@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: KmlX5auhVZchYLp0EdsEyM/E8dLW2eTWVqMoqjpuNUU=
+hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 ---
 ![логотип](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -12,6 +12,7 @@ hash: KmlX5auhVZchYLp0EdsEyM/E8dLW2eTWVqMoqjpuNUU=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.ebus.svg)
 ![тесты](https://travis-ci.org/rg-engineering/ioBroker.ebus.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.ebus.png?downloads=true)
+![Значок Greenkeeper](https://badges.greenkeeper.io/rg-engineering/ioBroker.ebus.svg)
 
 # IoBroker.ebus
 ** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
@@ -43,7 +44,7 @@ hash: KmlX5auhVZchYLp0EdsEyM/E8dLW2eTWVqMoqjpuNUU=
 * (René) обновление flot до версии 3.0
 
 ### 0.8.0 (2019-02-24)
-* (René) hcmode2 значение 5 = EVU Sperrzeit
+* (René) значение hcmode2 5 = EVU Sperrzeit
 
 ### 0.7.0 (2019-01-28)
 * (Рене) добавить регулируемое время ожидания

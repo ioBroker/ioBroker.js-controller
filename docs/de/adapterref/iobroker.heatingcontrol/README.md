@@ -3,15 +3,16 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: QFFQ+XpzNHiaN3UC8I8z18KMu//7TXoO1vmRGLC+mf8=
+hash: xLaWr2a0pUZpiYw+CrQjdZVwELPWYlVOjwdxXWfJABY=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/heatingcontrol-stable.svg)
-![NPM-Version](http://img.shields.io/npm/v/iobroker.heatingcontrol.svg)
+![NPM-Version](https://img.shields.io/npm/v/iobroker.heatingcontrol.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)
+![Tests](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/rg-engineering/ioBroker.heatingcontrol/master.svg)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/rg-engineering/ioBroker.heatingcontrol.svg)
 
 # IoBroker.HeatingControl
 ** Wenn es dir gefällt, erwäge bitte eine Spende: **
@@ -126,7 +127,22 @@ Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 
 ## Changelog
 
-### 0.3.10 (2019-12-xx)
+
+### 0.3.14 (2019-12-29)
+* (René) format conversion for temperatures in string to number
+
+### 0.3.13 (2019-12-28)
+* (René) bugfix create cron jobs for profile type 3 (daily)
+
+### 0.3.12 (2019-12-27)
+* (René) bugfix exception in CheckTemperatureChange [ReferenceError: RoomState is not defined] 
+
+### 0.3.11 (2019-12-27)
+* (René) option: minimum temperature per room
+* (René) bugfix exception in CheckTemperatureChange [ReferenceError: PublicHolidyToday is not defined] 
+
+
+### 0.3.10 (2019-12-26)
 * (René) see issue #54: stop override with OverrideTemperature =0
 * (René) new priority for lowering reasons
 * (René) handling of actuators without thermostat

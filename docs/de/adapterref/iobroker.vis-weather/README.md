@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis-Wetter
-hash: BJTwpQQlh2sbsjqITTaMzu+d+YqhccKCz5jxASGM21s=
+hash: E0dmMLuqIGEeUh+H8k+zwRZRqB8gibHsapW0fZBBndA=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
@@ -12,13 +12,14 @@ hash: BJTwpQQlh2sbsjqITTaMzu+d+YqhccKCz5jxASGM21s=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.vis-weather.svg)
 ![Tests](https://travis-ci.org/rg-engineering/ioBroker.vis-weather.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/rg-engineering/ioBroker.vis-weather.svg)
 
 # IoBroker.vis-weather
 ** Wenn es dir gefällt, erwäge bitte eine Spende: **
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
-Dieses Vis-Widget zeigt Wettervorhersagedaten von DasWetter.com oder Weatherunderground
+Dieses Vis-Widget zeigt Wettervorhersagedaten von DasWetter.com oder Weatherunderground an. Sie benötigen den DasWetter-Adpater oder Weatherunderground-Adapter, der ebenfalls ausgeführt wird ...
 
 Bei schlechtem Wetter müssen Sie die Vorhersage für die nächsten 36 Stunden aktivieren.
 In DasWetter.com muss eine von vier Prognosedatenstrukturen aktiviert sein. Sie können den anzuzeigenden auswählen.

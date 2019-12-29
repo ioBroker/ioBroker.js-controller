@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
+hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 ---
 ![логотип](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -12,6 +12,7 @@ hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sbfspot.svg)
 ![тесты](https://travis-ci.org/rg-engineering/ioBroker.sbfspot.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)
+![Значок Greenkeeper](https://badges.greenkeeper.io/rg-engineering/ioBroker.sbfspot.svg)
 
 # IoBroker.sbfspot
 ** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
@@ -67,7 +68,7 @@ hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
 * (Рене) сбросить доходность, если нет нового значения с сегодняшнего дня
 
 ### 2.2.4 (2018-08-19)
-* (René) исправление для тиков на X
+* (Рене) исправление для тиков на X
 
 ### 2.2.3
 * (Рене) так же, как 2.2.2
@@ -86,7 +87,7 @@ hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
 * (Рене) Поддержка MariaDB
 
 ### 2.0.1
-* (René) Поддержка admin3
+* (Рене) Поддержка admin3
 
 ### 2.0.0
 * (René), поскольку мы всегда используем один график для виджета, теперь поддерживается только один

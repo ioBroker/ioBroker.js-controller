@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.daswetter/README.md
 title: ioBroker.DasWetter.
-hash: qtWB28BUfn5iegjzOjAWojvN7T/MDiLSB4HMxJRZSeI=
+hash: 477MA3/BQ7DZEFWpOwWI3IAJWPLV6+kZugwgP9hw9/A=
 ---
 ![Logo](../../../en/adapterref/iobroker.daswetter/admin/daswettercom.png)
 
@@ -12,18 +12,23 @@ hash: qtWB28BUfn5iegjzOjAWojvN7T/MDiLSB4HMxJRZSeI=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.daswetter.svg)
 ![Tests](https://travis-ci.org/rg-engineering/ioBroker.daswetter.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.daswetter.png?downloads=true)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/rg-engineering/ioBroker.daswetter.svg)
 
 # IoBroker.DasWetter.
+** Wenn es dir gefällt, erwäge bitte eine Spende: **
+
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
 Dieser Adapter liest Wettervorhersagedaten von DasWetter.com.
 
-Sie benötigen ein Konto bei DasWetter.com. Registrieren Sie sich unter https://www.daswetter.com/api/#/login. Das Konto ist unter bestimmten Bedingungen kostenlos.
+Sie benötigen einen Account bei DasWetter.com. Registrieren Sie sich unter https://www.daswetter.com/api/#/login Das Konto ist unter bestimmten Bedingungen kostenlos.
 
 In Ihrem Konto finden Sie drei URLs für vier verschiedene Datenmodelle:
 
-* Prognose für die nächsten 7 Tage und allgemeine Informationen des Tages: Hoch und Tief, Wind (Symbol und Beschreibung), Tagessymbol und Wetterbedingungen
-* detaillierte Informationen für 5 Tage und alle 3 Stunden: Die allgemeinen täglichen Informationen sind folgende: Peak, Tiefs, Wind, Böen, Niederschlag, relative Luftfeuchtigkeit,
+* Vorhersage für die nächsten 7 Tage und allgemeine Informationen des Tages: Hoch und Tief, Wind (Symbol und Beschreibung), Tagessymbol und Wetterbedingungen
+* detaillierte Informationen für 5 Tage und alle 3 Stunden: Die allgemeinen täglichen Informationen lauten wie folgt: Gipfel, Tiefpunkte, Wind, Böen, Niederschlag, relative Luftfeuchtigkeit,
 
-Luftdruck des Meeresspiegels, Schneegrenze, Sonnenaufgang und Sonnenuntergang, Monddaten, Ortszeit
+Luftdruck auf Meereshöhe, Schneegrenze, Sonnenaufgang und Sonnenuntergang, Monddaten, Ortszeit
 
 * Vorschau mit detaillierten Daten jede Stunde (nur für die ersten 2 Tage, dann alle 3 Stunden)
 * Vorhersage für 5 Tage und alle 3 Stunden (im JSON-Format)
@@ -31,28 +36,31 @@ Luftdruck des Meeresspiegels, Schneegrenze, Sonnenaufgang und Sonnenuntergang, M
 Alle vier Modelle sind implementiert und eines sollte mindestens verwendet werden.
 In den Einstellungen muss eine URL wie http://api.daswetter.com/index.php?api_lang=de&localidad=xxxx verwendet werden. Kopieren Sie einfach die vollständige URL aus Ihrem Konto.
 
-## Hints
-### Icons in vis verwendet
-* Zugriff auf Symbole wie "http:// ip: 8082 / adapter / daswetter / icons / tiempo-weather / galeria1 / 1.png".
-* in galerie6 sind die ursprünglichen symbole im svg-format. Vis-App hat möglicherweise Probleme bei der Visualisierung. Es sind also konvertierte PNGs verfügbar. Verwenden Sie einfach die Option "use png".
-* in galerie5 sind die ursprünglichen symbole im svg- und png-format. Daneben sind auch Farb- und Weißversionen erhältlich
+## Hinweise
+### Icons in vis
+* Greifen Sie auf Symbole wie http:// ip: 8082 / adapter / daswetter / icons / tiempo-weather / galeria1 / 1.png zu.
+* in galerie6 sind die ursprünglichen symbole im svg-format. Vis App hat möglicherweise Probleme, es zu visualisieren. So konvertierte PNG sind verfügbar. Benutze einfach die Option "use png"
+* in galerie5 sind die ursprünglichen symbole im svg- und png-format. Daneben stehen auch Farb- und Weißversionen zur Verfügung
 
 ### "current" in NextHours_Day1:
-* DasWetter.com liefert keine echten aktuellen Wetterwerte
-* Aber manchmal ist es hilfreich, die Vorhersage der aktuellen Stunde zur Verfügung zu haben
-* also haben wir "current" hinzugefügt, was nur eine Kopie der zugehörigen Stundenwerte ist
-* Rufen Sie den Adapter mindestens einmal pro Stunde an, um sicherzustellen, dass "current" gut aktualisiert wird
-* siehe auch Github-Funktionsanforderung [issue24] (https://github.com/rg-engineering/ioBroker.daswetter/issues/24)
+* DasWetter.com liefert keine aktuellen Wetterdaten
+* aber manchmal ist es hilfreich, die Vorhersage der aktuellen Stunde zur Verfügung zu haben
+* Also haben wir "current" hinzugefügt, was nur eine Kopie der zugehörigen Stundenprognosen ist
+* Bitte stellen Sie sicher, dass Sie den Adapter mindestens einmal pro Stunde anrufen, um sicherzustellen, dass "current" ordnungsgemäß aktualisiert wird
+* Siehe auch Github Feature Request [issue24] (https://github.com/rg-engineering/ioBroker.daswetter/issues/24)
 
 ### Pfad 4
-* Im Moment sendet DasWetter.com Daten, die von ihren eigenen Spezifikationen abweichen.
+* Derzeit sendet DasWetter.com Daten, die von ihren eigenen Spezifikationen abweichen.
 
-Jetzt haben wir eine "Autoreparatur" implementiert, die ihre Struktur in eine dokumentierte Form ändert.
+Jetzt haben wir eine "Autoreparatur" implementiert, die die Struktur in eine dokumentierte Form ändert.
 
 ## Bekannte Probleme
-* Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.daswetter/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
+* Bitte erstellen Sie Probleme bei [github] (https://github.com/rg-engineering/ioBroker.daswetter/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
 ## Changelog
+
+### 2.8.1 (2019-09-08)
+* (René) bug fix: some datapoints were created as number instead of string
 
 ### 2.8.0 (2019-03-19)
 * (René) moon and wind icon set added in admin !!path to wind icons changed!!

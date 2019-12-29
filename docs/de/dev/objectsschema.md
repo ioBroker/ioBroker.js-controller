@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
-hash: kXC86ZmflKp2hOLTT8Pz0cnlkUiUTj8GK73eBWEiKFI=
+hash: OnfVW54nJrWGrGg9yrsROuCJgrvGhsV9YxRNeOw6P30=
 ---
 # Kernkonzept
 In ioBroker gibt es zwei grundsätzlich verschiedene Datentypen. Sogenannte **Staaten** (`states`) und **Objekte**
@@ -123,7 +123,7 @@ Die Methode getState und das Ereignis stateChange liefern ein Objekt mit allen A
 
 für die `setState`-Methode ist alles außer `val` optional, `from` wird automatisch durch die `setState`-Methode festgelegt. `ack` sind standardmäßig false, `ts` und `lc` sind wie erwartet eingestellt
 
-Attribute für das Objekt getState / stateChange / setState:
+Attribute für das getState / stateChange / setState-Objekt:
 
 * `val` - der tatsächliche Wert - kann ein beliebiger Typ sein, der JSON-" codierbar "ist
 * `ack` - ein Boolesches Flag, das angibt, ob das Zielsystem den Wert bestätigt hat
@@ -131,7 +131,7 @@ Attribute für das Objekt getState / stateChange / setState:
 * `lc` - ein Unix-Zeitstempel, der die letzte Änderung des tatsächlichen Werts des Zustands angibt (in Millisekunden)
 * `from` - Adapterinstanz, die den` setState` ausgeführt hat
 * `user` - Benutzername, der den Wert festlegt
-* `expire` - Ein ganzzahliger Wert, mit dem Zustände festgelegt werden können, die nach einer bestimmten Anzahl von Sekunden ablaufen. Kann nur mit `setValue` verwendet werden. Nachdem der Wert abgelaufen ist, verschwindet er aus redisDB.
+* `expire` - ein ganzzahliger Wert, mit dem Zustände festgelegt werden können, die nach einer bestimmten Anzahl von Sekunden ablaufen. Kann nur mit `setValue` verwendet werden. Nachdem der Wert abgelaufen ist, verschwindet er aus redisDB.
 * `c` - Kommentar zu dieser Zustandsänderung.
 * `q` - Qualität. Nummer mit folgenden Zuständen:
 
@@ -201,10 +201,11 @@ Attribute:
 * `common.defAck` (optional - wenn common.def gesetzt ist, wird dieser Wert als ack-Flag verwendet, js-controller 2.0.0+)
 * `common.desc` (optional, string)
 * `common.read` (Boolescher Wert, obligatorisch) - true, wenn der Status lesbar ist
-* `common.write` (Boolescher Wert, obligatorisch) - true, wenn der Status schreibbar ist
+* `common.write` (Boolescher Wert, obligatorisch) - true, wenn der Status beschreibbar ist
 * `common.role` (string, obligatorisch) - Rolle des Status (wird in Benutzeroberflächen verwendet, um anzugeben, welches Widget ausgewählt werden soll, siehe unten)
-* `common.states` (optional) Attribut vom Typ number mit Objekt möglicher Zustände {'value': 'valueName', 'value2': 'valueName2', 0: 'OFF', 1: 'ON'}
+* `common.states` (optional) Attribut vom Typ number mit Objekt möglicher Zustände` {'value': 'valueName', 'value2': 'valueName2', 0: 'OFF', 1: 'ON'} `
 * `common.workingID` (string, optional) - wenn dieser Zustand den Hilfszustand WORKING hat. Hier muss der vollständige Name oder nur der letzte Teil geschrieben werden, wenn die ersten Teile mit tatsächlichen gleich sind. Wird für HM.LEVEL verwendet und hat normalerweise den Wert "WORKING"
+* `common.custom` (optional) - die Struktur mit benutzerdefinierten Einstellungen für bestimmte Adapter. Wie "{" influxdb.0 ": {" enabled ": true," alias ":" name "}}". Das Attribut "enabled" ist erforderlich. Ist dies nicht der Fall, wird das gesamte Attribut gelöscht.
 
 ##### Bundesland `common.history`
 Die Verlaufsfunktion benötigt den Verlaufsadapter oder einen anderen Speicheradapter vom Typ Verlauf
@@ -485,69 +486,83 @@ id `system.adapter.<adapter.name>`
 
 * Hinweis: * Alle Flaggen sind optional, außer als **obligatorisch** gekennzeichnet.
 
-* `common.name` - **obligatorisch** Name des Adapters ohne" ioBroker ".
-* `common.title` - (veralteter) längerer Name des Adapters, der in admin angezeigt werden soll
-* `common.titleLang` - **obligatorisch** längerer Name des Adapters in allen unterstützten Sprachen wie {en: 'Adapter', de: 'Adapter', ru: 'Драйвер'}
-* `common.mode` - **obligatorisch** mögliche Werte siehe unten
-* `common.version` - **obligatorisch** verfügbare Version
-* `common.installedVersion` - **obligatorisch** installierte Version
-* `common.enabled` - **obligatorisch** Der Wert [true / false] sollte false sein, damit neue Instanzen standardmäßig deaktiviert werden
-* `common.platform` - **obligatorisch** mögliche Werte: Javascript / Node.js, weitere kommen
-* `common.webservers` - Array von Webserver-Instanzen, die Inhalte aus dem www-Ordner des Adapters bereitstellen sollen
-* `common.noRepository` - [true / false], wenn der Adapter bei der Erstinstallation geliefert wurde oder ein eigenes Repository hat
-* `common.messagebox` - true, wenn die Nachrichtenbox unterstützt wird. Wenn ja, wird das Objekt system.adapter. &lt; adapter.name &gt; adapter.instance & gt.messagebox erstellt, um Nachrichten an den Adapter zu senden (verwendet für E-Mail, Pushover, ...;
-* `common.subscribe` - Name der Variablen, die automatisch abonniert wird
-* `common.subscribable` - Variablen dieses Adapters müssen mit sendTo abonniert werden, um Aktualisierungen zu ermöglichen
-* `common.wakeup` -
-* `common.availableModes` - Werte für common.mode, wenn mehr als ein Modus möglich ist
-* `common.localLink` - Link zum Webservice dieses Adapters. ZB zu http:// localhost: 5984 / _utils für Futon von admin
-* `common.logTransporter` - wenn dieser Adapter Protokolle von anderen Hosts und Adaptern empfängt (z. B. um sie irgendwo zu speichern)
-* `common.nondeletable` - [true / false] Dieser Adapter kann nicht gelöscht oder aktualisiert werden. Es wird zusammen mit dem Controller aktualisiert.
-* `common.icon` - Name des lokalen Icons (sollte sich im Unterverzeichnis" admin "befinden)
-* `common.extIcon` - Link zum externen Symbol für deinstallierte Adapter. Normalerweise auf Github.
-* `common.logLevel` - Debug, Info, Warnung oder Fehler
-* `common.supportStopInstance`- [true / false], wenn der Adapter das Signal stopInstance unterstützt (** messagebox ** erforderlich). Das Signal wird vor dem Stopp an den Adapter gesendet. (Wird verwendet, wenn Probleme mit SIGTERM aufgetreten sind.)
-* `common.allowInit` - [true / false] ermöglicht, dass der" geplante "Adapter" nicht im Zeitplan "genannt wird, wenn Einstellungen geändert oder der Adapter gestartet werden.
-* `common.onlyWWW` - [true / false] sagt dem Controller, dass der Adapter nur HTML-Dateien und keine main.js hat, wie Rikscha
-* `common.singleton` - Adapter kann nur einmal im gesamten System installiert werden
-* `common.singletonHost` - Adapter kann nur einmal auf einem Host installiert werden
-* `common.allowInit` - [true / false] ermöglicht den geplanten Start des Adapters einmal nach Änderung der Konfiguration und dann nach Zeitplan
-* `common.config.width` - Standardbreite für den Konfigurationsdialog (veraltet - nur für admin2 gültig)
-* `common.config.height` - Standardhöhe für den Konfigurationsdialog (veraltet - nur für admin2 gültig)
-* `common.config.minWidth` - minimale Breite für den Konfigurationsdialog (veraltet - nur gültig für admin2)
-* `common.config.minHeight` - minimale Höhe für den Konfigurationsdialog (veraltet - nur gültig für admin2)
-* `common.os` - Zeichenfolge oder Array unterstützter Betriebssysteme, z. B. [" linux "," darwin "]
-* `common.stopBeforeUpdate` - [true / false], wenn der Adapter vor dem Update gestoppt werden muss
-* `common.adminTab.singleton` - [true / false], wenn der Adapter TAB für admin hat. Es wird nur ein Tab für alle Instanzen angezeigt.
-* `common.adminTab.name` - Name des TAB in admin
-* `common.adminTab.link` - Link für iframe im TAB. Sie können die Parameterersetzung folgendermaßen verwenden: "http://% ip%:% port%". IP wird durch Host-IP ersetzt. "port" wird aus native.port extrahiert.
+* `common.adminTab.fa-icon` - Name des Font-Awesome-Symbols für TAB.
 * `common.adminTab.ignoreConfigUpdate` - Konfigurations-TAB nicht aktualisieren, wenn die Konfiguration geändert wurde (um die Konfigurationseinstellungen in TAB zu aktivieren)
-* `common.restartAdapters` - Array mit Namen des Adapters, der nach der Installation dieses Adapters neu gestartet werden muss, z. ["vis"]
-* `common.preserveSettings` - Zeichenfolge (oder Array) mit Namen von Attributen, die gemeinsam verwendet werden und nicht gelöscht werden. Z.B. "history", daher wird bei setState ('system.adapter.mqtt.0 ", {..}) das Feld common.history nicht gelöscht, auch wenn das neue Objekt dieses Feld nicht enthält. Um das Attribut zu löschen, muss es explizit angegeben werden fertig mit `` `common: {history: null}` ``.
-* `common.noConfig` - [true / false] zeigt beispielsweise keinen Konfigurationsdialog an
-* `common.stopTimeout` - Wartezeit in ms, bis der Adapter heruntergefahren ist. Standard 500ms.
-* `common.unsafePerm` - [true / false], wenn das Paket mit dem Parameter" npm --unsafe-perm "installiert werden muss
-* `common.supportCustoms` - [true / false], wenn der Adapter Einstellungen für jeden Status unterstützt. Es muss die Datei custom.html in admin enthalten sein. Ein Beispiel finden Sie in ioBroker.history
-* `common.getHistory` - [true / false], wenn der Adapter die getHistory-Nachricht unterstützt
+* `common.adminTab.link` - Link für iframe im TAB. Sie können die Parameterersetzung folgendermaßen verwenden: "http://% ip%:% port%". IP wird durch Host-IP ersetzt. "port" wird aus native.port extrahiert.
+* `common.adminTab.name` - Name des TAB in admin
+* `common.adminTab.singleton` - [true / false], wenn der Adapter TAB für admin hat. Es wird nur ein Tab für alle Instanzen angezeigt.
+* `common.allowInit` - [true / false] ermöglicht, dass der" geplante "Adapter" nicht im Zeitplan "genannt wird, wenn Einstellungen geändert oder der Adapter gestartet werden. Oder lassen Sie einen geplanten Adapterstart einmal nach einer Konfigurationsänderung und dann nach Zeitplan zu.
+* `common.availableModes` - Werte für common.mode, wenn mehr als ein Modus möglich ist
 * `common.blockly` - [true / false], wenn der Adapter benutzerdefinierte Blöcke für blockly hat. (admin / blockly.js erforderlich)
+* `common.connection-type` - Verbindungstyp mit Gerät. Siehe [Verbindungstypen] (adapterpublish.md)
+* `common.compact` - teilt dem Controller mit, dass dieser Adapter auf Wunsch im selben Prozess gestartet werden kann
+* `common.config.height` - Standardhöhe für den Konfigurationsdialog (veraltet - nur für admin2 gültig)
+* `common.config.minHeight` - minimale Höhe für den Konfigurationsdialog (veraltet - nur für admin2 gültig)
+* `common.config.minWidth` - minimale Breite für den Konfigurationsdialog (veraltet - nur gültig für admin2)
+* `common.config.width` - Standardbreite für den Konfigurationsdialog (veraltet - nur für admin2 gültig)
+* `common.dataFolder` - Ordner relativ zu den iobroker-Daten, in denen der Adapter die Daten speichert. Dieser Ordner wird automatisch gesichert und wiederhergestellt. Sie können die Variable '% INSTANCE%' verwenden.
+* `common.dependencies` - Array wie` [{"js-controller": "> = 2.0.0"}] `, das beschreibt, welche ioBroker-Module für diesen Adapter benötigt werden.
+* `common.docs` - Die Struktur wie` {"en": "docs / en / README.md", "de": ["docs / de / README.md", "docs / de / README1.md" ]} `, der die Dokumentation beschreibt, wenn nicht in README.md
+* `common.enabled` - **obligatorisch** Der Wert [true / false] sollte false sein, damit neue Instanzen standardmäßig deaktiviert werden
+* `common.engineTypes` - veraltet. Verwenden Sie die Engine in package.json
+* `common.eraseOnUpload` - löscht alle vorherigen Daten im Verzeichnis vor dem Hochladen
+* `common.expert` - zeige dieses Objekt nur im Expertenmodus in admin
+* `common.extIcon` - Link zum externen Symbol für deinstallierte Adapter. Normalerweise auf Github.
+* `common.getHistory` - [true / false], wenn der Adapter die getHistory-Nachricht unterstützt
+* `common.icon` - Name des lokalen Icons (sollte sich im Unterverzeichnis" admin "befinden)
+* `common.installedVersion` - **obligatorisch** installierte Version
+* `common.keywords` - Ähnlich den Schlüsselwörtern in package.json, kann jedoch in vielen Sprachen definiert werden. Nur ein Array.
+* `common.localLinks` - Link zum Webservice dieses Adapters. ZB zu http:// localhost: 5984 / _utils für Futon von admin
+* `common.localLink` - veraltet. Verwenden Sie `common.localLinks`.
+* `common.logLevel` - Debug, Info, Warnung oder Fehler
+* `common.logTransporter` - wenn dieser Adapter Protokolle von anderen Hosts und Adaptern empfängt (z. B. um sie irgendwo zu speichern)
+* `common.main` - Startdatei des Adapters. Gleich wie in package.json.
+* `common.materializeTab` - wenn der Adapter> admin3 für tab unterstützt (materialize style)
+* `common.materialise` - wenn der Adapter> admin3 unterstützt (materialise style)
+* `common.messagebox` - true, wenn die Nachrichtenbox unterstützt wird. Wenn ja, wird das Objekt system.adapter. &lt; adapter.name &gt; adapter.instance & gt.messagebox erstellt, um Nachrichten an den Adapter zu senden (verwendet für E-Mail, Pushover, ...;
+* `common.mode` - **obligatorisch** mögliche Werte siehe unten
+* `common.name` - **obligatorisch** Name des Adapters ohne" ioBroker ".
+* `common.noConfig` - [true / false] zeigt beispielsweise keinen Konfigurationsdialog an
+* `common.noIntro` - zeige niemals Instanzen dieses Adapters auf dem Intro / Overview Bildschirm in Admin (wie Icons, Widgets)
+* `common.noRepository` - [true / false], wenn der Adapter bei der Erstinstallation geliefert wurde oder ein eigenes Repository hat
+* `common.nogit` - wenn dies zutrifft, ist keine direkte Installation von github möglich
+* `common.nondeletable` - [true / false] Dieser Adapter kann nicht gelöscht oder aktualisiert werden. Es wird zusammen mit dem Controller aktualisiert.
+* `common.npmLibs` - veraltet. Verwenden Sie package.json `dependencies`.
+* `common.onlyWWW` - [true / false] sagt dem Controller, dass der Adapter nur HTML-Dateien und keine main.js hat, wie Rikscha
+* `common.osDependencies.darwin` - Array von OSX-Paketen, die für diesen Adapter erforderlich sind
+* `common.osDependencies.linux` - Array von Debian / Centos-Paketen, die für diesen Adapter benötigt werden (natürlich nur Betriebssysteme mit apt, apt-get, yum als Paketmanager)
+* `common.osDependencies.win32` - wird nicht verwendet, da win32 keinen Paketmanager hat
+* `common.os` - Zeichenfolge oder Array unterstützter Betriebssysteme, z. B. [" linux "," darwin "]
+* `common.platform` - **obligatorisch** mögliche Werte: Javascript / Node.js, weitere kommen
+* `common.preserveSettings` - Zeichenfolge (oder Array) mit Namen von Attributen, die gemeinsam verwendet werden und nicht gelöscht werden. Z.B. "history", daher wird bei setState ('system.adapter.mqtt.0 ", {..}) das Feld common.history nicht gelöscht, auch wenn das neue Objekt dieses Feld nicht enthält. Um das Attribut zu löschen, muss es explizit angegeben werden fertig mit `` `common: {history: null}` ``.
+* `common.readme` - veraltet. Verwenden Sie `docs`.
+* `common.restartAdapters` - Array mit Namen des Adapters, der nach der Installation dieses Adapters neu gestartet werden muss, z. ["vis"]
+* `common.schedule` - CRON-Zeitplan, wenn der Adapter im Modus` schedule` ausgeführt wird.
+* `common.serviceStates` - [true / false oder path], wenn der Adapter zusätzliche Zustände liefern kann. Wenn ja, wird der Pfad adapter / lib / states.js aufgerufen und es gibt folgende Parameter function (objects, states, instance, config, callback). Die Funktion muss das Array von Punkten mit Werten wie function (err, result) liefern. {Result = [{id: 'id1', val: 1}, {id: 'id2', val: 2}]}
+* `common.singletonHost` - Adapter kann nur einmal auf einem Host installiert werden
+* `common.singleton` - Adapter kann nur einmal im gesamten System installiert werden
+* `common.stopBeforeUpdate` - [true / false], wenn der Adapter vor dem Update gestoppt werden muss
+* `common.stopTimeout` - Wartezeit in ms, bis der Adapter heruntergefahren ist. Standard 500ms.
+* `common.subscribable` - Variablen dieses Adapters müssen mit sendTo abonniert werden, um Aktualisierungen zu ermöglichen
+* `common.subscribe` - Name der Variablen, die automatisch abonniert wird
+* `common.supportCustoms` - [true / false], wenn der Adapter Einstellungen für jeden Status unterstützt. Es muss die Datei custom.html in admin enthalten sein. Ein Beispiel finden Sie in ioBroker.history
+* `common.supportStopInstance`- [true / false], wenn der Adapter das Signal stopInstance unterstützt (** messagebox ** erforderlich). Das Signal wird vor dem Stopp an den Adapter gesendet. (Wird verwendet, wenn Probleme mit SIGTERM aufgetreten sind.)
+* `common.titleLang` - **obligatorisch** längerer Name des Adapters in allen unterstützten Sprachen wie {en: 'Adapter', de: 'Adapter', ru: 'Драйвер'}
+* `common.title` - (veralteter) längerer Name des Adapters, der in admin angezeigt werden soll
+* `common.type` - Adaptertyp. Siehe [Types] (adapterpublish.md)
+* `common.unchanged` - (System) Bitte benutzen Sie dieses Flag nicht. Es ist ein Flag, das das System darüber informiert, dass der Konfigurationsdialog in admin angezeigt werden muss.
+* `common.unsafePerm` - [true / false], wenn das Paket mit dem Parameter" npm --unsafe-perm "installiert werden muss
+* `common.version` - **obligatorisch** verfügbare Version
+* `common.wakeup` - Adapter wird gestartet, wenn ein Wert in` system.adapter.NAME.x.wakeup` geschrieben wird. Normalerweise sollte der Adapter nach der Verarbeitung des Ereignisses anhalten.
+* `common.webByVersion` - Version als Präfix im Webadapter anzeigen (normalerweise - IP: Port / Material, WebByVersion - IP: Port / 1.2.3 / Material)
 * `common.webExtendable` - [true / false], wenn der Webserver in diesem Adapter mit Plugins / Erweiterungen wie Proxy, Simple-API erweitert werden kann
 * `common.webExtension` - relativer Dateiname, um die Web-Erweiterung zu verbinden. Z.B. in simple-api "lib / simpleapi.js" relativ zum Adapter-Stammverzeichnis. Zusätzlich muss native.webInstance angeben, wo diese Erweiterung enthalten sein wird. Leer bedeutet, es muss als eigener Webservice laufen. "*" bedeutet, dass jeder Webserver dies beinhalten muss.
-* `common.welcomeScreen` - Array von Seiten, die auf der Seite" web "index.html angezeigt werden sollen. ["vis / edit.html", "vis / index.html"] oder [{"link": "vis / edit.html", "name": "Vis editor", "img": "vis / img / edit.png "," color ":" blue "}," vis / index.html "]
-* `common.unchanged` - (System) Bitte benutzen Sie dieses Flag nicht. Es ist ein Flag, das das System darüber informiert, dass der Konfigurationsdialog in admin angezeigt werden muss.
-* `common.serviceStates` - [true / false oder path], wenn der Adapter zusätzliche Zustände liefern kann. Wenn ja, wird der Pfad adapter / lib / states.js aufgerufen und es gibt folgende Parameter function (objects, states, instance, config, callback). Die Funktion muss das Array von Punkten mit Werten wie function (err, result) liefern. {Result = [{id: 'id1', val: 1}, {id: 'id2', val: 2}]}
-* `common.nogit` - wenn dies zutrifft, ist keine direkte Installation von github möglich
-* `common.materialise` - wenn der Adapter> admin3 unterstützt (materialise style)
-* `common.materializeTab` - wenn der Adapter> admin3 für tab unterstützt (materialize style)
-* `common.dataFolder` - Ordner relativ zu iobroker-Daten, in dem der Adapter die Daten speichert. Dieser Ordner wird automatisch gesichert und wiederhergestellt. Sie können die Variable '% INSTANCE%' verwenden.
 * `common.webPreSettings` - Liste der Parameter, die vom Webserver-Adapter in info.js aufgenommen werden müssen. (Beispielmaterial)
-* `common.osDependencies.linux` - Array von Debian / Centos-Paketen, die für diesen Adapter benötigt werden (natürlich nur Betriebssysteme mit apt, apt-get, yum als Paketmanager)
-* `common.osDependencies.darwin` - Array von OSX-Paketen, die für diesen Adapter erforderlich sind
-* `common.osDependencies.win32` - wird nicht verwendet, da win32 keinen Paketmanager hat
-* `common.eraseOnUpload` - löscht alle vorherigen Daten im Verzeichnis vor dem Hochladen
-* `common.webByVersion` - Version als Präfix im Webadapter anzeigen (normalerweise - IP: Port / Material, WebByVersion - IP: Port / 1.2.3 / Material)
-* `common.noIntro` - zeige niemals Instanzen dieses Adapters auf dem Intro / Overview Bildschirm im Admin (wie Icons, Widgets)
-* `common.expert` - zeige dieses Objekt nur im Expertenmodus in admin
-* `common.compact` - teilt dem Controller mit, dass dieser Adapter auf Wunsch im selben Prozess gestartet werden kann
+* `common.webservers` - Array von Webserver-Instanzen, die Inhalte aus dem www-Ordner des Adapters bereitstellen sollen
+* `common.welcomeScreen` - Array von Seiten, die auf der Seite" web "index.html angezeigt werden sollen. ["vis / edit.html", "vis / index.html"] oder [{"link": "vis / edit.html", "name": "Vis editor", "img": "vis / img / edit.png "," color ":" blue "}," vis / index.html "]
+* `common.welcomeScreen.order` - erledigen
+* `common.welcomeScreenPro` - Entspricht` common.welcomeScreen`, wird jedoch nur beim Zugriff von ioBroker.cloud verwendet.
+* `common.wwwDontUpload` - Laden Sie das WWW-Verzeichnis nicht in die Datenbank hoch. Wird nur für Admin verwendet. Sie können Ihrem Verzeichnis einfach einen anderen Namen geben und OK.
 
 #### Instanz
 id *system.adapter. &lt; adapter.name &gt;. & lt; instanznummer & gt;*

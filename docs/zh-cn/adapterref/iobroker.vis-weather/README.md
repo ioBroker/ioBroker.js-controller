@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-weather/README.md
 title: ioBroker.vis天气
-hash: BJTwpQQlh2sbsjqITTaMzu+d+YqhccKCz5jxASGM21s=
+hash: E0dmMLuqIGEeUh+H8k+zwRZRqB8gibHsapW0fZBBndA=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-weather/admin/vis-weather.png)
 
@@ -12,6 +12,7 @@ hash: BJTwpQQlh2sbsjqITTaMzu+d+YqhccKCz5jxASGM21s=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.vis-weather.svg)
 ![测验](https://travis-ci.org/rg-engineering/ioBroker.vis-weather.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.vis-weather.png?downloads=true)
+![环保管理员徽章](https://badges.greenkeeper.io/rg-engineering/ioBroker.vis-weather.svg)
 
 ＃ioBroker.vis-天气
 **如果您愿意，请考虑捐赠：**

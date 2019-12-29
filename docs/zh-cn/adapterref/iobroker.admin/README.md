@@ -74,7 +74,7 @@ BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
 日志的字体显示为红色。
 
 ## Changelog
-### 3.7.3 (2019-12-28)
+### 3.7.4 (2019-12-29)
 * (bluefox) Added the filter of the running instances
 * (bluefox) The incompatible adapters will be hidden
 

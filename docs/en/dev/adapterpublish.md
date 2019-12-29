@@ -4,7 +4,7 @@ lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/dev/adapterpublish.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: Vl/THL9KmT4BuAzzqOhNO+NOVx4brRyAasB5kluAk+I=
+hash: qhR3rDNwQqTnyU3gvGpGmQHGH4s0CAAUTJbEFnxIimc=
 ---
 # Publish an adapter
 Before considering publishing an adapter, it should be offered for testing in [Forum test thread](https://forum.iobroker.net/category/91/tester). If the tests are successful and the adapter is stable, it should initially be included in the latest repository. <br/><br/> body weight If the adapter runs stable on a certain version number, it can be transferred to the stable repository. This requires the developer&#39;s own assessment in conjunction with the user feedback.
@@ -42,30 +42,34 @@ be available. Other languages are also welcome. This [example](https://github.co
 }
 ```
 
-6.The `` www '' directory and the `` widget '' directory should be deleted when not in use.
+6. The `www` directory and the` widget` directory should be deleted when not in use.
 
-7.In the io-package.json a `` type '' attribute should be created under common. To do this from this
+7. In the io-package.json a `type` attribute should be created under common. To do this from this
 
 [list](#Adapterkategorien) the best suitable category.
 
-8. The states created by the adapter should provide valid information for your
+8. In the io-package.json a `connection-type` attribute should be created under common. To do this from this
 
-[roll](https://github.com/ioBroker/ioBroker/blob/master/doc/STATE_ROLES.md#state-roles) ``role`` under common.
+[list](#Adapter-Verbindungstyp) the best matching connection category.
+
+9. The states created by the adapter should provide valid information for your
+
+[roll](https://github.com/ioBroker/ioBroker/blob/master/doc/STATE_ROLES.md#state-roles) `role` under common.
 The use of the role `state` should be avoided.
 
-9. The adapter should both use the testing specified in the template. For this, the Github account with Appveyor
+10. The adapter should both use the testing specified in the template. For this, the Github account with Appveyor
 
 (Windows tests) and Travis CI (Linux and Mac OS tests) are linked and the corresponding repository is registered for testing. These two continuous integration tools have proven to be suitable for the ioBroker project and are free of charge for public Github repositories. <br/><br/> The developer can gladly extend the scope of tests.
 
-10. At least one entry under common for the attribute `authors` must be made in the io-package.json. Likewise
+11. In the io-package.json at least one entry under common for the attribute `authors` must be made. Likewise
 
 the attribute `author` must be filled in the package.json. Optionally, several authors can also be saved for npm by using the attribute `contributors` in the package.json.
 
-11. The adapter must be available as an npm package. More information can
+12. The adapter must be available as an npm package. More information can
 
 [here](https://github.com/ioBroker/ioBroker.repositories#how-to-publish-on-npm) can be found.
 
-12. The ioBroker organization must be added on npm. This is necessary to enable long-term maintenance of the package
+13. The ioBroker organization must be added on npm. This is necessary to enable long-term maintenance of the package
 
 even if the developer can no longer wait for the package due to time or other reasons. More information can be found in [here](https://github.com/ioBroker/ioBroker.repositories#add-owner-to-packet).
 
@@ -187,33 +191,38 @@ Example:
 ```
 
 ## Adapter categories
-- **alarm** - security systems
-- **climate-control** - air conditioners, air filters, heaters and more
-- **communication** - data provision for other adapters, e.g. B. via REST
-- **date-and-time** - e.g. B. Calendar
-- **energy** - power monitoring, solar systems, inverters and much more.
-- **metering** - Other measuring systems (e.g. water, gas, oil)
-- **garden** - z. B. lawn mowers, sprinkler systems
-- **general** - General adapters like Admin, Web, Discovery
-- **geoposition** - geolocation of objects or people
-- **hardware** - Different multifunction hardware like Arduino, ESP, Bluetooth, ...
-- **health** - blood pressure, heartbeat, body weight, ...
-- **household** - kitchen appliances, vacuum cleaners, etc.
-- **infrastructure** - network, NAS, printers, telephones
-- **iot-systems** - Other smart home systems (hardware & software)
-- **lighting** - lighting
-- **logic** - rules, scripts, parsers, etc.
-- **messaging** - adapter for sending and receiving messages e.g. B. via email, telegram, ...
-- **misc-data** - export and import of data, currency converter etc.
-- **multimedia** - TV, AVR, boxes, voice assistants etc.
-- **network** - ping, network detection, UPnP, ...
-- **protocols** - communication protocols, e.g. B. MQTT
-- **storage** - logging, data storage e.g. B. relational databases, ...
-- **utility** - Supporting adapters such as B. Backup
-- **vehicle** - cars
-- **visualization** - visualization adapter, such as vis etc.
-- **visualization-icons** - icons for visualizations
-- **visualization-widgets** - iobroker.vis widgets
-- **weather** - weather information, air quality, environmental information
+- `alarm` - security systems
+- `climate-control` - air conditioners, air filters, heaters and more
+- `communication` - data provision for other adapters, e.g. B. via REST
+- `date-and-time` - e.g. B. Calendar
+- `energy` - power monitoring, solar systems, inverters and much more.
+- `metering` - other measuring systems (e.g. water, gas, oil)
+- `garden` - e.g. B. lawn mowers, sprinkler systems
+- `general` - General adapters like Admin, Web, Discovery
+- `geoposition` - geolocation of objects or people
+- `hardware` - Different multifunction hardware like Arduino, ESP, Bluetooth, ...
+- `health` - blood pressure, heartbeat, body weight, ...
+- `household` - kitchen appliances, vacuum cleaners, etc.
+- `infrastructure` - network, NAS, printers, telephones
+- `iot-systems` - Other smart home systems (hardware & software)
+- `lighting` - lighting
+- `logic` - rules, scripts, parsers, etc.
+- `messaging` - adapter for sending and receiving messages e.g. B. via email, telegram, ...
+- `misc-data` - export and import of data, currency converter etc.
+- `multimedia` - TV, AVR, boxes, voice assistants etc.
+- `network` - ping, network detection, UPnP, ...
+- `protocols` - communication protocols, e.g. B. MQTT
+- `storage` - logging, data storage e.g. B. relational databases, ...
+- `utility` - supporting adapters such as B. Backup
+- `vehicle` - cars
+- `visualization` - visualization adapter, such as vis etc.
+- `visualization-icons` - icons for visualizations
+- `visualization-widgets` - iobroker.vis widgets
+- `weather` - weather information, air quality, environmental information
 
-?> ***This is a placeholder*** . <br><br> Help with ioBroker and expand this article. Please note the [ioBroker Style Guide](community/styleguidedoc) so that the changes can be accepted more easily.
+## Adapter connection type
+- `guess` - The status of the device cannot be determined. ioBroker takes status based on last ioBroker command.
+- `cloud polling` - The integration of this device takes place via the cloud and requires an active internet connection. Querying the status means that an update may be noticed later.
+- `cloud-push` - The integration of this device takes place via the cloud and requires an active internet connection. ioBroker will be notified when a new status is available.
+- `local polling` - Provides direct communication with the device. Querying the status means that an update may be noticed later.
+- `local-push` - Offers direct communication with the device. ioBroker will be notified when a new status is available.

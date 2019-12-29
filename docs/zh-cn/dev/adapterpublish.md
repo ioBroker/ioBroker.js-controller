@@ -4,7 +4,7 @@ lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adapterpublish.md
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
-hash: Vl/THL9KmT4BuAzzqOhNO+NOVx4brRyAasB5kluAk+I=
+hash: qhR3rDNwQqTnyU3gvGpGmQHGH4s0CAAUTJbEFnxIimc=
 ---
 ＃发布一个适配器
 在考虑发布适配器之前，应在[论坛测试线程](https://forum.iobroker.net/category/91/tester)中提供它以进行测试。如果测试成功并且适配器稳定，则最初应将其包含在最新的存储库中。 <br/><br/>体重如果适配器可以在特定版本号上稳定运行，则可以将其转移到稳定存储库中。这需要开发者自己的评估以及用户反馈。
@@ -42,30 +42,34 @@ Github存储库中的[文件](https://github.com/foxriver76/ioBroker.denon/blob/
 }
 ```
 
-6，不使用时应删除``www''目录和``widget''目录
+6.不使用时，应删除www目录和widget目录。
 
-7，在io-package.json文件中，应该在common下创建一个``type''属性。为此
+7.在io-package.json中，应该在common下创建一个`type`属性。为此
 
 [名单](#Adapterkategorien)最合适的类别。
 
-8.适配器创建的状态应为您提供有效的信息
+8.在io-package.json中，应该在common下创建一个connection-type属性。为此
 
-[卷](https://github.com/ioBroker/ioBroker/blob/master/doc/STATE_ROLES.md#state-roles)``role``。
+[名单](#Adapter-Verbindungstyp)最佳匹配的连接类别。
+
+9.适配器创建的状态应为您提供有效的信息
+
+[卷](https://github.com/ioBroker/ioBroker/blob/master/doc/STATE_ROLES.md#state-roles)`role`在公共下。
 应避免使用角色`state`。
 
-9.适配器都应使用模板中指定的测试。为此，Github在Appveyor上的帐户
+10.适配器都应使用模板中指定的测试。为此，Github在Appveyor上的帐户
 
 （Windows测试）和Travis CI（Linux和Mac OS测试）已链接，并注册了相应的存储库以进行测试。这两个连续集成工具已被证明适用于ioBroker项目，并且对于公共Github存储库是免费的。 <br/><br/>开发人员可以很高兴地扩展测试范围。
 
-10.必须在io-package.json中为属性authors至少输入一个条目。还
+11.在io-package.json中，必须在属性authors的common下至少创建一个条目。还
 
 必须在package.json中填写属性`author`。 （可选）也可以使用package.json中的`contributors`属性为npm保存多个作者。
 
-11.适配器必须作为npm软件包提供。更多信息可以
+12.适配器必须作为npm软件包提供。更多信息可以
 
 可以找到[这里](https://github.com/ioBroker/ioBroker.repositories#how-to-publish-on-npm)。
 
-12.必须在npm上添加ioBroker组织。这对于长期维护包装很有必要
+13.必须在npm上添加ioBroker组织。这对于长期维护包装很有必要
 
 即使开发人员由于时间或其他原因无法再等待软件包。可以在[这里](https://github.com/ioBroker/ioBroker.repositories#add-owner-to-packet)中找到更多信息。
 
@@ -187,33 +191,38 @@ Github存储库中的[文件](https://github.com/foxriver76/ioBroker.denon/blob/
 ```
 
 ##适配器类别
--**警报**-安全系统
--**气候控制**-空调，空气过滤器，加热器等
--**通讯**-其他适配器的数据提供，例如B.通过REST
--**日期和时间**-例如B.日历
--**能源**-电力监控，太阳能系统，逆变器等等。
--**计量**-其他测量系统（例如水，气，油）
--**花园**-z B.割草机，洒水系统
--**通用**-通用适配器，例如Admin，Web，发现
--**地理**-物体或人的地理位置
--**硬件**-不同的多功能硬件，例如Arduino，ESP，蓝牙，...
--**健康**-血压，心跳，体重，...
--**家用**-厨房用具，吸尘器等
--**基础设施**-网络，NAS，打印机，电话
--**物联网系统**-其他智能家居系统（硬件和软件）
--**照明**-照明
--**逻辑**-规则，脚本，解析器等。
--**消息传递**-用于发送和接收消息的适配器，例如B.通过电子邮件，电报等...
--** misc-data **-数据的导出和导入，货币转换器等
--**多媒体**-电视，AVR，盒子，语音助手等
--**网络**-ping，网络检测，UPnP，...
--**协议**-通信协议，例如B.MQTT
--**存储**-日志记录，数据存储，例如B.关系数据库，...
--**实用程序**-支持的适配器，例如B.备份
--**车辆**-汽车
--**可视化**-可视化适配器，例如vis等
--**可视化图标**-可视化图标
--**可视化组件**-iobroker.vis小部件
--**天气**-天气信息，空气质量，环境信息
+-`警报`-安全系统
+-“气候控制”-空调，空气过滤器，加热器等
+-`communication`-其他适配器的数据提供，例如B.通过REST
+-日期和时间-例如B.日历
+-`energy`-电力监控，太阳能系统，逆变器等。
+-“计量”-其他测量系统（例如水，气，油）
+-`花园`-例如B.割草机，洒水系统
+-`general`-通用适配器，例如Admin，Web，Discovery
+-`geoposition`-物体或人物的地理位置
+-`hardware`-不同的多功能硬件，例如Arduino，ESP，蓝牙，...
+-`健康`-血压，心跳，体重，...
+-“家用”-厨房用具，吸尘器等。
+-基础设施-网络，NAS，打印机，电话
+-`iot-systems`-其他智能家居系统（硬件和软件）
+-`照明`-照明
+-`logic`-规则，脚本，解析器等
+-`messaging`-用于发送和接收消息的适配器，例如B.通过电子邮件，电报等...
+-`misc-data`-数据的进出口和货币转换器等。
+-`multimedia`-电视，AVR，盒子，语音助手等
+-`network`-ping，网络检测，UPnP，...
+-`protocols`-通信协议，例如B.MQTT
+-`storage`-日志记录，数据存储，例如B.关系数据库，...
+-`utility`-支持适配器，例如B.备份
+-`车辆`-汽车
+-`visualization`-可视化适配器，例如vis等
+-`visualization-icons`-可视化图标
+-`visualization-widgets`-iobroker.vis部件
+-`weather`-天气信息，空气质量，环境信息
 
-？&gt; ***这是一个占位符***。 <br><br>帮助ioBroker并扩展本文。请注意[ioBroker样式指南](community/styleguidedoc)，以便更容易接受更改。
+##适配器连接类型
+-`guess`-无法确定设备的状态。 ioBroker会根据上一个ioBroker命令获得状态。
+-“云轮询”-该设备的集成通过云进行，并且需要有效的Internet连接。查询状态意味着以后可能会注意到更新。
+-`cloud-push`-该设备的集成通过云进行，并且需要有效的Internet连接。当新状态可用时，将通知ioBroker。
+-“本地轮询”-提供与设备的直接通信。查询状态意味着以后可能会注意到更新。
+-`local-push`-提供与设备的直接通信。当新状态可用时，将通知ioBroker。

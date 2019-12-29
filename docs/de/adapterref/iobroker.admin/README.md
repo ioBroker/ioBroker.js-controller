@@ -123,7 +123,7 @@ Auch die Repositorien und Sicherheitseinstellungen können hier eingestellt werd
 Eine tiefergehende Beschreibung ist über den Link in dem Titel dieses Abschnitts zu erreichen.
 
 ## Changelog
-### 3.7.3 (2019-12-28)
+### 3.7.4 (2019-12-29)
 * (bluefox) Added the filter of the running instances
 * (bluefox) The incompatible adapters will be hidden
 

@@ -108,6 +108,9 @@ CCU和info文件夹包含网关的基本信息。
 ###常见问题
 
 ## Changelog
+### 2.5.2 (2019-12-29)
+* (foxriver76) fixed issue which originated by undefined tclsh alias on CCU for dutycycle.fn script
+
 ### 2.5.1 (2019-12-14)
 * (foxriver76) no longer use adapter.objects
 * (foxriver76) js-controller v > 2 required

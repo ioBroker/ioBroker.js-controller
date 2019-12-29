@@ -1,22 +1,18 @@
 ![Logo](admin/heatingcontrol.png)
 # ioBroker.HeatingControl
+![Number of Installations](http://iobroker.live/badges/heatingcontrol-installed.svg) ![Number of Installations](http://iobroker.live/badges/heatingcontrol-stable.svg) 
 
-
-
-![Number of Installations](http://iobroker.live/badges/heatingcontrol-installed.svg) 
-![Number of Installations](http://iobroker.live/badges/heatingcontrol-stable.svg) 
-[![NPM version](http://img.shields.io/npm/v/iobroker.heatingcontrol.svg)](https://www.npmjs.com/package/iobroker.heatingcontrol)
+[![NPM version](https://img.shields.io/npm/v/iobroker.heatingcontrol.svg)](https://www.npmjs.com/package/iobroker.heatingcontrol)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)](https://www.npmjs.com/package/iobroker.heatingcontrol)
+[![Tests](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol.svg?branch=master)](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol)
 
 [![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)](https://nodei.co/npm/iobroker.heatingcontrol/)
 
-[![Travis-CI](http://img.shields.io/travis/rg-engineering/ioBroker.heatingcontrol/master.svg)](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol)
-
+[![Greenkeeper badge](https://badges.greenkeeper.io/rg-engineering/ioBroker.heatingcontrol.svg)](https://greenkeeper.io/)
 
 **If you like it, please consider a donation:**
                                                                           
-[![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
-
+[![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url) 
 
 
 Adapter for controlling your heating system.
@@ -128,6 +124,10 @@ Just configure events from ical in admin. Supported are
 
 
 ## Changelog
+
+
+### 0.3.14 (2019-12-29)
+* (René) format conversion for temperatures in string to number
 
 ### 0.3.13 (2019-12-28)
 * (René) bugfix create cron jobs for profile type 3 (daily)

@@ -34,6 +34,9 @@ automatic control for shutters
 
 ## Changelog
 
+### 0.4.3 (29.12.2019)
+* (simatec) Bugfix update process
+
 ### 0.4.2 (22.12.2019)
 * (simatec) Fix Trigger added objects
 

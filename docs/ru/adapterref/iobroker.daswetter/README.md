@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.daswetter/README.md
 title: ioBroker.DasWetter.
-hash: qtWB28BUfn5iegjzOjAWojvN7T/MDiLSB4HMxJRZSeI=
+hash: 477MA3/BQ7DZEFWpOwWI3IAJWPLV6+kZugwgP9hw9/A=
 ---
 ![логотип](../../../en/adapterref/iobroker.daswetter/admin/daswettercom.png)
 
@@ -12,23 +12,28 @@ hash: qtWB28BUfn5iegjzOjAWojvN7T/MDiLSB4HMxJRZSeI=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.daswetter.svg)
 ![тесты](https://travis-ci.org/rg-engineering/ioBroker.daswetter.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.daswetter.png?downloads=true)
+![Значок Greenkeeper](https://badges.greenkeeper.io/rg-engineering/ioBroker.daswetter.svg)
 
 # IoBroker.DasWetter.
+** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
+
+[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
 Этот адаптер читает данные прогноза погоды от DasWetter.com.
 
-Вам нужен аккаунт на DasWetter.com. Зарегистрируйтесь по адресу https://www.daswetter.com/api/#/login. При определенных условиях учетная запись бесплатна.
+Вам нужен аккаунт на DasWetter.com. Зарегистрируйтесь на https://www.daswetter.com/api/#/login. При определенных условиях учетная запись бесплатна.
 
 В вашем аккаунте вы найдете три URL для четырех разных моделей данных:
 
 * Прогноз на следующие 7 дней и общая информация дня: высокая и низкая, ветер (символ и описание), символ дня и погодные условия
-* подробная информация за 5 дней и каждые 3 часа: общая ежедневная информация следующая: пик, минимумы, ветер, порывы ветра, осадки, относительная влажность,
+* подробная информация за 5 дней и каждые 3 часа: общая ежедневная информация следующая: пик, минимумы, ветер, порывы, осадки, относительная влажность,
 
 давление воздуха на уровне моря, линия снега, восход и заход солнца, даты, связанные с луной, местное время
 
 * Предварительный просмотр с подробными данными каждый час (только в течение первых 2 дней, затем каждые 3 часа)
 * Прогноз на 5 дней и каждые 3 часа (в формате JSON)
 
-Все четыре модели реализованы, и одна должна использоваться по крайней мере.
+Все четыре модели реализованы и одна должна использоваться как минимум.
 В настройках должен использоваться URL-адрес, например http://api.daswetter.com/index.php?api_lang=de&localidad=xxxx. Просто скопируйте полный URL из вашей учетной записи.
 
 ## Подсказки
@@ -38,7 +43,7 @@ hash: qtWB28BUfn5iegjzOjAWojvN7T/MDiLSB4HMxJRZSeI=
 * в galerie5 оригинальные иконки в форматах svg и png. Кроме того, доступны цветные и белые версии
 
 ### "текущий" в NextHours_Day1:
-* DasWetter.com не предоставляет реальные текущие значения погоды
+* DasWetter.com не предоставляет реальных текущих значений погоды
 * но иногда полезно иметь прогноз на текущий час
 * поэтому мы добавили «текущий», который является просто копией соответствующих значений часов прогноза
 * убедитесь, что вы вызываете адаптер не реже одного раза в час, чтобы убедиться, что «текущий» обновляется хорошо
@@ -53,6 +58,9 @@ hash: qtWB28BUfn5iegjzOjAWojvN7T/MDiLSB4HMxJRZSeI=
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.daswetter/issues), если вы обнаружите ошибки или пожелаете новых функций
 
 ## Changelog
+
+### 2.8.1 (2019-09-08)
+* (René) bug fix: some datapoints were created as number instead of string
 
 ### 2.8.0 (2019-03-19)
 * (René) moon and wind icon set added in admin !!path to wind icons changed!!

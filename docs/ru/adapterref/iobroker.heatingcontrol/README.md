@@ -3,15 +3,16 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: QFFQ+XpzNHiaN3UC8I8z18KMu//7TXoO1vmRGLC+mf8=
+hash: xLaWr2a0pUZpiYw+CrQjdZVwELPWYlVOjwdxXWfJABY=
 ---
 ![логотип](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
 ![Количество установок](http://iobroker.live/badges/heatingcontrol-stable.svg)
-![Версия NPM](http://img.shields.io/npm/v/iobroker.heatingcontrol.svg)
+![Версия NPM](https://img.shields.io/npm/v/iobroker.heatingcontrol.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)
+![тесты](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/rg-engineering/ioBroker.heatingcontrol/master.svg)
+![Значок Greenkeeper](https://badges.greenkeeper.io/rg-engineering/ioBroker.heatingcontrol.svg)
 
 # IoBroker.HeatingControl
 ** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
@@ -49,10 +50,10 @@ hash: QFFQ+XpzNHiaN3UC8I8z18KMu//7TXoO1vmRGLC+mf8=
 * Используйте приводы, если термостат отсутствует = действителен только для приводов. Если у вас есть комнаты без термостата, но с приводом отопления, вы можете постоянно включать или выключать их
 
 ### Профиль
-* Тип профиля = поддерживается три различных типа профиля (понедельник - воскресенье или понедельник - пятница и суббота / воскресенье или каждый день)
+* Тип профиля = три различных типа профиля (понедельник - воскресенье или понедельник - пятница и суббота / воскресенье или каждый день) поддерживаются
 * количество профилей = если вам нужно больше, то в профиле увеличьте это значение. Затем вы можете выбрать, какой профиль будет использоваться.
 * количество периодов = определить, сколько ежедневных секций с различной температурой вам нужно. Чем больше вы установите, тем больше точек данных будет создано. Лучше использовать низкое значение (например, 5)
-* "официальный выходной, например, воскресенье = если вы хотите установить целевые температуры в праздничные дни, например, в воскресенье, включите эту опцию. В противном случае настройки выходных дней такие же, как и в обычные дни.
+* "официальный выходной, например, воскресенье = если вы хотите установить целевые температуры в праздничные дни, например, в воскресенье, включите эту опцию. В противном случае настройки выходных дней такие же, как в обычные дни.
 * HeatingPeriod = дата начала и окончания периода нагрева. Используется для установки «HeatingPeriodActive»
 
 ### Устройства
@@ -61,10 +62,10 @@ hash: QFFQ+XpzNHiaN3UC8I8z18KMu//7TXoO1vmRGLC+mf8=
 
 ### Редактировать комнату
 * здесь вы можете проверить и установить идентификаторы объектов для термостатов, приводов и датчиков
-* Вы можете добавить вручную новые термостаты, приводы или датчики. Просто нажмите кнопку +. Тогда вы получите пустую строку, которую нужно заполнить. Кнопка «Правка» открывает список доступных устройств в системе.
+* Вы можете добавить вручную новые термостаты, приводы или датчики. Просто нажмите кнопку +. Тогда вы получите пустую строку, которую необходимо заполнить. Кнопка «Правка» открывает список доступных устройств в системе.
 * термостаты:
 
-** должны быть заданы имя, целевой температурный OID и текущий OID
+** должны быть заданы имя, целевой температурный OID и текущий температурный OID.
 
 * приводы
 
@@ -112,7 +113,7 @@ a) уменьшить текущую температуру профиля, ко
 Вы можете использовать свой календарь, чтобы изменить точки данных в адаптере.
 Просто настройте события из ical в админке. Поддерживаются
 
-* Heatingcontrol.0. Присутствует
+* HeatingControl.0. Присутствует
 * HeatingControl.0. HolidayPresent
 * Heatingcontrol.0. VacationAbsent
 * heatingcontrol.0. Гость-подарок
@@ -126,7 +127,22 @@ a) уменьшить текущую температуру профиля, ко
 
 ## Changelog
 
-### 0.3.10 (2019-12-xx)
+
+### 0.3.14 (2019-12-29)
+* (René) format conversion for temperatures in string to number
+
+### 0.3.13 (2019-12-28)
+* (René) bugfix create cron jobs for profile type 3 (daily)
+
+### 0.3.12 (2019-12-27)
+* (René) bugfix exception in CheckTemperatureChange [ReferenceError: RoomState is not defined] 
+
+### 0.3.11 (2019-12-27)
+* (René) option: minimum temperature per room
+* (René) bugfix exception in CheckTemperatureChange [ReferenceError: PublicHolidyToday is not defined] 
+
+
+### 0.3.10 (2019-12-26)
 * (René) see issue #54: stop override with OverrideTemperature =0
 * (René) new priority for lowering reasons
 * (René) handling of actuators without thermostat

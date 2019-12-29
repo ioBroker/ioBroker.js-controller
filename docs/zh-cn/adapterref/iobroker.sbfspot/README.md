@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
+hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 ---
 ![商标](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -12,6 +12,7 @@ hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sbfspot.svg)
 ![测验](https://travis-ci.org/rg-engineering/ioBroker.sbfspot.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)
+![环保管理员徽章](https://badges.greenkeeper.io/rg-engineering/ioBroker.sbfspot.svg)
 
 ＃ioBroker.sbfspot
 **如果您愿意，请考虑捐赠：**
@@ -99,7 +100,7 @@ hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
 *（René）可调日期格式
 
 ### 1.0.1
-*（René）修复SQLite错误
+*（René）修复SQLite的错误
 
 ### 1.0.0
 *（René）首次稳定发行
@@ -114,7 +115,7 @@ hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
 *（René）徽标已更改
 
 ### 0.2.3
-*（René）将历史数据添加为数据点（JSON）
+*（René）添加历史数据作为数据点（JSON）
 *（René）新的vis小部件可显示历史数据
 
 ### 0.2.2

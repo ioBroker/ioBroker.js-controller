@@ -3,56 +3,64 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.daswetter/README.md
 title: ioBroker.DasWetter。
-hash: qtWB28BUfn5iegjzOjAWojvN7T/MDiLSB4HMxJRZSeI=
+hash: 477MA3/BQ7DZEFWpOwWI3IAJWPLV6+kZugwgP9hw9/A=
 ---
 ![商标](../../../en/adapterref/iobroker.daswetter/admin/daswettercom.png)
 
 ![安装数量](http://iobroker.live/badges/daswetter-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.daswetter.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.daswetter.svg)
-![测试](https://travis-ci.org/rg-engineering/ioBroker.daswetter.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.daswetter.svg)
+![测验](https://travis-ci.org/rg-engineering/ioBroker.daswetter.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.daswetter.png?downloads=true)
+![环保管理员徽章](https://badges.greenkeeper.io/rg-engineering/ioBroker.daswetter.svg)
 
 ＃ioBroker.DasWetter。
-此适配器从DasWetter.com读取天气预报数据。
+**如果您愿意，请考虑捐赠：**
 
-您需要在DasWetter.com上拥有一个帐户。在https://www.daswetter.com/api/#/login注册该帐户在特定条件下免费。
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
-在您的帐户中，您会找到四个不同数据模型的三个网址：
+该适配器从DasWetter.com读取天气预报数据。
 
-*预测未来7天和当天的一般信息：高低，风（符号和描述），日符号和天气条件
-* 5天和3小时的详细信息：一般日常信息如下：高峰，低谷，风，阵风，降水，相对湿度，
+您需要在DasWetter.com上拥有一个帐户。在https://www.daswetter.com/api/#/login上注册该帐户在某些情况下是免费的。
+
+在您的帐户中，您将找到四个不同数据模型的三个URL：
+
+*未来7天的天气预报以及当天的一般信息：高低，风（符号和描述），日符号和天气情况
+*每5天每3个小时的详细信息：每日的常规信息如下：高峰，低谷，狂风，阵风，降水，相对湿度，
 
 海平面气压，雪线，日出和日落，与月亮有关的日期，当地时间
 
-*每小时预览详细数据（仅限前2天，然后每3小时）
-*预测5天和每3小时（采用JSON格式）
+*每小时预览详细数据（仅前2天，然后每3小时）
+*每3个小时进行5天的预测（JSON格式）
 
-所有四个模型都已实施，至少应使用一个模型。
-在设置URL中，必须使用http://api.daswetter.com/index.php?api_lang=de&localidad=xxxx。只需从您的帐户中复制完整的网址即可。
+所有这四个模型均已实现，至少应使用其中一个。
+在设置中，必须使用类似http://api.daswetter.com/index.php?api_lang=de&localidad=xxxx的URL。只需复制您帐户中的完整URL。
 
 ##提示
-在vis中使用的###图标
-*访问图标，如`http：// ip：8082 / adapter / daswetter / icons / tiempo-weather / galeria1 / 1.png`。
-*在galerie6中，原始图标采用svg格式。 Vis应用程序可能无法将其可视化。所以转换后的png可用。只需使用选项“使用png”
-*在galerie5中，原始图标采用svg和png格式。除此之外，还提供彩色和白色版本
+vis中使用的###图标
+*访问图标，例如“ http：// ip：8082 / adapter / daswetter / icons / tiempo-weather / galeria1 / 1.png”。
+*在galerie6中，原始图标为svg格式。 Vis应用程序可能无法可视化。因此可以使用转换后的png。只需使用选项“使用png”
+*在galerie5中，原始图标为svg和png格式。除了颜色和白色版本
 
-NextHours_Day1中###“current”：
-* DasWetter.com无法提供真实的当前天气预报值
-*但有时可以预测当前小时数
-*所以我们添加了“当前”，它只是相关预测小时值的副本
-*请确保每小时至少调用一次适配器，以确保“当前”更新
-*另见github功能请求[issue24]（https://github.com/rg-engineering/ioBroker.daswetter/issues/24）
+NextHours_Day1中的###“当前”：
+* DasWetter.com不提供实际的当前天气值
+*但有时提供当前小时的预测会有所帮助
+*因此我们添加了“当前”，这只是相关的预测小时值的副本
+*请确保您每小时至少调用一次适配器，以确保正确更新“ current”
+*另请参见github功能请求[issue24]（https://github.com/rg-engineering/ioBroker.daswetter/issues/24）
 
 ###路径4
-*目前DasWetter.com发送的数据与他们自己的规格不同。
+*目前，DasWetter.com发送的数据与其自己的规范不同。
 
-现在我们已经实现了“自动修复”，它将结构更改为记录的形状。
+现在，我们已经实现了“自动修复”，可以将结构更改为已记录的形状。
 
 ＃＃ 已知的问题
-*请在[github]（https://github.com/rg-engineering/ioBroker.daswetter/issues）创建问题，如果您发现错误或新功能
+*如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.daswetter/issues）中创建问题
 
 ## Changelog
+
+### 2.8.1 (2019-09-08)
+* (René) bug fix: some datapoints were created as number instead of string
 
 ### 2.8.0 (2019-03-19)
 * (René) moon and wind icon set added in admin !!path to wind icons changed!!

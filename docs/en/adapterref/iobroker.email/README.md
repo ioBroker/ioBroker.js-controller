@@ -99,6 +99,9 @@ To send email from other adapter use **adapter.sendTo** function.
 For other services see documentation of **Nodemailer**: `[https://github.com/nodemailer/nodemailer](https://github.com/nodemailer/nodemailer)`
 
 ## Changelog
+### 1.0.6 (2019-12-29)
+* (bluefox) Compact mode supported
+
 ### 1.0.5 (2019-09-18)
 * (Apollon77/bluefox) js-controller 2.0 compatibility, dependency updates
 

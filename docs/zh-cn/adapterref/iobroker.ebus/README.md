@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: KmlX5auhVZchYLp0EdsEyM/E8dLW2eTWVqMoqjpuNUU=
+hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 ---
 ![商标](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -12,6 +12,7 @@ hash: KmlX5auhVZchYLp0EdsEyM/E8dLW2eTWVqMoqjpuNUU=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.ebus.svg)
 ![测验](https://travis-ci.org/rg-engineering/ioBroker.ebus.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.ebus.png?downloads=true)
+![环保管理员徽章](https://badges.greenkeeper.io/rg-engineering/ioBroker.ebus.svg)
 
 ＃ioBroker.ebus
 **如果您愿意，请考虑捐赠：**
@@ -22,7 +23,7 @@ hash: KmlX5auhVZchYLp0EdsEyM/E8dLW2eTWVqMoqjpuNUU=
 
 -使用html从ebusd获取数据
 
-在这种情况下，ebusd必须运行并且必须能够将数据发送到例如通过http：// IP：port / data（http://192.168.0.123:8889/data）的资源管理器。可以从https://github.com/john30/ebusd复制配置文件。解析所有包含数据，lastup和来自global部分的字段。此刻，所有其他人都将被忽略。
+在这种情况下，ebusd必须运行并且必须能够将数据发送到例如通过http：// IP：port / data（http://192.168.0.123:8889/data）的资源管理器。可以从https://github.com/john30/ebusd复制配置文件。解析所有包含数据，lastup和来自global部分的字段。目前，其他所有内容都将被忽略。
 
 可能会轮询未通过ebusd直接轮询的数据。命令“ read -f”用于强制通过ebus进行读取。
 

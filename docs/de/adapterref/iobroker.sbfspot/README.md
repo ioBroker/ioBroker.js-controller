@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
+hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 ---
 ![Logo](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -12,6 +12,7 @@ hash: h1xzJwlZ0W9N47qbdlFZCX8XLYxhqqJDq8licyCYr1E=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sbfspot.svg)
 ![Tests](https://travis-ci.org/rg-engineering/ioBroker.sbfspot.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/rg-engineering/ioBroker.sbfspot.svg)
 
 # IoBroker.sbfspot
 ** Wenn es dir gefällt, erwäge bitte eine Spende: **

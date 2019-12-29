@@ -76,7 +76,7 @@ of the single instance can be set. In the selection Menu the the displayed minim
 lettering of the log appears in red.
 
 ## Changelog
-### 3.7.3 (2019-12-28)
+### 3.7.4 (2019-12-29)
 * (bluefox) Added the filter of the running instances
 * (bluefox) The incompatible adapters will be hidden
 

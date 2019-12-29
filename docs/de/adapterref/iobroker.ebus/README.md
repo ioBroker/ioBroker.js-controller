@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: KmlX5auhVZchYLp0EdsEyM/E8dLW2eTWVqMoqjpuNUU=
+hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 ---
 ![Logo](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -12,6 +12,7 @@ hash: KmlX5auhVZchYLp0EdsEyM/E8dLW2eTWVqMoqjpuNUU=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.ebus.svg)
 ![Tests](https://travis-ci.org/rg-engineering/ioBroker.ebus.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.ebus.png?downloads=true)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/rg-engineering/ioBroker.ebus.svg)
 
 # IoBroker.ebus
 ** Wenn es dir gefällt, erwäge bitte eine Spende: **
@@ -83,8 +84,8 @@ aktuell unterstützte ebusd-version: 3.3
 * (René) admin3-Unterstützung
 
 ### 0.2.0
-* (René) Verlauf als JSON für vis hinzufügen
-* (René) füge ein flottenbasiertes Widget hinzu, um Temperatur-, Status- und Leistungsdiagramme anzuzeigen
+* (René) füge history als JSON für vis hinzu
+* (René) füge ein flotbasiertes Widget hinzu, um Temperatur-, Status- und Leistungsdiagramme anzuzeigen
 
 ### 0.1.0
 * (René) geplanter Adapter anstelle von Deamon
