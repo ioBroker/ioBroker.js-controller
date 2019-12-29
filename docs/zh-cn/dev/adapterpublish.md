@@ -4,7 +4,7 @@ lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adapterpublish.md
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
-hash: 0VW1fW1Nr6cfDendblq7sk1iE3WH96N2hxQEfewx500=
+hash: Vl/THL9KmT4BuAzzqOhNO+NOVx4brRyAasB5kluAk+I=
 ---
 ＃发布一个适配器
 在考虑发布适配器之前，应在[论坛测试线程](https://forum.iobroker.net/category/91/tester)中提供它以进行测试。如果测试成功并且适配器稳定，则最初应将其包含在最新的存储库中。 <br/><br/>体重如果适配器可以在特定版本号上稳定运行，则可以将其转移到稳定存储库中。这需要开发者自己的评估以及用户反馈。
@@ -210,6 +210,7 @@ Github存储库中的[文件](https://github.com/foxriver76/ioBroker.denon/blob/
 -**协议**-通信协议，例如B.MQTT
 -**存储**-日志记录，数据存储，例如B.关系数据库，...
 -**实用程序**-支持的适配器，例如B.备份
+-**车辆**-汽车
 -**可视化**-可视化适配器，例如vis等
 -**可视化图标**-可视化图标
 -**可视化组件**-iobroker.vis小部件

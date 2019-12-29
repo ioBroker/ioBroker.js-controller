@@ -4,7 +4,7 @@ lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/dev/adapterpublish.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: 0VW1fW1Nr6cfDendblq7sk1iE3WH96N2hxQEfewx500=
+hash: Vl/THL9KmT4BuAzzqOhNO+NOVx4brRyAasB5kluAk+I=
 ---
 # Publish an adapter
 Before considering publishing an adapter, it should be offered for testing in [Forum test thread](https://forum.iobroker.net/category/91/tester). If the tests are successful and the adapter is stable, it should initially be included in the latest repository. <br/><br/> body weight If the adapter runs stable on a certain version number, it can be transferred to the stable repository. This requires the developer&#39;s own assessment in conjunction with the user feedback.
@@ -210,6 +210,7 @@ Example:
 - **protocols** - communication protocols, e.g. B. MQTT
 - **storage** - logging, data storage e.g. B. relational databases, ...
 - **utility** - Supporting adapters such as B. Backup
+- **vehicle** - cars
 - **visualization** - visualization adapter, such as vis etc.
 - **visualization-icons** - icons for visualizations
 - **visualization-widgets** - iobroker.vis widgets
