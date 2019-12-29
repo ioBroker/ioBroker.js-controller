@@ -893,6 +893,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.upnp/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.valloxmv/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vcard/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vedirect/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.velux/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.viessmann/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.viessmannapi/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.virtualpowermeter/README.md
@@ -1224,6 +1225,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.upnp/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.valloxmv/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vcard/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vedirect/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.velux/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.viessmann/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.viessmannapi/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.virtualpowermeter/README.md
@@ -1555,6 +1557,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.upnp/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.valloxmv/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vcard/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vedirect/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.velux/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.viessmann/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.viessmannapi/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.virtualpowermeter/README.md
@@ -1886,6 +1889,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.upnp/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.valloxmv/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vcard/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vedirect/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.velux/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.viessmann/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.viessmannapi/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.virtualpowermeter/README.md
