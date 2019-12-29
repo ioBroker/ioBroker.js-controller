@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.4 (2019-12-29) Release Dina
+* (Apollon77) create symlink to current logfile (fixes #578)
+
 ## 2.2.3 (2019-12-29) Release Dina
 * (Apollon77) add some logging for archiving logfiles on windows
 * (Apollon77) add warning messge for getMessage method to make deprecation more visible
