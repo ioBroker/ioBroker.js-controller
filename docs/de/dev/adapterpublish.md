@@ -41,30 +41,33 @@ verfügbar sein. Ergänzend sind andere Sprachen willkommen. Als Anregung kann d
      }
    }
    ```
-6. Das ``www`` Verzeichnis sowie das ``widget`` Verzeichnis sollen bei Nichtnutzung gelöscht werden.
+6. Das `www` Verzeichnis sowie das `widget` Verzeichnis sollen bei Nichtnutzung gelöscht werden.
 
-7. In der io-package.json sollte ein ``type`` Attribut unter common erstellt werden. Hierzu soll aus dieser
+7. In der io-package.json sollte ein `type` Attribut unter common erstellt werden. Hierzu soll aus dieser
 [Liste](#Adapterkategorien) die best passende Kategorie angegeben werden.
 
-8. Die durch den Adapter erstellten States, sollten valide Angaben für ihre
-[Rollen](https://github.com/ioBroker/ioBroker/blob/master/doc/STATE_ROLES.md#state-roles) ``role`` unter common haben.
+8. In der io-package.json sollte ein `connection-type` Attribut unter common erstellt werden. Hierzu soll aus dieser
+[Liste](#Adapter-Verbindungstyp) die best passende Verbindungs-Kategorie angegeben werden.
+
+9. Die durch den Adapter erstellten States, sollten valide Angaben für ihre
+[Rollen](https://github.com/ioBroker/ioBroker/blob/master/doc/STATE_ROLES.md#state-roles) `role` unter common haben.
 Das Nutzen der Rolle `state` sollte vermieden werden.
 
-9. Der Adapter sollte sowohl das im Template vorgegebene Testing nutzen. Hierzu kann das Github Konto mit Appveyor
+10. Der Adapter sollte sowohl das im Template vorgegebene Testing nutzen. Hierzu kann das Github Konto mit Appveyor
 (Windows Tests) sowie Travis CI (Linux und Mac OS Tests) verknüpft und das entsprechende Repository für das Testing angemeldet werden.
 Diese beiden Continious Integration Tools, haben sich für das ioBroker Projekt als geeignet erwiesen und sind für öffentliche Github
 Repositories kostenfrei.
 <br/><br/>
 Gerne kann der Testumfang durch den Entwickler erweitert werden.
 
-10. In der io-package.json muss mindestens eine Angabe unter common für das Attribut `authors` gemacht werden. Ebenfalls
+11. In der io-package.json muss mindestens eine Angabe unter common für das Attribut `authors` gemacht werden. Ebenfalls
 muss das Attribute `author` in der package.json ausgefüllt sein. Optional können auch für npm mehrere Autoren hinterlegt werden,
 indem in der package.json das Attribut `contributors` genutzt wird.
 
-11. Der Adapter muss als npm Package verfügbar sein. Mehr Informationen können
+12. Der Adapter muss als npm Package verfügbar sein. Mehr Informationen können
 [hier](https://github.com/ioBroker/ioBroker.repositories#how-to-publish-on-npm) gefunden werden.
 
-12. Die ioBroker Organisation muss auf npm hinzugefügt werden. Dies ist nötig um eine langfristige Wartung des Paketes zu ermöglichen,
+13. Die ioBroker Organisation muss auf npm hinzugefügt werden. Dies ist nötig um eine langfristige Wartung des Paketes zu ermöglichen,
 selbst wenn der Entwickler aus zeitlichen oder anderen Gründen das Paket nicht mehr warten kann. Nähere Informationen
 können [hier](https://github.com/ioBroker/ioBroker.repositories#add-owner-to-packet) gefunden werden.
 
@@ -189,37 +192,38 @@ Beispiel:
 
 ## Adapterkategorien
 
-- **alarm** - Sicherheitssysteme
-- **climate-control** - Klimaanlagen, Luftfilter, Heizungen und mehr
-- **communication** - Datenbereitstellung für andere Adapter, z. B. per REST
-- **date-and-time** - z. B. Kalender
-- **energy** - Stromüberwachung, Solaranlagen, Wechselrichter uvm.
-- **metering** - Weitere Messsysteme (z. B. Wasser, Gas, Öl)
-- **garden** - z. B. Rasenmäher, Sprinkleranlagen
-- **general** - Generelle Adapter wie Admin, Web, Discovery
-- **geoposition** - Geolokalisierung von Objekten oder Personen
-- **hardware** - Unterschiedliche Multifunktionshardware wie Arduino, ESP, Bluetooth, ...
-- **health** - Blutdruck, Herzschlag, Körpergewicht, ...
-- **household** - Küchengeräte, Staubsauger, usw.
-- **infrastructure** - Netzwerk, NAS, Drucker, Telefone
-- **iot-systems** - Andere Smart Home Systeme (Hard- & Software)
-- **lighting** - Beleuchtungen
-- **logic** - Regeln, Skripte, Parser, usw.
-- **messaging** - Adapter zum Senden und Empfangen von Nachrichten z. B. via E-Mail, Telegram, ...
-- **misc-data** - Export und Import von Daten, Währungsrechner usw.
-- **multimedia** - TV, AVR, Boxen, Sprachassistenten usw.
-- **network** - Ping, Netzwerkerkennung, UPnP, ...
-- **protocols** - Kommunikationsprotokolle, z. B. MQTT
-- **storage** - Logging, Datenhaltung z. B. relationale Datenbanken, ...
-- **utility** - Unterstützende Adapter wie z. B. Backup
-- **vehicle** - Autos
-- **visualization** - Visualisierungsadapter, wie vis usw.
-- **visualization-icons** - Icons für Visualisierungen
-- **visualization-widgets** - iobroker.vis Widgets
-- **weather** - Wetterinformationen, Luftqualität, Umgebungsinformationen
+- `alarm` - Sicherheitssysteme
+- `climate-control` - Klimaanlagen, Luftfilter, Heizungen und mehr
+- `communication` - Datenbereitstellung für andere Adapter, z. B. per REST
+- `date-and-time` - z. B. Kalender
+- `energy` - Stromüberwachung, Solaranlagen, Wechselrichter uvm.
+- `metering` - Weitere Messsysteme (z. B. Wasser, Gas, Öl)
+- `garden` - z. B. Rasenmäher, Sprinkleranlagen
+- `general` - Generelle Adapter wie Admin, Web, Discovery
+- `geoposition` - Geolokalisierung von Objekten oder Personen
+- `hardware` - Unterschiedliche Multifunktionshardware wie Arduino, ESP, Bluetooth, ...
+- `health` - Blutdruck, Herzschlag, Körpergewicht, ...
+- `household` - Küchengeräte, Staubsauger, usw.
+- `infrastructure` - Netzwerk, NAS, Drucker, Telefone
+- `iot-systems` - Andere Smart Home Systeme (Hard- & Software)
+- `lighting` - Beleuchtungen
+- `logic` - Regeln, Skripte, Parser, usw.
+- `messaging` - Adapter zum Senden und Empfangen von Nachrichten z. B. via E-Mail, Telegram, ...
+- `misc-data` - Export und Import von Daten, Währungsrechner usw.
+- `multimedia` - TV, AVR, Boxen, Sprachassistenten usw.
+- `network` - Ping, Netzwerkerkennung, UPnP, ...
+- `protocols` - Kommunikationsprotokolle, z. B. MQTT
+- `storage` - Logging, Datenhaltung z. B. relationale Datenbanken, ...
+- `utility` - Unterstützende Adapter wie z. B. Backup
+- `vehicle` - Autos
+- `visualization` - Visualisierungsadapter, wie vis usw.
+- `visualization-icons` - Icons für Visualisierungen
+- `visualization-widgets` - iobroker.vis Widgets
+- `weather` - Wetterinformationen, Luftqualität, Umgebungsinformationen
 
-?> ***Dies ist ein Platzhalter***.
-   <br><br>
-   Hilf mit bei ioBroker und erweitere diesen Artikel.  
-   Bitte beachte den [ioBroker Style Guide](community/styleguidedoc), 
-   damit die Änderungen einfacher übernommen werden können.
+## Adapter Verbindungstyp
+- `guess` - Der Status des Geräts kann nicht ermittelt werden. ioBroker nimmt den Status basierend auf letzten ioBroker-Befehl.
+- `cloud-polling` - Die Integration dieses Geräts erfolgt über die Cloud und erfordert eine aktive Internetverbindung. Das Abfragen des Status bedeutet, dass ein Update möglicherweise später bemerkt wird.
+- `cloud-push` - Die Integration dieses Geräts erfolgt über die Cloud und erfordert eine aktive Internetverbindung. ioBroker wird benachrichtigt, sobald ein neuer Status verfügbar ist.
+- `local-polling` - Bietet direkte Kommunikation mit dem Gerät. Das Abfragen des Status bedeutet, dass ein Update möglicherweise später bemerkt wird.
+- `local-push` - Bietet direkte Kommunikation mit dem Gerät. ioBroker wird benachrichtigt, sobald ein neuer Status verfügbar ist.
