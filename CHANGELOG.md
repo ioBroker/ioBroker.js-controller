@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.2.3 (2019-12-29) Release Dina
+* (Apollon77) add symlink for current logfile (fixes #578)
+* (Apollon77) add some logging for archiving logfiles on windows
+* (Apollon77) add warning messge for getMessage method to make deprecation more visible
+* (bluefox) Fix wrong error handling for adapter deletions; should work again! Fixes #576
+* (bluefox) Add Package installation by js-controller for Linux based systems (apt/yum package managers) via io-package common.osDependencies[process.platform]
+
 ## 2.2.2 (2019-12-27) Release Dina
 * (Apollon77) readd getMessages to adapter.js and remove in controller 2.4 later to prevent to many adapter incompatibilities now
 
