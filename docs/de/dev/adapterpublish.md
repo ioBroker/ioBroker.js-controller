@@ -212,6 +212,7 @@ Beispiel:
 - **protocols** - Kommunikationsprotokolle, z. B. MQTT
 - **storage** - Logging, Datenhaltung z. B. relationale Datenbanken, ...
 - **utility** - Unterstützende Adapter wie z. B. Backup
+- **vehicle** - Autos
 - **visualization** - Visualisierungsadapter, wie vis usw.
 - **visualization-icons** - Icons für Visualisierungen
 - **visualization-widgets** - iobroker.vis Widgets
