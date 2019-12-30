@@ -77,7 +77,9 @@ Diese Objekte (und deren Verzeichnisse) sind System-Objekte und sollten nicht f√
 
 **7.) Alphabetisch sortieren**
 
-Dieser Button ist hier ohne Funktion
+Hiermit wird innerhalb der Ordner entweder nach ID oder Namen sortiert.
+
+![Sortieren](media/Instance_new.gifmedia/ADMIN_Objekte_Sortieren.gif)
 
 
 **8.) Hinzuf√ºgen**
