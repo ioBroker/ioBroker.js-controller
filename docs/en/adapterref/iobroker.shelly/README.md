@@ -39,8 +39,12 @@ You find a detailed installation documentation here:
 |Shelly EM (SHEM)|verified|verified|
 |Shelly Flood (SHWT-1)|verified|verified|
 |Shelly Dimmer (SHDM-1)|verified|verified|
+|Shelly Door/Window Sensor (SHDW-1)|verified|verified|
 
 ## Changelog
+
+### 3.1.6 (30.12.2019)
+* (Stübi) - Add device Shelly Door/Windows sensor 
 
 ### 3.1.5 (23.12.2019)
 * (Stübi) - Add device Shelly Plug S2. It will be shown as Shelly Plug S (SHPLG-1) in MQTT

@@ -169,6 +169,8 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * ~~autodiscover logitech media server~~
 
 ## Changelog
+### 0.8.25
+ * fixing css-settings on volumebar
 ### 0.8.24
  * volumebar didnt get events between the segments, change clickevent and calculation
 ### 0.8.23

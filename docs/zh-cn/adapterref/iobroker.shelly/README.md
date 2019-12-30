@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: j4E/RYN8XehxAuODkF3n+sSdKmngZCTkFn8k3u8gyc4=
+hash: tz5UB5a5wyeONDFiqk/4m+Iv1wPchRoTMlAe4FUxawE=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -44,8 +44,12 @@ hash: j4E/RYN8XehxAuODkF3n+sSdKmngZCTkFn8k3u8gyc4=
 | Shelly EM（SHEM）|已验证|已验证|
 | Shelly Flood（SHWT-1）|已验证|已验证|
 | Shelly Dimmer（SHDM-1）|已验证|已验证|
+| Shelly门窗传感器（SHDW-1）|已验证|已验证|
 
 ## Changelog
+
+### 3.1.6 (30.12.2019)
+* (Stübi) - Add device Shelly Door/Windows sensor 
 
 ### 3.1.5 (23.12.2019)
 * (Stübi) - Add device Shelly Plug S2. It will be shown as Shelly Plug S (SHPLG-1) in MQTT

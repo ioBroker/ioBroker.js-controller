@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: j4E/RYN8XehxAuODkF3n+sSdKmngZCTkFn8k3u8gyc4=
+hash: tz5UB5a5wyeONDFiqk/4m+Iv1wPchRoTMlAe4FUxawE=
 ---
 ![логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -32,7 +32,7 @@ hash: j4E/RYN8XehxAuODkF3n+sSdKmngZCTkFn8k3u8gyc4=
 | Shelly H & T (SHHT-1) | проверено | проверено |
 | Shelly Smoke (SHSM-01) | проверено | проверено |
 | Shelly 1 1PM (SHSW-PM) | проверено | проверено |
-| Шелли 2.5 (SHSW-25) | проверено | проверено |
+| Shelly 2.5 (SHSW-25) | проверено | проверено |
 | ShellyRGBW (SHRGBWW-01) | проверено | проверено |
 | ShellyRGBW2 (SHRGBW2) | проверено | проверено |
 | Shelly2LED (SH2LED) | проверено | проверено |
@@ -44,8 +44,12 @@ hash: j4E/RYN8XehxAuODkF3n+sSdKmngZCTkFn8k3u8gyc4=
 | Shelly EM (SHEM) | проверено | проверено |
 | Шелли Потоп (SHWT-1) | проверено | проверено |
 | Шелли Диммер (ШДМ-1) | проверено | проверено |
+| Shelly Датчик двери / окна (SHDW-1) | проверено | проверено |
 
 ## Changelog
+
+### 3.1.6 (30.12.2019)
+* (Stübi) - Add device Shelly Door/Windows sensor 
 
 ### 3.1.5 (23.12.2019)
 * (Stübi) - Add device Shelly Plug S2. It will be shown as Shelly Plug S (SHPLG-1) in MQTT
