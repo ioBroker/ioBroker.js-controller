@@ -79,7 +79,7 @@ Diese Objekte (und deren Verzeichnisse) sind System-Objekte und sollten nicht f√
 
 Hiermit wird innerhalb der Ordner entweder nach ID oder Namen sortiert.
 
-![Sortieren](media/Instance_new.gifmedia/ADMIN_Objekte_Sortieren.gif)
+![Sortieren](media/ADMIN_Objekte_Sortieren.gif)
 
 
 **8.) Hinzuf√ºgen**
