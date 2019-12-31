@@ -45,6 +45,7 @@ You find a detailed installation documentation here:
 
 ### 3.1.6 (30.12.2019)
 * (Stübi) - Add device Shelly Door/Windows sensor 
+* (Stübi) - Bugfixing, auto update new firmware
 
 ### 3.1.5 (23.12.2019)
 * (Stübi) - Add device Shelly Plug S2. It will be shown as Shelly Plug S (SHPLG-1) in MQTT

@@ -21,6 +21,17 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### 0.6.3 (2019-12-30)
+* Updated `zwave-js` to v2.5.1. This includes the following changes:
+	* Fixed issues with the `Meter CC` and `Indicator CC`
+	* Fixed an issue where the information about device endpoints was not correctly saved and restored
+	* Several configuration parameters with duplicate labels were renamed
+* Node objects and states are now synchronized when the node is ready (rather than waiting for the interview to be completed)
+* When `udevadm` is not installed on a unix system, the adapter no longer crashes when opening the configuration UI
+* If a node name was manually changed, that change is now preserved
+* The debug log is no longer filled with "state changed" logs
+* Updated some dependencies
+
 ### 0.6.2 (2019-12-22)
 * When nodes are removed, the channel objects are now also removed
 * `BasicCC` commands from some devices are now mapped to more specific CCs
