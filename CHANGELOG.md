@@ -1,5 +1,13 @@
 # Changelog
 
+## 2.2.5 (2019-12-29) Release Dina
+* (Apollon77) add certificate handling if a local file is specified and do not overwrite if invalid in `setup first`
+* (Apollon77) add check in objects lib
+* (Apollon77) only initialize PacketManager when needed to prevent error messages shown when not relevant
+* (Apollon77) change logging when no packetmanageer found to info
+* (Apollon77) disable gz-log-rotation on windows; remove added logging from debugging
+* (Apollon77) make sure adapters and instances can be deleted again
+
 ## 2.2.4 (2019-12-29) Release Dina
 * (Apollon77) create symlink to current logfile (fixes #578)
 
