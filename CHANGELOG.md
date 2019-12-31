@@ -7,6 +7,7 @@
 * (Apollon77) change logging when no packetmanageer found to info
 * (Apollon77) disable gz-log-rotation on windows; remove added logging from debugging
 * (Apollon77) make sure adapters and instances can be deleted again
+* (Apollon77) make sure Redis simulator only set object data, all other logic is done in objects lib
 
 ## 2.2.4 (2019-12-29) Release Dina
 * (Apollon77) create symlink to current logfile (fixes #578)
