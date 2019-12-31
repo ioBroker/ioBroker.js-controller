@@ -413,7 +413,7 @@ In dieser Objektinstanz werden folgende Attribute angelegt:
 * `pack` - Inhalt von` package.json`
 * `log` - Loggerobjekt
 * `version` - Adapterversion
-* "Staaten" - (nur für Experten)
+* "States" - (nur für Experten)
 * `Objekte` - (nur für Experten)
 * `connected` - wenn der Adapter mit dem Host verbunden ist
 
@@ -528,7 +528,6 @@ Um eigene Events zu abonnieren, muss der folgende Befehl aufgerufen werden:
 
 `adapter.subscribeStates('memory*');` // alle Variablen dieser Adapterinstanz mit Muster `adapterName.X.memory*` abonnieren
 
-Andere Veranstaltungen abonnieren:
 
 `adapter.subscribeForeignStates('yr.*.forecast.html');` // Subskribieren auf Variable `forecast.html` aller Adapterinstanzen `yr`.
 
@@ -581,7 +580,7 @@ Zustände können als Befehle oder als Status geschrieben werden. Dafür müssen
 
 `adapter.setForeignState('otherAdapter.X.someState', 1);` // Anderen Adapter steuern (es ist nicht erforderlich, den eigenen Status zu steuern, wir können dies direkt tun)
 
-`adapter.setState('myState', 1, true);` // neuen Status des eigenen Staates anzeigen
+`adapter.setState('myState', 1, true);` // neuen Status des eigenen States anzeigen
 
 `adapter.setState('myState', {val: 1, ack: true});` // wie oben
 
@@ -599,7 +598,7 @@ adapter.setState('myState', 1, false);
 adapter.setState('myState', 1);
 ```
 
-#### Staatsstruktur
+#### States-Struktur
 State ist ein Javascript-Objekt mit folgenden Attributen:
 
 * `val`: Zustandswert (Sollwert oder Istwert)
@@ -763,7 +762,7 @@ In diesem Fall wird der Verbindungsstatus in der Liste der Instanz in `admin` an
 * log.error(msg)
 ```
 
-## Veranstaltungen
+## Events
 ```
 * ready
 * objectChange(id, obj) (Warning obj can be null if deleted)
