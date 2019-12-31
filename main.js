@@ -2331,6 +2331,9 @@ function checkAndAddInstance(instance, ipArr) {
     if (!ipArr.includes(instance.common.host) && instance.common.host && instance.common.host !== hostname) {
         return false;
     }
+    if (instance.deleted) {
+        return false;
+    }
 
     // update host name to current host if host name is empty
     if (!instance.common.host) {
