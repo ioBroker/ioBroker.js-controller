@@ -26,6 +26,9 @@ Only selected holidays count in the process.
 The adapter starts daily at midnight. Due to the nature of the subject, no higher frequency is required.
 
 ## Changelog
+### 1.0.15 (2019-12-31)
+* (kampfratte) Fixed wrong year displayed if holiday is in next year
+
 ### 1.0.14 (2019-12-19)
 * (pix) National day in Switzerland added
 
@@ -137,7 +140,7 @@ The adapter starts daily at midnight. Due to the nature of the subject, no highe
 
 ## License
 
-Copyright (c) 2019 pix
+Copyright (c) 2020 pix
 
 The MIT License (MIT)
 
