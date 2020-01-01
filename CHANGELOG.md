@@ -1,6 +1,9 @@
 # Changelog
 
-## 2.2.5 (2019-12-29) Release Dina
+## 2.2.6 (2020-01-01) Release Dina
+* (Apollon77) fix some more places where checks for not connected objects db were not triggered
+
+## 2.2.5 (2019-12-31) Release Dina
 * (Apollon77) add certificate handling if a local file is specified and do not overwrite if invalid in `setup first`
 * (Apollon77) add check in objects lib
 * (Apollon77) only initialize PacketManager when needed to prevent error messages shown when not relevant
