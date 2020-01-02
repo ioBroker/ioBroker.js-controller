@@ -28,6 +28,10 @@ SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain v
 
 ## Changelog
 
+### 1.2.1
+
+- 'Forecast' - bug fixed (forecast request now only sumbitted if forecast is activated), dependencies updated.
+
 ### 1.2.0
 
 -   Shows now forecast data: todays and tomorrows total kWh. Completed translations in words.js.

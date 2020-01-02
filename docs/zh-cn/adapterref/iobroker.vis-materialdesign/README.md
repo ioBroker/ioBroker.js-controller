@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: A2IBlahJfHiYbRA6wclMLOFoUq6lH8a8lrxlS8BPp30=
+hash: Q2LYq56Nef+zbG3RckxHC/F2KAX3JRPQqmLcsuN4qCU=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -20,9 +20,10 @@ hash: A2IBlahJfHiYbRA6wclMLOFoUq6lH8a8lrxlS8BPp30=
 ## IoBroker VIS的材料设计小部件
 [![贝宝]（https://www.paypalobjects.com/zh_CN/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
+### [下载示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)
 Material Design Widgets使用以下库：
 
-* [用于网络的Google物料组件]（https://github.com/material-components/material-components-web）
+* [用于网络的Google材料组件]（https://github.com/material-components/material-components-web）
 * [Vuetify]（https://github.com/vuetifyjs/vuetify）
 * [chartjs]（https://www.chartjs.org/）
 * [来自thomasloven的round-slider]（https://github.com/thomasloven/round-slider）
@@ -30,11 +31,11 @@ Material Design Widgets使用以下库：
 ###支持的浏览器
 https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
 
-###受支持的浏览器可在移动设备上振动功能
+###支持的浏览器可在mobil设备上振动功能
 https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 ### IoBroker应用
-无法正常运行，需要由应用程序标记，请参见https://github.com/ioBroker/ioBroker.vis.cordova
+无法正常运行，需要由应用程序标记，请参阅https://github.com/ioBroker/ioBroker.vis.cordova
 
 ##按钮切换
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
@@ -65,29 +66,24 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/switch.gif)
 
 ##带有导航抽屉的顶部应用栏
-信息：
+带有导航抽屉的顶部应用栏可以与<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>结合使用。
 
-*顶部应用栏使用VIS Adapter的[小部件8中的视图]（https://www.iobroker.net/#en/documentation/viz/basic.md）-配置相同，请在论坛上搜索工作示例。
-*应用栏的位置是硬编码的，始终显示在左上角。仅宽度和高度是可调的。在编辑器中，您可以移动窗口小部件，但是这些设置将不会应用！
-*在编辑器中，滚动等效果无法正确显示或表现不同！
-*必须激活复选框“永久”！
-* oid必须从类型号设置为数据点（例如VIS Adapter的[小部件8中的视图]（https://www.iobroker.net/#en/documentation/viz/basic.md））
+<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)</b>以了解它是如何工作的。
 
 #####布局模式：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
 
-#####可忽略的版式：
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_dismissible.gif)
-
 #####永久布局：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
+
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td>对象ID </td><td>必须从典型编号设置为数据点。例如<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">，小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>可以使用此数据点</td></tr><tr><td>显示导航项的索引</td><td>在项目标签之前显示导航索引。可以<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">在小部件8的视图中</a>使用此数字来定义如果选择了该项目应显示的视图</td></tr><tr><td>导航项目数</td><td>定义导航项的数量</td></tr></tbody></table>
 
 ###子菜单
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
 
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td>意见[x] </td><td>要激活子菜单，您必须添加多个以&#39;|&#39;分隔的视图进入查看字段，查看屏幕截图</td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td>标签[x] </td><td>要更改项目的文本，您必须将json对象放入带有查看字段索引的label字段中。 <br>例： <br>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td>子菜单数[x] </td><td>定义导航项是否具有子菜单和子菜单的计数。 </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td>标签[x] </td><td>要更改项目的文本，您必须将json对象放入带有查看字段索引的label字段中。 <br>例： <br>
 
 `{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
 
@@ -135,6 +131,15 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 示例请<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">参见上面</a> 。
 
 可以找到工作窗口小部件示例[这里](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
+
+##列视图
+列视图具有集成的多个`view in widget`§，它们将根据窗口小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动电话的一种布局）
+
+<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)</b>以了解它是如何工作的。
+
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/column_views.gif)
+
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/column_views_common.png"></td><td>列数</td><td>定义列数</td></tr><tr><td>最小宽度</td><td>每列的最小宽度。例如使用移动设备分辨率的宽度</td></tr><tr><td rowspan=2><img src="doc/en/media/column_views_col_settings.png"></td><td>列[x]中的视图</td><td>定义应在此列中显示的视图。多个视图必须以“ |”分隔</td></tr><tr><td>列中视图的高度[x] </td><td>在列中定义每个视图的高度。多个高度必须用&#39;|&#39;分隔</td></tr></tbody></table>
 
 ## Changelog
 

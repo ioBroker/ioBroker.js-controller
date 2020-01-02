@@ -15,6 +15,8 @@
 ## Material Design Widgets for IoBroker VIS
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
+### [Download Example Project](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)
+
 Material Design Widgets uses the following libraries:
 * [Google material components for the web](https://github.com/material-components/material-components-web)
 * [Vuetify](https://github.com/vuetifyjs/vuetify)
@@ -75,21 +77,40 @@ Settings that are not listed in the table below are self-explanatory.
 
 ## Top App Bar with Navigation Drawer
 
-Information:
-* Top App Bar use the [view in widget 8](https://www.iobroker.net/#en/documentation/viz/basic.md) of VIS Adapter - configuration is the same, search the forum for working examples.
-* App Bar position is hardcoded and always appears in the upper left corner. Only width and height are adjustable. In the editor you can move the widget, but these settings will not be applied!
-* In the editor, effects such as scrolling, etc. are not displayed correctly or behave differently!
-* Checkbox "persistent" must be activated!
-* oid must be set to a datapoint from typ number (like the [view in widget 8](https://www.iobroker.net/#en/documentation/viz/basic.md) of VIS Adapter)
+Top App Bar with Navigation Drawer can be combined with the <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">view in widget 8</a>.
+
+<b>Take a look at the [Material Design Widgets example project](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)</b> to understand how it works.
 
 ##### Layout modal:
 ![Logo](doc/en/media/topappbar_modal.gif)
 
-##### Layout dismissible:
-![Logo](doc/en/media/topappbar_dismissible.gif)
-
 ##### Layout permanent:
 ![Logo](doc/en/media/topappbar_permanent.gif)
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td>
+            <td>Object ID</td>
+            <td>must be set to a datapoint from typ number. For example this datapoint can be used by <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">view in widget 8</a></td>
+        </tr>
+        <tr>
+            <td>show index of navigation items</td>
+            <td>shows the index of navigation before the item label. This number can be used in <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">view in widget 8</a> to define the view that should be shown if the item is selected</td>
+        </tr>
+        <tr>
+            <td>count of navigation items</td>
+            <td>Define the count of the navigations items</td>
+        </tr>
+    </tbody>
+</table>
 
 ### Submenu 
 ![Logo](doc/en/media/drawer_subMenu.png)
@@ -107,8 +128,8 @@ Settings that are not listed in the table below are self-explanatory.
     <tbody>
         <tr>
             <td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td>
-            <td>views[x]</td>
-            <td>To activate submenu, you have to add multiple views seperated with '|' into the view field, see screenshots</td>
+            <td>count of sub menus[x]</td>
+            <td>Define if the navigation item has submenus and the count of submenus.</td>
         </tr>
         <tr>
             <td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td>
@@ -254,6 +275,43 @@ Example see <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#in
 
 Working Widget Example can be found [here](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
 
+## Column Views
+
+Column Views has multiple `view in widget` integrated, that will be ordered automatically depending of the width of the widget. With this widget it is possible to cereate a responsive layout (one layout for desktop, tablet and mobil)
+
+<b>Take a look at the [Material Design Widgets example project](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)</b> to understand how it works.
+
+![Logo](doc/en/media/column_views.gif)
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=2><img src="doc/en/media/column_views_common.png"></td>
+            <td>number of columns</td>
+            <td>define number of columns</td>
+        </tr>
+        <tr>
+            <td>minmal width</td>
+            <td>minimal width of each column. For example use the width of the resolution of a mobil device</td>
+        </tr>
+        <tr>
+            <td rowspan=2><img src="doc/en/media/column_views_col_settings.png"></td>
+            <td>views in column[x]</td>
+            <td>Define the views that should be shown in this column. Multiple views must be separated by '|'</td>
+        </tr>
+        <tr>
+            <td>height of views in column[x]</td>
+            <td>Define the height of each view in the column. Multiple heights must be separated by '|'</td>
+        </tr>
+    </tbody>
+</table>
 
 ## Changelog
 

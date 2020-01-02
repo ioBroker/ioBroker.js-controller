@@ -39,6 +39,9 @@ A german HowTo doc is available here: [howto_de](./doc/howto_de.md)
 
 ## Changelog
 
+### 0.2.3 [2020-01-02]
+* (HIRSCH-DE) bugfix main.js
+
 ### 0.2.2 [2019-06-29]
 * (foxthefox) adapter logs a warning when invalid values arrive and cancels further processing
 

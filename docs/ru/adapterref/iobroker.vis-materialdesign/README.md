@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: A2IBlahJfHiYbRA6wclMLOFoUq6lH8a8lrxlS8BPp30=
+hash: Q2LYq56Nef+zbG3RckxHC/F2KAX3JRPQqmLcsuN4qCU=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -20,6 +20,7 @@ hash: A2IBlahJfHiYbRA6wclMLOFoUq6lH8a8lrxlS8BPp30=
 ## Виджеты дизайна материалов для ioBroker VIS
 [![PayPal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
+### [Скачать пример проекта](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)
 Material Design Widgets использует следующие библиотеки:
 
 * [Компоненты материалов Google для Интернета] (https://github.com/material-components/material-components-web)
@@ -65,29 +66,24 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/switch.gif)
 
 ## Верхняя панель приложений с навигационным ящиком
-Информация:
+Верхнюю панель приложения с навигационным ящиком можно комбинировать с <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">видом в виджете 8</a> .
 
-* В верхней панели приложений используется [вид в виджете 8] (https://www.iobroker.net/#en/documentation/viz/basic.md) адаптера VIS - конфигурация такая же, ищите на форуме рабочие примеры.
-* Позиция App Bar жестко закодирована и всегда отображается в верхнем левом углу. Только ширина и высота регулируются. В редакторе вы можете переместить виджет, но эти настройки не будут применены!
-* В редакторе такие эффекты, как прокрутка и т. Д., Отображаются неправильно или ведут себя иначе!
-* Флажок "постоянный" должен быть активирован!
-* oid должен быть установлен на точку данных из номера типа (например, [вид в виджете 8] (https://www.iobroker.net/#en/documentation/viz/basic.md) адаптера VIS)
+<b>Взгляните на [Пример проекта Виджетов Материалов](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip),</b> чтобы понять, как это работает.
 
 ##### Макет модальный:
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
 
-##### Макет запрещен:
-![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_dismissible.gif)
-
 ##### Макет постоянного:
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
+
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td> Идентификатор объекта </td><td> должен быть установлен на точку данных из номера типа. Например, эта точка данных может использоваться <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">представлением в виджете 8</a> </td></tr><tr><td> показать индекс элементов навигации </td><td> показывает индекс навигации перед меткой элемента. Этот номер можно использовать в <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">представлении в виджете 8</a> для определения представления, которое должно отображаться, если элемент выбран </td></tr><tr><td> количество элементов навигации </td><td> Определить количество элементов навигации </td></tr></tbody></table>
 
 ### Подменю
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
 
 Настройки, которые не перечислены в таблице ниже, говорят сами за себя.
 
-<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td> просмотров [х] </td><td> Чтобы активировать подменю, вы должны добавить несколько представлений, разделенных &#39;|&#39; в поле зрения, смотрите скриншоты </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td> метка [х] </td><td> Чтобы изменить текст элементов, вы должны поместить объект json в поле метки с индексом поля представления. <br> Пример: <br>
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td> количество подменю [x] </td><td> Определите, имеет ли элемент навигации подменю и количество подменю. </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td> метка [х] </td><td> Чтобы изменить текст элементов, вы должны поместить объект json в поле метки с индексом поля представления. <br> Пример: <br>
 
 `{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
 
@@ -105,7 +101,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 
 Настройки, которые не перечислены в таблице ниже, говорят сами за себя.
 
-<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td><td> экземпляр адаптера </td><td> Экземпляр для адаптера sql или history </td></tr><tr><td> агрегирование </td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">ссылка на сайт</a> </td></tr><tr><td> Максимум. количество отображаемых точек данных </td><td> Количество максимальных точек данных для отображения </td></tr><tr><td> интервал времени между точками данных в [с] </td><td> Необязательный параметр, переопределяет параметр «количество». <br> Расстояние между отдельными точками данных в секундах. <br> Например, если вы хотите отображать точки данных каждую минуту, вам нужно ввести 60 здесь </td></tr><tr><td> управление временным интервалом с использованием объекта </td><td> Идентификатор точки данных для изменения временного интервала графика. Точка данных должна быть строкой и может содержать <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">связанные значения</a> <br> Например, вы можете использовать кнопку здесь, чтобы изменить отображение графика во время выполнения </td></tr><tr><td> логический объект для обновления </td><td> Идентификатор adatapoint запускает обновление графика вручную. <br> Например, вы можете использовать кнопку здесь, чтобы обновить диаграмму во время выполнения </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> форматы времени оси X </td><td> Изменить формат времени оси X. Форматы времени должны быть введены для всех единиц <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">времени, разрешены следующие единицы времени.</a> <br> Утвержденные форматы времени должны быть введены в соответствии с библиотекой moment.js, <a href="https://momentjs.com/docs/#/displaying/">см. Ссылку</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td> форматы времени всплывающей подсказки </td><td> Изменить формат времени всплывающей подсказки. Форматы времени должны быть введены для всех единиц <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">времени, разрешены следующие единицы времени.</a> <br> Утвержденные форматы времени должны быть введены в соответствии с библиотекой moment.js, <a href="https://momentjs.com/docs/#/displaying/">см. Ссылку</a> </td></tr></tbody></table>
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td><td> экземпляр адаптера </td><td> Экземпляр для адаптера sql или history </td></tr><tr><td> агрегирование </td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">ссылка на сайт</a> </td></tr><tr><td> Максимум. количество отображаемых точек данных </td><td> Количество максимальных точек данных для отображения </td></tr><tr><td> интервал времени между точками данных в [с] </td><td> Необязательный параметр, отменяет настройку «count» <br> Расстояние между отдельными точками данных в секундах. <br> Например, если вы хотите отображать точки данных каждую минуту, вам нужно ввести 60 здесь </td></tr><tr><td> управление временным интервалом с использованием объекта </td><td> Идентификатор точки данных для изменения временного интервала графика. Точка данных должна быть строкой и может содержать <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">связанные значения</a> <br> Например, вы можете использовать кнопку здесь, чтобы изменить отображение графика во время выполнения </td></tr><tr><td> логический объект для обновления </td><td> Идентификатор adatapoint запускает обновление графика вручную. <br> Например, вы можете использовать кнопку здесь, чтобы обновить диаграмму во время выполнения </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> форматы времени оси X </td><td> Изменить формат времени оси X. Форматы времени должны быть введены для всех единиц <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">времени, разрешены следующие единицы времени.</a> <br> Утвержденные форматы времени должны быть введены в соответствии с библиотекой moment.js, <a href="https://momentjs.com/docs/#/displaying/">см. Ссылку</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td> форматы времени всплывающей подсказки </td><td> Изменить формат времени всплывающей подсказки. Форматы времени должны быть введены для всех единиц <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">времени, разрешены следующие единицы времени.</a> <br> Утвержденные форматы времени должны быть введены в соответствии с библиотекой moment.js, <a href="https://momentjs.com/docs/#/displaying/">см. Ссылку</a> </td></tr></tbody></table>
 
 ## Стол
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table.gif)
@@ -135,6 +131,15 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 Пример см <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">. Выше</a> .
 
 Пример рабочего виджета можно найти [Вот](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
+
+## Просмотры столбцов
+Представления столбцов имеют несколько `view in widget` интегрированных, которые будут упорядочены автоматически в зависимости от ширины виджета. С помощью этого виджета можно создать адаптивный макет (один макет для рабочего стола, планшета и мобильного телефона)
+
+<b>Взгляните на [Пример проекта Виджетов Материалов](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip),</b> чтобы понять, как это работает.
+
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/column_views.gif)
+
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/column_views_common.png"></td><td> Число столбцов </td><td> определить количество столбцов </td></tr><tr><td> минимальная ширина </td><td> минимальная ширина каждого столбца. Например, используйте ширину разрешения мобильного устройства </td></tr><tr><td rowspan=2><img src="doc/en/media/column_views_col_settings.png"></td><td> просмотры в столбце [x] </td><td> Определите представления, которые должны быть показаны в этом столбце. Несколько представлений должны быть разделены &#39;|&#39; </td></tr><tr><td> высота просмотров в столбце [x] </td><td> Определите высоту каждого вида в столбце. Несколько высот должны быть разделены &#39;|&#39; </td></tr></tbody></table>
 
 ## Changelog
 
