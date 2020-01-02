@@ -4,7 +4,7 @@
     "linux": "Windows 32/64Bit",
     "date": "20191123",
     "device": "Windows",
-    "details": "Universal Installer mit br><ul><li>Node.js + npm</li><li>Visual Studio 2017</li><li>Python, Git, Bonjour, ...</li></ul>",
+    "details": "Universal Installer mit<br><ul><li>Node.js + npm</li><li>Visual Studio 2017</li><li>Python, Git, Bonjour, ...</li></ul>",
     "picture": "windows.png"
   },
   {
