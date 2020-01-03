@@ -2114,18 +2114,18 @@ function processMessage(msg) {
 
         case 'writeDirAsZip':
             zipFiles = zipFiles || require('./lib/zipFiles');
-            zipFiles.writeDirAsZip(objects, msg.message.id, msg.message.name, Buffer.from(msg.message.data, 'base64'), msg.message.options, err =>
-                msg.callback && msg.from && sendTo(msg.from, msg.command, {error: err}, msg.callback));
+            zipFiles.writeDirAsZip(objects, msg.message.id, msg.message.name, Buffer.from(msg.message.data, 'base64'), msg.message.options, error =>
+                msg.callback && msg.from && sendTo(msg.from, msg.command, {error}, msg.callback));
 
             break;
 
         case 'readObjectsAsZip':
             if (msg.callback && msg.from) {
                 zipFiles = zipFiles || require('./lib/zipFiles');
-                zipFiles.readObjectsAsZip(objects, msg.message.id, msg.message.adapter, msg.message.options, (err, base64) => {
+                zipFiles.readObjectsAsZip(objects, msg.message.id, msg.message.adapter, msg.message.options, (error, base64) => {
                     // If client supports file via link
                     if (msg.message.link) {
-                        if (!err) {
+                        if (!error) {
                             const buff = Buffer.from(base64, 'base64');
                             states.setBinaryState(hostObjectPrefix + '.zip.' + msg.message.link, buff, err => {
                                 if (err) {
@@ -2135,13 +2135,13 @@ function processMessage(msg) {
                                 }
                             });
                         } else {
-                            sendTo(msg.from, msg.command, {error: err}, msg.callback);
+                            sendTo(msg.from, msg.command, {error}, msg.callback);
                         }
                     } else {
                         if (base64) {
-                            sendTo(msg.from, msg.command, {error: err, data: base64}, msg.callback);
+                            sendTo(msg.from, msg.command, {error, data: base64}, msg.callback);
                         } else {
-                            sendTo(msg.from, msg.command, {error: err}, msg.callback);
+                            sendTo(msg.from, msg.command, {error}, msg.callback);
                         }
                     }
                 });
@@ -2150,8 +2150,8 @@ function processMessage(msg) {
 
         case 'writeObjectsAsZip':
             zipFiles = zipFiles || require('./lib/zipFiles');
-            zipFiles.writeObjectsAsZip(objects, msg.message.id, msg.message.adapter, Buffer.from(msg.message.data, 'base64'), msg.message.options, err =>
-                msg.callback && msg.from && sendTo(msg.from, msg.command, {error: err}, msg.callback));
+            zipFiles.writeObjectsAsZip(objects, msg.message.id, msg.message.adapter, Buffer.from(msg.message.data, 'base64'), msg.message.options, error =>
+                msg.callback && msg.from && sendTo(msg.from, msg.command, {error}, msg.callback));
             break;
 
         case 'checkLogging':
