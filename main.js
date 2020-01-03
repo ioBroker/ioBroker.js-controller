@@ -3,7 +3,7 @@
  *
  *      Controls Adapter-Processes
  *
- *      Copyright 2013-2019 bluefox <dogafox@gmail.com>,
+ *      Copyright 2013-2020 bluefox <dogafox@gmail.com>,
  *                2013-2014 hobbyquaker <hq@ccu.io>
  *      MIT License
  *
@@ -3760,7 +3760,7 @@ function init(compactGroupId) {
 
     if (!compactGroupController) {
         logger.info(hostLogPrefix + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
-        logger.info(hostLogPrefix + ' Copyright (c) 2014-2019 bluefox, 2014 hobbyquaker');
+        logger.info(hostLogPrefix + ' Copyright (c) 2014-2020 bluefox, 2014 hobbyquaker');
         logger.info(hostLogPrefix + ' hostname: ' + hostname + ', node: ' + process.version);
         logger.info(hostLogPrefix + ' ip addresses: ' + getIPs().join(' '));
 
