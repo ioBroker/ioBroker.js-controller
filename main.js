@@ -2276,7 +2276,7 @@ function getInstances() {
                             procs[instance._id] = {downloadRetry: 0, config: {common: {enabled: false}}};
                             installQueue.push({id: instance._id, disabled: true, version: instance.common.installedVersion || instance.common.version, installedFrom: instance.common.installedFrom});
                             // start install queue if not started
-                            if (installQueue.length === 1) installAdapters();
+                            installQueue.length === 1 && installAdapters();
                         }
                     }
                     continue;
