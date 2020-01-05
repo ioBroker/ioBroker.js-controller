@@ -2,134 +2,104 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-vacuum/README.md
-title: ioBroker mihome-vacuum适配器
-hash: 397aoJdVXEmf4jU9mhgcGIdTtzu5ml/ND4jdJKe9Hu8=
+title: ioBroker mihome-真空适配器
+hash: 1rN6gv/iKzQTmZqSG+CZXVeAzOoKce1RuBNJFljJHwY=
 ---
 ![商标](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
 ![安装数量](http://iobroker.live/badges/mihome-vacuum-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.mihome-vacuum.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.mihome-vacuum.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.mihome-vacuum.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.mihome-vacuum.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.mihome-vacuum.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.mihome-vacuum.png?downloads=true)
 
-＃ioBroker mihome-vacuum adapter
-[Deutsche beschreibung hier](README_de.md)
+＃ioBroker mihome-vacuum适配器
+[德意志银行](README_de.md)
 
-此适配器允许您控制小米吸尘器。
+该适配器可让您控制小米吸尘器。
 
 ##内容
- -  [设置]（＃配置）
-     -  [与Android]（＃on-android）
-     -  [与iOS]（＃for-ios）
-     -  [配置适配器]（#adapter-configuration）
-         -  [通过Alexa控制]（＃control-over-alexa）
-         -  [第二机器人]（＃second-robot）
- -  [功能]（＃功能）
-     -  [S50命令]（#svid-of-the-s50）
-     -  [转到]（＃goto）
- -  [区域清洁]（＃zoneclean）
-     -  [自己的命令]（＃send-your-own-commands）
-     -  [sendTo hook]（＃send-custom-commands-with-sendto）
- -  [widget]（＃widget）
- -  [bug]（#bugs）
- -  [更改日志]（#changelog）
+-[设置]（＃configuration）
+    -[配置适配器]（＃adapter-configuration）
+        -[通过Alexa控制]（＃control-over-alexa）
+        -[第二机器人]（＃second-robot）
+    -[配置Valetudo]（＃valetudo-config）
+-[功能]（＃functions）
+    -[S50命令]（＃s-s50）
+    -[转到]（＃goto）
+-[区域清洁]（＃zoneclean）
+    -[个人命令]（＃send-your-own-commands）
+    -[sendTo挂钩]（＃send-custom-commands-with-sendto）
+-[小工具]（＃widget）
+-[bug]（＃bugs）
+-[变更日志]（＃changelog）
 
 ##配置
-目前，找到令牌是最大的问题。
-可以使用以下过程：
+当前，找到令牌是最大的问题。
+请按照链接中的说明进行操作：
 
-### Android上的简单令牌发现
-只需卸载官方MiHome应用程序并从[这个页面（俄语）](http://www.kapiba.ru/2017/11/mi-home.html)安装：
-
- -  [链接APK]（https://cloud.mail.ru/public/BSos/7YJhcLB2W/MiHome_5.4.13_vevs.apk）。
-
-使用与官方应用程序相同的设置进行安装和登录后，您将在设备的“网络信息”中找到该令牌。
-
-###在Android上
-准备工作：需要配备现成MiHome应用程序的Android智能手机。奶嘴必须添加并装入其中。
-
-非根Android手机
-
- - 下载并解压缩[MiToolkit]（https://github.com/ultrara1n/MiToolkit/releases）并启动MiToolkit.exe。
- - 在智能手机设置中启用USB调试（[视频]（https://www.youtube.com/watch?v=aw7D6bNgI1U））
- - 使用USB线将智能手机连接到PC。
- - 在MiToolkit中单击“检查连接”，如有必要，测试Java安装，两个测试都应该无故障运行。
- - 单击“读取令牌”并在智能手机上确认消息（不给密码！）。
-
-在智能手机上应该打开（自动）MiHome应用程序，并且应该备份到PC（应该花几秒钟），程序然后从MiHome数据库（miio2.db）读取令牌。
-现在在打开的窗口中查找rockrobo.vacuum并复制32位令牌并在配置窗口中输入它。
-
-扎根Android手机
-
- - 您必须使用MiHome app 4.xx-5.029。更高版本的Mihome应用程序在数据库中不包含令牌。
- - 使用MiHome app在手机上安装[aSQLiteManager]（https://play.google.com/store/apps/details?id=dk.andsen.asqlitemanager）
- - 制作副本/data/data/com.xiaomi.smarthome/databases/miio2.db
- - 使用aSQLiteManager打开miio2.db的副本并执行查询“从devicerecord中选择令牌，其中localIP为'192.168.89.100'”，其中用小米真空吸尘器的IP地址替换IP地址192.168.89.100。复制32位令牌并在配置窗口中输入。
-
-###对于iOS
-随着越狱：
-
- - 如果在/var/mobile/Containers/Data/Application/514106F3-C854-45E9-A45C-119CB4FFC235/Documents/USERID_mihome.sqlite中找到令牌
-
-没有越狱：
-
- - 首先通过iPhone备份读取所需的令牌
- - 为此，首先在iPhone上设置xiaomi
- - 使用iTunes或3utools创建备份
- - 然后安装[iphonebackupviewer]（http://www.imactools.com/iphonebackupviewer/）
- - 转到树视图（右上角）
- - 转到路径AppDomain-com.xiaomi.mihome \ Documents \
- - 下载文件xxxxxxxxxx_mihome.sqlite
-
- - 如果找不到文件/文件夹，请使用iTunes备份而不是使用3utools
-
- - 使用[DBite for SQLite]打开它们（https://github.com/sqlitebrowser/sqlitebrowser/releases/download/v3.10.1/SQLiteDatabaseBrowserPortable_3.10.1_English.paf.exe）
- - 可以在最右侧列ZTOKEN的浏览数据表ZDEVICE下找到96位十六进制密钥
- - 现在必须将96位十六进制密钥转换为32位密钥
- - 在此处通过[link]（http://aes.online-domain-tools.com/）输入以下内容
- - 输入类型：文本
- - 输入文本：96位数字键
- - 十六进制
- - 自动检测：开启
- - 功能：AES
- - 模式：ECB（电子密码本）
- - 密钥：00000000000000000000000000000000 *必须是32位数
- - 十六进制
- - 现在单击Decrypt并从最右侧的解密文本中删除32位数密钥
+[代币](https://www.smarthomeassistent.de/token-auslesen-roborock-s6-roborock-s5-xiaomi-mi-robot-xiaowa/).
 
 ###适配器配置
- - 对于IP地址，必须以“192.168.178.XX”格式输入机器人的IP地址
- - 默认情况下，机器人的端口设置为“54321”，不应更改此端口
- - 自己的端口，只能用第二个机器人更换
- - 查询间隔检索机器人状态值的时间（以毫秒为单位）（不应小于10000）
+-对于IP地址，必须以“ 192.168.178.XX”格式输入机器人的IP地址。
+-机器人的端口默认设置为“ 54321”，不应更改
+-自己的端口，只能由第二个机器人更改
+-查询间隔检索机器人状态值的时间（以毫秒为单位）（不应小于10000）
 
 ####控制Alexa
-在配置添加alexa状态被激活这里是一个hack被设置一个额外的状态“clean_home”它是一个开关，从“真”吸盘开始，在“假”它回家，它自动成为云中的智能设备使用名称“vacuum cleaner”创建的适配器，可以在云适配器中更改。
+在配置中，添加alexa状态在此处被激活，一个hack被设置为一个附加状态“ clean_home”，这是一个从“ true”开始，到“ false”的开关，它返回主页，它自动成为云中的智能设备创建的适配器名称为“真空吸尘器”，可以在云适配器中进行更改。
 
-####使用开始按钮恢复暂停的区域清理
-启用此选项后，如果在运行区域清洁期间暂停状态，则将“启动”状态设置为“真”时，真空将恢复区域清理。
-如果禁用此选项，则在发送启动命令时，即使在运行区域清洁期间暂停，真空也将启动新的“正常清洁”。
+####使用开始按钮恢复暂停的区域清洁
+启用此选项后，如果在运行区域清洁期间暂停了“启动”状态，则Vacuum将恢复区域清洁。
+如果禁用此选项，则在发送启动命令时，真空吸尘器将开始新的“常规清洁”，即使在运行区域清洁期间暂停了真空吸尘器。
 
- - 实验：使用“发送您自己的命令”复选框创建对象，通过该对象可以向机器人发送和接收您自己的命令。
+-实验性：使用复选框“发送自己的命令”创建对象，通过这些对象，您可以向机器人发送和接收自己的命令。
 
 ####第二个机器人
-如果要通过ioBroker控制两个机器人，则必须创建两个实例。第二个机器人必须更改自己的端口（默认值：53421），以便两个机器人具有不同的端口。
+如果要通过ioBroker控制两个机械手，则必须创建两个实例。第二个机械手必须更改其自己的端口（默认值：53421），以便两个机械手都具有不同的端口。
+
+## Valetudo配置
+因此，您必须root并将valetudo安装到您的设备。 Vatudo可以使用[Valetudo RE]（https://github.com/rand256/valetudo）或普通的[Valetudo](https://github.com/Hypfer/Valetudo)
+
+![设定档](../../../en/adapterref/iobroker.mihome-vacuum/admin/valetudo_conf.png)
+
+-激活Valetudo激活Valetudo界面
+-请求间隔必须大于1000毫秒，这是更新html映射的间隔
+-地图间隔必须超过5000毫秒，此间隔会更新png地图文件（您可以将其用于Telegram或vis或其他任何东西）
+-在那里可以为地图示例选择颜色：
+
+```
+- #2211FF
+- rbg(255,200,190)
+- rgba(255,100,100,0.5) //for Transparent
+- green
+```
+
+-那里的机器人，您可以为地图选择其他机器人或其他车辆
+
+###地图小工具
+要显示地图，您可以使用普通的html小部件，例如：
+
+```
+[{"tpl":"tplHtml","data":{"g_fixed":false,"g_visibility":false,"g_css_font_text":false,"g_css_background":false,"g_css_shadow_padding":false,"g_css_border":false,"g_gestures":false,"g_signals":false,"g_last_change":false,"visibility-cond":"==","visibility-val":1,"visibility-groups-action":"hide","refreshInterval":"0","signals-cond-0":"==","signals-val-0":true,"signals-icon-0":"/vis/signals/lowbattery.png","signals-icon-size-0":0,"signals-blink-0":false,"signals-horz-0":0,"signals-vert-0":0,"signals-hide-edit-0":false,"signals-cond-1":"==","signals-val-1":true,"signals-icon-1":"/vis/signals/lowbattery.png","signals-icon-size-1":0,"signals-blink-1":false,"signals-horz-1":0,"signals-vert-1":0,"signals-hide-edit-1":false,"signals-cond-2":"==","signals-val-2":true,"signals-icon-2":"/vis/signals/lowbattery.png","signals-icon-size-2":0,"signals-blink-2":false,"signals-horz-2":0,"signals-vert-2":0,"signals-hide-edit-2":false,"lc-type":"last-change","lc-is-interval":true,"lc-is-moment":false,"lc-format":"","lc-position-vert":"top","lc-position-horz":"right","lc-offset-vert":0,"lc-offset-horz":0,"lc-font-size":"12px","lc-font-family":"","lc-font-style":"","lc-bkg-color":"","lc-color":"","lc-border-width":"0","lc-border-style":"","lc-border-color":"","lc-border-radius":10,"lc-zindex":0,"html":"{mihome-vacuum.0.valetudo.map64}"},"style":{"left":"0","top":"0","width":"100%","height":"100%"},"widgetSet":"basic"}]
+```
+
+第二种方法是使用src img小部件集成png文件。但是html视图速度更快，就像实时视图一样。
 
 ＃＃ 功能
-### S50的命令（第二代）
-卡片尺寸始终为52000mm x 52000mm，因此可以使用0到51999mm的值。
-不幸的是，卡的位置和位置无法查询，这可能会从吸力变为吸力。用作基础始终是最后一个吸卡，以及在应用程序中。
-如果机器人只拾取一个区域并始终以相同的方式构建地图，则可以将其可靠地发送到地方或将区域抽真空。
+S50的命令（第二代）
+卡的尺寸始终为52000mm x 52000mm，因此可以从0到51999mm取值。
+不幸的是，无法查询卡的位置和位置，这可以随吸力而变化。用作基础的始终是最后一张吸卡，以及在应用程序中。
+如果机器人仅拾取一个区域并始终以相同的方式构建地图，则可以可靠地将其发送到地方或对该区域进行清理。
 
 ＃＃＃＃ 去
-为了将真空吸尘器驱动到某一点，必须按如下方式填充“goTo”对象：
+为了将真空吸尘器驱动到一个点，必须按以下方式填充“ goTo”对象：
 
 ```
 xVal, yval
 ```
 
-值必须满足上述范围，并指示地图上的x和y坐标。
+值必须满足上述范围并在地图上指示x和y坐标。
 
 例：
 
@@ -138,14 +108,14 @@ xVal, yval
 ```
 
 #### ZoneClean
-要清空区域，必须按如下方式填写ZoneClean：
+要清理区域，必须按以下方式填充ZoneClean：
 
 ```
 [X1, y1, x2, x2, count]
 ```
 
-其中x和y是矩形区域的坐标，并“计算”清洁操作。
-你也可以让几个区域一次吸吮：
+其中x和y是矩形区域的坐标，并“计数”清洁操作。
+您还可以一次吸引多个区域：
 
 ```
 [X1, y1, x2, x2, count], [x3, y3, x4, x4, count2]
@@ -160,33 +130,33 @@ xVal, yval
 ###发送您自己的命令
 注意：此功能只能由专家使用，因为错误的命令可能会损坏吸盘
 
-机器人区分用于指定方法的方法（方法）和参数（参数）中的命令。
-在“mihome-vacuum.X.control.X_send_command”对象下，您可以将自己的命令发送给机器人。
-对象结构必须如下所示：方法; [PARAMS]
+机器人区分方法（方法）中的命令和用于指定方法的参数（参数）。
+在对象“ mihome-vacuum.X.control.X_send_command”下，您可以将自己的命令发送给机械手。
+对象结构必须如下所示： [参数]
 
-在“mihome-vacuum.X.control.X_get_response”对象下，机器人在发送后输入响应。如果查询了参数，它们将以JSON格式显示在此处。如果仅发送一个命令，则机器人仅响应“0”。
+发送后，机械手在对象“ mihome-vacuum.X.control.X_get_response”下输入响应。如果查询了参数，它们将以JSON格式显示在此处。如果仅发送了一个命令，则机器人仅响应“ 0”。
 
 支持以下方法和参数：
 
-|方法|参数| Beschreibung |
+|方法参数| Beschreibung |
 |-----------      |-------                                                              |-------------------                                                                                     |
-| get_timer | |返回set timer设置吸入次数BSp。 12点30分在5天内|
-| set_timer | [[“TIME_IN_MS”，[“30 12 * * 1,2,3,4,5”，[“start_clean”，“”]]]] |启用/禁用计时器|
-| upd_timer | [“1481997713308”，“开/关”] | |
-| | |拯救Do Not Distrube的时代 |
-| get_dnd_timer | |删除DND时间|
-| close_dnd_timer | | DND设置h，min，h，min |
+| get_timer | |返回设置的计时器设置吸气时间BSp。 5天12时30分|
+| set_timer | [[“” TIME_IN_MS“，[” 30 12 * * 1,2,3,4,5“，[” start_clean“，”“]]]] | |启用/禁用计时器 |
+| upd_timer | [“ 1481997713308”，“打开/关闭”] | |
+| | |拯救“请勿打扰”的时代 |
+| get_dnd_timer | |删除免打扰时间|
+| close_dnd_timer | |免打扰设置h，min，h，min |
 | set_dnd_timer | [22,0,8,0] | |
 |                 |                                                                     |                                                                                                        |
-| app_rc_start | |启动Romote Control |
-| app_rc_end | |完成远程控制|
+| app_rc_start | |启动远程控制|
+| app_rc_end | |完成遥控器|
 
-| app_rc_move | [{“seqnum”：'0-1000'，“velocity”：VALUE1，“omega”：VALUE2，“duration”：VALUE3}] |移动。序号必须是连续的，VALUE1（速度）= -0.3-0.3，VALUE2（旋转）= -3.1-3.1，VALUE3（持续时间）
+| app_rc_move | [{“ seqnum”：'0-1000'，“ velocity”：VALUE1，“ omega”：VALUE2，“ duration”：VALUE3}]] |移动。序列号必须是连续的，VALUE1（速度）= -0.3-0.3，VALUE2（旋转）= -3.1-3.1，VALUE3（持续时间）
 
-您可以在此处找到更多方法和参数（[链接](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)）。
+您可以在此处（[链接](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)）找到更多的方法和参数。
 
 ###使用sendTo发送自定义命令
-您还可以使用`sendTo`从其他适配器发送这些自定义命令。使用`method_id`和`params`如上所定义：
+您也可以使用`sendTo`从其他适配器发送那些自定义命令。与上面定义的`method_id`和`params`结合使用：
 
 ```
 sendTo("mihome-vacuum.0", "sendCustomCommand",
@@ -197,7 +167,7 @@ sendTo("mihome-vacuum.0", "sendCustomCommand",
 
 `response`对象具有两个属性：`error`和（如果没有错误）`result`。
 
-也可以通过这种方式发出一些预定义的命令：
+也可以通过这种方式发出几个预定义的命令：
 
 ```
 sendTo("mihome-vacuum.0",
@@ -209,38 +179,38 @@ sendTo("mihome-vacuum.0",
 
 支持的命令是：
 
-|说明| `commandName`|要求的参数|备注|
-|开始清洁过程| `startVacuuming`| - 无 -  | |
-|停止清洁过程| `stopVacuuming`| - 无 -  | |
-|暂停清洁过程| `pause`| - 无 -  | |
-|清洁机器人周围的小区域`cleanSpot`| - 无 -  | |
-|回到基地| `charge`| - 无 -  | |
-|说“嗨，我在这儿！” | `findMe`| - 无 -  | |
-|检查消耗品的状态（刷子等）| `getConsumableStatus`| - 无 -  | |
-|重置耗材状态（刷子等）| `resetConsumables`| - 无 -  |呼叫签名未知|
-|获取所有先前清洁过程的摘要| `getCleaningSummary`| - 无 -  | |
+|描述`commandName`|必需参数|备注|
+|开始清洁过程| `startVacuuming`| -无-| |
+|停止清洁过程| `stopVacuuming`| -无-| |
+|暂停清洁过程| `pause`| -无-| |
+|清洁机器人周围的一小块区域| `cleanSpot`| -无-| |
+|回到基地| `charge`| -无-| |
+|说“嗨，我在这里！” | `findMe`| -无-| |
+|检查耗材的状态（刷子等）| `getConsumableStatus`| -无-| |
+|重置耗材（刷子等）的状态| `resetConsumables`| -无-|通话签名未知|
+|获取以前所有清洁过程的摘要| `getCleaningSummary`| -无-| |
 |获取先前清洁过程的详细摘要| `getCleaningRecord`| `recordId`| |
-|获取地图| `getMap`| - 无 -  |未知如何处理结果|
-|获取机器人的当前状态| `getStatus`| - 无 -  | |
-|检索机器人的序列号| `getSerialNumber`| - 无 -  | |
-|获取详细的设备信息| `getDeviceDetails`| - 无 -  | |
-|检索*请勿打扰*计时器| `getDNDTimer`| - 无 -  | |
-|设置新的*请勿打扰*计时器| `setDNDTimer`| `startHour`，`startMinute`，`endHour`，`endMinute`| |
-|删除*请勿打扰*计时器| `deleteDNDTimer`| - 无 -  | |
-|检索当前的风扇速度| `getFanSpeed`| - 无 -  | |
-|设置新的风扇速度| `setFanSpeed`| `fanSpeed`| `fanSpeed`是介于1和100之间的数字 |
-|启动遥控器功能| `startRemoteControl`| - 无 -  | |
-|发出远程控制的移动命令`move`| `velocity`，`angularVelocity`，`duration`，`sequenceNumber`|序列号必须是顺序的，持续时间以ms为单位 |
-|结束遥控器功能| `stopRemoteControl`| - 无 -  | |
-|结束遥控器功能| `stopRemoteControl` | - 无 -  | |
+|获取地图| `getMap`| -无-|未知结果如何处理 |
+|获取机器人的当前状态| `getStatus`| -无-| |
+|检索机器人的序列号| `getSerialNumber`| -无-| |
+|获取详细的设备信息| `getDeviceDetails`| -无-| |
+|检索“请勿打扰”计时器| `getDNDTimer`| -无-| |
+|设置新的“请勿打扰”计时器| `setDNDTimer`| `startHour`，`startMinute`，`endHour`，`endMinute`| |
+|删除“请勿打扰”计时器| `deleteDNDTimer`| -无-| |
+|检索当前风扇速度| `getFanSpeed`| -无-| |
+|设置新风扇速度| `setFanSpeed`| `fanSpeed`| `fanSpeed`是1到100之间的数字|
+|启动遥控器功能| `startRemoteControl`| -无-| |
+|发出用于远程控制的移动命令`move`| `velocity`，`angularVelocity`，`duration`，`sequenceNumber`|序列号必须按顺序排列，持续时间以ms为单位|
+|结束遥控器功能| `stopRemoteControl`| -无-| |
+|结束遥控器功能| `stopRemoteControl` | -无-| |
 
-##小工具
-对不起，还没完呢。
-![窗口小部件](../../../en/adapterref/iobroker.mihome-vacuum/widgets/mihome-vacuum/img/previewControl.png)
+##小部件
+抱歉，尚未完成。
+![小部件](../../../en/adapterref/iobroker.mihome-vacuum/widgets/mihome-vacuum/img/previewControl.png)
 
-## Bugs
- - 偶尔断开连接，但这不是由于适配器，而是主要在自己的网络上
- - 当时没有功能的小工具
+##错误
+-偶尔断开连接，但这不是由于适配器引起的，而是主要在其自身的网络上
+-当时没有功能的小部件
 
 ## Changelog
 ### 1.1.6 (2018-12-06)

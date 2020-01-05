@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.roadtraffic/README.md
 title: ioBroker.roadtraffic
-hash: WTc2QoIqPSUz/X943PWANBl2ysHf+zoWvPQmCwgrPxw=
+hash: tyNpA/0hQ+n0OCG3Mnofzv9ocHgboD9cNkeV7eIb/CU=
 ---
 ![Logo](../../../en/adapterref/iobroker.roadtraffic/admin/roadtraffic.png)
 
@@ -16,8 +16,7 @@ hash: WTc2QoIqPSUz/X943PWANBl2ysHf+zoWvPQmCwgrPxw=
 # IoBroker.roadtraffic
 ## Über diesen Adapter
 Dieser Adapter verwendet die HERE.com-API, um den Verkehr auf Ihren Routen zu überprüfen. Sie können mehrere Routen konfigurieren. Der Adapter überprüft die aktuelle Verkehrssituation und zeigt an, wie lange Ihre Reise dauern wird.
-Der Adapter befindet sich gerade in einem frühen Stadium. Ich plane, einen Wecker zu implementieren - damit Sie dem Adapter mitteilen können, zu welcher Zeit Sie arbeiten müssen - und was passieren soll, wenn die Zeit zum Verlassen / Aufwachen verstrichen ist (Spiel starten) Radio und mache eine Ansage wie "Es scheint, als ob ein Stau auf deiner Route ist. Du musst jetzt aufstehen, um nicht zu spät zur Arbeit zu kommen!" Auf Alexa etc.) ..
-Fühlen Sie sich frei, einige Feature-Anfragen hier auf Github zu erstellen - eröffnen Sie einfach eine Ausgabe dafür! ;)
+Der Adapter verfügt über einen Wecker - damit Sie dem Adapter mitteilen können, zu welcher Zeit Sie arbeiten müssen - und der Adapter beginnt, Radio zu spielen und macht eine Ansage auf Alexa (Alexa2-Adapter erforderlich) - oder Sie können Ihr eigenes Skript verwenden, um zu reagieren auf den Alarm des Adapters ..
 
 ## Fertig machen
 So lass uns gehen:

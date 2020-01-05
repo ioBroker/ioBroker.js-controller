@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.cloud/README.md
 title: ioBroker-Cloud-Adapter
-hash: IBLnz1jbRRIpQ9d9ohaj94qCGQu1cVDgmgYxxzcIW1g=
+hash: RebA3aDvQtVtvoT0+yWQ951WyaujEGwhHFc9X8QsJ5c=
 ---
 ![Logo](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
 
@@ -29,152 +29,47 @@ Alle Anforderungen vom Cloud-Adapter werden an eine WEB-Instanz weitergeleitet. 
 ### Selbstsignierte Zertifikate zulassen
 Wenn Sie eine Standard-iobroker.net-Cloud verwenden, können Sie diese deaktivieren. Diese Option ist nur wichtig, wenn eine eigene Cloud verwendet wird.
 
-### Sprache
-Wenn Sie die Standardsprache auswählen, werden die Smart-Namen von Geräten und Aufzählungen nicht übersetzt. Wenn eine Sprache angegeben ist, werden alle bekannten Namen in diese Sprache übersetzt.
-Es wird getan, um zu Demonstrationszwecken schnell zwischen vielen Sprachen zu wechseln.
+### Alexa Einstellungen
+*** Alexa wird im `cloud`-Adapter nicht mehr unterstützt. Verwenden Sie dafür den Adapter ioBroker.iot. ***
 
-### Platziere die Funktion zuerst in den Namen
-Ändern Sie die Reihenfolge der Funktionen und Rollen in selbst generierten Namen:
-
-- wenn falsch: "Raumfunktion", z. "Wohnzimmer Dimmer"
-- Wenn ja: "Veranstaltungsraum", z. "Dimmer Wohnzimmer"
-
-Verketten Sie Wörter mit
-Sie können das Wort definieren, das zwischen Funktion und Raum platziert wird. Z.B. "In" und von "Dimmer Wohnzimmer" wird "Dimmer im Wohnzimmer" sein.
-
-Dies wird jedoch nicht empfohlen, da die Erkennungs-Engine ein weiteres Wort analysieren muss und dies zu Missverständnissen führen kann.
-
-### OFF-Pegel für Schalter
-Einige Gruppen bestehen aus gemischten Geräten: Dimmern und Schaltern. Sie können mit den Befehlen "EIN" und "AUS" und mit Prozenten gesteuert werden.
-Wenn der Befehl "Set to 30%" und der * OFF-Pegel "30%" ist, werden die Schalter eingeschaltet. Mit dem Befehl "Set to 25%" werden alle Schalter ausgeschaltet.
-
-Wenn der Befehl "OFF" ist, speichert der Adapter außerdem den aktuellen Dimmerpegel, wenn der tatsächliche Wert über oder gleich "30%" ist.
-Später, wenn der neue "EIN" -Befehl kommt, schaltet der Adapter den Dimmer nicht auf 100%, sondern auf den Pegel im Speicher.
-
-Beispiel:
-
-- Nehmen Sie an, dass *OFF level* 30% ist.
-- Das virtuelle Gerät "Light" verfügt über zwei physikalische Geräte: *switch* und *dimmer*
-- Befehl: "Licht auf 40 %s tellen". Der Adapter speichert diesen Wert für *dimmer* stellt ihn auf "dimmer" und schaltet den *Schalter* ein.
-- Befehl: "Licht ausschalten". Der Adapter stellt den *Dimmer* auf 0% und schaltet den *Schalter* aus.
-- Befehl: "Licht einschalten". *Dimmer* => 40%, *Schalter* => EIN.
-- Befehl: "Licht auf 20 %s tellen". *Dimmer* => 20%, *Schalter* => AUS. Der Wert für den Dimmer wird nicht gespeichert, da er unter *AUS* liegt.
-- Befehl: "Licht einschalten". *Dimmer* => 40%, *Schalter* => EIN.
-
-### Von ON
-Sie können das Verhalten des EIN-Befehls für den Nummernstatus auswählen. Der spezifische Wert kann ausgewählt werden oder der letzte Wert ungleich Null wird verwendet.
-
-### Antwort schreiben an
-Für jeden Befehl wird die Textantwort generiert. Hier können Sie die Objekt-ID definieren, in die dieser Text geschrieben werden muss. Z.B. *sayit.0.tts.text*
-
-### Farben
-Momentan unterstützt nur die englische alexa die Farbsteuerung.
-Der Kanal muss 4 Zustände mit folgenden Rollen haben:
-
-- level.color.saturation (zur Erkennung des Kanals erforderlich),
-- level.color.hue,
-- level.dimmer,
-- Schalter (optional)
-
-```
-Alexa, set the "device name" to "color"
-Alexa, turn the light fuschia
-Alexa, set the bedroom light to red
-Alexa, change the kitchen to the color chocolate
-```
-
-### Sperren
-Um die Sperren sperren zu können, muss der Status die Rolle "switch.lock" und native.LOCK_VALUE haben, um den Sperrstatus zu bestimmen.
-
-```
-Alexa, is "lock name" locked/unlocked
-Alexa, lock the "lock name"
-```
-
-## Wie Namen generiert werden
-Der Adapter versucht, virtuelle Geräte für die Smart-Home-Steuerung zu generieren (z. B. Amazon Alexa oder Google Home).
-
-Das sind zwei wichtige Aufzählungen: Räume und Funktionen.
-
-Die Zimmer sind wie: Wohnzimmer, Bad, Schlafzimmer.
-Funktionen sind wie: Licht, Jalousie, Heizung.
-
-Folgende Bedingungen müssen erfüllt sein, um den Status in die automatisch generierte Liste aufzunehmen:
-
-- Der Zustand muss in einer "Funktions" -Aufzählung sein.
-- Der Zustand muss eine Rolle haben ("Zustand", "Schalter" oder "Stufe. *", z. B. Stufe.Dimmer), wenn er nicht direkt in "Funktionen" enthalten ist.
-
-Es kann sein, dass der Kanal sich in den "Funktionen" befindet, sich aber nicht selbst angibt.
-
-- Der Status muss schreibbar sein: common.write = true
-- Der Zustandsdimmer muss den allgemeinen Typ 'Zahl' haben.
-- Die Standheizung muss die Einheit '°C', '°F' oder '° K' und den Typ 'Nummer' haben.
-
-Befindet sich der Status nur in "Funktionen" und nicht in einem "Raum", wird der Name des Status verwendet.
-
-Die Zustandsnamen werden aus Funktion und Raum generiert. Z.B. Alle *Lichter* im *Wohnzimmer* werden im virtuellen Gerät *Wohnzimmerlicht* gesammelt.
-Der Benutzer kann diesen Namen nicht ändern, da er automatisch generiert wird.
-Wenn sich der Aufzählungsname ändert, wird auch dieser Name geändert. (z. B. Funktion "Licht" in "Lichter" geändert, daher wird das *Wohnzimmerlicht* in *Wohnzimmerlichter* geändert.)
-
-Alle Regeln werden ignoriert, wenn der Status common.smartName hat. In diesem Fall wird nur der Smart Name verwendet.
-
-Wenn *common.smartName* **false** ist, wird der Status oder die Aufzählung nicht in die Listengenerierung einbezogen.
-
-Über den Konfigurationsdialog können Sie die einzelnen Status bequem entfernen und zu virtuellen Gruppen oder als Einzelgerät hinzufügen.
-![Aufbau](../../../en/adapterref/iobroker.cloud/img/configuration.png)
-
-Wenn die Gruppe nur einen Status hat, kann sie umbenannt werden, da hierfür der SmartName des Status verwendet wird.
-Wenn die Gruppe mehr als einen Status hat, muss die Gruppe über die Namen der Aufzählung umbenannt werden.
-
-Um eigene Gruppen zu erstellen, kann der Benutzer den "Szenen" -Adapter installieren oder ein "Skript" im Javascript-Adapter erstellen.
-
-### Ersetzt
-Sie können Zeichenfolgen angeben, die automatisch in den Gerätenamen ersetzt werden. Zum Beispiel, wenn Sie Ersatz setzen für:
-
-```.STATE,.LEVEL```, so all ".STATE" and ".LEVEL" will be deleted from names. Be careful with spaces.
-If you will set ```.STATE, .LEVEL```, so ".STATE" and " .LEVEL" will be replaced and not ".LEVEL".
-
-## Helper states
-- **smart.lastObjectID**: This state will be set if only one device was controlled by home skill (alexa, google home).
-- **smart.lastFunction**: Function name (if exists) for which last command was executed.
-- **smart.lastRoom**:     Room name (if exists) for which last command was executed.
-- **smart.lastCommand**:  Last executed command. Command can be: true(ON), false(OFF), number(%), -X(decrease at x), +X(increase at X)
-- **smart.lastResponse**: Textual response on command. It can be sent to some text2speech (sayit) engine.
+Für einige Zeit wird es immer noch für `.pro` Benutzer funktionieren und die Dokumentation ist [Hier](doc/alexa.md) verfügbar.
 
 ## IFTTT
-[instructions](doc/ifttt.md)
+[Anleitung](doc/ifttt.md)
 
-## Services
-There is a possibility to send messages to cloud adapter.
-If you call ```[POST]https://iobroker.net/service/custom_<NAME>/<user-app-key>``` und value as payload.
-
-```
-
-curl --data "myString" https://iobroker.net/service/custom_test/ <user-app-key>
+## Dienstleistungen
+Es besteht die Möglichkeit, Nachrichten an den Cloud-Adapter zu senden.
+Wenn Sie ```[POST]https://iobroker.net/service/custom_<NAME>/<user-app-key>``` und value als Nutzlast aufrufen.
 
 ```
+curl --data "myString" https://iobroker.net/service/custom_test/<user-app-key>
+```
 
-If you set in the settings the field "White list for services" the name *custom_test*, and call with "custom_test" as the service name, the state **cloud.0.services.custom_test** will be set to *myString*.
+Wenn Sie in den Einstellungen den Namen *custom_test* in das Feld "Weiße Liste für Dienste" eintragen und "custom_test" als Dienstnamen angeben, wird der Status **cloud.0.services.custom_test** auf *myString gesetzt*
 
-You may write "*" in white list and all services will be allowed.
+Sie können "*" in die weiße Liste schreiben, und alle Dienste werden zugelassen.
 
-From version 2.0.5 you can use GET request in form ```[GET]https://iobroker.net/service/custom_<NAME>/<user-app-key>/<data>``` to place the **\<data\>** into **cloud.0.services.custom_\<NAME\>**.
+Ab Version 2.0.5 können Sie GET request im Formular ```[GET]https://iobroker.net/service/custom_<NAME>/<user-app-key>/<data>``` verwenden, um die **\ <data\>** in **cloud.0.services.custom_ \ <NAME\>**
 
-Here you can find instructions how to use it with [tasker](doc/tasker.md).
+Hier finden Sie Anweisungen zur Verwendung mit [Tasker](doc/tasker.md).
 
-IFTTT service is allowed only if IFTTT key is set.
+Der IFTTT-Dienst ist nur zulässig, wenn der IFTTT-Schlüssel festgelegt ist.
 
-Reserved names are "ifttt", "text2command", "simpleApi", "swagger". These must be used without the ```"custom_"``` prefix.
+Reservierte Namen sind "ifttt", "text2command", "simpleApi", "swagger". Diese müssen ohne das Präfix ```"custom_"``` verwendet werden.
 
-### text2command
-You may write "text2command" in white list, you can send POST request to ```https://iobroker.net/service/text2command/<user-app-key>``` to write data into *text2command.X.text* variable.
+### Text2command
+Sie können "text2command" in die Whitelist schreiben. Sie können eine POST-Anfrage an ```https://iobroker.net/service/text2command/<user-app-key>``` senden, um Daten in die Variable *text2command.X.text* zu schreiben.
 
-"X" can be defined in settings by the "Use text2command instance" option.
+"X" kann in den Einstellungen mit der Option "Use text2command instance" definiert werden.
 
-### simpleApi
-*to do*
+### SimpleApi
+*machen*
 
 ## Changelog
+### 3.0.0 (2020-01-04)
+* (bluefox) Breaking changes: no alexa support. Use ioBroker.iot for that.
+* (bluefox) Support of multiple clients for .pro
+
 ### 2.8.0 (2019-11-13)
 * (bluefox) Connects your ioBroker server to the ioBroker cloud
 
@@ -336,7 +231,7 @@ You may write "text2command" in white list, you can send POST request to ```http
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2016-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

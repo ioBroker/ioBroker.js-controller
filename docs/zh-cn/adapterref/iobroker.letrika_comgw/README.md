@@ -3,22 +3,29 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.letrika_comgw/README.md
 title: ioBroker.letrika_comgw
-hash: 30/mS4uioPmf+HD4zFZDfwisHDU5tPHEelZFy4KFpSM=
+hash: fiFxuUY34p7i7D/o3sXYXXC8TlD+dOx//VLUYd03rlw=
 ---
 ![商标](../../../en/adapterref/iobroker.letrika_comgw/admin/letrika_comgw.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.letrika_comgw.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.letrika_comgw.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.letrika_comgw.svg)
+![安装数量](http://iobroker.live/badges/letrika_comgw-installed.svg)
+![稳定版](http://iobroker.live/badges/letrika_comgw-stable.svg)
 ![依赖状态](https://img.shields.io/david/AWhiteKnight/iobroker.letrika_comgw.svg)
-![已知的漏洞](https://snyk.io/test/github/AWhiteKnight/ioBroker.letrika_comgw/badge.svg)
+![已知漏洞](https://snyk.io/test/github/AWhiteKnight/ioBroker.letrika_comgw/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.letrika_comgw.png?downloads=true)
-![特拉维斯-CI](http://img.shields.io/travis/AWhiteKnight/ioBroker.letrika_comgw/master.svg)
+![特拉维斯](http://img.shields.io/travis/AWhiteKnight/ioBroker.letrika_comgw/master.svg)
 
 ＃ioBroker.letrika_comgw
-适用于ioBroker的## letrika_comgw适配器
+## Letrika_comgw ioBroker适配器
 通过letrika通信网关从Letrika SMI 260收集数据。
 
+适配器至少需要nodejs版本8 / ES9 / ECMAScript2018。
+
 ## Changelog
+
+### 0.0.4
+* (AWhiteKnight) code cleanup
 
 ### 0.0.3
 * (AWhiteKnight) translations, code cleanup

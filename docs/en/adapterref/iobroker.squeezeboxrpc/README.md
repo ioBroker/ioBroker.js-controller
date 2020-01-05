@@ -33,6 +33,9 @@ The actual main web interface of the LMS also uses the rpc/json-protocol to get 
 - all favorites and all sub levels from server
 - many widgets for the iobroker-vis component are included to create own control user interfaces (select player,select favorites, manage syncgroups, buttons for play/pause,fwd,rew, repeat mode and shuffle mode selection)
 
+Documentation for the vis-widgets are available inside vis or [Widget-Documentation/german](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.squeezeboxrpc/blob/master/widgets/squeezeboxrpc/doc.html)
+
+
 ## Installation
 
 - Install the package

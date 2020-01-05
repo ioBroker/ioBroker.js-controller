@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: Q2LYq56Nef+zbG3RckxHC/F2KAX3JRPQqmLcsuN4qCU=
+hash: Z6UnmG3ESKkbzXg9giR5nmFaeIppjm/0vgy7P4526+g=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -20,13 +20,18 @@ hash: Q2LYq56Nef+zbG3RckxHC/F2KAX3JRPQqmLcsuN4qCU=
 ## Material Design Widgets für ioBroker VIS
 [![paypal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-### [Beispielprojekt herunterladen](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)
 Material Design Widgets verwendet die folgenden Bibliotheken:
 
 * [Google Material Components für das Web] (https://github.com/material-components/material-components-web)
 * [Vuetify] (https://github.com/vuetifyjs/vuetify)
 * [chartjs] (https://www.chartjs.org/)
 * [round-slider von thomasloven] (https://github.com/thomasloven/round-slider)
+
+## Online Beispielprojekt
+bereitgestellt von [iobroker.click](https://iobroker.click/index.html), dank bluefox und iobroker.
+
+* <a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a>
+* <a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS Editor</a>
 
 ### Unterstützter Browser
 https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
@@ -68,7 +73,7 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 ## Top App Bar mit Navigationsleiste
 Die obere App-Leiste mit Navigationsleiste kann mit der <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">Ansicht in Widget 8</a> kombiniert werden.
 
-<b>Schauen Sie sich die [Material Design Widgets Beispielprojekt](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)</b> an, um zu verstehen, wie es funktioniert.
+<b>Schauen Sie sich die [Material Design Widgets Beispielprojekt](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b> an, um zu verstehen, wie es funktioniert.
 
 ##### Layout modal:
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
@@ -135,13 +140,25 @@ Working Widget Beispiel kann [Hier](https://forum.iobroker.net/topic/26199/test-
 ## Spaltenansichten
 In Column Views sind mehrere `view in widget` integriert, die je nach Breite des Widgets automatisch sortiert werden. Mit diesem Widget ist es möglich, ein responsives Layout zu erstellen (ein Layout für Desktop, Tablet und Mobil).
 
-<b>Schauen Sie sich die [Material Design Widgets Beispielprojekt](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)</b> an, um zu verstehen, wie es funktioniert.
+<b>Schauen Sie sich die [Material Design Widgets Beispielprojekt](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b> an, um zu verstehen, wie es funktioniert.
 
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/column_views.gif)
 
 <table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/column_views_common.png"></td><td> Anzahl der Spalten </td><td> Anzahl der Spalten festlegen </td></tr><tr><td> Mindestbreite </td><td> minimale Breite jeder Spalte. Verwenden Sie zum Beispiel die Breite der Auflösung eines Mobilgeräts </td></tr><tr><td rowspan=2><img src="doc/en/media/column_views_col_settings.png"></td><td> Ansichten in Spalte [x] </td><td> Definieren Sie die Ansichten, die in dieser Spalte angezeigt werden sollen. Mehrere Ansichten müssen durch &#39;|&#39; getrennt werden </td></tr><tr><td> Ansichtshöhe in Spalte [x] </td><td> Definieren Sie die Höhe jeder Ansicht in der Spalte. Mehrere Höhen müssen durch &#39;|&#39; getrennt werden </td></tr></tbody></table>
 
 ## Changelog
+
+### 0.2.xx
+* (Scrounger): Masonry Views Widget added
+* (Scrounger): Select Widget: background color bug fix
+* (Scrounger): Column Views Widget added
+* (Scrounger): Button Widgets: icon height bug fix
+* (Scrounger): Vuetify API bug fix
+* (Scrounger): Chart Widgets: localization added
+* (Scrounger): Line History Chart Widget: x-axis boundary options added
+* (Scrounger): Line History Chart Widget: x-axis scaling bug fix
+* (Scrounger): TopAppBar Widget: `view in widget 8` removed -> old TopAppBar Widget will be removed in version 0.3.x
+* (Scrounger): bug fixes
 
 ### 0.2.22
 * (Scrounger): library material-components-web updated to v4.0.0

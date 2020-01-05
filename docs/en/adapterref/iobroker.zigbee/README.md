@@ -36,6 +36,14 @@ There are knowledge bases that can be useful for working with Zigbee-devices and
 * in Russian https://github.com/kirovilya/ioBroker.zigbee/wiki
 
 ## Changelog
+### 1.0.0-c
+* Binding
+* Powered by new [zigbee-herdsman](https://github.com/Koenkk/zigbee-herdsman) library and new [converters database](https://github.com/Koenkk/zigbee-herdsman-converters)
+* Drop support NodeJS 6
+* Serialport 8.0.5 (in zigbee-herdsman)
+
+### freeze shepherd
+
 ### 0.11.5 (2019-10-26)
 * (allofmex) Improved publish-to-zigbee queue
 * (arteck) Gledopto GL-B-001Z

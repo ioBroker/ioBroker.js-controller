@@ -3,6 +3,8 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.letrika_comgw.svg)](https://www.npmjs.com/package/iobroker.letrika_comgw)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.letrika_comgw.svg)](https://www.npmjs.com/package/iobroker.letrika_comgw)
+![Number of Installations](http://iobroker.live/badges/letrika_comgw-installed.svg) 
+![Stable version](http://iobroker.live/badges/letrika_comgw-stable.svg)
 [![Dependency Status](https://img.shields.io/david/AWhiteKnight/iobroker.letrika_comgw.svg)](https://david-dm.org/AWhiteKnight/iobroker.letrika_comgw)
 [![Known Vulnerabilities](https://snyk.io/test/github/AWhiteKnight/ioBroker.letrika_comgw/badge.svg)](https://snyk.io/test/github/AWhiteKnight/ioBroker.letrika_comgw)
 
@@ -14,6 +16,7 @@
 
 Collects data from Letrika SMI 260 via letrika communication gateway.
 
+Adapter needs at least nodejs version 8 / ES9 / ECMAScript2018.
 
 ## Changelog
 

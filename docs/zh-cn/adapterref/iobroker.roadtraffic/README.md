@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.roadtraffic/README.md
 title: ioBroker.roadtraffic
-hash: WTc2QoIqPSUz/X943PWANBl2ysHf+zoWvPQmCwgrPxw=
+hash: tyNpA/0hQ+n0OCG3Mnofzv9ocHgboD9cNkeV7eIb/CU=
 ---
 ![商标](../../../en/adapterref/iobroker.roadtraffic/admin/roadtraffic.png)
 
@@ -15,9 +15,8 @@ hash: WTc2QoIqPSUz/X943PWANBl2ysHf+zoWvPQmCwgrPxw=
 
 ＃ioBroker.roadtraffic
 ##关于此适配器
-该适配器使用HERE.com API来检查您的路由上的流量。您可以配置多条路线，适配器将检查实际的交通状况，并显示您将花费多长时间。
-适配器现在处于早期状态。.我正计划安装一个闹钟-这样您就可以告诉适配器您必须在什么时候上班-以及当它离开/醒来时应该怎么办（开始播放）广播并在Alexa等上发布“在您的路线上似乎出现交通拥堵。您需要立即起床，以免上班迟到！”。
-随时在Github上创建一些功能请求-只需为此打开一个Issue！ ;）
+该适配器使用HERE.com API来检查您的路由上的流量。您可以配置多条路线，适配器将检查实际的交通状况并显示您需要花费多长时间。
+适配器有一个闹钟-因此您可以告诉适配器您必须在什么时候上班-适配器开始播放Radio并在Alexa上发出通知（需要Alexa2适配器）-或者您可以使用自己的脚本进行响应在适配器的警报上。
 
 ＃＃ 入门
 所以放手：
@@ -26,7 +25,7 @@ hash: WTc2QoIqPSUz/X943PWANBl2ysHf+zoWvPQmCwgrPxw=
 
 ![这里1](../../../en/adapterref/iobroker.roadtraffic/img/Here1.png)
 
-2.确保已选择Freemium，然后在左侧填写表格。（名字，姓氏，电子邮件等）
+2.确保已选择Freemium，然后在左侧填写表格。.（名字，姓氏，电子邮件等）
 
 ![这里2](../../../en/adapterref/iobroker.roadtraffic/img/Here2.png)
 
@@ -38,7 +37,7 @@ hash: WTc2QoIqPSUz/X943PWANBl2ysHf+zoWvPQmCwgrPxw=
 
 ![这里4](../../../en/adapterref/iobroker.roadtraffic/img/Here4.png)
 
-5.在下一页上，您已经在HERE.com仪表板上。查找REST部分，然后单击“ Generate App”。
+5.在下一页，您已经在HERE.com仪表板上。查找REST部分，然后单击“ Generate App”。
 
 ![这里5](../../../en/adapterref/iobroker.roadtraffic/img/Here5.png)
 
@@ -62,15 +61,15 @@ hash: WTc2QoIqPSUz/X943PWANBl2ysHf+zoWvPQmCwgrPxw=
 Alexa开始播放指定的TuneIn电台后15秒，将宣布弦乐。
 例如，如果您有一个名为“ Daniel”的路线，并且警报触发器Alexa会说：Guten Morgen Daniel。在29分钟的Arbeit大会上亮相。
 
-如果只希望适配器开始播放TuneIn Station，并且不收到任何通知，则将“说起”字符串保留为空。
+如果只希望适配器开始播放TuneIn Station，并且不接收任何通知，则将“说起”字符串保留为空。
 
-每条路线都有7个警报通道（周一至周日）。
+每个路线都有7个警报通道（星期一至星期日）。
 在每个通道中，您都有以下状态：
 
 *到达时间：输入您想要到达目的地的时间（例如：07：30是早上7点半）。
 *洗澡时间：输入您要添加到旅行持续时间的时间。 （例如：45为45分钟。假设您已将Arrivaltime设置为10：00，Bathtime设置为30 Minute，并且当前旅行时间是1小时。那么适配器将在08:30触发（Arrivaltime-Bathtime-Travelduration）。
 *已启用：如果要启用当天的警报，则设置为true
-*已触发：触发警报时，适配器会将此状态设置为true。 （例如，您可以将其与自己的脚本一起使用。。）触发状态将在相应日期的00:00重置为false。 （周六触发器将在周六00:00设置为false）。
+*已触发：触发警报时，适配器会将此状态设置为true。 （例如，您可以将其与自己的脚本一起使用。）触发状态将在相应日期的00:00重置为false。 （周六触发器将在周六00:00设置为false）。
 
 ## Changelog
 ### 0.2.0 (2019-12-21)

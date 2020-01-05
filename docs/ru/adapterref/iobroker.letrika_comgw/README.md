@@ -3,12 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.letrika_comgw/README.md
 title: ioBroker.letrika_comgw
-hash: 30/mS4uioPmf+HD4zFZDfwisHDU5tPHEelZFy4KFpSM=
+hash: fiFxuUY34p7i7D/o3sXYXXC8TlD+dOx//VLUYd03rlw=
 ---
 ![логотип](../../../en/adapterref/iobroker.letrika_comgw/admin/letrika_comgw.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.letrika_comgw.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.letrika_comgw.svg)
+![Количество установок](http://iobroker.live/badges/letrika_comgw-installed.svg)
+![Стабильная версия](http://iobroker.live/badges/letrika_comgw-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/AWhiteKnight/iobroker.letrika_comgw.svg)
 ![Известные уязвимости](https://snyk.io/test/github/AWhiteKnight/ioBroker.letrika_comgw/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.letrika_comgw.png?downloads=true)
@@ -18,7 +20,12 @@ hash: 30/mS4uioPmf+HD4zFZDfwisHDU5tPHEelZFy4KFpSM=
 ## Letrika_comgw адаптер для ioBroker
 Собирает данные с Letrika SMI 260 через коммуникационный шлюз letrika.
 
+Адаптеру требуется как минимум nodejs версии 8 / ES9 / ECMAScript2018.
+
 ## Changelog
+
+### 0.0.4
+* (AWhiteKnight) code cleanup
 
 ### 0.0.3
 * (AWhiteKnight) translations, code cleanup

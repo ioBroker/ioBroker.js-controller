@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.squeezeboxrpc/README.md
 title: ioBroker Logitech Squeezebox Adapter über JSON / RPC-Protokoll
-hash: b6Hcr4yfY/k0AaysOTbCZMEVAeLhR/Bghsc/wMg/bZE=
+hash: UHv5GS1FLdIKuxkNWHyEPRne5reo4FuXXuHCGhEUzn8=
 ---
 ![Logo](../../../en/adapterref/iobroker.squeezeboxrpc/admin/squeezeboxrpc.png)
 
@@ -24,7 +24,7 @@ Dies ist ein alternativer Adapter, der das JSON / RPC-Protokoll verwendet, um Da
 * Himbeer-Pi mit zusätzlichem Audiomodul und kleinen Linux-basierten Firmwares wie [picoreplayer] (https://picoreplayer.org/) oder [max2play] (https://www.max2play.com).
 * mit Plugins für Chromecast, Airplay oder UPnP / DLNA-Geräte
 
-Der LMS-Server kann sehr große Musiksammlungen auf Festplatten oder NAS verwalten / bereitstellen, sich mit verschiedenen Streaming-Anbietern wie Spotify, Deezer, Soundcloud, Shoutcast, Tunein, Napster, Pandora, Tidal und vielem mehr verbinden
+Der LMS-Server kann sehr große Musiksammlungen auf Festplatten oder NAS verwalten / bereitstellen und eine Verbindung zu verschiedenen Streaming-Anbietern wie Spotify, Deezer, Soundcloud, Shoutcast, Tunein, Napster, Pandora, Tidal und mehr herstellen
 
 Warum noch ein Squeezebox Adapter?
 
@@ -33,10 +33,12 @@ Das eigentliche Haupt-Webinterface des LMS verwendet auch das rpc / json-Protoko
 
 ## Eigenschaften
 - Die meisten Daten, die der LMS-Service zur Verfügung stellt, sind im Adapter verfügbar
-- Detaillierte Informationen zu Player-Status, Songtitel, Interpret, Album, Bildmaterial und Wiedergabeliste
-- Viele Steuerfunktionen zum Abspielen, Anhalten, Stoppen, Vor- und Zurückspulen, Wiederholen, Mischen, Wiedergeben von Favoriten, Springen zur Zeit (absolut und relativ), Springen zum Wiedergabelistenindex (absolut und relativ), Ein- / Ausschalten und Voreinstelltasten
+- Detaillierte Informationen über den Player-Status, den Songtitel, den Interpreten, das Album, das Bildmaterial und die Wiedergabeliste
+- Viele Steuerfunktionen zum Abspielen, Anhalten, Stoppen, Vor- und Zurückspulen, Wiederholen, Mischen, Wiedergeben von Favoriten, Springen zur Zeit (absolut und relativ), Springen zum Index der Wiedergabeliste (absolut und relativ), Ein- / Ausschalten und Voreinstelltasten
 - Alle Favoriten und alle Unterebenen vom Server
 - Viele Widgets für die iobroker-vis-Komponente sind enthalten, um eigene Benutzeroberflächen für die Steuerung zu erstellen (Player auswählen, Favoriten auswählen, Synchronisierungsgruppen verwalten, Schaltflächen für Wiedergabe / Pause, Vorwärts-, Rückwärts-, Wiederholungs- und Zufallsmodus auswählen).
+
+Die Dokumentation für die vis-Widgets ist in vis oder [Widget-Dokumentation](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.squeezeboxrpc/blob/master/widgets/squeezeboxrpc/doc.html) verfügbar.
 
 ## Installation
 - Installieren Sie das Paket
@@ -94,17 +96,31 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 ## Machen
 * Weitere Tests / Korrekturen
 * Fügen Sie Telnet-Kommunikation hinzu, um Push-Ereignisse vom Server abzurufen und das Polling zu optimieren
-* füge ID zu den Spielerzuständen hinzu
+* füge die ID zu den Spielerzuständen hinzu
 * Reduziere die Abhängigkeiten zu anderen Paketen (squeezenode)
 * Implementieren eines Befehlsstatus zum Platzieren von benutzerdefinierten Befehlen (über JSON) für Server und Player
 * Mehr Konfiguration, um optional Funktionen ein- und auszuschalten, um Speicher und Leistung zu verbessern
-* ~~ Implementieren Sie weitere Steuerungsfunktionen (wählen Sie die Wiedergabeliste zum Abspielen aus, ffwd, frew, springen Sie zu einer Zeitposition im Song, wiederholen Sie den Song, einen zufälligen Song) ~~
+* ~~ Implementieren Sie weitere Steuerungsfunktionen (wählen Sie die Wiedergabeliste zum Abspielen aus, ffwd, frew, springen Sie zu einer Zeitposition im Song, wiederholen Sie den Song, zufälliger Song) ~~
 * ~~ füge die Wiedergabeliste als json array ~~ zu den Wiedergabedaten hinzu
 * ~~ Grafik (Sender-Logo / Playlist-Cover) für Favoriten hinzufügen ~~
 * ~~ Implementiere mehr Ebenen (Unterverzeichnisse) von Favoriten ~~
 * ~~ autodiscover logitech media server ~~
 
 ## Changelog
+### 0.8.25
+ * fixing css-settings on volumebar
+### 0.8.24
+ * volumebar didnt get events between the segments, change clickevent and calculation
+### 0.8.23
+ * adjust dependencies to remove vulnerabilities in dependend packages. alos remove travis due of unresolvable build-failures for win+node10/12
+### 0.8.22
+ * due to iobroker.controller 2.0 a command in the api changed (socket to vis.conn._socket)
+### 0.8.21
+ * add command für playing urls
+### 0.8.20
+ * remove node v6 test setting
+### 0.8.19
+ * shorten news history
 ### 0.8.18 (2019-06-27)
 * last minute changes.
 ### 0.8.17 (2019-06-26)

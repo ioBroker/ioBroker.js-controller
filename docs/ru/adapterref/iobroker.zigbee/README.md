@@ -34,6 +34,14 @@ BADGE-NPM: https://nodei.co/npm/iobroker.zigbee.png?downloads=true
 Поэтому, если какие-либо улучшения или поддержка новых zigbee-устройств происходит в проекте Zigbee2MQTT, то можно перенести и добавить этот же функционал в этот драйвер. Если заметили это, то напиши issue - перенесем.
 
 ## Changelog
+### 1.0.0-c
+* Binding
+* Powered by new [zigbee-herdsman](https://github.com/Koenkk/zigbee-herdsman) library and new [converters database](https://github.com/Koenkk/zigbee-herdsman-converters)
+* Drop support NodeJS 6
+* Serialport 8.0.5 (in zigbee-herdsman)
+
+### freeze shepherd
+
 ### 0.11.5 (2019-10-26)
 * (allofmex) Improved publish-to-zigbee queue
 * (arteck) Gledopto GL-B-001Z

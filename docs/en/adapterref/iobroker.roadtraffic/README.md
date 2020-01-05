@@ -1,17 +1,13 @@
 ![Logo](admin/roadtraffic.png)
 # ioBroker.roadtraffic
-![Number of Installations](http://iobroker.live/badges/roadtraffic-installed.svg) ![Number of Installations](http://iobroker.live/badges/roadtraffic-stable.svg) =================
-
-
-[![NPM version](https://img.shields.io/npm/v/iobroker.roadtraffic.svg)](https://www.npmjs.com/package/iobroker.roadtraffic)
+![Number of Installations](http://iobroker.live/badges/roadtraffic-installed.svg) ![Number of Installations](http://iobroker.live/badges/roadtraffic-stable.svg) [![NPM version](https://img.shields.io/npm/v/iobroker.roadtraffic.svg)](https://www.npmjs.com/package/iobroker.roadtraffic)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.roadtraffic.svg)](https://www.npmjs.com/package/iobroker.roadtraffic)
 [![Tests](https://travis-ci.org/BuZZy1337/ioBroker.roadtraffic.svg?branch=master)](https://travis-ci.org/BuZZy1337/ioBroker.roadtraffic)
 
 [![NPM](https://nodei.co/npm/iobroker.roadtraffic.png?downloads=true)](https://nodei.co/npm/iobroker.roadtraffic/)
 ## About this Adapter
-This Adapter uses HERE.com API to check the traffic on your routes. You can configure multiple routes and the adapter will check the actual traffic situation and shows you how long your journey will take.
-Adapter is at a early state right now.. I am planning to implement an alarm clock - so you can tell the Adapter at which time you have to be at work - and what should happen when its time to leave/wake up (Start playing Radio and do an Announcement like "It seems like there is some trafficjam on your route. You need to get up now for not being late at work!" on Alexa etc.) ..
-Feel free to create some feature-requests here on Github - just open an Issue for that! ;)
+This Adapter uses HERE.com API to check the traffic on your routes. You can configure multiple routes and the adapter will check the actual traffic situation and show you how long your journey will take.
+The Adapter has an alarm clock - so you can tell the Adapter at which time you have to be at work - and the Adapter starts playing Radio and makes an announcement on Alexa (Alexa2 Adapter required) - or you can use your own script to react on the alarm of the adapter..
 
 ## Getting started
 So lets go:

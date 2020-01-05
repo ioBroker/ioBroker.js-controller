@@ -246,6 +246,13 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+### 1.2.0 (2020-01-04)
+* (TA2k) Google Home handling and visualization improved.
+
+### 1.1.10 (2020-01-03)
+* (bluefox) Now is allowed to selected the temperature values as alexa states
+* (bluefox) Allowed to set type immediately after insertion of new state
+
 ### 1.1.9 (2019-11-27)
 * (bluefox) Fixed: sometimes the configuration could not be loaded
 
@@ -324,7 +331,7 @@ Following types are supported:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2109 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

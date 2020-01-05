@@ -34,6 +34,14 @@ Zigbee-Geräte die nicht in der Liste aufgeführt sind, können zwar gepairt wer
 Es gibt noch ein [Freundschaftprojekt](https://github.com/koenkk/zigbee2mqtt) mit gleichen Funktionen und gleicher Technologie, welcher mit denselben Geräten über ein MQTT Protokoll kommuniziert. Wenn irgendwelche Verbesserungen oder neu unterstütze Geräte im Projekt Zigbee2MQTT eingefügt werden, können jene auch in dieses Projekt hinzugefügt werden. Solltet Ihr unterschiede merken, schreibt bitte ein Issue, wir kümmern uns darum
 
 ## Changelog
+### 1.0.0-c
+* Binding
+* Powered by new [zigbee-herdsman](https://github.com/Koenkk/zigbee-herdsman) library and new [converters database](https://github.com/Koenkk/zigbee-herdsman-converters)
+* Drop support NodeJS 6
+* Serialport 8.0.5 (in zigbee-herdsman)
+
+### freeze shepherd
+
 ### 0.11.5 (2019-10-26)
 * (allofmex) Improved publish-to-zigbee queue
 * (arteck) Gledopto GL-B-001Z

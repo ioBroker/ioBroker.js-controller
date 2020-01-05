@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.parser/README.md
 title: kein Titel
-hash: 1xpg1MP1AYgU5c5rd9cDJwleBI8cpRXpm7lzvwoML1U=
+hash: Lg4GUIwP3rQm33R0Vu1O+kha1iJ3jJ3EourbBn5IJIc=
 ---
-![Logo](../../../en/adapterref/iobroker.parser/admin/parser.png) ioBroker-Parseradapter ===================
+![Logo](../../../en/adapterref/iobroker.parser/admin/parser.png) ioBroker Parser Adapter
 
 ![Anzahl der Installationen](http://iobroker.live/badges/parser-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.parser.svg)
@@ -13,80 +13,94 @@ hash: 1xpg1MP1AYgU5c5rd9cDJwleBI8cpRXpm7lzvwoML1U=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.parser.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.parser.png?downloads=true)
 
-Dieser Adapter ermöglicht das Analysieren der über eine URL oder in Dateien mit regulären Ausdrücken erhaltenen Daten.
+=================
+
+Dieser Adapter analysiert Daten, die über eine URL oder aus einer Datei empfangen wurden, mithilfe regulärer Ausdrücke. Für jede Regel, die in den Einstellungen dieses Adapters konfiguriert wird, wird ein Status unter `parser.<instance number>` erstellt und mit den analysierten Informationen gefüllt und aktualisiert.
 
 ## Die Einstellungen
-### Standardabfrageintervall
-Dieser Wert wird verwendet, wenn für den Eintrag kein Abrufintervall angegeben wurde. Das Intervall ist in Millisekunden und beschreibt, wie oft der Link oder die Datei gelesen wird.
+### 1. Standard-Abfrageintervall
+Dieser Standard-Abfrageintervallwert wird verwendet, wenn für einen Eintrag in der Konfigurationstabelle (Spalte: "Intervall") kein einzelner Abfrageintervallwert angegeben ist. Das Intervall ist in Millisekunden angegeben und definiert, wie oft der Link oder die Datei gelesen und die Status aktualisiert werden.
 
-### Tabelle
-Mit dem Plus-Button werden die neuen Einträge zur Tabelle hinzugefügt.
+** Hinweis: ** Verwenden Sie kein zu aggressives Abfrageintervall, insbesondere für Website-URLs. Wenn Sie zum Beispiel den Preis Ihrer Aktien von einer bestimmten Website abrufen möchten, sollten Sie mit einem Intervall von nur 24 Stunden (= 86400000 ms) gut zurechtkommen, wenn Sie kein Daytrader sind. Wenn Sie versuchen, zu oft Daten von bestimmten URLs abzurufen, werden Sie möglicherweise von der Website gesperrt und auf eine Server-Blacklist gesetzt. Verwenden Sie daher das Abfrageintervall mit Vorsicht.
+
+### 2. Tabelle
+Klicken Sie auf die Schaltfläche "Plus", um der Tabelle einen neuen Eintrag hinzuzufügen.
 
 Tabellenfelder:
 
-- *Name* - ist der Statusname und darf keine Leerzeichen enthalten.
-- * URL oder Dateiname * - ist der URL-Link wie * https://darksky.net/forecast/48.1371,11.5754/si24/de* für das Wetter in München.
-- * RegEx * - regulärer Ausdruck, wie Daten aus der Verknüpfung extrahiert werden. Es gibt einen guten Service zum Testen von Regula-Ausdrücken: [regex101] (https://regex101.com/). Z.B. * temp swip "> (-? \ d +) ˚ <* für die obige Zeile.
-- *Rolle* - eine der Rollen:
-    - Benutzer definiert sich selbst über * admin "die Rolle
-    - Temperatur - Der Wert ist Temperatur
-    - value - Der Wert ist eine Zahl (z. B. Dimmer)
-    - Jalousien - Der Wert ist eine Blindposition
-    - switch - der Wert ist die Schalterposition (true / false)
-    - button - der Wert ist ein Button
-    - Anzeige - Boolesche Anzeige
-- *Type* - Typ der Variablen. Einer von boolean, number, string, json.
-- *Item* - Nummer des gefundenen Elements, beginnend mit 0.
-- *Einheit* - Einheit des Wertes. Z.B. *°C*
-- *Alt* - Wenn der Wert auf der Seite nicht gelesen oder gefunden werden kann, aktualisieren Sie nicht den tatsächlich gespeicherten Wert.
-- *Subs* - Ersatzwerte. Dieser Wert wird verwendet, wenn Datei oder URL nicht verfügbar sind.
-- *Faktor / Offset* - *berechneter Wert* = *extrahierter Wert* * Faktor + Offset, um den Wert sofort zu ändern. Wird nur für Zahlen verwendet.
-- *Intervall* - Abfrageintervall in ms. Wenn nicht oder 0 eingestellt ist, wird das Standardintervall verwendet.
+- ***Name*** - Name des Staates, der unter `Parser. <Instanznummer>` erstellt wird. Leerzeichen sind nicht erlaubt. Sie können Punkte "." als Trennzeichen zum Erstellen von Unterordnern. Beispiel: `Shares.Microsoft.Current` führt zu` Parser. <Instanznummer> .Shares.Micosoft.Current`.
+- ***URL oder Dateiname*** - entweder eine URL einer Website oder der Pfad zu einer Datei, von der wir Informationen abrufen möchten. Beispiele `https:// darksky.net / forecast / 48.1371,11.5754 / si24 / de` (Wetterinformation München) oder` / opt / iobroker / test / testdata.txt` (Datei aus ioBroker).
+- ***RegEx*** - regulärer Ausdruck, wie Daten aus dem Link extrahiert werden. Es gibt einen guten Service zum Testen von Regula-Ausdrücken: [regex101] (https://regex101.com/). Z.B. * temp swip "> (-? \ d +) ˚ <* für die obige Zeile.
+- ***Item*** (deutsch: "Num") - Ein Regex kann mehrere Einträge finden (abgleichen). Mit dieser Option können Sie festlegen, welche Übereinstimmung ausgewählt werden soll. 0 = erste Übereinstimmung, 1 = zweite Übereinstimmung, 2 = dritte Übereinstimmung usw. Die Standardeinstellung ist 0 (erste Übereinstimmung).
+- ***Rolle*** - eine der Rollen:
+    - custom - user definiert sich über * admin "die Rolle
+    - Temperatur - Der Wert ist die Temperatur
+    - value - der Wert ist eine Zahl (z. B. dimmer)
+    - blinds - der Wert ist eine Blindposition
+    - switch - der Wert ist die Schalterstellung (true / false)
+    - button - der Wert ist eine Schaltfläche
+    - indicator - Boolescher Indikator
+- ***Typ*** - Der Variablentyp gemäß dem Pulldown-Menü.
+- ***Item*** - Nummer des gefundenen Elements, beginnend mit 0.
+- ***Einheit*** - Optional: Einheit des Werts, der dem Staatseintrag hinzugefügt wurde. Z.B. `°C`,` € `,` GB` usw.
+- ***Alt*** - Wenn diese Option aktiviert ist, wird der Status *nicht* aktualisiert, wenn der Wert im angegebenen Datum (URL oder Datei) nicht gelesen oder gefunden werden kann. In diesem Fall wird der vorherige Wert beibehalten.
+- ***Subs*** - Optional: URL oder Dateiname ersetzen. Diese Ersatz-URL / Dateiname wird verwendet, wenn die URL / der Dateiname der ersten Spalte nicht verfügbar ist.
+- ***Faktor / Offset*** (nur für "Typ" -Nummern) - Ermöglicht das Ändern der abgerufenen Daten, bevor sie in den Status versetzt werden:
 
-## Probeneinstellungen
+* berechneter Wert * = * extrahierter Wert * * Faktor + Offset, um sofort Wertänderungen vorzunehmen
+
+- ***Interval*** - Abfrageintervall in ms (Millisekunden). Wenn leer oder 0, wird das Standard-Abfrageintervall verwendet. Weitere Informationen finden Sie oben.
+
+## Beispieleinstellungen
 | Name | URL oder Dateiname | RegEx | Rolle | Typ | Einheit | Intervall |
 |-------------------|:-----------------------------------------------------|:----------------------|--------------|---------|------|----------|
-| TemperaturMünchen | https://darksky.net/forecast/48.1371,11.5754/si24/de | Temp Swip "> (-? \ d +) ˚ <| Temperatur | Anzahl | °C | 180000 |
-| forumRunning | http://forum.iobroker.net/ | Forum | Anzeige | boolean | | 60000 |
-| cloudRunning | https://iobroker.net/ | Privatsphäre und Datenschutz | Anzeige | boolean | | 60000 |
-| cpuTemperatur | / sys / devices / virtual / thermal / thermal_zone0 / temp | (. *) | Temperatur | Nummer | °C | 30000 |
+| temperaturMünchen | `https://darksky.net/forecast/48.1371,11.5754/si24/de` | `temp swip">(-?\d+)˚<` | Temperatur | nummer | °C | 180000 |
+| cloudRunning | `https://iobroker.net/` | `Privacy Notice` | Anzeige | Boolescher Wert | | 60000 |
+| cpuTemperature | `/sys/devices/virtual/thermal/thermal_zone0/temp` | `(.*)` | Temperatur | nummer | °C | 30000 |
+| stockPrice.Visa | `https://www.finanzen.net/aktien/visa-aktie` | `\d{0,3},\d{2}(?=<span>EUR<\/span>)` | Wert | nummer | € | 86400000 |
+| stockPrice.Visa | https://www.finanzen.net/aktien/visa-aktie &quot;\ d {0,3}, \ d {2} (? = <span>EUR &lt;\ / span&gt;)&quot; | Wert | nummer | € | 86400000 |</span> |
 
-* Hinweis: * Im empfangenen Text werden alle neuen Zeilen durch Leerzeichen ersetzt, um eine mehrzeilige Suche zu ermöglichen.
+* Hinweis: * Beim Anwenden von Regex auf die abgerufenen URL- / Dateidaten werden alle Zeilenumbrüche durch Leerzeichen ersetzt, um die Suche in mehreren Zeilen zu ermöglichen.
 
-## Über reguläre Ausdrücke
-Reguläre Ausdrücke sind ein leistungsfähiges Werkzeug zum Analysieren und Extrahieren der Daten aus Zeichenfolgen.
+## Über reguläre Ausdrücke (RegExp)
+Reguläre Ausdrücke sind ein leistungsfähiges Werkzeug zum Parsen und Extrahieren bestimmter Daten aus Zeichenfolgen, und noch wichtiger: Sie ermöglichen das Extrahieren bestimmter Werte / Texte aus einer bestimmten Zeichenfolge (z. B. aus dem HTML-Code einer Webseite oder Text aus einer Datei) durch Anwenden von Regeln .
 
-Sie können effektiv prüfen, ob Text in der Zeichenfolge enthalten ist, oder Text aus der Zeichenfolge in eine Variable extrahieren.
+Für Boolesche Typen ist der reguläre Ausdruck ziemlich einfach. Bei numerischen Typen sollten Sie die Nummer mit Klammern - "()" markieren. Z.B. um die Zahl zu extrahieren *Die Temperatur beträgt 5 °C* Sie sollten den Ausdruck "(\ d +)" verwenden.
 
-Für boolesche Typen reicht es aus, einfaches RegEx zu schreiben. Bei numerischen Typen sollten Sie die Zahl mit Klammern markieren - "()". Z.B. um die Zahl aus * zu extrahieren * Die Temperatur beträgt 5 °C * Sie sollten den Ausdruck "(\ d +)" verwenden.
+Weitere Informationen zu RegExp:
 
-Weitere Informationen zu Regex finden Sie hier: https://developer.mozilla.org/ru/docs/Web/JavaScript/Reference/Global_Objects/RegExp
+  * [MDN / Mozilla-Dokumentation] (https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/RegExp)
+  * [regex101: Online-Tool zum Erstellen und Testen von regulären Ausdrücken] (https://regex101.com/)
 
-### Beispiele:
-- *.at* stimmt mit jeder aus drei Zeichen bestehenden Zeichenfolge überein, die mit "at" endet, einschließlich "Hut", "Katze" und "Schläger".
-- *[hc] bei* entspricht "Hut" und "Katze".
-- *[^ b] at* stimmt mit allen Strings überein, die mit .at übereinstimmen, mit Ausnahme von "bat".
-- *[^ hc] at* stimmt mit allen Zeichenfolgen überein, die mit .at außer "Hut" und "Katze" übereinstimmen.
+### Beispiele
+- *.at* entspricht einer beliebigen Zeichenfolge mit drei Zeichen, die mit "at" endet, einschließlich "hat", "cat" und "bat".
+- *[hc] at* stimmt mit "hat" und "cat" überein.
+- *[^ b] at* entspricht allen Zeichenfolgen, die mit .at übereinstimmen, mit Ausnahme von "bat".
+- *[^ hc] at* entspricht allen Zeichenfolgen, die mit .at übereinstimmen, mit Ausnahme von "hat" und "cat".
 - *^ [hc] at* stimmt mit "hat" und "cat" überein, jedoch nur am Anfang der Zeichenfolge oder Zeile.
-- *[hc] bei $* entspricht "hat" und "cat", jedoch nur am Ende der Zeichenfolge oder Zeile.
-- *\ [. \]* entspricht jedem einzelnen Zeichen, das von "[" und "]" umgeben ist, da die Klammern mit Escapezeichen versehen sind, zum Beispiel: "[a]" und "[b]".
-- * s. \ ** entspricht s gefolgt von null oder mehr Zeichen, z. B. "s" und "saw" und "seed".
-- *[hc] + at* entspricht "hat", "cat", "hhat", "chat", "hcat", "cchchat" usw., aber nicht "at".
+- *[hc] at $* stimmt mit "hat" und "cat" überein, jedoch nur am Ende der Zeichenfolge oder Zeile.
+- *\ [. \]* stimmt mit jedem einzelnen Zeichen überein, das von "[" und "]" umgeben ist, da die Klammern ausgeblendet sind, zum Beispiel: "[a]" und "[b]".
+- * s. \ ** stimmt mit s überein, gefolgt von null oder mehr Zeichen, zum Beispiel: "s" und "saw" und "seed".
+- *[hc] + at* entspricht "hat", "cat", "hhat", "chat", "hcat", "cchchat" usw., jedoch nicht "at".
 - *[hc]? at* entspricht "hat", "cat" und "at".
-- * [hc] \ * at * entspricht "Hut", "Katze", "Hhat", "Chat", "Hcat", "Cchchat", "At" und so weiter.
+- * [hc] \ * at * stimmt mit "hat", "cat", "hhat", "chat", "hcat", "cchchat", "at" usw. überein.
 - *cat | dog* entspricht "cat" oder "dog".
-- *(\ d +)* - Liefert die Nummer von String
-- *jetzt (\ w +)* später - erhalten Sie das Wort zwischen "jetzt" und "später"
+- *(\ d +)* - Ermittelt die Nummer aus dem String
+- *now (\ w +)* later - erhalte das Wort zwischen "now" und "later"
 
-### Die nützlichsten Ausdrücke
-- (-? \ d +) erhält die Zahl negativ oder positiv
+### Andere nützliche Ausdrücke
+- (-? \ d +) erhält eine Zahl (sowohl negative als auch positive Zahlen)
 
 ## Qualitätscodes
 Werte können Qualitätscodes haben:
 
 - 0 - OK
 - 0x82 - Die URL oder Datei kann nicht gelesen werden.
-- 0x44 - Zahlen- oder Stringwert nicht im Text gefunden
+- 0x44 - Zahl oder Zeichenfolge im Text nicht gefunden
+
+## Unterstützung
+1. Allgemein: [ioBroker Forum] (https://forum.iobroker.net/). Deutschsprachige Benutzer: siehe [ioBroker Forum Thread Parser-Adapter] (https://forum.iobroker.net/topic/4494/adapter-parser-regex).
+2. Bei Problemen lesen Sie bitte [ioBroker Parser Adapter: Github Issues] (https://github.com/ioBroker/ioBroker.parser/issues).
 
 ## Changelog
 ### 1.0.7 (2018-10-08)

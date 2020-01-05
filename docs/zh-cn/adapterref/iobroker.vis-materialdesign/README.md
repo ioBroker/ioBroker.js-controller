@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: Q2LYq56Nef+zbG3RckxHC/F2KAX3JRPQqmLcsuN4qCU=
+hash: Z6UnmG3ESKkbzXg9giR5nmFaeIppjm/0vgy7P4526+g=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -20,7 +20,6 @@ hash: Q2LYq56Nef+zbG3RckxHC/F2KAX3JRPQqmLcsuN4qCU=
 ## IoBroker VIS的材料设计小部件
 [![贝宝]（https://www.paypalobjects.com/zh_CN/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-### [下载示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)
 Material Design Widgets使用以下库：
 
 * [用于网络的Google材料组件]（https://github.com/material-components/material-components-web）
@@ -28,10 +27,16 @@ Material Design Widgets使用以下库：
 * [chartjs]（https://www.chartjs.org/）
 * [来自thomasloven的round-slider]（https://github.com/thomasloven/round-slider）
 
+##在线示例项目
+由[iobroker.click](https://iobroker.click/index.html)提供，这要归功于bluefox和iobroker。
+
+* <a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS运行时</a>
+* <a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS编辑器</a>
+
 ###支持的浏览器
 https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
 
-###支持的浏览器可在mobil设备上振动功能
+###受支持的浏览器可在移动设备上振动功能
 https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 ### IoBroker应用
@@ -68,7 +73,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ##带有导航抽屉的顶部应用栏
 带有导航抽屉的顶部应用栏可以与<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>结合使用。
 
-<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)</b>以了解它是如何工作的。
+<b>看一看[Material Design Widgets示例项目](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b>以了解其工作原理。
 
 #####布局模式：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
@@ -135,13 +140,25 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ##列视图
 列视图具有集成的多个`view in widget`§，它们将根据窗口小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动电话的一种布局）
 
-<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign/raw/master/doc/examples/MaterialDesignWidgets_Examples.zip)</b>以了解它是如何工作的。
+<b>看一看[Material Design Widgets示例项目](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b>以了解其工作原理。
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/column_views.gif)
 
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/column_views_common.png"></td><td>列数</td><td>定义列数</td></tr><tr><td>最小宽度</td><td>每列的最小宽度。例如使用移动设备分辨率的宽度</td></tr><tr><td rowspan=2><img src="doc/en/media/column_views_col_settings.png"></td><td>列[x]中的视图</td><td>定义应在此列中显示的视图。多个视图必须以“ |”分隔</td></tr><tr><td>列中视图的高度[x] </td><td>在列中定义每个视图的高度。多个高度必须用&#39;|&#39;分隔</td></tr></tbody></table>
 
 ## Changelog
+
+### 0.2.xx
+* (Scrounger): Masonry Views Widget added
+* (Scrounger): Select Widget: background color bug fix
+* (Scrounger): Column Views Widget added
+* (Scrounger): Button Widgets: icon height bug fix
+* (Scrounger): Vuetify API bug fix
+* (Scrounger): Chart Widgets: localization added
+* (Scrounger): Line History Chart Widget: x-axis boundary options added
+* (Scrounger): Line History Chart Widget: x-axis scaling bug fix
+* (Scrounger): TopAppBar Widget: `view in widget 8` removed -> old TopAppBar Widget will be removed in version 0.3.x
+* (Scrounger): bug fixes
 
 ### 0.2.22
 * (Scrounger): library material-components-web updated to v4.0.0

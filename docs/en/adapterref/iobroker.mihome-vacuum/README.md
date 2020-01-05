@@ -13,11 +13,10 @@ This adapter allows you control the Xiaomi vacuum cleaner.
 
 ## Content
 - [Setup](#configuration)
-    - [with Android](#on-android)
-    - [with iOS](#for-ios)
     - [Configure Adapter](#adapter-configuration)
         - [Control via Alexa](#control-over-alexa)
         - [Second robot](#second-robot)
+    - [Configure Valetudo](#valetudo-config)
 - [Functions](#functions)
     - [S50 Commands](#commands-of-the-s50)
     	- [Go To](#goto)
@@ -30,61 +29,9 @@ This adapter allows you control the Xiaomi vacuum cleaner.
  
 ## Configuration
 Currently, finding the token is the biggest problem.
-The following procedures can be used:
+PLease follow the instruction in the Link:
 
-### Easy token discovery on Android
-Just uninstall official MiHome App and install this one from [this page(russian)](http://www.kapiba.ru/2017/11/mi-home.html): 
-- [Link APK](https://cloud.mail.ru/public/BSos/7YJhcLB2W/MiHome_5.4.13_vevs.apk).
-
-After installation and login with the same settings as by officiall app, you will find the token in the "Network information" for the device.
-
-### On Android
-Preparation:
-An Android smartphone with ready-made MiHome app is required. The teat must be added and fitted in it.
-
-Non-Rooted Android Phones
-- Download and unzip the [MiToolkit](https://github.com/ultrara1n/MiToolkit/releases) and start MiToolkit.exe.
-- Enable USB debugging in the smartphone settings ([video](https://www.youtube.com/watch?v=aw7D6bNgI1U))
-- Connect the smartphone to the PC using a USB cable.
-- In the MiToolkit click on "Check connection" and if necessary test the Java installation, both tests should run fault-free.
-- Click on "Read token" and confirm the message on the smartphone (NO give password!).
-
-On the smartphone the MiHome app should be opened (automatically) and a backup to the PC should be taken (should take a few seconds), the program then reads the token from the MiHome database (miio2.db).
-Now look for the rockrobo.vacuum in the open window and copy the 32-digit token and enter it in the configuration window.
-
-Rooted Android Phones
-- You must use MiHome app 4.xx-5.029. Higher versions of the Mihome application do not contain a token in database.
-- Install [aSQLiteManager](https://play.google.com/store/apps/details?id=dk.andsen.asqlitemanager) on your phone with MiHome app
-- Made copy /data/data/com.xiaomi.smarthome/databases/miio2.db
-- Open copy of miio2.db with aSQLiteManager and execute the query "select token from devicerecord where localIP is '192.168.89.100'" where you replace the IP address 192.168.89.100 with the IP address of the Xiaomi vacuum cleaner. Copy the 32-digit token and enter it in the configuration window.
-
-### For iOS
-
-With Jailbreak:
-- If the token is found at /var/mobile/Containers/Data/Application/514106F3-C854-45E9-A45C-119CB4FFC235/Documents/USERID_mihome.sqlite
-
-Without Jailbreak:
-- First read the required token via iPhone backup
-- To do this, first set up the xiaomi on your  iPhone
-- Create a backup with iTunes or 3utools
-- Then install the [iphonebackupviewer](http://www.imactools.com/iphonebackupviewer/)
-- go to the Tree View (top right)
-- go to the path AppDomain-com.xiaomi.mihome\Documents\
-- download the file xxxxxxxxxx_mihome.sqlite
--If the file / folder is not found, backup with iTunes instead of using 3utools
-- Open these with [DB Browser for SQLite](https://github.com/sqlitebrowser/sqlitebrowser/releases/download/v3.10.1/SQLiteDatabaseBrowserPortable_3.10.1_English.paf.exe)
-- The 96-digit hex key can be found under Browse Data  Table ZDEVICE  in the right-most column ZTOKEN
-- The 96-digit Hex Key must now be converted to a 32-digit key
-- Enter the following via the [link](http://aes.online-domain-tools.com/) here
-- Input type: Text
-- Input text: the 96-digit key
-- Hex
-- Autodetect: ON
-- Function: AES
-- Mode: ECB (electronic codebook)
-- Key: 00000000000000000000000000000000 * must be 32 digits
-- Hex
-- Now click on Decrypt and remove the 32-digit key from the decrypted text at the far right
+[Token turorial](https://www.smarthomeassistent.de/token-auslesen-roborock-s6-roborock-s5-xiaomi-mi-robot-xiaowa/).
 
 
 ### Adapter Configuration
@@ -105,6 +52,32 @@ If this option is disabled, the vacuum will start a new "normal cleaning" when y
 
 #### Second robot
 If two robots are to be controlled via ioBroker, two instances must be created. The second robot must change its own port (default: 53421) so that both robots have different ports.
+
+## Valetudo Config
+Therefor you have to root and install valetudo to your device. Vatudo you can use 
+[Valetudo RE](https://github.com/rand256/valetudo) or normal [Valetudo](https://github.com/Hypfer/Valetudo)
+
+![Config](admin/valetudo_conf.png)
+- Activate Valetudo activates the Valetudo interface
+- request Interval must be more than 1000 ms this is the intervall for update the html map
+- map intervaall must be more than 5000 ms this intervall updates the png Map file (you can use this for Telegram or vis or anything else)
+- color there you can select the colors for the map example:
+```
+- #2211FF
+- rbg(255,200,190)
+- rgba(255,100,100,0.5) //for Transparent
+- green
+```
+- robots there you can select differt robots or other vehicles for the map 
+
+### Map Widget
+To display th map you can use a normal html Widget e.g:
+
+```
+[{"tpl":"tplHtml","data":{"g_fixed":false,"g_visibility":false,"g_css_font_text":false,"g_css_background":false,"g_css_shadow_padding":false,"g_css_border":false,"g_gestures":false,"g_signals":false,"g_last_change":false,"visibility-cond":"==","visibility-val":1,"visibility-groups-action":"hide","refreshInterval":"0","signals-cond-0":"==","signals-val-0":true,"signals-icon-0":"/vis/signals/lowbattery.png","signals-icon-size-0":0,"signals-blink-0":false,"signals-horz-0":0,"signals-vert-0":0,"signals-hide-edit-0":false,"signals-cond-1":"==","signals-val-1":true,"signals-icon-1":"/vis/signals/lowbattery.png","signals-icon-size-1":0,"signals-blink-1":false,"signals-horz-1":0,"signals-vert-1":0,"signals-hide-edit-1":false,"signals-cond-2":"==","signals-val-2":true,"signals-icon-2":"/vis/signals/lowbattery.png","signals-icon-size-2":0,"signals-blink-2":false,"signals-horz-2":0,"signals-vert-2":0,"signals-hide-edit-2":false,"lc-type":"last-change","lc-is-interval":true,"lc-is-moment":false,"lc-format":"","lc-position-vert":"top","lc-position-horz":"right","lc-offset-vert":0,"lc-offset-horz":0,"lc-font-size":"12px","lc-font-family":"","lc-font-style":"","lc-bkg-color":"","lc-color":"","lc-border-width":"0","lc-border-style":"","lc-border-color":"","lc-border-radius":10,"lc-zindex":0,"html":"{mihome-vacuum.0.valetudo.map64}"},"style":{"left":"0","top":"0","width":"100%","height":"100%"},"widgetSet":"basic"}]
+```
+
+Second way is to use a src img widget to integrate the png file. but the html view is faster, its like a live view.
 
 ## Functions
 ### Commands of the S50 (second generation)

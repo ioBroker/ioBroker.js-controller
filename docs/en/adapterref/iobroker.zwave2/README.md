@@ -21,6 +21,20 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### 0.8.0 (2020-01-04)
+* The cache file is now saved in `iobroker-data`, so it doesn't get lost between updates
+* Added a button on the device overview tab to clear the cache
+
+### 0.7.2 (2020-01-04)
+* Fixed an issue where indicators with `boolean` values could not be written to
+
+### 0.7.1 (2020-01-03)
+Updated `zwave-js` to v2.7.0. This includes the following changes:
+* The driver is no longer reset when unexpected data is received. Instead the invalid bytes are skipped.
+* `Basic CC` reports no longer create a value when they are mapped to another CC
+* `IndicatorCC`: Binary indicators now use `boolean` values
+* `IndicatorCC`: V1 indicators (unspecified) are now ignored if an endpoint is known to have V2 indicators
+
 ### 0.7.0 (2020-01-02)
 * Added a config option to write debug logfiles
 * Updated `zwave-js` to v2.6.0 to add support for `Scene Activation CC`
