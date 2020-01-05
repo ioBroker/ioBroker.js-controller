@@ -191,6 +191,9 @@ Auszug:
 ## FAQ
 
 ## Changelog
+### 1.12.3 (2020-01-05)
+* (foxriver76) handle some meta data more abstract
+
 ### 1.12.2 (2019-12-19)
 * (foxriver76) fix issue on https with less robust ccu emulations
 

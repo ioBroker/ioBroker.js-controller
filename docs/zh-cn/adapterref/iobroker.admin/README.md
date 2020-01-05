@@ -74,7 +74,7 @@ BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
 日志的字体显示为红色。
 
 ## Changelog
-### 3.7.6 (2020-01-03)
+### 3.7.7 (2020-01-05)
 * (bluefox) The disabling of custom settings was corrected
 
 ### 3.7.5 (2019-12-29)

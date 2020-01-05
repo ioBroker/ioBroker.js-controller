@@ -59,7 +59,7 @@ You may write "text2command" in white list, you can send POST request to ```http
 *to do*
 
 ## Changelog
-### 3.0.0 (2020-01-04)
+### 3.0.1 (2020-01-05)
 * (bluefox) Breaking changes: no alexa support. Use ioBroker.iot for that.
 * (bluefox) Support of multiple clients for .pro
 
