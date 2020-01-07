@@ -22,3 +22,7 @@ lib/objects/tools.js
 lib/objects/objectsInRedis.js
 lib/objects/lua
 package-lock.json
+.editorconfig
+.eslintrc.json
+.gitattributes
+tsconfig.json
