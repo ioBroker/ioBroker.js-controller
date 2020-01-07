@@ -5,6 +5,7 @@ conf/iobroker.json
 node_modules
 .idea
 .git
+.github
 *.md
 tmp
 log/*
