@@ -14,12 +14,16 @@ This adapter parses data received via URL or from a file, by using regular expre
 ### 1. Default poll interval
 This default poll interval value will be used, if no individual poll interval value is specified for an entry in the configuration table (column: "Interval"). The interval is in milliseconds and defines how often the link or file is being read and the states are being updated.
 
-**Note:** Do not use a too aggressive poll interval especially for website URLs. For example, if you want to retrieve the price of your shares from a certain website, you probably should be good with an interval of just every 24 hours (= 86400000 ms), if you are not a day trader. If you try to retrieve data from certain URLs too often, the website may ban you and put you on a server blacklist. So please use the poll interval with care.
+**Note:** 
+Do not use a too aggressive poll interval especially for website URLs. For example, if you want to retrieve the price of your shares from a certain website, you probably should be good with an interval of just every 24 hours (= 86400000 ms), if you are not a day trader. If you try to retrieve data from certain URLs too often, the website may ban you and put you on a server blacklist. So please use the poll interval with care.
 
 ### 2. Table
 Click the "Plus" button to add a new entry to the table.
 
-Table fields:
+**Performance Note:**
+If you enter the same URL or filename more than once into different table rows, and if the values of the column "Interval" are the same, the content of the URL or filename will be retrieved only **once** and cached for proccesing multiple table rows matching URL/filename and Interval. This allows you to apply multiple regex (so multiple table rows) to a single URL or filename, without the need of retrieving the data multiple times from the source.
+
+**Table fields:**
 
 - ***Name*** - name of state that is being created under `parser.<instance number>`. Spaces are not allowed. You can use dots "." as separator to create sub folders. Example: `Shares.Microsoft.Current` will result in `parser.<instance number>.Shares.Micosoft.Current`.
 - ***URL or file name*** - either an URL of a website or the path to a file of which we want to retrieve information. Examples `https://darksky.net/forecast/48.1371,11.5754/si24/de` (weather information Munich), or `/opt/iobroker/test/testdata.txt` (file from within ioBroker).
@@ -34,7 +38,6 @@ Table fields:
     - button - the value is a button
     - indicator - boolean indicator
 - ***Type*** - the type of variable per the pull-down menu.
-- ***Item*** - number of the found element, starting from 0.
 - ***Unit*** - Optional: unit of the value added to the state entry. E.g. `°C`, `€`, `GB`, etc.
 - ***Old***  - If activated, the state will *not* be updated if the value cannot be read or found in the provided date (URL or file), so it will keep the former value in this case.
 - ***Subs*** - Optional: substitute URL or file name. This substitute URL/filename will be used if the URL/file name of the first column is not available.

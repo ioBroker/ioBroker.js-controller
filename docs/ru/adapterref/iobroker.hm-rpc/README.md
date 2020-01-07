@@ -135,6 +135,10 @@ CCU / Homematic поддерживает различные типы устро�
 ## FAQ
 
 ## Changelog
+### 1.12.5 (2020-01-06)
+* (foxriver76) handle some meta data more abstract
+* (foxriver76) make DIMMER_REAL.LEVEL of unit '%' even it is not by definition
+
 ### 1.12.2 (2019-12-19)
 * (foxriver76) fix issue on https with less robust ccu emulations
 

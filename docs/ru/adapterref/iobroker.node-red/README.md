@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.node-red/README.md
 title: ioBroker - красный адаптер для узла
-hash: tYrxaoynXmWm77eUOiTqmKlKy7hxXjYUmrhJeyaanz4=
+hash: EeGMIn33K0Ekn4Qm0pvkHcXoojvGu85RHDuA7OP7ZMY=
 ---
 ![логотип](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
@@ -14,19 +14,42 @@ hash: tYrxaoynXmWm77eUOiTqmKlKy7hxXjYUmrhJeyaanz4=
 ![NPM](https://nodei.co/npm/iobroker.node-red.png?downloads=true)
 
 # IoBroker node-red Adapter
-## Запускает экземпляр узла красного цвета и связывается с ним.
-*** Для работы этого адаптера требуется как минимум nodejs 4.x ***
+Запускает узел-красный экземпляр и связывается с ним.
 
-Этот адаптер использует красный сервер узла с https://github.com/node-red/node-red
+Этот адаптер использует нод-красный сервер с https://github.com/node-red/node-red
 
 ** Примечание: ** Если в диалоге выбора идентификатора узла ioBroker вы не можете найти какую-либо переменную, перезапустите экземпляр узла красного цвета. При перезапуске будет создан новый список объектов.
 
-## Установить
-```node iobroker.js add node-red```
-
-## Конфигурация
+## Настройки
+- Безопасный режим - потоки не будут запущены, и вы можете редактировать потоки, чтобы устранить проблему перегрузки.
 
 ## Changelog
+### 1.15.0 (2020-01-06)
+* (mobilutz/bluefox) allow creation of foreign states
+* (SchumyHao) add state unit, min and max for ioBroker out node
+
+### 1.14.0 (2019-11-29)
+* (SchumyHao) hide some parameters if not enable create object
+
+### 1.13.2 (2019-11-24)
+* (SchumyHao) Set state name, role, type and readonly state in node and msg
+
+### 1.13.1 (2019-10-23)
+* (RustyThePropellerHead) Logging elevated from debug to info for debug-nodes with console output 
+
+### 1.13.0 (2019-10-20)
+* (WolfspiritM) Get Object node added
+
+### 1.12.0 (2019-10-06)
+* (Apollon77) Allow to enable/diable the projects feature via Admin
+* (Apollon77) Upgrade to node.red 1.0.1 and also add all now extra npm packages to stay compatible
+
+### 1.10.1 (2019-09-20)
+* (Apollon77) Make sure also checkState calls are executed after ioBroker databases are initialized
+
+### 1.10.0 (2019-09-15)
+* (Apollon77) Used newer version of node-red 0.20.8 and updated other dependencies
+
 ### 1.9.0 (2019-07-08)
 * (Apollon77) Used newer version of node-red 0.20.7 and updated other dependencies
 
@@ -190,7 +213,7 @@ hash: tYrxaoynXmWm77eUOiTqmKlKy7hxXjYUmrhJeyaanz4=
 
 ## License
 
-Copyright 2014-2018 bluefox <dogafox@gmail.com>.
+Copyright 2014-2020 bluefox <dogafox@gmail.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

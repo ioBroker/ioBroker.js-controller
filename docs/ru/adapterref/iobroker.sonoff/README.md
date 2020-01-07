@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sonoff/README.md
 title: ioBroker Sonoff
-hash: 3M7Cln8xx5EW+3rn3GxwEqEFoWXbbzFAYRt/bvjJM2E=
+hash: sd76KWFFfIcWHwVBnmdbn8KgdJtIKXjm3+WFAKuwtI8=
 ---
 ![логотип](../../../en/adapterref/iobroker.sonoff/admin/sonoff.png)
 
@@ -20,11 +20,11 @@ hash: 3M7Cln8xx5EW+3rn3GxwEqEFoWXbbzFAYRt/bvjJM2E=
 Ожидаются следующие темы:
 
 - `tele / DeviceNAME / STATE`
-- `ele / DeviceNAME / SENSOR`
-- `ele / DeviceNAME / INFOx`
-- `ele / DeviceNAME / ENERGY`
-- `mnd / DeviceNAME / POWERx`
-- `tat / DeviceNAME / POWERx`
+- `tele / DeviceNAME / SENSOR`
+- `tele / DeviceNAME / INFOx`
+- `tele / DeviceNAME / ENERGY`
+- `cmnd / DeviceNAME / POWERx`
+- `stat / DeviceNAME / POWERx`
 - `/ DeviceNAME / BM280 / Температура`
 - `/ DeviceNAME / BM280 / Humidity`
 - `/ DeviceNAME / BM280 / Temperatur`
@@ -103,7 +103,10 @@ hash: 3M7Cln8xx5EW+3rn3GxwEqEFoWXbbzFAYRt/bvjJM2E=
 
 ## Changelog
 
-### 2.3.1 (2019-10-23)
+### 2.3.3 (2019-11-27)
+* (bluefox) Error with empty packet was caught
+
+### 2.3.2 (2019-10-23)
 * (bluefox) Fixed the password input in the configuration
 * (bluefox) Allowed to set the IP interface for server
 * (bluefox) Fixed tests for js-controller 2.0

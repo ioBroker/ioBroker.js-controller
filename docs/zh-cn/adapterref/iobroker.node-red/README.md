@@ -3,30 +3,53 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.node-red/README.md
 title: ioBroker节点红色适配器
-hash: tYrxaoynXmWm77eUOiTqmKlKy7hxXjYUmrhJeyaanz4=
+hash: EeGMIn33K0Ekn4Qm0pvkHcXoojvGu85RHDuA7OP7ZMY=
 ---
 ![商标](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
 ![安装数量](http://iobroker.live/badges/node-red-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.node-red.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.node-red.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.node-red.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.node-red.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.node-red.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.node-red.png?downloads=true)
 
-#ioBroker node-red Adapter
-##启动node-red实例并与之通信。
-***这个适配器至少需要nodejs 4.x才能工作***
+＃ioBroker节点红色适配器
+启动节点红色实例并与其进行通信。
 
-此适配器使用https://github.com/node-red/node-red中的节点红色服务器
+该适配器使用https://github.com/node-red/node-red中的node-red服务器
 
-**注意：**如果在ioBroker节点的select ID对话框中找不到某个变量，请重新启动node-red实例。通过重新启动，将创建新的对象列表。
+**注意：**如果在ioBroker节点的“选择ID”对话框中找不到某些变量，请重新启动红色节点实例。通过重新启动，将创建新的对象列表。
 
-##安装
-```node iobroker.js add node-red```
-
-##配置
+##设置
+-安全模式-流程将不会启动，您可以编辑流程以解决某些过载问题。
 
 ## Changelog
+### 1.15.0 (2020-01-06)
+* (mobilutz/bluefox) allow creation of foreign states
+* (SchumyHao) add state unit, min and max for ioBroker out node
+
+### 1.14.0 (2019-11-29)
+* (SchumyHao) hide some parameters if not enable create object
+
+### 1.13.2 (2019-11-24)
+* (SchumyHao) Set state name, role, type and readonly state in node and msg
+
+### 1.13.1 (2019-10-23)
+* (RustyThePropellerHead) Logging elevated from debug to info for debug-nodes with console output 
+
+### 1.13.0 (2019-10-20)
+* (WolfspiritM) Get Object node added
+
+### 1.12.0 (2019-10-06)
+* (Apollon77) Allow to enable/diable the projects feature via Admin
+* (Apollon77) Upgrade to node.red 1.0.1 and also add all now extra npm packages to stay compatible
+
+### 1.10.1 (2019-09-20)
+* (Apollon77) Make sure also checkState calls are executed after ioBroker databases are initialized
+
+### 1.10.0 (2019-09-15)
+* (Apollon77) Used newer version of node-red 0.20.8 and updated other dependencies
+
 ### 1.9.0 (2019-07-08)
 * (Apollon77) Used newer version of node-red 0.20.7 and updated other dependencies
 
@@ -190,7 +213,7 @@ hash: tYrxaoynXmWm77eUOiTqmKlKy7hxXjYUmrhJeyaanz4=
 
 ## License
 
-Copyright 2014-2018 bluefox <dogafox@gmail.com>.
+Copyright 2014-2020 bluefox <dogafox@gmail.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

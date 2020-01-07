@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: Z6UnmG3ESKkbzXg9giR5nmFaeIppjm/0vgy7P4526+g=
+hash: yyNrBP+7CnWDJbmZu1KEa34c10BvcpNCprYCLbZgWD4=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -39,7 +39,7 @@ https://github.com/material-components/material-components-web/blob/master/docs/
 ### Unterstützter Browser für die Funktion "Vibrieren auf Mobilgeräten"
 https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 
-### IoBroker App
+### IoBroker VIS App
 funktioniert nicht, muss per App implementiert werden, siehe https://github.com/ioBroker/ioBroker.vis.cordova
 
 ## Button Umschalten
@@ -148,13 +148,20 @@ In Column Views sind mehrere `view in widget` integriert, die je nach Breite des
 
 ## Changelog
 
-### 0.2.xx
+### 0.2.32
+* (Scrounger): Editor translation bug fix
+* (Scrounger): Masonry Views Widget: alignment bug fix for chrome
+* (Scrounger): Line History Chart Widget: layout option for line values added
+* (Bluefox): Russian translation revised
+
+### 0.2.30
 * (Scrounger): Masonry Views Widget added
 * (Scrounger): Select Widget: background color bug fix
 * (Scrounger): Column Views Widget added
 * (Scrounger): Button Widgets: icon height bug fix
 * (Scrounger): Vuetify API bug fix
 * (Scrounger): Chart Widgets: localization added
+* (Scrounger): Line History Chart Widget: color options for each y-axis added
 * (Scrounger): Line History Chart Widget: x-axis boundary options added
 * (Scrounger): Line History Chart Widget: x-axis scaling bug fix
 * (Scrounger): TopAppBar Widget: `view in widget 8` removed -> old TopAppBar Widget will be removed in version 0.3.x

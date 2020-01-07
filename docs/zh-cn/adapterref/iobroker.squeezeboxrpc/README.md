@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.squeezeboxrpc/README.md
 title: 通过JSON / RPC协议的ioBroker Logitech Squeezebox适配器
-hash: UHv5GS1FLdIKuxkNWHyEPRne5reo4FuXXuHCGhEUzn8=
+hash: vk29mGAty3uiy1arX0kymA9byW02RckHEOLSuV4HR6o=
 ---
 ![商标](../../../en/adapterref/iobroker.squeezeboxrpc/admin/squeezeboxrpc.png)
 
@@ -24,7 +24,7 @@ hash: UHv5GS1FLdIKuxkNWHyEPRne5reo4FuXXuHCGhEUzn8=
 *树莓派，带有附加的音频模块和基于小型Linux的固件，例如[picoreplayer]（https://picoreplayer.org/）或[max2play]（https://www.max2play.com）。
 *带有chromecast，airplay或UPnP / DLNA设备插件
 
-LMS服务器可以管理/提供硬盘或NAS上的超大音乐收藏，并连接到不同的流媒体提供商，例如Spotify，Deezer，Soundcloud，shoutcast，tunein，napster，pandora，潮汐等
+LMS服务器可以在硬盘或NAS上管理/提供非常大的音乐收藏，并连接到不同的流媒体提供商，例如Spotify，Deezer，Soundcloud，shoutcast，tunein，napster，pandora，潮汐等
 
 为什么要使用另一个squeezebox适配器？
 
@@ -51,14 +51,14 @@ vis小部件的文档可在vis或[小部件文档/德语](https://htmlpreview.gi
 |州|描述 |
 | ----------------- | ------------------------------ |
 | LastScan |上次音乐扫描的时间戳|
-| PlayerCount |已知球员数|
-| PlayerCountOther |已知其他玩家数|
+| PlayerCount |已知玩家数|
+| PlayerCountOther |已知其他玩家数量|
 | PlayerCountSN |已知SN播放器数量|
 |总专辑|所有已知专辑的数量|
 | TotalArtists |所有已知艺术家的数目 |
 |总持续时间|所有歌曲的总播放时间|
 | TotalGenres |所有已知类型的数量 |
-| TotalSongs |所有已知歌曲的数量|
+| TotalSongs |所有已知歌曲的数量 |
 |同步组|现有的同步组|
 |版本| LMS版本|
 | mac |服务器的MAC-ID |
@@ -71,14 +71,14 @@ vis小部件的文档可在vis或[小部件文档/德语](https://htmlpreview.gi
 ###收藏
 对于每个收藏夹，所有属性都是只读的
 
-州|说明----------------- | ------------------------------名称|最喜欢的hasitems的名称|指示这是否为目录ID |最喜欢的图像的ID |可用的图像/图标（如果可用）isaudio | isaudio类型|示例类型：链接，文本，音频，播放列表网址|曲目的网址
+州|说明----------------- | ------------------------------名称|最喜欢的hasitems的名称|指示这是否是目录ID |最喜欢的图像的ID |可用的图像/图标（如果可用）isaudio | isaudio类型|示例类型：链接，文本，音频，播放列表网址|曲目的网址
 
  收藏夹的所有子级别（子目录）均可用。
 
 ###玩家
 对于每个玩家该模式显示是否可以更改值。在属性中描述了所采取的操作
 
-状态|模式|说明-------------------- | ---- | -------------------------------------------------- ---专辑| R /-|当前专辑的名称艺术家| R /-|艺术家作品名称的名称| R /-|网址至图稿比特率| R /-|轨道的比特率已连接| R /-|玩家的连接状态（0/1）持续时间| R /-|曲目时长| R /-| IP | R /-|的流派播放器的IP模式| R /-|播放/暂停/停止玩家名称| R /-|播放器的名称PlayerID | R /-|玩家ID播放列表| R /-|实际播放列表为JSON PlaylistCurrentIndex | R / W |通过指定trackindex到达绝对位置，或者在开头添加+或-相对。示例10，-3，+ 2播放列表重复| R / W |重复播放歌曲（1）/播放列表（2）/不要重复播放（0）播放列表随机播放| R / W |随机播放列表（1）/随机专辑（2）/不随机播放（0）Power | R / W |获取/设置播放器电源状态off（0）/ on（1）RadioName | R /-|电台名称名称费率| R /-|歌曲的评级| R /-|如果是远程流（1）SyncMaster | R /-| Syncmaster SyncSlaves的ID / MAC | R /-|同步组时间中的播放器ID / Mac | R /-|歌曲的播放时间标题| R /-|歌曲名称类型| R /-|媒体类型（例如MP3广播）Url | R /-|轨道/流的网址音量| R / W | get / set播放器的音量（0-100）状态| R / W |获取/设置播放状态：暂停（0），播放（1），停止（2）
+状态|模式|说明-------------------- | ---- | -------------------------------------------------- ---专辑| R /-|当前专辑的名称艺术家| R /-|艺术家作品名称的名称| R /-|网址至图稿比特率| R /-|轨道的比特率已连接| R /-|玩家的连接状态（0/1）持续时间| R /-|曲目时长| R /-| IP | R /-|的流派播放器的IP模式| R /-|播放/暂停/停止玩家名称| R /-|播放器的名称PlayerID | R /-|玩家ID播放列表| R /-|实际播放列表为JSON PlaylistCurrentIndex | R / W |通过指定trackindex移到绝对位置，或者在开头以+或-相对。示例10，-3，+ 2播放列表重复| R / W |重复播放歌曲（1）/播放列表（2）/不要重复播放（0）播放列表随机播放| R / W |随机播放列表（1）/随机专辑（2）/不随机播放（0）Power | R / W |获取/设置播放器电源状态off（0）/ on（1）RadioName | R /-|电台名称名称费率| R /-|歌曲的评级| R /-|如果是远程流（1）SyncMaster | R /-| Syncmaster SyncSlaves的ID / MAC | R /-|同步组时间中的播放器ID / Mac | R /-|歌曲的播放时间标题| R /-|歌曲名称类型| R /-|媒体类型（例如MP3广播）Url | R /-|轨道/流的网址音量| R / W | get / set播放器的音量（0-100）状态| R / W |获取/设置播放状态：暂停（0），播放（1），停止（2）
 
 播放列表实际提供以下属性（如果在LMS中可用）。
 Somme属性取决于歌曲的类型（流/文件/ ...）。所有属性均为只读
@@ -96,17 +96,20 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 ＃＃ 去做
 *更多测试/修复
 *添加telnet通信以从服务器获取推送事件以优化轮询
-*添加ID到玩家状态
 *减少对其他软件包的依赖（squeezenode）
-*实现命令状态以放置服务器和播放器的用户个人命令（通过json）
 *更多配置可选打开/关闭功能以改善内存和性能
+* ~~实现命令状态以放置用于服务器和播放器的用户个人命令（通过json）~~
 * ~~实现更多控制功能（选择播放列表pos以播放，ffwd，frew，跳到歌曲，重复歌曲，随机歌曲中的时间位置）~~
-* ~~将播放列表添加为playerdata作为json数组~~
-* ~~添加艺术品（station-logo / playlist-cover）作为收藏夹~~
+* ~~~~~~~~~~~~~~~~~~~~~~
+* ~~添加收藏夹的图稿（station-logo / playlist-cover）~~
 * ~~实现收藏夹的更多级别（子目录）~~
 * ~~自动发现罗技媒体服务器~~
 
 ## Changelog
+### 0.8.27
+ * initialization for the new calctype property if empty in volumebar
+### 0.8.26
+ * more improvement and fixing at volumebar / remove playlist widget from master. not ready yet
 ### 0.8.25
  * fixing css-settings on volumebar
 ### 0.8.24

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: Z6UnmG3ESKkbzXg9giR5nmFaeIppjm/0vgy7P4526+g=
+hash: yyNrBP+7CnWDJbmZu1KEa34c10BvcpNCprYCLbZgWD4=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -36,10 +36,10 @@ Material Design Widgets使用以下库：
 ###支持的浏览器
 https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
 
-###受支持的浏览器可在移动设备上振动功能
+###支持的浏览器可在mobil设备上振动功能
 https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
-### IoBroker应用
+### IoBroker VIS应用程序
 无法正常运行，需要由应用程序标记，请参阅https://github.com/ioBroker/ioBroker.vis.cordova
 
 ##按钮切换
@@ -73,7 +73,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ##带有导航抽屉的顶部应用栏
 带有导航抽屉的顶部应用栏可以与<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>结合使用。
 
-<b>看一看[Material Design Widgets示例项目](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b>以了解其工作原理。
+<b>看一看[Material Design Widgets示例项目](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b>以了解它是如何工作的。
 
 #####布局模式：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
@@ -140,7 +140,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ##列视图
 列视图具有集成的多个`view in widget`§，它们将根据窗口小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动电话的一种布局）
 
-<b>看一看[Material Design Widgets示例项目](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b>以了解其工作原理。
+<b>看一看[Material Design Widgets示例项目](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b>以了解它是如何工作的。
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/column_views.gif)
 
@@ -148,13 +148,20 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 ## Changelog
 
-### 0.2.xx
+### 0.2.32
+* (Scrounger): Editor translation bug fix
+* (Scrounger): Masonry Views Widget: alignment bug fix for chrome
+* (Scrounger): Line History Chart Widget: layout option for line values added
+* (Bluefox): Russian translation revised
+
+### 0.2.30
 * (Scrounger): Masonry Views Widget added
 * (Scrounger): Select Widget: background color bug fix
 * (Scrounger): Column Views Widget added
 * (Scrounger): Button Widgets: icon height bug fix
 * (Scrounger): Vuetify API bug fix
 * (Scrounger): Chart Widgets: localization added
+* (Scrounger): Line History Chart Widget: color options for each y-axis added
 * (Scrounger): Line History Chart Widget: x-axis boundary options added
 * (Scrounger): Line History Chart Widget: x-axis scaling bug fix
 * (Scrounger): TopAppBar Widget: `view in widget 8` removed -> old TopAppBar Widget will be removed in version 0.3.x

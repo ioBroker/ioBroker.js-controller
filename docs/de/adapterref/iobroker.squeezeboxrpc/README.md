@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.squeezeboxrpc/README.md
 title: ioBroker Logitech Squeezebox Adapter über JSON / RPC-Protokoll
-hash: UHv5GS1FLdIKuxkNWHyEPRne5reo4FuXXuHCGhEUzn8=
+hash: vk29mGAty3uiy1arX0kymA9byW02RckHEOLSuV4HR6o=
 ---
 ![Logo](../../../en/adapterref/iobroker.squeezeboxrpc/admin/squeezeboxrpc.png)
 
@@ -29,12 +29,12 @@ Der LMS-Server kann sehr große Musiksammlungen auf Festplatten oder NAS verwalt
 Warum noch ein Squeezebox Adapter?
 
 Der vorhandene Adapter greift über Telnet auf das LMS zu. Das Telnet hat einige Nachteile.
-Das eigentliche Haupt-Webinterface des LMS verwendet auch das rpc / json-Protokoll, um alle benötigten Informationen abzurufen oder Befehle an den Server / die Spieler zu senden.
+Das eigentliche Haupt-Webinterface des LMS verwendet auch das rpc / json-Protokoll, um alle benötigten Informationen zu erhalten oder Befehle an den Server / die Spieler zu senden.
 
 ## Eigenschaften
 - Die meisten Daten, die der LMS-Service zur Verfügung stellt, sind im Adapter verfügbar
 - Detaillierte Informationen über den Player-Status, den Songtitel, den Interpreten, das Album, das Bildmaterial und die Wiedergabeliste
-- Viele Steuerfunktionen zum Abspielen, Anhalten, Stoppen, Vor- und Zurückspulen, Wiederholen, Mischen, Wiedergeben von Favoriten, Springen zur Zeit (absolut und relativ), Springen zum Index der Wiedergabeliste (absolut und relativ), Ein- / Ausschalten und Voreinstelltasten
+- Viele Steuerfunktionen zum Abspielen, Anhalten, Stoppen, Vor- und Zurückspulen, Wiederholen, Mischen, Wiedergeben von Favoriten, Springen zur Zeit (absolut und relativ), Springen zum Wiedergabelistenindex (absolut und relativ), Ein- / Ausschalten und Voreinstelltasten
 - Alle Favoriten und alle Unterebenen vom Server
 - Viele Widgets für die iobroker-vis-Komponente sind enthalten, um eigene Benutzeroberflächen für die Steuerung zu erstellen (Player auswählen, Favoriten auswählen, Synchronisierungsgruppen verwalten, Schaltflächen für Wiedergabe / Pause, Vorwärts-, Rückwärts-, Wiederholungs- und Zufallsmodus auswählen).
 
@@ -96,17 +96,20 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 ## Machen
 * Weitere Tests / Korrekturen
 * Fügen Sie Telnet-Kommunikation hinzu, um Push-Ereignisse vom Server abzurufen und das Polling zu optimieren
-* füge die ID zu den Spielerzuständen hinzu
 * Reduziere die Abhängigkeiten zu anderen Paketen (squeezenode)
-* Implementieren eines Befehlsstatus zum Platzieren von benutzerdefinierten Befehlen (über JSON) für Server und Player
 * Mehr Konfiguration, um optional Funktionen ein- und auszuschalten, um Speicher und Leistung zu verbessern
-* ~~ Implementieren Sie weitere Steuerungsfunktionen (wählen Sie die Wiedergabeliste zum Abspielen aus, ffwd, frew, springen Sie zu einer Zeitposition im Song, wiederholen Sie den Song, zufälliger Song) ~~
+* ~~ Implementieren Sie einen Befehlsstatus, um benutzerdefinierte Befehle (über JSON) für Server und Player zu platzieren ~~
+* ~~ Implementieren Sie weitere Steuerungsfunktionen (wählen Sie die Wiedergabeliste zum Abspielen aus, ffwd, frew, springen Sie zu einer Zeitposition im Song, wiederholen Sie den Song, einen zufälligen Song) ~~
 * ~~ füge die Wiedergabeliste als json array ~~ zu den Wiedergabedaten hinzu
 * ~~ Grafik (Sender-Logo / Playlist-Cover) für Favoriten hinzufügen ~~
 * ~~ Implementiere mehr Ebenen (Unterverzeichnisse) von Favoriten ~~
 * ~~ autodiscover logitech media server ~~
 
 ## Changelog
+### 0.8.27
+ * initialization for the new calctype property if empty in volumebar
+### 0.8.26
+ * more improvement and fixing at volumebar / remove playlist widget from master. not ready yet
 ### 0.8.25
  * fixing css-settings on volumebar
 ### 0.8.24

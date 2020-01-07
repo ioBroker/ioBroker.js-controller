@@ -33,7 +33,7 @@ https://github.com/material-components/material-components-web/blob/master/docs/
 ### Supported Browser for vibrate on mobil devices function
 https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 
-### ioBroker App
+### ioBroker VIS App
 not working, needs to be implemneted by app, see https://github.com/ioBroker/ioBroker.vis.cordova
 
 ## Button Toggle
@@ -319,13 +319,20 @@ Column Views has multiple `view in widget` integrated, that will be ordered auto
 
 ## Changelog
 
-### 0.2.xx
+### 0.2.32
+* (Scrounger): Editor translation bug fix
+* (Scrounger): Masonry Views Widget: alignment bug fix for chrome
+* (Scrounger): Line History Chart Widget: layout option for line values added
+* (Bluefox): Russian translation revised
+
+### 0.2.30
 * (Scrounger): Masonry Views Widget added
 * (Scrounger): Select Widget: background color bug fix
 * (Scrounger): Column Views Widget added
 * (Scrounger): Button Widgets: icon height bug fix
 * (Scrounger): Vuetify API bug fix
 * (Scrounger): Chart Widgets: localization added
+* (Scrounger): Line History Chart Widget: color options for each y-axis added
 * (Scrounger): Line History Chart Widget: x-axis boundary options added
 * (Scrounger): Line History Chart Widget: x-axis scaling bug fix
 * (Scrounger): TopAppBar Widget: `view in widget 8` removed -> old TopAppBar Widget will be removed in version 0.3.x

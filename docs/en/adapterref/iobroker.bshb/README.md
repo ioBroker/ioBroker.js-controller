@@ -26,6 +26,16 @@ Work in progress. Feedback appreciated.
 
 ## Changelog
 
+### 0.1.2
+* (holomekc) Adapter core library updated
+
+### 0.1.1
+* (holomekc) update to new bridge version
+* (holomekc) allows adapter to reconnect in case bshc is restarting
+* (holomekc) remove not needed configuration
+* (holomekc) faults added to all service (channels)
+* (holomekc) faults are always a list: [] = no faults, \[{source: {rootDeviceId: string, deviceServiceId: string, deviceId: string}, type: string, category: INFO | WARNING | ERROR}, ...\] = faults
+
 ### 0.1.0
 * (holomekc) certificate and private key are handled in ioBroker and can be content or file reference
 * (holomekc) update to newer bridge version

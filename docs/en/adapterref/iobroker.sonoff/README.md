@@ -13,11 +13,11 @@ This adapter communicates with Sonoff devices with Tasmota firmware or ESP devic
 
 Following topics are expected:
 - `tele/DeviceNAME/STATE`
-- `ele/DeviceNAME/SENSOR`
-- `ele/DeviceNAME/INFOx`
-- `ele/DeviceNAME/ENERGY`
-- `mnd/DeviceNAME/POWERx`
-- `tat/DeviceNAME/POWERx`
+- `tele/DeviceNAME/SENSOR`
+- `tele/DeviceNAME/INFOx`
+- `tele/DeviceNAME/ENERGY`
+- `cmnd/DeviceNAME/POWERx`
+- `stat/DeviceNAME/POWERx`
 - `/DeviceNAME/BM280/Temperature`
 - `/DeviceNAME/BM280/Humidity`
 - `/DeviceNAME/BM280/Temperatur`

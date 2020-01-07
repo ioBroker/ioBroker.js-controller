@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sonoff/README.md
 title: ioBroker Sonoff
-hash: 3M7Cln8xx5EW+3rn3GxwEqEFoWXbbzFAYRt/bvjJM2E=
+hash: sd76KWFFfIcWHwVBnmdbn8KgdJtIKXjm3+WFAKuwtI8=
 ---
 ![商标](../../../en/adapterref/iobroker.sonoff/admin/sonoff.png)
 
@@ -20,11 +20,11 @@ hash: 3M7Cln8xx5EW+3rn3GxwEqEFoWXbbzFAYRt/bvjJM2E=
 预期以下主题：
 
 -`tele / DeviceNAME / STATE`
--`ele / DeviceNAME / SENSOR`
--`ele / DeviceNAME / INFOx`
--`ele / DeviceNAME / ENERGY`
--`mnd / DeviceNAME / POWERx`
--`tat / DeviceNAME / POWERx`
+-`tele / DeviceNAME / SENSOR`
+-`tele / DeviceNAME / INFOx`
+-`tele / DeviceNAME / ENERGY`
+-`cmnd / DeviceNAME / POWERx`
+-`stat / DeviceNAME / POWERx`
 -`/ DeviceNAME / BM280 / Temperature`
 -`/ DeviceNAME / BM280 / Humidity`
 -`/ DeviceNAME / BM280 / Temperatur`
@@ -87,7 +87,7 @@ hash: 3M7Cln8xx5EW+3rn3GxwEqEFoWXbbzFAYRt/bvjJM2E=
 
 *`TELE_SENSOR`从`tele / xxx / SENSOR`电报创建对象
 *`TELE_STATE`通过`tele / xxx / STATE`电报创建对象
-*`STAT_RESULT`从`stat / xxx / RESULT`电报创建对象
+* STAT_RESULT从stat / xxx / RESULT电报中创建对象
 
 通常，TELE_SENSOR对于大多数用户来说就足够了。
 
@@ -103,7 +103,10 @@ hash: 3M7Cln8xx5EW+3rn3GxwEqEFoWXbbzFAYRt/bvjJM2E=
 
 ## Changelog
 
-### 2.3.1 (2019-10-23)
+### 2.3.3 (2019-11-27)
+* (bluefox) Error with empty packet was caught
+
+### 2.3.2 (2019-10-23)
 * (bluefox) Fixed the password input in the configuration
 * (bluefox) Allowed to set the IP interface for server
 * (bluefox) Fixed tests for js-controller 2.0

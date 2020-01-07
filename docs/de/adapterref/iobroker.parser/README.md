@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.parser/README.md
 title: kein Titel
-hash: Lg4GUIwP3rQm33R0Vu1O+kha1iJ3jJ3EourbBn5IJIc=
+hash: Lekbr2Mm+it1a41tJJrl3ZTrIUyZInVXWP30U4Rlyh8=
 ---
 ![Logo](../../../en/adapterref/iobroker.parser/admin/parser.png) ioBroker Parser Adapter
 
@@ -26,7 +26,9 @@ Dieser Standard-Abfrageintervallwert wird verwendet, wenn für einen Eintrag in 
 ### 2. Tabelle
 Klicken Sie auf die Schaltfläche "Plus", um der Tabelle einen neuen Eintrag hinzuzufügen.
 
-Tabellenfelder:
+** Hinweis zur Leistung: ** Wenn Sie dieselbe URL oder denselben Dateinamen mehrmals in verschiedene Tabellenzeilen eingeben und die Werte der Spalte "Intervall" gleich sind, wird nur der Inhalt der URL oder des Dateinamens abgerufen ** einmal ** und zwischengespeichert, um mehrere Tabellenzeilen zu verarbeiten, die mit URL / Dateiname und Intervall übereinstimmen. Auf diese Weise können Sie mehrere reguläre Ausdrücke (also mehrere Tabellenzeilen) auf eine einzelne URL oder einen einzelnen Dateinamen anwenden, ohne die Daten mehrmals aus der Quelle abrufen zu müssen.
+
+** Tabellenfelder: **
 
 - ***Name*** - Name des Staates, der unter `Parser. <Instanznummer>` erstellt wird. Leerzeichen sind nicht erlaubt. Sie können Punkte "." als Trennzeichen zum Erstellen von Unterordnern. Beispiel: `Shares.Microsoft.Current` führt zu` Parser. <Instanznummer> .Shares.Micosoft.Current`.
 - ***URL oder Dateiname*** - entweder eine URL einer Website oder der Pfad zu einer Datei, von der wir Informationen abrufen möchten. Beispiele `https:// darksky.net / forecast / 48.1371,11.5754 / si24 / de` (Wetterinformation München) oder` / opt / iobroker / test / testdata.txt` (Datei aus ioBroker).
@@ -41,7 +43,6 @@ Tabellenfelder:
     - button - der Wert ist eine Schaltfläche
     - indicator - Boolescher Indikator
 - ***Typ*** - Der Variablentyp gemäß dem Pulldown-Menü.
-- ***Item*** - Nummer des gefundenen Elements, beginnend mit 0.
 - ***Einheit*** - Optional: Einheit des Werts, der dem Staatseintrag hinzugefügt wurde. Z.B. `°C`,` € `,` GB` usw.
 - ***Alt*** - Wenn diese Option aktiviert ist, wird der Status *nicht* aktualisiert, wenn der Wert im angegebenen Datum (URL oder Datei) nicht gelesen oder gefunden werden kann. In diesem Fall wird der vorherige Wert beibehalten.
 - ***Subs*** - Optional: URL oder Dateiname ersetzen. Diese Ersatz-URL / Dateiname wird verwendet, wenn die URL / der Dateiname der ersten Spalte nicht verfügbar ist.

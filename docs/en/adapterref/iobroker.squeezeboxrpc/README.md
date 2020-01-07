@@ -161,10 +161,9 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 
 * more testing/fixing
 * add telnet communication to get push events from the server to optimize the polling
-* add id to splayer states
 * reduce dependencys to other packages (squeezenode)
-* implement a command state to place user individual commands (via json) for server and player
 * more configuration to optionaly turn features on/off to improve memory and performance 
+* ~~implement a command state to place user individual commands (via json) for server and player~~
 * ~~implement more control features (select playlist pos to play,ffwd,frew,jump to a time position in song,repeat song,random song)~~
 * ~~add the playlist to playerdata as json array~~
 * ~~add artwork (station-logo/playlist-cover) for favorites~~
@@ -172,6 +171,10 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * ~~autodiscover logitech media server~~
 
 ## Changelog
+### 0.8.27
+ * initialization for the new calctype property if empty in volumebar
+### 0.8.26
+ * more improvement and fixing at volumebar / remove playlist widget from master. not ready yet
 ### 0.8.25
  * fixing css-settings on volumebar
 ### 0.8.24

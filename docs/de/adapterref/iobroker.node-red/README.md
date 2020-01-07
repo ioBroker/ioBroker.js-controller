@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.node-red/README.md
 title: ioBroker knotenroter Adapter
-hash: tYrxaoynXmWm77eUOiTqmKlKy7hxXjYUmrhJeyaanz4=
+hash: EeGMIn33K0Ekn4Qm0pvkHcXoojvGu85RHDuA7OP7ZMY=
 ---
 ![Logo](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
@@ -14,19 +14,42 @@ hash: tYrxaoynXmWm77eUOiTqmKlKy7hxXjYUmrhJeyaanz4=
 ![NPM](https://nodei.co/npm/iobroker.node-red.png?downloads=true)
 
 # IoBroker knotenroter Adapter
-## Startet die knotenrote Instanz und kommuniziert mit ihr.
-*** Dieser Adapter benötigt mindestens nodejs 4.x um zu funktionieren ***
+Startet die knotenrote Instanz und kommuniziert damit.
 
 Dieser Adapter verwendet den knotenroten Server von https://github.com/node-red/node-red
 
 ** Hinweis: ** Wenn Sie im Dialogfeld "ID auswählen" des ioBroker-Knotens keine Variable finden können, starten Sie die knotenrote Instanz neu. Durch einen Neustart wird die neue Objektliste erstellt.
 
-## Installieren
-```node iobroker.js add node-red```
-
-## Aufbau
+## Die Einstellungen
+- Abgesicherter Modus - Flows werden nicht gestartet und Sie können die Flows bearbeiten, um ein Überlastungsproblem zu beheben.
 
 ## Changelog
+### 1.15.0 (2020-01-06)
+* (mobilutz/bluefox) allow creation of foreign states
+* (SchumyHao) add state unit, min and max for ioBroker out node
+
+### 1.14.0 (2019-11-29)
+* (SchumyHao) hide some parameters if not enable create object
+
+### 1.13.2 (2019-11-24)
+* (SchumyHao) Set state name, role, type and readonly state in node and msg
+
+### 1.13.1 (2019-10-23)
+* (RustyThePropellerHead) Logging elevated from debug to info for debug-nodes with console output 
+
+### 1.13.0 (2019-10-20)
+* (WolfspiritM) Get Object node added
+
+### 1.12.0 (2019-10-06)
+* (Apollon77) Allow to enable/diable the projects feature via Admin
+* (Apollon77) Upgrade to node.red 1.0.1 and also add all now extra npm packages to stay compatible
+
+### 1.10.1 (2019-09-20)
+* (Apollon77) Make sure also checkState calls are executed after ioBroker databases are initialized
+
+### 1.10.0 (2019-09-15)
+* (Apollon77) Used newer version of node-red 0.20.8 and updated other dependencies
+
 ### 1.9.0 (2019-07-08)
 * (Apollon77) Used newer version of node-red 0.20.7 and updated other dependencies
 
@@ -190,7 +213,7 @@ Dieser Adapter verwendet den knotenroten Server von https://github.com/node-red/
 
 ## License
 
-Copyright 2014-2018 bluefox <dogafox@gmail.com>.
+Copyright 2014-2020 bluefox <dogafox@gmail.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

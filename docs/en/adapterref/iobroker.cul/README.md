@@ -20,6 +20,9 @@ ioBroker adapter to control FS20, Max!, HMS and other devices via [CUL](http://b
 
 
 ## Changelog
+### 1.1.0 (2020-01-04)
+* (foxriver76) removed usage of adapter.objects
+
 ### 1.0.0 (2019-05-15)
 * (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
 
