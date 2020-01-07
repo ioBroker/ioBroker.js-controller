@@ -36,11 +36,14 @@ There are knowledge bases that can be useful for working with Zigbee-devices and
 * in Russian https://github.com/kirovilya/ioBroker.zigbee/wiki
 
 ## Changelog
-### 1.0.0-c
-* Binding
+
+### 1.0.0-c (2020-*-*)
 * Powered by new [zigbee-herdsman](https://github.com/Koenkk/zigbee-herdsman) library and new [converters database](https://github.com/Koenkk/zigbee-herdsman-converters)
 * Drop support NodeJS 6
 * Serialport 8.0.5 (in zigbee-herdsman)
+* More new devices
+* Some design update
+* Binding
 
 ### freeze shepherd
 
@@ -216,7 +219,7 @@ Other changes:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Kirov Ilya <kirovilya@gmail.com>
+Copyright (c) 2018-2020 Kirov Ilya <kirovilya@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

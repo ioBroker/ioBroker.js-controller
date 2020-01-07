@@ -26,9 +26,16 @@ You must first link to deConz.
 
 ### No Support for Beta Versions of deConz
 
-Required node.js >= 0.12.
+Required node.js >= 8.x.x
 
 ## Changelog
+
+### 1.2.1
+* convert lastupdated time to locale
+* object creation refactored
+* fix adapter config update
+* add auto detect deConz
+* include ssdp discovery to repo
 
 ### 1.2.0
 * fix adapter crash when deConz is not reachable

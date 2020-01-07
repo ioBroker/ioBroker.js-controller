@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.youtube/README.md
 title: ioBroker.youtube
-hash: odZi6WpqavriGlgD83pHDdtlCzP/e2UxBCr1NMmBGpo=
+hash: QL9xwJEIHA84RRA4rZtDhZx8Y4ryEgqLMXfkycUX77A=
 ---
 ![商标](../../../en/adapterref/iobroker.youtube/admin/youtube.png)
 
@@ -17,9 +17,7 @@ hash: odZi6WpqavriGlgD83pHDdtlCzP/e2UxBCr1NMmBGpo=
 ![NPM](https://nodei.co/npm/iobroker.youtube.png?downloads=true)
 
 ＃ioBroker.youtube
-将频道统计信息（例如观看次数，订阅者和最新视频）添加到ioBroker。使用此解决方案，您可以跟踪频道的增长或将您的价值与其他YouTubers进行比较。
-
-由于所有这些信息都是公开可用的，因此您也可以使用此适配器来关注自己喜欢的YouTuber并通知您（例如，何时有新视频可用）。您只需要一个API密钥即可访问这些信息。有关详细信息，请参见“配置”部分。
+观看次数，订阅者人数和视频等统计信息
 
 ##配置
 要获取API密钥，您必须转到[console.developers.google.com](https://console.developers.google.com/apis/dashboard)。
@@ -28,8 +26,13 @@ hash: odZi6WpqavriGlgD83pHDdtlCzP/e2UxBCr1NMmBGpo=
 2.创建一个新的API密钥
 3.添加库的“ YouTube Data API v3”
 4.在选项面板中使用该API密钥
+5.使用ID和自定义名称在“渠道”标签中添加多个渠道
 
 ## Changelog
+
+### 0.0.3
+
+* (klein0r) Support for multiple channels
 
 ### 0.0.2
 

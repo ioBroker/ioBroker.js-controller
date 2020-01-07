@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.deconz/README.md
-title: без названия
-hash: N15QZOc4l5K5BdfrXWRZL5GsCH/pU5R7eSedWtnZTyU=
+title: без заголовка
+hash: RcbSbEHHWMMzUt2ZFMhwJH8ejTQpg1/E8GOCQFxxJv8=
 ---
 ![логотип](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -25,16 +25,34 @@ ioBroker deConz Дрезден-Электроник Адаптер
 
     б) Введите порт, если вы его изменили, иначе оставьте его пустым.
 
-2. После ввода и сохранения IP-адреса и порта нажмите кнопку «Создать ключ API». Теперь вы можете ввести учетные данные для deConz или перейти к приложению Phoscon и зарегистрировать ioBroker в качестве стороннего приложения.
+2. После ввода и сохранения IP-адреса и порта нажмите кнопку «Создать ключ API». Теперь вы можете ввести учетные данные для deConz или зайти в приложение Phoscon и зарегистрировать ioBroker в качестве стороннего приложения.
 
 ## Ссылки
 [deConz](https://www.dresden-elektronik.de/funktechnik/products/software/pc/deconz/) [REST плагин](https://github.com/dresden-elektronik/deconz-rest-plugin) [Шлюзы (Оборудование)](https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
 
 ## Уведомление
 ### Нет поддержки бета-версий deConz
-Обязательный node.js> = 0.12.
+Обязательный node.js> = 8.x.x
 
 ## Changelog
+
+### 1.2.1
+* convert lastupdated time to locale
+* object creation refactored
+* fix adapter config update
+* add auto detect deConz
+* include ssdp discovery to repo
+
+### 1.2.0
+* fix adapter crash when deConz is not reachable
+* show connection state as adapter state
+* add auto reconnect to deconz
+* add new objects for thermostat support and others
+
+### 1.1.3
+* Changed default port to 80
+* (mplogas) fixed config save 
+* (mplogas) added config.delay to set up presence sensor cooldown
 
 ### 1.1.2
 * fix button objects

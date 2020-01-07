@@ -920,6 +920,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-rgraph/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-timeandweather/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-weather/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vr200/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vw-connect/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.weatherunderground/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.web/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.weishaupt-wem/README.md
@@ -1252,6 +1253,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-rgraph/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-timeandweather/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-weather/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vr200/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vw-connect/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.weatherunderground/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.web/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.weishaupt-wem/README.md
@@ -1584,6 +1586,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-rgraph/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-timeandweather/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-weather/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vr200/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vw-connect/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.weatherunderground/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.web/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.weishaupt-wem/README.md
@@ -1916,6 +1919,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-rgraph/README.m
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-timeandweather/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-weather/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vr200/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vw-connect/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.weatherunderground/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.web/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.weishaupt-wem/README.md

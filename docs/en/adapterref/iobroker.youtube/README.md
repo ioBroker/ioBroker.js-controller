@@ -12,9 +12,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.youtube.png?downloads=true)](https://nodei.co/npm/iobroker.youtube/)
 
-Adds channel statistics like views, subscribers and latest videos to ioBroker. With this solution, you can track your channel growth or compare your values to other YouTubers.
-
-Since all these information are publicly available, you can also use this adapter to follow your favorite YouTubers and inform you, (e.g. when a new video is available). All you need is an API-Key to access those information. See Configuration section for details.
+Statistics like views, subscribers and videos
 
 ## Configuration
 
@@ -24,8 +22,13 @@ To get an API-Key you have to go to [console.developers.google.com](https://cons
 2. Create a new API key
 3. Add "YouTube Data API v3" of the library
 4. Use that API-Key in the options panel
+5. Add multiple channels in the channels tab by using the id and a custom name
 
 ## Changelog
+
+### 0.0.3
+
+* (klein0r) Support for multiple channels
 
 ### 0.0.2
 

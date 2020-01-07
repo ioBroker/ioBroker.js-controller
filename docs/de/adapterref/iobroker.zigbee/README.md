@@ -34,11 +34,14 @@ Zigbee-Geräte die nicht in der Liste aufgeführt sind, können zwar gepairt wer
 Es gibt noch ein [Freundschaftprojekt](https://github.com/koenkk/zigbee2mqtt) mit gleichen Funktionen und gleicher Technologie, welcher mit denselben Geräten über ein MQTT Protokoll kommuniziert. Wenn irgendwelche Verbesserungen oder neu unterstütze Geräte im Projekt Zigbee2MQTT eingefügt werden, können jene auch in dieses Projekt hinzugefügt werden. Solltet Ihr unterschiede merken, schreibt bitte ein Issue, wir kümmern uns darum
 
 ## Changelog
-### 1.0.0-c
-* Binding
+
+### 1.0.0-c (2020-*-*)
 * Powered by new [zigbee-herdsman](https://github.com/Koenkk/zigbee-herdsman) library and new [converters database](https://github.com/Koenkk/zigbee-herdsman-converters)
 * Drop support NodeJS 6
 * Serialport 8.0.5 (in zigbee-herdsman)
+* More new devices
+* Some design update
+* Binding
 
 ### freeze shepherd
 
@@ -214,7 +217,7 @@ Other changes:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Kirov Ilya <kirovilya@gmail.com>
+Copyright (c) 2018-2020 Kirov Ilya <kirovilya@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

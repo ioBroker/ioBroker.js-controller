@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.deconz/README.md
 title: kein Titel
-hash: N15QZOc4l5K5BdfrXWRZL5GsCH/pU5R7eSedWtnZTyU=
+hash: RcbSbEHHWMMzUt2ZFMhwJH8ejTQpg1/E8GOCQFxxJv8=
 ---
 ![Logo](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -25,16 +25,34 @@ Sie müssen zuerst einen Link zu deConz erstellen.
 
     b) Geben Sie den Port ein, wenn Sie ihn geändert haben, andernfalls lassen Sie ihn leer.
 
-2. Nachdem die IP-Adresse und der Port eingegeben und gespeichert wurden, klicken Sie auf die Schaltfläche "Create API Key" (API-Schlüssel erstellen). Jetzt können Sie die Anmeldeinformationen für deConz eingeben oder zur Phoscon APP gehen und ioBroker als Drittanbieter-APP registrieren.
+2. Nachdem die IP-Adresse und der Port eingegeben und gespeichert wurden, klicken Sie auf die Schaltfläche "Create API Key" (API-Schlüssel erstellen). Jetzt können Sie die Anmeldedaten für deConz eingeben oder zur Phoscon APP gehen und ioBroker als Drittanbieter-APP registrieren.
 
 ## Links
 [deConz](https://www.dresden-elektronik.de/funktechnik/products/software/pc/deconz/) [REST-Plugin](https://github.com/dresden-elektronik/deconz-rest-plugin) [Gateways (Hardware)](https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
 
 ## Beachten
 ### Keine Unterstützung für Beta-Versionen von deConz
-Erforderlich node.js> = 0.12.
+Erforderlich node.js> = 8.x.x
 
 ## Changelog
+
+### 1.2.1
+* convert lastupdated time to locale
+* object creation refactored
+* fix adapter config update
+* add auto detect deConz
+* include ssdp discovery to repo
+
+### 1.2.0
+* fix adapter crash when deConz is not reachable
+* show connection state as adapter state
+* add auto reconnect to deconz
+* add new objects for thermostat support and others
+
+### 1.1.3
+* Changed default port to 80
+* (mplogas) fixed config save 
+* (mplogas) added config.delay to set up presence sensor cooldown
 
 ### 1.1.2
 * fix button objects

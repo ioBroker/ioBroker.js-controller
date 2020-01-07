@@ -283,6 +283,11 @@ In addition to normal thermostat you can define:
 
 ## Changelog
 
+### 0.2.15 (202-01-07)
+* (Sebastian Bormann) Added svg as possible image to upload
+* (Sebastian Bormann) Made URL and HTML universal for nearly all devices, to display custom html code or content of an url inside the dialog (this could be used e.g. to display FLOT-graphs related to the device inside the dialog)
+* (Sebastian Bormann) Fixed disabled custom values with admin 3.7.6+ and js-controller <2.2 
+
 ### 0.2.14 (2019-11-12)
 * (Sebastian Bormann) Fixed icon-switching for thermostats
 

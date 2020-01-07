@@ -3,38 +3,56 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.deconz/README.md
 title: 无题
-hash: N15QZOc4l5K5BdfrXWRZL5GsCH/pU5R7eSedWtnZTyU=
+hash: RcbSbEHHWMMzUt2ZFMhwJH8ejTQpg1/E8GOCQFxxJv8=
 ---
 ![商标](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
 ![安装数量](http://iobroker.live/badges/deconz-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.deconz.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.deconz.svg)
-![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.deconz.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.deconz.svg)
+![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.deconz.svg)
 ![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)
 
 ioBroker deConz dresden-elektronik适配器
 
 ==============
 
-English --------------------连接到dresden-elektronik开发的deConz软件。该软件旨在成为一个通用的ZigBee网关解决方案，使用来自德累斯顿电子硬件的ConBee USB棒和RaspBee的硬件，用于Raspberry Pi。
+英语--------------------连接到dresden-elektronik开发的deConz软件。该软件旨在成为通用的ZigBee网关解决方案，使用来自dresden-elektronik的硬件，ConBee USB记忆棒和RaspBee作为Raspberry Pi的模块。
 
 您必须先链接到deConz。
 
 1. a）输入deConz的IP地址
 
-    b）如果已更改端口，请输入端口，否则将其留空。
+    b）如果更改了端口，请输入，否则将其留空。
 
-2.输入IP地址和端口并保存后点击“创建API密钥”按钮。现在您可以输入deConz的凭据或转到Phoscon APP并将ioBroker注册为第三方APP。
+2.输入并保存IP地址和端口后，单击“创建API密钥”按钮。现在，您可以输入deConz的凭据或转到Phoscon APP并将ioBroker注册为第三方APP。
 
 ##链接
-[deConz](https://www.dresden-elektronik.de/funktechnik/products/software/pc/deconz/)[REST插件](https://github.com/dresden-elektronik/deconz-rest-plugin)[网关（硬件）](https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
+[德康](https://www.dresden-elektronik.de/funktechnik/products/software/pc/deconz/)[REST插件](https://github.com/dresden-elektronik/deconz-rest-plugin)[网关（硬件）](https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
 
 ＃＃ 注意
 ###不支持deConz的Beta版本
-必需的node.js> = 0.12。
+必需的node.js> = 8.x.x
 
 ## Changelog
+
+### 1.2.1
+* convert lastupdated time to locale
+* object creation refactored
+* fix adapter config update
+* add auto detect deConz
+* include ssdp discovery to repo
+
+### 1.2.0
+* fix adapter crash when deConz is not reachable
+* show connection state as adapter state
+* add auto reconnect to deconz
+* add new objects for thermostat support and others
+
+### 1.1.3
+* Changed default port to 80
+* (mplogas) fixed config save 
+* (mplogas) added config.delay to set up presence sensor cooldown
 
 ### 1.1.2
 * fix button objects

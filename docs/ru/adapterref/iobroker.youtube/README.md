@@ -3,23 +3,21 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.youtube/README.md
 title: ioBroker.youtube
-hash: odZi6WpqavriGlgD83pHDdtlCzP/e2UxBCr1NMmBGpo=
+hash: QL9xwJEIHA84RRA4rZtDhZx8Y4ryEgqLMXfkycUX77A=
 ---
 ![логотип](../../../en/adapterref/iobroker.youtube/admin/youtube.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.youtube.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.youtube.svg)
 ![стабильный](http://iobroker.live/badges/youtube-stable.svg)
-![установлен](http://iobroker.live/badges/youtube-installed.svg)
+![установлены](http://iobroker.live/badges/youtube-installed.svg)
 ![Статус зависимости](https://img.shields.io/david/klein0r/iobroker.youtube.svg)
 ![Известные уязвимости](https://snyk.io/test/github/klein0r/ioBroker.youtube/badge.svg)
 ![Статус сборки](http://img.shields.io/travis/klein0r/ioBroker.youtube.svg)
 ![NPM](https://nodei.co/npm/iobroker.youtube.png?downloads=true)
 
 # IoBroker.youtube
-Добавляет статистику канала, такую как просмотры, подписчики и последние видео, в ioBroker. С помощью этого решения вы можете отслеживать рост своего канала или сравнивать свои значения с другими пользователями YouTube.
-
-Поскольку вся эта информация общедоступна, вы также можете использовать этот адаптер, чтобы следить за вашими любимыми YouTube-сообщениями и информировать вас (например, когда будет доступно новое видео). Все, что вам нужно, это API-ключ для доступа к этой информации. Подробнее смотрите в разделе «Конфигурация».
+Статистика как просмотры, подписчики и видео
 
 ## Конфигурация
 Чтобы получить API-ключ, вы должны перейти к [console.developers.google.com](https://console.developers.google.com/apis/dashboard).
@@ -28,8 +26,13 @@ hash: odZi6WpqavriGlgD83pHDdtlCzP/e2UxBCr1NMmBGpo=
 2. Создайте новый ключ API
 3. Добавить «API данных YouTube v3» из библиотеки
 4. Используйте этот API-ключ на панели параметров
+5. Добавьте несколько каналов на вкладке каналов, используя идентификатор и пользовательское имя
 
 ## Changelog
+
+### 0.0.3
+
+* (klein0r) Support for multiple channels
 
 ### 0.0.2
 
