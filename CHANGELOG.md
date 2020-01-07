@@ -4,6 +4,9 @@
 * (Apollon77) Update deps
 * (bluefox) disable log-symlink on windows because only admins are allowed to create symlinks here
 * (foxriver76) fix async version of getEncryptedConfig
+* (bluefox) Add for delObject the recursive flag to recursively delete objects
+* (bluefox) obj type 'adapter' not set if installing adapter via octocat (#539)
+* (bluefox) fixes Change settings of onlyWWW adapter cause exception (#549) 
 * Note: In order to remove custom settings you need Admin 3.7.6+
 
 ## 2.2.6 (2020-01-01) Release Dina
