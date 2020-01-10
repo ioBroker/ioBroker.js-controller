@@ -2854,6 +2854,7 @@ function startInstance(id, wakeUp) {
             // disable instance
             objects.getObject(id, (err, obj) => {
                 if (obj && obj.common && obj.common.enabled) {
+                    obj.common.enabled = false;
                     objects.setObject(obj._id, obj, _err =>
                         logger.warn(`${hostLogPrefix} startInstance ${name}.${args[0]}: instance disabled because of node.js version mismatch`));
                 }
