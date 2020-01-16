@@ -325,6 +325,8 @@ For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?p
 ### Object and State Aliases
 **Feature status:** Technology preview (since 2.0.0)
 
+**Feature Flag for detection: ALIAS**
+
 The Alias Feature allows to define one object/state to be the "alias" of an other object/state.
 
 All Aliases will be created in the Object namespace `alias.0`
@@ -499,6 +501,10 @@ ioBroker allows to use a Redis Sentinel system. For this you use ```iobroker cus
 
 With such a setup, ioBroker will connect to one of these sentinel processes to get the current Master Redis and then connect to it. When the connection to the Master is disconnected, all data updates are cached and transmitted as soon as a connection to the new master has been established.
 
+### Certificate Handling
+... CLI
+... Files vs PEM content
+
 ### Adapter Development
 **Feature status:** Stable
 
@@ -521,6 +527,7 @@ The following features can be checked using this method:
 
 * **ALIAS**: checks if the Alias feature is existing (since js.controller 2.0.0)
 * **ADAPTER_GETPORT_BIND**: the adapter.getPort method allows an optional second parameter to bind the port only on a special network interface. 
+* **ADAPTER_DEL_OBJECT_RECURSIVE**: adapter.delObjects supports options.recursive flag to delete whole object structures
 
 To check if certain adapter methods itself are existing please simply check for their existence like
 
