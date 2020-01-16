@@ -3245,13 +3245,15 @@ function startInstance(id, wakeUp) {
                 logger.error(hostLogPrefix + ' ' + instance._id + ' schedule attribute missing');
                 break;
             }
+
+            // cancel current schedule
             if (procs[id].schedule) {
                 procs[id].schedule.cancel();
                 logger.info(hostLogPrefix + ' instance canceled schedule ' + instance._id);
             }
 
             procs[id].schedule = schedule.scheduleJob(instance.common.schedule, () => {
-                // queue up, but only if not alredy queued
+                // queue up, but only if not already queued
                 scheduledInstances[id] = {
                     fileNameFull,
                     wakeUp
