@@ -223,7 +223,7 @@ function testAdapter(options) {
             expect(context.adapter.namespace).to.be.equal(context.adapterShortName + '.0');
             expect(context.adapter.name).to.be.equal(context.adapterShortName);
             expect(context.adapter.instance).to.be.equal(0);
-            expect(context.adapter.states).to.be.ok;
+            expect(context.adapter.states).to.be.undefined;
             expect(context.adapter.objects).to.be.ok;
             expect(context.adapter.log).to.be.ok;
             expect(context.adapter.log.info).to.be.a('function');
