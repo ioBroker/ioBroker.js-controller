@@ -8,6 +8,9 @@
 * (Apollon77) Add feature flag ADAPTER_DEL_OBJECT_RECURSIVE
 * (Apollon77) adapter.restart used "terminate" directly which do not call unload and broke compact mode, changed to use stop()
 * (foxriver76) Fix bug in nodejs version check and really disable adapter when requiring unsupported nodejs version
+* (foxriver76) fixing issues in backup validation + add some missing commands to cli help
+* (Apollon77) Do not have ioredis autoResubscribe because we do it by our own
+* (Apollon77) change stopTimeout to prevent killing wrong process for long running "stopTimeouts" that were then fast in the end
 
 ## 2.2.7 (2020-01-03) Release Dina
 * (Apollon77) Update deps
