@@ -1,10 +1,18 @@
 # Changelog
 
+## 2.2.8 (2020-01-xx) Release Dina
+* (bluefox) Add for delObject the recursive flag to recursively delete objects; use feature flag ADAPTER_DEL_OBJECT_RECURSIVE in your adapter code to detect if the js-controller supports it or not!
+* (bluefox) add check for sudo for package manager
+* (Apollon77) Fix error on restore/validate when no name is provided
+* (Apollon77) add/change checks for some calls (fixes #611 too ;-))
+* (Apollon77) Add feature flag ADAPTER_DEL_OBJECT_RECURSIVE
+* (Apollon77) adapter.restart used "terminate" directly which do not call unload and broke compact mode, changed to use stop()
+* (foxriver76) Fix bug in nodejs version check and really disable adapter when requiring unsupported nodejs version
+
 ## 2.2.7 (2020-01-03) Release Dina
 * (Apollon77) Update deps
 * (bluefox) disable log-symlink on windows because only admins are allowed to create symlinks here
 * (foxriver76) fix async version of getEncryptedConfig
-* (bluefox) Add for delObject the recursive flag to recursively delete objects
 * (bluefox) obj type 'adapter' not set if installing adapter via octocat (#539)
 * (bluefox) fixes Change settings of onlyWWW adapter cause exception (#549) 
 * Note: In order to remove custom settings you need Admin 3.7.6+
