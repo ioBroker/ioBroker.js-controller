@@ -581,6 +581,8 @@ id `system.adapter.<adapter.name>`
 * `common.welcomeScreen.order` - todo
 * `common.welcomeScreenPro`   - Same as `common.welcomeScreen` but used only by access from ioBroker.cloud. 
 * `common.wwwDontUpload`      - Do not upload into DB the www directory. Used only for admin. You can just name you directory something else and OK.
+* `native`                    - predefined attributes which are accessible in index_m.html and at runtime via `adapter.config.<attribute>`, e.g. `{"port": 1234, "password": "secret"}`
+* `protectedNative`           - array of config attributes which will only be accessible by the own adapter, e.g. `["password"]`
 
 #### instance
 id *system.adapter.&lt;adapter.name&gt;.&lt;instance-number&gt;*
