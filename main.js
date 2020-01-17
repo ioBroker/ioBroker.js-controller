@@ -2905,6 +2905,17 @@ function startInstance(id, wakeUp) {
                     states.setState(id + '.alive',     {val: false, ack: true, from: hostObjectPrefix});
                     states.setState(id + '.connected', {val: false, ack: true, from: hostObjectPrefix});
 
+                    // if we have waiting kill timeouts from stopInstance clear them
+                    // and call callback because process ended now
+                    if (procs[id] && procs[id].stopTimeout) {
+                        clearTimeout(procs[id].stopTimeout);
+                        procs[id].stopTimeout = null;
+                        if (procs[id].stopCallback && typeof procs[id].stopCallback === 'function') {
+                            procs[id].stopCallback();
+                            procs[id].stopCallback = null;
+                        }
+                    }
+
                     cleanAutoSubscribes(id, () => {
                         if (procs[id] && procs[id].config && procs[id].config.common.logTransporter) {
                             outputCount++;
@@ -3383,12 +3394,11 @@ function stopInstance(id, force, callback) {
                 } else
                 //noinspection JSUnresolvedVariable
                 if (instance.common.messagebox && instance.common.supportStopInstance) {
-                    let timeout;
                     // Send to adapter signal "stopInstance" because on some systems SIGTERM does not work
                     sendTo(instance._id, 'stopInstance', null, result => {
-                        if (timeout) {
-                            clearTimeout(timeout);
-                            timeout = null;
+                        if (procs[id] && procs[id].stopTimeout) {
+                            clearTimeout(procs[id].stopTimeout);
+                            procs[id].stopTimeout = null;
                         }
                         logger.info(hostLogPrefix + ' stopInstance self ' + instance._id + ' killing pid ' + procs[id].process.pid + (result ? ': ' + result : ''));
                         if (procs[id] && procs[id].process && !procs[id].startedAsCompactGroup) {
@@ -3401,16 +3411,19 @@ function stopInstance(id, force, callback) {
                             delete procs[id].process;
                         }
 
-                        if (typeof callback === 'function') {
-                            callback();
-                            callback = null;
+                        if (procs[id] && typeof procs[id].stopCallback === 'function') {
+                            procs[id].stopCallback();
+                            procs[id].stopCallback = null;
                         }
                     });
 
                     const timeoutDuration = (instance.common.supportStopInstance === true) ? 1000 : (instance.common.supportStopInstance || 1000);
                     // If no response from adapter, kill it in 1 second
-                    timeout = setTimeout(() => {
-                        timeout = null;
+                    procs[id].stopCallback = callback;
+                    procs[id].stopTimeout = setTimeout(() => {
+                        if (procs[id]) {
+                            procs[id].stopTimeout = null;
+                        }
                         if (procs[id] && procs[id].process && !procs[id].startedAsCompactGroup) {
                             logger.info(hostLogPrefix + ' stopInstance timeout ' + timeoutDuration + ' ' + instance._id + ' killing pid  ' + procs[id].process.pid);
                             procs[id].stopping = true;
@@ -3423,9 +3436,9 @@ function stopInstance(id, force, callback) {
                         } else if (!compactGroupController && procs[id] && procs[id].process) { // was compact mode in an other group
                             delete procs[id].process; // we consider that the other group controler managed to stop it
                         }
-                        if (typeof callback === 'function') {
-                            callback();
-                            callback = null;
+                        if (procs[id] && typeof procs[id].stopCallback === 'function') {
+                            procs[id].stopCallback();
+                            procs[id].stopCallback = null;
                         }
                     }, timeoutDuration);
                 } else if (!procs[id].startedAsCompactGroup) {
@@ -3440,8 +3453,11 @@ function stopInstance(id, force, callback) {
                         }
                         const timeoutDuration = instance.common.stopTimeout || 1000;
                         // If no response from adapter, kill it in 1 second
-                        let timeout = setTimeout(() => {
-                            timeout = null;
+                        procs[id].stopCallback = callback;
+                        procs[id].stopTimeout = setTimeout(() => {
+                            if (procs[id]) {
+                                procs[id].stopTimeout = null;
+                            }
                             if (procs[id] && procs[id].process && !procs[id].startedAsCompactGroup) {
                                 logger.info(hostLogPrefix + ' stopInstance ' + instance._id + ' killing pid ' + procs[id].process.pid);
                                 procs[id].stopping = true;
@@ -3451,6 +3467,10 @@ function stopInstance(id, force, callback) {
                                     logger.error(`${hostLogPrefix} Cannot stop ${id}: ${JSON.stringify(e)}`);
                                 }
                                 delete procs[id].process;
+                            }
+                            if (procs[id] && typeof procs[id].stopCallback === 'function') {
+                                procs[id].stopCallback();
+                                procs[id].stopCallback = null;
                             }
                         }, timeoutDuration);
                     }); // if started let it end itself as first try
