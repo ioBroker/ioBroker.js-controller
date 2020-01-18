@@ -11,6 +11,7 @@
 * (foxriver76) fixing issues in backup validation + add some missing commands to cli help
 * (Apollon77) Do not have ioredis autoResubscribe because we do it by our own
 * (Apollon77) change stopTimeout to prevent killing wrong process for long running "stopTimeouts" that were then fast in the end
+* (bluefox) add CLI command "file rm" to delete files from iobroker storage via command line
 
 ## 2.2.7 (2020-01-03) Release Dina
 * (Apollon77) Update deps
