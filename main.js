@@ -2551,7 +2551,7 @@ function storePids() {
             }
             catch (err) {
                 logger.error(hostLogPrefix + ' could not store process id list in ' + __dirname + '/pids.txt! Please check permissions and user ownership of this file. Was ioBroker started as a different user? Please also check left over processes when stopping ioBroker!\n' + err);
-                logger.error(hostLogPrefix + ' Please consider running the installation fixer when on Linux.')
+                logger.error(hostLogPrefix + ' Please consider running the installation fixer when on Linux.');
             }
         }, 1000);
     }
@@ -2591,7 +2591,7 @@ function installAdapters() {
                 installArgs.push('install');
                 let installedFrom = task.installedFrom;
                 if (installedFrom.startsWith(tools.appName + '.')) {
-                    installedFrom = installedFrom.substr(tools.appName.length + 1)
+                    installedFrom = installedFrom.substr(tools.appName.length + 1);
                 }
                 installArgs.push(installedFrom);
             }
@@ -3029,9 +3029,9 @@ function startInstance(id, wakeUp) {
                     ) {
                         states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // set to 0 to stop any pot. already running instances, especially broken compactModes
 
+                        const _instance = (instance && instance._id && instance.common) ? instance._id.split('.').pop() || 0 : 0;
+                        const logLevel = (instance && instance._id && instance.common) ? instance.common.loglevel || 'info' : 'info';
                         if (fileNameFull) {
-                            const _instance = (instance && instance._id && instance.common) ? instance._id.split('.').pop() || 0 : 0;
-                            const logLevel = (instance && instance._id && instance.common) ? instance.common.loglevel || 'info' : 'info';
                             try {
                                 decache = decache || require('decache');
                                 decache(fileNameFull);
@@ -3144,7 +3144,7 @@ function startInstance(id, wakeUp) {
                                     cleanErrors(compactProcs[currentCompactGroup], null, true);
 
                                     if (isStopping) {
-                                        logger.silly(hostLogPrefix + ' Check after group exit ' + currentCompactGroup)
+                                        logger.silly(hostLogPrefix + ' Check after group exit ' + currentCompactGroup);
                                         for (const i in procs) {
                                             if (!procs.hasOwnProperty(i)) continue;
                                             if (procs[i].process) {
@@ -3640,7 +3640,7 @@ function stopInstances(forceStop, callback) {
 
 function stop(force, callback) {
     if (force === undefined) {
-        force = false
+        force = false;
     }
     if (mhService) {
         mhService.close();

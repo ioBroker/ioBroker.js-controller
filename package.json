@@ -47,7 +47,7 @@
     "@types/event-stream": "^3.3.34",
     "@types/mocha": "^5.2.7",
     "@types/node": "^13.1.4",
-    "@types/yargs": "^13.0.4",
+    "@types/yargs": "^15.0.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "eslint": "^6.8.0",
@@ -55,7 +55,7 @@
     "gulp-jsdoc3": "^2.0.0",
     "gulp-replace": "^1.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^6.2.2"
+    "mocha": "^7.0.0"
   },
   "homepage": "http://www.iobroker.com",
   "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
