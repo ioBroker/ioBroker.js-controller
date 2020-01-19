@@ -3491,6 +3491,9 @@ function stopInstance(id, force, callback) {
             } else {
                 procs[id].schedule.cancel();
                 delete procs[id].schedule;
+                if (scheduledInstances[id]) {
+                    delete scheduledInstances[id];
+                }
                 logger.info(hostLogPrefix + ' stopInstance canceled schedule ' + instance._id);
             }
             if (typeof callback === 'function') {

@@ -12,6 +12,11 @@
 * (Apollon77) Do not have ioredis autoResubscribe because we do it by our own
 * (Apollon77) change stopTimeout to prevent killing wrong process for long running "stopTimeouts" that were then fast in the end
 * (bluefox) add CLI command "file rm" to delete files from iobroker storage via command line
+* (AlCalzone) fix some errors
+* (AlCalzone) make sure repository hash is always checked correctly
+* (Apollon77) make sure scheduled starts are also removed when a scheduled instance is stopped
+* (Apollon77) make sure Multihost discovery server does not unexpectedly restart  when trying to stop ioBroker Master
+* (Apollon77) add feature flag ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE for adapter class
 
 ## 2.2.7 (2020-01-03) Release Dina
 * (Apollon77) Update deps

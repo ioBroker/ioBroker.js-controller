@@ -525,9 +525,10 @@ if (adapter.supportsFeature && adapter.supportsFeature('NAME')) {
 
 The following features can be checked using this method:
 
-* **ALIAS**: checks if the Alias feature is existing (since js.controller 2.0.0)
-* **ADAPTER_GETPORT_BIND**: the adapter.getPort method allows an optional second parameter to bind the port only on a special network interface. 
-* **ADAPTER_DEL_OBJECT_RECURSIVE**: adapter.delObjects supports options.recursive flag to delete whole object structures
+* **ALIAS**: checks if the Alias feature is existing (since js.controller 2.0)
+* **ADAPTER_GETPORT_BIND**: the adapter.getPort method allows an optional second parameter to bind the port only on a special network interface  (since js.controller 2.0) 
+* **ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE**: adapter.setObject(*) methods now sets the default value (def) after the object is created  (since js.controller 2.0)
+* **ADAPTER_DEL_OBJECT_RECURSIVE**: adapter.delObjects supports options.recursive flag to delete whole object structures (since js.controller 2.2)
 
 To check if certain adapter methods itself are existing please simply check for their existence like
 
