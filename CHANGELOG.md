@@ -17,6 +17,9 @@
 * (Apollon77) make sure scheduled starts are also removed when a scheduled instance is stopped
 * (Apollon77) make sure Multihost discovery server does not unexpectedly restart  when trying to stop ioBroker Master
 * (Apollon77) add feature flag ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE for adapter class
+* (Apollon77) allow sessions to run longer then 24days (fixes #618, addresses ioBroker/ioBroker.admin#467)
+* (Apollon77) Check a wrong check for os on installation
+* (Apollon77) Also check nodejs minimum version on adapter install
 
 ## 2.2.7 (2020-01-03) Release Dina
 * (Apollon77) Update deps
