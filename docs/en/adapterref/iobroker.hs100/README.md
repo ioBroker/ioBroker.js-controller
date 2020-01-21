@@ -15,9 +15,14 @@ TP-Link adapter for ioBroker
 
 Switch TP-Link Plug and Bulb
  
-<b>NodeJs >> 6.x.x </b>
+<b>NodeJs >> 8.x.x </b>
 
 ## Changelog
+
+### 1.1.00 (2020-01-19)
+* (arteck) support ledstate
+* (arteck) voltage corr
+* 
 ### 1.0.10 (2019-02-09)
 * (arteck) support for compact-mode added
 

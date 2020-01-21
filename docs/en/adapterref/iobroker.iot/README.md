@@ -246,6 +246,9 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+### 1.2.1 (2020-01-18)
+* (bluefox) Fixed problem if the port of admin is not 8081
+
 ### 1.2.0 (2020-01-04)
 * (TA2k) Google Home handling and visualization improved.
 

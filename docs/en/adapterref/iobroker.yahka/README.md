@@ -2,17 +2,21 @@
 # iobroker.yahka
 =================
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.yahka.svg)](https://www.npmjs.com/package/iobroker.yahka)
+![Number of Installations](http://iobroker.live/badges/yahka-installed.svg) ![Number of Installations](http://iobroker.live/badges/yahka-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.yahka.svg)](https://www.npmjs.com/package/iobroker.yahka)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.yahka.svg)](https://www.npmjs.com/package/iobroker.yahka)
 [![Tests](https://travis-ci.org/ioBroker/ioBroker.yahka.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.yahka)
 
-***This adapter needs at least nodejs 4.x***
+***This adapter needs at least nodejs 6.x***
 
 ## Installation and Usage
 
 For details on how to install and configure this adapter, please see the [Wiki](https://github.com/jensweigele/ioBroker.yahka/wiki)
 
 ## Changelog
+
+### 0.10.0
+  (jw) updated dependencies<br>
+  (apollon77) removed support for NodeJS 4 - NodeJS 6 is now the minimum required NodeJS version (merged #109)<br>
 
 ### 0.9.2
   (jw) fixed a bug where the adapter didn't start anymore<br>

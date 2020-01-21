@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: yyNrBP+7CnWDJbmZu1KEa34c10BvcpNCprYCLbZgWD4=
+hash: FX1yfhr8Gw3Bks2gDT3cEDi9xCGBQkHmutsxSM2wyFc=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -20,27 +20,31 @@ hash: yyNrBP+7CnWDJbmZu1KEa34c10BvcpNCprYCLbZgWD4=
 ## Material Design Widgets für ioBroker VIS
 [![paypal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-Material Design Widgets verwendet die folgenden Bibliotheken:
+ioBroker Material Design Widgets basieren auf [Google-Richtlinien für das Materialdesign](https://material.io/design/). Der Adapter verwendet die folgenden Bibliotheken:
 
 * [Google Material Components für das Web] (https://github.com/material-components/material-components-web)
 * [Vuetify] (https://github.com/vuetifyjs/vuetify)
 * [chartjs] (https://www.chartjs.org/)
 * [round-slider von thomasloven] (https://github.com/thomasloven/round-slider)
+* [Material Design Icons] (https://materialdesignicons.com/)
 
 ## Online Beispielprojekt
 bereitgestellt von [iobroker.click](https://iobroker.click/index.html), dank bluefox und iobroker.
 
-* <a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a>
-* <a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS Editor</a>
+* <a href="https://iobroker.click/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a> ( <a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">alternativ</a> )
+* <a href="https://iobroker.click/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS Editor</a> ( <a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">alternativ</a> )
 
 ### Unterstützter Browser
 https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
 
-### Unterstützter Browser für die Funktion "Vibrieren auf Mobilgeräten"
+### Unterstützter Browser für Vibrationsfunktionen auf Mobilgeräten
 https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 
 ### IoBroker VIS App
-funktioniert nicht, muss per App implementiert werden, siehe https://github.com/ioBroker/ioBroker.vis.cordova
+Funktioniert momentan nicht, muss per App implementiert werden, siehe https://github.com/ioBroker/ioBroker.vis.cordova
+
+## Material Design Icons und Bilder
+<table><thead><tr><th> Bildschirmfoto </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/material-icons.png"></td><td> Einige der Widgets unterstützen die <a href="https://materialdesignicons.com/" target="_blank">Material Design Icons-</a> Bibliothek. Sie können ein Symbol aus der obigen Liste abrufen oder die Bildauswahl öffnen, indem Sie auf die Schaltfläche rechts neben dem Eingabefeld klicken. <br><br> <b>Bildfarben gelten nur für die Materialdesign-Symbole, nicht für ein Bild!</b> </td></tr></tbody></table>
 
 ## Button Umschalten
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
@@ -73,7 +77,7 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 ## Top App Bar mit Navigationsleiste
 Die obere App-Leiste mit Navigationsleiste kann mit der <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">Ansicht in Widget 8</a> kombiniert werden.
 
-<b>Schauen Sie sich die [Material Design Widgets Beispielprojekt](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b> an, um zu verstehen, wie es funktioniert.
+<b>Schauen Sie sich die [Beispielprojekt für Material Design Widgets](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b> an, um zu verstehen, wie es funktioniert.
 
 ##### Layout modal:
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
@@ -81,7 +85,7 @@ Die obere App-Leiste mit Navigationsleiste kann mit der <a href="https://www.iob
 ##### Layout permanent:
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
 
-<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td> Objekt Identifikation </td><td> muss auf einen Datenpunkt vom Typ number gesetzt werden. Beispielsweise kann dieser Datenpunkt von der <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">Ansicht in Widget 8 verwendet werden</a> </td></tr><tr><td> Index der Navigationselemente anzeigen </td><td> Zeigt den Navigationsindex vor dem Artikeletikett an. Diese Nummer kann in der <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">Ansicht in Widget 8 verwendet werden</a> , um die Ansicht zu definieren, die angezeigt werden soll, wenn das Element ausgewählt ist </td></tr><tr><td> Anzahl der Navigationselemente </td><td> Definieren Sie die Anzahl der Navigationselemente </td></tr></tbody></table>
+<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td> Objekt Identifikation </td><td> muss auf einen Datenpunkt vom Typ number gesetzt werden. Dieser Datenpunkt kann beispielsweise von der <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">Ansicht in Widget 8 verwendet werden</a> </td></tr><tr><td> Index der Navigationselemente anzeigen </td><td> Zeigt den Navigationsindex vor dem Artikeletikett an. Diese Nummer kann in der <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">Ansicht in Widget 8 verwendet werden</a> , um die Ansicht zu definieren, die angezeigt werden soll, wenn das Element ausgewählt ist </td></tr><tr><td> Anzahl der Navigationselemente </td><td> Definieren Sie die Anzahl der Navigationselemente </td></tr></tbody></table>
 
 ### Untermenü
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
@@ -137,16 +141,25 @@ Beispiel <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input
 
 Working Widget Beispiel kann [Hier](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113) gefunden werden
 
-## Spaltenansichten
-In Column Views sind mehrere `view in widget` integriert, die je nach Breite des Widgets automatisch sortiert werden. Mit diesem Widget ist es möglich, ein responsives Layout zu erstellen (ein Layout für Desktop, Tablet und Mobil).
+## Spaltenansichten - veraltet !!!
+In Column Views sind mehrere `view in widget` integriert, die abhängig von der Breite des Widgets automatisch sortiert werden. Mit diesem Widget ist es möglich, ein responsives Layout zu erstellen (ein Layout für Desktop, Tablet und Mobil).
 
-<b>Schauen Sie sich die [Material Design Widgets Beispielprojekt](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b> an, um zu verstehen, wie es funktioniert.
+<b>Schauen Sie sich die [Beispielprojekt für Material Design Widgets](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b> an, um zu verstehen, wie es funktioniert.
 
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/column_views.gif)
 
 <table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/column_views_common.png"></td><td> Anzahl der Spalten </td><td> Anzahl der Spalten festlegen </td></tr><tr><td> Mindestbreite </td><td> minimale Breite jeder Spalte. Verwenden Sie zum Beispiel die Breite der Auflösung eines Mobilgeräts </td></tr><tr><td rowspan=2><img src="doc/en/media/column_views_col_settings.png"></td><td> Ansichten in Spalte [x] </td><td> Definieren Sie die Ansichten, die in dieser Spalte angezeigt werden sollen. Mehrere Ansichten müssen durch &#39;|&#39; getrennt werden </td></tr><tr><td> Ansichtshöhe in Spalte [x] </td><td> Definieren Sie die Höhe jeder Ansicht in der Spalte. Mehrere Höhen müssen durch &#39;|&#39; getrennt werden </td></tr></tbody></table>
 
 ## Changelog
+
+### 0.2.xx
+* (Scrounger): use of Material Design Icons as images added
+* (Scrounger): Perfomrance optimized
+* (Scrounger): Input Widget added
+* (Scrounger): Masonry Views Widget: settings options for mobile phone and tablet added
+* (Scrounger): Masonry Views Widget: another chrome bug fix, option for distance between views added
+* (Scrounger): Round Slider: vibrate on mobil devices added
+* (Scrounger): bug fixes
 
 ### 0.2.32
 * (Scrounger): Editor translation bug fix

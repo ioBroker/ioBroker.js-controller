@@ -18,6 +18,9 @@ Control and configure Hyperion Lights.
 
 ## Changelog
 
+### 0.0.16 (2020-12-01)
+Fixed some wrong common type assignments. 
+
 ### 0.0.15 (2018-27-03)
 Changed Logging behaviour for clear and clear all, since node hyperion client is throwing err for clear all on some systems,
 even if everything is working as expected. 
@@ -68,7 +71,7 @@ Please don't use it. It's not ready.
 
 The MIT License (MIT)
 
-Copyright (c) 2018 ruhigundrelaxed
+Copyright (c) 2020 ruhigundrelaxed
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

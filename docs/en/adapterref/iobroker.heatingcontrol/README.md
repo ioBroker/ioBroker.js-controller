@@ -33,6 +33,14 @@ Features:
 * predefined heating period
 * A visualization example will be provided later
 
+[FAQ](doc/FAQ.md)
+
+
+## Installation
+
+
+
+
 
 ## Settings
 ### main
@@ -124,10 +132,12 @@ Just configure events from ical in admin. Supported are
 
 
 ## Changelog
+### 0.3.15 (2020-01-18)
+* (René) bug fix: avoid exception when go to override if MinTemperature-check is active
 
-
-### 0.3.14 (2019-12-29)
+### 0.3.14 (2020-01-12)
 * (René) format conversion for temperatures in string to number
+* (René) ack for MinTemperature
 
 ### 0.3.13 (2019-12-28)
 * (René) bugfix create cron jobs for profile type 3 (daily)
@@ -251,7 +261,7 @@ Attention: some changes in datapoints!!
 
 ## License
 
-Copyright (C) <2019>  <info@rg-engineering.eu>
+Copyright (C) <2019-2020>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

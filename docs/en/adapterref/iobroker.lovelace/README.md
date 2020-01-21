@@ -448,6 +448,12 @@ After that checkout modified version in `./build` folder. Then.
 8. Start `gulp rename` task.
 
 ## Changelog
+### 1.0.8 (2020-01-13)
+* (Garfonso) process max value of saturation and hue
+* (Garfonso) disable extensive debug logging
+* (Garfonso) many changes done concerning detection of devices and processing of states
+* (bluefox) Update hass lovelace
+
 ### 1.0.7 (2019-12-17)
 * (bluefox) Invalid objects will be filtered out.
 

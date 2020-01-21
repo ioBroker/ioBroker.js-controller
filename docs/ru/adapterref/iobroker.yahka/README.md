@@ -3,21 +3,28 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.yahka/README.md
 title: iobroker.yahka
-hash: 5sdF/MnXfLtjGXYd+MeQvB7g89jGMFLNH6eOm+WhVBI=
+hash: dHZZLpKFEsSVVyW2ypXQybWO0izVAjfMZtmS9Qd6GNo=
 ---
 ![логотип](../../../en/adapterref/iobroker.yahka/admin/yahka.png)
 
+![Количество установок](http://iobroker.live/badges/yahka-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.yahka.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.yahka.svg)
 ![тесты](https://travis-ci.org/ioBroker/ioBroker.yahka.svg?branch=master)
 
-# Iobroker.yahka =================
-*** Для этого адаптера требуется как минимум nodejs 4.x ***
+# Iobroker.yahka
+=================
+
+*** Для этого адаптера требуется как минимум nodejs 6.x ***
 
 ## Установка и использование
 Подробнее о том, как установить и настроить этот адаптер, см. [Wiki](https://github.com/jensweigele/ioBroker.yahka/wiki)
 
 ## Changelog
+
+### 0.10.0
+  (jw) updated dependencies<br>
+  (apollon77) removed support for NodeJS 4 - NodeJS 6 is now the minimum required NodeJS version (merged #109)<br>
 
 ### 0.9.2
   (jw) fixed a bug where the adapter didn't start anymore<br>

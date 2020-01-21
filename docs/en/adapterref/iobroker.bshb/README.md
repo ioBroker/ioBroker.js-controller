@@ -26,6 +26,11 @@ Work in progress. Feedback appreciated.
 
 ## Changelog
 
+### 0.1.3
+* (holomekc) restructure of handling device detection and updates iobroker <-> bshc via BshbHandler
+* (holomekc) added handler for devices, scenarios and messages
+* (holomekc) messages and scenarios are updated when adapter is running
+
 ### 0.1.2
 * (holomekc) Adapter core library updated
 

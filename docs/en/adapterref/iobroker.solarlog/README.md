@@ -28,9 +28,13 @@ SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain v
 
 ## Changelog
 
+### 1.2.2
+
+-   It is now possible to set the time when historic data is requested.
+
 ### 1.2.1
 
-- 'Forecast' - bug fixed (forecast request now only sumbitted if forecast is activated), dependencies updated.
+-   'Forecast' - bug fixed (forecast request now only sumbitted if forecast is activated), dependencies updated.
 
 ### 1.2.0
 

@@ -3,26 +3,34 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hs100/README.md
 title: ioBroker.hs100
-hash: mWXBYHnguGTYMZ/58VfO8dB67M7d9KzQlWhD6WQxLJA=
+hash: Ns5KSwub++dOnf8pPvsBl6b5U+Ci5dOcy6deoIQ/LhY=
 ---
 ![商标](../../../en/adapterref/iobroker.hs100/admin/hs100.png)
 
+![安装数量](http://iobroker.live/badges/hs100-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.hs100.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.hs100.svg)
-![测试](https://travis-ci.org/arteck/ioBroker.hs100.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.hs100.svg)
+![测验](https://travis-ci.org/arteck/ioBroker.hs100.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.hs100.png?downloads=true)
 
-＃ioBroker.hs100 =================
-适用于ioBroker的TP-Link适配器-------------------------------------------- ----------------------------------
+＃ioBroker.hs100
+=================
 
-切换TP-Link插头和灯泡
+ioBroker的TP-Link适配器-------------------------------------------- ----------------------------------
 
-<b>NodeJs &gt;&gt; 6.xx</b>
+开关TP-Link插头和灯泡
+
+<b>节点&gt;&gt; 8.xx</b>
 
 ## Changelog
-### 1.0.9 (2019-02-09)
+
+### 1.1.00 (2020-01-19)
+* (arteck) support ledstate
+* (arteck) voltage corr
+* 
+### 1.0.10 (2019-02-09)
 * (arteck) support for compact-mode added
-*
+
 ### 1.0.8 (2018-12-01)
 * (arteck) LB100 added <br>
 ### 1.0.6 (2018-11-02)

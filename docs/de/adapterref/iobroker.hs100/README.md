@@ -3,26 +3,34 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hs100/README.md
 title: ioBroker.hs100
-hash: mWXBYHnguGTYMZ/58VfO8dB67M7d9KzQlWhD6WQxLJA=
+hash: Ns5KSwub++dOnf8pPvsBl6b5U+Ci5dOcy6deoIQ/LhY=
 ---
 ![Logo](../../../en/adapterref/iobroker.hs100/admin/hs100.png)
 
+![Anzahl der Installationen](http://iobroker.live/badges/hs100-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.hs100.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.hs100.svg)
 ![Tests](https://travis-ci.org/arteck/ioBroker.hs100.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.hs100.png?downloads=true)
 
-# IoBroker.hs100 ===================
-TP-Link-Adapter für ioBroker ------------------------------------------ ----------------------------------
+# IoBroker.hs100
+=================
 
-TP-Link Stecker und Glühlampe wechseln
+TP-Link-Adapter für ioBroker ---------------------------------------- ----------------------------------
 
-<b>NodeJs &gt;&gt; 6.xx</b>
+TP-Link Stecker und Birne wechseln
+
+<b>NodeJs &gt;&gt; 8.xx</b>
 
 ## Changelog
-### 1.0.9 (2019-02-09)
+
+### 1.1.00 (2020-01-19)
+* (arteck) support ledstate
+* (arteck) voltage corr
+* 
+### 1.0.10 (2019-02-09)
 * (arteck) support for compact-mode added
-*
+
 ### 1.0.8 (2018-12-01)
 * (arteck) LB100 added <br>
 ### 1.0.6 (2018-11-02)

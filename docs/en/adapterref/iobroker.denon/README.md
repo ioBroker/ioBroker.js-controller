@@ -830,6 +830,9 @@ If you are missing any functions or detected a bug, please open an [issue](https
 The adapter is tested with an DENON AVR-X1200W and a Marantz SR5009.
    
 ## Changelog
+### 1.7.2 (2020-01-08)
+* (foxriver76) another fix for DENON Picool to keep connection alive when turned off
+
 ### 1.7.1 (2019-11-19)
 * (foxriver76) added ability to read desired data by expertReading states
 

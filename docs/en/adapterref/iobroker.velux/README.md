@@ -19,18 +19,12 @@ Adapter for Velux KIX 300
 
 Enter under module your new target_position. Windows allows only target_position 0.
 
-To convert temperature
-
-```
-createState("veluxTemperature", 0,{
-    "role": "level.temperature"});
-on('velux.0.home.rooms01.temperature',function(obj){
-   setState("veluxTemperature", obj.state.val / 10);
-})
-```
-
 ## Changelog
 
+### 0.0.4
+
+* Improve room assignment
+  
 ### 0.0.2
 
 * add changing target_position for non windows  
@@ -43,7 +37,7 @@ on('velux.0.home.rooms01.temperature',function(obj){
 
 MIT License
 
-Copyright (c) 2019 ta2k <tombox2020@gmail.com>
+Copyright (c) 2020 ta2k <tombox2020@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

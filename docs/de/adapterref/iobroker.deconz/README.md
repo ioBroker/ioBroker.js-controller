@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.deconz/README.md
 title: kein Titel
-hash: RcbSbEHHWMMzUt2ZFMhwJH8ejTQpg1/E8GOCQFxxJv8=
+hash: q3KR5mKvtQHOYZ6IQR961zO2zHamS9OUjsrQaKqZK/4=
 ---
 ![Logo](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -25,16 +25,36 @@ Sie müssen zuerst einen Link zu deConz erstellen.
 
     b) Geben Sie den Port ein, wenn Sie ihn geändert haben, andernfalls lassen Sie ihn leer.
 
-2. Nachdem die IP-Adresse und der Port eingegeben und gespeichert wurden, klicken Sie auf die Schaltfläche "Create API Key" (API-Schlüssel erstellen). Jetzt können Sie die Anmeldedaten für deConz eingeben oder zur Phoscon APP gehen und ioBroker als Drittanbieter-APP registrieren.
+2. Nachdem die IP-Adresse und der Port eingegeben und gespeichert wurden, klicken Sie auf die Schaltfläche "Create API Key" (API-Schlüssel erstellen). Jetzt können Sie die Anmeldeinformationen für deConz eingeben oder zur Phoscon APP gehen und ioBroker als Drittanbieter-APP registrieren.
 
 ## Links
 [deConz](https://www.dresden-elektronik.de/funktechnik/products/software/pc/deconz/) [REST-Plugin](https://github.com/dresden-elektronik/deconz-rest-plugin) [Gateways (Hardware)](https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
 
 ## Beachten
 ### Keine Unterstützung für Beta-Versionen von deConz
-Erforderlich node.js> = 8.x.x
+### Erforderliche js-controller Version> 2.x.x
+Erforderlich node.js> = 10.x.x
+
+## [Sponsoren](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
 
 ## Changelog
+
+### 1.2.4
+* dynamicly add boolean states for button events
+* added new object definitions
+* (mobilutz) remove ip overwrite
+* (njeisecke) add transitiontime for bri_inc (dim step)
+
+
+### 1.2.3
+* fix expire time for alive 
+* add object for open zigbee network to add new devices without admin config
+* removed input for opne network time
+* fix device list in admin config
+
+### 1.2.2
+* adapter configuration handling rewritten
+* fix lastupdated UTC to locale time
 
 ### 1.2.1
 * convert lastupdated time to locale

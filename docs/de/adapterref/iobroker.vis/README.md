@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis/README.md
 title: Visualisierung
-hash: 60JCUhzZFQHPMJigoPKkQ04ND1cv/I2ed0xjXZyjePQ=
+hash: xlDe+wAangAnbtsUYPvfwibsxkyTKWDgAO/nN7jD3tw=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis/admin/vis.png)
 
@@ -38,7 +38,7 @@ Folgende Operationen werden unterstützt:
 - `\ +` - hinzufügen. Das Argument muss in eckigen Klammern stehen, z. B. "+ (4.5)". In diesem Beispiel erhöhen wir den Wert 4.5.
 - `\ -` - subtrahieren. Das Argument muss in eckigen Klammern stehen, z. B. "- (- 674.5)". In diesem Beispiel subtrahieren wir vom Wert -674,5.
 - `/` - teilen. Argument muss in eckigen Klammern stehen, zB "/(0.5)". In diesem Beispiel teilen wir den Wert durch 0,5.
-- `%` - modulo. Das Argument muss in eckigen Klammern stehen, z. B. "% (5)". In diesem Beispiel nehmen wir Modulo 5.
+- `%` - Modulo. Das Argument muss in eckigen Klammern stehen, z. B. "% (5)". In diesem Beispiel nehmen wir Modulo 5.
 - `round` - rund um den Wert.
 - `round (N)` - Rundet den Wert mit N Stellen nach dem Punkt, z. 34,678, Runde (1) => 34,7
 - `hex` - Wert in Hexadezimalwert umwandeln. Alle Buchstaben sind in Großbuchstaben geschrieben.
@@ -125,7 +125,7 @@ Hinweis: Um ":" in Berechnungen zu verwenden (z. B. in Zeichenfolgenformeln), ve
 dafür.
 
 ## Filter
-Um die gesamte Anzahl der Widgets in einer Ansicht anzuzeigen, können Sie Filter verwenden, um die Anzahl der Widgets zu verringern, die gleichzeitig in der Ansicht angezeigt werden.
+Um die gesamte Anzahl der Widgets in einer Ansicht darzustellen, können Sie Filter verwenden, um die Anzahl der gleichzeitig in der Ansicht angezeigten Widgets zu verringern.
 
 Jedes Widget hat ein Feld `filter`. Wenn Sie einen Wert festlegen, z. `light`, damit Sie mit anderen Widgets `(bars - filters, filter - dropdown)` steuern können, welcher Filter tatsächlich aktiv ist.
 
@@ -138,7 +138,7 @@ Vis erstellt 3 Variablen:
 
 Befehle:
 
-* `alert` - Alarmfenster in vis anzeigen. "control.data" hat das folgende Format "message; title; jquery-icon". Titel und Abfragesymbol sind optional. Symbolnamen finden Sie [hier] (http://jqueryui.com/themeroller/). Um das Symbol "ui-icon-info" anzuzeigen, schreiben Sie "Message ;; info```".
+* `alert` - Alarmfenster in vis anzeigen. "control.data" hat folgendes Format "message; title; jquery-icon". Titel und Abfragesymbol sind optional. Symbolnamen finden Sie [hier] (http://jqueryui.com/themeroller/). Um das Symbol "ui-icon-info" anzuzeigen, schreiben Sie "` `Message ;; info```".
 * `changeView` - wechselt zur gewünschten Ansicht. "control.data" muss den Namen der Ansicht haben. Sie können den Projektnamen auch als "Projekt / Ansicht" angeben. Standardprojekt ist "main".
 * `refresh` - reload vis, zum Beispiel nachdem das Projekt geändert wurde, um es in allen Browsern neu zu laden.
 * `reload` - wie refresh.
@@ -151,7 +151,7 @@ Befehle:
     - `container - Icon - view in jqui Dialog`,
     - `container - Button - Ansicht im jqui Dialog`.
 
-    `control.data` müssen die ID des Dialogwidgets haben, z. `w00056`.
+    `control.data` muss die ID des Dialogwidgets haben, z. `w00056`.
 
 * `dialogClose`
 * `popup` - öffnet ein neues Browserfenster. Der Link muss in "control.data" angegeben werden, z. http://google.com
@@ -165,10 +165,16 @@ Wenn der Benutzer die Ansicht ändert oder zu Beginn, werden die Variablen von v
 - `control.data`: Name des Projekts und der Ansicht in der Form` project / view`, z. `main / view` (und` ack = true`)
 - `control.command`:` changedView` und `ack = true`
 
-Sie können den JSON-String oder das Objekt als `{instance: 'AABBCCDD', command: 'cmd', data: 'ddd'}` in den Befehl control.command schreiben. In diesem Fall werden die Instanz und die Daten vom JSON-Objekt übernommen.
+Sie können den JSON-String oder das Objekt als `{instance: 'AABBCCDD', command: 'cmd', data: 'ddd'}` in control.command schreiben. In diesem Fall werden die Instanz und die Daten vom JSON-Objekt übernommen.
+
+Beispiel für Javascript-Adapter:
+
+```
+setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data": ""});
+```
 
 ## Standardansicht
-Sie können für jede Ansicht die gewünschte Auflösung festlegen (Menü => Extras => Auflösung). Dies ist nur der visuelle Rand im Bearbeitungsmodus, um die Bildschirmgröße auf einem bestimmten Gerät anzuzeigen. Im Echtzeitmodus ist es nicht sichtbar und alle Widgets außerhalb des Rahmens sind sichtbar.
+Sie können für jede Ansicht die gewünschte Auflösung festlegen (Menü => Extras => Auflösung). Dies ist nur der visuelle Rahmen im Bearbeitungsmodus, um die Bildschirmgröße auf einem bestimmten Gerät anzuzeigen. Im Echtzeitmodus ist es nicht sichtbar und alle Widgets außerhalb des Rahmens sind sichtbar.
 
 Zusätzlich können Sie festlegen, ob diese Ansicht als Standard für diese Auflösung verwendet werden soll.
 
@@ -188,13 +194,22 @@ Sie können es im Menü "Einstellungen ..." konfigurieren. Wenn Sie das Interval
 Legen Sie das Intervall zwischen den Verbindungsversuchen fest, wenn die Verbindung getrennt wird. Wenn Sie 2 Sekunden einstellen, wird alle 2 Sekunden versucht, die Verbindung herzustellen.
 
 ### Dunkler Bildschirm zum erneuten Verbinden
-Manchmal (nachts) ist ein dunkler Ladebildschirm erforderlich. Mit dieser Option können Sie es einstellen.
+Manchmal (in der Nacht) ist ein dunkler Ladebildschirm erforderlich. Mit dieser Option können Sie es einstellen.
 
 Beachten Sie, dass diese Einstellungen nur für die erneute Verbindung und nicht für die erste Verbindung gültig sind.
 
 ![Dunkel](../../../en/adapterref/iobroker.vis/img/dark_screen.png)
 
 ## Changelog
+### 1.2.3 (2019-12-14)
+* (bluefox) Small changes in license handling were made
+
+### 1.2.2 (2019-10-27)
+* (bluefox) Preparations for js-controller 2.0. Check undefined adn null.
+
+### 1.2.1 (2019-09-10)
+* (bluefox) fixed upload of files
+
 ### 1.2.0 (2019-05-07)
 * (bluefox) add translations
 

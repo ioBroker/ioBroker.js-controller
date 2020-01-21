@@ -126,6 +126,7 @@ After startup of adapter the firmware version of fritzbox is requested, some mod
 ## Changelog
 ### 0.2.5
 * fixed testing
+* correction for indication of actualtemp in heater groups
 ### 0.2.4
 * (Scrounger) correction of type mismatch (string boolean)
 ### 0.2.3

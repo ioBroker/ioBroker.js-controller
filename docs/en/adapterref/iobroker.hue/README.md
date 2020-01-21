@@ -40,9 +40,21 @@ Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
 In den Adapter-Settings muss die IP der Hue Bridge sowie ein Username konfiguriert werden. Um einen User zu aktivieren einmal auf create user drücken und dann innerhalb von 30 Sekunden den Button an der Hue bridge drücken. Dann wird automatisch der User übergeben. 
 
 ## Changelog
-### 3.0.0 (2019-12-28)
+### 3.1.1 (2020-01-15)
+* (foxriver76) added additional frontend validation of polling interval
+* (foxriver76) if errors are hue errors, log message instead of Error
+
+### 3.1.0 (2020-01-12)
+* (foxriver76) added new indicators for entertainment groups (class and activeStream)
+* (foxriver76) added possibility to enable/disable streaming of entertainment group
+
+### 3.0.3 (2020-01-11)
+* (foxriver76) fixed turning on/off switchs like Osram Plug
+
+### 3.0.1 (2020-01-10)
 * (foxriver76) removed queue, because handled by dependency now
 * (foxriver76) improved error handling
+* __Nodejs >= 10 required__
 
 ### 2.5.0 (2019-12-23)
 * (foxriver76) implemented a mechanic to prevent regular polling of recently changed state
@@ -253,7 +265,7 @@ __ATTENTION: Remove all objects once, ids have changed__
 
 Apache 2.0
 
-Copyright (c) 2017-2019 Bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2020 Bluefox <dogafox@gmail.com>
 Copyright (c) 2014-2016 hobbyquaker
 
 

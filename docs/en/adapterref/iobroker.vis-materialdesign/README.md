@@ -15,17 +15,18 @@
 ## Material Design Widgets for IoBroker VIS
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-Material Design Widgets uses the following libraries:
+ioBroker Material Design Widgets are based on [Google's material design guidelines](https://material.io/design/). The adapter uses the following libraries:
 * [Google material components for the web](https://github.com/material-components/material-components-web)
 * [Vuetify](https://github.com/vuetifyjs/vuetify)
 * [chartjs](https://www.chartjs.org/)
 * [round-slider from thomasloven](https://github.com/thomasloven/round-slider)
+* [Material Design Icons](https://materialdesignicons.com/)
 
 ## Online Example Project
 provided by [iobroker.click](https://iobroker.click/index.html), thanks to bluefox and iobroker.
 
-* <a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a>
-* <a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS Editor</a>
+* <a href="https://iobroker.click/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a> (<a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">alternativ</a>)
+* <a href="https://iobroker.click/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS Editor</a> (<a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">alternativ</a>)
 
 ### Supported Browser
 https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
@@ -34,7 +35,23 @@ https://github.com/material-components/material-components-web/blob/master/docs/
 https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 
 ### ioBroker VIS App
-not working, needs to be implemneted by app, see https://github.com/ioBroker/ioBroker.vis.cordova
+not working at the moment, needs to be implemneted by app, see https://github.com/ioBroker/ioBroker.vis.cordova
+
+## Material Design Icons and Images
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=6><img src="doc/en/media/material-icons.png"></td>
+            <td>Some of the widgets support <a href="https://materialdesignicons.com/" target="_blank">Material Design Icons</a> library. You can pic up an icon from the list above or open the image picker by clicking the button on the right of the input field.<br><br><b>Image colors only applies to the material design icons, not to an image!</b></td>
+        </tr>
+    </tbody>
+</table>
 
 ## Button Toggle
 ![Logo](doc/en/media/buttons.gif)
@@ -83,7 +100,7 @@ Settings that are not listed in the table below are self-explanatory.
 
 Top App Bar with Navigation Drawer can be combined with the <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">view in widget 8</a>.
 
-<b>Take a look at the [Material Design Widgets example project](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b> to understand how it works.
+<b>Take a look at the [Material Design Widgets example project](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b> to understand how it works.
 
 ##### Layout modal:
 ![Logo](doc/en/media/topappbar_modal.gif)
@@ -279,11 +296,11 @@ Example see <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#in
 
 Working Widget Example can be found [here](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
 
-## Column Views
+## Column Views - decrepated !!!
 
 Column Views has multiple `view in widget` integrated, that will be ordered automatically depending of the width of the widget. With this widget it is possible to cereate a responsive layout (one layout for desktop, tablet and mobil)
 
-<b>Take a look at the [Material Design Widgets example project](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b> to understand how it works.
+<b>Take a look at the [Material Design Widgets example project](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b> to understand how it works.
 
 ![Logo](doc/en/media/column_views.gif)
 
@@ -318,6 +335,15 @@ Column Views has multiple `view in widget` integrated, that will be ordered auto
 </table>
 
 ## Changelog
+
+### 0.2.xx
+* (Scrounger): use of Material Design Icons as images added
+* (Scrounger): Perfomrance optimized
+* (Scrounger): Input Widget added
+* (Scrounger): Masonry Views Widget: settings options for mobile phone and tablet added
+* (Scrounger): Masonry Views Widget: another chrome bug fix, option for distance between views added
+* (Scrounger): Round Slider: vibrate on mobil devices added
+* (Scrounger): bug fixes
 
 ### 0.2.32
 * (Scrounger): Editor translation bug fix

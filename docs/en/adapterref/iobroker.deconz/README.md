@@ -26,9 +26,30 @@ You must first link to deConz.
 
 ### No Support for Beta Versions of deConz
 
-Required node.js >= 8.x.x
+### Required js-controller version >2.x.x
+
+Required node.js >= 10.x.x
+
+## [Sponsors](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
 
 ## Changelog
+
+### 1.2.4
+* dynamicly add boolean states for button events
+* added new object definitions
+* (mobilutz) remove ip overwrite
+* (njeisecke) add transitiontime for bri_inc (dim step)
+
+
+### 1.2.3
+* fix expire time for alive 
+* add object for open zigbee network to add new devices without admin config
+* removed input for opne network time
+* fix device list in admin config
+
+### 1.2.2
+* adapter configuration handling rewritten
+* fix lastupdated UTC to locale time
 
 ### 1.2.1
 * convert lastupdated time to locale

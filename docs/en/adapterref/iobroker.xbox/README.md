@@ -19,8 +19,8 @@
 * For Linux additional packages are required.
    
    The required packages will automatically be installed. Due to this fact root privileges are required as well as the 
-   --unsafe-perm flag. If this fails, you have to install the packages manually (build-essential libssl-dev libffi-dev 
-   python3-dev).
+   --unsafe-perm flag. If this fails, you have to install the packages manually (`build-essential libssl-dev libffi-dev 
+   python3-dev`).
 * If you want to power your Xbox on with this adapter, you have to
 [configure the instant-on power modus](https://support.xbox.com/en-GB/xbox-one/console/learn-about-power-modes) on your Xbox.
 
@@ -315,6 +315,9 @@ In this section you can find a description of every state of the adapter.
    *View button for media content.*
    
 ## Changelog
+### 0.5.12 (2020-01-17)
+* (foxriver76) let js-controller know which apt packages are required
+
 ### 0.5.11 (2019-11-27)
 * (foxriver76) we not try to install apt packages any longer if already installed
 
@@ -467,7 +470,7 @@ self detected and prevents reconnection on shutdown
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Moritz Heusinger <moritz.heusinger@gmail.com>
+Copyright (c) 2018-2020 Moritz Heusinger <moritz.heusinger@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

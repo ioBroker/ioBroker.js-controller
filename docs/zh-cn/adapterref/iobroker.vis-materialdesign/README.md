@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: yyNrBP+7CnWDJbmZu1KEa34c10BvcpNCprYCLbZgWD4=
+hash: FX1yfhr8Gw3Bks2gDT3cEDi9xCGBQkHmutsxSM2wyFc=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -20,18 +20,19 @@ hash: yyNrBP+7CnWDJbmZu1KEa34c10BvcpNCprYCLbZgWD4=
 ## IoBroker VIS的材料设计小部件
 [![贝宝]（https://www.paypalobjects.com/zh_CN/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-Material Design Widgets使用以下库：
+ioBroker物料设计小部件基于[Google的材料设计指南](https://material.io/design/)。适配器使用以下库：
 
-* [用于网络的Google材料组件]（https://github.com/material-components/material-components-web）
+* [用于网络的Google物料组件]（https://github.com/material-components/material-components-web）
 * [Vuetify]（https://github.com/vuetifyjs/vuetify）
 * [chartjs]（https://www.chartjs.org/）
 * [来自thomasloven的round-slider]（https://github.com/thomasloven/round-slider）
+* [材料设计图标]（https://materialdesignicons.com/）
 
 ##在线示例项目
 由[iobroker.click](https://iobroker.click/index.html)提供，这要归功于bluefox和iobroker。
 
-* <a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS运行时</a>
-* <a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS编辑器</a>
+* <a href="https://iobroker.click/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS运行时</a> （ <a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">alternativ</a> ）
+* <a href="https://iobroker.click/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS编辑器</a> （ <a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">alternativ</a> ）
 
 ###支持的浏览器
 https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
@@ -40,7 +41,10 @@ https://github.com/material-components/material-components-web/blob/master/docs/
 https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 ### IoBroker VIS应用程序
-无法正常运行，需要由应用程序标记，请参阅https://github.com/ioBroker/ioBroker.vis.cordova
+目前无法正常运行，需要由应用程序标记，请参阅https://github.com/ioBroker/ioBroker.vis.cordova
+
+##材质设计图标和图像
+<table><thead><tr><th>屏幕截图</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/material-icons.png"></td><td>一些小部件支持<a href="https://materialdesignicons.com/" target="_blank">Material Design Icons</a>库。您可以从上方列表中弹出一个图标，或通过单击输入字段右侧的按钮来打开图像选择器。 <br><br> <b>图像颜色仅适用于材料设计图标，不适用于图像！</b> </td></tr></tbody></table>
 
 ##按钮切换
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
@@ -73,7 +77,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ##带有导航抽屉的顶部应用栏
 带有导航抽屉的顶部应用栏可以与<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>结合使用。
 
-<b>看一看[Material Design Widgets示例项目](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b>以了解它是如何工作的。
+<b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
 
 #####布局模式：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
@@ -81,14 +85,14 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 #####永久布局：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td>对象ID </td><td>必须从典型编号设置为数据点。例如<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">，小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>可以使用此数据点</td></tr><tr><td>显示导航项的索引</td><td>在项目标签之前显示导航索引。可以<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">在小部件8的视图中</a>使用此数字来定义如果选择了该项目应显示的视图</td></tr><tr><td>导航项目数</td><td>定义导航项的数量</td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td>对象ID </td><td>必须从典型编号设置为数据点。例如<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">，小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>可以使用此数据点</td></tr><tr><td>显示导航项的索引</td><td>在项目标签之前显示导航索引。可以<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">在小部件8的视图中</a>使用此数字来定义在选择项目时应显示的视图</td></tr><tr><td>导航项目数</td><td>定义导航项的数量</td></tr></tbody></table>
 
 ###子菜单
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
 
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td>子菜单数[x] </td><td>定义导航项是否具有子菜单和子菜单的计数。 </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td>标签[x] </td><td>要更改项目的文本，您必须将json对象放入带有查看字段索引的label字段中。 <br>例： <br>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td>子菜单数[x] </td><td>定义导航项目是否具有子菜单和子菜单的计数。 </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td>标签[x] </td><td>要更改项目的文本，您必须将json对象放入带有视图字段索引的label字段中。 <br>例： <br>
 
 `{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
 
@@ -106,7 +110,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td> SQL或历史记录适配器的实例</td></tr><tr><td>聚合</td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">链接</a> </td></tr><tr><td>最高要显示的数据点数</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] </td><td>可选设置，将覆盖“计数”设置。 <br>各个数据点之间的距离，以秒为单位。 <br>例如，如果要每分钟显示一次数据点，则必须在此处输入60 </td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。数据点必须是字符串，并且可以包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接的值</a> <br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td> adatapoint的ID，以触发图表的手动刷新。 <br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td> SQL或历史记录适配器的实例</td></tr><tr><td>聚合</td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">链接</a> </td></tr><tr><td>最高要显示的数据点数</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] </td><td>可选设置，将覆盖“计数”设置。 <br>各个数据点之间的距离，以秒为单位。 <br>例如，如果要每分钟显示一次数据点，则必须在此处输入60 </td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。数据点必须是字符串，并且可以包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接的值</a> <br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td>用于触发手动刷新图表的adatapoint的ID。 <br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr></tbody></table>
 
 ##表
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table.gif)
@@ -124,7 +128,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ]
 ```
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/table_general.png"></td><td>开关</td><td>带有输入数据的类型字符串的数据点，如上所示</td></tr><tr><td>数据作为JSON </td><td>可选，如果未设置oid数据点，则输入如上所示的数据</td></tr><tr><td rowspan=4><img src="doc/en/media/table_column.png"></td><td> colType [x] </td><td>如果选择了图像，则对象属性必须具有图像的路径（ <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">请参见上文</a> ） </td></tr><tr><td>前缀[x] </td><td>可以使用对象属性，内部对象绑定（ <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">请参见下文</a> ）和html的前缀</td></tr><tr><td>后缀[x] </td><td>可以使用对象属性，内部对象绑定（ <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">见下文</a> ）和html的后缀</td></tr><tr><td>用于排序的对象名称[x] </td><td>在这里，您可以定义另一个用于排序的对象属性。 </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/table_general.png"></td><td>开关</td><td>带有输入数据的类型字符串的数据点，如上所示</td></tr><tr><td>数据作为JSON </td><td>可选，如果未设置oid数据点，则如上所述输入数据</td></tr><tr><td rowspan=4><img src="doc/en/media/table_column.png"></td><td> colType [x] </td><td>如果选择了图像，则对象属性必须具有图像的路径（ <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">请参见上文</a> ） </td></tr><tr><td>前缀[x] </td><td>可以使用对象属性，内部对象绑定（ <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">请参见下文</a> ）和html的前缀</td></tr><tr><td>后缀[x] </td><td>可以使用对象属性，内部对象绑定（ <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">见下文</a> ）和html的后缀</td></tr><tr><td>用于排序的对象名称[x] </td><td>在这里，您可以定义应用于排序的其他对象属性。 </td></tr></tbody></table>
 
 #####内部对象绑定
 前缀和后缀支持表内部对象绑定->您可以使用来访问对象的其他属性
@@ -137,16 +141,25 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 可以找到工作窗口小部件示例[这里](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
 
-##列视图
+##列视图-已弃用!!!
 列视图具有集成的多个`view in widget`§，它们将根据窗口小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动电话的一种布局）
 
-<b>看一看[Material Design Widgets示例项目](http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets)</b>以了解它是如何工作的。
+<b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/column_views.gif)
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/column_views_common.png"></td><td>列数</td><td>定义列数</td></tr><tr><td>最小宽度</td><td>每列的最小宽度。例如使用移动设备分辨率的宽度</td></tr><tr><td rowspan=2><img src="doc/en/media/column_views_col_settings.png"></td><td>列[x]中的视图</td><td>定义应在此列中显示的视图。多个视图必须以“ |”分隔</td></tr><tr><td>列中视图的高度[x] </td><td>在列中定义每个视图的高度。多个高度必须用&#39;|&#39;分隔</td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/column_views_common.png"></td><td>列数</td><td>定义列数</td></tr><tr><td>最小宽度</td><td>每列的最小宽度。例如使用移动设备分辨率的宽度</td></tr><tr><td rowspan=2><img src="doc/en/media/column_views_col_settings.png"></td><td>列[x]中的视图</td><td>定义应在此列中显示的视图。多个视图必须用&#39;|&#39;分隔</td></tr><tr><td>列[x]中的视图高度</td><td>在列中定义每个视图的高度。多个高度必须用&#39;|&#39;分隔</td></tr></tbody></table>
 
 ## Changelog
+
+### 0.2.xx
+* (Scrounger): use of Material Design Icons as images added
+* (Scrounger): Perfomrance optimized
+* (Scrounger): Input Widget added
+* (Scrounger): Masonry Views Widget: settings options for mobile phone and tablet added
+* (Scrounger): Masonry Views Widget: another chrome bug fix, option for distance between views added
+* (Scrounger): Round Slider: vibrate on mobil devices added
+* (Scrounger): bug fixes
 
 ### 0.2.32
 * (Scrounger): Editor translation bug fix

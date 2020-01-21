@@ -45,6 +45,9 @@ Actually only following attributes are supported:
 
 
 ## Changelog
+### 1.4.2 (2020-01-10)
+* (bluefox) Running timers will be stopped by unload
+
 ### 1.4.1 (2019-12-12)
 * (LausiD) Several fixes and changes
 
@@ -113,7 +116,7 @@ Actually only following attributes are supported:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2016-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

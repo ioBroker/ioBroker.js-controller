@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.velux/README.md
 title: ioBroker.velux
-hash: Rdrp2GJ5SQJIK/StfKJqEs1mxlmmbm3CGTJMEIN+2jU=
+hash: 7e92LnjeE0SgrBs2hMe35kLcWdVhbLQF+CYh6a6cLOs=
 ---
 ![Logo](../../../en/adapterref/iobroker.velux/admin/velux.png)
 
@@ -21,18 +21,12 @@ Adapter für Velux KIX 300
 ## Verwendung
 Geben Sie unter Modul Ihre neue Zielposition ein. Windows erlaubt nur target_position 0.
 
-Temperatur umrechnen
-
-```
-createState("veluxTemperature", 0,{
-    "role": "level.temperature"});
-on('velux.0.home.rooms01.temperature',function(obj){
-   setState("veluxTemperature", obj.state.val / 10);
-})
-```
-
 ## Changelog
 
+### 0.0.4
+
+* Improve room assignment
+  
 ### 0.0.2
 
 * add changing target_position for non windows  
@@ -45,7 +39,7 @@ on('velux.0.home.rooms01.temperature',function(obj){
 
 MIT License
 
-Copyright (c) 2019 ta2k <tombox2020@gmail.com>
+Copyright (c) 2020 ta2k <tombox2020@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -26,6 +26,18 @@ To get an API-Key you have to go to [console.developers.google.com](https://cons
 
 ## Changelog
 
+### 0.0.6
+
+* (klein0r) Collect YouTube information after configuration changes
+
+### 0.0.5
+
+* (klein0r) Bugfix
+
+### 0.0.4
+
+* (klein0r) Added more options
+
 ### 0.0.3
 
 * (klein0r) Support for multiple channels

@@ -21,6 +21,10 @@ If you like my work, please feel free to provide a personal donation
 
 ## Changelog
 
+### 0.1.6
+* (DutchmanNL) fix geoTrackingEnabled & atHome
+* (DutchmanNL) fix error preventFromSubscribing
+
 ### 0.1.5  
 * (DutchmanNL) Fix switching on/off heating & related auto mode
 * (DutchmanNL) Fix switching some incorrect logging

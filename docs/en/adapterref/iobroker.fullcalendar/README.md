@@ -15,6 +15,9 @@ You must not use any external resources, the scheduling is processed only in ioB
 You can control your events with calender and can plan to control them periodically.
 
 ## Changelog
+### 1.1.0 (2020-01-12)
+* (foxriver76) Updated to use with js-controller 2.x 
+
 ### 1.0.0 (2019-11-17)
 * (bluefox) Support of compact mode added
 
@@ -41,4 +44,4 @@ You can control your events with calender and can plan to control them periodica
 ## License
 CC BY-NC 4.0
 
-Copyright (c) 2017-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2020 bluefox <dogafox@gmail.com>

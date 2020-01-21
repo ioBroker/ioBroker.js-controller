@@ -3,21 +3,28 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.yahka/README.md
 title: iobroker.yahka
-hash: 5sdF/MnXfLtjGXYd+MeQvB7g89jGMFLNH6eOm+WhVBI=
+hash: dHZZLpKFEsSVVyW2ypXQybWO0izVAjfMZtmS9Qd6GNo=
 ---
 ![商标](../../../en/adapterref/iobroker.yahka/admin/yahka.png)
 
+![安装数量](http://iobroker.live/badges/yahka-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.yahka.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.yahka.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.yahka.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.yahka.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.yahka.svg?branch=master)
 
-＃iobroker.yahka =================
-***这个适配器至少需要nodejs 4.x ***
+＃iobroker.yahka
+=================
+
+***此适配器至少需要nodejs 6.x ***
 
 ##安装和使用
 有关如何安装和配置此适配器的详细信息，请参阅[维基](https://github.com/jensweigele/ioBroker.yahka/wiki)
 
 ## Changelog
+
+### 0.10.0
+  (jw) updated dependencies<br>
+  (apollon77) removed support for NodeJS 4 - NodeJS 6 is now the minimum required NodeJS version (merged #109)<br>
 
 ### 0.9.2
   (jw) fixed a bug where the adapter didn't start anymore<br>

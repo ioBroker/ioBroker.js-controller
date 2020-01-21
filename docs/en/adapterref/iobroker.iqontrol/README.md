@@ -283,13 +283,18 @@ In addition to normal thermostat you can define:
 
 ## Changelog
 
-### 0.2.15 (202-01-07)
-* (Sebastian Bormann) Added svg as possible image to upload
-* (Sebastian Bormann) Made URL and HTML universal for nearly all devices, to display custom html code or content of an url inside the dialog (this could be used e.g. to display FLOT-graphs related to the device inside the dialog)
-* (Sebastian Bormann) Fixed disabled custom values with admin 3.7.6+ and js-controller <2.2 
+### 0.2.16 (2020-01-14)
+* (Sebastian Bormann) Fixed custom step for heating control.
+* (Sebastian Bormann) Added option to open dialog by clicking on tile for View, Window, Door, Fire, Temperatur, Humidity, Brightness and Motion.
+* (Sebastian Bormann) Fixed universal popup wich was displayed, even when empty.
+
+### 0.2.15 (2020-01-07)
+* (Sebastian Bormann) Added svg as possible image to upload.
+* (Sebastian Bormann) Made URL and HTML universal for nearly all devices, to display custom html code or content of an url inside the dialog (this could be used e.g. to display FLOT-graphs related to the device inside the dialog).
+* (Sebastian Bormann) Fixed disabled custom values with admin 3.7.6+ and js-controller <2.2.
 
 ### 0.2.14 (2019-11-12)
-* (Sebastian Bormann) Fixed icon-switching for thermostats
+* (Sebastian Bormann) Fixed icon-switching for thermostats.
 
 ### 0.2.13 (2019-10-23)
 * (Sebastian Bormann) Improved the return after time method.

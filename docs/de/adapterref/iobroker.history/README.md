@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.history/README.md
 title: ioBroker.history
-hash: 53hn13Dh6RRRv4n3c+VoxnzrU3iuVzgw/v9Ik5WnRtU=
+hash: tq/r3S9OFXNtKGix4J0p/oLPOqHRXYBNGN6tSjVtauI=
 ---
 ![Logo](../../../en/adapterref/iobroker.history/admin/history.png)
 
@@ -16,21 +16,21 @@ hash: 53hn13Dh6RRRv4n3c+VoxnzrU3iuVzgw/v9Ik5WnRtU=
 
 # IoBroker.history
 Dieser Adapter speichert den Statusverlauf in einem zweistufigen Prozess.
-Zunächst werden Datenpunkte im RAM gespeichert, sobald sie maxLength erreichen, werden sie auf der Festplatte gespeichert.
+Zunächst werden Datenpunkte im RAM gespeichert, sobald sie die maximale Länge erreichen, werden sie auf der Festplatte gespeichert.
 
-Um einige zu speichernde Datenpunkte einzurichten, müssen diese im Admin-Register "Objekte" (letzte Schaltfläche) konfiguriert werden.
+Um einige zu speichernde Datenpunkte einzurichten, müssen sie auf der Registerkarte "Objekte" des Administrators (letzte Schaltfläche) konfiguriert werden.
 
-Um Diagramme zu aktivieren, müssen Sie einen ** Flot-Adapter installieren.
+Um Karten zu aktivieren, müssen Sie den **flot** Adapter installieren.
 
 ## Die Einstellungen
-- **Speicherverzeichnis** - Pfad zu dem Verzeichnis, in dem die Dateien gespeichert werden. Dies kann relativ zu "Iobroker-Daten" oder absolut erfolgen, wie "/ mnt / history" oder "D: / History".
-- **Maximale Anzahl von im RAM gespeicherten Werten** - Nachdem diese Anzahl von Werten im RAM erreicht wurde, werden sie auf der Festplatte gespeichert.
-- **Wertursprung speichern** - Wenn das Feld "from" ebenfalls gespeichert wird. Kann Platz auf der Festplatte speichern.
-- **De-Bounce-Intervall** - Schutz gegen zu häufige Änderungen eines bestimmten Wertes und Definieren der Zeit in ms, in der nach einer Wertänderung andere Änderungen nicht protokolliert werden
-- **Speicheraufbewahrung** - Wie viele Werte in der Vergangenheit werden auf der Festplatte gespeichert.
-- **Unveränderte Werte protokollieren beliebige (s)** - Wenn Sie "Nur Änderungen protokollieren" verwenden, können Sie hier ein Zeitintervall in Sekunden einstellen, nach dem auch unveränderte Werte erneut in den DB geschrieben werden
+- **Speicherverzeichnis** - Pfad zum Verzeichnis, in dem die Dateien gespeichert werden. Dies kann relativ zu "iobroker-data" oder absolut erfolgen, wie "/ mnt / history" oder "D: / history".
+- **Maximale Anzahl der im RAM gespeicherten Werte** - Nach Erreichen dieser Anzahl von Werten im RAM werden sie auf der Festplatte gespeichert.
+- **Ursprung des Wertes speichern** - Wenn "von" Feld wird auch gespeichert. Kann Platz auf der Festplatte speichern.
+- **Entprellintervall** - Schutz gegen zu häufige Änderungen eines Wertes und definierte die Zeit in ms, in der nach einer Wertänderung andere Änderungen nicht protokolliert werden
+- **Aufbewahrung des Speichers** - Wie viele Werte in der Vergangenheit werden auf der Festplatte gespeichert.
+- **Unveränderte Werte (n) protokollieren** - Bei Verwendung von "nur Änderungen protokollieren" können Sie hier ein Zeitintervall in Sekunden einstellen, nach dem auch unveränderte Werte in den DB zurückprotokolliert werden
 
-Die meisten dieser Werte werden in den Detaileinstellungen für den Datenpunkt vorbelegt und können dort geändert werden. Zusätzlich können Sie auf der Datenpunktseite eine "Alias-ID" angeben. Mit diesem können Sie z. Nachdem Sie einen Geräte- und Datenpunktnamen geändert haben, protokollieren Sie die Daten immer noch mit der alten ID, indem Sie diese ID dort eingeben. Alle Daten werden als diese protokolliert.
+Die meisten dieser Werte sind in den Detaileinstellungen für den Datenpunkt bereits eingetragen und können dort geändert werden. Zusätzlich können Sie auf der Datenpunktseite eine "Alias-ID" eintragen. Mit diesem können Sie z. Nach dem Umschalten eines Geräts und der Änderung von Datenpunktnamen werden die Daten weiterhin in die frühere ID protokolliert, indem nur diese ID dort eingegeben wird. Alle Daten werden als diese protokolliert.
 
 ## Zugriff auf Werte vom Javascript-Adapter
 Auf die sortierten Werte kann über den Javascript-Adapter zugegriffen werden. Z.B. Mit folgendem Code können Sie die Liste der Ereignisse für die letzte Stunde lesen:
@@ -68,45 +68,45 @@ sendTo('history.0', 'getHistory', {
 
 Möglichkeiten:
 
-- **start** - (optional) Zeit in ms - *neues Datum (). getTime ()* '
-- **end** - (optional) Zeit in ms - *neues Datum (). getTime ()* 'ist standardmäßig (jetzt + 5000 Sekunden)
-- **Schritt** - (optional) wird in Aggregatschritten (m4, max, min, Durchschnitt, gesamt) in ms von Intervallen verwendet
-- **Anzahl** - Anzahl der Werte, wenn das Aggregat "onchange" ist, oder Anzahl der Intervalle, wenn eine andere Aggregatmethode verwendet wird. Count wird ignoriert, wenn step eingestellt ist.
-- **von** - wenn *von* in der Antwort enthalten sein soll
-- **ack** - wenn *ack* in der Antwort enthalten sein soll
-- **q** - wenn *q* in der Antwort enthalten sein soll
-- **addId** - wenn *id* in der Antwort enthalten sein soll
-- **limit** - gibt nicht mehr Einträge als limit zurück
-- **ignoreNull** - Wenn NULL-Werte einschließen (false), durch letzten nicht NULL-Wert (true) oder durch 0 (0) ersetzt werden sollen.
-- **Aggregat** - Aggregatmethode:
-  - *minmax* - benutzter spezieller Algorithmus. Spleißen Sie den gesamten Zeitbereich in kleinen Intervallen und suchen Sie für jedes Intervall die Maximal-, Min-, Start- und Endwerte.
-  - *max* - Spleißen Sie den gesamten Zeitbereich in kleinen Intervallen und suchen Sie für jedes Intervall den Maximalwert und verwenden Sie ihn für dieses Intervall (Nullen werden ignoriert).
-  - *min* - Gleich wie max, aber minimaler Wert.
-  - *Durchschnitt* - Wie Max, jedoch Durchschnittswert.
-  - *total* - Wie Max, aber Gesamtwert berechnen.
-  - *count* - Gleich wie max, aber Anzahl der Werte berechnen (Nullwerte werden berechnet).
-  - *keine* - überhaupt keine Aggregation. Nur Rohwerte in einem bestimmten Zeitraum.
+- **start** - (optional) Zeit in ms - *new Date (). getTime ()* '
+- **end** - (optional) Zeit in ms - *new Date (). getTime ()* ', standardmäßig (jetzt + 5000 Sekunden)
+- **Schritt** - (optional) wird in aggregierten Schritten (m4, max, min, Durchschnitt, gesamt) in ms-Intervallen verwendet
+- **count** - Anzahl der Werte, wenn das Aggregat 'onchange' ist, oder Anzahl der Intervalle, wenn eine andere Aggregatmethode verwendet wird. Count wird ignoriert, wenn step gesetzt ist.
+- **von** - wenn das Feld *von* in der Antwort enthalten sein soll
+- **ack** - wenn das *ack* -Feld in der Antwort enthalten sein soll
+- **q** - wenn das Feld *q* in der Antwort enthalten sein soll
+- **addId** - wenn das Feld *id* in der Antwort enthalten sein soll
+- **limit** - Gebe nicht mehr Einträge als limit zurück
+- **ignoreNull** - wenn Nullwerte enthalten sein sollen (false), ersetzt durch den letzten Nicht-Nullwert (true) oder ersetzt durch 0 (0)
+- **aggregate** - aggregate method:
+  - *minmax* - verwendeter spezieller Algorithmus. Splice den gesamten Zeitbereich in kleinen Intervallen und finde für jedes Intervall Max-, Min-, Start- und Endwerte.
+  - *max* - Splice den gesamten Zeitbereich in kleinen Intervallen und finde für jedes Intervall den Maximalwert und verwende ihn für dieses Intervall (Nullen werden ignoriert).
+  - *min* - Wie max, aber mit minimalem Wert.
+  - *Average* - Wie Max, aber Durchschnittswert nehmen.
+  - *total* - Wie max, aber Gesamtwert berechnen.
+  - *count* - Wie "max", aber Anzahl der Werte berechnen (Nullen werden berechnet).
+  - *keine* - Überhaupt keine Aggregation. Nur Rohwerte im angegebenen Zeitraum.
 
 Der erste und der letzte Punkt werden für Aggregationen berechnet, mit Ausnahme der Aggregation "keine".
-Wenn Sie manuell eine Aggregation anfordern, sollten Sie die ersten und letzten Werte ignorieren, da sie aus Werten außerhalb des Zeitraums berechnet werden.
+Wenn Sie manuell eine Aggregation anfordern, sollten Sie den ersten und den letzten Wert ignorieren, da diese aus Werten außerhalb des Zeitraums berechnet werden.
 
 ## StoreState
 Wenn Sie andere Daten in die InfluxDB schreiben möchten, können Sie die eingebaute Systemfunktion **storeState** verwenden.
-Diese Funktion kann auch zum Konvertieren von Daten von anderen History-Adaptern wie History oder SQL verwendet werden.
+Diese Funktion kann auch zum Konvertieren von Daten aus anderen Verlaufsadaptern wie Verlauf oder SQL verwendet werden.
 
-Die angegebenen IDs werden nicht gegen die ioBroker-Datenbank geprüft und müssen dort nicht eingerichtet werden, sondern können nur direkt aufgerufen werden.
+Die angegebenen IDs werden nicht mit der ioBroker-Datenbank abgeglichen und müssen dort nicht eingerichtet werden, sondern sind nur direkt zugänglich.
 
 Die Nachricht kann eines der folgenden drei Formate haben:
 
-* eine ID und ein Zustandsobjekt
-* eine ID und ein Array von Statusobjekten
-* Array mit mehreren IDs mit Statusobjekten
+* eine ID und ein Statusobjekt
+* Eine ID und ein Array von Statusobjekten
+* Array von mehreren IDs mit Statusobjekten
 
 ## History Logging Management über Javascript
-Der Adapter unterstützt das Aktivieren und Deaktivieren der Protokollierung über JavaScript sowie das Abrufen der Liste der aktivierten Datenpunkte mit ihren Einstellungen.
+Der Adapter unterstützt das Aktivieren und Deaktivieren der Verlaufsprotokollierung über JavaScript sowie das Abrufen der Liste der aktivierten Datenpunkte mit ihren Einstellungen.
 
 ### Aktivieren
-Für die Nachricht muss die "id" des Datenpunkts vorhanden sein. Zusätzliche optionale "Optionen" zum Definieren der datenpunktspezifischen Einstellungen:
+Für die Nachricht muss die "ID" des Datenpunkts angegeben werden. Zusätzliche optionale "Optionen" zum Definieren der Datenpunkt-spezifischen Einstellungen:
 
 ```
 sendTo('history.0', 'enableHistory', {
@@ -130,7 +130,7 @@ sendTo('history.0', 'enableHistory', {
 ```
 
 ### Deaktivieren
-Die Nachricht muss die "ID" des Datenpunkts haben.
+Für die Nachricht muss die "ID" des Datenpunkts angegeben werden.
 
 ```
 sendTo('history.0', 'disableHistory', {
@@ -145,7 +145,7 @@ sendTo('history.0', 'disableHistory', {
 });
 ```
 
-### Liste abrufen
+### Liste holen
 Die Nachricht hat keine Parameter.
 
 ```
@@ -169,222 +169,233 @@ sendTo('history.0', 'getEnabledDPs', {}, function (result) {
 
 ## Datenkonverter
 ### Grund Idee
-Wenn Sie im Laufe der Zeit mehr Daten haben, ist der Verlaufsadapter möglicherweise nicht die beste Wahl und eine echte Datenbank ist besser. Hierfür gibt es zwei weitere History-Adapter für SQL-Datenbanken (PostgreSQL, MS-SQL, MySQL, SQLite) und InfluxDB.
-Mit dieser Änderung wird die Frage gestellt, wie die gesammelten Daten aus der Vergangenheit in diese neuen Adapter konvertiert werden können.
+Wenn Sie im Laufe der Zeit mehr Daten haben, ist der Verlaufsadapter möglicherweise nicht die beste Wahl, und eine echte Datenbank ist besser. Hierfür gibt es zwei weitere History-Adapter für SQL-Datenbanken (PostgreSQL, MS-SQL, MySQL, SQLite) und InfluxDB.
+Mit dieser Änderung stellt sich die Frage, wie die gesammelten Daten aus der Vergangenheit in diese neuen Adapter konvertiert werden sollen.
 
-Zu diesem Zweck wurden einige Konverter-Skripts erstellt, die helfen und die Arbeit erledigen können. Diese Skripts werden von der Befehlszeile aus aufgerufen.
+Hierfür wurden einige Konverterskripte vorbereitet, die helfen und die Arbeit erledigen können. Diese Skripte werden über die Befehlszeile aufgerufen.
 
 ### Bereiten Sie vorhandene Daten im Übertragungsziel vor und analysieren Sie sie
-Bei der Konvertierung von Daten sollten nur die Daten übertragen werden, die noch nicht vorhanden sind. Daher existiert der erste Satz von Skripten mit dem Namen **analysis <db> .js** Dieses Skript sollte zu Beginn einmal aufgerufen werden, um Daten für vorhandene Daten zu sammeln und diese in lokalen .json-Dateien zu speichern, die vom Real Converter-Skript verwendet werden.
-Es werden zwei Arten von Daten erfasst:
+Beim Konvertieren von Daten sollten nur die Daten übertragen werden, die noch nicht vorhanden sind. Daher gibt es die erste Gruppe von Skripten mit dem Namen **analyse <db> .js** Dieses Skript sollte zu Beginn einmal aufgerufen werden, um einige Daten für vorhandene Daten zu erfassen und in lokalen .json-Dateien zu speichern, die vom echten Konverterskript verwendet werden sollen.
+Es werden zwei Arten von Daten gesammelt:
 
-- **frühester Wert für Datenpunkt-ID** Der Zeitstempel des allerersten Eintrags für jeden vorhandenen Datenpunkt wird gespeichert und von importiert verwendet, um standardmäßig alle neueren Werte zu ignorieren. Es wird davon ausgegangen, dass die Daten ab diesem ersten Eintrag vollständig gefüllt sind und alle früheren Werte andernfalls doppelt vorhanden wären. Diese Annahme kann beim Import durch Parameter überschrieben werden.
-- **vorhandene Werte pro Tag pro Datenpunkt-ID** Die vorhandenen Daten werden täglich analysiert und jeder Tag wird dort gespeichert, wo bereits Daten vorhanden sind. Dies kann als Alternative zu den ersten Daten verwendet werden, um auch "Löcher" in den Daten füllen zu können.
+- **frühester Wert für Datenpunkt-ID** Der Zeitstempel des allerersten Eintrags für jeden vorhandenen Datenpunkt wird gespeichert und beim Importieren verwendet, um standardmäßig alle neueren Werte zu ignorieren. Es wird davon ausgegangen, dass die Daten ab diesem ersten Eintrag vollständig ausgefüllt sind und alle früheren Werte ansonsten dupliziert würden. Diese Annahme kann beim Import durch Parameter überschrieben werden.
+- **vorhandene Werte pro Tag pro Datenpunkt-ID** Die vorhandenen Daten werden pro Tag analysiert und an jedem Tag, an dem bereits Daten vorhanden sind, gespeichert. Dies kann alternativ zu den ersten Daten verwendet werden, um auch "Löcher" in die Daten füllen zu können.
 
-#### Analysisinflux.js
-Die Datei analysisinflux.js befindet sich im Verzeichnis "converter".
-Dieses Skript erfasst die oben genannten Daten für eine InfluxDB-Instanz.
+#### Analyseinflux.js
+Die Datei analyseinflux.js befindet sich im Verzeichnis "converter".
+Dieses Skript sammelt die oben genannten Daten für eine InfluxDB-Instanz.
 
-** Verwendung **: nodejs analysisinflux.js [<InfluxDB-Instanz>] [<Loglevel>] [--deepAnalyze] ** Beispiel **: nodejs analysisinflux.js influxdb.0 info --deepAnalyze
-
-Parameter:
-
-- **<InfluxDB-Instanz>** Welche Influxdb-Adapter-Instanz soll verwendet werden? (Standardeinstellung: influxdb.0) Wenn gesetzt, muss der erste Parameter hinter dem Skriptnamen stehen.
-- **<Loglevel>** Loglevel für die Ausgabe (Standard: info). Wenn gesetzt, muss der zweite Parameter hinter dem Skriptnamen stehen.
-- **- deepAnalyze** Sammelt auch die vorhandenen Werte pro Tag, standardmäßig wird nur der früheste Wert abgefragt.
-
-Das Skript generiert dann eine oder drei .json-Dateien mit den gesammelten Daten. Diese Dateien werden dann vom realen Konverter-Skript verwendet.
-
-#### Analysisql.js
-Die analysisql.js finden Sie im Verzeichnis "converter".
-Dieses Skript erfasst Teile der oben genannten Daten für eine SQL-Instanz.
-
-** Verwendung **: nodejs analysisql.js [<SQL-Instanz>] [<Loglevel>] ** Beispiel **: nodejs analysisql.js sql.0 info
+** Verwendung **: nodejs analyseinflux.js [<InfluxDB-Instance>] [<Loglevel>] [--deepAnalyze] ** Beispiel **: nodejs analyseinflux.js influxdb.0 info --deepAnalyze
 
 Parameter:
 
-- **<SQL-Instanz>** Welche SQL-Adapter-Instanz soll verwendet werden? (Standardeinstellung: sql.0) Wenn gesetzt, muss der erste Parameter hinter dem Skriptnamen stehen.
-- **<Loglevel>** Loglevel für die Ausgabe (Standard: info). Wenn gesetzt, muss der zweite Parameter hinter dem Skriptnamen stehen.
+- **<InfluxDB-Instanz>** Welche influxdb-Adapter-Instanz soll verwendet werden? (Standard: influxdb.0) Wenn set der erste Parameter nach dem Skriptnamen sein muss.
+- **<Loglevel>** Loglevel für die Ausgabe (Standard: info). Wenn gesetzt muss der zweite Parameter nach dem Skriptnamen stehen.
+- **- deepAnalyze** sammelt auch die vorhandenen Werte pro Tag, standardmäßig wird nur der früheste Wert abgefragt.
 
-Das Skript generiert dann zwei .json-Dateien mit den gesammelten Daten. Diese Dateien werden dann vom realen Konverter-Skript verwendet.
-Derzeit kann --processNonExistingValuesOnly for converter script nicht verwendet werden, da die Daten nicht erfasst werden.
+Das Skript generiert dann eine oder drei .json-Dateien mit den gesammelten Daten. Diese Dateien werden dann vom eigentlichen Konverterskript verwendet.
 
-### Konvertieren Sie History-Daten in eine DB
-Die history2db.js befindet sich im Verzeichnis "converter".
+#### Analysesql.js
+Die analysesql.js finden Sie im Verzeichnis "converter".
+Dieses Skript sammelt Teile der oben genannten Daten für eine SQL-Instanz.
 
-Das Skript verwendet die generierten JSON-Dateien vom History-Adapter auf der Festplatte direkt, um sie in die Datenbank zu übertragen.
-Außerdem werden die bereits generierten Datendateien für bereits vorhandene Werte in der Ziel-DB verwendet, um nur nicht vorhandene Daten zu konvertieren.
+** Verwendung **: nodejs analysesql.js [<SQL-Instanz>] [<Loglevel>] ** Beispiel **: nodejs analysesql.js sql.0 info
 
-Das Skript kann ohne jeden Analyseschritt ausgeführt werden, dann müssen Sie die Startdaten als Parameter festlegen und es wird einfach alles von diesem Zeitpunkt zeitlich rückwärts konvertieren.
-Wenn Sie zuvor eine Analyse ausgeführt haben und die älteste DBValues.json-Datei vorhanden ist, werden nur diese Datenpunkte konvertiert, sofern Sie diese nicht mit Parametern ändern.
-Wenn zuvor eine Analyse ausgeführt wurde und die Datendateien verwendet werden, werden sie auch mit allen konvertierten Daten aktualisiert, sodass bei einem zweiten Durchlauf normalerweise keine Duplikate erzeugt werden.
-Um die Daten zurückzusetzen, löschen Sie die Dateien "earliestDBValues.json", "existsDBValues.json" und / oder "existsDBTypes.json".
+Parameter:
 
-Der Konverter durchläuft dann in der Zeit alle verfügbaren Tage rückwärts und bestimmt, welche Daten an InfluxDB übertragen werden.
+- **<SQL-Instanz>** Welche SQL-Adapter-Instanz soll verwendet werden? (Standard: sql.0) Wenn set der erste Parameter nach dem Skriptnamen sein muss.
+- **<Loglevel>** Loglevel für die Ausgabe (Standard: info). Wenn gesetzt muss der zweite Parameter nach dem Skriptnamen stehen.
 
-Wenn Sie den Vorgang abbrechen möchten, drücken Sie "x" oder "<CTRL-C>" und der Konverter bricht nach der aktuellen Datei ab.
+Das Skript generiert dann zwei .json-Dateien mit den gesammelten Daten. Diese Dateien werden dann vom eigentlichen Konverterskript verwendet.
+Derzeit kann --processNonExistingValuesOnly für das Konverterskript nicht verwendet werden, da die Daten nicht erfasst werden.
 
-Das Konvertierungsskript selbst sollte mit allen History-Adaptern funktionieren, die "storeState" -Methoden unterstützen.
+### History-Daten in einen DB konvertieren
+Die history2db.js finden Sie im Verzeichnis "converter".
 
-Hinweis: Die Migration vieler Daten führt zu einer gewissen Belastung des Systems, insbesondere wenn die Konverter- und Zieldatenbankinstanz auf demselben Computer ausgeführt wird. Überwachen Sie die Last und Leistung Ihres Systems während der Aktion und verwenden Sie möglicherweise den Parameter "delayMultiplicator", um die Verzögerungen im Konverter zu erhöhen.
+Das Skript verwendet direkt die generierten JSON-Dateien vom Verlaufsadapter auf der Festplatte, um sie in die Datenbank zu übertragen.
+Außerdem werden die vorgenerierten Datendateien für bereits vorhandene Werte in der Ziel-DB verwendet, um nur nicht vorhandene Daten zu konvertieren.
 
-** Verwendung: ** nodejs history2influx.js DB-Instance [Loglevel] [Startdatum | 0] [Pfad-zu-Daten] [delayMultiplicator] [--logChangesOnly [relog-Interval (m)]] [- -ignoreExistingDBValues] [--processNonExistingValuesOnly] [--processAllDPs] [--simulate] ** Beispiel **: nodejs history2influx.js influxdb.0 info 20161001 / path / to / data 2
+Das Skript kann ohne vorherigen Analyseschritt ausgeführt werden. Dann müssen Sie die Startdaten als Parameter festlegen und es konvertiert einfach alles von diesem Zeitpunkt zurück in die Zeit.
+Wenn Sie zuvor eine Analyse ausgeführt haben und die Datei earliestDBValues.json vorhanden ist, werden nur diese Datenpunkte konvertiert, es sei denn, Sie verwenden Parameter, um dies zu ändern.
+Wenn zuvor eine Analyse ausgeführt wurde und die Datendateien verwendet werden, werden sie auch mit allen konvertierten Daten aktualisiert, sodass bei einer zweiten Ausführung normalerweise keine Duplikate generiert werden.
+Um die Daten zurückzusetzen, löschen Sie die Datei "earliestDBValues.json", "existingDBValues.json" und / oder "existingDBTypes.json".
+
+Der Konverter durchläuft dann alle als Daten verfügbaren Tage in der Zeit rückwärts und bestimmt, welche Daten an InfluxDB übertragen werden sollen.
+
+Wenn Sie den Vorgang abbrechen möchten, drücken Sie "x" oder "<STRG-C>" und der Konverter bricht nach der aktuellen Datendatei ab.
+
+Das Konverterskript selbst sollte mit allen Verlaufsadaptern funktionieren, die "storeState" -Methoden unterstützen.
+
+Hinweis: Die Migration vieler Daten führt zu einer bestimmten Systemlast, insbesondere wenn Konverter und Zieldatenbankinstanz auf demselben Computer ausgeführt werden. Überwachen Sie die Auslastung und Leistung Ihres Systems während der Aktion und verwenden Sie möglicherweise den Parameter "delayMultiplicator", um die Verzögerungen im Konverter zu erhöhen.
+
+** Verwendung: ** nodejs history2influx.js DB-Instanz [Loglevel] [Startdatum | 0] [Pfad-zu-Daten] [delayMultiplicator] [--logChangesOnly [relog-Interval (m)] [- -ignoreExistingDBValues] [--processNonExistingValuesOnly] [--processAllDPs] [--simulate] ** Beispiel **: nodejs history2influx.js influxdb.0 info 20161001 / path / to / data 2 --logChangesOnly 30 --processNonExistingValuesOnly
 
 Mögliche Optionen und Parameter:
 
 - **DB-Instanz** DB-Instanz zum Senden der Daten an den erforderlichen Parameter. Muss der erste Parameter nach dem Skriptnamen sein.
-- **Loglevel** Loglevel für die Ausgabe (Standard: info). Wenn gesetzt, muss der zweite Parameter hinter dem Skriptnamen stehen.
-- **Startdatum** Tag, an dem im Format yyyymmdd (z. B. 20161028) begonnen wird. Verwenden Sie "0", um erkannte früheste Werte zu verwenden. Wenn gesetzt, muss der dritte Parameter hinter dem Skriptnamen stehen.
-- **Pfad zu Daten** Pfad zu den Datendateien. Definiert das iobroker-Installationsverzeichnis / iobroker-data / history-data. Wenn gesetzt, muss der vierte Parameter hinter dem Skriptnamen stehen.
-- **<delayMultiplicator>** Ändern Sie die Verzögerungen zwischen mehreren Aktionen im Skript durch einen Multiplikator. "2" würde bedeuten, dass die Verzögerungen, die der Konvertierte von sich aus berechnet hatte, verdoppelt wurden. Wenn gesetzt, muss der fünfte Parameter hinter dem Skriptnamen stehen.
-- **- logChangesOnly [relog-Interval (m)]** Wenn --logChangesOnly gesetzt ist, werden die Daten analysiert und reduziert, sodass nur geänderte Werte in InfluxDB gespeichert werden. Zusätzlich kann ein "relog-Intervall (s)" in Minuten eingestellt werden, um nach diesem Intervall unveränderte Werte erneut zu protokollieren.
-- **- ignoreExistingDBValues** Mit diesem Parameter werden alle vorhandenen Daten ignoriert und alle Daten in die DB eingefügt. Bitte stellen Sie sicher, dass keine Duplikate generiert werden. Diese Option ist nützlich, um "Löcher" in den Daten zu beheben, bei denen einige Daten fehlen. Standardmäßig werden nur alle Datenpunkte mit mindestens einem Eintrag in der DB gefüllt. Dies kann durch --processAllDPs überschrieben werden
-- **- processNonExistingValuesOnly** Mit diesem Parameter wird die Datei "Vorhandene Datenpunkte nach Tag" aus dem Analyseskript für jeden Tag und Datenpunkt verwendet und geprüft. In diesem Modus werden die vorhandenen DB-Werte immer ignoriert und auch nicht aktualisiert. Führen Sie nach diesem Modus eine weitere Analyse durch !!!
-- **- processAllDPs** Mit diesem Parameter stellen Sie sicher, dass alle vorhandenen Datenpunkte aus den History-Dateien in die DB übernommen werden, auch wenn diese in dieser DB noch nicht vorhanden sind.
-- **- simulate** Mit diesem Parameter aktivieren Sie den Simulationsmodus. Dies bedeutet, dass kein Schreibvorgang stattfindet und auch die Analysedateien beim Beenden nicht aktualisiert werden.
+- **Loglevel** Loglevel für die Ausgabe (Default: info). Wenn gesetzt muss der zweite Parameter nach dem Skriptnamen stehen.
+- **Startdatum** Starttag im Format JJJJMTT (z. B. 20161028). Verwenden Sie "0", um erkannte früheste Werte zu verwenden. Wenn gesetzt, muss der dritte Parameter nach dem Skriptnamen stehen.
+- **Pfad zu Daten** Pfad zu den Datendateien. Standardmäßig in das iobroker-Installationsverzeichnis / iobroker-data / history-data. Wenn gesetzt, muss der vierte Parameter nach dem Skriptnamen stehen.
+- **<delayMultiplicator>** Ändern Sie die Verzögerungen zwischen mehreren Aktionen im Skript durch einen Multiplikator. "2" würde bedeuten, dass sich die Verzögerungen verdoppeln, die der Konvertierte selbst berechnet hat. Wenn gesetzt, muss der fünfte Parameter nach dem Skriptnamen stehen.
+- **- logChangesOnly [relog-Interval (m)]** Wenn --logChangesOnly gesetzt ist, werden die Daten analysiert und reduziert, so dass nur geänderte Werte in InfluxDB gespeichert werden. Zusätzlich kann ein "Relog-Intervall (e)" in Minuten eingestellt werden, um unveränderte Werte nach diesem Intervall neu zu protokollieren.
+- **- ignoreExistingDBValues** Mit diesem Parameter werden alle vorhandenen Daten ignoriert und alle Daten in den DB eingefügt. Bitte stellen Sie sicher, dass keine Duplikate generiert werden. Diese Option ist nützlich, um "Löcher" in den Daten zu beheben, in denen einige Daten fehlen. Standardmäßig werden nur alle Datenpunkte mit mindestens einem Eintrag in der Datenbank gefüllt. Dies kann von --processAllDPs überschrieben werden
+- **- processNonExistingValuesOnly** Mit diesem Parameter wird die Datei "Vorhandene Datenpunkte nach Tag" aus dem Analyseskript verwendet und für jeden Tag und Datenpunkt geprüft. In diesem Modus werden die vorhandenen DB-Werte immer ignoriert und auch nicht aktualisiert. Bitte führen Sie einen weiteren Analyselauf durch, nachdem Sie diesen Modus verwendet haben !!!
+- **- processAllDPs** Mit diesem Parameter stellen Sie sicher, dass alle vorhandenen Datenpunkte aus den History-Dateien in den DB übertragen werden, auch wenn diese in diesem DB noch nicht vorhanden sind.
+- **- simulieren** Mit diesem Parameter aktivieren Sie den Simulationsmodus, dh es findet kein richtiges Schreiben statt und auch die Analysedatendateien werden beim Beenden nicht aktualisiert.
 
-## Changelog
+## 1.9.0 (2020-01-16)
+* (foxriver76) hat die Verwendung von adapter.objects entfernt
+* __erfordert js-controller> = 2.0.0__
+
+### 1.8.7 (2019-09-02)
+* (paul53) alte Dateien sollten automatisch gelöscht werden
+
+### 1.8.6
+* Behebung einiger kleinerer Probleme und Optimierung einiger Texte
+
 ### 1.8.5 (2018-07-02)
-* (Apollon77) Error fixed in storeState
+* (Apollon77) Fehler in storeState behoben
 
 ### 1.8.4 (2018-06-24)
-* (Apollon77) Fixing/allow to disable writing of start and end values
+* (Apollon77) Beheben / Deaktivieren des Schreibens von Start- und Endwerten
 
-### 1.8.0 (2018-06-19/24)
-* (Apollon77) Add option to write data to a different ID to make device changes easier. Retrieving data works for both IDs
+### 1.8.0 (2018-06-19 / 24)
+* (Apollon77) Option zum Schreiben von Daten auf eine andere ID, um Geräteänderungen zu vereinfachen. Das Abrufen von Daten funktioniert für beide IDs
 
 ### 1.7.4 (2018-04-03)
-* (AlCalzone) Fix filename handling for states with special characters
+* (AlCalzone) Die Behandlung von Dateinamen für Zustände mit Sonderzeichen wurde korrigiert
 
 ### 1.7.3 (2018-03-28)
-* (Apollon77) Respect 'keep forever' setting for retention from datapoint configuration
+* (Apollon77) Respektieren Sie die Einstellung "Für immer behalten", um die Datenpunktkonfiguration beizubehalten
 
 ### 1.7.2 (2018-02-05)
-* (bondrogeen) Admin3 Fixes
+* (bondrogeen) Admin3-Korrekturen
 
 ### 1.7.1 (2018-01-31)
-* (Bluefox) Admin3 Fixes
+* (Bluefox) Admin3-Korrekturen
 
-### 1.7.0 (2018-01-17)
-* (bluefox) Ready for Admin3
+### 1.7.0 (17.01.2018)
+* (bluefox) Bereit für Admin3
 
 ### 1.6.6 (2017-12-20)
-* (bluefox) translations
+* (Bluefox) Übersetzungen
 
 ### 1.6.5 (2017-10-05)
-* (Apollon77) fix relog value feature
+* (Apollon77) Funktion zum Fixieren von Relog-Werten
 
 ### 1.6.4 (2017-08-12)
-* (bluefox) add "save last value" option
+* (bluefox) Option "letzten Wert speichern" hinzufügen
 
 ### 1.6.3 (2017-08-03)
-* (Apollon77) fix behaviour of log interval to always log the current value
+* (Apollon77) Behobenes Verhalten des Protokollintervalls, um immer den aktuellen Wert zu protokollieren
 
 ### 1.6.2 (2017-04-07)
-* fix in datatype conversions
+* Fix bei Datentypkonvertierungen
 
-### 1.6.0 (2017-02-28)
-* (Apollon77) Replace some characters in history filenames
+### 1.6.0 (28.02.2017)
+* (Apollon77) Ersetzen Sie einige Zeichen in den Dateinamen des Verlaufs
 
 ### 1.5.3 (2017-02-22)
-* (Apollon77) Small fix for older configurations
+* (Apollon77) Kleiner Fix für ältere Konfigurationen
 
 ### 1.5.2
-* (Apollon77) Enhance Min-Delta logic for datapoints from type mixed
+* (Apollon77) Verbesserung der Min-Delta-Logik für Datenpunkte vom Typ gemischt
 
 ### 1.5.1 (2017-01-16)
-* (bluefox) Fix handling of float values in Adapter config and Datapoint config.
+* (bluefox) Fehlerbehebung beim Umgang mit Float-Werten in der Adapterkonfiguration und in der Datenpunktkonfiguration.
 
-### 1.5.0 (2016-12-01)
-* (Apollon77) Add messages enableHistory/disableHistory
-* (Apollon77) add support to log changes only if value differs a minimum value for numbers
-* (Apollon77) Fixing aggregate calculation
+### 1.5.0 (01.12.2016)
+* (Apollon77) Nachrichten hinzufügen enableHistory / disableHistory
+* (Apollon77) Unterstützung für das Protokollieren von Änderungen nur dann hinzufügen, wenn der Wert von einem Mindestwert für Zahlen abweicht
+* (Apollon77) Berechnung des Fixing-Aggregats
 
-### 1.4.0 (2016-10-29)
-* (Apollon77) add option to re-log unchanged values to make it easier for visualization
-* (Apollon77) added converter scripts to move history data to db
+### 1.4.0 (29.10.2016)
+* (Apollon77) Option hinzufügen, um unveränderte Werte neu zu protokollieren, um die Visualisierung zu vereinfachen
+* (Apollon77) hat Konverterskripte hinzugefügt, um Verlaufsdaten nach db zu verschieben
 
-### 1.3.1 (2016-09-25)
-* (Apollon77) Fixed: ts is assigned as val
-* (bluefox) Fix selector for history objects
+### 1.3.1 (25.09.2016)
+* (Apollon77) Behoben: ts wird als Wert zugewiesen
+* (bluefox) Fix Selector für Verlaufsobjekte
 
-### 1.3.0 (2016-08-30)
-* (bluefox) сompatible only with new admin
+### 1.3.0 (30.08.2016)
+* (Bluefox) Kompatibel nur mit neuen Admin
 
-### 1.2.0 (2016-08-27)
-* (bluefox) change name of object from history to custom
+### 1.2.0 (27.08.2016)
+* (bluefox) Ändere den Namen des Objekts von "history" in "custom"
 
-### 1.1.0 (2016-08-27)
-* (bluefox) fix aggregation of last point
-* (bluefox) aggregation none just deliver the raw data without any aggregation
+### 1.1.0 (27.08.2016)
+* (bluefox) fixe Aggregation des letzten Punktes
+* (bluefox) aggregation none liefert nur die Rohdaten ohne Aggregation
 
-### 1.0.5 (2016-07-24)
-* (bluefox) fix aggregation on large intervals
+### 1.0.5 (24.07.2016)
+* (Bluefox) Fix Aggregation in großen Intervallen
 
-### 1.0.4 (2016-07-05)
-* (bluefox) fix aggregation on seconds
+### 1.0.4 (05.07.2016)
+* (Bluefox) Fix Aggregation in Sekunden
 
 ### 1.0.3 (2016-05-31)
-* (bluefox) draw line to the end if ignore null
+* (bluefox) Ziehe eine Linie bis zum Ende, wenn du null ignorierst
 
-### 1.0.2 (2016-05-29)
-* (bluefox) switch max and min with each other
+### 1.0.2 (29.05.2016)
+* (bluefox) wechselt zwischen max und min
 
-### 1.0.1 (2016-05-28)
-* (bluefox) calculate end/start values for "on change" too
+### 1.0.1 (28.05.2016)
+* (bluefox) berechnet auch End- / Startwerte für "on change"
 
 ### 1.0.0 (2016-05-20)
-* (bluefox) change default aggregation name
+* (bluefox) Ändert den Standardnamen der Aggregation
 
 ### 0.4.1 (2016-05-14)
 * (bluefox) support sessionId
 
-### 0.4.0 (2016-05-05)
-* (bluefox) use aggregation file from sql adapter
-* (bluefox) fix the values storage on exit
-* (bluefox) store all cached data every 5 minutes
-* (bluefox) support of ms
+### 0.4.0 (05.05.2016)
+* (bluefox) Aggregationsdatei vom SQL-Adapter verwenden
+* (bluefox) korrigiert den Wertespeicher beim Beenden
+* (bluefox) speichert alle 5 Minuten alle zwischengespeicherten Daten
+* (Bluefox) Unterstützung von ms
 
-### 0.2.1 (2015-12-14)
-* (bluefox) add description of settings
-* (bluefox) place aggregate function into separate file to enable sharing with other adapters
-* (smiling-Jack) Add generate Demo data
-* (smiling-Jack) get history in own fork
-* (bluefox) add storeAck flag
-* (bluefox) mockup for onchange
+### 0.2.1 (14.12.2015)
+* (bluefox) Beschreibung der Einstellungen hinzufügen
+* (bluefox) Platzieren Sie die Aggregatfunktion in einer separaten Datei, um sie für andere Adapter freizugeben
+* (lächelnder Jack) Hinzufügen Demo-Daten generieren
+* (lächelnd-Jack) bekommen Geschichte in der eigenen Gabel
+* (bluefox) storeAck-Flag hinzufügen
+* (Bluefox) Modell für onchange
 
 ### 0.2.0 (2015-11-15)
-* (Smiling_Jack) save and load in adapter and not in js-controller
-* (Smiling_Jack) aggregation of data points
-* (Smiling_Jack) support of storage path
+* (Smiling_Jack) Speichern und Laden im Adapter und nicht im js-controller
+* (Smiling_Jack) Aggregation von Datenpunkten
+* (Smiling_Jack) Unterstützung des Speicherpfads
 
-### 0.1.3 (2015-02-19)
-* (bluefox) fix small error in history (Thanks on Dschaedl)
-* (bluefox) update admin page
+### 0.1.3 (19.02.2015)
+* (bluefox) behebe einen kleinen Fehler in der Geschichte (Danke an Dschaedl)
+* (Bluefox) Update Admin-Seite
 
-### 0.1.2 (2015-01-20)
-* (bluefox) enable save&close button by config
+### 0.1.2 (20.01.2015)
+* (bluefox) speichere & schließe Button per config
 
-### 0.1.1 (2015-01-10)
-* (bluefox) check if state was not deleted
+### 0.1.1 (10.01.2015)
+* (Bluefox) Überprüfen Sie, ob der Status nicht gelöscht wurde
 
 ### 0.1.0 (2015-01-02)
-* (bluefox) enable npm install
+* (bluefox) aktiviere npm install
 
-### 0.0.8 (2014-12-25)
-* (bluefox) support of de-bounce interval
+### 0.0.8 (25.12.2014)
+* (Bluefox) Unterstützung des De-Bounce-Intervalls
 
 ### 0.0.7 (2014-11-01)
-* (bluefox) store every change and not only lc != ts
+* (bluefox) speichere jede Änderung und nicht nur lc! = ts
 
-### 0.0.6 (2014-10-19)
-* (bluefox) add configuration page
+### 0.0.6 (19.10.2014)
+* (bluefox) Konfigurationsseite hinzufügen
+
+## Changelog
 
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 Bluefox <dogafox@gmail.com>, Apollon77
+Copyright (c) 2014-2020 Bluefox <dogafox@gmail.com>, Apollon77
 
 Copyright (c) 2016 Smiling_Jack
 

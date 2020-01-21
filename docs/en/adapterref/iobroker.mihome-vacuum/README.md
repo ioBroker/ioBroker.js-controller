@@ -21,6 +21,8 @@ This adapter allows you control the Xiaomi vacuum cleaner.
     - [S50 Commands](#commands-of-the-s50)
     	- [Go To](#goto)
 	- [zone Clean](#zoneclean)
+    - [rooms](#rooms)
+    - [timer](#timer)
     - [Own Commands](#send-your-own-commands)
     - [sendTo hook](#send-custom-commands-with-sendto)
 - [widget](#widget)
@@ -114,7 +116,18 @@ Example:
 ```
 [24117,26005,25767,27205,1], [24320,24693,25970,25843,1]
 ```
- 
+#### rooms
+newer vacuum cleaner with the latest Home App supports the definition of rooms, see 
+[Video](https://www.youtube.com/watch?v=vEiUZzoXfPg)
+
+Each room in the current map has an index, which is then assigned to the room from the app. From the robot we only get a mapping with room number and index. The adapter queries these rooms every time the adapter starts and creates a channel for each room, which then knows the current room index. The same happens manually with the button loadRooms. This channel can then be assigned to the ioBroker rooms. If the button roomClean is pressed, the index of the card is determined and sent to the robot, so that it can then vacuum this room. Before that the FAN power is set for single room suction. If you don't have the possibility to name the rooms in the app yet, there is also the possibility to create such a channel manually by specifying the map index. It is also possible to add zone coordinates instead of mapIndex.
+If you want to clean several rooms spontaneously, you can do this via multiRoomClean by assigning the ioBroker rooms to this data point and then pressing the button.
+
+#### timer
+As soon as the vacuum cleaner supports the room function (see above), it is also possible to create timers, which then trigger the corresponding room channels or determine their mapIndexes. 
+The timer could trigger via rooms and/or room channels directly.
+The timers themselves are created via the config area, but then become a data point. There, each timer can be activated/deactivated or skipped once. A direct start is also possible. The advantage of the ioBroker timers is that they can be displayed and used in the VIS and you can disconnect the robot from the internet, because the timers of the app are triggered from China.
+
 ### Send your own commands
 NOTE: This function should only be used by experts, as the sucker might be damaged by wrong commands
 
@@ -187,6 +200,9 @@ The supported commands are:
 | Start the remote control function | `startRemoteControl` | - none - |  |
 | Issue a move command for remote control | `move` | `velocity`, `angularVelocity`, `duration`, `sequenceNumber` | Sequence number must be sequentially, Duration is in ms |
 | End the remote control function | `stopRemoteControl` | - none - |  |
+| clean room/rooms | `cleanRooms` | `rooms` | `rooms` is a comma separated String with enum.rooms.XXX |
+| clean segment | `cleanSegments` | `rooms` | `rooms` is an Array with mapIndex or comma separated String with mapIndex |
+| clean zone | `cleanZone` | `coordinates` | `coordinates` ist a String with coordinates and count, see [zoneClean](#zoneClean) |
 
 ## Widget
 Sorry, not yet finished.
@@ -197,6 +213,15 @@ Sorry, not yet finished.
 - Widget at the time without function
 
 ## Changelog
+### 1.10.1 (2020-01-20)
+* (dirkhe) added zone as room handling
+* (dirkhe) timer could room channels directly
+
+### 1.10.0 (2020-01-17)
+* (dirkhe) added room handling
+* (dirkhe) added Timer 
+* (dirkhe) changed featurehandling 
+
 ### 1.1.6 (2018-12-06)
 * (JoJ123) Added fan speed for MOP (S50+).
 

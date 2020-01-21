@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.squeezeboxrpc/README.md
 title: 通过JSON / RPC协议的ioBroker Logitech Squeezebox适配器
-hash: vk29mGAty3uiy1arX0kymA9byW02RckHEOLSuV4HR6o=
+hash: ttmFveGL2bh+QZZkVuu7ru1jJog0VRNyXyCBYOeDUdc=
 ---
 ![商标](../../../en/adapterref/iobroker.squeezeboxrpc/admin/squeezeboxrpc.png)
 
@@ -21,7 +21,7 @@ hash: vk29mGAty3uiy1arX0kymA9byW02RckHEOLSuV4HR6o=
 这是一个备用适配器，它使用JSON / RPC-Protokoll获取数据并将命令发送到Logitech媒体服务器（[LMS](https://de.wikipedia.org/wiki/Logitech_Media_Server)），以控制已连接的设备，例如
 
 *原生[squeezebox]（https://de.wikipedia.org/wiki/Squeezebox），
-*树莓派，带有附加的音频模块和基于小型Linux的固件，例如[picoreplayer]（https://picoreplayer.org/）或[max2play]（https://www.max2play.com）。
+*树莓派，具有附加的音频模块和基于小型Linux的固件，例如[picoreplayer]（https://picoreplayer.org/）或[max2play]（https://www.max2play.com）。
 *带有chromecast，airplay或UPnP / DLNA设备插件
 
 LMS服务器可以在硬盘或NAS上管理/提供非常大的音乐收藏，并连接到不同的流媒体提供商，例如Spotify，Deezer，Soundcloud，shoutcast，tunein，napster，pandora，潮汐等
@@ -34,9 +34,9 @@ LMS的实际主Web界面还使用rpc / json-protocol获取所有需要的信息�
 ＃＃ 特征
 -LMS服务提供的大多数数据在适配器中可用
 -有关播放器状态，歌曲标题，艺术家，专辑，插图，播放列表的详细信息
--许多控制功能可播放，暂停，停止，前进，快退，重复，随机播放，播放收藏夹，跳转到时间（绝对和相对），跳转到播放列表索引（绝对和相对），电源开/关和预设按钮
+-许多控制功能可播放，暂停，停止，前进，快退，重复，随机播放，播放收藏夹，跳至时间（绝对和相对），跳至播放列表索引（绝对和相对），电源开/关和预设按钮
 -服务器中的所有收藏夹和所有子级别
--包含许多用于iobroker-vis组件的小部件，以创建自己的控制用户界面（选择播放器，选择收藏夹，管理同步组，用于播放/暂停，正转，滚动，重复模式和随机播放模式选择的按钮）
+-包含用于iobroker-vis组件的许多小部件以创建自己的控制用户界面（选择播放器，选择收藏夹，管理同步组，用于播放/暂停，正向，滚动，重复模式和随机播放模式选择的按钮）
 
 vis小部件的文档可在vis或[小部件文档/德语](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.squeezeboxrpc/blob/master/widgets/squeezeboxrpc/doc.html)中找到
 
@@ -52,7 +52,7 @@ vis小部件的文档可在vis或[小部件文档/德语](https://htmlpreview.gi
 | ----------------- | ------------------------------ |
 | LastScan |上次音乐扫描的时间戳|
 | PlayerCount |已知玩家数|
-| PlayerCountOther |已知其他玩家数量|
+| PlayerCountOther |已知其他玩家数|
 | PlayerCountSN |已知SN播放器数量|
 |总专辑|所有已知专辑的数量|
 | TotalArtists |所有已知艺术家的数目 |
@@ -78,12 +78,12 @@ vis小部件的文档可在vis或[小部件文档/德语](https://htmlpreview.gi
 ###玩家
 对于每个玩家该模式显示是否可以更改值。在属性中描述了所采取的操作
 
-状态|模式|说明-------------------- | ---- | -------------------------------------------------- ---专辑| R /-|当前专辑的名称艺术家| R /-|艺术家作品名称的名称| R /-|网址至图稿比特率| R /-|轨道的比特率已连接| R /-|玩家的连接状态（0/1）持续时间| R /-|曲目时长| R /-| IP | R /-|的流派播放器的IP模式| R /-|播放/暂停/停止玩家名称| R /-|播放器的名称PlayerID | R /-|玩家ID播放列表| R /-|实际播放列表为JSON PlaylistCurrentIndex | R / W |通过指定trackindex移到绝对位置，或者在开头以+或-相对。示例10，-3，+ 2播放列表重复| R / W |重复播放歌曲（1）/播放列表（2）/不要重复播放（0）播放列表随机播放| R / W |随机播放列表（1）/随机专辑（2）/不随机播放（0）Power | R / W |获取/设置播放器电源状态off（0）/ on（1）RadioName | R /-|电台名称名称费率| R /-|歌曲的评级| R /-|如果是远程流（1）SyncMaster | R /-| Syncmaster SyncSlaves的ID / MAC | R /-|同步组时间中的播放器ID / Mac | R /-|歌曲的播放时间标题| R /-|歌曲名称类型| R /-|媒体类型（例如MP3广播）Url | R /-|轨道/流的网址音量| R / W | get / set播放器的音量（0-100）状态| R / W |获取/设置播放状态：暂停（0），播放（1），停止（2）
+状态|模式|说明-------------------- | ---- | -------------------------------------------------- ---专辑| R /-|当前专辑的名称艺术家| R /-|艺术家作品名称的名称| R /-|网址至图稿比特率| R /-|轨道的比特率已连接| R /-|玩家的连接状态（0/1）持续时间| R /-|曲目时长| R /-| IP | R /-|的流派播放器的IP模式| R /-|播放/暂停/停止玩家名| R /-|播放器的名称PlayerID | R /-|玩家ID播放列表| R /-|实际播放列表为JSON PlaylistCurrentIndex | R / W |通过指定trackindex移到绝对位置，或者在开头以+或-相对。示例10，-3，+ 2播放列表重复| R / W |重复播放歌曲（1）/播放列表（2）/不要重复播放（0）播放列表随机播放| R / W |随机播放列表（1）/随机专辑（2）/不随机播放（0）Power | R / W |获取/设置播放器电源状态off（0）/ on（1）RadioName | R /-|无线电台名称名称费率| R /-|歌曲的评级| R /-|如果是远程流（1）SyncMaster | R /-| Syncmaster SyncSlaves的ID / MAC | R /-|同步组时间中的播放器ID / Mac | R /-|歌曲的播放时间标题| R /-|歌曲名称类型| R /-|媒体类型（例如MP3广播）Url | R /-|轨道/流的网址音量| R / W | get / set播放器的音量（0-100）状态| R / W |获取/设置播放状态：暂停（0），播放（1），停止（2）
 
-播放列表实际提供以下属性（如果在LMS中可用）。
+播放列表实际提供以下属性（如果LMS中可用）。
 Somme属性取决于歌曲的类型（流/文件/ ...）。所有属性均为只读
 
-属性|说明----------------- | -------------------------------------------------- -专辑当前专辑的名称艺术家|艺术家ArtworkUrl的名称|网址至图稿比特率|曲目的比特率时长|曲目持续时间RadioName |电台名称名称费率|歌曲标题的分级|歌曲名称类型|媒体类型（例如MP3广播）url |轨道/流索引的网址|播放列表ID中歌曲的索引|歌曲的编号
+属性|说明----------------- | -------------------------------------------------- ---专辑|当前专辑的名称艺术家|艺术家ArtworkUrl的名称|网址至图稿比特率|曲目的比特率时长|曲目持续时间RadioName |电台名称名称费率|歌曲标题的分级|歌曲标题类型|媒体类型（例如MP3广播）url |轨道/流索引的网址|播放列表ID中歌曲的索引|歌曲的编号
 
 其他定义的按钮：
 
@@ -95,17 +95,23 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 
 ＃＃ 去做
 *更多测试/修复
-*添加telnet通信以从服务器获取推送事件以优化轮询
 *减少对其他软件包的依赖（squeezenode）
 *更多配置可选打开/关闭功能以改善内存和性能
+*添加播放列表小部件
+*添加玩家控制的圆形旋钮小部件
+* ~~添加telnet通信以从服务器获取推送事件以优化轮询~~
 * ~~实现命令状态以放置用于服务器和播放器的用户个人命令（通过json）~~
-* ~~实现更多控制功能（选择播放列表pos以播放，ffwd，frew，跳到歌曲，重复歌曲，随机歌曲中的时间位置）~~
-* ~~~~~~~~~~~~~~~~~~~~~~
-* ~~添加收藏夹的图稿（station-logo / playlist-cover）~~
+* ~~实现更多控制功能（选择播放列表pos来播放，ffwd，frew，跳到歌曲，重复歌曲，随机歌曲中的时间位置）~~
+* ~~将播放列表作为json数组添加到playerdata ~~
+* ~~添加艺术品（station-logo / playlist-cover）作为收藏夹~~
 * ~~实现收藏夹的更多级别（子目录）~~
 * ~~自动发现罗技媒体服务器~~
 
 ## Changelog
+### 0.8.29
+ * optimize handling of player state power and connected
+### 0.8.28
+ * add advanced signaling function with telnet and fix some more authorization issues with LMS
 ### 0.8.27
  * initialization for the new calctype property if empty in volumebar
 ### 0.8.26

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: xLaWr2a0pUZpiYw+CrQjdZVwELPWYlVOjwdxXWfJABY=
+hash: Exura2yBrEXdqssjKxhv8ukzoEsx89Y0kzExyM1kZ8U=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -38,20 +38,23 @@ hash: xLaWr2a0pUZpiYw+CrQjdZVwELPWYlVOjwdxXWfJABY=
 *预定加热时间
 *稍后将提供可视化示例
 
+[常问问题](doc/FAQ.md)
+
+##安装
 ##设置
 ###主要
 *功能=每个房间用于检测恒温器，执行器和传感器的功能。这是系统枚举之一
 *时区=用于cron调整cron作业
-* Feiertag的路径-适配器=如果您使用Feiertag-Adapter自动检测今天的公共假期，则在此处设置路径（例如feiertage.0）
+* Feiertag的路径-适配器=如果您拥有使用Feiertag-Adapter自动检测今天的公众假期的权限，请在此处设置路径（例如feiertage.0）
 *当管理员打开时删除所有设备=应该被禁用。仅在需要删除所有房间，执行器和传感器设置时才启用它。当适配器管理员打开时，将执行设备搜索
 *使用的传感器=如果您有窗户传感器，并且要在窗户打开时降低目标温度，则启用该选项
 *使用的执行器=如果要直接从适配器控制执行器。万一温控器和执行器之间没有直接连接，以防万一。
-*如果没有加热时间，则使用执行器=仅对执行器有效。定义没有加热时间时如何设置执行器
+*如果没有加热时间=仅对执行器有效，请使用执行器。定义在没有加热时间的情况下如何设置执行器
 *如果没有恒温器，则使用执行器=仅对执行器有效。如果您的房间没有恒温器但带有加热执行器，则可以永久打开或关闭它们
 
 ###个人资料
 *配置文件类型=支持三种不同的配置文件类型（周一-周日，或周一-周五和周六/周日或每天）
-*配置文件数量=如果需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
+*配置文件数量=如果您需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
 *周期数=定义您需要多少个不同温度的每日区域。设置的越多，将创建更多的数据点。最好使用较低的值（例如5）
 *““公众假期如星期天=如果您想在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
 * HeatPeriod =加热周期的开始和结束日期。用于设置“ HeatingPeriodActive”
@@ -61,7 +64,7 @@ hash: xLaWr2a0pUZpiYw+CrQjdZVwELPWYlVOjwdxXWfJABY=
 *按右侧的编辑按钮可打开该房间的恒温器，执行器和传感器的设置窗口
 
 ###编辑室
-*在这里您可以验证并设置恒温器，执行器和传感器的对象ID
+*您可以在此处验证并设置恒温器，执行器和传感器的对象ID
 *您可以手动添加新的恒温器，执行器或传感器。只需按+按钮。然后，您会得到一个空行，需要填写。编辑按钮将打开系统上可用设备的列表
 *温控器：
 
@@ -83,15 +86,15 @@ hash: xLaWr2a0pUZpiYw+CrQjdZVwELPWYlVOjwdxXWfJABY=
 | LastProgramRun |显示适配器运行的最后一次时间 |
 
 ###温度降低/升高
-| DP名称|说明|相对降低的目标温度|绝对降低的目标温度|
+| DP名称|描述|相对降低的目标温度|绝对降低的目标温度|
 |-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
-|来宾增加温度，因为客人想变暖|通过Profiles.0.room.GuestIncrease增加当前剖面温度。将目标设置为Profiles.0.room.absolute.GuestIncrease |
-| PartyNow |降低温度，因为温度变高'|通过Profiles.0.room.PartyDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.PartyDecrease |
-|现在|我们在场，如果我们不在场，降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
+|来宾增加温度，因为客人想要变暖|通过Profiles.0.room.GuestIncrease增加当前温度曲线温度将目标设置为Profiles.0.room.absolute.GuestIncrease |
+| PartyNow |降低温度，因为温度变高'|通过Profiles.0.room.PartyDecrease降低当前温度曲线|将目标设置为Profiles.0.room.absolute.PartyDecrease |
+|现在|如果不存在，我们在场|降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
 |假期缺席|我们缺席，所以周末也减少通过Profiles.0.room.VacationAbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.VacationAbsentDecrease |
 
-*在两种情况下，仅使用一次降脂（在适配器的先前版本中，可以使用一次以上的脱脂剂）
-*在绝对脱脂配方中，仅使用不等于0°C的目标值。如果不需要降低某个房间的温度，则将降低值保持在0°C
+*在两种情况下，仅使用一次降脂（在适配器的早期版本中，可以使用一次以上的脱脂剂）
+*在绝对脱脂配方中，仅使用不等于0°C的目标值。如果您不需要降低某个房间的温度，则将降低值保持在0°C
 
 ＃＃ 其他
 * HolidayPresent
@@ -105,13 +108,13 @@ hash: xLaWr2a0pUZpiYw+CrQjdZVwELPWYlVOjwdxXWfJABY=
 ###窗口打开
 如果“使用传感器”处于活动状态并且配置了一个房间的传感器，则
 
-a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降低当前窗口温度（true）时通过Profiles.0.room.WindowOpenDecrease b）将窗口打开时将目标设置为Profiles.0.room.absolute.WindowOpenDecrease（true）如果绝对降低已配置
+a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降低当打开窗口时的当前温度（true）。如果配置了相对降低，则b）将目标设置为Profiles.0.room.absolute.WindowOpenDecrease如果绝对降低则将窗口打开（true）已配置
 
 可选地，可以使用延迟。如果仅在短时间内打开窗户，则传感器延迟可以避免在很短的时间内减小并恢复正常。
 
 ##医疗支持
 您可以使用日历来更改适配器中的数据点。
-只需在admin中配置来自ical的事件即可。支持的是
+只需在admin中从ical配置事件。支持的是
 
 *加热控制0.存在
 *加热控制0.HolidayPresent
@@ -120,16 +123,18 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 * heatingcontrol.0.PartyNow
 
 ＃＃ 要求
-*需要节点版本8或更高版本
+*需要8版或更高版本的节点
 
 ##问题和功能请求
 *如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
 
 ## Changelog
+### 0.3.15 (2020-01-18)
+* (René) bug fix: avoid exception when go to override if MinTemperature-check is active
 
-
-### 0.3.14 (2019-12-29)
+### 0.3.14 (2020-01-12)
 * (René) format conversion for temperatures in string to number
+* (René) ack for MinTemperature
 
 ### 0.3.13 (2019-12-28)
 * (René) bugfix create cron jobs for profile type 3 (daily)
@@ -253,7 +258,7 @@ Attention: some changes in datapoints!!
 
 ## License
 
-Copyright (C) <2019>  <info@rg-engineering.eu>
+Copyright (C) <2019-2020>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

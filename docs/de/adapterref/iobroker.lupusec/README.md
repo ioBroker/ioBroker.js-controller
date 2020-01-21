@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: sTG65f0ejF9UmC0jh/+K+XPxy/PQnqFqVQdxJQjldPw=
+hash: 28EbynNRDbIp+fW+vSFfE6tmF/G1bZAGai4HpgQ13HY=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -16,7 +16,7 @@ hash: sTG65f0ejF9UmC0jh/+K+XPxy/PQnqFqVQdxJQjldPw=
 ![NPM](https://nodei.co/npm/iobroker.lupusec.png?downloads=true)
 
 # IoBroker.lupusec
-** Erfordert node.js 8.0 oder höher und Admin v3! **
+** Benötigt node.js 8.0 oder höher und Admin v3! **
 
 Dieser Adapter verbindet das Lupusec Alarmsystem XT1 Plus, XT2, XT2 Plus und XT3 mit ioBroker.
 Der XT1 (ohne Plus) wird nicht unterstützt. Sie können den Status der Lupusec-Sensoren wie Türen, Fenster, Wasser, Rauchmelder und den Status der Alarmanlage ablesen.
@@ -46,6 +46,7 @@ Vollständig unterstützt und individuell angepasst sind folgende Geräte:
   - Bewegungsmelder / 360-Grad-Bewegungsmelder (Typ 9)
   - CO-Sensor (Typ 13)
   - Rauchmelder / Wärmemelder (Typ 14)
+  - Temperaturfühler V2 (Typ 20)
   - Sirene innen (Typ 21)
   - Statusanzeige / Mini-Innensirene (Typ 22)
   - Netzschalter (Typ 24)
@@ -104,6 +105,12 @@ Folgende Dinge sind in der Zukunft geplant:
 * Verfassen einer Dokumentation für jeden Sensor / jedes Gerät
 
 ## Changelog
+
+### 1.2.5 (21.01.2019)
+* (Stübi) Change logic to get faster sensor states
+
+### 1.2.4 (09.01.2019)
+* (Stübi) Add device: temperature sensor v2
 
 ### 1.2.3 (06.09.2019)
 * (Stübi) Add device: Repeater V2
@@ -201,7 +208,7 @@ Folgende Dinge sind in der Zukunft geplant:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 Thorsten Stueben <thorsten@stueben.de>
+Copyright (c) 2019-2020 Thorsten Stueben <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

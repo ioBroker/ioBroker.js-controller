@@ -21,6 +21,30 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### 0.9.1 (2020-01-21)
+* The progress report for network healing now correctly distinguishes between not yet healed nodes and nodes that failed to heal
+* A potential source of stalled communication because of a missing timeout was eliminated
+
+### 0.9.0 (2020-01-21)
+Updated `zwave-js` to v2.11.0. This includes the following changes:
+* Improved `Multilevel Switch` support for some devices that report the immediate state after a `targetValue` change but not the final values
+* Fixed two issues where the communication with nodes (especially during the interview) could get stuck
+
+### 0.8.2 (2020-01-18)
+Updated `zwave-js` to v2.10.0. This includes the following changes:
+* Locally reset devices are now treated like failing nodes and automatically removed from the controller
+* The Notification status is now also queried on wakeup
+* The status of non-reporting listening nodes is now regularly queried
+* The controller is now correctly treated as an awake node when prioritizing messages
+
+
+### 0.8.1 (2020-01-07)
+* Brand new icon!
+* Updated `zwave-js` to v2.9.1. This includes the following fixes:
+	* Notification CC Reports that are received as a response during the interview are now correctly handled
+	* Status changes for nodes are now handled better
+	* The scenes of the Scene Activation CC are now automatically reset after the duration has elapsed.
+
 ### 0.8.0 (2020-01-04)
 * The cache file is now saved in `iobroker-data`, so it doesn't get lost between updates
 * Added a button on the device overview tab to clear the cache

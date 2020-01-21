@@ -160,9 +160,11 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 ## Todo
 
 * more testing/fixing
-* add telnet communication to get push events from the server to optimize the polling
 * reduce dependencys to other packages (squeezenode)
-* more configuration to optionaly turn features on/off to improve memory and performance 
+* more configuration to optionaly turn features on/off to improve memory and performance
+* add playlist widget
+* add player controlled circle knob widget
+* ~~add telnet communication to get push events from the server to optimize the polling~~
 * ~~implement a command state to place user individual commands (via json) for server and player~~
 * ~~implement more control features (select playlist pos to play,ffwd,frew,jump to a time position in song,repeat song,random song)~~
 * ~~add the playlist to playerdata as json array~~
@@ -171,6 +173,10 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * ~~autodiscover logitech media server~~
 
 ## Changelog
+### 0.8.29
+ * optimize handling of player state power and connected
+### 0.8.28
+ * add advanced signaling function with telnet and fix some more authorization issues with LMS
 ### 0.8.27
  * initialization for the new calctype property if empty in volumebar
 ### 0.8.26

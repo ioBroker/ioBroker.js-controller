@@ -157,6 +157,9 @@ lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_
 ```
 
 ## Changelog
+### 1.1.1 (2020-01-09)
+* (Peter Müller) Fixed wrong communication errror detection on some sensors.
+
 ### 1.1.0 (2019-11-11)
 * (Peter Müller) Own implementation of reading the sensor data.
 * (Peter Müller) Fixed bug on decimals rounding.

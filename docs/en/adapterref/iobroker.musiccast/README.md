@@ -199,6 +199,9 @@ The following objects are currently implemented:
 * dialog level
 
 ## Changelog
+#### 0.1.3
+* (foxthefox) added writing for linkControl/linkAudioDelay/linkAudioQuality
+
 #### 0.1.2
 * (Scrounger) correction of type mismatch (string boolean)
 

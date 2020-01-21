@@ -34,6 +34,12 @@ Connect your Philips Hue Lights with ioBroker.
 
 Please also see [release page](https://github.com/Zefau/ioBroker.hue-extended/releases) for changelog and detailed information.
 
+### 1.2.0 (2019-11-23)
+- (Zefau) added option to change `transitiontime` on scenes (see [#24](https://github.com/Zefau/ioBroker.hue-extended/issues/24))
+
+### 1.1.7 (2019-11-23)
+- (Zefau) fixed failing retrieval of new user / token from admin panel (see [#20](https://github.com/Zefau/ioBroker.hue-extended/issues/20))
+
 ### 1.1.7 (2019-11-23)
 - (Zefau) fixed incorrect behaviour of garbage collector (again)
 

@@ -125,6 +125,9 @@ zusätzlich werden für das Empfänger-Protokoll Version 2.0 folgende Datenpunkt
 
 
 ## Changelog
+### 0.1.2
+- (bowao) learningMode set to true if not defined
+
 ### 0.1.1
 - (bowao) New learning mode with 10min. auto-timeout
 

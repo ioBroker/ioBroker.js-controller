@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.velux/README.md
 title: ioBroker.velux
-hash: Rdrp2GJ5SQJIK/StfKJqEs1mxlmmbm3CGTJMEIN+2jU=
+hash: 7e92LnjeE0SgrBs2hMe35kLcWdVhbLQF+CYh6a6cLOs=
 ---
 ![логотип](../../../en/adapterref/iobroker.velux/admin/velux.png)
 
@@ -21,18 +21,12 @@ hash: Rdrp2GJ5SQJIK/StfKJqEs1mxlmmbm3CGTJMEIN+2jU=
 ## Использование
 Введите под модулем вашу новую target_position. Windows допускает только target_position 0.
 
-Чтобы преобразовать температуру
-
-```
-createState("veluxTemperature", 0,{
-    "role": "level.temperature"});
-on('velux.0.home.rooms01.temperature',function(obj){
-   setState("veluxTemperature", obj.state.val / 10);
-})
-```
-
 ## Changelog
 
+### 0.0.4
+
+* Improve room assignment
+  
 ### 0.0.2
 
 * add changing target_position for non windows  
@@ -45,7 +39,7 @@ on('velux.0.home.rooms01.temperature',function(obj){
 
 MIT License
 
-Copyright (c) 2019 ta2k <tombox2020@gmail.com>
+Copyright (c) 2020 ta2k <tombox2020@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

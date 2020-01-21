@@ -108,6 +108,9 @@ CCU和info文件夹包含网关的基本信息。
 ###常见问题
 
 ## Changelog
+### 2.5.3 (2020-01-15)
+* (foxriver76) improved error handling in edge cases and more verbose logging on errors
+
 ### 2.5.2 (2019-12-29)
 * (foxriver76) fixed issue which originated by undefined tclsh alias on CCU for dutycycle.fn script
 

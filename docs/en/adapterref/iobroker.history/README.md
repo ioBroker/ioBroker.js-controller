@@ -237,6 +237,9 @@ Possible options and Parameter:
 - **--simulate**: With this parameter you enable the simulation mode, means that no real write happends and also the analyze-datafiles will not be updated on exit.
 
 ## Changelog
+## 1.9.0 (2020-01-16)
+* (foxriver76) removed usage of adapter.objects
+* __requires js-controller >= 2.0.0__
 
 ### 1.8.7 (2019-09-02)
 * (paul53) old files should be deleted automatically
@@ -384,7 +387,7 @@ Possible options and Parameter:
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 Bluefox <dogafox@gmail.com>, Apollon77
+Copyright (c) 2014-2020 Bluefox <dogafox@gmail.com>, Apollon77
 
 Copyright (c) 2016 Smiling_Jack
 

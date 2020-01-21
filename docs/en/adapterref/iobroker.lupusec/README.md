@@ -42,6 +42,7 @@ Fully supported and individually adapted are following devices:
   - Motion detector / 360 degree motion detector (Type 9)
   - CO sensor (Type 13)
   - Smoke Detector / Heat Detector (Type 14)
+  - Temperature Sensor V2 (Type 20)
   - Siren inside (Type 21)
   - Status Indicator / Mini Indoor Siren (Type 22)
   - Power Switch (Type 24)
@@ -97,6 +98,12 @@ You find your Nuki door opener under 'devices' like the Lupusec devices. The Nuk
 ![lupusec_obj_nuki](docs/en/img/lupusec_obj_nuki.png)
 
 ## Changelog
+
+### 1.2.5 (21.01.2019)
+* (Stübi) Change logic to get faster sensor states
+
+### 1.2.4 (09.01.2019)
+* (Stübi) Add device: temperature sensor v2
 
 ### 1.2.3 (06.09.2019)
 * (Stübi) Add device: Repeater V2
@@ -199,7 +206,7 @@ Following things are planed in the future:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 Thorsten Stueben <thorsten@stueben.de>
+Copyright (c) 2019-2020 Thorsten Stueben <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

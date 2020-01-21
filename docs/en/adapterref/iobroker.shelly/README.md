@@ -43,6 +43,9 @@ You find a detailed installation documentation here:
 
 ## Changelog
 
+### 3.1.7 (08.01.2020)
+* (Stübi) - Add state energy to Shelly dimmer 
+
 ### 3.1.6 (30.12.2019)
 * (Stübi) - Add device Shelly Door/Windows sensor 
 * (Stübi) - Bugfixing, auto update new firmware
@@ -153,7 +156,7 @@ You find a detailed installation documentation here:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Thorsten Stueben <thorsten@stueben.de>, Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2020 Thorsten Stueben <thorsten@stueben.de>, Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

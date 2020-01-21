@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.deconz/README.md
 title: без заголовка
-hash: RcbSbEHHWMMzUt2ZFMhwJH8ejTQpg1/E8GOCQFxxJv8=
+hash: q3KR5mKvtQHOYZ6IQR961zO2zHamS9OUjsrQaKqZK/4=
 ---
 ![логотип](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -17,7 +17,7 @@ ioBroker deConz Дрезден-Электроник Адаптер
 
 ==============
 
-Английский -------------------- Подключается к программному обеспечению deConz, разработанному dresden-elektronik. Это программное обеспечение призвано стать универсальным решением ZigBee Gateway с использованием аппаратного обеспечения от dresden-elektronik, USB-накопителя ConBee и RaspBee, модуля для Raspberry Pi.
+Английский -------------------- Подключается к программному обеспечению deConz, разработанному dresden-elektronik. Это программное обеспечение является универсальным решением ZigBee Gateway, использующим аппаратное обеспечение от dresden-elektronik, USB-накопителя ConBee и RaspBee, модуль для Raspberry Pi.
 
 Вы должны сначала связаться с deConz.
 
@@ -25,16 +25,36 @@ ioBroker deConz Дрезден-Электроник Адаптер
 
     б) Введите порт, если вы его изменили, иначе оставьте его пустым.
 
-2. После ввода и сохранения IP-адреса и порта нажмите кнопку «Создать ключ API». Теперь вы можете ввести учетные данные для deConz или зайти в приложение Phoscon и зарегистрировать ioBroker в качестве стороннего приложения.
+2. После ввода и сохранения IP-адреса и порта нажмите кнопку «Создать ключ API». Теперь вы можете ввести учетные данные для deConz или перейти к приложению Phoscon и зарегистрировать ioBroker в качестве стороннего приложения.
 
 ## Ссылки
 [deConz](https://www.dresden-elektronik.de/funktechnik/products/software/pc/deconz/) [REST плагин](https://github.com/dresden-elektronik/deconz-rest-plugin) [Шлюзы (Оборудование)](https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
 
 ## Уведомление
 ### Нет поддержки бета-версий deConz
-Обязательный node.js> = 8.x.x
+### Требуемая версия js-контроллера> 2.x.x
+Обязательный node.js> = 10.x.x
+
+## [Спонсоры](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
 
 ## Changelog
+
+### 1.2.4
+* dynamicly add boolean states for button events
+* added new object definitions
+* (mobilutz) remove ip overwrite
+* (njeisecke) add transitiontime for bri_inc (dim step)
+
+
+### 1.2.3
+* fix expire time for alive 
+* add object for open zigbee network to add new devices without admin config
+* removed input for opne network time
+* fix device list in admin config
+
+### 1.2.2
+* adapter configuration handling rewritten
+* fix lastupdated UTC to locale time
 
 ### 1.2.1
 * convert lastupdated time to locale
