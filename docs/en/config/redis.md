@@ -1,5 +1,5 @@
 ---
-title: Extended configuration - Redis
+title: Redis
 lastChanged: 13.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/config/redis.md
 translatedFrom: de

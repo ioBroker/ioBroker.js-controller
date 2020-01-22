@@ -2,7 +2,7 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/config/cli.md
-title: Консольные команды для ioBroker
+title: Консольные команды
 hash: dhaADQZqpsslTjSaOFoQ5HJ8AK5tBBSCGOimap1w4jM=
 ---
 # Консольные команды для ioBroker

@@ -98,11 +98,10 @@
   * [User und rights control](config/userrights)
   * [Authentication](config/login)
   * [SSL for Web access](config/encryption)
-  * [CLI](config/commandline)
+  * [CLI](config/cli)
   * [Multi-Host](config/multihost)
   * [Data storage with Redis](config/redis)
   * [Backup](config/backup)
-  * [CLI](config/cli)
 
 * en:Troubleshooting;de:Fehlerbehebung;ru:Поиск и решение проблем;zh-cn:故障排除手册
   * [Introduction](trouble/README)

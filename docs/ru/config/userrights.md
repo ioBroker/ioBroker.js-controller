@@ -1,5 +1,5 @@
 ---
-title: Расширенная настройка - Управление пользователями
+title: Управление пользователями
 lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/config/userrights.md
 translatedFrom: de

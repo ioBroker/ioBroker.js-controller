@@ -1,5 +1,5 @@
 ---
-title: Расширенная настройка - аутентификация
+title: Аутентификация
 lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/config/login.md
 translatedFrom: de

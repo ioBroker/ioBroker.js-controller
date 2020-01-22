@@ -1,5 +1,5 @@
 ---
-title: Advanced Configuration - Multihost
+title: Multihost
 lastChanged: 13.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/config/multihost.md
 translatedFrom: de

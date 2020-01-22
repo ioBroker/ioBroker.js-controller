@@ -1,5 +1,5 @@
 ---
-title: Расширенная настройка - шифрование
+title: Шифрование
 lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/config/encryption.md
 translatedFrom: de

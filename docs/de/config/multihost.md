@@ -1,5 +1,5 @@
 ---
-title:       "Erweiterte Konfiguration - Multihost"
+title:       "Multihost"
 lastChanged: "13.09.2018"
 editLink:    "https://github.com/ioBroker/ioBroker.docs/edit/master/docs/config/multihost.md"
 ---

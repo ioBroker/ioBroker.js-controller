@@ -1,5 +1,5 @@
 ---
-title: Расширенная настройка - Multihost
+title: Multihost
 lastChanged: 13.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/config/multihost.md
 translatedFrom: de
