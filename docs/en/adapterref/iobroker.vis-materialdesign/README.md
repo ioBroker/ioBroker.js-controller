@@ -96,6 +96,136 @@ Settings that are not listed in the table below are self-explanatory.
 ## Switch
 ![Logo](doc/en/media/switch.gif)
 
+## Select
+![Logo](doc/en/media/select.gif)
+
+Settings that are not listed in the table below are self-explanatory.
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td>
+            <td>method of data of menu</td>
+            <td>There are three methods to define the data of the menu. First is to define it via editor. Second is to define it via a json string. Third method is to define it by three list for values, labels and icons</td>
+        </tr>
+        <tr>
+            <td>Editor: count of menu items</td>
+            <td>Method of data of menu: via editor<br>Define the number of menu entries. The the individual menu entries can be defined under menu item[x]</td>
+        </tr>
+        <tr>
+            <td>JSON string</td>
+            <td>Method of data of menu: json string<br>Here you can add a JSON string to define the menu entries or use bindings to a datapoint that contains a JSON string.<br><br>JSON string must have the following format:<br>
+<code>
+[
+	{
+		"text": "text 0",
+		"subText": "sub 0",
+		"value": "val0",
+		"icon": "account-cancel"
+	},
+	{
+		"text": "text 1",
+		"subText": "sub 1",
+		"value": "val1",
+		"icon": "/vis/icon/info.png"
+	},
+	{
+		"text": "text 2",
+		"subText": "sub 2",
+		"value": "val2",
+		"icon": "facebook-workplace"
+	}
+]
+</code>
+            </td>
+        </tr>
+        <tr>
+            <td>value list</td>
+            <td>Method of data of menu: value list<br>Define the number of menu entries by adding values that will be set to the datapoint. Entries must be separeted by comma</td>
+        </tr>
+        <tr>
+        <td>value list: labels</td>
+            <td>Method of data of menu: value list<br>Define the related labels of the values. Entries must be separeted by comma</td>
+        </tr>
+        <tr>
+        <td>value list: labels</td>
+            <td>Method of data of menu: value list<br>Define the related icons of the values. Entries must be separeted by comma. You can use image path or Material Design Icons name</td>
+        </tr>                
+    </tbody>
+</table>
+
+## Autocomplete
+![Logo](doc/en/media/autocomplete.gif)
+
+Settings that are not listed in the table below are self-explanatory.
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td>
+            <td>method of data of menu</td>
+            <td>There are three methods to define the data of the menu. First is to define it via editor. Second is to define it via a json string. Third method is to define it by three list for values, labels and icons</td>
+        </tr>
+        <tr>
+            <td>Editor: count of menu items</td>
+            <td>Method of data of menu: via editor<br>Define the number of menu entries. The the individual menu entries can be defined under menu item[x]</td>
+        </tr>
+        <tr>
+            <td>JSON string</td>
+            <td>Method of data of menu: json string<br>Here you can add a JSON string to define the menu entries or use bindings to a datapoint that contains a JSON string.<br><br>JSON string must have the following format:<br>
+<code>
+[
+	{
+		"text": "text 0",
+		"subText": "sub 0",
+		"value": "val0",
+		"icon": "account-cancel"
+	},
+	{
+		"text": "text 1",
+		"subText": "sub 1",
+		"value": "val1",
+		"icon": "/vis/icon/info.png"
+	},
+	{
+		"text": "text 2",
+		"subText": "sub 2",
+		"value": "val2",
+		"icon": "facebook-workplace"
+	}
+]
+</code>
+            </td>
+        </tr>
+        <tr>
+            <td>value list</td>
+            <td>Method of data of menu: value list<br>Define the number of menu entries by adding values that will be set to the datapoint. Entries must be separeted by comma</td>
+        </tr>
+        <tr>
+        <td>value list: labels</td>
+            <td>Method of data of menu: value list<br>Define the related labels of the values. Entries must be separeted by comma</td>
+        </tr>
+        <tr>
+        <td>value list: labels</td>
+            <td>Method of data of menu: value list<br>Define the related icons of the values. Entries must be separeted by comma. You can use image path or Material Design Icons name</td>
+        </tr>                
+    </tbody>
+</table>
+
 ## Top App Bar with Navigation Drawer
 
 Top App Bar with Navigation Drawer can be combined with the <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">view in widget 8</a>.

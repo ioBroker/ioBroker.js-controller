@@ -26,6 +26,9 @@ Only selected holidays count in the process.
 The adapter starts daily at midnight. Due to the nature of the subject, no higher frequency is required.
 
 ## Changelog
+### 1.0.16 (2020-01-22)
+* (pix) Minor fixes
+
 ### 1.0.15 (2019-12-31)
 * (kampfratte) Fixed wrong year displayed if holiday is in next year
 

@@ -158,6 +158,9 @@ lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_
 ```
 
 ## Changelog
+### 1.1.2 (2020-01-22)
+* (Peter Müller) Better handling of changed objects in admin.
+
 ### 1.1.1 (2020-01-09)
 * (Peter Müller) Fixed wrong communication errror detection on some sensors.
 
@@ -180,7 +183,7 @@ lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_
 
 ## License
 
-Copyright (c) 2019 Peter Müller <peter@crycode.de>
+Copyright (c) 2019-2020 Peter Müller <peter@crycode.de>
 
 ### MIT License
 
