@@ -38,7 +38,7 @@ Sollte dar Adapter auf einer bestimmten Versionsnummer stabil laufen, darf diese
 
 7. In der io-package.json sollte ein `type` Attribut unter common erstellt werden. Hierzu soll aus dieser [Liste](#Adapterkategorien) die best passende Kategorie angegeben werden.
 
-8. In der io-package.json sollte ein `connectionType` Attribut unter common erstellt werden. Hierzu soll aus dieser [Liste](#Adapter-Verbindungstyp) die best passende Verbindungs-Kategorie angegeben werden.
+8. In der io-package.json sollten die `connectionType` und `dataSource` Attributen unter common erstellt werden. Hierzu soll aus dieser [Liste](#Adapter-Verbindungstyp) die best passende Verbindungs-Kategorie angegeben werden.
 
 9. Die durch den Adapter erstellten States, sollten valide Angaben für ihre [Rollen](https://github.com/ioBroker/ioBroker/blob/master/doc/STATE_ROLES.md#state-roles) `role` unter common haben.
 Das Nutzen der Rolle `state` sollte vermieden werden.
@@ -204,8 +204,11 @@ Beispiel:
 - `weather` - Wetterinformationen, Luftqualität, Umgebungsinformationen
 
 ## Adapter Verbindungstyp
-- `guess` - Der Status des Geräts kann nicht ermittelt werden. ioBroker nimmt den Status basierend auf letzten ioBroker-Befehl.
-- `cloud polling` - Die Integration dieses Geräts erfolgt über die Cloud und erfordert eine aktive Internetverbindung. Das Abfragen des Status bedeutet, dass ein Update möglicherweise später bemerkt wird.
-- `cloud push` - Die Integration dieses Geräts erfolgt über die Cloud und erfordert eine aktive Internetverbindung. ioBroker wird benachrichtigt, sobald ein neuer Status verfügbar ist.
-- `local polling` - Bietet direkte Kommunikation mit dem Gerät. Das Abfragen des Status bedeutet, dass ein Update möglicherweise später bemerkt wird.
-- `local push` - Bietet direkte Kommunikation mit dem Gerät. ioBroker wird benachrichtigt, sobald ein neuer Status verfügbar ist.
+Definiere `connectionType` im `common` Teil von `io-package.json` als:
+- `local` - Bietet direkte Kommunikation mit dem Gerät oder Hub.
+- `cloud` - Die Integration dieses Geräts erfolgt über die Cloud und erfordert eine aktive Internetverbindung
+
+Definiere `dataSource` im `common` als:
+- `poll` - Das Abfragen des Status bedeutet, dass ein Update möglicherweise später bemerkt wird.
+- `push` - ioBroker wird benachrichtigt, sobald ein neuer Status verfügbar ist.
+- `assumption` - Der Status des Geräts kann nicht ermittelt werden. ioBroker nimmt den Status basierend auf letzten ioBroker-Befehl.
