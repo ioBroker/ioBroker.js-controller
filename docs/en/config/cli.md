@@ -54,6 +54,7 @@ Following commands are possible:
 - [iobroker status](#iobroker-status)
 - [iobroker repo \[repoName\]](#iobroker-repo)
 - [iobroker info](#iobroker-info)
+- [iobroker logs \[--watch\]](#iobroker-logs)
 
 **Note:** there is a parameter ```--timeout 5000```, that can be used with every command. It specifies the timeout in ms for connection to DB.
 
@@ -610,3 +611,9 @@ Disk size      : 949.9 GiB
 Disk free      : 813.3 GiB
 NPM            : v5.8.0
 ```
+
+## iobroker logs
+Show last lines of ioBroker log. This command shows last 1000 lines of log and monitors the log.
+
+```iobroker logs --lines 1000 --watch ```
+
