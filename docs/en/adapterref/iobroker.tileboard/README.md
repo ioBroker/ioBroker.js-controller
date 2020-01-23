@@ -55,7 +55,99 @@ setState('tileboard.0.control.command', JSON.stringify({
 }));
 ```
 
+## For developers
+How to merge the original repository into this one:
+
+Following files were change:
+- `/index.html` - added `../tileboard.0/custom.css`, `../../lib/js/socket.io.js`, `./_socket/info.js` and `scripts/vendors/conn.js`, removed `styles/custom.css`
+- `/scripts/models/api.js` - completely replaced
+- `/scripts/controllers/main.js` -
+ 
+Extended function `getItemEntity`:
+
+```
+   $scope.getItemEntity = function (item) {
+      if(typeof item.id === "object") return item.id;
+
+      if(!(item.id in $scope.states)) { // IoB
+          if (typeof Api.getState === 'function') {
+              Api.getState(item.id);
+          } else {
+              warnUnknownItem(item);
+          }
+          return null;
+      }
+
+      return $scope.states[item.id];
+   };
+```
+
+added function `setNewStates`: 
+
+```
+    // IoB - required for lazy load of the states, becasue every update of the single state cause the request of all states again.
+    // To avoid that all states must be updated at once and only then updateView should be called.
+    function setNewStates (states) {
+        states.forEach(function (state) {
+            if(!$scope.states[state.entity_id]) $scope.states[state.entity_id] = state.new_state;
+
+            // Is it required? If $scope.states[key] just assigned?
+            for(var k in state.new_state) $scope.states[state.entity_id][k] = state.new_state[k];
+        });
+    }
+```
+
+Modified function:
+
+```
+   function handleEvent (event) {
+      try {
+         if (event.event_type === "state_changed") {
+            debugLog('state change', event.data.entity_id, event.data.new_state);
+
+            if (event.data instanceof Array) { // IoB
+                setNewStates(event.data);
+                event.data.forEach(function (state) {
+                    checkStatesTriggers(state.entity_id, state.new_state);
+                });
+            } else {
+                setNewState(event.data.entity_id, event.data.new_state);
+                checkStatesTriggers(event.data.entity_id, event.data.new_state);
+            }
+         }
+         else if (event.event_type === "tileboard") {
+            debugLog('tileboard', event.data);
+
+            triggerEvents(event.data);
+         }
+      }
+      catch (e) {console.error(e);}
+      updateView();
+   }
+```
+
+At the end:
+```   if(CONFIG.pingConnection !== false) {```
+=>
+```
+   if (CONFIG.pingConnection) { // Changed for IoB 
+```
+
+- `/styles/main.less(css)`
+Added:
+```
+@media screen and (max-height: 770px) { // IoB
+  .header {
+    display: none;
+  }
+}
+```
+
 ## Changelog
+### 0.3.0 (2020-01-23)
+* (yaming116) fixed pingConnection
+* (bluefox) Changes of the original tileboard were merged
+
 ### 0.2.0 (2019-07-15)
 * (bluefox) Changes of the original tileboard were merged
 
@@ -66,6 +158,6 @@ setState('tileboard.0.control.command', JSON.stringify({
 * (bluefox) initial commit
 
 ## License
-Copyright (c) 2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2019-2020 bluefox <dogafox@gmail.com>
  
 MIT License

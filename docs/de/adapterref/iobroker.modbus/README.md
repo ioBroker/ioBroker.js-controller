@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.modbus/README.md
 title: iobroker.modbus
-hash: itzO8wIFEAtTCTZRzPCF2V+sF4/bpTLt/pzwT0lEKs4=
+hash: CqnuREdS9tFaI0kSXVWIDM+H7j1E1pIEYXmRorlQxwQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.modbus/admin/modbus.png)
 
@@ -43,7 +43,7 @@ Normalerweise können alle Register Adressen von 0 bis 65535 haben. Mithilfe von
 Jeder Alias wird intern einer Adresse zugeordnet, z. 30011 wird dem Eingangsregister 10 zugeordnet und so weiter.
 
 ### Adressen nicht an Wörtern ausrichten
-Normalerweise sind die Adressen der Spulen und der Digitaleingänge auf 16 Bit ausgerichtet. Gleiche Adressen von 3 bis 20 werden auf 0 bis 32 ausgerichtet.
+Normalerweise sind die Adressen der Spulen und der Digitaleingänge auf 16 Bit ausgerichtet. Gleiche Adressen von 3 bis 20 werden mit 0 bis 32 abgeglichen.
 Wenn diese Option aktiviert ist, werden die Adressen nicht ausgerichtet.
 
 ### Runde Real zu
@@ -52,7 +52,7 @@ Wie viele Stellen nach dem Komma für Float und Doubles.
 ### Umfrageverzögerung
 Zyklisches Abfrageintervall (nur für Master relevant)
 
-### Wiederverbindungszeit
+### Verbindungswiederherstellungszeit
 Wiederverbindungsintervall (nur für Master relevant)
 
 ### Pulszeit
@@ -71,24 +71,24 @@ Es gibt ein Software-Gateway [** Modbus RTU <-> Modbus RTU über TCP **](http://
 Beide Lösungen **RTU over TCP** und **TCP** funktionieren gut.
 
 ## Datentypen
-- uint16be - 16 Bit ohne Vorzeichen (Big Endian): AABB => AABB
+- uint16be - 16-Bit ohne Vorzeichen (Big Endian): AABB => AABB
 - uint16le - 16 Bit ohne Vorzeichen (Little Endian): AABB => BBAA
 - int16be - Signiertes 16-Bit (Big Endian): AABB => AABB
 - int16le - Signiertes 16-Bit (Little Endian): AABB => BBAA
 - uint32be - Vorzeichenloses 32-Bit (Big Endian): AABBCCDD => AABBCCDD
 - uint32le - Vorzeichenloses 32-Bit (Little Endian): AABBCCDD => DDCCBBAA
 - uint32sw - Vorzeichenloses 32-Bit (Big Endian Word Swap): AABBCCDD => CCDDAABB
-- uint32sb - 32-Bit ohne Vorzeichen (Big Endian Byte Swap): AABBCCDD => DDCCBBAA
+- uint32sb - Vorzeichenloses 32-Bit (Big Endian Byte Swap): AABBCCDD => DDCCBBAA
 - int32be - 32-Bit mit Vorzeichen (Big Endian): AABBCCDD => AABBCCDD
 - int32le - 32-Bit mit Vorzeichen (Little Endian): ABBCCDD => DDCCBBAA
 - int32sw - 32-Bit mit Vorzeichen (Big Endian Word Swap): AABBCCDD => CCDDAABB
-- int32sb - 32-Bit mit Vorzeichen (Big Endian Byte Swap): AABBCCDD => DDCCBBAA
+- int32sb - Vorzeichenbehaftetes 32-Bit (Big Endian Byte Swap): AABBCCDD => DDCCBBAA
 - uint64be - 64-Bit ohne Vorzeichen (Big Endian): AABBCCDDEEFFGGHH => AABBCCDDEEFFGGHH
 - uint64le - 64-Bit ohne Vorzeichen (Little Endian): AABBCCDDEEFFGGHH => HHGGFFEEDDCCBBAA
 - uint8be - 8-Bit ohne Vorzeichen (Big Endian): AA => AA
 - uint8le - 8-Bit ohne Vorzeichen (Little Endian): AA => AA
 - int8be - 8 Bit signiert (Big Endian): AA => AA
-- int8le - 8-Bit mit Vorzeichen (Little Endian): AA => AA
+- int8le - 8 Bit signiert (Little Endian): AA => AA
 - floatbe - Float (Big Endian): AABBCCDD => AABBCCDD
 - floatle - Float (Little Endian): AABBCCDD => DDCCBBAA
 - floatsw - Float (Big Endian Word Swap): AABBCCDD => CCDDAABB
@@ -98,11 +98,11 @@ Beide Lösungen **RTU over TCP** und **TCP** funktionieren gut.
 - string - String (Null-Ende): ABCDEF \ 0 => ABCDEF \ 0
 - stringle - String (Little Endian, Zero-End): BADCFE \ 0 => ABCDEF \ 0
 
-Die folgende Beschreibung wurde aus [Hier](http://www.chipkin.com/how-real-floating-point-and-32-bit-data-is-encoded-in-modbus-rtu-messages/) kopiert
+Die folgende Beschreibung wurde von [Hier](http://www.chipkin.com/how-real-floating-point-and-32-bit-data-is-encoded-in-modbus-rtu-messages/) kopiert
 
 Das Punkt-zu-Punkt-Modbus-Protokoll ist eine beliebte Wahl für die RTU-Kommunikation, wenn auch nicht aus einem anderen Grund, der den Grund für die Bequemlichkeit darstellt. Das Protokoll selbst steuert die Interaktionen jedes Geräts in einem Modbus-Netzwerk, wie das Gerät eine bekannte Adresse ermittelt, wie jedes Gerät seine Nachrichten erkennt und wie grundlegende Informationen aus den Daten extrahiert werden. Im Wesentlichen ist das Protokoll die Grundlage des gesamten Modbus-Netzwerks.
 
-Ein solcher Komfort ist jedoch nicht ohne Komplikationen und das Modbus RTU-Nachrichtenprotokoll ist keine Ausnahme. Das Protokoll selbst wurde basierend auf Geräten mit einer 16-Bit-Registerlänge entworfen. Daher waren bei der Implementierung von 32-Bit-Datenelementen besondere Überlegungen erforderlich. Diese Implementierung entschied sich dafür, zwei aufeinanderfolgende 16-Bit-Register zu verwenden, um 32 Datenbits oder im Wesentlichen 4 Datenbytes darzustellen. Innerhalb dieser 4 Datenbytes können Gleitkommadaten mit einfacher Genauigkeit in eine Modbus RTU-Nachricht codiert werden.
+Diese Bequemlichkeit ist jedoch nicht ohne Komplikationen und das Modbus RTU-Nachrichtenprotokoll ist keine Ausnahme. Das Protokoll selbst wurde basierend auf Geräten mit einer 16-Bit-Registerlänge entwickelt. Daher waren bei der Implementierung von 32-Bit-Datenelementen besondere Überlegungen erforderlich. Diese Implementierung entschied sich dafür, zwei aufeinanderfolgende 16-Bit-Register zu verwenden, um 32 Datenbits oder im Wesentlichen 4 Datenbytes darzustellen. Innerhalb dieser 4 Datenbytes können Gleitkommadaten mit einfacher Genauigkeit in eine Modbus RTU-Nachricht codiert werden.
 
 ### Die Bedeutung der Bytereihenfolge
 Modbus selbst definiert keinen Gleitkomma-Datentyp, es ist jedoch allgemein anerkannt, dass 32-Bit-Gleitkomma-Daten unter Verwendung des IEEE-754-Standards implementiert werden. Der IEEE-Standard hat jedoch keine eindeutige Definition der Bytereihenfolge der Datennutzlast. Daher ist die wichtigste Überlegung beim Umgang mit 32-Bit-Daten, dass die Daten in der richtigen Reihenfolge adressiert werden.
@@ -111,7 +111,7 @@ Die im IEEE 754-Standard für 32-Bit-Gleitkommazahlen mit einfacher Genauigkeit 
 
 ![Image1](../../../en/adapterref/iobroker.modbus/img/img1.png)
 
-Die Auswirkungen verschiedener Bytereihenfolgen sind erheblich. Ordnen Sie beispielsweise die 4 Datenbytes, die 123456.00 repräsentieren, in einer „B A D C“ -Sequenz, die als „Bytetausch“ bezeichnet wird. Bei der Interpretation als IEEE 744-Gleitkomma-Datentyp ist das Ergebnis ganz anders:
+Die Auswirkungen verschiedener Bytereihenfolgen sind erheblich. Ordnen Sie beispielsweise die 4 Datenbytes, die 123456.00 repräsentieren, in einer "B A D C" -Sequenz, die als "Bytetausch" bezeichnet wird. Bei der Interpretation als IEEE 744-Gleitkomma-Datentyp ist das Ergebnis ganz anders:
 
 ![Image2](../../../en/adapterref/iobroker.modbus/img/img2.png)
 
@@ -123,7 +123,7 @@ Außerdem würden sowohl ein "Byte-Tausch" als auch ein "Wort-Tausch" die Reihen
 
 ![Image4](../../../en/adapterref/iobroker.modbus/img/img4.png)
 
-Bei der Verwendung von Netzwerkprotokollen wie Modbus muss natürlich genau darauf geachtet werden, wie die Speicherbytes bei der Übertragung angeordnet werden. Dies wird auch als "Byte-Reihenfolge" bezeichnet.
+Bei der Verwendung von Netzwerkprotokollen wie Modbus muss natürlich genau darauf geachtet werden, wie die Speicherbytes bei der Übertragung sortiert werden. Dies wird auch als "Bytereihenfolge" bezeichnet.
 
 ### Bestimmung der Bytereihenfolge
 Das Modbus-Protokoll selbst wird gemäß der Modbus Application Protocol Specification, V1.1.b, als Big-Endian-Protokoll deklariert:
@@ -134,7 +134,7 @@ Big-Endian ist das am häufigsten verwendete Format für Netzwerkprotokolle - so
 
 Da das Modbus RTU-Nachrichtenprotokoll ein Big-Endian-Protokoll ist, muss die Endianität sowohl des Masters als auch des Slaves berücksichtigt werden, um einen 32-Bit-Datentyp erfolgreich über eine Modbus RTU-Nachricht auszutauschen. Viele RTU-Master- und Slave-Geräte ermöglichen eine gezielte Auswahl der Bytereihenfolge, insbesondere bei softwaresimulierten Einheiten. Man muss lediglich sicherstellen, dass beide Einheiten auf die gleiche Bytereihenfolge eingestellt sind.
 
-Als Faustregel gilt, dass die Familie des Mikroprozessors eines Geräts dessen Endianness bestimmt. Normalerweise wird der Big-Endian-Stil (das höherwertige Byte wird zuerst gespeichert, gefolgt vom niederwertigen Byte) in CPUs verwendet, die mit einem Motorola-Prozessor ausgestattet sind. Der Little-Endian-Stil (das niederwertige Byte wird zuerst gespeichert, gefolgt vom höherwertigen Byte) wird im Allgemeinen bei CPUs mit Intel-Architektur verwendet. Es ist eine Frage der persönlichen Perspektive, welcher Stil als „rückwärts“ betrachtet wird.
+Als Faustregel gilt, dass die Familie des Mikroprozessors eines Geräts dessen Endianness bestimmt. Normalerweise wird der Big-Endian-Stil (das höherwertige Byte wird zuerst gespeichert, gefolgt vom niederwertigen Byte) in CPUs verwendet, die mit einem Motorola-Prozessor ausgestattet sind. Der Little-Endian-Stil (das niederwertige Byte wird zuerst gespeichert, gefolgt vom höherwertigen Byte) wird im Allgemeinen in CPUs mit Intel-Architektur verwendet. Es ist eine Frage der persönlichen Perspektive, welcher Stil als „rückwärts“ betrachtet wird.
 
 Wenn jedoch die Bytereihenfolge und die Endianzahl nicht konfigurierbar sind, müssen Sie festlegen, wie das Byte interpretiert werden soll. Dies kann erfolgen, indem ein bekannter Gleitkommawert vom Slave angefordert wird. Wenn ein unmöglicher Wert zurückgegeben wird, d. H. Eine Zahl mit einem zweistelligen Exponenten oder dergleichen, muss die Bytereihenfolge höchstwahrscheinlich geändert werden.
 
@@ -181,7 +181,7 @@ Von den vielen im Internet verfügbaren Hex-zu-Fließkomma-Wandlern und Taschenr
 
 ![Image5](../../../en/adapterref/iobroker.modbus/img/img5.png)
 
-Man kann dann Bytes und / oder Wörter austauschen, um zu analysieren, welche potenziellen Endianness-Probleme zwischen Modbus RTU-Master- und Slave-Geräten bestehen können.
+Man kann dann Bytes und / oder Wörter austauschen, um zu analysieren, welche potenziellen Endianness-Probleme zwischen Modbus RTU-Master- und -Slave-Geräten bestehen können.
 
 ## Prüfung
 Es gibt einige Programme im Ordner * test ', um die TCP-Kommunikation zu testen:
@@ -189,6 +189,10 @@ Es gibt einige Programme im Ordner * test ', um die TCP-Kommunikation zu testen:
 - Ananas32 / 64 ist Slave-Simulator (hält nur Register und Eingänge, keine Spulen und digitale Eingänge)
 - RMMS ist Mastersimulator
 - mod_RSsim.exe ist Slave-Simulator. Möglicherweise benötigen Sie [Microsoft Visual C ++ 2008 SP1 Redistributable Package] (https://www.microsoft.com/en-us/download/details.aspx?id=5582), um es zu starten (aufgrund eines SideBySide-Fehlers).
+
+# 3.0.1 (2020-01-23)
+* (BlackBird77) Korrekturen für serielle Timeouts durchgeführt
+* (Bluefox) Refactoring
 
 # 3.0.0 (15.05.2019)
 * (Apollon77) Unterstützung für NodeJS 12 hinzugefügt, NodeJS 4 wird nicht mehr unterstützt!
@@ -203,7 +207,7 @@ Es gibt einige Programme im Ordner * test ', um die TCP-Kommunikation zu testen:
 * (Bluefox) RTU-TCP-Master-Modus wurde behoben
 
 # 2.0.3 (2018-06-16)
-* (bluefox) Die Rundung der Zahlen wurde korrigiert
+* (bluefox) Die Rundung von Zahlen wurde korrigiert
 
 # 2.0.2 (2018-06-12)
 * (bluefox) Der Fehler beim Lesen von Blöcken wurde behoben
@@ -265,7 +269,7 @@ Es gibt einige Programme im Ordner * test ', um die TCP-Kommunikation zu testen:
 # 0.3.7 (2015-11-02)
 * (bluefox) Füge einen speziellen Lese- / Schreibmodus hinzu, wenn "Max read request length" 1 ist.
 
-# 0.3.6 (01.11.2015)
+# 0.3.6 (2015-11-01)
 * (bluefox) füge zyklisches Schreiben für Halteregister hinzu (fix)
 
 # 0.3.5 (31.10.2015)
@@ -308,5 +312,15 @@ Es gibt einige Programme im Ordner * test ', um die TCP-Kommunikation zu testen:
 
 # 0.0.1
 * (Bluefox) Initial Commit
+
+Die MIT-Lizenz (MIT)
+
+Copyright (c) 2015-2020 Bluefox <dogafox@gmail.com>
+
+Jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, wird hiermit kostenlos die Erlaubnis erteilt, mit der Software uneingeschränkt umzugehen, einschließlich der Rechte zur Nutzung, zum Kopieren, Ändern und Zusammenführen Sie können Kopien der Software unter folgenden Bedingungen veröffentlichen, verbreiten, unterlizenzieren und / oder verkaufen und Personen gestatten, denen die Software zur Verfügung gestellt wird:
+
+Der obige Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
+
+DIE SOFTWARE WIRD "WIE BESEHEN" OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG, EINSCHLIESSLICH DER GARANTIEN FÜR HANDELBARKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG, ZUR VERFÜGUNG GESTELLT. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR JEGLICHE HAFTUNGSANSPRÜCHE, SCHÄDEN ODER SONSTIGE HAFTUNGEN, OB AUS VERTRAGSVERHÄLTNISSEN, UNTER BERÜCKSICHTIGUNG ODER IN VERBINDUNG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN HANDELNDEN HANDELNDEN HANDELNDEN SOFTWARE.
 
 ## Changelog

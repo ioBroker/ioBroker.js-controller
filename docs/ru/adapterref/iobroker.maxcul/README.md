@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.maxcul/README.md
 title: ioBroker.maxcul
-hash: 6XQo0gd7QRkRoylGdMHscKHQa5W4FB+ZhlyW12l65XA=
+hash: pIVFK6JHsxSuDkbtitePPG0bEpWGiXhgfr1cnYhEQI0=
 ---
 ![логотип](../../../en/adapterref/iobroker.maxcul/admin/maxcul.png)
 
@@ -13,7 +13,7 @@ hash: 6XQo0gd7QRkRoylGdMHscKHQa5W4FB+ZhlyW12l65XA=
 ![тесты](https://travis-ci.org/ioBroker/ioBroker.maxcul.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.maxcul.png?downloads=true)
 
-# IoBroker.maxcul =======================================
+# IoBroker.maxcul
 ioBroker адаптер для управления Максом! через [CUL](http://busware.de/tiki-index.php?page=CUL)
 
 Адаптер является производным от [pimatic-maxcul](https://github.com/fbeek/pimatic-maxcul)
@@ -29,8 +29,26 @@ ioBroker адаптер для управления Максом! через [CU
 Например. для термостатов нажмите и удерживайте кнопку «Boost», пока не начнется обратный отсчет.
 
 ## Changelog
+### 1.2.0 (2020-01-23)
+* (bluefox) Refactoring
+
+### 1.1.2 (2019-08-28)
+* (Arne Stenmanns) user enabled paringmode
+* (bowao) fixes for measured value of the wallthermostat
+
+### 1.1.1 (2019-07-05)
+* (bowao) fixes and optimizations
+
+### 1.1.0 (2019-07-04)
+* (bowao) support nodejs 10 and 12
+* (bowao) add thermostat week profile
+* (bowao) add thermostat vacation config
+* (bowao) add new thermostat modes: manual eco; manual comfort; manual window
+* (bowao) add poll timeout after 5 minutes of no response from thermostat
+* (bowao) optimize error handling for incomplete packages
+
 ### 1.0.0 (2018-10-20)
-* (Arne Stenmannsr) Wall thermostat was added
+* (Arne Stenmanns) Wall thermostat was added
 
 ### 0.5.3 (2018-03-25)
 * (skraw.iobroker) Optimize logic to send commands and scanning
@@ -63,4 +81,4 @@ ioBroker адаптер для управления Максом! через [CU
 
 ## License
 
-[Licensed under GPLv2](LICENSE) Copyright (c) 2017-2018 bluefox
+[Licensed under GPLv2](LICENSE) Copyright (c) 2017-2020 bluefox <dogafox@gmail.com>
