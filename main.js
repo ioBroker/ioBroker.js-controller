@@ -1557,7 +1557,7 @@ function setMeta() {
                                 logger && logger.info(hostLogPrefix + ' Apply vendor file: ' + VENDOR_FILE);
                                 vendor.checkVendor(VENDOR_FILE, startScript.password, logger)
                                     .then(() => {
-                                        logger && logger.info(`Synchronised vendor information.`);
+                                        logger && logger.info(`Vendor information synchronised.`);
                                         try {
                                             fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                         } catch (e) {
