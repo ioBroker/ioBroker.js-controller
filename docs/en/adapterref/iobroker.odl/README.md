@@ -33,6 +33,9 @@ Die aktuellen Messdaten werden von dem Adapter standardmäßig im Stundentakt ak
 
 
 ## Changelog
+### 1.0.3 (2020-01-23)
+* (Peter Müller) Added `connectionType` in `io-package.json` and updated dependencies.
+
 ### 1.0.2 (2019-10-22)
 * (Peter Müller) Minimum required js-conntroller version is now 1.5.7
 

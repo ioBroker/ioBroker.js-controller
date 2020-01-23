@@ -26,6 +26,9 @@ Only selected holidays count in the process.
 The adapter starts daily at midnight. Due to the nature of the subject, no higher frequency is required.
 
 ## Changelog
+### 1.0.17 (2020-01-22)
+* (kampfratte) Day of Freedom added
+
 ### 1.0.16 (2020-01-22)
 * (pix) Minor fixes
 

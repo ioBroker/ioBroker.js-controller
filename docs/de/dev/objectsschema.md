@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
-hash: OnfVW54nJrWGrGg9yrsROuCJgrvGhsV9YxRNeOw6P30=
+hash: btKGRpdtT2agwhtdcaOetZdrfBOxVJLBbaU17XPP2V0=
 ---
 # Kernkonzept
 In ioBroker gibt es zwei grundsätzlich verschiedene Datentypen. Sogenannte **Staaten** (`states`) und **Objekte**
@@ -236,7 +236,7 @@ mögliche Werte:
 * `media - gemeinsamer Medienkanal
 * `media.music` - Mediaplayer wie SONOS, YAMAHA und so weiter
 * `media.tv` - TV
-* `media.tts` - text to speech
+* `media.tts` - Text zur Rede
 
 * `thermo` - Überwacht oder regelt die Temperatur, Luftfeuchtigkeit und so weiter
 * `thermo.heat`
@@ -252,7 +252,7 @@ mögliche Werte:
 * `light.color.rgbw` - Farbe in RGBW einstellen
 * `light.color.hsl` - Farbe in Hue / Saturation / Luminance einstellen (Hue color light - LivingColors ...)
 * `light.color.hslct` - Farbe in Farbton / Sättigung / Luminanz oder Farbtemperatur einstellen (Farbton erweitertes Farblicht)
-* `light.color.ct` - Farbtemperatur K
+* `light.color.ct.` - Farbtemperatur K
 
 * `switch` - Ein generischer Schalter
 
@@ -494,13 +494,14 @@ id `system.adapter.<adapter.name>`
 * `common.allowInit` - [true / false] ermöglicht, dass der" geplante "Adapter" nicht im Zeitplan "genannt wird, wenn Einstellungen geändert oder der Adapter gestartet werden. Oder lassen Sie einen geplanten Adapterstart einmal nach einer Konfigurationsänderung und dann nach Zeitplan zu.
 * `common.availableModes` - Werte für common.mode, wenn mehr als ein Modus möglich ist
 * `common.blockly` - [true / false], wenn der Adapter benutzerdefinierte Blöcke für blockly hat. (admin / blockly.js erforderlich)
-* `common.connection-type` - Verbindungstyp mit Gerät. Siehe [Verbindungstypen] (adapterpublish.md)
+* `common.connectionType` - Verbindungstyp mit Gerät:` local / cloud`. Siehe auch `common.dataSource`.
 * `common.compact` - teilt dem Controller mit, dass dieser Adapter auf Wunsch im selben Prozess gestartet werden kann
 * `common.config.height` - Standardhöhe für den Konfigurationsdialog (veraltet - nur für admin2 gültig)
-* `common.config.minHeight` - minimale Höhe für den Konfigurationsdialog (veraltet - nur für admin2 gültig)
+* `common.config.minHeight` - minimale Höhe für den Konfigurationsdialog (veraltet - nur gültig für admin2)
 * `common.config.minWidth` - minimale Breite für den Konfigurationsdialog (veraltet - nur gültig für admin2)
 * `common.config.width` - Standardbreite für den Konfigurationsdialog (veraltet - nur für admin2 gültig)
 * `common.dataFolder` - Ordner relativ zu den iobroker-Daten, in denen der Adapter die Daten speichert. Dieser Ordner wird automatisch gesichert und wiederhergestellt. Sie können die Variable '% INSTANCE%' verwenden.
+* `common.dataSource` - Wie die Daten vom Gerät empfangen werden:` poll / push / assume`. Dies ist zusammen mit `connectionType` wichtig.
 * `common.dependencies` - Array wie` [{"js-controller": "> = 2.0.0"}] `, das beschreibt, welche ioBroker-Module für diesen Adapter benötigt werden.
 * `common.docs` - Die Struktur wie` {"en": "docs / en / README.md", "de": ["docs / de / README.md", "docs / de / README1.md" ]} `, der die Dokumentation beschreibt, wenn nicht in README.md
 * `common.enabled` - **obligatorisch** Der Wert [true / false] sollte false sein, damit neue Instanzen standardmäßig deaktiviert werden
@@ -525,7 +526,7 @@ id `system.adapter.<adapter.name>`
 * `common.noConfig` - [true / false] zeigt beispielsweise keinen Konfigurationsdialog an
 * `common.noIntro` - zeige niemals Instanzen dieses Adapters auf dem Intro / Overview Bildschirm in Admin (wie Icons, Widgets)
 * `common.noRepository` - [true / false], wenn der Adapter bei der Erstinstallation geliefert wurde oder ein eigenes Repository hat
-* `common.nogit` - wenn dies zutrifft, ist keine direkte Installation von github möglich
+* `common.nogit` - wenn dies zutrifft, ist keine direkte Installation von Github möglich
 * `common.nondeletable` - [true / false] Dieser Adapter kann nicht gelöscht oder aktualisiert werden. Es wird zusammen mit dem Controller aktualisiert.
 * `common.npmLibs` - veraltet. Verwenden Sie package.json `dependencies`.
 * `common.onlyWWW` - [true / false] sagt dem Controller, dass der Adapter nur HTML-Dateien und keine main.js hat, wie Rikscha
@@ -563,6 +564,8 @@ id `system.adapter.<adapter.name>`
 * `common.welcomeScreen.order` - erledigen
 * `common.welcomeScreenPro` - Entspricht` common.welcomeScreen`, wird jedoch nur beim Zugriff von ioBroker.cloud verwendet.
 * `common.wwwDontUpload` - Laden Sie das WWW-Verzeichnis nicht in die Datenbank hoch. Wird nur für Admin verwendet. Sie können Ihrem Verzeichnis einfach einen anderen Namen geben und OK.
+* `native` - vordefinierte Attribute, auf die in index_m.html und zur Laufzeit über` adapter.config. <attribute> `zugegriffen werden kann, z. `{" port ": 1234," password ":" secret "}`
+* `protectedNative` - Array von Konfigurationsattributen, auf die nur der eigene Adapter zugreifen kann, z. `[" Passwort "]`
 
 #### Instanz
 id *system.adapter. &lt; adapter.name &gt;. & lt; instanznummer & gt;*

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.plenticore/README.md
 title: ioBroker.plenticore
-hash: /+i1EKx2kcZ0F2S4MmNGtwjdE/pLoFWdnfSNLX9WYMM=
+hash: NOmuppZJszQtk4vXpDIlZVzc184ehQ9fxCYn+38dLIM=
 ---
 ![логотип](../../../en/adapterref/iobroker.plenticore/admin/plenticore.png)
 
@@ -79,7 +79,7 @@ hash: /+i1EKx2kcZ0F2S4MmNGtwjdE/pLoFWdnfSNLX9WYMM=
 `plenticore.0.forecast.consumption.day` - средняя потребляемая мощность в дневное время в течение последних 3 дней `plenticore.0.forecast.consumption.night` - средняя потребляемая мощность в ночное время в течение последних 3 дней.
 
 ### Plenticore.0.forecast.current
-`plenticore.0.forecast.current.sky` - текущая облачность от погодного адаптера `plenticore.0.forecast.current.visibility` - текущая видимость от погодного адаптера `plenticore.0.forecast.current.power.max` - расчетная максимальная мощность станции на чистом небе (0% облачности) `plenticore.0.forecast.current.power.sky` - расчетная станция мощность с учетом текущего облачного покрова от погодного адаптера `plenticore.0.forecast.current.power.skyvis` - расчетная мощность станции с учетом текущего облачного покрова и видимости от погодного адаптера `plenticore.0.forecast.current.sun.azimuth` - текущее положение солнца (азимут) `plenticore.0.forecast.current.sun.elevation` - текущее солнце положение (подъем) `plenticore.0.forecast.current.sun.sunrise` - время восхода прогнозируемой даты (сегодня или завтра) `plenticore.0.forecast.current.sun.sunset` - время захода прогнозной даты (сегодня или завтра)
+`plenticore.0.forecast.current.sky` - текущая облачность от погодного адаптера `plenticore.0.forecast.current.visibility` - текущая видимость от погодного адаптера `plenticore.0.forecast.current.power.generated` - генерируемая мощность станции в текущий день и до текущего времени `plenticore.0.forecast.current.power.max` - расчетная максимальная мощность станции при чистом небо (0% облачности) `plenticore.0.forecast.current.power.sky` - расчетная мощность станции с учетом текущего облачного покрытия от погодного адаптера `plenticore.0.forecast.current.power.skyvis` - расчетная мощность станции с учетом текущего облачного покрытия и видимости от погодного адаптера `plenticore.0.forecast.current.sun.azimuth` - текущая позиция солнца (азимут) `plenticore.0.forecast.current.sun.elevation` - текущая позиция солнца (элевация) `plenticore.0.forecast.current.sun.sunrise` - время восхода прогнозируемой даты (сегодня или завтра) `plenticore.0.forecast.current.sun.sunset` - время заката прогнозируемой даты (либо сегодня или завтра)
 
 ### Plenticore.0.forecast.power
 `plenticore.0.forecast.power.date` - дата, для которой информация о текущем прогнозе мощности предназначена для `plenticore.0.forecast.power.day` - прогноз общей мощности на день `plenticore.0.forecast.power.day_high` - прогноз общей мощности на день без учета данных о видимости адаптера погоды `plenticore.0.forecast.power.remaining` - остаточная мощность прогнозируемой суммы за день, основанная на `plenticore.0.forecast.power.day` `plenticore.0.forecast.power.Xh.power` - оценочная общая мощность от станции в солнечный час X прогнозируемого дня, где 1h - час восхода солнца `plenticore.0.forecast.power.1h.time` - время начала солнечного часа для `plenticore.0.forecast.power.Xh.power`

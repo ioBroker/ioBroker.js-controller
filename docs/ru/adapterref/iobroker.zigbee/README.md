@@ -35,7 +35,7 @@ BADGE-NPM: https://nodei.co/npm/iobroker.zigbee.png?downloads=true
 
 ## Changelog
 
-### 1.0.0-c (2020-*-*)
+### 1.0.0 (2020-01-23)
 * Powered by new [zigbee-herdsman](https://github.com/Koenkk/zigbee-herdsman) library and new [converters database](https://github.com/Koenkk/zigbee-herdsman-converters)
 * Drop support NodeJS 6
 * Serialport 8.0.5 (in zigbee-herdsman)

@@ -4,11 +4,11 @@ lastChanged: 21.01.2020
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/dev/adapterpublish.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: KS4nNOwDqkZMaLslYJkqrwPcOhWpmwt4cQdwBZMmefQ=
+hash: iLFFwmHGGEvoX1jzWG4/Zs7xSpudVBvxMEzm9P5Qcps=
 ---
 # Publish an adapter
 Before thinking about publishing an adapter, it should be offered for testing in [Forum test thread](https://forum.iobroker.net/category/91/tester).
-If the tests are successful and the adapter runs stably, it should initially be included in the latest repository.
+If the tests are successful and the adapter is stable, it should initially be included in the latest repository.
 
 If the adapter runs stable on a certain version number, it can be transferred to the stable repository. This requires the developer's own assessment in conjunction with the user feedback.
 
@@ -41,7 +41,7 @@ If the adapter runs stable on a certain version number, it can be transferred to
 
 7. In the io-package.json a `type` attribute should be created under common. For this purpose, the best fitting category should be specified from this [list] (# adapter categories).
 
-8. In the io-package.json a `connectionType` attribute should be created under common. For this purpose, the best fitting connection category should be specified from this [list] (# adapter connection type).
+8. In the io-package.json the `connectionType` and` dataSource` attributes should be created under common. For this purpose, the best fitting connection category should be specified from this [list] (# adapter connection type).
 
 9. The states created by the adapter should have valid information for their [roles] (https://github.com/ioBroker/ioBroker/blob/master/doc/STATE_ROLES.md#state-roles) `role` under common ,
 
@@ -55,7 +55,7 @@ The developer can gladly extend the scope of tests.
 
 11. In the io-package.json at least one entry under common for the attribute `authors` must be made.
 
-The attribute `author` in the package.json must also be filled out.
+The attribute `author` must also be filled in in the package.json.
 Optionally, several authors can also be saved for npm by using the attribute `contributors` in the package.json.
 
 12. The adapter must be available as an npm package. More information can be found [here] (https://github.com/ioBroker/ioBroker.repositories#how-to-publish-on-npm).
@@ -79,7 +79,7 @@ To do this, a pull request must be made in the repository of [Discovery adapters
 
 3. A version number must be declared when it is added to the stable repository. This must be updated when the adapter is further developed.
 
-4. The adapter should set a list attribute `docs` in the io-package.json, stating where instructions can be found in the respective language.
+4. The adapter should define a list attribute `docs` in the io-package.json, stating where instructions can be found in the respective language.
 
 The language is specified as the key and the path to the markdown file as the value.
 English instructions are required (in an emergency, reference can be made to the standard README). A German manual is also desirable, since a majority of users speak German, but this is optional.
@@ -99,7 +99,7 @@ An example can be found in [here](https://github.com/foxriver76/ioBroker.denon/b
 ```
 
 ### Latest
-The file `sources-dist.json` must be edited:
+The `sources-dist.json` file must be edited:
 
 Example:
 
@@ -115,7 +115,7 @@ Example:
 The `published` date represents the date of the first publication and should not be changed.
 
 ### Stable
-The file `sources-dist-stable.json` must be edited:
+The `sources-dist-stable.json` file must be edited:
 
 Example:
 
@@ -144,7 +144,7 @@ The version numbers should be increased according to the following list:
 
 - **micro** Only bugs were fixed
 - **minor** Features have been added, but the version is compatible with previous versions
-- **major** Major changes that make backward compatibility with the old version no longer possible
+- **major** Major changes which make backward compatibility with the old version no longer possible
 
 The `news` attribute should also be maintained in the io-package.json.
 This enables users to install any version listed (provided that it has been published on npm) via the admin interface.
@@ -205,14 +205,19 @@ Example:
 - `storage` - logging, data storage e.g. B. relational databases, ...
 - `utility` - supporting adapters such as B. Backup
 - `vehicle` - cars
-- `visualization` - visualization adapter, like vis etc.
+- `visualization` - visualization adapter, such as vis etc.
 - `visualization-icons` - icons for visualizations
 - `visualization-widgets` - iobroker.vis widgets
 - `weather` - weather information, air quality, environmental information
 
 ## Adapter connection type
-- `guess` - The status of the device cannot be determined. ioBroker takes status based on last ioBroker command.
-- `cloud polling` - The integration of this device takes place via the cloud and requires an active internet connection. Querying the status means that an update may be noticed later.
-- `cloud push` - The integration of this device takes place via the cloud and requires an active internet connection. ioBroker will be notified when a new status is available.
-- `local polling` - Provides direct communication with the device. Querying the status means that an update may be noticed later.
-- `local push` - Provides direct communication with the device. ioBroker will be notified when a new status is available.
+Define `connectionType` in `common` part of `io-package.json` as:
+
+- `local` - Provides direct communication with the device or hub.
+- `cloud` - The integration of this device takes place via the cloud and requires an active internet connection
+
+Define `dataSource` in `common` as:
+
+- `poll` - Polling the status means that an update may be noticed later.
+- `push` - ioBroker will be notified as soon as a new status is available.
+- `assumption` - The status of the device cannot be determined. ioBroker takes status based on last ioBroker command.

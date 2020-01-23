@@ -106,6 +106,10 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+### 2.1.0 (2020-01-21)
+* (foxriver76) no longer use adapter.objects
+* __js-controller > 2.0.0 required__
+
 ### 2.0.0 (2019-05-15)
 * (thewhobox) Code refactoring
 * (thewhobox) add emby detection

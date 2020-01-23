@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.plenticore/README.md
 title: ioBroker.plenticore
-hash: /+i1EKx2kcZ0F2S4MmNGtwjdE/pLoFWdnfSNLX9WYMM=
+hash: NOmuppZJszQtk4vXpDIlZVzc184ehQ9fxCYn+38dLIM=
 ---
 ![商标](../../../en/adapterref/iobroker.plenticore/admin/plenticore.png)
 
@@ -79,7 +79,7 @@ devices.local树包含有关逆变器以及可能连接的智能电表和/或电
 `plenticore.0.forecast.consumption.day`-最近3天内白天的平均功耗`plenticore.0.forecast.consumption.night`-过去3天内夜间的当前平均功耗`plenticore.0.forecast.consumption.remaining`-直到日落之前的当前预测天的估计剩余电量
 
 ### Plenticore.0.cast.current
-`plenticore.0.forecast.current.sky`-来自天气适配器的当前云覆盖率`plenticore.0.forecast.current.visibility`-来自天气适配器的当前可见性`plenticore.0.forecast.current.power.max`-计算出的晴天最大工厂功率（云覆盖率为0％）`plenticore.0.forecast.current.power.sky`-计算出的工厂功率，考虑到来自天气适配器的当前云覆盖范围`plenticore.0.forecast.current.power.skyvis`-计算出的电厂功率，考虑到来自天气适配器的当前云覆盖范围和可见性`plenticore.0.forecast.current.sun.azimuth`-当前太阳位置（方位角）`plenticore.0.forecast.current.sun.elevation`-当前太阳位置（海拔）`plenticore.0.forecast.current.sun.sunrise`-预测日期的日出时间（今天或明天）`plenticore.0.forecast.current.sun.sunset`-预测日期的日落时间（今天或明天）
+`plenticore.0.forecast.current.sky`-来自天气适配器的当前云覆盖范围`plenticore.0.forecast.current.visibility`-来自天气适配器的当前可见性`plenticore.0.forecast.current.power.generated`-从当天到当前时间的当前发电量`plenticore.0.forecast.current.power.max`-计算得出的最大工厂净功率天空（云覆盖率为0％）`plenticore.0.forecast.current.power.sky`-考虑到来自天气适配器的当前云覆盖率的计算出的工厂功率`plenticore.0.forecast.current.power.skyvis`-考虑到来自天气适配器的当前云覆盖率和可见性的计算出的工厂功率`plenticore.0.forecast.current.sun.azimuth` -当前太阳位置（方位角）`plenticore.0.forecast.current.sun.elevation`-当前太阳位置（海拔）`plenticore.0.forecast.current.sun.sunrise`-预报日期的日出时间（今天或明天）`plenticore.0.forecast.current.sun.sunset`-预报日期的日落时间（今天）或者明天）
 
 ### Plenticore.0.forecast.power
 `plenticore.0.forecast.power.date`-当前功率预测信息的日期`plenticore.0.forecast.power.day`-一天的总功率预测`plenticore.0.forecast.power.day_high`-忽略天气适配器的可见性数据的一天的总功率预测`plenticore.0.forecast.power.remaining`-根据`plenticore.0.forecast.power.day`§`plenticore.0.forecast.power.Xh.power`-预测日的星期日X时来自工厂的估计总功率，其中1h是日出时间`plenticore.0.forecast.power.1h.time`- `plenticore.0.forecast.power.Xh.power`的太阳时间开始的时间

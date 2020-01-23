@@ -157,6 +157,9 @@ lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_
 ```
 
 ## Changelog
+### 1.1.3 (2020-01-23)
+* (Peter Müller) Added `connectionType` in `io-package.json` and updated dependencies.
+
 ### 1.1.2 (2020-01-22)
 * (Peter Müller) Better handling of changed objects in admin.
 

@@ -126,6 +126,7 @@ To be able to use the forecast feature you need to have the ioBroker.darksky or 
 
 `plenticore.0.forecast.current.sky` - current cloud coverage from weather adapter  
 `plenticore.0.forecast.current.visibility` - current visibility from weather adapter  
+`plenticore.0.forecast.current.power.generated` - generated plant power on current day until current time  
 `plenticore.0.forecast.current.power.max` - calculated maximum plant power on clear sky (0% cloud coverage)  
 `plenticore.0.forecast.current.power.sky` - calculated plant power taking into account current cloud coverage from weather adapter  
 `plenticore.0.forecast.current.power.skyvis` - calculated plant power taking into account current cloud coverage and visibility from weather adapter  
