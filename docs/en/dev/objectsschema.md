@@ -512,13 +512,14 @@ id `system.adapter.<adapter.name>`
 * `common.allowInit`          - [true/false] allow for "scheduled" adapter to be called "not in the time schedule", if settings changed or adapter started. Or allow scheduled adapter start once after configuration changed and then by schedule.
 * `common.availableModes`     - values for common.mode if more than one mode is possible
 * `common.blockly`            - [true/false] if adapter has custom blocks for blockly. (admin/blockly.js required)
-* `common.connection-type`    - Connection type with device. See [Connection Types](adapterpublish.md) 
+* `common.connectionType`     - Connection type with device: `local/cloud`. See `common.dataSource` too.
 * `common.compact`            - says to controller that this adapter can be started in the same process if desired
 * `common.config.height`      - default height for configuration dialog (deprecated - valid only for admin2)
 * `common.config.minHeight`   - minimal height for configuration dialog (deprecated - valid only for admin2)
 * `common.config.minWidth`    - minimal width for configuration dialog (deprecated - valid only for admin2)
 * `common.config.width`       - default width for configuration dialog (deprecated - valid only for admin2)
 * `common.dataFolder`         - folder relative to iobroker-data where the adapter stores the data. This folder will be backed up and restored automatically. You can use variable '%INSTANCE%' in it.
+* `common.dataSource`         - How the data will be received from device:  `poll/push/assumption`. It is important together with `connectionType`.
 * `common.dependencies`       - Array like `[{"js-controller": ">=2.0.0"}]` that describes which ioBroker modules are required for this adapter. 
 * `common.docs`               - The structure like `{"en": "docs/en/README.md", "de": ["docs/de/README.md", "docs/de/README1.md"]}` that describes the documentation if not in README.md
 * `common.enabled`            - **mandatory** [true/false] value should be false so new instances are disabled by default
