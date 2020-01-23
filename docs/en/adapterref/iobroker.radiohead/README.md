@@ -292,6 +292,10 @@ Each instance of the adapter provides the following information:
 If necessary, the counters of the messages can be reset to 0 by writing to the object `actions.resetCounters`.
 
 ## Changelog
+### 1.0.3 (2020-01-23)
+* (Peter Müller) Better handling of changed objects in admin.
+* (Peter Müller) Added `connectionType` in `io-package.json` and updated dependencies.
+
 ### 1.0.2 (2019-09-08)
 * (Peter Müller) dependency updates and bugfixes
 

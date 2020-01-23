@@ -1,6 +1,6 @@
 ![Logo](admin/maxcul.png)
 # ioBroker.maxcul
-==================================
+
 ![Number of Installations](http://iobroker.live/badges/maxcul-installed.svg) ![Number of Installations](http://iobroker.live/badges/maxcul-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.maxcul.svg)](https://www.npmjs.com/package/iobroker.maxcul)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.maxcul.svg)](https://www.npmjs.com/package/iobroker.maxcul)
 [![Tests](https://travis-ci.org/ioBroker/ioBroker.maxcul.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.maxcul)
@@ -23,6 +23,9 @@ Before using you must first pair the devcies with ioBroker.
 E.g. for thermostats press longer the "boost" button till the countdown will start.
 
 ## Changelog
+### 1.2.0 (2020-01-23)
+* (bluefox) Refactoring
+
 ### 1.1.2 (2019-08-28)
 * (Arne Stenmanns) user enabled paringmode
 * (bowao) fixes for measured value of the wallthermostat
@@ -72,4 +75,4 @@ E.g. for thermostats press longer the "boost" button till the countdown will sta
 
 ## License
 
-[Licensed under GPLv2](LICENSE) Copyright (c) 2017-2018 bluefox
+[Licensed under GPLv2](LICENSE) Copyright (c) 2017-2020 bluefox <dogafox@gmail.com>

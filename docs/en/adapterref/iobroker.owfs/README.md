@@ -39,6 +39,9 @@ Before you must create the directroy */mnt/1wire* with command `mkdir /mnt/1wire
 http://sourceforge.net/projects/owfs/
 
 ## Changelog
+### 0.6.3 (2020-10-23)
+* (INgo Rah) Added the alarm state handling
+
 ### 0.6.2 (2019-10-29)
 * (RustyThePropellerHead) Improved data integrity when reading from local OWFS via file system
 
@@ -97,7 +100,7 @@ http://sourceforge.net/projects/owfs/
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2019, bluefox
+Copyright (c) 2015-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

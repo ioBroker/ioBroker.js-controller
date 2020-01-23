@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.maxcul/README.md
 title: ioBroker.maxcul
-hash: 6XQo0gd7QRkRoylGdMHscKHQa5W4FB+ZhlyW12l65XA=
+hash: pIVFK6JHsxSuDkbtitePPG0bEpWGiXhgfr1cnYhEQI0=
 ---
 ![Logo](../../../en/adapterref/iobroker.maxcul/admin/maxcul.png)
 
@@ -13,10 +13,10 @@ hash: 6XQo0gd7QRkRoylGdMHscKHQa5W4FB+ZhlyW12l65XA=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.maxcul.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.maxcul.png?downloads=true)
 
-# IoBroker.maxcul ===================================
-ioBroker-Adapter zur Steuerung von Max! über [CUL](http://busware.de/tiki-index.php?page=CUL)
+# IoBroker.maxcul
+ioBroker Adapter zur Steuerung von Max! über [CUL](http://busware.de/tiki-index.php?page=CUL)
 
-Adapter wird abgeleitet von [pimatic-maxcul](https://github.com/fbeek/pimatic-maxcul)
+Adapter ist abgeleitet von [pimatic-maxcul](https://github.com/fbeek/pimatic-maxcul)
 
 ## Unterstützte Geräte
 - Thermostat
@@ -24,13 +24,31 @@ Adapter wird abgeleitet von [pimatic-maxcul](https://github.com/fbeek/pimatic-ma
 - Druckknopf
 - Wandthermostat
 
-## Verwendungszweck
-Vor der Verwendung müssen Sie die Geräte mit dem ioBroker koppeln.
-Z.B. Bei Thermostaten länger die "Boost" - Taste drücken, bis der Countdown beginnt.
+## Verwendung
+Vor der Verwendung müssen Sie zuerst die Abweichungen mit ioBroker koppeln.
+Z.B. Bei Thermostaten die Taste "Boost" länger drücken, bis der Countdown startet.
 
 ## Changelog
+### 1.2.0 (2020-01-23)
+* (bluefox) Refactoring
+
+### 1.1.2 (2019-08-28)
+* (Arne Stenmanns) user enabled paringmode
+* (bowao) fixes for measured value of the wallthermostat
+
+### 1.1.1 (2019-07-05)
+* (bowao) fixes and optimizations
+
+### 1.1.0 (2019-07-04)
+* (bowao) support nodejs 10 and 12
+* (bowao) add thermostat week profile
+* (bowao) add thermostat vacation config
+* (bowao) add new thermostat modes: manual eco; manual comfort; manual window
+* (bowao) add poll timeout after 5 minutes of no response from thermostat
+* (bowao) optimize error handling for incomplete packages
+
 ### 1.0.0 (2018-10-20)
-* (Arne Stenmannsr) Wall thermostat was added
+* (Arne Stenmanns) Wall thermostat was added
 
 ### 0.5.3 (2018-03-25)
 * (skraw.iobroker) Optimize logic to send commands and scanning
@@ -63,4 +81,4 @@ Z.B. Bei Thermostaten länger die "Boost" - Taste drücken, bis der Countdown be
 
 ## License
 
-[Licensed under GPLv2](LICENSE) Copyright (c) 2017-2018 bluefox
+[Licensed under GPLv2](LICENSE) Copyright (c) 2017-2020 bluefox <dogafox@gmail.com>

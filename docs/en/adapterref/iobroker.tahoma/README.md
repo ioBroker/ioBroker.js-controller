@@ -52,6 +52,7 @@ Some of the states have a `:slow` at the end if supported by the device. Setting
 ### 0.3.1
 
 -   Fixed adapter crash on empty response object after request error
+-   Fixed problems with slow/silent mode for closure
 
 ### 0.3.0
 
