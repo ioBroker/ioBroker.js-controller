@@ -20,6 +20,8 @@
 * (Apollon77) allow sessions to run longer then 24days (fixes #618, addresses ioBroker/ioBroker.admin#467)
 * (Apollon77) Check a wrong check for os on installation
 * (Apollon77) Also check nodejs minimum version on adapter install
+* (bluefox) fix CLI "state set"
+* (Apollon77) Add some more logging to Objects/States DB
 
 ## 2.2.7 (2020-01-03) Release Dina
 * (Apollon77) Update deps
