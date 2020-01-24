@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "2.2.7",
+  "version": "2.2.8",
   "engines": {
     "node": ">=8.0.0"
   },
@@ -40,13 +40,13 @@
     "semver": "^7.1.1",
     "tar": "^5.0.5",
     "winston": "^3.2.1",
-    "winston-daily-rotate-file": "^4.4.1",
+    "winston-daily-rotate-file": "^4.4.2",
     "yargs": "^15.1.0"
   },
   "devDependencies": {
     "@types/event-stream": "^3.3.34",
     "@types/mocha": "^5.2.7",
-    "@types/node": "^13.1.4",
+    "@types/node": "^13.5.0",
     "@types/yargs": "^15.0.0",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",

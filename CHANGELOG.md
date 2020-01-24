@@ -1,6 +1,6 @@
 # Changelog
 
-## 2.2.8 (2020-01-xx) Release Dina
+## 2.2.8 (2020-01-24) Release Dina
 * (bluefox) Add for delObject the recursive flag to recursively delete objects; use feature flag ADAPTER_DEL_OBJECT_RECURSIVE in your adapter code to detect if the js-controller supports it or not!
 * (bluefox) add check for sudo for package manager
 * (Apollon77) Fix error on restore/validate when no name is provided
@@ -22,6 +22,9 @@
 * (Apollon77) Also check nodejs minimum version on adapter install
 * (bluefox) fix CLI "state set"
 * (Apollon77) Add some more logging to Objects/States DB
+* (foxriver76) check if controller is running on `upgrade self` before controller upgrade (fixes #511)
+* (bluefox) Restart iobroker after applying vendor information
+* (Apollon77) fix pot. crashes happening while logs are rotated or packaged (thanx @mattberther and @rogerc)
 
 ## 2.2.7 (2020-01-03) Release Dina
 * (Apollon77) Update deps
