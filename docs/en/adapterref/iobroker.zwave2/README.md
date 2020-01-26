@@ -21,6 +21,9 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### 0.9.3 (2020-01-26)
+* Updated `zwave-js` to v2.12.2. This should fix issues with older Thermostats.
+
 ### 0.9.2 (2020-01-25)
 Updated `zwave-js` to v2.12.1. This includes the following changes:
 * When a node is removed from the network, all associations to it are also removed
