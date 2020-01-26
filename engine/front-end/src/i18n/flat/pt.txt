@@ -9,6 +9,8 @@ Autores:
 Automatize tudo
 Distintivos
 Blog
+Compre uma caneca
+Compre uma camiseta
 Compre na Amazon
 Compre o que você precisa na amazon
 Cancelar
@@ -57,6 +59,8 @@ Linux
 Lista de adaptadores
 mantenedor
 Mais dispositivos
+A cada pedido, o ioBroker receberá 6,98 € como doação.
+Caneca com logotipo
 Novo no mês passado:
 Notícias, anúncios e ideias sobre o ioBroker
 Inscreva-se na Newsletter
@@ -78,9 +82,13 @@ Ordenar
 Estável:
 Se inscrever
 Subscrito!
+Ajude-nos e compre uma caneca com o logotipo ioBroker!
+Ajude-nos e compre uma camiseta com o logotipo ioBroker!
 Apoie-nos!
 Mudar para a vista de tabela
 Mudar para a vista da telha
+A cada pedido, o ioBroker receberá 8,07 € como doação.
+T-shirt com logótipo
 A capacidade de gerenciar seu sistema IoT como um projeto inteligente e robusto.
 A página que você está procurando pode ter sido removida, teve seu nome alterado ou está temporariamente indisponível.
 Temas

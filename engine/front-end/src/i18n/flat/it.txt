@@ -9,6 +9,8 @@ autori:
 Automatizza tutto
 badge
 blog
+Compra una tazza
+Compra una maglietta
 Acquista su Amazon
 Compra ciò che ti serve ad Amazon
 Annulla
@@ -57,6 +59,8 @@ Linux
 Elenco di adattatori
 Manutentore
 Più dispositivi
+Con ogni ordine lo ioBroker riceverà 6,98 € in donazione.
+Tazza con logo
 Novità del mese scorso:
 Notizie, annunci e idee su ioBroker
 Newsletter iscriviti
@@ -78,9 +82,13 @@ Ordinare
 Stabile:
 Sottoscrivi
 Sottoscritto!
+Sostienici e acquista una tazza con il logo ioBroker!
+Sostienici e acquista una maglietta con il logo ioBroker!
 Supportaci!
 Passa alla visualizzazione tabella
 Passa alla visualizzazione tessera
+Con ogni ordine lo ioBroker riceverà 8,07 € in donazione.
+T-shirt con logo
 La capacità di gestire il tuo sistema IoT come un progetto intelligente e solido.
 La pagina che stai cercando potrebbe essere stata rimossa, il suo nome è cambiato o temporaneamente non disponibile.
 Temi

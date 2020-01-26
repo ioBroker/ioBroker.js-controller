@@ -9,6 +9,8 @@ Autorski:
 Automatyzuj wszystko
 Odznaki
 Blog
+Kup kubek
+Kup koszulkę
 Kup w Amazon
 Kup to, czego potrzebujesz w Amazon
 anulować
@@ -57,6 +59,8 @@ Linux
 Lista adapterów
 opiekun
 Więcej urządzeń
+Za każde zamówienie ioBroker otrzyma 6,98 € jako darowiznę.
+Kubek z logo
 Nowość w zeszłym miesiącu:
 Wiadomości, ogłoszenia i pomysły na temat ioBroker
 Newsletter zapisz się
@@ -78,9 +82,13 @@ Sortować
 Stabilny:
 Subskrybować
 Subskrybować!
+Wesprzyj nas i kup kubek z logo ioBroker!
+Wesprzyj nas i kup koszulkę z logo ioBroker!
 Wesprzyj nas!
 Przełącz na widok tabeli
 Przełącz na widok kafelków
+Za każde zamówienie ioBroker otrzyma darowiznę w wysokości 8,07 €.
+Koszulka z logo
 Możliwość zarządzania systemem IoT jako jeden inteligentny, solidny projekt.
 Strona, której szukasz, mogła zostać usunięta, zmieniono jej nazwę lub jest tymczasowo niedostępna.
 Tematy

@@ -9,6 +9,8 @@ Authors:
 Automate everything
 Badges
 Blog
+Buy a mug
+Buy a t-shirt
 Buy at Amazon
 Buy what you need at amazon
 Cancel
@@ -57,6 +59,8 @@ Linux
 List of adapters
 Maintainer
 More devices
+Mug explanation
+Mug with logo
 New in last month:
 News, announcements and ideas about ioBroker
 Newsletter subscribe
@@ -78,9 +82,13 @@ Sort
 Stable:
 Subscribe
 Subscribed!
+Support us and buy a mug with ioBroker logo!
+Support us and buy a t-shirt with ioBroker logo!
 Support us!
 Switch to table view
 Switch to tile view
+T-Shirt explanation
+T-shirt with logo
 The ability to manage your IoT system as one intelligent, robust project.
 The page you are looking for
 Themes

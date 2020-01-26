@@ -9,6 +9,8 @@ auteurs:
 Automatiseer alles
 badges
 blog
+Koop een mok
+Koop een t-shirt
 Koop bij Amazon
 Koop wat je nodig hebt bij Amazon
 Annuleer
@@ -57,6 +59,8 @@ Linux
 Lijst met adapters
 Beheerder
 Meer apparaten
+Bij elke bestelling ontvangt de ioBroker 6,98 € als donatie.
+Mok met logo
 Nieuw in vorige maand:
 Nieuws, aankondigingen en ideeën over ioBroker
 Nieuwsbrief abonnement
@@ -78,9 +82,13 @@ Soort
 Stal:
 Abonneren
 Geabonneerd!
+Steun ons en koop een mok met ioBroker-logo!
+Steun ons en koop een t-shirt met ioBroker-logo!
 Steun ons!
 Schakel over naar tabelweergave
 Schakel over naar tegelweergave
+Bij elke bestelling ontvangt de ioBroker 8,07 € als donatie.
+T-shirt met logo
 De mogelijkheid om uw IoT-systeem te beheren als een intelligent, robuust project.
 De pagina waarnaar u zoekt, is mogelijk verwijderd, de naam ervan is gewijzigd of is tijdelijk niet beschikbaar.
 Thema's

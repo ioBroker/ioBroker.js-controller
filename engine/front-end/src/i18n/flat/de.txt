@@ -4,11 +4,13 @@
 Adapter
 Alles
 Amazon-Partnerlinks
-Jedes Mal, wenn Sie etwas über dieses Link kaufen, erhält ioBroker einen kleinen Prozentsatz Ihrer Bestellkosten. Der Preis bleibt für Sie unverändert.
+Jedes Mal, wenn Sie etwas über dieses Link kaufen, erhält ioBroker einen kleinen Prozentsatz Ihrer Bestellkosten. Der Preis bleibt für Sie unverändert
 Autoren:
 Alles automatisieren
 Abzeichen
 Blog
+Tasse kaufen
+T-Shirt Kaufen
 Bei Amazon kaufen
 Kaufen Sie bei Amazon, was Sie brauchen
 Abbrechen
@@ -27,7 +29,7 @@ Einzelheiten
 Dokumentation
 Mit PayPal spenden
 Spenden Sie mit dem PayPal-Button
-Downloads
+Download
 Dynamisch wachsende Community.
 lokale Bearbeitung
 Auf GitHub ändern
@@ -54,16 +56,18 @@ Stand
 Lizenz
 Licht, Rollladen, Thermostat, Zeitplan, ...
 Linux
-Liste der Adapter
+Adapterliste
 Maintainer
 Weitere Geräte
+Mit jeder Bestellung erhält der ioBroker 6,98 € als Spende.
+Tasse mit Logo
 Letzten Monat neu:
 Neuigkeiten, Ankündigungen und Ideen zu ioBroker
 Newsletter abonnieren
 keine Ergebnisse gefunden
 Repository öffnen
 Über %s verbundene Dienste und Systeme!
-Um das Hosting zu finanzieren, verlinken wir Produktangebote von angeschlossenen Partnershops über sogenannte Affiliate Links. Diese sind mit einem Stern '*' gekennzeichnet. Wenn ein Benutzer über einen solchen Affiliate Link ein Produkt in einem der Partnershops erwirbt, erhalten wir eine Verkaufsprovision vom Anbieter, z.B. von Amazon, GearBest und anderen. Der Preis bleibt hierbei für Sie in jedem Fall unverändert.
+Um das Hosting zu finanzieren, verlinken wir Produktangebote von angeschlossenen Partnershops über sogenannte Affiliate Links. Diese sind mit einem Stern '*' gekennzeichnet. Wenn ein Benutzer über einen solchen Affiliate Link ein Produkt in einem der Partnershops erwirbt, erhalten wir eine Verkaufsprovision vom Anbieter, z.B. von Amazon, GearBest und andere. Der Preis bleibt hierbei für den Benutzer in jedem Fall unverändert.
 PayPal - Der sicherere und einfachere Weg, online zu bezahlen!
 Plattform
 Beiträge
@@ -78,15 +82,19 @@ Sortieren
 Stable:
 Abonnieren
 Gezeichnet!
+Unterstütze uns und kaufe eine Tasse mit ioBroker-Logo!
+Unterstütze uns und kaufe ein T-Shirt mit ioBroker-Logo!
 Unterstütze uns!
 Wechseln Sie zur Tabellenansicht
 Wechseln Sie zur Kachelansicht
+Mit jeder Bestellung erhält der ioBroker 8,07 € als Spende.
+T-Shirt mit Logo
 Die Fähigkeit, Ihr IoT-System als ein intelligentes, robustes Projekt zu verwalten.
 Die gesuchte Seite wurde möglicherweise entfernt, der Name wurde geändert oder ist vorübergehend nicht verfügbar.
 Themen
 Titel
 Gesamt:
-Diese Seite wurde automatisch von "%s" übersetzt. Bitte unten auf Bearbeiten klicken, um diese Seite auf Deutsch zu übersetzen. Danke!
+Diese Seite wurde automatisch von "%s" übersetzt. Bitte unten auf Bearbeiten klicken, um diese Seite auf Deutsch zu übersetzen, Danke!
 Art
 Einzigartige Grafiken und schöne Schnittstellen für Sie.
 Abmelden?

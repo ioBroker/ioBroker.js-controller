@@ -9,6 +9,8 @@ Autores:
 Automatizar todo
 Insignias
 Blog
+Comprar una taza
+Compra una camiseta
 Compra en Amazon
 Compra lo que necesites en amazon
 Cancelar
@@ -57,6 +59,8 @@ Linux
 Lista de adaptadores
 mantenedor
 Más dispositivos
+Con cada pedido, el ioBroker recibirá 6,98 € como donación.
+Taza con logo
 Nuevo en el mes pasado:
 Noticias, anuncios e ideas sobre ioBroker.
 Subscripción de correspondencia
@@ -78,9 +82,13 @@ Ordenar
 Estable:
 Suscribir
 Suscrito!
+¡Apóyanos y compra una taza con el logo de ioBroker!
+¡Apóyanos y compra una camiseta con el logo de ioBroker!
 ¡Apoyanos!
 Cambiar a vista de tabla
 Cambiar a vista de mosaico
+Con cada pedido, ioBroker recibirá 8,07 € como donación.
+Camiseta con logo
 La capacidad de administrar su sistema de IoT como un proyecto inteligente y robusto.
 Es posible que la página que busca se haya eliminado, haya cambiado su nombre o no esté disponible temporalmente.
 Temas
