@@ -1,6 +1,6 @@
 <h1>
-	<img src="admin/gruenbeck.png" width="64"/>
-	ioBroker.gruenbeck
+ <img src="admin/gruenbeck.png" width="64"/>
+ ioBroker.gruenbeck
 </h1>
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.gruenbeck.svg)](https://www.npmjs.com/package/iobroker.gruenbeck)
@@ -17,6 +17,10 @@
 An ioBroker adapter for Grünbeck Wasseraufbereitung SC18, SC23, SD18, SD21, SD23 devices.
 
 ## Changelog
+
+### 0.0.17 (2020-01-24)
+
+- Increasing minimum interval to prevent blocking
 
 ### 0.0.15 (2019-10-28)
 
@@ -64,14 +68,14 @@ An ioBroker adapter for Grünbeck Wasseraufbereitung SC18, SC23, SD18, SD21, SD2
 ### 0.0.5 (2019-03-30)
 
 - Fehlercode History hinzugefügt. Fehlerspeicher muss nicht mehr zurückgesetzt für neue Fehler State. Nur der muss manuell auf 0 gesetzt werden.
-  Alle 4sek wird jetzt der aktuelle Durchfluss abgerufen.
+    Alle 4sek wird jetzt der aktuelle Durchfluss abgerufen.
 
 ### 0.0.4
 
 - (tombox) Bugfixes,
-  added Restkapazität Austauscher to refresh values
-  added berechneter Salzstand and reset Salzstand
-  added Fehlerspeicher reset
+    added Restkapazität Austauscher to refresh values
+    added berechneter Salzstand and reset Salzstand
+    added Fehlerspeicher reset
 
 ### 0.0.3
 

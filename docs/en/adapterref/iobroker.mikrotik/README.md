@@ -23,6 +23,10 @@ Reset power USB in mikrotik
 
 ## Changelog
 
+#### 1.0.10
+* (instalator) added name object
+* (instalator) fix error
+
 #### 1.0.6
 * (instalator) added in interface RX/TX (packets) [issues#20](https://github.com/instalator/ioBroker.mikrotik/issues/20)
 * (instalator) Added Support for Compact mode

@@ -3,21 +3,33 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.gruenbeck/README.md
 title: 无题
-hash: Dvd7ZASPUclPeQQ2hlcNDWVpyVXhlKGGE+PXj6DP7tQ=
+hash: ot6iKdWRZK7uVdTIc/7ZNwXp2Y/oyRsx3J6NSKSU7wk=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.gruenbeck.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.gruenbeck.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.gruenbeck.svg)
 ![依赖状态](https://img.shields.io/david/TA2k/iobroker.gruenbeck.svg)
-![已知的漏洞](https://snyk.io/test/github/TA2k/ioBroker.gruenbeck/badge.svg)
+![已知漏洞](https://snyk.io/test/github/TA2k/ioBroker.gruenbeck/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.gruenbeck.png?downloads=true)
-![特拉维斯-CI](http://img.shields.io/travis/TA2k/ioBroker.gruenbeck/master.svg)
+![特拉维斯](http://img.shields.io/travis/TA2k/ioBroker.gruenbeck/master.svg)
 
 <h1><img src="admin/gruenbeck.png" width="64"/> ioBroker.gruenbeck </h1>
 
-适用于ioBroker的## gruenbeck适配器
-适用于GrünbeckWasseraufbereitungSC18，SC23，SD18，SD21，SD23设备的ioBroker适配器。
+## IoBroker的gruenbeck适配器
+用于GrünbeckWasseraufbereitung SC18，SC23，SD18，SD21，SD23设备的ioBroker适配器。
 
 ## Changelog
+
+### 0.0.17 (2020-01-24)
+
+- Increasing minimum interval to prevent blocking
+
+### 0.0.15 (2019-10-28)
+
+- Fix combact mode
+
+### 0.0.14 (2019-09-13)
+
+- Add Refresh for SDxx devices
 
 ### 0.0.13 (2019-09-13)
 
@@ -57,14 +69,14 @@ hash: Dvd7ZASPUclPeQQ2hlcNDWVpyVXhlKGGE+PXj6DP7tQ=
 ### 0.0.5 (2019-03-30)
 
 - Fehlercode History hinzugefügt. Fehlerspeicher muss nicht mehr zurückgesetzt für neue Fehler State. Nur der muss manuell auf 0 gesetzt werden.
-  Alle 4sek wird jetzt der aktuelle Durchfluss abgerufen.
+    Alle 4sek wird jetzt der aktuelle Durchfluss abgerufen.
 
 ### 0.0.4
 
 - (tombox) Bugfixes,
-  added Restkapazität Austauscher to refresh values
-  added berechneter Salzstand and reset Salzstand
-  added Fehlerspeicher reset
+    added Restkapazität Austauscher to refresh values
+    added berechneter Salzstand and reset Salzstand
+    added Fehlerspeicher reset
 
 ### 0.0.3
 

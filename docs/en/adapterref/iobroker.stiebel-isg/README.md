@@ -28,6 +28,10 @@ Help or hints are welcome.
 
 ## Changelog
 
+### 1.4.11
+
+* support for further heatingtyp WPL25A
+
 ### 1.4.10
 
 * bugfix for group definitons
@@ -112,6 +116,11 @@ Help or hints are welcome.
 ### 1.1.0
 
 * Energymanagment added (ISG plus required)
+
+## Donate
+
+Kaffee spendieren/serve a coffee
+<https://paypal.me/unltdnetworx>
 
 ## License
 

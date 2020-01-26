@@ -43,6 +43,9 @@ You find a detailed installation documentation here:
 
 ## Changelog
 
+### 3.1.9 (25.01.2020)
+* (Stübi) - Bugfixing, auto update new firmware
+
 ### 3.1.7 (08.01.2020)
 * (Stübi) - Add state energy to Shelly dimmer 
 

@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.stiebel-isg/README.md
-title: ioBroker.stiebel-isg! [Логотип] (admin / stiebel-isg.png)
-hash: DljG7W2+AunamGID+OEEssfIa1iqnlqmUS86Id6c3Bo=
+title: ioBroker.stiebel-isg! [Logo] (admin / stiebel-isg.png)
+hash: F9wfRq1LCm/pTfUrhSPaeLE7JtedBb3ihJk77eA5DMo=
 ---
 # IoBroker.stiebel-isg ![логотип](../../../en/adapterref/iobroker.stiebel-isg/admin/stiebel-isg.png)
 
@@ -24,12 +24,19 @@ hash: DljG7W2+AunamGID+OEEssfIa1iqnlqmUS86Id6c3Bo=
 ## Шаги
 1. Установите adpater
 
-2. Возьмите значения из вашего stiebel-isg. [X] -объекта.
+2. Возьмите значения из вашего объекта. [X] -объект.
 
 ## Требования
 * Интернет-шлюз stiebel-eltron / tecalor (ISG)
 
+## Пожертвовать
+Kaffee тратят / подают кофе <https://paypal.me/unltdnetworx>
+
 ## Changelog
+
+### 1.4.11
+
+* support for further heatingtyp WPL25A
 
 ### 1.4.10
 

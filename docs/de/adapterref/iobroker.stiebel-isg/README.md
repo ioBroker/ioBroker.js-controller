@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.stiebel-isg/README.md
 title: ioBroker.stiebel-isg! [Logo] (admin / stiebel-isg.png)
-hash: DljG7W2+AunamGID+OEEssfIa1iqnlqmUS86Id6c3Bo=
+hash: F9wfRq1LCm/pTfUrhSPaeLE7JtedBb3ihJk77eA5DMo=
 ---
 # IoBroker.stiebel-isg ![Logo](../../../en/adapterref/iobroker.stiebel-isg/admin/stiebel-isg.png)
 
@@ -29,7 +29,14 @@ Hilfe oder Hinweise sind willkommen.
 ## Bedarf
 * Internet Service Gateway (ISG) von Stiebel-Eltron / Tecalor
 
+## Spenden
+Kaffee spendieren / einen Kaffee servieren <https://paypal.me/unltdnetworx>
+
 ## Changelog
+
+### 1.4.11
+
+* support for further heatingtyp WPL25A
 
 ### 1.4.10
 

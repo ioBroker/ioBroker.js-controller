@@ -95,82 +95,48 @@ iobroker upload tr-064
 ```
 
 ## Changelog
-### 0.4.18
-* (soef) IP and MAC-address added to device object
-### 0.4.17
-* (soef) readme updated
-### 0.4.16
-* (soef) terminating adapter, if init fails, so that the adapter will be restarted",
-### 0.4.15
-* (soef) callmonitor: new toPauseState with extension
-### 0.4.14
-* (soef) Errorhandling of connecting to FritzBox extended
-### 0.4.12
-* (soef) Errorhandling of deflections fixed
-### 0.4.11
-* (Apollon77) Update utils.js and usage, CI Testing and deps
-### 0.4.10 (2017-11-23)
-* (soef) readme changelog extended
-### 0.4.9
-* (soef) fix tag error in io-package.json
-### 0.4.8
-* (soef) fix posible timeout on getting WLAN-Infos
-### 0.4.6
-* (soef) fix posible exception in deflections
-### 0.4.5
-* (apollon77) update basic package-file testing
-### 0.4.4
-* (soef) states of call forwarding will now be updated in the configured interval
-### 0.4.3
-* (soef) Call forwarding now configurable
-### 0.4.2
-* (soef) fixed exception in deflections
-### 0.4.1
-* (soef) fix changing forwarding state
-### 0.4.0
-* (soef) enable/disable call forwarding added
-### 0.3.24
-* (soef) States from the callmonitor are renewed, even if no change
-### 0.3.23
-* (soef) node 0.12 removed from testing
-### 0.3.22
-* (soef) Enhance CI testing
-### 0.3.21
-* (soef) using soef 0.4.6 to fix adapter load
-### 0.3.20
-* (soef) adapter type changed to media
-### 0.3.19
-* (soef) error message removed
-### 0.3.18
-* (soef) clear caller/callee before next call
-### 0.3.17
-* (soef) Only active will be shone in configuration
-### 0.3.16
-* (soef) Some extensions in onMessage discovery
-### 0.3.15
-* (soef) toPauseState added. Values: ring, connect, end
-### 0.3.14
-* (soef) callee name added
-### 0.3.12 (2017-03-15)
-* (bluefox) phone book for repeater excluded
-* (bluefox) readme extended
-### 0.3.11 (2017-03-07)
-* (soef) external property adde to call list
-### 0.3.10 (2017-03-07)
-* (soef) Error message in configuration, if an older admin adapter is installed
-### 0.3.7 (2017-03-06)
-* (soef) Fixed imageurl for external phone book again. E.g. google
-### 0.3.6 (2017-03-06)
-* (soef) Fixed imageurl for external phone book. e.g. google
-### 0.3.5 (2017-03-06)
-* (soef) Json device list added
-### 0.3.3 (2017-03-01)
-* (soef) phonebook functions/states added
-### 0.3.1 (2017-02-28)
-* (soef) some bug fixes
-* (soef) releasing call lists
-### 0.3.0 (2017-02-25)
-* (bluefox) use new table for configuration dialog
+### 3.1.1 (2020-01-25)
+* (bluefox) Configuration dialog was improved
+* (bluefox) Soef library was removed
 
-### 0.2.0 (2016)
-* (soef) initial commit
+### 3.0.0 (2020-01-24)
+* (Apollon77) Switch Name back to tr064 because ewe got it from npmjs
+* (maeb3) Enhance call handling and fix wrong data for currently active calls 
+* (Apollon77) Remove unused state phonebook.ringing
+
+### 2.0.3 (2019-12-17)
+* (Jey Cee) fix delete last device from list
+
+### 2.0.2 (2019-12-16)
+* __requires js-controller v2__
+* (foxriver76) no longer use adapter.objects
+* (Apollon77) several fixes, Call lists working again, Phonebook fixed and many more
+
+### 1.1.0 (2019-11-10)
+* (jey cee) added Admin v3 support
+
+### 1.0.0 (2019-04-01)
+* (ldittmar) first version for the community
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2015-2020 soef <soef@gmx.net>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

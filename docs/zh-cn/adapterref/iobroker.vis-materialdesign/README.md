@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: 1nLZH6HGp0E/EGopvSP2BiPyp93R+9tkls7s0/dLet4=
+hash: eLX6p+Qi7beSULDJmUAseJkYgh9WE96AjNvyLMfQK1g=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -91,7 +91,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ##带有导航抽屉的顶部应用栏
 带有导航抽屉的顶部应用栏可以与<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>结合使用。
 
-<b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
+<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
 
 #####布局模式：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
@@ -153,20 +153,60 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 示例请<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">参见上面</a> 。
 
-可以找到工作窗口小部件示例[这里](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
+可以找到工作部件示例
+
+* [此处]（https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113）
+* [ical Adapter]（https://forum.iobroker.net/topic/26925/test-adapter-material-design-widgets-v0-2-x/581）
 
 ##列视图-已弃用!!!
-列视图具有集成的多个`view in widget`§，它们将根据窗口小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动电话的一种布局）
+列视图具有多个集成的`view in widget`§，将根据小部件的宽度自动对其进行排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动电话的一种布局）
 
-<b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
+<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/column_views.gif)
 
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/column_views_common.png"></td><td>列数</td><td>定义列数</td></tr><tr><td>最小宽度</td><td>每列的最小宽度。例如使用移动设备分辨率的宽度</td></tr><tr><td rowspan=2><img src="doc/en/media/column_views_col_settings.png"></td><td>列[x]中的视图</td><td>定义应在此列中显示的视图。多个视图必须用&#39;|&#39;分隔</td></tr><tr><td>列[x]中的视图高度</td><td>在列中定义每个视图的高度。多个高度必须用&#39;|&#39;分隔</td></tr></tbody></table>
 
+##警报
+可以使用Alerts小部件可以在VIS中显示消息，就像它与Pushover适配器一起使用一样，但是可以直接在VIS中显示。
+
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/alerts.gif)
+
+Alerts小部件需要JSON字符串作为对象，其结构必须如下：
+
+```
+[
+       {
+		"text": "we have a new message",
+		"backgroundColor": "",
+		"borderColor": "darkred",
+		"icon": "message-alert-outline",
+		"iconColor": "darkred",
+		"fontColor": "blue"
+	}, {
+		"text": "we have a new message",
+		"backgroundColor": "#e6b0aa",
+		"borderColor": "green",
+		"icon": "/vis/img/bulb_on.png",
+		"iconColor": "green",
+		"fontColor": "gold"
+	}, {
+		"text": "we have a new message",
+		"backgroundColor": "",
+		"borderColor": "gold",
+		"icon": "alert-outline",
+		"iconColor": "gold",
+		"fontColor": ""
+	}
+]
+```
+
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/alerts_settings.png"></td><td>列数</td><td>定义列数</td></tr><tr><td>对象ID </td><td>对象必须是json字符串，其结构必须如上所述</td></tr><tr><td>最高警报</td><td>应该显示的最大警报数。 </td></tr></tbody></table>
+
 ## Changelog
 
 ### 0.2.xx
+* (Scrounger): Alerts Widget added
 * (Scrounger): use of Material Design Icons as images added
 * (Scrounger): Perfomrance optimized
 * (Scrounger): Input Widget added

@@ -20,6 +20,10 @@ Exchange rates Central Bank of Russia and European Central Bank and more...
 
 ## Changelog
 
+### 0.0.12
+* (instalator) fixed getObject
+* (instalator) fixed compact mode
+
 ### 0.0.11
 * (instalator) delete widgets
 

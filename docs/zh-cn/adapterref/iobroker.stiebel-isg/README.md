@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.stiebel-isg/README.md
 title: ioBroker.stiebel-isg！[徽标]（admin / stiebel-isg.png）
-hash: DljG7W2+AunamGID+OEEssfIa1iqnlqmUS86Id6c3Bo=
+hash: F9wfRq1LCm/pTfUrhSPaeLE7JtedBb3ihJk77eA5DMo=
 ---
 ![安装数量](http://iobroker.live/badges/stiebel-isg-stable.svg)
 ![建立状态](https://api.travis-ci.org/unltdnetworx/ioBroker.stiebel-isg.svg?branch=master)
@@ -16,19 +16,26 @@ hash: DljG7W2+AunamGID+OEEssfIa1iqnlqmUS86Id6c3Bo=
 
 该适配器可用于从stiebel-eltron / tecalor Internet服务网关（ISG）读取值并控制设备。
 
-自行承担风险！！！绝对不为损坏提供保修，等等！！！
+自行承担使用风险！！！绝对不为损坏提供保修，等等！！！
 
 欢迎提供帮助或提示。
 
 ＃＃ 脚步
 1.安装adpater
 
-2.从您的stiebel-isg。[x]对象中获取值。
+2.从stiebel-isg。[x]对象中获取值。
 
 ＃＃ 要求
 * stiebel-eltron / tecalor互联网服务网关（ISG）
 
+##捐赠
+卡菲·比迪恩（Kaffee budieren）/提供咖啡<https://paypal.me/unltdnetworx>
+
 ## Changelog
+
+### 1.4.11
+
+* support for further heatingtyp WPL25A
 
 ### 1.4.10
 

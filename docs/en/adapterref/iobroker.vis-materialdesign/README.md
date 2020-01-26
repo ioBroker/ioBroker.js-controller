@@ -424,7 +424,9 @@ prefix & suffix supports table internal object binding -> you can access other p
 
 Example see <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">see above</a>.
 
-Working Widget Example can be found [here](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
+Working Widget Example can be found 
+* [here](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
+* [ical Adapter](https://forum.iobroker.net/topic/26925/test-adapter-material-design-widgets-v0-2-x/581)
 
 ## Column Views - decrepated !!!
 
@@ -464,9 +466,68 @@ Column Views has multiple `view in widget` integrated, that will be ordered auto
     </tbody>
 </table>
 
+## Alerts
+Alerts widget can be used e.g. to display messages in the VIS, like it works with the pushover adapter, but directly in the VIS.
+
+![Logo](doc/en/media/alerts.gif)
+
+The Alerts widget requires a JSON string as object, which must be structured as follows:
+```
+[
+       {
+		"text": "we have a new message",
+		"backgroundColor": "",
+		"borderColor": "darkred",
+		"icon": "message-alert-outline",
+		"iconColor": "darkred",
+		"fontColor": "blue"
+	}, {
+		"text": "we have a new message",
+		"backgroundColor": "#e6b0aa",
+		"borderColor": "green",
+		"icon": "/vis/img/bulb_on.png",
+		"iconColor": "green",
+		"fontColor": "gold"
+	}, {
+		"text": "we have a new message",
+		"backgroundColor": "",
+		"borderColor": "gold",
+		"icon": "alert-outline",
+		"iconColor": "gold",
+		"fontColor": ""
+	}
+]
+```
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=2><img src="doc/en/media/alerts_settings.png"></td>
+            <td>number of columns</td>
+            <td>define number of columns</td>
+        </tr>
+        <tr>
+            <td>Object ID</td>
+            <td>Object must be a json string, which must be structured as described above</td>
+        </tr>
+        <tr>
+            <td>max. Alerts</td>
+            <td>max number of Alerts that should be shown.</td>
+        </tr>
+    </tbody>
+</table>
+
 ## Changelog
 
 ### 0.2.xx
+* (Scrounger): Alerts Widget added
 * (Scrounger): use of Material Design Icons as images added
 * (Scrounger): Perfomrance optimized
 * (Scrounger): Input Widget added
