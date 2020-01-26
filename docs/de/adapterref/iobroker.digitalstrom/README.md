@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.digitalstrom/README.md
 title: ioBroker.digitalstrom
-hash: S5qgpBFNsIHl95YtEWjh6cBnBv1yuAc3ZX9vaeFp/X4=
+hash: s2n0zU09+s3oPtTs4nWMfeTPXXlhP8veObmZYbcTZMo=
 ---
 ![Logo](../../../en/adapterref/iobroker.digitalstrom/admin/digitalstrom.png)
 
@@ -17,7 +17,7 @@ hash: S5qgpBFNsIHl95YtEWjh6cBnBv1yuAc3ZX9vaeFp/X4=
 ![Travis-CI](http://img.shields.io/travis/Apollon77/ioBroker.digitalstrom/master.svg)
 
 # IoBroker.digitalstrom
-** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
 
 ## Digitalstrom Adapter für ioBroker
 Unterstützung für Digitalstrom-Geräte über DSS
@@ -25,7 +25,7 @@ Unterstützung für Digitalstrom-Geräte über DSS
 ## Installation
 Bitte installieren Sie den Adapter wie gewohnt über die Admin-Benutzeroberfläche.
 
-Sobald der Adapter offiziell freigegeben ist, ist er im Repo und kann einfach ausgewählt werden.
+Sobald der Adapter offiziell freigegeben ist, ist er im Repo und einfach auswählbar.
 
 Während der Testphase oder zum Testen neuerer Versionen (siehe relevante Forenthreads) können Sie den Adapter auch direkt von GitHub installieren, indem Sie https://github.com/ioBroker/ioBroker.digitalstrom als URL verwenden. Bitte benutzen Sie dazu die Admin "Custom Install" Option.
 
@@ -46,7 +46,7 @@ Wenn die Daten korrekt sind, liest der Adapter die Apartment- und Gerätestruktu
 
 Danach abonniert der Adapter mehrere DSS-Ereignisse, um über Aktionen im System benachrichtigt zu werden.
 
-Die Adapter-Statusanzeige wird grün und als Info-Protokoll wird "Status abonniert ..." angezeigt. Danach ist alles fertig und Sie können z.
+Die Adapter-Statusanzeige wird grün und als Info-Protokoll wird "Abonniert für Status ..." angezeigt. Danach ist alles fertig und Sie können z.
 
 * Szenen für Wohnung, Zonen, Gruppen oder Geräte setzen / rückgängig machen
 * Status und Sensorwerte lesen; Für Zonen ist es auch möglich, Sensorwerte zu verschieben
@@ -66,7 +66,7 @@ In den Strukturen sind verschiedene "Datentypen" enthalten:
 ### Apartment Objekt und Zustände
 ![Wohnungsobjekte](../../../en/adapterref/iobroker.digitalstrom/img/dss-apartment.png)
 
-Für die Wohnung wird eine Struktur mit "Etage". "Zone" mit den folgenden Unterstrukturen innerhalb dieser erstellt:
+Für die Wohnung wird eine Struktur mit "Etage". "Zone" mit folgenden Unterstrukturen innerhalb dieser erstellt:
 
 * Pro Gerätegruppe wird ein Unterordner mit den verfügbaren Gruppenszenen erstellt
 * Szenen für diese Zone
@@ -100,12 +100,16 @@ Bitte benutzen Sie dazu GitHub.
 
 Stellen Sie den Adapter am besten auf den Debug-Protokollmodus ein (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen schneidet). Wenn Sie es nicht in der GitHub-Ausgabe bereitstellen möchten, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Fügen Sie dem betreffenden GitHub-Problem eine Referenz hinzu UND beschreiben Sie, was zu welchem Zeitpunkt im Protokoll angezeigt wird.
 
-## Was ist Sentry.io und was wird den Servern dieser Firma gemeldet?
-Sentry.io ist ein Dienst, mit dem Entwickler einen Überblick über Fehler in ihren Anwendungen erhalten. Und genau das ist in diesem Adapter implementiert.
+## Was ist Sentry und was wird den Servern gemeldet?
+Sentry.io ist eine Möglichkeit für Entwickler, sich einen Überblick über Fehler in ihren Anwendungen zu verschaffen. Und genau das ist in diesem Adapter implementiert.
 
-Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Namen oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an meinen eigenen Sentry gesendet, der in Deutschland gehostet wird. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Namen oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
+
+### 0.5.2 (2020-01-26)
+* (Apollon77) fix smaller errors
+* (Apollon77) send Sentry reports to own server
 
 ### 0.5.0 (2020-01-19)
 * (Apollon77) add buttons for more device types (also vDC) and try to detect button triggers

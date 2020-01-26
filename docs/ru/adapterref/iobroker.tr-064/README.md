@@ -102,6 +102,10 @@ iobroker upload tr-064
 ```
 
 ## Changelog
+### 3.1.4 (2020-01-26)
+* (Apollon77) fix error and check some other code check comments
+* (Apollon77) Add proper meta data for buttons
+
 ### 3.1.1 (2020-01-25)
 * (bluefox) Configuration dialog was improved
 * (bluefox) Soef library was removed

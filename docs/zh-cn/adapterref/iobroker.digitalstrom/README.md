@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.digitalstrom/README.md
 title: ioBroker.digitalstrom
-hash: S5qgpBFNsIHl95YtEWjh6cBnBv1yuAc3ZX9vaeFp/X4=
+hash: s2n0zU09+s3oPtTs4nWMfeTPXXlhP8veObmZYbcTZMo=
 ---
 ![商标](../../../en/adapterref/iobroker.digitalstrom/admin/digitalstrom.png)
 
@@ -17,7 +17,7 @@ hash: S5qgpBFNsIHl95YtEWjh6cBnBv1yuAc3ZX9vaeFp/X4=
 ![特拉维斯](http://img.shields.io/travis/Apollon77/ioBroker.digitalstrom/master.svg)
 
 ＃ioBroker.digitalstrom
-**该适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备架构。**更多详细信息，请参见下文！
+**此适配器使用Sentry库向开发人员自动向我报告异常和代码错误以及新的设备架构。**更多详细信息，请参见下文！
 
 ##用于ioBroker的Digitalstrom适配器
 通过DSS支持Digitalstrom设备
@@ -25,7 +25,7 @@ hash: S5qgpBFNsIHl95YtEWjh6cBnBv1yuAc3ZX9vaeFp/X4=
 ##安装
 请照常通过Admin UI安装适配器。
 
-适配器正式发布后，他将进入回购协议中并且可以选择。
+适配器正式发布后，他将进入回购协议中，并且可以选择。
 
 在测试阶段，或者为了测试较新版本（请参阅相关论坛主题），您还可以使用https://github.com/ioBroker/ioBroker.digitalstrom作为URL直接从GitHub安装适配器。请为此使用“自定义安装”管理员选项。
 
@@ -57,9 +57,9 @@ hash: S5qgpBFNsIHl95YtEWjh6cBnBv1yuAc3ZX9vaeFp/X4=
 
 在结构中，包括几种数据“类型”：
 
-*场景：场景被实现为开关。将值tro设置为“ true”将为此场景发送“ callScene”命令。值为“ false”将为此场景发送一个“ undoScene”命令-由DSS服务器决定“ undo”是否为有效命令！当从DSS服务器触发callScene或undoScene作为事件时，相关场景将设置为“ true”或“ false”，且ack = true
+*场景：场景被实现为开关。将值tro设置为“ true”将为此场景发送“ callScene”命令。值为“ false”将为此场景发送“ undoScene”命令-由DSS服务器决定“ undo”是否为有效命令！当从DSS服务器触发callScene或undoScene作为事件时，相关场景将设置为“ true”或“ false”，且ack = true
 *状态：显示系统状态和用户通过插件定义的状态，它们是只读的
-*传感器值由事件触发时会更新，并且也可以部分更改赌注-更改将“ pushSensorValue”发送到服务器，如果值被接受，则取决于服务器！这主要与温度或湿度值有关
+*传感器值由事件触发时会更新，并且也可以部分更改赌注-更改会向服务器发送“ pushSensorValue”，如果接受该值，则取决于服务器！这主要与温度或湿度值有关
 
 *
 
@@ -98,14 +98,18 @@ hash: S5qgpBFNsIHl95YtEWjh6cBnBv1yuAc3ZX9vaeFp/X4=
 ##如何报告问题和功能要求
 请为此使用GitHub问题。
 
-最好是将适配器设置为“调试”日志模式（“实例”->“专家”模式->“列日志”级别）。然后，请从磁盘中获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin中的子目录，因为Admin减少了行数）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
+最好是将适配器设置为“调试”日志模式（“实例”->“专家”模式->“列日志”级别）。然后，请从磁盘获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin会删掉行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
 
-##什么是Sentry.io，什么报告给该公司的服务器？
-Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+##什么是Sentry，什么报告给服务器？
+Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我在德国托管的Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
+
+### 0.5.2 (2020-01-26)
+* (Apollon77) fix smaller errors
+* (Apollon77) send Sentry reports to own server
 
 ### 0.5.0 (2020-01-19)
 * (Apollon77) add buttons for more device types (also vDC) and try to detect button triggers
