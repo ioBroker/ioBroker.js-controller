@@ -521,6 +521,7 @@ function createObjects(onConnect) {
                             compactProcs[procs[id].config.common.compactGroup].instances.splice(compactProcs[procs[id].config.common.compactGroup].instances.indexOf(id), 1);
                         }
                         procs[id].config = obj;
+                        hostAdapter[id] = hostAdapter[id] || {};
                         hostAdapter[id].config = obj;
                     }
                     if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
