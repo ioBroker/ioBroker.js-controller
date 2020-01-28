@@ -180,6 +180,27 @@ The logging is configured in the `iobroker.json` file and can be changed there:
 }
 ```
 
+Since js-controller 2.2 Logfiles on non-Windows based systems are compressed on rotation, so that the older Files need less space on your storage. 
+
+If you do not want to compress the files this behaviour can be deactivated since js-controller 2.3 by `iobroker.json`:
+
+```
+{
+  ...
+  "log": {
+    ...
+    "transport": {
+      "file1": {
+        ...
+        "zippedArchive": false,
+        ...
+      },
+    },
+  ...
+}
+```
+
+
 #### Syslog logging
 **Feature status:** stable
 
