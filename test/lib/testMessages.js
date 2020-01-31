@@ -8,13 +8,13 @@ function register(it, expect, context) {
     const testName = context.name + ' ' + context.adapterShortName + ' adapter: ';
     const gid = 'system.adapter.' + context.adapterShortName + '.0';
     it(testName + 'check pushMessage', function (done) {
-        context.adapter.states.subscribeMessage(gid, function (err) {
+        context.states.subscribeMessage(gid, function (err) {
             expect(err).to.be.not.ok;
 
             context.onAdapterMessage = function (obj) {
                 expect(typeof obj).to.equal('object');
                 expect(obj.test).to.equal(1);
-                context.adapter.states.unsubscribeMessage(gid, () => done());
+                context.states.unsubscribeMessage(gid, () => done());
                 context.onAdapterMessage = null;
             };
 
@@ -25,14 +25,14 @@ function register(it, expect, context) {
         });
     });
     it(testName + 'check pushMessage Buffer', function (done) {
-        context.adapter.states.subscribeMessage(gid, function (err) {
+        context.states.subscribeMessage(gid, function (err) {
             expect(err).to.be.not.ok;
 
             context.onAdapterMessage = function (obj) {
                 expect(typeof obj).to.equal('object');
                 expect(Buffer.isBuffer(obj.test)).to.be.true;
                 expect(obj.test.toString('utf8')).to.equal('ABCDEFG');
-                context.adapter.states.unsubscribeMessage(gid, () => done());
+                context.states.unsubscribeMessage(gid, () => done());
                 context.onAdapterMessage = null;
             };
 
@@ -50,7 +50,7 @@ function register(it, expect, context) {
     });
 
     it(testName + 'check pushLog', function (done) {
-        context.adapter.states.subscribeLog(gid, function (err) {
+        context.states.subscribeLog(gid, function (err) {
             expect(err).to.be.not.ok;
             context.states.pushLog(gid, {test: 1}, function (err, id) {
                 expect(err).to.be.null;
