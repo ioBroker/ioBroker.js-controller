@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: j6m0qzV1f1E3JpYwTGgqLGC8xzydsmg606nEXmekPEg=
+hash: py7WH/sT7A9CXgu/xcGjnCdIpEIKKXYdeErNrQ8IoFo=
 ---
 ![Logo](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
@@ -56,12 +56,13 @@ Nach dem Neustart der Instanz, wird dieser Vorgang automatisch gestartet, man ka
 			</commands>
 		</vito>```
 
-A sortierung der befehle, is through click on the tables head possible.
+A sortierung der befehle ist durch klicken auf den tabellenkopf möglich.
 
 ## Wichtig !:
 - Bei jedem neuen einlesen der Vito Daten, werden ggf. die "alten" Einstellungen gelöscht.
 
 Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst grosses Abfrageintervall zu wählen.
+Es ist ebenfalls möglich, einen Wert ausserhalb des Abfragezyklus abzufragen. Hierzu muss der Datenpunkt *force_polling* mit dem gewünschten *get* Wert beschrieben werden.
 
 *die benutzten Bilder stammen von www.viessmann.com.*
 
@@ -75,7 +76,7 @@ Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst gro
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 misanorot <audi16v@gmx.de>
+Copyright (c) 2017-2020 misanorot <audi16v@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

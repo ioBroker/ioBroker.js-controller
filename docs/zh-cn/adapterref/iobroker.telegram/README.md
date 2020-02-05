@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.telegram/README.md
 title: ioBroker电报适配器
-hash: 3gUX37ZjaRU+kloaRUSblN655foTMhHsBRYtYr6RC54=
+hash: mWTsYb+tyqOBzPZDlS/FBuCmBw3qVJJKXqMOl/SMoRI=
 ---
 ![商标](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
 
@@ -15,16 +15,16 @@ hash: 3gUX37ZjaRU+kloaRUSblN655foTMhHsBRYtYr6RC54=
 
 ＃ioBroker电报适配器
 ##配置
-要求[@BotFather](https://telegram.me/botfather)创建新的漫游器```/newbot```。
+询问[@BotFather](https://telegram.me/botfather)创建新的漫游器```/newbot```。
 
-系统将要求您输入机器人的名称，然后输入用户名。
+系统将要求您输入漫游器的名称，然后输入用户名。
 之后，您将获得令牌。
 
 ![屏幕截图](../../../en/adapterref/iobroker.telegram/img/chat.png)
 
 您应该在配置对话框中设置通信密码。此后，启动适配器。
 
-要与您的机器人进行对话，您需要使用“ / passwordphrase”对用户进行身份验证，其中“ phrase **”是您配置的密码。因此，在Telegram中与您生成的Bot进行新的对话，然后您需要输入密码作为第一个命令。
+要与您的机器人进行对话，您需要使用“ /密码短语”对用户进行身份验证，其中“短语”是您配置的密码。因此，与您在Telegram中生成的Bot进行新的对话，然后需要输入密码作为第一个命令。
 
 **注意：**您可以使用缩写形式“ / p短语”。
 
@@ -110,18 +110,18 @@ sendTo('telegram.0', {
 **可能的选项**：
 
 -* disable_notification *：静默发送消息。 iOS用户将不会收到通知，Android用户将不会收到通知。 （所有类型）
--* parse_mode *：如果希望Telegram应用在机器人的消息中显示粗体，斜体，固定宽度的文本或内联URL，则发送Markdown或HTML。可能的值：“ Markdown”，“ HTML”（消息）
+-* parse_mode *：如果希望Telegram应用在机器人消息中显示粗体，斜体，固定宽度的文本或内联URL，则发送Markdown或HTML。可能的值：“ Markdown”，“ HTML”（消息）
 -* disable_web_page_preview *：禁用此消息中链接的链接预览（消息）
 -*说明*：用于文档，图片或视频的标题，0-200个字符（视频，音频，图片，文档）
 -*持续时间*：以秒为单位发送视频或音频的持续时间（音频，视频）
 -*表演者*：音频文件的表演者（音频）
--*标题*：音频文件的轨道名称（音频）
+-* title *：音频文件的轨道名称（音频）
 -*宽度*：视频宽度（视频）
 -*高度*：视频高度（视频）
 
 适配器尝试检测消息的类型（照片，视频，音频，文档，标签，动作，位置）取决于消息中的文本（如果文本是现有文件的路径），它将根据类型发送。
 
-将根据属性纬度检测位置：
+将在属性纬度上检测位置：
 
 ```
 sendTo('telegram.0', {
@@ -132,7 +132,7 @@ sendTo('telegram.0', {
 ```
 
 ###显式消息
-如果您想将数据发送为缓冲区，则可以定义其他消息类型。
+如果您想将数据发送为缓冲区，则可以定义消息的其他类型。
 
 可以使用以下类型：*贴纸*，*视频*，*文档*，*音频*，*照片*。
 
@@ -179,10 +179,10 @@ sendTo('telegram', {
 
 您可以阅读更多的[此处]（https://core.telegram.org/bots/api#inlinekeyboardmarkup）和[此处](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating)。
 
-**注意：** *用户按下回叫按钮后，Telegram客户端将显示进度条，直到您调用answerCallbackQuery。因此，即使不需要向用户发送通知，也必须通过调用answerCallbackQuery做出反应（例如，不指定任何可选参数）。*
+**注意：** *用户按下回叫按钮后，Telegram客户端将显示进度条，直到您调用answerCallbackQuery。因此，即使不需要向用户发送通知，也有必要通过调用answerCallbackQuery做出反应（例如，不指定任何可选参数）。*
 
 ### AnswerCallbackQuery
-使用此方法将答案发送给从嵌入式键盘发送的回调查询。答案将作为通知显示在用户的聊天屏幕顶部或作为警报。成功后，将返回* True *。
+使用此方法可以将答案发送给从嵌入式键盘发送的回调查询。答案将作为通知显示在用户的聊天屏幕顶部或作为警报。成功后，将返回* True *。
 
 ```
 if (command ==="1_2") {
@@ -224,7 +224,7 @@ sendTo('telegram.0', 'ask', {
 `sendTo('telegram.0', {text: 'Message to chat', chatId: 'SOME-CHAT-ID-123');`
 
 ##更新消息
-通过以下方法，您可以更改消息历史记录中的现有消息，而不是通过操作结果发送新消息。这对于使用*嵌入式键盘*的带有回调查询的消息最有用，但也可以帮助减少与常规聊天机器人进行对话时的混乱情况。
+通过以下方法，您可以更改消息历史记录中的现有消息，而不是通过操作结果发送新消息。这对于使用*内置键盘*的带有回调查询的消息最有用，但也可以帮助减少与常规聊天机器人进行对话时的混乱情况。
 
 ### EditMessageText
 使用此方法来编辑由机器人或通过机器人（对于嵌入式机器人）发送的文本。成功后，如果漫游器发送了已编辑的消息，则返回已编辑的消息，否则返回* True *。
@@ -250,7 +250,7 @@ if (command === "1_2") {
 }
 ```
 
-*或上一封邮件的新文本：*
+*或最后一条消息的新文本：*
 
 ```
 if (command ==="1_2") {
@@ -270,7 +270,7 @@ if (command ==="1_2") {
 您可以阅读更多的[这里](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegramboteditmessagetexttext-options--promise)。
 
 ### EditMessageReplyMarkup
-使用此方法仅编辑由漫游器或通过漫游器（对于嵌入式漫游器）发送的邮件的答复标记。成功后，如果漫游器发送了已编辑的消息，则返回已编辑的消息，否则返回* True *。
+使用此方法仅编辑由漫游器或通过漫游器（对于内向漫游器）发送的邮件的答复标记。成功后，如果漫游器发送了已编辑的消息，则返回已编辑的消息，否则返回* True *。
 
 ```
 if (command === "1_2") {
@@ -298,7 +298,7 @@ if (command === "1_2") {
 ### DeleteMessage
 使用此方法可以删除一条消息，包括服务消息，但有以下限制：
 
--仅在少于48小时之前发送过的邮件才能删除。
+-仅在48小时前发送过的邮件才能删除。
 
 成功返回* True *。
 
@@ -352,12 +352,152 @@ if (command === "delete") {
 -连锁证书（可选）
 -让我们加密选项-设置“让我们加密”证书非常容易。请阅读[here]（https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates）。
 
+##通过电报电话
+借助[Callmebot](https://www.callmebot.com/)api，您可以拨打电报帐户，并且一些文本将通过TTS引擎读取。
+
+要从javascript适配器执行此操作，只需调用：
+
+```
+sendTo('telegram.0', 'call', 'Some text');
+```
+
+要么
+
+```
+sendTo('telegram.0', 'call', {
+    text: 'Some text',
+    user: '@Username', // optional and the call will be done to the first user in telegram.0.communicate.users.
+    language: 'de-DE-Standard-A' // optional and the system language will be taken
+});
+```
+
+要么
+
+```
+sendTo('telegram.0', 'call', {
+    text: 'Some text',
+    users: ['@Username1', '@Username2'] // Array of `users'.
+});
+```
+
+要么
+
+```
+sendTo('telegram.0', 'call', {
+    file: 'url of mp3 file that is accessible from internet',
+    users: ['@Username1', '@Username2'] // Array of `users'.
+});
+```
+
+语言的可能值：
+
+-`ar-XA-Standard-A`-阿拉伯语（女声）
+-`ar-XA-Standard-B`-阿拉伯语（男声）
+-`ar-XA-Standard-C`-阿拉伯语（男性2种声音）
+-`cs-CZ-Standard-A`-捷克（捷克共和国）（女声）
+-`da-DK-Standard-A`-丹麦文（丹麦）（女声）
+-`nl-NL-Standard-A`-荷兰语（荷兰）（如果系统语言为NL且未提供任何语言，则将使用女性声音）
+-`nl-NL-Standard-B`-荷兰语（荷兰）（男声）
+-`nl-NL-Standard-C`-荷兰语（荷兰）（男2种声音）
+-`nl-NL-Standard-D`-荷兰语（荷兰）（女2种声音）
+-`nl-NL-Standard-E`-荷兰语（荷兰）（女性3种声音）
+-`en-AU-Standard-A`-英语（澳大利亚）（女声）
+-`en-AU-Standard-B`-英语（澳大利亚）（男声）
+-`en-AU-Standard-C`-英语（澳大利亚）（女性2种声音）
+-`en-AU-Standard-D`-英语（澳大利亚）（男性2种声音）
+-`en-IN-Standard-A`-英语（印度）（女声）
+-`en-IN-Standard-B`-英语（印度）（男声）
+-`en-IN-Standard-C`-英语（印度）（男性2种声音）
+-`en-GB-Standard-A`-英语（英国）（如果系统语言为EN并且未提供任何语言，则将使用女性语音）
+-`en-GB-Standard-B`-英语（英国）（男声）
+-`en-GB-Standard-C`-英语（英国）（女性2种声音）
+-`en-GB-Standard-D`-英语（英国）（男性2种声音）
+-`en-US-Standard-B`-英语（美国）（男声）
+-`en-US-Standard-C`-英语（美国）（女声）
+-`en-US-Standard-D`-英语（美国）（男性2种声音）
+-`en-US-Standard-E`-英语（美国）（女性2种声音）
+-`fil-PH-Standard-A`-菲律宾语（菲律宾）（女声）
+-`fi-FI-Standard-A`-芬兰语（芬兰）（女声）
+-`fr-CA-Standard-A`-法语（加拿大）（女声）
+-`fr-CA-Standard-B`-法语（加拿大）（男声）
+-`fr-CA-Standard-C`-法语（加拿大）（女性2种声音）
+-`fr-CA-Standard-D`-法语（加拿大）（男性2种声音）
+-`fr-FR-Standard-A`-法语（法国）（如果系统语言为FR并且未提供任何语言，则将使用女性声音）
+-`fr-FR-Standard-B`-法语（法国）（男声）
+-`fr-FR-Standard-C`-法语（法国）（女性2种声音）
+-`fr-FR-Standard-D`-法语（法国）（男性2种声音）
+-`de-DE-Standard-A`-德语（德国）（如果系统语言为DE并且未提供任何语言，则将使用女性声音）
+-`de-DE-Standard-B`-德语（德国）（男声）
+-`el-GR-Standard-A`-希腊语（希腊）（女声）
+-`hi-IN-Standard-A`-印地语（印度）（女声）
+-`hi-IN-Standard-B`-印地语（印度）（男声）
+-`hi-IN-Standard-C`-印地语（印度）（男性2种声音）
+-`hu-HU-Standard-A`-匈牙利语（匈牙利）（女声）
+-`id-ID-Standard-A`-印度尼西亚语（印度尼西亚）（女声）
+-`id-ID-Standard-B`-印度尼西亚语（印度尼西亚）（男声）
+-`id-ID-Standard-C`-印度尼西亚语（印度尼西亚）（男性2种声音）
+-`it-IT-Standard-A`-意大利语（意大利）（如果系统语言为IT，且未提供任何语言，则使用女性声音）
+-`it-IT-Standard-B`-意大利语（意大利）（女性2种声音）
+-`it-IT-Standard-C`-意大利语（意大利）（男声）
+-`it-IT-Standard-D`-意大利语（意大利）（男性2种声音）
+-`ja-JP-Standard-A`-日语（日本）（女声）
+-`ja-JP-Standard-B`-日语（日本）（女性2种声音）
+-`ja-JP-Standard-C`-日语（日本）（男声）
+-`ja-JP-Standard-D`-日语（日本）（男2种声音）
+-`ko-KR-Standard-A`-韩国（韩国）（女声）
+-`ko-KR-Standard-B`-韩语（韩国）（女2声音）
+-`ko-KR-Standard-C`-韩文（韩国）（男声）
+-`ko-KR-Standard-D`-韩文（韩国）（男2种声音）
+-`cmn-CN-Standard-A`-普通话（女声）
+-`cmn-CN-Standard-B`-普通话（男声）
+-`cmn-CN-Standard-C`-普通话（男2语音）
+-`nb-NO-Standard-A`-挪威语（挪威语）（女声）
+-`nb-NO-Standard-B`-挪威语（挪威语）（男声）
+-`nb-NO-Standard-C`-挪威语（挪威）（女2声音）
+-`nb-NO-Standard-D`-挪威文（挪威）（男2种声音）
+-`nb-no-Standard-E`-挪威语（挪威语）（女3声音）
+-`pl-PL-Standard-A`-波兰语（波兰）（如果系统语言为PL而未提供任何语言，则将使用女性声音）
+-`pl-PL-Standard-B`-波兰语（波兰）（男声）
+-`pl-PL-Standard-C`-波兰语（波兰）（男2种声音）
+-`pl-PL-Standard-D`-波兰语（波兰）（女性2种声音）
+-`pl-PL-Standard-E`-波兰语（波兰）（女性3种声音）
+-`pt-BR-Standard-A`-葡萄牙语（巴西）（如果系统语言为PT且未提供任何语言，则将使用女性声音）
+-`pt-PT-Standard-A`-葡萄牙语（葡萄牙）（女声）
+-`pt-PT-Standard-B`-葡萄牙语（葡萄牙）（男声）
+-`pt-PT-Standard-C`-葡萄牙语（葡萄牙）（男性2种声音）
+-`pt-PT-Standard-D`-葡萄牙语（葡萄牙）（女性2种声音）
+-`ru-RU-Standard-A`-俄语（俄罗斯）（如果系统语言为RU并且未提供任何语言，则将使用女性声音）
+-`ru-RU-Standard-B`-俄语（俄罗斯）（男声）
+-`ru-RU-Standard-C`-俄语（俄罗斯）（女性2种声音）
+-`ru-RU-Standard-D`-俄语（俄罗斯）（男性2种声音）
+-`sk-SK-Standard-A`-斯洛伐克（斯洛伐克）（女声）
+-`es-ES-Standard-A`-西班牙语（西班牙）（如果系统语言为ES，但未提供语言，则将使用女性语音）
+-`sv-SE-Standard-A`-瑞典语（瑞典）（女声）
+-`tr-TR-Standard-A`-土耳其语（土耳其）（女声）
+-`tr-TR-Standard-B`-土耳其文（土耳其）（男性配音）
+-`tr-TR-Standard-C`-土耳其语（土耳其）（女性2种声音）
+-`tr-TR-Standard-D`-土耳其语（土耳其）（女性3种声音）
+-`tr-TR-Standard-E`-土耳其文（土耳其）（男性配音）
+-`uk-UA-Standard-A`-乌克兰语（乌克兰）（女声）
+-`vi-VN-Standard-A`-越南语（越南）（女声）
+-`vi-VN-Standard-B`-越南文（越南）（男声）
+-`vi-VN-Standard-C`-越南语（越南）（女2声音）
+-`vi-VN-Standard-D`-越南文（越南）（男性2种声音）
+
 去做：
 
 -场地
--对话
 
 ## Changelog
+### 1.5.0 (2020-02-03)
+* (bluefox) Added voice calls 
+
+### 1.4.7 (2019-12-27)
+* (Apollon77) Make compatible with js-controller 2.3
+
+### 1.4.6 (2019-12-09)
+* (bluefox) Allowed writeOnly states in telegram
+
 ### 1.4.4 (2019-11-27)
 * (bluefox) New sendTo message "ask" was added (see [Question](#question) )
 
@@ -527,7 +667,7 @@ if (command === "delete") {
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2016-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

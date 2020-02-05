@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: VrjGsPhGQxker5i5TvZ1NNQkqfAJ6+e8Z/TfH4pNr0A=
+hash: So9qpZFQvZ+qrgK6SKiTIbeoOPVJAB1aOx2RyMFZBiE=
 ---
 ![логотип](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
@@ -18,17 +18,13 @@ hash: VrjGsPhGQxker5i5TvZ1NNQkqfAJ6+e8Z/TfH4pNr0A=
 # IoBroker.smartmeter
 [![Изменение климата] (https://codeclimate.com/github/Apollon77/ioBroker.smartmeter/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.smartmeter)
 
-** Этот адаптер использует службу [Sentry.io](https://sentry.io), чтобы автоматически сообщать об исключениях и ошибках кода мне как разработчику. **
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать об исключениях и ошибках кода мне как разработчику. ** Подробнее см. Ниже!
 
-Этот адаптер для ioBroker позволяет считывать и анализировать протоколы smartmeter, которые следуют числовой логике OBIS, чтобы сделать их данные доступными.
+Этот адаптер для ioBroker позволяет считывать и анализировать протоколы Smartmeter, которые следуют числовой логике OBIS, чтобы сделать их данные доступными.
 
 *** Для работы адаптера требуется nodejs 4.x! ***
 
-*** Для этого адаптера в настоящее время должен быть установлен git! ***
-
-## Известные в настоящее время проблемы
-* Этот адаптер использует библиотеку Serialport. Это может означать более длительное время установки, если его нужно скомпилировать
-* Кажется, что обработка памяти иногда неоптимальна и может привести к сбоям с SIGABRT или SIGSEGV во время чтения данных. iobroker Controller автоматически перезапустит Адаптер, поэтому единственный эффект здесь - 2-3 loglines :-)
+*** На этом адаптере должен быть установлен git для установки! ***
 
 ## Описание параметров
 ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54973
@@ -40,7 +36,7 @@ ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=549
 * **D0** D0 (на основе IEC 62056-21: 2002 / IEC 61107 / EN 61107) в формате ASCII (режим двоичного протокола E в настоящее время не поддерживается)
 * **Json-Efr** данные OBIS из EFR Smart Grid Hub (формат JSON)
 
-### Обмен данными
+### Передача данных
 * **Последовательный прием** получение через последовательные push-данные (Smartmeter отправляет данные без каких-либо запросов на регулярной основе). В основном используется для SML
 * **Последовательная двунаправленная связь** протокол D0 в режимах A, B, C и D (режим E в настоящее время НЕ поддерживается!) С Wakeup-, Signon-, pot. ACK- и Data-сообщения для считывания данных (режим программирования / записи пока не реализован)
 * **Http-Requests** чтение данных через HTTP, запрашивая определенный URL
@@ -61,17 +57,17 @@ ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=549
 ### D0: перезапись режима
 Адаптер пытается определить режим протокола D0, как определено в спецификациях. Есть некоторые устройства, которые не соответствуют спецификациям и поэтому создают проблемы. Используя эту опцию, вы можете перезаписать определенный режим протокола.
 
-* Режим A: нет смены скорости передачи, нет Ack-сообщения
+* Режим A: нет переключения скоростей, нет Ack-сообщения
 * Режим B: переключение скорости передачи, нет Ack-сообщения
 * Режим C: необходимо изменить скорость передачи и Ack-сообщение
 * Режим D: без изменения скорости передачи данных, скорость передачи данных всегда 2400
 * Режим E: необходимо изменить скорость передачи и Ack-сообщение, пользовательские протоколы не поддерживаются! Свяжитесь со мной, если у вас есть такой смартметр
 
 ### D0: Baudrate-Changeover-Overwrite
-Адаптер пытается определить скорость передачи сообщений данных, как определено в спецификациях протокола. Но, как и в случае с режимом, некоторые смартметры предоставляют здесь неверные данные. Таким образом, вы можете использовать это, чтобы перезаписать скорость передачи для сообщения данных по мере необходимости. Оставьте пустым, чтобы использовать переключение скорости передачи данных, как определено интеллектуальным счетчиком.
+Адаптер пытается определить скорость передачи сообщений данных, как определено в спецификациях протокола. Но, как и в случае с режимом, некоторые смартметры предоставляют здесь неверные данные. Таким образом, вы можете использовать это, чтобы перезаписать скорость передачи данных в случае необходимости. Оставьте пустым, чтобы использовать переключение скорости передачи данных, как определено интеллектуальным счетчиком.
 
 ## Адаптер протестирован с ...
-... как минимум:
+... по крайней мере:
 
 * Hager eHz Energy Meter (несколько, например, eHZ-IW8E2A5L0EK2P, EHZ363W5,)
 * EMH Счетчик энергии
@@ -85,21 +81,52 @@ ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=549
 
 Пожалуйста, пришлите мне информацию об устройствах, где вы успешно использовали библиотеку, и я добавлю ее здесь.
 
-## Сделать
-* Обновите поддержку Sml до 1.0.4 (при необходимости)
-* документы для веб-страницы
+## Специальные Смартметры и проблемы
+### DZG DVS74
+Иногда кажется, что в прошивке SML есть ошибка, и значения неправильно кодируются в сообщении SML, но само сообщение является действительным. Решение состоит в том, чтобы опубликовать значение обработки с использованием Javascript. См. Https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736.
+
+## Как сообщать о проблемах и пожеланиях
+Пожалуйста, используйте вопросы GitHub для этого.
+
+Лучше всего установить адаптер в режим журнала отладки (Экземпляры -> Экспертный режим -> Уровень журнала столбцов). Затем, пожалуйста, получите файл журнала с диска (подкаталог «log» в установочном каталоге ioBroker, а не от Admin, потому что Admin обрезает строки). Если вам не нравится предоставлять его в выпуске GitHub, вы также можете отправить его мне по электронной почте (iobroker@fischer-ka.de). Пожалуйста, добавьте ссылку на соответствующую проблему GitHub И также опишите, что я вижу в журнале в какое время.
+
+## Что такое Sentry и что сообщается на серверы?
+Sentry.io позволяет разработчикам получить обзор ошибок в своих приложениях. И именно это реализовано в этом адаптере.
+
+Когда происходит сбой адаптера или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Когда вы разрешили iobroker GmbH собирать диагностические данные, включался и ваш установочный идентификатор (это просто уникальный идентификатор **без** каких-либо дополнительных сведений о вас, адрес электронной почты, имя или тому подобное). Это позволяет Sentry группировать ошибки и показывать, на сколько уникальных пользователей влияет такая ошибка. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не выходят из строя.
 
 ## Changelog
 
-### 3.0.0 (2019-11-2x)
-* BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
-* support compact mode
-* update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
-* Use "/dev/serial/by-id" paths on linux if available; add port selection to Admin
-* Add Sentry for error reporting
+### 3.0.9 (2020-02-04)
+* (Apollon77) make sure HTTP based smartmeters are also polled frequently when responses are invalid
+* (Apollon77) other optimizations
+* (Apollon77) Switch Sentry to iobroker own instance hosted in germany
+
+### 3.0.8 (2019-12-20)
+* (Apollon77) errors prevented when stopping to process data
+
+### 3.0.7 (2019-12-18)
+* (Apollon77) errors prevented when stopping to process data
+
+### 3.0.6 (2019-12-07)
+* (Apollon77) serial port configuration further optimized
+* (Apollon77) update smartmeter-obis lib to fix some edge case errors and serial close handling
+
+### 3.0.3 (2019-11-30)
+* (Apollon77) serial port configuration further optimized
+
+### 3.0.2 (2019-11-29)
+* (Apollon77) Fix use of "/dev/serial/by-id" paths on linux if available
+
+### 3.0.1 (2019-11-27)
+* (Apollon77) BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
+* (Apollon77) support compact mode
+* (Apollon77) update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
+* (Apollon77) Use "/dev/serial/by-id" paths on linux if available; add port selection to Admin
+* (Apollon77) Add Sentry for error reporting
 
 ### 2.0.0 (2019-03-22)
-* BREAKING CHANGE: State names changed because * no longer supported. Is replaced by __ now because of possible collisions in state names with only one _
+* (Apollon77) BREAKING CHANGE: State names changed because * no longer supported. Is replaced by __ now because of possible collisions in state names with only one _
 
 ### 1.2.2 (2018-11-11)
 * Update smartmeter library, fix HTTP-JSON-Transport
@@ -178,7 +205,7 @@ ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=549
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2017-2020 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

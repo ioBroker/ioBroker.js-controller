@@ -12,17 +12,13 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon
 
 [![NPM](https://nodei.co/npm/iobroker.smartmeter.png?downloads=true)](https://nodei.co/npm/iobroker.smartmeter/)
 
-**This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors to me as the developer.**
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to me as the developer.** More details see below!
 
 This adapter for ioBroker allows the reading and parsing of smartmeter protocols that follow the OBIS number logic to make their data available.
 
 ***The Adapter needs nodejs 4.x to work!***
 
 ***This Adapter needs to have git installed currently for installing!***
-
-## Currently known problems
-* This Adapter uses the Serialport Library. This can mean a longer installation time if it needs to be compiled
-* It seems that memory handling is sometimes suboptimal and can lead to crashes with SIGABRT or SIGSEGV during reading data. iobroker Controller will restart the Adapter automatically, so 2-3 loglines is the only effect here :-)
 
 ## Description of parameters
 
@@ -77,37 +73,55 @@ The adapter tries to determine the Baudrate for the data messages as defined in 
 
 Please send me an info on devices where you have used the library successfully and I will add it here.
 
-## Todo
-* Update Sml support to 1.0.4 (if needed)
-* docs for webpage
+## Special Smartmeters and problems
+
+### DZG DVS74
+It seems to be an error in the SML firmware sometimes and values are wrongly encoded in the SML message, but the message itself is valid. Solution is to post process the value using a Javascript. See https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736
+
+## How to report issues and feature requests
+
+Please use GitHub issues for this.
+
+Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column Log level). Then please get the logfile from disk (subdirectory "log" in ioBroker installation directory and not from Admin because Admin cuts the lines). If you do not like providing it in GitHub issue you can also send it to me via email (iobroker@fischer-ka.de). Please add a reference to the relevant GitHub issue AND also describe what I see in the log at which time.
+
+## What is Sentry and what is reported to the servers?
+Sentry.io is a way for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
+
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to our own Sentry server hosted in germany. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.  
+
 
 ## Changelog
 
+### 3.0.9 (2020-02-04)
+* (Apollon77) make sure HTTP based smartmeters are also polled frequently when responses are invalid
+* (Apollon77) other optimizations
+* (Apollon77) Switch Sentry to iobroker own instance hosted in germany
+
 ### 3.0.8 (2019-12-20)
-* errors prevented when stopping to process data
+* (Apollon77) errors prevented when stopping to process data
 
 ### 3.0.7 (2019-12-18)
-* errors prevented when stopping to process data
+* (Apollon77) errors prevented when stopping to process data
 
 ### 3.0.6 (2019-12-07)
-* serial port configuration further optimized
-* update smartmeter-obis lib to fix some edge case errors and serial close handling
+* (Apollon77) serial port configuration further optimized
+* (Apollon77) update smartmeter-obis lib to fix some edge case errors and serial close handling
 
 ### 3.0.3 (2019-11-30)
-* serial port configuration further optimized
+* (Apollon77) serial port configuration further optimized
 
 ### 3.0.2 (2019-11-29)
-* Fix use of "/dev/serial/by-id" paths on linux if available
+* (Apollon77) Fix use of "/dev/serial/by-id" paths on linux if available
 
 ### 3.0.1 (2019-11-27)
-* BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
-* support compact mode
-* update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
-* Use "/dev/serial/by-id" paths on linux if available; add port selection to Admin
-* Add Sentry for error reporting
+* (Apollon77) BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
+* (Apollon77) support compact mode
+* (Apollon77) update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
+* (Apollon77) Use "/dev/serial/by-id" paths on linux if available; add port selection to Admin
+* (Apollon77) Add Sentry for error reporting
 
 ### 2.0.0 (2019-03-22)
-* BREAKING CHANGE: State names changed because * no longer supported. Is replaced by __ now because of possible collisions in state names with only one _
+* (Apollon77) BREAKING CHANGE: State names changed because * no longer supported. Is replaced by __ now because of possible collisions in state names with only one _
 
 ### 1.2.2 (2018-11-11)
 * Update smartmeter library, fix HTTP-JSON-Transport
@@ -187,7 +201,7 @@ Please send me an info on devices where you have used the library successfully a
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2017-2020 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

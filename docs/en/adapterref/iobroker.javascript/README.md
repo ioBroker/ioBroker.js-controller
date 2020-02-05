@@ -38,6 +38,7 @@ chapters: {"pages":{"en/adapterref/iobroker.javascript/README.md":{"title":{"en"
     - [getObject](#getobject)
     - [setObject](#setobject)
     - [extendObject](#extendobject)
+    - [deleteObject](#deleteobject)
     - [getIdByName](#getidbyname)
     - [getEnums](#getenums)
     - [createState](#createstate)
@@ -841,6 +842,23 @@ Use it like this:
 extendObject('system.adapter.sayit.0', {common: {enabled: false}});
 ```
 
+### deleteObject
+```js
+deleteObject(id, isRecursive, callback);
+```
+
+Deletes object from DB by ID. If the object has type `state`, the state value will be deleted too. 
+
+Additional parameter `isRecursive` could be provided, so all children of given ID will be deleted. Very dangerous! 
+
+Use it like this:
+```js
+// Delete state
+deleteObject('javascript.0.createdState');
+```
+
+*Notice: `isRecursive` option is available only with js-controller >= 2.2.x* 
+
 ### getIdByName
 ```js
 getIdByName(name, alwaysArray);
@@ -1426,6 +1444,12 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 4.3.7 (2020-01-26)
+* (bluefox) Made adapter compatible with js-controller >= 2.2.x 
+
+### 4.3.5 (2020-01-26)
+* (bluefox) fixed the load of zip files if more than one host
+
 ### 4.3.4 (2019-10-28)
 * (bluefox) Values are showed in select ID dialog
 * (bluefox) Allow select with $ the schedule objects
@@ -1642,6 +1666,6 @@ Scripts can be activated and deactivated by controlling of this state with ack=f
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019 bluefox <dogafox@gmail.com>,
+Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>,
 
 Copyright (c) 2014      hobbyquaker

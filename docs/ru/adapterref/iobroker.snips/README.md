@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.snips/README.md
 title: ioBroker.snips! [Logo] (admin / snips.png)
-hash: VxW/zWOv4YHN8H8avuo2J58rpai9txS56RnzKhC1E74=
+hash: pBgUGZnR38d1Hr6geTtsYLu64muY5uJ4tnyK+ks8FWs=
 ---
 # IoBroker.snips ![логотип](../../../en/adapterref/iobroker.snips/admin/snips.png)
 
@@ -13,6 +13,8 @@ hash: VxW/zWOv4YHN8H8avuo2J58rpai9txS56RnzKhC1E74=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.snips.svg)
 ![NPM](https://nodei.co/npm/iobroker.snips.png?downloads=true)
 
+ВНИМАНИЕ: Адаптер больше не разрабатывается и не обслуживается, потому что Sonos купил Snips, а бесплатная платформа была прекращена 01.02.2020. Адаптер и установленные устройства Snips по-прежнему будут работать.
+
 Требуется node.js 6.0 или выше и Admin v3!
 
 Адаптер связывается с оборудованием Snips с помощью MQTT. Для выполнения команд требуется адаптер text2command.
@@ -20,7 +22,7 @@ hash: VxW/zWOv4YHN8H8avuo2J58rpai9txS56RnzKhC1E74=
 URL-адрес фрагментов: <https://makers.snips.ai/>
 
 ## Установка Snips
-Для Snips под Debian Stretch (x86), Raspbian / Armbian Stretch (RPI3, Odroid) пожалуйста установите следующие пакеты:
+Для Snips под Debian Stretch (x86), Raspbian / Armbian Stretch (RPI3, Odroid), пожалуйста, установите следующие пакеты:
 
 lsb-release apt-transport-https ca-сертификаты systemd systemd-sysv libttspico-utils alsa-utils dirmngr комар snips-asr snips-аудио-сервер snips-диалог snips-горячее слово snips-nlu snips-tts snips-инъекция
 
@@ -28,18 +30,18 @@ lsb-release apt-transport-https ca-сертификаты systemd systemd-sysv l
 
 Инструкции по установке и конфигурации для Raspian / Armbian: <https://snips.gitbook.io/documentation/install-snips/on-a-raspberry-pi>
 
-Инструкции по установке и настройке Debian: sudo nano /etc/apt/sources.list В каждой строке указывайте «non-free», иначе вы не сможете установить пакет «libttspico-utils».
+Инструкции по установке и настройке Debian: sudo nano /etc/apt/sources.list Прикрепите «non-free» в каждой строке, иначе вы не сможете установить пакет «libttspico-utils».
 <Https://snips.gitbook.io/documentation/advanced-configuration/advanced-solutions>
 
 Войдите в <https://console.snips.ai> и добавьте новый мастер.
 Добавьте приложение над галочкой «показывать только приложения с действиями», найдите iobroker ![логотип приложения ioBroker snips-app](https://console.snips.ai/images/bundles/bundle-home.svg) и выберите.
 Когда вы закончите, нажмите Deploy Assistant, чтобы загрузить файл ZIP.
-Zip-файл распаковывается на машине с сниппами в папке "/ usr / share / snips", затем перезагружается.
+Zip-файл распаковывается на компьютере с сниппером в папке "/ usr / share / snips", затем перезагружается
 
 Снипс должен сработать, прежде чем мы продолжим здесь:
 
 ### Настройка адаптера Snips
-URL-адрес: адрес сервера Snips-MQTT-Servers. Порт: порт сервера Snips-MQTT-сервера. Instanz: Text2Command-Instanz (например, 0).
+Url: адрес сервера Snips-MQTT-Servers. Порт: порт сервера Snips-MQTT-сервера. Instanz: Text2Command-Instanz (например, 0). Фильтр: например, понять ClientID: ID (например, 0).
 
 ### Настройка адаптера Text2Command
 Вставьте в конфигурацию адаптера Text2Command в разделе «Ответ» с идентификатором snips.X.devices.all.send.say.text.
@@ -49,6 +51,22 @@ URL-адрес: адрес сервера Snips-MQTT-Servers. Порт: порт
 ВНИМАНИЕ: сервис инъекций должен быть установлен на устройстве / сервере. Sudo apt-get install -y snips -jection
 
 ## Changelog
+
+### 1.5.0
+
+* (unltdnetworx) removal of language support, may come back
+
+### 1.4.0
+
+* (unltdnetworx) multilingualism support for german and english
+
+### 1.3.1
+
+* (unltdnetworx) add multilingual blinds/switch-rule
+
+### 1.3.0
+
+* (unltdnetworx) preparation for multilingualism support
 
 ### 1.2.1
 
@@ -166,7 +184,7 @@ URL-адрес: адрес сервера Snips-MQTT-Servers. Порт: порт
 
 The MIT License (MIT)
 
-Copyright (c) 2019 Michael Schuster <development@unltd-networx.de> & Walter Zengel <w.zengel@gmx.de>
+Copyright (c) 2020 Michael Schuster <development@unltd-networx.de> & Walter Zengel <w.zengel@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

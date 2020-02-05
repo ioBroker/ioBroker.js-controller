@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
+hash: NMhpaS3tpGOVmK3sjScUmZDu88/zSBbi4B2KpgplBYw=
 ---
 ![логотип](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -21,7 +21,7 @@ hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 
 Этот адаптер считывает данные с силовых преобразователей SMA, используя sbfspot.
 Теперь поддерживаются оба типа базы данных (mySQL и sqlite).
-Начиная с версии 0.2.3, есть собственный виджет vis, основанный на flot, для отображения исторических данных.
+Начиная с версии 0.2.3, существует собственный виджет vis, основанный на flot, для отображения исторических данных.
 
 ## Установка
 следуйте инструкциям по установке sbfspot по адресу https://github.com/SBFspot/SBFspot/wiki
@@ -45,7 +45,10 @@ hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), если вы обнаружите ошибки или пожелаете новых функций
 
-## 2.4.0 (2019-12-хх)
+## 2.4.1 (2020-02-01)
+* (René) виджет исправлений
+
+## 2.4.0 (2019-12-28)
 * (Рене) обновление до моего собственного флота 3.0
 
 ## 2.3.4 (2019-10-31)
@@ -65,10 +68,10 @@ hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 * (René) пакеты обновлений
 
 ### 2.2.5 (2018-11-04)
-* (Рене) сбросить доходность, если нет нового значения с сегодняшнего дня
+* (René) сбросить доходность, если нет нового значения за сегодняшний день
 
 ### 2.2.4 (2018-08-19)
-* (Рене) исправление для тиков на X
+* (René) исправление для тиков на X
 
 ### 2.2.3
 * (Рене) так же, как 2.2.2
@@ -87,7 +90,7 @@ hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 * (Рене) Поддержка MariaDB
 
 ### 2.0.1
-* (Рене) Поддержка admin3
+* (René) Поддержка admin3
 
 ### 2.0.0
 * (René), поскольку мы всегда используем один график для виджета, теперь поддерживается только один
@@ -95,12 +98,12 @@ hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 Внимание: виджет не совместим с версией 1.x.x; просто проверьте настройки в виджете после установки!
 
 ### 1.1.0
-* (René) автомасштабирование оси y
+* (Рене) автомасштабирование оси Y
 * (Рене) цвет для оси у
 * (Рене) регулируемый формат даты
 
 ### 1.0.1
-* (Рене) исправление ошибки для sqlite
+* (René) исправление ошибки для sqlite
 
 ### 1.0.0
 * (Рене) первый стабильный релиз
@@ -139,7 +142,7 @@ hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 ## Changelog
 
 ## License
-Copyright (C) <2017-2019>  <info@rg-engineering.eu>
+Copyright (C) <2017-2020>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

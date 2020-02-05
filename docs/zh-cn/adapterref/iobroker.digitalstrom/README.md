@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.digitalstrom/README.md
 title: ioBroker.digitalstrom
-hash: s2n0zU09+s3oPtTs4nWMfeTPXXlhP8veObmZYbcTZMo=
+hash: izv9U0SVdsQ/y0qwTJ8NJCouEXZw/b5hPx2WwM/sAhY=
 ---
 ![商标](../../../en/adapterref/iobroker.digitalstrom/admin/digitalstrom.png)
 
@@ -17,7 +17,7 @@ hash: s2n0zU09+s3oPtTs4nWMfeTPXXlhP8veObmZYbcTZMo=
 ![特拉维斯](http://img.shields.io/travis/Apollon77/ioBroker.digitalstrom/master.svg)
 
 ＃ioBroker.digitalstrom
-**此适配器使用Sentry库向开发人员自动向我报告异常和代码错误以及新的设备架构。**更多详细信息，请参见下文！
+**此适配器使用Sentry库向开发人员自动向我报告异常和代码错误以及新设备架构。**更多详细信息，请参见下文！
 
 ##用于ioBroker的Digitalstrom适配器
 通过DSS支持Digitalstrom设备
@@ -27,7 +27,7 @@ hash: s2n0zU09+s3oPtTs4nWMfeTPXXlhP8veObmZYbcTZMo=
 
 适配器正式发布后，他将进入回购协议中，并且可以选择。
 
-在测试阶段，或者为了测试较新版本（请参阅相关论坛主题），您还可以使用https://github.com/ioBroker/ioBroker.digitalstrom作为URL直接从GitHub安装适配器。请为此使用“自定义安装”管理员选项。
+在测试阶段，或为了测试较新版本（请参阅相关论坛主题），您还可以使用https://github.com/ioBroker/ioBroker.digitalstrom作为URL直接从GitHub安装适配器。请为此使用“自定义安装”管理员选项。
 
 ##用法
 安装适配器并创建实例后，将显示管理对话框。
@@ -57,9 +57,9 @@ hash: s2n0zU09+s3oPtTs4nWMfeTPXXlhP8veObmZYbcTZMo=
 
 在结构中，包括几种数据“类型”：
 
-*场景：场景被实现为开关。将值tro设置为“ true”将为此场景发送“ callScene”命令。值为“ false”将为此场景发送“ undoScene”命令-由DSS服务器决定“ undo”是否为有效命令！当从DSS服务器触发callScene或undoScene作为事件时，相关场景将设置为“ true”或“ false”，且ack = true
+*场景：场景被实现为开关。将值tro设置为“ true”将为此场景发送“ callScene”命令。值为“ false”将为此场景发送“ undoScene”命令-由DSS服务器决定“ undo”是否为有效命令！当从DSS服务器触发callScene或undoScene作为事件时，将相关场景设置为“ true”或“ false”，且ack = true
 *状态：显示系统状态和用户通过插件定义的状态，它们是只读的
-*传感器值由事件触发时会更新，并且也可以部分更改赌注-更改会向服务器发送“ pushSensorValue”，如果接受该值，则取决于服务器！这主要与温度或湿度值有关
+*传感器值由事件触发时会更新，并且也可以部分更改赌注-更改将“ pushSensorValue”发送到服务器，如果值被接受，则取决于服务器！这主要与温度或湿度值有关
 
 *
 
@@ -103,11 +103,16 @@ hash: s2n0zU09+s3oPtTs4nWMfeTPXXlhP8veObmZYbcTZMo=
 ##什么是Sentry，什么报告给服务器？
 Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我在德国托管的Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
 
-### 0.5.2 (2020-01-26)
+### 1.0.0 (2020-01-31)
+* (Apollon77) bump version to 1.0.0
+* (Apollon77) update dependecies
+* (Apollon77) change default loglevel to info
+
+### 0.5.5 (2020-01-29)
 * (Apollon77) fix smaller errors
 * (Apollon77) send Sentry reports to own server
 

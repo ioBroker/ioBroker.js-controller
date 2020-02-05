@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: j6m0qzV1f1E3JpYwTGgqLGC8xzydsmg606nEXmekPEg=
+hash: py7WH/sT7A9CXgu/xcGjnCdIpEIKKXYdeErNrQ8IoFo=
 ---
 ![логотип](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
@@ -21,11 +21,11 @@ hash: j6m0qzV1f1E3JpYwTGgqLGC8xzydsmg606nEXmekPEg=
 
 **[Английское описание](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
 
-Mit Diesem Adapter ist es möglich, Werte aus einer, Viessmann Steuerung die mit mit dem Programm [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, в Objekten zu speichern.
-Ebenso ist das Setzen von Werten, умерший в сейнере Vito.xml, изображающий шляпу мёглиха.
+Mit Diesem Adapter ist es möglich, Werte aus einer Viessmann Steuerung die mit dem Programm, [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, в Objekten zu speichern.
+Ebenso ist das Setzen von Werten, умерший в сейнере Vito.xml, изображающий шляпу меглиха.
 
-#### (продавец Host)
-Sollte Vcontrold auf dem gleichen Хост-хост с IOBroker laufen, а также с Linux eigentlich keine weitere Veränderung в расширенной конфигурации.
+#### (хост Host)
+Sollte Vcontrold auf dem gleichen Принимающая сторона с IOBroker laufen, так и под Linux.
 * (Vorausgesetzt, sie liegt in dem Standard Pfad: /etc/vcontrold/vito.xml)*
 
 #### (Anderer Host)
@@ -33,7 +33,7 @@ Ist Vcontrold auf einem andderen Принимающая компания, раб
 Hierfür die nötigen Informationen in dem SSH Tab eingeben.
 * (Eine funktionierende SSH Verbindung wird vorausgesetzt.) *
 
-Nach dem Neustart der Instanz, странный человек, известный как человек, любящий человека в мире, или его мир.
+Nach dem Neustart der Instanz, странный человек, известный как человек, любящий человека в своей жизни.
 
 #### Die Struktur der vito.xml muss in der folgenden Форма aufgebaugt sein:
 		```<vito>
@@ -62,6 +62,7 @@ Eine Sortierung der Befehle, является самым популярным о
 - Бей Джедем Нойен Эйнлезен дер Вито Датен, Верден Г.Г.Ф. умереть "alten" Einstellungen gelöscht.
 
 Es ist empfehlenswert, bei reltiv unwichtigen Abfragewerten, ein möglichst grosses Abfrageintervall zu wählen.
+Es ist ebenso möglich, einen Wert ausserhalb des Abfragezyklus abzufragen. Hierzu muss der Datenpunkt *force_polling* mit dem gewünschten *get* Wert beschrieben werden.
 
 *die benutzten Bilder Stammen von www.viessmann.com.*
 
@@ -75,7 +76,7 @@ Es ist empfehlenswert, bei reltiv unwichtigen Abfragewerten, ein möglichst gros
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 misanorot <audi16v@gmx.de>
+Copyright (c) 2017-2020 misanorot <audi16v@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

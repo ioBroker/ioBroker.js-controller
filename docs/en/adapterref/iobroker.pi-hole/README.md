@@ -72,11 +72,16 @@ Help or hints are welcome.
 
 * (unltdnetworx) initial release
 
+## Donate
+
+Kaffee spendieren/serve a coffee
+<https://paypal.me/unltdnetworx>
+
 ## License
 
 MIT License
 
-Copyright (c) 2019 Michael Schuster
+Copyright (c) 2020 Michael Schuster
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

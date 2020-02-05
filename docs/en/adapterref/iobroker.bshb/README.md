@@ -22,9 +22,16 @@ which uses the information from official [Bosch Smart Home Controller Local REST
 IoBroker Forum Discussion for the BSHB Adapter:
 https://forum.iobroker.net/topic/25370/test-adapter-bshb-bosch-smart-home-v0-0-x/
 
+Examples:
+https://github.com/holomekc/ioBroker.bshb/wiki/Examples
+
 Work in progress. Feedback appreciated.
 
 ## Changelog
+
+### 0.1.4
+* (holomekc) issue fixed in loading configuration
+* (holomekc) minor restructuring
 
 ### 0.1.3
 * (holomekc) restructure of handling device detection and updates iobroker <-> bshc via BshbHandler

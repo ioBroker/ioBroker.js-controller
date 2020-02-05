@@ -309,7 +309,7 @@ CCU / Homematic支持不同的设备类型（有线，无线，HMIP，CUxD）。
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>
 
 Copyright (c) 2014 hobbyquaker
 

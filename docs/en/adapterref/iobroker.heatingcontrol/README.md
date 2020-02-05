@@ -132,6 +132,10 @@ Just configure events from ical in admin. Supported are
 
 
 ## Changelog
+### 0.3.16 (2020-02-xx)
+* (René) deccrease/increase-handling also when Override is active (see issue #72)
+* (René) priority handling for temperature increase / decrease overworked (use only values not equal zero)
+
 ### 0.3.15 (2020-01-18)
 * (René) bug fix: avoid exception when go to override if MinTemperature-check is active
 

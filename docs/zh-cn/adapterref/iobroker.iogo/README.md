@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: NFN0VcICDiFOM4D21FDMk+AnCfGecph3oqzmICD75L8=
+hash: aBmdaoGWO2ljGVbWQt5RUSWTCet+PJRr64BvVyuYySg=
 ---
 ![商标](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -17,11 +17,11 @@ hash: NFN0VcICDiFOM4D21FDMk+AnCfGecph3oqzmICD75L8=
 =================
 
 此适配器为ioGo https://play.google.com/store/apps/details?id=de.nisnagel.iogo智能家居应用程序增加了额外的功能。
-请访问iogo.nisnagel.de了解有关入门的更多信息。
+请访问www.iogo.app以获取有关如何入门的更多信息。
 
 ##配置
 您需要有效的许可证密钥才能使用此适配器。
-在https://iogo.nisnagel.de创建助手后，可以购买许可证。
+在https://www.iogo.app创建帐户后，可以购买许可证。
 
 请在实例配置中输入您的帐户信息（电子邮件/密码）。
 
@@ -53,7 +53,7 @@ sendTo('iogo', {title: 'News', text: 'New message'}, function (res) {
 });
 ```
 
-只需将路径发送到您的图片而不是文本，或使用url属性```sendTo('iogo.0', 'absolute/path/file.png')```
+只需将路径发送到图像而不是文本即可，或使用url属性```sendTo('iogo.0', 'absolute/path/file.png')```
 
 ```
 sendTo('iogo', {
@@ -72,6 +72,10 @@ sendTo('iogo', {
 -* url *：图片的绝对路径
 
 ## Changelog
+
+### 0.5.x
+* (nisio) Changes for ioGo app version 2.1.0+ (older versions no longer supported)
+* (nisio) Split main.js into several files
 
 ### 0.4.x
 * (nisio) Changes for ioGo app version 2.0.0+ (older versions no longer supported)

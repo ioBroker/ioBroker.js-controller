@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.pi-hole/README.md
 title: ioBroker.pi-hole! [Логотип] (admin / pi-hole.png)
-hash: YHXftTF474VCdIoX89RtsNFKij62dWoKVxjY6IQEolQ=
+hash: FCNx3Suc9+EPF5ZDlsOuLVsxxLQISMOlUX5P/GY2zTA=
 ---
 # IoBroker.pi-hole ![логотип](../../../en/adapterref/iobroker.pi-hole/admin/pi-hole.png)
 
@@ -15,7 +15,7 @@ hash: YHXftTF474VCdIoX89RtsNFKij62dWoKVxjY6IQEolQ=
 
 =================
 
-Этот адаптер предназначен для чтения значений из работающей точки и управления устройством (запуск / останов).
+Этот адаптер предназначен для чтения значений из работающей точки и управления устройством (запуск / остановка).
 
 ИСПОЛЬЗУЙТЕ НА СВОЙ РИСК!!! АБСОЛЮТНО НЕТ ГАРАНТИИ НА УЩЕРБ, ETC. !!!
 
@@ -24,7 +24,7 @@ hash: YHXftTF474VCdIoX89RtsNFKij62dWoKVxjY6IQEolQ=
 ## Шаги
 1. Установите adpater
 
-2. Заполните поля адаптера-админа. IP-адрес устройства pi-hole, API-токен, который можно получить через веб-интерфейс администратора устройства pi-hole (Настройки / API / Получить токен), и обязательный интервал для обновления значений пи-дыра (обновить статистику в iobroker))
+2. Заполните поля адаптера-админа. IP-адрес устройства pi-hole, API-токен, который можно получить из веб-интерфейса администратора устройства pi-hole (Настройки / API / Получить токен), и обязательный интервал для обновления значений пи-дыра (обновить статистику в iobroker))
 
 3. Некоторые из объектов являются json-таблицами, которые вы можете использовать внутри vis.
 
@@ -33,7 +33,18 @@ hash: YHXftTF474VCdIoX89RtsNFKij62dWoKVxjY6IQEolQ=
 ## Требования
 * работает пи-дырка
 
+## Пожертвовать
+Kaffee тратят / подают кофе <https://paypal.me/unltdnetworx>
+
 ## Changelog
+
+### 1.2.2
+
+* (unltdnetworx) bugfix for objecttypes
+
+### 1.2.1
+
+* (unltdnetworx) bugfix for update notification
 
 ### 1.2.0
 
@@ -71,7 +82,7 @@ hash: YHXftTF474VCdIoX89RtsNFKij62dWoKVxjY6IQEolQ=
 
 MIT License
 
-Copyright (c) 2019 Michael Schuster
+Copyright (c) 2020 Michael Schuster
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

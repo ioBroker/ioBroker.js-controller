@@ -97,12 +97,17 @@ Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column
 ## What is Sentry and what is reported to the servers?
 Sentry.io is a way for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
 
-When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to my own Sentry hosted in germany. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.  
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to our own Sentry server hosted in germany. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.  
 
 
 ## Changelog
 
-### 0.5.2 (2020-01-26)
+### 1.0.0 (2020-01-31)
+* (Apollon77) bump version to 1.0.0
+* (Apollon77) update dependecies
+* (Apollon77) change default loglevel to info
+
+### 0.5.5 (2020-01-29)
 * (Apollon77) fix smaller errors
 * (Apollon77) send Sentry reports to own server
 

@@ -64,6 +64,12 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 4.3.7 (2020-01-26)
+* (bluefox) Made adapter compatible with js-controller >= 2.2.x 
+
+### 4.3.5 (2020-01-26)
+* (bluefox) fixed the load of zip files if more than one host
+
 ### 4.3.4 (2019-10-28)
 * (bluefox) Values are showed in select ID dialog
 * (bluefox) Allow select with $ the schedule objects
@@ -280,6 +286,6 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019 bluefox <dogafox@gmail.com>,
+Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>,
 
 Copyright (c) 2014      hobbyquaker

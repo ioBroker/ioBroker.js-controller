@@ -2,29 +2,29 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.pushover/README.md
-title: ioBroker pushover适配器
-hash: 02hWTpLiS+mqDlE/19oNgDHZRUJh4zVatZ6xr2n7PEI=
+title: ioBroker推入式适配器
+hash: DEWM3/a3s19vsoybsv7HjyVW4LB87l2vv5zUuLXIozw=
 ---
 ![商标](../../../en/adapterref/iobroker.pushover/admin/pushover.png)
 
 ![安装数量](http://iobroker.live/badges/pushover-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.pushover.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.pushover.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.pushover.svg)
 ![NPM](https://nodei.co/npm/iobroker.pushover.png?downloads=true)
 
-#ioBroker pushover适配器
+＃ioBroker推入式适配器
 从ioBroker发送推送通知。
 
 ##配置
-首先，它需要一个推卸帐户。
-![Pushover配置](../../../en/adapterref/iobroker.pushover/img/Screen0.png)
+首先，需要在推入帐户。
+![推入配置](../../../en/adapterref/iobroker.pushover/img/Screen0.png)
 
 ![API令牌](../../../en/adapterref/iobroker.pushover/img/Screen1.png)
 
 ![组令牌](../../../en/adapterref/iobroker.pushover/img/Screen3.png)
 
 ##用法
-要从ScriptEngine发送通知，只需写：
+要从ScriptEngine发送通知，只需编写：
 
 ```
 // send notification to all instances of pushover adapter
@@ -47,7 +47,7 @@ sendTo("pushover", {
                           //    2 to also require confirmation from the user
    token: 'API/KEY token' // optional
                           // add other than configurated token to the call
-url,                   // optional  - a supplementary URL to show with your message
+   url,                   // optional  - a supplementary URL to show with your message
    url_title,             // optional  - a title for your supplementary URL, otherwise just the URL is shown
    device,                // optional  - your user's device name to send the message directly to that device, rather than all of the user's devices
    timestamp              // optional  - a Unix timestamp of your message's date and time to display to the user, rather than the time your message is received by our API
@@ -55,6 +55,12 @@ url,                   // optional  - a supplementary URL to show with your mess
 ```
 
 ## Changelog
+### 1.2.0 (2020-02-03)
+* (bluefox) Removed the getMessages call.
+
+### 1.1.1 (2019-09-18)
+* (Apollon77) js-controller 2.0 compatibility, dependency updates
+
 ### 1.1.0 (2018-09-02)
 * (bluefox) Admin3 is supported now
 
@@ -90,7 +96,7 @@ url,                   // optional  - a supplementary URL to show with your mess
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,82 +3,82 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/downloads/ioBroker_Image_RPi_2-3-4_20191127_buster.md
 title: ioBroker Image for Raspberry Pi2 / 3/4 Buster 20191127
-hash: NpNX09q/cxysJvJptolRsFtxi4rBhgFAkCb+5zdnbJo=
+hash: VMimg5s0Ar5yl1CUlqb84IAS0AMoMcD8TCLv8whhtHw=
 ---
 # IoBroker Image for Raspberry Pi2 / 3/4 Buster 20191127
-## Creating a μ-SD card
+## Generate a µ-SD card
 This is an SD card image for the Raspberry Pi2, Pi3, Pi3 B + or Pi4.
 
-The image was created on a Raspberry Pi4 with 4GB RAM, but should also run on all mentioned. It is suitable for 8 GB cards and larger. However, a 16 GB is the recommended minimum size.
-16GB cards are recommended anyway so that not always the same cells are described.
+The image was created on a Raspberry Pi4 with 4GB RAM, but should also run on all of the above. It is suitable for 8 GB cards and larger. However, a 16 GB is the recommended minimum size.
+16GB cards are recommended anyway so that the same cells are not always written to.
 
-The image is unpacked and then written to the SD card using the Balena Etcher program. Etcher is available for different operating systems.
+The image is extracted and then written to the SD card using the Balena Etcher program. Etcher is available for various operating systems.
 
 ## Components of the image
-The image contains the Raspbian lite, based on Debian 10 "Buster" from 26.09.2019 after download from http://www.raspberrypi.org/downloads.
+The image contains the Raspbian lite, based on Debian 10 “Buster” from 09/26/2019 after download from http://www.raspberrypi.org/downloads.
 
 In addition, packages that are necessary for some adapters were installed.
 
-The following user is created:
+The following user has been created:
 
 * User: `pi`,
 * Password: `raspberry`
 
-Node-js is installed in the version 10.17.0 and of course iobroker over the installer with the js-controller **v2.1.1** as of 27.11.2019.
+Node-js is installed in version 10.17.0 and of course iobroker via the installer with the js controller **v2.1.1** as of November 27, 2019.
 
-It is a ** minimal installation ** containing only the admin, info and discovery adapters **.
-Further adapters and their instances still have to be created and configured.
+It is a ** minimal installation **, which only contains the admin, the info and the discovery adapter **.
+Additional adapters and their instances still need to be created and configured.
 
-Creating additional adapters and their instances is described in [here](/tutorial/adapter.md).
+The creation of additional adapters and their instances is described in [here](/tutorial/adapter.md).
 
-** Note! ** The following instructions have been made to the best of our knowledge with the information at the time of the creation of the image. Updates to packages or the kernel can change anything at any time.
+** Note! ** The following instructions were created to the best of our knowledge with the information at the time the image was created. Updates to packages or the kernel can change something at any time.
 
-The image is localized for Germany. If using in other environments please adjust accordingly. (`sudo raspi-config`; 4.) Localization Options)
+The image is localized for Germany. If used in other environments, please adjust accordingly. (`sudo raspi-config`; 4.) Localization Options)
 
 ## After the first start
-After the first start of the Rapberry Pi, please make the following settings with `sudo raspi-config`:
+After starting the Rapberry Pi for the first time, please make the following settings with `sudo raspi-config`:
 
-* Point 1: `Change User password` (own password for the user` Pi` assigned)
+* Point 1: `Change user password` (assign your own password for the user` Pi`)
 
-* Point 2: `Network Options - Hostname` (change the name of the Raspberry Pi, default is` raspberrypi`)
+* Point 2: `Network Options - Hostname` (change the name of the Raspberry Pi if necessary. The default is` raspberrypi`)
 
-If the hostname is changed, please enter `iobroker host this` in the console in the installation directory
+if the host name is changed, please enter `iobroker host this` in the console in the installation directory
 
-* Item 7: `Advanced Options - Expand filesystem` (Extend the root filesystem up to the maximum size of the used SD card)
+* Point 7: `Advanced Options - Expand filesystem` (expanding the root filesystem up to the maximum size of the SD card used)
 
-* if necessary still under point 4: `Localization Options` make adjustments. The default settings apply to Germany
+* If necessary, make adjustments under point 4: `Localization Options`. The default settings apply to Germany
 
-## System Update
-As it may have been some time since the image was created at the time of the download, you should first update the system.
+## System update
+As it may have been some time since the image was created, the first thing to do is to update the system.
 
-To bring Linux and nodejs up to date versions, you can do the following on the console:
+To update Linux and nodejs to current versions, do the following on the console:
 
 ```sudo apt-get update && sudo apt-get upgrade -y```
 
-In addition, you should check whether there are already updates to the already installed adapters and the js-controller (see tab Hosts).
+You should also check whether there are already updates for the already installed adapters and the js controller (see tab Hosts).
 
-In addition to the smallest possible size of an image, this is also the reason that only a few adapters are already pre-installed.
+In addition to the smallest possible size of an image, this is also the reason that only a few adapters are preinstalled.
 
-In such cases always first run the js-controller via the console according to the instructions in the tab Hosts, then if necessary the adapter Admin and then all other adapters.
+In such cases, always first run the js-controller via the console according to the instructions in the Hosts tab, then if necessary the Adapter Admin and then all other adapters.
 
 ## Installation of Redis
-These images no longer contain the database Redis to save the states. With weak computers and low RAM, the use of Redis increases the performance in some cases considerably. With faster computers, it reduces the write access and thus prolongs the life of the SD card.
+These images no longer contain the Redis database to save the states. With weak computers and low RAM, the use of Redis increases the performance considerably in some cases. With faster computers, it reduces write access and extends the life of the SD card.
 
-If you want to install Redis you have to proceed with the current images as follows.
+If Redis is to be installed, the current images must be operated as follows.
 
-### Installing the Redis server
+### Installation of the Redis server
 After the command:
 
 `sudo apt install redis-server`
 
-If the Redis server is ready, it is available on port 6379
+Is the Redis server ready and is available at port 6379
 
-### Switching States to Redis
-The use of Redis to store the states in ioBroker must be configured in the console with:
+### Switching the states to Redis
+The use of Redis to save the states in ioBroker must be configured in the console with:
 
 `iobroker setup custom`
 
-In the dialog that follows, enter the following (Attention in the 4th line):
+In the following dialog, enter as follows (note on the 4th line):
 
 ```
 Type of objects DB [file, couch, redis], default [file]: ENTER
@@ -90,10 +90,10 @@ Port of states DB (file), default[9000]: ENTER
 Host name of this machine [hostname]: ENTER
 ```
 
-Special features when installing in a multi-host system are described here:
+Special features when installing in a multihost system are described here:
 
 [Click here](config/multihost.md)
 
-Release of redis for the user iobroker the backitup adapter can also access redis, the user must be given the necessary rights with:
+Approval of redis for the iobroker user the backitup adapter can also access redis, the user must be given the necessary rights to do so with:
 
 `sudo usermod -a -G redis iobroker`

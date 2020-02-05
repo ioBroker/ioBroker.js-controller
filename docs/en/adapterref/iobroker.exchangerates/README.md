@@ -39,7 +39,7 @@ Exchange rates Central Bank of Russia and European Central Bank and more...
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 instalator <vvvalt@mail.ru>
+Copyright (c) 2020 instalator <vvvalt@mail.ru>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: eLX6p+Qi7beSULDJmUAseJkYgh9WE96AjNvyLMfQK1g=
+hash: NahNm5YOLDTk59vlJH0Q9mbSUcJNyw7Gz5nE+6wkXtE=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -34,6 +34,11 @@ bereitgestellt von [iobroker.click](https://iobroker.click/index.html), dank blu
 * <a href="https://iobroker.click/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a> ( <a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">alternativ</a> )
 * <a href="https://iobroker.click/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS Editor</a> ( <a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">alternativ</a> )
 
+## Fragen und Antworten zu den Widgets
+Wenn Sie Fragen zu den einzelnen Widgets haben, schauen Sie sich zunächst die Themen der einzelnen Widgets an
+
+* [Deutsche Threads] Themen)
+
 ### Unterstützter Browser
 https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
 
@@ -46,14 +51,15 @@ Funktioniert momentan nicht, muss per App implementiert werden, siehe https://gi
 ## Material Design Icons und Bilder
 <table><thead><tr><th> Bildschirmfoto </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/material-icons.png"></td><td> Einige der Widgets unterstützen die <a href="https://materialdesignicons.com/" target="_blank">Material Design Icons-</a> Bibliothek. Sie können ein Symbol aus der obigen Liste abrufen oder die Bildauswahl öffnen, indem Sie auf die Schaltfläche rechts neben dem Eingabefeld klicken. <br><br> <b>Bildfarben gelten nur für die Materialdesign-Symbole, nicht für ein Bild!</b> </td></tr></tbody></table>
 
-## Button Umschalten
+## Tasten
+### Taste Umschalten
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
+
+### Icon Button
+![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
 
 ## Card
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/cards.png)
-
-## Icon Button
-![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
 
 ## Aufführen
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/list.gif)
@@ -71,22 +77,29 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 ## Runder Schieberegler
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/round_slider.gif)
 
+## Checkbox
+![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/checkbox.gif)
+
 ## Schalter
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/switch.gif)
 
-## Wählen
+## Eingabe
+### Text Eingabe
+![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/input.gif)
+
+### Wählen
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/select.gif)
 
 Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbsterklärend.
 
-<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td> Methode der Daten des Menüs </td><td> Es gibt drei Methoden, um die Daten des Menüs zu definieren. Zunächst muss es über den Editor definiert werden. Zweitens ist es über eine Json-Zeichenfolge zu definieren. Die dritte Methode besteht darin, sie durch drei Listen für Werte, Bezeichnungen und Symbole zu definieren </td></tr><tr><td> Editor: Anzahl der Menüpunkte </td><td> Art der Daten des Menüs: über Editor <br> Definieren Sie die Anzahl der Menüeinträge. Die einzelnen Menüeinträge können unter Menüpunkt [x] definiert werden </td></tr><tr><td> JSON-String </td><td> Datenmethode des Menüs: Json String <br> Hier können Sie eine JSON-Zeichenfolge hinzufügen, um die Menüeinträge zu definieren, oder Bindungen für einen Datenpunkt verwenden, der eine JSON-Zeichenfolge enthält. <br><br> JSON-Zeichenfolge muss das folgende Format haben: <br> <code>[ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </td> </tr><tr><td> Werteliste </td><td> Datenmethode des Menüs: Werteliste <br> Definieren Sie die Anzahl der Menüeinträge, indem Sie Werte hinzufügen, die für den Datenpunkt festgelegt werden. Einträge müssen durch Komma getrennt werden </td></tr><tr><td> Werteliste: Etiketten </td><td> Datenmethode des Menüs: Werteliste <br> Definieren Sie die zugehörigen Bezeichnungen der Werte. Einträge müssen durch Komma getrennt werden </td></tr><tr><td> Werteliste: Etiketten </td><td> Datenmethode des Menüs: Werteliste <br> Definieren Sie die zugehörigen Symbole der Werte. Einträge müssen durch Komma getrennt werden. Sie können den Bildpfad oder den Namen der Materialdesign-Symbole verwenden </td></tr></tbody></table>
+<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td> Methode der Daten des Menüs </td><td> Es gibt drei Methoden, um die Daten des Menüs zu definieren. Zunächst muss es über den Editor definiert werden. Zweitens ist es über eine Json-Zeichenfolge zu definieren. Die dritte Methode besteht darin, sie durch drei Listen für Werte, Beschriftungen und Symbole zu definieren </td></tr><tr><td> Editor: Anzahl der Menüpunkte </td><td> Art der Daten des Menüs: über Editor <br> Definieren Sie die Anzahl der Menüeinträge. Die einzelnen Menüeinträge können unter Menüpunkt [x] definiert werden </td></tr><tr><td> JSON-String </td><td> Datenmethode des Menüs: Json String <br> Hier können Sie eine JSON-Zeichenfolge hinzufügen, um die Menüeinträge zu definieren, oder Bindungen für einen Datenpunkt verwenden, der eine JSON-Zeichenfolge enthält. <br><br> JSON-Zeichenfolge muss das folgende Format haben: <br> <code>[ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </td> </tr><tr><td> Werteliste </td><td> Datenmethode des Menüs: Werteliste <br> Definieren Sie die Anzahl der Menüeinträge, indem Sie Werte hinzufügen, die für den Datenpunkt festgelegt werden. Einträge müssen durch Komma getrennt werden </td></tr><tr><td> Werteliste: Etiketten </td><td> Datenmethode des Menüs: Werteliste <br> Definieren Sie die zugehörigen Bezeichnungen der Werte. Einträge müssen durch Komma getrennt werden </td></tr><tr><td> Werteliste: Etiketten </td><td> Datenmethode des Menüs: Werteliste <br> Definieren Sie die zugehörigen Symbole der Werte. Einträge müssen durch Komma getrennt werden. Sie können den Bildpfad oder den Namen der Materialdesign-Symbole verwenden </td></tr></tbody></table>
 
-## Autocomplete
+### Autocomplete
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/autocomplete.gif)
 
 Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbsterklärend.
 
-<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td> Methode der Daten des Menüs </td><td> Es gibt drei Methoden, um die Daten des Menüs zu definieren. Zunächst muss es über den Editor definiert werden. Zweitens ist es über eine Json-Zeichenfolge zu definieren. Die dritte Methode besteht darin, sie durch drei Listen für Werte, Bezeichnungen und Symbole zu definieren </td></tr><tr><td> Editor: Anzahl der Menüpunkte </td><td> Art der Daten des Menüs: über Editor <br> Definieren Sie die Anzahl der Menüeinträge. Die einzelnen Menüeinträge können unter Menüpunkt [x] definiert werden </td></tr><tr><td> JSON-String </td><td> Datenmethode des Menüs: Json String <br> Hier können Sie eine JSON-Zeichenfolge hinzufügen, um die Menüeinträge zu definieren, oder Bindungen für einen Datenpunkt verwenden, der eine JSON-Zeichenfolge enthält. <br><br> JSON-Zeichenfolge muss das folgende Format haben: <br> <code>[ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </td> </tr><tr><td> Werteliste </td><td> Datenmethode des Menüs: Werteliste <br> Definieren Sie die Anzahl der Menüeinträge, indem Sie Werte hinzufügen, die für den Datenpunkt festgelegt werden. Einträge müssen durch Komma getrennt werden </td></tr><tr><td> Werteliste: Etiketten </td><td> Datenmethode des Menüs: Werteliste <br> Definieren Sie die zugehörigen Bezeichnungen der Werte. Einträge müssen durch Komma getrennt werden </td></tr><tr><td> Werteliste: Etiketten </td><td> Datenmethode des Menüs: Werteliste <br> Definieren Sie die zugehörigen Symbole der Werte. Einträge müssen durch Komma getrennt werden. Sie können den Bildpfad oder den Namen der Materialdesign-Symbole verwenden </td></tr></tbody></table>
+<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td> Methode der Daten des Menüs </td><td> Es gibt drei Methoden, um die Daten des Menüs zu definieren. Zunächst muss es über den Editor definiert werden. Zweitens ist es über eine Json-Zeichenfolge zu definieren. Die dritte Methode besteht darin, sie durch drei Listen für Werte, Beschriftungen und Symbole zu definieren </td></tr><tr><td> Editor: Anzahl der Menüpunkte </td><td> Art der Daten des Menüs: über Editor <br> Definieren Sie die Anzahl der Menüeinträge. Die einzelnen Menüeinträge können unter Menüpunkt [x] definiert werden </td></tr><tr><td> JSON-String </td><td> Datenmethode des Menüs: Json String <br> Hier können Sie eine JSON-Zeichenfolge hinzufügen, um die Menüeinträge zu definieren, oder Bindungen für einen Datenpunkt verwenden, der eine JSON-Zeichenfolge enthält. <br><br> JSON-Zeichenfolge muss das folgende Format haben: <br> <code>[ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </td> </tr><tr><td> Werteliste </td><td> Datenmethode des Menüs: Werteliste <br> Definieren Sie die Anzahl der Menüeinträge, indem Sie Werte hinzufügen, die für den Datenpunkt festgelegt werden. Einträge müssen durch Komma getrennt werden </td></tr><tr><td> Werteliste: Etiketten </td><td> Datenmethode des Menüs: Werteliste <br> Definieren Sie die zugehörigen Bezeichnungen der Werte. Einträge müssen durch Komma getrennt werden </td></tr><tr><td> Werteliste: Etiketten </td><td> Datenmethode des Menüs: Werteliste <br> Definieren Sie die zugehörigen Symbole der Werte. Einträge müssen durch Komma getrennt werden. Sie können den Bildpfad oder den Namen der Materialdesign-Symbole verwenden </td></tr></tbody></table>
 
 ## Top App Bar mit Navigationsleiste
 Die obere App-Leiste mit Navigationsleiste kann mit der <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">Ansicht in Widget 8</a> kombiniert werden.
@@ -156,7 +169,16 @@ Beispiel <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input
 Working Widget Beispiel kann gefunden werden
 
 * [hier] (https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
-* [ical Adapter] (https://forum.iobroker.net/topic/26925/test-adapter-material-design-widgets-v0-2-x/581)
+* [ical Adapter] (https://forum.iobroker.net/topic/29658/material-design-widgets-table-widget/2)
+
+## Mauerwerksansichten
+In Masonry Views sind mehrere `view in widget` integriert, die abhängig von der Breite des Widgets automatisch bestellt werden. Mit diesem Widget ist es möglich, ein responsives Layout zu erstellen (ein Layout für Desktop, Tablet und Mobil).
+
+<b>Schauen Sie sich die [Beispielprojekt für Material Design Widgets](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b> an, um zu verstehen, wie es funktioniert.
+
+![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/masnory.gif)
+
+<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2> Abhängig von der Breite der Auflösung können die Anzahl der Spalten und der Abstand zwischen den Ansichten festgelegt werden. Die Einstellungen können unabhängig für das Hoch- und Querformat vorgenommen werden. Um die Breite der Auflösung für die verschiedenen Geräte herauszufinden, aktivieren Sie den Auflösungsassistenten unter den allgemeinen Einstellungen. </td></tr><tr><td><img src="doc/en/media/masnory_settings_views.png"></td><td> Sichtweite [x] </td><td> Definieren Sie die Breite der Ansicht. Zulässige Werte sind number, px,% oder calc. Beispiele: <code>100</code> , <code>100px</code> , <code>55%</code> , <code>calc(60% - 12px)</code> </td></tr></tbody></table>
 
 ## Spaltenansichten - veraltet !!!
 In Column Views sind mehrere `view in widget` integriert, die abhängig von der Breite des Widgets automatisch sortiert werden. Mit diesem Widget ist es möglich, ein responsives Layout zu erstellen (ein Layout für Desktop, Tablet und Mobil).
@@ -201,11 +223,175 @@ Das Widget "Warnungen" erfordert eine JSON-Zeichenfolge als Objekt, die wie folg
 ]
 ```
 
-<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/alerts_settings.png"></td><td> Anzahl der Spalten </td><td> Anzahl der Spalten festlegen </td></tr><tr><td> Objekt Identifikation </td><td> Das Objekt muss eine JSON-Zeichenfolge sein, die wie oben beschrieben aufgebaut sein muss </td></tr><tr><td> max. Warnungen </td><td> Maximale Anzahl von Warnungen, die angezeigt werden sollen. </td></tr></tbody></table>
+<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/alerts_settings.png"></td><td> Anzahl der Spalten </td><td> Anzahl der Spalten festlegen </td></tr><tr><td> Objekt Identifikation </td><td> Das Objekt muss eine JSON-Zeichenfolge sein, die wie oben beschrieben aufgebaut sein muss </td></tr><tr><td> max. Warnungen </td><td> Maximale Anzahl von Warnungen, die angezeigt werden sollen. </td></tr></tbody></table>
+
+Mit dem folgenden Skript können Sie einfache Nachrichten an Datenpunkte senden, die vom Warnungs-Widget verwendet werden.
+Das Skript muss in globale Skripte eingefügt werden. Dann ist es möglich, eine Nachricht mit dem folgenden Befehl zu senden
+
+`materialDesignWidgets.sendTo('datapoint_id', 'message', 'color');`
+
+```
+
+
+var materialDesignWidgets = {};
+materialDesignWidgets.sendTo = function (id, text, backgroundColor = '', borderColor = '', icon = '', iconColor = '', fontColor = '') {
+    let json = getState(id).val;
+
+    if (json) {
+        try {
+
+            json = JSON.parse(json);
+
+        } catch (e) {
+            json = [];
+            console.warn('Wert ist kein JSON string! Wert wird ersetzt!');
+        }
+    } else {
+        json = [];
+    }
+
+    json.push(
+        {
+            text: text,
+            backgroundColor: backgroundColor,
+            borderColor: borderColor,
+            icon: icon,
+            iconColor: iconColor,
+            fontColor: fontColor
+        }
+    )
+    setState(id, JSON.stringify(json), true);
+}
+```
+
+## Kalender
+![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/calendar.gif)
+
+Das Kalender-Widget erfordert eine JSON-Zeichenfolge als Objekt, die wie folgt strukturiert sein muss:
+
+```
+[
+	{
+		"name": "Event",
+		"color": "#e74c3c",
+		"colorText": "#FFFFFF",
+		"start": "2020-01-24",
+		"end": "2020-01-26"
+	},
+	{
+		"name": "Meeting",
+		"color": "#717d7e",
+		"colorText": "#FFFFFF",
+		"start": "2020-03-23",
+		"end": "2020-03-24"
+	}
+]
+```
+
+Nur hex und rgba können als Farben verwendet werden!
+
+Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbsterklärend.
+
+<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/calendar_layout.png"></td><td> Wochentage angezeigt werden </td><td> Gibt an, welche Wochentage angezeigt werden sollen. Um nur Montag bis Freitag anzuzeigen, kann ein Wert von <code>1, 2, 3, 4, 5</code> verwendet werden. Um eine Woche ab Montag anzuzeigen, kann ein Wert von <code>1, 2, 3, 4, 5, 6, 0</code> verwendet werden. </td></tr><tr><td> Objekt Identifikation </td><td> Das Objekt muss eine JSON-Zeichenfolge sein, die wie oben beschrieben aufgebaut sein muss </td></tr><tr><td rowspan=2><img src="doc/en/media/calendar_timeaxis.png"></td><td> Startstunde </td><td> Die Stunde, ab der Termine in der Wochen- und Tagesansicht angezeigt werden sollen. </td></tr><tr><td> Endstunde </td><td> Die Stunde bis wann in den Wochen und Tagesansicht Termine werden angezeigt werden sollen </td></tr></tbody></table>
+
+Wenn Sie das Widget mit [ikaler Adapter](https://github.com/iobroker-community-adapters/ioBroker.ical) verwenden möchten, können Sie das ical-Objekt mithilfe des folgenden Skripts für die Arbeit mit dem Widget konvertieren.
+
+```
+// momentjs is required as dependecies in javascript adapter
+const moment = require("moment");
+
+var instances = $(`[id=ical.*.data.table]`);
+instances.on(ical2CalendarWidget);
+
+function ical2CalendarWidget() {
+    try {
+        let calList = [];
+
+        for (var inst = 0; inst <= instances.length - 1; inst++) {
+            let icalObj = getState(instances[inst]).val;
+
+            if (icalObj) {
+                for (var i = 0; i <= icalObj.length - 1; i++) {
+                    let item = icalObj[i];
+
+                    // extract calendar color
+                    let calendarName = item._class.split(' ')[0].replace('ical_', '');
+
+                    let startTime = moment(item._date);
+                    let endTime = moment(item._end);
+
+                    let start = startTime.format("YYYY-MM-DD HH:mm");
+                    let end = endTime.format("YYYY-MM-DD HH:mm");
+
+                    if (startTime.format('HH:mm') === '00:00' && endTime.format('HH:mm') === '00:00') {
+                        // is full-day event
+                        if (endTime.diff(startTime, 'hours') === 24) {
+                            // full-day event, one day
+                            start = startTime.format("YYYY-MM-DD");
+                            end = startTime.format("YYYY-MM-DD");
+                        } else {
+                            // full-day event, multiple days
+                            start = startTime.format("YYYY-MM-DD");
+                            end = endTime.format("YYYY-MM-DD");
+                        }
+                    }
+
+                    // create object for calendar widget
+                    calList.push({
+                        name: item.event,
+                        color: getMyCalendarColor(calendarName),
+                        colorText: getMyCalendarTextColor(calendarName),
+                        start: start,
+                        end: end
+                    })
+                }
+
+                function getMyCalendarColor(calendarName) {
+                    // assign colors via the calendar names, use calendar name as set in ical
+                    if (calendarName === 'calendar1') {
+                        return '#FF0000';
+                    } else if (calendarName === 'calendar2') {
+                        return '#44739e'
+                    } else if (calendarName === 'calendar3') {
+                        return '#32a852'
+                    }
+                }
+
+                function getMyCalendarTextColor(calendarName) {
+                    // assign colors via the calendar names, use calendar name as set in ical
+                    if (calendarName === 'calendar1') {
+                        return '#FFFFFF';
+                    } else if (calendarName === 'calendar2') {
+                        return '#FFFFFF'
+                    } else if (calendarName === 'calendar3') {
+                        return '#FFFFFF'
+                    }
+                }
+            }
+
+            // Enter the destination data point that is to be used as object ID in the widget
+            setState('0_userdata.0.materialdesignwidgets.ical2Calendar', JSON.stringify(calList), true);
+        }
+    } catch (e) {
+        console.error(`ical2MaterialDesignCalendarWidget: message: ${e.message}, stack: ${e.stack}`);
+    }
+}
+
+ical2CalendarWidget();
+```
 
 ## Changelog
 
-### 0.2.xx
+### 0.3.xx
+* (Scrounger): Masonry Views Widget: visible condition added
+* (Scrounger): Calendar Widget added
+* (Scrounger): translation added
+* (Scrounger): VIS Editor: Link to Forum widget threads added
+* (Scrounger): bug fixes
+
+### 0.2.49
+* (Scrounger): new Select Widget added
+* (Scrounger): Autocomplete Widget added
 * (Scrounger): Alerts Widget added
 * (Scrounger): use of Material Design Icons as images added
 * (Scrounger): Perfomrance optimized
@@ -342,7 +528,7 @@ Das Widget "Warnungen" erfordert eine JSON-Zeichenfolge als Objekt, die wie folg
 ## License
 MIT License
 
-Copyright (c) 2019 Scrounger <scrounger@gmx.net>
+Copyright (c) 2020 Scrounger <scrounger@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -86,5 +86,5 @@ A german HowTo doc is available here: [howto_de](./doc/howto_de.md)
 
 The MIT License (MIT)
 
-Copyright (c) 2018 - 2019 foxthefox <foxthefox@wysiwis.net>,
+Copyright (c) 2018 - 2020 foxthefox <foxthefox@wysiwis.net>,
                    bluefox <dogafox@gmail.com>

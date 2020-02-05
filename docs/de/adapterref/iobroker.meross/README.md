@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
+hash: y3+QIV+o2GNtEgX1E87gArX5VsyJrkw7y8gdInH5Fp4=
 ---
 ![Logo](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
@@ -16,14 +16,14 @@ hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
 ![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)
 
 # IoBroker.meross
-** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. **
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
 
 ## Beschreibung
 Mit diesem Adapter können Sie Meross-Geräte steuern, indem Sie eine Verbindung zu den Meross-Cloud-Servern herstellen.
 
 Sie müssen Ihre Cloud-Anmeldeinformationen angeben. Der Adapter stellt eine Verbindung zu Ihrem Cloud-Konto her und abonniert alle Gerätedaten über MQTT. Aus diesem Grund müssen die Geräte mit ihrer Cloud verbunden sein. Derzeit ist keine Möglichkeit bekannt, die Geräte lokal zu steuern.
 
-Eine Adapterinstanz zeigt alle Geräte eines Meross Cloud-Kontos an und ermöglicht deren Steuerung.
+Eine Adapter-Instanz zeigt alle Geräte eines Meross Cloud-Kontos an und ermöglicht deren Steuerung.
 
 ## Bekannte Arbeitsgeräte
 * mss425e
@@ -32,7 +32,36 @@ Eine Adapterinstanz zeigt alle Geräte eines Meross Cloud-Kontos an und ermögli
 
 Wenn mehr Geräte funktionieren (oder auch nicht), melden Sie dies bitte durch Öffnen eines GitHub-Problems.
 
+## So melden Sie Probleme und Funktionsanforderungen
+Bitte benutzen Sie dazu GitHub.
+
+Stellen Sie den Adapter am besten auf den Debug-Protokollmodus ein (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen schneidet). Wenn Sie es nicht in der GitHub-Ausgabe bereitstellen möchten, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
+
+## Was ist Sentry und was wird den Servern gemeldet?
+Sentry.io ist eine Möglichkeit für Entwickler, sich einen Überblick über Fehler in ihren Anwendungen zu verschaffen. Und genau das ist in diesem Adapter implementiert.
+
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server gesendet, der in Deutschland gehostet wird. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Namen oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+
 ## Changelog
+
+### 1.3.10 (2020.02.04)
+* (Apollon77) optimize error handling
+* (Apollon77) Switch Sentry to iobroker own instance hosted in germany
+
+### 1.3.9 (2019.12.18)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.8 (2019.12.07)
+* (Apollon77) update dependencies
+
+### 1.3.7 (2019.12.01)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.6 (2019.11.28)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.5 (2019.11.28)
+* (Apollon77) Prevent some error cases on disconnects
 
 ### 1.3.4 (2019.11.26)
 * (Apollon77) Add Temperature/Humidity support for MTS100
@@ -68,7 +97,7 @@ Wenn mehr Geräte funktionieren (oder auch nicht), melden Sie dies bitte durch �
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2020 Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

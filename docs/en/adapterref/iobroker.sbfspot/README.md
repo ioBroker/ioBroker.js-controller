@@ -45,7 +45,10 @@ sometimes npm intall must be called more then one time to successfully install a
 
 ## Changelog
 
-## 2.4.0 (2019-12-xx)
+## 2.4.1 (2020-02-01)
+* (René) bugfix widget
+
+## 2.4.0 (2019-12-28)
 * (René) update to my own flot 3.0
 
 ## 2.3.4 (2019-10-31)
@@ -137,7 +140,7 @@ sometimes npm intall must be called more then one time to successfully install a
 
 
 ## License
-Copyright (C) <2017-2019>  <info@rg-engineering.eu>
+Copyright (C) <2017-2020>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

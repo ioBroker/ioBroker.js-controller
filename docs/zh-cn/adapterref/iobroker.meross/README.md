@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
+hash: y3+QIV+o2GNtEgX1E87gArX5VsyJrkw7y8gdInH5Fp4=
 ---
 ![商标](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
@@ -16,7 +16,7 @@ hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
 ![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)
 
 ＃ioBroker.meross
-**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误。**
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**更多详细信息，请参见下文！
 
 ##说明
 该适配器允许通过连接到Meross云服务器来控制Meross设备。
@@ -32,7 +32,36 @@ hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
 
 如果有更多设备可用（或无法运行），请通过打开GitHub问题进行报告。
 
+##如何报告问题和功能要求
+请为此使用GitHub问题。
+
+最好是将适配器设置为“调试”日志模式（“实例”->“专家”模式->“列日志”级别）。然后，请从磁盘获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin会删掉行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
+
+##什么是Sentry，什么报告给服务器？
+Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+
 ## Changelog
+
+### 1.3.10 (2020.02.04)
+* (Apollon77) optimize error handling
+* (Apollon77) Switch Sentry to iobroker own instance hosted in germany
+
+### 1.3.9 (2019.12.18)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.8 (2019.12.07)
+* (Apollon77) update dependencies
+
+### 1.3.7 (2019.12.01)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.6 (2019.11.28)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.5 (2019.11.28)
+* (Apollon77) Prevent some error cases on disconnects
 
 ### 1.3.4 (2019.11.26)
 * (Apollon77) Add Temperature/Humidity support for MTS100
@@ -68,7 +97,7 @@ hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2020 Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.bshb/README.md
 title: ioBroker.bshb
-hash: /V/1fGlTf6mgFX7TfPiMF9C1c3y3Bd3V2yR2BDlTGBI=
+hash: qOqMMSIK7Al/nLRHLVUli03Bwr0uyt0iYRkipKzxtFc=
 ---
 ![Logo](../../../en/adapterref/iobroker.bshb/admin/bshb-logo.jpg)
 
@@ -25,9 +25,30 @@ Zu diesem Zweck wird die Bibliothek [Bosch-Smart-Home-Brücke](https://github.co
 
 Diskussion im ioBroker-Forum zum BSHB-Adapter: https://forum.iobroker.net/topic/25370/test-adapter-bshb-bosch-smart-home-v0-0-x/
 
+Beispiele: https://github.com/holomekc/ioBroker.bshb/wiki/Examples
+
 In Arbeit. Feedback erwünscht.
 
 ## Changelog
+
+### 0.1.4
+* (holomekc) issue fixed in loading configuration
+* (holomekc) minor restructuring
+
+### 0.1.3
+* (holomekc) restructure of handling device detection and updates iobroker <-> bshc via BshbHandler
+* (holomekc) added handler for devices, scenarios and messages
+* (holomekc) messages and scenarios are updated when adapter is running
+
+### 0.1.2
+* (holomekc) Adapter core library updated
+
+### 0.1.1
+* (holomekc) update to new bridge version
+* (holomekc) allows adapter to reconnect in case bshc is restarting
+* (holomekc) remove not needed configuration
+* (holomekc) faults added to all service (channels)
+* (holomekc) faults are always a list: [] = no faults, \[{source: {rootDeviceId: string, deviceServiceId: string, deviceId: string}, type: string, category: INFO | WARNING | ERROR}, ...\] = faults
 
 ### 0.1.0
 * (holomekc) certificate and private key are handled in ioBroker and can be content or file reference

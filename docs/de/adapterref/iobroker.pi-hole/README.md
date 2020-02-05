@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.pi-hole/README.md
 title: ioBroker.pi-hole! [Logo] (admin / pi-hole.png)
-hash: YHXftTF474VCdIoX89RtsNFKij62dWoKVxjY6IQEolQ=
+hash: FCNx3Suc9+EPF5ZDlsOuLVsxxLQISMOlUX5P/GY2zTA=
 ---
 # IoBroker.pi-hole ![Logo](../../../en/adapterref/iobroker.pi-hole/admin/pi-hole.png)
 
@@ -15,7 +15,7 @@ hash: YHXftTF474VCdIoX89RtsNFKij62dWoKVxjY6IQEolQ=
 
 =================
 
-Dieser Adapter dient zum Auslesen von Werten aus einem laufenden Pi-Hole und zur Steuerung des Geräts (Start / Stopp).
+Dieser Adapter dient zum Lesen von Werten aus einem laufenden Pi-Hole und zur Steuerung des Geräts (Start / Stopp).
 
 BENUTZUNG AUF EIGENE GEFAHR!!! ABSOLUT KEINE GARANTIE FÜR SCHÄDEN, ETC. !!!
 
@@ -26,14 +26,25 @@ Hilfe oder Hinweise sind willkommen.
 
 2. Füllen Sie die Felder des Adapter-Administrators aus. Die IP-Adresse des Pi-Hole-Geräts, das API-Token, das Sie über das Admin-Webinterface des Pi-Hole-Geräts (Einstellungen / API / Token abrufen) abrufen können, und das Intervall zur Erneuerung der Werte von Das Pi-Loch (Statistik in iobroker erneuern)
 
-3. Einige der Objekte sind Json-Tabellen, die Sie in vis verwenden können.
+3. Einige der Objekte sind JSON-Tabellen, die Sie in VIS verwenden können.
 
-4. Aktivieren Sie den Filter, indem Sie auf die Schaltfläche "Pi-Hole aktivieren" klicken. Deaktivieren Sie den Filter, indem Sie den Wert für "Pi-Hole deaktivieren" ändern (0 für permanent, Anzahl für Anzahl Sekunden).
+4. Aktivieren Sie den Filter, indem Sie auf die Schaltfläche "Pi-Hole aktivieren" klicken. Deaktivieren Sie den Filter, indem Sie den Wert von "Pi-Hole deaktivieren" ändern (0 für permanent, Anzahl für Anzahl Sekunden).
 
 ## Bedarf
 * Running Pi-Hole-Gerät
 
+## Spenden
+Kaffee spendieren / einen Kaffee servieren <https://paypal.me/unltdnetworx>
+
 ## Changelog
+
+### 1.2.2
+
+* (unltdnetworx) bugfix for objecttypes
+
+### 1.2.1
+
+* (unltdnetworx) bugfix for update notification
 
 ### 1.2.0
 
@@ -71,7 +82,7 @@ Hilfe oder Hinweise sind willkommen.
 
 MIT License
 
-Copyright (c) 2019 Michael Schuster
+Copyright (c) 2020 Michael Schuster
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

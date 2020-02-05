@@ -33,6 +33,12 @@ Die aktuellen Messdaten werden von dem Adapter standardmäßig im Stundentakt ak
 
 
 ## Changelog
+### 1.0.5 (2020-02-05)
+* (Peter Müller) Use of `extendObject` to update names of existing objects.
+
+### 1.0.4 (2020-02-03)
+* (Peter Müller) Updated connectionType and dataSource in io-package.json.
+
 ### 1.0.3 (2020-01-23)
 * (Peter Müller) Added `connectionType` in `io-package.json` and updated dependencies.
 
@@ -45,7 +51,7 @@ Die aktuellen Messdaten werden von dem Adapter standardmäßig im Stundentakt ak
 
 ## License
 
-Copyright (c) 2019 Peter Müller <peter@crycode.de>
+Copyright (c) 2019-2020 Peter Müller <peter@crycode.de>
 
 Data (c) [German Federal Office for Radiation Protection (Bundesamt für Strahlenschutz, BfS)](https://www.bfs.de/), [Data licence Germany – attribution – Version 2.0](http://www.govdata.de/dl-de/by-2-0)
 

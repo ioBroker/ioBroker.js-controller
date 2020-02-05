@@ -289,6 +289,9 @@ Jede Instanz des Adapters stellt die folgenden Informationen bereit:
 Die Zähler der Nachrichten können bei Bedarf durch ein Schreiben in das Objekt `actions.resetCounters` auf 0 zurückgesetzt werden.
 
 ## Changelog
+### 1.0.4 (2020-02-03)
+* (Peter Müller) Updated connectionType and dataSource in io-package.json.
+
 ### 1.0.3 (2020-01-23)
 * (Peter Müller) Better handling of changed objects in admin.
 * (Peter Müller) Added `connectionType` in `io-package.json` and updated dependencies.
@@ -304,4 +307,4 @@ Die Zähler der Nachrichten können bei Bedarf durch ein Schreiben in das Objekt
 
 ## License
 
-Copyright (c) 2019 Peter Müller <peter@crycode.de>
+Copyright (c) 2019-2020 Peter Müller <peter@crycode.de>

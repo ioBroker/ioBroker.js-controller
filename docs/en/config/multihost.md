@@ -1,30 +1,30 @@
 ---
-title: Multihost
+title: multihost
 lastChanged: 13.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/config/multihost.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: bn0CAoBAN5DPBn11696x47c991NbZ42OEAQayrrozEY=
+hash: A23kk/qlRZSQwhxWnYS9IUkoTlK55Gl8BTakFs5LL2o=
 ---
 # The multihost operation
-ioBroker is able to handle the tasks of several servers. This allows the workload to be distributed among multiple hosts.
-But you can also use system-specific extensions of a single-board computer (GPIO from a RaspberryPi, although the "mainframe" is a more powerful Intel NUC).
+ioBroker is able to have the tasks done by multiple servers. This enables the computing load to be distributed across multiple hosts.
+But you can also use system-specific extensions of a single-board computer (GPIO from a RaspberryPi, although the "main computer" is a more powerful Intel NUC).
 
-After creating a multi-host system, all configurations are performed centrally via the admin of the master. The admin of the slaves is no longer accessible via their web interface (s).
+After creating a multihost system, all configurations are carried out centrally via the admin of the master. The admin of the slave (s) can no longer be reached via their web interface (s).
 
-It is therefore useful for a slave to use a host with minimal installation, so only the js-controller and the admin.
+It therefore makes sense for a slave to use a host with minimal installation, i.e. only the js controller and the admin.
 
 ##Installation
 ### Master configuration
 Execute the following command on the master:
 
-** This step is absolutely necessary if Redis DB is in use. ** In other cases you can use it if the automatic method (s.u.) fails. But then choose f (ile) instead of r (edis)!
+** This step is absolutely necessary if Redis DB is in use. ** In other cases it can be used if the automatic method (see below) fails. Then please select f (ile) instead of r (edis)!
 
 please call via the console:
 
 1. `iobroker setup custom`
 
-Fill in the menu that appears as follows
+Complete the menu that now appears as follows
 
 ```
 Type of objects DB [(f)ile, (c)ouch, (r)edis], default [file]: f
@@ -50,7 +50,7 @@ Please enter via the console on the slave
 
 1. `sudo iobroker setup custom`
 
-Fill in the menu that appears as follows
+Complete the menu that now appears as follows
 
 ```
 Type of objects DB [(f)ile, (c)ouch, (r)edis], default [file]: f
@@ -62,7 +62,7 @@ Port of states DB (redis), default[6379]:
 Host name of this machine [raspi-sub-1]:
 ```
 
-Finally, the info appears:
+at the end the info appears:
 
 ```
 creating conf/iobroker.json
@@ -82,32 +82,32 @@ Config ok. Please restart ioBroker: "iobroker restart"
 
 2. `sudo service iobroker restart`
 
-On the main system, the newly created host then appears under Hosts.
+The newly created host then appears on the main system under Hosts.
 
-If that does not happen please reboot both hosts. first the master, then the slave.
+If this does not happen, please reboot both hosts. first the master, then the slave.
 
 ## Multihost with different subnets
-** If both ioBroker hosts are on different subnets, ...
+** If both ioBroker hosts are in different subnets, ...
 
 Example:**
 
-* Normal LAN (for PC, Tablet, use.) = 192.168.178.0/24
-* IoT LAN (for Shelly, Cameras, etc) = 10.20.30.0/24
+* Normal LAN (for PC, tablet, use.) = 192.168.178.0/24
+* IoT LAN (for Shelly, cameras, etc.) = 10.20.30.0/24
 
-... the multihost automatic ("sudo iobroker multihost enable" and "sudo iobroker multihost browse") does not work, but only the old path (`iobroker setup custom`) see above
+... the automatic multihost ("sudo iobroker multihost enable" and "sudo iobroker multihost browse") does not work, but only the old way (`iobroker setup custom`) see above
 
 ## Multihost with redis
-If a multi-host environment is to be installed, where the states are stored in redis, a lot of attention needs to be paid.
+If a multihost environment is to be installed, in which the states are saved in redis, there are still a few things to consider.
 
-The file redis.conf on the host where the states are stored must be changed as follows.
+The file redis.conf on the host on which the states must be saved must be changed as follows.
 
 ```
 nano /etc/redis/redis.conf
 ```
 
-The line contained therein `bind 127.0.0.1` must be supplemented with the IP of the network adapter so that the Redis server connects externally.
+The line `bind 127.0.0.1` contained in it must be supplemented with the IP of the network adapter so that the Redis server allows external connections.
 
-Eg
+So for example
 
 ```
 bind 127.0.0.1 192.168.1.10
@@ -115,15 +115,15 @@ bind 127.0.0.1 192.168.1.10
 
 assuming that 192.168.1.10 is the local IP of the ioBroker master.
 
-This adjustment is only necessary at the master.
+This adjustment is only necessary on the master.
 
-Alternatively, it works
+Alternatively, you can
 
 ```
 bind 0.0.0.0
 ```
 
-Finally, restart the Redis server or machine. eg:
+Finally restart the Redis server or computer. eg:
 
 ```
 sudo service redis-server restart
@@ -132,22 +132,22 @@ sudo service redis-server restart
 ## Distribute tasks
 There are two ways to distribute the tasks to the hosts.
 
-* If it is a new installation, select in the Adapter tab from the pulldown menu above the adapter list the host on which the instance of the adapter is to be installed.
+* If it is a new installation, select the host on which the instance of the adapter is to be installed from the pulldown menu above the adapter list in the Adapter tab.
 
-Then add the instance there by clicking on the (+) in the right column.
+Then you add the instance by clicking on the (+) in the right column.
 
-* If you have previously installed many adapters on a host, you can subsequently change the assignment of already installed instances in the Instances tab.
+* If you have already installed many adapters on a host, you can change the assignment of the installed instances in the Instances tab.
 
 ## Delete host
-To delete a host, activate Expert mode in the Admin tab Objects of the master and activate host in the column Type. Then delete the desired host.
+To delete a host, activate the expert mode in the objects tab of the master and activate the selection host in the Type column. Then delete the desired host.
 
 ## Possible problems
-sometimes another message appears, similar to:
+sometimes a message appears, similar to:
 
 ```> ... bytes ... in strict mode```
 
-Then please edit the file in which the occurrence with the nano editor. Right at the beginning, `'use strict';` comment in and comment on this line.
+Then please edit the file in which the appearance occurs with the nano editor. Right at the beginning is `'use strict';` comment this line with // and save.
 
 ```> IP Address of the host is 127.0.0.1. It accepts no connections. Please change.```
 
-if on the master system it was not made ``` setup custom ```
+if you have not made ``` setup custom ``` on the master system

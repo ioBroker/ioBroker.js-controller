@@ -76,7 +76,10 @@ of the single instance can be set. In the selection Menu the the displayed minim
 lettering of the log appears in red.
 
 ## Changelog
-### 3.7.7 (2020-01-05)
+### 3.7.9 (2020-01-28)
+* (bluefox) The log downloading was fixed
+
+### 3.7.8 (2020-01-26)
 * (bluefox) The disabling of custom settings was corrected
 
 ### 3.7.5 (2019-12-29)

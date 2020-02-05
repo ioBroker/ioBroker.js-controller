@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
+hash: NMhpaS3tpGOVmK3sjScUmZDu88/zSBbi4B2KpgplBYw=
 ---
 ![Logo](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -45,7 +45,10 @@ Manchmal muss npm intall mehrmals aufgerufen werden, um alle erforderlichen Pake
 
 * Bitte erstellen Sie Probleme bei [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
-## 2.4.0 (2019-12-xx)
+## 2.4.1 (2020-02-01)
+* (René) Bugfix Widget
+
+## 2.4.0 (2019-12-28)
 * (René) Update auf meinen eigenen Flot 3.0
 
 ## 2.3.4 (2019-10-31)
@@ -65,7 +68,7 @@ Manchmal muss npm intall mehrmals aufgerufen werden, um alle erforderlichen Pake
 * (René) Upgrade-Pakete
 
 ### 2.2.5 (04.11.2018)
-* (René) Rendite zurücksetzen, wenn ab heute kein neuer Wert vorhanden ist
+* (René) Rendite zurücksetzen, wenn kein neuer Wert von heute vorliegt
 
 ### 2.2.4 (2018-08-19)
 * (René) Bugfix für Ticks auf X
@@ -139,7 +142,7 @@ Achtung: Widget ist nicht kompatibel mit Version 1.x.x; Überprüfen Sie einfach
 ## Changelog
 
 ## License
-Copyright (C) <2017-2019>  <info@rg-engineering.eu>
+Copyright (C) <2017-2020>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

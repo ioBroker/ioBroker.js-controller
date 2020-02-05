@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.pushover/README.md
-title: адаптер ioBroker
-hash: 02hWTpLiS+mqDlE/19oNgDHZRUJh4zVatZ6xr2n7PEI=
+title: ioBroker переходник
+hash: DEWM3/a3s19vsoybsv7HjyVW4LB87l2vv5zUuLXIozw=
 ---
 ![логотип](../../../en/adapterref/iobroker.pushover/admin/pushover.png)
 
@@ -47,7 +47,7 @@ sendTo("pushover", {
                           //    2 to also require confirmation from the user
    token: 'API/KEY token' // optional
                           // add other than configurated token to the call
-url,                   // optional  - a supplementary URL to show with your message
+   url,                   // optional  - a supplementary URL to show with your message
    url_title,             // optional  - a title for your supplementary URL, otherwise just the URL is shown
    device,                // optional  - your user's device name to send the message directly to that device, rather than all of the user's devices
    timestamp              // optional  - a Unix timestamp of your message's date and time to display to the user, rather than the time your message is received by our API
@@ -55,6 +55,12 @@ url,                   // optional  - a supplementary URL to show with your mess
 ```
 
 ## Changelog
+### 1.2.0 (2020-02-03)
+* (bluefox) Removed the getMessages call.
+
+### 1.1.1 (2019-09-18)
+* (Apollon77) js-controller 2.0 compatibility, dependency updates
+
 ### 1.1.0 (2018-09-02)
 * (bluefox) Admin3 is supported now
 
@@ -90,7 +96,7 @@ url,                   // optional  - a supplementary URL to show with your mess
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,18 +3,20 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nuki-extended/README.md
 title: ioBroker.nuki-erweitert
-hash: HELzK1mWNuZtbfH8Aj54qCOpgurEUn5UA1pWTD8tA+I=
+hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 ---
 ![Logo](../../../en/adapterref/iobroker.nuki-extended/admin/nuki-extended.png)
 
+![Paypal-Spende](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/nuki-extended-installed.svg)
 ![Stabile Version](http://iobroker.live/badges/nuki-extended-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.nuki-extended.svg)
+![Commits seit der letzten Veröffentlichung](https://img.shields.io/github/commits-since/Zefau/ioBroker.nuki-extended/latest.svg)
 ![Travis CI](https://travis-ci.org/Zefau/ioBroker.nuki-extended.svg?branch=master)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.nuki-extended.svg)
 ![NPM](https://nodei.co/npm/iobroker.nuki-extended.png?downloads=true)
 
-# IoBroker.nuki-extended Dieser ioBroker-Adapter (ehemals ioBroker.Nuki2) ermöglicht die Steuerung und Überwachung der [Nuki Smart Lock] (https://nuki.io/de/smart-lock/) und / oder der [Nuki Opener] (https://nuki.io/de/opener/) unter Verwendung der beiden [Nuki Bridge API (v1.9.0, 06.05.2019)] (https://developer.nuki.io/page/nuki-bridge-http-api-170/4/#heading--introduction) und der [Nuki Web API (v1. 2.0, 31.05.2019)](https://developer.nuki.io/page/nuki-web-api-111/3/).
+# IoBroker.nuki-extended Dieser ioBroker-Adapter (ehemals ioBroker.Nuki2) ermöglicht die Steuerung und Überwachung der [Nuki Smart Lock] (https://nuki.io/de/smart-lock/) und / oder [Nuki Opener] (https://nuki.io/de/opener/) unter Verwendung der beiden [Nuki Bridge API (v1.9.0, 06.05.2019)] (https://developer.nuki.io/page/nuki-bridge-http-api-170/4/#heading--introduction) und der [Nuki Web API (v1. 2.0, 31.05.2019)](https://developer.nuki.io/page/nuki-web-api-111/3/).
 **Inhaltsverzeichnis**
 
 1. [Funktionen] (# Funktionen)
@@ -34,8 +36,8 @@ hash: HELzK1mWNuZtbfH8Aj54qCOpgurEUn5UA1pWTD8tA+I=
 - Unterstützung für Nuki Smartlock und Nuki Opener
 - Unterstützung für Nuki Bridge API und Nuki Web API
 - ~~ Unterstützung für Hash-Token auf Hardware-Bridges (siehe https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)~~
-- Fallback auf Nuki Web API, falls angewendete Aktionen auf Nuki Bridge API fehlschlagen, z. wegen Brückenfehler 503 (siehe https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
-- Wiederholen Sie den Vorgang, falls die auf die Nuki Bridge API angewendeten Aktionen fehlschlagen (wenn die Nuki Web API nicht verwendet wird).
+- Fallback auf die Nuki Web API, falls die auf die Nuki Bridge API angewendeten Aktionen fehlschlagen, z. wegen Brückenfehler 503 (siehe https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
+- Wiederholen Sie den Vorgang, falls die auf die Nuki Bridge-API angewendeten Aktionen fehlschlagen (wenn die Nuki Web-API nicht verwendet wird).
 - Option zur regelmäßigen Synchronisierung anstelle des Bridge-API-Rückrufs (möglicherweise verzögert aufgrund von Hardware Bridge)
 - Aktualisierung aller Zustände der Nuki Web API, wenn ein Rückruf über die Nuki Bridge API eingeht
 - Berechtigte Benutzer für Nuki Smartlock und Nuki Opener abrufen (siehe unten [Channels & States] (# general-information))
@@ -47,7 +49,7 @@ hash: HELzK1mWNuZtbfH8Aj54qCOpgurEUn5UA1pWTD8tA+I=
 
 ## Installation
 ### Nuki Bridge API
-So erhalten Sie Ihr Hardware-Bridge-Token (funktioniert nicht bei Software-Bridges):
+So erhalten Sie Ihr Hardware-Bridge-Token (funktioniert nicht für Software-Bridges):
 
 1. Rufen Sie `` http:// <bridge_ip>: <bridge_port> / auth``` in einem beliebigen Browser in Ihrem Netzwerk auf. Die Brücke schaltet ihre LED ein.
 2. Drücken Sie innerhalb von 30 Sekunden den Knopf der Brücke.
@@ -106,9 +108,9 @@ Als Gerät wird eine Brücke mit dem Namensmuster ```bridge__<name of bridge>```
 | notifications._notificationIndex_ | - | - |
 | notifications._notificationIndex_.settings | - | Benachrichtigungseinstellungen |
 | notifications._notificationIndex_.settings._settingsIndex_ | - | - |
-| notifications._notificationIndex_.settings._settingsIndex_ | authIds | Eine Reihe von Authentifizierungs-IDs zum Filtern von Push-Benachrichtigungen an bestimmte Benutzer oder Tastaturen. Wenn kein Eintrag vorhanden ist, werden Push-Benachrichtigungen für alle Benutzer und Tastaturen ausgelöst |
+| notifications._notificationIndex_.settings._settingsIndex_ | authIds | Eine Reihe von Authentifizierungs-IDs zum Filtern von Push-Benachrichtigungen an bestimmte Benutzer oder Tastaturen. Wenn keine Push-Benachrichtigungen für alle Benutzer und Tastaturen ausgelöst werden |
 | notifications._notificationIndex_.settings._settingsIndex_ | smartlockId | Wenn die Smartlock-ID nicht festgelegt ist, werden alle Smart Locks des Kontos für Push-Benachrichtigungen aktiviert |
-| notifications._notificationIndex_.settings._settingsIndex_ | triggerEvents | Ein Set, auf dem Push-Benachrichtigungen ausgelöst werden sollen: Sperren, Entsperren, Entriegeln, Sperren, Öffnen, Klingeln, Türsensor, Warnungen, Smartlock |
+| notifications._notificationIndex_.settings._settingsIndex_ | triggerEvents | Ein Satz, auf dem Push-Benachrichtigungen ausgelöst werden sollen: Sperren, Entsperren, Entriegeln, Sperren, Öffnen, Klingeln, Türsensor, Warnungen, Smartlock |
 | notifications._notificationIndex_ | sprache | Die Sprache der Push-Nachrichten |
 | notifications._notificationIndex_ | lastActiveDate | Das letzte aktive Datum |
 | notifications._notificationIndex_ | notificationId | Die eindeutige Benachrichtigungs-ID für die Benachrichtigung |
@@ -186,9 +188,9 @@ Als Gerät wird ein Schloss mit dem Namensmuster ```door__<name of door>``` ange
 | config | werbemodus | Der Werbemodus (Batteriesparen) <br> `{"0": 'AUTOMATIC', "1": 'NORMAL', "2": 'SLOW', "3": 'SLOWEST'}` |
 | config | AutoUnlatch | True, wenn die Tür beim Entriegeln entriegelt werden soll (Knopf) |
 | config | buttonEnabled | True, wenn die Schaltfläche auf dem Smartlock aktiviert ist |
-| config | Fähigkeiten Die Funktionen geben an, ob das Öffnen der Tür über App, RTO oder beides möglich ist |
+| config | Fähigkeiten | Die Funktionen geben an, ob das Öffnen der Tür über App, RTO oder beides möglich ist |
 | config | fobAction1 | Die Fob-Aktion, wenn die Taste einmal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
-| config | fobAction2 | Die Schlüsselanhängeraktion, wenn die Taste zweimal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
+| config | fobAction2 | Die Fob-Aktion, wenn die Taste zweimal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
 | config | fobAction3 | Die Fob-Aktion, wenn die Taste dreimal gedrückt wird <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
 | config | fobAction3 | Die Fob-Aktion, wenn die Taste dreimal gedrückt wird <br> &quot;{&quot; 0 &quot;:&quot; NONE &quot;,&quot; 1 &quot;:&quot; UNLOCK &quot;,&quot; 2 &quot;:&quot; LOCK &quot;,&quot; 3 &quot;:&quot; LOCK_N_GO &quot;,&quot; 4 &quot;:&quot; INTELLIGENT &quot;}&quot; |
 | config | fobPaired | True, wenn ein Anhänger mit dem Smartlock | gepaart ist |
@@ -233,7 +235,7 @@ Als Gerät wird ein Schloss mit dem Namensmuster ```door__<name of door>``` ange
 | openerAdvancedConfig | electricStrikeDelay | Verzögerung der Aktivierung des elektrischen Schließers in ms (nach Verriegelung 3 - Aktivierung des elektrischen Schließers -) |
 | openerAdvancedConfig | randomElectricStrikeDelay | Zufällige electricStrikeDelay (Bereich 3000 - 7000 ms), um eine Person im Inneren zu simulieren, die den elektrischen Schlag betätigt |
 | openerAdvancedConfig | electricStrikeDuration | Dauer in ms der Betätigung des elektrischen Schließers (Verriegelung 3 - Betätigung des elektrischen Schließers -) |
-| openerAdvancedConfig | disableRtoAfterRing | Flag zum Deaktivieren von RTO nach dem Klingeln |
+| openerAdvancedConfig | disableRtoAfterRing | Flag, um RTO nach dem Klingeln zu deaktivieren |
 | openerAdvancedConfig | Türklingelunterdrückung Der Klingelunterdrückungsmodus <br> `{"0": 'NEVER', "1": 'ALWAYS', "2": 'RTO', "3": 'CONTINUOUS', "4": 'CONTINUOUS + RTO'}` |
 | openerAdvancedConfig | Türklingelunterdrückung Der Klingelunterdrückungsmodus <br> &quot;{&quot; 0 &quot;:&quot; NIE &quot;,&quot; 1 &quot;:&quot; IMMER &quot;,&quot; 2 &quot;:&quot; RTO &quot;,&quot; 3 &quot;:&quot; KONTINUIERLICH &quot;,&quot; 4 &quot;:&quot; KONTINUIERLICH + RTO &quot;}&quot; |
 | openerAdvancedConfig | TürklingelunterdrückungDauer | Dauer in ms der Klingelunterdrückung (nur in Betriebsart 2 -digital Intercom-) |
@@ -415,7 +417,7 @@ function messenger(content, user = '')
 }
 ```
 
-Sie können diese Funktion in ioBroker.javascript verwenden, um über ```msg('Hello World')``` (an alle Benutzer) oder ```msg('Hello World', 'Zefau')``` (an bestimmte Benutzer) etwas an Telegramm zu senden.
+Sie können diese Funktion innerhalb von ioBroker.javascript verwenden, um über ```msg('Hello World')``` (an alle Benutzer) oder ```msg('Hello World', 'Zefau')``` (an bestimmte Benutzer) etwas an Telegramm zu senden.
 
 Erstellen Sie ein Skript im Ordner "common" von ioBroker.javascript und fügen Sie den folgenden Listener hinzu. WICHTIG: Ersetzen Sie #LOCK STATE ID # (auch # ersetzen) durch den Status, der den Sperrstatus enthält (z. B. ```nuki-extended.0.door__home_door.status.lockState```):
 
@@ -444,7 +446,7 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 });
 ```
 
-HINWEIS: Wenn Sie sowohl das Alexa-Skript als auch das Telegramm-Skript verwenden, dürfen Sie für beide Aktionen nur einen Listener definieren:
+HINWEIS: Wenn Sie sowohl das Alexa-Skript als auch das Telegramm-Skript verwenden, können Sie für beide Aktionen nur einen Listener definieren:
 
 ```javascript
 const DOOR_STATES = {
@@ -482,6 +484,32 @@ Icons von <a href="https://www.flaticon.com/authors/smashicons" title="Smashicon
 ## Changelog
 
 Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
+
+### v2.1.0  (2019-02-03)
+- (Zefau) added (optional) callback IP for Bridge API events (e.g. when ioBroker is run in docker; see [#51](https://github.com/Zefau/ioBroker.nuki-extended/issues/51))
+- (Zefau) added dedicated buttons for each lock / opener action
+- (Zefau) replaced `state.timestamp` with `state.lastDataUpdate` (indicates last data refresh from the APIs) and `state.lastStateUpdate` (indicates the last actual state change)
+
+### v2.0.3  (2019-10-31)
+- (Zefau) reintroduced support for hashed token on hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)
+
+### v2.0.2 (2019-10-31)
+- (Zefau) added support for newly introduced nightmode (see https://nuki.io/de/blog/nuki-news-de/nuki-update-2019-der-winter-naht-sei-vorbereitet/)
+- (Zefau) fixed incorrect behavior when bridges are defined insufficiently (no name, ip or token provided)
+
+### v2.0.1 (2019-10-26)
+- (Zefau) fixed missing `bridge_name`
+
+### v2.0.0 (2019-10-24)
+- (Zefau) added support for new Nuki Opener
+- (Zefau) added support for hashed token on hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)
+- (Zefau) added fallback to Nuki Web API in case applied actions on Nuki Bridge API fail, e.g. due to bridge error 503 (see https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
+- (Zefau) added retry in case applied actions on Nuki Bridge API fail (when Nuki Web API is not used)
+- (Zefau) added option to regularly synchronise instead of using Bridge API callback
+- (Zefau) added refreshing all states of Nuki Web API when callback is received via Nuki Bridge API
+- (Zefau) added states for Nuki Notifications
+- (Zefau) added support for multiple devices (including Nuki Opener) on adapter web interface
+- (Zefau) added option to not retrieve all information (by deselecting `config` or `users`) via Nuki Web API
 
 ## License
 The MIT License (MIT)

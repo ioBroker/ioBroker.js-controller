@@ -299,7 +299,7 @@ Note, that there are two different sonnen API's so if you are missing states, th
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Moritz Heusinger <moritz.heusinger@gmail.com>
+Copyright (c) 2018-2020 Moritz Heusinger <moritz.heusinger@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

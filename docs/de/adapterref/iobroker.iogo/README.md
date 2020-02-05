@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: NFN0VcICDiFOM4D21FDMk+AnCfGecph3oqzmICD75L8=
+hash: aBmdaoGWO2ljGVbWQt5RUSWTCet+PJRr64BvVyuYySg=
 ---
 ![Logo](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -17,17 +17,17 @@ hash: NFN0VcICDiFOM4D21FDMk+AnCfGecph3oqzmICD75L8=
 =================
 
 Dieser Adapter erweitert die SmartHome-App ioGo um zusätzliche Funktionen: https://play.google.com/store/apps/details?id=de.nisnagel.iogo.
-Bitte besuchen Sie iogo.nisnagel.de für weitere Informationen zum Einstieg.
+Bitte besuchen Sie www.iogo.app, um weitere Informationen zu erhalten.
 
 ## Aufbau
 Sie benötigen einen gültigen Lizenzschlüssel, um diesen Adapter zu verwenden.
-Eine Lizenz kann nach Erstellung eines Accounts unter https://iogo.nisnagel.de erworben werden.
+Eine Lizenz kann gekauft werden, nachdem ein Konto unter https://www.iogo.app erstellt wurde.
 
 Bitte geben Sie Ihre Kontoinformationen (E-Mail / Passwort) in die Instanzkonfiguration ein.
 
-## Verwendungszweck
+## Verwendung
 Sie können Nachrichten an alle authentifizierten Benutzer über die Nachrichtenbox ```sendTo('iogo', 'New message')``` oder an bestimmte Benutzer ```sendTo('iogo', {user: 'Username', text: 'Test message'})``` senden.
-Der Benutzer muss zuvor angelegt worden sein (bitte lesen Sie die Anwendungsdokumentation für weitere Details).
+Der Benutzer muss zuvor erstellt worden sein (weitere Details finden Sie in der Anwendungsdokumentation).
 
 Es ist möglich, mehr als einen Empfänger anzugeben (trennen Sie die Benutzernamen einfach durch Komma). Beispiel: Empfänger: "Benutzer1, Benutzer4, Benutzer5"
 
@@ -72,6 +72,10 @@ sendTo('iogo', {
 - *url* Absoluter Pfad zu einem Bild
 
 ## Changelog
+
+### 0.5.x
+* (nisio) Changes for ioGo app version 2.1.0+ (older versions no longer supported)
+* (nisio) Split main.js into several files
 
 ### 0.4.x
 * (nisio) Changes for ioGo app version 2.0.0+ (older versions no longer supported)

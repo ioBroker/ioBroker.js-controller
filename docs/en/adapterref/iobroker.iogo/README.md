@@ -10,12 +10,12 @@
 [![NPM](https://nodei.co/npm/iobroker.iogo.png?downloads=true)](https://nodei.co/npm/iobroker.iogo/)
 
 This adapter is adding extra featrures to the smarthome app ioGo https://play.google.com/store/apps/details?id=de.nisnagel.iogo.
-Please visit iogo.nisnagel.de for more information on how to getting started.
+Please visit www.iogo.app for more information on how to getting started.
 
 
 ## Configuration
 You need an valid licence key to use this adapter.
-A licence can be bought after creating an acoount at https://iogo.nisnagel.de.
+A licence can be bought after creating an acoount at https://www.iogo.app.
 
 Please enter your account information (email/password) in the instance configuration.
 

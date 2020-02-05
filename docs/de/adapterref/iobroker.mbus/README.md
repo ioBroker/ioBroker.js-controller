@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mbus/README.md
 title: ioBroker.mbus
-hash: L2+Sd6JuHqmMmGofP6mrX99ZFTDO+b5dWyzWfWGPXCQ=
+hash: VS5EObBHmPZwVRQJHeSjIUQ10tgEjK44ZiOuBnjOELI=
 ---
 ![Logo](../../../en/adapterref/iobroker.mbus/admin/mbus.png)
 
@@ -20,7 +20,7 @@ hash: L2+Sd6JuHqmMmGofP6mrX99ZFTDO+b5dWyzWfWGPXCQ=
 
 [![Code Climate] (https://codeclimate.com/github/Apollon77/ioBroker.mbus/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.mbus)
 
-** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. **
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
 
 Dieser Adapter für ioBroker verbindet sich über TCP oder seriell mit einem M-Bus-Master, um den Status und die Details der angeschlossenen M-Bus-Geräte anzuzeigen.
 
@@ -32,7 +32,7 @@ IP-Adresse und Port des M-Bus Masters / Gateways bei Verwendung von TCP.
 Serielle Schnittstelle und Baudrate von M-Bus Master / Gateway.
 
 ### Updateintervall
-Intervall in Sekunden zum Aktualisieren der Daten. Die Standardeinstellung (falls leer) ist 3600s (1h). Überlegen Sie, wie die Geräte am M-Bus mit Strom versorgt werden, um ein Entladen der Batterien zu vermeiden. Wenn Sie das Intervall auf 0 setzen, wird das Gerät beim Adapterstart nur einmal gelesen, dann aber nicht mehr automatisch.
+Intervall in Sekunden zum Aktualisieren der Daten. Die Standardeinstellung (falls leer) ist 3600s (1h). Überlegen Sie, wie die Geräte am M-Bus mit Strom versorgt werden, um ein Entladen der Batterien zu verhindern. Wenn Sie das Intervall auf 0 setzen, wird das Gerät beim Adapterstart nur einmal gelesen, dann aber nicht mehr automatisch.
 
 ### Geräte-IDs
 Sie können primäre (1-250) und sekundäre (16 Zeichen lange) M-Bus-IDs verwenden
@@ -43,7 +43,21 @@ In den erstellten Zuständen für jedes Gerät existiert ein Zustand mit dem Nam
 ## Machen
 * verschlüsselte Nutzlastverarbeitung (falls von irgendjemandem benötigt)
 
+## So melden Sie Probleme und Funktionsanforderungen
+Bitte benutzen Sie dazu GitHub.
+
+Stellen Sie den Adapter am besten auf den Debug-Protokollmodus ein (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen schneidet). Wenn Sie es nicht in der GitHub-Ausgabe bereitstellen möchten, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
+
+## Was ist Sentry und was wird den Servern gemeldet?
+Sentry.io ist eine Möglichkeit für Entwickler, sich einen Überblick über Fehler in ihren Anwendungen zu verschaffen. Und genau das ist in diesem Adapter implementiert.
+
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server gesendet, der in Deutschland gehostet wird. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Namen oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+
 ## Changelog
+
+### 2.1.2 (2020-02-04)
+* (Apollon77) optimize adapter stop logic to prevent crashes
+* (Apollon77) Switch Sentry to iobroker own instance hosted in germany
 
 ### 2.1.0 (2019-12-18)
 * add compact mode
@@ -87,7 +101,7 @@ In den erstellten Zuständen für jedes Gerät existiert ein Zustand mit dem Nam
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2018-2020 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

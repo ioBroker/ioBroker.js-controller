@@ -4,20 +4,20 @@ lastChanged: 28.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/linux.md
-hash: +9KkGvDJvUveJ02nsS48om8AmoOjywSgZJz/9MM+TGA=
+hash: VWn341/8OWBUd6wGXmXHdhlKZZgZwxH9dRDZqztXGGA=
 ---
 # IoBroker installation on Linux
 !> These instructions do NOT apply to finished images of the website !!!
 
 The installation routine for ioBroker has been completely revised and some installation problems (which installation user, autostart, etc.) have been fixed.
 
-The installation is now done via a script, which at runtime contains the required installation steps and software packages. recharges. During the installation, a new user “iobroker” is created, as well as an associated home directory (/ home / iobroker). From now on ioBroker runs under the user iobroker and no longer as root.
+The installation is now carried out via a script, which at runtime contains the required installation steps and software packages. recharges. During the installation, a new user “iobroker” is created, as well as an associated home directory (/ home / iobroker). From now on ioBroker runs under the user iobroker and no longer as root.
 
 If it is too dangerous for you to reload a script, you can check the script beforehand under [this link](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh).
 
 This installation guide for ioBroker shows the installation on Linux using the example of the Raspberry PI with the System Stretch. The actual instructions for installing nodejs and ioBroker can be used for almost all other Linux systems.
 
-Due to dependencies on other packages or additional installations, there can always be special features during the installation.
+Due to dependencies on other packages or additional installations, special features can always occur.
 
 If you still have any questions, please post them in the forum.
 
@@ -25,11 +25,11 @@ In the instructions published here, the node.js versions are automatically updat
 
 ## Required hardware
 ### Raspberry Pi 2/3,
-or any other hardware with a common Linux (Debian, Ubuntu, etc.), or a Mac.
+or any other hardware with a common Linux (Debian, Ubuntu, etc.), or even a Mac.
 
-We do not recommend using a Pi 1 as a master. It is simply not powerful enough (500 MB RAM, etc.). Due to the different hardware, these instructions do not fit for a Pi 1 anyway.
+We do not recommend using a Pi 1 as a master. It is simply not powerful enough (500 MB RAM, etc.). Due to the different hardware, these instructions are not suitable for a Pi 1 anyway.
 
-A Pi 2 or Pi 3 also has only max. 1 GB RAM. With 15 adapter instances, this should still be sufficient, but beyond that it can become scarce. Each adapter instance needs about 40 MB (and sometimes 200MB and more) of RAM. Therefore, you should always keep an eye on the RAM utilization before activating additional adapter instances - 1 GB RAM are finite.
+A Pi 2 or Pi 3 also has only max. 1 GB RAM. With 15 adapter instances, this should still be sufficient, but beyond that it can become scarce. Each adapter instance needs about 40 MB (and sometimes 200MB and more) of RAM. Therefore, you should always keep an eye on the RAM usage before activating additional adapter instances - 1 GB RAM are finite.
 
 ### Power adapter
 it is important to have a good power supply. With a weak power supply, stability problems can be expected
@@ -44,12 +44,12 @@ or SSD, USB stick, etc. (depending on the hardware used)
 * Putty: http://www.putty.org/
 
 ## Installation Guide
-### Installation operating system
+### Operating system installation
 * Install the desired basic operating system (Raspian Stretch, Ubuntu, Debian, etc.) - depending on the hardware used.
 
 Help and instructions for the respective versions are available on the corresponding support pages, YouTube, etc.
 
-* ONLY if root access via SSH or sftp is absolutely required, **CAN** also
+* ONLY if root access via SSH or sftp is absolutely necessary, **CAN** also
 
 Root access for SSH can be activated.
 
@@ -76,7 +76,7 @@ Depending on the OS used, the update can also be carried out using ``sudo apt up
 
     ``npm -v``
 
-only if **ALL** these commands have no result (i.e. no longer display the version number) continue with step 4 of this section, otherwise, or if the version does not correspond to the desired one, do the following beforehand:
+only if **ALL** these commands do not produce a result (i.e. no longer display the version number) continue with step 4 of this section, otherwise, or if the version does not correspond to the desired one, do the following beforehand:
 
 3. Uninstall the existing node & node.js versions
 
@@ -102,7 +102,7 @@ After installation, the commands “node -v” and “nodejs -v” must return t
 
     Execute ``sudo ln -s /usr/local/bin/nodejs /usr/bin/node`` on the console.
 
-If the versions are different, please work through the section [Installation of Node.js](#installation-nodejs) again
+If the versions are different, please go through the section [Installation of Node.js](#installation-nodejs) again
 
     As a final check, please check the version of npm using ``npm -v``.
 
@@ -154,9 +154,9 @@ instead must
 
 or the other equivalents are used
 
-Permission issues could also arise.
+Rights issues could also arise.
 
-In this case please use the installation fixer:
+In this case, please use the installation fixer:
 
 ``curl -sL https://iobroker.net/fix.sh | bash -``
 

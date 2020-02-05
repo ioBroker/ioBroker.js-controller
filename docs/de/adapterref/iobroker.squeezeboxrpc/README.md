@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.squeezeboxrpc/README.md
 title: ioBroker Logitech Squeezebox Adapter über JSON / RPC-Protokoll
-hash: ttmFveGL2bh+QZZkVuu7ru1jJog0VRNyXyCBYOeDUdc=
+hash: Zbrq2xmKX6Ee4ZvUBC2TbJY8QZSoISYY2/qUd+SrUTc=
 ---
 ![Logo](../../../en/adapterref/iobroker.squeezeboxrpc/admin/squeezeboxrpc.png)
 
@@ -15,9 +15,6 @@ hash: ttmFveGL2bh+QZZkVuu7ru1jJog0VRNyXyCBYOeDUdc=
 ![GitHub Probleme](https://img.shields.io/github/issues/oweitman/ioBroker.squeezeboxrpc.svg)
 
 # IoBroker Logitech Squeezebox Adapter über JSON / RPC-Protokoll
-<!--
--->
-
 Dies ist ein alternativer Adapter, der das JSON / RPC-Protokoll verwendet, um Daten abzurufen und Befehle an den Logitech Media Server ([LMS](https://de.wikipedia.org/wiki/Logitech_Media_Server)) zu senden, um angeschlossene Geräte wie z
 
 * native [squeezebox] (https://de.wikipedia.org/wiki/Squeezebox),
@@ -102,12 +99,14 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * ~~ Fügen Sie Telnet-Kommunikation hinzu, um Push-Ereignisse vom Server abzurufen und das Polling zu optimieren ~~
 * ~~ Implementieren Sie einen Befehlsstatus, um benutzerdefinierte Befehle (über JSON) für Server und Player zu platzieren ~~
 * ~~ Implementieren Sie weitere Steuerungsfunktionen (wählen Sie die Wiedergabeliste zum Abspielen aus, ffwd, frew, springen Sie zu einer Zeitposition im Song, wiederholen Sie den Song, einen zufälligen Song) ~~
-* ~~ füge die Wiedergabeliste als json array ~~ zu den Wiedergabedaten hinzu
+* ~~ füge die Wiedergabeliste als json array ~~ zu den Spieldaten hinzu
 * ~~ Grafik (Sender-Logo / Playlist-Cover) für Favoriten hinzufügen ~~
 * ~~ Implementiere mehr Ebenen (Unterverzeichnisse) von Favoriten ~~
 * ~~ autodiscover logitech media server ~~
 
 ## Changelog
+### 0.8.30
+ * change from the issue of the adapter checker
 ### 0.8.29
  * optimize handling of player state power and connected
 ### 0.8.28
@@ -190,7 +189,7 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 ## License
 MIT License
 
-Copyright (c) 2019 oweitman
+Copyright (c) 2019-2020 oweitman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

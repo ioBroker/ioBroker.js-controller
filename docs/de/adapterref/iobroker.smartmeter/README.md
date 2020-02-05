@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: VrjGsPhGQxker5i5TvZ1NNQkqfAJ6+e8Z/TfH4pNr0A=
+hash: So9qpZFQvZ+qrgK6SKiTIbeoOPVJAB1aOx2RyMFZBiE=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
@@ -18,17 +18,13 @@ hash: VrjGsPhGQxker5i5TvZ1NNQkqfAJ6+e8Z/TfH4pNr0A=
 # IoBroker.smartmeter
 [![Code Climate] (https://codeclimate.com/github/Apollon77/ioBroker.smartmeter/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.smartmeter)
 
-** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. **
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
 
 Dieser Adapter für ioBroker ermöglicht das Lesen und Parsen von Smartmeter-Protokollen, die der OBIS-Nummernlogik folgen, um deren Daten verfügbar zu machen.
 
 *** Der Adapter benötigt nodejs 4.x um zu funktionieren! ***
 
 *** Für diesen Adapter muss ein Git installiert sein! ***
-
-## Derzeit bekannte Probleme
-* Dieser Adapter verwendet die Serialport Library. Dies kann eine längere Installationszeit bedeuten, wenn es kompiliert werden muss
-* Es scheint, dass die Speicherbehandlung manchmal nicht optimal ist und beim Lesen von Daten zu Abstürzen mit SIGABRT oder SIGSEGV führen kann. iobroker Controller startet den Adapter automatisch neu, daher sind 2-3 Loglines der einzige Effekt :-)
 
 ## Beschreibung der Parameter
 ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54973
@@ -47,7 +43,7 @@ Unterstützte Protokolle:
 * **Lokale Dateien** Liest Daten aus einer lokalen Datei
 
 ### Datenanforderungsintervall
-Wartezeit in Sekunden bis zur nächsten Anforderung oder Unterbrechung des seriellen Empfangs. Der Wert 0 kann direkt nach Beendigung einer Nachricht neu gestartet werden.
+Anzahl der Sekunden, die auf die nächste Anforderung gewartet oder der serielle Empfang angehalten werden soll. Der Wert 0 kann direkt nach Beendigung einer Nachricht neu gestartet werden.
 
 Standardeinstellung: 300 (= 5 Minuten)
 
@@ -59,16 +55,16 @@ Befehl für SignIn-Nachricht, Standard "?" um Pflichtfelder abzufragen, andere W
 Beispiel: Der Wärmezähler 2WR5 verwendet "#", um viel mehr Daten abzufragen (optionale Felder zusammen mit allen Pflichtfeldern)
 
 ### D0: Mode-Overwrite
-Der Adapter versucht, den in den Spezifikationen definierten D0-Protokollmodus zu bestimmen. Es gibt einige Geräte, die nicht den Spezifikationen entsprechen und daher Probleme mit sich bringen. Mit dieser Option können Sie den ermittelten Protokollmodus überschreiben.
+Der Adapter versucht, den in den Spezifikationen definierten D0-Protokollmodus zu bestimmen. Es gibt einige Geräte, die nicht den Spezifikationen entsprechen und daher Probleme bereiten. Mit dieser Option können Sie den ermittelten Protokollmodus überschreiben.
 
 * Mode A: keine Baudratenumschaltung, keine Ack-Message
-* Modus B: Baudratenumschaltung, keine Bestätigungsmeldung
+* Modus B: Baudratenumschaltung, keine Ack-Meldung
 * Modus C: Baudratenumschaltung und Ack-Message erforderlich
 * Modus D: Keine Baudratenumschaltung, Baudrate immer 2400
-* Modus E: Baudratenumschaltung und Ack-Message erforderlich, Benutzerdefinierte Protokolle, werden derzeit nicht unterstützt !! Kontaktieren Sie mich, wenn Sie einen solchen Smartmeter haben
+* Modus E: Baudratenumschaltung und Ack-Message erforderlich, Benutzerdefinierte Protokolle, werden derzeit nicht unterstützt !! Kontaktieren Sie mich, wenn Sie ein solches Smartmeter haben
 
 ### D0: Baudrate-Umschaltung-Überschreiben
-Der Adapter versucht, die Baudrate für die Datennachrichten gemäß den Protokollspezifikationen zu ermitteln. Aber wie im Modus liefern einige Smartmeter hier falsche Daten. SO können Sie dies verwenden, um die Baudrate für die Datennachricht nach Bedarf zu überschreiben. Lassen Sie dieses Feld leer, um die vom Smart Meter festgelegte Baudratenumschaltung zu verwenden.
+Der Adapter versucht, die Baudrate für die Datennachrichten gemäß den Protokollspezifikationen zu ermitteln. Aber wie im Modus liefern einige Smartmeter hier falsche Daten. SO können Sie diese verwenden, um die Baudrate für die Datennachricht nach Bedarf zu überschreiben. Lassen Sie dieses Feld leer, um die vom Smart Meter festgelegte Baudratenumschaltung zu verwenden.
 
 ## Adapter wird getestet mit ...
 ... mindestens:
@@ -85,21 +81,52 @@ Der Adapter versucht, die Baudrate für die Datennachrichten gemäß den Protoko
 
 Bitte senden Sie mir Informationen zu Geräten, auf denen Sie die Bibliothek erfolgreich verwendet haben, und ich werde sie hier hinzufügen.
 
-## Machen
-* Aktualisieren Sie die Sml-Unterstützung auf 1.0.4 (falls erforderlich)
-* Dokumente für die Webseite
+## Spezielle Smartmeter und Probleme
+### DZG DVS74
+Es scheint manchmal ein Fehler in der SML-Firmware zu sein und die Werte sind in der SML-Nachricht falsch codiert, aber die Nachricht selbst ist gültig. Die Lösung besteht darin, den Wert mit einem Javascript nachzubearbeiten. Siehe https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736
+
+## So melden Sie Probleme und Funktionsanforderungen
+Bitte benutzen Sie dazu GitHub.
+
+Stellen Sie den Adapter am besten auf den Debug-Protokollmodus ein (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen schneidet). Wenn Sie es nicht in der GitHub-Ausgabe bereitstellen möchten, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
+
+## Was ist Sentry und was wird den Servern gemeldet?
+Sentry.io ist eine Möglichkeit für Entwickler, sich einen Überblick über Fehler in ihren Anwendungen zu verschaffen. Und genau das ist in diesem Adapter implementiert.
+
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server gesendet, der in Deutschland gehostet wird. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Namen oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
 
-### 3.0.0 (2019-11-2x)
-* BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
-* support compact mode
-* update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
-* Use "/dev/serial/by-id" paths on linux if available; add port selection to Admin
-* Add Sentry for error reporting
+### 3.0.9 (2020-02-04)
+* (Apollon77) make sure HTTP based smartmeters are also polled frequently when responses are invalid
+* (Apollon77) other optimizations
+* (Apollon77) Switch Sentry to iobroker own instance hosted in germany
+
+### 3.0.8 (2019-12-20)
+* (Apollon77) errors prevented when stopping to process data
+
+### 3.0.7 (2019-12-18)
+* (Apollon77) errors prevented when stopping to process data
+
+### 3.0.6 (2019-12-07)
+* (Apollon77) serial port configuration further optimized
+* (Apollon77) update smartmeter-obis lib to fix some edge case errors and serial close handling
+
+### 3.0.3 (2019-11-30)
+* (Apollon77) serial port configuration further optimized
+
+### 3.0.2 (2019-11-29)
+* (Apollon77) Fix use of "/dev/serial/by-id" paths on linux if available
+
+### 3.0.1 (2019-11-27)
+* (Apollon77) BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
+* (Apollon77) support compact mode
+* (Apollon77) update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
+* (Apollon77) Use "/dev/serial/by-id" paths on linux if available; add port selection to Admin
+* (Apollon77) Add Sentry for error reporting
 
 ### 2.0.0 (2019-03-22)
-* BREAKING CHANGE: State names changed because * no longer supported. Is replaced by __ now because of possible collisions in state names with only one _
+* (Apollon77) BREAKING CHANGE: State names changed because * no longer supported. Is replaced by __ now because of possible collisions in state names with only one _
 
 ### 1.2.2 (2018-11-11)
 * Update smartmeter library, fix HTTP-JSON-Transport
@@ -178,7 +205,7 @@ Bitte senden Sie mir Informationen zu Geräten, auf denen Sie die Bibliothek erf
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2017-2020 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

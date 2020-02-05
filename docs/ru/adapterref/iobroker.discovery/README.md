@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
 title: ioBroker Откройте для себя адаптер
-hash: sYWW7Okfb1qtqnDttbDHvtdt2KPsQchTkFPPggp6/i4=
+hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
 ---
 ![логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -21,6 +21,7 @@ hash: sYWW7Okfb1qtqnDttbDHvtdt2KPsQchTkFPPggp6/i4=
 
 ## На самом деле поддерживается
 ### Обнаружено автоматически
+- Умный Дом Bosch
 - Bose Soundtouch
 - Broadlink
 - Chromecast
@@ -111,6 +112,10 @@ hash: sYWW7Okfb1qtqnDttbDHvtdt2KPsQchTkFPPggp6/i4=
 - xs1 (франкжук)
 
 ## Changelog
+### 2.1.0 (2020-01-21)
+* (foxriver76) no longer use adapter.objects
+* __js-controller > 2.0.0 required__
+
 ### 2.0.0 (2019-05-15)
 * (thewhobox) Code refactoring
 * (thewhobox) add emby detection

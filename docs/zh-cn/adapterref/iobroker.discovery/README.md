@@ -3,114 +3,119 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.discovery/README.md
 title: ioBroker发现适配器
-hash: sYWW7Okfb1qtqnDttbDHvtdt2KPsQchTkFPPggp6/i4=
+hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
 ---
 ![商标](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
 ![安装数量](http://iobroker.live/badges/discovery-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.discovery.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.discovery.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.discovery.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.discovery.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.discovery.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.discovery.png?downloads=true)
 
-#ioBroker发现适配器
+＃ioBroker发现适配器
 **使用所有已知方法检测设备。**
 
-这是特殊的适配器，它试图找到可以从主机访问的所有可能的设备。
-刚才它可以通过ping，UPnP（串行计划）检测到。
+这是特殊的适配器，它试图查找主机可以访问的所有可能的设备。
+到目前为止，它可以通过ping，UPnP（串行计划）进行检测。
 
-##实际上支持
+##实际支持
 ###自动发现
- -  Bose Soundtouch
- -  Broadlink
- -  Chromecast
- - 大金气候控制
- -  deConz
- - 天龙/马兰士
- -  DoorBird
- -  ebus
- -  ekey
- -  energymanager（E.ON / Solarwatt）
- - 爱普生Stylus PX830
- -  Fakeroku
- -  FHEM
- -  FireTV
- - 弗罗尼乌斯
- -  G-Homa插头
- - 和谐
- - 家庭助理
- -  Homematic CCU（hm-rpc，hm-rega）
- -  Homepilot
- - 飞利浦HUE
- -  Plex
- -  InfluxDB
- -  KLF-200
- -  KNX
- -  Landroid
- -  LGTV
- -  Lightify
- - 洛克森
- -  Lupusec
- -  MAX！立方体
- -  MegaD
- -  Miele
- -  Mi Home Smarthome
- -  MiLight桥（v6）
- -  Musiccast
- -  Mysensors USB / Serial（9600,38400,57600,115200）
- - 坚果
- -  OpenHAB
- - 平
- -  Proxmox
- -  RFLink（串行57600波特）
- - 三星电视
- -  Sonnen
- - 索诺斯
- -  Stiebel-Eltron / Tecalor ISG（加）
- -  SQL（MySQL，MSSQL，PostgreSQL）
- -  Squeezebox
- -  stiebel-isg
- -  TR-064
- - Trådfri
- -  UPnP
- -  Wifilight
- - 雅马哈
- -  Yeelight
- -  Z-wave USB（使用Aeon Labs测试）
+-博世智能家居
+-Bose Soundtouch
+-Broadlink
+-Chromecast
+-大金气候控制
+-deConz
+-天龙/马兰士
+-门鸟
+-巴士
+-钥匙
+-能源经理（E.ON / Solarwatt）
+-爱普生Stylus PX830
+-Fakeroku
+-FHEM
+-消防电视
+-Fronius
+-G-Homa插头
+-和谐
+-家庭助理
+-Homematic CCU（hm-rpc，hm-rega）
+-飞行员
+-飞利浦HUE
+-Plex
+-InfluxDB
+-KLF-200
+-KNX
+-Landroid
+-LGTV
+-轻巧
+-Loxone
+-狼疮
+-MAX！立方体
+-MegaD
+-Miele
+-Mi Home智能家居
+-MiLight桥（v6）
+-音乐广播
+-Mysensors USB /串行（9600、38400、57600、115200）
+-坚果
+-OpenHAB
+-平
+-Proxmox
+-RFLink（序列号57600baud）
+-三星电视
+-索南
+-索诺斯
+-Stiebel-Eltron / Tecalor ISG（加号）
+-SQL（MySQL，MSSQL，PostgreSQL）
+-挤压盒
+-施蒂贝尔
+-TR-064
+-Trådfri
+-UPnP
+-Wifilight
+-雅马哈
+-Yeelight
+-Z-wave USB（已通过Aeon Labs测试）
 
 ###作为附加适配器提供
 - 云
- - 历史记录（如果没有找到SQL或InfluxDB）
- -  flot（在历史适配器存在时提供）
- -  JavaScript
- - 信息
- - 移动
- - 可见
- - 网络
+-历史记录（如果未找到SQL或InfluxDB）
+-flot（存在历史记录适配器时提供）
+-JavaScript
+-信息
+-手机
+-可见
+-网页
 
 ＃＃ 去做
- -  artnet？ （Bluefox）
- -  B-Control-Em？ （Bluefox）
- -  cul / maxcul（Bluefox）
- -  Foobar200（Instalator）
- -  fritzbox（ruhr70）
- -  km200（frankjoke）
- -  kodi（instalator）
- -  megaesp（ausHaus）
- -  modbus（Bluefox）
- -  mpd（instalator）
- -  mqtt / mqtt-client（Bluefox）
- -  onkyo（Bluefox）
- -  owfs（Bluefox）
- -  rpi2（如果ioBroker在Raspberry上运行）
- -  rwe-smarthome（PArns）
- -  s7（Bluefox）
- - 智能电表（Apollon77）
- -  unifi（jens-maus）
- - 狼（微笑杰克）
- -  xs1（frankjoke）
+-artnet？ （蓝狐）
+-B-Control-Em？ （蓝狐）
+-cul / maxcul（Bluefox）
+-Foobar200（安装程序）
+-fritzbox（ruhr70）
+-km200（弗兰克·乔克）
+-Kodi（安装员）
+-megaesp（ausHaus）
+-modbus（蓝狐）
+-mpd（安装程序）
+-mqtt / mqtt-client（Bluefox）
+-onkyo（蓝狐）
+-owfs（Bluefox）
+-rpi2（如果ioBroker在Raspberry上运行）
+-rwe-smarthome（PArns）
+-s7（Bluefox）
+-智能电表（Apollon77）
+-统一（jens-maus）
+-狼（微笑杰克）
+-xs1（frankjoke）
 
 ## Changelog
+### 2.1.0 (2020-01-21)
+* (foxriver76) no longer use adapter.objects
+* __js-controller > 2.0.0 required__
+
 ### 2.0.0 (2019-05-15)
 * (thewhobox) Code refactoring
 * (thewhobox) add emby detection

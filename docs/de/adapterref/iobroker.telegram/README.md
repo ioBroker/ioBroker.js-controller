@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.telegram/README.md
 title: ioBroker-Telegrammadapter
-hash: 3gUX37ZjaRU+kloaRUSblN655foTMhHsBRYtYr6RC54=
+hash: mWTsYb+tyqOBzPZDlS/FBuCmBw3qVJJKXqMOl/SMoRI=
 ---
 ![Logo](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
 
@@ -41,7 +41,7 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 });
 ```
 
-Wenn Sie das obige Beispiel verwenden, müssen Sie "Benutzername" entweder durch den Vornamen oder den öffentlichen Telegramm-Benutzernamen des Benutzers ersetzen, an den Sie die Nachricht senden möchten. (Hängt davon ab, ob die Einstellung "Benutzername nicht Vorname speichern" in den Adaptereinstellungen aktiviert ist oder nicht.) Wenn die Option aktiviert ist und der Benutzer keinen öffentlichen Benutzernamen in seinem Telegrammkonto angegeben hat, verwendet der Adapter weiterhin den Vornamen der Benutzer. Denken Sie daran, dass, wenn der Benutzer später (nach der Authentifizierung bei Ihrem Bot) einen öffentlichen Benutzernamen festlegt, der gespeicherte Vorname durch den Benutzernamen ersetzt wird, wenn der Benutzer das nächste Mal eine Nachricht an den Bot sendet.
+Wenn Sie das obige Beispiel verwenden, müssen Sie "Benutzername" entweder durch den Vornamen oder den öffentlichen Telegramm-Benutzernamen des Benutzers ersetzen, an den Sie die Nachricht senden möchten. (Hängt davon ab, ob die Einstellung "Benutzername nicht Vorname speichern" in den Adaptereinstellungen aktiviert ist oder nicht.) Wenn die Option aktiviert ist und der Benutzer keinen öffentlichen Benutzernamen in seinem Telegrammkonto angegeben hat, verwendet der Adapter weiterhin den Vornamen der Benutzer. Beachten Sie, dass der gespeicherte Vorname beim nächsten Senden einer Nachricht an den Bot durch den Benutzernamen ersetzt wird, wenn der Benutzer später (nach der Authentifizierung bei Ihrem Bot) einen öffentlichen Benutzernamen festlegt.
 
 Es ist möglich, mehr als einen Empfänger anzugeben (trennen Sie die Benutzernamen einfach durch Komma).
 Beispiel: Empfänger: "Benutzer1, Benutzer4, Benutzer5"
@@ -320,7 +320,7 @@ Sie können mehr lesen [Hier](https://github.com/yagop/node-telegram-bot-api/blo
 
 ## Spezielle Befehle
 ### / state stateName - Statuswert lesen
-Sie können den Wert von state abfragen, wenn Sie jetzt die ID:
+Sie können den Wert von state abfragen, wenn Sie jetzt die ID eingeben:
 
 ```
 /state system.adapter.admin.0.memHeapTotal
@@ -350,14 +350,154 @@ Folgende Einstellungen müssen für den Servermodus vorgenommen werden:
 - Öffentliches Zertifikat - Erforderlich, wenn **let's encrypt** deaktiviert ist.
 - Privater Schlüssel - Erforderlich, wenn die Verschlüsselung deaktiviert ist.
 - Kettenzertifikat (optional)
-- Lassen Sie uns Optionen verschlüsseln - Es ist sehr einfach, Zertifikate einzurichten. Bitte lesen Sie [hier] (https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates) darüber.
+- Lassen Sie uns Optionen verschlüsseln. - Es ist sehr einfach, Zertifikate einzurichten. Bitte lesen Sie [hier] (https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates) darüber.
+
+## Anrufe per Telegramm
+Dank [callmebot](https://www.callmebot.com/) api können Sie Ihr Telegrammkonto anrufen und es wird ein Teil des Textes über die TTS-Engine gelesen.
+
+Rufen Sie dazu über den Javascript-Adapter einfach Folgendes auf:
+
+```
+sendTo('telegram.0', 'call', 'Some text');
+```
+
+oder
+
+```
+sendTo('telegram.0', 'call', {
+    text: 'Some text',
+    user: '@Username', // optional and the call will be done to the first user in telegram.0.communicate.users.
+    language: 'de-DE-Standard-A' // optional and the system language will be taken
+});
+```
+
+oder
+
+```
+sendTo('telegram.0', 'call', {
+    text: 'Some text',
+    users: ['@Username1', '@Username2'] // Array of `users'.
+});
+```
+
+oder
+
+```
+sendTo('telegram.0', 'call', {
+    file: 'url of mp3 file that is accessible from internet',
+    users: ['@Username1', '@Username2'] // Array of `users'.
+});
+```
+
+Mögliche Werte für Sprache:
+
+- `ar-XA-Standard-A` - Arabisch (Frauenstimme)
+- `ar-XA-Standard-B` - Arabisch (Männerstimme)
+- `ar-XA-Standard-C` - Arabisch (Männer, 2 Stimmen)
+- `cs-CZ-Standard-A` - Tschechisch (Tschechische Republik) (Frauenstimme)
+- `da-DK-Standard-A` - Dänisch (Dänemark) (Frauenstimme)
+- `nl-NL-Standard-A` - Niederländisch (Niederlande) (Frauenstimme - wird verwendet, wenn die Systemsprache NL ist und keine Sprache angegeben wurde)
+- `nl-NL-Standard-B` - Niederländisch (Niederlande) (Männerstimme)
+- `nl-NL-Standard-C` - Niederländisch (Niederlande) (Männlich 2 Stimme)
+- `nl-NL-Standard-D` - Niederländisch (Niederlande) (Weiblich, 2-stimmig)
+- `nl-NL-Standard-E` - Niederländisch (Niederlande) (3-stimmig weiblich)
+- `en-AU-Standard-A` - Englisch (Australien) (Frauenstimme)
+- `en-AU-Standard-B` - Englisch (Australien) (Männerstimme)
+- `en-AU-Standard-C` - Englisch (Australien) (2-stimmig)
+- `en-AU-Standard-D` - Englisch (Australien) (Männlich 2 Stimme)
+- `en-IN-Standard-A` - Englisch (Indien) (Frauenstimme)
+- `en-IN-Standard-B` - Englisch (Indien) (Männerstimme)
+- `en-IN-Standard-C` - Englisch (Indien) (2 Männer)
+- `en-GB-Standard-A` - Englisch (UK) (Frauenstimme - wird verwendet, wenn die Systemsprache EN ist und keine Sprache angegeben wurde)
+- `en-GB-Standard-B` - Englisch (UK) (Männerstimme)
+- `en-GB-Standard-C` - Englisch (UK) (2-stimmig)
+- `en-GB-Standard-D` - Englisch (UK) (Männlich 2 Stimme)
+- `en-US-Standard-B` - Englisch (US) (Männerstimme)
+- `en-US-Standard-C` - Englisch (US) (Frauenstimme)
+- `en-US-Standard-D` - Englisch (USA) (Männer, 2 Stimmen)
+- `en-US-Standard-E` - Englisch (USA) (2-stimmig)
+- `fil-PH-Standard-A` - Philippinisch (Philippinen) (Frauenstimme)
+- `fi-FI-Standard-A` - Finnisch (Finnland) (Frauenstimme)
+- `fr-CA-Standard-A` - Französisch (Kanada) (Frauenstimme)
+- `fr-CA-Standard-B` - Französisch (Kanada) (Männerstimme)
+- `fr-CA-Standard-C` - Französisch (Kanada) (2 Stimmen)
+- `fr-CA-Standard-D` - Französisch (Kanada) (Männlich 2 Stimme)
+- `fr-FR-Standard-A` - Französisch (Frankreich) (Frauenstimme - wird verwendet, wenn die Systemsprache FR ist und keine Sprache angegeben wurde)
+- `fr-FR-Standard-B` - Französisch (Frankreich) (Männerstimme)
+- `fr-FR-Standard-C` - Französisch (Frankreich) (2-stimmig)
+- `fr-FR-Standard-D` - Französisch (Frankreich) (Männlich 2 Stimme)
+- `de-DE-Standard-A` - Deutsch (Deutschland) (Frauenstimme - wird verwendet, wenn die Systemsprache DE ist und keine Sprache angegeben wurde)
+- `de-DE-Standard-B` - Deutsch (Deutschland) (Männerstimme)
+- `el-GR-Standard-A` - Griechisch (Griechenland) (Frauenstimme)
+- `hi-IN-Standard-A` - Hindi (Indien) (Frauenstimme)
+- `hi-IN-Standard-B` - Hindi (Indien) (Männerstimme)
+- `hi-IN-Standard-C` - Hindi (Indien) (Männlich 2 Stimme)
+- `hu-HU-Standard-A` - Ungarisch (Ungarn) (Frauenstimme)
+- `id-ID-Standard-A` - Indonesisch (Indonesien) (Frauenstimme)
+- `id-ID-Standard-B` - Indonesisch (Indonesien) (Männerstimme)
+- `id-ID-Standard-C` - Indonesisch (Indonesien) (Männlich 2 Stimme)
+- `it-IT-Standard-A` - Italienisch (Italien) (Frauenstimme - wird verwendet, wenn die Systemsprache IT ist und keine Sprache angegeben wurde)
+- `it-IT-Standard-B` - Italienisch (Italien) (Weiblich, 2 Stimmen)
+- `it-IT-Standard-C` - Italienisch (Italien) (Männerstimme)
+- `it-IT-Standard-D` - Italienisch (Italien) (Männlich 2 Stimme)
+- `ja-JP-Standard-A` - Japanisch (Japan) (Frauenstimme)
+- `ja-JP-Standard-B` - Japanisch (Japan) (Weiblich, 2 Stimmen)
+- `ja-JP-Standard-C` - Japanisch (Japan) (Männerstimme)
+- `ja-JP-Standard-D` - Japanisch (Japan) (männlich 2 stimme)
+- `ko-KR-Standard-A` - Koreanisch (Südkorea) (Frauenstimme)
+- `ko-KR-Standard-B` - Koreanisch (Südkorea) (2 Stimmen)
+- `ko-KR-Standard-C` - Koreanisch (Südkorea) (Männerstimme)
+- `ko-KR-Standard-D` - Koreanisch (Südkorea) (Männlich, 2 Stimmen)
+- `cmn-CN-Standard-A` - Chinesisch (Frauenstimme)
+- `cmn-CN-Standard-B` - Chinesisch (Männerstimme)
+- `cmn-CN-Standard-C` - Chinesisch (Männer, 2 Stimmen)
+- `nb-NO-Standard-A` - Norwegisch (Norwegen) (Frauenstimme)
+- `nb-NO-Standard-B` - Norwegisch (Norwegen) (Männerstimme)
+- `nb-NO-Standard-C` - Norwegisch (Norwegen) (Weiblich, 2 Stimmen)
+- `nb-NO-Standard-D` - Norwegisch (Norwegen) (Männlich 2 Stimme)
+- `nb-no-Standard-E` - Norwegisch (Norwegen) (3-stimmig)
+- `pl-PL-Standard-A` - Polnisch (Polen) (Frauenstimme - wird verwendet, wenn die Systemsprache PL ist und keine Sprache angegeben wurde)
+- `pl-PL-Standard-B` - Polnisch (Polen) (Männerstimme)
+- `pl-PL-Standard-C` - Polnisch (Polen) (männlich 2 Stimme)
+- `pl-PL-Standard-D` - Polnisch (Polen) (2-stimmig)
+- `pl-PL-Standard-E` - Polnisch (Polen) (3-stimmig weiblich)
+- `pt-BR-Standard-A` - Portugiesisch (Brasilien) (Frauenstimme - wird verwendet, wenn die Systemsprache PT ist und keine Sprache angegeben wurde)
+- `pt-PT-Standard-A` - Portugiesisch (Portugal) (Frauenstimme)
+- `pt-PT-Standard-B` - Portugiesisch (Portugal) (Männerstimme)
+- `pt-PT-Standard-C` - Portugiesisch (Portugal) (Männlich, 2 Stimmen)
+- `pt-PT-Standard-D` - Portugiesisch (Portugal) (Weiblich, 2 Stimmen)
+- `ru-RU-Standard-A` - Russisch (Russland) (Frauenstimme - wird verwendet, wenn die Systemsprache RU ist und keine Sprache angegeben wurde)
+- `ru-RU-Standard-B` - Russisch (Russland) (Männerstimme)
+- `ru-RU-Standard-C` - Russisch (Russland) (2 Stimmen)
+- `ru-RU-Standard-D` - Russisch (Russland) (Männlich, 2 Stimmen)
+- `sk-SK-Standard-A` - Slowakisch (Slowakei) (Frauenstimme)
+- `es-ES-Standard-A` - Spanisch (Spanien) (Frauenstimme - wird verwendet, wenn die Systemsprache ES ist und keine Sprache angegeben wurde)
+- `sv-SE-Standard-A` - Schwedisch (Schweden) (Frauenstimme)
+- `tr-TR-Standard-A` - Türkisch (Türkei) (Frauenstimme)
+- `tr-TR-Standard-B` - Türkisch (Türkei) (Männerstimme)
+- `tr-TR-Standard-C` - Türkisch (Türkei) (2 Stimmen)
+- `tr-TR-Standard-D` - Türkisch (Türkei) (3 Stimmen)
+- `tr-TR-Standard-E` - Türkisch (Türkei) (Männerstimme)
+- `uk-UA-Standard-A` - Ukrainisch (Ukraine) (Frauenstimme)
+- `vi-VN-Standard-A` - Vietnamesisch (Vietnam) (Frauenstimme)
+- `vi-VN-Standard-B` - Vietnamesisch (Vietnam) (Männerstimme)
+- `vi-VN-Standard-C` - Vietnamesisch (Vietnam) (Weiblich, 2 Stimmen)
+- `vi-VN-Standard-D` - Vietnamesisch (Vietnam) (Männlich, 2 Stimmen)
 
 MACHEN:
 
 - Veranstaltungsort
-- Dialoge
 
 ## Changelog
+### 1.5.0 (2020-02-03)
+* (bluefox) Added voice calls 
+
+### 1.4.7 (2019-12-27)
+* (Apollon77) Make compatible with js-controller 2.3
+
+### 1.4.6 (2019-12-09)
+* (bluefox) Allowed writeOnly states in telegram
+
 ### 1.4.4 (2019-11-27)
 * (bluefox) New sendTo message "ask" was added (see [Question](#question) )
 
@@ -527,7 +667,7 @@ MACHEN:
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2016-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

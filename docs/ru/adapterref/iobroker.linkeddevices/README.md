@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.linkeddevices/README.md
 title: без заголовка
-hash: TQxFlCGAWt0gLcVkz0a2/nr/4wSvxPg7TRaP6ESbzb8=
+hash: fPVx5qQBuRw1am/e6Mdqgr/Zt7fBt9lI6Dy+/84luOI=
 ---
 ![Количество установок](http://iobroker.live/badges/linkeddevices-installed.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.linkeddevices.svg)
@@ -18,7 +18,7 @@ hash: TQxFlCGAWt0gLcVkz0a2/nr/4wSvxPg7TRaP6ESbzb8=
 ## Адаптер связанных устройств для ioBroker
 [![PayPal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-Связанные устройства создают связанные объекты (точки данных) устройств с определенной структурой. Это позволяет создать структуру в ioBroker, где все объекты централизованы, например, для использования в представлениях или сценариях. Это дает, например, преимущество в том, что при аппаратном обмене должны быть воссозданы только связанные объекты, и все виды представлений и сценарии снова будут работать.
+Связанные устройства создают связанные объекты (точки данных) устройств с определенной структурой. Это позволяет создать структуру в ioBroker, где все объекты централизованы, например, для использования в представлениях или сценариях. Это дает, например, преимущество, заключающееся в том, что при аппаратном обмене должны быть воссозданы только связанные объекты, и все виды представлений и сценарии снова работают.
 
 С помощью адаптера вы также можете конвертировать объекты или преобразовывать их в другие типы (еще не полностью реализованные).
 

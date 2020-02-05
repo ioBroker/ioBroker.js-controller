@@ -345,11 +345,144 @@ Following settings must be provided for server mode:
 - Chain certificate (optional)
 - Let's encrypt options - It is very easy to setup **let's encrypt** certificates. Please read [here](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates) about it.
 
+## Calls via telegram
+Thanks to [callmebot](https://www.callmebot.com/) api, you can make a call to your telegram account and some text will be read via TTS engine.
+
+To do that from javascript adapter just call:
+
+```
+sendTo('telegram.0', 'call', 'Some text');
+```
+
+or 
+
+```
+sendTo('telegram.0', 'call', {
+    text: 'Some text',
+    user: '@Username', // optional and the call will be done to the first user in telegram.0.communicate.users.
+    language: 'de-DE-Standard-A' // optional and the system language will be taken 
+});
+```
+
+or 
+
+```
+sendTo('telegram.0', 'call', {
+    text: 'Some text',
+    users: ['@Username1', '@Username2'] // Array of `users'.
+});
+```
+
+or 
+
+```
+sendTo('telegram.0', 'call', {
+    file: 'url of mp3 file that is accessible from internet',
+    users: ['@Username1', '@Username2'] // Array of `users'.
+});
+```
+
+Possible values for language:
+- `ar-XA-Standard-A` - Arabic (Female voice)
+- `ar-XA-Standard-B` - Arabic (Male voice)
+- `ar-XA-Standard-C` - Arabic (Male 2 voice)
+- `cs-CZ-Standard-A` - Czech (Czech Republic) (Female voice)
+- `da-DK-Standard-A` - Danish (Denmark) (Female voice)
+- `nl-NL-Standard-A` - Dutch (Netherlands) (Female voice - will be used if system language is NL and no language was provided)
+- `nl-NL-Standard-B` - Dutch (Netherlands) (Male voice)
+- `nl-NL-Standard-C` - Dutch (Netherlands) (Male 2 voice)
+- `nl-NL-Standard-D` - Dutch (Netherlands) (Female 2 voice)
+- `nl-NL-Standard-E` - Dutch (Netherlands) (Female 3 voice)
+- `en-AU-Standard-A` - English (Australia) (Female voice)
+- `en-AU-Standard-B` - English (Australia) (Male voice)
+- `en-AU-Standard-C` - English (Australia) (Female 2 voice)
+- `en-AU-Standard-D` - English (Australia) (Male 2 voice)
+- `en-IN-Standard-A` - English (India) (Female voice)
+- `en-IN-Standard-B` - English (India) (Male voice)
+- `en-IN-Standard-C` - English (India) (Male 2 voice)
+- `en-GB-Standard-A` - English (UK) (Female voice - will be used if system language is EN and no language was provided)
+- `en-GB-Standard-B` - English (UK) (Male voice)
+- `en-GB-Standard-C` - English (UK) (Female 2 voice)
+- `en-GB-Standard-D` - English (UK) (Male 2 voice)
+- `en-US-Standard-B` - English (US) (Male voice)
+- `en-US-Standard-C` - English (US) (Female voice)
+- `en-US-Standard-D` - English (US) (Male 2 voice)
+- `en-US-Standard-E` - English (US) (Female 2 voice)
+- `fil-PH-Standard-A` - Filipino (Philippines) (Female voice)
+- `fi-FI-Standard-A` - Finnish (Finland) (Female voice)
+- `fr-CA-Standard-A` - French (Canada) (Female voice)
+- `fr-CA-Standard-B` - French (Canada) (Male voice)
+- `fr-CA-Standard-C` - French (Canada) (Female 2 voice)
+- `fr-CA-Standard-D` - French (Canada) (Male 2 voice)
+- `fr-FR-Standard-A` - French (France) (Female voice - will be used if system language is FR and no language was provided)
+- `fr-FR-Standard-B` - French (France) (Male voice)
+- `fr-FR-Standard-C` - French (France) (Female 2 voice)
+- `fr-FR-Standard-D` - French (France) (Male 2 voice)
+- `de-DE-Standard-A` - German (Germany) (Female voice - will be used if system language is DE and no language was provided)
+- `de-DE-Standard-B` - German (Germany) (Male voice)
+- `el-GR-Standard-A` - Greek (Greece) (Female voice)
+- `hi-IN-Standard-A` - Hindi (India) (Female voice)
+- `hi-IN-Standard-B` - Hindi (India) (Male voice)
+- `hi-IN-Standard-C` - Hindi (India) (Male 2 voice)
+- `hu-HU-Standard-A` - Hungarian (Hungary) (Female voice)
+- `id-ID-Standard-A` - Indonesian (Indonesia) (Female voice)
+- `id-ID-Standard-B` - Indonesian (Indonesia) (Male voice)
+- `id-ID-Standard-C` - Indonesian (Indonesia) (Male 2 voice)
+- `it-IT-Standard-A` - Italian (Italy) (Female voice - will be used if system language is IT and no language was provided)
+- `it-IT-Standard-B` - Italian (Italy) (Female 2 voice)
+- `it-IT-Standard-C` - Italian (Italy) (Male voice)
+- `it-IT-Standard-D` - Italian (Italy) (Male 2 voice)
+- `ja-JP-Standard-A` - Japanese (Japan) (Female voice)
+- `ja-JP-Standard-B` - Japanese (Japan) (Female 2 voice)
+- `ja-JP-Standard-C` - Japanese (Japan) (Male voice)
+- `ja-JP-Standard-D` - Japanese (Japan) (Male 2 voice)
+- `ko-KR-Standard-A` - Korean (South Korea) (Female voice)
+- `ko-KR-Standard-B` - Korean (South Korea) (Female 2 voice)
+- `ko-KR-Standard-C` - Korean (South Korea) (Male voice)
+- `ko-KR-Standard-D` - Korean (South Korea) (Male 2 voice)
+- `cmn-CN-Standard-A` - Mandarin Chinese (Female voice)
+- `cmn-CN-Standard-B` - Mandarin Chinese (Male voice)
+- `cmn-CN-Standard-C` - Mandarin Chinese (Male 2 voice)
+- `nb-NO-Standard-A` - Norwegian (Norway) (Female voice)
+- `nb-NO-Standard-B` - Norwegian (Norway) (Male voice)
+- `nb-NO-Standard-C` - Norwegian (Norway) (Female 2 voice)
+- `nb-NO-Standard-D` - Norwegian (Norway) (Male 2 voice)
+- `nb-no-Standard-E` - Norwegian (Norway) (Female 3 voice)
+- `pl-PL-Standard-A` - Polish (Poland) (Female voice - will be used if system language is PL and no language was provided)
+- `pl-PL-Standard-B` - Polish (Poland) (Male voice)
+- `pl-PL-Standard-C` - Polish (Poland) (Male 2 voice)
+- `pl-PL-Standard-D` - Polish (Poland) (Female 2 voice)
+- `pl-PL-Standard-E` - Polish (Poland) (Female 3 voice)
+- `pt-BR-Standard-A` - Portuguese (Brazil) (Female voice - will be used if system language is PT and no language was provided)
+- `pt-PT-Standard-A` - Portuguese (Portugal) (Female voice)
+- `pt-PT-Standard-B` - Portuguese (Portugal) (Male voice)
+- `pt-PT-Standard-C` - Portuguese (Portugal) (Male 2 voice)
+- `pt-PT-Standard-D` - Portuguese (Portugal) (Female 2 voice)
+- `ru-RU-Standard-A` - Russian (Russia) (Female voice - will be used if system language is RU and no language was provided)
+- `ru-RU-Standard-B` - Russian (Russia) (Male voice)
+- `ru-RU-Standard-C` - Russian (Russia) (Female 2 voice)
+- `ru-RU-Standard-D` - Russian (Russia) (Male 2 voice)
+- `sk-SK-Standard-A` - Slovak (Slovakia) (Female voice)
+- `es-ES-Standard-A` - Spanish (Spain) (Female voice - will be used if system language is ES and no language was provided)
+- `sv-SE-Standard-A` - Swedish (Sweden) (Female voice)
+- `tr-TR-Standard-A` - Turkish (Turkey) (Female voice)
+- `tr-TR-Standard-B` - Turkish (Turkey) (Male voice)
+- `tr-TR-Standard-C` - Turkish (Turkey) (Female 2 voice)
+- `tr-TR-Standard-D` - Turkish (Turkey) (Female 3 voice)
+- `tr-TR-Standard-E` - Turkish (Turkey) (Male voice)
+- `uk-UA-Standard-A` - Ukrainian (Ukraine) (Female voice)
+- `vi-VN-Standard-A` - Vietnamese (Vietnam) (Female voice)
+- `vi-VN-Standard-B` - Vietnamese (Vietnam) (Male voice)
+- `vi-VN-Standard-C` - Vietnamese (Vietnam) (Female 2 voice)
+- `vi-VN-Standard-D` - Vietnamese (Vietnam) (Male 2 voice)
+
 TODO:
 - venue
-- dialogs
 
 ## Changelog
+### 1.5.0 (2020-02-03)
+* (bluefox) Added voice calls 
+
 ### 1.4.7 (2019-12-27)
 * (Apollon77) Make compatible with js-controller 2.3
 
@@ -525,7 +658,7 @@ TODO:
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2016-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

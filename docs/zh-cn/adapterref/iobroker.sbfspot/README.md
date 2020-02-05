@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
+hash: NMhpaS3tpGOVmK3sjScUmZDu88/zSBbi4B2KpgplBYw=
 ---
 ![商标](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -17,7 +17,7 @@ hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 ＃ioBroker.sbfspot
 **如果您愿意，请考虑捐赠：**
 
-[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+[![贝宝]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
 该适配器使用sbfspot从SMA电源逆变器读取数据。
 现在支持两种数据库类型（mySQL和sqlite）。
@@ -43,9 +43,12 @@ hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 
 有时必须多次调用npm intall才能成功安装所有必需的软件包
 
-*如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）中创建问题
+*如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）上创建问题
 
-## 2.4.0（2019-12-xx）
+## 2.4.1（2020-02-01）
+*（René）错误修正小工具
+
+## 2.4.0（2019-12-28）
 *（René）更新到我自己的flot 3.0
 
 ## 2.3.4（2019-10-31）
@@ -90,7 +93,7 @@ hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 *（René）支持admin3
 
 ### 2.0.0
-*（René），因为我们每个小部件始终使用一个图形，所以现在仅支持一个图形
+*（René），因为我们始终每个小部件使用一个图形，所以现在仅支持一个图形
 
 注意：小部件与1.x.x版本不兼容；安装后只需检查小部件中的设置即可！
 
@@ -100,7 +103,7 @@ hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 *（René）可调日期格式
 
 ### 1.0.1
-*（René）修复SQLite的错误
+*（René）修复SQLite错误
 
 ### 1.0.0
 *（René）首次稳定发行
@@ -139,7 +142,7 @@ hash: f6Cv7iTPjQ6C5FPGRCQdPP9CEYoZhp70HQV1aMUHSwk=
 ## Changelog
 
 ## License
-Copyright (C) <2017-2019>  <info@rg-engineering.eu>
+Copyright (C) <2017-2020>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

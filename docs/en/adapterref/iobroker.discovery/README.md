@@ -16,6 +16,7 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ### Automatically Discovered
 
+- Bosch Smart Home
 - Bose Soundtouch
 - Broadlink
 - Chromecast

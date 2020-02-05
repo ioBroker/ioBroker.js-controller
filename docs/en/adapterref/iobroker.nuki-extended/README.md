@@ -2,7 +2,12 @@
 # ioBroker.nuki-extended
 This ioBroker adapter (formerly ioBroker.Nuki2) allows to control and monitor the [Nuki Smart Lock](https://nuki.io/de/smart-lock/) and / or the [Nuki Opener](https://nuki.io/de/opener/) by using both the [Nuki Bridge API (v1.9.0, 06.05.2019)](https://developer.nuki.io/page/nuki-bridge-http-api-170/4/#heading--introduction) and the [Nuki Web API (v1.2.0, 31.05.2019)](https://developer.nuki.io/page/nuki-web-api-111/3/).
 
-![Number of Installations](http://iobroker.live/badges/nuki-extended-installed.svg) ![Stable Version](http://iobroker.live/badges/nuki-extended-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.nuki-extended.svg)](https://www.npmjs.com/package/iobroker.nuki-extended)
+[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S45U45EHXGQHN&source=url)
+
+![Number of Installations](http://iobroker.live/badges/nuki-extended-installed.svg)
+![Stable Version](http://iobroker.live/badges/nuki-extended-stable.svg)
+[![NPM Version](http://img.shields.io/npm/v/iobroker.nuki-extended.svg)](https://www.npmjs.com/package/iobroker.nuki-extended)
+[![Commits since last release](https://img.shields.io/github/commits-since/Zefau/ioBroker.nuki-extended/latest.svg)](https://github.com/Zefau/ioBroker.nuki-extended/releases/latest)
 [![Travis CI](https://travis-ci.org/Zefau/ioBroker.nuki-extended.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.nuki-extended)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.nuki-extended.svg)](https://www.npmjs.com/package/iobroker.nuki-extended)
 
@@ -473,9 +478,35 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 ```
 
 
-## Changelog / Release-Notes
+## Changelog
 
 Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
+
+### v2.1.0  (2019-02-03)
+- (Zefau) added (optional) callback IP for Bridge API events (e.g. when ioBroker is run in docker; see [#51](https://github.com/Zefau/ioBroker.nuki-extended/issues/51))
+- (Zefau) added dedicated buttons for each lock / opener action
+- (Zefau) replaced `state.timestamp` with `state.lastDataUpdate` (indicates last data refresh from the APIs) and `state.lastStateUpdate` (indicates the last actual state change)
+
+### v2.0.3  (2019-10-31)
+- (Zefau) reintroduced support for hashed token on hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)
+
+### v2.0.2 (2019-10-31)
+- (Zefau) added support for newly introduced nightmode (see https://nuki.io/de/blog/nuki-news-de/nuki-update-2019-der-winter-naht-sei-vorbereitet/)
+- (Zefau) fixed incorrect behavior when bridges are defined insufficiently (no name, ip or token provided)
+
+### v2.0.1 (2019-10-26)
+- (Zefau) fixed missing `bridge_name`
+
+### v2.0.0 (2019-10-24)
+- (Zefau) added support for new Nuki Opener
+- (Zefau) added support for hashed token on hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)
+- (Zefau) added fallback to Nuki Web API in case applied actions on Nuki Bridge API fail, e.g. due to bridge error 503 (see https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
+- (Zefau) added retry in case applied actions on Nuki Bridge API fail (when Nuki Web API is not used)
+- (Zefau) added option to regularly synchronise instead of using Bridge API callback
+- (Zefau) added refreshing all states of Nuki Web API when callback is received via Nuki Bridge API
+- (Zefau) added states for Nuki Notifications
+- (Zefau) added support for multiple devices (including Nuki Opener) on adapter web interface
+- (Zefau) added option to not retrieve all information (by deselecting `config` or `users`) via Nuki Web API
 
 
 ## Credits

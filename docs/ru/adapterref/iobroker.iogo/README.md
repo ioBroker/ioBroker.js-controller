@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: NFN0VcICDiFOM4D21FDMk+AnCfGecph3oqzmICD75L8=
+hash: aBmdaoGWO2ljGVbWQt5RUSWTCet+PJRr64BvVyuYySg=
 ---
 ![логотип](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -17,21 +17,21 @@ hash: NFN0VcICDiFOM4D21FDMk+AnCfGecph3oqzmICD75L8=
 =================
 
 Этот адаптер добавляет дополнительные функции в приложение smarthome ioGo https://play.google.com/store/apps/details?id=de.nisnagel.iogo.
-Пожалуйста, посетите iogo.nisnagel.de для получения дополнительной информации о том, как начать.
+Пожалуйста, посетите www.iogo.app для получения дополнительной информации о том, как начать.
 
 ## Конфигурация
-Вам нужен действующий лицензионный ключ, чтобы использовать этот адаптер.
-Лицензию можно приобрести после создания счета на https://iogo.nisnagel.de.
+Вам нужен действительный лицензионный ключ, чтобы использовать этот адаптер.
+Лицензию можно приобрести после создания аккаунта на https://www.iogo.app.
 
 Пожалуйста, введите информацию о вашей учетной записи (адрес электронной почты / пароль) в конфигурации экземпляра.
 
 ## Использование
-Вы можете отправить сообщение всем аутентифицированным пользователям через блок сообщения ```sendTo('iogo', 'New message')``` или конкретному пользователю ```sendTo('iogo', {user: 'Username', text: 'Test message'})```.
+Вы можете отправить сообщение всем аутентифицированным пользователям через блок сообщений ```sendTo('iogo', 'New message')``` или конкретному пользователю ```sendTo('iogo', {user: 'Username', text: 'Test message'})```.
 Пользователь должен быть создан до (пожалуйста, прочитайте документацию приложения для более подробной информации).
 
 Можно указать более одного получателя (просто разделите имена пользователей запятыми). Например: Получатель: «Пользователь1, Пользователь4, Пользователь5»
 
-Пример, как отправить уведомление настроенное сообщение с JavaScript:
+Пример, как отправить уведомление настроенное сообщение с помощью JavaScript:
 
 ```
 sendTo('iogo', {
@@ -72,6 +72,10 @@ sendTo('iogo', {
 - *url* абсолютный путь к изображению
 
 ## Changelog
+
+### 0.5.x
+* (nisio) Changes for ioGo app version 2.1.0+ (older versions no longer supported)
+* (nisio) Split main.js into several files
 
 ### 0.4.x
 * (nisio) Changes for ioGo app version 2.0.0+ (older versions no longer supported)

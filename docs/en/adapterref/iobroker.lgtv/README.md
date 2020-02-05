@@ -275,7 +275,7 @@ is true when TV is on and false if TV is off
 
 The MIT License (MIT)
 
-Copyright (c) 2019 Sebastian Schultz.
+Copyright (c) 2020 Sebastian Schultz.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

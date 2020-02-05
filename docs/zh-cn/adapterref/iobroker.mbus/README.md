@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mbus/README.md
 title: ioBroker.mbus
-hash: L2+Sd6JuHqmMmGofP6mrX99ZFTDO+b5dWyzWfWGPXCQ=
+hash: VS5EObBHmPZwVRQJHeSjIUQ10tgEjK44ZiOuBnjOELI=
 ---
 ![商标](../../../en/adapterref/iobroker.mbus/admin/mbus.png)
 
@@ -20,9 +20,9 @@ hash: L2+Sd6JuHqmMmGofP6mrX99ZFTDO+b5dWyzWfWGPXCQ=
 
 [![代码气候]（https://codeclimate.com/github/Apollon77/ioBroker.mbus/badges/gpa.svg）](https://codeclimate.com/github/Apollon77/ioBroker.mbus)
 
-**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误。**
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**更多详细信息，请参见下文！
 
-该ioBroker适配器通过TCP或串行连接到M-Bus主站，以提供所连接M-Bus设备的状态和详细信息。
+该ioBroker适配器通过TCP或串行连接到M-Bus主站，以提供已连接M-Bus设备的状态和详细信息。
 
 ##参数说明
 ###网关IP / TCP端口
@@ -32,7 +32,7 @@ hash: L2+Sd6JuHqmMmGofP6mrX99ZFTDO+b5dWyzWfWGPXCQ=
 M-Bus主站/网关的串行端口和波特率。
 
 ###更新间隔
-间隔以秒为单位更新数据。默认值（如果为空）是3600s（1h）。考虑如何为M-Bus总线上的设备供电，以防止电池耗尽。如果将时间间隔设置为0，则设备在适配器启动时仅读取一次，但不再自动读取。
+时间间隔以秒为单位来更新数据。默认值（如果为空）为3600s（1h）。考虑如何为M-Bus总线上的设备供电，以防止电池耗尽。如果将时间间隔设置为0，则设备在适配器启动时仅读取一次，但不再自动读取。
 
 ###设备ID
 您可以使用主要（1-250）和次要（16个字符长）的M-Bus ID
@@ -43,7 +43,21 @@ M-Bus主站/网关的串行端口和波特率。
 ＃＃ 去做
 *加密的有效载荷处理（如果任何人需要）
 
+##如何报告问题和功能要求
+请为此使用GitHub问题。
+
+最好是将适配器设置为“调试”日志模式（“实例”->“专家”模式->“列日志”级别）。然后，请从磁盘获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin会删掉行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
+
+##什么是Sentry，什么报告给服务器？
+Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+
 ## Changelog
+
+### 2.1.2 (2020-02-04)
+* (Apollon77) optimize adapter stop logic to prevent crashes
+* (Apollon77) Switch Sentry to iobroker own instance hosted in germany
 
 ### 2.1.0 (2019-12-18)
 * add compact mode
@@ -87,7 +101,7 @@ M-Bus主站/网关的串行端口和波特率。
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2018-2020 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

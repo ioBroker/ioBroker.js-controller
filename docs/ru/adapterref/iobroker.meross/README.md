@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
+hash: y3+QIV+o2GNtEgX1E87gArX5VsyJrkw7y8gdInH5Fp4=
 ---
 ![логотип](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
@@ -16,7 +16,7 @@ hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
 ![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)
 
 # IoBroker.meross
-** Этот адаптер использует службу [Sentry.io](https://sentry.io), чтобы автоматически сообщать об исключениях и ошибках кода мне как разработчику. **
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать об исключениях и ошибках кода мне как разработчику. ** Подробнее см. Ниже!
 
 ## Описание
 Этот адаптер позволяет управлять устройствами Meross, подключаясь к облачным серверам Meross.
@@ -32,7 +32,36 @@ hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
 
 Если работает больше устройств (или нет), сообщите об этом, открыв проблему с GitHub.
 
+## Как сообщать о проблемах и пожеланиях
+Пожалуйста, используйте вопросы GitHub для этого.
+
+Лучше всего установить адаптер в режим журнала отладки (Экземпляры -> Экспертный режим -> Уровень журнала столбцов). Затем, пожалуйста, получите файл журнала с диска (подкаталог «log» в установочном каталоге ioBroker, а не от Admin, потому что Admin обрезает строки). Если вам не нравится предоставлять его в выпуске GitHub, вы также можете отправить его мне по электронной почте (iobroker@fischer-ka.de). Пожалуйста, добавьте ссылку на соответствующую проблему GitHub И также опишите, что я вижу в журнале в какое время.
+
+## Что такое Sentry и что сообщается на серверы?
+Sentry.io позволяет разработчикам получить обзор ошибок в своих приложениях. И именно это реализовано в этом адаптере.
+
+Когда происходит сбой адаптера или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Когда вы разрешили iobroker GmbH собирать диагностические данные, включался и ваш установочный идентификатор (это просто уникальный идентификатор **без** каких-либо дополнительных сведений о вас, адрес электронной почты, имя или тому подобное). Это позволяет Sentry группировать ошибки и показывать, на сколько уникальных пользователей влияет такая ошибка. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не выходят из строя.
+
 ## Changelog
+
+### 1.3.10 (2020.02.04)
+* (Apollon77) optimize error handling
+* (Apollon77) Switch Sentry to iobroker own instance hosted in germany
+
+### 1.3.9 (2019.12.18)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.8 (2019.12.07)
+* (Apollon77) update dependencies
+
+### 1.3.7 (2019.12.01)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.6 (2019.11.28)
+* (Apollon77) Prevent some error cases on disconnects
+
+### 1.3.5 (2019.11.28)
+* (Apollon77) Prevent some error cases on disconnects
 
 ### 1.3.4 (2019.11.26)
 * (Apollon77) Add Temperature/Humidity support for MTS100
@@ -68,7 +97,7 @@ hash: pJGQEFLPE5QjV0vaS3+is8H8cMuJ76JaKN0Wjd+Pf1Q=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2020 Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

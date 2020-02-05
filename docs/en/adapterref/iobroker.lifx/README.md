@@ -82,4 +82,4 @@ npm install https://github.com/foxthefox/ioBroker.lifx/tarball/master --producti
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 foxthefox <foxthefox@wysiwis.net>
+Copyright (c) 2016-2020 foxthefox <foxthefox@wysiwis.net>

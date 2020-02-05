@@ -158,6 +158,9 @@ lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_
 ```
 
 ## Changelog
+### 1.1.4 (2020-02-03)
+* (Peter Müller) Updated connectionType and dataSource in io-package.json.
+
 ### 1.1.3 (2020-01-23)
 * (Peter Müller) Added `connectionType` in `io-package.json` and updated dependencies.
 

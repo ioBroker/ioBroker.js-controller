@@ -448,6 +448,9 @@ After that checkout modified version in `./build` folder. Then.
 8. Start `gulp rename` task.
 
 ## Changelog
+### 1.0.9 (2020-01-29)
+* (bluefox) Dimmer control was fixed
+
 ### 1.0.8 (2020-01-13)
 * (Garfonso) process max value of saturation and hue
 * (Garfonso) disable extensive debug logging

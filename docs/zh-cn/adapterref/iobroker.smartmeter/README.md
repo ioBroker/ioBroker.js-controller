@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: VrjGsPhGQxker5i5TvZ1NNQkqfAJ6+e8Z/TfH4pNr0A=
+hash: So9qpZFQvZ+qrgK6SKiTIbeoOPVJAB1aOx2RyMFZBiE=
 ---
 ![商标](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
@@ -18,17 +18,13 @@ hash: VrjGsPhGQxker5i5TvZ1NNQkqfAJ6+e8Z/TfH4pNr0A=
 ＃ioBroker.smartmeter
 [![代码气候]（https://codeclimate.com/github/Apollon77/ioBroker.smartmeter/badges/gpa.svg）](https://codeclimate.com/github/Apollon77/ioBroker.smartmeter)
 
-**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误。**
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**更多详细信息，请参见下文！
 
-ioBroker的此适配器允许读取和解析遵循OBIS编号逻辑的智能电表协议，以使其数据可用。
+该ioBroker适配器允许读取和解析遵循OBIS编号逻辑的智能电表协议，以使其数据可用。
 
 ***适配器需要nodejs 4.x才能工作！***
 
 ***此适配器当前需要安装git才能安装！***
-
-##当前已知的问题
-*此适配器使用串行端口库。如果需要编译，这可能意味着更长的安装时间
-*似乎内存处理有时不是最佳的，并且在读取数据期间可能导致SIGABRT或SIGSEGV崩溃。 iobroker Controller将自动重新启动适配器，因此2-3条日志行是这里唯一的效果:-)
 
 ##参数说明
 ioBroker-论坛线程：http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54973
@@ -42,7 +38,7 @@ ioBroker-论坛线程：http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54
 
 ＃＃＃ 数据传输
 * **串行接收**：通过串行推送数据接收（智能仪表定期发送数据，而无需任何请求）。主要用于SML
-* **双向双向通讯**：模式A，B，C和D（当前不支持模式E！）的D0协议，带有Wakeup-，Signon-，pot。 ACK和数据消息以读取数据（到目前为止尚未实现编程/写入模式）
+* **双向双向通讯**：模式A，B，C和D（目前不支持模式E！）中的D0协议，带有Wakeup-，Signon-，pot。 ACK和数据消息以读取数据（到目前为止尚未实现编程/写入模式）
 * **Http-Requests** 通过HTTP请求定义的URL读取数据
 * **本地文件**：从本地文件读取数据
 
@@ -59,7 +55,7 @@ ioBroker-论坛线程：http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54
 示例：2WR5温度计使用“＃”查询更多数据（可选字段以及所有必填字段）
 
 ### D0：模式覆盖
-适配器尝试确定规范中定义的D0协议模式。有些设备不符合规格，因此会带来问题。使用此选项可以覆盖确定的协议模式。
+适配器尝试确定规范中定义的D0协议模式。有些设备不符合规格，因此会带来问题。使用此选项，您可以覆盖确定的协议模式。
 
 *模式A：无波特率转换，无确认消息
 *模式B：波特率转换，无确认消息
@@ -83,23 +79,54 @@ ioBroker-论坛线程：http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54
 * Itron EM214 Typ 720
 *使用DSRM协议的荷兰智能电表（使用“仅串行设备读取数据”和“ D0”作为协议）
 
-请向我发送有关成功使用该库的设备的信息，我将在此处添加它。
+请向我发送有关成功使用该库的设备的信息，我将在此处添加。
 
-＃＃ 去做
-*将Sml支持更新为1.0.4（如果需要）
-*网页文档
+##特殊的智能电表和问题
+### DZG DVS74
+有时SML固件中似乎有错误，并且SML消息中的值编码错误，但是消息本身是有效的。解决方案是使用Javascript对值进行后期处理。参见https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736
+
+##如何报告问题和功能要求
+请为此使用GitHub问题。
+
+最好是将适配器设置为“调试”日志模式（“实例”->“专家”模式->“列日志”级别）。然后，请从磁盘获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin会删掉行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
+
+##什么是Sentry，什么报告给服务器？
+Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
 
-### 3.0.0 (2019-11-2x)
-* BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
-* support compact mode
-* update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
-* Use "/dev/serial/by-id" paths on linux if available; add port selection to Admin
-* Add Sentry for error reporting
+### 3.0.9 (2020-02-04)
+* (Apollon77) make sure HTTP based smartmeters are also polled frequently when responses are invalid
+* (Apollon77) other optimizations
+* (Apollon77) Switch Sentry to iobroker own instance hosted in germany
+
+### 3.0.8 (2019-12-20)
+* (Apollon77) errors prevented when stopping to process data
+
+### 3.0.7 (2019-12-18)
+* (Apollon77) errors prevented when stopping to process data
+
+### 3.0.6 (2019-12-07)
+* (Apollon77) serial port configuration further optimized
+* (Apollon77) update smartmeter-obis lib to fix some edge case errors and serial close handling
+
+### 3.0.3 (2019-11-30)
+* (Apollon77) serial port configuration further optimized
+
+### 3.0.2 (2019-11-29)
+* (Apollon77) Fix use of "/dev/serial/by-id" paths on linux if available
+
+### 3.0.1 (2019-11-27)
+* (Apollon77) BREAKING CHANGE: Supports nodejs 8.x+ only, up to 12.x
+* (Apollon77) support compact mode
+* (Apollon77) update to latest library versions to fix problems and add special handling for some smart meters with broken firmware
+* (Apollon77) Use "/dev/serial/by-id" paths on linux if available; add port selection to Admin
+* (Apollon77) Add Sentry for error reporting
 
 ### 2.0.0 (2019-03-22)
-* BREAKING CHANGE: State names changed because * no longer supported. Is replaced by __ now because of possible collisions in state names with only one _
+* (Apollon77) BREAKING CHANGE: State names changed because * no longer supported. Is replaced by __ now because of possible collisions in state names with only one _
 
 ### 1.2.2 (2018-11-11)
 * Update smartmeter library, fix HTTP-JSON-Transport
@@ -178,7 +205,7 @@ ioBroker-论坛线程：http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2017-2020 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

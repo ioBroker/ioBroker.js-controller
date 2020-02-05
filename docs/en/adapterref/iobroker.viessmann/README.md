@@ -65,6 +65,8 @@ Eine Sortierung der Befehle, ist durch klicken auf den Tabellenkopf möglich.
 
 
 Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst grosses Abfrageintervall zu wählen.
+Es ist ebenso möglich, einen Wert ausserhalb des Abfragezyklus abzufragen. Hierzu muss der Datenpunkt *force_polling*,
+mit dem gewünschten *get* Wert beschrieben werden.
 
 
 *die benutzten Bilder stammen von www.viessmann.com.*
@@ -79,7 +81,7 @@ Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst gro
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 misanorot <audi16v@gmx.de>
+Copyright (c) 2017-2020 misanorot <audi16v@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

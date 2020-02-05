@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.squeezeboxrpc/README.md
 title: ioBroker Logitech Squeezebox Adapter через JSON / RPC-протокол
-hash: ttmFveGL2bh+QZZkVuu7ru1jJog0VRNyXyCBYOeDUdc=
+hash: Zbrq2xmKX6Ee4ZvUBC2TbJY8QZSoISYY2/qUd+SrUTc=
 ---
 ![логотип](../../../en/adapterref/iobroker.squeezeboxrpc/admin/squeezeboxrpc.png)
 
@@ -15,9 +15,6 @@ hash: ttmFveGL2bh+QZZkVuu7ru1jJog0VRNyXyCBYOeDUdc=
 ![GitHub вопросы](https://img.shields.io/github/issues/oweitman/ioBroker.squeezeboxrpc.svg)
 
 # IoBroker Logitech Squeezebox Adapter через JSON / RPC-протокол
-<!--
--->
-
 Это альтернативный адаптер, который использует JSON / RPC-Protokoll для получения данных и отправки команд на сервер мультимедиа Logitech ([LMS](https://de.wikipedia.org/wiki/Logitech_Media_Server)) для управления подключенными устройствами, такими как
 
 * native [squeezebox] (https://de.wikipedia.org/wiki/Squeezebox),
@@ -36,7 +33,7 @@ LMS-сервер может управлять / предоставлять оч
 - подробная информация о статусе игрока, названии песни, исполнителе, альбоме, обложке, плейлисте
 - множество функций управления для воспроизведения, паузы, остановки, перемотки вперед, перемотки назад, повтора, воспроизведения в произвольном порядке, воспроизведения избранного, перехода на время (абсолютное и относительное), перехода к индексу списка воспроизведения (абсолютное и относительное), включения / выключения питания и кнопок предварительной настройки
 - все избранное и все подуровни с сервера
-- многие виджеты для компонента iobroker-vis включены для создания собственных пользовательских интерфейсов управления (выбор игрока, выбор избранного, управление синхронизирующими группами, кнопки воспроизведения / паузы, перемотки вперед, перемотки назад, режима повтора и выбора режима воспроизведения в случайном порядке)
+- многие виджеты для компонента iobroker-vis включены для создания собственных пользовательских интерфейсов управления (выбор игрока, выбор избранного, управление синхронизирующими группами, кнопки для воспроизведения / паузы, перемотки вперед, перемотки назад, режима повтора и выбора режима воспроизведения в случайном порядке)
 
 Документация для vis-виджетов доступна внутри vis или [Виджет-Documentation / немецкий](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.squeezeboxrpc/blob/master/widgets/squeezeboxrpc/doc.html)
 
@@ -108,6 +105,8 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * ~~ автообнаружение медиа-сервера logitech ~~
 
 ## Changelog
+### 0.8.30
+ * change from the issue of the adapter checker
 ### 0.8.29
  * optimize handling of player state power and connected
 ### 0.8.28
@@ -190,7 +189,7 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 ## License
 MIT License
 
-Copyright (c) 2019 oweitman
+Copyright (c) 2019-2020 oweitman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

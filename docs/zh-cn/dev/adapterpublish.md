@@ -4,26 +4,26 @@ lastChanged: 21.01.2020
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adapterpublish.md
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
-hash: iLFFwmHGGEvoX1jzWG4/Zs7xSpudVBvxMEzm9P5Qcps=
+hash: I0FIhrW7GjK+oU9/a+Snt1/LZjxE7xtbGDLoF8Lr2VE=
 ---
-＃发布一个适配器
+＃发布适配器
 在考虑发布适配器之前，应在[论坛测试线程](https://forum.iobroker.net/category/91/tester)中提供它以进行测试。
-如果测试成功并且适配器稳定，则最初应将其包含在最新的存储库中。
+如果测试成功并且适配器稳定运行，则应首先将其包含在最新的存储库中。
 
-如果适配器在特定版本号上稳定运行，则可以将其传输到稳定存储库。这需要开发者自己的评估以及用户反馈。
+如果适配器在某个版本号上稳定运行，则可以将其传输到稳定存储库。这需要开发者自己的评估以及用户反馈。
 
 ***进一步的当前要求可以在这里找到：*** https://github.com/ioBroker/ioBroker.repositories/blob/master/README.md
 
 ##最新存储库要求
-0.使用[https://adapter-check.iobroker.in/[(https://adapter-check.iobroker.in/）测试适配器存储库。
+0.使用[https://adapter-check.iobroker.in/[(https://adapter-check.iobroker.in/））测试适配器存储库。
 
-1.适配器的github存储库在ioBroker中应该使用大写字母B，而在package.json中必须使用小写字母，因为“ npm”不允许使用大写字母。
+1.适配器的github存储库应在ioBroker中使用大写字母B，但在package.json中必须使用小写字母，因为“ npm”不允许使用大写字母。
 
 2. io-package.json中的标题不应包含单词“ ioBroker”或单词“ adapter”。
 
-3. io-package.json中的``title''属性（常见）是英文适配器的简称。而``titleLang''包含``title''属性的翻译。 （扩展名Lang代表语言）
+3，io-package.json中的``title''属性（通用）是英文适配器的简称。而``titleLang''包含``title''属性的翻译。 （扩展名Lang代表语言）
 
-4.适配器应包含README.md文件形式的说明。至少应提供英文版本。也欢迎其他语言。这个[示例]（https://github.com/foxriver76/ioBroker.denon）可以作为建议。
+4.适配器应包含README.md文件形式的说明。至少应以英语提供。也欢迎其他语言。这个[示例]（https://github.com/foxriver76/ioBroker.denon）可以作为建议。
 
 5.适配器需要许可证。两者都在io-package.json和Github存储库中的单独[file]（https://github.com/foxriver76/ioBroker.denon/blob/master/LICENSE）中。
 
@@ -47,7 +47,7 @@ hash: iLFFwmHGGEvoX1jzWG4/Zs7xSpudVBvxMEzm9P5Qcps=
 
 应避免使用角色`state`。
 
-10.适配器都应使用模板中指定的测试。为此，可以将Github帐户链接到Appveyor（Windows测试）和Travis CI（Linux和Mac OS测试），并且可以注册相应的存储库以进行测试。
+10.适配器都应使用模板中指定的测试。 Github帐户可以链接到Appveyor（Windows测试）和Travis CI（Linux和Mac OS测试），并且可以注册相应的存储库以进行测试。
 
 这两个连续集成工具已被证明适合ioBroker项目，并且对于公共Github存储库是免费的。
 
@@ -55,8 +55,8 @@ hash: iLFFwmHGGEvoX1jzWG4/Zs7xSpudVBvxMEzm9P5Qcps=
 
 11.在io-package.json中，必须在属性authors的common下至少创建一个条目。
 
-还必须在package.json中填写属性`author`。
-（可选）也可以使用package.json中的`contributors`属性为npm保存几个作者。
+package.json中的`author`属性也必须填写。
+（可选）也可以使用package.json中的`contributors`属性为npm保存多个作者。
 
 12.适配器必须作为npm软件包提供。可以在[here]（https://github.com/ioBroker/ioBroker.repositories#how-to-publish-on-npm）中找到更多信息。
 
@@ -99,7 +99,7 @@ hash: iLFFwmHGGEvoX1jzWG4/Zs7xSpudVBvxMEzm9P5Qcps=
 ```
 
 ###最新
-必须编辑`sources-dist.json`文件：
+必须编辑文件`sources-dist.json`：
 
 例如：
 
@@ -115,7 +115,7 @@ hash: iLFFwmHGGEvoX1jzWG4/Zs7xSpudVBvxMEzm9P5Qcps=
 `published`日期代表首次发布的日期，不应更改。
 
 ###稳定
-必须编辑`sources-dist-stable.json`文件：
+必须编辑文件`sources-dist-stable.json`：
 
 例如：
 
@@ -132,7 +132,7 @@ hash: iLFFwmHGGEvoX1jzWG4/Zs7xSpudVBvxMEzm9P5Qcps=
 `published`日期代表首次发布的日期，不应更改。
 
 ##适配器版本管理
-适配器的当前版本号同时在io-package.json和package.json中给出。
+适配器的当前版本号在io-package.json和package.json中给出。
 这两个规格必须匹配。版本号由两个点分成三部分。
 
 ```json
@@ -149,7 +149,7 @@ hash: iLFFwmHGGEvoX1jzWG4/Zs7xSpudVBvxMEzm9P5Qcps=
 `news`属性也应在io-package.json中维护。
 这使用户可以通过管理界面安装列出的任何版本（前提是该版本已在npm上发布）。
 版本号和更改应存储在此处。
-可以记录每种受支持语言（至少以英语）的更改。
+可以记录每种受支持语言的更改，至少以英语记录。
 
 例如：
 
@@ -181,11 +181,11 @@ hash: iLFFwmHGGEvoX1jzWG4/Zs7xSpudVBvxMEzm9P5Qcps=
 ```
 
 ##适配器类别
--`警报`-安全系统
+-`alarm`-安全系统
 -“气候控制”-空调，空气过滤器，加热器等
 -`communication`-其他适配器的数据提供，例如B.通过REST
 -日期和时间-例如B.日历
--`energy`-电力监控，太阳能系统，逆变器等。
+-`energy`-电力监控，太阳能系统，逆变器等等。
 -“计量”-其他测量系统（例如水，气，油）
 -`花园`-例如B.割草机，洒水系统
 -`general`-通用适配器，例如Admin，Web，Discovery
@@ -216,7 +216,7 @@ hash: iLFFwmHGGEvoX1jzWG4/Zs7xSpudVBvxMEzm9P5Qcps=
 -`local`-提供与设备或集线器的直接通信。
 -`cloud`-此设备的集成通过云端进行，并且需要有效的Internet连接
 
-在`common`中将`dataSource`定义为：
+将`common`中的`dataSource`定义为：
 
 -`poll`-轮询状态意味着以后可能会注意到更新。
 -`push`-一旦有新状态可用，ioBroker将会收到通知。

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Adapter
-hash: sYWW7Okfb1qtqnDttbDHvtdt2KPsQchTkFPPggp6/i4=
+hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
 ---
 ![Logo](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -21,13 +21,14 @@ Gerade jetzt kann es per Ping, UPnP (seriell geplant) erkennen.
 
 ## Wird aktuell unterstützt
 Automatisch erkannt
+- Bosch Smart Home
 - Bose Soundtouch
 - Broadlink
 - Chromecast
 - Daikin-Klimasteuerung
 - deConz
 - Denon / Marantz
-- DoorBird
+- Türvogel
 - ebus
 - Schlüssel
 - Energiemanager (E.ON / Solarwatt)
@@ -83,7 +84,7 @@ Automatisch erkannt
 - Verlauf (wenn kein SQL oder InfluxDB gefunden wurde)
 - Flot (wird angeboten, wenn ein History-Adapter vorhanden ist)
 - JavaScript
-- Info
+- Die Info
 - Handy, Mobiltelefon
 - Vis
 - Netz
@@ -92,7 +93,7 @@ Automatisch erkannt
 - artnet? (Blauer Fuchs)
 - B-Control-Em? (Blauer Fuchs)
 - cul / maxcul (Bluefox)
-- Foobar200 (Installateur)
+- Foobar200 (Instalator)
 - Fritzbox (Ruhr70)
 - km200 (frankjoke)
 - kodi (Installateur)
@@ -107,10 +108,14 @@ Automatisch erkannt
 - s7 (Bluefox)
 - Smartmeter (Apollon77)
 - unifi (jens-maus)
-- Wolf (lächelnder Bube)
+- Wolf (Smiley-Jack)
 - xs1 (frankjoke)
 
 ## Changelog
+### 2.1.0 (2020-01-21)
+* (foxriver76) no longer use adapter.objects
+* __js-controller > 2.0.0 required__
+
 ### 2.0.0 (2019-05-15)
 * (thewhobox) Code refactoring
 * (thewhobox) add emby detection

@@ -28,6 +28,11 @@ provided by [iobroker.click](https://iobroker.click/index.html), thanks to bluef
 * <a href="https://iobroker.click/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a> (<a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">alternativ</a>)
 * <a href="https://iobroker.click/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS Editor</a> (<a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">alternativ</a>)
 
+## Questions and answers about the widgets
+If you have questions about the individual widgets, then first look at the topics of the individual widgets
+
+* [German threads](https://forum.iobroker.net/search?term=Material%20Design%20Widgets%3A&in=titles&matchWords=all&by%5B%5D=Scrounger&categories%5B%5D=7&sortBy=topic.title&sortDirection=desc&showAs=topics)
+
 ### Supported Browser
 https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
 
@@ -53,14 +58,16 @@ not working at the moment, needs to be implemneted by app, see https://github.co
     </tbody>
 </table>
 
-## Button Toggle
+## Buttons
+
+### Button Toggle
 ![Logo](doc/en/media/buttons.gif)
+
+### Icon Button
+![Logo](doc/en/media/icon-button.gif)
 
 ## Card
 ![Logo](doc/en/media/cards.png)
-
-## Icon Button
-![Logo](doc/en/media/icon-button.gif)
 
 ## List
 ![Logo](doc/en/media/list.gif)
@@ -93,10 +100,18 @@ Settings that are not listed in the table below are self-explanatory.
 ## Round Slider
 ![Logo](doc/en/media/round_slider.gif)
 
+## Checkbox
+![Logo](doc/en/media/checkbox.gif)
+
 ## Switch
 ![Logo](doc/en/media/switch.gif)
 
-## Select
+## Input
+
+### Text input
+![Logo](doc/en/media/input.gif)
+
+### Select
 ![Logo](doc/en/media/select.gif)
 
 Settings that are not listed in the table below are self-explanatory.
@@ -161,7 +176,7 @@ Settings that are not listed in the table below are self-explanatory.
     </tbody>
 </table>
 
-## Autocomplete
+### Autocomplete
 ![Logo](doc/en/media/autocomplete.gif)
 
 Settings that are not listed in the table below are self-explanatory.
@@ -426,7 +441,39 @@ Example see <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#in
 
 Working Widget Example can be found 
 * [here](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
-* [ical Adapter](https://forum.iobroker.net/topic/26925/test-adapter-material-design-widgets-v0-2-x/581)
+* [ical Adapter](https://forum.iobroker.net/topic/29658/material-design-widgets-table-widget/2)
+
+## Masonry Views
+
+Masonry Views has multiple `view in widget` integrated, that will be ordered automatically depending of the width of the widget. With this widget it is possible to cereate a responsive layout (one layout for desktop, tablet and mobil)
+
+<b>Take a look at the [Material Design Widgets example project](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b> to understand how it works.
+
+![Logo](doc/en/media/masnory.gif)
+
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td>
+            <td colspan=2>Depending on the width of the resolution, the number of columns and the distance between the views can be set. The settings can be set independently for portrait and landscape format.
+To find out the width of the resolution for the different devices, activate the Resolution Assistant under the common settings.</td>
+        </tr>
+        <tr>
+            <td><img src="doc/en/media/masnory_settings_views.png"></td>
+            <td>width of view[x]</td>
+            <td>Define the width of the view. Allowed values are number, px, % or calc. Examples: <code>100</code>, <code>100px</code>, <code>55%</code>, <code>calc(60% - 12px)</code></td>
+        </tr>
+    </tbody>
+</table>
+
 
 ## Column Views - decrepated !!!
 
@@ -509,7 +556,7 @@ The Alerts widget requires a JSON string as object, which must be structured as 
     </thead>
     <tbody>
         <tr>
-            <td rowspan=2><img src="doc/en/media/alerts_settings.png"></td>
+            <td rowspan=3><img src="doc/en/media/alerts_settings.png"></td>
             <td>number of columns</td>
             <td>define number of columns</td>
         </tr>
@@ -524,7 +571,196 @@ The Alerts widget requires a JSON string as object, which must be structured as 
     </tbody>
 </table>
 
+With the following script you can send easy messages to datapoint that is used by the Alerts Widget.
+The script must put into global scripts. Then it is possible to send message with the following command
+
+`materialDesignWidgets.sendTo('datapoint_id', 'message', 'color');`
+
+```
+
+
+var materialDesignWidgets = {};
+materialDesignWidgets.sendTo = function (id, text, backgroundColor = '', borderColor = '', icon = '', iconColor = '', fontColor = '') {
+    let json = getState(id).val;
+ 
+    if (json) {
+        try {
+
+            json = JSON.parse(json);
+
+        } catch (e) {
+            json = [];
+            console.warn('Wert ist kein JSON string! Wert wird ersetzt!');
+        }
+    } else {
+        json = [];
+    }
+
+    json.push(
+        {
+            text: text,
+            backgroundColor: backgroundColor,
+            borderColor: borderColor,
+            icon: icon,
+            iconColor: iconColor,
+            fontColor: fontColor
+        }
+    )
+    setState(id, JSON.stringify(json), true);
+}
+```
+
+## Calendar
+
+![Logo](doc/en/media/calendar.gif)
+
+The Calendar widget requires a JSON string as object, which must be structured as follows:
+```
+[
+	{
+		"name": "Event",
+		"color": "#e74c3c",
+		"colorText": "#FFFFFF",
+		"start": "2020-01-24",
+		"end": "2020-01-26"
+	},
+	{
+		"name": "Meeting",
+		"color": "#717d7e",
+		"colorText": "#FFFFFF",
+		"start": "2020-03-23",
+		"end": "2020-03-24"
+	}
+]
+```
+Only hex and rgba can be used as colors!
+
+Settings that are not listed in the table below are self-explanatory.
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=2><img src="doc/en/media/calendar_layout.png"></td>
+            <td>days of the week to be shown</td>
+            <td>Specifies which days of the week to display. To display Monday through Friday only, a value of <code>1, 2, 3, 4, 5</code> can be used. To display a week starting on Monday a value of <code>1, 2, 3, 4, 5, 6, 0</code> can be used.</td>
+        </tr>
+        <tr>
+            <td>Object ID</td>
+            <td>Object must be a json string, which must be structured as described above</td>
+        </tr>
+        <tr>
+            <td rowspan=2><img src="doc/en/media/calendar_timeaxis.png"></td>
+            <td>start hour</td>
+            <td>The hour from which appointments should be displayed in the week and day view.</td>
+        </tr>
+        <tr>
+            <td>end hour</td>
+            <td>Die Stunde bis wann in der Wochen und Tagesansicht Termine angezeigt werden sollen</td>
+        </tr>        
+    </tbody>
+</table>
+
+If you want to use the widget with the [ical adapter](https://github.com/iobroker-community-adapters/ioBroker.ical), you can use the following script to convert the ical object to work with the widget.
+
+```
+// momentjs is required as dependecies in javascript adapter
+const moment = require("moment");
+
+var instances = $(`[id=ical.*.data.table]`);
+instances.on(ical2CalendarWidget);
+
+function ical2CalendarWidget() {
+    try {
+        let calList = [];
+
+        for (var inst = 0; inst <= instances.length - 1; inst++) {
+            let icalObj = getState(instances[inst]).val;
+
+            if (icalObj) {
+                for (var i = 0; i <= icalObj.length - 1; i++) {
+                    let item = icalObj[i];
+
+                    // extract calendar color
+                    let calendarName = item._class.split(' ')[0].replace('ical_', '');
+
+                    let startTime = moment(item._date);
+                    let endTime = moment(item._end);
+                    
+                    let start = startTime.format("YYYY-MM-DD HH:mm");
+                    let end = endTime.format("YYYY-MM-DD HH:mm");
+
+                    if (startTime.format('HH:mm') === '00:00' && endTime.format('HH:mm') === '00:00') {
+                        // is full-day event
+                        if (endTime.diff(startTime, 'hours') === 24) {
+                            // full-day event, one day
+                            start = startTime.format("YYYY-MM-DD");
+                            end = startTime.format("YYYY-MM-DD");
+                        } else {
+                            // full-day event, multiple days
+                            start = startTime.format("YYYY-MM-DD");
+                            end = endTime.format("YYYY-MM-DD");
+                        }
+                    }
+
+                    // create object for calendar widget
+                    calList.push({
+                        name: item.event,
+                        color: getMyCalendarColor(calendarName),
+                        colorText: getMyCalendarTextColor(calendarName),
+                        start: start,
+                        end: end
+                    })
+                }
+
+                function getMyCalendarColor(calendarName) {
+                    // assign colors via the calendar names, use calendar name as set in ical
+                    if (calendarName === 'calendar1') {
+                        return '#FF0000';
+                    } else if (calendarName === 'calendar2') {
+                        return '#44739e'
+                    } else if (calendarName === 'calendar3') {
+                        return '#32a852'
+                    }
+                }
+
+                function getMyCalendarTextColor(calendarName) {
+                    // assign colors via the calendar names, use calendar name as set in ical
+                    if (calendarName === 'calendar1') {
+                        return '#FFFFFF';
+                    } else if (calendarName === 'calendar2') {
+                        return '#FFFFFF'
+                    } else if (calendarName === 'calendar3') {
+                        return '#FFFFFF'
+                    }
+                }
+            }
+
+            // Enter the destination data point that is to be used as object ID in the widget                
+            setState('0_userdata.0.materialdesignwidgets.ical2Calendar', JSON.stringify(calList), true);
+        }
+    } catch (e) {
+        console.error(`ical2MaterialDesignCalendarWidget: message: ${e.message}, stack: ${e.stack}`);
+    }
+}
+
+ical2CalendarWidget();
+```
+
 ## Changelog
+
+### 0.3.xx
+* (Scrounger): Masonry Views Widget: visible condition added
+* (Scrounger): Calendar Widget added
+* (Scrounger): translation added
+* (Scrounger): VIS Editor: Link to Forum widget threads added
+* (Scrounger): bug fixes
 
 ### 0.2.49
 * (Scrounger): new Select Widget added
@@ -665,7 +901,7 @@ The Alerts widget requires a JSON string as object, which must be structured as 
 ## License
 MIT License
 
-Copyright (c) 2019 Scrounger <scrounger@gmx.net>
+Copyright (c) 2020 Scrounger <scrounger@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

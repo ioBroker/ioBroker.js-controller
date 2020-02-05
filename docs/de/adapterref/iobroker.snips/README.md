@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.snips/README.md
 title: ioBroker.snips! [Logo] (admin / snips.png)
-hash: VxW/zWOv4YHN8H8avuo2J58rpai9txS56RnzKhC1E74=
+hash: pBgUGZnR38d1Hr6geTtsYLu64muY5uJ4tnyK+ks8FWs=
 ---
 # IoBroker.snips ![Logo](../../../en/adapterref/iobroker.snips/admin/snips.png)
 
@@ -12,6 +12,8 @@ hash: VxW/zWOv4YHN8H8avuo2J58rpai9txS56RnzKhC1E74=
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.snips.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.snips.svg)
 ![NPM](https://nodei.co/npm/iobroker.snips.png?downloads=true)
+
+ACHTUNG: Der Adapter wird nicht mehr weiterentwickelt oder gewartet, da Sonos Snips gekauft hat und die kostenlose Plattform am 01.02.2020 eingestellt wurde. Der Adapter und die installierten Snips-Geräte funktionieren weiterhin.
 
 Benötigt node.js 6.0 oder höher und Admin v3!
 
@@ -22,7 +24,7 @@ Snips-URL: <https://makers.snips.ai/>
 ## Installations-Snips
 Für Snips unter Debian Stretch (x86), Raspbian / Armbian Stretch (RPI3, Odroid) installieren Sie bitte die folgenden Pakete:
 
-lsb-release apt-transport-https czertifikate systemd systemd-sysv libttspico-utils alsa-utils dirmngr moskito snips-asr snips-audio-server snips-dialog snips-hotword snips-nlu snips-tts snips-injection
+lsb-release apt-transport-https ca-zertifikate systemd-sysv libttspico-utils alsa-utils dirmngr moskito snips-asr snips-audio-server snips-dialog snips-hotword snips-nlu snips-tts snips-injection
 
 Abhängig von Ihrer Hardware- und Linux-Distribution sind möglicherweise bereits Pakete installiert.
 
@@ -42,13 +44,29 @@ Snips sollten funktionieren, bevor wir hier weitermachen:
 URL: Adresse des Snips-MQTT-Servers Port: Port des Snips-MQTT-Servers Instanz: Text2Command-Instanz (zum Beispiel 0) Filter: zum Beispiel ClientID verstehen: ID (zum Beispiel 0)
 
 ### Konfigurieren Sie den Text2Command-Adapter
-Fügen Sie in der Konfiguration des Text2Command-Adapters unter Answer in ID snips.X.devices.all.send.say.text ein.
+Fügen Sie in der Konfiguration des Text2Command-Adapters unter Antwort in ID snips.X.devices.all.send.say.text ein.
 
 ### Injection (lerne neue Wörter)
 Unbekannte Wörter können unter snips.0.send.inject.room oder device gelernt werden.
 ACHTUNG: Der Injektionsdienst muss auf dem Gerät / Server installiert sein. Sudo apt-get install -y snips-injection
 
 ## Changelog
+
+### 1.5.0
+
+* (unltdnetworx) removal of language support, may come back
+
+### 1.4.0
+
+* (unltdnetworx) multilingualism support for german and english
+
+### 1.3.1
+
+* (unltdnetworx) add multilingual blinds/switch-rule
+
+### 1.3.0
+
+* (unltdnetworx) preparation for multilingualism support
 
 ### 1.2.1
 
@@ -166,7 +184,7 @@ ACHTUNG: Der Injektionsdienst muss auf dem Gerät / Server installiert sein. Sud
 
 The MIT License (MIT)
 
-Copyright (c) 2019 Michael Schuster <development@unltd-networx.de> & Walter Zengel <w.zengel@gmx.de>
+Copyright (c) 2020 Michael Schuster <development@unltd-networx.de> & Walter Zengel <w.zengel@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

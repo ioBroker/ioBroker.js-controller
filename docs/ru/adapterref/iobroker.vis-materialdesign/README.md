@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: eLX6p+Qi7beSULDJmUAseJkYgh9WE96AjNvyLMfQK1g=
+hash: NahNm5YOLDTk59vlJH0Q9mbSUcJNyw7Gz5nE+6wkXtE=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -34,6 +34,11 @@ hash: eLX6p+Qi7beSULDJmUAseJkYgh9WE96AjNvyLMfQK1g=
 * <a href="https://iobroker.click/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a> ( <a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">альтернатива</a> )
 * <a href="https://iobroker.click/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS Editor</a> ( <a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">альтернатива</a> )
 
+## Вопросы и ответы о виджетах
+Если у вас есть вопросы по отдельным виджетам, то сначала посмотрите на темы отдельных виджетов.
+
+* [Немецкие темы] (https://forum.iobroker.net/search?term=Material%20Design%20Widgets%3A&in=titles&matchWords=all&by%5B%5D=Scrounger&categories%5B%5D=7&sortBy=topic.title=sortDirection тем)
+
 ### Поддерживаемый браузер
 https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
 
@@ -46,14 +51,15 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 ## Материал Дизайн Иконки и Изображения
 <table><thead><tr><th> Скриншот </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/material-icons.png"></td><td> Некоторые виджеты поддерживают библиотеку <a href="https://materialdesignicons.com/" target="_blank">значков материалов</a> . Вы можете выбрать значок из списка выше или открыть средство выбора изображений, нажав кнопку справа от поля ввода. <br><br> <b>Цвета изображения применяются только к значкам дизайна материалов, а не к изображению!</b> </td></tr></tbody></table>
 
-## Кнопка Toggle
+## Кнопки
+### Кнопка Toggle
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/buttons.gif)
+
+### Кнопка со значком
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
 
 ## Открытка
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/cards.png)
-
-## Кнопка со значком
-![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
 
 ## Список
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/list.gif)
@@ -71,17 +77,24 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 ## Round Slider
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/round_slider.gif)
 
+## Флажок
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/checkbox.gif)
+
 ## Переключатель
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/switch.gif)
 
-## Выбрать
+## Ввод
+### Ввод текста
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/input.gif)
+
+### Выбрать
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/select.gif)
 
 Настройки, которые не перечислены в таблице ниже, говорят сами за себя.
 
 <table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td> метод данных меню </td><td> Существует три способа определения данных меню. Во-первых, определить это с помощью редактора. Во-вторых, определить его с помощью строки JSON. Третий способ - определить его тремя списками значений, меток и значков. </td></tr><tr><td> Редактор: количество пунктов меню </td><td> Метод данных меню: через редактор <br> Определите количество пунктов меню. Отдельные пункты меню могут быть определены в пункте меню [x] </td></tr><tr><td> Строка JSON </td><td> Метод данных меню: строка json <br> Здесь вы можете добавить строку JSON, чтобы определить пункты меню, или использовать привязки к точке данных, содержащей строку JSON. <br><br> Строка JSON должна иметь следующий формат: <br> <code>[ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </td> </tr><tr><td> список значений </td><td> Метод данных меню: список значений <br> Определите количество пунктов меню, добавив значения, которые будут установлены в точке данных. Записи должны быть разделены запятой </td></tr><tr><td> список значений: метки </td><td> Метод данных меню: список значений <br> Определите связанные метки значений. Записи должны быть разделены запятой </td></tr><tr><td> список значений: метки </td><td> Метод данных меню: список значений <br> Определите связанные значки значений. Записи должны быть разделены запятой. Вы можете использовать путь к изображению или название дизайна материалов. </td></tr></tbody></table>
 
-## Автозаполнение
+### Автозаполнение
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/autocomplete.gif)
 
 Настройки, которые не перечислены в таблице ниже, говорят сами за себя.
@@ -156,7 +169,16 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 Пример рабочего виджета можно найти
 
 * [здесь] (https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
-* [ical адаптер] (https://forum.iobroker.net/topic/26925/test-adapter-material-design-widgets-v0-2-x/581)
+* [ical адаптер] (https://forum.iobroker.net/topic/29658/material-design-widgets-table-widget/2)
+
+## Masonry Views
+В Masonry Views встроено несколько `view in widget`, которые будут упорядочены автоматически в зависимости от ширины виджета. С помощью этого виджета можно создать адаптивный макет (один макет для рабочего стола, планшета и мобильного телефона)
+
+<b>Взгляните на [Пример проекта Виджетов Материалов](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project),</b> чтобы понять, как это работает.
+
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/masnory.gif)
+
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2> В зависимости от ширины разрешения можно задать количество столбцов и расстояние между видами. Настройки могут быть установлены независимо для портретного и альбомного формата. Чтобы узнать ширину разрешения для разных устройств, активируйте Помощник по разрешению в общих настройках. </td></tr><tr><td><img src="doc/en/media/masnory_settings_views.png"></td><td> ширина обзора [х] </td><td> Определите ширину вида. Допустимые значения: число, px,% или calc. Примеры: <code>100</code> , <code>100px</code> , <code>55%</code> , <code>calc(60% - 12px)</code> </td></tr></tbody></table>
 
 ## Колонка просмотров - убог !!!
 Представления столбцов имеют несколько `view in widget` интегрированных, которые будут упорядочены автоматически в зависимости от ширины виджета. С помощью этого виджета можно создать адаптивный макет (один макет для рабочего стола, планшета и мобильного телефона)
@@ -172,7 +194,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/alerts.gif)
 
-Виджет Оповещения требует JSON-строки в качестве объекта, который должен быть структурирован следующим образом:
+Для виджета «Оповещения» в качестве объекта требуется строка JSON, которая должна иметь следующую структуру:
 
 ```
 [
@@ -201,11 +223,175 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 ]
 ```
 
-<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/alerts_settings.png"></td><td> Число столбцов </td><td> определить количество столбцов </td></tr><tr><td> Идентификатор объекта </td><td> Объект должен быть строкой json, структура которой должна быть описана выше </td></tr><tr><td> Максимум. Оповещения </td><td> максимальное количество предупреждений, которые должны быть показаны. </td></tr></tbody></table>
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/alerts_settings.png"></td><td> Число столбцов </td><td> определить количество столбцов </td></tr><tr><td> Идентификатор объекта </td><td> Объект должен быть строкой json, структура которой должна быть описана выше </td></tr><tr><td> Максимум. Оповещения </td><td> максимальное количество предупреждений, которые должны быть показаны. </td></tr></tbody></table>
+
+С помощью следующего скрипта вы можете отправлять простые сообщения в точку данных, которая используется виджетом Alerts.
+Сценарий должен включать в глобальные сценарии. Тогда можно отправить сообщение следующей командой
+
+`materialDesignWidgets.sendTo('datapoint_id', 'message', 'color');`
+
+```
+
+
+var materialDesignWidgets = {};
+materialDesignWidgets.sendTo = function (id, text, backgroundColor = '', borderColor = '', icon = '', iconColor = '', fontColor = '') {
+    let json = getState(id).val;
+
+    if (json) {
+        try {
+
+            json = JSON.parse(json);
+
+        } catch (e) {
+            json = [];
+            console.warn('Wert ist kein JSON string! Wert wird ersetzt!');
+        }
+    } else {
+        json = [];
+    }
+
+    json.push(
+        {
+            text: text,
+            backgroundColor: backgroundColor,
+            borderColor: borderColor,
+            icon: icon,
+            iconColor: iconColor,
+            fontColor: fontColor
+        }
+    )
+    setState(id, JSON.stringify(json), true);
+}
+```
+
+## Календарь
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/calendar.gif)
+
+Для виджета Календарь в качестве объекта требуется строка JSON, которая должна быть структурирована следующим образом:
+
+```
+[
+	{
+		"name": "Event",
+		"color": "#e74c3c",
+		"colorText": "#FFFFFF",
+		"start": "2020-01-24",
+		"end": "2020-01-26"
+	},
+	{
+		"name": "Meeting",
+		"color": "#717d7e",
+		"colorText": "#FFFFFF",
+		"start": "2020-03-23",
+		"end": "2020-03-24"
+	}
+]
+```
+
+Только hex и rgba могут использоваться как цвета!
+
+Настройки, которые не перечислены в таблице ниже, говорят сами за себя.
+
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/calendar_layout.png"></td><td> дни недели, которые будут показаны </td><td> Указывает, какие дни недели отображать. Для отображения только с понедельника по пятницу можно использовать значения <code>1, 2, 3, 4, 5</code> . Для отображения недели, начинающейся в понедельник, можно использовать значения <code>1, 2, 3, 4, 5, 6, 0</code> . </td></tr><tr><td> Идентификатор объекта </td><td> Объект должен быть строкой json, структура которой должна быть описана выше </td></tr><tr><td rowspan=2><img src="doc/en/media/calendar_timeaxis.png"></td><td> час начала </td><td> Час, с которого встречи должны отображаться в представлении недели и дня. </td></tr><tr><td> последний час </td><td> Die Stunde bis wann in der Wochen und Tagesansicht Termine angezeigt werden sollen </td></tr></tbody></table>
+
+Если вы хотите использовать виджет с [ical адаптер](https://github.com/iobroker-community-adapters/ioBroker.ical), вы можете использовать следующий сценарий для преобразования объекта ical в работу с виджетом.
+
+```
+// momentjs is required as dependecies in javascript adapter
+const moment = require("moment");
+
+var instances = $(`[id=ical.*.data.table]`);
+instances.on(ical2CalendarWidget);
+
+function ical2CalendarWidget() {
+    try {
+        let calList = [];
+
+        for (var inst = 0; inst <= instances.length - 1; inst++) {
+            let icalObj = getState(instances[inst]).val;
+
+            if (icalObj) {
+                for (var i = 0; i <= icalObj.length - 1; i++) {
+                    let item = icalObj[i];
+
+                    // extract calendar color
+                    let calendarName = item._class.split(' ')[0].replace('ical_', '');
+
+                    let startTime = moment(item._date);
+                    let endTime = moment(item._end);
+
+                    let start = startTime.format("YYYY-MM-DD HH:mm");
+                    let end = endTime.format("YYYY-MM-DD HH:mm");
+
+                    if (startTime.format('HH:mm') === '00:00' && endTime.format('HH:mm') === '00:00') {
+                        // is full-day event
+                        if (endTime.diff(startTime, 'hours') === 24) {
+                            // full-day event, one day
+                            start = startTime.format("YYYY-MM-DD");
+                            end = startTime.format("YYYY-MM-DD");
+                        } else {
+                            // full-day event, multiple days
+                            start = startTime.format("YYYY-MM-DD");
+                            end = endTime.format("YYYY-MM-DD");
+                        }
+                    }
+
+                    // create object for calendar widget
+                    calList.push({
+                        name: item.event,
+                        color: getMyCalendarColor(calendarName),
+                        colorText: getMyCalendarTextColor(calendarName),
+                        start: start,
+                        end: end
+                    })
+                }
+
+                function getMyCalendarColor(calendarName) {
+                    // assign colors via the calendar names, use calendar name as set in ical
+                    if (calendarName === 'calendar1') {
+                        return '#FF0000';
+                    } else if (calendarName === 'calendar2') {
+                        return '#44739e'
+                    } else if (calendarName === 'calendar3') {
+                        return '#32a852'
+                    }
+                }
+
+                function getMyCalendarTextColor(calendarName) {
+                    // assign colors via the calendar names, use calendar name as set in ical
+                    if (calendarName === 'calendar1') {
+                        return '#FFFFFF';
+                    } else if (calendarName === 'calendar2') {
+                        return '#FFFFFF'
+                    } else if (calendarName === 'calendar3') {
+                        return '#FFFFFF'
+                    }
+                }
+            }
+
+            // Enter the destination data point that is to be used as object ID in the widget
+            setState('0_userdata.0.materialdesignwidgets.ical2Calendar', JSON.stringify(calList), true);
+        }
+    } catch (e) {
+        console.error(`ical2MaterialDesignCalendarWidget: message: ${e.message}, stack: ${e.stack}`);
+    }
+}
+
+ical2CalendarWidget();
+```
 
 ## Changelog
 
-### 0.2.xx
+### 0.3.xx
+* (Scrounger): Masonry Views Widget: visible condition added
+* (Scrounger): Calendar Widget added
+* (Scrounger): translation added
+* (Scrounger): VIS Editor: Link to Forum widget threads added
+* (Scrounger): bug fixes
+
+### 0.2.49
+* (Scrounger): new Select Widget added
+* (Scrounger): Autocomplete Widget added
 * (Scrounger): Alerts Widget added
 * (Scrounger): use of Material Design Icons as images added
 * (Scrounger): Perfomrance optimized
@@ -342,7 +528,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 ## License
 MIT License
 
-Copyright (c) 2019 Scrounger <scrounger@gmx.net>
+Copyright (c) 2020 Scrounger <scrounger@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

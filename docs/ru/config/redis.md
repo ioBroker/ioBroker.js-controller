@@ -4,9 +4,9 @@ lastChanged: 13.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/config/redis.md
 translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
-hash: IsEV8V/gskssCSNH2QJqLyYHdsMZE7nxlpG/QV8rNuU=
+hash: yBzjHXuC5zyz0NoZKIJJIMZnklG2Anu07iyz/pLi32Q=
 ---
 # База данных Redis для ioBroker
-?> ***Это подстановочный знак*** . <br><br> Помогите с ioBroker и расширьте эту статью. Пожалуйста, обратите внимание на [Руководство по стилю ioBroker](community/styleguidedoc), чтобы изменения могли быть легко приняты.
+?> ***Это заполнитель*** . <br><br> Помогите с ioBroker и раскройте эту статью. Обратите внимание на [Руководство по стилю ioBroker](community/styleguidedoc), чтобы изменения могли быть приняты более легко.
 
-@@@ Где вы получаете Redis, как вы его устанавливаете, как вы его активируете, как вы это проверяете? @@@
+@@@ Где взять Redis, как его установить, как его активировать, как его проверить? @@@

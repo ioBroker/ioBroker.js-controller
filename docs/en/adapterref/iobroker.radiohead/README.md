@@ -292,6 +292,9 @@ Each instance of the adapter provides the following information:
 If necessary, the counters of the messages can be reset to 0 by writing to the object `actions.resetCounters`.
 
 ## Changelog
+### 1.0.4 (2020-02-03)
+* (Peter Müller) Updated connectionType and dataSource in io-package.json.
+
 ### 1.0.3 (2020-01-23)
 * (Peter Müller) Better handling of changed objects in admin.
 * (Peter Müller) Added `connectionType` in `io-package.json` and updated dependencies.
@@ -307,4 +310,4 @@ If necessary, the counters of the messages can be reset to 0 by writing to the o
 
 ## License
 
-Copyright (c) 2019 Peter Müller <peter@crycode.de>
+Copyright (c) 2019-2020 Peter Müller <peter@crycode.de>
