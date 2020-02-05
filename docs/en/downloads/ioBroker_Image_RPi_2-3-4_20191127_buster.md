@@ -3,7 +3,7 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/downloads/ioBroker_Image_RPi_2-3-4_20191127_buster.md
 title: ioBroker Image for Raspberry Pi2 / 3/4 Buster 20191127
-hash: VMimg5s0Ar5yl1CUlqb84IAS0AMoMcD8TCLv8whhtHw=
+hash: NpNX09q/cxysJvJptolRsFtxi4rBhgFAkCb+5zdnbJo=
 ---
 # IoBroker Image for Raspberry Pi2 / 3/4 Buster 20191127
 ## Generate a µ-SD card
@@ -17,7 +17,7 @@ The image is extracted and then written to the SD card using the Balena Etcher p
 ## Components of the image
 The image contains the Raspbian lite, based on Debian 10 “Buster” from 09/26/2019 after download from http://www.raspberrypi.org/downloads.
 
-In addition, packages that are necessary for some adapters were installed.
+In addition, packages that are necessary for some adapters have been installed.
 
 The following user has been created:
 
@@ -49,15 +49,15 @@ if the host name is changed, please enter `iobroker host this` in the console in
 * If necessary, make adjustments under point 4: `Localization Options`. The default settings apply to Germany
 
 ## System update
-As it may have been some time since the image was created, the first thing to do is to update the system.
+As it may have been a while since the image was downloaded, the first thing to do is to update the system.
 
 To update Linux and nodejs to current versions, do the following on the console:
 
 ```sudo apt-get update && sudo apt-get upgrade -y```
 
-You should also check whether there are already updates for the already installed adapters and the js controller (see tab Hosts).
+You should also check whether there are already updates for the already installed adapters and the js controller (see the Hosts tab).
 
-In addition to the smallest possible size of an image, this is also the reason that only a few adapters are preinstalled.
+In addition to the smallest possible size of an image, this is also the reason that only a few adapters are already preinstalled.
 
 In such cases, always first run the js-controller via the console according to the instructions in the Hosts tab, then if necessary the Adapter Admin and then all other adapters.
 
@@ -74,11 +74,11 @@ After the command:
 Is the Redis server ready and is available at port 6379
 
 ### Switching the states to Redis
-The use of Redis to save the states in ioBroker must be configured in the console with:
+The use of Redis to store the states in ioBroker must be configured in the console with:
 
 `iobroker setup custom`
 
-In the following dialog, enter as follows (note on the 4th line):
+In the following dialog, enter as follows (attention in the 4th line):
 
 ```
 Type of objects DB [file, couch, redis], default [file]: ENTER
@@ -94,6 +94,6 @@ Special features when installing in a multihost system are described here:
 
 [Click here](config/multihost.md)
 
-Approval of redis for the iobroker user the backitup adapter can also access redis, the user must be given the necessary rights to do so with:
+Release of redis for the iobroker user So that e.g. the backitup adapter can also access redis, the user must be given the necessary right to do so with:
 
 `sudo usermod -a -G redis iobroker`

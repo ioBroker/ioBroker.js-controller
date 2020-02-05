@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tuya/README.md
 title: ioBroker.tuya
-hash: ITcFjoWgbOVJgbLYwtz9JlPem9GwgnE7neC7mwnrJt4=
+hash: OPYx8AWx1cy+97xg1gQ6kgOMDXhT+6AyWkYwcNiBNY0=
 ---
 ![Logo](../../../en/adapterref/iobroker.tuya/admin/tuya.png)
 
@@ -16,17 +16,25 @@ hash: ITcFjoWgbOVJgbLYwtz9JlPem9GwgnE7neC7mwnrJt4=
 ![NPM](https://nodei.co/npm/iobroker.tuya.png?downloads=true)
 
 # IoBroker.tuya
-** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. **
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
 
 ioBroker-Adapter zur Verbindung mit mehreren kleinen und billigen WLAN-Geräten, die mit der Tuya Cloud verbunden sind und hauptsächlich die Smartlife App / Alexa-Skill verwenden. Der Adapter unterstützt das Lesen von Echtzeit-Statusaktualisierungen und die Steuerung dieser Geräte, sobald sie mit der jeweiligen Handy-App synchronisiert sind.
 
 Tuya-Geräte sind ESP8266MOD WiFi-Smart-Geräte von Shenzhen Xenon.
 
-Neben Geräten, die mit der Smart Live App verwendet werden können, sollte auch die Verwendung der Jinvoo Smart App, der Xenon Smart App, der eFamilyCloud, der io.e (Luminea oder einer ähnlichen) App möglich sein. Bitte melden Sie sich bei Erfolg zurück.
+Neben Geräten, die mit der Smart Live App verwendet werden können, sollte auch die Verwendung der Jinvoo Smart App, der Xenon Smart App, der eFamilyCloud, der io.e (Luminea oder einer ähnlichen) App möglich sein. Bitte melden Sie sich bei Erfolg zurück. <img src="https://https://raw.githubusercontent.com/Apollon77/ioBroker.tuya/master/admin/warning.png" width="50" height="50"> **Der Adapter funktioniert nur mit Tuya und kompatiblen Apps, solange deren Version &lt;3.14 (!!) ist**
 
-Der Adapter funktioniert nachweislich sehr gut mit allen Geräten, die "immer in WLAN" sind. Geräte, die nur online geschaltet werden, wenn ein Ereignis vorliegt, ihre Daten senden und wieder offline geschaltet werden, werden nicht unterstützt.
+Der Adapter funktioniert nachweislich sehr gut mit allen Geräten, die "immer in WLAN" sind. Geräte, die nur online geschaltet werden, wenn ein Ereignis vorliegt, ihre Daten senden und wieder offline geschaltet werden, werden nicht unterstützt. Dies bedeutet, dass **batteriebetriebene Geräte normalerweise NICHT funktionieren!**
 
 Eine Adapterinstanz kann alle Geräte in einem Netzwerk verarbeiten, die UDP-Pakete weiterleiten.
+
+## Kompatible Mobile Apps und Versionen
+Die aktuellen Versionen des Tuya Smart und auch der Smartlife App sind **nicht mehr kompatibel** mit der Funktionsweise des Adapters, da Tuya den gesamten Datenverkehr verschlüsselt hat, den der Adapter schnüffeln konnte. Vorerst funktionieren noch einige ältere Versionen der Apps ...
+
+* Smartlife App <3.14, am besten 3.12.6 !!
+* Tuya Smart App <3.14, am besten 3.12.x
+* STL Smart Home App 1.1.1 (zuletzt datiert September 2019)
+* Ucomen Home App (??)
 
 ## Wie der Adapter funktioniert
 ### Grundfunktionalität
@@ -39,7 +47,7 @@ Neuere verschlüsselte Geräte werden NICHT angezeigt, bevor Sie eine Gerätesyn
 ### Erweiterte Funktionalität nach Gerätesynchronisation
 Um die volle Funktionalität des Adapters zu erhalten und auch Geräte mit der neuen verschlüsselten Firmware zu unterstützen, muss dem Adapter ein Verschlüsselungsschlüssel bekannt sein.
 
-Der einfachste Weg, diesen Verschlüsselungsschlüssel zu erhalten, besteht darin, sie über die verwendete mobile App abzurufen. Zu diesem Zweck stellt der Adapter einen Proxy bereit, um die Kommunikation der App mit den Tuya-Servern abzufangen und die erforderlichen Informationen abzurufen.
+Der einfachste Weg, diesen Verschlüsselungsschlüssel zu erhalten, besteht darin, sie über die verwendete mobile App abzurufen. Dazu stellt der Adapter einen Proxy bereit, um die Kommunikation der App mit den Tuya-Servern abzufangen und die erforderlichen Informationen abzurufen.
 
 ** Wichtiger Hinweis für iOS-Benutzer: ** Der hier beschriebene Proxy-Ansatz funktioniert nicht mehr. Sobald Sie Smart Life App Version 3.10 oder höher haben, ist die Kommunikation von der App für den Proxy nicht mehr sichtbar. Es funktioniert jedoch immer noch mit allen Android-App-Versionen. Der beste Ansatz ist daher ein Androis-Emulator, wie unter https://forum.iobroker.net/topic/23431/aufruf-tuya-adapter-tests-verschl%C3%BCsselte- beschrieben. ger% C3% A4te / 19
 
@@ -61,7 +69,7 @@ Die Synchronisierung wird nur zu Beginn oder nach dem Hinzufügen neuer Geräte 
 Einige Bilder für bestimmte mobile Betriebssysteme finden Sie unter [Proxy-Seite](PROXY.md).
 
 ## Nicht für batteriebetriebene Geräte
-Batteriebetriebene Geräte werden von diesem Adapter normalerweise NICHT unterstützt! Der Grund dafür ist, dass sie nicht immer online sind, um Strom zu sparen. Wann immer sie ein Signal erhalten, gehen Sie online, senden Sie das Update an die Tuya-Cloud-Server und gehen Sie wieder offline. Sie senden keine UDP-Pakete aus oder sind so lange online, dass der Adapter eine Verbindung zu ihnen herstellen kann.
+Batteriebetriebene Geräte werden von diesem Adapter normalerweise NICHT unterstützt! Der Grund dafür ist, dass sie nicht immer online sind, um Strom zu sparen. Wenn sie ein Signal erhalten, gehen Sie online, senden Sie das Update an die Tuya-Cloud-Server und gehen Sie wieder offline. Sie senden keine UDP-Pakete aus oder sind so lange online, dass der Adapter eine Verbindung zu ihnen herstellen kann.
 Sobald jemand eine Möglichkeit findet, Daten direkt aus der Tuya-Cloud abzurufen, kann sich dies ändern.
 
 ## Credits
@@ -71,12 +79,72 @@ Die Arbeit des Adapters wäre ohne die großartige Arbeit von @codetheweb, @kueb
 * Verbesserung der Tests: State Checks und SetState's
 * Dokumentation verbessern
 
+## So melden Sie Probleme und Funktionsanforderungen
+Bitte benutzen Sie dazu GitHub.
+
+Stellen Sie den Adapter am besten auf den Debug-Protokollmodus ein (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen schneidet). Wenn Sie es nicht in der GitHub-Ausgabe bereitstellen möchten, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
+
+## Was ist Sentry und was wird den Servern gemeldet?
+Sentry.io ist eine Möglichkeit für Entwickler, sich einen Überblick über Fehler in ihren Anwendungen zu verschaffen. Und genau das ist in diesem Adapter implementiert.
+
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server gesendet, der in Deutschland gehostet wird. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Namen oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+
 ## Changelog
 
-### 3.1.1 (2019-11-23)
-* (Apollon77) try to get rid of SSL errors with new proxies
+### 3.2.0 (2020-02-05)
+* (Apollon77) Many new schemas added
+* (Apollon77) Add Infos about compatible App versions with link to enhanced docs
+* (Apollon77) try to detect unsupported apps when trying to sync and write warning in logfile
+* (Apollon77) Switch Sentry to iobroker own instance hosted in germany
+
+### 3.1.16 (2019-12-26)
 * (Apollon77) New schemas added
-* (Apollon77) Sentry added for error reporting
+* (Apollon77) prevent crash when proxy request had no hosts array
+
+### 3.1.15 (2019-12-24)
+* (Apollon77) New schemas added
+* (Apollon77) prevent usage of invalid Port numbers
+
+### 3.1.14 (2019-12-20)
+* (Apollon77) New schemas added
+* (Apollon77) prevent usage of invalid Port numbers
+
+### 3.1.13 (2019-12-11)
+* (Apollon77) New schemas added
+
+### 3.1.12 (2019-12-07)
+* (Apollon77) New schemas added
+* (Apollon77) Dependency update
+
+### 3.1.11 (2019-12-06)
+* (Apollon77) New schemas added
+* (Apollon77) Dependency update
+
+### 3.1.10 (2019-12-05)
+* (Apollon77) New schemas added
+
+### 3.1.9 (2019-11-30)
+* (Apollon77) New schemas added
+* (Apollon77) Improve error handling for proxy web port
+
+### 3.1.8 (2019-11-28)
+* (Apollon77) New schemas added
+* (Apollon77) Add check for invalid proxy port
+
+### 3.1.7 (2019-11-26)
+* (Apollon77) New schemas added
+
+### 3.1.6 (2019-11-25)
+* (Apollon77) New schemas added
+* (Apollon77) Optimize Sentry integration and dedupe errors
+
+### 3.1.4 (2019-11-24)
+* (Apollon77) New schemas added
+
+### 3.1.3 (2019-11-24)
+* (Apollon77) try to get rid of SSL errors with new proxies
+* (Apollon77) Many new schemas added
+* (Apollon77) Sentry added for error/exception/schema reporting
 * (Apollon77) Compact Mode added
 
 ### 3.0.0 (2019-09-03)

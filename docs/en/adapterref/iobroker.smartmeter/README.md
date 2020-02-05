@@ -92,7 +92,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 3.0.9 (2020-02-04)
+### 3.0.10 (2020-02-05)
 * (Apollon77) make sure HTTP based smartmeters are also polled frequently when responses are invalid
 * (Apollon77) other optimizations
 * (Apollon77) Switch Sentry to iobroker own instance hosted in germany

@@ -82,6 +82,8 @@ Documentation for the vis-widgets are available inside vis or [Widget-Documentat
 * widget gameday: fix issue with not working gamedaycount
 ### 0.8.0
 * push version for latest repository. fix some typos. fix a problem with date handling on different OS
+### 0.9.0
+* new Function for vis Binding to search for games at the actual day for favorite clubs, css-classes für games at actual day, fix bug to show the right match results, 
 
 
 ## License

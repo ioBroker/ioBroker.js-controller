@@ -49,7 +49,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 2.1.2 (2020-02-04)
+### 2.1.3 (2020-02-05)
 * (Apollon77) optimize adapter stop logic to prevent crashes
 * (Apollon77) Switch Sentry to iobroker own instance hosted in germany
 

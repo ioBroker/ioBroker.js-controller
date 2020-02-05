@@ -3,12 +3,12 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.linkeddevices/README.md
 title: без заголовка
-hash: fPVx5qQBuRw1am/e6Mdqgr/Zt7fBt9lI6Dy+/84luOI=
+hash: TQxFlCGAWt0gLcVkz0a2/nr/4wSvxPg7TRaP6ESbzb8=
 ---
 ![Количество установок](http://iobroker.live/badges/linkeddevices-installed.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.linkeddevices.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.linkeddevices.svg)
-![Статус зависимости](https://img.shields.io/david/Scrounger/iobroker.linkeddevices.svg)
+![Состояние зависимости](https://img.shields.io/david/Scrounger/iobroker.linkeddevices.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Scrounger/ioBroker.linkeddevices/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.linkeddevices.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/Scrounger/ioBroker.linkeddevices/master.svg)
