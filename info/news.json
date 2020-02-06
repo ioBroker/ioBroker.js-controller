@@ -705,5 +705,41 @@
             "cloud": "installed",
             "iot": "installed"
         }
+    },
+    {
+        "title": {
+            "en": "BREAKING CHANGE: No support for iPad 1+2 with updates for web, socketio and admin!",
+            "de": "BREAKING CHANGE: Keine Unterstützung für iPad 1 + 2 mit Updates für Web, Socketio und Admin!",
+            "ru": "BREAKING CHANGE: нет поддержки iPad 1 + 2 с обновлениями для Интернета, socketio и admin!",
+            "pt": "BREAKING CHANGE: Não há suporte para iPad 1 + 2 com atualizações para web, socketio e admin!",
+            "nl": "BREAKING CHANGE: Geen ondersteuning voor iPad 1 + 2 met updates voor web, socketio en admin!",
+            "fr": "CHANGEMENT DE RUPTURE: Pas de support pour iPad 1 + 2 avec des mises à jour pour le web, socketio et admin!",
+            "it": "CAMBIAMENTO DI ROTTURA: Nessun supporto per iPad 1 + 2 con aggiornamenti per web, socketio e admin!",
+            "es": "CAMBIO RÁPIDO: ¡No hay soporte para iPad 1 + 2 con actualizaciones para web, socketio y admin!",
+            "pl": "ZMIANA ZMIAN: Brak wsparcia dla iPada 1 + 2 z aktualizacjami dla sieci, socketio i administratora!",
+            "zh-cn": "突破性变化：不支持iPad 1 + 2的Web，Socketio和Admin更新！"
+        },
+        "content": {
+            "en": "The updates for web (3.0.0), socketio (3.0.0) and admin (4.0.0) do not support older devices like iPad 1+2 anymore! Please DO NOT install the updates if you use such devices! More information see the Community posts in Forum, Facebook and Teamspeak",
+            "de": "Die Updates für Web (3.0.0), Socketio (3.0.0) und Admin (4.0.0) unterstützen keine älteren Geräte wie iPad 1 + 2 mehr! Bitte installiere die Updates NICHT, wenn Du solche Geräte verwenden! Weitere Informationen findest Du in den Community-Beiträgen im Forum, Facebook und Teamspeak",
+            "ru": "Обновления для web (3.0.0), socketio (3.0.0) и admin (4.0.0) больше не поддерживают старые устройства, такие как iPad 1 + 2! Пожалуйста, НЕ устанавливайте обновления, если вы используете такие устройства! Более подробную информацию смотрите в сообщениях сообщества на форуме, в Facebook и Teamspeak.",
+            "pt": "As atualizações para web (3.0.0), socketio (3.0.0) e admin (4.0.0) não suportam mais dispositivos antigos como o iPad 1 + 2! NÃO instale as atualizações se você usar esses dispositivos! Mais informações, veja as postagens da comunidade em Fórum, Facebook e Teamspeak",
+            "nl": "De updates voor web (3.0.0), socketio (3.0.0) en admin (4.0.0) ondersteunen geen oudere apparaten zoals iPad 1 + 2 meer! Installeer de updates NIET als u dergelijke apparaten gebruikt! Meer informatie zie de communityberichten op Forum, Facebook en Teamspeak",
+            "fr": "Les mises à jour pour le Web (3.0.0), socketio (3.0.0) et admin (4.0.0) ne prennent plus en charge les appareils plus anciens comme l'iPad 1 + 2! Veuillez NE PAS installer les mises à jour si vous utilisez de tels appareils! Pour plus d'informations, consultez les messages de la communauté sur Forum, Facebook et Teamspeak",
+            "it": "Gli aggiornamenti per web (3.0.0), socketio (3.0.0) e admin (4.0.0) non supportano più i dispositivi più vecchi come iPad 1 + 2! Si prega di NON installare gli aggiornamenti se si utilizzano tali dispositivi! Maggiori informazioni vedi i post della community su Forum, Facebook e Teamspeak",
+            "es": "¡Las actualizaciones para web (3.0.0), socketio (3.0.0) y admin (4.0.0) ya no son compatibles con dispositivos más antiguos como iPad 1 + 2! ¡NO instale las actualizaciones si utiliza dichos dispositivos! Más información vea las publicaciones de la Comunidad en Forum, Facebook y Teamspeak",
+            "pl": "Aktualizacje dla sieci (3.0.0), socketio (3.0.0) i admin (4.0.0) nie obsługują już starszych urządzeń takich jak iPad 1 + 2! NIE instaluj aktualizacji, jeśli korzystasz z takich urządzeń! Więcej informacji można znaleźć w postach społeczności na forum, Facebooku i Teamspeak",
+            "zh-cn": "Web（3.0.0），socketio（3.0.0）和admin（4.0.0）的更新不再支持iPad 1 + 2等旧设备！如果您使用此类设备，请不要安装更新！有关更多信息，请参见论坛，Facebook和Teamspeak中的社区帖子。"
+        },
+        "id": "socketio-update-web-admin-socketio",
+        "class": "warning",
+        "fa-icon": "exclamation-triangle",
+        "created": "2020-02-06T17:00:00.000Z",
+        "repo": "latest",
+        "conditions": {
+            "admin": "smaller(4.0.0)",
+            "web": "smaller(3.0.0)",
+            "socketio": "smaller(3.0.0)"
+        }
     }
 ]
