@@ -170,6 +170,9 @@ IP-адрес с которого доступен драйвер (поддер�
 ![ioBroker.admin - system settings](img/admin_SystemSettings.jpg)
 
 ## Changelog
+### 4.0.0 (2020-01-15)
+* (Apollon77) upgrade all dependencies, especially socketio to current version! This might break ipad 1/2 devices
+
 ### 3.7.9 (2020-01-28)
 * (bluefox) The log downloading was fixed
 

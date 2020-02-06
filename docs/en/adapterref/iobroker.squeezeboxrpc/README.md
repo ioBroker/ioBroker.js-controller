@@ -171,6 +171,8 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * ~~autodiscover logitech media server~~
 
 ## Changelog
+### 0.8.31
+ * change behaviour of deleting favorites
 ### 0.8.30
  * change from the issue of the adapter checker
 ### 0.8.29

@@ -76,6 +76,9 @@ of the single instance can be set. In the selection Menu the the displayed minim
 lettering of the log appears in red.
 
 ## Changelog
+### 4.0.0 (2020-01-15)
+* (Apollon77) upgrade all dependencies, especially socketio to current version! This might break ipad 1/2 devices
+
 ### 3.7.9 (2020-01-28)
 * (bluefox) The log downloading was fixed
 

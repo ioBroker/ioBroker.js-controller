@@ -123,6 +123,9 @@ Auch die Repositorien und Sicherheitseinstellungen können hier eingestellt werd
 Eine tiefergehende Beschreibung ist über den Link in dem Titel dieses Abschnitts zu erreichen.
 
 ## Changelog
+### 4.0.0 (2020-01-15)
+* (Apollon77) upgrade all dependencies, especially socketio to current version! This might break ipad 1/2 devices
+
 ### 3.7.9 (2020-01-28)
 * (bluefox) The log downloading was fixed
 

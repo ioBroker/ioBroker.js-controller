@@ -306,6 +306,9 @@ On some web-sockets clients there is performance problem with communication. Som
 You can set option *Force Web-Sockets* to force using only web-sockets transport.
 
 ## Changelog
+### 3.0.0 (2020-01-15)
+* (Apollon77) upgrade all dependencies, especially socketio to current version! This might break ipad 1/2 devices
+
 ### 2.1.2 (2019-09-28)
 * (Apollon77) optimize shutdown for compact mode
 

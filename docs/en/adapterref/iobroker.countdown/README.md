@@ -52,6 +52,9 @@ You  can delete a countdown with the sendto. Therefore, send just the name with 
 * Possibility to use plus and minus in addminutes and the other add functions
 
 ## Changelog
+## 1.0.5 (2020-02-05)
+* (jack-blackson) Bugfix for alarm at midnight -> thanks to @Lueghi
+
 ## 1.0.4 (2019-08-25)
 * (jack-blackson) Reordered release infos
 

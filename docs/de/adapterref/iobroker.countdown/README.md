@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: 6m4E+5DhMPAtwRejIliYG6m+WNCHVJYCBw+/CSuNbx4=
+hash: hmuqgdnuVBbeU7rgtYZEUOe+Wsse6dubYbJrjEHoit8=
 ---
 ![Logo](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -59,6 +59,9 @@ Sie können einen Countdown mit dem sendto löschen. Senden Sie daher nur den Na
 ## Hinzuzufügende Funktionen
 * Möglichkeit, ein Skript als Parameter hinzuzufügen und es am Ende des Countdowns zu starten
 * Möglichkeit, Plus und Minus in addminutes und den anderen add-Funktionen zu verwenden
+
+## 1.0.5 (2020-02-05)
+* (jack-blackson) Bugfix für Alarm um Mitternacht -> danke an @Lueghi
 
 ## 1.0.4 (2019-08-25)
 * (jack-blackson) Nachbestellte Release-Infos
