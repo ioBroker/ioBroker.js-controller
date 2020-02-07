@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3.0 (2020-xx-xx) Release Elena
+WIP
+
 ## 2.2.8 (2020-01-24) Release Dina
 * (bluefox) Add for delObject the recursive flag to recursively delete objects; use feature flag ADAPTER_DEL_OBJECT_RECURSIVE in your adapter code to detect if the js-controller supports it or not!
 * (bluefox) add check for sudo for package manager
