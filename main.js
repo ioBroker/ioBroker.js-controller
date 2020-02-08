@@ -3035,6 +3035,7 @@ function startInstance(id, wakeUp) {
                         if (fileNameFull) {
                             try {
                                 decache = decache || require('decache');
+                                decache(path.join(__dirname,'lib','adapter.js'));
                                 decache(fileNameFull);
 
                                 procs[id].process = {
