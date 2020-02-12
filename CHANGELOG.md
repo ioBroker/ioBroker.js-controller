@@ -1,5 +1,15 @@
 # Changelog
 
+## 2.2.9 (2020-02-12) Release Dina
+* (Apollon77) fix pot. crash for edge cases
+* (Apollon77) allow to deactivate logfile zipping by iobroker.json (for non-windows systems)
+* (Apollon77) make sure sigKill state only handles number values (fixes #638)
+* (bluefox) add better checks for file CLI commands
+* (Apollon77) make sure directly is created before writing meta data and send redis error correctly, prevent controller crash (fixes #644)
+* (foxriver76) optimize package manager handling  (fixes #631)
+* (Apollon77) make sure deleting running instances does not crash js-controller (fixes #658)
+* (Apollon77) Downgrade semver to stay compatible with nodejs 8
+
 ## 2.2.8 (2020-01-24) Release Dina
 * (bluefox) Add for delObject the recursive flag to recursively delete objects; use feature flag ADAPTER_DEL_OBJECT_RECURSIVE in your adapter code to detect if the js-controller supports it or not!
 * (bluefox) add check for sudo for package manager
