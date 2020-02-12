@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "2.2.8",
+  "version": "2.2.9",
   "engines": {
     "node": ">=8.0.0"
   },
@@ -37,7 +37,7 @@
     "readline-sync": "^1.4.10",
     "request": "^2.88.0",
     "respjs": "^4.2.0",
-    "semver": "^7.1.1",
+    "semver": "^6.3.0",
     "tar": "^5.0.5",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.4.2",
