@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "2.2.8",
+        "version": "2.2.9",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "2.2.9": {
+                "en": "bugfixes and optimizations, see CHANGELOG.md",
+                "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
+                "ru": "исправления и оптимизации, см. CHANGELOG.md",
+                "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
+                "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
+                "fr": "corrections de bogues et optimisations, voir CHANGELOG.md",
+                "it": "correzioni di errori e ottimizzazioni, vedere CHANGELOG.md",
+                "es": "correcciones de errores y optimizaciones, ver CHANGELOG.md",
+                "pl": "poprawki i optymalizacje, patrz CHANGELOG.md",
+                "zh-cn": "错误修正和优化，请参阅CHANGELOG.md"
+            },
             "2.2.8": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
                 "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
