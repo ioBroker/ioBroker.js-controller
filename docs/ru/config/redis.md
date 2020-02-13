@@ -37,7 +37,7 @@ redis-cli ping
 
 Для автозапуска  **redis-server** после перезагрузки необходимо внести правки в файл **iobroker-startup.sh**.
 Файл находится по пути ``` opt/scripts/ ```
-![iobroker-startup.sh](/startup.jpg "Добавить строку")
+![iobroker-startup.sh](./docs/ru/config/startup.jpg "Добавить строку")
 
 {% highlight bash %}
 cd /usr/bin
