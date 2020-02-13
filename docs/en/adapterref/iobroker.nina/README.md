@@ -44,47 +44,55 @@ CipherString = DEFAULT@SECLEVEL=1
 
 ## Changelog
 
+### 0.0.19
+
+- (tomboxi) Auslastung reduziert. Objekte werden nur geändert wenn die Warnungen sich ändern.
+
+### 0.0.17
+
+- (tomboxi) Fehlerbehandlung verbessert. Option zum Deaktiveren der Area Objekte hinzugefügt.
+
 ### 0.0.13
 
--   (tomboxi) Identifierliste hinzugefügt.
+- (tomboxi) Identifierliste hinzugefügt.
 
 ### 0.0.12
 
--   (tomboxi) Fix Info connection, improve deleting, fix gzip problem.
+- (tomboxi) Fix Info connection, improve deleting, fix gzip problem.
 
 ### 0.0.8
 
--   (tomboxi) Katwarn Warnungen hinzugefügt.
+- (tomboxi) Katwarn Warnungen hinzugefügt.
 
 ### 0.0.7
 
--   (tomboxi) BiwApp Warnungen hinzugefügt.
+- (tomboxi) BiwApp Warnungen hinzugefügt.
 
 ### 0.0.6
 
--   (tomboxi) NumberOfWarns werden nur geändert wenn eine Änderung vorliegt
+- (tomboxi) NumberOfWarns werden nur geändert wenn eine Änderung vorliegt
 
 ### 0.0.5
 
--   (tomboxi) Option für Beispielwarnung
+- (tomboxi) Option für Beispielwarnung
 
 ### 0.0.4
 
--   (tomboxi) Mehrere Warnungen werden jetzt korrekt angezeigt.
+- (tomboxi) Mehrere Warnungen werden jetzt korrekt angezeigt.
 
 ### 0.0.3
 
--   (tomboxi) Unwetter und Hochwasserwarnungen hinzugefügt
+- (tomboxi) Unwetter und Hochwasserwarnungen hinzugefügt
 
 ### 0.0.1
 
--   (tomboxi) initial release
+- (tomboxi) initial release
 
 ## License
 
 MIT License
 
-Copyright (c) 2019 tomboxi <tombox_2020@gmail.com>
+Copyright (c) 2020 tomboxi <tombox_2020@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

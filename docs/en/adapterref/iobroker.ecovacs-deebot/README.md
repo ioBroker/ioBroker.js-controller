@@ -9,29 +9,48 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 
 ## Models
 
-So far, only devices that communicate with the **XMPP** protocol work.
+So far, only devices that communicate with the **XMPP** protocol work properly. 
+Devices that communicate with the **MQTT** protocol are experimental.
 
 You can check this with the state value `info.communicationProtocol` after successful connection establishment (values: `XMPP`, `MQTT`).
 
-### Works properly
-Basic commands such as `clean` (`auto`), `charge`, `stop` as well as `battery`, `charge`, `clean`  and `device` status are required for this and are not listed separately here.
+### Buttons and control
 
-| model | pause | spot | spotArea | customArea * | edge | playSound |
-|------ |------ |------ |------ |------ |------ |------ |
-| Deebot Ozmo 930 | x | | x | x | | x |
-| Deebot Slim 2 |  | x | | | x | |
+"Basic" commands are `clean` (`auto`), `charge`, `stop`. They are not listed separately here.
+
+| model | basic | pause | spot | spotArea | customArea * | edge | playSound | waterLevel |
+|------ |------ |------ |------ |------ |------ |------ |------ |------ |
+| Deebot Slim 2 | x | n/a | x | n/a | n/a | x | n/a | n/a |
+| Deebot 710 | x |  | | | | | | n/a |
+| Deebot 900 | x | | n/a | | | n/a | | n/a |
+| Deebot Ozmo 610 | x |  | x | n/a | n/a | x | | |
+| Deebot Ozmo 900 | | | n/a | | | n/a | | |
+| Deebot Ozmo 930 | x | x | n/a | x | x | n/a | x | x |
+| Deebot Ozmo 950 | | | n/a | | | n/a | | |
+
+### Info and status
+
+| model | battery | chargestatus | cleanstatus | waterLevel
+|------ |------ |------ |------ |------ 
+| Deebot Slim 2 | x | x | x | n/a |
+| Deebot 710 | | | | n/a |
+| Deebot 900 | | | | n/a |
+| Deebot Ozmo 610 | | | | |
+| Deebot Ozmo 900 | | | | |
+| Deebot Ozmo 930 | x | x | x | x |
+| Deebot Ozmo 950 | | | | |
 
 *) incl. number of `cleanings`
+
+### Works properly
+* Deebot Ozmo 610
+* Deebot Ozmo 930
+* Deebot Slim 2
 
 ### Should work
 * Deebot N79T
 * Deebot 601
-* Deebot Ozmo 610
-
-#### These models are unlikely to work
-* Deebot 900
-* Deebot Ozmo 900
-* Deebot Ozmo 950
+* Deebot Ozmo 960
 
 ## Control
 
@@ -94,8 +113,6 @@ Basic commands such as `clean` (`auto`), `charge`, `stop` as well as `battery`, 
 | Country code (continent) | Selection of pre-defined country codes (incl. continent) |
 | Device number | Selection for the current instance if you use multiple devices |
 | Number of spot areas | Number of sport areas defined in the Ecovacs app (default `0`) |
-
-*) The Ecovacs servers very often throw an odd error, so we want to try again automatically.
 
 ## Changelog
 

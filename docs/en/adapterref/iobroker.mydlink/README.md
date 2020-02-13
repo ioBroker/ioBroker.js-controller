@@ -41,6 +41,10 @@ The adapter does not interfere with the use of the app.
 
 ## Changelog
 
+### 0.0.7
+* (Garfonso) added info.connection state
+* (Garfonso) suppressed repeated error messages during polling.
+
 ### 0.0.6
 * (Garfonso) prevent removement of custom details in objects.
 

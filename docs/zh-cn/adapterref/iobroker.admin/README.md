@@ -74,6 +74,12 @@ BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
 日志的字体显示为红色。
 
 ## Changelog
+### 4.0.2 (2020-02-12)
+* (Apollon77) Downgrade semver to 6.3 to stay compatible with nodejs 8
+
+### 4.0.1 (2020-02-07)
+* (bluefox) Fixed the loading of some adapter configurations
+
 ### 4.0.0 (2020-01-15)
 * (Apollon77) upgrade all dependencies, especially socketio to current version! This might break ipad 1/2 devices
 

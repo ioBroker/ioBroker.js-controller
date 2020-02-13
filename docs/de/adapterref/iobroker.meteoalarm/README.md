@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: 6gepr/U5aI7aF0Lgl6lXxB+Fqs7459a8Xzg3v+pWfNg=
+hash: q3+ykWaSTPginlw8vXntnyzfAmmKaaanZiI6bTGdUww=
 ---
 ![Logo](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -16,7 +16,7 @@ hash: 6gepr/U5aI7aF0Lgl6lXxB+Fqs7459a8Xzg3v+pWfNg=
 # IoBroker.meteoalarm
 =================
 
-meteoalarm Adapter für ioBroker ------------------------------------------ -------------------------------- Dieser Adapter sendet Wetteralarme von meteoalarm.eu, einschließlich Wind, Schnee und Regen , hohe und niedrige Temperaturen usw. Diese Informationen sind in der Landessprache und für detaillierte Regionen verfügbar.
+meteoalarm Adapter für ioBroker ------------------------------------------ -------------------------------- Dieser Adapter ruft Wetteralarme von meteoalarm.eu ab, einschließlich Wind, Schnee, Regen , hohe und niedrige Temperatur usw. Diese Informationen sind in der Landessprache und für detaillierte Regionen verfügbar.
 
 ## Wie man es benutzt
 Bitte gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Gehen Sie dann zum RSS-Symbol oben rechts, machen Sie einen Rechtsklick und kopieren Sie den Link. Dies ist der Link, den Sie bitte zum Setup des Adapters hinzufügen.
@@ -29,11 +29,11 @@ Bitte gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Gehen S
 | Letzte Aktualisierung | Datum, an dem der Adapter das letzte Mal Daten empfangen hat |
 | Link | Link zum RSS Feed |
 | Standort | Alarmstandort |
-| Veröffentlichungsdatum Veröffentlichungsdatum des Alarms gemäß der Website |
+| Veröffentlichungsdatum | Veröffentlichungsdatum des Alarms gemäß der Website |
 | HTMLToday | HTML-Widget, das Alarme für heute anzeigt |
-| Wetterkarte Land | HTML Link zur Wetterkarte des Alarmlandes |
+| Wetterkartenland | HTML-Link zur Wetterkarte des Alarmlandes |
 | Heute / Morgen | Diese Datenpunkte sind für heute und morgen verfügbar: |
-| Text | Alarmtext in länderspezifischer Sprache |
+| Text | Alarm Text in länderspezifischer Sprache |
 | Von | Alarmstartdatum |
 | Bis | Enddatum des Alarms |
 | Art des Alarms als Zahl |
@@ -99,12 +99,15 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem bei Github. Gern
 ## Nicht mögliche Länder
 * Frankreich (kein RSS-Feed verfügbar)
 * Portugal (keine Aufteilung möglich)
-* Slowenien (kein RSS Feed verfügbar)
+* Slowenien (kein RSS-Feed verfügbar)
 
 ## Zu implementierende Funktionen
 * Behandeln Sie mehrere Alarme an einem Tag
 
-## 1.0.8 (15.11.2019)
+## 1.0.9 (2020-02-06)
+* (jack-blackson) Bugfix Deutschland
+
+## 1.0.8 (2019-11-15)
 * (jack-blackson) Hinzugefügt Polen, Moldawien, Griechenland, Rumänien
 * (jack-blackson) Neuer Datenpunkt hinzugefügt, um den Link zur Wetterkarte zu erhalten
 
@@ -112,51 +115,51 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem bei Github. Gern
 * (jack-blackson) Hinzugefügt: Tschechische Republik, Irland, Israel, Litauen, Lettland, Montenegro, Malta, Serbien, Schweden
 
 ## 1.0.6 (2019-10-19)
-* (jack-blackson) Schweiz & Slowakei hinzugefügt
+* (jack-blackson) Schweiz & Slowakia hinzugefügt
 
 ## 1.0.5 (2019-09-22)
 * (Jack-Blackson) Kleine Protokollierungsanpassungen
 
-## 1.0.4 (2019-09-11)
+## 1.0.4 (11.09.2019)
 * (Jack-Blackson) Travis-Fehler
 
-## 1.0.3 (2019-09-09)
-* (jack-blackson) Kleine Bugfixes, wechsle vom Typ "deamon" zu "schedule"
+## 1.0.3 (09.09.2019)
+* (jack-blackson) Kleine Bugfixes, ändern Sie von Typ "deamon" zu "Zeitplan"
 
 ## 1.0.2 (2019-08-25)
-* (jack-blackson) Nachbestellte Release-Infos
+* (jack-blackson) Neu geordnete Release-Infos
 
 ### 1.0.1 (2019-08-18)
-* (jack-blackson) Bugfix kein Alarmsymbol
+* (Jack-Blackson) Bugfix kein Alarmsymbol
 
 ### 1.0.0 (2019-08-12)
 * (Jack-Blackson) Release-Version
 
 ### 0.6.0 (2019-08-05)
-* (jack-blackson) Speichern Sie Wettersymbole lokal im Adapter
+* (Jack-Blackson) Speichern Sie die Wettersymbole lokal im Adapter
 
 ### 0.5.0 (2019-07-21)
-* (Jack-Blackson) Timeouts behandeln
+* (Jack-Blackson) Handle Timeouts
 * (jack-blackson) Übersetzungen für alle Sprachen
-* (Jack-Blackson) URL-Prüfungen
+* (jack-blackson) URL-Überprüfungen
 
 ### 0.4.0 (2019-07-20)
 * (jack-blackson) Daten für NL, NO, HR, FI, ES hinzugefügt
-* (jack-blackson) Typ Text hinzugefügt, Typ ist jetzt leer, wenn Level 1 ist (keine Warnung)
-* (jack-blackson) Angepasste Farben
+* (jack-blackson) Typ hinzugefügt Text, Typ ist jetzt leer, wenn Stufe 1 ist (keine Warnung)
+* (Jack-Blackson) Angepasste Farben
 
-### 0.3.0 (13.07.2019)
+### 0.3.0 (2019-07-13)
 * (jack-blackson) HTML Widget hinzugefügt
 * (Jack-Blackson) Bugfix-Symbol
 
 ### 0.2.0 (2019-07-12)
 * (jack-blackson) "Tomorrow" -Daten hinzugefügt
 
-### 0.1.0 (11.07.2019)
-* (Jack-Blackson) ursprüngliche Version
+### 0.1.0 (2019-07-11)
+* (Jack-Blackson) Erstversion
 
 ## Credits
-Glocke in der Ikone entworfen von Freepik von www.flaticon.com
+Bell in Icon von Freepik von www.flaticon.com
 
 ## Changelog
 

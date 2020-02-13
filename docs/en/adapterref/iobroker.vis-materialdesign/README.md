@@ -137,7 +137,7 @@ Settings that are not listed in the table below are self-explanatory.
         <tr>
             <td>JSON string</td>
             <td>Method of data of menu: json string<br>Here you can add a JSON string to define the menu entries or use bindings to a datapoint that contains a JSON string.<br><br>JSON string must have the following format:<br>
-<code>
+<pre><code>
 [
 	{
 		"text": "text 0",
@@ -158,7 +158,7 @@ Settings that are not listed in the table below are self-explanatory.
 		"icon": "facebook-workplace"
 	}
 ]
-</code>
+</code></pre>
             </td>
         </tr>
         <tr>
@@ -202,7 +202,7 @@ Settings that are not listed in the table below are self-explanatory.
         <tr>
             <td>JSON string</td>
             <td>Method of data of menu: json string<br>Here you can add a JSON string to define the menu entries or use bindings to a datapoint that contains a JSON string.<br><br>JSON string must have the following format:<br>
-<code>
+<pre><code>
 [
 	{
 		"text": "text 0",
@@ -223,7 +223,7 @@ Settings that are not listed in the table below are self-explanatory.
 		"icon": "facebook-workplace"
 	}
 ]
-</code>
+</code></pre>
             </td>
         </tr>
         <tr>
@@ -385,11 +385,41 @@ Settings that are not listed in the table below are self-explanatory.
 Input data must be a json array of objects, example:
 ```
 [
-{"img":"/vis.0/myImages/erlebnis_50.png","name":"Empire","betriebszeit":"4h 06m","funk":"5G","ip":"10.0.0.1"},
-{"img":"/vis.0/myImages/erlebnis_100.png","name":"Handy","betriebszeit":"13m","funk":"5G","ip":"10.0.0.2"},
-{"img":"/vis.0/myImages/erlebnis_100.png","name":"Harmony Hub - Wohnzimmer","betriebszeit":"18T 07h 21m","funk":"2G","ip":"10.0.0.3"},
-{"img":"/vis.0/myImages/erlebnis_25.png","name":"MusicCast - Esszimmer (WX-030)","betriebszeit":"1h 57m","funk":"2G","ip":"10.0.0.4"},
-{"img":"/vis.0/myImages/erlebnis_75.png","name":"MusicCast - K�che (ISX-18D)","betriebszeit":"4h 10m","funk":"2G","ip":"10.0.0.5"}
+	{
+		"img": "/vis.0/myImages/erlebnis_50.png",
+		"name": "Empire",
+		"betriebszeit": "4h 06m",
+		"funk": "5G",
+		"ip": "10.0.0.1"
+	},
+	{
+		"img": "/vis.0/myImages/erlebnis_100.png",
+		"name": "Handy",
+		"betriebszeit": "13m",
+		"funk": "5G",
+		"ip": "10.0.0.2"
+	},
+	{
+		"img": "/vis.0/myImages/erlebnis_100.png",
+		"name": "Harmony Hub - Wohnzimmer",
+		"betriebszeit": "18T 07h 21m",
+		"funk": "2G",
+		"ip": "10.0.0.3"
+	},
+	{
+		"img": "/vis.0/myImages/erlebnis_25.png",
+		"name": "MusicCast - Esszimmer (WX-030)",
+		"betriebszeit": "1h 57m",
+		"funk": "2G",
+		"ip": "10.0.0.4"
+	},
+	{
+		"img": "/vis.0/myImages/erlebnis_75.png",
+		"name": "MusicCast - K�che (ISX-18D)",
+		"betriebszeit": "4h 10m",
+		"funk": "2G",
+		"ip": "10.0.0.5"
+	}
 ]
 ```
 
@@ -443,9 +473,15 @@ Working Widget Example can be found
 * [here](https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
 * [ical Adapter](https://forum.iobroker.net/topic/29658/material-design-widgets-table-widget/2)
 
-## Masonry Views
+## Responsive Layout
+There are two widgets - Masonry Views and Grid Views - with which it is possible to create a repsonsive layout (a layout for desktop, tablet and mobile). Both Widgets has multiple `view in widget` integrated.
 
-Masonry Views has multiple `view in widget` integrated, that will be ordered automatically depending of the width of the widget. With this widget it is possible to cereate a responsive layout (one layout for desktop, tablet and mobil)
+
+### Masonry Views
+
+Masonry Views has multiple `view in widget` integrated, that will be ordered automatically depending of the width of the widget. With this widget it is possible to create a responsive layout (one layout for desktop, tablet and mobil).
+Masonry views are especially useful if the views included have different heights.
+
 
 <b>Take a look at the [Material Design Widgets example project](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b> to understand how it works.
 
@@ -463,8 +499,8 @@ Masonry Views has multiple `view in widget` integrated, that will be ordered aut
     <tbody>
         <tr>
             <td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td>
-            <td colspan=2>Depending on the width of the resolution, the number of columns and the distance between the views can be set. The settings can be set independently for portrait and landscape format.
-To find out the width of the resolution for the different devices, activate the Resolution Assistant under the common settings.</td>
+            <td colspan=2>Depending on the width of the widget, the number of columns and the distance between the views can be set. The settings can be set independently for portrait and landscape format.
+            To find out the width of the resolution for the different devices, activate the Resolution Assistant under the common settings.</td>
         </tr>
         <tr>
             <td><img src="doc/en/media/masnory_settings_views.png"></td>
@@ -473,6 +509,39 @@ To find out the width of the resolution for the different devices, activate the 
         </tr>
     </tbody>
 </table>
+
+### Grid Views
+
+Grid Views has multiple `view in widget` integrated, that will be ordered automatically depending of the width of the widget. With this widget it is possible to create a responsive layout (one layout for desktop, tablet and mobil).
+Grid views are especially useful if the views included have the same heights.
+
+<b>The Grid View widget has 12 columns in total. If you want a view to have a width of 4 columns, you have to set column span to 4 in the corresponding view[x]</b>
+
+<b>Take a look at the [Material Design Widgets example project](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b> to understand how it works.
+
+![Logo](doc/en/media/grid.gif)
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td>
+            <td colspan=2>Depending on the width of the widget, defined from which width of the widget the rules for column span of the individual views[x] can be applied and the distance between the views. The settings can be set independently for portrait and landscape format.
+            To find out the width of the resolution for the different devices, activate the Resolution Assistant under the common settings.</td>
+        </tr>
+        <tr>
+            <td><img src="doc/en/media/grid_settings_view.png"></td>
+            <td colspan=2>Define the column span of the view depending of the current width resolution rule.<br>You can also specify here whether a view should only be displayed at a resolution higher or lower than a defined value or whether it should be visible via a object id.</td>
+        </tr>
+    </tbody>
+</table>
+
 
 
 ## Column Views - decrepated !!!
@@ -628,8 +697,8 @@ The Calendar widget requires a JSON string as object, which must be structured a
 		"name": "Meeting",
 		"color": "#717d7e",
 		"colorText": "#FFFFFF",
-		"start": "2020-03-23",
-		"end": "2020-03-24"
+		"start": "2020-03-23 16:00",
+		"end": "2020-03-24 17:15"
 	}
 ]
 ```
@@ -675,6 +744,16 @@ const moment = require("moment");
 
 var instances = $(`[id=ical.*.data.table]`);
 instances.on(ical2CalendarWidget);
+
+// remove this, if you know to use your own datapoint
+let datapointId = 'materialdesignwidgets.calendar.ical2calendar'
+createState(datapointId, "[]", {
+  read: true, 
+  write: false, 
+  desc: "JSON String for Calendar Widget", 
+  type: "string", 
+  def: "[]"
+});
 
 function ical2CalendarWidget() {
     try {
@@ -743,7 +822,7 @@ function ical2CalendarWidget() {
             }
 
             // Enter the destination data point that is to be used as object ID in the widget                
-            setState('0_userdata.0.materialdesignwidgets.ical2Calendar', JSON.stringify(calList), true);
+            setState(datapointId, JSON.stringify(calList), true);
         }
     } catch (e) {
         console.error(`ical2MaterialDesignCalendarWidget: message: ${e.message}, stack: ${e.stack}`);
@@ -756,6 +835,8 @@ ical2CalendarWidget();
 ## Changelog
 
 ### 0.3.xx
+* (Scrounger): List Widget: color option for switch added
+* (Scrounger): List Widget: dynamic generate item using json string
 * (Scrounger): Masonry Views Widget: visible condition added
 * (Scrounger): Calendar Widget added
 * (Scrounger): translation added

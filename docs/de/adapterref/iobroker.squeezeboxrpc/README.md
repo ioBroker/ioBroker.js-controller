@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.squeezeboxrpc/README.md
 title: ioBroker Logitech Squeezebox Adapter über JSON / RPC-Protokoll
-hash: Zbrq2xmKX6Ee4ZvUBC2TbJY8QZSoISYY2/qUd+SrUTc=
+hash: e/7b9gb3+xHAr7vV/a4tfpkdfkR+lkUzAoDvSgBE0E8=
 ---
 ![Logo](../../../en/adapterref/iobroker.squeezeboxrpc/admin/squeezeboxrpc.png)
 
@@ -11,7 +11,7 @@ hash: Zbrq2xmKX6Ee4ZvUBC2TbJY8QZSoISYY2/qUd+SrUTc=
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.squeezeboxrpc.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.squeezeboxrpc.svg)
 ![Travis](https://img.shields.io/travis/oweitman/ioBroker.squeezeboxrpc.svg)
-![AppVeyor Build Status](https://img.shields.io/appveyor/ci/oweitman/iobroker-squeezeboxrpc.svg)
+![AppVeyor-Build-Status](https://img.shields.io/appveyor/ci/oweitman/iobroker-squeezeboxrpc.svg)
 ![GitHub Probleme](https://img.shields.io/github/issues/oweitman/ioBroker.squeezeboxrpc.svg)
 
 # IoBroker Logitech Squeezebox Adapter über JSON / RPC-Protokoll
@@ -19,29 +19,34 @@ Dies ist ein alternativer Adapter, der das JSON / RPC-Protokoll verwendet, um Da
 
 * native [squeezebox] (https://de.wikipedia.org/wiki/Squeezebox),
 * Himbeer-Pi mit zusätzlichem Audiomodul und kleinen Linux-basierten Firmwares wie [picoreplayer] (https://picoreplayer.org/) oder [max2play] (https://www.max2play.com).
-* mit Plugins für Chromecast, Airplay oder UPnP / DLNA-Geräte
+* mit Plugins Chromecast, Airplay oder UPnP / DLNA-Geräten
 
 Der LMS-Server kann sehr große Musiksammlungen auf Festplatten oder NAS verwalten / bereitstellen und eine Verbindung zu verschiedenen Streaming-Anbietern wie Spotify, Deezer, Soundcloud, Shoutcast, Tunein, Napster, Pandora, Tidal und mehr herstellen
 
 Warum noch ein Squeezebox Adapter?
 
-Der vorhandene Adapter greift über Telnet auf das LMS zu. Das Telnet hat einige Nachteile.
-Das eigentliche Haupt-Webinterface des LMS verwendet auch das rpc / json-Protokoll, um alle benötigten Informationen zu erhalten oder Befehle an den Server / die Spieler zu senden.
+Der vorhandene Adapter verwendet Telnet, um auf das LMS zuzugreifen. Das Telnet hat einige Nachteile.
+Die eigentliche Hauptwebschnittstelle des LMS verwendet auch das rpc / json-Protokoll, um alle erforderlichen Informationen abzurufen oder Befehle an den Server / die Player zu senden.
 
 ## Eigenschaften
 - Die meisten Daten, die der LMS-Service zur Verfügung stellt, sind im Adapter verfügbar
-- Detaillierte Informationen über den Player-Status, den Songtitel, den Interpreten, das Album, das Artwork und die Wiedergabeliste
+- Detaillierte Informationen über den Player-Status, den Songtitel, den Interpreten, das Album, das Bildmaterial und die Wiedergabeliste
 - Viele Steuerfunktionen zum Abspielen, Anhalten, Stoppen, Vor- und Zurückspulen, Wiederholen, Mischen, Wiedergeben von Favoriten, Springen zur Zeit (absolut und relativ), Springen zum Wiedergabelistenindex (absolut und relativ), Ein- / Ausschalten und Voreinstelltasten
 - Alle Favoriten und alle Unterebenen vom Server
-- Viele Widgets für die iobroker-vis-Komponente sind enthalten, um eigene Benutzeroberflächen für die Steuerung zu erstellen (Player auswählen, Favoriten auswählen, Synchronisierungsgruppen verwalten, Schaltflächen für Wiedergabe / Pause, Vorwärts-, Rückwärts-, Wiederholungs- und Zufallsmodus auswählen).
+- Viele Widgets für die iobroker-vis-Komponente sind enthalten, um eigene Steuerungsbenutzeroberflächen zu erstellen (Player auswählen, Favoriten auswählen, Synchronisationsgruppen verwalten, Schaltflächen für Wiedergabe / Pause, FWD, Rew, Wiederholungsmodus und Auswahl des Zufallsmodus).
 
-Die Dokumentation für die vis-Widgets ist in vis oder [Widget-Dokumentation](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.squeezeboxrpc/blob/master/widgets/squeezeboxrpc/doc.html) verfügbar.
+Die Dokumentation für die vis-Widgets ist in vis oder [Widget-Dokumentation / Deutsch](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.squeezeboxrpc/blob/master/widgets/squeezeboxrpc/doc.html) verfügbar
 
 ## Installation
 - Installieren Sie das Paket
 - Erstellen Sie eine Instanz
-- Konfigurieren Sie die Instanz mit der IP des logitech-Medienservers und dem Port (normalerweise 9000).
+- Konfigurieren Sie die Instanz mit der IP des Logitech-Medienservers und dem Port (normalerweise 9000).
 - Instanz starten / neu starten
+
+## Update
+- Nach Änderungen im Widget-Code und der Aktualisierung des Adapters sollte iobroker Webdateien auf den internen Webserver hochladen. Benutzer berichtete, dass dies manchmal nicht oder nur mit Verzögerung geschah. Sie können diese Aktion mit dem folgenden Befehl auslösen
+
+iobroker upload squeezeboxpc
 
 ## Bereitgestellte Zustände
 ### Server
@@ -59,7 +64,7 @@ Die Dokumentation für die vis-Widgets ist in vis oder [Widget-Dokumentation](ht
 | SyncGroups | Bestehende Syncgroups |
 | Version | Version von LMS |
 | mac | MAC-ID des Servers |
-| uuid | uuid der LMS-Instanz |
+| uuid | UUID der LMS-Instanz |
 
 zusätzlich eine definierte Schaltfläche, um die Favoriten zu aktualisieren
 
@@ -68,23 +73,23 @@ taste | Beschreibung ----------------- | ---------------------------------------
 ### Favoriten
 Für jeden Favoriten Alle Attribute sind schreibgeschützt
 
-Zustand | Beschreibung ----------------- | ------------------------------ Name | Name des Favoriten-Hashes | gibt an, ob dies eine dir id | ist id des lieblingsbildes | Bild / Symbol für Favorit, falls verfügbar isaudio | isaudio type | Beispieltypen: Link, Text, Audio, Wiedergabelisten-URL | URL der Strecke
+Zustand | Beschreibung ----------------- | ------------------------------ Name | Name des Favoriten-Hashes | Gibt an, ob dies eine Verzeichnis-ID ist id des lieblingsbildes | Bild / Symbol für Favorit, falls verfügbar isaudio | isaudio type | Beispieltypen: Link, Text, Audio, Wiedergabelisten-URL | URL des Tracks
 
- Alle Unterebenen (Unterverzeichnisse) des Favoriten sind verfügbar.
+ Alle Unterebenen (Unterverzeichnisse) der Favoriten sind verfügbar.
 
 ### Spieler
 für jeden Spieler Der Modus zeigt an, ob Sie den Wert ändern können. Die durchgeführte Aktion wird im Attribut beschrieben
 
-state | mode | Beschreibung -------------------- | ---- | -------------------------------------------------- --- Album | R / - | Name des aktuellen Albums Artist | R / - | Name des Künstlers ArtworkUrl | R / - | URL zur Artwork Bitrate | R / - | Bitrate der Spur Connected | R / - | Verbindungsstatus des Spielers (0/1) Dauer | R / - | Dauer des Titels Genre | R / - | Genre des Titels IP | R / - | IP des Spielermodus | R / - | Abspielen / Anhalten / Stoppen Spielername | R / - | Name des Spielers PlayerID | R / - | Spieler ID Wiedergabeliste | R / - | Die aktuelle Playlist als JSON PlaylistCurrentIndex | R / W | Gehen Sie zu einer absoluten Position, indem Sie den Trackindex angeben, oder gehen Sie relativ mit einem + oder - am Anfang. Beispiel 10, -3, + 2 PlaylistRepeat | R / W | Song wiederholen (1) / Playlist (2) / nicht wiederholen (0) PlaylistShuffle | R / W | Wiedergabeliste mischen (1) / Album mischen (2) / nicht mischen (0) Power | R / W | Hole / Setze PowerState des Spielers aus (0) / ein (1) RadioName | R / - | Name der Radiostationsrate | R / - | Bewertung des Liedes Remote | R / - | Wenn Remote-Stream (1) SyncMaster | R / - | ID / MAC von Syncmaster SyncSlaves | R / - | ID / Mac der Spieler in Syncgroup Time | R / - | verstrichene Liedzeit Titel | R / - | Songtitel Typ | R / - | Medientyp (z. B. MP3-Radio) Url | R / - | URL des Tracks / Streams Lautstärke | R / W | get / set Lautstärke des Players (0-100) Zustand | R / W | Wiedergabestatus abrufen / festlegen: Pause (0), Wiedergabe (1), Stopp (2)
+state | mode | Beschreibung -------------------- | ---- | -------------------------------------------------- --- Album | R / - | Name des aktuellen Albums Artist | R / - | Name des Künstlers ArtworkUrl | R / - | URL zur Artwork Bitrate | R / - | Bitrate der Spur Verbunden | R / - | Verbindungsstatus des Spielers (0/1) Dauer | R / - | Dauer des Titels Genre | R / - | Genre des Titels IP | R / - | IP des Spielermodus | R / - | Abspielen / Anhalten / Stoppen Spielername | R / - | Name des Spielers PlayerID | R / - | Spieler ID Wiedergabeliste | R / - | Die aktuelle Wiedergabeliste als JSON PlaylistCurrentIndex | R / W | Gehen Sie zu einer absoluten Position, indem Sie den Trackindex angeben, oder gehen Sie am Anfang relativ mit einem + oder -. Beispiel 10, -3, + 2 PlaylistRepeat | R / W | Wiederholen Sie das Lied (1) / Wiedergabeliste (2) / Wiederholen Sie nicht (0) PlaylistShuffle | R / W | Shuffle-Wiedergabeliste (1) / Shuffle-Album (2) / Nicht mischen (0) Power | R / W | Erhalte / setze PowerState des Spielers aus (0) / ein (1) RadioName | R / - | Name der Radiostationsrate | R / - | Bewertung des Songs Remote | R / - | Wenn Remote-Stream (1) SyncMaster | R / - | ID / MAC von Syncmaster SyncSlaves | R / - | ID / Mac der Spieler in Syncgroup Time | R / - | verstrichene Songzeit Titel | R / - | Songtitel Typ | R / - | Medientyp (z. B. MP3-Radio) URL | R / - | URL des Tracks / Streams Lautstärke | R / W | Get / Set Lautstärke des Player-Status (0-100) | R / W | Wiedergabestatus abrufen / festlegen: Pause (0), Wiedergabe (1), Stopp (2)
 
 Die Wiedergabeliste enthält die folgenden Attribute, sofern diese in LMS verfügbar sind.
 Somme-Attribute hängen von der Art der Songs ab (Stream / Datei / ...). Alle Attribute sind schreibgeschützt
 
-Attribut | Beschreibung ----------------- | -------------------------------------------------- --- Album | Name des aktuellen Albums Artist | Name des Künstlers ArtworkUrl | URL zur Artwork Bitrate | Bitrate des Tracks Dauer | Dauer des Titels RadioName | Name der Radiostationsrate Bewertung des Songtitels | Songtitel Typ | Medientyp (z. B. MP3-Radio) url | URL des Track / Stream-Index | Index des Songs in der Playlist id | ID des Liedes
+Attribut | Beschreibung ----------------- | -------------------------------------------------- --- Album | Name des aktuellen Albums Artist | Name des Künstlers ArtworkUrl | URL zur Artwork Bitrate | Bitrate des Tracks Dauer | Dauer des Titels RadioName | Name der Radiostationsrate Bewertung des Songtitels | Songtitel Typ | Art des Mediums (zB MP3-Radio) url | URL des Track / Stream-Index | Index des Songs in der Playlist id | ID des Liedes
 
 zusätzliche definierte Buttons:
 
-taste | Beschreibung ----------------- | ----------------------------------------- btnForward | Nächstes Lied btnRewind | Vorheriges Lied btnPreset_ * | 1-6 Schaltflächen, die im Player oder Server definiert werden sollen Ein allgemeines Befehlsfeld zum Senden von Befehlen an den Player. Jedes Feld muss in Anführungszeichen gesetzt werden. Parameter müssen durch Komma getrennt werden. Beispiel: "play", "1" cmdPlayFavorite | um einen Favoriten abzuspielen, setzen Sie die ID des Favoriten cmdPlayUrl | um ein URL-Beispiel abzuspielen "http://50.7.77.114:8101/;" cmdGoTime | Zu einer absoluten Position springen, indem eine Anzahl von Sekunden angegeben wird, oder relativ mit einem + oder - am Anfang der Sekunden springen. Beispiel 100, -50, + 50
+taste | Beschreibung ----------------- | ----------------------------------------- btnForward | Nächstes Lied btnRewind | Vorheriges Lied btnPreset_ * | 1-6 Schaltflächen zum Definieren im Player oder Server cmdGeneral | Ein allgemeines Befehlsfeld zum Senden von Befehlen an den Player. Jedes Feld muss in Anführungszeichen gesetzt werden. Parameter müssen durch Komma getrennt werden. Beispiel: "play", "1" cmdPlayFavorite | Um einen Favoriten abzuspielen, legen Sie die ID des Favoriten cmdPlayUrl | fest um ein URL-Beispiel abzuspielen "http://50.7.77.114:8101/;" cmdGoTime | Zu einer absoluten Position springen, indem eine Anzahl von Sekunden angegeben wird, oder relativ mit einem + oder - am Anfang der Sekunden springen. Beispiel 100, -50, + 50
 
 Weitere Informationen finden Sie in der CLI-Dokumentation:
 
@@ -92,19 +97,23 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 
 ## Machen
 * Weitere Tests / Korrekturen
-* Reduziere die Abhängigkeiten zu anderen Paketen (squeezenode)
+* Abhängigkeiten zu anderen Paketen reduzieren (Squeezenode)
 * Mehr Konfiguration, um optional Funktionen ein- und auszuschalten, um Speicher und Leistung zu verbessern
 * Playlist Widget hinzufügen
 * Spielergesteuertes Kreisknopf-Widget hinzufügen
 * ~~ Fügen Sie Telnet-Kommunikation hinzu, um Push-Ereignisse vom Server abzurufen und das Polling zu optimieren ~~
-* ~~ Implementieren Sie einen Befehlsstatus, um benutzerdefinierte Befehle (über JSON) für Server und Player zu platzieren ~~
-* ~~ Implementieren Sie weitere Steuerungsfunktionen (wählen Sie die Wiedergabeliste zum Abspielen aus, ffwd, frew, springen Sie zu einer Zeitposition im Song, wiederholen Sie den Song, einen zufälligen Song) ~~
-* ~~ füge die Wiedergabeliste als json array ~~ zu den Spieldaten hinzu
+* ~~ Implementieren eines Befehlsstatus zum Platzieren von benutzerdefinierten Befehlen (über JSON) für Server und Player ~~
+* ~~ Implementiere mehr Steuerungsfunktionen (wähle die Wiedergabeliste pos zum Abspielen, ffwd, frew, springe zu einer Zeitposition im Song, wiederhole den Song, zufälliger Song) ~~
+* ~~ füge die Wiedergabeliste als json array ~~ zu den Wiedergabedaten hinzu
 * ~~ Grafik (Sender-Logo / Playlist-Cover) für Favoriten hinzufügen ~~
 * ~~ Implementiere mehr Ebenen (Unterverzeichnisse) von Favoriten ~~
 * ~~ autodiscover logitech media server ~~
 
 ## Changelog
+### 0.8.32
+ * the adapter function iobroker.deleteChannel didnt works as expected. it didnt delete the whole subtree of states. now i implement my own delete function 
+### 0.8.31
+ * change behaviour of deleting favorites
 ### 0.8.30
  * change from the issue of the adapter checker
 ### 0.8.29

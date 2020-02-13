@@ -2,12 +2,12 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meteoalarm/README.md
-title: ioBroker.metaarm
-hash: 6gepr/U5aI7aF0Lgl6lXxB+Fqs7459a8Xzg3v+pWfNg=
+title: ioBroker.metalarm
+hash: q3+ykWaSTPginlw8vXntnyzfAmmKaaanZiI6bTGdUww=
 ---
 ![商标](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
-![保镖徽章](https://badges.greenkeeper.io/jack-blackson/ioBroker.meteoalarm.svg)
+![环保管理员徽章](https://badges.greenkeeper.io/jack-blackson/ioBroker.meteoalarm.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.meteoalarm.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.meteoalarm.svg)
 ![安装数量](http://iobroker.live/badges/meteoalarm-stable.svg)
@@ -16,7 +16,7 @@ hash: 6gepr/U5aI7aF0Lgl6lXxB+Fqs7459a8Xzg3v+pWfNg=
 ＃ioBroker.meteoalarm
 =================
 
-ioBroker的meteoalarm适配器---------------------------------------------- --------------------------------此适配器从meteoalarm.eu获取天气警报，其中包括风，雪，雨，高温和低温等。此信息以本地语言和详细区域提供。
+ioBroker的meteoalarm适配器---------------------------------------------- --------------------------------此适配器从meteoalarm.eu获取天气警报，其中包括风，雪，雨，高温和低温等。此信息以本地语言和特定区域提供。
 
 ＃＃ 如何使用它
 请访问http://meteoalarm.eu并选择您的地区。然后转到右上角的RSS符号，右键单击并复制链接。这是您需要添加到适配器设置的链接。
@@ -44,7 +44,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 |图标|报警类型图标|
 
 ##警报类型
-|报警类型|说明|
+|警报类型|描述|
 |:---:|:---:|
 | 1 |风|
 | 2 |雪/冰|
@@ -64,7 +64,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 |警报级别|描述|
 |:---:|:---:|
 |绿色|当前无警告。 |
-|黄色|天气潜在危险。预计的天气现象并不罕见，但应更加重视暴露于气象风险的活动。使自己了解预期的气象状况，并且不要承担任何可避免的风险。 |
+|黄色|天气潜在危险。预计的天气现象并不罕见，但应更加重视面临气象风险的活动。使自己了解预期的气象状况，并且不要承担任何可避免的风险。 |
 |橙色|天气很危险。已经预测到异常的气象现象。可能会造成损坏和事故。要非常细心和小心，并与预期的气象条件保持同步。 |
 |红色|天气非常危险。可以预料到异常强烈的气象现象。经常在大面积上发生的极端损坏和事故危及生命和财产。 |
 
@@ -97,12 +97,15 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 如果找不到您的国家，请在github上创建一个问题，我很乐意添加
 
 ##不可能的国家
-*法国（无RSS提要）
+*法国（没有RSS提要）
 *葡萄牙（不可分裂）
 *斯洛文尼亚（没有RSS提要）
 
 ##要实现的功能
 *一天处理多个警报
+
+## 1.0.9（2020-02-06）
+*（杰克·布莱克森）Bugfix德国
 
 ## 1.0.8（2019-11-15）
 *（jack-blackson）添加了波兰，摩尔多瓦，希腊，罗马尼亚

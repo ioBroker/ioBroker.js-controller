@@ -2,39 +2,52 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.opentherm/README.md
-title: Opentherm集成ioBroker
-hash: a1i87p1mgoR34nXnuxf08RnAdUZkk3ydYZkPxDmiDw8=
+title: ioBroker.opentherm
+hash: TT07Q6Qq2KXWMzdu39Uyobzc+G9cSxBhxbb0CaseEWc=
 ---
-![替代文字](https://raw.githubusercontent.com/DutchmanNL/ioBroker.opentherm/master/admin/opentherm_large.png)
+![商标](../../../en/adapterref/iobroker.opentherm/admin/opentherm.png)
 
-![替代文字](https://travis-ci.org/iobroker-community-adapters/ioBroker.opentherm.svg?branch=master)
-![安装数量](http://iobroker.live/badges/opentherm-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.opentherm.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.opentherm.svg)
-![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.opentherm.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.opentherm.svg)
+![安装数量（最新）](http://iobroker.live/badges/opentherm-installed.svg)
+![安装数量（稳定）](http://iobroker.live/badges/opentherm-stable.svg)
+![依赖状态](https://img.shields.io/david/iobroker-community-adapters//iobroker.opentherm.svg)
+![已知漏洞](https://snyk.io/test/github/iobroker-community-adapters//ioBroker.opentherm/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.opentherm.png?downloads=true)
+![特拉维斯](http://img.shields.io/travis/iobroker-community-adapters//ioBroker.opentherm/master.svg)
 
-#openntherm集成ioBroker
-此适配器将opentherm网关的所有功能集成到ioBroker中。
-Opentherm是几种现代加热系统（如Remeha）使用的网关协议。
+＃ioBroker.opentherm
+该适配器将opentherm网关的所有功能集成到ioBroker中。
+Opentherm是Remeha等多个现代供暖系统使用的网关协议。
 
-有关更多信息，请访问http://otgw.tclcode.com/index.html#intro，并向开发人员提供所有信用。
+有关更多信息，请访问http://otgw.tclcode.com/index.html#intro，并向开发人员提供所有积分。
 
-###最终状态的特色功能：
-*提供TCP / IP中继服务器以允许此实例的其他OpenTherm监控软件连接（当使用直接USB连接时）
-*尽可能调整ioBroker中的值并将命令发送给Opentherm
+###最终状态下的特色功能：
+*提供TCP / IP中继服务器以允许通过此实例进行其他OpenTherm Monitor软件连接（使用直接USB连接时）
+*在可能的情况下，调整ioBroker中的值并将命令发送给Opentherm
 *请随时添加功能请求
 
 ###目前已实施
-*通过TCP / IP连接到OpenTherm网关
-*通过USB连接直接连接到OpenTherm网关
+*通过TCP / IP连接到OpenTherm Gateway
+*通过USB连接直接连接到OpenTherm Gateway
 
 ＃＃ 去做
-*通过USB连接直接连接到OpenTherm网关
-*提供TCP / IP中继服务器以允许此实例的其他OpenTherm监控软件连接（当使用直接USB连接时）
+*通过USB连接直接连接到OpenTherm Gateway
+*提供TCP / IP中继服务器以允许通过此实例进行其他OpenTherm Monitor软件连接（使用直接USB连接时）
 *哪里
 
+＃＃ 支持我
+如果您喜欢我的工作，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](http://paypal.me/DutchmanNL)
+
 ## Changelog
-### 0.2.0
+
+### 0.2.3
+* Adapter fully rebuilded
+
+### 0.2.2
+* Fix read TCP/IP data (svenp)
+
+### 0.2.1
 * Fix translations
 
 ### 0.1.9
@@ -66,7 +79,7 @@ Opentherm是几种现代加热系统（如Remeha）使用的网关协议。
 ## License
 MIT License
 
-Copyright (c) 2019 DutchmanNL
+Copyright (c) 2020 DutchmanNL <rdrozda86@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

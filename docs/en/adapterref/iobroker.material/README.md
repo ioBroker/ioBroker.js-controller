@@ -45,6 +45,9 @@ Better if every device belongs to both categories. Because every device has the 
 - Volume knob from [here](https://codepen.io/blucube/pen/cudAz) By [Ed Hicks](https://twitter.com/blucube) - Inspired by a [dribbble shot](https://dribbble.com/shots/753124-Volume-Knob)  by [Ricardo Salazar](https://twitter.com/rickss)
 
 ## Changelog
+### 0.13.0 (2020.02.10)
+* (Apollon77) compatibility to web 3.0
+
 ### 0.12.1 (2019.11.06)
 * (bluefox) Packages were updated
 

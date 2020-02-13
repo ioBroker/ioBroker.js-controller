@@ -2,22 +2,24 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.wiffi-wz/README.md
-title: без названия
-hash: 6qBR46+TqcuITX7JMqfZPxt6U5rx04HZcDE4feHrczs=
+title: без заголовка
+hash: NGgm7DK6E9ncrgi/aCWgVT5ULGjWqESD0iJ9uLBcDEw=
 ---
-![логотип](../../../en/adapterref/iobroker.wiffi-wz/admin/wiffi-wz.png) адаптер ioBroker для Wiffi-wz, Weatherman, Wiffi-pump, Rainyman и, возможно, других =================
+![логотип](../../../en/adapterref/iobroker.wiffi-wz/admin/wiffi-wz.png) адаптер ioBroker для Wiffi-wz, Weatherman, Wiffi-pump, Pulsecounter, Rainyman и, возможно, других
 
 ![Количество установок](http://iobroker.live/badges/wiffi-wz-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.wiffi-wz.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.wiffi-wz.svg)
 ![NPM](https://nodei.co/npm/iobroker.wiffi-wz.png?downloads=true)
-![Статус сборки](https://ci.appveyor.com/api/projects/status/58b8ygy9slf4oygx/branch/master?svg=true)
+![Статус сборки](https://travis-ci.org/t4qjXH8N/ioBroker.wiffi-wz.svg?branch=master)
+
+=================
 
 Это [ioBroker] (https://github.com/ioBroker/ioBroker) Адаптер для извлечения данных датчиков с устройств Wiffi см. [Stall.biz](http://www.stall.biz) для получения дополнительной информации.
 
 Типичными примерами устройств от Stall.biz являются [Wiffi-wz] (http://www.stall.biz/project/der-wiffi-wz-2-0-der-wohnzimmersensor), [Метеоролог] (https://www.stall.biz/project/weatherman -die-perfekte-wetterstation-fuer-die-hausautomation) и [Rainyman](https://www.stall.biz/project/rainyman-der-perfekte-sensor-fuer-regen-sonne-klima-bodenfeuchte-und-mehr). Несколько Wiffis поддерживаются одновременно.
 
-Из-за очень низкой задержки адаптера (обычно <3 с) можно использовать инфракрасные датчики движения для запуска действия, такого как включение или выключение света.
+Из-за очень низкой задержки адаптера (обычно <3 с) можно использовать ИК-датчики движения для запуска действия, такого как включение или выключение света.
 
 Далее некоторые устройства от Stall.biz описаны более подробно: Wiffi-wz - это устройство, которое объединяет восемь датчиков в одном устройстве. В настоящее время доступны следующие датчики:
 
@@ -30,17 +32,17 @@ hash: 6qBR46+TqcuITX7JMqfZPxt6U5rx04HZcDE4feHrczs=
 - датчик качества воздуха ([MQ135] (https://www.olimex.com/Products/Components/Sensors/SNS-MQ135/resources/SNS-MQ135.pdf))
 - бипер
 
-Метеоролог может быть оснащен многими датчиками, подробнее см. [домашняя страница](https://www.stall.biz/project/weatherman-die-perfekte-wetterstation-fuer-die-hausautomation).
+Метеоролог может быть оснащен множеством датчиков, подробнее см. [домашняя страница](https://www.stall.biz/project/weatherman-die-perfekte-wetterstation-fuer-die-hausautomation).
 
 Rainyman - это несколько упрощенная версия Weatherman, подробнее см. [домашняя страница](https://www.stall.biz/project/rainyman-der-perfekte-sensor-fuer-regen-sonne-klima-bodenfeuchte-und-mehr).
 
 ## Как это устроено
-Обычно Wiffi-wz отправляет данные датчиков в Homematic CCU. Homematic CCU получает homematic script (или лучше JSON) через порт 8181. Страница администратора этого адаптера реконфигурирует Wiffi-wz для отправки данных датчика напрямую в ioBroker. Данные датчика кодируются в формате [JSON](https://en.wikipedia.org/wiki/JSON). Поэтому на компьютере ioBroker открыт локальный сокет на порту 8181. Обратите внимание, что сокет **не должен** быть доступным для Интернета из соображений безопасности.
+Обычно Wiffi-wz отправляет данные датчиков в Homematic CCU. Homematic CCU получает homematic script (или лучше JSON) через порт 8181. Страница администратора этого адаптера реконфигурирует Wiffi-wz для отправки данных датчика непосредственно в ioBroker. Данные датчика кодируются в формате [JSON](https://en.wikipedia.org/wiki/JSON). Поэтому на компьютере ioBroker открыт локальный сокет на порту 8181. Обратите внимание, что сокет **не должен** быть доступным для Интернета из соображений безопасности.
 
 ## Настроить
 1. Установите ioBroker в качестве получателя для данных датчика, получая URL
 
-    http:// [wiffi ip] /? ccu: [ip-брокер ip]:
+    http:// [IP-адрес wiffi] /? ccu: [IP-адрес io-брокера]:
 
 2. и установите порт на 8181 с помощью
 
@@ -50,12 +52,31 @@ Rainyman - это несколько упрощенная версия Weatherma
 
 http:// [wifi ip] /? param: 27: 1
 
-Если возникает какая-либо ошибка, установите уровень логики адаптера для отладки и отправьте мне телеграмму данных по электронной почте.
+Если возникает какая-либо ошибка, установите уровень логики адаптера для отладки и отправьте мне телеграмму с данными по электронной почте.
 
 ## Пожертвование
 Если этот проект помог вам сократить время разработки, вы можете дать мне чашку кофе или бутылку пива через PayPal (chvorholt@gmail.com) :-)
 
 ## Changelog
+#### 2.2.0 (08-Feb-2020)
+- compact mode successfully tested
+
+#### 2.1.5 (08-Feb-2020)
+- fixed an error with numeric state names
+
+#### 2.1.4 (29-Aug-2019)
+- fixed "could not create a state null" error
+
+#### 2.1.3 (27-Jun-2019)
+- compatibility for boolean values and old Wiffi versions
+
+#### 2.1.2 (21-Jun-2019)
+- changed behaviour: if states are missing in the datagram, but present in the database, they are not removed from the database
+- boolean and numeric values are correctly stored
+
+#### 2.1.0 (14-Apr-2019)
+- support for compact mode
+
 #### 2.0.1 (08-Jan-2019)
 - fixed "could not find ip" bug
 

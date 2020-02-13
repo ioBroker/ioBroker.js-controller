@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.wlanthermo-nano/README.md
 title: ioBroker.wlanthermo-нано
-hash: 7PaDGgC1a8xJz51Pnob9s7EItyBZ6R+SG8c4g97UNIs=
+hash: dXyP552FUGUaw44ss0/iVFDKJq+ThYgA/ZrktqJLcXQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.wlanthermo-nano/admin/wlanthermo-nano.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.wlanthermo-nano.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.wlanthermo-nano.svg)
-![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.wlanthermo-nano.svg)
+![Состояние зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.wlanthermo-nano.svg)
 ![Количество установок](http://iobroker.live/badges/wlanthermo-nano-stable.svg)
 ![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wlanthermo-nano/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.wlanthermo-nano.png?downloads=true)
@@ -17,24 +17,25 @@ hash: 7PaDGgC1a8xJz51Pnob9s7EItyBZ6R+SG8c4g97UNIs=
 
 # IoBroker.wlanthermo-nano
 ## Адаптер wlanthermo-nano для ioBroker
-[WLANThermo Nano](https://github.com/WLANThermo-nano/WLANThermo_nano_Software/wiki "WLANThermo Nano"), цифровое преимущество для вашего барбекю
+[WLANThermo Nano](https://github.com/WLANThermo-nano/WLANThermo_nano_Software/wiki "WLANThermo Nano"), цифровое преимущество для вашего барбекю спорта
 
 ## Конфигурация
 Адаптер можно установить и настроить в интерфейсе администратора.
 Пожалуйста, введите IP-адрес, имя пользователя и пароль в конфигурации экземпляра.
 
-Устройство Currenlty 1 поддерживается, если вы хотите контролировать устройство secode, пожалуйста, введите второй экземпляр.
-(в будущем выпуске будут поддерживаться устройства с несколькими переходниками на 1 адаптер).
-
-# Не устанавливайте с github пока только администратором ioBroker! (изменение выполняется в хранилище)
 ## Сделать
-* [] Оптимизировать настройки pitmaster, сделать состояния доступными для записи только в соответствующем режиме, иначе только для чтения
-* [] разрешить несколько устройств
+* [] Оптимизировать настройки pitmaster, сделать состояния доступными для записи только в соответствующих режимах, в противном случае только для чтения
+* [] Реализация автоматического определения устройства
+* [] Реализация устройства в режиме онлайн
+* [x] разрешить несколько устройств
 * [] очистка кода
+
+## Поддержите меня
+Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это личная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
-### 0.1.2  (in progress, not released !)
+### 0.1.2
 * (DutchmanNL) Support multiple devices
 
 ### 0.1.1

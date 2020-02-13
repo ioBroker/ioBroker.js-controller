@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.digitalstrom/README.md
 title: ioBroker.digitalstrom
-hash: izv9U0SVdsQ/y0qwTJ8NJCouEXZw/b5hPx2WwM/sAhY=
+hash: sC7gyK1zGE+zq+E8JdKyVB8pOVTMOIVE7TDNMEq4ZHI=
 ---
 ![商标](../../../en/adapterref/iobroker.digitalstrom/admin/digitalstrom.png)
 
@@ -17,7 +17,7 @@ hash: izv9U0SVdsQ/y0qwTJ8NJCouEXZw/b5hPx2WwM/sAhY=
 ![特拉维斯](http://img.shields.io/travis/Apollon77/ioBroker.digitalstrom/master.svg)
 
 ＃ioBroker.digitalstrom
-**此适配器使用Sentry库向开发人员自动向我报告异常和代码错误以及新设备架构。**更多详细信息，请参见下文！
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**更多详细信息，请参见下文！
 
 ##用于ioBroker的Digitalstrom适配器
 通过DSS支持Digitalstrom设备
@@ -25,7 +25,7 @@ hash: izv9U0SVdsQ/y0qwTJ8NJCouEXZw/b5hPx2WwM/sAhY=
 ##安装
 请照常通过Admin UI安装适配器。
 
-适配器正式发布后，他将进入回购协议中，并且可以选择。
+适配器正式发布后，他将进入回购协议中并且可以选择。
 
 在测试阶段，或为了测试较新版本（请参阅相关论坛主题），您还可以使用https://github.com/ioBroker/ioBroker.digitalstrom作为URL直接从GitHub安装适配器。请为此使用“自定义安装”管理员选项。
 
@@ -42,7 +42,7 @@ hash: izv9U0SVdsQ/y0qwTJ8NJCouEXZw/b5hPx2WwM/sAhY=
 
 提供应用令牌并保存设置后，适配器将自动重启。
 
-当数据正确时，适配器将读取单元和设备结构，并将它们创建为ioBroker对象。这可能会花费一些时间（取决于设备和楼层/区域/组的数量以及系统的性能需要几秒钟）。请耐心等待。我真的是那样说的...这里很容易达到数千个物体！请给适配器时间！
+当数据正确时，适配器将读取单元和设备结构，并将其创建为ioBroker对象。这可能需要一些时间（取决于设备和楼层/区域/组的数量以及系统的性能需要几秒钟）。请耐心等待。我真的是这样说的……这里很容易达到数千个物体！请给适配器时间！
 
 此后，适配器将订阅多个DSS事件，以获取有关系统中操作的通知。
 
@@ -59,7 +59,7 @@ hash: izv9U0SVdsQ/y0qwTJ8NJCouEXZw/b5hPx2WwM/sAhY=
 
 *场景：场景被实现为开关。将值tro设置为“ true”将为此场景发送“ callScene”命令。值为“ false”将为此场景发送“ undoScene”命令-由DSS服务器决定“ undo”是否为有效命令！当从DSS服务器触发callScene或undoScene作为事件时，将相关场景设置为“ true”或“ false”，且ack = true
 *状态：显示系统状态和用户通过插件定义的状态，它们是只读的
-*传感器值由事件触发时会更新，并且也可以部分更改赌注-更改将“ pushSensorValue”发送到服务器，如果值被接受，则取决于服务器！这主要与温度或湿度值有关
+*传感器值在由事件触发时会更新，并且也可以部分更改（下注）-更改将向服务器发送“ pushSensorValue”，并且该值取决于服务器！这主要与温度或湿度值有关
 
 *
 
@@ -88,7 +88,7 @@ hash: izv9U0SVdsQ/y0qwTJ8NJCouEXZw/b5hPx2WwM/sAhY=
 *按钮和二进制输入也将由状态表示，并且是只读的
 
 ##已知问题/系统设计效果
-* DSS系统主要使用场景而不是通过真实的设备值来工作，并且获取真实值的速度非常慢，因为需要通过总线来获取。
+* DSS系统主要使用场景而不是通过真实的设备值工作，并且获取真实值的速度非常慢，因为需要通过总线来获取。
 *当系统未报告值时，它们可能为空
 *二进制输入实现为“盲”，因为我没有这样的设备。因此，我很高兴获得一些使用二进制输入设备的日志/报告：-)
 *仅对Ligh（黄色）和Shade / Blind（灰色）设备实现有意义的输出值读取和写入。
@@ -98,7 +98,7 @@ hash: izv9U0SVdsQ/y0qwTJ8NJCouEXZw/b5hPx2WwM/sAhY=
 ##如何报告问题和功能要求
 请为此使用GitHub问题。
 
-最好是将适配器设置为“调试”日志模式（“实例”->“专家”模式->“列日志”级别）。然后，请从磁盘获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin会删掉行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
+最好是将适配器设置为“调试日志”模式（“实例”->“专家模式”->“列日志级别”）。然后，请从磁盘获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin会删掉行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我什么时候在日志中看到的内容。
 
 ##什么是Sentry，什么报告给服务器？
 Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
@@ -106,6 +106,14 @@ Sentry.io是开发人员从其应用程序中获得有关错误概述的一种�
 当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
+
+### 1.0.2 (2020-02-10)
+* (Apollon77) trigger buttons on scene calls also if scene is normally not allowed but came from the device
+* (Apollon77) fix button logic
+* (Apollon77) also add sensor type 255, but without name and unit because unknown
+* (Apollon77) Switch Sentry to iobroker own instance hosted in germany
+* (Apollon77) user states are optional now
+* (Apollon77) add button states for devices wth more then 1 button
 
 ### 1.0.0 (2020-01-31)
 * (Apollon77) bump version to 1.0.0

@@ -28,6 +28,12 @@ Manage and create devices for using it in other adapters like material, iot,...
 
 ## Changelog
 
+### 0.3.2 (2020-02-09)
+* (Apollon77) usage with all kinds of admin ports and reverse proxies optimized
+
+### 0.3.1 (2020-02-09)
+* (Apollon77) compatibility with Admin >4.0.0 added
+
 ### 0.2.0 (2019-12-20)
 * (bluefox) Backend was removed
 

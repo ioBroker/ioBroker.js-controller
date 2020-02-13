@@ -1,5 +1,5 @@
 ![Logo](admin/wiffi-wz.png)
-ioBroker adapter for Wiffi-wz, Weatherman, Wiffi-pump, Rainyman and maybe others 
+ioBroker adapter for Wiffi-wz, Weatherman, Wiffi-pump, Pulsecounter, Rainyman and maybe others 
 =================
 ![Number of Installations](http://iobroker.live/badges/wiffi-wz-installed.svg) ![Number of Installations](http://iobroker.live/badges/wiffi-wz-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.wiffi-wz.svg)](https://www.npmjs.com/package/iobroker.wiffi-wz)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.wiffi-wz.svg)](https://www.npmjs.com/package/iobroker.wiffi-wz)
@@ -52,6 +52,12 @@ If any error occurs, please set the adapter loglevel to debug and send me the da
 If this project helped you to reduce developing time, you can give me a cup of coffee or a bottle of beer via PayPal(chvorholt@gmail.com) :-)  
 
 ## Changelog
+#### 2.2.0 (08-Feb-2020)
+- compact mode successfully tested
+
+#### 2.1.5 (08-Feb-2020)
+- fixed an error with numeric state names
+
 #### 2.1.4 (29-Aug-2019)
 - fixed "could not create a state null" error
 

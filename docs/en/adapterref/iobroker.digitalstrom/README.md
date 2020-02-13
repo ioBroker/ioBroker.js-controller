@@ -12,7 +12,7 @@
 
 **Tests:**: [![Travis-CI](http://img.shields.io/travis/Apollon77/ioBroker.digitalstrom/master.svg)](https://travis-ci.org/Apollon77/ioBroker.digitalstrom)
 
-**This adapter uses Sentry libraries to automatically report exceptions and code errors and new device schemas to me as the developer.** More details see below!
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to me as the developer.** More details see below!
 
 ## Digitalstrom adapter for ioBroker
 
@@ -92,15 +92,22 @@ The devices are structured with "circuit/dSM"."deviceID" and the subsctructure i
 
 Please use GitHub issues for this.
 
-Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column Log level). Then please get the logfile from disk (subdirectory "log" in ioBroker installation directory and not from Admin because Admin cuts the lines). If you do not like providing it in GitHub issue you can also send it to me via email (iobroker@fischer-ka.de). Please add a refernce to the relevant GitHub issue AND also describe what I see in the log at which time.
+Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column Log level). Then please get the logfile from disk (subdirectory "log" in ioBroker installation directory and not from Admin because Admin cuts the lines). If you do not like providing it in GitHub issue you can also send it to me via email (iobroker@fischer-ka.de). Please add a reference to the relevant GitHub issue AND also describe what I see in the log at which time.
 
 ## What is Sentry and what is reported to the servers?
 Sentry.io is a way for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
 
-When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to our own Sentry server hosted in germany. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.  
-
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to our own Sentry server hosted in germany. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.
 
 ## Changelog
+
+### 1.0.2 (2020-02-10)
+* (Apollon77) trigger buttons on scene calls also if scene is normally not allowed but came from the device
+* (Apollon77) fix button logic
+* (Apollon77) also add sensor type 255, but without name and unit because unknown
+* (Apollon77) Switch Sentry to iobroker own instance hosted in germany
+* (Apollon77) user states are optional now
+* (Apollon77) add button states for devices wth more then 1 button
 
 ### 1.0.0 (2020-01-31)
 * (Apollon77) bump version to 1.0.0

@@ -774,6 +774,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mercury/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.meross/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.meteoalarm/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.miele/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mielecloudservice/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mihome/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mihome-airpurifier/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mihome-lamp/README.md
@@ -1117,6 +1118,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mercury/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.meross/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.meteoalarm/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.miele/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mielecloudservice/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mihome/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mihome-airpurifier/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mihome-lamp/README.md
@@ -1460,6 +1462,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mercury/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.meross/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.meteoalarm/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.miele/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mielecloudservice/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mihome/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mihome-airpurifier/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mihome-lamp/README.md
@@ -1803,6 +1806,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mercury/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.meross/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.meteoalarm/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.miele/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mielecloudservice/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mihome/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mihome-airpurifier/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mihome-lamp/README.md

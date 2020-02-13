@@ -41,6 +41,13 @@ Documentation for the vis-widgets are available inside vis or [Widget-Documentat
 - Configure the Instance with the IP of the logitech media server and the port (normaly 9000)
 - start/restart the instance
 
+## Update
+
+- after changes in the widget code and upadte of the adapter, iobroker should upload webfiles to the internal webserver. user reported that this sometimes didnt happend or only with delay. you can trigger this action with the following command
+
+iobroker upload squeezeboxpc
+
+
 ## Provided states
 
 ### Server
@@ -171,6 +178,8 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * ~~autodiscover logitech media server~~
 
 ## Changelog
+### 0.8.32
+ * the adapter function iobroker.deleteChannel didnt works as expected. it didnt delete the whole subtree of states. now i implement my own delete function 
 ### 0.8.31
  * change behaviour of deleting favorites
 ### 0.8.30

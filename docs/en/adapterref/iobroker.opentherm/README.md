@@ -1,10 +1,16 @@
-![alt text](https://raw.githubusercontent.com/DutchmanNL/ioBroker.opentherm/master/admin/opentherm_large.png)
+![Logo](admin/opentherm.png)
+# ioBroker.opentherm
 
-# Opentherm integration ioBroker
-![alt text](https://travis-ci.org/iobroker-community-adapters/ioBroker.opentherm.svg?branch=master)
-![Number of Installations](http://iobroker.live/badges/opentherm-installed.svg) ![Number of Installations](http://iobroker.live/badges/opentherm-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.opentherm.svg)](https://www.npmjs.com/package/iobroker.opentherm)
+[![NPM version](http://img.shields.io/npm/v/iobroker.opentherm.svg)](https://www.npmjs.com/package/iobroker.opentherm)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.opentherm.svg)](https://www.npmjs.com/package/iobroker.opentherm)
-[![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.opentherm.svg)](https://greenkeeper.io/)
+![Number of Installations (latest)](http://iobroker.live/badges/opentherm-installed.svg)
+![Number of Installations (stable)](http://iobroker.live/badges/opentherm-stable.svg)
+[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters//iobroker.opentherm.svg)](https://david-dm.org/iobroker-community-adapters//iobroker.opentherm)
+[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters//ioBroker.opentherm/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters//ioBroker.opentherm)
+
+[![NPM](https://nodei.co/npm/iobroker.opentherm.png?downloads=true)](https://nodei.co/npm/iobroker.opentherm/)
+
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters//ioBroker.opentherm/master.svg)](https://travis-ci.org/iobroker-community-adapters//ioBroker.opentherm)
 
 This adapter integrates all features of the opentherm gateway into ioBroker.
 Opentherm is an gateway protocol used by several modern heating systems like Remeha.
@@ -26,7 +32,19 @@ For more information http://otgw.tclcode.com/index.html#intro with all credits t
 * Provide TCP/IP relay server to allow other OpenTherm monitor software connection by this instance (when direct USB connection is used)
 * Where 
 
+## Support me
+If you like my work, please feel free to provide a personal donation  
+(this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
+[![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+
 ## Changelog
+
+### 0.2.3
+* Adapter fully rebuilded
+
+### 0.2.2
+* Fix read TCP/IP data (svenp)
+
 ### 0.2.1
 * Fix translations
 
@@ -59,7 +77,7 @@ For more information http://otgw.tclcode.com/index.html#intro with all credits t
 ## License
 MIT License
 
-Copyright (c) 2019 DutchmanNL
+Copyright (c) 2020 DutchmanNL <rdrozda86@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
