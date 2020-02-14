@@ -34,6 +34,15 @@ Required node.js >= 10.x.x
 
 ## Changelog
 
+### 1.2.5
+* code cleanup
+* (Zefau) fixed duplicated subscription
+* (Zefau) useless loop within getGroupAttributes()
+* refactor logging
+* refactor state change
+* fix API Key Dialog
+* Websocket reconnect after 60 Seconds if no message is received
+
 ### 1.2.4
 * dynamicly add boolean states for button events
 * added new object definitions
@@ -174,7 +183,7 @@ Required node.js >= 10.x.x
 ## License
 Apache-2.0
 
-Copyright (c) 2017-2019 Jey Cee jey-cee@live.com
+Copyright (c) 2017-2020 Jey Cee jey-cee@live.com
 
 
 

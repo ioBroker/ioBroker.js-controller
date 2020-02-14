@@ -2,18 +2,21 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.opentherm/README.md
-title: Opentherm интеграция ioBroker
-hash: a1i87p1mgoR34nXnuxf08RnAdUZkk3ydYZkPxDmiDw8=
+title: ioBroker.opentherm
+hash: TT07Q6Qq2KXWMzdu39Uyobzc+G9cSxBhxbb0CaseEWc=
 ---
-![альтернативный текст](https://raw.githubusercontent.com/DutchmanNL/ioBroker.opentherm/master/admin/opentherm_large.png)
+![логотип](../../../en/adapterref/iobroker.opentherm/admin/opentherm.png)
 
-![альтернативный текст](https://travis-ci.org/iobroker-community-adapters/ioBroker.opentherm.svg?branch=master)
-![Количество установок](http://iobroker.live/badges/opentherm-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.opentherm.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.opentherm.svg)
-![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.opentherm.svg)
+![Количество установок (последняя)](http://iobroker.live/badges/opentherm-installed.svg)
+![Количество установок (стабильно)](http://iobroker.live/badges/opentherm-stable.svg)
+![Состояние зависимости](https://img.shields.io/david/iobroker-community-adapters//iobroker.opentherm.svg)
+![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters//ioBroker.opentherm/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.opentherm.png?downloads=true)
+![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters//ioBroker.opentherm/master.svg)
 
-# Opentherm интеграция ioBroker
+# IoBroker.opentherm
 Этот адаптер объединяет все функции шлюза opentherm в ioBroker.
 Opentherm - это протокол шлюза, используемый несколькими современными системами отопления, такими как Remeha.
 
@@ -31,10 +34,20 @@ Opentherm - это протокол шлюза, используемый нес�
 ## Сделать
 * Подключение к OpenTherm Gateway напрямую через USB-соединение
 * Предоставьте сервер ретрансляции TCP / IP, чтобы разрешить подключение другого программного обеспечения монитора OpenTherm к этому экземпляру (при использовании прямого подключения USB)
-* Куда
+* Где
+
+## Поддержите меня
+Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это личная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
-### 0.2.0
+
+### 0.2.3
+* Adapter fully rebuilded
+
+### 0.2.2
+* Fix read TCP/IP data (svenp)
+
+### 0.2.1
 * Fix translations
 
 ### 0.1.9
@@ -66,7 +79,7 @@ Opentherm - это протокол шлюза, используемый нес�
 ## License
 MIT License
 
-Copyright (c) 2019 DutchmanNL
+Copyright (c) 2020 DutchmanNL <rdrozda86@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

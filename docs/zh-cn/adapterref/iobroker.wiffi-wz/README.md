@@ -3,59 +3,80 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.wiffi-wz/README.md
 title: 无题
-hash: 6qBR46+TqcuITX7JMqfZPxt6U5rx04HZcDE4feHrczs=
+hash: NGgm7DK6E9ncrgi/aCWgVT5ULGjWqESD0iJ9uLBcDEw=
 ---
-![商标](../../../en/adapterref/iobroker.wiffi-wz/admin/wiffi-wz.png)适用于Wiffi-wz，Weatherman，Wiffi-pump，Rainyman以及其他人的ioBroker适配器=================
+![商标](../../../en/adapterref/iobroker.wiffi-wz/admin/wiffi-wz.png)ioBroker适配器，用于Wiffi-wz，Weatherman，Wiffi-pump，Pulsecounter，Rainyman等
 
 ![安装数量](http://iobroker.live/badges/wiffi-wz-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.wiffi-wz.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.wiffi-wz.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.wiffi-wz.svg)
 ![NPM](https://nodei.co/npm/iobroker.wiffi-wz.png?downloads=true)
-![建立状态](https://ci.appveyor.com/api/projects/status/58b8ygy9slf4oygx/branch/master?svg=true)
+![建立状态](https://travis-ci.org/t4qjXH8N/ioBroker.wiffi-wz.svg?branch=master)
 
-这是一个[ioBroker]（https://github.com/ioBroker/ioBroker）从Wiffi设备检索传感器数据的适配器请参阅[Stall.biz](http://www.stall.biz)以获取更多信息。
+=================
 
-Stall.biz设备的典型示例是[Wiffi-wz]（http://www.stall.biz/project/der-wiffi-wz-2-0-der-wohnzimmersensor），[Weatherman]（https://www.stall.biz/project/weatherman -die-perfekte-wetterstation-fuer-die-hausautomation）和[Rainyman]](https://www.stall.biz/project/rainyman-der-perfekte-sensor-fuer-regen-sonne-klima-bodenfeuchte-und-mehr)。同时支持多个Wiffis。
+这是[ioBroker]（https://github.com/ioBroker/ioBroker）用于从Wiffi设备检索传感器数据的适配器，请参阅[Stall.biz](http://www.stall.biz)的更多信息。
 
-由于适配器的延迟非常低（通常<3s），因此可以使用IR运动传感器触发打开或关闭灯的操作。
+Stall.biz的设备的典型示例是[Wiffi-wz]（http://www.stall.biz/project/der-wiffi-wz-2-0-der-wohnzimmersensor），[气象员]（https://www.stall.biz/project/weatherman -die-perfekte-wetterstation-fuer-die-hausautomation）和[Rainyman](https://www.stall.biz/project/rainyman-der-perfekte-sensor-fuer-regen-sonne-klima-bodenfeuchte-und-mehr)。同时支持多个Wiffis。
 
-下面将详细介绍Stall.biz的一些设备：Wiffi-wz是一个将8个传感器组合在一个单元中的设备。目前可提供以下传感器：
+由于适配器的等待时间非常短（通常<3s），因此可以使用IR运动传感器来触发诸如打开或关闭灯之类的动作。
 
- - 两个正交对齐的红外运动传感器
- - 温度传感器（可以是[DHT22]（https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf），或[BME280]（https://ae-bst.resource.bosch.com/媒体/ _tech /媒体/数据表/ BST-BME280_DS001-11.pdf））
- - 空气湿度传感器（可以是[DHT22]（https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf），或[BME280]（https://ae-bst.resource.bosch.com /media/_tech/media/datasheets/BST-BME280_DS001-11.pdf））
- - 大气压力（可以[BMP180]（https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf），[BMP280]（https://ae-bst.resource.bosch .com / media / _tech / media / datasheets / BST-BMP280-DS001-12.pdf）或[BME280]（https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST- BME280_DS001-11.pdf））
- - 灵敏度可调的噪音传感器
- -  luxmeter（[BH1750]（http://rohmfs.rohm.com/en/products/databook/datasheet/ic/sensor/light/bh1750fvi-e.pdf））
- - 空气质量传感器（[MQ135]（https://www.olimex.com/Products/Components/Sensors/SNS-MQ135/resources/SNS-MQ135.pdf））
- - 蜂鸣器
+下面，将详细介绍Stall.biz的某些设备：Wiffi-wz是在一个单元中结合了八个传感器的设备。当前，以下传感器可用：
 
-Weatherman可以配备许多传感器，详见[主页](https://www.stall.biz/project/weatherman-die-perfekte-wetterstation-fuer-die-hausautomation)。
+-两个正交排列的红外运动传感器
+-温度传感器（可以是[DHT22]（https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf）或[BME280]（https://ae-bst.resource.bosch.com/媒体/ _tech / media /数据表/BST-BME280_DS001-11.pdf））
+-空气湿度传感器（可以是[DHT22]（https://www.sparkfun.com/datasheets/Sensors/Temperature/DHT22.pdf）或[BME280]（https://ae-bst.resource.bosch.com /media/_tech/media/datasheets/BST-BME280_DS001-11.pdf））
+-大气压（可以是[BMP180]（https://cdn-shop.adafruit.com/datasheets/BST-BMP180-DS000-09.pdf），[BMP280]（https://ae-bst.resource.bosch .com / media / _tech / media / datasheets / BST-BMP280-DS001-12.pdf）或[BME280]（https://ae-bst.resource.bosch.com/media/_tech/media/datasheets/BST- BME280_DS001-11.pdf））
+-灵敏度可调的噪音传感器
+-照度计（[BH1750]（http://rohmfs.rohm.com/en/products/databook/datasheet/ic/sensor/light/bh1750fvi-e.pdf））
+-空气质量传感器（[MQ135]（https://www.olimex.com/产品/组件/传感器/SNS-MQ135/resources/SNS-MQ135.pdf））
+-蜂鸣器
 
-Rainyman是Weatherman的某种简化版本，详见[主页](https://www.stall.biz/project/rainyman-der-perfekte-sensor-fuer-regen-sonne-klima-bodenfeuchte-und-mehr)。
+Weatherman可以配备许多传感器，有关更多详细信息，请参见[主页](https://www.stall.biz/project/weatherman-die-perfekte-wetterstation-fuer-die-hausautomation)。
 
-＃＃ 这个怎么运作
-通常，Wiffi-wz将传感器数据发送到Homematic CCU。 Homematic CCU在端口8181上接收主题脚本（或更好的JSON）。此适配器的管理页面重新配置Wiffi-wz以将传感器数据直接发送到ioBroker。传感器数据以[JSON](https://en.wikipedia.org/wiki/JSON)格式编码。因此，在ioBroker机器上打开端口8181上的本地套接字。请注意，出于安全原因，套接字**不得暴露于互联网。
+Rainyman是Weatherman的简化版本，有关更多详细信息，请参见[主页](https://www.stall.biz/project/rainyman-der-perfekte-sensor-fuer-regen-sonne-klima-bodenfeuchte-und-mehr)。
 
-＃＃ 建立
-1.通过检索URL将ioBroker设置为传感器数据的接收者
+＃＃ 怎么运行的
+通常，Wiffi-wz将传感器数据发送到Homematic CCU。 Homematic CCU在端口8181上接收homematic脚本（或更好的JSON）。此适配器的管理页面将Wiffi-wz重新配置为将传感器数据直接发送到ioBroker。传感器数据以[JSON格式](https://en.wikipedia.org/wiki/JSON)格式编码。因此，在ioBroker机器上打开了端口8181上的本地套接字。请注意，出于安全原因，不得将插座暴露在互联网上。
 
-    http：// [wiffi ip] /？ccu：[io-broker的ip]：
+＃＃ 设定
+1.通过检索url将ioBroker设置为传感器数据的接收者
+
+    http：// [wiffi ip] /？ccu：[io-broker的IP]：
 
 2.并将端口设置为8181
 
     http：// [wiffi ip] /？param：12：8181
 
-3.告诉wiffi-wz它必须以JSON格式发送没有HTML标题的数据（注意，气象员可能使用不同的参数编号）
+3.告诉wiffi-wz，它必须以JSON格式发送没有HTML标头的数据（请注意，气象员可能使用其他参数号）
 
 http：// [wiffi ip] /？param：27：1
 
-如果发生任何错误，请将适配器loglevel设置为debug并通过电子邮件将数据电报发送给我。
+如果发生任何错误，请设置适配器日志级别为调试并通过电子邮件向我发送数据电报。
 
-##捐款
-如果这个项目帮助你减少开发时间，你可以通过PayPal（chvorholt@gmail.com）给我一杯咖啡或一瓶啤酒:-)
+##捐赠
+如果这个项目帮助您减少了开发时间，您可以通过PayPal（chvorholt@gmail.com）给我一杯咖啡或一瓶啤酒:-)
 
 ## Changelog
+#### 2.2.0 (08-Feb-2020)
+- compact mode successfully tested
+
+#### 2.1.5 (08-Feb-2020)
+- fixed an error with numeric state names
+
+#### 2.1.4 (29-Aug-2019)
+- fixed "could not create a state null" error
+
+#### 2.1.3 (27-Jun-2019)
+- compatibility for boolean values and old Wiffi versions
+
+#### 2.1.2 (21-Jun-2019)
+- changed behaviour: if states are missing in the datagram, but present in the database, they are not removed from the database
+- boolean and numeric values are correctly stored
+
+#### 2.1.0 (14-Apr-2019)
+- support for compact mode
+
 #### 2.0.1 (08-Jan-2019)
 - fixed "could not find ip" bug
 

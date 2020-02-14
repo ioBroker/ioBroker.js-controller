@@ -21,6 +21,24 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### 0.10.0 (2020-02-13)
+* Updated `zwave-js` to v2.13.3 to improve support for older `Multi Channel` devices
+* Added an *actions* dialog to the device overview, which allows performing node-specific actions. The first available action is removing failed nodes.
+* Added a `ready` state for nodes which can be used in scripts to check if the node is ready to accept commands
+* Value that are set to `undefined` are now converted to `null` before being passed to ioBroker. This avoids a bug in the javascript adapter where triggers would be called with wrong state values.
+
+### 0.9.6 (2020-02-10)
+Updated `zwave-js` to v2.13.2. This includes the following fixes:
+* Improved support for older devices with multiple endpoints
+* The *HeatIt Z-Push Button 8* should now correctly be detected
+* Potential fix for weird behavior of Start Level Change commands in some devices.
+
+### 0.9.5 (2020-02-07)
+Updated `zwave-js` to v2.13.0. This includes the following changes:
+* Improved support for some notifications types
+* Added support for the `Clock CC`.
+* Fixed a bug where unsolicited commands could wrongly be interpreted as a response to the current request
+
 ### 0.9.4 (2020-02-02)
 * Small performance improvements
 * Fixed an error that could happen when a state was changed before the driver is ready

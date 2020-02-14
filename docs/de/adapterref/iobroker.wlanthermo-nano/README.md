@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.wlanthermo-nano/README.md
 title: ioBroker.wlanthermo-nano
-hash: 7PaDGgC1a8xJz51Pnob9s7EItyBZ6R+SG8c4g97UNIs=
+hash: dXyP552FUGUaw44ss0/iVFDKJq+ThYgA/ZrktqJLcXQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.wlanthermo-nano/admin/wlanthermo-nano.png)
 
@@ -21,20 +21,21 @@ hash: 7PaDGgC1a8xJz51Pnob9s7EItyBZ6R+SG8c4g97UNIs=
 
 ## Aufbau
 Der Adapter kann über die Administrationsoberfläche installiert und konfiguriert werden.
-Bitte geben Sie in der Instanzkonfiguration IP-Adresse, Benutzername und Passwort ein.
+Bitte geben Sie IP-Adresse, Benutzername und Passwort in die Instanzkonfiguration ein.
 
-1 Gerät wird unterstützt, wenn Sie ein sekodiertes Gerät überwachen möchten, verwenden Sie bitte die zweite Instanz.
-(In zukünftigen Versionen werden mehrere Geräte von 1 Adapter unterstützt).
-
-# Vorerst nicht von Github aus installieren, sondern nur vom ioBroker-Administrator! (Änderung im Repository)
 ## Machen
-* [] Pitmaster-Einstellungen optimieren, Zustände nur im verwandten Modus beschreibbar machen, ansonsten nur lesbar
-* [] erlauben mehrere Geräte
+* [] Pitmaster-Einstellungen optimieren, Zustände nur im verwandten Modus beschreibbar machen, sonst schreibgeschützt
+* [] Automatische Geräteerkennung implementieren
+* [] Implementieren Sie den Online-Status des Geräts
+* [x] erlauben mehrere Geräte
 * [] Code-Bereinigung
+
+## Unterstütze mich
+Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
-### 0.1.2  (in progress, not released !)
+### 0.1.2
 * (DutchmanNL) Support multiple devices
 
 ### 0.1.1

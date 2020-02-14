@@ -2615,6 +2615,16 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
+### 4.4.2 (2020-02-10)
+* (Apollon77) Fix Astro functions and error message
+* (Apollon77) usage with all kinds of admin ports and reverse proxies optimized
+
+### 4.4.0 (2020-02-08)
+* (Apollon77) Add new socket.io client library to prevent errors
+
+### 4.3.8 (2020-02-07)
+* (bluefox) Fixed the authentication error detection
+
 ### 4.3.7 (2020-01-26)
 * (bluefox) Made adapter compatible with js-controller >= 2.2.x 
 

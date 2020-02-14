@@ -92,6 +92,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.2.1 (2020-02-08)
+* (Apollon77) New schemas added
+* (Apollon77) Better handle strange case where qrcode library is not existing
+
 ### 3.2.0 (2020-02-05)
 * (Apollon77) Many new schemas added
 * (Apollon77) Add Infos about compatible App versions with link to enhanced docs

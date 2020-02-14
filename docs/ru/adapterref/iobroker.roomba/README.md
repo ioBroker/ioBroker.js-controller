@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: U8JyFng8pXWZePr9Z20INwu4Kj3qLI2F71RbGzxcqas=
+hash: T9yxjz3EPQTTd3vuWbGLj2VpjMOhUpCZM5Ctt8nyIac=
 ---
 ![логотип](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
@@ -11,15 +11,15 @@ hash: U8JyFng8pXWZePr9Z20INwu4Kj3qLI2F71RbGzxcqas=
 ![Количество установок](http://iobroker.live/badges/roomba-installed.svg)
 ![Стабильная версия](http://iobroker.live/badges/roomba-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.roomba.svg)
+![Фиксируется с момента последнего выпуска](https://img.shields.io/github/commits-since/Zefau/ioBroker.roomba/latest.svg)
 ![Трэвис CI](https://travis-ci.org/Zefau/ioBroker.roomba.svg?branch=master)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.roomba.svg)
-![Значок Greenkeeper](https://badges.greenkeeper.io/Zefau/ioBroker.roomba.svg)
 ![NPM](https://nodei.co/npm/iobroker.roomba.png?downloads=true)
 
 # IoBroker.roomba Подключите iRobot Roomba к ioBroker.
 Основано на библиотеке dorita980 https://github.com/koalazak/dorita980#readme
 
-**Оглавление**
+**Содержание**
 
 1. [Особенности] (# функции)
 2. [Установка] (# установка)
@@ -45,14 +45,19 @@ hash: U8JyFng8pXWZePr9Z20INwu4Kj3qLI2F71RbGzxcqas=
 
   ![Roomba Интерфейс](../../../en/adapterref/iobroker.roomba/img/roomba.interface.png)
 
-## Монтаж
+## Установка
 ioBroker.roomba нужен [холст](https://www.npmjs.com/package/canvas), чтобы нарисовать карты миссий Roomba. ioBroker попытается установить эту зависимость при установке ioBroker.roomba.
 
-Тем не менее, вы, вероятно, должны установить пакетные зависимости canvas (и самого canvas) с помощью следующей команды:
+Тем не менее, вам, вероятно, придется установить зависимости пакета canvas (и самого canvas) с помощью следующей команды:
 
 ### Linux
 ```
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+```
+
+Кроме того, выполните следующую команду __ в каталоге ioBroker.roomba__ (`/opt/iobroker/node_modules/iobroker.roomba`):
+
+```
 sudo npm install canvas --unsafe-perm=true
 ```
 
@@ -85,15 +90,15 @@ npm install canvas
 
 Для получения дополнительной информации см. Https://github.com/Automattic/node-canvas/wiki/Installation:-Windows.
 
-## Инструкция по настройке
+## Инструкции по настройке
 ### Автоматическая настройка
 Для автоматической настройки ioBroker.roomba следуйте инструкциям в админ-панели ioBroker.roomba.
 
-** ВНИМАНИЕ **: Учетные данные для аутентификации не совпадают с теми, которые вы используете в приложении для смартфона!
+** ВНИМАНИЕ **: Учетные данные для аутентификации не совпадают с тем, что вы используете в приложении для смартфона!
 
 1. Убедитесь, что адаптер ioBroker.roomba запущен.
 2. Убедитесь, что ваш робот находится на домашней базе и включен (зеленый свет включен).
-3. Затем нажмите и удерживайте кнопку HOME на вашем роботе, пока он не воспроизведет серию тонов (около 2 секунд).
+3. Затем нажмите и удерживайте кнопку HOME на своем роботе, пока он не воспроизведет серию тонов (около 2 секунд).
 4. Отпустите кнопку, и ваш робот начнет мигать светом WIFI.
 5. Затем вернитесь сюда и нажмите кнопку, чтобы получить IP и учетные данные.
 
@@ -121,7 +126,8 @@ npm install canvas
 | Roomba® 9xx | [960] (https://forum.iobroker.net/user/jb_sullivan), [966] (https://forum.iobroker.net/user/thomaslpz), 980 | v2.4.6-3 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/529#rn_PageTitle) | ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
 | Roomba® i | [i7 (7150)] (https://forum.iobroker.net/post/240589), i7 + (7550) | v1.4 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/19549#rn_PageTitle) | ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
 | Roomba® e5 | [e5] (https://forum.iobroker.net/topic/7657/irobot-roomba-adapter/158) | v3.4.42 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | ![# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **поддерживается** (! [# f03c15 ](https://placehold.it/15/f03c15/000000?text=+) НИКАКОЙ карты) |
-| Roomba® e5 | [e5] (https://forum.iobroker.net/topic/7657/irobot-roomba-adapter/158) | v3.4.42 | [Примечания к выпуску] (https://homesupport.irobot.com/app/answers/detail/a_id/6345#rn_PageTitle) | ! [# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **поддерживается** (! [# f03c15] (https://placehold.it/15/f03c15/000000? текст = +) НЕТ карта) |
+| Roomba® s | [S9 +] (https://github.com/Zefau/ioBroker.roomba/issues/34) | v3.2.4 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/26887/kw/s9%2B#rn_PageTitle) | ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
+| Roomba® s | [S9 +] (https://github.com/Zefau/ioBroker.roomba/issues/34) | v3.2.4 | [Примечания к выпуску] (https://homesupport.irobot.com/app/answers/detail/a_id/26887/kw/s9%2B#rn_PageTitle) | ! [# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
 
 Пожалуйста, помогите мне относительно поддерживаемых устройств и позвольте мне [знать через проблему](https://github.com/Zefau/ioBroker.roomba/issues), поддерживается ли ваша модель Roomba!
 
@@ -133,7 +139,7 @@ npm install canvas
 | уборка | - | - | Команды и информация о процессе очистки |
 | уборка | последний | - | Последние команды, отправленные роботу |
 | уборка | последний | команда | Последняя команда, отправленная роботу |
-| уборка | последний | метка времени | Отметка времени последней команды была отправлена |
+| уборка | последний | отметка времени | Отметка времени последней команды была отправлена |
 | уборка | последний | дата и время | DateTime последняя команда была отправлена |
 | уборка | последний | инициатор | Инициатор последней команды |
 | уборка | последний | цикл | Цикл |
@@ -160,7 +166,7 @@ npm install canvas
 | устройство | предпочтения | - | Установить предпочтения |
 | устройство | предпочтения | binPause | **НЕИЗВЕСТНО** |
 | устройство | предпочтения | carpetBoostAuto | Автоматически: Roomba автоматически повысит мощность вакуума для чистки глубоких ковров. |
-| устройство | предпочтения | carpetBoostHigh | Режим производительности: Roomba всегда будет увеличивать вакуум, чтобы максимально повысить эффективность очистки на всех поверхностях пола. |
+| устройство | предпочтения | carpetBoostHigh | Режим производительности: Roomba всегда будет увеличивать вакуум, чтобы максимизировать эффективность очистки на всех поверхностях пола. |
 | устройство | предпочтения | ecoCharge | **НЕИЗВЕСТНО** |
 | устройство | предпочтения | noAutoPasses | Один проход: Roomba покроет все области одним проходом очистки. |
 | устройство | предпочтения | noPP | **НЕИЗВЕСТНО** |
@@ -184,7 +190,7 @@ npm install canvas
 | устройство | - | тип | Тип робота |
 | Штаты | - | - | Информация о статусе |
 | Штаты | - | \ _connected | Состояние соединения |
-| Штаты | - | аккумулятор | Уровень заряда батареи робота |
+| Штаты | - | батарея | Уровень заряда батареи робота |
 | Штаты | - | binFull | Укажите, заполнен ли статус корзины |
 | Штаты | - | binInserted | Укажите, вставлен ли bin |
 | Штаты | - | состыкованный | Укажите, пристыкован ли робот |
@@ -310,7 +316,19 @@ _2019-05-04 исправлена ошибка, препятствовавшая 
 
 ## Changelog
 
-### 1.0.5 (2019-08-19)
+### 1.1.0 (2020-02-06)
+- (Zefau) added support to change schedule (see [#36](https://github.com/Zefau/ioBroker.roomba/issues/36))
+- (Zefau) fixed bug with state `commands.last.dateTime` having incorrect value `NaN`
+- (Zefau) fixed error message shown when robot is on a mission but map is not given
+
+### 1.1.0 (2020-02-06)
+- (Zefau) acknowledged support for S9+ (see [#34](https://github.com/Zefau/ioBroker.roomba/issues/34))
+
+### 1.0.7 (2019-09-03)
+- (Zefau) fixed bugs occurring when Roomba is on a mission
+- (Zefau) added additional debug logging
+
+### 1.0.6 (2019-08-19)
 - (Zefau) added loading screen to web interface
 
 ### 1.0.5 (2019-08-18)

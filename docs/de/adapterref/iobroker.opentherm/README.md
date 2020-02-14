@@ -2,39 +2,52 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.opentherm/README.md
-title: Opentherm Integration ioBroker
-hash: a1i87p1mgoR34nXnuxf08RnAdUZkk3ydYZkPxDmiDw8=
+title: ioBroker.opentherm
+hash: TT07Q6Qq2KXWMzdu39Uyobzc+G9cSxBhxbb0CaseEWc=
 ---
-![Alt-Text](https://raw.githubusercontent.com/DutchmanNL/ioBroker.opentherm/master/admin/opentherm_large.png)
+![Logo](../../../en/adapterref/iobroker.opentherm/admin/opentherm.png)
 
-![Alt-Text](https://travis-ci.org/iobroker-community-adapters/ioBroker.opentherm.svg?branch=master)
-![Anzahl der Installationen](http://iobroker.live/badges/opentherm-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.opentherm.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.opentherm.svg)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.opentherm.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/opentherm-installed.svg)
+![Anzahl der Installationen (stabil)](http://iobroker.live/badges/opentherm-stable.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters//iobroker.opentherm.svg)
+![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapters//ioBroker.opentherm/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.opentherm.png?downloads=true)
+![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters//ioBroker.opentherm/master.svg)
 
-# Opentherm-Integration ioBroker
-Dieser Adapter integriert alle Funktionen des opentherm Gateways in ioBroker.
-Opentherm ist ein Gateway-Protokoll, das von mehreren modernen Heizungssystemen wie Remeha verwendet wird.
+# IoBroker.opentherm
+Dieser Adapter integriert alle Funktionen des opentherm-Gateways in ioBroker.
+Opentherm ist ein Gateway-Protokoll, das von mehreren modernen Heizsystemen wie Remeha verwendet wird.
 
 Weitere Informationen finden Sie unter http://otgw.tclcode.com/index.html#intro mit allen Credits an die Entwickler.
 
-### Featured Funktionalität im Endzustand:
-* Stellen Sie einen TCP / IP-Relay-Server bereit, um die Verbindung anderer OpenTherm-Monitorsoftware durch diese Instanz zu ermöglichen (wenn eine direkte USB-Verbindung verwendet wird).
-* Passen Sie nach Möglichkeit Werte in ioBroker an und senden Sie den Befehl an Opentherm
-* Bitte zögern Sie nicht, Funktionsanfragen hinzuzufügen
+### Empfohlene Funktionalität im Endzustand:
+* Stellen Sie einen TCP / IP-Relay-Server bereit, um die Verbindung anderer OpenTherm-Überwachungssoftware durch diese Instanz zu ermöglichen (wenn eine direkte USB-Verbindung verwendet wird).
+* Passen Sie nach Möglichkeit die Werte in ioBroker an und senden Sie den Befehl an Opentherm
+* Sie können gerne Funktionsanfragen hinzufügen
 
-Derzeit implementiert
-* Stellen Sie über TCP / IP eine Verbindung zu OpenTherm Gateway her
-* Stellen Sie über eine USB-Verbindung eine direkte Verbindung zum OpenTherm Gateway her
+### Derzeit implementiert
+* Stellen Sie über TCP / IP eine Verbindung zum OpenTherm Gateway her
+* Stellen Sie eine direkte Verbindung zum OpenTherm Gateway über eine USB-Verbindung her
 
 ## Machen
-* Verbinden Sie sich über eine USB-Verbindung direkt mit dem OpenTherm Gateway
-* Stellen Sie einen TCP / IP-Relay-Server bereit, um die Verbindung anderer OpenTherm-Monitorsoftware durch diese Instanz zu ermöglichen (wenn eine direkte USB-Verbindung verwendet wird).
-* Woher
+* Stellen Sie eine direkte USB-Verbindung zu OpenTherm Gateway her
+* Stellen Sie einen TCP / IP-Relay-Server bereit, um die Verbindung anderer OpenTherm-Überwachungssoftware durch diese Instanz zu ermöglichen (wenn eine direkte USB-Verbindung verwendet wird).
+* Wo
+
+## Unterstütze mich
+Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
-### 0.2.0
+
+### 0.2.3
+* Adapter fully rebuilded
+
+### 0.2.2
+* Fix read TCP/IP data (svenp)
+
+### 0.2.1
 * Fix translations
 
 ### 0.1.9
@@ -66,7 +79,7 @@ Derzeit implementiert
 ## License
 MIT License
 
-Copyright (c) 2019 DutchmanNL
+Copyright (c) 2020 DutchmanNL <rdrozda86@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

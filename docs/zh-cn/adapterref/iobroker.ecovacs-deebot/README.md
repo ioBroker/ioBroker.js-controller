@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: fGU3XZWbDJ3WUMjci6Cz3amIKEhpbk5T9s+kF6SQOnE=
+hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -16,28 +16,45 @@ hash: fGU3XZWbDJ3WUMjci6Cz3amIKEhpbk5T9s+kF6SQOnE=
 
 ＃＃ 楷模
 到目前为止，只有与** XMPP **协议通信的设备才能正常工作。
+与** MQTT **协议通信的设备是实验性的。
 
 成功建立连接后，可以使用状态值`info.communicationProtocol`对此进行检查（值：`XMPP`，`MQTT`）。
 
-###正常工作
-基本命令，例如`clean`（§§SSSSS_1_1§§），`charge`，`stop`以及`battery`，`charge`，`clean`和§为此需要§SSSSS_7§§状态，此处未单独列出。
+###按钮和控件
+“基本”命令是`clean`（`auto`），`charge`，`stop`。它们不在此处单独列出。
 
-|型号暂停|现货| spotArea | customArea * |边缘playSound |
-|------ |------ |------ |------ |------ |------ |------ |
-| Deebot Ozmo 930 | x | | x | x | | x |
-| Deebot Slim 2 | | x | | | x | |
+|型号基本|暂停|现货| spotArea | customArea * |边缘playSound |水位|
+|------ |------ |------ |------ |------ |------ |------ |------ |------ |
+| Deebot Slim 2 | x |不适用x |不适用不适用x |不适用不适用 |
+| Deebot 710 | x | | | | | | |不适用 |
+| Deebot 900 | x | |不适用| |不适用|不适用 |
+| Deebot Ozmo 610 | x | | x |不适用不适用x | | |
+| Deebot Ozmo 900 | | |不适用| |不适用| |
+| Deebot Ozmo 930 | x | x |不适用x | x |不适用x | x |
+| Deebot Ozmo 950 | | |不适用| |不适用| |
+
+###信息和状态
+|型号电池| chargestatus | cleanstatus |水位| ------ | ------ | ------ | ------ | ------
+
+| Deebot Slim 2 | x | x | x |不适用 |
+| Deebot 710 | | | |不适用 |
+| Deebot 900 | | | |不适用 |
+| Deebot Ozmo 610 | | | | |
+| Deebot Ozmo 900 | | | | |
+| Deebot Ozmo 930 | x | x | x | x |
+| Deebot Ozmo 950 | | | | |
 
 *）包括`cleanings`的数量
+
+###正常工作
+* Deebot Ozmo 610
+* Deebot Ozmo 930
+* Deebot苗条2
 
 ＃＃＃ 应该管用
 * Deebot N79T
 * Deebot 601
-* Deebot Ozmo 610
-
-####这些模型不太可能起作用
-* Deebot 900
-* Deebot Ozmo 900
-* Deebot奥兹莫950
+* Deebot奥兹莫960
 
 ＃＃ 控制
 ＃＃＃ 纽扣
@@ -90,15 +107,13 @@ hash: fGU3XZWbDJ3WUMjci6Cz3amIKEhpbk5T9s+kF6SQOnE=
 | --- | --- |
 |电邮|您的Ecovacs帐户使用的电子邮件地址|
 |密码您的Ecovacs帐户使用的密码|
-|国家代码（大陆）|选择预定义的国家/地区代码（包括大陆）|
+|国家代码（大陆）|选择预定义的国家代码（包括大陆）|
 |设备编号|如果使用多个设备，则选择当前实例|
 |点数| Ecovacs应用程序中定义的运动区域数（默认为`0`）|
 
-*）Ecovacs服务器经常抛出奇数错误，因此我们想自动重试。
-
 ##谢谢和感谢
 * @joostth（[sucks.js]（https://github.com/joostth/sucks.js））
-* @wpietri（[吸]（https://github.com/wpietri/sucks））
+* @wpietri（[吮吸]（https://github.com/wpietri/sucks））
 * @ bmartin5692（[sucks]（https://github.com/bmartin5692/sucks），[bumber]（https://github.com/bmartin5692/bumper））
 * @Ligio（[ozmo]（https://github.com/Ligio/ozmo））
 

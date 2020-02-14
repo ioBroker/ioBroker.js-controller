@@ -48,6 +48,9 @@ This adapter cannot be installed directly from github. Only from npm.
 
 ## Changelog
 
+### 0.4.1 (2020-02-10)
+* (Apollon77) compatibility to web 3.0
+
 ### 0.3.5 (2019-04-15)
 * (yaming116) bugfix i18n
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: NahNm5YOLDTk59vlJH0Q9mbSUcJNyw7Gz5nE+6wkXtE=
+hash: ea7b/0PF8QqOOuwVwD2nTN3JwOlrZndZALMWGiIYrU0=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -11,7 +11,7 @@ hash: NahNm5YOLDTk59vlJH0Q9mbSUcJNyw7Gz5nE+6wkXtE=
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.vis-materialdesign.svg)
 ![Количество установок](http://iobroker.live/badges/vis-materialdesign-installed.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.vis-materialdesign.svg)
-![Статус зависимости](https://img.shields.io/david/Scrounger/iobroker.vis-materialdesign.svg)
+![Состояние зависимости](https://img.shields.io/david/Scrounger/iobroker.vis-materialdesign.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Scrounger/ioBroker.vis-materialdesign/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.vis-materialdesign.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/Scrounger/ioBroker.vis-materialdesign/master.svg)
@@ -20,7 +20,7 @@ hash: NahNm5YOLDTk59vlJH0Q9mbSUcJNyw7Gz5nE+6wkXtE=
 ## Виджеты дизайна материалов для ioBroker VIS
 [![PayPal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-Виджеты дизайна материалов ioBroker основаны на [Руководство Google по дизайну материалов](https://material.io/design/). Адаптер использует следующие библиотеки:
+Виджеты дизайна материалов ioBroker основаны на [Руководство по дизайну материалов Google](https://material.io/design/). Адаптер использует следующие библиотеки:
 
 * [Компоненты материалов Google для Интернета] (https://github.com/material-components/material-components-web)
 * [Vuetify] (https://github.com/vuetifyjs/vuetify)
@@ -46,9 +46,9 @@ https://github.com/material-components/material-components-web/blob/master/docs/
 https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 
 ### IoBroker VIS App
-не работает в данный момент, необходимо реализовать приложением, см. https://github.com/ioBroker/ioBroker.vis.cordova
+в данный момент не работает, необходимо внедрить в приложение, см. https://github.com/ioBroker/ioBroker.vis.cordova
 
-## Материал Дизайн Иконки и Изображения
+## Дизайн материалов значки и изображения
 <table><thead><tr><th> Скриншот </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/material-icons.png"></td><td> Некоторые виджеты поддерживают библиотеку <a href="https://materialdesignicons.com/" target="_blank">значков материалов</a> . Вы можете выбрать значок из списка выше или открыть средство выбора изображений, нажав кнопку справа от поля ввода. <br><br> <b>Цвета изображения применяются только к значкам дизайна материалов, а не к изображению!</b> </td></tr></tbody></table>
 
 ## Кнопки
@@ -92,14 +92,14 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 
 Настройки, которые не перечислены в таблице ниже, говорят сами за себя.
 
-<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td> метод данных меню </td><td> Существует три способа определения данных меню. Во-первых, определить это с помощью редактора. Во-вторых, определить его с помощью строки JSON. Третий способ - определить его тремя списками значений, меток и значков. </td></tr><tr><td> Редактор: количество пунктов меню </td><td> Метод данных меню: через редактор <br> Определите количество пунктов меню. Отдельные пункты меню могут быть определены в пункте меню [x] </td></tr><tr><td> Строка JSON </td><td> Метод данных меню: строка json <br> Здесь вы можете добавить строку JSON, чтобы определить пункты меню, или использовать привязки к точке данных, содержащей строку JSON. <br><br> Строка JSON должна иметь следующий формат: <br> <code>[ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </td> </tr><tr><td> список значений </td><td> Метод данных меню: список значений <br> Определите количество пунктов меню, добавив значения, которые будут установлены в точке данных. Записи должны быть разделены запятой </td></tr><tr><td> список значений: метки </td><td> Метод данных меню: список значений <br> Определите связанные метки значений. Записи должны быть разделены запятой </td></tr><tr><td> список значений: метки </td><td> Метод данных меню: список значений <br> Определите связанные значки значений. Записи должны быть разделены запятой. Вы можете использовать путь к изображению или название дизайна материалов. </td></tr></tbody></table>
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td> метод данных меню </td><td> Существует три способа определения данных меню. Во-первых, определить это с помощью редактора. Во-вторых, определить его с помощью строки JSON. Третий метод - определить его тремя списками значений, меток и значков. </td></tr><tr><td> Редактор: количество пунктов меню </td><td> Метод данных меню: через редактор <br> Определите количество пунктов меню. Отдельные пункты меню могут быть определены в пункте меню [x] </td></tr><tr><td> Строка JSON </td><td> Метод данных меню: строка json <br> Здесь вы можете добавить строку JSON для определения пунктов меню или использовать привязки к точке данных, содержащей строку JSON. <br><br> Строка JSON должна иметь следующий формат: <br><pre> <code> [ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </pre> </td></tr><tr><td> список значений </td><td> Метод данных меню: список значений <br> Определите количество пунктов меню, добавив значения, которые будут установлены в точке данных. Записи должны быть разделены запятой </td></tr><tr><td> список значений: метки </td><td> Метод данных меню: список значений <br> Определите связанные метки значений. Записи должны быть разделены запятой </td></tr><tr><td> список значений: метки </td><td> Метод данных меню: список значений <br> Определите связанные значки значений. Записи должны быть разделены запятой. Вы можете использовать путь к изображению или название дизайна материалов. </td></tr></tbody></table>
 
 ### Автозаполнение
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/autocomplete.gif)
 
 Настройки, которые не перечислены в таблице ниже, говорят сами за себя.
 
-<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td> метод данных меню </td><td> Существует три способа определения данных меню. Во-первых, определить это с помощью редактора. Во-вторых, определить его с помощью строки JSON. Третий способ - определить его тремя списками значений, меток и значков. </td></tr><tr><td> Редактор: количество пунктов меню </td><td> Метод данных меню: через редактор <br> Определите количество пунктов меню. Отдельные пункты меню могут быть определены в пункте меню [x] </td></tr><tr><td> Строка JSON </td><td> Метод данных меню: строка json <br> Здесь вы можете добавить строку JSON, чтобы определить пункты меню, или использовать привязки к точке данных, содержащей строку JSON. <br><br> Строка JSON должна иметь следующий формат: <br> <code>[ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </td> </tr><tr><td> список значений </td><td> Метод данных меню: список значений <br> Определите количество пунктов меню, добавив значения, которые будут установлены в точке данных. Записи должны быть разделены запятой </td></tr><tr><td> список значений: метки </td><td> Метод данных меню: список значений <br> Определите связанные метки значений. Записи должны быть разделены запятой </td></tr><tr><td> список значений: метки </td><td> Метод данных меню: список значений <br> Определите связанные значки значений. Записи должны быть разделены запятой. Вы можете использовать путь к изображению или название дизайна материалов. </td></tr></tbody></table>
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td> метод данных меню </td><td> Существует три способа определения данных меню. Во-первых, определить это с помощью редактора. Во-вторых, определить его с помощью строки JSON. Третий метод - определить его тремя списками значений, меток и значков. </td></tr><tr><td> Редактор: количество пунктов меню </td><td> Метод данных меню: через редактор <br> Определите количество пунктов меню. Отдельные пункты меню могут быть определены в пункте меню [x] </td></tr><tr><td> Строка JSON </td><td> Метод данных меню: строка json <br> Здесь вы можете добавить строку JSON для определения пунктов меню или использовать привязки к точке данных, содержащей строку JSON. <br><br> Строка JSON должна иметь следующий формат: <br><pre> <code> [ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </pre> </td></tr><tr><td> список значений </td><td> Метод данных меню: список значений <br> Определите количество пунктов меню, добавив значения, которые будут установлены в точке данных. Записи должны быть разделены запятой </td></tr><tr><td> список значений: метки </td><td> Метод данных меню: список значений <br> Определите связанные метки значений. Записи должны быть разделены запятой </td></tr><tr><td> список значений: метки </td><td> Метод данных меню: список значений <br> Определите связанные значки значений. Записи должны быть разделены запятой. Вы можете использовать путь к изображению или название дизайна материалов. </td></tr></tbody></table>
 
 ## Верхняя панель приложений с навигационным ящиком
 Верхнюю панель приложения с навигационным ящиком можно комбинировать с <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">видом в виджете 8</a> .
@@ -112,18 +112,18 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 ##### Макет постоянного:
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
 
-<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td> Идентификатор объекта </td><td> должен быть установлен на точку данных из номера типа. Например, эта точка данных может использоваться <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">представлением в виджете 8</a> </td></tr><tr><td> показать индекс элементов навигации </td><td> показывает индекс навигации перед меткой элемента. Этот номер можно использовать в <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">представлении в виджете 8</a> для определения представления, которое должно отображаться, если выбран элемент </td></tr><tr><td> количество элементов навигации </td><td> Определить количество элементов навигации </td></tr></tbody></table>
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td> Идентификатор объекта </td><td> должен быть установлен на точку данных из номера типа. Например, эта точка данных может использоваться <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">представлением в виджете 8</a> </td></tr><tr><td> показать индекс элементов навигации </td><td> показывает индекс навигации перед меткой элемента. Этот номер можно использовать в <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">представлении в виджете 8</a> для определения представления, которое должно отображаться, если элемент выбран </td></tr><tr><td> количество элементов навигации </td><td> Определить количество элементов навигации </td></tr></tbody></table>
 
 ### Подменю
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
 
 Настройки, которые не перечислены в таблице ниже, говорят сами за себя.
 
-<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td> количество подменю [x] </td><td> Определите, есть ли у элемента навигации подменю и количество подменю. </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td> метка [х] </td><td> Чтобы изменить текст элементов, вы должны поместить объект json в поле метки с индексом поля представления. <br> Пример: <br>
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td> количество подменю [x] </td><td> Определите, имеет ли элемент навигации подменю и количество подменю. </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td> метка [х] </td><td> Чтобы изменить текст элементов, вы должны поместить объект json в поле метки с индексом поля представления. <br> Пример: <br>
 
 `{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
 
-Результат: см. Скриншот </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_icons.png"></td><td> значок [х] </td><td> Чтобы изменить значки элементов, необходимо поместить объект json в поле значков с индексом поля просмотра. <br> Пример: <br>
+Результат: см. Скриншот </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_icons.png"></td><td> значок [х] </td><td> Чтобы изменить значки элементов, вы должны поместить объект json в поле значков с индексом поля представления. <br> Пример: <br>
 
 `{"itemImage": "/icons-material-svg/hardware/ic_computer_48px.svg", "subItems": ["/vis/widgets/materialdesign/img/IoBroker_Logo.png", "/icons-material-svg/action/ic_android_48px.svg"]}`
 
@@ -147,11 +147,41 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 
 ```
 [
-{"img":"/vis.0/myImages/erlebnis_50.png","name":"Empire","betriebszeit":"4h 06m","funk":"5G","ip":"10.0.0.1"},
-{"img":"/vis.0/myImages/erlebnis_100.png","name":"Handy","betriebszeit":"13m","funk":"5G","ip":"10.0.0.2"},
-{"img":"/vis.0/myImages/erlebnis_100.png","name":"Harmony Hub - Wohnzimmer","betriebszeit":"18T 07h 21m","funk":"2G","ip":"10.0.0.3"},
-{"img":"/vis.0/myImages/erlebnis_25.png","name":"MusicCast - Esszimmer (WX-030)","betriebszeit":"1h 57m","funk":"2G","ip":"10.0.0.4"},
-{"img":"/vis.0/myImages/erlebnis_75.png","name":"MusicCast - K�che (ISX-18D)","betriebszeit":"4h 10m","funk":"2G","ip":"10.0.0.5"}
+	{
+		"img": "/vis.0/myImages/erlebnis_50.png",
+		"name": "Empire",
+		"betriebszeit": "4h 06m",
+		"funk": "5G",
+		"ip": "10.0.0.1"
+	},
+	{
+		"img": "/vis.0/myImages/erlebnis_100.png",
+		"name": "Handy",
+		"betriebszeit": "13m",
+		"funk": "5G",
+		"ip": "10.0.0.2"
+	},
+	{
+		"img": "/vis.0/myImages/erlebnis_100.png",
+		"name": "Harmony Hub - Wohnzimmer",
+		"betriebszeit": "18T 07h 21m",
+		"funk": "2G",
+		"ip": "10.0.0.3"
+	},
+	{
+		"img": "/vis.0/myImages/erlebnis_25.png",
+		"name": "MusicCast - Esszimmer (WX-030)",
+		"betriebszeit": "1h 57m",
+		"funk": "2G",
+		"ip": "10.0.0.4"
+	},
+	{
+		"img": "/vis.0/myImages/erlebnis_75.png",
+		"name": "MusicCast - K�che (ISX-18D)",
+		"betriebszeit": "4h 10m",
+		"funk": "2G",
+		"ip": "10.0.0.5"
+	}
 ]
 ```
 
@@ -171,14 +201,30 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 * [здесь] (https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113)
 * [ical адаптер] (https://forum.iobroker.net/topic/29658/material-design-widgets-table-widget/2)
 
-## Masonry Views
-В Masonry Views встроено несколько `view in widget`, которые будут упорядочены автоматически в зависимости от ширины виджета. С помощью этого виджета можно создать адаптивный макет (один макет для рабочего стола, планшета и мобильного телефона)
+## Отзывчивый макет
+Есть два виджета - Masonry Views и Grid Views - с помощью которых можно создать отзывчивый макет (макет для настольного компьютера, планшета и мобильного устройства). В оба виджета встроено несколько `view in widget`.
+
+### Masonry Views
+В Masonry Views встроено несколько `view in widget`, которые будут упорядочены автоматически в зависимости от ширины виджета. С помощью этого виджета можно создать адаптивный макет (один макет для рабочего стола, планшета и мобильного телефона).
+Масонские виды особенно полезны, если представленные виды имеют разную высоту.
 
 <b>Взгляните на [Пример проекта Виджетов Материалов](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project),</b> чтобы понять, как это работает.
 
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/masnory.gif)
 
-<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2> В зависимости от ширины разрешения можно задать количество столбцов и расстояние между видами. Настройки могут быть установлены независимо для портретного и альбомного формата. Чтобы узнать ширину разрешения для разных устройств, активируйте Помощник по разрешению в общих настройках. </td></tr><tr><td><img src="doc/en/media/masnory_settings_views.png"></td><td> ширина обзора [х] </td><td> Определите ширину вида. Допустимые значения: число, px,% или calc. Примеры: <code>100</code> , <code>100px</code> , <code>55%</code> , <code>calc(60% - 12px)</code> </td></tr></tbody></table>
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2> В зависимости от ширины виджета, количество столбцов и расстояние между представлениями могут быть установлены. Настройки могут быть установлены независимо для портретного и альбомного формата. Чтобы узнать ширину разрешения для разных устройств, активируйте Помощник по разрешению в общих настройках. </td></tr><tr><td><img src="doc/en/media/masnory_settings_views.png"></td><td> ширина обзора [х] </td><td> Определите ширину вида. Допустимые значения: число, px,% или calc. Примеры: <code>100</code> , <code>100px</code> , <code>55%</code> , <code>calc(60% - 12px)</code> </td></tr></tbody></table>
+
+### Виды сетки
+В Grid Views встроено несколько `view in widget`, которые будут упорядочены автоматически в зависимости от ширины виджета. С помощью этого виджета можно создать адаптивный макет (один макет для рабочего стола, планшета и мобильного телефона).
+Виды сетки особенно полезны, если включенные виды имеют одинаковую высоту.
+
+<b>Виджет Grid View имеет в общей сложности 12 столбцов. Если вы хотите, чтобы представление имело ширину 4 столбца, вы должны установить для диапазона столбцов значение 4 в соответствующем представлении [x]</b>
+
+<b>Взгляните на [Пример проекта Виджетов Материалов](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project),</b> чтобы понять, как это работает.
+
+![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/grid.gif)
+
+<table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2> В зависимости от ширины виджета, от которой определяется ширина виджета, могут применяться правила для диапазона столбцов отдельных представлений [x] и расстояния между представлениями. Настройки могут быть установлены независимо для портретного и альбомного формата. Чтобы узнать ширину разрешения для разных устройств, активируйте Помощник по разрешению в общих настройках. </td></tr><tr><td><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2> Определите диапазон столбцов вида в зависимости от текущего правила разрешения ширины. <br> Здесь вы также можете указать, должно ли представление отображаться только с разрешением выше или ниже определенного значения или оно должно отображаться через идентификатор объекта. </td></tr></tbody></table>
 
 ## Колонка просмотров - убог !!!
 Представления столбцов имеют несколько `view in widget` интегрированных, которые будут упорядочены автоматически в зависимости от ширины виджета. С помощью этого виджета можно создать адаптивный макет (один макет для рабочего стола, планшета и мобильного телефона)
@@ -190,11 +236,11 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 <table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/column_views_common.png"></td><td> Число столбцов </td><td> определить количество столбцов </td></tr><tr><td> минимальная ширина </td><td> минимальная ширина каждого столбца. Например, используйте ширину разрешения мобильного устройства </td></tr><tr><td rowspan=2><img src="doc/en/media/column_views_col_settings.png"></td><td> просмотры в столбце [x] </td><td> Определите представления, которые должны быть показаны в этом столбце. Несколько представлений должны быть разделены &#39;|&#39; </td></tr><tr><td> высота просмотров в столбце [x] </td><td> Определите высоту каждого вида в столбце. Несколько высот должны быть разделены &#39;|&#39; </td></tr></tbody></table>
 
 ## Оповещения
-Виджет оповещений можно использовать, например, для отображения сообщений в VIS, как это работает с адаптером pushover, но непосредственно в VIS.
+Виджет оповещений может быть использован, например, для отображения сообщений в VIS, как это работает с адаптером pushover, но непосредственно в VIS.
 
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/alerts.gif)
 
-Для виджета «Оповещения» в качестве объекта требуется строка JSON, которая должна иметь следующую структуру:
+Виджет Оповещения требует JSON-строки в качестве объекта, который должен быть структурирован следующим образом:
 
 ```
 [
@@ -226,7 +272,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 <table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/alerts_settings.png"></td><td> Число столбцов </td><td> определить количество столбцов </td></tr><tr><td> Идентификатор объекта </td><td> Объект должен быть строкой json, структура которой должна быть описана выше </td></tr><tr><td> Максимум. Оповещения </td><td> максимальное количество предупреждений, которые должны быть показаны. </td></tr></tbody></table>
 
 С помощью следующего скрипта вы можете отправлять простые сообщения в точку данных, которая используется виджетом Alerts.
-Сценарий должен включать в глобальные сценарии. Тогда можно отправить сообщение следующей командой
+Скрипт должен быть включен в глобальные скрипты. Тогда можно отправить сообщение следующей командой
 
 `materialDesignWidgets.sendTo('datapoint_id', 'message', 'color');`
 
@@ -267,7 +313,7 @@ materialDesignWidgets.sendTo = function (id, text, backgroundColor = '', borderC
 ## Календарь
 ![логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/calendar.gif)
 
-Для виджета Календарь в качестве объекта требуется строка JSON, которая должна быть структурирована следующим образом:
+Для виджета Календарь в качестве объекта требуется строка JSON, которая должна иметь следующую структуру:
 
 ```
 [
@@ -282,8 +328,8 @@ materialDesignWidgets.sendTo = function (id, text, backgroundColor = '', borderC
 		"name": "Meeting",
 		"color": "#717d7e",
 		"colorText": "#FFFFFF",
-		"start": "2020-03-23",
-		"end": "2020-03-24"
+		"start": "2020-03-23 16:00",
+		"end": "2020-03-24 17:15"
 	}
 ]
 ```
@@ -294,7 +340,7 @@ materialDesignWidgets.sendTo = function (id, text, backgroundColor = '', borderC
 
 <table><thead><tr><th> Скриншот </th><th> настройка </th><th> Описание </th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/calendar_layout.png"></td><td> дни недели, которые будут показаны </td><td> Указывает, какие дни недели отображать. Для отображения только с понедельника по пятницу можно использовать значения <code>1, 2, 3, 4, 5</code> . Для отображения недели, начинающейся в понедельник, можно использовать значения <code>1, 2, 3, 4, 5, 6, 0</code> . </td></tr><tr><td> Идентификатор объекта </td><td> Объект должен быть строкой json, структура которой должна быть описана выше </td></tr><tr><td rowspan=2><img src="doc/en/media/calendar_timeaxis.png"></td><td> час начала </td><td> Час, с которого встречи должны отображаться в представлении недели и дня. </td></tr><tr><td> последний час </td><td> Die Stunde bis wann in der Wochen und Tagesansicht Termine angezeigt werden sollen </td></tr></tbody></table>
 
-Если вы хотите использовать виджет с [ical адаптер](https://github.com/iobroker-community-adapters/ioBroker.ical), вы можете использовать следующий сценарий для преобразования объекта ical в работу с виджетом.
+Если вы хотите использовать виджет с [ical адаптер](https://github.com/iobroker-community-adapters/ioBroker.ical), вы можете использовать следующий скрипт для преобразования объекта ical в работу с виджетом.
 
 ```
 // momentjs is required as dependecies in javascript adapter
@@ -302,6 +348,16 @@ const moment = require("moment");
 
 var instances = $(`[id=ical.*.data.table]`);
 instances.on(ical2CalendarWidget);
+
+// remove this, if you know to use your own datapoint
+let datapointId = 'materialdesignwidgets.calendar.ical2calendar'
+createState(datapointId, "[]", {
+  read: true,
+  write: false,
+  desc: "JSON String for Calendar Widget",
+  type: "string",
+  def: "[]"
+});
 
 function ical2CalendarWidget() {
     try {
@@ -370,7 +426,7 @@ function ical2CalendarWidget() {
             }
 
             // Enter the destination data point that is to be used as object ID in the widget
-            setState('0_userdata.0.materialdesignwidgets.ical2Calendar', JSON.stringify(calList), true);
+            setState(datapointId, JSON.stringify(calList), true);
         }
     } catch (e) {
         console.error(`ical2MaterialDesignCalendarWidget: message: ${e.message}, stack: ${e.stack}`);
@@ -383,6 +439,8 @@ ical2CalendarWidget();
 ## Changelog
 
 ### 0.3.xx
+* (Scrounger): List Widget: color option for switch added
+* (Scrounger): List Widget: dynamic generate item using json string
 * (Scrounger): Masonry Views Widget: visible condition added
 * (Scrounger): Calendar Widget added
 * (Scrounger): translation added

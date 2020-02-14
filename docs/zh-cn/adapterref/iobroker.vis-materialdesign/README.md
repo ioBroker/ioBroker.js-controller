@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: NahNm5YOLDTk59vlJH0Q9mbSUcJNyw7Gz5nE+6wkXtE=
+hash: ea7b/0PF8QqOOuwVwD2nTN3JwOlrZndZALMWGiIYrU0=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -22,7 +22,7 @@ hash: NahNm5YOLDTk59vlJH0Q9mbSUcJNyw7Gz5nE+6wkXtE=
 
 ioBroker物料设计小部件基于[Google的材料设计指南](https://material.io/design/)。适配器使用以下库：
 
-* [用于网络的Google物料组件]（https://github.com/material-components/material-components-web）
+* [适用于Google的网络材料组件]（https://github.com/material-components/material-components-web）
 * [Vuetify]（https://github.com/vuetifyjs/vuetify）
 * [chartjs]（https://www.chartjs.org/）
 * [来自thomasloven的round-slider]（https://github.com/thomasloven/round-slider）
@@ -92,14 +92,14 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td>菜单数据的方法</td><td>有三种方法可以定义菜单数据。首先是通过编辑器定义它。其次是通过json字符串定义它。第三种方法是通过三个列表分别定义值，标签和图标</td></tr><tr><td>编辑器：菜单项计数</td><td>菜单数据的方法：通过编辑器<br>定义菜单项的数量。可以在菜单项[x]下定义各个菜单项</td></tr><tr><td> JSON字符串</td><td>菜单数据的方法：json字符串<br>在这里，您可以添加JSON字符串以定义菜单项，或使用绑定到包含JSON字符串的数据点。 <br><br> JSON字符串必须具有以下格式： <br> <code>[ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </td> </tr><tr><td>值表</td><td>菜单数据的方法：值列表<br>通过添加将设置到数据点的值来定义菜单条目的数量。条目必须以逗号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关标签。条目必须以逗号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关图标。条目必须以逗号分隔。您可以使用图像路径或“材料设计图标”名称</td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td>菜单数据的方法</td><td>有三种方法可以定义菜单数据。首先是通过编辑器定义它。其次是通过json字符串定义它。第三种方法是通过三个值，标签和图标列表来定义它</td></tr><tr><td>编辑器：菜单项计数</td><td>菜单数据的方法：通过编辑器<br>定义菜单项的数量。可以在菜单项[x]下定义各个菜单项</td></tr><tr><td> JSON字符串</td><td>菜单数据的方法：json字符串<br>在这里，您可以添加JSON字符串以定义菜单项，或使用绑定到包含JSON字符串的数据点。 <br><br> JSON字符串必须具有以下格式： <br><pre> <code> [ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </pre> </td></tr><tr><td>值表</td><td>菜单数据的方法：值列表<br>通过添加将设置到数据点的值来定义菜单条目的数量。条目必须以逗号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关标签。条目必须以逗号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关图标。条目必须以逗号分隔。您可以使用图像路径或“材料设计图标”名称</td></tr></tbody></table>
 
 ###自动完成
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/autocomplete.gif)
 
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td>菜单数据的方法</td><td>有三种方法可以定义菜单数据。首先是通过编辑器定义它。其次是通过json字符串定义它。第三种方法是通过三个列表分别定义值，标签和图标</td></tr><tr><td>编辑器：菜单项计数</td><td>菜单数据的方法：通过编辑器<br>定义菜单项的数量。可以在菜单项[x]下定义各个菜单项</td></tr><tr><td> JSON字符串</td><td>菜单数据的方法：json字符串<br>在这里，您可以添加JSON字符串以定义菜单项，或使用绑定到包含JSON字符串的数据点。 <br><br> JSON字符串必须具有以下格式： <br> <code>[ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </td> </tr><tr><td>值表</td><td>菜单数据的方法：值列表<br>通过添加将设置到数据点的值来定义菜单条目的数量。条目必须以逗号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关标签。条目必须以逗号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关图标。条目必须以逗号分隔。您可以使用图像路径或“材料设计图标”名称</td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td>菜单数据的方法</td><td>有三种方法可以定义菜单数据。首先是通过编辑器定义它。其次是通过json字符串定义它。第三种方法是通过三个值，标签和图标列表来定义它</td></tr><tr><td>编辑器：菜单项计数</td><td>菜单数据的方法：通过编辑器<br>定义菜单项的数量。可以在菜单项[x]下定义各个菜单项</td></tr><tr><td> JSON字符串</td><td>菜单数据的方法：json字符串<br>在这里，您可以添加JSON字符串以定义菜单项，或使用绑定到包含JSON字符串的数据点。 <br><br> JSON字符串必须具有以下格式： <br><pre> <code> [ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot; } ]</code> </pre> </td></tr><tr><td>值表</td><td>菜单数据的方法：值列表<br>通过添加将设置到数据点的值来定义菜单条目的数量。条目必须以逗号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关标签。条目必须以逗号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关图标。条目必须以逗号分隔。您可以使用图像路径或“材料设计图标”名称</td></tr></tbody></table>
 
 ##带有导航抽屉的顶部应用栏
 带有导航抽屉的顶部应用栏可以与<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>结合使用。
@@ -112,7 +112,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 #####永久布局：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td>对象ID </td><td>必须从典型编号设置为数据点。例如<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">，小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>可以使用此数据点</td></tr><tr><td>显示导航项的索引</td><td>在项目标签之前显示导航索引。可以<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">在小部件8的视图中</a>使用此数字来定义在选择项目时应显示的视图</td></tr><tr><td>导航项目数</td><td>定义导航项的数量</td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td>对象ID </td><td>必须从典型编号设置为数据点。例如<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">，小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>可以使用此数据点</td></tr><tr><td>显示导航项的索引</td><td>在项目标签之前显示导航索引。此数字可<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">在小部件8的视图中</a>使用，以定义如果选择该项目应显示的视图</td></tr><tr><td>导航项目数</td><td>定义导航项的数量</td></tr></tbody></table>
 
 ###子菜单
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
@@ -137,7 +137,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td> SQL或历史记录适配器的实例</td></tr><tr><td>聚合</td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">链接</a> </td></tr><tr><td>最高要显示的数据点数</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] </td><td>可选设置，将覆盖“计数”设置。 <br>各个数据点之间的距离，以秒为单位。 <br>例如，如果要每分钟显示一次数据点，则必须在此处输入60 </td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。数据点必须是字符串，并且可以包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接的值</a> <br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td>用于触发手动刷新图表的adatapoint的ID。 <br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td> SQL或历史记录适配器的实例</td></tr><tr><td>聚合</td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">链接</a> </td></tr><tr><td>最高要显示的数据点数</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] </td><td>可选设置，将覆盖“计数”设置。 <br>各个数据点之间的距离，以秒为单位。 <br>例如，如果要每分钟显示一次数据点，则必须在此处输入60 </td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。数据点必须是字符串，并且可以包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接的值</a> <br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td>用于触发手动刷新图表的adatapoint的ID。 <br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许使用以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许使用以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr></tbody></table>
 
 ##表
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table.gif)
@@ -147,11 +147,41 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 ```
 [
-{"img":"/vis.0/myImages/erlebnis_50.png","name":"Empire","betriebszeit":"4h 06m","funk":"5G","ip":"10.0.0.1"},
-{"img":"/vis.0/myImages/erlebnis_100.png","name":"Handy","betriebszeit":"13m","funk":"5G","ip":"10.0.0.2"},
-{"img":"/vis.0/myImages/erlebnis_100.png","name":"Harmony Hub - Wohnzimmer","betriebszeit":"18T 07h 21m","funk":"2G","ip":"10.0.0.3"},
-{"img":"/vis.0/myImages/erlebnis_25.png","name":"MusicCast - Esszimmer (WX-030)","betriebszeit":"1h 57m","funk":"2G","ip":"10.0.0.4"},
-{"img":"/vis.0/myImages/erlebnis_75.png","name":"MusicCast - K�che (ISX-18D)","betriebszeit":"4h 10m","funk":"2G","ip":"10.0.0.5"}
+	{
+		"img": "/vis.0/myImages/erlebnis_50.png",
+		"name": "Empire",
+		"betriebszeit": "4h 06m",
+		"funk": "5G",
+		"ip": "10.0.0.1"
+	},
+	{
+		"img": "/vis.0/myImages/erlebnis_100.png",
+		"name": "Handy",
+		"betriebszeit": "13m",
+		"funk": "5G",
+		"ip": "10.0.0.2"
+	},
+	{
+		"img": "/vis.0/myImages/erlebnis_100.png",
+		"name": "Harmony Hub - Wohnzimmer",
+		"betriebszeit": "18T 07h 21m",
+		"funk": "2G",
+		"ip": "10.0.0.3"
+	},
+	{
+		"img": "/vis.0/myImages/erlebnis_25.png",
+		"name": "MusicCast - Esszimmer (WX-030)",
+		"betriebszeit": "1h 57m",
+		"funk": "2G",
+		"ip": "10.0.0.4"
+	},
+	{
+		"img": "/vis.0/myImages/erlebnis_75.png",
+		"name": "MusicCast - K�che (ISX-18D)",
+		"betriebszeit": "4h 10m",
+		"funk": "2G",
+		"ip": "10.0.0.5"
+	}
 ]
 ```
 
@@ -171,17 +201,33 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 * [此处]（https://forum.iobroker.net/topic/26199/test-adapter-material-design-widgets-v0-1-x/113）
 * [ical Adapter]（https://forum.iobroker.net/topic/29658/material-design-widgets-table-widget/2）
 
-##砌体景观
-Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自动对其进行排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动电话的一种布局）
+##响应式布局
+有两个小部件-Masonry Views和Grid Views-可以使用它们创建一个响应式布局（台式机，平板电脑和移动设备的布局）。这两个小部件都集成了多个`view in widget`。
+
+###砌体景观
+Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自动对其进行排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和mobil的一种布局）。
+如果所包含的视图具有不同的高度，则砖石视图特别有用。
 
 <b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/masnory.gif)
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2>根据分辨率的宽度，可以设置列数和视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td><img src="doc/en/media/masnory_settings_views.png"></td><td>视线宽度[x] </td><td>定义视图的宽度。允许的值为数字，px，％或calc。实施例： <code>100</code> ， <code>100px</code> ， <code>55%</code> <code>calc(60% - 12px)</code> </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2>根据窗口小部件的宽度，可以设置列数和视图之间的距离。可以独立设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td><img src="doc/en/media/masnory_settings_views.png"></td><td>视线宽度[x] </td><td>定义视图的宽度。允许的值为数字，px，％或calc。实施例： <code>100</code> ， <code>100px</code> ， <code>55%</code> <code>calc(60% - 12px)</code> </td></tr></tbody></table>
+
+###网格视图
+网格视图具有多个`view in widget`集成，将根据小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和mobil的一种布局）。
+如果包含的视图具有相同的高度，则网格视图特别有用。
+
+<b>网格视图小部件共有12列。如果要使视图的宽度为4列，则必须在相应的视图中将列跨度设置为4 [x]</b>
+
+<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
+
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/grid.gif)
+
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2>根据窗口小部件的宽度，可以从各个窗口小部件的宽度定义适用各个视图[x]的列跨度的规则以及视图之间的距离。可以独立设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2>根据当前的宽度分辨率规则定义视图的列范围。 <br>您还可以在此处指定是仅以高于或低于定义值的分辨率显示视图，还是通过对象ID使其可见。 </td></tr></tbody></table>
 
 ##列视图-已弃用!!!
-列视图具有集成的多个`view in widget`§，它们将根据窗口小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动电话的一种布局）
+列视图具有集成的多个`view in widget`§，将根据小部件的宽度自动对其进行排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动电话的一种布局）
 
 <b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
 
@@ -194,7 +240,7 @@ Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自�
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/alerts.gif)
 
-Alerts小部件需要JSON字符串作为对象，其结构必须如下：
+Alerts小部件需要一个JSON字符串作为对象，其结构必须如下：
 
 ```
 [
@@ -223,9 +269,9 @@ Alerts小部件需要JSON字符串作为对象，其结构必须如下：
 ]
 ```
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/alerts_settings.png"></td><td>列数</td><td>定义列数</td></tr><tr><td>对象ID </td><td>对象必须是json字符串，其结构必须如上所述</td></tr><tr><td>最高警报</td><td>应该显示的最大警报数。 </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/alerts_settings.png"></td><td>列数</td><td>定义列数</td></tr><tr><td>对象ID </td><td>对象必须是json字符串，其结构必须如上所述</td></tr><tr><td>最高快讯</td><td>应该显示的最大警报数。 </td></tr></tbody></table>
 
-使用以下脚本，您可以将简单消息发送到“警报”小部件使用的数据点。
+使用以下脚本，您可以将简单消息发送到警报小部件使用的数据点。
 该脚本必须放入全局脚本中。然后可以使用以下命令发送消息
 
 `materialDesignWidgets.sendTo('datapoint_id', 'message', 'color');`
@@ -282,8 +328,8 @@ Calendar窗口小部件需要一个JSON字符串作为对象，其结构必须�
 		"name": "Meeting",
 		"color": "#717d7e",
 		"colorText": "#FFFFFF",
-		"start": "2020-03-23",
-		"end": "2020-03-24"
+		"start": "2020-03-23 16:00",
+		"end": "2020-03-24 17:15"
 	}
 ]
 ```
@@ -292,7 +338,7 @@ Calendar窗口小部件需要一个JSON字符串作为对象，其结构必须�
 
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/calendar_layout.png"></td><td>要显示一周中的几天</td><td>指定要显示一周中的哪几天。要仅显示星期一至星期五，可以使用值<code>1, 2, 3, 4, 5</code> 。要显示从星期一开始的一周，可以使用值<code>1, 2, 3, 4, 5, 6, 0</code> 。 </td></tr><tr><td>对象ID </td><td>对象必须是json字符串，其结构必须如上所述</td></tr><tr><td rowspan=2><img src="doc/en/media/calendar_timeaxis.png"></td><td>开始时间</td><td>在周和日视图中应显示约会的小时数。 </td></tr><tr><td>结束时间</td><td>在德沃兴和塔格森希特（Tageansicht）的死刑院（Die Stunde bis wann） </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/calendar_layout.png"></td><td>要显示一周中的几天</td><td>指定要显示一周中的哪几天。要仅显示星期一至星期五，可以使用值<code>1, 2, 3, 4, 5</code> 。要显示从星期一开始的一周，可以使用值<code>1, 2, 3, 4, 5, 6, 0</code> 。 </td></tr><tr><td>对象ID </td><td>对象必须是json字符串，其结构必须如上所述</td></tr><tr><td rowspan=2><img src="doc/en/media/calendar_timeaxis.png"></td><td>开始时间</td><td>在周和日视图中应显示约会的小时数。 </td></tr><tr><td>结束时间</td><td>在德沃兴和塔格森希特（Tageansicht）的大屠杀纪念日</td></tr></tbody></table>
 
 如果要将小部件与[医用适配器](https://github.com/iobroker-community-adapters/ioBroker.ical)一起使用，则可以使用以下脚本将ical对象转换为可与小部件一起使用。
 
@@ -302,6 +348,16 @@ const moment = require("moment");
 
 var instances = $(`[id=ical.*.data.table]`);
 instances.on(ical2CalendarWidget);
+
+// remove this, if you know to use your own datapoint
+let datapointId = 'materialdesignwidgets.calendar.ical2calendar'
+createState(datapointId, "[]", {
+  read: true,
+  write: false,
+  desc: "JSON String for Calendar Widget",
+  type: "string",
+  def: "[]"
+});
 
 function ical2CalendarWidget() {
     try {
@@ -370,7 +426,7 @@ function ical2CalendarWidget() {
             }
 
             // Enter the destination data point that is to be used as object ID in the widget
-            setState('0_userdata.0.materialdesignwidgets.ical2Calendar', JSON.stringify(calList), true);
+            setState(datapointId, JSON.stringify(calList), true);
         }
     } catch (e) {
         console.error(`ical2MaterialDesignCalendarWidget: message: ${e.message}, stack: ${e.stack}`);
@@ -383,6 +439,8 @@ ical2CalendarWidget();
 ## Changelog
 
 ### 0.3.xx
+* (Scrounger): List Widget: color option for switch added
+* (Scrounger): List Widget: dynamic generate item using json string
 * (Scrounger): Masonry Views Widget: visible condition added
 * (Scrounger): Calendar Widget added
 * (Scrounger): translation added

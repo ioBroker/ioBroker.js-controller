@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: fGU3XZWbDJ3WUMjci6Cz3amIKEhpbk5T9s+kF6SQOnE=
+hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -14,50 +14,67 @@ hash: fGU3XZWbDJ3WUMjci6Cz3amIKEhpbk5T9s+kF6SQOnE=
 # Ecovacs Deebot Adapter für ioBroker
 Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js).
 
-## Models
-Bisher funktionieren nur Geräte, die mit dem Protokoll **XMPP** kommunizieren.
+## Modelle
+Bisher funktionieren nur Geräte, die mit dem Protokoll **XMPP** kommunizieren, ordnungsgemäß.
+Geräte, die mit dem **MQTT** -Protokoll kommunizieren, sind experimentell.
 
-Sie können dies mit dem Zustandswert `info.communicationProtocol` nach erfolgreichem Verbindungsaufbau überprüfen (Werte: `XMPP`, `MQTT`).
+Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.communicationProtocol` überprüfen (Werte: `XMPP`, `MQTT`).
+
+### Tasten und Steuerung
+"Grundlegende" Befehle sind `clean` (`auto`), `charge`, `stop`. Sie werden hier nicht gesondert aufgeführt.
+
+| Modell | Grund | Pause | spot | spotArea | customArea * | Rand | playSound | Wasserstand |
+|------ |------ |------ |------ |------ |------ |------ |------ |------ |
+| Deebot Slim 2 | x | n / a | x | kA | n / a | x | n / a | n / a |
+| Deebot 710 | x | | | | | | | n / a |
+| Deebot 900 | x | | n / a | | | n / a | | n / a |
+| Deebot Ozmo 610 | x | | x | n / a | n / a | x | | |
+| Deebot Ozmo 900 | | | n / a | | | n / a | | |
+| Deebot Ozmo 930 | x | x | n / a | x | x | n / a | x | x |
+| Deebot Ozmo 950 | | | n / a | | | n / a | | |
+
+### Info und Status
+| Modell | Batterie | chargestatus | cleanstatus | waterLevel | ------ | ------ | ------ | ------ | ------ | ------
+
+| Deebot Slim 2 | x | x | x | n / a |
+| Deebot 710 | | | | n / a |
+| Deebot 900 | | | | n / a |
+| Deebot Ozmo 610 | | | | |
+| Deebot Ozmo 900 | | | | |
+| Deebot Ozmo 930 | x | x | x | x |
+| Deebot Ozmo 950 | | | | |
+
+*) inkl. Anzahl der `cleanings`
 
 ### Funktioniert einwandfrei
-Grundbefehle wie `clean` (`auto`), `charge`, `stop` sowie `battery`, `charge`, `clean` und § §SSSSS_7§§ Status sind hierfür erforderlich und werden hier nicht gesondert aufgeführt.
-
-| Modell | Pause | spot | spotArea | customArea * | Rand | playSound |
-|------ |------ |------ |------ |------ |------ |------ |
-| Deebot Ozmo 930 | x | | x | x | | x |
-| Deebot Slim 2 | | x | | | x | |
-
-*) inkl. gesetzl. Anzahl der `cleanings`
+* Deebot Ozmo 610
+* Deebot Ozmo 930
+* Deebot Slim 2
 
 ### Sollte arbeiten
 * Deebot N79T
 * Deebot 601
-* Deebot Ozmo 610
-
-#### Es ist unwahrscheinlich, dass diese Modelle funktionieren
-* Deebot 900
-* Deebot Ozmo 900
-* Deebot Ozmo 950
+* Deebot Ozmo 960
 
 ## Steuerung
 ### Tasten
 | name | beschreibung |
 | --- | --- |
-| aufladen zurück zur ladestation |
+| aufladen zurück zur Ladestation |
 | sauber | automatische reinigung starten |
 | Rand | Kantenreinigung starten |
 | playSound | einen Sound abspielen, um den Bot zu lokalisieren |
 | spot | Spotreinigung starten |
-| aufhören | stoppe den Reinigungsprozess |
+| stop | Reinigungsprozess stoppen |
 | Pause | pause den reinigungsvorgang |
-| spotArea `0`-`9` | Bis zu 9 Schaltflächen * für die in der Ecovacs-App definierten Bereiche |
+| spotArea `0`-`9` | Bis zu 9 Schaltflächen * für die in der Ecovacs-App | definierten Bereiche |
 
 *) Siehe Adapterkonfiguration
 
 ### Flächen- / Zonenreinigung
 #### SpotArea
 * Durch Kommas getrennte Liste von Zahlen, die mit "0" (z. B. "1,3") für zu reinigende Bereiche beginnen.
-* Tasten für "0" - "9" -Spotbereiche (siehe "Adapterkonfiguration")
+* Schaltflächen für Punktbereiche "0" - "9" (siehe "Adapterkonfiguration")
 
 #### CustomArea
 * durch Kommas getrennte Liste von genau 4 Positionswerten für "x1, y1, x2, y2" (z. B. "-3975.000000,2280.000000, -1930.000000,4575.000000")
@@ -79,9 +96,9 @@ Grundbefehle wie `clean` (`auto`), `charge`, `stop` sowie `battery`, `charge`, `
 | Batterie | Batterie |
 | chargestatus | Status während des Ladevorgangs |
 | cleanstatus | Status während der Reinigung |
-| kommunikationProtokoll | XMPP oder MQTT |
-| Geräteklasse | Deebot-Geräteklasse |
-| Gerätename | Name des in der Ecovacs-App definierten Geräts |
+| Kommunikationsprotokoll | XMPP oder MQTT |
+| deviceClass | Deebot-Geräteklasse |
+| Gerätename | Name des in der Ecovacs-App | definierten Geräts |
 | deviceStatus | Status des Geräts |
 | Fehler | Aktuelle Fehlermeldung |
 
@@ -89,17 +106,15 @@ Grundbefehle wie `clean` (`auto`), `charge`, `stop` sowie `battery`, `charge`, `
 | name | beschreibung |
 | --- | --- |
 | E-Mail | E-Mail-Adresse, die für Ihr Ecovacs-Konto verwendet wird |
-| Passwort | Für Ihr Ecovacs-Konto verwendetes Passwort |
+| Passwort | Passwort für Ihr Ecovacs-Konto |
 | Ländercode (Kontinent) | Auswahl vordefinierter Ländercodes (inkl. Kontinent) |
 | Gerätenummer | Auswahl für die aktuelle Instanz, wenn Sie mehrere Geräte verwenden |
 | Anzahl der Spotflächen | Anzahl der in der Ecovacs-App definierten Sportgebiete (Standard `0`) |
 
-*) Die Ecovacs-Server geben sehr oft einen seltsamen Fehler aus, daher möchten wir es automatisch erneut versuchen.
-
 ## Danke und Credits
-* @joostth ([sucks.js] (https://github.com/joostth/sucks.js))
-* @wpietri ([sucks] (https://github.com/wpietri/sucks))
-* @ bmartin5692 ([sucks] (https://github.com/bmartin5692/sucks), [bumber] (https://github.com/bmartin5692/bumper))
+* @joostth ([saugt.js] (https://github.com/joostth/sucks.js))
+* @wpietri ([saugt] (https://github.com/wpietri/sucks))
+* @ bmartin5692 ([saugt] (https://github.com/bmartin5692/sucks), [bumber] (https://github.com/bmartin5692/bumper))
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog

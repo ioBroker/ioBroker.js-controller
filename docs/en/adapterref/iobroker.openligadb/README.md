@@ -52,14 +52,32 @@ Documentation for the vis-widgets are available inside vis or [Widget-Documentat
 * ~~controllable gameday in the gameday widget~~
 
 ## Changelog
-### 0.0.1
-* initial release
-### 0.0.2
-* add controlable gameday logic to gameday widget and adapter
-### 0.0.3
-* fixed getting oids in vis runtime
-### 0.0.4
-* fixed more oids in vis runtime
+### 0.10.1
+* Improve documentation with more recipes and syntax highgighting, improve code to get and subscribe states
+### 0.10.0
+* New widget Table 2 that  includes the calculation of the total, home and away results. the previous widget is now deprecated, due to the different datapoint (allmatches) to be selected.
+### 0.9.3
+* Remove ES6 features due to compatibility with older browsers 
+### 0.9.2
+* next try to fix the experimental javascript binding function 
+### 0.9.1
+* fix bugs in calculation matchresults and highlight clubs in favgames 
+### 0.9.0
+* new Function for vis Binding to search for games at the actual day for favorite clubs, css-classes für games at actual day, fix bug to show the right match results, 
+### 0.8.0
+* push version for latest repository. fix some typos. fix a problem with date handling on different OS
+### 0.0.11
+* widget gameday: fix issue with not working gamedaycount
+### 0.0.10
+* widget gameday: optional you can show informations about the goalgetters
+### 0.0.9
+* optional weekday for widgets: gameday and gamesoffavclub,highlight the clubname in gamesoffavclub
+### 0.0.8
+* new widget games of favorite clubs with multi league support as replacement for the old one
+### 0.0.7
+* close connections and remove observers (timeouts/intervals)
+### 0.0.6
+* NPM deployment and preperation for the latest repository
 ### 0.0.5
 * highlight favorite club, 
 * Replacement value for edit mode if showgameday is set with binding, 
@@ -68,22 +86,19 @@ Documentation for the vis-widgets are available inside vis or [Widget-Documentat
 * remove unused code
 * new widget: next x games of club
 * fix issue for dynamic with of club column
-### 0.0.6
-* NPM deployment and preperation for the latest repository
-### 0.0.7
-* close connections and remove observers (timeouts/intervals)
-### 0.0.8
-* new widget games of favorite clubs with multi league support as replacement for the old one
-### 0.0.9
-* optional weekday for widgets: gameday and gamesoffavclub,highlight the clubname in gamesoffavclub
-### 0.0.10
-* widget gameday: optional you can show informations about the goalgetters
-### 0.0.11
-* widget gameday: fix issue with not working gamedaycount
-### 0.8.0
-* push version for latest repository. fix some typos. fix a problem with date handling on different OS
-### 0.9.0
-* new Function for vis Binding to search for games at the actual day for favorite clubs, css-classes für games at actual day, fix bug to show the right match results, 
+### 0.0.4
+* fixed more oids in vis runtime
+### 0.0.3
+* fixed getting oids in vis runtime
+### 0.0.2
+* add controlable gameday logic to gameday widget and adapter
+### 0.0.1
+* initial release
+
+
+
+
+
 
 
 ## License

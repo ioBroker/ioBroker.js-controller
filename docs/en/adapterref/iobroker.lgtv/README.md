@@ -202,6 +202,10 @@ is true when TV is on and false if TV is off
 
 ## Changelog
 
+### 1.1.4 (2020-02-07)
+* (dirkhe) changed from pull to subscribing
+* (dirkhe) add livetv to launch list
+
 ### 1.1.3 (2019-12-16)
 * (merdok) fixed connect() [Pull requests #62](https://github.com/SebastianSchultz/ioBroker.lgtv/pull/62) 
 * (instalator) fixed [issues #64](https://github.com/SebastianSchultz/ioBroker.lgtv/issues/64) 
