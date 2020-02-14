@@ -1,6 +1,4 @@
 ---
-translatedFrom: en
-translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/faq/_050_advanced/010_enable_latest_repo.md
 title: Как включить последний репозиторий
 hash: 8CEHlp824aHx2GqDkXCYRGJahvdgbRjJzupXtuQV+64=
@@ -17,6 +15,14 @@ hash: 8CEHlp824aHx2GqDkXCYRGJahvdgbRjJzupXtuQV+64=
 
 ![системные настройки](../../../en/faq/_050_advanced/media/010_system_settings.png)
 
+
+
 - После обновления в списке адаптеров будет видна самая новая версия.
 
 ![системные настройки](../../../en/faq/_050_advanced/media/010_adapter_list.png)
+
+## Для 2 версии адаптера admin.2.x.x
+![2](media/010_enable_latest_repo2.jpg)
+
+## Для 3 версии адаптера admin.3.x.x
+![2](media/010_enable_latest_repo3.jpg)
