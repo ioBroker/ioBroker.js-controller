@@ -3,12 +3,12 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: tz5UB5a5wyeONDFiqk/4m+Iv1wPchRoTMlAe4FUxawE=
+hash: ObG6V2WYjGqHLfkZeG0b7HUzmDdMS29Elnd27w6C+tE=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
-![Build Status](https://travis-ci.org/schmupu/ioBroker.shelly.svg?branch=master)
-![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.shelly?branch=master&svg=true)
+![Build-Status](https://travis-ci.org/schmupu/ioBroker.shelly.svg?branch=master)
+![AppVeyor-Build-Status](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.shelly?branch=master&svg=true)
 ![Anzahl der Installationen](http://iobroker.live/badges/shelly-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.shelly.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.shelly.svg)
@@ -17,14 +17,14 @@ hash: tz5UB5a5wyeONDFiqk/4m+Iv1wPchRoTMlAe4FUxawE=
 # IoBroker.shelly
 Benötigt node.js 8.0 oder höher und Admin v3!
 
-Der Adapter kommuniziert mit Shelly-Geräten über REST-API und das CoAP- oder MQTT-Protokoll.
+Der Adapter kommuniziert mit Shelly-Geräten über die REST-API und das CoAP- oder MQTT-Protokoll.
 Standardmäßig Shelly-Firmware (kein Flashen der Firmware erforderlich!). Weitere und detaillierte Informationen zum Gerät finden Sie hier: [Shelly](https://shelly.cloud/)
 
 ## Installation
 Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdokumentation](./docs/EN/INSTALL.md)
 
 ## Unterstützte Geräte
-| Shelly Device | Standard (CoAP) | MQTT |
+| Shelly-Gerät | Standard (CoAP) | MQTT |
 |-------------|--------------|----|
 | Shelly1 (SHSW-1) | verifiziert | verifiziert |
 | Shelly2 (SHSW-21 / SHSW-22) | verifiziert | verifiziert |
@@ -45,11 +45,22 @@ Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdok
 | Shelly Flood (SHWT-1) | verifiziert | verifiziert |
 | Shelly Dimmer (SHDM-1) | verifiziert | verifiziert |
 | Shelly Tür- / Fenstersensor (SHDW-1) | verifiziert | verifiziert |
+| Shelly Bulb Duo (SHBDUO-1) | verifiziert | verifiziert |
 
 ## Changelog
 
+### 3.2.0 (13.02.2020)
+* (Stübi) - Add device Shelly Door/Windows sensor 
+
+### 3.1.9 (25.01.2020)
+* (Stübi) - Bugfixing, auto update new firmware
+
+### 3.1.7 (08.01.2020)
+* (Stübi) - Add state energy to Shelly dimmer 
+
 ### 3.1.6 (30.12.2019)
 * (Stübi) - Add device Shelly Door/Windows sensor 
+* (Stübi) - Bugfixing, auto update new firmware
 
 ### 3.1.5 (23.12.2019)
 * (Stübi) - Add device Shelly Plug S2. It will be shown as Shelly Plug S (SHPLG-1) in MQTT
@@ -156,7 +167,7 @@ Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdok
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Thorsten Stueben <thorsten@stueben.de>, Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2020 Thorsten Stueben <thorsten@stueben.de>, Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
+hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -21,17 +21,19 @@ Geräte, die mit dem **MQTT** -Protokoll kommunizieren, sind experimentell.
 Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.communicationProtocol` überprüfen (Werte: `XMPP`, `MQTT`).
 
 ### Tasten und Steuerung
-"Grundlegende" Befehle sind `clean` (`auto`), `charge`, `stop`. Sie werden hier nicht gesondert aufgeführt.
-
-| Modell | Grund | Pause | spot | spotArea | customArea * | Rand | playSound | Wasserstand |
+| Modell | Grund * | Pause | spot | spotArea | customArea ** | Rand | playSound | Wasserstand |
 |------ |------ |------ |------ |------ |------ |------ |------ |------ |
-| Deebot Slim 2 | x | n / a | x | kA | n / a | x | n / a | n / a |
+| Deebot Slim 2 | x | n / a | x | n / a | n / a | x | n / a | n / a |
 | Deebot 710 | x | | | | | | | n / a |
 | Deebot 900 | x | | n / a | | | n / a | | n / a |
 | Deebot Ozmo 610 | x | | x | n / a | n / a | x | | |
 | Deebot Ozmo 900 | | | n / a | | | n / a | | |
 | Deebot Ozmo 930 | x | x | n / a | x | x | n / a | x | x |
-| Deebot Ozmo 950 | | | n / a | | | n / a | | |
+| Deebot Ozmo 950 | | | n / a | | | n / a | x | |
+
+*) "grundlegende" Befehle sind `clean` (`auto`), `charge`, `stop`. Sie werden hier nicht gesondert aufgeführt.
+
+**) inkl. Anzahl der `cleanings`
 
 ### Info und Status
 | Modell | Batterie | chargestatus | cleanstatus | waterLevel | ------ | ------ | ------ | ------ | ------ | ------
@@ -42,9 +44,7 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 | Deebot Ozmo 610 | | | | |
 | Deebot Ozmo 900 | | | | |
 | Deebot Ozmo 930 | x | x | x | x |
-| Deebot Ozmo 950 | | | | |
-
-*) inkl. Anzahl der `cleanings`
+| Deebot Ozmo 950 | x | x | | |
 
 ### Funktioniert einwandfrei
 * Deebot Ozmo 610
@@ -55,6 +55,11 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 * Deebot N79T
 * Deebot 601
 * Deebot Ozmo 960
+
+### Sollte teilweise funktionieren
+* Deebot 710
+* Deebot Ozmo 950
+* Deebot Ozmo 900
 
 ## Steuerung
 ### Tasten
@@ -118,6 +123,10 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.3.5
+   * (mrbungle64) Improved support for MQTT devices
+   * (boriswerner) Improved support for Ozmo 950 device
 
 ### 0.3.4
 * (mrbungle64) Feature Release

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
+hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -21,9 +21,7 @@ hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
 Вы можете проверить это с помощью значения состояния `info.communicationProtocol` после успешного установления соединения (значения: `XMPP`, `MQTT`).
 
 ### Кнопки и управление
-«Основными» командами являются `clean` (`auto`), `charge`, `stop`. Они не перечислены отдельно здесь.
-
-| модель | основные | пауза | пятно | spotArea | customArea * | край | playSound | уровень воды |
+| модель | основные * | пауза | пятно | spotArea | customArea ** | край | playSound | уровень воды |
 |------ |------ |------ |------ |------ |------ |------ |------ |------ |
 | Deebot Slim 2 | х | н / д | х | н / д | н / д | х | н / д | н / д |
 | Deebot 710 | х | | | | | | | н / д |
@@ -31,7 +29,11 @@ hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
 | Deebot Ozmo 610 | х | | х | н / д | н / д | х | | |
 | Deebot Ozmo 900 | | | н / д | | | н / д | | |
 | Deebot Ozmo 930 | х | х | н / д | х | х | н / д | х | х |
-| Deebot Ozmo 950 | | | н / д | | | н / д | | |
+| Deebot Ozmo 950 | | | н / д | | | н / д | х | |
+
+*) «основными» командами являются `clean` (`auto`), `charge`, `stop`. Они не перечислены отдельно здесь.
+
+**) вкл. номер `cleanings`
 
 ### Информация и статус
 | модель | батарея | шаргестатус | Cleanstatus | уровень воды | ------ | ------ | ------ | ------ | ------
@@ -42,9 +44,7 @@ hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
 | Deebot Ozmo 610 | | | | |
 | Deebot Ozmo 900 | | | | |
 | Deebot Ozmo 930 | х | х | х | х |
-| Deebot Ozmo 950 | | | | |
-
-*) вкл. номер `cleanings`
+| Deebot Ozmo 950 | х | х | | |
 
 ### Работает правильно
 * Deebot Ozmo 610
@@ -55,6 +55,11 @@ hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
 * Deebot N79T
 * Deebot 601
 * Deebot Ozmo 960
+
+### Должен работать частично
+* Deebot 710
+* Deebot Ozmo 950
+* Deebot Ozmo 900
 
 ## Контроль
 ### Кнопки
@@ -118,6 +123,10 @@ hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.3.5
+   * (mrbungle64) Improved support for MQTT devices
+   * (boriswerner) Improved support for Ozmo 950 device
 
 ### 0.3.4
 * (mrbungle64) Feature Release

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: tz5UB5a5wyeONDFiqk/4m+Iv1wPchRoTMlAe4FUxawE=
+hash: ObG6V2WYjGqHLfkZeG0b7HUzmDdMS29Elnd27w6C+tE=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -18,7 +18,7 @@ hash: tz5UB5a5wyeONDFiqk/4m+Iv1wPchRoTMlAe4FUxawE=
 需要node.js 8.0或更高版本以及Admin v3！
 
 适配器通过REST api和CoAP或MQTT协议与Shelly设备通信。
-默认情况下为Shelly固件（无需刷新固件！）。您可以在这里找到有关该设备的更多详细信息：[雪莉](https://shelly.cloud/)
+默认为Shelly固件（无需刷新固件！）。您可以在这里找到有关该设备的更多详细信息：[雪莉](https://shelly.cloud/)
 
 ##安装
 您可以在此处找到详细的安装文档：[安装文件](./docs/EN/INSTALL.md)
@@ -45,11 +45,22 @@ hash: tz5UB5a5wyeONDFiqk/4m+Iv1wPchRoTMlAe4FUxawE=
 | Shelly Flood（SHWT-1）|已验证|已验证|
 | Shelly Dimmer（SHDM-1）|已验证|已验证|
 | Shelly门窗传感器（SHDW-1）|已验证|已验证|
+| Shelly Bulb Duo（SHBDUO-1）|已验证|已验证|
 
 ## Changelog
 
+### 3.2.0 (13.02.2020)
+* (Stübi) - Add device Shelly Door/Windows sensor 
+
+### 3.1.9 (25.01.2020)
+* (Stübi) - Bugfixing, auto update new firmware
+
+### 3.1.7 (08.01.2020)
+* (Stübi) - Add state energy to Shelly dimmer 
+
 ### 3.1.6 (30.12.2019)
 * (Stübi) - Add device Shelly Door/Windows sensor 
+* (Stübi) - Bugfixing, auto update new firmware
 
 ### 3.1.5 (23.12.2019)
 * (Stübi) - Add device Shelly Plug S2. It will be shown as Shelly Plug S (SHPLG-1) in MQTT
@@ -156,7 +167,7 @@ hash: tz5UB5a5wyeONDFiqk/4m+Iv1wPchRoTMlAe4FUxawE=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Thorsten Stueben <thorsten@stueben.de>, Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2020 Thorsten Stueben <thorsten@stueben.de>, Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

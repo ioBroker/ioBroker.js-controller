@@ -930,6 +930,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vw-connect/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.weatherunderground/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.web/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.web-speedy/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.weishaupt-wem/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.wetty/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.wiffi-wz/README.md
@@ -1275,6 +1276,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vw-connect/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.weatherunderground/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.web/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.web-speedy/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.weishaupt-wem/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.wetty/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.wiffi-wz/README.md
@@ -1620,6 +1622,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vw-connect/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.weatherunderground/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.web/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.web-speedy/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.weishaupt-wem/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.wetty/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.wiffi-wz/README.md
@@ -1965,6 +1968,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vw-connect/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.weatherunderground/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.web/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.web-speedy/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.weishaupt-wem/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.wetty/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.wiffi-wz/README.md

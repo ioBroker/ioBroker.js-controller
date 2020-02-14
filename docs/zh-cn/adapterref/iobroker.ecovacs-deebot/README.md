@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
+hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -21,9 +21,7 @@ hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
 成功建立连接后，可以使用状态值`info.communicationProtocol`对此进行检查（值：`XMPP`，`MQTT`）。
 
 ###按钮和控件
-“基本”命令是`clean`（`auto`），`charge`，`stop`。它们不在此处单独列出。
-
-|型号基本|暂停|现货| spotArea | customArea * |边缘playSound |水位|
+|型号基本* |暂停|现货| spotArea | customArea ** |边缘playSound |水位|
 |------ |------ |------ |------ |------ |------ |------ |------ |------ |
 | Deebot Slim 2 | x |不适用x |不适用不适用x |不适用不适用 |
 | Deebot 710 | x | | | | | | |不适用 |
@@ -31,7 +29,11 @@ hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
 | Deebot Ozmo 610 | x | | x |不适用不适用x | | |
 | Deebot Ozmo 900 | | |不适用| |不适用| |
 | Deebot Ozmo 930 | x | x |不适用x | x |不适用x | x |
-| Deebot Ozmo 950 | | |不适用| |不适用| |
+| Deebot Ozmo 950 | | |不适用| |不适用x | |
+
+*）“基本”命令是`clean`（`auto`），`charge`，`stop`。它们不在此处单独列出。
+
+**）包括`cleanings`的数量
 
 ###信息和状态
 |型号电池| chargestatus | cleanstatus |水位| ------ | ------ | ------ | ------ | ------
@@ -42,9 +44,7 @@ hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
 | Deebot Ozmo 610 | | | | |
 | Deebot Ozmo 900 | | | | |
 | Deebot Ozmo 930 | x | x | x | x |
-| Deebot Ozmo 950 | | | | |
-
-*）包括`cleanings`的数量
+| Deebot Ozmo 950 | x | x | | |
 
 ###正常工作
 * Deebot Ozmo 610
@@ -55,6 +55,11 @@ hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
 * Deebot N79T
 * Deebot 601
 * Deebot奥兹莫960
+
+###应该部分工作
+* Deebot 710
+* Deebot Ozmo 950
+* Deebot Ozmo 900
 
 ＃＃ 控制
 ＃＃＃ 纽扣
@@ -118,6 +123,10 @@ hash: 4BVOvCptvuqxW5c4Eo26r5SYJDy6nvmJW8OcbBeiJXk=
 * @Ligio（[ozmo]（https://github.com/Ligio/ozmo））
 
 ## Changelog
+
+### 0.3.5
+   * (mrbungle64) Improved support for MQTT devices
+   * (boriswerner) Improved support for Ozmo 950 device
 
 ### 0.3.4
 * (mrbungle64) Feature Release

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: tz5UB5a5wyeONDFiqk/4m+Iv1wPchRoTMlAe4FUxawE=
+hash: ObG6V2WYjGqHLfkZeG0b7HUzmDdMS29Elnd27w6C+tE=
 ---
 ![логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -21,7 +21,7 @@ hash: tz5UB5a5wyeONDFiqk/4m+Iv1wPchRoTMlAe4FUxawE=
 По умолчанию прошивка Shelly (прошивка прошивки не требуется!). Более подробную информацию об устройстве вы найдете здесь: [изобилующий раковинами](https://shelly.cloud/)
 
 ## Установка
-Вы найдете подробную документацию по установке здесь: [Документация по установке](./docs/EN/INSTALL.md)
+Подробную документацию по установке вы найдете здесь: [Документация по установке](./docs/EN/INSTALL.md)
 
 ## Поддерживаемые устройства
 | Shelly Device | По умолчанию (CoAP) | MQTT |
@@ -45,11 +45,22 @@ hash: tz5UB5a5wyeONDFiqk/4m+Iv1wPchRoTMlAe4FUxawE=
 | Шелли Потоп (SHWT-1) | проверено | проверено |
 | Шелли Диммер (ШДМ-1) | проверено | проверено |
 | Shelly Датчик двери / окна (SHDW-1) | проверено | проверено |
+| Shelly Bulb Duo (SHBDUO-1) | проверено | проверено |
 
 ## Changelog
 
+### 3.2.0 (13.02.2020)
+* (Stübi) - Add device Shelly Door/Windows sensor 
+
+### 3.1.9 (25.01.2020)
+* (Stübi) - Bugfixing, auto update new firmware
+
+### 3.1.7 (08.01.2020)
+* (Stübi) - Add state energy to Shelly dimmer 
+
 ### 3.1.6 (30.12.2019)
 * (Stübi) - Add device Shelly Door/Windows sensor 
+* (Stübi) - Bugfixing, auto update new firmware
 
 ### 3.1.5 (23.12.2019)
 * (Stübi) - Add device Shelly Plug S2. It will be shown as Shelly Plug S (SHPLG-1) in MQTT
@@ -156,7 +167,7 @@ hash: tz5UB5a5wyeONDFiqk/4m+Iv1wPchRoTMlAe4FUxawE=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Thorsten Stueben <thorsten@stueben.de>, Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2020 Thorsten Stueben <thorsten@stueben.de>, Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
