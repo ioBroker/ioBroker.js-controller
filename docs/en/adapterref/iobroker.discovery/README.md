@@ -16,6 +16,7 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ### Automatically Discovered
 
+- Beckhoff PLC
 - Bosch Smart Home
 - Bose Soundtouch
 - Broadlink
@@ -60,11 +61,13 @@ Just now it can detect via ping, UPnP (serial planned).
 - Proxmox
 - RFLink (Serial 57600baud)
 - SamsungTV
+- Solarlog
 - Sonnen
 - Sonos
 - Stiebel-Eltron/Tecalor ISG (plus)
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Squeezebox
+- SqueezeboxRPC
 - stiebel-isg
 - TR-064
 - Trådfri
@@ -107,6 +110,11 @@ Just now it can detect via ping, UPnP (serial planned).
 - xs1 (frankjoke)
 
 ## Changelog
+### 2.2.2 (2020-02-13)
+* (dkleber89) Add discovery for Beckhoff PLC
+* (forelleblau) Add discovery for Solarlog
+* (oweitman) Add discovery for SqueezeboxRPC
+
 ### 2.1.0 (2020-01-21)
 * (foxriver76) no longer use adapter.objects
 * __js-controller > 2.0.0 required__
@@ -205,7 +213,7 @@ Just now it can detect via ping, UPnP (serial planned).
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2020, Bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

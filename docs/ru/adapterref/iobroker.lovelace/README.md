@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: 71VvHB178O6BdfyZHf2WgeRgNbSJFA7SfbKNWOSEa4o=
+hash: VgIhdc1/23xticYs/abzNV4hx3j1Dut103VJuJ/9spo=
 ---
 ![логотип](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.lovelace.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.lovelace.svg)
-![Статус зависимости](https://img.shields.io/david/ioBroker/iobroker.lovelace.svg)
+![Состояние зависимости](https://img.shields.io/david/ioBroker/iobroker.lovelace.svg)
 ![Известные уязвимости](https://snyk.io/test/github/ioBroker/ioBroker.lovelace/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.lovelace.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/ioBroker/ioBroker.lovelace/master.svg)
@@ -23,17 +23,17 @@ hash: 71VvHB178O6BdfyZHf2WgeRgNbSJFA7SfbKNWOSEa4o=
 Существует два способа настройки сущностей:
 
 - авто
-- руководство по эксплуатации
+- руководство
 
 ### Авто
-В автоматическом режиме аналогичный процесс будет применяться так же, как и для `google home` или `material adapter`.
+В автоматическом режиме аналогичный процесс будет применяться, как для `google home` или `material adapter`.
 
 *** Будут обнаружены только объекты и канал, для которых определены категории `function` и `room` ***
 
 Вы можете определить дружественные имена, и это будет использоваться в сущностях.
 
-### Руководство по эксплуатации
-Объекты могут быть определены вручную в дереве объектов, например, sql или histroy. Тип объекта должен быть предоставлен и, необязательно, имя объекта.
+### Руководство
+Объекты могут быть определены вручную в дереве объектов, например, sql или history. Тип объекта должен быть предоставлен и, необязательно, имя объекта.
 С помощью этого метода могут быть созданы только простые объекты, такие как input_number, input_text или input_boolean. Он не может иметь более одного состояния или атрибута.
 
 ## Панели
@@ -77,8 +77,8 @@ createState(
 
 ### Ввод числа
 Это можно сделать вручную, если в пользовательском диалоге выбран тип объекта input_number.
-Для этого типа могут быть добавлены `min` и `max` значения в `common` и необязательные `step`.
-Если вы хотите видеть стрелки вверх и вниз, вы должны установить в пользовательском `mode` значение «номер»:
+Для этого типа могут быть добавлены значения `min` и `max` в `common` и необязательные `step`.
+Если вы хотите видеть стрелки вверх и вниз, вы должны установить в пользовательском `mode` значение «число»:
 
 ```
 common: {
@@ -114,7 +114,7 @@ common: {
     }
 ```
 
-другими словами, вход также должен быть выбран в IoB.
+Другими словами, вход также должен быть выбран в IoB.
 
 ### Таймер
 Таймер может быть смоделирован следующим скриптом:
@@ -204,7 +204,7 @@ createState(
 Протестировано с год и daswetter. Для одного или нескольких следующих объектов в конфигурации должны быть доступны `Function=Weather` и `Room=Any`:
 
 - daswetter.0.NextDays.Location_1
-- yr.0.forecast
+- год.0.прогноз
 
 Протестировано с драйвером AccuWeather v1.1.0 https://github.com/iobroker-community-adapters/ioBroker.accuweather.
 Пользовательская карта Lovelace, созданная в поддержку прогноза accuweather - https://github.com/algar42/IoB.lovelace.accuweather-card
@@ -275,7 +275,7 @@ createState('location.latitude', 39.5681295, false, {
 }
 ```
 
-или просто вручную установите тип объекта на `camera` и запишите в него URL-адрес.
+или просто вручную установите тип сущности на `camera` и запишите в него URL.
 
 ### Скрыть панель инструментов
 Чтобы скрыть панель инструментов, вы можете установить флажок в диалоговом окне конфигурации ioBroker на вкладке Темы.
@@ -303,7 +303,7 @@ createState('location.latitude', 39.5681295, false, {
 Я нашел эту ссылку https://github.com/jimz011/homeassistant как интересный ресурс для пользовательских карт.
 
 Часто пользовательские карты хранятся на github как источники и должны быть скомпилированы перед использованием.
-Вам следует проверить меню `Releases` на github и попытаться найти там скомпилированные файлы.
+Вы должны проверить меню `Releases` на github и попытаться найти там скомпилированные файлы.
 Как этот: [https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases) (Найдите файл `mini-graph-card-bundle.js`)
 
 ## Собственные изображения
@@ -434,33 +434,55 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 ### Версия
 Используемая версия home-assistant-frontend@1.0.0
 
-### Как собрать новую версию Lovelace
-Прежде всего фактический https://github.com/home-assistant/home-assistant-polymer (ветвь разработчика) необходимо **вручную** объединить с https://github.com/GermanBluefox/home-assistant-polymer. .git (iob) ветка.
+### Как построить новую версию Lovelace
+Прежде всего фактический https://github.com/home-assistant/home-assistant-polymer (ветвь разработчика) необходимо **вручную** объединить с https://github.com/GermanBluefox/home-assistant-polymer. .git (*** iob *** филиал!).
 
 Все изменения для ioBroker помечены комментарием `// IoB`.
-На данный момент (2019.11.23) были изменены следующие файлы:
+На данный момент (2020.01.12) были изменены следующие файлы:
 
 - `.gitignore` - добавлено` .idea` игнорировать
 - `build-scripts / gulp / app.js` - добавлено новое задание gulp
 - `build-scripts / gulp / webpack.js` - добавлено новое задание gulp
-- `src / entrypoints / core.ts` - модифицированный процесс аутентификации
 - `src / data / lovelace.ts` - добавлена опция скрытия панели
-- `src / Panel / lovelace / hui-root.ts` - добавлены уведомления и голосовое управление
 - `src / dialogs / notifications /tification-box.js` - добавлена кнопка подтверждения всех
+- `src / entrypoints / core.ts` - модифицированный процесс аутентификации
 - `src / layouts / home-assistant-main.ts` - удалить боковую панель приложения
+- `src / Panel / lovelace / hui-root.ts` - добавлены уведомления и голосовое управление
 
-После этого извлечения измененная версия в папке `./build`. Затем.
+После этого извлечения измененная версия в папке `./build`. Потом.
 
 1. Перейдите в каталог ./build.
 2. `git clone https:// github.com / GermanBluefox / home-assistant-Polymer.git` это вилка https://github.com/home-assistant/home-assistant-polymer.git, но некоторые вещи изменены (см. список файлов ранее).
 3. «CD-home-assistant-polymer»
 4. `git checkout master`
 5. `npm install`
-6. «gulp run build-app» для выпуска или «gulp runvelop-iob» для отладочной версии. Чтобы построить веб после изменений, вы можете вызвать `webpack-dev-app` для более быстрой сборки, но вам все равно нужно вызвать` build-app` после того, как версия будет готова к использованию.
+6. «gulp build-app» для выпуска или «gulp develop-iob» для отладочной версии. Чтобы построить веб после изменений, вы можете вызвать `webpack-dev-app` для более быстрой сборки, но вам все равно нужно вызвать` build-app` после того, как версия будет готова к использованию.
 7. Скопируйте все файлы из `. / Build / home-assistant-polymer / hass_frontend` в`. / Hass_frontend` в этом репо
 8. Запустите задачу gulp rename.
 
 ## Changelog
+### 1.0.10 (2020-02-13)
+* (Garfonso) Fixed handling of malformed / null RGB string
+* (algar42)  Binary sensor added
+* (Garfonso) fixed manual dimmer 
+* (algar42)  fixed for duplicated states via websockets
+* (Garfonso) fixed handling of deleted objects 
+
+### 1.0.9 (2020-01-29)
+* (bluefox) Dimmer control was fixed
+
+### 1.0.8 (2020-01-13)
+* (Garfonso) process max value of saturation and hue
+* (Garfonso) disable extensive debug logging
+* (Garfonso) many changes done concerning detection of devices and processing of states
+* (bluefox) Update hass lovelace
+
+### 1.0.7 (2019-12-17)
+* (bluefox) Invalid objects will be filtered out.
+
+### 1.0.6 (2019-12-06)
+* (bluefox) Fixed disconnection behavior
+
 ### 1.0.5 (2019-11-27)
 * (algar42) getting back broken update of internal_entities
 
@@ -514,7 +536,7 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 
 ## License
 
-Copyright 2019, bluefox <dogafox@gmail.com>
+Copyright 2019-2020, bluefox <dogafox@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

@@ -3,25 +3,25 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: +FJ3eN9WtCsnYiz6cbyFwcJvGQl4i3tOTcXYY7C5KLc=
+hash: eGEZTGV31ZdJeK46sDXmDuTgZnm5pFhilnFcOXs19GE=
 ---
 ![Logo](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
-![Build-Status](https://travis-ci.org/jens-maus/ioBroker.unifi.svg?branch=master)
+![Build-Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.unifi.svg?branch=master)
 ![Anzahl der Installationen](http://iobroker.live/badges/unifi-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.unifi.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.unifi.svg)
-![Github-Probleme](http://githubbadges.herokuapp.com/jens-maus/ioBroker.unifi/issues.svg)
+![Github-Probleme](http://githubbadges.herokuapp.com/iobroker-community-adapters/ioBroker.unifi/issues.svg)
 ![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)
 
 # IoBroker.unifi
-[![Code Climate] (https://codeclimate.com/github/jens-maus/ioBroker.unifi/badges/gpa.svg)](https://codeclimate.com/github/jens-maus/ioBroker.unifi) [![bitHound Score] (https://www.bithound.io/github/jens-maus/ioBroker.unifi/badges/score.svg)](https://www.bithound.io/github/jens-maus/ioBroker.unifi)
+[![Code Climate] (https://codeclimate.com/github/iobroker-community-adapters/ioBroker.unifi/badges/gpa.svg)](https://codeclimate.com/github/iobroker-community-adapters/ioBroker.unifi) [![bitHound Score] (https://www.bithound.io/github/iobroker-community-adapters/ioBroker.unifi/badges/score.svg)](https://www.bithound.io/github/iobroker-community-adapters/ioBroker.unifi)
 
-Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung von [UniFi-Geräte](http://www.ubnt.com/), z. B. UniFi WiFi Access Points, mit der öffentlichen UniFi-Controller-Web-API.
+Mit diesem ioBroker-Adapter können Sie [UniFi-Geräte](http://www.ubnt.com/) wie UniFi WiFi Access Points mithilfe der öffentlichen UniFi Controller-Web-API steuern und überwachen.
 
 ## Verweise
-Dieser Adapter verwendet die Funktionalität der folgenden Knotenmodule von Drittanbietern:
+Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanbietern:
 
 * [node-unifi] (https://github.com/jens-maus/node-unifi)
 
@@ -48,7 +48,7 @@ Dieser Adapter verwendet die Funktionalität der folgenden Knotenmodule von Drit
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 Jens Maus &lt;mail@jens-maus.de&gt;
+Copyright (c) 2016-2020 Jens Maus &lt;mail@jens-maus.de&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

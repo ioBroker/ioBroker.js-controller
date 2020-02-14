@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Adapter
-hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
+hash: y8n52Hctl4SpFRfyTCmddWRht4T/WaUJ9yuTmzGXeIQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -16,21 +16,22 @@ hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
 # IoBroker Discover Adapter
 ** Geräte mit allen bekannten Methoden erkennen. **
 
-Hierbei handelt es sich um spezielle Adapter, die versuchen, alle möglichen Geräte zu finden, die vom Host aus erreichbar sind.
-Gerade jetzt kann es per Ping, UPnP (seriell geplant) erkennen.
+Dies sind spezielle Adapter, die versuchen, alle möglichen Geräte zu finden, die vom Host aus erreichbar sind.
+Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 
-## Wird aktuell unterstützt
-Automatisch erkannt
+## Wird tatsächlich unterstützt
+### Automatisch erkannt
+- Beckhoff PLC
 - Bosch Smart Home
 - Bose Soundtouch
 - Broadlink
 - Chromecast
-- Daikin-Klimasteuerung
+- Daikin Klimatisierung
 - deConz
 - Denon / Marantz
-- Türvogel
+- DoorBird
 - ebus
-- Schlüssel
+- ekey
 - Energiemanager (E.ON / Solarwatt)
 - Epson Stylus PX830
 - Fakeroku
@@ -40,7 +41,7 @@ Automatisch erkannt
 - G-Homa-Stecker
 - Harmonie
 - Heimassistent
-- Homematic CCU (hm-rpc, hm-rega)
+- Homematische CCU (hm-rpc, hm-rega)
 - Homepilot
 - Philips HUE
 - Plex
@@ -49,37 +50,39 @@ Automatisch erkannt
 - KNX
 - Landroid
 - LGTV
-- Erleuchte
+- Beleuchten
 - Loxone
 - Lupusec
 - MAX! Würfel
 - MegaD
 - Miele
 - Mi Home Smarthome
-- MiLight Brücke (v6)
+- MiLight-Brücke (v6)
 - Musiksendung
-- Mysensors USB / Serial (9600, 38400, 57600, 115200)
+- Mysensoren USB / Seriell (9600, 38400, 57600, 115200)
 - Nuss
 - OpenHAB
 - Ping
 - Proxmox
-- RFLink (seriell 57600 Baud)
+- RFLink (Serial 57600baud)
 - SamsungTV
+- Solarlog
 - Sonnen
 - Sonos
 - Stiebel-Eltron / Tecalor ISG (plus)
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Squeezebox
+- SqueezeboxRPC
 - stiebel-isg
 - TR-064
 - Trådfri
 - UPnP
 - Wifilight
 - Yamaha
-- Ja, Licht
+- Yeelight
 - Z-Wave USB (getestet mit Aeon Labs)
 
-### Wird als zusätzlicher Adapter angeboten
+### Wird als zusätzliche Adapter angeboten
 - Wolke
 - Verlauf (wenn kein SQL oder InfluxDB gefunden wurde)
 - Flot (wird angeboten, wenn ein History-Adapter vorhanden ist)
@@ -90,28 +93,33 @@ Automatisch erkannt
 - Netz
 
 ## Machen
-- artnet? (Blauer Fuchs)
+- Artnet? (Blauer Fuchs)
 - B-Control-Em? (Blauer Fuchs)
 - cul / maxcul (Bluefox)
 - Foobar200 (Instalator)
-- Fritzbox (Ruhr70)
-- km200 (frankjoke)
-- kodi (Installateur)
-- megaesp (ausHaus)
+- Fritzbox (ruhr70)
+- km200 (Frankjoke)
+- Kodi (Installateur)
+- Megaesp (ausHaus)
 - Modbus (Bluefox)
-- mpd (instalator)
+- mpd (Installateur)
 - mqtt / mqtt-client (Bluefox)
 - Onkyo (Bluefox)
-- Eulen (Bluefox)
+- owfs (Bluefox)
 - rpi2 (wenn ioBroker auf Raspberry läuft)
 - rwe-smarthome (PArns)
 - s7 (Bluefox)
 - Smartmeter (Apollon77)
 - unifi (jens-maus)
-- Wolf (Smiley-Jack)
-- xs1 (frankjoke)
+- Wolf (lächelnder Wagenheber)
+- xs1 (Frankjoke)
 
 ## Changelog
+### 2.2.2 (2020-02-13)
+* (dkleber89) Add discovery for Beckhoff PLC
+* (forelleblau) Add discovery for Solarlog
+* (oweitman) Add discovery for SqueezeboxRPC
+
 ### 2.1.0 (2020-01-21)
 * (foxriver76) no longer use adapter.objects
 * __js-controller > 2.0.0 required__
@@ -210,7 +218,7 @@ Automatisch erkannt
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2020, Bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

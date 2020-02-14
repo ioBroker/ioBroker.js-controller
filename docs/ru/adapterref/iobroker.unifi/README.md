@@ -3,24 +3,24 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: +FJ3eN9WtCsnYiz6cbyFwcJvGQl4i3tOTcXYY7C5KLc=
+hash: eGEZTGV31ZdJeK46sDXmDuTgZnm5pFhilnFcOXs19GE=
 ---
 ![логотип](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
-![Статус сборки](https://travis-ci.org/jens-maus/ioBroker.unifi.svg?branch=master)
+![Статус сборки](https://travis-ci.org/iobroker-community-adapters/ioBroker.unifi.svg?branch=master)
 ![Количество установок](http://iobroker.live/badges/unifi-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.unifi.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.unifi.svg)
-![Github Issues](http://githubbadges.herokuapp.com/jens-maus/ioBroker.unifi/issues.svg)
+![Github Issues](http://githubbadges.herokuapp.com/iobroker-community-adapters/ioBroker.unifi/issues.svg)
 ![жертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)
 
 # IoBroker.unifi
-[![Изменение климата] (https://codeclimate.com/github/jens-maus/ioBroker.unifi/badges/gpa.svg)](https://codeclimate.com/github/jens-maus/ioBroker.unifi) [![Оценка bitHound]](https://www.bithound.io/github/jens-maus/ioBroker.unifi)
+[![Изменение климата] (https://codeclimate.com/github/iobroker-community-adapters/ioBroker.unifi/badges/gpa.svg)](https://codeclimate.com/github/iobroker-community-adapters/ioBroker.unifi) [![bitHound Score] (https://www.bithound.io/github/iobroker-community-adapters/ioBroker.unifi/badges/score.svg)](https://www.bithound.io/github/iobroker-community-adapters/ioBroker.unifi)
 
-Этот адаптер ioBroker позволяет управлять и контролировать [Устройства UniFi](http://www.ubnt.com/), такие как точки доступа UniFi WiFi, с помощью общедоступного Web-API контроллера UniFi.
+Этот адаптер ioBroker позволяет управлять и контролировать [Устройства UniFi](http://www.ubnt.com/), такие как точки доступа UniFi WiFi, с помощью общедоступного веб-API UniFi Controller.
 
-## Рекомендации
+## Ссылки
 Этот адаптер использует функциональность следующих сторонних модулей nodejs:
 
 * [узел-унифи] (https://github.com/jens-maus/node-unifi)
@@ -48,7 +48,7 @@ hash: +FJ3eN9WtCsnYiz6cbyFwcJvGQl4i3tOTcXYY7C5KLc=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 Jens Maus &lt;mail@jens-maus.de&gt;
+Copyright (c) 2016-2020 Jens Maus &lt;mail@jens-maus.de&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

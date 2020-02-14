@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.discovery/README.md
 title: ioBroker发现适配器
-hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
+hash: y8n52Hctl4SpFRfyTCmddWRht4T/WaUJ9yuTmzGXeIQ=
 ---
 ![商标](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -16,11 +16,12 @@ hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
 ＃ioBroker发现适配器
 **使用所有已知方法检测设备。**
 
-这是特殊的适配器，它试图查找主机可以访问的所有可能的设备。
+这是特殊的适配器，它尝试查找主机可以访问的所有可能的设备。
 到目前为止，它可以通过ping，UPnP（串行计划）进行检测。
 
 ##实际支持
 ###自动发现
+-Beckhoff PLC
 -博世智能家居
 -Bose Soundtouch
 -Broadlink
@@ -65,11 +66,13 @@ hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
 -Proxmox
 -RFLink（序列号57600baud）
 -三星电视
+-Solarlog
 -索南
 -索诺斯
 -Stiebel-Eltron / Tecalor ISG（加号）
 -SQL（MySQL，MSSQL，PostgreSQL）
 -挤压盒
+-SqueezeboxRPC
 -施蒂贝尔
 -TR-064
 -Trådfri
@@ -112,6 +115,11 @@ hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
 -xs1（frankjoke）
 
 ## Changelog
+### 2.2.2 (2020-02-13)
+* (dkleber89) Add discovery for Beckhoff PLC
+* (forelleblau) Add discovery for Solarlog
+* (oweitman) Add discovery for SqueezeboxRPC
+
 ### 2.1.0 (2020-01-21)
 * (foxriver76) no longer use adapter.objects
 * __js-controller > 2.0.0 required__
@@ -210,7 +218,7 @@ hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2020, Bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

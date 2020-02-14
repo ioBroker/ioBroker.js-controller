@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
 title: ioBroker Откройте для себя адаптер
-hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
+hash: y8n52Hctl4SpFRfyTCmddWRht4T/WaUJ9yuTmzGXeIQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -17,10 +17,11 @@ hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
 ** Обнаружение устройств всеми известными методами. **
 
 Это специальные адаптеры, которые пытаются найти все возможные устройства, которые могут быть доступны с хоста.
-Просто теперь он может обнаруживать с помощью ping, UPnP (последовательный план).
+Просто теперь он может обнаружить с помощью ping, UPnP (последовательный план).
 
 ## На самом деле поддерживается
 ### Обнаружено автоматически
+- Beckhoff PLC
 - Умный Дом Bosch
 - Bose Soundtouch
 - Broadlink
@@ -65,11 +66,13 @@ hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
 - Proxmox
 - RFLink (последовательный 57600 бод)
 - SamsungTV
+- Solarlog
 - Соннен
 - сонос
 - Stiebel-Eltron / Tecalor ISG (плюс)
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Squeezebox
+- SqueezeboxRPC
 - Stiebel-isg
 - TR-064
 - Trådfri
@@ -112,6 +115,11 @@ hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
 - xs1 (франкжук)
 
 ## Changelog
+### 2.2.2 (2020-02-13)
+* (dkleber89) Add discovery for Beckhoff PLC
+* (forelleblau) Add discovery for Solarlog
+* (oweitman) Add discovery for SqueezeboxRPC
+
 ### 2.1.0 (2020-01-21)
 * (foxriver76) no longer use adapter.objects
 * __js-controller > 2.0.0 required__
@@ -210,7 +218,7 @@ hash: xUURCuk7ZSosnEYdjfnPVg/y6r4wiGAKM5ewv9y82es=
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2020, Bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

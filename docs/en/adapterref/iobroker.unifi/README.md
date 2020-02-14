@@ -1,12 +1,12 @@
 ![Logo](admin/unifi.png)
 # ioBroker.unifi
 
-[![Build Status](https://travis-ci.org/jens-maus/ioBroker.unifi.svg?branch=master)](https://travis-ci.org/jens-maus/ioBroker.unifi)
-[![Code Climate](https://codeclimate.com/github/jens-maus/ioBroker.unifi/badges/gpa.svg)](https://codeclimate.com/github/jens-maus/ioBroker.unifi)
-[![bitHound Score](https://www.bithound.io/github/jens-maus/ioBroker.unifi/badges/score.svg)](https://www.bithound.io/github/jens-maus/ioBroker.unifi)
+[![Build Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.unifi.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.unifi)
+[![Code Climate](https://codeclimate.com/github/iobroker-community-adapters/ioBroker.unifi/badges/gpa.svg)](https://codeclimate.com/github/iobroker-community-adapters/ioBroker.unifi)
+[![bitHound Score](https://www.bithound.io/github/iobroker-community-adapters/ioBroker.unifi/badges/score.svg)](https://www.bithound.io/github/iobroker-community-adapters/ioBroker.unifi)
 ![Number of Installations](http://iobroker.live/badges/unifi-installed.svg) ![Number of Installations](http://iobroker.live/badges/unifi-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.unifi.svg)](https://www.npmjs.com/package/iobroker.unifi)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.unifi.svg)](https://www.npmjs.com/package/iobroker.unifi)
-[![Github Issues](http://githubbadges.herokuapp.com/jens-maus/ioBroker.unifi/issues.svg)](https://github.com/jens-maus/ioBroker.unifi/issues)
+[![Github Issues](http://githubbadges.herokuapp.com/iobroker-community-adapters/ioBroker.unifi/issues.svg)](https://github.com/iobroker-community-adapters/ioBroker.unifi/issues)
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=RAQSDY9YNZVCL)
 
 [![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)](https://nodei.co/npm/iobroker.unifi/)
@@ -41,7 +41,7 @@ This adapter uses functionality from the following third-party nodejs modules:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 Jens Maus &lt;mail@jens-maus.de&gt;
+Copyright (c) 2016-2020 Jens Maus &lt;mail@jens-maus.de&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

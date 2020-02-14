@@ -1,16 +1,15 @@
 ![Logo](admin/mielecloudservice.png)
 # ioBroker.MieleCloudService
-![Number of Installations](http://iobroker.live/badges/mielecloudservice-installed.svg)
+![Number of Installations](http://iobroker.live/badges/mielecloudservice-installed.svg) 
 [![Downloads](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)](https://www.npmjs.com/package/iobroker.mielecloudservice)
+![Number of Installations](http://iobroker.live/badges/mielecloudservice-stable.svg)
 [![NPM version](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)](https://www.npmjs.com/package/iobroker.mielecloudservice)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/grizzelbee/iobroker.mielecloudservice/blob/master/LICENSE) 
 [![Dependency Status](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)](https://david-dm.org/Grizzelbee/iobroker.mielecloudservice)
 [![Known Vulnerabilities](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg)](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice)
- 
+[![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)](https://travis-ci.com/Grizzelbee/ioBroker.mielecloudservice) 
  [![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)](https://nodei.co/npm/iobroker.mielecloudservice/)
- 
- **Tests:**: [![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)](https://travis-ci.com/Grizzelbee/ioBroker.mielecloudservice)
- 
+
  =================
 ## Description
 This adapter is for retrieving information about all your Miele@Home devices from the official Miele 3rd-party API. 
@@ -33,6 +32,11 @@ To install, excecute the following:
 * Miele Client_secret (from https://www.miele.com/developer/ )
 
 ## Changelog
+
+### 1.0.5 (2020-02-14)
+* (grizzelbee) removed node-schedule as a dependency
+* (grizzelbee) implemented scheduling via setTimeout, which raises the opportunity 
+               to schedule with less than a minute in the future
 
 ### 1.0.4 (2020-02-12)
 * (grizzelbee) removed unneeded setTimeout from main
@@ -97,6 +101,7 @@ To install, excecute the following:
 ## Next Steps
 * New: (longer) poll interval when no device is active
 * New: Sleeptime for complete inactivity (e.g. at night)
+* New: Support for Actions 
 
 ## Documentation
 There are some datapoints avaliable in 2 kinds. As a human readable text and as a number.

@@ -3,25 +3,25 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: +FJ3eN9WtCsnYiz6cbyFwcJvGQl4i3tOTcXYY7C5KLc=
+hash: eGEZTGV31ZdJeK46sDXmDuTgZnm5pFhilnFcOXs19GE=
 ---
 ![商标](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
-![建立状态](https://travis-ci.org/jens-maus/ioBroker.unifi.svg?branch=master)
+![建立状态](https://travis-ci.org/iobroker-community-adapters/ioBroker.unifi.svg?branch=master)
 ![安装数量](http://iobroker.live/badges/unifi-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.unifi.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.unifi.svg)
-![Github问题](http://githubbadges.herokuapp.com/jens-maus/ioBroker.unifi/issues.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.unifi.svg)
+![Github问题](http://githubbadges.herokuapp.com/iobroker-community-adapters/ioBroker.unifi/issues.svg)
 ![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)
 
 ＃ioBroker.unifi
-[![Code Climate]（https://codeclimate.com/github/jens-maus/ioBroker.unifi/badges/gpa.svg）](https://codeclimate.com/github/jens-maus/ioBroker.unifi)[![bitHound Score]（https://www.bithound.io/github/jens-maus/ioBroker.unifi/badges/score.svg）](https://www.bithound.io/github/jens-maus/ioBroker.unifi)
+[![代码气候]（https://codeclimate.com/github/iobroker-community-adapters/ioBroker.unifi/badges/gpa.svg）](https://codeclimate.com/github/iobroker-community-adapters/ioBroker.unifi)[![bitHound分数]（https://www.bithound.io/github/iobroker-community-adapters/ioBroker.unifi/badges/score.svg）](https://www.bithound.io/github/iobroker-community-adapters/ioBroker.unifi)
 
-此ioBroker适配器允许使用公共UniFi控制器Web-API控制和监控[UniFi设备](http://www.ubnt.com/)，例如UniFi WiFi接入点。
+此ioBroker适配器允许使用公共UniFi控制器Web-API控制和监视[UniFi设备](http://www.ubnt.com/)，例如UniFi WiFi接入点。
 
-##参考文献
-此适配器使用以下第三方nodejs模块的功能：
+##参考
+该适配器使用以下第三方nodejs模块的功能：
 
 * [node-unifi]（https://github.com/jens-maus/node-unifi）
 
@@ -48,7 +48,7 @@ hash: +FJ3eN9WtCsnYiz6cbyFwcJvGQl4i3tOTcXYY7C5KLc=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 Jens Maus &lt;mail@jens-maus.de&gt;
+Copyright (c) 2016-2020 Jens Maus &lt;mail@jens-maus.de&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

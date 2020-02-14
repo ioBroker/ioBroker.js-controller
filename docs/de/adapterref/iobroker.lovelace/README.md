@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: 71VvHB178O6BdfyZHf2WgeRgNbSJFA7SfbKNWOSEa4o=
+hash: VgIhdc1/23xticYs/abzNV4hx3j1Dut103VJuJ/9spo=
 ---
 ![Logo](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -17,28 +17,28 @@ hash: 71VvHB178O6BdfyZHf2WgeRgNbSJFA7SfbKNWOSEa4o=
 
 # IoBroker.lovelace
 ## Lovelace Adapter für ioBroker
-Mit diesem Adapter können Sie eine Visualisierung für ioBroker mit der Lovelace-Benutzeroberfläche von Home Assistant erstellen.
+Mit diesem Adapter können Sie eine Visualisierung für ioBroker mit der Home Assistant Lovelace-Benutzeroberfläche erstellen.
 
 ## Aufbau
-Es gibt zwei Möglichkeiten, wie die Entitäten konfiguriert werden können:
+Es gibt zwei Möglichkeiten, wie die Entitäten konfiguriert werden könnten:
 
-- auto
-- manuell
+- Auto
+- Handbuch
 
 ### Auto
-Im Auto-Modus wird der gleiche Vorgang angewendet wie für `google home` oder `material adapter`.
+Im Auto-Modus wird der gleiche Vorgang wie bei `google home` oder `material adapter` angewendet.
 
-*** Es werden nur Objekte und Kanäle erkannt, für die `function` und `room` Kategorien definiert sind ***
+*** Es werden nur Objekte und Kanäle erkannt, für die die Kategorien `function`und `room` definiert sind ***
 
 Sie können Anzeigenamen definieren, die in Entitäten verwendet werden.
 
 ### Handbuch
-Die Objekte können manuell im Objektbaum wie sql oder histroy definiert werden. Der Entitätstyp und optional der Name des Objekts müssen angegeben werden.
-Mit dieser Methode konnten nur einfache Entitäten wie input_number, input_text oder input_boolean erstellt werden. Es darf nicht mehr als einen Zustand oder ein Attribut haben.
+Die Objekte können manuell im Objektbaum wie SQL oder Histroy definiert werden. Der Entitätstyp muss angegeben werden und optional der Name des Objekts.
+Mit dieser Methode konnten nur einfache Entitäten wie input_number, input_text oder input_boolean erstellt werden. Es darf nicht mehr als einen Status oder ein Attribut haben.
 
 ## Panels
 ### Alarmzentrale
-ioBroker unterstützt ein solches Gerät noch nicht, kann jedoch simuliert werden. Wenn Sie ein solches Skript erstellen:
+ioBroker unterstützt ein solches Gerät noch nicht, kann aber simuliert werden. Wenn Sie ein solches Skript erstellen:
 
 ```
 createState(
@@ -73,12 +73,12 @@ createState(
 );
 ```
 
-oder du benutzt einfach `lovelace.X.control.alarm (entity_id = alarm_control_panel.defaultAlarm)` dafür.
+oder Sie verwenden einfach `lovelace.X.control.alarm (entity_id = alarm_control_panel.defaultAlarm)` dafür.
 
 ### Zahleneingabe
 Dies kann manuell erfolgen, wenn der Entitätstyp input_number im benutzerdefinierten Dialogfeld ausgewählt ist.
-Für diesen Typ wurden die erforderlichen Werte für `min` und `max` in `common` sowie die optionalen Werte für `step` hinzugefügt.
-Wenn Sie die Aufwärts- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` auf 'Nummer' einstellen:
+Dieser Typ erforderte `min` und `max` Werte in `common` und optionale `step` könnten hinzugefügt werden.
+Wenn Sie die Aufwärts- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` auf 'Nummer' setzen:
 
 ```
 common: {
@@ -95,7 +95,7 @@ common: {
 
 ### Eingang auswählen
 Dies kann manuell erfolgen, wenn der Entitätstyp input_select im benutzerdefinierten Dialogfeld ausgewählt ist.
-Die Liste der zur Auswahl stehenden Optionen sollte im Standardobjekt commom.states enthalten sein:
+Die Liste der Optionen zur Auswahl sollte im Standardobjekt commom.states enthalten sein:
 
 ```
 "common": {
@@ -114,7 +114,7 @@ Die Liste der zur Auswahl stehenden Optionen sollte im Standardobjekt commom.sta
     }
 ```
 
-mit anderen Worten, in sollte auch in IoB input select sein.
+Mit anderen Worten, in sollte auch in IoB eingegeben werden.
 
 ### Timer
 Der Timer kann mit folgendem Skript simuliert werden:
@@ -201,13 +201,13 @@ createState(
 ```
 
 ### Wetter
-Getestet mit Jahr und Daswetter. Für eines oder mehrere der folgenden Objekte müssen `Function=Weather` und `Room=Any` festgelegt sein, um in der Konfiguration verfügbar zu sein:
+Getestet mit yr und daswetter. Für eines oder mehrere der folgenden Objekte müssen `Function=Weather` und `Room=Any` festgelegt sein, damit sie in der Konfiguration verfügbar sind:
 
 - daswetter.0.NextDays.Location_1
 - yr.0.forecast
 
 Getestet mit dem AccuWeather-Treiber v1.1.0 https://github.com/iobroker-community-adapters/ioBroker.accuweather.
-Benutzerdefinierte Lovelace-Karte zur Unterstützung der AccuWeather-Vorhersage - https://github.com/algar42/IoB.lovelace.accuweather-card
+Benutzerdefinierte Lovelace-Karte zur Unterstützung der Accuweather-Prognose - https://github.com/algar42/IoB.lovelace.accuweather-card
 
 ### Einkaufsliste
 Einkaufsliste schreibt die Werte in Form:
@@ -222,7 +222,7 @@ Einkaufsliste schreibt die Werte in Form:
 in `lovelace.X.control.shopping_list` Zustand.
 
 ### Karte
-Die Objekte müssen so aussehen:
+Die Objekte müssen wie folgt aussehen:
 
 ```
 createState('location', '39.5681295;2.6432632', false, {
@@ -235,7 +235,7 @@ createState('location', '39.5681295;2.6432632', false, {
 });
 ```
 
-oder diese zwei Objekte:
+oder diese beiden Objekte:
 
 ```
 createState('location.longitude', 2.6432632, false, {
@@ -256,8 +256,8 @@ createState('location.latitude', 39.5681295, false, {
 });
 ```
 
-### Bildeinheit
-Sie können dafür ein statisches Bild oder einen beliebigen Status verwenden, der die URL als Status liefert.
+### Bildentität
+Sie können ein statisches Bild dafür verwenden oder einen beliebigen Status verwenden, der eine URL als Status liefert.
 Z.B.:
 
 ```
@@ -279,32 +279,32 @@ oder setzen Sie den Entitätstyp einfach manuell auf `camera` und schreiben Sie 
 
 ### Werkzeugleiste verstecken
 Um die Symbolleiste auszublenden, können Sie das Kontrollkästchen im ioBroker-Konfigurationsdialog auf der Registerkarte Themen aktivieren.
-Um es anzuzeigen, können Sie es im Dialog wieder deaktivieren oder einfach die URL mit dem Parameter `?toolbar=true` aufrufen.
+Um es anzuzeigen, können Sie es im Dialogfeld wieder deaktivieren oder einfach die URL mit dem Parameter `?toolbar=true` aufrufen.
 
 ### Abschrift
 Sie können Bindungen in Abschriften wie in [iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects) verwenden.
 
-Z.B. Text `Admin adapter is {a:system.adapter.admin.0.alive;a === true || a === 'true' ? ' ' : 'not '} *alive*.` erzeugt Text `Admin adapter is alive` im Abschriftenfeld.
+Z.B. Text `Admin adapter is {a:system.adapter.admin.0.alive;a === true || a === 'true' ? ' ' : 'not '} *alive*.` erzeugt Text `Admin adapter is alive` im Markdown-Bereich.
 
 ## Benutzerdefinierte Karten
-### Upload von benutzerdefinierten Karten
+### Hochladen von benutzerdefinierten Karten
 Um die benutzerdefinierte Karte hochzuladen, schreiben Sie Folgendes:
 
 ```iobroker file write PATH_TO_FILE\bignumber-card.js /lovelace.0/cards/```
 
-Nach dem Neustart des Lovelace Adapters werden alle Dateien aus dem Verzeichnis `cards` automatisch mit einbezogen.
+Nach dem Neustart des Lovelace-Adapters werden automatisch alle Dateien aus dem Verzeichnis `cards` aufgenommen.
 
 Folgende benutzerdefinierte Karten konnten erfolgreich getestet werden:
 
-- Bignumber-Card: https://github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
-- Simple-Thermostat: https://github.com/nervetattoo/simple-thermostat/releases (nehmen Sie die neueste Version)
+- bignumber-card: https://github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
+- einfacher Thermostat: https://github.com/nervetattoo/simple-thermostat/releases (nehmen Sie die neueste Version)
 - Thermostat: https://github.com/ciotlosm/custom-lovelace/tree/master/thermostat-card (beide Dateien .js und .lib.js sind erforderlich)
 
 Ich fand diesen Link https://github.com/jimz011/homeassistant als interessante Ressource für benutzerdefinierte Karten.
 
-Häufig werden die benutzerdefinierten Karten als Quellen auf github gespeichert und müssen vor der Verwendung kompiliert werden.
+Oft werden die benutzerdefinierten Karten als Quellen auf Github gespeichert und müssen vor der Verwendung kompiliert werden.
 Sie sollten das Menü `Releases` auf github überprüfen und versuchen, dort kompilierte Dateien zu finden.
-So wie dieser: [https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases) (Suchen Sie nach der Datei `mini-graph-card-bundle.js`)
+Wie dieser: [https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases) (Suchen Sie nach der Datei `mini-graph-card-bundle.js`)
 
 ## Eigene Bilder
 Die benutzerdefinierten Bilder (z. B. für den Hintergrund) können über denselben Konfigurationsdialog wie die benutzerdefinierten Karten geladen werden. Und benutze es so:
@@ -315,11 +315,11 @@ oder
 
 `background: center / cover no-repeat url("/local/custom_ui/background.jpg") fixed`
 
-in Lovelace Konfigurationsdatei. Lesen Sie mehr über den Hintergrund in Lovelace [Hier](https://www.home-assistant.io/lovelace/views/#background).
+in der Lovelace-Konfigurationsdatei. Lesen Sie mehr über den Hintergrund in Lovvelace [Hier](https://www.home-assistant.io/lovelace/views/#background).
 
-## Themes
+## Themen
 Die Themen können im Konfigurationsdialog von ioBroker definiert werden.
-Füge etwas ein wie:
+Fügen Sie etwas ein wie:
 
 ```
 midnight:
@@ -391,11 +391,11 @@ midnight:
 
 entnommen aus [Hier](https://community.home-assistant.io/t/midnight-theme/28598/2).
 
-## Icons
-Verwenden Sie Symbole in der Form `mdi:NAME` wie 'mdi: play-network'. Namen können hier entnommen werden: https://materialdesignicons.com/
+## Symbole
+Verwenden Sie Symbole in Form von `mdi:NAME` wie 'mdi: play-network'. Namen können hier abgerufen werden: https://materialdesignicons.com/
 
 ## Benachrichtigungen
-Sie können Benachrichtigungen über die `sendTo`-Funktionalität oder durch Schreiben des Status in `lovelace.X.notifications.add` hinzufügen:
+Sie können Benachrichtigungen über die Funktion `sendTo` oder durch Schreiben des Status in `lovelace.X.notifications.add` hinzufügen:
 
 ```
 sendTo('lovelace.0', 'send', {message: 'Message text', title: 'Title'}); // full version
@@ -410,7 +410,7 @@ setState('lovelace.0.notifications.add', 'Message text'); // short version
 ```
 
 ## Stimmenkontrolle
-Alle Befehle vom Webinterface werden mit `ack=false` in den Status lovelace.X.conversation geschrieben.
+Alle Befehle von der Weboberfläche werden mit `ack=false` in den Status lovelace.X.conversation geschrieben.
 Sie können ein Skript schreiben, das auf Anfrage reagiert und antwortet:
 
 ```
@@ -424,8 +424,8 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 });
 ```
 
-## Originalquellen für Lovelace
-Verwendete Quellen sind hier https://github.com/GermanBluefox/home-assistant-polymer.
+## Originalquellen für Liebesspiel
+Verwendete Quellen finden Sie hier https://github.com/GermanBluefox/home-assistant-polymer.
 
 ## Machen
 Die Sicherheit muss vom aktuellen Benutzer und nicht vom Standardbenutzer übernommen werden
@@ -434,33 +434,55 @@ Die Sicherheit muss vom aktuellen Benutzer und nicht vom Standardbenutzer übern
 ### Ausführung
 Verwendete Version von home-assistant-frontend@1.0.0
 
-### So erstellen Sie die neue Lovelace-Version
-Zunächst muss der eigentliche https://github.com/home-assistant/home-assistant-polymer (dev branch) manuell in https://github.com/GermanBluefox/home-assistant-polymer eingebunden werden .git (iob) -Zweig
+### Wie erstelle ich die neue Lovelace-Version?
+Zunächst muss der eigentliche https://github.com/home-assistant/home-assistant-polymer (Entwicklungszweig) **manuell** in https://github.com/GermanBluefox/home-assistant-polymer zusammengeführt werden .git (*** iob *** branch!).
 
 Alle Änderungen für ioBroker sind mit dem Kommentar `// IoB` gekennzeichnet.
-Fürs Erste (2019.11.23) wurden folgende Dateien geändert:
+Vorerst (2020.01.12) wurden folgende Dateien geändert:
 
 - `.gitignore` -` .idea` ignorieren hinzugefügt
-- `build-scripts / gulp / app.js` - Neue Aufgabe gulp hinzugefügt
-- `build-scripts / gulp / webpack.js` - Neue Aufgabe gulp hinzugefügt
-- `src / entrypoints / core.ts` - Modifizierter Authentifizierungsprozess
+- `build-scripts / gulp / app.js` - Neue gulp-Aufgabe hinzugefügt
+- `build-scripts / gulp / webpack.js` - Neue gulp-Aufgabe hinzugefügt
 - `src / data / lovelace.ts` - Option zum Ausblenden der Leiste hinzugefügt
-- `src / panels / lovelace / hui-root.ts` - Benachrichtigungen und Sprachsteuerung hinzugefügt
-- `src / dialogs / notifications / notification-drawer.js` - Button ack all hinzugefügt
-- `src / layouts / home-assistant-main.ts` - App-Seitenleiste entfernen
+- `src / dialogs / notifications / notification-drawer.js` - Schaltfläche ack all hinzugefügt
+- `src / entrypoints / core.ts` - geänderter Authentifizierungsprozess
+- `src / layouts / home-Assistant-main.ts` - App-Seitenleiste entfernen
+- `src / panel / lovelace / hui-root.ts` - Benachrichtigungen und Sprachsteuerung hinzugefügt
 
-Nach dem Auschecken wurde die Version im Ordner `./build` geändert. Dann.
+Nach dem Auschecken geänderte Version im Ordner `./build`. Dann.
 
-1. Wechseln Sie in das Verzeichnis ./build.
-2. `git clone https:// github.com / GermanBluefox / home-assistant-polymer.git` Es ist eine Abspaltung von https://github.com/home-assistant/home-assistant-polymer.git, aber einige Dinge geändert werden (siehe die Dateiliste weiter oben).
-3. `cd home-assistant-polymer`
-4. `Git Checkout Master`
+1. Gehen Sie zum Verzeichnis ./build.
+2. `git clone https:// github.com / GermanBluefox / home-Assistant-polymer.git` es ist eine Gabelung von https://github.com/home-assistant/home-assistant-polymer.git, aber einige Dinge geändert werden (siehe Dateiliste weiter oben).
+3. "CD Home-Assistant-Polymer"
+4. `git checkout master`
 5. `npm install`
-6. `gulp run build-app` für die Veröffentlichung oder` gulp run develop-iob` für die Debug-Version. Um das Web nach Änderungen zu erstellen, können Sie "webpack-dev-app" aufrufen, um es schneller zu erstellen. Sie müssen jedoch "build-app" aufrufen, nachdem die Version einsatzbereit ist.
-7. Kopieren Sie alle Dateien von `. / Build / home-assistant-polymer / hass_frontend` nach`. / Hass_frontend` in diesem Repo
-8. Starten Sie die Aufgabe "gulp rename".
+6. `gulp build-app` für die Veröffentlichung oder` gulp Develop-iob` für die Debug-Version. Um das Web nach Änderungen zu erstellen, können Sie "webpack-dev-app" für eine schnellere Erstellung aufrufen. Sie müssen jedoch "build-app" aufrufen, nachdem die Version einsatzbereit ist.
+7. Kopieren Sie alle Dateien von `. / Build / home-Assistant-Polymer / hass_frontend` in`. / Hass_frontend` in diesem Repo
+8. Starten Sie die Aufgabe "Schlucken umbenennen".
 
 ## Changelog
+### 1.0.10 (2020-02-13)
+* (Garfonso) Fixed handling of malformed / null RGB string
+* (algar42)  Binary sensor added
+* (Garfonso) fixed manual dimmer 
+* (algar42)  fixed for duplicated states via websockets
+* (Garfonso) fixed handling of deleted objects 
+
+### 1.0.9 (2020-01-29)
+* (bluefox) Dimmer control was fixed
+
+### 1.0.8 (2020-01-13)
+* (Garfonso) process max value of saturation and hue
+* (Garfonso) disable extensive debug logging
+* (Garfonso) many changes done concerning detection of devices and processing of states
+* (bluefox) Update hass lovelace
+
+### 1.0.7 (2019-12-17)
+* (bluefox) Invalid objects will be filtered out.
+
+### 1.0.6 (2019-12-06)
+* (bluefox) Fixed disconnection behavior
+
 ### 1.0.5 (2019-11-27)
 * (algar42) getting back broken update of internal_entities
 
@@ -514,7 +536,7 @@ Nach dem Auschecken wurde die Version im Ordner `./build` geändert. Dann.
 
 ## License
 
-Copyright 2019, bluefox <dogafox@gmail.com>
+Copyright 2019-2020, bluefox <dogafox@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

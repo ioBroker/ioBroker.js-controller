@@ -3,18 +3,18 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: +uTOxc+wS8rtAmvlfaENNjq2W5GH7DHUabNP+g3RTrs=
+hash: rddpQDgYYESDU49zCZjbWILDTaRrDNcBKGKqJvXk5Wg=
 ---
 ![логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
-![Количество установок](http://iobroker.live/badges/mielecloudservice-installed.svg)
+![Количество установок](http://iobroker.live/badges/mielecloudservice-stable.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Состояние зависимости](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
+![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
 
 # IoBroker.MieleCloudService
 =================
@@ -40,6 +40,7 @@ hash: +uTOxc+wS8rtAmvlfaENNjq2W5GH7DHUabNP+g3RTrs=
 ## Следующие шаги
 * Новое: (более длинный) интервал опроса, когда ни одно устройство не активно
 * Новое: время сна для полной неактивности (например, ночью)
+* Новое: поддержка действий
 
 ## Документация
 Существует несколько точек данных в 2 видах. Как читабельный текст и как число.
@@ -92,6 +93,11 @@ hash: +uTOxc+wS8rtAmvlfaENNjq2W5GH7DHUabNP+g3RTrs=
  | 6 | Машинное железо |
 
 ## Changelog
+
+### 1.0.5 (2020-02-14)
+* (grizzelbee) removed node-schedule as a dependency
+* (grizzelbee) implemented scheduling via setTimeout, which raises the opportunity 
+               to schedule with less than a minute in the future
 
 ### 1.0.4 (2020-02-12)
 * (grizzelbee) removed unneeded setTimeout from main

@@ -3,18 +3,18 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: +uTOxc+wS8rtAmvlfaENNjq2W5GH7DHUabNP+g3RTrs=
+hash: rddpQDgYYESDU49zCZjbWILDTaRrDNcBKGKqJvXk5Wg=
 ---
 ![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
-![安装数量](http://iobroker.live/badges/mielecloudservice-installed.svg)
+![安装数量](http://iobroker.live/badges/mielecloudservice-stable.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
 ![执照](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![依赖状态](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
 ![已知漏洞](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
 ![特拉维斯](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
+![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
 
 ＃ioBroker.MieleCloudService
 =================
@@ -40,6 +40,7 @@ hash: +uTOxc+wS8rtAmvlfaENNjq2W5GH7DHUabNP+g3RTrs=
 ＃＃ 下一步
 *新增：（无设备活动时）（更长）轮询间隔
 *新功能：完全不活动的睡眠时间（例如晚上）
+*新增：行动支持
 
 ##文档
 有一些数据点可用2种。作为人类可读的文本和数字。
@@ -92,6 +93,11 @@ hash: +uTOxc+wS8rtAmvlfaENNjq2W5GH7DHUabNP+g3RTrs=
  | 6 |机铁|
 
 ## Changelog
+
+### 1.0.5 (2020-02-14)
+* (grizzelbee) removed node-schedule as a dependency
+* (grizzelbee) implemented scheduling via setTimeout, which raises the opportunity 
+               to schedule with less than a minute in the future
 
 ### 1.0.4 (2020-02-12)
 * (grizzelbee) removed unneeded setTimeout from main

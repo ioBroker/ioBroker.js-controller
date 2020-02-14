@@ -3,18 +3,18 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: +uTOxc+wS8rtAmvlfaENNjq2W5GH7DHUabNP+g3RTrs=
+hash: rddpQDgYYESDU49zCZjbWILDTaRrDNcBKGKqJvXk5Wg=
 ---
 ![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
-![Anzahl der Installationen](http://iobroker.live/badges/mielecloudservice-installed.svg)
+![Anzahl der Installationen](http://iobroker.live/badges/mielecloudservice-stable.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
 ![Lizenz](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Abhängigkeitsstatus](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
+![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
 
 # IoBroker.MieleCloudService
 =================
@@ -40,6 +40,7 @@ Führen Sie zur Installation die folgenden Schritte aus:
 ## Nächste Schritte
 * Neu: (längeres) Abfrageintervall, wenn kein Gerät aktiv ist
 * Neu: Schlafzeit für vollständige Inaktivität (z. B. nachts)
+* Neu: Unterstützung für Aktionen
 
 ## Dokumentation
 Es gibt einige Datenpunkte, die auf zwei Arten verfügbar sind. Als vom Menschen lesbarer Text und als Zahl.
@@ -92,6 +93,11 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 6 | Maschineneisen |
 
 ## Changelog
+
+### 1.0.5 (2020-02-14)
+* (grizzelbee) removed node-schedule as a dependency
+* (grizzelbee) implemented scheduling via setTimeout, which raises the opportunity 
+               to schedule with less than a minute in the future
 
 ### 1.0.4 (2020-02-12)
 * (grizzelbee) removed unneeded setTimeout from main

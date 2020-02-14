@@ -423,18 +423,18 @@ Security must be taken from current user and not from default_user
 Used version of home-assistant-frontend@1.0.0
 
 ### How to build the new Lovelace version
-First of all the actual https://github.com/home-assistant/home-assistant-polymer (dev branch) must be **manually** merged into https://github.com/GermanBluefox/home-assistant-polymer.git (iob) branch.
+First of all the actual https://github.com/home-assistant/home-assistant-polymer (dev branch) must be **manually** merged into https://github.com/GermanBluefox/home-assistant-polymer.git (***iob*** branch!).
 
 All changes for ioBroker are marked with comment `// IoB`.
-For now (2019.11.23) following files were modified:
+For now (2020.01.12) following files were modified:
 - `.gitignore` - added `.idea` ignore
 - `build-scripts/gulp/app.js` - Added new gulp task
 - `build-scripts/gulp/webpack.js` - Added new gulp task
-- `src/entrypoints/core.ts` - modified authentication process
 - `src/data/lovelace.ts` - added hide bar option
-- `src/panels/lovelace/hui-root.ts` - added notifications and voice control
 - `src/dialogs/notifications/notification-drawer.js` - added button ack all
+- `src/entrypoints/core.ts` - modified authentication process
 - `src/layouts/home-assistant-main.ts` - remove app sidebar
+- `src/panels/lovelace/hui-root.ts` - added notifications and voice control
 
 After that checkout modified version in `./build` folder. Then.
 
@@ -443,11 +443,18 @@ After that checkout modified version in `./build` folder. Then.
 3. `cd home-assistant-polymer`
 4. `git checkout master`
 5. `npm install`
-6. `gulp run build-app` for release or `gulp run develop-iob` for debug version. To build web after changes you can call `webpack-dev-app` for faster build, but you need to call `build-app` anyway after the version is ready for use.
+6. `gulp build-app` for release or `gulp develop-iob` for debug version. To build web after changes you can call `webpack-dev-app` for faster build, but you need to call `build-app` anyway after the version is ready for use.
 7. copy all files from `./build/home-assistant-polymer/hass_frontend` into `./hass_frontend` in this repo
 8. Start `gulp rename` task.
 
 ## Changelog
+### 1.0.10 (2020-02-13)
+* (Garfonso) Fixed handling of malformed / null RGB string
+* (algar42)  Binary sensor added
+* (Garfonso) fixed manual dimmer 
+* (algar42)  fixed for duplicated states via websockets
+* (Garfonso) fixed handling of deleted objects 
+
 ### 1.0.9 (2020-01-29)
 * (bluefox) Dimmer control was fixed
 
@@ -516,7 +523,7 @@ After that checkout modified version in `./build` folder. Then.
 
 ## License
 
-Copyright 2019, bluefox <dogafox@gmail.com>
+Copyright 2019-2020, bluefox <dogafox@gmail.com>
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

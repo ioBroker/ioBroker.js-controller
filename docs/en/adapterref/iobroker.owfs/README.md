@@ -39,7 +39,11 @@ Before you must create the directroy */mnt/1wire* with command `mkdir /mnt/1wire
 http://sourceforge.net/projects/owfs/
 
 ## Changelog
-### 0.6.3 (2020-10-23)
+
+### 0.6.4 (2020-01-26)
+* (CC1337) Added option to not log 85°C readings. They appear if a DS18B20 has a power failure and returns this initial register value.
+
+### 0.6.3 (2020-01-23)
 * (INgo Rah) Added the alarm state handling
 
 ### 0.6.2 (2019-10-29)
