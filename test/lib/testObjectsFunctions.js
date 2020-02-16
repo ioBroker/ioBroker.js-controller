@@ -693,7 +693,7 @@ function register(it, expect, context) {
     // delObject
     it(testName + 'Try to delete existing object', function (done) {
         context.adapter.delObject(gid, function (err) {
-            expect(err).to.be.null;
+            expect(err).to.not.be.ok;
 
             context.adapter.getObject(gid, function (err, obj) {
                 expect(err).to.be.null;
@@ -712,7 +712,7 @@ function register(it, expect, context) {
     // delForeignObject
     it(testName + 'Try to delete foreign existing object', function (done) {
         context.adapter.delForeignObject(context.adapterShortName + 'f.0.' + gid, function (err) {
-            expect(err).to.be.null;
+            expect(err).to.not.be.ok;
 
             context.adapter.getForeignObject(context.adapterShortName + 'f.0.' + gid, function (err, obj) {
                 expect(err).to.be.null;
