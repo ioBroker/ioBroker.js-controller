@@ -113,21 +113,21 @@ Hier habt ihr den eigentlichen Wiederherstellungsvorgang gestartet.
 
 ![Restore läuft](media/restore/1575301208033-restore.jpg) 
 
-Dies kann je nach Leistung des Systems und Größe der alten ioBroker Installation etwas Zeit brauchen.
-Im Normalfall sollte der restore nach ca. 10-15 Minuten erledigt und ioBroker wieder gestartet sein.
+In eurem Browser öffnet sich nun ein weiterer Tab, in dem ihr den Wiederherstellungsprozess wie auf der Konsole im WebUI von Backitup verfolgen könnt.
+
+![restoreWebUI.JPG](media/restore/restorewebui.jpg) 
+
+Nachdem die Wiederherstellung erfolgreich abgeschlossen wurde, bekommt ihr die Meldung ebenfalls im WebUi des Restores.
+
+![restoreWebUI_finish.JPG](media/restore/restorewebui_finish.jpg) 
+
+Die Wiederherstellung kann je nach Leistung des Systems und Größe der alten ioBroker Installation etwas Zeit brauchen.
+Im Normalfall sollte der restore nach ca. 10-15 Minuten erledigt und ioBroker automatisch wieder gestartet sein.
 
 ![Restore fertig](media/restore/1575301228008-restorefinish.jpg) 
 
-Falls sich die Anzeige nicht ändert,  ab und an mal das Browserfenster mit F5 aktualisieren.
-
 In ganz seltenen Fällen kommt es vor, dass ioBroker nicht automatisch nach Restore startet.
-Falls dies der Fall oder nicht sicher ist, ob der Restore noch läuft,kann man mit dem installierten Tool htop schauen, ob der Restore noch läuft, oder bereits beendet ist.
-Dafür gebt im Terminal einfach ```htop``` eingeben. Die Ausgabe sollte dann in etwa so ausschauen.
-
-![htop](media/restore/1575363981959-htop.jpg) 
-
-In den Prozessen, die von htop angezeigt werden darf **keiner** der im Bild markierten Prozesse mehr vorhanden sein.
-Sollte dies der Fall sein, dann htop mit "F10" beenden und über das Terminal folgenden Befehl ausführen.
+Falls dies der Fall ist, könnt ihr den iobroker manuell mit folgende Befehl über die Konsole starten.
 
 ```
 iobroker start
