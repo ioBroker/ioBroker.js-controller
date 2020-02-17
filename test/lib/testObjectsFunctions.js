@@ -446,125 +446,125 @@ function register(it, expect, context) {
     // setForeignObject merge of custom settings
     it(testName + 'Try to merge custom settings', done => {
         context.adapter.setForeignObject(context.adapterShortName + '.0.' + gid, {
+            common: {
+                name: 'Some name',
+                custom: {
+                    history: {enabled: true}
+                }
+            },
+            native: {
+                ppparam: 11
+            },
+            type: 'state'
+        },
+        err => {
+            expect(err).to.be.null;
+            context.adapter.setForeignObject(context.adapterShortName + '.0.' + gid, {
                 common: {
                     name: 'Some name',
                     custom: {
-                        history: {enabled: true}
+                        material: {enabled: true}
                     }
                 },
                 native: {
-                    ppparam: 11
+                    ppparam: 12
                 },
                 type: 'state'
-            },
-            err => {
+            }, err => {
                 expect(err).to.be.null;
-                context.adapter.setForeignObject(context.adapterShortName + '.0.' + gid, {
-                    common: {
-                        name: 'Some name',
-                        custom: {
-                            material: {enabled: true}
-                        }
-                    },
-                    native: {
-                        ppparam: 12
-                    },
-                    type: 'state'
-                }, err => {
+                context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, (err, obj1) => {
                     expect(err).to.be.null;
-                    context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, (err, obj1) => {
-                        expect(err).to.be.null;
 
-                        expect(obj1.common.custom.material).to.be.ok;
-                        expect(obj1.common.custom.history).to.be.ok;
-                        done();
-                    });
+                    expect(obj1.common.custom.material).to.be.ok;
+                    expect(obj1.common.custom.history).to.be.ok;
+                    done();
                 });
             });
+        });
     });
 
     // setForeignObject merge of custom settings
     it(testName + 'Try to delete custom settings', done => {
         const id = context.adapterShortName + '.0.' + gid;
         context.adapter.setForeignObject(id, {
+            common: {
+                name: 'Some name',
+                custom: {
+                    history: {enabled: true}
+                }
+            },
+            native: {
+                ppparam: 11
+            },
+            type: 'state'
+        },
+        err => {
+            expect(err).to.be.null;
+            context.adapter.setForeignObject(id, {
                 common: {
                     name: 'Some name',
+                    desc: 'Hello',
                     custom: {
-                        history: {enabled: true}
+                        material: null,
+                        history: null
                     }
                 },
                 native: {
-                    ppparam: 11
+                    bluefox: 14
                 },
                 type: 'state'
-            },
-            err => {
+            }, err => {
                 expect(err).to.be.null;
-                context.adapter.setForeignObject(id, {
-                    common: {
-                        name: 'Some name',
-                        desc: 'Hello',
-                        custom: {
-                            material: null,
-                            history: null,
-                        }
-                    },
-                    native: {
-                        bluefox: 14
-                    },
-                    type: 'state'
-                }, err => {
+                context.adapter.getForeignObject(id, (err, obj1) => {
                     expect(err).to.be.null;
-                    context.adapter.getForeignObject(id, (err, obj1) => {
-                        expect(err).to.be.null;
 
-                        expect(obj1.common.custom).to.be.not.ok;
-                        done();
-                    });
+                    expect(obj1.common.custom).to.be.not.ok;
+                    done();
                 });
             });
+        });
     });
 
     // setForeignObject merge of custom settings
     it(testName + 'Try to delete custom settings in new object', done => {
         const id = context.adapterShortName + '.0.' + gid + '6';
         context.adapter.setForeignObject(id, {
+            common: {
+                name: 'Some name',
+                custom: {
+                    history: {enabled: true}
+                }
+            },
+            native: {
+                ppparam: 11
+            },
+            type: 'state'
+        },
+        err => {
+            expect(err).to.be.null;
+            context.adapter.setForeignObject(id, {
                 common: {
                     name: 'Some name',
+                    desc: 'Hello',
                     custom: {
-                        history: {enabled: true}
+                        material: null,
+                        history: null
                     }
                 },
                 native: {
-                    ppparam: 11
+                    bluefox: 14
                 },
                 type: 'state'
-            },
-            err => {
+            }, err => {
                 expect(err).to.be.null;
-                context.adapter.setForeignObject(id, {
-                    common: {
-                        name: 'Some name',
-                        desc: 'Hello',
-                        custom: {
-                            material: null,
-                            history: null,
-                        }
-                    },
-                    native: {
-                        bluefox: 14
-                    },
-                    type: 'state'
-                }, err => {
+                context.adapter.getForeignObject(id, (err, obj1) => {
                     expect(err).to.be.null;
-                    context.adapter.getForeignObject(id, (err, obj1) => {
-                        expect(err).to.be.null;
 
-                        expect(obj1.common.custom).to.be.not.ok;
-                        done();
-                    });
+                    expect(obj1.common.custom).to.be.not.ok;
+                    done();
                 });
             });
+        });
     });
 
     // getObjectView
@@ -693,7 +693,7 @@ function register(it, expect, context) {
     // delObject
     it(testName + 'Try to delete existing object', function (done) {
         context.adapter.delObject(gid, function (err) {
-            expect(err).to.be.null;
+            expect(err).to.not.be.ok;
 
             context.adapter.getObject(gid, function (err, obj) {
                 expect(err).to.be.null;
@@ -712,7 +712,7 @@ function register(it, expect, context) {
     // delForeignObject
     it(testName + 'Try to delete foreign existing object', function (done) {
         context.adapter.delForeignObject(context.adapterShortName + 'f.0.' + gid, function (err) {
-            expect(err).to.be.null;
+            expect(err).to.not.be.ok;
 
             context.adapter.getForeignObject(context.adapterShortName + 'f.0.' + gid, function (err, obj) {
                 expect(err).to.be.null;
@@ -723,6 +723,40 @@ function register(it, expect, context) {
                     expect(err).to.equal('Not exists');
 
                     done();
+                });
+            });
+        });
+    });
+
+    // check that enum membership is removed on delForeignObject
+    it(testName + 'should delete enum membership on object deletion', done => {
+        const objects = context.objects;
+        const enumObj = {
+            'common': {
+                'name': 'Wohnzimmer',
+                'members': [
+                    'tesla.0.model',
+                    'test.0.test'
+                ]
+            },
+            'native': {},
+            'type': 'enum'
+        };
+        // create our object
+        objects.setObject('tesla.0.model', {type: 'state', native: {}, common: {
+            name: 'Model'
+        }}, () => {
+            // now create the enum with object as member
+            objects.setObject('enum.rooms.living_room', enumObj, () => {
+                // delete the object via adapter method
+                context.adapter.delForeignObject('tesla.0.model', () => {
+                    // now get enum object
+                    objects.getObject('enum.rooms.living_room', (err, obj) => {
+                        // check that only the delete object has been removed
+                        expect(obj.common.members.indexOf('tesla.0.model')).to.equal(-1);
+                        expect(obj.common.members.indexOf('test.0.test')).to.equal(0);
+                        done();
+                    });
                 });
             });
         });
