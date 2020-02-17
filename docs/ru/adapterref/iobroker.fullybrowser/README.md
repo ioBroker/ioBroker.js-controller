@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.fullybrowser/README.md
 title: ioBroker.fullybrowser
-hash: DzvovUP10WBfvNa8fqbrlb36Xnv3kTyHhvnod1C+jSM=
+hash: Nn/bwU4XpkZRblqnE/mWtJmqwuB2cy2UOK5wp0oEm4I=
 ---
 ![логотип](../../../en/adapterref/iobroker.fullybrowser/admin/fully.png)
 
@@ -18,7 +18,7 @@ hash: DzvovUP10WBfvNa8fqbrlb36Xnv3kTyHhvnod1C+jSM=
 
 полностью браузерный адаптер для ioBroker ---------------------------------------------- --------------------------------
 
-Этот адаптер управляет вашими [Полностью киоск браузера](https://www.ozerov.de/fully-kiosk-browser) (требуется лицензия Plus). Он предоставляет вам множество возможностей для управления планшетом через ioBroker, например, включение / выключение дисплея, запуск любого приложения для планшета, запуск заставки и т. Д. Кроме того, он предоставляет различную информацию в таких состояниях, как уровень заряда батареи вашего планшета и т. Д. . которые вы можете использовать, например для визуализации.
+Этот адаптер управляет вашими [Полностью киоск браузера](https://www.ozerov.de/fully-kiosk-browser) (требуется лицензия Plus). Он предоставляет вам множество возможностей для управления планшетом с помощью ioBroker, например, включение / выключение дисплея, запуск любого приложения для планшета, запуск заставки и т. Д. Кроме того, он предоставляет различную информацию в таких состояниях, как уровень заряда батареи вашего планшета и т. Д. . которые вы можете использовать, например для визуализации.
 Небольшая выдержка из опций команды:
 
 ![möglichkeiten](https://github.com/arteck/iobroker.fullyBrowser/blob/master/doku/auszug.png)
@@ -26,6 +26,10 @@ hash: DzvovUP10WBfvNa8fqbrlb36Xnv3kTyHhvnod1C+jSM=
 <b>NodeJs &gt;&gt; 8.xx</b>
 
 ## Changelog
+### 1.0.3 (2020-02-16)
+* (arteck) support compact mode
+
+
 ### 1.0.1 (2019-06-20)
 * (arteck) encodeURL
 

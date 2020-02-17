@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker mihome-真空适配器
-hash: AOAalXfMKBwzIM4xD3kpyJJ278omMCQWMuM55jq/RZ0=
+hash: IOpE/9SuLy17vuLb+2bXXidrBNKtvjNeX9fs9uSXBbo=
 ---
 ![商标](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -46,10 +46,10 @@ hash: AOAalXfMKBwzIM4xD3kpyJJ278omMCQWMuM55jq/RZ0=
 -对于IP地址，必须以“ 192.168.178.XX”格式输入机器人的IP地址。
 -机器人的端口默认设置为“ 54321”，请勿更改
 -自己的端口，只能由第二个机器人更改
--查询间隔检索机器人状态值的时间（以毫秒为单位）（不应小于10000）
+-查询间隔检索机器人状态值的时间（毫秒）（不应小于10000）
 
 ####控制Alexa
-在配置中，添加alexa状态在此处被激活，一个hack被设置为附加状态“ clean_home”，这是一个从“ true”开始，在“ false”处启动的开关，它自动归位，它自动成为云中的智能设备创建的适配器名称为“真空吸尘器”，可以在云适配器中进行更改。
+在配置中添加alexa状态在此处被激活，一个hack被设置为一个附加状态“ clean_home”，这是一个从“ true”开始，到“ false”的开关，它返回首页，它自动成为云中的智能设备创建的适配器名称为“真空吸尘器”，可以在云适配器中进行更改。
 
 ####使用开始按钮恢复暂停的区域清洁
 启用此选项后，如果在运行区域清洁期间暂停了“开始”状态，则Vacuum将恢复区域清洁。
@@ -58,14 +58,16 @@ hash: AOAalXfMKBwzIM4xD3kpyJJ278omMCQWMuM55jq/RZ0=
 -实验性：使用复选框“发送自己的命令”创建对象，通过这些对象，您可以向机器人发送和接收自己的命令。
 
 ####第二个机器人
-如果要通过ioBroker控制两个机械手，则必须创建两个实例。第二个机械手必须更改其自己的端口（默认值：53421），以便两个机械手都具有不同的端口。
+如果要通过ioBroker控制两个机械手，则必须创建两个实例。第二个机械手必须更改其自己的端口（默认值：53421），以便两个机械手具有不同的端口。
 
-## Valetudo配置
-因此，您必须root并将valetudo安装到您的设备。 Vatudo可以使用[Valetudo RE]（https://github.com/rand256/valetudo）或普通的[Valetudo](https://github.com/Hypfer/Valetudo)
+##地图配置
+有两种获取地图的方法。首先从云端获取地图。因此，您必须登录并从列表中选择合适的机器人
+
+第二种方式是来自valetudo的地图（仅本地连接）。因此，您必须root并将valetudo安装到您的设备。 Vatudo可以使用[Valetudo RE]（https://github.com/rand256/valetudo）或普通的[Valetudo](https://github.com/Hypfer/Valetudo)
 
 ![设定档](../../../en/adapterref/iobroker.mihome-vacuum/admin/valetudo_conf.png)
 
--激活Valetudo激活Valetudo界面
+-要使用地图，您必须在配置中选择valetudo或原始地图
 -请求间隔必须大于1000毫秒，这是更新html映射的间隔
 -地图间隔必须超过5000毫秒，此间隔会更新png地图文件（您可以将其用于Telegram或vis或其他任何东西）
 -在此为地图示例选择颜色：
@@ -83,7 +85,7 @@ hash: AOAalXfMKBwzIM4xD3kpyJJ278omMCQWMuM55jq/RZ0=
 要显示地图，您可以使用普通的html小部件，例如：
 
 ```
-[{"tpl":"tplHtml","data":{"g_fixed":false,"g_visibility":false,"g_css_font_text":false,"g_css_background":false,"g_css_shadow_padding":false,"g_css_border":false,"g_gestures":false,"g_signals":false,"g_last_change":false,"visibility-cond":"==","visibility-val":1,"visibility-groups-action":"hide","refreshInterval":"0","signals-cond-0":"==","signals-val-0":true,"signals-icon-0":"/vis/signals/lowbattery.png","signals-icon-size-0":0,"signals-blink-0":false,"signals-horz-0":0,"signals-vert-0":0,"signals-hide-edit-0":false,"signals-cond-1":"==","signals-val-1":true,"signals-icon-1":"/vis/signals/lowbattery.png","signals-icon-size-1":0,"signals-blink-1":false,"signals-horz-1":0,"signals-vert-1":0,"signals-hide-edit-1":false,"signals-cond-2":"==","signals-val-2":true,"signals-icon-2":"/vis/signals/lowbattery.png","signals-icon-size-2":0,"signals-blink-2":false,"signals-horz-2":0,"signals-vert-2":0,"signals-hide-edit-2":false,"lc-type":"last-change","lc-is-interval":true,"lc-is-moment":false,"lc-format":"","lc-position-vert":"top","lc-position-horz":"right","lc-offset-vert":0,"lc-offset-horz":0,"lc-font-size":"12px","lc-font-family":"","lc-font-style":"","lc-bkg-color":"","lc-color":"","lc-border-width":"0","lc-border-style":"","lc-border-color":"","lc-border-radius":10,"lc-zindex":0,"html":"{mihome-vacuum.0.valetudo.map64}"},"style":{"left":"0","top":"0","width":"100%","height":"100%"},"widgetSet":"basic"}]
+[{"tpl":"tplHtml","data":{"g_fixed":false,"g_visibility":false,"g_css_font_text":false,"g_css_background":false,"g_css_shadow_padding":false,"g_css_border":false,"g_gestures":false,"g_signals":false,"g_last_change":false,"visibility-cond":"==","visibility-val":1,"visibility-groups-action":"hide","refreshInterval":"0","signals-cond-0":"==","signals-val-0":true,"signals-icon-0":"/vis/signals/lowbattery.png","signals-icon-size-0":0,"signals-blink-0":false,"signals-horz-0":0,"signals-vert-0":0,"signals-hide-edit-0":false,"signals-cond-1":"==","signals-val-1":true,"signals-icon-1":"/vis/signals/lowbattery.png","signals-icon-size-1":0,"signals-blink-1":false,"signals-horz-1":0,"signals-vert-1":0,"signals-hide-edit-1":false,"signals-cond-2":"==","signals-val-2":true,"signals-icon-2":"/vis/signals/lowbattery.png","signals-icon-size-2":0,"signals-blink-2":false,"signals-horz-2":0,"signals-vert-2":0,"signals-hide-edit-2":false,"lc-type":"last-change","lc-is-interval":true,"lc-is-moment":false,"lc-format":"","lc-position-vert":"top","lc-position-horz":"right","lc-offset-vert":0,"lc-offset-horz":0,"lc-font-size":"12px","lc-font-family":"","lc-font-style":"","lc-bkg-color":"","lc-color":"","lc-border-width":"0","lc-border-style":"","lc-border-color":"","lc-border-radius":10,"lc-zindex":0,"html":"{mihome-vacuum.0.map.map64}"},"style":{"left":"0","top":"0","width":"100%","height":"100%"},"widgetSet":"basic"}]
 ```
 
 第二种方法是使用src img小部件集成png文件。但是html视图速度更快，就像实时视图一样。
@@ -91,8 +93,8 @@ hash: AOAalXfMKBwzIM4xD3kpyJJ278omMCQWMuM55jq/RZ0=
 ＃＃ 功能
 S50的命令（第二代）
 卡的尺寸始终为52000mm x 52000mm，因此可以设置从0到51999mm的值。
-不幸的是，无法查询卡的位置和位置，这可以随吸力而变化。永远是最后一张吸卡，以及在应用程序中用作基础。
-如果机器人仅拾取一个区域并始终以相同的方式构建地图，则可以可靠地将其发送到地方或对该区域进行清理。
+不幸的是，无法查询卡的位置和位置，这可以随吸力变化。永远是最后一张吸卡，以及在应用程序中用作基础。
+如果机器人仅拾取一个区域并始终以相同的方式构建地图，则可以可靠地将其发送到各个地方或对该区域进行清理。
 
 ＃＃＃＃ 去
 为了将真空吸尘器驱动到一个点，必须按以下方式填充“ goTo”对象：
@@ -158,7 +160,7 @@ xVal, yval
 | upd_timer | [“ 1481997713308”，“打开/关闭”] | |
 | | |拯救“请勿打扰”的时代 |
 | get_dnd_timer | |删除免打扰时间|
-| close_dnd_timer | | DND设置h，min，h，min |
+| close_dnd_timer | |免打扰设置h，min，h，min |
 | set_dnd_timer | [22,0,8,0] | |
 |                 |                                                                     |                                                                                                        |
 | app_rc_start | |启动远程控制|
@@ -166,7 +168,7 @@ xVal, yval
 
 | app_rc_move | [{“ seqnum”：'0-1000'，“ velocity”：VALUE1，“ omega”：VALUE2，“ duration”：VALUE3}]] |移动。序列号必须是连续的，VALUE1（速度）= -0.3-0.3，VALUE2（旋转）= -3.1-3.1，VALUE3（持续时间）
 
-您可以在此处（[链接](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)）找到更多的方法和参数。
+您可以在此处（[链接](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)）中找到更多的方法和参数。
 
 ###使用sendTo发送自定义命令
 您还可以使用`sendTo`从其他适配器发送那些自定义命令。与上面定义的`method_id`和`params`结合使用：
@@ -199,8 +201,8 @@ sendTo("mihome-vacuum.0",
 |清洁机器人周围的一小块区域| `cleanSpot`| -无-| |
 |回到基地| `charge`| -无-| |
 |说“嗨，我在这里！” | `findMe`| -无-| |
-|检查耗材的状态（刷子等）| `getConsumableStatus`| -无-| |
-|重置耗材（刷子等）的状态| `resetConsumables`| -无-|通话签名未知|
+|检查耗材（刷子等）的状态| `getConsumableStatus`| -无-| |
+|重置耗材（刷子等）的状态| `resetConsumables`| -无-|呼叫签名未知|
 |获取以前所有清洁过程的摘要| `getCleaningSummary`| -无-| |
 |获取先前清洁过程的详细摘要| `getCleaningRecord`| `recordId`| |
 |获取地图| `getMap`| -无-|未知结果如何处理 |
@@ -229,6 +231,18 @@ sendTo("mihome-vacuum.0",
 -当时没有功能的小部件
 
 ## Changelog
+### 2.0.4 (2020-02-13)
+* add cloud login to get token
+* add cloud Map
+* add new and old Map format
+* rebuild config page
+### 1.10.5 (2020-02-11)
+* send Ping only if not connected, otherwise get_status
+* set button states to true, if clicked
+* move Timermanager and roomManager to own libs
+
+### 1.10.4 (2020-02-06)
+* (MeiserTR) add valetudo map support for gen3 and gen2 2XXX
 ### 1.10.1 (2020-01-20)
 * (dirkhe) added zone as room handling
 * (dirkhe) timer could room channels directly

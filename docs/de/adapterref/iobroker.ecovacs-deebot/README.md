@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
+hash: YGN/6v/1qE6LMVi/Pdzxp5Nv9o/GdDoAospgIpeTuvU=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -15,13 +15,13 @@ hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
 Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js).
 
 ## Modelle
-Bisher funktionieren nur Geräte, die mit dem Protokoll **XMPP** kommunizieren, ordnungsgemäß.
+Bisher funktionieren nur Geräte, die mit dem **XMPP** -Protokoll kommunizieren, ordnungsgemäß.
 Geräte, die mit dem **MQTT** -Protokoll kommunizieren, sind experimentell.
 
 Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.communicationProtocol` überprüfen (Werte: `XMPP`, `MQTT`).
 
 ### Tasten und Steuerung
-| Modell | Grund * | Pause | spot | spotArea | customArea ** | Rand | playSound | Wasserstand |
+| Modell | Grund * | Pause | Stelle | spotArea | customArea ** | Kante | playSound | waterLevel |
 |------ |------ |------ |------ |------ |------ |------ |------ |------ |
 | Deebot Slim 2 | x | n / a | x | n / a | n / a | x | n / a | n / a |
 | Deebot 710 | x | | | | | | | n / a |
@@ -29,27 +29,28 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 | Deebot Ozmo 610 | x | | x | n / a | n / a | x | | |
 | Deebot Ozmo 900 | | | n / a | | | n / a | | |
 | Deebot Ozmo 930 | x | x | n / a | x | x | n / a | x | x |
-| Deebot Ozmo 950 | | | n / a | | | n / a | x | |
+| Deebot Ozmo 950 | x | x | n / a | x | x | n / a | x | x |
 
-*) "grundlegende" Befehle sind `clean` (`auto`), `charge`, `stop`. Sie werden hier nicht gesondert aufgeführt.
+*) "grundlegende" Befehle sind `clean` (`auto`), `charge`, `stop`. Sie werden hier nicht separat aufgeführt.
 
 **) inkl. Anzahl der `cleanings`
 
 ### Info und Status
-| Modell | Batterie | chargestatus | cleanstatus | waterLevel | ------ | ------ | ------ | ------ | ------ | ------
+| Modell | Batterie | chargestatus | cleanstatus | waterLevel | Verbrauchsmaterialien |
 
-| Deebot Slim 2 | x | x | x | n / a |
-| Deebot 710 | | | | n / a |
-| Deebot 900 | | | | n / a |
-| Deebot Ozmo 610 | | | | |
-| Deebot Ozmo 900 | | | | |
-| Deebot Ozmo 930 | x | x | x | x |
-| Deebot Ozmo 950 | x | x | | |
+| ------ | ------ | ------ | ------ | ------ | ------ | Deebot Slim 2 | x | x | x | n / a | x
+
+| Deebot 710 | | | | n / a | |
+| Deebot 900 | | | | n / a | |
+| Deebot Ozmo 610 | | | | | |
+| Deebot Ozmo 900 | | | | | |
+| Deebot Ozmo 930 | x | x | x | x | x |
+| Deebot Ozmo 950 | x | | x | | |
 
 ### Funktioniert einwandfrei
+* Deebot Slim 2
 * Deebot Ozmo 610
 * Deebot Ozmo 930
-* Deebot Slim 2
 
 ### Sollte arbeiten
 * Deebot N79T
@@ -58,45 +59,45 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 
 ### Sollte teilweise funktionieren
 * Deebot 710
-* Deebot Ozmo 950
 * Deebot Ozmo 900
+* Deebot Ozmo 950
 
 ## Steuerung
 ### Tasten
-| name | beschreibung |
+| Name | Beschreibung |
 | --- | --- |
-| aufladen zurück zur Ladestation |
-| sauber | automatische reinigung starten |
-| Rand | Kantenreinigung starten |
-| playSound | einen Sound abspielen, um den Bot zu lokalisieren |
-| spot | Spotreinigung starten |
+| Gebühr | zurück zur Ladestation |
+| sauber | Starten Sie die automatische Reinigung |
+| Kante | Kantenreinigung starten |
+| playSound | Spielen Sie einen Sound zum Auffinden des Bots |
+| Stelle | Punktreinigung starten |
 | stop | Reinigungsprozess stoppen |
-| Pause | pause den reinigungsvorgang |
+| Pause | den Reinigungsvorgang unterbrechen |
 | spotArea `0`-`9` | Bis zu 9 Schaltflächen * für die in der Ecovacs-App | definierten Bereiche |
 
 *) Siehe Adapterkonfiguration
 
 ### Flächen- / Zonenreinigung
 #### SpotArea
-* Durch Kommas getrennte Liste von Zahlen, die mit "0" (z. B. "1,3") für zu reinigende Bereiche beginnen.
+* durch Kommas getrennte Liste von Zahlen, die mit "0" (z. B. "1,3") für zu reinigende Bereiche beginnen.
 * Schaltflächen für Punktbereiche "0" - "9" (siehe "Adapterkonfiguration")
 
 #### CustomArea
 * durch Kommas getrennte Liste von genau 4 Positionswerten für "x1, y1, x2, y2" (z. B. "-3975.000000,2280.000000, -1930.000000,4575.000000")
-    * Position "0.000000,0.000000,0.000000,0.000000" die Position der Ladestation
+    * Position `0.000000,0.000000,0.000000,0.000000` die Position der Ladestation
 
 #### Wasserstand
-* Kontrolle und Anzeige des Wasserstandes (`low`,` medium`, `high` und` max`)
+* Kontrollieren und Anzeigen des Wasserstandes ("niedrig", "mittel", "hoch" und "maximal")
 
 ## Verbrauchbar
-| name | beschreibung |
+| Name | Beschreibung |
 | --- | --- |
 | Filter | Filterlebensdauer |
 | main_brush | Lebensdauer der Hauptbürste |
 | side_brush | Lebensdauer der Seitenbürste |
 
 ## Die Info
-| name | beschreibung |
+| Name | Beschreibung |
 | --- | --- |
 | Batterie | Batterie |
 | chargestatus | Status während des Ladevorgangs |
@@ -108,13 +109,13 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 | Fehler | Aktuelle Fehlermeldung |
 
 ## Adapterkonfiguration
-| name | beschreibung |
+| Name | Beschreibung |
 | --- | --- |
-| E-Mail | E-Mail-Adresse, die für Ihr Ecovacs-Konto verwendet wird |
+| E-Mail | E-Mail-Adresse für Ihr Ecovacs-Konto |
 | Passwort | Passwort für Ihr Ecovacs-Konto |
 | Ländercode (Kontinent) | Auswahl vordefinierter Ländercodes (inkl. Kontinent) |
 | Gerätenummer | Auswahl für die aktuelle Instanz, wenn Sie mehrere Geräte verwenden |
-| Anzahl der Spotflächen | Anzahl der in der Ecovacs-App definierten Sportgebiete (Standard `0`) |
+| Anzahl der Spotbereiche | Anzahl der in der Ecovacs-App definierten Sportbereiche (Standard `0`) |
 
 ## Danke und Credits
 * @joostth ([saugt.js] (https://github.com/joostth/sucks.js))
@@ -123,6 +124,19 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.3.9
+   * (mrbungle64) Improved support for XML based MQTT devices
+
+### 0.3.8
+   * (boriswerner) Improved support for Ozmo 950 device
+   * (mrbungle64) Implemented waterbox info (XMPP based devices)
+
+### 0.3.7
+   * (mrbungle64) Bugfix
+   
+### 0.3.6
+   * (boriswerner) Basic clean & charge working (Ozmo 950)
 
 ### 0.3.5
    * (mrbungle64) Improved support for MQTT devices

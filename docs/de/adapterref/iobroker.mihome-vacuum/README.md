@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-vacuum/README.md
-title: ioBroker mihome-Vakuumadapter
-hash: AOAalXfMKBwzIM4xD3kpyJJ278omMCQWMuM55jq/RZ0=
+title: ioBroker Mihome-Vakuumadapter
+hash: IOpE/9SuLy17vuLb+2bXXidrBNKtvjNeX9fs9uSXBbo=
 ---
 ![Logo](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -13,25 +13,25 @@ hash: AOAalXfMKBwzIM4xD3kpyJJ278omMCQWMuM55jq/RZ0=
 ![Tests](https://travis-ci.org/ioBroker/ioBroker.mihome-vacuum.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.mihome-vacuum.png?downloads=true)
 
-ioBroker mihome-vacuum adapter
+# IoBroker Mihome-Vakuumadapter
 [Deutsche beschreibung hier](README_de.md)
 
 Mit diesem Adapter können Sie den Xiaomi-Staubsauger steuern.
 
 ## Inhalt
 - [Setup] (# Konfiguration)
-    - [Configure Adapter] (# Adapter-Konfiguration)
-        - [Kontrolle über Alexa] (# control-over-alexa)
+    - [Adapter konfigurieren] (# Adapterkonfiguration)
+        - [Kontrolle über Alexa] (# Kontrolle über Alexa)
         - [Zweiter Roboter] (# zweiter Roboter)
     - [Valetudo konfigurieren] (# valetudo-config)
 - [Funktionen] (# Funktionen)
-    - [S50-Befehle] (# s50-Befehle)
+    - [S50-Befehle] (# Befehle-des-s50)
     - [Gehe zu] (# gehe zu)
 - [zone Clean] (# zoneclean)
     - [Zimmer] (# Zimmer)
-    - [timer] (# timer)
-    - [Eigene Befehle] (# eigene Befehle senden)
-    - [sendTo hook] (# send-custom-commands-with-sendto)
+    - [Timer] (# Timer)
+    - [Eigene Befehle] (# send-your-own-Befehle)
+    - [sendTo hook] (# send-custom-befehle-with-sendto)
 - [Widget] (# Widget)
 - [Bugs] (# Bugs)
 - [Changelog] (# changelog)
@@ -40,34 +40,36 @@ Mit diesem Adapter können Sie den Xiaomi-Staubsauger steuern.
 Derzeit ist das Finden des Tokens das größte Problem.
 Bitte folgen Sie den Anweisungen im Link:
 
-[Jeton turorial](https://www.smarthomeassistent.de/token-auslesen-roborock-s6-roborock-s5-xiaomi-mi-robot-xiaowa/).
+[Token Turorial](https://www.smarthomeassistent.de/token-auslesen-roborock-s6-roborock-s5-xiaomi-mi-robot-xiaowa/).
 
 ### Adapterkonfiguration
-- Für die IP-Adresse muss die IP-Adresse des Roboters im Format "192.168.178.XX" eingegeben werden
-- Der Port des Roboters ist standardmäßig auf "54321" eingestellt. Dies sollte nicht geändert werden
+- Für die IP-Adresse muss die IP-Adresse des Roboters im Format "192.168.178.XX" eingegeben werden.
+- Der Port des Roboters ist standardmäßig auf "54321" eingestellt, dies sollte nicht geändert werden
 - Eigener Port, sollte nur mit zweitem Roboter gewechselt werden
-- Abfrageintervall Die Zeit in ms, in der die Statuswerte des Roboters abgerufen werden (sollte nicht <10000 sein)
+- Abfrageintervall Die Zeit in ms, in der die Statuswerte des Roboters abgerufen werden (sollte nicht <10000 sein).
 
 #### Kontrolle über Alexa
-In der Konfig ist hier ein Hack gesetzt und ein zusätzlicher Zustand aktiviert. "Clean_home" ist ein Schalter, der bei "true" den Sucker startet und bei "false" nach Hause geht, es wird automatisch ein Smart Device in der Cloud Adapter erstellt mit dem Namen "Staubsauger", der im Cloud-Adapter geändert werden kann.
+In der Konfiguration wird der Status "Alexa hinzufügen" aktiviert. Hier wird ein Hack gesetzt. Ein zusätzlicher Status "clean_home" ist ein Schalter, der bei "true" des Saugers beginnt und bei "false" nach Hause geht. Er wird automatisch zu einem intelligenten Gerät in der Cloud Adapter mit dem Namen "Staubsauger" erstellt, der im Cloud-Adapter geändert werden kann.
 
-#### Unterbrochene Zonenreinigung mit Starttaste fortsetzen
-Wenn diese Option aktiviert ist, nimmt das Vakuum die Zonenreinigung wieder auf, wenn der Status "start" auf "true" gesetzt wird, wenn es während einer laufenden Zonenreinigung angehalten wurde.
-Wenn diese Option deaktiviert ist, startet der Staubsauger eine neue "normale Reinigung", wenn Sie den Startbefehl senden, auch wenn er während einer laufenden Zonenreinigung angehalten wurde.
+#### Setzen Sie die angehaltene Zonenreinigung mit der Starttaste fort
+Wenn diese Option aktiviert ist, setzt das Vakuum die Zonenreinigung fort, wenn der Status "Start" auf "true" gesetzt wird, wenn er während einer laufenden Zonenreinigung angehalten wurde.
+Wenn diese Option deaktiviert ist, startet das Vakuum beim Senden des Startbefehls eine neue "normale Reinigung", auch wenn diese während einer laufenden Zonenreinigung angehalten wurde.
 
-- Experimentell: Mit der Checkbox "Eigene Befehle senden" werden Objekte erstellt, über die Sie eigene Befehle an den Roboter senden und empfangen können.
+- Experimentell: Mit dem Kontrollkästchen "Eigene Befehle senden" werden Objekte erstellt, über die Sie Ihre eigenen Befehle an den Roboter senden und empfangen können.
 
 #### Zweiter Roboter
 Wenn zwei Roboter über ioBroker gesteuert werden sollen, müssen zwei Instanzen erstellt werden. Der zweite Roboter muss seinen eigenen Port ändern (Standard: 53421), damit beide Roboter unterschiedliche Ports haben.
 
-## Valetudo Konfig
-Dazu musst du valetudo rooten und auf deinem Gerät installieren. Vatudo können Sie [Valetudo RE] (https://github.com/rand256/valetudo) oder normal [Valetudo](https://github.com/Hypfer/Valetudo)
+## Map Config
+Es gibt zwei Möglichkeiten, um die Karte zu erhalten. Die ersten holen die Karte aus der Cloud. Dazu müssen Sie sich anmelden und den richtigen Roboter aus der Liste auswählen
+
+Der zweite Weg ist die Karte von Valetudo (nur lokale Verbindung). Dafür müssen Sie valetudo rooten und auf Ihrem Gerät installieren. Vatudo können Sie [Valetudo RE] (https://github.com/rand256/valetudo) oder normal [Valetudo](https://github.com/Hypfer/Valetudo) verwenden
 
 ![Konfig](../../../en/adapterref/iobroker.mihome-vacuum/admin/valetudo_conf.png)
 
-- Valetudo aktivieren aktiviert die Valetudo-Oberfläche
-- Das Anforderungsintervall muss mehr als 1000 ms betragen. Dies ist das Intervall für die Aktualisierung der HTML-Karte
-- Das Kartenintervall muss länger als 5000 ms sein. Dieses Intervall aktualisiert die PNG-Kartendatei.
+- Um die Karte zu verwenden, müssen Sie in der Konfiguration Valetudo oder Originalkarte auswählen
+- Das Anforderungsintervall muss mehr als 1000 ms betragen. Dies ist das Intervall für die Aktualisierung der HTML-Map
+- Das Kartenintervall muss länger als 5000 ms sein. Dieses Intervall aktualisiert die PNG-Kartendatei (Sie können dies für Telegramm oder Vis oder irgendetwas anderes verwenden.)
 - Farbe dort können Sie die Farben für das Kartenbeispiel auswählen:
 
 ```
@@ -77,13 +79,13 @@ Dazu musst du valetudo rooten und auf deinem Gerät installieren. Vatudo können
 - green
 ```
 
-- roboter dort können sie verschiedene roboter oder andere fahrzeuge für die karte auswählen
+- Roboter dort können Sie verschiedene Roboter oder andere Fahrzeuge für die Karte auswählen
 
 ### Karten-Widget
-Zum Anzeigen der Karte können Sie ein normales HTML-Widget verwenden, z.
+Um die Karte anzuzeigen, können Sie ein normales HTML-Widget verwenden, z.
 
 ```
-[{"tpl":"tplHtml","data":{"g_fixed":false,"g_visibility":false,"g_css_font_text":false,"g_css_background":false,"g_css_shadow_padding":false,"g_css_border":false,"g_gestures":false,"g_signals":false,"g_last_change":false,"visibility-cond":"==","visibility-val":1,"visibility-groups-action":"hide","refreshInterval":"0","signals-cond-0":"==","signals-val-0":true,"signals-icon-0":"/vis/signals/lowbattery.png","signals-icon-size-0":0,"signals-blink-0":false,"signals-horz-0":0,"signals-vert-0":0,"signals-hide-edit-0":false,"signals-cond-1":"==","signals-val-1":true,"signals-icon-1":"/vis/signals/lowbattery.png","signals-icon-size-1":0,"signals-blink-1":false,"signals-horz-1":0,"signals-vert-1":0,"signals-hide-edit-1":false,"signals-cond-2":"==","signals-val-2":true,"signals-icon-2":"/vis/signals/lowbattery.png","signals-icon-size-2":0,"signals-blink-2":false,"signals-horz-2":0,"signals-vert-2":0,"signals-hide-edit-2":false,"lc-type":"last-change","lc-is-interval":true,"lc-is-moment":false,"lc-format":"","lc-position-vert":"top","lc-position-horz":"right","lc-offset-vert":0,"lc-offset-horz":0,"lc-font-size":"12px","lc-font-family":"","lc-font-style":"","lc-bkg-color":"","lc-color":"","lc-border-width":"0","lc-border-style":"","lc-border-color":"","lc-border-radius":10,"lc-zindex":0,"html":"{mihome-vacuum.0.valetudo.map64}"},"style":{"left":"0","top":"0","width":"100%","height":"100%"},"widgetSet":"basic"}]
+[{"tpl":"tplHtml","data":{"g_fixed":false,"g_visibility":false,"g_css_font_text":false,"g_css_background":false,"g_css_shadow_padding":false,"g_css_border":false,"g_gestures":false,"g_signals":false,"g_last_change":false,"visibility-cond":"==","visibility-val":1,"visibility-groups-action":"hide","refreshInterval":"0","signals-cond-0":"==","signals-val-0":true,"signals-icon-0":"/vis/signals/lowbattery.png","signals-icon-size-0":0,"signals-blink-0":false,"signals-horz-0":0,"signals-vert-0":0,"signals-hide-edit-0":false,"signals-cond-1":"==","signals-val-1":true,"signals-icon-1":"/vis/signals/lowbattery.png","signals-icon-size-1":0,"signals-blink-1":false,"signals-horz-1":0,"signals-vert-1":0,"signals-hide-edit-1":false,"signals-cond-2":"==","signals-val-2":true,"signals-icon-2":"/vis/signals/lowbattery.png","signals-icon-size-2":0,"signals-blink-2":false,"signals-horz-2":0,"signals-vert-2":0,"signals-hide-edit-2":false,"lc-type":"last-change","lc-is-interval":true,"lc-is-moment":false,"lc-format":"","lc-position-vert":"top","lc-position-horz":"right","lc-offset-vert":0,"lc-offset-horz":0,"lc-font-size":"12px","lc-font-family":"","lc-font-style":"","lc-bkg-color":"","lc-color":"","lc-border-width":"0","lc-border-style":"","lc-border-color":"","lc-border-radius":10,"lc-zindex":0,"html":"{mihome-vacuum.0.map.map64}"},"style":{"left":"0","top":"0","width":"100%","height":"100%"},"widgetSet":"basic"}]
 ```
 
 Die zweite Möglichkeit besteht darin, ein src img-Widget zu verwenden, um die PNG-Datei zu integrieren. Aber die HTML-Ansicht ist schneller, es ist wie eine Live-Ansicht.
@@ -91,17 +93,17 @@ Die zweite Möglichkeit besteht darin, ein src img-Widget zu verwenden, um die P
 ## Funktionen
 ### Befehle des S50 (zweite Generation)
 Die Kartengröße beträgt immer 52000 mm x 52000 mm, daher sind Werte von 0 bis 51999 mm möglich.
-Leider können Position und Position der Karte nicht abgefragt werden, dies kann sich von Saugkraft zu Saugkraft ändern. Als Grundlage dient immer die letzte Saugkarte sowie in der App.
-Wenn der Roboter nur einen Bereich aufnimmt und die Karte immer auf dieselbe Weise erstellt, können Sie sie zuverlässig an Orte senden oder den Bereich staubsaugen lassen.
+Leider kann die Position und Position der Karte nicht abgefragt werden, dies kann sich von Saugen zu Saugen ändern. Als Basis dient immer die letzte Saugkarte sowie in der App.
+Wenn der Roboter nur einen Bereich aufnimmt und die Karte immer auf die gleiche Weise erstellt, können Sie sie zuverlässig an Orte senden oder den Bereich staubsaugen lassen.
 
 #### Gehe zu
-Um den Staubsauger an einen Punkt zu fahren, muss das Objekt "goTo" wie folgt gefüllt werden:
+Um den Staubsauger auf einen Punkt zu bringen, muss das Objekt "goTo" wie folgt gefüllt werden:
 
 ```
 xVal, yval
 ```
 
-Die Werte müssen den oben angegebenen Bereich erfüllen und die x- und y-Koordinaten auf der Karte angeben.
+Die Werte müssen den oben genannten Gültigkeitsbereich erfüllen und die x- und y-Koordinaten auf der Karte angeben.
 
 Beispiel:
 
@@ -110,7 +112,7 @@ Beispiel:
 ```
 
 #### ZoneClean
-Um eine Zone zu saugen, muss ZoneClean wie folgt gefüllt sein:
+Um eine Zone abzusaugen, muss ZoneClean wie folgt gefüllt werden:
 
 ```
 [X1, y1, x2, x2, count]
@@ -130,32 +132,32 @@ Beispiel:
 ```
 
 #### Räume
-neuerer Staubsauger mit der neuesten Home App unterstützt die Definition von Räumen, siehe [Video](https://www.youtube.com/watch?v=vEiUZzoXfPg)
+Neuerer Staubsauger mit der neuesten Home App unterstützt die Definition von Räumen, siehe [Video](https://www.youtube.com/watch?v=vEiUZzoXfPg)
 
-Jeder Raum in der aktuellen Karte hat einen Index, der dann dem Raum aus der App zugeordnet wird. Vom Roboter erhalten wir nur ein Mapping mit Raumnummer und Index. Der Adapter fragt diese Räume bei jedem Start des Adapters ab und erstellt für jeden Raum einen Kanal, der dann den aktuellen Raumindex kennt. Das gleiche passiert manuell mit dem Button loadRooms. Dieser Kanal kann dann den ioBroker-Räumen zugewiesen werden. Wird der Knopf roomClean gedrückt, wird der Index der Karte ermittelt und an den Roboter gesendet, damit dieser diesen Raum dann staubsaugen kann. Davor ist die Ventilatorleistung auf Einzelraumabsaugung eingestellt. Wenn Sie in der App noch nicht die Möglichkeit haben, die Räume zu benennen, besteht auch die Möglichkeit, einen solchen Kanal manuell durch Angabe des Kartenindex zu erstellen. Anstelle von mapIndex können auch Zonenkoordinaten hinzugefügt werden.
-Wenn Sie mehrere Räume spontan reinigen möchten, können Sie dies über multiRoomClean tun, indem Sie die ioBroker-Räume diesem Datenpunkt zuordnen und dann die Taste drücken.
+Jeder Raum in der aktuellen Karte verfügt über einen Index, der dann über die App dem Raum zugewiesen wird. Vom Roboter erhalten wir nur eine Zuordnung mit Raumnummer und Index. Der Adapter fragt diese Räume bei jedem Start des Adapters ab und erstellt für jeden Raum einen Kanal, der dann den aktuellen Raumindex kennt. Das gleiche passiert manuell mit der Schaltfläche loadRooms. Dieser Kanal kann dann den ioBroker-Räumen zugewiesen werden. Wenn die Taste roomClean gedrückt wird, wird der Index der Karte ermittelt und an den Roboter gesendet, damit dieser diesen Raum absaugen kann. Zuvor ist die Lüfterleistung auf Einzelraumabsaugung eingestellt. Wenn Sie noch nicht die Möglichkeit haben, die Räume in der App zu benennen, besteht auch die Möglichkeit, einen solchen Kanal manuell durch Angabe des Kartenindex zu erstellen. Es ist auch möglich, Zonenkoordinaten anstelle von mapIndex hinzuzufügen.
+Wenn Sie mehrere Räume spontan reinigen möchten, können Sie dies über multiRoomClean tun, indem Sie die ioBroker-Räume diesem Datenpunkt zuweisen und dann die Taste drücken.
 
 #### Timer
-Sobald der Staubsauger die Raumfunktion unterstützt (so), können auch Timer angelegt werden, die dann die entsprechenden Raumkanäle auslösen oder deren mapIndexes ermitteln.
+Sobald der Staubsauger die Raumfunktion unterstützt (siehe oben), können auch Timer erstellt werden, die dann die entsprechenden Raumkanäle auslösen oder deren mapIndexe ermitteln.
 Der Timer kann direkt über Räume und / oder Raumkanäle ausgelöst werden.
-Die Timer selbst werden über den Konfigurationsbereich erstellt, werden dann aber zu einem Datenpunkt. Dort kann jeder Timer einmal aktiviert / deaktiviert oder übersprungen werden. Ein direkter Start ist ebenfalls möglich. Der Vorteil der ioBroker-Timer ist, dass sie im VIS angezeigt und verwendet werden können und Sie den Roboter vom Internet trennen können, da die Timer der App von China aus ausgelöst werden.
+Die Timer selbst werden über den Konfigurationsbereich erstellt, werden dann aber zu einem Datenpunkt. Dort kann jeder Timer einmal aktiviert / deaktiviert oder übersprungen werden. Ein direkter Start ist ebenfalls möglich. Der Vorteil der ioBroker-Timer besteht darin, dass sie im VIS angezeigt und verwendet werden können und Sie den Roboter vom Internet trennen können, da die Timer der App von China aus ausgelöst werden.
 
 ### Senden Sie Ihre eigenen Befehle
 HINWEIS: Diese Funktion sollte nur von Experten verwendet werden, da der Sauger durch falsche Befehle beschädigt werden kann
 
-Der Roboter unterscheidet zwischen den Befehlen in Methoden (Methoden) und Parametern (Parametern), die zur Festlegung der Methoden dienen.
-Unter dem Objekt "mihome-vacuum.X.control.X_send_command" können Sie eigene Befehle an den Roboter senden.
-Die Objektstruktur muss folgendermaßen aussehen: method; [params]
+Der Roboter unterscheidet zwischen den Befehlen in Methoden (Methoden) und Parametern (Parametern), die zur Angabe der Methoden dienen.
+Unter dem Objekt "mihome-vakuum.X.control.X_send_command" können Sie Ihre eigenen Befehle an den Roboter senden.
+Die Objektstruktur muss wie folgt aussehen: Methode; [params]
 
-Unter dem Objekt "mihome-vacuum.X.control.X_get_response" wird die Antwort nach dem Senden vom Roboter eingetragen. Wenn Parameter abgefragt wurden, werden sie hier im JSON-Format angezeigt. Wurde nur ein Befehl gesendet, antwortet der Roboter nur mit "0".
+Unter dem Objekt "mihome-vakuum.X.control.X_get_response" wird die Antwort vom Roboter nach dem Senden eingegeben. Wenn Parameter abgefragt wurden, werden sie hier im JSON-Format angezeigt. Wenn nur ein Befehl gesendet wurde, antwortet der Roboter nur mit "0".
 
 Die folgenden Methoden und Parameter werden unterstützt:
 
 | Methode | params | Beschreibung |
 |-----------      |-------                                                              |-------------------                                                                                     |
-| get_timer | | Liefert den eingestellten Timer. Einstellen der Saugzeiten BSp. 12 uhr 30 in 5 tagen |
+| get_timer | | Gibt den eingestellten Timer zurück. Einstellen der Saugzeiten BSp. 12 Uhr 30 in 5 Tagen |
 | set_timer | [["TIME_IN_MS", ["30 12 * * 1,2,3,4,5", ["start_clean", ""]]] | Timer aktivieren / deaktivieren |
-| upd_timer | ["1481997713308", "ein / aus"] | |
+| upd_timer | ["1481997713308", "Ein / Aus"] | |
 | | | Rettet die Zeiten des Do Not Distrube |
 | get_dnd_timer | | DND-Zeiten löschen |
 | close_dnd_timer | | DND Einstellung h, min, h, min |
@@ -164,11 +166,11 @@ Die folgenden Methoden und Parameter werden unterstützt:
 | app_rc_start | | Starten Sie Romote Control |
 | app_rc_end | | Beenden Sie die Fernbedienung |
 
-| app_rc_move | [{"seqnum": '0-1000', "velocity": VALUE1, "omega": VALUE2, "duration": VALUE3}] | Bewegung. Sequenznummer muss fortlaufend sein, VALUE1 (Geschwindigkeit) = -0,3-0,3, VALUE2 (Drehung) = -3,1-3,1, VALUE3 (Dauer)
+| app_rc_move | [{"seqnum": '0-1000', "Geschwindigkeit": VALUE1, "Omega": VALUE2, "Dauer": VALUE3}] | Bewegung. Die Sequenznummer muss fortlaufend sein, VALUE1 (Geschwindigkeit) = -0,3-0,3, VALUE2 (Drehung) = -3,1-3,1, VALUE3 (Dauer)
 
 Weitere Methoden und Parameter finden Sie hier ([Verknüpfung](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)).
 
-### Senden Sie benutzerdefinierte Befehle mit sendTo
+### Benutzerdefinierte Befehle mit sendTo senden
 Sie können diese benutzerdefinierten Befehle auch von anderen Adaptern mit `sendTo` senden. Verwendung mit `method_id` und `params` wie oben definiert:
 
 ```
@@ -180,7 +182,7 @@ sendTo("mihome-vacuum.0", "sendCustomCommand",
 
 Das Objekt `response` hat zwei Eigenschaften: `error` und (falls kein Fehler aufgetreten ist) `result`.
 
-Einige vordefinierte Befehle können auch folgendermaßen ausgegeben werden:
+Auf diese Weise können auch einige vordefinierte Befehle ausgegeben werden:
 
 ```
 sendTo("mihome-vacuum.0",
@@ -194,29 +196,29 @@ Die unterstützten Befehle sind:
 
 | Beschreibung | `commandName` | Erforderliche Parameter | Bemerkungen |
 | Reinigungsvorgang starten | `startVacuuming` | - Keine - | |
-| Beenden Sie den Reinigungsvorgang `stopVacuuming` | - Keine - | |
-| Reinigungsvorgang unterbrechen | `pause` | - Keine - | |
-| Reinigen Sie einen kleinen Bereich um den Roboter `cleanSpot` | - Keine - | |
-| Gehe zurück zur Basis `charge` | - Keine - | |
-| Sag "Hallo, ich bin hier drüben!" | `findMe` | - Keine - | |
+| Stoppen Sie den Reinigungsvorgang `stopVacuuming` | - Keine - | |
+| Unterbrechen Sie den Reinigungsvorgang `pause` | - Keine - | |
+| Reinigen Sie einen kleinen Bereich um den Roboter herum `cleanSpot` | - Keine - | |
+| Gehe zurück zur Basis | `charge` | - Keine - | |
+| Sag "Hallo, ich bin hier!" | `findMe` | - Keine - | |
 | Überprüfen Sie den Status der Verbrauchsmaterialien (Bürste usw.) `getConsumableStatus` | - Keine - | |
-| Status der Verbrauchsmaterialien (Bürste usw.) zurücksetzen | `resetConsumables` | - Keine - | Signatur unbekannt anrufen |
-| Verschaffen Sie sich einen Überblick über alle bisherigen Reinigungsprozesse `getCleaningSummary` | - Keine - | |
-| Erhalten Sie eine detaillierte Zusammenfassung eines vorherigen Reinigungsprozesses `getCleaningRecord` | `recordId` | |
-| Karte abrufen | `getMap` | - Keine - | Unbekannt, was mit dem Ergebnis geschehen soll |
-| Den aktuellen Status des Roboters abrufen `getStatus` | - Keine - | |
+| Status der Verbrauchsmaterialien (Bürste usw.) zurücksetzen | `resetConsumables` | - Keine - | Rufsignatur unbekannt |
+| Erhalten Sie eine Zusammenfassung aller vorherigen Reinigungsprozesse `getCleaningSummary` | - Keine - | |
+| Erhalten Sie eine detaillierte Zusammenfassung eines früheren Reinigungsprozesses `getCleaningRecord` | `recordId` | |
+| Holen Sie sich eine Karte | `getMap` | - Keine - | Unbekannt, was mit dem Ergebnis zu tun ist |
+| Ruft den aktuellen Status des Roboters ab `getStatus` | - Keine - | |
 | Rufen Sie die Seriennummer des Roboters ab `getSerialNumber` | - Keine - | |
-| Detaillierte Geräteinformationen abrufen `getDeviceDetails` | - Keine - | |
-| Rufen Sie den Timer *Bitte nicht stören* | auf `getDNDTimer` | - Keine - | |
-| Stellen Sie einen neuen *Nicht stören* Timer | ein `setDNDTimer` | `startHour`, `startMinute`, `endHour`, `endMinute` | |
-| Löschen Sie den Timer *Bitte nicht stören* | `deleteDNDTimer` | - Keine - | |
-| Aktuelle Lüfterdrehzahl abrufen | `getFanSpeed` | - Keine - | |
-| Neue Lüfterdrehzahl einstellen | `setFanSpeed` | `fanSpeed` | `fanSpeed` ist eine Zahl zwischen 1 und 100 |
+| Detaillierte Geräteinformationen abrufen | `getDeviceDetails` | - Keine - | |
+| Rufen Sie den Timer *nicht stören* | ab `getDNDTimer` | - Keine - | |
+| Stellen Sie einen neuen *nicht stören* Timer | ein `setDNDTimer` | `startHour`, `startMinute`, `endHour`, `endMinute` | |
+| Löschen Sie den Timer *nicht stören* | `deleteDNDTimer` | - Keine - | |
+| Rufen Sie die aktuelle Lüftergeschwindigkeit ab `getFanSpeed` | - Keine - | |
+| Stellen Sie eine neue Lüftergeschwindigkeit ein | `setFanSpeed` | `fanSpeed` | `fanSpeed` ist eine Zahl zwischen 1 und 100 |
 | Starten Sie die Fernbedienungsfunktion | `startRemoteControl` | - Keine - | |
-| Geben Sie einen Befehl zum Verschieben der Fernbedienung aus `move` | `velocity`, `angularVelocity`, `duration`, `sequenceNumber` | Die laufende Nummer muss fortlaufend sein. Die Dauer wird in ms angegeben |
+| Geben Sie einen Verschiebungsbefehl für die Fernbedienung aus `move` | `velocity`, `angularVelocity`, `duration`, `sequenceNumber` | Die Sequenznummer muss fortlaufend sein. Die Dauer ist in ms |
 | Beenden Sie die Fernbedienungsfunktion | `stopRemoteControl` | - Keine - | |
-| saubere zimmer / zimmer | `cleanRooms` | `rooms` | `rooms` ist eine durch Kommas getrennte Zeichenfolge mit enum.rooms.XXX |
-| Segment reinigen | `cleanSegments` | `rooms` | `rooms` ist ein Array mit mapIndex oder ein durch Kommas getrennter String mit mapIndex |
+| Reinraum / Zimmer | `cleanRooms` | `rooms` | `rooms` ist ein durch Kommas getrennter String mit enum.rooms.XXX |
+| sauberes Segment | `cleanSegments` | `rooms` | `rooms` ist ein Array mit mapIndex oder ein durch Kommas getrennter String mit mapIndex |
 | saubere Zone | `cleanZone` | `coordinates` | `coordinates` ist ein String mit Koordinaten und Anzahl, siehe [zoneClean](#zoneClean) |
 | saubere Zone | `cleanZone` | `Koordinaten` | `Koordinaten` ist ein String mit Koordinaten und Anzahl, siehe [zoneClean] (# zoneClean) |
 
@@ -225,10 +227,22 @@ Entschuldigung, noch nicht fertig.
 ![Widget](../../../en/adapterref/iobroker.mihome-vacuum/widgets/mihome-vacuum/img/previewControl.png)
 
 ## Bugs
-- Gelegentliche Unterbrechungen sind jedoch nicht auf den Adapter zurückzuführen, sondern meist auf die eigenen Netzwerke
-- Widget zur Zeit ohne Funktion
+- gelegentliche Unterbrechungen, dies ist jedoch nicht auf den Adapter zurückzuführen, sondern meist auf seine eigenen Netzwerke
+- Widget zu der Zeit ohne Funktion
 
 ## Changelog
+### 2.0.4 (2020-02-13)
+* add cloud login to get token
+* add cloud Map
+* add new and old Map format
+* rebuild config page
+### 1.10.5 (2020-02-11)
+* send Ping only if not connected, otherwise get_status
+* set button states to true, if clicked
+* move Timermanager and roomManager to own libs
+
+### 1.10.4 (2020-02-06)
+* (MeiserTR) add valetudo map support for gen3 and gen2 2XXX
 ### 1.10.1 (2020-01-20)
 * (dirkhe) added zone as room handling
 * (dirkhe) timer could room channels directly

@@ -38,7 +38,10 @@ If you like my work, please feel free to provide a personal donation
 
 ## Changelog
 
-### 0.1.6 Implemented specific scan by url
+### 0.1.8 Upload speed calculation issue fixed
+* (DutchmanNL) Upload speed calculation issue fixed
+
+### 0.1.7 Implemented specific scan by url
 * (DutchmanNL) Implemented specific scan by url
 
 ### 0.1.5 New settings possibilities & Code improvements

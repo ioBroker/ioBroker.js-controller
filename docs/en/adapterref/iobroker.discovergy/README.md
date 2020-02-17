@@ -26,13 +26,14 @@ You can test this adapter by using the demo credentials of discovergy (or with y
 username = demo@discovergy.com
 pass = demo
 
-## To-Do
-
-* Translations 
+## Support me
+If you like my work, please feel free to provide a personal donation  
+(this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
+[![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
-### 0.5.0 (Development in progress)
+### 0.5.0 
 * (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
 * (Dutchman) Rebuild complete logic of data pulling
 * (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly

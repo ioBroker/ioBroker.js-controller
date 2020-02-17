@@ -2,10 +2,9 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.owntracks/README.md
-title: Verschoben nach https://github.com/iobroker-community-adapters/ioBroker.owntracks
-hash: IWfeYjtdT3DDyKV4cYon2vDhXbQJh+qDAbqzQqcKwlw=
+title: ioBroker.owntracks
+hash: BaMk8Twp+HBcGMd2T3dPGP8Xy7GcC93ZZrFxYd5H1hk=
 ---
-# Auf https://github.com/iobroker-community-adapters/ioBroker.owntracks verschoben
 ![Logo](../../../en/adapterref/iobroker.owntracks/admin/owntracks.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/owntracks-stable.svg)
@@ -20,17 +19,17 @@ App sendet Ihre Position (Position des Geräts) kontinuierlich an einen bestimmt
 
 Link für:
 
-- Android: [https://play.google.com/store/apps/details?id=org.owntracks.android[https://play.google.com/store/apps/details?id=org.owntracks .Android)
-- iOS: [https://itunes.apple.com/de/app/owntracks/id692424691?mt=8[https://itunes.apple.com/de/app/owntracks/id692424691?mt=8)
+- Android: [https://play.google.com/store/apps/details?id=org.owntracks.android lightboxes(https://play.google.com/store/apps/details?id=org.owntracks .Android)
+- iOS: [https://itunes.apple.com/de/app/owntracks/id692424691?mt=8 lightboxes(https://itunes.apple.com/de/app/owntracks/id692424691?mt=8)
 
-## Setup Anweisungen
-### Verbindungskonfiguration (mit MQTT-Server)
-OwnTracks Adapter startet an Port 1883 (konfigurierbar) einen MQTT-Server, um die Nachrichten von Geräten mit Koordinaten zu empfangen.
+## Setup-Anweisungen
+### Verbindungskonfiguration (über MQTT-Server)
+Der OwnTracks Adapter startet an Port 1883 (konfigurierbar) eines MQTT-Servers, um die Nachrichten von Geräten mit Koordinaten zu empfangen.
 Das Problem ist, dass dieser Server über das Internet erreichbar sein muss.
 Normalerweise gibt es einen Router oder eine Firewall, die für die Weiterleitung des Datenverkehrs konfiguriert werden muss.
 
 ### App & Adapter Konfiguration
-Die folgenden Einstellungen müssen in der Android / iOS-App bzw. im ioBroker-Adapter vorgenommen werden:
+Die folgenden Einstellungen müssen in der Android / iOS-App bzw. im ioBroker-Adapter festgelegt werden:
 
 - Verbindung / Modus - MQTT privat
 - Verbindung / Host / Host - IP-Adresse Ihres Systems oder Ihrer DynDNS-Domäne. Z.B. Unter http://www.noip.com/ können Sie den Domainnamen anstelle der IP-Adresse verwenden.
@@ -38,16 +37,16 @@ Die folgenden Einstellungen müssen in der Android / iOS-App bzw. im ioBroker-Ad
 - Verbindung / Host / WebSockets - false
 - Verbindung / Identifikation / Benutzername - iobroker
 - Verbindung / Identifikation / Passwort - aus den Adaptereinstellungen
-- Verbindung / Identifizierung / Geräte-ID - Name des Geräts oder der Person. Für dieses Gerät werden die Zustände erstellt. Z.B. Wenn die Geräte-ID "Mark" ist, werden nach dem ersten Kontakt die folgenden Status erstellt:
+- Verbindung / Identifikation / Geräte-ID - Name des Geräts oder der Person. Für dieses Gerät werden die Zustände erstellt. Z.B. Wenn die Geräte-ID "Markieren" ist, werden nach dem ersten Kontakt folgende Status erstellt:
 
     - owntracks.0.users.Mark.longitude
     - owntracks.0.users.Mark.latitude
 
-- Connection / Identification / TrackerID - Kurzname des Benutzers (bis zu 2 Buchstaben), um ihn auf die Karte zu schreiben.
+- Verbindung / Identifikation / TrackerID - Kurzname des Benutzers (bis zu 2 Buchstaben), der ihn auf die Karte schreiben soll.
 - Verbindung / Sicherheit / TLS - aus
-- Erweitert / Verschlüsselungsschlüssel - optional, aber empfohlen: Fügen Sie eine Passphrase für die Verschlüsselung hinzu
+- Erweiterter / Verschlüsselungsschlüssel - optional, aber empfohlen: Fügen Sie eine Passphrase für die Verschlüsselung hinzu
 
-Bitte vergewissern Sie sich, dass owntracks mit der iobroker-Instanz über den Eintrag "Status" in der Schublade verbunden sind:
+Bitte überprüfen Sie, ob owntracks über den Eintrag "Status" in der Schublade mit der iobroker-Instanz verbunden sind:
 
 ![die Einstellungen](../../../en/adapterref/iobroker.owntracks/img/connection.jpg)
 
@@ -56,9 +55,9 @@ Bitte vergewissern Sie sich, dass owntracks mit der iobroker-Instanz über den E
 
 ![die Einstellungen](../../../en/adapterref/iobroker.owntracks/img/structure.png)
 
-### Regions Konfiguration
-Um Standorte innerhalb des Abwärtsstrecken-Adapters einzurichten, müssen Sie Regionen in der Android / iOS-App für Abwärtsstrecken erstellen.
-Gehen Sie dazu in der Schublade auf "Regionen"
+### Regionskonfiguration
+Um Standorte innerhalb des Owntracks-Adapters einzurichten, müssen Sie Regionen in der Owntracks-Android / iOS-App erstellen.
+Gehen Sie dazu in der Schublade zu "Regionen"
 
 ![die Einstellungen](../../../en/adapterref/iobroker.owntracks/img/regions1.jpg)
 
@@ -66,14 +65,14 @@ Erstellen Sie eine neue Region, indem Sie auf das Pluszeichen (+) in der oberen 
 
 ![die Einstellungen](../../../en/adapterref/iobroker.owntracks/img/regions2.jpg)
 
-Verwenden Sie die Standortschaltfläche in der rechten oberen Ecke, um den aktuellen Standort abzurufen, oder geben Sie sie selbst in Breiten- und Längengrad ein. Geben Sie außerdem einen Radius für den Standort an. Wenn Sie den Ort teilen, erhalten Ihre Freunde (siehe in der Schublade der Android / iOS-App) eine Benachrichtigung, wenn Sie einen Ort betreten / verlassen.
+Verwenden Sie die Standortschaltfläche in der oberen rechten Ecke, um den aktuellen Standort abzurufen, oder geben Sie sie selbst in Breiten- und Längengrad ein. Geben Sie außerdem einen Radius für den Standort an. Wenn Sie den Standort freigeben, erhalten Ihre Freunde (siehe in der Schublade der Android / iOS-App) eine Benachrichtigung, wenn Sie einen Standort betreten / verlassen.
 
 ![die Einstellungen](../../../en/adapterref/iobroker.owntracks/img/regions3.jpg)
 
-### Symboleinstellungen (innerhalb des ioBroker.owntracks-Adapters)
-Sie können für jeden Benutzer ein Symbol definieren. Einfach per Drag & Drop oder per Mausklick Ihr Bild hochladen. Es wird automatisch auf 64x64 skaliert.
+### Symboleinstellungen (im ioBroker.owntracks-Adapter)
+Sie können für jeden Benutzer ein Symbol definieren. Laden Sie einfach per Drag & Drop oder per Mausklick Ihr Bild hoch. Es wird automatisch auf 64x64 skaliert.
 
-Der Name muss mit der DeviceID in der OwnTracks-App übereinstimmen.
+Der Name muss der Geräte-ID in der OwnTracks-App entsprechen.
 
 ![die Einstellungen](../../../en/adapterref/iobroker.owntracks/img/settings1.png)
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovergy/README.md
 title: ioBroker.discovergy
-hash: Yq7w7WrrKrBXbBVCnBnKtZxI97dTUDjiPu3ry+3z/pE=
+hash: 8v1OaYKfsQtxGuCSzhmfjjkuyToO9U3B4HNovKMXpfE=
 ---
 ![альтернативный текст](https://raw.githubusercontent.com/DutchmanNL/ioBroker.discovergy/master/admin/Discovergy_logo.png)
 
@@ -31,8 +31,8 @@ https://api.discovergy.com/docs/
 
 Вы можете протестировать этот адаптер, используя демонстрационные учетные данные Discovergy (или свои собственные :-)): username = demo@discovergy.com pass = demo
 
-## Сделать
-* Переводы
+## Поддержите меня
+Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это личная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Участники
 * AlCalzone
@@ -40,7 +40,31 @@ https://api.discovergy.com/docs/
 
 ## Changelog
 
-### 0.4.0
+### 0.5.0 
+* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
+* (Dutchman) Rebuild complete logic of data pulling
+* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
+* (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
+
+### 0.4.9 Fix wrong readings and make intervall adjustable
+* (Dutchman) Implemented adjustable intervall
+* (Dutchman) Ensure propper reset to 0 of power values
+* (Dutchman) Fix "-" values for power delivery
+* (Dutchman) implement adjustable timing intervall
+* (Dutchman) make state names configurable
+* (Dutchman) update attr library
+* (Dutchman) code cleanup
+
+### 0.4.4 ALPHA version of rebuilded adapter
+* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
+* (Dutchman) Rebuild complete logic of data pulling
+* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
+* (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
+* (Dutchman) implement data pulling (needs improvement to avoid block by provider)
+* (Dutchman) ensure split values for consumption and delivery
+* (Dutchman) make state attributes configurable in library
+
+### 0.4.0 Stable Release
 * small code fixes
 * updated dependecys
 * release for stable repository

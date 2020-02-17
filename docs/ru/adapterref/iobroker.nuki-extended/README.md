@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nuki-extended/README.md
 title: ioBroker.nuki-продлен
-hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
+hash: 5IfLWziNuqBVMMRy41z9gg4aBIqDWxoiYMlQwHyV4sk=
 ---
 ![логотип](../../../en/adapterref/iobroker.nuki-extended/admin/nuki-extended.png)
 
@@ -12,11 +12,12 @@ hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 ![Стабильная версия](http://iobroker.live/badges/nuki-extended-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.nuki-extended.svg)
 ![Фиксируется с момента последнего выпуска](https://img.shields.io/github/commits-since/Zefau/ioBroker.nuki-extended/latest.svg)
-![Трэвис CI](https://travis-ci.org/Zefau/ioBroker.nuki-extended.svg?branch=master)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.nuki-extended.svg)
 ![NPM](https://nodei.co/npm/iobroker.nuki-extended.png?downloads=true)
 
-# IoBroker.nuki-extended Этот адаптер ioBroker (ранее ioBroker.Nuki2) позволяет контролировать и контролировать [Nuki Smart Lock] (https://nuki.io/de/smart-lock/) и / или [Nuki Opener] (https://nuki.io/de/opener/) с использованием [API-интерфейса Nuki Bridge] (v1.9.0, 06.05.2019)] (https://developer.nuki.io/page/nuki-bridge-http-api-170/4/#heading--introduction) и [Nuki Web API (v1. 2.0, 31.05.2019)](https://developer.nuki.io/page/nuki-web-api-111/3/).
+# IoBroker.nuki-extended Этот адаптер ioBroker (ранее ioBroker.Nuki2) позволяет контролировать и контролировать [Nuki Smart Lock] (https://nuki.io/de/smart-lock/) и / или [Nuki Opener] (https://nuki.io/de/opener/) с использованием [API-интерфейса Nuki Bridge (v1.9.0, 06.05.2019)] (https://developer.nuki.io/page/nuki-bridge-http-api-170/4/#heading--introduction) и [Nuki Web API (v1. 2.0, 31.05.2019)](https://developer.nuki.io/page/nuki-web-api-111/3/).
+[![Travis CI] (https://travis-ci.com/Zefau/ioBroker.nuki-extended.svg?branch=master)](https://travis-ci.com/Zefau/ioBroker.nuki-extended)
+
 **Содержание**
 
 1. [Особенности] (# функции)
@@ -37,7 +38,7 @@ hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 - Поддержка как Nuki Bridge API, так и Nuki Web API
 - ~~ Поддержка хешированного токена на аппаратных мостах (см. Https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)~~
 - Откат к Nuki Web API в случае сбоя прикладных действий над Nuki Bridge API, например, из-за ошибки моста 503 (см. https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
-- Повторите попытку в случае сбоя прикладных действий в API Nuki Bridge (когда Nuki Web API не используется).
+- Повторите попытку в случае сбоя прикладных действий над API Nuki Bridge (когда Nuki Web API не используется).
 - Возможность регулярной синхронизации вместо использования обратного вызова Bridge API (что может быть отложено из-за аппаратного моста)
 - Обновление всех состояний Nuki Web API при получении обратного вызова через Nuki Bridge API
 - Получить авторизованных пользователей для Nuki Smartlock и Nuki Opener (см. Ниже [Каналы и состояния] (# общая информация))
@@ -198,13 +199,13 @@ _ ** отмеченные состояния будут обновлены в д
 | конфиг | homekitState | Государство homekit <br> `{"0": 'UNAVAILABLE', "1": 'DISABLED', "2": 'ENABLED', "3": 'ENABLED & PAIRED'}` |
 | конфиг | homekitState | Государство homekit <br> `{&quot; 0 &quot;: &#39;НЕДОСТУПЕН&#39;,&quot; 1 &quot;:&quot; ОТКЛЮЧЕНО &quot;,&quot; 2 &quot;:&quot; ВКЛЮЧЕНО &quot;,&quot; 3 &quot;:&quot; ВКЛЮЧЕНО И СОЕДИНЕНО &quot;}` |
 | конфиг | keypadPaired | True, если клавиатура соединена со смарт-блокировкой |
-| конфиг | ledBrightness | Яркость светодиода: от 0 (выкл) до 5 (макс) |
-| конфиг | ledEnabled | Истина, если включен светодиод на смарт-блокировке |
+| конфиг | ledBrightness | Яркость светодиода: от 0 (выключен) до 5 (максимум) |
+| конфиг | ledEnabled | Истинно, если включен светодиод на смарт-блокировке |
 | конфиг | имя | Название смартлока для новых пользователей |
 | конфиг | OperatingMode | Режим работы сошника |
 | конфиг | pairingEnabled | True, если спаривание разрешено с помощью кнопки Smartlock |
-| конфиг | singleLock | True, если смартлок должен блокироваться только один раз (вместо двух) |
-| конфиг | timezoneId | ID часового пояса |
+| конфиг | singleLock | Истина, если смартлок должен блокироваться только один раз (вместо двух) |
+| конфиг | timezoneId | Идентификатор часового пояса |
 | конфиг | timezoneOffset | Смещение часового пояса (в минутах) |
 
 #### Advanced Config
@@ -219,7 +220,7 @@ _ ** отмеченные состояния будут обновлены в д
 | advancedConfig | lngTimeout | Тайм-аут в секундах для блокировки ‘n’ go |
 | advancedConfig | singleButtonPressAction | Желаемое действие, если кнопка нажата один раз <br> `{"0": "NO_ACTION", "1": "INTELLIGENT", "2": "UNLOCK", "3": "LOCK", "4": "UNLATCH", "5": "LOCK_N_GO", "6": "SHOW_STATUS"}` |
 | advancedConfig | singleButtonPressAction | Желаемое действие, если кнопка нажата один раз <br> `{&quot; 0 &quot;:&quot; NO_ACTION &quot;,&quot; 1 &quot;:&quot; INTELLIGENT &quot;,&quot; 2 &quot;:&quot; UNLOCK &quot;,&quot; 3 &quot;:&quot; LOCK &quot;,&quot; 4 &quot;:&quot; UNLATCH &quot;,&quot; 5 &quot;:&quot; LOCK_N_GO &quot;, &quot;6&quot;: &quot;SHOW_STATUS&quot;} `|
-| advancedConfig | singleLockedPositionOffsetDegrees | Смещение, изменяющее одиночную заблокированную позицию |
+| advancedConfig | singleLockedPositionOffsetDegrees | Смещение, которое изменяет одну заблокированную позицию |
 | advancedConfig | totalDegrees | Абсолютная общая позиция в градусах, которая была достигнута во время калибровки |
 | advancedConfig | unlatchDuration | Продолжительность в секундах для удержания защелки в открытом положении |
 | advancedConfig | unlockedPositionOffsetDegrees | Смещение, изменяющее разблокированное положение |
@@ -233,7 +234,7 @@ _ ** отмеченные состояния будут обновлены в д
 | openerAdvancedConfig | busModeSwitch | Способ переключения между данными и аналоговым режимом <br> `{"0": 'DATA MODE', "1": 'ANALOGUE MODE'}` |
 | openerAdvancedConfig | shortCircuitDuration | Длительность короткого замыкания для переключения режима шины в мс |
 | openerAdvancedConfig | electricStrikeDelay | Задержка активации электрического удара в мс (после действия блокировки 3 - включение электрического удара-) |
-| openerAdvancedConfig | randomElectricStrikeDelay | Произвольная задержка electricStrikeDelay (диапазон 3000 - 7000 мс) для того, чтобы симулировать человека внутри, приводящего в действие электрический удар |
+| openerAdvancedConfig | randomElectricStrikeDelay | Случайный электрический StrikeDelay (диапазон 3000 - 7000 мс) для того, чтобы симулировать человека внутри, приводящего в действие электрический удар |
 | openerAdvancedConfig | electricStrikeDuration | Продолжительность в мс срабатывания электрического удара (блокирующее действие 3 - срабатывание электрического удара-) |
 | openerAdvancedConfig | disableRtoAfterRing | Флаг для отключения RTO после звонка |
 | openerAdvancedConfig | дверной звонок подавление | Режим подавления дверного звонка <br> `{"0": 'NEVER', "1": 'ALWAYS', "2": 'RTO', "3": 'CONTINUOUS', "4": 'CONTINUOUS + RTO'}` |
@@ -260,7 +261,7 @@ _ ** отмеченные состояния будут обновлены в д
 | users._userName_ | allowUntilDate | Разрешено до даты |
 | users._userName_ | allowWeekDays | Разрешенные будни <br> `{64: 'Monday', 32: 'Tuesday', 16: 'Wednesday', 8: 'Thursday', 4: 'Friday', 2: 'Saturday', 1: 'Sunday'}` |
 | users._userName_ | allowFromTime | Разрешенное время (в минутах с полуночи) |
-| users._userName_ | allowUntilTime | Разрешено до времени (в минутах от полуночи) |
+| users._userName_ | allowUntilTime | Разрешено до времени (в минутах с полуночи) |
 | users._userName_ | authId | Идентификатор авторизации Smartlock |
 | users._userName_ | dateCreated | Дата создания |
 | users._userName_ | dateUpdated | Дата обновления |
@@ -308,12 +309,12 @@ schedule('0 22 * * *', function()
 });
 ```
 
-__Замените `nuki-extended.0.door__home_door.status.lockState` на lockState вашей блокировки! __ Вы также можете настроить сообщение через `msg`.
+__Заменить `nuki-extended.0.door__home_door.status.lockState` на lockState вашей блокировки! __ Вы также можете настроить сообщение через `msg`.
 
 ### Пусть Alexa сообщит вам об изменениях блокировки
 Для этого требуется адаптер ioBroker ioBroker.alexa2 (https://github.com/Apollon77/ioBroker.alexa2).
 
-Чтобы использовать голосовой вывод Alexa, мы определяем функцию ```say```. Поместите следующую функцию в скрипт в «глобальную» папку ioBroker.javascript. ВАЖНО: замените #YOUR ALEXA ID # (также замените #) своим Alexa ID. Вы можете найти Alexa ID в дереве объектов ioBroker ```alexa2.0.Echo-Devices```.
+Чтобы использовать голосовой вывод Alexa, мы определяем функцию ```say```. Поместите следующую функцию в сценарий в «глобальную» папку ioBroker.javascript. ВАЖНО: замените #YOUR ALEXA ID # (также замените #) своим Alexa ID. Вы можете найти Alexa ID в дереве объектов ioBroker ```alexa2.0.Echo-Devices```.
 
 ```javascript
 /**
@@ -417,7 +418,7 @@ function messenger(content, user = '')
 }
 ```
 
-Вы можете использовать эту функцию в ioBroker.javascript для отправки чего-либо в Telegram через ```msg('Hello World')``` (для всех пользователей) или ```msg('Hello World', 'Zefau')``` (для конкретных пользователей).
+Вы можете использовать эту функцию в ioBroker.javascript для отправки чего-либо в Telegram через ```msg('Hello World')``` (всем пользователям) или ```msg('Hello World', 'Zefau')``` (определенным пользователям).
 
 Создайте сценарий в «общей» папке ioBroker.javascript и добавьте в него следующий прослушиватель. ВАЖНО: Замените #LOCK STATE ID # (также замените #) на состояние, содержащее состояние блокировки (например, ```nuki-extended.0.door__home_door.status.lockState```):
 
@@ -446,7 +447,7 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 });
 ```
 
-ПРИМЕЧАНИЕ. Если вы используете как скрипт Alexa, так и скрипт Telegram, вы можете определить только одного слушателя для обоих действий:
+ПРИМЕЧАНИЕ. Если вы используете скрипт Alexa и Telegram, вы можете определить только одного слушателя для обоих действий:
 
 ```javascript
 const DOOR_STATES = {
@@ -477,13 +478,17 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 ```
 
 ## Кредиты
-Благодаря [@ Mik13] (https://github.com/Mik13) для [реализации API Nuki Bridge](https://github.com/Mik13/nuki-bridge-api#nuki-bridge-api).
+Благодаря [@ Mik13] (https://github.com/Mik13) для [реализации Nuki Bridge API](https://github.com/Mik13/nuki-bridge-api#nuki-bridge-api).
 
 Иконки, сделанные <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> ([Essential Set] (https://www.flaticon.com/packs/essential-set-2)) и <a href="https://www.freepik.com/" title="Freepik">Freepik</a> ([Двери](https://www.flaticon.com/packs/doors)) с <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> , лицензированы <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
 
 ## Changelog
 
 Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
+
+### v2.2.0  (2019-02-16)
+- (Zefau) added possibility to change configuration of Nuki Smartlock or Nuki Opener (when using Web API)
+- (Zefau) updated dependencies
 
 ### v2.1.0  (2019-02-03)
 - (Zefau) added (optional) callback IP for Bridge API events (e.g. when ioBroker is run in docker; see [#51](https://github.com/Zefau/ioBroker.nuki-extended/issues/51))
@@ -514,7 +519,7 @@ Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releas
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 Zefau <zefau@mailbox.org>
+Copyright (c) 2019-2020 Zefau <zefau@mailbox.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

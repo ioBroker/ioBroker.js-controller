@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fullybrowser/README.md
 title: ioBroker.fullybrowser
-hash: DzvovUP10WBfvNa8fqbrlb36Xnv3kTyHhvnod1C+jSM=
+hash: Nn/bwU4XpkZRblqnE/mWtJmqwuB2cy2UOK5wp0oEm4I=
 ---
 ![商标](../../../en/adapterref/iobroker.fullybrowser/admin/fully.png)
 
@@ -26,6 +26,10 @@ ioBroker的fullyBrowser适配器---------------------------------------------- -
 <b>节点&gt;&gt; 8.xx</b>
 
 ## Changelog
+### 1.0.3 (2020-02-16)
+* (arteck) support compact mode
+
+
 ### 1.0.1 (2019-06-20)
 * (arteck) encodeURL
 

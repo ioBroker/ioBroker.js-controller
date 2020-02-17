@@ -1,3 +1,8 @@
+:heavy_exclamation_mark: | **DEVELOPMENT HAS BEEN MOVED TO [COMMUNITY](https://github.com/iobroker-community-adapters/ioBroker.roomba).**
+------------ | -------------
+
+________________________
+
 ![Logo](admin/roomba.png)
 # ioBroker.roomba
 Connect your iRobot Roomba to ioBroker.
@@ -9,7 +14,6 @@ Based on the dorita980 library https://github.com/koalazak/dorita980#readme
 [![Number of Installations](http://iobroker.live/badges/roomba-installed.svg)](http://iobroker.live/badges/roomba-installed.svg)
 [![Stable Version](http://iobroker.live/badges/roomba-stable.svg)](http://iobroker.live/badges/roomba-stable.svg)
 [![NPM Version](http://img.shields.io/npm/v/iobroker.roomba.svg)](https://www.npmjs.com/package/iobroker.roomba)
-[![Commits since last release](https://img.shields.io/github/commits-since/Zefau/ioBroker.roomba/latest.svg)](https://github.com/Zefau/ioBroker.roomba/releases/latest)
 [![Travis CI](https://travis-ci.org/Zefau/ioBroker.roomba.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.roomba)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.roomba.svg)](https://www.npmjs.com/package/iobroker.roomba)
 

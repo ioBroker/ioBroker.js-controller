@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovergy/README.md
 title: ioBroker.discovergy
-hash: Yq7w7WrrKrBXbBVCnBnKtZxI97dTUDjiPu3ry+3z/pE=
+hash: 8v1OaYKfsQtxGuCSzhmfjjkuyToO9U3B4HNovKMXpfE=
 ---
 ![Alt-Text](https://raw.githubusercontent.com/DutchmanNL/ioBroker.discovergy/master/admin/Discovergy_logo.png)
 
@@ -19,28 +19,52 @@ Es verwendet die Discovergy-API, um Daten Ihrer Zähler zu lesen und die aktuell
 
 https://api.discovergy.com/docs/
 
-Bitte zögern Sie nicht, das Problem für Ihre gewünschte Funktionalität oder Probleme, die Sie sehen, hinzuzufügen, damit ich einen Blick darauf werfen kann!
+Bitte zögern Sie nicht, ein Problem für Ihre gewünschte Funktionalität oder Probleme hinzuzufügen, damit ich es mir ansehen kann!
 
-Anmerkung: Ich habe nicht alle möglichen Geräte und auch der Demo-Account liefert nicht alle vorhandenen Werte, die Geräte liefern können.
+Anmerkung: Ich habe nicht alle möglichen Geräte und auch das Demo-Konto bietet nicht alle vorhandenen Werte, die Geräte bereitstellen können.
 Wenn Sie die folgende Fehlermeldung erhalten:
 
-Von Discovergy erhaltene Informationen, die noch nicht Bestandteil dieses Adapters sind "" Senden Sie diese Informationen an den Entwickler: xxxxx
+Von Discovergy empfangene Informationen, die noch nicht Teil dieses Adapters sind "" Senden Sie diese Informationen an den Entwickler: xxxxx
 
-Bitte gehen Sie in Ihre Logdatei und laden Sie sie herunter. Erstellen Sie hier auf github ein Problem mit den angegebenen Werten.
-Kopieren und Einfügen nicht aus dem Admin-Webinterface, es fehlen Informationen, die ich brauche!
+Bitte gehen Sie zu Ihrer Protokolldatei und laden Sie sie herunter. Erstellen Sie hier auf github ein Problem mit den angegebenen Werten.
+Nicht aus dem Admin-Webinterface kopieren und einfügen, hier fehlen Informationen, die ich brauche!
 
-Sie können diesen Adapter mithilfe der Demo-Anmeldeinformationen von discovergy (oder mit Ihrem eigenen :-)) testen: username = demo@discovergy.com pass = demo
+Sie können diesen Adapter testen, indem Sie die Demo-Anmeldeinformationen von Discovery (oder mit Ihren eigenen :-)) verwenden: Benutzername = demo@discovergy.com pass = demo
 
-## Machen
-* Übersetzungen
+## Unterstütze mich
+Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Mitwirkende
 * AlCalzone
-* Zoernert
+* zoernert
 
 ## Changelog
 
-### 0.4.0
+### 0.5.0 
+* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
+* (Dutchman) Rebuild complete logic of data pulling
+* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
+* (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
+
+### 0.4.9 Fix wrong readings and make intervall adjustable
+* (Dutchman) Implemented adjustable intervall
+* (Dutchman) Ensure propper reset to 0 of power values
+* (Dutchman) Fix "-" values for power delivery
+* (Dutchman) implement adjustable timing intervall
+* (Dutchman) make state names configurable
+* (Dutchman) update attr library
+* (Dutchman) code cleanup
+
+### 0.4.4 ALPHA version of rebuilded adapter
+* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
+* (Dutchman) Rebuild complete logic of data pulling
+* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
+* (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
+* (Dutchman) implement data pulling (needs improvement to avoid block by provider)
+* (Dutchman) ensure split values for consumption and delivery
+* (Dutchman) make state attributes configurable in library
+
+### 0.4.0 Stable Release
 * small code fixes
 * updated dependecys
 * release for stable repository

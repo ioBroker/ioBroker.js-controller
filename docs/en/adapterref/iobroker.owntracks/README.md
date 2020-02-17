@@ -1,5 +1,3 @@
-# Moved to https://github.com/iobroker-community-adapters/ioBroker.owntracks
-
 ![Logo](admin/owntracks.png)
 # ioBroker.owntracks
 

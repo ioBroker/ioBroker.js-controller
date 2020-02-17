@@ -18,6 +18,8 @@ Switch TP-Link Plug and Bulb
 <b>NodeJs >> 8.x.x </b>
 
 ## Changelog
+### 1.1.1 (2020-02-16)
+* (arteck) support compact mode
 
 ### 1.1.00 (2020-01-19)
 * (arteck) support ledstate

@@ -3,18 +3,21 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: T9yxjz3EPQTTd3vuWbGLj2VpjMOhUpCZM5Ctt8nyIac=
+hash: 4QSunjs5xSBvOiA0U5aoHQDA8EhXC1dTvTjqLGNsTDk=
 ---
-![商标](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
-
 ![贝宝捐赠](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![安装数量](http://iobroker.live/badges/roomba-installed.svg)
 ![稳定版](http://iobroker.live/badges/roomba-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.roomba.svg)
-![自上次发布以来提交](https://img.shields.io/github/commits-since/Zefau/ioBroker.roomba/latest.svg)
 ![特拉维斯CI](https://travis-ci.org/Zefau/ioBroker.roomba.svg?branch=master)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.roomba.svg)
 ![NPM](https://nodei.co/npm/iobroker.roomba.png?downloads=true)
+
+：heavy_exclamation_mark：| **开发已移至[社区](https://github.com/iobroker-community-adapters/ioBroker.roomba)。** ------------ | -------------
+
+________________________
+
+![商标](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
 ＃ioBroker.roomba将iRobot Roomba连接到ioBroker。
 基于dorita980库https://github.com/koalazak/dorita980#readme
@@ -39,7 +42,7 @@ hash: T9yxjz3EPQTTd3vuWbGLj2VpjMOhUpCZM5Ctt8nyIac=
 -检索__设备状态__，例如电池，对接的，已满/已插入的垃圾箱（有关完整列表，请参见[通道和状态]（＃channels--状态））
 -检索__device configuration__，例如首选项，网络或时间表设置（有关完整列表，请参见[Channels and States]（＃channels--states））
 -检索__device的统计信息__，例如总任务数，扩展坞的工作时间等。（有关完整列表，请参见[Channels and States]（＃channels--states））
--检索有关__当前任务__的信息（清洁Roomba时），例如开始和结束时间，总运行时间，清洁的平方米等。（仅在支持的Roomba上，请参阅[支持的Roomba /固件版本]（＃supported-roombas --firmware-versions））
+-检索有关__当前任务__的信息（清理Roomba时），例如开始和结束时间，总运行时间，清理的平方米等。（仅在支持的Roomba上，请参阅[支持的Roomba /固件版本]（＃supported-roombas --firmware-versions））
 -__根据收到的任务数据绘制地图__（仅在支持的Roomba上）
 -__Web Interface__，显示当前任务以及先前/已存档任务的状态和地图：
 
@@ -48,7 +51,7 @@ hash: T9yxjz3EPQTTd3vuWbGLj2VpjMOhUpCZM5Ctt8nyIac=
 ##安装
 ioBroker.roomba需要[帆布](https://www.npmjs.com/package/canvas)才能绘制Roomba任务的地图。 ioBroker将尝试通过ioBroker.roomba安装来安装此依赖项。
 
-不过，您可能必须使用以下命令安装canvas的软件包依赖项（以及canvas本身）：
+但是，您可能必须使用以下命令安装canvas的软件包依赖项（以及canvas本身）：
 
 ### Linux
 ```
@@ -105,7 +108,7 @@ npm install canvas
 如果自动过程无法检索您的凭据，请使用手动设置。
 
 ###手动设置
-有关手动设置的信息，请参见https://github.com/koalazak/dorita980#how-to-get-your-usernameblid-and-password。
+对于手动设置，请参见https://github.com/koalazak/dorita980#how-to-get-your-usernameblid-and-password。
 
 ##支持的Roomba /固件版本
 ###支持的固件版本
@@ -129,7 +132,7 @@ npm install canvas
 | Roomba®s | [S9 +]（https://github.com/Zefau/ioBroker.roomba/issues/34）| v3.2.4 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/26887/kw/s9%2B#rn_PageTitle)| ![＃c5f015](https://placehold.it/15/c5f015/000000?text=+)**支持（包括地图）** |
 | Roomba®s | [S9 +]（https://github.com/Zefau/ioBroker.roomba/issues/34）| v3.2.4 | [发行说明]（https://homesupport.irobot.com/app/answers/detail/a_id/26887/kw/s9%2B#rn_PageTitle）| ！[＃c5f015]（https://placehold.it/15/c5f015/000000?text=+）**受支持（包括地图）** |
 
-请就支持的设备向我提供帮助，无论您的Roomba型号是否受支持，请让我[通过问题知道](https://github.com/Zefau/ioBroker.roomba/issues)！
+请就支持的设备向我提供帮助，无论您的Roomba型号是否支持，请让我[通过问题知道](https://github.com/Zefau/ioBroker.roomba/issues)！
 
 ##频道和状态
 成功设置后，将创建以下通道和状态：
@@ -146,7 +149,7 @@ npm install canvas
 |清洁|最后相相|
 |清洁|最后错误指示上一次任务期间发生错误|
 |清洁|时间表| -|时间表信息|
-|清洁|时间表|循环|时间表周期（周日至周六）|
+|清洁|时间表|循环|时间表周期（星期日至星期六）|
 |清洁|时间表|小时小时开始循环（星期日至星期六）|
 |清洁|时间表|分钟|分钟开始循环（星期日至星期六）|
 |清洁| -|码头|将机器人发送到扩展坞|
@@ -192,7 +195,7 @@ npm install canvas
 |州| -| \ _connected |连接状态 |
 |州| -|电池|机器人的电池电量|
 |州| -| binFull |陈述垃圾箱状态是否已满|
-|州| -| binInserted |说明是否已插入垃圾箱|
+|州| -| binInserted |说明是否插入了垃圾箱|
 |州| -|对接|声明机器人是否对接|
 |州| -|信号|信号强度|
 |州| -|状态|机器人的当前状态|
@@ -213,7 +216,7 @@ npm install canvas
 | -| -| refreshedTimestamp |最后更新的时间戳|
 
 ##首选项说明_（不完整）_
-调用```getPreferences()```（请参阅https://github.com/koalazak/dorita980#getpreferences）时，将收到以下有效负载：
+调用```getPreferences()```时，将收到以下有效负载（请参阅https://github.com/koalazak/dorita980#getpreferences）：
 
 |对象索引|类型描述ioBroker州|
 | ------ | ----- | ---- | ----------- | -------------- |
@@ -307,12 +310,12 @@ _2019-05-04修复了无法发送地图的错误_
 
 您可以将变量```message```修改为要与地图一起接收的任何通知。您可以使用```%name-of-state%```检索ioBroker.roomba对象树中的状态值。
 
-##学分
+##积分
 ###非官方API
 感谢[@@ koalazak]（https://github.com/koalazak）用于[非官方iRobot Roomba 980 node.js库（SDK）](https://github.com/koalazak/dorita980#readme)。
 
 ###图标
-<a href="https://www.flaticon.com/authors/iconnice" title="圣像">Iconnice</a>从<a href="https://www.flaticon.com/" title="平面图标">www.flaticon.com</a>制作的图标<a href="https://www.flaticon.com/authors/iconnice" title="圣像">已获</a> <a href="http://creativecommons.org/licenses/by/3.0/" title="知识共享3.0" target="_blank">CC 3.0 BY</a>许可</div>
+<a href="https://www.flaticon.com/authors/iconnice" title="圣像">Iconnice</a>从<a href="https://www.flaticon.com/" title="平面图标">www.flaticon.com</a>制作的图标<a href="https://www.flaticon.com/authors/iconnice" title="圣像">已获</a> <a href="http://creativecommons.org/licenses/by/3.0/" title="知识共享BY 3.0" target="_blank">CC 3.0 BY</a>许可</div>
 
 ## Changelog
 

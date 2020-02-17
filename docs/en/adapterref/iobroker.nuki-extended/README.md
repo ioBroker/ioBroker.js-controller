@@ -8,7 +8,7 @@ This ioBroker adapter (formerly ioBroker.Nuki2) allows to control and monitor th
 ![Stable Version](http://iobroker.live/badges/nuki-extended-stable.svg)
 [![NPM Version](http://img.shields.io/npm/v/iobroker.nuki-extended.svg)](https://www.npmjs.com/package/iobroker.nuki-extended)
 [![Commits since last release](https://img.shields.io/github/commits-since/Zefau/ioBroker.nuki-extended/latest.svg)](https://github.com/Zefau/ioBroker.nuki-extended/releases/latest)
-[![Travis CI](https://travis-ci.org/Zefau/ioBroker.nuki-extended.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.nuki-extended)
+[![Travis CI](https://travis-ci.com/Zefau/ioBroker.nuki-extended.svg?branch=master)](https://travis-ci.com/Zefau/ioBroker.nuki-extended)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.nuki-extended.svg)](https://www.npmjs.com/package/iobroker.nuki-extended)
 
 [![NPM](https://nodei.co/npm/iobroker.nuki-extended.png?downloads=true)](https://nodei.co/npm/iobroker.nuki-extended/)
@@ -481,6 +481,10 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 ## Changelog
 
 Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
+
+### v2.2.0  (2019-02-16)
+- (Zefau) added possibility to change configuration of Nuki Smartlock or Nuki Opener (when using Web API)
+- (Zefau) updated dependencies
 
 ### v2.1.0  (2019-02-03)
 - (Zefau) added (optional) callback IP for Bridge API events (e.g. when ioBroker is run in docker; see [#51](https://github.com/Zefau/ioBroker.nuki-extended/issues/51))

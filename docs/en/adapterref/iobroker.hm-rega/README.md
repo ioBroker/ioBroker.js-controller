@@ -108,6 +108,9 @@ Finally, the variables created in the CCU are listed
 ### FAQ
 
 ## Changelog
+### 2.5.5 (2020-02-17)
+* (foxriver76) we are logging the script name in still pending warning from now on
+
 ### 2.5.4 (2020-02-05)
 * (foxriver76) made port fully configurable, also with https enabled
 

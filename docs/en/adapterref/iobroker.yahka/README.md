@@ -15,6 +15,9 @@ For details on how to install and configure this adapter, please see the [Wiki](
 ## Changelog
 
 ### 0.10.0
+  (apollon77) updated dependencies, nodejs 12 support<br>
+
+### 0.10.0
   (jw) updated dependencies<br>
   (apollon77) removed support for NodeJS 4 - NodeJS 6 is now the minimum required NodeJS version (merged #109)<br>
 

@@ -315,6 +315,8 @@ Click on ![Link](img/link.png) to get directly to the forum.
 Forum entries will be displayed without problems when accessing ioBroker via IP or localhost:8081. But if you use a hostname like meinhaus.de:8081, you have to get a free API key at Feednami. To register, click [here](https://toolkit.sekando.com/docs/en/setup/hostnames) and follow the instructions.
 
 ## Changelog
+### 1.6.0 (2020-xx-xx)
+
 ### 1.5.7 (2019-11-12)
 * (ldittmar) add event vis widget
 
@@ -419,7 +421,7 @@ Forum entries will be displayed without problems when accessing ioBroker via IP 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017 - 2019 ldittmar <iobroker@lmdsoft.de>
+Copyright (c) 2017 - 2020 ldittmar <iobroker@lmdsoft.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

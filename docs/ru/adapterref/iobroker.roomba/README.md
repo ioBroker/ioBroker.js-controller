@@ -3,18 +3,21 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: T9yxjz3EPQTTd3vuWbGLj2VpjMOhUpCZM5Ctt8nyIac=
+hash: 4QSunjs5xSBvOiA0U5aoHQDA8EhXC1dTvTjqLGNsTDk=
 ---
-![логотип](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
-
 ![Пожертвование Paypal](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![Количество установок](http://iobroker.live/badges/roomba-installed.svg)
 ![Стабильная версия](http://iobroker.live/badges/roomba-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.roomba.svg)
-![Фиксируется с момента последнего выпуска](https://img.shields.io/github/commits-since/Zefau/ioBroker.roomba/latest.svg)
 ![Трэвис CI](https://travis-ci.org/Zefau/ioBroker.roomba.svg?branch=master)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.roomba.svg)
 ![NPM](https://nodei.co/npm/iobroker.roomba.png?downloads=true)
+
+: heavy_exclamation_mark: | **РАЗРАБОТКА ДВИЖЕНА В [СООБЩЕСТВО](https://github.com/iobroker-community-adapters/ioBroker.roomba).** ------------ | -------------
+
+________________________
+
+![логотип](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
 
 # IoBroker.roomba Подключите iRobot Roomba к ioBroker.
 Основано на библиотеке dorita980 https://github.com/koalazak/dorita980#readme
@@ -165,8 +168,8 @@ npm install canvas
 | устройство | сеть | днс2 | Вторичный DNS-адрес |
 | устройство | предпочтения | - | Установить предпочтения |
 | устройство | предпочтения | binPause | **НЕИЗВЕСТНО** |
-| устройство | предпочтения | carpetBoostAuto | Автоматически: Roomba автоматически повысит мощность вакуума для чистки глубоких ковров. |
-| устройство | предпочтения | carpetBoostHigh | Режим производительности: Roomba всегда будет увеличивать вакуум, чтобы максимизировать эффективность очистки на всех поверхностях пола. |
+| устройство | предпочтения | carpetBoostAuto | Автоматически: Roomba автоматически увеличит мощность вакуума до глубокой чистки ковров. |
+| устройство | предпочтения | carpetBoostHigh | Производительный режим: Roomba всегда будет увеличивать вакуум, чтобы максимизировать эффективность очистки на всех поверхностях пола. |
 | устройство | предпочтения | ecoCharge | **НЕИЗВЕСТНО** |
 | устройство | предпочтения | noAutoPasses | Один проход: Roomba покроет все области одним проходом очистки. |
 | устройство | предпочтения | noPP | **НЕИЗВЕСТНО** |
@@ -185,7 +188,7 @@ npm install canvas
 | устройство | версии | UmiVer | **НЕИЗВЕСТНО** |
 | устройство | версии | SoftwareVer | Версия программного обеспечения |
 | устройство | - | \ _rawData | Необработанные данные о предпочтениях как json |
-| устройство | - | Mac | Mac-адрес робота |
+| устройство | - | Mac | Mac адрес робота |
 | устройство | - | имя | Имя робота |
 | устройство | - | тип | Тип робота |
 | Штаты | - | - | Информация о статусе |

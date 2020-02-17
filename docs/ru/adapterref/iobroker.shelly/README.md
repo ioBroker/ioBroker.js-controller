@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: ObG6V2WYjGqHLfkZeG0b7HUzmDdMS29Elnd27w6C+tE=
+hash: C75pmvux4BRCINMqHMi6LVc2nuHJBOUUqsMJ3B7jqbE=
 ---
 ![логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -45,12 +45,15 @@ hash: ObG6V2WYjGqHLfkZeG0b7HUzmDdMS29Elnd27w6C+tE=
 | Шелли Потоп (SHWT-1) | проверено | проверено |
 | Шелли Диммер (ШДМ-1) | проверено | проверено |
 | Shelly Датчик двери / окна (SHDW-1) | проверено | проверено |
-| Shelly Bulb Duo (SHBDUO-1) | проверено | проверено |
+| Shelly Bulb Duo (SHBDUO-1) | проверено | не проверено |
+| Shelly 3EM (SHEM) | проверено | проверено |
 
 ## Changelog
 
 ### 3.2.0 (13.02.2020)
-* (Stübi) - Add device Shelly Door/Windows sensor 
+* (Simon W.) - Add device Shelly 3EM
+* (Stübi)    - Add device Shelly Door/Windows sensor 
+* (Stübi)    - Add external temperature sensor for Shelly 1, 1PM and 2.5
 
 ### 3.1.9 (25.01.2020)
 * (Stübi) - Bugfixing, auto update new firmware

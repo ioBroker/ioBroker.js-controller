@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker mihome-вакуумный адаптер
-hash: AOAalXfMKBwzIM4xD3kpyJJ278omMCQWMuM55jq/RZ0=
+hash: IOpE/9SuLy17vuLb+2bXXidrBNKtvjNeX9fs9uSXBbo=
 ---
 ![логотип](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -46,7 +46,7 @@ hash: AOAalXfMKBwzIM4xD3kpyJJ278omMCQWMuM55jq/RZ0=
 - Для IP-адреса IP-адрес робота должен быть введен в формате «192.168.178.XX».
 - Порт робота по умолчанию установлен на «54321», это не должно быть изменено.
 - Собственный порт, должен быть изменен только со вторым роботом
-- Интервал запроса Время в мс, в течение которого извлекаются значения состояния робота (не должно быть <10000)
+- Интервал запроса Время в мсек, в течение которого извлекаются значения состояния робота (не должно быть <10000)
 
 #### Контроль над Alexa
 В конфиге добавлено состояние alexa, здесь активируется взлом, устанавливается дополнительное состояние «clean_home», это переключатель, который запускается при «true» присоске, а при «false» он возвращается домой, он автоматически становится интеллектуальным устройством в облаке Адаптер создан с именем «пылесос», который можно изменить в облачном адаптере.
@@ -60,12 +60,14 @@ hash: AOAalXfMKBwzIM4xD3kpyJJ278omMCQWMuM55jq/RZ0=
 #### Второй робот
 Если два робота должны управляться через ioBroker, необходимо создать два экземпляра. Второй робот должен изменить свой собственный порт (по умолчанию: 53421), чтобы оба робота имели разные порты.
 
-## Valetudo Config
-Для этого вам нужно получить root права и установить valetudo на ваше устройство. Vatudo вы можете использовать [Valetudo RE] (https://github.com/rand256/valetudo) или обычный [Valetudo](https://github.com/Hypfer/Valetudo)
+## Map Config
+Есть два способа получить карту. Первыми достанут карту из облака. Для этого вам необходимо авторизоваться и выбрать нужного робота из списка.
+
+Второй способ - карта от valetudo (только локальная связь). Для этого вам нужно получить root права и установить valetudo на ваше устройство. Vatudo вы можете использовать [Valetudo RE] (https://github.com/rand256/valetudo) или обычный [Valetudo](https://github.com/Hypfer/Valetudo)
 
 ![конфиг](../../../en/adapterref/iobroker.mihome-vacuum/admin/valetudo_conf.png)
 
-- Активировать Valetudo активирует интерфейс Valetudo
+- Чтобы использовать карту, вы должны выбрать valetudo или оригинальную карту в конфиге
 - Интервал запроса должен быть больше 1000 мс, это интервал для обновления html-карты.
 - интервал карты должен быть больше 5000 мс, этот интервал обновляет файл карты png (вы можете использовать это для Telegram или vis или чего-либо еще)
 - цвет там вы можете выбрать цвета для примера карты:
@@ -83,7 +85,7 @@ hash: AOAalXfMKBwzIM4xD3kpyJJ278omMCQWMuM55jq/RZ0=
 Для отображения карты вы можете использовать обычный HTML-виджет, например:
 
 ```
-[{"tpl":"tplHtml","data":{"g_fixed":false,"g_visibility":false,"g_css_font_text":false,"g_css_background":false,"g_css_shadow_padding":false,"g_css_border":false,"g_gestures":false,"g_signals":false,"g_last_change":false,"visibility-cond":"==","visibility-val":1,"visibility-groups-action":"hide","refreshInterval":"0","signals-cond-0":"==","signals-val-0":true,"signals-icon-0":"/vis/signals/lowbattery.png","signals-icon-size-0":0,"signals-blink-0":false,"signals-horz-0":0,"signals-vert-0":0,"signals-hide-edit-0":false,"signals-cond-1":"==","signals-val-1":true,"signals-icon-1":"/vis/signals/lowbattery.png","signals-icon-size-1":0,"signals-blink-1":false,"signals-horz-1":0,"signals-vert-1":0,"signals-hide-edit-1":false,"signals-cond-2":"==","signals-val-2":true,"signals-icon-2":"/vis/signals/lowbattery.png","signals-icon-size-2":0,"signals-blink-2":false,"signals-horz-2":0,"signals-vert-2":0,"signals-hide-edit-2":false,"lc-type":"last-change","lc-is-interval":true,"lc-is-moment":false,"lc-format":"","lc-position-vert":"top","lc-position-horz":"right","lc-offset-vert":0,"lc-offset-horz":0,"lc-font-size":"12px","lc-font-family":"","lc-font-style":"","lc-bkg-color":"","lc-color":"","lc-border-width":"0","lc-border-style":"","lc-border-color":"","lc-border-radius":10,"lc-zindex":0,"html":"{mihome-vacuum.0.valetudo.map64}"},"style":{"left":"0","top":"0","width":"100%","height":"100%"},"widgetSet":"basic"}]
+[{"tpl":"tplHtml","data":{"g_fixed":false,"g_visibility":false,"g_css_font_text":false,"g_css_background":false,"g_css_shadow_padding":false,"g_css_border":false,"g_gestures":false,"g_signals":false,"g_last_change":false,"visibility-cond":"==","visibility-val":1,"visibility-groups-action":"hide","refreshInterval":"0","signals-cond-0":"==","signals-val-0":true,"signals-icon-0":"/vis/signals/lowbattery.png","signals-icon-size-0":0,"signals-blink-0":false,"signals-horz-0":0,"signals-vert-0":0,"signals-hide-edit-0":false,"signals-cond-1":"==","signals-val-1":true,"signals-icon-1":"/vis/signals/lowbattery.png","signals-icon-size-1":0,"signals-blink-1":false,"signals-horz-1":0,"signals-vert-1":0,"signals-hide-edit-1":false,"signals-cond-2":"==","signals-val-2":true,"signals-icon-2":"/vis/signals/lowbattery.png","signals-icon-size-2":0,"signals-blink-2":false,"signals-horz-2":0,"signals-vert-2":0,"signals-hide-edit-2":false,"lc-type":"last-change","lc-is-interval":true,"lc-is-moment":false,"lc-format":"","lc-position-vert":"top","lc-position-horz":"right","lc-offset-vert":0,"lc-offset-horz":0,"lc-font-size":"12px","lc-font-family":"","lc-font-style":"","lc-bkg-color":"","lc-color":"","lc-border-width":"0","lc-border-style":"","lc-border-color":"","lc-border-radius":10,"lc-zindex":0,"html":"{mihome-vacuum.0.map.map64}"},"style":{"left":"0","top":"0","width":"100%","height":"100%"},"widgetSet":"basic"}]
 ```
 
 Второй способ - использовать виджет src img для интеграции файла png. но просмотр html быстрее, это как просмотр в реальном времени.
@@ -95,13 +97,13 @@ hash: AOAalXfMKBwzIM4xD3kpyJJ278omMCQWMuM55jq/RZ0=
 Если робот выбирает только одну область и всегда строит карту одинаково, вы можете надежно отправить ее в разные места или очистить область пылесосом.
 
 #### Перейти к
-Чтобы привести пылесос в точку, объект «goTo» должен быть заполнен следующим образом:
+Чтобы подвести пылесос к точке, объект «goTo» должен быть заполнен следующим образом:
 
 ```
 xVal, yval
 ```
 
-Значения должны соответствовать вышеуказанной области и указывать координаты x и y на карте.
+Значения должны соответствовать вышеуказанному объему и указывать координаты x и y на карте.
 
 Пример:
 
@@ -132,7 +134,7 @@ xVal, yval
 #### Номера
 Более новый пылесос с последней версией Home App поддерживает определение номеров, см. [видео](https://www.youtube.com/watch?v=vEiUZzoXfPg)
 
-Каждая комната на текущей карте имеет индекс, который затем назначается комнате из приложения. От робота мы получаем только карту с номером комнаты и индексом. Адаптер запрашивает эти комнаты каждый раз, когда адаптер запускается, и создает канал для каждой комнаты, которая затем знает текущий индекс комнаты. То же самое происходит вручную с кнопкой loadRooms. Этот канал затем может быть назначен на комнаты ioBroker. Если кнопка roomClean нажата, индекс карты определяется и отправляется роботу, чтобы он мог затем пылесосить эту комнату. Перед этим мощность ВЕНТИЛЯТОРА устанавливается для всасывания в одной комнате. Если у вас пока нет возможности назвать комнаты в приложении, есть возможность создать такой канал вручную, указав индекс карты. Также возможно добавить координаты зоны вместо mapIndex.
+Каждая комната на текущей карте имеет индекс, который затем назначается комнате из приложения. От робота мы получаем только отображение с номером комнаты и индексом. Адаптер запрашивает эти комнаты каждый раз, когда адаптер запускается, и создает канал для каждой комнаты, которая затем знает текущий индекс комнаты. То же самое происходит вручную с кнопкой loadRooms. Этот канал затем может быть назначен на комнаты ioBroker. Если кнопка roomClean нажата, индекс карты определяется и отправляется роботу, чтобы он мог затем пылесосить эту комнату. Перед этим мощность ВЕНТИЛЯТОРА устанавливается для всасывания в одной комнате. Если у вас пока нет возможности назвать комнаты в приложении, есть возможность создать такой канал вручную, указав индекс карты. Также возможно добавить координаты зоны вместо mapIndex.
 Если вы хотите очистить несколько комнат спонтанно, вы можете сделать это с помощью функции multiRoomClean, назначив комнаты ioBroker этой точке данных, а затем нажав кнопку.
 
 #### Таймер
@@ -147,7 +149,7 @@ xVal, yval
 Под объектом «mihome-вакуум.X.control.X_send_command» вы можете отправлять свои собственные команды роботу.
 Структура объекта должна выглядеть следующим образом: метод; [PARAMS]
 
-Под объектом «mihome-вакуум.X.control.X_get_response» ответ вводится роботом после отправки. Если параметры запрашиваются, они отображаются здесь в формате JSON. Если была отправлена только одна команда, робот отвечает только «0».
+Под объектом «mihome -uum.X.control.X_get_response» ответ вводится роботом после отправки. Если параметры были запрошены, они отображаются здесь в формате JSON. Если была отправлена только одна команда, робот отвечает только «0».
 
 Поддерживаются следующие методы и параметры:
 
@@ -200,7 +202,7 @@ sendTo("mihome-vacuum.0",
 | Вернуться на базу | `charge` | - нет - | |
 | Скажи "Привет, я здесь!" | `findMe` | - нет - | |
 | Проверить состояние расходных материалов (щетка и т. Д.) | `getConsumableStatus` | - нет - | |
-| Сбросить состояние расходных материалов (кисти и т. Д.) | `resetConsumables` | - нет - | Звонок подпись неизвестна |
+| Сбросить состояние расходных материалов (кисть и пр.) | `resetConsumables` | - нет - | Звонок подпись неизвестна |
 | Получить сводку всех предыдущих процессов очистки | `getCleaningSummary` | - нет - | |
 | Получить подробную сводку предыдущего процесса очистки | `getCleaningRecord` | `recordId` | |
 | Получить карту | `getMap` | - нет - | Неизвестно, что делать с результатом |
@@ -218,7 +220,7 @@ sendTo("mihome-vacuum.0",
 | чистая комната / комнаты | `cleanRooms` | `rooms` | `rooms` - это строка, разделенная запятыми, с enum.rooms.XXX |
 | чистый сегмент | `cleanSegments` | `rooms` | `rooms` - массив с mapIndex или разделенная запятыми строка с mapIndex |
 | чистая зона | `cleanZone` | `coordinates` | `coordinates` - это строка с координатами и количеством, см. [zoneClean](#zoneClean) |
-| чистая зона | `cleanZone` | `координаты` | `координаты` - это строка с координатами и количеством, см. [zoneClean] (# zoneClean) |
+| чистая зона | `cleanZone` | `координаты` | `arguments` - это строка с координатами и количеством, см. [zoneClean] (# zoneClean) |
 
 ## Виджет
 Извините, еще не закончил.
@@ -229,6 +231,18 @@ sendTo("mihome-vacuum.0",
 - Виджет на тот момент без функции
 
 ## Changelog
+### 2.0.4 (2020-02-13)
+* add cloud login to get token
+* add cloud Map
+* add new and old Map format
+* rebuild config page
+### 1.10.5 (2020-02-11)
+* send Ping only if not connected, otherwise get_status
+* set button states to true, if clicked
+* move Timermanager and roomManager to own libs
+
+### 1.10.4 (2020-02-06)
+* (MeiserTR) add valetudo map support for gen3 and gen2 2XXX
 ### 1.10.1 (2020-01-20)
 * (dirkhe) added zone as room handling
 * (dirkhe) timer could room channels directly

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nuki-extended/README.md
 title: ioBroker.nuki扩展
-hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
+hash: 5IfLWziNuqBVMMRy41z9gg4aBIqDWxoiYMlQwHyV4sk=
 ---
 ![商标](../../../en/adapterref/iobroker.nuki-extended/admin/nuki-extended.png)
 
@@ -12,11 +12,12 @@ hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 ![稳定版](http://iobroker.live/badges/nuki-extended-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.nuki-extended.svg)
 ![自上次发布以来提交](https://img.shields.io/github/commits-since/Zefau/ioBroker.nuki-extended/latest.svg)
-![特拉维斯CI](https://travis-ci.org/Zefau/ioBroker.nuki-extended.svg?branch=master)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.nuki-extended.svg)
 ![NPM](https://nodei.co/npm/iobroker.nuki-extended.png?downloads=true)
 
 ＃ioBroker.nuki-extended这个ioBroker适配器（以前为ioBroker.Nuki2）允许控制和监视[Nuki Smart Lock]（https://nuki.io/de/smart-lock/）和/或[Nuki Opener]（https://nuki.io/de/opener/）同时使用[Nuki Bridge API （v1.9.0，06.05.2019）]（https://developer.nuki.io/page/nuki-bridge-http-api-170/4/#heading--introduction）和[Nuki Web API（v1。 2.0，31.05.2019）](https://developer.nuki.io/page/nuki-web-api-111/3/)。
+[![Travis CI]（https://travis-ci.com/Zefau/ioBroker.nuki-extended.svg?branch=master）](https://travis-ci.com/Zefau/ioBroker.nuki-extended)
+
 **目录**
 
 1. [功能]（＃features）
@@ -36,13 +37,13 @@ hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 -支持Nuki Smartlock和Nuki Opener
 -支持Nuki Bridge API和Nuki Web API
 -~~在硬件桥接器上支持哈希令牌（请参阅https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)~~
--如果在Nuki Bridge API上应用的操作失败（例如由于桥接错误503（请参阅https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau）
--如果在Nuki Bridge API上应用的操作失败（不使用Nuki Web API时），请重试
+-如果在Nuki Bridge API上执行的操作失败，则回退到Nuki Web API，例如由于桥接错误503（请参阅https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau）
+-重试以防在Nuki Bridge API上执行的操作失败（未使用Nuki Web API时）
 -选择定期同步而不是使用Bridge API回调（由于硬件Bridge可能会延迟）
 -通过Nuki Bridge API收到回调时，刷新Nuki Web API的所有状态
 -检索Nuki Smartlock和Nuki Opener的授权用户（请参见下面的[频道和州]（＃general-information））
 -检索Nuki Smartlock和Nuki Opener的配置（请参见下面的[Channels＆States]（＃general-config））
--检索设置Nuki通知（请参阅下面的[频道和状态]（＃users））
+-检索设置Nuki通知（请参见下面的[频道和状态]（＃users））
 -Web界面，显示Nuki Smartlock和Nuki Opener的最近事件：
 
   ![Nuki扩展Web界面](../../../en/adapterref/iobroker.nuki-extended/img/screenshot_adapter-interface.png)
@@ -51,7 +52,7 @@ hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 ### Nuki Bridge API
 如何获取硬件桥令牌（不适用于软件桥）：
 
-1.从网络中的任何浏览器调用“ http：// <bridge_ip>：<bridge_port> / auth”。桥打开其LED。
+1.从网络中的任何浏览器调用“ http：// <bridge_ip>：<bridge_port> / auth`”。桥打开其LED。
 2.在30秒内按下电桥的按钮。
 3.浏览器调用的结果应如下所示：
 
@@ -82,12 +83,12 @@ hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 | -| \ _connected |指示网桥是否已连接到Nuki服务器的标志。 |
 | -|名称|网桥/服务器的名称|
 | -| bridgeId |网桥/服务器的ID |
-| -| bridgeIp |桥的IP地址|
+| -| bridgeIp |网桥的IP地址|
 | -| bridgePort |桥梁的港口|
 | -| bridgeType |桥的类型 |
 | -| hardwareId |硬件桥的ID（仅硬件桥）|
 | -|刷新最后更新的时间戳|
-| -|正常运行时间桥梁的正常运行时间（以秒为单位）|
+| -|正常运行时间|桥梁的正常运行时间（以秒为单位）|
 | -| versFirmware |网桥固件的版本（仅硬件网桥）|
 | -| versWifi | WiFi模块固件的版本（仅硬件桥）|
 | -| versApp |桥应用程序的版本（仅软件桥）|
@@ -131,7 +132,7 @@ hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 | -|类型设备类型 |
 | -| bridgeId | Nuki的网桥ID |
 |状态| -|锁的当前状态 |
-|状态| batteryCritical ** |临界电池电量水平|
+|状态| batteryCritical ** |临界电池电量水平 |
 |状态| lockState ** | Nuki的当前锁定状态 |
 |状态|锁定** |指示门是否锁好 |
 |状态|刷新** |最后更新的时间戳|
@@ -170,7 +171,7 @@ hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 |频道|州|描述（可能的值）|
 |:------- |:----- |:----------------------------- |
 |州| -|锁的当前状态 |
-|州|电池严重|临界电池电量水平|
+|州|电池严重|临界电池电量水平 |
 |州|关闭指示门是否关闭（doorState的布尔值）|
 |州| doorState | Nuki的当前门国|
 |州| lastAction |最后触发动作|
@@ -189,7 +190,7 @@ hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 |配置|自动解锁如果应在解锁时将门解锁，则为真。 |
 |配置| buttonEnabled |如果启用了智能锁上的按钮，则为true。 |
 |配置|能力|该功能指示是否可以通过App，RTO或两者同时打开门。 |
-|配置| fobAction1 |如果按一次按钮，则为遥控操作<br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}`|
+|配置| fobAction1 |如果按一次按钮，则为遥控钥匙动作<br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}`|
 |配置| fobAction2 |如果按两次按钮，则为遥控钥匙动作<br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}`|
 |配置| fobAction3 |如果按下按钮3次，则显示FOB动作<br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}`|
 |配置| fobAction3 |如果按下按钮3次，则显示FOB动作<br> `{“ 0”：“ NONE”，“ 1”：“ UNLOCK”，“ 2”：“ LOCK”，“ 3”：“ LOCK_N_GO”，“ 4”：“ INTELLIGENT”} |
@@ -199,11 +200,11 @@ hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 |配置| homekitState |家庭套件状态<br> `{“ 0”：&#39;UNAVAILABLE&#39;，“ 1”：&#39;DISABLED&#39;，“ 2”：&#39;ENABLED&#39;，“ 3”：&#39;ENABLED＆PAIRED&#39;}`|
 |配置|配对如果键盘与smartlock配对，则为true。 |
 |配置| led亮度| LED的亮度：0（关闭）至5（最大）|
-|配置| ledEnabled |如果启用了智能锁上的LED，则为true |
+|配置| ledEnabled |如果启用了智能锁上的LED，则为true。 |
 |配置|名称|新用户的Smartlock名称|
 |配置| operatingMode |开瓶器的操作模式 |
 |配置| pairingEnabled |如果通过smartlock按钮允许配对，则为true。 |
-|配置| singleLock |如果智能锁只能锁定一次（而不是两次），则为true。 |
+|配置| singleLock |如果Smartlock仅应锁定一次（而不是两次），则为true。 |
 |配置| timezoneId |时区ID |
 |配置| timezoneOffset |时区偏移量（以分钟为单位）|
 
@@ -215,24 +216,24 @@ hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 | advancedConfig | automaticBatteryTypeDetection |指示是否启用了自动检测电池类型的标志 |
 | advancedConfig |电池类型|智能锁中存在的电池类型<br> `{"0": 'ALKALI', "1": 'ACCUMULATOR', "2": 'LITHIUM'}`|
 | advancedConfig | doubleButtonPressAction |所需的操作，如果两次按下按钮<br> `{"0": "NO_ACTION", "1": "INTELLIGENT", "2": "UNLOCK", "3": "LOCK", "4": "UNLATCH", "5": "LOCK_N_GO", "6": "SHOW_STATUS"}`|
-| advancedConfig | doubleButtonPressAction |所需的操作，如果两次按下按钮<br> `{“ 0”：“ NO_ACTION”，“ 1”：“智能”，“ 2”：“ UNLOCK”，“ 3”：“ LOCK”，“ 4”：“ UNLATCH”，“ 5”：“ LOCK_N_GO”， “ 6”：“ SHOW_STATUS”}`| |
+| advancedConfig | doubleButtonPressAction |所需的操作，如果两次按下按钮<br> `{“ 0”：“ NO_ACTION”，“ 1”：“智能”，“ 2”：“解锁”，“ 3”：“ LOCK”，“ 4”：“解锁”，“ 5”：“ LOCK_N_GO”， “ 6”：“ SHOW_STATUS”}`| |
 | advancedConfig | lngTimeout |锁定“ n”的超时时间（以秒为单位）|
 | advancedConfig | singleButtonPressAction |所需的操作（如果按下按钮一次） <br> `{"0": "NO_ACTION", "1": "INTELLIGENT", "2": "UNLOCK", "3": "LOCK", "4": "UNLATCH", "5": "LOCK_N_GO", "6": "SHOW_STATUS"}`|
-| advancedConfig | singleButtonPressAction |所需的操作（如果按下按钮一次） <br> `{“ 0”：“ NO_ACTION”，“ 1”：“智能”，“ 2”：“ UNLOCK”，“ 3”：“ LOCK”，“ 4”：“ UNLATCH”，“ 5”：“ LOCK_N_GO”， “ 6”：“ SHOW_STATUS”}`| |
+| advancedConfig | singleButtonPressAction |所需的操作（如果按下按钮一次） <br> `{“ 0”：“ NO_ACTION”，“ 1”：“智能”，“ 2”：“解锁”，“ 3”：“ LOCK”，“ 4”：“解锁”，“ 5”：“ LOCK_N_GO”， “ 6”：“ SHOW_STATUS”}`| |
 | advancedConfig | singleLockedPositionOffsetDegrees |改变单个锁定位置的偏移量 |
 | advancedConfig | totalDegrees |校准期间达到的绝对总位置（以度为单位）|
 | advancedConfig | unlatchDuration |将闩锁保持在解锁位置的持续时间（以秒为单位）|
 | advancedConfig | unlockedPositionOffsetDegrees |偏移量可更改解锁位置|
-| advancedConfig | unlockedToLockedTransitionOffsetDegrees |偏移量会更改从解锁到锁定的过渡发生的位置|
+| advancedConfig | unlockedToLockedTransitionOffsetDegrees |偏移量会改变从解锁到锁定发生过渡的位置|
 
 #### Opener Advanced Config
 |频道|州|描述（可能的值）|
 |:------- |:----- |:----------------------------- |
 | openerAdvancedConfig | -|开瓶器配置|
-| openerAdvancedConfig | intercomId |连接的对讲机的数据库ID。 |
+| openerAdvancedConfig | intercomId |连接的对讲机的数据库ID |
 | openerAdvancedConfig | busModeSwitch |在数据和模拟模式之间切换的方法<br> `{"0": 'DATA MODE', "1": 'ANALOGUE MODE'}`|
 | openerAdvancedConfig | shortCircuitDuration | BUS模式切换的短路持续时间（毫秒）|
-| openerAdvancedConfig | electricStrikeDelay |电击激活的延迟，以毫秒为单位（锁定操作3-电击激活后）|
+| openerAdvancedConfig | electricStrikeDelay |电击激活的延迟（以毫秒为单位）（在锁定动作3-电击激活之后）|
 | openerAdvancedConfig | randomElectricStrikeDelay |随机的electricalStrikeDelay（范围3000-7000 ms）以模拟一个人在内部触发电击 |
 | openerAdvancedConfig | electricStrikeDuration |电击致动的持续时间（毫秒）（锁定动作3-电击致动-）|
 | openerAdvancedConfig | disableRtoAfterRing |振铃后禁用RTO的标志|
@@ -265,7 +266,7 @@ hash: oKMFh6+AGzwFWwqHvDhA/2AFMsvjNoHJfCX2EPc7Wxc=
 | users._userName_ | dateCreated |创建日期|
 | users._userName_ | dateUpdated |更新日期|
 | users._userName_ | dateLastActive |上次有效日期|
-| users._userName_ |启用|如果启用了用户，则为true |
+| users._userName_ |已启用|如果启用了用户，则为true |
 | users._userName_ | id |用户的唯一ID |
 | users._userName_ | lockCount |锁数|
 | users._userName_ |名称|用户名|
@@ -334,7 +335,7 @@ function say(message, alexas = '#YOUR ALEXA ID#') // use alexas = ['#YOUR ALEXA 
 }
 ```
 
-您可以在ioBroker.javascript中使用此功能，使用Alexa§§JJJJJ_0_0§或```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])```来说出短语，以从多个设备输出语音。
+您可以在ioBroker.javascript中使用此功能，使用Alexa```say('Hello World')```或```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])```来表达短语，以从多个设备输出语音。
 
 在ioBroker.javascript的“ common”文件夹中创建一个脚本，并将以下侦听器添加到该脚本中。重要说明：用保持锁定状态的状态（例如§§JJJJJ_0_0§§）替换#LOCK STATE ID＃（也替换＃）：
 
@@ -366,7 +367,7 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 ###让Telegram通知您有关锁的更改
 这需要ioBroker适配器ioBroker.telegram（https://github.com/iobroker-community-adapters/ioBroker.telegram）。
 
-为了使用Telegram的消息输出，我们定义一个函数```msg```和```messenger```§。将以下函数放在ioBroker.javascript的“全局”文件夹中的脚本中：
+为了使用Telegram的消息输出，我们定义了一个函数```msg```和```messenger```§。将以下函数放在ioBroker.javascript的“全局”文件夹中的脚本中：
 
 ```javascript
 /**
@@ -446,7 +447,7 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 });
 ```
 
-注意：如果同时使用Alexa和Telegram脚本，则只能为这两种操作定义一个侦听器：
+注意：如果同时使用Alexa和Telegram脚本，则只能为这两个操作定义一个侦听器：
 
 ```javascript
 const DOOR_STATES = {
@@ -479,11 +480,15 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 ##积分
 感谢[@ Nik13]（https://github.com/Mik13）用于[Nuki Bridge API实现](https://github.com/Mik13/nuki-bridge-api#nuki-bridge-api)。
 
-<a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> （[基本套装]（https://www.flaticon.com/packs/essential-set-2））和<a href="https://www.freepik.com/" title="Freepik">Freepik</a> （[门](https://www.flaticon.com/packs/doors)）从<a href="https://www.flaticon.com/" title="平面图标">www.flaticon.com</a>制作的图标<a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">已获</a> <a href="http://creativecommons.org/licenses/by/3.0/" title="知识共享3.0" target="_blank">CC 3.0 BY</a>许可
+<a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> （[基本套装]（https://www.flaticon.com/packs/essential-set-2））和<a href="https://www.freepik.com/" title="Freepik">Freepik</a> （[门](https://www.flaticon.com/packs/doors)）从<a href="https://www.flaticon.com/" title="平面图标">www.flaticon.com</a>制作的图标<a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">已获</a> <a href="http://creativecommons.org/licenses/by/3.0/" title="知识共享BY 3.0" target="_blank">CC 3.0 BY</a>许可
 
 ## Changelog
 
 Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
+
+### v2.2.0  (2019-02-16)
+- (Zefau) added possibility to change configuration of Nuki Smartlock or Nuki Opener (when using Web API)
+- (Zefau) updated dependencies
 
 ### v2.1.0  (2019-02-03)
 - (Zefau) added (optional) callback IP for Bridge API events (e.g. when ioBroker is run in docker; see [#51](https://github.com/Zefau/ioBroker.nuki-extended/issues/51))
@@ -514,7 +519,7 @@ Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releas
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 Zefau <zefau@mailbox.org>
+Copyright (c) 2019-2020 Zefau <zefau@mailbox.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

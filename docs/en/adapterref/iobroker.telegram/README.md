@@ -480,6 +480,9 @@ TODO:
 - venue
 
 ## Changelog
+### 1.5.1 (2020-02-14)
+* (bluefox) Invalid parameters were checked
+
 ### 1.5.0 (2020-02-03)
 * (bluefox) Added voice calls 
 

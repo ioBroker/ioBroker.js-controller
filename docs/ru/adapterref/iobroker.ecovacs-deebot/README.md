@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
+hash: YGN/6v/1qE6LMVi/Pdzxp5Nv9o/GdDoAospgIpeTuvU=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -18,10 +18,10 @@ hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
 Пока только устройства, которые взаимодействуют с протоколом **XMPP** работают должным образом.
 Устройства, взаимодействующие с протоколом **MQTT** являются экспериментальными.
 
-Вы можете проверить это с помощью значения состояния `info.communicationProtocol` после успешного установления соединения (значения: `XMPP`, `MQTT`).
+Это можно проверить с помощью значения состояния `info.communicationProtocol` после успешного установления соединения (значения: `XMPP`, `MQTT`).
 
 ### Кнопки и управление
-| модель | основные * | пауза | пятно | spotArea | customArea ** | край | playSound | уровень воды |
+| модель | базовый * | пауза | пятно | spotArea | customArea ** | край | playSound | уровень воды |
 |------ |------ |------ |------ |------ |------ |------ |------ |------ |
 | Deebot Slim 2 | х | н / д | х | н / д | н / д | х | н / д | н / д |
 | Deebot 710 | х | | | | | | | н / д |
@@ -29,27 +29,28 @@ hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
 | Deebot Ozmo 610 | х | | х | н / д | н / д | х | | |
 | Deebot Ozmo 900 | | | н / д | | | н / д | | |
 | Deebot Ozmo 930 | х | х | н / д | х | х | н / д | х | х |
-| Deebot Ozmo 950 | | | н / д | | | н / д | х | |
+| Deebot Ozmo 950 | х | х | н / д | х | х | н / д | х | х |
 
 *) «основными» командами являются `clean` (`auto`), `charge`, `stop`. Они не перечислены отдельно здесь.
 
 **) вкл. номер `cleanings`
 
 ### Информация и статус
-| модель | батарея | шаргестатус | Cleanstatus | уровень воды | ------ | ------ | ------ | ------ | ------
+| модель | батарея | шаргестатус | Cleanstatus | уровень воды | расходные материалы |
 
-| Deebot Slim 2 | х | х | х | н / д |
-| Deebot 710 | | | | н / д |
-| Deebot 900 | | | | н / д |
-| Deebot Ozmo 610 | | | | |
-| Deebot Ozmo 900 | | | | |
-| Deebot Ozmo 930 | х | х | х | х |
-| Deebot Ozmo 950 | х | х | | |
+| ------ | ------ | ------ | ------ | ------ | ------ | Deebot Slim 2 | х | х | х | н / д | Икс
+
+| Deebot 710 | | | | н / д | |
+| Deebot 900 | | | | н / д | |
+| Deebot Ozmo 610 | | | | | |
+| Deebot Ozmo 900 | | | | | |
+| Deebot Ozmo 930 | х | х | х | х | х |
+| Deebot Ozmo 950 | х | | х | | |
 
 ### Работает правильно
+* Deebot Slim 2
 * Deebot Ozmo 610
 * Deebot Ozmo 930
-* Deebot Slim 2
 
 ### Должно сработать
 * Deebot N79T
@@ -58,8 +59,8 @@ hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
 
 ### Должен работать частично
 * Deebot 710
-* Deebot Ozmo 950
 * Deebot Ozmo 900
+* Deebot Ozmo 950
 
 ## Контроль
 ### Кнопки
@@ -123,6 +124,19 @@ hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.3.9
+   * (mrbungle64) Improved support for XML based MQTT devices
+
+### 0.3.8
+   * (boriswerner) Improved support for Ozmo 950 device
+   * (mrbungle64) Implemented waterbox info (XMPP based devices)
+
+### 0.3.7
+   * (mrbungle64) Bugfix
+   
+### 0.3.6
+   * (boriswerner) Basic clean & charge working (Ozmo 950)
 
 ### 0.3.5
    * (mrbungle64) Improved support for MQTT devices

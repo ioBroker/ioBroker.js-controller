@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fullybrowser/README.md
 title: ioBroker.fullybrowser
-hash: DzvovUP10WBfvNa8fqbrlb36Xnv3kTyHhvnod1C+jSM=
+hash: Nn/bwU4XpkZRblqnE/mWtJmqwuB2cy2UOK5wp0oEm4I=
 ---
 ![Logo](../../../en/adapterref/iobroker.fullybrowser/admin/fully.png)
 
@@ -16,16 +16,20 @@ hash: DzvovUP10WBfvNa8fqbrlb36Xnv3kTyHhvnod1C+jSM=
 # IoBroker.fullybrowser
 =================
 
-vollständig Browser-Adapter für ioBroker ---------------------------------------------- --------------------------------
+fullBrowser Adapter für ioBroker ---------------------------------------------- --------------------------------
 
-Dieser Adapter verwaltet Ihre [Vollständiger Kiosk-Browser](https://www.ozerov.de/fully-kiosk-browser) (eine Plus-Lizenz ist erforderlich). Es bietet Ihnen eine Reihe von Möglichkeiten, Ihr Tablet über ioBroker zu steuern, z. B. das Display ein- und auszuschalten, eine Tablet-App zu starten, den Bildschirmschoner zu starten usw. Außerdem werden verschiedene Informationen zu Zuständen wie dem Akkuladestand Ihres Tablets usw. angezeigt die du zB benutzen kannst zur Visualisierung.
+Dieser Adapter verwaltet Ihre [Voll Kiosk Browser](https://www.ozerov.de/fully-kiosk-browser) (eine Plus-Lizenz ist erforderlich). Es bietet Ihnen eine Reihe von Möglichkeiten, Ihr Tablet über ioBroker zu steuern, z. B. das Ein- und Ausschalten des Displays, das Starten einer beliebigen Tablet-App, das Starten des Bildschirmschoners usw. Außerdem bietet es verschiedene Informationen zu Zuständen wie dem Akkuladestand Ihres Tablets usw. . die Sie zB verwenden können zur Visualisierung.
 Ein kleiner Auszug nur der Befehlsoptionen:
 
 ![möglichkeiten](https://github.com/arteck/iobroker.fullyBrowser/blob/master/doku/auszug.png)
 
-<b>NodeJs &gt;&gt; 8.xx</b>
+<b>Knoten &gt;&gt; 8.xx.</b>
 
 ## Changelog
+### 1.0.3 (2020-02-16)
+* (arteck) support compact mode
+
+
 ### 1.0.1 (2019-06-20)
 * (arteck) encodeURL
 

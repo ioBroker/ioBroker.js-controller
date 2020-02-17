@@ -2,16 +2,15 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.owntracks/README.md
-title: 移至https://github.com/iobroker-community-adapters/ioBroker.owntracks
-hash: IWfeYjtdT3DDyKV4cYon2vDhXbQJh+qDAbqzQqcKwlw=
+title: ioBroker.owntracks
+hash: BaMk8Twp+HBcGMd2T3dPGP8Xy7GcC93ZZrFxYd5H1hk=
 ---
+![商标](../../../en/adapterref/iobroker.owntracks/admin/owntracks.png)
+
 ![安装数量](http://iobroker.live/badges/owntracks-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.owntracks.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.owntracks.svg)
 ![NPM](https://nodei.co/npm/iobroker.owntracks.png?downloads=true)
-
-＃移至https://github.com/iobroker-community-adapters/ioBroker.owntracks
-![商标](../../../en/adapterref/iobroker.owntracks/admin/owntracks.png)
 
 ＃ioBroker.owntracks
 [自己的曲目](http://owntracks.org/)是适用于Android和iOS的应用程序。
@@ -43,11 +42,11 @@ OwnTracks适配器在MQTT服务器的端口1883（可配置）上启动，以从
     -owntracks.0.users.Mark.longitude
     -owntracks.0.users.Mark.latitude
 
--连接/标识/ TrackerID-要在地图上写入的用户简称（最多2个字母）。
+-连接/标识/ TrackerID-将其写在地图上的用户简称（最多2个字母）。
 -连接/安全性/ TLS-关闭
 -高级/加密密钥-可选，但建议：添加密码短语以进行加密
 
-请验证自己的轨道是否通过抽屉中的“状态”条目连接到iobroker实例：
+请确认自己的轨道通过抽屉中的“状态”条目连接到iobroker实例：
 
 ![设定值](../../../en/adapterref/iobroker.owntracks/img/connection.jpg)
 
@@ -66,7 +65,7 @@ OwnTracks适配器在MQTT服务器的端口1883（可配置）上启动，以从
 
 ![设定值](../../../en/adapterref/iobroker.owntracks/img/regions2.jpg)
 
-使用右上角的位置按钮可检索当前位置，或自己在“纬度和经度”中输入位置。此外，指定位置的半径。如果您共享位置，则当您输入/离开位置时，您的“朋友”（请参阅Android / iOS应用的抽屉中的信息）会收到通知。
+使用右上角的位置按钮可检索当前位置，或自己在“纬度和经度”中输入位置。此外，指定位置的半径。如果您共享位置，则当您输入/离开位置时，您的好友（请参阅Android / iOS应用的抽屉中的信息）会收到通知。
 
 ![设定值](../../../en/adapterref/iobroker.owntracks/img/regions3.jpg)
 

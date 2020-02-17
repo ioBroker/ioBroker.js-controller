@@ -3,44 +3,68 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.discovergy/README.md
 title: ioBroker.discovergy
-hash: Yq7w7WrrKrBXbBVCnBnKtZxI97dTUDjiPu3ry+3z/pE=
+hash: 8v1OaYKfsQtxGuCSzhmfjjkuyToO9U3B4HNovKMXpfE=
 ---
 ![替代文字](https://raw.githubusercontent.com/DutchmanNL/ioBroker.discovergy/master/admin/Discovergy_logo.png)
 
 ![替代文字](https://travis-ci.org/iobroker-community-adapters/ioBroker.discovergy.svg?branch=master)
 ![安装数量](http://iobroker.live/badges/discovergy-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.discovergy.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.discovergy.svg)
-![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.discovergy.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.discovergy.svg)
+![保镖徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.discovergy.svg)
 
 ＃ioBroker.discovergy
-这是适用于您的Discovergy Power测量仪的ioBroker适配器。
-它使用Discovergy API读取仪表的数据，并将其当前值与ioBroker同步。
+这是用于Discovergy Power测量仪的ioBroker适配器。
+它使用Discovergy API读取电表数据并将其当前值同步到ioBroker。
 
 https://api.discovergy.com/docs/
 
-请随意为您想要的funktionality或问题添加问题，以便我可以看看它！
+请随时为您想要的功能或遇到的问题添加问题，以便我看看！
 
-备注：我没有所有可能的设备，并且模拟账户也没有提供设备可以提供的所有现有值。
-如果您收到以下错误：
+备注：我没有所有可能的设备，并且模拟账户并没有提供设备可以提供的所有现有值。
+如果收到以下错误：
 
-从Discovergy收到的信息尚未成为此适配器的一部分“”将此信息发送给开发人员：xxxxx
+从Discovergy接收到的信息，该信息尚未成为此适配器的一部分”“将此信息发送给开发人员：xxxxx
 
-请转到您的日志文件并下载它，在github上使用提供的值创建一个问题。
-不要从Admin webinterface复制粘贴，这里缺少我需要的信息！
+请转到您的日志文件并下载它，使用提供的值在github上创建一个问题。
+不要从Admin Web界面复制粘贴，这里我需要信息！
 
-您可以使用discovergy的演示凭证（或使用您自己的:-)来测试此适配器：username = demo@discovergy.com pass = demo
+您可以使用Discovergy的演示凭据（或使用您自己的:-)来测试此适配器：username = demo@discovergy.com pass = demo
 
-＃＃ 去做
-*翻译
+＃＃ 支持我
+如果您喜欢我的工作，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](http://paypal.me/DutchmanNL)
 
 ##贡献者
 * AlCalzone
-* zoernert
+*佐尔内特
 
 ## Changelog
 
-### 0.4.0
+### 0.5.0 
+* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
+* (Dutchman) Rebuild complete logic of data pulling
+* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
+* (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
+
+### 0.4.9 Fix wrong readings and make intervall adjustable
+* (Dutchman) Implemented adjustable intervall
+* (Dutchman) Ensure propper reset to 0 of power values
+* (Dutchman) Fix "-" values for power delivery
+* (Dutchman) implement adjustable timing intervall
+* (Dutchman) make state names configurable
+* (Dutchman) update attr library
+* (Dutchman) code cleanup
+
+### 0.4.4 ALPHA version of rebuilded adapter
+* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
+* (Dutchman) Rebuild complete logic of data pulling
+* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
+* (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
+* (Dutchman) implement data pulling (needs improvement to avoid block by provider)
+* (Dutchman) ensure split values for consumption and delivery
+* (Dutchman) make state attributes configurable in library
+
+### 0.4.0 Stable Release
 * small code fixes
 * updated dependecys
 * release for stable repository

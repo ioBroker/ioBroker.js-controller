@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
+hash: YGN/6v/1qE6LMVi/Pdzxp5Nv9o/GdDoAospgIpeTuvU=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -29,27 +29,28 @@ hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
 | Deebot Ozmo 610 | x | | x |不适用不适用x | | |
 | Deebot Ozmo 900 | | |不适用| |不适用| |
 | Deebot Ozmo 930 | x | x |不适用x | x |不适用x | x |
-| Deebot Ozmo 950 | | |不适用| |不适用x | |
+| Deebot Ozmo 950 | x | x |不适用x | x |不适用x | x |
 
 *）“基本”命令是`clean`（`auto`），`charge`，`stop`。它们不在此处单独列出。
 
 **）包括`cleanings`的数量
 
 ###信息和状态
-|型号电池| chargestatus | cleanstatus |水位| ------ | ------ | ------ | ------ | ------
+|型号电池| chargestatus | cleanstatus |水位|消耗品|
 
-| Deebot Slim 2 | x | x | x |不适用 |
-| Deebot 710 | | | |不适用 |
-| Deebot 900 | | | |不适用 |
-| Deebot Ozmo 610 | | | | |
-| Deebot Ozmo 900 | | | | |
-| Deebot Ozmo 930 | x | x | x | x |
-| Deebot Ozmo 950 | x | x | | |
+| ------ | ------ | ------ | ------ | ------ | ------ | Deebot Slim 2 | x | x | x |不适用X
+
+| Deebot 710 | | | |不适用|
+| Deebot 900 | | | |不适用|
+| Deebot Ozmo 610 | | | | | |
+| Deebot Ozmo 900 | | | | | |
+| Deebot Ozmo 930 | x | x | x | x | x |
+| Deebot Ozmo 950 | x | | x | | |
 
 ###正常工作
-* Deebot Ozmo 610
-* Deebot Ozmo 930
 * Deebot苗条2
+* Deebot奥兹莫610
+* Deebot Ozmo 930
 
 ＃＃＃ 应该管用
 * Deebot N79T
@@ -58,8 +59,8 @@ hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
 
 ###应该部分工作
 * Deebot 710
-* Deebot Ozmo 950
 * Deebot Ozmo 900
+* Deebot Ozmo 950
 
 ＃＃ 控制
 ＃＃＃ 纽扣
@@ -78,7 +79,7 @@ hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
 
 ###区域/区域清洁
 #### SpotArea
-*逗号分隔的数字列表，以“ 0”（例如“ 1,3”）开头，表示要清洁的区域。
+*逗号分隔的数字列表，以“ 0”（例如“ 1,3”）开头，表示要清理的区域。
 *用于“ 0”-“ 9”点区域的按钮（请参阅“适配器配置”）
 
 #### CustomArea
@@ -118,11 +119,24 @@ hash: fKzfMPh4+AmCO9xuQyon8Fs32vy42p2+SNHgTIBXQOk=
 
 ##谢谢和感谢
 * @joostth（[sucks.js]（https://github.com/joostth/sucks.js））
-* @wpietri（[吮吸]（https://github.com/wpietri/sucks））
+* @wpietri（[吸]（https://github.com/wpietri/sucks））
 * @ bmartin5692（[sucks]（https://github.com/bmartin5692/sucks），[bumber]（https://github.com/bmartin5692/bumper））
 * @Ligio（[ozmo]（https://github.com/Ligio/ozmo））
 
 ## Changelog
+
+### 0.3.9
+   * (mrbungle64) Improved support for XML based MQTT devices
+
+### 0.3.8
+   * (boriswerner) Improved support for Ozmo 950 device
+   * (mrbungle64) Implemented waterbox info (XMPP based devices)
+
+### 0.3.7
+   * (mrbungle64) Bugfix
+   
+### 0.3.6
+   * (boriswerner) Basic clean & charge working (Ozmo 950)
 
 ### 0.3.5
    * (mrbungle64) Improved support for MQTT devices

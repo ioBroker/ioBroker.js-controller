@@ -315,6 +315,8 @@ Mit einem Klick auf ![Link](img/link.png), kommt man direkt zum Forum.
 Forumeinträge werde ohne Probleme angezeigt, wenn man auf ioBroker per IP oder mit localhost:8081 zugreift. Nutz man aber ein Hostnamen wie meinhaus.de:8081, muss man sich eine kostenlose API-Key bei Feednami besorgen. Um sich dort zu registrieren, klicken Sie [hier](https://toolkit.sekando.com/docs/en/setup/hostnames) und folgen den Anweisungen.
 
 ## Changelog
+### 1.6.0 (2020-xx-xx)
+
 ### 1.5.7 (2019-11-12)
 * (ldittmar) add event vis widget
 
@@ -419,7 +421,7 @@ Forumeinträge werde ohne Probleme angezeigt, wenn man auf ioBroker per IP oder 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017 - 2019 ldittmar <iobroker@lmdsoft.de>
+Copyright (c) 2017 - 2020 ldittmar <iobroker@lmdsoft.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
