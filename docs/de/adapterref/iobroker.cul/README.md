@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.cul/README.md
 title: ioBroker.cul
-hash: hqv0/Rc/RJf2exQceWirvpbANz1fWf5hFYtE0KGTGDM=
+hash: ROw7IIcXhBRDnLoCDsNfcST+TCLHwk06DWfPWWYuLvA=
 ---
 ![Logo](../../../en/adapterref/iobroker.cul/admin/busware.jpg)
 
@@ -14,7 +14,7 @@ hash: hqv0/Rc/RJf2exQceWirvpbANz1fWf5hFYtE0KGTGDM=
 ![NPM](https://nodei.co/npm/iobroker.cul.png?downloads=true)
 
 # IoBroker.cul
-ioBroker-Adapter zur Steuerung von FS20, Max !, HMS und anderen Geräten über [CUL](http://busware.de/tiki-index.php?page=CUL) / [Culfw](http://culfw.de). Abhängig von https://github.com/hobbyquaker/cul
+ioBroker-Adapter zur Steuerung von FS20, Max!, HMS und anderen Geräten über [CUL](http://busware.de/tiki-index.php?page=CUL) / [culfw](http://culfw.de). Hängt von https://github.com/hobbyquaker/cul ab
 
 ## Unterstützte Geräte
 - *EM* - EM1000WZ, EMWZ
@@ -23,7 +23,19 @@ ioBroker-Adapter zur Steuerung von FS20, Max !, HMS und anderen Geräten über [
 - *MORITZ* - MAX!
 - *WS* - KS300TH, S300TH, WS2000 / WS7000
 
+## Wie man
+### Senden Sie einen Befehl an ein FS20-Gerät in z. JavaScript
+```sendTo("cul.0", "send", {"protocol":"FS20", "housecode":"A1B2", "address":"01", "command":"00"});```
+
+Dieser Befehl verwendet die CUL-Bibliothek dieses Adapters, um den Befehl an ein FS20-Gerät zu senden.
+
 ## Changelog
+### 1.1.0 (2020-01-04)
+* (foxriver76) removed usage of adapter.objects
+
+### 1.0.0 (2019-05-15)
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 ### 0.4.0 (2018-03-07)
 * (Apollon77/Michael Lorenz) Optimizations for nanoCul, Support for ESA devices
 

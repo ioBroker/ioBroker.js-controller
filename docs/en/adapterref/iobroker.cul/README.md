@@ -18,6 +18,12 @@ ioBroker adapter to control FS20, Max!, HMS and other devices via [CUL](http://b
 - *MORITZ* - MAX!
 - *WS* - KS300TH, S300TH, WS2000/WS7000
 
+## HowTo
+
+### Send a command to a FS20 Device in e.g. JavaScript
+```sendTo("cul.0", "send", {"protocol":"FS20", "housecode":"A1B2", "address":"01", "command":"00"});```
+
+This command uses the CUL Library of this adapter to send the command to a FS20 Device.
 
 ## Changelog
 ### 1.1.0 (2020-01-04)

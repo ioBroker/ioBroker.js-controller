@@ -4,13 +4,13 @@ lastChanged: 03.12.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/tutorial/restore.md
-hash: PdKXVqljYzqz8sIsT9661nR4t5rhUnRIN98FYdrp0w8=
+hash: 8fjKIZWSUsLvGl5MCIEitH5NfubgyMAmGcgUPK34OLg=
 ---
 # Basics
 How do I correctly restore the ioBroker installation on a Linux system?
 
 ### Foreword:
-Since some users find it very difficult to restore, a step-by-step guide for the restore after a crash or after a hardware change, system change or anything else should help.
+Since some users find it very difficult to restore, a step-by-step guide for the restore after a crash, or after a hardware change, system change or something else should help here.
 
 Basically, one thing can be said in advance: a restore can be done in a few minutes if done correctly and nobody needs to be afraid of it.
 
@@ -25,7 +25,7 @@ Either take a finished image from [download area](https://www.iobroker.net/#de/d
 ### Next Step
 If the old system had saved the states and / or objects in Redis, the new system must first be equipped with the Redis server.
 
-If it is not certain whether Redis was used and access to the old system still exists, then use the `iobroker status` command to get the required information. “The output looks like this when using Redis:
+If it is not certain whether Redis was used and access to the old system still exists, then use the `iobroker status` command to get the required information. “When using Redis, the output looks as follows:
 
 ```
 iobroker is running on this host.
@@ -36,10 +36,10 @@ Objects type: redis
 States  type: redis
 ```
 
-If "redis" is in Objects type and / or States type, you must install the Redis server on the new system.
+If objects type and / or states type says "redis", you must install the Redis server on the new system.
 If there is "file" for both types, the Redis server is not required.
 
-If you should no longer have access to the old system and you do not know what exactly was configured before, then install the Redis server in advance.
+If you should no longer have access to the old system and you do not know what exactly was configured there, then install the Redis server in advance.
 
 #### Redis installed:
 To do this, go to the terminal by putty and execute the following commands:
@@ -100,7 +100,7 @@ Now select this.
 
 ![Selection of backups](../../de/tutorial/media/restore/1575301146928-restoreliste.jpg)
 
-After selection, there is an indication that iobroker is stopped for the restore and then started again.
+After selection, there is a message that iobroker is stopped for the restore and then started again.
 
 ![Start restore](../../de/tutorial/media/restore/1575301175231-restorestart.jpg)
 
@@ -108,21 +108,21 @@ Here you have started the actual recovery process.
 
 ![Restore is in progress](../../de/tutorial/media/restore/1575301208033-restore.jpg)
 
-This may take some time depending on the performance of the system and the size of the old ioBroker installation.
-Normally, the restore should be completed after approx. 10-15 minutes and ioBroker should be started again.
+Another tab now opens in your browser, in which you can follow the recovery process as on the console in the WebUI of Backitup.
+
+![restoreWebUI.JPG](../../de/tutorial/media/restore/restorewebui.jpg)
+
+After the restore has been successfully completed, you will also receive the message in the WebUi of the restore.
+
+![restoreWebUI_finish.JPG](../../de/tutorial/media/restore/restorewebui_finish.jpg)
+
+The recovery may take some time depending on the performance of the system and the size of the old ioBroker installation.
+Normally, the restore should be completed after approx. 10-15 minutes and ioBroker should be started again automatically.
 
 ![Restore done](../../de/tutorial/media/restore/1575301228008-restorefinish.jpg)
 
-If the display does not change, update the browser window with F5 every now and then.
-
 In very rare cases it happens that ioBroker does not start automatically after restore.
-If this is the case or not sure whether the restore is still running, you can use the installed tool htop to check whether the restore is still running or has already ended.
-Simply enter §§YYYYY_0§§ in the terminal. The output should look something like this.
-
-![htop](../../de/tutorial/media/restore/1575363981959-htop.jpg)
-
-In the processes that can be displayed by htop **none** of the processes marked in the picture are present.
-If this is the case, end htop with "F10" and execute the following command via the terminal.
+If this is the case, you can start the iobroker manually using the following command via the console.
 
 ```
 iobroker start
@@ -142,14 +142,14 @@ Congratulations, the newly installed system is now complete with all settings, s
 With Backitup there is now the possibility to restore further data if it was backed up in advance on the old system.
 You can restore the Redis database, the Zigbee database, the mySql database and your history data using the same steps as described above.
 
-The list of the retrieved backups would then look like this in the example.
+The list of the retrieved backups would then look like the example here.
 
 ![complete list](../../de/tutorial/media/restore/1575362131512-fullliste.jpg)
 
 *****************************************************************************************************************************************
 
 #### **2. manual restore with the terminal commands**
-First of all, a few commands must be issued via putty or similar.
+First of all, a few commands have to be issued via Putty or similar.
 
 First a backup folder has to be created:
 
@@ -163,13 +163,13 @@ stored in the / opt / iobroker / backups folder.
 If states and objects were stored in the Redis DB, the backed up Redis database should be restored here first.
 If only the states ran under Redis, this does not necessarily have to be in advance.
 
-Once this is done, you can stop your ioBroker as follows:
+Once this is done, stop your ioBroker as follows:
 
 ```
 iobroker stop
 ```
 
-Afterwards please check whether everything is stopped with the following commands:
+Afterwards please check whether everything has stopped with the following commands:
 
 ```
 iobroker status
@@ -196,7 +196,7 @@ iobroker start
 
 Here too, all adapters are reinstalled individually by ioBroker via npm.
 This may take a while depending on the size of your installation, internet speed and system performance.
-The current status can be followed in the "Log" tab.
+The current status can be tracked in the "Log" tab.
 
 This is now done and the system is newly installed and all settings, scripts, visualizations, etc. restored.
 

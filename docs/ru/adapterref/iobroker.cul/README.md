@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.cul/README.md
 title: ioBroker.cul
-hash: hqv0/Rc/RJf2exQceWirvpbANz1fWf5hFYtE0KGTGDM=
+hash: ROw7IIcXhBRDnLoCDsNfcST+TCLHwk06DWfPWWYuLvA=
 ---
 ![логотип](../../../en/adapterref/iobroker.cul/admin/busware.jpg)
 
@@ -23,7 +23,19 @@ hash: hqv0/Rc/RJf2exQceWirvpbANz1fWf5hFYtE0KGTGDM=
 - *МОРИЦ* - МАКС!
 - *WS* - KS300TH, S300TH, WS2000 / WS7000
 
+## Как
+### Отправить команду на устройство FS20, например, JavaScript
+```sendTo("cul.0", "send", {"protocol":"FS20", "housecode":"A1B2", "address":"01", "command":"00"});```
+
+Эта команда использует библиотеку CUL этого адаптера для отправки команды на устройство FS20.
+
 ## Changelog
+### 1.1.0 (2020-01-04)
+* (foxriver76) removed usage of adapter.objects
+
+### 1.0.0 (2019-05-15)
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
+
 ### 0.4.0 (2018-03-07)
 * (Apollon77/Michael Lorenz) Optimizations for nanoCul, Support for ESA devices
 

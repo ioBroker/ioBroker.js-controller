@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker mihome-真空适配器
-hash: IOpE/9SuLy17vuLb+2bXXidrBNKtvjNeX9fs9uSXBbo=
+hash: l2iqiDljoLk+TmLrAJIuyuqTUw/VJg2pYBOC2exwptI=
 ---
 ![商标](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -41,6 +41,17 @@ hash: IOpE/9SuLy17vuLb+2bXXidrBNKtvjNeX9fs9uSXBbo=
 请按照链接中的说明进行操作：
 
 [代币](https://www.smarthomeassistent.de/token-auslesen-roborock-s6-roborock-s5-xiaomi-mi-robot-xiaowa/).
+
+###安装错误
+如果您的安装运行错误。画布包无法安装
+
+``npm ERR！ canvas@2.6.1安装：node-pre-gyp install --fallback-to-build npm ERR！退出状态1``
+
+请使用以下命令手动安装canvas和libs：
+
+``sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev``
+
+``sudo npm install canvas --unsafe-perm = true``
 
 ###适配器配置
 -对于IP地址，必须以“ 192.168.178.XX”格式输入机器人的IP地址。
@@ -231,11 +242,13 @@ sendTo("mihome-vacuum.0",
 -当时没有功能的小部件
 
 ## Changelog
+### 2.0.5 (2020-02-17)
+* (MeisterTR) add roooms for s50 with map (cloud or Valetudo needed)
 ### 2.0.4 (2020-02-13)
-* add cloud login to get token
-* add cloud Map
-* add new and old Map format
-* rebuild config page
+* (MeisterTR) add cloud login to get token
+* (MeisterTR) add cloud Map
+* (MeisterTR) add new and old Map format
+* (MeisterTR) rebuild config page
 ### 1.10.5 (2020-02-11)
 * send Ping only if not connected, otherwise get_status
 * set button states to true, if clicked

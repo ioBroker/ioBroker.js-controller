@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker mihome-вакуумный адаптер
-hash: IOpE/9SuLy17vuLb+2bXXidrBNKtvjNeX9fs9uSXBbo=
+hash: l2iqiDljoLk+TmLrAJIuyuqTUw/VJg2pYBOC2exwptI=
 ---
 ![логотип](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -41,6 +41,17 @@ hash: IOpE/9SuLy17vuLb+2bXXidrBNKtvjNeX9fs9uSXBbo=
 Пожалуйста, следуйте инструкциям в ссылке:
 
 [Жетон турориал](https://www.smarthomeassistent.de/token-auslesen-roborock-s6-roborock-s5-xiaomi-mi-robot-xiaowa/).
+
+### Ошибка при установке
+если ваша установка запускается по ошибке. Не удалось установить пакет canvas
+
+`` npm ERR! canvas@2.6.1 install: node-pre-gyp install - откат к сборке npm ERR! Статус выхода 1``
+
+Пожалуйста, установите canvas и libs вручную:
+
+`` sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev ``
+
+`` sudo npm install canvas --unsafe-perm = true ``
 
 ### Конфигурация адаптера
 - Для IP-адреса IP-адрес робота должен быть введен в формате «192.168.178.XX».
@@ -231,11 +242,13 @@ sendTo("mihome-vacuum.0",
 - Виджет на тот момент без функции
 
 ## Changelog
+### 2.0.5 (2020-02-17)
+* (MeisterTR) add roooms for s50 with map (cloud or Valetudo needed)
 ### 2.0.4 (2020-02-13)
-* add cloud login to get token
-* add cloud Map
-* add new and old Map format
-* rebuild config page
+* (MeisterTR) add cloud login to get token
+* (MeisterTR) add cloud Map
+* (MeisterTR) add new and old Map format
+* (MeisterTR) rebuild config page
 ### 1.10.5 (2020-02-11)
 * send Ping only if not connected, otherwise get_status
 * set button states to true, if clicked

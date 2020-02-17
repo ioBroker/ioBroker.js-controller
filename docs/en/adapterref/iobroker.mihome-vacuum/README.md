@@ -35,6 +35,23 @@ PLease follow the instruction in the Link:
 
 [Token turorial](https://www.smarthomeassistent.de/token-auslesen-roborock-s6-roborock-s5-xiaomi-mi-robot-xiaowa/).
 
+### Error at installation
+if your installation runs in error. The canvas package could not be install
+
+``npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build
+npm ERR! Exit status 1``
+
+Please install canvas and the libs manually with:
+
+``
+sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+``
+
+``
+sudo npm install canvas --unsafe-perm=true
+``
+
+
 
 ### Adapter Configuration
 - For IP address, the IP address of the robot must be entered in the format "192.168.178.XX"
@@ -215,11 +232,13 @@ Sorry, not yet finished.
 - Widget at the time without function
 
 ## Changelog
+### 2.0.5 (2020-02-17)
+* (MeisterTR) add roooms for s50 with map (cloud or Valetudo needed)
 ### 2.0.4 (2020-02-13)
-* add cloud login to get token
-* add cloud Map
-* add new and old Map format
-* rebuild config page
+* (MeisterTR) add cloud login to get token
+* (MeisterTR) add cloud Map
+* (MeisterTR) add new and old Map format
+* (MeisterTR) rebuild config page
 ### 1.10.5 (2020-02-11)
 * send Ping only if not connected, otherwise get_status
 * set button states to true, if clicked
