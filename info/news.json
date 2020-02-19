@@ -741,39 +741,5 @@
             "web": "smaller(3.0.0)",
             "socketio": "smaller(3.0.0)"
         }
-    },
-    {
-        "title": {
-            "en": "tr-064 not maintained anymore",
-            "de": "tr-064 wird nicht mehr gepflegt",
-            "ru": "tr-064 больше не поддерживается",
-            "pt": "O tr-064 não é mais mantido",
-            "nl": "tr-064 niet meer onderhouden",
-            "fr": "tr-064 n'est plus maintenu",
-            "it": "tr-064 non mantenuto più",
-            "es": "tr-064 no se mantiene más",
-            "pl": "tr-064 nie jest już obsługiwany",
-            "zh-cn": "tr-064不再维护了"
-        },
-        "content": {
-            "en": "This project is no longer maintained for personal reasons. Please use the ioBroker.tr-064-community instead.",
-            "de": "Dieses Projekt wird aus persönlichen Gründen nicht mehr gepflegt. Bitte verwenden Sie stattdessen den ioBroker.tr-064-community.",
-            "ru": "Этот проект больше не поддерживается по личным причинам. Пожалуйста, используйте вместо этого ioBroker.tr-064-community.",
-            "pt": "Este projeto não é mais mantido por motivos pessoais. Por favor, use o ioBroker.tr-064-community em seu lugar.",
-            "nl": "Dit project wordt om persoonlijke redenen niet langer onderhouden. Gebruik in plaats daarvan de ioBroker.tr-064-community.",
-            "fr": "Ce projet n'est plus maintenu pour des raisons personnelles. Veuillez utiliser le ioBroker.tr-064-community à la place.",
-            "it": "Questo progetto non è più mantenuto per ragioni personali. Utilizzare invece ioBroker.tr-064-community.",
-            "es": "Este proyecto ya no se mantiene por razones personales. Por favor use el ioBroker.tr-064-community en su lugar.",
-            "pl": "Ten projekt nie jest już utrzymywany z powodów osobistych. Zamiast tego użyj pliku ioBroker.tr-064-community.",
-            "zh-cn": "由于个人原因，该项目不再维护。请改用ioBroker.tr-064-community。"
-        },
-        "id": "broadlink",
-        "created": "2019-11-14T00:00:00.000Z",
-		"repo": "latest",
-        "conditions": {
-			"info": "bigger(1.5.5)",
-            "tr-064": "installed",
-            "tr-064-community": "!installed"
-        }
     }
 ]
