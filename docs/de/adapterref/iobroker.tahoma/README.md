@@ -3,44 +3,47 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tahoma/README.md
 title: ioBroker.tahoma
-hash: 6jJeftdc0XAKJLMQDjrLpjPo+Iha2eALuaX8cShxvjc=
+hash: iU4VTquXT8wLOTsxI8XsBIZpHUdUgfekYjMGvx+s2XU=
 ---
 ![Logo](../../../en/adapterref/iobroker.tahoma/admin/tahoma.png)
 
+![Anzahl der Installationen](http://iobroker.live/badges/tahoma-installed.svg)
+![Downloads](https://img.shields.io/npm/dm/iobroker.tahoma.svg)
+![NPM](https://nodei.co/npm/iobroker.tahoma.png?downloads=true)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.tahoma.svg)
-![Build Status](https://travis-ci.org/StrathCole/ioBroker.tahoma.svg?branch=master)
+![Build-Status](https://travis-ci.org/StrathCole/ioBroker.tahoma.svg?branch=master)
 ![Lizenz](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
 # IoBroker.tahoma
-Ein ioBroker-Adapter für Somfy Tahoma. Dieses Projekt hat keine Zugehörigkeit zu Somfy. Ursprünglich basierend auf dem Skript von https://forum.iobroker.net/post/336001.
+Ein ioBroker-Adapter für Somfy Tahoma. Dieses Projekt ist nicht mit Somfy verbunden. Zunächst basierend auf dem Skript aus https://forum.iobroker.net/post/336001.
 
-Der Adapter stellt eine Verbindung zur Tahomalink-Endbenutzer-API her und steuert die Geräte, die über die Tahoma Box (und höchstwahrscheinlich Connexoon) eingerichtet wurden.
-Der Adapter ist noch nicht mit allen Funktionen ausgestattet, sollte jedoch die meisten Aktionen zur Steuerung von Jalousien und Rollläden usw. unterstützen.
+Der Adapter stellt eine Verbindung zur Tahomalink-Endbenutzer-API her und steuert die Geräte, die über Tahoma Box (und höchstwahrscheinlich Connexoon) eingerichtet wurden.
+Der Adapter ist noch nicht vollständig ausgestattet, sollte jedoch die meisten Aktionen zur Steuerung von Jalousien und Rollläden usw. unterstützen.
 
-Befolgen Sie einige der vom Adapter erstellten Status.
+Folgen Sie einigen der vom Adapter erstellten Zustände.
 
-## Tahoma.X.Location
-Der Status in diesem Baum enthält die persönlichen Informationen des Benutzers wie Stadt, Straße und Längengrad / Breitengrad.
+## Tahoma.X.location
+Der Status in diesem Baum enthält die persönlichen Informationen des Benutzers wie Stadt, Straße und Längen- / Breitengrad.
 
 ## Tahoma.X.devices. *. deviceURL
-Dieser Status enthält die Geräte-URL, mit der Tahoma das Gerät identifiziert.
+Dieser Status enthält die Geräte-URL, die Tahoma zur Identifizierung des Geräts verwendet.
 
-## Tahoma.X.devices. *. -Befehle
-Diese Zustände enthalten Schaltflächenbefehle zur Steuerung der Geräte. Die meisten Geräte unterstützen Befehle wie `close` und `open`, aber auch einige andere.
-Einige Befehle haben am Ende einen `:slow`, sofern dies vom Gerät unterstützt wird. Wenn Sie diese verwenden, wird eine niedrige Geschwindigkeit oder ein sogenannter Silent-Modus aktiviert.
+## Tahoma.X.devices. *. Befehle
+Diese Zustände enthalten Schaltflächenbefehle zur Steuerung der Geräte. Die meisten Geräte unterstützen Befehle wie `close` und `open`, aber auch einige mehr.
+Einige der Befehle haben am Ende einen `:slow`, wenn dies vom Gerät unterstützt wird. Die Verwendung dieser ermöglicht einen langsamen oder sogenannten Silent-Modus.
 
-## Tahoma.X.devices. *. states
+## Tahoma.X.devices. *. Staaten
 Diese Zustände enthalten den aktuellen Status der Geräte wie folgt. Alle mit `[**]` gekennzeichneten Einstellungen können bearbeitet werden, um das Verhalten / die Sendebefehle des Geräts zu steuern.
-Einige Staaten haben am Ende einen `:slow`, wenn dies vom Gerät unterstützt wird. Wenn Sie diese einstellen, wird die niedrige Geschwindigkeit oder der sogenannte stille Modus aktiviert.
+Einige Staaten haben am Ende einen `:slow`, wenn dies vom Gerät unterstützt wird. Wenn Sie diese einstellen, wird eine niedrige Geschwindigkeit oder ein sogenannter Silent-Modus aktiviert.
 
-`[**] tahoma.X.devices.*.states.core:DeploymentState` - Stellt Informationen zum aktuellen Bereitstellungsstatus bereit und steuert diesen. 100 bedeutet vollständig implementiert, 0 ist nicht implementiert. Nicht alle Geräte haben diesen Wert, einige haben stattdessen `ClosureState`.
-`[**] tahoma.X.devices.*.states.core:TargetDeploymentState` - Siehe `tahoma.X.devices.*.states.core:DeploymentState` `[**] tahoma.X.devices.*.states.coreClosureState` - Stellt Informationen zum aktuellen Schließungsstatus bereit und steuert diesen. 100 bedeutet vollständig geschlossen, 0 ist offen. Nicht alle Geräte haben diesen Wert, einige haben stattdessen `DeploymentState`.
-`[**] tahoma.X.devices.*.states.core:TargetClosureState` - Siehe `tahoma.X.devices.*.states.core:ClosureState` `[**] tahoma.X.devices.*.states.core:OrientationState` - Bietet Informationen über und steuert die Ausrichtung (z. B. für Rollläden) von Lamellen. Nicht alle Geräte bieten diesen Wert.
+`[**] tahoma.X.devices.*.states.core:DeploymentState` - Enthält Informationen zum aktuellen Bereitstellungsstatus und steuert diesen. 100 bedeutet vollständig bereitgestellt, 0 ist nicht bereitgestellt. Nicht alle Geräte haben diesen Wert, einige haben stattdessen `ClosureState`.
+`[**] tahoma.X.devices.*.states.core:TargetDeploymentState` - Siehe `tahoma.X.devices.*.states.core:DeploymentState` `[**] tahoma.X.devices.*.states.coreClosureState` - Bietet Informationen über den aktuellen Stand der Schließung und steuert diesen. 100 bedeutet vollständig geschlossen, 0 ist offen. Nicht alle Geräte haben diesen Wert, einige haben stattdessen `DeploymentState`.
+`[**] tahoma.X.devices.*.states.core:TargetClosureState` - Siehe `tahoma.X.devices.*.states.core:ClosureState` `[**] tahoma.X.devices.*.states.core:OrientationState` - Bietet Informationen über und überwacht die Ausrichtung (z. B. für Rollläden) von Lamellen. Nicht alle Geräte bieten diesen Wert.
 `[**] tahoma.X.devices.*.states.core:TargetOrientationState` - Siehe `tahoma.X.devices.*.states.core:OrientationState` `tahoma.X.devices.*.states.core:NameState` - Enthält den aktuellen Namen des Geräts.
-`tahoma.X.devices.*.states.core:OpenClosedState` - Enthält `closed`, wenn das Gerät zu 100% geschlossen oder zu 0% in Betrieb ist, und `open`, ansonsten.
-`tahoma.X.devices.*.states.core:PriorityLockTimerState` - Wenn ein Sensor das Gerät gesperrt hat, wird dies hier angegeben, z. G. Ein Windsensor blockiert eine Markise.
-`tahoma.X.devices.*.states.core:RSSILevelState` - Die aktuelle Signalqualität des Geräts.
-`tahoma.X.devices.*.states.core:StatusState` - `available`, wenn das Gerät aktuell verfügbar ist.
+`tahoma.X.devices.*.states.core:OpenClosedState` - Enthält `closed` wenn das Gerät zu 100% geschlossen oder zu 0% eingesetzt ist und `open` sonst.
+`tahoma.X.devices.*.states.core:PriorityLockTimerState` - Wenn ein Sensor das Gerät gesperrt hat, wird dies hier angegeben, z. G. ein Windsensor blockiert eine Markise.
+`tahoma.X.devices.*.states.core:RSSILevelState` - Die aktuelle Signalqualität des Gerätes.
+`tahoma.X.devices.*.states.core:StatusState` - `available` wenn das Gerät aktuell verfügbar ist.
 `tahoma.X.devices.*.states.io:PriorityLockLevelState` - Siehe `tahoma.X.devices.*.states.core:PriorityLockTimerState` `tahoma.X.devices.*.states.io:PriorityLockOriginatorState` - Siehe `tahoma.X.devices.*.states.core:PriorityLockTimerState` `tahoma.X.devices.*.states.moving` - Gibt an, ob sich das Gerät gerade bewegt. `0 = stopped`, `1 = up/undeploy`, `2 = down/deploy`, `3 = unknown direction`
 
 ## Spenden
@@ -48,9 +51,15 @@ Einige Staaten haben am Ende einen `:slow`, wenn dies vom Gerät unterstützt wi
 
 ## Changelog
 
+### 0.3.2
+
+-  Fixed silent modes (low speed) for newer Somfy devices
+-  Fixed problem with wrong reference to `this`
+
 ### 0.3.1
 
 -   Fixed adapter crash on empty response object after request error
+-   Fixed problems with slow/silent mode for closure
 
 ### 0.3.0
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.web-speedy/README.md
 title: ioBroker.web-speedy
-hash: JVh7sCm5G2DiV8lPopZ2orRBflHlWpQnhjSWN1NZKKc=
+hash: c53coGGAwPoPNkVflNuBVhYnpJXOP0mQ8U3HTL42Klo=
 ---
 ![Logo](../../../en/adapterref/iobroker.web-speedy/admin/web-speedy.png)
 
@@ -26,29 +26,38 @@ Beim ersten Start werden die besten Server in der Nähe basierend auf den Ping-E
 Web-Speedy ist so aufgebaut, dass die gesamte Ausführung automatisch erfolgt, sodass Sie keine Konfigurationsseite haben.
 Sie können jedoch noch einige Dinge beeinflussen (siehe Datenpunkte):
 
-- [test_best] Führen Sie den Test jetzt auf dem besten Server basierend auf den letzten Ping-Ergebnissen aus
-- [test_specific] Verwenden Sie die Dropdown-Liste, um einen der fünf besten Server auszuwählen, die im vorherigen Scan gefunden wurden
-- [test_duration] Die maximale Länge (in Sekunden) eines einzelnen Testlaufs (Upload oder Download)
-- [test_id_always] Führen Sie den Test IMMER auf einer bestimmten Server-ID aus. [Eine Server-ID finden Sie hier.]
-- [test_id_once] Führen Sie den Test EINMAL auf einer bestimmten Server-ID aus. [Eine Server-ID finden Sie hier.]
-- [test_auto_intervall] Intervallzeit für die automatisierte Testausführung (Standard = 60, wenn auf 0 gesetzt, wird kein automatisierter Test ausgeführt!)
+| Staat | Beschreibung |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| test_auto_modus | Servermodus zum automatischen Ausführen von Tests mit |
+| test_auto_intervall | Intervallzeit für die automatisierte Testausführung (Standard = 30, wenn auf 0 gesetzt, wird kein automatisierter Test ausgeführt!) |
+| test_best | Führen Sie den Test jetzt auf dem besten Server basierend auf den letzten Ping-Ergebnissen aus |
+| test_by_id | Führen Sie jetzt einen Test für eine bestimmte Server-ID aus! |
+| test_by_url | Führen Sie jetzt einen Test für eine bestimmte Server-URL aus! |
+| test_duration | Die maximale Länge (in Sekunden) eines einzelnen Testlaufs (Upload oder Download) |
+| test_spezifisch | Verwenden Sie die Dropdown-Liste, um einen der fünf besten Server auszuwählen, die im vorherigen Scan gefunden wurden |
+| test_specific_id | Geben Sie eine bestimmte Server-ID ein. [Eine Server-ID finden Sie hier](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A) |
+| test_specific_url | Geben Sie eine bestimmte Server-URL ein. [Eine Server-URL finden Sie hier.] |
+
+![Mbyte](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/Mbyte.png) ![Mbit](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/Mbit.png) ![Zustände](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/states.png)
 
 ## Unterstütze mich
 Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
-### 0.1.6 Implemented specific scan by url
-* (DutchmanNL) Implemented specific scan by url
+### 0.2.0 Initial release
+* (DutchmanNL) Attention : Delete all objects beforer adapter start if previous version installed !
+* (DutchmanNL) Implement [ test_auto_modus ] Server mode to run automatically tests with
+* (DutchmanNL) Fix issues with running specific server tests
+* (DutchmanNL) Upload speed calculation issue fixed
 
 ### 0.1.5 New settings possibilities & Code improvements
 * (DutchmanNL) Implemented states for progress in %
 * (DutchmanNL) No automated scan if test_auto_intervall set zo 0
 * (DutchmanNL) Ensure propper running state reset at adapter start
-* (DutchmanNL) Improve code performance  and avoid multiple running instances
-* (DutchmanNL) Implemented adjustable duration time for scan by(increase if you see strange test results, like to 20 secons)
-* (DutchmanNL) Implemented state to run test ONCE by id or URL at specific server [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
-* (DutchmanNL) Implemented state to run test ALWAYS by id or URL at specific server [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
+* (DutchmanNL) Improve code performance and avoid multiple running instances
+* (DutchmanNL) Implemented adjustable duration time for scan by (increase if you see strange test results, like to 20 secons)
+* (DutchmanNL) Implemented state to run test by id or URL at specific server [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
 
 ### 0.1.1 MegaByte to Megabit calculation and current test speeds implemented
 * (DutchmanNL) Fix wrong status "test runnig"

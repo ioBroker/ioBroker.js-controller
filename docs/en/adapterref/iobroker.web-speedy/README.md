@@ -23,13 +23,22 @@ At first startup it will retrieve best-servers nearby based on ping results and 
 Web-Speedy is build in a way all execution is handled automatically, meaning you don't have a configuration page.
 However, you still can influance some things (see datapoints):
 
-- [ test_best ]				Run test now on best-server based on last ping results
-- [ test_specific ]			Use the dropdown list to choose one of the top 5 servers found in previous scan
-- [ test_duration ]			The maximum length (in seconds) of a single test run (upload or download)
-- [ test_id_always ]		Run test ALWAYS on specific server id [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
-- [ test_id_once ]	        Run test ONCE on specific server id [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
-- [ test_auto_intervall ]   Intervall time for automated test-execution (default = 60, if set to 0 no automated test will run !)
+| State               | Description                                                                                                                                                                          |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| test_auto_modus     | Server mode to run automatically tests with                                                                                                                                          |
+| test_auto_intervall | Intervall time for automated test-execution (default = 30, if set to 0 no automated test will run !)                                                                                 |
+| test_best           | Run test now on best-server based on last ping results                                                                                                                               |
+| test_by_id          | Run test on specific server ID now !                                                                                                                                                          |
+| test_by_url         | Run test on specific server URL now !                                                                                                                                                         |
+| test_duration       | The maximum length (in seconds) of a single test run (upload or download)                                                                                                            |
+| test_specific       | Use the dropdown list to choose one of the top 5 servers found in previous scan                                                                                                      |
+| test_specific_id    | Enter specific server ID [Please find a server ID here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)   |
+| test_specific_url   | Enter specific server URL [Please find a server URL here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A) |
 
+
+![Mbyte](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/Mbyte.png)
+![Mbit](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/Mbit.png)
+![States](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/states.png)
 
 ## Support me
 If you like my work, please feel free to provide a personal donation  
@@ -38,20 +47,19 @@ If you like my work, please feel free to provide a personal donation
 
 ## Changelog
 
-### 0.1.8 Upload speed calculation issue fixed
+### 0.2.0 Initial release
+* (DutchmanNL) Attention : Delete all objects beforer adapter start if previous version installed !
+* (DutchmanNL) Implement [ test_auto_modus ] Server mode to run automatically tests with
+* (DutchmanNL) Fix issues with running specific server tests
 * (DutchmanNL) Upload speed calculation issue fixed
-
-### 0.1.7 Implemented specific scan by url
-* (DutchmanNL) Implemented specific scan by url
 
 ### 0.1.5 New settings possibilities & Code improvements
 * (DutchmanNL) Implemented states for progress in %
 * (DutchmanNL) No automated scan if test_auto_intervall set zo 0
 * (DutchmanNL) Ensure propper running state reset at adapter start
-* (DutchmanNL) Improve code performance  and avoid multiple running instances
-* (DutchmanNL) Implemented adjustable duration time for scan by(increase if you see strange test results, like to 20 secons)
-* (DutchmanNL) Implemented state to run test ONCE by id or URL at specific server [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
-* (DutchmanNL) Implemented state to run test ALWAYS by id or URL at specific server [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
+* (DutchmanNL) Improve code performance and avoid multiple running instances
+* (DutchmanNL) Implemented adjustable duration time for scan by (increase if you see strange test results, like to 20 secons)
+* (DutchmanNL) Implemented state to run test by id or URL at specific server [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
 
 ### 0.1.1 MegaByte to Megabit calculation and current test speeds implemented
 * (DutchmanNL) Fix wrong status "test runnig"

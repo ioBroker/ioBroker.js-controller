@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.web-speedy/README.md
 title: ioBroker.web-speedy
-hash: JVh7sCm5G2DiV8lPopZ2orRBflHlWpQnhjSWN1NZKKc=
+hash: c53coGGAwPoPNkVflNuBVhYnpJXOP0mQ8U3HTL42Klo=
 ---
 ![商标](../../../en/adapterref/iobroker.web-speedy/admin/web-speedy.png)
 
@@ -26,29 +26,38 @@ Web-Speedy使您可以定期测试Internet连接并将结果存储在ioBroker中
 Web-Speedy以自动处理所有执行的方式构建，这意味着您没有配置页面。
 但是，您仍然可以影响某些事情（请参见数据点）：
 
--[test_best]现在根据上次ping结果在best服务器上运行测试
--[test_specific]使用下拉列表选择上一次扫描中发现的前5个服务器之一
--[test_duration]一次测试运行（上传或下载）的最大长度（以秒为单位）
--[test_id_always]始终在特定服务器ID上运行测试[请在此处找到服务器ID]（https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-P）
--[test_id_once]在特定服务器ID上运行一次测试[请在此处找到服务器ID]（https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPK-P）
--[test_auto_intervall]自动测试执行的时间间隔（默认值= 60，如果设置为0，则不会运行任何自动测试！）
+|州|描述 |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| test_auto_modus |服务器模式运行|
+| test_auto_intervall |自动测试执行的间隔时间（默认值= 30，如果设置为0，则不会运行任何自动测试！）|
+| test_best |现在根据上次ping结果在最佳服务器上运行测试|
+| test_by_id |立即在特定服务器ID上运行测试！ |
+| test_by_url |立即在特定服务器URL上运行测试！ |
+| test_duration |一次测试运行（上传或下载）的最大长度（以秒为单位）|
+| test_specific |使用下拉列表选择上一次扫描中发现的前5个服务器之一。 |
+| test_specific_id |输入特定的服务器ID[请在这里找到服务器ID](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)|
+| test_specific_url |输入特定的服务器URL [请在此处找到服务器URL]（https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A）|
+
+![兆字节](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/Mbyte.png)![兆比特](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/Mbit.png)![状态](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/states.png)
 
 ＃＃ 支持我
 如果您喜欢我的工作，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
-### 0.1.6 Implemented specific scan by url
-* (DutchmanNL) Implemented specific scan by url
+### 0.2.0 Initial release
+* (DutchmanNL) Attention : Delete all objects beforer adapter start if previous version installed !
+* (DutchmanNL) Implement [ test_auto_modus ] Server mode to run automatically tests with
+* (DutchmanNL) Fix issues with running specific server tests
+* (DutchmanNL) Upload speed calculation issue fixed
 
 ### 0.1.5 New settings possibilities & Code improvements
 * (DutchmanNL) Implemented states for progress in %
 * (DutchmanNL) No automated scan if test_auto_intervall set zo 0
 * (DutchmanNL) Ensure propper running state reset at adapter start
-* (DutchmanNL) Improve code performance  and avoid multiple running instances
-* (DutchmanNL) Implemented adjustable duration time for scan by(increase if you see strange test results, like to 20 secons)
-* (DutchmanNL) Implemented state to run test ONCE by id or URL at specific server [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
-* (DutchmanNL) Implemented state to run test ALWAYS by id or URL at specific server [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
+* (DutchmanNL) Improve code performance and avoid multiple running instances
+* (DutchmanNL) Implemented adjustable duration time for scan by (increase if you see strange test results, like to 20 secons)
+* (DutchmanNL) Implemented state to run test by id or URL at specific server [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
 
 ### 0.1.1 MegaByte to Megabit calculation and current test speeds implemented
 * (DutchmanNL) Fix wrong status "test runnig"

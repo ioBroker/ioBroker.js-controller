@@ -3,10 +3,13 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.tahoma/README.md
 title: ioBroker.tahoma
-hash: 6jJeftdc0XAKJLMQDjrLpjPo+Iha2eALuaX8cShxvjc=
+hash: iU4VTquXT8wLOTsxI8XsBIZpHUdUgfekYjMGvx+s2XU=
 ---
 ![логотип](../../../en/adapterref/iobroker.tahoma/admin/tahoma.png)
 
+![Количество установок](http://iobroker.live/badges/tahoma-installed.svg)
+![Загрузки](https://img.shields.io/npm/dm/iobroker.tahoma.svg)
+![NPM](https://nodei.co/npm/iobroker.tahoma.png?downloads=true)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.tahoma.svg)
 ![Статус сборки](https://travis-ci.org/StrathCole/ioBroker.tahoma.svg?branch=master)
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
@@ -27,13 +30,13 @@ hash: 6jJeftdc0XAKJLMQDjrLpjPo+Iha2eALuaX8cShxvjc=
 
 ## Tahoma.X.devices. *. команды
 Эти состояния содержат команды кнопок для управления устройствами. Большинство устройств будут поддерживать такие команды, как `close` и `open`, но также и некоторые другие.
-Некоторые из команд имеют `:slow` в конце, если они поддерживаются устройством. Использование этих включает низкую скорость или так называемый бесшумный режим.
+Некоторые из команд имеют `:slow` в конце, если они поддерживаются устройством. Использование этих включает низкоскоростной или так называемый бесшумный режим.
 
 ## Tahoma.X.devices. *. Состояния
 Эти состояния содержат текущее состояние устройств следующим образом. Все настройки, отмеченные `[**]`, могут редактироваться для управления поведением устройства / отправки команд.
-В некоторых состояниях в конце есть `:slow`, если это поддерживается устройством. Их установка включает низкую скорость или так называемый тихий режим.
+В некоторых состояниях в конце есть `:slow`, если это поддерживается устройством. Их установка включает низкую скорость или так называемый бесшумный режим.
 
-`[**] tahoma.X.devices.*.states.core:DeploymentState` - Предоставляет информацию о текущем развертывании и контролирует его состояние. 100 означает полностью развернутый, 0 не развернут. Не все устройства имеют это значение, некоторые вместо этого имеют `ClosureState`.
+`[**] tahoma.X.devices.*.states.core:DeploymentState` - Предоставляет информацию о текущем развертывании и управляет им. 100 означает полностью развернутый, 0 не развернут. Не все устройства имеют это значение, некоторые вместо этого имеют `ClosureState`.
 `[**] tahoma.X.devices.*.states.core:TargetDeploymentState` - см. `tahoma.X.devices.*.states.core:DeploymentState` `[**] tahoma.X.devices.*.states.coreClosureState` - Предоставляет информацию о состоянии текущего закрытия и контролирует его. 100 означает полностью закрыт, 0 открыт. Не все устройства имеют это значение, некоторые вместо этого имеют `DeploymentState`.
 `[**] tahoma.X.devices.*.states.core:TargetClosureState` - См. `tahoma.X.devices.*.states.core:ClosureState` `[**] tahoma.X.devices.*.states.core:OrientationState` - Предоставляет информацию об ориентации (например, для жалюзи) планок и контролирует ее. Не все устройства предлагают это значение.
 `[**] tahoma.X.devices.*.states.core:TargetOrientationState` - См. `tahoma.X.devices.*.states.core:OrientationState` `tahoma.X.devices.*.states.core:NameState` - Содержит текущее название устройства.
@@ -48,9 +51,15 @@ hash: 6jJeftdc0XAKJLMQDjrLpjPo+Iha2eALuaX8cShxvjc=
 
 ## Changelog
 
+### 0.3.2
+
+-  Fixed silent modes (low speed) for newer Somfy devices
+-  Fixed problem with wrong reference to `this`
+
 ### 0.3.1
 
 -   Fixed adapter crash on empty response object after request error
+-   Fixed problems with slow/silent mode for closure
 
 ### 0.3.0
 

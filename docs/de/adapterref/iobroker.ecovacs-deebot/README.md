@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: YGN/6v/1qE6LMVi/Pdzxp5Nv9o/GdDoAospgIpeTuvU=
+hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -20,12 +20,32 @@ Geräte, die mit dem **MQTT** -Protokoll kommunizieren, sind experimentell.
 
 Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.communicationProtocol` überprüfen (Werte: `XMPP`, `MQTT`).
 
+### Diese Modelle funktionieren in vollem Umfang
+* Deebot Slim 2
+* Deebot Ozmo 930
+
+### Diese Modelle funktionieren fast vollständig
+* Deebot 601
+* Deebot 710/711
+* Deebot 900/901
+* Deebot Ozmo 610
+* Deebot Ozmo 950
+
+### Diese Modelle sollten (fast) vollständig funktionieren
+* Deebot N79T
+* Deebot 600/605
+* Deebot Ozmo 960 (nicht getestet)
+
+### Diese Modelle sollten teilweise funktionieren
+* Deebot Ozmo 900
+
 ### Tasten und Steuerung
 | Modell | Grund * | Pause | Stelle | spotArea | customArea ** | Kante | playSound | waterLevel |
-|------ |------ |------ |------ |------ |------ |------ |------ |------ |
+|------------------- |-------- |------ |------ |--------- |-------------- |------ |---------- |----------- |
 | Deebot Slim 2 | x | n / a | x | n / a | n / a | x | n / a | n / a |
-| Deebot 710 | x | | | | | | | n / a |
-| Deebot 900 | x | | n / a | | | n / a | | n / a |
+| Deebot 600/601/605 | x | | x | n / a | n / a | x | | |
+| Deebot 710/711 | x | | | | | | | n / a |
+| Deebot 900/901 | x | x | n / a | | | n / a | | n / a |
 | Deebot Ozmo 610 | x | | x | n / a | n / a | x | | |
 | Deebot Ozmo 900 | | | n / a | | | n / a | | |
 | Deebot Ozmo 930 | x | x | n / a | x | x | n / a | x | x |
@@ -36,31 +56,16 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 **) inkl. Anzahl der `cleanings`
 
 ### Info und Status
-| Modell | Batterie | chargestatus | cleanstatus | waterLevel | Verbrauchsmaterialien |
-
-| ------ | ------ | ------ | ------ | ------ | ------ | Deebot Slim 2 | x | x | x | n / a | x
-
-| Deebot 710 | | | | n / a | |
-| Deebot 900 | | | | n / a | |
-| Deebot Ozmo 610 | | | | | |
-| Deebot Ozmo 900 | | | | | |
-| Deebot Ozmo 930 | x | x | x | x | x |
-| Deebot Ozmo 950 | x | | x | | |
-
-### Funktioniert einwandfrei
-* Deebot Slim 2
-* Deebot Ozmo 610
-* Deebot Ozmo 930
-
-### Sollte arbeiten
-* Deebot N79T
-* Deebot 601
-* Deebot Ozmo 960
-
-### Sollte teilweise funktionieren
-* Deebot 710
-* Deebot Ozmo 900
-* Deebot Ozmo 950
+| Modell | Batterie | chargestatus | cleanstatus | waterLevel | Wasserkasten | Verbrauchsmaterialien |
+|------------------- |-------- |------------- |------------ |----------- |--------  |------------ |
+| Deebot Slim 2 | x | x | x | n / a | n / a | x |
+| Deebot 600/601/605 | x | x | x | | | |
+| Deebot 710/711 | x | | | n / a | n / a | |
+| Deebot 900/901 | x | x | x | n / a | n / a | |
+| Deebot Ozmo 610 | | | | | | |
+| Deebot Ozmo 900 | | | | | | |
+| Deebot Ozmo 930 | x | x | x | x | x | x |
+| Deebot Ozmo 950 | x | | x | | | |
 
 ## Steuerung
 ### Tasten
@@ -73,18 +78,23 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 | Stelle | Punktreinigung starten |
 | stop | Reinigungsprozess stoppen |
 | Pause | den Reinigungsvorgang unterbrechen |
-| spotArea `0`-`9` | Bis zu 9 Schaltflächen * für die in der Ecovacs-App | definierten Bereiche |
-
-*) Siehe Adapterkonfiguration
+| spotArea `0`-`9` | Bis zu 9 Schaltflächen für die in der Ecovacs-App | definierten Bereiche |
 
 ### Flächen- / Zonenreinigung
 #### SpotArea
-* durch Kommas getrennte Liste von Zahlen, die mit "0" (z. B. "1,3") für zu reinigende Bereiche beginnen.
-* Schaltflächen für Punktbereiche "0" - "9" (siehe "Adapterkonfiguration")
+* Spotbereiche werden in der mobilen App mit Buchstaben benannt
+    * Im Adapter sind sie einer Nummer zugeordnet:
+        * `A` =` 0`
+        * `B` =` 1`
+        * etc.
+* `spotArea`: durch Kommas getrennte Liste von Zahlen
+    * beginnend mit "0" (z. B. "1,3" = Bereiche "B" und "D") für zu reinigende Bereiche
+* Die Anzahl der Schaltflächen (`spotArea_0-9`) kann in der Adapterkonfiguration konfiguriert werden
 
 #### CustomArea
-* durch Kommas getrennte Liste von genau 4 Positionswerten für "x1, y1, x2, y2" (z. B. "-3975.000000,2280.000000, -1930.000000,4575.000000")
-    * Position `0.000000,0.000000,0.000000,0.000000` die Position der Ladestation
+* durch Kommas getrennte Liste von genau 4 Positionswerten für "x1, y1, x2, y2" (z. B. "-3975,2280, -1930,4575")
+    * Position `0,0,0,0` scheint die Position der Ladestation zu sein
+    * Ein Wert von "1000" scheint die Entfernung von ungefähr 1 Meter zu sein
 
 #### Wasserstand
 * Kontrollieren und Anzeigen des Wasserstandes ("niedrig", "mittel", "hoch" und "maximal")
@@ -125,6 +135,9 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 
 ## Changelog
 
+### 0.3.10
+   * (mrbungle64) Improved support for XML based MQTT devices
+   
 ### 0.3.9
    * (mrbungle64) Improved support for XML based MQTT devices
 

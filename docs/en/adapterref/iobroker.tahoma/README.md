@@ -1,5 +1,9 @@
 ![Logo](admin/tahoma.png)
 
+![Number of Installations](http://iobroker.live/badges/tahoma-installed.svg) [![Downloads](https://img.shields.io/npm/dm/iobroker.tahoma.svg)](https://www.npmjs.com/package/iobroker.tahoma)
+
+[![NPM](https://nodei.co/npm/iobroker.tahoma.png?downloads=true)](https://nodei.co/npm/iobroker.tahoma/)
+
 [![NPM version](https://img.shields.io/npm/v/iobroker.tahoma.svg)](https://www.npmjs.com/package/iobroker.tahoma)
 [![Build Status](https://travis-ci.org/StrathCole/ioBroker.tahoma.svg?branch=master)](https://travis-ci.org/StrathCole/ioBroker.tahoma)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/StrathCole/iobroker.tahoma/blob/master/LICENSE)
@@ -48,6 +52,11 @@ Some of the states have a `:slow` at the end if supported by the device. Setting
 
 
 ## Changelog
+
+### 0.3.2
+
+-  Fixed silent modes (low speed) for newer Somfy devices
+-  Fixed problem with wrong reference to `this`
 
 ### 0.3.1
 

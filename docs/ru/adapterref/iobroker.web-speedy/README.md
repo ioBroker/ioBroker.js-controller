@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.web-speedy/README.md
 title: ioBroker.web-скоростной
-hash: JVh7sCm5G2DiV8lPopZ2orRBflHlWpQnhjSWN1NZKKc=
+hash: c53coGGAwPoPNkVflNuBVhYnpJXOP0mQ8U3HTL42Klo=
 ---
 ![логотип](../../../en/adapterref/iobroker.web-speedy/admin/web-speedy.png)
 
@@ -26,29 +26,38 @@ Web-Speedy позволяет вам регулярно проверять ва�
 Web-Speedy построен так, что все выполнение обрабатывается автоматически, то есть у вас нет страницы конфигурации.
 Тем не менее, вы все еще можете влиять на некоторые вещи (см. Точки данных):
 
-- [test_best] Теперь запустите тестирование на лучшем сервере на основе результатов последнего пинга
-- [test_specific] Используйте выпадающий список, чтобы выбрать один из 5 лучших серверов, найденных в предыдущем сканировании
-- [test_duration] Максимальная продолжительность (в секундах) одного запуска теста (выгрузка или загрузка)
-- [test_id_always] Запускайте тест ВСЕГДА на определенном идентификаторе сервера.
-- [test_id_once] Запустить тест ONCE для определенного идентификатора сервера.
-- [test_auto_intervall] Время интервала для автоматического выполнения теста (по умолчанию = 60, если установлено значение 0, автоматический тест не будет выполняться!)
+| Государство | Описание |
+|---------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| test_auto_modus | Режим сервера для автоматического запуска тестов с |
+| test_auto_intervall | Интервал времени для автоматического выполнения теста (по умолчанию = 30, если установлено значение 0, автоматический тест не будет запущен!) |
+| test_best | Запустите тестирование на лучшем сервере на основе результатов последнего пинга |
+| test_by_id | Запустите тестирование на определенном идентификаторе сервера сейчас! |
+| test_by_url | Запустите тестирование на определенном URL сервера сейчас! |
+| test_duration | Максимальная продолжительность (в секундах) одного теста (загрузка или загрузка) |
+| test_specific | Используйте раскрывающийся список, чтобы выбрать один из 5 лучших серверов, найденных при предыдущем сканировании |
+| test_specific_id | Введите идентификатор конкретного сервера [Пожалуйста, найдите идентификатор сервера здесь](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A) |
+| test_specific_url | Введите URL конкретного сервера [Пожалуйста, найдите здесь URL сервера] (https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wmeA) |
+
+![мегабайт](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/Mbyte.png) ![Mbit](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/Mbit.png) ![состояния](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.web-speedy/master/admin/states.png)
 
 ## Поддержите меня
 Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это личная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
-### 0.1.6 Implemented specific scan by url
-* (DutchmanNL) Implemented specific scan by url
+### 0.2.0 Initial release
+* (DutchmanNL) Attention : Delete all objects beforer adapter start if previous version installed !
+* (DutchmanNL) Implement [ test_auto_modus ] Server mode to run automatically tests with
+* (DutchmanNL) Fix issues with running specific server tests
+* (DutchmanNL) Upload speed calculation issue fixed
 
 ### 0.1.5 New settings possibilities & Code improvements
 * (DutchmanNL) Implemented states for progress in %
 * (DutchmanNL) No automated scan if test_auto_intervall set zo 0
 * (DutchmanNL) Ensure propper running state reset at adapter start
-* (DutchmanNL) Improve code performance  and avoid multiple running instances
-* (DutchmanNL) Implemented adjustable duration time for scan by(increase if you see strange test results, like to 20 secons)
-* (DutchmanNL) Implemented state to run test ONCE by id or URL at specific server [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
-* (DutchmanNL) Implemented state to run test ALWAYS by id or URL at specific server [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
+* (DutchmanNL) Improve code performance and avoid multiple running instances
+* (DutchmanNL) Implemented adjustable duration time for scan by (increase if you see strange test results, like to 20 secons)
+* (DutchmanNL) Implemented state to run test by id or URL at specific server [Please find a server id here](https://c.speedtest.net/speedtest-servers-static.php?fbclid=IwAR3mLi2N9mwp1zG4Xu96cn4h1Zql6NG26p6GDjctjMftq0YzKKwPk-wme8A)
 
 ### 0.1.1 MegaByte to Megabit calculation and current test speeds implemented
 * (DutchmanNL) Fix wrong status "test runnig"

@@ -3,10 +3,13 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.plenticore/README.md
 title: ioBroker.plenticore
-hash: NOmuppZJszQtk4vXpDIlZVzc184ehQ9fxCYn+38dLIM=
+hash: iYsGPNTIQID1HQf7CT0aOe5v2TDxhpHWuuni/5audKk=
 ---
 ![商标](../../../en/adapterref/iobroker.plenticore/admin/plenticore.png)
 
+![安装数量](http://iobroker.live/badges/plenticore-installed.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.plenticore.svg)
+![NPM](https://nodei.co/npm/iobroker.plenticore.png?downloads=true)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.plenticore.svg)
 ![建立状态](https://travis-ci.org/StrathCole/ioBroker.plenticore.svg?branch=master)
 ![执照](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
@@ -22,18 +25,18 @@ hash: NOmuppZJszQtk4vXpDIlZVzc184ehQ9fxCYn+38dLIM=
 设置您的逆变器的IP地址（例如192.168.0.23）和您用来作为工厂所有者连接到逆变器的Web界面的密码。轮询间隔以毫秒为单位（即10000为10秒）。
 
 ##适配器
-适配器不使用屏幕抓取功能。它使用与Web界面相同的REST API。适配器可能尚未使用（很多）功能。
+适配器不使用屏幕抓取。它使用与Web界面相同的REST API。适配器可能尚未使用（很多）功能。
 
 ###为什么不（简单地）使用modbus？
 变频器已启用modbus tcp，因此您可以使用modbus适配器查询值。但是，KOSTAL不允许编写任何Modbus地址。因此，您无法设置e。 G。使用ioBroker的电池最小SoC。
 
 ###使用适配器
-适配器应在plenticore.X对象树下填充一些对象。其中一些是只读的，例如。 G。当前的光伏输出或家庭用电量。其他是可变的，例如。 G。电池的最小SoC或电池管理模式。我在Plenticore Plus 10上测试了适配器。
+适配器应在plenticore.X对象树下填充一些对象。其中一些是只读的，例如。 G。当前的光伏输出或家庭功耗。其他是可变的，例如。 G。电池的最小SoC或电池管理模式。我在Plenticore Plus 10上测试了适配器。
 
-我尚未实现所有API端点，尤其是用于Web界面“统计”页面的能流统计。另外，适配器非常缺乏翻译功能，因为我是ioBroker开发的新手。
+我尚未实现所有API端点，特别是用于Web界面“统计”页面的能流统计。另外，适配器非常缺乏翻译功能，因为我是ioBroker开发的新手。
 
 ##对象
-以下是此适配器使用和填充的最重要对象的摘录。标有`[**]`的所有设置都应该是可编辑的，但并非所有设置都经过测试，并且可能存在（并将存在）错误。
+以下是此适配器使用和填充的最重要对象的摘录。标有`[**]`的所有设置都应该是可编辑的，但并非所有设置都已通过测试，并且可能存在（并将存在）错误。
 
 ### Plenticore.X.devices.local
 devices.local树包含有关逆变器以及可能连接的智能电表和/或电池的信息。
@@ -45,7 +48,7 @@ devices.local树包含有关逆变器以及可能连接的智能电表和/或电
 该通道包含有关逆变器交流侧的信息。最重要的是：`plenticore.X.devices.local.ac.Frequency`-净频率`plenticore.X.devices.local.ac.L1_P`-W中第1阶段的当前功率`plenticore.X.devices.local.ac.L2_P`-W中第2阶段的当前功率`plenticore.X.devices.local.ac.L3_P`-当前功率W`plenticore.X.devices.local.ac.P`中阶段3的变化-逆变器当前发射的总功率，包括电池放电
 
 #### Plenticore.X.devices.local.battery
-`plenticore.X.devices.local.battery.Cycles`-直至现在为止的电池寿命周期`[**] plenticore.X.devices.local.battery.MinSoc`-电池所需的最小SoC（充电状态）。如果缺少阳光，实际的SoC可能会低于此值。
+`plenticore.X.devices.local.battery.Cycles`-电池寿命到现在为止`[**] plenticore.X.devices.local.battery.DynamicSoc`-如果启用了动态SoC，则为true（仅当`SmartBatteryControl`也为true时）`[**] plenticore.X.devices.local.battery.MinHomeConsumption`-最低的家庭功耗`[**] plenticore.X.devices.local.battery.MinSoc`-电池所需的最小SoC（充电状态）。如果缺乏阳光，实际的SoC可能会低于此值。
 `plenticore.X.devices.local.battery.P`-当前电池电量（充电时为负，放电时为正）`[**] plenticore.X.devices.local.battery.SmartBatteryControl`-如果启用了智能电池管理，则为true。关于官方手册，只有在没有其他交流电源（如涉及第二个逆变器）的情况下才启用此功能`plenticore.X.devices.local.battery.SoC`-电池的当前充电状态
 
 #### Plenticore.X.devices.local.inverter
@@ -55,7 +58,7 @@ devices.local树包含有关逆变器以及可能连接的智能电表和/或电
 `plenticore.X.devices.local.pvX.P`-工厂X阶段提供的当前功率
 
 ### Plenticore.X.scb
-该频道包含设备本身的信息和设置
+该通道包含设备本身的信息和设置
 
 #### Plenticore.X.scb.modbus
 `[**] plenticore.X.scb.modbus.ModbusEnable`-如果启用了modbus tcp，则为true`[**] plenticore.X.scb.modbus.ModbusUnitId`-设备的modbus单元ID
@@ -70,7 +73,7 @@ devices.local树包含有关逆变器以及可能连接的智能电表和/或电
 ### Plenticore.X.scb.statistic.EnergyFlow
 本节中的数据点包含在Plenticore Web UI中可见的统计信息。仅提到了`Day`数据点，但每个数据点也可用于`Month`，`Year`和`Total`。
 
-`plenticore.0.scb.statistic.EnergyFlow.AutarkyDay`-当日以百分比表示的自给自足`plenticore.0.scb.statistic.EnergyFlow.CO2SavingDay`-当日以千克为单位的估计节省的二氧化碳排放量`plenticore.0.scb.statistic.EnergyFlow.EnergyHomeDay`-当日以Wh计的家庭总消费§§SSSSS_3§ §-光伏电站当天提供的总家庭消耗量`plenticore.0.scb.statistic.EnergyFlow.EnergyHomeBatDay`-电池当天提供的总家庭消耗量`plenticore.0.scb.statistic.EnergyFlow.EnergyHomeGridDay`-电网提供给当前用户的总家庭消耗量当日`plenticore.0.scb.statistic.EnergyFlow.OwnConsumptionRateDay`-当日自身的消耗率（发电设备未发送到电网的发电量）`plenticore.0.scb.statistic.EnergyFlow.YieldDay`-当日工厂的总产量
+`plenticore.0.scb.statistic.EnergyFlow.AutarkyDay`-当日的百分比自给自足`plenticore.0.scb.statistic.EnergyFlow.CO2SavingDay`-当日以公斤计算的估计节省的二氧化碳量`plenticore.0.scb.statistic.EnergyFlow.EnergyHomeDay`-当日以Wh计的家庭总消费§§SSSSS_3§ §-光伏电站在当日提供的总家用电量`plenticore.0.scb.statistic.EnergyFlow.EnergyHomeBatDay`-电池在当日提供的总家用电量`plenticore.0.scb.statistic.EnergyFlow.EnergyHomeGridDay`-电网为该日提供的总家用电量当日`plenticore.0.scb.statistic.EnergyFlow.OwnConsumptionRateDay`-当日自身的消耗率（发电设备未发送到电网的发电量）`plenticore.0.scb.statistic.EnergyFlow.YieldDay`-当日工厂的总产量
 
 ##预测数据
 为了能够使用预测功能，您需要安装ioBroker.darksky或ioBroker.weatherunderground适配器。另外，您需要配置系统的全局地理位置（经度和纬度），并设置plenticore适配器的扩展配置（面板和电池数据（如果适用））。

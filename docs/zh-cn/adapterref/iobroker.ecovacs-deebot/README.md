@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: YGN/6v/1qE6LMVi/Pdzxp5Nv9o/GdDoAospgIpeTuvU=
+hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -20,12 +20,32 @@ hash: YGN/6v/1qE6LMVi/Pdzxp5Nv9o/GdDoAospgIpeTuvU=
 
 成功建立连接后，可以使用状态值`info.communicationProtocol`对此进行检查（值：`XMPP`，`MQTT`）。
 
+###这些模型可以充分发挥作用
+* Deebot苗条2
+* Deebot Ozmo 930
+
+###这些模型几乎可以正常工作
+* Deebot 601
+* Deebot 710/711
+* Deebot 900/901
+* Deebot奥兹莫610
+* Deebot Ozmo 950
+
+###这些模型应该（几乎）完全正常工作
+* Deebot N79T
+* Deebot 600/605
+* Deebot Ozmo 960（未经测试）
+
+###这些模型应该部分起作用
+* Deebot Ozmo 900
+
 ###按钮和控件
 |型号基本* |暂停|现货| spotArea | customArea ** |边缘playSound |水位|
-|------ |------ |------ |------ |------ |------ |------ |------ |------ |
+|------------------- |-------- |------ |------ |--------- |-------------- |------ |---------- |----------- |
 | Deebot Slim 2 | x |不适用x |不适用不适用x |不适用不适用 |
-| Deebot 710 | x | | | | | | |不适用 |
-| Deebot 900 | x | |不适用| |不适用|不适用 |
+| Deebot 600/601/605 | x | | x |不适用不适用x | | |
+| Deebot 710/711 | x | | | | | | |不适用 |
+| Deebot 900/901 | x | x |不适用| |不适用|不适用 |
 | Deebot Ozmo 610 | x | | x |不适用不适用x | | |
 | Deebot Ozmo 900 | | |不适用| |不适用| |
 | Deebot Ozmo 930 | x | x |不适用x | x |不适用x | x |
@@ -36,31 +56,16 @@ hash: YGN/6v/1qE6LMVi/Pdzxp5Nv9o/GdDoAospgIpeTuvU=
 **）包括`cleanings`的数量
 
 ###信息和状态
-|型号电池| chargestatus | cleanstatus |水位|消耗品|
-
-| ------ | ------ | ------ | ------ | ------ | ------ | Deebot Slim 2 | x | x | x |不适用X
-
-| Deebot 710 | | | |不适用|
-| Deebot 900 | | | |不适用|
-| Deebot Ozmo 610 | | | | | |
-| Deebot Ozmo 900 | | | | | |
-| Deebot Ozmo 930 | x | x | x | x | x |
-| Deebot Ozmo 950 | x | | x | | |
-
-###正常工作
-* Deebot苗条2
-* Deebot奥兹莫610
-* Deebot Ozmo 930
-
-＃＃＃ 应该管用
-* Deebot N79T
-* Deebot 601
-* Deebot奥兹莫960
-
-###应该部分工作
-* Deebot 710
-* Deebot Ozmo 900
-* Deebot Ozmo 950
+|型号电池| chargestatus | cleanstatus |水位|水箱|消耗品|
+|------------------- |-------- |------------- |------------ |----------- |--------  |------------ |
+| Deebot Slim 2 | x | x | x |不适用不适用x |
+| Deebot 600/601/605 | x | x | x | | | |
+| Deebot 710/711 | x | | |不适用不适用|
+| Deebot 900/901 | x | x | x |不适用不适用|
+| Deebot Ozmo 610 | | | | | | |
+| Deebot Ozmo 900 | | | | | | |
+| Deebot Ozmo 930 | x | x | x | x | x | x |
+| Deebot Ozmo 950 | x | | x | | | |
 
 ＃＃ 控制
 ＃＃＃ 纽扣
@@ -73,18 +78,23 @@ hash: YGN/6v/1qE6LMVi/Pdzxp5Nv9o/GdDoAospgIpeTuvU=
 |现货|开始点清洁|
 |停止|停止清洁过程|
 |暂停|暂停清洁过程|
-| spotArea`0`-`9`|最多9个按钮*用于Ecovacs应用程序中定义的区域|
-
-*）请参阅适配器配置
+| spotArea`0`-`9`| Ecovacs应用程序中定义的区域最多有9个按钮|
 
 ###区域/区域清洁
 #### SpotArea
-*逗号分隔的数字列表，以“ 0”（例如“ 1,3”）开头，表示要清理的区域。
-*用于“ 0”-“ 9”点区域的按钮（请参阅“适配器配置”）
+*点区在移动应用中以字母命名
+    *在适配器中，它们映射到一个数字：
+        *`A` =`0`
+        *`B` =`1`
+        *等
+*`spotArea`：以逗号分隔的数字列表
+    *以0开头（例如：1,3 =区域B和D），以进行清洁
+*按钮数量（`spotArea_0-9`）可以在适配器配置中配置
 
 #### CustomArea
-*以逗号分隔的清单，精确列出了x1，y1，x2，y2的4个位置值（例如，-3975.000000,2280.000000，-1930.000000,4575.000000`）
-    *位置`0.000000,0.000000,0.000000,0.000000`充电站的位置
+*以逗号分隔的列表，精确列出了x1，y1，x2，y2的4个位置值（例如，-3975、2280，-1930、4575）
+    *位置“ 0,0,0,0”似乎是充电站的位置
+    *值“ 1000”似乎是大约1米的距离
 
 ＃＃＃＃ 水位
 *控制和显示水位（“低”，“中”，“高”和“最大”）
@@ -125,6 +135,9 @@ hash: YGN/6v/1qE6LMVi/Pdzxp5Nv9o/GdDoAospgIpeTuvU=
 
 ## Changelog
 
+### 0.3.10
+   * (mrbungle64) Improved support for XML based MQTT devices
+   
 ### 0.3.9
    * (mrbungle64) Improved support for XML based MQTT devices
 

@@ -1,5 +1,9 @@
 ![Logo](admin/plenticore.png)
 
+![Number of Installations](http://iobroker.live/badges/plenticore-installed.svg) [![Downloads](https://img.shields.io/npm/dm/iobroker.plenticore.svg)](https://www.npmjs.com/package/iobroker.plenticore)
+
+[![NPM](https://nodei.co/npm/iobroker.plenticore.png?downloads=true)](https://nodei.co/npm/iobroker.plenticore/)
+
 [![NPM version](https://img.shields.io/npm/v/iobroker.plenticore.svg)](https://www.npmjs.com/package/iobroker.plenticore)
 [![Build Status](https://travis-ci.org/StrathCole/ioBroker.plenticore.svg?branch=master)](https://travis-ci.org/StrathCole/ioBroker.plenticore)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/StrathCole/iobroker.plenticore/blob/master/LICENSE)
