@@ -551,7 +551,7 @@ function createObjects(onConnect) {
                             }
                         });
                     } else if (installQueue.find(obj => obj.id === id)) { // ignore object changes when still in install queue
-                        logger.debug(hostLogPrefix + ' ignore object change because adapter still in installation queue');
+                        logger.debug(hostLogPrefix + ' ignore object change because adapter still in installation/rebuild queue');
                     } else {
                         const _ipArr = getIPs();
                         if (procs[id].config && checkAndAddInstance(procs[id].config, _ipArr)) {
@@ -2564,11 +2564,12 @@ function installAdapters() {
 
     const task = installQueue[0];
     let name = task.id.split('.')[2];
-    if (task.version) {
+    if (task.version && !task.rebuild) {
         name += '@' + task.version;
     }
 
-    if (compactGroupController) {
+    const commandScope = task.rebuild ? 'rebuild' : 'install';
+    if (compactGroupController && !task.rebuild) {
         logger.info(hostLogPrefix + ' adapter ' + name + ' is not installed, installation will be handled by main controller ... waiting ');
         setImmediate(() => {
             installQueue.shift();
@@ -2579,10 +2580,15 @@ function installAdapters() {
 
     if (procs[task.id].downloadRetry < 4) {
         procs[task.id].downloadRetry++;
-        logger.warn(hostLogPrefix + ' startInstance cannot find adapter "' + name + '". Try to install it... ' + procs[task.id].downloadRetry + ' attempt');
+
+        if (task.rebuild) {
+            logger.warn(hostLogPrefix + ' adapter "' + name + '" seems to be installed for an other Node.js version. Try to rebuild it... ' + procs[task.id].downloadRetry + ' attempt');
+        } else {
+            logger.warn(hostLogPrefix + ' startInstance cannot find adapter "' + name + '". Try to install it... ' + procs[task.id].downloadRetry + ' attempt');
+        }
 
         const installArgs = [];
-        if (task.installedFrom && procs[task.id].downloadRetry < 3) {
+        if (!task.rebuild && task.installedFrom && procs[task.id].downloadRetry < 3) {
             // two tries with installed location, afterwards we try normal npm version install
             if (task.installedFrom.includes('://')) {
                 installArgs.push('url');
@@ -2599,10 +2605,10 @@ function installAdapters() {
             }
         }
         else {
-            installArgs.push('install');
+            installArgs.push(commandScope);
             installArgs.push(name);
         }
-        logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + installArgs.join(' ') + ' using ' + ((procs[task.id].downloadRetry < 3 && task.installedFrom) ? 'installedFrom' : 'installedVersion'));
+        logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + installArgs.join(' ') + (task.rebuild ? '' : ' using ' + ((procs[task.id].downloadRetry < 3 && task.installedFrom) ? 'installedFrom' : 'installedVersion')));
         installArgs.unshift(__dirname + '/' + tools.appName + '.js');
 
         try {
@@ -2610,18 +2616,18 @@ function installAdapters() {
             if (child.stdout) {
                 child.stdout.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
-                    logger.info(hostLogPrefix + ' ' + tools.appName + ' npm-install: ' + data);
+                    logger.info(hostLogPrefix + ' ' + tools.appName + ' npm-' + commandScope + ': ' + data);
                 });
             }
             if (child.stderr) {
                 child.stderr.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
-                    logger.error(hostLogPrefix + ' ' + tools.appName + ' npm-install: ' + data);
+                    logger.error(hostLogPrefix + ' ' + tools.appName + ' npm-' + commandScope + ': ' + data);
                 });
             }
 
             child.on('exit', exitCode => {
-                logger.info(hostLogPrefix + ' ' + tools.appName + ' npm-install: exit ' + exitCode);
+                logger.info(hostLogPrefix + ' ' + tools.appName + ' npm-' + commandScope + ': exit ' + exitCode);
                 installQueue.shift();
                 if (exitCode === EXIT_CODES.CANNOT_INSTALL_NPM_PACKET) {
                     installQueue.push(task); // We add at the end again to try three times
@@ -2634,7 +2640,7 @@ function installAdapters() {
                         startInstance(task.id, task.wakeUp);
                     }
                 } else {
-                    logger.debug(hostLogPrefix + ' ' + tools.appName + ' installation successfull but instance disabled');
+                    logger.debug(hostLogPrefix + ' ' + tools.appName + ' ' + commandScope + ' successful but instance disabled');
                 }
 
                 setTimeout(() => {
@@ -2642,21 +2648,25 @@ function installAdapters() {
                 }, 1000);
             });
             child.on('error', err => {
-                logger.error(hostLogPrefix + ' Cannot execute "' + __dirname + '/' + tools.appName + '.js install ' + name + ': ' + err);
+                logger.error(hostLogPrefix + ' Cannot execute "' + __dirname + '/' + tools.appName + '.js ' + commandScope + ' ' + name + ': ' + err);
                 setTimeout(() => {
                     installQueue.shift();
                     installAdapters();
                 }, 1000);
             });
         } catch (err) {
-            logger.error(hostLogPrefix + ' Cannot execute "' + __dirname + '/' + tools.appName + '.js install ' + name + ': ' + err);
+            logger.error(hostLogPrefix + ' Cannot execute "' + __dirname + '/' + tools.appName + '.js ' + commandScope + ' ' + name + ': ' + err);
             setTimeout(() => {
                 installQueue.shift();
                 installAdapters();
             }, 1000);
         }
     } else {
-        logger.error(hostLogPrefix + ' Cannot download and install adapter "' + name + '". To retry it disable/enable the adapter or restart host. Also check the error messages in the log!');
+        if (task.rebuild) {
+            logger.error(hostLogPrefix + ' Cannot rebuild adapter "' + name + '". To retry it disable/enable the adapter or restart host. Also check the error messages in the log!');
+        } else {
+            logger.error(hostLogPrefix + ' Cannot download and install adapter "' + name + '". To retry it disable/enable the adapter or restart host. Also check the error messages in the log!');
+        }
         setTimeout(() => {
             installQueue.shift();
             installAdapters();
@@ -2988,6 +2998,13 @@ function startInstance(id, wakeUp) {
                         if (procs[id] && procs[id].process) {
                             delete procs[id].process;
                         }
+
+                        if (procs[id].needsRebuild) {
+                            installQueue.push({id: instance._id, rebuild: true});
+                            // start install queue if not started
+                            installQueue.length === 1 && installAdapters();
+                        }
+
                         if (code !== EXIT_CODES.ADAPTER_REQUESTED_TERMINATION &&
                             !wakeUp &&
                             connected &&
@@ -3217,6 +3234,9 @@ function startInstance(id, wakeUp) {
                         const text = data.toString();
                         // show for debug
                         console.error(text);
+                        if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild')) {
+                            procs[id].needsRebuild = true;
+                        }
                         procs[id].errors = procs[id].errors || [];
                         const now = Date.now();
                         procs[id].errors.push({ts: now, text: text});
