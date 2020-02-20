@@ -2631,16 +2631,19 @@ function installAdapters() {
                 installQueue.shift();
                 if (exitCode === EXIT_CODES.CANNOT_INSTALL_NPM_PACKET) {
                     installQueue.push(task); // We add at the end again to try three times
-                } else if (!task.disabled) {
-                    if (!procs[task.id].config.common.enabled) {
-                        logger.info(hostLogPrefix + ' startInstance ' + task.id + ': should start instance but disabled, re-enable');
-                        states.setState(task.id + '.alive', {val: true, ack: false, from: hostObjectPrefix});
-                    }
-                    else {
-                        startInstance(task.id, task.wakeUp);
-                    }
                 } else {
-                    logger.debug(hostLogPrefix + ' ' + tools.appName + ' ' + commandScope + ' successful but instance disabled');
+                    procs[task.id].needsRebuild = false;
+                    if (!task.disabled) {
+                        if (!procs[task.id].config.common.enabled) {
+                            logger.info(hostLogPrefix + ' startInstance ' + task.id + ': should start instance but disabled, re-enable');
+                            states.setState(task.id + '.alive', {val: true, ack: false, from: hostObjectPrefix});
+                        }
+                        else {
+                            startInstance(task.id, task.wakeUp);
+                        }
+                    } else {
+                        logger.debug(hostLogPrefix + ' ' + tools.appName + ' ' + commandScope + ' successful but instance disabled');
+                    }
                 }
 
                 setTimeout(() => {
