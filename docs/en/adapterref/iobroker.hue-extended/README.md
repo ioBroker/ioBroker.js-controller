@@ -2,13 +2,13 @@
 # ioBroker.hue-extended
 Connect your Philips Hue Lights with ioBroker.
 
-[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S45U45EHXGQHN&source=url)
+[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://paypal.me/chvoelkel)
 
 ![Number of Installations](http://iobroker.live/badges/hue-extended-installed.svg)
 ![Stable Version](http://iobroker.live/badges/hue-extended-stable.svg)
 [![NPM Version](http://img.shields.io/npm/v/iobroker.hue-extended.svg)](https://www.npmjs.com/package/iobroker.hue-extended)
 [![Commits since last release](https://img.shields.io/github/commits-since/Zefau/ioBroker.hue-extended/latest.svg)](https://github.com/Zefau/ioBroker.hue-extended/releases/latest)
-[![Travis CI](https://travis-ci.org/Zefau/ioBroker.hue-extended.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.hue-extended)
+[![Travis CI](https://travis-ci.com/Zefau/ioBroker.hue-extended.svg?branch=master)](https://travis-ci.com/Zefau/ioBroker.hue-extended)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.hue-extended.svg)](https://www.npmjs.com/package/iobroker.hue-extended)
 
 [![NPM](https://nodei.co/npm/iobroker.hue-extended.png?downloads=true)](https://nodei.co/npm/iobroker.hue-extended/) 
@@ -33,6 +33,13 @@ Connect your Philips Hue Lights with ioBroker.
 ## Changelog
 
 Please also see [release page](https://github.com/Zefau/ioBroker.hue-extended/releases) for changelog and detailed information.
+
+### 1.2.3 (2019-02-21)
+- (Zefau) added `Signify` (formerly Philips Lighting) as official manufacturer
+- (Zefau) updated dependencies
+
+### 1.2.2 (2019-02-04)
+- (Zefau) fixed wrong group state (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))
 
 ### 1.2.1 (2019-02-03)
 - (Zefau) fixed failing secure connection when selecting default certificates

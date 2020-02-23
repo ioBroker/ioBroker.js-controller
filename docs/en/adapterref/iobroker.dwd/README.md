@@ -1,7 +1,9 @@
 ![Logo](admin/dwd.png)
 # ioBroker.dwd
 
-![Number of Installations](http://iobroker.live/badges/dwd-installed.svg) ![Number of Installations](http://iobroker.live/badges/dwd-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
+![Number of Installations](http://iobroker.live/badges/dwd-installed.svg) 
+![Number of Installations](http://iobroker.live/badges/dwd-stable.svg) 
+[![NPM version](http://img.shields.io/npm/v/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.dwd.svg)](https://www.npmjs.com/package/iobroker.dwd)
 [![Tests](https://travis-ci.org/ioBroker/ioBroker.dwd.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.dwd)
 
@@ -14,6 +16,9 @@ Dieser Adapter lädt die Wetterwarnungen vom deutschen Wetterdienst über JSON l
 This adapter loads the weather warnings from the German weather service via JSON link.
 
 ## Changelog
+### 2.4.5 (2020-02-23)
+* (ticaki) Datetime corrected
+
 ### 2.4.3 (2018-08-05)
 * (bluefox) Invalid certificate are accepted too
 
@@ -107,7 +112,7 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 bluefox <dogafox@gmail.com>, hobbyquaker
+Copyright (c) 2016-2020 bluefox <dogafox@gmail.com>, hobbyquaker
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

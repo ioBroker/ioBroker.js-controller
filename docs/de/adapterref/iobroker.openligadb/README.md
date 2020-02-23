@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.openligadb/README.md
-title: ioBroker Adapter, um Ergebnisse von Fußballspielen aus OpenLigaDB zu erhalten
-hash: 9bfbzA6cbNxYlyrVPRQt9p4KSJUlPjuP1FqXDEd/K3c=
+title: ioBroker Adapter zum Abrufen der Ergebnisse von Fußball-Sportspielen von OpenLigaDB
+hash: dbMnSe/XYVVMLqLRIGTAQqXErq/aPsuLgZ2gOvetPk0=
 ---
 ![Logo](../../../en/adapterref/iobroker.openligadb/admin/openligadb_b.png)
 
@@ -11,18 +11,18 @@ hash: 9bfbzA6cbNxYlyrVPRQt9p4KSJUlPjuP1FqXDEd/K3c=
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.openligadb.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.openligadb.svg)
 ![Travis](https://img.shields.io/travis/oweitman/ioBroker.openligadb.svg)
-![AppVeyor Build Status](https://img.shields.io/appveyor/ci/oweitman/iobroker-openligadb.svg)
+![AppVeyor-Build-Status](https://img.shields.io/appveyor/ci/oweitman/iobroker-openligadb.svg)
 ![GitHub Probleme](https://img.shields.io/github/issues/oweitman/ioBroker.openligadb.svg)
 
-# IoBroker Adapter, um Ergebnisse von Fußballspielen aus OpenLigaDB zu erhalten
+# IoBroker Adapter, um Ergebnisse von Fußball-Sportspielen von OpenLigaDB zu erhalten
 ## Überblick
-Adapter zur Abfrage von Spieldaten für Fußball oder andere Spiele von openligadb.de
+Adapter zum Anfordern von Spieldaten für Fußball oder andere Spiele von openligadb.de
 
 ## Aufbau
 Fügen Sie eine Instanz des Adapters hinzu und klicken Sie auf das Schraubenschlüsselsymbol. Im Formular können Sie die Verknüpfung aus einer Liga und einer Saison hinzufügen.
-Bitte besuchen Sie openligadb.de für verfügbare Ligen, Saisons und Shortcuts. Wenn eine Saison über zwei Jahre verteilt ist, geben Sie bitte nur das Startjahr ein.
+Bitte besuchen Sie openligadb.de für verfügbare Ligen, Jahreszeiten und Verknüpfungen. Wenn eine Saison über zwei Jahre verteilt ist, geben Sie bitte nur das Startjahr ein.
 
-Beispieldaten für die 1. Deutsche Bundliga sind shortcut = bl1 season = 2019
+Beispieldaten für 1. Deutsche Bundliga sind Abkürzung = bl1 Saison = 2019
 
 Wenn Sie die Konfiguration gespeichert und geschlossen haben, müssen kurze Zeit später neue Datenpunkte für Ihre Liga und Saison vorhanden sein.
 
@@ -36,30 +36,66 @@ Dieses Widget zeigt das aktuelle Ranking Ihrer Liga an
 Alle Spiele des aktuellen oder ausgewählten Spieltages. Es gibt viele Widget-Attribute, um die Menge der angezeigten Daten zu konfigurieren
 
 ### FavGame
-Zeigen Sie alle, aktuellen oder zukünftigen Spiele Ihrer Lieblingsvereine an
+Zeigen Sie alle aktuellen oder zukünftigen Spiele Ihrer Lieblingsclubs an
 
-Die Dokumentation für die vis-Widgets ist in vis oder [Widget-Dokumentation](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.openligadb/blob/master/widgets/openligadb/doc.html) verfügbar.
+Die Dokumentation für die vis-Widgets ist in vis oder [Widget-Dokumentation / Deutsch](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.openligadb/blob/master/widgets/openligadb/doc.html) verfügbar
 
 ## Machen
-* Überprüfung im Widget, wenn der Benutzer nicht den richtigen Datenpunkt ausgewählt hat
+* Validierung im Widget, wenn der Benutzer nicht den richtigen Datenpunkt ausgewählt hat
 * Übersetzung
-* Dokumentationsadapter / Widget
-* ~~ Problem mit der Dynamik der Clubspalte ~~ behoben
-* ~~ neues Widget: nächste x Spiele des Clubs ~~
-* ~~ Widget-Spieltag-Einstellung für Startspieltag und Länge (-1,3 = vorherigen Spieltag und 3 Spieltage danach anzeigen) ~~
-* ~~ Ersatzwert für den Bearbeitungsmodus, wenn showgameday mit Bindung ~~ gesetzt ist
-* ~~ Lieblingsclub markieren ~~
+* ~~ Tabellenmodi mit 1. Runde, 2. Runde ~~ erweitern
+* ~~ neue Widget-Pivot-Tabelle der gespielten Spiele ~~
+* ~~ neues Widget Goal Getter Ranking mit Sortierfunktion ~~
+* ~~ Tabelle mit Trendzeichen erweitern (Pfeil nach oben / unten, Punkt ohne Änderung) ~~
+* ~~ Tabelle erweitern, um mit x letzten Spielen zu berechnen ~~
+* ~~ Tabelle erweitern, um das Ranking für einen definierten Spieltag zu berechnen ~~
+* ~~ Dokumentationsadapter / Widget ~~
+* ~~ Problem für Dynamik mit Clubspalte ~~ behoben
+* ~~ neues Widget: nächste x Clubspiele ~~
+* ~~ Widget-Spieltag Einstellung für den Start des Spieltages um eine Länge (-1,3 = vorherigen Spieltag und 3 Spieltage danach anzeigen) ~~
+* ~~ Ersatzwert für den Bearbeitungsmodus, wenn der Spieltag mit Bindung ~~ eingestellt ist
+* ~~ Lieblingsclub hervorheben ~~
 * ~~ steuerbarer Spieltag im Spieltag-Widget ~~
 
 ## Changelog
-### 0.0.1
-* initial release
-### 0.0.2
-* add controlable gameday logic to gameday widget and adapter
-### 0.0.3
-* fixed getting oids in vis runtime
-### 0.0.4
-* fixed more oids in vis runtime
+### 0.11.0
+* extend table to calculate with x last games and extend table to calculate ranking for a defined gameday, to ensure backward compatibility i have to create a new table v3 widget
+* extend table with trend sign (arrow up/down, point for no change)
+* new widget goal getter ranking with sort function
+* new widget pivot table of played games
+* extend table modes with 1st round,2nd round
+### 0.10.3
+* change computing and output logic of gameday widget to mark gameday header with favorite class
+* improve documentation with css-klasses for  table widget
+* bugfix for calculate gameday.
+### 0.10.2
+* Add data column goaldiff to table widget, improve more documentation (systax highlighting,copy code function), add example to control gameday with buttons,
+### 0.10.1
+* Improve documentation with more recipes and syntax highlighting, improve code to get and subscribe states
+### 0.10.0
+* New widget Table 2 that  includes the calculation of the total, home and away results. the previous widget is now deprecated, due to the different datapoint (allmatches) to be selected.
+### 0.9.3
+* Remove ES6 features due to compatibility with older browsers 
+### 0.9.2
+* next try to fix the experimental javascript binding function 
+### 0.9.1
+* fix bugs in calculation matchresults and highlight clubs in favgames 
+### 0.9.0
+* new Function for vis Binding to search for games at the actual day for favorite clubs, css-classes für games at actual day, fix bug to show the right match results, 
+### 0.8.0
+* push version for latest repository. fix some typos. fix a problem with date handling on different OS
+### 0.0.11
+* widget gameday: fix issue with not working gamedaycount
+### 0.0.10
+* widget gameday: optional you can show informations about the goalgetters
+### 0.0.9
+* optional weekday for widgets: gameday and gamesoffavclub,highlight the clubname in gamesoffavclub
+### 0.0.8
+* new widget games of favorite clubs with multi league support as replacement for the old one
+### 0.0.7
+* close connections and remove observers (timeouts/intervals)
+### 0.0.6
+* NPM deployment and preperation for the latest repository
 ### 0.0.5
 * highlight favorite club, 
 * Replacement value for edit mode if showgameday is set with binding, 
@@ -68,20 +104,14 @@ Die Dokumentation für die vis-Widgets ist in vis oder [Widget-Dokumentation](ht
 * remove unused code
 * new widget: next x games of club
 * fix issue for dynamic with of club column
-### 0.0.6
-* NPM deployment and preperation for the latest repository
-### 0.0.7
-* close connections and remove observers (timeouts/intervals)
-### 0.0.8
-* new widget games of favorite clubs with multi league support as replacement for the old one
-### 0.0.9
-* optional weekday for widgets: gameday and gamesoffavclub,highlight the clubname in gamesoffavclub
-### 0.0.10
-* widget gameday: optional you can show informations about the goalgetters
-### 0.0.11
-* widget gameday: fix issue with not working gamedaycount
-### 0.8.0
-* push version for latest repository. fix some typos. fix a problem with date handling on different OS
+### 0.0.4
+* fixed more oids in vis runtime
+### 0.0.3
+* fixed getting oids in vis runtime
+### 0.0.2
+* add controlable gameday logic to gameday widget and adapter
+### 0.0.1
+* initial release
 
 ## License
 MIT License

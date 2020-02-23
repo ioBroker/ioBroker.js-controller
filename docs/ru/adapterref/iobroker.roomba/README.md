@@ -3,24 +3,21 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: 4QSunjs5xSBvOiA0U5aoHQDA8EhXC1dTvTjqLGNsTDk=
+hash: PloH4aMgi5KrKN3YSTHxs1DcmVcx7d6tkETE/7jJ/Kg=
 ---
-![Пожертвование Paypal](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
+![логотип](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
+
 ![Количество установок](http://iobroker.live/badges/roomba-installed.svg)
 ![Стабильная версия](http://iobroker.live/badges/roomba-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.roomba.svg)
-![Трэвис CI](https://travis-ci.org/Zefau/ioBroker.roomba.svg?branch=master)
+![Фиксируется с момента последнего выпуска](https://img.shields.io/github/commits-since/iobroker-community-adapters/ioBroker.roomba/latest.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.roomba.svg)
 ![NPM](https://nodei.co/npm/iobroker.roomba.png?downloads=true)
 
-: heavy_exclamation_mark: | **РАЗРАБОТКА ДВИЖЕНА В [СООБЩЕСТВО](https://github.com/iobroker-community-adapters/ioBroker.roomba).** ------------ | -------------
-
-________________________
-
-![логотип](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
-
 # IoBroker.roomba Подключите iRobot Roomba к ioBroker.
 Основано на библиотеке dorita980 https://github.com/koalazak/dorita980#readme
+
+[![Travis CI] (https://travis-ci.com/iobroker-community-adapters/ioBroker.roomba.svg?branch=master)](https://travis-ci.com/iobroker-community-adapters/ioBroker.roomba)
 
 **Содержание**
 
@@ -31,14 +28,14 @@ ________________________
 5. [Каналы и состояния] (# каналы - состояния)
 6. [Описание предпочтений (неполное)] (# описание-предпочтений-неполное)
 7. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# умный дом - alexa -gration-using-iobrokerjavascript)
-8. [Changelog] (# changelog)
+8. [Журнал изменений] (# changelog)
 9. [Кредиты] (# кредитов)
 10. [Лицензия] (# лицензия)
 
 ## Характеристики
 Следующие функции поставляются с этим адаптером:
 
-- __Отправить команды__ (`start`,` stop`, `resume`,` pause`, `dock`) на ваш Roomba
+- __Отправить команды__ (`start`,` stop`, `resume`,` pause`, `dock`) на вашу Roomba
 - Извлечение __device состояний__, таких как батарея, закрепленный, полный / вставленный лоток (полный список см. В разделе [Каналы и состояния] (# каналы - состояния))
 - Получить __device configuration__, например, настройки, настройки сети или расписания (полный список см. В разделе [Каналы и состояния] (# каналы - состояния)).
 - Получить статистику __device__, такую как общее количество миссий, количество часов на стыковочной станции и т. Д. (Полный список см. В разделе [Каналы и состояния] (# каналы - состояния))
@@ -93,7 +90,7 @@ npm install canvas
 
 Для получения дополнительной информации см. Https://github.com/Automattic/node-canvas/wiki/Installation:-Windows.
 
-## Инструкции по настройке
+## Инструкция по настройке
 ### Автоматическая настройка
 Для автоматической настройки ioBroker.roomba следуйте инструкциям в админ-панели ioBroker.roomba.
 
@@ -132,7 +129,7 @@ npm install canvas
 | Roomba® s | [S9 +] (https://github.com/Zefau/ioBroker.roomba/issues/34) | v3.2.4 | [Примечания к выпуску](https://homesupport.irobot.com/app/answers/detail/a_id/26887/kw/s9%2B#rn_PageTitle) | ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
 | Roomba® s | [S9 +] (https://github.com/Zefau/ioBroker.roomba/issues/34) | v3.2.4 | [Примечания к выпуску] (https://homesupport.irobot.com/app/answers/detail/a_id/26887/kw/s9%2B#rn_PageTitle) | ! [# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **поддерживается (включая карту)** |
 
-Пожалуйста, помогите мне относительно поддерживаемых устройств и позвольте мне [знать через проблему](https://github.com/Zefau/ioBroker.roomba/issues), поддерживается ли ваша модель Roomba!
+Пожалуйста, помогите нам относительно поддерживаемых устройств и позвольте мне [знать через проблему](https://github.com/iobroker-community-adapters/ioBroker.roomba/issues), поддерживается ли ваша модель Roomba!
 
 ## Каналы и Штаты
 После успешной настройки будут созданы следующие каналы и состояния:
@@ -142,7 +139,7 @@ npm install canvas
 | уборка | - | - | Команды и информация о процессе очистки |
 | уборка | последний | - | Последние команды, отправленные роботу |
 | уборка | последний | команда | Последняя команда, отправленная роботу |
-| уборка | последний | отметка времени | Отметка времени последней команды была отправлена |
+| уборка | последний | метка времени | Отметка времени последней команды была отправлена |
 | уборка | последний | дата и время | DateTime последняя команда была отправлена |
 | уборка | последний | инициатор | Инициатор последней команды |
 | уборка | последний | цикл | Цикл |
@@ -168,10 +165,10 @@ npm install canvas
 | устройство | сеть | днс2 | Вторичный DNS-адрес |
 | устройство | предпочтения | - | Установить предпочтения |
 | устройство | предпочтения | binPause | **НЕИЗВЕСТНО** |
-| устройство | предпочтения | carpetBoostAuto | Автоматически: Roomba автоматически увеличит мощность вакуума до глубокой чистки ковров. |
-| устройство | предпочтения | carpetBoostHigh | Производительный режим: Roomba всегда будет увеличивать вакуум, чтобы максимизировать эффективность очистки на всех поверхностях пола. |
+| устройство | предпочтения | carpetBoostAuto | Автоматически: Roomba автоматически повысит мощность вакуума до глубокой чистки ковров. |
+| устройство | предпочтения | carpetBoostHigh | Режим производительности: Roomba всегда будет увеличивать вакуум, чтобы максимально повысить эффективность очистки на всех поверхностях пола. |
 | устройство | предпочтения | ecoCharge | **НЕИЗВЕСТНО** |
-| устройство | предпочтения | noAutoPasses | Один проход: Roomba покроет все области одним проходом очистки. |
+| устройство | предпочтения | noAutoPasses | Один проход: Roomba покроет все участки одним проходом очистки. |
 | устройство | предпочтения | noPP | **НЕИЗВЕСТНО** |
 | устройство | предпочтения | openOnly | **НЕИЗВЕСТНО** |
 | устройство | предпочтения | schedHold | **НЕИЗВЕСТНО** |
@@ -188,12 +185,12 @@ npm install canvas
 | устройство | версии | UmiVer | **НЕИЗВЕСТНО** |
 | устройство | версии | SoftwareVer | Версия программного обеспечения |
 | устройство | - | \ _rawData | Необработанные данные о предпочтениях как json |
-| устройство | - | Mac | Mac адрес робота |
+| устройство | - | Mac | Mac-адрес робота |
 | устройство | - | имя | Имя робота |
 | устройство | - | тип | Тип робота |
 | Штаты | - | - | Информация о статусе |
 | Штаты | - | \ _connected | Состояние соединения |
-| Штаты | - | батарея | Уровень заряда батареи робота |
+| Штаты | - | аккумулятор | Уровень заряда батареи робота |
 | Штаты | - | binFull | Укажите, заполнен ли статус корзины |
 | Штаты | - | binInserted | Укажите, вставлен ли bin |
 | Штаты | - | состыкованный | Укажите, пристыкован ли робот |
@@ -244,7 +241,7 @@ npm install canvas
 | localtimeoffset | - | целое число | Неизвестный | - |
 | ... | - | ... | ... | - |
 
-Пожалуйста, помогите мне относительно описания предпочтений. Если вам известно значение предпочтений, указанных в таблице как неизвестные, позвольте мне [знать их значение через проблему](https://github.com/Zefau/ioBroker.roomba/issues)!
+Пожалуйста, помогите нам относительно описания предпочтений. Если вам известно значение предпочтений, указанных в таблице как неизвестные, позвольте мне [знать их значение через проблему](https://github.com/iobroker-community-adapters/ioBroker.roomba/issues)!
 
 ## Умный дом / интеграция с Alexa с использованием ioBroker.javascript
 ### Отправить карту через Telegram после завершения миссии
@@ -318,6 +315,9 @@ _2019-05-04 исправлена ошибка, препятствовавшая 
 Иконки, сделанные <a href="https://www.flaticon.com/authors/iconnice" title="Iconnice">Iconnice</a> от <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> , лицензированы <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> </div>
 
 ## Changelog
+
+### 1.1.1 (2020-02-16)
+- (Zefau) moved development to Community Repository
 
 ### 1.1.0 (2020-02-06)
 - (Zefau) added support to change schedule (see [#36](https://github.com/Zefau/ioBroker.roomba/issues/36))
@@ -413,7 +413,7 @@ Note: If you are coming from an earlier version, you have to (1) empty your sett
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Zefau <zefau@mailbox.org>
+Copyright (c) 2018-2020 Zefau <zefau@mailbox.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

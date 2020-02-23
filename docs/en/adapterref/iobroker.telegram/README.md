@@ -480,7 +480,11 @@ TODO:
 - venue
 
 ## Changelog
-### 1.5.1 (2020-02-14)
+### 1.5.3 (2020-02-23)
+* (foxriver76) removed usage of adapter.objects
+* (Haba) Fix of the response for the "callback_query" event
+
+### 1.5.1 (2020-02-09)
 * (bluefox) Invalid parameters were checked
 
 ### 1.5.0 (2020-02-03)

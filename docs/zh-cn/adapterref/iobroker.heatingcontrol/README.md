@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: Exura2yBrEXdqssjKxhv8ukzoEsx89Y0kzExyM1kZ8U=
+hash: 80yPXOUDRDFJbcLt0uyeDpBihd2v1+HoVsoYRqjJywo=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -17,7 +17,7 @@ hash: Exura2yBrEXdqssjKxhv8ukzoEsx89Y0kzExyM1kZ8U=
 ＃ioBroker.HeatingControl
 **如果您愿意，请考虑捐赠：**
 
-[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+[![贝宝]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
 用于控制加热系统的适配器。
 
@@ -29,14 +29,14 @@ hash: Exura2yBrEXdqssjKxhv8ukzoEsx89Y0kzExyM1kZ8U=
 *支持多个配置文件
 *如果恒温器和执行器之间没有直接连接，则可以直接从适配器中切换执行器
 *当前，当达到设定温度时，执行器直接关闭。只要设定温度低于实际温度，执行器便会打开。 （这样做：实施改进的控制）
-*每个房间均支持无限制的恒温器，执行器和传感器
+*每个房间都支持无限制的恒温器，执行器和传感器
 *每个房间自动检测恒温器，执行器和传感器。为此使用功能（例如“加热”）。
 *如果房间中装有恒温器，但不应对其进行控制，则可以在管理界面中排除房间
 *传感器用于降低目标温度（例如，如果窗户打开）；可选配SensorDelay
 *与Feiertag-Adapter或任何其他接口，以检测公共假期。公众假期可以是正常的一天，也可以是星期日。 （管理员设置）
 *手动控制温度超过一定时间
 *预定加热时间
-*稍后将提供可视化示例
+*支持[Pittini]（https://github.com/Pittini/iobroker-heatingcontrol-vis）的可视化。谢谢！
 
 [常问问题](doc/FAQ.md)
 
@@ -91,9 +91,9 @@ hash: Exura2yBrEXdqssjKxhv8ukzoEsx89Y0kzExyM1kZ8U=
 |来宾增加温度，因为客人想要变暖|通过Profiles.0.room.GuestIncrease增加当前温度曲线温度将目标设置为Profiles.0.room.absolute.GuestIncrease |
 | PartyNow |降低温度，因为温度变高'|通过Profiles.0.room.PartyDecrease降低当前温度曲线|将目标设置为Profiles.0.room.absolute.PartyDecrease |
 |现在|如果不存在，我们在场|降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
-|假期缺席|我们缺席，所以周末也减少通过Profiles.0.room.VacationAbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.VacationAbsentDecrease |
+|假期缺席|我们缺席，所以周末也减少通过Profiles.0.room.VacationAbsentDecrease降低当前温度曲线|将目标设置为Profiles.0.room.absolute.VacationAbsentDecrease |
 
-*在两种情况下，仅使用一次降脂（在适配器的早期版本中，可以使用一次以上的脱脂剂）
+*在这两种情况下，仅使用一次降脂（在适配器的早期版本中，可以使用一次以上的脱脂剂）
 *在绝对脱脂配方中，仅使用不等于0°C的目标值。如果您不需要降低某个房间的温度，则将降低值保持在0°C
 
 ＃＃ 其他
@@ -108,13 +108,13 @@ hash: Exura2yBrEXdqssjKxhv8ukzoEsx89Y0kzExyM1kZ8U=
 ###窗口打开
 如果“使用传感器”处于活动状态并且配置了一个房间的传感器，则
 
-a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降低当打开窗口时的当前温度（true）。如果配置了相对降低，则b）将目标设置为Profiles.0.room.absolute.WindowOpenDecrease如果绝对降低则将窗口打开（true）已配置
+a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降低当前打开时的温度（true），如果配置了相对降低b）将窗口打开时将目标设置为Profiles.0.room.absolute.WindowOpenDecrease（true）如果绝对降低已配置
 
 可选地，可以使用延迟。如果仅在短时间内打开窗户，则传感器延迟可以避免在很短的时间内减小并恢复正常。
 
 ##医疗支持
 您可以使用日历来更改适配器中的数据点。
-只需在admin中从ical配置事件。支持的是
+只需在ical中通过ical配置事件即可。支持的是
 
 *加热控制0.存在
 *加热控制0.HolidayPresent
@@ -129,6 +129,14 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 *如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
 
 ## Changelog
+### 0.3.17 (2020-02-xx)
+* (René) check datapoint configuration: if datapoint points to itself then error messages
++ (René) support of new vis see issue  #76
+
+### 0.3.16 (2020-02-09)
+* (René) deccrease/increase-handling also when Override is active (see issue #72)
+* (René) priority handling for temperature increase / decrease overworked (use only values not equal zero)
+
 ### 0.3.15 (2020-01-18)
 * (René) bug fix: avoid exception when go to override if MinTemperature-check is active
 

@@ -43,7 +43,13 @@ Documentation for the vis-widgets are available inside vis or [Widget-Documentat
 
 * validation in widget if user didnt select the right datapoint
 * translation
-* documentation adapter / widget 
+* ~~extend table modes with 1st round,2nd round~~
+* ~~new widget pivot table of played games~~
+* ~~new widget goal getter ranking with sort function~~
+* ~~extend table with trend sign (arrow up/down, point for no change)~~
+* ~~extend table to calculate with x last games~~
+* ~~extend table to calculate ranking for a defined gameday~~ 
+* ~~documentation adapter / widget~~
 * ~~fix issue for dynamic with of club column~~
 * ~~new widget: next x games of club~~
 * ~~widget gameday setting for start gameday an length (-1,3 = show previous gameday and 3 gamedays after that)~~
@@ -52,6 +58,12 @@ Documentation for the vis-widgets are available inside vis or [Widget-Documentat
 * ~~controllable gameday in the gameday widget~~
 
 ## Changelog
+### 0.11.0
+* extend table to calculate with x last games and extend table to calculate ranking for a defined gameday, to ensure backward compatibility i have to create a new table v3 widget
+* extend table with trend sign (arrow up/down, point for no change)
+* new widget goal getter ranking with sort function
+* new widget pivot table of played games
+* extend table modes with 1st round,2nd round
 ### 0.10.3
 * change computing and output logic of gameday widget to mark gameday header with favorite class
 * improve documentation with css-klasses for  table widget

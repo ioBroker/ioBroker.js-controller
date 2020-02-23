@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: Exura2yBrEXdqssjKxhv8ukzoEsx89Y0kzExyM1kZ8U=
+hash: 80yPXOUDRDFJbcLt0uyeDpBihd2v1+HoVsoYRqjJywo=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -15,62 +15,62 @@ hash: Exura2yBrEXdqssjKxhv8ukzoEsx89Y0kzExyM1kZ8U=
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/rg-engineering/ioBroker.heatingcontrol.svg)
 
 # IoBroker.HeatingControl
-** Wenn es dir gefällt, erwäge bitte eine Spende: **
+** Wenn es Ihnen gefällt, ziehen Sie bitte eine Spende in Betracht: **
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
-Adapter zur Steuerung Ihrer Heizungsanlage.
+Adapter zur Steuerung Ihres Heizungssystems.
 
 Eigenschaften:
 
-* Kontrollieren Sie die Solltemperatur aller Thermostate nach Zeitplan
+* Kontrollieren Sie die Solltemperaturen aller Thermostate nach Zeitplan
 * Konfigurieren Sie mehrere Heizperioden für jeden Tag und jede Nacht
-* Unterstützt verschiedene homematic und max! Thermostate
+* Unterstützt verschiedene homematische und max! Thermostate
 * unterstützt mehrere Profile
-* Wenn keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht, kann der Stellantrieb direkt aus dem Adapter geschaltet werden
-* Derzeit wird der Antrieb bei Erreichen der Solltemperatur direkt abgeschaltet. Sobald die Solltemperatur unter der Isttemperatur liegt, wird der Antrieb eingeschaltet. (Aufgabe: Verbesserte Steuerung implementieren)
-* Es werden unbegrenzt Thermostat, Stellantrieb und Sonde pro Raum unterstützt
-* Thermostat, Stellantrieb und Sensor werden automatisch pro Raum erkannt. Hierfür wird die Funktion (zB "Heizen") verwendet.
-* Räume können in der Admin-Oberfläche ausgeschlossen werden, wenn ein Raum einen Thermostat enthält, aber nicht gesteuert werden soll
-* Sensor wird verwendet, um die Zieltemperatur zu verringern (z. B. wenn ein Fenster geöffnet ist); optional mit SensorDelay
-* Schnittstelle zum Feiertag-Adapter oder anderen zur Erkennung von Feiertagen. Der gesetzliche Feiertag kann ein normaler Tag oder ein ähnlicher Sonntag sein. (Administratoreinstellung)
-* manuelle Übersteuerung der Temperatur für eine bestimmte Zeit
+* Wenn keine direkte Verbindung zwischen dem Thermostat und dem Stellantrieb besteht, kann der Stellantrieb direkt aus dem Adapter herausgeschaltet werden
+* Derzeit wird der Antrieb direkt ausgeschaltet, wenn die Solltemperatur erreicht ist. Sobald die Solltemperatur unter der Isttemperatur liegt, wird der Antrieb eingeschaltet. (Zu tun: verbesserte Kontrolle implementieren)
+* Unbegrenzter Thermostat, Aktuator und Sohn pro Raum werden unterstützt
+* Thermostat, Aktuator und Sensor werden pro Raum automatisch erkannt. Hierfür wird die Funktion (zB "Heizen") verwendet.
+* Räume können innerhalb der Administrationsoberfläche ausgeschlossen werden, wenn ein Raum einen Thermostat enthält, aber nicht gesteuert werden sollte
+* Sensor wird verwendet, um die Zieltemperatur zu reduzieren (z. B. wenn ein Fenster geöffnet ist); optional mit SensorDelay
+* Schnittstelle zum Feiertag-Adapter oder anderen zur Erkennung von Feiertagen. Feiertag kann ein normaler Tag oder wie ein Sonntag sein. (Admin-Einstellung)
+* Manuelle Temperaturüberschreibung für eine bestimmte Zeit
 * vordefinierte Heizperiode
-* Ein Visualisierungsbeispiel wird später bereitgestellt
+* Die Visualisierung von [Pittini] (https://github.com/Pittini/iobroker-heatingcontrol-vis) wird unterstützt. Vielen Dank!
 
 [FAQ](doc/FAQ.md)
 
 ## Installation
 ## Die Einstellungen
 ### Main
-* Funktion = Funktion zur Erkennung von Thermostaten, Antrieben und Sensoren pro Raum. Es ist eine der Systemaufzählungen
-* timezone = Wird für Cron verwendet, um Cron-Jobs anzupassen
-* Pfad zum Feiertag - Adapter = Wenn Sie den Feiertag-Adapter verwenden möchten, um automatisch einen Feiertag für heute zu erkennen, geben Sie hier den Pfad ein (z. B. feiertage.0).
-* Alle Geräte löschen, wenn der Administrator öffnet = sollte deaktiviert sein. Aktivieren Sie diese Option nur, wenn Sie alle Raum-, Aktor- und Sensoreinstellungen löschen müssen. Eine Gerätesuche wird ausgeführt, wenn der Adapteradministrator geöffnet wird
+* Funktion = Funktion zur Erkennung von Thermostaten, Aktuatoren und Sensoren pro Raum. Es ist eines der Systemaufzählungen
+* Zeitzone = Wird für Cron verwendet, um Cron-Jobs anzupassen
+* Pfad zum Feiertag - Adapter = Wenn Sie den Feiertag-Adapter verwenden möchten, um den Feiertag für heute automatisch zu erkennen, legen Sie hier den Pfad fest (z. B. Ereignisseage.0).
+* Alle Geräte löschen, wenn der Administrator geöffnet wird = sollte deaktiviert sein. Aktivieren Sie es nur, wenn Sie alle Raum-, Aktor- und Sensoreinstellungen löschen müssen. Eine Gerätesuche wird ausgeführt, wenn der Adapteradministrator geöffnet wird
 * Sensor verwendet = Wenn Sie Fenstersensoren haben und die Zieltemperatur bei geöffnetem Fenster senken möchten, aktivieren Sie diese Option
-* Aktoren verwendet = wenn Sie Aktoren direkt vom Adapter steuern möchten. Nur für den Fall, dass keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht.
-* Antriebe verwenden, wenn keine Heizperiode = nur bei Antrieben gültig. Legt fest, wie Aktoren eingestellt werden, wenn keine Heizperiode aktiv ist
-* Antriebe verwenden, wenn kein Thermostat vorhanden ist = nur gültig mit Antrieben. Wenn Sie Räume ohne Thermostat, aber mit Heizungsaktor haben, können Sie diese dauerhaft ein- oder ausschalten
+* Aktuatoren verwendet = wenn Sie Aktuatoren direkt vom Adapter aus steuern möchten. Nur für den Fall, dass keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht.
+* Aktuatoren verwenden, wenn keine Heizperiode = nur gültig mit Aktuatoren. Definiert, wie Aktuatoren eingestellt werden, wenn keine Heizperiode aktiv ist
+* Aktuatoren verwenden, wenn kein Thermostat verfügbar ist = nur gültig mit Aktuatoren. Wenn Sie Räume ohne Thermostat, aber mit Heizungsaktuator haben, können Sie diese dauerhaft ein- oder ausschalten
 
 ### Profil
-* Profiltyp = drei verschiedene Profiltypen (Montag - Sonntag oder Montag - Freitag und Suturday / Sonntag oder jeden Tag) werden unterstützt
-* Anzahl der Profile = Wenn Sie mehr als ein Profil benötigen, erhöhen Sie diesen Wert. Sie können dann auswählen, welches Profil verwendet werden soll.
-* Anzahl der Perioden = Definieren Sie, wie viele tägliche Abschnitte mit unterschiedlicher Temperatur Sie benötigen. Je mehr Sie einstellen, desto mehr Datenpunkte werden erstellt. Verwenden Sie besser einen niedrigen Wert (z. B. 5).
-* "Feiertag wie Sonntag = Wenn Sie an Feiertagen wie Sonntag Zieltemperaturen einstellen möchten, aktivieren Sie diese Option. Ansonsten sind die Feiertagseinstellungen dieselben wie an normalen Tagen
-* HeatingPeriod = Start- und Enddatum der Heizperiode. Dient zum Einstellen von "HeatingPeriodActive".
+* Profiltyp = Es werden drei verschiedene Profiltypen (Montag - Sonntag oder Montag - Freitag und Suturday / Sonntag oder jeden Tag) unterstützt
+* Anzahl der Profile = Wenn Sie mehr als das Profil benötigen, erhöhen Sie diesen Wert. Sie können dann auswählen, welches Profil verwendet werden soll.
+* Anzahl der Perioden = Definieren Sie, wie viele tägliche Abschnitte mit unterschiedlicher Temperatur Sie benötigen. Je mehr Sie festlegen, desto mehr Datenpunkte werden erstellt. Verwenden Sie besser einen niedrigen Wert (z. B. 5).
+* "Feiertag wie Sonntag = Wenn Sie an Feiertagen wie Sonntag Zieltemperaturen festlegen möchten, aktivieren Sie diese Option. Ansonsten sind die Einstellungen für Feiertage dieselben wie an normalen Tagen
+* Heizperiode = Start- und Enddatum der Heizperiode. Wird verwendet, um "HeatingPeriodActive" einzustellen
 
 ### Geräte
-* eine Liste aller Räume. Hier können Sie einen Raum deaktivieren.
-* Klicken Sie auf die Schaltfläche Bearbeiten auf der rechten Seite, um das Einstellungsfenster für Thermostate, Aktoren und Sensoren für diesen Raum zu öffnen
+* eine Liste aller Räume. Hier können Sie ein Zimmer deaktivieren.
+* Drücken Sie die Bearbeitungstaste auf der rechten Seite, um das Einstellungsfenster für Thermostate, Aktuatoren und Sensoren für diesen Raum zu öffnen
 
 ### Bearbeitungsraum
 * Hier können Sie Objekt-IDs für Thermostate, Aktoren und Sensoren überprüfen und einstellen
-* Sie können manuell neue Thermostate, Aktoren oder Sensoren hinzufügen. Drücken Sie einfach die + Taste. Dann erhalten Sie eine leere Zeile, die gefüllt werden muss. Der Edit-Button öffnet eine Liste der verfügbaren Geräte im System
+* Sie können manuell neue Thermostate, Aktuatoren oder Sensoren hinzufügen. Drücken Sie einfach die + Taste. Dann erhalten Sie eine leere Zeile, die ausgefüllt werden muss. Die Schaltfläche Bearbeiten öffnet eine Liste der verfügbaren Geräte im System
 * Thermostate:
 
 ** Name, Temperaturziel-OID und aktuelle Temperatur-OID sollten eingestellt werden.
 
-* Aktoren
+* Aktuatoren
 
 ** Name und OID für Status sollten festgelegt werden
 
@@ -79,22 +79,22 @@ Eigenschaften:
 ** Name und OID für den aktuellen Status sollten festgelegt werden
 
 ## Datenpunkte
-| DP-Name | beschreibung |
+| DP-Name | Beschreibung |
 |---------------------|-----------------------------------------------------------------------------------------------------|
-| HeatingPeriodActive | Wenn diese Option deaktiviert ist, werden die Profile nicht verwendet |
-| AktuellesProfil | Aktuelles Profil auswählen (1 basierend, bedeutet, dass Profil 1 Datenpunkte unter HeatingControl.0.Profiles.0 verwendet) |
+| HeatingPeriodActive | Wenn deaktiviert, werden die Profile nicht verwendet |
+| AktuellesProfil | aktuelles Profil auswählen (1 basiert, bedeutet, dass Profil 1 Datenpunkte unter Heizungssteuerung.0.Profile.0 verwendet) |
 | LastProgramRun | Zeigt das letzte Mal an, wenn der Adapter ausgeführt wird |
 
-### Temperatur senken / erhöhen
-| DP-Name | beschreibung | Zieltemperatur für die relative Abnahme Solltemperatur für absolute Abnahme |
+### Temperaturabnahme / -erhöhung
+| DP-Name | Beschreibung | Zieltemperatur für relative Abnahme | Zieltemperatur für absolute Abnahme |
 |-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
-| GuestsPresent | die temperatur erhöhen, weil die gäste es wärmer wollen Erhöhen Sie die aktuelle Profiltemperatur um Profiles.0.room.GuestIncrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.GuestIncrease |
-| PartyNow | Temperatur senken, weil es heiß wird '| Verringern Sie die aktuelle Profiltemperatur um Profiles.0.room.PartyDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.PartyDecrease |
-| Gegenwart | wir sind anwesend, wenn wir nicht anwesend sind Verringern Sie die aktuelle Profiltemperatur um Profiles.0.room.AbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.AbsentDecrease |
-| VacationAbsent | wir sind abwesend, nehmen also auch am wochenende ab | Verringern Sie die aktuelle Profiltemperatur um Profile.0.room.VacationAbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.VacationAbsentDecrease |
+| GästePräsentieren | Temperatur erhöhen, weil Gäste es wärmer wollen | Erhöhen Sie die aktuelle Profiltemperatur um Profile.0.room.GuestIncrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.GuestIncrease |
+| PartyNow | Temperatur senken, weil es heiß wird '| Verringern Sie die aktuelle Profiltemperatur um Profile.0.room.PartyDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.PartyDecrease |
+| Gegenwart | wir sind anwesend, wenn wir nicht anwesend sind, verringern wir die Temperatur Verringern Sie die aktuelle Profiltemperatur um Profile.0.room.AbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.AbsentDecrease |
+| VacationAbsent | wir sind abwesend, also auch am wochenende abnehmen | Verringern Sie die aktuelle Profiltemperatur um Profile.0.room.VacationAbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.VacationAbsentDecrease |
 
-* in beiden Fällen wird nur eine Absenkung verwendet (in der vorherigen Version des Adapters konnten mehr als eine Entfettung verwendet werden)
-* im absoluten Entfettungsszenario werden nur Sollwerte ungleich 0 °C verwendet. Wenn Sie für einen bestimmten Raum keine Absenkung benötigen, halten Sie die Absenkungswerte bei 0 ° C
+* In beiden Fällen wird nur eine Absenkung verwendet (in der vorherigen Version des Adapters konnten mehr als eine Entfettung verwendet werden)
+* Im absoluten Entfettungsszenario werden nur Zielwerte ungleich 0 °C verwendet. Wenn Sie für einen bestimmten Raum keine Absenkung benötigen, halten Sie die Abnahmewerte bei 0 ° C.
 
 ## Andere
 * HolidayPresent
@@ -103,32 +103,40 @@ Wenn HolidayPresent auf true gesetzt ist, wird in jedem Fall das Profil für Son
 
 * PublicHolidyToday
 
-Es gibt eine Option, um PublicHoliday wie Sonntag zu behandeln. Diese Option kann in admin aktiviert werden.
+Es besteht die Möglichkeit, PublicHoliday wie Sonntag zu behandeln. Diese Option kann in admin aktiviert werden.
 
 ### Fenster geöffnet
-wenn "use sensors" aktiv ist und der / die Sensor (en) für einen Raum konfiguriert ist / sind
+Wenn "Sensoren verwenden" aktiv ist und die Sensoren für einen Raum konfiguriert sind
 
-a) Verringern Sie die aktuelle Profiltemperatur bei geöffnetem Fenster (true) um Profiles.0.room.WindowOpenDecrease, wenn die relative Verringerung konfiguriert ist konfiguriert ist
+a) Verringern Sie die aktuelle Profiltemperatur, wenn das Fenster geöffnet ist (true) ist konfiguriert
 
-optional kann eine Verzögerung verwendet werden. Wenn das Fenster nur für eine kurze Zeit geöffnet wird, kann die Sensorverzögerung vermeiden, dass das Fenster in sehr kurzen Zeiten wieder normal wird.
+optional kann eine Verzögerung verwendet werden. Wenn das Fenster nur für eine kurze Zeit geöffnet wird, kann eine Sensorverzögerung verhindern, dass sie in sehr kurzen Zeiten reduziert und wieder normal wird.
 
 ## Ical Unterstützung
 Sie können Ihren Kalender verwenden, um Datenpunkte im Adapter zu ändern.
 Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 
-* Heizungssteuerung.0.Präsent
-* Heizungssteuerung.0.Ferienpräsent
-* Heizungsregelung.0.VacationAbsent
-* HeizungControl.0.GuestsPresent
-* heizungssteuerung.0.PartyNow
+* Heizungssteuerung.0.Present
+* Heizungssteuerung.0.HolidayPresent
+* Heizungssteuerung.0.VacationAbsent
+* Heizungssteuerung.0.GästePräsent
+* Heizungssteuerung.0.PartyNow
 
 ## Bedarf
-* Node Version 8 oder höher ist erforderlich
+* Knotenversion 8 oder höher ist erforderlich
 
-## Probleme und Funktionswünsche
-* Wenn Sie mit Fehlern konfrontiert sind oder Funktionsanfragen für diesen Adapter haben, erstellen Sie bitte ein Problem im Abschnitt "GitHub-Problem" des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
+## Probleme und Funktionsanforderungen
+* Wenn Sie auf Fehler stoßen oder Funktionsanforderungen für diesen Adapter haben, erstellen Sie bitte ein Problem im GitHub-Problemabschnitt des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
 
 ## Changelog
+### 0.3.17 (2020-02-xx)
+* (René) check datapoint configuration: if datapoint points to itself then error messages
++ (René) support of new vis see issue  #76
+
+### 0.3.16 (2020-02-09)
+* (René) deccrease/increase-handling also when Override is active (see issue #72)
+* (René) priority handling for temperature increase / decrease overworked (use only values not equal zero)
+
 ### 0.3.15 (2020-01-18)
 * (René) bug fix: avoid exception when go to override if MinTemperature-check is active
 

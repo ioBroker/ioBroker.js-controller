@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
+hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -41,15 +41,15 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 
 ### Tasten und Steuerung
 | Modell | Grund * | Pause | Stelle | spotArea | customArea ** | Kante | playSound | waterLevel |
-|------------------- |-------- |------ |------ |--------- |-------------- |------ |---------- |----------- |
-| Deebot Slim 2 | x | n / a | x | n / a | n / a | x | n / a | n / a |
-| Deebot 600/601/605 | x | | x | n / a | n / a | x | | |
-| Deebot 710/711 | x | | | | | | | n / a |
-| Deebot 900/901 | x | x | n / a | | | n / a | | n / a |
-| Deebot Ozmo 610 | x | | x | n / a | n / a | x | | |
-| Deebot Ozmo 900 | | | n / a | | | n / a | | |
-| Deebot Ozmo 930 | x | x | n / a | x | x | n / a | x | x |
-| Deebot Ozmo 950 | x | x | n / a | x | x | n / a | x | x |
+|------------ |-------- |------ |------ |--------- |-------------- |------ |---------- |----------- |
+| Slim 2 | x | n / a | x | n / a | n / a | x | n / a | n / a |
+| 600/601/605 | x | | x | n / a | n / a | x | | |
+| 710/711 | x | | x | n / a | n / a | x | x | n / a |
+| 900/901 | x | x | n / a | x | x | n / a | | n / a |
+| Ozmo 610 | x | x | x | n / a | n / a | x | X | x |
+| Ozmo 900 | x | x | n / a | x | x | n / a | x | x |
+| Ozmo 930 | x | x | n / a | x | x | n / a | x | x |
+| Ozmo 950 | x | x | n / a | x | x | n / a | x | x |
 
 *) "grundlegende" Befehle sind `clean` (`auto`), `charge`, `stop`. Sie werden hier nicht separat aufgeführt.
 
@@ -57,15 +57,15 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 
 ### Info und Status
 | Modell | Batterie | chargestatus | cleanstatus | waterLevel | Wasserkasten | Verbrauchsmaterialien |
-|------------------- |-------- |------------- |------------ |----------- |--------  |------------ |
-| Deebot Slim 2 | x | x | x | n / a | n / a | x |
-| Deebot 600/601/605 | x | x | x | | | |
-| Deebot 710/711 | x | | | n / a | n / a | |
-| Deebot 900/901 | x | x | x | n / a | n / a | |
-| Deebot Ozmo 610 | | | | | | |
-| Deebot Ozmo 900 | | | | | | |
-| Deebot Ozmo 930 | x | x | x | x | x | x |
-| Deebot Ozmo 950 | x | | x | | | |
+|------------ |-------- |------------- |------------ |----------- |--------  |------------ |
+| Slim 2 | x | x | x | n / a | n / a | x |
+| 600/601/605 | x | x | x | | | |
+| 710/711 | x | x | x | n / a | n / a | |
+| 900/901 | x | x | x | n / a | n / a | |
+| Ozmo 610 | x | x | x | x | | x |
+| Ozmo 900 | x | | | | | |
+| Ozmo 930 | x | x | x | x | x | x |
+| Ozmo 950 | x | | x | | | |
 
 ## Steuerung
 ### Tasten
@@ -135,6 +135,9 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 
 ## Changelog
 
+### 0.4.2
+   * Improved support for MQTT devices
+
 ### 0.3.10
    * (mrbungle64) Improved support for XML based MQTT devices
    
@@ -142,7 +145,7 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
    * (mrbungle64) Improved support for XML based MQTT devices
 
 ### 0.3.8
-   * (boriswerner) Improved support for Ozmo 950 device
+   * (boriswerner) Improved support for Ozmo 950
    * (mrbungle64) Implemented waterbox info (XMPP based devices)
 
 ### 0.3.7

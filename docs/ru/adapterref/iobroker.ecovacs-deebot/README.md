@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
+hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -41,31 +41,31 @@ hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
 
 ### Кнопки и управление
 | модель | базовый * | пауза | пятно | spotArea | customArea ** | край | playSound | уровень воды |
-|------------------- |-------- |------ |------ |--------- |-------------- |------ |---------- |----------- |
-| Deebot Slim 2 | х | н / д | х | н / д | н / д | х | н / д | н / д |
-| Deebot 600/601/605 | х | | х | н / д | н / д | х | | |
-| Deebot 710/711 | х | | | | | | | н / д |
-| Deebot 900/901 | х | х | н / д | | | н / д | | н / д |
-| Deebot Ozmo 610 | х | | х | н / д | н / д | х | | |
-| Deebot Ozmo 900 | | | н / д | | | н / д | | |
-| Deebot Ozmo 930 | х | х | н / д | х | х | н / д | х | х |
-| Deebot Ozmo 950 | х | х | н / д | х | х | н / д | х | х |
+|------------ |-------- |------ |------ |--------- |-------------- |------ |---------- |----------- |
+| Slim 2 | х | н / д | х | н / д | н / д | х | н / д | н / д |
+| 600/601/605 | х | | х | н / д | н / д | х | | |
+| 710/711 | х | | х | н / д | н / д | х | х | н / д |
+| 900/901 | х | х | н / д | х | х | н / д | | н / д |
+| Ozmo 610 | х | х | х | н / д | н / д | х | X | х |
+| Озмо 900 | х | х | н / д | х | х | н / д | х | х |
+| Озмо 930 | х | х | н / д | х | х | н / д | х | х |
+| Озмо 950 | х | х | н / д | х | х | н / д | х | х |
 
-*) «основными» командами являются `clean` (`auto`), `charge`, `stop`. Они не перечислены отдельно здесь.
+*) «основными» командами являются `clean` (`auto`), `charge`, `stop`. Они не перечислены здесь отдельно.
 
 **) вкл. номер `cleanings`
 
 ### Информация и статус
-| модель | батарея | шаргестатус | Cleanstatus | уровень воды | водный бокс | расходные материалы |
-|------------------- |-------- |------------- |------------ |----------- |--------  |------------ |
-| Deebot Slim 2 | х | х | х | н / д | н / д | х |
-| Deebot 600/601/605 | х | х | х | | | |
-| Deebot 710/711 | х | | | н / д | н / д | |
-| Deebot 900/901 | х | х | х | н / д | н / д | |
-| Deebot Ozmo 610 | | | | | | |
-| Deebot Ozmo 900 | | | | | | |
-| Deebot Ozmo 930 | х | х | х | х | х | х |
-| Deebot Ozmo 950 | х | | х | | | |
+| модель | аккумулятор | шаргестатус | Cleanstatus | уровень воды | водный бокс | расходные материалы |
+|------------ |-------- |------------- |------------ |----------- |--------  |------------ |
+| Slim 2 | х | х | х | н / д | н / д | х |
+| 600/601/605 | х | х | х | | | |
+| 710/711 | х | х | х | н / д | н / д | |
+| 900/901 | х | х | х | н / д | н / д | |
+| Ozmo 610 | х | х | х | х | | х |
+| Озмо 900 | х | | | | | |
+| Озмо 930 | х | х | х | х | х | х |
+| Озмо 950 | х | | х | | | |
 
 ## Контроль
 ### Кнопки
@@ -109,11 +109,11 @@ hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
 ## Информация
 | имя | описание |
 | --- | --- |
-| батарея | батарея |
+| аккумулятор | аккумулятор |
 | шаргестатус | состояние во время зарядки |
 | Cleanstatus | состояние во время уборки |
 | коммуникационный протокол | XMPP или MQTT |
-| DeviceClass | Класс устройства Deebot |
+| deviceClass | Deebot устройство класса |
 | имя_устройства | Имя устройства, определенное в приложении Ecovacs |
 | deviceStatus | состояние устройства |
 | ошибка | Текущее сообщение об ошибке |
@@ -135,6 +135,9 @@ hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
 
 ## Changelog
 
+### 0.4.2
+   * Improved support for MQTT devices
+
 ### 0.3.10
    * (mrbungle64) Improved support for XML based MQTT devices
    
@@ -142,7 +145,7 @@ hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
    * (mrbungle64) Improved support for XML based MQTT devices
 
 ### 0.3.8
-   * (boriswerner) Improved support for Ozmo 950 device
+   * (boriswerner) Improved support for Ozmo 950
    * (mrbungle64) Implemented waterbox info (XMPP based devices)
 
 ### 0.3.7

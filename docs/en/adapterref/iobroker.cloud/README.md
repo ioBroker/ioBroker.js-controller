@@ -59,6 +59,9 @@ You may write "text2command" in white list, you can send POST request to ```http
 *to do*
 
 ## Changelog
+### 3.0.2 (2020-02-23)
+* (Apollon77) fix for pot. crash when used with web 3.x
+
 ### 3.0.1 (2020-01-05)
 * (bluefox) Breaking changes: no alexa support. Use ioBroker.iot for that.
 * (bluefox) Support of multiple clients for .pro

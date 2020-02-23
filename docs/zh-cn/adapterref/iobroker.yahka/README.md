@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.yahka/README.md
 title: iobroker.yahka
-hash: dHZZLpKFEsSVVyW2ypXQybWO0izVAjfMZtmS9Qd6GNo=
+hash: WQ/YjLhugOj3gHo0ZPfKVI0A3f1acCv5zoT5UHnmU4Y=
 ---
 ![商标](../../../en/adapterref/iobroker.yahka/admin/yahka.png)
 
@@ -13,14 +13,146 @@ hash: dHZZLpKFEsSVVyW2ypXQybWO0izVAjfMZtmS9Qd6GNo=
 ![测验](https://travis-ci.org/ioBroker/ioBroker.yahka.svg?branch=master)
 
 ＃iobroker.yahka
-=================
-
-***此适配器至少需要nodejs 6.x ***
-
 ##安装和使用
 有关如何安装和配置此适配器的详细信息，请参阅[维基](https://github.com/jensweigele/ioBroker.yahka/wiki)
 
+##先决条件
+在安装适配器之前，您需要安装一些软件包（对于Linux）：
+
+```sudo apt-get install libavahi-compat-libdnssd-dev```
+
+##安装最新的**版本**
+只需在“适配器”页面的ioBroker管理面板中单击“ Homekit yahka适配器”后面的“ +”按钮。
+
+##安装最新的**测试版**
+如果您想了解最新的Beta版本，可以通过github url安装适配器。 <br> （有时需要额外的上传[fe iobroker upload yahka]和适配器重新启动） <br>
+
+＃＃ 故障排除
+###并非所有新功能都可用：
+如果yahka更新后并非所有新功能都可用，请尝试上传（例如iobrober yahka上传），然后重新启动适配器。
+
+### Missing Avahi守护程序（Linux）
+如果日志中出现以下错误： <br>
+
+```
+Error:	2016-07-26 18:57:17.989	error	at Error (native)
+Error:	2016-07-26 18:57:17.989	error	dns service error: unknown
+uncaught	2016-07-26 18:57:17.985	error	exception: dns service error: unknown
+```
+
+您必须执行一些其他步骤：
+
+*安装avahi守护程序：
+
+```sudo apt-get install avahi-daemon -y```
+
+*编辑avahi-daemon.conf
+
+```sudo nano avahi-daemon.conf ```<br>
+change the following variables:
+```host-name=\<put in your hostname\>
+domain-name=local
+use-ipv4=yes
+use-ipv6=yes
+enable-dbus=yes
+```
+
+###缺少pam-devel软件包（Linux）
+如果日志中出现以下错误： <br>
+
+```
+../authenticate_pam.cc:30:31: fatal error: security/pam_appl.h: Datei oder Verzeichnis nicht gefunden
+#include <security/pam_appl.h>
+```
+
+您必须安装pam-devel软件包：
+
+*安装avahi守护程序：
+
+```sudo apt-get install pam-devel -y```
+
+###缺少卓悦（Windows）
+-下载：```https：// www.samuelattard.com / files / bonjourcore2.msi`''
+-执行：```msiexec / i bonjourcore2.msi / qn`''
+-删除：```del bonjourcore2.msi```
+-下载：```https：// www.samuelattard.com / files / bonjoursdksetup.exe`''
+-执行：```bonjoursdksetup.exe / quiet`''
+-删除：```del bonjoursdksetup.exe```
+-设置：```set BONJOUR_SDK_HOME = C：\ Program Files \ Bonjour SDK```
+
+然后安装yahka适配器。
+
+##关于HomeKit的一些话
+HomeKit的体系结构如下： <br>有“设备”作为逻辑实体。每个设备可以具有多个**服务**，并且每个服务都具有多个**特征**。 <br>最后，特征是可以在其中读取或写入值的端点。 <br>服务可能具有哪些特征，由Apple / HomeKit定义，并由服务类型确定。服务类型也由Apple / HomeKit定义。
+
+例： <br>车库门开启器是一种可以提供两种服务的设备： <br>
+
+1.车库门开启器
+2.光
+
+车库门开启器服务本身可能具有不同的特征，例如：CurrentDoorState，TargetDoorState等。 <br>此外，Light Service可能具有不同的特征，例如：开（以及许多其他用于改变灯光颜色等）。
+
+## Yahka做什么
+使用Yahka，可以将ioBroker数据点映射到HomeKit特性。 <br>由于有时需要进行映射（例如，在HomeKit和其他系统之间，车库门的“状态”值不同），因此还可以指定功能来转换这些值。如下所述。 <br>为了避免过多的管理工作，您在Yahka中创建的所有设备都位于所谓的“桥”后面。使用此网桥，您只需将网桥与iOS设备配对即可访问所有设备。否则，您需要将每个Yahka设备与Homekit配对。
+
+##设置网桥并创建设备和服务
+每个需要与Homekit配对的设备都需要一个具有Mac地址形式的“用户名”。 Yahka自动为每个yahka实例生成一个随机的用户名。 <br> **重要提示：如果您将Yahka与HomeKit配对后更改了用户名，则需要重新配置iOS中的所有设备（房间分配，位置等）。更改用户名意味着使用iOS，这是一个完整的新设备！** <br>除了用户名，您还需要指定一个PIN码，该密码需要在iOS设备上输入。可以通过在Yahka的管理面板中单击“：yahka.0”来指定所有内容。 （单击列表条目后，展开右侧的面板）。桥梁的名称也可以在那里更改。
+
+设置网桥后，可以使用顶部的“添加设备”按钮添加所需的设备。添加/选择设备后，您可以向该设备添加服务。 <br>必须指定服务名称和服务类型。 <br>根据服务类型，可用特征列表会更改<br>
+
+##设置特征
+如果要支持特征，则必须在特征左侧选中“已启用”复选框。
+对于每个特征，您可以指定以下属性：
+
+-InOutFunction：您可以指定一个预定义函数，该函数负责将值从HomeKit传递到ioBroker，反之亦然
+-InOutParameter：您可以在此处为所选的InOutFunction指定参数。可用/期望的参数取决于所选功能。功能和参数的简要概述如下。
+-ConversionFunction：除了InOutFunction外，您还可以指定一个将HomeKit的值转换为ioBroker的函数（反之亦然）
+-ConversionParameter：与InOutParameter相同-可用/期望的参数取决于所选函数。
+
+## InOut功能概述
+|功能|预期参数|描述|
+|---|---|---|
+
+| const | Value |如果HomeKit读取const函数，则const函数始终将“ InOutParameter”中指定的值传递给Conversion Function。如果HomeKit要写入值，则拒绝此操作
+
+| ioBroker数据点的| ioBroker.State |名称|通过此功能，适配器将指定的ioBroker数据点用于读取和写入操作。所有操作均立即完成，无需缓冲或过滤（将值传递到指定的Conversion函数）|
+| ioBroker数据点的| ioBroker.State.Defered |名称|使用此功能，适配器将指定的ioBroker数据点用于读取和写入操作。来自HomeKit的写入操作直接传递给转换函数。 | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| ioBroker数据点的| ioBroker.State.OnlyACK |名称|使用此功能，适配器将指定的ioBroker数据点用于读取和写入操作。来自HomeKit的写入操作直接传递给转换函数。如果设置了“已确认”-标志值，则仅将ioBroker的更改转发到HomeKit。否则，最后确认的值将被传输到HomeKit |。 |
+| ioBroker.homematic。 <br> HomeMatic级别数据点的WindowCovering.TargetPosition | Id <br>要么<br>具有级别数据点的ID和工作数据点的ID的字符串数组|此功能尤其用于控制HomeMatic窗帘。在移动窗帘时，此功能会延迟将值传输到HomeKit。为避免iOS |中的窗帘滑块闪烁，这是必要的。 |
+
+##转换功能概述
+|功能|预期参数|描述|
+|---|---|---|
+
+| passthrough | \ <无\> |来自ioBroker的值不进行转换就传递给HomeKit（反之亦然）
+
+| HomematicDirectionTo <br> HomekitPositionState | \ <none\> |此函数将Homematic窗帘的方向枚举映射到HomeKit的PositionState枚举（并返回）|
+| HomematicControlModeTo <br> HomekitHeathingCoolingState | \ <none\> |此函数将Homematic的ControlMode枚举映射到HomeKit的HeathingCoolingState枚举（并返回）|
+| scaleInt <br> scaleFloat |```{ "homekit.min": <number>, "homekit.max": <number>, "iobroker.min": <number>, "iobroker.max": <number> }```||此函数类似于“ level255”，但更通用。它将ioBroker值的范围从“ iobroker.min”（如果省略，则为0）到“ iobroker.max”转换为HomeKit值，其值范围从“ homekit.min”（如果省略，则为0）到“ homekit.max” （然后回来）。 <br> **例：**如果参数字段为：```{ "homekit.max": 500, "iobroker.max": 250}``` <br>实际上，ioBroker的值会乘以2，然后再将其发送到HomeKit。 <br>** min参数仅在0.8.0及更高版本中可用** |
+| inverse | number |此函数用于“反转” ioBroker中的值。该参数在ioBroker中指定了最大值。公式是：```Parameter - value``` <br> **示例：**如果参数字段为```100```§，则ioBroker的值100将作为0发送到HomeKit，值80将作为20发送到HomeKit等。 |
+| | hue | \ <无\> |此函数是scaleInt的专用版本，具有参数```iobroker.max=65535```和```homekit.max=360```§。 |
+| hue | \ <none \> |此函数是scaleInt的专用版本，具有参数“ iobroker.max = 65535”和“ homekit.max = 360”。 |
+
+## Homematic盲致动器\窗帘
+要集成Homematic百叶窗执行器（如HM-LC-Bl1PBU-FM），需要以下设置：
+
+*将服务添加到设备
+*将“服务名称”设置为某些名称，并将服务类型设置为“ WindowCovering”。服务子类型可以留空
+*启用并填写以下特征：
+
+|特征名称| 1：InOut函数<br> 2：转换函数| 1：InOut参数<br> 2：转换参数|
+|---|---|---|
+| CurrentPosition | 1：ioBroker.State.OnlyACK <br> 2：直通| 1：_ \ <path to homematic object\> _.1。等级<br> 2： <empty\> |
+| PositionState | 1：ioBroker.State.OnlyACK <br> 2：HomematicDirectionToHomekitPositionState | 1：_ \ <path to homematic object\> _。1个方向<br> 2： <empty\> |
+| TargetPosition | 1：ioBroker.homematic.WindowCovering.TargetPosition <br> 2：直通| 1：_ \ <path to homematic object\> _.1。等级<br> 2： <empty\> |
+
+值_ \ <动态对象的路径\> _需要替换为设备的实际路径（例如hm-rpc.0.NEQ0012345）
+
+有关配置掩码的一般信息，请参见：TODO <br>有关配置，InOut函数和转换函数的更多信息，请参见：[维基](https://github.com/jensweigele/ioBroker.yahka/wiki/Configuration,-InOut-Functions-and-Conversion-Functions)
+
 ## Changelog
+### 0.10.0 (2020-02-19)
+  (apollon77) updated dependencies, nodejs 12 support<br>
 
 ### 0.10.0
   (jw) updated dependencies<br>
@@ -106,7 +238,7 @@ hash: dHZZLpKFEsSVVyW2ypXQybWO0izVAjfMZtmS9Qd6GNo=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 Jens Weigele (iobroker.yahka@gmail.com)
+Copyright (c) 2016-2020 Jens Weigele (iobroker.yahka@gmail.com)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

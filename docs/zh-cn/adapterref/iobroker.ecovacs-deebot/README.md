@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
+hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -28,10 +28,10 @@ hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
 * Deebot 601
 * Deebot 710/711
 * Deebot 900/901
-* Deebot奥兹莫610
-* Deebot Ozmo 950
+* Deebot Ozmo 610
+* Deebot奥兹莫950
 
-###这些模型应该（几乎）完全正常工作
+###这些模型应该（几乎）完全起作用
 * Deebot N79T
 * Deebot 600/605
 * Deebot Ozmo 960（未经测试）
@@ -41,15 +41,15 @@ hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
 
 ###按钮和控件
 |型号基本* |暂停|现货| spotArea | customArea ** |边缘playSound |水位|
-|------------------- |-------- |------ |------ |--------- |-------------- |------ |---------- |----------- |
-| Deebot Slim 2 | x |不适用x |不适用不适用x |不适用不适用 |
-| Deebot 600/601/605 | x | | x |不适用不适用x | | |
-| Deebot 710/711 | x | | | | | | |不适用 |
-| Deebot 900/901 | x | x |不适用| |不适用|不适用 |
-| Deebot Ozmo 610 | x | | x |不适用不适用x | | |
-| Deebot Ozmo 900 | | |不适用| |不适用| |
-| Deebot Ozmo 930 | x | x |不适用x | x |不适用x | x |
-| Deebot Ozmo 950 | x | x |不适用x | x |不适用x | x |
+|------------ |-------- |------ |------ |--------- |-------------- |------ |---------- |----------- |
+|修身2 | x |不适用x |不适用不适用x |不适用不适用 |
+| 600/601/605 | x | | x |不适用不适用x | | |
+| 710/711 | x | | x |不适用不适用x | x |不适用 |
+| 900/901 | x | x |不适用x | x |不适用|不适用 |
+| Ozmo 610 | x | x | x |不适用不适用x | X | x |
+| Ozmo 900 | x | x |不适用x | x |不适用x | x |
+| Ozmo 930 | x | x |不适用x | x |不适用x | x |
+| Ozmo 950 | x | x |不适用x | x |不适用x | x |
 
 *）“基本”命令是`clean`（`auto`），`charge`，`stop`。它们不在此处单独列出。
 
@@ -57,15 +57,15 @@ hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
 
 ###信息和状态
 |型号电池| chargestatus | cleanstatus |水位|水箱|消耗品|
-|------------------- |-------- |------------- |------------ |----------- |--------  |------------ |
-| Deebot Slim 2 | x | x | x |不适用不适用x |
-| Deebot 600/601/605 | x | x | x | | | |
-| Deebot 710/711 | x | | |不适用不适用|
-| Deebot 900/901 | x | x | x |不适用不适用|
-| Deebot Ozmo 610 | | | | | | |
-| Deebot Ozmo 900 | | | | | | |
-| Deebot Ozmo 930 | x | x | x | x | x | x |
-| Deebot Ozmo 950 | x | | x | | | |
+|------------ |-------- |------------- |------------ |----------- |--------  |------------ |
+|修身2 | x | x | x |不适用不适用x |
+| 600/601/605 | x | x | x | | | |
+| 710/711 | x | x | x |不适用不适用|
+| 900/901 | x | x | x |不适用不适用|
+| Ozmo 610 | x | x | x | x | | x |
+| Ozmo 900 | x | | | | | |
+| Ozmo 930 | x | x | x | x | x | x |
+| Ozmo 950 | x | | x | | | |
 
 ＃＃ 控制
 ＃＃＃ 纽扣
@@ -82,17 +82,17 @@ hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
 
 ###区域/区域清洁
 #### SpotArea
-*点区在移动应用中以字母命名
+*现货区域在移动应用中以字母命名
     *在适配器中，它们映射到一个数字：
         *`A` =`0`
         *`B` =`1`
         *等
-*`spotArea`：以逗号分隔的数字列表
+*`spotArea`：逗号分隔的数字列表
     *以0开头（例如：1,3 =区域B和D），以进行清洁
 *按钮数量（`spotArea_0-9`）可以在适配器配置中配置
 
 #### CustomArea
-*以逗号分隔的列表，精确列出了x1，y1，x2，y2的4个位置值（例如，-3975、2280，-1930、4575）
+*以逗号分隔的清单，精确列出了x1，y1，x2，y2的4个位置值（例如，-3975、2280，-1930、4575）
     *位置“ 0,0,0,0”似乎是充电站的位置
     *值“ 1000”似乎是大约1米的距离
 
@@ -123,17 +123,20 @@ hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
 | --- | --- |
 |电邮|您的Ecovacs帐户使用的电子邮件地址|
 |密码您的Ecovacs帐户使用的密码|
-|国家代码（大陆）|选择预定义的国家代码（包括大陆）|
+|国家代码（大陆）|选择预定义的国家/地区代码（包括大陆）|
 |设备编号|如果使用多个设备，则选择当前实例|
 |点数| Ecovacs应用程序中定义的运动区域数（默认为`0`）|
 
 ##谢谢和感谢
 * @joostth（[sucks.js]（https://github.com/joostth/sucks.js））
-* @wpietri（[吸]（https://github.com/wpietri/sucks））
+* @wpietri（[吮吸]（https://github.com/wpietri/sucks））
 * @ bmartin5692（[sucks]（https://github.com/bmartin5692/sucks），[bumber]（https://github.com/bmartin5692/bumper））
 * @Ligio（[ozmo]（https://github.com/Ligio/ozmo））
 
 ## Changelog
+
+### 0.4.2
+   * Improved support for MQTT devices
 
 ### 0.3.10
    * (mrbungle64) Improved support for XML based MQTT devices
@@ -142,7 +145,7 @@ hash: NpL58aNOi21reLcwXXu1HIRjHOIlqd2Ld3rxNiWRxv8=
    * (mrbungle64) Improved support for XML based MQTT devices
 
 ### 0.3.8
-   * (boriswerner) Improved support for Ozmo 950 device
+   * (boriswerner) Improved support for Ozmo 950
    * (mrbungle64) Implemented waterbox info (XMPP based devices)
 
 ### 0.3.7

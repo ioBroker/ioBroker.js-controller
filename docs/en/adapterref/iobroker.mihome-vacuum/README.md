@@ -232,7 +232,7 @@ Sorry, not yet finished.
 - Widget at the time without function
 
 ## Changelog
-### 2.0.5 (2020-02-17)
+### 2.0.6 (2020-02-17)
 * (MeisterTR) add roooms for s50 with map (cloud or Valetudo needed)
 ### 2.0.4 (2020-02-13)
 * (MeisterTR) add cloud login to get token

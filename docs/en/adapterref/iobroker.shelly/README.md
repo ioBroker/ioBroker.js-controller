@@ -48,7 +48,7 @@ You find a detailed installation documentation here:
 ### 3.2.0 (13.02.2020)
 * (Simon W.) - Add device Shelly 3EM
 * (Stübi)    - Add device Shelly Door/Windows sensor 
-* (Stübi)    - Add external temperature sensor for Shelly 1, 1PM and 2.5
+* (Stübi)    - Add external temperature sensor for Shelly 1, 1PM and 2.5 (only CoAP)
 
 ### 3.1.9 (25.01.2020)
 * (Stübi) - Bugfixing, auto update new firmware

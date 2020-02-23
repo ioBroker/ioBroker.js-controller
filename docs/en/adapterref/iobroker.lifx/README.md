@@ -43,19 +43,29 @@ npm install https://github.com/foxthefox/ioBroker.lifx/tarball/master --producti
 |Bulb.sat|value|x|saturation 0...100 %|
 |Bulb.bright|value|x|brightness 0...100 %|
 |Bulb.online|boolean|-|true/false|
+|Bulb.vendor|string|-|vendor|
+|Bulb.product|string|-|product|
+|Bulb.version|string|-|version|
+|Bulb.label|string|-|label|
+|Bulb.colorLamp|boolean|-|true/false|
+|Bulb.infraredLamp|boolean|-|true/false|
+|Bulb.multizoneLamp|boolean|-|true/false|
 
 ## TODO:
 - cyclical getState from lamp, if adjusted outside ioBroker
 - getting adjustment of color values with all existing settings (brighness adjust has fixed 80% saturation and keeps the previous hue setting; saturation adjust and hue adjust has fixed 80% brightness)
 - transition times
 - waveforms
-- usage of meta.roles
 - objects for white lamp
 
 ## known issues
 ??
 
 ## Changelog:
+### 0.2.0
+- lifx-lan-client library instead node-lifx
+- states for vendor, product, version, product features
+
 ### 0.1.1
 - logo quadratic
 ### 0.1.0

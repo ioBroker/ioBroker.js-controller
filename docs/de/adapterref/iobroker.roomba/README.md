@@ -3,31 +3,28 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: 4QSunjs5xSBvOiA0U5aoHQDA8EhXC1dTvTjqLGNsTDk=
+hash: PloH4aMgi5KrKN3YSTHxs1DcmVcx7d6tkETE/7jJ/Kg=
 ---
-![Paypal-Spende](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
+![Logo](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
+
 ![Anzahl der Installationen](http://iobroker.live/badges/roomba-installed.svg)
 ![Stabile Version](http://iobroker.live/badges/roomba-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.roomba.svg)
-![Travis CI](https://travis-ci.org/Zefau/ioBroker.roomba.svg?branch=master)
+![Commits seit der letzten Veröffentlichung](https://img.shields.io/github/commits-since/iobroker-community-adapters/ioBroker.roomba/latest.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.roomba.svg)
 ![NPM](https://nodei.co/npm/iobroker.roomba.png?downloads=true)
 
-: heavy_exclamation_mark: | **ENTWICKLUNG WURDE NACH [GEMEINSCHAFT](https://github.com/iobroker-community-adapters/ioBroker.roomba) verschoben.** ------------ | -------------
-
-________________________.
-
-![Logo](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
-
 # IoBroker.roomba Verbinden Sie Ihren iRobot Roomba mit ioBroker.
 Basierend auf der dorita980-Bibliothek https://github.com/koalazak/dorita980#readme
+
+[![Travis CI] (https://travis-ci.com/iobroker-community-adapters/ioBroker.roomba.svg?branch=master)](https://travis-ci.com/iobroker-community-adapters/ioBroker.roomba)
 
 **Inhaltsverzeichnis**
 
 1. [Funktionen] (# Funktionen)
 2. [Installation] (# Installation)
 3. [Setup-Anweisungen] (# Setup-Anweisungen)
-4. [Unterstützte Roombas / Firmware-Versionen] (# unterstützte Roombas - Firmware-Versionen)
+4. [Unterstützte Roombas / Firmware-Versionen] (# Supported-Roombas - Firmware-Versionen)
 5. [Kanäle & Zustände] (# Kanäle - Zustände)
 6. [Beschreibung der Einstellungen (unvollständig)] (# Beschreibung der Einstellungen unvollständig)
 7. [Smart Home / Alexa-Integration mit ioBroker.javascript] (# smart-home - alexa-Integration mit iobrokerjavascript)
@@ -39,7 +36,7 @@ Basierend auf der dorita980-Bibliothek https://github.com/koalazak/dorita980#rea
 Die folgenden Funktionen werden mit diesem Adapter geliefert:
 
 - __Senden Sie Befehle__ (`Start`,` Stop`, `Resume`,` Pause`, `Dock`) an Ihren Roomba
-- Abrufen von __Gerätezuständen__, z. B. Batterie, angedockter, voller / eingelegter Behälter (vollständige Liste finden Sie unter [Kanäle & Zustände] (# Kanäle - Zustände)).
+- Abrufen von __Gerätezuständen__, z. B. Batterie, angedockter, voller / eingelegter Behälter (vollständige Liste siehe [Kanäle & Zustände] (# Kanäle - Zustände))
 - Rufen Sie die Gerätekonfiguration ab, z. B. Einstellungen, Netzwerk- oder Zeitplaneinstellungen (eine vollständige Liste finden Sie unter [Kanäle und Status] (# Kanäle - Status)).
 - Abrufen von Gerätestatistiken, z. B. Gesamtmissionen, Stunden an der Dockingstation usw. (eine vollständige Liste finden Sie unter [Kanäle und Bundesstaaten] (# Kanäle - Bundesstaaten).)
 - Rufen Sie Informationen zu __current mission__ (wenn Ihr Roomba bereinigt wird) ab, z. B. Start- und Endzeit, Gesamtlaufzeit, gereinigte Quadratmeter usw. (nur bei unterstützten Roombas siehe [Unterstützte Roombas / Firmware-Versionen] (# unterstützte Roombas) --firmware-Versionen))
@@ -58,7 +55,7 @@ Allerdings müssen Sie wahrscheinlich die Paketabhängigkeiten von canvas (und c
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 ```
 
-Führen Sie außerdem den folgenden Befehl __ im Verzeichnis ioBroker.roomba__ (`/opt/iobroker/node_modules/iobroker.roomba`) aus:
+Führen Sie außerdem den folgenden Befehl __ im Verzeichnis ioBroker.roomba__ aus (`/opt/iobroker/node_modules/iobroker.roomba`):
 
 ```
 sudo npm install canvas --unsafe-perm=true
@@ -99,7 +96,7 @@ So richten Sie ioBroker.roomba automatisch ein, indem Sie den Anweisungen im Adm
 
 ** ACHTUNG **: Die Anmeldeinformationen für die Authentifizierung stimmen nicht mit denen überein, die Sie in der Smartphone-App verwenden!
 
-1. Stellen Sie sicher, dass der ioBroker.roomba-Adapter gestartet ist.
+1. Stellen Sie sicher, dass der Adapter ioBroker.roomba gestartet ist.
 2. Stellen Sie sicher, dass sich Ihr Roboter auf der Home Base befindet und eingeschaltet ist (grüne Lichter leuchten).
 3. Halten Sie dann die HOME-Taste Ihres Roboters gedrückt, bis eine Reihe von Tönen abgespielt wird (ca. 2 Sekunden).
 4. Lassen Sie die Taste los und Ihr Roboter blinkt WIFI-Licht.
@@ -132,7 +129,7 @@ Informationen zur manuellen Einrichtung finden Sie unter https://github.com/koal
 | Roomba® s | [S9 +] (https://github.com/Zefau/ioBroker.roomba/issues/34) | v3.2.4 | [Versionshinweise](https://homesupport.irobot.com/app/answers/detail/a_id/26887/kw/s9%2B#rn_PageTitle) | ![# c5f015](https://placehold.it/15/c5f015/000000?text=+) **unterstützt (inkl. Karte)** |
 | Roomba® s | [S9 +] (https://github.com/Zefau/ioBroker.roomba/issues/34) | v3.2.4 | [Versionshinweise] (https://homesupport.irobot.com/app/answers/detail/a_id/26887/kw/s9%2B#rn_PageTitle) | ! [# c5f015] (https://placehold.it/15/c5f015/000000?text=+) **unterstützt (inkl. Karte)** |
 
-Bitte helfen Sie mir bezüglich der unterstützten Geräte und lassen Sie mich [über ein Problem wissen](https://github.com/Zefau/ioBroker.roomba/issues), ob Ihr Roomba-Modell unterstützt wird!
+Bitte helfen Sie uns bezüglich der unterstützten Geräte und lassen Sie mich [über ein Problem wissen](https://github.com/iobroker-community-adapters/ioBroker.roomba/issues), ob Ihr Roomba-Modell unterstützt wird!
 
 ## Kanäle & Staaten
 Nach erfolgreicher Einrichtung werden die folgenden Kanäle und Zustände erstellt:
@@ -201,7 +198,7 @@ Nach erfolgreicher Einrichtung werden die folgenden Kanäle und Zustände erstel
 | Staaten | - | Status | Aktueller Status des Roboters |
 | Statistik | - | - | Statistische Informationen |
 | Statistik | Missionen | - | Missionsstatistik |
-| Statistik | Missionen | fehlgeschlagen | Anzahl fehlgeschlagener Reinigungsaufträge |
+| Statistik | Missionen | fehlgeschlagen | Anzahl fehlgeschlagener Reinigungsjobs |
 | Statistik | Missionen | erfolgreich sein | Anzahl erfolgreicher Reinigungsarbeiten |
 | Statistik | Missionen | gesamt | Anzahl der Reinigungsarbeiten |
 | Statistik | Zeit | - | Zeitstatistik |
@@ -244,7 +241,7 @@ Die folgenden Nutzdaten werden beim Aufrufen von ```getPreferences()``` empfange
 | localtimeoffset | - | Ganzzahl | Unbekannt | - |
 | ... | - | ... | ... | - |
 
-Bitte helfen Sie mir bei der Beschreibung der Einstellungen. Wenn Sie die Bedeutung der in der Tabelle als unbekannt angegebenen Einstellungen kennen, lassen Sie mich [kennen ihre Bedeutung über ein Problem](https://github.com/Zefau/ioBroker.roomba/issues)!
+Bitte helfen Sie uns bei der Beschreibung der Einstellungen. Wenn Sie die Bedeutung der in der Tabelle als unbekannt angegebenen Einstellungen kennen, lassen Sie mich [kennen ihre Bedeutung über ein Problem](https://github.com/iobroker-community-adapters/ioBroker.roomba/issues)!
 
 ## Smart Home / Alexa-Integration mit ioBroker.javascript
 ### Karte per Telegramm senden, wenn die Mission beendet ist
@@ -318,6 +315,9 @@ Dank [@koalazak] (https://github.com/koalazak) für die [inoffizielle iRobot Roo
 Von <a href="https://www.flaticon.com/authors/iconnice" title="Iconnice">Iconnice</a> von <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> <a href="https://www.flaticon.com/authors/iconnice" title="Iconnice">erstellte</a> <a href="https://www.flaticon.com/" title="Flaticon">Symbole werden</a> von <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a> lizenziert </div>
 
 ## Changelog
+
+### 1.1.1 (2020-02-16)
+- (Zefau) moved development to Community Repository
 
 ### 1.1.0 (2020-02-06)
 - (Zefau) added support to change schedule (see [#36](https://github.com/Zefau/ioBroker.roomba/issues/36))
@@ -413,7 +413,7 @@ Note: If you are coming from an earlier version, you have to (1) empty your sett
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Zefau <zefau@mailbox.org>
+Copyright (c) 2018-2020 Zefau <zefau@mailbox.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

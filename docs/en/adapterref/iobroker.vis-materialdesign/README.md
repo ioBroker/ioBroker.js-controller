@@ -72,6 +72,80 @@ not working at the moment, needs to be implemneted by app, see https://github.co
 ## List
 ![Logo](doc/en/media/list.gif)
 
+## IconList
+
+![Logo](doc/en/media/iconList.gif)
+
+Settings that are not listed in the table below are self-explanatory.
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=6><img src="doc/en/media/iconList_settings_common.png"></td>
+            <td>input method for the list data</td>
+            <td>The data for the IconList can be entered via the editor or a JSON string can be used</td>
+        </tr>
+        <tr>
+            <td>JSON string</td>
+            <td>JSON string can be entered directly in the editor or use binding. The JSON string must have the following format:
+            <pre><code>
+[
+	{
+		"text": "text1",
+		"subText": "number",
+		"image": "harddisk",
+		"imageColor": "#ec0909",
+		"imageActive": "folder",
+		"imageActiveColor": "#5ad902",
+		"buttonBackgroundColor": "",
+		"buttonBackgroundActiveColor": "",
+		"listType": "buttonState",
+		"objectId": "0_userdata.0.iconList.buttonState.number",
+		"buttonStateValue": "60",
+		"buttonNavView": "",
+		"buttonLink": "",
+		"buttonToggleValueTrue": "",
+		"buttonToggleValueFalse": "",
+		"valueAppendix": "",
+		"showValueLabel": "true",
+        "statusBarColor": "green"
+	},
+	{
+		"text": "text0",
+		"subText": "bool",
+		"image": "home",
+		"imageColor": "#44739e",
+		"imageActive": "home",
+		"imageActiveColor": "#44739e",
+		"buttonBackgroundColor": "",
+		"buttonBackgroundActiveColor": "#a0f628",
+		"listType": "buttonToggle",
+		"objectId": "0_userdata.0.iconList.buttonToggle.bool0",
+		"buttonStateValue": "60",
+		"buttonNavView": "",
+		"buttonLink": "",
+		"buttonToggleValueTrue": "",
+		"buttonToggleValueFalse": "",
+		"valueAppendix": "",
+		"showValueLabel": "false",
+        "statusBarColor": ""
+	}
+]
+            </code></pre>
+            Property <code>listType</code> can have the following values:<br>
+            <code>text, buttonState, buttonToggle, buttonToggleValueTrue, buttonToggleValueFalse, buttonNav, buttonLink</code>
+            </td>
+        </tr>        
+    </tbody>
+</table>
+
 ## Progress
 ![Logo](doc/en/media/progress.gif)
 
@@ -731,7 +805,7 @@ Settings that are not listed in the table below are self-explanatory.
         </tr>
         <tr>
             <td>end hour</td>
-            <td>Die Stunde bis wann in der Wochen und Tagesansicht Termine angezeigt werden sollen</td>
+            <td>The hour until which appointments should be displayed in the week and day view</td>
         </tr>        
     </tbody>
 </table>
@@ -834,7 +908,11 @@ ical2CalendarWidget();
 
 ## Changelog
 
-### 0.3.xx
+### 0.2.59
+* (Scrounger): Buttons Toggle: option for push function added
+* (Scrounger): IconList Widget added
+* (Scrounger): Alerts Widget: show dummy message in Editor
+* (Scrounger): Grid Views Widget added
 * (Scrounger): List Widget: color option for switch added
 * (Scrounger): List Widget: dynamic generate item using json string
 * (Scrounger): Masonry Views Widget: visible condition added

@@ -35,16 +35,16 @@ You can check this with the state value `info.communicationProtocol` after succe
 
 ### Buttons and control
 
-| model              | basic * | pause | spot  | spotArea | customArea ** | edge  | playSound | waterLevel |
-|------------------- |-------- |------ |------ |--------- |-------------- |------ |---------- |----------- |
-| Deebot Slim 2      |   x     |  n/a  |   x   |   n/a    |     n/a       |   x   |    n/a    |    n/a     |
-| Deebot 600/601/605 |   x     |       |   x   |   n/a    |     n/a       |   x   |           |            |
-| Deebot 710/711     |   x     |       |       |          |               |       |           |    n/a     |
-| Deebot 900/901     |   x     |   x   |  n/a  |          |               |  n/a  |           |    n/a     |
-| Deebot Ozmo 610    |   x     |       |   x   |   n/a    |     n/a       |   x   |           |            |
-| Deebot Ozmo 900    |         |       |  n/a  |          |               |  n/a  |           |            |
-| Deebot Ozmo 930    |   x     |   x   |  n/a  |    x     |      x        |  n/a  |     x     |     x      |
-| Deebot Ozmo 950    |   x     |   x   |  n/a  |    x     |      x        |  n/a  |     x     |     x      |
+| model       | basic * | pause | spot  | spotArea | customArea ** | edge  | playSound | waterLevel |
+|------------ |-------- |------ |------ |--------- |-------------- |------ |---------- |----------- |
+| Slim 2      |   x     |  n/a  |   x   |   n/a    |     n/a       |   x   |    n/a    |    n/a     |
+| 600/601/605 |   x     |       |   x   |   n/a    |     n/a       |   x   |           |            |
+| 710/711     |   x     |       |   x   |   n/a    |     n/a       |   x   |     x     |    n/a     |
+| 900/901     |   x     |   x   |  n/a  |    x     |      x        |  n/a  |           |    n/a     |
+| Ozmo 610    |   x     |   x   |   x   |   n/a    |     n/a       |   x   |     X     |     x      |
+| Ozmo 900    |   x     |   x   |  n/a  |    x     |      x        |  n/a  |     x     |     x      |
+| Ozmo 930    |   x     |   x   |  n/a  |    x     |      x        |  n/a  |     x     |     x      |
+| Ozmo 950    |   x     |   x   |  n/a  |    x     |      x        |  n/a  |     x     |     x      |
 
 *) "basic" commands are `clean` (`auto`), `charge`, `stop`. They are not listed separately here.
 
@@ -52,16 +52,16 @@ You can check this with the state value `info.communicationProtocol` after succe
 
 ### Info and status
 
-| model              | battery | chargestatus | cleanstatus | waterLevel | waterbox | consumables |
-|------------------- |-------- |------------- |------------ |----------- |--------  |------------ |
-| Deebot Slim 2      |    x    |      x       |      x      |     n/a    |    n/a   |      x      |
-| Deebot 600/601/605 |    x    |      x       |      x      |            |          |             |
-| Deebot 710/711     |    x    |              |             |     n/a    |    n/a   |             |
-| Deebot 900/901     |    x    |      x       |      x      |     n/a    |    n/a   |             |
-| Deebot Ozmo 610    |         |              |             |            |          |             |
-| Deebot Ozmo 900    |         |              |             |            |          |             |
-| Deebot Ozmo 930    |    x    |      x       |      x      |      x     |     x    |      x      |
-| Deebot Ozmo 950    |    x    |              |      x      |            |          |             |
+| model       | battery | chargestatus | cleanstatus | waterLevel | waterbox | consumables |
+|------------ |-------- |------------- |------------ |----------- |--------  |------------ |
+| Slim 2      |    x    |      x       |      x      |     n/a    |    n/a   |      x      |
+| 600/601/605 |    x    |      x       |      x      |            |          |             |
+| 710/711     |    x    |      x       |      x      |     n/a    |    n/a   |             |
+| 900/901     |    x    |      x       |      x      |     n/a    |    n/a   |             |
+| Ozmo 610    |    x    |      x       |      x      |      x     |          |      x      |
+| Ozmo 900    |    x    |              |             |            |          |             |
+| Ozmo 930    |    x    |      x       |      x      |      x     |     x    |      x      |
+| Ozmo 950    |    x    |              |      x      |            |          |             |
 
 ## Control
 
@@ -133,6 +133,9 @@ You can check this with the state value `info.communicationProtocol` after succe
 
 ## Changelog
 
+### 0.4.2
+   * Improved support for MQTT devices
+
 ### 0.3.10
    * (mrbungle64) Improved support for XML based MQTT devices
    
@@ -140,7 +143,7 @@ You can check this with the state value `info.communicationProtocol` after succe
    * (mrbungle64) Improved support for XML based MQTT devices
 
 ### 0.3.8
-   * (boriswerner) Improved support for Ozmo 950 device
+   * (boriswerner) Improved support for Ozmo 950
    * (mrbungle64) Implemented waterbox info (XMPP based devices)
 
 ### 0.3.7

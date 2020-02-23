@@ -3,24 +3,21 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.roomba/README.md
 title: ioBroker.roomba
-hash: 4QSunjs5xSBvOiA0U5aoHQDA8EhXC1dTvTjqLGNsTDk=
+hash: PloH4aMgi5KrKN3YSTHxs1DcmVcx7d6tkETE/7jJ/Kg=
 ---
-![贝宝捐赠](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
+![商标](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
+
 ![安装数量](http://iobroker.live/badges/roomba-installed.svg)
 ![稳定版](http://iobroker.live/badges/roomba-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.roomba.svg)
-![特拉维斯CI](https://travis-ci.org/Zefau/ioBroker.roomba.svg?branch=master)
+![自上次发布以来提交](https://img.shields.io/github/commits-since/iobroker-community-adapters/ioBroker.roomba/latest.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.roomba.svg)
 ![NPM](https://nodei.co/npm/iobroker.roomba.png?downloads=true)
 
-：heavy_exclamation_mark：| **开发已移至[社区](https://github.com/iobroker-community-adapters/ioBroker.roomba)。** ------------ | -------------
-
-________________________
-
-![商标](../../../en/adapterref/iobroker.roomba/admin/roomba.png)
-
-＃ioBroker.roomba将iRobot Roomba连接到ioBroker。
+＃ioBroker.roomba将您的iRobot Roomba连接到ioBroker。
 基于dorita980库https://github.com/koalazak/dorita980#readme
+
+[![Travis CI]（https://travis-ci.com/iobroker-community-adapters/ioBroker.roomba.svg?branch=master）](https://travis-ci.com/iobroker-community-adapters/ioBroker.roomba)
 
 **目录**
 
@@ -31,7 +28,7 @@ ________________________
 5. [通道和状态]（＃channels--states）
 6. [首选项描述（不完整）]（＃description-of-preferences-incomplete）
 7. [使用ioBroker.javascript进行智能家居/ Alexa集成]（＃smart-home--alexa-integration-using-iobrokerjavascript）
-8. [变更日志]（＃changelog）
+8. [Changelog]（＃changelog）
 9. [学分]（＃credits）
 10. [许可证]（＃license）
 
@@ -39,11 +36,11 @@ ________________________
 此适配器随附以下功能：
 
 -__发送命令__（“开始”，“停止”，“继续”，“暂停”，“停靠”）到您的Roomba
--检索__设备状态__，例如电池，对接的，已满/已插入的垃圾箱（有关完整列表，请参见[通道和状态]（＃channels--状态））
+-检索__设备状态__，例如电池，对接的电池，已满/已插入的垃圾箱（有关完整列表，请参见[通道和状态]（＃channels--状态））
 -检索__device configuration__，例如首选项，网络或时间表设置（有关完整列表，请参见[Channels and States]（＃channels--states））
 -检索__device的统计信息__，例如总任务数，扩展坞的工作时间等。（有关完整列表，请参见[Channels and States]（＃channels--states））
 -检索有关__当前任务__的信息（清理Roomba时），例如开始和结束时间，总运行时间，清理的平方米等。（仅在支持的Roomba上，请参阅[支持的Roomba /固件版本]（＃supported-roombas --firmware-versions））
--__根据收到的任务数据绘制地图__（仅在支持的Roomba上）
+-__根据任务数据绘制地图__（仅在受支持的Roomba上）
 -__Web Interface__，显示当前任务以及先前/已存档任务的状态和地图：
 
   ![Roomba介面](../../../en/adapterref/iobroker.roomba/img/roomba.interface.png)
@@ -51,7 +48,7 @@ ________________________
 ##安装
 ioBroker.roomba需要[帆布](https://www.npmjs.com/package/canvas)才能绘制Roomba任务的地图。 ioBroker将尝试通过ioBroker.roomba安装来安装此依赖项。
 
-但是，您可能必须使用以下命令安装canvas的软件包依赖项（以及canvas本身）：
+不过，您可能必须使用以下命令安装canvas的软件包依赖项（以及canvas本身）：
 
 ### Linux
 ```
@@ -108,7 +105,7 @@ npm install canvas
 如果自动过程无法检索您的凭据，请使用手动设置。
 
 ###手动设置
-对于手动设置，请参见https://github.com/koalazak/dorita980#how-to-get-your-usernameblid-and-password。
+有关手动设置的信息，请参见https://github.com/koalazak/dorita980#how-to-get-your-usernameblid-and-password。
 
 ##支持的Roomba /固件版本
 ###支持的固件版本
@@ -132,7 +129,7 @@ npm install canvas
 | Roomba®s | [S9 +]（https://github.com/Zefau/ioBroker.roomba/issues/34）| v3.2.4 | [发行说明](https://homesupport.irobot.com/app/answers/detail/a_id/26887/kw/s9%2B#rn_PageTitle)| ![＃c5f015](https://placehold.it/15/c5f015/000000?text=+)**支持（包括地图）** |
 | Roomba®s | [S9 +]（https://github.com/Zefau/ioBroker.roomba/issues/34）| v3.2.4 | [发行说明]（https://homesupport.irobot.com/app/answers/detail/a_id/26887/kw/s9%2B#rn_PageTitle）| ！[＃c5f015]（https://placehold.it/15/c5f015/000000?text=+）**受支持（包括地图）** |
 
-请就支持的设备向我提供帮助，无论您的Roomba型号是否支持，请让我[通过问题知道](https://github.com/Zefau/ioBroker.roomba/issues)！
+请就支持的设备向我们提供帮助，无论您的Roomba型号是否支持，请让我[通过问题知道](https://github.com/iobroker-community-adapters/ioBroker.roomba/issues)！
 
 ##频道和状态
 成功设置后，将创建以下通道和状态：
@@ -149,7 +146,7 @@ npm install canvas
 |清洁|最后相相|
 |清洁|最后错误指示上一次任务期间发生错误|
 |清洁|时间表| -|时间表信息|
-|清洁|时间表|循环|时间表周期（星期日至星期六）|
+|清洁|时间表|循环|时间表周期（周日至周六）|
 |清洁|时间表|小时小时开始循环（星期日至星期六）|
 |清洁|时间表|分钟|分钟开始循环（星期日至星期六）|
 |清洁| -|码头|将机器人发送到扩展坞|
@@ -195,13 +192,13 @@ npm install canvas
 |州| -| \ _connected |连接状态 |
 |州| -|电池|机器人的电池电量|
 |州| -| binFull |陈述垃圾箱状态是否已满|
-|州| -| binInserted |说明是否插入了垃圾箱|
+|州| -| binInserted |说明是否已插入垃圾箱|
 |州| -|对接|声明机器人是否对接|
 |州| -|信号|信号强度|
 |州| -|状态|机器人的当前状态|
 |统计-| -|统计信息|
 |统计任务| -|任务统计 |
-|统计任务|失败清洁作业失败的数量|
+|统计任务|失败清洁作业失败的数量 |
 |统计任务|成功成功清洁工作的数量|
 |统计任务|总计清洁工作数量|
 |统计时间| -|时间统计|
@@ -244,7 +241,7 @@ npm install canvas
 | localtimeoffset | -|整数|未知-|
 | ... | - | ... | ... | - |
 
-请帮我有关首选项的描述。如果您知道表中表述为未知的首选项的含义，请让我[通过问题了解其含义](https://github.com/Zefau/ioBroker.roomba/issues)！
+请帮助我们说明首选项。如果您知道表中表述为未知的首选项的含义，请让我[通过问题了解其含义](https://github.com/iobroker-community-adapters/ioBroker.roomba/issues)！
 
 ##使用ioBroker.javascript的Smart Home / Alexa集成
 ###任务完成后通过电报发送地图
@@ -315,9 +312,12 @@ _2019-05-04修复了无法发送地图的错误_
 感谢[@@ koalazak]（https://github.com/koalazak）用于[非官方iRobot Roomba 980 node.js库（SDK）](https://github.com/koalazak/dorita980#readme)。
 
 ###图标
-<a href="https://www.flaticon.com/authors/iconnice" title="圣像">Iconnice</a>从<a href="https://www.flaticon.com/" title="平面图标">www.flaticon.com</a>制作的图标<a href="https://www.flaticon.com/authors/iconnice" title="圣像">已获</a> <a href="http://creativecommons.org/licenses/by/3.0/" title="知识共享BY 3.0" target="_blank">CC 3.0 BY</a>许可</div>
+<a href="https://www.flaticon.com/authors/iconnice" title="圣像">Iconnice</a>从<a href="https://www.flaticon.com/" title="平面图标">www.flaticon.com</a>制作的图标<a href="https://www.flaticon.com/authors/iconnice" title="圣像">已获</a> <a href="http://creativecommons.org/licenses/by/3.0/" title="知识共享3.0" target="_blank">CC 3.0 BY</a>许可</div>
 
 ## Changelog
+
+### 1.1.1 (2020-02-16)
+- (Zefau) moved development to Community Repository
 
 ### 1.1.0 (2020-02-06)
 - (Zefau) added support to change schedule (see [#36](https://github.com/Zefau/ioBroker.roomba/issues/36))
@@ -413,7 +413,7 @@ Note: If you are coming from an earlier version, you have to (1) empty your sett
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Zefau <zefau@mailbox.org>
+Copyright (c) 2018-2020 Zefau <zefau@mailbox.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

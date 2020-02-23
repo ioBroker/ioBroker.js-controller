@@ -3,19 +3,20 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lifx/README.md
 title: ioBroker.lifx
-hash: S4fCQvdzkHOrq0MfE/tpd1WumFgBGsQZX2ufYygiWAM=
+hash: 5ovwws54rtb+OjggZIjqQ+5wEyYNXqj5q4DHwjM09yM=
 ---
 ![логотип](../../../en/adapterref/iobroker.lifx/admin/lifx_logo.png)
 
+![Количество установок](http://iobroker.live/badges/lifx-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.lifx.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.lifx.svg)
 ![Статус сборки](https://travis-ci.org/foxthefox/ioBroker.lifx.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.lifx.png?downloads=true)
 
 # IoBroker.lifx
-Адаптер Lifx для ioBroker
+Lifx адаптер для ioBroker
 
-## Монтаж:
+## Установка:
 официальная выпущенная версия
 
 ```javascript
@@ -34,7 +35,7 @@ npm install https://github.com/foxthefox/ioBroker.lifx/tarball/master --producti
 ### Виджет метро недоступен статус
 - маленькая иконка для недоступного статуса в metro-виджете - первый объект уведомления
 - object_id [0] является индикатором. недостижим
-- вместо предустановки «true» следует написать «false»
+- вместо предустановки «true» будет написано «false»
 - значок должен быть wifiColorRed.png
 - горизонтальное смещение 6 должно работать нормально
 
@@ -51,19 +52,31 @@ npm install https://github.com/foxthefox/ioBroker.lifx/tarball/master --producti
 | Bulb.sat | значение | x | насыщенность 0 ... 100% |
 | Bulb.bright | значение | x | яркость 0 ... 100% |
 | Bulb.online | логическое | - | истина / ложь |
+| Bulb.vendor | строка | - | поставщик |
+| Bulb.product | строка | - | продукт |
+| Bulb.version | строка | - | версия |
+| Bulb.label | строка | - | этикетка |
+| Bulb.colorLamp | логическое | - | истина / ложь |
+| Bulb.infraredLamp | логическое | - | истина / ложь |
+| Bulb.multizoneLamp | логическое | - | истина / ложь |
 
 ## СДЕЛАТЬ:
 - циклический getState от лампы, если настроен вне ioBroker
 - получение регулировки значений цвета со всеми существующими настройками (настройка яркости зафиксировала 80% насыщенности и сохраняет прежнюю настройку оттенка; настройка насыщенности и регулировки оттенка зафиксировала 80% яркости)
 - время перехода
 - формы волны
-- использование meta.roles
 - предметы для белой лампы
 
 ## Известные вопросы
 ??
 
 ## Changelog
+### 0.2.0
+- lifx-lan-client library instead node-lifx
+- states for vendor, product, version, product features
+
+### 0.1.1
+- logo quadratic
 ### 0.1.0
 - compact mode
 ### 0.0.5
@@ -88,4 +101,4 @@ npm install https://github.com/foxthefox/ioBroker.lifx/tarball/master --producti
 
 The MIT License (MIT)
 
-Copyright (c) 2018 foxthefox <foxthefox@wysiwis.net>
+Copyright (c) 2016-2020 foxthefox <foxthefox@wysiwis.net>
