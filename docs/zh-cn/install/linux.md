@@ -4,14 +4,14 @@ lastChanged: 28.03.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/linux.md
-hash: VWn341/8OWBUd6wGXmXHdhlKZZgZwxH9dRDZqztXGGA=
+hash: +9KkGvDJvUveJ02nsS48om8AmoOjywSgZJz/9MM+TGA=
 ---
 ＃在Linux上安装ioBroker
 ！>这些说明不适用于网站的最终图片！
 
 ioBroker的安装例程已被完全修改，并且某些安装问题（安装用户，自动启动等）已得到修复。
 
-现在通过脚本执行安装，该脚本在运行时包含必需的安装步骤和软件包。充电。在安装过程中，将创建一个新用户“ iobroker”，以及一个关联的主目录（/ home / iobroker）。从现在开始，ioBroker在用户iobroker下运行，不再以root用户身份运行。
+现在，通过脚本执行安装，该脚本在运行时包含所需的安装步骤和软件包。充电。在安装过程中，将创建一个新用户“ iobroker”，以及一个关联的主目录（/ home / iobroker）。从现在开始，ioBroker在用户iobroker下运行，不再以root用户身份运行。
 
 如果重新加载脚本太危险，则可以在[这个连结](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh)下事先检查脚本。
 
@@ -29,7 +29,7 @@ ioBroker的此安装指南以带有System Stretch的Raspberry PI为例显示了�
 
 我们不建议将Pi 1用作主机。它根本不够强大（500 MB RAM等）。由于硬件不同，这些说明仍然不适用于Pi 1。
 
-Pi 2或Pi 3也只有最大1 GB RAM。对于15个适配器实例，这应该仍然足够，但除此之外，它可能变得稀缺。每个适配器实例需要大约40 MB（有时需要200MB甚至更多）的RAM。因此，在激活其他适配器实例之前，您应始终注意RAM的使用-1 GB RAM是有限的。
+Pi 2或Pi 3最多只能有一个。 1 GB RAM。对于15个适配器实例，这应该仍然足够，但除此之外，它可能变得稀缺。每个适配器实例需要大约40 MB（有时需要200MB甚至更多）的RAM。因此，在激活其他适配器实例之前，您应始终注意RAM的利用率-1 GB RAM是有限的。
 
 ###电源
 拥有良好的电源很重要。在电源不足的情况下，可能会出现稳定性问题
@@ -49,7 +49,7 @@ Pi 2或Pi 3也只有最大1 GB RAM。对于15个适配器实例，这应该仍�
 
 有关相应版本的帮助和说明可在相应的支持页面，YouTube等上找到。
 
-*仅在绝对需要通过SSH或sftp进行root访问时，才可以** CAN **
+*仅当绝对需要通过SSH或sftp进行root访问时，才可以** CAN **
 
 可以激活SSH的根访问权限。
 
@@ -66,7 +66,7 @@ Pi 2或Pi 3也只有最大1 GB RAM。对于15个适配器实例，这应该仍�
 
 1.系统更新：``sudo apt-get update && sudo apt-get upgrade''
 
-根据所使用的操作系统，还可以使用``sudo apt update && sudo apt upgrade``进行更新。
+根据所使用的操作系统，也可以使用“`sudo apt update && sudo apt upgrade`”来执行更新。
 
 2.测试nodejs和npm的现有版本。
 
@@ -76,7 +76,7 @@ Pi 2或Pi 3也只有最大1 GB RAM。对于15个适配器实例，这应该仍�
 
     ``npm -v``
 
-仅当** ALL **这些命令没有结果（即不再显示版本号）时，才继续执行本节的步骤4，否则，或者如果版本与所需版本不符，请事先执行以下操作：
+仅当** ALL **这些命令没有结果（即不再显示版本号）时，才继续执行本节的步骤4，否则，或者如果版本与所需的版本不符，请事先执行以下操作：
 
 3.卸载现有的node＆node.js版本
 
@@ -102,11 +102,11 @@ Pi 2或Pi 3也只有最大1 GB RAM。对于15个适配器实例，这应该仍�
 
     在控制台上执行``sudo ln -s /usr/local/bin/nodejs /usr/bin/node``。
 
-如果版本不同，请再次浏览[安装Node.js](#installation-nodejs)部分
+如果版本不同，请再次阅读[安装Node.js](#installation-nodejs)部分
 
     作为最终检查，请使用``npm -v``检查npm的版本。
 
-如果这导致版本小于6，请使用``sudo -H npm install -g npm@6``进行npm更新。
+如果结果是版本<6，请使用``sudo -H npm install -g npm@6``进行npm更新。
 
 ### IoBroker安装
 可以使用pi用户或root用户来完成安装。
@@ -146,7 +146,7 @@ Pi 2或Pi 3也只有最大1 GB RAM。对于15个适配器实例，这应该仍�
 * iobroker重新启动
 * iobroker身份
 
-不再。这是Linux的功能-不是ioBroker！
+不再。这是Linux的功能-而不是ioBroker！
 
 相反必须
 

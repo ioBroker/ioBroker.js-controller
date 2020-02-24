@@ -3,7 +3,7 @@ editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/faq/_050
 title: Wie installiere ich c github?
 translatedFrom: ru
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
-hash: 8w/GUiXDsgpPyK55LckdATB6XYdSJn9WGv8HTuhCG18=
+hash: bm4l3UlC9IAuv0CGXC1wxdgBaEDj942roF3LcNliHIs=
 ---
 # Wie installiere ich c github?
 ## Für Version 2 des Admin.2.x.x-Adapters

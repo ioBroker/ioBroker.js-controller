@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tr-064/README.md
 title: 的ioBroker.tr-064
-hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
+hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 ---
 ![商标](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
@@ -29,7 +29,7 @@ hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 -使用外部号码时，振铃状态会将您连接到该外部号码。
 
 当拾起被叫电话时，FritzBox将呼叫外部号码，并且您的默认电话将响铃。
-可以在FritsBox中配置默认电话，如下所示：Telefonie / Anrufe / [Tab] Wahlhilfe /Wählhilfeverwenden
+可以在FritsBox中的以下位置配置默认电话：Telefonie / Anrufe / [Tab] Wahlhilfe /Wählhilfeverwenden
 
 ### ToPauseState
 -值：响铃，连接，结束

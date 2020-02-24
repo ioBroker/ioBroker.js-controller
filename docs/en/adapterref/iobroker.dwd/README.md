@@ -16,6 +16,9 @@ Dieser Adapter lädt die Wetterwarnungen vom deutschen Wetterdienst über JSON l
 This adapter loads the weather warnings from the German weather service via JSON link.
 
 ## Changelog
+### 2.4.6 (2020-02-24)
+* (bluefox) Time format added to widget
+
 ### 2.4.5 (2020-02-23)
 * (ticaki) Datetime corrected
 

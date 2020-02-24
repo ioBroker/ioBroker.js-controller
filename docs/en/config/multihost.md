@@ -4,15 +4,15 @@ lastChanged: 13.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/config/multihost.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: A23kk/qlRZSQwhxWnYS9IUkoTlK55Gl8BTakFs5LL2o=
+hash: bn0CAoBAN5DPBn11696x47c991NbZ42OEAQayrrozEY=
 ---
 # The multihost operation
-ioBroker is able to have the tasks done by multiple servers. This enables the computing load to be distributed across multiple hosts.
-But you can also use system-specific extensions of a single-board computer (GPIO from a RaspberryPi, although the "main computer" is a more powerful Intel NUC).
+ioBroker is able to have the tasks done by multiple servers. This allows the computing load to be distributed across multiple hosts.
+You can also use system-specific extensions of a single-board computer (GPIO from a RaspberryPi, although the "main computer" is a more powerful Intel NUC).
 
 After creating a multihost system, all configurations are carried out centrally via the admin of the master. The admin of the slave (s) can no longer be reached via their web interface (s).
 
-It therefore makes sense for a slave to use a host with minimal installation, i.e. only the js controller and the admin.
+It therefore makes sense to use a host with minimal installation for a slave, i.e. only the js controller and the admin.
 
 ##Installation
 ### Master configuration

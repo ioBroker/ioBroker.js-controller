@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.history/README.md
 title: ioBroker.history
-hash: PtdWXDfO7iyz5LSlWyu5E++pME8W7qWuproQAaoXRFc=
+hash: crZ8qcB8BIoTrMdd0LtQmPDHmNda2enWB/Ta0DlzjIA=
 ---
 ![логотип](../../../en/adapterref/iobroker.history/admin/history.png)
 
@@ -118,7 +118,7 @@ hash: PtdWXDfO7iyz5LSlWyu5E++pME8W7qWuproQAaoXRFc=
 * (bluefox) переключают макс и мин между собой
 
 ### 1.0.1 (2016-05-28)
-* (bluefox) рассчитывает конечные / начальные значения для "on change"
+* (bluefox) рассчитать конечные / начальные значения для "on change"
 
 ### 1.0.0 (2016-05-20)
 * (bluefox) изменить имя агрегации по умолчанию

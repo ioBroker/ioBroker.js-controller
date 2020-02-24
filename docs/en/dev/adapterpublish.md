@@ -4,18 +4,18 @@ lastChanged: 21.01.2020
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/dev/adapterpublish.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: I0FIhrW7GjK+oU9/a+Snt1/LZjxE7xtbGDLoF8Lr2VE=
+hash: iLFFwmHGGEvoX1jzWG4/Zs7xSpudVBvxMEzm9P5Qcps=
 ---
 # Publish an adapter
 Before thinking about publishing an adapter, it should be offered for testing in [Forum test thread](https://forum.iobroker.net/category/91/tester).
-If the tests are successful and the adapter runs stably, it should initially be included in the latest repository.
+If the tests are successful and the adapter is stable, it should initially be included in the latest repository.
 
 If the adapter runs stable on a certain version number, it can be transferred to the stable repository. This requires the developer's own assessment in conjunction with the user feedback.
 
 *** Further current requirements can be found here: *** https://github.com/ioBroker/ioBroker.repositories/blob/master/README.md
 
 ## Latest Repository Requirements
-0.Use [https://adapter-check.iobroker.in/[(https://adapter-check.iobroker.in/) to test adapter repo.
+0.Use [https://adapter-check.iobroker.in/[(https://adapter-check.iobroker.in/) to test the adapter repo.
 
 1. The adapter's github repository should have a capital B in ioBroker, while it must be lowercase in the package.json, since `` npm '' does not allow capital letters.
 
@@ -23,7 +23,7 @@ If the adapter runs stable on a certain version number, it can be transferred to
 
 3.The `` title '' attribute in the io-package.json (common) is the short name of the adapter in English. While `` titleLang '' contains the translations of the `` title '' attribute. (the extension Lang stands for languages)
 
-4. The adapter should contain instructions in the form of a README.md file. This should at least be available in the English language. Other languages are also welcome. This [example] (https://github.com/foxriver76/ioBroker.denon) can serve as a suggestion.
+4. The adapter should contain instructions in the form of a README.md file. This should at least be available in English. Other languages are also welcome. This [example] (https://github.com/foxriver76/ioBroker.denon) can serve as a suggestion.
 
 5. The adapter requires a license. Both in the io-package.json and a separate [file] (https://github.com/foxriver76/ioBroker.denon/blob/master/LICENSE) in the Github repository.
 
@@ -55,7 +55,7 @@ The developer can gladly extend the scope of tests.
 
 11. In the io-package.json at least one entry under common for the attribute `authors` must be made.
 
-The attribute `author` in the package.json must also be filled out.
+The attribute `author` must also be filled in in the package.json.
 Optionally, several authors can also be saved for npm by using the attribute `contributors` in the package.json.
 
 12. The adapter must be available as an npm package. More information can be found [here] (https://github.com/ioBroker/ioBroker.repositories#how-to-publish-on-npm).
@@ -73,13 +73,13 @@ to automatically recognize whether the user can use an instance of the adapter.
 To do this, a pull request must be made in the repository of [Discovery adapters](https://github.com/ioBroker/ioBroker.discovery).
 
 ## Add the adapter to the official repository
-1. The [official Github Repository] (https://github.com/ioBroker/ioBroker.repositories) should be visited and a pull request should be made with the following content, depending on the repository.
+1. The [official Github Repository] (https://github.com/ioBroker/ioBroker.repositories) should be visited and a pull request with the following content, depending on the repository, should be made.
 
-2. Please arrange the adapter alphabetically correctly between the existing adapters.
+2. Please arrange the adapter correctly alphabetically between the existing adapters.
 
 3. A version number must be declared when it is added to the stable repository. This must be updated when the adapter is further developed.
 
-4. The adapter should set a list attribute `docs` in the io-package.json, stating where instructions can be found in the respective language.
+4. The adapter should define a list attribute `docs` in the io-package.json, specifying where to find instructions in the respective language.
 
 The language is specified as the key and the path to the markdown file as the value.
 English instructions are required (in an emergency, reference can be made to the standard README). A German manual is also desirable, since a majority of users speak German, but this is optional.
@@ -139,12 +139,12 @@ The two specifications must match. The version number is separated into three pa
 "version": "1.7.6"
 ```
 
-The first part (from left to right) represents the `Major Part`, the second part the `minor` Part and the last part the `micro` Part.
+The first part (from left to right) represents `Major Part`, the second part represents `minor` Part and the last part represents `micro` Part.
 The version numbers should be increased according to the following list:
 
 - **micro** Only bugs were fixed
 - **minor** Features have been added, but the version is compatible with previous versions
-- **major** Major changes that make backward compatibility with the old version no longer possible
+- **major** Major changes which make backward compatibility with the old version no longer possible
 
 The `news` attribute should also be maintained in the io-package.json.
 This enables users to install any version listed (provided that it has been published on npm) via the admin interface.
@@ -205,7 +205,7 @@ Example:
 - `storage` - logging, data storage e.g. B. relational databases, ...
 - `utility` - supporting adapters such as B. Backup
 - `vehicle` - cars
-- `visualization` - visualization adapter, like vis etc.
+- `visualization` - visualization adapter, such as vis etc.
 - `visualization-icons` - icons for visualizations
 - `visualization-widgets` - iobroker.vis widgets
 - `weather` - weather information, air quality, environmental information

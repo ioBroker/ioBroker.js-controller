@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.history/README.md
 title: ioBroker.history
-hash: PtdWXDfO7iyz5LSlWyu5E++pME8W7qWuproQAaoXRFc=
+hash: crZ8qcB8BIoTrMdd0LtQmPDHmNda2enWB/Ta0DlzjIA=
 ---
 ![商标](../../../en/adapterref/iobroker.history/admin/history.png)
 
@@ -38,7 +38,7 @@ hash: PtdWXDfO7iyz5LSlWyu5E++pME8W7qWuproQAaoXRFc=
 *（Apollon77）修复/允许禁用开始和结束值的写入
 
 ### 1.8.0（2018-06-19 / 24）
-*（Apollon77）添加选项以将数据写入不同的ID，从而使设备更改更加容易。检索数据适用于两个ID
+*（Apollon77）添加选项以将数据写入其他ID，从而使设备更改变得更加容易。检索数据适用于两个ID
 
 ### 1.7.4（2018-04-03）
 *（AlCalzone）修复了特殊字符状态的文件名处理
@@ -74,7 +74,7 @@ hash: PtdWXDfO7iyz5LSlWyu5E++pME8W7qWuproQAaoXRFc=
 *（Apollon77）替换历史文件名中的某些字符
 
 ### 1.5.3（2017-02-22）
-*（Apollon77）针对较早配置的小修复
+*（Apollon77）针对较早配置的小修正
 
 ### 1.5.2
 *（Apollon77）增强了混合类型数据点的最小增量逻辑
@@ -84,7 +84,7 @@ hash: PtdWXDfO7iyz5LSlWyu5E++pME8W7qWuproQAaoXRFc=
 
 ### 1.5.0（2016-12-01）
 *（Apollon77）添加消息enableHistory / disableHistory
-*（Apollon77）仅在值与数字的最小值不同时才添加对日志更改的支持
+*（Apollon77）仅当值与数字的最小值不同时才添加对日志更改的支持
 *（Apollon77）固定汇总计算
 
 ### 1.4.0（2016-10-29）

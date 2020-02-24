@@ -4,15 +4,15 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome/README.md
 title: ioBroker Mi家庭适配器
-hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
+hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 ---
 ![徽标](../../../de/adapterref/iobroker.mihome/media/mihome.png)
 
 ＃ioBroker Mi家庭适配器通过Mi家庭适配器，将Mi Control集线器（网关）集成到ioBroker系统中，从而使各种小米传感器，开关等能够与ioBroker通信。
-通过ioBroker例如网关的照明和扬声器可以控制。
+通过ioBroker例如网关的照明和扬声器受到控制。
 
 ##要求
-* Android或iOS设备上的Mi Home应用并激活了本地网络功能
+* Android或iOS设备上的Mi Home应用程序和解锁的本地网络功能
 *连接的Mi家庭网关
 *就绪的ioBroker系统
 
@@ -24,7 +24,7 @@ hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
 
 *选择*中国大陆*作为国家
 *通过*登录*创建帐户
-*成功注册后，使用“ +”添加设备
+*成功注册“ +”后添加设备
 *在*家庭安全下*选择`MI Control Hub`和说明
 
 遵循
@@ -36,7 +36,7 @@ hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
 *输入文字*插件版本* 10次以下
 *现在开发人员模式已开启，并且应该在一定时间后
 
-出现2个其他菜单项>如果没有，请重试
+出现另外2个菜单项>如果没有，请再试一次
 
 *选择菜单项“无线通讯协议”
 *打开顶部的滑动开关，记下密码，然后按“确定”确认。
@@ -52,8 +52,8 @@ hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
 
 *通过配置文件/设置/国家/地区设置选择国家/地区*。
 *通过*登录*创建帐户
-*成功注册后，使用“ +”添加设备
-*在*家庭安全下*选择“ MI控制中心”和说明
+*成功注册“ +”后添加设备
+*在*家庭安全下*选择`MI Control Hub`和说明
 
 遵循
 
@@ -88,7 +88,7 @@ hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
 -sensor_switch.aq3-小米Aqara无线开关传感器
 -插头-小米智能插头
 -86plug-小米智能墙插
--86sw2-小米无线双壁开关
+-86sw2-小米无线双路墙壁开关
 -86sw1-小米无线单壁开关
 -汽油-小米米家霍尼韦尔气体报警探测器
 -烟雾-小米米家霍尼韦尔火灾报警探测器
@@ -123,7 +123,7 @@ hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
 
 ![徽标](../../../de/adapterref/iobroker.mihome/media/Adapterconfig1.PNG)
 
-在`Default Gateway Key`下输入上面确定的密码，然后按*保存* *并关闭*以关闭窗口。然后，正在运行的适配器应在*实例*下以绿色显示：
+输入上面在`Default Gateway Key`下确定的密码，然后按*保存* *并关闭*以关闭窗口。然后，正在运行的适配器应在*实例*下以绿色显示：
 
 ![徽标](../../../de/adapterref/iobroker.mihome/media/Instanz.PNG)
 

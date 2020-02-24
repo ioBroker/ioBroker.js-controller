@@ -185,6 +185,12 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 1.4.0 (24.02.2020)
+* (simatec) Add next Backup Time
+* (simatec) Add Name Suffix for mysql Backup
+* (simatec) Add more Options for mysql
+* (simatec) Add domain support for cifs
+
 ### 1.3.6 (18.12.2019)
 * (simatec) Fix historyList for compact-mode
 * (simatec) Added ack for history states

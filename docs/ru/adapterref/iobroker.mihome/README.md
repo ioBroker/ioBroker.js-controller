@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mihome/README.md
 title: ioBroker Mi Home Адаптер
-hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
+hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 ---
 ![логотип](../../../de/adapterref/iobroker.mihome/media/mihome.png)
 
@@ -94,7 +94,7 @@ hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
 - дым - Детектор пожарной сигнализации Xiaomi Mijia Honeywell
 - ctrl_ln1 - Переключатель противопожарной стены Xiaomi Aqara 86 одна кнопка
 - ctrl_ln1.aq1 - Настенный выключатель Xiaomi Aqara LN
-- ctrl_ln2 - Двойной ключ для настенного выключателя Xiaomi 86
+- ctrl_ln2 - Двойной ключ с нулевой противопожарной защитой Xiaomi 86
 - ctrl_ln2.aq1 - Настенный выключатель Xiaomi Aqara LN, двойной ключ
 - ctrl_neutral2 - Двойной настенный выключатель Xiaomi
 - ctrl_neutral1 - Проводной одностенный выключатель Xiaomi

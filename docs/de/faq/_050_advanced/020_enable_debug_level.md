@@ -3,7 +3,7 @@ editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/faq/_050
 title: So wechseln Sie den Treiber beim Debuggen
 translatedFrom: ru
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
-hash: Yhh1VwjNskJeloMwbVFlcGoyL6mZXDv8dtQ0IwmaQ9w=
+hash: aAaujcb7Cyx933CyAU3wIZv7oi8DMxAVxzVLJeWLO1U=
 ---
 # Wie schalte ich den Treiber auf Debug um?
 ## Für Version 2 des Admin.2.x.x-Adapters

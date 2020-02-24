@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: vfIeh7lfVVxn2dnoQzXckGACLbqHa5CovDOEYij2irs=
+hash: JlfMTIl0oYXy1Blq5/3T6Uz/DHavUfRYnn7wB2ZZ4/A=
 ---
 ![商标](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -29,7 +29,7 @@ ESP8266 / ESP32网络服务器的快速且功能丰富的实现，用于控制Ne
 
 ＃＃ 去做
 * []可配置设备（目前仅由Bonjour自动检测）
-* []调查更好的变更住宿公告的方式，目前支持波利
+* []调查更好的住宿变更公告方式，支持currentl polly
 * [x]特殊命令未包含在rest-api中（例如保存预设）
 * [x]个控制段
 * [x]颜色变化

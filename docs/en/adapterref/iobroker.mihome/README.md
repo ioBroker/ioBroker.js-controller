@@ -4,21 +4,21 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.mihome/README.md
 title: ioBroker Mi Home Adapter
-hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
+hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 ---
 ![logo](../../../de/adapterref/iobroker.mihome/media/mihome.png)
 
 # IoBroker Mi Home Adapter With the Mi Home Adapter, a Mi Control Hub (gateway) is integrated into an ioBroker system and thus enables various Xiaomi sensors, switches, etc. to communicate with ioBroker.
-Via ioBroker e.g. the lighting and the loudspeaker of the gateway can be controlled.
+Via ioBroker e.g. the lighting and the loudspeaker of the gateway are controlled.
 
 ## Requirements
-* Mi Home app on Android or iOS device and activated local network function
+* Mi Home app on Android or iOS device and unlocked local network function
 * Connected Mi Home Gateway
 * Ready ioBroker system
 
 ### Installation of the Mi Home app and activation of the local network function
 #### Android
-* Download, install, open and open the [Android App] (https://play.google.com/store/apps/details?id=com.xiaomi.smarthome) on an Android device
+* Download, install, open and open the [Android app] (https://play.google.com/store/apps/details?id=com.xiaomi.smarthome) on an Android device
 
 agree to the terms and conditions.
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.linkeddevices/README.md
 title: 无题
-hash: fPVx5qQBuRw1am/e6Mdqgr/Zt7fBt9lI6Dy+/84luOI=
+hash: TQxFlCGAWt0gLcVkz0a2/nr/4wSvxPg7TRaP6ESbzb8=
 ---
 ![安装数量](http://iobroker.live/badges/linkeddevices-installed.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.linkeddevices.svg)
@@ -18,7 +18,7 @@ hash: fPVx5qQBuRw1am/e6Mdqgr/Zt7fBt9lI6Dy+/84luOI=
 ## IoBroker的链接设备适配器
 [![贝宝]（https://www.paypalobjects.com/zh_CN/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-linkeddevices创建具有自定义结构的设备的链接对象（数据点）。这样就可以在ioBroker中创建一个结构，在该结构中所有对象都被集中化，例如用于vis视图或脚本中。例如，这提供了以下优势：通过硬件交换，仅必须重新创建链接的对象，并且所有vis视图和脚本都可以重新工作。
+linkeddevices创建具有自定义结构的设备的链接对象（数据点）。这样就可以在ioBroker中创建一个结构，在该结构中所有对象都被集中化，例如用于vis视图或脚本中。例如，这提供了以下优点：通过硬件交换，仅必须重新创建链接的对象，并且所有vis视图和脚本都可以重新工作。
 
 使用适配器，您还可以转换对象或将它们转换为其他类型（尚未完全实现）。
 
