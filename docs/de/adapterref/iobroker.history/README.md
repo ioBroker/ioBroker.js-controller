@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.history/README.md
 title: ioBroker.history
-hash: crZ8qcB8BIoTrMdd0LtQmPDHmNda2enWB/Ta0DlzjIA=
+hash: PtdWXDfO7iyz5LSlWyu5E++pME8W7qWuproQAaoXRFc=
 ---
 ![Logo](../../../en/adapterref/iobroker.history/admin/history.png)
 
@@ -65,12 +65,12 @@ Dieser Adapter speichert den Statusverlauf in einem zweistufigen Prozess.
 * (bluefox) Option "Letzten Wert speichern" hinzufügen
 
 ### 1.6.3 (2017-08-03)
-* (Apollon77) korrigiert das Verhalten des Protokollintervalls, um immer den aktuellen Wert zu protokollieren
+* (Apollon77) Das Verhalten des Protokollintervalls wurde korrigiert, um immer den aktuellen Wert zu protokollieren
 
 ### 1.6.2 (2017-04-07)
 * Korrektur bei Datentypkonvertierungen
 
-### 1.6.0 (28.02.2017)
+### 1.6.0 (2017-02-28)
 * (Apollon77) Ersetzen Sie einige Zeichen in Verlaufsdateinamen
 
 ### 1.5.3 (22.02.2017)
@@ -120,10 +120,10 @@ Dieser Adapter speichert den Statusverlauf in einem zweistufigen Prozess.
 ### 1.0.1 (28.05.2016)
 * (bluefox) berechnet auch End- / Startwerte für "on change"
 
-### 1.0.0 (20.05.2016)
+### 1.0.0 (2016-05-20)
 * (bluefox) Ändert den Standardaggregationsnamen
 
-### 0.4.1 (14.05.2016)
+### 0.4.1 (2016-05-14)
 * (bluefox) support sessionId
 
 ### 0.4.0 (2016-05-05)

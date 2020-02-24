@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.linkeddevices/README.md
 title: kein Titel
-hash: TQxFlCGAWt0gLcVkz0a2/nr/4wSvxPg7TRaP6ESbzb8=
+hash: fPVx5qQBuRw1am/e6Mdqgr/Zt7fBt9lI6Dy+/84luOI=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/linkeddevices-installed.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.linkeddevices.svg)
@@ -15,20 +15,20 @@ hash: TQxFlCGAWt0gLcVkz0a2/nr/4wSvxPg7TRaP6ESbzb8=
 
 <h1><img src="admin/linkeddevices.png" width="32"/> ioBroker.linkeddevices </h1>
 
-## Linkeddevices adapter für ioBroker
+## Linkeddevices Adapter für ioBroker
 [![paypal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-linkeddevices erzeugt verknüpfte Objekte (Datenpunkte) von Geräten mit einer selbst definierten Struktur. Dadurch ist es möglich, in ioBroker eine Struktur zu erstellen, in der alle Objekte zentralisiert sind, z. zur Verwendung in vis-Ansichten oder Skripten. Dies bietet beispielsweise den Vorteil, dass beim Hardware-Austausch nur die verknüpften Objekte neu erstellt werden müssen und alle vis-Ansichten und Skripte wieder funktionieren.
+linkeddevices erstellt verknüpfte Objekte (Datenpunkte) von Geräten mit einer selbst definierten Struktur. Dies ermöglicht es, eine Struktur in ioBroker zu erstellen, in der alle Objekte zentralisiert sind, z. zur Verwendung in vis-Ansichten oder Skripten. Dies bietet zum Beispiel den Vorteil, dass beim Hardwareaustausch nur die verknüpften Objekte neu erstellt werden müssen und alle visuellen Ansichten und Skripte wieder funktionieren.
 
 Mit dem Adapter können Sie auch Objekte konvertieren oder in andere Typen konvertieren (noch nicht vollständig implementiert).
 
 ![Struktur](../../../en/adapterref/iobroker.linkeddevices/screenshots/structure.png)
 
-Dieser Adapter ist inspiriert von [Skript für virtuelle Geräte von Pman](https://forum.iobroker.net/topic/7751/virtual-devices).
+Dieser Adapter ist von [Skript für virtuelle Geräte von Pman](https://forum.iobroker.net/topic/7751/virtual-devices) inspiriert.
 
 ## Aufbau
-* [Englische Beschreibung] (doc / en / README.md)
-* [english description] (doc / de / README.md)
+* [Englische Beschreibung] (doc / de / README.md)
+* [deutsche Beschreibung] (doc / de / README.md)
 
 ## Changelog
 

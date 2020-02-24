@@ -3,7 +3,7 @@ editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/faq/_050
 title: How to install c github?
 translatedFrom: ru
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: bm4l3UlC9IAuv0CGXC1wxdgBaEDj942roF3LcNliHIs=
+hash: 8w/GUiXDsgpPyK55LckdATB6XYdSJn9WGv8HTuhCG18=
 ---
 # How to install c github?
 ## For version 2 of the admin.2.x.x adapter

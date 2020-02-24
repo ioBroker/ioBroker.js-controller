@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tr-064/README.md
 title: 的ioBroker.tr-064
-hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
+hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 ---
 ![商标](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
@@ -60,14 +60,14 @@ hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 -json
 -HTML
 
-呼叫清单为：
+呼叫清单是：
 
 - 所有通话
 - 未接来电
 -来电
 -外拨电话
 
-通话次数：通话次数可以设置为0。下一个通话增加1。
+通话次数：通话次数可以设置为0。下一个通话将增加1。
 
 html输出可以通过模板配置
 

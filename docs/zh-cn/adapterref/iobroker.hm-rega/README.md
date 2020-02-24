@@ -4,25 +4,25 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
+hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ---
 ![徽标](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
 ＃HomeMatic ReGaHSS
 ## Homematic
-> Homematic是eQ-3的智能家居系统，它可以使用住宅或公寓中的场景（从简单到复杂）全面控制各种功能。
+> Homematic是eQ-3推出的智能家居系统，可使用家庭或公寓中的场景（从简单到复杂）全面控制各种功能。
 
 >这些设备包括用于照明，卷帘和加热控制的产品，危险检测器，安全传感器以及用于气象数据测量的产品。无线电通信简化了改装。电线总线组件可用于新建筑物。
 
 [源](https://www.eq-3.de/produkte/homematic.html)
 
 ## Homematic ReGaHss适配器
-该适配器建立与Homematic逻辑层“ ReGaHSS”（**住宅**网关**）的连接。
+该适配器建立到Homematic逻辑层“ ReGaHSS”（**住宅**网关**）的连接。
 它在Homematic和ioBroker之间同步实名，系统变量，房间，交易和程序。
 
 如果要将多个控制中心集成到ioBroker中，则必须为每个控制中心安装并配置一个单独的实例。
 
-安装ReGaHSS后，将安装适配器“ hm-rpc”的实例，应事先对其进行配置和激活。
+安装ReGaHSS后，还将安装适配器“ hm-rpc”的实例，应事先对其进行配置和激活。
 
 此适配器的一个实例最多可以管理5个不同的Homematic RPC适配器实例，这些实例提供不同的服务（每个服务需要其自己的RPC实例）：
 
@@ -41,7 +41,7 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 
 安装完成后，配置窗口将自动打开。
 
-在实际配置之前，应创建并配置HM-RPC适配器的实例（使用此适配器创建），或者，如果需要，还可以创建和配置其他HM-RPC实例。
+在实际配置之前，应创建并配置HM-RPC适配器的实例（使用此适配器创建），或者在必要时创建其他HM-RPC实例。
 
 ##配置
 ![](../../../de/adapterref/iobroker.hm-rega/media/01c7dbc4da0240421b0711b331971d2d.png)**上面的选择菜单**
@@ -65,8 +65,8 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 
 触发
 
-为了最大程度地减少从ioBroker到RegaHSS的活动查询，触发器还可以将数据推送到程序内CCU的更改中。
-为此，可以使用在CCU程序中触发的CCU虚拟按钮。默认情况下，这是BidCosRF.50.PRESS_SHORT键（请参阅示例程序）。
+为了最大程度地减少从ioBroker到RegaHSS的活动查询，触发器还可以根据程序中CCU上的更改推送数据。
+为此，可以使用CCU的虚拟密钥，该密钥在CCU程序中触发。默认情况下，这是BidCosRF.50.PRESS_SHORT键（请参阅示例程序）。
 
 ###同步区域
 用户可以在此处指定ioBroker中的CCU将接管哪些信息。然后在ioBroker中创建相应的对象和数据点。
@@ -77,10 +77,10 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 -名称：激活从CCU传输数据点的纯文本名称
 -收藏夹：激活收藏夹的传送和列表
 -房间：激活房间的接管以及它们的列表
--交易：激活交易的转移及其列表
+-交易：激活交易的接管及其列表
 
 ###其他设置区域
-用户可以在此处决定是否应使用https（加密和防错连接）。如果激活，则需要用户名和相应的密码
+用户可以在此处决定是否应使用https（加密和防窃听的连接）。如果激活，则需要用户名和相应的密码
 
 完成所有设置后，使用“保存并关闭”命令（设置区域下方的按钮）完成配置页面。关闭适配器，并使用新值启动实例。
 

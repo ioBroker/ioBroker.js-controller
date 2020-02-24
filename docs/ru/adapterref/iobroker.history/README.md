@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.history/README.md
 title: ioBroker.history
-hash: crZ8qcB8BIoTrMdd0LtQmPDHmNda2enWB/Ta0DlzjIA=
+hash: PtdWXDfO7iyz5LSlWyu5E++pME8W7qWuproQAaoXRFc=
 ---
 ![логотип](../../../en/adapterref/iobroker.history/admin/history.png)
 
@@ -89,7 +89,7 @@ hash: crZ8qcB8BIoTrMdd0LtQmPDHmNda2enWB/Ta0DlzjIA=
 
 ### 1.4.0 (2016-10-29)
 * (Apollon77) добавить опцию, чтобы повторно регистрировать неизмененные значения, чтобы упростить визуализацию
-* (Apollon77) добавлены скрипты конвертера для перемещения данных истории в базу данных
+* (Apollon77) добавлены скрипты конвертера для перемещения данных истории в БД
 
 ### 1.3.1 (2016-09-25)
 * (Apollon77) Исправлено: ts назначается как val

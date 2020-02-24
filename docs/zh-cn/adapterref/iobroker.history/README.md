@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.history/README.md
 title: ioBroker.history
-hash: crZ8qcB8BIoTrMdd0LtQmPDHmNda2enWB/Ta0DlzjIA=
+hash: PtdWXDfO7iyz5LSlWyu5E++pME8W7qWuproQAaoXRFc=
 ---
 ![商标](../../../en/adapterref/iobroker.history/admin/history.png)
 
@@ -12,7 +12,7 @@ hash: crZ8qcB8BIoTrMdd0LtQmPDHmNda2enWB/Ta0DlzjIA=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.history.svg)
 ![测验](http://img.shields.io/travis/ioBroker/ioBroker.history/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.history.png?downloads=true)
-![保镖徽章](https://badges.greenkeeper.io/ioBroker/ioBroker.history.svg)
+![环保管理员徽章](https://badges.greenkeeper.io/ioBroker/ioBroker.history.svg)
 
 ＃ioBroker.history
 此适配器将状态历史记录保存在两个阶段的过程中。
@@ -38,7 +38,7 @@ hash: crZ8qcB8BIoTrMdd0LtQmPDHmNda2enWB/Ta0DlzjIA=
 *（Apollon77）修复/允许禁用开始和结束值的写入
 
 ### 1.8.0（2018-06-19 / 24）
-*（Apollon77）添加选项以将数据写入其他ID，从而使设备更改变得更加容易。检索数据适用于两个ID
+*（Apollon77）添加选项以将数据写入不同的ID，从而使设备更改更加容易。检索数据适用于两个ID
 
 ### 1.7.4（2018-04-03）
 *（AlCalzone）修复了特殊字符状态的文件名处理
@@ -74,7 +74,7 @@ hash: crZ8qcB8BIoTrMdd0LtQmPDHmNda2enWB/Ta0DlzjIA=
 *（Apollon77）替换历史文件名中的某些字符
 
 ### 1.5.3（2017-02-22）
-*（Apollon77）针对较早配置的小修正
+*（Apollon77）针对较早配置的小修复
 
 ### 1.5.2
 *（Apollon77）增强了混合类型数据点的最小增量逻辑
@@ -84,7 +84,7 @@ hash: crZ8qcB8BIoTrMdd0LtQmPDHmNda2enWB/Ta0DlzjIA=
 
 ### 1.5.0（2016-12-01）
 *（Apollon77）添加消息enableHistory / disableHistory
-*（Apollon77）仅当值与数字的最小值不同时才添加对日志更改的支持
+*（Apollon77）仅在值与数字的最小值不同时才添加对日志更改的支持
 *（Apollon77）固定汇总计算
 
 ### 1.4.0（2016-10-29）
@@ -103,7 +103,7 @@ hash: crZ8qcB8BIoTrMdd0LtQmPDHmNda2enWB/Ta0DlzjIA=
 
 ### 1.1.0（2016-08-27）
 *（bluefox）修复了最后一点的聚合
-*（bluefox）聚合没有传递任何原始数据而没有任何聚合
+*（bluefox）聚合没有传递原始数据而没有任何聚合
 
 ### 1.0.5（2016-07-24）
 *（bluefox）大间隔修复了聚合

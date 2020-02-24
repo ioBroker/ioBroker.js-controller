@@ -4,12 +4,12 @@ translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mihome/README.md
 title: ioBroker Mi Home Адаптер
-hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
+hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
 ---
 ![логотип](../../../de/adapterref/iobroker.mihome/media/mihome.png)
 
 # IoBroker Адаптер Mi Home Адаптер Mi Home адаптер Mi Control Hub (шлюз) интегрирован в систему ioBroker и, таким образом, позволяет различным сенсорам, коммутаторам и т. д. Xiaomi связываться с ioBroker.
-Через ioBroker, например освещение и громкоговоритель шлюза контролируются.
+Через ioBroker, например можно управлять освещением и громкоговорителем шлюза.
 
 ## Требования
 * Приложение Mi Home на устройстве Android или iOS и активированная функция локальной сети
@@ -18,7 +18,7 @@ hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 
 ### Установка приложения Mi Home и активация функции локальной сети
 #### Android
-* Загрузите, установите, откройте и откройте [Android-приложение] (https://play.google.com/store/apps/details?id=com.xiaomi.smarthome) на устройстве Android
+* Загрузите, установите, откройте и откройте [приложение для Android] (https://play.google.com/store/apps/details?id=com.xiaomi.smarthome) на устройстве Android
 
 согласиться с условиями.
 
@@ -46,7 +46,7 @@ hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 Теперь другие устройства можно научить использовать символ `+`.
 
 #### IOS
-* [iOS-приложение] (https://itunes.apple.com/de/app/mi-home-xiaomi-smarthome/id957323480?mt=8) скачать, установить, открыть и загрузить на устройство iOS
+* [Приложение для iOS] (https://itunes.apple.com/de/app/mi-home-xiaomi-smarthome/id957323480?mt=8) скачать, установить, открыть и загрузить на устройство iOS
 
 Я согласен с политикой конфиденциальности
 
@@ -94,7 +94,7 @@ hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 - дым - Детектор пожарной сигнализации Xiaomi Mijia Honeywell
 - ctrl_ln1 - Переключатель противопожарной стены Xiaomi Aqara 86 одна кнопка
 - ctrl_ln1.aq1 - Настенный выключатель Xiaomi Aqara LN
-- ctrl_ln2 - Двойной ключ с нулевой противопожарной защитой Xiaomi 86
+- ctrl_ln2 - Двойной ключ для настенного выключателя Xiaomi 86
 - ctrl_ln2.aq1 - Настенный выключатель Xiaomi Aqara LN, двойной ключ
 - ctrl_neutral2 - Двойной настенный выключатель Xiaomi
 - ctrl_neutral1 - Проводной одностенный выключатель Xiaomi

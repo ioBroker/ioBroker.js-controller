@@ -4,18 +4,18 @@ lastChanged: 21.01.2020
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/dev/adapterpublish.md
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: iLFFwmHGGEvoX1jzWG4/Zs7xSpudVBvxMEzm9P5Qcps=
+hash: I0FIhrW7GjK+oU9/a+Snt1/LZjxE7xtbGDLoF8Lr2VE=
 ---
 # Publish an adapter
 Before thinking about publishing an adapter, it should be offered for testing in [Forum test thread](https://forum.iobroker.net/category/91/tester).
-If the tests are successful and the adapter is stable, it should initially be included in the latest repository.
+If the tests are successful and the adapter runs stably, it should initially be included in the latest repository.
 
 If the adapter runs stable on a certain version number, it can be transferred to the stable repository. This requires the developer's own assessment in conjunction with the user feedback.
 
 *** Further current requirements can be found here: *** https://github.com/ioBroker/ioBroker.repositories/blob/master/README.md
 
 ## Latest Repository Requirements
-0.Use [https://adapter-check.iobroker.in/[(https://adapter-check.iobroker.in/) to test the adapter repo.
+0.Use [https://adapter-check.iobroker.in/[(https://adapter-check.iobroker.in/) to test adapter repo.
 
 1. The adapter's github repository should have a capital B in ioBroker, while it must be lowercase in the package.json, since `` npm '' does not allow capital letters.
 
@@ -75,11 +75,11 @@ To do this, a pull request must be made in the repository of [Discovery adapters
 ## Add the adapter to the official repository
 1. The [official Github Repository] (https://github.com/ioBroker/ioBroker.repositories) should be visited and a pull request should be made with the following content, depending on the repository.
 
-2. Please arrange the adapter correctly alphabetically between the existing adapters.
+2. Please arrange the adapter alphabetically correctly between the existing adapters.
 
 3. A version number must be declared when it is added to the stable repository. This must be updated when the adapter is further developed.
 
-4. The adapter should define a list attribute `docs` in the io-package.json, stating where instructions can be found in the respective language.
+4. The adapter should set a list attribute `docs` in the io-package.json, stating where instructions can be found in the respective language.
 
 The language is specified as the key and the path to the markdown file as the value.
 English instructions are required (in an emergency, reference can be made to the standard README). A German manual is also desirable, since a majority of users speak German, but this is optional.
@@ -99,7 +99,7 @@ An example can be found in [here](https://github.com/foxriver76/ioBroker.denon/b
 ```
 
 ### Latest
-The `sources-dist.json` file must be edited:
+The file `sources-dist.json` must be edited:
 
 Example:
 
@@ -115,7 +115,7 @@ Example:
 The `published` date represents the date of the first publication and should not be changed.
 
 ### Stable
-The `sources-dist-stable.json` file must be edited:
+The file `sources-dist-stable.json` must be edited:
 
 Example:
 
@@ -144,7 +144,7 @@ The version numbers should be increased according to the following list:
 
 - **micro** Only bugs were fixed
 - **minor** Features have been added, but the version is compatible with previous versions
-- **major** Major changes which make backward compatibility with the old version no longer possible
+- **major** Major changes that make backward compatibility with the old version no longer possible
 
 The `news` attribute should also be maintained in the io-package.json.
 This enables users to install any version listed (provided that it has been published on npm) via the admin interface.
@@ -205,7 +205,7 @@ Example:
 - `storage` - logging, data storage e.g. B. relational databases, ...
 - `utility` - supporting adapters such as B. Backup
 - `vehicle` - cars
-- `visualization` - visualization adapter, such as vis etc.
+- `visualization` - visualization adapter, like vis etc.
 - `visualization-icons` - icons for visualizations
 - `visualization-widgets` - iobroker.vis widgets
 - `weather` - weather information, air quality, environmental information

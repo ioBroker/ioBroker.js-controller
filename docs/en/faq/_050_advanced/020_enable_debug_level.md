@@ -3,9 +3,9 @@ editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/faq/_050
 title: How to switch driver in debug
 translatedFrom: ru
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: aAaujcb7Cyx933CyAU3wIZv7oi8DMxAVxzVLJeWLO1U=
+hash: Yhh1VwjNskJeloMwbVFlcGoyL6mZXDv8dtQ0IwmaQ9w=
 ---
-# How to switch the driver to debug?
+# How to switch driver to debug?
 ## For version 2 of the admin.2.x.x adapter
 ![](../../../ru/faq/_050_advanced/media/020_enable_debug_level2.jpg)
 

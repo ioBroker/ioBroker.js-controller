@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.mihome/README.md
 title: ioBroker Mi Home Adapter
-hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
+hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
 ---
 ![logo](../../../de/adapterref/iobroker.mihome/media/mihome.png)
 
@@ -18,13 +18,13 @@ Via ioBroker e.g. the lighting and the loudspeaker of the gateway can be control
 
 ### Installation of the Mi Home app and activation of the local network function
 #### Android
-* Download, install, open and open the [Android app] (https://play.google.com/store/apps/details?id=com.xiaomi.smarthome) on an Android device
+* Download, install, open and open the [Android App] (https://play.google.com/store/apps/details?id=com.xiaomi.smarthome) on an Android device
 
 agree to the terms and conditions.
 
 * Select *Mainland China* as the country
 *Create an account via * Login*
-* Add a device after successful registration with `+`
+* After successful registration, add a device using `+`
 * Under *Household security* select the `MI Control Hub` and the instructions
 
 consequences
@@ -52,7 +52,7 @@ I agree to the privacy policy
 
 * Select the country *mainland* via Profile / Settings / Country Settings.
 *Create an account via * Login*
-* Add a device after successful registration with `+`
+* After successful registration, add a device using `+`
 * Under *Household security* select the `MI Control Hub` and the instructions
 
 consequences

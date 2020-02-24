@@ -3,7 +3,7 @@ editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/faq/_
 title: 如何在调试中切换驱动程序
 translatedFrom: ru
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
-hash: aAaujcb7Cyx933CyAU3wIZv7oi8DMxAVxzVLJeWLO1U=
+hash: Yhh1VwjNskJeloMwbVFlcGoyL6mZXDv8dtQ0IwmaQ9w=
 ---
 ＃如何切换驱动程序进行调试？
 ##对于admin.2.x.x适配器的版本2

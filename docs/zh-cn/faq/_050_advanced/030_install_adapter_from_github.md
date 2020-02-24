@@ -3,7 +3,7 @@ editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/faq/_
 title: 如何安装C github？
 translatedFrom: ru
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
-hash: bm4l3UlC9IAuv0CGXC1wxdgBaEDj942roF3LcNliHIs=
+hash: 8w/GUiXDsgpPyK55LckdATB6XYdSJn9WGv8HTuhCG18=
 ---
 ＃如何安装c github？
 ##对于admin.2.x.x适配器的版本2

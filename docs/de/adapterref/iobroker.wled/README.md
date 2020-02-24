@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: JlfMTIl0oYXy1Blq5/3T6Uz/DHavUfRYnn7wB2ZZ4/A=
+hash: vfIeh7lfVVxn2dnoQzXckGACLbqHa5CovDOEYij2irs=
 ---
 ![Logo](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -25,12 +25,12 @@ Eine schnelle und funktionsreiche Implementierung eines ESP8266 / ESP32-Webserve
 Der Adapter versucht automatisch, WLED-Geräte in Ihrem Netzwerk mithilfe von Bonjour-Diensten zu finden.
 Bekannte Probleme: Netzwerke mit VLAN-Trennung leiten den Broadcast-Verkehr meist nicht weiter, was bedeutet, dass die automatische Erkennung fehlschlägt. (siehe To-Do)
 
-1) Stellen Sie sicher, dass Ihr WLED-Gerät läuft und über das Netzwerk erreichbar ist. 2) Installieren Sie den Adapter. 3) Konfigurieren Sie die Intervallzeiten für die Datenabfrage und die automatische Erkennung des Zyklus. 4) Starten Sie den Adapter. Die Geräte sollten automatisch erkannt werden Daten alle x Sekunden (konfigurierbar)
+1) Stellen Sie sicher, dass Ihr WLED-Gerät läuft und über das Netzwerk erreichbar ist. 2) Installieren Sie den Adapter. 3) Konfigurieren Sie die Intervallzeiten für die Datenabfrage und den automatischen Erkennungszyklus. 4) Starten Sie den Adapter. Die Geräte sollten automatisch erkannt werden. 5) Der Adapter sendet sofort Änderungen und Abfragen Daten alle x Sekunden (konfigurierbar)
 
 ## Machen
 * [] konfigurierbare Geräte (derzeit nur automatische Erkennung durch Bonjour)
 * [] untersuchen eine bessere Art der Ankündigung von Aufenthaltsänderungen, die derzeit von Polly unterstützt werden
-* [x] Spezialbefehle, die nicht in rest-api enthalten sind (wie Voreinstellungen speichern)
+* [x] spezielle Befehle, die nicht in rest-api enthalten sind (wie Voreinstellungen speichern)
 * [x] Kontrollsegmente
 * [x] Farbänderungen
 
