@@ -1,6 +1,6 @@
 ---
 title:       "Adapter"
-lastChanged: "25.03.2019"
+lastChanged: "25.02.2020"
 ---
 
 # Der Reiter Adapter
@@ -40,6 +40,8 @@ Durch Anklicken dieses Icons (8) werden alle verfügbaren Adapter aktualisiert.
 
 **5.) Adapter aus eigener URL installieren**
 
+**ACHTUNG:** **Die Nutzung dieser Option kann zu Problemen mit Deiner ioBroker-Installation führen.** Adapter von GitHub funktionieren eventuell nicht richtig (da sie noch in Entwicklung sind). Es wird empfohlen, auf eine stabile Version zu warten, anstatt diese Option zu nutzen. Solltest Du über dieses Icon einen Adapter installieren, lädst Du einen Entwicklungs-Stand eines Adapters herunter, welcher nicht in einem Produktiv-System genutzt werden sollte.
+
 Über das Octocat-Icon können Adapter aus eigenen Pfaden (URL oder Dateipfade) oder Vorabversionen von GitHub installiert werden.
 
 Nach Anklicken dieses Icons öffnet sich ein entsprechendes Auswahlfenster:
@@ -49,8 +51,6 @@ Nach Anklicken dieses Icons öffnet sich ein entsprechendes Auswahlfenster:
 Unter dem Reiter ***VON GITHUB*** wird einfach im Pulldownmenü der gewünschte Adapter ausgewählt und die neueste Vorabversion wird installiert.
 
 Bei Anwahl des Reiters ***BELIEBIG*** kann ein beliebiger Dateipfad oder ein beliebiger URL (z.B. ein URL zu einem externen Adapterentwickler) in das Feld eingegeben werden und der entsprechende Adapter installiert werden.
-
-**Die Nutzung dieser Option birgt einige Gefahren und geschieht daher auf eigene Gefahr.**
 
 **6.) Expertenmodus einschalten**
 
