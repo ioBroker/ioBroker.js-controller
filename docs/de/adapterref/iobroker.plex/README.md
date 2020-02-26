@@ -3,132 +3,180 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: 9m/tRvAGi2VZifTmIIULKck7p+PJMWQ9bsY5J7SZvFo=
+hash: R+xTNphUZT9QNNpz9rhtHbQNV5aoYGIj4V5w5jDgVfw=
 ---
 ![Logo](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
 ![Paypal-Spende](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/plex-installed.svg)
-![stabile Version](http://iobroker.live/badges/plex-stable.svg)
+![Stabile Version](http://iobroker.live/badges/plex-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.plex.svg)
-![Travis CI](https://travis-ci.org/Zefau/ioBroker.plex.svg?branch=master)
+![Commits seit der letzten Veröffentlichung](https://img.shields.io/github/commits-since/Zefau/ioBroker.plex/latest.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.plex.svg)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Zefau/ioBroker.plex.svg)
 ![NPM](https://nodei.co/npm/iobroker.plex.png?downloads=true)
 
-# IoBroker.plex Integration des Plex Media Servers in ioBroker (mit oder ohne Plex Pass). Darüber hinaus Tautulli-Integration.
+# IoBroker.plex Integration des Plex Media Servers in ioBroker (mit oder ohne Plex Pass). Darüber hinaus Tautulli Integration.
+[![Travis CI] (https://travis-ci.com/Zefau/ioBroker.plex.svg?branch=master)](https://travis-ci.com/Zefau/ioBroker.plex)
+
 **Inhaltsverzeichnis**
 
-1. [Funktionen] (Nr. 1-Funktionen)
-2. [Setup Anweisungen] (# 2-Setup-Anweisungen)
+1. [Features] (# 1-Features)
+2. [Setup-Anweisungen] (# 2-Setup-Anweisungen)
    1. [Grundeinstellung] (# 21-Grundeinstellung)
-   2. [Erweitertes Setup] (# 22-Erweitertes-Setup-Plex-Pass-or-Tautulli)
-3. [Channels & States] (# 3-Kanäle - Staaten)
-   1. [mit Basic Setup] (# 31-mit-Basis-Setup)
-   2. [mit erweitertem Setup] (# 32-mit-erweitertem-Setup)
+   2. [Advanced Setup] (# 22-Advanced-Setup-Plex-Pass-or-Tautulli)
+3. [Kanäle & Zustände] (# 3-Kanäle - Zustände)
+   1. [mit Grundeinstellung] (# 31-mit-Basis-Einrichtung)
+   2. [mit erweitertem Setup] (# 32-mit-erweitertem Setup)
 4. [Changelog] (# changelog)
 5. [Lizenz] (# Lizenz)
 
-## 1. Eigenschaften
-- Empfangen Sie "Ereignisse" von Plex (über [Plex Webhook] (https://support.plex.tv/articles/115002267687-webhooks/#toc-0) und [Plex Notifications] (https://support.plex.tv) / articles / push-notifications / # toc-0) mit Plex Pass oder über Tautulli, [__se setup! __] (# 22-advanced-setup-plex-pass-or-tautulli)
+## 1. Funktionen
+- Empfangen Sie "Ereignisse" von Plex (über [Plex Webhook] (https://support.plex.tv/articles/115002267687-webhooks/#toc-0) und [Plex Notifications] (https://support.plex.tv) / articles / push-notifications / # toc-0) mit Plex Pass oder über Tautulli, [__see setup! __] (# 22-advanced-setup-plex-pass-or-tautulli))
 - Wiedergabesteuerung für Spieler
-- Holen Sie sich "Server"
-- Holen Sie sich `Bibliotheken`
-- Abrufen aller Elemente in einer Bibliothek
+- `Server` abrufen
+- `Bibliotheken` abrufen
+- Rufen Sie alle Elemente in einer Bibliothek ab
 - Benutzer abrufen (nur mit Tautulli)
-- Abrufen von Statistiken (nur mit Tautulli)
-- Wiedergabelisten abrufen
+- Statistiken abrufen (nur mit Tautulli)
+- Abrufen von Wiedergabelisten
 - `Einstellungen` abrufen
 - Webinterface, das die letzten Ereignisse von Plex anzeigt:
 
-  ![Plex Web Interface](../../../en/adapterref/iobroker.plex/img/screenshot_adapter-interface.png)
+  ![Plex Webinterface](../../../en/adapterref/iobroker.plex/img/screenshot_adapter-interface.png)
 
-## 2. Setup-Anweisungen
+## 2. Anweisungen zum Einrichten
 ### 2.1. Grundeinstellung
-Für die Grundeinstellung müssen Sie die IP-Adresse (und den Port) Ihrer Plex-Installation angeben. Darüber hinaus müssen Sie ein dediziertes Token für den Adapter abrufen, um Daten von Plex abzurufen.
+Für die Grundeinstellung müssen Sie die IP-Adresse (und den Port) Ihrer Plex-Installation angeben. Darüber hinaus müssen Sie ein dediziertes Token abrufen, damit der Adapter Daten von Plex abrufen kann.
 
-Sobald dies angegeben ist, ruft ioBroker.plex alle grundlegenden Daten (einschließlich Server, Bibliotheken) ab. Die vollständige Liste der Grunddaten finden Sie in [Kanäle und Bundesstaaten](#21-with-basis-setup).
+Sobald dies angegeben ist, ruft ioBroker.plex alle Basisdaten (einschließlich Server, Bibliotheken) ab. Die vollständige Liste der Basisdaten finden Sie in [Kanäle & Staaten](#21-with-basis-setup).
 
-### 2.2. Erweitertes Setup (Plex Pass oder Tautulli)
+### 2.2. Erweiterte Einrichtung (Plex Pass oder Tautulli)
 #### 2.2.1. Plex Pass
 __Webhook__
 
-Wenn Sie ein Plex Pass-Benutzer sind, können Sie in den Plex-Einstellungen [einen Webhook einrichten](https://support.plex.tv/articles/115002267687-webhooks/#toc-0) das aktuelle Ereignis / die aktuelle Aktion von Ihrem Plex Media-Server abrufen (Abspielen, Anhalten, Fortsetzen, Stoppen, Anzeigen und Bewerten).
+Wenn Sie ein Plex Pass-Benutzer sind, können Sie [Richten Sie einen Webhook ein](https://support.plex.tv/articles/115002267687-webhooks/#toc-0) in den Plex-Einstellungen das aktuelle Ereignis / die aktuelle Aktion von Ihrem Plex Media Server abrufen (Wiedergabe, Pause, Wiederaufnahme, Stopp, Anzeige und Bewertung).
 
-Navigieren Sie zu Ihrem Plex Media Server und gehen Sie zu ```Settings``` und ```Webhook```. Erstellt einen neuen Webhook, indem Sie auf ```Add Webhook``` klicken und Ihre ioBroker-IP-Adresse mit dem in den ioBroker.plex-Einstellungen angegebenen benutzerdefinierten Port eingeben und den ```/plex```-Pfad verfolgen, z. ```http://192.168.178.29:41891/plex```:
+Navigieren Sie zu Ihrem Plex Media Server und gehen Sie zu ```Settings``` und ```Webhook```. Erstellen Sie einen neuen Webhook, indem Sie auf ```Add Webhook``` klicken und Ihre ioBroker-IP-Adresse mit dem benutzerdefinierten Port eingeben, der in den Einstellungen von ioBroker.plex angegeben ist, und dem nachfolgenden Pfad ```/plex```, z. ```http://192.168.178.29:41891/plex```:
 
 ![Plex Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_plex-webhook.png)
 
 __Veranstaltungen__
 
-Informationen zu den Plex Notifications erhalten Sie unter [siehe die offizielle Dokumentation](https://support.plex.tv/articles/push-notifications/#toc-0). Um Benachrichtigungen auf Ihrem Plex Media Server zu aktivieren, gehen Sie zu `Settings`> `Server`> `General` und aktivieren Sie die Voreinstellung `Push Notifications`.
+Informationen zu den Plex-Benachrichtigungen finden Sie in [siehe die offizielle Dokumentation](https://support.plex.tv/articles/push-notifications/#toc-0). Um Benachrichtigungen auf Ihrem Plex Media Server zu aktivieren, gehen Sie zu `Settings`> `Server`> `General` und aktivieren Sie dann die Einstellung `Push Notifications`.
 
 #### 2.2.2.Tautulli
-[Tautulli ist eine Drittanbieteranwendung] (https://tautulli.com/#about), die Sie zusammen mit Ihrem Plex Media Server ausführen können, um Aktivitäten zu überwachen und verschiedene Statistiken zu verfolgen. Am wichtigsten ist, dass diese Statistiken enthalten, was gesehen wurde, wer es gesehen hat, wann und wo sie es gesehen haben und wie es gesehen wurde. Alle Statistiken werden in einer ansprechenden und übersichtlichen Oberfläche mit vielen Tabellen und Grafiken dargestellt, sodass Sie problemlos mit Ihren Servern für alle anderen prahlen können. Überprüfen Sie [Tautulli Preview] (https://tautulli.com/#preview) und [installieren Sie es auf Ihrem bevorzugten System](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation) wenn Sie interessiert sind.
+[Tautulli ist eine Drittanbieteranwendung (https://tautulli.com/#about), die Sie zusammen mit Ihrem Plex Media Server ausführen können, um Aktivitäten zu überwachen und verschiedene Statistiken zu verfolgen. Am wichtigsten ist, dass diese Statistiken enthalten, was gesehen wurde, wer es gesehen hat, wann und wo sie es gesehen haben und wie es gesehen wurde. Alle Statistiken werden in einer schönen und übersichtlichen Oberfläche mit vielen Tabellen und Grafiken dargestellt, sodass Sie allen anderen leicht mit Ihrem Server angeben können. Schauen Sie sich [Tautulli Preview] (https://tautulli.com/#preview) an und [installieren Sie es auf Ihrem bevorzugten System](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation) wenn Sie interessiert sind.
 
-Dieser Adapter stellt eine Verbindung zum [Tautulli API](https://github.com/Tautulli/Tautulli/blob/master/API.md) her und empfängt auch Webhook-Ereignisse von Tautulli.
+Dieser Adapter stellt eine Verbindung zu den [Tautulli API](https://github.com/Tautulli/Tautulli/blob/master/API.md) her und empfängt auch Webhook-Ereignisse von Tautulli.
 
 ##### 2.2.2.1. API
-Öffnen Sie nach der Installation von Tautulli die Seite _Einstellungen_ im Tautulli-Dashboard und navigieren Sie zu _Webschnittstelle_. Scrollen Sie zum Abschnitt _API_ und vergewissern Sie sich, dass ```Enable API``` markiert ist. Kopieren Sie den ```API key``` und tragen Sie ihn in die ioBroker.plex-Einstellungen ein. Fügen Sie außerdem die Tautulli-IP-Adresse und den Port hinzu, um die API-Kommunikation zu ermöglichen.
+Öffnen Sie nach der Installation von Tautulli die Seite "Einstellungen" im Tautulli-Dashboard und navigieren Sie zu "Webschnittstelle". Scrollen Sie zum Abschnitt _API_ und stellen Sie sicher, dass ```Enable API``` aktiviert ist. Kopieren Sie die ```API key``` und geben Sie sie in die Einstellungen von ioBroker.plex ein. Fügen Sie außerdem die Tautulli-IP-Adresse und den Port hinzu, um die API-Kommunikation zu ermöglichen.
 
 ##### 2.2.2.2. Webhook
 ###### Überblick
-Befolgen Sie zum Einrichten eines Webooks mit Tautulli die nachstehenden Anweisungen und vergewissern Sie sich, dass Sie alle vier Schritte ausgeführt haben:
+Befolgen Sie die nachstehenden Anweisungen, um ein Webook mit Tautulli einzurichten, und stellen Sie sicher, dass Sie alle 4 Schritte ausgeführt haben:
 
-1. Fügen Sie den Notification Agent hinzu
-2. Konfigurieren Sie Webhook im Notification Agent
-3. Konfigurieren Sie die Trigger im Notification Agent
-4. Konfigurieren Sie die Daten im Notification Agent
+1. Fügen Sie Notification Agent hinzu
+2. Konfigurieren Sie Webhook in Notification Agent
+3. Konfigurieren Sie Trigger in Notification Agent
+4. Konfigurieren Sie die Daten in Notification Agent
 5. Konfigurieren Sie die Benachrichtigungsoptionen
 
 ###### Beschreibung
-Nach der Installation öffnen Sie die Einstellungsseite im Tautulli-Dashboard und navigieren Sie zu Notification Agents (siehe unten):
+Öffnen Sie nach der Installation die Einstellungsseite im Tautulli-Dashboard und navigieren Sie wie unten gezeigt zu Benachrichtigungsagenten:
 
 ![Tautulli-Einstellungen](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-settings.png)
 
-1. Klicken Sie auf "Neuen Benachrichtigungsagenten hinzufügen" und auf "Webhook".
-2. Geben Sie Ihre ioBroker-IP-Adresse mit dem in den ioBroker.plex-Einstellungen angegebenen benutzerdefinierten Port ein und folgen Sie dem Pfad `` `/ tautulli```, z. `` `http://192.168.178.29: 41891 / tautulli```:
+1. Klicken Sie auf Neuen Benachrichtigungsagenten hinzufügen und auf Webhook.
+2. Geben Sie Ihre ioBroker-IP-Adresse mit dem in den ioBroker.plex-Einstellungen angegebenen benutzerdefinierten Port und dem nachfolgenden Pfad `` `/ tautulli``` ein, z. `` `http://192.168.178.29: 41891 / tautulli```:
 
 ![Tautulli Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-webhook.png) Wählen Sie außerdem ```POST``` für die _Webhook-Methode_ und geben Sie eine beliebige Beschreibung in _Description_ ein.
 
-3. Wechseln Sie als Nächstes zur Registerkarte _Triggers_, und wählen Sie die gewünschten (oder einfach alle) Benachrichtigungsagenten aus. Ein aktivierter Benachrichtigungsagent löst ein Ereignis aus, das dann an ioBroker gesendet wird. __Stellen Sie sicher, dass Sie im nächsten Schritt die erforderlichen Daten für jeden aktivierten Benachrichtigungsagenten bereitstellen!
-4. Tragen Sie nun __wichtigst__ die entsprechende Datennutzlast in der Registerkarte _Data_ gemäß __ [Benachrichtigungskonfiguration hier] (README-tautulli.md # notification-configuration) __ ein.
+3. Gehen Sie als Nächstes zur Registerkarte _Trigger_ und wählen Sie die gewünschten (oder einfach alle) Benachrichtigungsagenten aus. Ein aktivierter Benachrichtigungsagent löst ein Ereignis aus, das dann an ioBroker gesendet wird. __Stellen Sie sicher, dass Sie im nächsten Schritt die erforderlichen Daten für jeden aktivierten Benachrichtigungsagenten bereitstellen!
+4. Geben Sie nun, was am wichtigsten ist, die entsprechenden Datennutzdaten auf der Registerkarte _Data_ gemäß der __ [Benachrichtigungskonfiguration hier gefunden] (README-tautulli.md # Benachrichtigungskonfiguration) __ ein.
 
-   Kopieren Sie die Benachrichtigungskonfiguration der entsprechenden Benachrichtigungsagenten aus dem vorherigen Schritt (z. B. ```Playback Start```, ```Playback Stop```, ```Playback Pause``` und ```Playback Resume```) in jedes der folgenden Textfelder für § §JJJJJ_4§§:
+   Kopieren Sie die Benachrichtigungskonfiguration der relevanten Benachrichtigungsagenten aus dem vorherigen Schritt (z. B. ```Playback Start```, ```Playback Stop```, ```Playback Pause``` und ```Playback Resume```) in jedes der unten für § gezeigten Textfelder §JJJJJ_4§§:
 
    ![Tautulli-Benachrichtigung](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-notification.png)
 
-5. Aktivieren Sie abschließend die Option "Aufeinanderfolgende Benachrichtigungen zulassen", um das Senden aufeinanderfolgender Benachrichtigungen zuzulassen (z. B. sowohl überwachte als auch gestoppte Benachrichtigungen):
+5. Aktivieren Sie abschließend die Option "Aufeinanderfolgende Benachrichtigungen zulassen", um das Senden aufeinanderfolgender Benachrichtigungen zu ermöglichen (z. B. sowohl überwachte als auch gestoppte Benachrichtigungen):
 
    ![Tautulli-Benachrichtigungseinstellungen](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-notification_settings.png)
 
-## 3. Kanäle und Bundesstaaten
-Wenn sowohl die Grundkonfiguration als auch die erweiterte Konfiguration konfiguriert sind, werden die folgenden Kanäle angezeigt (Bibliotheken, Server und Benutzer sind natürlich nur Beispiele). Siehe weiter unten für [vollständige Liste der Kanäle und Bundesstaaten](#21-with-basis-setup).
+## 3. Kanäle & Staaten
+Wenn sowohl das grundlegende als auch das erweiterte Setup konfiguriert sind, werden die folgenden Kanäle angezeigt (Bibliotheken, Server und Benutzer sind natürlich nur Beispiele). Siehe weiter unten für [vollständige Liste der Kanäle und Staaten](#21-with-basis-setup).
 
-![Beispiel für Kanäle und Bundesstaaten](../../../en/adapterref/iobroker.plex/img/screenshot_plex-states.jpg)
+![Kanäle & Staaten Beispiel](../../../en/adapterref/iobroker.plex/img/screenshot_plex-states.jpg)
 
 ### 3.1. Mit Basis Setup
-Nach erfolgreicher Grundeinstellung werden die Kanäle gemäß folgender Tabelle angelegt. Für eine Liste aller Staaten, die erstellt werden, bitte [Siehe spezielle Liste der Bundesstaaten](README-states.md#with-basis-setup).
+Nach erfolgreicher Grundeinstellung werden die Kanäle gemäß der folgenden Tabelle erstellt. Für eine Liste aller Staaten, die erstellt werden, bitte [siehe dedizierte Liste der Staaten](README-states.md#with-basis-setup).
 
 | Kanal / Ordner | Beschreibung |
 | ------- | ----------- |
 | __bibliotheken__ | Plex-Bibliotheken |
 | __servers__ | Plex Server |
-| __Einstellungen__ | Plex-Einstellungen |
+| __Einstellungen__ | Plex Einstellungen |
 
 ### 3.2. Mit erweitertem Setup
-Nach erfolgreichem Advanced Setup werden zusätzlich folgende Kanäle angelegt. Für eine Liste aller Staaten, die erstellt werden, bitte [Siehe spezielle Liste der Bundesstaaten](README-states.md#with-advanced-setup).
+Nach erfolgreichem erweiterten Setup werden die folgenden Kanäle zusätzlich erstellt. Für eine Liste aller Staaten, die erstellt werden, bitte [siehe dedizierte Liste der Staaten](README-states.md#with-advanced-setup).
 
 | Kanal / Ordner | Beschreibung | Bemerkung |
 | ---------------- | ----------- | ------ |
 | __ \ _ spielen__ | Plex Media wird abgespielt | mit Plex Pass oder Tautulli |
-| __Statistik__ | Plex Watch Statistics | nur mit Tautulli |
-| __users__ | Plex Benutzer | nur mit Tautulli |
+| __statistics__ | Plex Watch Statistik | nur mit Tautulli |
+| __users__ | Plex-Benutzer | nur mit Tautulli |
 
 ## Changelog
 
-### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
-- Remote Player Control
+### 0.8.11 (2019-02-26)
+- (Zefau) fixed error with state retrieval on startup when no states are given
+- (Zefau) updated dependencies
+
+### 0.8.10 (2019-02-16)
+- (Zefau) fixed error with state retrieval on startup when no states are given
+- (Zfeau) fixed incorrect handling of certificates when using secure connection
+- (Zefau) updated dependencies
+
+### 0.8.9 (2019-12-14)
+- (Zefau) updated dependencies
+- (Zefau) fixed missing spaces in events (and thus Adapter Web View)
+- (Zefau) fixed using username instead of email for statistics [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
+
+### 0.8.8 (2019-12-05)
+- (Zefau) fixed player controls
+
+### 0.8.7 (2019-12-02)
+- (Zefau) fixed error with http / https settings
+
+### 0.8.6 (2019-12-02)
+- (Zefau) added further states to Tautulli Notification (see [README-tautulli.md](https://github.com/Zefau/ioBroker.plex/blob/master/README-tautulli.md))
+- (Zefau) fixed design issue with select-box in the adapter settings
+- (Zefau) fixed not showing thumbnails in adapter web view (when not using a secure connection)
+
+### 0.8.5 (2019-12-01)
+- (Zefau) fixed missing user / library statistics
+- (Zefau) fixed using username instead of email for statistics [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
+
+### 0.8.4 (2019-11-07)
+- (Zefau) added support for remote player control via cloud / iot adapter
+- (Zefau) added thumbnail to notifications as well as web interface of adapter
+- (Zefau) fixed icons within the web interface of adapter
+
+### 0.8.3 (2019-11-06)
+- (Zefau) fixed player controls (error when triggering `start`, `stop`, etc.)
+- (Zefau) added additional states to `event` channel
+
+### 0.8.1 (2019-11-02)
+- (Zefau) fixed error `Cannot read property 'forEach' of undefined`
+
+### 0.8.0 (2019-10-28)
+- (Zefau) added support for Plex Notifications including customization in adapter settings
+- (Zefau) added count of streams [#14](https://github.com/Zefau/ioBroker.plex/issues/14))
+- (Zefau) reworked cleaning up states when new webhook is received [#11](https://github.com/Zefau/ioBroker.plex/issues/11))
+
+### 0.7.0 (2019-10-17)
+- (Zefau) reworked duty cycle (clean up of outdated / old states)
+- (Zefau) fixed incorrect states [#15](https://github.com/Zefau/ioBroker.plex/issues/15))
 
 ### 0.6.0 (2019-08-19)
 - (Zefau) replaced password with token authentication
@@ -177,7 +225,7 @@ Nach erfolgreichem Advanced Setup werden zusätzlich folgende Kanäle angelegt. 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 Zefau <zefau@mailbox.org>
+Copyright (c) 2019-2020 Zefau <zefau@mailbox.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

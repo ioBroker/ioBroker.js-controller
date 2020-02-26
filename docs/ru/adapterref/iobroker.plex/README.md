@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: 9m/tRvAGi2VZifTmIIULKck7p+PJMWQ9bsY5J7SZvFo=
+hash: R+xTNphUZT9QNNpz9rhtHbQNV5aoYGIj4V5w5jDgVfw=
 ---
 ![логотип](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
@@ -11,21 +11,22 @@ hash: 9m/tRvAGi2VZifTmIIULKck7p+PJMWQ9bsY5J7SZvFo=
 ![Количество установок](http://iobroker.live/badges/plex-installed.svg)
 ![Стабильная версия](http://iobroker.live/badges/plex-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.plex.svg)
-![Трэвис CI](https://travis-ci.org/Zefau/ioBroker.plex.svg?branch=master)
+![Фиксируется с момента последнего выпуска](https://img.shields.io/github/commits-since/Zefau/ioBroker.plex/latest.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.plex.svg)
-![Значок Greenkeeper](https://badges.greenkeeper.io/Zefau/ioBroker.plex.svg)
 ![NPM](https://nodei.co/npm/iobroker.plex.png?downloads=true)
 
-# IoBroker.plex Интеграция Plex Media Server в ioBroker (с Plex Pass или без него). Кроме того, интеграция Tautulli.
-**Оглавление**
+# IoBroker.plex Интеграция Plex Media Server в ioBroker (с или без Plex Pass). Кроме того, интеграция Tautulli.
+[![Travis CI] (https://travis-ci.com/Zefau/ioBroker.plex.svg?branch=master)](https://travis-ci.com/Zefau/ioBroker.plex)
+
+**Содержание**
 
 1. [Особенности] (# 1-функции)
 2. [Инструкции по настройке] (# 2-инструкции по настройке)
    1. [Базовая настройка] (# 21-basic-setup)
    2. [Расширенная настройка] (# 22-advanced-setup-plex-pass-or-tautulli)
 3. [Каналы и состояния] (# 3-каналы - состояния)
-   1. [с базовой настройкой] (# 31 с базовой настройкой)
-   2. [с расширенной настройкой] (# 32 с расширенной настройкой)
+   1. [с базовой настройкой] (№ 31 с базовой настройкой)
+   2. [с расширенной настройкой] (# 32-с расширенной настройкой)
 4. [Список изменений] (# список изменений)
 5. [Лицензия] (# лицензия)
 
@@ -47,38 +48,38 @@ hash: 9m/tRvAGi2VZifTmIIULKck7p+PJMWQ9bsY5J7SZvFo=
 ### 2.1. Основные настройки
 Для базовой настройки необходимо указать IP-адрес (и порт) вашей установки Plex. Кроме того, вам нужно получить выделенный токен для адаптера для извлечения данных из Plex.
 
-После этого ioBroker.plex извлечет все основные данные (включая серверы, библиотеки). См. [Каналы и Штаты](#21-with-basis-setup) для полного списка основных данных.
+После этого ioBroker.plex получит все основные данные (включая серверы, библиотеки). См. [Каналы и Штаты](#21-with-basis-setup) для полного списка основных данных.
 
 ### 2.2. Расширенная настройка (Plex Pass или Tautulli)
 #### 2.2.1. Плекс Пасс
 __Webhook__
 
-Если вы являетесь пользователем Plex Pass, вы можете [настроить веб-крючок](https://support.plex.tv/articles/115002267687-webhooks/#toc-0) в Настройках Plex, чтобы получить текущее событие / действие с вашего Plex Media Server (воспроизведение, пауза, возобновление, остановка, просмотр и оценка).
+Если вы являетесь пользователем Plex Pass, вы можете [настроить веб-крючок](https://support.plex.tv/articles/115002267687-webhooks/#toc-0) в настройках Plex, чтобы получить текущее событие / действие с вашего Plex Media Server (воспроизведение, пауза, возобновление, остановка, просмотр и оценка).
 
-Перейдите к своему Plex Media Server и перейдите к ```Settings``` и ```Webhook```. Создайте новый веб-крюк, щелкнув ```Add Webhook``` и введите IP-адрес ioBroker с настраиваемым портом, указанным в настройках ioBroker.plex и в конце пути ```/plex```, например, ```http://192.168.178.29:41891/plex```:
+Перейдите к своему Plex Media Server и перейдите к ```Settings``` и ```Webhook```. Создайте новый веб-крючок, нажав ```Add Webhook``` и введите свой IP-адрес ioBroker с настраиваемым портом, указанным в настройках ioBroker.plex и в конце пути ```/plex```, например, ```http://192.168.178.29:41891/plex```:
 
 ![Plex Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_plex-webhook.png)
 
 __События__
 
-Для получения информации относительно уведомлений Plex, пожалуйста, [смотрите официальную документацию](https://support.plex.tv/articles/push-notifications/#toc-0). Чтобы включить уведомления на своем Plex Media Server, перейдите к `Settings`> `Server`> `General` и затем включите настройку `Push Notifications`.
+Для получения информации относительно уведомлений Plex, пожалуйста, [смотрите официальную документацию](https://support.plex.tv/articles/push-notifications/#toc-0). Чтобы включить уведомления на своем Plex Media Server, перейдите к `Settings`> `Server`> `General` и затем включите параметр `Push Notifications`.
 
 #### 2.2.2.Tautulli
-[Tautulli - это стороннее приложение] (https://tautulli.com/#about), которое вы можете запускать вместе со своим Plex Media Server для мониторинга активности и отслеживания различной статистики. Самое главное, что эта статистика включает в себя то, что было просмотрено, кто его смотрел, когда и где они смотрели, и как это смотрели. Вся статистика представлена в приятном и понятном интерфейсе со множеством таблиц и графиков, что позволяет легко хвастаться своим сервером всем остальным. Проверьте [Предварительный просмотр Tautulli] (https://tautulli.com/#preview) и [установите его на предпочитаемую систему](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation), если вы заинтересованы.
+[Tautulli - это стороннее приложение] (https://tautulli.com/#about), которое вы можете запускать вместе со своим Plex Media Server для мониторинга активности и отслеживания различной статистики. Наиболее важно, что эта статистика включает в себя то, что было просмотрено, кто его смотрел, когда и где он смотрел, и как это смотрели. Вся статистика представлена в приятном и понятном интерфейсе со множеством таблиц и графиков, что позволяет легко хвастаться своим сервером всем остальным. Проверьте [Предварительный просмотр Tautulli] (https://tautulli.com/#preview) и [установите его на предпочитаемую систему](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation), если вы заинтересованы.
 
-Этот адаптер подключается к [Tautulli API](https://github.com/Tautulli/Tautulli/blob/master/API.md), а также принимает события webhook от Tautulli.
+Этот адаптер подключается к [Tautulli API](https://github.com/Tautulli/Tautulli/blob/master/API.md), а также получает события webhook от Tautulli.
 
 ##### 2.2.2.1. API
-После установки Tautulli откройте страницу _Settings_ на панели инструментов Tautulli и перейдите на _Web Interface_. Прокрутите вниз до раздела _API_ и убедитесь, что флажок ```Enable API``` отмечен. Скопируйте ```API key``` и введите его в настройках ioBroker.plex. Кроме того, добавьте IP-адрес и порт Tautulli, чтобы обеспечить связь API.
+После установки Tautulli откройте страницу _Settings_ на панели инструментов Tautulli и перейдите на _Web Interface_. Прокрутите вниз до раздела _API_ и убедитесь, что установлен флажок ```Enable API```. Скопируйте ```API key``` и введите его в настройках ioBroker.plex. Кроме того, добавьте IP-адрес и порт Tautulli, чтобы обеспечить связь API.
 
 ##### 2.2.2.2. Webhook
 ###### Обзор
-Чтобы настроить книгу с помощью Tautulli, следуйте инструкциям ниже и убедитесь, что вы выполнили все 4 шага:
+Чтобы настроить webook с помощью Tautulli, следуйте инструкциям ниже и убедитесь, что вы выполнили все 4 шага:
 
 1. Добавить агент уведомлений
 2. Настройте Webhook в агенте уведомлений
 3. Настройте триггеры в агенте уведомлений
-4. Настройка данных в агенте уведомлений
+4. Настройте данные в агенте уведомлений
 5. Настройте параметры уведомлений
 
 ###### Описание
@@ -92,13 +93,13 @@ __События__
 ![Tautulli Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-webhook.png) Кроме того, выберите ```POST``` для метода _Webhook_ и введите любое понравившееся описание в _Description_.
 
 3. Затем перейдите на вкладку _Triggers_, выберите нужные (или просто все) агенты уведомлений. Включенный агент уведомлений вызовет событие, которое затем будет отправлено в ioBroker. __Убедитесь ___, чтобы предоставить необходимые данные для каждого из включенных агентов уведомлений на следующем шаге!
-4. Теперь, ___ что наиболее важно __, заполните соответствующую полезную нагрузку данных на вкладке _Data_ в соответствии с __ [Конфигурация уведомления найдена здесь] (README-tautulli.md # Notification-configuration) __.
+4. Теперь, ___ самое главное __, заполните соответствующую полезную нагрузку данных на вкладке _Data_ в соответствии с __ [Конфигурация уведомления найдена здесь] (README-tautulli.md # Notification-configuration) __.
 
    Скопируйте конфигурацию уведомлений соответствующих агентов уведомлений из предыдущего шага (например, ```Playback Start```, ```Playback Stop```, ```Playback Pause``` и ```Playback Resume```) в каждом из текстовых полей, как показано ниже для § §JJJJJ_4§§:
 
    ![Таутулли Уведомление](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-notification.png)
 
-5. Наконец, установите флажок «Разрешить последовательные уведомления», чтобы разрешить отправку последовательных уведомлений (например, как просмотренных, так и остановленных уведомлений):
+5. Наконец, отметьте опцию «Разрешить последовательные уведомления», чтобы разрешить отправку последовательных уведомлений (например, как просмотренных, так и остановленных уведомлений):
 
    ![Настройки уведомлений Tautulli](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-notification_settings.png)
 
@@ -127,8 +128,55 @@ __События__
 
 ## Changelog
 
-### 1.0.0 (2019-xx-xx) [MILESTONES / PLANNED FEATURES FOR v1.0.0 RELEASE]
-- Remote Player Control
+### 0.8.11 (2019-02-26)
+- (Zefau) fixed error with state retrieval on startup when no states are given
+- (Zefau) updated dependencies
+
+### 0.8.10 (2019-02-16)
+- (Zefau) fixed error with state retrieval on startup when no states are given
+- (Zfeau) fixed incorrect handling of certificates when using secure connection
+- (Zefau) updated dependencies
+
+### 0.8.9 (2019-12-14)
+- (Zefau) updated dependencies
+- (Zefau) fixed missing spaces in events (and thus Adapter Web View)
+- (Zefau) fixed using username instead of email for statistics [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
+
+### 0.8.8 (2019-12-05)
+- (Zefau) fixed player controls
+
+### 0.8.7 (2019-12-02)
+- (Zefau) fixed error with http / https settings
+
+### 0.8.6 (2019-12-02)
+- (Zefau) added further states to Tautulli Notification (see [README-tautulli.md](https://github.com/Zefau/ioBroker.plex/blob/master/README-tautulli.md))
+- (Zefau) fixed design issue with select-box in the adapter settings
+- (Zefau) fixed not showing thumbnails in adapter web view (when not using a secure connection)
+
+### 0.8.5 (2019-12-01)
+- (Zefau) fixed missing user / library statistics
+- (Zefau) fixed using username instead of email for statistics [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
+
+### 0.8.4 (2019-11-07)
+- (Zefau) added support for remote player control via cloud / iot adapter
+- (Zefau) added thumbnail to notifications as well as web interface of adapter
+- (Zefau) fixed icons within the web interface of adapter
+
+### 0.8.3 (2019-11-06)
+- (Zefau) fixed player controls (error when triggering `start`, `stop`, etc.)
+- (Zefau) added additional states to `event` channel
+
+### 0.8.1 (2019-11-02)
+- (Zefau) fixed error `Cannot read property 'forEach' of undefined`
+
+### 0.8.0 (2019-10-28)
+- (Zefau) added support for Plex Notifications including customization in adapter settings
+- (Zefau) added count of streams [#14](https://github.com/Zefau/ioBroker.plex/issues/14))
+- (Zefau) reworked cleaning up states when new webhook is received [#11](https://github.com/Zefau/ioBroker.plex/issues/11))
+
+### 0.7.0 (2019-10-17)
+- (Zefau) reworked duty cycle (clean up of outdated / old states)
+- (Zefau) fixed incorrect states [#15](https://github.com/Zefau/ioBroker.plex/issues/15))
 
 ### 0.6.0 (2019-08-19)
 - (Zefau) replaced password with token authentication
@@ -177,7 +225,7 @@ __События__
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 Zefau <zefau@mailbox.org>
+Copyright (c) 2019-2020 Zefau <zefau@mailbox.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

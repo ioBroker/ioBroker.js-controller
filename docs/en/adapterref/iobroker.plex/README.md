@@ -8,7 +8,7 @@ Integration of the Plex Media Server in ioBroker (with or without Plex Pass). Fu
 ![Stable Version](http://iobroker.live/badges/plex-stable.svg)
 [![NPM Version](http://img.shields.io/npm/v/iobroker.plex.svg)](https://www.npmjs.com/package/iobroker.plex)
 [![Commits since last release](https://img.shields.io/github/commits-since/Zefau/ioBroker.plex/latest.svg)](https://github.com/Zefau/ioBroker.plex/releases/latest)
-[![Travis CI](https://travis-ci.org/Zefau/ioBroker.plex.svg?branch=master)](https://travis-ci.org/Zefau/ioBroker.plex)
+[![Travis CI](https://travis-ci.com/Zefau/ioBroker.plex.svg?branch=master)](https://travis-ci.com/Zefau/ioBroker.plex)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.plex.svg)](https://www.npmjs.com/package/iobroker.plex)
 
 [![NPM](https://nodei.co/npm/iobroker.plex.png?downloads=true)](https://nodei.co/npm/iobroker.plex/) 
@@ -126,6 +126,15 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 
 ## Changelog
 
+### 0.8.11 (2019-02-26)
+- (Zefau) fixed error with state retrieval on startup when no states are given
+- (Zefau) updated dependencies
+
+### 0.8.10 (2019-02-16)
+- (Zefau) fixed error with state retrieval on startup when no states are given
+- (Zfeau) fixed incorrect handling of certificates when using secure connection
+- (Zefau) updated dependencies
+
 ### 0.8.9 (2019-12-14)
 - (Zefau) updated dependencies
 - (Zefau) fixed missing spaces in events (and thus Adapter Web View)
@@ -215,7 +224,7 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 Zefau <zefau@mailbox.org>
+Copyright (c) 2019-2020 Zefau <zefau@mailbox.org>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.telegram/README.md
 title: ioBroker电报适配器
-hash: mWTsYb+tyqOBzPZDlS/FBuCmBw3qVJJKXqMOl/SMoRI=
+hash: RBhAYT1pqUL+3o8PKTsGUsnKAoTbmLf6MIa2ktTPqA4=
 ---
 ![商标](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
 
@@ -41,7 +41,7 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 });
 ```
 
-如果使用上面的示例，请注意，必须将“ UserName”替换为您要向其发送消息的用户的名字或Public-Telegram-Username。 （取决于是否启用了Adaptersettings中的'Store username not firstname'设置）如果设置了该选项，并且用户未在电报帐户中指定公用用户名，则适配器将继续使用该用户名。用户。请记住，如果用户稍后（在对您的机器人进行身份验证之后）设置了公共用户名，则下次用户向机器人发送消息时，保存的名字将被用户名替换。
+如果使用上面的示例，请注意，必须将“ UserName”替换为您要向其发送消息的用户的名字或Public-Telegram-Username。 （取决于是否启用了Adaptersettings中的'Store username not firstname'设置）如果设置了该选项并且用户未在电报帐户中指定公共用户名，则适配器将继续使用该用户名。用户。请记住，如果用户稍后（在对您的机器人进行身份验证之后）设置了公共用户名，则下次用户向机器人发送消息时，保存的名字将被用户名替换。
 
 可以指定多个收件人（只需用逗号分隔用户名）。
 例如：收件人：“ User1，User4，User5”
@@ -51,7 +51,7 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 ##用法
 您可以将电报与[text2command](https://github.com/ioBroker/ioBroker.text2command)适配器一起使用。有预定义的通信模式，您可以以文本形式命令您回家。
 
-要发送照片，只需发送文件而不是文本或URL的路径即可：`sendTo('telegram', 'absolute/path/file.png')`或`sendTo('telegram', 'https://telegram.org/img/t_logo.png')`§。
+要发送照片，只需发送文件的路径而不是文本或URL：`sendTo('telegram', 'absolute/path/file.png')`或`sendTo('telegram', 'https://telegram.org/img/t_logo.png')`§。
 
 示例如何从网络摄像头向电报发送屏幕截图：
 
@@ -113,7 +113,7 @@ sendTo('telegram.0', {
 -* parse_mode *：如果希望Telegram应用在机器人消息中显示粗体，斜体，固定宽度的文本或内联URL，则发送Markdown或HTML。可能的值：“ Markdown”，“ HTML”（消息）
 -* disable_web_page_preview *：禁用此消息中链接的链接预览（消息）
 -*说明*：用于文档，图片或视频的标题，0-200个字符（视频，音频，图片，文档）
--*持续时间*：以秒为单位发送视频或音频的持续时间（音频，视频）
+-*持续时间*：发送的视频或音频的持续时间（以秒为单位）（音频，视频）
 -*表演者*：音频文件的表演者（音频）
 -* title *：音频文件的轨道名称（音频）
 -*宽度*：视频宽度（视频）
@@ -179,7 +179,7 @@ sendTo('telegram', {
 
 您可以阅读更多的[此处]（https://core.telegram.org/bots/api#inlinekeyboardmarkup）和[此处](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating)。
 
-**注意：** *用户按下回叫按钮后，Telegram客户端将显示进度条，直到您调用answerCallbackQuery。因此，即使不需要向用户发送通知，也有必要通过调用answerCallbackQuery做出反应（例如，不指定任何可选参数）。*
+**注意：** *用户按下回叫按钮后，Telegram客户端将显示进度条，直到您调用answerCallbackQuery。因此，即使不需要向用户发送通知，也必须通过调用answerCallbackQuery做出反应（例如，不指定任何可选参数）。*
 
 ### AnswerCallbackQuery
 使用此方法可以将答案发送给从嵌入式键盘发送的回调查询。答案将作为通知显示在用户的聊天屏幕顶部或作为警报。成功后，将返回* True *。
@@ -224,10 +224,10 @@ sendTo('telegram.0', 'ask', {
 `sendTo('telegram.0', {text: 'Message to chat', chatId: 'SOME-CHAT-ID-123');`
 
 ##更新消息
-通过以下方法，您可以更改消息历史记录中的现有消息，而不是通过操作结果发送新消息。这对于使用*内置键盘*的带有回调查询的消息最有用，但也可以帮助减少与常规聊天机器人进行对话时的混乱情况。
+通过以下方法，您可以更改消息历史记录中的现有消息，而不是通过操作结果发送新消息。这对于使用*嵌入式键盘*的带有回调查询的消息最有用，但也可以帮助减少与常规聊天机器人进行对话时的混乱情况。
 
 ### EditMessageText
-使用此方法来编辑由机器人或通过机器人（对于嵌入式机器人）发送的文本。成功后，如果漫游器发送了已编辑的消息，则返回已编辑的消息，否则返回* True *。
+使用此方法来编辑由机器人或通过机器人发送的文本（对于内联机器人）。成功后，如果漫游器发送了已编辑的消息，则返回已编辑的消息，否则返回* True *。
 
 ```
 if (command === "1_2") {
@@ -368,6 +368,7 @@ sendTo('telegram.0', 'call', {
     text: 'Some text',
     user: '@Username', // optional and the call will be done to the first user in telegram.0.communicate.users.
     language: 'de-DE-Standard-A' // optional and the system language will be taken
+    repeats: 0, // number of repeats
 });
 ```
 
@@ -376,7 +377,7 @@ sendTo('telegram.0', 'call', {
 ```
 sendTo('telegram.0', 'call', {
     text: 'Some text',
-    users: ['@Username1', '@Username2'] // Array of `users'.
+    users: ['@Username1', '+49xxxx'] // Array of `users' or telephone numbers.
 });
 ```
 
@@ -385,7 +386,7 @@ sendTo('telegram.0', 'call', {
 ```
 sendTo('telegram.0', 'call', {
     file: 'url of mp3 file that is accessible from internet',
-    users: ['@Username1', '@Username2'] // Array of `users'.
+    users: ['@Username1', '@Username2'] // Array of `users' or telephone numbers.
 });
 ```
 
@@ -436,7 +437,7 @@ sendTo('telegram.0', 'call', {
 -`id-ID-Standard-A`-印度尼西亚语（印度尼西亚）（女声）
 -`id-ID-Standard-B`-印度尼西亚语（印度尼西亚）（男声）
 -`id-ID-Standard-C`-印度尼西亚语（印度尼西亚）（男性2种声音）
--`it-IT-Standard-A`-意大利语（意大利）（如果系统语言为IT，且未提供任何语言，则使用女性声音）
+-`it-IT-Standard-A`-意大利语（意大利）（如果系统语言为IT，并且未提供任何语言，则使用女性声音）
 -`it-IT-Standard-B`-意大利语（意大利）（女性2种声音）
 -`it-IT-Standard-C`-意大利语（意大利）（男声）
 -`it-IT-Standard-D`-意大利语（意大利）（男性2种声音）
@@ -456,7 +457,7 @@ sendTo('telegram.0', 'call', {
 -`nb-NO-Standard-C`-挪威语（挪威）（女2声音）
 -`nb-NO-Standard-D`-挪威文（挪威）（男2种声音）
 -`nb-no-Standard-E`-挪威语（挪威语）（女3声音）
--`pl-PL-Standard-A`-波兰语（波兰）（如果系统语言为PL而未提供任何语言，则将使用女性声音）
+-`pl-PL-Standard-A`-波兰语（波兰）（如果系统语言为PL并且未提供任何语言，则将使用女性声音）
 -`pl-PL-Standard-B`-波兰语（波兰）（男声）
 -`pl-PL-Standard-C`-波兰语（波兰）（男2种声音）
 -`pl-PL-Standard-D`-波兰语（波兰）（女性2种声音）
@@ -471,17 +472,17 @@ sendTo('telegram.0', 'call', {
 -`ru-RU-Standard-C`-俄语（俄罗斯）（女性2种声音）
 -`ru-RU-Standard-D`-俄语（俄罗斯）（男性2种声音）
 -`sk-SK-Standard-A`-斯洛伐克（斯洛伐克）（女声）
--`es-ES-Standard-A`-西班牙语（西班牙）（如果系统语言为ES，但未提供语言，则将使用女性语音）
+-`es-ES-Standard-A`-西班牙语（西班牙）（如果系统语言为ES，但未提供语言，则使用女性语音）
 -`sv-SE-Standard-A`-瑞典语（瑞典）（女声）
 -`tr-TR-Standard-A`-土耳其语（土耳其）（女声）
--`tr-TR-Standard-B`-土耳其文（土耳其）（男性配音）
+-`tr-TR-Standard-B`-土耳其语（土耳其）（男声）
 -`tr-TR-Standard-C`-土耳其语（土耳其）（女性2种声音）
 -`tr-TR-Standard-D`-土耳其语（土耳其）（女性3种声音）
 -`tr-TR-Standard-E`-土耳其文（土耳其）（男性配音）
 -`uk-UA-Standard-A`-乌克兰语（乌克兰）（女声）
--`vi-VN-Standard-A`-越南语（越南）（女声）
+-`vi-VN-Standard-A`-越南文（越南）（女声）
 -`vi-VN-Standard-B`-越南文（越南）（男声）
--`vi-VN-Standard-C`-越南语（越南）（女2声音）
+-`vi-VN-Standard-C`-越南文（越南）（女性2种声音）
 -`vi-VN-Standard-D`-越南文（越南）（男性2种声音）
 
 去做：
@@ -489,6 +490,13 @@ sendTo('telegram.0', 'call', {
 -场地
 
 ## Changelog
+### 1.5.3 (2020-02-23)
+* (foxriver76) removed usage of adapter.objects
+* (Haba) Fix of the response for the "callback_query" event
+
+### 1.5.1 (2020-02-09)
+* (bluefox) Invalid parameters were checked
+
 ### 1.5.0 (2020-02-03)
 * (bluefox) Added voice calls 
 

@@ -96,7 +96,7 @@ You  can delete a countdown with the sendto. Therefore, send just the name with 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 jack-blackson <blacksonj7@gmail.com>
+Copyright (c) 2019-2020 jack-blackson <blacksonj7@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -360,7 +360,8 @@ or
 sendTo('telegram.0', 'call', {
     text: 'Some text',
     user: '@Username', // optional and the call will be done to the first user in telegram.0.communicate.users.
-    language: 'de-DE-Standard-A' // optional and the system language will be taken 
+    language: 'de-DE-Standard-A' // optional and the system language will be taken
+    repeats: 0, // number of repeats 
 });
 ```
 
@@ -369,7 +370,7 @@ or
 ```
 sendTo('telegram.0', 'call', {
     text: 'Some text',
-    users: ['@Username1', '@Username2'] // Array of `users'.
+    users: ['@Username1', '+49xxxx'] // Array of `users' or telephone numbers.
 });
 ```
 
@@ -378,7 +379,7 @@ or
 ```
 sendTo('telegram.0', 'call', {
     file: 'url of mp3 file that is accessible from internet',
-    users: ['@Username1', '@Username2'] // Array of `users'.
+    users: ['@Username1', '@Username2'] // Array of `users' or telephone numbers.
 });
 ```
 

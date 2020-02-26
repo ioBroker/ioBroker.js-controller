@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.swiss-weather-api/README.md
 title: ioBroker.swiss-weather-api
-hash: dwHJH2a0hJRlWd4Df+0d0Zwd0KLYpTsoEi0/X6YwBnY=
+hash: qtQLhf2pWdnBLxJYR9xuhxY9Y/fXMtoTb1JL6MXTNT0=
 ---
 ![Logo](../../../en/adapterref/iobroker.swiss-weather-api/admin/swiss-weather-api.png)
 
@@ -19,28 +19,38 @@ hash: dwHJH2a0hJRlWd4Df+0d0Zwd0KLYpTsoEi0/X6YwBnY=
 # IoBroker.swiss-weather-api
 ## Swiss-weather-api adapter für ioBroker
 Stellt eine Verbindung zur großartigen SRG-SSR-Wetter-API her (https://developer.srgssr.ch/apis/srgssr-weather).
-Wetter-Icons werden von https://erikflowers.github.io/weather-icons/ wiederverwendet
+Wettersymbole werden von https://erikflowers.github.io/weather-icons/ wiederverwendet.
 
-Mit der Wetter-REST-API der SRG-SSR können Sie Wettervorhersagen und -berichte von mehr als 25.000 Standorten in der ganzen Schweiz abrufen.
+Mit der SRG-SSR-Wetter-REST-API können Sie Wettervorhersagen und -berichte von mehr als 25.000 Standorten in der ganzen Schweiz abrufen.
 
 ** Beachten Sie, dass dieser Adapter nur Standorte innerhalb der Schweiz unterstützt. **
 
 ### Fertig machen
-1. Holen Sie sich einen kostenlosen Account auf https://developer.srgssr.ch/
-1. Gehen Sie zu "Meine Apps" und erstellen Sie eine neue App. Dadurch werden ein bestimmter ConsumerKey und ConsumerSecret erstellt
-1. Ermitteln Sie den Längengrad / Breitengrad (Dezimalgrad) des ausgewählten Ortes, für den die Vorhersage erforderlich ist
-1. Installiere diesen Adapter auf ioBroker => Dies kann einige Minuten dauern (~ 7min auf einem Raspberry Pi 3)
-1. Geben Sie in der Adapterkonfiguration Folgendes ein
-   1. ConsumerKey von App
-   1. ConsumerSecret von App
-   1. Längen- / Breitengrad des ausgewählten Schweizer Standortes, für den eine Vorhersage erforderlich ist. => Bitte verwenden Sie Dezimalgrade (zB Zürich: 47.36667 / 8.5)
+1. Holen Sie sich ein kostenloses Konto unter https://developer.srgssr.ch/
+1. Gehen Sie zu "Meine Apps" und erstellen Sie eine neue App. Dadurch werden ein spezifischer ConsumerKey und ConsumerSecret erstellt
+1. Ermitteln Sie den Längen- / Breitengrad (Dezimalgrad) des ausgewählten Standorts, für den eine Vorhersage erforderlich ist
+1. Installieren Sie diesen Adapter auf ioBroker => Dies kann einige Minuten dauern (~ 7 Minuten auf einem Raspberry Pi 3).
+1. Füllen Sie bei Adapterkonfiguration aus
+   1. ConsumerKey der App
+   1. ConsumerSecret der App
+   1. Längen- / Breitengrad des gewählten Schweizer Standorts, für den eine Prognose erforderlich ist. => Bitte Dezimalgrad verwenden (zum Beispiel Zürich: 47.36667 / 8.5)
 
-Dies ist ein geplanter Adapter. Es wird alle 30 Minuten geplant und liest die Prognose-API von SRG-SSR. Sie können dieses Intervall in der Instanzansicht (Schedule) ändern. Ein niedrigeres Intervall wird nicht empfohlen, da die minimale Prognose 1 Stunde beträgt.
-** Denken Sie also daran, dass es nach der Installation 30 Minuten dauern wird, bis die Prognosedaten zum ersten Mal geliefert werden und die Datenobjekte in der Datenansicht erstellt werden. **
+Dies ist ein geplanter Adapter. Es wird alle 30 Minuten geplant und liest die Prognose-API von SRG-SSR. Sie können dieses Intervall in der Instanzansicht (Zeitplan) ändern. Ein niedrigeres Intervall wird nicht empfohlen, da die minimale Prognose 1 Stunde beträgt.
+** Bitte beachten Sie, dass es nach der Installation 30 Minuten dauert, bis die Prognosedaten zum ersten Mal geliefert werden und die Datenobjekte in der Datenansicht erstellt werden. **
 
-Bei der ersten Installation möchten Sie möglicherweise überprüfen, ob alles ordnungsgemäß funktioniert, und nicht 30 Minuten warten. In diesem Fall können Sie den Scheduler auf 1min ändern. => Funktioniert alles einwandfrei, **bitte auf 30min zurückstellen**
+Bei der ersten Installation möchten Sie möglicherweise überprüfen, ob alles einwandfrei funktioniert, und nicht 30 Minuten warten. In diesem Fall können Sie den Scheduler auf 1 Minute ändern. => Wenn alles richtig funktioniert, **ändern Sie es bitte wieder auf 30min**
 
 ## Changelog
+
+### 0.1.8
+* (baerengraben) Added Icons provided by SRGSSR => Thank you!! :)
+* (baerengraben) Added new Object icon-url-srgssr => Contains the url-link to the srgssr Icon
+
+
+### 0.1.7
+**Attention**: If you have already installed a previous Version of swiss-weather-api (<= 0.1.6) please remove the adapter and install it completely new. This makes shure you get the new Unit-Names for "fff" and "ffx3" which where corrected by SRG. 
+* (baerengraben) Added Icon-Codes -17 to -30 => These are not yet confirmed by srf - but I beleave these are correct.  
+* (baerengraben) SRG is now providing the correct unit-names for "fff" and "ffx3". Adaptet this in the swiss-weather-adapter. **Attention**: You have to reinstall the swiss-weather-api (remove and install new Version) to make shure the Object-Name gets this Update.
 
 ### 0.1.6
 * (baerengraben) Some fixes based on Feedback of forum.iobroker.net

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.swiss-weather-api/README.md
 title: ioBroker.swiss-погода-апи
-hash: dwHJH2a0hJRlWd4Df+0d0Zwd0KLYpTsoEi0/X6YwBnY=
+hash: qtQLhf2pWdnBLxJYR9xuhxY9Y/fXMtoTb1JL6MXTNT0=
 ---
 ![логотип](../../../en/adapterref/iobroker.swiss-weather-api/admin/swiss-weather-api.png)
 
@@ -11,7 +11,7 @@ hash: dwHJH2a0hJRlWd4Df+0d0Zwd0KLYpTsoEi0/X6YwBnY=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.swiss-weather-api.svg)
 ![Количество установок (последняя)](http://iobroker.live/badges/swiss-weather-api-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/swiss-weather-api-stable.svg)
-![Статус зависимости](https://img.shields.io/david/baerengraben/iobroker.swiss-weather-api.svg)
+![Состояние зависимости](https://img.shields.io/david/baerengraben/iobroker.swiss-weather-api.svg)
 ![Известные уязвимости](https://snyk.io/test/github/baerengraben/ioBroker.swiss-weather-api/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.swiss-weather-api.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/baerengraben/ioBroker.swiss-weather-api/master.svg)
@@ -19,7 +19,7 @@ hash: dwHJH2a0hJRlWd4Df+0d0Zwd0KLYpTsoEi0/X6YwBnY=
 # IoBroker.swiss-weather-api
 ## Адаптер swiss-weather-api для ioBroker
 Соединяется с отличным API погоды SRG-SSR (https://developer.srgssr.ch/apis/srgssr-weather).
-Значки погоды повторно используются с https://erikflowers.github.io/weather-icons/
+Значки погоды используются повторно с https://erikflowers.github.io/weather-icons/
 
 API REST Weather SRG-SSR позволяет получать прогнозы погоды и отчеты из более чем 25 000 населенных пунктов по всей Швейцарии.
 
@@ -35,12 +35,22 @@ API REST Weather SRG-SSR позволяет получать прогнозы п
    1. ConsumerSecret of App
    1. Долгота / Широта выбранного швейцарского местоположения, для которого нужен прогноз. => Пожалуйста, используйте десятичные градусы (например, Цюрих: 47.36667 / 8.5)
 
-Это запланированный адаптер. Это запланировано каждые 30 минут и читает прогноз API SRG-SSR. Вы можете изменить этот интервал в режиме просмотра экземпляров (Расписание). Нижний интервал не рекомендуется, поскольку минимальный прогноз составляет 1 час.
-** Поэтому имейте в виду, что после установки потребуется 30 минут, пока не будут доставлены прогнозные данные, и будут созданы объекты данных в представлении данных. **
+Это запланированный адаптер. Он запланирован каждые 30 минут и читает прогноз API SRG-SSR. Вы можете изменить этот интервал в экземпляре-представлении (Расписание). Нижний интервал не рекомендуется, поскольку минимальный прогноз составляет 1 час.
+** Поэтому имейте в виду, что после установки потребуется 30 минут, пока данные прогноза не будут доставлены в первый раз, а объекты данных в представлении данных будут созданы. **
 
 При первой установке вы можете проверить, все ли работает нормально, и не хотите ждать 30 минут. В этом случае вы можете изменить планировщик на 1 мин. => Если все работает правильно, **, пожалуйста, измените его обратно на 30 минут **.
 
 ## Changelog
+
+### 0.1.8
+* (baerengraben) Added Icons provided by SRGSSR => Thank you!! :)
+* (baerengraben) Added new Object icon-url-srgssr => Contains the url-link to the srgssr Icon
+
+
+### 0.1.7
+**Attention**: If you have already installed a previous Version of swiss-weather-api (<= 0.1.6) please remove the adapter and install it completely new. This makes shure you get the new Unit-Names for "fff" and "ffx3" which where corrected by SRG. 
+* (baerengraben) Added Icon-Codes -17 to -30 => These are not yet confirmed by srf - but I beleave these are correct.  
+* (baerengraben) SRG is now providing the correct unit-names for "fff" and "ffx3". Adaptet this in the swiss-weather-adapter. **Attention**: You have to reinstall the swiss-weather-api (remove and install new Version) to make shure the Object-Name gets this Update.
 
 ### 0.1.6
 * (baerengraben) Some fixes based on Feedback of forum.iobroker.net

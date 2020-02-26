@@ -897,6 +897,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tunnelbroker-endpoint-
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tuya/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tvspielfilm/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.unifi/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.unifi-protect/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.upnp/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.valloxmv/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vcard/README.md
@@ -1244,6 +1245,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tunnelbroker-endpoint-
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tuya/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tvspielfilm/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.unifi/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.unifi-protect/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.upnp/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.valloxmv/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vcard/README.md
@@ -1591,6 +1593,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tunnelbroker-endpoint-
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tuya/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tvspielfilm/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.unifi/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.unifi-protect/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.upnp/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.valloxmv/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vcard/README.md
@@ -1938,6 +1941,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tunnelbroker-endpoi
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tuya/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tvspielfilm/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.unifi/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.unifi-protect/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.upnp/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.valloxmv/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vcard/README.md

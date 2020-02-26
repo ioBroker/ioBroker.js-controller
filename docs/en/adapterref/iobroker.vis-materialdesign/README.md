@@ -908,6 +908,13 @@ ical2CalendarWidget();
 
 ## Changelog
 
+### 0.2.62
+* (Scrounger): List Widget: binding bug fix
+* (Scrounger): Select Widget: number bug fix
+* (Scrounger): IconList Widget: object id for json string added, html input field removed from editor
+* (Scrounger): Input Widget: clear & null bug fix
+* (Scrounger): bug fixes
+
 ### 0.2.59
 * (Scrounger): Buttons Toggle: option for push function added
 * (Scrounger): IconList Widget added
