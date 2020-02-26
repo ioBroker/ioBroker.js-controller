@@ -46,6 +46,10 @@ To show multiple frames, you can also provide an array as message
 
 ## Changelog
 
+### 0.0.7
+
+* (klein0r) fixed blockly
+
 ### 0.0.6
 
 * (klein0r) switched to setTimeout instead of setInterval, improved logging and fixes eslint complaints
@@ -76,7 +80,7 @@ To show multiple frames, you can also provide an array as message
 
 The MIT License (MIT)
 
-Copyright (c) 2019 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

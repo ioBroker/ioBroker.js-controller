@@ -2,7 +2,7 @@
 # ioBroker.amazon-dash (Linux only!)
 =================
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.amazon-dash.svg)](https://www.npmjs.com/package/iobroker.amazon-dash)
+![Number of Installations](http://iobroker.live/badges/amazon-dash-installed.svg) ![Number of Installations](http://iobroker.live/badges/amazon-dash-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.amazon-dash.svg)](https://www.npmjs.com/package/iobroker.amazon-dash)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.amazon-dash.svg)](https://www.npmjs.com/package/iobroker.amazon-dash)
 
 [![NPM](https://nodei.co/npm/iobroker.amazon-dash.png?downloads=true)](https://nodei.co/npm/iobroker.amazon-dash/)
@@ -29,6 +29,13 @@ Adapter to add Amazon Dash Buttons to ioBroker
 As this project is developed during my spare time, I*m actively looking for help to maintain and extend this lib! If you're willing to help, drop me a line!
 
 ## Changelog
+
+### 1.1.0 (2020-02-25)
++ (foxriver76) support of compact mode
++ (foxriver76) usage of adapter-core and eslint
+
+### 1.0.1
++ (Apollon77) BREAKING: Ugrade pcap library supports nodejs 10+ and also supports nodejs 12
 
 ### 0.3.1
 + (PArns) Added new Amazon MAC family

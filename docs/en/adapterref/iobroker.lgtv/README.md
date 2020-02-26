@@ -201,6 +201,10 @@ is true when TV is on and false if TV is off
 
 
 ## Changelog
+### 1.1.5 (2020-02-25)
+* (dirkhe) stable connection and subsciptions
+* (dirkhe) add Polling for TV, which not support Power Off event 
+* (dirkhe) change some states role switch to button
 
 ### 1.1.4 (2020-02-07)
 * (dirkhe) changed from pull to subscribing

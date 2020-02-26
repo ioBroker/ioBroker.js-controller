@@ -3,7 +3,7 @@
 [![Travis-CI](https://api.travis-ci.org/MeisterTR/ioBroker.yeelight-2.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.yeelight-2)
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/MeisterTR/ioBroker.yeelight-2?branch=master&svg=true)](https://ci.appveyor.com/project/iobroker-community-adapters/ioBroker-yeelight-2/)
 
-[![NPM](https://nodei.co/npm/iobroker.yeelight-2.png?downloads=true)](https://nodei.co/npm/iobroker.yeelight-2/)
+[![NPM](https://nodei.co/npm/iobroker.yeelight-2.png?downloads=true)](https://nodei.co/npm/iobroker.yeelight-2/) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.yeelight-2.svg)](https://greenkeeper.io/)
 
 ![Logo](admin/yeelight.png)
 # ioBroker.yeelight-2

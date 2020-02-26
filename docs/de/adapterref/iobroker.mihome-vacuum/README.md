@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker Mihome-Vakuumadapter
-hash: l2iqiDljoLk+TmLrAJIuyuqTUw/VJg2pYBOC2exwptI=
+hash: Coc5j4UJQN/jXCcfkVhex7vyNas7fFM/DG1XysownD8=
 ---
 ![Logo](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -209,6 +209,7 @@ Die unterstützten Befehle sind:
 | Reinigungsvorgang starten | `startVacuuming` | - Keine - | |
 | Stoppen Sie den Reinigungsvorgang `stopVacuuming` | - Keine - | |
 | Unterbrechen Sie den Reinigungsvorgang `pause` | - Keine - | |
+| Wartejobs löschen | `clearQueue` | - Keine - | |
 | Reinigen Sie einen kleinen Bereich um den Roboter herum `cleanSpot` | - Keine - | |
 | Gehe zurück zur Basis | `charge` | - Keine - | |
 | Sag "Hallo, ich bin hier!" | `findMe` | - Keine - | |
@@ -242,7 +243,9 @@ Entschuldigung, noch nicht fertig.
 - Widget zu der Zeit ohne Funktion
 
 ## Changelog
-### 2.0.5 (2020-02-17)
+### 2.0.7 (2020-02-25)
+* (dirkhe) add Resuming after pause for rooms
+### 2.0.6 (2020-02-17)
 * (MeisterTR) add roooms for s50 with map (cloud or Valetudo needed)
 ### 2.0.4 (2020-02-13)
 * (MeisterTR) add cloud login to get token

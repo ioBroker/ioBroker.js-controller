@@ -200,6 +200,7 @@ The supported commands are:
 | Start the cleaning process | `startVacuuming` | - none - |  |
 | Stop the cleaning process | `stopVacuuming` | - none - |  |
 | Pause the cleaning process | `pause` | - none - |  |
+| Clear waiting jobs | `clearQueue` | - none - |  |
 | Clean a small area around the robot | `cleanSpot` | - none - |  |
 | Go back to the base | `charge` | - none - |  |
 | Say "Hi, I'm over here!" | `findMe` | - none - |  |
@@ -232,6 +233,8 @@ Sorry, not yet finished.
 - Widget at the time without function
 
 ## Changelog
+### 2.0.7 (2020-02-25)
+* (dirkhe) add Resuming after pause for rooms
 ### 2.0.6 (2020-02-17)
 * (MeisterTR) add roooms for s50 with map (cloud or Valetudo needed)
 ### 2.0.4 (2020-02-13)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker mihome-真空适配器
-hash: l2iqiDljoLk+TmLrAJIuyuqTUw/VJg2pYBOC2exwptI=
+hash: Coc5j4UJQN/jXCcfkVhex7vyNas7fFM/DG1XysownD8=
 ---
 ![商标](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -25,7 +25,7 @@ hash: l2iqiDljoLk+TmLrAJIuyuqTUw/VJg2pYBOC2exwptI=
         -[第二机器人]（＃second-robot）
     -[配置Valetudo]（＃valetudo-config）
 -[功能]（＃functions）
-    -[S50命令]（＃s-s-s50）
+    -[S50命令]（＃s-s50）
     -[转到]（＃goto）
 -[区域清洁]（＃zoneclean）
     -[房间]（＃rooms）
@@ -57,7 +57,7 @@ hash: l2iqiDljoLk+TmLrAJIuyuqTUw/VJg2pYBOC2exwptI=
 -对于IP地址，必须以“ 192.168.178.XX”格式输入机器人的IP地址。
 -机器人的端口默认设置为“ 54321”，请勿更改
 -自己的端口，只能由第二个机器人更改
--查询间隔检索机器人状态值的时间（毫秒）（不应小于10000）
+-查询间隔检索机器人状态值的时间（以毫秒为单位）（不应小于10000）
 
 ####控制Alexa
 在配置中添加alexa状态在此处被激活，一个hack被设置为一个附加状态“ clean_home”，这是一个从“ true”开始，到“ false”的开关，它返回首页，它自动成为云中的智能设备创建的适配器名称为“真空吸尘器”，可以在云适配器中进行更改。
@@ -69,7 +69,7 @@ hash: l2iqiDljoLk+TmLrAJIuyuqTUw/VJg2pYBOC2exwptI=
 -实验性：使用复选框“发送自己的命令”创建对象，通过这些对象，您可以向机器人发送和接收自己的命令。
 
 ####第二个机器人
-如果要通过ioBroker控制两个机械手，则必须创建两个实例。第二个机械手必须更改其自己的端口（默认值：53421），以便两个机械手具有不同的端口。
+如果要通过ioBroker控制两个机械手，则必须创建两个实例。第二个机械手必须更改其自己的端口（默认值：53421），以便两个机械手都具有不同的端口。
 
 ##地图配置
 有两种获取地图的方法。首先从云端获取地图。因此，您必须登录并从列表中选择合适的机器人
@@ -81,7 +81,7 @@ hash: l2iqiDljoLk+TmLrAJIuyuqTUw/VJg2pYBOC2exwptI=
 -要使用地图，您必须在配置中选择valetudo或原始地图
 -请求间隔必须大于1000毫秒，这是更新html映射的间隔
 -地图间隔必须超过5000毫秒，此间隔会更新png地图文件（您可以将其用于Telegram或vis或其他任何东西）
--在此为地图示例选择颜色：
+-在那里可以为地图示例选择颜色：
 
 ```
 - #2211FF
@@ -104,8 +104,8 @@ hash: l2iqiDljoLk+TmLrAJIuyuqTUw/VJg2pYBOC2exwptI=
 ＃＃ 功能
 S50的命令（第二代）
 卡的尺寸始终为52000mm x 52000mm，因此可以设置从0到51999mm的值。
-不幸的是，无法查询卡的位置和位置，这可以随吸力变化。永远是最后一张吸卡，以及在应用程序中用作基础。
-如果机器人仅拾取一个区域并始终以相同的方式构建地图，则可以可靠地将其发送到各个地方或对该区域进行清理。
+不幸的是，无法查询卡的位置和位置，这可以随吸力而变化。用作基础的始终是最后一张吸卡，以及在应用程序中。
+如果机器人仅拾取一个区域并始终以相同的方式构建地图，则可以可靠地将其发送到地方或对该区域进行清理。
 
 ＃＃＃＃ 去
 为了将真空吸尘器驱动到一个点，必须按以下方式填充“ goTo”对象：
@@ -130,7 +130,7 @@ xVal, yval
 ```
 
 其中x和y是矩形区域的坐标，并“计数”清洁操作。
-您还可以让多个区域一次吸吮：
+您还可以一次吸引多个区域：
 
 ```
 [X1, y1, x2, x2, count], [x3, y3, x4, x4, count2]
@@ -179,7 +179,7 @@ xVal, yval
 
 | app_rc_move | [{“ seqnum”：'0-1000'，“ velocity”：VALUE1，“ omega”：VALUE2，“ duration”：VALUE3}]] |移动。序列号必须是连续的，VALUE1（速度）= -0.3-0.3，VALUE2（旋转）= -3.1-3.1，VALUE3（持续时间）
 
-您可以在此处（[链接](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)）中找到更多的方法和参数。
+您可以在此处（[链接](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)）找到更多的方法和参数。
 
 ###使用sendTo发送自定义命令
 您还可以使用`sendTo`从其他适配器发送那些自定义命令。与上面定义的`method_id`和`params`结合使用：
@@ -209,11 +209,12 @@ sendTo("mihome-vacuum.0",
 |开始清洁过程| `startVacuuming`| -无-| |
 |停止清洁过程| `stopVacuuming`| -无-| |
 |暂停清洁过程| `pause`| -无-| |
+|清除等待的工作| `clearQueue`| -无-| |
 |清洁机器人周围的一小块区域| `cleanSpot`| -无-| |
 |回到基地| `charge`| -无-| |
 |说“嗨，我在这里！” | `findMe`| -无-| |
 |检查耗材（刷子等）的状态| `getConsumableStatus`| -无-| |
-|重置耗材（刷子等）的状态| `resetConsumables`| -无-|呼叫签名未知|
+|重置耗材（刷子等）的状态| `resetConsumables`| -无-|通话签名未知|
 |获取以前所有清洁过程的摘要| `getCleaningSummary`| -无-| |
 |获取先前清洁过程的详细摘要| `getCleaningRecord`| `recordId`| |
 |获取地图| `getMap`| -无-|未知结果如何处理 |
@@ -242,7 +243,9 @@ sendTo("mihome-vacuum.0",
 -当时没有功能的小部件
 
 ## Changelog
-### 2.0.5 (2020-02-17)
+### 2.0.7 (2020-02-25)
+* (dirkhe) add Resuming after pause for rooms
+### 2.0.6 (2020-02-17)
 * (MeisterTR) add roooms for s50 with map (cloud or Valetudo needed)
 ### 2.0.4 (2020-02-13)
 * (MeisterTR) add cloud login to get token

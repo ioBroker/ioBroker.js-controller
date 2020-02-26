@@ -118,7 +118,7 @@ Keep your credentials save! <br />To reject all Tokens, change your Tesla accoun
 ## License
 MIT License
 
-Copyright (c) 2019 Dominic Blattmann <nick@dbweb.ch>
+Copyright (c) 2020 Dominic Blattmann <nick@dbweb.ch>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
