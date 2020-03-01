@@ -45,6 +45,7 @@
   },
   "devDependencies": {
     "@types/event-stream": "^3.3.34",
+    "@types/iobroker": "^2.2.1",
     "@types/mocha": "^7.0.1",
     "@types/node": "^13.5.0",
     "@types/yargs": "^15.0.0",
@@ -55,7 +56,9 @@
     "gulp-jsdoc3": "^2.0.0",
     "gulp-replace": "^1.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^7.0.0"
+    "mocha": "^7.0.0",
+    "sinon": "^9.0.0",
+    "sinon-chai": "^3.5.0"
   },
   "homepage": "http://www.iobroker.com",
   "description": "Updated by reinstall.js on 2018-06-11T15:19:56.688Z",
