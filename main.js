@@ -2822,7 +2822,9 @@ function startInstance(id, wakeUp) {
     let fileNameFull = path.join(adapterDir_ , fileName);
 
     // workaround for old vis.
-    if (instance.common.onlyWWW && name === 'vis') instance.common.onlyWWW = false;
+    if (instance.common.onlyWWW && name === 'vis') {
+        instance.common.onlyWWW = false;
+    }
 
     if (instance.common.mode !== 'extension' && (instance.common.onlyWWW || !fs.existsSync(fileNameFull))) {
         fileName = name + '.js';
