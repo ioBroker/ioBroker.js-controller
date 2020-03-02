@@ -71,7 +71,7 @@ Normaly you can leave the "Auto detect" function on. If this does not work you c
 ## License
 MIT License
 
-Copyright (c) 2019 Jey Cee <jey-cee@live.com>
+Copyright (c) 2019-2020 Jey Cee <jey-cee@live.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

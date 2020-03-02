@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vw-connect/README.md
 title: ioBroker.vw-连接
-hash: a6nkGakADHd+6araRhNonGgiNMnG+Bj2+ZFdsV3mAFg=
+hash: 7Ssvsv+iQcxD2x7Mxi0uaEBwFQjjcJppGPZKcgXhwbE=
 ---
 ![商标](../../../en/adapterref/iobroker.vw-connect/admin/vw-connect.png)
 
@@ -22,14 +22,14 @@ hash: a6nkGakADHd+6araRhNonGgiNMnG+Bj2+ZFdsV3mAFg=
 <https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten>
 
 ##用法
-使用远程控制下的状态来远程控制您的汽车。
+使用受远程控制的状态来远程控制您的汽车。
 
 ##状态栏说明
 门窗状态：
 
 *开：1
 *锁定：2
-*封闭：3
+*封闭时间：3
 
 ###条目列表
 ```
@@ -112,38 +112,43 @@ hash: a6nkGakADHd+6araRhNonGgiNMnG+Bj2+ZFdsV3mAFg=
 
 ## Changelog
 
+### 0.0.11
+
+- fix audi bug with multiple vehicles
+- hide status update error if feature is not available
+
 ### 0.0.9
 
--   set default trip type to none
+- set default trip type to none
 
 ### 0.0.7
 
--   add we connect go and remote standheizung and lock/unlock
+- add we connect go and remote standheizung and lock/unlock
 
 ### 0.0.6
 
--   add audi
+- add audi
 
 ### 0.0.5
 
--   add honk and flash, fix address format
+- add honk and flash, fix address format
 
 ### 0.0.4
 
--   add Skoda support
+- add Skoda support
 
 ### 0.0.3
 
--   (ta2k) add more information
--   (ta2k) add remote controls
+- (ta2k) add more information
+- (ta2k) add remote controls
 
 ### 0.0.2
 
--   (ta2k) add car status capturing
+- (ta2k) add car status capturing
 
 ### 0.0.1
 
--   (ta2k) initial release
+- (ta2k) initial release
 
 ## License
 

@@ -349,6 +349,10 @@ der Tastenkombination "STRG + F".
    *View Button für Medieninhalte.*
 
 ## Changelog
+### 0.6.0 (2020-03-01)
+* (foxriver76) dependency upgrade (smartglass has been refactored)
+* __python 3.6 required!__
+
 ### 0.5.12 (2020-01-17)
 * (foxriver76) let js-controller know which apt packages are required
 

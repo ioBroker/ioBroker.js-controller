@@ -25,11 +25,13 @@ Use the state under remote control to control your car remotely.
 ## Status fields Explanation
 
 Door and window states:
+
 * open: 1
 * locked: 2
 * closed: 3
 
 ### List of entries
+
 ```
 "1MAINTENANCE_INTERVAL_DISTANCE_TO_OIL_CHANGE", 0, "0x0203010001"); // 0x0203FFFFFF.0x0203010001, oilInspectionData_km
 "2MAINTENANCE_INTERVAL_TIME_TO_OIL_CHANGE",     1, "0x0203010002"); // 0x0203FFFFFF.0x0203010002, oilInspectionData_days
@@ -110,38 +112,43 @@ Door and window states:
 
 ## Changelog
 
+### 0.0.11
+
+- fix audi bug with multiple vehicles
+- hide status update error if feature is not available
+
 ### 0.0.9
 
--   set default trip type to none
+- set default trip type to none
 
 ### 0.0.7
 
--   add we connect go and remote standheizung and lock/unlock
+- add we connect go and remote standheizung and lock/unlock
 
 ### 0.0.6
 
--   add audi
+- add audi
 
 ### 0.0.5
 
--   add honk and flash, fix address format
+- add honk and flash, fix address format
 
 ### 0.0.4
 
--   add Skoda support
+- add Skoda support
 
 ### 0.0.3
 
--   (ta2k) add more information
--   (ta2k) add remote controls
+- (ta2k) add more information
+- (ta2k) add remote controls
 
 ### 0.0.2
 
--   (ta2k) add car status capturing
+- (ta2k) add car status capturing
 
 ### 0.0.1
 
--   (ta2k) initial release
+- (ta2k) initial release
 
 ## License
 

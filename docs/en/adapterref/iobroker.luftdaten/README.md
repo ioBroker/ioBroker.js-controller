@@ -51,6 +51,10 @@ Wait some minutes until the cronjob collects the data for the first time.
 
 ## Changelog
 
+### 0.0.12
+
+* (klein0r) Minor bugfixes
+
 ### 0.0.11
 
 * (klein0r) fixed units of states

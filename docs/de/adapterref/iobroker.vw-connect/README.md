@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vw-connect/README.md
 title: ioBroker.vw-connect
-hash: a6nkGakADHd+6araRhNonGgiNMnG+Bj2+ZFdsV3mAFg=
+hash: 7Ssvsv+iQcxD2x7Mxi0uaEBwFQjjcJppGPZKcgXhwbE=
 ---
 ![Logo](../../../en/adapterref/iobroker.vw-connect/admin/vw-connect.png)
 
@@ -24,7 +24,7 @@ Bitte aktualisieren Sie Ihr System auf Knoten 10.
 ## Verwendung
 Verwenden Sie den ferngesteuerten Status, um Ihr Auto fernzusteuern.
 
-## Statusfelder Erklärung
+## Statusfelder Erläuterung
 Tür- und Fensterzustände:
 
 * offen: 1
@@ -112,38 +112,43 @@ Tür- und Fensterzustände:
 
 ## Changelog
 
+### 0.0.11
+
+- fix audi bug with multiple vehicles
+- hide status update error if feature is not available
+
 ### 0.0.9
 
--   set default trip type to none
+- set default trip type to none
 
 ### 0.0.7
 
--   add we connect go and remote standheizung and lock/unlock
+- add we connect go and remote standheizung and lock/unlock
 
 ### 0.0.6
 
--   add audi
+- add audi
 
 ### 0.0.5
 
--   add honk and flash, fix address format
+- add honk and flash, fix address format
 
 ### 0.0.4
 
--   add Skoda support
+- add Skoda support
 
 ### 0.0.3
 
--   (ta2k) add more information
--   (ta2k) add remote controls
+- (ta2k) add more information
+- (ta2k) add remote controls
 
 ### 0.0.2
 
--   (ta2k) add car status capturing
+- (ta2k) add car status capturing
 
 ### 0.0.1
 
--   (ta2k) initial release
+- (ta2k) initial release
 
 ## License
 

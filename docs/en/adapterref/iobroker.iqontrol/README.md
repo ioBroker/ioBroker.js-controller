@@ -281,11 +281,20 @@ In addition to normal thermostat you can define:
 
 ****
 
-## Changelog
+## Changelo8
+
+### 0.2.19 (2020-02-29)
+* (Sebastian Bormann) Updated dependencies.
+
+### 0.2.18 (2020-02-29)
+* (Sebastian Bormann) Updated dependencies.
+
+### 0.2.17 (2020-02-29)
+* (Sebastian Bormann) Added option to open dialog by clicking on tile for View, Window, Door, Fire, Temperatur, Humidity, Brightness and Motion.
+* (Sebastian Bormann) Added option to hide device, if it is inactive (handle with care, as you may not be able to switch it on again).
 
 ### 0.2.16 (2020-01-14)
 * (Sebastian Bormann) Fixed custom step for heating control.
-* (Sebastian Bormann) Added option to open dialog by clicking on tile for View, Window, Door, Fire, Temperatur, Humidity, Brightness and Motion.
 * (Sebastian Bormann) Fixed universal popup wich was displayed, even when empty.
 
 ### 0.2.15 (2020-01-07)
@@ -678,7 +687,7 @@ In addition to normal thermostat you can define:
 ## License
 MIT License
 
-Copyright (c) 2019 Sebastian Bormann
+Copyright (c) 2020 Sebastian Bormann
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

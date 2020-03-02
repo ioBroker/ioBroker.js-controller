@@ -34,6 +34,10 @@ Required node.js >= 10.x.x
 
 ## Changelog
 
+
+### 1.2.6
+* fix crash by executing commands without parameters
+
 ### 1.2.5
 * code cleanup
 * (Zefau) fixed duplicated subscription

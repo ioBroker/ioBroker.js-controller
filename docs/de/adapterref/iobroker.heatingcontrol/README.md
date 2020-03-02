@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: 80yPXOUDRDFJbcLt0uyeDpBihd2v1+HoVsoYRqjJywo=
+hash: Qx2/sSVNBo/IZIqHTVLJNsEI/U4q1RoWRuAEHPMDs/E=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -93,8 +93,24 @@ Eigenschaften:
 | Gegenwart | wir sind anwesend, wenn wir nicht anwesend sind, verringern wir die Temperatur Verringern Sie die aktuelle Profiltemperatur um Profile.0.room.AbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.AbsentDecrease |
 | VacationAbsent | wir sind abwesend, also auch am wochenende abnehmen | Verringern Sie die aktuelle Profiltemperatur um Profile.0.room.VacationAbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.VacationAbsentDecrease |
 
-* In beiden Fällen wird nur eine Absenkung verwendet (in der vorherigen Version des Adapters konnten mehr als eine Entfettung verwendet werden)
+* In beiden Fällen wird nur eine Absenkung verwendet (in der vorherigen Version des Adapters konnten mehr als eine Entfettung verwendet werden.)
 * Im absoluten Entfettungsszenario werden nur Zielwerte ungleich 0 °C verwendet. Wenn Sie für einen bestimmten Raum keine Absenkung benötigen, halten Sie die Abnahmewerte bei 0 ° C.
+
+### Keine Heizperiode
+Es gibt drei Möglichkeiten
+
+* Temperatur pro Raum festlegen
+
+Wenn diese Option ausgewählt ist, wird für jeden Raum ein neuer Datenpunkt im Objektbaum angezeigt. Hier können Sie eine feste Zieltemperatur einstellen, die eingestellt wird, wenn die Heizperiode nicht aktiv ist.
+
+* Temperatur für alle Räume festlegen
+
+Mit dieser Option können Sie eine Zieltemperatur für jeden Raum verwenden, wenn die Heizperiode nicht aktiv ist
+
+* nichts
+
+Mit dieser Option wird nichts an den Thermostat gesendet, wenn keine Heizperiode aktiv ist. Die Zieltemperatur bleibt vom letzten Taget erhalten, als die Heizperiode noch aktiv war.
+In diesem Fall und wenn Sie Aktuatoren aus dem Adapter verwenden, haben Sie die Möglichkeit zu definieren, wie Aktuatoren eingestellt werden sollen (aus, ein oder lassen Sie es wie es ist).
 
 ## Andere
 * HolidayPresent
@@ -108,7 +124,7 @@ Es besteht die Möglichkeit, PublicHoliday wie Sonntag zu behandeln. Diese Optio
 ### Fenster geöffnet
 Wenn "Sensoren verwenden" aktiv ist und die Sensoren für einen Raum konfiguriert sind
 
-a) Verringern Sie die aktuelle Profiltemperatur, wenn das Fenster geöffnet ist (true) ist konfiguriert
+a) Verringern Sie die aktuelle Profiltemperatur, wenn das Fenster geöffnet ist (true), um Profiles.0.room.WindowOpenDecrease, wenn die relative Verringerung konfiguriert ist. b) Setzen Sie das Ziel auf Profiles.0.room.absolute.WindowOpenDecrease, wenn das Fenster geöffnet ist (true), wenn die absolute Verringerung vorliegt ist konfiguriert
 
 optional kann eine Verzögerung verwendet werden. Wenn das Fenster nur für eine kurze Zeit geöffnet wird, kann eine Sensorverzögerung verhindern, dass sie in sehr kurzen Zeiten reduziert und wieder normal wird.
 
@@ -131,7 +147,8 @@ Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 ## Changelog
 ### 0.3.17 (2020-02-xx)
 * (René) check datapoint configuration: if datapoint points to itself then error messages
-+ (René) support of new vis see issue  #76
+* (René) support of new vis see issue  #76
+* (Rene) thermostat mode if no heating period
 
 ### 0.3.16 (2020-02-09)
 * (René) deccrease/increase-handling also when Override is active (see issue #72)

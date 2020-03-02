@@ -3,56 +3,67 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.comfoair/README.md
 title: ioBroker.comfoair
-hash: McBL6uZfelQ6fqPbZ7Rurv923UGe0gX3ayTNf29shsI=
+hash: JgCMOidjQkEBCrxte4UfFtKM9hD7kE7KeY/C6O4yKNU=
 ---
 ![商标](../../../en/adapterref/iobroker.comfoair/admin/comfoair.png)
 
 ![安装数量](http://iobroker.live/badges/comfoair-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.comfoair.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.comfoair.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.comfoair.svg)
 ![NPM](https://nodei.co/npm/iobroker.comfoair.png?downloads=true)
+![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.comfoair.svg)
 
 ＃ioBroker.comfoair
-用于Zehnder Comfoair'CA'通风的ioBroker适配器（即ComfoAir CA350，而不是ComfoAir Q350 ...）
+用于Zehnder Comfoair'CA'通风的ioBroker适配器（即ComfoAir CA350，而不是ComfoAir Q350 ...）。
 
-要使用此适配器，您需要RS232到LAN或WiFi转换器才能将ioBroker与Zehnder Comfoair连接。
-安装TCP的硬件 - 连接到comfoair：即RS232到LAN适配器到comfoair的串行接口。仅连接引脚2,3和5（也应与TX，RX和GND一起使用 - 也可以使用cc-Ease连接的触点）。
-实际上，此适配器仅适用于LAN-Connection。基于直接串行连接的直接链接正在开发中。
+##连接
+###通过IP / LAN
+使用RS232到LAN或WiFi转换器将ioBroker与Zehnder Comfoair连接。
+安装用于TCP的硬件-连接到comfoair：即，将RS232到LAN适配器连接到comfoair的串行接口。仅连接引脚2、3和5（也应与TX，RX和GND一起使用-cc-Ease连接的触点也应如此）。
 
-安装适配器，创建实例。
+###串行连接
+将您的交流串行接口连接到ioBroker正在运行的设备的串行接口。即使用RS232toUSB电缆或RS232toTTL适配器连接到Raspberry Pis UART-引脚。
 
 ##配置
-设置comfoair  -  IP地址，端口和轮询 -  intervall。
+选择您喜欢的连接模式（IP或串行），设置comfoair-IP地址和端口或指定您的串行设备，定义（RS232）comfoair连接模式（请参阅“适配器和CC缓解”）并定义轮询-intervall。
 
-## Adapter＆CC Ease
-通常，不建议在RS232串行通信中将数据从2个发送器发送到一个接收器。并行使用CCEase和适配器可能会导致错误，或者最坏的情况是导致您的comfoair控件损坏！因此，当您启动ComfoAir适配器时，您的CC Ease shold将被断开或将被关闭。
-comfoair本身知道4种不同的rs232模式：CCEaseonly，PConly，PCMaster，PCLogmode。在PConly和PCMaster中，CC-Ease已关闭。
-在实例 -  config中，您可以选择以下连接模式之一。请只勾选其中一个！一旦适配器仅在适配器或并行模式下运行，您就可以切换comfoair的rs232模式（不建议这样做，因为特定的连接模式需要特定的rs232模式！）。
+##适配器和CC轻松
+通常，不建议通过RS232串行通信将数据从2个发送器发送到一个接收器。并行使用CCEase和适配器可能会导致错误，甚至在最坏的情况下会损害您的舒适控制！因此，当您启动ComfoAir-适配器时，CC Ease应该断开连接或将被关闭。
+comfoair本身知道4种不同的rs232模式：CCEaseonly，PConly，PCMaster，PCLogmode。在PConly和PCMaster中，CC-Ease关闭。
+在实例-配置中，您可以选择以下连接-模式之一。请仅勾选其中之一！一旦适配器仅在适配器或并行模式下运行，就可以切换comrsair的rs232模式（不建议这样做，因为特定的连接模式需要特定的rs232模式！）。
 
-###仅限适配器
-CC Ease断开连接（推荐）或在适配器启动时关闭，您只能使用ioBroker控制您的comfoair（rs232mode是PCMaster）。此模式是默认和推荐的。
+###仅适配器
+CC Ease已断开连接（推荐）或将在适配器启动时关闭，您只能使用ioBroker（rs232mode为PCMaster）控制您的交流。此模式是默认模式，建议使用。
 
 ###只听
-适配器捕获从comfoair或CC Ease发送的数据。 CC Ease正在运行，不能从适配器发送任何命令。在此模式下，您只能获得一组基本值（温度，通风状态）。在这种模式下，也没有通信错误/损坏的风险，因为没有从适配器到comfoair的通信。
+适配器捕获从comfoair或CC Ease发送的数据。 CC Ease正在运行，无法从适配器发送任何命令。在这种模式下，您只能获得一组基本值（温度，通风状态）。在这种模式下，也没有通信错误/损坏的风险，因为从适配器到同伴没有通信。
 
 ###并行模式
-CC Ease和适配器正在运行。 comfoiar rs232mode设置为'PCLogmode'。适配器正在“监听”基本值（温度，通风水平）和其他人的轮询（错误，过滤器计时器）。设置扩展轮询间隔以降低通信错误的风险。您可以使用ioBroker和CC Ease单元控制ComfoAir。在发送命令（包括轮询）之前，rs232模式切换到PC Master。发送每个命令后，也会进行轮询。测试显示无错误 - 并行运行较长时间。但是：你自己承担这种模式的风险。
+CC Ease和适配器正在运行。 com rs232mode设置为“ PCLogmode”。适配器正在“监听”基本值（温度，通风水平），并轮询其他值（错误，过滤器计时器）。设置一个延长的轮询间隔以减少通信错误的风险。您可以使用ioBroker和CC Ease设备控制ComfoAir。在发送命令（包括查询）之前，rs232模式已切换到PC Master。发送每个命令后，还会进行轮询。测试显示无错误-并行运行更长的时间。但是：运行此模式需要您自担风险。
 
-###常量PC-logmode中的并行模式
-一些用户在PC-Logmode中不断运行comfoair时获得了积极的体验。此模式具有与仅适配器模式相同的功能，但具有正在运行的CC Ease。但是：你自己承担这种模式的风险。
+###恒定PC日志模式下的并行模式
+一些用户在PC-Logmode中持续运行comfoair方面取得了积极的经验。此模式与仅适配器模式具有相同的功能，但具有正在运行的CC Ease。但是：运行此模式需要您自担风险。
 
 ##使用适配器
-您的comfoair的值应该在'status'和'temperature'频道中可见。更改连接模式后请刷新对象 - 视图。
+交流的值应在“状态”和“温度”通道中可见。请在更改连接模式后刷新对象-视图。
 
-通过设置/更改“控制” - 通道中的值，您可以控制comfoair通风。 “控制” - 通道中的所有值都必须设置为wieth ACK = false，以便被识别为适配器的命令。
+通过在“控制”通道中设置/更改值，可以控制舒适通风。必须将“控制”-通道中的所有值都设置为ACK = false，才能将其识别为适配器的命令。
 
 在comfoair CA350上测试。
 
 ## Changelog
 
+### 1.0.0
+
+-   offers now the possibility of a direct serial connection besides the connection over IP/LAN.
+
+### 0.3.2
+
+-   Bypass - error bug fixed.
+
 ### 0.3.1
 
--   new connection mode: parelell in constant PC-Logmode.
+-   new connection mode: parallel in constant PC-Logmode.
 
 ### 0.3.0
 
@@ -96,7 +107,7 @@ CC Ease和适配器正在运行。 comfoiar rs232mode设置为'PCLogmode'。适�
 
 ### 0.0.5
 
--   bugfig set vent levels.
+-   bugfix set vent levels.
 
 ### 0.0.4
 
@@ -118,7 +129,7 @@ CC Ease和适配器正在运行。 comfoiar rs232mode设置为'PCLogmode'。适�
 
 The MIT License (MIT)
 
-Copyright (c) 2019 forelleblau marceladam@gmx.ch
+Copyright (c) 2020 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

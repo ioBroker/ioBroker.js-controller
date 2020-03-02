@@ -32,6 +32,10 @@ Help or hints are welcome.
 
 ## Changelog
 
+### 1.2.3
+
+* (unltdnetworx) bugfix for numbers with comma
+
 ### 1.2.2
 
 * (unltdnetworx) bugfix for objecttypes

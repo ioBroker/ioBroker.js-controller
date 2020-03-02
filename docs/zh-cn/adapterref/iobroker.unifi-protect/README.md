@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.unifi-protect/README.md
 title: ioBroker.unifi保护
-hash: 4HlX8WiuqVLNMKG8CqPxPx1sT4otYZToIk6x9F555PQ=
+hash: +g06eboy/ZUEQeC75vPSMb/k/QpK2Yhwjz8x2xUdkaU=
 ---
 ![商标](../../../en/adapterref/iobroker.unifi-protect/admin/unifi-protect.png)
 
@@ -19,7 +19,10 @@ hash: 4HlX8WiuqVLNMKG8CqPxPx1sT4otYZToIk6x9F555PQ=
 ## IoBroker的unifi保护适配器
 连接到Unifi Protect Controller并从添加的摄像机中提取所有数据。
 
-大多数功能也已通过新的UDM Pro测试。更改设置尚无作用。
+标准端口（如果未自行更改）：
+
+ -Cloud Key Plus Gen2：7443
+ -UDM Pro：443
 
 ## GetThumbnail和getSnapshot的示例
 ```
@@ -59,6 +62,11 @@ sendTo('unifi-protect.0', 'getSnapshot', { "cameraid": "5e4a861c01d12503870003f9
 ```
 
 ## Changelog
+
+### 0.0.11 (2020-02-27)
+* changed Admin interface a little
+* added description for port
+* fixed UDM Pro writeable states
 
 ### 0.0.10 (2020-02-26)
 * travis ci for integration tests fixed

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.unifi-protect/README.md
 title: ioBroker.unifi защиты
-hash: 4HlX8WiuqVLNMKG8CqPxPx1sT4otYZToIk6x9F555PQ=
+hash: +g06eboy/ZUEQeC75vPSMb/k/QpK2Yhwjz8x2xUdkaU=
 ---
 ![логотип](../../../en/adapterref/iobroker.unifi-protect/admin/unifi-protect.png)
 
@@ -11,7 +11,7 @@ hash: 4HlX8WiuqVLNMKG8CqPxPx1sT4otYZToIk6x9F555PQ=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.unifi-protect.svg)
 ![Количество установок (последняя)](http://iobroker.live/badges/unifi-protect-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/unifi-protect-stable.svg)
-![Состояние зависимости](https://img.shields.io/david/peterbaumert/iobroker.unifi-protect.svg)
+![Статус зависимости](https://img.shields.io/david/peterbaumert/iobroker.unifi-protect.svg)
 ![Известные уязвимости](https://snyk.io/test/github/peterbaumert/ioBroker.unifi-protect/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.unifi-protect.png?downloads=true)
 
@@ -19,7 +19,10 @@ hash: 4HlX8WiuqVLNMKG8CqPxPx1sT4otYZToIk6x9F555PQ=
 ## Адаптер unifi-protect для ioBroker
 Подключается к Unifi Protect Controller и извлекает все данные из добавленных камер.
 
-Большинство функций протестировано и с новым UDM Pro. Изменение настроек пока не работает.
+Стандартные порты, если вы их не изменили:
+
+ - Облачный ключ плюс Gen2: 7443
+ - UDM Pro: 443
 
 ## Примеры для getThumbnail и getSnapshot
 ```
@@ -59,6 +62,11 @@ sendTo('unifi-protect.0', 'getSnapshot', { "cameraid": "5e4a861c01d12503870003f9
 ```
 
 ## Changelog
+
+### 0.0.11 (2020-02-27)
+* changed Admin interface a little
+* added description for port
+* fixed UDM Pro writeable states
 
 ### 0.0.10 (2020-02-26)
 * travis ci for integration tests fixed

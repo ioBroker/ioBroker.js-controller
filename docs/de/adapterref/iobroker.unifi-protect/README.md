@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.unifi-protect/README.md
 title: ioBroker.unifi-schützen
-hash: 4HlX8WiuqVLNMKG8CqPxPx1sT4otYZToIk6x9F555PQ=
+hash: +g06eboy/ZUEQeC75vPSMb/k/QpK2Yhwjz8x2xUdkaU=
 ---
 ![Logo](../../../en/adapterref/iobroker.unifi-protect/admin/unifi-protect.png)
 
@@ -19,7 +19,10 @@ hash: 4HlX8WiuqVLNMKG8CqPxPx1sT4otYZToIk6x9F555PQ=
 ## Unifi-Protect-Adapter für ioBroker
 Stellt eine Verbindung zum Unifi Protect Controller her und ruft alle Daten von hinzugefügten Kameras ab.
 
-Die meisten Funktionen wurden auch mit dem neuen UDM Pro getestet. Das Ändern von Einstellungen funktioniert noch nicht.
+Standardports, wenn nicht von Ihnen selbst geändert:
+
+ - Cloud Key Plus Gen2: 7443
+ - UDM Pro: 443
 
 ## Beispiele für getThumbnail und getSnapshot
 ```
@@ -59,6 +62,11 @@ sendTo('unifi-protect.0', 'getSnapshot', { "cameraid": "5e4a861c01d12503870003f9
 ```
 
 ## Changelog
+
+### 0.0.11 (2020-02-27)
+* changed Admin interface a little
+* added description for port
+* fixed UDM Pro writeable states
 
 ### 0.0.10 (2020-02-26)
 * travis ci for integration tests fixed

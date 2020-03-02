@@ -93,8 +93,8 @@ Settings that are not listed in the table below are self-explanatory.
             <td>The data for the IconList can be entered via the editor or a JSON string can be used</td>
         </tr>
         <tr>
-            <td>JSON string</td>
-            <td>JSON string can be entered directly in the editor or use binding. The JSON string must have the following format:
+            <td>JSON-String: object id</td>
+            <td>Object Id of datapoint with JSON string. The JSON string must have the following format:
             <pre><code>
 [
 	{
@@ -115,7 +115,8 @@ Settings that are not listed in the table below are self-explanatory.
 		"buttonToggleValueFalse": "",
 		"valueAppendix": "",
 		"showValueLabel": "true",
-        "statusBarColor": "green"
+		"statusBarColor": "green",
+		"lockEnabled": "false"        
 	},
 	{
 		"text": "text0",
@@ -135,7 +136,8 @@ Settings that are not listed in the table below are self-explanatory.
 		"buttonToggleValueFalse": "",
 		"valueAppendix": "",
 		"showValueLabel": "false",
-        "statusBarColor": ""
+		"statusBarColor": "",
+		"lockEnabled": "false"
 	}
 ]
             </code></pre>

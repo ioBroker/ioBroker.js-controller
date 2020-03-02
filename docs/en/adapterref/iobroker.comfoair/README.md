@@ -5,23 +5,28 @@
 ![Number of Installations](http://iobroker.live/badges/comfoair-installed.svg) ![Number of Installations](http://iobroker.live/badges/comfoair-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.comfoair.svg)](https://www.npmjs.com/package/iobroker.comfoair)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.comfoair.svg)](https://www.npmjs.com/package/iobroker.comfoair)
 
-[![NPM](https://nodei.co/npm/iobroker.comfoair.png?downloads=true)](https://nodei.co/npm/iobroker.comfoair/)
+[![NPM](https://nodei.co/npm/iobroker.comfoair.png?downloads=true)](https://nodei.co/npm/iobroker.comfoair/) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.comfoair.svg)](https://greenkeeper.io/)
 
-An ioBroker adapter for Zehnder Comfoair  'CA' -ventilations (i.e. ComfoAir CA350, NOT ComfoAir Q350...)
+An ioBroker adapter for Zehnder Comfoair  'CA' -ventilations (i.e. ComfoAir CA350, NOT ComfoAir Q350...).
 
-To use this adapter, you need a RS232 to LAN oder WiFi Converter to connect ioBroker with your Zehnder Comfoair.
+## Connection
+
+### By IP / LAN
+
+Use a RS232 to LAN oder WiFi Converter to connect ioBroker with your Zehnder Comfoair.
 Install hardware for TCP - connection to comfoair: i.e. RS232 to LAN adapter to the serial interface of the comfoair. Connect Pins 2, 3 and 5 only (should work also with TX, RX and GND - contacts of the cc-Ease connection too).
-Actually this adapter works only with a LAN-Connection. A direct link based on a direct serial connection is in development.
 
-Install adapter, create instance.
+### Serial CONNECTION
+
+Connect the serial inferface of you comfoair to a serial interface of the device ioBroker is running on. I.e use a RS232toUSB cable or RS232toTTL adapter to connect to the Raspberry Pis UART - pins.
 
 ## Config
 
-Set comfoair - IP-adress, port and polling - intervall.
+Choose your preferred connection mode (IP or serial), set comfoair - IP-address and port or specify your serial device, define a (RS232) comfoair connection mode (see 'Adapter & CC Ease') and define a polling - intervall.
 
 ## Adapter & CC Ease
 
-In general it is not recommended to send data form 2 transmitters to one reciever in RS232 serial communication. The parallel use of CCEase and adapter can result in errors or, worst case, in damage to your comfoair-control! Therefore, when you start the ComfoAir - adapter your CC Ease shold be disconnected or will be shut down.
+In general it is not recommended to send data form 2 transmitters to one receiver in RS232 serial communication. The parallel use of CCEase and adapter can result in errors or, worst case, in damage to your comfoair-control! Therefore, when you start the ComfoAir - adapter your CC Ease should be disconnected or will be shut down.
 The comfoair itself knows 4 different rs232-modes: CCEaseonly, PConly, PCMaster, PCLogmode. In PConly and PCMaster, CC-Ease is off.
 In the instance - config you can choose one of the following connection - modes. Please tick only one of these! Once the adapter is running in the adapter only or the parallel mode, you're able to switch the rs232-mode of the comfoair (what is not recommended because a specific connection mode needs a specific rs232-mode!).
 
@@ -44,13 +49,17 @@ Some users made positive experiences with running the comfoair constantly in PC-
 
 ## Using the adapter
 
-Values of your comfoair should be visible in the 'status' and the 'temperatures' channel. Please refres the obects - view after changing the connection mode.
+Values of your comfoair should be visible in the 'status' and the 'temperatures' channel. Please refresh the objects - view after changing the connection mode.
 
-By setting/changeing values in the 'control' - channel, you control your comfoair ventilation. All values in the 'control' - channel have to be set wieth ACK=false to be recognized as commands for the adapter.
+By setting/changing values in the 'control' - channel, you control your comfoair ventilation. All values in the 'control' - channel have to be set with ACK=false to be recognized as commands for the adapter.
 
 Tested on comfoair CA350.
 
 ## Changelog
+
+### 1.0.0
+
+-   offers now the possibility of a direct serial connection besides the connection over IP/LAN.
 
 ### 0.3.2
 
@@ -58,7 +67,7 @@ Tested on comfoair CA350.
 
 ### 0.3.1
 
--   new connection mode: parelell in constant PC-Logmode.
+-   new connection mode: parallel in constant PC-Logmode.
 
 ### 0.3.0
 
@@ -102,7 +111,7 @@ Tested on comfoair CA350.
 
 ### 0.0.5
 
--   bugfig set vent levels.
+-   bugfix set vent levels.
 
 ### 0.0.4
 
@@ -124,7 +133,7 @@ Tested on comfoair CA350.
 
 The MIT License (MIT)
 
-Copyright (c) 2019 forelleblau marceladam@gmx.ch
+Copyright (c) 2020 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

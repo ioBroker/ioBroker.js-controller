@@ -748,6 +748,9 @@ void loop() {
 получать от нее данные через облачный сервис!
 
 ## Changelog
+### 2.1.2 (2020-03-02)
+* (foxriver76) removed usage of getMessage
+
 ### 2.1.1 (2019-07-27)
 * (bluefox) Add option to overwrite the client "clean session" settings
 

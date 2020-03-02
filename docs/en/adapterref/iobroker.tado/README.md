@@ -21,6 +21,9 @@ If you like my work, please feel free to provide a personal donation
 
 ## Changelog
 
+### 0.1.7
+* (DutchmanNL) Fix Unhandable information found in DoZoneState : "openWindowDetected" 
+
 ### 0.1.6
 * (DutchmanNL) fix geoTrackingEnabled & atHome
 * (DutchmanNL) fix error preventFromSubscribing

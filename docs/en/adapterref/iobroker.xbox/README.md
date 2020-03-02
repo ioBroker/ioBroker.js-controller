@@ -15,7 +15,7 @@
 
 ## Requirements
 
-* You need to have Python >= 3.5 installed
+* You need to have Python >= 3.6 installed
 * For Linux additional packages are required.
    
    The required packages will automatically be installed. Due to this fact root privileges are required as well as the 
@@ -315,6 +315,10 @@ In this section you can find a description of every state of the adapter.
    *View button for media content.*
    
 ## Changelog
+### 0.6.0 (2020-03-01)
+* (foxriver76) dependency upgrade (smartglass has been refactored)
+* __python 3.6 required!__
+
 ### 0.5.12 (2020-01-17)
 * (foxriver76) let js-controller know which apt packages are required
 

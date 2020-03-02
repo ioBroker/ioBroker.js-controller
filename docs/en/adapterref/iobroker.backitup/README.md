@@ -183,12 +183,15 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 ## Changelog
 
-### 1.4.0 (26.02.2020)
-* (simatec) Add next Backup Time
-* (simatec) Add Name Suffix for mysql Backup
-* (simatec) Add more Options for mysql
-* (simatec) Add domain support for cifs
-* (simatec) Add json history
+### 1.4.1 (02.03.2020)
+* (simatec) json historystate with more options
+
+### 1.4.0 (27.02.2020)
+* (simatec) added next Backup Time
+* (simatec) added Name Suffix for mysql Backup
+* (simatec) added more Options for mysql
+* (simatec) added domain support for cifs
+* (simatec) added json historystate
 
 ### 1.3.6 (18.12.2019)
 * (simatec) Fix historyList for compact-mode
@@ -451,7 +454,7 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 The MIT License (MIT)
 
-Copyright (c) 2018 - 2019 simatec <nais@gmx.net>
+Copyright (c) 2018 - 2020 simatec
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

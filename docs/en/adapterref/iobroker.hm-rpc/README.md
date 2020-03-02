@@ -135,6 +135,9 @@ Here, measured values, control and status data are listed; depending on the func
 ## FAQ
 
 ## Changelog
+### 1.12.9 (2020-02-29)
+* (foxriver76) replace DISPLAY_DATA_STRING by DIN_66003 encodings
+
 ### 1.12.8 (2020-02-26)
 * (foxriver76) improved error handling on undefined methods
 

@@ -133,6 +133,18 @@ You can check this with the state value `info.communicationProtocol` after succe
 
 ## Changelog
 
+### 0.5.2
+   * Bugfixes (MQTT/XML)
+   * Start implement NetInfo (XMPP)
+
+### 0.5.1
+   * Using version 0.3.2 of ecovacs-deebot.js module
+     * (boriswerner) Added Features for Ozmo 950
+     * (mrbungle64) Some improvements for non Ozmo 950
+   
+### 0.5.0
+   * Using version 0.3.x of ecovacs-deebot.js module (ng library)
+
 ### 0.4.2
    * Improved support for MQTT devices
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: 80yPXOUDRDFJbcLt0uyeDpBihd2v1+HoVsoYRqjJywo=
+hash: Qx2/sSVNBo/IZIqHTVLJNsEI/U4q1RoWRuAEHPMDs/E=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -36,7 +36,7 @@ hash: 80yPXOUDRDFJbcLt0uyeDpBihd2v1+HoVsoYRqjJywo=
 *与Feiertag-Adapter或任何其他接口，以检测公共假期。公众假期可以是正常的一天，也可以是星期日。 （管理员设置）
 *手动控制温度超过一定时间
 *预定加热时间
-*支持[Pittini]（https://github.com/Pittini/iobroker-heatingcontrol-vis）的可视化。谢谢！
+*支持来自[Pittini]（https://github.com/Pittini/iobroker-heatingcontrol-vis）的可视化。谢谢！
 
 [常问问题](doc/FAQ.md)
 
@@ -61,7 +61,7 @@ hash: 80yPXOUDRDFJbcLt0uyeDpBihd2v1+HoVsoYRqjJywo=
 
 ＃＃＃ 设备
 *所有房间的清单。您可以在此处禁用房间。
-*按右侧的编辑按钮可打开该房间的恒温器，执行器和传感器的设置窗口
+*按右侧的编辑按钮打开该房间的恒温器，执行器和传感器的设置窗口
 
 ###编辑室
 *您可以在此处验证并设置恒温器，执行器和传感器的对象ID
@@ -96,6 +96,22 @@ hash: 80yPXOUDRDFJbcLt0uyeDpBihd2v1+HoVsoYRqjJywo=
 *在这两种情况下，仅使用一次降脂（在适配器的早期版本中，可以使用一次以上的脱脂剂）
 *在绝对脱脂配方中，仅使用不等于0°C的目标值。如果您不需要降低某个房间的温度，则将降低值保持在0°C
 
+###没有加热时间
+有三种选择
+
+*固定每个房间的温度
+
+如果选择此选项，则将在每个房间的对象树中显示一个新的数据点。您可以在此处设置固定目标温度，该目标温度在加热时间段未激活时设置。
+
+*修复所有房间的温度
+
+使用此选项，您可以在不激活供暖时段时为每个房间使用一个目标温度
+
+* 没有
+
+如果没有激活加热时间，则使用此选项不会将任何东西发送到恒温器。加热期间仍处于活动状态时，目标温度从最后一个标签开始保持。
+在这种情况下，如果您使用适配器中的执行器，则可以定义执行器的设置方式（关闭，打开或保持原样）
+
 ＃＃ 其他
 * HolidayPresent
 
@@ -108,7 +124,7 @@ hash: 80yPXOUDRDFJbcLt0uyeDpBihd2v1+HoVsoYRqjJywo=
 ###窗口打开
 如果“使用传感器”处于活动状态并且配置了一个房间的传感器，则
 
-a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降低当前打开时的温度（true），如果配置了相对降低b）将窗口打开时将目标设置为Profiles.0.room.absolute.WindowOpenDecrease（true）如果绝对降低已配置
+a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降低当前打开窗口时的温度（true）b）如果绝对降低，则将目标设置为Profiles.0.room.absolute.WindowOpenDecrease已配置
 
 可选地，可以使用延迟。如果仅在短时间内打开窗户，则传感器延迟可以避免在很短的时间内减小并恢复正常。
 
@@ -131,7 +147,8 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 ## Changelog
 ### 0.3.17 (2020-02-xx)
 * (René) check datapoint configuration: if datapoint points to itself then error messages
-+ (René) support of new vis see issue  #76
+* (René) support of new vis see issue  #76
+* (Rene) thermostat mode if no heating period
 
 ### 0.3.16 (2020-02-09)
 * (René) deccrease/increase-handling also when Override is active (see issue #72)

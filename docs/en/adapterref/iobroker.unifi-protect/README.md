@@ -14,7 +14,10 @@
 
 Connects to Unifi Protect Controller and pulls all Data from added Cameras.
 
-Most features tested with new UDM Pro too. Changing settings isnt working yet.
+Standard Ports if not changed by yourself:
+ - Cloud Key Plus Gen2: 7443
+ - UDM Pro: 443
+
 
 ## Examples for getThumbnail and getSnapshot
 
@@ -55,6 +58,11 @@ sendTo('unifi-protect.0', 'getSnapshot', { "cameraid": "5e4a861c01d12503870003f9
 ```
 
 ## Changelog
+
+### 0.0.11 (2020-02-27)
+* changed Admin interface a little
+* added description for port
+* fixed UDM Pro writeable states
 
 ### 0.0.10 (2020-02-26)
 * travis ci for integration tests fixed

@@ -93,6 +93,18 @@ Features:
 * in both szenarious only one lowering is used (in previous version of adapter more then one degreases could be used)
 * in absolute degrease szenario only target values not equal 0°C are used. If you do not need any lowering for a certain room then keep decrease-values at 0°C
 
+### no heating period
+there are three options
+
+* fix Temperature per room
+if this option is selected, a new datapoint in object tree appears for every room. Here you can set a fix target temperature which is set when heating period is not active.
+* fix Temperature for all rooms
+with this option you can use one target temperature for every room when heating period is not active
+* nothing
+with this option nothing will be sent to thermostat if no heating period is active. Target temperature remain from last taget when heating period still was active.
+In that case and if you use actuators from the adapter then you have the possibilty to define how actuators should be set (off, on, or leave it as it is) 
+
+
 ## others
 
 * HolidayPresent
@@ -130,7 +142,8 @@ Just configure events from ical in admin. Supported are
 ## Changelog
 ### 0.3.17 (2020-02-xx)
 * (René) check datapoint configuration: if datapoint points to itself then error messages
-+ (René) support of new vis see issue  #76
+* (René) support of new vis see issue  #76
+* (Rene) thermostat mode if no heating period
 
 ### 0.3.16 (2020-02-09)
 * (René) deccrease/increase-handling also when Override is active (see issue #72)

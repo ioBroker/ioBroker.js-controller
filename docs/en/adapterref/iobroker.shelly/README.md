@@ -45,6 +45,9 @@ You find a detailed installation documentation here:
 
 ## Changelog
 
+### 3.2.1 (02.03.2020)
+* (Stübi) - Bugfixing Shelly 3EMfor MQTT support 
+
 ### 3.2.0 (13.02.2020)
 * (Simon W.) - Add device Shelly 3EM
 * (Stübi)    - Add device Shelly Door/Windows sensor 
