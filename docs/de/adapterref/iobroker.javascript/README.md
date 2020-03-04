@@ -64,6 +64,9 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 4.4.3 (2020-03-03)
+* (klein0r) Added JSONata for Object conversion
+
 ### 4.4.2 (2020-02-10)
 * (Apollon77) Fix Astro functions and error message
 * (Apollon77) usage with all kinds of admin ports and reverse proxies optimized

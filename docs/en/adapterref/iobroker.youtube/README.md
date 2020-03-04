@@ -26,6 +26,10 @@ To get an API-Key you have to go to [console.developers.google.com](https://cons
 
 ## Changelog
 
+### 0.0.8
+
+* (klein0r) Removed link from overview
+
 ### 0.0.7
 
 * (klein0r) Added VIS widget

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.openligadb/README.md
 title: ioBroker Adapter для получения результатов футбольного спортивного матча от OpenLigaDB
-hash: dbMnSe/XYVVMLqLRIGTAQqXErq/aPsuLgZ2gOvetPk0=
+hash: BK6yP9lYos7fGLNP++Ve8uKU+YWmT9kV39k/5QKuwak=
 ---
 ![логотип](../../../en/adapterref/iobroker.openligadb/admin/openligadb_b.png)
 
@@ -22,11 +22,11 @@ hash: dbMnSe/XYVVMLqLRIGTAQqXErq/aPsuLgZ2gOvetPk0=
 Добавьте экземпляр адаптера и нажмите на значок гаечного ключа. В форме вы можете добавить ярлык из лиги и сезона.
 Посетите openligadb.de, чтобы узнать о доступных лигах, сезонах и ярлыках. Если сезон длится более двух лет, введите только начальный год.
 
-Пример данных для 1. Немецкий Bundliga является ярлыком = bl1 сезона = 2019
+Пример данных для 1. Немецкий Bundliga является ярлыком = bl1 сезон = 2019
 
 Если вы сохранили и закрыли конфигурацию, вскоре после этого должны появиться новые точки данных для вашей лиги и сезона.
 
-## Vis и виджеты
+## Vis и Widgets
 На самом деле доступно 3 виджета. Пожалуйста, введите openligadb в фильтр виджетов
 
 ### Стол
@@ -43,6 +43,7 @@ hash: dbMnSe/XYVVMLqLRIGTAQqXErq/aPsuLgZ2gOvetPk0=
 ## Сделать
 * проверка в виджете, если пользователь не выбрал правильную точку данных
 * перевод
+* документация для новых виджетов сводных и голевых
 * ~~ расширить таблицы режимов с 1-го раунда, 2-го раунда ~~
 * ~~ новая сводная таблица виджетов сыгранных игр ~~
 * ~~ новый рейтинг получателя цели виджета с функцией сортировки ~~
@@ -58,6 +59,11 @@ hash: dbMnSe/XYVVMLqLRIGTAQqXErq/aPsuLgZ2gOvetPk0=
 * ~~ контролируемый игровой день в виджете игрового дня ~~
 
 ## Changelog
+### 0.11.1
+* change some template settings, goalgetter table get headers, add object change sensing
+* widget goalgetters: add parameter highlight and showonlyhighlight
+* widget pivottable: add sort option and choice to place favorite teams on top
+* remove year from date for several widgets
 ### 0.11.0
 * extend table to calculate with x last games and extend table to calculate ranking for a defined gameday, to ensure backward compatibility i have to create a new table v3 widget
 * extend table with trend sign (arrow up/down, point for no change)

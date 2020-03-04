@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
+hash: sTCasuu/WepLyWWPOxTlo5q17/lE9jIXKfCLuxMjq/c=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -20,24 +20,22 @@ hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
 
 Это можно проверить с помощью значения состояния `info.communicationProtocol` после успешного установления соединения (значения: `XMPP`, `MQTT`).
 
-### Эти модели работают в полной мере
+### Тезисные модели известны своей работой
 * Deebot Slim 2
-* Deebot Ozmo 930
-
-### Эти модели работают практически в полной мере
 * Deebot 601
 * Deebot 710/711
 * Deebot 900/901
 * Deebot Ozmo 610
+* Deebot Ozmo 930
 * Deebot Ozmo 950
-
-### Эти модели должны работать (почти) в полной мере
-* Deebot N79T
-* Deebot 600/605
-* Deebot Ozmo 960 (не тестировался)
 
 ### Эти модели должны работать частично
 * Deebot Ozmo 900
+
+### Эти модели должны работать
+* Deebot N79T
+* Deebot 600/605
+* Deebot Ozmo 960 (не тестировался)
 
 ### Кнопки и управление
 | модель | базовый * | пауза | пятно | spotArea | customArea ** | край | playSound | уровень воды |
@@ -56,7 +54,7 @@ hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
 **) вкл. номер `cleanings`
 
 ### Информация и статус
-| модель | аккумулятор | шаргестатус | Cleanstatus | уровень воды | водный бокс | расходные материалы |
+| модель | батарея | шаргестатус | Cleanstatus | уровень воды | водный бокс | расходные материалы |
 |------------ |-------- |------------- |------------ |----------- |--------  |------------ |
 | Slim 2 | х | х | х | н / д | н / д | х |
 | 600/601/605 | х | х | х | | | |
@@ -109,7 +107,7 @@ hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
 ## Информация
 | имя | описание |
 | --- | --- |
-| аккумулятор | аккумулятор |
+| батарея | батарея |
 | шаргестатус | состояние во время зарядки |
 | Cleanstatus | состояние во время уборки |
 | коммуникационный протокол | XMPP или MQTT |
@@ -134,6 +132,21 @@ hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.5.3
+   * Using library version 0.3.4
+
+### 0.5.2
+   * Bugfixes (MQTT/XML)
+   * Start implement NetInfo (XMPP)
+
+### 0.5.1
+   * Using version 0.3.2 of ecovacs-deebot.js module
+     * (boriswerner) Added Features for Ozmo 950
+     * (mrbungle64) Some improvements for non Ozmo 950
+   
+### 0.5.0
+   * Using version 0.3.x of ecovacs-deebot.js module (ng library)
 
 ### 0.4.2
    * Improved support for MQTT devices

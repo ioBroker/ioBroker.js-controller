@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.openligadb/README.md
 title: ioBroker Adapter从OpenLigaDB获得足球运动比赛结果
-hash: dbMnSe/XYVVMLqLRIGTAQqXErq/aPsuLgZ2gOvetPk0=
+hash: BK6yP9lYos7fGLNP++Ve8uKU+YWmT9kV39k/5QKuwak=
 ---
 ![商标](../../../en/adapterref/iobroker.openligadb/admin/openligadb_b.png)
 
@@ -16,7 +16,7 @@ hash: dbMnSe/XYVVMLqLRIGTAQqXErq/aPsuLgZ2gOvetPk0=
 
 ＃ioBroker适配器从OpenLigaDB获取足球运动比赛结果
 ##概述
-适配器，可通过openligadb.de请求足球或其他游戏的游戏数据
+适配器，用于从openligadb.de请求用于足球或其他游戏的游戏数据
 
 ##配置
 添加适配器的实例，然后单击扳手符号。在表格中，您可以添加联赛和赛季的快捷方式。
@@ -24,7 +24,7 @@ hash: dbMnSe/XYVVMLqLRIGTAQqXErq/aPsuLgZ2gOvetPk0=
 
 1.德国人的示例数据Bundliga是捷径= bl1季节= 2019
 
-如果您保存并关闭了配置，则此后不久，您的联赛和赛季必须有新的数据点。
+如果保存并关闭了配置，则此后不久，您的联赛和赛季必须有新的数据点。
 
 ## Vis和小部件
 实际上，有3个小部件可用。请在小部件过滤器中输入openligadb
@@ -43,6 +43,7 @@ vis小部件的文档可在vis或[小部件文档/德语](https://htmlpreview.gi
 ＃＃ 去做
 *如果用户未选择正确的数据点，则在小部件中进行验证
 *翻译
+*有关新的小部件数据透视表和目标获取者的文档
 * ~~以第一轮，第二轮扩展表模式~~
 * ~~新玩过的小部件枢纽表~~
 * ~~具有排序功能的新小部件目标获取器排名~~
@@ -51,13 +52,18 @@ vis小部件的文档可在vis或[小部件文档/德语](https://htmlpreview.gi
 * ~~扩展表格以计算指定游戏日的排名~~
 * ~~文档适配器/小部件~~
 * ~~修正了俱乐部专栏的动态搭配问题~~
-* ~~新小工具：俱乐部的下x场游戏~~
+* ~~新小部件：俱乐部的下x场游戏~~
 * ~~ widget游戏日设置为开始游戏日的长度（-1,3 =显示前一个游戏日和之后的3个游戏日）~~
 * ~~如果showgameday设置为binding ~~编辑模式的替换值~~
 * ~~重点关注俱乐部~~
 * ~~游戏日小部件中可控制的游戏日~~
 
 ## Changelog
+### 0.11.1
+* change some template settings, goalgetter table get headers, add object change sensing
+* widget goalgetters: add parameter highlight and showonlyhighlight
+* widget pivottable: add sort option and choice to place favorite teams on top
+* remove year from date for several widgets
 ### 0.11.0
 * extend table to calculate with x last games and extend table to calculate ranking for a defined gameday, to ensure backward compatibility i have to create a new table v3 widget
 * extend table with trend sign (arrow up/down, point for no change)

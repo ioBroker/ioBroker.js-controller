@@ -3,51 +3,79 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ble/README.md
 title: 无题
-hash: TFklzPIPLWol2shsHGm/nBfojbsla1MUhwZaPu0Kqzo=
+hash: X3BN9z9QT2g4Dn4oYKEJDV0N1zMdgUi8APe7JPfGOEo=
 ---
-![建立状态](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)
 ![安装数量](http://iobroker.live/badges/ble-stable.svg?break_cache=1)
 
 <img src="admin/ble.png" height="48" /> ioBroker.ble
 
 =================
 
-================
+![建立状态](https://action-badges.now.sh/AlCalzone/ioBroker.tradfri)
 
-监控蓝牙低功耗（BLE）信标并记录其信息。
-目前，仅支持录制*广告*服务数据。您可以使用nRF Connect应用程序（服务数据UUID）监控公布的服务。
-未来版本将支持连接和读/写服务特性。
+监视蓝牙低功耗（BLE）信标并记录其信息。
+当前，仅支持记录*广告*服务数据。您可以使用nRF Connect应用程序（服务数据UUID）监视要播发的服务。
+将来的版本将支持连接和读取/写入服务的功能。
 
 ##安装
-此适配器需要额外的库来编译。有关详细说明，请参阅https://github.com/sandeepmistry/noble#prerequisites。
-在Raspberry Pi和类似的，这应该这样做：`sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev libcap2-bin`
+该适配器需要其他库才能进行编译。有关详细说明，请参见https://github.com/sandeepmistry/noble#prerequisites。
+在Raspberry Pi和类似设备上，应该这样做：`sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev libcap2-bin`
 
-如果适配器启动但无法连接到蓝牙硬件，请检查ioBroker中的`info.driverState`状态。如果是`unauthorized`，则需要提供`node`附加权限。对于Linux，这很简单
+如果适配器启动但无法连接到蓝牙硬件，请检查ioBroker中的`info.driverState`状态。如果它是`unauthorized`，则需要授予`node`其他权限。对于Linux，这很简单
 
 ```bash
 sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 ```
 
-这需要安装`libcap2-bin`。
+这要求安装`libcap2-bin`。
 
 ##配置
 如果您的系统上有多个蓝牙设备，请从下拉列表中选择要使用的蓝牙设备。
-在下面的文本框中，输入要记录的广告服务的所有UUID（如nRF Connect应用程序中所示）。
+在下面的文本框中，输入要记录的广告服务的所有UUID（在nRF Connect应用程序中找到）。
 
 ##插件系统
-适配器通过插件支持扩展。这些定义了应该监听哪些广告服务以及如何翻译数据。插件结构在https://github.com/AlCalzone/ioBroker.ble/blob/master/src/plugins/plugin.ts中定义，这里定义了一个工作插件的示例https://github.com/AlCalzone /ioBroker.ble/blob/master/src/plugins/_default.ts
+适配器通过插件支持扩展。那些定义了应该监听哪些广告服务以及如何转换数据。插件结构在https://github.com/AlCalzone/ioBroker.ble/blob/master/src/plugins/plugin.ts中定义，并且在此https://github.com/AlCalzone定义了可用插件的示例/ioBroker.ble/blob/master/src/plugins/_default.ts
 
-如果您有任何设备通过广告传输特殊编码信息，请随意使用新插件创建PR。
+如果您有任何设备通过广告传输经过特殊编码的信息，请随时使用新插件创建PR。
 
 ###支持的插件
-*`“xiaomi”`：所有xiaomi蓝牙传感器，包括
+*`“ xiaomi”`：所有小米蓝牙传感器，包括
   * [花卉护理植物传感器]（https://xiaomi-mi.com/sockets-and-sensors/xiaomi-huahuacaocao-flower-care-smart-monitor/）
-  * [Mijia温度和湿度传感器]（https://www.banggood.com/Xiaomi-Mijia-Bluetooth-Thermometer-Hygrometer-with-LCD-Screen-Magnetic-Suction-Wall-Stickers-p-1232396.html?cur_warehouse = USA）
+  * [Mijia温湿度传感器]（https://www.banggood.com/Xiaomi-Mijia-Bluetooth-Thermometer-Hygrometer-with-LCD-Screen-Magnetic-Suction-Wall-Stickers-p-1232396.html?cur_warehouse =美国）
   * [驱蚊剂]（https://www.aliexpress.com/item/32883859984.html）
-*`“mi-flora”`：花卉植物传感器的原始插件，现在别名为“xiaomi”
-*`“ruuvi-tag”`：[Ruuvi Tag]（https://tag.ruuvi.com/）多传感器，固件版本为v1和v2。 **未经测试，请提供反馈！**
+*`“ mi-flora”`：用于花卉护理植物传感器的原始插件，现在别名为“” xiaomi“`
+*`“ ruuvi-tag”`：[ruuvi标签]（https://tag.ruuvi.com/）多传感器，固件版本为v1和v2。 **未经测试，请提供反馈！**
 
 ## Changelog
+
+### 0.11.0 (2019-11-19)
+* (AlCalzone) Removed compact support. `noble` sometimes throws errors in callbacks that cannot be handled and would bring the whole compact group down.
+
+### 0.10.1 (2019-10-13)
+* (AlCalzone) Fixed crash in JS-Controller 2.0
+
+### 0.10.0 (2019-09-26)
+* (AlCalzone) `xiaomi` plugin: test the received data instead of relying on MAC prefixes
+
+### 0.9.2 (2019-09-26)
+* (AlCalzone) Add `e7:2e:00` as an alternative mac prefix for MiTemperature
+
+### 0.9.1 (2019-09-22)
+* (AlCalzone) Fix compact mode crashes
+
+### 0.9.0 (2019-09-04)
+* (AlCalzone) Devices without service data but with manufacturer data are no longer treated as empty
+* (AlCalzone) `_default` plugin: Create states for manufacturer data
+* (AlCalzone) `ruuvi-tag` plugin: Set `"Ruuvi Tag"` as the default name for the device object
+
+### 0.8.4 (2019-09-03)
+* (AlCalzone) `ruuvi-tag` plugin: Fix parsing of data format 3 and 5
+
+### 0.8.3 (2019-08-26)
+* (AlCalzone) Add `80:ea:ca` as an alternative mac prefix for FlowerCare
+
+### 0.8.2 (2019-08-14)
+* (AlCalzone) Add `3f:5b:7d` as an alternative mac prefix for the Xiaomi watch
 
 ### 0.8.1 (2019-07-26)
 * (AlCalzone) Added support for the Xiaomi Mosquito Repellent (read-only!)
@@ -139,7 +167,7 @@ sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 AlCalzone <d.griesel@gmx.net>
+Copyright (c) 2017-2020 AlCalzone <d.griesel@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

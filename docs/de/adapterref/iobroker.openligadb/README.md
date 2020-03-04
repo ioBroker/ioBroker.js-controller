@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.openligadb/README.md
 title: ioBroker Adapter zum Abrufen der Ergebnisse von Fußball-Sportspielen von OpenLigaDB
-hash: dbMnSe/XYVVMLqLRIGTAQqXErq/aPsuLgZ2gOvetPk0=
+hash: BK6yP9lYos7fGLNP++Ve8uKU+YWmT9kV39k/5QKuwak=
 ---
 ![Logo](../../../en/adapterref/iobroker.openligadb/admin/openligadb_b.png)
 
@@ -14,7 +14,7 @@ hash: dbMnSe/XYVVMLqLRIGTAQqXErq/aPsuLgZ2gOvetPk0=
 ![AppVeyor-Build-Status](https://img.shields.io/appveyor/ci/oweitman/iobroker-openligadb.svg)
 ![GitHub Probleme](https://img.shields.io/github/issues/oweitman/ioBroker.openligadb.svg)
 
-# IoBroker Adapter, um Ergebnisse von Fußball-Sportspielen von OpenLigaDB zu erhalten
+# IoBroker Adapter zum Abrufen der Ergebnisse von Fußball-Sportspielen von OpenLigaDB
 ## Überblick
 Adapter zum Anfordern von Spieldaten für Fußball oder andere Spiele von openligadb.de
 
@@ -43,21 +43,27 @@ Die Dokumentation für die vis-Widgets ist in vis oder [Widget-Dokumentation / D
 ## Machen
 * Validierung im Widget, wenn der Benutzer nicht den richtigen Datenpunkt ausgewählt hat
 * Übersetzung
+* Dokumentation für neue Widgets schwenkbar und Torhüter
 * ~~ Tabellenmodi mit 1. Runde, 2. Runde ~~ erweitern
 * ~~ neue Widget-Pivot-Tabelle der gespielten Spiele ~~
 * ~~ neues Widget Goal Getter Ranking mit Sortierfunktion ~~
-* ~~ Tabelle mit Trendzeichen erweitern (Pfeil nach oben / unten, Punkt ohne Änderung) ~~
+* ~~ Tabelle mit Trendzeichen erweitern (Pfeil nach oben / unten, Punkt für keine Änderung) ~~
 * ~~ Tabelle erweitern, um mit x letzten Spielen zu berechnen ~~
 * ~~ Tabelle erweitern, um das Ranking für einen definierten Spieltag zu berechnen ~~
 * ~~ Dokumentationsadapter / Widget ~~
 * ~~ Problem für Dynamik mit Clubspalte ~~ behoben
 * ~~ neues Widget: nächste x Clubspiele ~~
-* ~~ Widget-Spieltag Einstellung für den Start des Spieltages um eine Länge (-1,3 = vorherigen Spieltag und 3 Spieltage danach anzeigen) ~~
-* ~~ Ersatzwert für den Bearbeitungsmodus, wenn der Spieltag mit Bindung ~~ eingestellt ist
+* ~~ Einstellung des Widget-Spieltages für den Start des Spieltages um eine Länge (-1,3 = vorherigen Spieltag und 3 Spieltage danach anzeigen) ~~
+* ~~ Ersatzwert für den Bearbeitungsmodus, wenn der Spieltag mit Bindung ~~ festgelegt ist
 * ~~ Lieblingsclub hervorheben ~~
 * ~~ steuerbarer Spieltag im Spieltag-Widget ~~
 
 ## Changelog
+### 0.11.1
+* change some template settings, goalgetter table get headers, add object change sensing
+* widget goalgetters: add parameter highlight and showonlyhighlight
+* widget pivottable: add sort option and choice to place favorite teams on top
+* remove year from date for several widgets
 ### 0.11.0
 * extend table to calculate with x last games and extend table to calculate ranking for a defined gameday, to ensure backward compatibility i have to create a new table v3 widget
 * extend table with trend sign (arrow up/down, point for no change)

@@ -2,7 +2,7 @@
 # ioBroker.nuki-extended
 This ioBroker adapter (formerly ioBroker.Nuki2) allows to control and monitor the [Nuki Smart Lock](https://nuki.io/de/smart-lock/) and / or the [Nuki Opener](https://nuki.io/de/opener/) by using both the [Nuki Bridge API (v1.9.0, 06.05.2019)](https://developer.nuki.io/page/nuki-bridge-http-api-170/4/#heading--introduction) and the [Nuki Web API (v1.2.0, 31.05.2019)](https://developer.nuki.io/page/nuki-web-api-111/3/).
 
-[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=S45U45EHXGQHN&source=url)
+[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://paypal.me/chvoelkel)
 
 ![Number of Installations](http://iobroker.live/badges/nuki-extended-installed.svg)
 ![Stable Version](http://iobroker.live/badges/nuki-extended-stable.svg)
@@ -17,9 +17,9 @@ This ioBroker adapter (formerly ioBroker.Nuki2) allows to control and monitor th
 **Table of contents**
 1. [Features](#features)
 2. [Installation](#installation)
-   1. [Get a API token](#get-a-api-token)
-   2. [Callback function](#callback-function)
-3. [Channels & States](#3-channels--states)
+   1. [Nuki Bridge API](#nuki-bridge-api)
+   2. [Nuki Web API](#nuki-web-api)
+3. [Channels & States](#channels--states)
 4. [Smart Home / Alexa integration using ioBroker.javascript](#smart-home--alexa-integration-using-iobrokerjavascript)
    1. [Lock door at 10pm in the evening](#lock-door-at-10pm-in-the-evening)
    2. [Let Alexa inform you about lock changes](#let-alexa-inform-you-about-lock-changes)
@@ -482,11 +482,19 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 
 Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
 
+### v2.2.2  (2019-03-04)
+- (Zefau) fixed incorrect error message `Error triggering action via Nuki Bridge API: No Nuki Hex ID given!`
+- (Zefau) added new error message if too many callbacks are already attached to Nuki Bridge (`Callback not attached because too many Callbacks attached to the Nuki Bridge already! Please delete a callback!`)
+
+### v2.2.1  (2019-03-03)
+- (Zefau) fixed incorrect state mapping of state `openerAdvancedConfig.doorbellSuppression`
+
+  **Note:** Please delete the state `openerAdvancedConfig.doorbellSuppression` once manually and restart the adapter to take affect!
+  
+- (Zefau) updated dependencies
+
 ### v2.2.0  (2019-02-16)
 - (Zefau) added possibility to change configuration of Nuki Smartlock or Nuki Opener (when using Web API)
-
-   __NOTE__: Please delete all `config`, `advancedConfig` and `openerAdvancedConfig` channels (states will be recreated to be editable)
-
 - (Zefau) updated dependencies
 
 ### v2.1.0  (2019-02-03)

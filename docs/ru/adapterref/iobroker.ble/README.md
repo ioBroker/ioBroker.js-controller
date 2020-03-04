@@ -2,27 +2,26 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ble/README.md
-title: без названия
-hash: TFklzPIPLWol2shsHGm/nBfojbsla1MUhwZaPu0Kqzo=
+title: без заголовка
+hash: X3BN9z9QT2g4Dn4oYKEJDV0N1zMdgUi8APe7JPfGOEo=
 ---
-![Статус сборки](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)
 ![Количество установок](http://iobroker.live/badges/ble-stable.svg?break_cache=1)
 
 <img src="admin/ble.png" height="48" /> ioBroker.ble
 
 =================
 
-================
+![Статус сборки](https://action-badges.now.sh/AlCalzone/ioBroker.tradfri)
 
 Мониторинг маяков Bluetooth с низким энергопотреблением (BLE) и запись их информации.
 В настоящее время поддерживается только запись *рекламируемых* данных сервиса. Вы можете отслеживать, какие сервисы рекламируются с помощью приложения nRF Connect (UUID данных сервисов).
 Подключение и чтение / запись сервисных характеристик будут поддерживаться в следующей версии.
 
-## Монтаж
+## Установка
 Этот адаптер требует дополнительных библиотек для компиляции. См. Https://github.com/sandeepmistry/noble#prerequisites для получения подробных инструкций.
 На Raspberry Pi и аналогичных, это должно сделать это: `sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev libcap2-bin`
 
-Если адаптер запускается, но не подключается к вашему оборудованию Bluetooth, проверьте состояние `info.driverState` в ioBroker. Если это `unauthorized`, вам необходимо предоставить `node` дополнительные разрешения. Для Linux это так просто, как
+Если адаптер запускается, но не подключается к вашему оборудованию Bluetooth, проверьте состояние `info.driverState` в ioBroker. Если это `unauthorized`, вам необходимо дать `node` дополнительные разрешения. Для Linux это так же просто, как
 
 ```bash
 sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
@@ -44,10 +43,39 @@ sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
   * [Датчик для ухода за цветами] (https://xiaomi-mi.com/sockets-and-sensors/xiaomi-huahuacaocao-flower-care-smart-monitor/)
   * [Датчик температуры и влажности Mijia] (https://www.banggood.com/Xiaomi-Mijia-Bluetooth-Thermometer-Hygrometer-with-LCD-Screen-Magnetic-Suction-Wall-Stickers-p-1232396.html?cur_warehouse = США)
   * [Средство от комаров] (https://www.aliexpress.com/item/32883859984.html)
-* `" mi-flora "`: оригинальный плагин для датчика по уходу за цветами, теперь псевдоним "xiaomi" `
-* `" ruuvi-tag "`: [мультисенсор Ruuvi] (https://tag.ruuvi.com/) с версиями прошивки v1 и v2. **Не проверено, пожалуйста, оставьте отзыв!**
+* `" mi-flora "`: оригинальный плагин для датчика по уходу за цветами, теперь псевдоним для "xiaomi" `
+* `" ruuvi-tag "`: мультисенсор [Ruuvi Tag] (https://tag.ruuvi.com/) с версиями прошивки v1 и v2. **Не проверено, пожалуйста, оставьте отзыв!**
 
 ## Changelog
+
+### 0.11.0 (2019-11-19)
+* (AlCalzone) Removed compact support. `noble` sometimes throws errors in callbacks that cannot be handled and would bring the whole compact group down.
+
+### 0.10.1 (2019-10-13)
+* (AlCalzone) Fixed crash in JS-Controller 2.0
+
+### 0.10.0 (2019-09-26)
+* (AlCalzone) `xiaomi` plugin: test the received data instead of relying on MAC prefixes
+
+### 0.9.2 (2019-09-26)
+* (AlCalzone) Add `e7:2e:00` as an alternative mac prefix for MiTemperature
+
+### 0.9.1 (2019-09-22)
+* (AlCalzone) Fix compact mode crashes
+
+### 0.9.0 (2019-09-04)
+* (AlCalzone) Devices without service data but with manufacturer data are no longer treated as empty
+* (AlCalzone) `_default` plugin: Create states for manufacturer data
+* (AlCalzone) `ruuvi-tag` plugin: Set `"Ruuvi Tag"` as the default name for the device object
+
+### 0.8.4 (2019-09-03)
+* (AlCalzone) `ruuvi-tag` plugin: Fix parsing of data format 3 and 5
+
+### 0.8.3 (2019-08-26)
+* (AlCalzone) Add `80:ea:ca` as an alternative mac prefix for FlowerCare
+
+### 0.8.2 (2019-08-14)
+* (AlCalzone) Add `3f:5b:7d` as an alternative mac prefix for the Xiaomi watch
 
 ### 0.8.1 (2019-07-26)
 * (AlCalzone) Added support for the Xiaomi Mosquito Repellent (read-only!)
@@ -139,7 +167,7 @@ sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 AlCalzone <d.griesel@gmx.net>
+Copyright (c) 2017-2020 AlCalzone <d.griesel@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

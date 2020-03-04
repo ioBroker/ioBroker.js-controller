@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
+hash: sTCasuu/WepLyWWPOxTlo5q17/lE9jIXKfCLuxMjq/c=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -20,24 +20,22 @@ Geräte, die mit dem **MQTT** -Protokoll kommunizieren, sind experimentell.
 
 Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.communicationProtocol` überprüfen (Werte: `XMPP`, `MQTT`).
 
-### Diese Modelle funktionieren in vollem Umfang
+### Diese Modelle funktionieren bekanntermaßen
 * Deebot Slim 2
-* Deebot Ozmo 930
-
-### Diese Modelle funktionieren fast vollständig
 * Deebot 601
 * Deebot 710/711
 * Deebot 900/901
 * Deebot Ozmo 610
+* Deebot Ozmo 930
 * Deebot Ozmo 950
-
-### Diese Modelle sollten (fast) vollständig funktionieren
-* Deebot N79T
-* Deebot 600/605
-* Deebot Ozmo 960 (nicht getestet)
 
 ### Diese Modelle sollten teilweise funktionieren
 * Deebot Ozmo 900
+
+### Diese Modelle sollten funktionieren
+* Deebot N79T
+* Deebot 600/605
+* Deebot Ozmo 960 (nicht getestet)
 
 ### Tasten und Steuerung
 | Modell | Grund * | Pause | Stelle | spotArea | customArea ** | Kante | playSound | waterLevel |
@@ -134,6 +132,21 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.5.3
+   * Using library version 0.3.4
+
+### 0.5.2
+   * Bugfixes (MQTT/XML)
+   * Start implement NetInfo (XMPP)
+
+### 0.5.1
+   * Using version 0.3.2 of ecovacs-deebot.js module
+     * (boriswerner) Added Features for Ozmo 950
+     * (mrbungle64) Some improvements for non Ozmo 950
+   
+### 0.5.0
+   * Using version 0.3.x of ecovacs-deebot.js module (ng library)
 
 ### 0.4.2
    * Improved support for MQTT devices

@@ -45,6 +45,13 @@ You find a detailed installation documentation here:
 
 ## Changelog
 
+### 3.2.3 (03.03.2020)
+* (Stübi) - Bugfixing Shelly 3EMfor MQTT support (fixed datapoints for total and total_returned)
+* (Stübi) - Bugfixing MQTT support for door and windows sensor (issue #135)
+
+### 3.2.2 (03.03.2020)
+* (Stübi) - Bugfixing, if Shelly sends a string instead of number and boolean (issue #131)
+
 ### 3.2.1 (02.03.2020)
 * (Stübi) - Bugfixing Shelly 3EMfor MQTT support 
 

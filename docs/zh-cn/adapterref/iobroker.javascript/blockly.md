@@ -3,156 +3,157 @@ chapters: {"pages":{"de/adapterref/iobroker.javascript/README.md":{"title":{"de"
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.javascript/blockly.md
-title: 内容
-hash: M7GQwgI497RpKFJcBY1bHyu/mjr8k/IJkPAMV3ynyG8=
+title: 内容内容
+hash: PmGhnq2LunmzZzqWkSpNxK3X11V1CmIVcs0cRO4mhdo=
 ---
-#Content
-- [描述](#beschreibung)
-- [入门](#getting-started)
-    - [例1](#beispiel-1)
-    - [例2](#beispiel-2)
-    - [例3](#beispiel-3)
-- [块](#blocks)
-    - [系统块](#systemblöcke)
-        - [调试输出](#debug-ausgabe)
-        - [评论](#kommentar)
-        - [控制状态](#steuere-state)
-        - [更新状态](#aktualisiere-state)
-        - [绑定州](#bind-states)
-        - [写州](#write-states)
-        - [创建状态](#create-state)
-        - [获得国家的价值](#get-value-of-state)
-        - [获取对象ID](#get-object-id)
-    - [动作块](#aktionsblöcke)
-        - [执行命令](#exec---kommando)
-        - [请求网址](#request-url)
-    - [SendTo块](#sendTo-blöcke)
-        - [发送电报](#send-to-telegram)
-        - [发送给SayIt](#send-to-sayit)
-        - [发送到pushover](#send-to-pushover)
-        - [发送邮件](#send-email)
-        - [自定义sendTo块](#custom-sendto-block)
-    - [日期和时间块](#datum-und-zeit-blöcke)
-        - [时间比较](#time-comparision)
-        - [实际时间比较](#actual-time-comparision)
-        - [获取特定格式的实际时间](#get-actual-time-im-specific-format)
-        - [获取今天的astro活动时间](#get-time-of-astro-events-for-today)
-    - [转换块](#convert-blocks)
-        - [转换为数字](convert-to-number)
-        - [转换为布尔值](convert-to-boolean)
-        - [获取变量的类型](get-type-of-variable)
-        - [转换为日期/时间对象](convert-to-datetime-object)
-        - [将日期/时间对象转换为字符串](convert-datetime-object-to-string)
-        - [将JSON转换为对象](convert-json-to-object)
-        - [将对象转换为JSON](convert-object-to-json)
-    - [触发](#trigger)
-        - [触发状态改变](#trigger-on-states-change)
-        - [触发状态变化](#trigger-on-state-change)
-        - [触发信息](#trigger-info)
-        - [时间表](#schedule)
-        - [触发astro事件](#trigger-on-astro-event)
-        - [命名时间表](#named-schedule)
-        - [时间安排清晰](#clear-schedule)
-        - [CRON对话框](#cron-dialog)
-        - [CRON规则](#cron-rule)
-    - [超时](#timeouts)
-        - [延迟执行](#delayed-execution)
-        - [清除延迟执行](#clear-delayed-execution)
-        - [按间隔执行](#execution-by-interval)
-        - [按间隔停止执行](#stop-execution-by-interval)
-    - [逻辑](#logic)
-        - [如果是阻止](#if-else-block)
-        - [比较块](#comparision-block)
-        - [逻辑AND / OR块](#logical-and-or-block)
-        - [否定块](#negation-block)
-        - [逻辑值TRUE / FALSE](#logical-value-true-false)
-        - [零块](#null-block)
-        - [试块](#test-block)
-    - [循环](#loops)
-        - [重复N次](#repeat-n-times)
-        - [重复一遍](#repeat-while)
-        - [算](#count)
-        - [对于每一个](#for-each)
-        - [打破循环](#break-out-of-loop)
-    - [数学](#math)
-        - [数值](#number-value)
-        - [算术运算+  -  \ * / ^](#arithmetical-operations--)
-        - [平方根，Abs， - ，ln，log10，e ^，10 ^](#square-root-abs---ln-log10-e-10)
-        - [罪，cos，棕褐色，asin，acos，atan](#sin-cos-tan-asin-acos-atan)
-        - [数学常数：pi，e，phi，sqrt（2），sqrt（1/2），无穷大](#math-constants-pi-e-phi-sqrt2-sqrt12-infinity)
-        - [是偶数，奇数，素数，整数，正数，负数，是否可分](#is-even-odd-prime-whole-positive-negative-divisibly-by)
-        - [通过值加或减可变地修改](#modify-variably-by-value-plus-or-minus)
-        - [圆形，地板，ceil值](#round-floor-ceil-value)
-        - [值列表上的操作：总和，最小值，最大值，平均值，中值，模式，偏差，随机项](#operations-on-the-list-of-values-sum-min-max-average-median-modes-deviation-random-item)
-        - [系数](#modulus)
-        - [以min和max限制某些值](#limit-some-value-by-min-and-max)
-        - [随机值从0到1](#random-value-from-0-to-1)
-        - [最小值和最大值之间的随机值](#random-value-between-min-and-max)
-    - [文本](#text)
-        - [字符串值](#string-value)
-        - [连接字符串](#concatenate-strings)
-        - [将字符串附加到变量](#append-string-to-variable)
-        - [字符串长度](#length-of-string)
-        - [字符串为空](#is-string-empty)
-        - [在字符串中查找位置](#find-position-in-string)
-        - [在特定位置的字符串中获取符号](#get-symbol-in-string-on-specific-position)
-        - [获取子字符串](#get-substring)
-        - [转换为大写或小写](#Convert-to-upper-case-or-to-lower-case)
-        - [修剪字符串](#trim-string)
-    - [清单](#lists)
-        - [创建空列表](#create-empty-list)
-        - [使用值创建列表](#create-list-with-values)
-        - [创建具有相同值N次的列表](#create-list-with-same-value-n-times)
-        - [获取列表的长度](#get-length-of-list)
-        - [列表是空的](#is-list-empty)
-        - [在列表中查找项目的位置](#Find-position-of-item-in-list)
-        - [获取列表中的项目](#get-item-in-list)
-        - [在列表中设置项目](#set-item-in-list)
-        - [获取列表的子列表](#get-sublist-of-list)
-        - [将文本转换为列表，反之亦然](#convert-text-to-list-and-vice-versa)
-    - [颜色](#colour)
-        - [颜色值](#colour-value)
-        - [随机颜色](#random-colour)
-        - [RGB颜色](#rgb-colour)
-        - [混合颜色](#mix-colours)
-    - [变量](#variables)
-        - [设置变量的值](#set-variables-value)
-        - [获取变量的值](#get-variables-value)
-    - [功能](#functions)
-        - [从没有返回值的块创建函数](#create-function-from-blocks-with-no-return-value)
-        - [从具有返回值的块创建函数](#create-function-from-blocks-with-return-value)
-        - [函数返回值](#return-value-in-function)
-        - [创建没有返回值的自定义函数](#create-custom-function-with-no-return-value)
-        - [使用返回值创建自定义函数](#create-custom-function-with-return-value)
-        - [通话功能](#call-function)
+＃内容
+-[说明]（＃个说明）
+-[使用入门]（＃使用入门）
+    -[示例1]（＃示例1）
+    -[示例2]（＃示例2）
+    -[示例3]（＃示例3）
+-[方块]（＃方块）
+    -[系统块]（＃个系统块）
+        -[调试输出]（＃调试输出）
+        -[评论]（＃条评论）
+        -[转向状态]（＃转向状态）
+        -[更新状态]（＃个更新状态）
+        -[绑定状态]（＃个绑定状态）
+        -[写入状态]（＃个写入状态）
+        -[创建状态]（＃创建状态）
+        -[获取状态值]（＃获取状态值）
+        -[获取对象ID]（＃get-object-id）
+    -[动作块]（＃个动作块）
+        -[执行命令]（＃exec ---命令）
+        -[请求网址]（＃个请求网址）
+    -[SendTo块]（＃sendTo块）
+        -[发送至电报]（＃发送至电报）
+        -[发送至SayIt]（＃发送到sayit）
+        -[发送到推送]（＃发送到推送）
+        -[发送电子邮件]（＃个发送电子邮件）
+        -[自定义sendTo块]（＃个自定义发送块）
+    -[日期和时间块]（＃个日期和时间块）
+        -[时间比较]（＃时间比较）
+        -[实际时间比较]（＃个实际时间比较）
+        -[以特定格式获取实际时间]（＃以特定格式获取实际时间）
+        -[获取今天的astro事件的时间]（＃获取今天的astro事件的时间）
+    -[转换块]（＃个转换块）
+        -[转换为数字]（＃转换为数字）
+        -[转换为布尔值]（＃转换为布尔值）
+        -[获取变量的类型]（＃获取变量的类型）
+        -[转换为日期/时间对象]（＃转换为日期时间对象）
+        -[将日期/时间对象转换为字符串]（＃convert-datetime-object-to-string）
+        -[将JSON转换为对象]（＃convert-json-to-object）
+        -[将对象转换为JSON]（＃convert-object-to-json）
+        -[通过JSONata表达式转换]（＃convert-by-jsonata-expression）
+    -[触发]（＃触发）
+        -[状态变更触发]（＃状态触发变更）
+        -[状态变更触发]（＃状态变更触发）
+        -[触发器信息]（＃触发器信息）
+        -[时间表]（＃个时间表）
+        -[触发astro事件]（＃触发astro事件）
+        -[命名时间表]（＃个命名时间表）
+        -[清除时间表]（＃清除时间表）
+        -[CRON对话框]（＃cron-dialog）
+        -[CRON规则]（＃cron-rule）
+    -[超时]（＃次超时）
+        -[延迟执行]（＃个延迟执行）
+        -[清除延迟执行]（＃清除延迟执行）
+        -[按时间间隔执行]（按时间间隔执行＃次）
+        -[按间隔停止执行]（按间隔＃停止执行）
+    -[逻辑]（＃逻辑）
+        -[If else块]（＃if-else-block）
+        -[比较块]（＃比较块）
+        -[逻辑与/或块]（＃逻辑与或块）
+        -[取反块]（＃取反块）
+        -[逻辑值TRUE / FALSE]（＃逻辑值-true-false）
+        -[空块]（＃个空块）
+        -[测试块]（＃个测试块）
+    -[循环]（＃个循环）
+        -[重复N次]（＃次重复n次）
+        -[重覆播放]（＃重覆播放）
+        -[计数]（＃个计数）
+        -[每个]（每个为＃）
+        -[突破循环]（＃突破循环）
+    -[数学]（＃数学）
+        -[数字值]（＃数字值）
+        -[算术运算+-\ * / ^]（＃算术运算-）
+        -[平方根，Abs，-，ln，log10，e ^，10 ^]（＃方根-abs --- ln-log10-e-10）
+        -[sin，cos，tan，asin，acos，atan]（＃sin-cos-tan-asin-acos-atan）
+        -[数学常数：pi，e，phi，sqrt（2），sqrt（1/2），无穷大]（＃math-constants-pi-e-phi-sqrt2-sqrt12-infinity）
+        -[偶数，奇数，素数，整数，正数，负数，除数]（＃为奇数-整数-负数-负数-除数）
+        -[按值正负可变地修改]（＃按值正负可变地修改）
+        -[圆，底，天花板值]（＃圆底天花板值）
+        -[值列表上的操作：总和，最小值，最大值，平均值，中位数，众数，偏差，随机项]（值列表中的＃个操作总和-最小值-最大值-平均中位数-模式偏差随机项目）
+        -[模数]（＃模数）
+        -[最小和最大限制一些值]（＃最小和最大限制一些值）
+        -[随机值从0到1]（＃随机值从0到1）
+        -[最小值和最大值之间的随机值]（＃最小值和最大值之间的随机值）
+    -[文字]（＃文字）
+        -[字符串值]（＃个字符串值）
+        -[连接字符串]（＃个连接字符串）
+        -[将字符串附加到变量]（＃将字符串附加到变量）
+        -[字符串长度]（＃字符串长度）
+        -[字符串是否为空]（＃is-string-empty）
+        -[在字符串中查找位置]（＃在字符串中查找位置）
+        -[在特定位置的字符串中获取符号]（＃在特定位置的字符串中获取符号）
+        -[获取子字符串]（＃获取子字符串）
+        -[转换为大写或小写]（＃转换为大写或小写）
+        -[修剪字符串]（＃修剪字符串）
+    -[列表]（＃个列表）
+        -[创建空列表]（＃create-empty-list）
+        -[使用值创建列表]（＃个带有值的创建列表）
+        -[创建具有相同值N次的列表]（＃创建具有相同值n次的列表）
+        -[获取列表长度]（＃get-length-of-list）
+        -[列表是否为空]（＃is-list-empty）
+        -[在列表中查找项目的位置]（＃在列表中查找项目的位置）
+        -[在列表中获取项目]（＃在列表中获取项目）
+        -[在列表中设置项目]（列表中的＃个设置项目）
+        -[获取列表的子列表]（＃get-sublist-of-list）
+        -[将文本转换为列表，反之亦然]（＃将文本转换为列表，反之亦然）
+    -[颜色]（＃颜色）
+        -[颜色值]（＃颜色值）
+        -[随机颜色]（＃随机颜色）
+        -[RGB颜色]（＃rgb颜色）
+        -[混合颜色]（＃种混合颜色）
+    -[变量]（＃个变量）
+        -[设置变量的值]（＃set-variables-value）
+        -[获取变量的值]（＃get-variables-value）
+    -[功能]（＃个功能）
+        -[从无返回值的块创建函数]（＃从无返回值的块创建函数）
+        -[从具有返回值的块创建函数]（＃从具有返回值的块创建函数）
+        -[函数中的返回值]（＃函数中的返回值）
+        -[创建无返回值的自定义函数]（＃创建无返回值的自定义函数）
+        -[使用返回值创建自定义函数]（＃创建具有返回值的自定义函数）
+        -[通话功能]（＃通话功能）
 
-＆NBSP;
+＆nbsp;
 
-＃说明Blockly是一个图形编辑器，允许用户通过合并块来创建脚本。
-它是为没有编程计算机经验的用户开发的。
-＆NBSP;
+＃说明Blockly是一个图形编辑器，允许用户通过组装块来创建脚本。
+它是为没有计算机编程经验的用户开发的。
+＆nbsp;
 
 ＃入门
-##例1
-**更改另一个数据点时更改数据点的状态**
+##示例1
+**更改另一个数据点时更改一个数据点的状态**
 
 ![入门1](../../../de/adapterref/iobroker.javascript/img/getting_started_1_de.png)
 
-这是将数据点更改为其他内容的经典示例。
+这是更改数据点时切换其他内容的经典示例。
 
-这里，当检测到移动或没有移动时，灯打开或关闭。
+当检测到运动或没有运动时，此处的灯会打开或关闭。
 
-首先插入块“Triggers => If object”。选择对象ID以使用对象的状态作为此脚本的触发器。
+首先插入块“触发器=>如果对象”。选择对象ID，以将对象的状态用作此脚本的触发器。
 
-添加另一个块 - “System => Control”，然后在对话框中选择应由触发器更改的另一个状态。
+添加另一个块-“系统=>控制”，然后在对话框中选择要由触发器更改的其他状态。
 
-在此控制块中插入一个块“System =>对象ID的值”，并在对话框中选择对象“Motion”，将其状态写入“Light”：
+在此控制块中插入“系统=>对象ID的值”块，然后在对话框中选择“运动”对象，以将其状态写入“浅”：
 
-**触发块有一个特殊的变量“value”。这总是在这里定义，可以用于不同的目的。它包含触发对象的当前值，因此您可以使用块“Variable => Object ID”创建更简单的脚本，并将其重命名为“Value”。**
+**触发块有一个特殊的变量“ Value”。这总是在这里定义，可以用于各种目的。它包含触发对象的当前值，因此您可以通过使用块“变量=>对象ID”并将其重命名为“值”来创建更简单的脚本。
 
 ![入门1](../../../de/adapterref/iobroker.javascript/img/getting_started_1_2_de.png)
 
-＆NBSP;导入示例：
+＆nbsp;导入示例：
 
 ```xml 
 <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -187,21 +188,21 @@ hash: M7GQwgI497RpKFJcBY1bHyu/mjr8k/IJkPAMV3ynyG8=
 </xml>
 ```
 
-＆NBSP;
+＆nbsp;
 
-##示例2 **如果10分钟没有移动，请在移动时打开和关闭灯。**
+##示例2 ** 10分钟内没有任何活动时，请打开和关闭灯。
 ![入门2](../../../de/adapterref/iobroker.javascript/img/getting_started_2_de.png)
 
-如果使用值“true”更新状态“Motion”，请执行以下操作：
+如果状态“运动”已更新为值“ true”，请执行以下操作：
 
- - 打开“灯”
- - 开始延迟10分钟以关闭“灯”并删除此数据点的所有先前延迟。
+-打开“灯”
+-启动10分钟的延迟以关闭“指示灯”，并删除该数据点的所有先前延迟。
 
-如您所见，“延迟延迟”标志由最后一个命令清除。这将删除此数据点的所有计时器并启动新计时器
+如您所见，最后一个命令清除了“清除延迟”标志。这将删除该数据点的所有计时器，并启动一个新计时器
 
-＆NBSP;导入示例：
+＆nbsp;导入示例：
 
-<！ - ```xml <xml xmlns =“http://www.w3.org/1999/xhtml”> - > <block type =“comment”id =“s7s ** k + Cc_KjDnJW`（h 〜“x =”112“y =”63“> <field name =”COMMENT“>在IDLE的10分钟内开灯和关灯</ field> <next> <block type =”on_ext“id =”＃} ：B（M-o5：/] k，_ msr％y“> <mutation items =”1“> </ mutation> <field name =”CONDITION“> true </ field> <field name =”ACK_CONDITION“> true </ field> <value name =“OID0”> <shadow type =“field_oid”id =“o~6）！C0IVy {WD％Km（lkc”> <field name =“oid”> javascript.0.Motion < / field> </ shadow> </ value> <statement name =“STATEMENT”> <block type =“control”id =“（ZqzhS_7 * jGpk;`zJAZg”> <mutation delay_input =“false”> </ mutation> <field name =“OID”> javascript.0.Light </ field> <field name =“WITH_DELAY”> FALSE </ field> <value name =“VALUE”> <block type =“logic_boolean”id =“％^ ADwe * 2l0tLw8Ga5F * Y“> <field name =”BOOL“> TRUE </ field> </ block> </ value> <next> <block type =”control“id =”=] vmzp6j ^ V9：3？R ？2Y，x“> <mutation delay_input =”true“> </ mutation> <field name =”OID“> javascript.0.Light </ field> <field name =”WITH_DELAY“> TR UE </ field> <field name =“DELAY_MS”> 600000 </ field> <field name =“CLEAR_RUNNING”> TRUE </ field> <value name =“VALUE”> <block type =“logic_boolean”id =“！ ; DiIh，D] l1oN {D; skYl“> <field name =”BOOL“> FALSE </ field> </ block> </ value> </ block> </ next> </ block> </ statement> < / block> </ next> </ block> </ xml>
+<！-```xml <xml xmlns =“ http://www.w3.org/1999/xhtml”>-> <block type =“ comment” id =“ s7s ** k + Cc_KjDnJW`（h 〜“ x =” 112“ y =” 63“> <field name =” COMMENT“>在10分钟的空闲状态下打开和关闭灯</ field> <next> <block type =” on_ext“ id =”＃} ：B（M-o5：/] k，_msr％y“> <变异项=” 1“> </ mutation> <字段名=” CONDITION“> true </ field> <字段名=” ACK_CONDITION“> true </ field> <值名称=“ OID0”> <阴影类型=“ field_oid” id =“ o〜6）！C0IVy {WD％Km（lkc”> <field name =“ oid”> javascript.0.Motion < / field> </ shadow> </ value> <statement name =“ STATEMENT”> <block type =“ control” id =“（ZqzhS_7 * jGpk;`zJAZg”> <mutation delay_input =“ false”> </ mutation> <field name =“ OID”> javascript.0.Light </ field> <field name =“ WITH_DELAY”> False </ field> <值名称=“ VALUE”> <块类型=“ logic_boolean” id =“％^ ADwe * 2l0tLw8Ga5F * Y“> <字段名=” BOOL“>是</ field> </ block> </ value> <next> <block type =” control“ id =” =] vmzp6j ^ V9：3？R ？2Y，x“> <mutation delay_input =” true“> </ mutation> <字段名称=” OID“> javascript.0.Light </ field> <字段名称=” WITH_DELAY“> TR UE </ field> <field name =“ DELAY_MS”> 600000 </ field> <field name =“ CLEAR_RUNNING”> TRUE </ field> <value name =“ VALUE”> <block type =“ logic_boolean” id =“！ ; DiIh，D] l1oN {D; skYl“> <field name =” BOOL“> FALSE </ field> </ block> </ value> </ block> </ next> </ block> </ statement> < / block> </ next> </ block> </ xml>
 
 ```
 
@@ -352,20 +353,20 @@ Beispiel zum importieren:
 </xml>
 ```
 
-＆NBSP;
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
 ＃块
 ##系统块
 ###调试输出
 ![调试输出](../../../de/adapterref/iobroker.javascript/img/system_debug_en.png)
 
-除了在日志中写入一行之外，此块无关紧要。您可以使用它来调试脚本，如下所示：
+除了在日志中写一行外，该块什么都不做。您可以使用它来调试脚本，如下所示：
 
 ![调试输出](../../../de/adapterref/iobroker.javascript/img/system_debug_1_en.png)
 
-＆NBSP;导入示例：
+＆nbsp;导入示例：
 
 ```xml 
 <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -395,44 +396,44 @@ Beispiel zum importieren:
 </xml>
 ```
 
-您可以定义4种不同的消息严重性级别：
+您可以为消息定义4个不同的严重性级别：
 
- -  debug（必须激活javascript实例的调试级别。）
- -  info（默认情况下，至少必须在javascript实例上启用信息日志级别）
- - 警告
- - 错误（总是显示，如果在javascript实例中相应设置，则可以忽略其他级别）
+-调试（为此必须激活Javascript实例的调试级别。）
+-info（默认，至少必须在Javascript实例中激活info日志级别。）
+-警告
+-错误（始终显示。如果在Javascript实例中进行了相应设置，则可以忽略其他级别。）
 
-＆NBSP;
+＆nbsp;
 
-###评论![评论](../../../de/adapterref/iobroker.javascript/img/system_comment_en.png)
-在脚本中添加注释以便以后了解它。
+###评论![留言](../../../de/adapterref/iobroker.javascript/img/system_comment_en.png)
+在脚本中添加注释，以便以后更好地理解。
 
-该块无关紧要，只是一个评论。
+块无关紧要，仅是注释。
 
-＆NBSP;
+＆nbsp;
 
-###控制状态![控制状态](../../../de/adapterref/iobroker.javascript/img/system_control_en.png)
-您可以通过两种不同的方式编写状态：
+###税收州![控制状态](../../../de/adapterref/iobroker.javascript/img/system_control_en.png)
+有两种写状态的方法：
 
- - 控制某些内容并将值发送到硬件（此块）
-仅为信息写一个新值，例如温度变化（[下一个街区](#update-state)）
+-控制某物并将其值发送到硬件（此块）
+-编写仅用于信息的新值，例如温度变化（[下一块]（＃更新状态））
 
-＆NBSP;该块的典型应用：
+＆nbsp;此块的典型用法：
 
 ![控制状态](../../../de/adapterref/iobroker.javascript/img/system_control_sample1_en.png)
 
-在对话框中选择对象ID，必须指定要发送的值。根据数据点的类型，值可以是[string]（＃string-value），[number]（＃number-value）或[boolean](#ogical-value-trueflase)类型。
+在对话框中选择对象ID，必须指定要发送的值。根据数据点的类型，该值可以是[字符串]（＃个字符串值），[数字]（＃个数字值）或[布尔值](#ogical-value-trueflase)类型。
 
-进一步的解释可以在[这里](https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation#commands-and-statuses)中找到。
+还有进一步的说明[在这里](https://github.com/ioBroker/ioBroker/wiki/Adapter-Development-Documentation#commands-and-statuses)。
 
-该块将命令写入数据点（ack = false）。此外，可以指定延迟。
-如果延迟不为0，则不会立即设置状态，而是仅在指定时间后的毫秒内设置。
+该块将命令写入数据点（ack = false）。也可以指定延迟。
+如果延迟不为0，则不会立即设置状态，而是仅在指定时间（以毫秒为单位）之后设置。
 
 您可以通过选中复选框来删除此数据点的所有其他延迟。
 
-因此，在以下示例中，数据点“light”仅切换一次（2秒后）：![控制状态](../../../de/adapterref/iobroker.javascript/img/system_control_1_en.png)
+在下面的示例中，数据点“ light”仅切换一次（2秒后）：![控制状态](../../../de/adapterref/iobroker.javascript/img/system_control_1_en.png)
 
-＆NBSP;导入示例：
+＆nbsp;导入示例：
 
 ```xml 
 <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -470,7 +471,7 @@ Beispiel zum importieren:
 </xml>
 ```
 
-与前面的示例相反，在下面的示例中（1秒后和2秒后），“light”的状态被切换两次：![控制状态](../../../de/adapterref/iobroker.javascript/img/system_control_2_en.png)
+与前面的示例相反，在下面的示例中，“光”的状态切换了两次（在1秒后和2秒后）：![控制状态](../../../de/adapterref/iobroker.javascript/img/system_control_2_en.png)
 
 ```xml 
 <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -508,27 +509,27 @@ Beispiel zum importieren:
 </xml>
 ```
 
-＆NBSP;
+＆nbsp;
 
 ###更新状态![更新状态](../../../de/adapterref/iobroker.javascript/img/system_update_en.png)
-此块类似于[控制块](#steuere-state)，但它仅设置当前值。没有命令发送来控制硬件。
+该块类似于[控制块](#steuere-state)，但是它仅设置当前值。没有发送控制硬件的命令。
 
-该块的典型应用：
+此块的典型用法：
 
 ![更新状态](../../../de/adapterref/iobroker.javascript/img/system_update_sample_en.png)
 
-＆NBSP;
+＆nbsp;
 
-### BindStates![绑定状态](../../../de/adapterref/iobroker.javascript/img/system_bind_en.png)
+###绑定状态![绑定状态](../../../de/adapterref/iobroker.javascript/img/system_bind_en.png)
 该块将两个状态绑定在一起。
 
-您可以对这些块执行相同的操作：
+您可以对以下块执行相同的操作：
 
 ![绑定状态](../../../de/adapterref/iobroker.javascript/img/system_bind_1_en.png)
 
-您可以选择仅在源更改时还是每次更新时转发值。
+您可以选择是仅在源更改时还是在每次更新时转发值。
 
-＆NBSP;导入示例：
+＆nbsp;导入示例：
 
 ```xml 
 <block xmlns="http://www.w3.org/1999/xhtml" type="on_ext" id="w/@=5/5!D;8wn4DZ;jzG" x="287.99999999999943" y="37.999999999999716">
@@ -555,30 +556,30 @@ Beispiel zum importieren:
 </block>
 ```
 
-＆NBSP;
+＆nbsp;
 
-###写状态![写状态](../../../de/adapterref/iobroker.javascript/img/system_write_en.png)
-通用写入块可以与[“更新状态”]（＃update-state）和[“控制状态”](#control-state)一起执行。
+###写入状态![写状态](../../../de/adapterref/iobroker.javascript/img/system_write_en.png)
+通用写块可以一起执行[“更新状态”]（＃更新状态）和[“控制状态”](#control-state)的作用。
 
-但与你相比，你可以做到。
+但是与它们相比，您可以定义对象ID和其他块的延迟，以使脚本更具通用性。
 
 ###创建状态
-![创建状态](../../../de/adapterref/iobroker.javascript/img/system_create_en.png)可以在脚本中创建两种类型的变量：
+![建立状态](../../../de/adapterref/iobroker.javascript/img/system_create_en.png)可以在脚本中创建两种类型的变量：
 
- - 本地[变量](#set-variables-value)
- - 全局变量或状态。
+-本地[变量]（＃set-variables-value）
+-全局变量或状态。
 
-全局状态在所有脚本中都可见，但仅在当前脚本中可见。
+全局状态在所有脚本中均可见，而局部状态仅在此当前脚本中可见。
 
-全局状态可以用于vis，移动和所有其他逻辑或可视化模块，可以登录到db或其他任何东西。
+全局状态可以在vis，mobile和所有其他逻辑或可视化模块中使用，可以登录到db等。
 
-该块将创建一个全局状态，并且状态将存在。您可以在每次启动脚本时安全地调用此块。
+该块创建全局状态，如果该状态还存在，则将忽略该命令。您可以在每次脚本启动时安全地调用此块。
 
-此块生成全局状态，如果已存在，则忽略该命令。因此，可以在每个脚本启动时无风险地使用此块。
+该块创建全局状态，如果已经存在，则忽略该命令。因此，此块可在任何脚本启动时使用，没有任何风险。
 
-＆NBSP;该块的典型应用：
+＆nbsp;此块的典型用法：
 
-![创建状态](../../../de/adapterref/iobroker.javascript/img/system_create_sample1_en.png)
+![建立状态](../../../de/adapterref/iobroker.javascript/img/system_create_sample1_en.png)
 
 ```xml 
 <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -628,29 +629,29 @@ Beispiel zum importieren:
 </xml>
 ```
 
-您已经可以在块sekber中使用新创建的状态。
+您已经可以在secber块中使用新创建的状态。
 
-以下代码在第一次执行时返回错误，因为subscribe'for“myState”找不到该对象：
+以下代码在首次运行时会引发错误，因为“ myState”的“订阅”找不到对象：
 
-![创建状态](../../../de/adapterref/iobroker.javascript/img/system_create_sample2_en.png)
+![建立状态](../../../de/adapterref/iobroker.javascript/img/system_create_sample2_en.png)
 
-在第二次执行中，不输出错误，因为数据点现在存在。
+在第二次执行中，由于现在存在数据点，因此不会输出任何错误。
 
-＆NBSP;
+＆nbsp;
 
-###对象ID的值![获得国家的价值](../../../de/adapterref/iobroker.javascript/img/system_get_value_en.png)
-该块用于读取数据点的值。可以读出数据点的以下属性：
+对象ID![获得国家价值](../../../de/adapterref/iobroker.javascript/img/system_get_value_en.png)的###值
+该块用于读取数据点的值。可以读取数据点的以下属性：
 
- - 价值
- - 确认命令=错误或更新=真
- - 自1970年1月1日起的ms中的时间戳（具有“日期对象”类型）
- - 自1970年1月1日以来的最后一次更改值（具有“日期对象”类型）
- - 质量
- -  Source  - 写入最后一个值的实例的名称，例如“System.adapter.javascript.0”
+-价值
+-确认命令= false或update = true
+-1970年1月1日以来的时间戳（以毫秒为单位）（类型为“日期对象”）
+-自1970年1月1日以来最后一次以毫秒为单位的值更改（类型为“日期对象”）
+-质量
+-源-写入最后一个值的实例的名称，例如“ system.adapter.javascript.0”
 
-＆NBSP;输出值的最后一次更改时间的示例：
+＆nbsp;输出值的最后更改时间的示例：
 
-![获得国家的价值](../../../de/adapterref/iobroker.javascript/img/system_get_value_sample_en.png)
+![获得国家价值](../../../de/adapterref/iobroker.javascript/img/system_get_value_sample_en.png)
 
 ```xml 
 <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -690,16 +691,16 @@ Beispiel zum importieren:
 </xml>
 ```
 
-＆NBSP;
+＆nbsp;
 
 ###对象ID
 ![获取对象ID](../../../de/adapterref/iobroker.javascript/img/system_get_id_en.png)
 
-这是一个简单的辅助块，可以轻松选择对象ID来触发块。
+这是一个简单的辅助块，用于舒适地选择对象ID以触发该块。
 
-单击“对象ID”打开ID选择对话框。
+通过单击“对象ID”打开ID选择对话框。
 
-＆NBSP;该块的典型应用：
+＆nbsp;此块的典型用法：
 
 ![获取对象ID](../../../de/adapterref/iobroker.javascript/img/system_get_id_sample_en.png)
 
@@ -736,27 +737,27 @@ Beispiel zum importieren:
 </xml>
 ```
 
-＆NBSP;
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
-##动作块
-### Exec  - 命令
-![执行 - 执行](../../../de/adapterref/iobroker.javascript/img/action_exec_en.png)
+行动块
+###执行命令
+![执行-执行](../../../de/adapterref/iobroker.javascript/img/action_exec_en.png)
 
-该块在系统中执行输入的命令，就像通过SSH在命令行输入一样。
+该块执行在系统中输入的命令，就好像它是通过SSH在命令行中输入的一样。
 
-该命令是在用户启动ioBroker的权限下执行的。
+以启动ioBroker的用户权限执行命令。
 
-如果不需要输出，可以抑制：
+如果不需要输出，则可以将其抑制：
 
-![执行 - 执行](../../../de/adapterref/iobroker.javascript/img/action_exec_2_en.png)
+![执行-执行](../../../de/adapterref/iobroker.javascript/img/action_exec_2_en.png)
 
 如果要输出：
 
-![执行 - 执行](../../../de/adapterref/iobroker.javascript/img/action_exec_1_en.png)
+![执行-执行](../../../de/adapterref/iobroker.javascript/img/action_exec_1_en.png)
 
-＆NBSP;
+＆nbsp;
 
 ```xml 
 <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -791,38 +792,38 @@ Beispiel zum importieren:
 </xml>
 ```
 
-＆NBSP;
+＆nbsp;
 
-要分析输出，会生成3个特殊变量：
+创建了三个特殊变量来分析输出：
 
- -  result，包含到控制台的常规输出（例如，对于命令“ls / opt”，输出为“iobroker nodejs”）
- - 如果JavaScript模块无法执行命令，则为Error对象
- -  stderr，执行程序的错误输出
+-结果，包含到控制台的常规输出（例如，对于命令“ ls / opt”，输出为“ iobroker nodejs”）
+-错误对象，如果该命令无法由JavaScript模块执行
+-stderr，已执行程序的错误输出
 
-此外，如果loglevel不是“none”，则相同的输出也将出现在日志中。
+此外，如果未将日志级别设置为“无”，则相同的输出也将出现在日志中。
 
-＆NBSP;
+＆nbsp;
 
 ###请求网址
-![请求网址](../../../de/adapterref/iobroker.javascript/img/action_request_en.png)
+![要求网址](../../../de/adapterref/iobroker.javascript/img/action_request_en.png)
 
-调用URL并返回结果。
+检索URL并返回结果。
 
-＆NBSP;例如：
+＆nbsp;例如：
 
-![请求网址](../../../de/adapterref/iobroker.javascript/img/action_request_1_en.png)
+![要求网址](../../../de/adapterref/iobroker.javascript/img/action_request_1_en.png)
 
-要分析输出，会生成3个特殊变量：
+创建了三个特殊变量来分析输出：
 
- - 结果，包含所请求页面的正文
- - 错误，包含错误说明
- - 答案（仅限高级用户），[http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage)类型的特殊对象
+-结果，包含所请求页面的正文
+-错误，包含错误说明
+-答案（仅适用于高级用户），类型为[http.IncomingMessage]（https://nodejs.org/api/http.html#http_class_http_incomingmessage）的特殊对象
 
-如果不需要输出，则可以抑制此输出。为此，请选中“带结果”选项。
+如果不需要输出，则可以将其抑制。选中选项“ with result”。
 
-＆NBSP;
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
 ## SendTo块
 ###发送电报
@@ -830,87 +831,87 @@ Beispiel zum importieren:
 
 该块用于使用电报适配器通过电报发送消息。
 
-当然，必须首先为此安装和配置电报适配器。
+当然，电报适配器必须事先安装和配置。
 
-为了发送有关特定实例的消息，必须选择所需的适配器实例（通常是telegram.0），否则将在所有可用实例中发送消息。
+为了通过特定实例发送消息，必须选择适配器的所需实例（通常为telegram.0），否则将通过所有可用实例发送消息。
 
-* Message *字段是必填字段，其中包含的文本将以完全相同的方式发送到客户端。
+* Message *字段是必填字段，它包含的文本以完全相同的方式发送给客户端。
 
-用户名ID是可选的，这是来自[电报](https://core.telegram.org/bots/api#user)（用户或机器人的唯一标识符）的ID。
+用户名ID是可选的，这是[电报](https://core.telegram.org/bots/api#user)（用户或漫游器的唯一标识符）中的ID。
 
-此外，如果日志级别不是“none”，则会将相同的消息发送到日志。
+此外，如果日志级别不是“ none”，则将同一条消息发送到日志。
 
-＆NBSP;
+＆nbsp;
 
-###发送给SayIt
-![发送给SayIt](../../../de/adapterref/iobroker.javascript/img/sendto_sayit_en.png)
+###发送至SayIt
+![发送到SayIt](../../../de/adapterref/iobroker.javascript/img/sendto_sayit_en.png)
 
-此块用于将文本发送到sayit实例以发出此文本。
+此块用于将文本发送到sayit实例以发音该文本。
 
-当然必须安装和配置适配器。
+当然，必须安装和配置sayit适配器。
 
-Elsewise消息希望存在于所有现有实例中。
+要将消息发送到某个特定实例，应选择已安装的适配器实例（通常为sayit.0），否则，消息将发送到所有现有实例。
 
-属性*消息*是强制性的，确切地说这个文本将被发音。
+属性*消息*是必填项，确切地说，此文本将发音。
 
 您必须检查语言属性。这将用于text2speech引擎。
 
-卷是可选的（通常从0到100）。
+音量是可选的（通常从0到100）。
 
-此外，如果日志级别不是“none”，则会将相同的消息发送到日志。
+此外，如果日志级别不是“ none”，则将同一条消息发送到日志。
 
-＆NBSP;
+＆nbsp;
 
 ###发送到pushover
-![发送到pushover](../../../de/adapterref/iobroker.javascript/img/sendto_pushover_en.png)
+![发送到下推](../../../de/adapterref/iobroker.javascript/img/sendto_pushover_en.png)
 
-此块用于向pushover客户端发送文本。您可以阅读有关推送驱动程序[这里](https://github.com/ioBroker/ioBroker.pushover)的信息。
+此块用于将文本发送到下推式客户端。您可以阅读有关推入驱动程序[在这里](https://github.com/ioBroker/ioBroker.pushover)的信息。
 
-当然必须安装和配置推进适配器。
+当然，必须安装和配置下推式适配器。
 
-Elsewise消息希望存在于所有现有实例中。
+要将消息发送到某个特定实例，您应该选择已安装的适配器实例（通常为pushover.0），否则消息将发送到所有现有实例。
 
-属性*消息*是必需的，确切地说这个文本要发送给客户端。
+属性*消息*是必填项，确切地说，此文本将发送给客户端。
 
-所有其他属性都是可选的，您可以阅读它们[这里](https://pushover.net/api)：
+所有其他属性都是可选的，您可以阅读以下内容[在这里](https://pushover.net/api)：
 
- - *备ID* - 用户的设备名称，用于将消息直接发送到该设备，而不是所有用户的设备（多个设备可能用逗号分隔）
- - *title* - 您的邮件标题，否则使用您的应用程序名称
- - *URL* - 显示您的消息的URL
- -  *网址标题*  - 网址网址的标题，否则显示网址
- - *priority* - 发送为-2以不生成通知/警报，-1发送始终作为安静通知发送，1发送为高优先级并绕过用户的安静时间，或2发送请求用户确认
- -  *以毫秒为单位的时间*  - 显示用户的消息的日期和时间的Unix时间戳，而不是我们的API接收消息的时间
- - *sound* - 设备客户端支持的声音之一的名称，以覆盖用户的默认声音选择
+-*设备ID *-您的用户设备名称，用于直接将消息发送到该设备，而不是所有用户设备（多个设备可以用逗号分隔）
+-*标题*-您邮件的标题，否则使用您应用的名称
+-* URL *-随邮件一起显示的补充URL
+-* URL标题*-补充URL的标题，否则仅显示URL
+-*优先级*-发送为-2不产生通知/警报，-1始终作为安静的通知发送，1显示为高优先级并绕过用户的安静时间，或2也需要用户确认
+-*时间（以毫秒为单位）*-消息的日期和时间显示给用户的Unix时间戳，而不是我们的API收到消息的时间
+-*声音*-设备客户端支持的声音之一，以覆盖用户的默认声音选择
 
-此外，如果日志级别不是“none”，则会将相同的消息发送到日志。
+此外，如果日志级别不是“ none”，则将同一条消息发送到日志。
 
-＆NBSP;
+＆nbsp;
 
 ###发送电子邮件
-![发送电子邮件](../../../de/adapterref/iobroker.javascript/img/sendto_email_en.png)
+![发送到电子邮件](../../../de/adapterref/iobroker.javascript/img/sendto_email_en.png)
 
 此块用于将文本作为电子邮件发送。
 
 当然，必须安装，配置和测试电子邮件适配器。
 
-Elsewise消息希望存在于所有现有实例中。
+要将消息发送到某个特定实例，您应该选择已安装的适配器实例（通常为email.0），否则消息将被发送到所有现有实例。
 
-属性*文本*是必需的，并且此文本正好要发送给客户端。
+属性*文本*是必填项，确切地说，此文本将发送给客户端。
 
 当然，目的地（*到*）必须填写有效的电子邮件地址。
 
-您可以将文件（通常是图像）附加到电子邮件中。要在文本中使用图像，您必须将格式更改为HTML（选中“以HTML格式发送”选项），文本可能如下所示：
+您可以将文件（通常是图像）附加到电子邮件中。要在文本中使用图片，您必须将格式更改为HTML（选中“以HTML格式发送”选项），文本可能如下所示：
 
 ```html
 <p>Embedded image 1: <img src='cid:file1'/></p>
 <p>Embedded image 2: <img src='cid:file2'/></p>
 ```
 
-您可以将文件称为```<img src='cid:file1'/>```。 “file1”和“file2”是保留ID，不能更改。
+您可以将文件称为```<img src='cid:file1'/>```。 “ file1”和“ file2”是保留的ID，无法更改。
 
-“文件名”必须是磁盘上映像的完整路径。
+“文件名”必须包含磁盘上映像的完整路径。
 
-![发送电子邮件](../../../de/adapterref/iobroker.javascript/img/sendto_email_1_en.png)
+![发送到电子邮件](../../../de/adapterref/iobroker.javascript/img/sendto_email_1_en.png)
 
 ```xml 
 <block xmlns="http://www.w3.org/1999/xhtml" type="email" id="VeysPTJXFh^.CW1t(s@Q" x="563" y="63">
@@ -946,22 +947,22 @@ Elsewise消息希望存在于所有现有实例中。
 </block>
 ```
 
-此外，如果日志级别不是“none”，则会将相同的消息发送到日志。
+此外，如果日志级别不是“ none”，则将同一条消息发送到日志。
 
-＆NBSP;
+＆nbsp;
 
 ###自定义sendTo块
 ![自定义sendTo块](../../../de/adapterref/iobroker.javascript/img/sendto_custom_en.png)
 
-这只是将内部系统消息（sendTo）发送到任何适配器的块。
+这只是一个将内部系统消息（sendTo）发送到任何适配器的帮助块。
 
-当然你可以使用自定义功能块来做疯狂，也可以发送消息。
+当然，您可以使用自定义功能块来疯狂地做任何事情，并发送消息。
 
 您可以为sendTo命令定义自己的参数：
 
 ![自定义sendTo块](../../../de/adapterref/iobroker.javascript/img/sendto_custom_1_en.png)
 
-阅读更多关于“sendTo”的[这里](https://github.com/ioBroker/ioBroker.javascript#sendto)。
+阅读更多关于“ sendTo”的[在这里](https://github.com/ioBroker/ioBroker.javascript#sendto)。
 
 示例如何将SQL查询发送到sql适配器：
 
@@ -1017,7 +1018,7 @@ Elsewise消息希望存在于所有现有实例中。
 </xml>
 ```
 
-如果您只想使用一个带有空名称的参数，那么不会创建任何结构，如下所示：
+如果仅使用一个名称为空的参数，那么将不会创建任何结构，例如：
 
 ```javascript
 var obj, result;
@@ -1037,7 +1038,7 @@ sendTo("sql.0", "query", 'SELECT * FROM datapoints', function (result) {
 console.log("sql.0: " + "");
 ```
 
-或者如何从SQL适配器请求历史记录：
+或如何从SQL适配器请求历史记录：
 
 ![自定义sendTo块](../../../de/adapterref/iobroker.javascript/img/sendto_custom_3_en.png)
 
@@ -1130,185 +1131,185 @@ sendTo("sql.0", "getHistory", {
   });
 ```
 
-如果你想用“{”开始值，它将被解释为JSON字符串。在字符串中使用双引号。
+如果以“ {”开头的值将被解释为JSON字符串，请在字符串中使用双引号。
 
-＆NBSP;
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
 ##日期和时间块
 ###时间比较
 ![时间比较](../../../de/adapterref/iobroker.javascript/img/datetime_compare_ex_en.png)
 
-如果使用运算符“between”或“not between”，则块看起来像这样：
+如果使用“在...之间”或“不在...之间”运算符，则该块如下所示：
 
 ![时间比较](../../../de/adapterref/iobroker.javascript/img/datetime_compare_ex_1_en.png)
 
-您可以指定必须比较的时间。 Block期望时间为“Date对象”。
+您可以指定一个必须比较的时间。块期望时间为“日期对象”。
 
 ![时间比较](../../../de/adapterref/iobroker.javascript/img/datetime_compare_ex_2_en.png)
 
 有以下比较模式：
 
- - 小于，检查实际时间是否小于指定时间。
- - 等于或小于
- - 大于
- - 等于或大于
- - 等于
-之间，检查是否有一天之间的时间。
-     - 例如如果时间必须在12:00到20:00之间。将检查实际时间是否大于或等于12:00且小于20:00。 20:00想要归还假。
-     - 或者例如在21:00到8:00之间。在最后一种情况下，将检查时间是否大于或等于21:00或小于8:00。
+-小于，请检查实际时间是否小于指定时间。
+-等于或小于
+-大于
+-等于或大于
+-等于
+-之间，请检查是否有一天之间的时间。
+    -例如如果时间必须在12:00和20:00之间。将检查实际时间是否大于或等于12:00且小于20:00。 20:00将返回false。
+    -或例如在21:00至8:00之间。在最后一种情况下，将检查时间是否大于或等于21:00或小于8:00。
 
- - 如果时间不在一天的给定时间内，则不介于两者之间。如果时间小于开始且大于或等于结束。 （如果开始时间大于结束时间，将检查时间是否大于或等于结束且小于开始）
+-如果时间不在一天中的给定时间段内，则不在此之间。如果时间小于开始而大于或等于结束。 （如果开始时间大于结束时间，则将检查时间是否大于或等于结束时间并且小于开始时间）
 
 以下时间格式有效：
 
- -  YYYY-MM-DD hh：mm：ss
- -  YYYY-MM-DD hh：mm
- -  hh：mm：ss
- - 嗯：mm
+-YYYY-MM-DD hh：mm：ss
+-YYYY-MM-DD hh：毫米
+-hh：mm：ss
+-时：毫米
 
-＆NBSP;
+＆nbsp;
 
 ###实际时间比较
 ![实际时间比较](../../../de/adapterref/iobroker.javascript/img/datetime_compare_en.png)
 
-该块用于比较白天和实际时间。它具有与[时间比较](#time-comparision)相同的逻辑，但限制不能是块，它只比较实际时间。 （与旧版本兼容）
+该块用于将白天时间与实际时间进行比较。它具有与[时间比较](#time-comparision)相同的逻辑，但是限制不能是一个块，并且只能比较实际时间。 （与旧版本兼容）
 
-＆NBSP;
+＆nbsp;
 
 ###以特定格式获取实际时间
-![获取特定格式的实际时间](../../../de/adapterref/iobroker.javascript/img/datetime_actualtime_en.png)
+![以特定格式获取实际时间](../../../de/adapterref/iobroker.javascript/img/datetime_actualtime_en.png)
 
-以某种指定格式返回实际时间。
+以某种指定的格式返回实际时间。
 
 支持以下格式：
 
- - 毫秒 - 仅返回从0到999（不是纪元毫秒）的当前秒的毫秒数。要获得纪元毫秒，请使用“日期对象”;
- - 秒 - 仅返回当前分钟的秒数，从0到59，
- - 一天中的秒数 - 从一天开始的秒数（0到24 * 3600  -  1），
- - 分钟 - 将当前小时的分钟数从0恢复为59，
- - 白天分钟 - 从一天开始返回分钟数（0到24 * 60  -  1），
- - 小时 - 将当天的小时数从0恢复为23，
- - 月中的某一天 - 从1到31的某一天，
- - 月份为数字 - 从1到12获取月份数，
- - 作为文本的月份 - 将月份作为文本。必须指定语言。
- - 月份为短文本 - 以月为文本：1月，2月，3月，4月，5月，6月，7月，8月，9月，10月，11月，12月必须指定语言。
- - 短年 - 从0到99年，例如2016年，结果将是16。
- - 全年 - 全年：2016年
- - 工作日文本 - 以文本形式获取星期几。
- - 短暂的一周 - 获得一周的短文：Su，Mo，Tu，We，Th，Fri，Sat。
-工作日作为数字 - 从1（星期一）到7（星期日）的星期几。
- - 自定义格式 - 您可以指定自己的[格式](https://github.com/ioBroker/ioBroker.javascript#formatdate)。
- - 日期对象 - 以从纪元开始（1970.1.1 00：00：00.000Z GMT）开始的毫秒数返回日期和时间。这总是GMT。
- -  yyyy.mm.dd  -  2016.09.14
- -  yyyy / mm / dd  -  2016/09/14
- -  yy.mm.dd  -  16.09.14
- -  yy / mm / dd  -  16/09/14
- -  dd.mm.yyyy  -  2016年9月14日
- -  dd / mm / yyyy  -  2016年9月14日
- -  dd.mm.yy  -  14.09.16
- - 年/月/日 -  14/09/16
- -  mm / dd / yyyy  -  09/14/2016
- -  mm / dd / yy  -  09/14/16
- -  dd.mm. -  14.09。
- -  dd / mm  -  14/09
- -  mm.dd  -  09.14
- -  mm / dd  -  09/14
- -  hh：mm  -  12:00
- -  hh：mm：ss  -  12:00:00
- -  hh：mm：ss.sss  -  12：00：00.000
+-毫秒-仅返回从0到999的当前秒的毫秒数（不是历元毫秒）。要获取纪元毫秒，请使用“日期对象”；
+-秒-仅返回当前分钟的秒，范围是0到59，
+-一天中的秒数-返回从一天中开始的秒数（0到24 * 3600-1），
+-分钟-返回当前小时的分钟数，从0到59，
+-一天中的分钟-返回从一天开始的分钟数（0到24 * 60-1），
+-小时-返回当天的小时数，从0到23，
+-每月的某天-每月的某天从1到31，
+-月份为数字-月份为1到12之间的数字
+-以月份为文本-以月份为文本。必须指定语言。
+-月份为短文本-月份为文本：1月，2月，3月，4月，5月，6月，7月，8月，9月，10月，11月，12月必须指定语言。
+-短年份-年份从0到99，例如2016年的结果为16。
+-全年-全年：2016年
+-周日文本-获取星期几作为文本。
+-星期几-以星期几作为简短文本：Su，Mo，Tu，We，Th，Fr，Sa。
+-星期几作为数字-星期几作为从1（星期一）到7（星期日）的数字。
+-自定义格式-您可以指定自己的[格式]（https://github.com/ioBroker/ioBroker.javascript#formatdate）。
+-日期对象-返回日期和时间，以从纪元开始（格林尼治标准时间1970.1.1 00：00：00.000Z）开始的毫秒数为单位。这始终是格林尼治标准时间。
+-yyyy.mm.dd-2016年9月14日
+-yyyy / mm / dd-2016/09/14
+-yy.mm.dd-16.09.14
+-yy / mm / dd-16/09/14
+-dd.mm.yyyy-14.09.2016
+-dd / mm / yyyy-14/09/2016
+-dd.mm.yy-9/14/16
+-dd / mm / yy-16/09/16
+-毫米/日/年-2016/09/14
+-毫米/日/年-09/14/16
+-dd.mm。 -14.09。
+-dd / mm-14/09
+-mm.dd-09.14
+-毫米/日-09/14
+-时：毫米-12:00
+-hh：mm：ss-12:00:00
+-hh：mm：ss.sss-12:00：00.000
 
-＆NBSP;
+＆nbsp;
 
-###获取今天的astro活动时间
-![获取今天的astro活动时间](../../../de/adapterref/iobroker.javascript/img/datetime_astro_en.png)
+###获取今天的astro事件时间
+![获取今天的astro事件时间](../../../de/adapterref/iobroker.javascript/img/datetime_astro_en.png)
 
-返回某个特定占星事件当天的时间。
+返回某个特定占星事件当前日期的时间。
 
-属性“offset”是以分钟为单位的偏移量。在astro事件之前定义时间也可能是否定的。
+属性“偏移”是以分钟为单位的偏移。定义astro事件之前的时间也可以是负数。
 
-以下值可用作astro-function中的属性：
+以下值可用作astro函数的属性：
 
- - 日出：日出（地平线上太阳的顶部边缘）
- -  sunriseEnd：日出结束（太阳的底部边缘接触地平线）
-goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）结束
- -  solarNoon：太阳正午（太阳处于最高位置）
- - 黄金时段：黄昏时分开始
- -  sunsetStart：日落开始（太阳的底部边缘接触地平线）
- - 日落：日落（太阳消失在地平线以下，晚上民间黄昏开始）
- - 黄昏：黄昏（傍晚航海黄昏开始）
- - 航海黄昏：航海黄昏（晚上天文学黄昏开始）
- - 夜晚：夜间开始（黑暗足以进行天文观测）
- -  nightEnd：夜晚结束（早晨天文学黄昏开始）
- - 航海黎明：航海黎明（早上航海黄昏开始）
- - 黎明：黎明（早晨航海黄昏结束，早晨民间黄昏开始）
- - 最低点：最低点（夜晚最黑暗的时刻，太阳处于最低位置）
+-日出：日出（太阳的上边缘出现在地平线上）
+-日出结束：日出结束（太阳的底部触及地平线）
+-goldenHourEnd：金色的早晨（柔和的光线，最佳摄影时间）结束
+-solarNoon：太阳正午（太阳处于最高位置）
+-goldenHour：黄金时段傍晚开始
+-sunsetStart：日落开始（太阳的底部接触地平线）
+-日落：日落（太阳消失在地平线下，傍晚的民航开始）
+-黄昏：黄昏（夜间航海黄昏开始）
+-nauticalDusk：航海黄昏（傍晚天文暮光开始）
+-夜晚：夜晚开始（足够黑暗以进行天文观测）
+-nightEnd：夜晚结束（早晨开始的天文暮光）
+-nauticalDawn：航海黎明（早晨开始航海黄昏）
+-黎明：黎明（早晨，航海暮色结束，早晨民间暮色开始）
+-最低点：最低点（夜晚最暗的时刻，太阳处于最低位置）
 
-返回值的类型为“Date Object”，它只是1970.01.01之后的毫秒数。
+返回值的类型为“日期对象”，即1970年1月1日以来的毫秒数。
 
-**注意：**使用“astro”函数必须在javascript适配器设置中定义“纬度”和“经度”。
+**注意：**要使用“ astro”功能，必须在javascript适配器设置中定义“纬度”和“经度”。
 
-＆NBSP;
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
 ##转换块
-有时需要转换为另一种类型。以下块允许将值转换为特定类型。
+有时需要将值转换为其他类型。以下块允许将值转换为特定类型。
 
 ###转换为数字
-![转换为数字](../../../de/adapterref/iobroker.javascript/img/convert_tonumber_en.png)
+![转换成数字](../../../de/adapterref/iobroker.javascript/img/convert_tonumber_en.png)
 
 将值转换为数字（浮点数）。
 
-＆NBSP;
+＆nbsp;
 
 ###转换为布尔值
 ![转换为布尔值](../../../de/adapterref/iobroker.javascript/img/convert_toboolean_en.png)
 
-将值转换为布尔值（true或false）。
+将值转换为布尔值（真或假）。
 
-＆NBSP;
+＆nbsp;
 
 ###转换为字符串
 ![转换为字符串](../../../de/adapterref/iobroker.javascript/img/convert_tostring_en.png)
 
 将值转换为字符串。
 
-＆NBSP;
+＆nbsp;
 
 ###获取变量类型
-![获取变量的类型](../../../de/adapterref/iobroker.javascript/img/convert_typeof_en.png)
+![获取变量类型](../../../de/adapterref/iobroker.javascript/img/convert_typeof_en.png)
 
-获取价值类型。类型可以是：boolean，number，string，object。
+获取值的类型。类型可以是：布尔值，数字，字符串，对象。
 
-＆NBSP;
+＆nbsp;
 
 ###转换为日期/时间对象
 ![转换为日期/时间对象](../../../de/adapterref/iobroker.javascript/img/convert_todate_en.png)
 
-将值转换为“日期对象”。阅读[这里](#get-actual-time-im-specific-format)，“Date对象”是什么。
+将值转换为“日期对象”。阅读[在这里](#get-actual-time-im-specific-format)，“日期对象”是什么。
 
-＆NBSP;
+＆nbsp;
 
 ###将日期/时间对象转换为字符串
 ![转换为布尔值](../../../de/adapterref/iobroker.javascript/img/convert_fromtime_en.png)
 
-将“Date object”转换为string。它具有与[获取特定格式的实际时间](#get-actual-time-im-specific-format)相同的格式选项。
+将“日期对象”转换为字符串，它具有与[以特定格式获取实际时间](#get-actual-time-im-specific-format)相同的格式选项。
 
-＆NBSP;
+＆nbsp;
 
 ###将JSON转换为对象
 ![将JSON转换为对象](../../../de/adapterref/iobroker.javascript/img/convert_json2object_en.png)
 
-将JSON字符串转换为javascript对象。如果发生错误，将返回空对象。 （仅限专家）
+将JSON字符串转换为javascript对象。如果发生错误，将返回空对象。 （仅适用于专家）
 
-＆NBSP;
+＆nbsp;
 
 ###将对象转换为JSON
 ![将对象转换为JSON](../../../de/adapterref/iobroker.javascript/img/convert_object2json_en.png)
 
-将Javascript对象转换为JSON字符串。如果选择了prettify选项，结果字符串如下所示：
+将Javascript对象转换为JSON字符串。如果选择prettify选项，则结果字符串如下所示：
 
 ```json
 {
@@ -1317,27 +1318,43 @@ goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）�
 }
 ```
 
-如果不是：
+如果没有：
 
 ```
 {"a": 1, "b": 2}
 ```
 
-＆NBSP;
+###通过JSONata表达式转换
+![通过JSONata表达式转换](../../../de/adapterref/iobroker.javascript/img/convert_by_jsonata_en.png)
 
-＆NBSP;
+通过JSONata表达式转换Javascript对象。您可以在此处了解更多信息：[https://jsonata.org/](https://jsonata.org/)
 
-##触发器
-###触发状态变化
-![触发状态改变](../../../de/adapterref/iobroker.javascript/img/trigger_trigger_ex_en.png)
+有效负载示例：
 
-该块执行一些操作。这是在不同状态和相应系统之间构建的主要块。
+```
+{"example": [{"value": 4},{"value": 7},{"value": 13}]}
+```
 
-使用此块，您可以将不同的状态绑定在一起，或者在值更改时发送消息或电子邮件
+结果：
+
+```
+[{"value": 4},{"value": 7},{"value": 13}]
+24
+4
+13
+```
+
+##触发
+###触发状态更改
+![触发状态变化](../../../de/adapterref/iobroker.javascript/img/trigger_trigger_ex_en.png)
+
+如果给定对象的状态发生更改或更新，则此块将执行某些操作。这是在不同状态与相应系统之间建立交互的主要模块。
+
+使用此块，您可以将不同的状态绑定在一起，或者在值更改时发送消息或电子邮件。
 
 块的典型用法：
 
-![触发状态改变](../../../de/adapterref/iobroker.javascript/img/trigger_trigger_ex_1_en.png)
+![触发状态变化](../../../de/adapterref/iobroker.javascript/img/trigger_trigger_ex_1_en.png)
 
 ```xml 
 <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -1373,14 +1390,14 @@ goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）�
 
 您可以通过扩展对话框定义任意数量的ObjectID：
 
-![触发状态改变](../../../de/adapterref/iobroker.javascript/img/trigger_trigger_ex_2_en.png)
+![触发状态变化](../../../de/adapterref/iobroker.javascript/img/trigger_trigger_ex_2_en.png)
 
-如果语句块中只使用了一个对象ID：
+如果仅使用一个对象ID，则在语句块中可以使用特殊变量：
 
- - 价值 - 国家的实际价值
- -  oldValue  - 旧的状态值
+-值-状态的实际值
+-oldValue-状态的旧值
 
-![触发状态改变](../../../de/adapterref/iobroker.javascript/img/trigger_trigger_ex_3_en.png)
+![触发状态变化](../../../de/adapterref/iobroker.javascript/img/trigger_trigger_ex_3_en.png)
 
 ```xml 
 <block xmlns="http://www.w3.org/1999/xhtml" type="on_ext" id="QYVeQlu|#2hwniNg)=z8" x="38" y="39">
@@ -1428,45 +1445,45 @@ goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）�
 </block>
 ```
 
-否则，如果将多个对象ID用于触发器，则可以通过[触发信息](#trigger-info)访问值和旧值。
+否则，如果使用多个对象ID进行触发，则可以通过[触发信息](#trigger-info)访问值和旧值。
 
-＆NBSP;
+＆nbsp;
 
-###触发状态变化
-![触发状态变化](../../../de/adapterref/iobroker.javascript/img/trigger_trigger_en.png)
+###触发状态更改
+![触发状态更改](../../../de/adapterref/iobroker.javascript/img/trigger_trigger_en.png)
 
-这与“触发状态更改”相同，但没有多个对象ID用于触发（用于版本兼容性）。
+这与“状态触发时触发”相同，但无法使用多个对象ID进行触发（以实现版本兼容性）。
 
-＆NBSP;
+＆nbsp;
 
 ###触发信息
 ![触发信息](../../../de/adapterref/iobroker.javascript/img/trigger_object_id_en.png)
 
-获取有关触发触发器的状态的值，时间戳或ID的信息。
+获取有关触发触发器的值，时间戳或状态ID的信息。
 
-该块只能在[“触发状态变化”或“触发状态变化”或“触发状态变化”](#trigger-on-state-change)块中使用。
+该块只能在[“状态更改触发”]（＃状态触发更改）或[“状态更改触发”](#trigger-on-state-change)块内使用。
 
 可以访问以下信息：
 
- - 对象ID  - 触发触发器的状态ID
- -  name  - 来自common.name的状态名称
- -  description  - 来自common.desc的状态描述
- - 通道ID  - 属于该状态的通道的ID。如果不存在，则为零
- - 频道名称 - 属于该州的频道名称。如果不存在，则为零
- - 设备ID  - 属于该状态的设备的ID。如果不存在，则为零
- - 设备名称 - 属于州。如果不存在，则为零
- - 州值 - 被解雇州的实际价值
- -  state timestamp  - 作为Date对象的实际时间戳
- - 国家质量 - 实际质量价值代码
- - 值的来源 - 导致更改的实例的名称
- - 是命令还是更新 - 是命令（ack = false）还是更新（ack = true）
-最后一次改变国家
- - 上一个值 - 触发触发器之前此状态的上一个值
- - 上一个时间戳 - 触发触发器之前此状态的上一个时间戳
- - 之前的质量 - 此状态的先前质量，在触发器触发之前
- - 前一个原点 - 触发器触发前该状态的上一个原点
- - 上一个命令或更新 - 触发器触发前的此值的上一个类型
- - 上一次上次更改 - 触发器触发前此状态的上一次“上次更改的值”
+-对象ID-触发触发器的状态ID
+-名称-common.name中的状态名称
+-描述-common.desc中的状态描述
+-通道ID-所属状态的通道ID。如果不在此处引导，它将为null
+-通道名称-所属状态的通道名称。如果不在此处引导，它将为null
+-设备ID-属于状态的设备的ID。如果不在此处引导，它将为null
+-设备名称-属于状态的设备的名称。如果不在此处引导，它将为null
+-状态值-触发状态的实际值
+-状态时间戳记-作为Date对象的实际时间戳记
+-状态质量-价值的实际质量代码
+-值的来源-引起更改的实例名称
+-是命令还是更新-是命令（ack = false）还是更新（ack = true）
+-状态的最后一次更改-此值的最后一次更改的时间戳
+-之前的值-在触发触发器之前，此状态的之前的值
+-触发时间戳之前，此状态的先前时间戳-
+-触发质量-触发触发之前，此状态的先前质量
+-触发之前的状态-此状态的触发源
+-之前的命令或更新-在触发触发器之前，此值的先前类型
+-触发之前，此状态的先前“最后更改”-此状态的先前“最后更改值”
 
 典型用法：
 
@@ -1518,36 +1535,36 @@ goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）�
 </block>
 ```
 
-＆NBSP;
+＆nbsp;
 
-###日程安排
-![时间表](../../../de/adapterref/iobroker.javascript/img/trigger_schedule_en.png)
+###时间表
+![日程安排](../../../de/adapterref/iobroker.javascript/img/trigger_schedule_en.png)
 
-这是[“触发国家变化”](#trigger-on-states-change)之后的第二个自动化主要块。此块可以定期执行某些操作。
+这是[“触发状态变化”](#trigger-on-states-change)之后的第二个自动化主要模块。该块使您可以定期执行一些动作。
 
-CRON[格式](https://en.wikipedia.org/wiki/Cron)。通过扩展，也可以定义秒数。
-CRON规则和规则将有6个部分。
+计划规则的定义将在记录充分的CRON[格式](https://en.wikipedia.org/wiki/Cron)中进行。通过扩展，也可以定义该秒数。
+如果应使用秒，则必须将它们定义为CRON规则的第一个参数，规则将分为6部分。
 
-通常CRON规则由5或6个部分组成：
+通常，CRON规则由5或6部分组成：
 
- - 秒规则（可选）
- - 分钟规则
- - 小时规则
- - 每月规则
- - 月的规则
- - 和周日规则。
+-秒规则（可选）
+-分钟规则
+-小时规则
+-月中的一天规则
+-月的规则
+-以及星期几规则。
 
-对于允许以下格式的每个部分：
+对于每个部分，允许使用以下格式：
 
- -  \ *  - 每（第二，分钟，小时......）开火
- -  X（例如5） - 仅在此秒，分钟，小时内点火......
- - 从 - 到（例如1-9） - 仅在此间隔内开火
- -  \ * / X（例如\ * / 5） - 每X秒，分钟点火......如果时间为“\ * / 5”，触发器将在0,5,10,15和20小时点火。
- - 数字和间隔可以用逗号组合（例如1,3,4-6）。不要在数字之间留出空格，因为空格是规则部分的分隔符。
+-\ *-每隔（秒，分钟，小时，...）开火
+-X（例如5）-仅在此秒，分钟，小时内触发...
+-从头到尾（例如1-9）-仅在此间隔内发射
+-\ * / X（例如\ * / 5）-每X秒，每分钟触发一次……如果“ \ * / 5”持续数小时，则触发器将在0、5、10、15和20小时触发。
+-数字和间隔可以用逗号组合（例如1,3,4-6）。不要在数字之间留空格，因为空格是规则各部分的分隔符。
 
-\ */ 10 \* \ *\* 6,7 - 星期六和星期日每10分钟开火一次。
+\ */ 10 \* \ *\* 6.7-在星期六和星期日每10分钟点火一次。
 
-\ */ 30 \* \ *\* \ *\* - 每30秒开火一次。
+\ */ 30 \* \ *\* \ *\* 每30秒触发一次。
 
 ```
  ┌───────────── min (0 - 59)
@@ -1561,7 +1578,7 @@ CRON规则和规则将有6个部分。
  * * * * *  schedule
 ```
 
-或者如果使用秒数：
+或如果使用秒：
 
 ```
  ┌───────────── seconds (0 - 59)
@@ -1576,52 +1593,52 @@ CRON规则和规则将有6个部分。
  * * * * * *  schedule
 ```
 
-但是建立这样的规则对你有很好的帮助。通过单击CRON对话框将打开，您可以按规则指定。
+但是，建立这样的规则对您有很好的帮助。通过单击规则，将打开CRON对话框，您可以通过鼠标指定规则。
 
-![时间表](../../../de/adapterref/iobroker.javascript/img/trigger_schedule_1_en.png)
+![日程安排](../../../de/adapterref/iobroker.javascript/img/trigger_schedule_1_en.png)
 
-＆NBSP;
+＆nbsp;
 
-###触发astro事件
-![时间表](../../../de/adapterref/iobroker.javascript/img/trigger_astro_en.png)
+###在astro事件上触发
+![日程安排](../../../de/adapterref/iobroker.javascript/img/trigger_astro_en.png)
 
-对占星事件执行一些操作。以下活动是可能的：
+对占星事件执行一些动作。可能发生以下事件：
 
- - 日出：日出（地平线上太阳的顶部边缘）
- -  sunriseEnd：日出结束（太阳的底部边缘接触地平线）
-goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）结束
- -  solarNoon：太阳正午（太阳处于最高位置）
- - 黄金时段：黄昏时分开始
- -  sunsetStart：日落开始（太阳的底部边缘接触地平线）
- - 日落：日落（太阳消失在地平线以下，晚上民间黄昏开始）
- - 黄昏：黄昏（傍晚航海黄昏开始）
- - 航海黄昏：航海黄昏（晚上天文学黄昏开始）
- - 夜晚：夜间开始（黑暗足以进行天文观测）
- -  nightEnd：夜晚结束（早晨天文学黄昏开始）
- - 航海黎明：航海黎明（早上航海黄昏开始）
- - 黎明：黎明（早晨航海黄昏结束，早晨民间黄昏开始）
- - 最低点：最低点（夜晚最黑暗的时刻，太阳处于最低位置）
+-日出：日出（太阳的上边缘出现在地平线上）
+-日出结束：日出结束（太阳的底部触及地平线）
+-goldenHourEnd：金色的早晨（柔和的光线，最佳摄影时间）结束
+-solarNoon：太阳正午（太阳处于最高位置）
+-goldenHour：黄金时段傍晚开始
+-sunsetStart：日落开始（太阳的底部接触地平线）
+-日落：日落（太阳消失在地平线下，傍晚的民航开始）
+-黄昏：黄昏（夜间航海黄昏开始）
+-nauticalDusk：航海黄昏（傍晚天文暮光开始）
+-夜晚：夜晚开始（足够黑暗以进行天文观测）
+-nightEnd：夜晚结束（早晨开始的天文暮光）
+-nauticalDawn：航海黎明（早晨开始航海黄昏）
+-黎明：黎明（早晨，航海暮色结束，早晨民间暮色开始）
+-最低点：最低点（夜晚最暗的时刻，太阳处于最低位置）
 
-**注意：**使用“astro”函数必须在javascript适配器设置中定义“纬度”和“经度”。
+**注意：**要使用“ astro”功能，必须在javascript适配器设置中定义“纬度”和“经度”。
 
-此外，您可以在几分钟内将偏移设置为占星事件，例如：在击倒前1小时触发扳机：
+此外，您可以按分钟设置占星事件的偏移量，例如在掉落前1小时触发扳机：
 
-![时间表](../../../de/adapterref/iobroker.javascript/img/trigger_astro_1_en.png)
+![日程安排](../../../de/adapterref/iobroker.javascript/img/trigger_astro_1_en.png)
 
-正如您所看到的，偏移量也可能是负值，以指定占星事件之前的时间。
+如您所见，偏移量也可以是负数，以指定占星事件发生的时间。
 
-＆NBSP;
+＆nbsp;
 
 ###命名时间表
-![时间表](../../../de/adapterref/iobroker.javascript/img/trigger_schedule_ex_en.png)
+![日程安排](../../../de/adapterref/iobroker.javascript/img/trigger_schedule_ex_en.png)
 
-此块与[时间表](#schedule)相同，但可以按字符串设置CRON规则，并可以停止计划。
+该块与[日程安排](#schedule)相同，但是可以按字符串设置CRON规则，并且可以停止计划。
 
-您可以指定此调度块的唯一名称，然后再使用[时间安排清晰](#clear-schedule)清除它。
+您可以指定此计划块的唯一名称，然后再使用[明确的时间表](#clear-schedule)清除它。
 
 以下是可配置闹钟的示例：
 
-![时间表](../../../de/adapterref/iobroker.javascript/img/trigger_schedule_ex_1_en.png)
+![日程安排](../../../de/adapterref/iobroker.javascript/img/trigger_schedule_ex_1_en.png)
 
 ```xml 
 <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -1691,23 +1708,23 @@ goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）�
 </xml>
 ```
 
-＆NBSP;
+＆nbsp;
 
 ###清除时间表
-![时间表](../../../de/adapterref/iobroker.javascript/img/trigger_cron_clear_en.png)
+![日程安排](../../../de/adapterref/iobroker.javascript/img/trigger_cron_clear_en.png)
 
-使用此功能，您可以清除命名的计划。如果再定义一次而不清除它。
+使用此功能块，您可以清除已命名的时间表。如果您再定义一次命名时间而不清除它，那么旧时间将仍然有效。
 
-请参阅[命名时间表](#named-schedule)中的示例
+请参阅[时间表](#named-schedule)中的示例
 
-＆NBSP;
+＆nbsp;
 
 ### CRON对话框
-![时间表](../../../de/adapterref/iobroker.javascript/img/trigger_cron_input_en.png)
+![日程安排](../../../de/adapterref/iobroker.javascript/img/trigger_cron_input_en.png)
 
-从对话框创建CRON规则。该块可以连接到[命名时间表](#named-schedule)。
+从对话框创建CRON规则。该块可以与[时间表](#named-schedule)连接。
 
-![时间表](../../../de/adapterref/iobroker.javascript/img/trigger_cron_input_1_en.png)
+![日程安排](../../../de/adapterref/iobroker.javascript/img/trigger_cron_input_1_en.png)
 
 ```xml 
 <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -1759,41 +1776,41 @@ goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）�
 </xml>
 ```
 
-＆NBSP;
+＆nbsp;
 
 ### CRON规则
-![时间表](../../../de/adapterref/iobroker.javascript/img/trigger_cron_rule_en.png)
+![日程安排](../../../de/adapterref/iobroker.javascript/img/trigger_cron_rule_en.png)
 
-结合不同部分的CRON规则。
+合并来自不同部分的CRON规则。
 
 您可以将规则显示为块或行：
 
-![时间表](../../../de/adapterref/iobroker.javascript/img/trigger_cron_rule_1_en.png)
+![日程安排](../../../de/adapterref/iobroker.javascript/img/trigger_cron_rule_1_en.png)
 
-使用附加参数“with seconds”，您也可以指定CRON规则的秒数
+通过附加参数“ with seconds”，您也可以为CRON规则指定秒数
 
-![时间表](../../../de/adapterref/iobroker.javascript/img/trigger_cron_rule_2_en.png)
+![日程安排](../../../de/adapterref/iobroker.javascript/img/trigger_cron_rule_2_en.png)
 
-可以使用此块（如[CRON对话框]（＃cron-dialog））仅与[命名时间表](#named-schedule)块。
+可以使用此块（例如[CRON对话框]（＃cron-dialog））仅带有[命名时间表](#named-schedule)块）。
 
-＆NBSP;
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
 ##超时
 ###延迟执行
-![延迟执行](../../../de/adapterref/iobroker.javascript/img/timeouts_timeout_en.png)
+![执行延迟](../../../de/adapterref/iobroker.javascript/img/timeouts_timeout_en.png)
 
-使用此块，您可以执行延迟一段时间的其他块，以毫秒为单位。
-如果你知道Javascript与setTimeout的功能相同。
+使用该块，您可以执行其他延迟了以毫秒为单位指定时间的块。
+如果您知道javascript，则它与setTimeout的功能相同。
 
-块中没有“中断”，但您可以使用此块来模拟中断。如果放置所有块，必须在中断后完成，您希望获得与中断相同的效果。
+块中没有“暂停”，但是您可以使用此块来模拟暂停。如果放置了所有块，则必须在暂停后执行这些块，您将获得与暂停相同的效果。
 
-另一个功能是使用变量设置间隔，只需用预定义的变量替换“ms”：![由区间变量执行](../../../de/adapterref/iobroker.javascript/img/Timer_variable_en.PNG)
+另一个功能是通过使用变量来设置时间间隔，只需将“ ms”替换为预定义的变量即可：![通过区间变量执行](../../../de/adapterref/iobroker.javascript/img/Timer_variable_en.PNG)
 
-每个延迟执行都可以具有唯一名称。它可以被其他块取消。 [清除延迟执行](#clear-delayed-execution)
+每个延迟执行可以有唯一的名称。可以被其他程序段取消。 [清除延迟执行](#clear-delayed-execution)
 
-![延迟执行](../../../de/adapterref/iobroker.javascript/img/timeouts_timeout_1_en.png)
+![执行延迟](../../../de/adapterref/iobroker.javascript/img/timeouts_timeout_1_en.png)
 
 ```xml 
 <xml xmlns="http://www.w3.org/1999/xhtml">
@@ -1824,13 +1841,13 @@ goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）�
 </xml>
 ```
 
-＆NBSP;
+＆nbsp;
 
 ###清除延迟执行
 ![清除延迟执行](../../../de/adapterref/iobroker.javascript/img/timeouts_timeout_clear_en.png)
 
-此块用于按名称取消延迟。典型用法是运动检测场景的模拟。
-通过第一次运动，灯应该继续，并且在30秒后最后一次运动之后，灯应该熄灭。
+此块用于按名称取消运行延迟。典型用法是模拟运动检测方案。
+通过第一动作，灯应该点亮，并且在30秒后的最后动作之后，灯应该熄灭。
 
 ![清除延迟执行](../../../de/adapterref/iobroker.javascript/img/timeouts_timeout_clear_1_en.png)
 
@@ -1933,28 +1950,28 @@ goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）�
 </xml>
 ```
 
-＆NBSP;
+＆nbsp;
 
 ###按间隔执行
 ![按间隔执行](../../../de/adapterref/iobroker.javascript/img/timeouts_interval_en.png)
 
-此块允许您定期执行某些操作。当然有CRON块，但CRON块的最小间隔为1秒。
-该块可以以毫秒为单位执行操作。
+该块使您可以定期执行一些操作。当然有一个CRON块，但CRON块的最小间隔为一秒。
+该块可以执行毫秒级的操作。
 
-如果将间隔设置得太小（小于100毫秒），则可能会更大。
+如果您将间隔设置得太小（小于100毫秒），则间隔可能会更大。
 
-与超时块类似，您也可以设置唯一的间隔名称。
+与超时阻止类似，您也可以设置唯一的时间间隔名称。
 
-＆NBSP;
+＆nbsp;
 
-###按间隔停止执行
+###按时间间隔停止执行
 ![按间隔停止执行](../../../de/adapterref/iobroker.javascript/img/timeouts_interval_clear_en.png)
 
-在此块的帮助下，您可以定期取消。
+借助该块，您可以按名称取消定期执行间隔块的操作。
 
-＆NBSP;
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
 ##逻辑
 ### If else阻止
@@ -1962,78 +1979,78 @@ goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）�
 ###逻辑AND / OR块
 ###否定块
 ###逻辑值TRUE / FALSE
-### Null块
+###空块
 ###测试块
-＆NBSP;
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
 ##循环
 ###重复N次
-###重复一遍
-###伯爵
-###每个人
-###打破循环
-＆NBSP;
+###重复一会儿
+###计数
+###每个
+###跳出循环
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
 ##数学
-###数值
-### Arithmetical operations +  -  * / ^
-###平方根，Abs， - ，ln，log10，e ^，10 ^
+###数字值
+###算术运算+-* / ^
+###平方根，Abs，-，ln，log10，e ^，10 ^
 ### Sin，cos，tan，asin，acos，atan
 ###数学常数：pi，e，phi，sqrt（2），sqrt（1/2），无穷大
-###是偶数，奇数，素数，整数，正数，负数，是否可分
-###按值修改（加号或减号）
-###圆形，地板，ceil值
-###值列表上的操作：总和，最小值，最大值，平均值，中位数，模式，偏差，随机项
+###是偶数，奇数，质数，整体，正数，负数
+###按值（正负）可变地修改
+###圆，底，天花板值
+###值列表上的运算：求和，最小值，最大值，平均值，中位数，众数，偏差，随机项
 ###模数
-###按最小值和最大值限制一些值
-### 0到1之间的随机值
-### Min和max之间的随机值
-＆NBSP;
+###通过最小和最大限制一些值
+###从0到1的随机值
+最小值和最大值之间的随机值
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
 ##文字
 ###字符串值
 ###连接字符串
 ###将字符串追加到变量
-###字符串的长度
+###字符串长度
 ###字符串为空
 ###在字符串中查找位置
-###在特定位置的字符串中获取符号
+###获取特定位置的字符串中的符号
 ###获取子字符串
 ###转换为大写或小写
 ###修剪字符串
-＆NBSP;
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
 ##列表
 ###创建空列表
 ###使用值创建列表
-###创建具有相同值N次的列表
+###创建N次相同值的列表
 ###获取列表长度
 ###列表为空
-###在列表中查找项目的位置
+###查找项目在列表中的位置
 ###获取列表中的项目
 ###在列表中设置项目
 ###获取列表的子列表
 ###将文本转换为列表，反之亦然
-＆NBSP;
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
 ##颜色
 ###颜色值
-###随机颜色
+###颜色随机
 ### RGB颜色
 ###混合颜色
-＆NBSP;
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
 ##变量
 ###设置变量的值
@@ -2041,9 +2058,9 @@ goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）�
 
 要使用此块，您应该了解基本的编程规则：如何使用变量。
 
-使用此块，您可以写入全局（变量无处不在）并使用它来存储一些值。如果变量不存在，则会自动声明。
+使用此块，您可以写入全局变量（在脚本中随处可见），并使用它存储一些值。如果变量不存在，它将被自动声明。
 
-此块可以创建新变量或使用现有变量。
+该块可以创建新变量或使用现有变量。
 
 ![设置变量的值](../../../de/adapterref/iobroker.javascript/img/variables_set_1_en.png)
 
@@ -2062,35 +2079,35 @@ goldenhourEnd：早上黄金时段（柔和的光线，摄影的最佳时间）�
 </block>
 ```
 
-只做这个：
+仅这样做：
 
 ```javascript
 var item;
 item = 0;
 ```
 
-＆NBSP;
+＆nbsp;
 
 ###获取变量的值
 ![获取变量的值](../../../de/adapterref/iobroker.javascript/img/variables_get_en.png)
 
-该块获取变量的值。您可以创建一个新的或使用现有的。
+该块获取变量的值。您可以创建一个新的或使用现有的一个。
 
 ![获取变量的值](../../../de/adapterref/iobroker.javascript/img/variables_get_1_en.png)
 
-触发块[触发状态改变]并触发状态改变](#trigger-on-state-change)有一个例外。
-在这些块中，变量“value”仍然存在，但无论如何要读取它们的值，您必须将变量重命名为value然后使用它。
+触发块[状态更改时触发]（＃状态更改时触发）和[状态更改时触发](#trigger-on-state-change)有一个例外。
+在这些块中，变量“值”仍然存在，但是无论如何要读取它们的值，必须将变量重命名为值，然后使用它。
 
 ![获取变量的值](../../../de/adapterref/iobroker.javascript/img/variables_get_2_en.png)
 
-＆NBSP;
+＆nbsp;
 
-＆NBSP;
+＆nbsp;
 
-##功能
+##函数
 ###从没有返回值的块创建函数
-###从具有返回值的块创建函数
-###函数返回值
+###从具有返回值的块中创建函数
+###函数中的返回值
 ###创建没有返回值的自定义函数
 ###使用返回值创建自定义函数
 ###通话功能

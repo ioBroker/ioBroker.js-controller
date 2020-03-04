@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nuki-extended/README.md
 title: ioBroker.nuki-продлен
-hash: 5IfLWziNuqBVMMRy41z9gg4aBIqDWxoiYMlQwHyV4sk=
+hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 ---
 ![логотип](../../../en/adapterref/iobroker.nuki-extended/admin/nuki-extended.png)
 
@@ -22,9 +22,9 @@ hash: 5IfLWziNuqBVMMRy41z9gg4aBIqDWxoiYMlQwHyV4sk=
 
 1. [Особенности] (# функции)
 2. [Установка] (# установка)
-   1. [Получить токен API] (# get-a-api-token)
-   2. [Функция обратного вызова] (# функция обратного вызова)
-3. [Каналы и состояния] (# 3-каналы - состояния)
+   1. [API-интерфейс Nuki Bridge] (# nuki-bridge-api)
+   2. [Nuki Web API] (# nuki-web-api)
+3. [Каналы и состояния] (# каналы - состояния)
 4. [Умный дом / интеграция Alexa с использованием ioBroker.javascript] (# умный дом - alexa -gration-using-iobrokerjavascript)
    1. [Закрывайте дверь в 10 вечера вечером] (# запирайте дверь в 10 вечера вечером)
    2. [Пусть Alexa сообщит вам об изменениях блокировки] (# let-alexa-inform-you-about-lock-changes)
@@ -122,7 +122,7 @@ hash: 5IfLWziNuqBVMMRy41z9gg4aBIqDWxoiYMlQwHyV4sk=
 | notifications._notificationIndex_ | статус | Текущее состояние активации <br> `{&quot; 0 &quot;: &#39;INIT&#39;,&quot; 1 &quot;: &#39;ACTIVE&#39;,&quot; 2 &quot;: &#39;FAILED&#39;}` |
 
 ### Smartlocks and Opener (с помощью API Nuki Bridge)
-Блокировка будет создана как устройство с шаблоном имени ```door__<name of door>```. Следующие каналы / состояния будут создаваться в каждой блокировке (при использовании Nuki Bridge API):
+Блокировка будет создана как устройство с именем шаблона ```door__<name of door>```. Следующие каналы / состояния будут создаваться в каждой блокировке (при использовании Nuki Bridge API):
 
 | Канал | Государство | Описание |
 |:------- |:----- |:----------- |
@@ -140,7 +140,7 @@ hash: 5IfLWziNuqBVMMRy41z9gg4aBIqDWxoiYMlQwHyV4sk=
 _ ** отмеченные состояния будут обновлены в действии Nuki, если обратный вызов установлен_
 
 ### Smartlocks and Opener (с помощью Nuki Web API)
-Блокировка будет создана как устройство с шаблоном имени ```door__<name of door>```. Следующие каналы / состояния будут создаваться в каждой блокировке (при использовании Nuki Web API):
+Блокировка будет создана как устройство с именем шаблона ```door__<name of door>```. Следующие каналы / состояния будут создаваться в каждой блокировке (при использовании Nuki Web API):
 
 | Канал | Государство | Описание (возможные значения) |
 |:------- |:----- |:----------------------------- |
@@ -194,13 +194,13 @@ _ ** отмеченные состояния будут обновлены в д
 | конфиг | fobAction2 | Действие брелка, если кнопка нажата дважды <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
 | конфиг | fobAction3 | Действие брелка, если кнопка нажата 3 раза <br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}` |
 | конфиг | fobAction3 | Действие брелка, если кнопка нажата 3 раза <br> `{&quot; 0 &quot;: &#39;NONE&#39;,&quot; 1 &quot;: &#39;UNLOCK&#39;,&quot; 2 &quot;: &#39;LOCK&#39;,&quot; 3 &quot;: &#39;LOCK_N_GO&#39;,&quot; 4 &quot;: &#39;INTELLIGENT&#39;}` |
-| конфиг | fobPaired | Истинно, если брелок соединен со SmartLock |
+| конфиг | fobPaired | Истинно, если брелок соединен со Smartlock |
 | конфиг | gpsLatitude | Широта |
 | конфиг | homekitState | Государство homekit <br> `{"0": 'UNAVAILABLE', "1": 'DISABLED', "2": 'ENABLED', "3": 'ENABLED & PAIRED'}` |
 | конфиг | homekitState | Государство homekit <br> `{&quot; 0 &quot;: &#39;НЕДОСТУПЕН&#39;,&quot; 1 &quot;:&quot; ОТКЛЮЧЕНО &quot;,&quot; 2 &quot;:&quot; ВКЛЮЧЕНО &quot;,&quot; 3 &quot;:&quot; ВКЛЮЧЕНО И СОЕДИНЕНО &quot;}` |
 | конфиг | keypadPaired | True, если клавиатура соединена со смарт-блокировкой |
 | конфиг | ledBrightness | Яркость светодиода: от 0 (выключен) до 5 (максимум) |
-| конфиг | ledEnabled | Истинно, если включен светодиод на смарт-блокировке |
+| конфиг | ledEnabled | Истинно, если включен светодиод на Smartlock |
 | конфиг | имя | Название смартлока для новых пользователей |
 | конфиг | OperatingMode | Режим работы сошника |
 | конфиг | pairingEnabled | True, если спаривание разрешено с помощью кнопки Smartlock |
@@ -212,15 +212,15 @@ _ ** отмеченные состояния будут обновлены в д
 | Канал | Государство | Описание (возможные значения) |
 |:------- |:----- |:----------------------------- |
 | advancedConfig | - | Расширенная настройка |
-| advancedConfig | autoLockTimeout | Секунды до тех пор, пока умная блокировка не разблокируется после разблокировки. Нет автоматической блокировки, если значение равно 0. |
+| advancedConfig | autoLockTimeout | Секунды до тех пор, пока умная блокировка не разблокируется после разблокировки Нет автоматической блокировки, если значение равно 0. |
 | advancedConfig | automaticBatteryTypeDetection | Флаг, указывающий, включено ли автоматическое определение типа батареи |
 | advancedConfig | batteryType | Тип батарей, присутствующих в умном замке <br> `{"0": 'ALKALI', "1": 'ACCUMULATOR', "2": 'LITHIUM'}` |
 | advancedConfig | doubleButtonPressAction | Желаемое действие, если кнопка нажата дважды <br> `{"0": "NO_ACTION", "1": "INTELLIGENT", "2": "UNLOCK", "3": "LOCK", "4": "UNLATCH", "5": "LOCK_N_GO", "6": "SHOW_STATUS"}` |
 | advancedConfig | doubleButtonPressAction | Желаемое действие, если кнопка нажата дважды <br> `{&quot; 0 &quot;:&quot; NO_ACTION &quot;,&quot; 1 &quot;:&quot; INTELLIGENT &quot;,&quot; 2 &quot;:&quot; UNLOCK &quot;,&quot; 3 &quot;:&quot; LOCK &quot;,&quot; 4 &quot;:&quot; UNLATCH &quot;,&quot; 5 &quot;:&quot; LOCK_N_GO &quot;, &quot;6&quot;: &quot;SHOW_STATUS&quot;} `|
-| advancedConfig | lngTimeout | Тайм-аут в секундах для блокировки ‘n’ go |
+| advancedConfig | lngTimeout | Тайм-аут в секундах для блокировки «n» go |
 | advancedConfig | singleButtonPressAction | Желаемое действие, если кнопка нажата один раз <br> `{"0": "NO_ACTION", "1": "INTELLIGENT", "2": "UNLOCK", "3": "LOCK", "4": "UNLATCH", "5": "LOCK_N_GO", "6": "SHOW_STATUS"}` |
 | advancedConfig | singleButtonPressAction | Желаемое действие, если кнопка нажата один раз <br> `{&quot; 0 &quot;:&quot; NO_ACTION &quot;,&quot; 1 &quot;:&quot; INTELLIGENT &quot;,&quot; 2 &quot;:&quot; UNLOCK &quot;,&quot; 3 &quot;:&quot; LOCK &quot;,&quot; 4 &quot;:&quot; UNLATCH &quot;,&quot; 5 &quot;:&quot; LOCK_N_GO &quot;, &quot;6&quot;: &quot;SHOW_STATUS&quot;} `|
-| advancedConfig | singleLockedPositionOffsetDegrees | Смещение, которое изменяет одну заблокированную позицию |
+| advancedConfig | singleLockedPositionOffsetDegrees | Смещение, изменяющее одиночную заблокированную позицию |
 | advancedConfig | totalDegrees | Абсолютная общая позиция в градусах, которая была достигнута во время калибровки |
 | advancedConfig | unlatchDuration | Продолжительность в секундах для удержания защелки в открытом положении |
 | advancedConfig | unlockedPositionOffsetDegrees | Смещение, изменяющее разблокированное положение |
@@ -234,7 +234,7 @@ _ ** отмеченные состояния будут обновлены в д
 | openerAdvancedConfig | busModeSwitch | Способ переключения между данными и аналоговым режимом <br> `{"0": 'DATA MODE', "1": 'ANALOGUE MODE'}` |
 | openerAdvancedConfig | shortCircuitDuration | Длительность короткого замыкания для переключения режима шины в мс |
 | openerAdvancedConfig | electricStrikeDelay | Задержка активации электрического удара в мс (после действия блокировки 3 - включение электрического удара-) |
-| openerAdvancedConfig | randomElectricStrikeDelay | Случайный электрический StrikeDelay (диапазон 3000 - 7000 мс) для того, чтобы симулировать человека внутри, приводящего в действие электрический удар |
+| openerAdvancedConfig | randomElectricStrikeDelay | Произвольная задержка electricStrikeDelay (диапазон 3000 - 7000 мс) для того, чтобы симулировать человека внутри, приводящего в действие электрический удар |
 | openerAdvancedConfig | electricStrikeDuration | Продолжительность в мс срабатывания электрического удара (блокирующее действие 3 - срабатывание электрического удара-) |
 | openerAdvancedConfig | disableRtoAfterRing | Флаг для отключения RTO после звонка |
 | openerAdvancedConfig | дверной звонок подавление | Режим подавления дверного звонка <br> `{"0": 'NEVER', "1": 'ALWAYS', "2": 'RTO', "3": 'CONTINUOUS', "4": 'CONTINUOUS + RTO'}` |
@@ -261,7 +261,7 @@ _ ** отмеченные состояния будут обновлены в д
 | users._userName_ | allowUntilDate | Разрешено до даты |
 | users._userName_ | allowWeekDays | Разрешенные будни <br> `{64: 'Monday', 32: 'Tuesday', 16: 'Wednesday', 8: 'Thursday', 4: 'Friday', 2: 'Saturday', 1: 'Sunday'}` |
 | users._userName_ | allowFromTime | Разрешенное время (в минутах с полуночи) |
-| users._userName_ | allowUntilTime | Разрешено до времени (в минутах с полуночи) |
+| users._userName_ | allowUntilTime | Разрешено до времени (в минутах от полуночи) |
 | users._userName_ | authId | Идентификатор авторизации Smartlock |
 | users._userName_ | dateCreated | Дата создания |
 | users._userName_ | dateUpdated | Дата обновления |
@@ -447,7 +447,7 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 });
 ```
 
-ПРИМЕЧАНИЕ. Если вы используете скрипт Alexa и Telegram, вы можете определить только одного слушателя для обоих действий:
+ПРИМЕЧАНИЕ. Если вы используете как скрипт Alexa, так и скрипт Telegram, вы можете определить только одного слушателя для обоих действий:
 
 ```javascript
 const DOOR_STATES = {
@@ -478,13 +478,24 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 ```
 
 ## Кредиты
-Благодаря [@ Mik13] (https://github.com/Mik13) для [реализации Nuki Bridge API](https://github.com/Mik13/nuki-bridge-api#nuki-bridge-api).
+Благодаря [@ Mik13] (https://github.com/Mik13) для [реализации API Nuki Bridge](https://github.com/Mik13/nuki-bridge-api#nuki-bridge-api).
 
 Иконки, сделанные <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Smashicons</a> ([Essential Set] (https://www.flaticon.com/packs/essential-set-2)) и <a href="https://www.freepik.com/" title="Freepik">Freepik</a> ([Двери](https://www.flaticon.com/packs/doors)) с <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> , лицензированы <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>
 
 ## Changelog
 
 Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
+
+### v2.2.2  (2019-03-04)
+- (Zefau) fixed incorrect error message `Error triggering action via Nuki Bridge API: No Nuki Hex ID given!`
+- (Zefau) added new error message if too many callbacks are already attached to Nuki Bridge (`Callback not attached because too many Callbacks attached to the Nuki Bridge already! Please delete a callback!`)
+
+### v2.2.1  (2019-03-03)
+- (Zefau) fixed incorrect state mapping of state `openerAdvancedConfig.doorbellSuppression`
+
+  **Note:** Please delete the state `openerAdvancedConfig.doorbellSuppression` once manually and restart the adapter to take affect!
+  
+- (Zefau) updated dependencies
 
 ### v2.2.0  (2019-02-16)
 - (Zefau) added possibility to change configuration of Nuki Smartlock or Nuki Opener (when using Web API)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
+hash: sTCasuu/WepLyWWPOxTlo5q17/lE9jIXKfCLuxMjq/c=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -20,24 +20,22 @@ hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
 
 成功建立连接后，可以使用状态值`info.communicationProtocol`对此进行检查（值：`XMPP`，`MQTT`）。
 
-###这些模型可以充分发挥作用
+###这些模型已知有效
 * Deebot苗条2
-* Deebot Ozmo 930
-
-###这些模型几乎可以正常工作
 * Deebot 601
 * Deebot 710/711
 * Deebot 900/901
 * Deebot Ozmo 610
+* Deebot Ozmo 930
 * Deebot奥兹莫950
-
-###这些模型应该（几乎）完全起作用
-* Deebot N79T
-* Deebot 600/605
-* Deebot Ozmo 960（未经测试）
 
 ###这些模型应该部分起作用
 * Deebot Ozmo 900
+
+###这些模型应该可以工作
+* Deebot N79T
+* Deebot 600/605
+* Deebot Ozmo 960（未经测试）
 
 ###按钮和控件
 |型号基本* |暂停|现货| spotArea | customArea ** |边缘playSound |水位|
@@ -87,12 +85,12 @@ hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
         *`A` =`0`
         *`B` =`1`
         *等
-*`spotArea`：逗号分隔的数字列表
+*`spotArea`：以逗号分隔的数字列表
     *以0开头（例如：1,3 =区域B和D），以进行清洁
 *按钮数量（`spotArea_0-9`）可以在适配器配置中配置
 
 #### CustomArea
-*以逗号分隔的清单，精确列出了x1，y1，x2，y2的4个位置值（例如，-3975、2280，-1930、4575）
+*以逗号分隔的列表，精确列出了x1，y1，x2，y2的4个位置值（例如，-3975、2280，-1930、4575）
     *位置“ 0,0,0,0”似乎是充电站的位置
     *值“ 1000”似乎是大约1米的距离
 
@@ -129,11 +127,26 @@ hash: mpQVL3OYB1sBuYOMaZn59ZMGOJ1gQGrU6hRslB2faxU=
 
 ##谢谢和感谢
 * @joostth（[sucks.js]（https://github.com/joostth/sucks.js））
-* @wpietri（[吮吸]（https://github.com/wpietri/sucks））
+* @wpietri（[吸]（https://github.com/wpietri/sucks））
 * @ bmartin5692（[sucks]（https://github.com/bmartin5692/sucks），[bumber]（https://github.com/bmartin5692/bumper））
 * @Ligio（[ozmo]（https://github.com/Ligio/ozmo））
 
 ## Changelog
+
+### 0.5.3
+   * Using library version 0.3.4
+
+### 0.5.2
+   * Bugfixes (MQTT/XML)
+   * Start implement NetInfo (XMPP)
+
+### 0.5.1
+   * Using version 0.3.2 of ecovacs-deebot.js module
+     * (boriswerner) Added Features for Ozmo 950
+     * (mrbungle64) Some improvements for non Ozmo 950
+   
+### 0.5.0
+   * Using version 0.3.x of ecovacs-deebot.js module (ng library)
 
 ### 0.4.2
    * Improved support for MQTT devices

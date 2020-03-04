@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nuki-extended/README.md
 title: ioBroker.nuki-erweitert
-hash: 5IfLWziNuqBVMMRy41z9gg4aBIqDWxoiYMlQwHyV4sk=
+hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 ---
 ![Logo](../../../en/adapterref/iobroker.nuki-extended/admin/nuki-extended.png)
 
@@ -22,9 +22,9 @@ hash: 5IfLWziNuqBVMMRy41z9gg4aBIqDWxoiYMlQwHyV4sk=
 
 1. [Funktionen] (# Funktionen)
 2. [Installation] (# Installation)
-   1. [API-Token abrufen] (# get-a-api-token)
-   2. [Rückruffunktion] (# Rückruffunktion)
-3. [Kanäle & Zustände] (# 3-Kanäle - Zustände)
+   1. [Nuki Bridge API] (# nuki-bridge-api)
+   2. [Nuki Web API] (# nuki-web-api)
+3. [Kanäle & Zustände] (# Kanäle - Zustände)
 4. [Smart Home / Alexa-Integration mit ioBroker.javascript] (# smart-home - alexa-Integration mit iobrokerjavascript)
    1. [Tür um 22 Uhr abends abschließen] (# Tür um 22 Uhr abends abschließen)
    2. [Lassen Sie sich von Alexa über Änderungen an der Sperre informieren] (# Lassen Sie sich von Alexa über Änderungen der Sperre informieren)
@@ -134,7 +134,7 @@ Als Gerät wird eine Sperre mit dem Namensmuster ```door__<name of door>``` erst
 | Status | - | Aktueller Status der Sperre |
 | Status | batteriekritisch ** | Gibt den kritischen Batteriestand an |
 | Status | lockState ** | Aktueller Sperrzustand des Nuki |
-| Status | gesperrt ** | Anzeige, wenn die Tür verriegelt ist |
+| Status | gesperrt ** | Anzeige, ob die Tür verriegelt ist |
 | Status | aktualisiert ** | Zeitstempel des letzten Updates |
 
 _ ** markierte Zustände werden bei einer Nuki-Aktion aktualisiert, wenn der Rückruf gesetzt ist_
@@ -176,7 +176,7 @@ Als Gerät wird eine Sperre mit dem Namensmuster ```door__<name of door>``` erst
 | Zustand | Türstaat | Aktueller Türzustand des Nuki |
 | Zustand | lastAction | Zuletzt ausgelöste Aktion |
 | Zustand | lockState | Aktueller Sperrzustand des Nuki |
-| Zustand | gesperrt | Anzeige, wenn die Tür verriegelt ist |
+| Zustand | gesperrt | Anzeige, ob die Tür verriegelt ist |
 | Zustand | Modus | Der Smartlock-Modus <br> `{"0": 'UNINITIALIZED', "1": 'PAIRING', "2": 'NORMAL', "3": 'UNKNOWN', "4": 'MAINTENANCE'}` |
 | Zustand | ringToOpenTimer | Verbleibender Ring zur Öffnungszeit |
 | Zustand | auslösen | Der Statusauslöser <br> `{"0": 'SYSTEM', "1": 'MANUAL', "2": 'BUTTON', "3": 'AUTOMATIC', "4": 'WEB', "5": 'APP'}` |
@@ -485,6 +485,17 @@ Von <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Sma
 ## Changelog
 
 Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
+
+### v2.2.2  (2019-03-04)
+- (Zefau) fixed incorrect error message `Error triggering action via Nuki Bridge API: No Nuki Hex ID given!`
+- (Zefau) added new error message if too many callbacks are already attached to Nuki Bridge (`Callback not attached because too many Callbacks attached to the Nuki Bridge already! Please delete a callback!`)
+
+### v2.2.1  (2019-03-03)
+- (Zefau) fixed incorrect state mapping of state `openerAdvancedConfig.doorbellSuppression`
+
+  **Note:** Please delete the state `openerAdvancedConfig.doorbellSuppression` once manually and restart the adapter to take affect!
+  
+- (Zefau) updated dependencies
 
 ### v2.2.0  (2019-02-16)
 - (Zefau) added possibility to change configuration of Nuki Smartlock or Nuki Opener (when using Web API)

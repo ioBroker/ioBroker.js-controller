@@ -43,6 +43,7 @@ Documentation for the vis-widgets are available inside vis or [Widget-Documentat
 
 * validation in widget if user didnt select the right datapoint
 * translation
+* documentation for new widgets pivottable and goalgetters
 * ~~extend table modes with 1st round,2nd round~~
 * ~~new widget pivot table of played games~~
 * ~~new widget goal getter ranking with sort function~~
@@ -58,6 +59,11 @@ Documentation for the vis-widgets are available inside vis or [Widget-Documentat
 * ~~controllable gameday in the gameday widget~~
 
 ## Changelog
+### 0.11.1
+* change some template settings, goalgetter table get headers, add object change sensing
+* widget goalgetters: add parameter highlight and showonlyhighlight
+* widget pivottable: add sort option and choice to place favorite teams on top
+* remove year from date for several widgets
 ### 0.11.0
 * extend table to calculate with x last games and extend table to calculate ranking for a defined gameday, to ensure backward compatibility i have to create a new table v3 widget
 * extend table with trend sign (arrow up/down, point for no change)

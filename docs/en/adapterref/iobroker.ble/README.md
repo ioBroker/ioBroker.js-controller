@@ -1,9 +1,7 @@
 <img src="admin/ble.png" height="48" /> ioBroker.ble
 =================
 
-**Tests:** [![Build Status](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)](https://travis-ci.org/AlCalzone/ioBroker.ble) 
-
-================
+![Build Status](https://action-badges.now.sh/AlCalzone/ioBroker.tradfri)
 
 Monitor Bluetooth Low Energy (BLE) beacons and record their information. 
 Currently, only recording *advertised* service data is supported. You can monitor which services are advertised by using the nRF Connect app (service data UUIDs).
@@ -39,6 +37,9 @@ If you have any device transmitting specially encoded information via advertisem
 * `"ruuvi-tag"`: [Ruuvi Tag](https://tag.ruuvi.com/) multisensor with firmware versions v1 and v2. **Untested, please give feedback!** 
 
 ## Changelog
+
+### 0.11.0 (2019-11-19)
+* (AlCalzone) Removed compact support. `noble` sometimes throws errors in callbacks that cannot be handled and would bring the whole compact group down.
 
 ### 0.10.1 (2019-10-13)
 * (AlCalzone) Fixed crash in JS-Controller 2.0

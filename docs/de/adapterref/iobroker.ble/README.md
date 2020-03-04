@@ -3,51 +3,79 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ble/README.md
 title: kein Titel
-hash: TFklzPIPLWol2shsHGm/nBfojbsla1MUhwZaPu0Kqzo=
+hash: X3BN9z9QT2g4Dn4oYKEJDV0N1zMdgUi8APe7JPfGOEo=
 ---
-![Build Status](https://travis-ci.org/AlCalzone/ioBroker.ble.svg?branch=master)
 ![Anzahl der Installationen](http://iobroker.live/badges/ble-stable.svg?break_cache=1)
 
 <img src="admin/ble.png" height="48" /> ioBroker.ble
 
 =================
 
-================
+![Build-Status](https://action-badges.now.sh/AlCalzone/ioBroker.tradfri)
 
-Überwachen Sie BLE-Beacons (Bluetooth Low Energy) und zeichnen Sie deren Informationen auf.
-Derzeit wird nur die Aufzeichnung von *beworbenen* Dienstdaten unterstützt. Mit der nRF Connect-App (Service Data UUIDs) können Sie überwachen, welche Dienste angekündigt werden.
-Merkmale des Verbindungs- und Lese- / Schreibdienstes werden in einer zukünftigen Version unterstützt.
+Überwachen Sie Bluetooth Low Energy (BLE) Beacons und zeichnen Sie deren Informationen auf.
+Derzeit wird nur die Aufzeichnung von *angekündigten* Servicedaten unterstützt. Mit der nRF Connect-App (Dienstdaten-UUIDs) können Sie überwachen, welche Dienste angekündigt werden.
+Das Verbinden und Lesen / Schreiben von Serviceeigenschaften wird in einer zukünftigen Version unterstützt.
 
 ## Installation
-Dieser Adapter benötigt zusätzliche Bibliotheken zum Kompilieren. Ausführliche Anweisungen finden Sie unter https://github.com/sandeepmistry/noble#prerequisites.
-Auf Raspberry Pi und ähnlichem sollte dies so aussehen: `sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev libcap2-bin`
+Dieser Adapter benötigt zum Kompilieren zusätzliche Bibliotheken. Ausführliche Anweisungen finden Sie unter https://github.com/sandeepmistry/noble#prerequisites.
+Auf Raspberry Pi und ähnlichem sollte dies folgendermaßen geschehen: `sudo apt-get install bluetooth bluez libbluetooth-dev libudev-dev libcap2-bin`
 
-Wenn der Adapter startet, sich aber nicht mit Ihrer Bluetooth-Hardware verbindet, überprüfen Sie bitte den Status von `info.driverState` in ioBroker. Wenn es sich um §§SSSSS_1§ handelt, müssen Sie `node` zusätzliche Berechtigungen erteilen. Für Linux ist dies so einfach wie
+Wenn der Adapter startet, aber keine Verbindung zu Ihrer Bluetooth-Hardware herstellt, überprüfen Sie bitte den Status `info.driverState` in ioBroker. Wenn es sich um `unauthorized` handelt, müssen Sie `node` zusätzliche Berechtigungen erteilen. Für Linux ist dies so einfach wie
 
 ```bash
 sudo setcap cap_net_raw+eip $(eval readlink -f `which node`)
 ```
 
-Hierfür muss `libcap2-bin` installiert sein.
+Dies erfordert die Installation von `libcap2-bin`.
 
 ## Aufbau
-Wenn Sie mehrere Bluetooth-Geräte in Ihrem System haben, wählen Sie das zu verwendende aus der Dropdown-Liste aus.
-Geben Sie in das Textfeld unten alle UUIDs der angekündigten Dienste ein, die Sie aufzeichnen möchten (wie in der nRF Connect-App angegeben).
+Wenn Ihr System mehrere Bluetooth-Geräte enthält, wählen Sie das zu verwendende aus der Dropdown-Liste aus.
+Geben Sie im folgenden Textfeld alle UUIDs der angekündigten Dienste ein, die Sie aufzeichnen möchten (wie in der nRF Connect-App enthalten).
 
-## Plugin-System
-Der Adapter unterstützt die Erweiterung über Plugins. Diese definieren, welche beworbenen Dienste abgehört werden sollen und wie die Daten übersetzt werden sollen. Die Plugin-Struktur ist in https://github.com/AlCalzone/ioBroker.ble/blob/master/src/plugins/plugin.ts definiert. Ein Beispiel für ein funktionierendes Plugin finden Sie hier https://github.com/AlCalzone /ioBroker.ble/blob/master/src/plugins/_default.ts
+## Plugin System
+Der Adapter unterstützt die Erweiterung über Plugins. Diese definieren, welche beworbenen Dienste angehört werden sollen und wie die Daten übersetzt werden sollen. Die Plugin-Struktur ist in https://github.com/AlCalzone/ioBroker.ble/blob/master/src/plugins/plugin.ts definiert. Ein Beispiel für ein funktionierendes Plugin finden Sie hier https://github.com/AlCalzone /ioBroker.ble/blob/master/src/plugins/_default.ts
 
-Wenn Sie ein Gerät haben, das speziell codierte Informationen über Werbung überträgt, können Sie eine PR mit einem neuen Plug-in für dieses Gerät erstellen.
+Wenn Sie ein Gerät haben, das speziell codierte Informationen über Werbung überträgt, können Sie eine PR mit einem neuen Plugin dafür erstellen.
 
 ### Unterstützte Plugins
-* "xiaomi": Alle xiaomi Bluetooth-Sensoren, einschließlich
+* `" xiaomi "`: Alle xiaomi Bluetooth-Sensoren, einschließlich
   * [Flower Care Pflanzensensor] (https://xiaomi-mi.com/sockets-and-sensors/xiaomi-huahuacaocao-flower-care-smart-monitor/)
-  * [Mijia-Temperatur- und Feuchtigkeitssensor] = USA)
+  * [Mijia Temperatur- und Feuchtigkeitssensor] (https://www.banggood.com/Xiaomi-Mijia-Bluetooth-Thermometer-Hygrometer-mit-LCD-Screen-Magnetic-Suction-Wall-Stickers-p-1232396.html?cur_warehouse = USA)
   * [Mückenschutz] (https://www.aliexpress.com/item/32883859984.html)
-* "mi-flora": Original Plugin für den Flower Care Plant Sensor, jetzt mit dem Alias "xiaomi"
-* `` "ruuvi-tag" `: [Ruuvi Tag] (https://tag.ruuvi.com/) Multisensor mit Firmware-Versionen v1 und v2. **Ungetestet, bitte Feedback geben!**
+* `" mi-flora "`: Ursprüngliches Plugin für den Sensor für Blumenpflegepflanzen, jetzt als "xiaomi" `
+* `" ruuvi-tag "`: [Ruuvi-Tag] (https://tag.ruuvi.com/) Multisensor mit Firmware-Versionen v1 und v2. **Ungetestet, bitte Feedback geben!**
 
 ## Changelog
+
+### 0.11.0 (2019-11-19)
+* (AlCalzone) Removed compact support. `noble` sometimes throws errors in callbacks that cannot be handled and would bring the whole compact group down.
+
+### 0.10.1 (2019-10-13)
+* (AlCalzone) Fixed crash in JS-Controller 2.0
+
+### 0.10.0 (2019-09-26)
+* (AlCalzone) `xiaomi` plugin: test the received data instead of relying on MAC prefixes
+
+### 0.9.2 (2019-09-26)
+* (AlCalzone) Add `e7:2e:00` as an alternative mac prefix for MiTemperature
+
+### 0.9.1 (2019-09-22)
+* (AlCalzone) Fix compact mode crashes
+
+### 0.9.0 (2019-09-04)
+* (AlCalzone) Devices without service data but with manufacturer data are no longer treated as empty
+* (AlCalzone) `_default` plugin: Create states for manufacturer data
+* (AlCalzone) `ruuvi-tag` plugin: Set `"Ruuvi Tag"` as the default name for the device object
+
+### 0.8.4 (2019-09-03)
+* (AlCalzone) `ruuvi-tag` plugin: Fix parsing of data format 3 and 5
+
+### 0.8.3 (2019-08-26)
+* (AlCalzone) Add `80:ea:ca` as an alternative mac prefix for FlowerCare
+
+### 0.8.2 (2019-08-14)
+* (AlCalzone) Add `3f:5b:7d` as an alternative mac prefix for the Xiaomi watch
 
 ### 0.8.1 (2019-07-26)
 * (AlCalzone) Added support for the Xiaomi Mosquito Repellent (read-only!)
@@ -139,7 +167,7 @@ Wenn Sie ein Gerät haben, das speziell codierte Informationen über Werbung üb
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 AlCalzone <d.griesel@gmx.net>
+Copyright (c) 2017-2020 AlCalzone <d.griesel@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

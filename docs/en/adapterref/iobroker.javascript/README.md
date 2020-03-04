@@ -1444,6 +1444,9 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 4.4.3 (2020-03-03)
+* (klein0r) Added JSONata for Object conversion
+
 ### 4.4.2 (2020-02-10)
 * (Apollon77) Fix Astro functions and error message
 * (Apollon77) usage with all kinds of admin ports and reverse proxies optimized

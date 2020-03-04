@@ -14,24 +14,22 @@ Devices that communicate with the **MQTT** protocol are experimental.
 
 You can check this with the state value `info.communicationProtocol` after successful connection establishment (values: `XMPP`, `MQTT`).
 
-### These models work to full extent
+### Theses models are known to work
 * Deebot Slim 2
-* Deebot Ozmo 930
-
-### These models work to almost full extent
 * Deebot 601
 * Deebot 710/711
 * Deebot 900/901
 * Deebot Ozmo 610
+* Deebot Ozmo 930
 * Deebot Ozmo 950
-
-### These models should work to (almost) full extent
-* Deebot N79T
-* Deebot 600/605
-* Deebot Ozmo 960 (not tested)
 
 ### These models should work partially
 * Deebot Ozmo 900
+
+### These models should work
+* Deebot N79T
+* Deebot 600/605
+* Deebot Ozmo 960 (not tested)
 
 ### Buttons and control
 
@@ -132,6 +130,9 @@ You can check this with the state value `info.communicationProtocol` after succe
 | Number of spot areas | Number of sport areas defined in the Ecovacs app (default `0`) |
 
 ## Changelog
+
+### 0.5.3
+   * Using library version 0.3.4
 
 ### 0.5.2
    * Bugfixes (MQTT/XML)
