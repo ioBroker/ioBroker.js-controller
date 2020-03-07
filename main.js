@@ -2441,7 +2441,7 @@ function initInstances() {
     }
 }
 
-function checkVersion(id, name, version) {
+function checkVersion(id, name, version, instances) {
     let isFound = false;
 
     if (name === 'js-controller') {
@@ -2458,15 +2458,13 @@ function checkVersion(id, name, version) {
         }
     }
     if (!isFound) {
-        for (const p in hostAdapter) {
-            if (!hostAdapter.hasOwnProperty(p)) continue;
-            if (hostAdapter[p] && hostAdapter[p].config && hostAdapter[p].config.common && hostAdapter[p].config.common.name === name) {
-                if (version && !semver.satisfies(hostAdapter[p].config.common.version, version)) {
-                    logger.error(hostLogPrefix + ' startInstance ' + id + ': required adapter "' + name + '" has wrong version. Installed "' + hostAdapter[p].config.common.version + '", required "' + version + '"!');
-                    return false;
-                }
-                isFound = true;
+        const p = Object.keys(instances).find(p => instances[p] && instances[p].common && instances[p].common.name === name);
+        if (p) {
+            if (version && !semver.satisfies(instances[p].common.version, version)) {
+                logger.error(hostLogPrefix + ' startInstance ' + id + ': required adapter "' + name + '" has wrong version. Installed "' + instances[p].common.version + '", required "' + version + '"!');
+                return false;
             }
+            isFound = true;
         }
     }
 
@@ -2479,52 +2477,53 @@ function checkVersion(id, name, version) {
 }
 
 function checkVersions(id, deps) {
-    try {
-        if (deps instanceof Array) {
-            for (let d = 0; d < deps.length; deps++) {
-                let version = null;
-                let name    = null;
-                if (typeof deps[d] === 'object') {
-                    for (const n in deps[d]) {
-                        if (!deps[d].hasOwnProperty(n)) continue;
-                        name    = n;
-                        version = deps[d][n];
-                        break;
-                    }
-                } else {
-                    name = deps[d];
-                }
-                if (!checkVersion(id, name, version)) {
-                    return false;
-                }
+    return new Promise((resolve, reject) => {
+        objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (err, res) => {
+            const instances = {};
+            if (res && res.rows) {
+                res.rows.forEach(item => instances[item.value._id] = item.value);
             }
-        } else if (typeof deps === 'object') {
-            if (deps.length !== undefined || deps[0]) {
-                for (const i in deps) {
-                    if (!deps.hasOwnProperty(i)) continue;
-                    for (const __name in deps[i]) {
-                        if (!deps[i].hasOwnProperty(__name)) continue;
-                        if (!checkVersion(id, __name, deps[__name][i])) {
-                            return false;
+            try {
+                if (deps instanceof Array) {
+                    for (let d = 0; d < deps.length; deps++) {
+                        let version = null;
+                        let name = null;
+                        if (typeof deps[d] === 'object') {
+                            for (const n in deps[d]) {
+                                if (!deps[d].hasOwnProperty(n)) continue;
+                                name = n;
+                                version = deps[d][n];
+                                break;
+                            }
+                        } else {
+                            name = deps[d];
+                        }
+                        if (!checkVersion(id, name, version, instances)) {
+                            return reject();
+                        }
+                    }
+                } else if (typeof deps === 'object') {
+                    if (deps.length !== undefined || deps[0]) {
+                        for (const i in deps) {
+                            if (!deps.hasOwnProperty(i)) continue;
+                            if (Object.keys(deps[i]).find(name => !checkVersion(id, name, deps[name][i], instances))) {
+                                return reject();
+                            }
+                        }
+                    } else {
+                        if (Object.keys(deps).find(name => !checkVersion(id, name, deps[name], instances))) {
+                            return reject();
                         }
                     }
                 }
-            } else {
-                for (const _name in deps) {
-                    if (!deps.hasOwnProperty(_name)) continue;
-                    if (!checkVersion(id, _name, deps[_name])) {
-                        return false;
-                    }
-                }
+            } catch (e) {
+                logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + e);
+                logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + JSON.stringify(deps));
+                return reject();
             }
-        }
-    }
-    catch (e) {
-        logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + e);
-        logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + JSON.stringify(deps));
-        return false;
-    }
-    return true;
+            resolve();
+        });
+    });
 }
 
 // Store process IDS to make possible kill them all by restart
@@ -2792,11 +2791,15 @@ function startInstance(id, wakeUp) {
 
     // Check if all required adapters installed and have valid version
     if (instance.common.dependencies) {
-        if (checkVersions(id, instance.common.dependencies)) {
-            delete instance.common.dependencies;
-        } else {
-            return;
-        }
+        return checkVersions(id, instance.common.dependencies)
+            .then(ok => {
+                delete instance.common.dependencies;
+                startInstance(id, wakeUp);
+            })
+            .catch(() => {
+                // do nothing
+                // Do not start this instance
+            });
     }
 
     let fileName = instance.common.main || 'main.js';
