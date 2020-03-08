@@ -551,7 +551,7 @@ function createObjects(onConnect) {
                             }
                         });
                     } else if (installQueue.find(obj => obj.id === id)) { // ignore object changes when still in install queue
-                        logger.debug(hostLogPrefix + ' ignore object change because adapter still in installation/rebuild queue');
+                        logger.debug(hostLogPrefix + ' ignore object change because the adapter is still in installation/rebuild queue');
                     } else {
                         const _ipArr = getIPs();
                         if (procs[id].config && checkAndAddInstance(procs[id].config, _ipArr)) {
@@ -2590,7 +2590,7 @@ function installAdapters() {
         procs[task.id].downloadRetry++;
 
         if (task.rebuild) {
-            logger.warn(hostLogPrefix + ' adapter "' + name + '" seems to be installed for an other Node.js version. Try to rebuild it... ' + procs[task.id].downloadRetry + ' attempt');
+            logger.warn(hostLogPrefix + ' adapter "' + name + '" seems to be installed for a different version of Node.js. Trying to rebuild it... ' + procs[task.id].downloadRetry + ' attempt');
         } else {
             logger.warn(hostLogPrefix + ' startInstance cannot find adapter "' + name + '". Try to install it... ' + procs[task.id].downloadRetry + ' attempt');
         }
@@ -2648,7 +2648,7 @@ function installAdapters() {
                     procs[task.id].needsRebuild = false;
                     if (!task.disabled) {
                         if (!procs[task.id].config.common.enabled) {
-                            logger.info(hostLogPrefix + ' startInstance ' + task.id + ': should start instance but disabled, re-enable');
+                            logger.info(hostLogPrefix + ' startInstance ' + task.id + ': instance is disabled but should be started, re-enabling it');
                             states.setState(task.id + '.alive', {val: true, ack: false, from: hostObjectPrefix});
                         }
                         else if (task.rebuild) {
@@ -2659,7 +2659,7 @@ function installAdapters() {
                             startInstance(task.id, task.wakeUp);
                         }
                     } else {
-                        logger.debug(hostLogPrefix + ' ' + tools.appName + ' ' + commandScope + ' successful but instance disabled');
+                        logger.debug(hostLogPrefix + ' ' + tools.appName + ' ' + commandScope + ' successful but the instance is disabled');
                     }
                 }
 
