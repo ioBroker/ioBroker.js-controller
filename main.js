@@ -2206,46 +2206,38 @@ function processMessage(msg) {
             break;
 
         case 'updateMultihost':
-            (function () {
-                const result = startMultihost();
-                if (msg.callback) {
-                    sendTo(msg.from, msg.command, {result: result}, msg.callback);
-                }
-            })();
+            const result = startMultihost();
+            if (msg.callback) {
+                sendTo(msg.from, msg.command, {result: result}, msg.callback);
+            }
             break;
 
         case 'getInterfaces':
-            (function () {
-                if (msg.callback) {
-                    sendTo(msg.from, msg.command, {result: os.networkInterfaces()}, msg.callback);
-                }
-            })();
+            if (msg.callback) {
+                sendTo(msg.from, msg.command, {result: os.networkInterfaces()}, msg.callback);
+            }
             break;
 
         case 'upload': {
-            (function (msg) {
-                if (msg.message) {
-                    uploadTasks.push({adapter: msg.message, msg});
-                    // start upload if no tasks running
-                    uploadTasks.length === 1 && startAdapterUpload();
-                } else {
-                    logger.error('host.' + hostname + ' No adapter name is specified for upload command from  ' + msg.from);
-                }
-            })(msg);
+            if (msg.message) {
+                uploadTasks.push({adapter: msg.message, msg});
+                // start upload if no tasks running
+                uploadTasks.length === 1 && startAdapterUpload();
+            } else {
+                logger.error(hostLogPrefix + ' No adapter name is specified for upload command from  ' + msg.from);
+            }
             break;
         }
 
         case 'rebuildAdapter':
-            (function (msg) {
-                if (!installQueue.find(entry => entry && entry.id && entry.id === msg.message.id)) {
-                    logger.info(msg.message.id + ' will be rebuild');
-                    installQueue.push({id: msg.message.id, rebuild: true, rebuildViaInstall: msg.message.rebuildViaInstall});
-                    // start install queue if not started
-                    installQueue.length === 1 && installAdapters();
-                } else {
-                    logger.info(msg.message.id + ' still in installQueue, rebuild will be done with install');
-                }
-            })(msg);
+            if (!installQueue.some(entry => entry.id === msg.message.id)) {
+                logger.info(hostLogPrefix + ' ' + msg.message.id + ' will be rebuilt');
+                installQueue.push({id: msg.message.id, rebuild: true, rebuildViaInstall: msg.message.rebuildViaInstall});
+                // start install queue if not started
+                installQueue.length === 1 && installAdapters();
+            } else {
+                logger.info(hostLogPrefix + ' ' + msg.message.id + ' still in installQueue, rebuild will be done with install');
+            }
             break;
 
     }
