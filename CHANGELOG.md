@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2.10 (2020-03-08) Release Dina - Windows Edition
+* (AlCalzone) do not execute nm installs with --prefix but inside a given directory
+
 ## 2.2.9 (2020-02-12) Release Dina
 * (Apollon77) fix pot. crash for edge cases
 * (Apollon77) allow to deactivate logfile zipping by iobroker.json (for non-windows systems)
