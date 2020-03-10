@@ -5,7 +5,7 @@
 * WIP!
 
 # 2.2.10 (2020-03-08) Release Dina - Windows Edition
-**This version is especially for the new Windows Installer and will be used by him. It is not offered as normal update for the users on Linux (will not break, but not needed)!**
+**This version is especially for the new Windows Installer and will be used by it. It is not offered as normal update for the users on Linux (will not break, but not needed)!**
 * (AlCalzone) do not execute npm installs with --prefix but inside a given directory on windows
 
 ## 2.2.9 (2020-02-12) Release Dina
