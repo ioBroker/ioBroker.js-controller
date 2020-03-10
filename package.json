@@ -41,14 +41,14 @@
     "tar": "^6.0.1",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.4.2",
-    "yargs": "^15.1.0"
+    "yargs": "^15.3.0"
   },
   "devDependencies": {
     "@types/event-stream": "^3.3.34",
     "@types/iobroker": "^2.2.1",
-    "@types/mocha": "^7.0.1",
-    "@types/node": "^13.5.0",
-    "@types/yargs": "^15.0.0",
+    "@types/mocha": "^7.0.2",
+    "@types/node": "^13.9.0",
+    "@types/yargs": "^15.0.4",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
     "eslint": "^6.8.0",
@@ -56,8 +56,8 @@
     "gulp-jsdoc3": "^2.0.0",
     "gulp-replace": "^1.0.0",
     "istanbul": "^0.4.5",
-    "mocha": "^7.0.0",
-    "sinon": "^9.0.0",
+    "mocha": "^7.1.0",
+    "sinon": "^9.0.1",
     "sinon-chai": "^3.5.0"
   },
   "homepage": "http://www.iobroker.com",
