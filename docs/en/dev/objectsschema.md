@@ -192,6 +192,7 @@ The tree structure is assembled automatically by names. E.g. ```system.adapter.0
 * `user`     - users
 * `group`    - groups
 * `chart`    - charts
+* `folder`   - a bunch of devices or may be other things.
  
 
 #### Attributes for specific object types
