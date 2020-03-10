@@ -37,6 +37,9 @@ You can read more about context [here](https://www.npmjs.com/package/http-proxy-
 Additionally the user can define the route path for proxy requests.
 
 ## Changelog
+### 1.2.0 (2020-03-08)
+* (Apollon77) update dependencies
+
 ### 1.1.1 (2019-07-02)
 * (bluefox) Implemented simple proxy to eliminate socket.io problem
 
@@ -62,7 +65,7 @@ Additionally the user can define the route path for proxy requests.
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

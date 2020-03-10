@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Adapter
-hash: y8n52Hctl4SpFRfyTCmddWRht4T/WaUJ9yuTmzGXeIQ=
+hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 ---
 ![Logo](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -66,6 +66,7 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - Proxmox
 - RFLink (Serial 57600baud)
 - SamsungTV
+- Smappee
 - Solarlog
 - Sonnen
 - Sonos

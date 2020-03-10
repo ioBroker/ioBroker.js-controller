@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: rddpQDgYYESDU49zCZjbWILDTaRrDNcBKGKqJvXk5Wg=
+hash: tnKz7m2fzyctXLChpilehEK9zJWfflzet92chku6PWE=
 ---
 ![логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -11,27 +11,26 @@ hash: rddpQDgYYESDU49zCZjbWILDTaRrDNcBKGKqJvXk5Wg=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
-![Состояние зависимости](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
+![Статус зависимости](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg)
 ![Трэвис-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
 
 # IoBroker.MieleCloudService
-=================
-
 ## Описание
 Этот адаптер предназначен для получения информации обо всех ваших устройствах Miele @ Home из официального стороннего API Miele.
+Независимо от того, подключены ли они через WiFi или XGW3000 Gateway. Он реализует **Miele Сторонний API V1.0.0**
 
 ## Установка
 Для установки выполните следующее:
 
-1. Установите через администратора: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git
+1. Установите через Admin, используя стабильный или последний репо или через: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git
 2. создать приложение-аккаунт для Miele @ Home в приложении Miele для смартфонов
 3. Создайте учетную запись разработчика по адресу https://www.miele.com/f/com/en/register_api.aspx.
 4. Добавьте свои Miele-устройства в приложение (если не добавлено автоматически)
 6. Заполните client_secret и client_id, полученные от команды разработчиков Miele, а также идентификатор учетной записи и пароль из приложения.
 
-## Требования
+## Предпосылки
 * Miele @ Home User (приложение для смартфона)
 * Miele @ Home Password (приложение для смартфонов)
 * Miele Client_id (от https://www.miele.com/developer/)
@@ -40,9 +39,13 @@ hash: rddpQDgYYESDU49zCZjbWILDTaRrDNcBKGKqJvXk5Wg=
 ## Следующие шаги
 * Новое: (более длинный) интервал опроса, когда ни одно устройство не активно
 * Новое: время сна для полной неактивности (например, ночью)
-* Новое: поддержка действий
 
 ## Документация
+Пожалуйста, в основном обращайтесь к основной документации API, опубликованной Miele
+
+* [Общая документация] (https://www.miele.com/developer/swagger-ui/index.html)
+* [Предварительные условия для выполнения действий на устройстве] (https://www.miele.com/developer/swagger-ui/put_additional_info.html)
+
 Существует несколько точек данных в 2 видах. Как читабельный текст и как число.
 Эти числовые поля данных, принадлежащие текстовому полю, имеют то же имя, но с добавлением «_raw».
 Те поля, которые имеют общее значение, перечислены ниже.
@@ -50,6 +53,42 @@ hash: rddpQDgYYESDU49zCZjbWILDTaRrDNcBKGKqJvXk5Wg=
 Если вам нужно ссылаться в скриптах на эти поля, всегда используйте значения _raw.
 Значения текста могут измениться в будущем, а также зависят от языка.
 Вот список того, что означают эти необработанные значения:
+
+### DeviceTypes
+ | Необработанная стоимость | государство |
+ |----------|-------|
+ | 1 | СТИРАЛЬНАЯ МАШИНА |
+ | 2 | Сушилка для белья |
+ | 7 | DISHWASHER |
+ | 8 | ПОЛУПРОМЫШЛЕННАЯ ПОСЫЛКА |
+ | 12 | ПЕЧЬ |
+ | 13 | ПЕЧЬ МИКРОВОЛНОВАЯ |
+ | 14 | HOB HIGHLIGHT |
+ | 15 | ПАРОВАЯ ПЕЧЬ |
+ | 16 | МИКРОВОЛНОВЫЙ |
+ | 17 | КОФЕ СИСТЕМА |
+ | 18 | HOOD |
+ | 19 | ХОЛОДИЛЬНИК |
+ | 20 | FREEZER |
+ | 21 | ХОЛОДИЛЬНАЯ / МОРОЗИЛЬНАЯ КОМБИНАЦИЯ |
+ | 23 | ВАКУУМНЫЙ ОЧИСТИТЕЛЬ, АВТОМАТИЧЕСКИЙ РОБОТИЧЕСКИЙ ВАКУУМНЫЙ ОЧИСТИТЕЛЬ |
+ | 24 | СТИРАЛЬНАЯ СУШКА |
+ | 25 | БЛЮДА ДЛЯ БЛЮДА |
+ | 27 | HOB INDUCTION |
+ | 28 | ПЕЧЬ ГАЗА |
+ | 31 | ПАРОВАЯ КОМБИНАЦИЯ |
+ | 32 | ВИННЫЙ ШКАФ |
+ | 33 | БЛОК КОНДИЦИОНИРОВАНИЯ ВИНА |
+ | 34 | БЛОК КОНДИЦИОНИРОВАНИЯ ВИН |
+ | 39 | ДВОЙНАЯ ПЕЧЬ |
+ | 40 | ПЕЧЬ ДЛЯ ДВОЙНОГО ПАРА |
+ | 41 | ДВУХКОМПОНЕНТНАЯ ДУХОВНАЯ КОМБИНАЦИЯ |
+ | 42 | ДВОЙНОЙ МИКРОВОЛНОВОЙ |
+ | 43 | ДВОЙНАЯ МИКРОВОЛНОВАЯ ПЕЧЬ |
+ | 45 | ПАРОВОЙ МИКРОВОЛНОВОЙ КОМБИНАЦИИ |
+ | 48 | ВАКУУМНЫЙ ЯЩИК |
+ | 67 | DIALOGOVEN |
+ | 68 | ВИННЫЙ КАБИНЕТ КОМБИНАЦИИ МОРОЗИЛЬНЫХ |
 
 ### Штат / Статус
  | Необработанная стоимость | государство |
@@ -94,6 +133,11 @@ hash: rddpQDgYYESDU49zCZjbWILDTaRrDNcBKGKqJvXk5Wg=
 
 ## Changelog
 
+### 1.1.0 (2020-03-07)
+* (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
+               Please remember that Actions will only work if you put your device into the appropiate state (e.g. Mobile Control)
+               please refer to https://www.miele.com/developer/swagger-ui/put_additional_info.html for more Information on actions. 
+  
 ### 1.0.5 (2020-02-14)
 * (grizzelbee) removed node-schedule as a dependency
 * (grizzelbee) implemented scheduling via setTimeout, which raises the opportunity 
@@ -180,4 +224,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ##Copyright
-Copyright (c) 2019, 2020 grizzelbee <captain.tzk@gmail.com>
+Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>

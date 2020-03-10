@@ -482,27 +482,30 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 
 Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
 
-### v2.2.2  (2019-03-04)
+### v2.2.3 (2019-03-04)
+- (Zefau) added refresh of configuration (via Nuki Web API) when any config item has been changed in ioBroker
+
+### v2.2.2 (2019-03-04)
 - (Zefau) fixed incorrect error message `Error triggering action via Nuki Bridge API: No Nuki Hex ID given!`
 - (Zefau) added new error message if too many callbacks are already attached to Nuki Bridge (`Callback not attached because too many Callbacks attached to the Nuki Bridge already! Please delete a callback!`)
 
-### v2.2.1  (2019-03-03)
+### v2.2.1 (2019-03-03)
 - (Zefau) fixed incorrect state mapping of state `openerAdvancedConfig.doorbellSuppression`
 
   **Note:** Please delete the state `openerAdvancedConfig.doorbellSuppression` once manually and restart the adapter to take affect!
   
 - (Zefau) updated dependencies
 
-### v2.2.0  (2019-02-16)
+### v2.2.0 (2019-02-16)
 - (Zefau) added possibility to change configuration of Nuki Smartlock or Nuki Opener (when using Web API)
 - (Zefau) updated dependencies
 
-### v2.1.0  (2019-02-03)
+### v2.1.0 (2019-02-03)
 - (Zefau) added (optional) callback IP for Bridge API events (e.g. when ioBroker is run in docker; see [#51](https://github.com/Zefau/ioBroker.nuki-extended/issues/51))
 - (Zefau) added dedicated buttons for each lock / opener action
 - (Zefau) replaced `state.timestamp` with `state.lastDataUpdate` (indicates last data refresh from the APIs) and `state.lastStateUpdate` (indicates the last actual state change)
 
-### v2.0.3  (2019-10-31)
+### v2.0.3 (2019-10-31)
 - (Zefau) reintroduced support for hashed token on hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)
 
 ### v2.0.2 (2019-10-31)

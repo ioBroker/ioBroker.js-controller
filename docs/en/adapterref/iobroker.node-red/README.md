@@ -17,6 +17,10 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 - Safe mode - Flows will not be started and you can edit the flows to fix some overload problem.
 
 ## Changelog
+
+### 1.16.0 (2020-03-08)
+* (Apollon77) update deps, node-red to 1.0.4
+
 ### 1.15.0 (2020-01-06)
 * (mobilutz/bluefox) allow creation of foreign states
 * (SchumyHao) add state unit, min and max for ioBroker out node

@@ -3,29 +3,29 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
-hash: btKGRpdtT2agwhtdcaOetZdrfBOxVJLBbaU17XPP2V0=
+hash: 7q54EEI22+Fm9SLmEqgSaQrFJkacw/yxUt1M0ne/mIc=
 ---
 # Kernkonzept
-In ioBroker gibt es zwei grundsätzlich verschiedene Datentypen. Sogenannte **Staaten** (`states`) und **Objekte**
+In ioBroker gibt es zwei grundlegend unterschiedliche Datentypen. Sogenannte **Zustände** (`states`) und **Objekte**
 
-Objekte repräsentieren sich selten ändernde und größere Daten, wie Metadaten Ihrer Systemgeräte, Konfigurationen und zusätzliche Dateien. Jedes Objekt muss ein Attribut "Typ" haben. Im Folgenden erfahren Sie, welche Objekttypen verfügbar sind und welche obligatorischen Attribute ein Objekt eines bestimmten Typs benötigt. Funktionen wie setObject, getObject, ... werden Ihnen vom Adaptermodul zur Verfügung gestellt.
+Objekte stellen selten wechselnde und größere Daten dar, z. B. Metadaten Ihrer Systemgeräte, Konfigurationen und zusätzliche Dateien. Jedes Objekt muss ein Attribut "Typ" haben. Im Folgenden finden Sie weitere Informationen dazu, welche Objekttypen verfügbar sind und welche obligatorischen Attribute ein Objekt eines bestimmten Typs benötigt. Funktionen wie setObject, getObject, ... werden Ihnen vom Adaptermodul zur Verfügung gestellt.
 
-Zustände stellen häufig sich ändernde Daten in Ihrem System dar, wie z. Wenn eine Lampe ein- oder ausgeschaltet ist, wenn ein Bewegungsmelder eine Bewegung festgestellt hat, die Temperatur Ihres Wohnzimmers oder wenn die Taste einer Fernbedienung gedrückt wird. Im Gegensatz zu Objekten können Zustände verwendet werden, um Aktionen auszulösen, und Zustände können Verlaufsdaten erstellen. Um mit Zuständen zu arbeiten, gibt es im Adaptermodul verschiedene Funktionen wie setState, getState und so weiter.
+Zustände repräsentieren häufig sich ändernde Daten in Ihrem System, wie z. Wenn eine Lampe ein- oder ausgeschaltet ist, wenn ein Bewegungsmelder eine Bewegung erkannt hat, die Temperatur Ihres Wohnzimmers oder wenn die Taste einer Fernbedienung gedrückt wird. Im Gegensatz zu Objekten können Zustände verwendet werden, um Aktionen auszulösen, und Zustände können Verlaufsdaten erstellen. Um mit Zuständen zu arbeiten, gibt es im Adaptermodul verschiedene Funktionen wie setState, getState und so weiter.
 
-Für jeden Staat muss auch ein entsprechendes Objekt mit `type=state` existieren.
+Für jeden Staat muss auch ein entsprechendes Objekt mit `type=state` vorhanden sein.
 
 In den folgenden Kapiteln wird das Datenbankschema beschrieben.
 
 ## IDs
-ID ist eine Zeichenfolge mit einer maximalen Länge von 240 Byte, hierarchisch strukturiert, Ebenen durch Punkte getrennt.
+ID ist eine Zeichenfolge mit einer maximalen Länge von 240 Byte, hierarchisch strukturiert und durch Punkte getrennt.
 
-Folgende Zeichen dürfen in IDs nicht verwendet werden: `[]*,;'"&#96;<>\\?`.
+Folgende Zeichen dürfen nicht in IDs verwendet werden: `[]*,;'"&#96;<>\\?`.
 
 Es wird nicht empfohlen, auch `^$()/` zu verwenden.
 
 Die ID hat verschiedene Ebenen. Jede Ebene wird durch einen Punkt bestimmt. Beispiel: `system.adapter.admin.0`
 
-- `system` - ist der Namespace für Systemobjekte
+- `system` - ist ein Namespace für Systemobjekte
 - `adapter` - Namespace für Adapterkonfigurationen
 - `admin` - Adaptername
 - `0` - Adapterinstanz
@@ -36,24 +36,24 @@ Oder ein anderes Beispiel `hm-rpc.1.ABC110022.2.VALUE`:
 - `1` - Adapterinstanz
 - `ABC110022` - Geräteadresse
 - `2` - Kanalname
-- `VALUE` - Name des Zustands
+- `VALUE` - Statusname
 
 ## Namespaces
 * `system.` - Systemobjekte und -zustände
-* `system.host.` - Steuerungsprozesse
+* `system.host.` - Controller-Prozesse
 * `system.config.` - Systemeinstellungen wie Standardsprache
 * `system.meta.` - System-Metadaten
 * `system.user.` - Benutzer
 * `system.group.` - Gruppen
 * `system.adapter. <Adaptername>` - Standardkonfiguration eines Adapters
 * `<Adaptername> .` - Objekte für einen bestimmten Adapter.
-* `<Adaptername> .meta.` - Gemeinsame Metadaten, die von allen Instanzen dieses Adapters verwendet werden
+* `<Adaptername> .meta.` - allgemeine Metadaten, die von allen Instanzen dieses Adapters verwendet werden
 * `<Adaptername>. <Instanznummer> .` - Ein Adapterinstanz-Namespace
 * `enum.` - Aufzählungen
 * `history.` - Verlaufsdaten
-* `scripts.` - Script Engine Scripts
+* `scripts.` - Script Engine-Skripte
 * `scripts.js.` - Javascript Script Engine Scripts
-* `scripts.py.` - Skripte der Python Script Engine (zukünftig)
+* `scripts.py.` - Python Script Engine Scripts (Zukunft)
 
 ### Namespace system.config.
 ```
@@ -121,18 +121,18 @@ Oder ein anderes Beispiel `hm-rpc.1.ABC110022.2.VALUE`:
 ## Zustände
 Die Methode getState und das Ereignis stateChange liefern ein Objekt mit allen Attributen außer expire
 
-für die `setState`-Methode ist alles außer `val` optional, `from` wird automatisch durch die `setState`-Methode festgelegt. `ack` sind standardmäßig false, `ts` und `lc` sind wie erwartet eingestellt
+Für die `setState` Methode ist alles außer `val` optional, `from` wird automatisch durch die `setState` Methode eingestellt. `ack` ist standardmäßig false, `ts` und `lc` werden wie erwartet gesetzt
 
-Attribute für das getState / stateChange / setState-Objekt:
+Attribute für das Objekt getState / stateChange / setState:
 
-* `val` - der tatsächliche Wert - kann ein beliebiger Typ sein, der JSON-" codierbar "ist
-* `ack` - ein Boolesches Flag, das angibt, ob das Zielsystem den Wert bestätigt hat
+* `val` - der tatsächliche Wert - kann ein beliebiger Typ sein, der JSON-" codierbar "ist.
+* `ack` - ein boolesches Flag, das angibt, ob das Zielsystem den Wert bestätigt hat
 * `ts` - ein Unix-Zeitstempel, der die letzte Aktualisierung des Status angibt (in Millisekunden)
-* `lc` - ein Unix-Zeitstempel, der die letzte Änderung des tatsächlichen Werts des Zustands angibt (in Millisekunden)
+* `lc` - ein Unix-Zeitstempel, der die letzte Änderung des tatsächlichen Status des Status angibt (in Millisekunden)
 * `from` - Adapterinstanz, die den` setState` ausgeführt hat
 * `user` - Benutzername, der den Wert festlegt
 * `expire` - ein ganzzahliger Wert, mit dem Zustände festgelegt werden können, die nach einer bestimmten Anzahl von Sekunden ablaufen. Kann nur mit `setValue` verwendet werden. Nachdem der Wert abgelaufen ist, verschwindet er aus redisDB.
-* `c` - Kommentar zu dieser Zustandsänderung.
+* `c` - Kommentar für diese Statusänderung.
 * `q` - Qualität. Nummer mit folgenden Zuständen:
 
 ```
@@ -159,86 +159,87 @@ Attribute für das getState / stateChange / setState-Objekt:
 Jeder *Zustand* muss durch ein Objekt vom Typ Zustand dargestellt werden, das Metadaten für den Zustand enthält. Siehe unten.
 
 ## Objekte
-### Pflichtattribute
+### Obligatorische Attribute
 Folgende Attribute müssen in jedem Objekt vorhanden sein:
 
 * `_id`
-* `type` - siehe unten für mögliche Werte
-* `common` - Ein Objekt, das ioBroker-spezifische Abstraktionseigenschaften enthält
-* `native` - Ein Objekt, das kongruente Eigenschaften des Zielsystems enthält
+* `type` - mögliche Werte siehe unten
+* `common` - ein Objekt, das ioBroker-spezifische Abstraktionseigenschaften enthält
+* `native` - ein Objekt, das kongruente Eigenschaften des Zielsystems enthält
 
 ### Optionale Attribute
-* `common.name` - der Name des Objekts (optional, aber unbedingt empfohlen, um es auszufüllen)
+* `common.name` - der Name des Objekts (optional, aber unbedingt empfohlen, um es zu füllen)
 
 ### Baumstruktur
-Die Baumstruktur wird automatisch nach Namen zusammengestellt. Z.B. ```system.adapter.0.admin``` ist Elternteil von `system.adapter.0.admin.uptime`. Verwenden Sie diese Namenskonvention mit Punkt "." Als Ebenenteiler.
+Die Baumstruktur wird automatisch nach Namen zusammengestellt. Z.B. ```system.adapter.0.admin``` ist übergeordnet für `system.adapter.0.admin.uptime`. Verwenden Sie diese Namenskonvention mit Punkt "." Als Teiler der Ebenen.
 
 ### Objekttypen
-* `state` - Elternteil sollte vom Typ Kanal, Gerät, Instanz oder Host sein
+* `state` - Eltern sollten vom Typ Kanal, Gerät, Instanz oder Host sein
 * `channel` - Objekt zum Gruppieren eines oder mehrerer Zustände. Eltern sollten Gerät sein.
-* `device` - Objekt zum Gruppieren eines oder mehrerer Kanäle oder Zustände. Sollte keinen übergeordneten außer dem Adapterinstanz-Namespace haben.
-* `enum` - Objekte, die ein Array in common.members enthalten, das auf Zustände, Kanäle, Geräte oder Dateien verweist. Aufzählungen können eine übergeordnete Aufzählung haben (Baumstruktur möglich)
-* `host` - Ein Host, der einen Controller-Prozess ausführt
-* `adapter` - Die Standardkonfiguration eines Adapters. Anwesenheit zeigt auch an, dass der Adapter erfolgreich installiert wurde. (Vorschlag: sollte ein Attribut enthalten, das ein Array der Hosts enthält, auf denen es installiert ist)
-* `instance` - Instanz des Adapters. Eltern müssen vom Typ Adapter sein
-* `meta` - Ändert selten die Meta-Informationen, die ein Adapter oder seine Instanzen benötigen
+* `device` - Objekt zum Gruppieren eines oder mehrerer Kanäle oder Status. Sollte außer dem Adapterinstanz-Namespace kein übergeordnetes Element haben.
+* `enum` - Objekte, die ein Array in common.members enthalten, das auf Status, Kanäle, Geräte oder Dateien verweist. Aufzählungen können eine übergeordnete Aufzählung haben (Baumstruktur möglich)
+* `host` - ein Host, der einen Controller-Prozess ausführt
+* `adapter` - die Standardkonfiguration eines Adapters. Das Vorhandensein zeigt auch an, dass der Adapter erfolgreich installiert wurde. (Vorschlag: sollte ein Attribut haben, das ein Array der Hosts enthält, auf denen es installiert ist)
+* `instance` - Instanz des Adapters. Das übergeordnete Element muss vom Typ Adapter sein
+* `meta` - ändert selten Metainformationen, die ein Adapter oder seine Instanzen benötigen
 * `config` - Konfigurationen
 * `script` - Skripte
 * `user` - Benutzer
 * `group` - Gruppen
 * `chart` - Diagramme
+* `Ordner` - eine Reihe von Geräten oder andere Dinge.
 
 #### Attribute für bestimmte Objekttypen
 ##### Zustand
 Attribute:
 
-* `common.type` (optional - (Standardeinstellung ist mixed == any type) (mögliche Werte: number, string, boolean, array, object, mixed, file) Als Ausnahme könnten die Objekte mit dem Typ` meta` `common haben .type = meta.user` oder `meta.folder`
+* `common.type` (optional - (Standard ist gemischt == beliebiger Typ) (mögliche Werte: Zahl, Zeichenfolge, Boolescher Wert, Array, Objekt, gemischt, Datei). Ausnahmsweise können Objekte mit dem Typ` meta` `common haben .type = meta.user` oder `meta.folder`
 * `common.min` (optional)
 * `common.max` (optional)
 * `common.step` (optional) - Intervall erhöhen / verringern. Z.B. 0,5 für Thermostat
 * `common.unit` (optional)
 * `common.def` (optional - der Standardwert)
 * `common.defAck` (optional - wenn common.def gesetzt ist, wird dieser Wert als ack-Flag verwendet, js-controller 2.0.0+)
-* `common.desc` (optional, string)
-* `common.read` (Boolescher Wert, obligatorisch) - true, wenn der Status lesbar ist
-* `common.write` (Boolescher Wert, obligatorisch) - true, wenn der Status beschreibbar ist
-* `common.role` (string, obligatorisch) - Rolle des Status (wird in Benutzeroberflächen verwendet, um anzugeben, welches Widget ausgewählt werden soll, siehe unten)
-* `common.states` (optional) Attribut vom Typ number mit Objekt möglicher Zustände` {'value': 'valueName', 'value2': 'valueName2', 0: 'OFF', 1: 'ON'} `
-* `common.workingID` (string, optional) - wenn dieser Zustand den Hilfszustand WORKING hat. Hier muss der vollständige Name oder nur der letzte Teil geschrieben werden, wenn die ersten Teile mit tatsächlichen gleich sind. Wird für HM.LEVEL verwendet und hat normalerweise den Wert "WORKING"
-* `common.custom` (optional) - die Struktur mit benutzerdefinierten Einstellungen für bestimmte Adapter. Wie "{" influxdb.0 ": {" enabled ": true," alias ":" name "}}". Das Attribut "enabled" ist erforderlich. Ist dies nicht der Fall, wird das gesamte Attribut gelöscht.
+* `common.desc` (optional, Zeichenfolge)
+* `common.read` (boolesch, obligatorisch) - true, wenn der Status lesbar ist
+* `common.write` (boolesch, obligatorisch) - true, wenn state beschreibbar ist
+* `common.role` (Zeichenfolge, obligatorisch) - Rolle des Status (wird in Benutzeroberflächen verwendet, um anzugeben, welches Widget ausgewählt werden soll, siehe unten)
+* `common.states` (optional) Attribut vom Typ Nummer mit Objekt möglicher Zustände` {'Wert': 'Wertname', 'Wert2': 'Wertname2', 0: 'AUS', 1: 'EIN'} `
+* `common.workingID` (Zeichenfolge, optional) - wenn dieser Status den Hilfsstatus WORKING hat. Hier muss der vollständige Name oder nur der letzte Teil geschrieben werden, wenn die ersten Teile mit den tatsächlichen identisch sind. Wird für HM.LEVEL verwendet und hat normalerweise den Wert "WORKING".
+* `common.custom` (optional) - die Struktur mit benutzerdefinierten Einstellungen für bestimmte Adapter. Wie `{" influxdb.0 ": {" enabled ": true," alias ":" name "}}`. Das Attribut "enabled" ist erforderlich. Wenn dies nicht der Fall ist, wird das gesamte Attribut gelöscht.
 
-##### Bundesland `common.history`
+##### Zustand `common.history`
 Die Verlaufsfunktion benötigt den Verlaufsadapter oder einen anderen Speicheradapter vom Typ Verlauf
 
-Die fifo-Länge wird auf min reduziert, wenn max getroffen wird. auf null setzen oder undefiniert lassen, um die Standardeinstellungen zu verwenden
+Die FIFO-Länge wird auf min reduziert, wenn max getroffen wird. auf null setzen oder undefiniert lassen, um die Standardeinstellungen zu verwenden
 
-Eine Liste der Transporte finden Sie in der README-Datei des Verlaufsadapters
+Eine Liste der Transporte finden Sie im Verlaufsadapter README
 
 * `common.history` (optional)
-* `common.history. <HISTORY-INSTANCE> .changesOnly` (optional, boolean, wenn true, werden nur Wertänderungen protokolliert)
-* `common.history. <HISTORY-INSTANCE> .enabled` (Boolean)
+* `common.history. <HISTORY-INSTANCE> .changesOnly` (optional, boolesch, wenn true, werden nur Wertänderungen protokolliert)
+* `common.history. <HISTORY-INSTANCE> .enabled` (boolean)
 
-##### Bundesland `common.role`
+##### Zustand `common.role`
 * `common.role` (gibt an, wie dieser Status in Benutzeroberflächen dargestellt werden soll)
 
 [mögliche Werte](stateroles.md)
 
 #### Kanal
-##### Channel `common.role` (optional)
-vorschlag: die channel-objects common.role sollte / könnte eine reihe von obligatorischen und / oder optionalen state-child-objekten beinhalten
+##### Kanal `common.role` (optional)
+Vorschlag: Die Kanalobjekte common.role sollten / könnten eine Reihe von obligatorischen und / oder optionalen State-Child-Objekten implizieren
 
 mögliche Werte:
 
-* `info` - Währung oder Aktienkurs, Kraftstoffpreise, Postfacheinfügung und ähnliches
-* `calendar` -
-* `Prognose` - Wettervorhersage
+* `info` - Währungs- oder Aktienkurs, Kraftstoffpreise, Einfügen von Postfächern und ähnliches
+* `Kalender` -
+* `Vorhersage` - Wettervorhersage
 
 * `media - gemeinsamer Medienkanal
-* `media.music` - Mediaplayer wie SONOS, YAMAHA und so weiter
+* `media.music` - Media Player wie SONOS, YAMAHA und so weiter
 * `media.tv` - TV
-* `media.tts` - Text zur Rede
+* `media.tts` - Text zu Sprache
 
-* `thermo` - Überwacht oder regelt die Temperatur, Luftfeuchtigkeit und so weiter
+* `thermo` - Überwachen oder steuern Sie Temperatur, Luftfeuchtigkeit usw.
 * `thermo.heat`
 * `thermo.cool`
 
@@ -247,16 +248,16 @@ mögliche Werte:
 * `Licht`
 * `light.dimmer` - Lichtdimmer
 * `light.switch` - Lichtschalter.
-* `light.color` - Lichtsteuerung mit der Möglichkeit der Farbänderung
-* `light.color.rgb` - Setzt die Farbe in RGB
+* `light.color` - Lichtsteuerung mit Fähigkeit zur Farbänderung
+* `light.color.rgb` - Farbe in RGB einstellen
 * `light.color.rgbw` - Farbe in RGBW einstellen
-* `light.color.hsl` - Farbe in Hue / Saturation / Luminance einstellen (Hue color light - LivingColors ...)
+* `light.color.hsl` - Farbe in Farbton / Sättigung / Luminanz einstellen (Farbton-Farblicht - LivingColors ...)
 * `light.color.hslct` - Farbe in Farbton / Sättigung / Luminanz oder Farbtemperatur einstellen (Farbton erweitertes Farblicht)
-* `light.color.ct.` - Farbtemperatur K
+* `light.color.ct` - Farbtemperatur K.
 
 * `switch` - Ein generischer Schalter
 
-* "Sensor" - z.B. Fenster- oder Türkontakt, Wasserlecksensor, Feuersensor
+* "Sensor" - z. Fenster- oder Türkontakt, Wasserlecksensor, Feuersensor
 * `sensor.door` - öffnen, schließen
 * `sensor.door.lock` - öffnen, schließen, verriegeln
 * `sensor.window` - öffnen, schließen
@@ -267,11 +268,11 @@ mögliche Werte:
 
 *
 
-* `Alarm` - etwas Alarm
+* `Alarm` - ein Alarm
 
 * `phone` - fritz box, speedport und so weiter
 
-* `button` - wie ein Wandschalter oder eine TV-Fernbedienung, bei der jede Taste einen Status wie .play, .stop, .pause hat
+* `button` - wie ein Wandschalter oder eine TV-Fernbedienung, bei der jede Taste einen Zustand wie .play, .stop, .pause aufweist
 * `remote` - TV oder andere Fernbedienungen mit Status sind Zeichenfolgen mit gedrückten Werten, z. "PLAY", "STOP", "PAUSE"
 
 * `meta` - Informationen zum Gerät
@@ -280,13 +281,13 @@ mögliche Werte:
 * ...
 
 #### Kanalbeschreibungen
-~~ Die Namen der Attribute können vom Adapter frei definiert werden, mit Ausnahme der mit **fett** geschriebenen. ~~
+~~ Die Namen der Attribute können vom Adapter frei definiert werden, mit Ausnahme derjenigen, die mit **Fett** geschrieben sind. ~~
 
 "W" - common.write = true
 
-"M" - Pflichtfeld
+"M" - Obligatorisch
 
-##### Optionale Zustände für jeden Kanal / Gerät
+##### Optionale Zustände für jeden Kanal / jedes Gerät
 ```javascript
 // state-working (optional)
 {
@@ -355,12 +356,12 @@ mögliche Werte:
 }
 ```
 
-##### `light.switch` - Beschreibung der Attribute
+##### `light.switch` - Attributbeschreibung
 | **Name** | **common.role** | **M** | **W** | **common.type** | **Beschreibung** | ------------- |: -------------------------- |: -----: | : -----: | ----------------- | ---
 
-| Zustand | wechseln | X | X | Boolescher Wert |
-| beschreibung | text.description | | | |
-| mmm | anzeige.wartung.mmm | | | | mmm = lowbat oder unreach oder was auch immer |
+| Zustand | Schalter | X | X | boolean |
+| Beschreibung | text.description | | | |
+| mmm | Indicator.maintenance.mmm | | | | mmm = Lowbat oder Unreach oder was auch immer |
 
 ```
 // SWITCH CHANNEL
@@ -393,7 +394,7 @@ mögliche Werte:
 
 ```
 
-##### `light.dimmer` - Beschreibung der Attribute
+##### `light.dimmer` - Attributbeschreibung
 ```
 // DIMMER CHANNEL
 {
@@ -430,7 +431,7 @@ mögliche Werte:
 
 ```
 
-##### `blind` - Beschreibung der Attribute
+##### `blind` - Attributbeschreibung
 ```
 // BLIND CHANNEL
 {
@@ -462,124 +463,124 @@ mögliche Werte:
 }
 ```
 
-##### `phone` - Beschreibung der Attribute
+##### `phone` - Attributbeschreibung
 | **Name** | **common.role** | **M** | **W** | **common.type** | **Beschreibung** | `ringing_number` | `text.phone_number` | | | `string` |
 
 | `ringing` | `indicator` | | | `boolean` |
-| `Klingeln` | `indicator` | | | `boolean` |
+| `klingeln` | `Indikator` | | | `boolean` |
 
 ...
 
 #### Gerät
 #### Enum
-* `common.members` - (optionales) Array von Enum-Mitglieds-IDs
+* `common.members` - (optionales) Array von Enum-Member-IDs
 
 #### Meta
 Ich würde
 
- * `* &lt; Adaptername &gt;. & lt; Instanznummer & gt; .meta & lt; Metaname & gt; * '
- * `* &lt; Adaptername &gt; .meta & lt; Metaname & gt; *`
- * `system. *meta. &lt; metaname &gt;*
+ * `* &lt; Adaptername &gt;. & lt; Instanznummer &gt; .meta. & lt; Metaname & gt; *`
+ * `* &lt; Adaptername &gt; .meta. & lt; Metaname & gt; *`
+ * `system. *meta. &lt; meta-name &gt;*
 
 #### Adapter
 id `system.adapter.<adapter.name>`
 
-* Hinweis: * Alle Flaggen sind optional, außer als **obligatorisch** gekennzeichnet.
+* Hinweis: * Alle Flags sind optional, außer als **obligatorisch** gekennzeichnet.
 
-* `common.adminTab.fa-icon` - Name des Font-Awesome-Symbols für TAB.
+* `common.adminTab.fa-icon` - Font-Awesome Symbolname für TAB.
 * `common.adminTab.ignoreConfigUpdate` - Konfigurations-TAB nicht aktualisieren, wenn die Konfiguration geändert wurde (um die Konfigurationseinstellungen in TAB zu aktivieren)
-* `common.adminTab.link` - Link für iframe im TAB. Sie können die Parameterersetzung folgendermaßen verwenden: "http://% ip%:% port%". IP wird durch Host-IP ersetzt. "port" wird aus native.port extrahiert.
-* `common.adminTab.name` - Name des TAB in admin
-* `common.adminTab.singleton` - [true / false], wenn der Adapter TAB für admin hat. Es wird nur ein Tab für alle Instanzen angezeigt.
-* `common.allowInit` - [true / false] ermöglicht, dass der" geplante "Adapter" nicht im Zeitplan "genannt wird, wenn Einstellungen geändert oder der Adapter gestartet werden. Oder lassen Sie einen geplanten Adapterstart einmal nach einer Konfigurationsänderung und dann nach Zeitplan zu.
+* `common.adminTab.link` - Link für iframe in der TAB. Sie können die Parameter wie folgt ersetzen: "http://% ip%:% port%". IP wird durch Host-IP ersetzt. "port" wird aus native.port extrahiert.
+* `common.adminTab.name` - Name der TAB in admin
+* `common.adminTab.singleton` - [true / false], wenn der Adapter TAB für admin hat. Es wird nur eine TAB für alle Instanzen angezeigt.
+* `common.allowInit` - [true / false] ermöglicht den Aufruf des" geplanten "Adapters" nicht im Zeitplan ", wenn die Einstellungen geändert oder der Adapter gestartet wurde. Oder lassen Sie den geplanten Adapter einmal nach Änderung der Konfiguration und dann nach Zeitplan starten.
 * `common.availableModes` - Werte für common.mode, wenn mehr als ein Modus möglich ist
 * `common.blockly` - [true / false], wenn der Adapter benutzerdefinierte Blöcke für blockly hat. (admin / blockly.js erforderlich)
-* `common.connectionType` - Verbindungstyp mit Gerät:` local / cloud`. Siehe auch `common.dataSource`.
-* `common.compact` - teilt dem Controller mit, dass dieser Adapter auf Wunsch im selben Prozess gestartet werden kann
-* `common.config.height` - Standardhöhe für den Konfigurationsdialog (veraltet - nur für admin2 gültig)
+* `common.connectionType` - Verbindungstyp mit Gerät:` local / cloud`. Siehe auch "common.dataSource".
+* `common.compact` - sagt dem Controller, dass dieser Adapter auf Wunsch im selben Prozess gestartet werden kann
+* `common.config.height` - Standardhöhe für den Konfigurationsdialog (veraltet - nur gültig für admin2)
 * `common.config.minHeight` - minimale Höhe für den Konfigurationsdialog (veraltet - nur gültig für admin2)
 * `common.config.minWidth` - minimale Breite für den Konfigurationsdialog (veraltet - nur gültig für admin2)
-* `common.config.width` - Standardbreite für den Konfigurationsdialog (veraltet - nur für admin2 gültig)
-* `common.dataFolder` - Ordner relativ zu den iobroker-Daten, in denen der Adapter die Daten speichert. Dieser Ordner wird automatisch gesichert und wiederhergestellt. Sie können die Variable '% INSTANCE%' verwenden.
-* `common.dataSource` - Wie die Daten vom Gerät empfangen werden:` poll / push / assume`. Dies ist zusammen mit `connectionType` wichtig.
-* `common.dependencies` - Array wie` [{"js-controller": "> = 2.0.0"}] `, das beschreibt, welche ioBroker-Module für diesen Adapter benötigt werden.
-* `common.docs` - Die Struktur wie` {"en": "docs / en / README.md", "de": ["docs / de / README.md", "docs / de / README1.md" ]} `, der die Dokumentation beschreibt, wenn nicht in README.md
+* `common.config.width` - Standardbreite für den Konfigurationsdialog (veraltet - nur gültig für admin2)
+* `common.dataFolder` - Ordner relativ zu iobroker-Daten, in dem der Adapter die Daten speichert. Dieser Ordner wird automatisch gesichert und wiederhergestellt. Sie können die Variable '% INSTANCE%' verwenden.
+* `common.dataSource` - Wie die Daten vom Gerät empfangen werden:` poll / push / Annahme`. Es ist wichtig zusammen mit `connectionType`.
+* `common.dependencies` - Array wie` [{"js-controller": "> = 2.0.0"}] `, das beschreibt, welche ioBroker-Module für diesen Adapter erforderlich sind.
+* `common.docs` - Die Struktur wie` {"en": "docs / de / README.md", "de": ["docs / de / README.md", "docs / de / README1.md" ]} `, das die Dokumentation beschreibt, wenn nicht in README.md
 * `common.enabled` - **obligatorisch** Der Wert [true / false] sollte false sein, damit neue Instanzen standardmäßig deaktiviert werden
 * `common.engineTypes` - veraltet. Verwenden Sie die Engine in package.json
-* `common.eraseOnUpload` - löscht alle vorherigen Daten im Verzeichnis vor dem Hochladen
-* `common.expert` - zeige dieses Objekt nur im Expertenmodus in admin
+* `common.eraseOnUpload` - Löscht alle vorherigen Daten im Verzeichnis vor dem Hochladen
+* `common.expert` - Zeigt dieses Objekt nur im Expertenmodus in admin an
 * `common.extIcon` - Link zum externen Symbol für deinstallierte Adapter. Normalerweise auf Github.
 * `common.getHistory` - [true / false], wenn der Adapter die getHistory-Nachricht unterstützt
-* `common.icon` - Name des lokalen Icons (sollte sich im Unterverzeichnis" admin "befinden)
-* `common.installedVersion` - **obligatorisch** installierte Version
-* `common.keywords` - Ähnlich den Schlüsselwörtern in package.json, kann jedoch in vielen Sprachen definiert werden. Nur ein Array.
-* `common.localLinks` - Link zum Webservice dieses Adapters. ZB zu http:// localhost: 5984 / _utils für Futon von admin
-* `common.localLink` - veraltet. Verwenden Sie `common.localLinks`.
+* `common.icon` - Name des lokalen Symbols (sollte sich im Unterverzeichnis" admin "befinden)
+* `common.installedVersion` - **obligatorische** installierte Version
+* `common.keywords` - Ähnlich wie Schlüsselwörter in package.json, kann jedoch in vielen Sprachen definiert werden. Nur ein Array.
+* `common.localLinks` - Link zum Webdienst dieses Adapters. Zum Beispiel zu http:// localhost: 5984 / _utils für Futon von admin
+* `common.localLink` - veraltet. Verwenden Sie "common.localLinks".
 * `common.logLevel` - Debug, Info, Warnung oder Fehler
 * `common.logTransporter` - wenn dieser Adapter Protokolle von anderen Hosts und Adaptern empfängt (z. B. um sie irgendwo zu speichern)
 * `common.main` - Startdatei des Adapters. Gleich wie in package.json.
 * `common.materializeTab` - wenn der Adapter> admin3 für tab unterstützt (materialize style)
-* `common.materialise` - wenn der Adapter> admin3 unterstützt (materialise style)
-* `common.messagebox` - true, wenn die Nachrichtenbox unterstützt wird. Wenn ja, wird das Objekt system.adapter. &lt; adapter.name &gt; adapter.instance & gt.messagebox erstellt, um Nachrichten an den Adapter zu senden (verwendet für E-Mail, Pushover, ...;
+* `common.materialize` - wenn der Adapter> admin3 unterstützt (materialize style)
+* `common.messagebox` - true, wenn das Nachrichtenfeld unterstützt wird. Wenn ja, wird das Objekt system.adapter. &lt; adapter.name & gt &lt; adapter.instance & gt.messagebox erstellt, um Nachrichten an den Adapter zu senden (wird für E-Mail, Pushover, ... verwendet;
 * `common.mode` - **obligatorisch** mögliche Werte siehe unten
-* `common.name` - **obligatorisch** Name des Adapters ohne" ioBroker ".
+* `common.name` - **obligatorischer** Name des Adapters ohne" ioBroker ".
 * `common.noConfig` - [true / false] zeigt beispielsweise keinen Konfigurationsdialog an
-* `common.noIntro` - zeige niemals Instanzen dieses Adapters auf dem Intro / Overview Bildschirm in Admin (wie Icons, Widgets)
-* `common.noRepository` - [true / false], wenn der Adapter bei der Erstinstallation geliefert wurde oder ein eigenes Repository hat
-* `common.nogit` - wenn dies zutrifft, ist keine direkte Installation von Github möglich
+* `common.noIntro` - zeigt niemals Instanzen dieses Adapters auf dem Intro / Übersichtsbildschirm in admin an (wie Symbole, Widgets)
+* `common.noRepository` - [true / false], wenn der Adapter bei der Erstinstallation geliefert wurde oder über ein eigenes Repository verfügt
+* `common.nogit` - Wenn true, ist keine direkte Installation von Github möglich
 * `common.nondeletable` - [true / false] Dieser Adapter kann nicht gelöscht oder aktualisiert werden. Es wird zusammen mit dem Controller aktualisiert.
 * `common.npmLibs` - veraltet. Verwenden Sie package.json `dependencies`.
-* `common.onlyWWW` - [true / false] sagt dem Controller, dass der Adapter nur HTML-Dateien und keine main.js hat, wie Rikscha
+* `common.onlyWWW` - [true / false] sagt dem Controller, dass der Adapter nur HTML-Dateien und keine main.js wie Rikscha hat
 * `common.osDependencies.darwin` - Array von OSX-Paketen, die für diesen Adapter erforderlich sind
-* `common.osDependencies.linux` - Array von Debian / Centos-Paketen, die für diesen Adapter benötigt werden (natürlich nur Betriebssysteme mit apt, apt-get, yum als Paketmanager)
+* `common.osDependencies.linux` - Array von Debian / Centos-Paketen, die für diesen Adapter erforderlich sind (natürlich nur Betriebssysteme mit apt, apt-get, yum als Paketmanager)
 * `common.osDependencies.win32` - wird nicht verwendet, da win32 keinen Paketmanager hat
 * `common.os` - Zeichenfolge oder Array unterstützter Betriebssysteme, z. B. [" linux "," darwin "]
-* `common.platform` - **obligatorisch** mögliche Werte: Javascript / Node.js, weitere kommen
-* `common.preserveSettings` - Zeichenfolge (oder Array) mit Namen von Attributen, die gemeinsam verwendet werden und nicht gelöscht werden. Z.B. "history", daher wird bei setState ('system.adapter.mqtt.0 ", {..}) das Feld common.history nicht gelöscht, auch wenn das neue Objekt dieses Feld nicht enthält. Um das Attribut zu löschen, muss es explizit angegeben werden fertig mit `` `common: {history: null}` ``.
-* `common.readme` - veraltet. Verwenden Sie `docs`.
-* `common.restartAdapters` - Array mit Namen des Adapters, der nach der Installation dieses Adapters neu gestartet werden muss, z. ["vis"]
-* `common.schedule` - CRON-Zeitplan, wenn der Adapter im Modus` schedule` ausgeführt wird.
-* `common.serviceStates` - [true / false oder path], wenn der Adapter zusätzliche Zustände liefern kann. Wenn ja, wird der Pfad adapter / lib / states.js aufgerufen und es gibt folgende Parameter function (objects, states, instance, config, callback). Die Funktion muss das Array von Punkten mit Werten wie function (err, result) liefern. {Result = [{id: 'id1', val: 1}, {id: 'id2', val: 2}]}
-* `common.singletonHost` - Adapter kann nur einmal auf einem Host installiert werden
+* `common.platform` - **obligatorisch** mögliche Werte: Javascript / Node.js, weitere folgen
+* `common.preserveSettings` - Zeichenfolge (oder Array) mit Namen von Attributen, die gemeinsam gelöscht werden und nicht gelöscht werden. Z.B. "history", also wird mit setState ('system.adapter.mqtt.0 ", {..}) das Feld common.history nicht gelöscht, auch wenn das neue Objekt dieses Feld nicht hat. Um das Attribut zu löschen, muss es explizit sein erledigt mit `` `common: {history: null}` ``.
+* `common.readme` - veraltet. Verwenden Sie "docs".
+* `common.restartAdapters` - Array mit den Namen des Adapters, der nach der Installation dieses Adapters neu gestartet werden muss, z. ["vis"]
+* `common.schedule` - CRON-Zeitplan, wenn der Adapter im Modus` Zeitplan` ausgeführt wird.
+* `common.serviceStates` - [true / false oder path], wenn der Adapter zusätzliche Zustände liefern kann. Wenn ja, wird der Pfadadapter / lib / States.js aufgerufen und gibt folgende Parameterfunktion (Objekte, Zustände, Instanz, Konfiguration, Rückruf). Die Funktion muss das Array von Punkten mit Werten wie function (err, result) liefern {result = [{id: 'id1', val: 1}, {id: 'id2', val: 2}]}
+* `common.singletonHost` - Der Adapter kann nur einmal auf einem Host installiert werden
 * `common.singleton` - Adapter kann nur einmal im gesamten System installiert werden
 * `common.stopBeforeUpdate` - [true / false], wenn der Adapter vor dem Update gestoppt werden muss
-* `common.stopTimeout` - Wartezeit in ms, bis der Adapter heruntergefahren ist. Standard 500ms.
-* `common.subscribable` - Variablen dieses Adapters müssen mit sendTo abonniert werden, um Aktualisierungen zu ermöglichen
+* `common.stopTimeout` - Zeitüberschreitung in ms, um zu warten, bis der Adapter heruntergefahren ist. Standard 500ms.
+* `common.subscribable` - Variablen dieses Adapters müssen mit sendTo abonniert werden, um Updates zu ermöglichen
 * `common.subscribe` - Name der Variablen, die automatisch abonniert wird
-* `common.supportCustoms` - [true / false], wenn der Adapter Einstellungen für jeden Status unterstützt. Es muss die Datei custom.html in admin enthalten sein. Ein Beispiel finden Sie in ioBroker.history
-* `common.supportStopInstance`- [true / false], wenn der Adapter das Signal stopInstance unterstützt (** messagebox ** erforderlich). Das Signal wird vor dem Stopp an den Adapter gesendet. (Wird verwendet, wenn Probleme mit SIGTERM aufgetreten sind.)
+* `common.supportCustoms` - [true / false], wenn der Adapter Einstellungen für jeden Status unterstützt. Die Datei custom.html muss sich in admin befinden. Ein Beispiel finden Sie in ioBroker.history
+* `common.supportStopInstance`- [true / false], wenn der Adapter das Signal stopInstance unterstützt (** Messagebox ** erforderlich). Das Signal wird vor dem Stopp an den Adapter gesendet. (wird verwendet, wenn die Probleme mit SIGTERM aufgetreten sind)
 * `common.titleLang` - **obligatorisch** längerer Name des Adapters in allen unterstützten Sprachen wie {en: 'Adapter', de: 'Adapter', ru: 'Драйвер'}
 * `common.title` - (veralteter) längerer Name des Adapters, der in admin angezeigt werden soll
-* `common.type` - Adaptertyp. Siehe [Types] (adapterpublish.md)
-* `common.unchanged` - (System) Bitte benutzen Sie dieses Flag nicht. Es ist ein Flag, das das System darüber informiert, dass der Konfigurationsdialog in admin angezeigt werden muss.
+* `common.type` - Adaptertyp. Siehe [Typen] (adapterpublish.md)
+* `common.unchanged` - (System) Bitte verwenden Sie dieses Flag nicht. Es ist ein Flag, um das System darüber zu informieren, dass der Konfigurationsdialog in admin angezeigt werden muss.
 * `common.unsafePerm` - [true / false], wenn das Paket mit dem Parameter" npm --unsafe-perm "installiert werden muss
-* `common.version` - **obligatorisch** verfügbare Version
-* `common.wakeup` - Adapter wird gestartet, wenn ein Wert in` system.adapter.NAME.x.wakeup` geschrieben wird. Normalerweise sollte der Adapter nach der Verarbeitung des Ereignisses anhalten.
+* `common.version` - **obligatorische** verfügbare Version
+* `common.wakeup` - Der Adapter wird gestartet, wenn ein Wert in` system.adapter.NAME.x.wakeup` geschrieben wird. Normalerweise sollte der Adapter nach der Verarbeitung des Ereignisses anhalten.
 * `common.webByVersion` - Version als Präfix im Webadapter anzeigen (normalerweise - IP: Port / Material, WebByVersion - IP: Port / 1.2.3 / Material)
 * `common.webExtendable` - [true / false], wenn der Webserver in diesem Adapter mit Plugins / Erweiterungen wie Proxy, Simple-API erweitert werden kann
-* `common.webExtension` - relativer Dateiname, um die Web-Erweiterung zu verbinden. Z.B. in simple-api "lib / simpleapi.js" relativ zum Adapter-Stammverzeichnis. Zusätzlich muss native.webInstance angeben, wo diese Erweiterung enthalten sein wird. Leer bedeutet, es muss als eigener Webservice laufen. "*" bedeutet, dass jeder Webserver dies beinhalten muss.
-* `common.webPreSettings` - Liste der Parameter, die vom Webserver-Adapter in info.js aufgenommen werden müssen. (Beispielmaterial)
-* `common.webservers` - Array von Webserver-Instanzen, die Inhalte aus dem www-Ordner des Adapters bereitstellen sollen
+* `common.webExtension` - relativer Dateiname zum Verbinden der Web-Erweiterung. Z.B. in simple-api "lib / simpleapi.js" relativ zum Adapter-Stammverzeichnis. Zusätzlich muss native.webInstance angeben, wo diese Erweiterung enthalten sein wird. Leer bedeutet, dass es als eigener Webdienst ausgeführt werden muss. "*" bedeutet, dass jeder Webserver es enthalten muss.
+* `common.webPreSettings` - Liste der Parameter, die vom webServer-Adapter in info.js aufgenommen werden müssen. (Beispielmaterial)
+* `common.webservers` - Array von Webserverinstanzen, die Inhalte aus dem www-Ordner des Adapters bereitstellen sollen
 * `common.welcomeScreen` - Array von Seiten, die auf der Seite" web "index.html angezeigt werden sollen. ["vis / edit.html", "vis / index.html"] oder [{"link": "vis / edit.html", "name": "Vis editor", "img": "vis / img / edit.png "," color ":" blue "}," vis / index.html "]
-* `common.welcomeScreen.order` - erledigen
-* `common.welcomeScreenPro` - Entspricht` common.welcomeScreen`, wird jedoch nur beim Zugriff von ioBroker.cloud verwendet.
-* `common.wwwDontUpload` - Laden Sie das WWW-Verzeichnis nicht in die Datenbank hoch. Wird nur für Admin verwendet. Sie können Ihrem Verzeichnis einfach einen anderen Namen geben und OK.
+* `common.welcomeScreen.order` - todo
+* `common.welcomeScreenPro` - Wie` common.welcomeScreen`, jedoch nur für den Zugriff von ioBroker.cloud verwendet.
+* `common.wwwDontUpload` - Laden Sie das Verzeichnis www nicht in die DB hoch. Wird nur für Administratoren verwendet. Sie können Ihrem Verzeichnis einfach einen anderen Namen geben und OK.
 * `native` - vordefinierte Attribute, auf die in index_m.html und zur Laufzeit über` adapter.config. <attribute> `zugegriffen werden kann, z. `{" port ": 1234," password ":" secret "}`
 * `protectedNative` - Array von Konfigurationsattributen, auf die nur der eigene Adapter zugreifen kann, z. `[" Passwort "]`
 
 #### Instanz
-id *system.adapter. &lt; adapter.name &gt;. & lt; instanznummer & gt;*
+id *system.adapter. &lt; adapter.name &gt;. & lt; instanznummer &gt;*
 
-* `common.host` - (obligatorischer) Host, auf dem der Adapter gestartet werden soll - object *system.host. &lt; host &gt;* muss vorhanden sein
+* `common.host` - (obligatorischer) Host, auf dem der Adapter unter - object *system.host gestartet werden soll. &lt; host &gt;* muss vorhanden sein
 * `common.enabled` - (obligatorisch)
 * `common.mode` - (obligatorische) mögliche Werte siehe unten
 
 ##### Adapter / Instanz common.mode
-* `none` - dieser Adapter startet keinen Prozess
+* `none` - Dieser Adapter startet keinen Prozess
 * `daemon` - immer laufender Prozess (wird neu gestartet, wenn der Prozess beendet wird)
-* `subscribe` - wird gestartet, wenn der Status *system.adapter. &lt; adaptername &gt;. & lt; instanznummer & gt; .alive* auf *true* geändert wird. Wird beendet, wenn *.alive* auf *false* wechselt und *.alive* auf *false* setzt, wenn der Prozess beendet wird (wird **nicht** neu gestartet, wenn der Prozess beendet wird)
-* `Zeitplan` - wird nach Zeitplan gestartet, der in *system.adapter. &lt; Adaptername &gt;. & lt; Instanznummer & gt; .schedule zu finden ist.* - reagiert auf Änderungen von *.schedule* durch Neuplanung mit neuem Status
-* `once` - Dieser Adapter wird jedes Mal gestartet, wenn das system.adapter.yyy.x-Objekt geändert wird. Es wird nach Beendigung nicht neu gestartet.
+* `subscribe` - wird gestartet, wenn der Status *system.adapter. &lt; Adaptername &gt;. & lt; Instanznummer &gt; .alive* in *true* geändert wird. Wird getötet, wenn *.alive* in *false* wechselt und *.alive* auf *false* gesetzt wird, wenn der Prozess beendet wird (wird **nicht** neu gestartet, wenn der Prozess beendet wird)
+* `Zeitplan` - wird durch den in *system.adapter gefundenen Zeitplan gestartet. &lt; Adaptername &gt;. & lt; Instanznummer &gt; .schedule* - reagiert auf Änderungen von *.schedule* durch Neuplanung mit neuem Status
+* `einmal` - Dieser Adapter wird jedes Mal gestartet, wenn das Objekt system.adapter.yyy.x geändert wird. Es wird nach Beendigung nicht neu gestartet.
 
 #### Host
 id `system.host.<host>`
@@ -589,15 +590,15 @@ id `system.host.<host>`
 * `common.version`
 * `common.platform`
 * `common.cmd`
-* `common.hostname` - f.e. `Banane`
+* `common.hostname` - f.e. "Banane"
 * `common.address` - Array von IP-Adresszeichenfolgen
 
 #### Config
 #### Skript
-* `common.platform` - (obligatorisch) mögliche Werte` Javascript / Node.js` (weitere folgen)
-* `common.enabled` - (obligatorisch) ist das aktivierte Skript oder nicht
+* `common.platform` - (obligatorisch) mögliche Werte` Javascript / Node.js` (weitere werden folgen)
+* `common.enabled` - (obligatorisch) ist skriptaktiviert oder nicht
 * `common.source` - (obligatorisch) die Skriptquelle
-* `common.engine` - (optional) *Skript-Engine* Instanz, die dieses Skript ausführen soll (zB 'javascript.0') - wenn die Engine weggelassen wird, wird sie automatisch ausgewählt
+* `common.engine` - (optional) *Skript-Engine* Instanz, die dieses Skript ausführen soll (z. B. 'javascript.0') - wenn die ausgelassene Engine automatisch ausgewählt wird
 
 #### Benutzer
 * `common.name` - (obligatorisch) Name des Benutzers (Groß- und Kleinschreibung beachten)
@@ -606,4 +607,4 @@ id `system.host.<host>`
 #### Gruppe
 * `common.name` - (obligatorischer) Name der Gruppe
 * `common.members` - (obligatorisches) Array von Benutzerobjekt-IDs
-* `common.desc` - (optional) Beschreibung des Gruppenzwecks
+* `common.desc` - (optionale) Beschreibung des Gruppenzwecks

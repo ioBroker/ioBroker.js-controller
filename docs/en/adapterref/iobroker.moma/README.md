@@ -5,14 +5,14 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.moma.svg)](https://www.npmjs.com/package/iobroker.moma)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.moma.svg)](https://www.npmjs.com/package/iobroker.moma)
-![Number of Installations](http://iobroker.live/badges/moma-installed.svg) ![Number of Installations](http://iobroker.live/badges/moma-stable.svg)
+![Number of Installations](http://iobroker.live/badges/moma-installed.svg) 
+![Stable version](http://iobroker.live/badges/moma-stable.svg)
 [![Dependency Status](https://img.shields.io/david/AWhiteKnight/iobroker.moma.svg)](https://david-dm.org/AWhiteKnight/iobroker.moma)
 [![Known Vulnerabilities](https://snyk.io/test/github/AWhiteKnight/ioBroker.moma/badge.svg)](https://snyk.io/test/github/AWhiteKnight/ioBroker.moma)
 
 [![NPM](https://nodei.co/npm/iobroker.moma.png?downloads=true)](https://nodei.co/npm/iobroker.moma/)
 
-**Tests:** Linux/Mac: [![Travis-CI](http://img.shields.io/travis/AWhiteKnight/ioBroker.moma/master.svg)](https://travis-ci.org/AWhiteKnight/ioBroker.moma)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/AWhiteKnight/ioBroker.moma?branch=master&svg=true)](https://ci.appveyor.com/project/AWhiteKnight/ioBroker-moma/)
+**Tests:** Linux/Mac/Windows: [![Travis-CI](http://img.shields.io/travis/AWhiteKnight/ioBroker.moma/master.svg)](https://travis-ci.org/AWhiteKnight/ioBroker.moma)
 
 ## moma adapter for ioBroker
 
@@ -31,6 +31,9 @@ MoMa uses the platform independant library 'systeminformation' (https://github.c
 MoMa needs at least nodejs version 8 / ES9 / ECMAScript2018.
 
 ## Changelog
+
+### 1.2.4 (2020-??-??)
+* (AWhiteKnight) bugfixing: issue #45 
 
 ### 1.2.3 (2019-11-06)
 * (AWhiteKnight) bugfixing, code cleanup 

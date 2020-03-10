@@ -59,6 +59,18 @@ Documentation for the vis-widgets are available inside vis or [Widget-Documentat
 * ~~controllable gameday in the gameday widget~~
 
 ## Changelog
+### 0.11.5
+* pivottable: show only results for selected gameday
+* table3: icon attributes, add image selection dialog
+* table3: add an extra attribute for mode to use with binding
+* all widgets: update documentation
+### 0.11.4
+* fixed build/test problem
+### 0.11.3
+* pivottable: fix problem with rank number
+### 0.11.2
+* pivottable: fix problem with sort and highlightontop
+* fix problem with goalgetters 
 ### 0.11.1
 * change some template settings, goalgetter table get headers, add object change sensing
 * widget goalgetters: add parameter highlight and showonlyhighlight

@@ -3,19 +3,23 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.pimatic/README.md
 title: ioBroker.pimatic
-hash: DnRuPvnhg8DO84VuAgSXVzW3N3/PFeQdWhIY//FPLRQ=
+hash: /xqXc6dlibslqwtZ7aAJ0o7WjeZOAov6H+J56Ex9+eM=
 ---
 ![商标](../../../en/adapterref/iobroker.pimatic/admin/pimatic.png)
 
 ![安装数量](http://iobroker.live/badges/pimatic-stable.svg)
 
 ＃ioBroker.pimatic
-此适配器将ioBroker与[pimatic](https://pimatic.org/)连接。
+该适配器将ioBroker与[虚构的](https://pimatic.org/)连接起来。
 
 它从pimatic导出设备和组，然后监视变量的更新。
 
 ## Changelog
-### 0.1.5 [2017.05.02]
+### 0.2.1 (2020.03.08)
+* (tehmilcho) Added Variables with Readonly false to the Sync
+* (bluefox) Reafactoring (compact mode, ES6)
+
+### 0.1.5 (2017.05.02)
 * (bluefox) add translation of config dialog
 
 ### 0.1.3
@@ -31,7 +35,7 @@ hash: DnRuPvnhg8DO84VuAgSXVzW3N3/PFeQdWhIY//FPLRQ=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017 bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

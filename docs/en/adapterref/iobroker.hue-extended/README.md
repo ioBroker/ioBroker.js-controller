@@ -34,12 +34,17 @@ Connect your Philips Hue Lights with ioBroker.
 
 Please also see [release page](https://github.com/Zefau/ioBroker.hue-extended/releases) for changelog and detailed information.
 
+### 1.3.0 (2019-03-04)
+- (Zefau) added option to only set devices in a group which are already turned on (thus devices which are off are not set) (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))
+- (Zefau) added option to set `brightness` / `level` to 0 when device is not reachable (see [#38](https://github.com/Zefau/ioBroker.hue-extended/issues/38))
+- (Zefau) change state `on` of a group to match state `any_on` (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))
+
 ### 1.2.3 (2019-02-21)
 - (Zefau) added `Signify` (formerly Philips Lighting) as official manufacturer
 - (Zefau) updated dependencies
 
 ### 1.2.2 (2019-02-04)
-- (Zefau) fixed wrong group state (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))
+- ~(Zefau) fixed wrong group state (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))~
 
 ### 1.2.1 (2019-02-03)
 - (Zefau) fixed failing secure connection when selecting default certificates

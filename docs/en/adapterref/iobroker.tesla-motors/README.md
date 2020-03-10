@@ -93,7 +93,9 @@ Keep your credentials save! <br />To reject all Tokens, change your Tesla accoun
 * Apollon77
 
 ## Changelog
-###
+### 0.2.3
+* (dbweb-ch) Refresh info every 5 seconds when car is moving
+### 0.2.2
 * (dbweb-ch) Use decrypt from ioBrokerTools, fix issue with selecting car
 ### 0.2.1
 * (dbweb-ch) Fix bug with odomoter, refactor object creation, fix issues with compact mode

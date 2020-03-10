@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
 title: ioBroker Откройте для себя адаптер
-hash: y8n52Hctl4SpFRfyTCmddWRht4T/WaUJ9yuTmzGXeIQ=
+hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 ---
 ![логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -66,6 +66,7 @@ hash: y8n52Hctl4SpFRfyTCmddWRht4T/WaUJ9yuTmzGXeIQ=
 - Proxmox
 - RFLink (последовательный 57600 бод)
 - SamsungTV
+- Smappee
 - Solarlog
 - Соннен
 - сонос

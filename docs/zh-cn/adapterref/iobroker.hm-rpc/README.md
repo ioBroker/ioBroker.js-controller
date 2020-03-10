@@ -135,6 +135,9 @@ CCU / Homematic支持不同的设备类型（有线，无线，HMIP，CUxD）。
 ##常见问题
 
 ## Changelog
+### 1.12.10 (2020-03-05)
+* (foxriver76) fixed no 'dpType for ..' error in all cases
+
 ### 1.12.9 (2020-02-29)
 * (foxriver76) replace DISPLAY_DATA_STRING by DIN_66003 encodings
 

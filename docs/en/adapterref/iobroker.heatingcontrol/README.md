@@ -140,7 +140,11 @@ Just configure events from ical in admin. Supported are
 
 
 ## Changelog
-### 0.3.17 (2020-02-xx)
+
+### 0.3.18 (2020-03-08)
+* (René) fix issues eported by adapter checker
+
+### 0.3.17 (2020-03-01)
 * (René) check datapoint configuration: if datapoint points to itself then error messages
 * (René) support of new vis see issue  #76
 * (Rene) thermostat mode if no heating period

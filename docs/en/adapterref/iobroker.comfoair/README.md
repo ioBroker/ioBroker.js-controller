@@ -57,6 +57,10 @@ Tested on comfoair CA350.
 
 ## Changelog
 
+### 1.1.0
+
+- displays now working hours of different ventilation levels, preheating, bypass and frost-protection.
+
 ### 1.0.0
 
 -   offers now the possibility of a direct serial connection besides the connection over IP/LAN.

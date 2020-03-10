@@ -21,6 +21,9 @@ If you like my work, please feel free to provide a personal donation
 
 ## Changelog
 
+### 0.1.8
+* (DutchmanNL) Correct countdown of "remainingtimeinseconds" implemented.
+
 ### 0.1.7
 * (DutchmanNL) Fix Unhandable information found in DoZoneState : "openWindowDetected" 
 

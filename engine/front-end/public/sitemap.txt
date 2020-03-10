@@ -606,6 +606,7 @@ https://doc.iobroker.net/#zh-cn/documentation/viz/material.md
 https://doc.iobroker.net/#zh-cn/documentation/viz/timeandweather.md
 https://doc.iobroker.net/#zh-cn/documentation/viz/vis.md
 https://doc.iobroker.net/#zh-cn/documentation/viz/widgets.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.accuweather/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.admin/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.admin/admin/tab-adapters.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.admin/admin/tab-enums.md
@@ -649,9 +650,11 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.bring/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.broadlink2/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.bsblan/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.bshb/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.calendar/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.chromecast/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.cloud/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.comfoair/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.contact/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.contactid/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.corrently/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.countdown/README.md
@@ -850,6 +853,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sayit/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sbfspot/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.scenes/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.schoolfree/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.senec/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.shelly/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.shuttercontrol/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sia/README.md
@@ -893,6 +897,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tino/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tinyrx4/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tr-064/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tradfri/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.trashschedule/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tunnelbroker-endpoint-updater/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tuya/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tvspielfilm/README.md
@@ -954,6 +959,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zoneminder/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zont/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zwave/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.zwave2/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.accuweather/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.admin/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.admin/admin/tab-adapters.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.admin/admin/tab-enums.md
@@ -997,9 +1003,11 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.bring/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.broadlink2/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.bsblan/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.bshb/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.calendar/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.chromecast/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.cloud/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.comfoair/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.contact/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.contactid/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.corrently/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.countdown/README.md
@@ -1198,6 +1206,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sayit/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sbfspot/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.scenes/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.schoolfree/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.senec/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.shelly/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.shuttercontrol/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sia/README.md
@@ -1241,6 +1250,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tino/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tinyrx4/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tr-064/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tradfri/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.trashschedule/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tunnelbroker-endpoint-updater/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tuya/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tvspielfilm/README.md
@@ -1302,6 +1312,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zoneminder/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zont/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zwave/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.zwave2/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.accuweather/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.admin/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.admin/admin/tab-adapters.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.admin/admin/tab-enums.md
@@ -1345,9 +1356,11 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.bring/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.broadlink2/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.bsblan/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.bshb/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.calendar/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.chromecast/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.cloud/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.comfoair/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.contact/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.contactid/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.corrently/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.countdown/README.md
@@ -1546,6 +1559,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sayit/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sbfspot/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.scenes/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.schoolfree/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.senec/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.shelly/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.shuttercontrol/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sia/README.md
@@ -1589,6 +1603,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tino/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tinyrx4/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tr-064/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tradfri/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.trashschedule/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tunnelbroker-endpoint-updater/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tuya/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tvspielfilm/README.md
@@ -1650,6 +1665,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zoneminder/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zont/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zwave/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.zwave2/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.accuweather/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.admin/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.admin/admin/tab-adapters.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.admin/admin/tab-enums.md
@@ -1693,9 +1709,11 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.bring/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.broadlink2/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.bsblan/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.bshb/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.calendar/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.chromecast/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.cloud/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.comfoair/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.contact/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.contactid/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.corrently/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.countdown/README.md
@@ -1894,6 +1912,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sayit/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sbfspot/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.scenes/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.schoolfree/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.senec/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.shelly/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.shuttercontrol/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sia/README.md
@@ -1937,6 +1956,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tino/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tinyrx4/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tr-064/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tradfri/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.trashschedule/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tunnelbroker-endpoint-updater/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tuya/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tvspielfilm/README.md

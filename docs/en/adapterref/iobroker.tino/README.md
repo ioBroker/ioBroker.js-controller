@@ -125,6 +125,9 @@ zusätzlich werden für das Empfänger-Protokoll Version 2.0 folgende Datenpunkt
 
 
 ## Changelog
+### 0.1.3
+- Update travis.yml, License, Readme
+
 ### 0.1.2
 - (bowao) learningMode set to true if not defined
 
@@ -156,7 +159,7 @@ zusätzlich werden für das Empfänger-Protokoll Version 2.0 folgende Datenpunkt
 ## License
 MIT License
 
-Copyright (c) 2019 bowao
+Copyright (c) 2020 bowao <cryolab@web.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

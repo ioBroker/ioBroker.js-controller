@@ -92,6 +92,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.1.0 (2020-03-08)
+* (Apollon77) bugfixes and optimizations
+* (Apollon77) experimental TCP support, please give feedback
+
 ### 3.0.10 (2020-02-05)
 * (Apollon77) make sure HTTP based smartmeters are also polled frequently when responses are invalid
 * (Apollon77) other optimizations

@@ -1,31 +1,30 @@
 ![Logo](admin/mielecloudservice.png)
 # ioBroker.MieleCloudService
-![Number of Installations](http://iobroker.live/badges/mielecloudservice-installed.svg) 
+![Number of Installations](http://iobroker.live/badges/mielecloudservice-installed.svg)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)](https://www.npmjs.com/package/iobroker.mielecloudservice)
 ![Number of Installations](http://iobroker.live/badges/mielecloudservice-stable.svg)
 [![NPM version](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)](https://www.npmjs.com/package/iobroker.mielecloudservice)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/grizzelbee/iobroker.mielecloudservice/blob/master/LICENSE) 
 [![Dependency Status](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)](https://david-dm.org/Grizzelbee/iobroker.mielecloudservice)
 [![Known Vulnerabilities](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg)](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice)
-[![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)](https://travis-ci.com/Grizzelbee/ioBroker.mielecloudservice) 
+[![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)](https://travis-ci.org/Grizzelbee/ioBroker.mielecloudservice) 
  [![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)](https://nodei.co/npm/iobroker.mielecloudservice/)
 
- =================
 ## Description
 This adapter is for retrieving information about all your Miele@Home devices from the official Miele 3rd-party API. 
-
+Regardless if they are connected via WiFi or XGW3000 Gateway. It implements the **Miele 3rd Party API V1.0.0**
 
 ## Installation 
 To install, excecute the following:
 
-1. Install via Admin: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git
+1. Install via Admin using the stable or latest Repo or via: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git
 2. create an App-Account for Miele@Home in the Miele Smartphone App
 3. Create an developer account at https://www.miele.com/f/com/en/register_api.aspx 
 4. Add your Miele-Devices to the App (if not added automatically)
 6. Fill in the client_secret and client_id received from Miele-developer Team and account-id and password from the App.
 
 
-## Requirements
+## Prerequisites
 * Miele@Home User (Smartphone App)
 * Miele@Home Password (Smartphone App)
 * Miele Client_id (from https://www.miele.com/developer/)
@@ -33,6 +32,11 @@ To install, excecute the following:
 
 ## Changelog
 
+### 1.1.0 (2020-03-07)
+* (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
+               Please remember that Actions will only work if you put your device into the appropiate state (e.g. Mobile Control)
+               please refer to https://www.miele.com/developer/swagger-ui/put_additional_info.html for more Information on actions. 
+  
 ### 1.0.5 (2020-02-14)
 * (grizzelbee) removed node-schedule as a dependency
 * (grizzelbee) implemented scheduling via setTimeout, which raises the opportunity 
@@ -101,9 +105,12 @@ To install, excecute the following:
 ## Next Steps
 * New: (longer) poll interval when no device is active
 * New: Sleeptime for complete inactivity (e.g. at night)
-* New: Support for Actions 
 
 ## Documentation
+Please mainly refer to the main API documentation published by Miele
+* [General Documentation](https://www.miele.com/developer/swagger-ui/index.html)
+* [Preconditions to perform an action on a device](https://www.miele.com/developer/swagger-ui/put_additional_info.html) 
+
 There are some datapoints avaliable in 2 kinds. As a human readable text and as a number.
 These numeric datafields belonging to a textfield have the same name but a "_raw" appended. 
 Those fields which have a general meaning are listed below.
@@ -111,6 +118,44 @@ The fields which aren't listed vary in their meaning from device to device and a
 If you need to refer in scripts to these fields, always use the _raw values. 
 The textvalues may change in the future and also depend on the language.
 Here is a list of what these raw values stand for: 
+
+### DeviceTypes
+
+ | Raw value | State|
+ |----------|-------|
+ |1 | WASHING MACHINE|
+ |2 | TUMBLE DRYER|
+ |7 | DISHWASHER|
+ |8 | DISHWASHER SEMI-PROF|
+ |12 | OVEN|
+ |13 | OVEN MICROWAVE|
+ |14 | HOB HIGHLIGHT|
+ |15 | STEAM OVEN|
+ |16 | MICROWAVE|
+ |17 | COFFEE SYSTEM|
+ |18 | HOOD|
+ |19 | FRIDGE|
+ |20 | FREEZER|
+ |21 | FRIDGE-/FREEZER COMBINATION|
+ |23 | VACUUM CLEANER, AUTOMATIC ROBOTIC VACUUM CLEANER|
+ |24 | WASHER DRYER|
+ |25 | DISH WARMER|
+ |27 | HOB INDUCTION|
+ |28 | HOB GAS|
+ |31 | STEAM OVEN COMBINATION|
+ |32 | WINE CABINET|
+ |33 | WINE CONDITIONING UNIT|
+ |34 | WINE STORAGE CONDITIONING UNIT|
+ |39 | DOUBLE OVEN|
+ |40 | DOUBLE STEAM OVEN|
+ |41 | DOUBLE STEAM OVEN COMBINATION|
+ |42 | DOUBLE MICROWAVE|
+ |43 | DOUBLE MICROWAVE OVEN|
+ |45 | STEAM OVEN MICROWAVE COMBINATION|
+ |48 | VACUUM DRAWER|
+ |67 | DIALOGOVEN|
+ |68 | WINE CABINET FREEZER COMBINATION| 
+
 
 ### State/Status
 
@@ -178,4 +223,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ##Copyright
-Copyright (c) 2019, 2020 grizzelbee <captain.tzk@gmail.com>
+Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>

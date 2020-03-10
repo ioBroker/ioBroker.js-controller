@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: sTCasuu/WepLyWWPOxTlo5q17/lE9jIXKfCLuxMjq/c=
+hash: /IgSTHOQpZv2tuj7sbV1RXOH9TJ7MarlVo6v1rTNQjs=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -15,11 +15,6 @@ hash: sTCasuu/WepLyWWPOxTlo5q17/lE9jIXKfCLuxMjq/c=
 Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js).
 
 ## Modelle
-Bisher funktionieren nur Geräte, die mit dem **XMPP** -Protokoll kommunizieren, ordnungsgemäß.
-Geräte, die mit dem **MQTT** -Protokoll kommunizieren, sind experimentell.
-
-Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.communicationProtocol` überprüfen (Werte: `XMPP`, `MQTT`).
-
 ### Diese Modelle funktionieren bekanntermaßen
 * Deebot Slim 2
 * Deebot 601
@@ -34,96 +29,15 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 
 ### Diese Modelle sollten funktionieren
 * Deebot N79T
+* Deebot M88
 * Deebot 600/605
-* Deebot Ozmo 960 (nicht getestet)
 
-### Tasten und Steuerung
-| Modell | Grund * | Pause | Stelle | spotArea | customArea ** | Kante | playSound | waterLevel |
-|------------ |-------- |------ |------ |--------- |-------------- |------ |---------- |----------- |
-| Slim 2 | x | n / a | x | n / a | n / a | x | n / a | n / a |
-| 600/601/605 | x | | x | n / a | n / a | x | | |
-| 710/711 | x | | x | n / a | n / a | x | x | n / a |
-| 900/901 | x | x | n / a | x | x | n / a | | n / a |
-| Ozmo 610 | x | x | x | n / a | n / a | x | X | x |
-| Ozmo 900 | x | x | n / a | x | x | n / a | x | x |
-| Ozmo 930 | x | x | n / a | x | x | n / a | x | x |
-| Ozmo 950 | x | x | n / a | x | x | n / a | x | x |
+## Verwendung
+Informationen zur Verwendung dieses Adapters finden Sie in [Hier](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki).
 
-*) "grundlegende" Befehle sind `clean` (`auto`), `charge`, `stop`. Sie werden hier nicht separat aufgeführt.
-
-**) inkl. Anzahl der `cleanings`
-
-### Info und Status
-| Modell | Batterie | chargestatus | cleanstatus | waterLevel | Wasserkasten | Verbrauchsmaterialien |
-|------------ |-------- |------------- |------------ |----------- |--------  |------------ |
-| Slim 2 | x | x | x | n / a | n / a | x |
-| 600/601/605 | x | x | x | | | |
-| 710/711 | x | x | x | n / a | n / a | |
-| 900/901 | x | x | x | n / a | n / a | |
-| Ozmo 610 | x | x | x | x | | x |
-| Ozmo 900 | x | | | | | |
-| Ozmo 930 | x | x | x | x | x | x |
-| Ozmo 950 | x | | x | | | |
-
-## Steuerung
-### Tasten
-| Name | Beschreibung |
-| --- | --- |
-| Gebühr | zurück zur Ladestation |
-| sauber | Starten Sie die automatische Reinigung |
-| Kante | Kantenreinigung starten |
-| playSound | Spielen Sie einen Sound zum Auffinden des Bots |
-| Stelle | Punktreinigung starten |
-| stop | Reinigungsprozess stoppen |
-| Pause | den Reinigungsvorgang unterbrechen |
-| spotArea `0`-`9` | Bis zu 9 Schaltflächen für die in der Ecovacs-App | definierten Bereiche |
-
-### Flächen- / Zonenreinigung
-#### SpotArea
-* Spotbereiche werden in der mobilen App mit Buchstaben benannt
-    * Im Adapter sind sie einer Nummer zugeordnet:
-        * `A` =` 0`
-        * `B` =` 1`
-        * etc.
-* `spotArea`: durch Kommas getrennte Liste von Zahlen
-    * beginnend mit "0" (z. B. "1,3" = Bereiche "B" und "D") für zu reinigende Bereiche
-* Die Anzahl der Schaltflächen (`spotArea_0-9`) kann in der Adapterkonfiguration konfiguriert werden
-
-#### CustomArea
-* durch Kommas getrennte Liste von genau 4 Positionswerten für "x1, y1, x2, y2" (z. B. "-3975,2280, -1930,4575")
-    * Position `0,0,0,0` scheint die Position der Ladestation zu sein
-    * Ein Wert von "1000" scheint die Entfernung von ungefähr 1 Meter zu sein
-
-#### Wasserstand
-* Kontrollieren und Anzeigen des Wasserstandes ("niedrig", "mittel", "hoch" und "maximal")
-
-## Verbrauchbar
-| Name | Beschreibung |
-| --- | --- |
-| Filter | Filterlebensdauer |
-| main_brush | Lebensdauer der Hauptbürste |
-| side_brush | Lebensdauer der Seitenbürste |
-
-## Die Info
-| Name | Beschreibung |
-| --- | --- |
-| Batterie | Batterie |
-| chargestatus | Status während des Ladevorgangs |
-| cleanstatus | Status während der Reinigung |
-| Kommunikationsprotokoll | XMPP oder MQTT |
-| deviceClass | Deebot-Geräteklasse |
-| Gerätename | Name des in der Ecovacs-App | definierten Geräts |
-| deviceStatus | Status des Geräts |
-| Fehler | Aktuelle Fehlermeldung |
-
-## Adapterkonfiguration
-| Name | Beschreibung |
-| --- | --- |
-| E-Mail | E-Mail-Adresse für Ihr Ecovacs-Konto |
-| Passwort | Passwort für Ihr Ecovacs-Konto |
-| Ländercode (Kontinent) | Auswahl vordefinierter Ländercodes (inkl. Kontinent) |
-| Gerätenummer | Auswahl für die aktuelle Instanz, wenn Sie mehrere Geräte verwenden |
-| Anzahl der Spotbereiche | Anzahl der in der Ecovacs-App definierten Sportbereiche (Standard `0`) |
+## Bekannte Probleme
+* Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da [ einige Berichte] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24), dass die Verbindung nach ca. 24 Stunden.
+* Anzahl der Reinigungen [funktioniert nicht] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/33) auf Deebot Ozmo 950
 
 ## Danke und Credits
 * @joostth ([saugt.js] (https://github.com/joostth/sucks.js))
@@ -132,6 +46,12 @@ Sie können dies nach erfolgreichem Verbindungsaufbau mit dem Statuswert `info.c
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.5.5
+   * Using library version 0.3.6
+
+### 0.5.4
+   * Using library version 0.3.5
 
 ### 0.5.3
    * Using library version 0.3.4

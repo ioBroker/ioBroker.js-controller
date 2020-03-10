@@ -49,6 +49,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 2.1.5 (2020-03-08)
+* (Apollon77) update dependencies
+
 ### 2.1.4 (2020-02-08)
 * (Apollon77) optimize adapter stop logic to prevent crashes (again)
 

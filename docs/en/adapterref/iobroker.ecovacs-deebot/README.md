@@ -9,11 +9,6 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 
 ## Models
 
-So far, only devices that communicate with the **XMPP** protocol work properly. 
-Devices that communicate with the **MQTT** protocol are experimental.
-
-You can check this with the state value `info.communicationProtocol` after successful connection establishment (values: `XMPP`, `MQTT`).
-
 ### Theses models are known to work
 * Deebot Slim 2
 * Deebot 601
@@ -28,108 +23,24 @@ You can check this with the state value `info.communicationProtocol` after succe
 
 ### These models should work
 * Deebot N79T
+* Deebot M88
 * Deebot 600/605
-* Deebot Ozmo 960 (not tested)
 
-### Buttons and control
+## Usage
 
-| model       | basic * | pause | spot  | spotArea | customArea ** | edge  | playSound | waterLevel |
-|------------ |-------- |------ |------ |--------- |-------------- |------ |---------- |----------- |
-| Slim 2      |   x     |  n/a  |   x   |   n/a    |     n/a       |   x   |    n/a    |    n/a     |
-| 600/601/605 |   x     |       |   x   |   n/a    |     n/a       |   x   |           |            |
-| 710/711     |   x     |       |   x   |   n/a    |     n/a       |   x   |     x     |    n/a     |
-| 900/901     |   x     |   x   |  n/a  |    x     |      x        |  n/a  |           |    n/a     |
-| Ozmo 610    |   x     |   x   |   x   |   n/a    |     n/a       |   x   |     X     |     x      |
-| Ozmo 900    |   x     |   x   |  n/a  |    x     |      x        |  n/a  |     x     |     x      |
-| Ozmo 930    |   x     |   x   |  n/a  |    x     |      x        |  n/a  |     x     |     x      |
-| Ozmo 950    |   x     |   x   |  n/a  |    x     |      x        |  n/a  |     x     |     x      |
+Information on how to use this adapter can be found [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki).
 
-*) "basic" commands are `clean` (`auto`), `charge`, `stop`. They are not listed separately here.
-
-**) incl. number of `cleanings`
-
-### Info and status
-
-| model       | battery | chargestatus | cleanstatus | waterLevel | waterbox | consumables |
-|------------ |-------- |------------- |------------ |----------- |--------  |------------ |
-| Slim 2      |    x    |      x       |      x      |     n/a    |    n/a   |      x      |
-| 600/601/605 |    x    |      x       |      x      |            |          |             |
-| 710/711     |    x    |      x       |      x      |     n/a    |    n/a   |             |
-| 900/901     |    x    |      x       |      x      |     n/a    |    n/a   |             |
-| Ozmo 610    |    x    |      x       |      x      |      x     |          |      x      |
-| Ozmo 900    |    x    |              |             |            |          |             |
-| Ozmo 930    |    x    |      x       |      x      |      x     |     x    |      x      |
-| Ozmo 950    |    x    |              |      x      |            |          |             |
-
-## Control
-
-### Buttons
-
-| name | description |
-| --- | --- |
-| charge | return to charging station |
-| clean | start auto cleaning |
-| edge | start edge cleaning |
-| playSound | play a sound for locating the bot |
-| spot | start spot cleaning |
-| stop | stop the cleaning process |
-| pause | pause the cleaning process |
-| spotArea `0`-`9` | up to 9 buttons for the areas defined in the Ecovacs app |
-
-### Area/zone cleaning
-
-#### SpotArea
-
-* spot areas are named with letters in the mobile app
-    * in the adapter they are mapped to a number:
-        * `A` = `0`
-        * `B` = `1`
-        * etc.
-* `spotArea`: comma-separated list of numbers
-    * starting by `0` (e.g. `1,3` = areas `B` and `D`) for areas to be cleaned
-* the number of buttons (`spotArea_0-9`) can be configured in the Adapter Configuration
-
-#### CustomArea
-
-* comma-separated list of exactly 4 position values for `x1,y1,x2,y2` (e.g. `-3975,2280,-1930,4575`)
-    * position `0,0,0,0` seems to be the position of the charging station
-    * a value of `1000` seems to be the distance of approximately 1 meter
-
-#### WaterLevel
-
-* Control and display water level (`low`, `medium`, `high` and `max`)
-
-## Consumable
-| name | description |
-| --- | --- |
-| filter | Filter lifespan |
-| main_brush | Main brush lifespan |
-| side_brush | Side brush lifespan |
-
-## Info
-
-| name | description |
-| --- | --- |
-| battery | battery |
-| chargestatus | status while charging |
-| cleanstatus | status while cleaning |
-| communicationProtocol | XMPP or MQTT |
-| deviceClass | Deebot device class |
-| deviceName | Name of the device defined in the Ecovacs app |
-| deviceStatus | status of the device |
-| error | Current error message |
-
-## Adapter configuration
-
-| name | description |
-| --- | --- |
-| Email | Email address used for your Ecovacs account |
-| Password | Passsword used for your Ecovacs account |
-| Country code (continent) | Selection of pre-defined country codes (incl. continent) |
-| Device number | Selection for the current instance if you use multiple devices |
-| Number of spot areas | Number of sport areas defined in the Ecovacs app (default `0`) |
+## Known issues
+* For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are [some reports](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24) that the connection is lost after approx. 24 hours.
+* Number of cleanings [not working](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/33) on Deebot Ozmo 950
 
 ## Changelog
+
+### 0.5.5
+   * Using library version 0.3.6
+
+### 0.5.4
+   * Using library version 0.3.5
 
 ### 0.5.3
    * Using library version 0.3.4

@@ -28,13 +28,17 @@ SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain v
 
 ## Changelog
 
+### 1.2.3
+
+-   Readme/License update.
+
 ### 1.2.2
 
 -   It is now possible to set the time when historic data is requested.
 
 ### 1.2.1
 
--   'Forecast' - bug fixed (forecast request now only sumbitted if forecast is activated), dependencies updated.
+-   'Forecast' - bug fixed (forecast request now only submitted if forecast is activated), dependencies updated.
 
 ### 1.2.0
 
@@ -148,7 +152,7 @@ Planned Objects:
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

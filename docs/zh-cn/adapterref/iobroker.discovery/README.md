@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.discovery/README.md
 title: ioBroker发现适配器
-hash: y8n52Hctl4SpFRfyTCmddWRht4T/WaUJ9yuTmzGXeIQ=
+hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 ---
 ![商标](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -66,6 +66,7 @@ hash: y8n52Hctl4SpFRfyTCmddWRht4T/WaUJ9yuTmzGXeIQ=
 -Proxmox
 -RFLink（序列号57600baud）
 -三星电视
+-Smappee
 -Solarlog
 -索南
 -索诺斯

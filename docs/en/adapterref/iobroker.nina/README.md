@@ -44,6 +44,10 @@ CipherString = DEFAULT@SECLEVEL=1
 
 ## Changelog
 
+### 0.0.22
+
+- (tomboxi) Optionen zum Filtern und JSON Ausgabe hinzugefügt.
+
 ### 0.0.19
 
 - (tomboxi) Auslastung reduziert. Objekte werden nur geändert wenn die Warnungen sich ändern.

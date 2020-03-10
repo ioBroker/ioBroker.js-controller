@@ -61,6 +61,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Proxmox
 - RFLink (Serial 57600baud)
 - SamsungTV
+- Smappee
 - Solarlog
 - Sonnen
 - Sonos

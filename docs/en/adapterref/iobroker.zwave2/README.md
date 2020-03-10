@@ -21,6 +21,21 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### 0.11.2 (2020-03-09)
+Updated `zwave-js` to v2.15.3. This includes the following fixes:
+* Fixed an issue where the firmware version of nodes would not be read correctly
+* Fixed an issue that caused the interview procedure for the `Manufacturer Proprietary CC` to be skipped
+
+### 0.11.1 (2020-03-07)
+Updated `zwave-js` to v2.15.2. This includes the following improvements and fixes:
+* Shortened the interview procedure for some multichannel devices
+* Updated `ZHC5002` configuration for firmware versions >= 2.02
+* The clock of devices supporting `Clock CC` can now be automatically kept in sync with the controller
+* Completed support for the `Fibaro Venetian Blind CC`
+* Added support for older devices supporting `Multi Instance CC`
+* The name and status of the controller is now correctly shown in the objects list
+* Values for the root endpoint are now hidden if a corresponding values exists on at least one endpoint
+
 ### 0.10.0 (2020-02-13)
 * Updated `zwave-js` to v2.13.3 to improve support for older `Multi Channel` devices
 * Added an *actions* dialog to the device overview, which allows performing node-specific actions. The first available action is removing failed nodes.

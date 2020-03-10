@@ -92,6 +92,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.2.3 (2020-03-08)
+* (Apollon77) Many new schemas added
+
 ### 3.2.2 (2020-02-08)
 * (Apollon77) New schemas added
 * (Apollon77) Better handle strange case where qrcode library is not existing
@@ -210,7 +213,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2020 Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

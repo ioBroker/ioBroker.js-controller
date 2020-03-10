@@ -1,6 +1,5 @@
 ![Logo](admin/socketio.png)
 # ioBroker socket.io
-=================
 
 ![Number of Installations](http://iobroker.live/badges/socketio-installed.svg) ![Number of Installations](http://iobroker.live/badges/socketio-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.socketio.svg)](https://www.npmjs.com/package/iobroker.socketio)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.socketio.svg)](https://www.npmjs.com/package/iobroker.socketio)
@@ -306,6 +305,9 @@ On some web-sockets clients there is performance problem with communication. Som
 You can set option *Force Web-Sockets* to force using only web-sockets transport.
 
 ## Changelog
+### 3.0.2 (2020-03-07)
+* (bluefox) Unload of adapter was corrected
+
 ### 3.0.1 (2020-02-23)
 * (Apollon77) Workaround for socket.io bug #3555 added to make sure always the correct client files are delivered
 
@@ -483,4 +485,4 @@ You can set option *Force Web-Sockets* to force using only web-sockets transport
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>

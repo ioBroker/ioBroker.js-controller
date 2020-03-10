@@ -105,6 +105,9 @@ Bereits benutzte msg-Variablen:
 * v = Batteriespannung
 
 ## Changelog
+### 0.1.5
+- Update travis.yml, License, Readme
+
 ### 0.1.4
 - (bowao) fix typo
 
@@ -135,7 +138,7 @@ Bereits benutzte msg-Variablen:
 ## License
 MIT License
 
-Copyright (c) 2019 bowao
+Copyright (c) 2020 bowao <cryolab@web.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

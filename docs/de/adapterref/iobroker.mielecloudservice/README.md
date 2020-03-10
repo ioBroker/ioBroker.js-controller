@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: rddpQDgYYESDU49zCZjbWILDTaRrDNcBKGKqJvXk5Wg=
+hash: tnKz7m2fzyctXLChpilehEK9zJWfflzet92chku6PWE=
 ---
 ![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -17,41 +17,80 @@ hash: rddpQDgYYESDU49zCZjbWILDTaRrDNcBKGKqJvXk5Wg=
 ![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
 
 # IoBroker.MieleCloudService
-=================
-
 ## Beschreibung
 Mit diesem Adapter können Sie Informationen zu allen Ihren Miele @ Home-Geräten von der offiziellen Miele-API eines Drittanbieters abrufen.
+Unabhängig davon, ob sie über WLAN oder XGW3000 Gateway verbunden sind. Es implementiert die **Miele 3rd Party API V1.0.0**
 
 ## Installation
-Führen Sie zur Installation die folgenden Schritte aus:
+Führen Sie zum Installieren Folgendes aus:
 
-1. Installieren Sie über Admin: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git
+1. Installieren Sie über Admin mit dem stabilen oder neuesten Repo oder über: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git
 2. Erstellen Sie in der Miele Smartphone App ein App-Konto für Miele @ Home
 3. Erstellen Sie ein Entwicklerkonto unter https://www.miele.com/f/com/en/register_api.aspx
 4. Fügen Sie Ihre Miele-Geräte zur App hinzu (falls nicht automatisch hinzugefügt)
 6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort von der App ein.
 
-## Bedarf
-* Miele @ Home-Benutzer (Smartphone-App)
-* Miele @ Home-Passwort (Smartphone-App)
+## Voraussetzungen
+* Miele @ Home User (Smartphone App)
+* Miele @ Home Passwort (Smartphone App)
 * Miele Client_id (von https://www.miele.com/developer/)
 * Miele Client_secret (von https://www.miele.com/developer/)
 
 ## Nächste Schritte
 * Neu: (längeres) Abfrageintervall, wenn kein Gerät aktiv ist
 * Neu: Schlafzeit für vollständige Inaktivität (z. B. nachts)
-* Neu: Unterstützung für Aktionen
 
 ## Dokumentation
-Es gibt einige Datenpunkte, die auf zwei Arten verfügbar sind. Als vom Menschen lesbarer Text und als Zahl.
+Bitte beziehen Sie sich hauptsächlich auf die von Miele veröffentlichte API-Hauptdokumentation
+
+* [Allgemeine Dokumentation] (https://www.miele.com/developer/swagger-ui/index.html)
+* [Voraussetzungen für die Ausführung einer Aktion auf einem Gerät] (https://www.miele.com/developer/swagger-ui/put_additional_info.html)
+
+Es gibt einige Datenpunkte, die auf zwei Arten verfügbar sind. Als menschlich lesbarer Text und als Zahl.
 Diese numerischen Datenfelder, die zu einem Textfeld gehören, haben denselben Namen, aber ein "_raw" wird angehängt.
 Die Felder, die eine allgemeine Bedeutung haben, sind unten aufgeführt.
-Die Felder, die nicht aufgelistet sind, variieren in ihrer Bedeutung von Gerät zu Gerät und werden von Miele nicht dokumentiert.
+Die Felder, die nicht aufgeführt sind, unterscheiden sich in ihrer Bedeutung von Gerät zu Gerät und werden von Miele nicht dokumentiert.
 Wenn Sie in Skripten auf diese Felder verweisen müssen, verwenden Sie immer die _raw-Werte.
 Die Textwerte können sich in Zukunft ändern und hängen auch von der Sprache ab.
 Hier ist eine Liste, wofür diese Rohwerte stehen:
 
-### Zustand / Status
+### Gerätetypen
+ | Rohwert | Staat |
+ |----------|-------|
+ | 1 | WASCHMASCHINE |
+ | 2 | TUMBLE DRYER |
+ | 7 | SPÜLMASCHINE |
+ | 8 | SPÜLMASCHINE SEMI-PROF |
+ | 12 | OFEN |
+ | 13 | OFEN MIKROWELLE |
+ | 14 | HOB HIGHLIGHT |
+ | 15 | DAMPFOFEN |
+ | 16 | MIKROWELLE |
+ | 17 | KAFFEESYSTEM |
+ | 18 | HAUBE |
+ | 19 | KÜHLSCHRANK |
+ | 20 | Gefrierschrank |
+ | 21 | KÜHLSCHRANK- / GEFRIERKOMBINATION |
+ | 23 | VAKUUMREINIGER, AUTOMATISCHER ROBOTER VAKUUMREINIGER |
+ | 24 | SCHEIBETROCKNER |
+ | 25 | DISH WARMER |
+ | 27 | HOB INDUKTION |
+ | 28 | HOB GAS |
+ | 31 | DAMPFOFENKOMBINATION |
+ | 32 | WEINKABINETTE |
+ | 33 | WEINKONDITIONIERUNGSEINHEIT |
+ | 34 | WEINLAGERKONDITIONIERUNGSEINHEIT |
+ | 39 | DOPPELTER OFEN |
+ | 40 | DOPPELDAMPFOFEN |
+ | 41 | DOPPELDAMPFOFENKOMBINATION |
+ | 42 | DOPPELTE MIKROWELLE |
+ | 43 | DOPPELTER MIKROWELLENOFEN |
+ | 45 | DAMPFOFEN MIKROWELLENKOMBINATION |
+ | 48 | VAKUUMSCHUBLADE |
+ | 67 | DIALOGOVEN |
+ | 68 | WINE CABINET FREEZER COMBINATION |
+
+### Status / Status
  | Rohwert | Staat |
  |----------|-------|
 | 1 | AUS |
@@ -89,11 +128,16 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 2 | Normal |
  | 3 | Leicht trocken |
  | 4 | Handeisen Stufe 1 |
- | 5 | Handbügeleisen Stufe 2 |
+ | 5 | Handeisen Stufe 2 |
  | 6 | Maschineneisen |
 
 ## Changelog
 
+### 1.1.0 (2020-03-07)
+* (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
+               Please remember that Actions will only work if you put your device into the appropiate state (e.g. Mobile Control)
+               please refer to https://www.miele.com/developer/swagger-ui/put_additional_info.html for more Information on actions. 
+  
 ### 1.0.5 (2020-02-14)
 * (grizzelbee) removed node-schedule as a dependency
 * (grizzelbee) implemented scheduling via setTimeout, which raises the opportunity 
@@ -180,4 +224,4 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
 ##Copyright
-Copyright (c) 2019, 2020 grizzelbee <captain.tzk@gmail.com>
+Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
