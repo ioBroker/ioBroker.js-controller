@@ -2957,21 +2957,21 @@ function startInstance(id, wakeUp) {
                         if (procs[id] && procs[id].config && procs[id].config.common.logTransporter) {
                             outputCount++;
                             console.log(`================================== > LOG REDIRECT ${id} => false [Process stopped]`);
-                            states.setState(id + '.logging', {val: false, ack: true, from: hostObjectPrefix});
+                            states.setState(`${id}.logging`, {val: false, ack: true, from: hostObjectPrefix});
                         }
 
                         // show stored errors
-                        cleanErrors(procs[id], null, code !== EXIT_CODES.START_IMMEDIATELY_AFTER_STOP_HEX && code !== EXIT_CODES.START_IMMEDIATELY_AFTER_STOP && code !== EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
+                        cleanErrors(procs[id], null, code !== EXIT_CODES.START_IMMEDIATELY_AFTER_STOP && code !== EXIT_CODES.ADAPTER_REQUESTED_TERMINATION);
 
                         if (mode !== 'once') {
                             if (signal) {
-                                logger.warn(hostLogPrefix + ' instance ' + id + ' terminated due to ' + signal);
+                                logger.warn(`${hostLogPrefix} instance ${id} terminated due to ${signal}`);
                             } else if (code === null) {
-                                logger.error(hostLogPrefix + ' instance ' + id + ' terminated abnormally');
+                                logger.error(`${hostLogPrefix} instance ${id} terminated abnormally`);
                             }
 
                             if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
-                                logger.info(hostLogPrefix + ' instance ' + id + ' terminated with code ' + code + ' (' + (getErrorText(code) || '') + ')');
+                                logger.info(`${hostLogPrefix} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`);
                                 if (procs[id].stopping !== undefined) {
                                     delete procs[id].stopping;
                                 }
@@ -2981,22 +2981,22 @@ function startInstance(id, wakeUp) {
                                 }
 
                                 if (isStopping) {
-                                    logger.silly(hostLogPrefix + ' Check Stopping ' + id);
+                                    logger.silly(`${hostLogPrefix} Check Stopping ${id}`);
                                     for (const i in procs) {
                                         if (!procs.hasOwnProperty(i)) continue;
                                         if (procs[i].process) {
-                                            logger.silly(hostLogPrefix + ' ' + procs[i].config.common.name + ' still running');
+                                            logger.silly(`${hostLogPrefix} ${procs[i].config.common.name} still running`);
                                             return;
                                         }
                                     }
                                     for (const i in compactProcs) {
                                         if (!compactProcs.hasOwnProperty(i)) continue;
                                         if (compactProcs[i].process) {
-                                            logger.silly(hostLogPrefix + ' Compact group ' + i + ' still running');
+                                            logger.silly(`${hostLogPrefix} Compact group ${i} still running`);
                                             return;
                                         }
                                     }
-                                    logger.info(hostLogPrefix + ' All instances are stopped.');
+                                    logger.info(`${hostLogPrefix} All instances are stopped.`);
                                     allInstancesStopped = true;
                                 }
                                 storePids(); // Store all pids to make possible kill them all
@@ -3006,12 +3006,12 @@ function startInstance(id, wakeUp) {
                                 if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
                                     logger.error(`${hostLogPrefix} instance ${id} terminated by request of the instance itself and will not be restarted, before user restarts it.`);
                                 } else
-                                if (code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP_HEX /* -100 */ && procs[id] && procs[id].config && procs[id].config.common.restartSchedule) {
-                                    logger.info(hostLogPrefix + ' instance ' + id + ' scheduled normal terminated and will be started anew.');
+                                if (code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP && procs[id] && procs[id].config && procs[id].config.common.restartSchedule) {
+                                    logger.info(`${hostLogPrefix} instance ${id} scheduled normal terminated and will be started anew.`);
                                 } else {
                                     code = parseInt(code, 10);
                                     const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
-                                    if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION || code === EXIT_CODES.NO_ERROR || code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP || code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP_HEX) {
+                                    if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION || code === EXIT_CODES.NO_ERROR || code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP) {
                                         logger.info(text);
                                     } else {
                                         logger.error(text);
@@ -3028,7 +3028,7 @@ function startInstance(id, wakeUp) {
                             procs[id].rebuildCounter = procs[id].rebuildCounter || 0;
                             procs[id].rebuildCounter++;
                             if (procs[id].rebuildCounter < 4) {
-                                logger.info(hostLogPrefix + ' Adapter ' + id + ' needs rebuild and will be restarted afterwards.');
+                                logger.info(`${hostLogPrefix} Adapter ${id} needs rebuild and will be restarted afterwards.`);
                                 const msg = {
                                     command: 'rebuildAdapter',
                                     message: {
@@ -3042,7 +3042,7 @@ function startInstance(id, wakeUp) {
                                     sendTo('system.host.' + hostname, 'rebuildAdapter', msg);
                                 }
                             } else {
-                                logger.info(hostLogPrefix + ' Rebuild for adapter ' + id + ' not successful in 3 tries. Adapter will not be restarted again. Please execute "npm install --production" in adapter directory manually.');
+                                logger.info(`${hostLogPrefix} Rebuild for adapter ${id} not successful in 3 tries. Adapter will not be restarted again. Please execute "npm install --production" in adapter directory manually.`);
                             }
                         } else {
                             procs[id].rebuildCounter = 0;
@@ -3065,8 +3065,8 @@ function startInstance(id, wakeUp) {
                                     clearTimeout(procs[id].restartTimer);
                                 }
                                 procs[id].restartTimer = setTimeout(_id => startInstance(_id),
-                                    code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP_HEX ? 1000 : ((procs[id].config.common.restartSchedule || restartTimerExisting) ? 1000 : 30000), id);
-                                // 4294967196 (-100) is special code that adapter wants itself to be restarted immediately
+                                    code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ? 1000 : ((procs[id].config.common.restartSchedule || restartTimerExisting) ? 1000 : 30000), id);
+                                // 156 is special code that adapter wants itself to be restarted immediately
                             } else {
                                 if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
                                     logger.info(`${hostLogPrefix} Do not restart adapter ${id} because desired by instance`);
@@ -3241,8 +3241,8 @@ function startInstance(id, wakeUp) {
                                                 clearTimeout(procs[id].restartTimer);
                                             }
                                             procs[id].restartTimer = setTimeout(_id => startInstance(_id),
-                                                code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP_HEX ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
-                                            // 4294967196 (-100) is special code that adapter wants itself to be restarted immediately
+                                                code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ? 1000 : (procs[id].config.common.restartSchedule ? 1000 : 30000), id);
+                                            // 156 is special code that adapter wants itself to be restarted immediately
                                         });
                                     } else {
                                         logger.info(`${hostLogPrefix} Do not restart compact group controller ${currentCompactGroup} because no instances assigned to him`);
