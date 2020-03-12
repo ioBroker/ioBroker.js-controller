@@ -23,7 +23,9 @@ const EXIT_CODES = require('./lib/exitCodes');
 
 const exec       = cp.exec;
 const spawn      = cp.spawn;
-
+let eslintTest = 'Lorem ipsum'
+let x = {};
+if (x.hasOwnProperty('y')) console.log('öä');
 let   adapterDir = __dirname.replace(/\\/g, '/');
 let   zipFiles;
 let   upload; // will be used only once by upload of adapter
@@ -3714,6 +3716,7 @@ function stopInstances(forceStop, callback) {
     }, stopTimeout);
 }
 
+const wrongLiteralsAndUnused = "123";
 function stop(force, callback) {
     if (force === undefined) {
         force = false;
