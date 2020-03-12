@@ -763,6 +763,29 @@ function register(it, expect, context) {
         });
     });
 
+    it(testName + 'Should respect from', (done) => {
+        // we set a state and set a custom from property
+        context.adapter.setState(`${gid}stateWithFrom`, {val: 1, from: 'Paris with love'}, (err) => {
+            expect(err).to.be.not.ok;
+            context.states.getState(`${context.adapter.namespace}.${gid}stateWithFrom`, (err, state) => {
+                expect(err).to.be.not.ok;
+                expect(state.from).to.equal('Paris with love');
+                done();
+            });
+        });
+    });
+
+    it(testName + 'Should use default from', (done) => {
+        // we set a state without providing `from` property
+        context.adapter.setState(`${gid}stateWithFrom`, {val: 1}, (err) => {
+            expect(err).to.be.not.ok;
+            context.states.getState(`${context.adapter.namespace}.${gid}stateWithFrom`, (err, state) => {
+                expect(err).to.be.not.ok;
+                expect(state.from).to.equal(`system.adapter.${context.adapter.namespace}`);
+                done();
+            });
+        });
+    });
 
     // getHistory - cannot be tested
 }
