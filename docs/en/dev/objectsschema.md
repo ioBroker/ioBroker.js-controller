@@ -599,6 +599,7 @@ id *system.adapter.&lt;adapter.name&gt;.&lt;instance-number&gt;*
 * `subscribe`   - is started when state *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.alive* changes to *true*. Is killed when *.alive* changes to *false* and sets *.alive* to *false* if process exits (will **not** be restarted when process exits)
 * `schedule`    - is started by schedule found in *system.adapter.&lt;adapter-name&gt;.&lt;instance-number&gt;.schedule* - reacts on changes of *.schedule* by rescheduling with new state
 * `once`        - this adapter will be started every time the system.adapter.yyy.x object changed. It will not be restarted after termination.
+* `extension`   - this adapter will be not started by `js-controller`, but it will be started by web instance. Web instance can be defined in `native.webInstance` as '*' (if in every web) or as `web.x` for specific web instance. (Examples: `cameras, proxy`). Additionally in `common.webExtension` the path to plugin file must be provided.
 
 #### host
 id `system.host.<host>`
