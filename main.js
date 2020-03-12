@@ -530,7 +530,7 @@ function createObjects(onConnect) {
                             const _ipArr = getIPs();
 
                             if (checkAndAddInstance(procs[id].config, _ipArr)) {
-                                if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
+                                if (procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)) {
                                     if (procs[id].restartTimer) {
                                         clearTimeout(procs[id].restartTimer);
                                         delete procs[id].restartTimer;
@@ -555,7 +555,7 @@ function createObjects(onConnect) {
                     } else {
                         const _ipArr = getIPs();
                         if (procs[id].config && checkAndAddInstance(procs[id].config, _ipArr)) {
-                            if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
+                            if (procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)) {
                                 startInstance(id);
                             }
                         } else {
@@ -576,7 +576,7 @@ function createObjects(onConnect) {
                     // new adapter
                     if (checkAndAddInstance(obj, _ipArr) &&
                         procs[id].config.common.enabled &&
-                        (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)
+                        (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)
                     ) {
                         // We should give is a slight delay to allow an pot. former existing process on other host to exit
                         procs[id].restartTimer = setTimeout(_id => startInstance(_id), 2500, id);
@@ -2294,7 +2294,7 @@ function getInstances() {
                 logger.debug(hostLogPrefix + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
                 console.log(hostLogPrefix + ' check instance "' + doc.rows[i].id  + '" for host "' + instance.common.host + '"');
 
-                if (checkAndAddInstance(instance, _ipArr) && instance.common.enabled && (!instance.common.webExtension || !instance.native.webInstance)) {
+                if (checkAndAddInstance(instance, _ipArr) && instance.common.enabled && (instance.common.mode !== 'extension' || !instance.native.webInstance)) {
                     count++;
                 }
             }
@@ -2389,7 +2389,7 @@ function initInstances() {
             continue;
         }
 
-        if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
+        if (procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)) {
             if (id.startsWith('system.adapter.admin')) {
                 // do not process if still running. It will be started when old one will be finished
                 if (procs[id].process) {
@@ -2416,7 +2416,7 @@ function initInstances() {
             continue;
         }
 
-        if (procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance)) {
+        if (procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)) {
             if (!id.startsWith('system.adapter.admin')) {
                 // do not process if still running. It will be started when old one will be finished
                 if (procs[id].process) {
@@ -3054,7 +3054,7 @@ function startInstance(id, wakeUp) {
                                 procs[id].config &&
                                 procs[id].config.common &&
                                 procs[id].config.common.enabled &&
-                                (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) &&
+                                (mode !== 'extension' || !procs[id].config.native.webInstance) &&
                                 mode !== 'once'
                             ) {
                                 logger.info(hostLogPrefix + ' Restart adapter ' + id + ' because enabled');
@@ -3295,7 +3295,7 @@ function startInstance(id, wakeUp) {
 
                 !procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process && procs[id].process.on('exit', exitHandler);
 
-                if (!wakeUp && procs[id] && procs[id].process && procs[id].config.common && procs[id].config.common.enabled && (!procs[id].config.common.webExtension || !procs[id].config.native.webInstance) && mode !== 'once') {
+                if (!wakeUp && procs[id] && procs[id].process && procs[id].config.common && procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance) && mode !== 'once') {
                     if (procs[id].startedInCompactMode) {
                         logger.info(`${hostLogPrefix} instance ${instance._id} started in COMPACT mode`);
                     }
