@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.swiss-weather-api/README.md
 title: ioBroker.swiss-weather-api
-hash: qtQLhf2pWdnBLxJYR9xuhxY9Y/fXMtoTb1JL6MXTNT0=
+hash: GJsLzI7hsrjrvfsCvzvsLffQXvnvvpKOlu4I1vOKqmQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.swiss-weather-api/admin/swiss-weather-api.png)
 
@@ -19,9 +19,14 @@ hash: qtQLhf2pWdnBLxJYR9xuhxY9Y/fXMtoTb1JL6MXTNT0=
 # IoBroker.swiss-weather-api
 ## Swiss-weather-api adapter für ioBroker
 Stellt eine Verbindung zur großartigen SRG-SSR-Wetter-API her (https://developer.srgssr.ch/apis/srgssr-weather).
-Wettersymbole werden von https://erikflowers.github.io/weather-icons/ wiederverwendet.
 
 Mit der SRG-SSR-Wetter-REST-API können Sie Wettervorhersagen und -berichte von mehr als 25.000 Standorten in der ganzen Schweiz abrufen.
+
+** Symbole **
+
+Wettersymbole werden von https://erikflowers.github.io/weather-icons/ wiederverwendet.
+
+Seit Version 0.1.8 bietet SRG-SSR sogar eigene Symbole. So können Sie auswählen, welches Icons-Set Sie verwenden möchten.
 
 ** Beachten Sie, dass dieser Adapter nur Standorte innerhalb der Schweiz unterstützt. **
 
@@ -32,7 +37,7 @@ Mit der SRG-SSR-Wetter-REST-API können Sie Wettervorhersagen und -berichte von 
 1. Installieren Sie diesen Adapter auf ioBroker => Dies kann einige Minuten dauern (~ 7 Minuten auf einem Raspberry Pi 3).
 1. Füllen Sie bei Adapterkonfiguration aus
    1. ConsumerKey der App
-   1. ConsumerSecret der App
+   1. ConsumerSecret of App
    1. Längen- / Breitengrad des gewählten Schweizer Standorts, für den eine Prognose erforderlich ist. => Bitte Dezimalgrad verwenden (zum Beispiel Zürich: 47.36667 / 8.5)
 
 Dies ist ein geplanter Adapter. Es wird alle 30 Minuten geplant und liest die Prognose-API von SRG-SSR. Sie können dieses Intervall in der Instanzansicht (Zeitplan) ändern. Ein niedrigeres Intervall wird nicht empfohlen, da die minimale Prognose 1 Stunde beträgt.
@@ -41,6 +46,9 @@ Dies ist ein geplanter Adapter. Es wird alle 30 Minuten geplant und liest die Pr
 Bei der ersten Installation möchten Sie möglicherweise überprüfen, ob alles einwandfrei funktioniert, und nicht 30 Minuten warten. In diesem Fall können Sie den Scheduler auf 1 Minute ändern. => Wenn alles richtig funktioniert, **ändern Sie es bitte wieder auf 30min**
 
 ## Changelog
+
+### 0.1.9
+* (baerengraben) Dependency- and Vulnerabilites-Updates
 
 ### 0.1.8
 * (baerengraben) Added Icons provided by SRGSSR => Thank you!! :)

@@ -20,6 +20,9 @@ Adapter needs at least nodejs version 8 / ES9 / ECMAScript2018.
 
 ## Changelog
 
+### 0.0.5
+* (AWhiteKnight) fixed issues and some minor bugs
+
 ### 0.0.4
 * (AWhiteKnight) code cleanup
 
@@ -34,8 +37,6 @@ Adapter needs at least nodejs version 8 / ES9 / ECMAScript2018.
 
 ## License
 MIT License
-
-Copyright (c) 2019 AWhiteKnight <awhiteknight@unity-mail.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -54,3 +55,5 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+Copyright (c) 2020 AWhiteKnight <awhiteknight@unity-mail.de>

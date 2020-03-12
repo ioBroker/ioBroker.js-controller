@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.swiss-weather-api/README.md
 title: ioBroker.swiss-погода-апи
-hash: qtQLhf2pWdnBLxJYR9xuhxY9Y/fXMtoTb1JL6MXTNT0=
+hash: GJsLzI7hsrjrvfsCvzvsLffQXvnvvpKOlu4I1vOKqmQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.swiss-weather-api/admin/swiss-weather-api.png)
 
@@ -11,7 +11,7 @@ hash: qtQLhf2pWdnBLxJYR9xuhxY9Y/fXMtoTb1JL6MXTNT0=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.swiss-weather-api.svg)
 ![Количество установок (последняя)](http://iobroker.live/badges/swiss-weather-api-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/swiss-weather-api-stable.svg)
-![Состояние зависимости](https://img.shields.io/david/baerengraben/iobroker.swiss-weather-api.svg)
+![Статус зависимости](https://img.shields.io/david/baerengraben/iobroker.swiss-weather-api.svg)
 ![Известные уязвимости](https://snyk.io/test/github/baerengraben/ioBroker.swiss-weather-api/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.swiss-weather-api.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/baerengraben/ioBroker.swiss-weather-api/master.svg)
@@ -19,9 +19,14 @@ hash: qtQLhf2pWdnBLxJYR9xuhxY9Y/fXMtoTb1JL6MXTNT0=
 # IoBroker.swiss-weather-api
 ## Адаптер swiss-weather-api для ioBroker
 Соединяется с отличным API погоды SRG-SSR (https://developer.srgssr.ch/apis/srgssr-weather).
-Значки погоды используются повторно с https://erikflowers.github.io/weather-icons/
 
 API REST Weather SRG-SSR позволяет получать прогнозы погоды и отчеты из более чем 25 000 населенных пунктов по всей Швейцарии.
+
+** Иконки **
+
+Значки погоды используются повторно с https://erikflowers.github.io/weather-icons/
+
+Начиная с версии 0.1.8 SRG-SSR даже предоставляет свои собственные значки. Таким образом, вы можете выбрать, какой набор иконок вы хотите использовать.
 
 ** Имейте в виду, что этот адаптер поддерживает только места в Швейцарии. **
 
@@ -35,12 +40,15 @@ API REST Weather SRG-SSR позволяет получать прогнозы п
    1. ConsumerSecret of App
    1. Долгота / Широта выбранного швейцарского местоположения, для которого нужен прогноз. => Пожалуйста, используйте десятичные градусы (например, Цюрих: 47.36667 / 8.5)
 
-Это запланированный адаптер. Он запланирован каждые 30 минут и читает прогноз API SRG-SSR. Вы можете изменить этот интервал в экземпляре-представлении (Расписание). Нижний интервал не рекомендуется, поскольку минимальный прогноз составляет 1 час.
+Это запланированный адаптер. Он запланирован каждые 30 минут и читает прогноз API SRG-SSR. Вы можете изменить этот интервал в режиме просмотра экземпляров (расписание). Нижний интервал не рекомендуется, поскольку минимальный прогноз составляет 1 час.
 ** Поэтому имейте в виду, что после установки потребуется 30 минут, пока данные прогноза не будут доставлены в первый раз, а объекты данных в представлении данных будут созданы. **
 
 При первой установке вы можете проверить, все ли работает нормально, и не хотите ждать 30 минут. В этом случае вы можете изменить планировщик на 1 мин. => Если все работает правильно, **, пожалуйста, измените его обратно на 30 минут **.
 
 ## Changelog
+
+### 0.1.9
+* (baerengraben) Dependency- and Vulnerabilites-Updates
 
 ### 0.1.8
 * (baerengraben) Added Icons provided by SRGSSR => Thank you!! :)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: /IgSTHOQpZv2tuj7sbV1RXOH9TJ7MarlVo6v1rTNQjs=
+hash: YZLdTpG1PQ3qV52xQ1UyjXqWvuL3PCNq3O6DvGgr6ak=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -19,12 +19,12 @@ hash: /IgSTHOQpZv2tuj7sbV1RXOH9TJ7MarlVo6v1rTNQjs=
 * Deebot苗条2
 * Deebot 601
 * Deebot 710/711
-* Deebot 900/901
 * Deebot Ozmo 610
 * Deebot Ozmo 930
 * Deebot奥兹莫950
 
 ###这些模型应该部分起作用
+* Deebot 900/901
 * Deebot Ozmo 900
 
 ###这些模型应该可以工作
@@ -33,11 +33,15 @@ hash: /IgSTHOQpZv2tuj7sbV1RXOH9TJ7MarlVo6v1rTNQjs=
 * Deebot 600/605
 
 ##用法
-有关如何使用此适配器的信息，请参见[这里](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)。
+*有关如何使用此适配器的信息可在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）
 
 ＃＃ 已知的问题
-*对于Deebot Ozmo 930，由于[一些报告]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24），连接大约在之后断开。 24小时。
+*对于Deebot Ozmo 930，由于[一些报告]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24），连接大约在之后断开。 24小时
 *在Deebot Ozmo 950上的清洁次数[无效]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/33）
+*消耗值在Deebot 710/711和900/901上不起作用
+
+＃＃ 常问问题
+*常见问题可以在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ）
 
 ##谢谢和感谢
 * @joostth（[sucks.js]（https://github.com/joostth/sucks.js））
@@ -46,6 +50,9 @@ hash: /IgSTHOQpZv2tuj7sbV1RXOH9TJ7MarlVo6v1rTNQjs=
 * @Ligio（[ozmo]（https://github.com/Ligio/ozmo））
 
 ## Changelog
+
+### 0.5.6
+   * Using library version 0.3.7
 
 ### 0.5.5
    * Using library version 0.3.6

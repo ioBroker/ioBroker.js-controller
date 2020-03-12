@@ -919,6 +919,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-fancyswitch/README
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-google-fonts/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-history/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-hqwidgets/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-inventwo/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-jqui-mfd/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-justgage/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-keyboard/README.md
@@ -1272,6 +1273,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-fancyswitch/README
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-google-fonts/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-history/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-hqwidgets/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-inventwo/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-jqui-mfd/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-justgage/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-keyboard/README.md
@@ -1625,6 +1627,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-fancyswitch/README
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-google-fonts/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-history/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-hqwidgets/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-inventwo/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-jqui-mfd/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-justgage/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-keyboard/README.md
@@ -1978,6 +1981,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-fancyswitch/REA
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-google-fonts/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-history/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-hqwidgets/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-inventwo/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-jqui-mfd/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-justgage/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-keyboard/README.md

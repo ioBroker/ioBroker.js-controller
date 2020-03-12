@@ -63,6 +63,10 @@ default: state-ID converted to a mqtt topic.
 * connect/reconnect without clean session
 
 ## Changelog
+### 1.3.0 (2020-03-11)
+* (bluefox) mqtt package was updated
+* (bluefox) Fixed the error with "custom" view
+
 ### 1.2.1 (2019-10-17)
 * (algar42) Fix adapter restarting
 * (algar42) Fix mqtt issues
@@ -107,7 +111,7 @@ default: state-ID converted to a mqtt topic.
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 Pmant
+Copyright (c) 2016-2020 Pmant
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

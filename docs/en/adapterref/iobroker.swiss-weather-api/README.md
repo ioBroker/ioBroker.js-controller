@@ -15,9 +15,14 @@
 ## swiss-weather-api adapter for ioBroker
 
 Connects to the great SRG-SSR weather API (https://developer.srgssr.ch/apis/srgssr-weather).  
-Weather-Icons are reused from https://erikflowers.github.io/weather-icons/
 
 The SRG-SSR Weather REST API allows you to get weather forecasts and reports from more than 25.000 locations across Switzerland.
+
+**Icons**
+
+Weather-Icons are reused from https://erikflowers.github.io/weather-icons/ 
+
+Since Version 0.1.8 SRG-SSR even provides their own icons. So you can choose which Icons-Set you want to use.
 
 **Be aware that this adapter only supports locations within Switzerland.**
 
@@ -37,6 +42,9 @@ This is a scheduled Adapter. It is scheduled every 30 minutes and reads the fore
 On first installation you might want to check if everything works fine and don't want to wait for 30min. In this case you can change the scheduler to 1min. => If everything is working properly, **please change it back to 30min**.
 
 ## Changelog
+
+### 0.1.9
+* (baerengraben) Dependency- and Vulnerabilites-Updates
 
 ### 0.1.8
 * (baerengraben) Added Icons provided by SRGSSR => Thank you!! :)

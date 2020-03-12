@@ -7,22 +7,12 @@
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/grizzelbee/iobroker.mielecloudservice/blob/master/LICENSE) 
 [![Dependency Status](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)](https://david-dm.org/Grizzelbee/iobroker.mielecloudservice)
 [![Known Vulnerabilities](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg)](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice)
-[![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)](https://travis-ci.org/Grizzelbee/ioBroker.mielecloudservice) 
- [![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)](https://nodei.co/npm/iobroker.mielecloudservice/)
+[![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)](https://travis-ci.com/Grizzelbee/ioBroker.mielecloudservice) 
+[![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)](https://nodei.co/npm/iobroker.mielecloudservice/)
 
 ## Description
 This adapter is for retrieving information about all your Miele@Home devices from the official Miele 3rd-party API. 
-Regardless if they are connected via WiFi or XGW3000 Gateway. It implements the **Miele 3rd Party API V1.0.0**
-
-## Installation 
-To install, excecute the following:
-
-1. Install via Admin using the stable or latest Repo or via: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git
-2. create an App-Account for Miele@Home in the Miele Smartphone App
-3. Create an developer account at https://www.miele.com/f/com/en/register_api.aspx 
-4. Add your Miele-Devices to the App (if not added automatically)
-6. Fill in the client_secret and client_id received from Miele-developer Team and account-id and password from the App.
-
+Regardless if they are connected directly via WiFi or XGW3000 Gateway. It implements the **Miele 3rd Party API V1.0.0**
 
 ## Prerequisites
 * Miele@Home User (Smartphone App)
@@ -30,12 +20,27 @@ To install, excecute the following:
 * Miele Client_id (from https://www.miele.com/developer/)
 * Miele Client_secret (from https://www.miele.com/developer/ )
 
-## Changelog
+## Installation 
+To install, excecute the following:
 
+1. Install via Admin using the 
+ * stable Repo - to get the current stable version
+ * latest Repo - to get the latest test version (may be not stable)
+ * via: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git - to get the latest development version
+2. create an App-Account for Miele@Home in the Miele Smartphone App
+3. Create a developer account at https://www.miele.com/f/com/en/register_api.aspx 
+4. Add your Miele-Devices to the App (if not added automatically)
+6. Fill in the client_secret and client_id received from Miele-developer Team and account-id and password from the App.
+
+## Next Steps
+* New: (longer) poll interval when no device is active
+* New: Sleeptime for complete inactivity (e.g. at night)
+
+## Changelog
 ### 1.1.0 (2020-03-07)
 * (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
                Please remember that Actions will only work if you put your device into the appropiate state (e.g. Mobile Control)
-               please refer to https://www.miele.com/developer/swagger-ui/put_additional_info.html for more Information on actions. 
+               please refer to [Miele-Documentation](#documentation) for more Information on actions. 
   
 ### 1.0.5 (2020-02-14)
 * (grizzelbee) removed node-schedule as a dependency
@@ -100,11 +105,6 @@ To install, excecute the following:
 
 ### 0.0.1
 * (hash99) initial release
-
- 
-## Next Steps
-* New: (longer) poll interval when no device is active
-* New: Sleeptime for complete inactivity (e.g. at night)
 
 ## Documentation
 Please mainly refer to the main API documentation published by Miele
@@ -222,5 +222,5 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-##Copyright
+## Copyright
 Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>

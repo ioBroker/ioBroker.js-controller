@@ -296,6 +296,7 @@ Here you can find a description of the states and how to use them. All states of
 ## Changelog
 
 ### 1.0.6 (NoBl)
+* Moved senec states and state attributes to libs
 * Added missing state descriptions
 
 ### 1.0.5 (2020-03-07) (NoBl)

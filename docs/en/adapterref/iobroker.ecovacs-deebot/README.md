@@ -13,12 +13,12 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 * Deebot Slim 2
 * Deebot 601
 * Deebot 710/711
-* Deebot 900/901
 * Deebot Ozmo 610
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 
 ### These models should work partially
+* Deebot 900/901
 * Deebot Ozmo 900
 
 ### These models should work
@@ -28,13 +28,22 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 
 ## Usage
 
-Information on how to use this adapter can be found [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki).
+* Information on how to use this adapter can be found [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Known issues
-* For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are [some reports](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24) that the connection is lost after approx. 24 hours.
+
+* For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are [some reports](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24) that the connection is lost after approx. 24 hours
 * Number of cleanings [not working](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/33) on Deebot Ozmo 950
+* Consumable values not working on Deebot 710/711 and 900/901
+
+## FAQ
+
+* Frequently asked questions can be found [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
 ## Changelog
+
+### 0.5.6
+   * Using library version 0.3.7
 
 ### 0.5.5
    * Using library version 0.3.6

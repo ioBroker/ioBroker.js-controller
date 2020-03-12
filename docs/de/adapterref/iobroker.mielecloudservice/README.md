@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: tnKz7m2fzyctXLChpilehEK9zJWfflzet92chku6PWE=
+hash: OsPJlZjV0DtErfgb8ksy/0sX2PeZxLg6pi8psc/KlDg=
 ---
 ![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -19,22 +19,25 @@ hash: tnKz7m2fzyctXLChpilehEK9zJWfflzet92chku6PWE=
 # IoBroker.MieleCloudService
 ## Beschreibung
 Mit diesem Adapter können Sie Informationen zu allen Ihren Miele @ Home-Geräten von der offiziellen Miele-API eines Drittanbieters abrufen.
-Unabhängig davon, ob sie über WLAN oder XGW3000 Gateway verbunden sind. Es implementiert die **Miele 3rd Party API V1.0.0**
-
-## Installation
-Führen Sie zum Installieren Folgendes aus:
-
-1. Installieren Sie über Admin mit dem stabilen oder neuesten Repo oder über: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git
-2. Erstellen Sie in der Miele Smartphone App ein App-Konto für Miele @ Home
-3. Erstellen Sie ein Entwicklerkonto unter https://www.miele.com/f/com/en/register_api.aspx
-4. Fügen Sie Ihre Miele-Geräte zur App hinzu (falls nicht automatisch hinzugefügt)
-6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort von der App ein.
+Unabhängig davon, ob sie direkt über WLAN oder XGW3000 Gateway verbunden sind. Es implementiert die **Miele 3rd Party API V1.0.0**
 
 ## Voraussetzungen
 * Miele @ Home User (Smartphone App)
 * Miele @ Home Passwort (Smartphone App)
 * Miele Client_id (von https://www.miele.com/developer/)
 * Miele Client_secret (von https://www.miele.com/developer/)
+
+## Installation
+Führen Sie zum Installieren Folgendes aus:
+
+1. Installieren Sie über Admin mit dem
+ * Stable Repo - um die aktuelle stabile Version zu erhalten
+ * letztes Repo - um die neueste Testversion zu erhalten (möglicherweise nicht stabil)
+ * via: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git - um die neueste Entwicklungsversion zu erhalten
+2. Erstellen Sie in der Miele Smartphone App ein App-Konto für Miele @ Home
+3. Erstellen Sie ein Entwicklerkonto unter https://www.miele.com/f/com/en/register_api.aspx
+4. Fügen Sie Ihre Miele-Geräte zur App hinzu (falls nicht automatisch hinzugefügt)
+6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort von der App ein.
 
 ## Nächste Schritte
 * Neu: (längeres) Abfrageintervall, wenn kein Gerät aktiv ist
@@ -131,12 +134,14 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 5 | Handeisen Stufe 2 |
  | 6 | Maschineneisen |
 
-## Changelog
+## Urheberrechte ©
+Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
 
+## Changelog
 ### 1.1.0 (2020-03-07)
 * (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
                Please remember that Actions will only work if you put your device into the appropiate state (e.g. Mobile Control)
-               please refer to https://www.miele.com/developer/swagger-ui/put_additional_info.html for more Information on actions. 
+               please refer to [Miele-Documentation](#documentation) for more Information on actions. 
   
 ### 1.0.5 (2020-02-14)
 * (grizzelbee) removed node-schedule as a dependency
@@ -222,6 +227,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-##Copyright
-Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>

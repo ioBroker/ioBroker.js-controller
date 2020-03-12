@@ -246,6 +246,9 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+### 1.34 (2020-02-26)
+* (TA2k) Fixed deconz issues in Google Home
+
 ### 1.3.3 (2020-02-12)
 * (Apollon77) fix alisa error with invalid smartName attributes
 

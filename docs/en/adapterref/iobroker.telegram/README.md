@@ -481,6 +481,9 @@ TODO:
 - venue
 
 ## Changelog
+### 1.5.4 (2020-03-11)
+* (bluefox) Improvement of callmebot
+
 ### 1.5.3 (2020-02-23)
 * (foxriver76) removed usage of adapter.objects
 * (Haba) Fix of the response for the "callback_query" event

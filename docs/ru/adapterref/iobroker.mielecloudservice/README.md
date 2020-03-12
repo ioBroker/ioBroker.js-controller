@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: tnKz7m2fzyctXLChpilehEK9zJWfflzet92chku6PWE=
+hash: OsPJlZjV0DtErfgb8ksy/0sX2PeZxLg6pi8psc/KlDg=
 ---
 ![логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -19,22 +19,25 @@ hash: tnKz7m2fzyctXLChpilehEK9zJWfflzet92chku6PWE=
 # IoBroker.MieleCloudService
 ## Описание
 Этот адаптер предназначен для получения информации обо всех ваших устройствах Miele @ Home из официального стороннего API Miele.
-Независимо от того, подключены ли они через WiFi или XGW3000 Gateway. Он реализует **Miele Сторонний API V1.0.0**
-
-## Установка
-Для установки выполните следующее:
-
-1. Установите через Admin, используя стабильный или последний репо или через: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git
-2. создать приложение-аккаунт для Miele @ Home в приложении Miele для смартфонов
-3. Создайте учетную запись разработчика по адресу https://www.miele.com/f/com/en/register_api.aspx.
-4. Добавьте свои Miele-устройства в приложение (если не добавлено автоматически)
-6. Заполните client_secret и client_id, полученные от команды разработчиков Miele, а также идентификатор учетной записи и пароль из приложения.
+Независимо от того, подключены ли они напрямую через WiFi или XGW3000 Gateway. Он реализует **Miele Сторонний API V1.0.0**
 
 ## Предпосылки
 * Miele @ Home User (приложение для смартфона)
 * Miele @ Home Password (приложение для смартфонов)
 * Miele Client_id (от https://www.miele.com/developer/)
 * Miele Client_secret (из https://www.miele.com/developer/)
+
+## Установка
+Для установки выполните следующее:
+
+1. Установите через Admin, используя
+ * стабильный репо - чтобы получить текущую стабильную версию
+ * последний репо - чтобы получить последнюю тестовую версию (может быть нестабильной)
+ * через: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git - чтобы получить последнюю версию для разработки
+2. создать приложение-аккаунт для Miele @ Home в приложении Miele для смартфонов
+3. Создайте учетную запись разработчика по адресу https://www.miele.com/f/com/en/register_api.aspx.
+4. Добавьте свои Miele-устройства в приложение (если не добавлено автоматически)
+6. Заполните client_secret и client_id, полученные от команды разработчиков Miele, а также идентификатор учетной записи и пароль из приложения.
 
 ## Следующие шаги
 * Новое: (более длинный) интервал опроса, когда ни одно устройство не активно
@@ -131,12 +134,14 @@ hash: tnKz7m2fzyctXLChpilehEK9zJWfflzet92chku6PWE=
  | 5 | Ручной утюг уровень 2 |
  | 6 | Машинное железо |
 
-## Changelog
+## Авторское право
+Copyright (c) 2019, 2020 гризельби <hanjo@hingsen.de>
 
+## Changelog
 ### 1.1.0 (2020-03-07)
 * (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
                Please remember that Actions will only work if you put your device into the appropiate state (e.g. Mobile Control)
-               please refer to https://www.miele.com/developer/swagger-ui/put_additional_info.html for more Information on actions. 
+               please refer to [Miele-Documentation](#documentation) for more Information on actions. 
   
 ### 1.0.5 (2020-02-14)
 * (grizzelbee) removed node-schedule as a dependency
@@ -222,6 +227,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-##Copyright
-Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>

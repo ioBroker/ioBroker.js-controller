@@ -317,6 +317,7 @@ Zur Suche nach einem bestimmten Datenpunkt empfiehlt sich die Suche mittels der 
 ## Changelog
 
 ### 1.0.6 (NoBl)
+* Moved senec states and state attributes to libs
 * Added missing state descriptions
 
 ### 1.0.5 (2020-03-07) (NoBl)

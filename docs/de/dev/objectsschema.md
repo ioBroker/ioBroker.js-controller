@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
-hash: 7q54EEI22+Fm9SLmEqgSaQrFJkacw/yxUt1M0ne/mIc=
+hash: FFzNRIzygOmQSrzVSlXxole2kfQWad2m1grDaZd3pPI=
 ---
 # Kernkonzept
 In ioBroker gibt es zwei grundlegend unterschiedliche Datentypen. Sogenannte **Zustände** (`states`) und **Objekte**
@@ -581,6 +581,7 @@ id *system.adapter. &lt; adapter.name &gt;. & lt; instanznummer &gt;*
 * `subscribe` - wird gestartet, wenn der Status *system.adapter. &lt; Adaptername &gt;. & lt; Instanznummer &gt; .alive* in *true* geändert wird. Wird getötet, wenn *.alive* in *false* wechselt und *.alive* auf *false* gesetzt wird, wenn der Prozess beendet wird (wird **nicht** neu gestartet, wenn der Prozess beendet wird)
 * `Zeitplan` - wird durch den in *system.adapter gefundenen Zeitplan gestartet. &lt; Adaptername &gt;. & lt; Instanznummer &gt; .schedule* - reagiert auf Änderungen von *.schedule* durch Neuplanung mit neuem Status
 * `einmal` - Dieser Adapter wird jedes Mal gestartet, wenn das Objekt system.adapter.yyy.x geändert wird. Es wird nach Beendigung nicht neu gestartet.
+* `extension` - Dieser Adapter wird nicht von` js-controller` gestartet, sondern von einer Webinstanz. Die Webinstanz kann in "native.webInstance" als "*" (wenn in jedem Web) oder als "web.x" für eine bestimmte Webinstanz definiert werden. (Beispiele: `Kameras, Proxy`). Zusätzlich muss in `common.webExtension` der Pfad zur Plugin-Datei angegeben werden.
 
 #### Host
 id `system.host.<host>`

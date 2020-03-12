@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: /IgSTHOQpZv2tuj7sbV1RXOH9TJ7MarlVo6v1rTNQjs=
+hash: YZLdTpG1PQ3qV52xQ1UyjXqWvuL3PCNq3O6DvGgr6ak=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -19,12 +19,12 @@ hash: /IgSTHOQpZv2tuj7sbV1RXOH9TJ7MarlVo6v1rTNQjs=
 * Deebot Slim 2
 * Deebot 601
 * Deebot 710/711
-* Deebot 900/901
 * Deebot Ozmo 610
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 
 ### Эти модели должны работать частично
+* Deebot 900/901
 * Deebot Ozmo 900
 
 ### Эти модели должны работать
@@ -33,11 +33,15 @@ hash: /IgSTHOQpZv2tuj7sbV1RXOH9TJ7MarlVo6v1rTNQjs=
 * Deebot 600/605
 
 ## Использование
-Информацию о том, как использовать этот адаптер, можно найти [Вот](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki).
+* Информацию о том, как использовать этот адаптер, можно найти здесь [https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki).
 
 ## Известные вопросы
-* Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть [ некоторые сообщения] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24), что соединение теряется после прибл. 24 часа.
+* Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть [ некоторые сообщения] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24), что соединение теряется после прибл. 24 часа
 * Количество чисток [не работает] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/33) на Deebot Ozmo 950
+* Расходные материалы не работают на Deebot 710/711 и 900/901
+
+## ВОПРОСЫ-ОТВЕТЫ
+* Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
 ## Спасибо и кредиты
 * @joostth ([sucks.js] (https://github.com/joostth/sucks.js))
@@ -46,6 +50,9 @@ hash: /IgSTHOQpZv2tuj7sbV1RXOH9TJ7MarlVo6v1rTNQjs=
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.5.6
+   * Using library version 0.3.7
 
 ### 0.5.5
    * Using library version 0.3.6

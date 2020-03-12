@@ -18,8 +18,9 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 
 ## Changelog
 
-### 1.16.0 (2020-03-08)
+### 1.16.1 (2020-03-12)
 * (Apollon77) update deps, node-red to 1.0.4
+* (Apollon77) update number of listeners to max 1000 before warning is displayed
 
 ### 1.15.0 (2020-01-06)
 * (mobilutz/bluefox) allow creation of foreign states

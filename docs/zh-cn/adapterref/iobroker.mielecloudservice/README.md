@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: tnKz7m2fzyctXLChpilehEK9zJWfflzet92chku6PWE=
+hash: OsPJlZjV0DtErfgb8ksy/0sX2PeZxLg6pi8psc/KlDg=
 ---
 ![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -19,22 +19,25 @@ hash: tnKz7m2fzyctXLChpilehEK9zJWfflzet92chku6PWE=
 ＃ioBroker.MieleCloudService
 ##说明
 该适配器用于从官方Miele 3rd-party API检索有关所有Miele @ Home设备的信息。
-无论它们是否通过WiFi或XGW3000网关连接。它实现了** Miele 3rd Party API V1.0.0 **
-
-##安装
-要安装，请执行以下操作：
-
-1.使用稳定的或最新的Repo通过Admin或通过以下网址进行安装：https://github.com/Grizzelbee/ioBroker.mielecloudservice.git
-2.在Miele Smartphone应用程序中为Miele @ Home创建一个应用程序帐户
-3.在https://www.miele.com/f/com/zh-CN/register_api.aspx上创建一个开发人员帐户
-4.将您的Miele设备添加到应用程序（如果未自动添加）
-6.填写从Miele-developer团队收到的client_secret和client_id，以及从应用程序获得的帐户ID和密码。
+无论它们是否通过WiFi或XGW3000网关直接连接。它实现了** Miele 3rd Party API V1.0.0 **
 
 ##先决条件
 * Miele @ Home用户（智能手机应用程序）
 * Miele @ Home密码（智能手机应用程序）
 * Miele Client_id（来自https://www.miele.com/developer/）
 * Miele Client_secret（来自https://www.miele.com/developer/）
+
+##安装
+要安装，请执行以下操作：
+
+1.使用以下命令通过管理员安装
+ *稳定的回购-获得当前的稳定版本
+ *最新的Repo-获取最新的测试版本（可能不稳定）
+ *通过：https://github.com/Grizzelbee/ioBroker.mielecloudservice.git-获得最新的开发版本
+2.在Miele Smartphone应用程序中为Miele @ Home创建一个应用程序帐户
+3.在https://www.miele.com/f/com/zh-CN/register_api.aspx上创建一个开发人员帐户
+4.将您的Miele设备添加到应用程序（如果未自动添加）
+6.填写从Miele-developer团队收到的client_secret和client_id，以及从应用程序获得的帐户ID和密码。
 
 ＃＃ 下一步
 *新增：（无设备活动时）（更长）轮询间隔
@@ -131,12 +134,14 @@ hash: tnKz7m2fzyctXLChpilehEK9zJWfflzet92chku6PWE=
  | 5 |手铁2级|
  | 6 |机铁|
 
-## Changelog
+##版权
+版权所有（c）2019、2020 grizzelbee <hanjo@hingsen.de>
 
+## Changelog
 ### 1.1.0 (2020-03-07)
 * (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
                Please remember that Actions will only work if you put your device into the appropiate state (e.g. Mobile Control)
-               please refer to https://www.miele.com/developer/swagger-ui/put_additional_info.html for more Information on actions. 
+               please refer to [Miele-Documentation](#documentation) for more Information on actions. 
   
 ### 1.0.5 (2020-02-14)
 * (grizzelbee) removed node-schedule as a dependency
@@ -222,6 +227,3 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
-
-##Copyright
-Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>

@@ -33,6 +33,9 @@ If this options is selected the user stays logged in for one month.
 If not, the user will stay logged in for the configured "login timeout".
 
 ## Changelog
+### 3.0.2 (2020-03-12)
+* (bluefox) Web extensions were fixed
+
 ### 3.0.1 (2020-02-23)
 * (Apollon77) Workaround for socket.io bug #3555 added to make sure always the correct client files are delivered
 

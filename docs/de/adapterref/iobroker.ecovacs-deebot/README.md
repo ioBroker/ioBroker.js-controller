@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: /IgSTHOQpZv2tuj7sbV1RXOH9TJ7MarlVo6v1rTNQjs=
+hash: YZLdTpG1PQ3qV52xQ1UyjXqWvuL3PCNq3O6DvGgr6ak=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -19,12 +19,12 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot Slim 2
 * Deebot 601
 * Deebot 710/711
-* Deebot 900/901
 * Deebot Ozmo 610
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 
 ### Diese Modelle sollten teilweise funktionieren
+* Deebot 900/901
 * Deebot Ozmo 900
 
 ### Diese Modelle sollten funktionieren
@@ -33,11 +33,15 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot 600/605
 
 ## Verwendung
-Informationen zur Verwendung dieses Adapters finden Sie in [Hier](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki).
+* Informationen zur Verwendung dieses Adapters finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Bekannte Probleme
-* Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da [ einige Berichte] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24), dass die Verbindung nach ca. 24 Stunden.
+* Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da [ einige Berichte] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24), dass die Verbindung nach ca. 24 Stunden
 * Anzahl der Reinigungen [funktioniert nicht] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/33) auf Deebot Ozmo 950
+* Verbrauchswerte funktionieren nicht mit Deebot 710/711 und 900/901
+
+## FAQ
+* Häufig gestellte Fragen finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
 ## Danke und Credits
 * @joostth ([saugt.js] (https://github.com/joostth/sucks.js))
@@ -46,6 +50,9 @@ Informationen zur Verwendung dieses Adapters finden Sie in [Hier](https://github
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.5.6
+   * Using library version 0.3.7
 
 ### 0.5.5
    * Using library version 0.3.6

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/objectsschema.md
 title: 核心理念
-hash: 7q54EEI22+Fm9SLmEqgSaQrFJkacw/yxUt1M0ne/mIc=
+hash: FFzNRIzygOmQSrzVSlXxole2kfQWad2m1grDaZd3pPI=
 ---
 ＃核心概念
 ioBroker中有两种根本不同的数据类型。所谓的“状态”（`states`）和“对象” **。
@@ -581,6 +581,7 @@ id *system.adapter。＆lt; adapter.name＆gt;。＆lt;实例号＆gt;*
 *`subscribe`-在状态* system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .alive *变为* true *时启动。当* .alive *更改为* false *并被杀死（如果进程退出，则将* .alive *设置为* false *）（进程退出时将不重新启动）
 *`schedule`-由在* system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .schedule *中找到的时间表开始。
 *`once`-每次更改system.adapter.yyy.x对象时，都会启动此适配器。终止后将不会重新启动。
+*`extension`-该适配器不会由`js-controller`启动，但会由Web实例启动。网络实例可以在“ native.webInstance”中定义为“ *”（如果在每个网络中），也可以在特定的网络实例中定义为“ web.x”。 （例如：“相机，代理”）。另外，在`common.webExtension`中必须提供插件文件的路径。
 
 ####主机
 id`system.host.<host>`

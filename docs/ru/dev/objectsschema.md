@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/objectsschema.md
 title: Основная концепция
-hash: 7q54EEI22+Fm9SLmEqgSaQrFJkacw/yxUt1M0ne/mIc=
+hash: FFzNRIzygOmQSrzVSlXxole2kfQWad2m1grDaZd3pPI=
 ---
 # Основная концепция
 В ioBroker есть два принципиально разных типа данных. Так называемые **состояния** (`states`) и **объекты**
@@ -581,6 +581,7 @@ id *system.adapter. &lt; имя адаптера &gt;. & lt; номер экзе
 * `subscribe` - запускается, когда состояние *system.adapter. &lt; имя-адаптера &gt;. & lt; номер-экземпляра & gt; .alive* меняется на *true* Уничтожается при изменении *.alive* на *false* и установке *.alive* на *false* при выходе из процесса (** не ** будет перезапущен при выходе из процесса)
 * `schedule` - запускается по расписанию, найденному в *system.adapter. &lt; имя-адаптера &gt;. & lt; instance-number & gt; .schedule* - реагирует на изменения *.schedule* путем перепланирования с новым состоянием
 * `Once` - этот адаптер будет запускаться при каждом изменении объекта system.adapter.yyy.x. Он не будет перезапущен после завершения.
+* `extension` - этот адаптер не будет запущен` js-controller`, но будет запущен веб-экземпляром. Веб-экземпляр может быть определен в `native.webInstance` как '*' (если есть в каждой сети) или как` web.x` для конкретного веб-экземпляра. (Примеры: `камеры, прокси`). Дополнительно в `common.webExtension` должен быть указан путь к файлу плагина.
 
 #### Хост
 id `system.host.<host>`
