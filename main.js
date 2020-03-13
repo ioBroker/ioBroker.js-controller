@@ -1682,7 +1682,7 @@ function startAdapterUpload() {
     const logger = msg.from ? {
         log:   text => states.pushMessage(msg.from, {command: 'log',   text, from: 'system.host.' + hostname}),
         warn:  text => states.pushMessage(msg.from, {command: 'warn',  text, from: 'system.host.' + hostname}),
-        error: text => states.pushMessage(msg.from, {command: 'error', text, from: 'system.host.' + hostname}),
+        error: text => states.pushMessage(msg.from, {command: 'error', text, from: 'system.host.' + hostname})
     } : null;
 
     upload.uploadAdapter(uploadTasks[0].adapter, true, true, logger,() =>
@@ -2652,7 +2652,7 @@ function installAdapters() {
                         }
                         else if (task.rebuild) {
                             // on rebuild we send a restart signal via object change to also reach compact group processes
-                            objects.extendObject(task.id, {})
+                            objects.extendObject(task.id, {});
                         }
                         else {
                             startInstance(task.id, task.wakeUp);
