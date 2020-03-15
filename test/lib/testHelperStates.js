@@ -12,7 +12,6 @@ function register(it, expect, context) {
     // getChannelsOf
     // getStatesOf
 
-
     // createDevice
     // createChannel
     // createState
