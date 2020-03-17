@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: YZLdTpG1PQ3qV52xQ1UyjXqWvuL3PCNq3O6DvGgr6ak=
+hash: TKPv1NWpGxt5Xrh8nm/KUv87mvH1OWku6xhq1j79eUo=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -15,16 +15,16 @@ hash: YZLdTpG1PQ3qV52xQ1UyjXqWvuL3PCNq3O6DvGgr6ak=
 Этот адаптер использует библиотеку [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js).
 
 ## Модели
-### Тезисные модели известны своей работой
+### Поддерживаемые модели
 * Deebot Slim 2
-* Deebot 601
-* Deebot 710/711
-* Deebot Ozmo 610
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 
-### Эти модели должны работать частично
+### Тезисные модели известны своей работой
+* Deebot 601
+* Deebot 710/711
 * Deebot 900/901
+* Deebot Ozmo 610
 * Deebot Ozmo 900
 
 ### Эти модели должны работать
@@ -37,8 +37,7 @@ hash: YZLdTpG1PQ3qV52xQ1UyjXqWvuL3PCNq3O6DvGgr6ak=
 
 ## Известные вопросы
 * Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть [ некоторые сообщения] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24), что соединение теряется после прибл. 24 часа
-* Количество чисток [не работает] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/33) на Deebot Ozmo 950
-* Расходные материалы не работают на Deebot 710/711 и 900/901
+* Есть несколько отчетов ([1] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/23), [2] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot / Issues / 34)) о странном поведении значения батареи на Deebot 900/901
 
 ## ВОПРОСЫ-ОТВЕТЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
@@ -51,6 +50,9 @@ hash: YZLdTpG1PQ3qV52xQ1UyjXqWvuL3PCNq3O6DvGgr6ak=
 
 ## Changelog
 
+### 0.5.7
+   * Using library version 0.3.8
+   
 ### 0.5.6
    * Using library version 0.3.7
 

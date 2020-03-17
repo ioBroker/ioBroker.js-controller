@@ -5,14 +5,15 @@
 This ioBroker adapter allows to control and monitor the [Nuki Smart Lock](https://nuki.io/de/) by using the API of the Nuki Bridge.
 
 ## Requirements
-* A Nuki Smart Lock (obviously) and a Nuki (hardware or software) Bridge.
+* A Nuki (hardware or software) Bridge.
+* A Nuki Smart Lock and/or a Nuki Opener.
 * A running instance of ioBroker.
 
 ## Usage
 Each instance of the Nuki adapter represents a Nuki bridge. When creating an instance, simply enter IP address, port and token of your Nuki bridge. The name is optional and will be generated automatically if left empty. The checkbox "use callback" and the value "callback port in ioBroker" are optional and can be set in order to make use of the callback function of the Nuki. After saving an instance there will be created a bridge device with a channel for each Nuki lock that is connected to the specified Nuki bridge. The channels provide the current state of the Nuki lock as output parameters:
 
 * batteryCritical: Indicator for low battery
-* lockState: Indicator whether Nuki is locked (Nuki Lock only)
+* lockState: Indicator whether Nuki is locked (Nuki Smart Lock only)
 * state: Current (numeric) lock state (Nuki native)
 * timestamp: Last updated
 
@@ -70,9 +71,16 @@ Remove:
 * http://< bridge_ip >:< bridge_port >/callback/remove?id=< callback_id >&token=< bridgeToken >
 
 ## Update
-When updating from 0.1.x to 0.2.0 or higher it is recommended to delete all instances of the old version before installing the new version. Please be aware that version changes bigger than on patch level (-> change of only the last digit) could always contain changes to data points e.g. 0.1.3 to 0.2.0
+When updating from 1.0.x to 1.1.0 or higher it is recommended to delete all instances of the old version before installing the new version. Please be aware that version changes bigger than on patch level (-> change of only the last digit) could always contain changes to data points e.g. 1.1.2 to 1.1.4
 
 ## Changelog
+
+### 1.2.0
+* (smaragdschlange) improvement: support of hashed token (set to standard)
+* (smaragdschlange) improvement: better use of delay before requests in order to prevent null messages
+
+### 1.1.5
+* (smaragdschlange) bug fix: clear all timeouts on unload
 
 ### 1.1.4
 * (smaragdschlange) bug fix: object was not defined

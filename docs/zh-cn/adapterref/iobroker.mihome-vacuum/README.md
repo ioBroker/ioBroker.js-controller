@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker mihome-真空适配器
-hash: Coc5j4UJQN/jXCcfkVhex7vyNas7fFM/DG1XysownD8=
+hash: jgAFr69EafUJFMKZTLdoBfXb9BHAbRyRHuy0LScVqGQ=
 ---
 ![商标](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
 ![安装数量](http://iobroker.live/badges/mihome-vacuum-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.mihome-vacuum.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.mihome-vacuum.svg)
-![测验](https://travis-ci.org/ioBroker/ioBroker.mihome-vacuum.svg?branch=master)
+![测验](https://travis-ci.org/iobroker-community-adapters/ioBroker.mihome-vacuum.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.mihome-vacuum.png?downloads=true)
 
 ＃ioBroker mihome-vacuum适配器
@@ -55,7 +55,7 @@ hash: Coc5j4UJQN/jXCcfkVhex7vyNas7fFM/DG1XysownD8=
 
 ###适配器配置
 -对于IP地址，必须以“ 192.168.178.XX”格式输入机器人的IP地址。
--机器人的端口默认设置为“ 54321”，请勿更改
+-机器人的端口默认设置为“ 54321”，不应更改
 -自己的端口，只能由第二个机器人更改
 -查询间隔检索机器人状态值的时间（以毫秒为单位）（不应小于10000）
 
@@ -104,8 +104,8 @@ hash: Coc5j4UJQN/jXCcfkVhex7vyNas7fFM/DG1XysownD8=
 ＃＃ 功能
 S50的命令（第二代）
 卡的尺寸始终为52000mm x 52000mm，因此可以设置从0到51999mm的值。
-不幸的是，无法查询卡的位置和位置，这可以随吸力而变化。用作基础的始终是最后一张吸卡，以及在应用程序中。
-如果机器人仅拾取一个区域并始终以相同的方式构建地图，则可以可靠地将其发送到地方或对该区域进行清理。
+不幸的是，无法查询卡的位置和位置，这可以随吸力而变化。永远是最后一张吸卡，以及在应用程序中用作基础。
+如果机器人仅拾取一个区域并始终以相同的方式构建地图，则可以可靠地将其发送到各个地方或对该区域进行清理。
 
 ＃＃＃＃ 去
 为了将真空吸尘器驱动到一个点，必须按以下方式填充“ goTo”对象：
@@ -130,7 +130,7 @@ xVal, yval
 ```
 
 其中x和y是矩形区域的坐标，并“计数”清洁操作。
-您还可以一次吸引多个区域：
+您还可以让多个区域一次吸吮：
 
 ```
 [X1, y1, x2, x2, count], [x3, y3, x4, x4, count2]
@@ -171,7 +171,7 @@ xVal, yval
 | upd_timer | [“ 1481997713308”，“打开/关闭”] | |
 | | |拯救“请勿打扰”的时代 |
 | get_dnd_timer | |删除免打扰时间|
-| close_dnd_timer | |免打扰设置h，min，h，min |
+| close_dnd_timer | | DND设置h，min，h，min |
 | set_dnd_timer | [22,0,8,0] | |
 |                 |                                                                     |                                                                                                        |
 | app_rc_start | |启动远程控制|
@@ -179,10 +179,10 @@ xVal, yval
 
 | app_rc_move | [{“ seqnum”：'0-1000'，“ velocity”：VALUE1，“ omega”：VALUE2，“ duration”：VALUE3}]] |移动。序列号必须是连续的，VALUE1（速度）= -0.3-0.3，VALUE2（旋转）= -3.1-3.1，VALUE3（持续时间）
 
-您可以在此处（[链接](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)）找到更多的方法和参数。
+您可以在此处（[链接](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)）中找到更多的方法和参数。
 
 ###使用sendTo发送自定义命令
-您还可以使用`sendTo`从其他适配器发送那些自定义命令。与上面定义的`method_id`和`params`结合使用：
+您也可以使用`sendTo`从其他适配器发送那些自定义命令。与上面定义的`method_id`和`params`结合使用：
 
 ```
 sendTo("mihome-vacuum.0", "sendCustomCommand",
@@ -213,8 +213,8 @@ sendTo("mihome-vacuum.0",
 |清洁机器人周围的一小块区域| `cleanSpot`| -无-| |
 |回到基地| `charge`| -无-| |
 |说“嗨，我在这里！” | `findMe`| -无-| |
-|检查耗材（刷子等）的状态| `getConsumableStatus`| -无-| |
-|重置耗材（刷子等）的状态| `resetConsumables`| -无-|通话签名未知|
+|检查耗材的状态（刷子等）| `getConsumableStatus`| -无-| |
+|重置耗材（刷子等）的状态| `resetConsumables`| `resetConsumables`| `consumable`|字符串：filter_work_time，filter_element_work_time，sensor_dirty_time，main_brush_work_time，side_brush_work_time |
 |获取以前所有清洁过程的摘要| `getCleaningSummary`| -无-| |
 |获取先前清洁过程的详细摘要| `getCleaningRecord`| `recordId`| |
 |获取地图| `getMap`| -无-|未知结果如何处理 |
@@ -243,6 +243,10 @@ sendTo("mihome-vacuum.0",
 -当时没有功能的小部件
 
 ## Changelog
+### 2.0.9 (2020-03-05)
+* (dirkhe) add state info for room channels and change queue info from number to JSON
+### 2.0.8 (2020-02-26)
+* (dirkhe) decreased communication with robot
 ### 2.0.7 (2020-02-25)
 * (dirkhe) add Resuming after pause for rooms
 ### 2.0.6 (2020-02-17)

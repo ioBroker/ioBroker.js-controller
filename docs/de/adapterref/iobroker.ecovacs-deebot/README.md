@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: YZLdTpG1PQ3qV52xQ1UyjXqWvuL3PCNq3O6DvGgr6ak=
+hash: TKPv1NWpGxt5Xrh8nm/KUv87mvH1OWku6xhq1j79eUo=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -15,16 +15,16 @@ hash: YZLdTpG1PQ3qV52xQ1UyjXqWvuL3PCNq3O6DvGgr6ak=
 Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js).
 
 ## Modelle
-### Diese Modelle funktionieren bekanntermaßen
+### Unterstützte Modelle
 * Deebot Slim 2
-* Deebot 601
-* Deebot 710/711
-* Deebot Ozmo 610
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 
-### Diese Modelle sollten teilweise funktionieren
+### Diese Modelle funktionieren bekanntermaßen
+* Deebot 601
+* Deebot 710/711
 * Deebot 900/901
+* Deebot Ozmo 610
 * Deebot Ozmo 900
 
 ### Diese Modelle sollten funktionieren
@@ -37,8 +37,7 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 
 ## Bekannte Probleme
 * Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da [ einige Berichte] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24), dass die Verbindung nach ca. 24 Stunden
-* Anzahl der Reinigungen [funktioniert nicht] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/33) auf Deebot Ozmo 950
-* Verbrauchswerte funktionieren nicht mit Deebot 710/711 und 900/901
+* Es gibt einige Berichte ([1] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/23), [2] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot / Issues / 34)) über seltsames Verhalten des Batteriewerts bei Deebot 900/901
 
 ## FAQ
 * Häufig gestellte Fragen finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
@@ -51,6 +50,9 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 
 ## Changelog
 
+### 0.5.7
+   * Using library version 0.3.8
+   
 ### 0.5.6
    * Using library version 0.3.7
 

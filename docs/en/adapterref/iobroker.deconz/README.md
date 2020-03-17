@@ -34,6 +34,14 @@ Required node.js >= 10.x.x
 
 ## Changelog
 
+### 1.3.1
+* fix set dimspeed
+* connect to Websocket in any case
+
+### 1.3.0
+* fix websocket connection if there are no upnp broadcast answer from deconz
+* corrected duration role
+* added level to lights and groups
 
 ### 1.2.6
 * fix crash by executing commands without parameters

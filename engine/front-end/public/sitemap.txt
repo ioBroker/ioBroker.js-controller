@@ -656,6 +656,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.cloud/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.comfoair/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.contact/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.contactid/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.coronavirus-statistics/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.corrently/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.countdown/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.cul/README.md
@@ -804,6 +805,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.netatmo/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nibeuplink/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nina/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.node-red/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.noolitef/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nuki/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nuki-extended/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nut/README.md
@@ -866,6 +868,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.snips/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.snmp/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.socketio/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.solarlog/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.solarviewdatareader/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.solarwetter/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sonnen/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sonoff/README.md
@@ -904,6 +907,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tvspielfilm/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.unifi/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.unifi-protect/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.upnp/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vaillant/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.valloxmv/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vcard/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vedirect/README.md
@@ -934,6 +938,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-plumb/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-rgraph/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-timeandweather/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vis-weather/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.volvo/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vw-connect/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.weatherunderground/README.md
@@ -1010,6 +1015,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.cloud/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.comfoair/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.contact/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.contactid/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.coronavirus-statistics/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.corrently/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.countdown/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.cul/README.md
@@ -1158,6 +1164,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.netatmo/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nibeuplink/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nina/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.node-red/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.noolitef/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nuki/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nuki-extended/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nut/README.md
@@ -1220,6 +1227,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.snips/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.snmp/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.socketio/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.solarlog/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.solarviewdatareader/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.solarwetter/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sonnen/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sonoff/README.md
@@ -1258,6 +1266,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tvspielfilm/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.unifi/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.unifi-protect/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.upnp/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vaillant/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.valloxmv/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vcard/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vedirect/README.md
@@ -1288,6 +1297,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-plumb/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-rgraph/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-timeandweather/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vis-weather/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.volvo/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vw-connect/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.weatherunderground/README.md
@@ -1364,6 +1374,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.cloud/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.comfoair/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.contact/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.contactid/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.coronavirus-statistics/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.corrently/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.countdown/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.cul/README.md
@@ -1512,6 +1523,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.netatmo/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nibeuplink/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nina/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.node-red/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.noolitef/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nuki/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nuki-extended/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nut/README.md
@@ -1574,6 +1586,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.snips/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.snmp/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.socketio/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.solarlog/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.solarviewdatareader/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.solarwetter/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sonnen/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sonoff/README.md
@@ -1612,6 +1625,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tvspielfilm/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.unifi/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.unifi-protect/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.upnp/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vaillant/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.valloxmv/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vcard/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vedirect/README.md
@@ -1642,6 +1656,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-plumb/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-rgraph/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-timeandweather/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vis-weather/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.volvo/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vw-connect/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.weatherunderground/README.md
@@ -1718,6 +1733,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.cloud/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.comfoair/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.contact/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.contactid/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.coronavirus-statistics/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.corrently/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.countdown/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.cul/README.md
@@ -1866,6 +1882,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.netatmo/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nibeuplink/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nina/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.node-red/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.noolitef/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nuki/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nuki-extended/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nut/README.md
@@ -1928,6 +1945,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.snips/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.snmp/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.socketio/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.solarlog/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.solarviewdatareader/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.solarwetter/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sonnen/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sonoff/README.md
@@ -1966,6 +1984,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tvspielfilm/README.
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.unifi/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.unifi-protect/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.upnp/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vaillant/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.valloxmv/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vcard/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vedirect/README.md
@@ -1996,6 +2015,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-plumb/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-rgraph/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-timeandweather/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vis-weather/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.volvo/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vw-connect/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.weatherunderground/README.md

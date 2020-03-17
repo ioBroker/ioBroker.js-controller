@@ -7,10 +7,11 @@
 [![Build status](https://ci.appveyor.com/api/projects/status/c92hrxu79mvs1qxo?svg=true)](https://ci.appveyor.com/project/Apollon77/iobroker-alexa)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/Apollon77/iobroker.alexa2/blob/master/LICENSE) [![Greenkeeper badge](https://badges.greenkeeper.io/Apollon77/ioBroker.alexa2.svg)](https://greenkeeper.io/)
 
+**This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors and new device schemas to me as the developer.** More details see below!
 
 This adapter allows you to remote control your Alexa (Amazon Echo) devices.
 
-Big thanks go to soef for the good version 1 of the adapter and to Hauke and ruhr70 for ideas in their scripts from ioBroker-Forum (especially the media progress updates)!
+Big thanks go to soef for the version 1 of the adapter and to Hauke and ruhr70 for ideas in their scripts from ioBroker-Forum (especially the media progress updates)!
 Also big thanks to to meicker for support in documenting all of this and numerous users from ioBroker Forum for their testing support!
 
 ## States and their meanings:
@@ -287,7 +288,18 @@ If the automatic Cookie determination don't work or you do not trust the Adapter
 
 But be aware: The Cookie will time out after several time and then the adapter will stop working and disable itself. You then need to manually get a new cookie!
 
+## What is Sentry.io and what is reported to the servers of that company?
+Sentry.io is a service for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
+
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.  
+
+
 ## Changelog
+
+### 3.0.8 (2020-01-19)
+* (Apollon77) fix some crash cases
+* (Apollon77) Update Sentry DSN and add filtering
+* (Apollon77) Update deps
 
 ### 3.0.7 (2019-12-28)
 * (Apollon77) Prevent some errors
@@ -500,3 +512,27 @@ But be aware: The Cookie will time out after several time and then the adapter w
 
 ### 0.0.x
 * soef versions
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2017-2018 soef <soef@gmx.net>, 2018-2020 Ingo Fischer <iobroker@fischer-ka.de>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker Mihome-Vakuumadapter
-hash: Coc5j4UJQN/jXCcfkVhex7vyNas7fFM/DG1XysownD8=
+hash: jgAFr69EafUJFMKZTLdoBfXb9BHAbRyRHuy0LScVqGQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/mihome-vacuum-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.mihome-vacuum.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.mihome-vacuum.svg)
-![Tests](https://travis-ci.org/ioBroker/ioBroker.mihome-vacuum.svg?branch=master)
+![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.mihome-vacuum.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.mihome-vacuum.png?downloads=true)
 
 # IoBroker Mihome-Vakuumadapter
@@ -214,7 +214,7 @@ Die unterstützten Befehle sind:
 | Gehe zurück zur Basis | `charge` | - Keine - | |
 | Sag "Hallo, ich bin hier!" | `findMe` | - Keine - | |
 | Überprüfen Sie den Status der Verbrauchsmaterialien (Bürste usw.) `getConsumableStatus` | - Keine - | |
-| Status der Verbrauchsmaterialien (Bürste usw.) zurücksetzen | `resetConsumables` | - Keine - | Rufsignatur unbekannt |
+| Status der Verbrauchsmaterialien (Bürste usw.) zurücksetzen | `resetConsumables` | `resetConsumables` | `consumable` | Zeichenfolge: filter_work_time, filter_element_work_time, sensor_dirty_time, main_brush_work_time, side_brush_work_time |
 | Erhalten Sie eine Zusammenfassung aller vorherigen Reinigungsprozesse `getCleaningSummary` | - Keine - | |
 | Erhalten Sie eine detaillierte Zusammenfassung eines früheren Reinigungsprozesses `getCleaningRecord` | `recordId` | |
 | Holen Sie sich eine Karte | `getMap` | - Keine - | Unbekannt, was mit dem Ergebnis zu tun ist |
@@ -243,6 +243,10 @@ Entschuldigung, noch nicht fertig.
 - Widget zu der Zeit ohne Funktion
 
 ## Changelog
+### 2.0.9 (2020-03-05)
+* (dirkhe) add state info for room channels and change queue info from number to JSON
+### 2.0.8 (2020-02-26)
+* (dirkhe) decreased communication with robot
 ### 2.0.7 (2020-02-25)
 * (dirkhe) add Resuming after pause for rooms
 ### 2.0.6 (2020-02-17)

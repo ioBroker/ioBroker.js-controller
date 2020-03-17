@@ -98,6 +98,7 @@ Settings that are not listed in the table below are self-explanatory.
             <pre><code>
 [
 	{
+		"background": "red",
 		"text": "text1",
 		"subText": "number",
 		"image": "harddisk",
@@ -119,6 +120,7 @@ Settings that are not listed in the table below are self-explanatory.
 		"lockEnabled": "false"        
 	},
 	{
+		"background": "green",
 		"text": "text0",
 		"subText": "bool",
 		"image": "home",

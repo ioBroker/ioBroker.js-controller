@@ -23,7 +23,11 @@ It is not intended as a replacement for administration tools like **Puppet**, **
 Those are for large environments with many computers and are capable of remote installation of packages. **MoMa** will only be able to remotely update existing installations, no remote installation and no remote configuration.
 
 
-I am using it for monitoring my IT-Infrastructure at home (including home automation) and keeping it up to date.
+**Attention:**
+
+When using the JavaScript adapter set the "do not register all states on startup" flag to true when you get the error " RangeError: Maximum call stack size exceeded". <br>
+When you register all states on startup, every state change event will generate an event to the JavaScript adapter too. Especially for Windows this larger amount of events may become a problem.<br>
+Another solution is to increase the time value for interval0.   
 
 
 MoMa uses the platform independant library 'systeminformation' (https://github.com/sebhildebrandt/systeminformation) to gather information about the computer. Many of the calls are exposed to be used in timer intervalls - see reference below.
@@ -32,8 +36,8 @@ MoMa needs at least nodejs version 8 / ES9 / ECMAScript2018.
 
 ## Changelog
 
-### 1.2.4 (2020-??-??)
-* (AWhiteKnight) bugfixing: issue #45, controller update working again 
+### 1.2.4 (2020-03-20)
+* (AWhiteKnight) bugfixing: issues #45 #42 #24, controller update working again 
 
 ### 1.2.3 (2019-11-06)
 * (AWhiteKnight) bugfixing, code cleanup 

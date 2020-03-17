@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nuki/README.md
 title: ioBroker.nuki
-hash: IFCxG7+BEae80E0Z4nCOc2h/bFT1gpT77yBDwio7Akg=
+hash: P87K8k3QRoNmwnT7cQ1SG6G3xD9B2Ic6N2+SM/BB8YE=
 ---
 ![логотип](../../../en/adapterref/iobroker.nuki/admin/nuki-logo.png)
 
@@ -13,14 +13,15 @@ hash: IFCxG7+BEae80E0Z4nCOc2h/bFT1gpT77yBDwio7Akg=
 Этот адаптер ioBroker позволяет контролировать и контролировать [Nuki Smart Lock](https://nuki.io/de/) с помощью API-интерфейса моста Nuki.
 
 ## Требования
-* Nuki Smart Lock (очевидно) и Nuki (аппаратный или программный) мост.
+* Мост Nuki (аппаратный или программный).
+* Nuki Smart Lock и / или Nuki Opener.
 * Работающий экземпляр ioBroker.
 
 ## Использование
-Каждый экземпляр адаптера Nuki представляет собой мост Nuki. При создании экземпляра просто введите IP-адрес, порт и токен вашего моста Nuki. Имя является необязательным и будет сгенерировано автоматически, если оставить его пустым. Флажок «использовать обратный вызов» и значение «порт обратного вызова в ioBroker» являются необязательными и могут быть установлены для использования функции обратного вызова Nuki. После сохранения экземпляра будет создано мостовое устройство с каналом для каждой блокировки Nuki, подключенной к указанному мосту Nuki. Каналы предоставляют текущее состояние блокировки Nuki в качестве выходных параметров:
+Каждый экземпляр адаптера Nuki представляет собой мост Nuki. При создании экземпляра просто введите IP-адрес, порт и токен вашего моста Nuki. Имя является необязательным и будет сгенерировано автоматически, если оставить его пустым. Флажок «Использовать обратный вызов» и значение «Порт обратного вызова в ioBroker» являются необязательными и могут быть установлены для использования функции обратного вызова Nuki. После сохранения экземпляра будет создано мостовое устройство с каналом для каждой блокировки Nuki, которая подключена к указанному мосту Nuki. Каналы предоставляют текущее состояние блокировки Nuki в качестве выходных параметров:
 
 * batteryCritical: индикатор низкого заряда батареи
-* lockState: индикатор того, заблокирован ли Nuki (только Nuki Lock)
+* lockState: индикатор того, заблокирован ли Nuki (только Nuki Smart Lock)
 * состояние: текущее (числовое) состояние блокировки (Nuki native)
 * отметка времени: последнее обновление
 
@@ -37,14 +38,14 @@ hash: IFCxG7+BEae80E0Z4nCOc2h/bFT1gpT77yBDwio7Akg=
 * openLocknGoAction: кнопка для разблокировки и через несколько секунд блокировки Nuki
 * unlockLocknGoAction: кнопка для разблокировки и через несколько секунд блокировки Nuki.
 
-Допустимые входные значения для сошников:
+Допустимые значения ввода для сошников:
 
 0 (без действия) 1 (активировать rto) 2 (деактивировать rto) 3 (активация электрического удара) 4 (активировать непрерывный режим) 5 (деактивировать непрерывный режим)
 
 * rtoAction: переключатель для активации / деактивации функции «Кольцо на открытие» (true = активировать; false = деактивировать)
 * openAction: кнопка для электрического удара
 * cmActiveAction: кнопка для активации непрерывного режима
-* cmDeactiveAction: кнопка для отключения непрерывного режима
+* cmDeactiveAction: кнопка для деактивации непрерывного режима
 
 ## Дополнительная информация
 Как получить свой токен мостов:
@@ -58,18 +59,39 @@ hash: IFCxG7+BEae80E0Z4nCOc2h/bFT1gpT77yBDwio7Akg=
 Если используется функция обратного вызова, адаптер попытается автоматически установить обратный вызов на мосту Nuki при сохранении экземпляра. Когда экземпляр выгружен, обратный вызов будет снова удален. Все состояния Nuki будут обновляться мостом Nuki, пока активирован обратный вызов.
 Обратные вызовы могут быть установлены и удалены из любого браузера со следующими URL:
 
-Установлен:
+Устанавливать:
 
 * http:// <bridge_ip>: <bridge_port> / callback / add? url = http% 3A% 2F% 2F <host_ip>% 3A <host_port>% 2Fapi% 2Fnuki & token = <bridgeToken>
 
-Удалить:
+Удалять:
 
 * http:// <bridge_ip>: <bridge_port> / callback / remove? id = <callback_id> & token = <bridgeToken>
 
 ## Обновить
-При обновлении с 0.1.x до 0.2.0 или выше рекомендуется удалить все экземпляры старой версии перед установкой новой версии. Помните, что изменения версии больше, чем на уровне патча (-> изменение только последней цифры), всегда могут содержать изменения в точках данных, например, От 0,1,3 до 0,2,0
+При обновлении с 1.0.x до 1.1.0 или выше рекомендуется удалить все экземпляры старой версии перед установкой новой версии. Помните, что изменения версии больше, чем на уровне патча (-> изменение только последней цифры), всегда могут содержать изменения в точках данных, например, 1.1.2 до 1.1.4
 
 ## Changelog
+
+### 1.2.0
+* (smaragdschlange) improvement: support of hashed token (set to standard)
+* (smaragdschlange) improvement: better use of delay before requests in order to prevent null messages
+
+### 1.1.5
+* (smaragdschlange) bug fix: clear all timeouts on unload
+
+### 1.1.4
+* (smaragdschlange) bug fix: object was not defined
+
+### 1.1.3
+* (smaragdschlange) bug fix: deviceType was undefined in case of Opener
+* (smaragdschlange) bug fix: Opener action was not set
+
+### 1.1.2
+* (smaragdschlange) improvement: added bridge type as object
+* (smaragdschlange) bug fix: force reset deviceType on adapter restart
+
+### 1.1.1
+* (smaragdschlange) bug fix: default to Nuki Lock when deviceType unknown
 
 ### 1.1.0
 * (smaragdschlange) improvement: support for Nuki Opener
@@ -135,7 +157,7 @@ hash: IFCxG7+BEae80E0Z4nCOc2h/bFT1gpT77yBDwio7Akg=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Smaragdschlange <smaragdschlange@gmx.de>
+Copyright (c) 2018-2020 Smaragdschlange <smaragdschlange@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

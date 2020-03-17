@@ -32,6 +32,10 @@ Values in the 'control' - channel have to be set with ack=false to trigger an ac
 
 ## Changelog
 
+### 0.2.2
+
+-   .npmignore and .gitignore added, small bugfix.
+
 ### 0.2.1
 
 -   Readme / License update.

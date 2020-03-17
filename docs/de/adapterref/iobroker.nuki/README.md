@@ -3,60 +3,61 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nuki/README.md
 title: ioBroker.nuki
-hash: IFCxG7+BEae80E0Z4nCOc2h/bFT1gpT77yBDwio7Akg=
+hash: P87K8k3QRoNmwnT7cQ1SG6G3xD9B2Ic6N2+SM/BB8YE=
 ---
 ![Logo](../../../en/adapterref/iobroker.nuki/admin/nuki-logo.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/nuki-stable.svg)
 
 # IoBroker.nuki
-Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung der [Nuki Smart Lock](https://nuki.io/de/) über die API der Nuki Bridge.
+Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung der [Nuki Smart Lock](https://nuki.io/de/) mithilfe der API der Nuki Bridge.
 
 ## Bedarf
-* Ein Nuki Smart Lock (offensichtlich) und eine Nuki-Brücke (Hardware oder Software).
+* Eine Nuki-Brücke (Hardware oder Software).
+* Ein Nuki Smart Lock und / oder ein Nuki Opener.
 * Eine laufende Instanz von ioBroker.
 
-## Verwendungszweck
-Jede Instanz des Nuki-Adapters repräsentiert eine Nuki-Bridge. Geben Sie beim Erstellen einer Instanz einfach IP-Adresse, Port und Token Ihrer Nuki-Bridge ein. Der Name ist optional und wird automatisch generiert, wenn er leer gelassen wird. Die Checkbox "Callback verwenden" und der Wert "Callback-Port in ioBroker" sind optional und können gesetzt werden, um die Callback-Funktion des Nuki zu nutzen. Nach dem Speichern einer Instanz wird für jedes Nuki-Schloss ein Brückengerät mit einem Kanal erstellt, das mit der angegebenen Nuki-Brücke verbunden ist. Die Kanäle liefern den aktuellen Status der Nuki-Sperre als Ausgabeparameter:
+## Verwendung
+Jede Instanz des Nuki-Adapters repräsentiert eine Nuki-Brücke. Geben Sie beim Erstellen einer Instanz einfach die IP-Adresse, den Port und das Token Ihrer Nuki-Bridge ein. Der Name ist optional und wird automatisch generiert, wenn er leer bleibt. Das Kontrollkästchen "Rückruf verwenden" und der Wert "Rückrufport in ioBroker" sind optional und können gesetzt werden, um die Rückruffunktion des Nuki zu nutzen. Nach dem Speichern einer Instanz wird für jedes Nuki-Schloss, das mit der angegebenen Nuki-Brücke verbunden ist, ein Bridge-Gerät mit einem Kanal erstellt. Die Kanäle liefern den aktuellen Status der Nuki-Sperre als Ausgabeparameter:
 
-* batteryCritical: Anzeige für schwache Batterie
-* lockState: Zeigt an, ob Nuki gesperrt ist (nur Nuki Lock)
+* Batteriekritisch: Anzeige für schwache Batterie
+* lockState: Zeigt an, ob Nuki gesperrt ist (nur Nuki Smart Lock)
 * state: Aktueller (numerischer) Sperrstatus (Nuki native)
 * Zeitstempel: Zuletzt aktualisiert
 
-Zusätzlich bieten die Kanäle Eingangsparameter, die die grundlegende Steuerung des Nuki-Schlosses ermöglichen:
+Zusätzlich bieten die Kanäle Eingangsparameter, die eine grundlegende Steuerung des Nuki-Schlosses ermöglichen:
 
 * action: Numerischer Aktionscode zum Festlegen des Nuki-Status (Nuki native)
 
 Gültige Eingabewerte für Sperren sind:
 
-0 (keine Aktion) 1 (Entsperren) 2 (Sperren) 3 (Entriegeln) 4 (Sperren und Loslassen) 5 (Sperren und Loslassen mit Entriegeln)
+0 (keine Aktion) 1 (Entsperren) 2 (Sperren) 3 (Entriegeln) 4 (Sperren 'n' go) 5 (Sperren 'n' gehen mit Entriegeln)
 
 * lockAction: Schalter zum Sperren / Entsperren des Nuki (true = entsperren; false = sperren)
 * openAction: Taste zum Entriegeln des Nuki
-* openLocknGoAction: Knopf zum Entriegeln und nach einigen Sekunden zum Verriegeln des Nuki
-* unlockLocknGoAction: Taste zum Entsperren und nach einigen Sekunden zum Sperren des Nuki
+* openLocknGoAction: Taste zum Entriegeln und nach einigen Sekunden zum Sperren des Nuki
+* refreshLocknGoAction: Taste zum Entsperren und nach einigen Sekunden zum Sperren des Nuki
 
-Gültige Eingabewerte für Öffner sind:
+Gültige Eingabewerte für Opener sind:
 
-0 (keine Aktion) 1 (aktiviere rto) 2 (deaktiviere rto) 3 (elektrische Schlagbetätigung) 4 (aktiviere kontinuierlichen Modus) 5 (deaktiviere kontinuierlichen Modus)
+0 (keine Aktion) 1 (rto aktivieren) 2 (rto deaktivieren) 3 (elektrische Schlagbetätigung) 4 (kontinuierlichen Modus aktivieren) 5 (kontinuierlichen Modus deaktivieren)
 
-* rtoAction: Schalter zum Aktivieren / Deaktivieren der Ring-to-Open-Funktion (true = aktivieren; false = deaktivieren)
-* openAction: Taste zur Betätigung eines elektrischen Schlaggeräts
+* rtoAction: Schalter zum Aktivieren / Deaktivieren der Funktion Ring to Open (true = aktivieren; false = deaktivieren)
+* openAction: Taste zur elektrischen Schlagbetätigung
 * cmActiveAction: Schaltfläche zum Aktivieren des kontinuierlichen Modus
 * cmDeactiveAction: Schaltfläche zum Deaktivieren des kontinuierlichen Modus
 
 ## Zusätzliche Information
-So bekommen Sie Ihren Brücken-Token:
+So erhalten Sie Ihren Bridge-Token:
 
-* Rufen Sie http:// <bridge_ip>: <bridge_port> / auth in einem beliebigen Browser in Ihrem LAN auf. -> Die Bridge schaltet ihre LED ein
-* Drücken Sie den Knopf der Brücke innerhalb von 30 Sekunden
+* Rufen Sie http:// <bridge_ip>: <bridge_port> / auth in einem beliebigen Browser in Ihrem LAN auf -> Bridge leuchtet die LED
+* Drücken Sie innerhalb von 30 Sekunden die Taste der Brücke
 * Das Ergebnis des Browseraufrufs sollte ungefähr so aussehen:
 
 {"token": "token123", "success": true} Rückruffunktion:
 
-Wenn die Rückruffunktion verwendet wird, versucht der Adapter, den Rückruf auf der Nuki-Bridge automatisch festzulegen, wenn die Instanz gespeichert wird. Beim Entladen der Instanz wird der Rückruf wieder gelöscht. Alle Nuki-Zustände werden von der Nuki-Brücke auf dem neuesten Stand gehalten, während der Rückruf aktiviert ist.
-Rückrufe können mit folgenden URLs in jedem Browser festgelegt und entfernt werden:
+Wenn die Rückruffunktion verwendet wird, versucht der Adapter, den Rückruf automatisch auf der Nuki-Brücke festzulegen, wenn die Instanz gespeichert wird. Wenn die Instanz entladen wird, wird der Rückruf erneut gelöscht. Alle Nuki-Zustände werden von der Nuki-Brücke auf dem neuesten Stand gehalten, während der Rückruf aktiviert ist.
+Rückrufe können in jedem Browser mit folgenden URLs festgelegt und entfernt werden:
 
 Einstellen:
 
@@ -64,12 +65,33 @@ Einstellen:
 
 Entfernen:
 
-* http:// <bridge_ip>: <bridge_port> / callback / remove? id = <callback_id> & token = <bridgeToken>
+* http:// <bridge_ip>: <bridge_port> / callback / remove? id = <Rückruf-ID> & token = <bridgeToken>
 
 ## Update
-Bei einem Update von 0.1.x auf 0.2.0 oder höher wird empfohlen, alle Instanzen der alten Version zu löschen, bevor Sie die neue Version installieren. Bitte beachten Sie, dass Versionsänderungen, die größer sind als auf Patch-Ebene (-> Änderung nur der letzten Ziffer), immer Änderungen an Datenpunkten enthalten können, z. 0,1,3 bis 0,2,0
+Beim Update von 1.0.x auf 1.1.0 oder höher wird empfohlen, alle Instanzen der alten Version zu löschen, bevor Sie die neue Version installieren. Bitte beachten Sie, dass Versionsänderungen, die größer als auf Patch-Ebene sind (-> Änderung nur der letzten Ziffer), immer Änderungen an Datenpunkten enthalten können, z. 1.1.2 bis 1.1.4
 
 ## Changelog
+
+### 1.2.0
+* (smaragdschlange) improvement: support of hashed token (set to standard)
+* (smaragdschlange) improvement: better use of delay before requests in order to prevent null messages
+
+### 1.1.5
+* (smaragdschlange) bug fix: clear all timeouts on unload
+
+### 1.1.4
+* (smaragdschlange) bug fix: object was not defined
+
+### 1.1.3
+* (smaragdschlange) bug fix: deviceType was undefined in case of Opener
+* (smaragdschlange) bug fix: Opener action was not set
+
+### 1.1.2
+* (smaragdschlange) improvement: added bridge type as object
+* (smaragdschlange) bug fix: force reset deviceType on adapter restart
+
+### 1.1.1
+* (smaragdschlange) bug fix: default to Nuki Lock when deviceType unknown
 
 ### 1.1.0
 * (smaragdschlange) improvement: support for Nuki Opener
@@ -135,7 +157,7 @@ Bei einem Update von 0.1.x auf 0.2.0 oder höher wird empfohlen, alle Instanzen 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Smaragdschlange <smaragdschlange@gmx.de>
+Copyright (c) 2018-2020 Smaragdschlange <smaragdschlange@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

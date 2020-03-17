@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: Ji/fqWvzgYlO3Gf8yPj9b6b/4sGYHKYQqxK1uJlMtqk=
+hash: NJXHibfs20+jB8hWLudju7GxYa16tIXyD57PZ6sYDCI=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -22,7 +22,7 @@ hash: Ji/fqWvzgYlO3Gf8yPj9b6b/4sGYHKYQqxK1uJlMtqk=
 
 ioBroker物料设计小部件基于[Google的材料设计指南](https://material.io/design/)。适配器使用以下库：
 
-* [用于网络的Google物料组件]（https://github.com/material-components/material-components-web）
+* [适用于Google的网络材料组件]（https://github.com/material-components/material-components-web）
 * [Vuetify]（https://github.com/vuetifyjs/vuetify）
 * [chartjs]（https://www.chartjs.org/）
 * [来自thomasloven的round-slider]（https://github.com/thomasloven/round-slider）
@@ -46,7 +46,7 @@ https://github.com/material-components/material-components-web/blob/master/docs/
 https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 ### IoBroker VIS应用程序
-目前无法正常运行，需要由应用程序标记，请参阅https://github.com/ioBroker/ioBroker.vis.cordova
+目前无法正常运行，需要由应用程序标记，请参见https://github.com/ioBroker/ioBroker.vis.cordova
 
 ##材质设计图标和图像
 <table><thead><tr><th>屏幕截图</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/material-icons.png"></td><td>一些小部件支持<a href="https://materialdesignicons.com/" target="_blank">Material Design Icons</a>库。您可以从上方列表中弹出一个图标，或通过单击输入字段右侧的按钮来打开图像选择器。 <br><br> <b>图像颜色仅适用于材料设计图标，不适用于图像！</b> </td></tr></tbody></table>
@@ -69,7 +69,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/iconList_settings_common.png"></td><td>列表数据的输入方法</td><td> IconList的数据可以通过编辑器输入，也可以使用JSON字符串</td></tr><tr><td> JSON-String：对象ID </td><td>带有JSON字符串的datapoint的对象ID。 JSON字符串必须具有以下格式： <pre> <code> [ { &quot;text&quot;: &quot;text1&quot;, &quot;subText&quot;: &quot;number&quot;, &quot;image&quot;: &quot;harddisk&quot;, &quot;imageColor&quot;: &quot;#ec0909&quot;, &quot;imageActive&quot;: &quot;folder&quot;, &quot;imageActiveColor&quot;: &quot;#5ad902&quot;, &quot;buttonBackgroundColor&quot;: &quot;&quot;, &quot;buttonBackgroundActiveColor&quot;: &quot;&quot;, &quot;listType&quot;: &quot;buttonState&quot;, &quot;objectId&quot;: &quot;0_userdata.0.iconList.buttonState.number&quot;, &quot;buttonStateValue&quot;: &quot;60&quot;, &quot;buttonNavView&quot;: &quot;&quot;, &quot;buttonLink&quot;: &quot;&quot;, &quot;buttonToggleValueTrue&quot;: &quot;&quot;, &quot;buttonToggleValueFalse&quot;: &quot;&quot;, &quot;valueAppendix&quot;: &quot;&quot;, &quot;showValueLabel&quot;: &quot;true&quot;, &quot;statusBarColor&quot;: &quot;green&quot;, &quot;lockEnabled&quot;: &quot;false&quot; }, { &quot;text&quot;: &quot;text0&quot;, &quot;subText&quot;: &quot;bool&quot;, &quot;image&quot;: &quot;home&quot;, &quot;imageColor&quot;: &quot;#44739e&quot;, &quot;imageActive&quot;: &quot;home&quot;, &quot;imageActiveColor&quot;: &quot;#44739e&quot;, &quot;buttonBackgroundColor&quot;: &quot;&quot;, &quot;buttonBackgroundActiveColor&quot;: &quot;#a0f628&quot;, &quot;listType&quot;: &quot;buttonToggle&quot;, &quot;objectId&quot;: &quot;0_userdata.0.iconList.buttonToggle.bool0&quot;, &quot;buttonStateValue&quot;: &quot;60&quot;, &quot;buttonNavView&quot;: &quot;&quot;, &quot;buttonLink&quot;: &quot;&quot;, &quot;buttonToggleValueTrue&quot;: &quot;&quot;, &quot;buttonToggleValueFalse&quot;: &quot;&quot;, &quot;valueAppendix&quot;: &quot;&quot;, &quot;showValueLabel&quot;: &quot;false&quot;, &quot;statusBarColor&quot;: &quot;&quot;, &quot;lockEnabled&quot;: &quot;false&quot; } ]</code> </pre>属性<code>listType</code>可以具有以下值： <br> <code>text, buttonState, buttonToggle, buttonToggleValueTrue, buttonToggleValueFalse, buttonNav, buttonLink</code> </td> </tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/iconList_settings_common.png"></td><td>列表数据的输入方法</td><td> IconList的数据可以通过编辑器输入，也可以使用JSON字符串</td></tr><tr><td> JSON-String：对象ID </td><td>带有JSON字符串的datapoint的对象ID。 JSON字符串必须具有以下格式： <pre> <code> [ { &quot;background&quot;: &quot;red&quot;, &quot;text&quot;: &quot;text1&quot;, &quot;subText&quot;: &quot;number&quot;, &quot;image&quot;: &quot;harddisk&quot;, &quot;imageColor&quot;: &quot;#ec0909&quot;, &quot;imageActive&quot;: &quot;folder&quot;, &quot;imageActiveColor&quot;: &quot;#5ad902&quot;, &quot;buttonBackgroundColor&quot;: &quot;&quot;, &quot;buttonBackgroundActiveColor&quot;: &quot;&quot;, &quot;listType&quot;: &quot;buttonState&quot;, &quot;objectId&quot;: &quot;0_userdata.0.iconList.buttonState.number&quot;, &quot;buttonStateValue&quot;: &quot;60&quot;, &quot;buttonNavView&quot;: &quot;&quot;, &quot;buttonLink&quot;: &quot;&quot;, &quot;buttonToggleValueTrue&quot;: &quot;&quot;, &quot;buttonToggleValueFalse&quot;: &quot;&quot;, &quot;valueAppendix&quot;: &quot;&quot;, &quot;showValueLabel&quot;: &quot;true&quot;, &quot;statusBarColor&quot;: &quot;green&quot;, &quot;lockEnabled&quot;: &quot;false&quot; }, { &quot;background&quot;: &quot;green&quot;, &quot;text&quot;: &quot;text0&quot;, &quot;subText&quot;: &quot;bool&quot;, &quot;image&quot;: &quot;home&quot;, &quot;imageColor&quot;: &quot;#44739e&quot;, &quot;imageActive&quot;: &quot;home&quot;, &quot;imageActiveColor&quot;: &quot;#44739e&quot;, &quot;buttonBackgroundColor&quot;: &quot;&quot;, &quot;buttonBackgroundActiveColor&quot;: &quot;#a0f628&quot;, &quot;listType&quot;: &quot;buttonToggle&quot;, &quot;objectId&quot;: &quot;0_userdata.0.iconList.buttonToggle.bool0&quot;, &quot;buttonStateValue&quot;: &quot;60&quot;, &quot;buttonNavView&quot;: &quot;&quot;, &quot;buttonLink&quot;: &quot;&quot;, &quot;buttonToggleValueTrue&quot;: &quot;&quot;, &quot;buttonToggleValueFalse&quot;: &quot;&quot;, &quot;valueAppendix&quot;: &quot;&quot;, &quot;showValueLabel&quot;: &quot;false&quot;, &quot;statusBarColor&quot;: &quot;&quot;, &quot;lockEnabled&quot;: &quot;false&quot; } ]</code> </pre>属性<code>listType</code>可以具有以下值： <br> <code>text, buttonState, buttonToggle, buttonToggleValueTrue, buttonToggleValueFalse, buttonNav, buttonLink</code> </td> </tr></tbody></table>
 
 ##进展
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/progress.gif)
@@ -111,7 +111,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ##带有导航抽屉的顶部应用栏
 带有导航抽屉的顶部应用栏可以与<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>结合使用。
 
-<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
+<b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
 
 #####布局模式：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
@@ -212,22 +212,22 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 有两个小部件-Masonry Views和Grid Views-可以使用它们创建一个响应式布局（台式机，平板电脑和移动设备的布局）。这两个小部件都集成了多个`view in widget`。
 
 ###砌体景观
-Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自动对其进行排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动设备的一种布局）。
+Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自动对其进行排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和mobil的一种布局）。
 如果所包含的视图具有不同的高度，则砖石视图特别有用。
 
-<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
+<b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/masnory.gif)
 
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2>根据窗口小部件的宽度，可以设置列数和视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td><img src="doc/en/media/masnory_settings_views.png"></td><td>视线宽度[x] </td><td>定义视图的宽度。允许的值为数字，px，％或calc。实施例： <code>100</code> ， <code>100px</code> ， <code>55%</code> <code>calc(60% - 12px)</code> </td></tr></tbody></table>
 
 ###网格视图
-网格视图具有多个`view in widget`集成，将根据小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动设备的一种布局）。
+网格视图具有多个`view in widget`集成，将根据小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和mobil的一种布局）。
 如果包含的视图具有相同的高度，则网格视图特别有用。
 
 <b>网格视图小部件共有12列。如果要使视图的宽度为4列，则必须在相应的视图中将列跨度设置为4 [x]</b>
 
-<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
+<b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/grid.gif)
 
@@ -236,7 +236,7 @@ Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自�
 ##列视图-已弃用!!!
 列视图具有集成的多个`view in widget`§，它们将根据窗口小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动电话的一种布局）
 
-<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
+<b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/column_views.gif)
 
@@ -278,7 +278,7 @@ Alerts小部件需要JSON字符串作为对象，其结构必须如下：
 
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/alerts_settings.png"></td><td>列数</td><td>定义列数</td></tr><tr><td>对象ID </td><td>对象必须是json字符串，其结构必须如上所述</td></tr><tr><td>最高警报</td><td>应该显示的最大警报数。 </td></tr></tbody></table>
 
-使用以下脚本，您可以将简单消息发送到“警报”小部件使用的数据点。
+使用以下脚本，您可以将简单消息发送到警报小部件使用的数据点。
 该脚本必须放入全局脚本中。然后可以使用以下命令发送消息
 
 `materialDesignWidgets.sendTo('datapoint_id', 'message', 'color');`
@@ -444,6 +444,14 @@ ical2CalendarWidget();
 ```
 
 ## Changelog
+
+### 0.2.66
+* (Scrounger): IconListWidget: button layout options added
+* (Scrounger): IconListWidget: lock option for toggle and state function added
+* (Scrounger): Alert Widget: visibility depending on resoltuion added
+* (Scrounger): Button Widgets: lock option for toggle and state button added
+* (Scrounger): Material Design Icon Widget added
+* (Scrounger): bug fixes
 
 ### 0.2.62
 * (Scrounger): List Widget: binding bug fix

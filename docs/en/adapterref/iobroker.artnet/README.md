@@ -12,6 +12,9 @@ Control DMX512 Devices via an Art-Net node.
 You can read more about art-net (here)[http://www.ulrichradig.de/home/index.php/avr/dmx-avr-artnetnode].
 
 ## Changelog
+### 1.1.1 (2020-03-15)
+* (Anzic23) Fixed delays between commands
+
 ### 1.1.0 (2019-12-23)
 * (foxriver76) removed usage of adapter.objects
 

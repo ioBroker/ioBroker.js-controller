@@ -3,16 +3,16 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.moma/README.md
 title: 无题
-hash: /18eY0rfu6ZFjyRax1iWpVkbXlO+pvLYm5mjCn/7nQc=
+hash: FgNb7HbH5pBb6C/UQvijmpBEebETJ0v0uW2BPLLuiWI=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.moma.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.moma.svg)
-![安装数量](http://iobroker.live/badges/moma-stable.svg)
+![安装数量](http://iobroker.live/badges/moma-installed.svg)
+![稳定版](http://iobroker.live/badges/moma-stable.svg)
 ![依赖状态](https://img.shields.io/david/AWhiteKnight/iobroker.moma.svg)
 ![已知漏洞](https://snyk.io/test/github/AWhiteKnight/ioBroker.moma/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.moma.png?downloads=true)
 ![特拉维斯](http://img.shields.io/travis/AWhiteKnight/ioBroker.moma/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/AWhiteKnight/ioBroker.moma?branch=master&svg=true)
 
 <h1><img src="admin/moma.png" width="64"/> ioBroker.moma </h1>
 
@@ -23,9 +23,11 @@ hash: /18eY0rfu6ZFjyRax1iWpVkbXlO+pvLYm5mjCn/7nQc=
 不能替代** Puppet **** Chef** ** Salt **** Ansible** 管理工具。
 它们用于具有许多计算机的大型环境，并且能够远程安装软件包。 **MoMa** 仅能远程更新现有安装，无远程安装且无远程配置。
 
-我正在使用它来监视我的IT基础架构（包括家庭自动化）并保持最新状态。
+**注意：**
 
-MoMa使用平台独立库'systeminformation'（https://github.com/sebhildebrandt/systeminformation）来收集有关计算机的信息。公开了许多呼叫将在计时器间隔中使用-请参阅下面的参考。
+当使用JavaScript适配器时，当出现错误“ RangeError：超出最大调用堆栈大小”时，请将“启动时不注册所有状态”标志设置为true。 <br>当您在启动时注册所有状态时，每个状态更改事件也会为JavaScript适配器生成一个事件。特别是对于Windows，此大量事件可能会成为问题。 <br>另一种解决方案是增加interval0的时间值。
+
+MoMa使用平台独立库“ systeminformation”（https://github.com/sebhildebrandt/systeminformation）来收集有关计算机的信息。公开了许多呼叫将在计时器间隔中使用-请参阅下面的参考。
 
 MoMa至少需要nodejs版本8 / ES9 / ECMAScript2018。
 
@@ -66,7 +68,7 @@ GitHub：https://github.com/AWhiteKnight/ioBroker.moma
 * memLayout-有关计算机内存芯片的信息
 * diskLayout-有关计算机硬盘的信息
 
-库系统信息的以下功能在时间间隔0（每秒默认值）中被调用：
+库系统信息的以下功能在间隔0（每秒默认值）中被调用：
 
 *时间-实际时间，时区和正常运行时间
 * cpuCurrentSpeed-实际cpu和核心频率
@@ -74,7 +76,7 @@ GitHub：https://github.com/AWhiteKnight/ioBroker.moma
 * currentLoad-实际cpu负载
 *流程-使用process.list作为HTML表的流程概述
 
-在间隔1中调用以下库系统信息功能（默认每10秒调用一次）：
+库系统信息的以下功能在间隔1中被调用（默认每10秒一次）：
 
 * mem-有关内存使用情况的信息
 * cpuTemperature-cpu和核心的温度
@@ -95,9 +97,9 @@ GitHub：https://github.com/AWhiteKnight/ioBroker.moma
 * networkInterfaceDefault-默认网络接口
 * networkInterfaces-可用的网络接口
 *图形-有关计算机图形卡和连接的显示器的信息
-* inetLatency-针对8.8.8.8检查互联网延迟
-* dockerInfo-docker的一般信息-在机器上需要一个“ adduser iobroker docker”才能正常运行
-* dockerContainers-所有Docker容器的列表-在机器上需要“ adduser iobroker docker”才能正常工作
+* inetLatency-根据8.8.8.8检查互联网延迟
+* dockerInfo-有关docker的一般信息-在机器上需要“ adduser iobroker docker”才能正常工作
+* dockerContainers-所有Docker容器的列表-在机器上需要有“ adduser iobroker docker”才能正常工作
 
 在间隔4（每天默认）中调用以下库系统信息功能：
 
@@ -114,7 +116,10 @@ GitHub：https://github.com/AWhiteKnight/ioBroker.moma
 
 ## Changelog
 
-### 1.2.3 (20??-??-??)
+### 1.2.4 (2020-03-20)
+* (AWhiteKnight) bugfixing: issues #45 #42 #24, controller update working again 
+
+### 1.2.3 (2019-11-06)
 * (AWhiteKnight) bugfixing, code cleanup 
 
 ### 1.2.2 (2019-09-12)
@@ -146,8 +151,6 @@ GitHub：https://github.com/AWhiteKnight/ioBroker.moma
 ## License
 MIT License
 
-Copyright (c) 2019 AWhiteKnight
-
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
 in the Software without restriction, including without limitation the rights
@@ -165,3 +168,5 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+Copyright (c) 2020 AWhiteKnight

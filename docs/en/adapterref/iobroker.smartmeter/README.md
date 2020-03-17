@@ -92,6 +92,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.1.1 (2020-03-11)
+* (Apollon77) fix admin when switching to TCPTransport
+* (Apollon77) bugfixes and optimizations
+
 ### 3.1.0 (2020-03-08)
 * (Apollon77) bugfixes and optimizations
 * (Apollon77) experimental TCP support, please give feedback

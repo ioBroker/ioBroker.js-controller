@@ -238,6 +238,9 @@ Following values for engines are possible:
 - **(tr-TR_AP_Female)** -           tr-TR - Female - Filiz
 
 ## Changelog
+### 1.9.1 (2020-03-12)
+* (foxriver76) removed usage of adapter.getMessage
+
 ### 1.9.0 (2019-11-06)
 * (algar42) Output file extension is changed dynamically based on the engine selected
 
@@ -403,7 +406,7 @@ Following values for engines are possible:
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

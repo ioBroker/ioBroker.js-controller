@@ -28,6 +28,10 @@ SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain v
 
 ## Changelog
 
+### 1.2.4
+
+-   .npmignore and .gitignore added, small bugfix
+
 ### 1.2.3
 
 -   Readme/License update.

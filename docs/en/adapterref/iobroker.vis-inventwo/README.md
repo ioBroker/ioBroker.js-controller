@@ -35,6 +35,12 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 1.1.0
+- Added slider widget
+- Added option to mirror image
+- Added new icons
+- Changed button widgets to use default font and text options
+
 ### 1.0.0
 - Widget background and content opacity, Switch can be changed from boolean to value, changed icons from white to black, added seamless backgrounds
 

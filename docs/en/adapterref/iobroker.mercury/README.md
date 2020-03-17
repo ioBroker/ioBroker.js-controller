@@ -42,16 +42,16 @@ Returns a buffer as a string
 
 ## Changelog
 
+### 0.0.11
+* (instalator) added translate function (PLEASE HELP WITH THE TRANSLATION)
+* (instalator) fix error
+
+### 0.0.10
+* (instalator) Added setting Polling period main parameters
+* (instalator) Added setting Polling period of non-main parameters
+* (instalator) Refactoring and fix error
+
 ### 0.0.8
-* (instalator) fixed error
-
-### 0.0.7
-* (instalator) fixed error
-
-### 0.0.6
-* (instalator) fixed error
-
-### 0.0.5
 * (instalator) fixed error
 
 ### 0.0.4
