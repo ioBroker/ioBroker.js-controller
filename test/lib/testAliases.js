@@ -657,13 +657,10 @@ function register(it, expect, context) {
                             if (id === gid + 'NotAlias') {
                                 expect(state.val).to.be.equal(2);
                                 count++;
-                            } else
-                            if (id === gAliasID + 'Star') {
+                            } else if (id === gAliasID + 'Star') {
                                 count++;
                                 expect(state.val).to.be.equal(-8);
-                            }
-                            else
-                            if (id === gid + 'Star') {
+                            } else if (id === gid + 'Star') {
                                 count++;
                                 expect(state.val).to.be.equal(10);
                             }
@@ -689,6 +686,55 @@ function register(it, expect, context) {
                                 // go to B:
                             }));
                     }))));
+    }).timeout(3000);
+
+    it(testName + 'Test newly created alias after subscribe', done => {
+        // at first we subscribe
+        context.adapter.subscribeForeignStates('*', err => {
+            // create orig object
+            expect(err).to.be.not.ok;
+            context.adapter.setForeignObject(`${gid}afterSub`, {
+                common: {
+                    name: 'for Alias',
+                    type: 'number',
+                    role: 'level',
+                    min: 0,
+                    max: 100
+                },
+                native: {},
+                type: 'state'
+            }, err => {
+                expect(err).to.be.not.ok;
+                // alias created after existing subscription
+                context.adapter.setForeignObject(`${gAliasID}afterSubAlias`, {
+                    common: {
+                        name: 'Test Alias',
+                        type: 'number',
+                        role: 'state',
+                        min: -10,
+                        max: 10,
+                        alias: {
+                            id: `${gid}afterSub`
+                        }
+                    },
+                    native: {},
+                    type: 'state'
+                }, err => {
+                    expect(err).to.be.not.ok;
+                    // listen on state changes
+                    context.onAdapterStateChanged = (id, state) => {
+                        if (id === `${gAliasID}afterSubAlias`) {
+                            expect(state.val).to.be.equal(0);
+                            done();
+                        }
+                    };
+                    // give adapter time to update alias subscription
+                    setTimeout(() => {
+                        context.states.setState(`${gid}afterSub`, 50);
+                    }, 100);
+                });
+            });
+        });
     }).timeout(3000);
 }
 
