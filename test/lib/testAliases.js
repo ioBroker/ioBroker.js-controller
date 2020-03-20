@@ -6,174 +6,174 @@
 
 function prepareGroupsAndUsers(objects) {
     return objects.setObject('system.group.userC', {
-        '_id' : 'system.group.userC',
-        'type' : 'group',
-        'common' : {
-            'name' : {
-                'en' : 'User C',
-                'de' : 'Benutzer C',
-                'ru' : 'Пользователь',
-                'pt' : 'Do utilizador',
-                'nl' : 'Gebruiker',
-                'fr' : 'Utilisateur',
-                'it' : 'Utente',
-                'es' : 'Usuario',
-                'pl' : 'Użytkownik'
+        '_id': 'system.group.userC',
+        'type': 'group',
+        'common': {
+            'name': {
+                'en': 'User C',
+                'de': 'Benutzer C',
+                'ru': 'Пользователь',
+                'pt': 'Do utilizador',
+                'nl': 'Gebruiker',
+                'fr': 'Utilisateur',
+                'it': 'Utente',
+                'es': 'Usuario',
+                'pl': 'Użytkownik'
             },
-            'description' : {
-                'en' : 'Cannot modify everything',
-                'de' : 'Kann nicht alles ändern',
-                'ru' : 'Не может изменять все',
-                'pt' : 'Não é possível modificar tudo',
-                'nl' : 'Kan niet alles wijzigen',
-                'fr' : 'Impossible de tout modifier',
-                'it' : 'Non è possibile modificare tutto',
-                'es' : 'No se puede modificar todo',
-                'pl' : 'Nie można modyfikować wszystkiego'
+            'description': {
+                'en': 'Cannot modify everything',
+                'de': 'Kann nicht alles ändern',
+                'ru': 'Не может изменять все',
+                'pt': 'Não é possível modificar tudo',
+                'nl': 'Kan niet alles wijzigen',
+                'fr': 'Impossible de tout modifier',
+                'it': 'Non è possibile modificare tutto',
+                'es': 'No se puede modificar todo',
+                'pl': 'Nie można modyfikować wszystkiego'
             },
-            'members' : ['system.user.userC'],
-            'dontDelete' : true,
-            'url' : 'https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip',
-            'meta' : 'https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json',
-            'acl' : {
-                'object' : {
-                    'list' : true,
-                    'read' : true,
-                    'write' : false,
-                    'delete' : false
+            'members': ['system.user.userC'],
+            'dontDelete': true,
+            'url': 'https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip',
+            'meta': 'https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json',
+            'acl': {
+                'object': {
+                    'list': true,
+                    'read': true,
+                    'write': false,
+                    'delete': false
                 },
-                'state' : {
-                    'list' : true,
-                    'read' : true,
-                    'write' : true,
-                    'create' : true,
-                    'delete' : false
+                'state': {
+                    'list': true,
+                    'read': true,
+                    'write': true,
+                    'create': true,
+                    'delete': false
                 },
-                'users' : {
-                    'list' : true,
-                    'read' : true,
-                    'write' : false,
-                    'create' : false,
-                    'delete' : false
+                'users': {
+                    'list': true,
+                    'read': true,
+                    'write': false,
+                    'create': false,
+                    'delete': false
                 },
-                'other' : {
-                    'execute' : false,
-                    'http' : true,
-                    'sendto' : false
+                'other': {
+                    'execute': false,
+                    'http': true,
+                    'sendto': false
                 },
-                'file' : {
-                    'list' : true,
-                    'read' : true,
-                    'write' : false,
-                    'create' : false,
-                    'delete' : false
+                'file': {
+                    'list': true,
+                    'read': true,
+                    'write': false,
+                    'create': false,
+                    'delete': false
                 }
             }
         }
     }).then(() => objects.setObject('system.user.userC', {
-        '_id' : 'system.user.userC',
-        'common' : {
-            'name' : 'UserC',
-            'icon' : '',
-            'color' : '#44d8f1',
-            'desc' : '',
-            'enabled' : true,
-            'password' : 'pbkdf2$10000$47785e10d8e468765c06b371f45981d625274dec3f8f6261b12d67320d07e7844e1e30df575f55ed3686804fbbae442ee9503c9c93fdcff4c46b8243200e1839b77fa18f769c9f71b13f12c4002e1cee03e6fa54878a2d6a9629589bd9169459989fc63abddce94690e5744e69658be43e1a9c7b38f1535eb9946a05394ee16f3724b75e0829ece04a05ef8848509d27b7944a9e064bba9341350d39d7a7e5bc4fe1980ae6da737c9e5e79e5a5a7e969825e94302c047a6054f3524b71c52acd33f2f83b1ed026c05af514da0a2e57c2267aeb10021f9503b5db02d8cc946421604f73548ceecc2a10b44be6a5b859e43e706cc86ee36b21984fc33abf9b2d66$0c4a5d538c84116846aac1c20fdc3fdd'
+        '_id': 'system.user.userC',
+        'common': {
+            'name': 'UserC',
+            'icon': '',
+            'color': '#44d8f1',
+            'desc': '',
+            'enabled': true,
+            'password': 'pbkdf2$10000$47785e10d8e468765c06b371f45981d625274dec3f8f6261b12d67320d07e7844e1e30df575f55ed3686804fbbae442ee9503c9c93fdcff4c46b8243200e1839b77fa18f769c9f71b13f12c4002e1cee03e6fa54878a2d6a9629589bd9169459989fc63abddce94690e5744e69658be43e1a9c7b38f1535eb9946a05394ee16f3724b75e0829ece04a05ef8848509d27b7944a9e064bba9341350d39d7a7e5bc4fe1980ae6da737c9e5e79e5a5a7e969825e94302c047a6054f3524b71c52acd33f2f83b1ed026c05af514da0a2e57c2267aeb10021f9503b5db02d8cc946421604f73548ceecc2a10b44be6a5b859e43e706cc86ee36b21984fc33abf9b2d66$0c4a5d538c84116846aac1c20fdc3fdd'
         },
-        'type' : 'user',
-        'native' : {},
-        'from' : 'system.adapter.admin.0',
-        'user' : 'system.user.admin',
-        'ts' : 1534947164702,
-        'acl' : {
-            'object' : 1636, // 0664
-            'owner' : 'system.user.admin',
-            'ownerGroup' : 'system.group.administrator'
+        'type': 'user',
+        'native': {},
+        'from': 'system.adapter.admin.0',
+        'user': 'system.user.admin',
+        'ts': 1534947164702,
+        'acl': {
+            'object': 1636, // 0664
+            'owner': 'system.user.admin',
+            'ownerGroup': 'system.group.administrator'
         }
     })).then(() => objects.setObject('system.group.userD', {
-        '_id' : 'system.group.userD',
-        'type' : 'group',
-        'common' : {
-            'name' : {
-                'en' : 'User D',
-                'de' : 'Benutzer D',
-                'ru' : 'Пользователь',
-                'pt' : 'Do utilizador',
-                'nl' : 'Gebruiker',
-                'fr' : 'Utilisateur',
-                'it' : 'Utente',
-                'es' : 'Usuario',
-                'pl' : 'Użytkownik'
+        '_id': 'system.group.userD',
+        'type': 'group',
+        'common': {
+            'name': {
+                'en': 'User D',
+                'de': 'Benutzer D',
+                'ru': 'Пользователь',
+                'pt': 'Do utilizador',
+                'nl': 'Gebruiker',
+                'fr': 'Utilisateur',
+                'it': 'Utente',
+                'es': 'Usuario',
+                'pl': 'Użytkownik'
             },
-            'description' : {
-                'en' : 'Cannot modify everything',
-                'de' : 'Kann nicht alles ändern',
-                'ru' : 'Не может изменять все',
-                'pt' : 'Não é possível modificar tudo',
-                'nl' : 'Kan niet alles wijzigen',
-                'fr' : 'Impossible de tout modifier',
-                'it' : 'Non è possibile modificare tutto',
-                'es' : 'No se puede modificar todo',
-                'pl' : 'Nie można modyfikować wszystkiego'
+            'description': {
+                'en': 'Cannot modify everything',
+                'de': 'Kann nicht alles ändern',
+                'ru': 'Не может изменять все',
+                'pt': 'Não é possível modificar tudo',
+                'nl': 'Kan niet alles wijzigen',
+                'fr': 'Impossible de tout modifier',
+                'it': 'Non è possibile modificare tutto',
+                'es': 'No se puede modificar todo',
+                'pl': 'Nie można modyfikować wszystkiego'
             },
-            'members' : ['system.user.userD'],
-            'dontDelete' : true,
-            'url' : 'https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip',
-            'meta' : 'https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json',
-            'acl' : {
-                'object' : {
-                    'list' : true,
-                    'read' : true,
-                    'write' : false,
-                    'delete' : false
+            'members': ['system.user.userD'],
+            'dontDelete': true,
+            'url': 'https://github.com/ioBroker/ioBroker.js-controller/archive/master.zip',
+            'meta': 'https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/io-package.json',
+            'acl': {
+                'object': {
+                    'list': true,
+                    'read': true,
+                    'write': false,
+                    'delete': false
                 },
-                'state' : {
-                    'list' : true,
-                    'read' : true,
-                    'write' : true,
-                    'create' : true,
-                    'delete' : false
+                'state': {
+                    'list': true,
+                    'read': true,
+                    'write': true,
+                    'create': true,
+                    'delete': false
                 },
-                'users' : {
-                    'list' : true,
-                    'read' : true,
-                    'write' : false,
-                    'create' : false,
-                    'delete' : false
+                'users': {
+                    'list': true,
+                    'read': true,
+                    'write': false,
+                    'create': false,
+                    'delete': false
                 },
-                'other' : {
-                    'execute' : false,
-                    'http' : true,
-                    'sendto' : false
+                'other': {
+                    'execute': false,
+                    'http': true,
+                    'sendto': false
                 },
-                'file' : {
-                    'list' : true,
-                    'read' : true,
-                    'write' : false,
-                    'create' : false,
-                    'delete' : false
+                'file': {
+                    'list': true,
+                    'read': true,
+                    'write': false,
+                    'create': false,
+                    'delete': false
                 }
             }
         }
     }).then(() => objects.setObject('system.user.userD', {
-        '_id' : 'system.user.userD',
-        'common' : {
-            'name' : 'UserC',
-            'icon' : '',
-            'color' : '#44d8f1',
-            'desc' : '',
-            'enabled' : true,
-            'password' : 'pbkdf2$10000$47785e10d8e468765c06b371f45981d625274dec3f8f6261b12d67320d07e7844e1e30df575f55ed3686804fbbae442ee9503c9c93fdcff4c46b8243200e1839b77fa18f769c9f71b13f12c4002e1cee03e6fa54878a2d6a9629589bd9169459989fc63abddce94690e5744e69658be43e1a9c7b38f1535eb9946a05394ee16f3724b75e0829ece04a05ef8848509d27b7944a9e064bba9341350d39d7a7e5bc4fe1980ae6da737c9e5e79e5a5a7e969825e94302c047a6054f3524b71c52acd33f2f83b1ed026c05af514da0a2e57c2267aeb10021f9503b5db02d8cc946421604f73548ceecc2a10b44be6a5b859e43e706cc86ee36b21984fc33abf9b2d66$0c4a5d538c84116846aac1c20fdc3fdd'
+        '_id': 'system.user.userD',
+        'common': {
+            'name': 'UserC',
+            'icon': '',
+            'color': '#44d8f1',
+            'desc': '',
+            'enabled': true,
+            'password': 'pbkdf2$10000$47785e10d8e468765c06b371f45981d625274dec3f8f6261b12d67320d07e7844e1e30df575f55ed3686804fbbae442ee9503c9c93fdcff4c46b8243200e1839b77fa18f769c9f71b13f12c4002e1cee03e6fa54878a2d6a9629589bd9169459989fc63abddce94690e5744e69658be43e1a9c7b38f1535eb9946a05394ee16f3724b75e0829ece04a05ef8848509d27b7944a9e064bba9341350d39d7a7e5bc4fe1980ae6da737c9e5e79e5a5a7e969825e94302c047a6054f3524b71c52acd33f2f83b1ed026c05af514da0a2e57c2267aeb10021f9503b5db02d8cc946421604f73548ceecc2a10b44be6a5b859e43e706cc86ee36b21984fc33abf9b2d66$0c4a5d538c84116846aac1c20fdc3fdd'
         },
-        'type' : 'user',
-        'native' : {},
-        'from' : 'system.adapter.admin.0',
-        'user' : 'system.user.admin',
-        'ts' : 1534947164702,
-        'acl' : {
-            'object' : 1636, // 0664
-            'owner' : 'system.user.admin',
-            'ownerGroup' : 'system.group.administrator'
+        'type': 'user',
+        'native': {},
+        'from': 'system.adapter.admin.0',
+        'user': 'system.user.admin',
+        'ts': 1534947164702,
+        'acl': {
+            'object': 1636, // 0664
+            'owner': 'system.user.admin',
+            'ownerGroup': 'system.group.administrator'
         }
     })));
 }
@@ -657,13 +657,10 @@ function register(it, expect, context) {
                             if (id === gid + 'NotAlias') {
                                 expect(state.val).to.be.equal(2);
                                 count++;
-                            } else
-                            if (id === gAliasID + 'Star') {
+                            } else if (id === gAliasID + 'Star') {
                                 count++;
                                 expect(state.val).to.be.equal(-8);
-                            }
-                            else
-                            if (id === gid + 'Star') {
+                            } else if (id === gid + 'Star') {
                                 count++;
                                 expect(state.val).to.be.equal(10);
                             }
@@ -689,6 +686,111 @@ function register(it, expect, context) {
                                 // go to B:
                             }));
                     }))));
+    }).timeout(3000);
+
+    it(testName + 'Test newly created alias after subscribe', done => {
+        // at first we subscribe
+        context.adapter.subscribeForeignStates('*', err => {
+            // create orig object
+            expect(err).to.be.not.ok;
+            context.adapter.setForeignObject(`${gid}afterSub`, {
+                common: {
+                    name: 'for Alias',
+                    type: 'number',
+                    role: 'level',
+                    min: 0,
+                    max: 100
+                },
+                native: {},
+                type: 'state'
+            }, err => {
+                expect(err).to.be.not.ok;
+                // alias created after existing subscription
+                context.adapter.setForeignObject(`${gAliasID}afterSubAlias`, {
+                    common: {
+                        name: 'Test Alias',
+                        type: 'number',
+                        role: 'state',
+                        min: -10,
+                        max: 10,
+                        alias: {
+                            id: `${gid}afterSub`
+                        }
+                    },
+                    native: {},
+                    type: 'state'
+                }, err => {
+                    expect(err).to.be.not.ok;
+                    // listen on state changes
+                    context.onAdapterStateChanged = (id, state) => {
+                        if (id === `${gAliasID}afterSubAlias`) {
+                            expect(state.val).to.be.equal(0);
+                            done();
+                        }
+                    };
+                    // give adapter time to update alias subscription
+                    setTimeout(() => {
+                        context.states.setState(`${gid}afterSub`, 50);
+                    }, 100);
+                });
+            });
+        });
+    }).timeout(3000);
+
+    it(testName + 'Test newly created alias after partial subscribe', done => {
+        // at first we subscribe, but only partial
+        context.adapter.unsubscribeForeignStates('*', () => {
+            context.adapter.subscribeForeignStates(`${gAliasID}okay*`, err => {
+                // create orig object
+                expect(err).to.be.not.ok;
+                context.adapter.setForeignObject(`${gid}partialOrig`, {
+                    common: {
+                        name: 'for Alias',
+                        type: 'number',
+                        role: 'level',
+                        min: 0,
+                        max: 100
+                    },
+                    native: {},
+                    type: 'state'
+                }, err => {
+                    expect(err).to.be.not.ok;
+                    // alias created after existing subscription which does not match pattern
+                    context.adapter.setForeignObject(`${gAliasID}notOkay`, {
+                        common: {
+                            name: 'Test Alias',
+                            type: 'number',
+                            role: 'state',
+                            min: -10,
+                            max: 10,
+                            alias: {
+                                id: `${gid}partialOrig`
+                            }
+                        },
+                        native: {},
+                        type: 'state'
+                    }, err => {
+                        expect(err).to.be.not.ok;
+                        // listen on state changes
+
+                        context.onAdapterStateChanged = (id) => {
+                            if (id === `${gAliasID}notOkay`) {
+                                clearTimeout(doneTimer);
+                                expect('Sparta').to.be.equal('Athens');
+                            }
+                        };
+
+                        // give adapter time to update alias subscription
+                        setTimeout(() => {
+                            context.states.setState(`${gid}partialOrig`, 50);
+                        }, 100);
+
+                        // if state change not triggered in 1 sec -> pass
+                        const doneTimer = setTimeout(done, 1000);
+                    });
+                });
+            });
+        });
     }).timeout(3000);
 }
 
