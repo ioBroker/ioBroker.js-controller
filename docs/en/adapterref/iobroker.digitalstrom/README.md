@@ -101,7 +101,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 2.0.0-2.0.5 (2020-02-10 - 2020-03-14)
+### 2.0.5 (2020-03-14)
 * (Apollon77) BREAKING: binaryInput are now numbers intead of booleans because it can have values other then true/false
 * (Apollon77) BREAKING: Some states are converted to strings to allow all values to be passed
 * (Apollon77) Fixes on some outputValues 

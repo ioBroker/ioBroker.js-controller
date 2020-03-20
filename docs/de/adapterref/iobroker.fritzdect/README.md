@@ -67,11 +67,21 @@ Vergleichbar für den Soll-/Istverlaufs ist demnach atualtemp und targettemp.
 Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig Information ist der debug modus über die Experteneinstellung der Instanz vorzuwählen.
 
 ## Changelog
+### 0.3.1
+* (scrounger) new states in COMET, operationList and operationMode
+
+### 0.3.0
+* new DECT500 supported (without commands)
+
 ### 0.2.5
 * fixed testing
 * correction for indication of actualtemp in heater groups
+* connection type and datasource added in io-package.json
+* correction pf switch and alert state (boolean in update routine)
+
 ### 0.2.4
 * (Scrounger) correction of type mismatch (string boolean)
+
 ### 0.2.3
 * skip updating values, when device not present
 

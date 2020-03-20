@@ -448,6 +448,10 @@ After that checkout modified version in `./build` folder. Then.
 8. Start `gulp rename` task.
 
 ## Changelog
+
+### 1.0.12 (2020-03-16)
+* (Garfonso) Added option to restrict auto entity creation to alias.0.*
+
 ### 1.0.10 (2020-02-13)
 * (Garfonso) Fixed handling of malformed / null RGB string
 * (algar42)  Binary sensor added

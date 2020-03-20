@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.cul/README.md
 title: ioBroker.cul
-hash: ROw7IIcXhBRDnLoCDsNfcST+TCLHwk06DWfPWWYuLvA=
+hash: nR8o8qUmkCDh2rpzFm+HXBen6bjUhSypsUGdYGuOGdg=
 ---
 ![логотип](../../../en/adapterref/iobroker.cul/admin/busware.jpg)
 
@@ -28,8 +28,16 @@ hash: ROw7IIcXhBRDnLoCDsNfcST+TCLHwk06DWfPWWYuLvA=
 ```sendTo("cul.0", "send", {"protocol":"FS20", "housecode":"A1B2", "address":"01", "command":"00"});```
 
 Эта команда использует библиотеку CUL этого адаптера для отправки команды на устройство FS20.
+Адаптер Busware CUL USB / culfw на основе Javascript / Node.js
 
 ## Changelog
+### 1.2.1 (2020-03-18)
+* (bluefox) Changed license from non SPDX conform "GPL-2.0" to "GPL-2.0-or-later"
+
+### 1.2.0 (2020-02-10)
+* (MK-2001) Sending of FS20 cmdRAW possible or via sendTo as described in the readme
+* (Bluefox) Refactoring
+
 ### 1.1.0 (2020-01-04)
 * (foxriver76) removed usage of adapter.objects
 
@@ -62,4 +70,4 @@ hash: ROw7IIcXhBRDnLoCDsNfcST+TCLHwk06DWfPWWYuLvA=
 
 ## License
 
-[Licensed under GPLv2](LICENSE) Copyright (c) 2014-2017 hobbyquaker
+[Licensed under GPLv2](LICENSE) Copyright (c) 2014-2020 hobbyquaker

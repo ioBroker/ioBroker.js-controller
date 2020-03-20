@@ -3,13 +3,14 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.knmi-weather.svg)](https://www.npmjs.com/package/iobroker.knmi-weather)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.knmi-weather.svg)](https://www.npmjs.com/package/iobroker.knmi-weather)
+![Number of Installations (latest)](http://iobroker.live/badges/knmi-weather-installed.svg)
+![Number of Installations (stable)](http://iobroker.live/badges/knmi-weather-stable.svg)
 [![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.knmi-weather.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.knmi-weather)
 [![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.knmi-weather/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.knmi-weather)
 
 [![NPM](https://nodei.co/npm/iobroker.knmi-weather.png?downloads=true)](https://nodei.co/npm/iobroker.knmi-weather/)
 
-**Tests:** Linux/Mac: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.knmi-weather/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.knmi-weather)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.knmi-weather?branch=master&svg=true)](https://ci.appveyor.com/project/iobroker-community-adapters/ioBroker-knmi-weather/)
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.knmi-weather/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.knmi-weather)
 
 ## KNMI-Weather data and alarms for ioBroker
 
@@ -26,10 +27,17 @@ Following data is availaible :
 
 Location data is based on GPS coordinates stored in admin configuration.
 
-For more information please visit : http://weerlive.nl/index.php
+For more information please visit : http://weerlive.nl/index.php  
 Get your free API-Key here : http://weerlive.nl/delen.php
 
 ## Changelog
+
+### 0.2.0
+* (DutchmanNL) improve propper adapter termination instead of guessing by timer
+* (DutchmanNL) Release to stable repository
+
+### 0.1.1
+* (DutchmanNL) implement states for RainRadar
 
 ### 0.1.0
 * (DutchmanNL) initial release
@@ -37,7 +45,7 @@ Get your free API-Key here : http://weerlive.nl/delen.php
 ## License
 MIT License
 
-Copyright (c) 2019 DutchmanNL
+Copyright (c) 2020 DutchmanNL <rdrozda86@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -2,37 +2,45 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.knmi-weather/README.md
-title: ioBroker.knmi天气
-hash: 71u/KS+jOB1jSbeq3AOMIt90NYMxyjUUUtsgMhayB/w=
+title: ioBroker.knmi-天气
+hash: KAKKSOXGMiMckWzpmH7ML4qcnA8KUcieYkmQXHc60mA=
 ---
 ![商标](../../../en/adapterref/iobroker.knmi-weather/admin/knmi-weather.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.knmi-weather.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.knmi-weather.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.knmi-weather.svg)
+![安装数量（最新）](http://iobroker.live/badges/knmi-weather-installed.svg)
+![安装数量（稳定）](http://iobroker.live/badges/knmi-weather-stable.svg)
 ![依赖状态](https://img.shields.io/david/iobroker-community-adapters/iobroker.knmi-weather.svg)
-![已知的漏洞](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.knmi-weather/badge.svg)
+![已知漏洞](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.knmi-weather/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.knmi-weather.png?downloads=true)
-![特拉维斯-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.knmi-weather/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.knmi-weather?branch=master&svg=true)
+![特拉维斯](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.knmi-weather/master.svg)
 
-＃ioBroker.knmi-weather
-## KNMI- ioBroker的天气数据和警报
-KNMI提供API，根据机构收集的所有传感器数据，每10分钟更新一次数据。
-此适配器允许读取此API（需要注册！）并将所有相关值存储在用户友好状态中，以便在通知（例如：电报/推覆）或访问中进一步处理。
+＃ioBroker.knmi-天气
+## KNMI天气数据和ioBroker警报
+KNMI提供了一个API，该API根据机构收集的所有传感器数据每10分钟更新一次数据。
+该适配器允许读取此API（需要注册！），并将所有相关值存储在用户友好状态下，以便在通知（例如：电报/推送）或可视化中进一步处理。
 
-该API每天最多可免费使用300次，因此适配器每5分钟进行一次。
+该API每天最多可免费使用300次attement，因此每5分钟放置一次适配器。
 
 以下数据可用：
 
-*目前的klimat条件
-*今天，明天，后天预测
+*当前的气候条件
+*今天，明天，后天的天气预报
 *天气警报
 
-位置数据基于管理配置中存储的GPS坐标。
+位置数据基于存储在管理员配置中的GPS坐标。
 
-有关更多信息，请访问：http：//weerlive.nl/index.php在此获取免费的API密钥：http：//weerlive.nl/delen.php
+有关更多信息，请访问：http://weerlive.nl/index.php在此处获取免费的API密钥：http://weerlive.nl/delen.php
 
 ## Changelog
+
+### 0.2.0
+* (DutchmanNL) improve propper adapter termination instead of guessing by timer
+* (DutchmanNL) Release to stable repository
+
+### 0.1.1
+* (DutchmanNL) implement states for RainRadar
 
 ### 0.1.0
 * (DutchmanNL) initial release
@@ -40,7 +48,7 @@ KNMI提供API，根据机构收集的所有传感器数据，每10分钟更新�
 ## License
 MIT License
 
-Copyright (c) 2019 DutchmanNL
+Copyright (c) 2020 DutchmanNL <rdrozda86@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

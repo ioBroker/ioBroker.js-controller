@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: hmuqgdnuVBbeU7rgtYZEUOe+Wsse6dubYbJrjEHoit8=
+hash: xHNdfxlaopeoue8Ux4AUCIlLOPTnSrQYMs1bbF2dHKc=
 ---
 ![Logo](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -16,97 +16,100 @@ hash: hmuqgdnuVBbeU7rgtYZEUOe+Wsse6dubYbJrjEHoit8=
 # IoBroker.countdown
 =================
 
-Countdown-Adapter für ioBroker ------------------------------------------ --------------------------------
+Countdown-Adapter für ioBroker ---------------------------------------------- --------------------------------
 
-Das Ziel des Adapters ist es, Ihnen die Möglichkeit zu geben, Countdowns für zukünftige Ereignisse mit Jahren, Monaten, Tagen, Stunden und Minuten durchzuführen. Sie erhalten jedes dieser Werte separat und zwei Zeichenfolgen mit einer kurzen und einer langen Version des Datums.
+Das Ziel des Adapters ist es, Ihnen die Möglichkeit zu geben, Countdowns für zukünftige Ereignisse mit Jahren, Monaten, Tagen, Stunden und Minuten durchzuführen. Sie erhalten jeden dieser Werte separat und zwei Zeichenfolgen mit einer kurzen und einer langen Version des Datums.
 
 ## Countdowns anzeigen
-Der Adapter stellt Ihnen automatisch einen JSON-Tisch zur Verfügung. Sie müssen es nur mit dem erweiterten JSON-Tisch verwenden. Bitte dort "No Header" ankreuzen. Es ist möglich, entweder den Kurztext oder den Langtext anzuzeigen.
+Der Adapter liefert Ihnen automatisch eine JSON-Tabelle. Sie müssen es nur mit der erweiterten json-Tabelle verwenden. Bitte kreuzen Sie dort "No Header" an. Es ist möglich, entweder den Kurztext oder den Langtext anzuzeigen.
 ![Logo](../../../en/adapterref/iobroker.countdown/admin/countdown_json.png)
 
-## Countdowns erstellen
+## So erstellen Sie Countdowns
 Es gibt zwei Möglichkeiten, Countdowns einzurichten:
 
-* Sie können im Geräte-Setup einen manuellen Status erstellen. Der Name des Objekts ist der Alarmname und der Wert ist das Datum. Das Datum muss das Format "TT.MM.JJJJ HH: mm: ss" haben.
+* Sie können einen manuellen Status im Gerät "Setup" erstellen. Der Name des Objekts ist der Alarmname und der Wert ist das Datum. Das Datum muss im Format "TT.MM.JJJJ HH: mm: ss" vorliegen.
 * Mit sendto können Sie einen Alarm erstellen. Dort können Sie entweder die Komponenten (mindestens Jahr Monat Datum) oder eine Datumszeichenfolge senden. Für die Datumszeichenfolge können Sie das Format im Setup des Adapters anpassen.
 
 ![Logo](../../../en/adapterref/iobroker.countdown/admin/countdown_blocky.png)
 
-* Mit sendto to to today date können Sie Tage, Monate und Jahre hinzufügen. Bitte senden Sie daher die Komponente "name" und entweder "addminutes", "addhours", "adddays", "addmonths" oder "addyears" als int-Wert.
+* Sie können Tage, Monate und Jahre mit sendto zum heutigen Datum hinzufügen. Senden Sie daher bitte die Komponente "Name" und entweder "addminutes", "addhours", "adddays", "addmonths" oder "addyears" als int-Wert.
 
 ![Logo](../../../en/adapterref/iobroker.countdown/admin/countdown_blocky_add.png)
 
 ## So löschen Sie Countdowns
-Sie können einen Countdown mit dem sendto löschen. Senden Sie daher nur den Namen mit sendto an den Adapter, und der Countdown wird automatisch gelöscht.
+Sie können einen Countdown mit dem Sendto löschen. Senden Sie daher nur den Namen mit sendto an den Adapter, und der Countdown wird automatisch gelöscht.
 
 ## Verfügbare Ausgänge
 | Datentyp | Beschreibung |
 |:---:|:---:|
-| minutes | Minuten bis Countdownende (nicht gesamt!) |
-| Stunden | Stunden bis Countdownende (nicht gesamt!) |
-| Tage | Tage bis Countdownende (nicht gesamt!) |
-| Monate | Monate bis Countdownende (nicht gesamt!) |
-| Jahre Jahre bis Countdownende (nicht gesamt!) |
-| name | Countdown-Name |
-| endDate | Enddatum des Countdowns wie im Setup definiert |
-| inWordsShort | Kombinierter Wert von Minuten, Stunden, ... - z. 1J 5M 4D |
+| Minuten | Minuten bis zum Ende des Countdowns (nicht insgesamt!) |
+| Stunden | Stunden bis zum Ende des Countdowns (nicht insgesamt!) |
+| Tage | Tage bis zum Ende des Countdowns (nicht insgesamt!) |
+| Monate | Monate bis zum Ende des Countdowns (nicht insgesamt!) |
+| Jahre | Jahre bis zum Ende des Countdowns (nicht insgesamt!) |
+| Name | Countdown-Name |
+| endDate | Enddatum des Countdowns - formatiert wie im definierten Setup |
+| inWordsShort | Kombinierter Wert von Minuten, Stunden, ... - z. 1Y 5M 4D |
 | inWordsLong | Kombinierter Wert von Minuten, Stunden, ... - z. 1 Jahr 5 Monate 4 Tage |
 | totalHours | Total Anzahl der Stunden bis zum Enddatum |
 | totalDays | Total Anzahl der Tage bis zum Enddatum |
 | totalWeeks | Total Anzahl der Wochen bis zum Enddatum |
-| Boolesches Feld, das definiert, ob das Enddatum erreicht wurde oder nicht |
+| erreicht | Boolesches Feld, das definiert, ob das Enddatum erreicht wurde oder nicht |
 
-## Hinzuzufügende Funktionen
-* Möglichkeit, ein Skript als Parameter hinzuzufügen und es am Ende des Countdowns zu starten
-* Möglichkeit, Plus und Minus in addminutes und den anderen add-Funktionen zu verwenden
+## Funktionen zum Hinzufügen
+* Möglichkeit, ein Skript als Parameter hinzuzufügen und zu starten, wenn der Countdown endet
+* Möglichkeit, Plus und Minus in Addminutes und den anderen Add-Funktionen zu verwenden
+
+## 1.0.6 (2020-03-20)
+* (DutchmanNL) Adaptertyp behoben
 
 ## 1.0.5 (2020-02-05)
 * (jack-blackson) Bugfix für Alarm um Mitternacht -> danke an @Lueghi
 
 ## 1.0.4 (2019-08-25)
-* (jack-blackson) Nachbestellte Release-Infos
+* (jack-blackson) Neu geordnete Release-Infos
 
 ## 1.0.3 (2019-08-10)
-* (jack-blackson) Änderungen für den Kompaktmodus
-* (jack-blackson) Verschiedene Bugfixes
-* (jack-blackson) Mehrere Instanzen des Adapters sind jetzt möglich
+* (Jack-Blackson) Änderungen für den Kompaktmodus
+* (Jack-Blackson) Verschiedene Bugfixes
+* (jack-blackson) Es ist jetzt möglich, mehrere Instanzen des Adapaters zu haben
 
 ## 1.0.2 (2019-07-22)
 * (Jack-Blackson) Release-Version
 
-## 0.7.0 (07.07.2019)
+## 0.7.0 (2019-07-07)
 * (Jack-Blackson) Bugfixes
-* (jack-blackson) Minuten und Stunden sind jetzt auch möglich
-* Der (Jack-Blackson) -Datenpunkt im Setup kann jetzt bearbeitet werden
-* (jack-blackson) addierte insgesamt nr. von Wochen
+* (Jack-Blackson) Addminutes und Addhours sind jetzt ebenfalls möglich
+* (jack-blackson) Datenpunkt im Setup kann jetzt bearbeitet werden
+* (Jack-Blackson) hinzugefügt Gesamt-Nr. von Wochen
 
-## 0.6.0 (2019-07-06)
+## 0.6.0 (06.07.2019)
 * (Jack-Blackson) einstellbares Datumsformat für Ein- und Ausgabe
 * (jack-blackson) Countdowns mit sendto löschen
-* (Jack-Blackson) Fähigkeit, Countdowns von "Tagen / Monaten / Wochen ab jetzt" hinzuzufügen
+* (Jack-Blackson) Fähigkeit, Countdowns in "Tagen / Monaten / Wochen ab jetzt) hinzuzufügen
 
 ## 0.5.0 (2019-07-04)
 * (Jack-Blackson) Passen Sie die Daten in der Tabelle an
 * (Jack-Blackson) Bugfix-Datumsimport
 
-### 0.4.0 (2019-06-04)
-* (Jack-Blackson) Restrukturierung - Erstellung von Alarmen mit Sendto oder manuell mit Datenpunkt ist jetzt möglich
+### 0.4.0 (04.06.2019)
+* (Jack-Blackson) Restrukturierung - Die Erstellung von Alarmen mit Sendto oder manuell mit Datenpunkt ist jetzt möglich
 
 ### 0.3.0 (2019-05-24)
-* (jack-blackson) addiert die Anzahl der Tage und Stunden
+* (Jack-Blackson) hat die Gesamtzahl der Tage und Stunden hinzugefügt
 
-### 0.2.0 (2019-05-21)
+### 0.2.0 (21.05.2019)
 * (Jack-Blackson) angepasste Pakete
 
-### 0.1.0 (2019-04-29)
-* (Jack-Blackson) ursprüngliche Version
+### 0.1.0 (29.04.2019)
+* (Jack-Blackson) Erstversion
 
 ## Changelog
 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 jack-blackson <blacksonj7@gmail.com>
+Copyright (c) 2019-2020 jack-blackson <blacksonj7@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

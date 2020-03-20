@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker mihome-真空适配器
-hash: jgAFr69EafUJFMKZTLdoBfXb9BHAbRyRHuy0LScVqGQ=
+hash: OzbeF+mF8wNlgeVONtaUgbpuiW5a421HTeBy/XuFSiQ=
 ---
 ![商标](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -60,7 +60,7 @@ hash: jgAFr69EafUJFMKZTLdoBfXb9BHAbRyRHuy0LScVqGQ=
 -查询间隔检索机器人状态值的时间（以毫秒为单位）（不应小于10000）
 
 ####控制Alexa
-在配置中添加alexa状态在此处被激活，一个hack被设置为一个附加状态“ clean_home”，这是一个从“ true”开始，到“ false”的开关，它返回首页，它自动成为云中的智能设备创建的适配器名称为“真空吸尘器”，可以在云适配器中进行更改。
+在配置中，添加alexa状态被激活，这里的hack被设置为附加状态“ clean_home”，这是一个从“ true”开始，到“ false”的开关，它返回首页，它自动成为云中的智能设备创建的适配器名称为“真空吸尘器”，可以在云适配器中进行更改。
 
 ####使用开始按钮恢复暂停的区域清洁
 启用此选项后，如果在运行区域清洁期间暂停了“开始”状态，则Vacuum将恢复区域清洁。
@@ -81,7 +81,7 @@ hash: jgAFr69EafUJFMKZTLdoBfXb9BHAbRyRHuy0LScVqGQ=
 -要使用地图，您必须在配置中选择valetudo或原始地图
 -请求间隔必须大于1000毫秒，这是更新html映射的间隔
 -地图间隔必须超过5000毫秒，此间隔会更新png地图文件（您可以将其用于Telegram或vis或其他任何东西）
--在那里可以为地图示例选择颜色：
+-在此为地图示例选择颜色：
 
 ```
 - #2211FF
@@ -104,7 +104,7 @@ hash: jgAFr69EafUJFMKZTLdoBfXb9BHAbRyRHuy0LScVqGQ=
 ＃＃ 功能
 S50的命令（第二代）
 卡的尺寸始终为52000mm x 52000mm，因此可以设置从0到51999mm的值。
-不幸的是，无法查询卡的位置和位置，这可以随吸力而变化。永远是最后一张吸卡，以及在应用程序中用作基础。
+不幸的是，无法查询卡的位置和位置，这可以随吸力而变化。用作基础的始终是最后一张吸卡，以及在应用程序中。
 如果机器人仅拾取一个区域并始终以相同的方式构建地图，则可以可靠地将其发送到各个地方或对该区域进行清理。
 
 ＃＃＃＃ 去
@@ -171,7 +171,7 @@ xVal, yval
 | upd_timer | [“ 1481997713308”，“打开/关闭”] | |
 | | |拯救“请勿打扰”的时代 |
 | get_dnd_timer | |删除免打扰时间|
-| close_dnd_timer | | DND设置h，min，h，min |
+| close_dnd_timer | |免打扰设置h，min，h，min |
 | set_dnd_timer | [22,0,8,0] | |
 |                 |                                                                     |                                                                                                        |
 | app_rc_start | |启动远程控制|
@@ -179,10 +179,10 @@ xVal, yval
 
 | app_rc_move | [{“ seqnum”：'0-1000'，“ velocity”：VALUE1，“ omega”：VALUE2，“ duration”：VALUE3}]] |移动。序列号必须是连续的，VALUE1（速度）= -0.3-0.3，VALUE2（旋转）= -3.1-3.1，VALUE3（持续时间）
 
-您可以在此处（[链接](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)）中找到更多的方法和参数。
+您可以在此处（[链接](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)）找到更多的方法和参数。
 
 ###使用sendTo发送自定义命令
-您也可以使用`sendTo`从其他适配器发送那些自定义命令。与上面定义的`method_id`和`params`结合使用：
+您还可以使用`sendTo`从其他适配器发送那些自定义命令。与上面定义的`method_id`和`params`结合使用：
 
 ```
 sendTo("mihome-vacuum.0", "sendCustomCommand",
@@ -214,7 +214,7 @@ sendTo("mihome-vacuum.0",
 |回到基地| `charge`| -无-| |
 |说“嗨，我在这里！” | `findMe`| -无-| |
 |检查耗材的状态（刷子等）| `getConsumableStatus`| -无-| |
-|重置耗材（刷子等）的状态| `resetConsumables`| `resetConsumables`| `consumable`|字符串：filter_work_time，filter_element_work_time，sensor_dirty_time，main_brush_work_time，side_brush_work_time |
+|重置耗材的状态（刷子等）| `resetConsumables`| `consumable`|字符串：filter_work_time，filter_element_work_time，sensor_dirty_time，main_brush_work_time，side_brush_work_time |
 |获取以前所有清洁过程的摘要| `getCleaningSummary`| -无-| |
 |获取先前清洁过程的详细摘要| `getCleaningRecord`| `recordId`| |
 |获取地图| `getMap`| -无-|未知结果如何处理 |

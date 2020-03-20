@@ -296,6 +296,14 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.1.2 (2020-03-18)
+* (Gieskanne/Apollon77) Add Next Timer Date as state
+* (Apollon77) Fix missing history entries
+* (Apollon77) Prevent List deletions from logging errors
+* (Apollon77) optimiztions, dependency updates and fixes
+* (Apollon77) Switch to ioBroker own sentry instance
+* (Apollon77) add Info.softwareVersion
+
 ### 3.0.8 (2020-01-19)
 * (Apollon77) fix some crash cases
 * (Apollon77) Update Sentry DSN and add filtering

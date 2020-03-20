@@ -36,7 +36,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 0.5.0 (2020.03.13)
+### 1.0.1 (2020.03.18)
+* (Apollon77) fixes and optimizations 
+
+### 1.0.0 (2020.03.13)
 * (Seraphis411) fixed writing of HomeeMode
 * (Seraphis411) bumped version of homee-api to 0.12.0 (no new features adopted)
 * (Seraphis411) now support for nodejs 10 thanks to newer ws-library (^7.1.2) in homee-api

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: +54sS1j/8Mh0hq6S+7j6cNQGV/0O/bH8eIA6dPy7w/A=
+hash: RMT8Az5ED8FuDUy2D4hEfDWjJU5FpGLavLYUzzOqB70=
 ---
 ![логотип](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
@@ -12,12 +12,10 @@ hash: +54sS1j/8Mh0hq6S+7j6cNQGV/0O/bH8eIA6dPy7w/A=
 ![NPM](https://nodei.co/npm/iobroker.knx.png?downloads=true)
 
 # IoBroker.knx
-=================
-
 ## Описание
 en: Этот адаптер позволяет импортировать файлы knxproj из ETS. Он генерирует перевод между адресами групп KNX и ioBroker и помещает устройства в комнаты (особенно для MobileUI).
 
-Он подключается к стандартным шлюзам KNX / LAN.
+Соединяется со стандартными шлюзами KNX / LAN.
 
 Перед началом: Каждый DPT для com.Objects должен быть установлен в вашем проекте ETS. Каждое устройство должно быть отсортировано в структуре вашего объекта.
 
@@ -48,25 +46,25 @@ en: Этот адаптер позволяет импортировать фай
 Здесь вы можете загрузить свой ETS Export в формате "knxproj".
 
 После успешного импорта в диалоговом окне отображается номер импортируемого объекта. Теперь нажмите «сохранить и закрыть», и адаптер должен запуститься.
-При запуске адаптер читает все групповые адреса с флагом чтения. Это может занять некоторое время и может привести к высокой нагрузке на вашу шину KNX. Но значения в вашем vis обновляются после запуска.
+При запуске адаптер читает все групповые адреса с read-Flag. Это может занять некоторое время и может привести к высокой нагрузке на вашу шину KNX. Но значения в вашем vis обновляются после запуска.
 
 ### Объекты
 Вот под knx.0 дерево группового адреса, как в вашем проекте ETS.
 
 ### Перечисления
-Если у вас в ETS есть строительная конструкция с соответствующими устройствами, это будет показано здесь. В разделе «участники» указаны имена групповых адресов, перечисленных на устройствах с флажком отправки в этой группе.
+Если у вас в ETS есть строительная конструкция с соответствующими устройствами, это будет показано здесь. В разделе «члены» указаны имена групповых адресов, перечисленных на устройствах с флажком отправки в этой группе.
 
 ### Использование
 Если адаптер запускается успешно, ваши точки данных будут доступны для всего, что вам нравится делать.
 
-### Типы Datapoint
+### Типы точек данных
 Доступны все DPT в соответствии с «Системными спецификациями, взаимодействием, типами данных» от KNX Association. Это означает, что есть 2 типа информации, которую вы можете получить: 1) Значение или Строка 2) Разделенные запятыми Значения или массив значений (на данный момент я не знаю, какой способ лучше обрабатывать)
 
 Например, DPT5.001 кодируется как 8-разрядное целое число без знака. Это дает единственное значение. DPT3.007 (управление диммированием) кодируется как 1Bit (логическое значение) + 3Bit (без знака Int).
 Это приводит к ф. Е. в значении, таком как «0,5», где «0» означает «уменьшение», а «5» означает количество интервалов.
 
 ## Wie werden die Datenpunkte generiert
-### 1) Ауслезен аллерг Коммуникационсобъектреферензен (im folgenden KOR)
+### 1) Ауслезен аллерг Коммуникационсобъектреферензен
 Dabei werden den Gruppenaddressreferenz (im folgenden GAR) удостоверение личности ювелирного изделия DPT der KOR zugeordnet, wenn er vorhanden ist. Ausserdem bekommt der erste Eintrag die Атрибут write = yes и read = no. Alle darauf folgenden GAR ID в bekommen nur den DPT zugeordnet
 
 ### 2) Erzeugen der Gruppenadressstruktur (im folgenden GAS)
@@ -79,34 +77,27 @@ Ausserdem werden die DPT abgeglichen aus der jewelilig korrespondierenden GA. Au
 
 Weiterhin werden die Flags in den Gerätekonfigurationen betrachtet. Dabei werden die Flags wie folgt umgesetzt:
 
-| KNX | | | иоброкер | | |
-|-------|-----------|------------|----------|----------|-------------------------------------------------|
-| Лесен | Шрайбен | Übertragen | Лесен | Schreiben | Erklärung |
-| - | - | - | - | - | der wert wird über GroupValueResponse aktualiesiert |
-| х | - | - | х | х | ein Trigger darauf löst GroupValueRead aus |
-| - | х | - | - | х | Schreibt den angegeben Wert с GroupValueWrite auf den KNX-Bus |
-| - | - | х | х | - | der Wert wird über GroupValueResponse aktualisiert |
-| х | - | х | х | х | ein Trigger darauf löst GroupValueRead aus |
+KNX <=> iobroker L = 0 S = 0 Ü = 0 <=> L = 0 S = 0 ==> der wert wird über GroupValueResponse aktualisiert L = 1 S = 0 Ü = 0 <=> L = 1 S = 1 ==> ein Trigger darauf Löst GroupValueRead aus L = 0 S = 1 Ü = 0 <=> L = 0 S = 1 ==> Schreibt den angegeben Wert mit GroupValueWrite auf den KNX-Bus L = 0 S = 0 Ü = 1 <=> L = 1 S = 0 ==> der Wert wird über GroupValueResponse aktualisiert L = 1 S = 0 Ü = 1 <=> L = 1 S = 1 ==> ein Trigger darauf löst GroupValueRead aus
 
 ### 4) Erzeugen der Datenpunktpaaren (im folgenden DPP)
-Ein DPP wird erzeugt, wenn die GA, GAR и действительный вид DPT. Mit Diesen DPP arbeitet der Adapter. Фелен также умирает от АКДС в Эйнере, США. A. Wege gefunden werden konnte, так странно, что GA GAIN DPP erzeugt und ist im Weiteren nicht nutzbar.
+Ein DPP wird erzeugt, wenn die GA, GAR и der DPT действительный вид. Mit Diesen DPP arbeitet der Adapter. Фелен также умирает от АКДС в Эйнере, штат Джорджия, США. A. Wege gefunden werden konnte, так что странно, что он не знает.
 
 Im Idealfall werden somit für einen Schaltkanal 2 DPP erzeugt. Das erste ist das Schalten. В этом случае GAR ID des Статус DPP задним числом. Das zweite ist dann das Статус DPP ohne weitere Refenrenz.
 
 ## Beim Start des Adapters
-Alle mit dem Lesen-Flag markieren DPP werden beim Запустите abgefragt. Умирает verursacht u.U. eine höhere Buslast und dauert einen Момент. Im Anschluss sind aber alle aktuellen Werte verfügbar.
+Alle mit dem Lesen-Flag markieren DPP werden beim Запустить abgefragt. Умирает verursacht u.U. eine höhere Buslast und dauert einen Момент. Im Anschluss sind aber alle aktuellen Werte verfügbar.
 
 ## (скрыто) Особенности:
-Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekte innerhalb dieser Gruppenadresse per GroupValueRead abgefragt.
+Durch senden eines Wertes aufine eine Statusadresse werden die Kommunikationsobjekte innerhalb dieser Gruppenadresse per GroupValueRead abgefragt.
 
 ### Vermeidung von Problemen
 1) программа ETS Programmeung и программа ETS Programmeung и Saubere программа ETS
 
 * Цувейзен дер DPT!
 * einheitliche Beschriftung der GA-Namen (z.B "Э.Г. Вонен Декке Лихт Шальтен" и "Э.Г. Вонен Декке Лихт Шальтен статус")
-* Vermeidung von Sonderzeichen ",. /; \ &% $ § []" (канн цу проблеммен эрзейгунг дер гас фюрен)
+Vermeidung von Sonderzeichen ",. /; \ &% $ § []"
 
-2) Prüfen ob das KNX / LAN GW erreichbar ist. Wenn es das nicht ist, versucht der Adapter sich kontinuierlich zu verbinden.
+2) Prüfen ob das KNX / LAN GW. Wenn es das nicht ist, versucht der Adapter sich kontinuierlich zu verbinden.
 
 3) Physikalische Adresse richtig wählen (Wichtig Beim Einsatz von Linienkopplern). !!! АХТУНГ: умереть, получить физический адрес!
 
@@ -299,7 +290,7 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 ## License
 The CC-NC-BY License (CC-NC-BY)
 
-Copyright (c) 2016-2019 K.Ringmann <info@punktnetzwerk.net>
+Copyright (c) 2016-2020 K.Ringmann <info@punktnetzwerk.net>
 
 THE WORK IS PROVIDED UNDER THE TERMS OF THIS CREATIVE
 COMMONS PUBLIC LICENSE ("CCPL" OR "LICENSE"). THE WORK IS PROTECTED BY

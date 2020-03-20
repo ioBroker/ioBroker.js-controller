@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.cul/README.md
 title: ioBroker.cul
-hash: ROw7IIcXhBRDnLoCDsNfcST+TCLHwk06DWfPWWYuLvA=
+hash: nR8o8qUmkCDh2rpzFm+HXBen6bjUhSypsUGdYGuOGdg=
 ---
 ![商标](../../../en/adapterref/iobroker.cul/admin/busware.jpg)
 
@@ -28,8 +28,16 @@ ioBroker适配器可通过[CUL](http://busware.de/tiki-index.php?page=CUL)/[ulf]
 ```sendTo("cul.0", "send", {"protocol":"FS20", "housecode":"A1B2", "address":"01", "command":"00"});```
 
 此命令使用此适配器的CUL库将命令发送到FS20设备。
+基于Javascript / Node.js的Busware CUL USB / culfw适配器
 
 ## Changelog
+### 1.2.1 (2020-03-18)
+* (bluefox) Changed license from non SPDX conform "GPL-2.0" to "GPL-2.0-or-later"
+
+### 1.2.0 (2020-02-10)
+* (MK-2001) Sending of FS20 cmdRAW possible or via sendTo as described in the readme
+* (Bluefox) Refactoring
+
 ### 1.1.0 (2020-01-04)
 * (foxriver76) removed usage of adapter.objects
 
@@ -62,4 +70,4 @@ ioBroker适配器可通过[CUL](http://busware.de/tiki-index.php?page=CUL)/[ulf]
 
 ## License
 
-[Licensed under GPLv2](LICENSE) Copyright (c) 2014-2017 hobbyquaker
+[Licensed under GPLv2](LICENSE) Copyright (c) 2014-2020 hobbyquaker

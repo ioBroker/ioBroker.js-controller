@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: JlfMTIl0oYXy1Blq5/3T6Uz/DHavUfRYnn7wB2ZZ4/A=
+hash: pO/VLwmq53Hbx9sjZnZ7/uAQIPQg5ORzFs8viU0ujdM=
 ---
 ![Logo](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -38,9 +38,21 @@ Bekannte Probleme: Netzwerke mit VLAN-Trennung leiten den Broadcast-Verkehr meis
 Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
-### 0.1.4
-- (DutchmanNL) Implement drop down menu for color pallets
-- (DutchmanNL) New configuration page
+
+### 0.1.9 Code improvements
+- (DutchmanNL) Code cleanup and optimalisation
+- (DutchmanNL) FIX memory leak by proper handling of bonjour service
+
+### 0.1.8 Bugfix
+- (DutchmanNL) Solved incorrect formated API call at state changes causing warning message
+
+### 0.1.7 Bugfix
+- (DutchmanNL) Fixed error when API call fails (write warning to log and retry at intervall time)
+
+### 0.1.6 HEX color states implemented
+- (DutchmanNL) HEX color states implemented
+
+### 0.1.5 Stable Beta release
 
 ### 0.1.2
 - (DutchmanNL) Implement drop down menu for effects

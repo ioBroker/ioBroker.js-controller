@@ -35,6 +35,16 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 1.2.0
+- Added image widget
+- Added Slider to change border radius for all 4 corners (If this version is an update for you, you need to click on each button in the vis-editor to get back the default corners)
+- Added new icons
+
+
+### 1.1.1
+- Bug fix
+
+
 ### 1.1.0
 - Added slider widget
 - Added option to mirror image

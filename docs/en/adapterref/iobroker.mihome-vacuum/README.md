@@ -205,7 +205,7 @@ The supported commands are:
 | Go back to the base | `charge` | - none - |  |
 | Say "Hi, I'm over here!" | `findMe` | - none - |  |
 | Check status of consumables (brush, etc.) | `getConsumableStatus` | - none - |  |
-| Reset status of consumables (brush, etc.) | `resetConsumables` | `resetConsumables` | `consumable` | String: filter_work_time, filter_element_work_time, sensor_dirty_time, main_brush_work_time, side_brush_work_time |
+| Reset status of consumables (brush, etc.) | `resetConsumables` | `consumable` | String: filter_work_time, filter_element_work_time, sensor_dirty_time, main_brush_work_time, side_brush_work_time |
 | Get a summary of all previous cleaning processes | `getCleaningSummary` | - none - |  |
 | Get a detailed summary of a previous cleaning process | `getCleaningRecord` | `recordId` |  |
 | Get a map | `getMap` | - none - | Unknown what to do with the result |

@@ -28,7 +28,6 @@ Known issues : Networks with VLAN seperation mostly don't route broadcast traffi
 5) Adapter will send changes immediatly and polls data every x seconds (configurable)
 
 ## To-Do
-
 * [ ] configurable devices (currenly only autodetect by bonjour)
 * [ ] investigate better way of stay change announcement, currentl polly supported
 * [x] special commands not included in rest-api (like save presets)
@@ -40,11 +39,22 @@ If you like my work, please feel free to provide a personal donation
 (this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
 [![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
-
 ## Changelog
-### 0.1.4
-- (DutchmanNL) Implement drop down menu for color pallets
-- (DutchmanNL) New configuration page
+
+### 0.1.9 Code improvements
+- (DutchmanNL) Code cleanup and optimalisation
+- (DutchmanNL) FIX memory leak by proper handling of bonjour service
+
+### 0.1.8 Bugfix
+- (DutchmanNL) Solved incorrect formated API call at state changes causing warning message
+
+### 0.1.7 Bugfix
+- (DutchmanNL) Fixed error when API call fails (write warning to log and retry at intervall time)
+
+### 0.1.6 HEX color states implemented
+- (DutchmanNL) HEX color states implemented
+
+### 0.1.5 Stable Beta release
 
 ### 0.1.2
 - (DutchmanNL) Implement drop down menu for effects

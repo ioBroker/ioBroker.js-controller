@@ -1,5 +1,9 @@
-![Logo](admin/coronavirus-statistics.png)
-# ioBroker.coronavirus-statistics
+<h1>
+
+<img  src="admin/coronavirus-statistics.png"  width="64"/>
+    ioBroker.coronavirus-statistics
+
+</h1>
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)](https://www.npmjs.com/package/iobroker.coronavirus-statistics)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)](https://www.npmjs.com/package/iobroker.coronavirus-statistics)
@@ -39,6 +43,13 @@ Please be aware this adapter uses as much as possible up-to-date information but
 Source : https://coronavirus-19-api.herokuapp.com
 
 ## Changelog
+
+### 0.2.4
+* (Scrounger) Grouping by continents implemented
+
+### 0.2.3
+* (DutchmanNL) Error message for new attribute solved
+
 ### 0.2.2
 * (GermanBluefox) fixed widget countries
 

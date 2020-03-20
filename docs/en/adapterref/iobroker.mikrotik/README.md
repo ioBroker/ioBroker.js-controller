@@ -23,6 +23,9 @@ Reset power USB in mikrotik
 
 ## Changelog
 
+#### 1.0.11
+* (instalator) fixed [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/28)
+
 #### 1.0.10
 * (instalator) added name object
 * (instalator) fix error

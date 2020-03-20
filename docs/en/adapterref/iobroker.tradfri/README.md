@@ -71,6 +71,9 @@ The result object `ret` looks as follows:
 	### __WORK IN PROGRESS__
 -->
 
+### 2.6.0 (2020-03-17)
+* Support stopping blinds at their current position
+
 ### 2.5.2 (2020-01-26)
 * Fix: Suppress log warnings for Symfonisk remotes
 

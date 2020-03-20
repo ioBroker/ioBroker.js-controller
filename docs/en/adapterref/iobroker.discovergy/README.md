@@ -117,7 +117,7 @@ If you like my work, please feel free to provide a personal donation
 ## License
 MIT License
 
-Copyright (c) 2019 Dutchman
+Copyright (c) 2020 Dutchman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,6 +1,5 @@
 ![Logo](admin/knx.png)
 # ioBroker.knx
-=================
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.knx.svg)](https://www.npmjs.com/package/iobroker.knx)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.knx.svg)](https://www.npmjs.com/package/iobroker.knx)
@@ -75,14 +74,12 @@ In dem ETS Export sind die Schalt- und Statusadressen nicht hinterlegt. Somit f�
 
 Weiterhin werden die Flags in den Gerätekonfigurationen betrachtet. Dabei werden die Flags wie folgt umgesetzt:
 
-| KNX   |  |  | iobroker |  |  |
-|-------|-----------|------------|----------|----------|-------------------------------------------------|
-| Lesen | Schreiben | Übertragen | Lesen    | Schreiben| Erklärung                                       |
-|   -   |    -      |    -      |   -     |    -    | der wert wird über GroupValueResponse aktualiesiert |
-|   x   |    -      |    -      |   x     |    x    | ein Trigger darauf löst GroupValueRead aus|
-|   -   |    x      |    -      |   -     |    x    | Schreibt den angegeben Wert mit GroupValueWrite auf den KNX-Bus|
-|   -   |    -      |    x      |   x     |    -    | der Wert wird über GroupValueResponse aktualisiert |
-|   x   |    -      |    x      |   x     |    x    | ein Trigger darauf löst GroupValueRead aus|
+KNX <=> iobroker
+L=0  S=0 Ü=0  <=> L=0 S=0   ==> der wert wird über GroupValueResponse aktualisiert
+L=1  S=0 Ü=0  <=> L=1 S=1   ==> ein Trigger darauf löst GroupValueRead aus
+L=0  S=1 Ü=0  <=> L=0 S=1   ==> Schreibt den angegeben Wert mit GroupValueWrite auf den KNX-Bus
+L=0  S=0 Ü=1  <=> L=1 S=0   ==> der Wert wird über GroupValueResponse aktualisiert
+L=1  S=0 Ü=1  <=> L=1 S=1   ==> ein Trigger darauf löst GroupValueRead aus
 
 ###  4)Erzeugen der Datenpunktpaaren (im folgenden DPP)
 Ein DPP wird erzeugt, wenn die GA, GAR und der DPT valid sind. Mit diesen DPP arbeitet der Adapter. Fehlen also die DPT's in einer GA, weil sie auf keiner der o. A. Wege gefunden werden konnte, so wird für diese GA kein DPP erzeugt und ist im Weiteren nicht nutzbar.
@@ -297,7 +294,7 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 ## License
 The CC-NC-BY License (CC-NC-BY)
 
-Copyright (c) 2016-2019 K.Ringmann <info@punktnetzwerk.net>
+Copyright (c) 2016-2020 K.Ringmann <info@punktnetzwerk.net>
 
 THE WORK IS PROVIDED UNDER THE TERMS OF THIS CREATIVE
 COMMONS PUBLIC LICENSE ("CCPL" OR "LICENSE"). THE WORK IS PROTECTED BY

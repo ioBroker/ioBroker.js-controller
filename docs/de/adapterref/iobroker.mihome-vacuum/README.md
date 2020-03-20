@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker Mihome-Vakuumadapter
-hash: jgAFr69EafUJFMKZTLdoBfXb9BHAbRyRHuy0LScVqGQ=
+hash: OzbeF+mF8wNlgeVONtaUgbpuiW5a421HTeBy/XuFSiQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -31,7 +31,7 @@ Mit diesem Adapter können Sie den Xiaomi-Staubsauger steuern.
     - [Zimmer] (# Zimmer)
     - [Timer] (# Timer)
     - [Eigene Befehle] (# send-your-own-Befehle)
-    - [sendTo hook] (# send-custom-befehle-with-sendto)
+    - [sendTo hook] (# send-custom-Befehle-mit-sendto)
 - [Widget] (# Widget)
 - [Bugs] (# Bugs)
 - [Changelog] (# changelog)
@@ -60,7 +60,7 @@ Bitte installieren Sie canvas und die Bibliotheken manuell mit:
 - Abfrageintervall Die Zeit in ms, in der die Statuswerte des Roboters abgerufen werden (sollte nicht <10000 sein).
 
 #### Kontrolle über Alexa
-In der Konfiguration wird der Status "Alexa hinzufügen" aktiviert. Hier wird ein Hack gesetzt. Ein zusätzlicher Status "clean_home" ist ein Schalter, der bei "true" des Saugers beginnt und bei "false" nach Hause geht. Er wird automatisch zu einem intelligenten Gerät in der Cloud Adapter mit dem Namen "Staubsauger" erstellt, der im Cloud-Adapter geändert werden kann.
+In der Konfiguration wird der Status "Alexa hinzufügen" aktiviert. Hier wird ein Hack gesetzt. Ein zusätzlicher Status "clean_home". Es ist ein Schalter, der bei "true" des Saugers beginnt und bei "false" nach Hause geht. Es wird automatisch ein intelligentes Gerät in der Cloud Adapter mit dem Namen "Staubsauger" erstellt, der im Cloud-Adapter geändert werden kann.
 
 #### Setzen Sie die angehaltene Zonenreinigung mit der Starttaste fort
 Wenn diese Option aktiviert ist, setzt das Vakuum die Zonenreinigung fort, wenn der Status "Start" auf "true" gesetzt wird, wenn er während einer laufenden Zonenreinigung angehalten wurde.
@@ -214,7 +214,7 @@ Die unterstützten Befehle sind:
 | Gehe zurück zur Basis | `charge` | - Keine - | |
 | Sag "Hallo, ich bin hier!" | `findMe` | - Keine - | |
 | Überprüfen Sie den Status der Verbrauchsmaterialien (Bürste usw.) `getConsumableStatus` | - Keine - | |
-| Status der Verbrauchsmaterialien (Bürste usw.) zurücksetzen | `resetConsumables` | `resetConsumables` | `consumable` | Zeichenfolge: filter_work_time, filter_element_work_time, sensor_dirty_time, main_brush_work_time, side_brush_work_time |
+| Status der Verbrauchsmaterialien (Bürste usw.) zurücksetzen | `resetConsumables` | `consumable` | Zeichenfolge: filter_work_time, filter_element_work_time, sensor_dirty_time, main_brush_work_time, side_brush_work_time |
 | Erhalten Sie eine Zusammenfassung aller vorherigen Reinigungsprozesse `getCleaningSummary` | - Keine - | |
 | Erhalten Sie eine detaillierte Zusammenfassung eines früheren Reinigungsprozesses `getCleaningRecord` | `recordId` | |
 | Holen Sie sich eine Karte | `getMap` | - Keine - | Unbekannt, was mit dem Ergebnis zu tun ist |

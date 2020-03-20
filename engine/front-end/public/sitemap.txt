@@ -847,6 +847,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.rflink/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.rickshaw/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ring/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.roadtraffic/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.robonect/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.roomba/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.rpi2/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.s7/README.md
@@ -1206,6 +1207,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.rflink/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.rickshaw/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ring/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.roadtraffic/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.robonect/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.roomba/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.rpi2/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.s7/README.md
@@ -1565,6 +1567,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.rflink/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.rickshaw/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ring/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.roadtraffic/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.robonect/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.roomba/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.rpi2/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.s7/README.md
@@ -1924,6 +1927,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.rflink/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.rickshaw/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ring/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.roadtraffic/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.robonect/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.roomba/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.rpi2/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.s7/README.md

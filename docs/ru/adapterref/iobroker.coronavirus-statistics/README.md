@@ -2,21 +2,24 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.coronavirus-statistics/README.md
-title: ioBroker.coronavirus-статистика
-hash: JR33iNLvIejO8yNKVer3X/NkoXAx9CHiGkTRHTF5quE=
+title: без заголовка
+hash: 3sQ2AFsMKV+YfA+lHLTsIcBIVQGMiahyAT44vv+ieSo=
 ---
-![логотип](../../../en/adapterref/iobroker.coronavirus-statistics/admin/coronavirus-statistics.png)
-
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
 ![Количество установок (последняя)](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/coronavirus-statistics-stable.svg)
-![Состояние зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.coronavirus-statistics.svg)
+![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.coronavirus-statistics.svg)
 ![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.coronavirus-statistics/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.coronavirus-statistics/master.svg)
 
-# IoBroker.coronavirus-statistics
+<h1>
+
+<img  src="admin/coronavirus-statistics.png"  width="64"/> ioBroker.coronavirus-статистика
+
+</ H1>
+
 ## Адаптер живой статистики Coronavirus для ioBroker
 Адаптер для отображения информации о вирусе глобальной короны и текущих отчетов
 
@@ -42,6 +45,13 @@ hash: JR33iNLvIejO8yNKVer3X/NkoXAx9CHiGkTRHTF5quE=
 Источник: https://coronavirus-19-api.herokuapp.com
 
 ## Changelog
+
+### 0.2.4
+* (Scrounger) Grouping by continents implemented
+
+### 0.2.3
+* (DutchmanNL) Error message for new attribute solved
+
 ### 0.2.2
 * (GermanBluefox) fixed widget countries
 

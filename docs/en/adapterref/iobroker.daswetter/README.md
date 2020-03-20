@@ -52,6 +52,9 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
+### 2.8.2 (2020-03-20)
+* (René) some more logs to find parser errors
+
 ### 2.8.1 (2019-09-08)
 * (René) bug fix: some datapoints were created as number instead of string
 
@@ -119,7 +122,7 @@ needs also 2.x of vis-weather-widget
 
 
 ## License
-Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2020>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

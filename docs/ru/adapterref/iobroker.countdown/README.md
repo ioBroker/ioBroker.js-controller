@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: hmuqgdnuVBbeU7rgtYZEUOe+Wsse6dubYbJrjEHoit8=
+hash: xHNdfxlaopeoue8Ux4AUCIlLOPTnSrQYMs1bbF2dHKc=
 ---
 ![логотип](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -32,7 +32,7 @@ hash: hmuqgdnuVBbeU7rgtYZEUOe+Wsse6dubYbJrjEHoit8=
 
 ![логотип](../../../en/adapterref/iobroker.countdown/admin/countdown_blocky.png)
 
-* Вы можете добавить дни, месяцы и годы с sendto к сегодняшней дате. Поэтому, пожалуйста, отправьте компоненту "name" и либо "addminutes", "addhours", "adddays", "addmonths", либо "addyears" в качестве значения int.
+* Вы можете добавить дни, месяцы и годы с sendto к сегодняшней дате. Поэтому, пожалуйста, отправьте компоненту «name» и либо «addminutes», «addhours», «adddays», «addmonths», либо «addyears» в качестве значения int.
 
 ![логотип](../../../en/adapterref/iobroker.countdown/admin/countdown_blocky_add.png)
 
@@ -54,17 +54,20 @@ hash: hmuqgdnuVBbeU7rgtYZEUOe+Wsse6dubYbJrjEHoit8=
 | totalHours | Общее количество часов до даты окончания |
 | totalDays | Общее количество дней до даты окончания |
 | totalWeeks | Общее количество недель до даты окончания |
-| достигла | Логическое поле, определяющее, была ли достигнута дата окончания или нет |
+| достигается | Булево поле, определяющее, была ли достигнута дата окончания или нет |
 
 ## Особенности для добавления
 * Возможность добавить скрипт в качестве параметра и запустить его по окончании обратного отсчета.
 * Возможность использовать плюс и минус в addminutes и другие функции добавления
 
+## 1.0.6 (2020-03-20)
+* (DutchmanNL) Фиксированный тип адаптера
+
 ## 1.0.5 (2020-02-05)
 * (Джек-Блэксон) Исправление тревоги в полночь -> благодаря @Lueghi
 
 ## 1.0.4 (2019-08-25)
-* (Джек-Блэксон) Переупорядоченная информация о выпуске
+* (Джек-Блэксон) Информация о переупорядоченной версии
 
 ## 1.0.3 (2019-08-10)
 * (Джек-Блэксон) Изменения в компактном режиме
@@ -106,7 +109,7 @@ hash: hmuqgdnuVBbeU7rgtYZEUOe+Wsse6dubYbJrjEHoit8=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 jack-blackson <blacksonj7@gmail.com>
+Copyright (c) 2019-2020 jack-blackson <blacksonj7@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

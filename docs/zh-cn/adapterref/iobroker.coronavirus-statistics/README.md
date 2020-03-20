@@ -2,11 +2,9 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.coronavirus-statistics/README.md
-title: ioBroker。冠状病毒统计
-hash: JR33iNLvIejO8yNKVer3X/NkoXAx9CHiGkTRHTF5quE=
+title: 无题
+hash: 3sQ2AFsMKV+YfA+lHLTsIcBIVQGMiahyAT44vv+ieSo=
 ---
-![商标](../../../en/adapterref/iobroker.coronavirus-statistics/admin/coronavirus-statistics.png)
-
 ![NPM版本](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
 ![安装数量（最新）](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
@@ -16,7 +14,12 @@ hash: JR33iNLvIejO8yNKVer3X/NkoXAx9CHiGkTRHTF5quE=
 ![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
 ![特拉维斯](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.coronavirus-statistics/master.svg)
 
-＃ioBroker.coronavirus-statistics
+<h1>
+
+<img  src="admin/coronavirus-statistics.png"  width="64"/> ioBroker。冠状病毒统计
+
+</ h1>
+
 ##用于ioBroker的冠状病毒实时统计适配器
 显示全球冠状病毒信息和当前报告的适配器
 
@@ -38,10 +41,17 @@ hash: JR33iNLvIejO8yNKVer3X/NkoXAx9CHiGkTRHTF5quE=
 |今天案例今天的新案例|
 |今天死亡|今天有很多众所周知的人死亡 |
 
-请注意，此适配器会使用尽可能多的最新信息，但是可能会延迟几个小时，具体取决于国家/地区的报告。
+请注意，此适配器使用尽可能多的最新信息，但是可能会延迟几个小时，具体取决于国家/地区的报告。
 来源：https://coronavirus-19-api.herokuapp.com
 
 ## Changelog
+
+### 0.2.4
+* (Scrounger) Grouping by continents implemented
+
+### 0.2.3
+* (DutchmanNL) Error message for new attribute solved
+
 ### 0.2.2
 * (GermanBluefox) fixed widget countries
 

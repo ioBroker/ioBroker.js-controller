@@ -2,11 +2,9 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.coronavirus-statistics/README.md
-title: ioBroker.coronavirus-Statistik
-hash: JR33iNLvIejO8yNKVer3X/NkoXAx9CHiGkTRHTF5quE=
+title: kein Titel
+hash: 3sQ2AFsMKV+YfA+lHLTsIcBIVQGMiahyAT44vv+ieSo=
 ---
-![Logo](../../../en/adapterref/iobroker.coronavirus-statistics/admin/coronavirus-statistics.png)
-
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
 ![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
@@ -16,7 +14,12 @@ hash: JR33iNLvIejO8yNKVer3X/NkoXAx9CHiGkTRHTF5quE=
 ![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.coronavirus-statistics/master.svg)
 
-# IoBroker.coronavirus-statistics
+<h1>
+
+<img  src="admin/coronavirus-statistics.png"  width="64"/> ioBroker.coronavirus-Statistik
+
+</ h1>
+
 ## Coronavirus Live Statistics-Adapter für ioBroker
 Adapter zur Anzeige von Informationen zum globalen Corona-Virus und aktuellen Berichten
 
@@ -42,6 +45,13 @@ Bitte beachten Sie, dass dieser Adapter so viele aktuelle Informationen wie mög
 Quelle: https://coronavirus-19-api.herokuapp.com
 
 ## Changelog
+
+### 0.2.4
+* (Scrounger) Grouping by continents implemented
+
+### 0.2.3
+* (DutchmanNL) Error message for new attribute solved
+
 ### 0.2.2
 * (GermanBluefox) fixed widget countries
 

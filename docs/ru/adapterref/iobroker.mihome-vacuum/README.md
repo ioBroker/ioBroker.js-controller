@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker mihome-вакуумный адаптер
-hash: jgAFr69EafUJFMKZTLdoBfXb9BHAbRyRHuy0LScVqGQ=
+hash: OzbeF+mF8wNlgeVONtaUgbpuiW5a421HTeBy/XuFSiQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -45,7 +45,7 @@ hash: jgAFr69EafUJFMKZTLdoBfXb9BHAbRyRHuy0LScVqGQ=
 ### Ошибка при установке
 если ваша установка запускается по ошибке. Не удалось установить пакет canvas
 
-`` npm ERR! canvas@2.6.1 install: node-pre-gyp install - Fallback-to-build npm ERR! Статус выхода 1``
+`` npm ERR! canvas@2.6.1 install: node-pre-gyp install - откат к сборке npm ERR! Статус выхода 1``
 
 Пожалуйста, установите canvas и libs вручную:
 
@@ -56,7 +56,7 @@ hash: jgAFr69EafUJFMKZTLdoBfXb9BHAbRyRHuy0LScVqGQ=
 ### Конфигурация адаптера
 - Для IP-адреса IP-адрес робота должен быть введен в формате «192.168.178.XX».
 - Порт робота по умолчанию установлен на «54321», это не должно быть изменено.
-- Собственный порт, должен быть изменен только со вторым роботом
+- Собственный порт, должен меняться только со вторым роботом
 - Интервал запроса Время в мс, в течение которого извлекаются значения состояния робота (не должно быть <10000)
 
 #### Контроль над Alexa
@@ -78,7 +78,7 @@ hash: jgAFr69EafUJFMKZTLdoBfXb9BHAbRyRHuy0LScVqGQ=
 
 ![конфиг](../../../en/adapterref/iobroker.mihome-vacuum/admin/valetudo_conf.png)
 
-- Чтобы использовать карту, вы должны выбрать valetudo или оригинальную карту в конфиге
+- Чтобы использовать карту, вы должны выбрать valetudo или оригинальную карту в конфигурации
 - Интервал запроса должен быть больше 1000 мс, это интервал для обновления html-карты
 - интервал карты должен быть больше 5000 мс, этот интервал обновляет файл карты png (вы можете использовать это для Telegram или vis или чего-либо еще)
 - цвет там вы можете выбрать цвета для примера карты:
@@ -108,7 +108,7 @@ hash: jgAFr69EafUJFMKZTLdoBfXb9BHAbRyRHuy0LScVqGQ=
 Если робот выбирает только одну область и всегда строит карту одинаково, вы можете надежно отправить ее в разные места или очистить область пылесосом.
 
 #### Перейти к
-Чтобы привести пылесос в точку, объект «goTo» должен быть заполнен следующим образом:
+Чтобы подвести пылесос к точке, объект «goTo» должен быть заполнен следующим образом:
 
 ```
 xVal, yval
@@ -160,7 +160,7 @@ xVal, yval
 Под объектом «mihome-вакуум.X.control.X_send_command» вы можете отправлять свои собственные команды роботу.
 Структура объекта должна выглядеть следующим образом: метод; [PARAMS]
 
-Под объектом «mihome -uum.X.control.X_get_response» ответ вводится роботом после отправки. Если параметры были запрошены, они отображаются здесь в формате JSON. Если была отправлена только одна команда, робот отвечает только «0».
+Под объектом «mihome-вакуум.X.control.X_get_response» ответ вводится роботом после отправки. Если параметры были запрошены, они отображаются здесь в формате JSON. Если была отправлена только одна команда, робот отвечает только «0».
 
 Поддерживаются следующие методы и параметры:
 
@@ -214,7 +214,7 @@ sendTo("mihome-vacuum.0",
 | Вернуться на базу | `charge` | - нет - | |
 | Скажи "Привет, я здесь!" | `findMe` | - нет - | |
 | Проверить состояние расходных материалов (щетка и т. Д.) | `getConsumableStatus` | - нет - | |
-| Сбросить состояние расходных материалов (кисти и т. Д.) | `resetConsumables` | `resetConsumables` | `consumable` | Строка: filter_work_time, filter_element_work_time, sensor_dirty_time, main_brush_work_time, side_brush_work_time |
+| Сбросить состояние расходных материалов (кисти и т. Д.) | `resetConsumables` | `consumable` | Строка: filter_work_time, filter_element_work_time, sensor_dirty_time, main_brush_work_time, side_brush_work_time |
 | Получить сводку всех предыдущих процессов очистки | `getCleaningSummary` | - нет - | |
 | Получить подробную сводку предыдущего процесса очистки | `getCleaningRecord` | `recordId` | |
 | Получить карту | `getMap` | - нет - | Неизвестно, что делать с результатом |
@@ -232,7 +232,7 @@ sendTo("mihome-vacuum.0",
 | чистая комната / комнаты | `cleanRooms` | `rooms` | `rooms` - это строка, разделенная запятыми, с enum.rooms.XXX |
 | чистый сегмент | `cleanSegments` | `rooms` | `rooms` - массив с mapIndex или разделенная запятыми строка с mapIndex |
 | чистая зона | `cleanZone` | `coordinates` | `coordinates` - это строка с координатами и количеством, см. [zoneClean](#zoneClean) |
-| чистая зона | `cleanZone` | `координаты` | `координаты` - это строка с координатами и количеством, см. [zoneClean] (# zoneClean) |
+| чистая зона | `cleanZone` | `координаты` | `arguments` - это строка с координатами и количеством, см. [zoneClean] (# zoneClean) |
 
 ## Виджет
 Извините, еще не закончил.

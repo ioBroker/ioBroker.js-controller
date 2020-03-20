@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: hmuqgdnuVBbeU7rgtYZEUOe+Wsse6dubYbJrjEHoit8=
+hash: xHNdfxlaopeoue8Ux4AUCIlLOPTnSrQYMs1bbF2dHKc=
 ---
 ![商标](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -28,11 +28,11 @@ ioBroker的倒数适配器---------------------------------------------- -------
 设置倒计时有两种方法：
 
 *您可以在设备“设置”中创建手动状态。对象的名称是警报名称，值将是日期。日期必须采用“ DD.MM.YYYY HH：mm：ss”格式。
-*您可以使用sendto创建警报。在那里，您可以发送组件（最少是年月日）或日期字符串。对于日期字符串，您可以在适配器的设置中调整格式。
+*您可以使用sendto创建警报。在这里，您可以发送组件（最少是年月日）或日期字符串。对于日期字符串，您可以在适配器的设置中调整格式。
 
 ![商标](../../../en/adapterref/iobroker.countdown/admin/countdown_blocky.png)
 
-*您可以添加日期，月份和年份以及sendto到今天的日期。因此，请发送组件“名称”以及“ addminutes”，“ addhours”，“ adddays”，“ addmonths”或“ addyears”作为int值。
+*您可以将日期，月份和年份与sendto添加到今天的日期。因此，请发送组件“名称”以及“ addminutes”，“ addhours”，“ adddays”，“ addmonths”或“ addyears”作为int值。
 
 ![商标](../../../en/adapterref/iobroker.countdown/admin/countdown_blocky_add.png)
 
@@ -43,10 +43,10 @@ ioBroker的倒数适配器---------------------------------------------- -------
 |数据类型|描述|
 |:---:|:---:|
 |分钟|分钟，直到倒计时结束（不总计！）|
-|小时|数到倒计时结束为止的小时数（不是总计！）|
+|小时|倒计时结束为止的小时数（并非总计！）|
 |天|直到倒计时结束的天数（不总计！）|
-|个月|直到倒计时结束的月数（不总计！）|
-|年|倒计时结束为止的年数（总计！）|
+|月|直到倒计时结束的月数（不总计！）|
+|年|直至倒计时结束的年限（未总计！）|
 |名称|倒数名称|
 | endDate |倒数结束日期-格式如定义的设置|
 | inWordsShort |分钟，小时，...的组合值-例如1年5M 4D |
@@ -59,6 +59,9 @@ ioBroker的倒数适配器---------------------------------------------- -------
 ##要添加的功能
 *可以添加脚本作为参数并在倒计时结束时启动它
 *可以在addminutes和其他添加函数中使用加号和减号
+
+## 1.0.6（2020-03-20）
+*（DutchmanNL）固定适配器类型
 
 ## 1.0.5（2020-02-05）
 *（jack-blackson）修正了午夜警报->感谢@Lueghi
@@ -106,7 +109,7 @@ ioBroker的倒数适配器---------------------------------------------- -------
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 jack-blackson <blacksonj7@gmail.com>
+Copyright (c) 2019-2020 jack-blackson <blacksonj7@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

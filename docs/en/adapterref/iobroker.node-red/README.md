@@ -19,6 +19,7 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 ## Changelog
 ### 1.16.5 (2020-03-17)
 * (bluefox) Caught errors if state deleted
+* (bluefox) "Fire on start" for the input node was implemented
 
 ### 1.16.4 (2020-03-16)
 * (Apollon77) fix State ID verification regex to allow all characters

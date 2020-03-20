@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: JlfMTIl0oYXy1Blq5/3T6Uz/DHavUfRYnn7wB2ZZ4/A=
+hash: pO/VLwmq53Hbx9sjZnZ7/uAQIPQg5ORzFs8viU0ujdM=
 ---
 ![логотип](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -11,7 +11,7 @@ hash: JlfMTIl0oYXy1Blq5/3T6Uz/DHavUfRYnn7wB2ZZ4/A=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.wled.svg)
 ![Количество установок (последняя)](http://iobroker.live/badges/wled-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/wled-stable.svg)
-![Состояние зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.wled.svg)
+![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.wled.svg)
 ![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wled/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.wled.png?downloads=true)
 
@@ -29,7 +29,7 @@ hash: JlfMTIl0oYXy1Blq5/3T6Uz/DHavUfRYnn7wB2ZZ4/A=
 
 ## Сделать
 * [] настраиваемые устройства (только автоматическое обнаружение с помощью Bonjour)
-* [] Изучите лучший способ объявления об изменении пребывания, поддерживается текущая политика
+* [] Изучить лучший способ объявления об изменении пребывания, при поддержке текущих политик
 * [x] специальные команды, не включенные в rest-api (например, сохранение настроек)
 * [x] контрольные сегменты
 * [x] изменения цвета
@@ -38,9 +38,21 @@ hash: JlfMTIl0oYXy1Blq5/3T6Uz/DHavUfRYnn7wB2ZZ4/A=
 Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это личная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
-### 0.1.4
-- (DutchmanNL) Implement drop down menu for color pallets
-- (DutchmanNL) New configuration page
+
+### 0.1.9 Code improvements
+- (DutchmanNL) Code cleanup and optimalisation
+- (DutchmanNL) FIX memory leak by proper handling of bonjour service
+
+### 0.1.8 Bugfix
+- (DutchmanNL) Solved incorrect formated API call at state changes causing warning message
+
+### 0.1.7 Bugfix
+- (DutchmanNL) Fixed error when API call fails (write warning to log and retry at intervall time)
+
+### 0.1.6 HEX color states implemented
+- (DutchmanNL) HEX color states implemented
+
+### 0.1.5 Stable Beta release
 
 ### 0.1.2
 - (DutchmanNL) Implement drop down menu for effects

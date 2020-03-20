@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: JlfMTIl0oYXy1Blq5/3T6Uz/DHavUfRYnn7wB2ZZ4/A=
+hash: pO/VLwmq53Hbx9sjZnZ7/uAQIPQg5ORzFs8viU0ujdM=
 ---
 ![商标](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -19,13 +19,13 @@ hash: JlfMTIl0oYXy1Blq5/3T6Uz/DHavUfRYnn7wB2ZZ4/A=
 ##用于ioBroker的wled适配器
 ESP8266 / ESP32网络服务器的快速且功能丰富的实现，用于控制NeoPixel（WS2812B，WS2811，SK6812，APA102）LED！
 
-@Aircoookie的[WLED-Github项目](https://github.com/Aircoookie/WLED)
+@Aircoookie的[WLED-Github项目](https://github.com/Aircoookie/WLED)§
 
 ##说明
 适配器会使用Bonjour服务自动尝试在网络中查找WLED设备。
 已知问题：具有VLAN分隔的网络通常不会路由广播流量，这意味着自动检测将失败。 （请参阅待办事项）
 
-1）确保您的WLED设备正在运行并且可以通过网络访问2）安装适配器3）配置数据轮询和自动检测周期的间隔时间4）启动适配器，应自动检测设备5）适配器将立即发送更改并进行轮询每x秒传输一次数据（可配置）
+1）确保WLED设备正在运行并且可以通过网络访问2）安装适配器3）配置数据轮询和自动检测周期的间隔时间4）启动适配器，应自动检测设备5）适配器将立即发送更改并进行轮询每x秒传输一次数据（可配置）
 
 ＃＃ 去做
 * []可配置设备（目前仅由Bonjour自动检测）
@@ -35,12 +35,24 @@ ESP8266 / ESP32网络服务器的快速且功能丰富的实现，用于控制Ne
 * [x]颜色变化
 
 ＃＃ 支持我
-如果您喜欢我的工作，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](http://paypal.me/DutchmanNL)
+如果您喜欢我的作品，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](http://paypal.me/DutchmanNL)
 
 ## Changelog
-### 0.1.4
-- (DutchmanNL) Implement drop down menu for color pallets
-- (DutchmanNL) New configuration page
+
+### 0.1.9 Code improvements
+- (DutchmanNL) Code cleanup and optimalisation
+- (DutchmanNL) FIX memory leak by proper handling of bonjour service
+
+### 0.1.8 Bugfix
+- (DutchmanNL) Solved incorrect formated API call at state changes causing warning message
+
+### 0.1.7 Bugfix
+- (DutchmanNL) Fixed error when API call fails (write warning to log and retry at intervall time)
+
+### 0.1.6 HEX color states implemented
+- (DutchmanNL) HEX color states implemented
+
+### 0.1.5 Stable Beta release
 
 ### 0.1.2
 - (DutchmanNL) Implement drop down menu for effects

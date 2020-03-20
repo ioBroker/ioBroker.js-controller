@@ -63,6 +63,9 @@ default: state-ID converted to a mqtt topic.
 * connect/reconnect without clean session
 
 ## Changelog
+### 1.3.1 (2020-03-17)
+* (bluefox) mqtt package moved back to 2.x
+
 ### 1.3.0 (2020-03-11)
 * (bluefox) mqtt package was updated
 * (bluefox) Fixed the error with "custom" view
