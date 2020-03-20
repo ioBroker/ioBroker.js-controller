@@ -551,7 +551,7 @@ function createObjects(onConnect) {
                             }
                         });
                     } else if (installQueue.find(obj => obj.id === id)) { // ignore object changes when still in install queue
-                        logger.debug(hostLogPrefix + ' ignore object change because the adapter is still in installation/rebuild queue');
+                        logger.debug(`${hostLogPrefix} ignore object change because the adapter is still in installation/rebuild queue`);
                     } else {
                         const _ipArr = getIPs();
                         if (procs[id].config && checkAndAddInstance(procs[id].config, _ipArr)) {
@@ -583,7 +583,7 @@ function createObjects(onConnect) {
                     }
                 }
             } catch (err) {
-                if (!compactGroupController || (compactGroupController && obj && obj.common && obj.common.runAsCompactMode && obj.common.compactGroup === compactGroup)) {
+                if (!compactGroupController || (obj && obj.common && obj.common.runAsCompactMode && obj.common.compactGroup === compactGroup)) {
                     logger.error(hostLogPrefix + ' cannot process: ' + id + ': ' + err + ' / ' + err.stack);
                 }
             }
@@ -771,7 +771,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
 
         if (modified) {
             outputCount++;
-            states.setState(autoInstance + '.subscribes', subs, () => (typeof callback === 'function')  && callback());
+            states.setState(`${autoInstance}.subscribes`, subs, () => (typeof callback === 'function')  && callback());
         } else if (typeof callback === 'function') {
             setImmediate(() => callback());
         }
@@ -3231,7 +3231,7 @@ function startInstance(id, wakeUp) {
                                     }
 
                                     // Restart group controller because still instances assigned to him, done via startInstance
-                                    if (connected && !isStopping && compactProcs[currentCompactGroup].instances.length) {
+                                    if (connected && compactProcs[currentCompactGroup].instances.length) {
                                         logger.info(hostLogPrefix + ' Restart compact group controller ' + currentCompactGroup);
                                         logger.debug('Instances: ' + JSON.stringify(compactProcs[currentCompactGroup].instances));
 
