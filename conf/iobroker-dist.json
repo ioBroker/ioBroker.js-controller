@@ -32,6 +32,7 @@
         "pass": "",
         "noFileCache": false,
         "connectTimeout": 2000,
+        "writeFileInterval": 5000,
         "options": {
             "auth_pass" : null,
             "retry_max_delay" : 5000
@@ -57,6 +58,7 @@
         "user": "",
         "pass": "",
         "connectTimeout": 2000,
+        "writeFileInterval": 30000,
         "options": {
             "auth_pass" : null,
             "retry_max_delay" : 5000
