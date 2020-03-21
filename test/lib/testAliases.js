@@ -201,6 +201,7 @@ function register(it, expect, context) {
                 ownerGroup: 'system.group.user1'
             }
         }, err => {
+            expect(err).to.be.not.ok;
             context.adapter.setForeignState(gid, 2, true, err => {
                 expect(err).to.be.not.ok;
 
@@ -251,6 +252,7 @@ function register(it, expect, context) {
                 ownerGroup: 'system.group.user1'
             }
         }, err => {
+            expect(err).to.be.not.ok;
             context.adapter.setForeignState(gid + '1', 5, true, err => {
                 expect(err).to.be.not.ok;
 
@@ -274,6 +276,7 @@ function register(it, expect, context) {
                         ownerGroup: 'system.group.user1'
                     }
                 }, err => {
+                    expect(err).to.be.not.ok;
                     context.adapter.getForeignStates(gAliasID + '1', (err, states) => {
                         // It must be scaled from -100, 2, 100
                         // to                     -10, 0.2, 10
@@ -792,6 +795,79 @@ function register(it, expect, context) {
             });
         });
     }).timeout(3000);
+
+    it(testName + 'should respect different read and write ids', done => {
+        // first we subscribe to all
+        context.adapter.subscribeForeignStates('*', err => {
+            expect(err).to.not.be.ok;
+            // define alias with different read and write
+            context.adapter.setForeignObject(`${gAliasID}aliasReadWrite`, {
+                common: {
+                    name: 'Test Alias R/W',
+                    type: 'number',
+                    role: 'state',
+                    min: -10,
+                    max: 10,
+                    alias: {
+                        id: {
+                            read: `${gid}readOrig`,
+                            write: `${gid}writeOrig`
+                        }
+                    }
+                },
+                native: {},
+                type: 'state'
+            }, err => {
+                expect(err).to.not.be.ok;
+                // set our alias read obj with def to set state too
+                context.adapter.setForeignObject(`${gid}readOrig`, {
+                    common: {
+                        name: 'Test ID read',
+                        type: 'number',
+                        role: 'state',
+                        min: -10,
+                        max: 10
+                    },
+                    native: {},
+                    type: 'state'
+                }, err => {
+                    expect(err).to.not.be.ok;
+                    // set our write object
+                    context.adapter.setForeignObject(`${gid}writeOrig`, {
+                        common: {
+                            name: 'Test ID write',
+                            type: 'number',
+                            role: 'state',
+                            min: -10,
+                            max: 10
+                        },
+                        native: {},
+                        type: 'state'
+                    }, err => {
+                        expect(err).to.not.be.ok;
+                        // set a state to readOrig
+                        context.adapter.setForeignState(`${gid}readOrig`, 5, err => {
+                            expect(err).to.not.be.ok;
+                            // check that our alias has val of read state
+                            context.adapter.getForeignState(`${gAliasID}aliasReadWrite`, (err, state) => {
+                                expect(err).to.not.be.ok;
+                                expect(state.val).to.be.equal(5);
+                                // now set the alias
+                                context.adapter.setForeignState(`${gAliasID}aliasReadWrite`, -2, err => {
+                                    expect(err).to.not.be.ok;
+                                    context.adapter.getForeignState(`${gid}writeOrig`, (err, state) => {
+                                        expect(err).to.not.be.ok;
+                                        expect(state.val).to.be.equal(-2);
+                                        done();
+                                    });
+                                });
+                            });
+                        });
+                    });
+                });
+            });
+        });
+    });
 }
 
 module.exports.register = register;
