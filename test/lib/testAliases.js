@@ -819,7 +819,7 @@ function register(it, expect, context) {
                 type: 'state'
             }, err => {
                 expect(err).to.not.be.ok;
-                // set our alias read obj with def to set state too
+                // set our alias read obj
                 context.adapter.setForeignObject(`${gid}readOrig`, {
                     common: {
                         name: 'Test ID read',
