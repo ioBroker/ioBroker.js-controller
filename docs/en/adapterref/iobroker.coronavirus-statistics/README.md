@@ -63,7 +63,13 @@ As first value the name from the warning message must be taken from the log. The
 
 ## Changelog
 
-### 0.3.3
+### 0.3.4 Add button to read "All Countrys"
+* (DutchmanNL) Add button to read "All Countrys"
+* (DutchmanNL) Add state for link to flag for each country on github
+* (DutchmanNL) BugFix : State attribute definition missing for + countryInfo
+* (DutchmanNL) BugFix : Turks_and_Caicos not found in lib! Must be added to the country name translator.
+
+### 0.3.3 Improved configuration page
 * (DutchmanNL) Improved configuration page
 * (DutchmanNL) Make country list in configuration variable	
 * (DutchmanNL) Implement choice if non-selected countrys should be deleted from states (if already there, default No!) 

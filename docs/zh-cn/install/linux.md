@@ -1,23 +1,23 @@
 ---
-title: Linux的
+title: 的Linux
 lastChanged: 28.03.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/linux.md
-hash: +9KkGvDJvUveJ02nsS48om8AmoOjywSgZJz/9MM+TGA=
+hash: rtMx/qa0LqA7eeV08PZdBVj8FPqOecmz9LxsJzryiKk=
 ---
 ＃在Linux上安装ioBroker
 ！>这些说明不适用于网站的最终图片！
 
 ioBroker的安装例程已被完全修改，并且某些安装问题（安装用户，自动启动等）已得到修复。
 
-现在，通过脚本执行安装，该脚本在运行时包含所需的安装步骤和软件包。充电。在安装过程中，将创建一个新用户“ iobroker”，以及一个关联的主目录（/ home / iobroker）。从现在开始，ioBroker在用户iobroker下运行，不再以root用户身份运行。
+现在通过脚本执行安装，该脚本在运行时包含必需的安装步骤和软件包。重新加载。在安装过程中，将创建一个新用户“ iobroker”，以及一个关联的主目录（/ home / iobroker）。从现在开始，ioBroker在用户iobroker下运行，并且不再以root用户身份运行。
 
-如果重新加载脚本太危险，则可以在[这个连结](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh)下事先检查脚本。
+如果重新加载脚本对您来说太危险，则可以在[这个连结](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh)下事先检查脚本。
 
 ioBroker的此安装指南以带有System Stretch的Raspberry PI为例显示了在Linux上的安装。几乎所有其他Linux系统都可以使用安装nodejs和ioBroker的实际说明。
 
-由于依赖于其他软件包或其他安装，因此总是会出现特殊功能。
+由于依赖于其他软件包或其他安装，在安装过程中可能始终会有特殊功能。
 
 如果您还有任何疑问，请在论坛中发布。
 
@@ -80,7 +80,7 @@ Pi 2或Pi 3最多只能有一个。 1 GB RAM。对于15个适配器实例，这�
 
 3.卸载现有的node＆node.js版本
 
-    ``sudo apt-get --purge remove node``
+    ``sudo apt-get --purge remove node``（可能这里显示错误消息。请继续！）
 
     ``sudo apt-get --purge remove nodejs``
 
@@ -102,11 +102,11 @@ Pi 2或Pi 3最多只能有一个。 1 GB RAM。对于15个适配器实例，这�
 
     在控制台上执行``sudo ln -s /usr/local/bin/nodejs /usr/bin/node``。
 
-如果版本不同，请再次阅读[安装Node.js](#installation-nodejs)部分
+如果版本不同，请再次浏览[安装Node.js](#installation-nodejs)部分
 
     作为最终检查，请使用``npm -v``检查npm的版本。
 
-如果结果是版本<6，请使用``sudo -H npm install -g npm@6``进行npm更新。
+如果这导致版本小于6，请使用``sudo -H npm install -g npm@6``进行npm更新。
 
 ### IoBroker安装
 可以使用pi用户或root用户来完成安装。
@@ -137,16 +137,16 @@ Pi 2或Pi 3最多只能有一个。 1 GB RAM。对于15个适配器实例，这�
 
 现在，通过Web浏览器中的指定IP调用ioBroker：``http://<IP-Adresse>:8081``
 
-**注：**
+**注意：**
 
-通过安装例程，这些命令从一月初到一月中旬生效：
+这些命令在1月初至1月中旬与安装例程一起使用：
 
 * iobroker停止
 * iobroker开始
 * iobroker重新启动
 * iobroker身份
 
-不再。这是Linux的功能-而不是ioBroker！
+不再。这是Linux的功能-不是ioBroker！
 
 相反必须
 

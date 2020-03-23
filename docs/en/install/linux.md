@@ -4,24 +4,24 @@ lastChanged: 28.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/linux.md
-hash: +9KkGvDJvUveJ02nsS48om8AmoOjywSgZJz/9MM+TGA=
+hash: rtMx/qa0LqA7eeV08PZdBVj8FPqOecmz9LxsJzryiKk=
 ---
 # IoBroker installation on Linux
 !> These instructions do NOT apply to finished images of the website !!!
 
 The installation routine for ioBroker has been completely revised and some installation problems (which installation user, autostart, etc.) have been fixed.
 
-The installation is now carried out via a script, which at runtime contains the required installation steps and software packages. recharges. During the installation, a new user "iobroker" is created, as well as an associated home directory (/ home / iobroker). From now on ioBroker runs under the user iobroker and no longer as root.
+The installation is now carried out via a script, which at runtime contains the required installation steps and software packages. reloads. During the installation, a new user "iobroker" is created, as well as an associated home directory (/ home / iobroker). From now on ioBroker runs under the user iobroker and no longer as root.
 
-If the reloading of a script is too dangerous, you can check the script beforehand under [this link](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh).
+If the reloading of a script is too dangerous for you, you can check the script beforehand under [this link](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh).
 
 This installation guide for ioBroker shows the installation on Linux using the example of the Raspberry PI with the System Stretch. The actual instructions for installing nodejs and ioBroker can be used for almost all other Linux systems.
 
-Due to dependencies on other packages or additional installations, special features can always occur.
+Due to dependencies on other packages or additional installations, there may always be special features during the installation.
 
-If you still have any questions, please post them in the forum.
+If you still have questions, please post them in the forum.
 
-In the instructions published here, the node.js versions are automatically updated with every kernel update, if available.
+With the instructions published here, the node.js versions are automatically updated with every kernel update, if available.
 
 ## Required hardware
 ### Raspberry Pi 2/3,
@@ -80,7 +80,7 @@ only if **ALL** these commands have no result (i.e. no longer display the versio
 
 3. Uninstall the existing node & node.js versions
 
-    ``sudo apt-get --purge remove node``
+    ``sudo apt-get --purge remove node`` (It may be that an error message appears here. Please continue!)
 
     ``sudo apt-get --purge remove nodejs``
 
