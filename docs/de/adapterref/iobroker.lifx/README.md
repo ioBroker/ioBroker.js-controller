@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lifx/README.md
 title: ioBroker.lifx
-hash: 5ovwws54rtb+OjggZIjqQ+5wEyYNXqj5q4DHwjM09yM=
+hash: Dq1R7yqzh6tng4JyujLCfbpyWc1Q6H2oRCzS2Uv4Jcw=
 ---
 ![Logo](../../../en/adapterref/iobroker.lifx/admin/lifx_logo.png)
 
@@ -52,33 +52,38 @@ npm install https://github.com/foxthefox/ioBroker.lifx/tarball/master --producti
 | Bulb.sat | Wert | x | Sättigung 0 ... 100% |
 | Bulb.bright | value | x | Helligkeit 0 ... 100% |
 | Bulb.online | boolean | - | true / false |
-| Bulb.vendor | string | - | vendor |
-| Bulb.product | string | - | product |
-| Bulb.version | string | - | version |
-| Bulb.label | string | - | label |
-| Bulb.colorLamp | boolean | - | true / false |
-| Bulb.infraredLamp | boolean | - | true / false |
-| Bulb.multizoneLamp | boolean | - | true / false |
+| Bulb.label | value | - | name / label |
+| Bulb.vendor | value | - | vendor info |
+| Bulb.product | value | - | Produktinfo |
+| Bulb.colorLamp | value | - | colorLamp info |
+| Bulb.infraredLamp | value | - | infraredLamp info |
+| Bulb.multizoneLamp | value | - | multizoneLamp info |
+| Bulb.Zone.temp | value | x | Farbtemperatur 2500 ... 9000 K |
+| Bulb.Zone.hue | value | x | color 0 ... 360 |
+| Bulb.Zone.sat | Wert | x | Sättigung 0 ... 100% |
+| Bulb.Zone.bright | value | x | Helligkeit 0 ... 100% |
 
 ## MACHEN:
-- zyklischer getState von Lampe, falls außerhalb von ioBroker eingestellt
 - Anpassung der Farbwerte mit allen vorhandenen Einstellungen (Helligkeitsanpassung hat eine feste Sättigung von 80% und behält die vorherige Farbtoneinstellung bei; Sättigungsanpassung und Farbtonanpassung haben feste 80% Helligkeit)
 - Übergangszeiten
 - Wellenformen
-- Gegenstände für weiße Lampe
 
 ## Bekannte Probleme
-??
+- Werte außerhalb des Bereichs führen zum Absturz des Adapters
 
 ## Changelog
 ### 0.2.0
 - lifx-lan-client library instead node-lifx
 - states for vendor, product, version, product features
+- multizone support
+- cyclic polling
 
 ### 0.1.1
 - logo quadratic
+
 ### 0.1.0
 - compact mode
+
 ### 0.0.5
 - adminv3
 - noConfig -> no admin page anymore

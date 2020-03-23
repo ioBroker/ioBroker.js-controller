@@ -67,8 +67,22 @@ Vergleichbar für den Soll-/Istverlaufs ist demnach atualtemp und targettemp.
 Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig Information ist der debug modus über die Experteneinstellung der Instanz vorzuwählen.
 
 ## Changelog
+### 1.0.1
+* bugfixes in fritz API calls
+
+### 1.0.0 Breaking Change for non-native API objects
+* merge of fritzapi into repo directly including added DECT500 commands
+* **no longer support of non-native API calls (scraping of website)**
+    * GuestWLAN
+    * BatteryCharge
+    * OS version
+    
+### 0.3.2
+* new states in heater group, operationList and operationMode
+
 ### 0.3.1
 * (scrounger) new states in COMET, operationList and operationMode
+
 
 ### 0.3.0
 * new DECT500 supported (without commands)

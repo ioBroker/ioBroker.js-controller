@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.calendar/README.md
 title: ioBroker.calendar
-hash: 5Oon6BS1Ri7dDHrSAvewD1qgw+8jZjHpH7mlDgI486s=
+hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
 ---
 ![Logo](../../../en/adapterref/iobroker.calendar/admin/calendar.png)
 
@@ -60,7 +60,7 @@ Sie können Ihren Caldav-Kalender in der Adapterkonfiguration hinzufügen.
 Geben Sie Ihre Zugangsdaten und den Hostnamen in die Konfiguration ein.
 
 ### Baseurl-Liste
-* Nextcloud: https:// \ <Hostname \> /remote.php/dav/principals
+* Nextcloud: https:// \ <Hostname \> /remote.php/dav oder https: // \ <Hostname \> /remote.php/dav/principals
 * Web.de: https://caldav.web.de
 * mail.de: https://kalender.mail.de
 * Posteo: https://posteo.de:8443
@@ -73,6 +73,15 @@ Sie können Ihren iCal-Kalender in der Adapterkonfiguration hinzufügen.
 Geben Sie den Dateipfad auf der Registerkarte CalDav in das Feld Hostname ein.
 
 ## Changelog
+
+### 1.1.3 (2020-03-22)
+* (WLAN-Kabel) #18 - Added possibility to load ics files from web servers
+* (WLAN-Kabel) #21 - Added option to ignore certificate errors
+* (WLAN-Kabel) #15 - Caldav time range is used to reduce traffic
+* (WLAN-Kabel) Caldav library revised
+* (WLAN-Kabel) Google functions outsourced in own lib
+* (WLAN-Kabel) #15 - Fixed caldav bug that occurred when end times were missing
+* (WLAN-Kabel) #15 - Added more debug messages
 
 ### 1.1.2 (2020-03-03)
 * (WLAN-Kabel) #15 - Fixed a serious bug that caused incorrect credentials for CalDav accounts

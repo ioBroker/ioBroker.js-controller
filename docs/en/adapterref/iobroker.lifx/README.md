@@ -43,29 +43,38 @@ npm install https://github.com/foxthefox/ioBroker.lifx/tarball/master --producti
 |Bulb.sat|value|x|saturation 0...100 %|
 |Bulb.bright|value|x|brightness 0...100 %|
 |Bulb.online|boolean|-|true/false|
-|Bulb.vendor|string|-|vendor|
-|Bulb.product|string|-|product|
-|Bulb.version|string|-|version|
-|Bulb.label|string|-|label|
-|Bulb.colorLamp|boolean|-|true/false|
-|Bulb.infraredLamp|boolean|-|true/false|
-|Bulb.multizoneLamp|boolean|-|true/false|
+|Bulb.label|value|-|name/label|
+|Bulb.vendor|value|-|vendor info|
+|Bulb.product|value|-|product info|
+|Bulb.colorLamp|value|-|colorLamp info|
+|Bulb.infraredLamp|value|-|infraredLamp info|
+|Bulb.multizoneLamp|value|-|multizoneLamp info|
+|Bulb.Zone.temp|value|x|color temperature 2500...9000 K|
+|Bulb.Zone.hue|value|x|color 0...360|
+|Bulb.Zone.sat|value|x|saturation 0...100 %|
+|Bulb.Zone.bright|value|x|brightness 0...100 %|
 
 ## TODO:
-- cyclical getState from lamp, if adjusted outside ioBroker
 - getting adjustment of color values with all existing settings (brighness adjust has fixed 80% saturation and keeps the previous hue setting; saturation adjust and hue adjust has fixed 80% brightness)
 - transition times
 - waveforms
-- objects for white lamp
 
 ## known issues
-??
+- values outside of range cause crash of adapter
 
 ## Changelog:
+### 0.2.0
+- lifx-lan-client library instead node-lifx
+- states for vendor, product, version, product features
+- multizone support
+- cyclic polling
+
 ### 0.1.1
 - logo quadratic
+
 ### 0.1.0
 - compact mode
+
 ### 0.0.5
 - adminv3
 - noConfig -> no admin page anymore

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: l1Mmx1JvJjgwj64GW35rCZDCBZMtbJjx4PF3KM6SLnM=
+hash: a5XAzwEFvMNG/rWozs4JpDiAbJxszl4glipyShtWqeE=
 ---
 ![商标](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
@@ -19,18 +19,40 @@ hash: l1Mmx1JvJjgwj64GW35rCZDCBZMtbJjx4PF3KM6SLnM=
 必须在Solarlog的配置菜单中激活开放的JSON接口（offene Json-Schnittstelle）（Konfiguration-系统-Zugangskontrolle-Offene Json-Schnittstelle：aktivieren。）
 
 安装适配器，创建实例。
-设置Solarlog-IP地址（192.XXX.X.XXX），端口（可选）和轮询-intervall（以毫秒为单位）。由于适配器向您发送了许多http请求，因此我建议不要将polling-intervall设置得过于密集。检查调试日志，以了解轮询或设置至少10s所需的时间。
+设置Solarlog-IP地址（192.XXX.X.XXX），端口（可选）和轮询-间隔（以毫秒为单位）。由于适配器向您发送了许多http请求，因此我建议不要将轮询间隔设置得太密集。检查调试日志，以了解轮询或设置至少10s所需的时间。
 
-检查是否收集了所有逆变器数据。 !!此选项必须禁用solarlog中的用户密码！！背景：《日光浴杂志》上的《本命者通缉令》。
+检查是否收集了所有逆变器数据。 !!
+
+安全性：您可以在solarlog中激活“用户”-密码，并在“用户登录已激活”复选框中添加密码，然后在适配器配置中添加密码，也可以在没有用户密码的情况下运行solarlog和适配器。如果激活了用户登录，建议在使用solarlog-用户界面时停止适配器（否则，在每次请求适配器后都需要重新登录）。
 
 预测：（可选）适配器使用Forecast.Solar API获取预测-数据。实际上，可以预测今天和明天的总kWh，每小时刷新一次。可根据要求提供更详细的数据或其他数据（请提出问题）。
 
 ＃＃ 硬件
 经过测试：Solarlog 200PM + / 300PM + / 500/1200米/ 50
 
-SolarLog 50：没有开放的JSON接口@ SolarLog 50设备。因此，“信息”和“状态”通道中的某些值将为“访问权限被拒绝”。如果您想要其他解决方案，请打开一个问题或在相应的问题中发布您的偏好。
+SolarLog 50：没有开放的JSON接口@ SolarLog 50设备。因此，“信息”和“状态”通道中的某些值将为“访问权限被拒绝”。如果您希望使用其他解决方案，请打开一个问题或在相应的问题中发布您的偏好。
 
 ## Changelog
+
+### 1.3.0
+
+-   user-login possibility added.
+
+### 1.2.4
+
+-   .npmignore and .gitignore added, small bugfix
+
+### 1.2.3
+
+-   Readme/License update.
+
+### 1.2.2
+
+-   It is now possible to set the time when historic data is requested.
+
+### 1.2.1
+
+-   'Forecast' - bug fixed (forecast request now only submitted if forecast is activated), dependencies updated.
 
 ### 1.2.0
 
@@ -144,7 +166,7 @@ Planned Objects:
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

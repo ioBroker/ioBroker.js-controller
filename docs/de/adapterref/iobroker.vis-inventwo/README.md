@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: Cri1GwOTd8x7acZznK6RFrrGrhL9QLIXkDKeSGZwzeM=
+hash: 92n94I2ZG3E2a4iB/b8NSZnifni7HtTykIc/gJhbp30=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -27,7 +27,7 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ---
 
 ## Besetzung
-Falls Dir unsere Arbeit ausgewählt und du uns nicht möchtest, wir freuen uns über jede Spende.
+Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
 
 (Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
@@ -35,27 +35,47 @@ Falls Dir unsere Arbeit ausgewählt und du uns nicht möchtest, wir freuen uns �
 
 ---
 
-## Changelog
+## 1.2.1
+- Fixed Slider Widget: Separatet in zwei Widgets (horizontal und vertikal)
+
+### 1.2.0
+- Bild-Widget hinzugefügt
+- Schieberegler hinzugefügt, um den Rahmenradius für alle 4 Ecken zu ändern (Wenn diese Version ein Update für Sie ist, müssen Sie auf jede Schaltfläche im Vis-Editor klicken, um die Standardecken wiederherzustellen.)
+- Neue Symbole hinzugefügt
+
+### 1.1.1
+- Bug-Fix
+
+### 1.1.0
+- Slider-Widget hinzugefügt
+- Option zum Spiegeln des Bildes hinzugefügt
+- Neue Symbole hinzugefügt
+- Die Schaltflächen-Widgets wurden geändert, um die Standardoptionen für Schriftart und Text zu verwenden
 
 ### 1.0.0
-- Widget background and content opacity, Switch can be changed from boolean to value, changed icons from white to black, added seamless backgrounds
+- Widget-Hintergrund und Inhaltsopazität, Wechsel kann von boolesch auf Wert geändert werden, Symbole von weiß auf schwarz geändert, nahtlose Hintergründe hinzugefügt
 
 ### 0.1.2
-- Bug fixes
+- Fehlerbehebung
+
 ...
 
 ### 0.1.1
-- Bug fixes
+- Fehlerbehebung
+
 ...
 
 ### 0.1.0 (Erstveröffentlichung)
-- inventwo Design Widgets
+- Erfinde zwei Design-Widgets
+
 ...
 
 ### 0.0.1
 - Die Idee ist geboren
 
 ---
+
+## Changelog
 
 ## License
 

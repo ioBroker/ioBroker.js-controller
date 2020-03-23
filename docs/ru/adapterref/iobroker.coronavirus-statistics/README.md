@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.coronavirus-statistics/README.md
-title: без заголовка
-hash: 3sQ2AFsMKV+YfA+lHLTsIcBIVQGMiahyAT44vv+ieSo=
+title: ioBroker.coronavirus-статистика
+hash: oTIhUDP9XRjsxpNs7s5q8OIxCSwDQeG2kZFHzz6bpk4=
 ---
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
@@ -14,12 +14,9 @@ hash: 3sQ2AFsMKV+YfA+lHLTsIcBIVQGMiahyAT44vv+ieSo=
 ![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.coronavirus-statistics/master.svg)
 
-<h1>
+! (Логотип) [админ / коронавирус-statistics.png]
 
-<img  src="admin/coronavirus-statistics.png"  width="64"/> ioBroker.coronavirus-статистика
-
-</ H1>
-
+# IoBroker.coronavirus-statistics
 ## Адаптер живой статистики Coronavirus для ioBroker
 Адаптер для отображения информации о вирусе глобальной короны и текущих отчетов
 
@@ -41,10 +38,47 @@ hash: 3sQ2AFsMKV+YfA+lHLTsIcBIVQGMiahyAT44vv+ieSo=
 | TodayCases | Новые случаи на сегодня |
 | сегодня смерти | Количество полностью известных людей умерло сегодня |
 
-Помните, что этот адаптер использует как можно больше актуальной информации, но в зависимости от отчета страны может быть задержка на несколько часов.
+Обратите внимание, что этот адаптер использует как можно больше актуальной информации, но в зависимости от отчета страны может быть задержка на несколько часов.
 Источник: https://coronavirus-19-api.herokuapp.com
 
+## Добавить недостающие страны
+Может случиться, что страны не распознаются правильно, потому что API предоставляет названия некоторых стран, не соответствующих ISO. В таком случае вы получите предупреждение в журнале, которое выглядит следующим образом
+
+```
+coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not found in lib! Must be added to the country name translator.
+```
+
+Используя точку данных `coronavirus-statistics.0.countryTranslator`, вы можете назначить страну самостоятельно. Ищите название соответствующей страны здесь:
+
+[Список с названиями стран](https://github.com/i-rocky/country-list-js/blob/master/data/names.json)
+
+С выбранным названием страны необходимо создать строку JSON и ввести ее в точку данных `coronavirus-statistics.0.countryTranslator`.
+Строка JSON выглядит следующим образом, например:
+
+```
+{
+	"Cabo_Verde": "Cape Verde",
+	"Timor-Leste": "East Timor"
+}
+```
+
+В качестве первого значения имя из предупреждающего сообщения должно быть взято из журнала. Название страны из [Список с названиями стран](https://github.com/i-rocky/country-list-js/blob/master/data/names.json) затем присваивается этому.
+
 ## Changelog
+
+### 0.3.3
+* (DutchmanNL) Improved configuration page
+* (DutchmanNL) Make country list in configuration variable	
+* (DutchmanNL) Implement choice if non-selected countrys should be deleted from states (if already there, default No!) 
+
+### 0.3.1
+* (DutchmanNL) Enable configuration
+
+### 0.3.0 (2020-03-22)
+* (bluefox) The number of data points was reduced by selection of countries
+ 
+### 0.2.5 
+* (Scrounger) Bugfix : Cabo_Verde not found in lib! Must be added to the country name translator
 
 ### 0.2.4
 * (Scrounger) Grouping by continents implemented

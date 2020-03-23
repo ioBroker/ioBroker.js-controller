@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: pO/VLwmq53Hbx9sjZnZ7/uAQIPQg5ORzFs8viU0ujdM=
+hash: fGqBbZvGNesHxxe5OfRwxTPW9jckbijOaHgAbed5JcA=
 ---
 ![商标](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -28,34 +28,51 @@ ESP8266 / ESP32网络服务器的快速且功能丰富的实现，用于控制Ne
 1）确保WLED设备正在运行并且可以通过网络访问2）安装适配器3）配置数据轮询和自动检测周期的间隔时间4）启动适配器，应自动检测设备5）适配器将立即发送更改并进行轮询每x秒传输一次数据（可配置）
 
 ＃＃ 去做
-* []可配置设备（目前仅由Bonjour自动检测）
-* []调查更好的住宿变更公告方式，支持currentl polly
-* [x]特殊命令未包含在rest-api中（例如保存预设）
-* [x]个控制段
-* [x]颜色变化
+* []将轮询切换到套接字连接，等待WLED固件实施
 
 ＃＃ 支持我
 如果您喜欢我的作品，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
+### 0.3.0 Bugfix : Correct handling of polling timer
+* (DutchmanNL  & Jey-Cee) Bugfix : Polling timer not saved
+* (DutchmanNL) Bugfix : Correct handling of "online" state
+* (DutchmanNL) Bugfix : Polling timer (offline devices did not reconnect)
+
+### 0.2.6 Bugfix : Hex state value change
+* (DutchmanNL) Bugfix : Hex state value change
+
+### 0.2.5 Stable release candidate
+* (DutchmanNL) Code cleanup
+* (DutchmanNL) Improved logging information
+* (DutchmanNL) Make polling timer configurable
+* (DutchmanNL) Correct handling of device online state
+* (DutchmanNL) Show online state in instance configuration
+
+### 0.2.0 Possibility to add devices by IP-adress
+* (DutchmanNL) Bugfix io-package
+* (DutchmanNL) Improved logging at adapter start
+* (DutchmanNL) Possibility to add devices by IP-adress implemented. (Needed for situations were autoscan fails)
+* (DutchmanNL) Ensure known devices get connected immediatly after adapter start instead of waiting for network scan
+
 ### 0.1.9 Code improvements
-- (DutchmanNL) Code cleanup and optimalisation
-- (DutchmanNL) FIX memory leak by proper handling of bonjour service
+* (DutchmanNL) Code cleanup and optimalisation
+* (DutchmanNL) FIX memory leak by proper handling of bonjour service
 
 ### 0.1.8 Bugfix
-- (DutchmanNL) Solved incorrect formated API call at state changes causing warning message
+* (DutchmanNL) Solved incorrect formated API call at state changes causing warning message
 
 ### 0.1.7 Bugfix
-- (DutchmanNL) Fixed error when API call fails (write warning to log and retry at intervall time)
+* (DutchmanNL) Fixed error when API call fails (write warning to log and retry at intervall time)
 
 ### 0.1.6 HEX color states implemented
-- (DutchmanNL) HEX color states implemented
+* (DutchmanNL) HEX color states implemented
 
 ### 0.1.5 Stable Beta release
 
 ### 0.1.2
-- (DutchmanNL) Implement drop down menu for effects
+* (DutchmanNL) Implement drop down menu for effects
 
 ### 0.1.1
 * (DutchmanNL) Implemented states hidden from JSON-API : tt / psave / nn / time

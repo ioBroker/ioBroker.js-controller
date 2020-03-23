@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: pO/VLwmq53Hbx9sjZnZ7/uAQIPQg5ORzFs8viU0ujdM=
+hash: fGqBbZvGNesHxxe5OfRwxTPW9jckbijOaHgAbed5JcA=
 ---
 ![Logo](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -25,37 +25,54 @@ Eine schnelle und funktionsreiche Implementierung eines ESP8266 / ESP32-Webserve
 Der Adapter versucht automatisch, WLED-Geräte in Ihrem Netzwerk mithilfe von Bonjour-Diensten zu finden.
 Bekannte Probleme: Netzwerke mit VLAN-Trennung leiten den Broadcast-Verkehr meist nicht weiter, was bedeutet, dass die automatische Erkennung fehlschlägt. (siehe To-Do)
 
-1) Stellen Sie sicher, dass Ihr WLED-Gerät läuft und über das Netzwerk erreichbar ist. 2) Installieren Sie den Adapter. 3) Konfigurieren Sie die Intervallzeiten für die Datenabfrage und die automatische Erkennung des Zyklus. 4) Starten Sie den Adapter. Die Geräte sollten automatisch erkannt werden Daten alle x Sekunden (konfigurierbar)
+1) Stellen Sie sicher, dass Ihr WLED-Gerät läuft und über das Netzwerk erreichbar ist. 2) Installieren Sie den Adapter. 3) Konfigurieren Sie die Intervallzeiten für die Datenabfrage und den automatischen Erkennungszyklus. 4) Starten Sie den Adapter. Die Geräte sollten automatisch erkannt werden. 5) Der Adapter sendet sofort Änderungen und Abfragen Daten alle x Sekunden (konfigurierbar)
 
 ## Machen
-* [] konfigurierbare Geräte (derzeit nur automatische Erkennung durch Bonjour)
-* [] untersuchen eine bessere Art der Ankündigung von Aufenthaltsänderungen, die derzeit von Polly unterstützt werden
-* [x] Spezialbefehle, die nicht in rest-api enthalten sind (wie Voreinstellungen speichern)
-* [x] Kontrollsegmente
-* [x] Farbänderungen
+* [] Schalten Sie die Abfrage auf Socket-Verbindungen um, bis die Implementierung der WLED-Firmware abgeschlossen ist
 
 ## Unterstütze mich
 Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
+### 0.3.0 Bugfix : Correct handling of polling timer
+* (DutchmanNL  & Jey-Cee) Bugfix : Polling timer not saved
+* (DutchmanNL) Bugfix : Correct handling of "online" state
+* (DutchmanNL) Bugfix : Polling timer (offline devices did not reconnect)
+
+### 0.2.6 Bugfix : Hex state value change
+* (DutchmanNL) Bugfix : Hex state value change
+
+### 0.2.5 Stable release candidate
+* (DutchmanNL) Code cleanup
+* (DutchmanNL) Improved logging information
+* (DutchmanNL) Make polling timer configurable
+* (DutchmanNL) Correct handling of device online state
+* (DutchmanNL) Show online state in instance configuration
+
+### 0.2.0 Possibility to add devices by IP-adress
+* (DutchmanNL) Bugfix io-package
+* (DutchmanNL) Improved logging at adapter start
+* (DutchmanNL) Possibility to add devices by IP-adress implemented. (Needed for situations were autoscan fails)
+* (DutchmanNL) Ensure known devices get connected immediatly after adapter start instead of waiting for network scan
+
 ### 0.1.9 Code improvements
-- (DutchmanNL) Code cleanup and optimalisation
-- (DutchmanNL) FIX memory leak by proper handling of bonjour service
+* (DutchmanNL) Code cleanup and optimalisation
+* (DutchmanNL) FIX memory leak by proper handling of bonjour service
 
 ### 0.1.8 Bugfix
-- (DutchmanNL) Solved incorrect formated API call at state changes causing warning message
+* (DutchmanNL) Solved incorrect formated API call at state changes causing warning message
 
 ### 0.1.7 Bugfix
-- (DutchmanNL) Fixed error when API call fails (write warning to log and retry at intervall time)
+* (DutchmanNL) Fixed error when API call fails (write warning to log and retry at intervall time)
 
 ### 0.1.6 HEX color states implemented
-- (DutchmanNL) HEX color states implemented
+* (DutchmanNL) HEX color states implemented
 
 ### 0.1.5 Stable Beta release
 
 ### 0.1.2
-- (DutchmanNL) Implement drop down menu for effects
+* (DutchmanNL) Implement drop down menu for effects
 
 ### 0.1.1
 * (DutchmanNL) Implemented states hidden from JSON-API : tt / psave / nn / time

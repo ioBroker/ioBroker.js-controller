@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.coronavirus-statistics/README.md
-title: 无题
-hash: 3sQ2AFsMKV+YfA+lHLTsIcBIVQGMiahyAT44vv+ieSo=
+title: ioBroker。冠状病毒统计
+hash: oTIhUDP9XRjsxpNs7s5q8OIxCSwDQeG2kZFHzz6bpk4=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
@@ -14,12 +14,9 @@ hash: 3sQ2AFsMKV+YfA+lHLTsIcBIVQGMiahyAT44vv+ieSo=
 ![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
 ![特拉维斯](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.coronavirus-statistics/master.svg)
 
-<h1>
+！（徽标）[admin / coronavirus-statistics.png]
 
-<img  src="admin/coronavirus-statistics.png"  width="64"/> ioBroker。冠状病毒统计
-
-</ h1>
-
+＃ioBroker.coronavirus-statistics
 ##用于ioBroker的冠状病毒实时统计适配器
 显示全球冠状病毒信息和当前报告的适配器
 
@@ -44,7 +41,44 @@ hash: 3sQ2AFsMKV+YfA+lHLTsIcBIVQGMiahyAT44vv+ieSo=
 请注意，此适配器使用尽可能多的最新信息，但是可能会延迟几个小时，具体取决于国家/地区的报告。
 来源：https://coronavirus-19-api.herokuapp.com
 
+##添加缺少的国家
+由于API提供的某些国家/地区名称与ISO不一致，因此可能无法正确识别国家/地区。在这种情况下，您会在日志中收到一条警告消息，看起来像这样
+
+```
+coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not found in lib! Must be added to the country name translator.
+```
+
+使用数据点`coronavirus-statistics.0.countryTranslator`您可以自己分配国家/地区。在此处查找相应国家/地区的名称：
+
+[列出国家名称](https://github.com/i-rocky/country-list-js/blob/master/data/names.json)
+
+使用选定的国家名称，您必须创建一个JSON字符串，并将其输入到数据点`coronavirus-statistics.0.countryTranslator`中。
+然后，JSON字符串如下所示：
+
+```
+{
+	"Cabo_Verde": "Cape Verde",
+	"Timor-Leste": "East Timor"
+}
+```
+
+作为第一个值，警告消息中的名称必须从日志中获取。然后将[列出国家名称](https://github.com/i-rocky/country-list-js/blob/master/data/names.json)中的国家/地区名称分配给该名称。
+
 ## Changelog
+
+### 0.3.3
+* (DutchmanNL) Improved configuration page
+* (DutchmanNL) Make country list in configuration variable	
+* (DutchmanNL) Implement choice if non-selected countrys should be deleted from states (if already there, default No!) 
+
+### 0.3.1
+* (DutchmanNL) Enable configuration
+
+### 0.3.0 (2020-03-22)
+* (bluefox) The number of data points was reduced by selection of countries
+ 
+### 0.2.5 
+* (Scrounger) Bugfix : Cabo_Verde not found in lib! Must be added to the country name translator
 
 ### 0.2.4
 * (Scrounger) Grouping by continents implemented

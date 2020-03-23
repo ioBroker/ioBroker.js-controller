@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.robonect/README.md
 title: ioBroker.robonect
-hash: 2bDm47Ac2ug3MdRGon3Eeh12kGi575v6XzZjeO/22Mo=
+hash: 2g+4CkiBh7gPjDcSVR5f3KIb1fznPovNq5EAee0reqs=
 ---
 ![Logo](../../../en/adapterref/iobroker.robonect/admin/robonect.png)
 
@@ -11,7 +11,7 @@ hash: 2bDm47Ac2ug3MdRGon3Eeh12kGi575v6XzZjeO/22Mo=
 ![Anzahl der Installationen](http://iobroker.live/badges/robonect-stable.svg)
 
 # IoBroker.robonect
-Dies ist ein ioBroker-Adapter für Ihren Robonect HX-fähigen Rasenmäher. Es wurde mit Robonect v1.1b und einem Gardena R70Li getestet.
+Dies ist ein ioBroker-Adapter für Ihren Robonect HX-fähigen Rasenmäher. Es wurde mit Robonect v1.1b (mit ZeroConf v1.4) und einem Gardena R70Li getestet.
 
 ## Die Einstellungen
 * Es ist erforderlich, die IP-Adresse des Robonect-Moduls einzugeben. Falls Benutzername und Passwort festgelegt sind, sind diese ebenfalls erforderlich.

@@ -12,10 +12,11 @@ An ioBroker adapter for solarlog - devices
 The open JSON-interface (offene Json-Schnittstelle) has to be activated in the Solarlog's configuration menu (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: aktivieren.)
 
 Install adapter, create instance.
-Set Solarlog - IP-adress (192.XXX.X.XXX), port (optional) and polling - intervall (in millilseconds). Since the adapter sends a lot of http-requests to you solarlog, I recommend not to set the polling-intervall too dense. Check your debug-log for the time needed to poll or set at least 10s.
+Set Solarlog - IP-address (192.XXX.X.XXX), port (optional) and polling - interval (in milliseconds). Since the adapter sends a lot of http-requests to you solarlog, I recommend not to set the polling-interval too dense. Check your debug-log for the time needed to poll or set at least 10s.
 
-Check if all inverter - data is collected. !! The user-password in solarlog has to be deactivated for this option!!
-Achtung: Damit die Abfrage der Unterzaehler funktioniert, muss das Benutzerpasswort im Solarlog deaktiviert sein.
+Check if all inverter - data is collected. !!
+
+Security: you can activate the 'user' - password in your solarlog and the 'user login activated' checkbox & add your password in the adapter config or you can run solarlog and adapter without user password. If user-login is activated, it is recommended to stop the adapter while using the solarlog - user interface (otherwise you need to re-login after every request of the adapter).
 
 Forecast: optionally, the adapter gets forecast - data using the Forecast.Solar API. Actually, the todays and tomorrows total kWh are predicted, refreshing every hour. More detailed or additional data is available on request (pls open an issue).
 
@@ -27,6 +28,10 @@ Solarlog 200PM+ / 300PM+ / 500 / 1200Meter / 50
 SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain values in the 'info' and the 'status' channel will be 'ACCESS DENIED'. If you prefer another solution, please open an issue or post your preferences in a corresponding issue.
 
 ## Changelog
+
+### 1.3.0
+
+-   user-login possibility added.
 
 ### 1.2.4
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: Cri1GwOTd8x7acZznK6RFrrGrhL9QLIXkDKeSGZwzeM=
+hash: 92n94I2ZG3E2a4iB/b8NSZnifni7HtTykIc/gJhbp30=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -19,7 +19,7 @@ hash: Cri1GwOTd8x7acZznK6RFrrGrhL9QLIXkDKeSGZwzeM=
 ## Schalter窗口小部件ioBroker.vis适配器
 ![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行，并恢复图标。 Uhr und Wetter stammen aus anderen Adaptern undmüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Preview.png)
 
@@ -35,27 +35,47 @@ hash: Cri1GwOTd8x7acZznK6RFrrGrhL9QLIXkDKeSGZwzeM=
 
 ---
 
-## Changelog
+## 1.2.1
+-固定的滑块小部件：分为两个小部件（水平和垂直）
+
+### 1.2.0
+-添加了图像小部件
+-添加了Slider来更改所有4个角的边界半径（如果此版本是您的更新，则需要单击vis-editor中的每个按钮以恢复默认角）
+-添加了新图标
+
+### 1.1.1
+-错误修复
+
+### 1.1.0
+-添加了滑块小部件
+-添加了镜像选项
+-添加了新图标
+-更改了按钮小部件以使用默认字体和文本选项
 
 ### 1.0.0
-- Widget background and content opacity, Switch can be changed from boolean to value, changed icons from white to black, added seamless backgrounds
+-小部件背景和内容不透明度，可将开关从布尔值更改为值，将图标从白色更改为黑色，添加无缝背景
 
 ### 0.1.2
-- Bug fixes
+- Bug修复
+
 ...
 
 ### 0.1.1
-- Bug fixes
+- Bug修复
+
 ...
 
-### 0.1.0 (Erstveröffentlichung)
-- inventwo Design Widgets
+### 0.1.0（Erstveröffentlichung）
+-inventwo设计小部件
+
 ...
 
 ### 0.0.1
-- Die Idee ist geboren
+-Idee ist geboren
 
 ---
+
+## Changelog
 
 ## License
 

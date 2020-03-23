@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lifx/README.md
 title: ioBroker.lifx
-hash: 5ovwws54rtb+OjggZIjqQ+5wEyYNXqj5q4DHwjM09yM=
+hash: Dq1R7yqzh6tng4JyujLCfbpyWc1Q6H2oRCzS2Uv4Jcw=
 ---
 ![логотип](../../../en/adapterref/iobroker.lifx/admin/lifx_logo.png)
 
@@ -52,33 +52,38 @@ npm install https://github.com/foxthefox/ioBroker.lifx/tarball/master --producti
 | Bulb.sat | значение | x | насыщенность 0 ... 100% |
 | Bulb.bright | значение | x | яркость 0 ... 100% |
 | Bulb.online | логическое | - | истина / ложь |
-| Bulb.vendor | строка | - | поставщик |
-| Bulb.product | строка | - | продукт |
-| Bulb.version | строка | - | версия |
-| Bulb.label | строка | - | этикетка |
-| Bulb.colorLamp | логическое | - | истина / ложь |
-| Bulb.infraredLamp | логическое | - | истина / ложь |
-| Bulb.multizoneLamp | логическое | - | истина / ложь |
+| Bulb.label | значение | - | имя / этикетки |
+| Bulb.vendor | значение | - | информация о продавце |
+| Bulb.product | значение | - | информация о продукте |
+| Bulb.colorLamp | value | - | colorLamp info |
+| Bulb.infraredLamp | value | - | infraredLamp info |
+| Bulb.multizoneLamp | value | - | multizoneLamp info |
+| Bulb.Zone.temp | значение | x | цветовая температура 2500 ... 9000 K |
+| Bulb.Zone.hue | значение | x | цвет 0 ... 360 |
+| Bulb.Zone.sat | значение | x | насыщенность 0 ... 100% |
+| Bulb.Zone.bright | значение | x | яркость 0 ... 100% |
 
 ## СДЕЛАТЬ:
-- циклический getState от лампы, если настроен вне ioBroker
 - получение регулировки значений цвета со всеми существующими настройками (настройка яркости зафиксировала 80% насыщенности и сохраняет прежнюю настройку оттенка; настройка насыщенности и регулировки оттенка зафиксировала 80% яркости)
 - время перехода
 - формы волны
-- предметы для белой лампы
 
 ## Известные вопросы
-??
+- значения вне диапазона вызывают сбой адаптера
 
 ## Changelog
 ### 0.2.0
 - lifx-lan-client library instead node-lifx
 - states for vendor, product, version, product features
+- multizone support
+- cyclic polling
 
 ### 0.1.1
 - logo quadratic
+
 ### 0.1.0
 - compact mode
+
 ### 0.0.5
 - adminv3
 - noConfig -> no admin page anymore

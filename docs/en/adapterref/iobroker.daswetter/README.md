@@ -52,6 +52,10 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
+### 3.0.0 (2020-03-xx)
+* (René) breaking change: old data structure is not supported anymore
+* (René) "request" replaced by "bent"
+
 ### 2.8.2 (2020-03-20)
 * (René) some more logs to find parser errors
 

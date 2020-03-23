@@ -33,6 +33,16 @@ A german explanatory doc is available here: [install_de](./docs/de/install.md)
 
 The widget requires that also vis-metro and vis-jqui-mfd are installed
 
+## Common Issues / Frequently Asked Questions
+
+  1. no login to the FritzBox
+
+      Log messages if the form of:
+
+          { error: { [Error: self signed certificate] code: 'DEPTH_ZERO_SELF_SIGNED_CERT' }
+
+      indicate that there are SSL security problems. Use the `"strictSSL": false` option (no tick in checkbox) in the admin page of adapter to disable the respective check.
+
 ## ioBroker objects
 
 objects in *italic* are not part of all fritz.box configurations
@@ -124,23 +134,32 @@ objects in *italic* are not part of all fritz.box configurations
 |--------|-------|:-:|--------|
 |Button.lastclick|number|-|timestamp|
 
-### guest WLAN
-|Object|Value|settable|Description|
-|--------|-------|:-:|--------|
-|GuestWLAN.state|boolean|x|true/false -> ON/OFF|
-
 
 ## Known Issues:
-After startup of adapter the firmware version of fritzbox is requested, some models do not respond to this request and therefore an error is logged.
+Not all FW-versions support all objects.
 
 ## TODO:
 * universal object names
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
-* FritzDECT500 commands, FritzDECT440 after API release
+* FritzDECT440 after API release
 
 ## Changelog
+### 1.0.1
+* bugfixes in fritz API calls
+
+### 1.0.0 Breaking Change for non-native API objects
+* merge of fritzapi into repo directly including added DECT500 commands
+* **no longer support of non-native API calls (scraping of website)**
+    * GuestWLAN
+    * BatteryCharge
+    * OS version
+    
+### 0.3.2
+* new states in heater group, operationList and operationMode
+
 ### 0.3.1
 * (scrounger) new states in COMET, operationList and operationMode
+
 
 ### 0.3.0
 * new DECT500 supported (without commands)

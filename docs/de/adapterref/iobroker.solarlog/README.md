@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: l1Mmx1JvJjgwj64GW35rCZDCBZMtbJjx4PF3KM6SLnM=
+hash: a5XAzwEFvMNG/rWozs4JpDiAbJxszl4glipyShtWqeE=
 ---
 ![Logo](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
@@ -16,21 +16,43 @@ hash: l1Mmx1JvJjgwj64GW35rCZDCBZMtbJjx4PF3KM6SLnM=
 # IoBroker.solarlog
 Ein ioBroker-Adapter für Solarlog-Geräte
 
-Die offene Json-Schnittstelle muss im Konfigurationsmenü des Solarlogs aktiviert werden (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: aktivieren.)
+Die offene JSON-Schnittstelle (offen Json-Schnittstelle) muss im Konfigurationsmenü des Solarlog aktiviert werden (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: Wahrnehmung.)
 
 Adapter installieren, Instanz erstellen.
-Solarlog einstellen - IP-Adresse (192.XXX.X.XXX), Port (optional) und Polling - Intervall (in Millisekunden). Da der Adapter viele http-Anfragen an Sie sendet, empfehle ich, das Polling-Intervall nicht zu dicht einzustellen. Überprüfen Sie Ihr Debug-Protokoll auf die Zeit, die benötigt wird, um mindestens 10 Sekunden abzufragen oder einzustellen.
+Stellen Sie Solarlog - IP-Adresse (192.XXX.X.XXX), Port (optional) und Abfrageintervall (in Millisekunden) ein. Da der Adapter viele http-Anfragen an Sie Solarlog sendet, empfehle ich, das Abfrageintervall nicht zu dicht einzustellen. Überprüfen Sie Ihr Debug-Protokoll auf die Zeit, die zum Abrufen oder Festlegen von mindestens 10 Sekunden benötigt wird.
 
-Überprüfen Sie, ob alle Wechselrichterdaten erfasst wurden. !! Das User-Passwort im Solarlog muss für diese Option deaktiviert sein !! Achtung: Damit die Abfrage der Unterzähler funktioniert, muss das Benutzerpasswort im Solarlog deaktiviert werden.
+Überprüfen Sie, ob alle Wechselrichterdaten erfasst wurden. !!
 
-Prognose: Optional ruft der Adapter Prognosedaten über die Forecast.Solar-API ab. Tatsächlich werden die Gesamt-kWh von heute und morgen vorhergesagt und stündlich aktualisiert. Detailliertere oder zusätzliche Daten sind auf Anfrage erhältlich (bitte eröffnen Sie eine Ausgabe).
+Sicherheit: Sie können das 'Benutzer'-Passwort in Ihrem Solarlog und das Kontrollkästchen' Benutzer-Login aktiviert 'aktivieren und Ihr Passwort in der Adapterkonfiguration hinzufügen oder Sie können Solarlog und Adapter ohne Benutzerpasswort ausführen. Wenn die Benutzeranmeldung aktiviert ist, wird empfohlen, den Adapter während der Verwendung der Solarlog-Benutzeroberfläche zu stoppen (andernfalls müssen Sie sich nach jeder Anforderung des Adapters erneut anmelden).
+
+Prognose: Optional erhält der Adapter Prognosedaten mithilfe der Forecast.Solar-API. Tatsächlich werden die Gesamt-kWh von heute und morgen vorhergesagt und jede Stunde aktualisiert. Detailliertere oder zusätzliche Daten sind auf Anfrage erhältlich (bitte öffnen Sie ein Problem).
 
 ## Hardware
-Getestet auf: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
+Getestet am: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
 
-SolarLog 50: Es sind keine JSON-Interface @ SolarLog 50-Geräte geöffnet. Bestimmte Werte in den Kanälen 'info' und 'status' lauten daher 'ACCESS DENIED'. Wenn Sie eine andere Lösung bevorzugen, öffnen Sie bitte ein Problem oder veröffentlichen Sie Ihre Präferenzen in einem entsprechenden Problem.
+SolarLog 50: Es gibt keine offenen JSON-Interface @ SolarLog 50-Geräte. Bestimmte Werte im Kanal 'info' und 'status' lauten also 'ACCESS DENIED'. Wenn Sie eine andere Lösung bevorzugen, öffnen Sie bitte ein Problem oder veröffentlichen Sie Ihre Einstellungen in einem entsprechenden Problem.
 
 ## Changelog
+
+### 1.3.0
+
+-   user-login possibility added.
+
+### 1.2.4
+
+-   .npmignore and .gitignore added, small bugfix
+
+### 1.2.3
+
+-   Readme/License update.
+
+### 1.2.2
+
+-   It is now possible to set the time when historic data is requested.
+
+### 1.2.1
+
+-   'Forecast' - bug fixed (forecast request now only submitted if forecast is activated), dependencies updated.
 
 ### 1.2.0
 
@@ -144,7 +166,7 @@ Planned Objects:
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

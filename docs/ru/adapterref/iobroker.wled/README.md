@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: pO/VLwmq53Hbx9sjZnZ7/uAQIPQg5ORzFs8viU0ujdM=
+hash: fGqBbZvGNesHxxe5OfRwxTPW9jckbijOaHgAbed5JcA=
 ---
 ![логотип](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -16,46 +16,63 @@ hash: pO/VLwmq53Hbx9sjZnZ7/uAQIPQg5ORzFs8viU0ujdM=
 ![NPM](https://nodei.co/npm/iobroker.wled.png?downloads=true)
 
 # IoBroker.wled
-## Wled адаптер для ioBroker
+## Сетевой адаптер для ioBroker
 Быстрая и многофункциональная реализация веб-сервера ESP8266 / ESP32 для управления светодиодами NeoPixel (WS2812B, WS2811, SK6812, APA102)!
 
 [WLED - Github Project](https://github.com/Aircoookie/WLED) @Aircoookie
 
 ## Инструкции
 Адаптер автоматически пытается найти устройства WLED в вашей сети, используя службы Bonjour.
-Известные проблемы: Сети с разделением VLAN в основном не маршрутизируют широковещательный трафик, что означает сбой автоопределения. (см. To-Do)
+Известные проблемы: сети с разделением VLAN в основном не маршрутизируют широковещательный трафик, что означает сбой автоматического определения. (см. To-Do)
 
-1) Убедитесь, что ваше WLED-устройство работает и доступно по сети. 2) Установите адаптер. 3) Настройте время интервала для опроса данных и автоматического определения cyclus. 4) Запустите адаптер, устройства должны быть обнаружены автоматически. 5) Адаптер немедленно отправит изменения и опросы. данные каждые х секунд (настраивается)
+1) Убедитесь, что ваше устройство WLED работает и доступно по сети. 2) Установите адаптер. 3) Настройте время интервала для опроса данных и автоматического определения cyclus. 4) Запустите адаптер, устройства должны быть обнаружены автоматически. 5) Адаптер немедленно отправит изменения и опросы. данные каждые х секунд (настраивается)
 
 ## Сделать
-* [] настраиваемые устройства (только автоматическое обнаружение с помощью Bonjour)
-* [] Изучить лучший способ объявления об изменении пребывания, при поддержке текущих политик
-* [x] специальные команды, не включенные в rest-api (например, сохранение настроек)
-* [x] контрольные сегменты
-* [x] изменения цвета
+* [] Переключение опроса на сокетные соединения, ожидающие реализации на прошивке WLED
 
 ## Поддержите меня
-Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это личная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это персональная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
+### 0.3.0 Bugfix : Correct handling of polling timer
+* (DutchmanNL  & Jey-Cee) Bugfix : Polling timer not saved
+* (DutchmanNL) Bugfix : Correct handling of "online" state
+* (DutchmanNL) Bugfix : Polling timer (offline devices did not reconnect)
+
+### 0.2.6 Bugfix : Hex state value change
+* (DutchmanNL) Bugfix : Hex state value change
+
+### 0.2.5 Stable release candidate
+* (DutchmanNL) Code cleanup
+* (DutchmanNL) Improved logging information
+* (DutchmanNL) Make polling timer configurable
+* (DutchmanNL) Correct handling of device online state
+* (DutchmanNL) Show online state in instance configuration
+
+### 0.2.0 Possibility to add devices by IP-adress
+* (DutchmanNL) Bugfix io-package
+* (DutchmanNL) Improved logging at adapter start
+* (DutchmanNL) Possibility to add devices by IP-adress implemented. (Needed for situations were autoscan fails)
+* (DutchmanNL) Ensure known devices get connected immediatly after adapter start instead of waiting for network scan
+
 ### 0.1.9 Code improvements
-- (DutchmanNL) Code cleanup and optimalisation
-- (DutchmanNL) FIX memory leak by proper handling of bonjour service
+* (DutchmanNL) Code cleanup and optimalisation
+* (DutchmanNL) FIX memory leak by proper handling of bonjour service
 
 ### 0.1.8 Bugfix
-- (DutchmanNL) Solved incorrect formated API call at state changes causing warning message
+* (DutchmanNL) Solved incorrect formated API call at state changes causing warning message
 
 ### 0.1.7 Bugfix
-- (DutchmanNL) Fixed error when API call fails (write warning to log and retry at intervall time)
+* (DutchmanNL) Fixed error when API call fails (write warning to log and retry at intervall time)
 
 ### 0.1.6 HEX color states implemented
-- (DutchmanNL) HEX color states implemented
+* (DutchmanNL) HEX color states implemented
 
 ### 0.1.5 Stable Beta release
 
 ### 0.1.2
-- (DutchmanNL) Implement drop down menu for effects
+* (DutchmanNL) Implement drop down menu for effects
 
 ### 0.1.1
 * (DutchmanNL) Implemented states hidden from JSON-API : tt / psave / nn / time

@@ -61,7 +61,7 @@ You can add your caldav calendar in the adapter config.
 Enter your access data and the host name in the config.
 
 ### Baseurl list
-* Nextcloud: https://\<Hostname\>/remote.php/dav/principals
+* Nextcloud: https://\<Hostname\>/remote.php/dav or https://\<Hostname\>/remote.php/dav/principals
 * Web.de: https://caldav.web.de
 * mail.de: https://kalender.mail.de
 * Posteo: https://posteo.de:8443
@@ -75,6 +75,15 @@ You can add your iCal calendar in the adapter config.
 Enter the file path on the CalDav tab in the hostname field.
 
 ## Changelog
+
+### 1.1.3 (2020-03-22)
+* (WLAN-Kabel) #18 - Added possibility to load ics files from web servers
+* (WLAN-Kabel) #21 - Added option to ignore certificate errors
+* (WLAN-Kabel) #15 - Caldav time range is used to reduce traffic
+* (WLAN-Kabel) Caldav library revised
+* (WLAN-Kabel) Google functions outsourced in own lib
+* (WLAN-Kabel) #15 - Fixed caldav bug that occurred when end times were missing
+* (WLAN-Kabel) #15 - Added more debug messages
 
 ### 1.1.2 (2020-03-03)
 * (WLAN-Kabel) #15 - Fixed a serious bug that caused incorrect credentials for CalDav accounts

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.calendar/README.md
 title: ioBroker.calendar
-hash: 5Oon6BS1Ri7dDHrSAvewD1qgw+8jZjHpH7mlDgI486s=
+hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
 ---
 ![商标](../../../en/adapterref/iobroker.calendar/admin/calendar.png)
 
@@ -60,7 +60,7 @@ hash: 5Oon6BS1Ri7dDHrSAvewD1qgw+8jZjHpH7mlDgI486s=
 在配置中输入访问数据和主机名。
 
 ### Baseurl列表
-* Nextcloud：https：// \ <主机名\> / remote.php / dav / principals
+* Nextcloud：https：// \ <主机名\> / remote.php / dav或https：// \ <主机名\> / remote.php / dav / principals
 * Web.de：https://caldav.web.de
 * mail.de：https://kalender.mail.de
 * Posteo：https：//posteo.de：8443
@@ -73,6 +73,15 @@ hash: 5Oon6BS1Ri7dDHrSAvewD1qgw+8jZjHpH7mlDgI486s=
 在主机名字段的CalDav选项卡上输入文件路径。
 
 ## Changelog
+
+### 1.1.3 (2020-03-22)
+* (WLAN-Kabel) #18 - Added possibility to load ics files from web servers
+* (WLAN-Kabel) #21 - Added option to ignore certificate errors
+* (WLAN-Kabel) #15 - Caldav time range is used to reduce traffic
+* (WLAN-Kabel) Caldav library revised
+* (WLAN-Kabel) Google functions outsourced in own lib
+* (WLAN-Kabel) #15 - Fixed caldav bug that occurred when end times were missing
+* (WLAN-Kabel) #15 - Added more debug messages
 
 ### 1.1.2 (2020-03-03)
 * (WLAN-Kabel) #15 - Fixed a serious bug that caused incorrect credentials for CalDav accounts

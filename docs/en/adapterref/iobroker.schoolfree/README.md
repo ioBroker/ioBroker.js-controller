@@ -69,6 +69,20 @@ The following data points are available for further processing with Schoolfree:
 
 ## Changelog
 
+### 0.5.0 (23.03.2020)
+* (simatec) added public holidays
+* (simatec) Bugfix next schoolfree for API 2.0
+* (simatec) Bugfix schoolfree-name for API 2.0
+
+### 0.4.1 (22.03.2020)
+* (simatec) new query as adaptation to API v2.0
+* (simatec) Adjustment of the federal state IDs"
+* (simatec) Code fix for autochecker
+* (simatec) update Dependencies
+
+### 0.4.0 (21.03.2020)
+* (simatec) added new api v2.0 from www.mehr-schulferien.de
+
 ### 0.3.1 (28.10.2019)
 * (simatec) Fix start after install
 
@@ -98,7 +112,7 @@ The following data points are available for further processing with Schoolfree:
 ## License
 MIT License
 
-Copyright (c) 2019 simatec
+Copyright (c) 2019 - 2020 simatec
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

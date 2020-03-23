@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: l1Mmx1JvJjgwj64GW35rCZDCBZMtbJjx4PF3KM6SLnM=
+hash: a5XAzwEFvMNG/rWozs4JpDiAbJxszl4glipyShtWqeE=
 ---
 ![логотип](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
@@ -19,18 +19,40 @@ hash: l1Mmx1JvJjgwj64GW35rCZDCBZMtbJjx4PF3KM6SLnM=
 Открытый JSON-интерфейс (offene Json-Schnittstelle) должен быть активирован в меню конфигурации Solarlog (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: aktivieren.)
 
 Установите адаптер, создайте экземпляр.
-Установите Solarlog - IP-адрес (192.XXX.X.XXX), порт (необязательно) и опрос - интервал (в миллисекундах). Поскольку адаптер отправляет вам много http-запросов к Solarlog, я рекомендую не устанавливать слишком плотный опросный интервал. Проверьте ваш журнал отладки на время, необходимое для опроса или установить по крайней мере 10 секунд.
+Установите Solarlog - IP-адрес (192.XXX.X.XXX), порт (необязательно) и интервал опроса (в миллисекундах). Поскольку адаптер отправляет вам много http-запросов, Solarlog, я рекомендую не устанавливать слишком большой интервал опроса. Проверьте в журнале отладки время, необходимое для опроса или установки не менее 10 с.
 
-Проверьте, собраны ли все данные инвертора. !! Для этой опции пароль пользователя в solarlog должен быть деактивирован !! Achtung: Damit die Abfrage der Unterzaehler funktioniert, Muss das Benutzerpasswort im Solarlog deaktiviert sein.
+Проверьте, все ли данные инвертора собраны. !!
 
-Прогноз: при желании адаптер получает прогноз - данные с помощью API Forecast.Solar. На самом деле, прогнозируется общий киловатт-час на сегодня и завтра, каждый час обновляясь. Более подробные или дополнительные данные доступны по запросу (пожалуйста, откройте вопрос).
+Безопасность: вы можете активировать «user» - пароль в вашем Solarlog и «User Login Activated» и добавить свой пароль в конфигурации адаптера, или вы можете запустить Solarlog и адаптер без пароля пользователя. Если активирован вход пользователя в систему, рекомендуется остановить адаптер при использовании интерфейса пользователя solarlog - в противном случае необходимо повторно входить в систему после каждого запроса адаптера.
+
+Прогноз: при желании адаптер получает прогноз - данные с помощью API Forecast.Solar. На самом деле, прогнозируется общий киловатт-час на сегодняшний день и завтра, который обновляется каждый час. Более подробные или дополнительные данные доступны по запросу (пожалуйста, откройте вопрос).
 
 ## Аппаратное обеспечение
-Проверено: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
+Проверено на: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
 
 SolarLog 50: нет открытых устройств JSON-Interface @ SolarLog 50. Таким образом, определенные значения в «info» и «status» канале будут «ACCESS DENIED». Если вы предпочитаете другое решение, пожалуйста, откройте проблему или опубликуйте ваши предпочтения в соответствующей проблеме.
 
 ## Changelog
+
+### 1.3.0
+
+-   user-login possibility added.
+
+### 1.2.4
+
+-   .npmignore and .gitignore added, small bugfix
+
+### 1.2.3
+
+-   Readme/License update.
+
+### 1.2.2
+
+-   It is now possible to set the time when historic data is requested.
+
+### 1.2.1
+
+-   'Forecast' - bug fixed (forecast request now only submitted if forecast is activated), dependencies updated.
 
 ### 1.2.0
 
@@ -144,7 +166,7 @@ Planned Objects:
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

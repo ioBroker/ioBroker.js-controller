@@ -28,6 +28,9 @@ Manage and create devices for using it in other adapters like material, iot,...
 
 ## Changelog
 
+### 0.3.3 (2020-03-23)
+* (bluefox) Fixed error by device creation
+
 ### 0.3.2 (2020-02-09)
 * (Apollon77) usage with all kinds of admin ports and reverse proxies optimized
 

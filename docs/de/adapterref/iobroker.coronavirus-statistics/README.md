@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.coronavirus-statistics/README.md
-title: kein Titel
-hash: 3sQ2AFsMKV+YfA+lHLTsIcBIVQGMiahyAT44vv+ieSo=
+title: ioBroker.coronavirus-Statistik
+hash: oTIhUDP9XRjsxpNs7s5q8OIxCSwDQeG2kZFHzz6bpk4=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
@@ -14,12 +14,9 @@ hash: 3sQ2AFsMKV+YfA+lHLTsIcBIVQGMiahyAT44vv+ieSo=
 ![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.coronavirus-statistics/master.svg)
 
-<h1>
+! (Logo) [admin / coronavirus-statistics.png]
 
-<img  src="admin/coronavirus-statistics.png"  width="64"/> ioBroker.coronavirus-Statistik
-
-</ h1>
-
+# IoBroker.coronavirus-statistics
 ## Coronavirus Live Statistics-Adapter für ioBroker
 Adapter zur Anzeige von Informationen zum globalen Corona-Virus und aktuellen Berichten
 
@@ -44,7 +41,44 @@ Folgende Informationen sind verfügbar:
 Bitte beachten Sie, dass dieser Adapter so viele aktuelle Informationen wie möglich verwendet. Je nach Bericht des Landes kann es jedoch zu einer Verzögerung von mehreren Stunden kommen.
 Quelle: https://coronavirus-19-api.herokuapp.com
 
+## Fehlende Länder hinzufügen
+Es kann vorkommen, dass Länder nicht korrekt erkannt werden, da die API einige Ländernamen liefert, die nicht ISO-konform sind. In einem solchen Fall erhalten Sie eine Warnmeldung im Protokoll, die so aussieht
+
+```
+coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not found in lib! Must be added to the country name translator.
+```
+
+Mit dem Datenpunkt `coronavirus-statistics.0.countryTranslator` können Sie selbst ein Land zuordnen. Suchen Sie hier nach dem Namen des entsprechenden Landes:
+
+[Liste mit Ländernamen](https://github.com/i-rocky/country-list-js/blob/master/data/names.json)
+
+Mit dem ausgewählten Ländernamen müssen Sie eine JSON-Zeichenfolge erstellen und in den Datenpunkt `coronavirus-statistics.0.countryTranslator` eingeben.
+Die JSON-Zeichenfolge sieht dann folgendermaßen aus:
+
+```
+{
+	"Cabo_Verde": "Cape Verde",
+	"Timor-Leste": "East Timor"
+}
+```
+
+Als erster Wert muss der Name aus der Warnmeldung aus dem Protokoll entnommen werden. Dem wird dann der Name des Landes aus den [Liste mit Ländernamen](https://github.com/i-rocky/country-list-js/blob/master/data/names.json) zugeordnet.
+
 ## Changelog
+
+### 0.3.3
+* (DutchmanNL) Improved configuration page
+* (DutchmanNL) Make country list in configuration variable	
+* (DutchmanNL) Implement choice if non-selected countrys should be deleted from states (if already there, default No!) 
+
+### 0.3.1
+* (DutchmanNL) Enable configuration
+
+### 0.3.0 (2020-03-22)
+* (bluefox) The number of data points was reduced by selection of countries
+ 
+### 0.2.5 
+* (Scrounger) Bugfix : Cabo_Verde not found in lib! Must be added to the country name translator
 
 ### 0.2.4
 * (Scrounger) Grouping by continents implemented

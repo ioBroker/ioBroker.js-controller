@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: Cri1GwOTd8x7acZznK6RFrrGrhL9QLIXkDKeSGZwzeM=
+hash: 92n94I2ZG3E2a4iB/b8NSZnifni7HtTykIc/gJhbp30=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -35,27 +35,47 @@ Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen u
 
 ---
 
-## Changelog
+## 1.2.1
+- Исправлен виджет слайдера: разделены на два виджета (горизонтальный и вертикальный)
+
+### 1.2.0
+- Добавлен виджет изображения
+- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно нажать на каждую кнопку в vis-редакторе, чтобы вернуть углы по умолчанию)
+- Добавлены новые иконки
+
+### 1.1.1
+- Исправлена ошибка
+
+### 1.1.0
+- Добавлен виджет слайдера
+- Добавлена опция для зеркального отображения
+- Добавлены новые иконки
+- Изменены виджеты кнопок для использования шрифта по умолчанию и параметров текста
 
 ### 1.0.0
-- Widget background and content opacity, Switch can be changed from boolean to value, changed icons from white to black, added seamless backgrounds
+- Фон виджета и непрозрачность содержимого. Переключатель можно изменить с логического на значение, изменить значки с белого на черный, добавить бесшовный фон
 
 ### 0.1.2
-- Bug fixes
+- Исправление ошибок
+
 ...
 
 ### 0.1.1
-- Bug fixes
+- Исправление ошибок
+
 ...
 
 ### 0.1.0 (Erstveröffentlichung)
-- inventwo Design Widgets
+- изобретение двух виджетов дизайна
+
 ...
 
 ### 0.0.1
 - Die Idee ist geboren
 
 ---
+
+## Changelog
 
 ## License
 

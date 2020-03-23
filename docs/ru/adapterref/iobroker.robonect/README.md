@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.robonect/README.md
 title: ioBroker.robonect
-hash: 2bDm47Ac2ug3MdRGon3Eeh12kGi575v6XzZjeO/22Mo=
+hash: 2g+4CkiBh7gPjDcSVR5f3KIb1fznPovNq5EAee0reqs=
 ---
 ![логотип](../../../en/adapterref/iobroker.robonect/admin/robonect.png)
 
@@ -11,7 +11,7 @@ hash: 2bDm47Ac2ug3MdRGon3Eeh12kGi575v6XzZjeO/22Mo=
 ![Количество установок](http://iobroker.live/badges/robonect-stable.svg)
 
 # IoBroker.robonect
-Это адаптер ioBroker для вашей газонокосилки с поддержкой Robonect HX. Он был протестирован с Robonect v1.1b и Gardena R70Li.
+Это адаптер ioBroker для вашей газонокосилки с поддержкой Robonect HX. Он был протестирован с Robonect v1.1b (с ZeroConf v1.4) и Gardena R70Li.
 
 ## Настройки
 * Требуется ввести IP-адрес модуля Robonect. Если имя пользователя и пароль установлены, они также необходимы.

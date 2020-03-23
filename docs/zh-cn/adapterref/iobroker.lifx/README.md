@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lifx/README.md
 title: ioBroker.lifx
-hash: 5ovwws54rtb+OjggZIjqQ+5wEyYNXqj5q4DHwjM09yM=
+hash: Dq1R7yqzh6tng4JyujLCfbpyWc1Q6H2oRCzS2Uv4Jcw=
 ---
 ![商标](../../../en/adapterref/iobroker.lifx/admin/lifx_logo.png)
 
@@ -52,33 +52,38 @@ npm install https://github.com/foxthefox/ioBroker.lifx/tarball/master --producti
 | Bulb.sat |值| x |饱和度0 ... 100％|
 |灯泡亮度|值| x |亮度0 ... 100％|
 | Bulb.online | boolean |-| true / false |
-|灯泡供应商|字符串|-|供应商|
-|灯泡产品|绳子|-|产品|
-| Bulb.version | string |-| version |
-|灯泡标签|字符串|-|标签|
-| Bulb.colorLamp | boolean |-| true / false |
-| Bulb.infraredLamp | boolean |-| true / false |
-| Bulb.multizoneLamp | boolean |-| true / false |
+| Bulb.label |值|-|名称/标签|
+|灯泡供应商|值|-|供应商信息|
+|灯泡产品|值|-|产品信息|
+| Bulb.colorLamp |值|-|| colorLamp信息|
+| Bulb.infraredLamp |值|-| infraredLamp信息|
+| Bulb.multizoneLamp |值|-| multizoneLamp信息|
+|灯泡区域温度|值| x |色温2500 ... 9000 K |
+| Bulb.Zone.hue |值| x |颜色0 ... 360 |
+| Bull.Zone.sat |值| x |饱和度0 ... 100％|
+|灯泡区域亮度|值| x |亮度0 ... 100％|
 
 ＃＃ 去做：
--如果在ioBroker外部进行了调整，则从灯泡周期性获取getState
 -使用所有现有设置进行色彩值调整（亮度调整具有固定的80％饱和度并保持以前的色相设置；饱和度调整和色调调整具有固定的80％亮度）
 -过渡时间
 -波形
--白灯对象
 
 ＃＃ 已知的问题
-??
+-超出范围的值会导致适配器崩溃
 
 ## Changelog
 ### 0.2.0
 - lifx-lan-client library instead node-lifx
 - states for vendor, product, version, product features
+- multizone support
+- cyclic polling
 
 ### 0.1.1
 - logo quadratic
+
 ### 0.1.0
 - compact mode
+
 ### 0.0.5
 - adminv3
 - noConfig -> no admin page anymore

@@ -6,7 +6,7 @@ Windows: [![Build status](https://ci.appveyor.com/api/projects/status/yl79oamami
 
 ![Number of Installations](http://iobroker.live/badges/robonect-installed.svg) ![Number of Installations](http://iobroker.live/badges/robonect-stable.svg) 
 
-This is an ioBroker adapter for your Robonect HX enabled lawn mower. It has been tested with Robonect v1.1b and a Gardena R70Li.
+This is an ioBroker adapter for your Robonect HX enabled lawn mower. It has been tested with Robonect v1.1b (with ZeroConf v1.4) and a Gardena R70Li.
 
 ## Settings
 * It is required to enter the IP address of the Robonect module. In case username and password are set, they are required, too.

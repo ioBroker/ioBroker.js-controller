@@ -36,6 +36,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 1.0.2 (2020.03.22)
+* (Apollon77) fixes and optimizations 
+
 ### 1.0.1 (2020.03.18)
 * (Apollon77) fixes and optimizations 
 
