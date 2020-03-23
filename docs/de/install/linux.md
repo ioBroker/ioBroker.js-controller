@@ -102,7 +102,7 @@ gewünschten entspricht folgendes vorher ausführen:
 
 3. Die existierenden node & node.js Versionen deinstallieren
 
-    ``sudo apt-get --purge remove node``
+    ``sudo apt-get --purge remove node`` (Es kann sein, dass hier eine Fehlermeldung kommt. Bitte weiter machen!)
 
     ``sudo apt-get --purge remove nodejs``
 
