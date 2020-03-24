@@ -110,5 +110,8 @@
             }
         }
     },
-    "dataDirComment": "Always relative to iobroker.js-controller/"
+    "dataDirComment": "Always relative to iobroker.js-controller/",
+    "plugins": {
+
+    }
 }

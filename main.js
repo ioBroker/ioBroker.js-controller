@@ -10,21 +10,23 @@
  */
 'use strict';
 
-const schedule   = require('node-schedule');
-const os         = require('os');
-const fs         = require('fs');
-const path       = require('path');
-const cp         = require('child_process');
-const ioPackage  = require('./io-package.json');
-const tools      = require('./lib/tools');
-const version    = ioPackage.common.version;
-const pidUsage   = require('pidusage');
-const EXIT_CODES = require('./lib/exitCodes');
+const schedule        = require('node-schedule');
+const os              = require('os');
+const fs              = require('fs');
+const path            = require('path');
+const cp              = require('child_process');
+const ioPackage       = require('./io-package.json');
+const tools           = require('./lib/tools');
+const version         = ioPackage.common.version;
+const pidUsage        = require('pidusage');
+const EXIT_CODES      = require('./lib/exitCodes');
+const {PluginHandler} = require('@iobroker/plugin-base');
+let pluginHandler;
 
-const exec       = cp.exec;
-const spawn      = cp.spawn;
+const exec            = cp.exec;
+const spawn           = cp.spawn;
 
-let   adapterDir = __dirname.replace(/\\/g, '/');
+let   adapterDir      = __dirname.replace(/\\/g, '/');
 let   zipFiles;
 let   upload; // will be used only once by upload of adapter
 
@@ -399,16 +401,19 @@ function createStates(onConnect) {
                 clearTimeout(statesDisconnectTimeout);
                 statesDisconnectTimeout = null;
             }
-            // logs and cleanups are only handled by the main controller process
-            if (!compactGroupController) {
-                states.clearAllLogs && states.clearAllLogs();
-                deleteAllZipPackages();
-            }
-            initMessageQueue();
-            startAliveInterval();
+            pluginHandler.setDatabaseForPlugins(objects, states);
+            pluginHandler.initPlugins(ioPackage, () => {
+                // logs and cleanups are only handled by the main controller process
+                if (!compactGroupController) {
+                    states.clearAllLogs && states.clearAllLogs();
+                    deleteAllZipPackages();
+                }
+                initMessageQueue();
+                startAliveInterval();
 
-            initializeController();
-            onConnect && onConnect();
+                initializeController();
+                onConnect && onConnect();
+            });
         },
         disconnected: (/*error*/) => {
             if (restartTimeout) {
@@ -1530,8 +1535,16 @@ function setMeta() {
         if (!compactGroupController) {
             thishostStates = doc.rows.filter(out1 => !out1.id.includes(hostObjectPrefix + compactGroupObjectPrefix));
         }
+        const pluginStatesIndex = (hostObjectPrefix + '.plugins.').length;
         const toDelete = thishostStates.filter(out1 => {
             const found = tasks.find(out2 => out1.id === out2._id);
+            if (found === undefined && out1.id.startsWith(hostObjectPrefix + '.plugins.')) {
+                let nameEndIndex = out1.id.indexOf('.', pluginStatesIndex + 1);
+                if (nameEndIndex === -1) {
+                    nameEndIndex = undefined;
+                }
+                return !pluginHandler.pluginExists(out1.id.substring(pluginStatesIndex, nameEndIndex));
+            }
             return found === undefined;
         });
 
@@ -3734,6 +3747,8 @@ function stop(force, callback) {
     }
 
     stopInstances(force, wasForced => {
+        pluginHandler.destroy();
+
         if (objects && objects.destroy) objects.destroy();
 
         if (!states || force) {
@@ -3892,6 +3907,24 @@ function init(compactGroupId) {
     else {
         logger.info(hostLogPrefix + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
     }
+
+    const pluginSettings = {
+        scope: 'controller',
+        namespace: hostObjectPrefix,
+        logNamespace: hostLogPrefix,
+        log: logger,
+        iobrokerConfig: config,
+        parentPackage: null
+    };
+    try {
+        pluginSettings.parentPackage = JSON.parse(fs.readFileSync(__dirname + '/package.json', 'utf8'));
+    }
+    catch (err) {
+        logger.error(hostLogPrefix + ' Can not read js-controller package.json');
+    }
+    pluginHandler = new PluginHandler(pluginSettings);
+    pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
+    pluginHandler.addPlugins(config.plugins, __dirname);           // ... plugins from iobroker.json
 
     createObjects(() => {
         objects.subscribe('system.adapter.*');
