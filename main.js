@@ -377,6 +377,29 @@ function createStates(onConnect) {
                     logger.info(hostLogPrefix + ' Got invalid loglevel "' + state.val + '", ignoring');
                 }
                 states.setState(hostObjectPrefix + '.logLevel', {val: currentLevel, ack: true, from: hostObjectPrefix});
+            } else
+            if (id.startsWith(hostObjectPrefix + '.plugins.') && id.endsWith('.enabled')) {
+                if (!config || !config.log || !state || state.ack) return;
+                const pluginStatesIndex = (hostObjectPrefix + '.plugins.').length;
+                let nameEndIndex = id.indexOf('.', pluginStatesIndex + 1);
+                if (nameEndIndex === -1) {
+                    nameEndIndex = undefined;
+                }
+                const pluginName = id.substring(pluginStatesIndex, nameEndIndex);
+                if (!pluginHandler.pluginExists(pluginName)) return;
+                if (pluginHandler.isPluginActive(pluginName) !== state.val) {
+                    if (state.val) {
+                        if (!pluginHandler.isPluginInstanciated(pluginName)) {
+                            pluginHandler.instanciatePlugin(pluginName, pluginHandler.getPluginConfig(pluginName), __dirname);
+                            pluginHandler.setDatabaseForPlugin(pluginName, objects, states);
+                            pluginHandler.initPlugin(pluginName, ioPackage);
+                        }
+                    } else {
+                        if (!pluginHandler.destroy(pluginName)) {
+                            logger.info(hostLogPrefix + ' Plugin ' + pluginName + ' could not be destroyed. Please restart js-controller to disable it.');
+                        }
+                    }
+                }
             }
             /* it is not used because of code before
             else
@@ -401,19 +424,16 @@ function createStates(onConnect) {
                 clearTimeout(statesDisconnectTimeout);
                 statesDisconnectTimeout = null;
             }
-            pluginHandler.setDatabaseForPlugins(objects, states);
-            pluginHandler.initPlugins(ioPackage, () => {
-                // logs and cleanups are only handled by the main controller process
-                if (!compactGroupController) {
-                    states.clearAllLogs && states.clearAllLogs();
-                    deleteAllZipPackages();
-                }
-                initMessageQueue();
-                startAliveInterval();
+            // logs and cleanups are only handled by the main controller process
+            if (!compactGroupController) {
+                states.clearAllLogs && states.clearAllLogs();
+                deleteAllZipPackages();
+            }
+            initMessageQueue();
+            startAliveInterval();
 
-                initializeController();
-                onConnect && onConnect();
-            });
+            initializeController();
+            onConnect && onConnect();
         },
         disconnected: (/*error*/) => {
             if (restartTimeout) {
@@ -441,12 +461,17 @@ function initializeController() {
     if (connected === null) {
         connected = true;
         if (!isStopping) {
-            // Do not start if we still stopping the instances
-            checkHost(() => {
-                startMultihost(config);
-                setMeta();
-                started = true;
-                getInstances();
+            pluginHandler.setDatabaseForPlugins(objects, states);
+            pluginHandler.initPlugins(ioPackage, () => {
+                states.subscribe(hostObjectPrefix + '.plugins.*');
+
+                // Do not start if we still stopping the instances
+                checkHost(() => {
+                    startMultihost(config);
+                    setMeta();
+                    started = true;
+                    getInstances();
+                });
             });
         }
     } else {
@@ -3747,7 +3772,7 @@ function stop(force, callback) {
     }
 
     stopInstances(force, wasForced => {
-        pluginHandler.destroy();
+        pluginHandler.destroyAll();
 
         if (objects && objects.destroy) objects.destroy();
 
@@ -4007,6 +4032,8 @@ function init(compactGroupId) {
             stop();
             return;
         }
+        console.error(err.message || err);
+        if (err.stack) console.error(err.stack);
         if (err.arguments && err.arguments[0] === 'fragmentedOperation') {
             // TODO Remove as soon as socketio is no longer used
             logger.error(hostLogPrefix + ' fragmentedOperation: restart objects');
