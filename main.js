@@ -396,7 +396,7 @@ function createStates(onConnect) {
                         }
                     } else {
                         if (!pluginHandler.destroy(pluginName)) {
-                            logger.info(hostLogPrefix + ' Plugin ' + pluginName + ' could not be destroyed. Please restart js-controller to disable it.');
+                            logger.info(hostLogPrefix + ' Plugin ' + pluginName + ' could not be disabled. Please restart js-controller to disable it.');
                         }
                     }
                 }
