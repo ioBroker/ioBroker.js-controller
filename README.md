@@ -356,9 +356,12 @@ Effectively an `alias` object will mirror the state value of the target object.
 If allowed, both states can be changed and are synced automatically by the ioBroker core system.
 Also both states can be used to subscribe in scripts and should behave exactly identical.
 
-Additionally to defining the target ID theAlias object can also define "read and write functions" to do easy value conversions, so e.g.
+Additionally to defining the target ID the alias object can also define "read and write functions" to do easy value conversions, so e.g.
 the target state could contain a power measurement value in Wh (because an adapter delivers the value that way)
 and the alias could use the same value calculated as kWh.
+
+Some devices have separate states for semantically one state. One to read the current status from and one to write to, to
+control the device. You can combine these states into one alias by using a separate alias id to write to and  another to read from.
 
 As of now (js-controller 2.0.0 release) there are no front-ends to configure alias.
 To create an alias object simple create a new object with a own name in the `alias.0` namespace and add the alias definition in the common section (here for an alias with the id `"alias.0.aliasName"`):
@@ -382,9 +385,37 @@ To create an alias object simple create a new object with a own name in the `ali
     type: 'state'
 }
 ```
+
+or using different read and write ids:
+
+```
+{
+    _id: "alias.0.aliasName",
+    common: {
+        name: 'Test AliasC',
+        type: 'number',
+        role: 'state',
+        min: -10,
+        max: 10,
+        alias: {
+            id: {
+                read: 'state.id.to.read.from',
+                write: 'state.id.to.write.to'
+            }
+            read: 'val * 10 + 1',
+            write: '(val - 1) / 10'
+        }
+    },
+    native: {},
+    type: 'state'
+}
+```
+
 The following fields are allowed in the alias structure:
 
-* `alias.id` contains the ID of the target object/state to mirror
+* `alias.id` contains the ID of the target object/state to mirror or represents an object with the following two properties:
+    * `alias.id.write` contains the ID of the object which will be set when alias is written
+    * `alias.id.read` contains the ID of the object which will be mirrored to the alias object/state   
 * `alias.read` can optionally contain a read script (will be evaluated) to calculate the alias value when the target state changes
 * `alias.write` can optionally contain a write script (will be evaluated) to calculate the target value if the alias value is changed
 

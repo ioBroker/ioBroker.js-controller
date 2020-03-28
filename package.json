@@ -23,7 +23,7 @@
     "debug": "^4.1.1",
     "decache": "^4.5.1",
     "event-stream": "^4.0.1",
-    "iobroker.objects-redis": "^2.0.4",
+    "iobroker.objects-redis": "^2.0.5",
     "ioredis": "^4.16.0",
     "jsonwebtoken": "^8.5.1",
     "jszip": "^3.2.2",

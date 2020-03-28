@@ -2835,7 +2835,7 @@ function startInstance(id, wakeUp) {
     if (isStopping || !connected) return;
 
     if (!procs[id]) {
-        logger.error(hostLogPrefix + ' startInstance ' + id + ': object not found!');
+        logger.error(`${hostLogPrefix} startInstance ${id}: object not found!`);
         return;
     }
 
@@ -2874,7 +2874,7 @@ function startInstance(id, wakeUp) {
     const adapterDir_ = tools.getAdapterDir(name);
     if (!fs.existsSync(adapterDir_)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
-        logger.debug(hostLogPrefix + ' startInstance Queue ' + id + ' for installation');
+        logger.debug(`${hostLogPrefix} startInstance Queue ${id} for installation`);
         installQueue.push({id: id, version: instance.common.installedVersion || instance.common.version, installedFrom: instance.common.installedFrom, wakeUp: wakeUp});
         // start install queue if not started
         if (installQueue.length === 1) installAdapters();
@@ -2887,7 +2887,7 @@ function startInstance(id, wakeUp) {
     //noinspection JSUnresolvedVariable
     if (instance.common.memoryLimitMB && parseInt(instance.common.memoryLimitMB, 10)) {
         //noinspection JSUnresolvedVariable
-        args.push('--max-old-space-size=' + parseInt(instance.common.memoryLimitMB, 10));
+        args.push(`--max-old-space-size=${parseInt(instance.common.memoryLimitMB, 10)}`);
     }
 
     let fileNameFull = path.join(adapterDir_ , fileName);
@@ -2903,9 +2903,9 @@ function startInstance(id, wakeUp) {
         if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
             // If not just www files
             if (instance.common.onlyWWW || fs.existsSync(path.join(adapterDir_, 'www'))) {
-                logger.debug(hostLogPrefix + ' startInstance ' + name + '.' + args[0] + ' only WWW files. Nothing to start');
+                logger.debug(`${hostLogPrefix} startInstance ${name}.${args[0]} only WWW files. Nothing to start`);
             } else {
-                logger.error(hostLogPrefix + ' startInstance ' + name + '.' + args[0] + ': cannot find start file!');
+                logger.error(`${hostLogPrefix} startInstance ${name}.${args[0]}: cannot find start file!`);
             }
             return;
         }
@@ -2915,7 +2915,7 @@ function startInstance(id, wakeUp) {
     // read node.js engine requirements
     try {
         // read directly from disk and not via require to allow "on the fly" updates of adapters.
-        let p = fs.readFileSync(adapterDir_ + '/package.json');
+        let p = fs.readFileSync(`${adapterDir_}/package.json`);
         p = JSON.parse(p.toString());
         procs[id].engine = p && p.engines && p.engines.node;
     } catch (e) {
@@ -2936,6 +2936,35 @@ function startInstance(id, wakeUp) {
             });
             return;
         }
+    }
+
+    // check how much memory is left and log a warning error/if its critical
+    let availableMemMB;
+
+    if (fs.existsSync('/proc/meminfo')) {
+        // on linux we read mem available
+        try {
+            const text = fs.readFileSync('/proc/meminfo', 'utf8');
+            const m = text && text.match(/MemAvailable:\s*(\d+)/);
+            if (m && m[1]) {
+                availableMemMB =  Math.round(parseInt(m[1], 10) * 0.001024); // convert to MB
+            }
+        } catch (err) {
+            logger.warn(`${hostLogPrefix} Cannot read /proc/meminfo: ${err}`);
+        }
+    } else {
+        // else just use freemem
+        availableMemMB = os.freemem() / 1048576;  // convert to MB
+    }
+
+    // default: if less than 100 MB log warning, less than 50 MB log error, but check config first
+    if (availableMemMB !== undefined && availableMemMB < (typeof config.system.memLimitError === 'number' ? config.system.memLimitError : 50)) {
+        logger.error(`${hostLogPrefix} Your system has only ${availableMemMB} MB RAM left available and an additional \
+        adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`);
+        logger.error(`${hostLogPrefix} In future versions, the adapter might not be started!`);
+    } else if (availableMemMB !== undefined && availableMemMB < (typeof config.system.memLimitWarn === 'number' ? config.system.memLimitWarn : 100)) {
+        logger.warn(`${hostLogPrefix} Your system has only ${availableMemMB} MB RAM left available and an additional \
+        adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`);
     }
 
     //noinspection JSUnresolvedVariable

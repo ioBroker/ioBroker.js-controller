@@ -12,7 +12,11 @@
         "compact": false,
         "compactComment": "Controller will try to start the instances as a part of the same process. No spawn will be done. Only by adapters that support it and have flag compact flag in io-package.json",
         "allowShellCommands": false,
-        "allowShellCommandsComment": "Allow execution of \"shell\" sendToHost commands"
+        "allowShellCommandsComment": "Allow execution of \"shell\" sendToHost commands",
+        "memLimitWarn": 100,
+        "memLimitWarnComment": "If the available RAM is below this threshold on adapter start, a warning will be logged.",
+        "memLimitError": 50,
+        "memLimitErrorComment": "If the available RAM is below this threshold on adapter start, an error will be logged."
     },
     "multihostService": {
         "enabled": false,
