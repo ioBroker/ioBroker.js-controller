@@ -43,7 +43,9 @@ describe('States-Redis: Test states in Redis', function() {
                 port: 6379,
                 onChange: (id, state) => {
                     console.log('Redis-state changed. ' + id);
-                    if (onStatesChanged) onStatesChanged(id, state);
+                    if (onStatesChanged) {
+                        onStatesChanged(id, state);
+                    }
                 }
             }
         },

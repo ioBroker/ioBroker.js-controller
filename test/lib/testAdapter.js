@@ -67,14 +67,20 @@ function testAdapter(options) {
             stateChange: (id, state) =>
                 context.onAdapterStateChanged && context.onAdapterStateChanged(id, state),
             unload: callback => {
-                if (context.onAdapterUnload) context.onAdapterUnload(callback);
+                if (context.onAdapterUnload) {
+                    context.onAdapterUnload(callback);
+                }
             },
             message: obj => {
-                if (context.onAdapterMessage) context.onAdapterMessage(obj);
+                if (context.onAdapterMessage) {
+                    context.onAdapterMessage(obj);
+                }
 
             },
             ready: () => {
-                if (callback) callback();
+                if (callback) {
+                    callback();
+                }
             },
             compact: true
         });
@@ -84,14 +90,20 @@ function testAdapter(options) {
         counter = counter || 0;
         console.log('Try check #' + counter);
         if (counter > 30) {
-            if (cb) cb('Cannot check connection');
+            if (cb) {
+                cb('Cannot check connection');
+            }
             return;
         }
 
         context.states.getState('system.adapter.' + context.adapterShortName + '.0.alive', (err, state) => {
-            if (err) console.error(err);
+            if (err) {
+                console.error(err);
+            }
             if (state && (state.val === isConnected)) {
-                if (cb) cb();
+                if (cb) {
+                    cb();
+                }
             } else {
                 setTimeout(() => checkConnectionOfAdapter(isConnected, cb, counter + 1), 1000);
             }
@@ -102,17 +114,25 @@ function testAdapter(options) {
     function checkValueOfState(id, value, cb, counter) {
         counter = counter || 0;
         if (counter > 20) {
-            if (cb) cb('Cannot check value Of State ' + id);
+            if (cb) {
+                cb('Cannot check value Of State ' + id);
+            }
             return;
         }
 
         context.states.getState(id, (err, state) => {
-            if (err) console.error(err);
+            if (err) {
+                console.error(err);
+            }
             if (value === null && !state) {
-                if (cb) cb();
+                if (cb) {
+                    cb();
+                }
             } else
             if (state && (value === undefined || state.val === value)) {
-                if (cb) cb();
+                if (cb) {
+                    cb();
+                }
             } else {
                 setTimeout(function () {
                     checkValueOfState(id, value, cb, counter + 1);
@@ -167,8 +187,12 @@ function testAdapter(options) {
         if (objectsConfig.dataDir && !fs.existsSync(objectsConfig.dataDir)) {
             fs.mkdirSync(objectsConfig.dataDir);
         }
-        if (objectsConfig.dataDir) fs.writeFileSync(objectsConfig.dataDir + '/objects.json', fs.readFileSync(__dirname + '/objects.json'));
-        if (statesConfig.dataDir) fs.writeFileSync(statesConfig.dataDir + '/states.json', fs.readFileSync(__dirname + '/states.json'));
+        if (objectsConfig.dataDir) {
+            fs.writeFileSync(objectsConfig.dataDir + '/objects.json', fs.readFileSync(__dirname + '/objects.json'));
+        }
+        if (statesConfig.dataDir) {
+            fs.writeFileSync(statesConfig.dataDir + '/states.json', fs.readFileSync(__dirname + '/states.json'));
+        }
     }
 
     describe(options.name + ' ' + context.adapterShortName + ' adapter', function () {
@@ -181,11 +205,15 @@ function testAdapter(options) {
 
             _statesConfig.onChange = (id, state) => {
                 console.log('state changed. ' + id);
-                if (context.onControllerStateChanged) context.onControllerStateChanged(id, state);
+                if (context.onControllerStateChanged) {
+                    context.onControllerStateChanged(id, state);
+                }
             };
             _objectsConfig.onChange = (id, obj) => {
                 console.log('object changed. ' + id);
-                if (context.onControllerObjectChanged) context.onControllerObjectChanged(id, obj);
+                if (context.onControllerObjectChanged) {
+                    context.onControllerObjectChanged(id, obj);
+                }
             };
 
             setup.startController({
@@ -212,7 +240,9 @@ function testAdapter(options) {
         it(options.name + ' ' + context.adapterShortName + ' adapter: Check if adapter started', function (done) {
             this.timeout(60000);
             checkConnectionOfAdapter(true, function (err) {
-                if (err) console.log(err);
+                if (err) {
+                    console.log(err);
+                }
                 expect(err).not.to.be.equal('Cannot check connection');
                 done();
             });

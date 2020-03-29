@@ -106,7 +106,7 @@ function register(it, expect, context) {
 
     // getAdapterObjects
     it(testName + 'Read all objects of adapter', function (done) {
-        context.adapter.getAdapterObjects((objects) => {
+        context.adapter.getAdapterObjects(objects => {
             expect(objects).to.be.ok;
             expect(objects[context.adapterShortName + '.0.' + gid]).to.be.ok;
             expect(objects[context.adapterShortName + '.0.' + gid].type).to.be.equal('state');

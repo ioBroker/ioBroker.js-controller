@@ -46,7 +46,9 @@ describe('States-Redis-Socket: Test states', function () {
                 port: 0,
                 onChange: (id, state) => {
                     console.log('Redis-state-Socket changed. ' + id);
-                    if (onStatesChanged) onStatesChanged(id, state);
+                    if (onStatesChanged) {
+                        onStatesChanged(id, state);
+                    }
                 }
             }
         },

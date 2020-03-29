@@ -95,7 +95,7 @@ function runNpm(root) {
         const child = exec('npm install --production', {cwd: root});
         child.stderr.pipe(process.stdout);
         child.stdout.pipe(process.stdout);
-        child.on('exit', (code /* , signal */) => {
+        child.on('exit', code => {
             // code 1 is strange error that cannot be explained. Everything is installed but error :(
             if (code && code !== 1) {
                 console.error('Error ' + code);
@@ -116,7 +116,7 @@ function runNpmClean() {
         const child = exec('npm cache clean -f');
         child.stderr.pipe(process.stdout);
         child.stdout.pipe(process.stdout);
-        child.on('exit', (code /* , signal */) => {
+        child.on('exit', code => {
             // code 1 is strange error that cannot be explained. Everything is installed but error :(
             if (code && code !== 1) {
                 console.error('Error ' + code);

@@ -41,12 +41,10 @@ describe('Test package.json and io-package.json', () => {
                 if (ioPackage.common.authors.length === 1) {
                     expect(ioPackage.common.authors[0], 'ERROR: Author in io-package.json needs to be a real name').to.not.be.equal('my Name <my@email.com>');
                 }
-            }
-            else {
+            } else {
                 expect(ioPackage.common.authors, 'ERROR: Author in io-package.json needs to be a real name').to.not.be.equal('my Name <my@email.com>');
             }
-        }
-        else {
+        } else {
             console.log('WARNING: Testing for set authors field in io-package skipped because template adapter');
             console.log();
         }
