@@ -12,6 +12,9 @@
                 "SwitchCase": 1
             }
         ],
+        "curly": "error",
+        "brace-style": "error",
+        "arrow-parens": ["error", "as-needed"],
         "no-console": "off",
         "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
         "no-useless-escape": "warn",
