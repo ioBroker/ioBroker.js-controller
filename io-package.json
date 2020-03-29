@@ -334,7 +334,14 @@
         ],
         "license": "MIT",
         "type": "general",
-        "unsafePerm": true
+        "unsafePerm": true,
+        "plugins": {
+            "sentry": {
+                "dsn": "https://ab26a840557947c088448fead588e0c5@sentry.iobroker.net/9",
+                "pathWhitelist": ["@iobroker", "iobroker.js-controller"],
+                "errorBlacklist": ["SyntaxError"]
+            }
+        }
     },
     "objects": [
         {

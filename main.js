@@ -10,21 +10,23 @@
  */
 'use strict';
 
-const schedule   = require('node-schedule');
-const os         = require('os');
-const fs         = require('fs');
-const path       = require('path');
-const cp         = require('child_process');
-const ioPackage  = require('./io-package.json');
-const tools      = require('./lib/tools');
-const version    = ioPackage.common.version;
-const pidUsage   = require('pidusage');
-const EXIT_CODES = require('./lib/exitCodes');
+const schedule        = require('node-schedule');
+const os              = require('os');
+const fs              = require('fs');
+const path            = require('path');
+const cp              = require('child_process');
+const ioPackage       = require('./io-package.json');
+const tools           = require('./lib/tools');
+const version         = ioPackage.common.version;
+const pidUsage        = require('pidusage');
+const EXIT_CODES      = require('./lib/exitCodes');
+const {PluginHandler} = require('@iobroker/plugin-base');
+let pluginHandler;
 
-const exec       = cp.exec;
-const spawn      = cp.spawn;
+const exec            = cp.exec;
+const spawn           = cp.spawn;
 
-let   adapterDir = __dirname.replace(/\\/g, '/');
+let   adapterDir      = __dirname.replace(/\\/g, '/');
 let   zipFiles;
 let   upload; // will be used only once by upload of adapter
 
@@ -375,6 +377,29 @@ function createStates(onConnect) {
                     logger.info(hostLogPrefix + ' Got invalid loglevel "' + state.val + '", ignoring');
                 }
                 states.setState(hostObjectPrefix + '.logLevel', {val: currentLevel, ack: true, from: hostObjectPrefix});
+            } else
+            if (id.startsWith(hostObjectPrefix + '.plugins.') && id.endsWith('.enabled')) {
+                if (!config || !config.log || !state || state.ack) return;
+                const pluginStatesIndex = (hostObjectPrefix + '.plugins.').length;
+                let nameEndIndex = id.indexOf('.', pluginStatesIndex + 1);
+                if (nameEndIndex === -1) {
+                    nameEndIndex = undefined;
+                }
+                const pluginName = id.substring(pluginStatesIndex, nameEndIndex);
+                if (!pluginHandler.pluginExists(pluginName)) return;
+                if (pluginHandler.isPluginActive(pluginName) !== state.val) {
+                    if (state.val) {
+                        if (!pluginHandler.isPluginInstanciated(pluginName)) {
+                            pluginHandler.instanciatePlugin(pluginName, pluginHandler.getPluginConfig(pluginName), __dirname);
+                            pluginHandler.setDatabaseForPlugin(pluginName, objects, states);
+                            pluginHandler.initPlugin(pluginName, ioPackage);
+                        }
+                    } else {
+                        if (!pluginHandler.destroy(pluginName)) {
+                            logger.info(hostLogPrefix + ' Plugin ' + pluginName + ' could not be disabled. Please restart ioBroker to disable it.');
+                        }
+                    }
+                }
             }
             /* it is not used because of code before
             else
@@ -436,12 +461,17 @@ function initializeController() {
     if (connected === null) {
         connected = true;
         if (!isStopping) {
-            // Do not start if we still stopping the instances
-            checkHost(() => {
-                startMultihost(config);
-                setMeta();
-                started = true;
-                getInstances();
+            pluginHandler.setDatabaseForPlugins(objects, states);
+            pluginHandler.initPlugins(ioPackage, () => {
+                states.subscribe(hostObjectPrefix + '.plugins.*');
+
+                // Do not start if we still stopping the instances
+                checkHost(() => {
+                    startMultihost(config);
+                    setMeta();
+                    started = true;
+                    getInstances();
+                });
             });
         }
     } else {
@@ -1530,8 +1560,16 @@ function setMeta() {
         if (!compactGroupController) {
             thishostStates = doc.rows.filter(out1 => !out1.id.includes(hostObjectPrefix + compactGroupObjectPrefix));
         }
+        const pluginStatesIndex = (hostObjectPrefix + '.plugins.').length;
         const toDelete = thishostStates.filter(out1 => {
             const found = tasks.find(out2 => out1.id === out2._id);
+            if (found === undefined && out1.id.startsWith(hostObjectPrefix + '.plugins.')) {
+                let nameEndIndex = out1.id.indexOf('.', pluginStatesIndex + 1);
+                if (nameEndIndex === -1) {
+                    nameEndIndex = undefined;
+                }
+                return !pluginHandler.pluginExists(out1.id.substring(pluginStatesIndex, nameEndIndex));
+            }
             return found === undefined;
         });
 
@@ -3763,6 +3801,8 @@ function stop(force, callback) {
     }
 
     stopInstances(force, wasForced => {
+        pluginHandler.destroyAll();
+
         if (objects && objects.destroy) objects.destroy();
 
         if (!states || force) {
@@ -3922,6 +3962,24 @@ function init(compactGroupId) {
         logger.info(hostLogPrefix + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
     }
 
+    const pluginSettings = {
+        scope: 'controller',
+        namespace: hostObjectPrefix,
+        logNamespace: hostLogPrefix,
+        log: logger,
+        iobrokerConfig: config,
+        parentPackage: null
+    };
+    try {
+        pluginSettings.parentPackage = JSON.parse(fs.readFileSync(__dirname + '/package.json', 'utf8'));
+    }
+    catch (err) {
+        logger.error(hostLogPrefix + ' Can not read js-controller package.json');
+    }
+    pluginHandler = new PluginHandler(pluginSettings);
+    pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
+    pluginHandler.addPlugins(config.plugins, __dirname);           // ... plugins from iobroker.json
+
     createObjects(() => {
         objects.subscribe('system.adapter.*');
 
@@ -4003,6 +4061,8 @@ function init(compactGroupId) {
             stop();
             return;
         }
+        console.error(err.message || err);
+        if (err.stack) console.error(err.stack);
         if (err.arguments && err.arguments[0] === 'fragmentedOperation') {
             // TODO Remove as soon as socketio is no longer used
             logger.error(hostLogPrefix + ' fragmentedOperation: restart objects');
