@@ -17,7 +17,9 @@ function getBackupDir() {
         }
     }
     dataDir = dataDir.replace(/\\/g, '/');
-    if (dataDir[dataDir.length - 1] !== '/') dataDir += '/';
+    if (dataDir[dataDir.length - 1] !== '/') {
+        dataDir += '/';
+    }
 
     const parts = dataDir.split('/');
     parts.pop();// remove data or appName-data

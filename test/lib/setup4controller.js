@@ -26,7 +26,9 @@ if (!fs.existsSync(rootDir + 'tmp')) {
 }
 
 function startController(options, callback) {
-    if (!options) options = {};
+    if (!options) {
+        options = {};
+    }
 
     let isObjectConnected;
     let isStatesConnected;
@@ -53,7 +55,7 @@ function startController(options, callback) {
             warn:  msg => console.warn(msg),
             error: msg => console.error(msg)
         },
-        connected: (objectsInst) => {
+        connected: objectsInst => {
             objects = objectsInst;
             // clear all states
             if (settingsObjects.connection.type === 'redis') {
@@ -134,7 +136,7 @@ function startController(options, callback) {
             warn:  msg => console.warn(msg),
             error: msg => console.error(msg)
         },
-        connected: (statesInst) => {
+        connected: statesInst => {
             states = statesInst;
             console.log('States ok');
             isStatesConnected = true;

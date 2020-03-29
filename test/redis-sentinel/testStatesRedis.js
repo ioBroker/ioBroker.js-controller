@@ -47,7 +47,9 @@ describe('States-Redis-Sentinel: Test states', function () {
                 port: [26380, 26381, 26382],
                 onChange: (id, state) => {
                     console.log('Redis-state-Sentinel changed. ' + id);
-                    if (onStatesChanged) onStatesChanged(id, state);
+                    if (onStatesChanged) {
+                        onStatesChanged(id, state);
+                    }
                 }
             }
         },

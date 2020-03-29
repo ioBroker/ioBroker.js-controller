@@ -763,9 +763,9 @@ function register(it, expect, context) {
         });
     });
 
-    it(testName + 'Should respect from', (done) => {
+    it(testName + 'Should respect from', done => {
         // we set a state and set a custom from property
-        context.adapter.setState(`${gid}stateWithFrom`, {val: 1, from: 'Paris with love'}, (err) => {
+        context.adapter.setState(`${gid}stateWithFrom`, {val: 1, from: 'Paris with love'}, err => {
             expect(err).to.be.not.ok;
             context.states.getState(`${context.adapter.namespace}.${gid}stateWithFrom`, (err, state) => {
                 expect(err).to.be.not.ok;
@@ -775,9 +775,9 @@ function register(it, expect, context) {
         });
     });
 
-    it(testName + 'Should use default from', (done) => {
+    it(testName + 'Should use default from', done => {
         // we set a state without providing `from` property
-        context.adapter.setState(`${gid}stateWithFrom`, {val: 1}, (err) => {
+        context.adapter.setState(`${gid}stateWithFrom`, {val: 1}, err => {
             expect(err).to.be.not.ok;
             context.states.getState(`${context.adapter.namespace}.${gid}stateWithFrom`, (err, state) => {
                 expect(err).to.be.not.ok;

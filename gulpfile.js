@@ -47,7 +47,9 @@ gulp.task('updateRepo', done => {
 
     processAdapters(sources, adapters, result => {
         for (const adapter in result) {
-            if (!result.hasOwnProperty(adapter)) continue;
+            if (!result.hasOwnProperty(adapter)) {
+                continue;
+            }
             const meta = sources[adapter].meta;
             const url  = sources[adapter].url;
             sources[adapter] = result[adapter];
@@ -62,11 +64,21 @@ gulp.task('updateRepo', done => {
 
 gulp.task('renameFiles', done => {
     fs.unlink(__dirname + '/lib/img/iobroker.png');
-    if (fs.existsSync(__dirname + '/iobroker'))                 fs.renameSync(__dirname + '/iobroker',                __dirname + '/' + appName);
-    if (fs.existsSync(__dirname + '/_service_iobroker.bat'))    fs.renameSync(__dirname + '/_service_iobroker.bat',   __dirname + '/_service_' + appName + '.bat');
-    if (fs.existsSync(__dirname + '/iobroker.bat'))             fs.renameSync(__dirname + '/iobroker.bat',            __dirname + '/' + appName + '.bat');
-    if (fs.existsSync(__dirname + '/iobroker.js'))              fs.renameSync(__dirname + '/iobroker.js',             __dirname + '/' + appName + '.js');
-    if (fs.existsSync(__dirname + '/conf/iobroker-dist.json'))  fs.renameSync(__dirname + '/conf/iobroker-dist.json', __dirname + '/conf/' + appName + '-dist.json');
+    if (fs.existsSync(__dirname + '/iobroker'))                 {
+        fs.renameSync(__dirname + '/iobroker',                __dirname + '/' + appName);
+    }
+    if (fs.existsSync(__dirname + '/_service_iobroker.bat'))    {
+        fs.renameSync(__dirname + '/_service_iobroker.bat',   __dirname + '/_service_' + appName + '.bat');
+    }
+    if (fs.existsSync(__dirname + '/iobroker.bat'))             {
+        fs.renameSync(__dirname + '/iobroker.bat',            __dirname + '/' + appName + '.bat');
+    }
+    if (fs.existsSync(__dirname + '/iobroker.js'))              {
+        fs.renameSync(__dirname + '/iobroker.js',             __dirname + '/' + appName + '.js');
+    }
+    if (fs.existsSync(__dirname + '/conf/iobroker-dist.json'))  {
+        fs.renameSync(__dirname + '/conf/iobroker-dist.json', __dirname + '/conf/' + appName + '-dist.json');
+    }
     done();
 });
 
@@ -180,15 +192,23 @@ gulp.task('replaceCore', done => {
 gulp.task('cleanRepo', done => {
     const sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources-dist.json'));
     for (const adapter in sources) {
-        if (!sources.hasOwnProperty(adapter)) continue;
+        if (!sources.hasOwnProperty(adapter)) {
+            continue;
+        }
         const meta = sources[adapter].meta;
         const url  = sources[adapter].url;
         const icon = sources[adapter].icon;
 
         sources[adapter] = {};
-        if (meta) sources[adapter].meta = meta;
-        if (url)  sources[adapter].url  = url;
-        if (icon) sources[adapter].icon = icon;
+        if (meta) {
+            sources[adapter].meta = meta;
+        }
+        if (url)  {
+            sources[adapter].url  = url;
+        }
+        if (icon) {
+            sources[adapter].icon = icon;
+        }
     }
     fs.writeFileSync(__dirname + '/conf/sources-dist.json', JSON.stringify(sources, null, 2));
     done();

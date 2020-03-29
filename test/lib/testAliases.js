@@ -776,7 +776,7 @@ function register(it, expect, context) {
                         expect(err).to.be.not.ok;
                         // listen on state changes
 
-                        context.onAdapterStateChanged = (id) => {
+                        context.onAdapterStateChanged = id => {
                             if (id === `${gAliasID}notOkay`) {
                                 clearTimeout(doneTimer);
                                 expect('Sparta').to.be.equal('Athens');
