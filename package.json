@@ -16,8 +16,8 @@
     "iobroker": "./iobroker.js"
   },
   "dependencies": {
-    "@iobroker/plugin-base": "^0.1.0",
-    "@iobroker/plugin-sentry": "^0.1.0",
+    "@iobroker/plugin-base": "^0.1.1",
+    "@iobroker/plugin-sentry": "^0.1.2",
     "chokidar": "^3.3.1",
     "daemonize2": "^0.4.2",
     "debug": "^4.1.1",
@@ -49,7 +49,7 @@
     "@types/event-stream": "^3.3.34",
     "@types/iobroker": "^2.2.1",
     "@types/mocha": "^7.0.2",
-    "@types/node": "^13.9.5",
+    "@types/node": "^13.9.8",
     "@types/yargs": "^15.0.4",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
