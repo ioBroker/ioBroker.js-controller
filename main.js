@@ -3018,17 +3018,15 @@ function startInstance(id, wakeUp) {
         }
     } else {
         // else just use freemem
-        availableMemMB = os.freemem() / 1048576;  // convert to MB
+        availableMemMB = Math.round(os.freemem() / 1048576);  // convert to MB
     }
 
     // default: if less than 100 MB log warning, less than 50 MB log error, but check config first
     if (availableMemMB !== undefined && availableMemMB < (typeof config.system.memLimitError === 'number' ? config.system.memLimitError : 50)) {
-        logger.error(`${hostLogPrefix} Your system has only ${availableMemMB} MB RAM left available and an additional \
-        adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`);
+        logger.error(`${hostLogPrefix} Your system has only ${availableMemMB} MB RAM left available and an additional adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`);
         logger.error(`${hostLogPrefix} In future versions, the adapter might not be started!`);
     } else if (availableMemMB !== undefined && availableMemMB < (typeof config.system.memLimitWarn === 'number' ? config.system.memLimitWarn : 100)) {
-        logger.warn(`${hostLogPrefix} Your system has only ${availableMemMB} MB RAM left available and an additional \
-        adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`);
+        logger.warn(`${hostLogPrefix} Your system has only ${availableMemMB} MB RAM left available and an additional adapter process is started. Please check your system, settings and active instances to prevent swapping and Out-Of-Memory situations!`);
     }
 
     //noinspection JSUnresolvedVariable

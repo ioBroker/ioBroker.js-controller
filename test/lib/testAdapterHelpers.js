@@ -385,78 +385,94 @@ function register(it, expect, context) {
                 this.timeout(1000);
                 const callback = spy();
                 context.adapter[method]('testid', {ack: true}, callback);
-                expect(callback).to.have.been.calledOnce;
-                expect(callback.firstCall.args[0]).to.match(/required/);
-                done();
+                setImmediate(() => {
+                    expect(callback).to.have.been.calledOnce;
+                    expect(callback.firstCall.args[0]).to.match(/required/);
+                    done();
+                });
             });
 
             it('forbids extra properties', function (done) {
                 this.timeout(1000);
                 const callback = spy();
                 context.adapter[method]('testid', {val: 1, foo: 'bar'}, callback);
-                expect(callback).to.have.been.calledOnce;
-                expect(callback.firstCall.args[0]).to.match(/forbidden/);
-                done();
+                setImmediate(() => {
+                    expect(callback).to.have.been.calledOnce;
+                    expect(callback.firstCall.args[0]).to.match(/forbidden/);
+                    done();
+                });
             });
 
             it('enforces ack to be a boolean', function (done) {
                 this.timeout(1000);
                 const callback = spy();
                 context.adapter[method]('testid', {val: 1, ack: 'true'}, callback);
-                expect(callback).to.have.been.calledOnce;
-                expect(callback.firstCall.args[0]).to.match(/wrong type/);
-                expect(callback.firstCall.args[0].includes('should be "boolean"')).to.be.true;
-                done();
+                setImmediate(() => {
+                    expect(callback).to.have.been.calledOnce;
+                    expect(callback.firstCall.args[0]).to.match(/wrong type/);
+                    expect(callback.firstCall.args[0].includes('should be "boolean"')).to.be.true;
+                    done();
+                });
             });
 
             it('enforces ts to be a number', function (done) {
                 this.timeout(1000);
                 const callback = spy();
                 context.adapter[method]('testid', {val: 1, ts: true}, callback);
-                expect(callback).to.have.been.calledOnce;
-                expect(callback.firstCall.args[0]).to.match(/wrong type/);
-                expect(callback.firstCall.args[0].includes('should be "number"')).to.be.true;
-                done();
+                setImmediate(() => {
+                    expect(callback).to.have.been.calledOnce;
+                    expect(callback.firstCall.args[0]).to.match(/wrong type/);
+                    expect(callback.firstCall.args[0].includes('should be "number"')).to.be.true;
+                    done();
+                });
             });
 
             it('enforces q to be a number', function (done) {
                 this.timeout(1000);
                 const callback = spy();
                 context.adapter[method]('testid', {val: 1, q: true}, callback);
-                expect(callback).to.have.been.calledOnce;
-                expect(callback.firstCall.args[0]).to.match(/wrong type/);
-                expect(callback.firstCall.args[0].includes('should be "number"')).to.be.true;
-                done();
+                setImmediate(() => {
+                    expect(callback).to.have.been.calledOnce;
+                    expect(callback.firstCall.args[0]).to.match(/wrong type/);
+                    expect(callback.firstCall.args[0].includes('should be "number"')).to.be.true;
+                    done();
+                });
             });
 
             it('enforces expire to be a number', function (done) {
                 this.timeout(1000);
                 const callback = spy();
                 context.adapter[method]('testid', {val: 1, expire: true}, callback);
-                expect(callback).to.have.been.calledOnce;
-                expect(callback.firstCall.args[0]).to.match(/wrong type/);
-                expect(callback.firstCall.args[0].includes('should be "number"')).to.be.true;
-                done();
+                setImmediate(() => {
+                    expect(callback).to.have.been.calledOnce;
+                    expect(callback.firstCall.args[0]).to.match(/wrong type/);
+                    expect(callback.firstCall.args[0].includes('should be "number"')).to.be.true;
+                    done();
+                });
             });
 
             it('enforces from to be a string', function (done) {
                 this.timeout(1000);
                 const callback = spy();
                 context.adapter[method]('testid', {val: 1, from: 2}, callback);
-                expect(callback).to.have.been.calledOnce;
-                expect(callback.firstCall.args[0]).to.match(/wrong type/);
-                expect(callback.firstCall.args[0].includes('should be "string"')).to.be.true;
-                done();
+                setImmediate(() => {
+                    expect(callback).to.have.been.calledOnce;
+                    expect(callback.firstCall.args[0]).to.match(/wrong type/);
+                    expect(callback.firstCall.args[0].includes('should be "string"')).to.be.true;
+                    done();
+                });
             });
 
             it('enforces c to be a string', function (done) {
                 this.timeout(1000);
                 const callback = spy();
                 context.adapter[method]('testid', {val: 1, c: []}, callback);
-                expect(callback).to.have.been.calledOnce;
-                expect(callback.firstCall.args[0]).to.match(/wrong type/);
-                expect(callback.firstCall.args[0].includes('should be "string"')).to.be.true;
-                done();
+                setImmediate(() => {
+                    expect(callback).to.have.been.calledOnce;
+                    expect(callback.firstCall.args[0]).to.match(/wrong type/);
+                    expect(callback.firstCall.args[0].includes('should be "string"')).to.be.true;
+                    done();
+                });
             });
         });
     }
