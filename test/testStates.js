@@ -81,6 +81,29 @@ describe('States: Test states in File-Redis', function() {
             expect(err).to.be.not.ok);
     });
 
+    it('States: should setState async', done => {
+        const testID = 'testObject.0.test1';
+        onStatesChanged = async (id, state) => {
+            if (id === testID) {
+                expect(state).to.be.ok;
+                expect(state.val).to.be.equal(2);
+                expect(state.ack).to.be.false;
+                expect(state.ts).to.be.ok;
+                expect(state.q).to.be.equal(0);
+
+                state = await states.getStateAsync(testID);
+                expect(state).to.be.ok;
+                expect(state.val).to.be.equal(2);
+                expect(state.ack).to.be.false;
+                expect(state.ts).to.be.ok;
+                expect(state.q).to.be.equal(0);
+                done();
+            }
+        };
+
+        states.setStateAsync(testID, 2);
+    });
+
     after('States: Stop js-controller', function (done) {
         this.timeout(5000);
         setup.stopController(() =>

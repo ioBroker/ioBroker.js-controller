@@ -87,6 +87,29 @@ describe('States-Redis: Test states in Redis', function() {
         });
     }).timeout(10000);
 
+    it('States-Redis: should setState async', done => {
+        const testID = 'testObject.0.test1';
+        onStatesChanged = async (id, state) => {
+            if (id === testID) {
+                expect(state).to.be.ok;
+                expect(state.val).to.be.equal(2);
+                expect(state.ack).to.be.false;
+                expect(state.ts).to.be.ok;
+                expect(state.q).to.be.equal(0);
+
+                state = await states.getStateAsync(testID);
+                expect(state).to.be.ok;
+                expect(state.val).to.be.equal(2);
+                expect(state.ack).to.be.false;
+                expect(state.ts).to.be.ok;
+                expect(state.q).to.be.equal(0);
+                done();
+            }
+        };
+
+        states.setStateAsync(testID, 2);
+    }).timeout(10000);
+
     // todo: write more tests
 
     after('States-Redis: Stop js-controller', function (done) {
