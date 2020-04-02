@@ -2842,33 +2842,34 @@ function startScheduledInstance(callback) {
             // Remember the last run
             procs[id].lastStart = Date.now();
             if (!procs[id].process) {
-                states.setState(instance._id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // reset sigKill to 0 if it was set to an other value from "once run"
-                const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
-                procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
-                storePids(); // Store all pids to make possible kill them all
-                logger.info(hostLogPrefix + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
-
-                procs[id].process.on('exit', (code, signal) => {
-                    outputCount++;
-                    states.setState(id + '.alive', {val: false, ack: true, from: hostObjectPrefix});
-                    if (signal) {
-                        logger.warn(hostLogPrefix + ' instance ' + id + ' terminated due to ' + signal);
-                    } else if (code === null) {
-                        logger.error(hostLogPrefix + ' instance ' + id + ' terminated abnormally');
-                    } else {
-                        code = parseInt(code, 10);
-                        const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
-                        if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION || code === EXIT_CODES.NO_ERROR) {
-                            logger.info(text);
-                        } else {
-                            logger.error(text);
-                        }
-                    }
-                    if (procs[id] && procs[id].process) {
-                        delete procs[id].process;
-                    }
+                states.setState(instance._id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}, () => {
+                    const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
+                    procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
                     storePids(); // Store all pids to make possible kill them all
-                });
+                    logger.info(hostLogPrefix + ' instance ' + instance._id + ' started with pid ' + procs[instance._id].process.pid);
+
+                    procs[id].process.on('exit', (code, signal) => {
+                        outputCount++;
+                        states.setState(id + '.alive', {val: false, ack: true, from: hostObjectPrefix});
+                        if (signal) {
+                            logger.warn(hostLogPrefix + ' instance ' + id + ' terminated due to ' + signal);
+                        } else if (code === null) {
+                            logger.error(hostLogPrefix + ' instance ' + id + ' terminated abnormally');
+                        } else {
+                            code = parseInt(code, 10);
+                            const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
+                            if (!code || code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION || code === EXIT_CODES.NO_ERROR) {
+                                logger.info(text);
+                            } else {
+                                logger.error(text);
+                            }
+                        }
+                        if (procs[id] && procs[id].process) {
+                            delete procs[id].process;
+                        }
+                        storePids(); // Store all pids to make possible kill them all
+                    });
+                }); // reset sigKill to 0 if it was set to an other value from "once run"
             } else {
                 !wakeUp && logger.warn(hostLogPrefix + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
                 skipped = true;
@@ -3224,38 +3225,41 @@ function startInstance(id, wakeUp) {
                         (!compactGroupController && instance.common.compactGroup === 0) ||
                         (compactGroupController && instance.common.compactGroup !== 0)
                     ) {
-                        states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // set to 0 to stop any pot. already running instances, especially broken compactModes
+                        // set to 0 to stop any pot. already running instances, especially broken compactModes
+                        states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}, () => {
+                            const _instance = (instance && instance._id && instance.common) ? instance._id.split('.').pop() || 0 : 0;
+                            const logLevel = (instance && instance._id && instance.common) ? instance.common.loglevel || 'info' : 'info';
+                            if (fileNameFull) {
+                                try {
+                                    decache = decache || require('decache');
+                                    decache(fileNameFull);
 
-                        const _instance = (instance && instance._id && instance.common) ? instance._id.split('.').pop() || 0 : 0;
-                        const logLevel = (instance && instance._id && instance.common) ? instance.common.loglevel || 'info' : 'info';
-                        if (fileNameFull) {
-                            try {
-                                decache = decache || require('decache');
-                                decache(fileNameFull);
+                                    procs[id].process = {
+                                        logic: require(fileNameFull)({
+                                            logLevel,
+                                            compactInstance: _instance,
+                                            compact: true
+                                        })
+                                    };
+                                    procs[id].process.logic.on('exit', exitHandler);
 
-                                procs[id].process = {
-                                    logic: require(fileNameFull)({
-                                        logLevel,
-                                        compactInstance: _instance,
-                                        compact: true
-                                    })
-                                };
-                                procs[id].process.logic.on('exit', exitHandler);
-
-                                procs[id].startedInCompactMode = true;
-                            } catch (e) {
-                                logger.error(`${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode. Fallback to normal start! : ${e.message}`);
-                                logger.error(e.stackTrace);
-                                procs[id].process && delete procs[id].process;
-                                states.setState(id + '.sigKill', {val: -1, ack: false, from: hostObjectPrefix}); // if started let it end itself
+                                    procs[id].startedInCompactMode = true;
+                                } catch (e) {
+                                    logger.error(`${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode. Fallback to normal start! : ${e.message}`);
+                                    logger.error(e.stackTrace);
+                                    procs[id].process && delete procs[id].process;
+                                    states.setState(id + '.sigKill', {val: -1, ack: false, from: hostObjectPrefix}); // if started let it end itself
+                                }
+                            } else {
+                                logger.warn(`${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode: Filename invalid`);
                             }
-                        } else {
-                            logger.warn(`${hostLogPrefix} Cannot start ${name}.${_instance} in compact mode: Filename invalid`);
-                        }
 
-                        if (procs[id].process && !procs[id].process.kill) {
-                            procs[id].process.kill = () => states.setState(id + '.sigKill', {val: -1, ack: false, from: hostObjectPrefix});
-                        }
+                            if (procs[id].process && !procs[id].process.kill) {
+                                procs[id].process.kill = () => states.setState(id + '.sigKill', {val: -1, ack: false, from: hostObjectPrefix});
+                            }
+
+                            handleAdapterProcessStart();
+                        });
                     } else {
                         // a group controller for this group is not yet started, execute one
                         if (!compactProcs[instance.common.compactGroup].process) {
@@ -3395,54 +3399,61 @@ function startInstance(id, wakeUp) {
                         }
                         procs[id].process = compactProcs[instance.common.compactGroup].process;
                         procs[id].startedAsCompactGroup = true;
+
+                        handleAdapterProcessStart();
                     }
                 } else {
-                    states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}); // set to 0 to stop any pot. already running instances, especially broken compactModes
-                }
-                if (!procs[id].process) { // We were not able or should not start as compact mode
-                    procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc'], windowsHide: true});
+                    // set to 0 to stop any pot. already running instances, especially broken compactModes
+                    states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}, () => handleAdapterProcessStart());
                 }
 
-                if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process) {
-                    states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: hostObjectPrefix});
-                }
+                function handleAdapterProcessStart() {
+                    if (!procs[id].process) { // We were not able or should not start as compact mode
+                        procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc'], windowsHide: true});
+                    }
 
-                // catch error output
-                if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process && procs[id].process.stderr) {
-                    procs[id].process.stderr.on('data', data => {
-                        if (!data || !procs[id] || typeof procs[id] !== 'object') {
-                            return;
+                    if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process) {
+                        states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: hostObjectPrefix});
+                    }
+
+                    // catch error output
+                    if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process && procs[id].process.stderr) {
+                        procs[id].process.stderr.on('data', data => {
+                            if (!data || !procs[id] || typeof procs[id] !== 'object') {
+                                return;
+                            }
+                            const text = data.toString();
+                            // show for debug
+                            console.error(text);
+                            if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild')) {
+                                procs[id].needsRebuild = true;
+                            }
+                            procs[id].errors = procs[id].errors || [];
+                            const now = Date.now();
+                            procs[id].errors.push({ts: now, text: text});
+                            // limit output to 300 messages
+                            if (procs[id].errors > 300) {
+                                procs[id].errors.splice(procs[id].errors.length - 300);
+                            }
+                            cleanErrors(procs[id], now);
+                        });
+                    }
+
+                    storePids(); // Store all pids to make possible kill them all
+
+                    !procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process && procs[id].process.on('exit', exitHandler);
+
+                    if (!wakeUp && procs[id] && procs[id].process && procs[id].config.common && procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance) && mode !== 'once') {
+                        if (procs[id].startedInCompactMode) {
+                            logger.info(`${hostLogPrefix} instance ${instance._id} started in COMPACT mode`);
+                        } else if (procs[id].startedAsCompactGroup) {
+                            logger.info(`${hostLogPrefix} instance ${instance._id} is handled by compact group controller pid ${procs[id].process.pid}`);
+                        } else {
+                            logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${procs[id].process.pid}`);
                         }
-                        const text = data.toString();
-                        // show for debug
-                        console.error(text);
-                        if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild')) {
-                            procs[id].needsRebuild = true;
-                        }
-                        procs[id].errors = procs[id].errors || [];
-                        const now = Date.now();
-                        procs[id].errors.push({ts: now, text: text});
-                        // limit output to 300 messages
-                        if (procs[id].errors > 300) {
-                            procs[id].errors.splice(procs[id].errors.length - 300);
-                        }
-                        cleanErrors(procs[id], now);
-                    });
-                }
-
-                storePids(); // Store all pids to make possible kill them all
-
-                !procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process && procs[id].process.on('exit', exitHandler);
-
-                if (!wakeUp && procs[id] && procs[id].process && procs[id].config.common && procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance) && mode !== 'once') {
-                    if (procs[id].startedInCompactMode) {
-                        logger.info(`${hostLogPrefix} instance ${instance._id} started in COMPACT mode`);
-                    } else if (procs[id].startedAsCompactGroup) {
-                        logger.info(`${hostLogPrefix} instance ${instance._id} is handled by compact group controller pid ${procs[id].process.pid}`);
-                    } else {
-                        logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${procs[id].process.pid}`);
                     }
                 }
+
             } else {
                 !wakeUp && procs[id] && logger.warn(hostLogPrefix + ' instance ' + instance._id + ' ' + (procs[id].stopping ? 'still' : 'already') + ' running with pid ' + procs[id].process.pid);
                 if (procs[id].stopping) {
