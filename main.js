@@ -2842,6 +2842,7 @@ function startScheduledInstance(callback) {
             // Remember the last run
             procs[id].lastStart = Date.now();
             if (!procs[id].process) {
+                // reset sigKill to 0 if it was set to an other value from "once run"
                 states.setState(instance._id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}, () => {
                     const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                     procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
@@ -2869,7 +2870,10 @@ function startScheduledInstance(callback) {
                         }
                         storePids(); // Store all pids to make possible kill them all
                     });
-                }); // reset sigKill to 0 if it was set to an other value from "once run"
+
+                    processNextScheduledInstance();
+                });
+                return;
             } else {
                 !wakeUp && logger.warn(hostLogPrefix + ' instance ' + instance._id + ' already running with pid ' + procs[id].process.pid);
                 skipped = true;
@@ -2883,12 +2887,16 @@ function startScheduledInstance(callback) {
         skipped = true;
     }
 
-    let delay = (config.system && config.system.instanceStartInterval) || 2000;
-    delay = skipped ? 0 : delay + 2000;
-    setTimeout(() => {
-        delete scheduledInstances[id];
-        startScheduledInstance(callback);
-    }, delay); // 4 seconds pause
+    processNextScheduledInstance();
+
+    function processNextScheduledInstance() {
+        let delay = (config.system && config.system.instanceStartInterval) || 2000;
+        delay = skipped ? 0 : delay + 2000;
+        setTimeout(() => {
+            delete scheduledInstances[id];
+            startScheduledInstance(callback);
+        }, delay); // 4 seconds pause
+    }
 }
 
 function startInstance(id, wakeUp) {
