@@ -589,7 +589,6 @@ function createObjects(onConnect) {
                                 if (procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)) {
                                     if (procs[id].restartTimer) {
                                         clearTimeout(procs[id].restartTimer);
-                                        delete procs[id].restartTimer;
                                     }
                                     procs[id].restartTimer = setTimeout(_id => startInstance(_id), 2500, id);
                                 }
@@ -3157,7 +3156,7 @@ function startInstance(id, wakeUp) {
                             delete procs[id].process;
                         }
 
-                        if (procs[id].needsRebuild) {
+                        if (procs[id] && procs[id].needsRebuild) {
                             procs[id].rebuildCounter = procs[id].rebuildCounter || 0;
                             procs[id].rebuildCounter++;
                             if (procs[id].rebuildCounter < 4) {
@@ -3178,7 +3177,9 @@ function startInstance(id, wakeUp) {
                                 logger.info(`${hostLogPrefix} Rebuild for adapter ${id} not successful in 3 tries. Adapter will not be restarted again. Please execute "npm install --production" in adapter directory manually.`);
                             }
                         } else {
-                            procs[id].rebuildCounter = 0;
+                            if (procs[id]) {
+                                procs[id].rebuildCounter = 0;
+                            }
                             if (code !== EXIT_CODES.ADAPTER_REQUESTED_TERMINATION &&
                                 !wakeUp &&
                                 connected &&
@@ -3230,7 +3231,6 @@ function startInstance(id, wakeUp) {
                         if (fileNameFull) {
                             try {
                                 decache = decache || require('decache');
-                                decache(path.join(__dirname,'lib','adapter.js'));
                                 decache(fileNameFull);
 
                                 procs[id].process = {
@@ -3404,7 +3404,7 @@ function startInstance(id, wakeUp) {
                 }
 
                 if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process) {
-                    states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: hostObjectPrefix, expire: 180}); // give 180 seconds to terminate
+                    states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: hostObjectPrefix});
                 }
 
                 // catch error output
@@ -4127,17 +4127,7 @@ function init(compactGroupId) {
         setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), compactGroupController ? 0 : 1000);
     }, 30000);
 
-    process.on('SIGINT', () => {
-        logger.info(hostLogPrefix + ' received SIGINT');
-        stop();
-    });
-
-    process.on('SIGTERM', () => {
-        logger.info(hostLogPrefix + ' received SIGTERM');
-        stop();
-    });
-
-    process.on('uncaughtException', err => {
+    const exceptionHandler = err => {
         if (compactGroupController) {
             console.error(err.message || err);
             if (err.stack) {
@@ -4186,7 +4176,20 @@ function init(compactGroupId) {
         stop();
         // Restart itself
         processMessage({command: 'cmdExec', message: {data: '_restart'}});
+    };
+
+    process.on('SIGINT', () => {
+        logger.info(hostLogPrefix + ' received SIGINT');
+        stop();
     });
+
+    process.on('SIGTERM', () => {
+        logger.info(hostLogPrefix + ' received SIGTERM');
+        stop();
+    });
+
+    process.on('uncaughtException', exceptionHandler);
+    process.on('unhandledRejection', exceptionHandler);
 }
 
 if (typeof module !== 'undefined' && module.parent) {
