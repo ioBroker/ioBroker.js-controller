@@ -330,7 +330,8 @@
         "readme": "https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md",
         "authors": [
             "bluefox <bluefox@gmail.com>",
-            "hobbyquaker <hq@ccu.io>"
+            "hobbyquaker <hq@ccu.io>",
+            "Apollon77 <iobroker@fischer-ka.de>"
         ],
         "license": "MIT",
         "type": "general",
