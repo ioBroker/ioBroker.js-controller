@@ -2834,6 +2834,15 @@ function startScheduledInstance(callback) {
     const fileNameFull = scheduledInstances[idsToStart[0]].fileNameFull;
     const wakeUp = scheduledInstances[idsToStart[0]].wakeUp;
 
+    const processNextScheduledInstance = () => {
+        let delay = (config.system && config.system.instanceStartInterval) || 2000;
+        delay = skipped ? 0 : delay + 2000;
+        setTimeout(() => {
+            delete scheduledInstances[id];
+            startScheduledInstance(callback);
+        }, delay); // 4 seconds pause
+    };
+
     if (procs[id]) {
         const instance = procs[id].config;
 
@@ -2888,15 +2897,6 @@ function startScheduledInstance(callback) {
     }
 
     processNextScheduledInstance();
-
-    function processNextScheduledInstance() {
-        let delay = (config.system && config.system.instanceStartInterval) || 2000;
-        delay = skipped ? 0 : delay + 2000;
-        setTimeout(() => {
-            delete scheduledInstances[id];
-            startScheduledInstance(callback);
-        }, delay); // 4 seconds pause
-    }
 }
 
 function startInstance(id, wakeUp) {
@@ -3226,6 +3226,54 @@ function startInstance(id, wakeUp) {
                     });
                 };
 
+                // Some parts of the Adapter start logic are async, so "the finalization" is put into this method
+                const handleAdapterProcessStart = () => {
+                    if (!procs[id].process) { // We were not able or should not start as compact mode
+                        procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc'], windowsHide: true});
+                    }
+
+                    if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process) {
+                        states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: hostObjectPrefix});
+                    }
+
+                    // catch error output
+                    if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process && procs[id].process.stderr) {
+                        procs[id].process.stderr.on('data', data => {
+                            if (!data || !procs[id] || typeof procs[id] !== 'object') {
+                                return;
+                            }
+                            const text = data.toString();
+                            // show for debug
+                            console.error(text);
+                            if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild')) {
+                                procs[id].needsRebuild = true;
+                            }
+                            procs[id].errors = procs[id].errors || [];
+                            const now = Date.now();
+                            procs[id].errors.push({ts: now, text: text});
+                            // limit output to 300 messages
+                            if (procs[id].errors > 300) {
+                                procs[id].errors.splice(procs[id].errors.length - 300);
+                            }
+                            cleanErrors(procs[id], now);
+                        });
+                    }
+
+                    storePids(); // Store all pids to make possible kill them all
+
+                    !procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process && procs[id].process.on('exit', exitHandler);
+
+                    if (!wakeUp && procs[id] && procs[id].process && procs[id].config.common && procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance) && mode !== 'once') {
+                        if (procs[id].startedInCompactMode) {
+                            logger.info(`${hostLogPrefix} instance ${instance._id} started in COMPACT mode`);
+                        } else if (procs[id].startedAsCompactGroup) {
+                            logger.info(`${hostLogPrefix} instance ${instance._id} is handled by compact group controller pid ${procs[id].process.pid}`);
+                        } else {
+                            logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${procs[id].process.pid}`);
+                        }
+                    }
+                };
+
                 // If system has compact mode enabled and adapter supports it and instance has it enabled
                 if (config.system.compact && instance.common.compact && instance.common.runAsCompactMode) {
                     // compactgroup = 0 is executed by main js.controller, all others as own processes
@@ -3413,53 +3461,6 @@ function startInstance(id, wakeUp) {
                 } else {
                     // set to 0 to stop any pot. already running instances, especially broken compactModes
                     states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}, () => handleAdapterProcessStart());
-                }
-
-                function handleAdapterProcessStart() {
-                    if (!procs[id].process) { // We were not able or should not start as compact mode
-                        procs[id].process = cp.fork(fileNameFull, args, {stdio: ['ignore', 'ignore', 'pipe', 'ipc'], windowsHide: true});
-                    }
-
-                    if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process) {
-                        states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: hostObjectPrefix});
-                    }
-
-                    // catch error output
-                    if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process && procs[id].process.stderr) {
-                        procs[id].process.stderr.on('data', data => {
-                            if (!data || !procs[id] || typeof procs[id] !== 'object') {
-                                return;
-                            }
-                            const text = data.toString();
-                            // show for debug
-                            console.error(text);
-                            if (text.includes('NODE_MODULE_VERSION') || text.includes('npm rebuild')) {
-                                procs[id].needsRebuild = true;
-                            }
-                            procs[id].errors = procs[id].errors || [];
-                            const now = Date.now();
-                            procs[id].errors.push({ts: now, text: text});
-                            // limit output to 300 messages
-                            if (procs[id].errors > 300) {
-                                procs[id].errors.splice(procs[id].errors.length - 300);
-                            }
-                            cleanErrors(procs[id], now);
-                        });
-                    }
-
-                    storePids(); // Store all pids to make possible kill them all
-
-                    !procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process && procs[id].process.on('exit', exitHandler);
-
-                    if (!wakeUp && procs[id] && procs[id].process && procs[id].config.common && procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance) && mode !== 'once') {
-                        if (procs[id].startedInCompactMode) {
-                            logger.info(`${hostLogPrefix} instance ${instance._id} started in COMPACT mode`);
-                        } else if (procs[id].startedAsCompactGroup) {
-                            logger.info(`${hostLogPrefix} instance ${instance._id} is handled by compact group controller pid ${procs[id].process.pid}`);
-                        } else {
-                            logger.info(`${hostLogPrefix} instance ${instance._id} started with pid ${procs[id].process.pid}`);
-                        }
-                    }
                 }
 
             } else {
