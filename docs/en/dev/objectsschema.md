@@ -208,7 +208,7 @@ attributes:
 * `common.unit`   (optional)
 * `common.def`    (optional - the default value)
 * `common.defAck` (optional - if common.def is set this value is used as ack flag, js-controller 2.0.0+)
-* `common.desc`   (optional, string or object) - description, object for multilingual desciprtion
+* `common.desc`   (optional, string or object) - description, object for multilingual description
 * `common.read`   (boolean, mandatory) - true if state is readable
 * `common.write`  (boolean, mandatory) - true if state is writable
 * `common.role`   (string,  mandatory) - role of the state (used in user interfaces to indicate which widget to choose, see below)
