@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: TKPv1NWpGxt5Xrh8nm/KUv87mvH1OWku6xhq1j79eUo=
+hash: dx3TwUQC6M0Dbk38oLidMd6U5l80bs0PVcYvDdJnp+s=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -18,7 +18,7 @@ hash: TKPv1NWpGxt5Xrh8nm/KUv87mvH1OWku6xhq1j79eUo=
 ###支持的型号
 * Deebot苗条2
 * Deebot Ozmo 930
-* Deebot Ozmo 950
+* Deebot奥兹莫950
 
 ###已知这些模型有效
 * Deebot 601
@@ -32,6 +32,23 @@ hash: TKPv1NWpGxt5Xrh8nm/KUv87mvH1OWku6xhq1j79eUo=
 * Deebot M88
 * Deebot 600/605
 
+##安装
+该适配器使用画布库，这可能需要附加安装，否则在iobroker中进行安装可能会导致错误：
+
+```
+npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
+```
+
+对于基于Linux的系统，应执行以下命令：
+
+```
+sudo apt-get update
+sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+sudo npm install canvas --unsafe-perm=true
+```
+
+有关其他系统的说明，请访问https://www.npmjs.com/package/canvas#compiling
+
 ##用法
 *有关如何使用此适配器的信息可在[此处]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）中找到
 
@@ -44,11 +61,14 @@ hash: TKPv1NWpGxt5Xrh8nm/KUv87mvH1OWku6xhq1j79eUo=
 
 ##谢谢和感谢
 * @joostth（[sucks.js]（https://github.com/joostth/sucks.js））
-* @wpietri（[吮吸]（https://github.com/wpietri/sucks））
+* @wpietri（[吸]（https://github.com/wpietri/sucks））
 * @ bmartin5692（[sucks]（https://github.com/bmartin5692/sucks），[bumber]（https://github.com/bmartin5692/bumper））
 * @Ligio（[ozmo]（https://github.com/Ligio/ozmo））
 
 ## Changelog
+
+### 0.5.8
+   * Several enhancements and fixes
 
 ### 0.5.7
    * Using library version 0.3.8

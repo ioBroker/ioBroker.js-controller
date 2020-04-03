@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.bsblan/README.md
 title: ioBroker.bsblan
-hash: 9xmWWEjt1WlHXzCcxSovGCp40pOQ9NHKlrzoOme765A=
+hash: xUD8t6FT0RVhgnVBFyFDHVTD1appxS4rdHEINifPNdY=
 ---
 ![商标](../../../en/adapterref/iobroker.bsblan/admin/bsblan.png)
 
@@ -32,15 +32,24 @@ BSB_LAN接口将BSB（锅炉系统总线）带到LAN。该适配器将其连接�
     -IP
     -用户和密码（如果激活了基本身份验证）
     -轮询间隔（以秒为单位）（最小值为10）
-    -应该轮询的ID（以逗号或换行符分隔，有关可用ID，请参见BSB_LAN的Web界面）
+    -应该轮询或更改的ID（以逗号或换行符分隔，有关可用ID，请参见BSB_LAN的Web界面）
 
-##局限性
--TODO：允许对ID进行写访问
+##写作价值观
+-将所有或特定ID激活为可写入
+  * zh：[只读或读/写访问权限]（https://1coderookie.github.io/BSB-LPB-LAN_EN/chap05.html）
+  * de：[Zugriff des Adapters auf den Regler]（https://1coderookie.github.io/BSB-LPB-LAN/kap05.html）
+  *全部使用：`bsb_lan_config.h：#define DEFAULT_FLAG 0`
+  *编译并上传
+-添加应写入适配器实例配置的ID（请参阅用法）
+-数字，枚举和hr：min类型现在是可写的（当然只能写可写的ID）
 
-##学分
+##积分
 -由[Freepik]（https://www.freepik.com/home）从www.flaticon.com制作的图标
 
 ## Changelog
+### 0.1.0
+* Support write access
+
 ### 0.0.3
 * dynamically create states
 * IDs without whitespaces
@@ -52,7 +61,7 @@ BSB_LAN接口将BSB（锅炉系统总线）带到LAN。该适配器将其连接�
 ## License
 MIT License
 
-Copyright (c) 2019 hacki11 <jur.schmid@gmail.com>
+Copyright (c) 2020 hacki11 <jur.schmid@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

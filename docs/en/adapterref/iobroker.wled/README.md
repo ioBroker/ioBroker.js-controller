@@ -19,12 +19,15 @@ A fast and feature-rich implementation of an ESP8266/ESP32 webserver to control 
 ## Instructions
 
 The adapter automatically try's to find WLED devices in your network using Bonjour services.  
-Known issues : Networks with VLAN seperation mostly don't route broadcast traffic, meaning autodetect will fail. (see To-Do)
+Known issues : Networks with VLAN seperation mostly don't route broadcast traffic, meaning autodetect will fail.  
+
+Don't worry, in that case you can add the device manually by IP-Adress.
 
 1) Ensure your WLED device is runnning and reachable by network
 2) Install the adapter
-3) Configure intervall times for data polling and auto-detect cyclus
-4) Start the adapter, devices should be detected automatically
+3) Configure intervall times for data polling and auto-detect cyclus  
+4 - A) Start the adapter, devices should be detected automatically  
+4 - B) If A fails, use the Add-Device button an provide the device IP-Adress  
 5) Adapter will send changes immediatly and polls data every x seconds (configurable)
 
 ## To-Do
@@ -37,6 +40,10 @@ If you like my work, please feel free to provide a personal donation
 [![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
+
+### 0.5.0 Stable release
+* (DutchmanNL) Added translations
+* (DutchmanNL) Release to stable repository, beta testing finished
 
 ### 0.3.0 Bugfix : Correct handling of polling timer
 * (DutchmanNL  & Jey-Cee) Bugfix : Polling timer not saved

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lgtv/README.md
 title: ioBroker.lgtv
-hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
+hash: e1vRRQd3Kvr7YBcscpRBGok3Apv+ZLAD2XhIHxpR73w=
 ---
 ![Logo](../../../en/adapterref/iobroker.lgtv/admin/lgtv.png)
 
@@ -19,36 +19,39 @@ hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
 
 LG WebOS SmartTV Adapter für ioBroker
 
-Fernbedienung eines LG WebOS SmartTV (Modelle ab 2013) über [ioBroker](https://www.iobroker.net).
+Fernsteuerung eines LG WebOS SmartTV (Modelle ab 2013) aus [ioBroker](https://www.iobroker.net).
 
 ---
 
 ## Verwendungszweck:
 Installieren Sie den Adapter über die ioBroker-Administrationsoberfläche.
-In der Adapterkonfiguration geben Sie die IP-Adresse Ihres LG WebOS TV ein.
-Bei der ersten Verbindung wird auf Ihrem Fernsehbildschirm eine Pairing-Aufforderung angezeigt, in der Sie die Verbindung zulassen sollten.
+Geben Sie in der Adapterkonfiguration die IP-Adresse Ihres LG WebOS TV ein.
+Bei der ersten Verbindung erhalten Sie auf Ihrem Fernsehbildschirm eine Pairing-Eingabeaufforderung, in der Sie die Verbindung zulassen sollten.
+
+### Polling
+Einige Fernsehgeräte werden beim Ausschalten des Fernsehgeräts von der Netzsteckdose getrennt und melden dies dem Adapter nicht korrekt. Dann ist eine zusätzliche Abfrage erforderlich. Sie können die Zeit in den Einstellungen definieren. Wenn der Wert leer ist, versucht der Adapter dies automatisch zu erkennen: Beim Neustart des Adapters ist die Abfrage (alle 60 Sekunden) aktiv, bis das erste richtige TV-Aus-Ereignis erkannt wird.
 
 ## Einige Beispiele:
 ```setState('lgtv.0.states.popup', 'Some text!');```
 
-Dies zeigt ein Popup mit dem Text "Some text!" im Fernsehen.
+Dies zeigt ein Popup mit dem Text "Irgendein Text!" im Fernsehen.
 Sie können HTML-Zeilenumbrüche (br) im Text verwenden.
 
 ```setState('lgtv.0.states.turnOff', true);```
 
-Fernsehgerät ausschalten.
+Fernseher ausschalten.
 
 ```setState('lgtv.0.states.mute', true);```
 
-Schalte den Fernseher aus.
+Schalten Sie den Fernseher aus.
 
 ```setState('lgtv.0.states.mute', false);```
 
-Schalten Sie den Fernseher ein.
+Schalten Sie den Fernseher aus.
 
 ```setState('lgtv.0.states.volumeUp', true);```
 
-Dies erhöht die Lautstärke des Fernsehgeräts.
+Dadurch wird die Lautstärke des Fernsehgeräts erhöht.
 
 ```setState('lgtv.0.states.volumeDown', true);```
 
@@ -56,15 +59,15 @@ Verringern der Lautstärke des Fernsehgeräts.
 
 ```setState('lgtv.0.states.channelUp', true);```
 
-Erhöhen des aktuellen Fernsehkanals.
+Erhöhen des aktuellen TV-Kanals.
 
 ```setState('lgtv.0.states.channelDown', true);```
 
-Verringert den aktuellen Fernsehkanal.
+Verringern des aktuellen TV-Kanals.
 
 ```setState('lgtv.0.states.3Dmode', true);```
 
-Aktiviert den 3D-Modus am Fernsehgerät
+Aktiviert den 3D-Modus auf dem Fernseher
 
 ```setState('lgtv.0.states.3Dmode', false);```
 
@@ -72,7 +75,7 @@ Deaktiviert den 3D-Modus am Fernsehgerät.
 
 ```setState('lgtv.0.states.channel', 7);```
 
-Umschalten des Live-Fernsehers auf Kanalnummer 7.
+Umschalten des Live-TV auf Kanal 7.
 
 ```setState('lgtv.0.states.launch', 'livetv');```
 
@@ -80,7 +83,7 @@ In den Live-TV-Modus wechseln.
 
 ```setState('lgtv.0.states.launch', 'smartshare');```
 
-Öffnen der SmartShare App auf dem Fernseher.
+Öffnen der SmartShare-App auf dem Fernseher.
 
 ```setState('lgtv.0.states.launch', 'tvuserguide');```
 
@@ -88,11 +91,11 @@ Führt die TV User Guide App auf dem Fernseher aus.
 
 ```setState('lgtv.0.states.launch', 'netflix');```
 
-Öffnen Sie die Netflix-App auf dem Fernseher.
+Öffnen der Netflix-App auf dem Fernseher.
 
 ```setState('lgtv.0.states.launch', 'youtube');```
 
-Öffnet die Youtube App auf dem Fernseher.
+Öffnet die Youtube App im Fernsehen.
 
 ```setState('lgtv.0.states.launch', 'prime');```
 
@@ -100,7 +103,7 @@ Führt die TV User Guide App auf dem Fernseher aus.
 
 ```setState('lgtv.0.states.launch', 'amazon');```
 
-Auf einigen Fernsehgeräten wird mit diesem Befehl die Amazon Prime-App geöffnet.
+Auf einigen Fernsehgeräten öffnet dieser Befehl die Amazon Prime App.
 
 ```setState('lgtv.0.states.openURL', 'http://www.iobroker.net');```
 
@@ -109,27 +112,27 @@ Kann auch zum Öffnen von Bildern oder Videos (im Browser) verwendet werden.
 
 ```setState('lgtv.0.states.input', 'av1');```
 
-Schaltet den Iput des Fernsehers auf AV1.
+Schaltet den Eingang des Fernsehgeräts auf AV1.
 
 ```setState('lgtv.0.states.input', 'scart');```
 
-Schaltet den Iput des Fernsehgeräts auf Scart.
+Schaltet den Eingang des Fernsehgeräts auf Scart.
 
 ```setState('lgtv.0.states.input', 'component');```
 
-Schaltet den Iput des Fernsehgeräts auf Component um.
+Schaltet den Eingang des Fernsehgeräts auf Komponente um.
 
 ```setState('lgtv.0.states.input', 'hdmi1');```
 
-Schaltet den Anschluss des Fernsehgeräts auf HDMI 1 um.
+Schaltet den Eingang des Fernsehgeräts auf HDMI 1 um.
 
 ```setState('lgtv.0.states.input', 'hdmi2');```
 
-Schaltet den Anschluss des Fernsehgeräts auf HDMI 2 um.
+Schaltet den Eingang des Fernsehgeräts auf HDMI 2 um.
 
 ```setState('lgtv.0.states.input', 'hdmi3');```
 
-Schaltet den iPod am Fernseher auf HDMI 3 um.
+Schaltet den Eingang des Fernsehgeräts auf HDMI 3 um.
 
 ```setState('lgtv.0.states.youtube', 'https://www.youtube.com/watch?v=AjSpMQfRmEo'); OR setState('lgtv.0.states.youtube', 'AjSpMQfRmEo');```
 
@@ -139,19 +142,19 @@ YouTube-Video abspielen.
 
 ```setState('lgtv.0.states.raw', '{"url": "ssap://api/getServiceList", "cmd": ""}');```
 
-Sende- und Antwort-RAW-Befehls-API.
+Senden und Antworten der RAW-Befehls-API.
 
 ```setState('lgtv.0.remote.*KEY*', true);```
 
-Senden Sie den Fernbedienungsschlüssel an den Fernseher.
+Senden Sie die Fernbedienungstaste an das Fernsehgerät.
 
 ```setState('lgtv.0.states.power', true/false);```
 
-TV ausschalten und TV einschalten (Einschalten, funktioniert nur im LAN mit WOL).
+TV ausschalten und TV einschalten (TurnOn, funktioniert nur LAN mit WOL).
 
 ```setState('lgtv.0.states.soundOutput', 'external_arc');```
 
-Schaltet den Audioausgang über ARC (HDMI) um.
+Schalten Sie den Audioausgang über ARC (HDMI) um.
 
 ---
 
@@ -162,7 +165,7 @@ hält den aktuellen Kanal
 
 Volumen
 
-Hält den aktuellen Lautstärkepegel und kann die Lautstärke ändern
+hält den aktuellen Lautstärkepegel und kann die Lautstärke ändern
 
 auf
 
@@ -171,8 +174,25 @@ ist wahr, wenn der Fernseher eingeschaltet ist, und falsch, wenn der Fernseher a
 ---
 
 ## Changelog
+### 1.1.6 (2020-03-07)
+* (dirkhe) make healthintervall configurable
+
+### 1.1.5 (2020-02-25)
+* (dirkhe) stable connection and subsciptions
+* (dirkhe) add Polling for TV, which not support Power Off event 
+* (dirkhe) change some states role switch to button
+
+### 1.1.4 (2020-02-07)
+* (dirkhe) changed from pull to subscribing
+* (dirkhe) add livetv to launch list
+
+### 1.1.3 (2019-12-16)
+* (merdok) fixed connect() [Pull requests #62](https://github.com/SebastianSchultz/ioBroker.lgtv/pull/62) 
+* (instalator) fixed [issues #64](https://github.com/SebastianSchultz/ioBroker.lgtv/issues/64) 
+* (instalator) change error log to debug [issues #59](https://github.com/SebastianSchultz/ioBroker.lgtv/issues/59) 
 
 ### 1.1.1 (2019-10-26)
+* (instalator) Safe keyfile to /opt/iobroker [issues #52](https://github.com/SebastianSchultz/ioBroker.lgtv/issues/52) 
 * (instalator) fix error reconect
 * (instalator) fix raw object
 * (instalator) add mac address to admin settings
@@ -238,7 +258,7 @@ ist wahr, wenn der Fernseher eingeschaltet ist, und falsch, wenn der Fernseher a
 
 The MIT License (MIT)
 
-Copyright (c) 2019 Sebastian Schultz.
+Copyright (c) 2020 Sebastian Schultz.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

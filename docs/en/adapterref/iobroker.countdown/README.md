@@ -20,6 +20,7 @@ The adapter prowides you automatically a json table. You just need to use it wit
 ## How to create countdowns
 There are two ways to set up countdowns:
 
+* You can create a countdown in the adapter settings, in the tab "Create Countdown".
 * You can create a manual state in the device "setup". The name of the object is the alarm name, and the value will be the date. The date neets to be in the format "DD.MM.YYYY HH:mm:ss".
 * You can create an alarm with sendto. There, you can either send the components (minimum is Year Month Date) or a date string. For the date string, you can adjust the format in the setup of the adapter.
 ![Logo](admin/countdown_blocky.png)
@@ -28,6 +29,22 @@ There are two ways to set up countdowns:
 
 ## How to delete countdowns
 You  can delete a countdown with the sendto. Therefore, send just the name with sendto to the adapter, and the countdown will be deleted automatically.
+
+## Repeating countdown
+If you want a countdown to repeat in a defined period (e.g. you cant a countdown for your wedding day every year) you can also do this with this adapter. Therefore either fill the field "Repeat period" in the settings of the adapter, or add the period after the date when you create a countdown with the type "date". A sendTo would look like that for a countdown which should end on the 1st of April 2020 and repeat every year:
+
+sendTo("countdown.0", "send", {
+   "name": 'Wedding Day',
+   "date": '01.04.2020 00:01+1Y'
+});
+
+Parameters here are:
+* Y: Years
+* M: Months
+* D: Days
+* H: Hours
+* m: Minutes 
+
 
 ## Available outputs
 
@@ -46,12 +63,28 @@ You  can delete a countdown with the sendto. Therefore, send just the name with 
 |totalDays|Total No. of days until the end date|
 |totalWeeks|Total No. of weeks until the end date|
 |reached|Boolean field defining if the end date was reached or not|
+|repeatEvery|Countdown is repeted by this period after reaching the enddate|
+
 
 ## Features to add
 * Possibility to add a script as a parameter and start it when countdown ends
 * Possibility to use plus and minus in addminutes and the other add functions
 
 ## Changelog
+
+## 1.1.0 (2020-04-02) 
+* (jack-blackson) bugfix Read-Me link
+* (jack-blackson) bugfix repeatCycle
+
+## 1.0.9 (2020-03-31)
+* (jack-blackson) Bugfix log messages
+
+## 1.0.8 (2020-03-31)
+* (jack-blackson) Repeat countdown in defined period (e.g. every year)
+
+## 1.0.7 (2020-03-30)
+* (jack-blackson) Added new date-type for settings: YYYY-MM-DD
+* (jack-blackson) Add countdown directly in adapter settings
 
 ## 1.0.6 (2020-03-20)
 * (DutchmanNL) Fixed adapter type

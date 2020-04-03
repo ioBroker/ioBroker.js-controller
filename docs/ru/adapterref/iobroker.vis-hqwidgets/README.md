@@ -2,22 +2,29 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-hqwidgets/README.md
-title: без названия
-hash: jPQegu6pF6O2hzwFNfhetVOfbBWWxDaDYcjjC49bstY=
+title: oBroker.vis-hqWidgets
+hash: Tr25/rGLCShP3cb01xpc6DE4Umea7NwQzg7lJFwe94k=
 ---
-![логотип](../../../en/adapterref/iobroker.vis-hqwidgets/admin/hqwidgets.png) ioBroker.vis-hqWidgets ============
+![логотип](../../../en/adapterref/iobroker.vis-hqwidgets/admin/hqwidgets.png)
 
 ![Количество установок](http://iobroker.live/badges/vis-hqwidgets-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.vis-hqwidgets.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.vis-hqwidgets.svg)
 ![NPM](https://nodei.co/npm/iobroker.vis-hqwidgets.png?downloads=true)
 
+# OBroker.vis-hqWidgets
 hqWidgets - высококачественные виджеты для ioBroker.vis ![пример](../../../en/adapterref/iobroker.vis-hqwidgets/img/widgets.png)
 
 Для одного виджета используется плагин jQuery.knob (MIT) от Энтони Терриена.
 http://anthonyterrien.com/knob/ или https://github.com/aterrien/jQuery-Knob
 
 ## Changelog
+### 1.1.4 (2020-03-28)
+* (bluefox) Fixed blinds widget
+
+### 1.1.3 (2019-10-27)
+* (bluefox) Preparations for js-controller 2.0. Check undefined and nulls.
+
 ### 1.1.2 (2018-06-09)
 * (bluefox) Odometer was fixed while rendering in invisible state
 

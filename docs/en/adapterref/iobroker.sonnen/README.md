@@ -72,7 +72,22 @@ Note, that there are two different sonnen API's so if you are missing states, th
 
    *Read-only JSON string, which contains configuration information of your battery.*
    
+* info.powerMeter
 
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |string|R|
+
+   *Read-only JSON string, which contains power metering information of your battery.*
+   
+* info.inverter
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |string|R|
+
+   *Read-only JSON string, which contains inverter information of your battery.*
+   
 #### Channel: status
    
 * status.consumption
@@ -248,6 +263,9 @@ Note, that there are two different sonnen API's so if you are missing states, th
     ```
 
 ## Changelog
+### 1.4.0
+* (foxriver76) introducing new states with power metering and inverter information (supported on :8080 API)
+* (foxriver76) only minimum support until we know what users need as states
 
 ### 1.3.0
 * (foxriver76) introducing new state with configuration information (supported on :8080 API)

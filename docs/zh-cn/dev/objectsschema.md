@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/objectsschema.md
 title: 核心理念
-hash: FFzNRIzygOmQSrzVSlXxole2kfQWad2m1grDaZd3pPI=
+hash: JrIFbEK5K2RPHEBk4fp6C36DmJ7nX4aLQFaEoUOmtHU=
 ---
 ＃核心概念
 ioBroker中有两种根本不同的数据类型。所谓的“状态”（`states`）和“对象” **。
 
-对象代表很少更改的较大数据，例如系统设备的元数据，配置和其他文件。每个对象都必须具有属性“类型”。有关更多信息，请参见下面的内容，特定类型的对象需要哪些对象类型以及哪些必需属性。适配器模块为您提供了诸如setObject，getObject等功能。
+对象代表很少更改的较大数据，例如系统设备的元数据，配置和其他文件。每个对象都必须具有属性“类型”。有关更多信息，请参见下面的信息，特定类型的对象需要哪些对象类型以及哪些必需属性。适配器模块为您提供了诸如setObject，getObject等功能。
 
-状态代表系统中经常变化的数据，例如f。如果指示灯点亮或熄灭，运动检测器检测到某种运动，客厅的温度或按了遥控器的按钮。与对象相反，状态可以用来触发动作，状态可以创建历史数据。要使用状态，适配器模块中有几个功能，例如setState，getState等。
+状态代表系统中经常变化的数据，例如f。如果指示灯亮起或熄灭，运动检测器检测到某种运动，起居室的温度或按了遥控器的按钮。与对象相反，状态可以用来触发动作，状态可以创建历史数据。要使用状态，适配器模块中有几个功能，例如setState，getState等。
 
 对于每个状态，还必须存在一个带有`type=state`的对应对象。
 
@@ -45,7 +45,7 @@ ID具有不同的级别。每个级别由点确定。示例：`system.adapter.ad
 *`system.meta.`-系统元数据
 *`system.user.`-用户
 *`system.group.`-组
-*`system.adapter。<adapter-name>`-适配器的默认配置
+*`system.adapter。<适配器名称>`-适配器的默认配置
 *`<适配器名称> .`-特定适配器的对象。
 *`<适配器名称> .meta.`-此适配器的所有实例使用的公共元数据
 *`<适配器名称>。<实例编号> .`-适配器实例名称空间
@@ -128,7 +128,7 @@ getState / stateChange / setState对象的属性：
 *`val`-实际值-可以是JSON-“可编码”的任何类型
 *`ack`-一个布尔型标志，指示目标系统是否已确认该值
 *`ts`-指示状态的最后更新的unix时间戳（以毫秒为单位）
-*`lc`-UNIX时间戳，指示状态的实际值的最后一次更改（以毫秒为单位）
+*`lc`-Unix时间戳，指示该状态的实际值的最后一次更改（以毫秒为单位）
 *`from`-完成`setState`的适配器实例
 *`user`-用户名，用于设置值
 *`expire`-一个整数值，可用于设置在给定秒数后到期的状态。可以和setValue一起使用。该值过期后，它将从redisDB中消失。
@@ -156,7 +156,7 @@ getState / stateChange / setState对象的属性：
   0x84 - 10000100 - sensor reports error
 ```
 
-每个* state *必须由state类型的对象表示，该对象包含该状态的元数据。见下文。
+每个* state *必须由state类型的对象表示，该对象包含该状态的Meta-Data。见下文。
 
 ##对象
 ###强制属性
@@ -171,7 +171,7 @@ getState / stateChange / setState对象的属性：
 *`common.name`-对象的名称（可选，但严格建议填写）
 
 ###树结构
-树结构是按名称自动组装的。例如。 ```system.adapter.0.admin```是`system.adapter.0.admin.uptime`的父级。将此名称约定与点“。”一起用作级别分隔符。
+树结构是按名称自动组装的。例如。 ```system.adapter.0.admin```是`system.adapter.0.admin.uptime`的父级。将此名称约定与点“。”一起使用，作为级别的分隔符。
 
 ###对象类型
 *`state`-父级应该是通道，设备，实例或主机的类型
@@ -200,13 +200,13 @@ getState / stateChange / setState对象的属性：
 *`common.unit`（可选）
 *`common.def`（可选-默认值）
 *`common.defAck`（可选-如果设置了common.def，则此值用作ack标志，js-controller 2.0.0+）
-*`common.desc`（可选，字符串）
-*`common.read`（布尔值，强制的）-如果状态可读则为true
+*`common.desc`（可选，字符串或对象）-描述，用于多语言描述的对象
+*`common.read`（布尔值，强制性）-如果状态可读，则为true
 *`common.write`（布尔值，强制性）-如果状态为可写，则为true
-*`common.role`（字符串，强制性）-状态的角色（在用户界面中用于指示要选择的小部件，请参见下文）
+*`common.role`（字符串，强制性）-状态的角色（在用户界面中用于指示要选择哪个小部件，请参见下文）
 *类型号的`common.states`（可选）属性，带有可能状态的对象'{'value'：'valueName'，'value2'：'valueName2'，0：'OFF'，1：'ON'}`
-*`common.workingID`（字符串，可选）-如果此状态具有辅助状态WORKING。如果前几部分与实际名称相同，则必须写上全名或仅写最后一部分。用于HM.LEVEL，通常值为“ WORKING”
-*`common.custom`（可选）-具有特定适配器的自定义设置的结构。就像`{“ influxdb.0”：{“ enabled”：true，“ alias”：“ name”}}`一样。 “ enabled”属性是必需的，如果不为true，则将删除整个属性。
+*`common.workingID`（字符串，可选）-如果此状态具有助手状态WORKING。如果前几部分与实际名称相同，则必须写上全名或最后一部分。用于HM.LEVEL，通常值为“ WORKING”
+*`common.custom`（可选）-具有特定适配器的自定义设置的结构。像`{“ influxdb.0”：{“ enabled”：true，“ alias”：“ name”}}`一样。 “ enabled”属性是必需的，如果不为true，则将删除整个属性。
 
 #####状态`common.history`
 历史记录功能需要历史记录适配器或任何其他类型为历史记录的存储适配器
@@ -251,8 +251,8 @@ getState / stateChange / setState对象的属性：
 *`light.color`-具有颜色更改功能的灯光控制
 *`light.color.rgb`-以RGB设置颜色
 *`light.color.rgbw`-以RGBW设置颜色
-*`light.color.hsl`-在“色相/饱和度/亮度”中设置颜色（“色相光-LivingColors ...”）
-*`light.color.hslct`-在“色相/饱和度/亮度”或“色温”中设置颜色（色相扩展色光）
+*`light.color.hsl`-以色相/饱和度/亮度设置颜色（色相光-LivingColors ...）
+*`light.color.hslct`-在色相/饱和度/亮度或色温中设置颜色（色相扩展色光）
 *`light.color.ct`-色温K
 
 *`switch`-一些通用的开关
@@ -281,7 +281,7 @@ getState / stateChange / setState对象的属性：
 * ...
 
 ####频道说明
-~~属性名称可以由适配器自由定义，用** bold **字体书写的属性除外。~~
+~~属性名称可以由适配器自由定义，用** bold **字体编写的名称除外。~~
 
 “ W”-common.write = true
 
@@ -357,7 +357,7 @@ getState / stateChange / setState对象的属性：
 ```
 
 #####`light.switch`-属性说明
-| **称** |** common.role **|** M **|** W **|** common.type **|** 明** | ------------- |：-------------------------- |：-----：| ：-----：| ------------------------------------
+| **称** |** common.role **|** M **|** W **|** common.type **|** 明** | ------------- |：-------------------------- |：-----：| ：-----：| ----------------- | ---
 
 |州|开关| X | X |布尔|
 |描述| text.description | | | |
@@ -496,28 +496,28 @@ id`system.adapter.<adapter.name>`
 *`common.availableModes`-common.mode的值，如果可能有多个模式
 *`common.blockly`-[true / false]如果适配器具有用于块的自定义块。 （需要admin / blockly.js）
 *`common.connectionType`-与设备的连接类型：`local / cloud`。参见`common.dataSource`。
-*`common.compact`-对控制器说，如果需要，此适配器可以在同一过程中启动
+*`common.compact`-对控制器说，如果需要，该适配器可以在同一过程中启动
 *`common.config.height`-配置对话框的默认高度（不建议使用-仅对admin2有效）
 *`common.config.minHeight`-配置对话框的最小高度（不建议使用-仅对admin2有效）
 *`common.config.minWidth`-配置对话框的最小宽度（不建议使用-仅对admin2有效）
 *`common.config.width`-配置对话框的默认宽度（不建议使用-仅对admin2有效）
 *`common.dataFolder`-相对于iobroker-data的文件夹，适配器存储数据。该文件夹将被备份并自动恢复。您可以在其中使用变量'％INSTANCE％'。
-*`common.dataSource`-如何从设备上接收数据：`poll / push / assumption`。与`connectionType`一起使用很重要。
-*`common.dependencies`-类似于[[{“ js-controller”：“> = 2.0.0”}]]之类的数组，它描述此适配器需要哪些ioBroker模块。
+*`common.dataSource`-如何从设备：`poll / push / assumption`接收数据。与`connectionType`一起使用很重要。
+*`common.dependencies`-类似[[{“ js-controller”：“> = 2.0.0”}]]之类的数组，它描述此适配器需要哪些ioBroker模块。
 *`common.docs`-类似于`{“ en”：“ docs / en / README.md”，“ de”：[“ docs / de / README.md”，“ docs / de / README1.md” ]}`描述了文档（如果不在README.md中）
 *`common.enabled`-强制性[true / false]值应为false，因此默认情况下禁用新实例
 *`common.engineTypes`-不推荐使用。在package.json中使用引擎
-*`common.eraseOnUpload`-上传前清除目录中所有先前的数据
-*`common.expert`-仅在admin的专家模式下显示此对象
+*`common.eraseOnUpload`-上传前擦除目录中所有先前的数据
+*`common.expert`-仅在管理员的专家模式下显示此对象
 *`common.extIcon`-链接到已卸载适配器的外部图标。通常在github上。
 *`common.getHistory`-[true / false]如果适配器支持getHistory消息
 *`common.icon`-本地图标的名称（应位于子目录“ admin”中）
 *`common.installedVersion`-**必须安装的版本
 *`common.keywords`-与package.json中的关键字相似，但是可以用多种语言定义。只是一个数组。
-*`common.localLinks`-链接到该适配器的Web服务。例如从管理员到http：// localhost：5984 / _utils以获取蒲团
+*`common.localLinks`-链接到该适配器的Web服务。例如，从管理员到http：// localhost：5984 / _utils以获取蒲团
 *`common.localLink`-不推荐使用。使用`common.localLinks`。
 *`common.logLevel`-调试，信息，警告或错误
-*`common.logTransporter`-如果此适配器从其他主机和适配器接收日志（例如在某处散布日志）
+*`common.logTransporter`-如果此适配器从其他主机和适配器接收日志（例如，将日志散布在某处）
 *`common.main`-适配器的启动文件。与package.json中的相同。
 *`common.materializeTab`-如果适配器支持> tab的admin3（具体化样式）
 *`common.materialize`-如果适配器支持> admin3（具体化样式）
@@ -550,14 +550,14 @@ id`system.adapter.<adapter.name>`
 *`common.supportCustoms`-[true / false]如果适配器支持每种状态的设置。它必须在admin中具有custom.html文件。样本可以在ioBroker.history中找到
 *`common.supportStopInstance`-[true / false]如果适配器支持信号stopInstance（需要** messagebox **）。该信号将在停止前发送到适配器。 （如果问题发生在SIGTERM上，则使用）
 *`common.titleLang`-**必填**所有支持的语言的适配器的更长名称，例如{en：'Adapter'，de：'adapter'，ru：'Драйвер'}
-*`common.title`-（不建议使用）更长的适配器名称，以在admin中显示
+*`common.title`-（不建议使用）适配器的更长名称，以在admin中显示
 *`common.type`-适配器类型。参见[类型]（adapterpublish.md）
 *`common.unchanged`-（系统）请不要使用此标志。这是通知系统的标志，必须在admin中显示配置对话框。
 *`common.unsafePerm`-[true / false]如果必须使用“ npm --unsafe-perm”参数安装软件包
 *`common.version`-**必需**可用版本
 *`common.wakeup`-如果将一些值写入`system.adapter.NAME.x.wakeup`中，适配器将启动。通常，适配器应在事件处理后停止。
 *`common.webByVersion`-将版本显示为Web适配器中的前缀（通常-ip：port / material，webByVersion-ip：port / 1.2.3 / material）
-*`common.webExtendable`-[true / false]如果此适配器中的Web服务器可以使用诸如代理，simple-api之类的插件/扩展名进行扩展
+*`common.webExtendable`-[true / false]如果可以使用诸如代理，simple-api之类的插件/扩展名扩展此适配器中的Web服务器
 *`common.webExtension`-用于连接网络扩展名的相对文件名。例如。在相对于适配器根目录的simple-api“ lib / simpleapi.js”中。另外，native.webInstance要求说出该扩展名的位置。空意味着，它必须作为自己的Web服务运行。 “ *”表示每个Web服务器都必须包含它。
 *`common.webPreSettings`-WebServer适配器必须包含在info.js中的参数列表。 （示例材料）
 *`common.webservers`-Web服务器实例的数组，应从适配器www文件夹提供内容
@@ -581,7 +581,7 @@ id *system.adapter。＆lt; adapter.name＆gt;。＆lt;实例号＆gt;*
 *`subscribe`-在状态* system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .alive *变为* true *时启动。当* .alive *更改为* false *并被杀死（如果进程退出，则将* .alive *设置为* false *）（进程退出时将不重新启动）
 *`schedule`-由在* system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .schedule *中找到的时间表开始。
 *`once`-每次更改system.adapter.yyy.x对象时，都会启动此适配器。终止后将不会重新启动。
-*`extension`-该适配器不会由`js-controller`启动，但会由Web实例启动。网络实例可以在“ native.webInstance”中定义为“ *”（如果在每个网络中），也可以在特定的网络实例中定义为“ web.x”。 （例如：“相机，代理”）。另外，在`common.webExtension`中必须提供插件文件的路径。
+*`extension`-该适配器不会由`js-controller`启动，但是会由Web实例启动。 Web实例可以在“ native.webInstance”中定义为“ *”（如果在每个网络中），也可以在特定Web实例中定义为“ web.x”。 （例如：“相机，代理”）。另外，在`common.webExtension`中必须提供插件文件的路径。
 
 ####主机
 id`system.host.<host>`

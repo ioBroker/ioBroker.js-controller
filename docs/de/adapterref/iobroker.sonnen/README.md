@@ -116,6 +116,23 @@ der Tastenkombination "STRG + F".
 
    *Nur lesbarer JSON String, mit Konfigurationsinformationen der sonnenBatterie.*
    
+   
+* info.powerMeter
+
+    |Datentyp|Berechtigung|                                                                       
+    |:---:|:---:|
+    |string|R|
+
+   *Nur lesbarer JSON String, mit Strommessungsinformationen der sonnenBatterie.*
+   
+* info.inverter
+
+    |Datentyp|Berechtigung|                                                                       
+    |:---:|:---:|
+    |string|R|
+
+   *Nur lesbarer JSON String, mit Wechselrichter Informationen der sonnenBatterie.*
+   
 #### Channel: status
    
 * status.consumption
@@ -301,6 +318,9 @@ der Tastenkombination "STRG + F".
     ```
 
 ## Changelog
+### 1.4.0
+* (foxriver76) introducing new states with power metering and inverter information (supported on :8080 API)
+* (foxriver76) only minimum support until we know what users need as states
 
 ### 1.3.0
 * (foxriver76) introducing new state with configuration information (supported on :8080 API)

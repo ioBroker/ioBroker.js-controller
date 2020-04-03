@@ -228,6 +228,10 @@ With command in javascript adapter you can activate text to speech engine of And
 - enable automatically load of project files from ioBroker server (e.g. for home use)
 
 ## Changelog
+### 2.0.0 (2020-03-28)
+* (bluefox) BREAKING CHANGES: works only with web >= 3.0
+* (bluefox) versions of adapters were updated
+
 ### 1.2.2 (2019-05-05)
 * versions of adapters were updated
 

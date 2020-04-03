@@ -11,7 +11,11 @@ meteoalarm Adapter for ioBroker
 This adapter is pulling weather alarms from meteoalarm.eu, which includes wind, snow, rain, high and low temperature,etc. This information is available in local language and for detailed regions.
 
 ## How to use it
-Please go to http://meteoalarm.eu and choose your region. Then go to the RSS symbol on the top right side, do a right click and copy the link. This is the link which you please add to the setup of the adapter.
+There are two options how you can get the link to retrieve the meteoalarm information.
+
+Option 1: Choose your country, then press "load region", and then choose the region. The xml is then filled automatically. Just press save and you are ready.
+
+Option 2: Go to http://meteoalarm.eu and choose your region. Then go to the RSS symbol on the top right side, do a right click and copy the link. This is the link which you please add to the setup of the adapter.
 
 ![Logo](screenshot.png)
 
@@ -81,7 +85,7 @@ Please go to http://meteoalarm.eu and choose your region. Then go to the RSS sym
 * Moldova
 * Montenegro
 * Netherlands
-* Norwege
+* Norway
 * Poland
 * Romania
 * Serbia
@@ -102,6 +106,8 @@ If you don't find your country, please create an issue on github, and I will be 
 
 
 ## Changelog
+## 1.1.0 (2020-03-29)
+* (jack-blackson) Bugfix Germany
 ## 1.0.9 (2020-02-06)
 * (jack-blackson) Bugfix Germany
 ## 1.0.8 (2019-11-15)

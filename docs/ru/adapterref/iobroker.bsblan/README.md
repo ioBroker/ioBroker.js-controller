@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.bsblan/README.md
 title: ioBroker.bsblan
-hash: 9xmWWEjt1WlHXzCcxSovGCp40pOQ9NHKlrzoOme765A=
+hash: xUD8t6FT0RVhgnVBFyFDHVTD1appxS4rdHEINifPNdY=
 ---
 ![логотип](../../../en/adapterref/iobroker.bsblan/admin/bsblan.png)
 
@@ -15,11 +15,11 @@ hash: 9xmWWEjt1WlHXzCcxSovGCp40pOQ9NHKlrzoOme765A=
 ![Трэвис-CI](http://img.shields.io/travis/hacki11/ioBroker.bsblan/master.svg)
 
 # IoBroker.bsblan
-## Адаптер bsb_lan для ioBroker
+## Bsb_lan адаптер для ioBroker
 Этот адаптер соединяет [BSB_LAN интерфейс](https://github.com/fredlcore/bsb_lan) с ioBroker.
 Интерфейс BSB_LAN переносит BSB (системную шину котла) в локальную сеть. Этот адаптер подключает его к ioBroker.
 
-[BSB_LAN Интерфейс Руководство пользователя](https://github.com/1coderookie/BSB-LPB-LAN)
+[BSB_LAN Interface Руководство пользователя](https://github.com/1coderookie/BSB-LPB-LAN)
 
 ## Поддерживаемые устройства
 - BSB / LPB-совместимые устройства (например, Brötje, Elco, MHG, Fujitsu)
@@ -32,15 +32,24 @@ hash: 9xmWWEjt1WlHXzCcxSovGCp40pOQ9NHKlrzoOme765A=
     - IP
     - Пользователь и пароль (если активирована базовая аутентификация)
     - Интервал опроса в секундах (минимум 10)
-    - идентификаторы, которые должны быть опрошены (через запятую или новую строку, доступные идентификаторы см. В веб-интерфейсе BSB_LAN)
+    - идентификаторы, которые должны быть опрошены или изменены (разделенные запятыми или символом новой строки, доступные идентификаторы см. В веб-интерфейсе BSB_LAN)
 
-## Ограничения
-- TODO: разрешить запись для идентификаторов
+## Запись значений
+- Активируйте все или конкретные идентификаторы как доступные для записи в
+  * ru: [Только чтение или доступ для чтения / записи] (https://1coderookie.github.io/BSB-LPB-LAN_EN/chap05.html)
+  * de: [Zugriff des Adapters auf den Regler] (https://1coderookie.github.io/BSB-LPB-LAN/kap05.html)
+  * для всех: `bsb_lan_config.h: #define DEFAULT_FLAG 0`
+  * скомпилировать и загрузить
+- Добавьте идентификаторы, которые должны быть записаны в конфигурацию экземпляра адаптера (см. Раздел «Использование»).
+- Типы Numbers, Enums и hr: min теперь доступны для записи (конечно, могут быть записаны только идентификаторы, доступные для записи)
 
 ## Кредиты
 - Иконка сделана [Freepik] (https://www.freepik.com/home) с сайта www.flaticon.com
 
 ## Changelog
+### 0.1.0
+* Support write access
+
 ### 0.0.3
 * dynamically create states
 * IDs without whitespaces
@@ -52,7 +61,7 @@ hash: 9xmWWEjt1WlHXzCcxSovGCp40pOQ9NHKlrzoOme765A=
 ## License
 MIT License
 
-Copyright (c) 2019 hacki11 <jur.schmid@gmail.com>
+Copyright (c) 2020 hacki11 <jur.schmid@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

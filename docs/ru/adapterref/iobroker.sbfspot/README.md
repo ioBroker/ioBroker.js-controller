@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: NMhpaS3tpGOVmK3sjScUmZDu88/zSBbi4B2KpgplBYw=
+hash: n1znYPs/e/xFNF9U1C2lXCpwlsxYnM+RP1MxJYaxeHI=
 ---
 ![логотип](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -23,7 +23,7 @@ hash: NMhpaS3tpGOVmK3sjScUmZDu88/zSBbi4B2KpgplBYw=
 Теперь поддерживаются оба типа базы данных (mySQL и sqlite).
 Начиная с версии 0.2.3, существует собственный виджет vis, основанный на flot, для отображения исторических данных.
 
-## Установка
+## Монтаж
 следуйте инструкциям по установке sbfspot по адресу https://github.com/SBFspot/SBFspot/wiki
 
 [детальная установка на системы на основе оружия](docs/en/install_arm.md)
@@ -45,7 +45,10 @@ hash: NMhpaS3tpGOVmK3sjScUmZDu88/zSBbi4B2KpgplBYw=
 
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), если вы обнаружите ошибки или пожелаете новых функций
 
-## 2.4.1 (2020-02-01)
+## 2.4.3 (2020-04-02)
+* (René) исправление в DB_CalcHistory_Today, используемом для виджета
+
+## 2.4.2 (2020-02-01)
 * (René) виджет исправлений
 
 ## 2.4.0 (2019-12-28)
@@ -68,7 +71,7 @@ hash: NMhpaS3tpGOVmK3sjScUmZDu88/zSBbi4B2KpgplBYw=
 * (René) пакеты обновлений
 
 ### 2.2.5 (2018-11-04)
-* (René) сбросить доходность, если нет нового значения за сегодняшний день
+* (René) сбросить доходность, если нет нового значения с сегодняшнего дня
 
 ### 2.2.4 (2018-08-19)
 * (René) исправление для тиков на X
@@ -93,7 +96,7 @@ hash: NMhpaS3tpGOVmK3sjScUmZDu88/zSBbi4B2KpgplBYw=
 * (René) Поддержка admin3
 
 ### 2.0.0
-* (René), поскольку мы всегда используем один график для виджета, теперь поддерживается только один
+* (René), поскольку мы всегда используем один график для виджета, теперь поддерживается только один график
 
 Внимание: виджет не совместим с версией 1.x.x; просто проверьте настройки в виджете после установки!
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: TKPv1NWpGxt5Xrh8nm/KUv87mvH1OWku6xhq1j79eUo=
+hash: dx3TwUQC6M0Dbk38oLidMd6U5l80bs0PVcYvDdJnp+s=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -32,7 +32,24 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot M88
 * Deebot 600/605
 
-## Verwendung
+## Installation
+Dieser Adapter verwendet die Canvas-Bibliothek, für die möglicherweise zusätzliche Installationen erforderlich sind. Andernfalls kann die Installation in iobroker zu einem Fehler führen:
+
+```
+npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
+```
+
+Für Linux-basierte Systeme sollten die folgenden Befehle ausgeführt werden:
+
+```
+sudo apt-get update
+sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+sudo npm install canvas --unsafe-perm=true
+```
+
+Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/canvas#compiling
+
+## Verwendungszweck
 * Informationen zur Verwendung dieses Adapters finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Bekannte Probleme
@@ -49,6 +66,9 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.5.8
+   * Several enhancements and fixes
 
 ### 0.5.7
    * Using library version 0.3.8

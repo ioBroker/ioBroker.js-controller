@@ -35,6 +35,11 @@ BADGE-NPM: https://nodei.co/npm/iobroker.zigbee.png?downloads=true
 
 ## Changelog
 
+### 1.1.0 (2020-04-)
+* ConBee/RaspBee support
+* OTA update for some devices (IKEA, OSRAM and other)
+* Touchlink reset and join
+
 ### 1.0.4 (2020-03-14)
 * (kirovilya) Philips Hue Adore Bathroom Mirror Light
 * (kirovilya) Oujiabao Gas and carbon monoxide alarm

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: a5XAzwEFvMNG/rWozs4JpDiAbJxszl4glipyShtWqeE=
+hash: wBB1fOkh1pUD1WNC1D6srYRqE5LKuVIJq/zFYpGUT6k=
 ---
 ![商标](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
@@ -14,16 +14,21 @@ hash: a5XAzwEFvMNG/rWozs4JpDiAbJxszl4glipyShtWqeE=
 ![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.solarlog.svg)
 
 ＃ioBroker.solarlog
-适用于solarlog的ioBroker适配器-设备
+用于Solarlog的ioBroker适配器-设备
 
+## Solarlog-设置
 必须在Solarlog的配置菜单中激活开放的JSON接口（offene Json-Schnittstelle）（Konfiguration-系统-Zugangskontrolle-Offene Json-Schnittstelle：aktivieren。）
 
-安装适配器，创建实例。
-设置Solarlog-IP地址（192.XXX.X.XXX），端口（可选）和轮询-间隔（以毫秒为单位）。由于适配器向您发送了许多http请求，因此我建议不要将轮询间隔设置得太密集。检查调试日志，以了解轮询或设置至少10s所需的时间。
+##适配器-设置
+＃＃＃ 基本设置
+设置Solarlog-IP地址（192.XXX.X.XXX），端口（可选）和轮询-间隔（以毫秒为单位，最少10s，建议30s或更长时间）。
 
-检查是否收集了所有逆变器数据。 !!
+安全性：您可以在Solarlog中激活“用户”-密码，并在“用户登录已激活”复选框中添加密码，然后在适配器配置中添加密码，也可以在没有用户密码的情况下运行Solarlog和适配器。如果激活了用户登录，建议在使用solarlog-用户界面时停止适配器（否则，在每次请求适配器后都需要重新登录）。
 
-安全性：您可以在solarlog中激活“用户”-密码，并在“用户登录已激活”复选框中添加密码，然后在适配器配置中添加密码，也可以在没有用户密码的情况下运行solarlog和适配器。如果激活了用户登录，建议在使用solarlog-用户界面时停止适配器（否则，在每次请求适配器后都需要重新登录）。
+＃＃＃ 高级设置
+检查是否所有逆变器/子表/设备-数据都将被收集。
+
+检查是否要收集历史数据，并设置一天中更新历史数据对象的时间。
 
 预测：（可选）适配器使用Forecast.Solar API获取预测-数据。实际上，可以预测今天和明天的总kWh，每小时刷新一次。可根据要求提供更详细的数据或其他数据（请提出问题）。
 
@@ -33,6 +38,10 @@ hash: a5XAzwEFvMNG/rWozs4JpDiAbJxszl4glipyShtWqeE=
 SolarLog 50：没有开放的JSON接口@ SolarLog 50设备。因此，“信息”和“状态”通道中的某些值将为“访问权限被拒绝”。如果您希望使用其他解决方案，请打开一个问题或在相应的问题中发布您的偏好。
 
 ## Changelog
+
+### 2.0.0
+
+-   Complete code redesign.
 
 ### 1.3.0
 

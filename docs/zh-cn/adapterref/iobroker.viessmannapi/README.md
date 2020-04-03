@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.viessmannapi/README.md
 title: ioBroker.viessmannapi
-hash: VHRP4CZLw2F3JTpv5Ed5HBdIex5+YNaRgLvZMV4cakU=
+hash: lLDXB2XHqoMaykrvZ5pxHh1uGZZt7r8lUDLuII0KiPY=
 ---
 ![商标](../../../en/adapterref/iobroker.viessmannapi/admin/viessmannapi.png)
 
@@ -13,9 +13,9 @@ hash: VHRP4CZLw2F3JTpv5Ed5HBdIex5+YNaRgLvZMV4cakU=
 ＃ioBroker.viessmannapi
 =================
 
- **请注意，自2020年3月起，Viessmann已对其API实施了一些速率限制。目前，限制为120分钟呼叫10分钟的时间窗口和1450次呼叫24小时的时间窗口（请参阅https://www.viessmann-community.com/t5/Experten-fragen/Q-amp-A- Viessmann-API / qaq-p / 127660 / comment-id / 117660＃M117660）。因此，轮询间隔设置为900秒。您可以通过adpater配置更改它，后果自负。如果在短时间内拨打过多电话，您的viessmann帐户将被封锁一段时间。这也阻止了通过官方的Viessmann App访问！ **
+ **请注意，自2020年3月起，Viessmann已对其API实施了一些速率限制。目前，限制为10分钟的时间窗口有120个呼叫，而24小时的时间窗口有1450个呼叫（请参阅https://www.viessmann-community.com/t5/Experten-fragen/Q-amp-A- Viessmann-API / qaq-p / 127660 / comment-id / 117660＃M117660）。因此，轮询间隔设置为900秒。您可以通过adpater配置更改它，后果自负。如果在短时间内拨打过多电话，您的viessmann帐户将被封锁一段时间。这也将阻止通过正式的Viessmann App进行访问！**
 
-该适配器通过Viessmann API将ioBroker系统连接到Viessmann中央供暖系统。它要求您的供暖系统通过Vitoconnect或类似设备连接到Viessmann Server。该API提供的所有已启用信息都将定期（每60秒一次）进行轮询并写入状态。
+该适配器通过Viessmann API将ioBroker系统连接到Viessmann中央供暖系统。它要求您的供暖系统通过Vitoconnect或类似设备连接到Viessmann Server。该API提供的所有已启用信息都将定期（每60秒）轮询一次，并写入状态。
 
 请注意，这是一个私人项目，使用风险自负。 Viessmann不支持或不支持它！
 
@@ -28,7 +28,7 @@ hash: VHRP4CZLw2F3JTpv5Ed5HBdIex5+YNaRgLvZMV4cakU=
 -`viessmannapi.0.heating.boiler.sensors.temperature.main.value`-锅炉温度
 -`viessmannapi.0.heating.circuits.0.heating.curve.shift`和`slope`-确定加热曲线的偏移和斜率
 -`viessmannapi.0.heating.circuits.0.operating.modes.active.value`-当前操作模式；例如dhw仅表示热水，dhwAndHeating表示热水和暖气
--`viessmannapi.0.heating.sensors.temperature.outside.value`-外部传感器测量的外部温度
+-`viessmannapi.0.heating.sensors.temperature.outside.value`-外部传感器测得的外部温度
 
 ##动作
 一些功能提供了* action *来更改某些属性。可以通过`sendTo`方法调用一个动作。语法如下所示：
@@ -57,7 +57,7 @@ sendTo('viessmannapi.0', 'action', {
 | | | `shift`（number，min：-13，max“：40，stepping：1）| |
 | **加热电路X加热时间表** | | | |
 | | | `newSchedule`（类型：时间表，请参见下文，模式：“正常”，默认值：“已减少” |请参见下文的时间表类型说明|
-| | | `newSchedule`（类型：计划，请参见下文，模式：“正常”，默认值：“已减少”）|请参见下面的计划类型说明|
+| | | `newSchedule`（类型：时间表，请参见下文，模式：“正常”，默认值：“已减少”）|请参见下面的时间表类型说明|
 | **加热电路X操作模式有效** | | | |
 | | | `mode`（字符串，枚举：[“ standby”，“ dhw”，“ dhwAndHeating”，“ forcedReduced”，“ forcedNormal”]）|必填|
 | | | `mode`（字符串，枚举：[“ standby”，“ dhw”，“ dhwAndHeating”，“ forcedReduced”，“ forcedNormal”]）|必填|
@@ -89,7 +89,7 @@ sendTo('viessmannapi.0', 'action', {
 | | | “温度”（数字，最小值：10，最大值：60，步进：1）|必填|
 | **heating.dhw.schedule** | | | |
 | | | `newSchedule`（类型：时间表，请参见下文，模式：“开启”，默认值：“关闭”）|请参阅下面的时间表类型说明。 |
-| | | `newSchedule`（类型：时间表，请参见下文，模式：“开”，默认值：“关”）|请参阅下面的时间表类型说明。 |
+| | | `newSchedule`（类型：时间表，请参见下文，模式：“开启”，默认值：“关闭”）|请参阅下面的时间表类型说明。 |
 
 ###时间表类型
 大多数操作使用简单的数据类型（数字，字符串）。某些操作允许设置时间表。时间表如下所示：
@@ -120,7 +120,7 @@ sendTo('viessmannapi.0', 'action', {
 }
 ```
 
-对于每一天，都必须提供一个包含当天“时间表”的数组。单个条目包括开始和结束时间，计划的“模式”和位置。支持的模式取决于计划的时间，请参阅上面的支持功能表。在预定元素之外，使用默认模式，请参见上表。在上面的示例中，计划在星期一的5:30和10:00之间以及11:00和12:30之间“开”东西。在这些时间间隔之外，将计划默认模式（“关闭”）。
+对于每一天，都必须提供一个包含当天“时间表”的数组。单个条目包括开始和结束时间，计划的“模式”和位置。支持的模式取决于计划的时间，请参阅上面的支持功能表。在预定元素之外，使用默认模式，请参见上表。在上面的示例中，计划在星期一的5:30和10:00之间以及11:00和12:30之间“打开”某物。在这些时间间隔之外，将计划默认模式（“关闭”）。
 
 ###查询所有功能
 要获取具有所有可用操作的所有可用功能的列表，只需将消息`describe`发送到正在运行的适配器实例。结果是所有可用功能的数组，例如可以通过`JSON.stringify()`打印为JSON字符串。
@@ -137,12 +137,12 @@ sendTo('viessmannapi.0', 'describe', {}, (result) => {
 该脚本查询所有可用功能并将其打印到日志中。
 
 ##注意
--该adpater处于早期开发中！请期待错误，并随时在github（https://github.com/thovid/ioBroker.viessmannapi/issues“）上报告错误。
+-该adpater处于早期开发中！请期待错误，并在github（https://github.com/thovid/ioBroker.viessmannapi/issues“）上报告错误。
 
 ##法律
 -Viessmann和Vitoconnect是Viessmann Werke GmbH＆Co. KG的注册商标。
 
--此项目是私人项目，未经Viessmann Werke GmbH＆Co. KG官方*支持或认可，使用后果自负。
+-此项目是私人项目，未经Viessmann Werke GmbH＆Co. KG官方*支持*或认可，使用后果自负。
 
 -如果您有任何疑问，请通过github与我联系！
 

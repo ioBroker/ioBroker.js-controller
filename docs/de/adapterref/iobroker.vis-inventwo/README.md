@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 92n94I2ZG3E2a4iB/b8NSZnifni7HtTykIc/gJhbp30=
+hash: 3ZiMn4BgwnOgFbM02y6Fj+d7eqd7GrtqQeynSqdQJSU=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -35,6 +35,13 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ---
 
+# 1.2.3
+- Aktive Navigationsfarbe hinzugefügt
+- Feste Zustandsfarbe für Wertschalter
+
+## 1.2.2
+- Fehlerbehebung: Schiebereglerwert, Konfiguration
+
 ## 1.2.1
 - Fixed Slider Widget: Separatet in zwei Widgets (horizontal und vertikal)
 
@@ -44,7 +51,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Neue Symbole hinzugefügt
 
 ### 1.1.1
-- Bug-Fix
+- Fehlerbehebung
 
 ### 1.1.0
 - Slider-Widget hinzugefügt

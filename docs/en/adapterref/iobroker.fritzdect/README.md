@@ -153,7 +153,8 @@ Not all FW-versions support all objects.
     * GuestWLAN
     * BatteryCharge
     * OS version
-    
+* correction of timestamp to date conversion fpr DECT400
+
 ### 0.3.2
 * new states in heater group, operationList and operationMode
 

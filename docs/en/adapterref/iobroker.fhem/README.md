@@ -45,6 +45,10 @@ Actually only following attributes are supported:
 
 
 ## Changelog
+
+### 1.4.3 (2020-03-21)
+* (LausiD) fix compact mode
+
 ### 1.4.2 (2020-01-10)
 * (bluefox) Running timers will be stopped by unload
 

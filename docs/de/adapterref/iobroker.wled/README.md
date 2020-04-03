@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: fGqBbZvGNesHxxe5OfRwxTPW9jckbijOaHgAbed5JcA=
+hash: kCIU567p3HLKqgoQcJfrWYd3+DYVVDUQpFAtfqomBRI=
 ---
 ![Logo](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -23,9 +23,11 @@ Eine schnelle und funktionsreiche Implementierung eines ESP8266 / ESP32-Webserve
 
 ## Anleitung
 Der Adapter versucht automatisch, WLED-Geräte in Ihrem Netzwerk mithilfe von Bonjour-Diensten zu finden.
-Bekannte Probleme: Netzwerke mit VLAN-Trennung leiten den Broadcast-Verkehr meist nicht weiter, was bedeutet, dass die automatische Erkennung fehlschlägt. (siehe To-Do)
+Bekannte Probleme: Netzwerke mit VLAN-Trennung leiten den Broadcast-Verkehr meist nicht weiter, was bedeutet, dass die automatische Erkennung fehlschlägt.
 
-1) Stellen Sie sicher, dass Ihr WLED-Gerät läuft und über das Netzwerk erreichbar ist. 2) Installieren Sie den Adapter. 3) Konfigurieren Sie die Intervallzeiten für die Datenabfrage und den automatischen Erkennungszyklus. 4) Starten Sie den Adapter. Die Geräte sollten automatisch erkannt werden. 5) Der Adapter sendet sofort Änderungen und Abfragen Daten alle x Sekunden (konfigurierbar)
+Keine Sorge, in diesem Fall können Sie das Gerät manuell über die IP-Adresse hinzufügen.
+
+1) Stellen Sie sicher, dass Ihr WLED-Gerät läuft und über das Netzwerk erreichbar ist. 2) Installieren Sie den Adapter. 3) Konfigurieren Sie die Intervallzeiten für die Datenabfrage und die automatische Erkennung des Zyklus. 4 - A) Starten Sie den Adapter. Die Geräte sollten automatisch erkannt werden. 4 - B) Wenn A ausfällt Verwenden Sie die Schaltfläche Gerät hinzufügen und geben Sie die IP-Adresse des Geräts an. 5) Der Adapter sendet sofort Änderungen und fragt alle x Sekunden Daten ab (konfigurierbar).
 
 ## Machen
 * [] Schalten Sie die Abfrage auf Socket-Verbindungen um, bis die Implementierung der WLED-Firmware abgeschlossen ist
@@ -34,6 +36,10 @@ Bekannte Probleme: Netzwerke mit VLAN-Trennung leiten den Broadcast-Verkehr meis
 Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
+
+### 0.5.0 Stable release
+* (DutchmanNL) Added translations
+* (DutchmanNL) Release to stable repository, beta testing finished
 
 ### 0.3.0 Bugfix : Correct handling of polling timer
 * (DutchmanNL  & Jey-Cee) Bugfix : Polling timer not saved

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker.coronavirus-Statistik
-hash: oTIhUDP9XRjsxpNs7s5q8OIxCSwDQeG2kZFHzz6bpk4=
+hash: Sbloxfv/wHn7WacXUIZ5lIjT/1caCqz4t4TsaU7228c=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
@@ -14,7 +14,7 @@ hash: oTIhUDP9XRjsxpNs7s5q8OIxCSwDQeG2kZFHzz6bpk4=
 ![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.coronavirus-statistics/master.svg)
 
-! (Logo) [admin / coronavirus-statistics.png]
+<img src="./admin/coronavirus-statistics.png" width="50" height="50">
 
 # IoBroker.coronavirus-statistics
 ## Coronavirus Live Statistics-Adapter für ioBroker
@@ -32,14 +32,37 @@ Folgende Informationen sind verfügbar:
 |--|--|
 | aktiv | Anzahl der aktuell infizierten Personen |
 | Fälle | Anzahl der völlig bekannten Fälle |
+| FällePerOneMillion | Anzahl der völlig bekannten Fälle pro Million Einwohner |
 | kritisch | Menge der kritischen Situation (Krankenhausaufenthalt) |
 | Todesfälle | Anzahl der aktuell registrierten Todesfälle |
+| TodesfällePerOneMillion | Anzahl der aktuell registrierten Todesfälle pro Million Einwohner |
+| flag | Länderflagge, Link zum Github-Standort |
 | wiederhergestellt | Anzahl der vollständig bekannten wiederhergestellten Fälle |
 | todayCases | Neue Fälle bis heute |
 | todayDeaths | Zahl der völlig bekannten Menschen ist heute gestorben |
 
 Bitte beachten Sie, dass dieser Adapter so viele aktuelle Informationen wie möglich verwendet. Je nach Bericht des Landes kann es jedoch zu einer Verzögerung von mehreren Stunden kommen.
-Quelle: https://coronavirus-19-api.herokuapp.com
+Bundesländer: https://npgeo-corona-npgeo-de.hub.arcgis.com/ s Generische Quelle: https://coronavirus-19-api.herokuapp.com
+
+## Erweiterte Einstellungen
+| Option | Beschreibung |
+|--|--|
+| Alle Länder | Daten für alle Länder weltweit abrufen (Standard: false) |
+| Kontinente | Gruppieren Sie die Gesamtbeträge nach Kontinent in einem separaten Status (Standard: false) |
+| Nicht verwendete Zustände löschen | Daten löschen, wenn Länder abgewählt sind (Standard: false) |
+
+## Nur für Deutschland
+| Option | Beschreibung |
+|--|--|
+| Bundesländer | Bundeslanddaten für Deutschland abrufen (nur ausgewählt, Standard falsch) |
+| Landkreise | Daten für Deutschland abrufen (nur ausgewählt, Standard falsch) |
+| Städte | Daten für deutsche Städte abrufen (nur ausgewählt, Standard falsch) |
+| Alle Bundesländer | Alle Bundesländer (Standard falsch) |
+| Alle Städte | Alle deutschen Städte (Standard falsch) |
+| Alle Landkreise | Alle Bundesländer (Standard falsch) |
+
+Es ist möglich, Daten für Bundesländer und Städtekreise abzurufen.
+Sie können wählen, ob alle Daten empfangen werden sollen, oder nur bestimmte Regionen in den erweiterten Einstellungen auswählen.
 
 ## Fehlende Länder hinzufügen
 Es kann vorkommen, dass Länder nicht korrekt erkannt werden, da die API einige Ländernamen liefert, die nicht ISO-konform sind. In einem solchen Fall erhalten Sie eine Warnmeldung im Protokoll, die so aussieht
@@ -66,7 +89,54 @@ Als erster Wert muss der Name aus der Warnmeldung aus dem Protokoll entnommen we
 
 ## Changelog
 
-### 0.3.3
+### 0.5.1 (2020-03-31) BugFix : State attribute definition missing for + affectedCountries
+* (DutchmanNL) BugFix : State attribute definition missing for + affectedCountries
+* (DutchmanNL) BugFix : Ensure name changes are propagated
+
+### 0.5.0 (2020-03-31) For Germany : federal states, counties and cities added
+* (DutchmanNL) Update production release from 0.4.0 to 0.5.0
+* (DutchmanNL) BugFix : Do not write objects unneeded
+
+### 0.4.9 Fixed issues in country names, added counties and cities for germany
+* (DutchmanNL  & AlCalzone) Code optimations 
+* (DutchmanNL) Cities for germany added
+* (DutchmanNL) counties for germany added
+* (DutchmanNL) Hiding tables if "all" is selected
+* (DutchmanNL) Hiding unused tables in advanced settings
+* (Kampfratte) BugFix : Country top 5
+* (GermanBluefox) BugFix : hidden numbers
+* (DutchmanNL) BugFix : Several translations
+* (DutchmanNL) BugFix : Issues with integration testing
+* (Scrounger)  Bugfix : Country names by ISO format (could result in new datapoints !)
+* (DutchmanNL) BugFix : Deletion of unselected federal states and counties (Germany)
+* (DutchmanNL) BugFix : Button only respond when clicking on lable (not all browser)
+* (DutchmanNL) BugFix : Ensure incorrect created states for "countryInfo" are removed
+
+### 0.4.5 Countries for Germany added
+* (DutchmanNL) Countries for Germany added
+* (DutchmanNL) added selection for federal states and country's
+* (DutchmanNL) BugFix : State attribute definition missing for + deathsPerOneMillion
+
+### 0.4.2 Federal States for Germany implemented
+* (DutchmanNL) Configuration redesigned, moved options to "Advanced Settings" tab
+* (DutchmanNL) Federal States for Germany implemented, thanks to : https://npgeo-corona-npgeo-de.hub.arcgis.com/ 
+
+### 0.4.0 Data-points added for Top 5 of countries with most cases
+* (KLVN) BugFix : German (and some other) translations corrected
+* (DutchmanNL) Add gulp i18n translation structure
+
+
+### 0.3.5 Data-points added for Top 5 of countries with most cases
+* (DutchmanNL) Data-points added for Top 5 of countries with most cases
+* (DutchmanNL) BugFix : Flag datapoints are not deleted
+
+### 0.3.4 Add button to read "All Countrys"
+* (DutchmanNL) Add button to read "All Countrys"
+* (DutchmanNL) Add state for link to flag for each country on github
+* (DutchmanNL) BugFix : State attribute definition missing for + countryInfo
+* (DutchmanNL) BugFix : Turks_and_Caicos not found in lib! Must be added to the country name translator.
+
+### 0.3.3 Improved configuration page
 * (DutchmanNL) Improved configuration page
 * (DutchmanNL) Make country list in configuration variable	
 * (DutchmanNL) Implement choice if non-selected countrys should be deleted from states (if already there, default No!) 
@@ -75,7 +145,7 @@ Als erster Wert muss der Name aus der Warnmeldung aus dem Protokoll entnommen we
 * (DutchmanNL) Enable configuration
 
 ### 0.3.0 (2020-03-22)
-* (bluefox) The number of data points was reduced by selection of countries
+* (GermanBluefox) The number of data points was reduced by selection of countries
  
 ### 0.2.5 
 * (Scrounger) Bugfix : Cabo_Verde not found in lib! Must be added to the country name translator

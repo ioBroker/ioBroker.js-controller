@@ -191,6 +191,9 @@ Auszug:
 ## FAQ
 
 ## Changelog
+### 1.13.0 (2020-04-02)
+* (foxriver76) sentry plugin support
+
 ### 1.12.10 (2020-03-05)
 * (foxriver76) fixed no 'dpType for ..' error in all cases
 

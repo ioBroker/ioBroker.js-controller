@@ -436,7 +436,7 @@ Settings that are not listed in the table below are self-explanatory.
         </tr>
         <tr>
             <td>controlling time interval using object</td>
-            <td>Id of a datapoint to change the time interval of the chart. The data point must be a string and may contain <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">the linked values</a><br>For example, you can use a button here to change the display of the chart during runtime</td>
+            <td>Id of a datapoint to change the time interval of the chart.<br><br>If the datapoint is from type 'string' it must contain <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">one of the linked values</a><br>If the datapoint is from type 'number', it must contain the starting timestamp of the graph.<br><br>For example, you can use a button here to change the display of the chart during runtime</td>
         </tr>
         <tr>
             <td>boolean object for update</td>
@@ -451,6 +451,621 @@ Settings that are not listed in the table below are self-explanatory.
             <td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td>
             <td>tooltip time formats</td>
             <td>Change the time format of the tooltip. Time formats must be entered for all time units, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">the following time units are permitted.</a><br>Approved time formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/displaying/">see link</a></td>
+        </tr>
+    </tbody>
+</table>
+
+### JSON Chart
+
+#### General
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Values</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>axisLabels</td>
+            <td>axis label of graph</td>
+            <td>Array</td>
+            <td>numbers or string</td>
+        </tr>
+        <tr>
+            <td>graphs</td>
+            <td>data of graphs</td>
+            <td>array[<a href="#graph">graph</a>]</td>
+            <td>see graph</td>
+        </tr>
+    </tbody>
+</table>
+
+#### graph
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Values</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>data</td>
+            <td>data of graph or data with timestamp</td>
+            <td>Array[numbers] | Array[<a href="#data-with-time-axis">values with timestamp</a>]</td>
+            <td>number</td>
+        </tr>
+        <tr>
+            <td>type</td>
+            <td>type of graph</td>
+            <td>string</td>
+            <td>'line', 'bar'</td>
+        </tr>
+        <tr>
+            <td>legendText</td>
+            <td>text of legend</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>displayOrder</td>
+            <td>overlay order of graph</td>
+            <td>number</td>
+            <td>1, 2, ...</td>
+        </tr>
+        <tr>
+            <td>color</td>
+            <td>color of graph</td>
+            <td>color</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>use_gradient_color</td>
+            <td>use gradient color</td>
+            <td>boolean</td>
+            <td>false, true</td>
+        </tr>
+        <tr>
+            <td>gradient_color</td>
+            <td>gradient color array</td>
+            <td>array[<a href="#gradientcolor">gradientColor</a>]</td>
+            <td>[ { value: -20, color: '#7d3c98' }, { value: 0, color: '#2874a6' } ]</td>
+        </tr>
+        <tr>
+            <td>tooltip_MinDigits</td>
+            <td>max decimals of tooltip value</td>
+            <td>number</td>
+            <td>0, 1, 2, ...</td>
+        </tr>
+        <tr>
+            <td>tooltip_MaxDigits</td>
+            <td>max decimals of tooltip value</td>
+            <td>number</td>
+            <td>0, 1, 2, ...</td>
+        </tr>
+        <tr>
+            <td>tooltip_AppendText</td>
+            <td>append text to tooltip value</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>datalabel_show</td>
+            <td>show data labels for graph</td>
+            <td>boolean</td>
+            <td>false, true</td>
+        </tr>
+        <tr>
+            <td>datalabel_anchor</td>
+            <td>anchor of data labels</td>
+            <td>string</td>
+            <td>center, start, end</td>
+        </tr>
+        <tr>
+            <td>datalabel_align</td>
+            <td>position of the data label relative to the anchor point</td>
+            <td>string</td>
+            <td>left, start, center, end, right, top, bottom</td>
+        </tr>
+        <tr>
+            <td>datalabel_offset</td>
+            <td>distance (in pixels) to pull the data label away from the anchor point</td>
+            <td>number</td>
+            <td>0, 1, 2, ...</td>
+        </tr>
+        <tr>
+            <td>datalabel_text_align</td>
+            <td>text aligment of the data label</td>
+            <td>string</td>
+            <td>left, start, center, end, right</td>
+        </tr>
+        <tr>
+            <td>datalabel_rotation</td>
+            <td>clockwise rotation angle (in degrees) of the data label</td>
+            <td>number</td>
+            <td>0, 1, 2, ...</td>
+        </tr>
+        <tr>
+            <td>datalabel_steps</td>
+            <td>show data label every x step</td>
+            <td>number</td>
+            <td>0, 1, 2, ...</td>
+        </tr>
+        <tr>
+            <td>datalabel_minDigits</td>
+            <td>minimum decimals of data labels</td>
+            <td>number</td>
+            <td>0, 1, 2, ...</td>
+        </tr>
+        <tr>
+            <td>datalabel_maxDigits</td>
+            <td>maximum decimals of data labels</td>
+            <td>number</td>
+            <td>0, 1, 2, ...</td>
+        </tr>
+        <tr>
+            <td>datalabel_append</td>
+            <td>append text to data label</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>datalabel_color</td>
+            <td>data label color</td>
+            <td>color | array[colors]</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>datalabel_fontFamily</td>
+            <td>data label font family</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>datalabel_fontSize</td>
+            <td>data label font size</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>datalabel_backgroundColor</td>
+            <td>data label background color</td>
+            <td>color | array[colors]</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>datalabel_borderColor</td>
+            <td>data label border color</td>
+            <td>color | array[colors]</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>datalabel_borderWidth</td>
+            <td>data label border width</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>datalabel_borderRadius</td>
+            <td>data label border radius</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+    </tbody>
+</table>
+
+
+
+#### graph line chart spfeicifc
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Values</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>line_pointStyle</td>
+            <td>point style of line</td>
+            <td>string</td>
+            <td>circle, cross, crossRot, dash, line, rect, rectRounded, rectRot, star, triangle</td>
+        </tr>
+        <tr>
+            <td>line_pointSize</td>
+            <td>point size of line</td>
+            <td>number</td>
+            <td>1, 2, 3, ...</td>
+        </tr>
+        <tr>
+            <td>line_pointSizeHover</td>
+            <td>point size of line</td>
+            <td>number</td>
+            <td>1, 2, 3, ...</td>
+        </tr>
+        <tr>
+            <td>line_PointColor</td>
+            <td>color of line point</td>
+            <td>color | array[colors]</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>line_PointColorBorder</td>
+            <td>border color of line point</td>
+            <td>color | array[colors]</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>line_PointColorHover</td>
+            <td>hover color of line point</td>
+            <td>color | array[colors]</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>line_PointColorBorderHover</td>
+            <td>border hover color of line point</td>
+            <td>color | array[colors]</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>line_spanGaps</td>
+            <td>draw lines if data has gaps</td>
+            <td>boolean</td>
+            <td>false, true</td>
+        </tr>
+        <tr>
+            <td>line_Tension</td>
+            <td>smothness of line</td>
+            <td>number</td>
+            <td>0 - 1</td>
+        </tr>
+        <tr>
+            <td>line_Thickness</td>
+            <td>thikness of line</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>line_UseFillColor</td>
+            <td>use fill color under line</td>
+            <td>boolean</td>
+            <td>false, true</td>
+        </tr>
+        <tr>
+            <td>line_FillColor</td>
+            <td>fill color under line</td>
+            <td>color</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>use_line_gradient_fill_color</td>
+            <td>use gradient fill color</td>
+            <td>boolean</td>
+            <td>false, true</td>
+        </tr>
+        <tr>
+            <td>line_gradient_fill_color</td>
+            <td>gradient color array</td>
+            <td>array[<a href="#gradientcolor">gradientColor</a>]</td>
+            <td>[ { value: -20, color: '#7d3c98' }, { value: 0, color: '#2874a6' } ]</td>
+        </tr>
+        <tr>
+            <td>line_FillBetweenLines</td>
+            <td>fill color to next / previous line</td>
+            <td>string</td>
+            <td>'+1', '-1', '+2', ...</td>
+        </tr>
+    </tbody>
+</table>
+
+
+#### graph bar chart spfeicifc
+
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Values</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>barColorHover</td>
+            <td>hover color of bar</td>
+            <td>color | array[colors]</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>barBorderColor</td>
+            <td>border color of bar</td>
+            <td>color | array[colors]</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>barBorderWidth</td>
+            <td>thikness of bar border</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>barBorderColorHover</td>
+            <td>border hover color of bar</td>
+            <td>color | array[colors]</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>barBorderWidthHover</td>
+            <td>hover thikness of bar border</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+    </tbody>
+</table>
+
+#### graph y-Axis
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Values</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>yAxis_id</td>
+            <td>id of y-axis. If you would like to use a common y-axis for multipl graph data, use the same id.</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>yAxis_position</td>
+            <td>position of y-axis</td>
+            <td>string</td>
+            <td>left, right</td>
+        </tr>
+        <tr>
+            <td>yAxis_show</td>
+            <td>show y-axis</td>
+            <td>boolean</td>
+            <td>false, true</td>
+        </tr>
+        <tr>
+            <td>yAxis_title_text</td>
+            <td>y-axis title</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>yAxis_title_color</td>
+            <td>override y-axis title color</td>
+            <td>color</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>yAxis_title_fontFamily</td>
+            <td>override y-axis title font family</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>yAxis_title_fontSize</td>
+            <td>override y-axis title font size</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>yAxis_min</td>
+            <td>minimum value of y-axis</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>yAxis_max</td>
+            <td>maximum value of y-axis</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>yAxis_step</td>
+            <td>steps of y-axis</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>yAxis_minimumDigits</td>
+            <td>y-axis minimum number of decimal places</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>yAxis_maximumDigits</td>
+            <td>y-axis maximum number of decimal places</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>yAxis_maxSteps</td>
+            <td>maximum steps of y-axis</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>yAxis_distance</td>
+            <td>override y-axis value distance to axis</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>yAxis_appendix</td>
+            <td>append text to y-axis value</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>yAxis_color</td>
+            <td>override y-axis value color</td>
+            <td>color</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>yAxis_fontFamily</td>
+            <td>override y-axis value font family</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>yAxis_fontSize</td>
+            <td>override y-axis value font size</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>yAxis_zeroLineWidth</td>
+            <td>width of y-axis zero line</td>
+            <td>number</td>
+            <td>0.3, 1.5, 4, ...</td>
+        </tr>
+        <tr>
+            <td>yAxis_zeroLineColor</td>
+            <td>y-axis zero line color</td>
+            <td>color</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>yAxis_gridLines_show</td>
+            <td>show y-axis grid lines</td>
+            <td>boolean</td>
+            <td>false, true</td>
+        </tr>
+        <tr>
+            <td>yAxis_gridLines_color</td>
+            <td>color of y-axis grid lines</td>
+            <td>color</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+        <tr>
+            <td>yAxis_gridLines_lineWidth</td>
+            <td>width of grid lines</td>
+            <td>number</td>
+            <td>0 - 1</td>
+        </tr>
+        <tr>
+            <td>yAxis_gridLines_border_show</td>
+            <td>show border of y-axis grid lines</td>
+            <td>boolean</td>
+            <td>false, true</td>
+        </tr>
+        <tr>
+            <td>yAxis_gridLines_ticks_show</td>
+            <td>show y-axis grid interval ticks</td>
+            <td>boolean</td>
+            <td>false, true</td>
+        </tr>
+        <tr>
+            <td>yAxis_gridLines_ticks_length</td>
+            <td>length of y-axis grid ticks</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+    </tbody>
+</table>
+
+#### gradientColor
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Values</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>value</td>
+            <td>value where color should be applied</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>color</td>
+            <td>color for value</td>
+            <td>color</td>
+            <td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+        </tr>
+    </tbody>
+</table>
+
+### Chart with time axis
+JSON Chart supports data that have a timestamp. To use this the data array must have values for timestamp (x-axis value) and value (y-axis value).
+
+#### values with timestamp
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Values</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>t</td>
+            <td>timestamp - xAxis value</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
+            <td>y</td>
+            <td>value for timestamp - yAxis value</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+    </tbody>
+</table>
+
+#### x-axis settings for data with timestamp
+<table>
+    <thead>
+        <tr>
+            <th>Property</th>
+            <th>Description</th>
+            <th>Type</th>
+            <th>Values</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>xAxis_bounds</td>
+            <td>scale boundary strategy<br><br>'data': makes sure data are fully visible, labels outside are removed<br>'ticks': makes sure ticks are fully visible, data outside are truncated</td>
+            <td>String</td>
+            <td>data, ticks</td>
+        </tr>
+        <tr>
+            <td>xAxis_timeFormats</td>
+            <td>time formats for the x-axis</td>
+            <td>Object</td>
+            <td>Time formats must be entered for all time units, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">the following time units are permitted.</a><br>Approved time formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/displaying/">see link</a></td>
+        </tr>
+        <tr>
+            <td>xAxis_tooltip_timeFormats</td>
+            <td>time formats for the x-axis</td>
+            <td>String</td>
+            <td>Approved time formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/displaying/">see link</a></td>
         </tr>
     </tbody>
 </table>

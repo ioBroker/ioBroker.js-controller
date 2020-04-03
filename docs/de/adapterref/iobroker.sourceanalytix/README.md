@@ -2,10 +2,11 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sourceanalytix/README.md
-title: [Beta - Veröffentlicht] SourceAnalytix
-hash: QBdIrwKQw8DZnNfvJrzM4brA6hx/vmBatpdePpsBsps=
+title: [Dev - in Progress] SourceAnalytix
+hash: 1BbfFumF7a5jvMdRL9kJsznsqMIuM2aCYewim9cCChU=
 ---
-# [Beta - Veröffentlicht] SourceAnalytix
+# [Dev - in Progress] SourceAnalytix
+# {!!! Nicht von Git installieren !!!}
 
 ![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
 ![Anzahl der Installationen](http://iobroker.live/badges/sourceanalytix-stable.svg)
@@ -13,11 +14,10 @@ hash: QBdIrwKQw8DZnNfvJrzM4brA6hx/vmBatpdePpsBsps=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
 
-## Achtung, dieser Adapter benötigt Node 8 oder höher !!!
-Mit ioBroker SourceAnalytix können Sie Verbrauchs-, Kosten- und Zählerwerte für Ihre Geräte nachverfolgen.
-Sie benötigen Daten als Eingabe (Gesamtmenge von Wh, l / h oder m3) von Ihren Geräten und dieser Adapter wird:
+Mit ioBroker SourceAnalytix können Sie den Verbrauch, die Kosten und die Zählerwerte Ihrer Geräte nachverfolgen.
+Sie benötigen Daten als Eingabe (Gesamtmenge an verwendetem Wh, l / h oder m3) von Ihren Geräten, und dieser Adapter wird:
 
-* Verfolgen Sie den Verbrauch täglich, wöchentlich, monatlich, vierteljährlich, jährlich
+* Verfolgen Sie den Verbrauch täglich, wöchentlich, monatlich, vierteljährlich und jährlich
 * Kosten berechnen (aktueller Preis ist konfigurierbar)
 * Kann für Stromverbrauch, Flüssigkeiten und GAS verwendet werden
 * Eingabewerte können wh / kWh / m3 / l sein
@@ -25,56 +25,34 @@ Sie benötigen Daten als Eingabe (Gesamtmenge von Wh, l / h oder m3) von Ihren G
 ## Wie man
 * [ ] Machen
 
-Dieser Adapter hat Wurzeln dank Pix im Jahr 2016 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
+Dieser Adapter hat seine Wurzeln dank Pix im Jahr 2016 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
-Das wurde von @hadering verbessert und auf github https://github.com/hdering/homematic_verbrauchszaehler veröffentlicht
+Was von @hadering verbessert und auf github https://github.com/hdering/homematic_verbrauchszaehler veröffentlicht wurde
 
 ## Bekannte Probleme
-* [] Periodenberechnung wählbar, aber noch nicht implementiert
-* [] Viertel nicht berechnet
-* [] monatlicher Einstandspreis noch nicht kalkuliert
-* [x] Aktuelle Zählerwerte speichern, die noch nicht implementiert sind
-* [x] Zählerwert wählbar, aber noch nicht implementiert
-* [x] Neustart des Adapters erforderlich, um die Berechnung neuer Objekte hinzuzufügen
-* [x] Statest für Kostenart Lieferung werden nicht geschrieben
-* [x] Aliasname des Geräts nicht korrekt
-* [x] Übersetzungen
+* [] Periodenberechnung auswählbar, aber noch nicht implementiert
+* [] monatlicher Kostenpreis noch nicht in die Berechnung einbezogen
 
 ## Machen
 * [] Dokumentation
-* [] Standardwert für Kosten auf 0 mit Fehlermeldung, falls nicht angegeben
+* [] Standardwert auf 0 mit Fehlermeldung, falls nicht angegeben
 * [] Neukalibrierung basierend auf Zählerwerten (konfigurierbar nach Datum)
-* [] Berechnungen für Viertelwerte
-* [] Objektstatus für vorherigen [x] Tag, [x] Woche, [x] Monat, [x] Quartal, [x] Jahr hinzufügen, konfigurierbar in den Adaptereinstellungen
-* [] Code-Optimierung
-* [x] Speicherung von Zählerwerten für jeden Zustand
-* [x] Kompaktmodus
-* [x] Unterstützung für die Berechnung von wh-Werten hinzufügen
-* [x] Grundlegende Übersetzungen korrigieren
-* [x] Bereitschaftsstatuswerte und Speicherung in Status
-* [x] Zählerwert in den "Start" -Zustand schreiben, um ihn für Berechnungen zu verwenden
-* [x] konfigurierbares Intervall für jeden Zustand
-* [x] konfigurierbare Einheit für jeden Status
-* [x] konfigurierbarer Selbstkostenpreis für jeden Staat
-* [x] konfigurierbarer Einheitspreis für jeden Staat
-* [x] Staat, der für Kosten oder Verdienst verwendet wird
-* [x] Verbrauchsberechnung
-* [x] Kostenkalkulation
-* [x] einstellbarer Startpunkt der Messung
-* [x] Unterstützung mehrerer Gerätezustände
-* [x] Zählerwert in das Objekt schreiben, um es in Berechnungen zu verwenden
-* [x] Konfiguration in den Adaptereinstellungen (derzeit werden nur Demo-Objekte von Discovery unterstützt)
-* [x] temporäre Zustände für Berechnungen löschen
-* [x] Berechnung für m3-Werte
-* [x] Alias des Gerätenamens verwenden
-* [x] konfigurierbare Datenpunkte (Ja / Nein) für Kosten, Verbrauch und Zählerwerte
-* [x] Wählen Sie diese Option aus, um Analysen für das gesamte Jahr oder nur für einen auswählbaren Zeitraum zu speichern
-* [x] Sicherstellen, dass alle Werte beim Herunterfahren des Adapters gespeichert werden, um Datenlücken zu vermeiden
+* [] Objektzustände für vorherigen [x] Tag, [x] Woche, [x] Monat, [x] Quartal, [x] Jahr hinzufügen, die in den Adaptereinstellungen konfiguriert werden können
+* [] Speicherung von Zählerwerten für jeden Zustand
 
 ## Unterstütze mich
-Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende übermitteln (dies ist ein persönlicher Spendenlink für DutchmanNL, kein Bezug zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Wenn Ihnen meine Arbeit gefällt, ziehen Sie bitte eine persönliche Spende in Betracht (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
+
+### 0.4.0 (Development in progress)
+* (Dutchman) Complete code rebuild
+* (Dutchman) Complete code rebuild & optimalisation
+* (Dutchman) Change datapoints to root by year
+* (Dutchman) Delete unneded states automatically
+* (Dutchman) Rebuild calculation logic to use memory instead of object DB (performance)
+
+To-Do : Migration from < 0.4.0 to new datastructure
 
 ### 0.3.0   
 * (Dutchman) m³ Implemented
@@ -234,7 +212,7 @@ Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende üb
 ## License
 MIT License
 
-Copyright (c) 2018 Dutchman
+Copyright (c) 2020 Dutchman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

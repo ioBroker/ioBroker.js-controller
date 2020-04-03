@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 92n94I2ZG3E2a4iB/b8NSZnifni7HtTykIc/gJhbp30=
+hash: 3ZiMn4BgwnOgFbM02y6Fj+d7eqd7GrtqQeynSqdQJSU=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -29,11 +29,18 @@ Mit Hilfe unserer Widgets lassen sich folgende Projekte verwirklichen. Zur Zeit 
 ## Unterstützung
 Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen uns über jede Spende.
 
-(Dieser Link от компании PayPal-Konto и Steht в Кейнер Verbindung zum ioBroker)
+(Dieser Link для тех, кто предпочитает PayPal-Konto и Steht в Keiner Verbindung zum ioBroker)
 
 [![Spende] (администратор / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+# 1.2.3
+- Добавлен навигационный активный цвет
+- Исправлен цвет состояния для переключения значения
+
+## 1.2.2
+- Исправление ошибки: значение слайдера, конфиг
 
 ## 1.2.1
 - Исправлен виджет слайдера: разделены на два виджета (горизонтальный и вертикальный)
@@ -53,7 +60,7 @@ Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen u
 - Изменены виджеты кнопок для использования шрифта по умолчанию и параметров текста
 
 ### 1.0.0
-- Фон виджета и непрозрачность содержимого. Переключатель можно изменить с логического на значение, изменить значки с белого на черный, добавить бесшовный фон
+- Фон виджета и непрозрачность контента, Переключатель может быть изменен с логического на значение, изменены значки с белого на черный, добавлены бесшовные фоны
 
 ### 0.1.2
 - Исправление ошибок

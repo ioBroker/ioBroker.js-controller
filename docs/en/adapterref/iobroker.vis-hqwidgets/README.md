@@ -1,6 +1,5 @@
 ![Logo](admin/hqwidgets.png)
-ioBroker.vis-hqWidgets
-============
+# oBroker.vis-hqWidgets
 
 ![Number of Installations](http://iobroker.live/badges/vis-hqwidgets-installed.svg) ![Number of Installations](http://iobroker.live/badges/vis-hqwidgets-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.vis-hqwidgets.svg)](https://www.npmjs.com/package/iobroker.vis-hqwidgets)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.vis-hqwidgets.svg)](https://www.npmjs.com/package/iobroker.vis-hqwidgets)
@@ -14,6 +13,9 @@ For one widget the jQuery.knob plugin (MIT) from Anthony Terrien is used.
 http://anthonyterrien.com/knob/ or https://github.com/aterrien/jQuery-Knob 
 
 ## Changelog
+### 1.1.4 (2020-03-28)
+* (bluefox) Fixed blinds widget
+
 ### 1.1.3 (2019-10-27)
 * (bluefox) Preparations for js-controller 2.0. Check undefined and nulls.
 

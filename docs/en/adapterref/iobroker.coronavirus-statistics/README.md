@@ -1,4 +1,5 @@
-!(logo)[admin/coronavirus-statistics.png]
+<img src="./admin/coronavirus-statistics.png" width="50" height="50">
+
 # ioBroker.coronavirus-statistics
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)](https://www.npmjs.com/package/iobroker.coronavirus-statistics)
@@ -28,15 +29,38 @@ The following information is available :
 |--|--|
 | active | Amount of current infected people |
 | cases | Amount of totally known cases |
+| casesPerOneMillion | Amount of totally known cases per million citizen |
 | critical | Amount of critical situation (Hospitalized) |
 | deaths | Amount of current registered deaths |
+| deathsPerOneMillion | Amount of current registered deaths per million citizen |
+| flag | Country flag, link to github location |
 | recovered | Amount of totally known recovered cases |
 | todayCases | New Cases by Today |
 | todayDeaths | Amount of totally known people died today |
 
+Please be aware this adapter uses as much as possible up-to-date information but there can be an delay of several hours depending on the country's report.  
+German Federal States : https://npgeo-corona-npgeo-de.hub.arcgis.com/  s
+Generic Source : https://coronavirus-19-api.herokuapp.com
 
-Please be aware this adapter uses as much as possible up-to-date information but there can be an delay of several hours depending on the country's report.
-Source : https://coronavirus-19-api.herokuapp.com
+## Advanced settings
+| Option | Description |
+|--|--|
+| All Countries | Get data for all countries World-Wide (Default: false) |
+| Continents | Group total amounts by continent in seperate state (Default: false) |
+| Delete unused States | Delete data when countries are deselected (Default: false) |
+
+## For Germany only
+| Option | Description |
+|--|--|
+| Federal states| Get federal state data for Germany (Selected only, Default false) |
+| counties | Get data for Germany counties (Selected only, Default false) |
+| Cities | Get data for Germany cities (Selected only, Default false) |
+| All federal states | All Germany federal states  (Default false) |
+| All cities | All Germany cities (Default false) |
+| All counties | All Germany counties (Default false) |
+
+It's possible to get data for federal states (Bundesländer), cities (Städte) counties (Landeskreise).
+You can choose to recieve all data or just select specific regions in advanced settings.
 
 ## Add missing countries
 It may happen that countries are not recognized correctly because the API delivers some country names not ISO conform. In such a case you will get a warning message in the log, which looks like this
@@ -63,6 +87,47 @@ As first value the name from the warning message must be taken from the log. The
 
 ## Changelog
 
+### 0.5.1 (2020-03-31) BugFix : State attribute definition missing for + affectedCountries
+* (DutchmanNL) BugFix : State attribute definition missing for + affectedCountries
+* (DutchmanNL) BugFix : Ensure name changes are propagated
+
+### 0.5.0 (2020-03-31) For Germany : federal states, counties and cities added
+* (DutchmanNL) Update production release from 0.4.0 to 0.5.0
+* (DutchmanNL) BugFix : Do not write objects unneeded
+
+### 0.4.9 Fixed issues in country names, added counties and cities for germany
+* (DutchmanNL  & AlCalzone) Code optimations 
+* (DutchmanNL) Cities for germany added
+* (DutchmanNL) counties for germany added
+* (DutchmanNL) Hiding tables if "all" is selected
+* (DutchmanNL) Hiding unused tables in advanced settings
+* (Kampfratte) BugFix : Country top 5
+* (GermanBluefox) BugFix : hidden numbers
+* (DutchmanNL) BugFix : Several translations
+* (DutchmanNL) BugFix : Issues with integration testing
+* (Scrounger)  Bugfix : Country names by ISO format (could result in new datapoints !)
+* (DutchmanNL) BugFix : Deletion of unselected federal states and counties (Germany)
+* (DutchmanNL) BugFix : Button only respond when clicking on lable (not all browser)
+* (DutchmanNL) BugFix : Ensure incorrect created states for "countryInfo" are removed
+
+### 0.4.5 Countries for Germany added
+* (DutchmanNL) Countries for Germany added
+* (DutchmanNL) added selection for federal states and country's
+* (DutchmanNL) BugFix : State attribute definition missing for + deathsPerOneMillion
+
+### 0.4.2 Federal States for Germany implemented
+* (DutchmanNL) Configuration redesigned, moved options to "Advanced Settings" tab
+* (DutchmanNL) Federal States for Germany implemented, thanks to : https://npgeo-corona-npgeo-de.hub.arcgis.com/ 
+
+### 0.4.0 Data-points added for Top 5 of countries with most cases
+* (KLVN) BugFix : German (and some other) translations corrected
+* (DutchmanNL) Add gulp i18n translation structure
+
+
+### 0.3.5 Data-points added for Top 5 of countries with most cases
+* (DutchmanNL) Data-points added for Top 5 of countries with most cases
+* (DutchmanNL) BugFix : Flag datapoints are not deleted
+
 ### 0.3.4 Add button to read "All Countrys"
 * (DutchmanNL) Add button to read "All Countrys"
 * (DutchmanNL) Add state for link to flag for each country on github
@@ -78,7 +143,7 @@ As first value the name from the warning message must be taken from the log. The
 * (DutchmanNL) Enable configuration
 
 ### 0.3.0 (2020-03-22)
-* (bluefox) The number of data points was reduced by selection of countries
+* (GermanBluefox) The number of data points was reduced by selection of countries
  
 ### 0.2.5 
 * (Scrounger) Bugfix : Cabo_Verde not found in lib! Must be added to the country name translator

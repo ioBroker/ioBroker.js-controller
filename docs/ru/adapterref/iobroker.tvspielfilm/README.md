@@ -2,52 +2,47 @@
 BADGE-Number of Installations: http://iobroker.live/badges/tvspielfilm-stable.svg
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.tvspielfilm.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.tvspielfilm.svg
-BADGE-Open Issues: http://githubbadges.herokuapp.com/Pix---/ioBroker.tvspielfilm/issues.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.tvspielfilm.png?downloads=true
 BADGE-Travis-CI: http://img.shields.io/travis/Pix---/ioBroker.tvspielfilm/master.svg
 BADGE-AppVeyor: https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.tvspielfilm?branch=master&svg=true
 translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.tvspielfilm/README.md
-title: ioBroker.tvspielfim
-hash: aCdx+2O635CNM9ScI0OXfImW/CQV9aJEaZF9fuorkC0=
+title: без названия
+hash: z6npkpyVh2T8ozN8KqRoizNp5yglzOtuUQDLDrtM/8k=
 ---
-![логотип](../../../de/adapterref/iobroker.tvspielfilm/../../admin/tvspielfilm.png)
-
-![Версия NPM](http://img.shields.io/npm/v/iobroker.tvspielfilm.svg)
-![Загрузки](https://img.shields.io/npm/dm/iobroker.tvspielfilm.svg)
-![Открытые вопросы](http://githubbadges.herokuapp.com/Pix---/ioBroker.tankerkoenig/issues.svg)
-![NPM](https://nodei.co/npm/iobroker.tvspielfilm.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/Pix---/ioBroker.tvspielfilm/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.tvspielfilm?branch=master&svg=true)
-
-# IoBroker.tvspielfim
+#Документация
 ## Описание
-Этот адаптер доставляет телепрограмму из каналов RSS «Советы» и «сейчас» поставщика [tvspielfilm.de] (http://www.tvspielfilm.de/services/widgets/rss-feeds/rss-feeds-im-ueberblick,3538128,ApplicationArticle.html). Данные хранятся в объектах JSON в [ioBroker.vis](https://github.com/ioBroker/ioBroker.vis) для обработки.
+: de: Этот адаптер доставляет телепрограмму из каналов RSS "Tips" и "now" от поставщика [tvspielfilm.de] (http://www.tvspielfilm.de/services/widgets/rss-feeds/rss-feeds-im-ueberblick,3538128,ApplicationArticle.html). Данные хранятся в объектах JSON для хранения в [ioBroker.vis](https://github.com/ioBroker/ioBroker.vis) для обработки.
 
 ## Настройки
 ### Белый список
-Если должны отображаться только трансляции одной или нескольких конкретных станций, названия этих станций должны быть внесены в белый список. Если белый список содержит хотя бы одну запись, черный список игнорируется.
-Можно заполнить несколько каналов заполнителем "\ *" (звездочка): * \ * RTL *, * RTL \ ** находит "* SuperRTL *" и "* RTL II *"
+Если должны отображаться только программы из одного или нескольких определенных каналов, эти имена каналов должны быть введены в белый список. Если белый список содержит хотя бы одну запись, черный список игнорируется.
+Можно покрыть несколько каналов подстановочным знаком "\ *" (звездочкой): * \ * RTL *, * RTL \ **, поэтому находит "* SuperRTL *" и "* RTL II *"
 
 ### Черный список
-Станции, которые нельзя получить или которые не должны быть перечислены, могут быть сохранены в черном списке и, таким образом, пропущены при выводе. Черный список будет рассматриваться только в том случае, если белый список пуст.
+Станции, которые не принимаются или не должны быть перечислены, могут быть сохранены в черном списке и могут быть пропущены во время вывода. Черный список учитывается только в том случае, если белый список пуст.
 
 ![старый текст](../../../de/adapterref/iobroker.tvspielfilm/img/tvspielfilmSettingScreenshot.jpg "Настройки скриншота")
 
-## Активация / Расписание
-Адаптер запускается каждые 5 минут и читает в RSS-каналах «Советы», «Основные характеристики», «Сегодня в 20:15», «Сегодня в 22:00» и «Сейчас».
+### Условия поиска
+Разделенные запятыми S термины могут храниться в этой точке данных. При построении таблицы HTML в информации об отправке ищутся сохраненные термины и при необходимости помечаются.
+
+## Активация
+Адаптер запускается каждые 5 минут и считывает RSS-каналы «Советы», «Основные характеристики», «Сегодня в 20:15», «Сегодня в 22:00» и «Сейчас».
 
 ## Точки данных
-tvspielfilm.0.json .__ filme__ (* JSON * Таблица для виджета VIS * json, таблица *)
+tvspielfilm.0.settings .__ searchlist__ (* STRING * условия поиска для VIS или других входных данных * массив *)
 
-tvspielfilm.0.json .__ heute2015__ (* JSON * Таблица для виджета VIS * json, таблица *)
+tvspielfilm.0.json .__ filme__ (* JSON * таблица для виджета VIS * json, таблица *)
 
-tvspielfilm.0.json .__ today2200__ (* JSON * Таблица для виджета VIS * json, таблица *)
+tvspielfilm.0.json .__ today2015__ (* JSON * таблица для виджета VIS * json, таблица *)
+
+tvspielfilm.0.json .__ today2200__ (* JSON * таблица для виджета VIS * json, таблица *)
 
 tvspielfilm.0.json .__ now__ (* JSON * таблица для виджета VIS * json, таблица *)
 
-tvspielfilm.0.json .__ tips__ (* JSON * Таблица для виджета VIS * json, таблица *)
+tvspielfilm.0.json .__ tipps__ (* JSON * таблица для виджета VIS * json, таблица *)
 
 пример
 
@@ -56,7 +51,7 @@ tvspielfilm.0.json .__ tips__ (* JSON * Таблица для виджета VIS
 ```
 
 ## Конфигурация CSS
-Для визуально привлекательного форматирования я рекомендую использовать определения CSS в VIS Editor.
+Для визуально привлекательного форматирования я рекомендую использовать следующие определения CSS в VIS Editor.
 
 ```
 .tclass-th { /* Headerzeilen */
@@ -129,32 +124,21 @@ tvspielfilm.0.json .__ tips__ (* JSON * Таблица для виджета VIS
 
 ![старый текст](../../../de/adapterref/iobroker.tvspielfilm/img/tvspielfilmVISScreenshot.jpg "Скриншот VIS виджетов")
 
-## VIS Widget
+## VIS виджет
 ```
 [{"tpl":"tplTableBody","data":{"visibility-cond":"==","visibility-val":1,"static_value":"","table_oid":"tvspielfilm.0.json.tipps","colCount":"2","colName1":"Vorschau","colWidth1":"30px","colName2":"Tagestipps","colAttr1":"","colWidth2":"60px","hide_header":false,"show_scroll":false,"new_on_top":true,"name":"JSON Tabelle TV Programm TIPPS","gestures-offsetX":0,"gestures-offsetY":0},"style":{"left":"44px","top":"30px","width":"357px","height":"auto","z-index":"25","color":"rgba(250,250,250,1)","text-align":"","font-family":"","background-color":"","border-style":""},"widgetSet":"basic"}]
 ```
 
-## Дорожная карта
-* Скрыть подсказки программы, которые указывают время до текущего времени.
-* Видеосигнал: обнаружение предустановленных названий фильмов
-* Подстановочные знаки для черного списка
-
-## Лицензия
-Лицензия MIT (MIT)
-
-Copyright (c) 2017 pix
-
-Настоящим бесплатно предоставляется разрешение любому лицу, получающему копию данного Программного обеспечения и соответствующего файла документации (далее - «Программное обеспечение»), без каких-либо ограничений на право использовать, копировать, изменять, объединять публиковать, распространять, сублицензировать и / или продавать копии Программного обеспечения и разрешать его использование при следующих условиях:
-
-Вышеуказанное уведомление об авторских правах и это уведомление должны быть включены во все копии или существенные части Программного обеспечения.
-
-ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ КАК КАК БЕЗ ГАРАНТИИ ЛЮБОГО РЕБЕНКА, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЬ, ГАРАНТИЙ ТОВАРНОГО ОБЕСПЕЧЕНИЯ, ПРИГОДНОСТИ ДЛЯ ОСОБЫХ ЦЕЛЕЙ И НЕРАЗРЕШЕНИЯ. Ни при каких обстоятельствах авторы или держатели авторских прав не несут ответственности за любые претензии, ущерб или иную ответственность, будь то в результате действия контракта, деликтного или иного действия, возникающего в результате, в результате или в связи с программным обеспечением или использованием в другом месте. ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ.
-
---- *Логотип частично создан CHALLENGER* +1:
-
 ## Changelog
+### 1.2.0 (2020-04-02)
+* (Scrounger) devlibs updated and JSON interface created
+* (pix) docs updated
+
+### 1.1.0 (2019-04-28)
+* (pix) String search added
+
 ### 1.0.4 (2017-10-17)
-* (apollon77) Fehlerkorrekturen io-package.json
+* (apollon77) Fehlerkorrekturen _io-package.json_
 
 ### 1.0.3 (2017-10-15)
 * (pix) New documentation structure
@@ -179,11 +163,11 @@ Copyright (c) 2017 pix
 * (pix) Whitelist
 
 ### 0.1.1 (2016-05-08)
-* (pix) Channel renamed to 'json'
+* (pix) Channel renamed to _json_
 
 ### 0.1.0 (2016-05-08)
 * (pix) Blacklist function fixed
- 
+
 ### 0.0.1 (2016-05-07)
 * (pix) Adapter created
 
@@ -191,7 +175,7 @@ Copyright (c) 2017 pix
 
 The MIT License (MIT)
 
-Copyright (c) 2016 pix
+Copyright (c) 2016-2020 pix
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

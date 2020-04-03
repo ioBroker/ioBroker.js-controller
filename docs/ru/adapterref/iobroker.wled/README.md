@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: fGqBbZvGNesHxxe5OfRwxTPW9jckbijOaHgAbed5JcA=
+hash: kCIU567p3HLKqgoQcJfrWYd3+DYVVDUQpFAtfqomBRI=
 ---
 ![логотип](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -23,17 +23,23 @@ hash: fGqBbZvGNesHxxe5OfRwxTPW9jckbijOaHgAbed5JcA=
 
 ## Инструкции
 Адаптер автоматически пытается найти устройства WLED в вашей сети, используя службы Bonjour.
-Известные проблемы: сети с разделением VLAN в основном не маршрутизируют широковещательный трафик, что означает сбой автоматического определения. (см. To-Do)
+Известные проблемы: сети с разделением VLAN в основном не маршрутизируют широковещательный трафик, что означает сбой автоматического определения.
 
-1) Убедитесь, что ваше устройство WLED работает и доступно по сети. 2) Установите адаптер. 3) Настройте время интервала для опроса данных и автоматического определения cyclus. 4) Запустите адаптер, устройства должны быть обнаружены автоматически. 5) Адаптер немедленно отправит изменения и опросы. данные каждые х секунд (настраивается)
+Не волнуйтесь, в этом случае вы можете добавить устройство вручную по IP-адресу.
+
+1) Убедитесь, что ваше устройство WLED работает и доступно по сети. 2) Установите адаптер. 3) Настройте время интервала для опроса данных и автоматического определения cyclus. 4 - A) Запустите адаптер, устройства должны быть обнаружены автоматически. 4 - B) Если отказывает A используйте кнопку «Добавить устройство» и укажите IP-адрес устройства. 5) Адаптер немедленно отправляет изменения и опрашивает данные каждые x секунд (настраивается).
 
 ## Сделать
 * [] Переключение опроса на сокетные соединения, ожидающие реализации на прошивке WLED
 
 ## Поддержите меня
-Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это персональная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это личная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
+
+### 0.5.0 Stable release
+* (DutchmanNL) Added translations
+* (DutchmanNL) Release to stable repository, beta testing finished
 
 ### 0.3.0 Bugfix : Correct handling of polling timer
 * (DutchmanNL  & Jey-Cee) Bugfix : Polling timer not saved

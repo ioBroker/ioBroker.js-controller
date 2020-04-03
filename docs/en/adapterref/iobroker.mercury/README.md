@@ -42,6 +42,18 @@ Returns a buffer as a string
 
 ## Changelog
 
+### 0.1.0
+* (instalator) beta
+
+### 0.0.15
+* (instalator) fixed error Power
+
+### 0.0.13
+* (SanSanysch) translate
+* (instalator) added translate
+* (instalator) added temperature, frequency, full power
+* (instalator) fix error
+
 ### 0.0.11
 * (instalator) added translate function (PLEASE HELP WITH THE TRANSLATION)
 * (instalator) fix error

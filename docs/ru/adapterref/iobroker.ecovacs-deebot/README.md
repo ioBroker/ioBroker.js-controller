@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: TKPv1NWpGxt5Xrh8nm/KUv87mvH1OWku6xhq1j79eUo=
+hash: dx3TwUQC6M0Dbk38oLidMd6U5l80bs0PVcYvDdJnp+s=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -32,6 +32,23 @@ hash: TKPv1NWpGxt5Xrh8nm/KUv87mvH1OWku6xhq1j79eUo=
 * Deebot M88
 * Deebot 600/605
 
+## Монтаж
+Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок, в противном случае установка в iobroker может привести к ошибке:
+
+```
+npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
+```
+
+Для систем на основе Linux должны быть выполнены следующие команды:
+
+```
+sudo apt-get update
+sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+sudo npm install canvas --unsafe-perm=true
+```
+
+Для инструкций для других систем посетите https://www.npmjs.com/package/canvas#compiling
+
 ## Использование
 * Информацию о том, как использовать этот адаптер, можно найти здесь [https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki).
 
@@ -39,7 +56,7 @@ hash: TKPv1NWpGxt5Xrh8nm/KUv87mvH1OWku6xhq1j79eUo=
 * Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть [ некоторые сообщения] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24), что соединение теряется после прибл. 24 часа
 * Есть несколько отчетов ([1] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/23), [2] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot / Issues / 34)) о странном поведении значения батареи на Deebot 900/901
 
-## ВОПРОСЫ-ОТВЕТЫ
+## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
 ## Спасибо и кредиты
@@ -49,6 +66,9 @@ hash: TKPv1NWpGxt5Xrh8nm/KUv87mvH1OWku6xhq1j79eUo=
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.5.8
+   * Several enhancements and fixes
 
 ### 0.5.7
    * Using library version 0.3.8

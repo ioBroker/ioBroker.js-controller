@@ -28,12 +28,21 @@ The BSB_LAN Interface brings the BSB (Boiler System Bus) to LAN. This adapter co
     - IP
     - User and password (if basic auth activated)
     - Poll interval in seconds (10 is minimum)
-    - IDs which should be polled (comma- or newline separated, see Webinterface of BSB_LAN for available ids)
+    - IDs which should be polled or changed (comma- or newline separated, see Webinterface of BSB_LAN for available ids)
 
-## Limitations
-- TODO: allow write access for IDs
+## Writing Values
+- Activate all or specific IDs as Writable in 
+  * en: [Readonly or read/write access](https://1coderookie.github.io/BSB-LPB-LAN_EN/chap05.html)
+  * de: [Zugriff des Adapters auf den Regler](https://1coderookie.github.io/BSB-LPB-LAN/kap05.html)
+  * for all: `bsb_lan_config.h: #define DEFAULT_FLAG 0`
+  * compile & upload 
+- Add IDs which should be written to Adapter instance config (see Usage)
+- Numbers, Enums and hr:min types are now writable (of course only writable IDs can be written)
 
 ## Changelog
+### 0.1.0
+* Support write access
+
 ### 0.0.3
 * dynamically create states
 * IDs without whitespaces

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 92n94I2ZG3E2a4iB/b8NSZnifni7HtTykIc/gJhbp30=
+hash: 3ZiMn4BgwnOgFbM02y6Fj+d7eqd7GrtqQeynSqdQJSU=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -34,6 +34,13 @@ hash: 92n94I2ZG3E2a4iB/b8NSZnifni7HtTykIc/gJhbp30=
 [![Spende]（admin / spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+＃1.2.3
+-添加了导航活动颜色
+-数值开关的固定状态颜色
+
+## 1.2.2
+-错误修复：滑块值，配置
 
 ## 1.2.1
 -固定的滑块小部件：分为两个小部件（水平和垂直）

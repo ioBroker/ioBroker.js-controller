@@ -185,6 +185,9 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 1.4.5 (23.03.2020)
+* (simatec) Bugfix CIFS Domain
+
 ### 1.4.4 (23.03.2020)
 * (simatec) Fix history error
 

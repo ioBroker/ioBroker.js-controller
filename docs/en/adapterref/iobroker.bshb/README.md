@@ -3,12 +3,14 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.bshb.svg)](https://www.npmjs.com/package/iobroker.bshb)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.bshb.svg)](https://www.npmjs.com/package/iobroker.bshb)
+![Number of Installations (latest)](http://iobroker.live/badges/bshb-installed.svg)
+![Number of Installations (stable)](http://iobroker.live/badges/bshb-stable.svg)
 [![Dependency Status](https://david-dm.org/holomekc/iobroker.bshb.svg)](https://david-dm.org/holomekc/iobroker.bshb)
 [![Known Vulnerabilities](https://snyk.io/test/github/holomekc/ioBroker.bshb/badge.svg)](https://snyk.io/test/github/holomekc/ioBroker.bshb)
 
 [![NPM](https://nodei.co/npm/iobroker.bshb.png)](https://nodei.co/npm/iobroker.bshb/)
 
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/holomekc/ioBroker.bshb/master.svg)](https://travis-ci.org/holomekc/ioBroker.bshb) 
+[![Travis-CI](http://img.shields.io/travis/holomekc/ioBroker.bshb/master.svg)](https://travis-ci.org/holomekc/ioBroker.bshb) 
 
 ## bosch-smart-home-bridge adapter for ioBroker
 
@@ -28,6 +30,13 @@ https://github.com/holomekc/ioBroker.bshb/wiki/Examples
 Work in progress. Feedback appreciated.
 
 ## Changelog
+
+### 0.1.6
+* (holomekc) Added open doors and windows feature
+
+### 0.1.5
+* (holomekc) functions and rooms are only added for new channels 
+* (holomekc) increase timeout for requests which expect to contain more data
 
 ### 0.1.4
 * (holomekc) issue fixed in loading configuration
@@ -102,7 +111,7 @@ Work in progress. Feedback appreciated.
 
 MIT License
 
-Copyright (c) 2019 Christopher Holomek <holomekc.github@gmail.com>
+Copyright (c) 2020 Christopher Holomek <holomekc.github@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

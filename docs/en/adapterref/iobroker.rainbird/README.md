@@ -1,5 +1,10 @@
 ![Logo](admin/rainbird.png)
 
+![Number of Installations](http://iobroker.live/badges/rainbird-installed.svg) [![Downloads](https://img.shields.io/npm/dm/iobroker.rainbird.svg)](https://www.npmjs.com/package/iobroker.rainbird)
+
+[![NPM](https://nodei.co/npm/iobroker.rainbird.png?downloads=true)](https://nodei.co/npm/iobroker.rainbird/)
+
+![Stable](http://iobroker.live/badges/rainbird-stable.svg)
 [![NPM version](https://img.shields.io/npm/v/iobroker.rainbird.svg)](https://www.npmjs.com/package/iobroker.rainbird)
 [![Build Status](https://travis-ci.org/StrathCole/ioBroker.rainbird.svg?branch=master)](https://travis-ci.org/StrathCole/ioBroker.rainbird)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/StrathCole/iobroker.rainbird/blob/master/LICENSE)

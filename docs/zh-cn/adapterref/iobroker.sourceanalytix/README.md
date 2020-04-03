@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
-title: [测试版-已发布] SourceAnalytix
-hash: QBdIrwKQw8DZnNfvJrzM4brA6hx/vmBatpdePpsBsps=
+title: [Dev-正在进行中] SourceAnalytix
+hash: 1BbfFumF7a5jvMdRL9kJsznsqMIuM2aCYewim9cCChU=
 ---
 ![测验](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
 ![安装数量](http://iobroker.live/badges/sourceanalytix-stable.svg)
@@ -11,8 +11,8 @@ hash: QBdIrwKQw8DZnNfvJrzM4brA6hx/vmBatpdePpsBsps=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
 ![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
 
-＃[测试版-已发布] SourceAnalytix
-##警告，此适配器需要节点8或更高！
+＃[Dev-进行中] SourceAnalytix
+＃{!!!不要从git安装！
 ioBroker SourceAnalytix允许您跟踪和跟踪设备的消耗，成本和仪表值。
 您需要设备提供的数据作为输入（使用的Wh，l / h或m3总量），此适配器将：
 
@@ -30,50 +30,28 @@ ioBroker SourceAnalytix允许您跟踪和跟踪设备的消耗，成本和仪表
 
 ＃＃ 已知的问题
 * []期间计算可选，但尚未实施
-* []个季度未计算
 * []尚未在计算中实施的每月费用价格
-* [x]存储尚未实现的电流表值
-* [x]仪表值可选，但尚未实现
-* [x]适配器重新启动以添加新对象的计算
-*未写入成本类型交付的[x]状态
-* [x]设备名称别名不正确
-* [x]个翻译
 
 ＃＃ 去做
 * []文档
 * []成本默认值为0，如果未提供则显示错误消息
 * []根据仪表值重新计算（可按日期配置）
-* []计算四分之一数值
 * []添加可在适配器设置中配置的前[x]天，[x]周，[x]月，[x]季度，[x]年的对象状态
-* []代码优化
-* [x]每种状态的仪表值存储
-* [x]紧凑模式
-* [x]添加了对Wh值计算的支持
-* [x]修复基本翻译
-* [x]个就绪状态值并存储到状态
-* [x]将仪表值写入“开始”状态以用于计算
-* [x]每个状态的可配置间隔
-* [x]每个状态的可配置单位
-* [x]每个州的可配置成本价
-* [x]每个州的可配置单价
-* [x]状态用于成本或收入
-* [x]消耗量计算
-* [x]费用计算
-* [x]可调的测量起点
-* [x]支持多种设备状态
-* [x]将仪表值写入要在计算中使用的对象
-*适配器设置中的[x]配置（当前仅支持Discover的演示对象）
-* [x]删除临时状态进行计算
-* [x]计算m3值
-* [x]使用设备名称的别名
-* [x]个可配置的数据点（是/否），用于成本，消耗量和仪表值
-* [x]可以选择存储整年的分析数据，也可以仅存储可选的期间
-* [x]确保在适配器关闭时存储所有值，以防止数据间隔
+* []每种状态的仪表值存储
 
 ＃＃ 支持我
-如果您喜欢我的工作，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png）](http://paypal.me/DutchmanNL)
+如果您喜欢我的作品，请考虑个人捐赠（这是DutchmanNL的个人捐赠链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png）](http://paypal.me/DutchmanNL)
 
 ## Changelog
+
+### 0.4.0 (Development in progress)
+* (Dutchman) Complete code rebuild
+* (Dutchman) Complete code rebuild & optimalisation
+* (Dutchman) Change datapoints to root by year
+* (Dutchman) Delete unneded states automatically
+* (Dutchman) Rebuild calculation logic to use memory instead of object DB (performance)
+
+To-Do : Migration from < 0.4.0 to new datastructure
 
 ### 0.3.0   
 * (Dutchman) m³ Implemented
@@ -233,7 +211,7 @@ ioBroker SourceAnalytix允许您跟踪和跟踪设备的消耗，成本和仪表
 ## License
 MIT License
 
-Copyright (c) 2018 Dutchman
+Copyright (c) 2020 Dutchman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

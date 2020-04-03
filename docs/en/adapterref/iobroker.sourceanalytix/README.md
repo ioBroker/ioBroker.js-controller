@@ -1,10 +1,9 @@
-#  [Beta - Released] SourceAnalytix
+#  [Dev - in Progress] SourceAnalytix
+# { !!! Do not install from git !!!}
 [![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix)
 ![Number of Installations](http://iobroker.live/badges/sourceanalytix-installed.svg) ![Number of Installations](http://iobroker.live/badges/sourceanalytix-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)](https://www.npmjs.com/package/iobroker.sourceanalytix)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)](https://www.npmjs.com/package/iobroker.sourceanalytix)
 [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)](https://greenkeeper.io/)
-
-## Warning, this adapter needs node 8 or higher !!!
 
 ioBroker SourceAnalytix allows you to keep track & trace of consumption, cost and meter values for your devices.
 You need data as input (total amount of Wh, l/h or m3 used) from your devices and this adapter will :
@@ -27,52 +26,30 @@ https://github.com/hdering/homematic_verbrauchszaehler
 ## Known issues
 
 * [ ] Period calculation selectable but not yet implemented
-* [ ] quarters not calculated
 * [ ] monthly costprice not yet implemented in calculation
-* [x] store current meter values not yet implemented
-* [x] Meter value selectable  but not yet implemented
-* [x] adapter restart needed to add calculation of new objects
-* [x] statest for cost type delivery are not writen
-* [x] device name alias not correct
-* [x] translations
 
 ## To-Do
 * [ ] Documentation
 * [ ] Cost default value to 0 with error message if not provided
 * [ ] recalcalation based on meter values (configurable by date)
-* [ ] calculations for quarter values
 * [ ] add object states for previous [x]day, [x]week, [x]month, [x]quarter, [x]year configurable in adapter settings
-* [ ] code optimalisation
-* [x] storage of meter values for every state
-* [x] compact mode
-* [x] add support for calculation of wh values
-* [x] Fix basic translations
-* [x] ready state values and store to states
-* [x] write meter value to "start" state to use in calculations
-* [x] configurable intervall for every state
-* [x] configurable unit for every state
-* [x] configurable cost price for every state
-* [x] configurable unit price for every state
-* [x] state used for cost or earning
-* [x] consumption calculation
-* [x] cost calculation
-* [x] adjustable starting point of meassurement
-* [x] support of multiple device states
-* [x] write meter value to object to use in calculations
-* [x] configuration in adapter settings (currently only demo objects of discovergy are supported)
-* [x] delete temporary states for calculations
-* [x] calculation for m3 values
-* [x] use alias of device name
-* [x] configurable data points (yes/no) for cost, consumption and meter-values
-* [x] Make it selectable to store analytics for complete year or only selectable periode
-* [x] ensure all values are stored when adapter shuts down to prevent data gaps
+* [ ] storage of meter values for every state
 
 ## Support me
-If you like my work, please feel free to provide a personal donation  
+If you like my work, please consider a personal donation  
 (this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
 [![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
+
+### 0.4.0 (Development in progress)
+* (Dutchman) Complete code rebuild
+* (Dutchman) Complete code rebuild & optimalisation
+* (Dutchman) Change datapoints to root by year
+* (Dutchman) Delete unneded states automatically
+* (Dutchman) Rebuild calculation logic to use memory instead of object DB (performance)
+
+To-Do : Migration from < 0.4.0 to new datastructure
 
 ### 0.3.0   
 * (Dutchman) m³ Implemented
@@ -232,7 +209,7 @@ If you like my work, please feel free to provide a personal donation
 ## License
 MIT License
 
-Copyright (c) 2018 Dutchman
+Copyright (c) 2020 Dutchman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

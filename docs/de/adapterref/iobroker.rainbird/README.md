@@ -3,34 +3,38 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.rainbird/README.md
 title: ioBroker.rainbird
-hash: pl7ETPDt8mpHDMW6jIpuDTrXvFaFcAv30MS1+/S+4xI=
+hash: I5DvFG4EAJokL/cHf2SvLiANcKh5W1Gh3IVaAxUUnqg=
 ---
 ![Logo](../../../en/adapterref/iobroker.rainbird/admin/rainbird.png)
 
+![Anzahl der Installationen](http://iobroker.live/badges/rainbird-installed.svg)
+![Downloads](https://img.shields.io/npm/dm/iobroker.rainbird.svg)
+![NPM](https://nodei.co/npm/iobroker.rainbird.png?downloads=true)
+![Stabil](http://iobroker.live/badges/rainbird-stable.svg)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.rainbird.svg)
-![Build Status](https://travis-ci.org/StrathCole/ioBroker.rainbird.svg?branch=master)
+![Build-Status](https://travis-ci.org/StrathCole/ioBroker.rainbird.svg?branch=master)
 ![Lizenz](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 
 # IoBroker.rainbird
-Ein ioBroker Adapter für Rain Bird mit LNK WiFi Adapter. Dieses Projekt ist nicht mit Rain Bird verbunden.
+Ein ioBroker-Adapter für Rain Bird mit LNK-WLAN-Adapter. Dieses Projekt ist nicht mit Rain Bird verbunden.
 
-Basierend auf der Python-Bibliothek "pyrainbird" von https://github.com/jbarrancos/pyrainbird und vollständig auf NodeJS portiert. Der Adapter stellt über eine WLAN-Verbindung eine direkte Verbindung zum Gerät her und verwendet nicht den Rain Bird-Clouddienst.
+Basierend auf der Python-Bibliothek "pyrainbird" von https://github.com/jbarrancos/pyrainbird und vollständig auf NodeJS portiert. Der Adapter stellt über eine WiFi-Verbindung eine direkte Verbindung zum Gerät her und verwendet den Rain Bird-Clouddienst nicht.
 
 ## Zustände
 `rainbird.X.device.commands.advanceZone` - Wenn das aktuelle Programm ausgeführt wird, fahren Sie mit der nächsten Bewässerungszone fort und stoppen Sie die aktuelle.
-`rainbird.X.device.commands.runProgram` - Führen Sie das angegebene Programm manuell aus (1 bis X), wie zuvor im Gerät konfiguriert.
-`rainbird.X.device.commands.stopIrrigation` - Bewässerung in allen Zonen sofort abbrechen.
+`rainbird.X.device.commands.runProgram` - Führen Sie das angegebene Programm manuell (1 bis X) aus, wie zuvor im Gerät konfiguriert.
+`rainbird.X.device.commands.stopIrrigation` - Bewässerung in allen Zonen sofort stoppen.
 
 `rainbird.X.device.irrigation.active` - Die Bewässerung ist derzeit aktiv. Wenn false, kann dies bedeuten, dass Sie den Schalter am Gerät auf "Stop" stellen.
-`rainbird.X.device.irrigation.station` - Nummer der Zone, die aktuell bewässert wird.
+`rainbird.X.device.irrigation.station` - Nummer der Zone, die derzeit bewässert wird.
 
 `rainbird.X.device.sensors.rain` - True, wenn ein Regensensor angeschlossen ist und Regen erkannt wird.
 
-`rainbird.X.device.settings.rainDelay` - Die aktuelle Bewässerungsverzögerung (in Tagen), die für das Gerät eingestellt wurde.
+`rainbird.X.device.settings.rainDelay` - Die für das Gerät eingestellte aktuelle Bewässerungsverzögerung (in Tagen).
 
 `rainbird.X.device.stations.Y.available` - True, wenn Zone Y im Gerät verfügbar ist.
-`rainbird.X.device.stations.Y.irrigation` - True, wenn Zone Y aktuell bewässert wird.
-`rainbird.X.device.stations.Y.runZone` - Bewässerung in Zone Y für die angegebene Anzahl von Minuten manuell ausführen.
+`rainbird.X.device.stations.Y.irrigation` - True, wenn Zone Y derzeit bewässert wird.
+`rainbird.X.device.stations.Y.runZone` - Bewässerung der Zone Y für die angegebene Anzahl von Minuten manuell durchführen.
 `rainbird.X.device.stations.Y.testZone` - Testzone Y.
 
 ## Spenden

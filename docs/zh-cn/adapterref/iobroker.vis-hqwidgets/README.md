@@ -2,22 +2,29 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-hqwidgets/README.md
-title: 无题
-hash: jPQegu6pF6O2hzwFNfhetVOfbBWWxDaDYcjjC49bstY=
+title: oBroker.vis-hqWidgets
+hash: Tr25/rGLCShP3cb01xpc6DE4Umea7NwQzg7lJFwe94k=
 ---
-![商标](../../../en/adapterref/iobroker.vis-hqwidgets/admin/hqwidgets.png)ioBroker.vis-hqWidgets ============
+![商标](../../../en/adapterref/iobroker.vis-hqwidgets/admin/hqwidgets.png)
 
 ![安装数量](http://iobroker.live/badges/vis-hqwidgets-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.vis-hqwidgets.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.vis-hqwidgets.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.vis-hqwidgets.svg)
 ![NPM](https://nodei.co/npm/iobroker.vis-hqwidgets.png?downloads=true)
 
-hqWidgets  -  ioBroker.vis的高质量小部件![例](../../../en/adapterref/iobroker.vis-hqwidgets/img/widgets.png)
+＃oBroker.vis-hqWidgets
+hqWidgets-ioBroker.vis![例](../../../en/adapterref/iobroker.vis-hqwidgets/img/widgets.png)的高质量窗口小部件
 
-对于一个小部件，使用来自Anthony Terrien的jQuery.knob插件（MIT）。
+对于一个小部件，使用了Anthony Terrien的jQuery.knob插件（MIT）。
 http://anthonyterrien.com/knob/或https://github.com/aterrien/jQuery-Knob
 
 ## Changelog
+### 1.1.4 (2020-03-28)
+* (bluefox) Fixed blinds widget
+
+### 1.1.3 (2019-10-27)
+* (bluefox) Preparations for js-controller 2.0. Check undefined and nulls.
+
 ### 1.1.2 (2018-06-09)
 * (bluefox) Odometer was fixed while rendering in invisible state
 

@@ -3,10 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.rainbird/README.md
 title: ioBroker.rainbird
-hash: pl7ETPDt8mpHDMW6jIpuDTrXvFaFcAv30MS1+/S+4xI=
+hash: I5DvFG4EAJokL/cHf2SvLiANcKh5W1Gh3IVaAxUUnqg=
 ---
 ![логотип](../../../en/adapterref/iobroker.rainbird/admin/rainbird.png)
 
+![Количество установок](http://iobroker.live/badges/rainbird-installed.svg)
+![Загрузки](https://img.shields.io/npm/dm/iobroker.rainbird.svg)
+![NPM](https://nodei.co/npm/iobroker.rainbird.png?downloads=true)
+![стабильный](http://iobroker.live/badges/rainbird-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.rainbird.svg)
 ![Статус сборки](https://travis-ci.org/StrathCole/ioBroker.rainbird.svg?branch=master)
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
@@ -18,7 +22,7 @@ hash: pl7ETPDt8mpHDMW6jIpuDTrXvFaFcAv30MS1+/S+4xI=
 
 ## Состояния
 `rainbird.X.device.commands.advanceZone` - Когда работает текущая программа, перейдите к следующей зоне орошения и остановите текущую.
-`rainbird.X.device.commands.runProgram` - Запустите указанную программу вручную (от 1 до X), как ранее было настроено в устройстве.
+`rainbird.X.device.commands.runProgram` - Запустите указанную программу вручную (от 1 до X), как ранее было настроено на устройстве.
 `rainbird.X.device.commands.stopIrrigation` - Немедленно прекратить полив во всех зонах.
 
 `rainbird.X.device.irrigation.active` - Полив в настоящее время активен. Если false, это может означать, что вы установили переключатель на устройстве в положение «Стоп».
@@ -30,7 +34,7 @@ hash: pl7ETPDt8mpHDMW6jIpuDTrXvFaFcAv30MS1+/S+4xI=
 
 `rainbird.X.device.stations.Y.available` - Истина, если в устройстве доступна зона Y.
 `rainbird.X.device.stations.Y.irrigation` - Истина, если зона Y в настоящее время орошается.
-`rainbird.X.device.stations.Y.runZone` - Запустите полив вручную в зоне Y на указанное количество минут.
+`rainbird.X.device.stations.Y.runZone` - Вручную выполните полив в зоне Y в течение указанного количества минут.
 `rainbird.X.device.stations.Y.testZone` - Тестовая зона Y.
 
 ## Пожертвовать

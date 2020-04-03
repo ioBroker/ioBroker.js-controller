@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lgtv/README.md
 title: ioBroker.lgtv
-hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
+hash: e1vRRQd3Kvr7YBcscpRBGok3Apv+ZLAD2XhIHxpR73w=
 ---
 ![商标](../../../en/adapterref/iobroker.lgtv/admin/lgtv.png)
 
@@ -26,7 +26,10 @@ hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
 ##用法：
 通过ioBroker管理界面安装适配器。
 在适配器配置中，输入LG WebOS TV的IP地址。
-首次连接时，您会在电视屏幕上收到一个配对提示，您应该在该提示下进行连接。
+首次连接时，您会在电视屏幕上收到一个配对提示，您应该在其中允许连接。
+
+###轮询
+关闭电视时，某些电视会与网络插座断开连接，因此无法正确将其报告给适配器。然后，需要额外的轮询。您可以在设置中定义时间。如果该值为空，则适配器尝试自动检测到此值：在适配器上重新启动轮询（每60秒），直到检测到第一个正确的电视关闭事件为止。
 
 ＃＃ 一些例子：
 ```setState('lgtv.0.states.popup', 'Some text!');```
@@ -80,7 +83,7 @@ hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
 
 ```setState('lgtv.0.states.launch', 'smartshare');```
 
-在电视上打开SmartShare应用。
+在电视上打开SmartShare应用程序。
 
 ```setState('lgtv.0.states.launch', 'tvuserguide');```
 
@@ -171,8 +174,25 @@ hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
 ---
 
 ## Changelog
+### 1.1.6 (2020-03-07)
+* (dirkhe) make healthintervall configurable
+
+### 1.1.5 (2020-02-25)
+* (dirkhe) stable connection and subsciptions
+* (dirkhe) add Polling for TV, which not support Power Off event 
+* (dirkhe) change some states role switch to button
+
+### 1.1.4 (2020-02-07)
+* (dirkhe) changed from pull to subscribing
+* (dirkhe) add livetv to launch list
+
+### 1.1.3 (2019-12-16)
+* (merdok) fixed connect() [Pull requests #62](https://github.com/SebastianSchultz/ioBroker.lgtv/pull/62) 
+* (instalator) fixed [issues #64](https://github.com/SebastianSchultz/ioBroker.lgtv/issues/64) 
+* (instalator) change error log to debug [issues #59](https://github.com/SebastianSchultz/ioBroker.lgtv/issues/59) 
 
 ### 1.1.1 (2019-10-26)
+* (instalator) Safe keyfile to /opt/iobroker [issues #52](https://github.com/SebastianSchultz/ioBroker.lgtv/issues/52) 
 * (instalator) fix error reconect
 * (instalator) fix raw object
 * (instalator) add mac address to admin settings
@@ -238,7 +258,7 @@ hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
 
 The MIT License (MIT)
 
-Copyright (c) 2019 Sebastian Schultz.
+Copyright (c) 2020 Sebastian Schultz.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

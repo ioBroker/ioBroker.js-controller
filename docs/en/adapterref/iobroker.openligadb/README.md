@@ -59,6 +59,8 @@ Documentation for the vis-widgets are available inside vis or [Widget-Documentat
 * ~~controllable gameday in the gameday widget~~
 
 ## Changelog
+### 1.0.0
+* prepare for stable repository
 ### 0.11.5
 * pivottable: show only results for selected gameday
 * table3: icon attributes, add image selection dialog

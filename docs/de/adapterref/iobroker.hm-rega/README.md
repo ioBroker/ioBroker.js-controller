@@ -145,6 +145,12 @@ Abschließend sind die in der CCU angelegten Variablen aufgelistet
 ### FAQ
 
 ## Changelog
+### 2.6.0 (2020-04-02)
+* (foxriver76) sentry plugin support added
+
+### 2.5.6 (2020-04-01)
+* (foxriver76) handle never fired `end` events
+
 ### 2.5.5 (2020-02-17)
 * (foxriver76) we are logging the script name in still pending warning from now on
 

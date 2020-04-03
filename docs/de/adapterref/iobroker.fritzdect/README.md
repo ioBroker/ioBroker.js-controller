@@ -76,7 +76,8 @@ Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig In
     * GuestWLAN
     * BatteryCharge
     * OS version
-    
+* correction of timestamp to date conversion fpr DECT400
+
 ### 0.3.2
 * new states in heater group, operationList and operationMode
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.bsblan/README.md
 title: ioBroker.bsblan
-hash: 9xmWWEjt1WlHXzCcxSovGCp40pOQ9NHKlrzoOme765A=
+hash: xUD8t6FT0RVhgnVBFyFDHVTD1appxS4rdHEINifPNdY=
 ---
 ![Logo](../../../en/adapterref/iobroker.bsblan/admin/bsblan.png)
 
@@ -17,30 +17,39 @@ hash: 9xmWWEjt1WlHXzCcxSovGCp40pOQ9NHKlrzoOme765A=
 # IoBroker.bsblan
 ## Bsb_lan Adapter für ioBroker
 Dieser Adapter verbindet die [BSB_LAN-Schnittstelle](https://github.com/fredlcore/bsb_lan) mit ioBroker.
-Die BSB_LAN-Schnittstelle bringt den BSB (Boiler System Bus) ins LAN. Dieser Adapter verbindet ihn mit ioBroker.
+Die BSB_LAN-Schnittstelle bringt den BSB (Boiler System Bus) ins LAN. Dieser Adapter verbindet es mit ioBroker.
 
-[BSB_LAN Interface Benutzerhandbuch](https://github.com/1coderookie/BSB-LPB-LAN)
+[BSB_LAN-Schnittstelle Benutzerhandbuch](https://github.com/1coderookie/BSB-LPB-LAN)
 
 ## Unterstützte Geräte
 - BSB / LPB-kompatible Geräte (z. B. Brötje, Elco, MHG, Fujitsu)
 - Einzelheiten finden Sie unter: [Unterstützte Geräte] (https://github.com/1coderookie/BSB-LPB-LAN)
 
-## Verwendung
-- BSB_LAN-Schnittstelle ist in Betrieb
+## Verwendungszweck
+- Die BSB_LAN-Schnittstelle ist aktiv
 - Installieren Sie den Adapter
 - Konfigurieren
     - IP
-    - Benutzer und Passwort (falls Basisauthentifizierung aktiviert)
+    - Benutzer und Passwort (wenn die Basisauthentifizierung aktiviert ist)
     - Abfrageintervall in Sekunden (mindestens 10)
-    - IDs, die abgefragt werden sollen (durch Kommas oder Zeilenumbrüche getrennt, verfügbare IDs siehe Webinterface von BSB_LAN)
+    - IDs, die abgefragt oder geändert werden sollen (Komma- oder Zeilenumbruch getrennt, verfügbare IDs siehe Webinterface von BSB_LAN)
 
-## Einschränkungen
-- TODO: Schreibzugriff für IDs zulassen
+## Werte schreiben
+- Aktivieren Sie alle oder bestimmte IDs als beschreibbar in
+  * de: [Lese- oder Lese- / Schreibzugriff] (https://1coderookie.github.io/BSB-LPB-LAN_EN/chap05.html)
+  * de: [Zugriff des Adapters auf den Regler] (https://1coderookie.github.io/BSB-LPB-LAN/kap05.html)
+  * für alle: `bsb_lan_config.h: #define DEFAULT_FLAG 0`
+  * kompilieren & hochladen
+- Fügen Sie IDs hinzu, die in die Adapterinstanzkonfiguration geschrieben werden sollen (siehe Verwendung).
+- Zahlen, Aufzählungen und Stunden: Min-Typen sind jetzt beschreibbar (natürlich können nur beschreibbare IDs geschrieben werden)
 
 ## Credits
-- Icon von [Freepik] (https://www.freepik.com/home) von www.flaticon.com
+- Symbol von [Freepik] (https://www.freepik.com/home) von www.flaticon.com
 
 ## Changelog
+### 0.1.0
+* Support write access
+
 ### 0.0.3
 * dynamically create states
 * IDs without whitespaces
@@ -52,7 +61,7 @@ Die BSB_LAN-Schnittstelle bringt den BSB (Boiler System Bus) ins LAN. Dieser Ada
 ## License
 MIT License
 
-Copyright (c) 2019 hacki11 <jur.schmid@gmail.com>
+Copyright (c) 2020 hacki11 <jur.schmid@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

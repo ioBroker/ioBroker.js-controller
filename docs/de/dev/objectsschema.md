@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
-hash: FFzNRIzygOmQSrzVSlXxole2kfQWad2m1grDaZd3pPI=
+hash: JrIFbEK5K2RPHEBk4fp6C36DmJ7nX4aLQFaEoUOmtHU=
 ---
 # Kernkonzept
 In ioBroker gibt es zwei grundlegend unterschiedliche Datentypen. Sogenannte **Zustände** (`states`) und **Objekte**
@@ -47,7 +47,7 @@ Oder ein anderes Beispiel `hm-rpc.1.ABC110022.2.VALUE`:
 * `system.group.` - Gruppen
 * `system.adapter. <Adaptername>` - Standardkonfiguration eines Adapters
 * `<Adaptername> .` - Objekte für einen bestimmten Adapter.
-* `<Adaptername> .meta.` - allgemeine Metadaten, die von allen Instanzen dieses Adapters verwendet werden
+* `<Adaptername> .meta.` - gemeinsame Metadaten, die von allen Instanzen dieses Adapters verwendet werden
 * `<Adaptername>. <Instanznummer> .` - Ein Adapterinstanz-Namespace
 * `enum.` - Aufzählungen
 * `history.` - Verlaufsdaten
@@ -200,8 +200,8 @@ Attribute:
 * `common.unit` (optional)
 * `common.def` (optional - der Standardwert)
 * `common.defAck` (optional - wenn common.def gesetzt ist, wird dieser Wert als ack-Flag verwendet, js-controller 2.0.0+)
-* `common.desc` (optional, Zeichenfolge)
-* `common.read` (boolesch, obligatorisch) - true, wenn der Status lesbar ist
+* `common.desc` (optional, Zeichenfolge oder Objekt) - Beschreibung, Objekt für mehrsprachige Beschreibung
+* `common.read` (boolesch, obligatorisch) - true, wenn state lesbar ist
 * `common.write` (boolesch, obligatorisch) - true, wenn state beschreibbar ist
 * `common.role` (Zeichenfolge, obligatorisch) - Rolle des Status (wird in Benutzeroberflächen verwendet, um anzugeben, welches Widget ausgewählt werden soll, siehe unten)
 * `common.states` (optional) Attribut vom Typ Nummer mit Objekt möglicher Zustände` {'Wert': 'Wertname', 'Wert2': 'Wertname2', 0: 'AUS', 1: 'EIN'} `
@@ -230,7 +230,7 @@ Vorschlag: Die Kanalobjekte common.role sollten / könnten eine Reihe von obliga
 
 mögliche Werte:
 
-* `info` - Währungs- oder Aktienkurs, Kraftstoffpreise, Einfügen von Postfächern und ähnliches
+* `info` - Währungs- oder Aktienkurs, Kraftstoffpreise, Postfacheinfügung und ähnliches
 * `Kalender` -
 * `Vorhersage` - Wettervorhersage
 
@@ -492,7 +492,7 @@ id `system.adapter.<adapter.name>`
 * `common.adminTab.link` - Link für iframe in der TAB. Sie können die Parameter wie folgt ersetzen: "http://% ip%:% port%". IP wird durch Host-IP ersetzt. "port" wird aus native.port extrahiert.
 * `common.adminTab.name` - Name der TAB in admin
 * `common.adminTab.singleton` - [true / false], wenn der Adapter TAB für admin hat. Es wird nur eine TAB für alle Instanzen angezeigt.
-* `common.allowInit` - [true / false] ermöglicht den Aufruf des" geplanten "Adapters" nicht im Zeitplan ", wenn die Einstellungen geändert oder der Adapter gestartet wurde. Oder lassen Sie den geplanten Adapter einmal nach Änderung der Konfiguration und dann nach Zeitplan starten.
+* `common.allowInit` - [true / false] ermöglicht den Aufruf des" geplanten "Adapters" nicht im Zeitplan ", wenn die Einstellungen geändert oder der Adapter gestartet wurde. Oder erlauben Sie den geplanten Adapterstart einmal nach Änderung der Konfiguration und dann nach Zeitplan.
 * `common.availableModes` - Werte für common.mode, wenn mehr als ein Modus möglich ist
 * `common.blockly` - [true / false], wenn der Adapter benutzerdefinierte Blöcke für blockly hat. (admin / blockly.js erforderlich)
 * `common.connectionType` - Verbindungstyp mit Gerät:` local / cloud`. Siehe auch "common.dataSource".
@@ -524,7 +524,7 @@ id `system.adapter.<adapter.name>`
 * `common.messagebox` - true, wenn das Nachrichtenfeld unterstützt wird. Wenn ja, wird das Objekt system.adapter. &lt; adapter.name & gt &lt; adapter.instance & gt.messagebox erstellt, um Nachrichten an den Adapter zu senden (wird für E-Mail, Pushover, ... verwendet;
 * `common.mode` - **obligatorisch** mögliche Werte siehe unten
 * `common.name` - **obligatorischer** Name des Adapters ohne" ioBroker ".
-* `common.noConfig` - [true / false] zeigt beispielsweise keinen Konfigurationsdialog an
+* `common.noConfig` - [true / false] zeigt zum Beispiel keinen Konfigurationsdialog an
 * `common.noIntro` - zeigt niemals Instanzen dieses Adapters auf dem Intro / Übersichtsbildschirm in admin an (wie Symbole, Widgets)
 * `common.noRepository` - [true / false], wenn der Adapter bei der Erstinstallation geliefert wurde oder über ein eigenes Repository verfügt
 * `common.nogit` - Wenn true, ist keine direkte Installation von Github möglich
@@ -560,7 +560,7 @@ id `system.adapter.<adapter.name>`
 * `common.webExtendable` - [true / false], wenn der Webserver in diesem Adapter mit Plugins / Erweiterungen wie Proxy, Simple-API erweitert werden kann
 * `common.webExtension` - relativer Dateiname zum Verbinden der Web-Erweiterung. Z.B. in simple-api "lib / simpleapi.js" relativ zum Adapter-Stammverzeichnis. Zusätzlich muss native.webInstance angeben, wo diese Erweiterung enthalten sein wird. Leer bedeutet, dass es als eigener Webdienst ausgeführt werden muss. "*" bedeutet, dass jeder Webserver es enthalten muss.
 * `common.webPreSettings` - Liste der Parameter, die vom webServer-Adapter in info.js aufgenommen werden müssen. (Beispielmaterial)
-* `common.webservers` - Array von Webserverinstanzen, die Inhalte aus dem www-Ordner des Adapters bereitstellen sollen
+* `common.webservers` - Array von Webserverinstanzen, die Inhalte aus dem Ordner www des Adapters bereitstellen sollen
 * `common.welcomeScreen` - Array von Seiten, die auf der Seite" web "index.html angezeigt werden sollen. ["vis / edit.html", "vis / index.html"] oder [{"link": "vis / edit.html", "name": "Vis editor", "img": "vis / img / edit.png "," color ":" blue "}," vis / index.html "]
 * `common.welcomeScreen.order` - todo
 * `common.welcomeScreenPro` - Wie` common.welcomeScreen`, jedoch nur für den Zugriff von ioBroker.cloud verwendet.
@@ -601,7 +601,7 @@ id `system.host.<host>`
 * `common.source` - (obligatorisch) die Skriptquelle
 * `common.engine` - (optional) *Skript-Engine* Instanz, die dieses Skript ausführen soll (z. B. 'javascript.0') - wenn die ausgelassene Engine automatisch ausgewählt wird
 
-#### Benutzer
+#### Nutzer
 * `common.name` - (obligatorisch) Name des Benutzers (Groß- und Kleinschreibung beachten)
 * `common.password` - (obligatorisch) MD5 Hash des Passworts
 

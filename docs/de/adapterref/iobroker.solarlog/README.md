@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.solarlog/README.md
 title: ioBroker.solarlog
-hash: a5XAzwEFvMNG/rWozs4JpDiAbJxszl4glipyShtWqeE=
+hash: wBB1fOkh1pUD1WNC1D6srYRqE5LKuVIJq/zFYpGUT6k=
 ---
 ![Logo](../../../en/adapterref/iobroker.solarlog/admin/solarlog.png)
 
@@ -16,14 +16,19 @@ hash: a5XAzwEFvMNG/rWozs4JpDiAbJxszl4glipyShtWqeE=
 # IoBroker.solarlog
 Ein ioBroker-Adapter für Solarlog-Geräte
 
-Die offene JSON-Schnittstelle (offen Json-Schnittstelle) muss im Konfigurationsmenü des Solarlog aktiviert werden (Konfiguration - System - Zugangskontrolle - Offene Json-Schnittstelle: Wahrnehmung.)
+## Solarlog - Einstellungen
+Die offene JSON-Schnittstelle (offen Json-Schnittstelle) muss im Konfigurationsmenü des Solarlog aktiviert werden.
 
-Adapter installieren, Instanz erstellen.
-Stellen Sie Solarlog - IP-Adresse (192.XXX.X.XXX), Port (optional) und Abfrageintervall (in Millisekunden) ein. Da der Adapter viele http-Anfragen an Sie Solarlog sendet, empfehle ich, das Abfrageintervall nicht zu dicht einzustellen. Überprüfen Sie Ihr Debug-Protokoll auf die Zeit, die zum Abrufen oder Festlegen von mindestens 10 Sekunden benötigt wird.
+## Adapter - Einstellungen
+### Grundeinstellungen
+Stellen Sie Solarlog - IP-Adresse (192.XXX.X.XXX), Port (optional) und Abfrageintervall (in Millisekunden, mindestens 10 Sekunden, empfohlenen 30 Sekunden oder mehr) ein.
 
-Überprüfen Sie, ob alle Wechselrichterdaten erfasst wurden. !!
+Sicherheit: Sie können das Kennwort 'Benutzer' in Ihrem Solarlog und das Kontrollkästchen 'Benutzeranmeldung aktiviert' aktivieren und Ihr Kennwort in der Adapterkonfiguration hinzufügen oder Solarlog und Adapter ohne Benutzerkennwort ausführen. Wenn die Benutzeranmeldung aktiviert ist, wird empfohlen, den Adapter während der Verwendung der Solarlog-Benutzeroberfläche zu stoppen (andernfalls müssen Sie sich nach jeder Anforderung des Adapters erneut anmelden).
 
-Sicherheit: Sie können das 'Benutzer'-Passwort in Ihrem Solarlog und das Kontrollkästchen' Benutzer-Login aktiviert 'aktivieren und Ihr Passwort in der Adapterkonfiguration hinzufügen oder Sie können Solarlog und Adapter ohne Benutzerpasswort ausführen. Wenn die Benutzeranmeldung aktiviert ist, wird empfohlen, den Adapter während der Verwendung der Solarlog-Benutzeroberfläche zu stoppen (andernfalls müssen Sie sich nach jeder Anforderung des Adapters erneut anmelden).
+### Erweiterte Einstellungen
+Überprüfen Sie, ob alle Wechselrichter / Submeter / Geräte - Daten erfasst werden sollen.
+
+Überprüfen Sie, ob historische Daten erfasst werden sollen, und legen Sie die Tageszeit fest, zu der die historischen Datenobjekte aktualisiert werden.
 
 Prognose: Optional erhält der Adapter Prognosedaten mithilfe der Forecast.Solar-API. Tatsächlich werden die Gesamt-kWh von heute und morgen vorhergesagt und jede Stunde aktualisiert. Detailliertere oder zusätzliche Daten sind auf Anfrage erhältlich (bitte öffnen Sie ein Problem).
 
@@ -33,6 +38,10 @@ Getestet am: Solarlog 200PM + / 300PM + / 500 / 1200Meter / 50
 SolarLog 50: Es gibt keine offenen JSON-Interface @ SolarLog 50-Geräte. Bestimmte Werte im Kanal 'info' und 'status' lauten also 'ACCESS DENIED'. Wenn Sie eine andere Lösung bevorzugen, öffnen Sie bitte ein Problem oder veröffentlichen Sie Ihre Einstellungen in einem entsprechenden Problem.
 
 ## Changelog
+
+### 2.0.0
+
+-   Complete code redesign.
 
 ### 1.3.0
 

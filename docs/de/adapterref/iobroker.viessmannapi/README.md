@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.viessmannapi/README.md
 title: ioBroker.viessmannapi
-hash: VHRP4CZLw2F3JTpv5Ed5HBdIex5+YNaRgLvZMV4cakU=
+hash: lLDXB2XHqoMaykrvZ5pxHh1uGZZt7r8lUDLuII0KiPY=
 ---
 ![Logo](../../../en/adapterref/iobroker.viessmannapi/admin/viessmannapi.png)
 
@@ -13,7 +13,7 @@ hash: VHRP4CZLw2F3JTpv5Ed5HBdIex5+YNaRgLvZMV4cakU=
 # IoBroker.viessmannapi
 =================
 
- ** Beachten Sie, dass Viessmann ab März 2020 eine Ratenbegrenzung für seine API implementiert hat. Derzeit sind 120 Anrufe für ein Zeitfenster von 10 Minuten und 1450 Anrufe für ein Zeitfenster von 24 Stunden zulässig (siehe https://www.viessmann-community.com/t5/Experten-fragen/Q-amp-A- Viessmann-API / qaq-p / 127660 / comment-id / 117660 # M117660). Aus diesem Grund ist das Abfrageintervall auf 900 Sekunden eingestellt. Sie können es über die Adpater-Konfiguration auf eigenes Risiko ändern. Wenn in kurzer Zeit zu viele Anrufe getätigt werden, ist Ihr viessmann-Konto für einige Zeit gesperrt. Dies verhindert auch den Zugriff über die offizielle Viessmann App! ** **.
+ ** Beachten Sie, dass Viessmann ab März 2020 eine Ratenbegrenzung für seine API implementiert hat. Derzeit sind 120 Anrufe für ein Zeitfenster von 10 Minuten und 1450 Anrufe für ein Zeitfenster von 24 Stunden zulässig (siehe https://www.viessmann-community.com/t5/Experten-fragen/Q-amp-A- Viessmann-API / qaq-p / 127660 / comment-id / 117660 # M117660). Aus diesem Grund ist das Abfrageintervall auf 900 Sekunden eingestellt. Sie können es über die Adpater-Konfiguration auf eigenes Risiko ändern. Wenn in kurzer Zeit zu viele Anrufe getätigt werden, ist Ihr viessmann-Konto für einige Zeit gesperrt. Dies verhindert auch den Zugriff über die offizielle Viessmann App! **
 
 Dieser Adapter verbindet Ihr ioBroker-System über die Viessmann-API mit Ihrer Viessmann-Zentralheizung. Dazu muss Ihr Heizsystem über einen Vitoconnect oder ein ähnliches Gerät mit dem Viessmann-Server verbunden sein. Alle von der API bereitgestellten aktivierten Informationen werden regelmäßig (alle 60 Sekunden) abgefragt und in Status geschrieben.
 
@@ -44,7 +44,7 @@ sendTo('viessmannapi.0', 'action', {
 Der obige Anruf würde die Zieltemperatur für das Komfortprogramm auf 20 °C einstellen.
 
 ### Unterstützte Aktionen
-Nachfolgend finden Sie eine Liste der unterstützten Aktionen (beachten Sie, dass abhängig von Ihrer Heizungsinstallation einige Aktionen möglicherweise nicht verfügbar sind oder andere Aktionen verfügbar sind, aber hier nicht dokumentiert sind).
+Unten finden Sie eine Liste der unterstützten Aktionen (beachten Sie, dass abhängig von Ihrer Heizungsinstallation einige Aktionen möglicherweise nicht verfügbar sind oder andere Aktionen verfügbar sind, aber hier nicht dokumentiert sind).
 
 | Feature | Aktion | Feld | Anmerkungen |
 |---------------------------------------------------|----------------------|---------------------------------------------------------------------------------------------|----------------------------------------------------------------------------------|
@@ -58,7 +58,7 @@ Nachfolgend finden Sie eine Liste der unterstützten Aktionen (beachten Sie, das
 | **Heizkreis.X.Heizplan** | | | |
 | | | `newSchedule` (Typ: Zeitplan, siehe unten, Modi: 'normal', Standard: 'reduziert' | siehe Beschreibung des Zeitplantyps unten |
 | | | `newSchedule` (Typ: Zeitplan, siehe unten, Modi: 'normal', Standard: 'reduziert' | siehe Beschreibung des Zeitplantyps unten |
-| **Heizkreise.X.Betriebsmodus.Aktiv** | | | |
+| **Heizkreis.X.Betriebsmodus.Aktiv** | | | |
 | | | `mode` (Zeichenfolge, Aufzählung: ["Standby", "Dhw", "DhwAndHeating", "ForcedReduced", "ForcedNormal"]) | erforderlich |
 | | | `mode` (string, enum: [" standby "," dhw "," dhwAndHeating "," forceReduced "," forcatedNormal "]) | erforderlich |
 | **Heizkreis.X.Betriebsprogramme.Komfort** | | | |

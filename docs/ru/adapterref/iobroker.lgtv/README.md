@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lgtv/README.md
 title: ioBroker.lgtv
-hash: jDtgTLIniMsQADCA0Jtq9PcTe3MD1Ocv38KNSrTgKSY=
+hash: e1vRRQd3Kvr7YBcscpRBGok3Apv+ZLAD2XhIHxpR73w=
 ---
 ![логотип](../../../en/adapterref/iobroker.lgtv/admin/lgtv.png)
 
@@ -26,12 +26,15 @@ LG WebOS SmartTV адаптер для ioBroker
 ## Использование:
 Установите адаптер через интерфейс администратора ioBroker.
 В конфигурации адаптера введите IP-адрес вашего телевизора LG WebOS.
-При первом подключении вы получите запрос на сопряжение на экране телевизора, где вам следует разрешить подключение.
+При первом подключении вы получите сообщение о сопряжении на экране телевизора, где вы должны разрешить подключение.
+
+### Опрос
+Некоторые телевизоры отключаются от сетевой розетки, когда телевизор выключен, и не сообщают об этом правильно адаптеру. Затем требуется дополнительный опрос. Вы можете определить время в настройках. Если значение пустое, адаптер пытается определить это автоматически: при перезапуске адаптера опрос (каждые 60 секунд) активен, пока не будет обнаружено первое правильное событие выключения телевизора.
 
 ## Некоторые примеры:
 ```setState('lgtv.0.states.popup', 'Some text!');```
 
-Это покажет всплывающее окно с текстом "Some text!" на ТВ.
+Это покажет всплывающее окно с текстом "Некоторый текст!" на ТВ.
 Вы можете использовать HTML разрывы строк (br) в тексте.
 
 ```setState('lgtv.0.states.turnOff', true);```
@@ -60,7 +63,7 @@ LG WebOS SmartTV адаптер для ioBroker
 
 ```setState('lgtv.0.states.channelDown', true);```
 
-Снижение текущего телеканала.
+Уменьшается текущий телеканал.
 
 ```setState('lgtv.0.states.3Dmode', true);```
 
@@ -68,7 +71,7 @@ LG WebOS SmartTV адаптер для ioBroker
 
 ```setState('lgtv.0.states.3Dmode', false);```
 
-Отключение режима 3D на телевизоре.
+Деактивирует режим 3D на телевизоре.
 
 ```setState('lgtv.0.states.channel', 7);```
 
@@ -84,7 +87,7 @@ LG WebOS SmartTV адаптер для ioBroker
 
 ```setState('lgtv.0.states.launch', 'tvuserguide');```
 
-Запускает приложение Руководство пользователя телевизора на телевизоре.
+Запускает приложение «Руководство пользователя телевизора» на телевизоре.
 
 ```setState('lgtv.0.states.launch', 'netflix');```
 
@@ -109,11 +112,11 @@ LG WebOS SmartTV адаптер для ioBroker
 
 ```setState('lgtv.0.states.input', 'av1');```
 
-Переключает входной сигнал телевизора на AV1.
+Переключает iput с телевизора на AV1.
 
 ```setState('lgtv.0.states.input', 'scart');```
 
-Переключает iput ой телевизора на Scart.
+Переключает iput с телевизора на Scart.
 
 ```setState('lgtv.0.states.input', 'component');```
 
@@ -125,11 +128,11 @@ LG WebOS SmartTV адаптер для ioBroker
 
 ```setState('lgtv.0.states.input', 'hdmi2');```
 
-Переключает вход телевизора на HDMI 2.
+Переключает входной сигнал телевизора на HDMI 2.
 
 ```setState('lgtv.0.states.input', 'hdmi3');```
 
-Переключает входной сигнал телевизора на HDMI 3.
+Переключение входа телевизора на HDMI 3.
 
 ```setState('lgtv.0.states.youtube', 'https://www.youtube.com/watch?v=AjSpMQfRmEo'); OR setState('lgtv.0.states.youtube', 'AjSpMQfRmEo');```
 
@@ -162,17 +165,34 @@ LG WebOS SmartTV адаптер для ioBroker
 
 объем
 
-содержит текущий уровень громкости и может изменить громкость
+удерживает текущий уровень громкости и может изменить громкость
 
 на
 
-Значение true, когда телевизор включен, и значение false, если телевизор выключен.
+true, когда телевизор включен, и false, если телевизор выключен.
 
 ---
 
 ## Changelog
+### 1.1.6 (2020-03-07)
+* (dirkhe) make healthintervall configurable
+
+### 1.1.5 (2020-02-25)
+* (dirkhe) stable connection and subsciptions
+* (dirkhe) add Polling for TV, which not support Power Off event 
+* (dirkhe) change some states role switch to button
+
+### 1.1.4 (2020-02-07)
+* (dirkhe) changed from pull to subscribing
+* (dirkhe) add livetv to launch list
+
+### 1.1.3 (2019-12-16)
+* (merdok) fixed connect() [Pull requests #62](https://github.com/SebastianSchultz/ioBroker.lgtv/pull/62) 
+* (instalator) fixed [issues #64](https://github.com/SebastianSchultz/ioBroker.lgtv/issues/64) 
+* (instalator) change error log to debug [issues #59](https://github.com/SebastianSchultz/ioBroker.lgtv/issues/59) 
 
 ### 1.1.1 (2019-10-26)
+* (instalator) Safe keyfile to /opt/iobroker [issues #52](https://github.com/SebastianSchultz/ioBroker.lgtv/issues/52) 
 * (instalator) fix error reconect
 * (instalator) fix raw object
 * (instalator) add mac address to admin settings
@@ -238,7 +258,7 @@ LG WebOS SmartTV адаптер для ioBroker
 
 The MIT License (MIT)
 
-Copyright (c) 2019 Sebastian Schultz.
+Copyright (c) 2020 Sebastian Schultz.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

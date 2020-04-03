@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.metalarm
-hash: q3+ykWaSTPginlw8vXntnyzfAmmKaaanZiI6bTGdUww=
+hash: d1rW8+dWfJIl6ria3Tyss9F+KnMsLdWlGNZWIb/m7GI=
 ---
 ![商标](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -16,10 +16,14 @@ hash: q3+ykWaSTPginlw8vXntnyzfAmmKaaanZiI6bTGdUww=
 ＃ioBroker.meteoalarm
 =================
 
-ioBroker的meteoalarm适配器---------------------------------------------- --------------------------------此适配器从meteoalarm.eu获取天气警报，其中包括风，雪，雨，高温和低温等。此信息以本地语言和特定区域提供。
+ioBroker的meteoalarm适配器---------------------------------------------- --------------------------------此适配器从meteoalarm.eu获取天气警报，包括风，雪，雨，高温和低温等。此信息以本地语言和特定区域提供。
 
 ＃＃ 如何使用它
-请访问http://meteoalarm.eu并选择您的地区。然后转到右上角的RSS符号，右键单击并复制链接。这是您需要添加到适配器设置的链接。
+有两种方法可以获取链接以检索气象警报信息。
+
+选项1：选择您的国家/地区，然后按“加载区域”，然后选择区域。然后自动填充xml。只需按保存就可以了。
+
+选项2：转到http://meteoalarm.eu并选择您的地区。然后转到右上方的RSS符号，右键单击并复制链接。这是您需要添加到适配器设置的链接。
 
 ![商标](../../../en/adapterref/iobroker.meteoalarm/screenshot.png)
 
@@ -85,7 +89,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 * 摩尔多瓦
 *黑山
 *荷兰
-*挪威
+* 挪威
 *波兰
 * 罗马尼亚
 *塞尔维亚
@@ -103,6 +107,9 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 
 ##要实现的功能
 *一天处理多个警报
+
+## 1.1.0（2020-03-29）
+*（杰克·布莱克森）Bugfix德国
 
 ## 1.0.9（2020-02-06）
 *（杰克·布莱克森）Bugfix德国
@@ -158,7 +165,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 ### 0.1.0（2019-07-11）
 *（杰克·布莱克森）初始版本
 
-##学分
+##积分
 钟声由Freepik从www.flaticon.com设计
 
 ## Changelog
@@ -166,7 +173,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 jack-blackson <blacksonj7@gmail.com>
+Copyright (c) 2019-2020 jack-blackson <blacksonj7@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

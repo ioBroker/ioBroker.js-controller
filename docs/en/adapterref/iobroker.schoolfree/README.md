@@ -69,6 +69,9 @@ The following data points are available for further processing with Schoolfree:
 
 ## Changelog
 
+### 0.5.1 (25.03.2020)
+* (simatec) added ne features
+
 ### 0.5.0 (23.03.2020)
 * (simatec) added public holidays
 * (simatec) Bugfix next schoolfree for API 2.0

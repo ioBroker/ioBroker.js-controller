@@ -3,14 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tankerkoenig/README.md
 title: ioBroker.tankerkoenig
-hash: RshBHrBeH5FO+wSL8kiOLO+Pq/GL8aiJSnNkF9rALkk=
+hash: KbbtVuq9ff+qUhK53m+PDR78Af0J2qSk2C5ZGxEhlpA=
 ---
 ![Logo](../../../en/adapterref/iobroker.tankerkoenig/admin/tankerkoenig.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/tankerkoenig-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.tankerkoenig.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.tankerkoenig.svg)
-![Offene Punkte](http://githubbadges.herokuapp.com/Pix---/ioBroker.tankerkoenig/issues.svg)
 ![NPM](https://nodei.co/npm/iobroker.tankerkoenig.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/Pix---/ioBroker.tankerkoenig/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.tankerkoenig?branch=master&svg=true)
@@ -24,7 +23,7 @@ hash: RshBHrBeH5FO+wSL8kiOLO+Pq/GL8aiJSnNkF9rALkk=
 
 : portugal: [Documentação](/docs/en/doc_tankerkoenig_en.md)
 
-: niederlande: [Dokumentation](/docs/en/doc_tankerkoenig_en.md)
+: Niederlande: [Dokumentation](/docs/en/doc_tankerkoenig_en.md)
 
 : fr: [Dokumentation](/docs/en/doc_tankerkoenig_en.md)
 
@@ -32,26 +31,35 @@ hash: RshBHrBeH5FO+wSL8kiOLO+Pq/GL8aiJSnNkF9rALkk=
 
 : es: [Documentación](/docs/en/doc_tankerkoenig_en.md)
 
-: polen: [Dokumentacja](/docs/en/doc_tankerkoenig_en.md)
+: poland: [Dokumentacja](/docs/en/doc_tankerkoenig_en.md)
 
 : cn: [文档](/docs/en/doc_tankerkoenig_en.md)
 
 ## Roadmap
-* Das Speichern von Einstellungen ist nicht möglich, wenn kein Intervall eingegeben wurde ->
-* State HTML Table
-* State-JSON-Tabelle für das VIS-JSON-Tabellen-Widget
-* optionaler Preistrend durch CSS-Klasse
-* Abruf und Anzeige des Tankerkönigsraten-Grenzfehlers 503
-* ~~ Datenpunkte für jede Station sollten nach dem Neustart des Adapters erstellt werden, nicht nur nach der Installation ~~
+* Das Speichern von Einstellungen ist nicht möglich, wenn kein Intervall eingegeben wurde
+* HTML-Tabelle angeben
+* Status JSON-Tabelle für VIS JSON-Tabellen-Widget
+* Optionale Preisentwicklung durch CSS-Klasse
+* Fang und Anzeige Tankerkoenig Rate Limit _Fehler 503_
+* Datenpunkte für jede Station sollten nach dem Neustart des Adapters erstellt werden, nicht nur nach der Installation
 
 ## Changelog
+### 2.0.8 (2020-03-27)
+* (Zwer2k) 2.0.8 Catch error if station status reports _no data_
 
-### 2.0.5 (2019-02-221)
-* (jens-maus) fixes to prevent request() floodings
+### 2.0.7 (2020-03-25)
+* (pix) 2.0.7 Catch error if station status reports _no stations_
+
+### 2.0.6 (2019-04-17)
+* (Zwer2k) implementation of utils corrected
+* (Zwer2k) fixed error occured when all stations were closed
+
+### 2.0.5 (2019-02-22)
+* (jens-maus) fixes to prevent _request()_ floodings
 
 ### 2.0.3 (2019-02-21)
 * (pix) fixed issue with too short sync interval
-* (pix) removed datoint 'price' which was created for debug only
+* (pix) removed datapoint __price__ which was created for debug only
 
 ### 2.0.1 (2019-02-20)
 * (pix) fixed scrollbar issue in firefox
@@ -66,7 +74,7 @@ hash: RshBHrBeH5FO+wSL8kiOLO+Pq/GL8aiJSnNkF9rALkk=
 * (pix) Compact mode added
 
 ### 1.2.1 (2018-11-25)
-* (pix) fixed issue 'station_id' and 'status' mixed up
+* (pix) fixed issue __station_id__ and __status__ mixed up
 
 ### 1.2.0 (2018-11-25)
 * (pix) new datapoint station ID added
@@ -78,7 +86,7 @@ hash: RshBHrBeH5FO+wSL8kiOLO+Pq/GL8aiJSnNkF9rALkk=
 * (pix) Log entry opt out
 
 ### 1.0.4 (2017-03-21)
-* (pix) position of adapter.stop() optimized
+* (pix) position of _adapter.stop()_ optimized
 
 ### 1.0.3 (2017-01-05)
 * (pix) Appveyor testing added
@@ -118,13 +126,13 @@ hash: RshBHrBeH5FO+wSL8kiOLO+Pq/GL8aiJSnNkF9rALkk=
 * (pix) scheduled starting improved
 
 ### 0.0.4 (2016-06-01)
-* (pix) HTML Code in Datapoint "combined" corrected
+* (pix) HTML Code in Datapoint __combined__ corrected
 
 ### 0.0.3 (2016-06-01)
-* (pix) Datapoint "combined" with CSS class for status
+* (pix) Datapoint __combined__ with CSS class for status
 
 ### 0.0.2 (2016-06-01)
-* (pix) Datapoint "combined"
+* (pix) Datapoint __combined__
 
 ### 0.0.1 (2016-05-31)
 * (pix) Adapter created
@@ -133,7 +141,7 @@ hash: RshBHrBeH5FO+wSL8kiOLO+Pq/GL8aiJSnNkF9rALkk=
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 pix
+Copyright (c) 2016-2020 pix
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

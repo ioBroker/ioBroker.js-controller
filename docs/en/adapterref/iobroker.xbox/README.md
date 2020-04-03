@@ -315,6 +315,10 @@ In this section you can find a description of every state of the adapter.
    *View button for media content.*
    
 ## Changelog
+### 0.6.3 (2020-04-02)
+* (foxriver76) try specific python versions first on install
+* (foxriver76) bump dependency, because of auth bug in smartglass
+
 ### 0.6.1 (2020-03-17)
 * (foxriver76) fixes for compact mode compatibility
 * (foxriver76) more translations added

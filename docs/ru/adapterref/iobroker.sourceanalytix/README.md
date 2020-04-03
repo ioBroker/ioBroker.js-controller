@@ -2,10 +2,11 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sourceanalytix/README.md
-title: [Бета-релиз] SourceAnalytix
-hash: QBdIrwKQw8DZnNfvJrzM4brA6hx/vmBatpdePpsBsps=
+title: [Dev - в прогрессе] SourceAnalytix
+hash: 1BbfFumF7a5jvMdRL9kJsznsqMIuM2aCYewim9cCChU=
 ---
-# [Бета - выпущен] SourceAnalytix
+# [Dev - в прогрессе] SourceAnalytix
+# {!!! Не устанавливайте с git !!!}
 
 ![тесты](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
 ![Количество установок](http://iobroker.live/badges/sourceanalytix-stable.svg)
@@ -13,9 +14,8 @@ hash: QBdIrwKQw8DZnNfvJrzM4brA6hx/vmBatpdePpsBsps=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
 ![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
 
-## Внимание, этому адаптеру нужен узел 8 или выше !!!
 ioBroker SourceAnalytix позволяет вам отслеживать и отслеживать потребление, стоимость и значения счетчиков для ваших устройств.
-Вам нужны данные в качестве ввода (общее количество использованного Wh, л / ч или м3) с ваших устройств, и этот адаптер будет:
+Вам нужны данные в качестве входных данных (общее количество использованного Wh, л / ч или м3) с ваших устройств, и этот адаптер будет:
 
 * Отслеживание потребления ежедневно, еженедельно, ежемесячно, ежеквартально, ежегодно
 * рассчитать стоимость (текущая цена настраивается)
@@ -25,56 +25,34 @@ ioBroker SourceAnalytix позволяет вам отслеживать и от
 ## Как
 * [ ] Сделать
 
-Этот адаптер имеет свои корни благодаря пиксам еще в 2016 году https://forum.iobroker.net/viewtopic.php?f=21&t=2262
+Этот адаптер имеет свои корни благодаря пикселю в 2016 году https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
 Что было улучшено @hadering и опубликовано на github https://github.com/hdering/homematic_verbrauchszaehler
 
 ## Известные вопросы
 * [] Расчет периода выбирается, но еще не реализован
-* [] четверти не рассчитаны
 * [] месячная стоимость еще не включена в расчет
-* [x] сохранить текущие значения счетчика, еще не реализованные
-* [x] Значение счетчика выбирается, но еще не реализовано
-* [x] требуется перезапуск адаптера для добавления расчета новых объектов
-* [x] состояние для доставки по типу стоимости не записывается
-* [x] псевдоним устройства неверен
-* [x] переводы
 
 ## Сделать
 * [ ] Документация
 * [] Стоимость по умолчанию равна 0 с сообщением об ошибке, если не указано
 * [] пересчет на основе значений счетчика (настраивается по дате)
-* [] расчеты для квартальных значений
 * [] добавить состояния объекта для предыдущего [x] дня, [x] недели, [x] месяца, [x] квартала, [x] года, настраиваемых в настройках адаптера
-* [] оптимизация кода
-* [x] хранение значений счетчиков для каждого состояния
-* [x] компактный режим
-* [x] добавить поддержку для вычисления значений wh
-* [x] Исправлены основные переводы.
-* [x] готовые значения состояний и сохранение в состояниях
-* [x] записать значение счетчика в состояние «старт» для использования в расчетах
-* [x] настраиваемый интервал для каждого состояния
-* [x] настраиваемая единица измерения для каждого состояния
-* [x] настраиваемая себестоимость для каждого штата
-* [x] настраиваемая цена за единицу для каждого штата
-* [x] Штат, использованный для стоимости или заработка
-* [x] расчет потребления
-* [x] расчет стоимости
-* [x] регулируемая начальная точка измерения
-* [x] поддержка нескольких состояний устройства
-* [x] записать значение метра в объект для использования в вычислениях
-* [x] конфигурация в настройках адаптера (в настоящее время поддерживаются только демонстрационные объекты Discovergy)
-* [x] удалить временные состояния для расчетов
-* [x] расчет для значений м3
-* [x] использовать псевдоним имени устройства
-* [x] настраиваемые точки данных (да / нет) для стоимости, потребления и значений счетчиков
-* [x] Возможность выбора хранения аналитики за полный год или только по выбору
-* [x] убедитесь, что все значения сохраняются при выключении адаптера, чтобы предотвратить пробелы в данных
+* [] хранение значений счетчиков для каждого штата
 
 ## Поддержите меня
-Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это личная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Если вам нравится моя работа, рассмотрите возможность личного пожертвования (это персональная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
+
+### 0.4.0 (Development in progress)
+* (Dutchman) Complete code rebuild
+* (Dutchman) Complete code rebuild & optimalisation
+* (Dutchman) Change datapoints to root by year
+* (Dutchman) Delete unneded states automatically
+* (Dutchman) Rebuild calculation logic to use memory instead of object DB (performance)
+
+To-Do : Migration from < 0.4.0 to new datastructure
 
 ### 0.3.0   
 * (Dutchman) m³ Implemented
@@ -234,7 +212,7 @@ ioBroker SourceAnalytix позволяет вам отслеживать и от
 ## License
 MIT License
 
-Copyright (c) 2018 Dutchman
+Copyright (c) 2020 Dutchman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

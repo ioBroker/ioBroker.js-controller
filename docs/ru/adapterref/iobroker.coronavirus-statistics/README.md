@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker.coronavirus-статистика
-hash: oTIhUDP9XRjsxpNs7s5q8OIxCSwDQeG2kZFHzz6bpk4=
+hash: Sbloxfv/wHn7WacXUIZ5lIjT/1caCqz4t4TsaU7228c=
 ---
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
@@ -14,7 +14,7 @@ hash: oTIhUDP9XRjsxpNs7s5q8OIxCSwDQeG2kZFHzz6bpk4=
 ![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.coronavirus-statistics/master.svg)
 
-! (Логотип) [админ / коронавирус-statistics.png]
+<img src="./admin/coronavirus-statistics.png" width="50" height="50">
 
 # IoBroker.coronavirus-statistics
 ## Адаптер живой статистики Coronavirus для ioBroker
@@ -32,14 +32,37 @@ hash: oTIhUDP9XRjsxpNs7s5q8OIxCSwDQeG2kZFHzz6bpk4=
 |--|--|
 | активный | Количество текущих инфицированных людей |
 | случаи | Количество полностью известных случаев |
+| casePerOneMillion | Количество полностью известных случаев на миллион жителей |
 | критический | Сумма критической ситуации (Госпитализирована) |
 | смерти | Количество зарегистрированных зарегистрированных смертей |
+| deathsPerOneMillion | Количество зарегистрированных зарегистрированных смертей на миллион жителей |
+| флаг | Флаг страны, ссылка на местоположение GitHub |
 | выздоровел | Количество полностью известных восстановленных случаев |
 | TodayCases | Новые случаи на сегодня |
 | сегодня смерти | Количество полностью известных людей умерло сегодня |
 
-Обратите внимание, что этот адаптер использует как можно больше актуальной информации, но в зависимости от отчета страны может быть задержка на несколько часов.
-Источник: https://coronavirus-19-api.herokuapp.com
+Помните, что этот адаптер использует как можно больше актуальной информации, но в зависимости от отчета страны может быть задержка на несколько часов.
+Федеральные земли Германии: https://npgeo-corona-npgeo-de.hub.arcgis.com/ s Общий источник: https://coronavirus-19-api.herokuapp.com
+
+## Расширенные настройки
+| Вариант | Описание |
+|--|--|
+| Все страны | Получить данные для всех стран мира (по умолчанию: false) |
+| Континенты | Группировать общие суммы по континентам в отдельном состоянии (по умолчанию: false) |
+| Удалить неиспользуемые состояния | Удалить данные, когда страны не выбраны (по умолчанию: false) |
+
+## Только для Германии
+| Вариант | Описание |
+|--|--|
+| Федеральные штаты | Получить данные федеральных земель по Германии (только выбрано, по умолчанию false) |
+| уезды | Получить данные для округов Германии (только выбрано, по умолчанию false) |
+| Города | Получить данные для городов Германии (только выбрано, по умолчанию false) |
+| Все федеральные земли | Все федеральные земли Германии (по умолчанию false) |
+| Все города | Все города Германии (по умолчанию false) |
+| Все округа | Все округа Германии (по умолчанию false) |
+
+Можно получить данные по федеральным округам (Bundesländer), городам (Städte) и округам (Landeskreise).
+Вы можете выбрать получение всех данных или просто выбрать определенные регионы в дополнительных настройках.
 
 ## Добавить недостающие страны
 Может случиться, что страны не распознаются правильно, потому что API предоставляет названия некоторых стран, не соответствующих ISO. В таком случае вы получите предупреждение в журнале, которое выглядит следующим образом
@@ -52,7 +75,7 @@ coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not fo
 
 [Список с названиями стран](https://github.com/i-rocky/country-list-js/blob/master/data/names.json)
 
-С выбранным названием страны необходимо создать строку JSON и ввести ее в точку данных `coronavirus-statistics.0.countryTranslator`.
+Выбрав название страны, вы должны создать строку JSON и ввести ее в точку данных `coronavirus-statistics.0.countryTranslator`.
 Строка JSON выглядит следующим образом, например:
 
 ```
@@ -66,7 +89,54 @@ coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not fo
 
 ## Changelog
 
-### 0.3.3
+### 0.5.1 (2020-03-31) BugFix : State attribute definition missing for + affectedCountries
+* (DutchmanNL) BugFix : State attribute definition missing for + affectedCountries
+* (DutchmanNL) BugFix : Ensure name changes are propagated
+
+### 0.5.0 (2020-03-31) For Germany : federal states, counties and cities added
+* (DutchmanNL) Update production release from 0.4.0 to 0.5.0
+* (DutchmanNL) BugFix : Do not write objects unneeded
+
+### 0.4.9 Fixed issues in country names, added counties and cities for germany
+* (DutchmanNL  & AlCalzone) Code optimations 
+* (DutchmanNL) Cities for germany added
+* (DutchmanNL) counties for germany added
+* (DutchmanNL) Hiding tables if "all" is selected
+* (DutchmanNL) Hiding unused tables in advanced settings
+* (Kampfratte) BugFix : Country top 5
+* (GermanBluefox) BugFix : hidden numbers
+* (DutchmanNL) BugFix : Several translations
+* (DutchmanNL) BugFix : Issues with integration testing
+* (Scrounger)  Bugfix : Country names by ISO format (could result in new datapoints !)
+* (DutchmanNL) BugFix : Deletion of unselected federal states and counties (Germany)
+* (DutchmanNL) BugFix : Button only respond when clicking on lable (not all browser)
+* (DutchmanNL) BugFix : Ensure incorrect created states for "countryInfo" are removed
+
+### 0.4.5 Countries for Germany added
+* (DutchmanNL) Countries for Germany added
+* (DutchmanNL) added selection for federal states and country's
+* (DutchmanNL) BugFix : State attribute definition missing for + deathsPerOneMillion
+
+### 0.4.2 Federal States for Germany implemented
+* (DutchmanNL) Configuration redesigned, moved options to "Advanced Settings" tab
+* (DutchmanNL) Federal States for Germany implemented, thanks to : https://npgeo-corona-npgeo-de.hub.arcgis.com/ 
+
+### 0.4.0 Data-points added for Top 5 of countries with most cases
+* (KLVN) BugFix : German (and some other) translations corrected
+* (DutchmanNL) Add gulp i18n translation structure
+
+
+### 0.3.5 Data-points added for Top 5 of countries with most cases
+* (DutchmanNL) Data-points added for Top 5 of countries with most cases
+* (DutchmanNL) BugFix : Flag datapoints are not deleted
+
+### 0.3.4 Add button to read "All Countrys"
+* (DutchmanNL) Add button to read "All Countrys"
+* (DutchmanNL) Add state for link to flag for each country on github
+* (DutchmanNL) BugFix : State attribute definition missing for + countryInfo
+* (DutchmanNL) BugFix : Turks_and_Caicos not found in lib! Must be added to the country name translator.
+
+### 0.3.3 Improved configuration page
 * (DutchmanNL) Improved configuration page
 * (DutchmanNL) Make country list in configuration variable	
 * (DutchmanNL) Implement choice if non-selected countrys should be deleted from states (if already there, default No!) 
@@ -75,7 +145,7 @@ coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not fo
 * (DutchmanNL) Enable configuration
 
 ### 0.3.0 (2020-03-22)
-* (bluefox) The number of data points was reduced by selection of countries
+* (GermanBluefox) The number of data points was reduced by selection of countries
  
 ### 0.2.5 
 * (Scrounger) Bugfix : Cabo_Verde not found in lib! Must be added to the country name translator

@@ -28,6 +28,9 @@ Install the adapter through ioBroker admin interface.
 In the adapter config input the ip adress of your LG WebOS TV.
 At first connection you will receive a pairing prompt on your TV screen where you should allow the connection.
 
+### Polling
+Some TVs disconnect from the web socket when the TV is turned off and do not report this to the adapter correctly. Then additional polling is required.  You can define the time in settings. If the value is empty, the adapter tries to detect this automatically:
+On adapter restart the polling (every 60 sec) is active until the first correct TV off event is detected.
 
 
 ## Some examples:
@@ -201,6 +204,9 @@ is true when TV is on and false if TV is off
 
 
 ## Changelog
+### 1.1.6 (2020-03-07)
+* (dirkhe) make healthintervall configurable
+
 ### 1.1.5 (2020-02-25)
 * (dirkhe) stable connection and subsciptions
 * (dirkhe) add Polling for TV, which not support Power Off event 

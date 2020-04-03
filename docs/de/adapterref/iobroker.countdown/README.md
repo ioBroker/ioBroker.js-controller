@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: xHNdfxlaopeoue8Ux4AUCIlLOPTnSrQYMs1bbF2dHKc=
+hash: fGTU+SIk/WT8113/GNv8Lzz/zMLM1jDhiNgxQPHmVCQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -27,6 +27,7 @@ Der Adapter liefert Ihnen automatisch eine JSON-Tabelle. Sie müssen es nur mit 
 ## So erstellen Sie Countdowns
 Es gibt zwei Möglichkeiten, Countdowns einzurichten:
 
+* Sie können einen Countdown in den Adaptereinstellungen auf der Registerkarte "Countdown erstellen" erstellen.
 * Sie können einen manuellen Status im Gerät "Setup" erstellen. Der Name des Objekts ist der Alarmname und der Wert ist das Datum. Das Datum muss im Format "TT.MM.JJJJ HH: mm: ss" vorliegen.
 * Mit sendto können Sie einen Alarm erstellen. Dort können Sie entweder die Komponenten (mindestens Jahr Monat Datum) oder eine Datumszeichenfolge senden. Für die Datumszeichenfolge können Sie das Format im Setup des Adapters anpassen.
 
@@ -38,6 +39,19 @@ Es gibt zwei Möglichkeiten, Countdowns einzurichten:
 
 ## So löschen Sie Countdowns
 Sie können einen Countdown mit dem Sendto löschen. Senden Sie daher nur den Namen mit sendto an den Adapter, und der Countdown wird automatisch gelöscht.
+
+## Countdown wiederholen
+Wenn Sie möchten, dass sich ein Countdown in einem definierten Zeitraum wiederholt (z. B. können Sie nicht jedes Jahr einen Countdown für Ihren Hochzeitstag durchführen), können Sie dies auch mit diesem Adapter tun. Füllen Sie daher entweder das Feld "Wiederholungszeitraum" in den Einstellungen des Adapters aus oder fügen Sie den Zeitraum nach dem Datum hinzu, wenn Sie einen Countdown mit dem Typ "Datum" erstellen. Ein sendTo würde so aussehen für einen Countdown, der am 1. April 2020 endet und jedes Jahr wiederholt wird:
+
+sendTo ("countdown.0", "send", {"name": 'Hochzeitstag', "Datum": '01 .04.2020 00: 01 + 1Y '});
+
+Parameter hier sind:
+
+* Y: Jahre
+* M: Monate
+* D: Tage
+* H: Stunden
+* m: Minuten
 
 ## Verfügbare Ausgänge
 | Datentyp | Beschreibung |
@@ -55,10 +69,25 @@ Sie können einen Countdown mit dem Sendto löschen. Senden Sie daher nur den Na
 | totalDays | Total Anzahl der Tage bis zum Enddatum |
 | totalWeeks | Total Anzahl der Wochen bis zum Enddatum |
 | erreicht | Boolesches Feld, das definiert, ob das Enddatum erreicht wurde oder nicht |
+| repeatEvery | Countdown wird um diesen Zeitraum nach Erreichen des Enddatums | wiederholt |
 
 ## Funktionen zum Hinzufügen
 * Möglichkeit, ein Skript als Parameter hinzuzufügen und zu starten, wenn der Countdown endet
 * Möglichkeit, Plus und Minus in Addminutes und den anderen Add-Funktionen zu verwenden
+
+## 1.1.0 (2020-04-02)
+* (jack-blackson) Bugfix Read-Me-Link
+* (Jack-Blackson) Bugfix RepeatCycle
+
+## 1.0.9 (2020-03-31)
+* (jack-blackson) Bugfix-Protokollmeldungen
+
+## 1.0.8 (2020-03-31)
+* (Jack-Blackson) Wiederholen Sie den Countdown in einem definierten Zeitraum (z. B. jedes Jahr).
+
+## 1.0.7 (2020-03-30)
+* (jack-blackson) Neuer Datumstyp für Einstellungen hinzugefügt: JJJJ-MM-TT
+* (jack-blackson) Countdown direkt in den Adaptereinstellungen hinzufügen
 
 ## 1.0.6 (2020-03-20)
 * (DutchmanNL) Adaptertyp behoben
@@ -90,7 +119,7 @@ Sie können einen Countdown mit dem Sendto löschen. Senden Sie daher nur den Na
 
 ## 0.5.0 (2019-07-04)
 * (Jack-Blackson) Passen Sie die Daten in der Tabelle an
-* (Jack-Blackson) Bugfix-Datumsimport
+* (Jack-Blackson) Bugfix Datumsimport
 
 ### 0.4.0 (04.06.2019)
 * (Jack-Blackson) Restrukturierung - Die Erstellung von Alarmen mit Sendto oder manuell mit Datenpunkt ist jetzt möglich
