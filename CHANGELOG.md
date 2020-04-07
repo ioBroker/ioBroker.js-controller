@@ -42,6 +42,7 @@
 **Developer relevant DEPRECATIONS/WARNINGS**
 * (foxriver76) Do not allow access to adapter.states and adapter.objects anymore and add warning logs to deprecate the usage. js-controller 3.1+ will remove these methods. Please adjust your adapters
 * (foxriver76) Verify that a proper object of type "meta" exists when files are accessed in the internal ioBroker storage and output deprecation logging, these actions will be declined in js-controller 3.1+
+* (AlCalzone) Validate the object argument to set[Foreign]State[Changed] and log warnings, such invalid set commands will be declined with js-controller 3.1
 * (Apollon77) Move deprecation of getMessage to next controller version (3.1+)
 * (foxriver76/Apollon77) Validate that id in several state and object methods is of type string and log warnings
 * (foxriver76) Add basic checking for obj.common properties including logging. Please check logs and fix them
@@ -52,7 +53,6 @@
 
 **Developer relevant Optimizations and Fixes**
 * (Apollon77) Make sure that all places in adapters for states and objects that can return "really async" (e.g. because of DB communication) ALWAYS return async! (else callback !--count constructs can fail)
-* (AlCalzone) Validate the object argument to set[Foreign]State[Changed]
 * (foxriver76) Also set default values of instanceObjects defined in io-package.json
 * (bluefox) Improve extension mode for web extensions
 * (foxriver76) Optimize extendObjects function of adapter.js (use from and ack)
@@ -66,7 +66,7 @@
 * code style optimizations
 
 
-# 2.2.10 (2020-03-08) Release Dina - Windows Edition
+## 2.2.10 (2020-03-08) Release Dina - Windows Edition
 **This version is especially for the new Windows Installer and will be used by it. It is not offered as normal update for the users on Linux (will not break, but not needed)!**
 * (AlCalzone) do not execute npm installs with --prefix but inside a given directory on windows
 
