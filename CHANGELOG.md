@@ -1,8 +1,72 @@
 # Changelog
 
-## 3.0.0 (2020-03-xx) Release Elena
-* BREAKING CHANGE: Nodejs 8.x will be no longer officially supported!
-* WIP!
+## 3.0.x (2020-04-xx) Release Elena
+**BREAKING CHANGES**
+* Nodejs 8.x will be no longer officially supported! Supported are nodejs 10.x, 12.x and (most likely) 14.x
+
+**Features**
+* (Apollon77) Enable zip Archive setting that it is on by default again. All Logs on Linux will be packaged to .gz on rotation. This can be deactivated by configuration (see ...)
+* (Apollon77) Introduce CLI command "iobroker rebuild <adaptername>" or "iobroker rebuild self" (for controller) to execute an npm install/rebuild for the specified adapter
+* (Apollon77) Detect the need for a rebuild because of a nodejs update by checking adapter crash error message and execute the "iobroker rebuild" command for the affected adapter up to 3 times.
+* (foxriver76) Add ability to define separate read and write id for aliases (see ...)
+* (foxriver76) Make file write intervals of objects and state file dbs configurable (see ...)
+* (foxriver76) Check available RAM of the system before a new adapter process is started. If it is below 50/100MB log an error/warn and make it configurable via iobroker.json (see ...)
+* (Apollon77) Add plugin system for js-controller and adapters (see ...)
+* (Apollon77) Add and automatically enable Sentry as plugin for js-controller (see infos in README.md), can be disable per host via system.host.name.plugins.sentry.enabled (see ...)
+
+**Optimizations and Fixes**
+* (bluefox) Show options for start/stop/restart if more than one instance exists for the adapter
+* (AlCalzone) Validate arguments for `iobroker del ...` CLI command
+* (bluefox) Log js-controller version by start of adapter too
+* (Stabilostick) Set default certificate validity to 12 months, according to new Apple rules! Existing certificates will be recreated on controller installation if no custom certificate is used
+* (bluefox) Also initialize objects with local redis connection details if setup command is called with "useRedis" parameter
+* (foxriver76) Increase timeout of hostinfo command to prevent errors on systems with low CPU
+* (foxriver76) The end of schedule adapters is no longer logged as error
+* (foxriver76) Allow CLI commands to check status of an adapter instance
+* (foxriver76) Enhancements and fixes for `iobroker list files` command, allow to specify exact meta folder name as parameter and not only the adapter
+* (foxriver76) Add forced repository update to help, add logging to show that it is used
+* (foxriver76) Also delete uploaded vis widgets on adapter deletion
+* (foxriver76) Restart referenced restart-adapters after uninstall also
+* (foxriver76) Prevent dot as last char of an object or state id
+* (foxriver76) Improve performance on filter actions (getObjectView) when redis is used as objects database
+* (Apollon77) Optimize sigKill handling to prevent restart loops for edge cases and slow system
+* (Apollon77) Optimize errormessage for invalid protocol on database connection and make easier understandable
+* (Apollon77) Also catch unhandled promise rejections in adapters and handle like exceptions to allow error detection and automatic restart
+* (foxriver76) Also remove objects from Enums on object deletion
+* (foxriver76) Fix adapter exiting with wrong exit codes
+* (bluefox) Fix restart CLI command
+* (foxriver) Update cache manifest correctly on visdebug and fix process exit on non existing vis dir
+* (foxriver76) No longer require restart of instance after alias object changes and other alias optimizations
+* (foxriver76) Make sure files in internal file storage are always stored with correct path and also  automatically fix existing entries
+
+**Developer relevant DEPRECATIONS/WARNINGS**
+* (foxriver76) Do not allow access to adapter.states and adapter.objects anymore and add warning logs to deprecate the usage. js-controller 3.1+ will remove these methods. Please adjust your adapters
+* (foxriver76) Verify that a proper object of type "meta" exists when files are accessed in the internal ioBroker storage and output deprecation logging, these actions will be declined in js-controller 3.1+
+* (Apollon77) Move deprecation of getMessage to next controller version (3.1+)
+* (foxriver76/Apollon77) Validate that id in several state and object methods is of type string and log warnings
+* (foxriver76) Add basic checking for obj.common properties including logging. Please check logs and fix them
+
+**Developer relevant Optimizations and Fixes**
+* (AlCalzone) Validate the object argument to set[Foreign]State[Changed]
+* (foxriver76) Also set default values of instanceObjects defined in io-package.json
+* (bluefox) Improve extension mode for web extensions
+* (Apollon77) Make sure that all places in adapters for states and objects that can return "really async" (e.g. because of DB communication) ALWAYS return async! (else callback !--count constructs can fail)
+* (foxriver76) Optimize extendObjects function of adapter.js (use from and ack)
+* (foxriver76) Use from and ack when creating instanceObjects on installation of an instance
+* (Apollon77) Fix potential crash where name is no string in some File object operations
+* (foxriver76) Fix this.stop being undefined on daemon adapters 
+* (foxriver76) Also respect def values of io-package.json on automatic object recreation due to instance start
+* (foxriver76) Respect state.from if provided on setState
+* (Apollon77) Enhance checks for getObjectsView response
+* general dependency updates
+* code style optimizations
+
+OPEN:
+* (bluefox) TODO ?? Automatically encrypt all config attributes starting with "enc_", introduce ADAPTER_AUTO_DECRYPT
+* (??) Dependency stuff
+
+CUT Commits 6.4.!!
+
 
 # 2.2.10 (2020-03-08) Release Dina - Windows Edition
 **This version is especially for the new Windows Installer and will be used by it. It is not offered as normal update for the users on Linux (will not break, but not needed)!**
@@ -13,7 +77,7 @@
 * (Apollon77) allow to deactivate logfile zipping by iobroker.json (for non-windows systems)
 * (Apollon77) make sure sigKill state only handles number values (fixes #638)
 * (bluefox) add better checks for file CLI commands
-* (Apollon77) make sure directly is created before writing meta data and send redis error correctly, prevent controller crash (fixes #644)
+* (Apollon77) make sure directory is created before writing meta data and send redis error correctly, prevent controller crash (fixes #644)
 * (foxriver76) optimize package manager handling  (fixes #631)
 * (Apollon77) make sure deleting running instances does not crash js-controller (fixes #658)
 * (Apollon77) Downgrade semver to stay compatible with nodejs 8

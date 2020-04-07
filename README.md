@@ -43,7 +43,7 @@ after that, ioBroker should be running and available in the browser under ```htt
 ### Start ioBroker controller
 #### Linux
 * run ```iobroker start``` to start the ioBroker controller in the background
-* watch the logfile ```tail -f log/iobroker.<Date>.log```
+* watch the logfile ```iobroker logs --watch```
 
 or
 
@@ -118,6 +118,19 @@ If needed, especially for low memory situations the memory limit for all adapter
 
 The js-controller is collecting statistics for the host (`system.host.hostname.*`), running compact groups (`system.host.hostname.compaczgroupX.*`) and for each adapter (`system.adapter.adaptername.*`). The data contains memory usage, free memory, number of events and also the event loop lag of the Node.js process.
 
+## Error Reporting via ioBroker Sentry
+**Feature status:** stable since js-controller 3.0.0
+
+Sentry.io is a way for developers to get an overview about errors from their applications. The js-controller uses this method to make sure application crashes are reported to us. With this we can make sure to provide fixes for problems very fast.
+
+Especially with the automatic restart behaviour of ioBroker some crashes happen and noone really realizes them. And so we also do not get bug reports for them. With this method the information are provided to us. 
+
+When the js-controller crashes or an other Code error happens (and only then!), this error, that also appears in the ioBroker log, is submitted to our own Sentry server hosted in Germany. If you have allowed iobroker GmbH to collect diagnostic data then also your anonymous installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. IP adresses are not stored with the crash report! 
+
+All of this helps me to provide an error free smart home system that basically never crashes.
+
+If you want to disable the error reporting you can do this by setting the state "system.host.NAME.plugins.sentry.enabled" to false. You should see a log message stating that sentry was disabled. After disabling the plugin no crashes from your system are reported and so can not be fixed without reporting them by yourself manually!
+
 ### Logging
 
 #### Log levels
@@ -180,9 +193,9 @@ The logging is configured in the `iobroker.json` file and can be changed there:
 }
 ```
 
-Since js-controller 2.2 Logfiles on non-Windows based systems are compressed on rotation, so that the older Files need less space on your storage. 
+Since js-controller 3.0 Logfiles on non-Windows based systems are compressed on rotation, so that the older Files need less space on your storage. 
 
-If you do not want to compress the files this behaviour can be deactivated since js-controller 2.3 by `iobroker.json`:
+If you do not want to compress the files this behaviour can be deactivated by `iobroker.json`:
 
 ```
 {
@@ -321,6 +334,23 @@ Please check that your adapter starts and runs as expected also when compact mod
 
 For adapters running in compact mode, special care must be taken to clean up used resources without throwing errors. You need to make sure that **all** initialized connections, timers and intervals are closed and stopped in the `unload` handler.
 
+#### Check available RAM before adapters are started
+**Feature status:** stable, since js-controller 3.0
+
+The js-controller checks the available RAM of the system before starting a new adapter process. If the available RAM is below 50/100MB by default an error/warn is logged. The limits can be configured in iobroker.json
+
+```
+    "system": {
+        "memLimitWarn": 100,
+        "memLimitWarnComment": "If the available RAM is below this threshold on adapter start, a warning will be logged.",
+        "memLimitError": 50,
+        "memLimitErrorComment": "If the available RAM is below this threshold on adapter start, an error will be logged."
+    }
+    ...
+```
+
+Later versions of js-controller might prevent start of a new adapter process if system resources are too low! 
+
 #### Manually run adapter instances for debugging
 **Feature status:** stable
 
@@ -337,7 +367,7 @@ All log output will now be printed to the console.
 
 When local interfaces are required or the host system is reaching its resource limits, the ioBroker system can be distributed to additional hosts. All hosts in a multihost environment are connected to the same states and objects databases and are thus synchronized with each other.
 
-When the states and/or objects databases are provided by an js-controller process on one host, this "master" host needs to be configured so the databases are available on the local network. TO do so, enter 0.0.0.0 as the address in ```iobroker setup custom``` instead of 127.0.0.1.
+When the states and/or objects databases are provided by an js-controller process on one host, this "master" host needs to be configured so the databases are available on the local network. To do so, enter 0.0.0.0 as the address in ```iobroker setup custom``` instead of 127.0.0.1.
 
 All other hosts are configured to connect to this master host.
 
@@ -386,7 +416,7 @@ To create an alias object simple create a new object with a own name in the `ali
 }
 ```
 
-or using different read and write ids:
+or using different read and write ids (supported starting js-controller 3.0):
 
 ```
 {
@@ -413,7 +443,7 @@ or using different read and write ids:
 
 The following fields are allowed in the alias structure:
 
-* `alias.id` contains the ID of the target object/state to mirror or represents an object with the following two properties:
+* `alias.id` contains the ID of the target object/state to mirror OR (since js-controller 3.0) represents an object with the following two properties:
     * `alias.id.write` contains the ID of the object which will be set when alias is written
     * `alias.id.read` contains the ID of the object which will be mirrored to the alias object/state   
 * `alias.read` can optionally contain a read script (will be evaluated) to calculate the alias value when the target state changes
@@ -446,12 +476,22 @@ The in-memory DBs work well for up to 10000 objects and normal state update freq
 
 js-controller 1.x was using socket.io as the communication protocol between the adapters and the in-memory DBs. Starting with js-controller 2.0, the communication protocol was changed to be a lightweight Redis protocol. This simplifies the logic and shuld increase performance.
 
-For the objects and states databases special additional logging of the redis protocl messages can be activated in iobroker.json
+For the objects and states databases special additional logging of the redis protocol messages can be activated in iobroker.json
 
 ```
 "objects": {
   ...
   "enhancedLogging": false
+}
+```
+
+When not configured differently the file databases are persisted every 15s (15000ms) after data are changed. The interval in ms can be changed by configuration in iobroker.json starting js-controller 3.0.
+**Note:** If you do that be aware that you may loose data when the js-controller crashes unexpectedly!
+
+```
+"objects": {
+  ...
+  "writeFileInterval": 60000
 }
 ```
 
@@ -554,6 +594,7 @@ ioBroker allows to use a Redis Sentinel system. For this you use ```iobroker cus
 With such a setup, ioBroker will connect to one of these sentinel processes to get the current Master Redis and then connect to it. When the connection to the Master is disconnected, all data updates are cached and transmitted as soon as a connection to the new master has been established.
 
 ### Certificate Handling
+
 ... CLI
 ... Files vs PEM content
 
@@ -561,6 +602,12 @@ With such a setup, ioBroker will connect to one of these sentinel processes to g
 **Feature status:** Stable
 
 TODO: Link to Adapter Development docs
+
+#### Subscribe to Logs from other adapters
+**Feature status:** Stable
+
+The js-controller allows adapters to subscribe to log messages from other adapters and react on them.
+For details see https://github.com/ioBroker/ioBroker.js-controller/blob/master/doc/LOGGING.md
 
 #### Adapter Feature Detection
 **Feature status:** Stable since js-controller 2.0.0
@@ -581,6 +628,8 @@ The following features can be checked using this method:
 * **ADAPTER_GETPORT_BIND**: the adapter.getPort method allows an optional second parameter to bind the port only on a special network interface  (since js.controller 2.0) 
 * **ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE**: adapter.setObject(*) methods now sets the default value (def) after the object is created  (since js.controller 2.0)
 * **ADAPTER_DEL_OBJECT_RECURSIVE**: adapter.delObjects supports options.recursive flag to delete whole object structures (since js.controller 2.2)
+* **ADAPTER_AUTO_DECRYPT**: TODO
+* **PLUGINS**: Plugins are supported by this js-controller and adapters, see section below for more details
 
 To check if certain adapter methods itself are existing please simply check for their existence like
 
@@ -598,17 +647,28 @@ if (typeof adapter.getObjectView === 'function') {
 }
 ```
 
+#### Plugin-System for Adapters and js-controller
+**Feature status:** Stable since js-controller 3.0.0
+
+Starting with js-controller 3.0 a flexible plugin system is available to the js-controller and also to adapters.
+Plugins are custom modules that can be configured in io-package.json in a new "plugins" section and provide central functionality on the level of the adapter or js-controller process. The modules are automatically loaded and configured. Depending on the plugin they can be enabled or disabled by setting system.host or system.adapter states.
+
+More details about plugins and their development can be found at the [Plugin-Base repository](https://github.com/ioBroker/plugin-base/blob/master/README.md). A simple implementation can be found at the [Sentry-Plugin](https://github.com/ioBroker/plugin-sentry/blob/master/README.md)
+
+New Plugins should always be developed, reviewed and pulished by ioBroker Core developers! Contact @Apollon77 or @GermanBluefox for this.
+
+Since js-controller 3.0 the sentry plugin is integrated and activated by default in js-controller. See information above.
 
 ## Release cycle and Development process overview
 
-The goal is to release an update for the js-controller roughly all 3 months. The main reasons for this are shorter iterations and less changes that can be problematic for the users (and getting fast feedback) and also trying to stay up-to-date with the dependencies.
+The goal is to release an update for the js-controller roughly all 6 months (April/September). The main reasons for this are shorter iterations and less changes that can be problematic for the users (and getting fast feedback) and also trying to stay up-to-date with the dependencies.
 
-For the dependencies we will use depend-a-bot. In general the goal is still to support a certain range of node.js LTS versions. Currently js-controller 2.0 will start with nodes 8.x up to 12.x. If dependency updates would break that and would require a major-release, this will be discussed and decided on core developer level BEFORE merging such a dependency change!
+For the dependencies we will use depend-a-bot. In general the goal is still to support a certain range of node.js LTS versions. Currently js-controller 3.0 will start with nodes 10.x up to 12/14.x. If dependency updates would break that and would require a major-release, this will be discussed and decided on core developer level BEFORE merging such a dependency change!
 
 For the planned changes we use a backlog approach. This means that out of the existing issues for the project the core developers select issues to put into a prioritized backlog in the project view. Other users also can propose tickets. All merged PRs (also when unplanned/not prioritized before) are included as finished tickets in the project (so project is assigned to them manually on merge).
 When a ticket is contained in the backlog this does not mean that it will be done in the next version! But it helps if developers have some time to see what’s considered important. The current project will always get the name „Next Release“. All older projects will get the respective release version number to know the history.
 
-Roughly at the end of each quarter (so 31.3./30.6./30.9./31.12.) we will finalize the next release version, update changelogs. A version branch for this version is created that will allow hotfixes. 1-2 weeks before that cut-off date.no new feature PRs should be added. Changes are flagged as [Bugfix], [Feature] or [Breaking Change] in changelog (ideally also in PRs) and version increase is depending on the type of the changes.
+Roughly at the end of each first/third quarter (so 31.3. and 30.9.) we will finalize the next release version, update changelogs. A version branch for this version is created that will allow hotfixes. 1-2 weeks before that cut-off date no new feature PRs should be added. Changes are flagged as [Bugfix], [Feature] or [Breaking Change] in changelog (ideally also in PRs) and version increase is depending on the type of the changes.
 
 After this we will have a testing phase for this version. Once tests ended successfully it will be published to „latest“ repository to get feedback from community. After this it goes too stable. Depending on the problems, bugs and feedback the goal is to release the stable version roughly 1 - 1.5 month after cut-off date from the version.
 
@@ -616,7 +676,7 @@ All changes should be added via PRs that are reviewed and merged by the core dev
 
 It is also allowed to introduce unfinished new features, as soon as they do not break the system. We will also start to introduce „testing quality features“ that only may be configured manually in JSON files or via CLI. They are then flagged as „Technology Preview“. This means we will not delay a new js-controller version because a new feature is not possible to configure via admin. The feature list and details in js-controller README needs to be updated as soon as the feature is ready in general (including "Technology preview"). Unfinished features are not included in the README even if existing partly in the code.
 
-This new process and rules are introduced with js-controller 2.0.0. The cut-off date will most likely be (different from described above) somewhere before end of September. Also the testing phase may be longer because of the size of the 2.0.0. W need to test this version carefully because it contains big rewrites and refactorings.
+This new process and rules are introduced with js-controller 2.0 and updated to a 6 month cycle with js-controller 3.0.
 
 ## License
 
