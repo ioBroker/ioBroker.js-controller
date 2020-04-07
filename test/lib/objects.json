@@ -672,7 +672,11 @@
       "config": {
         "width ": 1224,
         "height": 520
-      }
+      },
+      "protectedNative": [
+        "username",
+        "password"
+      ]
     },
     "native": {
       "paramString": "value1",
@@ -681,10 +685,6 @@
       "username": "tesla",
       "password": "-\u000e\b\u001c\\X\u0000"
     },
-    "protectedNative": [
-      "username",
-      "password"
-    ],
     "_id": "system.adapter.test.0",
     "type": "adapter"
   }

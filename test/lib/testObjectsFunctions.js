@@ -290,17 +290,17 @@ function register(it, expect, context) {
                 name: 'tesla',
                 type: 'number',
                 role: 'level',
-                members: ['A']
+                members: ['A'],
+                protectedNative: [
+                    'username',
+                    'password'
+                ]
             },
             native: {
                 model: 'S P85D',
                 username: 'tesla',
                 password: 'winning'
-            },
-            protectedNative: [
-                'username',
-                'password'
-            ]
+            }
         }, function (err) {
             expect(err).to.be.null;
 
@@ -327,17 +327,17 @@ function register(it, expect, context) {
                 name: 'tesla',
                 type: 'number',
                 role: 'level',
-                members: ['A']
+                members: ['A'],
+                protectedNative: [
+                    'username',
+                    'password'
+                ]
             },
             native: {
                 model: 'S P85D',
                 username: 'tesla',
                 password: 'winning'
-            },
-            protectedNative: [
-                'username',
-                'password'
-            ]
+            }
         }, function (err) {
             expect(err).to.be.null;
 
@@ -864,17 +864,17 @@ function register(it, expect, context) {
                     name: 'tesla',
                     type: 'number',
                     role: 'level',
-                    members: ['A']
+                    members: ['A'],
+                    protectedNative: [
+                        'username',
+                        'password'
+                    ]
                 },
                 native: {
                     model: 'S P85D',
                     username: 'tesla',
                     password: 'winning'
-                },
-                protectedNative: [
-                    'username',
-                    'password'
-                ]
+                }
             },
             function (err) {
                 expect(err).to.be.null;
@@ -904,17 +904,17 @@ function register(it, expect, context) {
                     name: 'tesla',
                     type: 'number',
                     role: 'level',
-                    members: ['A']
+                    members: ['A'],
+                    protectedNative: [
+                        'username',
+                        'password'
+                    ]
                 },
                 native: {
                     model: 'S P85D',
                     username: 'tesla',
                     password: 'winning'
-                },
-                protectedNative: [
-                    'username',
-                    'password'
-                ]
+                }
             },
             function (err) {
                 expect(err).to.be.null;

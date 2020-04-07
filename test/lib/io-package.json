@@ -30,7 +30,10 @@
         "en": "fix reconnect",
         "de": "Korrigiere Wiederverbindung",
         "ru": "Исправлено распознавание дисконнекта"
-      }
+      },
+      "encryptedNative": [
+        "password"
+      ]
     },
     "authors": [
       "bluefox <dogafox@gmail.com>"
@@ -54,9 +57,6 @@
     "paramA": "",
     "paramB": ""
   },
-  "encryptedNative": [
-    "password"
-  ],
   "_id": "system.adapter.test",
   "type": "adapter"
 }
