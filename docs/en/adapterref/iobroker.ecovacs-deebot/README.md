@@ -32,7 +32,7 @@ This adapter uses the canvas library which might require additional installation
 ```
 npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
 ```
-For linux based systems the following commands should be executed:
+For linux based systems the following commands should be executed (a reboot might be necessary after the second line):
 ```
 sudo apt-get update
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev

@@ -11,6 +11,7 @@ This is an ioBroker adapter for your Robonect HX enabled lawn mower. It has been
 ## Settings
 * It is required to enter the IP address of the Robonect module. In case username and password are set, they are required, too.
 * ioBroker.robonect polls data at different intervals: By default status information is polled every 60 seconds (1 minute) and other information is polled every 900 seconds (15 minutes).
+* It is possible to configure two rest periods to prevent polling e.g. at noon and during the night. Information that can be polled without waking the lawn mower (and make it beep) will still be polled.
 * For every API request it is possible to choose the polling interval (status or info) or don't poll at all.
 
 ## Control

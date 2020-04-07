@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: dx3TwUQC6M0Dbk38oLidMd6U5l80bs0PVcYvDdJnp+s=
+hash: 6eD1dGnNSHyhz413axLSCBw9FiD2595ttBvL5dfTrus=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -39,7 +39,7 @@ hash: dx3TwUQC6M0Dbk38oLidMd6U5l80bs0PVcYvDdJnp+s=
 npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
 ```
 
-对于基于Linux的系统，应执行以下命令：
+对于基于Linux的系统，应执行以下命令（第二行之后可能需要重新启动）：
 
 ```
 sudo apt-get update

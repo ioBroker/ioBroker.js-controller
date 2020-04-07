@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 3ZiMn4BgwnOgFbM02y6Fj+d7eqd7GrtqQeynSqdQJSU=
+hash: tgbbEaWnu//nVsUuH82cZ05SrvIpOyf3/Knc+g4mLqo=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -34,6 +34,11 @@ Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen u
 [![Spende] (администратор / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+# 1.3.0
+- Добавлена таблица JSON
+- Добавлена задержка для навигации
+- Текст в кнопках теперь может быть HTML
 
 # 1.2.3
 - Добавлен навигационный активный цвет

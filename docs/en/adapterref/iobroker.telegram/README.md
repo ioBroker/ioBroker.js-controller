@@ -310,6 +310,33 @@ if (command === "delete") {
 
 You can read more [here](https://github.com/yagop/node-telegram-bot-api/blob/master/doc/api.md#TelegramBot+deleteMessage).
 
+## Reacting to user replies / messages
+
+Suppose you are using only JavaScript without *text2command*. You already sent a message/question to your user using *sendTo()* as described above. The user replies to that by pushing a button or writing a message. You can extract the command and give feedback to your user, execute commands or switch states in iobroker.
+
+ - telegram.0 is your iobroker Telegram instance you want to use
+ - user is the user registered with you TelegramBot which sent the message
+ - command is the command your TelegramBot received
+
+```
+on({id: 'telegram.0.communicate.request', change: 'any'}, function (obj) {
+    var stateval = getState('telegram.0.communicate.request').val;              // save Statevalue received from your Bot
+    var user = stateval.substring(1,stateval.indexOf("]"));                 // extract user from the message
+    var command = stateval.substring(stateval.indexOf("]")+1,stateval.length);   // extract command/text from the message
+
+    switch (command) {
+        case "1_2":
+            //... see example above ...
+            break;
+        case "delete":
+            //... see example above
+            break;
+        //.... and so on ...
+    }
+});
+
+```
+
 ## Special commands
 
 ### /state stateName - read state value
@@ -481,6 +508,10 @@ TODO:
 - venue
 
 ## Changelog
+### 1.5.5 (2020-04-04)
+* (alutov) Fixed bug for telegram users with an empty user name
+* (Mark Rohrbacher) Allowed JSON objects in telegram.*.communicate.response 
+
 ### 1.5.4 (2020-03-11)
 * (bluefox) Improvement of callmebot
 

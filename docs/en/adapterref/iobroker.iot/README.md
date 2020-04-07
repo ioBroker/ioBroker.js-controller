@@ -246,7 +246,7 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
-### 1.4.0 (2020-04-03)
+### 1.4.1 (2020-04-04)
 * (bluefox) The blood glucose request supported now
 
 ### 1.3.4 (2020-02-26)

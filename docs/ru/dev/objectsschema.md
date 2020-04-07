@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/objectsschema.md
 title: Основная концепция
-hash: JrIFbEK5K2RPHEBk4fp6C36DmJ7nX4aLQFaEoUOmtHU=
+hash: A/qY4yM3YzdeuQj6/YGrA4QqLUgSiPovfWb0Clv/woY=
 ---
 # Основная концепция
 В ioBroker есть два принципиально разных типа данных. Так называемые **состояния** (`states`) и **объекты**
@@ -565,8 +565,9 @@ id `system.adapter.<adapter.name>`
 * `common.welcomeScreen.order` - todo
 * `common.welcomeScreenPro` - То же, что и` common.welcomeScreen`, но используется только при доступе из ioBroker.cloud.
 * `common.wwwDontUpload` - не загружайте в БД каталог www. Используется только для администратора. Вы можете просто назвать свой каталог как-нибудь еще и ОК.
+* `common.protectedNative` - массив атрибутов конфигурации, которые будут доступны только для собственного адаптера, например `[ "Пароль"]`
+* `common.encryptedNative` - массив атрибутов конфигурации, которые будут автоматически шифроваться при сохранении на странице конфигурации администратора и автоматически расшифровываться во время работы адаптера, например, `[" пароль "," токен "]`
 * `native` - предопределенные атрибуты, которые доступны в index_m.html и во время выполнения через" adapter.config. <attribute> ", например, `{" port ": 1234," password ":" secret "}`
-* protectedNative - массив атрибутов конфигурации, которые будут доступны только для собственного адаптера, например `[ "Пароль"]`
 
 #### Пример
 id *system.adapter. &lt; имя адаптера &gt;. & lt; номер экземпляра & gt;*

@@ -35,6 +35,11 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+# 1.3.0
+- Added JSON table
+- Added delay for navigations
+- Text in buttons can now be HTML
+
 # 1.2.3
 - Added Navigation active color
 - Fixed state color for value switch

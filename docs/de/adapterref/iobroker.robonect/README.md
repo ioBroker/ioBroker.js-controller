@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.robonect/README.md
 title: ioBroker.robonect
-hash: 2g+4CkiBh7gPjDcSVR5f3KIb1fznPovNq5EAee0reqs=
+hash: AIePSRE9dTKq6kfagz+sRD1BIjw03aCX+GDwSfQ9qoo=
 ---
 ![Logo](../../../en/adapterref/iobroker.robonect/admin/robonect.png)
 
@@ -16,6 +16,7 @@ Dies ist ein ioBroker-Adapter für Ihren Robonect HX-fähigen Rasenmäher. Es wu
 ## Die Einstellungen
 * Es ist erforderlich, die IP-Adresse des Robonect-Moduls einzugeben. Falls Benutzername und Passwort festgelegt sind, sind diese ebenfalls erforderlich.
 * ioBroker.robonect fragt Daten in verschiedenen Intervallen ab: Standardmäßig werden Statusinformationen alle 60 Sekunden (1 Minute) und andere Informationen alle 900 Sekunden (15 Minuten) abgefragt.
+* Es ist möglich, zwei Ruhezeiten zu konfigurieren, um ein Abrufen zu verhindern, z. mittags und nachts. Informationen, die abgefragt werden können, ohne den Rasenmäher zu wecken (und ihn piepen zu lassen), werden weiterhin abgefragt.
 * Für jede API-Anfrage kann das Abfrageintervall (Status oder Info) ausgewählt oder überhaupt nicht abgefragt werden.
 
 ## Steuerung
@@ -26,6 +27,15 @@ Der Modus des Rasenmähers kann durch Ändern von robonect.0.status.mode gesteue
 Es ist möglich, die Erweiterungen GPIO 1, GPIO 2, OUT 1 und OUT 2 des Robonect-Moduls zu steuern. Voraussetzung ist, dass der Modus der Erweiterung über die Robonect Web-UI als "API" konfiguriert ist. Wenn beispielsweise LEDs an OUT1 angeschlossen sind, können Sie diese nachts ein- und morgens ausschalten, indem Sie Robonect.0.extension.out1.status auf "true" oder "false" setzen.
 
 ## Changelog
+### 0.0.12
+* (braindead1) improved polling
+
+### 0.0.11
+* (braindead1) implemented weather and GPS polls
+
+### 0.0.10
+* (braindead1) first stable version
+
 ### 0.0.9
 * (braindead1) adapter improvements
 

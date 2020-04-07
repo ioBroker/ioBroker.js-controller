@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 3ZiMn4BgwnOgFbM02y6Fj+d7eqd7GrtqQeynSqdQJSU=
+hash: tgbbEaWnu//nVsUuH82cZ05SrvIpOyf3/Knc+g4mLqo=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -34,6 +34,11 @@ hash: 3ZiMn4BgwnOgFbM02y6Fj+d7eqd7GrtqQeynSqdQJSU=
 [![Spende]（admin / spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+＃1.3.0
+-添加了JSON表
+-增加了导航延迟
+-按钮中的文本现在可以是HTML
 
 ＃1.2.3
 -添加了导航活动颜色

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker。冠状病毒统计
-hash: Sbloxfv/wHn7WacXUIZ5lIjT/1caCqz4t4TsaU7228c=
+hash: aNCB9lKKNnKhn3FeSBkx1l77wYLxDUsCYRm3gAkx4FE=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
@@ -40,6 +40,8 @@ hash: Sbloxfv/wHn7WacXUIZ5lIjT/1caCqz4t4TsaU7228c=
 |恢复|完全已知的康复病例数量|
 |今天案例今天的新案例|
 |今天死亡|今天有很多众所周知的人死亡 |
+|测试全球进行的covid-19测试总数|
+|每百万个县进行测试|全球每100万次进行的covid-19测试总数|
 
 请注意，此适配器会使用尽可能多的最新信息，但是可能会延迟几个小时，具体取决于国家/地区的报告。
 德国联邦州：https://npgeo-corona-npgeo-de.hub.arcgis.com/ s通用来源：https://coronavirus-19-api.herokuapp.com
@@ -88,6 +90,17 @@ coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not fo
 作为第一个值，警告消息中的名称必须从日志中获取。然后将[列出国家名称](https://github.com/i-rocky/country-list-js/blob/master/data/names.json)中的国家名称分配给它。
 
 ## Changelog
+
+
+### 0.5.5 (2020-04-07) Bugfixes, see changelog for details
+* (DutchmanNL) Bugfix : Remove test-states
+* (DutchmanNL) Bugfix : Selected items not shown in tables
+* (DutchmanNL) Bugfix : Remove incorrect countryInfo state
+* (Scrounger)  Bugfix : Timestamp for continents calculation
+* (Scrounger)  Bugfix : Replace " , " in country name causing errors
+* (DutchmanNL) Bugfix : Saint Pierre Miquelon (iso2: null, iso3: null) not found in lib!
+* (DutchmanNL) Implemented Total number of covid-19 tests taken globally.  
+ It reflects the Total Tests column in the table at https://www.worldometers.info/coronavirus/.
 
 ### 0.5.1 (2020-03-31) BugFix : State attribute definition missing for + affectedCountries
 * (DutchmanNL) BugFix : State attribute definition missing for + affectedCountries

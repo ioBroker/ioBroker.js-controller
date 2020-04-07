@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
-hash: JrIFbEK5K2RPHEBk4fp6C36DmJ7nX4aLQFaEoUOmtHU=
+hash: A/qY4yM3YzdeuQj6/YGrA4QqLUgSiPovfWb0Clv/woY=
 ---
 # Kernkonzept
 In ioBroker gibt es zwei grundlegend unterschiedliche Datentypen. Sogenannte **Zustände** (`states`) und **Objekte**
@@ -565,8 +565,9 @@ id `system.adapter.<adapter.name>`
 * `common.welcomeScreen.order` - todo
 * `common.welcomeScreenPro` - Wie` common.welcomeScreen`, jedoch nur für den Zugriff von ioBroker.cloud verwendet.
 * `common.wwwDontUpload` - Laden Sie das Verzeichnis www nicht in die DB hoch. Wird nur für Administratoren verwendet. Sie können Ihrem Verzeichnis einfach einen anderen Namen geben und OK.
+* `common.protectedNative` - Array von Konfigurationsattributen, auf die nur der eigene Adapter zugreifen kann, z. `[" Passwort "]`
+* `common.encryptedNative` - Array von Konfigurationsattributen, die automatisch verschlüsselt werden, wenn sie über die Admin-Konfigurationsseite gespeichert und zur Laufzeit des Adapters automatisch entschlüsselt werden, z. `[" Passwort "," Token "]`
 * `native` - vordefinierte Attribute, auf die in index_m.html und zur Laufzeit über` adapter.config. <attribute> `zugegriffen werden kann, z. `{" port ": 1234," password ":" secret "}`
-* `protectedNative` - Array von Konfigurationsattributen, auf die nur der eigene Adapter zugreifen kann, z. `[" Passwort "]`
 
 #### Instanz
 id *system.adapter. &lt; adapter.name &gt;. & lt; instanznummer &gt;*

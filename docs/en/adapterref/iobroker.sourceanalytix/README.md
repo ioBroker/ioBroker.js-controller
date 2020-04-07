@@ -1,21 +1,21 @@
-#  [Dev - in Progress] SourceAnalytix
-# { !!! Do not install from git !!!}
+# SourceAnalytix
+# { Dev - in Progress, version 0.4.0  stable candidate }
 [![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix)
 ![Number of Installations](http://iobroker.live/badges/sourceanalytix-installed.svg) ![Number of Installations](http://iobroker.live/badges/sourceanalytix-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)](https://www.npmjs.com/package/iobroker.sourceanalytix)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)](https://www.npmjs.com/package/iobroker.sourceanalytix)
 [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)](https://greenkeeper.io/)
 
-ioBroker SourceAnalytix allows you to keep track & trace of consumption, cost and meter values for your devices.
-You need data as input (total amount of Wh, l/h or m3 used) from your devices and this adapter will :
+Detailed analysis of your Energy, gas and liquid consumptions
+Any source (kWh, Wh, Watt, l/h or m3 )can be used for data analyses :
 
 * Trace comsumption daily, weekly, monthly, quarterly, yearly
 * calculate costs (current price is configurable)
 * Can be used for Power Consumption, liquids, and GAS
-* Input values can be wh/kWh/m3/l
+* Input values can be wh/kWh/Watt/m3/l
 
 ## How-To
 
-* [ ] To-Do
+Please provide your feedback here https://forum.iobroker.net/topic/31932/major-update-sourceanalytix-0-4-0-complete-code-rebuild
 
 This adapter has is roots with thanks to pix back in 2016 
 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
@@ -30,10 +30,8 @@ https://github.com/hdering/homematic_verbrauchszaehler
 
 ## To-Do
 * [ ] Documentation
-* [ ] Cost default value to 0 with error message if not provided
 * [ ] recalcalation based on meter values (configurable by date)
 * [ ] add object states for previous [x]day, [x]week, [x]month, [x]quarter, [x]year configurable in adapter settings
-* [ ] storage of meter values for every state
 
 ## Support me
 If you like my work, please consider a personal donation  
@@ -42,12 +40,13 @@ If you like my work, please consider a personal donation
 
 ## Changelog
 
-### 0.4.0 (Development in progress)
+### 0.4.0 (2020-04-05) Adapter completely redesigned, please test carefully
 * (Dutchman) Complete code rebuild
-* (Dutchman) Complete code rebuild & optimalisation
 * (Dutchman) Change datapoints to root by year
 * (Dutchman) Delete unneded states automatically
-* (Dutchman) Rebuild calculation logic to use memory instead of object DB (performance)
+* (Dutchman) Calculation by quarter implemented
+* (Dutchman) Storage of meter values implemented
+* (Dutchman) Rebuild calculation logic to handle in memory instead of object DB (performance)
 
 To-Do : Migration from < 0.4.0 to new datastructure
 

@@ -3,12 +3,12 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/objectsschema.md
 title: 核心理念
-hash: JrIFbEK5K2RPHEBk4fp6C36DmJ7nX4aLQFaEoUOmtHU=
+hash: A/qY4yM3YzdeuQj6/YGrA4QqLUgSiPovfWb0Clv/woY=
 ---
 ＃核心概念
 ioBroker中有两种根本不同的数据类型。所谓的“状态”（`states`）和“对象” **。
 
-对象代表很少更改的较大数据，例如系统设备的元数据，配置和其他文件。每个对象都必须具有属性“类型”。有关更多信息，请参见下面的信息，特定类型的对象需要哪些对象类型以及哪些必需属性。适配器模块为您提供了诸如setObject，getObject等功能。
+对象代表很少更改的较大数据，例如系统设备的元数据，配置和其他文件。每个对象都必须具有属性“类型”。有关更多信息，请参见下面的内容，特定类型的对象需要哪些对象类型以及哪些必需属性。适配器模块为您提供了诸如setObject，getObject等功能。
 
 状态代表系统中经常变化的数据，例如f。如果指示灯亮起或熄灭，运动检测器检测到某种运动，起居室的温度或按了遥控器的按钮。与对象相反，状态可以用来触发动作，状态可以创建历史数据。要使用状态，适配器模块中有几个功能，例如setState，getState等。
 
@@ -565,8 +565,9 @@ id`system.adapter.<adapter.name>`
 *`common.welcomeScreen.order`-待办事项
 *`common.welcomeScreenPro`-与`common.welcomeScreen`相同，但仅用于ioBroker.cloud的访问。
 *`common.wwwDontUpload`-不要将www目录上传到数据库。仅用于管理员。您可以只命名目录，然后单击确定。
+*`common.protectedNative`-配置属性数组，只能由自己的适配器访问，例如`[“ password”]`
+*`common.encryptedNative`-配置属性数组，当通过“管理员”配置页面存储时会自动加密，并在适配器运行时自动解密，例如`[“ password”，“ token”]`
 *`native`-预定义的属性，可在index_m.html中并在运行时通过`adapter.config。<attribute>`访问，例如`{“端口”：1234，“密码”：“秘密”}`
-*`protectedNative`-配置属性数组，只能由自己的适配器访问，例如`[“ password”]`
 
 ####实例
 id *system.adapter。＆lt; adapter.name＆gt;。＆lt;实例号＆gt;*
@@ -581,7 +582,7 @@ id *system.adapter。＆lt; adapter.name＆gt;。＆lt;实例号＆gt;*
 *`subscribe`-在状态* system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .alive *变为* true *时启动。当* .alive *更改为* false *并被杀死（如果进程退出，则将* .alive *设置为* false *）（进程退出时将不重新启动）
 *`schedule`-由在* system.adapter。＆lt; adapter-name＆gt;。＆lt; instance-number＆gt; .schedule *中找到的时间表开始。
 *`once`-每次更改system.adapter.yyy.x对象时，都会启动此适配器。终止后将不会重新启动。
-*`extension`-该适配器不会由`js-controller`启动，但是会由Web实例启动。 Web实例可以在“ native.webInstance”中定义为“ *”（如果在每个网络中），也可以在特定Web实例中定义为“ web.x”。 （例如：“相机，代理”）。另外，在`common.webExtension`中必须提供插件文件的路径。
+*`extension`-该适配器不会由`js-controller`启动，但是会由Web实例启动。网络实例可以在“ native.webInstance”中定义为“ *”（如果在每个网络中），也可以在特定的网络实例中定义为“ web.x”。 （例如：“相机，代理”）。另外，在`common.webExtension`中必须提供插件文件的路径。
 
 ####主机
 id`system.host.<host>`

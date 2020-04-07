@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: dx3TwUQC6M0Dbk38oLidMd6U5l80bs0PVcYvDdJnp+s=
+hash: 6eD1dGnNSHyhz413axLSCBw9FiD2595ttBvL5dfTrus=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -39,7 +39,7 @@ Dieser Adapter verwendet die Canvas-Bibliothek, für die möglicherweise zusätz
 npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
 ```
 
-Für Linux-basierte Systeme sollten die folgenden Befehle ausgeführt werden:
+Für Linux-basierte Systeme sollten die folgenden Befehle ausgeführt werden (ein Neustart kann nach der zweiten Zeile erforderlich sein):
 
 ```
 sudo apt-get update

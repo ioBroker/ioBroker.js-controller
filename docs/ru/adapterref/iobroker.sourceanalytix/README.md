@@ -2,11 +2,11 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sourceanalytix/README.md
-title: [Dev - в прогрессе] SourceAnalytix
-hash: 1BbfFumF7a5jvMdRL9kJsznsqMIuM2aCYewim9cCChU=
+title: SourceAnalytix
+hash: Kt7KXCfmXRBuQVVJDSDPDW5RzxYkn7oDwdbKC49xuLQ=
 ---
-# [Dev - в прогрессе] SourceAnalytix
-# {!!! Не устанавливайте с git !!!}
+# SourceAnalytix
+# {Dev - in Progress, стабильный кандидат версии 0.4.0}
 
 ![тесты](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
 ![Количество установок](http://iobroker.live/badges/sourceanalytix-stable.svg)
@@ -14,16 +14,15 @@ hash: 1BbfFumF7a5jvMdRL9kJsznsqMIuM2aCYewim9cCChU=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
 ![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
 
-ioBroker SourceAnalytix позволяет вам отслеживать и отслеживать потребление, стоимость и значения счетчиков для ваших устройств.
-Вам нужны данные в качестве входных данных (общее количество использованного Wh, л / ч или м3) с ваших устройств, и этот адаптер будет:
+Детальный анализ потребления энергии, газа и жидкости Любой источник (кВтч, Вт, Вт, л / ч или м3) может быть использован для анализа данных:
 
 * Отслеживание потребления ежедневно, еженедельно, ежемесячно, ежеквартально, ежегодно
 * рассчитать стоимость (текущая цена настраивается)
 * Может использоваться для энергопотребления, жидкостей и ГАЗА
-* Входные значения могут быть wh / кВтч / м3 / л
+* Входные значения могут быть wh / kWh / Watt / m3 / l
 
 ## Как
-* [ ] Сделать
+Пожалуйста, оставьте свой отзыв здесь https://forum.iobroker.net/topic/31932/major-update-sourceanalytix-0-4-0-complete-code-rebuild
 
 Этот адаптер имеет свои корни благодаря пикселю в 2016 году https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
@@ -35,22 +34,21 @@ ioBroker SourceAnalytix позволяет вам отслеживать и от
 
 ## Сделать
 * [ ] Документация
-* [] Стоимость по умолчанию равна 0 с сообщением об ошибке, если не указано
 * [] пересчет на основе значений счетчика (настраивается по дате)
 * [] добавить состояния объекта для предыдущего [x] дня, [x] недели, [x] месяца, [x] квартала, [x] года, настраиваемых в настройках адаптера
-* [] хранение значений счетчиков для каждого штата
 
 ## Поддержите меня
 Если вам нравится моя работа, рассмотрите возможность личного пожертвования (это персональная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
-### 0.4.0 (Development in progress)
+### 0.4.0 (2020-04-05) Adapter completely redesigned, please test carefully
 * (Dutchman) Complete code rebuild
-* (Dutchman) Complete code rebuild & optimalisation
 * (Dutchman) Change datapoints to root by year
 * (Dutchman) Delete unneded states automatically
-* (Dutchman) Rebuild calculation logic to use memory instead of object DB (performance)
+* (Dutchman) Calculation by quarter implemented
+* (Dutchman) Storage of meter values implemented
+* (Dutchman) Rebuild calculation logic to handle in memory instead of object DB (performance)
 
 To-Do : Migration from < 0.4.0 to new datastructure
 

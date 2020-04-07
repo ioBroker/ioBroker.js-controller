@@ -781,6 +781,18 @@ Settings that are not listed in the table below are self-explanatory.
     </thead>
     <tbody>
         <tr>
+            <td>barIsStacked</td>
+            <td>stacked bar</td>
+            <td>boolean</td>
+            <td>false, true</td>
+        </tr>
+        <tr>
+            <td>barStackId</td>
+            <td>id of stack. Bar that should combine to a stack must have the same id</td>
+            <td>number</td>
+            <td>1, 2, 5, ...</td>
+        </tr>
+        <tr>
             <td>barColorHover</td>
             <td>hover color of bar</td>
             <td>color | array[colors]</td>
@@ -1235,46 +1247,6 @@ Grid views are especially useful if the views included have the same heights.
     </tbody>
 </table>
 
-
-
-## Column Views - decrepated !!!
-
-Column Views has multiple `view in widget` integrated, that will be ordered automatically depending of the width of the widget. With this widget it is possible to cereate a responsive layout (one layout for desktop, tablet and mobil)
-
-<b>Take a look at the [Material Design Widgets example project](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b> to understand how it works.
-
-![Logo](doc/en/media/column_views.gif)
-
-<table>
-    <thead>
-        <tr>
-            <th>Screenshot</th>
-            <th>Setting</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan=2><img src="doc/en/media/column_views_common.png"></td>
-            <td>number of columns</td>
-            <td>define number of columns</td>
-        </tr>
-        <tr>
-            <td>minmal width</td>
-            <td>minimal width of each column. For example use the width of the resolution of a mobil device</td>
-        </tr>
-        <tr>
-            <td rowspan=2><img src="doc/en/media/column_views_col_settings.png"></td>
-            <td>views in column[x]</td>
-            <td>Define the views that should be shown in this column. Multiple views must be separated by '|'</td>
-        </tr>
-        <tr>
-            <td>height of views in column[x]</td>
-            <td>Define the height of each view in the column. Multiple heights must be separated by '|'</td>
-        </tr>
-    </tbody>
-</table>
-
 ## Alerts
 Alerts widget can be used e.g. to display messages in the VIS, like it works with the pushover adapter, but directly in the VIS.
 
@@ -1526,6 +1498,17 @@ ical2CalendarWidget();
 ```
 
 ## Changelog
+
+### 0.2.76
+* (Scrounger): deprecated Widgets Slider, TopAppBar, Select, Column View removed
+* (Scrounger): JSON Chart Widget added
+* (Scrounger): Line Chart Widget: starttime by object added
+* (Scrounger): Bar Chart Widget: support for json string oid added
+* (Scrounger): Chart Widget: min / max decimals for axis, labels and tooltip added
+* (Scrounger): Masonry View Widget: sort order added
+* (Scrounger): Grid View Widget: sort order added
+* (Scrounger): new Dialog Widget added
+* (Scrounger): bug fixes
 
 ### 0.2.66
 * (Scrounger): IconListWidget: button layout options added

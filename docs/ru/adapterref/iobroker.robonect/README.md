@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.robonect/README.md
 title: ioBroker.robonect
-hash: 2g+4CkiBh7gPjDcSVR5f3KIb1fznPovNq5EAee0reqs=
+hash: AIePSRE9dTKq6kfagz+sRD1BIjw03aCX+GDwSfQ9qoo=
 ---
 ![логотип](../../../en/adapterref/iobroker.robonect/admin/robonect.png)
 
@@ -16,6 +16,7 @@ hash: 2g+4CkiBh7gPjDcSVR5f3KIb1fznPovNq5EAee0reqs=
 ## Настройки
 * Требуется ввести IP-адрес модуля Robonect. Если имя пользователя и пароль установлены, они также необходимы.
 * ioBroker.robonect опрашивает данные с различными интервалами: по умолчанию информация о состоянии опрашивается каждые 60 секунд (1 минута), а другая информация опрашивается каждые 900 секунд (15 минут).
+* Для предотвращения опроса можно настроить два периода отдыха, например, в полдень и ночью. Информация, которую можно опросить, не разбудив газонокосилку (и подать звуковой сигнал), все равно будет опрошена.
 * Для каждого запроса API можно выбрать интервал опроса (статус или информация) или вообще не опрашивать.
 
 ## Контроль
@@ -26,6 +27,15 @@ hash: 2g+4CkiBh7gPjDcSVR5f3KIb1fznPovNq5EAee0reqs=
 Можно управлять расширениями GPIO 1, GPIO 2, OUT 1 и OUT 2 модуля Robonect. Требование заключается в том, что режим расширения настраивается как «API» через веб-интерфейс Robonect. Например, если светодиоды подключены к OUT1, их можно включить ночью и выключить утром, установив для Robonect.0.extension.out1.status значение «true» или «false».
 
 ## Changelog
+### 0.0.12
+* (braindead1) improved polling
+
+### 0.0.11
+* (braindead1) implemented weather and GPS polls
+
+### 0.0.10
+* (braindead1) first stable version
+
 ### 0.0.9
 * (braindead1) adapter improvements
 

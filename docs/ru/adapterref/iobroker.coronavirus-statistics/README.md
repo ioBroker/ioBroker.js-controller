@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker.coronavirus-статистика
-hash: Sbloxfv/wHn7WacXUIZ5lIjT/1caCqz4t4TsaU7228c=
+hash: aNCB9lKKNnKhn3FeSBkx1l77wYLxDUsCYRm3gAkx4FE=
 ---
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
@@ -40,6 +40,8 @@ hash: Sbloxfv/wHn7WacXUIZ5lIjT/1caCqz4t4TsaU7228c=
 | выздоровел | Количество полностью известных восстановленных случаев |
 | TodayCases | Новые случаи на сегодня |
 | сегодня смерти | Количество полностью известных людей умерло сегодня |
+| тест | Общее количество тестов covid-19, принятых во всем мире |
+| тесты на миллион округов | Общее количество тестов covid-19, принятых во всем мире на миллион |
 
 Помните, что этот адаптер использует как можно больше актуальной информации, но в зависимости от отчета страны может быть задержка на несколько часов.
 Федеральные земли Германии: https://npgeo-corona-npgeo-de.hub.arcgis.com/ s Общий источник: https://coronavirus-19-api.herokuapp.com
@@ -88,6 +90,17 @@ coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not fo
 В качестве первого значения имя из предупреждающего сообщения должно быть взято из журнала. Название страны из [Список с названиями стран](https://github.com/i-rocky/country-list-js/blob/master/data/names.json) затем присваивается этому.
 
 ## Changelog
+
+
+### 0.5.5 (2020-04-07) Bugfixes, see changelog for details
+* (DutchmanNL) Bugfix : Remove test-states
+* (DutchmanNL) Bugfix : Selected items not shown in tables
+* (DutchmanNL) Bugfix : Remove incorrect countryInfo state
+* (Scrounger)  Bugfix : Timestamp for continents calculation
+* (Scrounger)  Bugfix : Replace " , " in country name causing errors
+* (DutchmanNL) Bugfix : Saint Pierre Miquelon (iso2: null, iso3: null) not found in lib!
+* (DutchmanNL) Implemented Total number of covid-19 tests taken globally.  
+ It reflects the Total Tests column in the table at https://www.worldometers.info/coronavirus/.
 
 ### 0.5.1 (2020-03-31) BugFix : State attribute definition missing for + affectedCountries
 * (DutchmanNL) BugFix : State attribute definition missing for + affectedCountries

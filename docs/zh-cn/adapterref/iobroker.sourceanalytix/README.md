@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
-title: [Dev-正在进行中] SourceAnalytix
-hash: 1BbfFumF7a5jvMdRL9kJsznsqMIuM2aCYewim9cCChU=
+title: SourceAnalytix
+hash: Kt7KXCfmXRBuQVVJDSDPDW5RzxYkn7oDwdbKC49xuLQ=
 ---
 ![测验](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
 ![安装数量](http://iobroker.live/badges/sourceanalytix-stable.svg)
@@ -11,18 +11,17 @@ hash: 1BbfFumF7a5jvMdRL9kJsznsqMIuM2aCYewim9cCChU=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
 ![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
 
-＃[Dev-进行中] SourceAnalytix
-＃{!!!不要从git安装！
-ioBroker SourceAnalytix允许您跟踪和跟踪设备的消耗，成本和仪表值。
-您需要设备提供的数据作为输入（使用的Wh，l / h或m3总量），此适配器将：
+＃SourceAnalytix
+＃{开发人员-进行中，版本0.4.0稳定的候选版}
+详细分析您的能源，气体和液体消耗可以将任何来源（kWh，Wh，Watt，l / h或m3）用于数据分析：
 
 *每天，每周，每月，每季度，每年跟踪消耗
 *计算成本（当前价格是可配置的）
 *可用于功耗，液体和气体
-*输入值可以是wh / kWh / m3 / l
+*输入值可以是wh / kWh / Watt / m3 / l
 
 ＃＃ 如何
-* [ ] 去做
+请在这里提供您的反馈https://forum.iobroker.net/topic/31932/major-update-sourceanalytix-0-4-0-complete-code-rebuild
 
 此适配器的起源归功于pix早在2016年https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
@@ -34,22 +33,21 @@ ioBroker SourceAnalytix允许您跟踪和跟踪设备的消耗，成本和仪表
 
 ＃＃ 去做
 * []文档
-* []成本默认值为0，如果未提供则显示错误消息
 * []根据仪表值重新计算（可按日期配置）
 * []添加可在适配器设置中配置的前[x]天，[x]周，[x]月，[x]季度，[x]年的对象状态
-* []每种状态的仪表值存储
 
 ＃＃ 支持我
 如果您喜欢我的作品，请考虑个人捐赠（这是DutchmanNL的个人捐赠链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png）](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
-### 0.4.0 (Development in progress)
+### 0.4.0 (2020-04-05) Adapter completely redesigned, please test carefully
 * (Dutchman) Complete code rebuild
-* (Dutchman) Complete code rebuild & optimalisation
 * (Dutchman) Change datapoints to root by year
 * (Dutchman) Delete unneded states automatically
-* (Dutchman) Rebuild calculation logic to use memory instead of object DB (performance)
+* (Dutchman) Calculation by quarter implemented
+* (Dutchman) Storage of meter values implemented
+* (Dutchman) Rebuild calculation logic to handle in memory instead of object DB (performance)
 
 To-Do : Migration from < 0.4.0 to new datastructure
 

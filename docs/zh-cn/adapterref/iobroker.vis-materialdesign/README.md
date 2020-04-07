@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: 88yUvEG9pNMUL1SktIgy5yaEOtht83WbYvJqJg9IurY=
+hash: Se1ZgNKqKHRnQZIE6bQeQuVEAcA0GJyAf8hoXAAj8oo=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -119,7 +119,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 #####永久布局：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_permanent.gif)
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td>对象ID </td><td>必须从典型编号设置为数据点。例如<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">，小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>可以使用此数据点</td></tr><tr><td>显示导航项的索引</td><td>在项目标签之前显示导航索引。可以<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">在小部件8的视图中</a>使用此数字来定义在选择项目时应显示的视图</td></tr><tr><td>导航项目数</td><td>定义导航项的数量</td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/topappbar_settings.png"></td><td>对象ID </td><td>必须从典型编号设置为数据点。例如<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">，小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>可以使用此数据点</td></tr><tr><td>显示导航项的索引</td><td>在项目标签之前显示导航索引。此数字可<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">在小部件8的视图中</a>使用，以定义如果选择该项目应显示的视图</td></tr><tr><td>导航项目数</td><td>定义导航项的数量</td></tr></tbody></table>
 
 ###子菜单
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
@@ -157,7 +157,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> line_pointStyle </td><td>线的点样式</td><td>串</td><td>圆，十字，crossRot，破折号，直线，矩形，rectRounded，rectRot，星形，三角形</td></tr><tr><td> line_pointSize </td><td>线的点大小</td><td>数</td><td> 1，2，3，... </td></tr><tr><td> line_pointSizeHover </td><td>线的点大小</td><td>数</td><td> 1，2，3，... </td></tr><tr><td> line_PointColor </td><td>线点颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_PointColorBorder </td><td>线点的边框颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_PointColorHover </td><td>悬停线点颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_PointColorBorderHover </td><td>线点的边框悬停颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_spanGaps </td><td>如果数据之间存在差距，则画线</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_Tension </td><td>线的平滑度</td><td>数</td><td> 0-1 </td></tr><tr><td>线的粗细</td><td>线的厚度</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> line_UseFillColor </td><td>在线条下使用填充颜色</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_FillColor </td><td>在线下填充颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> use_line_gradient_fill_color </td><td>使用渐变填充颜色</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_gradient_fill_color </td><td>渐变颜色阵列</td><td>数组[ <a href="#gradientcolor">gradientColor</a> ] </td><td> [{值：-20，颜色：&#39;＃7d3c98&#39;}，{值：0，颜色：&#39;＃2874a6&#39;}] </td></tr><tr><td> line_FillBetweenLines </td><td>为下一行/上一行填充颜色</td><td>串</td><td> &#39;+1&#39;，&#39;-1&#39;，&#39;+ 2&#39;，... </td></tr></tbody></table>
 
 ####图形条形图spfeicifc
-<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> barColorHover </td><td>悬停颜色栏</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderColor </td><td>条的边框颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderWidth </td><td>条形边框的厚度</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> barBorderColorHover </td><td>条形的边框悬停颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderWidthHover </td><td>将鼠标悬停在边框上</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table>
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> bar已堆叠</td><td>叠杆</td><td>布尔值</td><td>假，真</td></tr><tr><td> barStackId </td><td>堆栈ID。应该组合到堆栈的栏必须具有相同的ID </td><td>数</td><td> 1，2，5，... </td></tr><tr><td> barColorHover </td><td>悬停颜色栏</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderColor </td><td>条的边框颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderWidth </td><td>条形边框的厚度</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> barBorderColorHover </td><td>条形的边框悬停颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderWidthHover </td><td>将鼠标悬停在边框上</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table>
 
 ####图形y轴
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> yAxis_id </td><td> y轴的ID。如果您想将通用的y轴用于多图图形数据，请使用相同的ID。 </td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_position </td><td> y轴位置</td><td>串</td><td>左右</td></tr><tr><td> yAxis_show </td><td>显示y轴</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_title_text </td><td> y轴标题</td><td>串</td><td></td></tr><tr><td> yAxis_title_color </td><td>覆盖y轴标题颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_title_font家庭</td><td>覆盖y轴标题字体系列</td><td>串</td><td></td></tr><tr><td> yAxis_title_fontSize </td><td>覆盖y轴标题字体大小</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_min </td><td> y轴最小值</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_max </td><td> y轴最大值</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_step </td><td> y轴步长</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_minimumDigits </td><td> y轴最小小数位数</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_maximumDigits </td><td> y轴最大小数位数</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_maxSteps </td><td> y轴的最大步幅</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_distance </td><td>覆盖y轴值到轴的距离</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_appendix </td><td>将文字附加到y轴值</td><td>串</td><td></td></tr><tr><td> yAxis_color </td><td>覆盖y轴值颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_fontFamily </td><td>覆盖y轴值字体系列</td><td>串</td><td></td></tr><tr><td> yAxis_fontSize </td><td>覆盖y轴值字体大小</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_zeroLineWidth </td><td> y轴零线宽度</td><td>数</td><td> 0.3、1.5、4 ... </td></tr><tr><td> yAxis_zeroLineColor </td><td> y轴零线颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_gridLines_show </td><td>显示y轴网格线</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_gridLines_color </td><td> y轴网格线的颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_gridLines_lineWidth </td><td>网格线的宽度</td><td>数</td><td> 0-1 </td></tr><tr><td> yAxis_gridLines_border_show </td><td>显示y轴网格线的边界</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_gridLines_ticks_show </td><td>显示y轴网格间隔刻度</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_gridLines_ticks_length </td><td> y轴刻度线的长度</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table>
@@ -260,15 +260,6 @@ Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自�
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/grid.gif)
 
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2>根据窗口小部件的宽度，可以从各个窗口小部件的宽度定义适用各个视图[x]的列跨度的规则以及视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2>根据当前的宽度分辨率规则定义视图的列范围。 <br>您还可以在此处指定是仅以高于或低于定义值的分辨率显示视图，还是通过对象ID使其可见。 </td></tr></tbody></table>
-
-##列视图-已弃用!!!
-列视图具有多个集成的`view in widget`§，将根据小部件的宽度自动对其进行排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和移动电话的一种布局）
-
-<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
-
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/column_views.gif)
-
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/column_views_common.png"></td><td>列数</td><td>定义列数</td></tr><tr><td>最小宽度</td><td>每列的最小宽度。例如使用移动设备分辨率的宽度</td></tr><tr><td rowspan=2><img src="doc/en/media/column_views_col_settings.png"></td><td>列[x]中的视图</td><td>定义应在此列中显示的视图。多个视图必须用&#39;|&#39;分隔</td></tr><tr><td>列[x]中的视图高度</td><td>在列中定义每个视图的高度。多个高度必须用&#39;|&#39;分隔</td></tr></tbody></table>
 
 ##警报
 可以使用Alerts小部件可以在VIS中显示消息，就像它与Pushover适配器一起使用一样，但是可以直接在VIS中显示。
@@ -472,6 +463,17 @@ ical2CalendarWidget();
 ```
 
 ## Changelog
+
+### 0.2.76
+* (Scrounger): deprecated Widgets Slider, TopAppBar, Select, Column View removed
+* (Scrounger): JSON Chart Widget added
+* (Scrounger): Line Chart Widget: starttime by object added
+* (Scrounger): Bar Chart Widget: support for json string oid added
+* (Scrounger): Chart Widget: min / max decimals for axis, labels and tooltip added
+* (Scrounger): Masonry View Widget: sort order added
+* (Scrounger): Grid View Widget: sort order added
+* (Scrounger): new Dialog Widget added
+* (Scrounger): bug fixes
 
 ### 0.2.66
 * (Scrounger): IconListWidget: button layout options added

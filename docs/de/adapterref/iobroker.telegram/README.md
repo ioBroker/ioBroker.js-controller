@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.telegram/README.md
 title: ioBroker Telegrammadapter
-hash: RBhAYT1pqUL+3o8PKTsGUsnKAoTbmLf6MIa2ktTPqA4=
+hash: VRIdMiUgqct15MdEo+TxapxwmTaoIl+xo+flI0ZQKaY=
 ---
 ![Logo](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
 
@@ -15,7 +15,7 @@ hash: RBhAYT1pqUL+3o8PKTsGUsnKAoTbmLf6MIa2ktTPqA4=
 
 # IoBroker Telegrammadapter
 ## Aufbau
-Bitten Sie [@ BotFather](https://telegram.me/botfather), einen neuen Bot ```/newbot``` zu erstellen.
+Bitten Sie [@ BotFather](https://telegram.me/botfather), einen neuen Bot zu erstellen ```/newbot```.
 
 Sie werden aufgefordert, den Namen des Bots und dann den Benutzernamen einzugeben.
 Danach erhalten Sie das Token.
@@ -41,14 +41,14 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 });
 ```
 
-Wenn Sie das obige Beispiel verwenden, beachten Sie, dass Sie 'Benutzername' entweder durch den Vornamen oder den öffentlichen Telegramm-Benutzernamen des Benutzers ersetzen müssen, an den Sie die Nachricht senden möchten. (Hängt davon ab, ob die Einstellung "Benutzername nicht Vorname speichern" in den Adaptereinstellungen aktiviert ist oder nicht.) Wenn die Option aktiviert ist und der Benutzer in seinem Telegrammkonto keinen öffentlichen Benutzernamen angegeben hat, verwendet der Adapter weiterhin den Vornamen von Benutzer. Beachten Sie, dass, wenn der Benutzer später (nach der Authentifizierung bei Ihrem Bot) einen öffentlichen Benutzernamen festlegt, der gespeicherte Vorname beim nächsten Senden einer Nachricht an den Bot durch den Benutzernamen ersetzt wird.
+Wenn Sie das obige Beispiel verwenden, beachten Sie, dass Sie 'Benutzername' entweder durch den Vornamen oder den öffentlichen Telegramm-Benutzernamen des Benutzers ersetzen müssen, an den Sie die Nachricht senden möchten. (Hängt davon ab, ob die Einstellung "Benutzername nicht Vorname speichern" in den Adaptereinstellungen aktiviert ist oder nicht.) Wenn die Option aktiviert ist und der Benutzer in seinem Telegrammkonto keinen öffentlichen Benutzernamen angegeben hat, verwendet der Adapter weiterhin den Vornamen von Nutzer. Beachten Sie, dass, wenn der Benutzer später (nach der Authentifizierung bei Ihrem Bot) einen öffentlichen Benutzernamen festlegt, der gespeicherte Vorname beim nächsten Senden einer Nachricht an den Bot durch den Benutzernamen ersetzt wird.
 
 Es ist möglich, mehr als einen Empfänger anzugeben (trennen Sie einfach die Benutzernamen durch Komma).
 Zum Beispiel: Empfänger: "Benutzer1, Benutzer4, Benutzer5"
 
 Sie können eine Nachricht auch über den Status senden. Setzen Sie einfach den Status *"telegram.INSTANCE.communicate.response"* mit dem Wert *"@ userName Test message"*
 
-## Verwendung
+## Verwendungszweck
 Sie können das Telegramm mit dem Adapter [text2command](https://github.com/ioBroker/ioBroker.text2command) verwenden. Es gibt vordefinierte Kommunikationsschemata und Sie können in Textform zu Ihnen nach Hause befehlen.
 
 Um ein Foto zu senden, senden Sie einfach einen Pfad zur Datei anstelle von Text oder URL: `sendTo('telegram', 'absolute/path/file.png')` oder `sendTo('telegram', 'https://telegram.org/img/t_logo.png')`.
@@ -318,6 +318,32 @@ if (command === "delete") {
 
 Sie können mehr [Hier](https://github.com/yagop/node-telegram-bot-api/blob/master/doc/api.md#TelegramBot+deleteMessage) lesen.
 
+## Auf Benutzerantworten / -nachrichten reagieren
+Angenommen, Sie verwenden nur JavaScript ohne *text2command* Sie haben Ihrem Benutzer bereits eine Nachricht / Frage mit *sendTo ()* gesendet, wie oben beschrieben. Der Benutzer antwortet darauf, indem er eine Taste drückt oder eine Nachricht schreibt. Sie können den Befehl extrahieren und Ihrem Benutzer Feedback geben, Befehle ausführen oder den Status in iobroker wechseln.
+
+ - telegram.0 ist Ihre iobroker Telegram-Instanz, die Sie verwenden möchten
+ - Benutzer ist der bei Ihnen registrierte Benutzer TelegramBot, der die Nachricht gesendet hat
+ - Befehl ist der Befehl, den Ihr TelegramBot erhalten hat
+
+```
+on({id: 'telegram.0.communicate.request', change: 'any'}, function (obj) {
+    var stateval = getState('telegram.0.communicate.request').val;              // save Statevalue received from your Bot
+    var user = stateval.substring(1,stateval.indexOf("]"));                 // extract user from the message
+    var command = stateval.substring(stateval.indexOf("]")+1,stateval.length);   // extract command/text from the message
+
+    switch (command) {
+        case "1_2":
+            //... see example above ...
+            break;
+        case "delete":
+            //... see example above
+            break;
+        //.... and so on ...
+    }
+});
+
+```
+
 ## Sonderbefehle
 ### / state stateName - Statuswert lesen
 Sie können den Wert des Status anfordern, wenn Sie jetzt die ID:
@@ -336,7 +362,7 @@ Sie können den Wert des Status festlegen, wenn Sie jetzt die ID:
 ```
 
 ## Abruf- oder Servermodus
-Wenn der Abfragemodus verwendet wird, fragt der Adapter den Telegrammserver standardmäßig alle 300 ms nach Updates ab. Es verwendet Datenverkehr und Nachrichten können bis zum Abfrageintervall verzögert werden. Das Abfrageintervall kann in der Adapterkonfiguration definiert werden.
+Wenn der Abfragemodus verwendet wird, fragt der Adapter standardmäßig alle 300 ms den Telegrammserver nach Updates ab. Es verwendet Datenverkehr und Nachrichten können bis zum Abfrageintervall verzögert werden. Das Abfrageintervall kann in der Adapterkonfiguration definiert werden.
 
 Um den Servermodus verwenden zu können, muss Ihre ioBroker-Instanz über das Internet erreichbar sein (z. B. mit dem dynamischen DNS-Dienst noip.com).
 
@@ -445,7 +471,7 @@ Mögliche Werte für die Sprache:
 - `ja-JP-Standard-B` - Japanisch (Japan) (weibliche 2 Stimme)
 - `ja-JP-Standard-C` - Japanisch (Japan) (männliche Stimme)
 - `ja-JP-Standard-D` - Japanisch (Japan) (männlich 2 Stimme)
-- `ko-KR-Standard-A` - Koreanisch (Südkorea) (weibliche Stimme)
+- `ko-KR-Standard-A` - Koreanisch (Südkorea) (Frauenstimme)
 - `ko-KR-Standard-B` - Koreanisch (Südkorea) (2 Frauen)
 - `ko-KR-Standard-C` - Koreanisch (Südkorea) (Männerstimme)
 - `ko-KR-Standard-D` - Koreanisch (Südkorea) (männliche 2 Stimme)
@@ -458,7 +484,7 @@ Mögliche Werte für die Sprache:
 - `nb-NO-Standard-D` - Norwegisch (Norwegen) (männlich 2 Stimme)
 - `nb-no-Standard-E` - Norwegisch (Norwegen) (3 Frauen)
 - `pl-PL-Standard-A` - Polnisch (Polen) (weibliche Stimme - wird verwendet, wenn die Systemsprache PL ist und keine Sprache angegeben wurde)
-- `pl-PL-Standard-B` - Polnisch (Polen) (Männerstimme)
+- `pl-PL-Standard-B` - Polnisch (Polen) (männliche Stimme)
 - `pl-PL-Standard-C` - Polnisch (Polen) (männlich 2 Stimme)
 - `pl-PL-Standard-D` - Polnisch (Polen) (weibliche 2 Stimme)
 - `pl-PL-Standard-E` - Polnisch (Polen) (3 Frauen)
@@ -469,17 +495,17 @@ Mögliche Werte für die Sprache:
 - `pt-PT-Standard-D` - Portugiesisch (Portugal) (2 Frauen)
 - `ru-RU-Standard-A` - Russisch (Russland) (weibliche Stimme - wird verwendet, wenn die Systemsprache RU ist und keine Sprache angegeben wurde)
 - `ru-RU-Standard-B` - Russisch (Russland) (Männerstimme)
-- `ru-RU-Standard-C` - Russisch (Russland) (weibliche 2 Stimme)
+- `ru-RU-Standard-C` - Russisch (Russland) (2 Frauen)
 - `ru-RU-Standard-D` - Russisch (Russland) (männlich 2 Stimme)
 - `sk-SK-Standard-A` - Slowakisch (Slowakei) (Frauenstimme)
 - `es-ES-Standard-A` - Spanisch (Spanien) (weibliche Stimme - wird verwendet, wenn die Systemsprache ES ist und keine Sprache angegeben wurde)
 - `sv-SE-Standard-A` - Schwedisch (Schweden) (weibliche Stimme)
 - `tr-TR-Standard-A` - Türkisch (Türkei) (Frauenstimme)
 - `tr-TR-Standard-B` - Türkisch (Türkei) (Männerstimme)
-- `tr-TR-Standard-C` - Türkisch (Türkei) (2 Frauen)
-- `tr-TR-Standard-D` - Türkisch (Türkei) (weibliche 3 Stimme)
+- `tr-TR-Standard-C` - Türkisch (Türkei) (weibliche 2 Stimme)
+- `tr-TR-Standard-D` - Türkisch (Türkei) (3 Frauen)
 - `tr-TR-Standard-E` - Türkisch (Türkei) (Männerstimme)
-- `uk-UA-Standard-A` - Ukrainisch (Ukraine) (weibliche Stimme)
+- `uk-UA-Standard-A` - Ukrainisch (Ukraine) (Frauenstimme)
 - `vi-VN-Standard-A` - Vietnamesisch (Vietnam) (weibliche Stimme)
 - `vi-VN-Standard-B` - Vietnamesisch (Vietnam) (männliche Stimme)
 - `vi-VN-Standard-C` - Vietnamesisch (Vietnam) (weibliche 2 Stimme)
@@ -490,6 +516,13 @@ MACHEN:
 - Veranstaltungsort
 
 ## Changelog
+### 1.5.5 (2020-04-04)
+* (alutov) Fixed bug for telegram users with an empty user name
+* (Mark Rohrbacher) Allowed JSON objects in telegram.*.communicate.response 
+
+### 1.5.4 (2020-03-11)
+* (bluefox) Improvement of callmebot
+
 ### 1.5.3 (2020-02-23)
 * (foxriver76) removed usage of adapter.objects
 * (Haba) Fix of the response for the "callback_query" event

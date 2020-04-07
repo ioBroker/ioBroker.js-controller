@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker.coronavirus-Statistik
-hash: Sbloxfv/wHn7WacXUIZ5lIjT/1caCqz4t4TsaU7228c=
+hash: aNCB9lKKNnKhn3FeSBkx1l77wYLxDUsCYRm3gAkx4FE=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
@@ -40,6 +40,8 @@ Folgende Informationen sind verfügbar:
 | wiederhergestellt | Anzahl der vollständig bekannten wiederhergestellten Fälle |
 | todayCases | Neue Fälle bis heute |
 | todayDeaths | Zahl der völlig bekannten Menschen ist heute gestorben |
+| test | Gesamtzahl der weltweit durchgeführten Covid-19-Tests |
+| Tests pro eine Million Landkreise Gesamtzahl der weltweit durchgeführten Covid-19-Tests pro Million |
 
 Bitte beachten Sie, dass dieser Adapter so viele aktuelle Informationen wie möglich verwendet. Je nach Bericht des Landes kann es jedoch zu einer Verzögerung von mehreren Stunden kommen.
 Bundesländer: https://npgeo-corona-npgeo-de.hub.arcgis.com/ s Generische Quelle: https://coronavirus-19-api.herokuapp.com
@@ -88,6 +90,17 @@ Die JSON-Zeichenfolge sieht dann folgendermaßen aus:
 Als erster Wert muss der Name aus der Warnmeldung aus dem Protokoll entnommen werden. Dem wird dann der Name des Landes aus den [Liste mit Ländernamen](https://github.com/i-rocky/country-list-js/blob/master/data/names.json) zugeordnet.
 
 ## Changelog
+
+
+### 0.5.5 (2020-04-07) Bugfixes, see changelog for details
+* (DutchmanNL) Bugfix : Remove test-states
+* (DutchmanNL) Bugfix : Selected items not shown in tables
+* (DutchmanNL) Bugfix : Remove incorrect countryInfo state
+* (Scrounger)  Bugfix : Timestamp for continents calculation
+* (Scrounger)  Bugfix : Replace " , " in country name causing errors
+* (DutchmanNL) Bugfix : Saint Pierre Miquelon (iso2: null, iso3: null) not found in lib!
+* (DutchmanNL) Implemented Total number of covid-19 tests taken globally.  
+ It reflects the Total Tests column in the table at https://www.worldometers.info/coronavirus/.
 
 ### 0.5.1 (2020-03-31) BugFix : State attribute definition missing for + affectedCountries
 * (DutchmanNL) BugFix : State attribute definition missing for + affectedCountries

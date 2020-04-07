@@ -3,11 +3,18 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: xvJAGdSNVXACS/GYrLjZH/Z64uh0aTAFSH4hPx8OV0g=
+hash: 0Sa3sSzmqayHNfgyBTbLkdyeSBK6oUU98CiU3akhXPY=
 ---
 ![логотип](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
-![Количество установок](http://iobroker.live/badges/onvif-stable.svg)
+![Версия NPM](http://img.shields.io/npm/v/iobroker.onvif.svg)
+![Загрузки](https://img.shields.io/npm/dm/iobroker.onvif.svg)
+![Количество установок (последняя)](http://iobroker.live/badges/onvif-installed.svg)
+![Количество установок (стабильно)](http://iobroker.live/badges/onvif-stable.svg)
+![Статус зависимости](https://img.shields.io/david/Haba1234/iobroker.onvif.svg)
+![Известные уязвимости](https://snyk.io/test/github/Haba1234/ioBroker.onvif/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.onvif.png?downloads=true)
+![Трэвис-CI](http://img.shields.io/travis/Haba1234/ioBroker.onvif/master.svg)
 
 # IoBroker.onvif
 ## RU
@@ -16,7 +23,7 @@ hash: xvJAGdSNVXACS/GYrLjZH/Z64uh0aTAFSH4hPx8OV0g=
 2. Нажать кнопку сканирования (сверху справа)
 3. По умолчанию: startRange - начальный IP-адрес диапазона поиска,
 
-End Range - конечный IP-адрес диапазона поиска, список портов - через запятую порты сервиса onvif (по умолчанию: 80, 7575, 8000, 8080, 8081), имя пользователя - по умолчанию admin, пароль - по умолчанию admin
+Конечный диапазон - конечный IP-адрес диапазона поиска, Список портов - через запатую порты сервиса onvif (по умолчанию: 80, 7575, 8000, 8080, 8081), Имя пользователя - по умолчанию admin, Пароль - по умолчанию admin
 
 4. Нажать НАЧАТЬ СКАН
 
@@ -57,13 +64,13 @@ function getSnapshot(caption){
 2. Нажмите кнопку сканирования (вверху справа)
 3. Введите необходимые настройки или оставьте настройки по умолчанию:
 
-startRange - начальный IP-адрес диапазона сканирования, End Range - конечный IP-адрес диапазона сканирования, список портов - разделенные запятыми порты службы onvif (по умолчанию: 80, 7575, 8000, 8080, 8081), имя пользователя - администратор по умолчанию, пароль - администратор по умолчанию
+startRange - начальный IP-адрес диапазона сканирования, End Range - конечный IP-адрес диапазона сканирования, список портов - разделенные запятыми порты службы onvif (по умолчанию: 80, 7575, 8000, 8080, 8081), имя пользователя - Администратор по умолчанию, Пароль - Администратор по умолчанию
 
 4. Нажмите НАЧАТЬ СКАНИРОВАНИЕ
 
 Если все сделано правильно, то найденные камеры появятся в главном окне настроек и через несколько секунд снимки придется подтянуть.
 
-### События
+### Мероприятия
 Драйвер автоматически подписывается на события для настроенных камер.
 События, генерируемые камерой, будут отображаться в следующих объектах:
 
@@ -94,6 +101,13 @@ function getSnapshot(caption){
 Вызывать можно как по событию, так и по кнопке / расписанию
 
 ## Changelog
+
+### 0.0.3 (2020-04-03)
+* (haba1234) bag fix and different little things
+* (haba1234) compact mode
+* (haba1234) deprecated 'request' is replaced by class 'http'
+* (haba1234) 'onvif-snapshot' is replaced by class 'http'
+
 ### 0.0.2 (2018-11-20)
 * (haba1234) add events and snapshot
 
@@ -104,22 +118,4 @@ function getSnapshot(caption){
 
 The MIT License (MIT)
 
-Copyright (c) 2018 Kirov Ilya <kirovilya@gmail.com>
-
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+Copyright (c) 2018-2020 Haba1234 <b_roman@inbox.ru>

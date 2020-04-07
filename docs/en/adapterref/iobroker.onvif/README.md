@@ -1,6 +1,17 @@
 ![Logo](admin/onvif_logo.png)
 # ioBroker.onvif
-![Number of Installations](http://iobroker.live/badges/onvif-installed.svg) ![Number of Installations](http://iobroker.live/badges/onvif-stable.svg) =================
+
+[![NPM version](http://img.shields.io/npm/v/iobroker.onvif.svg)](https://www.npmjs.com/package/iobroker.onvif)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.onvif.svg)](https://www.npmjs.com/package/iobroker.onvif)
+![Number of Installations (latest)](http://iobroker.live/badges/onvif-installed.svg)
+![Number of Installations (stable)](http://iobroker.live/badges/onvif-stable.svg)
+[![Dependency Status](https://img.shields.io/david/Haba1234/iobroker.onvif.svg)](https://david-dm.org/Haba1234/iobroker.onvif)
+[![Known Vulnerabilities](https://snyk.io/test/github/Haba1234/ioBroker.onvif/badge.svg)](https://snyk.io/test/github/Haba1234/ioBroker.onvif)
+
+[![NPM](https://nodei.co/npm/iobroker.onvif.png?downloads=true)](https://nodei.co/npm/iobroker.onvif/)
+
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/Haba1234/ioBroker.onvif/master.svg)](https://travis-ci.org/Haba1234/ioBroker.onvif)
+
 ## RU
 
 ### Настройка
@@ -95,6 +106,9 @@ It is possible to cause both on an event, and according to the button/schedule
 
 ### 0.0.3 (2020-04-03)
 * (haba1234) bag fix and different little things
+* (haba1234) compact mode
+* (haba1234) deprecated 'request' is replaced by class 'http'
+* (haba1234) 'onvif-snapshot' is replaced by class 'http'
 
 ### 0.0.2 (2018-11-20)
 * (haba1234) add events and snapshot

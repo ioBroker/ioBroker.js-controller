@@ -2,11 +2,11 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sourceanalytix/README.md
-title: [Dev - in Progress] SourceAnalytix
-hash: 1BbfFumF7a5jvMdRL9kJsznsqMIuM2aCYewim9cCChU=
+title: SourceAnalytix
+hash: Kt7KXCfmXRBuQVVJDSDPDW5RzxYkn7oDwdbKC49xuLQ=
 ---
-# [Dev - in Progress] SourceAnalytix
-# {!!! Nicht von Git installieren !!!}
+# SourceAnalytix
+# {Dev - in Progress, Version 0.4.0 stabiler Kandidat}
 
 ![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
 ![Anzahl der Installationen](http://iobroker.live/badges/sourceanalytix-stable.svg)
@@ -14,16 +14,15 @@ hash: 1BbfFumF7a5jvMdRL9kJsznsqMIuM2aCYewim9cCChU=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
 
-Mit ioBroker SourceAnalytix können Sie den Verbrauch, die Kosten und die Zählerwerte Ihrer Geräte nachverfolgen.
-Sie benötigen Daten als Eingabe (Gesamtmenge an verwendetem Wh, l / h oder m3) von Ihren Geräten, und dieser Adapter wird:
+Detaillierte Analyse Ihres Energie-, Gas- und Flüssigkeitsverbrauchs Für Datenanalysen kann jede Quelle (kWh, Wh, Watt, l / h oder m3) verwendet werden:
 
 * Verfolgen Sie den Verbrauch täglich, wöchentlich, monatlich, vierteljährlich und jährlich
 * Kosten berechnen (aktueller Preis ist konfigurierbar)
 * Kann für Stromverbrauch, Flüssigkeiten und GAS verwendet werden
-* Eingabewerte können wh / kWh / m3 / l sein
+* Eingabewerte können wh / kWh / Watt / m3 / l sein
 
 ## Wie man
-* [ ] Machen
+Bitte geben Sie Ihr Feedback hier https://forum.iobroker.net/topic/31932/major-update-sourceanalytix-0-4-0-complete-code-rebuild
 
 Dieser Adapter hat seine Wurzeln dank Pix im Jahr 2016 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
@@ -35,22 +34,21 @@ Was von @hadering verbessert und auf github https://github.com/hdering/homematic
 
 ## Machen
 * [] Dokumentation
-* [] Standardwert auf 0 mit Fehlermeldung, falls nicht angegeben
 * [] Neukalibrierung basierend auf Zählerwerten (konfigurierbar nach Datum)
 * [] Objektzustände für vorherigen [x] Tag, [x] Woche, [x] Monat, [x] Quartal, [x] Jahr hinzufügen, die in den Adaptereinstellungen konfiguriert werden können
-* [] Speicherung von Zählerwerten für jeden Zustand
 
 ## Unterstütze mich
 Wenn Ihnen meine Arbeit gefällt, ziehen Sie bitte eine persönliche Spende in Betracht (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 
-### 0.4.0 (Development in progress)
+### 0.4.0 (2020-04-05) Adapter completely redesigned, please test carefully
 * (Dutchman) Complete code rebuild
-* (Dutchman) Complete code rebuild & optimalisation
 * (Dutchman) Change datapoints to root by year
 * (Dutchman) Delete unneded states automatically
-* (Dutchman) Rebuild calculation logic to use memory instead of object DB (performance)
+* (Dutchman) Calculation by quarter implemented
+* (Dutchman) Storage of meter values implemented
+* (Dutchman) Rebuild calculation logic to handle in memory instead of object DB (performance)
 
 To-Do : Migration from < 0.4.0 to new datastructure
 

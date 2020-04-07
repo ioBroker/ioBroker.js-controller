@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.robonect/README.md
 title: ioBroker.robonect
-hash: 2g+4CkiBh7gPjDcSVR5f3KIb1fznPovNq5EAee0reqs=
+hash: AIePSRE9dTKq6kfagz+sRD1BIjw03aCX+GDwSfQ9qoo=
 ---
 ![商标](../../../en/adapterref/iobroker.robonect/admin/robonect.png)
 
@@ -17,16 +17,26 @@ hash: 2g+4CkiBh7gPjDcSVR5f3KIb1fznPovNq5EAee0reqs=
 ##设置
 *必须输入Robonect模块的IP地址。如果设置了用户名和密码，则也是必需的。
 * ioBroker.robonect以不同的时间间隔轮询数据：默认情况下，状态信息每60秒（1分钟）被轮询一次，而其他信息则每900秒（15分钟）被轮询一次。
+*可以配置两个休息时间来防止轮询，例如在中午和夜晚。无需轮询割草机（不会发出哔声）就可以轮询的信息仍将被轮询。
 *对于每个API请求，都可以选择轮询间隔（状态或信息）或完全不轮询。
 
 ＃＃ 控制
 ###模式
-可以通过更改robonect.0.status.mode来控制割草机的模式。可能的模式是“自动”，“主页”，“手动”，“一天结束”和“作业”（目前尚未完全实现）。
+可以通过更改robonect.0.status.mode来控制割草机的模式。可能的模式为“自动”，“主页”，“手动”，“一天结束”和“作业”（目前尚未完全实现）。
 
 ###扩展
 可以控制Robonect模块的扩展GPIO 1，GPIO 2，OUT 1和OUT 2。要求是通过Robonect Web-UI将扩展方式配置为“ API”。例如，如果将LED连接到OUT1，则可以通过将Robonect.0.extension.out1.status设置为“ true”或“ false”，在晚上将其打开，在早晨将其关闭。
 
 ## Changelog
+### 0.0.12
+* (braindead1) improved polling
+
+### 0.0.11
+* (braindead1) implemented weather and GPS polls
+
+### 0.0.10
+* (braindead1) first stable version
+
 ### 0.0.9
 * (braindead1) adapter improvements
 
