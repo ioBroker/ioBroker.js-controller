@@ -679,7 +679,7 @@
       "paramNumber": 42,
       "paramBoolean": false,
       "username": "tesla",
-      "password": "winning"
+      "password": "-\u000e\b\u001c\\X\u0000"
     },
     "protectedNative": [
       "username",
