@@ -620,6 +620,8 @@ Normally all objects can be read by any adapter using getObject or getForeignObj
 
 If an array with fieldnames from native is defined in io-package.json as common.protectedNative the ioBroker system will sort these fields out when the object is read. Only the adapter itself is allowed to read the full object.
 
+It is best practice to add the field names of encrypted fields to the protectedNative array too to make sure the fields stay protected (even if encrypted). Only let other adapters read your encrypted values if there is a need to (e.g. inter-adapter-operability)
+
 #### Define Adapter dependencies to other adapters
 **Feature status:** Stable
 
