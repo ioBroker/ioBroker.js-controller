@@ -54,6 +54,9 @@
     "paramA": "",
     "paramB": ""
   },
+  "encryptedNative": [
+    "password"
+  ],
   "_id": "system.adapter.test",
   "type": "adapter"
 }
