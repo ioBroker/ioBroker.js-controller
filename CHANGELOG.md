@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.x (2020-04-xx) Release Elena
+## 3.0.1 (2020-04-07) Release Elena
 **BREAKING CHANGES**
 * Nodejs 8.x will be no longer officially supported! Supported are nodejs 10.x, 12.x and (most likely) 14.x
 
