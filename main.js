@@ -2539,7 +2539,7 @@ function checkVersion(id, name, version, instances) {
 
     if (name === 'js-controller') {
         // Check only version
-        if (version !== null) {
+        if (version) {
             if (!semver.satisfies(ioPackage.common.version, version)) {
                 logger.error(hostLogPrefix + ' startInstance ' + id + 'Invalid version of "' + name + '". Installed "' + ioPackage.common.version + '", required "' + version);
                 return false;
@@ -2550,6 +2550,7 @@ function checkVersion(id, name, version, instances) {
             isFound = true;
         }
     }
+
     if (!isFound) {
         const p = Object.keys(instances).find(p => instances[p] && instances[p].common && instances[p].common.name === name);
         if (p) {
@@ -2569,55 +2570,100 @@ function checkVersion(id, name, version, instances) {
     }
 }
 
-function checkVersions(id, deps) {
+function checkVersions(id, deps, globalDeps) {
     return new Promise((resolve, reject) => {
         objects.getObjectView('system', 'instance', {startkey: 'system.adapter.', endkey: 'system.adapter.\u9999'}, (err, res) => {
             const instances = {};
+            const globInstances = {};
             if (res && res.rows) {
-                res.rows.forEach(item => instances[item.value._id] = item.value);
-            }
-            try {
-                if (deps instanceof Array) {
-                    for (let d = 0; d < deps.length; deps++) {
-                        let version = null;
-                        let name = null;
-                        if (typeof deps[d] === 'object') {
-                            for (const n in deps[d]) {
-                                if (!deps[d].hasOwnProperty(n)) {
-                                    continue;
-                                }
-                                name = n;
-                                version = deps[d][n];
-                                break;
-                            }
-                        } else {
-                            name = deps[d];
-                        }
-                        if (!checkVersion(id, name, version, instances)) {
-                            return reject();
-                        }
+                res.rows.forEach(item => globInstances[item.value._id] = item.value);
+                Object.keys(globInstances).forEach(id => {
+                    if (globInstances[id] && globInstances[id].common && globInstances[id].common.host === hostname) {
+                        instances[id] = globInstances[id];
                     }
-                } else if (typeof deps === 'object') {
-                    if (deps.length !== undefined || deps[0]) {
-                        for (const i in deps) {
-                            if (!deps.hasOwnProperty(i)) {
-                                continue;
+                });
+            }
+
+            // check local dependencies: required adapter must be installed on the same host
+            if (deps) {
+                try {
+                    if (deps instanceof Array) {
+                        for (let d = 0; d < deps.length; deps++) {
+                            let version = null;
+                            let name = null;
+                            if (typeof deps[d] === 'object') {
+                                name = Object.keys(deps[d])[0];
+                                version = deps[d][name];
+                            } else {
+                                name = deps[d];
                             }
-                            if (Object.keys(deps[i]).find(name => !checkVersion(id, name, deps[name][i], instances))) {
+                            if (!checkVersion(id, name, version, instances)) {
                                 return reject();
                             }
                         }
-                    } else {
-                        if (Object.keys(deps).find(name => !checkVersion(id, name, deps[name], instances))) {
-                            return reject();
+                    } else if (typeof deps === 'object') {
+                        if (deps.length !== undefined || deps[0]) {
+                            for (const i in deps) {
+                                if (!deps.hasOwnProperty(i)) {
+                                    continue;
+                                }
+                                if (Object.keys(deps[i]).find(name => !checkVersion(id, name, deps[name][i], instances))) {
+                                    return reject();
+                                }
+                            }
+                        } else {
+                            if (Object.keys(deps).find(name => !checkVersion(id, name, deps[name], instances))) {
+                                return reject();
+                            }
                         }
                     }
+                } catch (e) {
+                    logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + e);
+                    logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + JSON.stringify(deps));
+                    return reject();
                 }
-            } catch (e) {
-                logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + e);
-                logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + JSON.stringify(deps));
-                return reject();
             }
+
+            // check global dependencies: required adapter must be NOT installed on the same host
+            if (globalDeps) {
+                try {
+                    if (globalDeps instanceof Array) {
+                        for (let d = 0; d < globalDeps.length; globalDeps++) {
+                            let version = null;
+                            let name = null;
+                            if (typeof globalDeps[d] === 'object') {
+                                name = Object.keys(globalDeps[d])[0];
+                                version = globalDeps[d][name];
+                            } else {
+                                name = globalDeps[d];
+                            }
+                            if (!checkVersion(id, name, version, globInstances)) {
+                                return reject();
+                            }
+                        }
+                    } else if (typeof globalDeps === 'object') {
+                        if (globalDeps.length !== undefined || globalDeps[0]) {
+                            for (const i in globalDeps) {
+                                if (!globalDeps.hasOwnProperty(i)) {
+                                    continue;
+                                }
+                                if (Object.keys(globalDeps[i]).find(name => !checkVersion(id, name, globalDeps[name][i], globInstances))) {
+                                    return reject();
+                                }
+                            }
+                        } else {
+                            if (Object.keys(globalDeps).find(name => !checkVersion(id, name, globalDeps[name], globInstances))) {
+                                return reject();
+                            }
+                        }
+                    }
+                } catch (e) {
+                    logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + e);
+                    logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + JSON.stringify(globalDeps));
+                    return reject();
+                }
+            }
+
             resolve();
         });
     });
@@ -2928,10 +2974,11 @@ function startInstance(id, wakeUp) {
     }
 
     // Check if all required adapters installed and have valid version
-    if (instance.common.dependencies) {
-        return checkVersions(id, instance.common.dependencies)
+    if (instance.common.dependencies || instance.common.globalDependencies) {
+        return checkVersions(id, instance.common.dependencies, instance.common.globalDependencies)
             .then(ok => {
                 delete instance.common.dependencies;
+                delete instance.common.globalDependencies;
                 startInstance(id, wakeUp);
             })
             .catch(() => {
