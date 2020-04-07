@@ -46,11 +46,15 @@
 * (foxriver76/Apollon77) Validate that id in several state and object methods is of type string and log warnings
 * (foxriver76) Add basic checking for obj.common properties including logging. Please check logs and fix them
 
+**Developer relevant new Features**
+* (bluefox/foxriver76) Automatically encrypt all config attributes that are listed in common.encryptedNative in io-package, introduce ADAPTER_AUTO_DECRYPT (see ...) **Admin support missing as of now!**
+* (bluefox) Introduce new dependency field for io-package called common.globalDependencies to check for global dependencies (see ...). **Admin support missing as of now!**
+
 **Developer relevant Optimizations and Fixes**
+* (Apollon77) Make sure that all places in adapters for states and objects that can return "really async" (e.g. because of DB communication) ALWAYS return async! (else callback !--count constructs can fail)
 * (AlCalzone) Validate the object argument to set[Foreign]State[Changed]
 * (foxriver76) Also set default values of instanceObjects defined in io-package.json
 * (bluefox) Improve extension mode for web extensions
-* (Apollon77) Make sure that all places in adapters for states and objects that can return "really async" (e.g. because of DB communication) ALWAYS return async! (else callback !--count constructs can fail)
 * (foxriver76) Optimize extendObjects function of adapter.js (use from and ack)
 * (foxriver76) Use from and ack when creating instanceObjects on installation of an instance
 * (Apollon77) Fix potential crash where name is no string in some File object operations
@@ -60,12 +64,6 @@
 * (Apollon77) Enhance checks for getObjectsView response
 * general dependency updates
 * code style optimizations
-
-OPEN:
-* (bluefox) TODO ?? Automatically encrypt all config attributes starting with "enc_", introduce ADAPTER_AUTO_DECRYPT
-* (??) Dependency stuff
-
-CUT Commits 6.4.!!
 
 
 # 2.2.10 (2020-03-08) Release Dina - Windows Edition

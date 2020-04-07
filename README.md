@@ -603,6 +603,54 @@ With such a setup, ioBroker will connect to one of these sentinel processes to g
 
 TODO: Link to Adapter Development docs
 
+#### Automatically Encrypt/Decrypt configuration fields
+**Feature status:** Stable, since js-controller 3.0
+
+Since js-controller 3.0 the adapter developer can define an array or fieldnames in io-package.json as common.encryptedNative to define which fields should be automatically encrypted before being stored by Admin and decrypted when the adapter process starts.
+The values are not decrypted when the object itself is read!
+
+With this change and the Admin support for this soon the adapter developer do not need to struggle around with encryption or decryption of adapter values and can simply configure this.
+
+To preserve backward compatibility you can check for the feature flag ADAPTER_AUTO_DECRYPT or add a global Admin dependency to the respective Admin version. 
+
+#### Protect free reading of adapter configuration fields
+**Feature status:** Stable, since js-controller 2.0
+
+Normally all objects can be read by any adapter using getObject or getForeignObject. To make sure sensible adapter configuration values are protected from that free reading they can be secured.
+
+If an array with fieldnames from native is defined in io-package.json as common.protectedNative the ioBroker system will sort these fields out when the object is read. Only the adapter itself is allowed to read the full object.
+
+#### Define Adapter dependencies to other adapters
+**Feature status:** Stable
+
+Dependencies are defined in array and can contain an adaptername of an object.
+
+When using the object style you can define a semver versionrange for this adapter:
+```
+"dependencies": [
+      {
+        "js-controller": ">=2.0.0"
+      }
+    ],
+```
+
+If the version do not matter and just the adaptr itself needs to be present you can also use:
+```
+"dependencies": [
+      "web"
+    ],
+```
+
+There are tow types of adapter dependencies that can be defined in io-package.json and will be checked on installation and adapter start.
+
+**common.dependencies for Same Host dependencies**
+With common.dependencies in io-package.json you can define if an adapter needs to be present on the same host and optionally in which version.
+This is mainly used to define the needed "js-controller" version for yor adapter and can also be relevant e.g. for web extension adapters (adapters that can be plugged in into the web adapter, so the code needs to be on the same host).
+
+**common.globalDependencies for Same Host dependencies**
+With common.globalDependencies in io-package.json and starting with js-controller 3.0 you can define a global dependency that will be checked over all hosts. Irrelevant where on the system the referenced adapter is installed it needs to match the version and at least one instance needs to exist.
+This can mainly be used for more loose dependencies where adapters are split over multiple hosts but still work together, e.g. Admin. 
+
 #### Subscribe to Logs from other adapters
 **Feature status:** Stable
 
