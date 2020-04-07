@@ -11,12 +11,15 @@ Note, that the Admin adapter will always have access to protected attributes, to
 __Example__:
 ```json
 ...
+"common": {
+    "protectedNative": [
+        "password"
+    ],
+    ...
+},
 "native": {
   "password": "topSecret"
-},
-"protectedNative": [
-  "password"
-],
+}
 ...
 ```
 
@@ -34,11 +37,14 @@ Note, that this feature requires at least js-controller 3.0.0.
 __Example__:
 ```json
 ...
+"common": {
+    "encryptedNative": [
+        "password"
+    ],
+    ...
+},
 "native": {
   "password": "topSecret"
-},
-"encryptedNative": [
-  "password"
-],
+}
 ...
 ```
