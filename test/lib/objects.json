@@ -676,6 +676,9 @@
       "protectedNative": [
         "username",
         "password"
+      ],
+      "encryptedNative": [
+        "password"
       ]
     },
     "native": {
