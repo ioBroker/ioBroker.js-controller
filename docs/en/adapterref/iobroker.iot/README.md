@@ -12,7 +12,7 @@ It is not for remote access to your ioBroker instance. Use ioBroker.cloud adapte
 ## Settings
 To use cloud adapter you should first to register on the ioBroker cloud [https://iobroker.pro](https://iobroker.pro).
 
-[Refference to google API type settings](https://developers.google.com/actions/smarthome/guides/)
+[Reference to google API type settings](https://developers.google.com/actions/smarthome/guides/)
 
 ![Intro](img/intro.png)
 
@@ -246,6 +246,9 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+### 1.4.2 (2020-04-08)
+* (TA2k) Fix updateState for Google Home
+
 ### 1.4.1 (2020-04-04)
 * (bluefox) The blood glucose request supported now
 

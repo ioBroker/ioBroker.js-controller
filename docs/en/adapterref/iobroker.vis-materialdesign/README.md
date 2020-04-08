@@ -1499,6 +1499,14 @@ ical2CalendarWidget();
 
 ## Changelog
 
+### 0.3.0
+* (Scrounger): JSON Chart: error handling added
+* (Scrounger): IconList: error handling added
+* (Scrounger): Line History chart: debug mode & error handling added
+* (Scrounger): Select Widget: handling for object with mulitstate added
+* (Scrounger): Autocomplete Widget: handling for object with mulitstate added
+* (Scrounger): bug fixes
+
 ### 0.2.76
 * (Scrounger): deprecated Widgets Slider, TopAppBar, Select, Column View removed
 * (Scrounger): JSON Chart Widget added

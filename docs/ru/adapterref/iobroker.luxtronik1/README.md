@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
+hash: DFgt0+UkXwVLDlE+SoE8gYKyy2A4U5NakxuX7u0Pqto=
 ---
 ![логотип](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -17,11 +17,11 @@ hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
 Адаптер ioBroker для Luxtronik 1 - тепловые насосы - контроллеры (то есть Alpha Innotec, Siemens ...)
 
 Установите адаптер, создайте экземпляр.
-Установите аппаратное обеспечение: то есть адаптер RS232-LAN к последовательному интерфейсу (RS232) основного разъема тепловых насосов.
-Спецификации: последовательный кабель: связать PINS 2, 3 и 5 (если он не работает, поменяйте контакты 2 и 3) Преобразователь RS232 в LAN: то есть USR TCP232 - 302.
+Установите аппаратное обеспечение: то есть адаптер RS232-LAN к последовательному интерфейсу (RS232) основного кабеля тепловых насосов.
+Характеристики: последовательный кабель: связать PINS 2, 3 и 5 (если он не работает, поменяйте контакты 2 и 3). Преобразователь RS232 в LAN: т. Е. USR TCP232 - 302.
 Настройки последовательного интерфейса: 57600/8 / N / 1, режим: время ожидания сброса TCP-сервера: 0
 
-Установить comfoair - IP-адрес, порт и опрос - intervall
+Set luxtronik - IP-адрес, порт и опрос - intervall
 
 Испытано на тепловых насосах luxtronik 1 и AlphaInnotec
 
@@ -36,6 +36,22 @@ hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
 Значения в 'control' - канале должны быть установлены с помощью ack = false, чтобы инициировать действие.
 
 ## Changelog
+
+### 0.2.3
+
+-   adapter - restart in case of connection - problems added.
+
+### 0.2.2
+
+-   .npmignore and .gitignore added, small bugfix.
+
+### 0.2.1
+
+-   Readme / License update.
+
+### 0.2.0
+
+-   missing temperature values added, displays now all available temperature values.
 
 ### 0.1.0
 
@@ -73,7 +89,7 @@ hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

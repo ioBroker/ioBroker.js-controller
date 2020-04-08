@@ -16,7 +16,7 @@ RS232 to LAN converter: i.e. USR TCP232 – 302.
 Settings serial interface : 57600/8/N/1 , Mode :TCP-Server
 Reset Timeout:0
 
-Set comfoair - IP-adress, port and polling - intervall
+Set luxtronik - IP-adress, port and polling - intervall
 
 Tested on luxtronik 1 and AlphaInnotec heatpump
 
@@ -31,6 +31,10 @@ Controls Luxtronik 1 by setting values in the 'control' - channel. Controls the 
 Values in the 'control' - channel have to be set with ack=false to trigger an action.
 
 ## Changelog
+
+### 0.2.3
+
+-   adapter - restart in case of connection - problems added.
 
 ### 0.2.2
 

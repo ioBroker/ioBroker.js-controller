@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
+hash: DFgt0+UkXwVLDlE+SoE8gYKyy2A4U5NakxuX7u0Pqto=
 ---
 ![Logo](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -14,28 +14,44 @@ hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.luxtronik1.svg)
 
 # IoBroker.luxtronik1
-Ein ioBroker Adapter für Luxtronik 1 - Wärmepumpen - Steuerungen (d. H. Alpha Innotec, Siemens ...)
+Ein ioBroker-Adapter für Luxtronik 1 - Wärmepumpenregler (d. H. Alpha Innotec, Siemens ...)
 
 Adapter installieren, Instanz erstellen.
-Installieren Sie die Hardware: d. H. Den RS232-LAN-Adapter an die serielle Schnittstelle (RS232) des Hauptbords der Wärmepumpe.
-Technische Daten: serielle Schnittstelle: PINS 2, 3 und 5 verbinden (falls dies nicht funktioniert, Pin 2 und 3 wechseln) RS232 zu LAN-Konverter: d. H. USR TCP232 - 302.
+Installieren Sie die Hardware: d. H. RS232-LAN-Adapter an die serielle Schnittstelle (RS232) des Heatbumps-Hauptbords.
+Technische Daten: serielles Kabel: Link-PINS 2, 3 und 5 (wenn dies nicht funktioniert, ändern Sie die Pins 2 und 3) RS232-LAN-Konverter: d. H. USR TCP232 - 302.
 Einstellungen serielle Schnittstelle: 57600/8 / N / 1, Modus: TCP-Server Reset Timeout: 0
 
-Stellen Sie comfoair ein - IP-Adresse, Port und Polling - Intervall
+Set luxtronik - IP-Adresse, Port und Polling - Intervall
 
-Getestet mit luxtronik 1 und AlphaInnotec Wärmepumpe
+Getestet auf Luxtronik 1 und AlphaInnotec Heatpumpe
 
 Liest verschiedene Werte und Statistiken Ihrer Wärmepumpe (Temperaturen, Fehler, Laufzeit, ...).
-Steuert Luxtronik 1 durch Einstellen von Werten im 'control' - Kanal. Steuert die folgenden Werte:
+Steuert Luxtronik 1 durch Einstellen von Werten im 'Steuerungskanal'. Steuert die folgenden Werte:
 
-- Warmwassertemperatureinstellung
-- Heizbetrieb
-- Heißwasserbetrieb
-- Heizkurve (Differenz, Endpunkt, Startpunkt, Nachtabsenkung).
+- Heißwasser - Temperatureinstellung
+- Heizmodus
+- Heißwassermodus
+- Heizkurve (Differenz, Endpunkt, Startpunkt, nächtliche Reduzierung).
 
 Werte im 'control' - Kanal müssen mit ack = false gesetzt werden, um eine Aktion auszulösen.
 
 ## Changelog
+
+### 0.2.3
+
+-   adapter - restart in case of connection - problems added.
+
+### 0.2.2
+
+-   .npmignore and .gitignore added, small bugfix.
+
+### 0.2.1
+
+-   Readme / License update.
+
+### 0.2.0
+
+-   missing temperature values added, displays now all available temperature values.
 
 ### 0.1.0
 
@@ -73,7 +89,7 @@ Werte im 'control' - Kanal müssen mit ack = false gesetzt werden, um eine Aktio
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

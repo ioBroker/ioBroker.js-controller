@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
+hash: DFgt0+UkXwVLDlE+SoE8gYKyy2A4U5NakxuX7u0Pqto=
 ---
 ![商标](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -11,7 +11,7 @@ hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
 ![NPM版本](http://img.shields.io/npm/v/iobroker.luxtronik1.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.luxtronik1.svg)
 ![NPM](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)
-![保镖徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.luxtronik1.svg)
+![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.luxtronik1.svg)
 
 ＃ioBroker.luxtronik1
 用于Luxtronik 1-热泵-控制器的ioBroker适配器（即Alpha Innotec，Siemens ...）
@@ -21,11 +21,11 @@ hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
 规格：串行电缆：链接PINS 2、3和5（如果不起作用，请更改引脚2和3）RS232到LAN转换器：即USR TCP232 – 302。
 设置串行接口：57600/8 / N / 1，模式：TCP-服务器复位超时：0
 
-设置comfoair-IP地址，端口和轮询-intervall
+设置luxtronik-IP地址，端口和轮询-intervall
 
 在luxtronik 1和AlphaInnotec热泵上测试
 
-读取热泵的不同值和状态（温度，错误，运行时间等）。
+读取热泵的不同值和统计信息（温度，错误，运行时间等）。
 通过在“控制”通道中设置值来控制Luxtronik 1。控制以下值：
 
 -热水-温度设定
@@ -36,6 +36,22 @@ hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
 必须使用ack = false设置“控制”-通道中的值才能触发操作。
 
 ## Changelog
+
+### 0.2.3
+
+-   adapter - restart in case of connection - problems added.
+
+### 0.2.2
+
+-   .npmignore and .gitignore added, small bugfix.
+
+### 0.2.1
+
+-   Readme / License update.
+
+### 0.2.0
+
+-   missing temperature values added, displays now all available temperature values.
 
 ### 0.1.0
 
@@ -73,7 +89,7 @@ hash: 8VsZ+suZ2Fy8U0hoAC5hdTXvDK5IZFzfcf4ATnaqn60=
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

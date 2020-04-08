@@ -35,6 +35,7 @@ chapters: {"pages":{"en/adapterref/iobroker.javascript/README.md":{"title":{"en"
     - [clearStateDelayed](#clearstatedelayed)
     - [getStateDelayed](#getstatedelayed)
     - [getState](#getstate)
+    - [existsState](#existsState)
     - [getObject](#getobject)
     - [setObject](#setobject)
     - [extendObject](#extendobject)
@@ -789,7 +790,8 @@ Returns state with the given id in the following form:
 }
 ```
 
-If state does not exist, it will be returned following object: ```{val: null, notExist: true}```
+If state does not exist, a warning will be printed in the logs and the object: ```{val: null, notExist: true}``` will be returned.
+To surpress the warning check if the state exists before calling getState (see [existsState](#existsState)).
 
 ### getBinaryState
 ```js
@@ -799,6 +801,20 @@ Same as getState, but for the binary states, like files, images, buffers.
 The difference is that such a state has no ack, ts, lc, quality and so on flags und should be used only for binary "things".
 The object's common.type must be equal to 'file'.
 This function must be always used with callback. "data" is a buffer.
+
+### existsState
+```js
+existsState(id, function (err, isExists) {});
+```
+
+If option "Do not subscribe all states on start" is deactivated, you can use simplier call:
+
+```js
+existsState(id)
+```
+the function returns in this case true or false.
+
+Checks if a state exists.
 
 ### getObject
 ```js

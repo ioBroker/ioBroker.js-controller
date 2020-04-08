@@ -72,8 +72,14 @@ On configuration page you can select following modules:
 
 ## Changelog
 
+### 1.1.0 (2020-04-08)
+* (simatec) delete sync-exec
+* (simatec) Rewritten code on child_process
+* (simatec) code cleaned
+
+
 ### 1.0.0 (2020-04-07)
-(simatec) Release 1.0.0
+* (simatec) Release 1.0.0
 
 ### 0.1.3 (2019-03-14)
 * (simatec) Ready for latest
