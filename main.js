@@ -1777,7 +1777,7 @@ function processMessage(msg) {
     // important: Do not forget to update the list of protected commands in iobroker.admin/lib/socket.js for "socket.on('sendToHost'"
     // and iobroker.socketio/lib/socket.js
 
-    logger.debug('Incoming Host message ' + msg.command);
+    logger.debug(hostLogPrefix + ' Incoming Host message ' + msg.command);
     switch (msg.command) {
         case 'shell':
             if (config.system && config.system.allowShellCommands) {
@@ -2732,7 +2732,7 @@ function installAdapters() {
         procs[task.id].downloadRetry++;
 
         if (task.rebuild) {
-            logger.warn(hostLogPrefix + ' adapter "' + name + '" seems to be installed for a different version of Node.js. Trying to rebuild it... ' + procs[task.id].downloadRetry + ' attempt');
+            logger.warn(hostLogPrefix + ' adapter "' + name + '" seems to be installed for a different version of Node.js. Trying to rebuild it... ' + procs[task.id].rebuildCounter + ' attempt');
         } else {
             logger.warn(hostLogPrefix + ' startInstance cannot find adapter "' + name + '". Try to install it... ' + procs[task.id].downloadRetry + ' attempt');
         }

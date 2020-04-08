@@ -1,18 +1,18 @@
 # Changelog
 
-## 3.0.2 (2020-04-07) Release Elena
+## 3.0.3 (2020-04-07) Release Elena
 **BREAKING CHANGES**
 * Nodejs 8.x will be no longer officially supported! Supported are nodejs 10.x, 12.x and (most likely) 14.x
 
 **Features**
-* (Apollon77) Enable zip Archive setting that it is on by default again. All Logs on Linux will be packaged to .gz on rotation. This can be deactivated by configuration (see ...)
+* (Apollon77) Enable zip Archive setting that it is on by default again. All Logs on Linux will be packaged to .gz on rotation. This can be deactivated by configuration ([see Documentation](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#file-based-logging))
 * (Apollon77) Introduce CLI command "iobroker rebuild <adaptername>" or "iobroker rebuild self" (for controller) to execute an npm install/rebuild for the specified adapter
 * (Apollon77) Detect the need for a rebuild because of a nodejs update by checking adapter crash error message and execute the "iobroker rebuild" command for the affected adapter up to 3 times.
-* (foxriver76) Add ability to define separate read and write id for aliases (see ...)
-* (foxriver76) Make file write intervals of objects and state file dbs configurable (see ...)
-* (foxriver76) Check available RAM of the system before a new adapter process is started. If it is below 50/100MB log an error/warn and make it configurable via iobroker.json (see ...)
-* (Apollon77) Add plugin system for js-controller and adapters (see ...)
-* (Apollon77) Add and automatically enable Sentry as plugin for js-controller (see infos in README.md), can be disable per host via system.host.name.plugins.sentry.enabled (see ...)
+* (foxriver76) Add ability to define separate read and write id for aliases ([see Documentation](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#object-and-state-aliases))
+* (foxriver76) Make file write intervals of objects and state file dbs configurable ([see Documentation](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#iobroker-in-memory-database-with-json-file-storage))
+* (foxriver76) Check available RAM of the system before a new adapter process is started. If it is below 50/100MB log an error/warn and make it configurable via iobroker.json ([see Documentation](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#check-available-ram-before-adapters-are-started))
+* (Apollon77) Add plugin system for js-controller and adapters ([see Documentation](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#plugin-system-for-adapters-and-js-controller))
+* (Apollon77) Add and automatically enable Sentry as plugin for js-controller (see infos in README.md), can be disable per host via system.host.name.plugins.sentry.enabled ([see Documentation](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#error-reporting-via-iobroker-sentry))
 
 **Optimizations and Fixes**
 * (bluefox) Show options for start/stop/restart if more than one instance exists for the adapter
@@ -48,8 +48,8 @@
 * (foxriver76) Add basic checking for obj.common properties including logging. Please check logs and fix them, such invalid objects will be declined with js-controller 3.1
 
 **Developer relevant new Features**
-* (bluefox/foxriver76) Automatically encrypt all config attributes that are listed in common.encryptedNative in io-package, introduce ADAPTER_AUTO_DECRYPT (see ...) **Admin support missing as of now!**
-* (bluefox) Introduce new dependency field for io-package called common.globalDependencies to check for global dependencies (see ...). **Admin support missing as of now!**
+* (bluefox/foxriver76) Automatically encrypt all config attributes that are listed in common.encryptedNative in io-package, introduce ADAPTER_AUTO_DECRYPT ([see Documentation](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#automatically-encryptdecrypt-configuration-fields)) **Admin support missing as of now!**
+* (bluefox) Introduce new dependency field for io-package called common.globalDependencies to check for global dependencies ([see Documentation](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#define-adapter-dependencies-to-other-adapters)). **Admin support missing as of now!**
 
 **Developer relevant Optimizations and Fixes**
 * (Apollon77) Make sure that all places in adapters for states and objects that can return "really async" (e.g. because of DB communication) ALWAYS return async! (else callback !--count constructs can fail)
