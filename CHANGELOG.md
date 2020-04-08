@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.4 (2020-04-07) Release Elena
+* (Apollon77) Add "ls" property to list of allowed properties to set (prevent false positive errors with hm-rpc adapter)
+* (Apollon77) Add mock for adapter.states.getState to prevent crashed with Soef Adapters
+
 ## 3.0.3 (2020-04-07) Release Elena
 **BREAKING CHANGES**
 * Nodejs 8.x will be no longer officially supported! Supported are nodejs 10.x, 12.x and (most likely) 14.x
