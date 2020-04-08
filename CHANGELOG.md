@@ -45,7 +45,7 @@
 * (AlCalzone) Validate the object argument to set[Foreign]State[Changed] and log warnings, such invalid set commands will be declined with js-controller 3.1
 * (Apollon77) Move deprecation of getMessage to next controller version (3.1+)
 * (foxriver76/Apollon77) Validate that id in several state and object methods is of type string and log warnings
-* (foxriver76) Add basic checking for obj.common properties including logging. Please check logs and fix them
+* (foxriver76) Add basic checking for obj.common properties including logging. Please check logs and fix them, such invalid objects will be declined with js-controller 3.1
 
 **Developer relevant new Features**
 * (bluefox/foxriver76) Automatically encrypt all config attributes that are listed in common.encryptedNative in io-package, introduce ADAPTER_AUTO_DECRYPT (see ...) **Admin support missing as of now!**
@@ -64,7 +64,6 @@
 * (Apollon77) Enhance checks for getObjectsView response
 * general dependency updates
 * code style optimizations
-
 
 ## 2.2.10 (2020-03-08) Release Dina - Windows Edition
 **This version is especially for the new Windows Installer and will be used by it. It is not offered as normal update for the users on Linux (will not break, but not needed)!**
