@@ -3,6 +3,7 @@
 ## 3.0.4 (2020-04-07) Release Elena
 * (Apollon77) Add "ls" property to list of allowed properties to set (prevent false positive errors with hm-rpc adapter)
 * (Apollon77) Add mock for adapter.states.getState to prevent crashed with Soef Adapters
+* (Apollon77) Make sure extendObject is checking object parts differently
 
 ## 3.0.3 (2020-04-07) Release Elena
 **BREAKING CHANGES**
