@@ -378,6 +378,8 @@ function register(it, expect, context) {
         done();
     });
 
+    /*
+    // Todo: reactivate this tests with 3.1 when setState validation will refuse to set state
     // setState object validation
     for (const method of ['setState', 'setStateChanged', 'setForeignState', 'setForeignStateChanged']) {
         describe(`${context.name} ${context.adapterShortName} adapter: ${method} validates the state object`, () => {
@@ -476,6 +478,7 @@ function register(it, expect, context) {
             });
         });
     }
+     */
 }
 
 module.exports.register = register;
