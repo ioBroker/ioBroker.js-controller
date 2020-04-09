@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.5 (2020-04-09) Release Elena
+* (foxriver76) Remove mock for adapter.states.getState gain, fixed two adapters
+* (foxriver76) fix crash of redis setState when undefined is passed and refuse undefined as value in general
+* (Apollon77) Make sure objects update from/ts/user when extending objects in all cases
+
 ## 3.0.4 (2020-04-07) Release Elena
 * (Apollon77) Add "lc" property to list of allowed properties to set (prevent false positive errors with hm-rpc adapter)
 * (Apollon77) Add mock for adapter.states.getState to prevent crashed with Soef Adapters
