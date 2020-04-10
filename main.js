@@ -2584,84 +2584,42 @@ function checkVersions(id, deps, globalDeps) {
                 });
             }
 
+            // this ensures we have a real object with correct structure
+            deps = tools.parseDependencies(deps);
+            globalDeps = tools.parseDependencies(globalDeps);
+
             // check local dependencies: required adapter must be installed on the same host
-            if (deps) {
-                try {
-                    if (deps instanceof Array) {
-                        for (let d = 0; d < deps.length; deps++) {
-                            let version = null;
-                            let name = null;
-                            if (typeof deps[d] === 'object') {
-                                name = Object.keys(deps[d])[0];
-                                version = deps[d][name];
-                            } else {
-                                name = deps[d];
-                            }
-                            if (!checkVersion(id, name, version, instances)) {
-                                return reject();
-                            }
-                        }
-                    } else if (typeof deps === 'object') {
-                        if (deps.length !== undefined || deps[0]) {
-                            for (const i in deps) {
-                                if (!deps.hasOwnProperty(i)) {
-                                    continue;
-                                }
-                                if (Object.keys(deps[i]).find(name => !checkVersion(id, name, deps[name][i], instances))) {
-                                    return reject();
-                                }
-                            }
-                        } else {
-                            if (Object.keys(deps).find(name => !checkVersion(id, name, deps[name], instances))) {
-                                return reject();
-                            }
-                        }
+            try {
+                for (const dep in deps) {
+                    if (!Object.prototype.hasOwnProperty.call(deps, dep)) {
+                        continue;
                     }
-                } catch (e) {
-                    logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + e);
-                    logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + JSON.stringify(deps));
-                    return reject();
+
+                    if (!checkVersion(id, dep, deps[dep], instances)) {
+                        return reject(new Error());
+                    }
                 }
+            } catch (e) {
+                logger.error(`${hostLogPrefix} startInstance ${id} [checkVersions]: ${e}`);
+                logger.error(`${hostLogPrefix} startInstance ${id} [checkVersions]: ${JSON.stringify(deps)}`);
+                return reject(new Error());
             }
 
             // check global dependencies: required adapter must be NOT installed on the same host
-            if (globalDeps) {
-                try {
-                    if (globalDeps instanceof Array) {
-                        for (let d = 0; d < globalDeps.length; globalDeps++) {
-                            let version = null;
-                            let name = null;
-                            if (typeof globalDeps[d] === 'object') {
-                                name = Object.keys(globalDeps[d])[0];
-                                version = globalDeps[d][name];
-                            } else {
-                                name = globalDeps[d];
-                            }
-                            if (!checkVersion(id, name, version, globInstances)) {
-                                return reject();
-                            }
-                        }
-                    } else if (typeof globalDeps === 'object') {
-                        if (globalDeps.length !== undefined || globalDeps[0]) {
-                            for (const i in globalDeps) {
-                                if (!globalDeps.hasOwnProperty(i)) {
-                                    continue;
-                                }
-                                if (Object.keys(globalDeps[i]).find(name => !checkVersion(id, name, globalDeps[name][i], globInstances))) {
-                                    return reject();
-                                }
-                            }
-                        } else {
-                            if (Object.keys(globalDeps).find(name => !checkVersion(id, name, globalDeps[name], globInstances))) {
-                                return reject();
-                            }
-                        }
+            try {
+                for (const gDep in globalDeps) {
+                    if (!Object.prototype.hasOwnProperty.call(globalDeps, gDep)) {
+                        continue;
                     }
-                } catch (e) {
-                    logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + e);
-                    logger.error(hostLogPrefix + ' startInstance ' + id + ' [checkVersions]: ' + JSON.stringify(globalDeps));
-                    return reject();
+
+                    if (!checkVersion(id, gDep, globalDeps[gDep], globInstances)) {
+                        return reject(new Error());
+                    }
                 }
+            } catch (e) {
+                logger.error(`${hostLogPrefix} startInstance ${id} [checkVersions]: ${e}`);
+                logger.error(`${hostLogPrefix} startInstance ${id} [checkVersions]: ${JSON.stringify(globalDeps)}`);
+                return reject(new Error());
             }
 
             resolve();
