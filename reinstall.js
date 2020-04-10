@@ -3,6 +3,7 @@
 const fs = require('fs');
 const path = require('path');
 const exec = require('child_process').exec;
+const deepClone = require('deep-clone');
 
 function getNodeModulesRoot() {
     // special case
@@ -42,7 +43,7 @@ function savePackages(root) {
         return;
     }
     let dirs = fs.readdirSync(root + '/node_modules');
-    let newPack = JSON.parse(JSON.stringify(defaultPack));
+    let newPack = deepClone(defaultPack);
     dirs = dirs.filter(dir => dir.match(/^iobroker\.?/i));
     const deps = dirs.map(dir => {
         const fileName = root + '/node_modules/' + dir + '/package.json';

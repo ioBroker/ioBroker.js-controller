@@ -22,6 +22,7 @@
     "daemonize2": "^0.4.2",
     "debug": "^4.1.1",
     "decache": "^4.5.1",
+    "deep-clone": "^3.0.3",
     "event-stream": "^4.0.1",
     "iobroker.objects-redis": "^3.2.1",
     "ioredis": "^4.16.1",
