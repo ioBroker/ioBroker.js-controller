@@ -14,6 +14,7 @@ before(() => {
 });
 
 const setup  = require('./setup4controller');
+const deepClone = require('deep-clone');
 
 function testAdapter(options) {
     const statesConfig  = options.statesConfig;
@@ -200,8 +201,8 @@ function testAdapter(options) {
             this.timeout(10000); // no installation
 
             addInstance();
-            const _statesConfig  = JSON.parse(JSON.stringify(statesConfig));
-            const _objectsConfig = JSON.parse(JSON.stringify(objectsConfig));
+            const _statesConfig  = deepClone(statesConfig);
+            const _objectsConfig = deepClone(objectsConfig);
 
             _statesConfig.onChange = (id, state) => {
                 console.log('state changed. ' + id);

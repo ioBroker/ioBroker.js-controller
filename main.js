@@ -19,6 +19,7 @@ const ioPackage       = require('./io-package.json');
 const tools           = require('./lib/tools');
 const version         = ioPackage.common.version;
 const pidUsage        = require('pidusage');
+const deepClone       = require('deep-clone');
 const EXIT_CODES      = require('./lib/exitCodes');
 const {PluginHandler} = require('@iobroker/plugin-base');
 let pluginHandler;
@@ -2442,7 +2443,7 @@ function checkAndAddInstance(instance, ipArr) {
 
     hostAdapter[instance._id] = hostAdapter[instance._id] || {};
     if (!hostAdapter[instance._id].config) {
-        hostAdapter[instance._id].config = JSON.parse(JSON.stringify(instance));
+        hostAdapter[instance._id].config = deepClone(instance);
     }
 
     if (!instanceRelevantForThisController(instance, ipArr)) {
@@ -2459,7 +2460,7 @@ function checkAndAddInstance(instance, ipArr) {
     }
     procs[instance._id] = procs[instance._id] || {};
     if (!procs[instance._id].config) {
-        procs[instance._id].config = JSON.parse(JSON.stringify(instance));
+        procs[instance._id].config = deepClone(instance);
     }
     return true;
 }
