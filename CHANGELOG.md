@@ -2,7 +2,7 @@
 
 ## 3.0.6 (2020-04-11) Release Elena
 * (bluefox) Fixed vis debug
-* (foxriver76/Apollon77) optimize and fix dependeny checks to consider all dependencies correctly on install, upgrade and adapter start
+* (foxriver76/Apollon77) optimize and fix dependency checks to consider all dependencies correctly on install, upgrade and adapter start
 * (AlCalzone) add `iobroker extend object` command
 * (AlCalzone) optimize performance when objects are duplicated and checked internally
 * (AlCalzone) Add command `iobroker debug adapter` to start Node.js debug sessions for an adapter
