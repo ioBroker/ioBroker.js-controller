@@ -1,7 +1,7 @@
 # Changelog
 
 ## 3.0.5 (2020-04-09) Release Elena
-* (foxriver76) Remove mock for adapter.states.getState gain, fixed two adapters
+* (foxriver76) Remove mock for adapter.states.getState again, fixed two adapters
 * (foxriver76) fix crash of redis setState when undefined is passed and refuse undefined as value in general
 * (Apollon77) Make sure objects update from/ts/user when extending objects in all cases
 

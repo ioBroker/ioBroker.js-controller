@@ -1130,7 +1130,7 @@ function setMeta() {
         if (compactGroupController) {
             newObj = {
                 _id: id,
-                type: 'device',
+                type: 'folder',
                 common: {
                     name: hostname + compactGroupObjectPrefix + compactGroup,
                     cmd: process.argv[0] + ' ' + (process.execArgv.join(' ') + ' ').replace(/--inspect-brk=\d+ /, '') + process.argv.slice(1).join(' '),
