@@ -187,7 +187,7 @@ Die Baumstruktur wird automatisch nach Namen zusammengestellt. Z.B. ```system.ad
 * `user` - Benutzer
 * `group` - Gruppen
 * `chart` - Diagramme
-* `Ordner` - eine Reihe von Geräten oder andere Dinge.
+* `folder` - eine Reihe von Geräten oder andere Dinge.
 
 #### Attribute für bestimmte Objekttypen
 ##### Zustand
