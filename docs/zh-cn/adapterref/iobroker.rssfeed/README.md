@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.rssfeed/README.md
 title: ioBroker适配器，用于请求和显示不同标准的RSS提要（Atom，RSS，RDF）
-hash: RVTdUT34i61jk7CadAR8g8U8dkTUcvJJiE+9BOPW2T0=
+hash: 2vvaeZwJi4wWwucNzR47xVXajElmyuwtz6er3PWxm9Q=
 ---
 ![商标](../../../en/adapterref/iobroker.rssfeed/admin/rssfeed-logo.png)
 
@@ -16,11 +16,11 @@ hash: RVTdUT34i61jk7CadAR8g8U8dkTUcvJJiE+9BOPW2T0=
 
 ＃ioBroker适配器以请求并显示不同标准（Atom，RSS，RDF）的RSS Feed
 ##概述
-要求和显示不同标准（Atom，RSS，RDF）的RSS feed的适配器
+请求和显示不同标准（Atom，RSS，RDF）的RSS feed的适配器。
+您可以使用模板系统自定义提要的输出。在模板中，您可以包括HTML，CSS和Javascript。
 
 ##安装
-该适配器当前仅在github上可用。
-存储库名称为https://github.com/oweitman/iobroker.rssfeed
+最新存储库中提供的适配器。
 
 ##添加实例
 安装后，适配器应显示在iobroker的适配器部分中。
@@ -44,29 +44,27 @@ iobroker upload rssfeed
 
 |设置|描述|
 | --------------------------------- | ------------------------------------------------------------------------------------------------- |
-|姓名|唯一名称，不能出现两次|
+|姓名|数据点的名称。在文件夹内，名称不能出现两次。 |
+|分类|子文件夹的名称，数据点应出现在该文件夹中。类别必须是唯一的|
 |网址|供稿的完整地址（带有http：//或https：//，请参见下面的示例）|
 |刷新|可以为此Feed指定其他值。否则，采用通用规范|
+|编辑按钮|所选项目将被删除，值将显示在“添加”部分|
+|删除按钮|所选项目将被删除|
 
 如果保存并关闭了配置，则可以在对象树中将提要数据作为JSON数据点找到。
 
 ##视觉和小部件
 以下小部件实际存在
 
-#### RSS视图小部件显示提要的小部件。可以使用rssfeed通过vis中的搜索过滤器找到。
-小部件具有以下设置选项
+* RSS Feed小部件-显示单个feed
+* RSS Feed Multi小部件-在一个小部件中显示多个汇总的feed。
+* RSS Feed meta Helper-帮助器小部件，用于检查提要的元数据
+* RSS Feed文章帮助程序-帮助程序窗口小部件，用于检查摘要的文章数据
+* RSS提要字幕-一个将提要的标题显示为选框的小部件
+* JSON模板-与RSS Feed无关的wdiget，但您可以定义一个自定义模板以显示vis中的任何JSON-Data。
 
-rss_oid在此处选择所需提要的JSON数据点。我注意到对象浏览器并不总是令人满意地工作，因为它试图显示JSON中包含的HTML部分。
-或者，直接从vis复制数据点ID。
-template：可以在此处输入模板，其中可以包含javascript和html混合。
+vis小部件的文档可在vis或[小部件文档/德语](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.rssfeed/blob/master/widgets/rssfeed/doc.html)中找到
 
-maxarticles：在这里小部件可以单独限制为文章数。
-
-所有其他设置与其他小部件相同。格式规范通常适用于所有小部件内容
-
-#### RSS meta helper小部件，用于查看供稿中的所有元属性的小部件，此小部件可帮助您找到要在模板中选择的正确属性。
-#### RSS文章帮助程序小部件，用于查看文章的所有属性的小部件。此小部件可帮助您找到要在模板中选择的文章的正确属性。
-还有以下附加设置前缀：您要在模板中使用的javascript变量的名称。这有助于将名称直接复制到模板文章中：您希望在帮助器中看到的文章编号。
 ##基于示例的模板
 我使用以下RSS feed测试了一个示例：
 
@@ -128,6 +126,10 @@ Z7：无输出。这行代码关闭了javascript循环。 Z2和Z7之间定义的
 * ~~蒂法尔河畔劳夫教堂的小工具https://forum.iobroker.net/topic/31242/nachrichten-ticker-newsticker-via-php-in-vis-einbinden/2~~
 
 ## Changelog
+### 0.0.27
+* adapter configuration is now editable
+### 0.0.26
+* correct changelog size 
 ### 0.0.25
 * the error messages for the template are improved 
 ### 0.0.24

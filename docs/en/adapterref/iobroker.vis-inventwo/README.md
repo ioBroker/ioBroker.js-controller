@@ -35,10 +35,18 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+# 1.3.2
+- Bug fix
+
+# 1.3.1
+- Changed navigation button color behaviour
+- Added new icons
+
 # 1.3.0
 - Added JSON table
 - Added delay for navigations
 - Text in buttons can now be HTML
+- Added new icons
 
 # 1.2.3
 - Added Navigation active color

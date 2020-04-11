@@ -2,11 +2,13 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.firetv/README.md
-title: без названия
-hash: /Cz3gDgOPpGgPIThLnFhQpr1VYtUyYP/Jt1QSmkhE58=
+title: без заголовка
+hash: CovZUdv+x4gbupj11lkb3U6+4IVmRfxlLmRx36rxneY=
 ---
 ![логотип](../../../en/adapterref/iobroker.firetv/admin/firetv.png)
 
+![Количество установок](http://iobroker.live/badges/firetv-community-installed.svg)
+![Стабильная версия](http://iobroker.live/badges/firetv-community-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.firetv.svg)
 ![тесты](https://img.shields.io/travis/soef/iobroker.firetv/master.svg)
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
@@ -24,7 +26,7 @@ hash: /Cz3gDgOPpGgPIThLnFhQpr1VYtUyYP/Jt1QSmkhE58=
 - Отправить ключевые события
 - Отправить текстовые строки в поля ввода
 - запуск / остановка приложений
-- перезагружать
+- перезагрузка
 - точные команды оболочки
 
 #### Некоторая информация
@@ -39,9 +41,29 @@ hash: /Cz3gDgOPpGgPIThLnFhQpr1VYtUyYP/Jt1QSmkhE58=
 
 Кроме того, вы можете использовать *adbLink*
 
-#### Монтаж
-Выполните следующую команду в корневом каталоге iobroker (например, в / opt / iobroker)
+## Changelog
+### 1.0.0 (2020-04-09)
+* (foxriver76) compatibility for js-c 3
 
-```
-npm install iobroker.firetv
-```
+## License
+The MIT License (MIT)
+
+Copyright (c) 2016-2020 soef <soef@gmx.net>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

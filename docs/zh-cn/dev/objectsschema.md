@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/objectsschema.md
 title: 核心理念
-hash: A/qY4yM3YzdeuQj6/YGrA4QqLUgSiPovfWb0Clv/woY=
+hash: mG9F6aWkgsId38qcRUEcjkU7m6+afwc4m6L2RBBrG9U=
 ---
 ＃核心概念
 ioBroker中有两种根本不同的数据类型。所谓的“状态”（`states`）和“对象” **。
@@ -128,7 +128,7 @@ getState / stateChange / setState对象的属性：
 *`val`-实际值-可以是JSON-“可编码”的任何类型
 *`ack`-一个布尔型标志，指示目标系统是否已确认该值
 *`ts`-指示状态的最后更新的unix时间戳（以毫秒为单位）
-*`lc`-Unix时间戳，指示该状态的实际值的最后一次更改（以毫秒为单位）
+*`lc`-Unix时间戳，指示状态的实际值的最后一次更改（以毫秒为单位）
 *`from`-完成`setState`的适配器实例
 *`user`-用户名，用于设置值
 *`expire`-一个整数值，可用于设置在给定秒数后到期的状态。可以和setValue一起使用。该值过期后，它将从redisDB中消失。
@@ -156,7 +156,7 @@ getState / stateChange / setState对象的属性：
   0x84 - 10000100 - sensor reports error
 ```
 
-每个* state *必须由state类型的对象表示，该对象包含该状态的Meta-Data。见下文。
+每个* state *必须由state类型的对象表示，该对象包含该状态的元数据。见下文。
 
 ##对象
 ###强制属性
@@ -177,7 +177,7 @@ getState / stateChange / setState对象的属性：
 *`state`-父级应该是通道，设备，实例或主机的类型
 *`channel`-反对组织一个或多个状态。父母应该是设备。
 *`device`-阻止对一个或多个通道或状态进行分组。除适配器实例名称空间外，不应有任何父项。
-*`enum`-持有共同点数组的对象。成员指向状态，通道，设备或文件。枚举可以有一个父枚举（可能是树结构）
+*`enum`-持有一个数组的对象common.members指向状态，通道，设备或文件。枚举可以有一个父枚举（可能是树结构）
 *`host`-运行控制器进程的主机
 *`adapter`-适配器的默认配置。存在状态也表示适配器已成功安装。 （建议：应具有保存安装它的主机的数组的属性）
 *`instance`-适配器的实例。父级必须是适配器类型
@@ -251,8 +251,8 @@ getState / stateChange / setState对象的属性：
 *`light.color`-具有颜色更改功能的灯光控制
 *`light.color.rgb`-以RGB设置颜色
 *`light.color.rgbw`-以RGBW设置颜色
-*`light.color.hsl`-以色相/饱和度/亮度设置颜色（色相光-LivingColors ...）
-*`light.color.hslct`-在色相/饱和度/亮度或色温中设置颜色（色相扩展色光）
+*`light.color.hsl`-在“色相/饱和度/亮度”中设置颜色（“色相光-LivingColors ...”）
+*`light.color.hslct`-在“色相/饱和度/亮度”或“色温”中设置颜色（色相扩展色光）
 *`light.color.ct`-色温K
 
 *`switch`-一些通用的开关
@@ -492,7 +492,7 @@ id`system.adapter.<adapter.name>`
 *`common.adminTab.link`-TAB中iframe的链接。您可以像这样使用参数替换：“ http：//％ip％：％port％”。 IP将被替换为主机IP。 “端口”将从native.port中提取。
 *`common.adminTab.name`-管理员中TAB的名称
 *`common.adminTab.singleton`-[true / false]如果适配器具有用于管理员的TAB。对于所有实例，只会显示一个TAB。
-*`common.allowInit`-[true / false]如果设置更改或适配器已启动，则允许将“计划的”适配器称为“不在时间表中”。或者在配置更改后允许调度的适配器启动一次，然后按调度启动。
+*`common.allowInit`-[true / false]如果设置更改或适配器已启动，则允许将“计划的”适配器称为“不在时间表内”。或者在配置更改后允许调度的适配器启动一次，然后按调度启动。
 *`common.availableModes`-common.mode的值，如果可能有多个模式
 *`common.blockly`-[true / false]如果适配器具有用于块的自定义块。 （需要admin / blockly.js）
 *`common.connectionType`-与设备的连接类型：`local / cloud`。参见`common.dataSource`。
@@ -540,7 +540,7 @@ id`system.adapter.<adapter.name>`
 *`common.readme`-不推荐使用。使用`docs`。
 *`common.restartAdapters`-具有适配器名称的阵列，必须在安装此适配器后重新启动它，例如[“可见”]
 *`common.schedule`-如果适配器以`schedule`模式运行，则CRON时间表。
-*`common.serviceStates`-[true / false或path]如果适配器可以传递其他状态。如果是，路径适配器/lib/states.js将被调用，并提供以下参数功能（对象，状态，实例，配置，回调）。函数必须传递具有函数（err，result）之类的值的点数组{result = [{id：'id1'，val：1}，{id：'id2'，val：2}]}}
+*`common.serviceStates`-[true / false或path]如果适配器可以传递其他状态。如果是，路径适配器/lib/states.js将被调用，并提供以下参数功能（对象，状态，实例，配置，回调）。函数必须传递点数组，其值类似于函数（err，result）{result = [{{id：'id1'，val：1}，{id：'id2'，val：2}]}}
 *`common.singletonHost`-适配器只能在一台主机上安装一次
 *`common.singleton`-适配器在整个系统中只能安装一次
 *`common.stopBeforeUpdate`-[true / false]如果适配器必须在更新前停止
@@ -549,7 +549,7 @@ id`system.adapter.<adapter.name>`
 *`common.subscribe`-变量名，自动订阅
 *`common.supportCustoms`-[true / false]如果适配器支持每种状态的设置。它必须在admin中具有custom.html文件。样本可以在ioBroker.history中找到
 *`common.supportStopInstance`-[true / false]如果适配器支持信号stopInstance（需要** messagebox **）。该信号将在停止前发送到适配器。 （如果问题发生在SIGTERM上，则使用）
-*`common.titleLang`-**必填**所有支持的语言的适配器的更长名称，例如{en：'Adapter'，de：'adapter'，ru：'Драйвер'}
+*`common.titleLang`-**必填**所有支持的语言的适配器名称，例如{en：'Adapter'，de：'adapter'，ru：'Драйвер'}
 *`common.title`-（不建议使用）适配器的更长名称，以在admin中显示
 *`common.type`-适配器类型。参见[类型]（adapterpublish.md）
 *`common.unchanged`-（系统）请不要使用此标志。这是通知系统的标志，必须在admin中显示配置对话框。
@@ -565,8 +565,8 @@ id`system.adapter.<adapter.name>`
 *`common.welcomeScreen.order`-待办事项
 *`common.welcomeScreenPro`-与`common.welcomeScreen`相同，但仅用于ioBroker.cloud的访问。
 *`common.wwwDontUpload`-不要将www目录上传到数据库。仅用于管理员。您可以只命名目录，然后单击确定。
-*`common.protectedNative`-配置属性数组，只能由自己的适配器访问，例如`[“ password”]`
-*`common.encryptedNative`-配置属性数组，当通过“管理员”配置页面存储时会自动加密，并在适配器运行时自动解密，例如`[“ password”，“ token”]`
+*`protectedNative`-配置属性数组，只能由自己的适配器访问，例如`[“ password”]`
+*`encryptedNative`-配置属性数组，当通过“管理员”配置页面存储时将自动加密，并在适配器运行时自动解密，例如`[“ password”，“ token”]`
 *`native`-预定义的属性，可在index_m.html中并在运行时通过`adapter.config。<attribute>`访问，例如`{“端口”：1234，“密码”：“秘密”}`
 
 ####实例

@@ -3,6 +3,7 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)](https://www.npmjs.com/package/iobroker.ecovacs-deebot)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)](https://www.npmjs.com/package/iobroker.ecovacs-deebot)
+[![Installed](http://iobroker.live/badges/ecovacs-deebot-installed.svg)](https://www.iobroker.net/#en/adapters/adapterref/iobroker.ecovacs-deebot/README.md)
 [![Travis-CI](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot)
 
 This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js) library.
@@ -25,6 +26,7 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 * Deebot N79T
 * Deebot M88
 * Deebot 600/605
+* Deebot Ozmo 920
 
 ## Installation
 

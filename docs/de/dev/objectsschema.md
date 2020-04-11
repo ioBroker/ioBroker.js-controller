@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
-hash: A/qY4yM3YzdeuQj6/YGrA4QqLUgSiPovfWb0Clv/woY=
+hash: mG9F6aWkgsId38qcRUEcjkU7m6+afwc4m6L2RBBrG9U=
 ---
 # Kernkonzept
 In ioBroker gibt es zwei grundlegend unterschiedliche Datentypen. Sogenannte **Zustände** (`states`) und **Objekte**
@@ -47,7 +47,7 @@ Oder ein anderes Beispiel `hm-rpc.1.ABC110022.2.VALUE`:
 * `system.group.` - Gruppen
 * `system.adapter. <Adaptername>` - Standardkonfiguration eines Adapters
 * `<Adaptername> .` - Objekte für einen bestimmten Adapter.
-* `<Adaptername> .meta.` - gemeinsame Metadaten, die von allen Instanzen dieses Adapters verwendet werden
+* `<Adaptername> .meta.` - allgemeine Metadaten, die von allen Instanzen dieses Adapters verwendet werden
 * `<Adaptername>. <Instanznummer> .` - Ein Adapterinstanz-Namespace
 * `enum.` - Aufzählungen
 * `history.` - Verlaufsdaten
@@ -187,7 +187,7 @@ Die Baumstruktur wird automatisch nach Namen zusammengestellt. Z.B. ```system.ad
 * `user` - Benutzer
 * `group` - Gruppen
 * `chart` - Diagramme
-* `folder` - eine Reihe von Geräten oder andere Dinge.
+* `Ordner` - eine Reihe von Geräten oder andere Dinge.
 
 #### Attribute für bestimmte Objekttypen
 ##### Zustand
@@ -201,7 +201,7 @@ Attribute:
 * `common.def` (optional - der Standardwert)
 * `common.defAck` (optional - wenn common.def gesetzt ist, wird dieser Wert als ack-Flag verwendet, js-controller 2.0.0+)
 * `common.desc` (optional, Zeichenfolge oder Objekt) - Beschreibung, Objekt für mehrsprachige Beschreibung
-* `common.read` (boolesch, obligatorisch) - true, wenn state lesbar ist
+* `common.read` (boolesch, obligatorisch) - true, wenn der Status lesbar ist
 * `common.write` (boolesch, obligatorisch) - true, wenn state beschreibbar ist
 * `common.role` (Zeichenfolge, obligatorisch) - Rolle des Status (wird in Benutzeroberflächen verwendet, um anzugeben, welches Widget ausgewählt werden soll, siehe unten)
 * `common.states` (optional) Attribut vom Typ Nummer mit Objekt möglicher Zustände` {'Wert': 'Wertname', 'Wert2': 'Wertname2', 0: 'AUS', 1: 'EIN'} `
@@ -497,7 +497,7 @@ id `system.adapter.<adapter.name>`
 * `common.blockly` - [true / false], wenn der Adapter benutzerdefinierte Blöcke für blockly hat. (admin / blockly.js erforderlich)
 * `common.connectionType` - Verbindungstyp mit Gerät:` local / cloud`. Siehe auch "common.dataSource".
 * `common.compact` - sagt dem Controller, dass dieser Adapter auf Wunsch im selben Prozess gestartet werden kann
-* `common.config.height` - Standardhöhe für den Konfigurationsdialog (veraltet - nur gültig für admin2)
+* `common.config.height` - Standardhöhe für den Konfigurationsdialog (veraltet - nur für admin2 gültig)
 * `common.config.minHeight` - minimale Höhe für den Konfigurationsdialog (veraltet - nur gültig für admin2)
 * `common.config.minWidth` - minimale Breite für den Konfigurationsdialog (veraltet - nur gültig für admin2)
 * `common.config.width` - Standardbreite für den Konfigurationsdialog (veraltet - nur gültig für admin2)
@@ -524,7 +524,7 @@ id `system.adapter.<adapter.name>`
 * `common.messagebox` - true, wenn das Nachrichtenfeld unterstützt wird. Wenn ja, wird das Objekt system.adapter. &lt; adapter.name & gt &lt; adapter.instance & gt.messagebox erstellt, um Nachrichten an den Adapter zu senden (wird für E-Mail, Pushover, ... verwendet;
 * `common.mode` - **obligatorisch** mögliche Werte siehe unten
 * `common.name` - **obligatorischer** Name des Adapters ohne" ioBroker ".
-* `common.noConfig` - [true / false] zeigt zum Beispiel keinen Konfigurationsdialog an
+* `common.noConfig` - [true / false] zeigt beispielsweise keinen Konfigurationsdialog an
 * `common.noIntro` - zeigt niemals Instanzen dieses Adapters auf dem Intro / Übersichtsbildschirm in admin an (wie Symbole, Widgets)
 * `common.noRepository` - [true / false], wenn der Adapter bei der Erstinstallation geliefert wurde oder über ein eigenes Repository verfügt
 * `common.nogit` - Wenn true, ist keine direkte Installation von Github möglich
@@ -560,13 +560,13 @@ id `system.adapter.<adapter.name>`
 * `common.webExtendable` - [true / false], wenn der Webserver in diesem Adapter mit Plugins / Erweiterungen wie Proxy, Simple-API erweitert werden kann
 * `common.webExtension` - relativer Dateiname zum Verbinden der Web-Erweiterung. Z.B. in simple-api "lib / simpleapi.js" relativ zum Adapter-Stammverzeichnis. Zusätzlich muss native.webInstance angeben, wo diese Erweiterung enthalten sein wird. Leer bedeutet, dass es als eigener Webdienst ausgeführt werden muss. "*" bedeutet, dass jeder Webserver es enthalten muss.
 * `common.webPreSettings` - Liste der Parameter, die vom webServer-Adapter in info.js aufgenommen werden müssen. (Beispielmaterial)
-* `common.webservers` - Array von Webserverinstanzen, die Inhalte aus dem Ordner www des Adapters bereitstellen sollen
+* `common.webservers` - Array von Webserverinstanzen, die Inhalte aus dem www-Ordner des Adapters bereitstellen sollen
 * `common.welcomeScreen` - Array von Seiten, die auf der Seite" web "index.html angezeigt werden sollen. ["vis / edit.html", "vis / index.html"] oder [{"link": "vis / edit.html", "name": "Vis editor", "img": "vis / img / edit.png "," color ":" blue "}," vis / index.html "]
 * `common.welcomeScreen.order` - todo
 * `common.welcomeScreenPro` - Wie` common.welcomeScreen`, jedoch nur für den Zugriff von ioBroker.cloud verwendet.
 * `common.wwwDontUpload` - Laden Sie das Verzeichnis www nicht in die DB hoch. Wird nur für Administratoren verwendet. Sie können Ihrem Verzeichnis einfach einen anderen Namen geben und OK.
-* `common.protectedNative` - Array von Konfigurationsattributen, auf die nur der eigene Adapter zugreifen kann, z. `[" Passwort "]`
-* `common.encryptedNative` - Array von Konfigurationsattributen, die automatisch verschlüsselt werden, wenn sie über die Admin-Konfigurationsseite gespeichert und zur Laufzeit des Adapters automatisch entschlüsselt werden, z. `[" Passwort "," Token "]`
+* `protectedNative` - Array von Konfigurationsattributen, auf die nur der eigene Adapter zugreifen kann, z. `[" Passwort "]`
+* `encryptedNative` - Array von Konfigurationsattributen, die automatisch verschlüsselt werden, wenn sie über die Admin-Konfigurationsseite gespeichert und zur Laufzeit des Adapters automatisch entschlüsselt werden, z. `[" Passwort "," Token "]`
 * `native` - vordefinierte Attribute, auf die in index_m.html und zur Laufzeit über` adapter.config. <attribute> `zugegriffen werden kann, z. `{" port ": 1234," password ":" secret "}`
 
 #### Instanz

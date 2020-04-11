@@ -317,7 +317,11 @@ $ sudo apt-get install smartmontools
 Записи форума будут отображаться без проблем при доступе к ioBroker через IP или localhost:8081. Но если вы используете имя хоста, такое как meinhaus.de:8081, вы должны получить бесплатный ключ API в Feednami. Чтобы зарегистрироваться, нажмите [здесь](https://toolkit.sekando.com/docs/en/setup/hostnames) и следуйте инструкциям.
 
 ## Changelog
-### 1.6.0 (2020-xx-xx)
+### 1.6.0 (2020-04-08)
+* (SchumyHa) update Chinese bbs rss url
+* (ldittmar) Tabs were added to config
+* (ldittmar) Update translations
+* (bluefox) Widget corrected in edit mode
 
 ### 1.5.7 (2019-11-12)
 * (ldittmar) add event vis widget

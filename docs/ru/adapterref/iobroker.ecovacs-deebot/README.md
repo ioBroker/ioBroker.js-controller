@@ -3,12 +3,13 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: 6eD1dGnNSHyhz413axLSCBw9FiD2595ttBvL5dfTrus=
+hash: pxTnxHQ8587eG2gLkxM3SnhTsZ2RDqcKUDsXUMm/2cI=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
+![Установлены](http://iobroker.live/badges/ecovacs-deebot-installed.svg)
 ![Трэвис-CI](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
 
 # Ecovacs Deebot адаптер для ioBroker
@@ -31,8 +32,9 @@ hash: 6eD1dGnNSHyhz413axLSCBw9FiD2595ttBvL5dfTrus=
 * Deebot N79T
 * Deebot M88
 * Deebot 600/605
+* Deebot Ozmo 920
 
-## Монтаж
+## Установка
 Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок, в противном случае установка в iobroker может привести к ошибке:
 
 ```

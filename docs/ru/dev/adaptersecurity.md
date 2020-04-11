@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/adaptersecurity.md
 title: Функции безопасности для разработчиков адаптеров
-hash: oLnPqP8YmmBYPvsBFcc7eVpDh+QuM6unsVwmt9QNGT0=
+hash: iXhVBmKdkGTG6U453IC5CTNS5Wb5kjpTybMEUkvUEUs=
 ---
 # Функции, связанные с безопасностью для разработчиков адаптеров
 ## Запретить доступ других адаптеров к конфиденциальным данным
@@ -16,12 +16,9 @@ __Пример__:
 
 ```json
 ...
-"common": {
-    "protectedNative": [
-        "password"
-    ],
-    ...
-},
+"protectedNative": [
+    "password"
+],
 "native": {
   "password": "topSecret"
 }
@@ -42,12 +39,9 @@ __Пример__:
 
 ```json
 ...
-"common": {
-    "encryptedNative": [
-        "password"
-    ],
-    ...
-},
+"encryptedNative": [
+    "password"
+],
 "native": {
   "password": "topSecret"
 }

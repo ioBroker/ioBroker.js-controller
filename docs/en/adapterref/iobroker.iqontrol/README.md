@@ -281,7 +281,13 @@ In addition to normal thermostat you can define:
 
 ****
 
-## Changelo8
+## Changelog
+
+### 0.2.20 (2020-04-08)
+* (Sebastian Bormann) If value for POWER is greater than 100, it is rounded withour decimal places.
+* (Sebastian Bormann) Bugfixed invert-function with custom min and max.
+* (Sebastian Bormann) Added reload-link to loading page.
+* (Sebastian Bormann) Updated dependencies.
 
 ### 0.2.19 (2020-02-29)
 * (Sebastian Bormann) Updated dependencies.

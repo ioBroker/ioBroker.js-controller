@@ -3,12 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: 6eD1dGnNSHyhz413axLSCBw9FiD2595ttBvL5dfTrus=
+hash: pxTnxHQ8587eG2gLkxM3SnhTsZ2RDqcKUDsXUMm/2cI=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
+![Eingerichtet](http://iobroker.live/badges/ecovacs-deebot-installed.svg)
 ![Travis-CI](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
 
 # Ecovacs Deebot Adapter für ioBroker
@@ -31,6 +32,7 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot N79T
 * Deebot M88
 * Deebot 600/605
+* Deebot Ozmo 920
 
 ## Installation
 Dieser Adapter verwendet die Canvas-Bibliothek, für die möglicherweise zusätzliche Installationen erforderlich sind. Andernfalls kann die Installation in iobroker zu einem Fehler führen:

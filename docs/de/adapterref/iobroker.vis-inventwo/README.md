@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: tgbbEaWnu//nVsUuH82cZ05SrvIpOyf3/Knc+g4mLqo=
+hash: iw9jHbxnZMm10ysHEF8fY2bBp6smchJQfBPXBq4g33k=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -27,7 +27,7 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ---
 
 ## Besetzung
-Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
+Falls Dir unsere Arbeit ausgewählt und du uns nicht möchtest, wir freuen uns über jede Spende.
 
 (Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
@@ -35,10 +35,18 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ---
 
+# 1.3.2
+- Bug-Fix
+
+# 1.3.1
+- Das Farbverhalten der Navigationsschaltfläche wurde geändert
+- Neue Symbole hinzugefügt
+
 # 1.3.0
 - JSON-Tabelle hinzugefügt
 - Verzögerung für die Navigation hinzugefügt
 - Text in Schaltflächen kann jetzt HTML sein
+- Neue Symbole hinzugefügt
 
 # 1.2.3
 - Aktive Navigationsfarbe hinzugefügt
@@ -56,7 +64,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Neue Symbole hinzugefügt
 
 ### 1.1.1
-- Fehlerbehebung
+- Bug-Fix
 
 ### 1.1.0
 - Slider-Widget hinzugefügt
@@ -65,7 +73,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Die Schaltflächen-Widgets wurden geändert, um die Standardoptionen für Schriftart und Text zu verwenden
 
 ### 1.0.0
-- Widget-Hintergrund und Inhaltsopazität, Wechsel kann von boolesch auf Wert geändert werden, Symbole von weiß auf schwarz geändert, nahtlose Hintergründe hinzugefügt
+- Widget-Hintergrund und Inhaltsopazität, Umschalten von Boolesch auf Wert, Symbole von Weiß auf Schwarz geändert, nahtlose Hintergründe hinzugefügt
 
 ### 0.1.2
 - Fehlerbehebung

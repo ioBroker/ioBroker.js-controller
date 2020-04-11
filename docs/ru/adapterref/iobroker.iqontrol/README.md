@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: J3EuVE+zZQ/jZpebcngfTcfVq90XvItMCYE74SafCbU=
+hash: Rdr5TNbAWWrNwV3UmMfa4XaMB6U4kbuDh7k4uX8JEU0=
 ---
 ![логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -38,15 +38,15 @@ hash: J3EuVE+zZQ/jZpebcngfTcfVq90XvItMCYE74SafCbU=
 Это полностью настраиваемый.
 
 ## Добавить на домашний экран
-Вы можете сохранить его как веб-приложение на главном экране, и оно будет выглядеть как «родное» приложение: ![Добавить в Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
+Вы можете сохранить его как веб-приложение на главном экране, и оно будет выглядеть и выглядеть как собственное приложение: ![Добавить в Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
 
 ## Тебе нужно...
 * Nodejs 8 или выше
-* Веб-адаптер с одним экземпляром, работающим по тому же протоколу (http или https), что и административный адаптер, для socket.IO установлено значение «интегрированный» и «Принудительно установлены веб-сокеты»
+* Веб-адаптер с одним экземпляром, работающим по тому же протоколу (http или https), что и администратор-адаптер, для socket.IO установлено значение «интегрированный» и «Принудительно установлены веб-сокеты»
     * Если это противоречит другим адаптерам, просто добавьте еще один экземпляр с указанными выше настройками - iQontrol будет искать наиболее подходящий экземпляр веб-адаптера и использовать его для связи
-* Для подключения через *iobroker.pro-Cloud* оба, admin и web-адаптер должны быть установлены на http (не https)
+* Для подключения через *iobroker.pro-Cloud* и admin, и web-адаптер должны быть установлены на http (не https)
 
-## Исправление проблем
+## Поиск проблемы
 * Убедитесь, что вы выполнили раздел «Вам нужно ...» вверху этой страницы
 * Если после обновления что-то не работает, как ожидается, попробуйте выполнить следующие действия:
     * Начать загрузку адаптера:
@@ -61,7 +61,7 @@ hash: J3EuVE+zZQ/jZpebcngfTcfVq90XvItMCYE74SafCbU=
 ## Форум
 Посетите [форум iobroker](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol).
 
-## Как пользоваться
+## Как использовать
 * Начните создавать представления.
 
 Вы можете рассматривать представления как что-то вроде страницы.
@@ -75,12 +75,12 @@ hash: J3EuVE+zZQ/jZpebcngfTcfVq90XvItMCYE74SafCbU=
 
 * После этого вы можете создать панель инструментов, которая отображается в виде нижнего колонтитула.
 
-Панель инструментов-Entrys - это ссылки на представления.
+Панель инструментов-Entrys - это ссылки на виды.
 Первая панель инструментов будет вашей «Домашней панелью» и будет загружена при запуске.
 
 * Чтобы придать всему модный стиль, вы можете загрузить свои собственные изображения.
 
-Вы можете использовать ваши изображения в качестве фоновых изображений для просмотра или для устройств.
+Вы можете использовать свои изображения в качестве фоновых изображений для просмотра или для устройств.
 Изображения в папке «/ usericons» могут использоваться в качестве значков для устройств.
 Бесплатные встроенные демо-обои от www.pexels.com.
 
@@ -107,8 +107,8 @@ hash: J3EuVE+zZQ/jZpebcngfTcfVq90XvItMCYE74SafCbU=
 * Установить флажок только для чтения
 * Установить флаг инвертирования
 * Установить флажок подтверждения (заставляет пользователя подтвердить перед записью изменения в точку данных)
-* Установить ПИН-код (заставляет пользователя вводить этот ПИН-код до того, как изменение будет записано в точку данных - но будьте осторожны: это только из-за низкого уровня безопасности, потому что ПИН проверяется во внешнем интерфейсе! Используйте номер для отображения в полноэкранном режиме -pin-pad, если запрашивается код)
-* Установите идентификатор точки данных, в который записываются целевые значения (если у вас есть разные точки данных для фактического и целевого значения)
+* Установить ПИН-код (вынуждает пользователя вводить этот ПИН-код до того, как изменение будет записано в точку данных - но будьте осторожны: это только из-за низкого уровня безопасности, потому что ПИН проверяется во внешнем интерфейсе! Используйте номер для отображения в полноэкранном режиме -pin-pad, если запрашивается код)
+* Установите идентификатор точки данных, в который записываются целевые значения (если у вас разные точки данных для фактического и целевого значения)
 * Изменить единицу datapoint, отдельно для нулевого, единственного и множественного числа значений
 * Изменить минимальное и максимальное значения datapoint
 * Изменить тип назначения данных
@@ -121,13 +121,13 @@ hash: J3EuVE+zZQ/jZpebcngfTcfVq90XvItMCYE74SafCbU=
 Каждая роль имеет следующие три состояния:
 
 * **ADDITIONAL_INFO** *массив* - массив точек данных, которые будут отображаться в нижней части информационного диалога
-* **BATTERY** *boolean* - при значении true или *number* - при значении менее 10% будет отображаться маленький значок разряда батареи
+* **BATTERY** *boolean* - при значении true или *number* - при значении менее 10% будет отображаться небольшой значок разряда батареи
 * **ОШИБКА** *логическое* - при значении true будет отображаться маленький значок с восклицательным знаком
 * **UNREACH** *логический* - при значении true будет отображаться маленький значок беспроводной сети
 
 Почти все роли имеют состояние STATE и / или LEVEL. В большинстве случаев это представляет собой основную функцию устройства. Вы можете назначить ему состояния io-broker следующих типов:
 
-* *boolean* - если возможно, он будет переведен в полезный текст, такой как «вкл / выкл», «открыт / закрыт» или тому подобное. Если вы нажмете на иконку плитки, она попытается переключить логическое значение (например, чтобы включить или выключить свет). Если он не доступен только для чтения, в диалоговом окне появится сальто-переключатель
+* *boolean* - если возможно, он будет переведен в содержательный текст, такой как «вкл / выкл», «открыт / закрыт» или тому подобное. Если вы нажмете на иконку плитки, она попытается переключить логическое значение (например, чтобы включить или выключить свет). Если он не доступен только для чтения, в диалоговом окне будет создан переключатель
 * *число* - будет отображаться с соответствующим ему блоком и генерировать слайдер в диалоге
 * *string* - текст для отображения
 * *список значений* - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню.
@@ -148,16 +148,16 @@ hash: J3EuVE+zZQ/jZpebcngfTcfVq90XvItMCYE74SafCbU=
 * Не имеет больше состояний
 * **связанный-вид-свойство** открывается напрямую
 
-### <img src="img/icons/switch_on.png" width="32"> Переключатель, <img src="img/icons/fan_on.png" width="32"> Вентилятор:
+### <img src="img/icons/switch_on.png" width="32"> Переключатель, <img src="img/icons/fan_on.png" width="32"> Поклонник:
 * **STATE** *boolean* - отображать и устанавливать вкл / выкл
 * **POWER** *number* - энергопотребление, которое будет отображаться маленьким в верхнем правом углу
 
 ### <img src="img/icons/button.png" width="32"> Кнопка:
 * **STATE** *any* - любой желаемый тип состояния
 * **SET_VALUE** CONSTANT *string* - это константа (а не связанное состояние io-broker!), Которая будет назначена в STATE при нажатии кнопки
-* **OFF_SET_VALUE** CONSTANT *string* - это константа (а не связанное состояние io-broker!). Если определено, STATE будет сброшено к этому значению после определенного в опциях времени или 100 мс
+* **OFF_SET_VALUE** CONSTANT *string* - это константа (а не связанное состояние io-broker!). Если определено, STATE будет сброшен на это значение после определенного в опциях времени или 100 мс
 
-### <img src="img/icons/light_on.png" width="32"> Светлый:
+### <img src="img/icons/light_on.png" width="32"> Свет:
 Каждый источник света может иметь одно или оба из следующих состояний:
 
 * **STATE** *логическое* - показать и установить вкл / выкл
@@ -180,8 +180,8 @@ hash: J3EuVE+zZQ/jZpebcngfTcfVq90XvItMCYE74SafCbU=
     * **RGB** / **# RGB** вместо использования HUE, SATURATION и COLOR_BRIGHTNESS вы можете использовать RGB-формат (шестнадцатеричный), опционально с начальным '#'
     * **RGBW** / **# RGBW** вместо использования HUE, SATURATION, COLOR_BRIGHTNESS и WHITE_BRIGHTNESS вы можете использовать RGBW-формат (шестнадцатеричный), опционально с начальным '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** вместо HUE, SATURATION, COLOR_BRIGHTNESS, CT и WHITE_BRIGHTNESS вы можете использовать формат RGBWWCW- или RGBCWWW (hex) , WW = теплый белый, CW = холодный белый), необязательно с начальным '#'
-    * **RGB (только Hue)** / **# RGB (только Hue)** вместо использования HUE вы можете использовать формат RGB (только Hue) -Format (hex), опционально с начальным символом #. В этом особом случае RGB-формат будет принимать только чистые насыщенные цвета цветового круга. Смешанный белый не допускается
-    * **Hue for Milight** это значение Hue для Milight-Devices с использованием другой отправной точки в оттенке цвета-cirlce:
+    * **RGB (только Hue)** / **# RGB (только Hue)** вместо использования HUE вы можете использовать формат RGB (только Hue) -Format (шестнадцатеричный), опционально с начальным '#'. В этом особом случае RGB-формат будет принимать только чистые насыщенные цвета цветового круга. Смешанный белый не допускается
+    * **Hue for Milight** это значение оттенка для Milight-Devices с использованием другой отправной точки в оттенке цвета-cirlce:
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
@@ -194,7 +194,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * Эффект-режим:
   * **EFFECT** * value-list * - эффект для воспроизведения
 * **EFFECT_NEXT** *boolean* - при значении true будет воспроизводиться следующий эффект (в качестве альтернативы для устройств, которые не поддерживают список значений EFFECT)
-* **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - если установлено значение true, эффект будет ускоряться вверх / вниз
+* **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - при значении true эффект будет ускоряться вверх / вниз
 * Разнообразный:
   * **POWER** * number * - энергопотребление, которое будет отображаться маленьким в верхнем правом углу
 
@@ -220,7 +220,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/brightness_light.png" width="32"> Яркость-Sensor:
 * **STATE** *number* - яркость, которая будет отображаться в нижней части устройства
-* **BRIGHTNESS** *number* - яркость, которая будет отображаться маленьким шрифтом в верхнем правом углу
+* **BRIGHTNESS** *number* - яркость, которая будет отображаться маленьким шрифтом в правом верхнем углу
 * **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/motion_on.png" width="32"> Датчик движения:
@@ -228,40 +228,40 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/door_closed.png" width="32"> Дверь, <img src="img/icons/window_closed.png" width="32"> Окно:
-* **STATE** *boolean* - отображать, открыта или закрыта дверь или окно
+* **STATE** *логический* - отображать, открыта или закрыта дверь или окно
   * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «наклон»
   * Вы также можете назначить *строку* для отображения любого текста, такого как «3 окна открыты» или «все закрыты»
 * Уважайте **свойство-связанный-вид**
 
 ### <img src="img/icons/garagedoor_closed.png" width="32"> Гаражная дверь:
-* **STATE** *boolean* - отображать, открыта или закрыта дверь
+* **STATE** *логический* - отображать, открыта или закрыта дверь
   * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «наклон»
   * Вы также можете назначить *строку* для отображения любого текста, такого как «3 двери открыты» или «все закрыты»
 * **TOGGLE** *boolean* - отображает кнопку Toggle и устанавливается в значение true, если нажата
 
 ### <img src="img/icons/door_locked.png" width="32"> Дверь с замком:
-* **STATE** *boolean* - отображать, открыта или закрыта дверь
+* **STATE** *логический* - отображать, открыта или закрыта дверь
 * **LOCK_STATE** *логический* - отображать, заблокирована или разблокирована дверь
 * **LOCK_STATE_UNCERTAIN** *логический* - если true, STATE будет отображаться курсивом, чтобы показать, что точная позиция блокировки неизвестна
-* **LOCK_OPEN** *boolean* - если установлено значение true, дверь полностью откроется
+* **LOCK_OPEN** *логический* - если установлено значение true, дверь полностью откроется
 
 ### <img src="img/icons/blind_middle.png" width="32"> Слепой:
 * **УРОВЕНЬ** *число* - высота жалюзи в процентах
 * **DIRECTION** *список значений* - может быть Stop, Up и Down. Значения, которые представляют Стоп, Вверх, Вниз и Неизвестно, могут быть настроены
-* **STOP** *boolean* - устанавливается в значение true, если нажата кнопка остановки
+* **STOP** *boolean* - устанавливается в true, если нажата кнопка остановки
 * **UP** / **DOWN** *boolean* - устанавливается в значение true, если нажата кнопка вверх / вниз (для устройств, которые используют точки данных UP и DOWN вместо или в дополнение к LEVEL). Дополнительно вы можете определить значение с помощью **UP_SET_VALUE** / **DOWN_SET_VALUE** точек данных. Если определено, это значение будет отправлено вместо true, когда нажата кнопка «вверх / вниз»
 * **FAVORITE_POSITION** *boolean* - может использоваться для вызова любимой позиции. Если нажать кнопку «Избранное» (заголовок кнопки можно настроить в настройках устройства), на эту точку данных будет отправлено значение true. Дополнительно вы можете определить значение с помощью **FAVORITE_POSITION_SET_VALUE** Datapoint. Если определено, это значение будет отправлено вместо true, когда нажата любимая кнопка
 * **SLATS_LEVEL** *number* - положение планок в процентах
 
 ### <img src="img/icons/fire_on.png" width="32"> Fire-Sensor:
 * **STATE** *boolean* - если true, датчик будет отображаться как сработавший
-  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный»
+  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ»
   * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже"
 * **связанный-вид-свойство** открывается напрямую
 
 ### <img src="img/icons/alarm_on.png" width="32"> Аварийная сигнализация:
 * **STATE** *boolean* - если true, датчик будет отображаться как сработавший
-  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный»
+  * В качестве альтернативы вы можете назначить *список значений* чтобы отобразить дополнительные состояния, такие как «несанкционированный доступ»
   * Вы также можете назначить *строку* для отображения любого текста, например "огонь на верхнем этаже"
 * **CONTROL_MODE** *список значений* - выберите режим работы, например, «постановка на охрану» и «снятие с охраны»
     * В настройках устройства вы можете определить значение, которое представляет собой снятый с охраны, так что может быть отображен представляющий значок
@@ -270,14 +270,14 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **STATE** *число* - уровень заряда батареи в процентах
 * **CHARGING** *boolean* - если true, отображается значок зарядки
 * **POWER** *number* - энергопотребление, которое будет отображаться маленьким в верхнем правом углу
-* **НАПРЯЖЕНИЕ** *число* - напряжение, которое будет отображаться маленьким в верхнем правом углу
+* **VOLTAGE** *number* - напряжение, которое будет отображаться маленьким в верхнем правом углу
 
-### <img src="img/icons/value_on.png" width="32"> Значение:
-* **СОСТОЯНИЕ** *любое* - любое допустимое состояние, которое будет отображаться (посмотрите раздел общих состояний)
+### <img src="img/icons/value_on.png" width="32"> Стоимость:
+* **СОСТОЯНИЕ** *любое* - любое действительное состояние, которое будет отображаться (посмотрите раздел общих состояний)
 * **LEVEL** *number* - создаст слайдер в диалоге
 
 ### <img src="img/icons/play_on.png" width="32"> Программа:
-* **STATE** *логическое* - если установлено значение true, программа будет запущена
+* **STATE** *boolean* - если установлено значение true, программа будет запущена
 
 ### <img src="img/icons/play.png" width="32"> Сцена:
 * **STATE** *boolean* - отображается, если сцена активна. Если установлено значение true, сцена будет запущена
@@ -296,407 +296,414 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ****
 
-## Changelo8
+## Changelog
+
+### 0.2.20 (2020-04-08)
+* (Sebastian Bormann) If value for POWER is greater than 100, it is rounded withour decimal places.
+* (Sebastian Bormann) Bugfixed invert-function with custom min and max.
+* (Sebastian Bormann) Added reload-link to loading page.
+* (Sebastian Bormann) Updated dependencies.
+
 ### 0.2.19 (2020-02-29)
-* (Себастьян Борман) Обновлены зависимости.
+* (Sebastian Bormann) Updated dependencies.
 
 ### 0.2.18 (2020-02-29)
-* (Себастьян Борман) Обновлены зависимости.
+* (Sebastian Bormann) Updated dependencies.
 
 ### 0.2.17 (2020-02-29)
-* (Себастьян Борман) Добавлена возможность открывать диалог, нажав на плитку для Вид, Окно, Дверь, Огонь, Температура, Влажность, Яркость и Движение.
-* (Себастьян Борманн) Добавлена возможность скрывать устройство, если оно неактивно (обращайтесь с ним осторожно, так как вы не сможете снова его включить).
+* (Sebastian Bormann) Added option to open dialog by clicking on tile for View, Window, Door, Fire, Temperatur, Humidity, Brightness and Motion.
+* (Sebastian Bormann) Added option to hide device, if it is inactive (handle with care, as you may not be able to switch it on again).
 
 ### 0.2.16 (2020-01-14)
-* (Себастьян Борман) Исправлен пользовательский шаг для управления отоплением.
-* (Себастьян Борман) Исправлено универсальное всплывающее окно, которое отображалось, даже если оно пустое.
+* (Sebastian Bormann) Fixed custom step for heating control.
+* (Sebastian Bormann) Fixed universal popup wich was displayed, even when empty.
 
 ### 0.2.15 (2020-01-07)
-* (Себастьян Борманн) Добавлен svg как возможное изображение для загрузки.
-* (Себастьян Борманн) Сделал URL и HTML универсальными практически для всех устройств, чтобы отображать собственный HTML-код или содержимое URL внутри диалога (это можно использовать, например, для отображения FLOT-графиков, связанных с устройством, внутри диалога).
-* (Себастьян Борманн) Исправлены отключенные пользовательские значения с admin 3.7.6+ и js-controller <2.2.
+* (Sebastian Bormann) Added svg as possible image to upload.
+* (Sebastian Bormann) Made URL and HTML universal for nearly all devices, to display custom html code or content of an url inside the dialog (this could be used e.g. to display FLOT-graphs related to the device inside the dialog).
+* (Sebastian Bormann) Fixed disabled custom values with admin 3.7.6+ and js-controller <2.2.
 
 ### 0.2.14 (2019-11-12)
-* (Себастьян Борманн) Исправлено переключение иконок для термостатов.
+* (Sebastian Bormann) Fixed icon-switching for thermostats.
 
 ### 0.2.13 (2019-10-23)
-* (Себастьян Борман) Улучшен метод возврата по времени.
-* (Bluefox) Исправлены переводы в пользовательском диалоге.
+* (Sebastian Bormann) Improved the return after time method.
+* (Bluefox) Fixed translations in custom-dialog.
 
 ### 0.2.12 (2019-10-12)
-* (Себастьян Борманн) Улучшение гомематического термостата для совместимости с контроллером 2.0.
+* (Sebastian Bormann) Improvement of homematic-thermostat for controler 2.0 compatiility.
 
 ### 0.2.11 (2019-10-07)
-* (Себастьян Борманн) Переписан раздел пин-кода для работы со старыми браузерами.
-* (Себастьян Борман) Pincode теперь работает и для кнопок.
-* (Себастьян Борманн) Изменена функция возврата после времени для работы со старыми браузерами.
-* (Себастьян Борман) Исправлены пропущенные записи в меню длинного нажатия в iOS 13.
+* (Sebastian Bormann) Rewritten pincode-section to work with older browsers.
+* (Sebastian Bormann) Pincode now works for buttons as well.
+* (Sebastian Bormann) Modified the return after time function to work with older browsers.
+* (Sebastian Bormann) Fixed missing entrys in long pressure menus in iOS 13.
 
 ### 0.2.10 (2019-10-05)
-* (Себатиан Борманн) Улучшенный PIN-код для просмотра цифровой клавиатуры при использовании буквенно-цифрового PIN-кода.
+* (Sebatian Bormann) Enhanced PIN-Code to view a num-pad when using an alphanumeric PIN.
 
 ### 0.2.9 (2019-10-02)
-* (Себастьян Борманн) Добавлен необязательный PIN-код в настраиваемое диалоговое окно конфигурации datapoint (значок гаечного ключа).
-* (Себастьян Борман) Добавлена опция возврата к виду после установленного времени бездействия в настройках.
+* (Sebastian Bormann) Added optional PIN-Code to custom datapoint-configuration dialog (wrench icon).
+* (Sebastian Bormann) Added option to return to a view after a settable time of inactivity to settings.
 
 ### 0.2.8 (2019-09-27)
-* (Себастьян Борманн) Дальнейшее улучшение index.js для совместимости с контроллером 2.0.
+* (Sebastian Bormann) Further improvement of index.js for controller 2.0 compatibility.
 
 ### 0.2.7 (2019-09-27)
-* (Себастьян Борманн) Исправлены popup_width и popup_height.
-* (Себастьян Борманн) Дальнейшее улучшение main.js и index.js для совместимости с контроллером 2.0.
-* (Себастьян Борман) Добавлена опция showState для кнопки и программы.
+* (Sebastian Bormann) Fixed popup_width and popup_height.
+* (Sebastian Bormann) Further improvement of main.js and index.js for controller 2.0 compatibility.
+* (Sebastian Bormann) Added option showState for Button and Program.
 
 ### 0.2.6 (2019-09-24)
-* (Себастьян Борманн) Обработка простого текста значений теперь выполняется после округления числового значения.
-* (Себастьян Борман) Удален Icon_on для кнопки.
-* (Себастьян Борманн) Модифицированный файл main.js для совместимости с контроллером 2.0.
+* (Sebastian Bormann) Processing the plain text of values is now done after rounding a number value.
+* (Sebastian Bormann) Removed Icon_on for Button.
+* (Sebastian Bormann) Modified main.js for controler 2.0 compatibility.
 
 ### 0.2.5 (2019-09-22)
-* (Себастьян Борман) Исправлена обработка меню давления для iOS 13.
-* (Себастьян Борманн) Добавлен буфер для рендеринга вида, когда создается давление.
-* (Себастьян Борманн) Добавлены СИЛА и НАПРЯЖЕНИЕ к батарее.
+* (Sebastian Bormann) Adjusted handling of pressure menu for iOS 13.
+* (Sebastian Bormann) Added Buffer for rendering a view while pressureMenue is beeing created.
+* (Sebastian Bormann) Added POWER and VOLTAGE to battery.
 
 ### 0.2.4 (2019-09-15)
-* (Себастьян Борманн) Дальнейшее улучшение управления в режиме управления для термостата homematic.
-* (Себастьян Борман) Незначительные исправления.
+* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (Sebastian Bormann) Minor bugfixes.
 
 ### 0.2.3 (2019-09-15)
-* (Себастьян Борманн) Дальнейшее улучшение управления в режиме управления для термостата homematic.
-* (Себастьян Борман) Добавлена обработка синтаксиса альтернативных состояний-свойств.
+* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (Sebastian Bormann) Added handling of alternative states-property-syntax.
 
 ### 0.2.2 (2019-09-14)
-* (Себастьян Борманн) Улучшенное управление режимом управления для термостата homematic для большей совместимости.
-* (Себастьян Борман) Снижена скорость отправки при перемещении слайдера на жалюзи и термостаты.
+* (Sebastian Bormann) Enhanced handling of control-mode for homematic-thermostat for more compatibility.
+* (Sebastian Bormann) Reduced rate of sending when moving slider for blinds and thermostats. 
 
 ### 0.2.1 (2019-09-07)
-* (Себастьян Борман) Исправлено падение Backend (взаимозаменяемые index_m.html и custom_m.html).
+* (Sebastian Bormann) Fixed crash of Backend (interchanged index_m.html and custom_m.html).
 
 ### 0.2.0 (2019-09-06)
-* (Себастьян Борман) Добавлен уровень планок для слепых.
+* (Sebastian Bormann) Added slats level to blind.
 
 ### 0.1.15 (2019-09-05)
-* (Себастьян Борман) В пользовательский диалог добавлен шаг, позволяющий определить разрешение ползунков значений.
-* (Себастьян Борманн) Значения с единицей измерения% и диапазоном от мин до макс 0-1 теперь масштабируются до 0-100.
-* (Себастьян Борманн) Исправлено преобразование в альтернативное цветовое пространство для фонарей.
+* (Sebastian Bormann) Added step to custom dialog, wich allowes to define the resolution of value-sliders.
+* (Sebastian Bormann) Values with unit % and a range from min to max of 0-1 are now scaled to 0-100.
+* (Sebastian Bormann) Fixed conversion to alternative colorspace for hue lights.
 
 ### 0.1.14 (2019-09-01)
-* (Себастьян Борман) Исправлены отсутствующие выпадающие меню для изображений после сортировки или добавления элементов в таблицы.
-* (Себастьян Борманн) Ползунки уровней будут иметь более высокое разрешение для точек данных с небольшими диапазонами значений.
+* (Sebastian Bormann) Fixed missing dropdown-menus for images after sorting or adding items to tables.
+* (Sebastian Bormann) Level-Sliders will have a higher resolution for datapoints with small value ranges.
 
 ### 0.1.13 (2019-08-28)
-* (Себастьян Борманн) Исправлено падение фронтэнда.
-* (Себастьян Борман) Обновления безопасности.
+* (Sebastian Bormann) Fixed crash of frontend.
+* (Sebastian Bormann) Security updates.
 
 ### 0.1.12 (2019-08-28)
-* (Себастьян Борманн) Добавлены ширина и высота в опциях для всплывающих окон.
-* (Себастьян Борманн) Добавлена опция определения бесплатного CSS-кода для модификации внешнего интерфейса.
-* (Себастьян Борман) Информационные значения теперь отображаются в виде обычного текста или округленных чисел.
-* (Себастьян Борманн) Добавлено «Закрыть диалог после выполнения» в настройках устройства для сцен, программ и кнопок.
+* (Sebastian Bormann) Added width and height to options for popup.
+* (Sebastian Bormann) Added option to define free CSS-code to modify frontend.
+* (Sebastian Bormann) Infotext-values are now displayed as plain text or rounded if numbers.
+* (Sebastian Bormann) Added 'Close dialog after execution' to device options for scenes, programs and buttons.
 
 ### 0.1.11 (2019-08-26)
-* (Себастьян Борманн) Исправление ошибки перехода из-за непрозрачности хрома.
-* (Себастьян Борманн) Добавлен заполнитель для значений по умолчанию для ввода текста на странице параметров.
-* (Себастьян Борманн) Добавлен заполнитель для значка по умолчанию и пустой значок для параметров устройства.
-* (Себастьян Борманн) Расширенный термостат CONTROL_MODE по типу переключателя.
-* (Себастьян Борманн) Исправлен сбой при использовании термостата с уставкой не homematic-устройств.
-* (Себастьян Борман) Добавлены мин и макс в пользовательский диалог.
-* (Себастьян Борманн) Теперь вы не можете установить ни одного в качестве фонового изображения устройства для активных устройств (ранее это было скопировано с неактивных устройств по причинам обратной совместимости).
-
+* (Sebastian Bormann) Bugfix for chrome opacity transition bug.
+* (Sebastian Bormann) Added placeholder for default values for text inputs on options page.
+* (Sebastian Bormann) Added placeholder for default icon and blank icon to device options.
+* (Sebastian Bormann) Extended thermostat CONTROL_MODE by type switch.
+* (Sebastian Bormann) Fixed crash when using thermostat with setpoint an non homematic-devices.
+* (Sebastian Bormann) Added min and max to custom dialog.
+* (Sebastian Bormann) Now you can set none as a devices background image for active devices (formerly this was copied from inactive devices for backward-compatibility-reasons).
+ 
 ### 0.1.10 (2019-08-20)
-* (Себастьян Борман) Теперь вы можете определять различные единицы измерения, если значение равно нулю или если значение равно единице в пользовательском диалоговом окне.
-* (Себастьян Борманн) При смене изображения с помощью нового выпадающего меню теперь будет активирована кнопка сохранения.
-* (Себастьян Брамнн) Добавлена опция, чтобы удалить наложение плитки, если устройство активно или неактивно.
-* (Себастьян Борманн) Улучшенная функция преобразования при преобразовании логического числа в число.
-* (Себастьян Борманн) Исправлено переименование файлов изображений (ссылки на использованные изображения теперь также корректно переименовываются).
-* (Себастьян Борман) Исправлена обработка пробелов в именах файлов изображений.
+* (Sebastian Bormann) You can now define different units if value is zero or if value is one in custom dialog.
+* (Sebastian Bormann) When changing an image via the new drop-down, save button will be activated now.
+* (Sebastian Boramnn) Added option, to remove overlay of tile, if device is active or inactive.
+* (Sebastian Bormann) Enhanced conversion function when converting booelan to number.
+* (Sebastian Bormann) Fixed renaming of image files (links to used images are now also correctly renamed).
+* (Sebastian Bormann) Fixed handling of spaces in image filenames.
 
 ### 0.1.9 (2019-08-18)
-* (Себастьян Борманн) Изменен манифест кэша для удаления ошибок EISDIR из журнала.
-* (Себастьян Борман) Исправлен тумблер в меню давления.
-* (Себастьян Борманн) Добавлена загрузка нескольких файлов на вкладку изображений.
-* (Себастьян Борманн) Добавлена проверка на наличие битых ссылок на другие виды при сохранении настроек.
-* (Себастьян Борманн) Теперь вы можете назначать внешние URL фоновым изображениям и значкам (например, чтобы добавить карту погоды в реальном времени).
-* (Себастьян Борман) Удалены параметры clickOnIconOpensDialog и clickOnTileToggles для значений и программ, поскольку они не переключаются.
-* (Себастьян Борман) Добавлена кнопка OFF_SET_VALUE и опция «Возврат к OFF_SET_VALUE после [мс]» для кнопки.
+* (Sebastian Bormann) Modified cache manifest to remove EISDIR-errors from log.
+* (Sebastian Bormann) Fixed toggle-entry in pressure menu.
+* (Sebastian Bormann) Added multiple file upload to images tab.
+* (Sebastian Bormann) Added check for dead links to other views when saving settings.
+* (Sebastian Bormann) You can now assign external urls to background images and icons (for example to add a weather-live-map).
+* (Sebastian Bormann) Removed options clickOnIconOpensDialog and clickOnTileToggles for Values and Programs as they are not switchable.
+* (Sebastian Bormann) Added OFF_SET_VALUE and the option 'Return to OFF_SET_VALUE after [ms]' to button.
 
 ### 0.1.8 (2019-08-11)
-* (Себастьян Борман) Дальнейшие улучшения при подключении через iobroker.pro.
-* (Себастьян Борман) COLOR_BRIGHTNESS и WHITE_BRIGHTNESS теперь отображаются, если LEVEL не определен для подсветки оттенка.
-* (Себастьян Борман) Добавлены миниатюры-превью шрифтов.
-* (Себастьян Борман) Добавил clickOnIconOpensDialog и clickOnTileToggles к опциям устройства.
+* (Sebastian Bormann) Further improvements on connecting over iobroker.pro.
+* (Sebastian Bormann) COLOR_BRIGHTNESS and WHITE_BRIGHTNESS are now displayed, if LEVEL is not defined on hue lights.
+* (Sebastian Bormann) Added thumbnail-previews of fonts.
+* (Sebastian Bormann) Added clickOnIconOpensDialog and clickOnTileToggles to device options.
 
 ### 0.1.7 (2019-08-11)
-* (Себастьян Борманн) Добавлены семейство шрифтов, -size, -weight и -style для параметров панели инструментов, заголовков, имени устройства, состояния устройства и информации об устройстве.
-* (Себастьян Борманн) Добавлены параметры размера панели инструментов, значка фонового размера и значка фонового угла в параметры панели инструментов.
+* (Sebastian Bormann) Added font-family, -size, -weight and -style to options for toolbar, headers, device-name, device-state and device-info-text.
+* (Sebastian Bormann) Added icon-size, icon-background-size and icon-background-corner-size to options for toolbar.
 
 ### 0.1.6 (2019-08-08)
-* (Себастьян Борман) Далее попробуйте подключиться через iobroker.pro
+* (Sebastian Bormann) Next try to connect via iobroker.pro
 
 ### 0.1.5 (2019-08-06)
-* (Себастьян Борман) Добавлена проверка параметров.
-* (Себастьян Борманн) Расширенная тревога с CONTROL_MODE-datapoint и значками для снятия с охраны, постановки на охрану и срабатывания.
-* (Себастьян Борман) Для сохранения памяти в локальную память сохраняются только используемые состояния (до сохранения всех использованных И всех обновленных состояний).
-* (Себастьян Борманн) Оптимизированное сокет-соединениеСсылка, чтобы попытаться подключиться через iobroker.pro.
+* (Sebastian Bormann) Added validation to options.
+* (Sebastian Bormann) Extended alarm with CONTROL_MODE-datapoint and icons for disarmed, armed and triggered. 
+* (Sebastian Bormann) To save memory, only used states are saved in local memory (before all used AND all updated states were saved).
+* (Sebastian Bormann) Optimized socket-connectionLink to try to connect via iobroker.pro.
 
 ### 0.1.4 (2019-08-04)
-* (Себастьян Борман) Оптимизированное выцветание плиток.
-* (Себастьян Борманн) Добавлен тумблер для блайндов, если кнопка вверх / вниз не определена.
-* (Себастьян Борманн) Добавлено определение протокола для сокета в админке.
-* (Себастьян Борманн) Добавлен флаг подтверждения в диалоговом окне конфигурации пользовательских точек данных, чтобы пользователь мог запросить подтверждение перед изменением значений.
-* (Себастьян Борман) Добавлен тумблер в дверь гаража.
+* (Sebastian Bormann) Optimized fading of tiles.
+* (Sebastian Bormann) Added toggle-button to blind, if no up/down button is defined.
+* (Sebastian Bormann) Added detection of protocol for socket in admin.
+* (Sebastian Bormann) Added confirm-flag inside custom datapoint configuration dialog to enable asking user to confirm before changing values.
+* (Sebastian Bormann) Added toggle-button to garage door.
 
 ### 0.1.3 (2019-08-01)
-* (Себастьян Борманн) Добавлено отдельное фоновое изображение для активных устройств.
-* (Себастьян Борман) Исправлены опции фона (цвет и непрозрачность) для активных и неактивных тайлов устройства.
-* (Себастьян Борман) Добавлено больше места для просмотра снизу.
-* (Себастьян Борман) Исправлен уровень инвертирования блайндов.
-* (Себастьян Борман) Организованные варианты в разборном макете.
+* (Sebastian Bormann) Added seperate background image for active devices.
+* (Sebastian Bormann) Fixed background-options (color and opacity) for active and inactive device tiles.
+* (Sebastian Bormann) Added more space to views bottom.
+* (Sebastian Bormann) Fixed invert level for blinds.
+* (Sebastian Bormann) Organized options in collapsible layout.
 
 ### 0.1.2 (2019-07-29)
-* (Себастьян Борман) Добавлены FAVORITE_POSITION (с настраиваемым заголовком кнопки) и SET_VALUE для UP, DOWN и FAVORITE_POSITION для блайндов.
-* (Себастьян Борманн) Добавлен «Нет иконки» в качестве опции для конфигурации иконок.
-* (Себастьян Борманн) Добавляет значок в «Ссылка на другой вид».
-* (Себастьян Борман) Добавлена куча новых стандартных иконок.
+* (Sebastian Bormann) Added FAVORITE_POSITION (with configurable button caption) and SET_VALUE for UP, DOWN and FAVORITE_POSITION to Blinds.
+* (Sebastian Bormann) Added 'No Icon' as option to icon configuration.
+* (Sebastian Bormann) Addes icon to 'Link to other view'.
+* (Sebastian Bormann) Added a bunch of new standard-icons.
 
 ### 0.1.1 (2019-07-28)
-* (Себастьян Борман) Добавлены имена пользователей.
+* (Sebastian Bormann) Added usericons.
 
-### 0.1.0 **стабильный** (2019-07-27)
-* (Себастьян Борман) Первый стабильный релиз.
-* (Себастьян Борманн) Добавлено отображение метки времени в параметрах устройства для выбора поведения по умолчанию и небольшой значок метки времени в диалоговом окне для отображения и скрытия меток времени.
-* (Себастьян Борманн) Исправлена обработка режима управления для термостатов Homematic только для чтения.
+### 0.1.0 **stable** (2019-07-27)
+* (Sebastian Bormann) First stable release.
+* (Sebastian Bormann) Added show timestamp to device options to chose default behaviour and a small timestamp-icon in the dialog to show and hide timestamps.
+* (Sebastian Bormann) Fixed readonly handling of control mode for Homematic Thermostats.
 
 ### 0.0.49 (2019-07-27)
-* (Себастьян Борманн) Добавлен общий тип и общая роль в пользовательский диалог.
-* (Себастьян Борман) Добавлено меню давления для панели инструментов.
+* (Sebastian Bormann) Added common type and common role to custom dialog.
+* (Sebastian Bormann) Added pressure menu for toolbar.
 
 ### 0.0.48 (2019-07-25)
-* (Себастьян Борман) Datapoint BATTERY теперь может быть уровнем - значок батареи будет отображаться, если значение меньше 10%.
-* (Себастьян Борман) Добавлены дополнительные цветовые пространства для подсветки оттенков (RGB, RGBW, RGBWWCW, RGBCWWW, Milight-Hue, только RGB Hue).
-* (Себастьян Борман) Добавлена дверь гаража.
+* (Sebastian Bormann) Datapoint BATTERY can now be a level - the battery-empty-icon will be shown if value is less than 10%.
+* (Sebastian Bormann) Added additional colorspaces for hue lights (RGB, RGBW, RGBWWCW, RGBCWWW, Milight-Hue, RGB Hue Only).
+* (Sebastian Bormann) Added Garage Door.
 
 ### 0.0.47 (2019-07-22)
-* (Себастьян Борманн) Добавлен targetValueId в настраиваемом диалоговом окне конфигурации точек данных, который позволяет иметь разные точки данных как для фактического значения, так и для целевого значения.
-* (Себастьян Борманн) Добавлен флаг инвертирования в пользовательском диалоге конфигурации точки данных.
+* (Sebastian Bormann) Added targetValueId inside custom datapoint configuration dialog wich allowes to have different datapoints vor actual value and for target value.
+* (Sebastian Bormann) Added invert-flag inside custom datapoint configuration dialog.
 
 ### 0.0.46 (2019-07-20)
-* (Себастьян Борманн) Добавлены опции в диалог конфигурации устройства.
-* (Себастьян Борманн) Добавлен флаг readonly в параметры устройства.
-* (Себастьян Борманн) Добавлен флаг инверсии цветовой температуры в настройках устройства для освещения.
-* (Себастьян Борман) Добавлен флаг инвертирования в настройках устройства для блайндов.
+* (Sebastian Bormann) Added options to device configuration dialog.
+* (Sebastian Bormann) Added readonly-flag to device options.
+* (Sebastian Bormann) Added invert color temperature flag to device options for lights.
+* (Sebastian Bormann) Added invert flag to device options for blinds.
 
 ### 0.0.45 (2019-07-15)
-* (Себастьян Борман) Устройства теперь масштабируются по размеру экрана (настраивается в настройках).
+* (Sebastian Bormann) Devices are now zoomed to fit screen (configurable under options).
 
 ### 0.0.44
-* (Себастьян Борманн) Исправлена неполная загрузка страницы администратора с некоторыми настройками.
-* (Себастьян Борманн) Добавлена конфигурация datapoint через настраиваемый диалог.
+* (Sebastian Bormann) Fixed incomplete loading of admin page with some settings.
+* (Sebastian Bormann) Added datapoint-configuration via custom-dialog.
 
 ### 0.0.43
-* (Себастьян Борманн) Изменена инициализация socket.io для асинхронного процесса, который ожидает подключения, прежде чем пытаться использовать файловые операции.
-* (Себастьян Борман) Добавлен общий пункт данных ADDITIONAL_INFO для отображения дополнительных точек данных в нижней части информационного диалога.
-* (Себастьян Борман) Исправлен конфликт типов списка значений.
+* (Sebastian Bormann) Changed initialization of socket.io to an asynchronous process to wait for connection before trying to use file-operations.
+* (Sebastian Bormann) Added general datapoint ADDITIONAL_INFO to display additional datapoints at the bottom of the info-dialog.
+* (Sebastian Bormann) Fixed value list type conflict.
 
 ### 0.0.42
-* (Себастьян Борман) Исправлены патчи демо-файлов.
+* (Sebastian Bormann) Adjusted pathes of demo-files.
 
 ### 0.0.41
-* (Себастьян Борманн) Основные изменения: расположение загруженных изображений пользователя изменилось, поэтому к изображениям можно получить доступ с помощью функции резервного копирования iobroker - изображения будут автоматически перемещены на новое место - откройте страницу администратора для ВСЕХ экземпляров и Сохраните настройки, чтобы автоматически настроить имена файлов используемых изображений.
-* (Себастьян Борман) Инвертированная шкала цветовой температуры для фонарей (теперь она использует шкалу микроданных взаимных степеней вместо Кельвина).
-* (Ансгар Шульте) Добавлены кнопки вверх и вниз к блайндам.
-* (Себастьян Борман) При создании каталога он будет введен.
-* (Себастьян Борманн) Добавлен раздел эффектов в свет
-* (Себастьян Борман) Если состояние еще не установлено, будет использовано стандартное значение
+* (Sebastian Bormann) Major Change: The location of the uploaded userimages has changed, so the images can be accessed by backup-function of iobroker - the images will be moved to the new location automatically - please open admin-page for ALL instances and save the settings to adjust the filenames of used images automatically.
+* (Sebastian Bormann) Inverted colortemperature-scale for hue-lights (now it uses the mired-scale = micro reciprocal degree-scale instead of kelvin).
+* (Ansgar Schulte) Added Up and Down Buttons to Blinds.
+* (Sebastian Bormann) When creating a directory it will be entered.
+* (Sebastian Bormann) Added Effect-Section to Light
+* (Sebastian Bormann) If a state is not set yet, a standard value will be used
 
 ### 0.0.40
-* (Себастьян Борманн) Добавлен недостающий файл conn.js в папку администратора.
+* (Sebastian Bormann) Appended missing conn.js in admin-folder.
 
 ### 0.0.39
-* (Себастьян Борман) Теперь файловые операции в админке должны работать (переименование и удаление файлов и каталогов).
-* (Себастьян Борман) Добавлен Image-Popup в админке.
-* (Себастьян Борман) Переименованы демо-изображения.
+* (Sebastian Bormann) Now file-operations in admin should work (file and directory renaming and deleting).
+* (Sebastian Bormann) Added Image-Popup in admin.
+* (Sebastian Bormann) Renamed demo-images.
 
 ### 0.0.38
-* (Себастьян Борманн) Снова изменяется на принудительное прикосновение для получения совместимости.
+* (Sebastian Bormann) Again changes to forced touch for gained compatibility.
 
 ### 0.0.37
-* (Себастьян Борман) Еще несколько небольших изменений в принудительном прикосновении.
-* (Себастьян Борманн) Добавлена возможность открывать представление через URL, добавив home = <viewId> к URL-параметрам.
+* (Sebastian Bormann) Some more little changes to forced touch.
+* (Sebastian Bormann) Added option to open a view via url by adding 'home=<viewId>' to url-parameters.
 
 ### 0.0.36
-* (Себастьян Борманн) Добавлена совместимость для некоторых устройств Android для принудительного касания.
-* (Себастьян Борманн) Изменен способ отображения оттенков и ct для лучшей совместимости с некоторыми устройствами.
+* (Sebastian Bormann) Added compatibility for some android devices to forced touch.
+* (Sebastian Bormann) Changed the way hue and ct is displayed for better compatibility to some devices.
 
 ### 0.0.35
-* (Себастьян Борманн) Исправлен сбой внешнего интерфейса, если устройство не имеет роли и добавил информацию администратору для выбора роли.
-* (Себастьян Борманн) Удалена фильтрация состояний в диалоге select-id для автоматического создания.
-* (Себастьян Борманн) Дальнейшие улучшения принудительного прикосновения с индикатором силы и, надеюсь, лучшая совместимость с большим количеством устройств.
+* (Sebastian Bormann) Fixed crash of frontend, if a device has no role and added info to admin to chose a role.
+* (Sebastian Bormann) Removed filtering of states in select-id-dialog for autocreate.
+* (Sebastian Bormann) Further improvments of forced touch with force-indicator and hopefully a better compatibility with more devices.
 
 ### 0.0.34
-* (Себастьян Борманн) Добавлено принудительное сенсорное меню (жмите сильно или долго нажимайте на неподдерживаемых устройствах), что даст больше места для расширенных функций в будущем.
-* (Себастьян Борман) Связанные виды теперь могут быть установлены для всех ролей и доступны в диалоге и принудительным касанием.
-* (Себастьян Борман) Добавлена временная метка для окна, двери, огня, температуры, влажности, яркости и движения.
-* (Себастьян Борман) Исправлена ошибка 49 (состояние переключения ролей, если тип - число).
+* (Sebastian Bormann) Added forced touch menu (press hard or press long on unsupported devices), wich will give more room for extended features in future.
+* (Sebastian Bormann) Linked Views can now be set for all roles and are available in the dialog and by a forced touch.
+* (Sebastian Bormann) Added timestamp for Window, Door, Fire, Temperature, Humidity, Brightness and Motion.
+* (Sebastian Bormann) Fixed issure 49 (state for role switch if type is number).
 
 ### 0.0.33
-* (Себастьян Борманн) Добавлено WINDOW_OPENING_REPORTING к термостату и гомеатическому термостату.
-* (Себастьян Борманн) Исправлена ошибка, из-за которой шатер не всегда запускался правильно.
+* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat.
+* (Sebastian Bormann) Fixed marquee not always starting correctly.
 
 ### 0.0.32
-* (Себастьян Борман) Добавлен аккумулятор.
-* (Себастьян Борман) Обогреватели отображаются как неактивные, если заданное значение минимально.
-* (Себастьян Борманн) Добавлен объект meta.user, позволяющий создавать резервные копии загруженных пользователем файлов с помощью резервного копирования iobroker.
-* (Себастьян Борманн) Добавлена проверка на наличие common.role перед визуализацией.
+* (Sebastian Bormann) Added Battery.
+* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum.
+* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup.
+* (Sebastian Bormann) Added check for existance of common.role before rendering view.
 
 ### 0.0.31
-* (Себастьян Борман) Исправлены некоторые опечатки.
-* (Себастьян Борман) Улучшенное смешение цветов с отдельными точками яркости для цвета и белого.
-* (Себастьян Борманн) Переписан перевод представления в качестве подготовки к дальнейшим улучшениям.
-* (Себастьян Борманн) Переписан перевод диалога в качестве подготовки к дальнейшим улучшениям.
-* (Себастьян Борман) Добавлена возможность раскрашивать Device-Texts.
+* (Sebastian Bormann) Fixed some typos.
+* (Sebastian Bormann) Enhanced colour-mixing of light with seperate brightness-datapoints for color and white.
+* (Sebastian Bormann) Rewritten rendering of view as praparation for further enhancements.
+* (Sebastian Bormann) Rewritten rendering of dialog as praparation for further enhancements.
+* (Sebastian Bormann) Added option to colorize Device-Texts.
 
 ### 0.0.30
-* (Себастьян Борман) Исправлено io-package.json
+* (Sebastian Bormann) Fixed io-package.json
 
 ### 0.0.29
-* (Себастьян Борманн) изменил части кода для обратной совместимости со старыми браузерами, такими как 11.
-* (Себастьян Борманн) Теперь можно определить список значений для точки данных в .native.states, который будет иметь больший приоритет, чем список значений в .common.states.
-* (Себастьян Борманн) Обновлена зависимость для axios до 0.0.19, чтобы исправить проблему с безопасностью.
+* (Sebastian Bormann) changed parts of the code to be backward-compatible to older browsers like ie 11.
+* (Sebastian Bormann) Now its possible to define a value list for a data point under .native.states wich will have a greater priority than a value list under .common.states. 
+* (Sebastian Bormann) Updated dependency for axios to 0.0.19 to fix a scurity issue.
 
 ### 0.0.28
-* (Себастьян Борманн) Добавлен пункт данных POWER для переключения, вентилятора и освещения.
-* (Себастьян Борманн) Исправлен шатер для небольших информационных текстов в верхнем правом углу на больших экранах.
-* (Себастьян Борманн) Добавлены дополнительные параметры для настройки цветов заголовка и цвета устройства (экспериментальное состояние). Цвет текста пока не настраивается.
+* (Sebastian Bormann) Added datapoint POWER to switch, fan and light.
+* (Sebastian Bormann) Fixed marquee for small info texts in the upper right corner at big screen sizes.
+* (Sebastian Bormann) Added more options for configuring header-colors and device-colors (experimental state). Text-color ist not configurable yet.
 
 ### 0.0.27
-* (Себастьян Борман) Добавлен marquee (прокрутка текста) для длинных состояний и имен устройств (можно настроить в настройках).
-* (Себастьян Борман) Добавлены дополнительные параметры панели инструментов.
-* (Себастьян Борманн) Улучшенная обработка списков значений.
-* (Себастьян Борман) Отключение смахивания при открытии диалога.
+* (Sebastian Bormann) Added marquee (scrolling text) for long states and device names (can be configured  in options). 
+* (Sebastian Bormann) Added more toolbar-options. 
+* (Sebastian Bormann) Enhanced handling of value lists. 
+* (Sebastian Bormann) Disabled swiping when dialog is opened.
 
 ### 0.0.26
-* (Себастьян Борман) Добавлена яркость датчика движения.
-* (Себастьян Борман) Добавлена вкладка настроек. Теперь вы можете настроить цвета панели инструментов.
-* (Себастьян Борман) Исправлен рендеринг констант.
-* (Себастьян Борман) Изменен размер демо-обоев для более быстрой загрузки.
+* (Sebastian Bormann) Added brightness to motion-sensor.
+* (Sebastian Bormann) Added options tab. You can now configure colors of toolbar.
+* (Sebastian Bormann) Fixed rendering of constants.
+* (Sebastian Bormann) Resized the demo-wallpapers for faster loading.
 
 ### 0.0.25
-* (Себастьян Борман) Добавлен датчик движения.
-* (Себастьян Борман) Добавлено описание того, как работает внешний интерфейс: [Принцип работы внешнего интерфейса] (Операция% 20Principle% 20of% 20Frontend.md).
-* (Себастьян Борман) Добавлен диалог для редактирования констант, таких как SET_VALUE, URL или HTML.
-* (Себастьян Борманн) Изменен способ хранения массивов.
-* (Себастьян Борман) Добавлена кнопка отправки значений типа string.
-* (Себастьян Борманн) Добавлена насыщенность оттенков света.
-* (Себастьян Борман) Лучше иконки для цветовой температуры и яркости сенсора.
+* (Sebastian Bormann) Added motion-sensor.
+* (Sebastian Bormann) Added description, how the frontend works: [Operating Principle of Frontend](Operating%20Principle%20of%20Frontend.md).
+* (Sebastian Bormann) Added dialog for editing constants like SET_VALUE, URL or HTML.
+* (Sebastian Bormann) Changed the way arrays are stored.
+* (Sebastian Bormann) Added submit-button for values of type string.
+* (Sebastian Bormann) Added saturation to hue-lights.
+* (Sebastian Bormann) Better icons for color-temperature and brightness-sensor.
 
 ### 0.0.24
-* (Себастьян Борман) Исправлено дрожание в Safari при прокрутке (было связано с Pull2Refresh).
-* (Себастьян Борман) Системный язык iobroker будет загружен и использован.
+* (Sebastian Bormann) Fixed jittering on Safari while scrolling (was related to Pull2Refresh).
+* (Sebastian Bormann) System language of iobroker will be loaded and used.
 
 ### 0.0.23
-* (Себастьян Борман) Переписал, как обрабатываются значения констант (вместо связанных состояний) - это требование для дальнейшего развития.
-* (Себастьян Борман) Исправлено Pull2Refresh на устройствах Android / Chrome.
-* (Себастьян Борман) Добавлены внешние ссылки
-* (Себастьян Борман) Добавлены всплывающие окна с фреймами
+* (Sebastian Bormann) Rewrote how constant values (instead of linkedStates) are handeled - this is a requirement for further development.
+* (Sebastian Bormann) Fixed Pull2Refresh on android devices / chrome.
+* (Sebastian Bormann) Added external links
+* (Sebastian Bormann) Added popups with iframes
 
 ### 0.0.22
-* (watcherkb) Улучшен немецкий перевод.
-* (BramTown) Улучшен немецкий перевод.
-* (Себастьян Борман) Вскоре после очередного события повторного соединения (<5 с) теперь игнорируются.
+* (watcherkb) Improved german translation.
+* (BramTown) Improved german translation.
+* (Sebastian Bormann) Short after another coming reconnect-events (<5s) are ignored now.
 
 ### 0.0.21
-* (Себастьян Борманн) Добавлен Pull2Refresh на мобильных устройствах - перезагружается вся страница при сносе на домашнюю страницу, в противном случае перезагружается только актуальный вид.
-* (Себастьян Борман) Улучшена перезагрузка при переподключении (с надеждой на то, что он наконец-то хорошо работает на iOS 12.2).
+* (Sebastian Bormann) Added Pull2Refresh on mobile devices - reloads whole page when pulling down on homepage, otherwise only the acual view is reloaded.
+* (Sebastian Bormann) Improved reloading on reconnect (hoepefully to get it finally good working on iOS 12.2).
 
 ### 0.0.20
-* (Себастьян Борман) Новая пробная версия, чтобы заставить его работать в iOS 12.2.
+* (Sebastian Bormann) New trial to get it working in iOS 12.2.
 
 ### 0.0.19
-* (Себастьян Борман) Улучшена перезагрузка страницы в новом PWA-режиме iOS 12.2.
+* (Sebastian Bormann) Improved reloading of page in new PWA-Mode of iOS 12.2.
 
 ### 0.0.18
-* (Себастьян Борманн) Улучшено получение VALVE_STATES.
-* (Себастьян Борман) Изменен значок кнопки.
-* (Себастьян Борманн) Добавлен Spinner для загрузки, если он отключен.
-* (Себастьян Борманн) В связи с новым iOS 12.2 PWA-Mode добавлены проверка видимости и проверка подключения.
-* (Себастьян Борманн) Добавлены значки ролей в поле выбора ролей в диалоге редактирования устройства.
-* (Себастьян Борманн) Исправлен отсутствующий список значений для состояний типа string.
+* (Sebastian Bormann) Improved fetching of VALVE_STATES.
+* (Sebastian Bormann) Changed Button Icon.
+* (Sebastian Bormann) Added Loading-Spinner if disconnected.
+* (Sebastian Bormann) Due to new iOS 12.2 PWA-Mode added visibility-check and connectivity-check.
+* (Sebastian Bormann) Added role-icons to role-selectbox in edit device dialog.
+* (Sebastian Bormann) Fixed missing value-list for states of the type string.
 
 ### 0.0.17
-* (Себастьян Борманн) Изменено описание слайдера (уровень / диммер / значение / высота).
+* (Sebastian Bormann) Changed description of slider (level/dimmer/value/height).
 
 ### 0.0.16
-* (Себастьян Борманн) Роль устройства отображается в таблице устройств.
-* (Себастьян Борман) VALVE_STATES теперь редактируется через графический интерфейс (в процентах показано открытие клапанов, связанных с термостатом).
-* (Себастьян Борманн) Добавлена роль «Кнопка»: вы можете определить константу SET_VALUE, которая будет записана в идентификатор, связанный с STATE, если кнопка нажата.
-* (Себастьян Борманн) Переписать части интерфейса, чтобы гарантировать лучшую совместимость. Boost-Mode для Homematic-Thermostat теперь должен работать.
-* (Себастьян Борманн) Добавлено состояние BOOST_STATE для Homematic-Thermostat - возможность отображать оставшееся время разгона, если в режиме наддува.
-* (Себастьян Борман) Добавлено описание ролей и соответствующих состояний.
-* (Себастьян Борман) Датчики температуры и влажности теперь могут отображать СОСТОЯНИЕ внизу устройства, а также ТЕМПЕРАТУРА и ВЛАЖНОСТЬ в небольшом правом верхнем углу.
-* (Себастьян Борманн) Лучшее управление автоматическим созданием датчиков температуры и влажности.
-* (Себастьян Борман) Немецкий перевод: «geöffnet» строчные.
-* (Себастьян Борман) Влажность и температура Zigbee добавлены к автоматическому созданию.
-* (Себастьян Борманн) Исправлено не прокручиваемое поле выбора на вкладке устройства.
+* (Sebastian Bormann) Role of device is displayed in devices-table.
+* (Sebastian Bormann) VALVE_STATES is now editable via GUI (show opening of valves associated with a thermostat in percentage).
+* (Sebastian Bormann) Added Role 'Button': You can define a constant SET_VALUE wich will be written to the ID that is linked with STATE if the button is pressed.
+* (Sebastian Bormann) Rewritten parts of front-end to guarentee better compatibility. Boost-Mode for Homematic-Thermostat should work now.
+* (Sebastian Bormann) Added state BOOST_STATE for Homematic-Thermostat - ability to display remaining boost-time if in boost-mode.
+* (Sebastian Bormann) Added dessription of roles and corresponding states.
+* (Sebastian Bormann) Temperature und Humidity-Sensors can now display a STATE at bottom of device, and both, TEMPERATURE and HUMIDITY, in small in the upper right corner.
+* (Sebastian Bormann) Better handling of Auto-Create of Temperature- und Humidity-Sensors.
+* (Sebastian Bormann) German translation: 'geöffnet' lower case.
+* (Sebastian Bormann) Zigbee humidity and temperature added to auto-creation.
+* (Sebastian Bormann) Fixed not scrollable selectbox at devices tab.
 
 ### 0.0.15
-* (Себастьян Борманн) Улучшена проверка типов значений состояний.
-* (Себастьян Борманн) Улучшена подсказка ползунка для уменьшения размера шрифта при больших числах.
+* (Sebastian Bormann) Improved check for value type of states.
+* (Sebastian Bormann) Improved slider-tooltip to lower font-size at large numbers.
 
-### 0,0 14
-* (Себастьян Борманн) Если роль состояния в дальнейшем не указана, проверьте роль родительского объекта.
+### 0.0 14
+* (Sebastian Bormann) If role of state is not further specified, then check for role of parent object.
 
 ### 0.0.13
-* (Себастьян Борман) Двери и окна теперь принудительно переводят true / false в открытое / закрытое.
-* (Себастьян Борманн) Двойные записи на WelcomeScreen / Overview удалены.
-* (Себастьян Борман) Состояния теперь установлены с правильным типом значения.
-* (Себастьян Борман) Изменено распознавание государственных типов. Я надеюсь, что нет новых ошибок сейчас!
+* (Sebastian Bormann) Doors and Windows now force true/false to be translated to opened/closed.
+* (Sebastian Bormann) Double Entrys on WelcomeScreen/Overview removed.
+* (Sebastian Bormann) States are now set with the correct value type.
+* (Sebastian Bormann) Changed recognition of state types. I hope there are no new bugs now!
 
 ### 0.0.12
-* (Себастьян Борманн) Проверьте наличие недопустимых символов в именах объектов.
-* (Себастьян Борман) Проверьте наличие дубликатов в именах представлений.
-* (Себастьян Борманн) Уровень запускает слайдер в диалоге - даже когда у него есть список состояний (снова HUE :)).
-* (Себастьян Борманн) Добавлены жалюзи (Homematic) - пожалуйста, проверьте это, у меня нет одного, чтобы проверить.
+* (Sebastian Bormann) Check for unallowed chars in object names.
+* (Sebastian Bormann) Check for duplicates in view names.
+* (Sebastian Bormann) Level fires a slider in dialog - even when it has a state list (HUE again :)).
+* (Sebastian Bormann) Added Blinds (Homematic) - please test it, i don't have one to test.
 
 ### 0.0.11
-* (Себастьян Борман) Добавлена совместимость для edge и firefox.
-* (Себастьян Борман) Снова исправления Хюэ.
-* (Себастьян Борманн) Удалена подсказка с панели инструментов.
+* (Sebastian Bormann) Added compatibility for edge and firefox. 
+* (Sebastian Bormann) Again Hue bugfixes.
+* (Sebastian Bormann) Removed Tooltip from Toolbar.
 
 ### 0.0.10
-* (Себастьян Борман) Добавлена цветовая температура. Hoepful HUE работает сейчас? Не могу проверить это, потому что у меня нет лампы накаливания :)
+* (Sebastian Bormann) Added ColorTemperature. Hoepfully HUE works now? Can't test ist, because i do not own any hue lamp :)
 
 ### 0.0.9
-* (Себастьян Борманн) Philips HUE добавлен в автосоздание (colortemp еще не работает!).
-* (Себастьян Борман) LinkedView теперь также работает на окнах, дверях и датчике пожара.
-* (Себастьян Борман) Добавлен перевод (спасибо ldittmar!).
+* (Sebastian Bormann) Philips HUE added to autocreate (colortemp is not working yet!).  
+* (Sebastian Bormann) LinkedView now also works on windows, doors and fire-sensor.
+* (Sebastian Bormann) Added translation (thanks ldittmar!).
 
 ### 0.0.8
-* (Себастьян Борманн) Добавлены иконки в окна выбора изображений.
+* (Sebastian Bormann) Added icons to image selectboxes.
 
 ### 0.0.7
-* (Себастьян Борман) Изменен порядок вкладок
-* (Себастьян Борман) Автосоздание для Шелли должно работать сейчас (я надеюсь, что не могу проверить это здесь)
+* (Sebastian Bormann) Changed order of tabs
+* (Sebastian Bormann) Autocreate for shelly should work now (i hope so, can't test it here)
 
 ### 0.0.6
-* (Себастьян Борманн) Улучшена скорость выбора идентификатора и автоматического создания
-* (Себастьян Борманн) Установить фильтр на канал при автоопределении
+* (Sebastian Bormann) Improved speed of select id and autocreate
+* (Sebastian Bormann) Set filter to channel on autocreate
 
 ### 0.0.5
-* (Себастьян Борман) Исправление: создание многих устройств должно работать сейчас
+* (Sebastian Bormann) Bugfix: creation of many devices schould work now
 
 ### 0.0.4
-* (Себастьян Борман) Исправление: при копировании устройства создавалась просто ссылка на старый объект
-* (Себастьян Борман) Addes Toolbar-Icons
+* (Sebastian Bormann) Bugfix: copy device created just a reference to old object
+* (Sebastian Bormann) Addes Toolbar-Icons
 
 ### 0.0.3
-* (Себастьян Борман) различные исправления
+* (Sebastian Bormann) various bugfixes
 
 ### 0.0.2
-* (Себастьян Борман) первая частично запущенная версия
+* (Sebastian Bormann) first partly running version
 
 ### 0.0.1
-* (Себастьян Борман) первый релиз
+* (Sebastian Bormann) initial release
 
 ## License
 MIT License

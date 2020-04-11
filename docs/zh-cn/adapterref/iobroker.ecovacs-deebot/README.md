@@ -3,12 +3,13 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: 6eD1dGnNSHyhz413axLSCBw9FiD2595ttBvL5dfTrus=
+hash: pxTnxHQ8587eG2gLkxM3SnhTsZ2RDqcKUDsXUMm/2cI=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
+![已安装](http://iobroker.live/badges/ecovacs-deebot-installed.svg)
 ![特拉维斯](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
 
 ＃适用于ioBroker的Ecovacs Deebot适配器
@@ -31,6 +32,7 @@ hash: 6eD1dGnNSHyhz413axLSCBw9FiD2595ttBvL5dfTrus=
 * Deebot N79T
 * Deebot M88
 * Deebot 600/605
+* Deebot奥兹莫920
 
 ##安装
 该适配器使用画布库，这可能需要附加安装，否则在iobroker中进行安装可能会导致错误：

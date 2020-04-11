@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: tgbbEaWnu//nVsUuH82cZ05SrvIpOyf3/Knc+g4mLqo=
+hash: iw9jHbxnZMm10ysHEF8fY2bBp6smchJQfBPXBq4g33k=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -35,10 +35,18 @@ hash: tgbbEaWnu//nVsUuH82cZ05SrvIpOyf3/Knc+g4mLqo=
 
 ---
 
+＃1.3.2
+-错误修复
+
+＃1.3.1
+-更改了导航按钮的颜色行为
+-添加了新图标
+
 ＃1.3.0
 -添加了JSON表
 -增加了导航延迟
 -按钮中的文本现在可以是HTML
+-添加了新图标
 
 ＃1.2.3
 -添加了导航活动颜色

@@ -645,6 +645,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.b-control-em/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.backitup/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.beckhoff/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.benq/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.binance/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ble/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.blink4home/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.bmw/README.md
@@ -893,6 +894,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.starline/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.statistics/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.stiebel-isg/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.stockmarket/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.sunnyportal/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.swiss-weather-api/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.synology/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.systeminfo/README.md
@@ -1010,6 +1012,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.b-control-em/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.backitup/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.beckhoff/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.benq/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.binance/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ble/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.blink4home/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.bmw/README.md
@@ -1258,6 +1261,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.starline/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.statistics/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.stiebel-isg/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.stockmarket/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.sunnyportal/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.swiss-weather-api/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.synology/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.systeminfo/README.md
@@ -1375,6 +1379,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.b-control-em/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.backitup/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.beckhoff/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.benq/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.binance/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ble/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.blink4home/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.bmw/README.md
@@ -1623,6 +1628,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.starline/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.statistics/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.stiebel-isg/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.stockmarket/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.sunnyportal/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.swiss-weather-api/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.synology/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.systeminfo/README.md
@@ -1740,6 +1746,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.b-control-em/README
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.backitup/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.beckhoff/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.benq/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.binance/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ble/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.blink4home/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.bmw/README.md
@@ -1988,6 +1995,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.starline/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.statistics/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.stiebel-isg/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.stockmarket/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.sunnyportal/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.swiss-weather-api/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.synology/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.systeminfo/README.md

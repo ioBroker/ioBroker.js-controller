@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: tgbbEaWnu//nVsUuH82cZ05SrvIpOyf3/Knc+g4mLqo=
+hash: iw9jHbxnZMm10ysHEF8fY2bBp6smchJQfBPXBq4g33k=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -29,16 +29,24 @@ Mit Hilfe unserer Widgets lassen sich folgende Projekte verwirklichen. Zur Zeit 
 ## Unterstützung
 Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen uns über jede Spende.
 
-(Dieser Link для тех, кто предпочитает PayPal-Konto и Steht в Keiner Verbindung zum ioBroker)
+(Dieser Link от компании PayPal-Konto и Steht в Кейнер Verbindung zum ioBroker)
 
 [![Spende] (администратор / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
 
+# 1.3.2
+- Исправлена ошибка
+
+# 1.3.1
+- Изменено поведение цвета кнопки навигации
+- Добавлены новые иконки
+
 # 1.3.0
 - Добавлена таблица JSON
 - Добавлена задержка для навигации
 - Текст в кнопках теперь может быть HTML
+- Добавлены новые иконки
 
 # 1.2.3
 - Добавлен навигационный активный цвет

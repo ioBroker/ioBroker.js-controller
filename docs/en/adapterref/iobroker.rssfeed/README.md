@@ -11,11 +11,11 @@
 
 
 ## Overview
-Adapter to request and show RSS Feeds of different standands (Atom, RSS, RDF)
+Adapter to request and show RSS Feeds of different standands (Atom, RSS, RDF).
+You can customize the output of the feed with a template system. In the templates you can include HTML, CSS and Javascript.
 
 ## Installation
-The adapter is currently only available on github.
-Repository name is https://github.com/oweitman/iobroker.rssfeed
+The adapter available in the latest repository.
 
 ## Add an Instance
 After Installation the adapter should then be displayed in the adapter section in the iobroker.
@@ -37,37 +37,27 @@ The configuration is relatively easy. There are only a few fields
 
 Then for each new feed:
 
-| Setting                           | description                                                                                       |  
-| --------------------------------- | ------------------------------------------------------------------------------------------------- |  
-| Name                              | A unique name, must not appear twice                                                              |  
-| Url                               | The full address of the feed (with http: // or https: //, see examples below)                     |  
-| Refresh                           | A different value can be specified for this feed. Otherwise the general specification is taken    |  
+| Setting                           | description                                                                                       |
+| --------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Name                              | A name for the datapoint. Inside a folder a name must not appear twice.                           |
+| Category                          | Name for a subfolder there the datapoint should appear. The category must be unique               |
+| Url                               | The full address of the feed (with http: // or https: //, see examples below)                     |
+| Refresh                           | A different value can be specified for this feed. Otherwise the general specification is taken    |
+| Edit button                       | The selected Item will be removed and the values appear in the Adding section                     |
+| Delete button                     | The selected Item will be  removed                                                                |
 
 If you saved and closed the configuration, the feed-data can be found as a JSON data point in the object tree.
 
 ## vis and widgets
 The following widgets actually exists
-#### RSS view widget
-Widget to display a feed. This can be found via the search filter in vis using rssfeed.
+* RSS Feed widget -  to show a single feed
+* RSS Feed Multi widget -  to show several aggregated feeds in one widget.
+* RSS Feed meta Helper - a helper widget to inspect the meta data of a feed 
+* RSS Feed article Helper - a helper widget to inspect the article data of a feed 
+* RSS Feed marquee - a widget to show the Headlines of a feed as a marquee 
+* JSON Template - a wdiget that have nothing todo with RSS Feeds, but you can define a custom template to show any JSON-Data in vis.
 
-The widget has the following setting options
-
-rss_oid The JSON data point of the desired feed is selected here. I have noticed that the object browser does not always work satisfactorily since it tries to display the HTML parts contained in the JSON.
-Alternatively, copy the data point ID directly from vis.
-template: A template can be entered here, which can contain javascript and html mixed.
-
-maxarticles: Here the widget can be individually limited to the number of articles.
-
-All other settings are identical to the other widgets. The format specifications generally apply to all widget content
-#### RSS meta helper widget
-A widget to view all the meta attributes in the feed
-this widgets helps you to find the right attribute to select in the template.
-#### RSS article helper widget
-A widget to view all the attributes of an article
-This widgets helps you to find the right attribute of an article to select in the template.
-There are the following additional settings
-prefix: Name of a javascript variable you want to use in the template. This helps to copy the name directly to the template
-article: Number of an article you want to see in the helper.
+Documentation for the vis-widgets are available inside vis or [Widget-Documentation/german](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.rssfeed/blob/master/widgets/rssfeed/doc.html)
 
 ## Template based on examples
 An example that I tested with the following RSS feeds:
@@ -161,6 +151,8 @@ Z7: Without output. This line closed the javascript loop . Everything that was d
 * ~~Widget für Laufschrift mit den Titeln https://forum.iobroker.net/topic/31242/nachrichten-ticker-newsticker-via-php-in-vis-einbinden/2~~
 
 ## Changelog
+### 0.0.27
+* adapter configuration is now editable
 ### 0.0.26
 * correct changelog size 
 ### 0.0.25

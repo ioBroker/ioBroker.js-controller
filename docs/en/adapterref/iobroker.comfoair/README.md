@@ -57,9 +57,13 @@ Tested on comfoair CA350.
 
 ## Changelog
 
+### 1.1.1
+
+-   Periodical self-test with restart in case of fail added
+
 ### 1.1.0
 
-- displays now working hours of different ventilation levels, preheating, bypass and frost-protection.
+-   displays now working hours of different ventilation levels, preheating, bypass and frost-protection.
 
 ### 1.0.0
 

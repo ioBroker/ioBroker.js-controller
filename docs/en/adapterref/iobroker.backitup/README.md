@@ -183,6 +183,10 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 ## Changelog
 
+### 1.5.0 (xx.04.2020)
+* (simatec) revised error handling
+* (simatec) update dependencies
+
 ### 1.4.5 (23.03.2020)
 * (simatec) Bugfix CIFS Domain
 

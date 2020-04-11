@@ -227,13 +227,15 @@ Settings that are not listed in the table below are self-explanatory.
 		"text": "text 1",
 		"subText": "sub 1",
 		"value": "val1",
-		"icon": "/vis/icon/info.png"
+		"icon": "/vis/icon/info.png",
+        "iconColor": "red"
 	},
 	{
 		"text": "text 2",
 		"subText": "sub 2",
 		"value": "val2",
-		"icon": "facebook-workplace"
+		"icon": "facebook-workplace",
+        "iconColor": "green"
 	}
 ]
 </code></pre>
@@ -292,13 +294,15 @@ Settings that are not listed in the table below are self-explanatory.
 		"text": "text 1",
 		"subText": "sub 1",
 		"value": "val1",
-		"icon": "/vis/icon/info.png"
+		"icon": "/vis/icon/info.png",
+        "iconColor": "red"
 	},
 	{
 		"text": "text 2",
 		"subText": "sub 2",
 		"value": "val2",
-		"icon": "facebook-workplace"
+		"icon": "facebook-workplace",
+        "iconColor": "green"
 	}
 ]
 </code></pre>

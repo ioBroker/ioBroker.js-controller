@@ -42,6 +42,9 @@ If you have any device transmitting specially encoded information via advertisem
 	### __WORK IN PROGRESS__
 -->
 
+### 0.11.1 (2020-04-11)
+* (AlCalzone) Fixed typo in Ruuvi Tag plugin: `motionCounter` -> `movementCounter`
+
 ### 0.11.0 (2020-03-25)
 * (AlCalzone) Removed compact support. `noble` sometimes throws errors in callbacks that cannot be handled and would bring the whole compact group down.
 * (AlCalzone) Added support for the Xiaomi Kettle

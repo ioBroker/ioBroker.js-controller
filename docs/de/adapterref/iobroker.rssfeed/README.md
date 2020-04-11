@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.rssfeed/README.md
 title: ioBroker Adapter zum Anfordern und Anzeigen von RSS-Feeds verschiedener Standards (Atom, RSS, RDF)
-hash: RVTdUT34i61jk7CadAR8g8U8dkTUcvJJiE+9BOPW2T0=
+hash: 2vvaeZwJi4wWwucNzR47xVXajElmyuwtz6er3PWxm9Q=
 ---
 ![Logo](../../../en/adapterref/iobroker.rssfeed/admin/rssfeed-logo.png)
 
@@ -16,11 +16,11 @@ hash: RVTdUT34i61jk7CadAR8g8U8dkTUcvJJiE+9BOPW2T0=
 
 # IoBroker Adapter zum Anfordern und Anzeigen von RSS-Feeds verschiedener Standards (Atom, RSS, RDF)
 ## Überblick
-Adapter zum Anfordern und Anzeigen von RSS-Feeds verschiedener Standards (Atom, RSS, RDF)
+Adapter zum Anfordern und Anzeigen von RSS-Feeds verschiedener Standards (Atom, RSS, RDF).
+Sie können die Ausgabe des Feeds mit einem Vorlagensystem anpassen. In den Vorlagen können Sie HTML, CSS und Javascript einfügen.
 
 ## Installation
-Der Adapter ist derzeit nur auf Github verfügbar.
-Der Name des Repositorys lautet https://github.com/oweitman/iobroker.rssfeed
+Der im neuesten Repository verfügbare Adapter.
 
 ## Instanz hinzufügen
 Nach der Installation sollte der Adapter dann im Adapterbereich des iobroker angezeigt werden.
@@ -44,29 +44,27 @@ Dann für jeden neuen Feed:
 
 | Einstellung | Beschreibung |
 | --------------------------------- | ------------------------------------------------------------------------------------------------- |
-| Name | Ein eindeutiger Name darf nicht zweimal vorkommen |
+| Name | Ein Name für den Datenpunkt. In einem Ordner darf ein Name nicht zweimal vorkommen. |
+| Kategorie | Name für einen Unterordner dort sollte der Datenpunkt erscheinen. Die Kategorie muss eindeutig sein |
 | URL | Die vollständige Adresse des Feeds (mit http:// oder https://, siehe Beispiele unten) |
 | Aktualisieren | Für diesen Feed kann ein anderer Wert angegeben werden. Andernfalls wird die allgemeine Spezifikation übernommen |
+| Schaltfläche Bearbeiten | Das ausgewählte Element wird entfernt und die Werte werden im Abschnitt Hinzufügen | angezeigt |
+| Schaltfläche Löschen | Das ausgewählte Element wird entfernt |
 
 Wenn Sie die Konfiguration gespeichert und geschlossen haben, werden die Feed-Daten als JSON-Datenpunkt im Objektbaum gefunden.
 
 ## Vis und Widgets
 Die folgenden Widgets sind tatsächlich vorhanden
 
-#### RSS-Ansichts-Widget Widget zum Anzeigen eines Feeds. Dies kann über den Suchfilter in vis mit rssfeed gefunden werden.
-Das Widget verfügt über die folgenden Einstellungsoptionen
+* RSS-Feed-Widget - um einen einzelnen Feed anzuzeigen
+* RSS Feed Multi Widget - um mehrere aggregierte Feeds in einem Widget anzuzeigen.
+* RSS-Feed-Meta-Helfer - Ein Helfer-Widget zum Überprüfen der Metadaten eines Feeds
+* RSS-Feed-Artikel-Helfer - Ein Helfer-Widget zum Überprüfen der Artikeldaten eines Feeds
+* RSS-Feed-Auswahlrahmen - Ein Widget zum Anzeigen der Überschriften eines Feeds als Auswahlrahmen
+* JSON-Vorlage - ein wdiget, das nichts mit RSS-Feeds zu tun hat, aber Sie können eine benutzerdefinierte Vorlage definieren, um alle JSON-Daten in vis anzuzeigen.
 
-rss_oid Hier wird der JSON-Datenpunkt des gewünschten Feeds ausgewählt. Ich habe festgestellt, dass der Objektbrowser nicht immer zufriedenstellend funktioniert, da er versucht, die im JSON enthaltenen HTML-Teile anzuzeigen.
-Alternativ können Sie die Datenpunkt-ID direkt von vis kopieren.
-Vorlage: Hier kann eine Vorlage eingegeben werden, die Javascript und HTML gemischt enthalten kann.
+Die Dokumentation für die vis-Widgets ist in vis oder [Widget-Dokumentation / Deutsch](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.rssfeed/blob/master/widgets/rssfeed/doc.html) verfügbar
 
-maxarticles: Hier kann das Widget individuell auf die Anzahl der Artikel begrenzt werden.
-
-Alle anderen Einstellungen sind mit den anderen Widgets identisch. Die Formatspezifikationen gelten im Allgemeinen für alle Widget-Inhalte
-
-#### RSS-Meta-Hilfs-Widget Ein Widget zum Anzeigen aller Meta-Attribute im Feed dieses Widgets hilft Ihnen, das richtige Attribut für die Auswahl in der Vorlage zu finden.
-#### Widget für RSS-Artikelhilfe Ein Widget zum Anzeigen aller Attribute eines Artikels Mit diesen Widgets können Sie das richtige Attribut eines Artikels finden, das in der Vorlage ausgewählt werden kann.
-Es gibt das folgende zusätzliche Einstellungspräfix: Name einer Javascript-Variablen, die Sie in der Vorlage verwenden möchten. Auf diese Weise können Sie den Namen direkt in den Vorlagenartikel kopieren: Nummer eines Artikels, den Sie im Hilfsprogramm anzeigen möchten.
 ## Vorlage anhand von Beispielen
 Ein Beispiel, das ich mit den folgenden RSS-Feeds getestet habe:
 
@@ -128,6 +126,10 @@ Z7: Ohne Ausgabe. Diese Zeile schloss die Javascript-Schleife. Alles, was zwisch
 * ~~ Widget für Laufschrift mit den Titeln https://forum.iobroker.net/topic/31242/nachrichten-ticker-newsticker-via-php-in-vis-einbinden/2~~
 
 ## Changelog
+### 0.0.27
+* adapter configuration is now editable
+### 0.0.26
+* correct changelog size 
 ### 0.0.25
 * the error messages for the template are improved 
 ### 0.0.24
