@@ -3,6 +3,7 @@ import { Writable } from "stream";
 declare global {
 	namespace ioBroker {
 
+		/** Defines the API of the ioBroker objects DB */
 		interface ObjectsDB {
 			/** Returns which kind of DB this is */
 			getStatus(): DBType;

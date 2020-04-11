@@ -71,7 +71,9 @@ const procs                 = {};
 const hostAdapter           = {};
 const subscribe             = {};
 const stopTimeouts          = {};
+/** @type {ioBroker.StatesDB} */
 let states                  = null;
+/** @type {ioBroker.ObjectsDB} */
 let objects                 = null;
 let storeTimer              = null;
 let isStopping              = null;

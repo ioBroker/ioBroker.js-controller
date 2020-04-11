@@ -55,7 +55,10 @@
 		"resolveJsonModule": true
 	},
 	"include": [
+		"compactgroupController.js",
+		"controller.js",
 		"iobroker.js",
+		"main.js",
 		"lib/**/*.js",
 		"lib/**/*.d.ts"
 	]
