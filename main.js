@@ -20,6 +20,7 @@ const tools           = require('./lib/tools');
 const version         = ioPackage.common.version;
 const pidUsage        = require('pidusage');
 const deepClone       = require('deep-clone');
+const { isDeepStrictEqual } = require('util');
 const EXIT_CODES      = require('./lib/exitCodes');
 const {PluginHandler} = require('@iobroker/plugin-base');
 let pluginHandler;
@@ -1085,8 +1086,8 @@ function setIPs(ipList) {
                 oldObj &&
                 oldObj.common &&
                 (
-                    JSON.stringify(oldObj.native.hardware.networkInterfaces) !== JSON.stringify(networkInterfaces) ||
-                    JSON.stringify(oldObj.common.address) !== JSON.stringify(_ipList)
+                    !isDeepStrictEqual(oldObj.native.hardware.networkInterfaces, networkInterfaces) ||
+                    !isDeepStrictEqual(oldObj.common.address, _ipList)
                 )
             ) {
                 oldObj.common.address = _ipList;
@@ -1203,7 +1204,7 @@ function setMeta() {
             delete oldObj.acl;
         }
 
-        if (!oldObj || JSON.stringify(newObj) !== JSON.stringify(oldObj)) {
+        if (!oldObj || !isDeepStrictEqual(newObj, oldObj)) {
             newObj.from = hostObjectPrefix;
             newObj.ts = Date.now();
             objects.setObject(id, newObj, err => {
