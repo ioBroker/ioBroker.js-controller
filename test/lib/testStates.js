@@ -805,6 +805,17 @@ function register(it, expect, context) {
         }
     });
 
+    it(testName + 'Should also set object id', async () => {
+        // set state with device, channel, state
+        await context.adapter.setStateAsync({device: `${gid}derGeraet`, channel: 'donau', state: 'awake'}, {val: 5});
+        const state = await context.adapter.getStateAsync({device: `${gid}derGeraet`, channel: 'donau', state: 'awake'});
+        expect(state.val).to.equal(5);
+        // check with string
+        const stateTwo = await context.adapter.getStateAsync(`${gid}derGeraet.donau.awake`);
+        expect(stateTwo.val).to.equal(5);
+        return Promise.resolve();
+    });
+
     // getHistory - cannot be tested
 }
 
