@@ -376,7 +376,7 @@ For detailed setup instructions see https://www.iobroker.net/docu/index-24.htm?p
 ### Object and State Aliases
 **Feature status:** Technology preview (since 2.0.0)
 
-**Feature Flag for detection: ALIAS**
+**Feature Flag for detection: ALIAS, ALIAS_SEPARATE_READ_WRITE_ID**
 
 The Alias Feature allows to define one object/state to be the "alias" of an other object/state.
 
@@ -416,7 +416,7 @@ To create an alias object simple create a new object with a own name in the `ali
 }
 ```
 
-or using different read and write ids (supported starting js-controller 3.0):
+or using different read and write ids (supported starting js-controller 3.0, check using feature flag ALIAS_SEPARATE_READ_WRITE_ID):
 
 ```
 {
@@ -675,6 +675,7 @@ if (adapter.supportsFeature && adapter.supportsFeature('NAME')) {
 The following features can be checked using this method:
 
 * **ALIAS**: checks if the Alias feature is existing (since js.controller 2.0)
+* **ALIAS_SEPARATE_READ_WRITE_ID**: allows to specify separate ids for read and write (since js.controller 3.0)
 * **ADAPTER_GETPORT_BIND**: the adapter.getPort method allows an optional second parameter to bind the port only on a special network interface  (since js.controller 2.0) 
 * **ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE**: adapter.setObject(*) methods now sets the default value (def) after the object is created  (since js.controller 2.0)
 * **ADAPTER_DEL_OBJECT_RECURSIVE**: adapter.delObjects supports options.recursive flag to delete whole object structures (since js.controller 2.2)
