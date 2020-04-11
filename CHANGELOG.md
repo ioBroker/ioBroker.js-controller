@@ -1,5 +1,16 @@
 # Changelog
 
+## 3.0.6 (2020-04-11) Release Elena
+* (bluefox) Fixed vis debug
+* (foxriver76/Apollon77) optimize and fix dependeny checks to consider all dependencies correctly on install, upgrade and adapter start
+* (AlCalzone) add `iobroker extend object` command
+* (AlCalzone) optimize performance when objects are duplicated and checked internally
+* (AlCalzone) Add command `iobroker debug adapter` to start Node.js debug sessions for an adapter
+* (foxriver76) validate id also has to allow objects with correct properties (device, channel ...)
+* (Apollon77) prevent crash if udp membership can not be added (Sentry fix)
+* (Apollon77) change object type for compact groups to "folder"
+* (Apollon77) add adapter flag ALIAS_SEPARATE_READ_WRITE_ID
+ 
 ## 3.0.5 (2020-04-09) Release Elena
 * (foxriver76) Remove mock for adapter.states.getState again, fixed two adapters
 * (foxriver76) fix crash of redis setState when undefined is passed and refuse undefined as value in general
