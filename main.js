@@ -2598,11 +2598,7 @@ function checkVersions(id, deps, globalDeps) {
                         continue;
                     }
 
-                    if (globalDeps[dep] !== undefined) {
-                        if (!checkVersion(id, dep, globalDeps[dep], globInstances)) {
-                            return reject(new Error());
-                        }
-                    } else if (!checkVersion(id, dep, deps[dep], instances)) {
+                    if (!checkVersion(id, dep, deps[dep], instances)) {
                         return reject(new Error());
                     }
                 }
