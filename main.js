@@ -2557,8 +2557,8 @@ function checkVersion(id, name, version, instances) {
         // get all instances of this adapter
         const filteredInst = Object.keys(instances).filter(p => instances[p] && instances[p].common && instances[p].common.name === name);
         for (const inst of filteredInst) {
-            if (version && !semver.satisfies(inst.common.version, version)) {
-                logger.error(`${hostLogPrefix} startInstance ${id}: required adapter "${name}" has wrong version. Installed "${inst.common.version}", required "${version}"!`);
+            if (version && !semver.satisfies(instances[inst].common.version, version)) {
+                logger.error(`${hostLogPrefix} startInstance ${id}: required adapter "${name}" has wrong version. Installed "${instances[inst].common.version}", required "${version}"!`);
                 return false;
             }
             isFound = true;
