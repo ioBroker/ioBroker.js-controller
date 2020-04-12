@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.7 (2020-04-12) Release Elena
+* (foxriver76) also allow to set user property for states
+* (Apollon77) change FeatureFlag for Auto decrypt to ADAPTER_AUTO_DECRYPT_NATIVE
+
 ## 3.0.6 (2020-04-11) Release Elena
 * (bluefox) Fixed vis debug
 * (foxriver76/Apollon77) optimize and fix dependency checks to consider all dependencies correctly on install, upgrade and adapter start
@@ -69,7 +73,7 @@
 * (foxriver76) Add basic checking for obj.common properties including logging. Please check logs and fix them, such invalid objects will be declined with js-controller 3.1
 
 **Developer relevant new Features**
-* (bluefox/foxriver76) Automatically encrypt all config attributes that are listed in common.encryptedNative in io-package, introduce ADAPTER_AUTO_DECRYPT ([see Documentation](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#automatically-encryptdecrypt-configuration-fields)) **Admin support missing as of now!**
+* (bluefox/foxriver76) Automatically encrypt all config attributes that are listed in common.encryptedNative in io-package, introduce ADAPTER_AUTO_DECRYPT_NATIVE ([see Documentation](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#automatically-encryptdecrypt-configuration-fields)) **Admin support missing as of now!**
 * (bluefox) Introduce new dependency field for io-package called common.globalDependencies to check for global dependencies ([see Documentation](https://github.com/ioBroker/ioBroker.js-controller/blob/master/README.md#define-adapter-dependencies-to-other-adapters)). **Admin support missing as of now!**
 
 **Developer relevant Optimizations and Fixes**

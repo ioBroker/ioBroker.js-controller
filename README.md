@@ -611,7 +611,7 @@ The values are not decrypted when the object itself is read!
 
 With this change and the Admin support for this soon the adapter developer do not need to struggle around with encryption or decryption of adapter values and can simply configure this.
 
-To preserve backward compatibility you can check for the feature flag ADAPTER_AUTO_DECRYPT or add a global Admin dependency to the respective Admin version. 
+To preserve backward compatibility you can check for the feature flag ADAPTER_AUTO_DECRYPT_NATIVE or add a global Admin dependency to the respective Admin version. 
 
 #### Protect free reading of adapter configuration fields
 **Feature status:** Stable, since js-controller 2.0
@@ -679,7 +679,7 @@ The following features can be checked using this method:
 * **ADAPTER_GETPORT_BIND**: the adapter.getPort method allows an optional second parameter to bind the port only on a special network interface  (since js.controller 2.0) 
 * **ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE**: adapter.setObject(*) methods now sets the default value (def) after the object is created  (since js.controller 2.0)
 * **ADAPTER_DEL_OBJECT_RECURSIVE**: adapter.delObjects supports options.recursive flag to delete whole object structures (since js.controller 2.2)
-* **ADAPTER_AUTO_DECRYPT**: TODO
+* **ADAPTER_AUTO_DECRYPT_NATIVE**: The Controller supports auto decryption of encrypted native properties
 * **PLUGINS**: Plugins are supported by this js-controller and adapters, see section below for more details
 
 To check if certain adapter methods itself are existing please simply check for their existence like
