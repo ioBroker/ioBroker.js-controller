@@ -8,7 +8,7 @@
 'use strict';
 
 const gulp      = require('gulp');
-const fs        = require('fs');
+const fs        = require('fs-extra');
 const pkg       = require('./package.json');
 const iopackage = require('./io-package.json');
 const version   = (pkg && pkg.version) ? pkg.version : iopackage.common.version;
@@ -42,7 +42,7 @@ function processAdapters(sources, adapters, callback, result) {
 }
 
 gulp.task('updateRepo', done => {
-    const sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources-dist.json'));
+    const sources = fs.readJSONSync(__dirname + '/conf/sources-dist.json');
     const adapters = Object.keys(sources);
 
     processAdapters(sources, adapters, result => {
@@ -190,7 +190,7 @@ gulp.task('replaceCore', done => {
 });
 
 gulp.task('cleanRepo', done => {
-    const sources = JSON.parse(fs.readFileSync(__dirname + '/conf/sources-dist.json'));
+    const sources = fs.readJSONSync(__dirname + '/conf/sources-dist.json');
     for (const adapter in sources) {
         if (!sources.hasOwnProperty(adapter)) {
             continue;

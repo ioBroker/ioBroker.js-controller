@@ -12,7 +12,7 @@
 
 const schedule        = require('node-schedule');
 const os              = require('os');
-const fs              = require('fs');
+const fs              = require('fs-extra');
 const path            = require('path');
 const cp              = require('child_process');
 const ioPackage       = require('./io-package.json');
@@ -120,7 +120,7 @@ function getConfig() {
         process.exit(EXIT_CODES.MISSING_CONFIG_JSON);
         return null;
     } else {
-        const _config = JSON.parse(fs.readFileSync(configFile));
+        const _config = fs.readJSONSync(configFile);
         if (!_config.states)  {
             _config.states  = {type: 'file'};
         }
@@ -1943,7 +1943,7 @@ function processMessage(msg) {
                             if (doc.rows[i].id === hostObjectPrefix) {
                                 let _ioPack;
                                 try {
-                                    _ioPack = JSON.parse(fs.readFileSync(`${__dirname}/io-package.json`));
+                                    _ioPack = fs.readJSONSync(`${__dirname}/io-package.json`);
                                 } catch (e) {
                                     logger.error(`${hostLogPrefix} cannot read and parse "${__dirname}/io-package.json"`);
                                 }
@@ -1998,7 +1998,7 @@ function processMessage(msg) {
                 let _result = null;
                 if (fs.existsSync(dir + '/io-package.json')) {
                     try {
-                        _result = JSON.parse(fs.readFileSync(dir + '/io-package.json'));
+                        _result = fs.readJSONSync(dir + '/io-package.json');
                     } catch (e) {
                         logger.error(hostLogPrefix + ' cannot read and parse "' + dir + '/io-package.json"');
                     }
@@ -2013,7 +2013,7 @@ function processMessage(msg) {
             if (msg.callback && msg.from) {
                 ioPack = null;
                 try {
-                    ioPack = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+                    ioPack = fs.readJSONSync(__dirname + '/io-package.json');
                 } catch (e) {
                     logger.error(hostLogPrefix + ' cannot read and parse "' + __dirname + '/io-package.json"');
                 }
@@ -4209,7 +4209,7 @@ function init(compactGroupId) {
                     }, null, 2));
                 } else {
                     // npm3 requires version attribute
-                    const p = JSON.parse(fs.readFileSync(__dirname + '/../../package.json').toString());
+                    const p = fs.readJSONSync(__dirname + '/../../package.json');
                     if (!p.version) {
                         fs.writeFileSync(__dirname + '/../../package.json', JSON.stringify({
                             name: 'iobroker.core',
@@ -4229,7 +4229,7 @@ function init(compactGroupId) {
 
     let packageJson;
     try {
-        packageJson = JSON.parse(fs.readFileSync(__dirname + '/package.json', 'utf8'));
+        packageJson = fs.readJSONSync(`${__dirname}/package.json`);
     } catch (err) {
         logger.error(hostLogPrefix + ' Can not read js-controller package.json');
     }
@@ -4254,6 +4254,7 @@ function init(compactGroupId) {
         }
     }
 
+    /** @type {import("@iobroker/plugin-base/types").PluginHandlerSettings} */
     const pluginSettings = {
         scope: 'controller',
         namespace: hostObjectPrefix,
