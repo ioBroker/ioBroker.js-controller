@@ -1,5 +1,5 @@
 ---
-lastChanged: 2020.04.12
+lastChanged: 2020.04.13
 ---
 # Guide for adapter developers
 
@@ -339,16 +339,9 @@ Version 1.2.3 =>
 
 ### Deploying
 
-It is recommended to have the adapter code on github. Once your code is stable and lets you install the adapter in your environment successfully, you can share your adapter to other users by one of the following ways:
+It is recommended to have the adapter code on github. Once your code is stable and lets you install the adapter in your environment successfully, you can share your adapter to other users by asking them to install the adapter within the ioBroker admin interface: Refer to section *(5.) Install adapter from your own URL* of [ioBroker Admin documentation](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/admin/adapter.md). 
 
-1. Installing within the ioBroker admin interface: Refer users to section *(5.) Install adapter from your own URL* of [ioBroker Admin documentation](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/admin/adapter.md). 
-
-2. Alternatively, ask users to install the adapter through the command line: 
-```
-npm install https://github.com/yourName/ioBroker.adaptername/tarball/master/
-```
-
-If everything is OK and you have got positive feedback from users, you can publish the adapter on npm. It would be good if before publishing you will create realease on github.
+If everything is OK and you have got positive feedback from users, you can publish the adapter on npm. It would be good if before publishing you will create release on github.
 
 Publishing can be done with following command:
 
