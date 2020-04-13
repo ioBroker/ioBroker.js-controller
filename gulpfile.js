@@ -178,7 +178,7 @@ gulp.task('replaceCore', done => {
     ];
     for (let f = 0; f < files.length; f++) {
         if (fs.existsSync(files[f])) {
-            let text = fs.readFileSync(files[f]).toString('utf8');
+            let text = fs.readFileSync(files[f], 'utf8');
             patterns.forEach(pattern => {
                 text = text.replace(pattern.match, pattern.replacement);
             });
