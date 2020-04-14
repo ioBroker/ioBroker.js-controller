@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.8 (2020-04-xx) Release Elena
+* (foxriver76/bluefox/Apollon77) small code optimizations
+* (Apollon77) dependency updates
+
 ## 3.0.7 (2020-04-12) Release Elena
 * (foxriver76) also allow to set user property for states
 * (Apollon77) change FeatureFlag for Auto decrypt to ADAPTER_AUTO_DECRYPT_NATIVE
