@@ -1,5 +1,5 @@
 ---
-lastChanged: 2020.04.13
+lastChanged: 2020.04.14
 ---
 # Guide for adapter developers
 
@@ -324,24 +324,37 @@ It is required to use [Semantic Versioning](https://semver.org/) (SemVer) for yo
 
 #### Syntax
 
-Version 1.2.3 =>
+Version x.y.z (like 1.2.3) =>
 
 | **Major** | **Minor** | **Patch** |
 |-----------|-----------|-----------|
-| 1         | 2         | 3         |
+| x         | y         | z         |
 
 #### Explanation
 
-* Major: Changes which lead to an incompatibility with previous versions
-* Minor: Added or extended functionality  (backwards compatible)
-* Patch: Bug fixes (backwards compatible)
+* **Major**: Changes which lead to an incompatibility with previous versions
+* **Minor**: Added or extended functionality (backwards compatible)
+* **Patch**: Bug fixes (backwards compatible)
+
+#### Special Rule for Versions 0.y.z 
+
+While SemVer [suggests](https://semver.org/#how-should-i-deal-with-revisions-in-the-0yz-initial-development-phase) *(...) start your initial development release at 0.1.0 and then increment the minor version for each subsequent release (...)*, we recommend as well to initially start at `0.1.0`, but then increase **`z` for any patch or minor upgrade**, and **`y` for any breaking change** which is leading to an incompatibility with a previous versions.
+
+Once your adapter was successfully tested in the [latest repository](https://github.com/ioBroker/ioBroker.repositories#add-a-new-adapter-to-the-latest-repository) by several users and in different envirements, and is considered by you as "absolutely stable", you are ready to increase to **`1.0.0`** accordingly and can follow the instructions [Add a new adapter to the stable repository](https://github.com/ioBroker/ioBroker.repositories#add-a-new-adapter-to-the-stable-repository).
 
 
 ### Deploying
 
-It is recommended to have the adapter code on github. Once your code is stable and lets you install the adapter in your environment successfully, you can share your adapter to other users by asking them to install the adapter within the ioBroker admin interface: Refer to section *(5.) Install adapter from your own URL* of [ioBroker Admin documentation](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/admin/adapter.md). 
+It is recommended to add your adapter as new repository on GitHub. [See this guideline](https://github.com/ioBroker/ioBroker.template/tree/master/JavaScript#getting-started).
 
-If everything is OK and you have got positive feedback from users, you can publish the adapter on npm. It would be good if before publishing you will create release on github.
+Once your adapter is stable in your environment and you are able to successfully install your adapter through GitHub, go ahead and post a new thread in the [ioBroker forum](https://forum.iobroker.net/). Refer to one of the following options for installation:
+1. **Recommended**: Installation through *Install adapter from your own URL* within the ioBroker admin interface. Refer to section *(5.) Install adapter from your own URL* of [ioBroker Admin documentation](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/admin/adapter.md). 
+
+2. Alternatively, adapters can be installed by the command line, using [`npm install iobroker.adapterName`](https://github.com/ioBroker/ioBroker/wiki/Console-commands#npm-install-iobrokeradaptername),  and then [`iobroker upload adapterName`](https://github.com/ioBroker/ioBroker/wiki/Console-commands#iobroker-upload-adaptername). However, this is **not** the recommended way.
+
+#### Publishing
+
+If everything is OK and you have got positive feedback from users you can publish adapter on npm. It would be good if before publishing you will create realease on github.
 
 Publishing can be done with following command:
 
