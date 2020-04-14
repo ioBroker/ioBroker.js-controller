@@ -1,6 +1,5 @@
 ---
-translatedFrom: en
-translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
+
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/objectsschema.md
 title: Kernkonzept
 hash: mG9F6aWkgsId38qcRUEcjkU7m6+afwc4m6L2RBBrG9U=
@@ -8,11 +7,11 @@ hash: mG9F6aWkgsId38qcRUEcjkU7m6+afwc4m6L2RBBrG9U=
 # Kernkonzept
 In ioBroker gibt es zwei grundlegend unterschiedliche Datentypen. Sogenannte **Zustände** (`states`) und **Objekte**
 
-Objekte stellen selten wechselnde und größere Daten dar, z. B. Metadaten Ihrer Systemgeräte, Konfigurationen und zusätzliche Dateien. Jedes Objekt muss ein Attribut "Typ" haben. Im Folgenden finden Sie weitere Informationen dazu, welche Objekttypen verfügbar sind und welche obligatorischen Attribute ein Objekt eines bestimmten Typs benötigt. Funktionen wie setObject, getObject, ... werden Ihnen vom Adaptermodul zur Verfügung gestellt.
+Objekte stellen selten wechselnde und größere Daten dar, z. B. Metadaten von Systemgeräten, Konfigurationen und zusätzliche Dateien. Jedes Objekt muss ein Attribut "Typ" haben. Im Folgenden gibt es weitere Informationen dazu, welche Objekttypen verfügbar sind und welche obligatorischen Attribute ein Objekt eines bestimmten Typs benötigt. Funktionen wie setObject, getObject, ... werden vom Adaptermodul zur Verfügung gestellt.
 
-Zustände repräsentieren häufig sich ändernde Daten in Ihrem System, wie z. Wenn eine Lampe ein- oder ausgeschaltet ist, wenn ein Bewegungsmelder eine Bewegung erkannt hat, die Temperatur Ihres Wohnzimmers oder wenn die Taste einer Fernbedienung gedrückt wird. Im Gegensatz zu Objekten können Zustände verwendet werden, um Aktionen auszulösen, und Zustände können Verlaufsdaten erstellen. Um mit Zuständen zu arbeiten, gibt es im Adaptermodul verschiedene Funktionen wie setState, getState und so weiter.
+Zustände repräsentieren häufig sich ändernde Daten im System, wie z. Wenn eine Lampe ein- oder ausgeschaltet ist, wenn ein Bewegungsmelder eine Bewegung erkannt hat, die Temperatur des Wohnzimmers oder wenn die Taste einer Fernbedienung gedrückt wird. Im Gegensatz zu Objekten können Zustände verwendet werden, um Aktionen auszulösen, und Zustände können Verlaufsdaten erstellen. Um mit Zuständen zu arbeiten, gibt es im Adaptermodul verschiedene Funktionen wie setState, getState und so weiter.
 
-Für jeden Staat muss auch ein entsprechendes Objekt mit `type=state` vorhanden sein.
+Für jeden Zustand muss auch ein entsprechendes Objekt mit `type=state` vorhanden sein.
 
 In den folgenden Kapiteln wird das Datenbankschema beschrieben.
 
@@ -21,12 +20,12 @@ ID ist eine Zeichenfolge mit einer maximalen Länge von 240 Byte, hierarchisch s
 
 Folgende Zeichen dürfen nicht in IDs verwendet werden: `[]*,;'"&#96;<>\\?`.
 
-Es wird nicht empfohlen, auch `^$()/` zu verwenden.
+Es wird auch nicht empfohlen, `^$()/` zu verwenden.
 
-Die ID hat verschiedene Ebenen. Jede Ebene wird durch einen Punkt bestimmt. Beispiel: `system.adapter.admin.0`
+Die ID hat verschiedene Ebenen. Jede Ebene wird durch einen Punkt getrennt. Beispiel: `system.adapter.admin.0`
 
-- `system` - ist ein Namespace für Systemobjekte
-- `adapter` - Namespace für Adapterkonfigurationen
+- `system` - ist ein Namensraume für Systemobjekte
+- `adapter` - Namensraum für Adapterkonfigurationen
 - `admin` - Adaptername
 - `0` - Adapterinstanz
 
@@ -38,7 +37,7 @@ Oder ein anderes Beispiel `hm-rpc.1.ABC110022.2.VALUE`:
 - `2` - Kanalname
 - `VALUE` - Statusname
 
-## Namespaces
+## Namensräume
 * `system.` - Systemobjekte und -zustände
 * `system.host.` - Controller-Prozesse
 * `system.config.` - Systemeinstellungen wie Standardsprache
@@ -48,14 +47,14 @@ Oder ein anderes Beispiel `hm-rpc.1.ABC110022.2.VALUE`:
 * `system.adapter. <Adaptername>` - Standardkonfiguration eines Adapters
 * `<Adaptername> .` - Objekte für einen bestimmten Adapter.
 * `<Adaptername> .meta.` - allgemeine Metadaten, die von allen Instanzen dieses Adapters verwendet werden
-* `<Adaptername>. <Instanznummer> .` - Ein Adapterinstanz-Namespace
+* `<Adaptername>. <Instanznummer> .` - Ein Adapterinstanz-Namensraum
 * `enum.` - Aufzählungen
 * `history.` - Verlaufsdaten
-* `scripts.` - Script Engine-Skripte
-* `scripts.js.` - Javascript Script Engine Scripts
-* `scripts.py.` - Python Script Engine Scripts (Zukunft)
+* `scripts.` - Script Engine
+* `scripts.js.` - Javascript Engine Skripte
+* `scripts.py.` - Python Script Engine Skripte (Zukunft)
 
-### Namespace system.config.
+### Namensraum system.config.
 ```
 {
     _id:   id,
@@ -75,7 +74,7 @@ Oder ein anderes Beispiel `hm-rpc.1.ABC110022.2.VALUE`:
 }
 ```
 
-### Namespace system.host. &lt; Hostname &gt;
+### Namensraum system.host. &lt; Hostname &gt;
 ```
 {
     _id:   id,
@@ -156,7 +155,7 @@ Attribute für das Objekt getState / stateChange / setState:
   0x84 - 10000100 - sensor reports error
 ```
 
-Jeder *Zustand* muss durch ein Objekt vom Typ Zustand dargestellt werden, das Metadaten für den Zustand enthält. Siehe unten.
+Jeder *Datenpunkt* muss durch ein Objekt vom Typ "state" dargestellt werden, das Metadaten für den Datenpunkt enthält. Siehe unten.
 
 ## Objekte
 ### Obligatorische Attribute
@@ -168,16 +167,16 @@ Folgende Attribute müssen in jedem Objekt vorhanden sein:
 * `native` - ein Objekt, das kongruente Eigenschaften des Zielsystems enthält
 
 ### Optionale Attribute
-* `common.name` - der Name des Objekts (optional, aber unbedingt empfohlen, um es zu füllen)
+* `common.name` - der Name des Objekts (optional, aber unbedingt empfohlen)
 
 ### Baumstruktur
-Die Baumstruktur wird automatisch nach Namen zusammengestellt. Z.B. ```system.adapter.0.admin``` ist übergeordnet für `system.adapter.0.admin.uptime`. Verwenden Sie diese Namenskonvention mit Punkt "." Als Teiler der Ebenen.
+Die Baumstruktur wird automatisch nach Namen zusammengestellt. Z.B. ```system.adapter.0.admin``` ist übergeordnet für `system.adapter.0.admin.uptime`. Diese Namenskonvention mit Punkt "." als Teiler der Ebenen ist zu verwenden.
 
 ### Objekttypen
-* `state` - Eltern sollten vom Typ Kanal, Gerät, Instanz oder Host sein
-* `channel` - Objekt zum Gruppieren eines oder mehrerer Zustände. Eltern sollten Gerät sein.
-* `device` - Objekt zum Gruppieren eines oder mehrerer Kanäle oder Status. Sollte außer dem Adapterinstanz-Namespace kein übergeordnetes Element haben.
-* `enum` - Objekte, die ein Array in common.members enthalten, das auf Status, Kanäle, Geräte oder Dateien verweist. Aufzählungen können eine übergeordnete Aufzählung haben (Baumstruktur möglich)
+* `state` - Datenpunkt. Eltern sollten vom Typ Kanal, Gerät, Instanz oder Host sein
+* `channel` - Objekt zum Gruppieren eines oder mehrerer Datenpunkte. Eltern sollten Gerät sein.
+* `device` - Objekt zum Gruppieren eines oder mehrerer Kanäle oder Datenpunkte. Sollte außer dem Adapterinstanz-Namespace kein übergeordnetes Element haben.
+* `enum` - Objekte, die ein Array in common.members enthalten, das auf Datenpunkte, Kanäle, Geräte oder Dateien verweist. Aufzählungen können eine übergeordnete Aufzählung haben (Baumstruktur möglich)
 * `host` - ein Host, der einen Controller-Prozess ausführt
 * `adapter` - die Standardkonfiguration eines Adapters. Das Vorhandensein zeigt auch an, dass der Adapter erfolgreich installiert wurde. (Vorschlag: sollte ein Attribut haben, das ein Array der Hosts enthält, auf denen es installiert ist)
 * `instance` - Instanz des Adapters. Das übergeordnete Element muss vom Typ Adapter sein
@@ -190,7 +189,7 @@ Die Baumstruktur wird automatisch nach Namen zusammengestellt. Z.B. ```system.ad
 * `Ordner` - eine Reihe von Geräten oder andere Dinge.
 
 #### Attribute für bestimmte Objekttypen
-##### Zustand
+##### Datenpunkt
 Attribute:
 
 * `common.type` (optional - (Standard ist gemischt == beliebiger Typ) (mögliche Werte: Zahl, Zeichenfolge, Boolescher Wert, Array, Objekt, gemischt, Datei). Ausnahmsweise können Objekte mit dem Typ` meta` `common haben .type = meta.user` oder `meta.folder`
@@ -201,14 +200,14 @@ Attribute:
 * `common.def` (optional - der Standardwert)
 * `common.defAck` (optional - wenn common.def gesetzt ist, wird dieser Wert als ack-Flag verwendet, js-controller 2.0.0+)
 * `common.desc` (optional, Zeichenfolge oder Objekt) - Beschreibung, Objekt für mehrsprachige Beschreibung
-* `common.read` (boolesch, obligatorisch) - true, wenn der Status lesbar ist
-* `common.write` (boolesch, obligatorisch) - true, wenn state beschreibbar ist
-* `common.role` (Zeichenfolge, obligatorisch) - Rolle des Status (wird in Benutzeroberflächen verwendet, um anzugeben, welches Widget ausgewählt werden soll, siehe unten)
-* `common.states` (optional) Attribut vom Typ Nummer mit Objekt möglicher Zustände` {'Wert': 'Wertname', 'Wert2': 'Wertname2', 0: 'AUS', 1: 'EIN'} `
+* `common.read` (bool, obligatorisch) - true, wenn der Datenpunkt lesbar ist
+* `common.write` (bool, obligatorisch) - true, wenn der Datenpunkt beschreibbar ist
+* `common.role` (Zeichenfolge, obligatorisch) - Rolle des Datenpunktes (wird in Benutzeroberflächen verwendet, um anzugeben, welches Widget ausgewählt werden soll, siehe unten)
+* `common.states` (optional) Attribut mit Objekt möglicher Zustände` {'Wert': 'Wertname', 'Wert2': 'Wertname2', 0: 'AUS', 1: 'EIN'} `
 * `common.workingID` (Zeichenfolge, optional) - wenn dieser Status den Hilfsstatus WORKING hat. Hier muss der vollständige Name oder nur der letzte Teil geschrieben werden, wenn die ersten Teile mit den tatsächlichen identisch sind. Wird für HM.LEVEL verwendet und hat normalerweise den Wert "WORKING".
 * `common.custom` (optional) - die Struktur mit benutzerdefinierten Einstellungen für bestimmte Adapter. Wie `{" influxdb.0 ": {" enabled ": true," alias ":" name "}}`. Das Attribut "enabled" ist erforderlich. Wenn dies nicht der Fall ist, wird das gesamte Attribut gelöscht.
 
-##### Zustand `common.history`
+##### Attribut `common.history`
 Die Verlaufsfunktion benötigt den Verlaufsadapter oder einen anderen Speicheradapter vom Typ Verlauf
 
 Die FIFO-Länge wird auf min reduziert, wenn max getroffen wird. auf null setzen oder undefiniert lassen, um die Standardeinstellungen zu verwenden
@@ -219,20 +218,20 @@ Eine Liste der Transporte finden Sie im Verlaufsadapter README
 * `common.history. <HISTORY-INSTANCE> .changesOnly` (optional, boolesch, wenn true, werden nur Wertänderungen protokolliert)
 * `common.history. <HISTORY-INSTANCE> .enabled` (boolean)
 
-##### Zustand `common.role`
+##### Attribut `common.role`
 * `common.role` (gibt an, wie dieser Status in Benutzeroberflächen dargestellt werden soll)
 
 [mögliche Werte](stateroles.md)
 
 #### Kanal
 ##### Kanal `common.role` (optional)
-Vorschlag: Die Kanalobjekte common.role sollten / könnten eine Reihe von obligatorischen und / oder optionalen State-Child-Objekten implizieren
+Vorschlag: Die Kanalobjekte common.role sollten / könnten eine Reihe von obligatorischen und / oder optionalen Datenpunkt-KInd-Objekte implizieren
 
 mögliche Werte:
 
 * `info` - Währungs- oder Aktienkurs, Kraftstoffpreise, Postfacheinfügung und ähnliches
-* `Kalender` -
-* `Vorhersage` - Wettervorhersage
+* `calendar` -
+* `forecast` - Wettervorhersage
 
 * `media - gemeinsamer Medienkanal
 * `media.music` - Media Player wie SONOS, YAMAHA und so weiter
@@ -245,7 +244,7 @@ mögliche Werte:
 
 * `blind` - Jalousiesteuerung
 
-* `Licht`
+* `light` - Licht
 * `light.dimmer` - Lichtdimmer
 * `light.switch` - Lichtschalter.
 * `light.color` - Lichtsteuerung mit Fähigkeit zur Farbänderung
@@ -257,7 +256,7 @@ mögliche Werte:
 
 * `switch` - Ein generischer Schalter
 
-* "Sensor" - z. Fenster- oder Türkontakt, Wasserlecksensor, Feuersensor
+* "sensor" - z. Fenster- oder Türkontakt, Wasserlecksensor, Feuersensor
 * `sensor.door` - öffnen, schließen
 * `sensor.door.lock` - öffnen, schließen, verriegeln
 * `sensor.window` - öffnen, schließen
@@ -268,7 +267,7 @@ mögliche Werte:
 
 *
 
-* `Alarm` - ein Alarm
+* `alarm` - ein Alarm
 
 * `phone` - fritz box, speedport und so weiter
 
@@ -287,7 +286,7 @@ mögliche Werte:
 
 "M" - Obligatorisch
 
-##### Optionale Zustände für jeden Kanal / jedes Gerät
+##### Optionale Attribute für jeden Kanal / jedes Gerät
 ```javascript
 // state-working (optional)
 {
@@ -473,7 +472,7 @@ mögliche Werte:
 
 #### Gerät
 #### Enum
-* `common.members` - (optionales) Array von Enum-Member-IDs
+* `common.members` - (optionales) Array von Enum-Mitglieder-IDs
 
 #### Meta
 Ich würde
