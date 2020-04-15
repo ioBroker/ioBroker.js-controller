@@ -1,6 +1,11 @@
 # Changelog
 
-## 3.0.8 (2020-04-xx) Release Elena
+## 3.0.9 (2020-04-15) Release Elena
+* (Apollon77) fix reported crash on obsolete object deletion (Sentry IOBROKER-JS-CONTROLLER-8)
+* (Apollon77) fix reported crash when a new process can not be started because of ENOMEM (Sentry IOBROKER-JS-CONTROLLER-7)
+* (foxriver76) make sure errors are return the same in two places 
+
+## 3.0.8 (2020-04-14) Release Elena
 * (foxriver76/bluefox/Apollon77) small code optimizations
 * (Apollon77) dependency updates
 
@@ -15,7 +20,7 @@
 * (AlCalzone) optimize performance when objects are duplicated and checked internally
 * (AlCalzone) Add command `iobroker debug adapter` to start Node.js debug sessions for an adapter
 * (foxriver76) validate id also has to allow objects with correct properties (device, channel ...)
-* (Apollon77) prevent crash if udp membership can not be added (Sentry fix)
+* (Apollon77) prevent crash if udp membership can not be added (Sentry IOBROKER-JS-CONTROLLER-5)
 * (Apollon77) change object type for compact groups to "folder"
 * (Apollon77) add adapter flag ALIAS_SEPARATE_READ_WRITE_ID
  
