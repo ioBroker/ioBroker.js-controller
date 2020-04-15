@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.11 (2020-04-15) Release Elena
+* (Apollon77) fix crash when system views are not correctly initalized (Sentry IOBROKER-JS-CONTROLLER-9) 
+
 ## 3.0.10 (2020-04-15) Release Elena
 * (Apollon77) consider the Adapter Stop Timeout also for adapter restarts to give adapters enough time to stop before restarting
 

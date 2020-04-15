@@ -907,7 +907,7 @@ function checkHost(callback) {
 
             // find out all instances and rewrite it to actual hostname
             objects.getObjectView('system', 'instance', {}, (err, doc) => {
-                if (err && err.status_code === 404) {
+                if (err && err.message.startsWith('Cannot find ')) {
                     typeof callback === 'function' && callback();
                 } else if (doc.rows.length === 0) {
                     logger.info(hostLogPrefix + ' no instances found');
@@ -2331,13 +2331,13 @@ function processMessage(msg) {
 
 function getInstances() {
     objects.getObjectView('system', 'instance', {}, (err, doc) => {
-        if (err && err.status_code === 404) {
+        if (err && err.message.startsWith('Cannot find ')) {
             logger.error(hostLogPrefix + ' _design/system missing - call node ' + tools.appName + '.js setup');
             //if (objects.destroy) objects.destroy();
             //if (states  && states.destroy)  states.destroy();
             //process.exit(1);
             return;
-        } else if (doc.rows.length === 0) {
+        } else if (!doc.rows || doc.rows.length === 0) {
             logger.info(hostLogPrefix + ' no instances found');
         } else {
             const _ipArr = getIPs();
