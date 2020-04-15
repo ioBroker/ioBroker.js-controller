@@ -40,7 +40,7 @@
     "readline-sync": "^1.4.10",
     "request": "^2.88.2",
     "respjs": "^4.2.0",
-    "semver": "^7.3.0",
+    "semver": "^7.3.2",
     "tar": "^6.0.1",
     "winston": "^3.2.1",
     "winston-daily-rotate-file": "^4.4.2",
@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "@types/event-stream": "^3.3.34",
-    "@types/iobroker": "^2.2.2",
+    "@types/iobroker": "^3.0.2",
     "@types/mocha": "^7.0.2",
     "@types/node": "^13.11.1",
     "@types/yargs": "^15.0.4",
