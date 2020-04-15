@@ -909,7 +909,7 @@ function checkHost(callback) {
             objects.getObjectView('system', 'instance', {}, (err, doc) => {
                 if (err && err.message.startsWith('Cannot find ')) {
                     typeof callback === 'function' && callback();
-                } else if (doc.rows.length === 0) {
+                } else if (!doc.rows || doc.rows.length === 0) {
                     logger.info(hostLogPrefix + ' no instances found');
                     // no instances found
                     typeof callback === 'function' && callback();
