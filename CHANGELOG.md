@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.10 (2020-04-15) Release Elena
+* (Apollon77) consider the Adapter Stop Timeout also for adapter restarts to give adapters enough time to stop before restarting
+
 ## 3.0.9 (2020-04-15) Release Elena
 * (Apollon77) fix reported crash on obsolete object deletion (Sentry IOBROKER-JS-CONTROLLER-8)
 * (Apollon77) fix reported crash when a new process can not be started because of ENOMEM (Sentry IOBROKER-JS-CONTROLLER-7)
