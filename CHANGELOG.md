@@ -1,6 +1,10 @@
 # Changelog
 
-## 3.0.12 (2020-04-15) Release Elena
+## 3.0.13 (2020-04-18) Release Elena
+* (Apollon77) fix in objects lib when db connection closes while loading view results
+* (bluefox) fixes and optimizations
+
+## 3.0.12 (2020-04-17) Release Elena
 * (Apollon77) prevent logged error from file DB where it ws tried to write meta file for already deleted folders
 * (Apollon77) display errors on npm uninstall
 * (foxriver76) delete adapter and adapter.admin folders even if no corresponding meta objects exist
