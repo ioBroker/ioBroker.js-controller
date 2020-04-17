@@ -512,7 +512,7 @@ https://www.digitalocean.com/community/tutorials/how-to-install-and-secure-redis
 ###### Allow Network access
 Ideally the Redis server should be installed on the same host as the js-controller process because as soon as Redis is configured to be used the ioBroker installation will not work without it.
 
-If you plan to install Redis on a different host then the js-controller or use a mulithost environment (see below), you must allow connections to redis from any address (the default only accepts connections from 127.0.0.1).
+If you plan to install Redis on a different host then the js-controller or use a mulit-host environment (see below), you must allow connections to redis from any address (the default only accepts connections from 127.0.0.1).
 To do that edit the file `/etc/redis/redis.conf` (```sudo nano /etc/redis/redis.conf```) and replace ```bind 127.0.0.1``` with ```bind 0.0.0.0``` .
 Don't forget to restart redis after that. (```sudo systemctl restart redis-server```)
 
@@ -530,12 +530,12 @@ After reconfiguring Redis you also need to update all ioBroker states/objects DB
 
 ###### Redis persistence
 
-By default Redis is a pure in-memory Database which means that it has no content when it starts. In the default configuration, the content of the redis DB is stored on disk after a certain amount of changed keys.
+By default, Redis is a pure in-memory Database which means that it has no content when it starts. In the default configuration, the content of the redis DB is stored on disk after a certain amount of changed keys.
 
 Depending on how many changes your system is doing it will update the data on disk roughly every 5 minutes by default.
 Please consider this if your system runs from an SD card (like Raspberry Pi).
 
-If you are not working on a SD card and want to have real up-to-date data on disk you can use the second persistance method called AOF. Else the latest dumped data are used, which could be some minutes old.
+If you are not working on a SD card and want to have real up-to-date data on disk you can use the second persistence method called AOF. Else the latest dumped data are used, which could be some minutes old.
 
 Please see https://redis.io/topics/persistence for details, differences and configuration information for both persistence options.
 
@@ -569,7 +569,7 @@ creating conf/iobroker.json
 ```
 
 Now ioBroker can be started.
-If it does not start, please check the log at `log/iobroker.*.log` in the ioBroker directory. Please also check that redis is running (use e.g. ```redis-cli```) and that the firewall is set up correctly.
+If it does not start, please check the log at `log/iobroker.*.log` in the ioBroker directory. Please also check the redis is running (use e.g. ```redis-cli```) and that the firewall set up correctly.
 
 To switch back to file based states write the same commands again, just instead of **redis** in fourth line write nothing and press ENTER.
 
@@ -618,16 +618,16 @@ To preserve backward compatibility you can check for the feature flag ADAPTER_AU
 
 Normally all objects can be read by any adapter using getObject or getForeignObject. To make sure sensible adapter configuration values are protected from that free reading they can be secured.
 
-If an array with fieldnames from native is defined in io-package.json as common.protectedNative the ioBroker system will sort these fields out when the object is read. Only the adapter itself is allowed to read the full object.
+If an array with field names from native is defined in io-package.json as common.protectedNative the ioBroker system will sort these fields out when the object is read. Only the adapter itself is allowed to read the full object.
 
 It is best practice to add the field names of encrypted fields to the protectedNative array too to make sure the fields stay protected (even if encrypted). Only let other adapters read your encrypted values if there is a need to (e.g. inter-adapter-operability)
 
 #### Define Adapter dependencies to other adapters
 **Feature status:** Stable
 
-Dependencies are defined in array and can contain an adaptername of an object.
+Dependencies are defined in array and can contain an adapter name of an object.
 
-When using the object style you can define a semver versionrange for this adapter:
+When using the object style you can define a semver version range for this adapter:
 ```
 "dependencies": [
       {
@@ -636,7 +636,7 @@ When using the object style you can define a semver versionrange for this adapte
     ],
 ```
 
-If the version do not matter and just the adaptr itself needs to be present you can also use:
+If the version do not matter and just the adapter itself needs to be present you can also use:
 ```
 "dependencies": [
       "web"
@@ -677,7 +677,7 @@ The following features can be checked using this method:
 * **ALIAS**: checks if the Alias feature is existing (since js.controller 2.0)
 * **ALIAS_SEPARATE_READ_WRITE_ID**: allows to specify separate ids for read and write (since js.controller 3.0)
 * **ADAPTER_GETPORT_BIND**: the adapter.getPort method allows an optional second parameter to bind the port only on a special network interface  (since js.controller 2.0) 
-* **ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE**: adapter.setObject(*) methods now sets the default value (def) after the object is created  (since js.controller 2.0)
+* **ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE**: adapter.setObject(*) methods now sets the default value (def) after the object was created  (since js.controller 2.0)
 * **ADAPTER_DEL_OBJECT_RECURSIVE**: adapter.delObjects supports options.recursive flag to delete whole object structures (since js.controller 2.2)
 * **ADAPTER_AUTO_DECRYPT_NATIVE**: The Controller supports auto decryption of encrypted native properties
 * **PLUGINS**: Plugins are supported by this js-controller and adapters, see section below for more details
@@ -706,20 +706,20 @@ Plugins are custom modules that can be configured in io-package.json in a new "p
 
 More details about plugins and their development can be found at the [Plugin-Base repository](https://github.com/ioBroker/plugin-base/blob/master/README.md). A simple implementation can be found at the [Sentry-Plugin](https://github.com/ioBroker/plugin-sentry/blob/master/README.md)
 
-New Plugins should always be developed, reviewed and pulished by ioBroker Core developers! Contact @Apollon77 or @GermanBluefox for this.
+New Plugins should always be developed, reviewed and published by ioBroker Core developers! Contact @Apollon77 or @GermanBluefox for this.
 
 Since js-controller 3.0 the sentry plugin is integrated and activated by default in js-controller. See information above.
 
 ## Release cycle and Development process overview
 
-The goal is to release an update for the js-controller roughly all 6 months (April/September). The main reasons for this are shorter iterations and less changes that can be problematic for the users (and getting fast feedback) and also trying to stay up-to-date with the dependencies.
+The goal is to release an update for the js-controller roughly all 6 months (April/September). The main reasons for this are shorter iterations and fewer changes that can be problematic for the users (and getting fast feedback) and also trying to stay up-to-date with the dependencies.
 
-For the dependencies we will use depend-a-bot. In general the goal is still to support a certain range of node.js LTS versions. Currently js-controller 3.0 will start with nodes 10.x up to 12/14.x. If dependency updates would break that and would require a major-release, this will be discussed and decided on core developer level BEFORE merging such a dependency change!
+For the dependencies we will use depend-a-bot. In general the goal is still to support a certain range of node.js LTS versions. Currently, js-controller 3.0 will start with nodes 10.x up to 12/14.x. If dependency updates would break that and would require a major-release, this will be discussed and decided on core developer level BEFORE merging such a dependency change!
 
 For the planned changes we use a backlog approach. This means that out of the existing issues for the project the core developers select issues to put into a prioritized backlog in the project view. Other users also can propose tickets. All merged PRs (also when unplanned/not prioritized before) are included as finished tickets in the project (so project is assigned to them manually on merge).
 When a ticket is contained in the backlog this does not mean that it will be done in the next version! But it helps if developers have some time to see what’s considered important. The current project will always get the name „Next Release“. All older projects will get the respective release version number to know the history.
 
-Roughly at the end of each first/third quarter (so 31.3. and 30.9.) we will finalize the next release version, update changelogs. A version branch for this version is created that will allow hotfixes. 1-2 weeks before that cut-off date no new feature PRs should be added. Changes are flagged as [Bugfix], [Feature] or [Breaking Change] in changelog (ideally also in PRs) and version increase is depending on the type of the changes.
+Roughly at the end of each first/third quarter (so 31.3. and 30.9.) we will finalize the next release version, update change logs. A version branch for this version is created that will allow hotfixes. 1-2 weeks before that cut-off date no new feature PRs should be added. Changes are flagged as [Bugfix], [Feature] or [Breaking Change] in changelog (ideally also in PRs) and the version increase is depending on the type of the changes.
 
 After this we will have a testing phase for this version. Once tests ended successfully it will be published to „latest“ repository to get feedback from community. After this it goes too stable. Depending on the problems, bugs and feedback the goal is to release the stable version roughly 1 - 1.5 month after cut-off date from the version.
 
@@ -727,7 +727,7 @@ All changes should be added via PRs that are reviewed and merged by the core dev
 
 It is also allowed to introduce unfinished new features, as soon as they do not break the system. We will also start to introduce „testing quality features“ that only may be configured manually in JSON files or via CLI. They are then flagged as „Technology Preview“. This means we will not delay a new js-controller version because a new feature is not possible to configure via admin. The feature list and details in js-controller README needs to be updated as soon as the feature is ready in general (including "Technology preview"). Unfinished features are not included in the README even if existing partly in the code.
 
-This new process and rules are introduced with js-controller 2.0 and updated to a 6 month cycle with js-controller 3.0.
+This new process and rules are introduced with js-controller 2.0 and updated to a 6 months cycle with js-controller 3.0.
 
 ## License
 
