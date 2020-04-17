@@ -24,6 +24,7 @@
     "decache": "^4.5.1",
     "deep-clone": "^3.0.3",
     "event-stream": "^4.0.1",
+    "iobroker.info": "^1.6.0",
     "iobroker.objects-redis": "^3.3.1",
     "ioredis": "^4.16.2",
     "jsonwebtoken": "^8.5.1",
