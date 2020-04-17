@@ -1,5 +1,11 @@
 # Changelog
 
+## 3.0.12 (2020-04-15) Release Elena
+* (Apollon77) prevent logged error from file DB where it ws tried to write meta file for already deleted folders
+* (Apollon77) display errors on npm uninstall
+* (foxriver76) delete adapter and adapter.admin folders even if no corresponding meta objects exist
+* (foxriver76) streamline dependencies/globalDependency checks in all places and allow different versions 
+
 ## 3.0.11 (2020-04-15) Release Elena
 * (Apollon77) fix crash when system views are not correctly initalized (Sentry IOBROKER-JS-CONTROLLER-9) 
 
