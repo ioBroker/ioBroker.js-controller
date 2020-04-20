@@ -1,6 +1,6 @@
 {
   "name": "iobroker.js-controller",
-  "version": "3.0.13",
+  "version": "3.0.14",
   "engines": {
     "node": ">=10.0.0"
   },
@@ -27,7 +27,7 @@
     "iobroker.objects-redis": "^3.3.2",
     "ioredis": "^4.16.2",
     "jsonwebtoken": "^8.5.1",
-    "jszip": "^3.3.0",
+    "jszip": "^3.4.0",
     "loadavg-windows": "^1.1.1",
     "mime": "^2.4.4",
     "mkdirp": "^1.0.4",
@@ -50,7 +50,7 @@
     "@types/event-stream": "^3.3.34",
     "@types/iobroker": "^3.0.2",
     "@types/mocha": "^7.0.2",
-    "@types/node": "^13.11.1",
+    "@types/node": "^13.13.1",
     "@types/yargs": "^15.0.4",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",

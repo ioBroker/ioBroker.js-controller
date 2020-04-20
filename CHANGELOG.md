@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.14 (2020-04-18) Release Elena
+* First version for latest repository
+* (Apollon77) catch errors when letsencrypt server can not bind to port 80 (Sentry IOBROKER-WEB-1)
+
 ## 3.0.13 (2020-04-18) Release Elena
 * (Apollon77) fix in objects lib when db connection closes while loading view results
 * (bluefox) fixes and optimizations
