@@ -3256,8 +3256,7 @@ function startInstance(id, wakeUp) {
                                 windowsHide: true
                             });
                         } catch (err) {
-                            logger.error(hostLogPrefix + ' instance ' + instance._id + ' could not be started: ' + err);
-                            delete procs[id].process;
+                            logger.error(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
                         }
                     }
 
@@ -3543,8 +3542,7 @@ function startInstance(id, wakeUp) {
                 try {
                     procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
                 } catch (err) {
-                    logger.info(hostLogPrefix + ' instance ' + instance._id + ' could not be started: ' + err);
-                    delete procs[id].process;
+                    logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
                 }
                 if (procs[id].process) {
                     storePids(); // Store all pids to make possible kill them all
