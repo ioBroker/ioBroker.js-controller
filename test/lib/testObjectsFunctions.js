@@ -123,7 +123,7 @@ function register(it, expect, context) {
                 attr4: '4'   // add
             }
         }, function (err) {
-            expect(err).to.be.null;
+            expect(err).to.be.not.ok;
 
             context.objects.getObject(context.adapterShortName + '.0.' + gid, function (err, obj) {
                 expect(obj).to.be.ok;
@@ -187,7 +187,7 @@ function register(it, expect, context) {
                 devices: ['D2']
             }
         }, function (err) {
-            expect(err).to.be.null;
+            expect(err).to.be.not.ok;
 
             context.objects.getObject(context.adapterShortName + 'f.0.' + gid, function (err, obj) {
                 expect(obj).to.be.ok;
@@ -1073,6 +1073,47 @@ function register(it, expect, context) {
                 });
             });
         });
+    });
+
+    // should use def as default state value
+    it(testName + 'Check setObject state with def', async () => {
+        await context.adapter.setObjectNotExistsAsync('testDefaultVal', {
+            type: 'state',
+            common: {
+                type: 'string',
+                def: 'Run Forrest, Run!'
+            }
+        });
+
+        const state = await context.adapter.getStateAsync('testDefaultVal');
+        expect(state.val).to.equal('Run Forrest, Run!');
+        return Promise.resolve();
+    });
+
+    // should use def as default state value on extendObject when obj non existing
+    it(testName + 'Check extendObject state with def', async () => {
+        await context.adapter.extendObjectAsync('testDefaultValExtend', {
+            type: 'state',
+            common: {
+                type: 'string',
+                def: 'Run Forrest, Run!'
+            }
+        });
+
+        let state = await context.adapter.getStateAsync('testDefaultValExtend');
+        expect(state.val).to.equal('Run Forrest, Run!');
+
+        // when state already exists def should not override
+        await context.adapter.extendObjectAsync('testDefaultValExtend', {
+            common: {
+                def: 'Please, do not set me up'
+            }
+        });
+
+        state = await context.adapter.getStateAsync('testDefaultValExtend');
+        expect(state.val).to.equal('Run Forrest, Run!');
+
+        return Promise.resolve();
     });
 
     // files
