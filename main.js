@@ -3130,12 +3130,15 @@ function startInstance(id, wakeUp) {
 
                             if ((procs[id] && procs[id].stopping) || isStopping || wakeUp) {
                                 logger.info(`${hostLogPrefix} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`);
-                                if (procs[id].stopping !== undefined) {
-                                    delete procs[id].stopping;
-                                }
 
-                                if (procs[id].process) {
-                                    delete procs[id].process;
+                                if (procs[id]) {
+                                    if (procs[id].stopping !== undefined) {
+                                        delete procs[id].stopping;
+                                    }
+
+                                    if (procs[id].process) {
+                                        delete procs[id].process;
+                                    }
                                 }
 
                                 if (isStopping) {
@@ -3419,7 +3422,7 @@ function startInstance(id, wakeUp) {
 
                                         cleanAutoSubscribes(id, () => {
                                             if ((procs[id] && procs[id].stopping) || isStopping) {
-                                                if (procs[id].stopping !== undefined) {
+                                                if (procs[id] && procs[id].stopping !== undefined) {
                                                     delete procs[id].stopping;
                                                 }
                                             }
