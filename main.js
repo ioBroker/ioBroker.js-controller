@@ -1937,9 +1937,9 @@ function processMessage(msg) {
                             if (doc.rows[i].id === hostObjectPrefix) {
                                 let _ioPack;
                                 try {
-                                    _ioPack = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+                                    _ioPack = JSON.parse(fs.readFileSync(`${__dirname}/io-package.json`));
                                 } catch (e) {
-                                    logger.error(hostLogPrefix + ' cannot read and parse "' + __dirname + '/io-package.json"');
+                                    logger.error(`${hostLogPrefix} cannot read and parse "${__dirname}/io-package.json"`);
                                 }
                                 if (_ioPack) {
                                     _ioPack.common.host = hostname;
@@ -1962,7 +1962,7 @@ function processMessage(msg) {
                                             timeout = null;
                                             sendTo(msg.from, msg.command, result, msg.callback);
                                         } else {
-                                            logger.warn(hostLogPrefix + ' too delayed answer for ' + (ioPack ? ioPack.host : id));
+                                            logger.warn(`${hostLogPrefix} too delayed answer for ${ioPack ? ioPack.host : id}`);
                                         }
                                     }
                                 });
@@ -1974,14 +1974,14 @@ function processMessage(msg) {
                     } else {
                         // Start timeout and send answer in 5 seconds if some hosts are offline
                         timeout = setTimeout(() => {
-                            logger.warn(hostLogPrefix + ' some hosts are offline');
+                            logger.warn(`${hostLogPrefix} some hosts are offline`);
                             timeout = null;
                             sendTo(msg.from, msg.command, result, msg.callback);
                         }, 5000);
                     }
                 });
             } else {
-                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
+                logger.error(`${hostLogPrefix} Invalid request ${msg.command}. "callback" or "from" is null`);
             }
             break;
 
