@@ -1,13 +1,14 @@
 # Changelog
 
 ## 3.0.15 (2020-04-21) Release Elena
-* (Apollon77) Adjust ID checking to allow numbers for non foreihgn id's for now but log warn
-* (Apollon77) Adjust extendObject logic and only set state when state was not defined before
-* (Apollon77) check that path is found before using it on rebuild CLI command
+* (Apollon77) Adjust ID checking to allow numbers for non foreign id's for now but log warn
+* (foxriver76/Apollon77) Adjust extendObject logic and only set state when state was not defined before
+* (Apollon77) check that path is found before using it on rebuild CLI command (Sentry issue)
 * (foxriver76) fix error on caught process exceptions
-* (foxriver76)  make sure that procs[id] is not undefined in some cases 
-* (foxriver76/Apollon77) handle weird case where io-package.json from controller is not on normal place when getInstalledInfo is called
-* (foxriver76/Apollon77) extendObject should set default value 
+* (foxriver76)  make sure that procs[id] is not undefined in some cases (Sentry IOBROKER-JS-CONTROLLER-E/G)
+* (foxriver76/Apollon77) handle weird case where io-package.json from controller is not on normal place when getInstalledInfo is called (Sentry IOBROKER-JS-CONTROLLER-B/C/D/F/H)
+* (foxriver76) fix bug for some cases where common.def is used on creation of foreign objects
+* (Apollon77) make sure error cases are handled on zip file creation for objects (Sentry IOBROKER-JS-CONTROLLER-J)
  
 ## 3.0.14 (2020-04-20) Release Elena
 * First version for latest repository
