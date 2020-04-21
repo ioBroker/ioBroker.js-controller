@@ -1,6 +1,15 @@
 # Changelog
 
-## 3.0.14 (2020-04-18) Release Elena
+## 3.0.15 (2020-04-21) Release Elena
+* (Apollon77) Adjust ID checking to allow numbers for non foreihgn id's for now but log warn
+* (Apollon77) Adjust extendObject logic and only set state when state was not defined before
+* (Apollon77) check that path is found before using it on rebuild CLI command
+* (foxriver76) fix error on caught process exceptions
+* (foxriver76)  make sure that procs[id] is not undefined in some cases 
+* (foxriver76/Apollon77) handle weird case where io-package.json from controller is not on normal place when getInstalledInfo is called
+* (foxriver76/Apollon77) extendObject should set default value 
+ 
+## 3.0.14 (2020-04-20) Release Elena
 * First version for latest repository
 * (Apollon77) catch errors when letsencrypt server can not bind to port 80 (Sentry IOBROKER-WEB-1)
 
