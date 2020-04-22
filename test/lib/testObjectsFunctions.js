@@ -122,8 +122,9 @@ function register(it, expect, context) {
                 attr2: null, // delete
                 attr4: '4'   // add
             }
-        }, function (err) {
+        }, function (err, obj) {
             expect(err).to.be.not.ok;
+            expect(obj).to.be.ok;
 
             context.objects.getObject(context.adapterShortName + '.0.' + gid, function (err, obj) {
                 expect(obj).to.be.ok;
@@ -186,8 +187,9 @@ function register(it, expect, context) {
                 repositories: ['R2'],
                 devices: ['D2']
             }
-        }, function (err) {
+        }, function (err, obj) {
             expect(err).to.be.not.ok;
+            expect(obj).to.be.ok;
 
             context.objects.getObject(context.adapterShortName + 'f.0.' + gid, function (err, obj) {
                 expect(obj).to.be.ok;
@@ -1092,7 +1094,7 @@ function register(it, expect, context) {
 
     // should use def as default state value on extendObject when obj non existing
     it(testName + 'Check extendObject state with def', async () => {
-        await context.adapter.extendObjectAsync('testDefaultValExtend', {
+        let obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
             type: 'state',
             common: {
                 type: 'string',
@@ -1100,15 +1102,19 @@ function register(it, expect, context) {
             }
         });
 
+        expect(obj).to.be.ok;
+
         let state = await context.adapter.getStateAsync('testDefaultValExtend');
         expect(state.val).to.equal('Run Forrest, Run!');
 
         // when state already exists def should not override
-        await context.adapter.extendObjectAsync('testDefaultValExtend', {
+        obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
             common: {
                 def: 'Please, do not set me up'
             }
         });
+
+        expect(obj).to.be.ok;
 
         state = await context.adapter.getStateAsync('testDefaultValExtend');
         expect(state.val).to.equal('Run Forrest, Run!');
