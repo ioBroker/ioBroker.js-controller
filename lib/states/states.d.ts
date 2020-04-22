@@ -57,7 +57,7 @@ declare global {
 			 * @param id ID of the state to be stored
 			 * @param callback Is called when the operation has finished (successfully or not)
 			 */
-			delState(id: string, callback: DeleteStateCallback): void;
+			delState(id: string, callback?: DeleteStateCallback): void;
 
 			/**
 			 * Retrieves all ids of states matching @link{pattern}

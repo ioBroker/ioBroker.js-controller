@@ -1138,6 +1138,7 @@ function setMeta() {
     const id = hostObjectPrefix;
 
     objects.getObject(id, (err, oldObj) => {
+        /** @type {ioBroker.Object} */
         let newObj;
         if (compactGroupController) {
             newObj = {
@@ -2314,6 +2315,7 @@ function processMessage(msg) {
             }
             break;
         }
+
         case 'getInterfaces':
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {result: os.networkInterfaces()}, msg.callback);
