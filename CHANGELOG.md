@@ -2,7 +2,7 @@
 
 ## 3.0.16 (2020-04-22) Release Elena
 * (Apollon77) make sure error cases are handled on zip file creation for objects (Sentry IOBROKER-JS-CONTROLLER-J)
-* (Apollon77) mke sure to check id when iterating over it (Sentry IOBROKER-WEB-3)
+* (Apollon77) make sure to check id when iterating over it (Sentry IOBROKER-WEB-3)
 * (foxriver76) fix path on getInstalledInfo (was broken in 3.0.15)
 
 ## 3.0.15 (2020-04-21) Release Elena
