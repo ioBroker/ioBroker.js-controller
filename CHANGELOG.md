@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.17 (2020-04-22) Release Elena WIP
+* (Apollon77) make sure system.config objects has correct type
+* (foxriver76) make sure that callback of extend*Object returns object as before (was broken in 3.0.15)
+
 ## 3.0.16 (2020-04-22) Release Elena
 * (Apollon77) make sure error cases are handled on zip file creation for objects (Sentry IOBROKER-JS-CONTROLLER-J)
 * (Apollon77) make sure to check id when iterating over it (Sentry IOBROKER-WEB-3)
