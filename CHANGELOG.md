@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.16 (2020-04-22) Release Elena
+* (Apollon77) make sure error cases are handled on zip file creation for objects (Sentry IOBROKER-JS-CONTROLLER-J)
+* (Apollon77) mke sure to check id when iterating over it (Sentry IOBROKER-WEB-3)
+* (foxriver76) fix path on getInstalledInfo (was broken in 3.0.15)
+
 ## 3.0.15 (2020-04-21) Release Elena
 * (Apollon77) Adjust ID checking to allow numbers for non foreign id's for now but log warn
 * (foxriver76/Apollon77) Adjust extendObject logic and only set state when state was not defined before
