@@ -75,7 +75,7 @@ class Loader extends React.Component {
             <div className={this.props.classes.footerLink} style={{cursor: 'inherit'}}> | </div>
             <div className={this.props.classes.footerLink} onClick={() => this.props.onNavigate(null, 'privacy')}>{I18n.t('Privacy policy')}</div>
 
-            <p className={this.props.classes.footerCopyright}>Copyright © 2014-2019 by the ioBroker Community and the ioBroker GmbH.</p>
+            <p className={this.props.classes.footerCopyright}>Copyright © 2014-2020 by the ioBroker Community and the ioBroker GmbH.</p>
             <img src={LogoIoBroker} className={this.props.classes.footerLogo} alt="logo"/>
         </div>);
     }
