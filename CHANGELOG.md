@@ -1,6 +1,9 @@
 # Changelog
 
-## 3.0.17 (2020-04-22) Release Elena WIP
+## 3.0.18 (2020-04-2x) Release Elena WIP!!
+* (Apollon77) correct error handling for letsencrypt challenge server
+
+## 3.0.17 (2020-04-22) Release Elena
 * (Apollon77) make sure system.config objects has correct type
 * (foxriver76) make sure that callback of extend*Object returns object as before (was broken in 3.0.15)
 
