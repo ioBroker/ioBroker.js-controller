@@ -1,7 +1,9 @@
 # Changelog
 
-## 3.0.18 (2020-04-2x) Release Elena WIP!!
+## 3.0.18 (2020-04-23) Release Elena
 * (Apollon77) correct error handling for letsencrypt challenge server
+* (foxriver76) fix default value of extend*Object
+* (AlCalzone) Add 'CONTROLLER_NPM_AUTO_REBUILD' to supported features
 
 ## 3.0.17 (2020-04-22) Release Elena
 * (Apollon77) make sure system.config objects has correct type
