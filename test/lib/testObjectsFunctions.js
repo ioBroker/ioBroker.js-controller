@@ -1089,6 +1089,7 @@ function register(it, expect, context) {
 
         const state = await context.adapter.getStateAsync('testDefaultVal');
         expect(state.val).to.equal('Run Forrest, Run!');
+        expect(state.ack).to.equal(true);
         return Promise.resolve();
     });
 
@@ -1106,6 +1107,7 @@ function register(it, expect, context) {
 
         let state = await context.adapter.getStateAsync('testDefaultValExtend');
         expect(state.val).to.equal('Run Forrest, Run!');
+        expect(state.ack).to.equal(true);
 
         // when state already exists def should not override
         obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
@@ -1118,6 +1120,21 @@ function register(it, expect, context) {
 
         state = await context.adapter.getStateAsync('testDefaultValExtend');
         expect(state.val).to.equal('Run Forrest, Run!');
+
+        // delete state but not object
+        await context.adapter.delStateAsync('testDefaultValExtend');
+        // extend it again - def should be created again, because state has been removed
+        obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
+            common: {
+                def: 'Please, do not set me up'
+            }
+        });
+
+        expect(obj).to.be.ok,
+
+        state = await context.adapter.getStateAsync('testDefaultValExtend');
+        expect(state.val).to.equal('Please, do not set me up');
+        expect(state.ack).to.equal(true);
 
         return Promise.resolve();
     });
