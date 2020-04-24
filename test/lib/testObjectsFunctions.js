@@ -1123,17 +1123,17 @@ function register(it, expect, context) {
 
         // delete state but not object
         await context.adapter.delStateAsync('testDefaultValExtend');
-        // extend it again - def should be created again, because state has been removed
+        // extend it again - def should be created again, because state has been removed - now we set a def object
         obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
             common: {
-                def: 'Please, do not set me up'
+                def: {hello: 'world'}
             }
         });
 
         expect(obj).to.be.ok,
 
         state = await context.adapter.getStateAsync('testDefaultValExtend');
-        expect(state.val).to.equal('Please, do not set me up');
+        expect(state.val.hello).to.equal('world');
         expect(state.ack).to.equal(true);
 
         return Promise.resolve();
