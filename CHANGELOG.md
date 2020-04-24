@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.0.19 (2020-04-2x) Release Elena WIP!!
+* (Apollon77) make sure to correctly create empty logfile on "delLogs" (Sentry IOBROKER-JS-CONTROLLER-Q) 
+
 ## 3.0.18 (2020-04-23) Release Elena
 * (Apollon77) correct error handling for letsencrypt challenge server
 * (foxriver76) fix default value of extend*Object

@@ -65,6 +65,12 @@
     "type": "multimedia",
     "version": "0.2.0"
   },
+  "binance": {
+    "meta": "https://raw.githubusercontent.com/Kartax/ioBroker.binance/master/io-package.json",
+    "icon": "https://raw.githubusercontent.com/Kartax/ioBroker.binance/master/admin/binance.png",
+    "type": "misc-data",
+    "version": "1.0.5"
+  },
   "ble": {
     "meta": "https://raw.githubusercontent.com/AlCalzone/ioBroker.ble/master/io-package.json",
     "icon": "https://raw.githubusercontent.com/AlCalzone/ioBroker.ble/master/admin/ble.png",

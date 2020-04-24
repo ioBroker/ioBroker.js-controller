@@ -2182,7 +2182,7 @@ function processMessage(msg) {
             const logFile = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
             fs.existsSync(__dirname +       '/log/' + tools.appName + '.log') && fs.writeFileSync(__dirname +       '/log/' + tools.appName + '.log', '');
             fs.existsSync(__dirname + '/../../log/' + tools.appName + '.log') && fs.writeFileSync(__dirname + '/../../log/' + tools.appName + '.log', '');
-            fs.existsSync(logFile) && fs.writeFileSync(logFile);
+            fs.existsSync(logFile) && fs.writeFileSync(logFile, '');
 
             msg.callback && msg.from && sendTo(msg.from, msg.command, null, msg.callback);
             break;
