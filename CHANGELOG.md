@@ -9,6 +9,7 @@
 * (foxriver76) make sure stacktrace is there on validateId
 * (foxriver76) avoid error on installAdapters function due to downloadyRetry (Sentry IOBROKER-JS-CONTROLLER-V)
 * (Apollon77) make sure Logfile is rewritten with empty content (Sentry IOBROKER-JS-CONTROLLER-Q)
+* (Apollon77) Update Sentry Plugin to 0.2.0, adds pathBlacklist option, fixes pot. crash reason
 
 ## 3.0.18 (2020-04-23) Release Elena
 * (Apollon77) correct error handling for letsencrypt challenge server
