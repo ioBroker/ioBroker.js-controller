@@ -2,6 +2,13 @@
 
 ## 3.0.19 (2020-04-2x) Release Elena WIP!!
 * (Apollon77) make sure to correctly create empty logfile on "delLogs" (Sentry IOBROKER-JS-CONTROLLER-Q) 
+* (foxriver76) make callback consistent when client has closed connection (Sentry IOBROKER-JS-CONTROLLER-R)
+* (foxriver76) add missing Error for DB closed, which was used but undefined in tools.js
+* (foxriver76) if buffer is of type object and not a buffer object log a warning - also bufferFrom null will also result in an error, prevent it (Sentry IOBROKER-JS-CONTROLLER-S)
+* (foxriver76) in edge cases def can be an object, we also support this on extend*Object*
+* (foxriver76) make sure stacktrace is there on validateId
+* (foxriver76) avoid error on installAdapters function due to downloadyRetry (Sentry IOBROKER-JS-CONTROLLER-V)
+* (Apollon77) make sure Logfile is rewritten with empty content (Sentry IOBROKER-JS-CONTROLLER-Q)
 
 ## 3.0.18 (2020-04-23) Release Elena
 * (Apollon77) correct error handling for letsencrypt challenge server
