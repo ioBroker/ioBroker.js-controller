@@ -2695,7 +2695,7 @@ function installAdapters() {
         return;
     }
 
-    if (procs[task.id].downloadRetry < 4) {
+    if (procs[task.id] && procs[task.id].downloadRetry < 4) {
         procs[task.id].downloadRetry++;
 
         if (task.rebuild) {
