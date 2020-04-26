@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: BGKafNZy/5RUUdKGXH9EhcqxnnE4e2bCX/s/+9gQZ2E=
+hash: lkoU58ud/5496orez92lNOWh/uBAoRBJwi2svTubvTo=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -143,6 +143,14 @@ Ergebnis: siehe Screenshot </td></tr><tr><td rowspan=1><img src="doc/en/media/dr
 Ergebnis: siehe Screenshot </ td> </ tr> </ tbody> </ table>
 
 ## Diagramme
+### Balkendiagramm
+![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/barChart.png)
+
+MACHEN
+
+### Kuchendiagramm
+MACHEN
+
 ### Linienverlaufsdiagramm:
 > Erforderlicher Adapter: [SQL] (https://github.com/ioBroker/ioBroker.sql), [Verlauf] (https://github.com/ioBroker/ioBroker.history) oder [InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)!
 
@@ -471,6 +479,7 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* Pie Chart: support for json string implemented
 * Browser Edge: gradient color bug fix
 
 ### 0.3.3

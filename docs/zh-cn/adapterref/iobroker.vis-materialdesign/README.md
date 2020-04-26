@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: BGKafNZy/5RUUdKGXH9EhcqxnnE4e2bCX/s/+9gQZ2E=
+hash: lkoU58ud/5496orez92lNOWh/uBAoRBJwi2svTubvTo=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -143,6 +143,14 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 结果：查看屏幕截图</ td> </ tr> </ tbody> </ table>
 
 ##图表
+###条形图
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/barChart.png)
+
+去做
+
+＃＃＃ 饼形图
+去做
+
 ###线路历史记录图表：
 >必需的适配器：[SQL]（https://github.com/ioBroker/ioBroker.sql），[历史记录]（https://github.com/ioBroker/ioBroker.history）或[InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)！
 
@@ -265,7 +273,7 @@ Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自�
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/grid.gif)
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2>根据窗口小部件的宽度，可以从各个窗口小部件的宽度定义适用各个视图[x]的列跨度的规则以及视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2>根据当前的宽度分辨率规则定义视图的列范围。 <br>您还可以在此处指定是仅以高于或低于定义值的分辨率显示视图，还是通过对象ID使其可见。 </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2>根据窗口小部件的宽度，可以从各个窗口小部件的宽度定义可应用各个视图[x]的列跨度的规则以及视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2>根据当前的宽度分辨率规则定义视图的列范围。 <br>您还可以在此处指定是仅以高于或低于定义值的分辨率显示视图，还是通过对象ID使其可见。 </td></tr></tbody></table>
 
 ##警报
 可以使用Alerts小部件可以在VIS中显示消息，就像它与Pushover适配器一起使用一样，但是可以直接在VIS中显示。
@@ -471,6 +479,7 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* Pie Chart: support for json string implemented
 * Browser Edge: gradient color bug fix
 
 ### 0.3.3

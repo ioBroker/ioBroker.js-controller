@@ -56,8 +56,21 @@ function getSnapshot(caption){
 *caption* - заголовок для картинки в телеграме.
 Вызывать можно как по событию, так и по кнопке/рассписанию
 
-### Сообщения и авариии от Камеры
-Чтобы отключить подписку на сообщения и аварии от камеры, необходимо выставить состояние 'subscribeEvents' = false и перезапустить адаптер.
+### События Камеры
+Чтобы отключить подписку на события от камеры, необходимо выставить состояние `subscribeEvents = false` и перезапустить адаптер.
+При изменении в панели администратора, перезугрузка адаптера выполняется автоматически.
+
+События имеют тип "Объект", например:
+```
+{
+	'Value': false,
+	'UtcTime': '2020-04-26T17:35:34.000Z'
+}
+```
+`Value` - значение/состояние,
+`UtcTime` - время изменения значения/состояния
+
+Т.к. адаптер работает по подписке на события, то время состояния `state.ts` может не совпадать с реальным временем события в камере.
 
 ## ENG
 
@@ -105,10 +118,28 @@ function getSnapshot(caption){
 
 It is possible to cause both on an event, and according to the button/schedule
 
-### Messages and accidents from the Camera
-To disconnect the subscription to messages and alarms from the camera, you need to set the status 'subscribeEvents' = false and restart the adapter.
+### Camera Events
+To disconnect the subscription to events from the camera, you need to set the status `subscribeEvents = false` and restart the adapter.
+When changing in the admin panel, the adapter is restarted automatically.
+
+Events are of type "Object", for example:
+```
+{
+	'Value': false,
+	'UtcTime': '2020-04-26T17:35:34.000Z'
+}
+```
+`Value` - value/state,
+`UtcTime` - state change time
+
+because the adapter works by subscribing to events, the state time of `state.ts` may not coincide with the real time of the event in the camera.
+
 
 ## Changelog
+
+### 0.4.0 (2020-04-26)
+* (haba1234) States as an Object
+* (haba1234) Error control 'pullMessages'. Disconnect if there are more than three errors
 
 ### 0.3.0 (2020-04-24)
 * (haba1234) Added support for the Discovery adapter

@@ -410,6 +410,16 @@ Result: see screenshot</td>
 
 ## Charts
 
+### Bar Chart
+
+![Logo](doc/en/media/barChart.png)
+
+TODO
+
+### Pie Chart
+
+TODO
+
 ### Line History Chart:
 
 > Required Adapter: [SQL](https://github.com/ioBroker/ioBroker.sql), [History](https://github.com/ioBroker/ioBroker.history) or [InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)!
@@ -1510,6 +1520,7 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* Pie Chart: support for json string implemented
 * Browser Edge: gradient color bug fix
 
 ### 0.3.3
