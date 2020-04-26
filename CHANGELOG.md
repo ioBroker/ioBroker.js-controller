@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.19 (2020-04-2x) Release Elena WIP!!
+## 3.0.19 (2020-04-2x) Release Elena
 * (Apollon77) make sure to correctly create empty logfile on "delLogs" (Sentry IOBROKER-JS-CONTROLLER-Q) 
 * (foxriver76) make callback consistent when client has closed connection (Sentry IOBROKER-JS-CONTROLLER-R)
 * (foxriver76) add missing Error for DB closed, which was used but undefined in tools.js
@@ -9,7 +9,9 @@
 * (foxriver76) make sure stacktrace is there on validateId
 * (foxriver76) avoid error on installAdapters function due to downloadyRetry (Sentry IOBROKER-JS-CONTROLLER-V)
 * (Apollon77) make sure Logfile is rewritten with empty content (Sentry IOBROKER-JS-CONTROLLER-Q)
-* (Apollon77) Update Sentry Plugin to 0.2.0, adds pathBlacklist option, fixes pot. crash reason
+* (Apollon77) Update Sentry Plugin to 1.0.0, adds pathBlacklist option, fixes pot. crash reason
+* (foxriver76) ensure backward compatibility with auto decrypt function
+* (Apollon77) Re-allow states to be set with no val property but check that there is at least one property
 
 ## 3.0.18 (2020-04-23) Release Elena
 * (Apollon77) correct error handling for letsencrypt challenge server

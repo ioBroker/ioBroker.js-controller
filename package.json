@@ -1,6 +1,6 @@
 {
     "name": "iobroker.js-controller",
-    "version": "3.0.18",
+    "version": "3.0.19",
     "engines": {
         "node": ">=10.0.0"
     },
@@ -16,8 +16,8 @@
         "iobroker": "./iobroker.js"
     },
     "dependencies": {
-        "@iobroker/plugin-base": "^0.1.1",
-        "@iobroker/plugin-sentry": "^0.2.0",
+        "@iobroker/plugin-base": "^1.0.0",
+        "@iobroker/plugin-sentry": "^1.0.0",
         "chokidar": "^3.3.1",
         "daemonize2": "^0.4.2",
         "debug": "^4.1.1",
