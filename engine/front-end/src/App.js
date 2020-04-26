@@ -162,11 +162,11 @@ const LANGUAGES = {
 };
 
 const PAGES = {
-    'blog':     {tabIndex: 1, component: Blog,     icon: null, name: 'Blog'},
-    'download': {tabIndex: 2, component: Downloads, icon: null, name: 'Download'},
+    'blog':           {tabIndex: 1, component: Blog,      icon: null, name: 'Blog'},
+    'download':       {tabIndex: 2, component: Downloads, icon: null, name: 'Download'},
     'documentation':  {tabIndex: 3, name: 'Documentation', content: 'content.json'},
-    'adapters':  {tabIndex: 4, name: 'Adapters', content: 'adapters.json'},
-    'forum':  {tabIndex: 5, name: 'Forum',
+    'adapters':       {tabIndex: 4, name: 'Adapters',      content: 'adapters.json'},
+    'forum':          {tabIndex: 5, name: 'Forum',
         links: {
             en: 'https://forum.iobroker.net',
             nl: 'https://forum.iobroker.net/category/40/nederlands',
@@ -174,19 +174,19 @@ const PAGES = {
             ru: 'https://forum.iobroker.net/category/28/%D1%80%D1%83%D1%81%D1%81%D0%BA%D0%B8%D0%B9',
             'zh-cn': 'https://bbs.iobroker.cn/'
         }, target: '_self'},
-    'about':  {tabIndex: 6, name: 'About', menu: [
+    'about':          {tabIndex: 6, name: 'About', menu: [
             {tab: 'statistics', name: 'Statistics', icon: null},
             {name: 'Imprint', tab: 'imprint', icon: null},
         ]},
-    'cloud':    {tabIndex: 7, name: 'Cloud', menu: [
+    'cloud':          {tabIndex: 7, name: 'Cloud', menu: [
             {link: 'https://iobroker.net', name: 'Free', target: 'this'},
             {link: 'https://iobroker.pro', name: 'Pro', target: 'this'},
             {link: 'https://iobroker.link', name: 'VPN', target: 'this'},
         ]},
-    'intro':    {component: PageIntro, name: 'intro'},
-    'imprint':  {name: 'imprint', md: 'imprint.md'},
-    'privacy':  {name: 'privacy', md: 'privacy.md'},
-    'statistics': {component: Statistics},
+    'intro':         {component: PageIntro, name: 'intro'},
+    'imprint':       {name: 'imprint', md: 'imprint.md'},
+    'privacy':       {name: 'privacy', md: 'privacy.md'},
+    'statistics':    {component: Statistics},
 };
 
 const MOBILE_WIDTH = 650;

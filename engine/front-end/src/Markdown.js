@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import {Converter} from 'react-showdown';
+import MarkdownView from 'react-showdown';
 import Paper from '@material-ui/core/Paper';
 import ExpansionPanel from '@material-ui/core/ExpansionPanel';
 import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
@@ -315,14 +315,15 @@ const styles = theme => ({
     }
 });
 
-const converter = new Converter({
+const CONVERTER_OPTIONS = {
     emoji: true,
     underline: true,
     strikethrough: true,
     simplifiedAutoLink: true,
     parseImgDimensions: true,
     splitAdjacentBlockquotes: true
-});
+};
+
 let title;
 
 const ADAPTER_CARD = ['version', 'authors', 'keywords', 'mode', 'materialize', 'compact'];
@@ -369,6 +370,52 @@ class Markdown extends Router {
         }
 
         this.contentRef = React.createRef();
+
+        this.customLink = ({ text, link }) =>
+            (<a className={this.props.classes.mdLink + ' md-link'} onClick={() => {
+                if (link) {
+                    if (link.startsWith('#')) {
+                        this.onNavigate(Utils.text2link(link.substring(1)))
+                    } else {
+                        let href = link;
+                        if (!href.match(/^https?:\/\//)) {
+                            const parts = (this.props.path || '').split('/');
+                            // const fileName = parts.pop();
+                            const prefix = parts.join('/') + '/';
+
+                            href = prefix + link;
+                        }
+
+                        this.onNavigate(null, href);
+                    }
+                }
+            }} title={link}>{text}</a>);
+
+        /*
+        if (reactObj && (reactObj.type === 'h1' || reactObj.type === 'h2' || reactObj.type === 'h3' || reactObj.type === 'h3')) {
+            reactObj.props.children[0] = (<span>{reactObj.props.children[0]}<a
+                href={prefix + '?' + reactObj.props.id}
+                className={this.props.classes.mdHeaderLink + ' md-h-link'}>
+            </a></span>);
+        }
+         */
+        this.customH = ({text, id, level, prefix}) => {
+            const _level = parseInt(level, 10);
+
+            if (_level === 1) {
+                return (<h1 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}></a></h1>);
+            } else if (_level === 2) {
+                return (<h2 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}></a></h2>);
+            } else if (_level === 3) {
+                return (<h3 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}></a></h3>);
+            } else if (_level === 4) {
+                return (<h4 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}></a></h4>);
+            } else if (_level === 5) {
+                return (<h5 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}></a></h5>);
+            } else  {
+                return (<h6 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}></a></h6>);
+            }
+        };
     }
 
     componentWillMount() {
@@ -609,7 +656,7 @@ class Markdown extends Router {
     _renderSubContent(menu) {
         return (<ul>{
             menu.children.map(item => {
-                const ch = this.state.content[item].children;
+                const ch   = this.state.content[item].children;
                 const link = this.state.content[item].external && this.state.content[item].link;
                 return (
                     <li><span onClick={() => this.onNavigate(item, link)} className={this.props.classes.contentLinks}>{this.state.content[item].title}</span>
@@ -659,12 +706,12 @@ class Markdown extends Router {
                 {this.renderContentCloseButton()}
                 <ul>{
                     links.map(item => {
-                        const link = this.state.content[item].external && this.state.content[item].link;
+                        const link  = this.state.content[item].external && this.state.content[item].link;
                         const level = this.state.content[item].level;
-                        let title = this.state.content[item].title.replace('&gt;', '>').replace('&lt;', '<').replace('&amp;', '&');
+                        let   title = this.state.content[item].title.replace('&gt;', '>').replace('&lt;', '<').replace('&amp;', '&');
 
                         return (
-                            <li style={{fontSize: 16 - level * 2, paddingLeft: level * 8, fontWeight: !level ? 'bold' : 'normal'}}>
+                            <li key={title} style={{ fontSize: 16 - level * 2, paddingLeft: level * 8, fontWeight: !level ? 'bold' : 'normal' }}>
                                 <span onClick={() => this.onNavigate(item, link)} className={this.props.classes.contentLinks}>{title}</span>
                                 {this.state.content[item].children ? this._renderSubContent(this.state.content[item]) : null}
                             </li>
@@ -679,13 +726,15 @@ class Markdown extends Router {
         if (!this.state.license) {
             return null;
         } else {
+            const CustomLink = this.customLink;
+            const CustomH = this.customH;
             return (<ExpansionPanel>
                 <ExpansionPanelSummary
                     className={this.props.classes.summary}
                     classes={{expanded: this.props.classes.summaryExpanded}}
                     expandIcon={<IconExpandMore />}>{I18n.t('License')} <span className={this.props.classes.license}> {this.state.header.license}</span></ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    {converter.convert(this.state.license)}
+                    <MarkdownView markdown={this.state.license} options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>
                 </ExpansionPanelDetails>
             </ExpansionPanel>);
         }
@@ -695,10 +744,12 @@ class Markdown extends Router {
         if (!this.state.changeLog) {
             return null;
         } else {
+            const CustomLink = this.customLink;
+            const CustomH = this.customH;
             return (<ExpansionPanel>
                 <ExpansionPanelSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Changelog')}</ExpansionPanelSummary>
                 <ExpansionPanelDetails>
-                    {converter.convert(this.state.changeLog)}
+                    <MarkdownView markdown={this.state.changeLog} options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>
                 </ExpansionPanelDetails>
             </ExpansionPanel>);
         }
@@ -724,8 +775,19 @@ class Markdown extends Router {
         />)
     }
 
-    replaceHref(reactObj) {
-        const parts = (this.props.path || '').split('/');
+    replaceHref(line) {
+        const m = line.match(/\[.*]\(#[^)]+\)/g);
+        if (m) {
+            m.forEach(link => {
+                const pos = link.lastIndexOf('](');
+                let text = link.substring(0, pos).replace(/^\[/, '');
+                let href = link.substring(pos + 2).replace(/\)$/, '');
+                line = line.replace(link, `<CustomLink text="${text}" link="${href}" />`);
+            });
+        }
+        return line;
+
+        /*const parts = (this.props.path || '').split('/');
         // const fileName = parts.pop();
         const prefix = parts.join('/') + '/';
 
@@ -764,20 +826,31 @@ class Markdown extends Router {
                     this.replaceHref(item);
                 }
             });
-        }
+        }*/
     }
 
-    makeHeadersAsLink(reactObj, prefix) {
-        if (reactObj && (reactObj.type === 'h1' || reactObj.type === 'h2' || reactObj.type === 'h3' || reactObj.type === 'h3')) {
+    makeHeadersAsLink(line, prefix) {
+        const mm = line.match(/^#+\s.+/g);
+        if (mm) {
+            mm.forEach(header => {
+                const level = header.match(/^(#+)\s/)[1].length;
+                let text = header.substring(level + 1);
+                line = line.replace(header, `<CustomH text="${text}" id="${Utils.text2link(text)}" level="${level}" prefix="${prefix}"/>`);
+            });
+        }
+        return line;
+        /*if (reactObj && (reactObj.type === 'h1' || reactObj.type === 'h2' || reactObj.type === 'h3' || reactObj.type === 'h3')) {
             reactObj.props.children[0] = (<span>{reactObj.props.children[0]}<a
                 href={prefix + '?' + reactObj.props.id}
                 className={this.props.classes.mdHeaderLink + ' md-h-link'}>
             </a></span>);
-        }
+        }*/
     }
 
     renderTable(lines) {
         const header = lines[0].replace(/^\||\|$/g, '').split('|').map(h => h.trim());
+        const CustomLink = this.customLink;
+        const CustomH = this.customH;
 
         const rows = [];
         for (let i = 2; i < lines.length; i++) {
@@ -785,8 +858,8 @@ class Markdown extends Router {
 
             const cells = [];
             for (let j = 0; j < header.length; j++) {
-                const crt = converter.convert(parts[j] || '');
-                this.replaceHref(crt);
+                parts[j] = this.replaceHref(parts[j]);
+                const crt = (<MarkdownView markdown={parts[j] || ''}  options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>);
                 cells.push((<TableCell className={this.props.classes.tableCell} key={'cell' + i + '_' + j}>{crt}</TableCell>));
             }
 
@@ -795,35 +868,17 @@ class Markdown extends Router {
         return (
             <Table padding="dense" className={this.props.classes.table}>
                 <TableHead className={this.props.classes.tableHead}>
-                    <TableRow className={this.props.classes.tableRowHead}>{header.map((h, i) => (<TableCell className={this.props.classes.tableCellHead} key={'header' + i}>{converter.convert(h)}</TableCell>))}</TableRow>
+                    <TableRow className={this.props.classes.tableRowHead}>
+                        {
+                            header.map((h, i) =>
+                                (<TableCell className={this.props.classes.tableCellHead} key={'header' + i}>
+                                    <MarkdownView markdown={h} options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>
+                                </TableCell>))
+                        }
+                    </TableRow>
                 </TableHead>
                 <TableBody className={this.props.classes.tableBody}>{rows}</TableBody>
             </Table>);
-
-        /*<Table className={classes.table}>
-            <TableHead>
-                <TableRow>
-                    <TableCell>Dessert (100g serving)</TableCell>
-                    <TableCell align="right">Calories</TableCell>
-                    <TableCell align="right">Fat (g)</TableCell>
-                    <TableCell align="right">Carbs (g)</TableCell>
-                    <TableCell align="right">Protein (g)</TableCell>
-                </TableRow>
-            </TableHead>
-            <TableBody>
-                {rows.map(row => (
-                    <TableRow key={row.id}>
-                        <TableCell component="th" scope="row">
-                            {row.name}
-                        </TableCell>
-                        <TableCell align="right">{row.calories}</TableCell>
-                        <TableCell align="right">{row.fat}</TableCell>
-                        <TableCell align="right">{row.carbs}</TableCell>
-                        <TableCell align="right">{row.protein}</TableCell>
-                    </TableRow>
-                ))}
-            </TableBody>
-        </Table>*/
     }
 
     render() {
@@ -847,6 +902,9 @@ class Markdown extends Router {
 
         const prefix = window.location.hash.split('?')[0];
 
+        const CustomLink = this.customLink;
+        const CustomH = this.customH;
+
         const reactElements = this.state.parts.map((part, i) => {
             if (part.type === 'table') {
                 return this.renderTable(part.lines);
@@ -862,10 +920,14 @@ class Markdown extends Router {
                 if (trimmed.match(/^\*[^\s]/) && trimmed.match(/[^\s]\*$/)) {
                     line = trimmed;
                 }
-                const rct = converter.convert(line);
 
-                this.replaceHref(rct);
-                this.makeHeadersAsLink(rct, prefix);
+                // find all "[text](#link)" and replace it with <link text="text" link="link"/>
+                // Detect "[iobroker repo \[repoName\]](#iobroker-repo)"
+
+                line = this.replaceHref(line);
+                line = this.makeHeadersAsLink(line, prefix);
+
+                const rct = (<MarkdownView markdown={line} options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>);
 
                 if (part.type === 'warn') {
                     return (<div key={'parts' + i} className={this.props.classes.warn}>{rct}</div>);

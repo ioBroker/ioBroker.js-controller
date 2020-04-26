@@ -237,7 +237,7 @@ class SupportUs extends Component {
             onClick={() => this.setState({opened: true})}
         >
                 {/*<IconSupport className={this.props.classes.mainButtonIcon}/>*/}
-            <img src={ImgMugSmall} class={this.props.classes.mainButtonIcon}/>
+            <img src={ImgMugSmall} className={this.props.classes.mainButtonIcon} alt="logo"/>
             {I18n.t('Support us!')}
             </Button>),
             this.renderDialog(),

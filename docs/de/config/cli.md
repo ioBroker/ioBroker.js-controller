@@ -1,7 +1,8 @@
-# Konsolenbefehle für ioBroker
+# Konsolenbefehle
 Einige Befehle wie z.B. starten, stoppen oder aktualisieren können über die Konsole (Windows bzw. Linux) ausgeführt werden.
 
-***Hinweis:*** Alle Befehle, die mit ```iobroker``` beginnen, können von jedem Verzeichnis aus aufgerufen werden. Der Befehl ```npm install``` muss jedoch im ioBroker-Stammverzeichnis ausgeführt werden.
+***Hinweis:*** Alle Befehle, die mit ```iobroker``` beginnen, können von jedem Verzeichnis aus aufgerufen werden. 
+Der Befehl ```npm install``` muss jedoch im ioBroker-Stammverzeichnis ausgeführt werden.
 
 Befehlsübersicht:
 
@@ -55,9 +56,10 @@ Befehlsübersicht:
 - [iobroker repo](#iobroker-repo)
 - [iobroker info](#iobroker-info)
 - [iobroker compact status](#iobroker-compact-status)
-- [iobroker compact enable|on|disable|off](#iobroker-compact-enableondisableoff)
+- [iobroker compact \[enable|disable|on|off\]](#iobroker-compact-enabledisableonoff)
 - [iobroker compact adapterName.instance](#iobroker-compact-adapternameinstance)
 - [iobroker cert create](#iobroker-cert-create)
+- [iobroker logs \[--watch\]](#iobroker-logs)
 
 ***Hinweis:*** Mit dem Parameter ```--timeout 5000``` am Ende eines jeden Befehls kann ein Timeout (ms) für die Verbindung zur DB angegeben werden.
 
@@ -460,7 +462,7 @@ Sie können den Hostnamen in einen bestimmten Namen ändern (nicht den Computern
 Um den Host zu löschen, schreiben Sie einfach ```iobroker host remove hostNameToRemove```. Bitte seien Sie damit vorsichtig.
 
 ## iobroker list
-Mit diesem Befehl können verschiedene Objekttypen und Zustände in ioBroker angezeigt werden. Beispiele:
+Mit diesem Befehl können verschiedene Objekt-Typen und Zustände in ioBroker angezeigt werden. Beispiele:
 
 - ```iobroker list objects hm-rega.0``` - zeigt alle Objekte der Instanz hm-rega.0
 - ```iobroker list states hm-rega.0``` - Zeigt alle Zustände der Instanz hm-rega.0 an
@@ -595,7 +597,7 @@ UUID dieser ioBroker-Installation anzeigen.
 Zeigt an ob ioBroker läuft oder nicht.
 
 ## iobroker repo
-Zeigt die im Admin Adapter konfigurierten Repositorys an bzw. ändert das aktive Repository.
+Zeigt die im Admin Adapter konfigurierten Repositories an bzw. ändert das aktive Repository.
 
 ```
 C:\ioBroker>ioBroker repo
@@ -642,10 +644,11 @@ Zeigt den Status des Compact-Mode für den aktuellen Host an.
 Compact mode for this host is currently enabled
 ``` 
 
-## iobroker compact enable|on|disable|off
+## iobroker compact [enable|disable|on|off]
 **Verfügbar seit js-controller 2.0.0**
 
-Erlaubt die Aktivierung oder Deaktivierung des Compact-Modus für den aktuellen Host. Hierbei wird zuerst der aktuelle Status ausgegeben und dann die durchgeführte Änderung.
+Erlaubt die Aktivierung oder Deaktivierung des Compact-Modus für den aktuellen Host. 
+Hierbei wird zuerst der aktuelle Status ausgegeben und dann die durchgeführte Änderung.
 
 ```
 Compact mode for this host is currently disabled
@@ -653,11 +656,15 @@ Compact mode for this host is currently disabled
 Compact mode for this host changed to enabled
 ```
 
+Folgende Befehle sind möglich:
+- `enable/on` - Compact-Modus für ioBroker aktivieren
+- `disable/off` - Compact-Modus für ioBroker deaktivieren 
+
 ## iobroker compact adapterName.instance
 **Verfügbar seit js-controller 2.0.0**
 
-Dieser Befehl erlaubt die COmpact-Modus Konfiguration einer Adapter-Instanz zu prüfen und zu ändern.
-Es werden immer alle EInstellungen (siehe status) angezeigt inklusive der vorgenommenen Änderungen.
+Dieser Befehl erlaubt die Compact-Modus Konfiguration einer Adapter-Instanz zu prüfen und zu ändern.
+Es werden immer alle Einstellungen (siehe status) angezeigt inklusive der vorgenommenen Änderungen.
  
 
 Alle Änderungen können auch bei laufendem ioBroker durchgeführt werden. Die Adapterinstanzen werden ggf neu gestartet.
@@ -675,13 +682,10 @@ Compact group:          0
 
 Bedeutung der Felder:
 * Compact mode supported: Der Adapter unterstützt den Compact Mode generell
-* Compact mode enabled: Diese Instanz wird im Compact Modus gestartetCompact mode supported: true
-                                                                     Compact mode enabled:   false --> true
-                                                                     Compact group:          0 --> 1
-
+* Compact mode enabled: Diese Instanz wird im Compact Modus gestartet
 * Compact group: Die Instanz wird in der Compact-Gruppe gestartet wie angegeben. 0 bedeutet "im Haupt-js-controller-Prozess dieses Hosts" (höheres Risiko, wenigster RAM Bedarf). >0 bedeutet jeweils ein eigener Host-Prozess (weniger Risiko, dafür etwas mehr RAM Bedarf)
 
-### compact adapterName.instance group <group-id>
+### compact adapterName.instance group &lt;group-id&gt;
 
 Setzt die Compact Mode Gruppe der Instanz
 
@@ -692,7 +696,7 @@ Compact group:          0 --> 1
 Instance settings for "simple-api.0" are changed.
 ```
 
-### compact adapterName.instance <disable|off>
+### compact adapterName.instance disable;
 
 Deaktiviert den Compact Mode für die Instanz.
 ```
@@ -702,10 +706,9 @@ Compact group:          1
 Instance settings for "simple-api.0" are changed.
 ```
 
+### compact adapterName.instance group enable [group-id]
 
-### compact adapterName.instance group <enable|on> [group-id]
-
-Aktiviert den Compact Mode für die Instanz und setzt (optional) im gleichen AUfruf die Gruppe
+Aktiviert den Compact Mode für die Instanz und setzt (optional) im gleichen Aufruf die Gruppe
 ```
 Compact mode supported: true
 Compact mode enabled:   false --> true
@@ -728,3 +731,14 @@ Generiert ein neues SSL Zertifikat für die ioBroker Installation, trägt diese 
    
 The object "system.certificates" was updated successfully.
 ```
+
+## iobroker logs
+Letzte Zeilen anzeigen und das ioBroker-Protokoll überwachen.
+
+Dieser Befehl zeigt die letzten 1000 Protokollzeilen an und überwacht das Protokoll:
+
+```iobroker logs --lines 1000```
+
+Um das Protokoll zu überwachen, fügen Sie "--watch" hinzu, wie hier: 
+
+```iobroker logs --lines 100 --watch```

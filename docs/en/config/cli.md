@@ -1,7 +1,7 @@
-# Console commands for ioBroker
+# Console commands
 There is a possibility to do some operations like start, stop or update over console (windows and linux). Here is the description of them.
 
-Note: all commands that start with ```iobroker``` can be called from any directory where iobroker command is available. ```npm install``` command must be called from ioBroker root directory.
+Note: all commands that start with ```iobroker``` can be called from any directory where ioBroker command is available. ```npm install``` command must be called from ioBroker root directory.
 
 Following commands are possible:
 
@@ -54,6 +54,10 @@ Following commands are possible:
 - [iobroker status](#iobroker-status)
 - [iobroker repo \[repoName\]](#iobroker-repo)
 - [iobroker info](#iobroker-info)
+- [iobroker compact status](#iobroker-compact-status)
+- [iobroker compact \[enable|disable|on|off\]](#iobroker-compact-enabledisableonoff)
+- [iobroker compact adapterName.instance](#iobroker-compact-adapternameinstance)
+- [iobroker cert create](#iobroker-cert-create)
 - [iobroker logs \[--watch\]](#iobroker-logs)
 
 **Note:** there is a parameter ```--timeout 5000```, that can be used with every command. It specifies the timeout in ms for connection to DB.
@@ -476,7 +480,7 @@ With the "list instances" you can use additional filters:
 - enabled   - list all enabled instances
 - disabled  - list all disabled instances
 - port      - list all instances with port
-- ip        - list all instacnes, that can be binded to some IP
+- ip        - list all instances, that can be bound to some IP
 - ssl       - list all instances, where SSL can be enabled
 
 Using: ```iobroker list instances --enabled``` to list all enabled instances
@@ -612,8 +616,110 @@ Disk free      : 813.3 GiB
 NPM            : v5.8.0
 ```
 
+## iobroker compact status
+**Available since js-controller 2.0.0**
+
+Displays the status of the compact mode for the current host.
+
+```
+Compact mode for this host is currently enabled
+``` 
+
+## iobroker compact [enable|disable|on|off]
+**Available since js-controller 2.0.0**
+
+Allows you to enable or disable compact mode for the current host. The current status is output first and then the change made.
+
+```
+Compact mode for this host is currently disabled
+
+Compact mode for this host changed to enabled
+```
+Folgende Befehle sind möglich:
+- `enable/on` - activate Compact-Modus for ioBroker
+- `disable/off` - deactivate Compact-Modus for ioBroker 
+
+## iobroker compact adapterName.instance
+**Available since js-controller 2.0.0**
+
+This command allows the Compact mode configuration of an adapter instance to be checked and changed.
+All settings (see status) are always displayed, including the changes made.
+ 
+
+All changes can also be made while the ioBroker is running. The adapter instances may be restarted.
+
+The following combinations are available:
+
+### compact adapterName.instance status
+Display of the current status and the current settings of the instance.
+
+```
+Compact mode supported: true
+Compact mode enabled:   true
+Compact group:          0
+```
+
+Meaning of the fields:
+* Compact mode supported: The adapter generally supports Compact Mode
+* Compact mode enabled: This instance is started in compact mode
+* Compact group: The instance is started in the compact group as specified. 0 means "in this host's main js controller process" (higher risk, less RAM required). > 0 means a separate host process (less risk, but a little more RAM required)
+
+### compact adapterName.instance group &lt;group-id&gt;
+
+Sets the compact mode group of the instance
+
+```
+Compact mode supported: true
+Compact mode enabled:   true
+Compact group:          0 --> 1
+Instance settings for "simple-api.0" are changed.
+```
+
+### compact adapterName.instance  &lt;disable|off&gt;
+
+Deactivates the compact mode for the instance.
+```
+Compact mode supported: true
+Compact mode enabled:   true --> false
+Compact group:          1
+Instance settings for "simple-api.0" are changed.
+```
+
+
+### compact adapterName.instance group  &lt;enable|on&gt; [group-id]
+
+Activates the compact mode for the instance and (optionally) sets the group in the same call:
+
+```
+Compact mode supported: true
+Compact mode enabled:   false --> true
+Compact group:          0 --> 1
+Instance settings for "simple-api.0" are changed.
+```
+
+## iobroker cert create
+
+Generates a new SSL certificate for the ioBroker installation, enters it in the system as the standard certificate and also issues it.
+
+```
+-----BEGIN RSA PRIVATE KEY-----
+...
+-----END RSA PRIVATE KEY-----
+
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+   
+The object "system.certificates" was updated successfully.
+```
+
 ## iobroker logs
-Show last lines of ioBroker log. This command shows last 1000 lines of log and monitors the log.
+Show last lines and monitor the ioBroker log. 
 
-```iobroker logs --lines 1000 --watch ```
+This command shows last 1000 lines of log and monitors the log:
 
+```iobroker logs --lines 1000```
+
+To monitor the log add `--watch`, like here: 
+
+```iobroker logs --lines 100 --watch```

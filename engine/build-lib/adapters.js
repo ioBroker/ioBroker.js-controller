@@ -81,6 +81,10 @@ function prepareAdapterReadme(lang, repo, data) {
             console.error('No data found for ' + repo.name + ': ' + data.link);
             return resolve();
         }
+        if (!repo) {
+            console.error(`File possibly deleted from repository, but still in docs. Run "gulp remove --${data && data.relative && data.relative.splice('/').pop().splice('.').pop()}" to remove it`);
+            return resolve();
+        }
 
         let {header, body} = utils.extractHeader(text);
 

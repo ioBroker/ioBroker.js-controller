@@ -9,7 +9,7 @@ import Loader from '../Components/Loader';
 import I18n from '../i18n';
 import Utils from '../Utils';
 import Router from '../Router';
-import {Converter} from 'react-showdown';
+import MarkdownView from 'react-showdown';
 
 import {MdEdit as IconEdit} from 'react-icons/md';
 import {MdRssFeed as IconRss} from 'react-icons/md';
@@ -107,8 +107,14 @@ const styles = theme => ({
     },
 });
 
-
-const converter = new Converter();
+const CONVERTER_OPTIONS = {
+    emoji: true,
+    underline: true,
+    strikethrough: true,
+    simplifiedAutoLink: true,
+    parseImgDimensions: true,
+    splitAdjacentBlockquotes: true
+};
 
 
 class Blog extends Router {
@@ -244,7 +250,7 @@ class Blog extends Router {
 
         const {body, header} = Utils.extractHeader(this.state.text);
 
-        const reactElement = converter.convert(body || '');
+        const reactElement = (<MarkdownView markdown={body} options={CONVERTER_OPTIONS} />);
 
         this.replaceHref(reactElement, `${this.props.language}/blog/`);
 
@@ -255,7 +261,7 @@ class Blog extends Router {
         let prev = pos + 1 < pages.length ? Blog.page2Date(pages[pos + 1]) : '';
 
         return (<Paper  className={this.props.classes.pagePage}>
-            {header.logo ? (<div className={this.props.classes.pageLogoDiv} style={{backgroundImage: 'url(' + header.logo + ')'}}></div>) : null}
+            {header.logo ? (<div className={this.props.classes.pageLogoDiv} style={{backgroundImage: 'url(' + header.logo + ')'}}/>) : null}
             <div className={this.props.classes.pageTitleDiv}>
                 <h2 className={this.props.classes.pageTitle}>{header.title}</h2>
                 <div className={this.props.classes.pagePosted}><strong>{header.author || header.Author}</strong> {I18n.t(' posted on %s', d.toLocaleDateString())}</div>
