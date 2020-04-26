@@ -372,7 +372,7 @@ class Markdown extends Router {
         this.contentRef = React.createRef();
 
         this.customLink = ({ text, link }) =>
-            (<a className={this.props.classes.mdLink + ' md-link'} href="" onClick={() => {
+            (<a className={this.props.classes.mdLink + ' md-link'} onClick={() => {
                 if (link) {
                     if (link.startsWith('#')) {
                         this.onNavigate(Utils.text2link(link.substring(1)))
