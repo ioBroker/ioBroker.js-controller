@@ -54,7 +54,18 @@ function register(it, expect, context) {
                                         expect(state).to.be.ok;
                                         expect(state.val).to.equal(3);
                                         expect(state.ack).to.equal(true);
-                                        done();
+
+                                        context.adapter.setState(gid, {ack: false}, function (err) {
+                                            expect(err).to.be.not.ok;
+
+                                            context.states.getState(context.adapterShortName + '.0.' + gid, function (err, state) {
+                                                expect(err).to.be.null;
+                                                expect(state).to.be.ok;
+                                                expect(state.val).to.equal(3);
+                                                expect(state.ack).to.equal(false);
+                                                done();
+                                            });
+                                        });
                                     });
                                 });
                             });

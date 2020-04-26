@@ -12,6 +12,7 @@
 * (Apollon77) Update Sentry Plugin to 1.0.0, adds pathBlacklist option, fixes pot. crash reason
 * (foxriver76) ensure backward compatibility with auto decrypt function
 * (Apollon77) Re-allow states to be set with no val property but check that there is at least one property
+* (foxriver76) also call enumerateAdapterDocs when deleting all instances
 
 ## 3.0.18 (2020-04-23) Release Elena
 * (Apollon77) correct error handling for letsencrypt challenge server
