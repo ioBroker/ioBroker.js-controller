@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: 0Sa3sSzmqayHNfgyBTbLkdyeSBK6oUU98CiU3akhXPY=
+hash: AoU8d3cSR1UqV8DWIHPCZXiuptIYD5dvwKiKxzCEZmY=
 ---
 ![商标](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
@@ -58,6 +58,9 @@ function getSnapshot(caption){
 *说明*-заголовокдлякартинкивтелеграме。
 Вызыватьможнокакпособытию，такипокнопке/рассписанию
 
+### Сообщения и авариии от Камеры
+subтобыотключитьподпискунасообщенияиаварииоткамеры，необходимовыставитьсостотаееscribe事件
+
 ## ENG
 ###定制
 1.打开驱动程序设置
@@ -100,13 +103,34 @@ function getSnapshot(caption){
 
 既可能导致事件发生，也可能导致按钮/时间表发生
 
+###来自相机的消息和事故
+要从摄像机断开对消息和警报的订阅，您需要设置状态'subscribeEvents'= false并重新启动适配器。
+
 ## Changelog
 
-### 0.0.3 (2020-04-03)
+### 0.3.0 (2020-04-24)
+* (haba1234) Added support for the Discovery adapter
+* (haba1234) Added password encryption
+
+### 0.2.0 (2020-04-21)
+* (haba1234) Added camera settings
+* (haba1234) Changes in the structure of objects (ATTENTION! After updating, delete cameras and add again)
+* (haba1234) Fixed issue [#9](https://github.com/Haba1234/ioBroker.onvif/issues/9)
+
+### 0.1.2 (2020-04-19)
+* (haba1234) Fixed uncaught exception: The \"chunk\" argument must be one of type string or Buffer
+* (haba1234) Add state 'subscribeEvents'
+
+### 0.1.1 (2020-04-18)
+* (haba1234) Port polling bug fixed
+
+### 0.1.0 (2020-04-15)
 * (haba1234) bag fix and different little things
 * (haba1234) compact mode
 * (haba1234) deprecated 'request' is replaced by class 'http'
 * (haba1234) 'onvif-snapshot' is replaced by class 'http'
+* (haba1234) Added translate
+* (haba1234) Refactoring code
 
 ### 0.0.2 (2018-11-20)
 * (haba1234) add events and snapshot

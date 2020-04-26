@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.binance/README.md
 title: ioBroker.binance
-hash: dPWsMLNDNpUqbYRpdvoJlMZroTgWgY4ADFWZXh9fyFA=
+hash: g1ciorZTR3u5Yhaf5+j4iEvviAnfozU2ASrlfW4BtJo=
 ---
 ![логотип](../../../en/adapterref/iobroker.binance/admin/binance.png)
 
@@ -16,8 +16,8 @@ hash: dPWsMLNDNpUqbYRpdvoJlMZroTgWgY4ADFWZXh9fyFA=
 ![NPM](https://nodei.co/npm/iobroker.binance.png?downloads=true)
 
 # IoBroker.binance
-## Вступление
-Адаптер для связи с торговой платформой склепа
+## Введение
+Адаптер для связи с криптографической торговой платформой
 
 Адаптер вытягивает цены валют в настроенном интервале обновления.
 Если вы настроите ключ API и соответствующий секретный ключ, он также потянет остатки на счетах.
@@ -26,6 +26,10 @@ hash: dPWsMLNDNpUqbYRpdvoJlMZroTgWgY4ADFWZXh9fyFA=
 ![screenshot-1] (screenshot-1.png)! [screenshot-2](../../../en/adapterref/iobroker.binance/screenshot-2.png)
 
 ## Changelog
+### 1.1.0
+- added 24hr data for selected symbols
+### 1.0.5
+- fixed interval handle
 ### 1.0.4
 - npmjs repackage
 ### 1.0.3

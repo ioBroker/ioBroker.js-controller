@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: vtDB5jMxUBaT00Qluoz2CiNbIk3YGQHlt1Q+oNPjw5U=
+hash: BGKafNZy/5RUUdKGXH9EhcqxnnE4e2bCX/s/+9gQZ2E=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -34,6 +34,12 @@ bereitgestellt von [iobroker.click](https://iobroker.click/index.html), dank blu
 * <a href="https://iobroker.click/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a> ( <a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">alternativ</a> )
 * <a href="https://iobroker.click/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS Editor</a> ( <a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">alternativ</a> )
 
+## Praktische Beispiele
+* [Wetteransicht] (https://forum.iobroker.net/topic/32232/material-design-widgets-wetter-view)
+* [Skriptstatus] (https://forum.iobroker.net/topic/30662/material-design-widgets-skript-status)
+* [Adapterstatus] (https://forum.iobroker.net/topic/30661/material-design-widgets-adapter-status)
+* [UniFi Netzwerk Status] (https://forum.iobroker.net/topic/30875/material-design-widgets-unifi-netzwerk-status)
+
 ## Fragen und Antworten zu den Widgets
 Wenn Sie Fragen zu den einzelnen Widgets haben, schauen Sie sich zunächst die Themen der einzelnen Widgets an
 
@@ -61,7 +67,7 @@ funktioniert momentan nicht, muss von der App implementiert werden, siehe https:
 ## Karte
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/cards.png)
 
-## Aufführen
+## Liste
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/list.gif)
 
 ## IconList
@@ -463,6 +469,18 @@ ical2CalendarWidget();
 ```
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* Browser Edge: gradient color bug fix
+
+### 0.3.3
+* (Scrounger): css file bug fixes
+* (Scrounger): Material Design Icons library updated to v5.1.45
+
+### 0.3.2
+* (Scrounger): Select & Autocomplete Widget: color option for menu items added
+* (Scrounger): setState type bug fixes
+* (Scrounger): small bug fixes
 
 ### 0.3.0
 * (Scrounger): JSON Chart: error handling added

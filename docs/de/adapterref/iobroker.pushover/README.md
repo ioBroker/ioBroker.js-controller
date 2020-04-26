@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.pushover/README.md
 title: ioBroker Pushover Adapter
-hash: DEWM3/a3s19vsoybsv7HjyVW4LB87l2vv5zUuLXIozw=
+hash: mrMzTGveYDthpTPCdJ+TTHdRfH8dpRW5jSYXzraxxEs=
 ---
 ![Logo](../../../en/adapterref/iobroker.pushover/admin/pushover.png)
 
@@ -15,16 +15,18 @@ hash: DEWM3/a3s19vsoybsv7HjyVW4LB87l2vv5zUuLXIozw=
 # IoBroker Pushover Adapter
 Senden Sie Pushover-Benachrichtigungen von ioBroker.
 
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
+
 ## Aufbau
-Zuallererst ist ein Account bei Pushover erforderlich.
+Zunächst ist ein Konto bei Pushover erforderlich.
 ![Pushover-Konfiguration](../../../en/adapterref/iobroker.pushover/img/Screen0.png)
 
 ![API-Token](../../../en/adapterref/iobroker.pushover/img/Screen1.png)
 
 ![Gruppen-Token](../../../en/adapterref/iobroker.pushover/img/Screen3.png)
 
-## Verwendung
-Um eine Benachrichtigung von ScriptEngine aus zu senden, schreiben Sie einfach:
+## Verwendungszweck
+Um eine Benachrichtigung von ScriptEngine zu senden, schreiben Sie einfach:
 
 ```
 // send notification to all instances of pushover adapter
@@ -54,7 +56,26 @@ sendTo("pushover", {
 });
 ```
 
+## Was ist Sentry und was wird den Servern gemeldet?
+Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendungen. Und genau das ist in diesem Adapter implementiert.
+
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server in Deutschland gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+
 ## Changelog
+### 2.0.1 (2020-04-24)
+* (bluefox) Fixed error in the blockly if language was not "ru/en/de"
+* (bluefox) Breaking change: the encryption of the password was changed, so the token must be entered anew. Store your token before update.
+
+### 1.3.2 (2020-04-17)
+* (Apollon77) add Error handler to not crash adapter (fixes Sentry IOBROKER-PUSHOVER-1)
+
+### 1.3.0 (2020-04-12)
+* (Apollon77) Fix token decryption and add compatibility to js-controller 3.0
+* (Apollon77) Add Sentry (used in js-controller 3.0)
+
+### 1.2.3 (2020-02-19)
+* (bluefox) Token will be encrypted now.
+
 ### 1.2.0 (2020-02-03)
 * (bluefox) Removed the getMessages call.
 

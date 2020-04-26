@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lgtv/README.md
 title: ioBroker.lgtv
-hash: e1vRRQd3Kvr7YBcscpRBGok3Apv+ZLAD2XhIHxpR73w=
+hash: 7IHLz/tapp08N9APUPMn1oaS5CtG3bxyukS3VKinNrY=
 ---
 ![Logo](../../../en/adapterref/iobroker.lgtv/admin/lgtv.png)
 
@@ -15,11 +15,9 @@ hash: e1vRRQd3Kvr7YBcscpRBGok3Apv+ZLAD2XhIHxpR73w=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/xx55hgsuff4fas47/branch/master?svg=true)
 
 # IoBroker.lgtv
-=================
-
 LG WebOS SmartTV Adapter für ioBroker
 
-Fernsteuerung eines LG WebOS SmartTV (Modelle ab 2013) aus [ioBroker](https://www.iobroker.net).
+Fernsteuerung eines LG WebOS SmartTV (Modelle ab 2013) über [ioBroker](https://www.iobroker.net).
 
 ---
 

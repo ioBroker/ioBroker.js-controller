@@ -9,6 +9,8 @@
 
 This is RESTFul interface to read the objects and states from ioBroker and to write/control the states over HTTP Get/Post requests.
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ## Usage
 Call in browser ```http://ipaddress:8087/help``` to get the help about API. The result is:
 
@@ -547,6 +549,12 @@ If no data source was specified or the noHistory parameter is passed, then only 
 </pre>
 
 ## Changelog
+### 2.4.1 (2020-04-23)
+* (bluefox) Caught the web server errors
+
+### 2.4.0 (2020-04-12)
+* (Apollon77) Add Sentry support with js-controller 3.0
+* (Apollon77) fix potential crash
 
 ### 2.3.3 (2019-11-16)
 * (bluefox) Added response code for unknown commands
@@ -645,7 +653,7 @@ If no data source was specified or the noHistory parameter is passed, then only 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2015-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

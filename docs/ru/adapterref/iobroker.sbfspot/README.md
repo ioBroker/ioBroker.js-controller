@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: n1znYPs/e/xFNF9U1C2lXCpwlsxYnM+RP1MxJYaxeHI=
+hash: K07tNG5QJNKsiaC64HYt+Ci9c8DNEE/P1ZHi7d55jOc=
 ---
 ![логотип](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -12,7 +12,6 @@ hash: n1znYPs/e/xFNF9U1C2lXCpwlsxYnM+RP1MxJYaxeHI=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sbfspot.svg)
 ![тесты](https://travis-ci.org/rg-engineering/ioBroker.sbfspot.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)
-![Значок Greenkeeper](https://badges.greenkeeper.io/rg-engineering/ioBroker.sbfspot.svg)
 
 # IoBroker.sbfspot
 ** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
@@ -23,7 +22,7 @@ hash: n1znYPs/e/xFNF9U1C2lXCpwlsxYnM+RP1MxJYaxeHI=
 Теперь поддерживаются оба типа базы данных (mySQL и sqlite).
 Начиная с версии 0.2.3, существует собственный виджет vis, основанный на flot, для отображения исторических данных.
 
-## Монтаж
+## Установка
 следуйте инструкциям по установке sbfspot по адресу https://github.com/SBFspot/SBFspot/wiki
 
 [детальная установка на системы на основе оружия](docs/en/install_arm.md)
@@ -44,6 +43,13 @@ hash: n1znYPs/e/xFNF9U1C2lXCpwlsxYnM+RP1MxJYaxeHI=
 иногда для успешной установки всех необходимых пакетов необходимо вызывать npm intall более одного раза
 
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), если вы обнаружите ошибки или пожелаете новых функций
+
+## 3.0.0 (2020-04-25)
+* (Рене) пакет sqlite3 заменен на более качественный sqlite3
+* (Рене) роли DP перегружены
+* (Рене) см. Вопрос № 19: получать данные только при добавлении дневного света в качестве опции
+* (René) см. Вопрос № 29: изменен цвет по умолчанию для метки оси виджета
+* (René) виджет: лог, если виджет слишком мал добавлен
 
 ## 2.4.3 (2020-04-02)
 * (René) исправление в DB_CalcHistory_Today, используемом для виджета
@@ -96,7 +102,7 @@ hash: n1znYPs/e/xFNF9U1C2lXCpwlsxYnM+RP1MxJYaxeHI=
 * (René) Поддержка admin3
 
 ### 2.0.0
-* (René), поскольку мы всегда используем один график для виджета, теперь поддерживается только один график
+* (René), поскольку мы всегда используем один график для виджета, теперь поддерживается только один
 
 Внимание: виджет не совместим с версией 1.x.x; просто проверьте настройки в виджете после установки!
 

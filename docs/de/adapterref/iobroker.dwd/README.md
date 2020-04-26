@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.dwd/README.md
 title: ioBroker.dwd
-hash: iV0I50r+WvpQoN+q0KEZ2btBsIOluRVvdpqbG9cIhNI=
+hash: 39/h4ENoIuZXO+aJD88gFbM7fOmSVWBu9tkkJ7PtkvA=
 ---
 ![Logo](../../../en/adapterref/iobroker.dwd/admin/dwd.png)
 
@@ -16,14 +16,27 @@ hash: iV0I50r+WvpQoN+q0KEZ2btBsIOluRVvdpqbG9cIhNI=
 # IoBroker.dwd
 Copyright Deutscher Wetterdienst
 
-Dieser Adapter lädt die Wetterwarnungen vom deutschen Wetterdienst über JSON-Link.
+Dieser Adapter lädt die Wetterwarnungen vom deutschen Wetterdienst über JSON Link.
 
-Dieser Adapter lädt die Wetterwarnungen des deutschen Wetterdienstes über den JSON-Link.
+Dieser Adapter lädt die Wetterwarnungen des deutschen Wetterdienstes über JSON-Link.
+
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Machen
 * Behandeln Sie FTP-Timeouts
 
 ## Changelog
+
+### 2.4.7 (2020-04-18)
+* (Apollon77) Add Sentry for error reporting with js-controller 3.0
+* (Apollon77) Fix crash because of undefined lat/long 
+
+### 2.4.6 (2020-02-24)
+* (bluefox) Time format added to widget
+
+### 2.4.5 (2020-02-23)
+* (ticaki) Datetime corrected
+
 ### 2.4.3 (2018-08-05)
 * (bluefox) Invalid certificate are accepted too
 
@@ -113,7 +126,7 @@ Dieser Adapter lädt die Wetterwarnungen des deutschen Wetterdienstes über den 
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 bluefox <dogafox@gmail.com>, hobbyquaker
+Copyright (c) 2016-2020 bluefox <dogafox@gmail.com>, hobbyquaker
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

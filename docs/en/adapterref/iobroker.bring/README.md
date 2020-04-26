@@ -128,6 +128,9 @@ For every shopping list a channel with the following states will be created:
     *Read only json string, which contains a dictionary to translate the swiss item names to the list language.*
 
 ## Changelog
+### 1.7.2 (2020-04-23)
+* (foxriver76) fixed potential issue on rendering widget
+
 ### 1.7.1 (2020-02-13)
 * (foxriver76) we are now using AES-256-CBC as encryption
 

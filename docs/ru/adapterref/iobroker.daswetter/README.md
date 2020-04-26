@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.daswetter/README.md
 title: ioBroker.DasWetter.
-hash: 477MA3/BQ7DZEFWpOwWI3IAJWPLV6+kZugwgP9hw9/A=
+hash: DEY5HlXp/lCyqV21CoMhaIZ9fCxdePj71f6b2zaoMMM=
 ---
 ![логотип](../../../en/adapterref/iobroker.daswetter/admin/daswettercom.png)
 
@@ -12,7 +12,6 @@ hash: 477MA3/BQ7DZEFWpOwWI3IAJWPLV6+kZugwgP9hw9/A=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.daswetter.svg)
 ![тесты](https://travis-ci.org/rg-engineering/ioBroker.daswetter.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.daswetter.png?downloads=true)
-![Значок Greenkeeper](https://badges.greenkeeper.io/rg-engineering/ioBroker.daswetter.svg)
 
 # IoBroker.DasWetter.
 ** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
@@ -39,18 +38,18 @@ hash: 477MA3/BQ7DZEFWpOwWI3IAJWPLV6+kZugwgP9hw9/A=
 ## Подсказки
 ### Иконки, используемые в vis
 * Доступ к таким значкам, как `http:// ip: 8082 / adapter / daswetter / icons / tiempo-weather / galeria1 / 1.png`.
-* в galerie6 оригинальные иконки в формате svg. В приложении Vis могут возникнуть проблемы с его визуализацией. Так что конвертированные PNG доступны. Просто используйте опцию «использовать PNG»
+* в galerie6 оригинальные иконки в формате svg. В приложении Vis могут возникнуть проблемы с его визуализацией. Так что преобразованные PNG доступны. Просто используйте опцию «использовать PNG»
 * в galerie5 оригинальные иконки в форматах svg и png. Кроме того, доступны цветные и белые версии
 
 ### "текущий" в NextHours_Day1:
-* DasWetter.com не предоставляет реальных текущих значений погоды
+* DasWetter.com не предоставляет реальные текущие значения погоды
 * но иногда полезно иметь прогноз на текущий час
 * поэтому мы добавили «текущий», который является просто копией соответствующих значений часов прогноза
-* убедитесь, что вы вызываете адаптер не реже одного раза в час, чтобы убедиться, что «текущий» обновляется хорошо
+* пожалуйста, звоните адаптеру как минимум один раз в час, чтобы убедиться, что «текущий» обновляется хорошо
 * см. также запрос функции github [проблема 24] (https://github.com/rg-engineering/ioBroker.daswetter/issues/24)
 
 ### Путь 4
-* в данный момент DasWetter.com отправляет данные, которые отличаются от их собственной спецификации.
+* на данный момент DasWetter.com отправляет данные, которые отличаются от их собственной спецификации.
 
 Теперь мы реализовали «авторемонт», который меняет структуру на документированную форму.
 
@@ -58,6 +57,13 @@ hash: 477MA3/BQ7DZEFWpOwWI3IAJWPLV6+kZugwgP9hw9/A=
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.daswetter/issues), если вы обнаружите ошибки или пожелаете новых функций
 
 ## Changelog
+
+### 3.0.0 (2020-03-xx)
+* (René) breaking change: old data structure is not supported anymore
+* (René) "request" replaced by "bent"
+
+### 2.8.2 (2020-03-20)
+* (René) some more logs to find parser errors
 
 ### 2.8.1 (2019-09-08)
 * (René) bug fix: some datapoints were created as number instead of string
@@ -124,7 +130,7 @@ for compatibility: in configuration old data structure can be enabled
 needs also 2.x of vis-weather-widget
 
 ## License
-Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2020>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

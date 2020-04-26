@@ -8,6 +8,8 @@
 
 [![NPM](https://nodei.co/npm/iobroker.synology.png?downloads=true)](https://nodei.co/npm/iobroker.synology/)
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
+
 ## Description
 The driver allows you to receive data and manage your Synology NAS server.
 
@@ -25,6 +27,9 @@ Get the SurveillanceStation info is a getInfo method with no additional paramete
 ```{"method":"getInfo", "params":{}}```
 
 ## Changelog
+
+### 0.1.0
+* (instalator) 
 
 ### 0.0.4 (2018-10-07)
 * (instalator) Изменен репозиторий библиотеки

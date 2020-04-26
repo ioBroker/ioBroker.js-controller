@@ -40,7 +40,7 @@ SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain v
 
 ### 2.0.0
 
--   Complete code redesign.
+-   Complete code redesign to reduce traffic between adapter and solarlog. NEW: System informations (info) and solarlogs setpoint-values for year, current and all month and current day (forecast).
 
 ### 1.3.0
 

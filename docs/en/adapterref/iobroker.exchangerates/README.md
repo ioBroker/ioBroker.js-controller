@@ -5,10 +5,11 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.exchangerates.svg)](https://www.npmjs.com/package/iobroker.exchangerates)
 [![Dependency Status](https://img.shields.io/david/instalator/iobroker.exchangerates.svg)](https://david-dm.org/instalator/iobroker.exchangerates)
 [![Known Vulnerabilities](https://snyk.io/test/github/instalator/ioBroker.exchangerates/badge.svg)](https://snyk.io/test/github/instalator/ioBroker.exchangerates)
+[![Travis-CI](http://img.shields.io/travis/instalator/ioBroker.exchangerates/master.svg)](https://travis-ci.org/instalator/ioBroker.exchangerates)
 
 [![NPM](https://nodei.co/npm/iobroker.exchangerates.png?downloads=true)](https://nodei.co/npm/iobroker.exchangerates/)
 
-**Tests:** [![Travis-CI](http://img.shields.io/travis/instalator/ioBroker.exchangerates/master.svg)](https://travis-ci.org/instalator/ioBroker.exchangerates)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
 
 ## exchangerates adapter for ioBroker
 

@@ -76,6 +76,20 @@ of the single instance can be set. In the selection Menu the the displayed minim
 lettering of the log appears in red.
 
 ## Changelog
+### 4.1.1 (2020-04-25)
+* (bluefox) Started the development of GUI based on React (only for developers)
+
+### 4.0.10 (2020-04-23)
+* (bluefox) Caught the web server errors
+
+### 4.0.9 (2020-04-19)
+* (Apollon77) Fix password encryption logics and make compatible to js-controller 3.x again
+
+### 4.0.8 (2020-04-18)
+* (bluefox) The attempt to process error by the gz log show.
+* (bluefox) Implement new automatic encryption/decryption for js-controller 3.0
+* (bluefox) add Sentry for error reporting with js-controller 3.0
+
 ### 4.0.5 (2020-02-23)
 * (Apollon77) Workaround for socket.io bug #3555 added to make sure always the correct client files are delivered
 * (Apollon77) remove socket.io-client dep again because we lookup via socket.io lib

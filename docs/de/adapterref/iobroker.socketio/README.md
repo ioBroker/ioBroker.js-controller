@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.socketio/README.md
 title: ioBroker socket.io
-hash: 6YPK4bSUejiR/S8fvJjcDOEhQiS11d46/YTfDNPZGVo=
+hash: kvmr/STXUvUUlD5loJavs7GahNyBQDsN0hBq3IpB90U=
 ---
 ![Logo](../../../en/adapterref/iobroker.socketio/admin/socketio.png)
 
@@ -13,7 +13,7 @@ hash: 6YPK4bSUejiR/S8fvJjcDOEhQiS11d46/YTfDNPZGVo=
 ![NPM](https://nodei.co/npm/iobroker.socketio.png?downloads=true)
 
 # IoBroker socket.io
-Dieser Adapter wird von einigen WEB-Anwendungen und Adaptern zur Kommunikation mit ioBroker verwendet.
+Dieser Adapter wird von einigen WEB-Anwendungen und Adaptern verwendet, um mit ioBroker über das Protokoll socket.io zu kommunizieren.
 
 Benutzer können diesen Adapter verwenden, um ihre Produkte über Web-Sockets mit ioBroker zu verbinden. Tatsächlich wird dieser Adapter von Flot, Rickshaw, Vis und Mobile verwendet, um Daten aus ioBroker zu extrahieren.
 
@@ -23,11 +23,13 @@ Unter Verwendung der Schnittstelle socket.io sollte der Benutzer die [Grundlagen
 
 Es ist nützlich, auch über die [Struktur der Objekte](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md) zu lesen.
 
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 ## Kurze Beschreibung des Konzepts
 ### Objekt
-Objekt ist die Beschreibung eines Datenpunkts oder einer Datengruppe. Die Gruppe könnte andere Datenpunkte in diesem Fall als Kanal bezeichnen. Wenn die Gruppe in diesem Fall aus anderen Kanälen besteht, wird sie als Gerät bezeichnet.
+Objekt ist eine Beschreibung des Datenpunkts oder der Datengruppe. Die Gruppe könnte andere Datenpunkte in diesem Fall als Kanal bezeichnen. Wenn die Gruppe in diesem Fall aus anderen Kanälen besteht, wird sie als Gerät bezeichnet.
 
-Objekt ist eine Metainformation, die einen Datenpunkt beschreibt und Inhalt enthalten kann: Max / Min-Wert, Einheit, Name, Standardwert, Werttyp, Informationen für den Adapter für die Kommunikation (z. B. IP-Adresse) und so weiter.
+Objekt ist eine Metainformation, die den Datenpunkt beschreibt und Inhalt enthalten kann: Max / Min-Wert, Einheit, Name, Standardwert, Werttyp, Informationen für den Adapter für die Kommunikation (z. B. IP-Adresse) und so weiter.
 
 ### Zustand
 Der Status ist der tatsächliche Wert des Datenpunkts und wird vom Javascript-Objekt dargestellt:
@@ -43,7 +45,7 @@ Der Status ist der tatsächliche Wert des Datenpunkts und wird vom Javascript-Ob
 }
 ```
 
-Zustände ändern sich sehr häufig im Vergleich zu Objekten. (Normalerweise sollten Objekte einmal durch Erstellung geändert werden und das ist alles)
+Zustände ändern sich sehr häufig im Vergleich zu Objekten. (Normalerweise sollten Objekte durch Erstellung einmal geändert werden und das ist alles)
 
 ### Wissen
 Jeder Staat hat das Attribut "ack". Es zeigt die Befehlsrichtung.
@@ -61,12 +63,12 @@ Jeder Staat hat das Attribut "ack". Es zeigt die Befehlsrichtung.
 ### Qualität
 Jeder Datenpunkt hat das Attribut **q** - *Qualität*
 
-## Verwendung
+## Verwendungszweck
 Es wird empfohlen, example / conn.js für die Kommunikation zu verwenden.
 
 Nach Aufnahme der Datei conn.js kann das globale Objekt **servConn** verwendet werden, um die Kommunikation mit dem Socketio-Adapter herzustellen.
 
-** servConn ** Objekt hat Aushöhlungsmethoden:
+Das Objekt **servConn** verfügt über Aushöhlungsmethoden:
 
 ### Drin
 - Funktion (connOptions, connCallbacks, Objekte Erforderlich)
@@ -117,7 +119,7 @@ Falls ein einfacher Wert verwendet wird, wird "ack" auf "false" gesetzt.
 ### GetStates
 - Funktion (IDs, Rückruf)
 
-Holen Sie sich die Zustände von mehr als einem Zustand. Dieser Befehl wird normalerweise aufgerufen, nachdem die Verbindung hergestellt wurde, um den tatsächlichen Status der verwendeten Datenpunkte abzurufen.
+Erhalten Sie die Zustände von mehr als einem Zustand. Dieser Befehl wird normalerweise aufgerufen, nachdem die Verbindung hergestellt wurde, um den tatsächlichen Status der verwendeten Datenpunkte abzurufen.
 
 - **IDs** - Muster oder Array mit IDs. Könnte weggelassen werden, um alle Zustände zu erhalten. Muster können Platzhalter haben, z. B.: '* .STATE', 'haa.0. *'
 - **Rückruf** - `` `Funktion (Fehler, Zustände) {}` `` - *Zustände* ist ein Objekt wie `` `{'id1': 'state1', 'id2': 'state2', .. .} `` `. *stateX* sind Objekte mit der oben beschriebenen Struktur (# state).
@@ -310,11 +312,21 @@ liest, ob die Authentifizierung aktiviert ist und welcher Benutzer angemeldet is
 
 Wenn die Authentifizierung aktiviert ist, wird der aktuell angemeldete Benutzer zurückgegeben. Wenn die Authentifizierung deaktiviert ist, wird der Standardbenutzer "Ausführen als" zurückgegeben.
 
-## Optimieren von Web-Sockets
+## Web-Sockets optimieren
 Auf einigen Web-Sockets-Clients gibt es Leistungsprobleme bei der Kommunikation. Manchmal ist dieses Problem auf einen Fallback der Socket.io-Kommunikation bei einem langen Abfragemechanismus zurückzuführen.
 Sie können die Option *Web-Sockets erzwingen* so einstellen, dass nur der Transport von Web-Sockets erzwungen wird.
 
 ## Changelog
+### 3.0.5 (2020-04-23)
+* (bluefox) Caught the web server errors
+
+### 3.0.4 (2020-04-23)
+* fix crash reason when server closes (Sentry IOBROKER-SOCKETIO-2/3/4/5)
+
+### 3.0.3 (2020-04-16)
+* (Apollon77) Remove usage of deprecated object methods; prevent js-controller 3.0 warnings
+* (Apollon77) Add Sentry error reporting
+
 ### 3.0.2 (2020-03-07)
 * (bluefox) Unload of adapter was corrected
 

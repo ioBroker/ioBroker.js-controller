@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: pxTnxHQ8587eG2gLkxM3SnhTsZ2RDqcKUDsXUMm/2cI=
+hash: p7EEJoNdKiXlYuc8V6IyWDTM1T8jtdu6FV5vNMAL7MU=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -33,6 +33,7 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot M88
 * Deebot 600/605
 * Deebot Ozmo 920
+* Deebot Ozmo Slim 10
 
 ## Installation
 Dieser Adapter verwendet die Canvas-Bibliothek, für die möglicherweise zusätzliche Installationen erforderlich sind. Andernfalls kann die Installation in iobroker zu einem Fehler führen:
@@ -56,7 +57,7 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 
 ## Bekannte Probleme
 * Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da [ einige Berichte] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24), dass die Verbindung nach ca. 24 Stunden
-* Es gibt einige Berichte ([1] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/23), [2] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot / Issues / 34)) über seltsames Verhalten des Batteriewerts bei Deebot 900/901
+* Seltsames Verhalten des Batteriewerts bei Deebot 900/901. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
 
 ## FAQ
 * Häufig gestellte Fragen finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
@@ -68,6 +69,9 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.5.9
+   * Several enhancements and fixes
 
 ### 0.5.8
    * Several enhancements and fixes

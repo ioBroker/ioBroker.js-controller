@@ -14,6 +14,8 @@ Requires node.js 8.0 or higher and Admin v3!
 The adapter communicates with Shelly devices by REST api and the CoAP or MQTT protocol.    
 By the default Shelly firmware (no flashing of firmware needed!). You will find more and detailed information about the device here : [Shelly](https://shelly.cloud/)
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to me as the developer.** More details see below!
+
 ## Installation
 You find a detailed installation documentation here:
 [Installation Documentation](./docs/EN/INSTALL.md)
@@ -43,7 +45,20 @@ You find a detailed installation documentation here:
 |Shelly Bulb Duo (SHBDUO-1)|verified|not verified|
 |Shelly 3EM (SHEM)|verified|verified|
 
+## What is Sentry and what is reported to the servers?
+Sentry.io is a way for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
+
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to our own Sentry server hosted in germany. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.
+
 ## Changelog
+
+### 3.2.5 (13.04.2020)
+* (Apollon77) - Update Dependencies incl shelly-lib to prevent exceptions
+* (Apollon77) - Add Sentry for error/crash reporting (active with js-controller 3.0)
+* (Stübi      - Add for hue two new datapoints for Shelly Bulb and RGBW2
+
+### 3.2.4 (11.04.2020)
+* (Stübi) - Bugfixing MQTT ext_temperature for Shelly 1
 
 ### 3.2.3 (03.03.2020)
 * (Stübi) - Bugfixing Shelly 3EMfor MQTT support (fixed datapoints for total and total_returned)

@@ -49,6 +49,10 @@ Not all states are available for all type of devices.
 
 ## Changelog
 
+### 0.1.2
+
+-  Poll states after sending command
+
 ### 0.1.1
 
 -  Code rework and several bugs fixed

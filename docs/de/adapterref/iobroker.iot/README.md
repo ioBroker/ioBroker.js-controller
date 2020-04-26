@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iot/README.md
 title: ioBroker IoT Adapter
-hash: LIxKjYA6G4HRyZ2clUWyMxnxX0RgaP7yd0uHUQ+KQMc=
+hash: AyRn68CYR4s+qIW3NFGuHjhm45ipfK0KTILNm9iI+fY=
 ---
 ![Logo](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -15,6 +15,8 @@ hash: LIxKjYA6G4HRyZ2clUWyMxnxX0RgaP7yd0uHUQ+KQMc=
 # IoBroker IoT Adapter
 Dieser Adapter ist NUR für die Kommunikation mit Amazon Alexa, Google Home und Nightscout vorgesehen.
 Es ist nicht für den Remotezugriff auf Ihre ioBroker-Instanz vorgesehen. Verwenden Sie dazu den ioBroker.cloud-Adapter.
+
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Die Einstellungen
 Um einen Cloud-Adapter zu verwenden, müssen Sie sich zuerst in der ioBroker-Cloud registrieren. [https://iobroker.pro](https://iobroker.pro).
@@ -191,7 +193,7 @@ Der Adapter liefert die Details in zwei Zuständen mit unterschiedlicher Details
 * ** smart.lastCommandObj *** enthält eine JSON-Zeichenfolge, die auf ein Objekt analysiert werden kann, das die folgenden Informationen enthält
  * **Wörter** enthält die empfangenen Wörter in einem Array
  * **intent** enthält den Abfragetyp. Mögliche Werte sind derzeit "askDevice", "controlDevice", "actionStart", "actionEnd", "askWhen", "askWhere", "askWho".
- * **Geräte-ID** enthält eine Geräte-ID, die angibt, an welches Gerät, an das die Anforderung gesendet wurde und das von Amazon übermittelt wird, eine leere Zeichenfolge ist, wenn sie nicht angegeben wird
+ * **Geräte-ID** enthält eine Geräte-ID, die angibt, an welches Gerät, an das die Anforderung gesendet wurde und das von Amazon gesendet wurde, eine leere Zeichenfolge ist, wenn sie nicht angegeben wird
  * **sessionId** enthält eine sessionId der Skill-Sitzung. Sollte identisch sein, wenn mehrere von Amazon gelieferte Befehle gesprochen wurden, ist die Zeichenfolge leer, wenn sie nicht angegeben wird
  * **Benutzer-ID** enthält eine Benutzer-ID des Gerätebesitzers (oder möglicherweise später des Benutzers, der mit der Fertigkeit interagiert hat), die von Amazon bereitgestellt wird, ist eine leere Zeichenfolge, wenn sie nicht angegeben wird
 
@@ -208,7 +210,7 @@ Wenn der Text ein JSON-Objekt ist, können die folgenden Schlüssel verwendet we
 
 ** Ergebnis per Nachricht an iot-Instanz zurückgeben **
 
-Die iot-Instanz akzeptiert auch eine Nachricht mit dem Namen "alexaCustomResponse", die den Schlüssel "response" mit einem Objekt enthält, das die Schlüssel **responseText** und **shouldEndSession** enthalten kann, wie oben beschrieben.
+Die iot-Instanz akzeptiert auch eine Nachricht mit dem Namen "alexaCustomResponse", die den Schlüssel "response" enthält, mit einem Objekt, das die Schlüssel **responseText** und **shouldEndSession** enthalten kann, wie oben beschrieben.
 Die iot-Instanz antwortet nicht auf die Nachricht!
 
 ** Beispiel eines Skripts, das Texte verwendet **
@@ -263,6 +265,24 @@ Folgende Typen werden unterstützt:
 - `ifttt` - verhält sich wie IFTTT (eigentlich nicht erforderlich, aber zu Testzwecken)
 
 ## Changelog
+### 1.4.11 (2020-04-26)
+* (bluefox) fixed IOBROKER-IOT-REACT-F
+
+### 1.4.10 (2020-04-24)
+* (bluefox) Fixed crashes reported by sentry
+
+### 1.4.7 (2020-04-23)
+* fix iot crash when timeouts in communications to Google happens (Sentry IOBROKER-IOT-2)
+* fix iot crash when google answers without customData (Sentry IOBROKER-IOT-1)
+
+### 1.4.6 (2020-04-18)
+* (Apollon77) Add Sentry error reporting to React Frontend
+
+### 1.4.4 (2020-04-14)
+* (Apollon77) remove js-controller 3.0 warnings and replace adapter.objects access
+* (Apollon77) add linux dependencies for canvas library
+* (Apollon77) add sentry configuration
+
 ### 1.4.2 (2020-04-08)
 * (TA2k) Fix updateState for Google Home
 

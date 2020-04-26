@@ -8,6 +8,9 @@
 
 This adapter allows connection from internet through ioBroker cloud to local installation of ioBroker.
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** 
+For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ## Settings
 ### APP-KEY
 To use cloud adapter you should first get the APP-Key on [https://iobroker.net](https://iobroker.net).
@@ -59,6 +62,10 @@ You may write "text2command" in white list, you can send POST request to ```http
 *to do*
 
 ## Changelog
+### 3.0.3 (2020-04-14)
+* (bluefox) Updated socket.io version
+* (bluefox) Added sentry.io reporting
+
 ### 3.0.2 (2020-02-23)
 * (Apollon77) fix for pot. crash when used with web 3.x
 

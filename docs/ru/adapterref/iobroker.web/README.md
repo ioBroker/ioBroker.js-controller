@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: IoxXgKd7pdra/01v8N27ewN+TRl/KFc9cGGYsa3qLd0=
+hash: a9Z9DdqN4STkXTJENa2X1xlRf2gGuQgICEeqvVHCVpE=
 ---
 ![логотип](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -16,12 +16,14 @@ hash: IoxXgKd7pdra/01v8N27ewN+TRl/KFc9cGGYsa3qLd0=
 # IoBroker.web
 Веб-сервер на базе Node.js и экспресс для чтения файлов из БД ioBroker
 
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
+
 ## Настройка веб-сокетов
 На некоторых клиентах веб-сокетов существует проблема с производительностью связи. Иногда эта проблема возникает из-за сбоя соединения socket.io с длинным механизмом опроса.
 Вы можете установить опцию *Force Web-Sockets* чтобы принудительно использовать только транспорт веб-сокетов.
 
 ## Давайте зашифруем сертификаты
-Прочитайте [Вот](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates)
+Читать [Вот](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates)
 
 ## Расширения
 Веб-драйвер поддерживает расширения. Расширением является обработчик URL, который будет вызываться при появлении такого запроса URL.
@@ -39,6 +41,28 @@ hash: IoxXgKd7pdra/01v8N27ewN+TRl/KFc9cGGYsa3qLd0=
 Если нет, пользователь останется в системе в течение настроенного времени ожидания входа.
 
 ## Changelog
+### 3.0.5 (2020-04-23)
+* (bluefox) fixed the sentry warnings
+
+### 3.0.4 (2020-04-16)
+* (Apollon77) fix js-controller 3.0 warnings
+* (Apollon77) add Sentry error reporting with js-controller 3.0
+
+### 3.0.2 (2020-03-12)
+* (bluefox) Web extensions were fixed
+
+### 3.0.1 (2020-02-23)
+* (Apollon77) Workaround for socket.io bug #3555 added to make sure always the correct client files are delivered
+
+### 3.0.0 (2020-01-15)
+* (Apollon77) upgrade all dependencies, especially socketio to current version! This might break ipad 1/2 devices
+
+### 2.4.10 (2019-11-07)
+* (bluefox) Workaround for material was added
+
+### 2.4.9 (2019-11-04)
+* (Apollon77) permission errors fixed when whitelist had at least one entry
+
 ### 2.4.8 (2019-10-16)
 * (bluefox) Fixed login of non-admin user
 

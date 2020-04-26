@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: d1rW8+dWfJIl6ria3Tyss9F+KnMsLdWlGNZWIb/m7GI=
+hash: 1qF1F3sF76A7SsE8czndOHy0mUHbge1glmr0Dulmlgg=
 ---
 ![Logo](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -14,8 +14,6 @@ hash: d1rW8+dWfJIl6ria3Tyss9F+KnMsLdWlGNZWIb/m7GI=
 ![NPM](https://nodei.co/npm/iobroker.meteoalarm.png?downloads=true)
 
 # IoBroker.meteoalarm
-=================
-
 meteoalarm Adapter für ioBroker ---------------------------------------------- -------------------------------- Dieser Adapter ruft Wetteralarme von meteoalarm.eu ab, einschließlich Wind, Schnee, Regen , hohe und niedrige Temperatur usw. Diese Informationen sind in der Landessprache und für detaillierte Regionen verfügbar.
 
 ## Wie man es benutzt
@@ -75,7 +73,7 @@ Option 2: Gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Geh
 ## Unterstützte Länder
 * Österreich
 * Kroatien
-* Tschechien
+* Tschechische Republik
 * Finnland
 * Deutschland
 * Griechenland

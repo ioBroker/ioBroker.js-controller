@@ -4,6 +4,7 @@ BADGE-NPM version: http://img.shields.io/npm/v/iobroker.feiertage.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.feiertage.svg
 BADGE-Tests: https://travis-ci.org/Pix---/ioBroker.feiertage.svg?branch=master
 BADGE-Open Issues: http://githubbadges.herokuapp.com/Pix---/ioBroker.feiertage/issues.svg
+BADGE-Known Vulnerabilities: https://snyk.io/test/github/Pix---/ioBroker.feiertage/badge.svg?targetFile=package.json
 BADGE-NPM: https://nodei.co/npm/iobroker.feiertage.png?downloads=true
 BADGE-Travis-CI: http://img.shields.io/travis/Pix---/ioBroker.feiertage/master.svg
 BADGE-AppVeyor: https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.feiertage?branch=master&svg=true
@@ -26,6 +27,9 @@ Only selected holidays count in the process.
 The adapter starts daily at midnight. Due to the nature of the subject, no higher frequency is required.
 
 ## Changelog
+### 1.0.19 (2020-04-21)
+* (pix) NodeJS 10 or higher required
+
 ### 1.0.18 (2020-03-25)
 * (pix) Italy's Day of Liberation and Day of Republic added
 * (pix) Minor fixes

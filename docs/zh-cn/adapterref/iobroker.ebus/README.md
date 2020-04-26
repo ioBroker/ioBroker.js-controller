@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
+hash: 7ccg+/aNzLiIjNkfd8PVdm5RHJVNDAtu3yLbaDizhCg=
 ---
 ![商标](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -12,7 +12,6 @@ hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.ebus.svg)
 ![测验](https://travis-ci.org/rg-engineering/ioBroker.ebus.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.ebus.png?downloads=true)
-![环保管理员徽章](https://badges.greenkeeper.io/rg-engineering/ioBroker.ebus.svg)
 
 ＃ioBroker.ebus
 **如果您愿意，请考虑捐赠：**
@@ -21,11 +20,11 @@ hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 
 该适配器读取
 
--使用html从ebusd获取数据
+-使用html从ebusd提取数据
 
 在这种情况下，ebusd必须运行并且必须能够将数据发送到例如通过http：// IP：port / data（http://192.168.0.123:8889/data）的资源管理器。可以从https://github.com/john30/ebusd复制配置文件。解析所有包含数据，lastup和来自global部分的字段。目前，其他所有内容都将被忽略。
 
-可能会轮询未通过ebusd直接轮询的数据。命令“ read -f”用于强制通过ebus进行读取。
+有可能轮询未通过ebusd直接轮询的数据。命令“ read -f”用于强制通过ebus进行读取。
 
 另一个功能是发送任何命令到ebusd并接收答案，例如脚本。
 
@@ -34,7 +33,10 @@ hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 ＃＃ 已知的问题
 *如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.ebus/issues）上创建问题
 
-## 1.0.0（2019-12-xx）
+## 2.0.0（2020-04-26）
+*（René）“请求”替换为“弯曲”
+
+## 1.0.0（2019-12-15）
 *（René）更新到我自己的flot 3.0
 
 ## 0.8.2（2019-11-10）
@@ -62,7 +64,7 @@ hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 *（René）添加错误信息
 
 ### 0.5.2
-*（René）错误修复：在vis 1.x中，某些值未存储
+*（René）错误修复：在vis 1.x中某些值未存储
 
 ### 0.5.1
 *（René）错误修复：如果没有要轮询的内容，则跳过telnet连接
@@ -99,7 +101,7 @@ hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 ## Changelog
 
 ## License
-Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2020>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

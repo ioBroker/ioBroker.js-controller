@@ -12,7 +12,7 @@
 
 
 ## Introduction
-Adapter to communicate with the crypt trading platform binance
+Adapter to communicate with the crypto trading platform binance
 
 The adapter pulls prices of currencies in the configured update interval.
 If you configure an API Key and the corresponding secret, it will pull account balances as well.
@@ -21,6 +21,10 @@ You may create an API Key on binance.com - i suggest to restrict it to "read-onl
 ![screenshot-1](screenshot-1.png) ![screenshot-2](screenshot-2.png)
 
 ## Changelog
+### 1.1.0
+- added 24hr data for selected symbols
+### 1.0.5
+- fixed interval handle
 ### 1.0.4
 - npmjs repackage
 ### 1.0.3

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: VgIhdc1/23xticYs/abzNV4hx3j1Dut103VJuJ/9spo=
+hash: 61fEhv2DxfmqAoNBj1Ifds0g5354L6Q/0uNr0BUdeYY=
 ---
 ![商标](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -77,8 +77,8 @@ createState(
 
 ###数字输入
 如果在自定义对话框中选择了input_number实体类型，则可以手动完成此操作。
-可以添加`common`中的此类型所需的`min`和`max`值以及可选的`step`。
-如果要查看向上和向下箭头，则应在自定义`mode`中将其设置为'number'：
+可以添加`common`中必需的`min`和`max`值以及可选的`step`类型。
+如果要查看向上和向下箭头，则应在自定义`mode`中将其设置为“数字”：
 
 ```
 common: {
@@ -275,11 +275,11 @@ createState('location.latitude', 39.5681295, false, {
 }
 ```
 
-或者只是手动将实体类型设置为`camera`并将URL写入其中。
+或者只是将实体类型手动设置为`camera`并将URL写入其中。
 
 ###隐藏工具栏
 要隐藏工具栏，可以在“主题”选项卡上的ioBroker配置对话框中设置复选框。
-要显示它，您可以再次在对话框中禁用它，或者仅使用`?toolbar=true`参数调用URL。
+要显示它，可以再次在对话框中将其禁用，或者仅使用`?toolbar=true`参数调用URL。
 
 ### Markdown
 您可以像[iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects)中那样在markdown中使用绑定。
@@ -315,7 +315,7 @@ createState('location.latitude', 39.5681295, false, {
 
 `background: center / cover no-repeat url("/local/custom_ui/background.jpg") fixed`
 
-在lovelace配置文件中。阅读更多有关lovelace[这里](https://www.home-assistant.io/lovelace/views/#background)中的背景的信息。
+在lovelace配置文件中。阅读有关lovelace[这里](https://www.home-assistant.io/lovelace/views/#background)中的背景的更多信息。
 
 ##主题
 可以在ioBroker的配置对话框中定义主题。
@@ -435,7 +435,7 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 二手版本的home-assistant-frontend@1.0.0
 
 ###如何构建新的Lovelace版本
-首先必须将** https：//github.com/home-assistant/home-assistant-polymer（dev分支）**手动**合并到https://github.com/GermanBluefox/home-assistant-polymer .git（*** iob ***分支！）。
+首先必须将** https：//github.com/home-assistant/home-assistant-polymer（dev分支）实际**手动合并到https://github.com/GermanBluefox/home-assistant-polymer .git（*** iob ***分支！）。
 
 ioBroker的所有更改都标记有注释`// IoB`。
 现在（2020.01.12）修改了以下文件：
@@ -452,7 +452,7 @@ ioBroker的所有更改都标记有注释`// IoB`。
 之后，在`./build`文件夹中签出修改后的版本。然后。
 
 1.转到./build目录。
-2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`是https://github.com/home-assistant/home-assistant-polymer.git的分支，但有些事情被修改（请参阅前面的文件列表）。
+2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`这是https://github.com/home-assistant/home-assistant-polymer.git的分支，但有些事物已修改（请参见前面的文件列表）。
 3.`cd home-assistant-polymer`
 4.`git checkout master`
 5.`npm install`
@@ -461,6 +461,15 @@ ioBroker的所有更改都标记有注释`// IoB`。
 8.启动“ gulp重命名”任务。
 
 ## Changelog
+### 1.0.14 (2020-04-22)
+* (algar42) Call of deprecated getObjectView updated for js-controller v3
+
+### 1.0.13 (2020-04-13)
+* (bluefox) The translation was corrected in the custom settings.
+
+### 1.0.12 (2020-03-16)
+* (Garfonso) Added option to restrict auto entity creation to alias.0.*
+
 ### 1.0.10 (2020-02-13)
 * (Garfonso) Fixed handling of malformed / null RGB string
 * (algar42)  Binary sensor added

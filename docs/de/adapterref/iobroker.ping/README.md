@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ping/README.md
 title: PING-Adapter
-hash: +sNYQlgffFdpaQvuftMDNSEkuiykM/qAbysmwLlp358=
+hash: CN7YacMSC0ttlxH0ZpgkJ6AEGQGK/oBDM2KGFFNGz8g=
 ---
 ![Logo](../../../en/adapterref/iobroker.ping/admin/ping.png)
 
@@ -14,10 +14,26 @@ hash: +sNYQlgffFdpaQvuftMDNSEkuiykM/qAbysmwLlp358=
 ![NPM](https://nodei.co/npm/iobroker.ping.png?downloads=true)
 
 # PING-Adapter
-## Pings konfigurierte IP-Adressen.
-Pingt angegebene IP-Adressen in definierten Intervallen und überwacht die Ergebnisse.
+## Pingt konfigurierte IP-Adressen.
+Pingt die angegebenen IP-Adressen in einem definierten Intervall und überwacht die Ergebnisse.
+
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Changelog
+
+### 1.4.5 (2020-04-23)
+* (Apollon77) Fixed potential crash case (Sentry)
+
+### 1.4.4 (2020-04-17)
+* (bluefox) Added support of Admin3 
+
+### 1.4.3 (2020-04-17)
+* (Apollon77) Add Sentry for js-controller 3.0
+* (Apollon77) update dependencies
+
+### 1.4.2 (2020-01-23)
+* (JayVee2) Sort the IP addresses
+
 ### 1.4.1 (2019-01-08)
 * (simatec) support compact mode
 
@@ -74,7 +90,7 @@ Pingt angegebene IP-Adressen in definierten Intervallen und überwacht die Ergeb
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

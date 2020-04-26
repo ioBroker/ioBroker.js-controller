@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: IoxXgKd7pdra/01v8N27ewN+TRl/KFc9cGGYsa3qLd0=
+hash: a9Z9DdqN4STkXTJENa2X1xlRf2gGuQgICEeqvVHCVpE=
 ---
 ![Logo](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -14,31 +14,55 @@ hash: IoxXgKd7pdra/01v8N27ewN+TRl/KFc9cGGYsa3qLd0=
 ![NPM](https://nodei.co/npm/iobroker.web.png?downloads=true)
 
 # IoBroker.web
-Webserver auf der Basis von Node.js und Express zum Lesen der Dateien aus der ioBroker DB
+Webserver auf der Basis von Node.js und Express zum Lesen der Dateien aus ioBroker DB
 
-## Web-Sockets einstellen
-Auf einigen Web-Sockets-Clients liegt ein Leistungsproblem bei der Kommunikation vor. Manchmal ist dieses Problem auf ein Zurückfallen der socket.io-Kommunikation bei langen Abfragemechanismen zurückzuführen.
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
+## Web-Sockets optimieren
+Auf einigen Web-Sockets-Clients gibt es Leistungsprobleme bei der Kommunikation. Manchmal ist dieses Problem auf einen Fallback der Socket.io-Kommunikation bei einem langen Abfragemechanismus zurückzuführen.
 Sie können die Option *Web-Sockets erzwingen* so einstellen, dass nur der Transport von Web-Sockets erzwungen wird.
 
-## Lassen Sie uns Zertifikate verschlüsseln
+## Verschlüsseln wir Zertifikate
 Lesen Sie [Hier](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates)
 
 ## Erweiterungen
-Der Web-Treiber unterstützt Erweiterungen. Die Erweiterung ist URL-Handler, der aufgerufen wird, wenn eine solche URL-Anfrage erscheint.
+Der Webtreiber unterstützt Erweiterungen. Die Erweiterung ist URL-Handler, der aufgerufen wird, wenn eine solche URL-Anforderung angezeigt wird.
 Die Erweiterungen sehen aus wie normale Adapter, haben jedoch keinen laufenden Prozess und werden vom Webserver aufgerufen.
 
-Z.B. Der Benutzer kann einen speziellen Proxy-Adapter aktivieren und andere Geräte (z. B. Webcams) auf demselben Webserver erreichen.
+Z.B. Der Benutzer kann einen speziellen Proxy-Adapter aktivieren und andere Geräte (wie Web-Cams) auf demselben Webserver erreichen.
 Es ist erforderlich, dass alle Dienste unter einem Webserver verfügbar sind.
 
 ## Brute-Force-Schutz
-Wenn die Authentifizierung aktiviert ist und der Benutzer innerhalb einer Minute das fünffache eines ungültigen Kennworts eingibt, muss er mindestens eine Minute bis zum nächsten Versuch warten.
+Wenn die Authentifizierung aktiviert ist und der Benutzer innerhalb einer Minute ein fünfmal ungültiges Kennwort eingibt, muss er mindestens eine Minute bis zum nächsten Versuch warten.
 Nach dem 15. Fehlversuch muss der Benutzer 1 Stunde warten.
 
 ## Option "Angemeldet bleiben"
 Wenn diese Option ausgewählt ist, bleibt der Benutzer einen Monat lang angemeldet.
-Wenn nicht, bleibt der Benutzer für das konfigurierte "Anmelde-Timeout" angemeldet.
+Wenn nicht, bleibt der Benutzer für das konfigurierte "Anmeldezeitlimit" angemeldet.
 
 ## Changelog
+### 3.0.5 (2020-04-23)
+* (bluefox) fixed the sentry warnings
+
+### 3.0.4 (2020-04-16)
+* (Apollon77) fix js-controller 3.0 warnings
+* (Apollon77) add Sentry error reporting with js-controller 3.0
+
+### 3.0.2 (2020-03-12)
+* (bluefox) Web extensions were fixed
+
+### 3.0.1 (2020-02-23)
+* (Apollon77) Workaround for socket.io bug #3555 added to make sure always the correct client files are delivered
+
+### 3.0.0 (2020-01-15)
+* (Apollon77) upgrade all dependencies, especially socketio to current version! This might break ipad 1/2 devices
+
+### 2.4.10 (2019-11-07)
+* (bluefox) Workaround for material was added
+
+### 2.4.9 (2019-11-04)
+* (Apollon77) permission errors fixed when whitelist had at least one entry
+
 ### 2.4.8 (2019-10-16)
 * (bluefox) Fixed login of non-admin user
 

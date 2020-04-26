@@ -1,34 +1,40 @@
 ![Logo](admin/kodi.png)
 
 [![NPM version](https://img.shields.io/npm/v/iobroker.kodi.svg)](https://www.npmjs.com/package/iobroker.kodi)
+![Number of Installations](http://iobroker.live/badges/kodi-stable.svg)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.kodi.svg)](https://www.npmjs.com/package/iobroker.kodi)
+![Number of Installations](http://iobroker.live/badges/kodi-installed.svg)
 [![Tests](http://img.shields.io/travis/instalator/ioBroker.kodi/master.svg)](https://travis-ci.org/instalator/ioBroker.kodi)
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
 
 [![NPM](https://nodei.co/npm/iobroker.kodi.png?downloads=true)](https://nodei.co/npm/iobroker.kodi/)
 
-# Kodi's JSON-RPC API for IoBroker
-![Number of Installations](http://iobroker.live/badges/kodi-installed.svg) ![Number of Installations](http://iobroker.live/badges/kodi-stable.svg) You can find kodi's official documentation of the JSON-RCP API [here](http://kodi.wiki/view/JSON-RPC_API) and the full list of available commands (for protocol version 6) [here](http://kodi.wiki/view/JSON-RPC_API/v6).
+[English manual](https://github.com/instalator/ioBroker.kodi/wiki/en_EN)
 
-***Note: This adapter requires Node 0.12+ (so 0.10 not supported)***
+# Адаптер Kodi для IoBroker (JSON-RPC API) 
+Вы можете найти официальную документацию KODI по API JSON-RCP [тут](http://kodi.wiki/view/JSON-RPC_API) и полный список доступных команд (для протокола версии 6) [тут](http://kodi.wiki/view/JSON-RPC_API/v6).
+
+***Примечание: Этот адаптер требует Nodejs 8.0+***
 
 ## Конфигурация KODI
-Remote control enable.
-![Remote control enable.] (admin/remote.jpg)
+Включение удаленного управления и веб-сервера.
+![Remote control enable.](admin/remote.png)
+
 JSON-RPC API использует **по умолчанию порт 9090**, для того чтобы его изменить необходимо внести изменения в файл [advancedsettings.xml](http://kodi.wiki/view/AdvancedSettings.xml)
 
-_Note: The advancedsettings.xml file does not exist by default. You have to create it first!_
+_Примечание: Файл advancedsettings.xml не существует по умолчанию. Вы должны сначала создать его!_
 ```xml
 <jsonrpc>
     <compactoutput>true</compactoutput>
     <tcpport>9999</tcpport>
 </jsonrpc>
 ```
-![http enable.](admin/web.jpg)
 
 ## Конфигурация драйвера
-В найстройках драйвера указывается IP адрес KODI и порт для JSON-RPC API (по умолчанию 9090).
+В настройках адаптера указывается IP адрес и порт для JSON-RPC API (по умолчанию 9090), и логин/пароль для доступа на веб-сервер Kodi.
 
-## Using
+## Использование
 ### ShowNotif:
 Один важный момент, если используется заголовок сообщения, то он должен всегда находится перед самим текстом сообщения (Внимание;Протечка воды), расположение остальных параметров не критично.
 
@@ -39,7 +45,7 @@ _Note: The advancedsettings.xml file does not exist by default. You have to crea
   * 'error' - 2.
 
 **displaytime:**
-Время отображения сообщения в милисекундах, минимум 1500 макс 30000 мс.
+Время отображения сообщения в миллисекундах, минимум 1500 макс 30000 мс.
 
 **Пример:**
  * 1;Внимание;Протечка воды;15000
@@ -53,7 +59,7 @@ sendTo("kodi.0", {
     message:  'Возможно протечка воды ', //Текст сообщения
     title:    'ВНИМАНИЕ!!!', //Заголовок сообщения
     image: 'https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png', //Ссылка на иконку
-    delay: 7000 //Время отображения сообщения милисекундах (минимум 1500 макс 30000 мс)
+    delay: 7000 //Время отображения сообщения миллисекундах (минимум 1500 макс 30000 мс)
 });
 ```
 ### SwitchPVR:
@@ -67,7 +73,7 @@ sendTo("kodi.0", {
 
 ### Open:
 Сюда записывается ссылка на медиконтент в сети интернет либо путь до локального медиа файла.
-После записи значения начнется воспроизведение на проигрователе KODI.
+После записи значения начнется воспроизведение на проигрывателе KODI.
 
 ### Position:
 Текущая позиция в плейлисте, так же в этот статус можно записать необходимую позицую и KODI тут же перейдет к воспроизведению этой позиции.
@@ -89,7 +95,7 @@ sendTo("kodi.0", {
 Старт воспроизведения (true, false)
 
 ### Speed:
-Скорость воспроизведения. Фиксированные значения -32, -16, -8, -4, -2, -1, 0, 1, 2, 4, 8, 16, 32, а также increment и decrement
+Скорость воспроизведения. Фиксированные значения (-32, -16, -8, -4, -2, -1, 0, 1, 2, 4, 8, 16, 32), а также 'increment' и 'decrement'
 
 ### Directory:
 Сюда записывается путь до папки или диска, в ответ в этот статус записывается список каталогов указанной папки или диска.
@@ -115,11 +121,16 @@ sendTo("kodi.0", {
 
 ## Changelog
 
-#### 2.0.0 (2017-11-13)
+#### 2.0.1 (2020-04-13)
+* (instalator) fixed error if not used PVR
+
+#### 2.0.0 (2020-04-12)
 * (instalator) support admin3
 * (instalator) support compact mode
 * (instalator) refactoring
 * (instalator) fixed different error
+* (instalator) added english manual
+* (instalator) big change code
 
 #### 1.0.0 (2017-11-13)
 * (instalator) up to stable

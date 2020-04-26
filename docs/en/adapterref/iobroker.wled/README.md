@@ -41,6 +41,12 @@ If you like my work, please feel free to provide a personal donation
 
 ## Changelog
 
+### 0.5.1 (20-04-2020) Avoid writing objects unnecessarily, Sentry implemented
+* (Dutchman) Implement Sentry
+* (Dutchman) Bugfix : Devicename
+* (Dutchman) Bugfix : Warning with JS Controler 3.0.7
+* (Dutchman) Bugfix : Avoid writing objects unnecessarily
+
 ### 0.5.0 Stable release
 * (DutchmanNL) Added translations
 * (DutchmanNL) Release to stable repository, beta testing finished

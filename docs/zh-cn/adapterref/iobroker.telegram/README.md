@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.telegram/README.md
 title: ioBroker电报适配器
-hash: VRIdMiUgqct15MdEo+TxapxwmTaoIl+xo+flI0ZQKaY=
+hash: BuYkubzMLypshKqNbVufMZM5m/zjagIRqR6vJCVHuOQ=
 ---
 ![商标](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
 
@@ -28,7 +28,7 @@ hash: VRIdMiUgqct15MdEo+TxapxwmTaoIl+xo+flI0ZQKaY=
 
 **注意：**您可以使用缩写形式“ / p短语”。
 
-要添加精美的头像图片，请输入`/setuserpic`并上传所需的图片（512x512像素），例如[商标](img/logo.png)。
+要添加精美的头像图片，请在“ BotFather”聊天中输入`/setuserpic`并将其上载所需的图片（512x512像素），例如[商标](img/logo.png)。
 
 您可以通过messageBox`sendTo('telegram', 'Test message')`向所有经过身份验证的用户或特定用户`sendTo('telegram', '@userName Test message')`发送消息。
 用户必须先经过身份验证。
@@ -41,7 +41,7 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 });
 ```
 
-如果使用上面的示例，请注意，必须将“ UserName”替换为您要向其发送消息的用户的名字或Public-Telegram-Username。 （取决于是否启用了Adaptersettings中的'Store username not firstname'设置）如果设置了该选项并且用户未在电报帐户中指定公共用户名，则适配器将继续使用该用户名。用户。请记住，如果用户稍后（在对您的机器人进行身份验证之后）设置了公共用户名，则下次用户向机器人发送消息时，保存的名字将被用户名替换。
+如果使用上面的示例，请注意，您必须将“ UserName”替换为您要向其发送消息的用户的名字或Public-Telegram-Username。 （取决于是否启用了Adaptersettings中的'Store username not firstname'设置）如果设置了该选项并且用户未在电报帐户中指定公共用户名，则适配器将继续使用该用户名。用户。请记住，如果用户稍后（在对您的机器人进行身份验证之后）设置了公共用户名，则下次用户向机器人发送消息时，保存的名字将被用户名替换。
 
 可以指定多个收件人（只需用逗号分隔用户名）。
 例如：收件人：“ User1，User4，User5”
@@ -110,7 +110,7 @@ sendTo('telegram.0', {
 **可能的选项**：
 
 -* disable_notification *：静默发送消息。 iOS用户将不会收到通知，Android用户将不会收到通知。 （所有类型）
--* parse_mode *：如果希望Telegram应用在机器人的消息中显示粗体，斜体，固定宽度的文本或嵌入式URL，则发送Markdown或HTML。可能的值：“ Markdown”，“ HTML”（消息）
+-* parse_mode *：如果希望Telegram应用在机器人消息中显示粗体，斜体，固定宽度的文本或内联URL，则发送Markdown或HTML。可能的值：“ Markdown”，“ HTML”（消息）
 -* disable_web_page_preview *：禁用此消息中链接的链接预览（消息）
 -*说明*：用于文档，图片或视频的标题，0-200个字符（视频，音频，图片，文档）
 -*持续时间*：发送的视频或音频的持续时间（以秒为单位）（音频，视频）
@@ -508,14 +508,107 @@ sendTo('telegram.0', 'call', {
 -`uk-UA-Standard-A`-乌克兰语（乌克兰）（女声）
 -`vi-VN-Standard-A`-越南文（越南）（女声）
 -`vi-VN-Standard-B`-越南文（越南）（男声）
--`vi-VN-Standard-C`-越南文（越南）（女性2种声音）
+-`vi-VN-Standard-C`-越南语（越南）（女2声音）
 -`vi-VN-Standard-D`-越南文（越南）（男性2种声音）
 
 去做：
 
 -场地
 
+##基于admin中的设置的自动嵌入式键盘（简易键盘）
+对于每种状态，可以启用其他设置：
+
+![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings.png)
+
+通过输入“ / cmds”，以下键盘将以电报形式显示：
+
+![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings1.png)
+
+在电报适配器的配置对话框中，“ / cmds”可以替换为任何文本（例如“？”）。
+
+如果在电报适配器的配置对话框中启用了“在键盘命令中使用房间”选项，那么在第一步中将显示房间列表。 ***尚未实现***
+
+###设置状态
+首先必须启用配置。
+
+####别名
+设备名称。如果为空，则名称将取自对象。
+通过输入“门灯”，以下菜单将显示为布尔状态。
+![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings2.png)
+
+您可以打开设备，关闭设备或请求状态。
+如果单击`Door lamp ?`，您将获得`Door lamp  => switched off`。
+
+＃＃＃ 只读
+如果激活，将不显示任何ON / OFF按钮，仅显示`Door lamp ?`。
+
+###报告更改
+如果设备的状态发生了变化（例如有人物理地打开了灯），则新的状态将被传送到电报中。
+例如。 `Door lamp  => switched on`。
+
+###行中的按钮
+一台设备的行中必须显示多少个按钮。
+由于名称太长，最好在该行中仅显示2个（或什至只显示一个）按钮。
+
+![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings3.png)
+
+###只写
+如果激活，则不会显示任何状态查询（`Door lamp ?`）按钮。
+![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings4.png)
+
+### ON命令
+哪些文本将显示在“打开”按钮上。
+就像这里：![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings5.png)
+
+将产生以下键盘：![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings6.png)
+
+### ON文字
+状态报告将显示哪些文本。
+例如。 `Door lamp => activated`如果设备的状态更改为true且“ ON Text”为`activated`
+
+仅当“报告更改”被激活时，才会显示开/关文本。
+
+### OFF命令
+与** ON命令**相同，但为OFF。
+
+### OFF文字
+与** ON Text **相同，但为OFF。
+例如。 `Door lamp => deactivated`如果设备的状态更改为false且“关闭文本”为`deactivated`
+
+###仅适用
+例如。对于按钮，它们没有关闭状态。在这种情况下，将不会显示“关闭”按钮。
+
+![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings7.png)
+
+##如何使用电报适配器在群聊中接收消息
+如果电报漫游器在私人聊天中接收到用户发送给该机器人的消息，但在群聊中未接收到用户发送的消息。
+在这种情况下，您必须与@botfather交谈并禁用隐私模式。
+
+BotFather聊天：
+
+```
+You: /setprivacy
+
+BotFather: Choose a bot to change group messages settings.
+
+You: @your_name_bot
+
+BotFather: 'Enable' - your bot will only receive messages that either start with the '/' symbol or mention the bot by username.
+
+'Disable' - your bot will receive all messages that people send to groups.
+
+Current status is: ENABLED
+
+You: Disable
+
+BotFather: Success! The new status is: DISABLED. /help
+```
+
 ## Changelog
+### 1.5.6 (2020-04-04)
+* (bluefox) Fixed missing languages for blockly
+* (bluefox) Added description of easy-keyboard
+
 ### 1.5.5 (2020-04-04)
 * (alutov) Fixed bug for telegram users with an empty user name
 * (Mark Rohrbacher) Allowed JSON objects in telegram.*.communicate.response 

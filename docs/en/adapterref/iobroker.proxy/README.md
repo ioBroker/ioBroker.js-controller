@@ -37,6 +37,9 @@ You can read more about context [here](https://www.npmjs.com/package/http-proxy-
 Additionally the user can define the route path for proxy requests.
 
 ## Changelog
+### 1.2.1 (2020-04-14)
+* (bluefox) Corrected error with access to local files
+
 ### 1.2.0 (2020-03-08)
 * (Apollon77) update dependencies
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: iw9jHbxnZMm10ysHEF8fY2bBp6smchJQfBPXBq4g33k=
+hash: 1rYVmy6lpZhG8vlUpYRAhkAU4GuCT7b4xULKhFRrp30=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -34,6 +34,9 @@ Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen u
 [![Spende] (администратор / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+# 1.3.3
+- Исправлена опция значения фонового виджета
 
 # 1.3.2
 - Исправлена ошибка

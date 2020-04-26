@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: Qx2/sSVNBo/IZIqHTVLJNsEI/U4q1RoWRuAEHPMDs/E=
+hash: oKl8aI61rKkyRcLuEGerQ10oKva5p3JoIsihkkS3MNA=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -12,15 +12,13 @@ hash: Qx2/sSVNBo/IZIqHTVLJNsEI/U4q1RoWRuAEHPMDs/E=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)
 ![Tests](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/rg-engineering/ioBroker.heatingcontrol.svg)
 
 # IoBroker.HeatingControl
 ** Wenn es Ihnen gefällt, ziehen Sie bitte eine Spende in Betracht: **
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
-Adapter zur Steuerung Ihres Heizungssystems.
-
+## Adapter zur Steuerung Ihres Heizungssystems.
 Eigenschaften:
 
 * Kontrollieren Sie die Solltemperaturen aller Thermostate nach Zeitplan
@@ -138,6 +136,11 @@ Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 * Heizungssteuerung.0.GästePräsent
 * Heizungssteuerung.0.PartyNow
 
+## Änderungen vom Thermostat verwenden
+Viele Benutzer fragten nach einer Option, um Änderungen vom Thermostat in den Adapter zu übernehmen. Jetzt sind drei Optionen implementiert:
+
+| Option | Beschreibung | -------------------------- | --------------------- -------------------------------------------------- ---------------- | nein | Wie bis zur Version 0.3.x werden Änderungen am Thermostat ignoriert als Überschreibung | Änderungen vom Thermostat werden als Außerkraftsetzung angesehen; Die Übersteuerungszeit muss im Voraus in der Heizungssteuerung.0.Rooms.RoomName.TemperaturOverrideTime | eingestellt werden | Wenn die Überschreibzeit nicht eingestellt ist, wird die Überschreibung nicht ausgeführt als neue Profileinstellung | Änderungen vom Thermostat werden als Zieltemperatur für die aktuelle Profilperiode verwendet verstellbar pro Raum | Die oben genannten Optionen können pro Raum konfiguriert werden. Datenpunkt Heizung.0.Rooms.RoomName.ChangesFromThermostatMode definiert den Modus: | | 1 - nein | | 2 - als Überschreibung | | 3 - als neue Profileinstellung | | Im Protokoll wird eine Warnung angezeigt, wenn Werte verwendet werden, die niedriger als 0 oder höher als 3 sind
+
 ## Bedarf
 * Knotenversion 8 oder höher ist erforderlich
 
@@ -145,7 +148,23 @@ Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 * Wenn Sie auf Fehler stoßen oder Funktionsanforderungen für diesen Adapter haben, erstellen Sie bitte ein Problem im GitHub-Problemabschnitt des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
 
 ## Changelog
-### 0.3.17 (2020-02-xx)
+
+### 0.4.0 (2020-04-xx)
+* (René) see issue #70: use changes from thermostat
+* (René) see issue #91 bug fix: if the same sensor is configured for more than one room thermostat target temperature will be set for all configured rooms
+* (René) script from Pittini integrated to support his visualization [Pittini](https://github.com/Pittini/iobroker-heatingcontrol-vis) 
+
+### 0.3.19 (2020-03-15)
+* (René) create correct cron job for sunday if profile type "every day" is used
+* (René) see issue #87: change type of time data points to string
+* (René) see issue #87: set correct roles for data points
+* (René) see issue #84: set default value for minimum temperature
+* (René) see issue #86: all "float" converted to "number""
+
+### 0.3.18 (2020-03-08)
+* (René) fix issues reported by adapter checker
+
+### 0.3.17 (2020-03-01)
 * (René) check datapoint configuration: if datapoint points to itself then error messages
 * (René) support of new vis see issue  #76
 * (Rene) thermostat mode if no heating period

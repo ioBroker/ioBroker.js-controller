@@ -3,16 +3,19 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: Kt7KXCfmXRBuQVVJDSDPDW5RzxYkn7oDwdbKC49xuLQ=
+hash: cvVNKwzs3MHPMuBDA8ApZxWB+5OR5cSNPbZ5l7xCwE4=
 ---
 # SourceAnalytix
 # {Dev - in Progress, Version 0.4.0 stabiler Kandidat}
 
-![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
-![Anzahl der Installationen](http://iobroker.live/badges/sourceanalytix-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
+![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/sourceanalytix-installed.svg)
+![Anzahl der Installationen (stabil)](http://iobroker.live/badges/sourceanalytix-stable.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)
+![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.sourceanalytix/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
+![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.sourceanalytix/master.svg)
 
 Detaillierte Analyse Ihres Energie-, Gas- und Flüssigkeitsverbrauchs Für Datenanalysen kann jede Quelle (kWh, Wh, Watt, l / h oder m3) verwendet werden:
 
@@ -24,7 +27,7 @@ Detaillierte Analyse Ihres Energie-, Gas- und Flüssigkeitsverbrauchs Für Daten
 ## Wie man
 Bitte geben Sie Ihr Feedback hier https://forum.iobroker.net/topic/31932/major-update-sourceanalytix-0-4-0-complete-code-rebuild
 
-Dieser Adapter hat seine Wurzeln dank Pix im Jahr 2016 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
+Dieser Adapter hat Wurzeln dank dank Pix im Jahr 2016 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
 Was von @hadering verbessert und auf github https://github.com/hdering/homematic_verbrauchszaehler veröffentlicht wurde
 
@@ -41,6 +44,17 @@ Was von @hadering verbessert und auf github https://github.com/hdering/homematic
 Wenn Ihnen meine Arbeit gefällt, ziehen Sie bitte eine persönliche Spende in Betracht (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
+### 0.4.5 work in progress
+* (Dutchman) Implement Sentry
+* (Dutchman) Bugfix : Warn message for week creations (js-controller 3.x)
+
+### 0.4.2 (2020-04-12) BugFixes
+* (Dutchman) Translations updated
+* (Dutchman) Bugfix : Values not resettet at new day start
+* (Dutchman) Bugfix : Handle calculations when reading = 0
+* (Dutchman) Bugfix : Handle calculations at initialisation
+* (Dutchman) Bugfix : Pauze all calculation during day-reset
+* (Dutchman) Do not calculate values is state is update with same value as previous
 
 ### 0.4.0 (2020-04-05) Adapter completely redesigned, please test carefully
 * (Dutchman) Complete code rebuild

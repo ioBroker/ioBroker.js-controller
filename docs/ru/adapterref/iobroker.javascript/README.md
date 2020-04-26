@@ -2638,6 +2638,17 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
+### 4.6.0 (2020-04-24)
+* (bluefox) Updated blockly to 3.20200402.1
+* (bluefox) Added to blockly the switch/case block. Warning do not use it in production, because license request from author still pending.
+
+### 4.5.1 (2020-04-17)
+* (Apollon77) Nodejs 10 is new minimum Version!
+* (Apollon77) Add Sentry for use in js-controller 3.0 and React component
+* (Apollon77) prevent warnings with js-controller 3.0
+* (Garfonso) fix enum object cache handling
+* (bluefox/Apollon77) enhance existsState
+
 ### 4.4.3 (2020-03-03)
 * (klein0r) Added JSONata for Object conversion
 

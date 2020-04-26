@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: C75pmvux4BRCINMqHMi6LVc2nuHJBOUUqsMJ3B7jqbE=
+hash: Iw9TRNc7yuHLTC6n9EPAN+dwZuKAtJ+a78pbLtWS/t4=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -19,6 +19,8 @@ Benötigt node.js 8.0 oder höher und Admin v3!
 
 Der Adapter kommuniziert mit Shelly-Geräten über die REST-API und das CoAP- oder MQTT-Protokoll.
 Standardmäßig Shelly-Firmware (kein Flashen der Firmware erforderlich!). Weitere und detaillierte Informationen zum Gerät finden Sie hier: [Shelly](https://shelly.cloud/)
+
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
 
 ## Installation
 Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdokumentation](./docs/EN/INSTALL.md)
@@ -48,12 +50,35 @@ Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdok
 | Shelly Bulb Duo (SHBDUO-1) | verifiziert | nicht verifiziert |
 | Shelly 3EM (SHEM) | verifiziert | verifiziert |
 
+## Was ist Sentry und was wird den Servern gemeldet?
+Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendungen. Und genau das ist in diesem Adapter implementiert.
+
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server in Deutschland gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+
 ## Changelog
+
+### 3.2.5 (13.04.2020)
+* (Apollon77) - Update Dependencies incl shelly-lib to prevent exceptions
+* (Apollon77) - Add Sentry for error/crash reporting (active with js-controller 3.0)
+* (Stübi      - Add for hue two new datapoints for Shelly Bulb and RGBW2
+
+### 3.2.4 (11.04.2020)
+* (Stübi) - Bugfixing MQTT ext_temperature for Shelly 1
+
+### 3.2.3 (03.03.2020)
+* (Stübi) - Bugfixing Shelly 3EMfor MQTT support (fixed datapoints for total and total_returned)
+* (Stübi) - Bugfixing MQTT support for door and windows sensor (issue #135)
+
+### 3.2.2 (03.03.2020)
+* (Stübi) - Bugfixing, if Shelly sends a string instead of number and boolean (issue #131)
+
+### 3.2.1 (02.03.2020)
+* (Stübi) - Bugfixing Shelly 3EMfor MQTT support 
 
 ### 3.2.0 (13.02.2020)
 * (Simon W.) - Add device Shelly 3EM
 * (Stübi)    - Add device Shelly Door/Windows sensor 
-* (Stübi)    - Add external temperature sensor for Shelly 1, 1PM and 2.5
+* (Stübi)    - Add external temperature sensor for Shelly 1, 1PM and 2.5 (only CoAP)
 
 ### 3.1.9 (25.01.2020)
 * (Stübi) - Bugfixing, auto update new firmware

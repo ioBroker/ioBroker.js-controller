@@ -2,25 +2,32 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.kodi/README.md
-title: Kodi的IoBroker JSON-RPC API
-hash: 1OhuxWO9MIT4xrWNmR5Oi3uSr8Tluol5qvxu4WziQXU=
+title: АдаптерKodiдляioBroker（JSON-RPC API）
+hash: 7CNAK2pno9o5iQNt4r+Gnu4vGbI+c25SGXrMG5Me1lk=
 ---
 ![商标](../../../en/adapterref/iobroker.kodi/admin/kodi.png)
 
 ![NPM版本](https://img.shields.io/npm/v/iobroker.kodi.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.kodi.svg)
-![测试](http://img.shields.io/travis/instalator/ioBroker.kodi/master.svg)
+![安装数量](http://iobroker.live/badges/kodi-installed.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.kodi.svg)
+![测验](http://img.shields.io/travis/instalator/ioBroker.kodi/master.svg)
+![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.kodi.png?downloads=true)
-![安装数量](http://iobroker.live/badges/kodi-stable.svg)
 
-#Kodi的IoBroker的JSON-RPC API
-***注意：此适配器需要节点0.12+（因此不支持0.10）***
+[英文手册](https://github.com/instalator/ioBroker.kodi/wiki/en_EN)
+
+＃АдаптерKodiдляioBroker（JSON-RPC API）
+KODIпоAPI JSON-RCP[тут]（http://kodi.wiki/view/JSON-RPC_API）иполныйсписокдоступныхкоманд（дляпротоколаверсии6）[тут](http://kodi.wiki/view/JSON-RPC_API/v6)。
+
+***Примечание：ЭтотадаптертребуетNodejs 8.0 + ***
 
 ##КонфигурацияKODI
-远程控制启用。
-！[远程控制启用。]（admin / remote.jpg）JSON-RPC APIиспользует**поумолчаниюпорт9090**，длятогочтобыегоизменитьнеобходимовнестиизменениявфайл[advancedsettings.xml](http://kodi.wiki/view/AdvancedSettings.xml)
+Включение удаленного управления и веб-сервера.
+![启用远程控制。](../../../en/adapterref/iobroker.kodi/admin/remote.png)
 
-_注意：默认情况下，advancedsettings.xml文件不存在。你必须先创建它！_
+JSON-RPC APIиспользует**поумолчаниюпорт9090 **，длятогочтобыегоизменитьнеобходимо点
+
+_Примечание：Файлadvancedsettings.xmlнесуществуетпоумолчанию。 Выдолжнысначаласоздатьего！_
 
 ```xml
 <jsonrpc>
@@ -29,22 +36,20 @@ _注意：默认情况下，advancedsettings.xml文件不存在。你必须先�
 </jsonrpc>
 ```
 
-![http启用。](../../../en/adapterref/iobroker.kodi/admin/web.jpg)
-
 ## Конфигурация драйвера
-ВнайстройкахдрайверауказываетсяIPаарресKODIипортдляJSON-RPC API（поумолчанию9090）。
+在JSON-RPC API（поумолчанию9090）和IP上添加IP标记。
 
-##使用
+## Использование
 ### ShowNotif：
 Один важный момент, если используется заголовок сообщения, то он должен всегда находится перед самим текстом сообщения (Внимание;Протечка воды), расположение остальных параметров не критично.
 
 **图片：**Уровеньсообщения
 
-  *'info' -  0（默认），
-  *'警告' -  1，
-  *'错误' -  2。
+  *'info'-0（默认），
+  *'警告'-1，
+  *'错误'-2。
 
-** displaytime：**Времяотображениясообщениявмилисекундах，минимум1500макс30000мс。
+**显示时间：**Времяотображениясообщениявмиллисекундах，минимум1500макс30000мс。
 
 **Пример:**
 
@@ -60,44 +65,44 @@ sendTo("kodi.0", {
     message:  'Возможно протечка воды ', //Текст сообщения
     title:    'ВНИМАНИЕ!!!', //Заголовок сообщения
     image: 'https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png', //Ссылка на иконку
-    delay: 7000 //Время отображения сообщения милисекундах (минимум 1500 макс 30000 мс)
+    delay: 7000 //Время отображения сообщения миллисекундах (минимум 1500 макс 30000 мс)
 });
 ```
 
 ### SwitchPVR：
-ПереключениеPVRIPTVканаловпоназваниюканалавплейлисте。
-**Пример：**ТВканал - 发现科学найдеткакпополномунаименованиютакипо发现，
+ПереключениеPVR IPTVканаловпоназваниюканалавплейлисте。
+**Пример：**ТВканал-探索科学探索，发现，
 
-### Youtube：
-Дляоткрытиявидеоссайтаytubeдостаточнозаписатькодвидеовданныйстатус。 Начинаясверсии0.1.5和вышеможновставлятьпрямуюссылкунавидео，атакжекодилиполнуюссылкунаплейлист。
-Например：Дляоткрытияэтого[видео](https://www.youtube.com/watch?v=Bvmxr24D4TA)，необходимоустановитьвстатус -  Bvmxr24D4TA
+### YouTube：
+Дляоткрытиявидеоссастаyoutubeдостаточнозаписатькодвидеовданныйстатус。 Начинаясверсии0.1.5иввышеможновставлятьпрямуюссылкунавидео，以及такжекодилиполнуиссылкуна。
+Например：Дляоткрытияэтого[видео](https://www.youtube.com/watch?v=Bvmxr24D4TA)，необходимоустановитьв-Bvmxr24D4TA
 
 ###打开：
 Сюдазаписываетсяссылканамедиконтентвсетиинтернетлибопутьдолокальногомедиафайла。
-KODI，ПослезаписизначенияначнетсявоспроизведениенапроигрователеKODI。
+ПослезаписизначенияначнетсявоспроизведениенапроигрывателеKODI。
 
-###职位：
-Текущаяпозициявплейлисте，такжевэтотстатусможнозаписатьнеобходимуюпозицуюиKODIтутжеперейдетквоспроизведениюэтойпозиции。
+###位置：
+Текущаяпозициявплейлисте，такжевэтотстатусможнозаписатьнеобходимуюпозициюисет
 
 ###寻求：
-Текущеезначениепозициивоспроизведениявпроцентахот0до100。
+标记0到100时。
 
 ###重复：
 Повтор воспроизведения, принимает следующие значения:
 
-*关闭 - повторвоспроизведенияотключен
-*上 - повторвоспроизведениятекущеготрека
-*全部 - повторвсегоплейлиста
+*关闭-повторвоспроизведенияотключен
+*开-повторвоспроизведениятекущеготрека
+*全部-повторвсегоплейлиста
 
 ###随机播放：
 Перемешиваниеспискатрековвплейлистедляслучайноговоспроизведения。
-Принимаетзначения真和假
+Принимаетзначенияtrue和false
 
 ###播放：
-Стартвоспроизведения（true，false）
+Стартвоспроизведения（对，错）
 
 ###速度：
-Скоростьвоспроизведения。 Фиксированныезначения-32，-16，-8，-4，-2，-1,0,1,2,4,8,16,32，атакжеincrementиmentment
+Скоростьвоспроизведения。 Фиксированныезначения（-32，-16，-8，-4，-2，-1，0，1，2，4，8，16，16，32），атакже'increment'и'decrement'
 
 ＃＃＃ 目录：
 Сюда записывается путь до папки или диска, в ответ в этот статус записывается список каталогов указанной папки или диска.
@@ -118,13 +123,24 @@ KODI，Послезаписизначенияначнетсявоспроизв�
 ```
 
 ###系统：
-  -  EjectOpticalDrive  - Извлекаетилизакрываетдисководоптическихдисков（еслиимеется）
-  -  Hibernate  - включениеспящегорежима
-  - 重新启动 - перезагрузкасистемы
-  - 关机 - выключаетсистему
-  - 暂停 - приостанавливаетKodi
+ -EjectOpticalDrive-Извлекаетилизакрываетдисководоптическихдисков（еслиимеется）
+ -冬眠-включениеспящегорежима
+ -重新启动-перезагрузкасистемы
+ -关闭-выключаетсистему
+ -挂起-приостанавливаетKodi
 
 ## Changelog
+
+#### 2.0.1 (2020-04-13)
+* (instalator) fixed error if not used PVR
+
+#### 2.0.0 (2020-04-12)
+* (instalator) support admin3
+* (instalator) support compact mode
+* (instalator) refactoring
+* (instalator) fixed different error
+* (instalator) added english manual
+* (instalator) big change code
 
 #### 1.0.0 (2017-11-13)
 * (instalator) up to stable
@@ -201,3 +217,26 @@ KODI，Послезаписизначенияначнетсявоспроизв�
 
 #### 0.0.1
 * (instalator) initial (17.04.2016)
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2020 instalator <vvvalt@mail.ru>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

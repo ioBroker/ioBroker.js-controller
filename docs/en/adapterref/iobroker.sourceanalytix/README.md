@@ -1,9 +1,16 @@
 # SourceAnalytix
 # { Dev - in Progress, version 0.4.0  stable candidate }
-[![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix)
-![Number of Installations](http://iobroker.live/badges/sourceanalytix-installed.svg) ![Number of Installations](http://iobroker.live/badges/sourceanalytix-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)](https://www.npmjs.com/package/iobroker.sourceanalytix)
+
+[![NPM version](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)](https://www.npmjs.com/package/iobroker.sourceanalytix)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)](https://www.npmjs.com/package/iobroker.sourceanalytix)
-[![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)](https://greenkeeper.io/)
+![Number of Installations (latest)](http://iobroker.live/badges/sourceanalytix-installed.svg)
+![Number of Installations (stable)](http://iobroker.live/badges/sourceanalytix-stable.svg)
+[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.sourceanalytix)
+[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.sourceanalytix/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.sourceanalytix)
+
+[![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)](https://nodei.co/npm/iobroker.sourceanalytix/)
+
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.sourceanalytix/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix)
 
 Detailed analysis of your Energy, gas and liquid consumptions
 Any source (kWh, Wh, Watt, l/h or m3 )can be used for data analyses :
@@ -39,6 +46,17 @@ If you like my work, please consider a personal donation
 [![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
+### 0.4.5 work in progress
+* (Dutchman) Implement Sentry
+* (Dutchman) Bugfix : Warn message for week creations (js-controller 3.x)
+
+### 0.4.2 (2020-04-12) BugFixes
+* (Dutchman) Translations updated
+* (Dutchman) Bugfix : Values not resettet at new day start
+* (Dutchman) Bugfix : Handle calculations when reading = 0
+* (Dutchman) Bugfix : Handle calculations at initialisation
+* (Dutchman) Bugfix : Pauze all calculation during day-reset
+* (Dutchman) Do not calculate values is state is update with same value as previous
 
 ### 0.4.0 (2020-04-05) Adapter completely redesigned, please test carefully
 * (Dutchman) Complete code rebuild

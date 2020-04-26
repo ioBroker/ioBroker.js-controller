@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.rainbird/README.md
 title: ioBroker.rainbird
-hash: I5DvFG4EAJokL/cHf2SvLiANcKh5W1Gh3IVaAxUUnqg=
+hash: WL+q1yaT3lsf38E8OWSWmtuH/yJwW0OC/NAFrnIF5Ec=
 ---
 ![商标](../../../en/adapterref/iobroker.rainbird/admin/rainbird.png)
 
@@ -34,13 +34,27 @@ hash: I5DvFG4EAJokL/cHf2SvLiANcKh5W1Gh3IVaAxUUnqg=
 
 `rainbird.X.device.stations.Y.available`-如果设备中的区域Y可用，则为True。
 `rainbird.X.device.stations.Y.irrigation`-如果当前正在灌溉区域Y，则为True。
-`rainbird.X.device.stations.Y.runZone`-手动在Y区进行指定时间的灌溉。
+`rainbird.X.device.stations.Y.remaining`-剩余灌溉时间（以秒为单位）`rainbird.X.device.stations.Y.runZone`-手动在区域Y上灌溉指定的分钟数。
 `rainbird.X.device.stations.Y.testZone`-测试区Y。
 
 ##捐赠
 [![贝宝]（https://www.paypalobjects.com/zh_CN/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SFLJ8HCW9T698&source=url)
 
 ## Changelog
+
+### 0.2.2
+
+-   Added fixes for adapter crashes on failed connection to controller
+
+### 0.2.1
+
+-   Added support for run times on different controller model
+-   Less polling for some states to reduce requests to controller
+
+### 0.2.0
+
+-   Added remaining irrigation time of zone
+-   Fixed bug in decoding responses
 
 ### 0.1.2
 

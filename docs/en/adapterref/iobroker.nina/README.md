@@ -44,6 +44,10 @@ CipherString = DEFAULT@SECLEVEL=1
 
 ## Changelog
 
+### 0.0.23
+
+- (tomboxi) Convert all state changes to async.
+
 ### 0.0.22
 
 - (tomboxi) Optionen zum Filtern und JSON Ausgabe hinzugefügt.

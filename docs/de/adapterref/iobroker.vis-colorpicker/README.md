@@ -2,21 +2,25 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-colorpicker/README.md
-title: kein Titel
-hash: 491J+XEouBLVLmIKIMxMLsnijPbyLBDh7puWg42Oxf0=
+title: ioBroker.vis-colorpicker
+hash: B1w/G7UiVMcNh+gSWWvj2Ml4kA65XvNSZFAYY8leqc4=
 ---
-![Logo](../../../en/adapterref/iobroker.vis-colorpicker/admin/colorpicker.png) ioBroker.vis-colorpicker =============
+![Logo](../../../en/adapterref/iobroker.vis-colorpicker/admin/colorpicker.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/vis-colorpicker-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.vis-colorpicker.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.vis-colorpicker.svg)
 ![NPM](https://nodei.co/npm/iobroker.vis-colorpicker.png?downloads=true)
 
+# IoBroker.vis-colorpicker
 Farbauswahl-Widgets für ioBroker.vis
 
 ![Beispiel](../../../en/adapterref/iobroker.vis-colorpicker/img/widgets.png)
 
 ## Changelog
+### 1.2.0 (2020-04-14)
+- (bluefox) Corrected html structure
+
 ### 1.1.1 (2016-11-30)
 - (Pmant) add new hue bulbs and fix gamut
 
@@ -45,5 +49,5 @@ Farbauswahl-Widgets für ioBroker.vis
 - (bluefox) initial checkin
 
 ## License
- Copyright (c) 2013-2016  bluefox https://github.com/GermanBluefox, hobbyquaker https://github.com/hobbyquaker
+ Copyright (c) 2013-2020 Bbluefox https://github.com/GermanBluefox, hobbyquaker https://github.com/hobbyquaker
  MIT

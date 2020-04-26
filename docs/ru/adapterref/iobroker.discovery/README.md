@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
 title: ioBroker Откройте для себя адаптер
-hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
+hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
 ---
 ![логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -17,7 +17,9 @@ hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 ** Обнаружение устройств всеми известными методами. **
 
 Это специальные адаптеры, которые пытаются найти все возможные устройства, которые могут быть доступны с хоста.
-Просто теперь он может обнаружить с помощью ping, UPnP (последовательный план).
+Просто теперь он может обнаруживать с помощью ping, UPnP (последовательный план).
+
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
 
 ## На самом деле поддерживается
 ### Обнаружено автоматически
@@ -33,36 +35,46 @@ hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 - Ebus
 - Эки
 - энергетический менеджер (E.ON / Solarwatt)
+- энет (юнг)
 - Epson Stylus PX830
-- Факероку
+- Факероку (гармония)
 - FHEM
 - FireTV
+- Fritzdect
 - Фрониус
 - пробки G-Homa
 - Гармония
 - Домашний помощник
 - Homematic CCU (hm-rpc, hm-rega)
 - Домашний пилот
+- HP-lio
 - Philips HUE
 - Плекс
 - InfluxDB
 - KLF-200
-- KNX
+- KNX (фактически отключен)
+- Коди
 - Landroid
 - LGTV
 - Освети
 - локсон
 - Lupusec
 - МАКС! куб
+- McLighting
 - МегаД
 - Миле
 - Mi Home Smarthome
+- Микротик
 - Мост MiLight (v6)
+- Mpd
 - Musiccast
 - Mysensors USB / Serial (9600, 38400, 57600, 115200)
+- Nuki2
 - Орех
+- Onkyo
 - OpenHAB
 - Пинг
+- Плекс
 - Proxmox
 - RFLink (последовательный 57600 бод)
 - SamsungTV
@@ -74,14 +86,14 @@ hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Squeezebox
 - SqueezeboxRPC
-- Stiebel-isg
+- Синология
 - TR-064
 - Trådfri
 - UPnP
 - Wifilight
 - Yamaha
 - Yeelight
-- Z-wave USB (протестировано Aeon Labs)
+- Z-wave USB (протестировано в Aeon Labs)
 
 ### Предлагается в качестве дополнительных адаптеров
 - Облако
@@ -93,19 +105,16 @@ hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 - Vis
 - Интернет
 
-## Сделать
+## Делать
 - артнет? (Bluefox)
 - B-Control-Em? (Bluefox)
 - куль / макскул (блюфокс)
 - Foobar200 (Установщик)
 - fritzbox (ruhr70)
 - км200 (франкжук)
-- коди (установщик)
 - мегаэсп (ausHaus)
 - Modbus (Bluefox)
-- mpd (установщик)
 - mqtt / mqtt-client (Bluefox)
-- Онкио (Блюфокс)
 - owfs (Bluefox)
 - rpi2 (если ioBroker работает на Raspberry)
 - rwe-smarthome (PArns)
@@ -116,6 +125,21 @@ hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 - xs1 (франкжук)
 
 ## Changelog
+
+### 2.3.3 (2020-04-23)
+* correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
+* catch http errors better (Sentry IOBROKER-DISCOVERY-2)
+
+### 2.3.2 (2020-04-18)
+* (Apollon77) Fix potential crash in knx discovery
+
+### 2.3.1 (2020-04-16)
+* (instalator) Add Synology, Onkyo, Mpd, Mikrotik
+* (instalator) Fixed eKey, Mihome, Broadlink2, Plex
+* (instalator) Several optimizations and fixing of crash causes
+* (Apollon77) Add Sentry Crash Reporting for js-controller 3.0
+* (bluefox) Refactoring
+
 ### 2.2.2 (2020-02-13)
 * (dkleber89) Add discovery for Beckhoff PLC
 * (forelleblau) Add discovery for Solarlog

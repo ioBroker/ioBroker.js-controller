@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.pushsafer/README.md
-title: kein Titel
-hash: Y5Kks5tuSiTJUikSXpEqu6ZdbHVMxRB3eg8UFZ5YsA8=
+title: ioBroker Pushsafer Adapter
+hash: rMEVbK1o78/tNZmAIWohQc//PmhHxDENCCFgi0pUSSE=
 ---
 ![Logo](../../../en/adapterref/iobroker.pushsafer/admin/pushsafer.png)
 
@@ -12,19 +12,16 @@ hash: Y5Kks5tuSiTJUikSXpEqu6ZdbHVMxRB3eg8UFZ5YsA8=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.pushsafer.svg)
 ![NPM](https://nodei.co/npm/iobroker.pushsafer.png?downloads=true)
 
-ioBroker pushsafer Adapter
-
-==============
-
+# IoBroker Pushsafer Adapter
 Senden Sie Pushsafer-Benachrichtigungen von ioBroker.
-Pushsafer.com unterstützt iOS-, Android-, Windows 10- (Phone & Desktop) -Geräte und Webpush (Chrome & Firefox).
+Pushsafer.com unterstützt iOS-, Android-, Windows 10-Geräte (Telefon und Desktop) und Webpush (Chrome und Firefox).
 
 ## Aufbau
-Zunächst ist ein PushSafe-Konto mit einem [Privat Schlüssel](https://www.pushsafer.com/) erforderlich. Anstelle des privaten Schlüssels können Sie auch einen Alias-Schlüssel mit vordefinierten Parametern verwenden.
+Zunächst ist ein Konto auf Pushsafer mit einem [Privat Schlüssel](https://www.pushsafer.com/) erforderlich. Anstelle des privaten Schlüssels können Sie auch einen Aliasschlüssel mit vordefinierten Parametern verwenden.
 ![Pushsafer-Konfiguration](../../../en/adapterref/iobroker.pushsafer/img/Screen0.png)
 
 ## Verwendungszweck
-Um eine Benachrichtigung von ScriptEngine aus zu senden, schreiben Sie einfach:
+Um eine Benachrichtigung von ScriptEngine zu senden, schreiben Sie einfach:
 
 ```javascript
 // send notification to all instances of pushsafer adapter
@@ -45,18 +42,24 @@ sendTo("pushsafer", {
    retry:     '600',                   // optional  - Integer 60-10800 (60s steps): Time in seconds, after a message shuld resend (see pushsafers API description)
    expire:    '1200',                  // optional  - Integer 60-10800: Time in seconds, after the retry/resend should stop. (see pushsafers API description)
    answer:    '1',                     // optional  - 1 = Answer is possible, 0 = Answer is not possible. (see pushsafers API description)
-   picture:   'absolutePathToPicture'  // optional  - absolute path to picture or base64 coded image URL
-   picture2:  'absolutePathToPicture2' // optional  - absolute path to picture or base64 coded image URL
-   picture3:  'absolutePathToPicture3' // optional  - absolute path to picture or base64 coded image URL
+   picture:   'absolutePathToPicture', // optional  - absolute path to picture or base64 coded image URL
+   picture2:  'absolutePathToPicture2',// optional  - absolute path to picture or base64 coded image URL
+   picture3:  'absolutePathToPicture3',// optional  - absolute path to picture or base64 coded image URL
    url:       'http://blabla',         // optional  - URL or URL scheme, https://www.pushsafer.com/en/url_schemes
    urlTitle:  'Link to BLA',           // optional  - title of URL
-   time2live  '60',                    // optional  - Integer number 0-43200: Time in minutes, after which message automatically gets purged.
+   time2live: '60',                    // optional  - Integer number 0-43200: Time in minutes, after which message automatically gets purged.
 });
 ```
 
 Sie finden die API-Beschreibung [Hier](https://www.pushsafer.com/en/pushapi)
 
+Sie können auch blockly verwenden.
+
 ## Changelog
+### 1.0.2 (2020-04-24)
+* (bluefox) Added color icon option
+* (bluefox) Refactoring
+
 ### 0.1.9 (2019-09-19)
 * (appzer) add new sounds & icons, add new parameter (priority, retry, expire, answer)
 
@@ -83,7 +86,7 @@ Sie finden die API-Beschreibung [Hier](https://www.pushsafer.com/en/pushapi)
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2017 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

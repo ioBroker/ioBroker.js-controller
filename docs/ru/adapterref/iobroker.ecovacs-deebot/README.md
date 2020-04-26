@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: pxTnxHQ8587eG2gLkxM3SnhTsZ2RDqcKUDsXUMm/2cI=
+hash: p7EEJoNdKiXlYuc8V6IyWDTM1T8jtdu6FV5vNMAL7MU=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -33,6 +33,7 @@ hash: pxTnxHQ8587eG2gLkxM3SnhTsZ2RDqcKUDsXUMm/2cI=
 * Deebot M88
 * Deebot 600/605
 * Deebot Ozmo 920
+* Deebot Ozmo Slim 10
 
 ## Установка
 Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок, в противном случае установка в iobroker может привести к ошибке:
@@ -51,12 +52,12 @@ sudo npm install canvas --unsafe-perm=true
 
 Для инструкций для других систем посетите https://www.npmjs.com/package/canvas#compiling
 
-## Использование
+## Применение
 * Информацию о том, как использовать этот адаптер, можно найти здесь [https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki).
 
 ## Известные вопросы
 * Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть [ некоторые сообщения] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24), что соединение теряется после прибл. 24 часа
-* Есть несколько отчетов ([1] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/23), [2] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot / Issues / 34)) о странном поведении значения батареи на Deebot 900/901
+* Странное поведение значения батареи на Deebot 900/901. Очень вероятно, что это ошибка прошивки.
 
 ## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
@@ -68,6 +69,9 @@ sudo npm install canvas --unsafe-perm=true
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.5.9
+   * Several enhancements and fixes
 
 ### 0.5.8
    * Several enhancements and fixes

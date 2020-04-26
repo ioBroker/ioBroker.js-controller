@@ -1,11 +1,14 @@
 ![Logo](admin/haier_admin.png)
 # ioBroker Haier air conditioning adapter
 =================
+
 ![Number of Installations](http://iobroker.live/badges/haier-installed.svg) ![Number of Installations](http://iobroker.live/badges/haier-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.haier.svg)](https://www.npmjs.com/package/iobroker.haier)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.haier.svg)](https://www.npmjs.com/package/iobroker.haier)
 [![Tests](http://img.shields.io/travis/instalator/ioBroker.haier/master.svg)](https://travis-ci.org/instalator/ioBroker.haier)
 
 [![NPM](https://nodei.co/npm/iobroker.haier.png?downloads=true)](https://nodei.co/npm/iobroker.haier/)
+
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
 
 IoBroker Haier adapter is used to control your Haier air conditioning via UART in conjunction with the TCP to Serial Gateway.
 The work is checked on the air conditioner of the 'Lightera' series.
@@ -25,23 +28,24 @@ Switching the air conditioner on and off. (true/false)
 Setting the temperature. (16 - 30 °C)
 
 ### mode
-* **smart** or **0** - One key can give you a comfortable room! The air conditioning unit can judge the indoor temperature and humidity, and make the adjustment accordingly.
+* **auto**  or **0** - One key can give you a comfortable room! The air conditioning unit can judge the indoor temperature and humidity, and make the adjustment accordingly.
 * **cool**  or **1** - Cooling room.
 * **heat**  or **2** - Room heating.
 * **fan**   or **3** - Only fan.
 * **dry**   or **4** - Air dehumidification.
+* **off**   or **5** - Power off AC.
 
 ### fanspeed
-* **min**  or **2**
-* **mid**  or **1**
-* **max**  or **0**
-* **auto** or **3**
+* **min**  or **2** - Fan speed
+* **mid**  or **1** - Fan speed
+* **max**  or **0** - Fan speed
+* **auto** or **3** - Fan speed
 
 ### swing
 * **ud**    or **1**  - Auto UP/Down.
 * **lr**    or **2**  - Auto Left/Right.
 * **both**  or **3**  - Both directions.
-* **false** or **0**  - Off.
+* **false** or **0**  or **off**  - Off.
 
 ### health
 (true/false)
@@ -64,6 +68,12 @@ example: power on - **0A000000000001014D02**
 
 
 ## Changelog
+
+### 1.0.3
+   (instalator) support admin3
+   (instalator) support compact mode
+   (instalator) change smart to auto
+   (instalator) added role for state
 
 ### 1.0.2
    (instalator) fix error

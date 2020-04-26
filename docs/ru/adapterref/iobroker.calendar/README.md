@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.calendar/README.md
 title: ioBroker.calendar
-hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
+hash: Th83raSd6dt7sLUlOdYPxEuaPmChd5EkCb7+NNKxmNA=
 ---
 ![логотип](../../../en/adapterref/iobroker.calendar/admin/calendar.png)
 
@@ -19,26 +19,14 @@ hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
 
 # IoBroker.calendar
 ## Адаптер календаря для ioBroker
-Читайте ваш Google, Caldav или ical календарь.
+Читайте ваш календарь событий Google, Caldav или ical.
 
-## Сделать
+## Делать
 * Добавить календарь Outlook
 * Добавить функцию, чтобы добавить события в календарь
 * Расширить виджет vis
 
-## Google Authentication
-Следующий шаг необходим, только если ваш ioBroker установлен на другом компьютере / сервере и вы не можете получить доступ к веб-интерфейсу через localhost.
-
-### Windows:
-Запустите ```nodepad.exe``` с правами администратора и откройте файл ```C:\Windows\System32\drivers\etc\hosts```.
-Добавьте запись, например, ```192.168.0.10    example.com``` (\ <IP-адрес ioBroker \> \ <FQDN \>) Сохраните файл и откройте веб-интерфейс через <FQDN>, который вы записали в файле hosts. Пример: http://example.com:8081
-
-### Linux:
-    Скоро ...
-
-### Mac
-    Скоро ...
-
+## Календарь Google
 ### Ключ API Google
 Вам нужен ключ API. Перейдите на страницу https://console.cloud.google.com/apis/dashboard и войдите в свою учетную запись Google.
 
@@ -48,11 +36,24 @@ hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
 
 Нажмите «активировать», а затем «API и сервисы». Откройте вкладку «Экран согласия OAuth» и введите имя приложения, например «Календарь ioBroker». Вы также можете загрузить логотип, но это не обязательно.
 
-Откройте вкладку «Учетные данные», щелкните «Раскрыть учетные данные» и выберите «Идентификатор клиента OAuth». На следующем шаге выберите «Веб-приложение». Введите имя типа «ioBroker» или «Webclient». Добавьте ```http://<FQDN>:<Port from adapter config>``` к авторизованным источникам JavaScript. Добавьте ```http://<FQDN>:<Port from adapter config>/google``` и ```http://<FQDN>:<Port from adapter config>/google/``` в URI авторизованного перенаправления.
+Откройте вкладку «Учетные данные», щелкните «Раскрыть учетные данные» и выберите «Идентификатор клиента OAuth». На следующем шаге выберите «Другое». Введите имя как «ioBroker» или «Клиент».
 
 Создайте идентификатор клиента и скопируйте отображаемый идентификатор клиента и секрет клиента.
 
 Перейдите в конфигурацию адаптера и добавьте идентификатор клиента и секрет клиента.
+
+### Добавить аккаунт
+Если вы хотите добавить учетную запись, нажмите на кнопку.
+
+Кнопка переместит вас на страницу авторизации, где вы должны дать разрешение.
+
+Когда вы выбрали свою учетную запись и авторизовали клиента, будет отображен код.
+
+Скопируйте код и добавьте календарь в настройках адаптера с помощью символа +.
+
+Вставьте код в столбец «Код» и сохраните все настройки.
+
+После перезагрузки адаптер считывает и сохраняет все доступные календари. Календари могут быть активированы в настройках.
 
 ## Caldav Calendar (протестировано с помощью Nextcloud, Web.de и Mail.de)
 Вы можете добавить свой календарь Caldav в конфигурации адаптера.
@@ -60,10 +61,13 @@ hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
 Введите ваши данные доступа и имя хоста в конфигурации.
 
 ### Baseurl список
-* Nextcloud: https:// \ <имя хоста \> /remote.php/dav или https: // \ <имя хоста \> /remote.php/dav/principals
-* Web.de: https://caldav.web.de
-* mail.de: https://kalender.mail.de
-* Posteo: https://posteo.de:8443
+| Имя | URL |
+| ------ | ------ |
+| GMX | https://caldav.gmx.net |
+| mail & period; de | https://kalender.mail.de |
+| Nextcloud | [https:// &lt;имя хоста&gt; /remote.php/dav] (https://example.com/remote.php/dav) или <br> [Https: // &lt;имя хоста&gt; /remote.php/dav/principals](https://example.com/remote.php/dav/principals) |
+| Постео | https://posteo.de:8443 |
+| Web & period; de | https://caldav.web.de |
 
 Если вы знаете больше, пожалуйста, дайте мне знать, чтобы я мог включить их.
 
@@ -73,6 +77,13 @@ hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
 Введите путь к файлу на вкладке CalDav в поле имени хоста.
 
 ## Changelog
+
+### 1.2.0 (2020-04-11)
+* (WLAN-Kabel) #24 - New iCal library to better read calendars and support future event writing functionality
+* (WLAN-Kabel) Google authorization changed
+* (WLAN-Kabel) #27 - ical events with recurrence are now handled
+* (WLAN-Kabel) #25 - Regular request for new calendars added
+* (WLAN-Kabel) #29 - Fixed a bug that caused a \"TypeError\" message on iCal calendars
 
 ### 1.1.3 (2020-03-22)
 * (WLAN-Kabel) #18 - Added possibility to load ics files from web servers

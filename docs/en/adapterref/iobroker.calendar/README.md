@@ -15,29 +15,14 @@
 
 ## Calendar adapter for ioBroker
 
-Read your google, caldav or ical calendar.
+Read your google, caldav or ical calendar events.
 
 ## Todo
 * Add Outlook calendar
 * Add function to add events to calendar
 * Extend vis widget
 
-## Google Authentication
-The following step is only needed if your ioBroker is installed on another computer/server and you cannot acces the webinterface via localhost.
-
-### Windows:
-
-Run ```nodepad.exe``` with admin right and open the ```C:\Windows\System32\drivers\etc\hosts``` file.
-Add a entry like ```192.168.0.10    example.com``` (\<IP-Adress ioBroker\>     \<FQDN\>)
-Save the file and open the webinterface via the <FQDN> you have written in the hosts file. Example: http://example.com:8081
-
-### Linux:
-
-    Comming soon ...
-
-### Mac
-
-    Comming soon ...
+## Google Calendar
 
 ### Google API Key
 You need an api key. Visit https://console.cloud.google.com/apis/dashboard and login with your google account.
@@ -48,11 +33,24 @@ Make sure you have selected the right project from the list. Open the library ta
 
 Click "activate" and then click on "APIs & Services". Open the tab "OAuth consent screen" and type a application name like "ioBroker Calendar". You can also upload a logo, but this is not necessary.
 
-Open the "Credentials" tab, click the "Create credentials" dropdown and select "OAuth client ID". In the next step choose "Web application". Type a name like "ioBroker" or "Webclient". Add ```http://<FQDN>:<Port from adapter config>``` to authorised JavaScript origins. Add ```http://<FQDN>:<Port from adapter config>/google``` and ```http://<FQDN>:<Port from adapter config>/google/``` to Authorised redirect URIs.
+Open the "Credentials" tab, click the "Create credentials" dropdown and select "OAuth client ID". In the next step choose "Other". Type a name like "ioBroker" or "Client".
 
 Create the client id and copy the displayed client ID and the client secret.
 
-Go to the adapter config an add the client ID and the client secret.
+Go to the adapter config and add the client ID and the client secret.
+
+### Add an account
+If you want to add an account, click on the button.
+
+The button will take you to an authorization page where you have to give permission.
+
+When you have selected your account and authorized the client, a code will be displayed.
+
+Copy the code and add a calendar in the adapter settings using the + symbol.
+
+Paste the code in the "Code" column and save all settings.
+
+After the restart, the adapter will read out and save all available calendars. The calendars can then be activated in the settings.
 
 ## Caldav Calendar (Tested with Nextcloud, Web.de and Mail.de)
 
@@ -61,10 +59,13 @@ You can add your caldav calendar in the adapter config.
 Enter your access data and the host name in the config.
 
 ### Baseurl list
-* Nextcloud: https://\<Hostname\>/remote.php/dav or https://\<Hostname\>/remote.php/dav/principals
-* Web.de: https://caldav.web.de
-* mail.de: https://kalender.mail.de
-* Posteo: https://posteo.de:8443
+| Name | URL |
+| ------ | ------ |
+| GMX | https://caldav.gmx.net |
+| mail&period;de | https://kalender.mail.de |
+| Nextcloud | [https://&lt;Hostname&gt;/remote.php/dav](https://example.com/remote.php/dav) or<br>[https://&lt;Hostname&gt;/remote.php/dav/principals](https://example.com/remote.php/dav/principals) |
+| Posteo | https://posteo.de:8443 |
+| Web&period;de | https://caldav.web.de |
 
 If you know more, please let me know so that I can include them.
 
@@ -75,6 +76,13 @@ You can add your iCal calendar in the adapter config.
 Enter the file path on the CalDav tab in the hostname field.
 
 ## Changelog
+
+### 1.2.0 (2020-04-11)
+* (WLAN-Kabel) #24 - New iCal library to better read calendars and support future event writing functionality
+* (WLAN-Kabel) Google authorization changed
+* (WLAN-Kabel) #27 - ical events with recurrence are now handled
+* (WLAN-Kabel) #25 - Regular request for new calendars added
+* (WLAN-Kabel) #29 - Fixed a bug that caused a \"TypeError\" message on iCal calendars
 
 ### 1.1.3 (2020-03-22)
 * (WLAN-Kabel) #18 - Added possibility to load ics files from web servers

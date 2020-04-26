@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.calendar/README.md
 title: ioBroker.calendar
-hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
+hash: Th83raSd6dt7sLUlOdYPxEuaPmChd5EkCb7+NNKxmNA=
 ---
 ![商标](../../../en/adapterref/iobroker.calendar/admin/calendar.png)
 
@@ -19,26 +19,14 @@ hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
 
 ＃ioBroker.calendar
 ## IoBroker日历适配器
-阅读您的Google，caldav或ical日历。
+阅读您的Google，caldav或ical日历事件。
 
 ＃＃ 去做
 *添加Outlook日历
 *添加功能以将事件添加到日历
 *扩展可见小部件
 
-## Google身份验证
-仅当ioBroker安装在另一台计算机/服务器上并且您无法通过本地主机访问Web界面时，才需要执行以下步骤。
-
-### Windows：
-使用管理员权限运行```nodepad.exe```，然后打开```C:\Windows\System32\drivers\etc\hosts```文件。
-添加诸如```192.168.0.10    example.com```之类的条目（\ <IP-地址ioBroker \> \ <FQDN \>）保存文件并通过您在主机文件中编写的<FQDN>打开Web界面。范例：http：//example.com：8081
-
-### Linux：
-    即将推出...
-
-＃＃＃ 苹果电脑
-    即将推出...
-
+## Google日历
 ### Google API密钥
 您需要一个api键。访问https://console.cloud.google.com/apis/dashboard并使用您的Google帐户登录。
 
@@ -48,11 +36,24 @@ hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
 
 单击“激活”，然后单击“ API和服务”。打开标签“ OAuth同意屏幕”，然后输入应用程序名称，例如“ ioBroker Calendar”。您也可以上传徽标，但这不是必需的。
 
-打开“凭据”标签，点击“创建凭据”下拉菜单，然后选择“ OAuth客户端ID”。在下一步中选择“ Web应用程序”。输入类似“ ioBroker”或“ Webclient”的名称。将```http://<FQDN>:<Port from adapter config>```添加到授权的JavaScript来源。将```http://<FQDN>:<Port from adapter config>/google```和```http://<FQDN>:<Port from adapter config>/google/```添加到授权重定向URI。
+打开“凭据”标签，点击“创建凭据”下拉菜单，然后选择“ OAuth客户端ID”。在下一步中选择“其他”。键入一个名称，例如“ ioBroker”或“ Client”。
 
 创建客户端ID，然后复制显示的客户端ID和客户端密码。
 
-转到适配器配置，然后添加客户端ID和客户端密钥。
+转到适配器配置，并添加客户端ID和客户端密钥。
+
+###添加一个帐户
+如果要添加帐户，请单击按钮。
+
+该按钮会将您带到必须授予权限的授权页面。
+
+选择帐户并授权客户后，将显示一个代码。
+
+复制代码，并使用+符号在适配器设置中添加日历。
+
+将代码粘贴到“代码”列中，然后保存所有设置。
+
+重新启动后，适配器将读出并保存所有可用日历。然后可以在设置中激活日历。
 
 ## Caldav日历（已通过Nextcloud，Web.de和Mail.de测试）
 您可以在适配器配置中添加caldav日历。
@@ -60,10 +61,13 @@ hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
 在配置中输入访问数据和主机名。
 
 ### Baseurl列表
-* Nextcloud：https：// \ <主机名\> / remote.php / dav或https：// \ <主机名\> / remote.php / dav / principals
-* Web.de：https://caldav.web.de
-* mail.de：https://kalender.mail.de
-* Posteo：https：//posteo.de：8443
+|姓名|网址|
+| ------ | ------ |
+| GMX | https://caldav.gmx.net |
+| mail＆period; de | https://kalender.mail.de |
+| Nextcloud | [https：// &lt;主机名&gt; /remote.php/dav]（https://example.com/remote.php/dav）或<br> [https：// &lt;主机名&gt; /remote.php/dav/principals](https://example.com/remote.php/dav/principals)|
+| Posteo | https://posteo.de:8443 |
+| Web＆period; de | https://caldav.web.de |
 
 如果您了解更多信息，请告诉我，以便我将其包括在内。
 
@@ -73,6 +77,13 @@ hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
 在主机名字段的CalDav选项卡上输入文件路径。
 
 ## Changelog
+
+### 1.2.0 (2020-04-11)
+* (WLAN-Kabel) #24 - New iCal library to better read calendars and support future event writing functionality
+* (WLAN-Kabel) Google authorization changed
+* (WLAN-Kabel) #27 - ical events with recurrence are now handled
+* (WLAN-Kabel) #25 - Regular request for new calendars added
+* (WLAN-Kabel) #29 - Fixed a bug that caused a \"TypeError\" message on iCal calendars
 
 ### 1.1.3 (2020-03-22)
 * (WLAN-Kabel) #18 - Added possibility to load ics files from web servers

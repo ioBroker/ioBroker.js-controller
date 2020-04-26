@@ -3,18 +3,24 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.tankerkoenig/README.md
 title: ioBroker.tankerkoenig
-hash: KbbtVuq9ff+qUhK53m+PDR78Af0J2qSk2C5ZGxEhlpA=
+hash: C6p5yaBcYzEpjgN2V7xmYxnDAlhxEWfzQEIAaOm+KeM=
 ---
 ![логотип](../../../en/adapterref/iobroker.tankerkoenig/admin/tankerkoenig.png)
 
 ![Количество установок](http://iobroker.live/badges/tankerkoenig-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.tankerkoenig.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.tankerkoenig.svg)
+![Известные уязвимости](https://snyk.io/test/github/Pix---/ioBroker.tankerkoenig/badge.svg?targetFile=package.json)
 ![NPM](https://nodei.co/npm/iobroker.tankerkoenig.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/Pix---/ioBroker.tankerkoenig/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.tankerkoenig?branch=master&svg=true)
 
 # IoBroker.tankerkoenig
+** Тесты: **
+
+NodeJS v10 oder höher wird vorausgesetzt.
+
+## Документация
 : de: [Dokumentation](/docs/de/doc_tankerkoenig_de.md)
 
 : uk: [Документация](/docs/en/doc_tankerkoenig_en.md)
@@ -44,6 +50,9 @@ hash: KbbtVuq9ff+qUhK53m+PDR78Af0J2qSk2C5ZGxEhlpA=
 * Точки данных для каждой станции должны создаваться после перезапуска адаптера, а не только после установки
 
 ## Changelog
+### 2.0.9 (2020-04-21)
+* (pix) NodeJS 10 or higher required
+
 ### 2.0.8 (2020-03-27)
 * (Zwer2k) 2.0.8 Catch error if station status reports _no data_
 

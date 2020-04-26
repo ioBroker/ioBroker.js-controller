@@ -3,21 +3,37 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ping/README.md
 title: PING适配器
-hash: +sNYQlgffFdpaQvuftMDNSEkuiykM/qAbysmwLlp358=
+hash: CN7YacMSC0ttlxH0ZpgkJ6AEGQGK/oBDM2KGFFNGz8g=
 ---
 ![商标](../../../en/adapterref/iobroker.ping/admin/ping.png)
 
 ![安装数量](http://iobroker.live/badges/ping-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.ping.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.ping.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.ping.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.ping.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.ping.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.ping.png?downloads=true)
 
-#PING适配器
-## Pings配置了IP地址。
-Ping在定义的时间间隔内指定IP地址并监视结果。
+＃PING适配器
+## Ping配置的IP地址。
+以定义的时间间隔ping指定的IP地址并监视结果。
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ## Changelog
+
+### 1.4.5 (2020-04-23)
+* (Apollon77) Fixed potential crash case (Sentry)
+
+### 1.4.4 (2020-04-17)
+* (bluefox) Added support of Admin3 
+
+### 1.4.3 (2020-04-17)
+* (Apollon77) Add Sentry for js-controller 3.0
+* (Apollon77) update dependencies
+
+### 1.4.2 (2020-01-23)
+* (JayVee2) Sort the IP addresses
+
 ### 1.4.1 (2019-01-08)
 * (simatec) support compact mode
 
@@ -74,7 +90,7 @@ Ping在定义的时间间隔内指定IP地址并监视结果。
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

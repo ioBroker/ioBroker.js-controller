@@ -92,6 +92,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.1.2 (2020-04-12)
+* (Apollon77) catch errors when no memory is available anymore and stop processing
+
 ### 3.1.1 (2020-03-11)
 * (Apollon77) fix admin when switching to TCPTransport
 * (Apollon77) bugfixes and optimizations

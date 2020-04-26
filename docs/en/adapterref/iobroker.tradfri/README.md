@@ -71,6 +71,9 @@ The result object `ret` looks as follows:
 	### __WORK IN PROGRESS__
 -->
 
+### 2.6.1 (2020-04-17)
+* Bugfix: Blinds would not always be stopped
+
 ### 2.6.0 (2020-03-17)
 * Support stopping blinds at their current position
 

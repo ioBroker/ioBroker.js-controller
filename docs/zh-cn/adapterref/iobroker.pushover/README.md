@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.pushover/README.md
 title: ioBroker推入式适配器
-hash: DEWM3/a3s19vsoybsv7HjyVW4LB87l2vv5zUuLXIozw=
+hash: mrMzTGveYDthpTPCdJ+TTHdRfH8dpRW5jSYXzraxxEs=
 ---
 ![商标](../../../en/adapterref/iobroker.pushover/admin/pushover.png)
 
@@ -14,6 +14,8 @@ hash: DEWM3/a3s19vsoybsv7HjyVW4LB87l2vv5zUuLXIozw=
 
 ＃ioBroker推入式适配器
 从ioBroker发送推送通知。
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**更多详细信息，请参见下文！
 
 ##配置
 首先，需要在推入帐户。
@@ -54,7 +56,26 @@ sendTo("pushover", {
 });
 ```
 
+##什么是Sentry，什么报告给服务器？
+Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+
 ## Changelog
+### 2.0.1 (2020-04-24)
+* (bluefox) Fixed error in the blockly if language was not "ru/en/de"
+* (bluefox) Breaking change: the encryption of the password was changed, so the token must be entered anew. Store your token before update.
+
+### 1.3.2 (2020-04-17)
+* (Apollon77) add Error handler to not crash adapter (fixes Sentry IOBROKER-PUSHOVER-1)
+
+### 1.3.0 (2020-04-12)
+* (Apollon77) Fix token decryption and add compatibility to js-controller 3.0
+* (Apollon77) Add Sentry (used in js-controller 3.0)
+
+### 1.2.3 (2020-02-19)
+* (bluefox) Token will be encrypted now.
+
 ### 1.2.0 (2020-02-03)
 * (bluefox) Removed the getMessages call.
 

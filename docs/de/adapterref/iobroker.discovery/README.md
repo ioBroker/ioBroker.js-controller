@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Adapter
-hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
+hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
 ---
 ![Logo](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -19,6 +19,8 @@ hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 Dies sind spezielle Adapter, die versuchen, alle möglichen Geräte zu finden, die vom Host aus erreichbar sind.
 Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 ## Wird tatsächlich unterstützt
 ### Automatisch erkannt
 - Beckhoff PLC
@@ -33,36 +35,46 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - ebus
 - ekey
 - Energiemanager (E.ON / Solarwatt)
+- enet (Jung)
 - Epson Stylus PX830
-- Fakeroku
+- Fakeroku (Harmonie)
 - FHEM
 - FireTV
+- Fritzdect
 - Fronius
 - G-Homa-Stecker
 - Harmonie
 - Heimassistent
 - Homematische CCU (hm-rpc, hm-rega)
 - Homepilot
+- HP-Lio
 - Philips HUE
 - Plex
 - InfluxDB
 - KLF-200
-- KNX
+- KNX (tatsächlich deaktiviert)
+- Kodi
 - Landroid
 - LGTV
 - Beleuchten
 - Loxone
 - Lupusec
 - MAX! Würfel
+- McLighting
 - MegaD
 - Miele
 - Mi Home Smarthome
+- Mikrotik
 - MiLight-Brücke (v6)
+- Mpd
 - Musiksendung
 - Mysensoren USB / Seriell (9600, 38400, 57600, 115200)
+- Nuki2
 - Nuss
+- Onkyo
 - OpenHAB
 - Ping
+- Plex
 - Proxmox
 - RFLink (Serial 57600baud)
 - SamsungTV
@@ -74,7 +86,7 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Squeezebox
 - SqueezeboxRPC
-- stiebel-isg
+- Synologie
 - TR-064
 - Trådfri
 - UPnP
@@ -100,12 +112,9 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - Foobar200 (Instalator)
 - Fritzbox (ruhr70)
 - km200 (Frankjoke)
-- Kodi (Installateur)
 - Megaesp (ausHaus)
 - Modbus (Bluefox)
-- mpd (Installateur)
 - mqtt / mqtt-client (Bluefox)
-- Onkyo (Bluefox)
 - owfs (Bluefox)
 - rpi2 (wenn ioBroker auf Raspberry läuft)
 - rwe-smarthome (PArns)
@@ -116,6 +125,21 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - xs1 (Frankjoke)
 
 ## Changelog
+
+### 2.3.3 (2020-04-23)
+* correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
+* catch http errors better (Sentry IOBROKER-DISCOVERY-2)
+
+### 2.3.2 (2020-04-18)
+* (Apollon77) Fix potential crash in knx discovery
+
+### 2.3.1 (2020-04-16)
+* (instalator) Add Synology, Onkyo, Mpd, Mikrotik
+* (instalator) Fixed eKey, Mihome, Broadlink2, Plex
+* (instalator) Several optimizations and fixing of crash causes
+* (Apollon77) Add Sentry Crash Reporting for js-controller 3.0
+* (bluefox) Refactoring
+
 ### 2.2.2 (2020-02-13)
 * (dkleber89) Add discovery for Beckhoff PLC
 * (forelleblau) Add discovery for Solarlog

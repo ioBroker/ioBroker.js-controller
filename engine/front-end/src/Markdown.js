@@ -372,7 +372,7 @@ class Markdown extends Router {
         this.contentRef = React.createRef();
 
         this.customLink = ({ text, link }) =>
-            (<a className={this.props.classes.mdLink + ' md-link'} onClick={() => {
+            (<a className={this.props.classes.mdLink + ' md-link'} href="" onClick={() => {
                 if (link) {
                     if (link.startsWith('#')) {
                         this.onNavigate(Utils.text2link(link.substring(1)))
@@ -403,17 +403,17 @@ class Markdown extends Router {
             const _level = parseInt(level, 10);
 
             if (_level === 1) {
-                return (<h1 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}></a></h1>);
+                return (<h1 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h1>);
             } else if (_level === 2) {
-                return (<h2 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}></a></h2>);
+                return (<h2 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h2>);
             } else if (_level === 3) {
-                return (<h3 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}></a></h3>);
+                return (<h3 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h3>);
             } else if (_level === 4) {
-                return (<h4 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}></a></h4>);
+                return (<h4 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h4>);
             } else if (_level === 5) {
-                return (<h5 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}></a></h5>);
+                return (<h5 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h5>);
             } else  {
-                return (<h6 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}></a></h6>);
+                return (<h6 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h6>);
             }
         };
     }

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: OsPJlZjV0DtErfgb8ksy/0sX2PeZxLg6pi8psc/KlDg=
+hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
 ---
 ![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -32,7 +32,7 @@ Führen Sie zum Installieren Folgendes aus:
 
 1. Installieren Sie über Admin mit dem
  * Stable Repo - um die aktuelle stabile Version zu erhalten
- * letztes Repo - um die neueste Testversion zu erhalten (möglicherweise nicht stabil)
+ * Neuestes Repo - um die neueste Testversion zu erhalten (möglicherweise nicht stabil)
  * via: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git - um die neueste Entwicklungsversion zu erhalten
 2. Erstellen Sie in der Miele Smartphone App ein App-Konto für Miele @ Home
 3. Erstellen Sie ein Entwicklerkonto unter https://www.miele.com/f/com/en/register_api.aspx
@@ -50,9 +50,9 @@ Bitte beziehen Sie sich hauptsächlich auf die von Miele veröffentlichte API-Ha
 * [Voraussetzungen für die Ausführung einer Aktion auf einem Gerät] (https://www.miele.com/developer/swagger-ui/put_additional_info.html)
 
 Es gibt einige Datenpunkte, die auf zwei Arten verfügbar sind. Als menschlich lesbarer Text und als Zahl.
-Diese numerischen Datenfelder, die zu einem Textfeld gehören, haben denselben Namen, aber ein "_raw" wird angehängt.
+Diese numerischen Datenfelder, die zu einem Textfeld gehören, haben denselben Namen, aber ein "_raw" ist angehängt.
 Die Felder, die eine allgemeine Bedeutung haben, sind unten aufgeführt.
-Die Felder, die nicht aufgeführt sind, unterscheiden sich in ihrer Bedeutung von Gerät zu Gerät und werden von Miele nicht dokumentiert.
+Die Felder, die nicht aufgelistet sind, unterscheiden sich in ihrer Bedeutung von Gerät zu Gerät und werden von Miele nicht dokumentiert.
 Wenn Sie in Skripten auf diese Felder verweisen müssen, verwenden Sie immer die _raw-Werte.
 Die Textwerte können sich in Zukunft ändern und hängen auch von der Sprache ab.
 Hier ist eine Liste, wofür diese Rohwerte stehen:
@@ -134,10 +134,26 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 5 | Handeisen Stufe 2 |
  | 6 | Maschineneisen |
 
+### ProgramPhase für Waschmaschinen
+| Rohwert | Staat |
+|----------|-------|
+| 260 | "Waschen" / "Waschen" |
+| 261 | "Spülen" / "Spülen" |
+| 266 | "Schleudern" / "Spinnen" |
+| 267 | "Knitterschutz" / "" |
+| 268 | "Ende" / "Ende" |
+| 256 | "" |
+
 ## Urheberrechte ©
 Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 1.2.0 (2020-04-18)
+* (grizzelbee) New: Added new boolean state (**Connected**) that indicates whether the device is connected to WLAN or a gateway.
+* (grizzelbee) New: Added new boolean state (**signalInUse**) that indicates whether the device is switched off (false) or in Use (true).
+* (grizzelbee) Change: replaced the deprecated http-library **request** with **axios** 
+* (grizzelbee) Change: Made functions communicating with API asynchronus 
+  
 ### 1.1.0 (2020-03-07)
 * (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
                Please remember that Actions will only work if you put your device into the appropiate state (e.g. Mobile Control)

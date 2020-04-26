@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.binance/README.md
 title: ioBroker.binance
-hash: dPWsMLNDNpUqbYRpdvoJlMZroTgWgY4ADFWZXh9fyFA=
+hash: g1ciorZTR3u5Yhaf5+j4iEvviAnfozU2ASrlfW4BtJo=
 ---
 ![Logo](../../../en/adapterref/iobroker.binance/admin/binance.png)
 
@@ -17,7 +17,7 @@ hash: dPWsMLNDNpUqbYRpdvoJlMZroTgWgY4ADFWZXh9fyFA=
 
 # IoBroker.binance
 ## Einführung
-Adapter zur Kommunikation mit der Krypta-Handelsplattform binance
+Adapter zur Kommunikation mit der Krypto-Handelsplattform binance
 
 Der Adapter zieht die Preise der Währungen im konfigurierten Aktualisierungsintervall.
 Wenn Sie einen API-Schlüssel und das entsprechende Geheimnis konfigurieren, werden auch Kontensalden abgerufen.
@@ -26,6 +26,10 @@ Sie können einen API-Schlüssel auf binance.com erstellen. Ich empfehle, ihn au
 ![Screenshot-1] (Screenshot-1.png)! [Screenshot-2](../../../en/adapterref/iobroker.binance/screenshot-2.png)
 
 ## Changelog
+### 1.1.0
+- added 24hr data for selected symbols
+### 1.0.5
+- fixed interval handle
 ### 1.0.4
 - npmjs repackage
 ### 1.0.3

@@ -145,7 +145,7 @@ sendTo('influxdb.0', 'getHistory', {
 Possible options:
 - **start** - (optional) time in ms - *new Date().getTime()*'
 - **end** - (optional) time in ms - *new Date().getTime()*', by default is (now + 5000 seconds)
-- **step** - (optional) used for  aggregate (max, min, average, total, count) step in ms of intervals
+- **step** - (required if aggregate is not "none") used for  aggregate functions (max, min, average, total, count) step in ms of intervals
 - **count** - (optional) number of values if aggregate is 'onchange'/'none' or number of intervals if other aggregate method. Count will be ignored if step is set.
 - **limit** - do not return more entries than limit (only used if aggregate is 'onchange'/'none')
 - **addId** - if *id* field should be included in answer
@@ -245,6 +245,13 @@ sendTo('influxdb.0', 'getEnabledDPs', {}, function (result) {
 
 
 ## Changelog
+### 1.8.2 (2020-04-19)
+* __Requires js-controller >= 2.0.0__
+* (Apollon77) removed usage of adapter.objects
+* (Apollon77) check if objects have changed and ignore unchanged
+* (Apollon77) Add Sentry for Error Reporting with js-controller 3.0
+* (Apollon77) Make sure value undefined is ignored
+
 ## 1.7.0 (2019-12-23)
 * (bluefox) Support of compact mode
 
@@ -372,7 +379,7 @@ sendTo('influxdb.0', 'getEnabledDPs', {}, function (result) {
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2019 bluefox, apollon77
+Copyright (c) 2015-2020 bluefox, apollon77
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -8,7 +8,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.daswetter.png?downloads=true)](https://nodei.co/npm/iobroker.daswetter/)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/rg-engineering/ioBroker.daswetter.svg)](https://greenkeeper.io/)
+
 
 **If you like it, please consider a donation:**
                                                                           

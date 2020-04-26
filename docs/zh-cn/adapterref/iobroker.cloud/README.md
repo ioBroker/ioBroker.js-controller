@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.cloud/README.md
 title: ioBroker云适配器
-hash: RebA3aDvQtVtvoT0+yWQ951WyaujEGwhHFc9X8QsJ5c=
+hash: FSkpNQoml2w+OoHO8MMRFHzZeypm1KRKbim/xZiTs/0=
 ---
 ![商标](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
 
@@ -14,6 +14,8 @@ hash: RebA3aDvQtVtvoT0+yWQ951WyaujEGwhHFc9X8QsJ5c=
 
 ＃ioBroker云适配器
 该适配器允许从互联网通过ioBroker云连接到ioBroker的本地安装。
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##设置
 ### APP-KEY
@@ -39,13 +41,13 @@ hash: RebA3aDvQtVtvoT0+yWQ951WyaujEGwhHFc9X8QsJ5c=
 
 ＃＃ 服务
 可以将消息发送到云适配器。
-如果将```[POST]https://iobroker.net/service/custom_<NAME>/<user-app-key>```und值称为有效负载。
+如果调用```[POST]https://iobroker.net/service/custom_<NAME>/<user-app-key>```und值作为有效负载。
 
 ```
 curl --data "myString" https://iobroker.net/service/custom_test/<user-app-key>
 ```
 
-如果您在设置中将“服务白名单”字段设置为名称* custom_test *，并使用“ custom_test”作为服务名称进行调用，则状态** cloud.0.services.custom_test **将设置为* myString *。
+如果在设置中将“服务白名单”字段设置为名称* custom_test *，并以“ custom_test”作为服务名称进行调用，则状态cloud / 0.services.custom_test将设置为myString *。
 
 您可以在白名单中写上“ *”，然后将允许所有服务。
 
@@ -66,7 +68,14 @@ curl --data "myString" https://iobroker.net/service/custom_test/<user-app-key>
 *去做*
 
 ## Changelog
-### 3.0.0 (2020-01-04)
+### 3.0.3 (2020-04-14)
+* (bluefox) Updated socket.io version
+* (bluefox) Added sentry.io reporting
+
+### 3.0.2 (2020-02-23)
+* (Apollon77) fix for pot. crash when used with web 3.x
+
+### 3.0.1 (2020-01-05)
 * (bluefox) Breaking changes: no alexa support. Use ioBroker.iot for that.
 * (bluefox) Support of multiple clients for .pro
 

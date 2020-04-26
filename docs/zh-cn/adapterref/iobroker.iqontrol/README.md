@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: Rdr5TNbAWWrNwV3UmMfa4XaMB6U4kbuDh7k4uX8JEU0=
+hash: M5IbnPuAxtJgk2x/3tfUdj2bYQ5lmeua/GfCsJ8CX1Y=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -25,7 +25,7 @@ hash: Rdr5TNbAWWrNwV3UmMfa4XaMB6U4kbuDh7k4uX8JEU0=
 
 \ **如果喜欢，请考虑捐赠：**
 
-[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
 
 ****
 
@@ -56,7 +56,7 @@ hash: Rdr5TNbAWWrNwV3UmMfa4XaMB6U4kbuDh7k4uX8JEU0=
 
 *清除浏览器缓存
 *重新启动ioBroker
-*在浏览器打开的调试控制台中启动iQonrol（通常需要按F12键打开它），然后在控制台窗口中查找消息
+*使用已打开浏览器的调试控制台启动iQonrol（通常需要按F12键打开它），然后在控制台窗口中查找消息
 
 ##论坛
 访问[iobroker论坛](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol)。
@@ -107,7 +107,7 @@ hash: Rdr5TNbAWWrNwV3UmMfa4XaMB6U4kbuDh7k4uX8JEU0=
 *设置只读标志
 *设置反转标志
 *设置Confirm-Flag（强制用户在将更改写入数据点之前进行确认）
-*设置PIN码（强制用户在将更改写入数据点之前输入此PIN码-但要注意：这仅是低安全性，因为在前端检查了PIN码！使用数字显示全屏-pin-pad（如果要求输入代码）
+*设置PIN码（强制用户在将更改写入数据点之前输入此PIN码-但要注意：这仅是低安全性，因为该密码是在前端检查的！使用数字显示全屏-pin-pad（如果要求输入代码）
 *设置一个写入目标值的数据点ID（如果实际值和目标值有不同的数据点）
 *修改数据点的单位，以零，单数和复数分隔
 *修改数据点的最小值和最大值
@@ -118,14 +118,14 @@ hash: Rdr5TNbAWWrNwV3UmMfa4XaMB6U4kbuDh7k4uX8JEU0=
 ![CustomDialog调用](img/custom_call.png)![CustomDialog示例](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
 
 ###一般状态：
-每个角色具有以下三种状态：
+每个角色具有以下三个状态：
 
 * **ADDITIONAL_INFO** *array* 数据点的数组，将显示在信息对话框的底部
 * **BATTERY** *布尔值*-为true或* number *-小于10％时，将显示少许电池电量图标
 * **错误**：*布尔值*-为true时，将显示一些感叹号图标
 * **UNREACH** *布尔值*-为true时，将显示一个小的无线图标
 
-几乎所有角色都具有STATE和/或LEVEL状态。在大多数情况下，这代表了设备的主要功能。您可以为其分配以下类型的io-broker-states：
+几乎所有角色都具有状态和/或级别状态。在大多数情况下，这代表了设备的主要功能。您可以为其分配以下类型的io-broker-states：
 
 * *布尔值*-如果可能，它将被翻译为有意义的文本，例如“开/关”，“打开/关闭”或类似内容。如果单击图块的图标，它将尝试切换布尔值（例如，打开或关闭灯）。如果它不是只读的，它将在对话框中生成一个翻转开关。
 * *数字*-将显示其对应的单位并在对话框中生成一个滑块
@@ -154,7 +154,7 @@ hash: Rdr5TNbAWWrNwV3UmMfa4XaMB6U4kbuDh7k4uX8JEU0=
 
 ### <img src="img/icons/button.png" width="32">按键：
 * **STATE** *任何*-任何所需的状态类型
-* **SET_VALUE** 常量*字符串*-这是一个常数（不是链接的io-broker-state！），如果按下按钮将分配给STATE
+* **SET_VALUE** 常量*字符串*-这是一个常数（不是链接的io-broker-state！），如果按下按钮，它将分配给STATE
 * **OFF_SET_VALUE** 常量*字符串*-这是一个常量（不是链接的io-broker状态！）。如果已定义，则在in选项中定义的时间或100ms之后，STATE将重置为该值。
 
 ### <img src="img/icons/light_on.png" width="32">光：
@@ -177,8 +177,8 @@ hash: Rdr5TNbAWWrNwV3UmMfa4XaMB6U4kbuDh7k4uX8JEU0=
 
     如果您的设备不支持使用HUE，SATURATION和COLOR_BRIGHTNESS（HSB / HSV颜色空间），则可以使用多种替代颜色空间。在设备选项中，可以选择以下颜色空间之一：
 
-    * **RGB** / **RGB** 您可以使用RGB格式（十六进制），而不是使用HUE，SATURATION和COLOR_BRIGHTNESS，可在前导'＃'处使用
-    * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可在前导'＃'处使用
+    * **RGB** / **RGB** 您可以使用RGB格式（十六进制），而不是使用HUE，SATURATION和COLOR_BRIGHTNESS，可选，前导'＃'
+    * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可选，并以'＃'开头
     * **RGBWWCW** / **RGBWWCW** / **RGBCWWW** / **RGBCWWW** 您可以使用RGBWWCW-或RGBCWWW-Format（十六进制）来代替HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS ，WW =暖白，CW =冷白），可选，以“＃”开头
     * **RGB（仅色相）** /** RGB（仅色相）**：可以使用RGB（仅色相）格式（十六进制）替代使用HUE，并在前导'＃'处可选。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
     * ** Milight的色相**：这是Milight设备的色相值，在色相色域中使用另一个起点：
@@ -193,7 +193,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 *效果模式：
     * **效果**：*值列表*-播放效果
-* **EFFECT_NEXT** *布尔值*-如果设置为true，将播放下一个效果（作为不支持EFFECT值列表的设备的替代）
+* **EFFECT_NEXT** *布尔值*-如果设置为true，则将播放下一个效果（作为不支持EFFECT值列表的设备的替代）
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *布尔值*-如果设置为true，则效果将加快/降低
 *其他：
     * **电源**：*数字*-功耗将在右上角以小号显示
@@ -254,13 +254,19 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **SLATS_LEVEL** *数量*-百叶板的位置百分比
 
 ### <img src="img/icons/fire_on.png" width="32">火灾传感器：
-* **STATE** *布尔值*-如果为true，传感器将显示为已触发
+* **STATE** *布尔值*-如果为true，则传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
     *您还可以分配* string *来显示任何文本，例如“楼上的火”
 * **链接视图属性**直接打开
 
+### <img src="img/icons/flood_on.png" width="32">洪水传感器：
+* **STATE** *布尔值*-如果为true，则传感器将显示为已触发
+    *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
+    *您还可以分配* string *以显示任何文本，例如“楼上洪水”
+* **链接视图属性**直接打开
+
 ### <img src="img/icons/alarm_on.png" width="32">报警：
-* **STATE** *布尔值*-如果为true，传感器将显示为已触发
+* **STATE** *布尔值*-如果为true，则传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
     *您还可以分配* string *来显示任何文本，例如“楼上的火”
 * **CONTROL_MODE** *值列表*-选择操作模式，例如“武装”和“撤防”
@@ -291,6 +297,15 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **STATE** *任何*-可用于显示更多信息
 * **URL** 常量* string *-该URL将被打开
 
+##图标和背景图片
+*您可以使用内置图像或在“图像”标签下上传的图像或您喜欢的任何免费网址
+*您也可以在图片网址中使用变量。例如，这对于天气预报来说可能是有用的。使用此模式：
+    *``path / to / firstloaded.png | anotherpath / to / {iobrokerstate | fallback} .png``
+    *示例：``./../ iqontrol.meta / userimages / demo / bottle.jpg | ./../ iqontrol.meta / userimages / demo / {javascript.0.myimage | whitestone} .jpg''
+*打开视图时加载``./../iqontrol.meta/userimages/demo/bottle.jpg''
+*从服务器获取javascript.0.myimage的状态后，该图像将立即替换为./../iqontrol.meta/userimages/demo/XXX.jpg，其中XXX是javascript.0.myimage的值
+*如果javascript.0.myimage没有值，将使用后备的whitestone
+
 ##开发中
 *查看[前端的操作原理]（Operating％20Principle％20of％20Frontend.md）
 
@@ -298,8 +313,32 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ## Changelog
 
+### 0.3.4 (2020-04-26)
+* (Sebastian Bormann) Added variables to icons and backgroundimages (see readme)
+* (Sebastian Bormann) It is now possible to remove toolbar (the first view is then the home view)
+
+### 0.3.3 (2020-04-19)
+* (Sebastian Bormann) Fixed device readonly for toggle state.
+* (Sebastian Boramnn) Fixed devices with same name.
+* (Sebastian Bormann) Removed some old code from version <0.3.0.
+
+### 0.3.2 (2020-04-19)
+* (Sebastian Bormann) Fixed loading toolbar with no entries on linked view.
+* (Sebastian Bormann) Fixed views with quotes in name.
+* (Sebastian Bormann) Fixed Flood-Sensor.
+
+### 0.3.1 (2020-04-16)
+* (Sebastian Bormann) Breaking change: The complete configuration is no longer stored in ioBroker channels and states, but is fetched as one complete object, thus saving the configuration is much much faster than before.
+* (Sebastian Bormann) Views, devices and toolbar entries are now sortable via drag- and drop in the configuration dialog.
+* (Sebastian Bormann) After saving the configuration the instance ist now yellow until the configuration is completely written.
+* (Sebastian Bormann) Added invert UNREACH to device options.
+* (Sebastian Bormann) Added Flood-Sensor.
+* (Sebastian Bormann) Enhanced autocreation-feature by using ioBroker-Type-Detector by bluefox.
+* (Sebastian Bormann) Enhanced hue-lights when using alternative colorspace without white-values and changing ct.
+* (Sebastian Bormann) Enhanced hue-lights when using alternative colorspace to keep uppercase if needed.
+
 ### 0.2.20 (2020-04-08)
-* (Sebastian Bormann) If value for POWER is greater than 100, it is rounded withour decimal places.
+* (Sebastian Bormann) If value for POWER is greater than 100, it is rounded without decimal places.
 * (Sebastian Bormann) Bugfixed invert-function with custom min and max.
 * (Sebastian Bormann) Added reload-link to loading page.
 * (Sebastian Bormann) Updated dependencies.

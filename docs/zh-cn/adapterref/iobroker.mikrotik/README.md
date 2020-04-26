@@ -3,26 +3,45 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mikrotik/README.md
 title: 无题
-hash: 2QllcQo+36Hh2pTRpMCJV29QqLILPJvPVUEjrN4ajQA=
+hash: 7EeWKM8SDAAtM9HgqMYmms/HyCa9sK8wBPztX2k0EGQ=
 ---
-![商标](../../../en/adapterref/iobroker.mikrotik/admin/mikrotik_admin.png)ioBrokerMikroTik路由器适配器=================
+![商标](../../../en/adapterref/iobroker.mikrotik/admin/mikrotik_admin.png)ioBroker MikroTik路由器适配器
 
+![安装数量](http://iobroker.live/badges/mikrotik-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.mikrotik.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.mikrotik.svg)
-![测试](http://img.shields.io/travis/instalator/ioBroker.mikrotik/master.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.mikrotik.svg)
+![测验](http://img.shields.io/travis/instalator/ioBroker.mikrotik/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mikrotik.png?downloads=true)
+![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
+
+=================
 
 ##使用
 ### Add_firewall
 将地址添加到防火墙列表并启用。
 例如`name,127.0.0.1,comment`。
 
-### Raw将命令api发送给mikrotik，例如`/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`。
-### Reboot，shutdown重启/关闭mikrotik
+### Raw将命令api发送到mikrotik，例如`/ip/firewall/address-list/add\n=list=2vpn\n=address=195.82.146.0/24\n=comment=rutracker.org`。
+###重新启动，关闭重新启动/关闭mikrotik
 ### Usb_reset重置mikrotik中的电源USB
-*在路由器中删除时，不会自动删除创建的对象。*
+*在路由器中删除后，创建的对象不会自动删除。*
 
 ## Changelog
+
+#### 1.0.11
+* (instalator) fixed [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/28)
+
+#### 1.0.10
+* (instalator) added name object
+* (instalator) fix error
+
+#### 1.0.6
+* (instalator) added in interface RX/TX (packets) [issues#20](https://github.com/instalator/ioBroker.mikrotik/issues/20)
+* (instalator) Added Support for Compact mode
+* (instalator) Refactoring
+
+#### 1.0.5
+* (instalator) Update Login Protocol [issues#23](https://github.com/instalator/ioBroker.mikrotik/issues/23)
 
 #### 1.0.4
 * (instalator) fix add_firewall command [issues#18](https://github.com/instalator/ioBroker.mikrotik/issues/18#issue-358331248)
@@ -69,3 +88,27 @@ hash: 2QllcQo+36Hh2pTRpMCJV29QqLILPJvPVUEjrN4ajQA=
 
 #### 0.0.1
 * (instalator) initial version
+
+## License
+
+The MIT License (MIT)
+
+Copyright (c) 2020 instalator <vvvalt@mail.ru>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

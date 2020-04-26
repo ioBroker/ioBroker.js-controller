@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: VgIhdc1/23xticYs/abzNV4hx3j1Dut103VJuJ/9spo=
+hash: 61fEhv2DxfmqAoNBj1Ifds0g5354L6Q/0uNr0BUdeYY=
 ---
 ![Logo](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -28,7 +28,7 @@ Es gibt zwei Möglichkeiten, wie die Entitäten konfiguriert werden könnten:
 ### Auto
 Im Auto-Modus wird der gleiche Vorgang wie bei `google home` oder `material adapter` angewendet.
 
-*** Es werden nur Objekte und Kanäle erkannt, für die die Kategorien `function`und `room` definiert sind ***
+*** Es werden nur Objekte und Kanäle erkannt, für die Kategorien `function`und `room` definiert sind ***
 
 Sie können Anzeigenamen definieren, die in Entitäten verwendet werden.
 
@@ -78,7 +78,7 @@ oder Sie verwenden einfach `lovelace.X.control.alarm (entity_id = alarm_control_
 ### Zahleneingabe
 Dies kann manuell erfolgen, wenn der Entitätstyp input_number im benutzerdefinierten Dialogfeld ausgewählt ist.
 Dieser Typ erforderte `min` und `max` Werte in `common` und optionale `step` könnten hinzugefügt werden.
-Wenn Sie die Aufwärts- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` auf 'Nummer' setzen:
+Wenn Sie die Aufwärts- und Abwärtspfeile sehen möchten, sollten Sie in benutzerdefinierten `mode` 'Nummer' setzen:
 
 ```
 common: {
@@ -95,7 +95,7 @@ common: {
 
 ### Eingang auswählen
 Dies kann manuell erfolgen, wenn der Entitätstyp input_select im benutzerdefinierten Dialogfeld ausgewählt ist.
-Die Liste der Optionen zur Auswahl sollte im Standardobjekt commom.states enthalten sein:
+Die Liste der Optionen, aus denen Sie auswählen können, sollte im Standardobjekt commom.states enthalten sein:
 
 ```
 "common": {
@@ -452,15 +452,24 @@ Vorerst (2020.01.12) wurden folgende Dateien geändert:
 Nach dem Auschecken geänderte Version im Ordner `./build`. Dann.
 
 1. Gehen Sie zum Verzeichnis ./build.
-2. `git clone https:// github.com / GermanBluefox / home-Assistant-polymer.git` es ist eine Gabelung von https://github.com/home-assistant/home-assistant-polymer.git, aber einige Dinge geändert werden (siehe Dateiliste weiter oben).
+2. `git clone https:// github.com / GermanBluefox / home-Assistant-polymer.git` es ist eine Gabelung von https://github.com/home-assistant/home-assistant-polymer.git, aber einige Dinge werden geändert (siehe die Dateiliste früher).
 3. "CD Home-Assistant-Polymer"
 4. `git checkout master`
 5. `npm install`
-6. `gulp build-app` für die Veröffentlichung oder` gulp Develop-iob` für die Debug-Version. Um das Web nach Änderungen zu erstellen, können Sie "webpack-dev-app" für eine schnellere Erstellung aufrufen. Sie müssen jedoch "build-app" aufrufen, nachdem die Version einsatzbereit ist.
+6. `gulp build-app` für die Veröffentlichung oder` gulp Develop-iob` für die Debugging-Version. Um das Web nach Änderungen zu erstellen, können Sie "webpack-dev-app" für eine schnellere Erstellung aufrufen. Sie müssen jedoch trotzdem "build-app" aufrufen, nachdem die Version einsatzbereit ist.
 7. Kopieren Sie alle Dateien von `. / Build / home-Assistant-Polymer / hass_frontend` in`. / Hass_frontend` in diesem Repo
 8. Starten Sie die Aufgabe "Schlucken umbenennen".
 
 ## Changelog
+### 1.0.14 (2020-04-22)
+* (algar42) Call of deprecated getObjectView updated for js-controller v3
+
+### 1.0.13 (2020-04-13)
+* (bluefox) The translation was corrected in the custom settings.
+
+### 1.0.12 (2020-03-16)
+* (Garfonso) Added option to restrict auto entity creation to alias.0.*
+
 ### 1.0.10 (2020-02-13)
 * (Garfonso) Fixed handling of malformed / null RGB string
 * (algar42)  Binary sensor added

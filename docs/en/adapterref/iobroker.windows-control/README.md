@@ -58,6 +58,9 @@ Place the `GetAdmin.exe` file in any folder of your Windows device. Execute the 
 
 ## Changelog
 
+### 0.1.3
+* (Mic-M) Internal only: Correction to support compatibility with js-adapter 3.x, Use gulp for translations (which is resulting in files under admin/i18n/)
+
 ### 0.1.2
 * (Mic-M) Several fixes.
 

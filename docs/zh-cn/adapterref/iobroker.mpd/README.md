@@ -3,23 +3,29 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mpd/README.md
 title: ioBroker.mpd适配器
-hash: nICyiM828I14uglLlFHsHPTR/nhrqxON2tzU08H/1Yw=
+hash: Wk5frA8U3enc0+dFatkdPlZN7hdvOmx2T8sfFxyRHTA=
 ---
 ![商标](../../../en/adapterref/iobroker.mpd/admin/mpd.png)
 
 ![安装数量](http://iobroker.live/badges/mpd-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.mpd.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.mpd.svg)
-![测试](http://img.shields.io/travis/instalator/ioBroker.mpd/master.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.mpd.svg)
+![测验](http://img.shields.io/travis/instalator/ioBroker.mpd/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mpd.png?downloads=true)
+![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
-#ioBroker.mpd适配器
-连接到[音乐播放器守护进程](http://musicpd.org)服务器，发送命令，发出事件。
+＃ioBroker.mpd适配器
+连接到[音乐播放器守护程序](http://musicpd.org)服务器，发送命令，发出事件。
 
 ##文档
-另见[MPD协议文档](http://www.musicpd.org/doc/protocol/)。
+另请参阅[MPD协议文档](http://www.musicpd.org/doc/protocol/)。
 
 ## Changelog
+
+#### 1.0.4
+* (instalator) Changed the appearance of the settings
+* (instalator) Added support compact mode
+* (instalator) Refactoring
 
 #### 1.0.2
 * (twonky) support admin3
@@ -95,3 +101,26 @@ hash: nICyiM828I14uglLlFHsHPTR/nhrqxON2tzU08H/1Yw=
 
 #### 0.0.1
 * 11.12.2016 (instalator) initial adapter
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2020 instalator <vvvalt@mail.ru>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

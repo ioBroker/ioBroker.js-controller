@@ -263,6 +263,10 @@ Note, that there are two different sonnen API's so if you are missing states, th
     ```
 
 ## Changelog
+# 1.4.2 (2020-04-16)
+* (foxriver76) added more translations
+* (foxriver76) optimizations for compact mode
+
 ### 1.4.0
 * (foxriver76) introducing new states with power metering and inverter information (supported on :8080 API)
 * (foxriver76) only minimum support until we know what users need as states

@@ -4,6 +4,7 @@ BADGE-NPM version: http://img.shields.io/npm/v/iobroker.feiertage.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.feiertage.svg
 BADGE-Tests: https://travis-ci.org/Pix---/ioBroker.feiertage.svg?branch=master
 BADGE-Open Issues: http://githubbadges.herokuapp.com/Pix---/ioBroker.feiertage/issues.svg
+BADGE-Known Vulnerabilities: https://snyk.io/test/github/Pix---/ioBroker.feiertage/badge.svg?targetFile=package.json
 BADGE-NPM: https://nodei.co/npm/iobroker.feiertage.png?downloads=true
 BADGE-Travis-CI: http://img.shields.io/travis/Pix---/ioBroker.feiertage/master.svg
 BADGE-AppVeyor: https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.feiertage?branch=master&svg=true
@@ -29,6 +30,9 @@ Der Adapter startet jeden Tag um Mitternacht. Ein häufigeres Starten ist nicht 
 Es können natürlich weitere Instanzen des Adapters mit abweichenden Feiertagsauswahlen angelegt werden. So kann man z.B. die unterschiedlichen Anforderungen bei Feiertagsarbeitern abdecken. Eine Beispielanwendung ist der [Shuttercontrol Adapter](https://github.com/simatec/ioBroker.shuttercontrol/blob/master/docs/de/shuttercontrol.md#extra-einstellungen)
 
 ## Changelog
+### 1.0.19 (2020-04-21)
+* (pix) NodeJS 10 or higher required
+
 ### 1.0.18 (2020-03-25)
 * (pix) Italy's Day of Liberation and Day of Republic added
 * (pix) Minor fixes

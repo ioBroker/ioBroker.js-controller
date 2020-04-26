@@ -34,6 +34,39 @@ Required node.js >= 10.x.x
 
 ## Changelog
 
+###1.3.5
+* disable node v8 tests
+* fix createscene object definition
+* prevent websocket to connect if port, api key or ip is missing
+* catch errors on ackStateVal
+* fix "Cannot read property 'id' of undefined" for controlId
+* fix crash on scene actions with js-controller 3
+* catch onStateChange stateObj is null
+* fix level update when bri was set by other deConz instance
+
+### 1.3.4
+* fix message "State value to set is invalid"
+* terminate websocket connection on error to make sure the session is closed
+* check response is not undefined
+* catch request errors and send to sentry
+* prevent sending message with wrong value type
+
+### 1.3.3
+* fix catch response of setLightState is undefined
+* fix ws.terminate at unload
+* catch ip/port undefined at auto updates
+* catch res is undefined at deleteApiKey
+
+### 1.3.2
+* transitiontime now in seconds instead 1/10 seconds
+* fix colorspeed
+* use new class style
+* add sentry for error collection
+* fix transition time if set to 0
+* objects will be now deleted if the device is removed by adapter
+* fix multiple websocket connections
+* try to fix #120 reconnect after 60 seconds
+
 ### 1.3.1
 * fix set dimspeed
 * connect to Websocket in any case

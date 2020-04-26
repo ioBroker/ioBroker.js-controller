@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.telegram/README.md
 title: ioBroker Telegrammadapter
-hash: VRIdMiUgqct15MdEo+TxapxwmTaoIl+xo+flI0ZQKaY=
+hash: BuYkubzMLypshKqNbVufMZM5m/zjagIRqR6vJCVHuOQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
 
@@ -28,7 +28,7 @@ Um ein Gespräch mit Ihrem Bot zu beginnen, müssen Sie den Benutzer mit "/ pass
 
 ** Hinweis: ** Sie können die Kurzform "/ p Phrase" verwenden.
 
-Um ein schönes Avatar-Bild hinzuzufügen, geben Sie `/setuserpic` ein und laden Sie das gewünschte Bild (512x512 Pixel) hoch, wie dieses [Logo](img/logo.png).
+Um ein schönes Avatar-Bild hinzuzufügen, geben Sie `/setuserpic` in **BotFather** Chat ein und laden Sie das gewünschte Bild (512x512 Pixel) hoch, wie dieses [Logo](img/logo.png).
 
 Sie können eine Nachricht an alle authentifizierten Benutzer über messageBox `sendTo('telegram', 'Test message')` oder an einen bestimmten Benutzer `sendTo('telegram', '@userName Test message')` senden.
 Der Benutzer muss zuvor authentifiziert sein.
@@ -41,7 +41,7 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 });
 ```
 
-Wenn Sie das obige Beispiel verwenden, beachten Sie, dass Sie 'Benutzername' entweder durch den Vornamen oder den öffentlichen Telegramm-Benutzernamen des Benutzers ersetzen müssen, an den Sie die Nachricht senden möchten. (Hängt davon ab, ob die Einstellung "Benutzername nicht Vorname speichern" in den Adaptereinstellungen aktiviert ist oder nicht.) Wenn die Option aktiviert ist und der Benutzer in seinem Telegrammkonto keinen öffentlichen Benutzernamen angegeben hat, verwendet der Adapter weiterhin den Vornamen von Nutzer. Beachten Sie, dass, wenn der Benutzer später (nach der Authentifizierung bei Ihrem Bot) einen öffentlichen Benutzernamen festlegt, der gespeicherte Vorname beim nächsten Senden einer Nachricht an den Bot durch den Benutzernamen ersetzt wird.
+Wenn Sie das obige Beispiel verwenden, beachten Sie, dass Sie 'Benutzername' entweder durch den Vornamen oder den öffentlichen Telegramm-Benutzernamen des Benutzers ersetzen müssen, an den Sie die Nachricht senden möchten. (Hängt davon ab, ob die Einstellung "Benutzername nicht Vorname speichern" in den Adaptereinstellungen aktiviert ist oder nicht.) Wenn die Option aktiviert ist und der Benutzer in seinem Telegrammkonto keinen öffentlichen Benutzernamen angegeben hat, verwendet der Adapter weiterhin den Vornamen von Benutzer. Beachten Sie, dass, wenn der Benutzer später (nach der Authentifizierung bei Ihrem Bot) einen öffentlichen Benutzernamen festlegt, der gespeicherte Vorname beim nächsten Senden einer Nachricht an den Bot durch den Benutzernamen ersetzt wird.
 
 Es ist möglich, mehr als einen Empfänger anzugeben (trennen Sie einfach die Benutzernamen durch Komma).
 Zum Beispiel: Empfänger: "Benutzer1, Benutzer4, Benutzer5"
@@ -53,7 +53,7 @@ Sie können das Telegramm mit dem Adapter [text2command](https://github.com/ioBr
 
 Um ein Foto zu senden, senden Sie einfach einen Pfad zur Datei anstelle von Text oder URL: `sendTo('telegram', 'absolute/path/file.png')` oder `sendTo('telegram', 'https://telegram.org/img/t_logo.png')`.
 
-Beispiel für das Senden eines Screenshots von der Webcam zum Telegramm:
+Beispiel für das Senden eines Screenshots von der Web-Cam zum Telegramm:
 
 ```
 var request = require('request');
@@ -119,7 +119,7 @@ sendTo('telegram.0', {
 - *width* Videobreite (Video)
 - *Höhe* Videohöhe (Video)
 
-Der Adapter versucht, den Nachrichtentyp (Foto, Video, Audio, Dokument, Aufkleber, Aktion, Speicherort) zu ermitteln. Dies hängt vom Text in der Nachricht ab. Wenn der Text der Pfad zu einer vorhandenen Datei ist, wird er als entsprechender Typ gesendet.
+Der Adapter versucht, den Nachrichtentyp (Foto, Video, Audio, Dokument, Aufkleber, Aktion, Speicherort) zu erkennen. Dies hängt vom Text in der Nachricht ab. Wenn der Text der Pfad zu einer vorhandenen Datei ist, wird er als entsprechender Typ gesendet.
 
 Der Standort wird anhand des Attributspielraums ermittelt:
 
@@ -430,8 +430,8 @@ Mögliche Werte für die Sprache:
 - `nl-NL-Standard-E` - Niederländisch (Niederlande) (3 Frauen)
 - `en-AU-Standard-A` - Englisch (Australien) (weibliche Stimme)
 - `en-AU-Standard-B` - Englisch (Australien) (männliche Stimme)
-- `en-AU-Standard-C` - Englisch (Australien) (weibliche 2 Stimme)
-- `en-AU-Standard-D` - Englisch (Australien) (männlich 2 Stimmen)
+- `en-AU-Standard-C` - Englisch (Australien) (2 Frauen)
+- `en-AU-Standard-D` - Englisch (Australien) (männlich 2 Stimme)
 - `en-IN-Standard-A` - Englisch (Indien) (weibliche Stimme)
 - `en-IN-Standard-B` - Englisch (Indien) (männliche Stimme)
 - `en-IN-Standard-C` - Englisch (Indien) (männlich 2 Stimme)
@@ -505,7 +505,7 @@ Mögliche Werte für die Sprache:
 - `tr-TR-Standard-C` - Türkisch (Türkei) (weibliche 2 Stimme)
 - `tr-TR-Standard-D` - Türkisch (Türkei) (3 Frauen)
 - `tr-TR-Standard-E` - Türkisch (Türkei) (Männerstimme)
-- `uk-UA-Standard-A` - Ukrainisch (Ukraine) (Frauenstimme)
+- `uk-UA-Standard-A` - Ukrainisch (Ukraine) (weibliche Stimme)
 - `vi-VN-Standard-A` - Vietnamesisch (Vietnam) (weibliche Stimme)
 - `vi-VN-Standard-B` - Vietnamesisch (Vietnam) (männliche Stimme)
 - `vi-VN-Standard-C` - Vietnamesisch (Vietnam) (weibliche 2 Stimme)
@@ -515,7 +515,100 @@ MACHEN:
 
 - Veranstaltungsort
 
+## Auto-Inline-Tastatur basierend auf den Einstellungen in admin (Easy-Keyboard)
+Für jeden Zustand können die zusätzlichen Einstellungen aktiviert werden:
+
+![die Einstellungen](../../../en/adapterref/iobroker.telegram/img/stateSettings.png)
+
+Durch Eingabe von "/ cmds" wird die folgende Tastatur im Telegramm angezeigt:
+
+![die Einstellungen](../../../en/adapterref/iobroker.telegram/img/stateSettings1.png)
+
+"/ cmds" kann durch einen beliebigen Text (z. B. "?") im Konfigurationsdialog des Telegrammadapters ersetzt werden.
+
+Wenn die Option **Räume in Tastatur verwenden** im Konfigurationsdialog des Telegrammadapters aktiviert ist, wird im ersten Schritt die Raumliste angezeigt. ***Noch nicht implementiert***
+
+### Einstellungen im Zustand
+Zunächst muss die Konfiguration aktiviert werden.
+
+#### Alias
+Name des Geräts. Wenn leer, wird der Name vom Objekt übernommen.
+Durch Eingabe von "Türleuchte" wird das folgende Menü für den Booleschen Zustand angezeigt.
+![die Einstellungen](../../../en/adapterref/iobroker.telegram/img/stateSettings2.png)
+
+Sie können das Gerät einschalten, das Gerät ausschalten oder den Status anfordern.
+Wenn Sie auf `Door lamp ?` klicken, erhalten Sie `Door lamp  => switched off`.
+
+### Schreibgeschützt
+Wenn aktiviert, werden keine EIN / AUS-Tasten angezeigt, nur ein `Door lamp ?`.
+
+### Änderungen melden
+Wenn sich der Status des Geräts ändert (z. B. wenn jemand die Lampe physisch eingeschaltet hat), wird der neue Status an das Telegramm gesendet.
+Z.B. `Door lamp  => switched on`.
+
+### Schaltflächen in der Linie
+Wie viele Schaltflächen müssen in der Zeile für ein Gerät angezeigt werden?
+Aufgrund des langen Namens ist es möglicherweise besser, nur 2 (oder sogar nur eine) Schaltflächen in der Zeile anzuzeigen.
+
+![die Einstellungen](../../../en/adapterref/iobroker.telegram/img/stateSettings3.png)
+
+### Nur schreiben
+Wenn aktiviert, wird die Schaltfläche Statusabfrage (`Door lamp ?`) nicht angezeigt.
+![die Einstellungen](../../../en/adapterref/iobroker.telegram/img/stateSettings4.png)
+
+### Auf Befehl
+Welcher Text wird auf der Schaltfläche EIN angezeigt?
+Wie hier: ![die Einstellungen](../../../en/adapterref/iobroker.telegram/img/stateSettings5.png)
+
+Erzeugt folgende Tastatur: ![die Einstellungen](../../../en/adapterref/iobroker.telegram/img/stateSettings6.png)
+
+### ON Text
+Welcher Text wird im Statusbericht angezeigt?
+Z.B. `Door lamp => activated` wenn sich der Status des Geräts in true geändert hat und der **ON-Text** `activated` ist
+
+Die EIN / AUS-Texte werden nur angezeigt, wenn **Änderungen melden** aktiviert ist.
+
+### OFF Befehl
+Wie **EIN-Befehl** jedoch für AUS.
+
+### OFF Text
+Wie **ON Text** jedoch für OFF.
+Z.B. `Door lamp => deactivated` wenn sich der Status des Geräts in false geändert hat und der **OFF-Text** `deactivated` ist
+
+### Nur wahr
+Z.B. Für Tasten haben sie keinen AUS-Status. In diesem Fall wird keine AUS-Taste angezeigt.
+
+![die Einstellungen](../../../en/adapterref/iobroker.telegram/img/stateSettings7.png)
+
+## So empfangen Sie Nachrichten in Gruppenchats mit dem Telegrammadapter
+Wenn der Telegrammbot Nachrichten empfängt, die vom Benutzer in privaten Chats an den Bot gesendet wurden, aber keine Nachrichten, die von Benutzern in Gruppenchats gesendet wurden.
+In diesem Fall müssen Sie mit @botfather sprechen und den Datenschutzmodus deaktivieren.
+
+BotFather Chat:
+
+```
+You: /setprivacy
+
+BotFather: Choose a bot to change group messages settings.
+
+You: @your_name_bot
+
+BotFather: 'Enable' - your bot will only receive messages that either start with the '/' symbol or mention the bot by username.
+
+'Disable' - your bot will receive all messages that people send to groups.
+
+Current status is: ENABLED
+
+You: Disable
+
+BotFather: Success! The new status is: DISABLED. /help
+```
+
 ## Changelog
+### 1.5.6 (2020-04-04)
+* (bluefox) Fixed missing languages for blockly
+* (bluefox) Added description of easy-keyboard
+
 ### 1.5.5 (2020-04-04)
 * (alutov) Fixed bug for telegram users with an empty user name
 * (Mark Rohrbacher) Allowed JSON objects in telegram.*.communicate.response 

@@ -2,25 +2,32 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.kodi/README.md
-title: JSON-RPC-API von Kodi für IoBroker
-hash: 1OhuxWO9MIT4xrWNmR5Oi3uSr8Tluol5qvxu4WziQXU=
+title: Kodдаптер Kodi для ioBroker (JSON-RPC-API)
+hash: 7CNAK2pno9o5iQNt4r+Gnu4vGbI+c25SGXrMG5Me1lk=
 ---
 ![Logo](../../../en/adapterref/iobroker.kodi/admin/kodi.png)
 
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.kodi.svg)
+![Anzahl der Installationen](http://iobroker.live/badges/kodi-installed.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.kodi.svg)
 ![Tests](http://img.shields.io/travis/instalator/ioBroker.kodi/master.svg)
+![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.kodi.png?downloads=true)
-![Anzahl der Installationen](http://iobroker.live/badges/kodi-stable.svg)
 
-# Kodis JSON-RPC-API für IoBroker
-*** Hinweis: Dieser Adapter erfordert Node 0.12+ (daher wird 0.10 nicht unterstützt). ***
+[Englisches Handbuch](https://github.com/instalator/ioBroker.kodi/wiki/en_EN)
+
+# Kodдаптер Kodi для ioBroker (JSON-RPC-API)
+Вы можете найти официальную документацию KODI по API JSON-RCP [тут] (http://kodi.wiki/view/JSON-RPC_API) и полный список доступных команд (для протокола версии 6) [тут](http://kodi.wiki/view/JSON-RPC_API/v6).
+
+*** :римечание: Этот адаптер требует Nodejs 8.0 + ***
 
 ## Конфигурация KODI
-Fernsteuerung aktivieren.
-[Fernbedienung]. / J J J J J J J J J J J J J J J J J J J J J J J J J J J J J J J J J J J J J J J 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90 90
+Включение удаленного управления и веб-сервера.
+![Fernbedienung aktivieren.](../../../en/adapterref/iobroker.kodi/admin/remote.png)
 
-_Hinweis: Die Datei advancedsettings.xml ist standardmäßig nicht vorhanden. Sie müssen es zuerst erstellen! _
+JSON-RPC-API использует **по умолчанию порт 9090** для того чтобы его изменить необходимо внести изменения §
+
+_Примечание: Файл advancedsettings.xml не существует по умолчанию. Вы должны сначала создать его! _
 
 ```xml
 <jsonrpc>
@@ -29,22 +36,20 @@ _Hinweis: Die Datei advancedsettings.xml ist standardmäßig nicht vorhanden. Si
 </jsonrpc>
 ```
 
-![http aktivieren.](../../../en/adapterref/iobroker.kodi/admin/web.jpg)
-
 ## Конфигурация драйвера
-В найстройках драйвера указывается IP адрес KODI и порт для JSON-RPC-API (î умолчанию 9090).
+В настройках адаптера указывается IP адрес и порт для JSON-RPC-API (по умолчанию 9090), и логин / пароль дло о
 
-## Verwenden von
+## Использование
 ### ShowNotif:
 Один важный момент, если используется заголовок сообщения, то он должен всегда находится перед самим текстом сообщения (Внимание;Протечка воды), расположение остальных параметров не критично.
 
-** Image: ** Уровень сообщения
+** Bild: ** Уровень сообщения
 
-  * 'info' - 0 (Standardeinstellung),
+  * 'info' - 0 (Standard),
   * 'Warnung' - 1,
-  * 'error' - 2.
+  * 'Fehler' - 2.
 
-** Anzeigezeit: ** Время отображения сообщения в милисекундах, минимум 1500 макс 30000 мс.
+** Anzeigezeit: ** Время отображения сообщения в миллисекундах, минимум 1500 макс 30000 мс.
 
 **Пример:**
 
@@ -53,51 +58,51 @@ _Hinweis: Die Datei advancedsettings.xml ist standardmäßig nicht vorhanden. Si
  * Внимание;Протечка воды
  * Протечка воды
 
-Deutsch-Russisch-Englisch-Übersetzung:
+Так же сообщения можно отправлять из драйвера Javascript:
 
 ```js
 sendTo("kodi.0", {
     message:  'Возможно протечка воды ', //Текст сообщения
     title:    'ВНИМАНИЕ!!!', //Заголовок сообщения
     image: 'https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png', //Ссылка на иконку
-    delay: 7000 //Время отображения сообщения милисекундах (минимум 1500 макс 30000 мс)
+    delay: 7000 //Время отображения сообщения миллисекундах (минимум 1500 макс 30000 мс)
 });
 ```
 
 ### SwitchPVR:
-Переключение PVR IPTV по названию канала в плейлисте.
-** Пример: ** ТВ канал - Discovery Science Entdecken Sie die neuesten Erkenntnisse,
+Переключение PVR IPTV каналов по названию канала в плейлисте.
+** :ример: ** ТВ канал - Discovery Science найдет как по полному наименованию так и по entdecken,
 
 ### Youtube:
-Для открытия видео с сайта youtube достаточно записать код видео в данный статус. Начиная с версии 0.1.5 и выше можно вставлять прямую ссылку на видео;
+Для открытия видео с сайта youtube достаточно записать код видео в данный статус. Начиная с версии 0.1.5 и в е можно вставлять прямую ссылку на видео, а также код или полную ссылке са
 Например: Для открытия этого [видео](https://www.youtube.com/watch?v=Bvmxr24D4TA), необходимо установить в статус - Bvmxr24D4TA
 
 ### Öffnen:
-Сюда записывается ссылка на медиконтент в сети интернет либо поть до локального медиа фельный.
-После записи значения начнется воспроизведение на проигрователе KODI.
+Сюда записывается ссылка на медиконтент в сети интернет либо путь до локального медиа файла.
+После записи значения начнется воспроизведение на проигрывателе KODI.
 
-Position:
-Е к з
+### Position:
+Текущая позиция в плейлисте, так же в этот статус можно записать необходимую позицую и KODI тут е
 
 ### Suchen:
-Текущее значение позиции воспроизведения в процентах von 0 bis 100.
+Текущее значение позиции воспроизведения в процентах от 0 до 100.
 
-### Wiederholung:
+### Wiederholen:
 Повтор воспроизведения, принимает следующие значения:
 
-* aus - повтор воспроизведения отключен
-* ein - повтор воспроизведения текущего трека
-* alle - повтор всего плейлиста
+* off - повтор воспроизведения отключен
+* on - повтор воспроизведения текущего трека
+* all - повтор всего плейлиста
 
 ### Mischen:
 Перемешивание списка треков в плейлисте для случайного воспроизведения.
-Принимает значения wahr und falsch
+Принимает значения true и false
 
 ### Abspielen:
 Старт воспроизведения (wahr, falsch)
 
 ### Geschwindigkeit:
-Скорость воспроизведения. Фиксированные значения -32, -16, -8, -4, -2, -1, 0, 1, 2, 4, 8, 16, 32, und erhöhen das Dekrement
+Скорость воспроизведения. Фиксированные значения (-32, -16, -8, -4, -2, -1, 0, 1, 2, 4, 8, 16, 32), также 'Inkrement' и 'Dekrement'
 
 ### Verzeichnis:
 Сюда записывается путь до папки или диска, в ответ в этот статус записывается список каталогов указанной папки или диска.
@@ -118,13 +123,24 @@ Position:
 ```
 
 ### System:
- - EjectOpticalDrive - Benutzerhandbuch или закрывает дисковод оптических дисков (если имеется)
- - Winterschlaf - включение спящего режима
- - Reboot - перезагрузка системы
+ - EjectOpticalDrive - Извлекает или закрывает дисковод оптических дисков (если имеется)
+ - Ruhezustand - включение спящего режима
+ - Neustart - перезагрузка системы
  - Herunterfahren - выключает систему
- - Aussetzen - приостанавливает Kodi
+ - Suspend - приостанавливает Kodi
 
 ## Changelog
+
+#### 2.0.1 (2020-04-13)
+* (instalator) fixed error if not used PVR
+
+#### 2.0.0 (2020-04-12)
+* (instalator) support admin3
+* (instalator) support compact mode
+* (instalator) refactoring
+* (instalator) fixed different error
+* (instalator) added english manual
+* (instalator) big change code
 
 #### 1.0.0 (2017-11-13)
 * (instalator) up to stable
@@ -201,3 +217,26 @@ Position:
 
 #### 0.0.1
 * (instalator) initial (17.04.2016)
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2020 instalator <vvvalt@mail.ru>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

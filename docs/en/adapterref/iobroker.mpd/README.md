@@ -7,6 +7,8 @@
 
 [![NPM](https://nodei.co/npm/iobroker.mpd.png?downloads=true)](https://nodei.co/npm/iobroker.mpd/)
 
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=PFUALWTR2CTPY)
+
 Connect to a [music player daemon](http://musicpd.org) server, send commands,
 emit events.
 
@@ -16,6 +18,11 @@ See also the [MPD Protocol Documentation](http://www.musicpd.org/doc/protocol/).
 
 
 ## Changelog
+
+#### 1.0.4
+* (instalator) Changed the appearance of the settings
+* (instalator) Added support compact mode
+* (instalator) Refactoring
 
 #### 1.0.2
 * (twonky) support admin3

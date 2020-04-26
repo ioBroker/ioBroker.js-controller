@@ -2,90 +2,93 @@
 BADGE-Number of Installations: http://iobroker.live/badges/backitup-stable.svg
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.backitup.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.backitup.svg
+BADGE-Dependency Status: https://img.shields.io/david/simatec/iobroker.backitup.svg
+BADGE-Known Vulnerabilities: https://snyk.io/test/github/simatec/ioBroker.backitup/badge.svg
+BADGE-Travis-CI: http://img.shields.io/travis/simatec/ioBroker.backitup/master.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.backitup.png?downloads=true
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.backitup/README.md
 title: 没有标题
-hash: bzs5oxDy5vnxzGAnMRWCNpBWfGCNZoo3NkG//y1V+lc=
+hash: 3HO4Ns5LZYQrZ87K9TCdIMfmGqke7/2spGuWxLxuO0w=
 ---
-Backitup是一种备份解决方案，它可以对ioBroker安装以及Homematic CCU进行周期性备份。
+Backitup是一种备份解决方案，它可以周期性地备份ioBroker安装和Homematic CCU。
 
 该适配器适用于多平台，除了Windows和Mac安装上的Linux安装之外，还可以使用该适配器。
 
-CIFS安装必须安装了cifs-utils。
+必须为CIFS挂载安装Cifs-utils。
 
     -`sudo apt-get install cifs-utils`
 
-NFS挂载必须已安装nfs-common。
+对于NFS挂载，必须安装nfs-common。
 
     -`sudo apt-get install nfs-common`
 
 ## 1.备份类型
-Backitup提供了以下选项：周期性地或按一下按钮即可执行三种类型（可选地使用数据库备份）的不同备份类型。默认情况下，每个备份都放置在/ opt / iobroker / backups /目录中。 （可选）可以设置FTP上传，也可以使用CIFS挂载。
+通过Backitup，可以周期性地或按一下按钮来执行三种（可选的DB备份）不同的备份类型。默认情况下，每个备份都存储在/ opt / iobroker / backups /目录中。 （可选）可以设置FTP上传，也可以使用CIFS挂载。
 
 1.标准备份
-   -该备份对应于ioBroker中包含的备份，可以通过调用“ ./iobroker backup”在控制台中启动它。但是，此操作是通过适配器配置或OneClick Backup小部件中的指定设置完成的，而不必使用控制台。
+   -此备份对应于ioBroker中包含的备份，可以通过调用“ ./iobroker backup”在控制台中启动它。仅在此处，它是通过适配器配置或OneClick Backup小部件中定义的设置执行的，而不必使用控制台。
 2. CCU备份（Homematic）
-   -此备份可以保存Homematic安装的3种不同变体（CCU原始/ pivCCU / Raspberrymatic）。也可以通过适配器配置或OneClick备份小部件中的指定设置来执行此备份。
-3. mysql备份（本地主机）
-   -如果激活了此可单独调整的备份，则会为每个备份“最少”创建一个备份，并在指定的保留时间到期后将其删除。除非为其他ioBroker备份类型设置，否则FTP或CIFS对此备份也有效。
+   -此备份提供了备份Homematic安装的3种不同变体（CCU原始/ pivCCU / Raspberrymatic）的可能性。也可以使用适配器配置或OneClick备份小部件中指定的设置来执行此备份。
+3. Mysql备份（本地主机）
+   -可以单独设置的该备份（如果已激活）将为每个备份“最少”创建，并且在指定的保留时间后也会删除。如果为其他ioBroker备份类型设置了FTP或CIFS，则此备份也有效。
 4. Redis备份
-   -如果激活了此可单独调整的备份，则会为每个备份“最少”创建一个备份，并在指定的保留时间到期后将其删除。除非为其他ioBroker备份类型设置，否则FTP或CIFS对此备份也有效。
+   -可以单独设置的该备份（如果已激活）将为每个备份“最少”创建，并且在指定的保留时间后也会删除。如果为其他ioBroker备份类型设置了FTP或CIFS，则此备份也有效。
 5.历史数据备份
-   -如果激活了此可单独调整的备份，则会为每个备份“最少”创建一个备份，并在指定的保留时间到期后将其删除。除非为其他ioBroker备份类型设置，否则FTP或CIFS对此备份也有效。
+   -可以单独设置的该备份（如果已激活）将为每个备份“最少”创建，并且在指定的保留时间后也会删除。如果为其他ioBroker备份类型设置了FTP或CIFS，则此备份也有效。
 
-## 2.使用Ftp，CIFS，NFS，Copy或Dropbox在Nas上进行可选备份吗？
+## 2.使用Ftp，CIFS，NFS，Copy或Dropbox在Nas上进行可选的进一步备份吗？
   -CIFS：
-    -在Linux上，CIFS挂载不是问题。
+    -在Linux下，CIFS挂载不是问题。
     -请注意，已安装cifs-utils
-    -路径应如下所示（例如：“ / Sharename / Pfadangabe”）
-    -（可选）您可以启用/禁用是否应从NAS删除备份
+    -路径规范应如下所示（例如：“ /共享名称/路径规范”）
+    -（可选）您可以激活/停用是否应从NAS删除备份
   -NFS：
-    -在Linux上，NFS挂载不是问题。
+    -在Linux下，NFS挂载不是问题。
     -请注意，已安装nfs-common
-    -路径应如下所示（例如：“ / Sharename / Pfadangabe”）
-    -（可选）您可以启用/禁用是否应从NAS删除备份
+    -路径规范应如下所示（例如：“ /共享名称/路径规范”）
+    -（可选）您可以激活/停用是否应从NAS删除备份
   -FTP：
-    -在所有操作系统上都可以使用FTP，并且FTP可以替代CIFS安装
-    -FTP下的路径必须始终以“ /”开头（例如：“ / path”）
-    -（可选）您可以启用/禁用是否应从NAS删除备份
+    -在所有操作系统上都可以使用FTP，它可以替代CIFS安装
+    -FTP下的路径规范必须始终以“ /”开头（例如：“ /路径规范”）
+    -（可选）您可以激活/停用是否应从NAS删除备份
   -复制：
-    -如果没有CIFS挂载，则复制功能还有另一种可能性
-    -在CIFS设置中，必须在此处输入路径，并在其中进行复制
-    -复制功能的IP地址规范必须保留为空
+    -如果无法安装CIFS，则复制功能还有另一种选择
+    -在此处应在CIFS设置中输入要复制的路径的详细信息
+    -复制功能的IP地址必须保持为空
   -保管箱：
     -要在Dropbox中使用备份，必须在https://www.dropbox.com/developers/apps中创建访问令牌和APP
-    -步骤1：使用按钮“创建备份”
+    -步骤1：使用“创建备份”按钮
     -步骤2：选择“ Dropbox API”
     -步骤3：选择“应用文件夹”
-    -步骤4：输入“为您的应用命名”
-    -第5步：按“生成的访问令牌”按钮（在Backitup的设置中输入了令牌）
-    -在您的Dropbox中，现在有一个名为“ Apps”的新文件夹
+    -步骤4：“为您的应用命名”
+    -第5步：按“生成的访问令牌”按钮（令牌已在Backitup的设置中输入）
+    -Dropbox中现在有一个名为“ Apps”的新文件夹
   -Google云端硬盘：
-    -要在Google云端硬盘中使用备份，必须获取访问令牌。您可以在配置页面上执行此操作
+    -要在Google云端硬盘中使用备份，您需要获取访问令牌。您可以在配置页面上执行此操作
     -ioBroker仅攻击定义的区域。可以在[此处]（https://github.com/simatec/ioBroker.backitup/blob/master/docs/oAuthService.js）查看oAuth的代码。
     -没有令牌或用户数据存储在云中。
 
 ## 3.使用
 1.适配器创建7个数据点以用于Vis
--oneClick.ccu->用作CCU备份的触发触发器（可以在Vis中通过按钮设置为true）
--oneClick.minimal->用作标准备份的触发触发器（可以在Vis中通过按钮设置为true）
+-oneClick.ccu->用作CCU备份的触发器（可以在Vis中通过按钮设置为true）
+-oneClick.minimal->用作标准备份的触发器（可以在Vis中通过按钮设置为true）
 
--history.html->用作历史记录，该记录可在Vis中通过CCS由设计定制。
--history.ccuLastTime->存储上一次CCU备份的创建日期和时间
--history.minimalLastTime->存储上次标准备份的创建日期和时间
-    -history.ccuSuccess->成功备份后显示状态“ true”
-    -history.minimalSuccess->成功备份后显示状态“ true”
+-history.html->用作历史记录日志，可以通过CCS在Vis中对其进行自定义。
+-history.ccuLastTime->保存上一次CCU备份的创建日期和时间
+-history.minimalLastTime->保存上次标准备份的创建日期和时间
+    -history.ccuSuccess->如果备份成功，则显示状态“ true”
+    -history.minimalSuccess->如果备份成功，则显示状态“ true”
 
 2.在Vis中显示历史记录日志
-   -例如，通过在HTML中输入以下行，可以在html小部件中显示历史记录日志：
+   -例如，通过在HTML中输入以下行，可以在HTML小部件中显示历史记录日志：
 
 ```
 {backitup.0.history.html}
 ```
 
-语法：{BackitupInstance.history.html}
+语法：{BackitupInstanz.history.html}
 
 3.历史日志的CCS格式：
 
@@ -110,14 +113,14 @@ Backitup提供了以下选项：周期性地或按一下按钮即可执行三种
    ```
 
 4.带有状态文本的OneClick按钮
-   -如果OneClick数据点设置为true，则将启动相应的备份，并且在预定义的时间后，该数据点将再次设置为false，因此可以通过调整以下行并在Vis中将其输入为按钮文本来创建具有状态的按钮：
+   -如果将OneClick数据点设置为true，则将启动相应的备份，并且在预定义的时间后将此数据点设置为false，因此可以创建一个带有状态的按钮，为此修改以下行，并在Vis中将其输入为按钮文本：
 
 ```
 {wert: backitup.0.oneClick.minimal; wert === "true" || wert === true ? "Minimal Backup </br> wird erstellt" : "Minimal Backup </br> starten"}
 
 ```
 
-语法：{value：<BackitupInstance> .oneClick。<触发触发器>;值===“ true” ||值===正确吗？ “备份创建期间的文本”：“标准文本”}
+语法：{value：<BackitupInstanz> .oneClick。<触发触发器>;值===“ true” ||值===正确吗？ “备份创建期间的文本”：“标准文本”}
 
 5.成功备份后，Backitup支持以下Messenger进行通知。
    -电报
@@ -125,72 +128,145 @@ Backitup提供了以下选项：周期性地或按一下按钮即可执行三种
    -电子邮件
 
 ## 4.还原：
-可以从本地路径，Dropbox，GoogleDrive，FTP或NAS恢复最小备份以及mysql，历史数据和Redis。
-目前，还原仍处于测试阶段。
+可以从本地路径，Dropbox，GoogleDrive，FTP或NAS恢复最小备份以及mysql，历史记录数据和Redis。
+还原当前处于beta中。
 
-必须仍然通过CCU的Web界面还原CCU备份。
+必须仍然通过CCU Web界面还原CCU备份。
 
 对于所有备份类型，iobroker在还原过程中都会停止，然后自动重新启动。
 
-那些希望手动还原其备份的人应该执行以下操作：
+如果您希望手动还原备份，则应执行以下操作：
 
 1.恢复最小/正常的ioBroker备份：
     -备份必须照常位于“ opt / iobroker / backups /”目录中
-    -可以使用以下命令从控制台进行还原：“ iobroker restore（列表中的备份数）”。
-    -还原后，需要“ iobroker全部上传”
+    -可以使用以下命令从控制台进行还原：“ iobroker restore（列表中的备份编号）”。
+    -恢复后，需要“ iobroker全部上传”
 
 2.还原Raspberrymatic / CCU备份：
-    -通过SCP将* .sbk文件复制到Raspberrymatic上的目录“ / usr / local / tmp directory”
-    -通过控制台以root用户身份登录Raspberrymatic
-    -在Raspberrymatic上执行命令：“ / bin / restoreBackup.sh / user / local / tmp / YourBackupFileName”。
+    -通过SCP将* .sbk文件复制到Raspberrymatic上的目录“ / usr / local / tmp目录”中
+    -通过控制台以root用户身份登录到Raspberrymatic
+    -在Raspberrymatic上执行命令：“ / bin / restoreBackup.sh / user / local / tmp / EuerBackupDateiname”。
     -在Raspberrymatic上执行命令：“ reboot”以重新启动PI
-    -当然，也可以通过Web界面照常还原备份。
+    -另外，当然也可以通过Web界面照常还原备份。
 
 3.恢复Redis：
-    -还原期间，必须将Redis数据库解压缩到相应的文件夹中。 （例如：/ var / lib / redis）
+    -在还原期间，必须将Redis数据库提取到关联的文件夹中。 （示例：/ var / lib / redis）
 
 4.还原历史记录：
-    -在还原过程中，必须将历史数据库解压缩到相应的文件夹中。
+    -在还原过程中，必须将历史数据库提取到关联的文件夹中。
 
 ## 6.故障排除
-    1.要记录错误，必须在ioBroker附加程序实例下将Backitup设置为“调试”。
+    1.为了记录错误，必须在ioBroker选项卡下的实例中将Backitup设置为“调试”。
 
-## 7.遇到的错误/解决方案：
-这里列出了到目前为止遇到的问题及其解决方案（如果有）。
+## 7.发生的错误/解决方案：
+这里列出了到目前为止已经发生的问题及其解决方案（如果有）。
 
-1. Olifall（来自论坛）遇到的问题是，在还原ioBrokers的Web界面后，无法再通过在控制台上执行以下步骤来解决此问题：
-    -sudo iobroker身份
-    -消息=“未连接到状态127.0.0.0:6379[redis]
+1. Olifall（来自论坛）遇到的问题是，还原后无法再访问ioBroker的Web界面，他可以按照控制台上的步骤修复此问题：
+    -sudo iobroker状态
+    -消息=“与状态127.0.0.0:6379[redis]无关”
     -sudo apt-get install redis-server
 
-2.如果无法通过IP地址安装CIFS，则应使用NAS的主机名
-3.如果在cifs-mount中使用带有特殊字符的密码，则用户会注意到，该密码必须在引号中存储在引号中。
-4.一些用户认为，cifs-mount无法处理非常长的密码。如果安装不起作用，密码将略微缩短（12个字符对我有用）。
-5.如果未安装适配器，请检查您的node和nodejs版本。适配器不支持版本<Node 8。
-6.如果您的iobroker系统是使用新的安装程序脚本安装的，则您可能没有新用户iobroker的所有权利。
+2.如果无法通过IP地址安装CIFS，则应使用NAS的主机名。
+3.如果在cifs-mount中使用带有特殊字符的密码，则用户会发现该密码必须在引号中存储在引号中。
+4.一些用户认为，cifs-mount无法处理非常长的密码。如果安装不起作用，请稍微缩短密码（12个字符对我有用）。
+5.如果无法安装适配器，请检查您的node和nodejs版本。适配器不支持版本<Node 8。
+6.如果您的iobroker系统是使用新的安装程序脚本安装的，则可能会发生您没有新用户iobroker的所有权限的情况。
 
-    不幸的是，这也适用于备份，因为备份使用一些与系统相关的命令。
+    不幸的是，这也会影响备份，因为备份使用一些与系统相关的命令。
 
-为了解决缺少权限的问题，现在对iobroker安装程序脚本进行了修复。
-请在控制台的Iobroker环境中运行以下命令：
+要解决缺少权限的问题，现在有针对iobroker的安装程序脚本的修复程序。
+请在控制台的Iobroker环境中执行以下命令：
 
 ```
-curl -sL https://iobroker.net/fix.sh | bash -
+curl -fsL https://iobroker.net/fix.sh | bash -
 sudo reboot
 ```
 
-8.如果在创建Redis数据库时遇到错误，请检查您的用户iobroker是否具有权限以及该用户是否存在于用户组Redis中。
+8.如果在创建Redis数据库时收到错误消息，请检查您的用户iobroker是否具有权限以及他是否存在于Redis用户组中。
 
-    如果不是这种情况，则可以在控制台中使用以下命令对其进行修复。
+    如果不是这种情况，则可以在控制台中使用以下命令来解决此问题。
 
 ```
 sudo usermod -a -G redis iobroker
 sudo reboot
 ```
 
-    如果您尚未使用安装程序脚本设置Iobroker安装，并且您的用户使用其他名称，请在命令“ iobroker”中将其替换为您的用户。
+    如果您尚未使用安装程序脚本设置Iobroker安装，并且您的用户使用其他名称，请在“ iobroker”命令中将其替换为您的用户。
 
 ## Changelog
+
+### 1.5.2 (24.04.2020)
+* (simatec) errorhandling sentry.io
+* (AlCalzone) docu updated
+
+### 1.5.1 (23.04.2020)
+* (simatec) Bugfix list from nas
+* (simatec) Bugfix sentry errors
+
+### 1.5.0 (21.04.2020)
+* (simatec) revised error handling
+* (simatec) revised mount process
+* (simatec) revised umount process
+* (simatec) added log for last backup file
+* (simatec) updated dependencies
+* (simatec) added sentry.io support
+
+### 1.4.5 (23.03.2020)
+* (simatec) Bugfix CIFS Domain
+
+### 1.4.4 (23.03.2020)
+* (simatec) Fix history error
+
+### 1.4.3 (21.03.2020)
+* (simatec) Fix for autochecker
+
+### 1.4.2 (21.03.2020)
+* (simatec) Fix start after restore
+* (simatec) update dependencies
+
+### 1.4.1 (02.03.2020)
+* (simatec) json historystate with more options
+
+### 1.4.0 (27.02.2020)
+* (simatec) added next Backup Time
+* (simatec) added Name Suffix for mysql Backup
+* (simatec) added more Options for mysql
+* (simatec) added domain support for cifs
+* (simatec) added json historystate
+
+### 1.3.6 (18.12.2019)
+* (simatec) Fix historyList for compact-mode
+* (simatec) Added ack for history states
+
+### 1.3.5 (17.12.2019)
+* (simatec) Fix compact-mode for history
+
+### 1.3.4 (15.12.2019)
+* (simatec) Fix hide passwords
+
+### 1.3.3 (14.12.2019)
+* (simatec) Fix Webinterface for Restore
+* (simatec) Fix MySql Backup
+* (simatec) Added some debug logs for Restore
+* (simatec) some Bug Fix
+* (simatec) Messagebox for restore list
+* (simatec) hide password on log
+* (simatec) Added password hiding
+* (simatec) Clean Code
+* (simatec) detected history path
+* (simatec) Fix deteced
+
+### 1.3.2 (04.12.2019)
+* (simatec) Add Webinterface for Restore
+* (simatec) Bug fix
+
+### 1.3.1 (02.12.2019)
+* (bluefox) Added information about latest backup
+* (simatec) some Bug fix
+* (simatec) add new translation
+* (simatec) Fix translation
+* (simatec) Default backup renamed to ioBroker backup
+* (simatec) delete old objects
 
 ### 1.3.0 (22.11.2019)
 * (simatec) support end for the total backup
@@ -419,7 +495,7 @@ sudo reboot
 
 The MIT License (MIT)
 
-Copyright (c) 2018 - 2019 simatec <nais@gmx.net>
+Copyright (c) 2018 - 2020 simatec
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -78,7 +78,8 @@ Also new is that intervals for HP-Printer, ECB-, UWZ- and normal scans can be de
 Before installing the adapter into ioBroker you need to install on linux `arp-scan` and `libcap2-bin` and some drivers which you can do by running below commands.
 On Debian (Raspi-Stretch, Ubuntu, ...) it looks like:
 ```
-sudo apt-get install libcap2-bin arp-scan bluetooth bluez libbluetooth-dev libudev-dev net-tools
+sudo apt-get install -y coreutils libcap2-bin arp-scan bluetooth bluez libbluetooth-dev libudev-dev net-tools
+# and below need to be run whenever you update nodejs!
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which arp-scan`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which node`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which arp`)
@@ -86,6 +87,8 @@ sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink 
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which hciconfig`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which l2ping`)
 ```
+
+If first line installs everything but `readlink` or `hcitools` cannot be found a path is missing most probably, try to search for the path with `sudo find / -name readlink` (in my case it was `/usr/bin`) which was not included in $PATH! Edit then `.bashrc` and add a line with `export PATH=$PATH:/usr/bin`!
 
 If you update node or some system tools the above should be executed again!
 
@@ -119,6 +122,11 @@ This methodology of moving settings is working also between systems but may not 
 * Adapter may have problems with bluetooth on windows as well, also arp-scan is not available on windows, will use only ping then which cannot detect IP mac adresses!.
 
 ## Changelog
+
+### 1.2.3
+
+* Updated to use the adapter for js-controller 3.0 
+* Updated HP printer routine to understand some newer inkjet printers
 
 ### 1.2.0
 

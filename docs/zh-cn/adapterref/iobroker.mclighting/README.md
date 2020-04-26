@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mclighting/README.md
 title: ioBroker McLighting适配器
-hash: ixWn7Rk/k80GwVIl40xGSfxtS/RZIguaanH5ZQiYQYo=
+hash: +pUewii2TFoXNMHz/YwnT/oru4KU4iOxFCdIFwHsoXA=
 ---
 ![商标](../../../en/adapterref/iobroker.mclighting/admin/mclighting.png)
 
@@ -12,12 +12,13 @@ hash: ixWn7Rk/k80GwVIl40xGSfxtS/RZIguaanH5ZQiYQYo=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.mclighting.svg)
 ![测验](http://img.shields.io/travis/instalator/ioBroker.mclighting/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mclighting.png?downloads=true)
+![捐](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 ＃ioBroker McLighting适配器
 =================
 
 ## Описание
-WS 1/826 WS2811 / WS2812 SP 281 281лE 281 WS 12 E 6 SP SP ESP8266
+SP 1 / WS WS SP SP SP SP SP SP SP SP SP SP SP SP ESP8266 RGB RGB RGB RGB 281
 
 ЕсливыхотитеиспользоватьRGBW-светодиоды（например，SK6812），подключенныекESP8266，вамнужнавотэтадоработаннаяпрошивка：[McLightingRGBW](https://github.com/FabLab-Luenen/McLighting)ивнастройкахдрайверавыбратьRGBW。
 
@@ -128,6 +129,10 @@ R[rangestart_led][rangeend_led][hexrgb(w)]R[rangestart_led][rangeend_led][hexrgb
 ### Fx_mode_name当前名称fx_mode
 
 ## Changelog
+
+### 0.1.0
+* (instalator) refactoring
+* (instalator) added compact mode
 
 ### 0.0.12 (2018-12-09)
 * (instalator) fix error

@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.cloud/README.md
-title: ioBroker-Cloud-Adapter
-hash: RebA3aDvQtVtvoT0+yWQ951WyaujEGwhHFc9X8QsJ5c=
+title: ioBroker Cloud-Adapter
+hash: FSkpNQoml2w+OoHO8MMRFHzZeypm1KRKbim/xZiTs/0=
 ---
 ![Logo](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
 
@@ -12,14 +12,16 @@ hash: RebA3aDvQtVtvoT0+yWQ951WyaujEGwhHFc9X8QsJ5c=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.cloud.svg)
 ![NPM](https://nodei.co/npm/iobroker.cloud.png?downloads=true)
 
-# IoBroker-Cloud-Adapter
+# IoBroker Cloud Adapter
 Dieser Adapter ermöglicht die Verbindung vom Internet über die ioBroker-Cloud zur lokalen Installation von ioBroker.
+
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Die Einstellungen
 ### APP-KEY
-Um den Cloud-Adapter zu nutzen, sollten Sie zuerst den APP-Key auf [https://iobroker.net](https://iobroker.net) erhalten.
+Um einen Cloud-Adapter zu verwenden, sollten Sie zuerst den APP-Schlüssel auf [https://iobroker.net](https://iobroker.net) erhalten.
 
-Dies ist der Anwendungsschlüssel, den der Benutzer auf der Site [https://iobroker.net](https://iobroker.net) erhalten kann. Bitte holen Sie sich dort den Schlüssel und geben Sie ihn hier ein.
+Dies ist der Anwendungsschlüssel, den der Benutzer auf der Website [https://iobroker.net](https://iobroker.net) erhalten kann. Bitte holen Sie sich dort den Schlüssel und geben Sie ihn hier ein.
 
 ![Intro](../../../en/adapterref/iobroker.cloud/img/intro.png)
 
@@ -27,29 +29,29 @@ Dies ist der Anwendungsschlüssel, den der Benutzer auf der Site [https://iobrok
 Alle Anforderungen vom Cloud-Adapter werden an eine WEB-Instanz weitergeleitet. Der Benutzer muss hier die WEB-Instanz angeben, die dem Benutzer angezeigt wird, wenn er sich auf der Website https://iobroker.net anmeldet.
 
 ### Selbstsignierte Zertifikate zulassen
-Wenn Sie eine Standard-iobroker.net-Cloud verwenden, können Sie diese deaktivieren. Diese Option ist nur wichtig, wenn eine eigene Cloud verwendet wird.
+Wenn Sie die Standard-Cloud von iobroker.net verwenden, können Sie diese deaktivieren. Diese Option ist nur wichtig, wenn eine eigene Cloud verwendet wird.
 
-### Alexa Einstellungen
-*** Alexa wird im `cloud`-Adapter nicht mehr unterstützt. Verwenden Sie dafür den Adapter ioBroker.iot. ***
+### Alexa-Einstellungen
+*** Alexa wird im `cloud` Adapter nicht mehr unterstützt. Verwenden Sie dazu den ioBroker.iot-Adapter. ***
 
-Für einige Zeit wird es immer noch für `.pro` Benutzer funktionieren und die Dokumentation ist [Hier](doc/alexa.md) verfügbar.
+Für einige Zeit wird es noch für `.pro` Benutzer funktionieren und die Dokumentation ist verfügbar [Hier](doc/alexa.md).
 
 ## IFTTT
 [Anleitung](doc/ifttt.md)
 
 ## Dienstleistungen
 Es besteht die Möglichkeit, Nachrichten an den Cloud-Adapter zu senden.
-Wenn Sie ```[POST]https://iobroker.net/service/custom_<NAME>/<user-app-key>``` und value als Nutzlast aufrufen.
+Wenn Sie ```[POST]https://iobroker.net/service/custom_<NAME>/<user-app-key>``` und Wert als Nutzlast aufrufen.
 
 ```
 curl --data "myString" https://iobroker.net/service/custom_test/<user-app-key>
 ```
 
-Wenn Sie in den Einstellungen den Namen *custom_test* in das Feld "Weiße Liste für Dienste" eintragen und "custom_test" als Dienstnamen angeben, wird der Status **cloud.0.services.custom_test** auf *myString gesetzt*
+Wenn Sie in den Einstellungen im Feld "Weiße Liste für Dienste" den Namen *custom_test* festlegen und mit "custom_test" als Dienstnamen aufrufen, wird der Status **cloud.0.services.custom_test** auf *myString gesetzt*
 
-Sie können "*" in die weiße Liste schreiben, und alle Dienste werden zugelassen.
+Sie können "*" in die weiße Liste schreiben und alle Dienste werden zugelassen.
 
-Ab Version 2.0.5 können Sie GET request im Formular ```[GET]https://iobroker.net/service/custom_<NAME>/<user-app-key>/<data>``` verwenden, um die **\ <data\>** in **cloud.0.services.custom_ \ <NAME\>**
+Ab Version 2.0.5 können Sie die GET-Anfrage in der Form ```[GET]https://iobroker.net/service/custom_<NAME>/<user-app-key>/<data>``` verwenden, um die **\ zu platzieren <data\>** in **cloud.0.services.custom_ \ <NAME\>**
 
 Hier finden Sie Anweisungen zur Verwendung mit [Tasker](doc/tasker.md).
 
@@ -58,15 +60,22 @@ Der IFTTT-Dienst ist nur zulässig, wenn der IFTTT-Schlüssel festgelegt ist.
 Reservierte Namen sind "ifttt", "text2command", "simpleApi", "swagger". Diese müssen ohne das Präfix ```"custom_"``` verwendet werden.
 
 ### Text2command
-Sie können "text2command" in die Whitelist schreiben. Sie können eine POST-Anfrage an ```https://iobroker.net/service/text2command/<user-app-key>``` senden, um Daten in die Variable *text2command.X.text* zu schreiben.
+Sie können "text2command" in eine weiße Liste schreiben. Sie können eine POST-Anfrage an ```https://iobroker.net/service/text2command/<user-app-key>``` senden, um Daten in die Variable *text2command.X.text* zu schreiben.
 
-"X" kann in den Einstellungen mit der Option "Use text2command instance" definiert werden.
+"X" kann in den Einstellungen mit der Option "text2command-Instanz verwenden" definiert werden.
 
 ### SimpleApi
 *machen*
 
 ## Changelog
-### 3.0.0 (2020-01-04)
+### 3.0.3 (2020-04-14)
+* (bluefox) Updated socket.io version
+* (bluefox) Added sentry.io reporting
+
+### 3.0.2 (2020-02-23)
+* (Apollon77) fix for pot. crash when used with web 3.x
+
+### 3.0.1 (2020-01-05)
 * (bluefox) Breaking changes: no alexa support. Use ioBroker.iot for that.
 * (bluefox) Support of multiple clients for .pro
 

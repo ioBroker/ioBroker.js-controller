@@ -102,6 +102,14 @@ iobroker upload tr-064
 ```
 
 ## Changelog
+
+### 4.0.1 (2020-04-23)
+* (Apollon77) handle case where no Phone deflections are available (Sentry IOBROKER-TR-064-1/2)
+
+### 4.0.0 (2020-04-12)
+* (Apollon77) update dependencies, use auto decrypt features with js-controller 3.0
+* (foxriver76) make callmonitor compatible with js-controller 3.0
+
 ### 3.1.4 (2020-01-26)
 * (Apollon77) fix error and check some other code check comments
 * (Apollon77) Add proper meta data for buttons

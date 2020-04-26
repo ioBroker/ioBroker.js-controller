@@ -270,7 +270,7 @@ or just set manually the entity type to `camera` and write URL into it.
 
 ### Hide toolbar
 To hide toolbar you can set the checkbox in the ioBroker configuration dialog on the Themes tab.
-To show it, you can disable it in dialog again or just call the URL with `?toolbar=true` parameter.
+To show it, you can disable it in the dialog again or just call the URL with `?toolbar=true` parameter.
 
 ### Markdown
 You can use bindings in markdown like in [iobroker.vis](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects).
@@ -439,15 +439,20 @@ For now (2020.01.12) following files were modified:
 After that checkout modified version in `./build` folder. Then.
 
 1. go to ./build directory.
-2. `git clone https://github.com/GermanBluefox/home-assistant-polymer.git` it is fork of https://github.com/home-assistant/home-assistant-polymer.git, but some things are modified (see the file list earlier).
+2. `git clone https://github.com/GermanBluefox/home-assistant-polymer.git` it is a fork of https://github.com/home-assistant/home-assistant-polymer.git, but some things are modified (see the file list earlier).
 3. `cd home-assistant-polymer`
 4. `git checkout master`
 5. `npm install`
-6. `gulp build-app` for release or `gulp develop-iob` for debug version. To build web after changes you can call `webpack-dev-app` for faster build, but you need to call `build-app` anyway after the version is ready for use.
+6. `gulp build-app` for release or `gulp develop-iob` for the debugging version. To build web after changes you can call `webpack-dev-app` for faster build, but you need to call `build-app` anyway after the version is ready for use.
 7. copy all files from `./build/home-assistant-polymer/hass_frontend` into `./hass_frontend` in this repo
 8. Start `gulp rename` task.
 
 ## Changelog
+### 1.0.14 (2020-04-22)
+* (algar42) Call of deprecated getObjectView updated for js-controller v3
+
+### 1.0.13 (2020-04-13)
+* (bluefox) The translation was corrected in the custom settings.
 
 ### 1.0.12 (2020-03-16)
 * (Garfonso) Added option to restrict auto entity creation to alias.0.*

@@ -78,10 +78,12 @@ Weiterhin werden die Flags in den Gerätekonfigurationen betrachtet. Dabei werde
 |-------|-----------|------------|----------|----------|-------------------------------------------------|
 | Lesen | Schreiben | Übertragen | Lesen    | Schreiben| Erklärung                                       |
 |   -   |    -      |    -      |   -     |    -    | der wert wird über GroupValueResponse aktualiesiert |
-|   x   |    -      |    -      |   x     |    x    | ein Trigger darauf löst GroupValueRead aus|
+|   x   |    -      |    -      |   x     |    x    | ein Trigger<sup>1</sup> darauf löst GroupValueRead aus|
 |   -   |    x      |    -      |   -     |    x    | Schreibt den angegeben Wert mit GroupValueWrite auf den KNX-Bus|
 |   -   |    -      |    x      |   x     |    -    | der Wert wird über GroupValueResponse aktualisiert |
-|   x   |    -      |    x      |   x     |    x    | ein Trigger darauf löst GroupValueRead aus|
+|   x   |    -      |    x      |   x     |    x    | ein Trigger<sup>1</sup> darauf löst GroupValueRead aus|
+
+1: Trigger bedeutet das Objekt schreiben, z.B. setState in Skripten oder im Admin das Objekt verändern.
 
 ###  4)Erzeugen der Datenpunktpaaren (im folgenden DPP)
 Ein DPP wird erzeugt, wenn die GA, GAR und der DPT valid sind. Mit diesen DPP arbeitet der Adapter. Fehlen also die DPT's in einer GA, weil sie auf keiner der o. A. Wege gefunden werden konnte, so wird für diese GA kein DPP erzeugt und ist im Weiteren nicht nutzbar.
@@ -117,6 +119,10 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 * require node Version >8.9.4!
 
 ## Changelog
+### 1.0.41
+* fixed bug on GroupValue_Response event
+* corrected connection to gira GW
+
 ### 1.0.40
 * fixed some import errors for ETS 5.7.x
 * fixed bug on GroupValue_Response event

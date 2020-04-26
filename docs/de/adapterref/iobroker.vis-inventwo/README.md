@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: iw9jHbxnZMm10ysHEF8fY2bBp6smchJQfBPXBq4g33k=
+hash: 1rYVmy6lpZhG8vlUpYRAhkAU4GuCT7b4xULKhFRrp30=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -27,13 +27,16 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ---
 
 ## Besetzung
-Falls Dir unsere Arbeit ausgewählt und du uns nicht möchtest, wir freuen uns über jede Spende.
+Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
 
 (Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
 [![Spende] (admin / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+# 1.3.3
+- Die Option für den Hintergrund-Widget-Wert wurde korrigiert
 
 # 1.3.2
 - Bug-Fix
@@ -73,7 +76,7 @@ Falls Dir unsere Arbeit ausgewählt und du uns nicht möchtest, wir freuen uns �
 - Die Schaltflächen-Widgets wurden geändert, um die Standardoptionen für Schriftart und Text zu verwenden
 
 ### 1.0.0
-- Widget-Hintergrund und Inhaltsopazität, Umschalten von Boolesch auf Wert, Symbole von Weiß auf Schwarz geändert, nahtlose Hintergründe hinzugefügt
+- Widget-Hintergrund und Inhaltsopazität, Wechsel kann von boolesch auf Wert geändert werden, Symbole von weiß auf schwarz geändert, nahtlose Hintergründe hinzugefügt
 
 ### 0.1.2
 - Fehlerbehebung

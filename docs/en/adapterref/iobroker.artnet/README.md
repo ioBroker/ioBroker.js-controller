@@ -11,7 +11,7 @@ Control DMX512 Devices via an Art-Net node.
 You can read more about art-net (here)[http://www.ulrichradig.de/home/index.php/avr/dmx-avr-artnetnode].
 
 ## Changelog
-### 1.2.0 (2020-04-08)
+### 1.2.2 (2020-04-08)
 * (bluefox) Support of compact mode
 
 ### 1.1.1 (2020-03-15)

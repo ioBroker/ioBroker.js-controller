@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: a5YkSAbQlMW578zCh2ZzV6nWfx0/O0pc7MEahBTTsK0=
+hash: gFmeFJ/0K5TajtmCNWYK+Tmfl5WTxj7+VJ2DQbLUgMQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
@@ -65,7 +65,7 @@ Dies führt zu f.e. im Wert wie "0,5", wobei "0" "Abnahme" und "5" die Anzahl de
 
 ## Wie werden die Datenpunkte müssen
 ### 1) Auslesen aller Kommunikationsobjektreferenzen (im folgenden KOR)
-Es werden die Gruppenaddressreferenz (im folgenden GAR) identifiziert. Ausserdem erhalten der erste gehört die Attribut write = yes und read = no. Alle betreffenden GAR IDs werden nur den DPT empfangen
+Es werden die Gruppenaddressreferenz (im folgenden GAR) IDs der derigenigen DPT der KOR gehören, wenn er vorhanden ist. Ausserdem erhalten der erste gehört die Attribut write = yes und read = no. Alle betreffenden GAR IDs werden nur den DPT empfangen
 
 ### 2) Erzeugen der Gruppenadressstruktur (im folgenden GAS)
 Hier wird die GAS-Anzeige der GAR-IDs gehört und auch die DPT-Rechte, fällt stirbt unter 1) noch nicht erwartet ist.
@@ -81,10 +81,12 @@ Weiterhin werden die Flaggen in den Gerätekonfigurationen betrachtet. Dabei wer
 |-------|-----------|------------|----------|----------|-------------------------------------------------|
 | Lesen | Schreiben | Übertragen | Lesen | Schreiben | Erklärung |
 | - | - | - | - | - | der Wert wird über GroupValueResponse aktualiesiert |
-| x | - | - | x | x | ein Trigger bezieht sich auf GroupValueRead aus |
+| x | - | - | x | x | ein Trigger <sup>1</sup> betreuen GruppeValueRead aus |
 | - | x | - | - | x | Schreiben den Wert Wert mit GroupValueWrite auf den KNX-Bus |
 | - | - | x | x | - | der Wert wird über GroupValueResponse aktualisiert |
-| x | - | x | x | x | ein Trigger bezieht sich auf GroupValueRead aus |
+| x | - | x | x | x | ein Trigger <sup>1</sup> betreuen GruppeValueRead aus |
+
+1: Trigger bedeutet das Objekt schreiben, z.B. setState in Skripten oder im Admin das Objekt ändert.
 
 ### 4) Erzeugen der Datenpunktpaaren
 Ein DPP wird erledigt, wenn die GA, GAR und der DPT gültig sind. Mit diesen DPP arbeiten der Adapter. Fehlen auch die DPTs in einer GA, weil sie auf keine der o. A. Wege gefunden werden können, so wird für diese GA kein DPP gewählt und ist im Weiteren nicht nutzbar.
@@ -110,7 +112,7 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 
 4) Der Port der LAN Schnittstelle ist i.d.R. 3671
 
-5.
+5) Durch die Möglichkeit des Statuswahlrechts ist eines zu gehören: Es ist das, was nicht mehr als 40 ist, als das Adapter und das Gateway weitergereicht werden.
 
 ## Geplante Funktionen
 * Hinzufügen von Adressen zur Objektbeschreibung (ID)
@@ -118,6 +120,10 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 * Knotenversion> 8.9.4 erforderlich!
 
 ## Changelog
+### 1.0.41
+* fixed bug on GroupValue_Response event
+* corrected connection to gira GW
+
 ### 1.0.40
 * fixed some import errors for ETS 5.7.x
 * fixed bug on GroupValue_Response event

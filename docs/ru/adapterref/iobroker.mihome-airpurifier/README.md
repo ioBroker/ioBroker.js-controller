@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mihome-airpurifier/README.md
 title: ioBroker.mihome-воздухоочиститель
-hash: 4cO83i4dXikaBbW73ZksOsXn9rVQP2OKRCk+RMXHOS0=
+hash: GZpDfYg6GTTqGpD7ZIU8MYgRKvu6uwkllS7U5QdFRpk=
 ---
 ![Количество установок](http://iobroker.live/badges/mihome-airpurifier-stable.svg)
 ![Статус сборки](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)
@@ -12,7 +12,7 @@ hash: 4cO83i4dXikaBbW73ZksOsXn9rVQP2OKRCk+RMXHOS0=
 ---
 ![логотип](../../../en/adapterref/iobroker.mihome-airpurifier/admin/mihome-airpurifier.png)
 
-# IoBroker.mihome-airpurifier Адаптер Xiaomi Air Purifier для платформы IoB ioBroker.
+# IoBroker.mihome-airpurifier
 ## Как получить токен?
 Вы должны установить инструмент командной строки miio `npm install -g miio`
 
@@ -47,7 +47,7 @@ Support: At least basic
     Теперь очиститель воздуха подключен к вашей сети.
 
 ## Облачное соединение
-Для управления очистителем воздуха с помощью облачного адаптера просто добавьте состояние «manuallevel» в ваш облачный адаптер. После этого вы можете отправить е.э. следующие команды через Alexa:
+Для управления очистителем воздуха с помощью облачного адаптера просто добавьте состояние «manuallevel» в ваш облачный адаптер. После этого вы можете отправить е. Е. следующие команды через Alexa:
 
 * Alexa, включи очиститель воздуха *,
 
@@ -55,7 +55,7 @@ Support: At least basic
 
 *Алекса, выключи очиститель воздуха*
 
-Если в облачном адаптере вы установили значение «Вкл. Значение» на «Последнее активное значение», устройство всегда начнет работать с последним активным уровнем мощности.
+Если вы установите в облачном адаптере значение «Вкл. Значение» на «Последнее активное значение», устройство всегда начнет работать с последним активным уровнем мощности.
 
 ## Контрольные состояния
 Для управления очистителем воздуха можно написать следующие объекты:
@@ -80,6 +80,9 @@ Support: At least basic
 | `pm25` | Загрязнение воздуха в PM2.5. |
 
 ## Changelog
+### 0.1.1 (18.04.2020)
+* (JoJ123) move to typescript
+
 ### 0.0.6 (09.04.2019)
 * (JoJ123) update miio to fork of Sineos
 
@@ -121,4 +124,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Copyright (c) 2019 Johannes Jaeger johannesjaegeroffice@gmail.com
+Copyright (c) 2020 Johannes Jaeger <johannesjaegeroffice@gmail.com>

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iot/README.md
 title: ioBroker IoT адаптер
-hash: LIxKjYA6G4HRyZ2clUWyMxnxX0RgaP7yd0uHUQ+KQMc=
+hash: AyRn68CYR4s+qIW3NFGuHjhm45ipfK0KTILNm9iI+fY=
 ---
 ![логотип](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -15,6 +15,8 @@ hash: LIxKjYA6G4HRyZ2clUWyMxnxX0RgaP7yd0uHUQ+KQMc=
 # IoBroker IoT Adapter
 Этот адаптер предназначен ТОЛЬКО для связи с Amazon Alexa, Google Home и Nightscout.
 Это не для удаленного доступа к вашему экземпляру ioBroker. Для этого используйте адаптер ioBroker.cloud.
+
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
 
 ## Настройки
 Для использования облачного адаптера вы должны сначала зарегистрироваться в облаке ioBroker [https://iobroker.pro](https://iobroker.pro).
@@ -192,7 +194,7 @@ or
  * **intent** содержит тип запроса. В настоящее время возможны следующие значения: «askDevice», «controlDevice», «actionStart», «actionEnd», «askWhen», «askWhere», «askWho»
  * **deviceId** содержит идентификатор устройства, идентифицирующий устройство, на которое был отправлен запрос, доставленный Amazon, будет пустой строкой, если не предоставлено
  * **sessionId** содержит sessionId сеанса Skill, должен быть одинаковым, если было произнесено несколько команд, доставленных Amazon, будет пустой строкой, если не предоставлено
- * **userId** содержит идентификатор пользователя от владельца устройства (или, возможно, позже пользователя, который взаимодействовал со скиллом), доставленный Amazon, будет пустой строкой, если она не указана
+ * **userId** содержит идентификатор пользователя от владельца устройства (или, возможно, позже пользователя, который взаимодействовал со скиллом), предоставленный Amazon, будет пустой строкой, если она не указана
 
  Подробнее о том, как слова обнаруживаются и какие типы запросов различает пользовательский навык Alexa, см. На странице https://forum.iobroker.net/viewtopic.php?f=37&t=17452.
 
@@ -262,6 +264,24 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 - `ifttt` - действует как IFTTT (на самом деле не требуется, но для целей тестирования)
 
 ## Changelog
+### 1.4.11 (2020-04-26)
+* (bluefox) fixed IOBROKER-IOT-REACT-F
+
+### 1.4.10 (2020-04-24)
+* (bluefox) Fixed crashes reported by sentry
+
+### 1.4.7 (2020-04-23)
+* fix iot crash when timeouts in communications to Google happens (Sentry IOBROKER-IOT-2)
+* fix iot crash when google answers without customData (Sentry IOBROKER-IOT-1)
+
+### 1.4.6 (2020-04-18)
+* (Apollon77) Add Sentry error reporting to React Frontend
+
+### 1.4.4 (2020-04-14)
+* (Apollon77) remove js-controller 3.0 warnings and replace adapter.objects access
+* (Apollon77) add linux dependencies for canvas library
+* (Apollon77) add sentry configuration
+
 ### 1.4.2 (2020-04-08)
 * (TA2k) Fix updateState for Google Home
 

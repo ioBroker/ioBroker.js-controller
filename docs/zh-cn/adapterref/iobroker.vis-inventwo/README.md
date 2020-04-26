@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: iw9jHbxnZMm10ysHEF8fY2bBp6smchJQfBPXBq4g33k=
+hash: 1rYVmy6lpZhG8vlUpYRAhkAU4GuCT7b4xULKhFRrp30=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
 
@@ -19,7 +19,7 @@ hash: iw9jHbxnZMm10ysHEF8fY2bBp6smchJQfBPXBq4g33k=
 ## Schalter窗口小部件ioBroker.vis适配器
 ![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Preview.png)
 
@@ -34,6 +34,9 @@ hash: iw9jHbxnZMm10ysHEF8fY2bBp6smchJQfBPXBq4g33k=
 [![Spende]（admin / spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+＃1.3.3
+-修复了背景小部件值选项
 
 ＃1.3.2
 -错误修复

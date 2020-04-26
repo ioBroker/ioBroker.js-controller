@@ -1,6 +1,5 @@
 ![Logo](admin/colorpicker.png)
-ioBroker.vis-colorpicker
-============
+# ioBroker.vis-colorpicker
 
 ![Number of Installations](http://iobroker.live/badges/vis-colorpicker-installed.svg) ![Number of Installations](http://iobroker.live/badges/vis-colorpicker-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.vis-colorpicker.svg)](https://www.npmjs.com/package/iobroker.vis-colorpicker)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.vis-colorpicker.svg)](https://www.npmjs.com/package/iobroker.vis-colorpicker)
@@ -12,6 +11,9 @@ Color selector widgets for ioBroker.vis
 ![Example](img/widgets.png)
 
 ## Changelog
+### 1.2.0 (2020-04-14)
+- (bluefox) Corrected html structure
+
 ### 1.1.1 (2016-11-30)
 - (Pmant) add new hue bulbs and fix gamut
 
@@ -40,5 +42,5 @@ Color selector widgets for ioBroker.vis
 - (bluefox) initial checkin
 
 ## License
- Copyright (c) 2013-2016  bluefox https://github.com/GermanBluefox, hobbyquaker https://github.com/hobbyquaker
+ Copyright (c) 2013-2020 Bbluefox https://github.com/GermanBluefox, hobbyquaker https://github.com/hobbyquaker
  MIT

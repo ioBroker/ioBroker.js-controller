@@ -3,20 +3,21 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.homepilot/README.md
 title: ioBroker.homepilot
-hash: h4tiza7xEW571MRD8xKFFPGDnHTlUGekk6SiBhJIpKY=
+hash: g/Mez58dWCtVTsBlvP6X9shYu9GotSYWpbI0fpjl17Q=
 ---
 ![логотип](../../../en/adapterref/iobroker.homepilot/admin/homepilot.png)
 
 ![Количество установок](http://iobroker.live/badges/homepilot-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.homepilot.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.homepilot.svg)
-![NPM](https://nodei.co/npm/iobroker.homepilot.png?downloads=true)
 ![Знак Кодаси](https://api.codacy.com/project/badge/Grade/41e0e541711c47b996f11a2439a6663c)
+![Известные уязвимости](https://snyk.io/test/github/Pix---/ioBroker.homepilot/badge.svg?targetFile=package.json)
+![NPM](https://nodei.co/npm/iobroker.homepilot.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/Pix---/ioBroker.homepilot/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.homepilot?branch=master&svg=true)
 
 # IoBroker.homepilot
-Для адаптера требуется, чтобы прошивка базовой станции Homepilot была ниже версии 5.0 (ранее сентября 2019 года). Более новыми или обновленными станциями можно управлять с помощью [ioBroker.homepilot20](https://github.com/homecineplexx/ioBroker.homepilot20)
+Для адаптера требуется, чтобы прошивка базовой станции Homepilot была ниже версии 5.0 (ранее сентября 2019 года). Более новыми или обновленными станциями можно управлять с помощью [ioBroker.homepilot20](https://github.com/homecineplexx/ioBroker.homepilot20) NodeJS 10 или выше
 
 : de: [Dokumentation](/docs/de/doc_homepilot_de.md)
 
@@ -44,6 +45,10 @@ hash: h4tiza7xEW571MRD8xKFFPGDnHTlUGekk6SiBhJIpKY=
 Вклад приветствуется!
 
 ## Changelog
+### 1.1.4 (2020-04-21)
++ (pix) xml2js-lib updated
++ NodeJS 10 or higher required
+
 ### 1.1.3 (2019-09-23)
 + (christofkac) Added support for Connect Actor
 
@@ -143,7 +148,7 @@ hash: h4tiza7xEW571MRD8xKFFPGDnHTlUGekk6SiBhJIpKY=
 
 The MIT License (MIT)
 
-Copyright (c) 2019 pix
+Copyright (c) 2016-2020 pix
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

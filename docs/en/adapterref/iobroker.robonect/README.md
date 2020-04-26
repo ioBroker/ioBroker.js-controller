@@ -22,6 +22,18 @@ The mode of the lawn mower can be controlled by changing robonect.0.status.mode.
 It is possible to control the extensions GPIO 1, GPIO 2, OUT 1 and OUT 2 of the Robonect module. Requirement is that the mode of the extension is configured as "API" via the Robonect Web-UI. If for example LEDs are connected to OUT1, it is possible to switch them on in the night and off in the morning by setting Robonect.0.extension.out1.status to "true" or "false".
 
 ## Changelog
+### 0.1.3
+* (braindead1) implemented JsonLogic & refactoring
+
+### 0.1.2
+* (braindead1) fixed GPS
+
+### 0.1.1
+* (braindead1) fixed typo
+
+### 0.1.0
+* (braindead1) implemented rest times
+
 ### 0.0.12
 * (braindead1) improved polling
 

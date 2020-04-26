@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.dwd/README.md
 title: ioBroker.dwd
-hash: iV0I50r+WvpQoN+q0KEZ2btBsIOluRVvdpqbG9cIhNI=
+hash: 39/h4ENoIuZXO+aJD88gFbM7fOmSVWBu9tkkJ7PtkvA=
 ---
 ![логотип](../../../en/adapterref/iobroker.dwd/admin/dwd.png)
 
@@ -20,10 +20,23 @@ Dieser Adapter lädt die Wetterwarnungen vom deutschen Wetterdienst über JSON l
 
 Этот адаптер загружает предупреждения о погоде из немецкой службы погоды по ссылке JSON.
 
-## Сделать
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
+
+## Делать
 * Обработка тайм-аутов FTP
 
 ## Changelog
+
+### 2.4.7 (2020-04-18)
+* (Apollon77) Add Sentry for error reporting with js-controller 3.0
+* (Apollon77) Fix crash because of undefined lat/long 
+
+### 2.4.6 (2020-02-24)
+* (bluefox) Time format added to widget
+
+### 2.4.5 (2020-02-23)
+* (ticaki) Datetime corrected
+
 ### 2.4.3 (2018-08-05)
 * (bluefox) Invalid certificate are accepted too
 
@@ -113,7 +126,7 @@ Dieser Adapter lädt die Wetterwarnungen vom deutschen Wetterdienst über JSON l
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 bluefox <dogafox@gmail.com>, hobbyquaker
+Copyright (c) 2016-2020 bluefox <dogafox@gmail.com>, hobbyquaker
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

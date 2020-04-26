@@ -292,6 +292,12 @@ Each instance of the adapter provides the following information:
 If necessary, the counters of the messages can be reset to 0 by writing to the object `actions.resetCounters`.
 
 ## Changelog
+### 1.0.5 (2020-04-14)
+* (Peter Müller) Fixed bug in grouping in/out data.
+* (Peter Müller) Added missing translations.
+* (Peter Müller) Fixed bug with promiscuous mode.
+* (Peter Müller) Updated dependencies.
+
 ### 1.0.4 (2020-02-03)
 * (Peter Müller) Updated connectionType and dataSource in io-package.json.
 

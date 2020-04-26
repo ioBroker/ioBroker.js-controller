@@ -10,6 +10,8 @@
 
 Web server on the base of Node.js and express to read the files from ioBroker DB
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ## Tuning Web-Sockets
 On some web-sockets clients there is performance problem with communication. Sometimes this problem is due to fallback of socket.io communication on long polling mechanism.
 You can set option *Force Web-Sockets* to force using only web-sockets transport.
@@ -33,6 +35,13 @@ If this options is selected the user stays logged in for one month.
 If not, the user will stay logged in for the configured "login timeout".
 
 ## Changelog
+### 3.0.5 (2020-04-23)
+* (bluefox) fixed the sentry warnings
+
+### 3.0.4 (2020-04-16)
+* (Apollon77) fix js-controller 3.0 warnings
+* (Apollon77) add Sentry error reporting with js-controller 3.0
+
 ### 3.0.2 (2020-03-12)
 * (bluefox) Web extensions were fixed
 

@@ -3,18 +3,24 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tankerkoenig/README.md
 title: ioBroker.tankerkoenig
-hash: KbbtVuq9ff+qUhK53m+PDR78Af0J2qSk2C5ZGxEhlpA=
+hash: C6p5yaBcYzEpjgN2V7xmYxnDAlhxEWfzQEIAaOm+KeM=
 ---
 ![商标](../../../en/adapterref/iobroker.tankerkoenig/admin/tankerkoenig.png)
 
 ![安装数量](http://iobroker.live/badges/tankerkoenig-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.tankerkoenig.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.tankerkoenig.svg)
+![已知漏洞](https://snyk.io/test/github/Pix---/ioBroker.tankerkoenig/badge.svg?targetFile=package.json)
 ![NPM](https://nodei.co/npm/iobroker.tankerkoenig.png?downloads=true)
 ![特拉维斯](http://img.shields.io/travis/Pix---/ioBroker.tankerkoenig/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.tankerkoenig?branch=master&svg=true)
 
 ＃ioBroker.tankerkoenig
+**测试：**
+
+NodeJS v10或更高版本。
+
+##文档
 ：de：[补语](/docs/de/doc_tankerkoenig_de.md)
 
 ：uk：[文献资料](/docs/en/doc_tankerkoenig_en.md)
@@ -44,6 +50,9 @@ hash: KbbtVuq9ff+qUhK53m+PDR78Af0J2qSk2C5ZGxEhlpA=
 *每个站的数据点都应该在适配器重新启动后创建，而不仅是在安装之后
 
 ## Changelog
+### 2.0.9 (2020-04-21)
+* (pix) NodeJS 10 or higher required
+
 ### 2.0.8 (2020-03-27)
 * (Zwer2k) 2.0.8 Catch error if station status reports _no data_
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: eGEZTGV31ZdJeK46sDXmDuTgZnm5pFhilnFcOXs19GE=
+hash: A/Ux+wgkVD+w2T/9ABNl9E0hwZKdOLDWMTTkJhF7hT0=
 ---
 ![Logo](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -11,14 +11,11 @@ hash: eGEZTGV31ZdJeK46sDXmDuTgZnm5pFhilnFcOXs19GE=
 ![Anzahl der Installationen](http://iobroker.live/badges/unifi-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.unifi.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.unifi.svg)
-![Github-Probleme](http://githubbadges.herokuapp.com/iobroker-community-adapters/ioBroker.unifi/issues.svg)
-![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
+![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.unifi.svg)
 ![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)
 
 # IoBroker.unifi
-[![Code Climate] (https://codeclimate.com/github/iobroker-community-adapters/ioBroker.unifi/badges/gpa.svg)](https://codeclimate.com/github/iobroker-community-adapters/ioBroker.unifi) [![bitHound Score] (https://www.bithound.io/github/iobroker-community-adapters/ioBroker.unifi/badges/score.svg)](https://www.bithound.io/github/iobroker-community-adapters/ioBroker.unifi)
-
-Mit diesem ioBroker-Adapter können Sie [UniFi-Geräte](http://www.ubnt.com/) wie UniFi WiFi Access Points mithilfe der öffentlichen UniFi Controller-Web-API steuern und überwachen.
+Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung von [UniFi-Geräte](http://www.ubnt.com/), z. B. UniFi WiFi Access Points, mithilfe der öffentlichen UniFi Controller-Web-API.
 
 ## Verweise
 Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanbietern:
@@ -26,24 +23,35 @@ Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanb
 * [node-unifi] (https://github.com/jens-maus/node-unifi)
 
 ## Changelog
+### 0.4.3 (2020-04-24)
+* (braindead1) fixed configuration issue
 
+### 0.4.2 (2020-04-23)
+* (braindead1) subsystem issue fixed
+
+### 0.4.1 (2020-04-16)
+* (braindead1) Enhanced refactoring
+
+### 0.4.0 (2020-04-16)
+* (bluefox) Refactoring
+  
 ### 0.3.1
-  (jens-maus) added support for multi-site environments.
+* (jens-maus) added support for multi-site environments.
 
 ### 0.3.0
-  (jens-maus) added access device data query and moved the client devices to the 'clients' subtree instead
+* (jens-maus) added access device data query and moved the client devices to the 'clients' subtree instead
 
 ### 0.2.1
-  (jens-maus) minor fixes
+* (jens-maus) minor fixes
 
 ### 0.2.0
-  (jens-maus) moved `lib/unifi.js` to dedicated node-unifi nodejs class and added it as a dependency.
+* (jens-maus) moved `lib/unifi.js` to dedicated node-unifi nodejs class and added it as a dependency.
 
 ### 0.1.0
-  (jens-maus) implemented a first basically working version which can retrieve status information from a UniFi controller.
+* (jens-maus) implemented a first basically working version which can retrieve status information from a UniFi controller.
 
 ### 0.0.1
-  (jens-maus) initial checkin of non-working development version
+* (jens-maus) initial checkin of non-working development version
 
 ## License
 The MIT License (MIT)

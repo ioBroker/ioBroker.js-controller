@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.rainbird/README.md
 title: ioBroker.rainbird
-hash: I5DvFG4EAJokL/cHf2SvLiANcKh5W1Gh3IVaAxUUnqg=
+hash: WL+q1yaT3lsf38E8OWSWmtuH/yJwW0OC/NAFrnIF5Ec=
 ---
 ![логотип](../../../en/adapterref/iobroker.rainbird/admin/rainbird.png)
 
@@ -34,13 +34,27 @@ hash: I5DvFG4EAJokL/cHf2SvLiANcKh5W1Gh3IVaAxUUnqg=
 
 `rainbird.X.device.stations.Y.available` - Истина, если в устройстве доступна зона Y.
 `rainbird.X.device.stations.Y.irrigation` - Истина, если зона Y в настоящее время орошается.
-`rainbird.X.device.stations.Y.runZone` - Вручную выполните полив в зоне Y в течение указанного количества минут.
+`rainbird.X.device.stations.Y.remaining` - Оставшееся время полива в секундах. `rainbird.X.device.stations.Y.runZone` - Запустите полив вручную в зоне Y на указанное количество минут.
 `rainbird.X.device.stations.Y.testZone` - Тестовая зона Y.
 
 ## Пожертвовать
 [![PayPal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SFLJ8HCW9T698&source=url)
 
 ## Changelog
+
+### 0.2.2
+
+-   Added fixes for adapter crashes on failed connection to controller
+
+### 0.2.1
+
+-   Added support for run times on different controller model
+-   Less polling for some states to reduce requests to controller
+
+### 0.2.0
+
+-   Added remaining irrigation time of zone
+-   Fixed bug in decoding responses
 
 ### 0.1.2
 

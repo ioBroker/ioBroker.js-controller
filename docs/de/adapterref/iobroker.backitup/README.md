@@ -171,7 +171,7 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
     Führt bitte folgende Befehle auf eure Iobrokerumgebung in der Konsole aus:
 
     ```
-    curl -sL https://iobroker.net/fix.sh | bash -
+    curl -fsL https://iobroker.net/fix.sh | bash -
     sudo reboot
     ```
 8.  Solltet Ihr eine Fehlermeldung beim erstellen der Redis Datenbank bekommen, prüft bitte, ob euer User iobroker die Rechte hat und ob er in der User-Gruppe Redis vorhanden ist.
@@ -185,9 +185,21 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
-### 1.5.0 (xx.04.2020)
+### 1.5.2 (24.04.2020)
+* (simatec) errorhandling sentry.io
+* (AlCalzone) docu updated
+
+### 1.5.1 (23.04.2020)
+* (simatec) Bugfix list from nas
+* (simatec) Bugfix sentry errors
+
+### 1.5.0 (21.04.2020)
 * (simatec) revised error handling
-* (simatec) update dependencies
+* (simatec) revised mount process
+* (simatec) revised umount process
+* (simatec) added log for last backup file
+* (simatec) updated dependencies
+* (simatec) added sentry.io support
 
 ### 1.4.5 (23.03.2020)
 * (simatec) Bugfix CIFS Domain

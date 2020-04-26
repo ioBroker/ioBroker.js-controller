@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sunnyportal/README.md
 title: ioBroker.sunnyportal
-hash: aQpHilv11JQ0wbXCkGwodp0LO6jO9IDS+UiiRkN+hoU=
+hash: TMqCdVLk68bgg1DcittqVGvvI5+Y6fTY8WZiIprn2p8=
 ---
 ![логотип](../../../en/adapterref/iobroker.sunnyportal/admin/sunnyportal.png)
 
+![Статус сборки](https://travis-ci.org/marvincaspar/ioBroker.sunnyportal.svg?branch=master)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sunnyportal.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sunnyportal.svg)
 ![Количество установок (последняя)](http://iobroker.live/badges/sunnyportal-installed.svg)
@@ -16,6 +17,8 @@ hash: aQpHilv11JQ0wbXCkGwodp0LO6jO9IDS+UiiRkN+hoU=
 ![NPM](https://nodei.co/npm/iobroker.sunnyportal.png?downloads=true)
 
 # IoBroker.sunnyportal
+![Тест и выпуск](https://github.com/marvincaspar/ioBroker.sunnyportal/workflows/Test%20and%20Release/badge.svg)
+
 ## Солнечный портал-адаптер для ioBroker
 Получайте текущие данные с Солнечного портала каждую минуту.
 
@@ -25,7 +28,17 @@ hash: aQpHilv11JQ0wbXCkGwodp0LO6jO9IDS+UiiRkN+hoU=
 ### Обзор объекта
 ![Обзор объекта](../../../en/adapterref/iobroker.sunnyportal/./docs/images/object-overview.png)
 
+## Кредиты
+Я основал код на [sunnyportal-апи](https://github.com/mkorthuis/sunnyportal-api/) mkorthuis
+
 ## Changelog
+
+### 0.1.5
+* (Marvin Caspar) Reduce update interval to 60 seconds
+
+### 0.1.4
+* (Marvin Caspar) Rewrite code to fix login issue
+* (Marvin Caspar) Add units to ioBroker states
 
 ### 0.1.3
 * (Marvin Caspar) Fix version

@@ -243,6 +243,12 @@ In addition to normal thermostat you can define:
     * You can also assign a *string* to display any text like "fire in upper floor"
 * The **linked-view-property** is opened directly
 
+### <img src="img/icons/flood_on.png" width="32"> Flood-Sensor:
+* **STATE**: *boolean* - if true the sensor will be displayed as triggered
+    * Alternatively you can assign a *value-list*, to display additional states like 'tampered'
+    * You can also assign a *string* to display any text like "flood in upper floor"
+* The **linked-view-property** is opened directly
+
 ### <img src="img/icons/alarm_on.png" width="32"> Alarm:
 * **STATE**: *boolean* - if true the sensor will be displayed as triggered
     * Alternatively you can assign a *value-list*, to display additional states like 'tampered'
@@ -276,6 +282,16 @@ In addition to normal thermostat you can define:
 * **URL**: CONSTANT *string* - this url will be opened
 
 
+## Icons and Background-Images
+* You can use the inbuilt images or the images uploaded under the images tab or any free url you like
+* You can also use a variable inside the image-url. This may be useful for example for weather-forecasts. Use this pattern:
+    * ``path/to/firstloaded.png|anotherpath/to/{iobrokerstate|fallback}.png``
+    * Example: ``./../iqontrol.meta/userimages/demo/bottle.jpg|./../iqontrol.meta/userimages/demo/{javascript.0.myimage|whitestone}.jpg`` 
+	* This loads ``./../iqontrol.meta/userimages/demo/bottle.jpg`` when you open the view
+	* As soon as the state of ``javascript.0.myimage`` is fetched from the server, the image will be replaced with ``./../iqontrol.meta/userimages/demo/XXX.jpg`` where ``XXX`` is the value of ``javascript.0.myimage``
+	* If ``javascript.0.myimage`` has no value the fallback ``whitestone`` will be used
+
+
 ## Developing
 * Have a look at [Operating Principle of Frontend](Operating%20Principle%20of%20Frontend.md)
 
@@ -283,8 +299,32 @@ In addition to normal thermostat you can define:
 
 ## Changelog
 
+### 0.3.4 (2020-04-26)
+* (Sebastian Bormann) Added variables to icons and backgroundimages (see readme)
+* (Sebastian Bormann) It is now possible to remove toolbar (the first view is then the home view)
+
+### 0.3.3 (2020-04-19)
+* (Sebastian Bormann) Fixed device readonly for toggle state.
+* (Sebastian Boramnn) Fixed devices with same name.
+* (Sebastian Bormann) Removed some old code from version <0.3.0.
+
+### 0.3.2 (2020-04-19)
+* (Sebastian Bormann) Fixed loading toolbar with no entries on linked view.
+* (Sebastian Bormann) Fixed views with quotes in name.
+* (Sebastian Bormann) Fixed Flood-Sensor.
+
+### 0.3.1 (2020-04-16)
+* (Sebastian Bormann) Breaking change: The complete configuration is no longer stored in ioBroker channels and states, but is fetched as one complete object, thus saving the configuration is much much faster than before.
+* (Sebastian Bormann) Views, devices and toolbar entries are now sortable via drag- and drop in the configuration dialog.
+* (Sebastian Bormann) After saving the configuration the instance ist now yellow until the configuration is completely written.
+* (Sebastian Bormann) Added invert UNREACH to device options.
+* (Sebastian Bormann) Added Flood-Sensor.
+* (Sebastian Bormann) Enhanced autocreation-feature by using ioBroker-Type-Detector by bluefox.
+* (Sebastian Bormann) Enhanced hue-lights when using alternative colorspace without white-values and changing ct.
+* (Sebastian Bormann) Enhanced hue-lights when using alternative colorspace to keep uppercase if needed.
+
 ### 0.2.20 (2020-04-08)
-* (Sebastian Bormann) If value for POWER is greater than 100, it is rounded withour decimal places.
+* (Sebastian Bormann) If value for POWER is greater than 100, it is rounded without decimal places.
 * (Sebastian Bormann) Bugfixed invert-function with custom min and max.
 * (Sebastian Bormann) Added reload-link to loading page.
 * (Sebastian Bormann) Updated dependencies.

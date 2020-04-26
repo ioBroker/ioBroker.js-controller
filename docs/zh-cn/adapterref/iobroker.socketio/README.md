@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.socketio/README.md
 title: ioBroker socket.io
-hash: 6YPK4bSUejiR/S8fvJjcDOEhQiS11d46/YTfDNPZGVo=
+hash: kvmr/STXUvUUlD5loJavs7GahNyBQDsN0hBq3IpB90U=
 ---
 ![商标](../../../en/adapterref/iobroker.socketio/admin/socketio.png)
 
@@ -13,15 +13,17 @@ hash: 6YPK4bSUejiR/S8fvJjcDOEhQiS11d46/YTfDNPZGVo=
 ![NPM](https://nodei.co/npm/iobroker.socketio.png?downloads=true)
 
 ＃ioBroker socket.io
-一些WEB应用程序和适配器使用此适配器与ioBroker进行通信。
+一些WEB应用程序和适配器使用此适配器，以使用socket.io协议与ioBroker进行通信。
 
 用户可以使用此适配器通过Web套接字将其产品连接到ioBroker。实际上，Flot，Rickshaw，Vis和mobile使用此适配器从ioBroker提取数据。
 
-您可以在示例[目录](https://github.com/ioBroker/ioBroker.socketio/tree/master/example)简单应用程序中找到示例，该应用程序使用此接口显示一些数据。
+您可以在示例[目录](https://github.com/ioBroker/ioBroker.socketio/tree/master/example)示例中找到简单的应用程序，该应用程序使用此接口显示一些数据。
 
 通过使用socket.io接口，用户应该了解系统的[基本概念](https://github.com/ioBroker/ioBroker)。
 
 同样，了解[对象的结构](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md)也很有用。
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##概念简介
 ###对象
@@ -48,15 +50,15 @@ hash: 6YPK4bSUejiR/S8fvJjcDOEhQiS11d46/YTfDNPZGVo=
 ###致谢
 每个州都有“ ack”属性。它显示命令的方向。
 
--如果ack = false，则表示其他适配器希望控制（写入）此变量，以便执行命令（例如，将打开灯）。
+-如果ack = false，则表示其他适配器要控制（写入）此变量，以便执行命令（例如，将打开灯）。
 -如果ack = true，则表示设备通知新值。 （例如，手动打开灯光或检测到运动）
 
 **示例**：我们有一些家庭自动化适配器（HAA），其在地址* haa.0.lamp1 *下连接了一个灯。
 
 -在HAA的帮助下，可以使用物理开关手动打开灯，也可以通过wifi打开灯。
--如果vis要通过wifi打开灯，则应使用```{value：true，ack：false}`''设置新值。
--当灯打开时，通常会通知HAA新状态，该值应立即用```{value：true，ack：true}`''覆盖。
--如果通过物理开关手动关闭了灯泡，则会通过```{value：false，ack：true}`''通知HAA新状态。
+-如果vis想通过wifi打开灯，则应使用```{value：true，ack：false}`''设置新值。
+-当灯打开时，通常会通知HAA新状态，该值应立即用```{value：true，ack：true}```覆盖。
+-如果通过物理开关手动关闭灯，则会通过```{value：false，ack：true}''`通知HAA新状态。
 
 ###质量
 每个数据点都具有** q **-* quality *属性。
@@ -108,11 +110,11 @@ connCallbacks = {
 例如。 ```servConn.setState('adapter.0.myvalue', true)```将```{val: true, ack: false}```写入* adapter.0.myvalue *。
 
 -** pointId **-是状态的ID，例如* adapter.0.myvalue *，
--**值**-状态的新值，可以是简单值（字符串，数字，布尔值）或类似“ {val：newValue，ack：false，q：0}”的对象。
+-**值**-状态的新值，可以是简单值（字符串，数字，布尔值）或类似“ {val：newValue，ack：false，q：0}”之类的对象。
 
 如果使用简单值，则“ ack”将设置为“ false”。
 
--** callback **-```function（error）{}```-在执行将新值写入DB时调用（而不是在控制设备时）。
+-** callback **-```function（error）{}```-在执行向数据库中写入新值时调用（不是在控制设备时）。
 
 ### GetStates
 -函数（ID，回调）
@@ -120,7 +122,7 @@ connCallbacks = {
 得到一个以上状态的状态。建立连接后，通常会调用此命令以获取已使用数据点的实际状态。
 
 -** ID **-具有ID的模式或数组。可以省略以获取所有状态。模式可以具有通配符，例如：'* .STATE'，'haa.0。*'
--**回调**-```（功能（错误，状态）{}```-*状态*是类似于```{'id1'：'state1'，'id2'：'state2'，.. 。}`''。 *stateX* 具有[上面]（＃state）描述的结构的对象。
+-**回调**-```（功能（错误，状态）{}```-*状态*是类似于```{'id1'：'state1'，'id2'：'state2'，.. 。}```。 *stateX* 具有[[state]以上描述的结构的对象。
 
 ### HttpGet
 -函数（URL，回调）
@@ -128,7 +130,7 @@ connCallbacks = {
 从运行socketio适配器的PC调用此URL。
 
 -** url **-是致电地址。
--** callback **-```function（data）{}```-请求的结果（html正文）。
+-**回调**-函数（数据）{}`-请求的结果（HTML正文）。
 
 ### LogError
 -函数（errorText）
@@ -167,7 +169,7 @@ connCallbacks = {
 从数据库读取特定对象。使用此功能，可以读取某些对象的元信息。
 
 -** id **-状态的ID，例如“ haa.0.light1”，
--**回调**-```功能（错误，obj）```-obj看起来像：
+-**回调**-```function（error，obj）```-obj看起来像：
 
 ```
 {
@@ -267,12 +269,12 @@ connCallbacks = {
 ### ReadFile
 -函数（文件名，回调）
 
--**回调**-函数（错误，fileData，mimeType）
+-**回调**-功能（错误，fileData，mimeType）
 
 ### ReadFile64
 -函数（文件名，回调）
 
--**回调**-函数（错误，数据）-数据为{{mime：mimeType，data：base64data}`
+-**回调**-函数（错误，数据）-数据为{mime：mimeType，数据：base64data}
 
 ### WriteFile
 -函数（文件名，数据，模式，回调）
@@ -292,7 +294,7 @@ connCallbacks = {
 ### GetHistory
 -函数（实例，选项，回调）
 
--**回调**-```功能（错误，数据，步骤，sessionId）{}```
+-**回调**-函数（错误，数据，步骤，会话ID）{}`
 
 ### RequireLog
 -函数（isRequire，回调）
@@ -315,6 +317,16 @@ connCallbacks = {
 您可以设置选项* Force Web-Sockets *强制仅使用Web套接字传输。
 
 ## Changelog
+### 3.0.5 (2020-04-23)
+* (bluefox) Caught the web server errors
+
+### 3.0.4 (2020-04-23)
+* fix crash reason when server closes (Sentry IOBROKER-SOCKETIO-2/3/4/5)
+
+### 3.0.3 (2020-04-16)
+* (Apollon77) Remove usage of deprecated object methods; prevent js-controller 3.0 warnings
+* (Apollon77) Add Sentry error reporting
+
 ### 3.0.2 (2020-03-07)
 * (bluefox) Unload of adapter was corrected
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: OsPJlZjV0DtErfgb8ksy/0sX2PeZxLg6pi8psc/KlDg=
+hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
 ---
 ![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -134,10 +134,26 @@ hash: OsPJlZjV0DtErfgb8ksy/0sX2PeZxLg6pi8psc/KlDg=
  | 5 |手铁2级|
  | 6 |机铁|
 
+### ProgramPhase洗衣机
+|原始值状态|
+|----------|-------|
+| 260 | “洗涤” /“洗涤” |
+| 261 | “Spülen” /“冲洗” |
+| 266 | “ Schleudern” /“ Spinning” |
+| 267 | “ Knitterschutz” /“” |
+| 268 | “ Ende” /“ End” |
+| 256 | “” |
+
 ##版权
 版权所有（c）2019、2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 1.2.0 (2020-04-18)
+* (grizzelbee) New: Added new boolean state (**Connected**) that indicates whether the device is connected to WLAN or a gateway.
+* (grizzelbee) New: Added new boolean state (**signalInUse**) that indicates whether the device is switched off (false) or in Use (true).
+* (grizzelbee) Change: replaced the deprecated http-library **request** with **axios** 
+* (grizzelbee) Change: Made functions communicating with API asynchronus 
+  
 ### 1.1.0 (2020-03-07)
 * (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
                Please remember that Actions will only work if you put your device into the appropiate state (e.g. Mobile Control)

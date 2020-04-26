@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.binance/README.md
 title: ioBroker.binance
-hash: dPWsMLNDNpUqbYRpdvoJlMZroTgWgY4ADFWZXh9fyFA=
+hash: g1ciorZTR3u5Yhaf5+j4iEvviAnfozU2ASrlfW4BtJo=
 ---
 ![商标](../../../en/adapterref/iobroker.binance/admin/binance.png)
 
@@ -26,6 +26,10 @@ hash: dPWsMLNDNpUqbYRpdvoJlMZroTgWgY4ADFWZXh9fyFA=
 ![screenshot-1]（screenshot-1.png）！[screenshot-2](../../../en/adapterref/iobroker.binance/screenshot-2.png)
 
 ## Changelog
+### 1.1.0
+- added 24hr data for selected symbols
+### 1.0.5
+- fixed interval handle
 ### 1.0.4
 - npmjs repackage
 ### 1.0.3

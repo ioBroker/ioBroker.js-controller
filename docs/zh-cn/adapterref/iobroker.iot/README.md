@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iot/README.md
 title: ioBroker物联网适配器
-hash: LIxKjYA6G4HRyZ2clUWyMxnxX0RgaP7yd0uHUQ+KQMc=
+hash: AyRn68CYR4s+qIW3NFGuHjhm45ipfK0KTILNm9iI+fY=
 ---
 ![商标](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -15,6 +15,8 @@ hash: LIxKjYA6G4HRyZ2clUWyMxnxX0RgaP7yd0uHUQ+KQMc=
 ＃ioBroker物联网适配器
 该适配器仅用于与Amazon Alexa，Google Home和Nightscout通信。
 它不是用于远程访问ioBroker实例。为此使用ioBroker.cloud适配器。
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##设置
 要使用云适配器，您应该首先在ioBroker云[https://iobroker.pro](https://iobroker.pro)上注册。
@@ -96,7 +98,7 @@ Alexa, lock the "lock name"
 必须满足以下条件才能在自动生成的列表中获取状态：
 
 -状态必须处于某些“功能”枚举中。
--如果未直接包含在“功能”中，则状态必须具有角色（“状态”，“开关”或“级别*”，例如level.dimmer）。
+-如果未直接包含在“功能”中，则状态必须具有角色（“状态”，“开关”或“ level。*”，例如level.dimmer）。
 
 可能是该通道位于“功能”中，但未声明其状态。
 
@@ -152,7 +154,7 @@ or
 
 ```[GET]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>&data=myString```
 
-如果您在设置中将“服务白名单”字段设置为名称* custom_test *，并使用“ custom_test”作为服务名称进行调用，则状态** cloud.0.services.custom_test **将设置为* myString *。
+如果在设置中将“服务白名单”字段设置为名称* custom_test *，并以“ custom_test”作为服务名称进行调用，则状态cloud / 0.services.custom_test将设置为myString *。
 
 您可以在白名单中写上“ *”，然后将允许所有服务。
 
@@ -263,6 +265,24 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 -`ifttt`-类似于IFTTT（实际上不是必需的，但出于测试目的）
 
 ## Changelog
+### 1.4.11 (2020-04-26)
+* (bluefox) fixed IOBROKER-IOT-REACT-F
+
+### 1.4.10 (2020-04-24)
+* (bluefox) Fixed crashes reported by sentry
+
+### 1.4.7 (2020-04-23)
+* fix iot crash when timeouts in communications to Google happens (Sentry IOBROKER-IOT-2)
+* fix iot crash when google answers without customData (Sentry IOBROKER-IOT-1)
+
+### 1.4.6 (2020-04-18)
+* (Apollon77) Add Sentry error reporting to React Frontend
+
+### 1.4.4 (2020-04-14)
+* (Apollon77) remove js-controller 3.0 warnings and replace adapter.objects access
+* (Apollon77) add linux dependencies for canvas library
+* (Apollon77) add sentry configuration
+
 ### 1.4.2 (2020-04-08)
 * (TA2k) Fix updateState for Google Home
 

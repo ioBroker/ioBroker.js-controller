@@ -21,6 +21,11 @@ If you like my work, please feel free to provide a personal donation
 
 ## Changelog
 
+### 0.1.9
+* (DutchmanNL) Implement Sentry
+* (DutchmanNL) Bugfix : Better error handling
+* (DutchmanNL) Bugfix : state creation with JS-controller 3.x
+
 ### 0.1.8
 * (DutchmanNL) Correct countdown of "remainingtimeinseconds" implemented.
 

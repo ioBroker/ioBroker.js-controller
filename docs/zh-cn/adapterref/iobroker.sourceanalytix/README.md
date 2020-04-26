@@ -3,17 +3,20 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: Kt7KXCfmXRBuQVVJDSDPDW5RzxYkn7oDwdbKC49xuLQ=
+hash: cvVNKwzs3MHPMuBDA8ApZxWB+5OR5cSNPbZ5l7xCwE4=
 ---
-![测验](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
-![安装数量](http://iobroker.live/badges/sourceanalytix-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
-![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
+![安装数量（最新）](http://iobroker.live/badges/sourceanalytix-installed.svg)
+![安装数量（稳定）](http://iobroker.live/badges/sourceanalytix-stable.svg)
+![依赖状态](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)
+![已知漏洞](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.sourceanalytix/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
+![特拉维斯](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.sourceanalytix/master.svg)
 
 ＃SourceAnalytix
 ＃{开发人员-进行中，版本0.4.0稳定的候选版}
-详细分析您的能源，气体和液体消耗可以将任何来源（kWh，Wh，Watt，l / h或m3）用于数据分析：
+能源，气体和液体消耗的详细分析可以将任何来源（kWh，Wh，Watt，l / h或m3）用于数据分析：
 
 *每天，每周，每月，每季度，每年跟踪消耗
 *计算成本（当前价格是可配置的）
@@ -37,9 +40,20 @@ hash: Kt7KXCfmXRBuQVVJDSDPDW5RzxYkn7oDwdbKC49xuLQ=
 * []添加可在适配器设置中配置的前[x]天，[x]周，[x]月，[x]季度，[x]年的对象状态
 
 ＃＃ 支持我
-如果您喜欢我的作品，请考虑个人捐赠（这是DutchmanNL的个人捐赠链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png）](http://paypal.me/DutchmanNL)
+如果您喜欢我的工作，请考虑个人捐赠（这是DutchmanNL的个人捐赠链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png）](http://paypal.me/DutchmanNL)
 
 ## Changelog
+### 0.4.5 work in progress
+* (Dutchman) Implement Sentry
+* (Dutchman) Bugfix : Warn message for week creations (js-controller 3.x)
+
+### 0.4.2 (2020-04-12) BugFixes
+* (Dutchman) Translations updated
+* (Dutchman) Bugfix : Values not resettet at new day start
+* (Dutchman) Bugfix : Handle calculations when reading = 0
+* (Dutchman) Bugfix : Handle calculations at initialisation
+* (Dutchman) Bugfix : Pauze all calculation during day-reset
+* (Dutchman) Do not calculate values is state is update with same value as previous
 
 ### 0.4.0 (2020-04-05) Adapter completely redesigned, please test carefully
 * (Dutchman) Complete code rebuild

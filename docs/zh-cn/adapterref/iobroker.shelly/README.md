@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: C75pmvux4BRCINMqHMi6LVc2nuHJBOUUqsMJ3B7jqbE=
+hash: Iw9TRNc7yuHLTC6n9EPAN+dwZuKAtJ+a78pbLtWS/t4=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -19,6 +19,8 @@ hash: C75pmvux4BRCINMqHMi6LVc2nuHJBOUUqsMJ3B7jqbE=
 
 适配器通过REST api和CoAP或MQTT协议与Shelly设备通信。
 默认情况下为Shelly固件（无需刷新固件！）。您可以在这里找到有关该设备的更多详细信息：[雪莉](https://shelly.cloud/)
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**更多详细信息，请参见下文！
 
 ##安装
 您可以在此处找到详细的安装文档：[安装文件](./docs/EN/INSTALL.md)
@@ -48,12 +50,35 @@ hash: C75pmvux4BRCINMqHMi6LVc2nuHJBOUUqsMJ3B7jqbE=
 | Shelly Bulb Duo（SHBDUO-1）|已验证|未验证|
 | Shelly 3EM（SHEM）|已验证|已验证|
 
+##什么是Sentry，什么报告给服务器？
+Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+
 ## Changelog
+
+### 3.2.5 (13.04.2020)
+* (Apollon77) - Update Dependencies incl shelly-lib to prevent exceptions
+* (Apollon77) - Add Sentry for error/crash reporting (active with js-controller 3.0)
+* (Stübi      - Add for hue two new datapoints for Shelly Bulb and RGBW2
+
+### 3.2.4 (11.04.2020)
+* (Stübi) - Bugfixing MQTT ext_temperature for Shelly 1
+
+### 3.2.3 (03.03.2020)
+* (Stübi) - Bugfixing Shelly 3EMfor MQTT support (fixed datapoints for total and total_returned)
+* (Stübi) - Bugfixing MQTT support for door and windows sensor (issue #135)
+
+### 3.2.2 (03.03.2020)
+* (Stübi) - Bugfixing, if Shelly sends a string instead of number and boolean (issue #131)
+
+### 3.2.1 (02.03.2020)
+* (Stübi) - Bugfixing Shelly 3EMfor MQTT support 
 
 ### 3.2.0 (13.02.2020)
 * (Simon W.) - Add device Shelly 3EM
 * (Stübi)    - Add device Shelly Door/Windows sensor 
-* (Stübi)    - Add external temperature sensor for Shelly 1, 1PM and 2.5
+* (Stübi)    - Add external temperature sensor for Shelly 1, 1PM and 2.5 (only CoAP)
 
 ### 3.1.9 (25.01.2020)
 * (Stübi) - Bugfixing, auto update new firmware

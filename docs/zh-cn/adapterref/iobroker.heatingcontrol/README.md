@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: Qx2/sSVNBo/IZIqHTVLJNsEI/U4q1RoWRuAEHPMDs/E=
+hash: oKl8aI61rKkyRcLuEGerQ10oKva5p3JoIsihkkS3MNA=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -12,15 +12,13 @@ hash: Qx2/sSVNBo/IZIqHTVLJNsEI/U4q1RoWRuAEHPMDs/E=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.heatingcontrol.svg)
 ![测验](https://travis-ci.org/rg-engineering/ioBroker.heatingcontrol.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
-![环保管理员徽章](https://badges.greenkeeper.io/rg-engineering/ioBroker.heatingcontrol.svg)
 
 ＃ioBroker.HeatingControl
 **如果您愿意，请考虑捐赠：**
 
-[![贝宝]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
-用于控制加热系统的适配器。
-
+##用于控制加热系统的适配器。
 特征：
 
 *根据时间表控制所有恒温器的设定温度水平
@@ -45,7 +43,7 @@ hash: Qx2/sSVNBo/IZIqHTVLJNsEI/U4q1RoWRuAEHPMDs/E=
 ###主要
 *功能=每个房间用于检测恒温器，执行器和传感器的功能。这是系统枚举之一
 *时区=用于cron调整cron作业
-* Feiertag的路径-适配器=如果您拥有使用Feiertag-Adapter自动检测今天的公众假期的权限，请在此处设置路径（例如feiertage.0）
+* Feiertag的路径-适配器=如果您拥有使用Feiertag-Adapter自动检测今天的公共假期的权限，请在此处设置路径（例如feiertage.0）
 *当管理员打开时删除所有设备=应该被禁用。仅在需要删除所有房间，执行器和传感器设置时才启用它。当适配器管理员打开时，将执行设备搜索
 *使用的传感器=如果您有窗户传感器，并且要在窗户打开时降低目标温度，则启用该选项
 *使用的执行器=如果要直接从适配器控制执行器。万一温控器和执行器之间没有直接连接，以防万一。
@@ -61,7 +59,7 @@ hash: Qx2/sSVNBo/IZIqHTVLJNsEI/U4q1RoWRuAEHPMDs/E=
 
 ＃＃＃ 设备
 *所有房间的清单。您可以在此处禁用房间。
-*按右侧的编辑按钮打开该房间的恒温器，执行器和传感器的设置窗口
+*按右侧的编辑按钮可打开该房间的恒温器，执行器和传感器的设置窗口
 
 ###编辑室
 *您可以在此处验证并设置恒温器，执行器和传感器的对象ID
@@ -93,7 +91,7 @@ hash: Qx2/sSVNBo/IZIqHTVLJNsEI/U4q1RoWRuAEHPMDs/E=
 |现在|如果不存在，我们在场|降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
 |假期缺席|我们缺席，所以周末也减少通过Profiles.0.room.VacationAbsentDecrease降低当前温度曲线|将目标设置为Profiles.0.room.absolute.VacationAbsentDecrease |
 
-*在这两种情况下，仅使用一次降脂（在适配器的早期版本中，可以使用一次以上的脱脂剂）
+*在两种情况下，仅使用一次降脂（在适配器的早期版本中，可以使用一次以上的脱脂剂）
 *在绝对脱脂配方中，仅使用不等于0°C的目标值。如果您不需要降低某个房间的温度，则将降低值保持在0°C
 
 ###没有加热时间
@@ -138,6 +136,11 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 * heatingcontrol.0.GuestsPresent
 * heatingcontrol.0.PartyNow
 
+##使用恒温器的更改
+许多用户要求一个选项来将恒温器的更改接管适配器。现在实现了三个选项：
+
+|选项|描述| -------------------------- | --------------------- -------------------------------------------------- ---------------- |没有与我们在0.3.x版本之前一样，将忽略恒温器的更改|作为替代|温控器的变化被视为优先；必须在heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime中预先设置替代时间。 |如果未设置替代时间，则不执行替代|作为新的配置文件设置|从温度调节器的变化被视为当前温度曲线期间的目标温度|每个房间可调节|以上选项可以按房间配置。 datapoint heatingcontrol.0.Rooms.RoomName.ChangesFromThermostatMode定义模式： | 1-否| | 2-作为替代| | 3-作为新的配置文件设置| |如果使用小于0或大于3的值，则会在日志中显示警告
+
 ＃＃ 要求
 *需要8版或更高版本的节点
 
@@ -145,7 +148,23 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 *如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
 
 ## Changelog
-### 0.3.17 (2020-02-xx)
+
+### 0.4.0 (2020-04-xx)
+* (René) see issue #70: use changes from thermostat
+* (René) see issue #91 bug fix: if the same sensor is configured for more than one room thermostat target temperature will be set for all configured rooms
+* (René) script from Pittini integrated to support his visualization [Pittini](https://github.com/Pittini/iobroker-heatingcontrol-vis) 
+
+### 0.3.19 (2020-03-15)
+* (René) create correct cron job for sunday if profile type "every day" is used
+* (René) see issue #87: change type of time data points to string
+* (René) see issue #87: set correct roles for data points
+* (René) see issue #84: set default value for minimum temperature
+* (René) see issue #86: all "float" converted to "number""
+
+### 0.3.18 (2020-03-08)
+* (René) fix issues reported by adapter checker
+
+### 0.3.17 (2020-03-01)
 * (René) check datapoint configuration: if datapoint points to itself then error messages
 * (René) support of new vis see issue  #76
 * (Rene) thermostat mode if no heating period

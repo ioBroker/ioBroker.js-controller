@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.devices/README.md
 title: ioBroker.devices
-hash: 2Vvzaww226NY2dyAxdkVjqJxtnxfiWp/5MGtsTAJPtQ=
+hash: Y04evJLVzOEM5HChNnb2Dvb8OVXBXmMD5qJ/0gxhE88=
 ---
 ![логотип](../../../en/adapterref/iobroker.devices/admin/devices.png)
 
@@ -23,7 +23,9 @@ hash: 2Vvzaww226NY2dyAxdkVjqJxtnxfiWp/5MGtsTAJPtQ=
 
 ![экран](../../../en/adapterref/iobroker.devices/img/screen.png)
 
-## Сделать
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. **
+
+## Делать
 - добавить иконки для всех состояний каналов
 - добавить описания для состояний
 - показать ошибки для Google / Алиса / Алекса
@@ -31,6 +33,21 @@ hash: 2Vvzaww226NY2dyAxdkVjqJxtnxfiWp/5MGtsTAJPtQ=
 - определить, установлен ли js-контроллер 2.0
 
 ## Changelog
+
+### 0.3.6 (2020-04-17)
+* (Apollon77) Added Sentry error reporting for Frontend/React
+
+### 0.3.5 (2020-04-17)
+* (Apollon77) Fixed typo
+
+### 0.3.4 (2020-03-24)
+* (bluefox) Fixed error by device creation
+
+### 0.3.2 (2020-02-09)
+* (Apollon77) usage with all kinds of admin ports and reverse proxies optimized
+
+### 0.3.1 (2020-02-09)
+* (Apollon77) compatibility with Admin >4.0.0 added
 
 ### 0.2.0 (2019-12-20)
 * (bluefox) Backend was removed

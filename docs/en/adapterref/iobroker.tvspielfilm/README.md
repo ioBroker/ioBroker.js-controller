@@ -2,6 +2,7 @@
 BADGE-Number of Installations: http://iobroker.live/badges/tvspielfilm-stable.svg
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.tvspielfilm.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.tvspielfilm.svg
+BADGE-Known Vulnerabilities: https://snyk.io/test/github/Pix---/ioBroker.tvspielfilm/badge.svg?targetFile=package.json
 BADGE-NPM: https://nodei.co/npm/iobroker.tvspielfilm.png?downloads=true
 BADGE-Travis-CI: http://img.shields.io/travis/Pix---/ioBroker.tvspielfilm/master.svg
 BADGE-AppVeyor: https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.tvspielfilm?branch=master&svg=true
@@ -131,7 +132,10 @@ For a nicer look the following CSS is suggested to be used to the VIS editor.
 ```
 
 ## Changelog
-### 1.2.0 (2020-04-02)
+### 2.0.1 (2020-04-21)
+* (pix) NodeJS 10 or higher required
+
+### 2.0.0 (2020-04-02)
 * (Scrounger) devlibs updated and JSON interface created
 * (pix) docs updated
 

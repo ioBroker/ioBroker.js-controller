@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lgtv/README.md
 title: ioBroker.lgtv
-hash: e1vRRQd3Kvr7YBcscpRBGok3Apv+ZLAD2XhIHxpR73w=
+hash: 7IHLz/tapp08N9APUPMn1oaS5CtG3bxyukS3VKinNrY=
 ---
 ![商标](../../../en/adapterref/iobroker.lgtv/admin/lgtv.png)
 
@@ -15,8 +15,6 @@ hash: e1vRRQd3Kvr7YBcscpRBGok3Apv+ZLAD2XhIHxpR73w=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/xx55hgsuff4fas47/branch/master?svg=true)
 
 ＃ioBroker.lgtv
-=================
-
 适用于ioBroker的LG WebOS SmartTV适配器
 
 从[ioBroker](https://www.iobroker.net)远程控制LG WebOS SmartTV（2013年及更高版本）。
@@ -29,7 +27,7 @@ hash: e1vRRQd3Kvr7YBcscpRBGok3Apv+ZLAD2XhIHxpR73w=
 首次连接时，您会在电视屏幕上收到一个配对提示，您应该在其中允许连接。
 
 ###轮询
-关闭电视时，某些电视会与网络插座断开连接，因此无法正确将其报告给适配器。然后，需要额外的轮询。您可以在设置中定义时间。如果该值为空，则适配器尝试自动检测到此值：在适配器上重新启动轮询（每60秒），直到检测到第一个正确的电视关闭事件为止。
+关闭电视时，某些电视会与网络插座断开连接，因此无法正确地将其报告给适配器。然后，需要额外的轮询。您可以在设置中定义时间。如果该值为空，则适配器尝试自动检测到此值：在适配器上重新启动轮询（每60秒），直到检测到第一个正确的电视关闭事件为止。
 
 ＃＃ 一些例子：
 ```setState('lgtv.0.states.popup', 'Some text!');```

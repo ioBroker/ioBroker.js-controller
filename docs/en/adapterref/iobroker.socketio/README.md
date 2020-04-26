@@ -7,7 +7,7 @@
 [![NPM](https://nodei.co/npm/iobroker.socketio.png?downloads=true)](https://nodei.co/npm/iobroker.socketio/)
 
 
-This adapter used by some WEB applications and adapters to communicate with ioBroker.
+This adapter used by some WEB applications and adapters to communicate with ioBroker using socket.io protocol.
 
 Users can use this adapter to connect their products to ioBroker via web sockets. Actually this adapter is used by Flot, Rickshaw, Vis and mobile to extract data from ioBroker.
 
@@ -16,6 +16,8 @@ You can find in the example [directory](https://github.com/ioBroker/ioBroker.soc
 By using of socket.io interface user should understand the [basics and concept](https://github.com/ioBroker/ioBroker) of the system.
 
 It is useful to read about the [structure of the objects](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md) too. 
+
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Brief description of concept
 ### Object
@@ -305,6 +307,16 @@ On some web-sockets clients there is performance problem with communication. Som
 You can set option *Force Web-Sockets* to force using only web-sockets transport.
 
 ## Changelog
+### 3.0.5 (2020-04-23)
+* (bluefox) Caught the web server errors
+
+### 3.0.4 (2020-04-23)
+* fix crash reason when server closes (Sentry IOBROKER-SOCKETIO-2/3/4/5)
+
+### 3.0.3 (2020-04-16)
+* (Apollon77) Remove usage of deprecated object methods; prevent js-controller 3.0 warnings
+* (Apollon77) Add Sentry error reporting
+
 ### 3.0.2 (2020-03-07)
 * (bluefox) Unload of adapter was corrected
 

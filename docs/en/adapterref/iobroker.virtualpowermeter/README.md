@@ -32,6 +32,10 @@ siehe MeinBeispiel.jpg
 
 
 ## Changelog
+### 1.2.1 (2020-04-15)
+* (Lutz Sebastian) translation
+### 1.2.0 (2020-04-15)
+* (Lutz Sebastian) js-controller 3.x support
 ### 1.1.1 (2020-04-07)
 * (Lutz Sebastian) bugfix translation
 ### 1.1.0 (2020-04-05)
@@ -62,7 +66,7 @@ siehe MeinBeispiel.jpg
 ## License
 MIT License
 
-Copyright (c) 2019 Lutz Sebastian
+Copyright (c) 2020 Lutz Sebastian general.of.omega@googlemail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

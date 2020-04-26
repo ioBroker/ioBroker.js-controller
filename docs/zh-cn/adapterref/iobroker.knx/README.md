@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: a5YkSAbQlMW578zCh2ZzV6nWfx0/O0pc7MEahBTTsK0=
+hash: gFmeFJ/0K5TajtmCNWYK+Tmfl5WTxj7+VJ2DQbLUgMQ=
 ---
 ![商标](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
@@ -13,7 +13,7 @@ hash: a5YkSAbQlMW578zCh2ZzV6nWfx0/O0pc7MEahBTTsK0=
 
 ＃ioBroker.knx
 ##说明
-zh：该适配器允许从ETS导入knxproj文件。它会在KNX-groupaddress和ioBroker之间生成转换，并将设备放入房间（尤其是MobileUI）。
+zh：该适配器允许从ETS导入knxproj文件。它生成KNX-groupaddress和ioBroker之间的转换，并将设备放入房间（尤其是MobileUI）。
 
 它连接到标准KNX / LAN网关。
 
@@ -58,14 +58,14 @@ zh：该适配器允许从ETS导入knxproj文件。它会在KNX-groupaddress和i
 如果适配器成功启动，您的数据点将可用于您想做的所有事情。
 
 ###数据点类型
-根据KNX Association的“系统规范，互通，数据点类型”，所有DPT均可用。这意味着您可以获得两种信息类型：1）值或字符串2）逗号分隔的值或值数组（目前我还没有更好的处理方法）
+根据KNX Association的“系统规范，互通，数据点类型”，所有DPT均可用。这意味着您可以获得2种信息类型：1）值或字符串2）逗号分隔的值或值数组（目前我还没有更好的处理方法）
 
 例如，DPT5.001被编码为8位无符号整数。这给出一个值。 DPT3.007（控制调光）被编码为1Bit（Boolean）+ 3Bit（unsigned Int）。
 结果是值如“ 0,5”，其中“ 0”表示“减少”，“ 5”表示间隔数。
 
 ## Wie werden死于Datenpunkte创始者
 ### 1）Auslesen aller Kommunikationsobjektreferenzen（im folgenden KOR）
-ID的déjeweilige DPT der KOR zugeordnet，Wen ervorhanden ist。属性写入=是和读取=否。 Alle darauf folgenden GAR ID的bekommen nur den DPT zugeordnet
+ID的jeweilige DPT der KOR zugeordnet，Wen ervorhanden ist。属性写入=是和读取=否。 Alle darauf folgenden GAR ID的bekommen nur den DPT zugeordnet
 
 ### 2）Erzeugen der Gruppenadressstruktur（im folgenden GAS）
 较高的级别是GAS anhand der GAR ID的级别，而DPT的zugeordnet级别则是下降，1级以下级别的级别是1）noch nicht geschehen ist。
@@ -81,10 +81,12 @@ Weiterhin werden死在旗帜上。达贝·韦登（Dabei werden die）标志：
 |-------|-----------|------------|----------|----------|-------------------------------------------------|
 |莱森|施瑞本| Übertragen|莱森|施瑞本| Erklärung|
 | -| -| -| -| -| der wert wiberüberGroupValueResponse aktualiesiert |
-| x | -| -| x | x | ein触发器darauflöstGroupValueRead aus |
-| -| x | -| -| x | Schreibt den angegeben Wert mit GroupValueWrite auf den KNX-Bus |
+| x | -| -| x | x |触发<sup>1</sup> darauflöstGroupValueRead aus |
+| -| x | -| -| x | KNX总线|
 | -| -| x | x | -| der Wert wiberüberGroupValueResponse aktualisiert |
-| x | -| x | x | x | ein触发器darauflöstGroupValueRead aus |
+| x | -| x | x | x |触发<sup>1</sup> darauflöstGroupValueRead aus |
+
+1：触发bedeutet das Objekt schreiben，z.B. setState in Skripten oder im Admin das Objektverändern。
 
 ### 4）Erzeugen der Datenpunktpaaren（im folgenden DPP）
 Ein DPP与erzeugt，GA，GAR和DPT有效结合。 Mit diesen DPP适配器适配器。 Fehlen还死于einer GA的DPT，weil sie auf keiner der o。答：Wege gefunden werden konnte，所以我们很想知道GA维护DPP维护和维护。
@@ -118,6 +120,10 @@ Lese-Flag Markieren DPP律师事务所开始abgefragt。死于美国时刻了解
 *要求节点版本> 8.9.4！
 
 ## Changelog
+### 1.0.41
+* fixed bug on GroupValue_Response event
+* corrected connection to gira GW
+
 ### 1.0.40
 * fixed some import errors for ETS 5.7.x
 * fixed bug on GroupValue_Response event

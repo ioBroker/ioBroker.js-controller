@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: pxTnxHQ8587eG2gLkxM3SnhTsZ2RDqcKUDsXUMm/2cI=
+hash: p7EEJoNdKiXlYuc8V6IyWDTM1T8jtdu6FV5vNMAL7MU=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -33,6 +33,7 @@ hash: pxTnxHQ8587eG2gLkxM3SnhTsZ2RDqcKUDsXUMm/2cI=
 * Deebot M88
 * Deebot 600/605
 * Deebot奥兹莫920
+* Deebot Ozmo苗条10
 
 ##安装
 该适配器使用画布库，这可能需要附加安装，否则在iobroker中进行安装可能会导致错误：
@@ -55,8 +56,8 @@ sudo npm install canvas --unsafe-perm=true
 *有关如何使用此适配器的信息可在[此处]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）中找到
 
 ＃＃ 已知的问题
-*对于Deebot Ozmo 930，由于[一些报告]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24），连接大约在之后断开。 24小时
-*有一些报告（[1]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/23），[2]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot / issues / 34））关于Deebot 900/901上电池电量的异常行为
+*对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content），因为[一些报告]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24），连接大约在之后断开。 24小时
+* Deebot 900/901上电池值的异常行为。这很可能是固件错误。
 
 ＃＃ 常问问题
 *常见问题可以在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ）
@@ -68,6 +69,9 @@ sudo npm install canvas --unsafe-perm=true
 * @Ligio（[ozmo]（https://github.com/Ligio/ozmo））
 
 ## Changelog
+
+### 0.5.9
+   * Several enhancements and fixes
 
 ### 0.5.8
    * Several enhancements and fixes

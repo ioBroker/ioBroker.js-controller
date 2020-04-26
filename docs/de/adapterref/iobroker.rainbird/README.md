@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.rainbird/README.md
 title: ioBroker.rainbird
-hash: I5DvFG4EAJokL/cHf2SvLiANcKh5W1Gh3IVaAxUUnqg=
+hash: WL+q1yaT3lsf38E8OWSWmtuH/yJwW0OC/NAFrnIF5Ec=
 ---
 ![Logo](../../../en/adapterref/iobroker.rainbird/admin/rainbird.png)
 
@@ -34,13 +34,27 @@ Basierend auf der Python-Bibliothek "pyrainbird" von https://github.com/jbarranc
 
 `rainbird.X.device.stations.Y.available` - True, wenn Zone Y im Gerät verfügbar ist.
 `rainbird.X.device.stations.Y.irrigation` - True, wenn Zone Y derzeit bewässert wird.
-`rainbird.X.device.stations.Y.runZone` - Bewässerung der Zone Y für die angegebene Anzahl von Minuten manuell durchführen.
+`rainbird.X.device.stations.Y.remaining` - Verbleibende Bewässerungszeit in Sekunden `rainbird.X.device.stations.Y.runZone` - Bewässerung in Zone Y für die angegebene Anzahl von Minuten manuell durchführen.
 `rainbird.X.device.stations.Y.testZone` - Testzone Y.
 
 ## Spenden
 [![paypal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SFLJ8HCW9T698&source=url)
 
 ## Changelog
+
+### 0.2.2
+
+-   Added fixes for adapter crashes on failed connection to controller
+
+### 0.2.1
+
+-   Added support for run times on different controller model
+-   Less polling for some states to reduce requests to controller
+
+### 0.2.0
+
+-   Added remaining irrigation time of zone
+-   Fixed bug in decoding responses
 
 ### 0.1.2
 

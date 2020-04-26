@@ -21,7 +21,7 @@ To start a conversation with your bot you need to authenticate user with "/passw
 
 **Note:** you can use short form "/p phrase".
 
-To add nice avatar picture enter `/setuserpic` and upload him desired picture (512x512 pixels), like this one [logo](img/logo.png).
+To add nice avatar picture enter `/setuserpic` in **BotFather** chat and upload him desired picture (512x512 pixels), like this one [logo](img/logo.png).
 
 You can send message to all authenticated users over messageBox `sendTo('telegram', 'Test message')`
 or to specific user `sendTo('telegram', '@userName Test message')`.
@@ -35,10 +35,10 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 });
 ```
 
-If you use the example above be aware of that you have to replace 'UserName' with either the firstname or the Public-Telegram-Username of the User you want to send the message to. (Depends on if the 'Store username not firstname' setting in the Adaptersettings is enabled or not)
+If you use the example above be aware of that you have to replace 'UserName' with either the first name or the Public-Telegram-Username of the User you want to send the message to. (Depends on if the 'Store username not firstname' setting in the Adaptersettings is enabled or not)
 If the option is set and the user did not specify a public username in his telegram account, then the adapter will continue to use the firstname of the user. Keep in mind that if the user sets a public username later (after authenticating to your bot) the saved firstname will be replaced by the username the next time the user sends a message to the bot.
 
-It is possible to specify more than one recipient (just separate the Usernames by comma).
+It is possible to specify more than one recipient (just separate the User names by comma).
 For example: Recipient: "User1,User4,User5"
 
 You can send message over state too, just set state *"telegram.INSTANCE.communicate.response"* with value *"@userName Test message"*.
@@ -48,7 +48,7 @@ You can use telegram with [text2command](https://github.com/ioBroker/ioBroker.te
 
 To send photo, just send a path to file instead of text or URL: `sendTo('telegram', 'absolute/path/file.png')` or `sendTo('telegram', 'https://telegram.org/img/t_logo.png')`.
 
-Example how to send screenshot from webcam to telegram:
+Example how to send screenshot from web-cam to telegram:
 
 ```
 var request = require('request');
@@ -507,7 +507,102 @@ Possible values for language:
 TODO:
 - venue
 
+## Auto-Inline keyboard based on settings in admin (Easy-Keyboard)
+For every state the additional settings could be enabled:
+
+![settings](img/stateSettings.png)
+
+By entering "/cmds" the following keyboard will be displayed in telegram:
+
+![settings](img/stateSettings1.png)
+
+"/cmds" could be replaced by any text (e.g. "?") in the configuration dialog of telegram adapter.
+
+If **Use rooms in keyboard command** option is enabled in the configuration dialog of telegram adapter, so in the first step the room list will be shown. ***Not yet implemented***
+
+### Settings in the state
+First of all the configuration must be enabled.
+
+#### Alias  
+Name of the device. If empty the name will be taken from object. 
+By entering "Door lamp" following menu will be shown for boolean state.
+![settings](img/stateSettings2.png)
+
+You can switch the device ON, turn the device OFF or request the state. 
+If you Click `Door lamp ?`, you will get `Door lamp  => switched off`.
+ 
+### Read only
+If activated, no ON/OFF buttons will be shown, just a `Door lamp ?`.
+
+### Report changes
+If the status of device changed (e.g. some one turned the lamp on physically), the new status will be delivered to telegram.
+E.g. `Door lamp  => switched on`.
+
+### Buttons in line
+How many button must be shown in the line for one device. 
+Because of the long name may be it is better to show only 2 (or even just one) buttons in the line.
+  
+![settings](img/stateSettings3.png)
+
+### Write only
+If activated, no the status query (`Door lamp ?`) button will be shown.
+ ![settings](img/stateSettings4.png)
+ 
+### ON Command
+Which text will be shown on ON button.
+Like here: 
+![settings](img/stateSettings5.png)
+
+Will produce following keyboard:
+![settings](img/stateSettings6.png)
+
+### ON Text
+Which text will be shown by state report. 
+E.g. `Door lamp => activated` if the state of the device changed to true and the **ON Text** is `activated` 
+
+The ON/OFF Texts will be shown only if **Report changes** is activated.
+
+### OFF Command
+Same as **ON Command**, but for OFF.
+
+### OFF Text
+Same as **ON Text**, but for OFF.
+E.g. `Door lamp => deactivated` if the state of the device changed to false and the **OFF Text** is `deactivated` 
+
+### Only true
+E.g. for buttons, they have no OFF state. In this case no OFF button will be shown.
+
+![settings](img/stateSettings7.png)
+
+## How to receive messages in group chats using telegram adapter
+If telegram bot receives messages sent by user to the bot in private chats, but not receives messages sent by users in group chats. 
+In this case you must to talk to @botfather and disable the privacy mode.
+
+BotFather chat:
+
+```
+You: /setprivacy
+
+BotFather: Choose a bot to change group messages settings.
+
+You: @your_name_bot
+
+BotFather: 'Enable' - your bot will only receive messages that either start with the '/' symbol or mention the bot by username.
+
+'Disable' - your bot will receive all messages that people send to groups.
+
+Current status is: ENABLED
+
+You: Disable
+
+BotFather: Success! The new status is: DISABLED. /help
+```
+ 
 ## Changelog
+### 1.5.6 (2020-04-04)
+* (bluefox) Fixed missing languages for blockly
+* (bluefox) Added description of easy-keyboard
+
 ### 1.5.5 (2020-04-04)
 * (alutov) Fixed bug for telegram users with an empty user name
 * (Mark Rohrbacher) Allowed JSON objects in telegram.*.communicate.response 

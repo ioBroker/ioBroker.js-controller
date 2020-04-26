@@ -4,13 +4,13 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
+hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ---
 ![logo](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
 # HomeMatic ReGaHSS
 ## Homematic
-> Homematic is the smart home system from eQ-3, which enables comprehensive control of a wide variety of functions using scenarios (from simple to complex) in the home or apartment.
+> Homematic is the smart home system from eQ-3, which enables comprehensive control of a wide range of functions using scenarios (from simple to complex) in the home or apartment.
 
 > The devices include products for light, roller shutter and heating control, hazard detectors, safety sensors and products for weather data measurement. The radio communication simplifies retrofitting. Wire bus components can be used in new buildings.
 
@@ -22,9 +22,9 @@ It synchronizes real names, system variables, rooms, trades and programs between
 
 If several control centers are to be integrated in ioBroker, a separate instance must be installed and configured for each control center.
 
-With the installation of ReGaHSS an instance of the adapter "hm-rpc" is installed, which should be configured and activated in advance.
+With the installation of ReGaHSS an instance of the adapter "hm-rpc" is also installed, which should be configured and activated in advance.
 
-An instance of this adapter can manage up to 5 different instances of the Homematic RPC adapter, which provide different services (each service requires its own RPC instance):
+An instance of this adapter can manage up to 5 different instances of the Homematic RPC adapter, which provide different services (each service needs its own RPC instance):
 
 - rfd (CCU radio service for standard components)
 - hs485d (Wired) (for wire bus components)
@@ -41,7 +41,7 @@ An instance of the adapter is installed via the ioBroker admin interface.
 
 After the installation is complete, the configuration window opens automatically.
 
-Before the actual configuration, the instance of the HM-RPC adapter (created together with this adapter) or, if necessary, further HM-RPC instances should be created and configured.
+Before the actual configuration, the instance of the HM-RPC adapter (created with this adapter) or, if necessary, further HM-RPC instances should be created and configured.
 
 ## Configuration
 ![](../../../de/adapterref/iobroker.hm-rega/media/01c7dbc4da0240421b0711b331971d2d.png) **selection menu above**
@@ -108,6 +108,15 @@ Finally, the variables created in the CCU are listed
 ### FAQ
 
 ## Changelog
+### 2.6.5 (2020-04-22)
+* (foxriver76) improved error handling, no longer use legacy log file
+
+### 2.6.4 (2020-04-13)
+* (foxriver76) now storing scripts in iob file storage
+
+### 2.6.2 (2020-04-11)
+* (foxriver76) minor fix on ccu object
+
 ### 2.6.1 (2020-04-04)
 * (foxriver76) fix synchronization
 

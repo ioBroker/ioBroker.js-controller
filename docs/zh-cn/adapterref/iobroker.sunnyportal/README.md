@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sunnyportal/README.md
 title: ioBroker.sunnyportal
-hash: aQpHilv11JQ0wbXCkGwodp0LO6jO9IDS+UiiRkN+hoU=
+hash: TMqCdVLk68bgg1DcittqVGvvI5+Y6fTY8WZiIprn2p8=
 ---
 ![商标](../../../en/adapterref/iobroker.sunnyportal/admin/sunnyportal.png)
 
+![建立状态](https://travis-ci.org/marvincaspar/ioBroker.sunnyportal.svg?branch=master)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sunnyportal.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sunnyportal.svg)
 ![安装数量（最新）](http://iobroker.live/badges/sunnyportal-installed.svg)
@@ -16,6 +17,8 @@ hash: aQpHilv11JQ0wbXCkGwodp0LO6jO9IDS+UiiRkN+hoU=
 ![NPM](https://nodei.co/npm/iobroker.sunnyportal.png?downloads=true)
 
 ＃ioBroker.sunnyportal
+![测试与发布](https://github.com/marvincaspar/ioBroker.sunnyportal/workflows/Test%20and%20Release/badge.svg)
+
 ## IoBroker的Sunny Portal适配器
 每分钟从Sunny Portal提取当前数据。
 
@@ -25,7 +28,17 @@ hash: aQpHilv11JQ0wbXCkGwodp0LO6jO9IDS+UiiRkN+hoU=
 ###对象概述
 ![对象概述](../../../en/adapterref/iobroker.sunnyportal/./docs/images/object-overview.png)
 
+##积分
+我基于mkorthuis的[Sunnyportal-api](https://github.com/mkorthuis/sunnyportal-api/)
+
 ## Changelog
+
+### 0.1.5
+* (Marvin Caspar) Reduce update interval to 60 seconds
+
+### 0.1.4
+* (Marvin Caspar) Rewrite code to fix login issue
+* (Marvin Caspar) Add units to ioBroker states
 
 ### 0.1.3
 * (Marvin Caspar) Fix version

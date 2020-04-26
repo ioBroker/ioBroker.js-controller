@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: OsPJlZjV0DtErfgb8ksy/0sX2PeZxLg6pi8psc/KlDg=
+hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
 ---
 ![логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -32,7 +32,7 @@ hash: OsPJlZjV0DtErfgb8ksy/0sX2PeZxLg6pi8psc/KlDg=
 
 1. Установите через Admin, используя
  * стабильный репо - чтобы получить текущую стабильную версию
- * последний репо - чтобы получить последнюю тестовую версию (может быть нестабильной)
+ * последний репо - получить последнюю тестовую версию (может быть нестабильной)
  * через: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git - чтобы получить последнюю версию для разработки
 2. создать приложение-аккаунт для Miele @ Home в приложении Miele для смартфонов
 3. Создайте учетную запись разработчика по адресу https://www.miele.com/f/com/en/register_api.aspx.
@@ -54,7 +54,7 @@ hash: OsPJlZjV0DtErfgb8ksy/0sX2PeZxLg6pi8psc/KlDg=
 Те поля, которые имеют общее значение, перечислены ниже.
 Поля, которые не перечислены, различаются по своему значению от устройства к устройству и не декументированы Miele.
 Если вам нужно ссылаться в скриптах на эти поля, всегда используйте значения _raw.
-Значения текста могут измениться в будущем, а также зависят от языка.
+Значения текста могут измениться в будущем, а также зависеть от языка.
 Вот список того, что означают эти необработанные значения:
 
 ### DeviceTypes
@@ -134,10 +134,26 @@ hash: OsPJlZjV0DtErfgb8ksy/0sX2PeZxLg6pi8psc/KlDg=
  | 5 | Ручной утюг уровень 2 |
  | 6 | Машинное железо |
 
-## Авторское право
+### ProgramPhase для стиральных машин
+| Необработанная стоимость | государство |
+|----------|-------|
+| 260 | "Waschen" / "Мойка" |
+| 261 | "Spülen" / "Полоскание" |
+| 266 | "Schleudern" / "Спиннинг" |
+| 267 | "Knitterschutz" / "" |
+| 268 | "Ende" / "Конец" |
+| 256 | "" |
+
+## Авторские права
 Copyright (c) 2019, 2020 гризельби <hanjo@hingsen.de>
 
 ## Changelog
+### 1.2.0 (2020-04-18)
+* (grizzelbee) New: Added new boolean state (**Connected**) that indicates whether the device is connected to WLAN or a gateway.
+* (grizzelbee) New: Added new boolean state (**signalInUse**) that indicates whether the device is switched off (false) or in Use (true).
+* (grizzelbee) Change: replaced the deprecated http-library **request** with **axios** 
+* (grizzelbee) Change: Made functions communicating with API asynchronus 
+  
 ### 1.1.0 (2020-03-07)
 * (grizzelbee) New: Added Actions - Implemented all currently supported and documented Actions for all devices
                Please remember that Actions will only work if you put your device into the appropiate state (e.g. Mobile Control)

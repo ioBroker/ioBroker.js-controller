@@ -19,6 +19,8 @@ Manage and create devices for using it in other adapters like material, iot,...
 
 ![Screen](img/screen.png)
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.**
+
 ## ToDo
 - add icons for all states of channels
 - add descriptions for states
@@ -27,6 +29,12 @@ Manage and create devices for using it in other adapters like material, iot,...
 - detect if js-controller 2.0 installed
 
 ## Changelog
+
+### 0.3.6 (2020-04-17)
+* (Apollon77) Added Sentry error reporting for Frontend/React
+
+### 0.3.5 (2020-04-17)
+* (Apollon77) Fixed typo
 
 ### 0.3.4 (2020-03-24)
 * (bluefox) Fixed error by device creation

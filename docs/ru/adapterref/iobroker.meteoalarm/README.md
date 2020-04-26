@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: d1rW8+dWfJIl6ria3Tyss9F+KnMsLdWlGNZWIb/m7GI=
+hash: 1qF1F3sF76A7SsE8czndOHy0mUHbge1glmr0Dulmlgg=
 ---
 ![логотип](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -14,8 +14,6 @@ hash: d1rW8+dWfJIl6ria3Tyss9F+KnMsLdWlGNZWIb/m7GI=
 ![NPM](https://nodei.co/npm/iobroker.meteoalarm.png?downloads=true)
 
 # IoBroker.meteoalarm
-=================
-
 meteoalarm Адаптер для ioBroker ---------------------------------------------- -------------------------------- Этот адаптер получает аварийные сигналы о погоде от meteoalarm.eu, который включает ветер, снег, дождь , высокая и низкая температура, и т. д. Эта информация доступна на местном языке и для подробных регионов.
 
 ## Как это использовать

@@ -4,6 +4,7 @@ BADGE-NPM version: http://img.shields.io/npm/v/iobroker.epson_stylus_px830.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.epson_stylus_px830.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.epson_stylus_px830.png?downloads=true
 BADGE-Codacy Badge: https://api.codacy.com/project/badge/Grade/827f4b69c4654bd9be86eef485f13b8e
+BADGE-Known Vulnerabilities: https://snyk.io/test/github/Pix---/ioBroker.epson_stylus_px830/badge.svg?targetFile=package.json
 BADGE-Travis-CI: http://img.shields.io/travis/Pix---/ioBroker.epson_stylus_px830/master.svg
 BADGE-AppVeyor: https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.epson_stylus_px830?branch=master&svg=true
 ---

@@ -2,13 +2,13 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/config/cli.md
-title: ioBroker的控制台命令
-hash: 4zamKLaOfbKpOwq0yrGsxHCQnDFBHNUOJf+8fdbXcdo=
+title: 控制台命令
+hash: o9cwg+qXCeRhTN48U+tVW4Y05Khl5G1/JN/mn4f76m0=
 ---
-＃ioBroker的控制台命令
+＃控制台命令
 可以通过控制台（Windows和Linux）执行一些操作，如启动，停止或更新。这是它们的描述。
 
-注意：可以从iobroker命令可用的任何目录中调用以```iobroker```开头的所有命令。必须从ioBroker根目录中调用```npm install```命令。
+注意：可以从ioBroker命令可用的任何目录中调用以```iobroker```开头的所有命令。必须从ioBroker根目录中调用```npm install```命令。
 
 可以使用以下命令：
 
@@ -17,10 +17,10 @@ hash: 4zamKLaOfbKpOwq0yrGsxHCQnDFBHNUOJf+8fdbXcdo=
 -[iobroker stop]（＃iobroker-stop）
 -[iobroker重新启动]（＃iobroker-restart）
 -[iobroker isrun]（＃iobroker-isrun）
--[iobroker启动适配器名称。实例]（＃iobroker-start-adaptername实例）
+-[iobroker启动adapterName.instance]（＃iobroker-start-adapternameinstance）
 -[iobroker停止adapterName.instance]（＃iobroker-stop-adapternameinstance）
 -[iobroker重新启动adapterName.instance]（＃iobroker-restart-adapternameinstance）
--[iobroker添加适配器名称\ [-已启用\] \ [-主机\ <主机\> \] \ [-端口\ <端口\> \]]（＃iobroker-add-adaptername）
+-[iobroker添加适配器名称\ [-启用\] \ [-主机\ <主机\> \] \ [-端口\ <端口\> \]]（＃iobroker-add-adaptername）
 -[iobroker安装适配器名称]（＃iobroker-install-adaptername）
 -[iobroker上传适配器名称]（＃iobroker-upload-adaptername）
 -[iobroker设置]（＃iobroker-setup）
@@ -61,22 +61,26 @@ hash: 4zamKLaOfbKpOwq0yrGsxHCQnDFBHNUOJf+8fdbXcdo=
 -[iobroker状态]（＃iobroker-status）
 -[iobroker repo \ [repoName \]]（＃iobroker-repo）
 -[iobroker信息]（＃iobroker-info）
+-[iobroker紧凑状态]（＃iobroker-compact-status）
+-[iobroker compact \ [enable | disable | on | off \]]（＃iobroker-compact-enabledisableonoff）
+-[iobroker紧凑型adapterName.instance]（＃iobroker-compact-adapternameinstance）
+-[iobroker证书创建]（＃iobroker-cert-create）
 -[iobroker日志\ [-watch \]]（＃iobroker-logs）
 
 **注意：**有一个参数```--timeout 5000```§，可以与每个命令一起使用。它指定连接数据库的超时时间（以毫秒为单位）。
 
 ## Npm install iobroker.adapterName
-必须从ioBroker的根目录（通常是```/opt/iobroker```或```C:\Program Files\ioBroker```§）中调用此命令。它使用npm管理器来安装或更新给定的适配器或js-controller。即使“ admin”或“ js-controller”有问题，它也始终有效。
+必须从ioBroker的根目录（通常为```/opt/iobroker```或```C:\Program Files\ioBroker```§）中调用此命令。它使用npm管理器来安装或更新给定的适配器或js-controller。即使“ admin”或“ js-controller”有问题，它也始终有效。
 
 用法示例：
 
 -```npm install iobroker.admin```-更新或安装“管理员”适配器
 -```npm install iobroker.js-controller```-更新或安装js-controller本身
--```npm install https：// github.com / husky-koglhof / ioBroker.hmm / tarball / master /```-直接从github或其他地方安装适配器。它必须是ZIP或GZ软件包，并且必须包含package.json。
+-```npm install https://github.com/husky-koglhof/ioBroker.hmm/tarball/master/''-直接从github或其他地方安装适配器。它必须是ZIP或GZ软件包，并且必须包含package.json。
 
 如果已安装适配器，则在调用```npm install ..```之后，应重新启动指定的适配器或整个js-controller，这样更改才能生效。
 
-这可以通过```iobroker restart adapterName```或仅通过```iobroker restart```完成。有关详细信息，请参见[这里](#restart)。
+可以使用```iobroker restart adapterName```或仅使用```iobroker restart```§完成。有关详细信息，请参见[这里](#restart)。
 
 ***注意：***只能安装名称为ioBroker.zzz **的软件包。
 
@@ -118,7 +122,7 @@ hash: 4zamKLaOfbKpOwq0yrGsxHCQnDFBHNUOJf+8fdbXcdo=
 ## Iobroker停止adapterName.instance
 您可以从控制台停止指定的适配器。它将禁用并停止。以后不会自动重新启动。
 
-您可以在“管理员”中控制适配器实例已被禁用。
+您可以在“管理员”中控制适配器实例现已禁用。
 
 用法：
 
@@ -134,7 +138,7 @@ hash: 4zamKLaOfbKpOwq0yrGsxHCQnDFBHNUOJf+8fdbXcdo=
 
 还有一些其他参数：
 
--启用：适配器实例将在创建后自动启用，否则将使用适配器预定义值。
+-启用：适配器实例将在创建后自动启用，否则将使用适配器的预定义值。
 -host：必须在其中创建适配器实例的主机名。您可以使用“ iobroker list hosts”命令获取主机列表。（尚未实现）
 -端口：如果适配器具有native.port设置，则安装后将设置为所需的值。
 -requiredInstanceNumber：您可以指定所需的实例号。
@@ -144,7 +148,7 @@ hash: 4zamKLaOfbKpOwq0yrGsxHCQnDFBHNUOJf+8fdbXcdo=
 -```iobroker add dwd```--安装并创建dwd适配器实例。
 -```iobroker add admin --enabled --port 80```-在端口80上创建第二个（通常）管理适配器实例并启用它。
 
-如果此命令不起作用，则始终可以使用```npm install iobroker.adapterName```命令强制进行更新或安装。将不会创建任何实例，您应该在那之后再调用```iobroker add iobroker.adapterName```命令。
+如果此命令不起作用，则始终可以使用```npm install iobroker.adapterName```命令强制执行更新或安装。将不会创建任何实例，您应该在此之后再调用```iobroker add iobroker.adapterName```命令。
 
 ## Iobroker安装adapterName
 仅将适配器安装在ioBroker中，不创建任何实例。如果尚未安装适配器，则会收到以下警告：
@@ -206,7 +210,7 @@ Full syntax: ```iobroker update \[repository url\]```
 用法：
 
 -```iobroker update```--列出已配置（通常是本地）存储库中的可用版本。
--``iobroker更新https：// raw.githubusercontent.com / ioBroker / ioBroker.js-controller / master / conf / sources-dist.json`''-列出在线存储库中的可用版本。
+-``iobroker更新https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/conf/sources-dist.json''-列出在线存储库中的可用版本。
 
 ```
 >./iobroker.js update
@@ -259,12 +263,12 @@ Adapter    "admin"         : 0.3.21   , installed 0.3.20 [Updateable]
 ## Iobroker升级
 完整语法：```iobroker upgrade \[repository url\]```
 
-如果所有适配器（不是js-controller）在指定存储库中具有较新的版本，则将它们升级。如果未指定存储库链接，则将使用配置的存储库。
+如果所有适配器（不是js-controller）在指定存储库中具有较新版本，则将它们升级。如果未指定存储库链接，则将使用配置的存储库。
 
 用法：
 
 -```iobroker upgrade```--升级所有适配器。
--``iobroker升级https：// raw.githubusercontent.com / ioBroker / ioBroker.js-controller / master / conf / sources-dist.json`''-从在线存储库升级所有适配器
+-``iobroker升级https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/conf/sources-dist.json''-从在线存储库升级所有适配器
 
 ## Iobroker升级自我
 完整语法：```iobroker upgrade self \[repository url\]```
@@ -274,7 +278,7 @@ Adapter    "admin"         : 0.3.21   , installed 0.3.20 [Updateable]
 **注意：**如果指定或配置的存储库具有较低的版本，它将降级为该版本。
 
 -```iobroker upgrade self```-将js-controller升级到已配置存储库中的版本。
--``iobroker升级自我https：// raw.githubusercontent.com / ioBroker / ioBroker.js-controller / master / conf / sources-dist.json`-从在线存储库升级js-controller到版本。
+-``iobroker升级自我https：// raw.githubusercontent.com / ioBroker / ioBroker.js-controller / master / conf / sources-dist.json``-从在线存储库升级js-controller到版本。
 
 ## Iobroker升级适配器名称
 完整语法：```iobroker upgrade adapterName \[repository url\]```
@@ -283,8 +287,8 @@ Adapter    "admin"         : 0.3.21   , installed 0.3.20 [Updateable]
 
 **注意：**如果指定或配置的存储库具有较低的版本，它将降级为该版本。
 
--```iobroker升级电子邮件```--将ioBroker.email适配器升级到配置的存储库中的版本。
--```iobroker升级电子邮件https：// raw.githubusercontent.com / ioBroker / ioBroker.js-controller / master / conf / sources-dist.json```-将ioBroker.email适配器从在线存储库升级到版本。
+-```iobroker升级电子邮件`''-将ioBroker.email适配器升级到配置的存储库中的版本。
+-``iobroker升级电子邮件https://raw.githubusercontent.com/ioBroker/ioBroker.js-controller/master/conf/sources-dist.json''-从在线存储库升级ioBroker.email适配器到版本。
 
 ## Iobroker对象获取
 完整语法：```iobroker get objectId```
@@ -446,7 +450,7 @@ Please specify one of the backup names:
 -iobroker 2015_07_17-21_54_01_backupioBroker.tar.gz
 -iobroker /opt/iobroker/backups/2015_07_17-21_54_01_backupioBroker.tar.gz
 
-除“ admin”外，所有适配器都将恢复为禁用状态。要一次启用所有适配器，可以调用“ iobroker全部启动”。如果未上载某些适配器，则可以调用“ iobroker全部上载”以一次上载所有适配器的文件。
+除“ admin”外，所有适配器都将恢复为禁用状态。要一次启用所有适配器，您可以调用“ iobroker全部启动”。如果未上载某些适配器，则可以调用“ iobroker全部上载”以一次上载所有适配器的文件。
 
 ## Iobroker主机
 更改对象中的主机名。
@@ -463,7 +467,7 @@ Please specify one of the backup names:
 您可以将主机名更改为某些特定的名称（而不是计算机名）。为此，您必须编写：```iobroker host set newHostName```从实际的计算机名称或先前指定的主机名重命名。
 
 ## Iobroker主机删除
-要删除主机，只需编写```iobroker host remove hostNameToRemove```。请小心。
+要删除主机，只需写```iobroker host remove hostNameToRemove```。请小心。
 
 ## Iobroker列表
 使用此命令可以在ioBroker中显示不同类型的对象和状态。例子：
@@ -471,7 +475,7 @@ Please specify one of the backup names:
 -```iobroker列出对象hm-rega.0```--显示实例hm-rega.0的所有对象
 -```iobroker列表状态hm-rega.0```-显示实例hm-rega.0的所有状态
 -```iobroker列表文件vis.0```-显示实例vis.0的所有文件
--``iobroker列表实例''-显示所有实例
+-```iobroker列表实例`''-显示所有实例
 -```iobroker列表适配器```-显示所有适配器
 -```iobroker list users```--显示所有用户
 -```iobroker列表群组```-显示所有群组
@@ -499,7 +503,7 @@ Please specify one of the backup names:
 -ip-列出可以绑定到某些IP的所有实例
 -ssl-列出所有可以启用SSL的实例
 
-使用：```iobroker list instances --enabled```列出所有已启用的实例
+使用：```iobroker list instances --enabled```列出所有启用的实例
 
 或```iobroker l i --port```列出使用的端口。
 
@@ -637,7 +641,108 @@ Disk free      : 813.3 GiB
 NPM            : v5.8.0
 ```
 
-## Iobroker日志
-显示ioBroker日志的最后几行。此命令显示日志的最后1000行并监视日志。
+## Iobroker紧凑状态
+**自js-controller 2.0.0起可用**
 
-```iobroker logs --lines 1000 --watch ```
+显示当前主机的压缩模式的状态。
+
+```
+Compact mode for this host is currently enabled
+```
+
+## Iobroker compact [启用|禁用|打开|关闭]
+**自js-controller 2.0.0起可用**
+
+允许您为当前主机启用或禁用紧凑模式。首先输出当前状态，然后进行更改。
+
+```
+Compact mode for this host is currently disabled
+
+Compact mode for this host changed to enabled
+```
+
+Folgende Befehle sindmöglich：
+
+-`enable / on`-为ioBroker激活Compact-Modus
+-`disable / off`-停用ioBroker的Compact-Modus
+
+## Iobroker紧凑型adapterName.instance
+**自js-controller 2.0.0起可用**
+
+此命令允许检查和更改适配器实例的紧凑模式配置。
+所有设置（请参阅状态）始终显示，包括所做的更改。
+
+ioBroker运行时也可以进行所有更改。适配器实例可能会重新启动。
+
+可以使用以下组合：
+
+###紧凑adapterName.instance状态
+显示实例的当前状态和当前设置。
+
+```
+Compact mode supported: true
+Compact mode enabled:   true
+Compact group:          0
+```
+
+字段的含义：
+
+*支持紧凑模式：适配器通常支持紧凑模式
+*启用紧凑模式：此实例以紧凑模式启动
+*紧凑组：实例在指定的紧凑组中启动。 0表示“在此主机的主要js控制器进程中”（更高的风险，需要的RAM更少）。 > 0表示一个单独的主机进程（风险较小，但需要更多的RAM）
+
+### Compact adapterName.instance group＆lt; group-id＆gt;
+设置实例的压缩模式组
+
+```
+Compact mode supported: true
+Compact mode enabled:   true
+Compact group:          0 --> 1
+Instance settings for "simple-api.0" are changed.
+```
+
+###紧凑adapterName.instance＆lt; disable | off＆gt;
+禁用实例的压缩模式。
+
+```
+Compact mode supported: true
+Compact mode enabled:   true --> false
+Compact group:          1
+Instance settings for "simple-api.0" are changed.
+```
+
+###紧凑adapterName.instance组＆lt; enable | on＆gt; [group-id]
+激活实例的压缩模式，并（可选）在同一调用中设置组：
+
+```
+Compact mode supported: true
+Compact mode enabled:   false --> true
+Compact group:          0 --> 1
+Instance settings for "simple-api.0" are changed.
+```
+
+## Iobroker证书创建
+为ioBroker安装生成一个新的SSL证书，将其作为标准证书输入到系统中，然后颁发该证书。
+
+```
+-----BEGIN RSA PRIVATE KEY-----
+...
+-----END RSA PRIVATE KEY-----
+
+-----BEGIN CERTIFICATE-----
+...
+-----END CERTIFICATE-----
+
+The object "system.certificates" was updated successfully.
+```
+
+## Iobroker日志
+显示最后几行，并监视ioBroker日志。
+
+此命令显示日志的最后1000行并监视日志：
+
+```iobroker logs --lines 1000```
+
+要监视日志，请添加`--watch`，例如：
+
+```iobroker logs --lines 100 --watch```

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.devices/README.md
 title: ioBroker.devices
-hash: 2Vvzaww226NY2dyAxdkVjqJxtnxfiWp/5MGtsTAJPtQ=
+hash: Y04evJLVzOEM5HChNnb2Dvb8OVXBXmMD5qJ/0gxhE88=
 ---
 ![商标](../../../en/adapterref/iobroker.devices/admin/devices.png)
 
@@ -17,20 +17,37 @@ hash: 2Vvzaww226NY2dyAxdkVjqJxtnxfiWp/5MGtsTAJPtQ=
 
 ＃ioBroker.devices
 ## IoBroker的设备适配器
-管理和创建在其他适配器（例如材料，物联网，...等）中使用该设备的设备
+管理和创建用于在其他适配器（例如材料，物联网，...等）中使用它的设备
 
 **重要提示：在管理员中启用标签，例如日志和脚本**
 
 ![屏幕](../../../en/adapterref/iobroker.devices/img/screen.png)
 
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**
+
 ＃＃ 去做
 -为频道的所有状态添加图标
 -添加状态说明
--显示google / alisa / alexa的错误
+-显示有关Google / alisa / alexa的错误
 -将现有设备克隆到linkeddevices / alias / javascript
 -检测是否安装了js-controller 2.0
 
 ## Changelog
+
+### 0.3.6 (2020-04-17)
+* (Apollon77) Added Sentry error reporting for Frontend/React
+
+### 0.3.5 (2020-04-17)
+* (Apollon77) Fixed typo
+
+### 0.3.4 (2020-03-24)
+* (bluefox) Fixed error by device creation
+
+### 0.3.2 (2020-02-09)
+* (Apollon77) usage with all kinds of admin ports and reverse proxies optimized
+
+### 0.3.1 (2020-02-09)
+* (Apollon77) compatibility with Admin >4.0.0 added
 
 ### 0.2.0 (2019-12-20)
 * (bluefox) Backend was removed

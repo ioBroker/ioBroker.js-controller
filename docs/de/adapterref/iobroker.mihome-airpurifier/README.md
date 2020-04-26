@@ -3,24 +3,24 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-airpurifier/README.md
 title: ioBroker.mihome-Luftreiniger
-hash: 4cO83i4dXikaBbW73ZksOsXn9rVQP2OKRCk+RMXHOS0=
+hash: GZpDfYg6GTTqGpD7ZIU8MYgRKvu6uwkllS7U5QdFRpk=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/mihome-airpurifier-stable.svg)
-![Build Status](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)
+![Build-Status](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)
 
 ---
 ---
 ![Logo](../../../en/adapterref/iobroker.mihome-airpurifier/admin/mihome-airpurifier.png)
 
-# IoBroker.mihome-airpurifier Xiaomi Air Purifier-Adapter für die ioBroker IoT-Plattform.
+# IoBroker.mihome-Luftreiniger
 ## Wie bekomme ich den Token?
-Sie müssen das miio-Kommandozeilen-Tool `npm install -g miio` installieren.
+Sie müssen das miio-Befehlszeilentool `npm install -g miio` installieren
 
 Jetzt haben Sie zwei Möglichkeiten:
 
-1. Mit der Mi Home App:
+1. Mit Mi Home App:
 
-    Sie verbinden den Luftreiniger mit der MI Home App mit Ihrem Wifi-Netzwerk und führen dann den folgenden Befehl aus:
+    Sie verbinden den Luftreiniger mit der MI Home App mit Ihrem WLAN-Netzwerk und führen dann den folgenden Befehl aus:
 
     `miio discover`
 
@@ -36,11 +36,11 @@ Support: At least basic
 
 2. Ohne Mi Home App:
 
-    Sie setzen die WLAN-Einstellungen des Luftreinigers zurück. Dann verbinden Sie Ihr Netzwerk mit dem WIFI des Luftreinigers und führen den folgenden Befehl aus:
+    Sie setzen die WIFI-Einstellungen des Luftreinigers zurück. Anschließend verbinden Sie Ihr Netzwerk mit dem WIFI des Luftreinigers und führen den folgenden Befehl aus:
 
     `miio discover`
 
-    Sie sollten die gleiche Ausgabe wie oben erhalten und können nun die Verbindung zu Ihrem Netzwerk mit dem folgenden Befehl konfigurieren:
+    Sie sollten dieselbe Ausgabe wie oben erhalten und können jetzt die Verbindung zu Ihrem Netzwerk mit dem folgenden Befehl konfigurieren:
 
     `miio configure id-or-address --ssid ssid-of-network --passwd password-of-network`
 
@@ -51,35 +51,38 @@ Um den Luftreiniger mit dem Cloud-Adapter zu steuern, fügen Sie Ihrem Cloud-Ada
 
 * Alexa, schalte den Luftreiniger ein *,
 
-* Alexa, stelle den Luftreiniger auf 50% *,
+* Alexa, stelle den Luftreiniger auf 50% ein *,
 
 *Alexa, schalte den Luftreiniger aus*
 
-Wenn Sie im Cloud-Adapter den Wert "On Value" auf "Last active value" setzen, wird das Gerät immer mit der neuesten aktiven Leistungsstufe gestartet.
+Wenn Sie im Cloud-Adapter "On Value" auf "Last active value" setzen, wird das Gerät immer mit der neuesten aktiven Leistungsstufe gestartet.
 
 ## Kontrollzustände
-Zur Steuerung Ihres Luftreinigers können die folgenden Objekte geschrieben werden:
+Zur Steuerung Ihres Luftreinigers können folgende Objekte geschrieben werden:
 
 | Staat | Beschreibung |
 | :---           | :---        |
 | `power` | Gerät ein- / ausschalten |
 | `silent` | Aktivieren Sie den Silent-Modus des Geräts. |
 | `manual` | Aktivieren Sie den manuellen Modus des Geräts. |
-| `manuallevel` | Steuern Sie die Leistung des manuellen Modus im Bereich von 0-100%. Dadurch wird das Gerät bei Bedarf auch ein- / ausgeschaltet |
-| `manuallevel` | Steuern Sie die Leistung des manuellen Modus im Bereich von 0-100%. Dadurch wird das Gerät bei Bedarf auch ein- / ausgeschaltet |
+| `manuallevel` | Steuern Sie die Leistung des manuellen Modus im Bereich von 0-100%. Dadurch wird das Gerät bei Bedarf auch ein- und ausgeschaltet |
+| `manuallevel` | Steuern Sie die Leistung des manuellen Modus im Bereich von 0-100%. Dadurch wird das Gerät bei Bedarf auch ein- und ausgeschaltet |
 
-## Info States
-Die folgenden Informationen werden von Ihrem Luftreiniger gesammelt (schreibgeschützt):
+## Info Staaten
+Die folgenden Informationen werden von Ihrem Luftreiniger erfasst (schreibgeschützt):
 
 ### Geräteinformationen
 | Staat | Beschreibung |
 | :---        | :---        |
-| `mode` | Der tatsächliche Gerätemodus, nur gültig, wenn das Gerät eingeschaltet ist. |
+| `mode` | Der tatsächliche Gerätemodus ist nur gültig, wenn das Gerät eingeschaltet ist. |
 | `humidity` | Die gemessene relative Luftfeuchtigkeit in% des Geräts. |
 | `pm25` | Die Luftverschmutzung in PM2.5. |
 | `pm25` | Die Luftverschmutzung in PM2.5. |
 
 ## Changelog
+### 0.1.1 (18.04.2020)
+* (JoJ123) move to typescript
+
 ### 0.0.6 (09.04.2019)
 * (JoJ123) update miio to fork of Sineos
 
@@ -121,4 +124,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Copyright (c) 2019 Johannes Jaeger johannesjaegeroffice@gmail.com
+Copyright (c) 2020 Johannes Jaeger <johannesjaegeroffice@gmail.com>

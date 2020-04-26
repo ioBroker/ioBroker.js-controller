@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mpd/README.md
-title: Adapter ioBroker.mpd
-hash: nICyiM828I14uglLlFHsHPTR/nhrqxON2tzU08H/1Yw=
+title: ioBroker.mpd Adapter
+hash: Wk5frA8U3enc0+dFatkdPlZN7hdvOmx2T8sfFxyRHTA=
 ---
 ![Logo](../../../en/adapterref/iobroker.mpd/admin/mpd.png)
 
@@ -12,14 +12,20 @@ hash: nICyiM828I14uglLlFHsHPTR/nhrqxON2tzU08H/1Yw=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.mpd.svg)
 ![Tests](http://img.shields.io/travis/instalator/ioBroker.mpd/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mpd.png?downloads=true)
+![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 # IoBroker.mpd Adapter
-Stellen Sie eine Verbindung zu einem [Musik-Player-Daemon](http://musicpd.org)-Server her, senden Sie Befehle, senden Sie Ereignisse.
+Stellen Sie eine Verbindung zu einem [Musik-Player-Daemon](http://musicpd.org) Server her, senden Sie Befehle, senden Sie Ereignisse aus.
 
 ## Dokumentation
-Siehe auch [MPD-Protokolldokumentation](http://www.musicpd.org/doc/protocol/).
+Siehe auch die [MPD-Protokolldokumentation](http://www.musicpd.org/doc/protocol/).
 
 ## Changelog
+
+#### 1.0.4
+* (instalator) Changed the appearance of the settings
+* (instalator) Added support compact mode
+* (instalator) Refactoring
 
 #### 1.0.2
 * (twonky) support admin3
@@ -95,3 +101,26 @@ Siehe auch [MPD-Protokolldokumentation](http://www.musicpd.org/doc/protocol/).
 
 #### 0.0.1
 * 11.12.2016 (instalator) initial adapter
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2020 instalator <vvvalt@mail.ru>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

@@ -3,27 +3,40 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.dwd/README.md
 title: ioBroker.dwd
-hash: iV0I50r+WvpQoN+q0KEZ2btBsIOluRVvdpqbG9cIhNI=
+hash: 39/h4ENoIuZXO+aJD88gFbM7fOmSVWBu9tkkJ7PtkvA=
 ---
 ![商标](../../../en/adapterref/iobroker.dwd/admin/dwd.png)
 
 ![安装数量](http://iobroker.live/badges/dwd-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.dwd.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.dwd.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.dwd.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.dwd.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.dwd.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.dwd.png?downloads=true)
 
-#ioBroker.dwd
-版权所有Deutscher Wetterdienst
+＃ioBroker.dwd
+Deutscher Wetterdienst版权所有
 
-DieserAdapterlädtdieWetterwarnungen vom deutschenWetterdienstüberJSONlink。
+Dieser Adapter可以连接到德国的WetterdienstüberJSON链接。
 
-此适配器通过JSON链接从德国气象服务加载天气警告。
+该适配器通过JSON链接从德国气象服务加载天气警告。
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ＃＃ 去做
 *处理FTP超时
 
 ## Changelog
+
+### 2.4.7 (2020-04-18)
+* (Apollon77) Add Sentry for error reporting with js-controller 3.0
+* (Apollon77) Fix crash because of undefined lat/long 
+
+### 2.4.6 (2020-02-24)
+* (bluefox) Time format added to widget
+
+### 2.4.5 (2020-02-23)
+* (ticaki) Datetime corrected
+
 ### 2.4.3 (2018-08-05)
 * (bluefox) Invalid certificate are accepted too
 
@@ -113,7 +126,7 @@ DieserAdapterlädtdieWetterwarnungen vom deutschenWetterdienstüberJSONlink。
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 bluefox <dogafox@gmail.com>, hobbyquaker
+Copyright (c) 2016-2020 bluefox <dogafox@gmail.com>, hobbyquaker
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

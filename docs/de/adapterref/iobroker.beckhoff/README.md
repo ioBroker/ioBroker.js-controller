@@ -1,6 +1,5 @@
 ---
-BADGE-Build Status: https://travis-ci.org/dkleber89/ioBroker.beckhoff.svg?branch=master
-BADGE-Build status: https://ci.appveyor.com/api/projects/status/tpqe657lqrir3kew/branch/master?svg=true
+BADGE-GitHub: https://img.shields.io/github/license/dkleber89/ioBroker.beckhoff
 BADGE-npm: https://img.shields.io/npm/v/iobroker.beckhoff.svg
 BADGE-Number of Installations: http://iobroker.live/badges/beckhoff-installed.svg
 ---
@@ -72,9 +71,13 @@ Die *.tpy Datei aus dem SPS Projekt muss hochgeladen werden. -> Immer wenn am St
 3. Bei "Synchronisierung" bzw. "Einlesen" ist nicht der Werteaustausch der Variablen gemeint sondern die Synchronisierung der Variablen selbst und das anlegen bzw. löschen derselben im ioBroker
 
 ## Changelog
+### 1.2.1 (2020-04-20)
+
+- (dkleber89) Add CI over Github Actions; Update Dependencies;
+
 ### 1.2.0 (2020-01-02)
 
-- (dkleber89) Add Support for Strings with fixed length to 80 Chars 
+- (dkleber89) Add Support for Strings with fixed length to 80 Chars
 
 ### 1.1.0 (2019-11-12)
 
@@ -116,14 +119,6 @@ Die *.tpy Datei aus dem SPS Projekt muss hochgeladen werden. -> Immer wenn am St
 ### 0.2.2 (2019-02-11)
 
 -   (dkleber89) DEBUG Version -> Still Problems with 'write after end'
-
-### 0.2.1 (2018-12-30)
-
--   (dkleber89) Add IE 11 and Mobile Support
-
-### 0.2.0 (2018-11-24)
-
--   (dkleber89) Code cleanup and second Beta Release
 
 ## License
 

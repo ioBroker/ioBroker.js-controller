@@ -127,6 +127,11 @@ Here you will find information about the history of the current day.
 
 ## Changelog 
 
+### 1.0.1 (2020-04-12)
+* (afuerhoff) error handling optimized
+* (afuerhoff) history configuration optimized
+* (afuerhoff) re-synchronisation of fb-devices implemented
+
 ### 1.0.0 (2020-03-30)
 * (afuerhoff) Configuration dialog optimized
 * (afuerhoff) fbdevice speed added

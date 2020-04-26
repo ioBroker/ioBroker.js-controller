@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: IoxXgKd7pdra/01v8N27ewN+TRl/KFc9cGGYsa3qLd0=
+hash: a9Z9DdqN4STkXTJENa2X1xlRf2gGuQgICEeqvVHCVpE=
 ---
 ![商标](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -16,6 +16,8 @@ hash: IoxXgKd7pdra/01v8N27ewN+TRl/KFc9cGGYsa3qLd0=
 ＃ioBroker.web
 基于Node.js的Web服务器，并表示可以从ioBroker DB中读取文件
 
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+
 ##调整Web套接字
 在某些网络套接字客户端上，通信存在性能问题。有时，此问题是由于长轮询机制上的socket.io通信回退所致。
 您可以设置选项* Force Web-Sockets *强制仅使用Web套接字传输。
@@ -27,8 +29,8 @@ hash: IoxXgKd7pdra/01v8N27ewN+TRl/KFc9cGGYsa3qLd0=
 Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类URL请求，则会调用该处理程序。
 这些扩展看起来像普通的适配器，但是它们没有正在运行的进程，将由Web服务器调用。
 
-例如。用户可以激活特殊的代理适配器，并访问同一Web服务器中的其他设备（例如Web cam）。
-必须让所有服务在一台Web服务器下可用。
+例如。用户可以激活特殊的代理适配器并访问同一Web服务器中的其他设备（例如Web cam）。
+需要使所有服务在一台Web服务器下可用。
 
 ##暴力保护
 如果启用了身份验证，并且用户在一分钟内输入了5次无效密码，则他必须至少等待一分钟才能进行下一次尝试。
@@ -36,9 +38,31 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 
 ##“保持登录状态”选项
 如果选择此选项，则用户将保持登录状态一个月。
-否则，用户将保持登录状态以配置“登录超时”。
+否则，用户将保持已配置的“登录超时”的登录状态。
 
 ## Changelog
+### 3.0.5 (2020-04-23)
+* (bluefox) fixed the sentry warnings
+
+### 3.0.4 (2020-04-16)
+* (Apollon77) fix js-controller 3.0 warnings
+* (Apollon77) add Sentry error reporting with js-controller 3.0
+
+### 3.0.2 (2020-03-12)
+* (bluefox) Web extensions were fixed
+
+### 3.0.1 (2020-02-23)
+* (Apollon77) Workaround for socket.io bug #3555 added to make sure always the correct client files are delivered
+
+### 3.0.0 (2020-01-15)
+* (Apollon77) upgrade all dependencies, especially socketio to current version! This might break ipad 1/2 devices
+
+### 2.4.10 (2019-11-07)
+* (bluefox) Workaround for material was added
+
+### 2.4.9 (2019-11-04)
+* (Apollon77) permission errors fixed when whitelist had at least one entry
+
 ### 2.4.8 (2019-10-16)
 * (bluefox) Fixed login of non-admin user
 

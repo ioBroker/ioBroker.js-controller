@@ -2,7 +2,7 @@
 ![alt text](https://travis-ci.org/iobroker-community-adapters/ioBroker.discovergy.svg?branch=master)
 ![Number of Installations](http://iobroker.live/badges/discovergy-installed.svg) ![Number of Installations](http://iobroker.live/badges/discovergy-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.discovergy.svg)](https://www.npmjs.com/package/iobroker.discovergy)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.discovergy.svg)](https://www.npmjs.com/package/iobroker.discovergy)
-[![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.discovergy.svg)](https://greenkeeper.io/)
+
 
 # ioBroker.discovergy
 
@@ -32,6 +32,22 @@ If you like my work, please feel free to provide a personal donation
 [![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
+
+### 0.5.4 (19-04-2020) Bugfix : Wrong Unit
+* (Dutchman) Bugfix : Wrong Unit
+
+### 0.5.3 (19-04-2020) Bugfix : change root back to SerialNumber
+* (Dutchman) Bugfix : Change root of information back to SerialNumber instead of MeterId
+
+### 0.5.2 (18-04-2020) Code improvements
+* (Dutchman) Optimize and simplify code
+* (Dutchman) Set calculation factors in attribute definition
+* (Dutchman) Send information about missing state attribute definitions to sentry
+
+### 0.5.1 (17-04-2020) Avoid writing objects unnecessarily
+* (Dutchman) Implement Sentry
+* (Dutchman) Bugfix : Avoid writing objects unnecessarily
+* (Dutchman) Ensure propper handling of await instead of fire and forget
 
 ### 0.5.0 
 * (Dutchman) Rebuild complete logic of data pulling

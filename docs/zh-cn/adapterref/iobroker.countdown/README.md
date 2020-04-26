@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: fGTU+SIk/WT8113/GNv8Lzz/zMLM1jDhiNgxQPHmVCQ=
+hash: p4FkV853prgZOjvgYnZt9Y3LcUThtRiYzI5PqsyxU44=
 ---
 ![商标](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -14,7 +14,7 @@ hash: fGTU+SIk/WT8113/GNv8Lzz/zMLM1jDhiNgxQPHmVCQ=
 ![NPM](https://nodei.co/npm/iobroker.countdown.png?downloads=true)
 
 ＃ioBroker.countdown
-=================
+[![构建状态Travis]（https://travis-ci.com/jack-blackson/ioBroker.countdown.svg?branch=master）](https://travis-ci.com/jack-blackson/ioBroker.countdown)
 
 ioBroker倒计时适配器---------------------------------------------- --------------------------------
 

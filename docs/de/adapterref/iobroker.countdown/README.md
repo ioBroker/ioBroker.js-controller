@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: fGTU+SIk/WT8113/GNv8Lzz/zMLM1jDhiNgxQPHmVCQ=
+hash: p4FkV853prgZOjvgYnZt9Y3LcUThtRiYzI5PqsyxU44=
 ---
 ![Logo](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -14,7 +14,7 @@ hash: fGTU+SIk/WT8113/GNv8Lzz/zMLM1jDhiNgxQPHmVCQ=
 ![NPM](https://nodei.co/npm/iobroker.countdown.png?downloads=true)
 
 # IoBroker.countdown
-=================
+[![Build Status Travis] (https://travis-ci.com/jack-blackson/ioBroker.countdown.svg?branch=master)](https://travis-ci.com/jack-blackson/ioBroker.countdown)
 
 Countdown-Adapter für ioBroker ---------------------------------------------- --------------------------------
 

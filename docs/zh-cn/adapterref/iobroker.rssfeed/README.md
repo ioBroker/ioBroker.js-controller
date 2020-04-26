@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.rssfeed/README.md
-title: ioBroker适配器，用于请求和显示不同标准的RSS提要（Atom，RSS，RDF）
-hash: 2vvaeZwJi4wWwucNzR47xVXajElmyuwtz6er3PWxm9Q=
+title: ioBroker适配器，用于请求和显示不同标准（Atom，RSS，RDF）的RSS Feed
+hash: fdZGN3otuVCjYZjFFxzWNfhB/D59zu4ZgSI8B7Pene4=
 ---
 ![商标](../../../en/adapterref/iobroker.rssfeed/admin/rssfeed-logo.png)
 
@@ -61,7 +61,7 @@ iobroker upload rssfeed
 * RSS Feed meta Helper-帮助器小部件，用于检查提要的元数据
 * RSS Feed文章帮助程序-帮助程序窗口小部件，用于检查摘要的文章数据
 * RSS提要字幕-一个将提要的标题显示为选框的小部件
-* JSON模板-与RSS Feed无关的wdiget，但您可以定义一个自定义模板以显示vis中的任何JSON-Data。
+* JSON模板-与RSS Feed无关的wdiget，但是您可以定义一个自定义模板以显示vis中的任何JSON-Data。
 
 vis小部件的文档可在vis或[小部件文档/德语](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.rssfeed/blob/master/widgets/rssfeed/doc.html)中找到
 
@@ -120,12 +120,16 @@ Z5：文章内容的输出。它带有一个p标签。在这里，至少在两�
 Z7：无输出。这行代码关闭了javascript循环。 Z2和Z7之间定义的所有内容都会针对每篇文章重复进行。
 
 ＃＃ 去做
+*通过保存在管理对话框中清除datapoint info.lastRequest中未使用的条目。
+*按钮，用于清除管理对话框中未使用的数据点
 * ~~多个小部件RSS源~~
 * ~~多个小组件字幕~~
 * ~~ Weitere Datenpunkte im Templateverfügbarmachen。~~
 * ~~蒂法尔河畔劳夫教堂的小工具https://forum.iobroker.net/topic/31242/nachrichten-ticker-newsticker-via-php-in-vis-einbinden/2~~
 
 ## Changelog
+### 0.0.28
+* remove customtab
 ### 0.0.27
 * adapter configuration is now editable
 ### 0.0.26

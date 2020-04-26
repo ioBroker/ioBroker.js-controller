@@ -170,7 +170,7 @@ Here is a list of problems encountered so far and their solutions, if any.
     In order to solve the problem with missing rights, there is now a fix for the installer script of iobroker.
     Please run the following commands on your Iobroker environment in the console:
     ```
-    curl -sL https://iobroker.net/fix.sh | bash -
+    curl -fsL https://iobroker.net/fix.sh | bash -
     sudo reboot
     ```
 7. If you get an error when creating the Redis database, please check if your user iobroker has the rights and if he exists in the user group Redis.
@@ -183,9 +183,21 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 ## Changelog
 
-### 1.5.0 (xx.04.2020)
+### 1.5.2 (24.04.2020)
+* (simatec) errorhandling sentry.io
+* (AlCalzone) docu updated
+
+### 1.5.1 (23.04.2020)
+* (simatec) Bugfix list from nas
+* (simatec) Bugfix sentry errors
+
+### 1.5.0 (21.04.2020)
 * (simatec) revised error handling
-* (simatec) update dependencies
+* (simatec) revised mount process
+* (simatec) revised umount process
+* (simatec) added log for last backup file
+* (simatec) updated dependencies
+* (simatec) added sentry.io support
 
 ### 1.4.5 (23.03.2020)
 * (simatec) Bugfix CIFS Domain

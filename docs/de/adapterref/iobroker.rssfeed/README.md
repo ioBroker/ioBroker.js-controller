@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.rssfeed/README.md
 title: ioBroker Adapter zum Anfordern und Anzeigen von RSS-Feeds verschiedener Standards (Atom, RSS, RDF)
-hash: 2vvaeZwJi4wWwucNzR47xVXajElmyuwtz6er3PWxm9Q=
+hash: fdZGN3otuVCjYZjFFxzWNfhB/D59zu4ZgSI8B7Pene4=
 ---
 ![Logo](../../../en/adapterref/iobroker.rssfeed/admin/rssfeed-logo.png)
 
@@ -120,12 +120,16 @@ Z5: Ausgabe des Inhalts des Artikels. Es ist mit einem p-Tag versehen. Hier ist 
 Z7: Ohne Ausgabe. Diese Zeile schloss die Javascript-Schleife. Alles, was zwischen Z2 und Z7 definiert wurde, wird für jeden einzelnen Artikel wiederholt.
 
 ## Machen
+* Bereinigen Sie nicht verwendete Einträge in datapoint info.lastRequest, indem Sie sie im Admin-Dialogfeld speichern.
+* Schaltfläche zum Bereinigen nicht verwendeter Datenpunkte im Admin-Dialog
 * ~~ RSS-Feeds für mehrere Widgets ~~
 * ~~ Festzelt für mehrere Widgets ~~
 * ~~ Weitere Datenpunkte im Template verfügbar machen. ~~
 * ~~ Widget für Laufschrift mit den Titeln https://forum.iobroker.net/topic/31242/nachrichten-ticker-newsticker-via-php-in-vis-einbinden/2~~
 
 ## Changelog
+### 0.0.28
+* remove customtab
 ### 0.0.27
 * adapter configuration is now editable
 ### 0.0.26

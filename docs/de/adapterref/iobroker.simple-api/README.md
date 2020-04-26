@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.simple-api/README.md
 title: Simple-API
-hash: Pzu6XWof0Q+xvD4BXm7QsBDq9u2W21/4MARrzN1g9I0=
+hash: vDYbOjpcjVC5q909oU5KaSM3FZtD+CJgTHCxRwVVEH4=
 ---
 ![Logo](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
@@ -16,8 +16,10 @@ hash: Pzu6XWof0Q+xvD4BXm7QsBDq9u2W21/4MARrzN1g9I0=
 # Simple-API
 Dies ist die RESTFul-Schnittstelle zum Lesen der Objekte und Zustände von ioBroker und zum Schreiben / Steuern der Zustände über HTTP-Get / Post-Anforderungen.
 
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 ## Verwendungszweck
-Rufen Sie im Browser ```http://ipaddress:8087/help``` auf, um die Hilfe zur API zu erhalten. Das Ergebnis ist:
+Rufen Sie den Browser ```http://ipaddress:8087/help``` auf, um Hilfe zur API zu erhalten. Das Ergebnis ist:
 
 ```
 {
@@ -51,7 +53,7 @@ Ergebnis:
 true
 ```
 
-### Bekommen
+### Erhalten
 Rufen Sie z.
 
 ```
@@ -92,7 +94,7 @@ Ergebnis:
 ```
 
 ### GetBulk
-    Holen Sie sich viele Zustände mit einer Anfrage, die als Array von Objekten in der Reihenfolge der Liste in der Anfrage und ID / Wert / TS als Unterobjekt zurückgegeben werden
+    Erhalten Sie viele Zustände mit einer Anforderung, die als Array von Objekten in der Reihenfolge der Liste in der Anforderung und id / val / ts als Unterobjekt zurückgegeben werden
 
 ### Einstellen
 Rufen Sie z.
@@ -122,15 +124,15 @@ Ergebnis:
 }
 ```
 
-Natürlich muss der Datenpunkt *javascript.0.test* vorhanden sein.
+Natürlich muss der Datenpunkt *javascript.0.test* existieren.
 
-Zusätzlich kann die Art des Wertes definiert werden:
+Zusätzlich könnte die Art des Wertes definiert werden:
 
 ```
 http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&type=string
 ```
 
-und ack flag können auch definiert werden:
+und ack flag könnte auch definiert werden:
 
 ```
 http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
@@ -140,28 +142,28 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
     schaltet den Wert um:
 
 - Boolescher Wert: true => false, false => true
-- Anzahl ohne Grenzen: x => 100-x
-- Anzahl mit Grenzen: x => max - (x - min)
+- Zahl ohne Grenzen: x => 100-x
+- Zahl mit Grenzen: x => max - (x - min)
 
 ### SetBulk
-    Setze viele Zustände mit einer Anfrage. Diese Anfrage unterstützt auch die POST-Methode, denn POST-Daten sollten sich im Hauptteil und nicht in der URL befinden.
+    Legen Sie mit einer Anfrage viele Zustände fest. Diese Anforderung unterstützt auch die POST-Methode, da sich die POST-Daten im Hauptteil und nicht in der URL befinden sollten.
 
 ### SetValueFromBody
-    Ermöglicht das Festlegen des Werts eines bestimmten Status anhand des Inhalts des POST-Texts.
+    Ermöglicht das Festlegen des Werts eines bestimmten Status, der durch den Inhalt des POST-Körpers festgelegt wird.
 
 ### Objekte
 ### Zustände
 ### Suche
-Ist in der Konfiguration eine Datenquelle (History, SQL) eingestellt, so werden nur die der Datenquelle bekannten Datenpunkte aufgelistet.
-Wenn die Option 'Alle Datenpunkte auflisten' aktiviert ist oder keine Datenquelle angegeben wurde, werden alle Datenpunkte aufgelistet.
-Dieser Befehl wird für das Grafana JSON / SimpleJSON Plugin benötigt.
+Ist eine Datenquelle (Verlauf, SQL) in der Konfiguration festgelegt, werden nur die der Datenquelle bekannten Datenpunkte aufgelistet.
+Wenn die Option 'Alle Datenpunkte auflisten' aktiviert wurde oder keine Datenquelle angegeben wurde, werden alle Datenpunkte aufgelistet.
+Dieser Befehl wird für das Grafana JSON / SimpleJSON-Plugin benötigt.
 
 ### Abfrage
-Wenn eine Datenquelle (History, SQL) angegeben wurde, werden die Daten aus den angegebenen Datenpunkten für den angegebenen Zeitraum ausgelesen, ansonsten wird nur der aktuelle Wert ausgelesen.
-Dieser Befehl wird für das Grafana JSON / SimpleJSON Plugin benötigt.
+Wenn eine Datenquelle (Verlauf, SQL) angegeben wurde, werden die Daten von den angegebenen Datenpunkten für den angegebenen Zeitraum ausgelesen, andernfalls wird nur der aktuelle Wert ausgelesen.
+Dieser Befehl wird für das Grafana JSON / SimpleJSON-Plugin benötigt.
 
 ### Hilfe
-Gibt [diese](#usage) zurück
+Gibt [diese](#usage) Ausgabe zurück
 
 ## Installieren
 ```node iobroker.js add simple-api```
@@ -169,34 +171,34 @@ Gibt [diese](#usage) zurück
 ## Verwendungszweck
 Angenommen, wir haben keine Sicherheit und der Server wird auf dem Standardport 8087 ausgeführt.
 
-Für alle Abfragen kann der Name oder die ID des Staates angegeben werden.
+Für alle Abfragen kann der Name oder die ID des Status angegeben werden.
 
-Für jeden Request, der JSON zurückgibt, können Sie den Parameter *prettyPrint* setzen, um die Ausgabe in lesbarer Form zu erhalten.
+Für jede Anforderung, die JSON zurückgibt, können Sie den Parameter *prettyPrint* festlegen, um die Ausgabe in lesbarer Form zu erhalten.
 
-Wenn die Authentifizierung aktiviert ist, müssen zwei weitere Felder ausgefüllt werden: <pre> ? user = admin &amp; pass = iobroker </pre>
+Wenn die Authentifizierung aktiviert ist, sind zwei weitere Felder obligatorisch: <pre> ? user = admin &amp; pass = iobroker </pre>
 
 ### GetPlainValue
-Statuswert als Text lesen. Sie können weitere durch Semikolon geteilte IDs angeben
+Statuswert als Text lesen. Sie können weitere IDs angeben, die durch Semikolon geteilt werden
 
 <pre> http:// ip: 8087 / getPlainValue / admin.0.memHeapTotal </pre>
 
-<pre> 31,19 </pre>
+<pre> 31.19 </pre>
 
-<pre> http:// ip: 8087 / getPlainValue / admin.0.memHeapTotal, admin.0.memHeapUsed </pre><pre> 31.19 17.52 </pre>
+<pre> http:// ip: 8087 / getPlainValue / admin.0.memHeapTotal, admin.0.memHeapUsed </pre><pre> 31,19 17,52 </pre>
 
-### Bekommen
-Liest Status- und Objektdaten des Status als json. Sie können weitere durch Semikolon geteilte IDs angeben.
+### Erhalten
+Lesen Sie Status- und Objektdaten des Status als json. Sie können weitere IDs angeben, die durch Semikolon geteilt werden.
 Wenn mehr als eine ID angefordert wird, wird das JSON-Array zurückgegeben.
 
 <pre> http:// localhost: 8087 / get / admin.0.memHeapTotal /? prettyPrint </pre>
 
-<pre> {&quot;val&quot;: 31.19, &quot;ack&quot;: true, &quot;ts&quot;: 1423154619, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423153989, &quot;_id&quot;: &quot;system.adapter.admin. 0.memHeapTotal &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memHeapTotal &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indicator.state &quot;,&quot; unit &quot;:&quot; MB &quot;,&quot; history &quot;: {&quot; enabled &quot;: true,&quot; changesOnly &quot;: true,&quot; minLength &quot;: 480,&quot; maxLength &quot;: 960,&quot; retention &quot;: 604800,&quot; debounce &quot;: 10000}},&quot; native &quot;: {}} </pre>
+<pre> {&quot;val&quot;: 31.19, &quot;ack&quot;: true, &quot;ts&quot;: 1423154619, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423153989, &quot;_id&quot;: &quot;system.adapter.admin&quot;. 0.memHeapTotal &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memHeapTotal &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indic.state &quot;,&quot; unit &quot; &quot;:&quot; MB &quot;,&quot; Verlauf &quot;: {&quot; aktiviert &quot;: wahr,&quot; ÄnderungenOnly &quot;: wahr,&quot; minLength &quot;: 480,&quot; maxLength &quot;: 960,&quot; Aufbewahrung &quot;: 604800,&quot; entprellen &quot;: 10000}},&quot; native &quot;: {}} </pre>
 
-<pre> http:// ip: 8087 / get / admin.0.memHeapTotal, admin.0.memHeapUsed /? prettyPrint </pre><pre> [{&quot;val&quot;: 31.19, &quot;ack&quot;: true, &quot;ts&quot;: 1423154544, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423153989, &quot;_id&quot;: &quot;system.adapter.admin .0.memHeapTotal &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memHeapTotal &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indicator.state &quot;,&quot; unit &quot;:&quot; MB &quot;,&quot; history &quot;: {&quot; enabled &quot;: true,&quot; changesOnly &quot;: true,&quot; minLength &quot;: 480,&quot; maxLength &quot;: 960,&quot; retention &quot;: 604800,&quot; debounce &quot;: 10000}}, &quot;native&quot;: {}}, {&quot;val&quot;: 16.25, &quot;ack&quot;: true, &quot;ts&quot;: 1423154544, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423154544, &quot;_id&quot; : &quot;system.adapter.admin.0.memHeapUsed&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin.0.memHeapUsed&quot;, &quot;type&quot;: &quot;number&quot;, &quot;role&quot;: &quot;indicator.state&quot;, &quot;unit&quot;: &quot;MB&quot;, &quot;history&quot;: {&quot;enabled&quot;: true, &quot;changesOnly&quot;: true, &quot;minLength&quot;: 480, &quot;maxLength&quot;: 960, &quot;retention&quot;: 604800, &quot; debounce &quot;: 10000}},&quot; native &quot;: {}}] </pre>
+<pre> http:// ip: 8087 / get / admin.0.memHeapTotal, admin.0.memHeapUsed /? prettyPrint </pre><pre> [{&quot;val&quot;: 31.19, &quot;ack&quot;: true, &quot;ts&quot;: 1423154544, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423153989, &quot;_id&quot;: &quot;system.adapter.admin&quot; .0.memHeapTotal &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memHeapTotal &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indic.state &quot;,&quot; Einheit &quot;:&quot; MB &quot;,&quot; Verlauf &quot;: {&quot; aktiviert &quot;: wahr,&quot; ÄnderungenOnly &quot;: wahr,&quot; minLength &quot;: 480,&quot; maxLength &quot;: 960,&quot; Aufbewahrung &quot;: 604800,&quot; entprellen &quot;: 10000}}, &quot;native&quot;: {}}, {&quot;val&quot;: 16.25, &quot;ack&quot;: true, &quot;ts&quot;: 1423154544, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423154544, &quot;_id&quot; : &quot;system.adapter.admin.0.memHeapUsed&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin.0.memHeapUsed&quot;, &quot;type&quot;: &quot;number&quot;, &quot;role&quot;: &quot;Indikator.Zustand&quot;, &quot;Einheit&quot;: &quot;MB&quot;, &quot;Verlauf&quot;: {&quot;aktiviert&quot;: wahr, &quot;Änderungen nur&quot;: wahr, &quot;minLength&quot;: 480, &quot;maxLength&quot;: 960, &quot;Aufbewahrung&quot;: 604800, &quot; entprellen &quot;: 10000}},&quot; native &quot;: {}}] </pre>
 
 ### GetBulk
-Lesen Sie den Status mehrerer IDs mit einem Zeitstempel. Sie können weitere durch Semikolon geteilte IDs angeben.
-Es wird immer das JSON-Array zurückgegeben.
+Lesen Sie die Zustände weiterer IDs mit Zeitstempel. Sie können weitere IDs angeben, die durch Semikolon geteilt werden.
+Das JSON-Array wird immer zurückgegeben.
 
 <pre> http:// ip: 8087 / getBulk / admin.0.memHeapTotal, admin.0.memHeapUsed /? prettyPrint </pre>
 
@@ -210,50 +212,63 @@ Schreiben Sie die Zustände mit den angegebenen IDs. Sie können die Option *wai
 <pre> http:// ip: 8087 / set / hm-rpc.0.IEQ12345.LEVEL? value = 1 &amp; wait = 5000 &amp; prettyPrint </pre><pre> {&quot;val&quot;: 1, &quot;ack&quot;: true, &quot;ts&quot;: 1423155399, &quot;from&quot;: &quot;hm-rpc.0.IEQ12345.LEVEL&quot;, &quot;lc&quot;: 1423155399} </pre>
 
 Wenn innerhalb der angegebenen Zeit keine Antwort eingeht, wird der Wert *null* zurückgegeben.
-Im ersten Fall wird die Antwort sofort zurückgegeben und *ack* ist falsch. Im zweiten Fall ist *ack* wahr. Das heißt, es war die Antwort des Fahrers.
+Im ersten Fall wird die Antwort sofort zurückgegeben und *ack* ist falsch. Im zweiten Fall ist *ack* wahr. Das heißt, es war eine Antwort des Fahrers.
 
 ### SetBulk
-- Schreiben Sie einen Großteil der IDs in einer Anfrage.
+- Schreiben Sie einen Großteil der IDs in eine Anfrage.
 
-<pre> http:// ip: 8087 / setBulk? hm-rpc.0.FEQ1234567: 1.LEVEL = 0.7 &amp; Anwesenheit = 0 &amp; prettyPrint </pre><pre> [{&quot;id&quot;: &quot;hm-rpc.0.FEQ1234567: 1.LEVEL&quot;, &quot;val&quot;: &quot;0.7&quot;}, {&quot;error&quot;: &quot;error: Datenpunkt \&quot; Anwesenheit \ &quot;not found&quot;}] </pre> Sie können diese Anfrage auch als POST senden.
+<pre> http:// ip: 8087 / setBulk? hm-rpc.0.FEQ1234567: 1.LEVEL = 0.7 &amp; Anwesenheit = 0 &amp; prettyPrint </pre><pre> [{&quot;id&quot;: &quot;hm-rpc.0.FEQ1234567: 1.LEVEL&quot;, &quot;val&quot;: &quot;0.7&quot;}, {&quot;error&quot;: &quot;error: datapoint \&quot; Anwesenheit \ &quot;not found&quot;}] </pre> Sie können diese Anfrage auch als POST senden.
 
 ### Objekte
-Ruft die Liste aller Objekte für das Muster ab. Wenn kein Muster angegeben ist, werden alle Objekte als JSON-Array zurückgegeben.
+Holen Sie sich die Liste aller Objekte für Muster. Wenn kein Muster angegeben ist, werden alle Objekte als JSON-Array zurückgegeben.
 
-<pre> http:// ip: 8087 / objects? prettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indicator.state &quot;,&quot; unit &quot;:&quot; seconds &quot;},&quot; native &quot;: {}},&quot; system.adapter.admin.0.memRss &quot;: {&quot; _id &quot;:&quot; system.adapter.admin.0.memRss &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memRss &quot;,&quot; desc &quot;:&quot; Resident set size &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indicator.state &quot;,&quot; unit &quot;:&quot; MB &quot;,&quot; history &quot;: {&quot; enabled &quot;: true,&quot; changesOnly &quot;: true,&quot; minLength &quot; : 480, &quot;maxLength&quot;: 960, &quot;retention&quot;: 604800, &quot;debounce&quot;: 10000}}, &quot;native&quot;: {}}, ...
+<pre> http:// ip: 8087 / Objekte? PrettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indic.state &quot;,&quot; unit &quot;:&quot; Sekunden &quot;},&quot; native &quot;: {}},&quot; system.adapter.admin.0.memRss &quot;: {&quot; _id &quot;:&quot; system.adapter.admin.0.memRss &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memRss &quot;,&quot; desc &quot;:&quot; Resident Größe einstellen &quot;,&quot; Typ &quot;:&quot; Nummer &quot;,&quot; Rolle &quot;:&quot; Indikator.Zustand &quot;,&quot; Einheit &quot;:&quot; MB &quot;,&quot; Verlauf &quot;: {&quot; aktiviert &quot;: wahr,&quot; Änderungen nur &quot;: wahr,&quot; minLength &quot; : 480, &quot;maxLength&quot;: 960, &quot;Retention&quot;: 604800, &quot;Debounce&quot;: 10000}}, &quot;native&quot;: {}}, ...
 </pre>
 
-Holen Sie sich alle Kontrollobjekte des Adapters system.adapter.admin.0: <pre> http:// ip: 8087 / objects? pattern = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indicator.state &quot;,&quot; unit &quot;:&quot; seconds &quot;},&quot; native &quot;: {}}, ...
+Holen Sie sich alle Steuerobjekte des Adapters system.adapter.admin.0: <pre> http:// ip: 8087 / object? pattern = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indic.state &quot;,&quot; unit &quot;:&quot; Sekunden &quot;},&quot; native &quot;: {}}, ...
 
 </ pre>
 
 ### Zustände
-Holen Sie sich die Liste aller Zustände für Muster. Wenn kein Muster angegeben ist, werden alle Status als JSON-Array zurückgegeben.
+Holen Sie sich die Liste aller Zustände für Muster. Wenn kein Muster angegeben ist, werden alle Zustände als JSON-Array zurückgegeben.
 
-<pre> http:// ip: 8087 / states? prettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;val&quot;: 32176, &quot;ack&quot;: true, &quot;ts&quot;: 1423156164, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423156164}, &quot;system.adapter.admin.0.memRss&quot;: {&quot;val&quot;: 41,14, &quot;ack&quot;: true, &quot;ts&quot;: 1423156164, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc &quot;: 1423156119},&quot; system.adapter.admin.0.memHeapTotal &quot;: {&quot; val &quot;: 31.19,&quot; ack &quot;: true,&quot; ts &quot;: 1423156164,&quot; from &quot;:&quot; system.adapter.admin.0 &quot;, &quot;lc&quot;: 1423155084}, ...
+<pre> http:// ip: 8087 / States? PrettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;val&quot;: 32176, &quot;ack&quot;: true, &quot;ts&quot;: 1423156164, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423156164}, &quot;system.adapter.admin.0.memRss&quot;: {&quot;val&quot;: 41.14, &quot;ack&quot;: true, &quot;ts&quot;: 1423156164, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc &quot;: 1423156119},&quot; system.adapter.admin.0.memHeapTotal &quot;: {&quot; val &quot;: 31.19,&quot; ack &quot;: true,&quot; ts &quot;: 1423156164,&quot; from &quot;:&quot; system.adapter.admin.0 &quot;, &quot;lc&quot;: 1423155084}, ...
 </pre>
 
- Holen Sie sich alle Kontrollobjekte des Adapters system.adapter.admin.0:
+ Holen Sie sich alle Steuerobjekte des Adapters system.adapter.admin.0:
 
-<pre> http:// ip: 8087 / states? pattern = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;val&quot;: 32161, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423156149}, &quot;system.adapter.admin.0.memRss&quot;: {&quot;val&quot;: 41,14, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc &quot;: 1423156119},&quot; system.adapter.admin.0.memHeapTotal &quot;: {&quot; val &quot;: 31.19,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin.0 &quot;, &quot;lc&quot;: 1423155084}, &quot;system.adapter.admin.0.memHeapUsed&quot;: {&quot;val&quot;: 19.07, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0 &quot;,&quot; lc &quot;: 1423156149},&quot; system.adapter.admin.0.connected &quot;: {&quot; val &quot;: true,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin .0 &quot;,&quot; lc &quot;: 1423128324,&quot; expire &quot;: 28100},&quot; system.adapter.admin.0.alive &quot;: {&quot; val &quot;: true,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin.0 &quot;,&quot; lc &quot;: 1423128324,&quot; expire &quot;: 28115}} </pre>
+<pre> http:// ip: 8087 / state? pattern = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;val&quot;: 32161, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423156149}, &quot;system.adapter.admin.0.memRss&quot;: {&quot;val&quot;: 41.14, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc &quot;: 1423156119},&quot; system.adapter.admin.0.memHeapTotal &quot;: {&quot; val &quot;: 31.19,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin.0 &quot;, &quot;lc&quot;: 1423155084}, &quot;system.adapter.admin.0.memHeapUsed&quot;: {&quot;val&quot;: 19.07, &quot;ack&quot;: true, &quot;ts&quot;: 1423156149, &quot;from&quot;: &quot;system.adapter.admin.0 &quot;,&quot; lc &quot;: 1423156149},&quot; system.adapter.admin.0.connected &quot;: {&quot; val &quot;: true,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin .0 &quot;,&quot; lc &quot;: 1423128324,&quot; expire &quot;: 28100},&quot; system.adapter.admin.0.alive &quot;: {&quot; val &quot;: true,&quot; ack &quot;: true,&quot; ts &quot;: 1423156149,&quot; from &quot;:&quot; system.adapter.admin.0 &quot;,&quot; lc &quot;: 1423128324,&quot; expire &quot;: 28115}} </pre>
 
 ### Suche
-Ist in der Konfiguration eine Datenquelle (History, SQL) eingestellt, so werden nur die der Datenquelle bekannten Datenpunkte aufgelistet.
-Wenn die Option 'Alle Datenpunkte auflisten' aktiviert ist oder keine Datenquelle angegeben wurde, werden alle Datenpunkte aufgelistet.
+Ist eine Datenquelle (Verlauf, SQL) in der Konfiguration festgelegt, werden nur die der Datenquelle bekannten Datenpunkte aufgelistet.
+Wenn die Option 'Alle Datenpunkte auflisten' aktiviert wurde oder keine Datenquelle angegeben wurde, werden alle Datenpunkte aufgelistet.
 
 <pre> http:// ip: 8087 / search? pattern = system.adapter.admin.0 * &amp; prettyPrint </pre><pre> {&quot;system.adapter.admin.0.outputCount&quot;, &quot;system.adapter.admin.0.inputCount&quot;, &quot;system.adapter.admin.0.uptime&quot;, &quot;system.adapter.admin.0.memRss&quot;, &quot; system.adapter.admin.0.memHeapTotal &quot;,&quot; system.adapter.admin.0.memHeapUsed &quot;,&quot; system.adapter.admin.0.cputime &quot;,&quot; system.adapter.admin.0.cpu &quot;,&quot; system. adapter.admin.0.connected &quot;,&quot; system.adapter.admin.0.alive &quot;} </pre>
 
 ### Abfrage
-Wenn eine Datenquelle (History, SQL) angegeben wurde, werden die Daten aus den angegebenen Datenpunkten für den angegebenen Zeitraum ausgelesen.
+Wenn eine Datenquelle (Verlauf, SQL) angegeben wurde, werden die Daten von den angegebenen Datenpunkten für den angegebenen Zeitraum ausgelesen.
 
-<pre> http:// ip: 8087 / query / system.host.iobroker-dev.load, system.host.iobroker-dev.memHeapUsed /? prettyPrint &amp; dateFrom = 2019-06-08T01: 00: 00.000Z &amp; dateTo = 2019-06-08T01: 00: 10.000Z </pre><pre> [{&quot;target&quot;: &quot;system.host.iobroker-dev.load&quot;, &quot;datapoints&quot;: [[0.12, 1559955600000], [0.46, 1559955601975], [0.44, 1559955610000]]}, {&quot;target&quot;: &quot;system .host.iobroker-dev.memHeapUsed &quot;,&quot; datapoints &quot;: [[23.01, 1559955600000], [22.66, 1559955601975], [22.69, 1559955610000]]}] </pre>
+<pre> http:// ip: 8087 / query / system.host.iobroker-dev.load, system.host.iobroker-dev.memHeapUsed /? prettyPrint &amp; dateFrom = 2019-06-08T01: 00: 00.000Z &amp; dateTo = 2019-06-08T01: 00: 10.000Z </pre><pre> [{&quot;target&quot;: &quot;system.host.iobroker-dev.load&quot;, &quot;datapoints&quot;: [[0.12, 1559955600000], [0.46, 1559955601975], [0.44, 1559955610000]]}, {&quot;target&quot;: &quot;system .host.iobroker-dev.memHeapUsed &quot;,&quot; Datenpunkte &quot;: [[23.01, 1559955600000], [22.66, 1559955601975], [22.69, 1559955610000]]}] </pre>
 
-Wurde keine Datenquelle angegeben oder der Parameter noHistory übergeben, wird nur der aktuelle Wert des Datenpunktes ausgelesen.
+Wenn keine Datenquelle angegeben wurde oder der Parameter noHistory übergeben wird, wird nur der aktuelle Wert des Datenpunkts ausgelesen.
 
 <pre> http:// ip: 8087 / query / system.host.iobroker-dev.load, system.host.iobroker-dev.memHeapUsed /? prettyPrint &amp; noHistory = true </pre><pre> [{&quot;target&quot;: &quot;system.host.iobroker-dev.load&quot;, &quot;datapoints&quot;: [[0.58, 1559970500342]]}, {&quot;target&quot;: &quot;system.host.iobroker-dev.memHeapUsed&quot;, &quot;datapoints&quot; &quot;: [[21.53, 1559970500342]]}] </pre>
 
 ## Changelog
-### 2.3.0 (2019-10-10)
+### 2.4.1 (2020-04-23)
+* (bluefox) Caught the web server errors
+
+### 2.4.0 (2020-04-12)
+* (Apollon77) Add Sentry support with js-controller 3.0
+* (Apollon77) fix potential crash
+
+### 2.3.3 (2019-11-16)
+* (bluefox) Added response code for unknown commands
+
+### 2.3.2 (2019-10-18)
+* (Apollon77) Fix Admin 3 support
+
+### 2.3.1 (2019-10-12)
 * (bluefox) Admin 3 is now supported
 * (bluefox) NPM packages were updated
 
@@ -344,7 +359,7 @@ Wurde keine Datenquelle angegeben oder der Parameter noHistory übergeben, wird 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2015-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

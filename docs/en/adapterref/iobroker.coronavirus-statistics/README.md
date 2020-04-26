@@ -6,12 +6,12 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)](https://www.npmjs.com/package/iobroker.coronavirus-statistics)
 ![Number of Installations (latest)](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/coronavirus-statistics-stable.svg)
-[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.coronavirus-statistics.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.coronavirus-statistics)
+[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/ioBroker.coronavirus-statistics.svg)](https://david-dm.org/iobroker-community-adapters/ioBroker.coronavirus-statistics)
 [![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.coronavirus-statistics/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.coronavirus-statistics)
 
-[![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)](https://nodei.co/npm/iobroker.coronavirus-statistics/)
+[![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)](https://nodei.co/npm/ioBroker.coronavirus-statistics/)
 
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.coronavirus-statistics/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.coronavirus-statistics)
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/iobroker.coronavirus-statistics/master.svg)](https://travis-ci.org/iobroker-community-adapters/iobroker.coronavirus-statistics)
 
 ## Coronavirus Live Statistics adapter for ioBroker
 
@@ -89,6 +89,16 @@ As first value the name from the warning message must be taken from the log. The
 
 ## Changelog
 
+### 0.5.9 (2020-04-24)
+* (DutchmanNL) Replaced module request with axios
+* (DutchmanNL) Bugfix : Proper error handling of failing API calls (if api not reachable)
+
+### 0.5.7 (2020-04-17) Continent state attribute information added and warn messages reduced
+* (DutchmanNL) Bugfix : Add continent state attribute definition
+* (DutchmanNL) Bugfix : Reduce warn messages if error occurs to 1 per message
+
+### 0.5.6 (2020-04-17) Bugfix : API changed
+* (Kampfratte) Bugfix : API changed
 
 ### 0.5.5 (2020-04-07) Bugfixes, see changelog for details
 * (DutchmanNL) Bugfix : Remove test-states

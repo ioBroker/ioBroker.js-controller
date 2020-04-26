@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ping/README.md
 title: Адаптер PING
-hash: +sNYQlgffFdpaQvuftMDNSEkuiykM/qAbysmwLlp358=
+hash: CN7YacMSC0ttlxH0ZpgkJ6AEGQGK/oBDM2KGFFNGz8g=
 ---
 ![логотип](../../../en/adapterref/iobroker.ping/admin/ping.png)
 
@@ -15,9 +15,25 @@ hash: +sNYQlgffFdpaQvuftMDNSEkuiykM/qAbysmwLlp358=
 
 # Адаптер PING
 ## Пингует настроенные IP-адреса.
-Звонит по указанным IP-адресам через определенный интервал и отслеживает результаты.
+Звонит указанным IP-адресам через определенный интервал и отслеживает результаты.
+
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
 
 ## Changelog
+
+### 1.4.5 (2020-04-23)
+* (Apollon77) Fixed potential crash case (Sentry)
+
+### 1.4.4 (2020-04-17)
+* (bluefox) Added support of Admin3 
+
+### 1.4.3 (2020-04-17)
+* (Apollon77) Add Sentry for js-controller 3.0
+* (Apollon77) update dependencies
+
+### 1.4.2 (2020-01-23)
+* (JayVee2) Sort the IP addresses
+
 ### 1.4.1 (2019-01-08)
 * (simatec) support compact mode
 
@@ -74,7 +90,7 @@ hash: +sNYQlgffFdpaQvuftMDNSEkuiykM/qAbysmwLlp358=
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -9,6 +9,8 @@
 This adapter is ONLY for communication with Amazon Alexa, Google Home and Nightscout.
 It is not for remote access to your ioBroker instance. Use ioBroker.cloud adapter for that.
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ## Settings
 To use cloud adapter you should first to register on the ioBroker cloud [https://iobroker.pro](https://iobroker.pro).
 
@@ -246,6 +248,24 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+### 1.4.11 (2020-04-26)
+* (bluefox) fixed IOBROKER-IOT-REACT-F
+
+### 1.4.10 (2020-04-24)
+* (bluefox) Fixed crashes reported by sentry
+
+### 1.4.7 (2020-04-23)
+* fix iot crash when timeouts in communications to Google happens (Sentry IOBROKER-IOT-2)
+* fix iot crash when google answers without customData (Sentry IOBROKER-IOT-1)
+
+### 1.4.6 (2020-04-18)
+* (Apollon77) Add Sentry error reporting to React Frontend
+
+### 1.4.4 (2020-04-14)
+* (Apollon77) remove js-controller 3.0 warnings and replace adapter.objects access
+* (Apollon77) add linux dependencies for canvas library
+* (Apollon77) add sentry configuration
+
 ### 1.4.2 (2020-04-08)
 * (TA2k) Fix updateState for Google Home
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mclighting/README.md
 title: ioBroker McLighting адаптер
-hash: ixWn7Rk/k80GwVIl40xGSfxtS/RZIguaanH5ZQiYQYo=
+hash: +pUewii2TFoXNMHz/YwnT/oru4KU4iOxFCdIFwHsoXA=
 ---
 ![логотип](../../../en/adapterref/iobroker.mclighting/admin/mclighting.png)
 
@@ -12,6 +12,7 @@ hash: ixWn7Rk/k80GwVIl40xGSfxtS/RZIguaanH5ZQiYQYo=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.mclighting.svg)
 ![тесты](http://img.shields.io/travis/instalator/ioBroker.mclighting/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mclighting.png?downloads=true)
+![жертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 # IoBroker Адаптер McLighting
 =================
@@ -48,7 +49,7 @@ hash: ixWn7Rk/k80GwVIl40xGSfxtS/RZIguaanH5ZQiYQYo=
 - телевизор (запускает ТВ симулятор.)
 
 ### Array_RGB (W)
- Зажгите несколько светодиодов в заданных цветах.
+ Зажгите несколько светодиодов заданными цветами.
 
 ```
 +[numled][hexrgb(w)]+[numled][hexrgb(w)]+[numled][hexrgb(w)] [...] or
@@ -67,7 +68,7 @@ hash: ixWn7Rk/k80GwVIl40xGSfxtS/RZIguaanH5ZQiYQYo=
  Если активен режим 0 (статический) - установите цвет лампы по умолчанию и включите все светодиоды этого цвета.
 
 ### Color_R, color_G, color_B (, color_W) Установить цвет лампы по умолчанию.
- Где <r (g) (b) (w)> - цвет как число (0 - 255), например, 154
+ Где <r (g) (b) (w)> - это цвет в виде числа (0 - 255), например, 154
 
  Если активен режим 0 (статический) - установите цвет лампы по умолчанию и включите все светодиоды этого цвета.
 
@@ -128,6 +129,10 @@ R[rangestart_led][rangeend_led][hexrgb(w)]R[rangestart_led][rangeend_led][hexrgb
 ### Fx_mode_name Текущее имя fx_mode
 
 ## Changelog
+
+### 0.1.0
+* (instalator) refactoring
+* (instalator) added compact mode
 
 ### 0.0.12 (2018-12-09)
 * (instalator) fix error

@@ -28,6 +28,12 @@ provided by [iobroker.click](https://iobroker.click/index.html), thanks to bluef
 * <a href="https://iobroker.click/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a> (<a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">alternativ</a>)
 * <a href="https://iobroker.click/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS Editor</a> (<a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">alternativ</a>)
 
+## Practical examples
+* [Weather View](https://forum.iobroker.net/topic/32232/material-design-widgets-wetter-view)
+* [Skript Status](https://forum.iobroker.net/topic/30662/material-design-widgets-skript-status)
+* [Adapter Status](https://forum.iobroker.net/topic/30661/material-design-widgets-adapter-status)
+* [UniFi Netzwerk Status](https://forum.iobroker.net/topic/30875/material-design-widgets-unifi-netzwerk-status)
+
 ## Questions and answers about the widgets
 If you have questions about the individual widgets, then first look at the topics of the individual widgets
 
@@ -1502,6 +1508,18 @@ ical2CalendarWidget();
 ```
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* Browser Edge: gradient color bug fix
+
+### 0.3.3
+* (Scrounger): css file bug fixes
+* (Scrounger): Material Design Icons library updated to v5.1.45
+
+### 0.3.2
+* (Scrounger): Select & Autocomplete Widget: color option for menu items added
+* (Scrounger): setState type bug fixes
+* (Scrounger): small bug fixes
 
 ### 0.3.0
 * (Scrounger): JSON Chart: error handling added

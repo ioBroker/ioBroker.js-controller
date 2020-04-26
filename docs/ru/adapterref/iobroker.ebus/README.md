@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
+hash: 7ccg+/aNzLiIjNkfd8PVdm5RHJVNDAtu3yLbaDizhCg=
 ---
 ![логотип](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -12,7 +12,6 @@ hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.ebus.svg)
 ![тесты](https://travis-ci.org/rg-engineering/ioBroker.ebus.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.ebus.png?downloads=true)
-![Значок Greenkeeper](https://badges.greenkeeper.io/rg-engineering/ioBroker.ebus.svg)
 
 # IoBroker.ebus
 ** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
@@ -23,18 +22,21 @@ hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 
 - данные из ebusd с использованием HTML
 
-В этом случае ebusd должен работать и должен иметь возможность отправлять данные, например, на. проводник через http:// IP: порт / данные (http://192.168.0.123:8889/data) Текущая версия ebusd вкл. Конфигурационные файлы можно скопировать с https://github.com/john30/ebusd. Все поля с данными, lastup и из глобального раздела анализируются. Все остальные в данный момент игнорируются.
+В этом случае ebusd должен работать и должен иметь возможность отправлять данные, например, на. проводник через http:// IP: порт / данные (http://192.168.0.123:8889/data) Текущая версия ebusd вкл. Конфигурационные файлы могут быть скопированы с https://github.com/john30/ebusd. Все поля с данными, lastup и из глобального раздела анализируются. Все остальные в данный момент игнорируются.
 
 Существует возможность опроса данных, которые не опрашиваются непосредственно ebusd. Команда «read -f» используется для принудительного чтения через ebus.
 
-Другая особенность - отправка любой команды в ebusd и получение ответа для работы, например, с. скрипты.
+Другая особенность - отправлять любую команду в ebusd и получать ответ для работы, например, с. скрипты.
 
 текущая поддерживаемая ebusd-версия: 3.3
 
 ## Известные вопросы
 * пожалуйста, создайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), если вы обнаружите ошибки или пожелаете новых функций
 
-## 1.0.0 (2019-12-хх)
+## 2.0.0 (2020-04-26)
+* (Рене) "запрос" заменен на "согнут"
+
+## 1.0.0 (2019-12-15)
 * (Рене) обновление до моего собственного флота 3.0
 
 ## 0.8.2 (2019-11-10)
@@ -59,7 +61,7 @@ hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 * (René) удалена поддержка arduino
 
 ### 0.5.3
-* (Рене) добавить информацию об ошибке
+* (René) добавить информацию об ошибке
 
 ### 0.5.2
 * (René) исправление ошибки: в vis 1.x некоторые значения не сохраняются
@@ -68,7 +70,7 @@ hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 * (René) исправление ошибки: если нечего опрашивать, пропустите соединение telnet
 
 ### 0.5.0
-* (Рене) записать дату по TCP в ebusd
+* (Рене) запись даты по TCP в ebusd
 
 ### 0.4.2
 * (Рене) исправление ошибки для администратора V3
@@ -85,7 +87,7 @@ hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 
 ### 0.2.0
 * (Рене) добавить историю как JSON для виз
-* (René) добавить виджет, основанный на флоте, для отображения графика температуры, состояния и мощности
+* (René) добавить виджет на основе flot для отображения графика температуры, состояния и мощности
 
 ### 0.1.0
 * (Рене) запланированный адаптер вместо deamon
@@ -99,7 +101,7 @@ hash: QZI96FSGrKMkCaPSRthk4wij3nU+r2HTQBaRykhCdaI=
 ## Changelog
 
 ## License
-Copyright (C) <2017 - 2019>  <info@rg-engineering.eu>
+Copyright (C) <2017 - 2020>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

@@ -315,6 +315,15 @@ Click on ![Link](img/link.png) to get directly to the forum.
 Forum entries will be displayed without problems when accessing ioBroker via IP or localhost:8081. But if you use a hostname like meinhaus.de:8081, you have to get a free API key at Feednami. To register, click [here](https://toolkit.sekando.com/docs/en/setup/hostnames) and follow the instructions.
 
 ## Changelog
+
+### 1.7.0 (2020-04-16)
+* (Apollon77) IMPORTANT: Supported version minimum nodejs 10
+* (Apollon77) add Sentry error reporting and update dependencies
+* (Apollon77) remove usage of objects directly to prevent js-controller 3.0 warnings
+* (Apollon77) update dependencies
+* (Apollon77) fix some crashes
+* (Apollon77) fix compact mode
+
 ### 1.6.0 (2020-04-08)
 * (SchumyHa) update Chinese bbs rss url
 * (ldittmar) Tabs were added to config

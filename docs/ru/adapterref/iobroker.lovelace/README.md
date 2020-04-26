@@ -3,20 +3,20 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: VgIhdc1/23xticYs/abzNV4hx3j1Dut103VJuJ/9spo=
+hash: 61fEhv2DxfmqAoNBj1Ifds0g5354L6Q/0uNr0BUdeYY=
 ---
 ![логотип](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.lovelace.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.lovelace.svg)
-![Состояние зависимости](https://img.shields.io/david/ioBroker/iobroker.lovelace.svg)
+![Статус зависимости](https://img.shields.io/david/ioBroker/iobroker.lovelace.svg)
 ![Известные уязвимости](https://snyk.io/test/github/ioBroker/ioBroker.lovelace/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.lovelace.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/ioBroker/ioBroker.lovelace/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/ioBroker/ioBroker.lovelace?branch=master&svg=true)
 
 # IoBroker.lovelace
-## Адаптер ловелас для ioBroker
+## Адаптер lovelace для ioBroker
 С помощью этого адаптера вы можете создавать визуализацию для ioBroker с помощью интерфейса Home Assistant Lovelace.
 
 ## Конфигурация
@@ -77,7 +77,7 @@ createState(
 
 ### Ввод числа
 Это можно сделать вручную, если в пользовательском диалоге выбран тип объекта input_number.
-Для этого типа могут быть добавлены значения `min` и `max` в `common` и необязательные `step`.
+Для этого типа могут быть добавлены `min` и `max` значения в `common` и необязательные `step`.
 Если вы хотите видеть стрелки вверх и вниз, вы должны установить в пользовательском `mode` значение «число»:
 
 ```
@@ -392,7 +392,7 @@ midnight:
 взято из [Вот](https://community.home-assistant.io/t/midnight-theme/28598/2).
 
 ## Иконки
-Используйте значки в форме `mdi:NAME`, например, «mdi: play-network». Имена можно взять здесь: https://materialdesignicons.com/
+Используйте значки в форме `mdi:NAME`, например «mdi: play-network». Имена можно взять здесь: https://materialdesignicons.com/
 
 ## Уведомления
 Вы можете добавить уведомления через функции `sendTo` или записав состояние в `lovelace.X.notifications.add`:
@@ -425,9 +425,9 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 ```
 
 ## Оригинальные источники для ловеласа
-Использованные источники здесь https://github.com/GermanBluefox/home-assistant-polymer.
+Использованные источники находятся здесь https://github.com/GermanBluefox/home-assistant-polymer.
 
-## Сделать
+## Делать
 Безопасность должна быть взята от текущего пользователя, а не от default_user
 
 ## Разработка
@@ -449,18 +449,27 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 - `src / layouts / home-assistant-main.ts` - удалить боковую панель приложения
 - `src / Panel / lovelace / hui-root.ts` - добавлены уведомления и голосовое управление
 
-После этого извлечения измененная версия в папке `./build`. Потом.
+После этого извлечения измененная версия в папке `./build`. Затем.
 
 1. Перейдите в каталог ./build.
 2. `git clone https:// github.com / GermanBluefox / home-assistant-Polymer.git` это вилка https://github.com/home-assistant/home-assistant-polymer.git, но некоторые вещи изменены (см. список файлов ранее).
 3. «CD-home-assistant-polymer»
 4. `git checkout master`
 5. `npm install`
-6. «gulp build-app» для выпуска или «gulp develop-iob» для отладочной версии. Чтобы построить веб после изменений, вы можете вызвать `webpack-dev-app` для более быстрой сборки, но вам все равно нужно вызвать` build-app` после того, как версия будет готова к использованию.
+6. «gulp build-app» для релиза или «gulp develop-iob» для отладочной версии. Чтобы построить веб после изменений, вы можете вызвать `webpack-dev-app` для более быстрой сборки, но вам все равно нужно вызывать` build-app` после того, как версия будет готова к использованию.
 7. Скопируйте все файлы из `. / Build / home-assistant-polymer / hass_frontend` в`. / Hass_frontend` в этом репо
 8. Запустите задачу gulp rename.
 
 ## Changelog
+### 1.0.14 (2020-04-22)
+* (algar42) Call of deprecated getObjectView updated for js-controller v3
+
+### 1.0.13 (2020-04-13)
+* (bluefox) The translation was corrected in the custom settings.
+
+### 1.0.12 (2020-03-16)
+* (Garfonso) Added option to restrict auto entity creation to alias.0.*
+
 ### 1.0.10 (2020-02-13)
 * (Garfonso) Fixed handling of malformed / null RGB string
 * (algar42)  Binary sensor added

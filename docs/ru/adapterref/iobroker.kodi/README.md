@@ -2,25 +2,32 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.kodi/README.md
-title: JSON-RPC API Kodi для IoBroker
-hash: 1OhuxWO9MIT4xrWNmR5Oi3uSr8Tluol5qvxu4WziQXU=
+title: Адаптер Kodi для ioBroker (JSON-RPC API)
+hash: 7CNAK2pno9o5iQNt4r+Gnu4vGbI+c25SGXrMG5Me1lk=
 ---
 ![логотип](../../../en/adapterref/iobroker.kodi/admin/kodi.png)
 
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.kodi.svg)
+![Количество установок](http://iobroker.live/badges/kodi-installed.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.kodi.svg)
 ![тесты](http://img.shields.io/travis/instalator/ioBroker.kodi/master.svg)
+![жертвовать](https://img.shields.io/badge/Donate-PayPal-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.kodi.png?downloads=true)
-![Количество установок](http://iobroker.live/badges/kodi-stable.svg)
 
-# JSON-RPC API Kodi для IoBroker
-*** Примечание: для этого адаптера требуется узел 0.12+ (поэтому 0.10 не поддерживается) ***
+[Руководство на английском](https://github.com/instalator/ioBroker.kodi/wiki/en_EN)
+
+# Адаптер Kodi для ioBroker (JSON-RPC API)
+Вы можете найти официальную документацию по API JSON-RCP [тут] (http://kodi.wiki/view/JSON-RPC_API) и полный список команд (для протокола версии 6) [тут](http://kodi.wiki/view/JSON-RPC_API/v6).
+
+*** Примечание: Этот адаптер требует Nodejs 8.0 + ***
 
 ## Конфигурация KODI
-Дистанционное управление включено.
-! [Дистанционное управление разрешено.] (Admin / remote.jpg) API-интерфейс JSON-RPC использует **по умолчанию порт 9090** чтобы изменить его в файл
+Включение удаленного управления и веб-сервера.
+![Дистанционное управление включено.](../../../en/adapterref/iobroker.kodi/admin/remote.png)
 
-_Note: файл advancedsettings.xml не существует по умолчанию. Вы должны сначала создать его! _
+JSON-RPC API использует **по умолчанию порт 9090** для которого необходимо изменить изменения в файле [advancedsettings.xml](http://kodi.wiki/view/AdvancedSettings.xml)
+
+_Примечание: Файл advancedsettings.xml не существует по умолчанию. Вы должны сначала создать его! _
 
 ```xml
 <jsonrpc>
@@ -29,22 +36,20 @@ _Note: файл advancedsettings.xml не существует по умолча
 </jsonrpc>
 ```
 
-![http включить.](../../../en/adapterref/iobroker.kodi/admin/web.jpg)
-
 ## Конфигурация драйвера
-IP-адрес KODI и порт для JSON-RPC API (по умолчанию 9090).
+В настройках адаптера указывается IP-адрес и порт для JSON-RPC API (по умолчанию 9090) и логин / пароль для доступа на веб-сервер Kodi.
 
-## С помощью
+## Использование
 ### ShowNotif:
 Один важный момент, если используется заголовок сообщения, то он должен всегда находится перед самим текстом сообщения (Внимание;Протечка воды), расположение остальных параметров не критично.
 
 ** Изображение: ** Уровень сообщения
 
   * 'info' - 0 (по умолчанию),
-  * 'предупреждение' - 1,
+  * «предупреждение» - 1,
   * 'ошибка' - 2.
 
-** время отображения: ** Время отображения сообщений в милисекундах, минимум 1500 макс 30000 мс.
+** время отображения: ** Время отображения сообщений в миллисекундах, минимум 1500 макс 30000 мс.
 
 **Пример:**
 
@@ -60,13 +65,13 @@ sendTo("kodi.0", {
     message:  'Возможно протечка воды ', //Текст сообщения
     title:    'ВНИМАНИЕ!!!', //Заголовок сообщения
     image: 'https://raw.githubusercontent.com/instalator/ioBroker.kodi/master/admin/kodi.png', //Ссылка на иконку
-    delay: 7000 //Время отображения сообщения милисекундах (минимум 1500 макс 30000 мс)
+    delay: 7000 //Время отображения сообщения миллисекундах (минимум 1500 макс 30000 мс)
 });
 ```
 
 ### SwitchPVR:
 Переключение PVR IPTV каналов по названию канала в плейлисте.
-** Пример: ** ТВ канал - Дискавери Наука
+** Пример: ** ТВ канал - Discovery Science.
 
 ### YouTube:
 Для открытия видео с сайта youtube достаточно записать код видео в данный статус. На основе версии 0.1.5 и выше можно вставить прямую ссылку на видео, а также код или полную ссылку на плейлист.
@@ -74,12 +79,12 @@ sendTo("kodi.0", {
 
 ### Открыто:
 Ссылка на медиаконтент в сети Интернет либо путь к локальному медиа файлу.
-После записи значения будут прочитаны на проигрователе KODI.
+После записи значения начнут слушать на проигрывателе KODI.
 
-### Позиция:
+### Должность:
 Текущая позиция в плейлисте, так же, как и в этом статусе, можно записать в исходную позицию и KODI.
 
-### Искать:
+### Стремиться:
 Текущее значение позиции воспроизведения в процентах от 0 до 100.
 
 ### Повторение:
@@ -93,11 +98,11 @@ sendTo("kodi.0", {
 Перемешивание списка треков в плейлисте для случайного воспроизведения.
 Принимает значения true и false
 
-### Играть:
+### Играть в:
 Старт воспроизведения (true, false)
 
 ### Скорость:
-Скорость воспроизведения. Фиксированные значения -32, -16, -8, -4, -2, -1, 0, 1, 2, 4, 8, 16, 32, а также увеличение и уменьшение
+Скорость воспроизведения. Фиксированные значения (-32, -16, -8, -4, -2, -1, 0, 1, 2, 4, 8, 16, 32), а также «приращение» и «уменьшение»
 
 ### Каталог:
 Сюда записывается путь до папки или диска, в ответ в этот статус записывается список каталогов указанной папки или диска.
@@ -120,11 +125,22 @@ sendTo("kodi.0", {
 ### Система:
  - EjectOpticalDrive - Извлекает или закрывает дисковод оптических дисков (если имеется)
  - Hibernate - включение спящего режима
- - Перезагрузка - перезагрузка системы
+ - перезагрузка - перезагрузка системы
  - Отключение - выключает систему
  - Приостановить - приостанованавливает Kodi
 
 ## Changelog
+
+#### 2.0.1 (2020-04-13)
+* (instalator) fixed error if not used PVR
+
+#### 2.0.0 (2020-04-12)
+* (instalator) support admin3
+* (instalator) support compact mode
+* (instalator) refactoring
+* (instalator) fixed different error
+* (instalator) added english manual
+* (instalator) big change code
 
 #### 1.0.0 (2017-11-13)
 * (instalator) up to stable
@@ -201,3 +217,26 @@ sendTo("kodi.0", {
 
 #### 0.0.1
 * (instalator) initial (17.04.2016)
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2020 instalator <vvvalt@mail.ru>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

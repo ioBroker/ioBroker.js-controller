@@ -8,14 +8,14 @@
 
 [![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)](https://nodei.co/npm/iobroker.heatingcontrol/)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/rg-engineering/ioBroker.heatingcontrol.svg)](https://greenkeeper.io/)
+
 
 **If you like it, please consider a donation:**
                                                                           
 [![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url) 
 
 
-Adapter for controlling your heating system.
+## Adapter for controlling your heating system.
 
 Features:
 * Control the setpoint temperature levels of all thermostats per schedules
@@ -132,6 +132,22 @@ Just configure events from ical in admin. Supported are
 * heatingcontrol.0.GuestsPresent
 * heatingcontrol.0.PartyNow
 
+## use changes from thermostat
+Many user asked for an option to take over changes from thermostat into adapter. Now a thre options are implemented:
+
+| option                   | description                                                
+|--------------------------|---------------------------------------------------------------------------------------
+| no                       | as we have until version 0.3.x, changes from thermostat are ignored
+| as override              | changes from thermostat are taken as override; override time must be set in advance in heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime
+|                          | if override time is not set, than override is not executed
+| as new profile setting   | changes from thermostat are taken as target temperature for current profile period
+| adjustable per room      | above options can be configured per room. datapoint heatingcontrol.0.Rooms.RoomName.ChangesFromThermostatMode defines the mode:
+|                          |               1 - no
+|                          |               2 - as override 
+|                          |               3 -  as new profile setting 
+|                          | a warning will appear in log if values lower then 0 or higher then 3 are used
+
+
 ## Requirements
 * Node version 8 or higher is required
 
@@ -140,6 +156,11 @@ Just configure events from ical in admin. Supported are
 
 
 ## Changelog
+
+### 0.4.0 (2020-04-xx)
+* (René) see issue #70: use changes from thermostat
+* (René) see issue #91 bug fix: if the same sensor is configured for more than one room thermostat target temperature will be set for all configured rooms
+* (René) script from Pittini integrated to support his visualization [Pittini](https://github.com/Pittini/iobroker-heatingcontrol-vis) 
 
 ### 0.3.19 (2020-03-15)
 * (René) create correct cron job for sunday if profile type "every day" is used

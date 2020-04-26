@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.countdown/README.md
 title: ioBroker.countdown
-hash: fGTU+SIk/WT8113/GNv8Lzz/zMLM1jDhiNgxQPHmVCQ=
+hash: p4FkV853prgZOjvgYnZt9Y3LcUThtRiYzI5PqsyxU44=
 ---
 ![логотип](../../../en/adapterref/iobroker.countdown/admin/countdown.png)
 
@@ -14,7 +14,7 @@ hash: fGTU+SIk/WT8113/GNv8Lzz/zMLM1jDhiNgxQPHmVCQ=
 ![NPM](https://nodei.co/npm/iobroker.countdown.png?downloads=true)
 
 # IoBroker.countdown
-=================
+[![Статус сборки Трэвис] (https://travis-ci.com/jack-blackson/ioBroker.countdown.svg?branch=master)](https://travis-ci.com/jack-blackson/ioBroker.countdown)
 
 Адаптер обратного отсчета для ioBroker ---------------------------------------------- --------------------------------
 
@@ -33,7 +33,7 @@ hash: fGTU+SIk/WT8113/GNv8Lzz/zMLM1jDhiNgxQPHmVCQ=
 
 ![логотип](../../../en/adapterref/iobroker.countdown/admin/countdown_blocky.png)
 
-* Вы можете добавить дни, месяцы и годы с sendto к сегодняшней дате. Поэтому, пожалуйста, отправьте компоненту «name» и либо «addminutes», «addhours», «adddays», «addmonths», либо «addyears» в качестве значения int.
+* Вы можете добавить дни, месяцы и годы с sendto к сегодняшней дате. Поэтому, пожалуйста, отправьте компонент "name" и либо "addminutes", "addhours", "adddays", "addmonths", либо "addyears" в качестве значения int.
 
 ![логотип](../../../en/adapterref/iobroker.countdown/admin/countdown_blocky_add.png)
 

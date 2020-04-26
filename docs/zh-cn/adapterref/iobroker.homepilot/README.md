@@ -3,34 +3,35 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.homepilot/README.md
 title: ioBroker.homepilot
-hash: h4tiza7xEW571MRD8xKFFPGDnHTlUGekk6SiBhJIpKY=
+hash: g/Mez58dWCtVTsBlvP6X9shYu9GotSYWpbI0fpjl17Q=
 ---
 ![商标](../../../en/adapterref/iobroker.homepilot/admin/homepilot.png)
 
 ![安装数量](http://iobroker.live/badges/homepilot-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.homepilot.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.homepilot.svg)
-![NPM](https://nodei.co/npm/iobroker.homepilot.png?downloads=true)
+![资料下载](https://img.shields.io/npm/dm/iobroker.homepilot.svg)
 ![编码徽章](https://api.codacy.com/project/badge/Grade/41e0e541711c47b996f11a2439a6663c)
-![特拉维斯-CI](http://img.shields.io/travis/Pix---/ioBroker.homepilot/master.svg)
+![已知漏洞](https://snyk.io/test/github/Pix---/ioBroker.homepilot/badge.svg?targetFile=package.json)
+![NPM](https://nodei.co/npm/iobroker.homepilot.png?downloads=true)
+![特拉维斯](http://img.shields.io/travis/Pix---/ioBroker.homepilot/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Pix---/ioBroker.homepilot?branch=master&svg=true)
 
 ＃ioBroker.homepilot
-适配器需要Homepilot基站的固件版本低于v5.0（2019年9月之前）。可以使用[ioBroker.homepilot20](https://github.com/homecineplexx/ioBroker.homepilot20)管理更新或更新的电台
+适配器需要Homepilot基站的固件版本低于v5.0（2019年9月之前）。可以使用[ioBroker.homepilot20](https://github.com/homecineplexx/ioBroker.homepilot20)NodeJS 10或更高版本来管理更新或更新的工作站
 
-：de：[Dokumentation](/docs/de/doc_homepilot_de.md)
+：de：[补语](/docs/de/doc_homepilot_de.md)
 
-：uk：[文档](/docs/en/doc_homepilot_en.md)
+：uk：[文献资料](/docs/en/doc_homepilot_en.md)
 
 ：ru：[Документация](/docs/en/doc_homepilot_en.md)
 
 ：葡萄牙：[Documentação](/docs/en/doc_homepilot_en.md)
 
-：荷兰：[Documentatie](/docs/en/doc_homepilot_en.md)
+：荷兰：[文献资料](/docs/en/doc_homepilot_en.md)
 
-：fr：[文档](/docs/en/doc_homepilot_en.md)
+：fr：[文献资料](/docs/en/doc_homepilot_en.md)
 
-：it：[Documentazione](/docs/en/doc_homepilot_en.md)
+：it：[文件资料](/docs/en/doc_homepilot_en.md)
 
 ：es：[Documentación](/docs/en/doc_homepilot_en.md)
 
@@ -44,6 +45,10 @@ hash: h4tiza7xEW571MRD8xKFFPGDnHTlUGekk6SiBhJIpKY=
 欢迎捐款！
 
 ## Changelog
+### 1.1.4 (2020-04-21)
++ (pix) xml2js-lib updated
++ NodeJS 10 or higher required
+
 ### 1.1.3 (2019-09-23)
 + (christofkac) Added support for Connect Actor
 
@@ -143,7 +148,7 @@ hash: h4tiza7xEW571MRD8xKFFPGDnHTlUGekk6SiBhJIpKY=
 
 The MIT License (MIT)
 
-Copyright (c) 2019 pix
+Copyright (c) 2016-2020 pix
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

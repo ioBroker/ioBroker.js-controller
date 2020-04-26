@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.devices/README.md
 title: ioBroker.devices
-hash: 2Vvzaww226NY2dyAxdkVjqJxtnxfiWp/5MGtsTAJPtQ=
+hash: Y04evJLVzOEM5HChNnb2Dvb8OVXBXmMD5qJ/0gxhE88=
 ---
 ![Logo](../../../en/adapterref/iobroker.devices/admin/devices.png)
 
@@ -16,21 +16,38 @@ hash: 2Vvzaww226NY2dyAxdkVjqJxtnxfiWp/5MGtsTAJPtQ=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/ioBroker/ioBroker.devices?branch=master&svg=true)
 
 # IoBroker.devices
-## Geräte Adapter für ioBroker
+## Geräteadapter für ioBroker
 Verwalten und erstellen Sie Geräte für die Verwendung in anderen Adaptern wie Material, iot, ...
 
-** Wichtig: Aktiviere Tab in Admin, wie Log und Skripte **
+** Wichtig: Registerkarte im Administrator aktivieren, z. B. Protokoll und Skripte **
 
 ![Bildschirm](../../../en/adapterref/iobroker.devices/img/screen.png)
 
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. **
+
 ## Machen
 - Fügen Sie Symbole für alle Zustände von Kanälen hinzu
-- Beschreibungen für Staaten hinzufügen
-- zeige Fehler für google / alisa / alexa
+- Beschreibungen für Zustände hinzufügen
+- Fehler für Google / Alisa / Alexa anzeigen
 - Klonen Sie ein vorhandenes Gerät in linkeddevices / alias / javascript
-- erkenne ob js-controller 2.0 installiert ist
+- Erkennen, ob js-controller 2.0 installiert ist
 
 ## Changelog
+
+### 0.3.6 (2020-04-17)
+* (Apollon77) Added Sentry error reporting for Frontend/React
+
+### 0.3.5 (2020-04-17)
+* (Apollon77) Fixed typo
+
+### 0.3.4 (2020-03-24)
+* (bluefox) Fixed error by device creation
+
+### 0.3.2 (2020-02-09)
+* (Apollon77) usage with all kinds of admin ports and reverse proxies optimized
+
+### 0.3.1 (2020-02-09)
+* (Apollon77) compatibility with Admin >4.0.0 added
 
 ### 0.2.0 (2019-12-20)
 * (bluefox) Backend was removed

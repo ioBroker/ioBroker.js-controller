@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: 0Sa3sSzmqayHNfgyBTbLkdyeSBK6oUU98CiU3akhXPY=
+hash: AoU8d3cSR1UqV8DWIHPCZXiuptIYD5dvwKiKxzCEZmY=
 ---
 ![Logo](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
@@ -58,6 +58,9 @@ function getSnapshot(caption){
 * caption * - заголовок для картинки в телеграме.
 Вызывать можно как по событию, так и по кнопке / рассписанию
 
+### Сообщения и авариии от Камеры
+Чтобы отключить подписку на сообщения и аварии от камеры, необходимо выставить состояние ''
+
 ## ENG
 ### Anpassung
 1. Öffnen Sie die Treibereinstellungen
@@ -100,13 +103,34 @@ function getSnapshot(caption){
 
 Es ist möglich, sowohl bei einem Ereignis als auch gemäß der Schaltfläche / dem Zeitplan zu verursachen
 
+### Nachrichten und Unfälle von der Kamera
+Um das Abonnement für Nachrichten und Alarme von der Kamera zu trennen, müssen Sie den Status 'subscribeEvents' = false setzen und den Adapter neu starten.
+
 ## Changelog
 
-### 0.0.3 (2020-04-03)
+### 0.3.0 (2020-04-24)
+* (haba1234) Added support for the Discovery adapter
+* (haba1234) Added password encryption
+
+### 0.2.0 (2020-04-21)
+* (haba1234) Added camera settings
+* (haba1234) Changes in the structure of objects (ATTENTION! After updating, delete cameras and add again)
+* (haba1234) Fixed issue [#9](https://github.com/Haba1234/ioBroker.onvif/issues/9)
+
+### 0.1.2 (2020-04-19)
+* (haba1234) Fixed uncaught exception: The \"chunk\" argument must be one of type string or Buffer
+* (haba1234) Add state 'subscribeEvents'
+
+### 0.1.1 (2020-04-18)
+* (haba1234) Port polling bug fixed
+
+### 0.1.0 (2020-04-15)
 * (haba1234) bag fix and different little things
 * (haba1234) compact mode
 * (haba1234) deprecated 'request' is replaced by class 'http'
 * (haba1234) 'onvif-snapshot' is replaced by class 'http'
+* (haba1234) Added translate
+* (haba1234) Refactoring code
 
 ### 0.0.2 (2018-11-20)
 * (haba1234) add events and snapshot

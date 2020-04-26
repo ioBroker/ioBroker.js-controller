@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: kgUMFfPvXJPVKfLhgliXogkU9vNv3A1C7FXzOWGintc=
+hash: Ls/2jx7RB4fYH8tFYFajvAI4JG/1h6KY9vtXwOrr3RM=
 ---
 ![商标](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -20,8 +20,10 @@ hash: kgUMFfPvXJPVKfLhgliXogkU9vNv3A1C7FXzOWGintc=
 支持PostgreSQL，mysql，Microsoft SQL Server和sqlite。
 如果需要默认端口，则可以保留端口0。
 
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+
 ### MS-SQL：
-对主机使用§§JJJJJ_0_0§§并检查是否已启用TCP / IP连接。
+对主机使用§§JJJJJ_0_0§§并检查已启用的TCP / IP连接。
 https://msdn.microsoft.com/zh-CN/library/bb909712(v=vs.90).aspx
 
 ### SQLite：
@@ -49,7 +51,7 @@ iobroker start sql
 ```
 
 ### MySQL：
-您可以在linux系统上安装mysql：
+您可以按照以下步骤在linux系统上安装mysql：
 
 ```
 apt-get install mysql-server mysql-client
@@ -64,6 +66,12 @@ FLUSH PRIVILEGES;
 如果需要，请编辑* / etc / mysql / my.cnf *以设置绑定到IP地址以进行远程连接。
 
 **警告**：iobroker用户是“ admin”。如果需要，请为iobroker用户授予有限的权利。
+
+在“ Windows”上，可以通过安装程序轻松安装它：https://dev.mysql.com/downloads/installer/。
+
+注意身份验证方法。 `node.js`尚不支持MySQL 8.0中的新加密算法，您必须选择旧式身份验证方法。
+
+![视窗](../../../en/adapterref/iobroker.sql/img/WindowsMySQLinstaller.png)
 
 ##数据库的结构
 默认数据库名称为“ iobroker”，但可以在配置中更改。
@@ -127,6 +135,25 @@ FLUSH PRIVILEGES;
 | q |整数|质量如数。您可以找到描述[这里](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states)|
 
 *注意：* MS-SQL使用BIT，其他使用BOOLEAN。 SQLite用于ts INTEGER和所有其他BIGINT。
+
+用户可以定义类型`number`的“计数器”功能。为此，创建了下表：
+
+| DB |查询中的名称|
+|------------|-------------------------|
+| MS-SQL | iobroker.dbo.ts_counter |
+| MySQL | iobroker.ts_counter |
+| PostgreSQL | ts_counter |
+| SQLite | ts_counter |
+
+结构体：
+
+|领域|类型描述 |
+|--------|--------------------------------------------|-------------------------------------------------|
+| id |整数| “数据点”表中的状态ID |
+| ts | BIGINT /整数|直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
+| val |真实|价值|
+
+该表存储了交换计数器时的值，并且该值没有增加，但是失败到零或更低的值。
 
 ###字符串
 类型为“字符串”的状态的值。
@@ -207,22 +234,24 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 ```
 
 ## StoreState
-如果要将其他数据写入InfluxDB，则可以使用内置系统功能** storeState **。
+如果要将其他数据写入InfluxDB / SQL，则可以使用内置系统功能** storeState **。
 此功能还可用于转换其他历史记录适配器（如历史记录或SQL）中的数据。
 
 不会根据ioBroker数据库检查给定的ID，也不需要在其中进行设置，而只能直接访问。
 
 消息可以具有以下三种格式之一：
 
-*一个ID和一个状态对象
-*一个ID和状态对象数组
-*具有状态对象的多个ID的数组
+*一个ID和一个状态对象：`{id：'adapter.0.device.counter'，状态：{val：1，ts：10239499}}`
+*一个ID和状态对象的数组：`{id：'adapter.0.device.counter'，state：[{val：1，ts：10239499}，{val：2，ts：10239599}，{val：3 ，ts：10239699}]}`
+*具有状态对象`[[{id：'adapter.0.device.counter1'，state：{val：1，ts：10239499}，{id：'adapter.0.device.counter2'，state： {val：2，ts：10239599}]`
+
+此外，您可以添加属性`rules: true`来激活所有规则，例如`counter`，`changesOnly`，`de-bounce`等：`{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
 
 ##获取历史
 除了自定义查询外，您还可以使用内置系统功能** getHistory **：
 
 ```
-var end = new Date().getTime();
+var end = Date.now();
 sendTo('sql.0', 'getHistory', {
     id: 'system.adapter.admin.0.memRss',
     options: {
@@ -237,11 +266,30 @@ sendTo('sql.0', 'getHistory', {
 });
 ```
 
+##获取计数器
+用户可以询问特定时段内某个计数器的值（类型=数字，计数器=真）。
+
+```
+var now = Date.now();
+// get consumption value for last 30 days
+sendTo('sql.0', 'getCounter', {
+    id: 'system.adapter.admin.0.memRss',
+    options: {
+        start:      now - 3600000 * 24 * 30,
+        end:        now,
+    }
+}, result => {
+    console.log(`In last 30 days the consumption was ${result.result} kWh`);
+});
+```
+
+如果计数器将被替换，它也会被计算。
+
 ##通过Javascript进行历史记录记录管理
 适配器支持通过JavaScript启用和禁用历史记录日志，还支持使用其设置检索启用的数据点列表。
 
 ###启用
-该消息要求具有数据点的“ id”。其他可选的“选项”用于定义特定于数据点的设置：
+该消息需要具有数据点的“ id”。其他可选的“选项”用于定义特定于数据点的设置：
 
 ```
 sendTo('sql.0', 'enableHistory', {
@@ -252,7 +300,7 @@ sendTo('sql.0', 'enableHistory', {
         retention:    31536000,
         maxLength:    3,
         changesMinDelta: 0.5,
-        aliasId: ""
+        aliasId: ''
     }
 }, function (result) {
     if (result.error) {
@@ -315,13 +363,33 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 -**允许并行请求**：允许同时向DB发送SQL请求。
 
 ＃＃ 默认设置
--**防抖动间隔**：请勿经常存储该间隔值。
+-**反跳间隔**：请勿存储比该间隔更频繁的值。
 -**记录任何不变的值**：每X秒额外写入一次值。
--**从最后一个值到对数值的最小差值**：两个值之间的最小间隔。
+-**从最后一个值到对数的最小差**：两个值之间的最小间隔。
 -**存储保留**：值将在数据库中存储多长时间。
 
-## 1.10.0（2019-07-xx）WIP !!
+## 1.12.1（2020-04-26）
+*（Apollon77）修复了潜在的崩溃（Sentry）
+
+## 1.12.0（2020-04-23）
+*（Apollon77）实施max Connections设置并遵守该设置，现在可以控制使用了多少个数据库并发连接（默认为100），而其他连接最多等待10s的空闲连接才失败）
+*（Apollon77）将依赖项从admin更改为全局依赖项
+*（Apollon77）还在之间更新连接状态
+*（Apollon77）修复了一些潜在的崩溃案例（Sentry报告）
+*（Omega236）将ID添加到查询的错误消息中
+*（Apollon77）更新pg以与Node.js 14保持兼容
+*（Apollon77）开始清楚地结束卸载超时...仍然有些情况！
+
+## 1.11.1（2020-04-19）
+* __需要js-controller> = 2.0.0__
+*（Apollon77）删除了adapter.objects的用法
+*（Apollon77）检查对象是否已更改并忽略不变
+*（Apollon77）使用js-controller 3.0添加Sentry进行错误报告
+*（Apollon77）确保忽略未定义的值
+
+## 1.10.1（2020-04-12）
 *（bluefox）转换为ES6
+*（bluefox）计数器功能已实现。
 
 ## 1.9.5（2019-05-15）
 *（Apollon77）添加对nodejs 12的支持
@@ -341,7 +409,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 *（Apollon77）修复了getHistory
 
 ## 1.7.3（2018-03-28）
-*（Apollon77）尊重“永久保留”设置以保留数据点配置
+*（Apollon77）尊重“永久保留”设置，以保留数据点配置
 
 ## 1.7.2（2018-03-24）
 *（Apollon77）禁止为SQLite写入NULL
@@ -502,7 +570,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2018 bluefox <dogafox@gmail.com>, Apollon77
+Copyright (c) 2015-2020 bluefox <dogafox@gmail.com>, Apollon77
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

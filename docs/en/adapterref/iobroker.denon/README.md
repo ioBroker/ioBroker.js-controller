@@ -830,6 +830,9 @@ If you are missing any functions or detected a bug, please open an [issue](https
 The adapter is tested with an DENON AVR-X1200W and a Marantz SR5009.
    
 ## Changelog
+### 1.7.5 (2020-04-21)
+* (foxriver76) better error handling
+
 ### 1.7.4 (2020-04-01)
 * (foxriver76) fix potential timeout issues
 

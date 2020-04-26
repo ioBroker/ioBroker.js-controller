@@ -170,6 +170,9 @@ The forecast values can then be used to set the MinSoC of the battery, enable or
 
 ## Changelog
 
+### 2.1.2
+-   Added setting for minimum SoC to enable battery management
+
 ### 2.1.1
 -   Fixed problems in config and translations
 

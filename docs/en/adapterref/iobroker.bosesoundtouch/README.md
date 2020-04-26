@@ -68,6 +68,9 @@ Soundtouch Application itself.
 
 ## Changelog
 
+### 0.9.2 (09.12.2019)
+* We dont use adapter.objects anymore
+
 ### 0.9.1 (12.05.2019)
 
 * Support for compact mode.

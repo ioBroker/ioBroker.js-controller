@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.metalarm
-hash: d1rW8+dWfJIl6ria3Tyss9F+KnMsLdWlGNZWIb/m7GI=
+hash: 1qF1F3sF76A7SsE8czndOHy0mUHbge1glmr0Dulmlgg=
 ---
 ![商标](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
@@ -14,8 +14,6 @@ hash: d1rW8+dWfJIl6ria3Tyss9F+KnMsLdWlGNZWIb/m7GI=
 ![NPM](https://nodei.co/npm/iobroker.meteoalarm.png?downloads=true)
 
 ＃ioBroker.meteoalarm
-=================
-
 ioBroker的meteoalarm适配器---------------------------------------------- --------------------------------此适配器从meteoalarm.eu获取天气警报，包括风，雪，雨，高温和低温等。此信息以本地语言和特定区域提供。
 
 ＃＃ 如何使用它

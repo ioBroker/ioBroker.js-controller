@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-airpurifier/README.md
-title: ioBroker.mihome-空气净化器
-hash: 4cO83i4dXikaBbW73ZksOsXn9rVQP2OKRCk+RMXHOS0=
+title: ioBroker.mihome空气净化器
+hash: GZpDfYg6GTTqGpD7ZIU8MYgRKvu6uwkllS7U5QdFRpk=
 ---
 ![安装数量](http://iobroker.live/badges/mihome-airpurifier-stable.svg)
 ![建立状态](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)
@@ -12,7 +12,7 @@ hash: 4cO83i4dXikaBbW73ZksOsXn9rVQP2OKRCk+RMXHOS0=
 ---
 ![商标](../../../en/adapterref/iobroker.mihome-airpurifier/admin/mihome-airpurifier.png)
 
-＃ioBroker.mihome-airpurifier适用于ioBroker IoT平台的小米空气净化器适配器。
+＃ioBroker.mihome-airpurifier
 ##如何获取令牌？
 您必须安装miio命令行工具`npm install -g miio`
 
@@ -36,7 +36,7 @@ Support: At least basic
 
 2.如果没有Mi Home App：
 
-    您重置空气净化器的WIFI设置。然后，将网络连接到空气净化器的WIFI并运行以下命令：
+    您重置空气净化器的WIFI设置。然后，将您的网络与空气净化器的WIFI连接，然后运行以下命令：
 
     `miio discover`
 
@@ -69,7 +69,7 @@ Support: At least basic
 | `manuallevel` |将手动模式的功率控制在0-100％的范围内。如有必要，这还将打开/关闭设备。 |
 
 ##信息状态
-以下信息是从空气净化器中收集的（只读状态）：
+从您的空气净化器收集以下信息（只读状态）：
 
 ＃＃＃ 设备信息
 |州|描述 |
@@ -80,6 +80,9 @@ Support: At least basic
 | `pm25` | PM2.5中的空气污染。 |
 
 ## Changelog
+### 0.1.1 (18.04.2020)
+* (JoJ123) move to typescript
+
 ### 0.0.6 (09.04.2019)
 * (JoJ123) update miio to fork of Sineos
 
@@ -121,4 +124,4 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
-Copyright (c) 2019 Johannes Jaeger johannesjaegeroffice@gmail.com
+Copyright (c) 2020 Johannes Jaeger <johannesjaegeroffice@gmail.com>

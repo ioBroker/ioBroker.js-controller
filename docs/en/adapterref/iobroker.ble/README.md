@@ -42,6 +42,15 @@ If you have any device transmitting specially encoded information via advertisem
 	### __WORK IN PROGRESS__
 -->
 
+### 0.11.4 (2020-04-23)
+* (AlCalzone) Utilize JS-Controller's auto module rebuild if possible
+
+### 0.11.3 (2020-04-22)
+* (AlCalzone) Fixed a crash that happens when `noble` can not be loaded.
+
+### 0.11.2 (2020-04-19)
+* (AlCalzone) Avoid setting `undefined` as a state value to be compatible with JS-Controller 3.0
+
 ### 0.11.1 (2020-04-11)
 * (AlCalzone) Fixed typo in Ruuvi Tag plugin: `motionCounter` -> `movementCounter`
 

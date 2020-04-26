@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.discovery/README.md
 title: ioBroker发现适配器
-hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
+hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
 ---
 ![商标](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -16,8 +16,10 @@ hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 ＃ioBroker发现适配器
 **使用所有已知方法检测设备。**
 
-这是特殊的适配器，它尝试查找主机可以访问的所有可能的设备。
+这是特殊的适配器，它试图查找主机可以访问的所有可能的设备。
 到目前为止，它可以通过ping，UPnP（串行计划）进行检测。
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##实际支持
 ###自动发现
@@ -33,36 +35,46 @@ hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 -巴士
 -钥匙
 -能源经理（E.ON / Solarwatt）
+-enet（Jung）
 -爱普生Stylus PX830
--Fakeroku
+-Fakeroku（和声）
 -FHEM
 -消防电视
+-Fritzdect
 -Fronius
 -G-Homa插头
 -和谐
 -家庭助理
 -Homematic CCU（hm-rpc，hm-rega）
 -飞行员
+-HP-lio
 -飞利浦HUE
 -Plex
 -InfluxDB
 -KLF-200
--KNX
+-KNX（实际上已禁用）
+-科迪
 -Landroid
 -LGTV
 -轻巧
 -Loxone
 -狼疮
 -MAX！立方体
+-McLighting
 -MegaD
 -Miele
 -Mi Home智能家居
+-Mikrotik
 -MiLight桥（v6）
+-MPD
 -音乐广播
 -Mysensors USB /串行（9600、38400、57600、115200）
+-Nuki2
 -坚果
+-安桥
 -OpenHAB
 -平
+-Plex
 -Proxmox
 -RFLink（序列号57600baud）
 -三星电视
@@ -74,7 +86,7 @@ hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 -SQL（MySQL，MSSQL，PostgreSQL）
 -挤压盒
 -SqueezeboxRPC
--施蒂贝尔
+-Synology
 -TR-064
 -Trådfri
 -UPnP
@@ -100,12 +112,9 @@ hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 -Foobar200（安装程序）
 -fritzbox（ruhr70）
 -km200（弗兰克·乔克）
--Kodi（安装员）
 -megaesp（ausHaus）
 -modbus（蓝狐）
--mpd（安装程序）
 -mqtt / mqtt-client（Bluefox）
--onkyo（蓝狐）
 -owfs（Bluefox）
 -rpi2（如果ioBroker在Raspberry上运行）
 -rwe-smarthome（PArns）
@@ -116,6 +125,21 @@ hash: JQaO9vzSOmuhezvF1itvGQZ/6JhY0QjLC9q3OLbycjs=
 -xs1（frankjoke）
 
 ## Changelog
+
+### 2.3.3 (2020-04-23)
+* correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
+* catch http errors better (Sentry IOBROKER-DISCOVERY-2)
+
+### 2.3.2 (2020-04-18)
+* (Apollon77) Fix potential crash in knx discovery
+
+### 2.3.1 (2020-04-16)
+* (instalator) Add Synology, Onkyo, Mpd, Mikrotik
+* (instalator) Fixed eKey, Mihome, Broadlink2, Plex
+* (instalator) Several optimizations and fixing of crash causes
+* (Apollon77) Add Sentry Crash Reporting for js-controller 3.0
+* (bluefox) Refactoring
+
 ### 2.2.2 (2020-02-13)
 * (dkleber89) Add discovery for Beckhoff PLC
 * (forelleblau) Add discovery for Solarlog

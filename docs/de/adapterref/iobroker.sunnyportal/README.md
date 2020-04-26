@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sunnyportal/README.md
 title: ioBroker.sunnyportal
-hash: aQpHilv11JQ0wbXCkGwodp0LO6jO9IDS+UiiRkN+hoU=
+hash: TMqCdVLk68bgg1DcittqVGvvI5+Y6fTY8WZiIprn2p8=
 ---
 ![Logo](../../../en/adapterref/iobroker.sunnyportal/admin/sunnyportal.png)
 
+![Build-Status](https://travis-ci.org/marvincaspar/ioBroker.sunnyportal.svg?branch=master)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.sunnyportal.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sunnyportal.svg)
 ![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/sunnyportal-installed.svg)
@@ -16,6 +17,8 @@ hash: aQpHilv11JQ0wbXCkGwodp0LO6jO9IDS+UiiRkN+hoU=
 ![NPM](https://nodei.co/npm/iobroker.sunnyportal.png?downloads=true)
 
 # IoBroker.sunnyportal
+![Testen und freigeben](https://github.com/marvincaspar/ioBroker.sunnyportal/workflows/Test%20and%20Release/badge.svg)
+
 ## Sunny Portal Adapter für ioBroker
 Rufen Sie jede Minute die aktuellen Daten von Sunny Portal ab.
 
@@ -25,7 +28,17 @@ Rufen Sie jede Minute die aktuellen Daten von Sunny Portal ab.
 ### Objektübersicht
 ![Objektübersicht](../../../en/adapterref/iobroker.sunnyportal/./docs/images/object-overview.png)
 
+## Credits
+Ich habe den Code auf mkorthuis '[sunnyportal-api](https://github.com/mkorthuis/sunnyportal-api/) gestützt
+
 ## Changelog
+
+### 0.1.5
+* (Marvin Caspar) Reduce update interval to 60 seconds
+
+### 0.1.4
+* (Marvin Caspar) Rewrite code to fix login issue
+* (Marvin Caspar) Add units to ioBroker states
 
 ### 0.1.3
 * (Marvin Caspar) Fix version

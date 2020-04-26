@@ -145,12 +145,16 @@ Z6: Output a div tag that clears special formatting in the feed-html (in both ex
 Z7: Without output. This line closed the javascript loop . Everything that was defined between Z2 and Z7 is repeated for every single article.  
 
 ## Todo
+* cleanup unused entrys in datapoint info.lastRequest by saving in admin dialog.
+* button for cleanup not used datapoints in admin dialog
 * ~~Multi widget RSS Feeds~~
 * ~~Multi widget marquee~~
 * ~~Weitere Datenpunkte im Template verfügbar machen.~~
 * ~~Widget für Laufschrift mit den Titeln https://forum.iobroker.net/topic/31242/nachrichten-ticker-newsticker-via-php-in-vis-einbinden/2~~
 
 ## Changelog
+### 0.0.28
+* remove customtab
 ### 0.0.27
 * adapter configuration is now editable
 ### 0.0.26

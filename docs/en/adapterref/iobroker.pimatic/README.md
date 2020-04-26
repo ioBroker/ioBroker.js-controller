@@ -9,6 +9,11 @@ This adapter connects ioBroker with [pimatic](https://pimatic.org/).
 It exports devices and groups from pimatic and then monitors updates of variables.
 
 ## Changelog
+
+### 0.3.0 (2020.04.12)
+* (Apollon77) make auto decrypt compatble with js-controller 3.0
+* (Apollon77) Remove Admin 2 support
+
 ### 0.2.1 (2020.03.08)
 * (tehmilcho) Added Variables with Readonly false to the Sync
 * (bluefox) Reafactoring (compact mode, ES6)

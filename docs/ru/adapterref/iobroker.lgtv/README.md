@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lgtv/README.md
 title: ioBroker.lgtv
-hash: e1vRRQd3Kvr7YBcscpRBGok3Apv+ZLAD2XhIHxpR73w=
+hash: 7IHLz/tapp08N9APUPMn1oaS5CtG3bxyukS3VKinNrY=
 ---
 ![логотип](../../../en/adapterref/iobroker.lgtv/admin/lgtv.png)
 
@@ -15,15 +15,13 @@ hash: e1vRRQd3Kvr7YBcscpRBGok3Apv+ZLAD2XhIHxpR73w=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/xx55hgsuff4fas47/branch/master?svg=true)
 
 # IoBroker.lgtv
-=================
-
 LG WebOS SmartTV адаптер для ioBroker
 
 Дистанционное управление LG WebOS SmartTV (модели 2013 года и выше) из [ioBroker](https://www.iobroker.net).
 
 ---
 
-## Использование:
+## Применение:
 Установите адаптер через интерфейс администратора ioBroker.
 В конфигурации адаптера введите IP-адрес вашего телевизора LG WebOS.
 При первом подключении вы получите сообщение о сопряжении на экране телевизора, где вы должны разрешить подключение.
@@ -169,7 +167,7 @@ LG WebOS SmartTV адаптер для ioBroker
 
 на
 
-true, когда телевизор включен, и false, если телевизор выключен.
+Значение true, когда телевизор включен, и значение false, если телевизор выключен.
 
 ---
 

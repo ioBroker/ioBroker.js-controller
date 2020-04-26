@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.pushsafer/README.md
-title: без названия
-hash: Y5Kks5tuSiTJUikSXpEqu6ZdbHVMxRB3eg8UFZ5YsA8=
+title: ioBroker pushsafer Адаптер
+hash: rMEVbK1o78/tNZmAIWohQc//PmhHxDENCCFgi0pUSSE=
 ---
 ![логотип](../../../en/adapterref/iobroker.pushsafer/admin/pushsafer.png)
 
@@ -12,10 +12,7 @@ hash: Y5Kks5tuSiTJUikSXpEqu6ZdbHVMxRB3eg8UFZ5YsA8=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.pushsafer.svg)
 ![NPM](https://nodei.co/npm/iobroker.pushsafer.png?downloads=true)
 
-ioBroker pushsafer Адаптер
-
-==============
-
+# IoBroker pushsafer Адаптер
 Отправить pushsafer уведомления от ioBroker.
 Pushsafer.com поддерживает устройства iOS, Android, Windows 10 (телефон и рабочий стол) и Webpush (Chrome & Firefox)
 
@@ -23,7 +20,7 @@ Pushsafer.com поддерживает устройства iOS, Android, Window
 Прежде всего требуется учетная запись на pushsafer с [закрытый ключ](https://www.pushsafer.com/), вместо закрытого ключа, вы также можете использовать псевдоним с предопределенными параметрами.
 ![Конфигурация Pushsafer](../../../en/adapterref/iobroker.pushsafer/img/Screen0.png)
 
-## Использование
+## Применение
 Чтобы отправить уведомление от ScriptEngine, просто напишите:
 
 ```javascript
@@ -45,18 +42,24 @@ sendTo("pushsafer", {
    retry:     '600',                   // optional  - Integer 60-10800 (60s steps): Time in seconds, after a message shuld resend (see pushsafers API description)
    expire:    '1200',                  // optional  - Integer 60-10800: Time in seconds, after the retry/resend should stop. (see pushsafers API description)
    answer:    '1',                     // optional  - 1 = Answer is possible, 0 = Answer is not possible. (see pushsafers API description)
-   picture:   'absolutePathToPicture'  // optional  - absolute path to picture or base64 coded image URL
-   picture2:  'absolutePathToPicture2' // optional  - absolute path to picture or base64 coded image URL
-   picture3:  'absolutePathToPicture3' // optional  - absolute path to picture or base64 coded image URL
+   picture:   'absolutePathToPicture', // optional  - absolute path to picture or base64 coded image URL
+   picture2:  'absolutePathToPicture2',// optional  - absolute path to picture or base64 coded image URL
+   picture3:  'absolutePathToPicture3',// optional  - absolute path to picture or base64 coded image URL
    url:       'http://blabla',         // optional  - URL or URL scheme, https://www.pushsafer.com/en/url_schemes
    urlTitle:  'Link to BLA',           // optional  - title of URL
-   time2live  '60',                    // optional  - Integer number 0-43200: Time in minutes, after which message automatically gets purged.
+   time2live: '60',                    // optional  - Integer number 0-43200: Time in minutes, after which message automatically gets purged.
 });
 ```
 
 Вы можете найти описание API [Вот](https://www.pushsafer.com/en/pushapi)
 
+Вы можете использовать блочно тоже.
+
 ## Changelog
+### 1.0.2 (2020-04-24)
+* (bluefox) Added color icon option
+* (bluefox) Refactoring
+
 ### 0.1.9 (2019-09-19)
 * (appzer) add new sounds & icons, add new parameter (priority, retry, expire, answer)
 
@@ -83,7 +86,7 @@ sendTo("pushsafer", {
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2017 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

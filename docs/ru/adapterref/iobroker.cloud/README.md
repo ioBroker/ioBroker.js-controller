@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.cloud/README.md
 title: Облачный адаптер ioBroker
-hash: RebA3aDvQtVtvoT0+yWQ951WyaujEGwhHFc9X8QsJ5c=
+hash: FSkpNQoml2w+OoHO8MMRFHzZeypm1KRKbim/xZiTs/0=
 ---
 ![логотип](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
 
@@ -15,6 +15,8 @@ hash: RebA3aDvQtVtvoT0+yWQ951WyaujEGwhHFc9X8QsJ5c=
 # IoBroker облачный адаптер
 Этот адаптер позволяет подключаться из Интернета через облако ioBroker к локальной установке ioBroker.
 
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
+
 ## Настройки
 ### APP-ключ
 Для использования облачного адаптера вы должны сначала получить ключ APP на [https://iobroker.net](https://iobroker.net).
@@ -23,16 +25,16 @@ hash: RebA3aDvQtVtvoT0+yWQ951WyaujEGwhHFc9X8QsJ5c=
 
 ![вступление](../../../en/adapterref/iobroker.cloud/img/intro.png)
 
-### Экземпляр
+### Пример
 Все запросы от облачного адаптера будут перенаправлены в какой-либо WEB-экземпляр. Пользователь должен указать здесь экземпляр WEB, который будет показан пользователю при входе на сайт https://iobroker.net.
 
 ### Разрешить самозаверяющие сертификаты
 Если вы используете стандартное облако iobroker.net, вы можете отключить его. Эта опция важна, только если используется собственное облако.
 
 ### Настройки Алекса
-*** Alexa больше не поддерживается адаптером `cloud`. Для этого используйте адаптер ioBroker.iot. ***
+*** Alexa больше не поддерживается в адаптере `cloud`. Для этого используйте адаптер ioBroker.iot. ***
 
-Некоторое время он все еще будет работать для пользователей `.pro`, а документация доступна [Вот](doc/alexa.md).
+В течение некоторого времени он все еще будет работать для пользователей `.pro`, а документация доступна [Вот](doc/alexa.md).
 
 ## IFTTT
 [инструкции](doc/ifttt.md)
@@ -63,10 +65,17 @@ curl --data "myString" https://iobroker.net/service/custom_test/<user-app-key>
 «X» можно определить в настройках с помощью опции «Использовать экземпляр text2command».
 
 ### SimpleApi
-*сделать*
+*делать*
 
 ## Changelog
-### 3.0.0 (2020-01-04)
+### 3.0.3 (2020-04-14)
+* (bluefox) Updated socket.io version
+* (bluefox) Added sentry.io reporting
+
+### 3.0.2 (2020-02-23)
+* (Apollon77) fix for pot. crash when used with web 3.x
+
+### 3.0.1 (2020-01-05)
 * (bluefox) Breaking changes: no alexa support. Use ioBroker.iot for that.
 * (bluefox) Support of multiple clients for .pro
 

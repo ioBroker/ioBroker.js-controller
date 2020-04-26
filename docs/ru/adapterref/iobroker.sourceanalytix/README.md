@@ -3,18 +3,21 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: Kt7KXCfmXRBuQVVJDSDPDW5RzxYkn7oDwdbKC49xuLQ=
+hash: cvVNKwzs3MHPMuBDA8ApZxWB+5OR5cSNPbZ5l7xCwE4=
 ---
 # SourceAnalytix
 # {Dev - in Progress, стабильный кандидат версии 0.4.0}
 
-![тесты](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix.svg?branch=master)
-![Количество установок](http://iobroker.live/badges/sourceanalytix-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
-![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.sourceanalytix.svg)
+![Количество установок (последняя)](http://iobroker.live/badges/sourceanalytix-installed.svg)
+![Количество установок (стабильно)](http://iobroker.live/badges/sourceanalytix-stable.svg)
+![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)
+![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.sourceanalytix/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
+![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.sourceanalytix/master.svg)
 
-Детальный анализ потребления энергии, газа и жидкости Любой источник (кВтч, Вт, Вт, л / ч или м3) может быть использован для анализа данных:
+Детальный анализ вашей энергии, газа и жидкости Любой источник (кВтч, Вт, Вт, л / ч или м3) может быть использован для анализа данных:
 
 * Отслеживание потребления ежедневно, еженедельно, ежемесячно, ежеквартально, ежегодно
 * рассчитать стоимость (текущая цена настраивается)
@@ -32,7 +35,7 @@ hash: Kt7KXCfmXRBuQVVJDSDPDW5RzxYkn7oDwdbKC49xuLQ=
 * [] Расчет периода выбирается, но еще не реализован
 * [] месячная стоимость еще не включена в расчет
 
-## Сделать
+## Делать
 * [ ] Документация
 * [] пересчет на основе значений счетчика (настраивается по дате)
 * [] добавить состояния объекта для предыдущего [x] дня, [x] недели, [x] месяца, [x] квартала, [x] года, настраиваемых в настройках адаптера
@@ -41,6 +44,17 @@ hash: Kt7KXCfmXRBuQVVJDSDPDW5RzxYkn7oDwdbKC49xuLQ=
 Если вам нравится моя работа, рассмотрите возможность личного пожертвования (это персональная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
+### 0.4.5 work in progress
+* (Dutchman) Implement Sentry
+* (Dutchman) Bugfix : Warn message for week creations (js-controller 3.x)
+
+### 0.4.2 (2020-04-12) BugFixes
+* (Dutchman) Translations updated
+* (Dutchman) Bugfix : Values not resettet at new day start
+* (Dutchman) Bugfix : Handle calculations when reading = 0
+* (Dutchman) Bugfix : Handle calculations at initialisation
+* (Dutchman) Bugfix : Pauze all calculation during day-reset
+* (Dutchman) Do not calculate values is state is update with same value as previous
 
 ### 0.4.0 (2020-04-05) Adapter completely redesigned, please test carefully
 * (Dutchman) Complete code rebuild

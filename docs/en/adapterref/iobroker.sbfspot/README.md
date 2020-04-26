@@ -8,7 +8,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)](https://nodei.co/npm/iobroker.sbfspot/)
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/rg-engineering/ioBroker.sbfspot.svg)](https://greenkeeper.io/)
+
 
 **If you like it, please consider a donation:**
                                                                           
@@ -44,6 +44,13 @@ sometimes npm intall must be called more then one time to successfully install a
 * please create issues at [github](https://github.com/rg-engineering/ioBroker.sbfspot/issues) if you find bugs or whish new features
 
 ## Changelog
+
+## 3.0.0 (2020-04-25)
+* (René) sqlite3 package replaced by better-sqlite3
+* (René) roles of DP overworked
+* (René) see issue #19: get data only when daylight added as an option
+* (René) see issue #29: default color for widget axis label changed
+* (René) widget: log if widget is too small added
 
 ## 2.4.3 (2020-04-02)
 * (René) bugfix in DB_CalcHistory_Today used for widget

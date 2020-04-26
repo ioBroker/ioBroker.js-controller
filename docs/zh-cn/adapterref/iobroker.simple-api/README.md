@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.simple-api/README.md
 title: 简单API
-hash: Pzu6XWof0Q+xvD4BXm7QsBDq9u2W21/4MARrzN1g9I0=
+hash: vDYbOjpcjVC5q909oU5KaSM3FZtD+CJgTHCxRwVVEH4=
 ---
 ![商标](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
@@ -15,6 +15,8 @@ hash: Pzu6XWof0Q+xvD4BXm7QsBDq9u2W21/4MARrzN1g9I0=
 
 ＃简单API
 这是RESTFul接口，用于从ioBroker读取对象和状态，并通过HTTP Get / Post请求写入/控制状态。
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##用法
 在浏览器```http://ipaddress:8087/help```中调用以获取有关API的帮助。结果是：
@@ -64,7 +66,7 @@ http://ipaddress:8087/get/system.adapter.admin.0.alive
 {"val":true,"ack":true,"ts":1442432193,"from":"system.adapter.admin.0","lc":1442431190,"expire":23437,"_id":"system.adapter.admin.0.alive","type":"state","common":{"name":"admin.0.alive","type":"boolean","role":"indicator.state"},"native":{}}
 ```
 
-或致电例如：
+或致电：
 
 ```
 http://ipaddress:8087/get/system.adapter.admin.0.alive?prettyPrint
@@ -92,7 +94,7 @@ http://ipaddress:8087/get/system.adapter.admin.0.alive?prettyPrint
 ```
 
 ### GetBulk
-    通过一个请求获得多个状态，以请求中的列表顺序作为对象数组返回，并以id / val / ts作为子对象
+    通过一个请求获得许多状态，以请求中的列表顺序作为对象数组返回，并以id / val / ts作为子对象
 
 ###设置
 致电例如：
@@ -107,7 +109,7 @@ http://ipaddress:8087/set/javascript.0.test?value=1
 {"id":"javascript.0.test","value":1}
 ```
 
-或致电例如：
+或致电：
 
 ```
 http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint
@@ -144,7 +146,7 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
 -有限制的数字：x =>最大值-（x-最小值）
 
 ### SetBulk
-    通过一个请求设置多个状态。该请求也支持POST方法，因为POST数据应该在正文中，而不是URL。
+    通过一个请求设置多个状态。此请求也支持POST方法，因为POST数据应在正文中，而不是URL。
 
 ### SetValueFromBody
     允许通过POST正文内容设置给定State的值。
@@ -157,10 +159,10 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
 Grafana JSON / SimpleJSON插件需要此命令。
 
 ###查询
-如果已指定数据源（History，SQL），则将在指定时间段内从指定数据点读取数据，否则仅读取当前值。
+如果已指定数据源（History，SQL），则在指定的时间段内从指定的数据点中读取数据，否则仅读取当前值。
 Grafana JSON / SimpleJSON插件需要此命令。
 
-＃＃＃ 救命
+＃＃＃ 帮帮我
 返回[这个](#usage)输出
 
 ##安装
@@ -176,7 +178,7 @@ Grafana JSON / SimpleJSON插件需要此命令。
 如果启用身份验证，则必须填写其他两个字段： <pre> ？user = admin＆pass = iobroker </pre>
 
 ### GetPlainValue
-读取状态值作为文本。您可以指定更多ID除以分号
+读取状态值作为文本。您可以指定更多的ID，以分号分隔
 
 <pre> http：// ip：8087 / getPlainValue / admin.0.memHeapTotal </pre>
 
@@ -186,16 +188,16 @@ Grafana JSON / SimpleJSON插件需要此命令。
 
 ###得到
 将状态和状态的对象数据读取为json。您可以指定更多的ID，以分号分隔。
-如果请求了多个ID，则将返回JSON数组。
+如果请求多个ID，则将返回JSON数组。
 
 <pre> http：// localhost：8087 / get / admin.0.memHeapTotal /？prettyPrint </pre>
 
-<pre> {“ val”：31.19，“ ack”：true，“ ts”：1423154619，“ from”：“ system.adapter.admin.0”，“ lc”：1423153989，“ _ id”：“ system.adapter.admin。 0.memHeapTotal”，“ type”：“ state”，“ common”：{“ name”：“ admin.0.memHeapTotal”，“ type”：“ number”，“ role”：“ indicator.state”，“ unit” “：” MB“，”历史记录“：{” enabled“：true，” changesOnly“：true，” minLength“：480，” maxLength“：960，” retention“：604800，” debounce“：10000}}，”本机”：{}} </pre>
+<pre> {“ val”：31.19，“ ack”：true，“ ts”：1423154619，“ from”：“ system.adapter.admin.0”，“ lc”：1423153989，“ _ id”：“ system.adapter.admin。 0.memHeapTotal”，“类型”：“状态”，“公共”：{“名称”：“ admin.0.memHeapTotal”，“类型”：“数字”，“角色”：“ indicator.state”，“单位” “：” MB“，”历史记录“：{” enabled“：true，” changesOnly“：true，” minLength“：480，” maxLength“：960，” retention“：604800，” debounce“：10000}}，”本机”：{}} </pre>
 
-<pre> http：// ip：8087 / get / admin.0.memHeapTotal，admin.0.memHeapUsed /？prettyPrint </pre><pre> [{“ val”：31.19，“ ack”：true，“ ts”：1423154544，“ from”：“ system.adapter.admin.0”，“ lc”：1423153989，“ _id”：“ system.adapter.admin .0.memHeapTotal”，“类型”：“状态”，“公共”：{“名称”：“ admin.0.memHeapTotal”，“类型”：“数字”，“角色”：“ indicator.state”，“ unit“：” MB“，” history“：{” enabled“：true，” changesOnly“：true，” minLength“：480，” maxLength“：960，” retention“：604800，” debounce“：10000}}， “ native”：{}}，{“ val”：16.25，“ ack”：true，“ ts”：1423154544，“ from”：“ system.adapter.admin.0”，“ lc”：1423154544，“ _id” ：“” system.adapter.admin.0.memHeapUsed“，” type“：”状态“，” common“：{”名称“：” admin.0.memHeapUsed“，” type“：”数字“，”角色“： “ indicator.state”，“ unit”：“ MB”，“ history”：{“ enabled”：true，“ changesOnly”：true，“ minLength”：480，“ maxLength”：960，“ retention”：604800，“ debounce”：10000}}，“ native”：{}}] </pre>
+<pre> http：// ip：8087 / get / admin.0.memHeapTotal，admin.0.memHeapUsed /？prettyPrint </pre><pre> [{“ val”：31.19，“ ack”：true，“ ts”：1423154544，“ from”：“ system.adapter.admin.0”，“ lc”：1423153989，“ _id”：“ system.adapter.admin .0.memHeapTotal”，“类型”：“状态”，“公共”：{“名称”：“ admin.0.memHeapTotal”，“类型”：“数字”，“角色”：“ indicator.state”，“ unit“：” MB“，” history“：{” enabled“：true，” changesOnly“：true，” minLength“：480，” maxLength“：960，” retention“：604800，” debounce“：10000}}， “ native”：{}}，{“ val”：16.25，“ ack”：true，“ ts”：1423154544，“ from”：“ system.adapter.admin.0”，“ lc”：1423154544，“ _id” ：“” system.adapter.admin.0.memHeapUsed“，” type“：” state“，” common“：{” name“：” admin.0.memHeapUsed“，” type“：” number“，” role“： “ indicator.state”，“ unit”：“ MB”，“ history”：{“ enabled”：true，“ changesOnly”：true，“ minLength”：480，“ maxLength”：960，“保留”：604800，“ debounce”：10000}}，“ native”：{}}] </pre>
 
 ### GetBulk
-读取带有时间戳的更多ID的状态。您可以指定更多的ID，以分号分隔。
+使用时间戳读取更多ID的状态。您可以指定更多的ID，以分号分隔。
 始终会返回JSON数组。
 
 <pre> http：// ip：8087 / getBulk / admin.0.memHeapTotal，admin.0.memHeapUsed /？prettyPrint </pre>
@@ -220,7 +222,7 @@ Grafana JSON / SimpleJSON插件需要此命令。
 ###对象
 获取模式的所有对象的列表。如果未指定任何模式，则将返回所有对象作为JSON数组。
 
-<pre> http：// ip：8087 / objects？prettyPrint </pre><pre> {“” system.adapter.admin.0.uptime“：{” _id“：” system.adapter.admin.0.uptime“，” type“：” state“，” common“：{” name“：” admin。 0.uptime”，“ type”：“ number”，“ role”：“ indicator.state”，“ unit”：“ seconds”，“}”，“ native”：{}}，“ system.adapter.admin.0.memRss” “：{” _id“：” system.adapter.admin.0.memRss“，” type“：”州“，” common“：{” name“：” admin.0.memRss“，” desc“：”常驻设置大小”，“类型”：“数字”，“角色”：“ indicator.state”，“单位”：“ MB”，“历史记录”：{“启用”：true，“ changesOnly”：true，“ minLength” ：480，“ maxLength”：960，“ retention”：604800，“ debounce”：10000}}，“ native”：{}}，...
+<pre> http：// ip：8087 / objects？prettyPrint </pre><pre> {“” system.adapter.admin.0.uptime“：{” _id“：” system.adapter.admin.0.uptime“，” type“：” state“，” common“：{” name“：” admin。 0.uptime”，“ type”：“ number”，“ role”：“ indicator.state”，“ unit”：“ seconds”，“}”，“ native”：{}}，“ system.adapter.admin.0.memRss” “：{” _id“：” system.adapter.admin.0.memRss“，” type“：”状态“，” common“：{” name“：” admin.0.memRss“，” desc“：”常驻设置大小”，“类型”：“数字”，“角色”：“ indicator.state”，“单位”：“ MB”，“历史记录”：{“启用”：true，“ changesOnly”：true，“ minLength” ：480，“ maxLength”：960，“ retention”：604800，“ debounce”：10000}}，“ native”：{}}，...
 </pre>
 
 获取适配器system.adapter.admin.0的所有控制对象： <pre> http：// ip：8087 / objects？pattern = system.adapter.admin.0 *＆prettyPrint </pre><pre> {“” system.adapter.admin.0.uptime“：{” _id“：” system.adapter.admin.0.uptime“，” type“：” state“，” common“：{” name“：” admin。 0.uptime”，“ type”：“ number”，“ role”：“ indicator.state”，“ unit”：“ seconds”，“}”，“ native”：{}}，...
@@ -253,7 +255,20 @@ Grafana JSON / SimpleJSON插件需要此命令。
 <pre> http：// ip：8087 / query / system.host.iobroker-dev.load，system.host.iobroker-dev.memHeapUsed /？prettyPrint＆noHistory = true </pre><pre> [{“ target”：“ system.host.iobroker-dev.load”，“数据点”：[[0.58，1559970500342]]}，{“ target”：“ system.host.iobroker-dev.memHeapUsed”，“数据点“：[[21.53，1559970500342]]}] </pre>
 
 ## Changelog
-### 2.3.0 (2019-10-10)
+### 2.4.1 (2020-04-23)
+* (bluefox) Caught the web server errors
+
+### 2.4.0 (2020-04-12)
+* (Apollon77) Add Sentry support with js-controller 3.0
+* (Apollon77) fix potential crash
+
+### 2.3.3 (2019-11-16)
+* (bluefox) Added response code for unknown commands
+
+### 2.3.2 (2019-10-18)
+* (Apollon77) Fix Admin 3 support
+
+### 2.3.1 (2019-10-12)
 * (bluefox) Admin 3 is now supported
 * (bluefox) NPM packages were updated
 
@@ -344,7 +359,7 @@ Grafana JSON / SimpleJSON插件需要此命令。
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2015-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

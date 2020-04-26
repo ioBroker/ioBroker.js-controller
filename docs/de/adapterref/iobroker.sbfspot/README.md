@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: n1znYPs/e/xFNF9U1C2lXCpwlsxYnM+RP1MxJYaxeHI=
+hash: K07tNG5QJNKsiaC64HYt+Ci9c8DNEE/P1ZHi7d55jOc=
 ---
 ![Logo](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -12,7 +12,6 @@ hash: n1znYPs/e/xFNF9U1C2lXCpwlsxYnM+RP1MxJYaxeHI=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sbfspot.svg)
 ![Tests](https://travis-ci.org/rg-engineering/ioBroker.sbfspot.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/rg-engineering/ioBroker.sbfspot.svg)
 
 # IoBroker.sbfspot
 ** Wenn es Ihnen gefällt, ziehen Sie bitte eine Spende in Betracht: **
@@ -44,6 +43,13 @@ In diesem Fall installieren Sie alle npm-Pakete neu
 Manchmal muss npm intall mehrmals aufgerufen werden, um alle erforderlichen Pakete erfolgreich zu installieren
 
 * Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
+
+## 3.0.0 (2020-04-25)
+* (René) sqlite3-Paket ersetzt durch better-sqlite3
+* (René) Rollen von DP überarbeitet
+* (René) siehe Problem Nr. 19: Daten nur abrufen, wenn optional Tageslicht hinzugefügt wird
+* (René) siehe Problem Nr. 29: Standardfarbe für Widget-Achsenbeschriftung geändert
+* (René) Widget: Protokollieren, wenn das Widget zu klein ist
 
 ## 2.4.3 (2020-04-02)
 * (René) Bugfix in DB_CalcHistory_Today, der für das Widget verwendet wird

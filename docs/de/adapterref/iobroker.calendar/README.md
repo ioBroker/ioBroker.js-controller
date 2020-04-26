@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.calendar/README.md
 title: ioBroker.calendar
-hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
+hash: Th83raSd6dt7sLUlOdYPxEuaPmChd5EkCb7+NNKxmNA=
 ---
 ![Logo](../../../en/adapterref/iobroker.calendar/admin/calendar.png)
 
@@ -19,26 +19,14 @@ hash: eyf1MuFjT7S4izlzTioHHTuJDpNZ1zHSaldG2C2BIQc=
 
 # IoBroker.calendar
 ## Kalenderadapter für ioBroker
-Lesen Sie Ihren Google-, Caldav- oder Iical-Kalender.
+Lesen Sie Ihre Google-, Caldav- oder Kalenderereignisse.
 
 ## Machen
 * Outlook-Kalender hinzufügen
 * Funktion zum Hinzufügen von Ereignissen zum Kalender hinzufügen
 * Vis Widget erweitern
 
-## Google-Authentifizierung
-Der folgende Schritt ist nur erforderlich, wenn Ihr ioBroker auf einem anderen Computer / Server installiert ist und Sie nicht über localhost auf das Webinterface zugreifen können.
-
-### Windows:
-Führen Sie ```nodepad.exe``` mit Administratorrecht aus und öffnen Sie die Datei ```C:\Windows\System32\drivers\etc\hosts```.
-Fügen Sie einen Eintrag wie ```192.168.0.10    example.com``` (\ <IP-Adresse ioBroker \> \ <FQDN \>) hinzu. Speichern Sie die Datei und öffnen Sie das Webinterface über den <FQDN>, den Sie in die Hosts-Datei geschrieben haben. Beispiel: http://example.com:8081
-
-### Linux:
-    In Kürze ...
-
-### Mac
-    In Kürze ...
-
+## Google Kalender
 ### Google API-Schlüssel
 Sie benötigen einen API-Schlüssel. Besuchen Sie https://console.cloud.google.com/apis/dashboard und melden Sie sich mit Ihrem Google-Konto an.
 
@@ -48,11 +36,24 @@ Stellen Sie sicher, dass Sie das richtige Projekt aus der Liste ausgewählt habe
 
 Klicken Sie auf "Aktivieren" und dann auf "APIs & Services". Öffnen Sie die Registerkarte "OAuth-Zustimmungsbildschirm" und geben Sie einen Anwendungsnamen wie "ioBroker-Kalender" ein. Sie können auch ein Logo hochladen, dies ist jedoch nicht erforderlich.
 
-Öffnen Sie die Registerkarte "Anmeldeinformationen", klicken Sie auf die Dropdown-Liste "Anmeldeinformationen erstellen" und wählen Sie "OAuth-Client-ID". Wählen Sie im nächsten Schritt "Webanwendung". Geben Sie einen Namen wie "ioBroker" oder "Webclient" ein. Fügen Sie autorisierten JavaScript-Ursprüngen ```http://<FQDN>:<Port from adapter config>``` hinzu. Fügen Sie ```http://<FQDN>:<Port from adapter config>/google``` und ```http://<FQDN>:<Port from adapter config>/google/``` zu autorisierten Weiterleitungs-URIs hinzu.
+Öffnen Sie die Registerkarte "Anmeldeinformationen", klicken Sie auf die Dropdown-Liste "Anmeldeinformationen erstellen" und wählen Sie "OAuth-Client-ID". Wählen Sie im nächsten Schritt "Andere". Geben Sie einen Namen wie "ioBroker" oder "Client" ein.
 
 Erstellen Sie die Client-ID und kopieren Sie die angezeigte Client-ID und das Client-Geheimnis.
 
 Gehen Sie zur Adapterkonfiguration und fügen Sie die Client-ID und das Client-Geheimnis hinzu.
+
+### Füge ein Konto hinzu
+Wenn Sie ein Konto hinzufügen möchten, klicken Sie auf die Schaltfläche.
+
+Über die Schaltfläche gelangen Sie zu einer Autorisierungsseite, auf der Sie eine Berechtigung erteilen müssen.
+
+Wenn Sie Ihr Konto ausgewählt und den Kunden autorisiert haben, wird ein Code angezeigt.
+
+Kopieren Sie den Code und fügen Sie in den Adaptereinstellungen einen Kalender mit dem Symbol + hinzu.
+
+Fügen Sie den Code in die Spalte "Code" ein und speichern Sie alle Einstellungen.
+
+Nach dem Neustart liest der Adapter alle verfügbaren Kalender aus und speichert sie. Die Kalender können dann in den Einstellungen aktiviert werden.
 
 ## Caldav Kalender (Getestet mit Nextcloud, Web.de und Mail.de)
 Sie können Ihren Caldav-Kalender in der Adapterkonfiguration hinzufügen.
@@ -60,10 +61,13 @@ Sie können Ihren Caldav-Kalender in der Adapterkonfiguration hinzufügen.
 Geben Sie Ihre Zugangsdaten und den Hostnamen in die Konfiguration ein.
 
 ### Baseurl-Liste
-* Nextcloud: https:// \ <Hostname \> /remote.php/dav oder https: // \ <Hostname \> /remote.php/dav/principals
-* Web.de: https://caldav.web.de
-* mail.de: https://kalender.mail.de
-* Posteo: https://posteo.de:8443
+| Name | URL |
+| ------ | ------ |
+| GMX | https://caldav.gmx.net |
+| mail & period; de | https://kalender.mail.de |
+| Nextcloud | [https:// &lt;Hostname&gt; /remote.php/dav lightboxes(https://example.com/remote.php/dav) oder <br> [https: // &lt;Hostname&gt; /remote.php/dav/principals](https://example.com/remote.php/dav/principals) |
+| Posteo | https://posteo.de:8443 |
+| Web & period; de | https://caldav.web.de |
 
 Wenn Sie mehr wissen, lassen Sie es mich bitte wissen, damit ich sie aufnehmen kann.
 
@@ -73,6 +77,13 @@ Sie können Ihren iCal-Kalender in der Adapterkonfiguration hinzufügen.
 Geben Sie den Dateipfad auf der Registerkarte CalDav in das Feld Hostname ein.
 
 ## Changelog
+
+### 1.2.0 (2020-04-11)
+* (WLAN-Kabel) #24 - New iCal library to better read calendars and support future event writing functionality
+* (WLAN-Kabel) Google authorization changed
+* (WLAN-Kabel) #27 - ical events with recurrence are now handled
+* (WLAN-Kabel) #25 - Regular request for new calendars added
+* (WLAN-Kabel) #29 - Fixed a bug that caused a \"TypeError\" message on iCal calendars
 
 ### 1.1.3 (2020-03-22)
 * (WLAN-Kabel) #18 - Added possibility to load ics files from web servers

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovergy/README.md
 title: ioBroker.discovergy
-hash: 8v1OaYKfsQtxGuCSzhmfjjkuyToO9U3B4HNovKMXpfE=
+hash: 9qw5IcAtLdQhB/lSZQfA5dd/4lUQ27QrcxZY8eSsPNI=
 ---
 ![альтернативный текст](https://raw.githubusercontent.com/DutchmanNL/ioBroker.discovergy/master/admin/Discovergy_logo.png)
 
@@ -11,7 +11,6 @@ hash: 8v1OaYKfsQtxGuCSzhmfjjkuyToO9U3B4HNovKMXpfE=
 ![Количество установок](http://iobroker.live/badges/discovergy-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.discovergy.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.discovergy.svg)
-![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.discovergy.svg)
 
 # IoBroker.discovergy
 Это адаптер ioBroker для вашего измерителя мощности Discovergy Power.
@@ -26,7 +25,7 @@ https://api.discovergy.com/docs/
 
 Информация, полученная от Discovergy, которая еще не является частью этого адаптера "" Отправить эту информацию разработчику: xxxxx
 
-Перейдите в свой лог-файл и загрузите его, создайте проблему на github с указанными значениями.
+Перейдите в свой лог-файл и загрузите его, создайте проблему здесь на github с указанными значениями.
 Не копируйте и не вставляйте с веб-интерфейса администратора, здесь отсутствует информация, которая мне нужна!
 
 Вы можете протестировать этот адаптер, используя демонстрационные учетные данные Discovergy (или свои собственные :-)): username = demo@discovergy.com pass = demo
@@ -40,29 +39,45 @@ https://api.discovergy.com/docs/
 
 ## Changelog
 
+### 0.5.4 (19-04-2020) Bugfix : Wrong Unit
+* (Dutchman) Bugfix : Wrong Unit
+
+### 0.5.3 (19-04-2020) Bugfix : change root back to SerialNumber
+* (Dutchman) Bugfix : Change root of information back to SerialNumber instead of MeterId
+
+### 0.5.2 (18-04-2020) Code improvements
+* (Dutchman) Optimize and simplify code
+* (Dutchman) Set calculation factors in attribute definition
+* (Dutchman) Send information about missing state attribute definitions to sentry
+
+### 0.5.1 (17-04-2020) Avoid writing objects unnecessarily
+* (Dutchman) Implement Sentry
+* (Dutchman) Bugfix : Avoid writing objects unnecessarily
+* (Dutchman) Ensure propper handling of await instead of fire and forget
+
 ### 0.5.0 
-* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
 * (Dutchman) Rebuild complete logic of data pulling
-* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
+* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
 * (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
+* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
 
 ### 0.4.9 Fix wrong readings and make intervall adjustable
+* (Dutchman) code cleanup
+* (Dutchman) update attr library
+* (Dutchman) make state names configurable
 * (Dutchman) Implemented adjustable intervall
-* (Dutchman) Ensure propper reset to 0 of power values
 * (Dutchman) Fix "-" values for power delivery
 * (Dutchman) implement adjustable timing intervall
-* (Dutchman) make state names configurable
-* (Dutchman) update attr library
-* (Dutchman) code cleanup
+* (Dutchman) Ensure propper reset to 0 of power values
 
 ### 0.4.4 ALPHA version of rebuilded adapter
-* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
-* (Dutchman) Rebuild complete logic of data pulling
-* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
-* (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
-* (Dutchman) implement data pulling (needs improvement to avoid block by provider)
-* (Dutchman) ensure split values for consumption and delivery
+* (Dutchman) Rebuild complete logic of data pullin
 * (Dutchman) make state attributes configurable in library
+* (Dutchman) ensure split values for consumption and delivery
+* (Dutchman) implement data pulling (needs improvement to avoid block by provider)
+* (Dutchman) Rewrite adapter to class and support JS-Controller 2.0 with compact mode
+* (Dutchman) For new Devices : Write error for unknwon states but create device with basic information
+* (Dutchman) Variable JSON-Array scan for attributes, if Discovergy adds new devices they will be visible immidiatly
 
 ### 0.4.0 Stable Release
 * small code fixes
@@ -79,33 +94,34 @@ https://api.discovergy.com/docs/
 
 ### 0.3.0
 * Implemented encrypted password storage
-* Fixed issue with polling of states (this should fix "connection failed" of version 0.2.9)
 * Correct error message in LOG when credentials are missing
+* Fixed issue with polling of states (this should fix "connection failed" of version 0.2.9)
 
 ### 0.2.9
+* Small code fixes
+* Pull intervall can be configured in Adapter settings
 * implemented intervall short and long, only relevant information (current consumption) is pulled short alle other (totals) on interval Long
 * Implemented additional datapoints for Power, Power_x_Consumption and Power_x_Delivery, the power value can have a positive and negative number depending of if u consumer or produce for the network. Seperate - and + values to seperated datapoints.
-* Pull intervall can be configured in Adapter settings
-* Small code fixes
 
 ### 0.2.6
 * (Dutchman) new version published on NPM
-* (Dutchman) installation now possible by ioBroker Admin
 * (AlCalzone) code reviewd, several fixes
 * (AlCalzone) fixed dependency with package request
+* (Dutchman) installation now possible by ioBroker Admin
 
 ### 0.2.5
-* (Dutchman) Please remove all current objects within tree discoververgy.x, version 0.2.5 introduce device creation by serial number !
-* (Dutchman) Changed object tree of device from meterId to sererialnumber, please not this means all vallue are now in a different tree
+* (Dutchman) Reduced logging
 * (Dutchman) Implemented multiple meter support
 * (Dutchman) implemented "info" object which provides basic information of the device
 * (Dutchman) Implemented all values which are available by demo-account of discovergy
+* (Dutchman) Please remove all current objects within tree discoververgy.x, version 0.2.5 introduce device creation by serial number !
+* (Dutchman) Changed object tree of device from meterId to sererialnumber, please not this means all vallue are now in a different tree
 * (Dutchman) Remark : not all possbile devices are in the demo, if a device cannot be handled you will get an error message i need that information to implement !
-* (Dutchman) Reduced logging
+
 
 ### 0.2.2
-* (Dutchman) add support for values voltage1, voltage1 & voltage3
 * (Dutchman) add support for values power1, power2
+* (Dutchman) add support for values voltage1, voltage1 & voltage3
 
 ### 0.2.0
 * (Dutchman) reduced logging from every 3 seconds to only error if values are received which cannot be handled
@@ -120,7 +136,7 @@ https://api.discovergy.com/docs/
 ## License
 MIT License
 
-Copyright (c) 2019 Dutchman
+Copyright (c) 2020 Dutchman
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

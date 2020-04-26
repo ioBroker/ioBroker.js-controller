@@ -12,12 +12,14 @@ This adapter saves state history into SQL DB.
 Supports PostgreSQL, mysql, Microsoft SQL Server and sqlite.
 You can leave port 0 if default port is desired.
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ### MS-SQL:
-Use ```localhost\instance``` for host and check that TCP/IP connections are enabled.
+Use ```localhost\instance``` for the host and check TCP/IP connections enabled.
 https://msdn.microsoft.com/en-us/library/bb909712(v=vs.90).aspx
 
 ### SQLite:
-is "file"-DB and cannot manage too many events. If you have a big amount of data use real DB, like PostgreSQL and co.
+is "file"-DB and cannot manage too many events. If you have a big amount of data use the real DB, like PostgreSQL and co.
 
 SQLite DB must not be installed extra. It is just a file on disk, but to install it you require build tools on your system. For linux, just write:
 
@@ -31,7 +33,7 @@ For windows:
 c:\>npm install --global --production windows-build-tools
 ```
 
-And then reinstall the adapter, e.g:
+and then reinstall the adapter, e.g:
 
 ```
 cd /opt/iobroker
@@ -41,7 +43,7 @@ iobroker start sql
 ```
 
 ### MySQL:
-You can install mysql on linux systems:
+You can install mysql on linux systems as following:
 
 ```
 apt-get install mysql-server mysql-client
@@ -57,8 +59,14 @@ If required edit */etc/mysql/my.cnf* to set bind to IP-Address for remote connec
 
 **Warning**: iobroker user is "admin". If required give limited rights to iobroker user.
 
+On the "windows" it can be easily installed via installer: https://dev.mysql.com/downloads/installer/.
+
+Pay attention for authentication method. The new encryption algorithm in MySQL 8.0 is not yet supported by `node.js` and you must select legacy authentication method.
+
+![Windows](img/WindowsMySQLinstaller.png)
+
 ## Structure of the DBs
-Default Database name is "iobroker", but it can be changed in configuration.
+Default Database name is "iobroker", but it can be changed in the configuration.
 ### Sources
 This table is a list of adapter's instances, that wrote the entries. (state.from)
 
@@ -78,8 +86,8 @@ Structure:
 
 *Note:* MS-SQL uses varchar(255), and others use TEXT
 
-### Datapoints
-This table is a list of datapoints. (IDs)
+### Data points
+This table is a list of data points. (IDs)
 
 | DB         | Name in query           |
 |------------|-------------------------|
@@ -121,6 +129,23 @@ Structure:
 
 *Note:* MS-SQL uses BIT, and others use BOOLEAN. SQLite uses for ts INTEGER and all others BIGINT.
 
+The user can define additional to type `number` the functionality of "counters". For this purpose following table is created:
+| DB         | Name in the query       |
+|------------|-------------------------|
+| MS-SQL     | iobroker.dbo.ts_counter |
+| MySQL      | iobroker.ts_counter     |
+| PostgreSQL | ts_counter              |
+| SQLite     | ts_counter              |
+
+Structure:
+
+| Field  | Type                                       | Description                                     |
+|--------|--------------------------------------------|-------------------------------------------------|
+| id     | INTEGER                                    | ID of state from "Datapoints" table             |
+| ts     | BIGINT / INTEGER                           | Time in ms till epoch. Can be converted to time with "new Date(ts)" |
+| val    | REAL                                       | Value                                           |
+ 
+This table stores the values when the counter was exchanged and the value does not increased, but failed to zero or lower value. 
 
 ### Strings
 Values for states with type "string".
@@ -200,20 +225,22 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 ```
 
 ## storeState
-If you want to write other data into the InfluxDB you can use the build in system function **storeState**.
+If you want to write other data into the InfluxDB/SQL you can use the build in system function **storeState**.
 This function can also be used to convert data from other History adapters like History or SQL.
 
-The given ids are not checked against the ioBroker database and do not need to be set up there, but can only be accessed directly.
+The given IDs are not checked against the ioBroker database and do not need to be set up there, but can only be accessed directly.
 
 The Message can have one of the following three formats:
-* one ID and one state object
-* one ID and array of state objects
-* array of multiple IDs with state objects
+* one ID and one state object: `{id: 'adapter.0.device.counter', state: {val: 1, ts: 10239499}}`
+* one ID and array of state objects: `{id: 'adapter.0.device.counter', state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
+* array of multiple IDs with state objects `[{id: 'adapter.0.device.counter1', state: {val: 1, ts: 10239499}, {id: 'adapter.0.device.counter2', state: {val: 2, ts: 10239599}]`
+
+Additionally, you can add attribute `rules: true` to activate all rules, like `counter`, `changesOnly`, `de-bounce` and so on: `{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}` 
 
 ## Get history
 Additional to custom queries, you can use build in system function **getHistory**:
 ```
-var end = new Date().getTime();
+var end = Date.now();
 sendTo('sql.0', 'getHistory', {
     id: 'system.adapter.admin.0.memRss',
     options: {
@@ -228,11 +255,29 @@ sendTo('sql.0', 'getHistory', {
 });
 ```
 
+## Get counter
+User can ask the value of some counter (type=number, counter=true) for specific period.
+
+```
+var now = Date.now();
+// get consumption value for last 30 days
+sendTo('sql.0', 'getCounter', {
+    id: 'system.adapter.admin.0.memRss',
+    options: {
+        start:      now - 3600000 * 24 * 30,
+        end:        now,
+    }
+}, result => {
+    console.log(`In last 30 days the consumption was ${result.result} kWh`);    
+});
+```
+If the counter will be replaced it will be calculated too.
+
 ## History Logging Management via Javascript
-The adapter supports enabling and disabling of history logging via JavaScript and also retrieving the list of enabled datapoints with their settings.
+The adapter supports enabling and disabling of history logging via JavaScript and also retrieving the list of enabled data points with their settings.
 
 ### enable
-The message requires to have the "id" of the datapoint.Additionally optional "options" to define the datapoint specific settings:
+The message requires to have the "id" of the datapoint.Additionally optional "options" to define the data point specific settings:
 
 ```
 sendTo('sql.0', 'enableHistory', {
@@ -243,7 +288,7 @@ sendTo('sql.0', 'enableHistory', {
         retention:    31536000,
         maxLength:    3,
         changesMinDelta: 0.5,
-        aliasId: ""
+        aliasId: ''
     }
 }, function (result) {
     if (result.error) {
@@ -298,23 +343,43 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Host**: IP address or host name with SQL Server
 - **Port**: Port of SQL Server (leave blank if not sure)
 - **Database name**: Database name. Default iobroker
-- **User**: User name for SQL. Must exists in the DB.
+- **User**: User name for SQL. Must exist in the DB.
 - **Password**: Password for SQL.
 - **Password confirm**: Just repeat password here.
 - **Encrypt**: Some DBs support encryption.
-- **Round real to**: Number of digits after comma.
+- **Round real to**: Number of digits after the comma.
 - **Allow parallel requests**: Allow simultaneous SQL requests to DB.
 
 ## Default Settings
-- **De-bounce interval**: Do not store values often than this interval.
+- **De-bounce interval**: Do not store values oftener than this interval.
 - **Log unchanged values any**: Write additionally the values every X seconds.
-- **Minimum difference from last value to log**: Minimum interval between two values.
-- **Storage retention**: How long the values will be stored in DB.
+- **Minimum difference from last value to log**: The minimum interval between two values.
+- **Storage retention**: How long the values will be stored in the DB.
 
 ## Changelog
 
-## 1.10.0 (2019-07-xx) WIP!!
-* (bluefox) Convert to ES6
+## 1.12.1 (2020-04-26)
+* (Apollon77) Fix potential crash (Sentry) 
+
+## 1.12.0 (2020-04-23)
+* (Apollon77) Implement max Connections setting and respect it, now allows to control how many concurrent connections to database are used (default 100) and others wait up to 10s for a free connection before failing)
+* (Apollon77) Change dependencies to admin to a global dependency
+* (Apollon77) Update connection status also in between
+* (Apollon77) fix some potential crash cases (Sentry reported)
+* (Omega236) Add id to error message for queries
+* (Apollon77) update pg to stay compatible with nodejs 14
+* (Apollon77) Start clearly ending timeouts on unload ... still some cases left!
+
+## 1.11.1 (2020-04-19)
+* __Requires js-controller >= 2.0.0__
+* (Apollon77) removed usage of adapter.objects
+* (Apollon77) check if objects have changed and ignore unchanged
+* (Apollon77) Add Sentry for Error Reporting with js-controller 3.0
+* (Apollon77) Make sure value undefined is ignored
+
+## 1.10.1 (2020-04-12)
+* (bluefox) Converted to ES6
+* (bluefox) The counter functionality was implemented.
 
 ## 1.9.5 (2019-05-15)
 * (Apollon77) Add support for nodejs 12
@@ -334,7 +399,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 * (Apollon77) Fix getHistory
 
 ## 1.7.3 (2018-03-28)
-* (Apollon77) Respect 'keep forever' setting for retention from datapoint configuration
+* (Apollon77) Respect 'keep forever' setting for retention from data point configuration
 
 ## 1.7.2 (2018-03-24)
 * (Apollon77) Disable to write NULLs for SQLite
@@ -493,7 +558,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2018 bluefox <dogafox@gmail.com>, Apollon77
+Copyright (c) 2015-2020 bluefox <dogafox@gmail.com>, Apollon77
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

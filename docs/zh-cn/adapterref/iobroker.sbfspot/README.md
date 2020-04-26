@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: n1znYPs/e/xFNF9U1C2lXCpwlsxYnM+RP1MxJYaxeHI=
+hash: K07tNG5QJNKsiaC64HYt+Ci9c8DNEE/P1ZHi7d55jOc=
 ---
 ![商标](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -12,7 +12,6 @@ hash: n1znYPs/e/xFNF9U1C2lXCpwlsxYnM+RP1MxJYaxeHI=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sbfspot.svg)
 ![测验](https://travis-ci.org/rg-engineering/ioBroker.sbfspot.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)
-![环保管理员徽章](https://badges.greenkeeper.io/rg-engineering/ioBroker.sbfspot.svg)
 
 ＃ioBroker.sbfspot
 **如果您愿意，请考虑捐赠：**
@@ -43,7 +42,14 @@ hash: n1znYPs/e/xFNF9U1C2lXCpwlsxYnM+RP1MxJYaxeHI=
 
 有时必须多次调用npm intall才能成功安装所有必需的软件包
 
-*如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）中创建问题
+*如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）上创建问题
+
+## 3.0.0（2020-04-25）
+*（René）sqlite3包被Better-sqlite3取代
+* DP的（René）角色工作过度
+*（René）请参阅问题19：仅当添加日光时才获取数据
+*（René）参见问题＃29：小部件轴标签的默认颜色已更改
+*（René）小部件：如果添加的小部件太小，则记录日志
 
 ## 2.4.3（2020-04-02）
 *（René）DB_CalcHistory_Today中的错误修正用于小部件
@@ -71,7 +77,7 @@ hash: n1znYPs/e/xFNF9U1C2lXCpwlsxYnM+RP1MxJYaxeHI=
 *（René）升级包
 
 ### 2.2.5（2018-11-04）
-*（René）如果今天没有新值，请重置收益
+*（René）如果今天没有新值可重置收益
 
 ### 2.2.4（2018-08-19）
 *（René）错误修正X

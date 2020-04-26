@@ -238,6 +238,12 @@ Following values for engines are possible:
 - **(tr-TR_AP_Female)** -           tr-TR - Female - Filiz
 
 ## Changelog
+### 1.9.3 (2020-04-24)
+* (bluefox) Fixed blockly with missing languages
+
+### 1.9.2 (2020-04-21)
+Changed type of top-level object to "meta" in order to comply with js-controller v3
+
 ### 1.9.1 (2020-03-12)
 * (foxriver76) removed usage of adapter.getMessage
 

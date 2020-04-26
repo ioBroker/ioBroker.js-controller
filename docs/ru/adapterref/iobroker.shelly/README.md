@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: C75pmvux4BRCINMqHMi6LVc2nuHJBOUUqsMJ3B7jqbE=
+hash: Iw9TRNc7yuHLTC6n9EPAN+dwZuKAtJ+a78pbLtWS/t4=
 ---
 ![логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -20,8 +20,10 @@ hash: C75pmvux4BRCINMqHMi6LVc2nuHJBOUUqsMJ3B7jqbE=
 Адаптер связывается с устройствами Shelly по REST api и протоколу CoAP или MQTT.
 По умолчанию прошивка Shelly (прошивка прошивки не требуется!). Более подробную информацию об устройстве вы найдете здесь: [изобилующий раковинами](https://shelly.cloud/)
 
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать об исключениях и ошибках кода мне как разработчику. ** Подробнее см. Ниже!
+
 ## Установка
-Подробную документацию по установке вы найдете здесь: [Документация по установке](./docs/EN/INSTALL.md)
+Вы найдете подробную документацию по установке здесь: [Документация по установке](./docs/EN/INSTALL.md)
 
 ## Поддерживаемые устройства
 | Shelly Device | По умолчанию (CoAP) | MQTT |
@@ -48,12 +50,35 @@ hash: C75pmvux4BRCINMqHMi6LVc2nuHJBOUUqsMJ3B7jqbE=
 | Shelly Bulb Duo (SHBDUO-1) | проверено | не проверено |
 | Shelly 3EM (SHEM) | проверено | проверено |
 
+## Что такое Sentry и что сообщается на серверы?
+Sentry.io позволяет разработчикам получить обзор ошибок в своих приложениях. И именно это реализовано в этом адаптере.
+
+Когда происходит сбой адаптера или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Когда вы разрешили iobroker GmbH собирать диагностические данные, включался и ваш установочный идентификатор (это просто уникальный идентификатор **без** каких-либо дополнительных сведений о вас, адрес электронной почты, имя и т. П.). Это позволяет Sentry группировать ошибки и показывать, на сколько уникальных пользователей влияет такая ошибка. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не выходят из строя.
+
 ## Changelog
+
+### 3.2.5 (13.04.2020)
+* (Apollon77) - Update Dependencies incl shelly-lib to prevent exceptions
+* (Apollon77) - Add Sentry for error/crash reporting (active with js-controller 3.0)
+* (Stübi      - Add for hue two new datapoints for Shelly Bulb and RGBW2
+
+### 3.2.4 (11.04.2020)
+* (Stübi) - Bugfixing MQTT ext_temperature for Shelly 1
+
+### 3.2.3 (03.03.2020)
+* (Stübi) - Bugfixing Shelly 3EMfor MQTT support (fixed datapoints for total and total_returned)
+* (Stübi) - Bugfixing MQTT support for door and windows sensor (issue #135)
+
+### 3.2.2 (03.03.2020)
+* (Stübi) - Bugfixing, if Shelly sends a string instead of number and boolean (issue #131)
+
+### 3.2.1 (02.03.2020)
+* (Stübi) - Bugfixing Shelly 3EMfor MQTT support 
 
 ### 3.2.0 (13.02.2020)
 * (Simon W.) - Add device Shelly 3EM
 * (Stübi)    - Add device Shelly Door/Windows sensor 
-* (Stübi)    - Add external temperature sensor for Shelly 1, 1PM and 2.5
+* (Stübi)    - Add external temperature sensor for Shelly 1, 1PM and 2.5 (only CoAP)
 
 ### 3.1.9 (25.01.2020)
 * (Stübi) - Bugfixing, auto update new firmware

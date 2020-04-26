@@ -41,6 +41,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 1.3.13 (2020.04.12)
+* (Apollon77) add auto decryption handling with js-controller 3.0
+* (Apollon77) update meross library to prevent some crash cases
+
 ### 1.3.12 (2020.03.08)
 * (Apollon77) update dependencies
 

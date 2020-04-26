@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.starline/README.md
 title: ioBroker.starline
-hash: tKAmCdJIRJxCv5NwsM66DKRRbnyp6LdQpxGVntHm3pM=
+hash: eE7OsQsPgGY5WR/tI1VKgccoL01ejEZw67m3XgE2TqU=
 ---
 ![Logo](../../../en/adapterref/iobroker.starline/admin/starline_git.jpg)
 
@@ -12,17 +12,18 @@ hash: tKAmCdJIRJxCv5NwsM66DKRRbnyp6LdQpxGVntHm3pM=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.starline.svg)
 ![Tests](http://img.shields.io/travis/instalator/ioBroker.starline/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.starline.png?downloads=true)
+![Spenden](https://img.shields.io/badge/Donate-PayPal-green.svg)
 
 # IoBroker.starline
-Дленить рабатерьный становленное и настроенное противоугонное установленное и настроенное.
+Для работы драйвера необходимо установленное и настроенное противоугонное устройство поддее
 
-Weitere Informationen finden Sie unter StarLine Телематика. https://starline-online.ru.
+Драйвер позволяет получать данные состояния автомобиля через сервис StarLine Телематика. https://starline-online.ru.
 
 ##### Управление основными режимами работы автосигнализации:
   - Постановка/снятие с охраны
-  - Активация функции AntiHiJack
+  - Hктивация функции AntiHiJack
   - Автозапуск
-  - Активация сервисного режима (Valet)
+  - Valктивация сервисного режима (Valet)
   - Активация доп. каналов
   - Включение / отключение подогревателя Webasto (При его наличии)
   - Запрос координат автомобиля
@@ -64,3 +65,26 @@ Weitere Informationen finden Sie unter StarLine Телематика. https://st
 
 #### 0.0.2
 * (instalator) initial release
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2020 instalator <vvvalt@mail.ru>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

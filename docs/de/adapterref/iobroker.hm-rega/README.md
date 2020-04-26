@@ -145,6 +145,15 @@ Abschließend sind die in der CCU angelegten Variablen aufgelistet
 ### FAQ
 
 ## Changelog
+### 2.6.5 (2020-04-22)
+* (foxriver76) improved error handling, no longer use legacy log file
+
+### 2.6.4 (2020-04-13)
+* (foxriver76) now storing scripts in iob file storage
+
+### 2.6.2 (2020-04-11)
+* (foxriver76) minor fix on ccu object
+
 ### 2.6.1 (2020-04-04)
 * (foxriver76) fix synchronization
 
