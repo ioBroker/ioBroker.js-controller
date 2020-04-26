@@ -48,9 +48,9 @@
     },
     "devDependencies": {
         "@types/event-stream": "^3.3.34",
-        "@types/iobroker": "^3.0.2",
+        "@types/iobroker": "^3.0.6",
         "@types/mocha": "^7.0.2",
-        "@types/node": "^13.13.1",
+        "@types/node": "^13.13.4",
         "@types/yargs": "^15.0.4",
         "chai": "^4.2.0",
         "chai-as-promised": "^7.1.1",
@@ -59,7 +59,7 @@
         "gulp-jsdoc3": "^3.0.0",
         "gulp-replace": "^1.0.0",
         "istanbul": "^0.4.5",
-        "mocha": "^7.1.1",
+        "mocha": "^7.1.2",
         "sinon": "^9.0.2",
         "sinon-chai": "^3.5.0"
     },

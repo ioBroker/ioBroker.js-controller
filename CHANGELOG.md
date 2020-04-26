@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.19 (2020-04-2x) Release Elena
+## 3.0.19 (2020-04-26) Release Elena
 * (Apollon77) make sure to correctly create empty logfile on "delLogs" (Sentry IOBROKER-JS-CONTROLLER-Q) 
 * (foxriver76) make callback consistent when client has closed connection (Sentry IOBROKER-JS-CONTROLLER-R)
 * (foxriver76) add missing Error for DB closed, which was used but undefined in tools.js
