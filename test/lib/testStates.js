@@ -71,7 +71,7 @@ function register(it, expect, context) {
                                                         expect(err).to.be.null;
                                                         expect(state).to.be.ok;
                                                         expect(state.val).to.equal(3);
-                                                        expect(state.ack).to.equal(false);
+                                                        expect(state.ack).to.equal(true);
                                                         done();
                                                     });
                                                 });
