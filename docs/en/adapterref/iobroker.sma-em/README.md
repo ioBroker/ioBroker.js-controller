@@ -43,6 +43,8 @@ Example:
           ssurplus S-apparent power /surplus
         
 ## Changelog
+### 0.5.7
+* (DutchmanNL) Solved incorrect stated ID type for JS-controller 3.x
 
 ### 0.5.4
 * (Andiling) Adapter compatibility extended for Node 10 and higher

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: M5IbnPuAxtJgk2x/3tfUdj2bYQ5lmeua/GfCsJ8CX1Y=
+hash: G/5eOS05DJdMR8jS71JWCUq16ke70JyL64pk13Bblow=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -41,7 +41,7 @@ Es ist vollständig anpassbar.
 Sie können es als Web-App auf Homescreen speichern und es sieht aus und fühlt sich an wie eine native App: ![Zu Homescreeen hinzufügen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
 
 ## Du brauchst...
-* Knoten 8 oder höher
+* Knoten 10 oder höher
 * Web-Adapter mit einer Instanz, auf der dasselbe Protokoll (http oder https) wie der Admin-Adapter ausgeführt wird. Socket.IO ist auf "integriert" und "Web-Sockets erzwingen" deaktiviert
     * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu - iQontrol durchsucht die passende passende Webadapter-Instanz und verwendet sie für die Kommunikation
 * Für die Verbindung über *iobroker.pro-Cloud* sollten sowohl der Administrator- als auch der Webadapter auf http (nicht https) eingestellt sein.
@@ -127,7 +127,7 @@ Jede Rolle hat die folgenden drei Zustände:
 
 Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meisten Fällen stellt dies die Hauptfunktion des Geräts dar. Sie können ihm io-Broker-Zustände der folgenden Typen zuweisen:
 
-* *boolean* - Wenn möglich, wird es in einen sinnvollen Text wie "Ein / Aus", "Geöffnet / Geschlossen" oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialog ein Kippschalter generiert
+* *boolean* - Wenn möglich, wird es in einen sinnvollen Text wie "Ein / Aus", "Geöffnet / Geschlossen" oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialog ein Flip-Switch generiert
 * *Nummer* - wird mit der entsprechenden Einheit angezeigt und generiert einen Schieberegler im Dialog
 * *string* - Ein anzuzeigender Text
 * *Werteliste* - Der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü generiert
@@ -161,7 +161,7 @@ Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der
 Jedes Licht kann einen oder beide der folgenden Zustände haben:
 
 * **STATE** *boolean* - show und set on / off-state
-* **LEVEL** *number* - Zeigt den Lichtpegel an und stellt ihn ein
+* **LEVEL** *number* - Zeige und stelle den Lichtpegel ein
 
 Optional können Sie folgende Zustände definieren:
 
@@ -170,7 +170,7 @@ Optional können Sie folgende Zustände definieren:
   * **SÄTTIGUNG** * Zahl * - Lichtsättigung (von Weiß zu reiner Farbe)
   * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (wenn Sie einen LEVEL-Status und keine weißen LEDs haben, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Für weiße LEDs:
-  * **CT** * Nummer * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
+  * **CT** * Zahl * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
   * **WHITE_BRIGHTNESS** * number * - die Helligkeit der weißen LEDs (wenn Sie einen LEVEL-Status und keine farbigen LEDs haben, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Alternative Farbräume:
   * **ALTERNATIVE_COLORSPACE_VALUE** * string * oder * number * (abhängig vom gewählten Farbraum) - der Wert des alternativen Farbraums
@@ -193,7 +193,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 
 * Effektmodus:
   * **EFFECT** * Werteliste * - der zu spielende Effekt
-* **EFFECT_NEXT** *boolean* - Wenn dieser Wert auf true gesetzt ist, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen).
+* **EFFECT_NEXT** *boolean* - Wenn auf true gesetzt, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen).
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - Wenn dieser Wert auf true gesetzt ist, wird der Effekt beschleunigt / verringert
 * Sonstiges:
   * **POWER** * number * - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
@@ -204,12 +204,12 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 * **FEUCHTIGKEIT** *Zahl* - Die tatsächliche Luftfeuchtigkeit wird in der oberen rechten Ecke klein angezeigt
 * **CONTROL_MODE** *Werteliste* - Anzeige und Einstellung des Thermostatmodus
 * **WINDOW_OPENING_REPORTING** *boolean* - Wenn true, wird ein kleines geöffnetes Fenster angezeigt
-* **VALVE_STATES** Array mit Namen und Nummern - Zeigt die Öffnung der Ventile an, die dem Thermostat zugeordnet sind
+* **VALVE_STATES** Array von Namen und Nummern - Zeigt die Öffnung der Ventile an, die dem Thermostat zugeordnet sind
 
 ### <img src="img/icons/radiator.png" width="32"> Homematischer Thermostat:
 Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
-* **PARTY_TEMPERATURE** *string* - Speziell formatierter String zum Definieren des Party- oder Feiertagsmodus von homematischen Thermostaten
+* **PARTY_TEMPERATURE** *string* - Spezialformatierter String zum Definieren des Party- oder Feiertagsmodus von homematischen Thermostaten
 * **BOOST_STATE** *number* - Zeigt die verbleibende Boost-Zeit von homematischen Thermostaten an
 
 ### <img src="img/icons/temperature.png" width="32"> Temperatursensor, <img src="img/icons/humidity.png" width="32"> Feuchtigkeitssensor:

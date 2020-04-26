@@ -42,7 +42,7 @@ You can save it as Web-App on Homescreen and it looks and feels like a native ap
 
 
 ## You need...
-* Nodejs 8 or higher
+* Nodejs 10 or higher
 * Web-Adapter with one instance running the same protocol (http or https) as the admin-adapter, socket.IO set to 'integrated' and 'Force Web-Sockets' disabled
     * If this stands in conflict to other adapters, simply add another instance with the above settings - iQontrol will search the besst fitting web-adapter-instance and use it for communication
 	* For connecting over *iobroker.pro-Cloud* both, admin- and web-adapter should be set to http (not https)
