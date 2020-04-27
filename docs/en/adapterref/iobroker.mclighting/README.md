@@ -126,6 +126,9 @@ Where <brightness> is the brightness as value 0-255.
   
 ## Changelog
 
+### 0.1.1
+* (Bluefox) Fix clear timeouts
+
 ### 0.1.0
 * (instalator) refactoring
 * (instalator) added compact mode

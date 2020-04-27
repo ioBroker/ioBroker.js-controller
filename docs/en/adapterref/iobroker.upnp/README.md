@@ -222,6 +222,9 @@ You can enable polling in admin via objects configuration.
 
 ## Changelog
 
+### 1.0.16 (2020-04-27)
+* fixes for js-controller 3
+
 ### 1.0.15 (2019-08-27)
 * (jey-cee) make control of devices work again (including player controls)
 

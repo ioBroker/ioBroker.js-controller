@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mydlink/README.md
 title: ioBroker.mydlink
-hash: Z/pfhpgN8a8nIfFFaCuewqG0zq4C99nOwLHhTA569qA=
+hash: Tx0RggrpUy6Edc2CQQDri98x8JiWjf19dZvAb9iZutk=
 ---
 ![логотип](../../../en/adapterref/iobroker.mydlink/admin/mydlink.png)
 
@@ -19,6 +19,9 @@ hash: Z/pfhpgN8a8nIfFFaCuewqG0zq4C99nOwLHhTA569qA=
 -------------------------------------------------- ----------------------------
 
 Позволяет управлять силовыми розетками или детекторами движения из [D-Link](https://eu.dlink.com/uk/en/for-home/smart-home) из ioBroker.
+
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
+Это также помогает с поддержкой новых устройств.
 
 В настоящее время проверенные устройства:
 
@@ -38,6 +41,10 @@ hash: Z/pfhpgN8a8nIfFFaCuewqG0zq4C99nOwLHhTA569qA=
 Адаптер не мешает использованию приложения.
 
 ## Changelog
+
+### 0.0.7
+* (Garfonso) added info.connection state
+* (Garfonso) suppressed repeated error messages during polling.
 
 ### 0.0.6
 * (Garfonso) prevent removement of custom details in objects.

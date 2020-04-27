@@ -137,9 +137,10 @@ because the adapter works by subscribing to events, the state time of `state.ts`
 
 ## Changelog
 
-### 0.4.0 (2020-04-26)
+### 0.4.1 (2020-04-27)
 * (haba1234) States as an Object
 * (haba1234) Error control 'pullMessages'. Disconnect if there are more than three errors
+* (haba1234) Encryption disabled. Compatibility issues
 
 ### 0.3.0 (2020-04-24)
 * (haba1234) Added support for the Discovery adapter

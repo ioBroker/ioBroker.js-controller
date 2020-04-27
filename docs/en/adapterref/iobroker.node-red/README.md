@@ -17,6 +17,11 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 - Safe mode - Flows will not be started and you can edit the flows to fix some overload problem.
 
 ## Changelog
+
+### 1.17.0 (2020-04-27) WIP
+* (Apollon77) check object and not state to detect if a object exists
+* (Apollon77) update node-red to 1.0.6 and deps
+
 ### 1.16.5 (2020-03-17)
 * (bluefox) Caught errors if state deleted
 * (bluefox) "Fire on start" for the input node was implemented

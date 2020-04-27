@@ -1520,7 +1520,8 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
-* Pie Chart: support for json string implemented
+* Select / AutoComplete Widget: Breaking Changes !!! separator for valuelist changed from comma to semicolon
+* Pie Chart Widget: support for json string implemented
 * Browser Edge: gradient color bug fix
 
 ### 0.3.3

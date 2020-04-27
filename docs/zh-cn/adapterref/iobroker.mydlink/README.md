@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mydlink/README.md
 title: ioBroker.mydlink
-hash: Z/pfhpgN8a8nIfFFaCuewqG0zq4C99nOwLHhTA569qA=
+hash: Tx0RggrpUy6Edc2CQQDri98x8JiWjf19dZvAb9iZutk=
 ---
 ![商标](../../../en/adapterref/iobroker.mydlink/admin/mydlink.png)
 
@@ -20,6 +20,9 @@ ioBroker的MyDlink适配器。
 
 允许从ioBroker中的[D-Link](https://eu.dlink.com/uk/en/for-home/smart-home)控制电源插座或运动检测器。
 
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+这也有助于支持新设备。
+
 当前测试的设备：
 
 |型号|类型图片|
@@ -27,7 +30,7 @@ ioBroker的MyDlink适配器。
 | [DSP-W215](https://eu.dlink.com/uk/en/products/dsp-w215-smart-plug)|插座（插座，温度，电流）| ![图片](../../../en/adapterref/iobroker.mydlink/admin/DSP_W215.png)|
 | [DCH-S150]（https://eu.dlink.com/uk/zh/products/dch-s150-motion-sensor）|动作检测器（检测到最后动作）| ！[Image]（admin / DCH_S150.png）|
 
-适配器需要轮询设备。因此，传感器的读数和运动检测将因轮询间隔而延迟（可以在配置中设置）。
+适配器需要轮询设备。因此，传感器的读数和运动检测将被轮询间隔延迟（可以在配置中设置）。
 
 ####配置：
 *全局轮询间隔-如果未设置特定间隔，则适配器将轮询该间隔中的所有设备。设置为0禁用。
@@ -38,6 +41,10 @@ ioBroker的MyDlink适配器。
 适配器不会干扰应用程序的使用。
 
 ## Changelog
+
+### 0.0.7
+* (Garfonso) added info.connection state
+* (Garfonso) suppressed repeated error messages during polling.
 
 ### 0.0.6
 * (Garfonso) prevent removement of custom details in objects.

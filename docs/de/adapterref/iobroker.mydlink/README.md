@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mydlink/README.md
 title: ioBroker.mydlink
-hash: Z/pfhpgN8a8nIfFFaCuewqG0zq4C99nOwLHhTA569qA=
+hash: Tx0RggrpUy6Edc2CQQDri98x8JiWjf19dZvAb9iZutk=
 ---
 ![Logo](../../../en/adapterref/iobroker.mydlink/admin/mydlink.png)
 
@@ -18,26 +18,33 @@ hash: Z/pfhpgN8a8nIfFFaCuewqG0zq4C99nOwLHhTA569qA=
 MyDlink Adapter für ioBroker.
 -------------------------------------------------- ----------------------------
 
-Ermöglicht die Steuerung von Steckdosen oder Bewegungsmeldern über [D-Link](https://eu.dlink.com/uk/en/for-home/smart-home) innerhalb von ioBroker.
+Ermöglicht die Steuerung von Steckdosen oder Bewegungsmeldern über [D-Link](https://eu.dlink.com/uk/en/for-home/smart-home) in ioBroker.
+
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+Dies hilft auch bei der Unterstützung neuer Geräte.
 
 Derzeit getestete Geräte:
 
-| Modell | Typ | Bild |
+| Modell | Geben Sie | ein Bild |
 | :---: | :---: | :---: |
-| [DSP-W215](https://eu.dlink.com/uk/en/products/dsp-w215-smart-plug) | Steckdose (Steckdose, Temperatur, Strom) | ![Bild](../../../en/adapterref/iobroker.mydlink/admin/DSP_W215.png) |
-| [DCH-S150] (https://eu.dlink.com/uk/en/products/dch-s150-motion-sensor) | Bewegungsmelder (letzte erkannte Bewegung) | ! [Image] (admin / DCH_S150.png) |
+| [DSP-W215](https://eu.dlink.com/uk/en/products/dsp-w215-smart-plug) | Buchse (Buchse, Temperatur, Strom) | ![Bild](../../../en/adapterref/iobroker.mydlink/admin/DSP_W215.png) |
+| [DCH-S150] (https://eu.dlink.com/uk/en/products/dch-s150-motion-sensor) | Bewegungsmelder (letzte erkannte Bewegung) | ! [Bild] (admin / DCH_S150.png) |
 
-Der Adapter muss die Geräte abfragen. So werden die Sensorwerte und die Bewegungserkennung um das Abfrageintervall verzögert (kann in der Konfiguration eingestellt werden).
+Der Adapter muss die Geräte abfragen. So werden Sensorwerte und Bewegungserkennung um das Abfrageintervall verzögert (kann in der Konfiguration eingestellt werden).
 
 #### Aufbau:
-* Globales Abfrageintervall - Der Adapter fragt alle Geräte in diesem Intervall ab, wenn für sie kein bestimmtes Intervall festgelegt wurde. Zum Deaktivieren auf 0 setzen.
+* globales Abfrageintervall - Der Adapter fragt alle Geräte in diesem Intervall ab, wenn für sie kein bestimmtes Intervall festgelegt wurde. Zum Deaktivieren auf 0 setzen.
 * Liste der Geräte, jedes Gerät mit folgenden Einstellungen:
 
-<table><tr><td> Name </td><td> hier einen namen vergeben, muss eindeutig sein (für mydlink geräte) </td></tr><tr><td> IP </td><td> Geben Sie hier die IP-Adresse ein. Der Hostname sollte ebenfalls funktionieren </td></tr><tr><td> STIFT </td><td> Die PIN befindet sich auf einem Aufkleber am Gerät, wahrscheinlich unten </td></tr><tr><td> Abfrageintervall </td><td> Leer lassen, um das globale Abfrageintervall zu verwenden. <br /> Setzen Sie 0, um die Abfrage zu deaktivieren. <br /> <b>Empfehlung:</b> Stellen Sie ein schnelles Abfrageintervall für Sensoren und ein längeres für Stecker ein. </td></tr><tr><td> aktivieren </td><td> Wenn diese Option nicht aktiviert ist, wird sie nicht abgefragt oder gesteuert. <br /> Nicht angeschlossene Geräte können deaktiviert werden, um Fehlermeldungen im Protokoll zu vermeiden. </td></tr></table>
+<table><tr><td> Name </td><td> hier einen Namen setzen, muss eindeutig sein (für mydlink Geräte) </td></tr><tr><td> IP </td><td> Geben Sie hier die IP-Adresse ein, der Hostname sollte auch funktionieren </td></tr><tr><td> STIFT </td><td> Die PIN befindet sich auf einem Aufkleber auf dem Gerät, wahrscheinlich unten </td></tr><tr><td> Abfrageintervall </td><td> Lassen Sie das Gerät pro Abfrageintervall leer, um das globale Abfrageintervall zu verwenden. <br /> Setzen Sie 0, um die Abfrage zu deaktivieren. <br /> <b>Empfehlung:</b> Legen Sie ein schnelles Abfrageintervall für Sensoren und ein längeres für Stecker fest. </td></tr><tr><td> aktivieren </td><td> Wenn nicht aktiviert, wird nicht abgefragt oder gesteuert. <br /> Geräte, die nicht angeschlossen sind, können deaktiviert werden, um Fehlermeldungen im Protokoll zu vermeiden. </td></tr></table>
 
 Der Adapter stört die Nutzung der App nicht.
 
 ## Changelog
+
+### 0.0.7
+* (Garfonso) added info.connection state
+* (Garfonso) suppressed repeated error messages during polling.
 
 ### 0.0.6
 * (Garfonso) prevent removement of custom details in objects.
