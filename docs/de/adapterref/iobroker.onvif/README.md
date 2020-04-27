@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: AoU8d3cSR1UqV8DWIHPCZXiuptIYD5dvwKiKxzCEZmY=
+hash: anOSc88zA6i8s7Xoblhm727huSUtKa+Z4Ydd4A7nSZg=
 ---
 ![Logo](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
@@ -58,8 +58,22 @@ function getSnapshot(caption){
 * caption * - заголовок для картинки в телеграме.
 Вызывать можно как по событию, так и по кнопке / рассписанию
 
-### Сообщения и авариии от Камеры
-Чтобы отключить подписку на сообщения и аварии от камеры, необходимо выставить состояние ''
+### События Камеры
+Чтобы отключить подписку на события от камеры, необходимо выставить состояние `subscribeEvents = false` и перз
+При изменении в панели администратора, перезугрузка адаптера выполняется автоматически.
+
+События имеют тип "Объект", например:
+
+```
+{
+	'Value': false,
+	'UtcTime': '2020-04-26T17:35:34.000Z'
+}
+```
+
+`Value` - значение / состояние, `UtcTime` - время изменения значения / состояния
+
+Т.к. адаптер работает по подписке на события, то время состояния `state.ts` может не совпадать се
 
 ## ENG
 ### Anpassung
@@ -103,10 +117,28 @@ function getSnapshot(caption){
 
 Es ist möglich, sowohl bei einem Ereignis als auch gemäß der Schaltfläche / dem Zeitplan zu verursachen
 
-### Nachrichten und Unfälle von der Kamera
-Um das Abonnement für Nachrichten und Alarme von der Kamera zu trennen, müssen Sie den Status 'subscribeEvents' = false setzen und den Adapter neu starten.
+### Kameraereignisse
+Um das Abonnement für Ereignisse von der Kamera zu trennen, müssen Sie den Status `subscribeEvents = false` setzen und den Adapter neu starten.
+Beim Ändern im Admin-Bereich wird der Adapter automatisch neu gestartet.
+
+Ereignisse sind vom Typ "Objekt", zum Beispiel:
+
+```
+{
+	'Value': false,
+	'UtcTime': '2020-04-26T17:35:34.000Z'
+}
+```
+
+`Value` - Wert / Zustand, `UtcTime` - Zustandsänderungszeit
+
+Da der Adapter Ereignisse abonniert, stimmt die Statuszeit von `state.ts` möglicherweise nicht mit der Echtzeit des Ereignisses in der Kamera überein.
 
 ## Changelog
+
+### 0.4.0 (2020-04-26)
+* (haba1234) States as an Object
+* (haba1234) Error control 'pullMessages'. Disconnect if there are more than three errors
 
 ### 0.3.0 (2020-04-24)
 * (haba1234) Added support for the Discovery adapter

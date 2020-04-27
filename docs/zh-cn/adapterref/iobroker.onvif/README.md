@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: AoU8d3cSR1UqV8DWIHPCZXiuptIYD5dvwKiKxzCEZmY=
+hash: anOSc88zA6i8s7Xoblhm727huSUtKa+Z4Ydd4A7nSZg=
 ---
 ![商标](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
@@ -58,8 +58,22 @@ function getSnapshot(caption){
 *说明*-заголовокдлякартинкивтелеграме。
 Вызыватьможнокакпособытию，такипокнопке/рассписанию
 
-### Сообщения и авариии от Камеры
-subтобыотключитьподпискунасообщенияиаварииоткамеры，необходимовыставитьсостотаееscribe事件
+### События Камеры
+натобыотключитьподпискунасобытияоткамеры，необходимовыставитьсостояние`subscribeEvents = false`иперезапуста。
+Приизменениивпанелиадминистратора，перезугрузкаадаптеравыполняетсяавтоматически。
+
+События имеют тип "Объект", например:
+
+```
+{
+	'Value': false,
+	'UtcTime': '2020-04-26T17:35:34.000Z'
+}
+```
+
+`Value`-значение/состояние，`UtcTime`-времяизменениязначения/состояния
+
+Т.к. адаптерработаетпоподпискенасобытия，товремясостояния`state.ts`можетнесовпадатьсеельным
 
 ## ENG
 ###定制
@@ -103,10 +117,28 @@ function getSnapshot(caption){
 
 既可能导致事件发生，也可能导致按钮/时间表发生
 
-###来自相机的消息和事故
-要从摄像机断开对消息和警报的订阅，您需要设置状态'subscribeEvents'= false并重新启动适配器。
+###相机事件
+要从摄像机断开对事件的订阅，您需要设置状态`subscribeEvents = false`并重新启动适配器。
+在管理面板中更改时，适配器会自动重新启动。
+
+事件的类型为“对象”，例如：
+
+```
+{
+	'Value': false,
+	'UtcTime': '2020-04-26T17:35:34.000Z'
+}
+```
+
+`Value`-值/状态，`UtcTime`-状态更改时间
+
+因为适配器通过订阅事件来工作，所以`state.ts`的状态时间可能与摄像机中事件的实时时间不一致。
 
 ## Changelog
+
+### 0.4.0 (2020-04-26)
+* (haba1234) States as an Object
+* (haba1234) Error control 'pullMessages'. Disconnect if there are more than three errors
 
 ### 0.3.0 (2020-04-24)
 * (haba1234) Added support for the Discovery adapter
