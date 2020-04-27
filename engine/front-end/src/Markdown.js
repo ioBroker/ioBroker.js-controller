@@ -776,6 +776,9 @@ class Markdown extends Router {
     }
 
     replaceHref(line) {
+        if (!line) {
+            return '';
+        }
         const m = line.match(/\[.*]\(#[^)]+\)/g);
         if (m) {
             m.forEach(link => {
@@ -830,6 +833,9 @@ class Markdown extends Router {
     }
 
     makeHeadersAsLink(line, prefix) {
+        if (!line) {
+            return '';
+        }
         const mm = line.match(/^#+\s.+/g);
         if (mm) {
             mm.forEach(header => {
