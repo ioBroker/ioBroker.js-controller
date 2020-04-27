@@ -2090,6 +2090,7 @@ function processMessage(msg) {
                 const lines = msg.message || 200;
                 let text  = '';
                 let logFile_ = logger.getFileName(); //__dirname + '/log/' + tools.appName + '.log';
+
                 if (!fs.existsSync(logFile_)) {
                     logFile_ = __dirname + '/../../log/' + tools.appName + '.log';
                 }
