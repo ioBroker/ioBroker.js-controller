@@ -41,7 +41,7 @@
         "request": "^2.88.2",
         "respjs": "^4.2.0",
         "semver": "^7.3.2",
-        "tar": "^6.0.1",
+        "tar": "^6.0.2",
         "winston": "^3.2.1",
         "winston-daily-rotate-file": "^4.4.2",
         "yargs": "^15.3.1"

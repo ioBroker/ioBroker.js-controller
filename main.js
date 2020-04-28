@@ -2752,7 +2752,7 @@ function installAdapters() {
                 if (exitCode === EXIT_CODES.CANNOT_INSTALL_NPM_PACKET) {
                     task.inProgress = false;
                     installQueue.push(task); // We add at the end again to try three times
-                } else {
+                } else if (procs[task.id]) {
                     procs[task.id].needsRebuild = false;
                     if (!task.disabled) {
                         if (!procs[task.id].config.common.enabled) {
@@ -3253,6 +3253,7 @@ function startInstance(id, wakeUp) {
 
                 // Some parts of the Adapter start logic are async, so "the finalization" is put into this method
                 const handleAdapterProcessStart = () => {
+                    if (!procs[id]) return;
                     if (!procs[id].process) { // We were not able or should not start as compact mode
                         try {
                             procs[id].process = cp.fork(fileNameFull, args, {
