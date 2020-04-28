@@ -1,13 +1,12 @@
 # Changelog
 
-## 3.0.20 (2020-04-2x) Release Elena WIP
+## 3.0.20 (2020-04-28) Release Elena
 * (Apollon77) make sure disabling instances while installation is running do not crash the controller (Sentry IOBROKER-JS-CONTROLLER-Z) 
 * (From Forum) prevent error on backup restore
 * (Apollon77) Make sure error handing do not throw exception
 * (Apollon77) Catch all errors when trying to store the File DB (Sentry IOBROKER-JS-CONTROLLER-14/15)
 * (Apollon77) Make sure also edge cases on start adapter are handled correctly (Sentry IOBROKER-JS-CONTROLLER-12)
- 
-
+* (Apollon77) Use 3.3.4 of objects library to prevent an error from 3.3.3
 
 ## 3.0.19 (2020-04-26) Release Elena
 * (Apollon77) make sure to correctly create empty logfile on "delLogs" (Sentry IOBROKER-JS-CONTROLLER-Q) 
