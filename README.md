@@ -11,6 +11,16 @@
 
 The ioBroker.js-controller is the heart of any ioBroker installation. The controller is owning the central configuration of the ioBroker installation and controls and monitors all adapter processes for the current host.
 
+**Please check the js-controller compatibility information below which version runs on your Node.js version**
+
+## Compatibility
+* js-controller 3.x works with Node.js 10.x, 12.x and probably 14.x (first tests look good)
+* js-controller 2.x works with Node.js 8.x, 10.x , 12.x and probably 14.x (untested)
+* js-controller 1.x works with Node.js 4.x, 6.x, 8.x and probably 10.x (untested)
+
+Please try to stay current with your Node.js version because the support is limited in Time. As of now (April 2020) all Node.js versions below 10.x are no longer supported by Node.js and considered EOL (End Of Life).
+To upgrade your Node.js version and ioBroker please follow https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten !
+
 ## Links
 
 * [Changelog](CHANGELOG.md)
