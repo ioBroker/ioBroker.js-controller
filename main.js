@@ -2199,6 +2199,8 @@ function processMessage(msg) {
                         sendTo(msg.from, msg.command, {error: err}, msg.callback);
                     }
                 });
+            } else {
+                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
@@ -2235,6 +2237,8 @@ function processMessage(msg) {
                         }
                     }
                 });
+            } else {
+                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
@@ -2300,8 +2304,10 @@ function processMessage(msg) {
             break;
 
         case 'getInterfaces':
-            if (msg.callback) {
+            if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {result: os.networkInterfaces()}, msg.callback);
+            } else {
+                logger.error(hostLogPrefix + ' Invalid request ' + msg.command + '. "callback" or "from" is null');
             }
             break;
 
@@ -2322,11 +2328,93 @@ function processMessage(msg) {
                 installQueue.push({id: msg.message.id, rebuild: true, rebuildViaInstall: msg.message.rebuildViaInstall});
                 // start install queue if not started
                 installQueue.length === 1 && installAdapters();
+
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
+                }
             } else {
                 logger.info(hostLogPrefix + ' ' + msg.message.id + ' still in installQueue, rebuild will be done with install');
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, {result: 'pending'}, msg.callback);
+                }
             }
             break;
 
+        case 'readBaseSettings':
+            if (msg.callback && msg.from) {
+                const configFile = tools.getConfigFileName();
+                if (fs.existsSync(configFile)) {
+                    try {
+                        let config = fs.readFileSync(configFile).toString('utf8');
+                        let stat = fs.lstatSync(configFile);
+                        config = JSON.parse(config);
+                        sendTo(msg.from, msg.command, {config, isActive: uptimeStart > stat.mtimeMs}, msg.callback);
+                    } catch (e) {
+                        const error = 'Cannot parse file ' + configFile;
+                        logger.error(hostLogPrefix + ' ' + error);
+                        sendTo(msg.from, msg.command, {error}, msg.callback);
+                    }
+                } else {
+                    const error = 'Cannot find file ' + configFile;
+                    logger.error(hostLogPrefix + ' ' + error);
+                    sendTo(msg.from, msg.command, {error}, msg.callback);
+                }
+            } else {
+                logger.error(hostLogPrefix + ' No adapter name is specified for readBaseSettings command from  ' + msg.from);
+            }
+            break;
+
+        case 'writeBaseSettings':
+            let error;
+            if (msg.message) {
+                const configFile = tools.getConfigFileName();
+                if (fs.existsSync(configFile)) {
+                    let config;
+                    if (typeof msg.message === 'string') {
+                        try {
+                            config = JSON.parse(msg.message);
+                        } catch (e) {
+                            error = 'Cannot parse data ' + msg.message;
+                        }
+                    } else {
+                        config = msg.message;
+                    }
+
+                    if (!error) {
+                        // todo validate structure, because very important
+                        if (!config.system) {
+                            error = 'Cannot find "system" in data';
+                        } else if (!config.objects) {
+                            error = 'Cannot find "objects" in data';
+                        } else if (!config.states) {
+                            error = 'Cannot find "states" in data';
+                        } else if (!config.log) {
+                            error = 'Cannot find "log" in data';
+                        }
+                    }
+
+                    if (!error) {
+                        try {
+                            fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
+                        } catch (e) {
+                            error = 'Cannot write file ' + configFile;
+                        }
+                    }
+                }
+            } else {
+                error = 'No data found for writeBaseSettings ' + msg.from;
+            }
+
+            if (error) {
+                logger.error(hostLogPrefix + ' ' + error);
+                if (msg.callback && msg.from) {
+                    sendTo(msg.from, msg.command, {error}, msg.callback);
+                }
+            } else {
+                msg.callback && msg.from && sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
+            }
+
+            break;
     }
 }
 
