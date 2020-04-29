@@ -607,6 +607,81 @@ With such a setup, ioBroker will connect to one of these sentinel processes to g
 
 ... CLI
 ... Files vs PEM content
+... TODO
+
+### js-controller Host Messages
+
+... TODO
+#### shell
+... TODO
+
+#### cmdExec
+... TODO
+
+#### getRepository
+... TODO
+
+#### getInstalled
+... TODO
+
+#### getInstalledAdapter
+... TODO
+
+#### getVersion
+... TODO
+
+#### getDiagData
+... TODO
+
+... TODO
+
+#### getLocationOnDisk
+... TODO
+
+#### getDevList
+... TODO
+
+#### getLogs
+... TODO
+
+#### getHostInfo
+... TODO
+
+#### getHostInfoShort
+... TODO
+
+#### delLogs
+... TODO
+
+#### readDirAsZip
+... TODO
+
+#### writeDirAsZip
+... TODO
+
+#### readObjectsAsZip
+... TODO
+
+#### writeObjectsAsZip
+... TODO
+
+#### updateMultihost
+... TODO
+
+#### getInterfaces
+... TODO
+
+#### upload
+... TODO
+
+#### rebuildAdapter
+... TODO
+
+#### readBaseSettings
+... TODO
+
+#### writeBaseSettings
+... TODO
 
 ### Adapter Development
 **Feature status:** Stable
@@ -692,6 +767,7 @@ The following features can be checked using this method:
 * **ADAPTER_AUTO_DECRYPT_NATIVE**: The Controller supports auto decryption of encrypted native properties (since js-controller 3.0)
 * **PLUGINS**: Plugins are supported by this js-controller and adapters, see section below for more details (since js-controller 3.0)
 * **CONTROLLER_NPM_AUTO_REBUILD**: Automatic rebuild when node version mismatch is detected (since js-controller 3.0)
+* **CONTROLLER_READWRITE_BASE_SETTINGS**: Allow read and write of js-controller base settings file (iobroker.json) via host messages (since js-controller 3.0)
 
 To check if certain adapter methods itself are existing please simply check for their existence like
 
