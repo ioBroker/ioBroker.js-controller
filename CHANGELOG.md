@@ -4,6 +4,8 @@
 * (foxriver76) catch error on alias ids with empty objects
 * (Apollon77) make sure promise rejections without error are not crashing the controller 
 * (bluefox) Add Controller messages to allow read and write controller base settings (iobroker.json); introduce adapter feature flag CONTROLLER_READWRITE_BASE_SETTINGS
+* (Apollon77) handle edge case where hostName is not a string when sending messages (Sentry IOBROKER-ADMIN-B)
+* (Apollon77) handle case where letsencrypt directory can not be created (Sentry IOBROKER-ADMIN-C/IOBROKER-WEB-B)
 
 ## 3.0.20 (2020-04-28) Release Elena
 * (Apollon77) make sure disabling instances while installation is running do not crash the controller (Sentry IOBROKER-JS-CONTROLLER-Z) 
