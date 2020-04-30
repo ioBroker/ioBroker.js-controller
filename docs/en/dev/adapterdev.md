@@ -1,5 +1,5 @@
 ---
-lastChanged: 2019.01.13
+lastChanged: 2020.04.14
 ---
 # Guide for adapter developers
 
@@ -12,6 +12,7 @@ lastChanged: 2019.01.13
     - [Object fields](#object-fields)
     - [Instance object fields](#instance-object-fields)
 - [package.json](#packagejson)
+- [Versioning](#versioning)
 - [Deploying](#deploying)
 - [How to create own adapter](#how-to-create-own-adapter)
     - [Structure of main.js](#structure-of-mainjs)
@@ -35,6 +36,7 @@ lastChanged: 2019.01.13
 - [How to debug](#how-to-debug)
 - [admin.html](#adminhtml)
 - [Best practice](#best-practice)
+- [Useful links and references](#useful-links-and-references)
 
 ## Data structure - Objects and states
 
@@ -93,7 +95,7 @@ For each instance the configuration object can be found in the data storage unde
 - host: host name where this instance must run;
 - mode: none, daemon, subscribe, schedule, once;
 
-Description can be found [here](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#instance)
+Description can be found [here](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/objectsschema.md#instance)
 
 "Native" settings consist of **specific** configurations for this adapter, e.g.: IP address of device, device settings and so on.
 
@@ -101,7 +103,7 @@ Description can be found [here](https://github.com/ioBroker/ioBroker/blob/master
 
 All adapter instance object IDs starts with _adapterName.X_, where X is number of adapter instance.
 
-Objects have different [types](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#object-types) for different purposes.
+Objects have different [types](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/objectsschema.md#object-types) for different purposes.
 
 For every adapter (not the instance) the following objects will be created automatically:
 
@@ -150,7 +152,7 @@ Adapter must must follow some naming convention to be accepted and started by io
 
 ## Structure of io-package.json
 io-package.json is used by js-controller to show information about adapter and to know how to treat it.
-Complete description of all fields in common part can be found [here](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#adapter)
+Complete description of all fields in common part can be found [here](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/objectsschema.md#adapter)
 
 io-package.json will be read by "admin" to find out the online version of adapter.
 
@@ -316,12 +318,42 @@ Short structure of package.json:
 ```
 - All fields are mandatory. devDependencies should be inside too to enable the grunt tasks.
 
-### Deploying
-It is suggested to have the code on github. After the code is stable and lets to install adapter you can share you adapter to other user by asking them to install adapter as follow:
+### Versioning
 
-```
-npm install https://github.com/yourName/iobroker.adapterName/tarball/master/
-```
+It is required to use [Semantic Versioning](https://semver.org/) (SemVer) for your adapters.
+
+#### Syntax
+
+Version x.y.z (like 1.2.3) =>
+
+| **Major** | **Minor** | **Patch** |
+|-----------|-----------|-----------|
+| x         | y         | z         |
+
+#### Explanation
+
+* **Major**: Changes which lead to an incompatibility with previous versions
+* **Minor**: Added or extended functionality (backwards compatible)
+* **Patch**: Bug fixes (backwards compatible)
+
+#### Special Rule for Versions 0.y.z 
+
+While SemVer [suggests](https://semver.org/#how-should-i-deal-with-revisions-in-the-0yz-initial-development-phase) *(...) start your initial development release at 0.1.0 and then increment the minor version for each subsequent release (...)*, we recommend as well to initially start at `0.1.0`, but then increase **`z` for any patch or minor upgrade**, and **`y` for any breaking change** which is leading to an incompatibility with a previous versions.
+
+Once your adapter was successfully tested in the [latest repository](https://github.com/ioBroker/ioBroker.repositories#add-a-new-adapter-to-the-latest-repository) by several users and in different envirements, and is considered by you as "absolutely stable", you are ready to increase to **`1.0.0`** accordingly and can follow the instructions [Add a new adapter to the stable repository](https://github.com/ioBroker/ioBroker.repositories#add-a-new-adapter-to-the-stable-repository).
+
+
+### Deploying
+
+It is recommended to add your adapter as new repository on GitHub. [See this guideline](https://github.com/ioBroker/ioBroker.template/tree/master/JavaScript#getting-started).
+
+Once your adapter is stable in your environment and you are able to successfully install your adapter through GitHub, go ahead and post a new thread in the [ioBroker forum](https://forum.iobroker.net/). Refer to one of the following options for installation:
+1. **Recommended**: Installation through *Install adapter from your own URL* within the ioBroker admin interface. Refer to section *(5.) Install adapter from your own URL* of [ioBroker Admin documentation](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/admin/adapter.md). 
+
+2. Alternatively, adapters can be installed by the command line, using [`npm install iobroker.adapterName`](https://github.com/ioBroker/ioBroker/wiki/Console-commands#npm-install-iobrokeradaptername),  and then [`iobroker upload adapterName`](https://github.com/ioBroker/ioBroker/wiki/Console-commands#iobroker-upload-adaptername). However, this is **not** the recommended way.
+
+#### Publishing
+
 If everything is OK and you have got positive feedback from users you can publish adapter on npm. It would be good if before publishing you will create realease on github.
 
 Publishing can be done with following command:
@@ -339,9 +371,15 @@ Of course you must first create the account on [npm](https://www.npmjs.com/signu
 After the adapter is tested and other users find it useful, it can be taken into common repository, so it can be installed via "admin" adapter.
 
 ## How to create own adapter
-Please check [https://github.com/ioBroker/ioBroker.template](https://github.com/ioBroker/ioBroker.template) for a template of your own adapter.
 
-If you want to create a widget or an adapter with a widget please check [ioBroker.vis-template]https://github.com/ioBroker/ioBroker.vis-template) for a template of your own adapter.
+### ioBroker Adapter Creator
+
+The [ioBroker Adapter Creator](https://github.com/ioBroker/create-adapter) is a command line utility to quickly create a new adapter or VIS widget for visualization. This is the recommended way to start developing an adapter or widget.
+
+### ioBroker Adapter Templates
+
+Alteratively, you can download an [ioBroker Template](https://github.com/ioBroker/ioBroker.template) for adapter or VIS widget.
+
 
 ## Structure of main.js
 ```
@@ -810,3 +848,13 @@ After published at npm: go to ioBroker/ and write "npm install iobroker.xxx --pr
 
 ## Best practice
 ...
+
+## Useful links and references
+* [ioBroker Core Concept and Schema](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/objectsschema.md)
+* [ioBroker Adapter Creator](https://github.com/ioBroker/create-adapter)
+* [ioBroker Adapter Templates](https://github.com/ioBroker/ioBroker.template)
+* [ioBroker State Roles](https://github.com/ioBroker/ioBroker/blob/master/doc/STATE_ROLES.md)
+* [Translator for words.js](https://translator.iobroker.in/)
+* [Console commands for ioBroker](https://github.com/ioBroker/ioBroker/wiki/Console-commands)
+* [All current ioBroker adapters and categories](http://download.iobroker.net/list.html)
+* [Adapter Requests](https://github.com/ioBroker/AdapterRequests/issues)
