@@ -1,6 +1,5 @@
 ![Logo](admin/synology.png)
 # ioBroker Synology adapter
-=================
 
 ![Number of Installations](http://iobroker.live/badges/synology-installed.svg) ![Number of Installations](http://iobroker.live/badges/synology-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.synology.svg)](https://www.npmjs.com/package/iobroker.synology)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.synology.svg)](https://www.npmjs.com/package/iobroker.synology)
@@ -13,23 +12,59 @@
 ## Description
 The driver allows you to receive data and manage your Synology NAS server.
 
+### sendMethod
+
 You can send any command (method) by setting the sendMethod object, for example:
 Get the SurveillanceStation info is a getInfo method with no additional parameters.
 
 ```{"method": "getInfo", "params": {}}```
 
-## Описание
-Драйвер позволяет получать данные и управлять вашим NAS сервером фирмы Synology.
+### Control
+**commands.reboot** - reboot NAS
 
-Можно отправить любую команду(метод) установив значение обьекта ```sendMethod```, например:
-Получить инфо SurveillanceStation это метод getInfo без дополнительных параметров.
+**commands.shutdown** - shutdown NAS
 
-```{"method":"getInfo", "params":{}}```
+***SurveillanceStation.cameras.{NAMECAM}***:
+* enabled - Current status and enable/disable camera
+* linkSnapshot - URL for snapshot
+
+***SurveillanceStation.HomeMode.status_on*** - Current status and enable/disable homemode
+
+***SurveillanceStation.getSnapshotCamera*** - Get snapshot by camera number, the file is saved in a directory *...iobroker-data\synology_0\snapshotCam_2.jpg*
+
+***AudioStation.players.{PLAYERID}***:
+* play, pause, stop, next, prev - Controlling playback (button, only true)
+* repeat - Repeat control (Off, All, One)
+* shuffle - Shuffle control (true/false)
+* volume - Volume remote player (0-100) 
+* seek - Controlling playback seek (0-100)
+* play_folder - Add tracks from the folder to the playlist (id folder e.g. *dir_5816*)
+* play_track - Play track by its id (e.g. *music_120847*)
+* current_play - Control and status of the current track by its number in the playlist (e.g. *14*)
+
+### Messagebox
+```
+sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
+    if(res) sendTo('telegram.0', {text: res, caption: 'caption for image'});
+});
+```
 
 ## Changelog
 
+### 0.1.1
+* (instalator) added messagebox for snapshot
+* (instalator) update readme
+* (instalator) added ss link for different streams
+* (instalator) fix error
+* (instalator) refactoring
+
 ### 0.1.0
-* (instalator) 
+* (instalator) added HomeMode switch 
+* (instalator) change for audiostation 
+* (instalator) change for as and ss
+* (instalator) added snapshot functional 
+* (instalator) fixed systemConfig 
+* (instalator) fixed many error 
 
 ### 0.0.4 (2018-10-07)
 * (instalator) Изменен репозиторий библиотеки

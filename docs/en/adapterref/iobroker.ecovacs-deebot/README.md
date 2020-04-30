@@ -15,7 +15,8 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 
-### Theses models are known to work
+### These models are known to work
+* Deebot N79T/W
 * Deebot 601
 * Deebot 710/711
 * Deebot 900/901
@@ -23,7 +24,7 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 * Deebot Ozmo 900
 
 ### These models should work
-* Deebot N79T
+* Deebot N79S
 * Deebot M88
 * Deebot 600/605
 * Deebot Ozmo 920

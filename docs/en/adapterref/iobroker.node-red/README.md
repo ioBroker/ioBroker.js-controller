@@ -18,9 +18,12 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 
 ## Changelog
 
-### 1.17.0 (2020-04-27) WIP
-* (Apollon77) check object and not state to detect if a object exists
+### 1.17.2 (2020-04-29)
+* (Apollon77) check object and not state to detect if an object exists
 * (Apollon77) update node-red to 1.0.6 and deps
+* (Apollon77) make sure adapter namespace is prepended in all situations and so correct objects are created
+* (Apollon77) fix crash cases
+* (Apollon77) make sure msg topic is not overwritten by null 
 
 ### 1.16.5 (2020-03-17)
 * (bluefox) Caught errors if state deleted

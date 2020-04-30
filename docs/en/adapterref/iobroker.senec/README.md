@@ -25,7 +25,9 @@ In addition to the adapter installation you have to add an instance of the adapt
 | Feld         | Beschreibung |                                                                       
 |:-------------|:-------------|
 |SENEC System    |Type in the IP-address of your SENEC system (FQDN is also possible if you have a working local DNS).|
-|Polling Interval|You can change the polling interval (how often the Adapter reads from your Senec System), too. (Default: 10 seconds)|
+|Polling Interval High Priority Data|You can change the polling interval for high priority data (how often the Adapter reads from your Senec System), too. (Default: 10 seconds)|
+|Polling Interval Low Priority Data|You can change the polling interval for low priority data (how often the Adapter reads from your Senec System), too. (Default: 60 minutes)<br>
+Please be careful with high-frequency polling because this can render your SENEC machine unable to connect to the SENEC server!|
 |Request-Timeout|If your network requires a higher timeout for requests sent to SENEC, please change the Request-Timeout in miliseconds accordingly. (Default: 5000 miliseconds)|
 |Polling Retries|In case there is an issue communicating with SENEC the adapter will retry several times. You can adjust how often it will try to read from SENEC. (Default: 10)<br>
 This does not apply to Adapter Start - if the System is unavailable to Adapter will stop.|
@@ -35,6 +37,8 @@ Once finished setting up configuration, hit `SAVE AND CLOSE` to leave configurat
 
 ## Usage
 Here you can find a description of the states and how to use them. All states of this adapter are read-only states.
+Depending on the individual system states might not be available or additional states could be there.
+If a state is not documented (or only partially documented) and you know what it represents, please send a pull request (or open a ticket with the information).
 
 ### States
 
@@ -49,6 +53,166 @@ Here you can find a description of the states and how to use them. All states of
    *Read-only boolean which is true if the adapter is connected to the senec system.*
    
 #### Channel: BMS
+
+* BL[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents ? for each battery pack.*
+   
+* CHARGED_ENERGY[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents the amount of charged energy per battery pack in unit ?*
+   
+* CHARGE_CURRENT_LIMIT[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents the current charge limit in Ampere per battery pack.*
+   
+* CURRENT[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's current in Ampere.*
+   
+* CYCLES[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's current charching cycles.*
+   
+* DISCHARGED_ENERGY[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents the amount of energy discharged per battery in unit ?.*
+   
+* DISCHARGE_CURRENT_LIMIT[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's current discharge limit in Ampere.*
+   
+* FW[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's firmware version.*
+   
+* HW_EXTENSION[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's ?.*
+   
+* HW_MAINBOARD[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's mainboard version.*
+   
+* MAX_CELL_VOTAGE[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's maximum cell voltage in Volts.*
+   
+* MIN_CELL_VOTAGE[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's minimum cell voltage in Volts.*
+   
+* SN[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's serial number.*
+   
+* SOC[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's state of charge.*
+   
+* SOH[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's state of health.*
+   
+* STATUS[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's status.*
+   
+* TEMP_MAX[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's maximum temperature.*
+   
+* TEMP_MIN[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's minimum temperature.*
+   
+* VOLTAGE[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only number, which represents each battery pack's voltage in Volts.*
+   
+* BMS_READY_FLAG
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Read-only boolean, which represents if the BMS is ready.*
    
 * MODULES_CONFIGURED
 
@@ -65,6 +229,54 @@ Here you can find a description of the states and how to use them. All states of
     |number|R|
 
    *Read-only number, which represents the number of modules currently known the system (incl. non-configured).*
+   
+* START_UPDATE
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Read-only boolean, which represents if an update is to be started.*
+   
+* WIZARD_ABORT
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Read-only boolean, which represents if the setup wizard was aborted.*
+   
+* WIZARD_CONFIRM
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Read-only boolean, which represents if the setup wizard was confirmed.*
+   
+* WIZARD_DCCONNECT
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Read-only boolean, which represents ?.*
+   
+* WIZARD_START
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Read-only boolean, which represents if the setup wizard is to be started.*
+   
+* WIZARD_STATE
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Read-only number, which represents the setup wizard's state.*
    
 
 #### Channel: ENERGY
@@ -294,6 +506,12 @@ Here you can find a description of the states and how to use them. All states of
    *Read-only text, which designates the serial number of wallbox [0..3].*
 
 ## Changelog
+
+### 1.0.7 (NoBl)
+* Reading all known states from SENEC.
+* Split states into high/low priority (heavy requesting the SENEC system renders it unable to sync with the SENEC datacenter!).
+* Updated adapter-core and testing versions along with current dev dependencies. Removed node 8 support.
+* Added more state descriptions to manual. But need input on these and those that are still not documented.
 
 ### 1.0.6 (NoBl)
 * Moved senec states and state attributes to libs

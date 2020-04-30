@@ -316,6 +316,10 @@ Forumeinträge werde ohne Probleme angezeigt, wenn man auf ioBroker per IP oder 
 
 ## Changelog
 
+### 1.7.1 (2020-04-29)
+* (ldittmar) Update systeminformation library
+* (ldittmar) Check instance active for messages
+
 ### 1.7.0 (2020-04-16)
 * (Apollon77) IMPORTANT: Supported version minimum nodejs 10
 * (Apollon77) add Sentry error reporting and update dependencies

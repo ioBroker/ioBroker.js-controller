@@ -99,6 +99,10 @@ The adapter understands also 'sendTo' commands.
 
 ## Changelog
 
+### 2.0.3
+
+* changed to new myAdapter to support js-controller 2.0 and 3.0
+
 ### 2.0.1
 * Can handle Floureon/Beko thermostats (now with MQTT)
 * Can handle S1C security devices

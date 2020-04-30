@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
+hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
 ---
 ![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -33,7 +33,7 @@ hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
 1.使用以下命令通过管理员安装
  *稳定的回购-获得当前的稳定版本
  *最新的Repo-获取最新的测试版本（可能不稳定）
- *通过：https://github.com/Grizzelbee/ioBroker.mielecloudservice.git-获得最新的开发版本
+ *通过：https://github.com/Grizzelbee/ioBroker.mielecloudservice.git-获取最新的开发版本
 2.在Miele Smartphone应用程序中为Miele @ Home创建一个应用程序帐户
 3.在https://www.miele.com/f/com/zh-CN/register_api.aspx上创建一个开发人员帐户
 4.将您的Miele设备添加到应用程序（如果未自动添加）
@@ -134,6 +134,13 @@ hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
  | 5 |手铁2级|
  | 6 |机铁|
 
+### ProgramBezeichnung洗衣机
+|原始值状态|
+|----------|-------|
+| 1 | “ Baumwolle” /“棉” |
+| 27 | “Imprägnieren” / |
+| 123 | “ Dunkles /牛仔裤” / |
+
 ### ProgramPhase洗衣机
 |原始值状态|
 |----------|-------|
@@ -148,6 +155,11 @@ hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
 版权所有（c）2019、2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 1.2.1 (2020-04-22)
+* (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumbledryers, washer dryer and dishwashers. **Dosen't work perfectly currently.**  
+* (grizzelbee) Upd: Updated Documentation 
+* (grizzelbee) Fix: Fixed warnings with js-Controller >=3.0 (Issue #23)
+
 ### 1.2.0 (2020-04-18)
 * (grizzelbee) New: Added new boolean state (**Connected**) that indicates whether the device is connected to WLAN or a gateway.
 * (grizzelbee) New: Added new boolean state (**signalInUse**) that indicates whether the device is switched off (false) or in Use (true).

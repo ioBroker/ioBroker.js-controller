@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mydlink/README.md
 title: ioBroker.mydlink
-hash: Tx0RggrpUy6Edc2CQQDri98x8JiWjf19dZvAb9iZutk=
+hash: NK0Lc25HJwJaBrywBx44As6e8fzW1H78ChDFSSi092s=
 ---
 ![Logo](../../../en/adapterref/iobroker.mydlink/admin/mydlink.png)
 
@@ -33,14 +33,28 @@ Derzeit getestete Geräte:
 Der Adapter muss die Geräte abfragen. So werden Sensorwerte und Bewegungserkennung um das Abfrageintervall verzögert (kann in der Konfiguration eingestellt werden).
 
 #### Aufbau:
-* globales Abfrageintervall - Der Adapter fragt alle Geräte in diesem Intervall ab, wenn für sie kein bestimmtes Intervall festgelegt wurde. Zum Deaktivieren auf 0 setzen.
 * Liste der Geräte, jedes Gerät mit folgenden Einstellungen:
 
-<table><tr><td> Name </td><td> hier einen Namen setzen, muss eindeutig sein (für mydlink Geräte) </td></tr><tr><td> IP </td><td> Geben Sie hier die IP-Adresse ein, der Hostname sollte auch funktionieren </td></tr><tr><td> STIFT </td><td> Die PIN befindet sich auf einem Aufkleber auf dem Gerät, wahrscheinlich unten </td></tr><tr><td> Abfrageintervall </td><td> Lassen Sie das Gerät pro Abfrageintervall leer, um das globale Abfrageintervall zu verwenden. <br /> Setzen Sie 0, um die Abfrage zu deaktivieren. <br /> <b>Empfehlung:</b> Legen Sie ein schnelles Abfrageintervall für Sensoren und ein längeres für Stecker fest. </td></tr><tr><td> aktivieren </td><td> Wenn nicht aktiviert, wird nicht abgefragt oder gesteuert. <br /> Geräte, die nicht angeschlossen sind, können deaktiviert werden, um Fehlermeldungen im Protokoll zu vermeiden. </td></tr></table>
+<table><tr><td> Name </td><td> hier einen Namen setzen, muss eindeutig sein (für mydlink Geräte) </td></tr><tr><td> IP </td><td> Geben Sie hier die IP-Adresse ein, der Hostname sollte auch funktionieren </td></tr><tr><td> STIFT </td><td> Die PIN befindet sich auf einem Aufkleber auf dem Gerät, wahrscheinlich unten </td></tr><tr><td> Abfrageintervall </td><td> pro Gerät Abfrageintervall <br /> Setzen Sie 0, um die Abfrage zu deaktivieren. <br /> <b>Empfehlung:</b> Legen Sie ein schnelles Abfrageintervall für Sensoren und ein längeres für Stecker fest. </td></tr><tr><td> aktivieren </td><td> Wenn nicht aktiviert, wird nicht abgefragt oder gesteuert. <br /> Geräte, die nicht angeschlossen sind, können deaktiviert werden, um Netzwerkverkehr und Fehlermeldungen im Protokoll zu vermeiden. </td></tr></table>
 
 Der Adapter stört die Nutzung der App nicht.
 
 ## Changelog
+### 1.0.2 (2020-04-30)
+* Fixed potential crashes on network errors.
+
+### 1.0.1 (2020-04-30)
+* Re-added device config to adapter config (in case objects get deleted).
+
+### 1.0.0 (2020-04-30)
+* BREAKING CHANGE: device id is now mac instead of name -> all devices need to be recreated. Sorry for that. But should never happen again, now. New devices *should* be created automatically.
+* added encryption of PIN
+* settings stored in native part of device (please do not delete them or you have to reconfigure them)
+* modified device creation / identification / start to allow devices to be (re-)started during runtime (you do not need to press save on config page anymore)
+* added auto detection
+* added missing translations
+* added sentry plugin (including sending information about unknown devices)
+* a lot of internal restructuring and cleanup for better maintenance in future.
 
 ### 0.0.7
 * (Garfonso) added info.connection state

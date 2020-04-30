@@ -178,6 +178,12 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * ~~autodiscover logitech media server~~
 
 ## Changelog
+### 1.0.1
+ * change setstate/createobject logic
+ * fix role and type for Mode-state
+ * update tests
+ * update dependency versions
+ * improve io-package.json
 ### 1.0.0
  * prepare for stable repository
 ### 0.8.32

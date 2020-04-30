@@ -153,6 +153,10 @@ Following global Actions are current supported:
 
 ## Changelog
 
+### 2.0.1
+* (AlCalzone) Removed usage of `adapter.objects` for compatibility with JS-Controller 3.x
+* (AlCalzone) Update dependencies
+
 ### 2.0.0
 * (cburghardt) Added ldconfig to installation and upgraded openzwave. Fixes #99. If this causes issues, please run the ioBroker fixer first!
 

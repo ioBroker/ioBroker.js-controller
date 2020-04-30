@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: Ls/2jx7RB4fYH8tFYFajvAI4JG/1h6KY9vtXwOrr3RM=
+hash: oH6/B1e2WUVKqSdwl85gT18ugSQxUpkvi9mR7iujG8k=
 ---
 ![логотип](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -366,6 +366,12 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Записать неизмененные значения любые** записывать значения каждые X секунд.
 - **Минимальная разница от последнего значения к журналу** минимальный интервал между двумя значениями.
 - **Хранение хранения** как долго значения будут храниться в БД.
+
+## 1.12.3 (2020-04-30)
+* (Apollon77) Попробуйте ускорить создание Indizes на MSSQL. Информация отображается, если не возможно, чтобы пользователь мог сделать это самостоятельно. Тайм-аут составляет 15 с
+
+## 1.12.2 (2020-04-30)
+* (Apollon77) MSSQL снова работает
 
 ## 1.12.1 (2020-04-26)
 * (Apollon77) Исправлено возможное падение (Sentry)

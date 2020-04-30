@@ -29,20 +29,34 @@ The adapter needs to poll the devices. So sensor readings and motion detection w
 delayed by polling interval (can be set in config).
 
 #### Configuration:
-* global poll interval - Adapter will poll all devices in that interval, if they do not have a specific interval set. Set to 0 to disable.
 * List of devices, each device with following settings:
 
 <table>
 <tr><td>Name</td><td>set a name here, must be unique (for mydlink devices)</td></tr>
 <tr><td>IP</td><td>fill in IP address here, hostname should also work</td></tr>
 <tr><td>PIN</td><td>PIN is printed on a sticker on the device, probably at the bottom</td></tr>
-<tr><td>Poll interval</td><td>per device poll interval, leave empty to use global poll interval. <br /> Set 0 to disable polling. <br /><b>Recommendation:</b> Set a fast poll interval for sensors and a longer one for plugs.</td></tr>
-<tr><td>enable</td><td>if not enabled, will not be polled or controlled. <br />Devices that are not plugged in can be disabled to avoid error messages in the log.</td></tr>
+<tr><td>Poll interval</td><td>per device poll interval<br /> Set 0 to disable polling. <br /><b>Recommendation:</b> Set a fast poll interval for sensors and a longer one for plugs.</td></tr>
+<tr><td>enable</td><td>if not enabled, will not be polled or controlled. <br />Devices that are not plugged in can be disabled to avoid network traffic and error messages in the log.</td></tr>
 </table>
 
 The adapter does not interfere with the use of the app.
 
 ## Changelog
+### 1.0.2 (2020-04-30)
+* Fixed potential crashes on network errors.
+
+### 1.0.1 (2020-04-30)
+* Re-added device config to adapter config (in case objects get deleted).
+
+### 1.0.0 (2020-04-30)
+* BREAKING CHANGE: device id is now mac instead of name -> all devices need to be recreated. Sorry for that. But should never happen again, now. New devices *should* be created automatically.
+* added encryption of PIN
+* settings stored in native part of device (please do not delete them or you have to reconfigure them)
+* modified device creation / identification / start to allow devices to be (re-)started during runtime (you do not need to press save on config page anymore)
+* added auto detection
+* added missing translations
+* added sentry plugin (including sending information about unknown devices)
+* a lot of internal restructuring and cleanup for better maintenance in future.
 
 ### 0.0.7
 * (Garfonso) added info.connection state

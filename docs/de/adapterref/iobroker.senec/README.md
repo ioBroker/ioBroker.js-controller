@@ -34,7 +34,9 @@ Nach Abschluss der Installation einer Adapterinstanz öffnet sich automatisch ei
 | Feld         | Beschreibung |                                                                       
 |:-------------|:-------------|
 |SENEC System    |Hier wird die IP-Adresse des gewünschten Senec.Home Systems angegeben werden. Falls im Netzwerk ein funktionierender DNS existiert, kann auch der FQDN angegeben werden.|
-|Abfrageintervall|Hier wird eingegeben, in welchen Zeitintervallen (Millisekunden) die Werde vom Senec.Home Systems abgerufen werden. (Default: 10)|
+|Abfrageintervall hohe Priorität|Hier wird eingegeben, in welchen Zeitintervallen (Millisekunden) die Werde hoher Priorität vom Senec.Home Systems abgerufen werden. (Default: 10 Sekunden)|
+|Abfrageintervall niedrige Priorität|Hier wird eingegeben, in welchen Zeitintervallen (Millisekunden) die Werde niedriger Priorität vom Senec.Home Systems abgerufen werden. (Default: 60 Minuten)<br>
+Achtung! Wird das SENEC System mit zu hoher Frequenz abgefragt, kann dies dazu führen, dass keine Daten mehr an die SENEC Server übermittelt werden können! (z.B. keine aktuellen Werte in der App oder auf mein-senec.de)|
 |Request-Timeout|Hier wird eingegeben, nach wievielen Millisekunden eine Anfrage spätestens vom Senec.Home System beantwortet sein muss, bevor die Anfrage abgebrochen wird. (Default: 5000)|
 |Wiederholungsversuche|Hier wird angegeben, wie oft versucht werden soll, das Senec System anzufragen, falls es zu einem Fehler kommt. Dies gilt nicht beim Start des Adapters - sollte das System dabei nicht erreichbar sein, beendet der Adapter seine Arbeit. (Default: 10)|
 |Polling-Wiederholungsfaktor|Mit diesem Wert kann der Abstand zwischen den Wiederholungsversuchen beeinflusst werden. Es gilt: der n'te Wiederholungsversuch erfolgt nach Intervall * Multiplikator * n Sekunden nach Versuch n-1. Beispiel: Mit Standardwerten erfolgt der 1. Wiederholungsversuch 20 Sekunden nach dem initialen Versuch und der 2. Wiederholungsversuch erfolgt 40 Sekunden nach dem 1. Ein erfolgreicher Datenabruf setzt den Zähler für Wiederholungen zurück.|
@@ -56,6 +58,8 @@ Nachfolgend werden die Objekte in States unterteilt.
 Jeder Datenpunkt ist mit seinem zugehörigen Datentyp sowie seinen Berechtigungen aufgeführt. 
 Berechtigungen können dezeit nur lesend (R) sein. Jeder Datenpunkt kann mindestens gelesen (R) werden.
 Zur Suche nach einem bestimmten Datenpunkt empfiehlt sich die Suche mittels der Tastenkombination "STRG + F".
+Abhängig vom individuellen System können States nicht existieren oder aber auch nicht dokumentierte States auftreten.
+Falls zu einem State keine Dokumentation vorhanden ist, jemand aber weiß, was der State darstellt, bitte ich um einen entspr. Pull-Request (oder Ticket mit der entspr. Information eröffnen).
 
 ### States
 
@@ -70,6 +74,166 @@ Zur Suche nach einem bestimmten Datenpunkt empfiehlt sich die Suche mittels der 
    *Nur lesbarer boolscher Wert, welcher true ist, wenn die Verbindung zwischen ioBroker und Senec.Home hergestellt ist.*
    
 #### Channel: BMS
+
+* BL[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt: ? für jeden Battery Pack.*
+   
+* CHARGED_ENERGY[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wieviel Energie je Battery Pack geladen wurde. Einheit: ?*
+   
+* CHARGE_CURRENT_LIMIT[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wie hoch die Ladeleistung je Battery Pack in Ampere ist.*
+   
+* CURRENT[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wieviel Ampere jeder Battery Pack aktuell hat.*
+   
+* CYCLES[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wieviele Ladezyklen jeder Battery Pack hat.*
+   
+* DISCHARGED_ENERGY[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wieviel Energie aus einem Battery Pack ausgespeist wurde. Einheit: ?*
+   
+* DISCHARGE_CURRENT_LIMIT[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, welche Entladeleistung jeder Battery Pack aktuell hat.*
+   
+* FW[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, welche Firmwareversion ein Battery Pack aktuell hat.*
+   
+* HW_EXTENSION[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, welche Hardware Erweiterung der jeweilige Battery Pack hat.*
+   
+* HW_MAINBOARD[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, welche Hardwareversion das Mainboard des jeweiligen Battery Pack hat.*
+   
+* MAX_CELL_VOTAGE[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wie hoch die maximale Voltzahl des einzelnen Battery Pack ist.*
+   
+* MIN_CELL_VOTAGE[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wie hoch die minimale Voltzahl des einzelnen Battery Pack ist.*
+   
+* SN[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wie die Seriennummer des einzelnen Battery Pack lautet.*
+   
+* SOC[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wie der Ladezustand des einzelnen Battery Pack ist.*
+   
+* SOH[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wie der Gesundheitszustand des einzelnen Battery Pack ist.*
+   
+* STATUS[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wie der Status des einzelnen Battery Pack ist.*
+   
+* TEMP_MAX[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wie hoch die maximale Temperatur des einzelnen Battery Pack ist.*
+   
+* TEMP_MIN[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wie hoch die minimale Temperatur des einzelnen Battery Pack ist.*
+   
+* VOLTAGE[0-3]
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, wie hoch die Volt des einzelnen Battery Pack sind.*
+   
+* BMS_READY_FLAG
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Nur lesbarer boolscher Wert, welcher true ist, falls das BMS bereit ist.*
    
 * MODULES_CONFIGURED
 
@@ -87,6 +251,53 @@ Zur Suche nach einem bestimmten Datenpunkt empfiehlt sich die Suche mittels der 
 
    *Nur lesbare Zahl, die angibt, wieviele Module im System angeschlossen sind (inkl. nicht konfigurierter).*
    
+* START_UPDATE
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Nur lesbarer boolscher Wert, welcher true ist, falls ein Update zu starten ist.*
+   
+* WIZARD_ABORT
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Nur lesbarer boolscher Wert, welcher true ist, der Einrichtungsprozess unterbrochen wurde.*
+   
+* WIZARD_CONFIRM
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Nur lesbarer boolscher Wert, welcher true ist, der Einrichtungsprozess bestätigt wurde.*
+   
+* WIZARD_DCCONNECT
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Nur lesbarer boolscher Wert, welcher true ist, der Einrichtungsprozess ?.*
+   
+* WIZARD_START
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Nur lesbarer boolscher Wert, welcher true ist, der Einrichtungsprozess gestartet wurde.*
+   
+* WIZARD_STATE
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |number|R|
+
+   *Nur lesbare Zahl, die angibt, welchen Status der Einrichtungsprozess hat.*
 
 #### Channel: ENERGY
 
@@ -315,6 +526,12 @@ Zur Suche nach einem bestimmten Datenpunkt empfiehlt sich die Suche mittels der 
    *Nur lesbarer Text, die die Seriennummern der evtl. vorhandenen Wallboxen 0-3 angibt.*
 
 ## Changelog
+
+### 1.0.7 (NoBl)
+* Reading all known states from SENEC.
+* Split states into high/low priority (heavy requesting the SENEC system renders it unable to sync with the SENEC datacenter!).
+* Updated adapter-core and testing versions along with current dev dependencies. Removed node 8 support.
+* Added more state descriptions to manual. But need input on these and those that are still not documented.
 
 ### 1.0.6 (NoBl)
 * Moved senec states and state attributes to libs

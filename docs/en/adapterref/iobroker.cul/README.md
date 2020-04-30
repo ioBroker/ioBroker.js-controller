@@ -27,8 +27,12 @@ This command uses the CUL Library of this adapter to send the command to a FS20 
 Javascript/Node.js based Busware CUL USB / culfw adapter
 
 ## Changelog
+### 1.2.2 (2020-04-30)
+* (Apollon77) Update dependencies/Serialport 
+
 ### 1.2.1 (2020-03-18)
-* (bluefox) Changed license from non SPDX conform "GPL-2.0" to "GPL-2.0-or-later"
+* (bluefox) Changed license from non SPDX conform 
+    "GPL-2.0" to "GPL-2.0-or-later"
 
 ### 1.2.0 (2020-02-10)
 * (MK-2001) Sending of FS20 cmdRAW possible or via sendTo as described in the readme

@@ -107,6 +107,10 @@ Wählt man in der Titelzeile unter Historie "mit" oder "influxdb.0" aus, werden
 Die Beschreibung einer Installation einer influxDB-Datenbank folgt.
 
 ## Changelog
+
+### 1.8.3 (2020-04-29)
+* (Apollon77) Fix pot crash case when deleting objects while saving values (Sentry) 
+
 ### 1.8.2 (2020-04-19)
 * __Requires js-controller >= 2.0.0__
 * (Apollon77) removed usage of adapter.objects

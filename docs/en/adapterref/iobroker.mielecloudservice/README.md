@@ -37,6 +37,11 @@ To install, excecute the following:
 * New: Sleeptime for complete inactivity (e.g. at night)
 
 ## Changelog
+### 1.2.1 (2020-04-22)
+* (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumbledryers, washer dryer and dishwashers. **Dosen't work perfectly currently.**  
+* (grizzelbee) Upd: Updated Documentation 
+* (grizzelbee) Fix: Fixed warnings with js-Controller >=3.0 (Issue #23)
+
 ### 1.2.0 (2020-04-18)
 * (grizzelbee) New: Added new boolean state (**Connected**) that indicates whether the device is connected to WLAN or a gateway.
 * (grizzelbee) New: Added new boolean state (**signalInUse**) that indicates whether the device is switched off (false) or in Use (true).
@@ -206,6 +211,14 @@ Here is a list of what these raw values stand for:
  |4 |   Hand iron level 1|
  |5 |   Hand iron level 2|
  |6 |   Machine iron|
+
+### ProgramBezeichnung for washing machines
+
+| Raw value | State|
+|----------|-------|
+|1 | "Baumwolle" / "Cotton"  |
+|27 | "Imprägnieren"  /     |
+|123 | "Dunkles / Jeans"  /     |
 
 ### ProgramPhase for washing machines
 

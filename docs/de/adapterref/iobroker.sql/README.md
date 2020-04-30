@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: Ls/2jx7RB4fYH8tFYFajvAI4JG/1h6KY9vtXwOrr3RM=
+hash: oH6/B1e2WUVKqSdwl85gT18ugSQxUpkvi9mR7iujG8k=
 ---
 ![Logo](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -359,7 +359,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Passwort** Passwort für SQL.
 - **Passwort bestätigen** Wiederholen Sie einfach das Passwort hier.
 - **Verschlüsseln** Einige DBs unterstützen die Verschlüsselung.
-- **Real runden auf** Anzahl der Stellen nach dem Komma.
+- **Real runden auf** Anzahl der Ziffern nach dem Komma.
 - **Parallele Anforderungen zulassen** Zulassen gleichzeitiger SQL-Anforderungen an die Datenbank.
 
 ## Standardeinstellungen
@@ -368,17 +368,23 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Minimale Differenz vom letzten Wert zum Protokoll** Das minimale Intervall zwischen zwei Werten.
 - **Speicheraufbewahrung** Wie lange werden die Werte in der Datenbank gespeichert?
 
+## 1.12.3 (2020-04-30)
+* (Apollon77) Versuchen Sie, Indizes unter MSSQL zu erstellen, um die Dinge zu beschleunigen. Infos werden angezeigt, wenn dies für den Benutzer nicht möglich ist. Timeout ist 15s
+
+## 1.12.2 (2020-04-30)
+* (Apollon77) MSSQL funktioniert wieder
+
 ## 1.12.1 (2020-04-26)
 * (Apollon77) Behebung eines möglichen Absturzes (Sentry)
 
 ## 1.12.0 (2020-04-23)
-* (Apollon77) Implementieren Sie die Einstellung für die maximale Verbindung und respektieren Sie diese. Jetzt können Sie steuern, wie viele gleichzeitige Verbindungen zur Datenbank verwendet werden (Standard 100). Andere warten bis zu 10 Sekunden auf eine freie Verbindung, bevor sie fehlschlagen.)
+* (Apollon77) Implementieren Sie die Einstellung für maximale Verbindungen und respektieren Sie diese. Jetzt können Sie steuern, wie viele gleichzeitige Verbindungen zur Datenbank verwendet werden (Standard 100), und andere warten bis zu 10 Sekunden auf eine freie Verbindung, bevor sie fehlschlagen.)
 * (Apollon77) Ändern Sie die Abhängigkeiten von admin in eine globale Abhängigkeit
 * (Apollon77) Aktualisieren Sie den Verbindungsstatus auch dazwischen
 * (Apollon77) behebt einige mögliche Absturzfälle (Sentry berichtet)
 * (Omega236) ID zur Fehlermeldung für Abfragen hinzufügen
 * (Apollon77) aktualisiere pg, um mit nodejs 14 kompatibel zu bleiben
-* (Apollon77) Beenden Sie die Zeitüberschreitung beim Entladen deutlich ... noch einige Fälle übrig!
+* (Apollon77) Beginne klar, Timeouts beim Entladen zu beenden ... noch einige Fälle übrig!
 
 ## 1.11.1 (2020-04-19)
 * __Erfordert js-controller> = 2.0.0__
@@ -425,7 +431,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 * (Bluefox) Admin3-Korrekturen
 * (Apollon77) Relog- und Null-Log-Korrekturen
 
-## 1.6.2 (30.01.2018)
+## 1.6.2 (2018-01-30)
 * (Apollon77) Admin3-Korrekturen
 
 ## 1.6.0 (2018-01-14)
@@ -440,7 +446,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 ## 1.5.6 (2017-08-02)
 * (Apollon77) Das Verhalten des Protokollintervalls wurde korrigiert, um immer den aktuellen Wert zu protokollieren
 
-## 1.5.4 (2017-06-12)
+## 1.5.4 (12.06.2017)
 * (Apollon77) Behebung der Abhängigkeit von einer anderen Bibliothek
 
 ## 1.5.3 (2017-04-07)

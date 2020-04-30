@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: p7EEJoNdKiXlYuc8V6IyWDTM1T8jtdu6FV5vNMAL7MU=
+hash: GsUr206XF8dSP1kZQ6AZ2jXpGifpgMybCtj/zrrAQNU=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -22,6 +22,7 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot Ozmo 950
 
 ### Diese Modelle funktionieren bekanntermaßen
+* Deebot N79T / W.
 * Deebot 601
 * Deebot 710/711
 * Deebot 900/901
@@ -29,7 +30,7 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot Ozmo 900
 
 ### Diese Modelle sollten funktionieren
-* Deebot N79T
+* Deebot N79S
 * Deebot M88
 * Deebot 600/605
 * Deebot Ozmo 920

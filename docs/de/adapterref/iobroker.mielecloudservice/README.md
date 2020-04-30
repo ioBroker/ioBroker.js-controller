@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
+hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
 ---
 ![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -73,7 +73,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 18 | HAUBE |
  | 19 | KÜHLSCHRANK |
  | 20 | Gefrierschrank |
- | 21 | KÜHLSCHRANK- / GEFRIERKOMBINATION |
+ | 21 | KÜHL- / GEFRIERKOMBINATION |
  | 23 | VAKUUMREINIGER, AUTOMATISCHER ROBOTER VAKUUMREINIGER |
  | 24 | SCHEIBETROCKNER |
  | 25 | DISH WARMER |
@@ -134,6 +134,13 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 5 | Handeisen Stufe 2 |
  | 6 | Maschineneisen |
 
+### ProgramBezeichnung für Waschmaschinen
+| Rohwert | Staat |
+|----------|-------|
+| 1 | "Baumwolle" / "Baumwolle" |
+| 27 | "Imprägnieren" / |
+| 123 | "Dunkles / Jeans" / |
+
 ### ProgramPhase für Waschmaschinen
 | Rohwert | Staat |
 |----------|-------|
@@ -148,6 +155,11 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
 Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 1.2.1 (2020-04-22)
+* (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumbledryers, washer dryer and dishwashers. **Dosen't work perfectly currently.**  
+* (grizzelbee) Upd: Updated Documentation 
+* (grizzelbee) Fix: Fixed warnings with js-Controller >=3.0 (Issue #23)
+
 ### 1.2.0 (2020-04-18)
 * (grizzelbee) New: Added new boolean state (**Connected**) that indicates whether the device is connected to WLAN or a gateway.
 * (grizzelbee) New: Added new boolean state (**signalInUse**) that indicates whether the device is switched off (false) or in Use (true).

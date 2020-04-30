@@ -43,6 +43,12 @@ Returns a buffer as a string
 
 ## Changelog
 
+### 0.1.1
+* (instalator) fixed Unsigned value current
+* (instalator) fix for serial number > 240
+* (instalator) change recconect SerialPort
+* (instalator) refactoring
+
 ### 0.1.0
 * (instalator) beta
 

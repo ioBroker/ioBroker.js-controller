@@ -48,6 +48,9 @@ E.g: ```10;AB400D;00004d;1;OFF;```. Please read documentation to understand the 
 
 ## Changelog
 
+### 2.1.0 (2020-04-24)
+* (Apollon77) nodejs 6 is no longer supported!
+
 ### 2.0.0 (2019-05-15)
 * (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
 

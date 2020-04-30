@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mydlink/README.md
 title: ioBroker.mydlink
-hash: Tx0RggrpUy6Edc2CQQDri98x8JiWjf19dZvAb9iZutk=
+hash: NK0Lc25HJwJaBrywBx44As6e8fzW1H78ChDFSSi092s=
 ---
 ![商标](../../../en/adapterref/iobroker.mydlink/admin/mydlink.png)
 
@@ -33,14 +33,28 @@ ioBroker的MyDlink适配器。
 适配器需要轮询设备。因此，传感器的读数和运动检测将被轮询间隔延迟（可以在配置中设置）。
 
 ####配置：
-*全局轮询间隔-如果未设置特定间隔，则适配器将轮询该间隔中的所有设备。设置为0禁用。
 *设备列表，每个设备具有以下设置：
 
-<table><tr><td>名称</td><td>在此处设置名称，必须唯一（对于mydlink设备） </td></tr><tr><td>知识产权</td><td>在这里填写IP地址，主机名也应该起作用</td></tr><tr><td>销</td><td> PIN码印在设备的不干胶标签上，可能在底部</td></tr><tr><td>轮询间隔</td><td>每设备轮询间隔，请留空以使用全局轮询间隔。 <br />设置为0以禁用轮询。 <br /> <b>建议：</b>为传感器设置一个快速轮询间隔，为插头设置一个较长的轮询间隔。 </td></tr><tr><td>使能</td><td>如果未启用，将不会被轮询或控制。 <br />可以禁用未插入的设备，以避免日志中出现错误消息。 </td></tr></table>
+<table><tr><td>名称</td><td>在此处设置名称，必须唯一（对于mydlink设备） </td></tr><tr><td>知识产权</td><td>在这里填写IP地址，主机名也应该起作用</td></tr><tr><td>销</td><td> PIN码印在设备的不干胶标签上，可能在底部</td></tr><tr><td>轮询间隔</td><td>每个设备的轮询间隔<br />设置为0以禁用轮询。 <br /> <b>建议：</b>为传感器设置一个快速轮询间隔，为插头设置一个较长的轮询间隔。 </td></tr><tr><td>使能</td><td>如果未启用，将不会被轮询或控制。 <br />可以禁用未插入的设备，以避免网络流量和日志中的错误消息。 </td></tr></table>
 
 适配器不会干扰应用程序的使用。
 
 ## Changelog
+### 1.0.2 (2020-04-30)
+* Fixed potential crashes on network errors.
+
+### 1.0.1 (2020-04-30)
+* Re-added device config to adapter config (in case objects get deleted).
+
+### 1.0.0 (2020-04-30)
+* BREAKING CHANGE: device id is now mac instead of name -> all devices need to be recreated. Sorry for that. But should never happen again, now. New devices *should* be created automatically.
+* added encryption of PIN
+* settings stored in native part of device (please do not delete them or you have to reconfigure them)
+* modified device creation / identification / start to allow devices to be (re-)started during runtime (you do not need to press save on config page anymore)
+* added auto detection
+* added missing translations
+* added sentry plugin (including sending information about unknown devices)
+* a lot of internal restructuring and cleanup for better maintenance in future.
 
 ### 0.0.7
 * (Garfonso) added info.connection state

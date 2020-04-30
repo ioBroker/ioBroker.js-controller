@@ -578,8 +578,8 @@ Settings that are not listed in the table below are self-explanatory.
         <tr>
             <td>datalabel_show</td>
             <td>show data labels for graph</td>
-            <td>boolean</td>
-            <td>false, true</td>
+            <td>string | boolean</td>
+            <td>false, true, auto</td>
         </tr>
         <tr>
             <td>datalabel_anchor</td>
@@ -1520,6 +1520,18 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* table: option for fixed table headline added
+
+### 0.3.6 (2020-04-29)
+* Input, Select, Autocomplete: default input controll buttons removed
+* vuetify library updated to v2.2.26 
+* JSON Chart: auto mode to show values added
+* Line History Chart: auto mode to show values added
+* Bar Chart: auto mode to show values added
+* Pie Chart: auto mode to show values added
+* Button State: lock icon input field bug fix
+
+### 0.3.4 (2020-04-27)
 * Select / AutoComplete Widget: Breaking Changes !!! separator for valuelist changed from comma to semicolon
 * Pie Chart Widget: support for json string implemented
 * Browser Edge: gradient color bug fix

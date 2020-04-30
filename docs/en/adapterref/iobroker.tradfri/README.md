@@ -71,6 +71,9 @@ The result object `ret` looks as follows:
 	### __WORK IN PROGRESS__
 -->
 
+### 2.6.2 (2020-04-29)
+* Bugfix: The unhandled error handler should now correctly log the error even if `adapter` is not defined
+
 ### 2.6.1 (2020-04-17)
 * Bugfix: Blinds would not always be stopped
 

@@ -3,70 +3,103 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.homeconnect/README.md
 title: ioBroker.homeconnect
-hash: 6CvYBjhtz9gp9QYsounGpuWdRZEfsOfBUY8C8Lp1t70=
+hash: 9dYiNc4TRPp1J5/Hynp2s6JxQPlDuIfKKeP3SiWlr24=
 ---
 ![Logo](../../../en/adapterref/iobroker.homeconnect/admin/homeconnect.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.homeconnect.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.homeconnect.svg)
-![Build Status](https://travis-ci.org/dna909/ioBroker.homeconnect.svg?branch=master)
+![Build-Status](https://travis-ci.org/dna909/ioBroker.homeconnect.svg?branch=master)
 
 # IoBroker.homeconnect
 =================
 
 ## Voraussetzungen vor der Installation
-Es muss mindestens Node.js Version 8 installiert sein !!
+Es muß noch Node.js Version 8 installiert sein !!
 
-Für den Adapter wird eine ClientID benötigt. Nutze die Einstellungen um jeden Schritt der Registrierung zu erreichen.
+Für den Adapter wird eine ClientID ausgewählt. Nutze die Einstellungen um jeden Schritt der Berechtigung zu entfernen.
 
-## Voraussetzungen vor der Installation
+## Anforderungen vor der Installation
 Mindestens Node.js Version 8 muss installiert sein!
 
 Für den Adapter ist eine ClientID erforderlich. Verwenden Sie die Einstellungen für jeden Schritt, um sich zu registrieren.
 
-https://developer.home-connect.com
+<https://developer.home-connect.com>
 
 ![Bildschirmfoto](../../../en/adapterref/iobroker.homeconnect/img/registrierung1.JPG)
 
-Bei **Default Home Connect User Account for Testing** wird die E-Mail-Adresse angegeben, mit der die Home Connect-App registriert wird, diese wird auch später beim Authorization-Prozess benötigt.
+Bei **Standard-Home-Connect-Benutzerkonto zum Testen** Die E-Mail-Adresse wurde geändert, mit der Home-Connect-App wurde bestätigt, diese wird auch beim Autorisierungsprozess geändert.
 
-Geben Sie für **Standard-Home Connect-Benutzerkonto zum Testen** die E-Mail-Adresse an, mit der die Home Connect-App gesendet werden soll.
-registriert wurde, ist dies auch später im Autorisierungsprozess erforderlich.
+Geben Sie unter **Standard-Home Connect-Benutzerkonto zum Testen** die E-Mail-Adresse an, mit der die Home Connect-App gesendet werden soll.
+registriert wurde, wird dies auch später im Autorisierungsprozess benötigt.
 
 ![Bildschirmfoto](../../../en/adapterref/iobroker.homeconnect/img/registrierung2.JPG)
 
-Bei **Account Type** Individual auswählen. Keine Ahnung, ob das geprüft wird.
+Bei **Kontotyp** Individuell gesehen. Die gleichen Daten müssen vorhanden sind.
 
-Für **Account Type** wählen Sie Individual. Fügen Sie die restlichen Daten hinzu, falls verfügbar (keine Ahnung, ob dies überprüft wird).
+Für **Kontotyp** wählen Sie Individuell. Fügen Sie die verbleibenden Daten hinzu, falls verfügbar (keine Ahnung, ob dies überprüft wird).
 
 ![Bildschirmfoto](../../../en/adapterref/iobroker.homeconnect/img/application1.JPG)
 
-Dann auf **Applications** und anschließend auf **Register Application** gehen.
+Dann auf **Bewerbungen** und entfernen auf **Anmeldung anmelden** gehen.
 
-Gehen Sie dann zu **Applications** und dann zu **Register Application**
+Gehen Sie dann zu **Bewerbungen** und dann zu **Bewerbung registrieren**
 
 ![Bildschirmfoto](../../../en/adapterref/iobroker.homeconnect/img/application2.JPG)
 
-Bei **Application ID** einen Namen für die Application eintragen, diesen ioBroker. Bei **OAuth Flow** Device Flow kann das letzte Feld leer bleiben. Dann speichern und dann hat man die benötigte ClientID.
+Bei **Bewerbungs-ID** einen Namen für die Bewerbung eintragen, z.B. ioBroker. Bei **OAuth Flow** Gerätefluss selektieren das letzte Feld kann leer bleiben. Dann fordert und dann hat man die Ansehen ClientID.
 
 Geben Sie für **Anwendungs-ID** einen Namen für die Anwendung ein, z. ioBroker. Wählen Sie mit **OAuth Flow** Device Flow das Feld Das letzte Feld kann leer bleiben. Speichern Sie dann und Sie haben die erforderliche ClientID.
 
 ## Konfiguration
-In der Adapter-Config muss nur die ClientID eingetragen werden. Wenn der Adapter läuft, wird eine Authorization-URL generiert, die in den Einstellungen nach dem Speichern der ClientID angezeigt wird. Einfach nach dem Speichern der Einstellungen neu öffnen
+In der Adapter-Konfiguration muss nur die ClientID eingetragen werden. Wenn der Adapter läuft, wird eine Autorisierungs-URL gekauft, diese wird in den Einstellungen nach dem Entfernen der ClientID-Einstellungen. Einfach nach dem Einstellungen die Einstellungen neuöffnen
 
 ## Aufbau
-In der Adapterkonfiguration muss nur die ClientID eingegeben werden. Wenn der Adapter ausgeführt wird, wird eine Autorisierungs-URL generiert. Diese URL können Sie in den Einstellungen nach dem Speichern sehen, warten und öffnen Sie die Einstellungen erneut.
+In der Adapterkonfiguration muss nur die ClientID eingegeben werden. Wenn der Adapter ausgeführt wird, wird eine Autorisierungs-URL generiert. Diese URL sehen Sie in den Einstellungen nach dem Speichern, Warten und erneuten Öffnen der Einstellungen.
 
-## Benutzung
-Mit den Befehlen können Sie das Programm stoppen, pausiren oder fortführen.
-Mit den Zuständen in den Einstellungen kannst du das Gerät ein oder ausschalten.
-Ändern des States programs.active.BSH_Common_Root_ActiveProgram führt zum Starten eines Programms Ändern des States programs.selected.BSH_Common_Root_SelectedProgram führt zum Auswählen des Programms oder der Optionen
+## Berechtung
+Mit den Zuständen in Befehlen können Sie das Programm anhalten, pausiren oder fortführen.
+Mit den Zuständen in Einstellungen können Sie das Gerät ein oder ausschalten.
+Verwandte des States programs.active.BSH_Common_Root_ActiveProgram kontrollierte zum Start eines Programms der des dess programs.selected.BSH_Common_Root_SelectedProgram führen zum besseren des Programms oder Optionen
 
 ## Verwendungszweck
 Mit den Zuständen in Befehlen können Sie ein Programm anhalten, anhalten und fortsetzen.
-Mit den Status in den Einstellungen können Sie das Gerät ausschalten oder einschalten. Ändern des Werts von programs.active.BSH_Common_Root_ActiveProgram führt zum Starten eines Programms. Ändern des Werts von programs.selected.BSH_Common_Root_SelectedProgram führt zur Auswahl eines Programms oder von Optionen
+Mit den Status in den Einstellungen können Sie das Gerät ausschalten oder einschalten. Ändern Sie den Wert von programs.active.BSH_Common_Root_ActiveProgram führt zum Starten eines Programms. Ändern Sie den Wert von programs.selected.BSH_Common_Root_SelectedProgram führt zur Auswahl eines Programms oder von Optionen
 
 ## Changelog
+
+### 0.0.27 (13.11.2019)
+
+-   (ta2k) improve option selecting
+
+### 0.0.26 (04.11.2019)
+
+-   (ta2k) fix boolean settings
+
+### 0.0.25 (08.09.2019)
+
+-   (ta2k) fix compact mode
+-   (ta2k) reduce query per minute to prevent too much request error
+
+### 0.0.24 (08.09.2019)
+
+-   (ta2k) improve error messaging
+
+### 0.0.22 (08.09.2019)
+
+-   (ta2k) improve error messaging
+
+### 0.0.22 (26.07.2019)
+
+-   (ta2k) bugfixing
+
+### 0.0.21 (12.07.2019)
+
+-   (ta2k) bugfixing
+
+### 0.0.19 (30.06.2019)
+
+-   (ta2k) improve displaying long states, options and events
 
 ### 0.0.18 (26.06.2019)
 
@@ -146,7 +179,7 @@ Mit den Status in den Einstellungen können Sie das Gerät ausschalten oder eins
 
 The MIT License (MIT)
 
-Copyright (c) 2019 dna909 <dna909@googlemail.com>
+Copyright (c) 2020 dna909 <dna909@googlemail.com>, TA2k
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

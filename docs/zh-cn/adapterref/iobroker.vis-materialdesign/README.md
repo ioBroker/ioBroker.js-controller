@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: lkoU58ud/5496orez92lNOWh/uBAoRBJwi2svTubvTo=
+hash: xzZVlDtk22Z4Kw1IgAamK9ZXv0kF/zXPdanW5sUdSN4=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -165,7 +165,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> axisLabels </td><td>图的轴标签</td><td>数组</td><td>数字或字符串</td></tr><tr><td>图表</td><td>图形数据</td><td>数组[ <a href="#graph">图</a> ] </td><td>见图表</td></tr></tbody></table>
 
 ####图
-<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>数据</td><td>图形数据或带有时间戳的数据</td><td>数组[数字] | Array [ <a href="#data-with-time-axis">带有时间戳的值</a> ] </td><td>数</td></tr><tr><td>类型</td><td>图的类型</td><td>串</td><td> “线”，“栏” </td></tr><tr><td> legendText </td><td>传说文字</td><td>串</td><td></td></tr><tr><td>显示顺序</td><td>图的叠加顺序</td><td>数</td><td>一二三</td></tr><tr><td>颜色</td><td>图的颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> use_gradient_color </td><td>使用渐变色</td><td>布尔值</td><td>假，真</td></tr><tr><td>渐变色</td><td>渐变颜色阵列</td><td>数组[ <a href="#gradientcolor">gradientColor</a> ] </td><td> [{值：-20，颜色：&#39;＃7d3c98&#39;}，{值：0，颜色：&#39;＃2874a6&#39;}] </td></tr><tr><td> tooltip_MinDigits </td><td>工具提示值的最大小数</td><td>数</td><td> 0、1、2，... </td></tr><tr><td> tooltip_MaxDigits </td><td>工具提示值的最大小数</td><td>数</td><td> 0、1、2，... </td></tr><tr><td> tooltip_AppendText </td><td>将文字附加到工具提示值</td><td>串</td><td></td></tr><tr><td> datalabel_show </td><td>显示图表的数据标签</td><td>布尔值</td><td>假，真</td></tr><tr><td> datalabel_anchor </td><td>数据标签的锚点</td><td>串</td><td>中心，开始，结束</td></tr><tr><td> datalabel_align </td><td>数据标签相对于锚点的位置</td><td>串</td><td>左，开始，居中，结束，右，上，下</td></tr><tr><td> datalabel_offset </td><td>距离（以像素为单位）将数据标签拉离锚点</td><td>数</td><td> 0、1、2，... </td></tr><tr><td> datalabel_text_align </td><td>数据标签的文字匹配</td><td>串</td><td>左，开始，居中，结束，右</td></tr><tr><td> datalabel_rotation </td><td>数据标签的顺时针旋转角度（以度为单位） </td><td>数</td><td> 0、1、2，... </td></tr><tr><td> datalabel_steps </td><td>每x步显示数据标签</td><td>数</td><td> 0、1、2，... </td></tr><tr><td> datalabel_minDigits </td><td>数据标签的最小小数</td><td>数</td><td> 0、1、2，... </td></tr><tr><td> datalabel_maxDigits </td><td>数据标签的最大小数</td><td>数</td><td> 0、1、2，... </td></tr><tr><td> datalabel_append </td><td>将文字附加到数据标签</td><td>串</td><td></td></tr><tr><td> datalabel_color </td><td>数据标签颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> datalabel_fontFamily </td><td>数据标签字体系列</td><td>串</td><td></td></tr><tr><td> datalabel_fontSize </td><td>数据标签字体大小</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> datalabel_backgroundColor </td><td>数据标签背景色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> datalabel_borderColor </td><td>数据标签边框颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> datalabel_borderWidth </td><td>数据标签边框宽度</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> datalabel_borderRadius </td><td>数据标签边框半径</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table>
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>数据</td><td>图形数据或带有时间戳的数据</td><td>数组[数字] | Array [ <a href="#data-with-time-axis">带有时间戳的值</a> ] </td><td>数</td></tr><tr><td>类型</td><td>图的类型</td><td>串</td><td> “线”，“栏” </td></tr><tr><td> legendText </td><td>传说文字</td><td>串</td><td></td></tr><tr><td>显示顺序</td><td>图的叠加顺序</td><td>数</td><td>一二三</td></tr><tr><td>颜色</td><td>图的颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> use_gradient_color </td><td>使用渐变色</td><td>布尔值</td><td>假，真</td></tr><tr><td>渐变色</td><td>渐变颜色阵列</td><td>数组[ <a href="#gradientcolor">gradientColor</a> ] </td><td> [{值：-20，颜色：&#39;＃7d3c98&#39;}，{值：0，颜色：&#39;＃2874a6&#39;}] </td></tr><tr><td> tooltip_MinDigits </td><td>工具提示值的最大小数</td><td>数</td><td> 0、1、2，... </td></tr><tr><td> tooltip_MaxDigits </td><td>工具提示值的最大小数</td><td>数</td><td> 0、1、2，... </td></tr><tr><td> tooltip_AppendText </td><td>将文字附加到工具提示值</td><td>串</td><td></td></tr><tr><td> datalabel_show </td><td>显示图表的数据标签</td><td>字符串布尔值</td><td>虚假，真实，自动</td></tr><tr><td> datalabel_anchor </td><td>数据标签的锚点</td><td>串</td><td>中心，开始，结束</td></tr><tr><td> datalabel_align </td><td>数据标签相对于锚点的位置</td><td>串</td><td>左，开始，居中，结束，右，上，下</td></tr><tr><td> datalabel_offset </td><td>距离（以像素为单位）将数据标签拉离锚点</td><td>数</td><td> 0、1、2，... </td></tr><tr><td> datalabel_text_align </td><td>数据标签的文字匹配</td><td>串</td><td>左，开始，居中，结束，右</td></tr><tr><td> datalabel_rotation </td><td>数据标签的顺时针旋转角度（以度为单位） </td><td>数</td><td> 0、1、2，... </td></tr><tr><td> datalabel_steps </td><td>每x步显示数据标签</td><td>数</td><td> 0、1、2，... </td></tr><tr><td> datalabel_minDigits </td><td>数据标签的最小小数</td><td>数</td><td> 0、1、2，... </td></tr><tr><td> datalabel_maxDigits </td><td>数据标签的最大小数</td><td>数</td><td> 0、1、2，... </td></tr><tr><td> datalabel_append </td><td>将文字附加到数据标签</td><td>串</td><td></td></tr><tr><td> datalabel_color </td><td>数据标签颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> datalabel_fontFamily </td><td>数据标签字体系列</td><td>串</td><td></td></tr><tr><td> datalabel_fontSize </td><td>数据标签字体大小</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> datalabel_backgroundColor </td><td>数据标签背景色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> datalabel_borderColor </td><td>数据标签边框颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> datalabel_borderWidth </td><td>数据标签边框宽度</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> datalabel_borderRadius </td><td>数据标签边框半径</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table>
 
 ####图形折线图spfeicifc
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> line_pointStyle </td><td>线的点样式</td><td>串</td><td>圆，十字，crossRot，破折号，直线，矩形，rectRounded，rectRot，星形，三角形</td></tr><tr><td> line_pointSize </td><td>线的点大小</td><td>数</td><td> 1，2，3，... </td></tr><tr><td> line_pointSizeHover </td><td>线的点大小</td><td>数</td><td> 1，2，3，... </td></tr><tr><td> line_PointColor </td><td>线点颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_PointColorBorder </td><td>线点的边框颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_PointColorHover </td><td>悬停线点颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_PointColorBorderHover </td><td>线点的边框悬停颜色</td><td>颜色|数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_spanGaps </td><td>如果数据之间存在差距，则画线</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_Tension </td><td>线的平滑度</td><td>数</td><td> 0-1 </td></tr><tr><td>线的粗细</td><td>线的厚度</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> line_UseFillColor </td><td>在线条下使用填充颜色</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_FillColor </td><td>在线下填充颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> use_line_gradient_fill_color </td><td>使用渐变填充颜色</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_gradient_fill_color </td><td>渐变颜色阵列</td><td>数组[ <a href="#gradientcolor">gradientColor</a> ] </td><td> [{值：-20，颜色：&#39;＃7d3c98&#39;}，{值：0，颜色：&#39;＃2874a6&#39;}] </td></tr><tr><td> line_FillBetweenLines </td><td>为下一行/上一行填充颜色</td><td>串</td><td> &#39;+1&#39;，&#39;-1&#39;，&#39;+ 2&#39;，... </td></tr></tbody></table>
@@ -273,7 +273,7 @@ Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自�
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/grid.gif)
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2>根据窗口小部件的宽度，可以从各个窗口小部件的宽度定义可应用各个视图[x]的列跨度的规则以及视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2>根据当前的宽度分辨率规则定义视图的列范围。 <br>您还可以在此处指定是仅以高于或低于定义值的分辨率显示视图，还是通过对象ID使其可见。 </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2>根据窗口小部件的宽度，可以从各个窗口小部件的宽度定义适用各个视图[x]的列跨度的规则以及视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2>根据当前的宽度分辨率规则定义视图的列范围。 <br>您还可以在此处指定是仅以高于或低于定义值的分辨率显示视图，还是通过对象ID使其可见。 </td></tr></tbody></table>
 
 ##警报
 可以使用Alerts小部件可以在VIS中显示消息，就像它与Pushover适配器一起使用一样，但是可以直接在VIS中显示。
@@ -479,7 +479,20 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
-* Pie Chart: support for json string implemented
+* table: option for fixed table headline added
+
+### 0.3.6 (2020-04-29)
+* Input, Select, Autocomplete: default input controll buttons removed
+* vuetify library updated to v2.2.26 
+* JSON Chart: auto mode to show values added
+* Line History Chart: auto mode to show values added
+* Bar Chart: auto mode to show values added
+* Pie Chart: auto mode to show values added
+* Button State: lock icon input field bug fix
+
+### 0.3.4 (2020-04-27)
+* Select / AutoComplete Widget: Breaking Changes !!! separator for valuelist changed from comma to semicolon
+* Pie Chart Widget: support for json string implemented
 * Browser Edge: gradient color bug fix
 
 ### 0.3.3

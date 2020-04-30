@@ -245,6 +245,10 @@ sendTo('influxdb.0', 'getEnabledDPs', {}, function (result) {
 
 
 ## Changelog
+
+### 1.8.3 (2020-04-29)
+* (Apollon77) Fix pot crash case when deleting objects while saving values (Sentry) 
+
 ### 1.8.2 (2020-04-19)
 * __Requires js-controller >= 2.0.0__
 * (Apollon77) removed usage of adapter.objects

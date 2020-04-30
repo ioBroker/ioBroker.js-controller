@@ -3,70 +3,103 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.homeconnect/README.md
 title: ioBroker.homeconnect
-hash: 6CvYBjhtz9gp9QYsounGpuWdRZEfsOfBUY8C8Lp1t70=
+hash: 9dYiNc4TRPp1J5/Hynp2s6JxQPlDuIfKKeP3SiWlr24=
 ---
 ![商标](../../../en/adapterref/iobroker.homeconnect/admin/homeconnect.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.homeconnect.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.homeconnect.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.homeconnect.svg)
 ![建立状态](https://travis-ci.org/dna909/ioBroker.homeconnect.svg?branch=master)
 
 ＃ioBroker.homeconnect
 =================
 
-## Voraussetzungen vor der Installation
-EsmußmindestensNode.js Version 8 installiert sein !!
+## Voraussetzungen vor der安装
+ES介意Node.js版本8安装程序！！
 
-FürdenAdapter Wird eineClientIDbenötigt。 Nutze die Einstellungen um jeden Schritt der Registrierung zu erreichen。
+使用ClientIDbenötigt的适配器。坚果和坚果的注册。
 
 ##安装前的要求
 至少必须安装Node.js版本8！
 
 适配器需要ClientID。使用每个步骤的设置进行注册。
 
-https://developer.home-connect.com
+<https://developer.home-connect.com>
 
-![截图](../../../en/adapterref/iobroker.homeconnect/img/registrierung1.JPG)
+![屏幕截图](../../../en/adapterref/iobroker.homeconnect/img/registrierung1.JPG)
 
-Bei **默认主页连接测试用户帐户** die E-Mail-Adresse angeben，mit der die Home-Connect-App registriert wurde，diesewirdspäterauchbeim授权 - Prozessbenötigt。
+Bei **“用于测试的默认Home Connect用户帐户” **电子邮件地址和地址，仅限于Home-Connect-App的注册人，也可以通过Authorization-Prozessbenötigt。
 
-对于**默认主页连接用户帐户测试**，请指定用于发送Home Connect应用程序的电子邮件地址。
-注册后，授权过程中也需要这样做。
+对于“用于测试的默认Home Connect用户帐户”，指定用于发送Home Connect应用程序的电子邮件地址。
+已注册，这在以后的授权过程中也需要。
 
-![截图](../../../en/adapterref/iobroker.homeconnect/img/registrierung2.JPG)
+![屏幕截图](../../../en/adapterref/iobroker.homeconnect/img/registrierung2.JPG)
 
-Bei **账户类型**个人auswählen。 Die restlichen Daten sofernvorhandenergänzen（keine Ahnung，obdasgeprüftwird）。
+Bei **帐户类型**个人auswählen。 Die restlichen Daten sofern vorhandenergänzen（凯恩·阿洪（Keine Ahnung），《世界之窗》）。
 
-对于**帐户类型**选择个人。添加剩余数据（如果可用）（不知道是否会检查）。
+对于“帐户类型”，选择个人。添加剩余的数据（如果可用）（不知道是否将被选中）。
 
-![截图](../../../en/adapterref/iobroker.homeconnect/img/application1.JPG)
+![屏幕截图](../../../en/adapterref/iobroker.homeconnect/img/application1.JPG)
 
-Dann auf **Applications** ndanschließendauf**注册申请** gehen。
+Dann auf **应用程序**和anschließendauf **注册应用程序** gehen。
 
-然后转到** Applications **然后转到** Register Application **。
+然后转到“应用程序”，然后转到“注册应用程序”。
 
-![截图](../../../en/adapterref/iobroker.homeconnect/img/application2.JPG)
+![屏幕截图](../../../en/adapterref/iobroker.homeconnect/img/application2.JPG)
 
-Bei **请ID** einenNamenfürdie应用eintragen，z.B。 ioBroker。 Bei **OAuth Flow** 备流程selektieren das letzte Feld kann leer bleiben。 Dann Speichern和dann hat mandiebenötigteClientID。
+Bei **应用程序ID ** einen Namenfürdie Application eintragen，z.B. ioBroker。 Bei ** OAuth流**设备流selektieren das letzte Feld kann leer bleiben。 Dann Speichern和dann hat客户ID。
 
-对于**申请ID **，输入申请的名称，例如ioBroker。使用** OAuth Flow **设备流程选择最后一个字段可以保持为空。然后保存并且您拥有所需的ClientID。
+对于** Application ID **，输入应用程序的名称，例如ioBroker。使用** OAuth Flow **设备流选择最后一个字段可以保留为空。然后保存，您将拥有所需的ClientID。
 
 ## Konfiguration
-In der Adapter-Config muss nur die ClientID eingetragen werden。 Wenn derAdapterläuft，wird eine授权-URL generiert，diese wird in den Einstellungen nach dem Speichern der ClientID angezeigt。 Einfach nach dem Speichern死于Einstellungenneuöffnen
+在Adapter-Config中，您可以使用ClientID进行身份验证。 Wenn der Adapterläuft，无线授权URL生成器，在ClientID的Einstellungen nach dem Speichern中失效。 Einfach nach dem Speichern die Einstellungenneuöffnen
 
 ##配置
-必须在适配器配置中仅输入ClientID。如果适配器正在运行，则会生成授权URL。保存后您可以在设置中看到此URL，等待并重新打开设置。
+必须在适配器配置中仅输入ClientID。如果适配器正在运行，那么将生成授权URL。保存后，您可以在设置中看到此网址，请等待并重新打开设置。
 
-## Benutzung
-Mit den in commands kannst du das Programm stoppen，pausirenoderfortführen。
-Mit den在设置kannst dudasGerätteinoder ausschalten中说明。
-ÄnderndesStatesprograms.active.BSH_Common_Root_ActiveProgramführtzumstarten einesProgrammsÄnderndesStatesprograms.selected.BSH_Common_Root_SelectedProgramführtzumususwählendesProgramms order Optionen
+##贝努宗
+密特山州在命令kannst du das Programm Stoppen中陈述，在州立监狱中。
+密特根州（Kitst du dasGerätein oder ausschalten）
+进入国家程序。
 
 ##用法
-使用命令中的状态，您可以停止，暂停和恢复程序。
-设置中的状态可以关闭或打开设备更改程序的值。活动.BSH_Common_Root_ActiveProgram导致启动程序更改程序的值。选择.BSH_Common_Root_SelectedProgram导致选择程序或选项
+使用命令中的状态，您可以停止，暂停和继续执行程序。
+设置状态后，您可以关闭或打开设备。更改程序的值。active.BSH_Common_Root_ActiveProgram导致启动程序。更改程序的值。selected.BSH_Common_Root_SelectedProgram导致选择程序或选项。
 
 ## Changelog
+
+### 0.0.27 (13.11.2019)
+
+-   (ta2k) improve option selecting
+
+### 0.0.26 (04.11.2019)
+
+-   (ta2k) fix boolean settings
+
+### 0.0.25 (08.09.2019)
+
+-   (ta2k) fix compact mode
+-   (ta2k) reduce query per minute to prevent too much request error
+
+### 0.0.24 (08.09.2019)
+
+-   (ta2k) improve error messaging
+
+### 0.0.22 (08.09.2019)
+
+-   (ta2k) improve error messaging
+
+### 0.0.22 (26.07.2019)
+
+-   (ta2k) bugfixing
+
+### 0.0.21 (12.07.2019)
+
+-   (ta2k) bugfixing
+
+### 0.0.19 (30.06.2019)
+
+-   (ta2k) improve displaying long states, options and events
 
 ### 0.0.18 (26.06.2019)
 
@@ -146,7 +179,7 @@ Mit den在设置kannst dudasGerätteinoder ausschalten中说明。
 
 The MIT License (MIT)
 
-Copyright (c) 2019 dna909 <dna909@googlemail.com>
+Copyright (c) 2020 dna909 <dna909@googlemail.com>, TA2k
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

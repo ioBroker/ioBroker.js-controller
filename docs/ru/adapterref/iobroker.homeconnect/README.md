@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.homeconnect/README.md
 title: ioBroker.homeconnect
-hash: 6CvYBjhtz9gp9QYsounGpuWdRZEfsOfBUY8C8Lp1t70=
+hash: 9dYiNc4TRPp1J5/Hynp2s6JxQPlDuIfKKeP3SiWlr24=
 ---
 ![логотип](../../../en/adapterref/iobroker.homeconnect/admin/homeconnect.png)
 
@@ -20,22 +20,22 @@ Es muß mindestens Node.js Версия 8 установка!
 Für den Adapter wird eine ClientID benötigt. Nutze die Einstellungen um jeden Schritt der Registrierung zu erreichen.
 
 ## Требования перед установкой
-По крайней мере, Node.js версии 8 должен быть установлен!
+Должен быть установлен как минимум Node.js версии 8!
 
 ClientID требуется для адаптера. Используйте настройки для каждого шага, чтобы зарегистрироваться.
 
-https://developer.home-connect.com
+<Https://developer.home-connect.com>
 
 ![Скриншот](../../../en/adapterref/iobroker.homeconnect/img/registrierung1.JPG)
 
-Bei **Учетная запись пользователя Home Connect по умолчанию для тестирования** die E-Mail-Adresse angeben, mit der die Home-Connect-App registriert wurde, diese wird später auch beim Authorization-Prozess benötigt.
+Bei **Учетная запись пользователя Home Connect по умолчанию для тестирования** die E-Mail-Adresse angeben, mit der die Home-Connect-App registriert wurde, diese wird später auch beim Авторизация-Prozess benötigt.
 
-Для **Учетной записи пользователя Home Connect по умолчанию для тестирования** укажите адрес электронной почты, с которого должно отправляться приложение Home Connect.
+Для **Учетной записи пользователя Home Connect по умолчанию для тестирования** укажите адрес электронной почты, с которого должно быть отправлено приложение Home Connect.
 был зарегистрирован, это также требуется позже в процессе авторизации.
 
 ![Скриншот](../../../en/adapterref/iobroker.homeconnect/img/registrierung2.JPG)
 
-Bei **Тип учетной записи** Индивидуальный auswählen. Die restlichen Daten sofern vorhanden ergänzen (keine Ahnung, ob das geprüft wird).
+Bei **Тип счета** Индивидуальный auswählen. Die restlichen Daten sofern vorhanden ergänzen (keine Ahnung, ob das geprüft wird).
 
 Для **Тип учетной записи** выберите Индивидуальный. Добавьте оставшиеся данные, если они есть (не знаю, будет ли это проверено).
 
@@ -47,26 +47,59 @@ Dann auf **Приложения** und anschließend auf **Регистрация
 
 ![Скриншот](../../../en/adapterref/iobroker.homeconnect/img/application2.JPG)
 
-Bei **Заявление ID** einen Namen für die Применение eintragen, z.B. ioBroker. Bei **OAuth Flow** Устройство Flow отобранных для фельд Канн леер блейбен. Дэнн Спейчерн и Дэнн Хэт Мэн умереть
+Bei **Заявка ID** einen Namen für die Применение eintragen, z.B. ioBroker. Bei **OAuth Flow** Устройство Flow Selektieren das letzte Feld kann leer bleiben. Дэнн Спейчерн и Дэнн Хэт Мэн умереть
 
-Для **Идентификатор приложения** введите имя приложения, например, ioBroker. С помощью **OAuth Flow** Device Flow выберите последнее поле, которое может остаться пустым. Затем сохраните, и у вас есть требуемый ClientID.
+Для **Идентификатор приложения** введите имя приложения, например, ioBroker. С **OAuth Flow** Device Flow выберите последнее поле может остаться пустым. Затем сохраните, и у вас есть требуемый ClientID.
 
 ## Конфигурация
-В адаптере-настройке необходимо указать ClientID eingetragen werden. Wenn der Adapter läuft, wird eine generiert URL авторизации, die wird in den Einstellungen nach dem Speichern der ClientID angezeigt. Einfach nach dem Speichern die Einstellungen neuöffnen
+В адаптере-конфигурации необходимо указать ClientID eingetragen werden. Wenn der Adapter läuft, wird eine generiert URL-адреса авторизации, die wird in den Einstellungen nach dem Speichern der ClientID angezeigt. Einfach nach dem Speichern die Einstellungen neuöffnen
 
 ## Конфигурация
 Только ClientID должен быть введен в конфигурации адаптера. Если адаптер работает, генерируется URL авторизации. Этот URL вы можете увидеть в настройках после сохранения, подождите и снова откройте настройки.
 
 ## Benutzung
-Mit den заявляет в командах, что программа остановлена, pausiren или fortführen
+Mit den заявляет в командах, что программа остановлена, pausiren oder fortführen.
 Mit Den State в настройках.
-Программы современных государств. Активные.BSH_Common_Root_ActiveProgram führt zum starten eines Программы. Программы заданных состояний. Выбранные.
+Программы современных состояний
 
-## Использование
+## Применение
 С помощью состояний в командах вы можете остановить, приостановить и возобновить программу.
-С помощью состояний в настройках вы можете выключить или включить устройство. Изменить значение Programs.active.BSH_Common_Root_ActiveProgram приводит к запуску программы.
+С помощью состояний в настройках вы можете выключить или включить устройство. Изменить значение Programs.active.BSH_Common_Root_ActiveProgram приводит к запуску программы. Изменить значение Programs.selected.BSH_Common_Root_SelectedProgram приводит к выбору программы или параметров
 
 ## Changelog
+
+### 0.0.27 (13.11.2019)
+
+-   (ta2k) improve option selecting
+
+### 0.0.26 (04.11.2019)
+
+-   (ta2k) fix boolean settings
+
+### 0.0.25 (08.09.2019)
+
+-   (ta2k) fix compact mode
+-   (ta2k) reduce query per minute to prevent too much request error
+
+### 0.0.24 (08.09.2019)
+
+-   (ta2k) improve error messaging
+
+### 0.0.22 (08.09.2019)
+
+-   (ta2k) improve error messaging
+
+### 0.0.22 (26.07.2019)
+
+-   (ta2k) bugfixing
+
+### 0.0.21 (12.07.2019)
+
+-   (ta2k) bugfixing
+
+### 0.0.19 (30.06.2019)
+
+-   (ta2k) improve displaying long states, options and events
 
 ### 0.0.18 (26.06.2019)
 
@@ -146,7 +179,7 @@ Mit Den State в настройках.
 
 The MIT License (MIT)
 
-Copyright (c) 2019 dna909 <dna909@googlemail.com>
+Copyright (c) 2020 dna909 <dna909@googlemail.com>, TA2k
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

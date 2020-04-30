@@ -34,7 +34,7 @@ Required node.js >= 10.x.x
 
 ## Changelog
 
-###1.3.5
+### 1.3.5
 * disable node v8 tests
 * fix createscene object definition
 * prevent websocket to connect if port, api key or ip is missing

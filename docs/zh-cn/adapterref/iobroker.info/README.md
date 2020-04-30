@@ -326,6 +326,10 @@ ioBroker的官方适配器数量已经相当可观。 当然，网上还有更�
 
 ## Changelog
 
+### 1.7.1 (2020-04-29)
+* (ldittmar) Update systeminformation library
+* (ldittmar) Check instance active for messages
+
 ### 1.7.0 (2020-04-16)
 * (Apollon77) IMPORTANT: Supported version minimum nodejs 10
 * (Apollon77) add Sentry error reporting and update dependencies

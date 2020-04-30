@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: p7EEJoNdKiXlYuc8V6IyWDTM1T8jtdu6FV5vNMAL7MU=
+hash: GsUr206XF8dSP1kZQ6AZ2jXpGifpgMybCtj/zrrAQNU=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -21,7 +21,8 @@ hash: p7EEJoNdKiXlYuc8V6IyWDTM1T8jtdu6FV5vNMAL7MU=
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 
-### Тезисные модели известны своей работой
+### Известно, что эти модели работают
+* Deebot N79T / W
 * Deebot 601
 * Deebot 710/711
 * Deebot 900/901
@@ -29,7 +30,7 @@ hash: p7EEJoNdKiXlYuc8V6IyWDTM1T8jtdu6FV5vNMAL7MU=
 * Deebot Ozmo 900
 
 ### Эти модели должны работать
-* Deebot N79T
+* Deebot N79S
 * Deebot M88
 * Deebot 600/605
 * Deebot Ozmo 920

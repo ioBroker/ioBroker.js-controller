@@ -20,7 +20,7 @@ At least Node.js version 8 must be installed!
 
 A ClientID is required for the adapter. Use the settings for each step to register.
 
-https://developer.home-connect.com
+<https://developer.home-connect.com>
 
 ![Screenshot](img/registrierung1.JPG)
 
@@ -90,7 +90,7 @@ Change the value of programs.selected.BSH_Common_Root_SelectedProgram leads to s
 ### 0.0.24 (08.09.2019)
 
 -   (ta2k) improve error messaging
-  
+
 ### 0.0.22 (08.09.2019)
 
 -   (ta2k) improve error messaging
@@ -185,7 +185,7 @@ Change the value of programs.selected.BSH_Common_Root_SelectedProgram leads to s
 
 The MIT License (MIT)
 
-Copyright (c) 2019 dna909 <dna909@googlemail.com>
+Copyright (c) 2020 dna909 <dna909@googlemail.com>, TA2k
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

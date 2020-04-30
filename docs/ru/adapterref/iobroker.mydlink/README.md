@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mydlink/README.md
 title: ioBroker.mydlink
-hash: Tx0RggrpUy6Edc2CQQDri98x8JiWjf19dZvAb9iZutk=
+hash: NK0Lc25HJwJaBrywBx44As6e8fzW1H78ChDFSSi092s=
 ---
 ![логотип](../../../en/adapterref/iobroker.mydlink/admin/mydlink.png)
 
@@ -33,14 +33,28 @@ hash: Tx0RggrpUy6Edc2CQQDri98x8JiWjf19dZvAb9iZutk=
 Адаптер должен опрашивать устройства. Таким образом, показания датчика и обнаружение движения будут задерживаться интервалом опроса (может быть установлен в конфигурации).
 
 #### Конфигурация:
-* глобальный интервал опроса - Адаптер будет опрашивать все устройства в этом интервале, если они не имеют определенного установленного интервала. Установите 0, чтобы отключить.
 * Список устройств, каждое устройство со следующими настройками:
 
-<table><tr><td> имя </td><td> установите здесь имя, должно быть уникальным (для устройств mydlink) </td></tr><tr><td> IP </td><td> введите здесь IP-адрес, имя хоста также должно работать </td></tr><tr><td> ШТЫРЬ </td><td> PIN-код напечатан на наклейке на устройстве, вероятно, внизу </td></tr><tr><td> Интервал опроса </td><td> для каждого интервала опроса устройства оставьте пустым, чтобы использовать глобальный интервал опроса. <br /> Установите 0, чтобы отключить опрос. <br /> <b>Рекомендация:</b> установите быстрый интервал опроса для датчиков и более длинный для штекеров. </td></tr><tr><td> включить </td><td> если не включен, не будет опрашиваться или контролироваться. <br /> Устройства, которые не подключены, могут быть отключены, чтобы избежать сообщений об ошибках в журнале. </td></tr></table>
+<table><tr><td> имя </td><td> установите здесь имя, должно быть уникальным (для устройств mydlink) </td></tr><tr><td> IP </td><td> введите здесь IP-адрес, имя хоста также должно работать </td></tr><tr><td> ШТЫРЬ </td><td> PIN-код напечатан на наклейке на устройстве, вероятно, внизу </td></tr><tr><td> Интервал опроса </td><td> за интервал опроса устройства <br /> Установите 0, чтобы отключить опрос. <br /> <b>Рекомендация:</b> установите быстрый интервал опроса для датчиков и более длинный для штекеров. </td></tr><tr><td> включить </td><td> если не включен, не будет опрашиваться или контролироваться. <br /> Устройства, которые не подключены, можно отключить, чтобы избежать сетевого трафика и сообщений об ошибках в журнале. </td></tr></table>
 
 Адаптер не мешает использованию приложения.
 
 ## Changelog
+### 1.0.2 (2020-04-30)
+* Fixed potential crashes on network errors.
+
+### 1.0.1 (2020-04-30)
+* Re-added device config to adapter config (in case objects get deleted).
+
+### 1.0.0 (2020-04-30)
+* BREAKING CHANGE: device id is now mac instead of name -> all devices need to be recreated. Sorry for that. But should never happen again, now. New devices *should* be created automatically.
+* added encryption of PIN
+* settings stored in native part of device (please do not delete them or you have to reconfigure them)
+* modified device creation / identification / start to allow devices to be (re-)started during runtime (you do not need to press save on config page anymore)
+* added auto detection
+* added missing translations
+* added sentry plugin (including sending information about unknown devices)
+* a lot of internal restructuring and cleanup for better maintenance in future.
 
 ### 0.0.7
 * (Garfonso) added info.connection state

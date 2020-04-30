@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
+hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
 ---
 ![логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -44,7 +44,7 @@ hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
 * Новое: время сна для полной неактивности (например, ночью)
 
 ## Документация
-Пожалуйста, в основном обращайтесь к основной документации API, опубликованной Miele
+Пожалуйста, в основном обратитесь к основной документации API, опубликованной Miele
 
 * [Общая документация] (https://www.miele.com/developer/swagger-ui/index.html)
 * [Предварительные условия для выполнения действий на устройстве] (https://www.miele.com/developer/swagger-ui/put_additional_info.html)
@@ -63,7 +63,7 @@ hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
  | 1 | СТИРАЛЬНАЯ МАШИНА |
  | 2 | Сушилка для белья |
  | 7 | DISHWASHER |
- | 8 | ПОЛУПРОМЫШЛЕННАЯ ПОСЫЛКА |
+ | 8 | ПОЛУПРОМЫШЛЕННАЯ ПОСУДА |
  | 12 | ПЕЧЬ |
  | 13 | ПЕЧЬ МИКРОВОЛНОВАЯ |
  | 14 | HOB HIGHLIGHT |
@@ -134,6 +134,13 @@ hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
  | 5 | Ручной утюг уровень 2 |
  | 6 | Машинное железо |
 
+### ProgramBezeichnung для стиральных машин
+| Необработанная стоимость | государство |
+|----------|-------|
+| 1 | "Баумволле" / "Хлопок" |
+| 27 | "Imprägnieren" / |
+| 123 | "Dunkles / Jeans" / |
+
 ### ProgramPhase для стиральных машин
 | Необработанная стоимость | государство |
 |----------|-------|
@@ -148,6 +155,11 @@ hash: bkt8Xev32l5DoJ1vUtwgrgwFuxBUvJOvCqstCXSOBIA=
 Copyright (c) 2019, 2020 гризельби <hanjo@hingsen.de>
 
 ## Changelog
+### 1.2.1 (2020-04-22)
+* (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumbledryers, washer dryer and dishwashers. **Dosen't work perfectly currently.**  
+* (grizzelbee) Upd: Updated Documentation 
+* (grizzelbee) Fix: Fixed warnings with js-Controller >=3.0 (Issue #23)
+
 ### 1.2.0 (2020-04-18)
 * (grizzelbee) New: Added new boolean state (**Connected**) that indicates whether the device is connected to WLAN or a gateway.
 * (grizzelbee) New: Added new boolean state (**signalInUse**) that indicates whether the device is switched off (false) or in Use (true).

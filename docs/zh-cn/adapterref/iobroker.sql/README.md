@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: Ls/2jx7RB4fYH8tFYFajvAI4JG/1h6KY9vtXwOrr3RM=
+hash: oH6/B1e2WUVKqSdwl85gT18ugSQxUpkvi9mR7iujG8k=
 ---
 ![商标](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -241,9 +241,9 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 
 消息可以具有以下三种格式之一：
 
-*一个ID和一个状态对象：`{id：'adapter.0.device.counter'，状态：{val：1，ts：10239499}}`
+*一个ID和一个状态对象：{{id：'adapter.0.device.counter'，state：{val：1，ts：10239499}}`
 *一个ID和状态对象的数组：`{id：'adapter.0.device.counter'，state：[{val：1，ts：10239499}，{val：2，ts：10239599}，{val：3 ，ts：10239699}]}`
-*具有状态对象`[[{id：'adapter.0.device.counter1'，state：{val：1，ts：10239499}，{id：'adapter.0.device.counter2'，state： {val：2，ts：10239599}]`
+*具有状态对象`[{{id：'adapter.0.device.counter1'，state：{val：1，ts：10239499}，{id：'adapter.0.device.counter2'，state： {val：2，ts：10239599}]`
 
 此外，您可以添加属性`rules: true`来激活所有规则，例如`counter`，`changesOnly`，`de-bounce`等：`{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
 
@@ -367,6 +367,12 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 -**记录任何不变的值**：每X秒额外写入一次值。
 -**从最后一个值到对数的最小差**：两个值之间的最小间隔。
 -**存储保留**：值将在数据库中存储多长时间。
+
+## 1.12.3（2020-04-30）
+*（Apollon77）尝试在MSSQL上创建Indize，以加快处理速度。如果无法让用户自行执行，则会显示信息。超时是15秒
+
+## 1.12.2（2020-04-30）
+*（Apollon77）MSSQL再次起作用
 
 ## 1.12.1（2020-04-26）
 *（Apollon77）修复了潜在的崩溃（Sentry）
