@@ -16,8 +16,8 @@
         "iobroker": "./iobroker.js"
     },
     "dependencies": {
-        "@iobroker/plugin-base": "^1.1.0",
-        "@iobroker/plugin-sentry": "^1.0.1",
+        "@iobroker/plugin-base": "^1.1.1",
+        "@iobroker/plugin-sentry": "^1.0.2",
         "chokidar": "^3.4.0",
         "daemonize2": "^0.4.2",
         "debug": "^4.1.1",
