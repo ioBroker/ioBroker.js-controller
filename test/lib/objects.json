@@ -64,6 +64,9 @@
       "diag": "extended",
       "defaultHistory": ""
     },
+    "native": {
+      "secret": "05fe0b4701125b01d6de004d2bc054e569a4f615e7d389b7"
+    },
     "acl": {
       "owner": "system.user.admin",
       "ownerGroup": "system.group.administrator",
@@ -679,7 +682,7 @@
       "paramNumber": 42,
       "paramBoolean": false,
       "username": "tesla",
-      "password": "-\u000e\b\u001c\\X\u0000"
+      "password": "G\\\b\u000bY\fS"
     },
     "protectedNative": [
       "username",
