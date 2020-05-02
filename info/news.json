@@ -639,5 +639,39 @@
             "web": "smaller(3.0.0)",
             "socketio": "smaller(3.0.0)"
         }
+    },
+    {
+        "title": {
+            "en": "Mydlink: Object IDs will change",
+            "de": "Mydlink: Objekt-IDs ändern sich",
+            "ru": "Mydlink: Идентификаторы объектов будут меняться",
+            "pt": "Mydlink: os IDs de objetos serão alterados",
+            "nl": "Mydlink: Object-ID's zullen veranderen",
+            "fr": "Mydlink: les ID d'objet vont changer",
+            "it": "Mydlink: gli ID oggetto cambieranno",
+            "es": "Mydlink: las ID de objeto cambiarán",
+            "pl": "Mydlink: identyfikatory obiektów ulegną zmianie",
+            "zh-cn": "Mydlink：对象ID将更改"
+        },
+        "content": {
+            "en": "Breaking change: With this update the device ids will change from 'Name' to 'MAC'. That means 'mydlink..Name.state' will be reachable at 'mydlink..MAC.state' after the update. The transition should be automatic. If not, please have a look in instance configuration (the new auto detect functionality should make configuration much easier). This change was necessary to make IDs static and unique, two requirements the name does not offer.",
+            "de": "Aktuelle Änderung: Mit diesem Update ändern sich die Geräte-IDs von \"Name\" in \"MAC\". Das bedeutet, dass 'mydlink..Name.state' nach dem Update unter 'mydlink..MAC.state' erreichbar ist. Der Übergang sollte automatisch erfolgen. Wenn nicht, schauen Sie sich bitte die Instanzkonfiguration an (die neue Funktion zur automatischen Erkennung sollte die Konfiguration erheblich vereinfachen). Diese Änderung war erforderlich, um IDs statisch und eindeutig zu machen, zwei Anforderungen, die der Name nicht bietet.",
+            "ru": "Срочные изменения: с этим обновлением идентификаторы устройств изменятся с «Имя» на «MAC». Это означает, что «mydlink..Name.state» будет доступно в «mydlink..MAC.state» после обновления. Переход должен быть автоматическим. Если нет, пожалуйста, посмотрите на конфигурацию экземпляра (новая функция автоопределения должна значительно упростить настройку). Это изменение было необходимо, чтобы сделать идентификаторы статичными и уникальными, два требования, которые имя не предлагает.",
+            "pt": "Alterações recentes: com esta atualização, os IDs do dispositivo mudarão de 'Nome' para 'MAC'. Isso significa que 'mydlink..Name.state' estará acessível em 'mydlink..MAC.state' após a atualização. A transição deve ser automática. Caso contrário, consulte a configuração da instância (a nova funcionalidade de detecção automática deve facilitar muito a configuração). Essa alteração foi necessária para tornar os IDs estáticos e exclusivos, dois requisitos que o nome não oferece.",
+            "nl": "Brekende wijziging: met deze update veranderen de apparaat-ID's van 'Naam' in 'MAC'. Dat betekent dat 'mydlink..Name.state' na de update bereikbaar zal zijn op 'mydlink..MAC.state'. De overgang moet automatisch zijn. Zo niet, neem dan een kijkje in de configuratie van de instantie (de nieuwe functie voor automatisch detecteren zou de configuratie veel gemakkelijker moeten maken). Deze wijziging was nodig om ID's statisch en uniek te maken, twee vereisten die de naam niet biedt.",
+            "fr": "Changement de rupture: Avec cette mise à jour, les identifiants des appareils passeront de «Nom» à «MAC». Cela signifie que «mydlink..Name.state» sera accessible sur «mydlink..MAC.state» après la mise à jour. La transition doit être automatique. Sinon, veuillez jeter un œil à la configuration de l'instance (la nouvelle fonctionnalité de détection automatique devrait faciliter la configuration). Cette modification était nécessaire pour rendre les identifiants statiques et uniques, deux exigences que le nom n'offre pas.",
+            "it": "Ultime modifiche: con questo aggiornamento gli ID dei dispositivi cambieranno da \"Nome\" a \"MAC\". Ciò significa che \"mydlink..Name.state\" sarà raggiungibile in \"mydlink..MAC.state\" dopo l'aggiornamento. La transizione dovrebbe essere automatica. In caso contrario, dai un'occhiata alla configurazione dell'istanza (la nuova funzionalità di rilevamento automatico dovrebbe rendere la configurazione molto più semplice). Questa modifica è stata necessaria per rendere gli ID statici e univoci, due requisiti che il nome non offre.",
+            "es": "Cambio de última hora: con esta actualización, los ID del dispositivo cambiarán de 'Nombre' a 'MAC'. Eso significa que 'mydlink..Name.state' estará disponible en 'mydlink..MAC.state' después de la actualización. La transición debe ser automática. De lo contrario, eche un vistazo a la configuración de la instancia (la nueva funcionalidad de detección automática debería facilitar la configuración). Este cambio fue necesario para que los ID fueran estáticos y únicos, dos requisitos que el nombre no ofrece.",
+            "pl": "Przełomowa zmiana: dzięki tej aktualizacji identyfikatory urządzeń zmienią się z „Nazwa” na „MAC”. Oznacza to, że „mydlink..Name.state” będzie dostępny w „mydlink..MAC.state” po aktualizacji. Przejście powinno być automatyczne. Jeśli nie, zajrzyj do konfiguracji instancji (nowa funkcja automatycznego wykrywania powinna znacznie ułatwić konfigurację). Ta zmiana była konieczna, aby identyfikatory były statyczne i niepowtarzalne, dwa wymagania, których nazwa nie oferuje.",
+            "zh-cn": "重大更改：通过此更新，设备ID将由“名称”更改为“ MAC”。这意味着更新后，可以在“ mydlink.MAC.state”处访问“ mydlink..Name.state”。过渡应该是自动的。如果没有，请查看实例配置（新的自动检测功能将使配置更加容易）。进行此更改对于使ID静态且唯一是必要的，这是名称未提供的两个要求。"
+        },
+        "id": "mydlinkAdapter",
+        "class": "warning",
+        "fa-icon": "exclamation-circle",
+        "created": "2020-05-02T00:00:00.000Z",
+	"repo": "latest",
+        "conditions": {
+            "mydlink": "smaller(1.0.0)"
+        }
     }
 ]
