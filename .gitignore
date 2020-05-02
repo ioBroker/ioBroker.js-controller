@@ -22,3 +22,6 @@ cache
 /lib/objects/tools.js
 lib/objects/lua
 /*.pid
+/test/tmp
+/test/redis-sentinel/log
+/test/redis-sentinel/*.config

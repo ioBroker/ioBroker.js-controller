@@ -12,6 +12,7 @@
 * (foxriver76) Make decrypt and encrypt methods available in adapter object for developers
 * (AlCalzone) Add adapter exitcode 13 (ADAPTER_REQUESTED_REBUILD) to also allow to tell js-controller to rebuild this adapter.
 * (Apollon77) make EXIT_CODES available on adapter object to use exit code constants also in adapters
+* (Apollon77) change logging for invalid readFile actions to debug because ca be triggered also by other cases then planned ones. Update objects lib
 
 ## 3.0.20 (2020-04-28) Release Elena
 * (Apollon77) make sure disabling instances while installation is running do not crash the controller (Sentry IOBROKER-JS-CONTROLLER-Z) 
