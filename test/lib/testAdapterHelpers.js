@@ -378,6 +378,21 @@ function register(it, expect, context) {
         done();
     });
 
+    it(context.name + ' ' + context.adapterShortName + ' adapter: encrypt decrypt functions', async () => {
+        // get the secret
+        const sysConfig = await context.objects.getObjectAsync('system.config');
+        expect(sysConfig).to.be.ok;
+        const secret = sysConfig.native.secret;
+        expect(secret).to.be.ok;
+        const encrypted = context.adapter.encrypt(secret, 'topSecret');
+        // we only check not equal, because encryption can change and is not always deterministic
+        expect(encrypted).to.not.equal('topSecret');
+        const decrypted = context.adapter.decrypt(secret, encrypted);
+        // check that correctly decrypted
+        expect(decrypted).to.equal('topSecret');
+        return Promise.resolve();
+    });
+
     /*
     // Todo: reactivate this tests with 3.1 when setState validation will refuse to set state
     // setState object validation
