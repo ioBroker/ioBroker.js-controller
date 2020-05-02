@@ -3259,9 +3259,11 @@ function startInstance(id, wakeUp) {
                                 //noinspection JSUnresolvedVariable
                                 if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
                                     logger.error(`${hostLogPrefix} instance ${id} terminated by request of the instance itself and will not be restarted, before user restarts it.`);
-                                } else
-                                if (code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP && procs[id] && procs[id].config && procs[id].config.common.restartSchedule) {
-                                    logger.info(`${hostLogPrefix} instance ${id} scheduled normal terminated and will be started anew.`);
+                                } else if (code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP && procs[id] && procs[id].config && procs[id].config.common.restartSchedule) {
+                                    logger.info(`${hostLogPrefix} instance ${id} scheduled normal terminated and will be restarted on schedule.`);
+                                } else if (code === EXIT_CODES.ADAPTER_REQUESTED_REBUILD && procs[id]) {
+                                    logger.info(`${hostLogPrefix} instance ${id} requested a rebuild of its dependencies and will be restarted after that is done.`);
+                                    procs[id].needsRebuild = true;
                                 } else {
                                     code = parseInt(code, 10);
                                     const text = `${hostLogPrefix} instance ${id} terminated with code ${code} (${getErrorText(code) || ''})`;
