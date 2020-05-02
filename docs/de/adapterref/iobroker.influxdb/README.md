@@ -108,6 +108,9 @@ Die Beschreibung einer Installation einer influxDB-Datenbank folgt.
 
 ## Changelog
 
+### 1.8.4 (2020-05-02)
+* (Apollon77) make sure disabling of datapoints do not crash adapter (Sentry IOBROKER-INFLUXDB-4)
+
 ### 1.8.3 (2020-04-29)
 * (Apollon77) Fix pot crash case when deleting objects while saving values (Sentry) 
 

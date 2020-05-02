@@ -51,6 +51,14 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 
 ## Changelog
 
+### 0.1.3
+* (instalator) change obj for ss info fix for cover song 
+* (instalator) fix for info.connection 
+* (instalator) add 6.2.3 fix for player browser files 
+* (instalator) fix for 2FA
+* (instalator) fixed error add download 
+* (instalator) added DownloadStation task list
+
 ### 0.1.2
 * (instalator) fixed error
 

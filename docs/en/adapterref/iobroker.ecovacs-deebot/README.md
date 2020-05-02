@@ -12,6 +12,7 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 
 ### Supported models
 * Deebot Slim 2
+* Deebot 900/901
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 
@@ -19,7 +20,6 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 * Deebot N79T/W
 * Deebot 601
 * Deebot 710/711
-* Deebot 900/901
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 
@@ -31,6 +31,8 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 * Deebot Ozmo Slim 10
 
 ## Installation
+
+It is recommended to use version 10 of Node.js or a newer version.
 
 This adapter uses the canvas library which might require additional installations, otherwise the installation in iobroker might result in an error:
 ```
@@ -50,8 +52,9 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Known issues
 
-* For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are [some reports](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24) that the connection is lost after approx. 24 hours
-* Strange behavior of the battery value on Deebot 900/901. It's very likely that this is a firmware bug.
+* For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours.
+* There are also some reports that there's a strange behavior of the battery value on Deebot 900/901. It's very likely that this is a firmware bug.
+  * You can use the corresponding option in the adapter config as a workaround.
 
 ## FAQ
 

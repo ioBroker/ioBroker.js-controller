@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.solarviewdatareader/README.md
 title: ioBroker.solarviewdatareader
-hash: K4ygJNlGuMTFRDISlNafdr6/58PwmabOnMtfMCrFGwM=
+hash: N2WdT+EmCQqXeNw1uSS9qyLsRAmJtIdcT7DfxuwaPkk=
 ---
 ![商标](../../../en/adapterref/iobroker.solarviewdatareader/admin/solarviewdatareader.png)
 
@@ -27,6 +27,9 @@ hash: K4ygJNlGuMTFRDISlNafdr6/58PwmabOnMtfMCrFGwM=
 ### D0转换器
 如果将D0转换器连接到Solarview数据记录器，则可以启用此选项。
 
+###自用电表1至5
+如果您有S0表，则可以启用此选项。
+
 ###逆变器1至4
 您可以分别启用每个逆变器。
 
@@ -39,6 +42,8 @@ hash: K4ygJNlGuMTFRDISlNafdr6/58PwmabOnMtfMCrFGwM=
 
 ## Changelog
 
+### 0.2.0
+* (Achim Fürhoff) Error handling optimized, self consumption meter implemented
 ### 0.1.0
 * (Achim Fürhoff) optimizations for adding to latest repository
 ### 0.0.5

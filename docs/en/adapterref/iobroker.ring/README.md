@@ -12,7 +12,8 @@
 Requires node.js 10.0 or higher and Admin v3!
 
 The Ring adapter works with Ring devices like the Ring Video Doorbell and Ring Cam and shows if somenone rings the doorbell or if motion is detected. The Ring Video Doorbell or Cam sends a videostream if a motion or doorbell ist detected or you use the SIP Information for a SIP Video Conference with your SIP client. 
-Unfortunately the adapter will not provide all ring devices because the used API do not includes all ring devices. 
+Unfortunately the snapshot and livestream function does not work properly. Unfortunately I have no influence on it. Please consider this before you create an issue. 
+The adapter will not provide all ring devices because the used API do not includes all ring devices. 
 
 You can use for example the Blink SIP client on [http://icanblink.com/](http://icanblink.com/). To get video working go into Blink's Preferences and under "Accounts", switch the tab to "Media" and deselect "Encrypt audio and video" under "RTP Options". Be careful the SIP information expire after a few seconds!
 Hopefully I will able to support a video stream soon. Unfortunatly [ring.com](https://ring.com) does not have an official API that support this feature. 
@@ -24,6 +25,12 @@ If you press livestreamrequest button you get new SIP Information for building u
 After installing the Adapter you have to enter your Email and Password of your [ring.com](https://ring.com) Account and a Token. Ring now requires the use of Two-Factor Auth (2fa) for all accounts. For getting the token please do following on your shell.
 ```
 npx -p ring-client-api ring-auth-cli
+```
+or
+```
+# Unix 
+cd /opt/iobroker/node_modules/iobroker.ring/node_modules/ring-client-api
+node ring-auth-cli
 ```
 
 ![Ring Admin 1](docs/ring_admin_tab1.png)
@@ -45,6 +52,10 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 ```
 
 ## Changelog
+
+### 1.1.1 (02.05.2020)
+* (Stübi) Bugfixing
+* (Stübi) User can enable/disable external sentry logging
 
 ### 1.1.0 (01.05.2020)
 * (Stübi) Node 10 is now required, Node 12 recommended. If you use Node 8 or less, the adapter will stop immediately.

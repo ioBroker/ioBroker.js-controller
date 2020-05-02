@@ -63,7 +63,7 @@ Manage and create devices for using it in other adapters like material, iot,...
 ## License
 MIT License
 
-Copyright (c) 2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2019-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ring/README.md
 title: 环适配器
-hash: eq1W5H3G6syyXpqSF43HG7tT9Hn9x4M32xPANniEsk4=
+hash: z+0EKjBKMvAf5n8/5NOA5xp0XAE/dieMYTTzHmqIORQ=
 ---
 ![商标](../../../en/adapterref/iobroker.ring/admin/ring.png)
 
@@ -18,7 +18,8 @@ hash: eq1W5H3G6syyXpqSF43HG7tT9Hn9x4M32xPANniEsk4=
 需要node.js 10.0或更高版本以及Admin v3！
 
 Ring适配器可与Ring设备一起使用，例如Ring Video门铃和Ring Cam，并显示是否有人敲响了门铃或是否检测到运动。如果检测到动作或门铃，或者您将SIP信息与SIP客户端一起用于SIP视频会议，则Ring Video Doorbell或Cam将发送视频流。
-不幸的是，适配器不会提供所有的环形设备，因为所使用的API不包括所有的环形设备。
+不幸的是，快照和实时流功能无法正常工作。不幸的是，我对此没有任何影响。在创建问题之前，请考虑这一点。
+适配器将不提供所有环形设备，因为所使用的API不包括所有环形设备。
 
 例如，您可以在[http://icanblink.com/](http://icanblink.com/)上使用Blink SIP客户端。要使视频正常播放，请进入Blink的偏好设置，然后在“帐户”下，将标签切换到“媒体”，然后取消选中“ RTP选项”下的“加密音频和视频”。请注意，几秒钟后SIP信息就会过期！希望我能尽快支持视频流。不幸的是，[ring.com](https://ring.com)没有支持此功能的官方API。
 如果按livestreamrequest按钮，将获得新的SIP信息以建立SIP视频通话会话。如果您使用的是[ring.com](https://ring.com)云，则在历史记录下会找到指向上一个运动/门铃录制视频的http链接。
@@ -28,6 +29,14 @@ Ring适配器可与Ring设备一起使用，例如Ring Video门铃和Ring Cam，
 
 ```
 npx -p ring-client-api ring-auth-cli
+```
+
+要么
+
+```
+# Unix
+cd /opt/iobroker/node_modules/iobroker.ring/node_modules/ring-client-api
+node ring-auth-cli
 ```
 
 ![环管理员1](../../../en/adapterref/iobroker.ring/docs/ring_admin_tab1.png)
@@ -48,6 +57,10 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 ```
 
 ## Changelog
+
+### 1.1.1 (02.05.2020)
+* (Stübi) Bugfixing
+* (Stübi) User can enable/disable external sentry logging
 
 ### 1.1.0 (01.05.2020)
 * (Stübi) Node 10 is now required, Node 12 recommended. If you use Node 8 or less, the adapter will stop immediately.

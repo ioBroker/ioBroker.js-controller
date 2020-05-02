@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ring/README.md
 title: Кольцевой адаптер
-hash: eq1W5H3G6syyXpqSF43HG7tT9Hn9x4M32xPANniEsk4=
+hash: z+0EKjBKMvAf5n8/5NOA5xp0XAE/dieMYTTzHmqIORQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.ring/admin/ring.png)
 
@@ -18,9 +18,10 @@ hash: eq1W5H3G6syyXpqSF43HG7tT9Hn9x4M32xPANniEsk4=
 Требуется node.js 10.0 или выше и Admin v3!
 
 Адаптер Ring работает с устройствами Ring, такими как Ring Video Doorbell и Ring Cam, и показывает, звонит ли somenone дверной звонок или обнаруживается ли движение. Звонок с видеодомофона или видеокамеры отправляет видеопоток, если не обнаружено движение или дверной звонок, или вы используете информацию SIP для видеоконференции SIP с вашим клиентом SIP.
-К сожалению, адаптер не предоставляет все устройства вызова, поскольку используемый API не включает все устройства вызова.
+К сожалению, функция снимка и прямой трансляции не работает должным образом. К сожалению, я не имею никакого влияния на это. Пожалуйста, подумайте об этом, прежде чем создавать проблему.
+Адаптер не будет предоставлять все кольцевые устройства, поскольку используемый API не включает все кольцевые устройства.
 
-Вы можете использовать, например, Blink SIP-клиент на [http://icanblink.com/](http://icanblink.com/). Чтобы заставить работать видео, перейдите в «Настройки» Blink и в разделе «Учетные записи» переключите вкладку на «Медиа» и отмените выбор «Шифровать аудио и видео» в «Параметры RTP». Будьте осторожны, срок действия информации SIP истекает через несколько секунд! Надеюсь, я скоро смогу поддерживать видеопоток. К сожалению, [ring.com](https://ring.com) не имеет официального API, поддерживающего эту функцию.
+Вы можете использовать, например, Blink SIP-клиент на [http://icanblink.com/](http://icanblink.com/). Чтобы заставить видео работать, перейдите в «Настройки» Blink и в «Учетные записи», переключите вкладку на «Медиа» и снимите флажок «Шифровать аудио и видео» в «Параметры RTP». Будьте осторожны, срок действия информации SIP истекает через несколько секунд! Надеюсь, я скоро смогу поддерживать видеопоток. К сожалению, [ring.com](https://ring.com) не имеет официального API, поддерживающего эту функцию.
 Если вы нажмете кнопку livestreamrequest, вы получите новую информацию SIP для создания сеанса видеовызова SIP. Если вы используете облако [ring.com](https://ring.com), в истории вы найдете ссылку http на ваше последнее видео с записью движения / дверного звонка.
 
 ## Установка и настройка
@@ -28,6 +29,14 @@ hash: eq1W5H3G6syyXpqSF43HG7tT9Hn9x4M32xPANniEsk4=
 
 ```
 npx -p ring-client-api ring-auth-cli
+```
+
+или
+
+```
+# Unix
+cd /opt/iobroker/node_modules/iobroker.ring/node_modules/ring-client-api
+node ring-auth-cli
 ```
 
 ![Кольцо Админ 1](../../../en/adapterref/iobroker.ring/docs/ring_admin_tab1.png)
@@ -48,6 +57,10 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 ```
 
 ## Changelog
+
+### 1.1.1 (02.05.2020)
+* (Stübi) Bugfixing
+* (Stübi) User can enable/disable external sentry logging
 
 ### 1.1.0 (01.05.2020)
 * (Stübi) Node 10 is now required, Node 12 recommended. If you use Node 8 or less, the adapter will stop immediately.

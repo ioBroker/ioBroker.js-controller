@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: GsUr206XF8dSP1kZQ6AZ2jXpGifpgMybCtj/zrrAQNU=
+hash: xlJKx+n8XaTruzMaaXnSS7AqH/RHxzZ7hT7TWux1hAM=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -18,6 +18,7 @@ hash: GsUr206XF8dSP1kZQ6AZ2jXpGifpgMybCtj/zrrAQNU=
 ## Модели
 ### Поддерживаемые модели
 * Deebot Slim 2
+* Deebot 900/901
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 
@@ -25,7 +26,6 @@ hash: GsUr206XF8dSP1kZQ6AZ2jXpGifpgMybCtj/zrrAQNU=
 * Deebot N79T / W
 * Deebot 601
 * Deebot 710/711
-* Deebot 900/901
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 
@@ -37,13 +37,15 @@ hash: GsUr206XF8dSP1kZQ6AZ2jXpGifpgMybCtj/zrrAQNU=
 * Deebot Ozmo Slim 10
 
 ## Установка
+Рекомендуется использовать версию 10 Node.js или более новую версию.
+
 Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок, в противном случае установка в iobroker может привести к ошибке:
 
 ```
 npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
 ```
 
-Для систем на основе Linux должны быть выполнены следующие команды (перезагрузка может потребоваться после второй строки):
+Для систем на основе Linux должны быть выполнены следующие команды (может потребоваться перезагрузка после второй строки):
 
 ```
 sudo apt-get update
@@ -57,8 +59,9 @@ sudo npm install canvas --unsafe-perm=true
 * Информацию о том, как использовать этот адаптер, можно найти здесь [https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki).
 
 ## Известные вопросы
-* Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть [ некоторые сообщения] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/issues/24), что соединение теряется после прибл. 24 часа
-* Странное поведение значения батареи на Deebot 900/901. Очень вероятно, что это ошибка прошивки.
+* Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно после прибл. 24 часа.
+* Есть также некоторые сообщения, что на Deebot 900/901 наблюдается странное поведение уровня заряда батареи. Очень вероятно, что это ошибка прошивки.
+  * Вы можете использовать соответствующую опцию в конфигурации адаптера в качестве обходного пути.
 
 ## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)

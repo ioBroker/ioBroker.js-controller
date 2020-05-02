@@ -42,6 +42,14 @@ delayed by polling interval (can be set in config).
 The adapter does not interfere with the use of the app.
 
 ## Changelog
+### 1.0.7 (2020-05-02)
+* Made saving config more robust and direct again.
+* Made identify by IP more robust and allows saving right away. 
+* Prevent saving if devices without PIN are configured.
+
+### 1.0.6 (2020-05-02)
+* Prevent creation of empty devices (MYDLINK-6)
+
 ### 1.0.5 (2020-05-02)
 * Fixed possible issue with device ids.
 * Improved device creation

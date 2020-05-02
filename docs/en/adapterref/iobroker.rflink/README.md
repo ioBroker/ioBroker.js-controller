@@ -48,6 +48,9 @@ E.g: ```10;AB400D;00004d;1;OFF;```. Please read documentation to understand the 
 
 ## Changelog
 
+### 2.1.2 (2020-05-02)
+* (Apollon77) getting port list works again 
+
 ### 2.1.0 (2020-04-24)
 * (Apollon77) nodejs 6 is no longer supported!
 

@@ -21,6 +21,10 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* Breaking Change: Raised minimum Node.js version to 10
+* Improved performance of the network cache. This significantly reduces CPU consumption during the adapter startup.
+
 ### 0.11.7 (2020-04-25)
 * Fixed a crash that happened when setting invalid values in ioBroker
 * Fixed some compilation issues with newer typings

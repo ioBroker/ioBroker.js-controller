@@ -15,6 +15,9 @@ Pings specified IP addresses in defined interval and monitors the results.
 
 ## Changelog
 
+### 1.4.7 (2020-05-02)
+* (Apollon77) finally try to catch spawn errors (Sentry IOBROKER-PING-2)
+
 ### 1.4.6 (2020-04-29)
 * (Apollon77) Make sure adapter do not crash if ping command can not be executed (Sentry)
 * (Apollon77) Catch error when ping.probe could not be started (Sentry IOBROKER-PING-2)

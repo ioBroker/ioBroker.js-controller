@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.solarviewdatareader/README.md
 title: ioBroker.solarviewdatareader
-hash: K4ygJNlGuMTFRDISlNafdr6/58PwmabOnMtfMCrFGwM=
+hash: N2WdT+EmCQqXeNw1uSS9qyLsRAmJtIdcT7DfxuwaPkk=
 ---
 ![логотип](../../../en/adapterref/iobroker.solarviewdatareader/admin/solarviewdatareader.png)
 
 ![Количество установок](http://iobroker.live/badges/solarviewdatareader-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.solarviewdatareader.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.solarviewdatareader.svg)
-![Состояние зависимости](https://img.shields.io/david/afuerhoff/iobroker.solarviewdatareader.svg)
+![Статус зависимости](https://img.shields.io/david/afuerhoff/iobroker.solarviewdatareader.svg)
 ![Известные уязвимости](https://snyk.io/test/github/afuerhoff/ioBroker.solarviewdatareader/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.solarviewdatareader.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/afuerhoff/ioBroker.solarviewdatareader/master.svg)
@@ -27,11 +27,14 @@ hash: K4ygJNlGuMTFRDISlNafdr6/58PwmabOnMtfMCrFGwM=
 ### D0 конвертер
 Если у вас есть преобразователь D0, подключенный к регистратору данных Solarview, вы можете включить эту опцию.
 
+### Счетчик собственного потребления от 1 до 5
+Если у вас есть счетчик S0, вы можете включить эту опцию.
+
 ### Инвертор с 1 по 4
 Каждый инвертор вы можете включить отдельно.
 
 ### Интервал, начало интервала, конец интервала
-Здесь вы можете настроить временной диапазон и интервал.
+Здесь вы можете настроить диапазон времени и интервал.
 
 ### Установить системную переменную CCU, Системная переменная
 Это особенность гомеатической CCU. Вы можете определить системную переменную в CCU.
@@ -39,6 +42,8 @@ hash: K4ygJNlGuMTFRDISlNafdr6/58PwmabOnMtfMCrFGwM=
 
 ## Changelog
 
+### 0.2.0
+* (Achim Fürhoff) Error handling optimized, self consumption meter implemented
 ### 0.1.0
 * (Achim Fürhoff) optimizations for adding to latest repository
 ### 0.0.5

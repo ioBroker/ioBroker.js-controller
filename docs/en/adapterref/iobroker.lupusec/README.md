@@ -10,7 +10,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.lupusec.svg)](https://www.npmjs.com/package/iobroker.lupusec) 
 [![NPM](https://nodei.co/npm/iobroker.lupusec.png?downloads=true)](https://nodei.co/npm/iobroker.lupusec/)
 
-**Requires node.js 8.0 or higher and Admin v3!**
+**Requires node.js 10.0 or higher and Admin v3!**
 
 This adapter connects the Lupusec alarm system XT1 Plus, XT2, XT2 Plus and XT3 with ioBroker.
 The XT1 (without Plus) will not be supported. You can read the status of the Lupusec sensors
@@ -98,6 +98,12 @@ You find your Nuki door opener under 'devices' like the Lupusec devices. The Nuk
 ![lupusec_obj_nuki](docs/en/img/lupusec_obj_nuki.png)
 
 ## Changelog
+
+### 1.2.6 (02.05.2020)
+* (Stübi) Change logic to get faster sensor states
+* (Stübi) Node 10 recommended 
+* (Stübi) Add sentry logging
+* (Stübi) Add old Light sensor (type 78)
 
 ### 1.2.5 (21.01.2019)
 * (Stübi) Change logic to get faster sensor states

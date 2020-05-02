@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: 28EbynNRDbIp+fW+vSFfE6tmF/G1bZAGai4HpgQ13HY=
+hash: LsenZYGZwR2+bdJjtVQwX90D40EnitSaUr69a9uemcI=
 ---
 ![商标](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -16,7 +16,7 @@ hash: 28EbynNRDbIp+fW+vSFfE6tmF/G1bZAGai4HpgQ13HY=
 ![NPM](https://nodei.co/npm/iobroker.lupusec.png?downloads=true)
 
 ＃ioBroker.lupusec
-**需要node.js 8.0或更高版本以及Admin v3！**
+**需要node.js 10.0或更高版本以及Admin v3！**
 
 该适配器将Lupusec报警系统XT1 Plus，XT2，XT2 Plus和XT3与ioBroker相连。
 不支持XT1（不带Plus）。您可以读取Lupusec传感器的状态，例如门，窗户，水，烟雾传感器以及警报系统的状态。
@@ -33,8 +33,8 @@ hash: 28EbynNRDbIp+fW+vSFfE6tmF/G1bZAGai4HpgQ13HY=
 
 从Lupusec警报系统中选择IP地址或主机名。如果可能，请选择https（推荐）。
 仅读取状态，请选择没有写访问权的用户。如果要更改状态（例如，打开/关闭灯或布防/撤防警报），请选择具有写权限的用户。
-![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png)如果将监视摄像机连接到Lupusec警报系统，则可以在ioBroker中提供它们。 Lupusec适配器自己找到所有Lupusec凸轮。您必须输入一个地址（您的ioBroker IP地址或0.0.0.0）和一个端口，以便以后连接到凸轮。
-![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png)§如果您将Nuki开门器连接到Lupusec警报系统，则也可以从ioBroker使用它。在ioBroker实例管理菜单上，您可以输入安装在Nuki门上的Lupusec门传感器。如果现在打开安装Nuki的门，则将具有附加状态“开门”，而只有“解锁”状态。如果您在Nuki门上没有Lupusec门传感器，则只会看到“锁定”或“锁定”状态。
+![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png)如果您将监视摄像机连接到Lupusec警报系统，则可以在ioBroker中提供它们。 Lupusec适配器自己找到所有Lupusec凸轮。您必须输入一个地址（您的ioBroker IP地址或0.0.0.0）和一个端口，以便以后连接到凸轮。
+![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png)§如果您将Nuki开门器连接到Lupusec报警系统，则也可以从ioBroker使用它。在ioBroker实例管理菜单上，您可以输入安装在Nuki门上的Lupusec门传感器。如果现在打开安装Nuki的门，则将具有附加状态“开门”，而只有“解锁”状态。如果您在Nuki门上没有Lupusec门传感器，则只会看到“锁定”或“锁定”状态。
 ![admin_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_nuki.png)
 
 默认情况下，所有Lupusec设备都将显示在ioBroker对象选项卡上。
@@ -48,7 +48,7 @@ hash: 28EbynNRDbIp+fW+vSFfE6tmF/G1bZAGai4HpgQ13HY=
   -烟雾探测器/热量探测器（类型14）
   -温度传感器V2（类型20）
   -内部警笛（21型）
-  -状态指示器/迷你室内警报器（22型）
+  -状态指示灯/迷你室内警报器（22型）
   -电源开关（类型24）
   -带ZigBee中继器的1通道中继器（类型24）
   -带ZigBee中继器的2通道中继器（类型24）
@@ -91,11 +91,11 @@ ioBroker为您提供与Lupusec应用程序中相同的状态对象。
 ![lupusec_obj_status](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_devices_type09.png)
 
 ### Lupusec网络摄像头
-您可以在“网络摄像头”下找到所有已连接的监视摄像头。您可以将“图像”和“流”状态中提供的链接复制到Web浏览器以打开。
+您可以在“网络摄像头”下找到所有已连接的监视摄像头。您可以将“图像”和“流”状态中提供的链接复制到Web浏览器中以打开。
 ![lupusec_obj_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_webcam.png)
 
 ### Lupusec Nuki
-您可以在Lupusec设备之类的“设备”下找到Nuki开门器。 Nuki提供2个州。状态nuki_state向您显示Nuki开门器的实际状态，例如门已锁定或未锁定。使用状态nuki_action，您可以打开，锁定或解锁门。
+您可以在Lupusec设备之类的“设备”下找到Nuki开门器。 Nuki提供2个州。状态nuki_state向您显示Nuki开门器的实际状态，例如门已锁定或未锁定。通过状态nuki_action，您可以打开，锁定或解锁门。
 ![lupusec_obj_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_nuki.png)
 
 ##已计划
@@ -105,6 +105,12 @@ ioBroker为您提供与Lupusec应用程序中相同的状态对象。
 *为每个传感器/设备编写文档
 
 ## Changelog
+
+### 1.2.6 (02.05.2020)
+* (Stübi) Change logic to get faster sensor states
+* (Stübi) Node 10 recommended 
+* (Stübi) Add sentry logging
+* (Stübi) Add old Light sensor (type 78)
 
 ### 1.2.5 (21.01.2019)
 * (Stübi) Change logic to get faster sensor states

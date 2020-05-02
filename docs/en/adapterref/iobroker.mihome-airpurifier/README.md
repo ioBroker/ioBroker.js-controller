@@ -79,11 +79,14 @@ The following information is collected from your air purifier (read-only states)
 | `filterHoursUsed`        | The used hours of the filter. |
 
 ## Changelog
+### 0.1.8 (02.05.2020)
+* (JoJ123) bug: npm install
+
 ### 0.1.7 (01.05.2020)
-* (JoJ123) add new parameter
+* (JoJ123) bug: interval load data
 
 ### 0.1.6 (01.05.2020)
-* (JoJ123) add new parameter
+* (JoJ123) support for 'zhimi.airpurifier.mc1'
 
 ### 0.1.5 (01.05.2020)
 * (JoJ123) add new parameter
