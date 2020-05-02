@@ -599,6 +599,9 @@ BotFather: Success! The new status is: DISABLED. /help
 ```
  
 ## Changelog
+### 1.5.8 (2020-04-30)
+* (Apollon77) errors on webserver initialization are handled properly
+
 ### 1.5.6 (2020-04-04)
 * (bluefox) Fixed missing languages for blockly
 * (bluefox) Added description of easy-keyboard

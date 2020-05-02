@@ -448,6 +448,10 @@ After that checkout modified version in `./build` folder. Then.
 8. Start `gulp rename` task.
 
 ## Changelog
+
+### 1.0.15 (2020-04-30)
+* (Apollon77) errors on webserver initialization are handled properly
+
 ### 1.0.14 (2020-04-22)
 * (algar42) Call of deprecated getObjectView updated for js-controller v3
 

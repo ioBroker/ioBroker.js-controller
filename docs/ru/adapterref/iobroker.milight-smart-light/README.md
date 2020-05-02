@@ -3,16 +3,18 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.milight-smart-light/README.md
 title: ioBroker.milight смарт-свет
-hash: HHagzctIvHavIW8wnVoIGdlFc2AftK2MNJnAWE6NtNA=
+hash: Zlq40cZEWbVrN2V3mGoB2N81zeVjLNLtZOra9pTZt38=
 ---
 ![milight-smart-light логотип](../../../en/adapterref/iobroker.milight-smart-light/admin/lib/images/milight-smart-light-md.png)
 
-![Трэвис-CI](http://img.shields.io/travis/Steiger04/ioBroker.milight-smart-light/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Steiger04/ioBroker.milight-smart-light?branch=master&svg=true)
+![Версия NPM](http://img.shields.io/npm/v/iobroker.milight-smart-light.svg)
+![Загрузки](https://img.shields.io/npm/dm/iobroker.milight-smart-light.svg)
+![тесты](http://img.shields.io/travis/Steiger04/ioBroker.milight-smart-light/master.svg)
+![стабильный](http://iobroker.live/badges/milight-smart-light-stable.svg)
+![установлены](http://iobroker.live/badges/milight-smart-light-installed.svg)
+![NPM](https://nodei.co/npm/iobroker.milight-smart-light.png?downloads=true)
 
 # IoBroker.milight-smart-light
-** Тесты: ** Linux / Mac: Windows:
-
 Этот адаптер для ioBroker управляет светодиодными лампами Milight и светодиодными лентами и основан на модуле узла от mwittig.
 
 mwittig / [узел-milight-обещание](https://github.com/mwittig/node-milight-promise)
@@ -37,6 +39,15 @@ mwittig / [узел-milight-обещание](https://github.com/mwittig/node-mi
 - **iobroker.admin** используйте версию 3.5.10 или выше
 
 ## Changelog
+### 0.3.0 (2020-04-30)
+- (steiger04): Optimizations, bug fixes and new app
+
+### 0.2.7 (2019-04-15)
+- (steiger04): Additions to the Stable Repository
+
+### 0.2.6 (2019-04-11)
+- (steiger04): Updated the CI test and some MaterialiseCSS optimizations
+
 ### 0.2.5 (2019-03-07)
 - (steiger04): Core Files/Testing Update and introduce adapter-core
 
@@ -109,4 +120,4 @@ mwittig / [узел-milight-обещание](https://github.com/mwittig/node-mi
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 Steiger04 <steiger04@posteo.de>
+Copyright (c) 2017-2020 Steiger04 <steiger04@posteo.de>

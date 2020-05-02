@@ -13,10 +13,10 @@ Wenn man ein Adapter im ioBroker stoppt und dann aus der Konsole so startet:
 ```
 cd /opt/iobroker
 iobroker stop sayit
-node --inspect node_modules/iobroker.sayit/main.js --force --logs
+node --inspect node_modules/iobroker.sayit/main.js --debug
 ```
 
-Wichtig ist `–inspect`
+Wichtig ist `-–inspect`
 
 Dann wird so was ausgegeben:
 
@@ -33,7 +33,7 @@ Debugger attached.
 
 Danach kann mit Chrome debuggen, wenn man ausgegeben Link im Chrome eingibt:
 
-!(Chrome)[media/adapterdebug1.png]
+![Chrome](media/adapterdebug1.png)
 
 *Getestet: Windows, Chrome 55, node.js 6.9.2*
 
@@ -41,7 +41,7 @@ Danach kann mit Chrome debuggen, wenn man ausgegeben Link im Chrome eingibt:
 Wenn iobroker läuft nicht auf dem gleichen Rechner wie chrome, dann lautet der befehl in Anlehnung an dem obigen beispiel:
 
 ```
-node --inspect-brk=<ip-adresse iobroker>:9229 node_modules/iobroker.sayit/main.js --force --logs
+node --inspect-brk=0.0.0.0:9229 node_modules/iobroker.sayit/main.js --debug
 ```
 
 der parameter `--inspect-brk` sorgt im vergleich zu oben,
@@ -54,13 +54,12 @@ Wer nicht immer den link zum start des debugs einzeln kopieren will, kann auch i
 chrome://inspect
 ```
 
-dann einmalig über configure die ip und port eures remotrechners genau wie beim inspect befehl eingeben.
+dann einmalig über configure die IP Adresse und Port eures **ioBroker-Rechners** genau wie beim inspect befehl eingeben.
 
 Dort wird dann die debug session nach start des befehls angezeigt und kann mit einem klick gestartet werden.
 
 Die chrome debug möglichkeiten sind fantastisch.
-Man hat alle möglichkeiten, die man auch aus dem **web-debugging**
-kennt (Breakpoints, auch mit Bedingungen, watch, callstack, scope inspection, consolenausgabe,etc.)
+Man hat alle Möglichkeiten, die man auch aus dem **Web-Debugging** kennt: Breakpoints, auch mit Bedingungen, watch, call stack, scope inspection, Konsole-Ausgabe, usw.
 
 Bilder und englische Beschreibung befindet sich [hier](https://software.intel.com/en-us/xdk/articles/using-chrome-devtools-to-debug-your-remote-iot-nodejs-application)
 
@@ -72,4 +71,48 @@ npm install -g node-inspector
 
 ## Debuggen mit WebStorm
 
-## Debuggen mit Visual Sturio Code
+## Debuggen mit `Visual Studio Code`
+Falls man ein Verzeichnis mit `VS Code` aufmacht, dann nachdem als man Adapter Verzeichnis aufmacht (`File=>Open folder...` menu),
+kann man dann einen Adapter debuggen.
+
+Die Konfiguration in der Datei `.vscode/launch.js` sollte so aussehen:
+```
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${workspaceFolder}\\main.js",
+            "args": ["--debug"]
+        },
+        {
+            "name": "Attach to Process",
+            "type": "node",
+            "request": "attach",
+            "address": "IO_BROKER_IP_ADDRESS",
+            "port": 9229
+          }
+    ]
+}
+```
+
+### Lokal Debugging
+Nachdem als der Adapter gestoppt ist (`iobroker stop ADAPTER_NAME`), kann man den Adapter im VS Code starten:
+![VS Code](media/adapterdebug10.png) 
+
+Nachdem als man `Launch Program` auswählt und `Play` Knopf klickt, wird Der Adapter gestartet und man kann lokal debuggen.
+
+### Remote Debugging
+Dafür sollte man den Adapter auf dem ioBroker server speziell starten.
+
+ ```
+cd /opt/iobroker
+iobroker stop ADAPTERNAME
+node --inspect-brk=0.0.0.0:9229 node_modules/iobroker.ADAPTERNAME/main.js --debug
+ ```
+
+Danach kann man `VS Code` an Prozess anschließen (`attach`).
+
+![VS Code](media/adapterdebug11.png) 

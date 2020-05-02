@@ -3,23 +3,25 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.milight-smart-light/README.md
 title: ioBroker.milight-smart-light
-hash: HHagzctIvHavIW8wnVoIGdlFc2AftK2MNJnAWE6NtNA=
+hash: Zlq40cZEWbVrN2V3mGoB2N81zeVjLNLtZOra9pTZt38=
 ---
-![milight-smart-light-Logo](../../../en/adapterref/iobroker.milight-smart-light/admin/lib/images/milight-smart-light-md.png)
+![milight-smart-light Logo](../../../en/adapterref/iobroker.milight-smart-light/admin/lib/images/milight-smart-light-md.png)
 
-![Travis-CI](http://img.shields.io/travis/Steiger04/ioBroker.milight-smart-light/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Steiger04/ioBroker.milight-smart-light?branch=master&svg=true)
+![NPM-Version](http://img.shields.io/npm/v/iobroker.milight-smart-light.svg)
+![Downloads](https://img.shields.io/npm/dm/iobroker.milight-smart-light.svg)
+![Tests](http://img.shields.io/travis/Steiger04/ioBroker.milight-smart-light/master.svg)
+![stabil](http://iobroker.live/badges/milight-smart-light-stable.svg)
+![Eingerichtet](http://iobroker.live/badges/milight-smart-light-installed.svg)
+![NPM](https://nodei.co/npm/iobroker.milight-smart-light.png?downloads=true)
 
 # IoBroker.milight-smart-light
-** Tests: ** Linux / Mac: Windows:
+Dieser Adapter für ioBroker steuert Milight-LED-Lampen und LED-Streifen und basiert auf dem Knotenmodul von mwittig.
 
-Dieser Adapter für ioBroker steuert Milight LED-Lampen und LED-Streifen und basiert auf dem Knotenmodul von mwittig.
-
-mwittig / [Knoten-Milight-Versprechen](https://github.com/mwittig/node-milight-promise)
+mwittig / [Node-Milight-Versprechen](https://github.com/mwittig/node-milight-promise)
 
 Mit dem Adapter können Sie beide verwenden: **v6 Bridge** und **Legacy Bridge**
 
-** v6-Brücke: **
+** v6 Brücke: **
 
 - Brücke (nur iBox1)
 - Weiß
@@ -37,6 +39,15 @@ Mit dem Adapter können Sie beide verwenden: **v6 Bridge** und **Legacy Bridge**
 - **iobroker.admin** Verwenden Sie Version 3.5.10 oder höher
 
 ## Changelog
+### 0.3.0 (2020-04-30)
+- (steiger04): Optimizations, bug fixes and new app
+
+### 0.2.7 (2019-04-15)
+- (steiger04): Additions to the Stable Repository
+
+### 0.2.6 (2019-04-11)
+- (steiger04): Updated the CI test and some MaterialiseCSS optimizations
+
 ### 0.2.5 (2019-03-07)
 - (steiger04): Core Files/Testing Update and introduce adapter-core
 
@@ -109,4 +120,4 @@ Mit dem Adapter können Sie beide verwenden: **v6 Bridge** und **Legacy Bridge**
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 Steiger04 <steiger04@posteo.de>
+Copyright (c) 2017-2020 Steiger04 <steiger04@posteo.de>

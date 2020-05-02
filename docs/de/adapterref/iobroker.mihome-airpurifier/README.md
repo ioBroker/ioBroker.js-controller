@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-airpurifier/README.md
 title: ioBroker.mihome-Luftreiniger
-hash: GZpDfYg6GTTqGpD7ZIU8MYgRKvu6uwkllS7U5QdFRpk=
+hash: i0mj+g03C3agZOqTW6P5zlf0jkyXuwJEv1qcqWOz16I=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/mihome-airpurifier-stable.svg)
 ![Build-Status](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)
@@ -66,7 +66,9 @@ Zur Steuerung Ihres Luftreinigers können folgende Objekte geschrieben werden:
 | `silent` | Aktivieren Sie den Silent-Modus des Geräts. |
 | `manual` | Aktivieren Sie den manuellen Modus des Geräts. |
 | `manuallevel` | Steuern Sie die Leistung des manuellen Modus im Bereich von 0-100%. Dadurch wird das Gerät bei Bedarf auch ein- und ausgeschaltet |
-| `manuallevel` | Steuern Sie die Leistung des manuellen Modus im Bereich von 0-100%. Dadurch wird das Gerät bei Bedarf auch ein- und ausgeschaltet |
+| `led` | Schalten Sie die automatische LED ein / aus |
+| `buzzer` | Schalten Sie den Summer ein / aus |
+| `Summer` | Schalten Sie den Summer ein / aus |
 
 ## Info Staaten
 Die folgenden Informationen werden von Ihrem Luftreiniger erfasst (schreibgeschützt):
@@ -77,9 +79,23 @@ Die folgenden Informationen werden von Ihrem Luftreiniger erfasst (schreibgesch�
 | `mode` | Der tatsächliche Gerätemodus ist nur gültig, wenn das Gerät eingeschaltet ist. |
 | `humidity` | Die gemessene relative Luftfeuchtigkeit in% des Geräts. |
 | `pm25` | Die Luftverschmutzung in PM2.5. |
-| `pm25` | Die Luftverschmutzung in PM2.5. |
+| `filterLifeRemaining` | Die verbleibende Filterlebensdauer in Stunden. |
+| `filterHoursUsed` | Die verwendeten Stunden des Filters. |
+| `filterHoursUsed` | Die verwendeten Stunden des Filters. |
 
 ## Changelog
+### 0.1.7 (01.05.2020)
+* (JoJ123) add new parameter
+
+### 0.1.6 (01.05.2020)
+* (JoJ123) add new parameter
+
+### 0.1.5 (01.05.2020)
+* (JoJ123) add new parameter
+
+### 0.1.4 (01.05.2020)
+* (JoJ123) bug fixing
+
 ### 0.1.1 (18.04.2020)
 * (JoJ123) move to typescript
 

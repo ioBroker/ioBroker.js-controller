@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-airpurifier/README.md
 title: ioBroker.mihome空气净化器
-hash: GZpDfYg6GTTqGpD7ZIU8MYgRKvu6uwkllS7U5QdFRpk=
+hash: i0mj+g03C3agZOqTW6P5zlf0jkyXuwJEv1qcqWOz16I=
 ---
 ![安装数量](http://iobroker.live/badges/mihome-airpurifier-stable.svg)
 ![建立状态](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)
@@ -66,7 +66,9 @@ Support: At least basic
 | `silent`|激活设备的静音模式。 |
 | `manual`|激活设备的手动模式。 |
 | `manuallevel`|将手动模式的功率控制在0-100％的范围内。如有必要，这还将打开/关闭设备。 |
-| `manuallevel` |将手动模式的功率控制在0-100％的范围内。如有必要，这还将打开/关闭设备。 |
+| `led`|打开/关闭自动指示灯|
+| `buzzer`|打开/关闭蜂鸣器|
+|蜂鸣器|打开/关闭蜂鸣器|
 
 ##信息状态
 从您的空气净化器收集以下信息（只读状态）：
@@ -77,9 +79,23 @@ Support: At least basic
 | `mode`|如果设备已打开电源，则实际的设备模式才有效。 |
 | `humidity`|测量的相对湿度，以设备的百分比表示。 |
 | `pm25`| PM2.5中的空气污染。 |
-| `pm25` | PM2.5中的空气污染。 |
+| `filterLifeRemaining`|剩余过滤器寿命（小时）。 |
+| `filterHoursUsed`|过滤器的使用时间。 |
+| `filterHoursUsed` |过滤器的使用时间。 |
 
 ## Changelog
+### 0.1.7 (01.05.2020)
+* (JoJ123) add new parameter
+
+### 0.1.6 (01.05.2020)
+* (JoJ123) add new parameter
+
+### 0.1.5 (01.05.2020)
+* (JoJ123) add new parameter
+
+### 0.1.4 (01.05.2020)
+* (JoJ123) bug fixing
+
 ### 0.1.1 (18.04.2020)
 * (JoJ123) move to typescript
 

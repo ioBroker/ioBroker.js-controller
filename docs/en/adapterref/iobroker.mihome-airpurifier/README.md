@@ -61,6 +61,8 @@ To control your air purifier, the following objects can be written:
 | `silent`         | Activate the silent mode of the device. |
 | `manual`         | Activate the manual mode of the device. |
 | `manuallevel`    | Control the power of the manual mode in the range from 0-100%. This will also turn on / off the device if necessary |
+| `led`          | Turn the auto led on / off  |
+| `buzzer`       | Turn the buzzer on / off  |
 
 ## Info States
 The following information is collected from your air purifier (read-only states):
@@ -73,8 +75,22 @@ The following information is collected from your air purifier (read-only states)
 | `temperature` | The measured temperature in °C of the device. |
 | `humidity`    | The measured relative humidity in % of the device. |
 | `pm25`        | The air pollution in PM2.5. |
+| `filterLifeRemaining`        | The remaining filter life in hours. |
+| `filterHoursUsed`        | The used hours of the filter. |
 
 ## Changelog
+### 0.1.7 (01.05.2020)
+* (JoJ123) add new parameter
+
+### 0.1.6 (01.05.2020)
+* (JoJ123) add new parameter
+
+### 0.1.5 (01.05.2020)
+* (JoJ123) add new parameter
+
+### 0.1.4 (01.05.2020)
+* (JoJ123) bug fixing
+
 ### 0.1.1 (18.04.2020)
 * (JoJ123) move to typescript
 

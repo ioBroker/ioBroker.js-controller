@@ -9,9 +9,11 @@
 
 [![NPM](https://nodei.co/npm/iobroker.ring.png?downloads=true)](https://nodei.co/npm/iobroker.ring/)
 
-Requires node.js 8.0 or higher and Admin v3!
+Requires node.js 10.0 or higher and Admin v3!
 
-The Ring adapter works with Ring devices like the Ring Video Doorbell and Ring Cam and shows if somenone rings the doorbell or if motion is detected. The Ring Video Doorbell or Cam does not send a videostream if a motion or door bell ist detected. Instead SIP Information for a SIP Video Conference will be provided. 
+The Ring adapter works with Ring devices like the Ring Video Doorbell and Ring Cam and shows if somenone rings the doorbell or if motion is detected. The Ring Video Doorbell or Cam sends a videostream if a motion or doorbell ist detected or you use the SIP Information for a SIP Video Conference with your SIP client. 
+Unfortunately the adapter will not provide all ring devices because the used API do not includes all ring devices. 
+
 You can use for example the Blink SIP client on [http://icanblink.com/](http://icanblink.com/). To get video working go into Blink's Preferences and under "Accounts", switch the tab to "Media" and deselect "Encrypt audio and video" under "RTP Options". Be careful the SIP information expire after a few seconds!
 Hopefully I will able to support a video stream soon. Unfortunatly [ring.com](https://ring.com) does not have an official API that support this feature. 
 If you press livestreamrequest button you get new SIP Information for building up a SIP Video Call session. If you are using the [ring.com](https://ring.com) cloud you find under history a http link to your last motion / door bell recorded video. 
@@ -19,7 +21,20 @@ If you press livestreamrequest button you get new SIP Information for building u
 
 ## Install & Configuration
 
-After installing the Adapter you have to enter your Email and Password of your [ring.com](https://ring.com) Account. 
+After installing the Adapter you have to enter your Email and Password of your [ring.com](https://ring.com) Account and a Token. Ring now requires the use of Two-Factor Auth (2fa) for all accounts. For getting the token please do following on your shell.
+```
+npx -p ring-client-api ring-auth-cli
+```
+
+![Ring Admin 1](docs/ring_admin_tab1.png)
+
+![Ring Admin 2](docs/ring_admin_tab2.png)
+
+## Objects
+
+![Ring Admin 2](docs/ring_objects.png)
+
+## Example
 
 An example to get changes if a motion or door ring is detected: 
 ```
@@ -31,8 +46,18 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 
 ## Changelog
 
+### 1.1.0 (01.05.2020)
+* (Stübi) Node 10 is now required, Node 12 recommended. If you use Node 8 or less, the adapter will stop immediately.
+* (Stübi) Tested with js-controller 3. I recommend using js-controller 3 or higher because of sentry logging and more features in the future 
+* (Stübi) Snapshot link will be shown as https or http in state (Issue #18)
+* (Stübi) Livestream link added and a request button added to get new livestream
+* (Stübi) Old snapshots and livestreams can be deleted on the filesystem
+* (Stübi) Sentry logging added
+* (Stübi) Small improvements and bugfixing   
+* (Stübi) Add a Two-Factor Auth (2fa) description (Issue #14, Issue #13, Issue #19)
+
 ### 1.0.7 (24.12.2019)
-* (Stübi) Improvements
+* (Stübi) Bugfixing
 
 ### 1.0.6 (20.12.2019)
 * (Stübi) Bugfixing: Login with username and password changed
@@ -76,7 +101,7 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 Thorsten <thorsten@stueben.de> / <https://github.com/schmupu>
+Copyright (c) 2020 Thorsten <thorsten@stueben.de> / <https://github.com/schmupu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

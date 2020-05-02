@@ -19,6 +19,9 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ## Changelog
 
+### 2.4.8 (2020-04-30)
+* (Apollon77) Better handle errors when adapter ends 
+
 ### 2.4.7 (2020-04-18)
 * (Apollon77) Add Sentry for error reporting with js-controller 3.0
 * (Apollon77) Fix crash because of undefined lat/long 

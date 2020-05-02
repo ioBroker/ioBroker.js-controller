@@ -549,6 +549,9 @@ If no data source was specified or the noHistory parameter is passed, then only 
 </pre>
 
 ## Changelog
+### 2.4.3 (2020-04-30)
+* (Apollon77) Optimize web server error handling
+
 ### 2.4.1 (2020-04-23)
 * (bluefox) Caught the web server errors
 

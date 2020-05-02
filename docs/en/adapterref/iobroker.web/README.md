@@ -35,6 +35,9 @@ If this options is selected the user stays logged in for one month.
 If not, the user will stay logged in for the configured "login timeout".
 
 ## Changelog
+### 3.0.7 (2020-04-30)
+* (Apollon77) errors on webserver initialization are handled properly
+
 ### 3.0.5 (2020-04-23)
 * (bluefox) fixed the sentry warnings
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mihome-airpurifier/README.md
 title: ioBroker.mihome-воздухоочиститель
-hash: GZpDfYg6GTTqGpD7ZIU8MYgRKvu6uwkllS7U5QdFRpk=
+hash: i0mj+g03C3agZOqTW6P5zlf0jkyXuwJEv1qcqWOz16I=
 ---
 ![Количество установок](http://iobroker.live/badges/mihome-airpurifier-stable.svg)
 ![Статус сборки](https://travis-ci.org/JoJ123/ioBroker.mihome-airpurifier.svg?branch=master)
@@ -66,7 +66,9 @@ Support: At least basic
 | `silent` | Активируйте беззвучный режим устройства. |
 | `manual` | Активируйте ручной режим устройства. |
 | `manuallevel` | Управляйте мощностью ручного режима в диапазоне от 0 до 100%. Это также включит / выключит устройство при необходимости |
-| `manuallevel` | Управляйте мощностью ручного режима в диапазоне от 0 до 100%. Это также включит / выключит устройство при необходимости |
+| `led` | Включите / выключите автоматический светодиод |
+| `buzzer` | Включить / выключить зуммер |
+| `зуммер` | Включить / выключить зуммер |
 
 ## Инфо Состояния
 Следующая информация собирается из вашего очистителя воздуха (только для чтения):
@@ -77,9 +79,23 @@ Support: At least basic
 | `mode` | Фактический режим устройства, только действительный, если устройство включено. |
 | `humidity` | Измеренная относительная влажность в% от прибора. |
 | `pm25` | Загрязнение воздуха в PM2.5. |
-| `pm25` | Загрязнение воздуха в PM2.5. |
+| `filterLifeRemaining` | Оставшийся срок службы фильтра в часах. |
+| `filterHoursUsed` | Используемые часы фильтра. |
+| `filterHoursUsed` | Используемые часы фильтра. |
 
 ## Changelog
+### 0.1.7 (01.05.2020)
+* (JoJ123) add new parameter
+
+### 0.1.6 (01.05.2020)
+* (JoJ123) add new parameter
+
+### 0.1.5 (01.05.2020)
+* (JoJ123) add new parameter
+
+### 0.1.4 (01.05.2020)
+* (JoJ123) bug fixing
+
 ### 0.1.1 (18.04.2020)
 * (JoJ123) move to typescript
 

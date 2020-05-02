@@ -75,6 +75,9 @@ When updating from 1.0.x to 1.1.0 or higher it is recommended to delete all inst
 
 ## Changelog
 
+### 1.2.3
+* (smaragdschlange) bug fix: convert to template strings
+
 ### 1.2.2
 * (smaragdschlange) bug fix: get device type by state name when not provided by bridge (software bridge)
 

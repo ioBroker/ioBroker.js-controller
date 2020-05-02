@@ -107,6 +107,9 @@ on({id: "pollenflug.0.info.today"/*Today*/, change: "ne"}, (obj) => {
 
 ## Changelog
 
+### 1.0.5 (29.04.2019)
+* (Stübi) Add Sentry to adapter
+
 ### 1.0.4 (19.10.2019)
 * (Stübi) Bugfixing
 
@@ -140,7 +143,7 @@ on({id: "pollenflug.0.info.today"/*Today*/, change: "ne"}, (obj) => {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 Thorsten Stueben <thorsten@stueben.de> / <https://github.com/schmupu>
+Copyright (c) 2020 Thorsten Stueben <thorsten@stueben.de> / <https://github.com/schmupu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

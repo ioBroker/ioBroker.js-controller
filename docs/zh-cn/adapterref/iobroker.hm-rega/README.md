@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
+hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ---
 ![徽标](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
@@ -22,9 +22,9 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 
 如果要将多个控制中心集成到ioBroker中，则必须为每个控制中心安装并配置一个单独的实例。
 
-安装ReGaHSS后，将安装适配器“ hm-rpc”的实例，应事先对其进行配置和激活。
+安装ReGaHSS时，还将安装适配器“ hm-rpc”的实例，应事先对其进行配置和激活。
 
-此适配器的一个实例最多可以管理5个不同的Homematic RPC适配器实例，这些实例提供不同的服务（每个服务都需要其自己的RPC实例）：
+此适配器的一个实例最多可以管理5个不同的Homematic RPC适配器实例，这些实例提供不同的服务（每个服务需要其自己的RPC实例）：
 
 -rfd（标准组件的CCU无线电服务）
 -hs485d（有线）（用于总线组件）
@@ -65,7 +65,7 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 
 扳机
 
-为了最小化从ioBroker到RegaHSS的活动查询，触发器还可以将数据推送到程序内CCU的更改中。
+为了最大程度地减少从ioBroker到RegaHSS的活动查询，触发器还可以根据程序中CCU上的更改推送数据。
 为此，可以使用CCU的虚拟密钥，该密钥在CCU程序中触发。默认情况下，这是BidCosRF.50.PRESS_SHORT键（请参阅示例程序）。
 
 ###同步区域

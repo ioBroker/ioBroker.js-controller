@@ -52,9 +52,13 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
-### 3.0.0 (2020-03-xx)
+### 3.0.0 (2020-05-01)
 * (René) breaking change: old data structure is not supported anymore
 * (René) "request" replaced by "bent"
+* (René) "xml2js" replaced by "xml2json"
+* (René) manual from DasWetter updated in folder \docs
+* (René) see issue #39: create copy of data in hourly data path for next 1, 2, 3 or 6 hours (as an option)
+* (René) copy for current can be disabled now
 
 ### 2.8.2 (2020-03-20)
 * (René) some more logs to find parser errors

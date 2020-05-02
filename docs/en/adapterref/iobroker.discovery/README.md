@@ -121,9 +121,13 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ## Changelog
 
+### 2.3.4 (2020-04-30)
+* (Apollon77) make sure to check if initialization was done when ending (Sentry IOBROKER-DISCOVERY-8) 
+* (APollon77) fix megad discovery error
+
 ### 2.3.3 (2020-04-23)
-* correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
-* catch http errors better (Sentry IOBROKER-DISCOVERY-2)
+* (Apollon77) correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
+* (Apollon77) catch http errors better (Sentry IOBROKER-DISCOVERY-2)
 
 ### 2.3.2 (2020-04-18)
 * (Apollon77) Fix potential crash in knx discovery

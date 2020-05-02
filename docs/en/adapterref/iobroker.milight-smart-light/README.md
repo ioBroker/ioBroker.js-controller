@@ -2,12 +2,13 @@
 
 # ioBroker.milight-smart-light
 
-![Number of Installations](http://iobroker.live/badges/milight-smart-light-installed.svg) ![Number of Installations](http://iobroker.live/badges/milight-smart-light-stable.svg) 
-**Tests:** Linux/Mac:
-[![Travis-CI](http://img.shields.io/travis/Steiger04/ioBroker.milight-smart-light/master.svg)](https://travis-ci.org/Steiger04/ioBroker.milight-smart-light)
-Windows:
-[![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Steiger04/ioBroker.milight-smart-light?branch=master&svg=true)](https://ci.appveyor.com/project/Steiger04/ioBroker-milight-smart-light/)
+[![NPM version](http://img.shields.io/npm/v/iobroker.milight-smart-light.svg)](https://www.npmjs.com/package/milight-smart-light)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.milight-smart-light.svg)](https://www.npmjs.com/package/iobroker.milight-smart-light)
+[![Tests](http://img.shields.io/travis/Steiger04/ioBroker.milight-smart-light/master.svg)](https://travis-ci.org/Steiger04/ioBroker.milight-smart-light)
+[![stable](http://iobroker.live/badges/milight-smart-light-stable.svg)](http://iobroker.live/badges/milight-smart-light-stable.svg)
+[![installed](http://iobroker.live/badges/milight-smart-light-installed.svg)](http://iobroker.live/badges/milight-smart-light-installed.svg)
 
+[![NPM](https://nodei.co/npm/iobroker.milight-smart-light.png?downloads=true)](https://nodei.co/npm/milight-smart-light/)
 
 This adapter for ioBroker controls Milight LED bulbs and LED strips and
 based on the node module from mwittig.
@@ -35,10 +36,15 @@ With adapter you can use both: **v6 Bridge** and **Legacy Bridge**.
 
 
 ## Changelog
+### 0.3.0 (2020-04-30)
+- (steiger04): Optimizations, bug fixes and new app
+
 ### 0.2.7 (2019-04-15)
 - (steiger04): Additions to the Stable Repository
+
 ### 0.2.6 (2019-04-11)
 - (steiger04): Updated the CI test and some MaterialiseCSS optimizations
+
 ### 0.2.5 (2019-03-07)
 - (steiger04): Core Files/Testing Update and introduce adapter-core
 
@@ -111,4 +117,4 @@ With adapter you can use both: **v6 Bridge** and **Legacy Bridge**.
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 Steiger04 <steiger04@posteo.de>
+Copyright (c) 2017-2020 Steiger04 <steiger04@posteo.de>

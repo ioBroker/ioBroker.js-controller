@@ -4,10 +4,10 @@ lastChanged: 14.09.2018
 translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/adapterdebug.md
-hash: BOKT0EbFe/3HwmnwWGpZ+5EgAHDyRw7VtK6+4awC7D0=
+hash: LcI9FPoCRxjihMbpw/IL392v32axPUUZTunbpcN7/vg=
 ---
 # Отладка адаптеров
-## Адаптеры отлаживаются с помощью Chrome
+Адаптер отладки с Chrome
 Node.JS поддерживает отладку с помощью Chrome.
 
 Если вы остановите адаптер в ioBroker, а затем запустите его из консоли:
@@ -15,10 +15,10 @@ Node.JS поддерживает отладку с помощью Chrome.
 ```
 cd /opt/iobroker
 iobroker stop sayit
-node --inspect node_modules/iobroker.sayit/main.js --force --logs
+node --inspect node_modules/iobroker.sayit/main.js --debug
 ```
 
-Важным является `–inspect`
+Важным является `-–inspect`
 
 Тогда что-то вроде этого выводится:
 
@@ -33,43 +33,86 @@ starting. Version 1.3.1 in /opt/iobroker/node_modules/iobroker.sayit, node: v6.9
 Debugger attached.
 ```
 
-После этого Chrome можно отлаживать, введя ссылку в Chrome:
+Затем вы можете выполнить отладку в Chrome, если введете выходную ссылку в Chrome:
 
-! (Хром) [СМИ / adapterdebug1.png]
+![хром](../../de/dev/media/adapterdebug1.png)
 
 *Протестировано: Windows, Chrome 55, node.js 6.9.2*
 
 ### Удаленная отладка с помощью Chrome
-Если iobroker не работает на той же машине, что и Chrome, то команда основана на примере выше:
+Если iobroker не работает на том же компьютере, что и Chrome, то команда основана на приведенном выше примере:
 
 ```
-node --inspect-brk=<ip-adresse iobroker>:9229 node_modules/iobroker.sayit/main.js --force --logs
+node --inspect-brk=0.0.0.0:9229 node_modules/iobroker.sayit/main.js --debug
 ```
 
-параметр `--inspect-brk` обеспечивает в сравнении с вышеупомянутым,
+параметр `--inspect-brk` обеспечивает сравнение с вышеупомянутым,
 
-что точка останова устанавливается прямо в начале отладчика в первой строке вашего адаптера.
+точка останова устанавливается в первой строке вашего адаптера прямо в начале отладчика.
 
-Если вы не всегда хотите скопировать ссылку на начало отладки, вы также можете вызвать следующую страницу в Chrome:
+Если вы не всегда хотите копировать ссылку, чтобы запустить отладку по отдельности, вы также можете перейти на следующую страницу в Chrome:
 
 ```
 chrome://inspect
 ```
 
-затем один раз через настройку ip и порта ваших remotrechners так же, как введите команду inspect.
+затем введите IP-адрес и порт вашего компьютера **ioBroker** только один раз с помощью команды configure, как с помощью команды inspect.
 
-Там сеанс отладки будет отображаться после запуска команды и может быть запущен одним щелчком мыши.
+Сеанс отладки отображается там после запуска команды и может быть запущен одним щелчком мыши.
 
 Варианты отладки Chrome просто фантастические.
-У вас есть все возможности, которые вы также знаете из **веб-отладки** (точки останова, также с условиями, наблюдением, вызовом стека, проверкой области действия, проблемой консоли и т. Д.).
+У вас есть все опции, которые вы также знаете из **веб-отладки** точки останова, также с условиями, наблюдением, стеком вызовов, проверкой области, выводом на консоль и т. Д.
 
-Изображения и английское описание [здесь](https://software.intel.com/en-us/xdk/articles/using-chrome-devtools-to-debug-your-remote-iot-nodejs-application)
+Картинки и английское описание находится в [здесь](https://software.intel.com/en-us/xdk/articles/using-chrome-devtools-to-debug-your-remote-iot-nodejs-application)
 
-Если компьютер iobroker еще не установлен, по-прежнему требуется инспектор узлов:
+Если он еще не установлен, на компьютере iobroker все еще требуется инспектор узлов:
 
 ```
 npm install -g node-inspector
 ```
 
 ## Отладка с помощью WebStorm
-## Отладка с помощью кода Visual Sturio
+## Отладка с помощью `Visual Studio Code`
+Если вы откроете каталог с помощью `VS Code`, то после открытия каталога адаптера (меню `File=>Open folder...`) вы сможете отладить адаптер.
+
+Конфигурация в файле `.vscode/launch.js` должна выглядеть следующим образом:
+
+```
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "node",
+            "request": "launch",
+            "name": "Launch Program",
+            "program": "${workspaceFolder}\\main.js",
+            "args": ["--debug"]
+        },
+        {
+            "name": "Attach to Process",
+            "type": "node",
+            "request": "attach",
+            "address": "IO_BROKER_IP_ADDRESS",
+            "port": 9229
+          }
+    ]
+}
+```
+
+### Локальная отладка
+После остановки адаптера (`iobroker stop ADAPTER_NAME`) можно запустить адаптер в коде VS: ![Код VS](../../de/dev/media/adapterdebug10.png)
+
+После выбора `Launch Program` и нажатия кнопки `Play` адаптер запускается, и вы можете выполнять локальную отладку.
+
+### Удаленная отладка
+Для этого вам следует запустить адаптер на сервере ioBroker.
+
+```
+d /opt/iobroker
+obroker stop ADAPTERNAME
+ode --inspect-brk=0.0.0.0:9229 node_modules/iobroker.ADAPTERNAME/main.js --debug
+```
+
+Затем вы можете подключить §SSSSS_0§§ к процессу (§SSSSS_1§§).
+
+![Код VS](../../de/dev/media/adapterdebug11.png)

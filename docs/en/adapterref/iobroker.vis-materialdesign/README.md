@@ -1520,7 +1520,9 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* bar & pie chart: option for distance between legends points added
 * table: option for fixed table headline added
+* charts: newline bug fixed
 
 ### 0.3.6 (2020-04-29)
 * Input, Select, Autocomplete: default input controll buttons removed

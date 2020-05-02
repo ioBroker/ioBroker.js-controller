@@ -185,6 +185,9 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 1.5.5 (01.05.2020)
+* (simatec) bugfix errorhandling sentry.io
+
 ### 1.5.4 (29.04.2020)
 * (simatec) added osDependencies for nfs and cifs
 * (simatec) Bugfixes for errorhandling telegram, pushover, e-mail, ftp list and create backup folder
