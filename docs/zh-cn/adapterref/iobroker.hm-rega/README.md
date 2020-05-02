@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
+hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 ---
 ![徽标](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
@@ -14,7 +14,7 @@ hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 
 >这些设备包括用于照明，卷帘和加热控制的产品，危险检测器，安全传感器以及用于气象数据测量的产品。无线电通信简化了改装。电线总线组件可用于新建筑物。
 
-[来源](https://www.eq-3.de/produkte/homematic.html)
+[资源](https://www.eq-3.de/produkte/homematic.html)
 
 ## Homematic ReGaHss适配器
 该适配器建立到Homematic逻辑层“ ReGaHSS”（**住宅**网关**）的连接。
@@ -22,9 +22,9 @@ hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 
 如果要将多个控制中心集成到ioBroker中，则必须为每个控制中心安装并配置一个单独的实例。
 
-安装ReGaHSS时，还将安装适配器“ hm-rpc”的实例，应事先对其进行配置和激活。
+安装ReGaHSS后，将安装适配器“ hm-rpc”的实例，应事先对其进行配置和激活。
 
-此适配器的一个实例最多可以管理5个不同的Homematic RPC适配器实例，这些实例提供不同的服务（每个服务需要其自己的RPC实例）：
+此适配器的一个实例最多可以管理5个不同的Homematic RPC适配器实例，这些实例提供不同的服务（每个服务都需要其自己的RPC实例）：
 
 -rfd（标准组件的CCU无线电服务）
 -hs485d（有线）（用于总线组件）
@@ -63,10 +63,10 @@ hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 
 如果激活，则CCU会根据“间隔”字段中设置的秒数定期查询RegaHSS数据。间隔不应设置得太低，因为轮询过多会导致CCU崩溃。
 
-扳机
+触发
 
-为了最大程度地减少从ioBroker到RegaHSS的活动查询，触发器还可以根据程序中CCU上的更改推送数据。
-为此，可以使用CCU的虚拟密钥，该密钥在CCU程序中触发。默认情况下，这是BidCosRF.50.PRESS_SHORT键（请参阅示例程序）。
+为了最小化从ioBroker到RegaHSS的活动查询，触发器还可以将数据推送到程序内CCU的更改中。
+为此可以使用CCU虚拟按钮，该按钮在CCU程序中触发。默认情况下，这是BidCosRF.50.PRESS_SHORT键（请参阅示例程序）。
 
 ###同步区域
 用户可以在此处指定ioBroker中的CCU将接管哪些信息。然后在ioBroker中创建相应的对象和数据点。
@@ -92,7 +92,7 @@ hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 如果将鼠标指针放在符号上，则会获得详细信息。
 
 ###适配器的对象
-在“对象”区域中，适配器从CCU传输的所有值和信息均以树形结构显示。
+在对象区域中，适配器从CCU传输的所有值和信息都以树形结构显示。
 
 由于对象是特定于用户的，因此这里仅显示对于所有用户都相同的常规对象。
 

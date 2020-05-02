@@ -42,8 +42,10 @@ delayed by polling interval (can be set in config).
 The adapter does not interfere with the use of the app.
 
 ## Changelog
-### __WORK IN PROGRESS__
-* fix possible issue with device ids.
+### 1.0.5 (2020-05-02)
+* Fixed possible issue with device ids.
+* Improved device creation
+* Adjusted for discovery adapter that not yet stores passwords encrypted.
 
 ### 1.0.4 (2020-05-01)
 * Improved connection keepAlive

@@ -549,6 +549,9 @@ If no data source was specified or the noHistory parameter is passed, then only 
 </pre>
 
 ## Changelog
+### 2.4.4 (2020-05-02)
+* (Apollon77) Make sure Permission errors do not crash adapter (Sentry IOBROKER-SIMPLE-API-3)
+
 ### 2.4.3 (2020-04-30)
 * (Apollon77) Optimize web server error handling
 

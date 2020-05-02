@@ -121,6 +121,9 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ## Changelog
 
+### 2.3.5 (2020-05-01)
+* (Apollon77) serial device discovery fixed
+
 ### 2.3.4 (2020-04-30)
 * (Apollon77) make sure to check if initialization was done when ending (Sentry IOBROKER-DISCOVERY-8) 
 * (APollon77) fix megad discovery error
