@@ -2345,7 +2345,7 @@ function processMessage(msg) {
                 if (fs.existsSync(configFile)) {
                     try {
                         let config = fs.readFileSync(configFile).toString('utf8');
-                        let stat = fs.lstatSync(configFile);
+                        const stat = fs.lstatSync(configFile);
                         config = JSON.parse(config);
                         sendTo(msg.from, msg.command, {config, isActive: uptimeStart > stat.mtimeMs}, msg.callback);
                     } catch (e) {
