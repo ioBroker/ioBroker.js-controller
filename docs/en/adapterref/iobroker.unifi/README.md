@@ -5,7 +5,34 @@
 
 [![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)](https://nodei.co/npm/iobroker.unifi/)
 
-This ioBroker adapter allows controlling and monitoring of [UniFi devices](http://www.ubnt.com/), such as UniFi WiFi Access Points using the public UniFi Controller Web-API.
+This ioBroker adapter allows the monitoring of [UniFi devices](http://www.ubnt.com/), such as UniFi WiFi Access Points using the public UniFi Controller Web-API.
+
+## Important information
+The adapter is still under development. As of now it is only possible to get information from your UniFi controller into your ioBroker. 
+
+**It is not possible to change the configuration of your UniFi controller (e.g. enable/disable WLANs)**
+
+## Configuration
+###  Minimum required information
+To get this adapter up and running the following information is needed:
+* IP address and port of your UniFi controller
+* Username and password
+* Update interval
+
+By default the information is updated every 60 seconds. Depending on your ioBroker hardware and your network size (number of clients, UniFi devices etc.) it is not recommended to further decrease the interval.
+
+### Blacklists
+The adapter updates as much information from your UniFi controller as possible, but offers the possibility to limit the updated information.
+
+It is possible to disable the update of selected information or blacklist specific items of that information.
+
+| Information | Items blacklistable by                  |
+|-------------|-----------------------------------------|
+| Clients     | Name, Hostname, IP address, MAC address |
+| Devices     | Name, IP address, MAC address           |
+| WLANs       | Name                                    |
+| Networks    | Name                                    |
+| Health      | Subsystem                               |
 
 ## Changelog
 ### 0.5.0-beta.1 (2020-05-01)
@@ -48,6 +75,7 @@ This ioBroker adapter allows controlling and monitoring of [UniFi devices](http:
 This adapter uses functionality from the following third-party nodejs modules:
 
 * [node-unifi](https://github.com/jens-maus/node-unifi)
+* [json-logic-js](https://github.com/jwadhams/json-logic-js)
 
 ## License
 The MIT License (MIT)

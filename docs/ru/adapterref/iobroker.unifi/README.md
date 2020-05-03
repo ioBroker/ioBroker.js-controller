@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: A/Ux+wgkVD+w2T/9ABNl9E0hwZKdOLDWMTTkJhF7hT0=
+hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
 ---
 ![логотип](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -15,14 +15,49 @@ hash: A/Ux+wgkVD+w2T/9ABNl9E0hwZKdOLDWMTTkJhF7hT0=
 ![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)
 
 # IoBroker.unifi
-Этот адаптер ioBroker позволяет управлять и контролировать [Устройства UniFi](http://www.ubnt.com/), такие как точки доступа UniFi WiFi, с помощью общедоступного веб-API UniFi Controller.
+Этот адаптер ioBroker позволяет осуществлять мониторинг [Устройства UniFi](http://www.ubnt.com/), таких как точки доступа UniFi WiFi, с помощью общедоступного веб-API UniFi Controller.
+
+## Важная информация
+Адаптер находится в стадии разработки. На данный момент в ioBroker можно получить информацию только с вашего контроллера UniFi.
+
+** Невозможно изменить конфигурацию вашего контроллера UniFi (например, включить / отключить WLAN) **
+
+## Конфигурация
+### Минимально необходимая информация
+Для запуска и запуска этого адаптера необходима следующая информация:
+
+* IP-адрес и порт вашего контроллера UniFi
+* Имя пользователя и пароль
+* Интервал обновления
+
+По умолчанию информация обновляется каждые 60 секунд. В зависимости от вашего оборудования ioBroker и размера вашей сети (количество клиентов, устройства UniFi и т. Д.) Дальнейшее уменьшение интервала не рекомендуется.
+
+### Черные списки
+Адаптер обновляет как можно больше информации с вашего контроллера UniFi, но предлагает возможность ограничить обновленную информацию.
+
+Можно отключить обновление выбранной информации или внести в черный список определенные элементы этой информации.
+
+| Информация | Элементы черного списка по |
+|-------------|-----------------------------------------|
+| Клиенты | Имя, Имя хоста, IP-адрес, MAC-адрес |
+| Устройства | Имя, IP-адрес, MAC-адрес |
+| WLAN | Имя |
+| Сети | Имя |
+| Здоровье | Подсистема |
 
 ## Ссылки
 Этот адаптер использует функциональность следующих сторонних модулей nodejs:
 
 * [node-unifi] (https://github.com/jens-maus/node-unifi)
+* [json-logic-js] (https://github.com/jwadhams/json-logic-js)
 
 ## Changelog
+### 0.5.0-beta.1 (2020-05-01)
+* (braindead1) Implemented configuration of updates
+* (braindead1) Improved JsonLogic
+* (braindead1) Removed legacy code
+* (braindead1) Implemented Sentry
+
 ### 0.4.3 (2020-04-24)
 * (braindead1) fixed configuration issue
 
@@ -56,6 +91,7 @@ hash: A/Ux+wgkVD+w2T/9ABNl9E0hwZKdOLDWMTTkJhF7hT0=
 ## License
 The MIT License (MIT)
 
+Copyright (c) 2020 braindead1 &lt;os.braindead1@gmail.com&gt;
 Copyright (c) 2016-2020 Jens Maus &lt;mail@jens-maus.de&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

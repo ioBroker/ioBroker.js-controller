@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: A/Ux+wgkVD+w2T/9ABNl9E0hwZKdOLDWMTTkJhF7hT0=
+hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
 ---
 ![商标](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -15,14 +15,49 @@ hash: A/Ux+wgkVD+w2T/9ABNl9E0hwZKdOLDWMTTkJhF7hT0=
 ![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)
 
 ＃ioBroker.unifi
-此ioBroker适配器允许使用公共UniFi控制器Web-API控制和监视[UniFi设备](http://www.ubnt.com/)，例如UniFi WiFi接入点。
+此ioBroker适配器允许使用公共UniFi控制器Web-API监视[UniFi设备](http://www.ubnt.com/)，例如UniFi WiFi接入点。
+
+##重要信息
+该适配器仍在开发中。到目前为止，只能将信息从UniFi控制器获取到ioBroker中。
+
+**无法更改UniFi控制器的配置（例如，启用/禁用WLAN）**
+
+##配置
+###最低要求信息
+要启动此适配器并运行，需要以下信息：
+
+* UniFi控制器的IP地址和端口
+* 用户名和密码
+*更新间隔
+
+默认情况下，信息每60秒更新一次。根据您的ioBroker硬件和您的网络大小（客户端，UniFi设备等），不建议进一步缩短间隔。
+
+###黑名单
+适配器会从您的UniFi控制器中更新尽可能多的信息，但可以限制更新的信息。
+
+可以禁用所选信息的更新，也可以禁用该信息的特定黑名单。
+
+|信息|被|列入黑名单的项目 |
+|-------------|-----------------------------------------|
+|客户|名称，主机名，IP地址，MAC地址|
+|设备|名称，IP地址，MAC地址|
+|无线局域网|姓名|
+|网络|姓名|
+|健康|子系统|
 
 ##参考
 该适配器使用以下第三方nodejs模块的功能：
 
 * [node-unifi]（https://github.com/jens-maus/node-unifi）
+* [json-logic-js]（https://github.com/jwadhams/json-logic-js）
 
 ## Changelog
+### 0.5.0-beta.1 (2020-05-01)
+* (braindead1) Implemented configuration of updates
+* (braindead1) Improved JsonLogic
+* (braindead1) Removed legacy code
+* (braindead1) Implemented Sentry
+
 ### 0.4.3 (2020-04-24)
 * (braindead1) fixed configuration issue
 
@@ -56,6 +91,7 @@ hash: A/Ux+wgkVD+w2T/9ABNl9E0hwZKdOLDWMTTkJhF7hT0=
 ## License
 The MIT License (MIT)
 
+Copyright (c) 2020 braindead1 &lt;os.braindead1@gmail.com&gt;
 Copyright (c) 2016-2020 Jens Maus &lt;mail@jens-maus.de&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

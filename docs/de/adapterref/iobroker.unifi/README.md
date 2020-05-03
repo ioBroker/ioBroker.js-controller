@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: A/Ux+wgkVD+w2T/9ABNl9E0hwZKdOLDWMTTkJhF7hT0=
+hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
 ---
 ![Logo](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -15,14 +15,49 @@ hash: A/Ux+wgkVD+w2T/9ABNl9E0hwZKdOLDWMTTkJhF7hT0=
 ![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)
 
 # IoBroker.unifi
-Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung von [UniFi-Geräte](http://www.ubnt.com/), z. B. UniFi WiFi Access Points, mithilfe der öffentlichen UniFi Controller-Web-API.
+Dieser ioBroker-Adapter ermöglicht die Überwachung von [UniFi-Geräte](http://www.ubnt.com/), z. B. UniFi WiFi Access Points, mithilfe der öffentlichen UniFi Controller-Web-API.
+
+## Wichtige Informationen
+Der Adapter befindet sich noch in der Entwicklung. Ab sofort können nur noch Informationen von Ihrem UniFi-Controller in Ihren ioBroker übertragen werden.
+
+** Es ist nicht möglich, die Konfiguration Ihres UniFi-Controllers zu ändern (z. B. WLANs aktivieren / deaktivieren) **
+
+## Aufbau
+### Erforderliche Mindestinformationen
+Um diesen Adapter zum Laufen zu bringen, werden die folgenden Informationen benötigt:
+
+* IP-Adresse und Port Ihres UniFi-Controllers
+* Benutzername und Passwort
+* Updateintervall
+
+Standardmäßig werden die Informationen alle 60 Sekunden aktualisiert. Abhängig von Ihrer ioBroker-Hardware und Ihrer Netzwerkgröße (Anzahl der Clients, UniFi-Geräte usw.) wird nicht empfohlen, das Intervall weiter zu verkürzen.
+
+### Blacklists
+Der Adapter aktualisiert so viele Informationen wie möglich von Ihrem UniFi-Controller, bietet jedoch die Möglichkeit, die aktualisierten Informationen einzuschränken.
+
+Es ist möglich, die Aktualisierung ausgewählter Informationen zu deaktivieren oder bestimmte Elemente dieser Informationen auf die schwarze Liste zu setzen.
+
+| Informationen | Artikel, die von | auf die schwarze Liste gesetzt werden können |
+|-------------|-----------------------------------------|
+| Kunden | Name, Hostname, IP-Adresse, MAC-Adresse |
+| Geräte | Name, IP-Adresse, MAC-Adresse |
+| WLANs | Name |
+| Netzwerke | Name |
+| Gesundheit | Subsystem |
 
 ## Verweise
 Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanbietern:
 
 * [node-unifi] (https://github.com/jens-maus/node-unifi)
+* [json-logo-js] (https://github.com/jwadhams/json-logic-js)
 
 ## Changelog
+### 0.5.0-beta.1 (2020-05-01)
+* (braindead1) Implemented configuration of updates
+* (braindead1) Improved JsonLogic
+* (braindead1) Removed legacy code
+* (braindead1) Implemented Sentry
+
 ### 0.4.3 (2020-04-24)
 * (braindead1) fixed configuration issue
 
@@ -56,6 +91,7 @@ Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanb
 ## License
 The MIT License (MIT)
 
+Copyright (c) 2020 braindead1 &lt;os.braindead1@gmail.com&gt;
 Copyright (c) 2016-2020 Jens Maus &lt;mail@jens-maus.de&gt;
 
 Permission is hereby granted, free of charge, to any person obtaining a copy

@@ -107,6 +107,9 @@ on({id: "pollenflug.0.info.today"/*Today*/, change: "ne"}, (obj) => {
 
 ## Changelog
 
+### 1.0.6 (03.05.2019)
+* (Stübi) User can enable/disable sentry logging
+
 ### 1.0.5 (29.04.2019)
 * (Stübi) Add Sentry to adapter
 
