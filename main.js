@@ -592,7 +592,7 @@ function createObjects(onConnect) {
                                     if (procs[id].restartTimer) {
                                         clearTimeout(procs[id].restartTimer);
                                     }
-                                    const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500
+                                    const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500;
                                     procs[id].restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                                 }
                             } else {
@@ -637,7 +637,7 @@ function createObjects(onConnect) {
                         (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)
                     ) {
                         // We should give is a slight delay to allow an pot. former existing process on other host to exit
-                        const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500
+                        const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500;
                         procs[id].restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                     }
                 }
