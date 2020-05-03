@@ -274,6 +274,7 @@ function handleDisconnect() {
 }
 
 function createStates(onConnect) {
+    // eslint-disable-next-line no-unused-vars
     const _inst = new States({
         namespace: hostLogPrefix,
         connection: config.states,
@@ -513,6 +514,7 @@ function initializeController() {
 
 // create "objects" object
 function createObjects(onConnect) {
+    // eslint-disable-next-line no-unused-vars
     const _inst = new Objects({
         namespace:  hostLogPrefix,
         connection: config.objects,
@@ -3039,7 +3041,7 @@ function startInstance(id, wakeUp) {
     // Check if all required adapters installed and have valid version
     if (instance.common.dependencies || instance.common.globalDependencies) {
         return checkVersions(id, instance.common.dependencies, instance.common.globalDependencies)
-            .then(ok => {
+            .then(() => {
                 delete instance.common.dependencies;
                 delete instance.common.globalDependencies;
                 startInstance(id, wakeUp);
