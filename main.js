@@ -2295,13 +2295,13 @@ function processMessage(msg) {
             })();
             break;
 
-        case 'updateMultihost':
+        case 'updateMultihost': {
             const result = startMultihost();
             if (msg.callback) {
                 sendTo(msg.from, msg.command, {result: result}, msg.callback);
             }
             break;
-
+        }
         case 'getInterfaces':
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {result: os.networkInterfaces()}, msg.callback);
@@ -2363,7 +2363,7 @@ function processMessage(msg) {
             }
             break;
 
-        case 'writeBaseSettings':
+        case 'writeBaseSettings': {
             let error;
             if (msg.message) {
                 const configFile = tools.getConfigFileName();
@@ -2414,6 +2414,7 @@ function processMessage(msg) {
             }
 
             break;
+        }
     }
 }
 
