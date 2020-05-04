@@ -82,7 +82,7 @@ gulp.task('renameFiles', done => {
     done();
 });
 
-gulp.task('replaceName', _done => {
+gulp.task('replaceName', () => {
     const patterns = [
         {
             match:       /iobroker/gi,

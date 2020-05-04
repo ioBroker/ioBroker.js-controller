@@ -274,6 +274,7 @@ function handleDisconnect() {
 }
 
 function createStates(onConnect) {
+    // eslint-disable-next-line no-unused-vars
     const _inst = new States({
         namespace: hostLogPrefix,
         connection: config.states,
@@ -513,6 +514,7 @@ function initializeController() {
 
 // create "objects" object
 function createObjects(onConnect) {
+    // eslint-disable-next-line no-unused-vars
     const _inst = new Objects({
         namespace:  hostLogPrefix,
         connection: config.objects,
@@ -592,7 +594,7 @@ function createObjects(onConnect) {
                                     if (procs[id].restartTimer) {
                                         clearTimeout(procs[id].restartTimer);
                                     }
-                                    const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500
+                                    const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500;
                                     procs[id].restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                                 }
                             } else {
@@ -637,7 +639,7 @@ function createObjects(onConnect) {
                         (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)
                     ) {
                         // We should give is a slight delay to allow an pot. former existing process on other host to exit
-                        const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500
+                        const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500;
                         procs[id].restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                     }
                 }
@@ -1595,8 +1597,7 @@ function setMeta() {
     objects.getObjectView('system', 'state', {startkey: hostObjectPrefix + '.', endkey: hostObjectPrefix + '.\u9999', include_docs: true}, (err, doc) => {
         if (err) {
             logger && logger.error(hostLogPrefix + ' Could not collect ' + hostObjectPrefix + ' states to check for obsolete states: ' + err);
-        }
-        else if (doc.rows) {
+        } else if (doc.rows) {
             // identify existing states for deletion, because they are not in the new tasks-list
             let thishostStates = doc.rows;
             if (!compactGroupController) {
@@ -2296,13 +2297,13 @@ function processMessage(msg) {
             })();
             break;
 
-        case 'updateMultihost':
+        case 'updateMultihost': {
             const result = startMultihost();
             if (msg.callback) {
                 sendTo(msg.from, msg.command, {result: result}, msg.callback);
             }
             break;
-
+        }
         case 'getInterfaces':
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {result: os.networkInterfaces()}, msg.callback);
@@ -2346,7 +2347,7 @@ function processMessage(msg) {
                 if (fs.existsSync(configFile)) {
                     try {
                         let config = fs.readFileSync(configFile).toString('utf8');
-                        let stat = fs.lstatSync(configFile);
+                        const stat = fs.lstatSync(configFile);
                         config = JSON.parse(config);
                         sendTo(msg.from, msg.command, {config, isActive: uptimeStart > stat.mtimeMs}, msg.callback);
                     } catch (e) {
@@ -2364,7 +2365,7 @@ function processMessage(msg) {
             }
             break;
 
-        case 'writeBaseSettings':
+        case 'writeBaseSettings': {
             let error;
             if (msg.message) {
                 const configFile = tools.getConfigFileName();
@@ -2415,6 +2416,7 @@ function processMessage(msg) {
             }
 
             break;
+        }
     }
 }
 
@@ -3039,7 +3041,7 @@ function startInstance(id, wakeUp) {
     // Check if all required adapters installed and have valid version
     if (instance.common.dependencies || instance.common.globalDependencies) {
         return checkVersions(id, instance.common.dependencies, instance.common.globalDependencies)
-            .then(ok => {
+            .then(() => {
                 delete instance.common.dependencies;
                 delete instance.common.globalDependencies;
                 startInstance(id, wakeUp);
@@ -3343,7 +3345,9 @@ function startInstance(id, wakeUp) {
 
                 // Some parts of the Adapter start logic are async, so "the finalization" is put into this method
                 const handleAdapterProcessStart = () => {
-                    if (!procs[id]) return;
+                    if (!procs[id]) {
+                        return;
+                    }
                     if (!procs[id].process) { // We were not able or should not start as compact mode
                         try {
                             procs[id].process = cp.fork(fileNameFull, args, {
