@@ -1807,8 +1807,8 @@ function processMessage(msg) {
 
         case 'cmdExec': {
             const args = [__dirname + '/' + tools.appName + '.js'];
-            if (!msg.message.data) {
-                logger.warn(hostLogPrefix + ' ' + tools.appName + ' Invalid cmdExec object. Expected {"data": "command"}');
+            if (!msg.message.data || typeof msg.message.data !== 'string') {
+                logger.warn(hostLogPrefix + ' ' + tools.appName + ' Invalid cmdExec object. Expected {"data": "command"}. Got as data: ' + JSON.stringify(msg.message.data));
             } else {
                 const cmd = msg.message.data.split(' ');
                 for (let i = 0; i < cmd.length; i++) {
@@ -3664,7 +3664,9 @@ function startInstance(id, wakeUp) {
                                     logger.error(text);
                                 }
                             }
-                            delete procs[id].process;
+                            if (procs[id]) {
+                                delete procs[id].process;
+                            }
                             storePids(); // Store all pids to make possible kill them all
                         });
                     });
@@ -3696,7 +3698,7 @@ function stopInstance(id, force, callback) {
 
     const instance = procs[id].config;
     if (!instance || !instance.common || !instance.common.mode) {
-        if (procs[id].process) {
+        if (procs[id] && procs[id].process) {
             procs[id].stopping = true;
             if (!procs[id].startedAsCompactGroup) {
                 try {
@@ -3708,12 +3710,12 @@ function stopInstance(id, force, callback) {
             delete procs[id].process;
         }
 
-        if (procs[id].schedule) {
+        if (procs[id] && procs[id].schedule) {
             procs[id].schedule.cancel();
             delete procs[id].schedule;
         }
 
-        if (procs[id].subscribe) {
+        if (procs[id] && procs[id].subscribe) {
             // Remove this id from subsribed on this message
             if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) !== -1) {
                 subscribe[procs[id].subscribe].splice(subscribe[procs[id].subscribe].indexOf(id), 1);
@@ -3850,7 +3852,9 @@ function stopInstance(id, force, callback) {
                         }, timeoutDuration);
                     }); // if started let it end itself as first try
                 } else {
-                    delete procs[id].process;
+                    if (procs[id]) {
+                        delete procs[id].process;
+                    }
                     if (typeof callback === 'function') {
                         callback();
                         callback = null;
@@ -3860,9 +3864,9 @@ function stopInstance(id, force, callback) {
             break;
 
         case 'schedule':
-            if (!procs[id].schedule) {
+            if (procs[id] && !procs[id].schedule) {
                 !isStopping && logger.debug(hostLogPrefix + ' stopInstance ' + instance._id + ' not scheduled');
-            } else {
+            } else if (procs[id]) {
                 procs[id].schedule.cancel();
                 delete procs[id].schedule;
                 if (scheduledInstances[id]) {
@@ -4211,19 +4215,41 @@ function init(compactGroupId) {
         logger.info(hostLogPrefix + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
     }
 
+    let packageJson;
+    try {
+        packageJson = JSON.parse(fs.readFileSync(__dirname + '/package.json', 'utf8'));
+    } catch (err) {
+        logger.error(hostLogPrefix + ' Can not read js-controller package.json');
+    }
+
+    if (packageJson && packageJson.engines && packageJson.engines.node) {
+        let invalidVersion = false;
+        try {
+            invalidVersion = !semver.satisfies(process.version, packageJson.engines.node);
+        } catch {
+            // semver could also not support the node version or something else ... failsafe
+            invalidVersion = true;
+        }
+
+        if (invalidVersion){
+            logger.error('ioBroker requires Node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
+            logger.error('Please upgrade your nodejs version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
+
+            console.error('ioBroker requires node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
+            console.error('Please upgrade your nodejs version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
+
+            process.exit(EXIT_CODES.INVALID_NODE_VERSION);
+        }
+    }
+
     const pluginSettings = {
         scope: 'controller',
         namespace: hostObjectPrefix,
         logNamespace: hostLogPrefix,
         log: logger,
         iobrokerConfig: config,
-        parentPackage: null
+        parentPackage: packageJson
     };
-    try {
-        pluginSettings.parentPackage = JSON.parse(fs.readFileSync(__dirname + '/package.json', 'utf8'));
-    } catch (err) {
-        logger.error(hostLogPrefix + ' Can not read js-controller package.json');
-    }
     pluginHandler = new PluginHandler(pluginSettings);
     pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
     pluginHandler.addPlugins(config.plugins, __dirname);           // ... plugins from iobroker.json
