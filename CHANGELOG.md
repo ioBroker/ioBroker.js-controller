@@ -15,6 +15,11 @@
 * (Apollon77) make sure command on cmdExec is a string (Sentry IOBROKER-JS-CONTROLLER-1H)
 * (Apollon77) Check more cases for existence of variables before accessing them (Sentry IOBROKER-JS-CONTROLLER-E)  
 * (Apollon77) Add a node.js version check and output special error message if node.js version is not satisfied
+* (AlCalzone) Add missing parameter `digest` to crypto calls
+* (AlCalzone) further code optimizatons
+* (AlCalzone) Allow reverse lookup of exit codes (exit code -> error name)
+* (Apollon77) make sure Objects/States backup files are deleted correctly according to backup settings
+
 
 ## 3.0.20 (2020-04-28) Release Elena
 * (Apollon77) make sure disabling instances while installation is running do not crash the controller (Sentry IOBROKER-JS-CONTROLLER-Z) 
