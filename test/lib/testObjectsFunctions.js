@@ -1095,7 +1095,6 @@ function register(it, expect, context) {
 
     // should use def as default state value on extendObject when obj non existing
     it(testName + 'Check extendObject state with def', async () => {
-        await context.adapter.delStateAsync('testDefaultValExtend');
         let obj = await context.adapter.extendObjectAsync('testDefaultValExtend', {
             type: 'state',
             common: {
