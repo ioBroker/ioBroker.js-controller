@@ -19,6 +19,8 @@
 * (AlCalzone) further code optimizatons
 * (AlCalzone) Allow reverse lookup of exit codes (exit code -> error name)
 * (Apollon77) make sure Objects/States backup files are deleted correctly according to backup settings
+* (foxriver76) Make sure default state value is only set if state is not existing also in setObject
+* (foxriver76) check that alias is of type state when adding subscribing pattern
 
 
 ## 3.0.20 (2020-04-28) Release Elena
