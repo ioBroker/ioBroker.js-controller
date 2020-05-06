@@ -142,9 +142,10 @@ For instance PI2:
 ### 1.2.0 (2020-01-17)
 - (janfromberlin) GPIO configuration as output with defined initial value
 - (foxriver76) No longer use adapter.objects
+- (Apollon77) Adjust gpio errors
 
 ### 1.1.1
- - (Apollon77) Error messages for not existing values are logged only once
+- (Apollon77) Error messages for not existing values are logged only once
 
 ### 1.1.0
  - (Apollon77) Nodejs 10 support 

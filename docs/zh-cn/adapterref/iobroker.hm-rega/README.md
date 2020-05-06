@@ -108,6 +108,9 @@ CCU和info文件夹包含网关的基本信息。
 ###常见问题
 
 ## Changelog
+### 2.6.6 (2020-05-06)
+* (foxriver76) use current time as timestamp if non-existent on initial variables poll
+
 ### 2.6.5 (2020-04-22)
 * (foxriver76) improved error handling, no longer use legacy log file
 

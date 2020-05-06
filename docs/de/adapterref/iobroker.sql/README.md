@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: oH6/B1e2WUVKqSdwl85gT18ugSQxUpkvi9mR7iujG8k=
+hash: KKY58/u1GJRUBHdwjwvOqO7UzVsWcvagdNl5EiZrOVE=
 ---
 ![Logo](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -368,209 +368,216 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Minimale Differenz vom letzten Wert zum Protokoll** Das minimale Intervall zwischen zwei Werten.
 - **Speicheraufbewahrung** Wie lange werden die Werte in der Datenbank gespeichert?
 
-## 1.12.3 (2020-04-30)
-* (Apollon77) Versuchen Sie, Indizes unter MSSQL zu erstellen, um die Dinge zu beschleunigen. Infos werden angezeigt, wenn dies für den Benutzer nicht möglich ist. Timeout ist 15s
+## Changelog
 
-## 1.12.2 (2020-04-30)
-* (Apollon77) MSSQL funktioniert wieder
+### 1.12.5 (2020-05-05)
+* (Apollon77) Crash prevented for invalid objects (Sentry IOBROKER-SQL-X) 
 
-## 1.12.1 (2020-04-26)
-* (Apollon77) Behebung eines möglichen Absturzes (Sentry)
+### 1.12.4 (2020-05-04)
+* (Apollon77) Potential crash fixed when disabling datapoints too fast (Sentry IOBROKER-SQL-W) 
+* (Apollon77) Always set "encrypt" flag, even if false because else might en in default true (see https://github.com/tediousjs/tedious/issues/931)
 
-## 1.12.0 (2020-04-23)
-* (Apollon77) Implementieren Sie die Einstellung für maximale Verbindungen und respektieren Sie diese. Jetzt können Sie steuern, wie viele gleichzeitige Verbindungen zur Datenbank verwendet werden (Standard 100), und andere warten bis zu 10 Sekunden auf eine freie Verbindung, bevor sie fehlschlagen.)
-* (Apollon77) Ändern Sie die Abhängigkeiten von admin in eine globale Abhängigkeit
-* (Apollon77) Aktualisieren Sie den Verbindungsstatus auch dazwischen
-* (Apollon77) behebt einige mögliche Absturzfälle (Sentry berichtet)
-* (Omega236) ID zur Fehlermeldung für Abfragen hinzufügen
-* (Apollon77) aktualisiere pg, um mit nodejs 14 kompatibel zu bleiben
-* (Apollon77) Beginne klar, Timeouts beim Entladen zu beenden ... noch einige Fälle übrig!
+### 1.12.3 (2020-04-30)
+* (Apollon77) Try to create Indizes on MSSQL to speed up things. Infos are shown if not possible to be able for the user to do it themself. Timeout is 15s
 
-## 1.11.1 (2020-04-19)
-* __Erfordert js-controller> = 2.0.0__
-* (Apollon77) hat die Verwendung von adapter.objects entfernt
-* (Apollon77) Überprüfen Sie, ob sich Objekte geändert haben, und ignorieren Sie sie unverändert
-* (Apollon77) Fügen Sie Sentry für die Fehlerberichterstattung mit js-controller 3.0 hinzu
-* (Apollon77) Stellen Sie sicher, dass der undefinierte Wert ignoriert wird
+### 1.12.2 (2020-04-30)
+* (Apollon77) MSSQL works again
 
-## 1.10.1 (2020-04-12)
-* (Bluefox) In ES6 konvertiert
-* (bluefox) Die Zählerfunktionalität wurde implementiert.
+### 1.12.1 (2020-04-26)
+* (Apollon77) Fix potential crash (Sentry) 
 
-## 1.9.5 (2019-05-15)
-* (Apollon77) Unterstützung für NodeJS 12 hinzufügen
+### 1.12.0 (2020-04-23)
+* (Apollon77) Implement max Connections setting and respect it, now allows to control how many concurrent connections to database are used (default 100) and others wait up to 10s for a free connection before failing)
+* (Apollon77) Change dependencies to admin to a global dependency
+* (Apollon77) Update connection status also in between
+* (Apollon77) fix some potential crash cases (Sentry reported)
+* (Omega236) Add id to error message for queries
+* (Apollon77) update pg to stay compatible with nodejs 14
+* (Apollon77) Start clearly ending timeouts on unload ... still some cases left!
 
-## 1.9.4 (2019-02-24)
-* (Apollon77) Beheben Sie mehrere kleinere Probleme und Themen
-* (Apollon77) Texte optimieren (für Admin v3 UI)
+### 1.11.1 (2020-04-19)
+* __Requires js-controller >= 2.0.0__
+* (Apollon77) removed usage of adapter.objects
+* (Apollon77) check if objects have changed and ignore unchanged
+* (Apollon77) Add Sentry for Error Reporting with js-controller 3.0
+* (Apollon77) Make sure value undefined is ignored
 
-## 1.9.0 (2018-06-19)
-* (Apollon77) Option zum Protokollieren von Datenpunkten als andere ID (Alias) hinzufügen, um die Migration von Geräten und dergleichen zu vereinfachen
+### 1.10.1 (2020-04-12)
+* (bluefox) Converted to ES6
+* (bluefox) The counter functionality was implemented.
 
-## 1.8.0 (29.04.2018)
-* (Apollon77) Aktualisieren Sie sqlite3, nodejs 10 kompatibel
-* (BuZZy1337) Admin-Fix
+### 1.9.5 (2019-05-15)
+* (Apollon77) Add support for nodejs 12
 
-## 1.7.4 (15.04.2018)
+### 1.9.4 (2019-02-24)
+* (Apollon77) Fix several smaller issues and topics
+* (Apollon77) Optimize Texts (for Admin v3 UI)
+
+### 1.9.0 (2018-06-19)
+* (Apollon77) Add option to log datapoints as other ID (alias) to easier migrate devices and such
+
+### 1.8.0 (2018-04-29)
+* (Apollon77) Update sqlite3, nodejs 10 compatible
+* (BuZZy1337) Admin fix
+
+### 1.7.4 (2018-04-15)
 * (Apollon77) Fix getHistory
 
-## 1.7.3 (2018-03-28)
-* (Apollon77) Beachten Sie die Einstellung "Für immer behalten", um die Datenpunktkonfiguration beizubehalten
+### 1.7.3 (2018-03-28)
+* (Apollon77) Respect 'keep forever' setting for retention from data point configuration
 
-## 1.7.2 (2018-03-24)
-* (Apollon77) Deaktiviert das Schreiben von NULL-Werten für SQLite
+### 1.7.2 (2018-03-24)
+* (Apollon77) Disable to write NULLs for SQLite
 
-## 1.7.1 (10.02.2018)
-* (Apollon77) Option zum Schreiben von NULL-Werten an Start- / Stoppgrenzen konfigurierbar machen
+### 1.7.1 (2018-02-10)
+* (Apollon77) Make option to write NULL values on start/stop boundaries configurable
 
-## 1.6.9 (2018-02-07)
-* (bondrogeen) Admin3-Korrekturen
-* (Apollon77) Optimieren Sie die Relog-Funktion und andere Dinge
+### 1.6.9 (2018-02-07)
+* (bondrogeen) Admin3 Fixes
+* (Apollon77) optimize relog feature and other things
 
-## 1.6.7 (2018-01-31)
-* (Bluefox) Admin3-Korrekturen
-* (Apollon77) Relog- und Null-Log-Korrekturen
+### 1.6.7 (2018-01-31)
+* (Bluefox) Admin3 Fixes
+* (Apollon77) Relog and null log fixes
 
-## 1.6.2 (2018-01-30)
-* (Apollon77) Admin3-Korrekturen
+### 1.6.2 (2018-01-30)
+* (Apollon77) Admin3 Fixes
 
-## 1.6.0 (2018-01-14)
-* (bluefox) Bereit für Admin3
+### 1.6.0 (2018-01-14)
+* (bluefox) Ready for Admin3
 
-## 1.5.8 (2017-10-05)
-* (Apollon77) Relog-Wert-Funktion korrigieren
+### 1.5.8 (2017-10-05)
+* (Apollon77) fix relog value feature
 
-## 1.5.7 (10.08.2017)
-* (bluefox) Option "Letzten Wert speichern" hinzufügen
+### 1.5.7 (2017-08-10)
+* (bluefox) add "save last value" option
 
-## 1.5.6 (2017-08-02)
-* (Apollon77) Das Verhalten des Protokollintervalls wurde korrigiert, um immer den aktuellen Wert zu protokollieren
+### 1.5.6 (2017-08-02)
+* (Apollon77) fix behaviour of log interval to always log the current value
 
-## 1.5.4 (12.06.2017)
-* (Apollon77) Behebung der Abhängigkeit von einer anderen Bibliothek
+### 1.5.4 (2017-06-12)
+* (Apollon77) fix dependency to other library
 
-## 1.5.3 (2017-04-07)
-* (Apollon77) Korrektur bei Datentypkonvertierungen
+### 1.5.3 (2017-04-07)
+* (Apollon77) fix in datatype conversions
 
 ### 1.5.0 (2017-03-02)
-* (Apollon77) Option zum Definieren des Speicherdatentyps pro Datenpunkt hinzufügen, einschließlich der Konvertierung des Werts bei Bedarf
+* (Apollon77) Add option to define storage datatype per datapoint inclusing converting the value if needed
 
 ### 1.4.6 (2017-02-25)
-* (Apollon77) Tippfehler mit PostgrSQL beheben
+* (Apollon77) Fix typo with PostgrSQL
 
 ### 1.4.5 (2017-02-18)
-* (Apollon77) Wieder ein kleiner Fix für ältere Konfigurationen
-* (Apollon77) Fix für DBConverter Analyze-Funktion
+* (Apollon77) Small fix again for older configurations
+* (Apollon77) fix for DBConverter Analyze function
 
 ### 1.4.3 (2017-02-11)
-* (Apollon77) Kleine Korrektur für ältere Konfigurationen
+* (Apollon77) Small fix for older configurations
 
 ### 1.4.2 (2017-01-16)
-* (bluefox) Die Behandlung von Gleitkommawerten in der Adapterkonfiguration und der Datenpunktkonfiguration wurde korrigiert.
+* (bluefox) Fix handling of float values in Adapter config and Datapoint config.
 
 ### 1.4.1
-* (Apollon77) Rollback auf SQL-Client 0.7, um die mmagische Abhängigkeit zu beseitigen, die auf älteren Systemen zu Problemen führt
+* (Apollon77) Rollback to sql-client 0.7 to get rid of the mmagic dependecy that brings problems on older systems
 
 ### 1.4.0 (2016-12-02)
-* (Apollon77) Nachrichten hinzufügen enableHistory / disableHistory
-* (Apollon77) Unterstützung für Protokolländerungen nur hinzufügen, wenn der Wert von einem Mindestwert für Zahlen abweicht
+* (Apollon77) Add messages enableHistory/disableHistory
+* (Apollon77) add support to log changes only if value differs a minimum value for numbers
 
 ### 1.3.4 (2016-11)
-* (Apollon77) Erlaube Datenbanknamen mit '-' für MySQL
+* (Apollon77) Allow database names with '-' for MySQL
 
 ### 1.3.3 (2016-11)
-* (Apollon77) Aktualisieren Sie die Abhängigkeiten
+* (Apollon77) Update dependecies
 
-### 1.3.2 (21.11.2016)
-* (bluefox) Fix Einfügung der Zeichenfolge mit '
+### 1.3.2 (2016-11-21)
+* (bluefox) Fix insert of string with '
 
-### 1.3.0 (29.10.2016)
-* (Apollon77) Option zum erneuten Protokollieren unveränderter Werte hinzufügen, um die Visualisierung zu vereinfachen
+### 1.3.0 (2016-10-29)
+* (Apollon77) add option to re-log unchanged values to make it easier for visualization
 
-### 1.2.1 (30.08.2016)
-* (bluefox) Fix Selektor für SQL-Objekte
+### 1.2.1 (2016-08-30)
+* (bluefox) Fix selector for SQL objects
 
-### 1.2.0 (30.08.2016)
-* (bluefox) Nur mit neuem Administrator kompatibel
+### 1.2.0 (2016-08-30)
+* (bluefox) сompatible only with new admin
 
-### 1.0.10 (27.08.2016)
-* (bluefox) Ändern Sie den Namen des Objekts von "Verlauf" in "Benutzerdefiniert".
+### 1.0.10 (2016-08-27)
+* (bluefox) change name of object from "history" to "custom"
 
 ### 1.0.10 (2016-07-31)
-* (bluefox) behebt mehrere Anfragen, wenn SQLite
+* (bluefox) fix multi requests if sqlite
 
-### 1.0.9 (14.06.2016)
-* (bluefox) erlaubt Einstellungen für parallele Anfragen
+### 1.0.9 (2016-06-14)
+* (bluefox) allow settings for parallel requests
 
 ### 1.0.7 (2016-05-31)
-* (bluefox) Linie bis zum Ende ziehen, wenn null ignoriert wird
+* (bluefox) draw line to the end if ignore null
 
-### 1.0.6 (30.05.2016)
-* (bluefox) erlaubt den Setup-DB-Namen für MySQL und MSSQL
+### 1.0.6 (2016-05-30)
+* (bluefox) allow setup DB name for mysql and mssql
 
-### 1.0.5 (29.05.2016)
-* (bluefox) schalten max und min miteinander um
+### 1.0.5 (2016-05-29)
+* (bluefox) switch max and min with each other
 
-### 1.0.4 (29.05.2016)
-* (bluefox) Datenaufbewahrung prüfen, wenn "nie" gesetzt ist
+### 1.0.4 (2016-05-29)
+* (bluefox) check retention of data if set "never"
 
-### 1.0.3 (28.05.2016)
-* (Bluefox) versuchen, alte Zeitstempel zu berechnen
+### 1.0.3 (2016-05-28)
+* (bluefox) try to calculate old timestamps
 
-### 1.0.2 (24.05.2016)
-* (bluefox) Fehler mit io-package behoben
+### 1.0.2 (2016-05-24)
+* (bluefox) fix error with io-package
 
-### 1.0.1 (24.05.2016)
-* (bluefox) Fehler mit SQLite behoben
+### 1.0.1 (2016-05-24)
+* (bluefox) fix error with SQLite
 
 ### 1.0.0 (2016-05-20)
-* (bluefox) Ändert den Standardaggregationsnamen
+* (bluefox) change default aggregation name
 
 ### 0.3.3 (2016-05-18)
-* (Bluefox) Postgres reparieren
+* (bluefox) fix postgres
 
 ### 0.3.2 (2016-05-13)
-* (bluefox) Warteschlange auswählen, ob IDs und FROMs nach SQLite fragen
+* (bluefox) queue select if IDs and FROMs queries for sqlite
 
 ### 0.3.1 (2016-05-12)
-* (bluefox) Warteschlange Löschabfragen auch für SQLite
+* (bluefox) queue delete queries too for sqlite
 
-### 0.3.0 (08.05.2016)
-* (Bluefox) Unterstützung von benutzerdefinierten Abfragen
-* (bluefox) nur eine Anfrage gleichzeitig für SQLite
-* (Bluefox) Tests hinzufügen (primitiv und nur SQL)
+### 0.3.0 (2016-05-08)
+* (bluefox) support of custom queries
+* (bluefox) only one request simultaneously for sqlite
+* (bluefox) add tests (primitive and only sql)
 
-### 0.2.0 (30.04.2016)
-* (Bluefox) Unterstützung von Millisekunden
-* (Bluefox) SQLite reparieren
+### 0.2.0 (2016-04-30)
+* (bluefox) support of milliseconds
+* (bluefox) fix sqlite
 
-### 0.1.4 (25.04.2016)
-* (bluefox) korrigiert das Löschen alter Einträge
+### 0.1.4 (2016-04-25)
+* (bluefox) fix deletion of old entries
 
-### 0.1.3 (08.03.2016)
-* (bluefox) druckt Fehler nicht zweimal
+### 0.1.3 (2016-03-08)
+* (bluefox) do not print errors twice
 
 ### 0.1.2 (2015-12-22)
-* (bluefox) korrigiert die MS-SQL-Porteinstellungen
+* (bluefox) fix MS-SQL port settings
 
 ### 0.1.1 (2015-12-19)
-* (bluefox) Fehler mit doppelten Einträgen behoben
+* (bluefox) fix error with double entries
 
-### 0.1.0 (14.12.2015)
-* (Bluefox) Unterstützung von Strings
+### 0.1.0 (2015-12-14)
+* (bluefox) support of strings
 
-### 0.0.3 (06.12.2015)
-* (smile_Jack) Demo-Daten hinzufügen (Aufgabe: schnelleres Einfügen in die Datenbank)
-* (smile_Jack) Änderungsaggregation (jetzt wie Verlaufsadapter)
-* (Bluefox) Fehlerbehebung
+### 0.0.3 (2015-12-06)
+* (smiling_Jack) Add demo Data ( todo: faster insert to db )
+* (smiling_Jack) change aggregation (now same as history Adapter)
+* (bluefox) bug fixing
 
-### 0.0.2 (06.12.2015)
-* (bluefox) erlaubt nur 1 Client für SQLite
+### 0.0.2 (2015-12-06)
+* (bluefox) allow only 1 client for SQLite
 
 ### 0.0.1 (2015-11-19)
-* (Bluefox) anfängliches Commit
-
-## Changelog
+* (bluefox) initial commit
 
 ## License
 

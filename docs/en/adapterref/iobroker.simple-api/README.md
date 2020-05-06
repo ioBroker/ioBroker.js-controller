@@ -549,6 +549,10 @@ If no data source was specified or the noHistory parameter is passed, then only 
 </pre>
 
 ## Changelog
+
+### 2.4.5 (2020-05-04)
+* (Apollon77) webserver initialization optimized again to prevent errors with imvalid certificates 
+
 ### 2.4.4 (2020-05-02)
 * (Apollon77) Make sure Permission errors do not crash adapter (Sentry IOBROKER-SIMPLE-API-3)
 

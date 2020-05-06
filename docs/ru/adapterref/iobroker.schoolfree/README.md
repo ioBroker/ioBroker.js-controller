@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.schoolfree/README.md
 title: ioBroker.schoolfree
-hash: yiMSYlfKCxjeBsenYc2dabwdT1FA3HLmuutu2//xE20=
+hash: uzju6TA2Nd+imMw4P3aGsSgS0hBAeyPIQshsOhieXkI=
 ---
 ![логотип](../../../en/adapterref/iobroker.schoolfree/admin/schoolfree.png)
 
@@ -17,6 +17,8 @@ hash: yiMSYlfKCxjeBsenYc2dabwdT1FA3HLmuutu2//xE20=
 ![NPM](https://nodei.co/npm/iobroker.schoolfree.png?downloads=true)
 
 # IoBroker.schoolfree
+Этот адаптер использует сервис Sentry.io, чтобы автоматически сообщать об исключениях и ошибках кода и новых схемах устройств мне как разработчику. Подробнее смотрите ниже!
+
 ## Школьный адаптер для ioBroker
 ** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
 
@@ -47,13 +49,13 @@ Folgende Datenpunkte stehen mit Schoolfree für die weitere Verarbeitung zur Ver
 ### Английское описание:
 Schoolfree - это адаптер для установки iobroker.
 С помощью адаптера можно оценить школьные каникулы и перенести их в точки данных.
-Таким образом, точки данных могут быть оценены и обработаны для других функций, таких как управление нагревом, затвор и контроль присутствия.
+Таким образом, точки данных могут быть оценены и обработаны для других функций, таких как управление обогревом, затвор и контроль присутствия.
 
 Текущая подписка на школьные каникулы осуществляется через API https://www.mehr-schulferien.de.
 
 В настоящее время школьные каникулы и выходные для Германии поддерживаются.
 
-Следующие данные доступны для дальнейшей обработки с Schoolfree:
+Следующие точки данных доступны для дальнейшей обработки с Schoolfree:
 
 * info.current.end: дата окончания текущих праздников
 * info.current.name: название текущих школьных каникул
@@ -64,9 +66,38 @@ Schoolfree - это адаптер для установки iobroker.
 * info.today: переключиться на текущий статус сегодня (true / false)
 * info.tщё: переключение на текущий статус завтра (true / false)
 
+### Что такое Sentry.io и что сообщается серверам этой компании?
+Sentry.io - это сервис для разработчиков, позволяющий получить обзор ошибок в своих приложениях. И именно это реализовано в этом адаптере.
+
+Когда происходит сбой адаптера или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включался и ваш установочный идентификатор (это просто уникальный идентификатор **без** каких-либо дополнительных сведений о вас, адрес электронной почты, имя и т. П.). Это позволяет Sentry группировать ошибки и показывать, на сколько уникальных пользователей влияет такая ошибка. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не выходят из строя.
+
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.6.0 (04.05.2020)
+* (simatec) added new features
+* (simatec) Bugfix next day schoolfree
+* (simatec) added sentry.io
+* (simatec) added translations
+* (simatec) added error handling
+
+### 0.5.1 (25.03.2020)
+* (simatec) added new features
+
+### 0.5.0 (23.03.2020)
+* (simatec) added public holidays
+* (simatec) Bugfix next schoolfree for API 2.0
+* (simatec) Bugfix schoolfree-name for API 2.0
+
+### 0.4.1 (22.03.2020)
+* (simatec) new query as adaptation to API v2.0
+* (simatec) Adjustment of the federal state IDs"
+* (simatec) Code fix for autochecker
+* (simatec) update Dependencies
+
+### 0.4.0 (21.03.2020)
+* (simatec) added new api v2.0 from www.mehr-schulferien.de
 
 ### 0.3.1 (28.10.2019)
 * (simatec) Fix start after install
@@ -96,7 +127,7 @@ Schoolfree - это адаптер для установки iobroker.
 ## License
 MIT License
 
-Copyright (c) 2019 simatec
+Copyright (c) 2019 - 2020 simatec
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

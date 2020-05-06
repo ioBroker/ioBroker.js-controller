@@ -4,7 +4,7 @@
 
 ![Number of Installations](http://iobroker.live/badges/mydlink-installed.svg) ![Number of Installations](http://iobroker.live/badges/mydlink-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.mydlink.svg)](https://www.npmjs.com/package/iobroker.mydlink)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.mydlink.svg)](https://www.npmjs.com/package/iobroker.mydlink)
-[![Tests](https://travis-ci.org/arteck/ioBroker.mydlink.svg?branch=master)](https://travis-ci.org/arteck/ioBroker.mydlink)
+[![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink)
 
 [![NPM](https://nodei.co/npm/iobroker.mydlink.png?downloads=true)](https://nodei.co/npm/iobroker.mydlink/) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.mydlink.svg)](https://greenkeeper.io/)
 
@@ -42,6 +42,9 @@ delayed by polling interval (can be set in config).
 The adapter does not interfere with the use of the app.
 
 ## Changelog
+### 1.0.8 (2020-05-05)
+* Fixed switching, was broken in some circumstances by id changes.
+
 ### 1.0.7 (2020-05-02)
 * Made saving config more robust and direct again.
 * Made identify by IP more robust and allows saving right away. 

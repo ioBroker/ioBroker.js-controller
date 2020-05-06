@@ -36,6 +36,12 @@ With adapter you can use both: **v6 Bridge** and **Legacy Bridge**.
 
 
 ## Changelog
+### 0.4.1 (2020-05-04)
+- (steiger04): Some small bug fixes
+
+### 0.4.0 (2020-05-04)
+- (steiger04): Some small bug fixes
+
 ### 0.3.0 (2020-04-30)
 - (steiger04): Optimizations, bug fixes and new app
 

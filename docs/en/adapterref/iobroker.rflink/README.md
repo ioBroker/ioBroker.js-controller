@@ -48,6 +48,9 @@ E.g: ```10;AB400D;00004d;1;OFF;```. Please read documentation to understand the 
 
 ## Changelog
 
+### 2.1.5 (2020-05-04)
+* (Apollon77) optimize rebuild handling if needed
+
 ### 2.1.2 (2020-05-02)
 * (Apollon77) getting port list works again 
 

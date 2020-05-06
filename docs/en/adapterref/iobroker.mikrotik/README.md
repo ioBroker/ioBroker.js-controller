@@ -28,6 +28,9 @@ Reset power USB in mikrotik
 
 ## Changelog
 
+#### 1.0.12
+* (instalator) fixed error symb
+
 #### 1.0.11
 * (instalator) fixed [issues#28](https://github.com/instalator/ioBroker.mikrotik/issues/28)
 

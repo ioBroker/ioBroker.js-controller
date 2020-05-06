@@ -10,6 +10,9 @@ This adapter is forked from [MeisterTR](https://github.com/MeisterTR/iobroker.mi
 
 ## Changelog
 
+### 0.2.1 (2020-05-05)
+* (Apollon77) fix wrong variable usage
+
 ### 0.2.0 (2018-09-02)
 * (bluefox) The input of token is allowed if required
 

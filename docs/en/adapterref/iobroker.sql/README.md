@@ -358,16 +358,23 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 
 ## Changelog
 
-## 1.12.3 (2020-04-30)
+### 1.12.5 (2020-05-05)
+* (Apollon77) Crash prevented for invalid objects (Sentry IOBROKER-SQL-X) 
+
+### 1.12.4 (2020-05-04)
+* (Apollon77) Potential crash fixed when disabling datapoints too fast (Sentry IOBROKER-SQL-W) 
+* (Apollon77) Always set "encrypt" flag, even if false because else might en in default true (see https://github.com/tediousjs/tedious/issues/931)
+
+### 1.12.3 (2020-04-30)
 * (Apollon77) Try to create Indizes on MSSQL to speed up things. Infos are shown if not possible to be able for the user to do it themself. Timeout is 15s
 
-## 1.12.2 (2020-04-30)
+### 1.12.2 (2020-04-30)
 * (Apollon77) MSSQL works again
 
-## 1.12.1 (2020-04-26)
+### 1.12.1 (2020-04-26)
 * (Apollon77) Fix potential crash (Sentry) 
 
-## 1.12.0 (2020-04-23)
+### 1.12.0 (2020-04-23)
 * (Apollon77) Implement max Connections setting and respect it, now allows to control how many concurrent connections to database are used (default 100) and others wait up to 10s for a free connection before failing)
 * (Apollon77) Change dependencies to admin to a global dependency
 * (Apollon77) Update connection status also in between
@@ -376,70 +383,70 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 * (Apollon77) update pg to stay compatible with nodejs 14
 * (Apollon77) Start clearly ending timeouts on unload ... still some cases left!
 
-## 1.11.1 (2020-04-19)
+### 1.11.1 (2020-04-19)
 * __Requires js-controller >= 2.0.0__
 * (Apollon77) removed usage of adapter.objects
 * (Apollon77) check if objects have changed and ignore unchanged
 * (Apollon77) Add Sentry for Error Reporting with js-controller 3.0
 * (Apollon77) Make sure value undefined is ignored
 
-## 1.10.1 (2020-04-12)
+### 1.10.1 (2020-04-12)
 * (bluefox) Converted to ES6
 * (bluefox) The counter functionality was implemented.
 
-## 1.9.5 (2019-05-15)
+### 1.9.5 (2019-05-15)
 * (Apollon77) Add support for nodejs 12
 
-## 1.9.4 (2019-02-24)
+### 1.9.4 (2019-02-24)
 * (Apollon77) Fix several smaller issues and topics
 * (Apollon77) Optimize Texts (for Admin v3 UI)
 
-## 1.9.0 (2018-06-19)
+### 1.9.0 (2018-06-19)
 * (Apollon77) Add option to log datapoints as other ID (alias) to easier migrate devices and such
 
-## 1.8.0 (2018-04-29)
+### 1.8.0 (2018-04-29)
 * (Apollon77) Update sqlite3, nodejs 10 compatible
 * (BuZZy1337) Admin fix
 
-## 1.7.4 (2018-04-15)
+### 1.7.4 (2018-04-15)
 * (Apollon77) Fix getHistory
 
-## 1.7.3 (2018-03-28)
+### 1.7.3 (2018-03-28)
 * (Apollon77) Respect 'keep forever' setting for retention from data point configuration
 
-## 1.7.2 (2018-03-24)
+### 1.7.2 (2018-03-24)
 * (Apollon77) Disable to write NULLs for SQLite
 
-## 1.7.1 (2018-02-10)
+### 1.7.1 (2018-02-10)
 * (Apollon77) Make option to write NULL values on start/stop boundaries configurable
 
-## 1.6.9 (2018-02-07)
+### 1.6.9 (2018-02-07)
 * (bondrogeen) Admin3 Fixes
 * (Apollon77) optimize relog feature and other things
 
-## 1.6.7 (2018-01-31)
+### 1.6.7 (2018-01-31)
 * (Bluefox) Admin3 Fixes
 * (Apollon77) Relog and null log fixes
 
-## 1.6.2 (2018-01-30)
+### 1.6.2 (2018-01-30)
 * (Apollon77) Admin3 Fixes
 
-## 1.6.0 (2018-01-14)
+### 1.6.0 (2018-01-14)
 * (bluefox) Ready for Admin3
 
-## 1.5.8 (2017-10-05)
+### 1.5.8 (2017-10-05)
 * (Apollon77) fix relog value feature
 
-## 1.5.7 (2017-08-10)
+### 1.5.7 (2017-08-10)
 * (bluefox) add "save last value" option
 
-## 1.5.6 (2017-08-02)
+### 1.5.6 (2017-08-02)
 * (Apollon77) fix behaviour of log interval to always log the current value
 
-## 1.5.4 (2017-06-12)
+### 1.5.4 (2017-06-12)
 * (Apollon77) fix dependency to other library
 
-## 1.5.3 (2017-04-07)
+### 1.5.3 (2017-04-07)
 * (Apollon77) fix in datatype conversions
 
 ### 1.5.0 (2017-03-02)

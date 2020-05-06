@@ -35,6 +35,13 @@ node ring-auth-cli
 
 ![Ring Admin 1](docs/ring_admin_tab1.png)
 
+You can use special variables for your livestream and snapshort path and filename. This variables will be replaced with a counter, timestamp, ring id or kind of ring.
+
+* %d : Unix timestamp. Example: test_%d -> test_1588331430061
+* %i : Id of your ring device: Example: test_%i -> test_234567890
+* %n : Counter since ring instance start. Example: test_%n -> test_1
+* %k : Kind of your ring device: Example: test_%k -> test_doorbel
+
 ![Ring Admin 2](docs/ring_admin_tab2.png)
 
 ## Objects
@@ -52,6 +59,12 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 ```
 
 ## Changelog
+
+### 1.1.2 (02.05.2020)
+* (Stübi) Fixed health info like missing battery status (Issue #22, Issue #25) 
+* (Stübi) Change error handling
+* (Stübi) Providing Stick Up Cam (BETA)
+* (Stübi) Using variables in the filename of the livestream or snapshot 
 
 ### 1.1.1 (02.05.2020)
 * (Stübi) Bugfixing

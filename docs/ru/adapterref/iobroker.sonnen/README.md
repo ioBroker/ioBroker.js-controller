@@ -8,7 +8,7 @@ translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sonnen/README.md
 title: солнечный адаптер
-hash: dsD7u9HDDpnPSQsxuk9HjRkYv2Fu3q1EL6WtCUvPGCQ=
+hash: oMeeAfD4xgO3JYH8YuAPHB25TvMTGYjpiqMBJjHpvLI=
 ---
 ![логотип](../../../de/adapterref/iobroker.sonnen/media/sonnen.png)
 
@@ -26,7 +26,7 @@ hash: dsD7u9HDDpnPSQsxuk9HjRkYv2Fu3q1EL6WtCUvPGCQ=
 ## Требования перед установкой
 Обязательным условием работы sonnenBatterie с ioBroker является успешная установка батареи электриком. Аккумулятор также должен быть в той же сети, что и ioBroker.
 
-### Монтаж
+### Установка
 Экземпляр адаптера устанавливается через интерфейс администратора ioBroker. Подробные инструкции по необходимым шагам установки можно найти здесь (TODO: LINK). <br/><br/> После завершения установки экземпляра адаптера окно конфигурации открывается автоматически.
 
 ## Конфигурация
@@ -42,26 +42,26 @@ hash: dsD7u9HDDpnPSQsxuk9HjRkYv2Fu3q1EL6WtCUvPGCQ=
 
 | Поле | Описание |
 |:-------------|:-------------|
-| Интервал опроса | Альтернативное значение может быть установлено здесь в миллисекундах. Состояния sonnenBatterie обновляются в этом интервале |
+| Интервал запроса | Альтернативное значение может быть установлено здесь в миллисекундах. Состояния sonnenBatterie обновляются в этом интервале |
 
 После завершения настройки выйдите из диалогового окна конфигурации, нажав `SPEICHERN UND SCHLIEßEN`.
 Это затем перезапустит адаптер.
 
 ## Экземпляры
-При установке адаптера был создан активный экземпляр адаптера sonnen в области §SSSSS_0§§. <br/><br/> ![Пример](../../../de/adapterref/iobroker.sonnen/media/instance.png "Пример") <span style="color:grey">* Первая инстанция *</span>
+Установка адаптера создала активный экземпляр адаптера sonnen в разделе §SSSSS_0§§. <br/><br/> ![пример](../../../de/adapterref/iobroker.sonnen/media/instance.png "пример") <span style="color:grey">* Первая инстанция *</span>
 
 На сервере ioBroker можно создать несколько экземпляров адаптера sonnen. И наоборот, sonnenBatterie также может работать с несколькими серверами ioBroker. Если несколько устройств должны управляться одним сервером ioBroker, для каждой батареи должен быть создан один экземпляр. <br/><br/> Цвет поля состояния экземпляра указывает, активирован ли адаптер или подключен к аккумулятору. Если указатель мыши указывает на символ, отображается дополнительная подробная информация.
 
 ## Объекты адаптера
 Все устройства и действия, распознаваемые адаптером в концентраторе, перечислены в древовидной структуре в области `Objekte`. Кроме того, также сообщается, является ли связь с концентратором гладкой.
 
-![Объекты](../../../de/adapterref/iobroker.sonnen/media/objects.png "солнечные объекты") <span style="color:grey">* Предметы солнечного адаптера *</span>
+![объекты](../../../de/adapterref/iobroker.sonnen/media/objects.png "солнечные объекты") <span style="color:grey">* Предметы солнечного адаптера *</span>
 
 Затем объекты делятся на состояния и кнопки. Поскольку в зависимости от батареи есть два разных API, создаются только те состояния, которые поддерживаются соответствующей батареей.
 Каждая точка данных указана с соответствующим типом данных и ее полномочиями.
 Полномочия можно читать (R) и писать (W). Каждая точка данных может быть прочитана, по крайней мере, (R), тогда как другие также могут быть записаны. Для поиска конкретной точки данных мы рекомендуем использовать комбинацию клавиш «CTRL + F».
 
-### Состояния
+### Штаты
 #### Канал: информация
 * info.connection
 
@@ -118,7 +118,7 @@ hash: dsD7u9HDDpnPSQsxuk9HjRkYv2Fu3q1EL6WtCUvPGCQ=
     |:---:|:---:|
     | число | R |
 
-   *Только читаемое числовое значение, которое указывает, сколько ватт в настоящее время производится системой PV.*
+   *Только для чтения числовое значение, которое указывает, сколько ватт в настоящее время производится системой PV.*
 
 * status.pacTotal
 
@@ -250,6 +250,14 @@ hash: dsD7u9HDDpnPSQsxuk9HjRkYv2Fu3q1EL6WtCUvPGCQ=
 *Только читаемое числовое значение, которое представляет количество электроэнергии в ваттах, которое в настоящее время подается в сеть или подключается к ней.
 Если значение положительное, сетка в настоящее время подается в сетку, если оно отрицательное, количество электроэнергии берется из сетки.*
 
+* status.onlineStatus
+
+    | Тип данных | Авторизация |
+    |:---:|:---:|
+    | логическое | R |
+
+   *Только читаемое логическое значение, которое верно, sonnenBatterie онлайн.*
+
 #### Канал: контроль
 * control.charge
 
@@ -284,56 +292,6 @@ setState('sonnen.0.control.discharge', 1250); // Die Batterie wird maximal mit 1
 ```
 
 ## Changelog
-### 1.4.0
-* (foxriver76) introducing new states with power metering and inverter information (supported on :8080 API)
-* (foxriver76) only minimum support until we know what users need as states
-
-### 1.3.0
-* (foxriver76) introducing new state with configuration information (supported on :8080 API)
-
-### 1.2.0
-* (foxriver76) support of another sonnen api
-
-### 1.1.2
-* (foxriver76) bugfix for control states
-
-### 1.1.1
-* (foxriver76) add compact mode compatibility
-
-### 1.0.2
-* (foxriver76) use adapter-core module
-
-### 1.0.1
-* (foxriver76) take timezone offset into account on time states
-
-### 1.0.0
-* (foxriver76) formal version increment
-
-### 0.0.8
-* (foxriver76) Enhanced debug logging
-* (foxriver76) Prevent crashing when a return code is received
-
-### 0.0.7
-* (foxriver76) Only set info.connection on change
-
-### 0.0.6
-* (foxriver76) Only set states if request was successfull --> prevents adapter crash
-
-### 0.0.5
-* (foxriver76) translations on index_m.html
-* (foxriver76) use 7000 as interval if poll interval is undefined
-
-### 0.0.3
-* (foxriver76) fixed links to bugs, repo etc
-
-### 0.0.2
-* (foxriver76) bugfixes on control states
-* (foxriver76) big readme update
-* (foxriver76) addded more states
-* (foxriver76) added advanced settings
-
-### 0.0.1
-* (foxriver76) initial release
 
 ## License
 The MIT License (MIT)

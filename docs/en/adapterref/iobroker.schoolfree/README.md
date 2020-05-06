@@ -12,6 +12,9 @@
 [![NPM](https://nodei.co/npm/iobroker.schoolfree.png?downloads=true)](https://nodei.co/npm/iobroker.schoolfree/)
 
 
+This adapter uses the service Sentry.io to automatically report exceptions and code errors and new device schemas to me as the developer. More details see below!
+
+
 ## schoolfree adapter for ioBroker
 
 
@@ -65,12 +68,26 @@ The following data points are available for further processing with Schoolfree:
 * info.today: Switch for the current status today (true / false)
 * info.tomorrow: switch for the current status tomorrow (true / false)
 
+
+### What is Sentry.io and what is reported to the servers of that company?
+Sentry.io is a service for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
+
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.
+
+
 *************************************************************************************************************************************
 
 ## Changelog
 
+### 0.6.0 (04.05.2020)
+* (simatec) added new features
+* (simatec) Bugfix next day schoolfree
+* (simatec) added sentry.io
+* (simatec) added translations
+* (simatec) added error handling
+
 ### 0.5.1 (25.03.2020)
-* (simatec) added ne features
+* (simatec) added new features
 
 ### 0.5.0 (23.03.2020)
 * (simatec) added public holidays

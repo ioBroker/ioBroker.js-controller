@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ring/README.md
 title: Ringadapter
-hash: z+0EKjBKMvAf5n8/5NOA5xp0XAE/dieMYTTzHmqIORQ=
+hash: fNNJNWNuBGKkiNXvbDE6w5rFnloRoqkAASNMDJ7fmAk=
 ---
 ![Logo](../../../en/adapterref/iobroker.ring/admin/ring.png)
 
@@ -41,6 +41,13 @@ node ring-auth-cli
 
 ![Ring Admin 1](../../../en/adapterref/iobroker.ring/docs/ring_admin_tab1.png)
 
+Sie können spezielle Variablen für Ihren Livestream- und Snapshort-Pfad und Dateinamen verwenden. Diese Variablen werden durch einen Zähler, einen Zeitstempel, eine Ring-ID oder eine Art von Ring ersetzt.
+
+*% d: Unix-Zeitstempel. Beispiel: test_% d -> test_1588331430061
+*% i: ID Ihres Ringgeräts: Beispiel: test_% i -> test_234567890
+*% n: Zähler seit dem Start der Ringinstanz. Beispiel: test_% n -> test_1
+*% k: Art Ihres Ringgeräts: Beispiel: test_% k -> test_doorbel
+
 ![Ring Admin 2](../../../en/adapterref/iobroker.ring/docs/ring_admin_tab2.png)
 
 ## Objekte
@@ -57,6 +64,12 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 ```
 
 ## Changelog
+
+### 1.1.2 (02.05.2020)
+* (Stübi) Fixed health info like missing battery status (Issue #22, Issue #25) 
+* (Stübi) Change error handling
+* (Stübi) Providing Stick Up Cam (BETA)
+* (Stübi) Using variables in the filename of the livestream or snapshot 
 
 ### 1.1.1 (02.05.2020)
 * (Stübi) Bugfixing

@@ -121,6 +121,12 @@ sendTo("kodi.0", {
 
 ## Changelog
 
+#### 2.0.2
+* (instalator) changed title in io-package.json
+* (instalator) changed seek
+* (instalator) fixed widgets
+* (instalator) fixed for thumbnails
+
 #### 2.0.1 (2020-04-13)
 * (instalator) fixed error if not used PVR
 

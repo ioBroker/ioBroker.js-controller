@@ -233,7 +233,14 @@ Note, that there are two different sonnen API's so if you are missing states, th
     |number|R|
 
    *Read-only number, which represents the amount of watts consuming from or feeding in grid. If the number is positive you are feeding the grid, if negative you are consuming from grid.*
-   
+  
+* status.onlineStatus
+
+    |Data type|Permission|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Read-only boolean which is true if your sonnen battery is online.* 
 #### Channel: control
 
 * control.charge
@@ -263,6 +270,9 @@ Note, that there are two different sonnen API's so if you are missing states, th
     ```
 
 ## Changelog
+# 1.5.0 (2020-05-04)
+* (foxriver76) added online status indicator
+
 # 1.4.2 (2020-04-16)
 * (foxriver76) added more translations
 * (foxriver76) optimizations for compact mode

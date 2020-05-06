@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.schoolfree/README.md
 title: ioBroker.schoolfree
-hash: yiMSYlfKCxjeBsenYc2dabwdT1FA3HLmuutu2//xE20=
+hash: uzju6TA2Nd+imMw4P3aGsSgS0hBAeyPIQshsOhieXkI=
 ---
 ![商标](../../../en/adapterref/iobroker.schoolfree/admin/schoolfree.png)
 
@@ -17,17 +17,19 @@ hash: yiMSYlfKCxjeBsenYc2dabwdT1FA3HLmuutu2//xE20=
 ![NPM](https://nodei.co/npm/iobroker.schoolfree.png?downloads=true)
 
 ＃ioBroker.schoolfree
+该适配器使用服务Sentry.io向开发人员自动向我报告异常和代码错误以及新设备架构。详情请见下文！
+
 ##适用于ioBroker的schoolfree适配器
 **如果您愿意，请考虑捐赠：**
 
 [![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
 
-### Deutsche Beschreibung：
+###德意志银行（Deutsche Beschreibung）：
 校内免费安装适配器。
-在Datenpunkteübergeben的Schmiterien auswerten und Mit dem Adapter。
+在Datenpunkteübergeben的Schulferien auswerten und Mit dem Adapter。
 Die Datenpunktekönnensomitfürweitere Funktionen wie Heizungssteuerungen，Rolladen- and Anwesenheitssteuerungen ausgewertet and verarbeitet werden。
 
-API的https://www.mehr-schulferien.de
+API的https://www.mehr-schulferien.de的Der aktuelle Bezug von Terminen的Schüfererienerfolgtüber的API
 
 德国和德国之间的友谊。
 
@@ -35,25 +37,25 @@ API的https://www.mehr-schulferien.de
 
 * info.current.end：Datumfürdas Ende der aktuellen Ferien
 * info.current.name：Bezeichnung der aktuellen Schulferien
-* info.current.start：开始日期
-* info.next.end：费恩（Fer das Ende dernächstenFerien）
+* info.current.start：起始日期
+* info.next.end：费恩（Fatum）
 *信息名称：Bezeichnung dernächstenSchulferien
 * info.next.start：开始日期Ferien
-*今日信息：切换状态列表（真/假）
-* info。明天：Switch forfürden aktuellen Status morgen（true / false）
+*今日信息：切换状态指示灯（真/假）
+* info。明天：Switch for aktuellen Status morgen（true / false）
 
 *************************************************************************************************************************************
 
 ###英文说明：
 Schoolfree是用于iobroker安装的适配器。
 使用适配器，可以评估学校假期并将其传输到数据点。
-因此，可以针对其他功能（例如加热控制，快门和存在控制）评估和处理数据点。
+因此，可以针对其他功能（例如加热控制，快门和存在控制）对数据点进行评估和处理。
 
 当前的学校假期订阅是通过https://www.mehr-schulferien.de的API进行的
 
 目前，支持德国的学校假期和放假时间。
 
-以下数据点可用于Schoolfree进行进一步处理：
+以下数据点可用于Schoolfree的进一步处理：
 
 * info.current.end：当前假期结束的日期
 * info.current.name：当前学校假期的名称
@@ -64,9 +66,38 @@ Schoolfree是用于iobroker安装的适配器。
 *今天的信息：今天切换为当前状态（是/否）
 * info。明天：明天切换为当前状态（对/错）
 
+###什么是Sentry.io，什么报告给该公司的服务器？
+Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.6.0 (04.05.2020)
+* (simatec) added new features
+* (simatec) Bugfix next day schoolfree
+* (simatec) added sentry.io
+* (simatec) added translations
+* (simatec) added error handling
+
+### 0.5.1 (25.03.2020)
+* (simatec) added new features
+
+### 0.5.0 (23.03.2020)
+* (simatec) added public holidays
+* (simatec) Bugfix next schoolfree for API 2.0
+* (simatec) Bugfix schoolfree-name for API 2.0
+
+### 0.4.1 (22.03.2020)
+* (simatec) new query as adaptation to API v2.0
+* (simatec) Adjustment of the federal state IDs"
+* (simatec) Code fix for autochecker
+* (simatec) update Dependencies
+
+### 0.4.0 (21.03.2020)
+* (simatec) added new api v2.0 from www.mehr-schulferien.de
 
 ### 0.3.1 (28.10.2019)
 * (simatec) Fix start after install
@@ -96,7 +127,7 @@ Schoolfree是用于iobroker安装的适配器。
 ## License
 MIT License
 
-Copyright (c) 2019 simatec
+Copyright (c) 2019 - 2020 simatec
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

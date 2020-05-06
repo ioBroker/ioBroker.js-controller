@@ -8,7 +8,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sonnen/README.md
 title: 太阳适配器
-hash: dsD7u9HDDpnPSQsxuk9HjRkYv2Fu3q1EL6WtCUvPGCQ=
+hash: oMeeAfD4xgO3JYH8YuAPHB25TvMTGYjpiqMBJjHpvLI=
 ---
 ![商标](../../../de/adapterref/iobroker.sonnen/media/sonnen.png)
 
@@ -24,7 +24,7 @@ sonnen适配器可将sonnenBatterie集成到ioBroker中。
 Sonnen适配器可以监视和控制网络中的Sonnen电池。使用发现适配器（TODO：链接），可以在网络中自动找到sonnenBatterie。 <br/>适配器以对象形式创建用于监视和控制sonnenBatterie的状态。状态的很大一部分仅用于监视电池，而通过描述某些状态，也可以控制电池。
 
 ##安装前的要求
-使用ioBroker操作sonnenBatterie的前提是电工必须成功安装电池。电池还必须与ioBroker位于同一网络中。
+使用ioBroker操作sonnenBatterie的前提是电工要成功安装电池。电池还必须与ioBroker位于同一网络中。
 
 ###安装
 适配器的实例通过ioBroker管理界面安装。有关必要安装步骤的详细说明，请参见此处（TODO：LINK）。 <br/><br/>适配器实例的安装完成后，配置窗口将自动打开。
@@ -38,7 +38,7 @@ Sonnen适配器可以监视和控制网络中的Sonnen电池。使用发现适�
 | | IP地址|所需sonnenBattery的IP地址应在此处指定。 |
 
 ###高级设置窗口
-![高级设置](../../../de/adapterref/iobroker.sonnen/media/advancedSettings.png "高级设置")
+![进阶设定](../../../de/adapterref/iobroker.sonnen/media/advancedSettings.png "进阶设定")
 
 |领域|描述 |
 |:-------------|:-------------|
@@ -48,12 +48,12 @@ Sonnen适配器可以监视和控制网络中的Sonnen电池。使用发现适�
 然后，这将重新启动适配器。
 
 ##个实例
-适配器的安装已在§SSSSS_0§§区域中创建了Sonnen适配器的活动实例。 <br/><br/> ![实例](../../../de/adapterref/iobroker.sonnen/media/instance.png "实例") <span style="color:grey">*一审*</span>
+适配器的安装已在§SSSSS_0§§部分中创建了Sonnen适配器的活动实例。 <br/><br/> ![实例](../../../de/adapterref/iobroker.sonnen/media/instance.png "实例") <span style="color:grey">*一审*</span>
 
 可以在ioBroker服务器上创建几个Sonnen适配器实例。相反，sonnenBatterie也可以与多个ioBroker服务器一起运行。如果一台ioBroker服务器要控制多个设备，则应为每个电池创建一个实例。 <br/><br/>实例状态字段的颜色指示适配器是已激活还是已连接至电池。如果鼠标指针指向该符号，则会显示更多详细信息。
 
 ##适配器的对象
-在`Objekte`部分中，树状结构中列出了集线器中适配器识别的所有设备和活动。另外，还通知与集线器的通信是否畅通。
+集线器中适配器识别的所有设备和活动均以树形结构列出在`Objekte`区域中。另外，还通知与集线器的通信是否畅通。
 
 ![对象](../../../de/adapterref/iobroker.sonnen/media/objects.png "太阳物体") <span style="color:grey">*太阳适配器的对象*</span>
 
@@ -61,7 +61,7 @@ Sonnen适配器可以监视和控制网络中的Sonnen电池。使用发现适�
 列出了每个数据点及其关联的数据类型及其授权。
 可以读取（R）和写入（W）授权。每个数据点至少可以读取（R），而其他数据点也可以写入。要搜索特定的数据点，我们建议使用“ CTRL + F”组合键。
 
-＃＃＃ 状态
+###状态
 ####频道：信息
 *信息连接
 
@@ -118,7 +118,7 @@ Sonnen适配器可以监视和控制网络中的Sonnen电池。使用发现适�
     |:---:|:---:|
     |号| R |
 
-   *仅可读的数值，表示当前光伏系统正在产生多少瓦特。
+   *仅可读的数字值，它指示光伏系统当前正在产生多少瓦特。
 
 * status.pacTotal
 
@@ -167,7 +167,7 @@ Sonnen适配器可以监视和控制网络中的Sonnen电池。使用发现适�
     |:---:|:---:|
     |号| R |
 
-   *仅可读的数字值，代表电池的当前DC（直流）电压。
+   *唯一可读的数字值，代表电池的当前DC（直流）电压。
 
 * status.systemTime
 
@@ -239,7 +239,7 @@ Sonnen适配器可以监视和控制网络中的Sonnen电池。使用发现适�
     |:---:|:---:|
     |布尔值| R |
 
-   *仅可读的布尔值，如果当前正在将发电量馈入电网，则为true。
+   *仅可读的布尔值，如果当前将发电量馈入电网，则为true。
 
 * status.gridFeedIn
 
@@ -249,6 +249,14 @@ Sonnen适配器可以监视和控制网络中的Sonnen电池。使用发现适�
 
 *仅可读数字值，表示当前正在馈入或抽取到电网的电量（瓦）。
 如果该值为正，则表明当前正在向电网供电；如果该值为负，则从电网中抽取电量。
+
+* status.onlineStatus
+
+    |数据类型|授权|
+    |:---:|:---:|
+    |布尔值| R |
+
+   *仅可读的布尔值，这是真的，sonnenBatterie在线。
 
 ####频道：控制
 *控制费
@@ -284,56 +292,6 @@ setState('sonnen.0.control.discharge', 1250); // Die Batterie wird maximal mit 1
 ```
 
 ## Changelog
-### 1.4.0
-* (foxriver76) introducing new states with power metering and inverter information (supported on :8080 API)
-* (foxriver76) only minimum support until we know what users need as states
-
-### 1.3.0
-* (foxriver76) introducing new state with configuration information (supported on :8080 API)
-
-### 1.2.0
-* (foxriver76) support of another sonnen api
-
-### 1.1.2
-* (foxriver76) bugfix for control states
-
-### 1.1.1
-* (foxriver76) add compact mode compatibility
-
-### 1.0.2
-* (foxriver76) use adapter-core module
-
-### 1.0.1
-* (foxriver76) take timezone offset into account on time states
-
-### 1.0.0
-* (foxriver76) formal version increment
-
-### 0.0.8
-* (foxriver76) Enhanced debug logging
-* (foxriver76) Prevent crashing when a return code is received
-
-### 0.0.7
-* (foxriver76) Only set info.connection on change
-
-### 0.0.6
-* (foxriver76) Only set states if request was successfull --> prevents adapter crash
-
-### 0.0.5
-* (foxriver76) translations on index_m.html
-* (foxriver76) use 7000 as interval if poll interval is undefined
-
-### 0.0.3
-* (foxriver76) fixed links to bugs, repo etc
-
-### 0.0.2
-* (foxriver76) bugfixes on control states
-* (foxriver76) big readme update
-* (foxriver76) addded more states
-* (foxriver76) added advanced settings
-
-### 0.0.1
-* (foxriver76) initial release
 
 ## License
 The MIT License (MIT)

@@ -283,6 +283,14 @@ der Tastenkombination "STRG + F".
    Wenn der Wert positiv ist, wird derzeit in das Netz eingespeist, wenn dieser negativ ist, wird die Menge an Strom 
    vom Netz bezogen.*
    
+* status.onlineStatus
+
+    |Datentyp|Berechtigung|                                                                       
+    |:---:|:---:|
+    |boolean|R|
+
+   *Nur lesbarer boolscher Wert, welcher true ist, die sonnenBatterie online ist.*
+   
 #### Channel: control
 
 * control.charge

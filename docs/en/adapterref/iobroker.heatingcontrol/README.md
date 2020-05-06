@@ -157,6 +157,13 @@ Many user asked for an option to take over changes from thermostat into adapter.
 
 ## Changelog
 
+### 0.5.0 (2020-05-03)
+* (René) see issue #101: sensor close delay added (similar to already existing sensor open delay)
+* (René) see issue #103: date/time format string corrected for vis
+* (René) see issue #104: bug fix to take over changes from vis
+* (René) see issue #102: bug fix change current time period to be shown on vis
+
+
 ### 0.4.0 (2020-05-02)
 * (René) see issue #70: use changes from thermostat
 * (René) see issue #91 bug fix: if the same sensor is configured for more than one room thermostat target temperature will be set for all configured rooms

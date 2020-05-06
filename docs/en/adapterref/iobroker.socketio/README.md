@@ -307,6 +307,10 @@ On some web-sockets clients there is performance problem with communication. Som
 You can set option *Force Web-Sockets* to force using only web-sockets transport.
 
 ## Changelog
+
+### 3.0.7 (2020-05-04)
+* (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
+
 ### 3.0.6 (2020-04-30)
 * (bluefox) errors on webserver initialization are handled properly
 

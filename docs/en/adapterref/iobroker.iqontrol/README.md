@@ -298,8 +298,11 @@ In addition to normal thermostat you can define:
 ****
 
 ## Changelog
+### 0.3.6
+* (Sebastian Bormann) Added failback to variables
+* (Sebastian Bormann) Added option to add timestamp to state
 
-### 0.3.4 (2020-04-26)
+### 0.3.5 (2020-04-26)
 * (Sebastian Bormann) Added variables to icons and backgroundimages (see readme)
 * (Sebastian Bormann) It is now possible to remove toolbar (the first view is then the home view)
 

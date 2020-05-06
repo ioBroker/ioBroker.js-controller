@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.synology/README.md
 title: ioBroker Synology适配器
-hash: OhfbYWN/EDHPMTrcO9ZK7r1UZjp03raEDfDHfPdA2lg=
+hash: ZgiDmF/OtQedayveb9quXFQrOdFw7ynRjreiqGbqxw0=
 ---
 ![商标](../../../en/adapterref/iobroker.synology/admin/synology.png)
 
@@ -17,6 +17,9 @@ hash: OhfbYWN/EDHPMTrcO9ZK7r1UZjp03raEDfDHfPdA2lg=
 ＃ioBroker Synology适配器
 ##说明
 该驱动程序使您可以接收数据并管理Synology NAS服务器。
+
+### 2FA设置
+如果您使用2FA，请参阅说明[这里](docs/en/template.md)
 
 ### SendMethod
 您可以通过设置sendMethod对象来发送任何命令（方法），例如：获取SurveillanceStation信息是一个没有附加参数的getInfo方法。
@@ -35,7 +38,7 @@ hash: OhfbYWN/EDHPMTrcO9ZK7r1UZjp03raEDfDHfPdA2lg=
 
 *** SurveillanceStation.HomeMode.status_on ***-当前状态和启用/禁用Homemode
 
-*** SurveillanceStation.getSnapshotCamera ***-通过摄像机编号获取快照，文件保存在目录中……iobroker-data \ synology_0 \ snapshotCam_2.jpg *
+*** SurveillanceStation.getSnapshotCamera ***-通过摄像机编号获取快照，文件保存在目录“`...iobroker-data\synology_0\snapshotCam_2.jpg`”中
 
 *** AudioStation.players。{PLAYERID} ***：
 
@@ -44,9 +47,19 @@ hash: OhfbYWN/EDHPMTrcO9ZK7r1UZjp03raEDfDHfPdA2lg=
 *随机播放-随机播放控制（对/错）
 *音量-音量远程播放器（0-100）
 *搜索-控制播放搜索（0-100）
-* play_folder-将文件夹中的曲目添加到播放列表（id文件夹，例如* dir_5816 *）
-* play_track-按其ID播放曲目（例如* music_120847 *）
-* current_play-根据当前曲目在播放列表中的编号来控制和状态（例如* 14 *）
+* play_folder-将文件夹中的曲目添加到播放列表（id文件夹，例如``dir_5816''）
+* play_track-按其ID播放曲目（例如``music_120847''）
+* current_play-通过播放列表中当前曲目的编号控制和状态（例如``14''）
+
+*** DownloadStation ***：
+
+* activeTask-不完整的下载数量
+* listTasks-下载不完整的数组
+* shedule_enabled，shedule_emule_enabled-计划或立即下载的状态和控制
+* add_hash_download-添加到哈希下载（例如``8BD3CAD02FC9ECB661A12378414FA310D3F3FE03''）
+* add_url_download-添加下载URL或磁铁链接
+*文件夹-要下载的文件夹，在添加下载之前进行设置，否则将加载到默认文件夹中
+* pause_task，resume_task-暂停下载并继续。 （例如``dbid_170''或``170''或``all''）
 
 ###消息框
 ```
@@ -56,6 +69,34 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 ```
 
 ## Changelog
+
+### 0.1.7
+* (instalator) fixed 2FA
+* (instalator) Added setup guide 2FA
+
+### 0.1.6
+* (instalator) fix for 2fa
+* (instalator) fix error
+* (instalator) change error log
+* (instalator) fix io-package
+* (instalator) fix error status player
+
+### 0.1.4
+* (instalator) change for DownloadStation
+* (instalator) added playlist favorite radio
+* (instalator) added clearPlaylist button
+* (instalator) refactoring
+
+### 0.1.3
+* (instalator) change obj for ss info fix for cover song 
+* (instalator) fix for info.connection 
+* (instalator) add 6.2.3 fix for player browser files 
+* (instalator) fix for 2FA
+* (instalator) fixed error add download 
+* (instalator) added DownloadStation task list
+
+### 0.1.2
+* (instalator) fixed error
 
 ### 0.1.1
 * (instalator) added messagebox for snapshot

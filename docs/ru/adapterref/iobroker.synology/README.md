@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.synology/README.md
 title: ioBroker Synology адаптер
-hash: OhfbYWN/EDHPMTrcO9ZK7r1UZjp03raEDfDHfPdA2lg=
+hash: ZgiDmF/OtQedayveb9quXFQrOdFw7ynRjreiqGbqxw0=
 ---
 ![логотип](../../../en/adapterref/iobroker.synology/admin/synology.png)
 
@@ -17,6 +17,9 @@ hash: OhfbYWN/EDHPMTrcO9ZK7r1UZjp03raEDfDHfPdA2lg=
 # IoBroker Synology адаптер
 ## Описание
 Драйвер позволяет получать данные и управлять сервером Synology NAS.
+
+### 2FA Настройки
+Если вы используете 2FA, см. Инструкции [Вот](docs/en/template.md)
 
 ### SendMethod
 Вы можете отправить любую команду (метод), установив объект sendMethod, например: Получить информацию SurveillanceStation - это метод getInfo без дополнительных параметров.
@@ -33,9 +36,9 @@ hash: OhfbYWN/EDHPMTrcO9ZK7r1UZjp03raEDfDHfPdA2lg=
 * enabled - текущее состояние и включение / отключение камеры
 * linkSnapshot - URL для снимка
 
-*** SurveillanceStation.HomeMode.status_on *** - Текущий статус и включение / отключение режима дома
+*** SurveillanceStation.HomeMode.status_on *** - Текущий статус и включение / отключение домашнего режима
 
-*** SurveillanceStation.getSnapshotCamera *** - Получить снимок по номеру камеры, файл сохраняется в каталоге *... iobroker-data \ synology_0 \ snapshotCam_2.jpg*
+*** SurveillanceStation.getSnapshotCamera *** - Получить снимок по номеру камеры, файл сохраняется в каталоге ``...iobroker-data\synology_0\snapshotCam_2.jpg``
 
 . ***AudioStation.players {PLAYERID}*** :
 
@@ -44,9 +47,19 @@ hash: OhfbYWN/EDHPMTrcO9ZK7r1UZjp03raEDfDHfPdA2lg=
 * shuffle - Shuffle control (true / false)
 * громкость - громкость дистанционного проигрывателя (0-100)
 * seek - Управление поиском воспроизведения (0-100)
-* play_folder - добавляет треки из папки в список воспроизведения (например, папка id *dir_5816*
-* play_track - воспроизведение трека по его идентификатору (например, *music_120847*
-* current_play - управление и статус текущей дорожки по ее номеру в списке воспроизведения (например, *14*
+* play_folder - добавляет треки из папки в список воспроизведения (папка id, например, `` dir_5816``)
+* play_track - Воспроизведение трека по его идентификатору (например, `` music_120847``)
+* current_play - управление и статус текущей дорожки по ее номеру в списке воспроизведения (например, `` 14``)
+
+*** DownloadStation ***:
+
+* activeTask - количество незавершенных загрузок
+* listTasks - массив с неполными загрузками
+* shedule_enabled, shedule_emule_enabled - Статус и контроль запланированных или немедленных загрузок
+* add_hash_download - добавить в Hash Downloads (например, `` 8BD3CAD02FC9ECB661A12378414FA310D3F3FE03``)
+* add_url_download - добавить URL загрузки или ссылку на магнит
+* folder - папка для загрузки, устанавливается перед добавлением загрузки, в противном случае она загружается в папку по умолчанию
+* pause_task, resume_task - приостановить загрузку и возобновить. (например, `` dbid_170`` или `` 170`` или `` all``)
 
 ### Окно сообщения
 ```
@@ -56,6 +69,34 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 ```
 
 ## Changelog
+
+### 0.1.7
+* (instalator) fixed 2FA
+* (instalator) Added setup guide 2FA
+
+### 0.1.6
+* (instalator) fix for 2fa
+* (instalator) fix error
+* (instalator) change error log
+* (instalator) fix io-package
+* (instalator) fix error status player
+
+### 0.1.4
+* (instalator) change for DownloadStation
+* (instalator) added playlist favorite radio
+* (instalator) added clearPlaylist button
+* (instalator) refactoring
+
+### 0.1.3
+* (instalator) change obj for ss info fix for cover song 
+* (instalator) fix for info.connection 
+* (instalator) add 6.2.3 fix for player browser files 
+* (instalator) fix for 2FA
+* (instalator) fixed error add download 
+* (instalator) added DownloadStation task list
+
+### 0.1.2
+* (instalator) fixed error
 
 ### 0.1.1
 * (instalator) added messagebox for snapshot

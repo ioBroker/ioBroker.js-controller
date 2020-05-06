@@ -22,6 +22,12 @@ You will also need an Ethernet Shield W5100 or W5500 and an RS232 to TTL convert
 Supported models: LD750 to be...
 
 ## Changelog
+
+### 0.1.0
+  (instalator) support compact mode
+  (instalator) support admin3
+  (instalator) refactoring
+
 ### 0.0.4
   (instalator) fix error
 

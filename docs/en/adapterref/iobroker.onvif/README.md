@@ -137,6 +137,9 @@ because the adapter works by subscribing to events, the state time of `state.ts`
 
 ## Changelog
 
+### 0.4.2 (2020-05-03)
+* (haba1234) Updated admin panel
+
 ### 0.4.1 (2020-04-27)
 * (haba1234) States as an Object
 * (haba1234) Error control 'pullMessages'. Disconnect if there are more than three errors

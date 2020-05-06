@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: oH6/B1e2WUVKqSdwl85gT18ugSQxUpkvi9mR7iujG8k=
+hash: KKY58/u1GJRUBHdwjwvOqO7UzVsWcvagdNl5EiZrOVE=
 ---
 ![商标](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -241,7 +241,7 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 
 消息可以具有以下三种格式之一：
 
-*一个ID和一个状态对象：{{id：'adapter.0.device.counter'，state：{val：1，ts：10239499}}`
+*一个ID和一个状态对象：`{id：'adapter.0.device.counter'，状态：{val：1，ts：10239499}}`
 *一个ID和状态对象的数组：`{id：'adapter.0.device.counter'，state：[{val：1，ts：10239499}，{val：2，ts：10239599}，{val：3 ，ts：10239699}]}`
 *具有状态对象`[{{id：'adapter.0.device.counter1'，state：{val：1，ts：10239499}，{id：'adapter.0.device.counter2'，state： {val：2，ts：10239599}]`
 
@@ -368,209 +368,216 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 -**从最后一个值到对数的最小差**：两个值之间的最小间隔。
 -**存储保留**：值将在数据库中存储多长时间。
 
-## 1.12.3（2020-04-30）
-*（Apollon77）尝试在MSSQL上创建Indize，以加快处理速度。如果无法让用户自行执行，则会显示信息。超时是15秒
+## Changelog
 
-## 1.12.2（2020-04-30）
-*（Apollon77）MSSQL再次起作用
+### 1.12.5 (2020-05-05)
+* (Apollon77) Crash prevented for invalid objects (Sentry IOBROKER-SQL-X) 
 
-## 1.12.1（2020-04-26）
-*（Apollon77）修复了潜在的崩溃（Sentry）
+### 1.12.4 (2020-05-04)
+* (Apollon77) Potential crash fixed when disabling datapoints too fast (Sentry IOBROKER-SQL-W) 
+* (Apollon77) Always set "encrypt" flag, even if false because else might en in default true (see https://github.com/tediousjs/tedious/issues/931)
 
-## 1.12.0（2020-04-23）
-*（Apollon77）实施max Connections设置并遵守该设置，现在可以控制使用了多少个数据库并发连接（默认为100），而其他连接最多等待10s的空闲连接才失败）
-*（Apollon77）将依赖项从admin更改为全局依赖项
-*（Apollon77）还在之间更新连接状态
-*（Apollon77）修复了一些潜在的崩溃案例（Sentry报告）
-*（Omega236）将ID添加到查询的错误消息中
-*（Apollon77）更新pg以与Node.js 14保持兼容
-*（Apollon77）开始清楚地结束卸载超时...仍然有些情况！
+### 1.12.3 (2020-04-30)
+* (Apollon77) Try to create Indizes on MSSQL to speed up things. Infos are shown if not possible to be able for the user to do it themself. Timeout is 15s
 
-## 1.11.1（2020-04-19）
-* __需要js-controller> = 2.0.0__
-*（Apollon77）删除了adapter.objects的用法
-*（Apollon77）检查对象是否已更改并忽略不变
-*（Apollon77）使用js-controller 3.0添加Sentry进行错误报告
-*（Apollon77）确保忽略未定义的值
+### 1.12.2 (2020-04-30)
+* (Apollon77) MSSQL works again
 
-## 1.10.1（2020-04-12）
-*（bluefox）转换为ES6
-*（bluefox）计数器功能已实现。
+### 1.12.1 (2020-04-26)
+* (Apollon77) Fix potential crash (Sentry) 
 
-## 1.9.5（2019-05-15）
-*（Apollon77）添加对nodejs 12的支持
+### 1.12.0 (2020-04-23)
+* (Apollon77) Implement max Connections setting and respect it, now allows to control how many concurrent connections to database are used (default 100) and others wait up to 10s for a free connection before failing)
+* (Apollon77) Change dependencies to admin to a global dependency
+* (Apollon77) Update connection status also in between
+* (Apollon77) fix some potential crash cases (Sentry reported)
+* (Omega236) Add id to error message for queries
+* (Apollon77) update pg to stay compatible with nodejs 14
+* (Apollon77) Start clearly ending timeouts on unload ... still some cases left!
 
-## 1.9.4（2019-02-24）
-*（Apollon77）修复了一些较小的问题和主题
-*（Apollon77）优化文本（对于Admin v3 UI）
+### 1.11.1 (2020-04-19)
+* __Requires js-controller >= 2.0.0__
+* (Apollon77) removed usage of adapter.objects
+* (Apollon77) check if objects have changed and ignore unchanged
+* (Apollon77) Add Sentry for Error Reporting with js-controller 3.0
+* (Apollon77) Make sure value undefined is ignored
 
-## 1.9.0（2018-06-19）
-*（Apollon77）添加选项以其他ID（别名）的形式记录数据点，从而更轻松地迁移设备等
+### 1.10.1 (2020-04-12)
+* (bluefox) Converted to ES6
+* (bluefox) The counter functionality was implemented.
 
-## 1.8.0（2018-04-29）
-*（Apollon77）更新sqlite3，与nodejs 10兼容
-*（BuZZy1337）管理员修复
+### 1.9.5 (2019-05-15)
+* (Apollon77) Add support for nodejs 12
 
-## 1.7.4（2018-04-15）
-*（Apollon77）修复了getHistory
+### 1.9.4 (2019-02-24)
+* (Apollon77) Fix several smaller issues and topics
+* (Apollon77) Optimize Texts (for Admin v3 UI)
 
-## 1.7.3（2018-03-28）
-*（Apollon77）尊重“永久保留”设置，以保留数据点配置
+### 1.9.0 (2018-06-19)
+* (Apollon77) Add option to log datapoints as other ID (alias) to easier migrate devices and such
 
-## 1.7.2（2018-03-24）
-*（Apollon77）禁止为SQLite写入NULL
+### 1.8.0 (2018-04-29)
+* (Apollon77) Update sqlite3, nodejs 10 compatible
+* (BuZZy1337) Admin fix
 
-## 1.7.1（2018-02-10）
-*（Apollon77）使在开始/停止边界上写入NULL值的选项可配置
+### 1.7.4 (2018-04-15)
+* (Apollon77) Fix getHistory
 
-## 1.6.9（2018-02-07）
-*（bondrogeen）Admin3修复
-*（Apollon77）优化重新记录功能和其他功能
+### 1.7.3 (2018-03-28)
+* (Apollon77) Respect 'keep forever' setting for retention from data point configuration
 
-## 1.6.7（2018-01-31）
-*（Bluefox）Admin3修复
-*（Apollon77）重新记录和空日志修复
+### 1.7.2 (2018-03-24)
+* (Apollon77) Disable to write NULLs for SQLite
 
-## 1.6.2（2018-01-30）
-*（Apollon77）Admin3修复
+### 1.7.1 (2018-02-10)
+* (Apollon77) Make option to write NULL values on start/stop boundaries configurable
 
-## 1.6.0（2018-01-14）
-*（bluefox）准备使用Admin3
+### 1.6.9 (2018-02-07)
+* (bondrogeen) Admin3 Fixes
+* (Apollon77) optimize relog feature and other things
 
-## 1.5.8（2017-10-05）
-*（Apollon77）修复了重新记录值功能
+### 1.6.7 (2018-01-31)
+* (Bluefox) Admin3 Fixes
+* (Apollon77) Relog and null log fixes
 
-## 1.5.7（2017-08-10）
-*（bluefox）添加“保存最后一个值”选项
+### 1.6.2 (2018-01-30)
+* (Apollon77) Admin3 Fixes
 
-## 1.5.6（2017-08-02）
-*（Apollon77）修复了日志间隔的行为，以始终记录当前值
+### 1.6.0 (2018-01-14)
+* (bluefox) Ready for Admin3
 
-## 1.5.4（2017-06-12）
-*（Apollon77）修复了对其他库的依赖
+### 1.5.8 (2017-10-05)
+* (Apollon77) fix relog value feature
 
-## 1.5.3（2017-04-07）
-*（Apollon77）修复了数据类型转换
+### 1.5.7 (2017-08-10)
+* (bluefox) add "save last value" option
 
-### 1.5.0（2017-03-02）
-*（Apollon77）添加选项以定义每个数据点的存储数据类型，包括在需要时转换值
+### 1.5.6 (2017-08-02)
+* (Apollon77) fix behaviour of log interval to always log the current value
 
-### 1.4.6（2017-02-25）
-*（Apollon77）使用PostgrSQL修复拼写错误
+### 1.5.4 (2017-06-12)
+* (Apollon77) fix dependency to other library
 
-### 1.4.5（2017-02-18）
-*（Apollon77）针对较旧的配置再次进行小修正
-*（Apollon77）修复了DBConverter Analyze功能
+### 1.5.3 (2017-04-07)
+* (Apollon77) fix in datatype conversions
 
-### 1.4.3（2017-02-11）
-*（Apollon77）针对较早配置的小修复
+### 1.5.0 (2017-03-02)
+* (Apollon77) Add option to define storage datatype per datapoint inclusing converting the value if needed
 
-### 1.4.2（2017-01-16）
-*（bluefox）修复了适配器配置和数据点配置中浮点值的处理。
+### 1.4.6 (2017-02-25)
+* (Apollon77) Fix typo with PostgrSQL
+
+### 1.4.5 (2017-02-18)
+* (Apollon77) Small fix again for older configurations
+* (Apollon77) fix for DBConverter Analyze function
+
+### 1.4.3 (2017-02-11)
+* (Apollon77) Small fix for older configurations
+
+### 1.4.2 (2017-01-16)
+* (bluefox) Fix handling of float values in Adapter config and Datapoint config.
 
 ### 1.4.1
-*（Apollon77）回滚到sql-client 0.7以摆脱在较旧系统上带来问题的不可思议的依赖
+* (Apollon77) Rollback to sql-client 0.7 to get rid of the mmagic dependecy that brings problems on older systems
 
-### 1.4.0（2016-12-02）
-*（Apollon77）添加消息enableHistory / disableHistory
-*（Apollon77）仅在值与数字的最小值不同时才添加对日志更改的支持
+### 1.4.0 (2016-12-02)
+* (Apollon77) Add messages enableHistory/disableHistory
+* (Apollon77) add support to log changes only if value differs a minimum value for numbers
 
-### 1.3.4（2016-11）
-*（Apollon77）对于MySQL，允许数据库名称带有“-”
+### 1.3.4 (2016-11)
+* (Apollon77) Allow database names with '-' for MySQL
 
-### 1.3.3（2016-11）
-*（Apollon77）更新依赖
+### 1.3.3 (2016-11)
+* (Apollon77) Update dependecies
 
-### 1.3.2（2016-11-21）
-*（bluefox）用'固定字符串插入
+### 1.3.2 (2016-11-21)
+* (bluefox) Fix insert of string with '
 
-### 1.3.0（2016-10-29）
-*（Apollon77）添加选项以重新记录未更改的值，使其更易于可视化
+### 1.3.0 (2016-10-29)
+* (Apollon77) add option to re-log unchanged values to make it easier for visualization
 
-### 1.2.1（2016-08-30）
-*（bluefox）修复SQL对象的选择器
+### 1.2.1 (2016-08-30)
+* (bluefox) Fix selector for SQL objects
 
-### 1.2.0（2016-08-30）
-*（bluefox）仅与新管理员兼容
+### 1.2.0 (2016-08-30)
+* (bluefox) сompatible only with new admin
 
-### 1.0.10（2016-08-27）
-*（bluefox）将对象名称从“历史记录”更改为“自定义”
+### 1.0.10 (2016-08-27)
+* (bluefox) change name of object from "history" to "custom"
 
-### 1.0.10（2016-07-31）
-*（bluefox）如果sqlite修复了多个请求
+### 1.0.10 (2016-07-31)
+* (bluefox) fix multi requests if sqlite
 
-### 1.0.9（2016-06-14）
-*（bluefox）允许设置并行请求
+### 1.0.9 (2016-06-14)
+* (bluefox) allow settings for parallel requests
 
-### 1.0.7（2016-05-31）
-*（bluefox）如果忽略null，则在最后画线
+### 1.0.7 (2016-05-31)
+* (bluefox) draw line to the end if ignore null
 
-### 1.0.6（2016-05-30）
-*（bluefox）允许为mysql和mssql设置数据库名称
+### 1.0.6 (2016-05-30)
+* (bluefox) allow setup DB name for mysql and mssql
 
-### 1.0.5（2016-05-29）
-*（bluefox）彼此切换最大值和最小值
+### 1.0.5 (2016-05-29)
+* (bluefox) switch max and min with each other
 
-### 1.0.4（2016-05-29）
-*（bluefox）如果设置为“从不”，则检查数据保留
+### 1.0.4 (2016-05-29)
+* (bluefox) check retention of data if set "never"
 
-### 1.0.3（2016-05-28）
-*（bluefox）尝试计算旧时间戳
+### 1.0.3 (2016-05-28)
+* (bluefox) try to calculate old timestamps
 
-### 1.0.2（2016-05-24）
-*（bluefox）修复了io-package的错误
+### 1.0.2 (2016-05-24)
+* (bluefox) fix error with io-package
 
-### 1.0.1（2016-05-24）
-*（bluefox）修复SQLite错误
+### 1.0.1 (2016-05-24)
+* (bluefox) fix error with SQLite
 
-### 1.0.0（2016-05-20）
-*（bluefox）更改默认聚合名称
+### 1.0.0 (2016-05-20)
+* (bluefox) change default aggregation name
 
-### 0.3.3（2016-05-18）
-*（bluefox）修复postgres
+### 0.3.3 (2016-05-18)
+* (bluefox) fix postgres
 
-### 0.3.2（2016-05-13）
-*（bluefox）队列选择是否查询sqlite的ID和FROMs
+### 0.3.2 (2016-05-13)
+* (bluefox) queue select if IDs and FROMs queries for sqlite
 
-### 0.3.1（2016-05-12）
-*（bluefox）队列删除查询也为sqlite
+### 0.3.1 (2016-05-12)
+* (bluefox) queue delete queries too for sqlite
 
-### 0.3.0（2016-05-08）
-*（bluefox）支持自定义查询
-*（bluefox）仅同时请求一个sqlite
-*（bluefox）添加测试（原始和仅sql）
+### 0.3.0 (2016-05-08)
+* (bluefox) support of custom queries
+* (bluefox) only one request simultaneously for sqlite
+* (bluefox) add tests (primitive and only sql)
 
-### 0.2.0（2016-04-30）
-*（bluefox）支持毫秒
-*（bluefox）修复sqlite
+### 0.2.0 (2016-04-30)
+* (bluefox) support of milliseconds
+* (bluefox) fix sqlite
 
-### 0.1.4（2016-04-25）
-*（bluefox）修复了删除旧条目的问题
+### 0.1.4 (2016-04-25)
+* (bluefox) fix deletion of old entries
 
-### 0.1.3（2016-03-08）
-*（bluefox）不会两次打印错误
+### 0.1.3 (2016-03-08)
+* (bluefox) do not print errors twice
 
-### 0.1.2（2015-12-22）
-*（bluefox）修复了MS-SQL端口设置
+### 0.1.2 (2015-12-22)
+* (bluefox) fix MS-SQL port settings
 
-### 0.1.1（2015-12-19）
-*（bluefox）修复了两次输入错误
+### 0.1.1 (2015-12-19)
+* (bluefox) fix error with double entries
 
-### 0.1.0（2015-12-14）
-*（bluefox）支持字符串
+### 0.1.0 (2015-12-14)
+* (bluefox) support of strings
 
-### 0.0.3（2015-12-06）
-*（smiling_Jack）添加演示数据（待办事项：更快地插入db）
-*（smiling_Jack）更改聚合（现在与历史记录适配器相同）
-*（bluefox）错误修复
+### 0.0.3 (2015-12-06)
+* (smiling_Jack) Add demo Data ( todo: faster insert to db )
+* (smiling_Jack) change aggregation (now same as history Adapter)
+* (bluefox) bug fixing
 
-### 0.0.2（2015-12-06）
-*（bluefox）仅允许1个客户端使用SQLite
+### 0.0.2 (2015-12-06)
+* (bluefox) allow only 1 client for SQLite
 
-### 0.0.1（2015-11-19）
-*（bluefox）初始提交
-
-## Changelog
+### 0.0.1 (2015-11-19)
+* (bluefox) initial commit
 
 ## License
 
