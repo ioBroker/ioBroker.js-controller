@@ -50,7 +50,7 @@
         "@types/event-stream": "^3.3.34",
         "@types/iobroker": "^3.0.6",
         "@types/mocha": "^7.0.2",
-        "@types/node": "^13.13.4",
+        "@types/node": "^13.13.5",
         "@types/yargs": "^15.0.4",
         "chai": "^4.2.0",
         "chai-as-promised": "^7.1.1",
