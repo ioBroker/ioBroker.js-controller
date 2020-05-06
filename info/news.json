@@ -702,8 +702,7 @@
         "class": "warning",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-07T00:00:00.000Z",
-	"repo": "latest",
-        "conditions": {
+	"conditions": {
             "deconz": "smaller(1.3.6)"
         }
     }
