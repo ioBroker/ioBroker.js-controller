@@ -672,5 +672,39 @@
         "conditions": {
             "mydlink": "smaller(1.0.0)"
         }
+    },
+    {
+        "title": {
+            "en": "deconz: Important! Delete adapter before update",
+	    "de": "deconz: Wichtig! Adapter vor dem Update löschen",
+	    "ru": "deconz: Важно! Удалить адаптер перед обновлением",
+	    "pt": "deconz: Importante! Excluir adaptador antes da atualização",
+	    "nl": "deconz: Belangrijk! Verwijder adapter voor update",
+	    "fr": "deconz: Important! Supprimer l'adaptateur avant la mise à jour",
+	    "it": "deconz: Importante! Elimina l'adattatore prima dell'aggiornamento",
+	    "es": "deconz: ¡Importante! Eliminar adaptador antes de actualizar",
+	    "pl": "deconz: Ważne! Usuń adapter przed aktualizacją",
+	    "zh-cn": "deconz：重要！更新前删除适配器"
+        },
+        "content": {
+            "en": "To prevent issues save your API Key and delete the adapter than install new, espacially if you com from a version <1.3.x. The minimum js-controller version must be 2.2.9 and nodejs 10.",
+	    "de": "Um Probleme zu vermeiden, speichern Sie Ihren API-Schlüssel und löschen Sie den Adapter, bevor Sie ihn neu installieren, insbesondere wenn Sie von einer Version <1.3.x kommen. Die minimale js-controller-Version muss 2.2.9 und nodejs 10 sein.",
+	    "ru": "Во избежание проблем сохраните ваш ключ API и удалите адаптер, а не устанавливайте новый, особенно если вы используете версию с версией <1.3.x. Минимальная версия js-контроллера должна быть 2.2.9, а nodejs 10.",
+	    "pt": "Para evitar problemas, salve sua chave API e exclua o adaptador e instale novo, espacialmente, se você vier de uma versão <1.3.x. A versão mínima do controlador js deve ser 2.2.9 e nodejs 10.",
+	    "nl": "Om problemen te voorkomen, slaat u uw API-sleutel op en verwijdert u de adapter en installeert u deze nieuw, vooral als u een versie <1.3.x gebruikt. De minimale js-controller-versie moet 2.2.9 en nodejs 10 zijn.",
+	    "fr": "Pour éviter les problèmes, enregistrez votre clé API et supprimez l'adaptateur plutôt que d'installer un nouveau, surtout si vous utilisez une version <1.3.x. La version minimale du contrôleur js doit être 2.2.9 et nodejs 10.",
+	    "it": "Per evitare problemi, salva la tua chiave API ed elimina l'adattatore anziché installarne di nuovi, soprattutto se hai una versione <1.3.x. La versione minima del controller js deve essere 2.2.9 e nodejs 10.",
+	    "es": "Para evitar problemas, guarde su clave API y elimine el adaptador que instale nuevo, espacialmente si viene de una versión <1.3.x. La versión mínima del controlador js debe ser 2.2.9 y nodejs 10.",
+	    "pl": "Aby uniknąć problemów, zapisz klucz API i usuń adapter niż zainstaluj nowy, szczególnie jeśli korzystasz z wersji <1.3.x. Minimalna wersja kontrolera js musi wynosić 2.2.9 i nodejs 10.",
+	    "zh-cn": "为防止出现问题，请保存API密钥并删除适配器，然后再安装新适配器，尤其是如果您使用的是<1.3.x版本的com。最低js-controller版本必须为2.2.9和nodejs 10。"
+        },
+        "id": "deconzAdapter",
+        "class": "warning",
+        "fa-icon": "exclamation-circle",
+        "created": "2020-05-07T00:00:00.000Z",
+	"repo": "latest",
+        "conditions": {
+            "deconz": "smaller(1.3.6)"
+        }
     }
 ]
