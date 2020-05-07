@@ -21,7 +21,8 @@
 * (Apollon77) make sure Objects/States backup files are deleted correctly according to backup settings
 * (foxriver76) Make sure default state value is only set if state is not existing also in setObject
 * (foxriver76) check that alias is of type state when adding subscribing pattern
-
+* (Apollon77) Make sure error are checked correctly (Sentry IOBROKER-JS-CONTROLLER-1N) 
+* (Apollon77) Inform about sentry activation if not configured on "iobroker setup first"
 
 ## 3.0.20 (2020-04-28) Release Elena
 * (Apollon77) make sure disabling instances while installation is running do not crash the controller (Sentry IOBROKER-JS-CONTROLLER-Z) 

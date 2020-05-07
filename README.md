@@ -603,6 +603,11 @@ ioBroker allows to use a Redis Sentinel system. For this you use ```iobroker cus
 
 With such a setup, ioBroker will connect to one of these sentinel processes to get the current Master Redis and then connect to it. When the connection to the Master is disconnected, all data updates are cached and transmitted as soon as a connection to the new master has been established.
 
+##### Using Password for Redis Databases
+**Feature status:** Stable
+
+
+
 ### Certificate Handling
 
 ... CLI
