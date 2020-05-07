@@ -46,6 +46,6 @@
         "no-trailing-spaces": "error"
     },
     "parserOptions": {
-        "ecmaVersion": 2018
+        "ecmaVersion": 2019
     }
 }
