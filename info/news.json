@@ -736,7 +736,7 @@
         "fa-icon": "exclamation-circle",
         "created": "2020-05-09T00:00:00.000Z",
 	"conditions": {
-            "deconz": "smaller(0.5.0)"
+            "unifi": "smaller(0.5.0)"
         }
     }
 ]
