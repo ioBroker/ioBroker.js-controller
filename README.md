@@ -829,6 +829,8 @@ Following adapter methods support maintenance mode:
 - adapter.delBinaryState
 ```
 
+*** Do not use this mode for any other purposes except sanitizing/cleaning/repairing of existing DBs (Object and States)***
+
 ## Release cycle and Development process overview
 
 The goal is to release an update for the js-controller roughly all 6 months (April/September). The main reasons for this are shorter iterations and fewer changes that can be problematic for the users (and getting fast feedback) and also trying to stay up-to-date with the dependencies.
