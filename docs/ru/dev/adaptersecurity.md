@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/adaptersecurity.md
 title: Функции безопасности для разработчиков адаптеров
-hash: nro6IumPrOwuLGuI6ZK1+D2oeAgQ3g+tn7+OvT1fuAU=
+hash: iXhVBmKdkGTG6U453IC5CTNS5Wb5kjpTybMEUkvUEUs=
 ---
 # Функции безопасности для разработчиков адаптеров
 ## Запретить доступ других адаптеров к конфиденциальным данным
@@ -33,7 +33,7 @@ __Пример__:
 
 __В настоящее время используется алгоритм шифрования__: `default`
 
-Обратите внимание, что для этой функции требуется как минимум js-контроллер 3.0.0.
+Обратите внимание, что эта функция требует как минимум js-controller 3.0.0.
 
 __Пример__:
 

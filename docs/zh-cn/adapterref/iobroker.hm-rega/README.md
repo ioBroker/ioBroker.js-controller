@@ -4,9 +4,9 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
+hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 ---
-![徽标](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
+![商标](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
 ＃HomeMatic ReGaHSS
 ## Homematic
@@ -16,7 +16,7 @@ hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 
 [来源](https://www.eq-3.de/produkte/homematic.html)
 
-##适配器Homematic ReGaHss
+## Homematic ReGaHss适配器
 该适配器建立到Homematic逻辑层“ ReGaHSS”（** Re ** **网关）的连接。
 它在Homematic和ioBroker之间同步实名，系统变量，房间，交易和程序。
 
@@ -24,7 +24,7 @@ hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 
 安装ReGaHSS后，将安装适配器“ hm-rpc”的实例，应事先对其进行配置和激活。
 
-此适配器的一个实例最多可以管理5个不同的Homematic RPC适配器实例，这些实例提供不同的服务（每个服务需要其自己的RPC实例）：
+此适配器的一个实例最多可以管理5个不同的Homematic RPC适配器实例，这些实例提供不同的服务（每个服务都需要自己的RPC实例）：
 
 -rfd（标准组件的CCU无线电服务）
 -hs485d（有线）（用于总线组件）
@@ -34,17 +34,17 @@ hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 
 ###安装之前的要求
 -Homematic网关（CCU / CCU2 / CCU3…）*或*
--具有合适软件（piVCCU（* x）*，RaspberryMatic或类似软件）的无线电模块
+-带有合适软件（piVCCU（* x）*，RaspberryMatic或类似软件）的无线电模块
 
 ##安装
 适配器的实例是通过ioBroker管理界面安装的。
 
 安装完成后，配置窗口将自动打开。
 
-在实际配置之前，应创建并配置HM-RPC适配器的实例（与此适配器一起创建），或者如果需要，还可以创建和配置其他HM-RPC实例。
+在实际配置之前，应创建并配置HM-RPC适配器实例（使用此适配器创建），或者，如果需要，还可以创建其他HM-RPC实例。
 
 ##配置
-![](../../../de/adapterref/iobroker.hm-rega/media/01c7dbc4da0240421b0711b331971d2d.png)**上方的选择菜单**
+![](../../../de/adapterref/iobroker.hm-rega/media/01c7dbc4da0240421b0711b331971d2d.png)**上面的选择菜单**
 
 可以在上方的选择菜单中选择三个不同的区域：
 
@@ -63,7 +63,7 @@ hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 
 如果激活，则CCU会根据“间隔”字段中设置的秒数定期查询RegaHSS数据。间隔不应设置得太低，因为轮询过多会导致CCU崩溃。
 
-扳机
+触发
 
 为了最大程度地减少从ioBroker到RegaHSS的活动查询，触发器还可以根据程序中CCU上的更改推送数据。
 为此，可以使用CCU的虚拟密钥，该密钥在CCU程序中触发。默认情况下，这是BidCosRF.50.PRESS_SHORT键（请参阅示例程序）。
@@ -87,7 +87,7 @@ hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ###实例
 ![](../../../de/adapterref/iobroker.hm-rega/media/44785b82964bcdc198565b1681787dc0.png)**实例和信号**
 
-现在，可以在ioBroker的*实例*区域中找到创建的实例。左侧的交通信号灯系统显示适配器是已激活还是已连接到CCU。
+现在可以在ioBroker的*实例*区域中找到创建的实例。左侧的交通信号灯系统显示适配器是已激活还是已连接到CCU。
 
 如果将鼠标指针放在符号上，则会获得详细信息。
 
@@ -105,7 +105,7 @@ CCU和info文件夹包含网关的基本信息。
 
 最后，列出在CCU中创建的变量
 
-###常见问题
+＃＃＃ 常问问题
 
 ## Changelog
 ### 2.6.6 (2020-05-06)
