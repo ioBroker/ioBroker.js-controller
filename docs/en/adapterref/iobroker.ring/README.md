@@ -60,6 +60,9 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 
 ## Changelog
 
+### 1.1.3 (06.05.2020)
+* (Stübi) Fixed error of missing objects 
+
 ### 1.1.2 (02.05.2020)
 * (Stübi) Fixed health info like missing battery status (Issue #22, Issue #25) 
 * (Stübi) Change error handling

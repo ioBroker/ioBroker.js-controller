@@ -19,6 +19,9 @@ See also the [MPD Protocol Documentation](http://www.musicpd.org/doc/protocol/).
 
 ## Changelog
 
+#### 1.0.5
+* (instalator) fix error state
+
 #### 1.0.4
 * (instalator) Changed the appearance of the settings
 * (instalator) Added support compact mode

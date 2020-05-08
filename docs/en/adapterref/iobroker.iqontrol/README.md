@@ -298,7 +298,11 @@ In addition to normal thermostat you can define:
 ****
 
 ## Changelog
-### 0.3.6
+
+### 0.3.7 (2020-05-06)
+* (Sebastian Bormann) Added more options to timestamp.
+
+### 0.3.6 (2020-05-05)
 * (Sebastian Bormann) Added failback to variables
 * (Sebastian Bormann) Added option to add timestamp to state
 

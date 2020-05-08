@@ -64,6 +64,11 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 
 ## Changelog
 
+### 0.1.8
+* (instalator) fix error addDownload
+* (instalator) fixed listRadios
+* (instalator) fixed get cover
+
 ### 0.1.7
 * (instalator) fixed 2FA
 * (instalator) Added setup guide 2FA

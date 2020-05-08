@@ -245,6 +245,8 @@ sendTo('influxdb.0', 'getEnabledDPs', {}, function (result) {
 
 
 ## Changelog
+### 1.8.5 (2020-05-08)
+* (bluefox) set default history if not yet set
 
 ### 1.8.4 (2020-05-02)
 * (Apollon77) make sure disabling of datapoints do not crash adapter (Sentry IOBROKER-INFLUXDB-4)

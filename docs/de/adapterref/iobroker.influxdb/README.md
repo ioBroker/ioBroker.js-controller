@@ -107,6 +107,8 @@ Wählt man in der Titelzeile unter Historie "mit" oder "influxdb.0" aus, werden
 Die Beschreibung einer Installation einer influxDB-Datenbank folgt.
 
 ## Changelog
+### 1.8.5 (2020-05-08)
+* (bluefox) set default history if not yet set
 
 ### 1.8.4 (2020-05-02)
 * (Apollon77) make sure disabling of datapoints do not crash adapter (Sentry IOBROKER-INFLUXDB-4)

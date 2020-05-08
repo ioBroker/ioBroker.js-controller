@@ -42,6 +42,11 @@ delayed by polling interval (can be set in config).
 The adapter does not interfere with the use of the app.
 
 ## Changelog
+### 1.0.9 (2020-05-07)
+* Fixed: changes in configuration were not respected once devices were created
+* Fixed: re-login to device on switching if polling is disabled
+* Fixed: Error output on switching now more informative
+
 ### 1.0.8 (2020-05-05)
 * Fixed switching, was broken in some circumstances by id changes.
 

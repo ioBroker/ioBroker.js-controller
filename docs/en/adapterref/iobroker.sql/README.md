@@ -357,7 +357,9 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Storage retention**: How long the values will be stored in the DB.
 
 ## Changelog
-
+### 1.12.6 (2020-05-08)
+* (bluefox) set default history if not yet set
+ 
 ### 1.12.5 (2020-05-05)
 * (Apollon77) Crash prevented for invalid objects (Sentry IOBROKER-SQL-X) 
 

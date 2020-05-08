@@ -18,10 +18,14 @@ Switch TP-Link Plug and Bulb
 <b>NodeJs >> 8.x.x </b>
 
 ## Changelog
+
+### 1.1.5 (2020-05-08)
+* (arteck) new error handling
+
 ### 1.1.2 (2020-04-28)
 * (arteck) update create state
 * (arteck) update tplink-smarthome-*
-* 
+ 
 ### 1.1.1 (2020-02-16)
 * (arteck) support compact mode
 

@@ -17,6 +17,9 @@ Receiving data from heat meters Sanext
 
 ## Changelog
 
+### 0.0.4
+* (instalator) fixed error
+
 ### 0.0.3
 * (GermanBluefox) Formatting and timer behavior cleaning
 

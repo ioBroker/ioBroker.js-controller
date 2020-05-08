@@ -7,6 +7,8 @@ import {FaUsers as IconForum} from 'react-icons/fa';
 import {FaAddressCard as IconUsers} from 'react-icons/fa';
 import {FaComments as IconPosts} from 'react-icons/fa';
 import {FaComment as IconThemes} from 'react-icons/fa';
+import {MdCloud as IconCloud} from 'react-icons/md';
+import ServerImg from '../assets/iob-server.png';
 
 import Footer from '../Footer';
 import ForumInfo from '../Components/ForumInfo';
@@ -71,7 +73,44 @@ const styles = theme => ({
         fontFamily: 'Audiowide, sans-serif',
         cursor: 'pointer'
     },
-
+    serverButton: {
+        marginTop: 100,
+        paddingTop: 25,
+        height: 45,
+        borderRadius: 100,
+        textTransform: 'uppercase',
+        background: '#3399CC',
+        color: '#FFFFFF',
+        textAlign: 'center',
+        fontSize: 20,
+        opacity: 0.9,
+        fontFamily: 'Audiowide, sans-serif',
+        cursor: 'pointer'
+    },
+    serverButtonImage: {
+        width: 50,
+        height: 40,
+        marginRight: 10,
+        verticalAlign: 'top',
+        marginTop: -8,
+    },
+    serverButtonText: {
+        whiteSpace: 'nowrap',
+        display: 'inline-block',
+        verticalAlign: 'top',
+    },
+    cloudButtonIcon: {
+        width: 32,
+        height: 32,
+        marginRight: 5,
+        verticalAlign: 'top',
+        marginTop: -3,
+    },
+    cloudButtonText: {
+        whiteSpace: 'nowrap',
+        display: 'inline-block',
+        verticalAlign: 'top',
+    },
     darkPart: theme.palette.darkPart,
     lightPart: theme.palette.lightPart,
 });
@@ -132,9 +171,34 @@ class Intro extends Component {
 
         return (<div style={{
             marginTop: smallMargin ? 10 : undefined,
-            width: long ? 300 : 200,
-            marginLeft: long ? 'calc(50% - 150px)' : 'calc(50% - 100px)'
-        }} className={this.props.classes.cloudButton} onClick={() => window.document.location = 'https://iobroker.pro/accountRemote'}>{I18n.t('get cloud')}</div>)
+            width: long ? 330 : 230,
+            marginLeft: long ? 'calc(50% - 165px)' : 'calc(50% - 115px)'
+        }} className={this.props.classes.cloudButton} onClick={() => window.document.location = 'https://iobroker.pro/accountRemote'}>
+            <IconCloud className={ this.props.classes.cloudButtonIcon }/>
+            <div className={ this.props.classes.cloudButtonText }>{I18n.t('get cloud')}</div>
+        </div>)
+    }
+
+    renderServer() {
+        const smallMargin = window.screen.height < 500;
+
+        const long = I18n.getLanguage() === 'ru';
+
+        return (<div
+                    style={{
+                        marginTop: smallMargin ? 10 : undefined,
+                        width: long ? 500 : 350,
+                        marginLeft: long ? 'calc(50% - 250px)' : 'calc(50% - 175px)'
+                    }}
+                    className={ this.props.classes.serverButton }
+                    onClick={() => {
+                        const win = window.open('https://iobroker.com/shop', '_blank');
+                        win.focus();
+                    }}
+        >
+            <img className={ this.props.classes.serverButtonImage } src={ServerImg} alt="server"/>
+            <div className={ this.props.classes.serverButtonText }>{I18n.t('buy IOB server')}</div>
+        </div>)
     }
 
     // What differs ioBroker from other open source automation platforms?
@@ -167,7 +231,8 @@ class Intro extends Component {
                         <div  className={this.props.classes.titleDescription}>Open source automation platform</div>
                     </div>
                 </div>
-                {this.renderCloud()}
+                {/*this.renderCloud()*/}
+                {this.renderServer()}
                 {!this.props.mobile ? (<LinusShell
                     header={I18n.t('install on linux')}
                     copyTitle={I18n.t('copy to clipboard')}
@@ -181,7 +246,7 @@ class Intro extends Component {
             (<Subscribe key="subscribe" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
             (<Press key="press" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
             (<Adapters key="adapters" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language} onNavigate={this.props.onNavigate}/>),
-            (<Screenshots key="adapters" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language} onNavigate={this.props.onNavigate}/>),
+            (<Screenshots key="screenshots" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language} onNavigate={this.props.onNavigate}/>),
             (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>),
         ];
     }

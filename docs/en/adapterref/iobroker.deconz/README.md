@@ -37,6 +37,12 @@ Required node.js >= 10.x.x
 ### 1.3.6
 * fix object definition dimup and dimdown
 
+### 1.3.7
+* stable re-release
+
+### 1.3.6
+* fix object definition dimup and dimdown
+
 ### 1.3.5
 * disable node v8 tests
 * fix createscene object definition

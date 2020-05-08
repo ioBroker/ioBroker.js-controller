@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: anOSc88zA6i8s7Xoblhm727huSUtKa+Z4Ydd4A7nSZg=
+hash: PjF2jptQFzLAzlK4b4PHvZ93TS8NMOg+4cYhuz9a16A=
 ---
 ![商标](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
@@ -21,9 +21,9 @@ hash: anOSc88zA6i8s7Xoblhm727huSUtKa+Z4Ydd4A7nSZg=
 ### Настройка
 1.ОткрытьНастройкидрайвера
 2.Нажатькнопкусканирования（сверхусправа）
-3.Ввестинеобходимыенастройкиилиоставитьпоумолчанию：startRange-начальныйipадресдиапазонасканировани
+3.Ввестинеобходимыенастройкиилиоставитьпоумолчанию：
 
-终端范围-конечныйipадресдиапазонасканирования，端口列表-череззапятуюпортысервисаonvif（密码оооччи）：80，80，575，-
+终端范围-конечныйipадресдиапазонасканирования，端口列表-череззапятуюпортысервисаonvif（密码ооочонии）：80，80，575，-
 
 4.Нажать开始扫描
 
@@ -34,8 +34,8 @@ hash: anOSc88zA6i8s7Xoblhm727huSUtKa+Z4Ydd4A7nSZg=
 События, которые генерирует камера, появятся в объектах вида:
 
 ```
-onvif.0.192_168_1_4_80.message.tns1:RuleEngine/FieldDetector/ObjectsInside
-onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
+onvif.0.122_116_220_230_2033.message.ruleengine.cellmotiondetector.motion.IsMotion
+onvif.0.122_116_220_230_2033.message.ruleengine.tamperdetector.tamper.IsTamper
 ```
 
 ### Запрос снапшота
@@ -47,7 +47,7 @@ onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
 const fs = require('fs');
 
 function getSnapshot(caption){
-    sendTo('onvif.0', 'saveFileSnapshot', {"id":"onvif.0.192_168_1_4_80", "file":"/opt/cameras/snapshot.jpg"}, (data) => {
+    sendTo('onvif.0', 'saveFileSnapshot', {"id":"192_168_1_4_80", "file":"/opt/cameras/snapshot.jpg"}, (data) => {
         console.log('image принят: ' + data);
         if (data === "OK")
             sendTo('telegram.0', {text: '/opt/cameras/snapshot.jpg', caption: caption});
@@ -56,7 +56,26 @@ function getSnapshot(caption){
 ```
 
 *说明*-заголовокдлякартинкивтелеграме。
-Вызыватьможнокакпособытию，такипокнопке/рассписанию
+Вызыватьможнокакпособытию，такипокнопке/рассписанию。
+
+缓冲区或缓冲区：
+
+```
+function getSnapshot(){
+    sendTo('onvif.0', 'getSnapshot', {"id":"192_168_1_4_80"}, (result) => {
+        if (result.err) log(result);
+        if (result.img){
+			log('image принят: ' + typeof result.img);
+            sendTo('telegram.0', {
+                user: 'user',
+                text: result.img.rawImage,
+                type: 'photo',
+                caption: 'Camera 1'
+			});
+		}
+    });
+}
+```
 
 ### События Камеры
 натобыотключитьподпискунасобытияоткамеры，необходимовыставитьсостояние`subscribeEvents = false`иперезапуста。
@@ -92,8 +111,8 @@ startRange-扫描范围的起始ip地址，End Range-扫描范围的终止ip地�
 摄像机生成的事件将显示在以下对象中：
 
 ```
-onvif.0.192_168_1_4_80.message.tns1:RuleEngine/FieldDetector/ObjectsInside
-onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
+onvif.0.122_116_220_230_2033.message.ruleengine.cellmotiondetector.motion.IsMotion
+onvif.0.122_116_220_230_2033.message.ruleengine.tamperdetector.tamper.IsTamper
 ```
 
 ###快照请求
@@ -105,17 +124,34 @@ onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
 const fs = require('fs');
 
 function getSnapshot(caption){
-    sendTo('onvif.0', 'saveFileSnapshot', {"id":"onvif.0.192_168_1_4_80", "file":"/opt/cameras/snapshot.jpg"}, (data) => {
-        console.log('image принят: ' + data);
+    sendTo('onvif.0', 'saveFileSnapshot', {"id":"192_168_1_4_80", "file":"/opt/cameras/snapshot.jpg"}, (data) => {
+        console.log('image received: ' + data);
         if (data === "OK")
             sendTo('telegram.0', {text: '/opt/cameras/snapshot.jpg', caption: caption});
     });
 }
 ```
 
-*说明*-前往电报中的图片
+*标题*-前往电报中的图像可能在事件中以及根据按钮/时间表导致事件。
 
-既可能导致事件发生，也可能导致按钮/时间表发生
+加载到文件位置的中间Buffer中的选项：
+
+```
+function getSnapshot(){
+    sendTo('onvif.0', 'getSnapshot', {"id":"192_168_1_4_80"}, (result) => {
+        if (result.err) log(result);
+        if (result.img){
+			log('image received: ' + typeof result.img);
+            sendTo('telegram.0', {
+                user: 'user',
+                text: result.img.rawImage,
+                type: 'photo',
+                caption: 'Camera 1'
+			});
+		}
+    });
+}
+```
 
 ###相机事件
 要从摄像机断开对事件的订阅，您需要设置状态`subscribeEvents = false`并重新启动适配器。
@@ -136,9 +172,20 @@ function getSnapshot(caption){
 
 ## Changelog
 
-### 0.4.0 (2020-04-26)
+### 0.4.3 (2020-05-08)
+* (haba1234) Snapshot preview is squeezed
+* (haba1234) Preview is buffered and not requested again
+* (haba1234) After a minute, re-subscribe to camera events after 4 errors
+* (haba1234) Support digest authentification
+* (haba1234) node >= 10
+
+### 0.4.2 (2020-05-03)
+* (haba1234) Updated admin panel
+
+### 0.4.1 (2020-04-27)
 * (haba1234) States as an Object
 * (haba1234) Error control 'pullMessages'. Disconnect if there are more than three errors
+* (haba1234) Encryption disabled. Compatibility issues
 
 ### 0.3.0 (2020-04-24)
 * (haba1234) Added support for the Discovery adapter

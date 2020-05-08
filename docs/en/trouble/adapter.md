@@ -1,12 +1,35 @@
 ---
-title: Troubleshooting - Adapter error
+title: Resolve adapters errors
 lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/trouble/adapter.md
-translatedFrom: de
-translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
-hash: 0kInk6qgZY8klUK323jmfledPo0H+YZwkCh3RKLErAQ=
 ---
 # Resolve adapters errors
-?> ***This is a wildcard*** . <br><br> Help with ioBroker and extend this article. Please note the [ioBroker style guide](community/styleguidedoc), so that the changes can be adopted more easily.
+To see more errors by the adapter you can start it in the console:
+```
+cd /opt/iobroker
+iobroker stop ADAPTERNAME
+node node_modules/iobroker.ADAPTERNAME/main.js --debug
+```
 
-@@@ link to the adapter reference @@@
+If you see the error message `Cannot find module 'C:\pWork\node_modules\ioBroker.ADAPTERNAME\main.js`, try to execute: 
+```
+node node_modules/iobroker.ADAPTERNAME/ADAPTERNAME.js --debug
+```
+
+Of course the `ADAPTERNAME` must be replaced with the adapter name which you want to debug.
+
+E.g.: 
+```
+cd /opt/iobroker
+iobroker stop s7
+node node_modules/iobroker.s7/main.js --debug
+```
+
+Sometimes the rebuild of adapter is required, if the node was updated. To do that, call:
+```
+cd /opt/iobroker
+iobroker stop ADAPTERNAME
+npm rebuild iobroker.ADAPTERNAME
+```
+
+

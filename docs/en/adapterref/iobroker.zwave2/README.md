@@ -21,9 +21,14 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
-* Breaking Change: Raised minimum Node.js version to 10
-* Improved performance of the network cache. This significantly reduces CPU consumption during the adapter startup.
+### 0.12.0 (2020-05-08)
+* **BREAKING**: Raised minimum Node.js version to 10
+* **BREAKING**: Some duplicate states for the root endpoint have been removed
+* The network heal now updates the routes from all nodes to the controller and between associated nodes
+* Significantly reduced CPU consumption and filesystem accesses during the adapter startup
+* Added support for the `Color Switch CC`
+* Fixed a crash that happened when trying to set an invalid configuration value
+* Updated dependencies
 
 ### 0.11.7 (2020-04-25)
 * Fixed a crash that happened when setting invalid values in ioBroker

@@ -23,6 +23,9 @@ Supported models: W1200, W1070, W1080 to be...
 
 ## Changelog
 
+### 0.2.2
+ * (instalator) fixed clearTimeout
+
 ### 0.2.1
  * (instalator) support compact mode
  * (instalator) support admin3

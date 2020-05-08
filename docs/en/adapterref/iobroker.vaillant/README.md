@@ -21,17 +21,17 @@ Change objects in the folders configuration. Some configuration will only work w
 
 ## Changelog
 
-### 0.0.9
+### 0.0.10
 
-- fix issue with js-controller 3
+-   fix issue with js-controller 3
 
 ### 0.0.8
 
-- (TA2k) Fix Authorization problem and missing configuration states
+-   (TA2k) Fix Authorization problem and missing configuration states
 
 ### 0.0.6
 
-- (TA2k) initial release
+-   (TA2k) initial release
 
 ## License
 

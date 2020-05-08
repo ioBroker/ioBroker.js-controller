@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: anOSc88zA6i8s7Xoblhm727huSUtKa+Z4Ydd4A7nSZg=
+hash: PjF2jptQFzLAzlK4b4PHvZ93TS8NMOg+4cYhuz9a16A=
 ---
 ![логотип](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
@@ -34,8 +34,8 @@ hash: anOSc88zA6i8s7Xoblhm727huSUtKa+Z4Ydd4A7nSZg=
 События, которые генерирует камера, появятся в объектах вида:
 
 ```
-onvif.0.192_168_1_4_80.message.tns1:RuleEngine/FieldDetector/ObjectsInside
-onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
+onvif.0.122_116_220_230_2033.message.ruleengine.cellmotiondetector.motion.IsMotion
+onvif.0.122_116_220_230_2033.message.ruleengine.tamperdetector.tamper.IsTamper
 ```
 
 ### Запрос снапшота
@@ -47,7 +47,7 @@ onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
 const fs = require('fs');
 
 function getSnapshot(caption){
-    sendTo('onvif.0', 'saveFileSnapshot', {"id":"onvif.0.192_168_1_4_80", "file":"/opt/cameras/snapshot.jpg"}, (data) => {
+    sendTo('onvif.0', 'saveFileSnapshot', {"id":"192_168_1_4_80", "file":"/opt/cameras/snapshot.jpg"}, (data) => {
         console.log('image принят: ' + data);
         if (data === "OK")
             sendTo('telegram.0', {text: '/opt/cameras/snapshot.jpg', caption: caption});
@@ -56,7 +56,26 @@ function getSnapshot(caption){
 ```
 
 * заголовок * - заголовок для картинки в телеграме.
-Вызывать можно как по событию, так и по кнопке / рассписанию
+Вызывать можно как по событию, так и по кнопке / рассписанию.
+
+Вариант загрузки в промежуточный буфер в место файла:
+
+```
+function getSnapshot(){
+    sendTo('onvif.0', 'getSnapshot', {"id":"192_168_1_4_80"}, (result) => {
+        if (result.err) log(result);
+        if (result.img){
+			log('image принят: ' + typeof result.img);
+            sendTo('telegram.0', {
+                user: 'user',
+                text: result.img.rawImage,
+                type: 'photo',
+                caption: 'Camera 1'
+			});
+		}
+    });
+}
+```
 
 ### События Камеры
 Подписать на события от камеры, необходимо выставить состояние `subscribeEvents = false` и перезапустить адаптер.
@@ -73,7 +92,7 @@ function getSnapshot(caption){
 
 `Value` - значение / состояние, `UtcTime` - время изменения значения / состояние
 
-Т.к. Адаптер работает над подписью о событиях, в то время как в состоянии `state.ts` может не совпадать с реальным временем событий в камере.
+Т.к. Адаптер работает по подписке на события, в то время, состояние, `state.ts` может не совпадать с реальным временем события в камере.
 
 ## ENG
 ### Настройка
@@ -92,8 +111,8 @@ startRange - начальный IP-адрес диапазона сканиро�
 События, генерируемые камерой, будут отображаться в следующих объектах:
 
 ```
-onvif.0.192_168_1_4_80.message.tns1:RuleEngine/FieldDetector/ObjectsInside
-onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
+onvif.0.122_116_220_230_2033.message.ruleengine.cellmotiondetector.motion.IsMotion
+onvif.0.122_116_220_230_2033.message.ruleengine.tamperdetector.tamper.IsTamper
 ```
 
 ### Запрос снимка
@@ -105,21 +124,38 @@ onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
 const fs = require('fs');
 
 function getSnapshot(caption){
-    sendTo('onvif.0', 'saveFileSnapshot', {"id":"onvif.0.192_168_1_4_80", "file":"/opt/cameras/snapshot.jpg"}, (data) => {
-        console.log('image принят: ' + data);
+    sendTo('onvif.0', 'saveFileSnapshot', {"id":"192_168_1_4_80", "file":"/opt/cameras/snapshot.jpg"}, (data) => {
+        console.log('image received: ' + data);
         if (data === "OK")
             sendTo('telegram.0', {text: '/opt/cameras/snapshot.jpg', caption: caption});
     });
 }
 ```
 
-* заголовок * - идет к картинке в Telegram
+* заголовок * - идет к картинке в Telegram. Вызывать можно как по событию, так и по кнопке / расписанию.
 
-Вызывать можно как по событию, так и по кнопке / расписанию
+Возможность загрузки в промежуточный буфер в расположении файла:
+
+```
+function getSnapshot(){
+    sendTo('onvif.0', 'getSnapshot', {"id":"192_168_1_4_80"}, (result) => {
+        if (result.err) log(result);
+        if (result.img){
+			log('image received: ' + typeof result.img);
+            sendTo('telegram.0', {
+                user: 'user',
+                text: result.img.rawImage,
+                type: 'photo',
+                caption: 'Camera 1'
+			});
+		}
+    });
+}
+```
 
 ### События камеры
 Чтобы отключить подписку на события с камеры, необходимо установить состояние `subscribeEvents = false` и перезапустить адаптер.
-При смене в админке адаптер автоматически перезагружается.
+При изменении в админ-панели адаптер автоматически перезагружается.
 
 События имеют тип «Объект», например:
 
@@ -132,13 +168,24 @@ function getSnapshot(caption){
 
 `Value` - значение / состояние, `UtcTime` - время изменения состояния
 
-Поскольку адаптер работает, подписываясь на события, время состояния `state.ts` может не совпадать с реальным временем события в камере.
+поскольку адаптер работает путем подписки на события, время состояния `state.ts` может не совпадать с реальным временем события в камере.
 
 ## Changelog
 
-### 0.4.0 (2020-04-26)
+### 0.4.3 (2020-05-08)
+* (haba1234) Snapshot preview is squeezed
+* (haba1234) Preview is buffered and not requested again
+* (haba1234) After a minute, re-subscribe to camera events after 4 errors
+* (haba1234) Support digest authentification
+* (haba1234) node >= 10
+
+### 0.4.2 (2020-05-03)
+* (haba1234) Updated admin panel
+
+### 0.4.1 (2020-04-27)
 * (haba1234) States as an Object
 * (haba1234) Error control 'pullMessages'. Disconnect if there are more than three errors
+* (haba1234) Encryption disabled. Compatibility issues
 
 ### 0.3.0 (2020-04-24)
 * (haba1234) Added support for the Discovery adapter

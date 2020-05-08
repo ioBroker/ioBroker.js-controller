@@ -151,7 +151,7 @@ class SupportUs extends Component {
                     <CardContent>
                         <h5>{I18n.t('Amazon Affiliate Links')}</h5>
                         <Button className={classes.amazonButton} onClick={() => Utils.openLink(AMAZON_LINK)}>{I18n.t('Buy at Amazon')}</Button>
-                        <p style={{textAlign: 'left'}}>{I18n.t('Amazon explanation')}</p>
+                        <div style={{textAlign: 'left'}}>{I18n.t('Amazon explanation')}</div>
                     </CardContent>
                 </CardActionArea>
             </Card>
@@ -183,7 +183,7 @@ class SupportUs extends Component {
         const {classes} = this.props;
 
         return (
-            <Card key="mug" className={classes.card + ' ' + (this.props.mobile ? this.props.classes.cardMobile : '')}>
+            <Card key="tshirt" className={classes.card + ' ' + (this.props.mobile ? this.props.classes.cardMobile : '')}>
                 <CardActionArea onClick={() => Utils.openLink(TSHIRT_LINK)}>
                     <CardMedia
                         className={classes.media +  ' '+ classes.goodsMedia}
@@ -193,7 +193,7 @@ class SupportUs extends Component {
                     <CardContent>
                         <h5>{I18n.t('T-shirt with logo')}</h5>
                         <Button className={classes.amazonButton} onClick={() => Utils.openLink(TSHIRT_LINK)}>{I18n.t('Buy a t-shirt')}</Button>
-                        <p style={{textAlign: 'left'}}>{I18n.t('T-Shirt explanation')}</p>
+                        <div style={{ textAlign: 'left' }}>{ I18n.t('T-Shirt explanation') }</div>
                     </CardContent>
                 </CardActionArea>
             </Card>

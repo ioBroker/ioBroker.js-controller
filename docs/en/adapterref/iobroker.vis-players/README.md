@@ -3,6 +3,7 @@
 ![Number of Installations](http://iobroker.live/badges/vis-players-installed.svg) ![Number of Installations](http://iobroker.live/badges/vis-players-stable.svg) 
 [![NPM version](https://img.shields.io/npm/v/iobroker.vis-players.svg)](https://www.npmjs.com/package/iobroker.vis-players)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.vis-players.svg)](https://www.npmjs.com/package/iobroker.vis-players)
+[![Travis-CI](http://img.shields.io/travis/instalator/ioBroker.vis-players/master.svg)](https://travis-ci.org/instalator/ioBroker.vis-players)
 
 [![NPM](https://nodei.co/npm/iobroker.vis-players.png?downloads=true)](https://nodei.co/npm/iobroker.vis-players/)
 
@@ -11,8 +12,11 @@
 
 
 Widgets for media players.
-
+ 
 ## Changelog
+
+#### 0.1.7
+* (instalator) added test
 
 #### 0.1.6
 * (instalator) fix error

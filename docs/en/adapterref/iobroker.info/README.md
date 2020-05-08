@@ -316,6 +316,11 @@ Forum entries will be displayed without problems when accessing ioBroker via IP 
 
 ## Changelog
 
+### 1.7.2 (2020-05-07)
+* (ldittmar) Update systeminformation library
+* (ldittmar) Messages can be hidden
+* (ldittmar) Show subnet mask for ip4 and ip6 
+
 ### 1.7.1 (2020-04-29)
 * (ldittmar) Update systeminformation library
 * (ldittmar) Check instance active for messages

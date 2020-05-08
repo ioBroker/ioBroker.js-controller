@@ -66,8 +66,8 @@ class Press extends Component {
             <div className={this.props.classes.title}>{I18n.t('ioBroker in The Press')}</div>
             <div className={this.props.classes.preBox}>
                 <div className={this.props.classes.box}>
-                {PRESS.map(p => (
-                    <div key={p.title + p.alt} className={this.props.classes.card} onClick={() => Utils.openLink(p.link)}>
+                {PRESS.map((p, i) => (
+                    <div key={ i } className={this.props.classes.card} onClick={() => Utils.openLink(p.link)}>
                         <img className={this.props.classes.cardLink + ' ' + (this.props.mobile ? this.props.classes.cardLinkMobile : '')} src={p.image} alt={p.alt}/>
                         <div className={this.props.classes.cardTitle}>{p.title}</div>
                     </div>))}

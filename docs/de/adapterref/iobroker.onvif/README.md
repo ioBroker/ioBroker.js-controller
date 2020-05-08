@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.onvif/README.md
 title: ioBroker.onvif
-hash: anOSc88zA6i8s7Xoblhm727huSUtKa+Z4Ydd4A7nSZg=
+hash: PjF2jptQFzLAzlK4b4PHvZ93TS8NMOg+4cYhuz9a16A=
 ---
 ![Logo](../../../en/adapterref/iobroker.onvif/admin/onvif_logo.png)
 
@@ -23,7 +23,7 @@ hash: anOSc88zA6i8s7Xoblhm727huSUtKa+Z4Ydd4A7nSZg=
 2. Нажать кнопку сканирования (сверху справа)
 3. Ввести необходимые настройки или оставить по умолчанию: startRange - начальный ip адрес диапазона сканирова
 
-End Range - конечный ip адрес диапазона сканирования, Port-Liste - через запятую порты сервиса onvif (по умолчанию: 80, 75,
+End Range - конечный ip адрес диапазона сканирования, Port-Liste - через запятую порты сервиса onvif (по умолчанию: 80, 75 ию
 
 4. ARTажать SCAN STARTEN
 
@@ -34,8 +34,8 @@ End Range - конечный ip адрес диапазона сканирова
 События, которые генерирует камера, появятся в объектах вида:
 
 ```
-onvif.0.192_168_1_4_80.message.tns1:RuleEngine/FieldDetector/ObjectsInside
-onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
+onvif.0.122_116_220_230_2033.message.ruleengine.cellmotiondetector.motion.IsMotion
+onvif.0.122_116_220_230_2033.message.ruleengine.tamperdetector.tamper.IsTamper
 ```
 
 ### Запрос снапшота
@@ -47,7 +47,7 @@ onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
 const fs = require('fs');
 
 function getSnapshot(caption){
-    sendTo('onvif.0', 'saveFileSnapshot', {"id":"onvif.0.192_168_1_4_80", "file":"/opt/cameras/snapshot.jpg"}, (data) => {
+    sendTo('onvif.0', 'saveFileSnapshot', {"id":"192_168_1_4_80", "file":"/opt/cameras/snapshot.jpg"}, (data) => {
         console.log('image принят: ' + data);
         if (data === "OK")
             sendTo('telegram.0', {text: '/opt/cameras/snapshot.jpg', caption: caption});
@@ -56,7 +56,26 @@ function getSnapshot(caption){
 ```
 
 * caption * - заголовок для картинки в телеграме.
-Вызывать можно как по событию, так и по кнопке / рассписанию
+Вызывать можно как по событию, так и по кнопке / рассписанию.
+
+Вариант загрузки в промежуточный Puffer в место файла:
+
+```
+function getSnapshot(){
+    sendTo('onvif.0', 'getSnapshot', {"id":"192_168_1_4_80"}, (result) => {
+        if (result.err) log(result);
+        if (result.img){
+			log('image принят: ' + typeof result.img);
+            sendTo('telegram.0', {
+                user: 'user',
+                text: result.img.rawImage,
+                type: 'photo',
+                caption: 'Camera 1'
+			});
+		}
+    });
+}
+```
 
 ### События Камеры
 Чтобы отключить подписку на события от камеры, необходимо выставить состояние `subscribeEvents = false` и перз
@@ -73,7 +92,7 @@ function getSnapshot(caption){
 
 `Value` - значение / состояние, `UtcTime` - время изменения значения / состояния
 
-Т.к. адаптер работает по подписке на события, то время состояния `state.ts` может не совпадать се
+Т.к. адаптер работает по подписке на события, то время состояния `state.ts` может не совпадать сере
 
 ## ENG
 ### Anpassung
@@ -92,8 +111,8 @@ Der Treiber abonniert automatisch Ereignisse für die konfigurierten Kameras.
 Die von der Kamera erzeugten Ereignisse werden in folgenden Objekten angezeigt:
 
 ```
-onvif.0.192_168_1_4_80.message.tns1:RuleEngine/FieldDetector/ObjectsInside
-onvif.0.192_168_1_4_80.message.tns1:VideoSource/MotionAlarm.State
+onvif.0.122_116_220_230_2033.message.ruleengine.cellmotiondetector.motion.IsMotion
+onvif.0.122_116_220_230_2033.message.ruleengine.tamperdetector.tamper.IsTamper
 ```
 
 ### Snapshot-Anfrage
@@ -105,17 +124,34 @@ Beispiel eines Skripts zur Anforderung des Schnappschusses und zum Senden an Tel
 const fs = require('fs');
 
 function getSnapshot(caption){
-    sendTo('onvif.0', 'saveFileSnapshot', {"id":"onvif.0.192_168_1_4_80", "file":"/opt/cameras/snapshot.jpg"}, (data) => {
-        console.log('image принят: ' + data);
+    sendTo('onvif.0', 'saveFileSnapshot', {"id":"192_168_1_4_80", "file":"/opt/cameras/snapshot.jpg"}, (data) => {
+        console.log('image received: ' + data);
         if (data === "OK")
             sendTo('telegram.0', {text: '/opt/cameras/snapshot.jpg', caption: caption});
     });
 }
 ```
 
-* caption * - steuert das Bild im Telegramm an
+* caption * - steuert auf das Bild im Telegramm zu Es ist möglich, sowohl bei einem Ereignis als auch gemäß der Schaltfläche / dem Zeitplan zu verursachen.
 
-Es ist möglich, sowohl bei einem Ereignis als auch gemäß der Schaltfläche / dem Zeitplan zu verursachen
+Die Option zum Laden in einen Zwischenpuffer am Dateispeicherort:
+
+```
+function getSnapshot(){
+    sendTo('onvif.0', 'getSnapshot', {"id":"192_168_1_4_80"}, (result) => {
+        if (result.err) log(result);
+        if (result.img){
+			log('image received: ' + typeof result.img);
+            sendTo('telegram.0', {
+                user: 'user',
+                text: result.img.rawImage,
+                type: 'photo',
+                caption: 'Camera 1'
+			});
+		}
+    });
+}
+```
 
 ### Kameraereignisse
 Um das Abonnement für Ereignisse von der Kamera zu trennen, müssen Sie den Status `subscribeEvents = false` setzen und den Adapter neu starten.
@@ -136,9 +172,20 @@ Da der Adapter Ereignisse abonniert, stimmt die Statuszeit von `state.ts` mögli
 
 ## Changelog
 
-### 0.4.0 (2020-04-26)
+### 0.4.3 (2020-05-08)
+* (haba1234) Snapshot preview is squeezed
+* (haba1234) Preview is buffered and not requested again
+* (haba1234) After a minute, re-subscribe to camera events after 4 errors
+* (haba1234) Support digest authentification
+* (haba1234) node >= 10
+
+### 0.4.2 (2020-05-03)
+* (haba1234) Updated admin panel
+
+### 0.4.1 (2020-04-27)
 * (haba1234) States as an Object
 * (haba1234) Error control 'pullMessages'. Disconnect if there are more than three errors
+* (haba1234) Encryption disabled. Compatibility issues
 
 ### 0.3.0 (2020-04-24)
 * (haba1234) Added support for the Discovery adapter
