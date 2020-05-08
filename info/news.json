@@ -735,7 +735,7 @@
         "class": "warning",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-09T00:00:00.000Z",
-	"repo"; "latest",
+	"repo": "latest",
 	"conditions": {
             "unifi": "smaller(0.5.0)"
         }
