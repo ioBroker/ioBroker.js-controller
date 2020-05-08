@@ -797,6 +797,38 @@ New Plugins should always be developed, reviewed and published by ioBroker Core 
 
 Since js-controller 3.0 the sentry plugin is integrated and activated by default in js-controller. See information above.
 
+#### Maintenance mode
+There is a special maintenance mode. It is used by some special adapters, that will clean the objects and states from invalid entries.
+Invalid entries could be: 
+- has invalid ID (e.g. null, empty or with prohibited chars, very long IDs over 2000 chars),
+- has empty object or with no object type.
+- states, that have no according entry in object DB
+
+To make possible to get such an entries, the maintenance mode was implemented.
+To make a call in maintenance mode, you must provide `options` object with at least following attributes:
+```
+{
+    user: 'system.user.admin',
+    maintenance: true,
+}
+```    
+
+Following adapter methods support maintenance mode:
+```
+- adapter.getForeignState
+- adapter.getForeignObject
+- adapter.setObjectWithDefaultValue
+- adapter.setForeignObject
+- adapter.setObjectNotExists
+- adapter.delForeignObject
+
+- adapter.getForeignState
+- adapter.delForeignState
+- adapter.setBinaryState
+- adapter.getBinaryState
+- adapter.delBinaryState
+```
+
 ## Release cycle and Development process overview
 
 The goal is to release an update for the js-controller roughly all 6 months (April/September). The main reasons for this are shorter iterations and fewer changes that can be problematic for the users (and getting fast feedback) and also trying to stay up-to-date with the dependencies.

@@ -10,7 +10,7 @@
 * (foxriver76) fix some logging in objects lib
 * (Apollon77) make sure to catch error when reading log directory (Sentry IOBROKER-JS-CONTROLLER-1F)
 * (foxriver76) Make decrypt and encrypt methods available in adapter object for developers. System secret is read automatically soonly the value is passed to the function
-* (AlCalzone) Add adapter exitcode 13 (ADAPTER_REQUESTED_REBUILD) to also allow to tell js-controller to rebuild this adapter.
+* (AlCalzone) Add adapter exit code 13 (ADAPTER_REQUESTED_REBUILD) to also allow to tell js-controller to rebuild this adapter.
 * (Apollon77) change logging for invalid readFile actions to debug because ca be triggered also by other cases then planned ones. Update objects lib
 * (Apollon77) make sure command on cmdExec is a string (Sentry IOBROKER-JS-CONTROLLER-1H)
 * (Apollon77) Check more cases for existence of variables before accessing them (Sentry IOBROKER-JS-CONTROLLER-E)  
@@ -21,7 +21,8 @@
 * (Apollon77) make sure Objects/States backup files are deleted correctly according to backup settings
 * (foxriver76) Make sure default state value is only set if state is not existing also in setObject
 * (foxriver76) check that alias is of type state when adding subscribing pattern
-
+* (bluefox) implement maintenance mode for adapter methods
+* (bluefox) store for binary states the binary flag in objects  
 
 ## 3.0.20 (2020-04-28) Release Elena
 * (Apollon77) make sure disabling instances while installation is running do not crash the controller (Sentry IOBROKER-JS-CONTROLLER-Z) 
