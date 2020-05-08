@@ -703,7 +703,7 @@
         "fa-icon": "exclamation-circle",
         "created": "2020-05-07T00:00:00.000Z",
 	"conditions": {
-            "deconz": "smaller(1.3.6)"
+            "deconz": "smaller(1.3.0)"
         }
     },
     {
