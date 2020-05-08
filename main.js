@@ -4250,7 +4250,8 @@ function init(compactGroupId) {
         logNamespace: hostLogPrefix,
         log: logger,
         iobrokerConfig: config,
-        parentPackage: packageJson
+        parentPackage: packageJson,
+        controllerVersion: version
     };
     pluginHandler = new PluginHandler(pluginSettings);
     pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
