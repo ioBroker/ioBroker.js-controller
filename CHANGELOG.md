@@ -21,6 +21,8 @@
 * (Apollon77) make sure Objects/States backup files are deleted correctly according to backup settings
 * (foxriver76) Make sure default state value is only set if state is not existing also in setObject
 * (foxriver76) check that alias is of type state when adding subscribing pattern
+* (Apollon77) Make sure error are checked correctly (Sentry IOBROKER-JS-CONTROLLER-1N) 
+* (Apollon77) Inform about sentry activation if not configured on "iobroker setup first"
 * (bluefox) implement maintenance mode for adapter methods
 * (bluefox) store for binary states the binary flag in objects  
 

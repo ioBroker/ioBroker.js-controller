@@ -2428,6 +2428,8 @@ function getInstances() {
             //if (states  && states.destroy)  states.destroy();
             //process.exit(1);
             return;
+        } else if (err) {
+            logger.error(hostLogPrefix + ' Can not get instances: ' + err);
         } else if (!doc.rows || doc.rows.length === 0) {
             logger.info(hostLogPrefix + ' no instances found');
         } else {
@@ -4248,7 +4250,8 @@ function init(compactGroupId) {
         logNamespace: hostLogPrefix,
         log: logger,
         iobrokerConfig: config,
-        parentPackage: packageJson
+        parentPackage: packageJson,
+        controllerVersion: version
     };
     pluginHandler = new PluginHandler(pluginSettings);
     pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
