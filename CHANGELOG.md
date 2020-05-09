@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.0.21/3.1.0 (2020-05-xx) Release Elena WIP!!!
+## 3.1.0 (2020-05-09) Release Elena
 * (foxriver76) catch error on alias ids with empty objects
 * (Apollon77) make sure promise rejections without error are not crashing the controller 
 * (bluefox) Add Controller messages to allow read and write controller base settings (iobroker.json); introduce adapter feature flag CONTROLLER_READWRITE_BASE_SETTINGS
@@ -25,6 +25,9 @@
 * (Apollon77) Inform about sentry activation if not configured on "iobroker setup first"
 * (bluefox) implement maintenance mode for adapter methods
 * (bluefox) store for binary states the binary flag in objects  
+* (Apollon77) update Plugin system
+* (Apollon77) update Sentry plugin to respect all options to disable reporting including new disableDataReporting flag ( will be integrated into Admin later)
+* (AlCalzone) Add Plugin CLI commands to enable/disable plugins
 
 ## 3.0.20 (2020-04-28) Release Elena
 * (Apollon77) make sure disabling instances while installation is running do not crash the controller (Sentry IOBROKER-JS-CONTROLLER-Z) 
