@@ -1808,7 +1808,7 @@ function processMessage(msg) {
         case 'cmdExec': {
             const args = [__dirname + '/' + tools.appName + '.js'];
             if (!msg.message.data || typeof msg.message.data !== 'string') {
-                logger.warn(hostLogPrefix + ' ' + tools.appName + ' Invalid cmdExec object. Expected {"data": "command"}. Got as data: ' + JSON.stringify(msg.message.data));
+                logger.warn(hostLogPrefix + ' ' + tools.appName + ' Invalid cmdExec object. Expected key "data" with the command as string. Got as "data": ' + JSON.stringify(msg.message.data));
             } else {
                 const cmd = msg.message.data.split(' ');
                 for (let i = 0; i < cmd.length; i++) {
@@ -3111,13 +3111,13 @@ function startInstance(id, wakeUp) {
     // check node.js version if defined in package.json
     if (procs[id].engine) {
         if (!semver.satisfies(process.version.replace(/^v/, ''), procs[id].engine)) {
-            logger.warn(`${hostLogPrefix} startInstance ${name}.${args[0]}: required node.js version ${procs[id].engine}, actual version ${process.version}`);
+            logger.warn(`${hostLogPrefix} startInstance ${name}.${args[0]}: required Node.js version ${procs[id].engine}, actual version ${process.version}`);
             // disable instance
             objects.getObject(id, (err, obj) => {
                 if (obj && obj.common && obj.common.enabled) {
                     obj.common.enabled = false;
                     objects.setObject(obj._id, obj, _err =>
-                        logger.warn(`${hostLogPrefix} startInstance ${name}.${args[0]}: instance disabled because of node.js version mismatch`));
+                        logger.warn(`${hostLogPrefix} startInstance ${name}.${args[0]}: instance disabled because of Node.js version mismatch`));
                 }
             });
             return;
@@ -4237,7 +4237,7 @@ function init(compactGroupId) {
             logger.error('ioBroker requires Node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
             logger.error('Please upgrade your nodejs version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
 
-            console.error('ioBroker requires node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
+            console.error('ioBroker requires Node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
             console.error('Please upgrade your nodejs version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
 
             process.exit(EXIT_CODES.INVALID_NODE_VERSION);
