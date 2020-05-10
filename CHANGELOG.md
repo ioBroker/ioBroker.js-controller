@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.4 (2020-05-10) Release Francesca
+* (Apollon77) Update Sentry plugin to be more transparent on temporary disabling reasons
+* (foxriver76) fix error when writing binary States
+
 ## 3.1.3 (2020-05-09) Release Francesca
 * (foxriver76) catch error on alias ids with empty objects
 * (Apollon77) make sure promise rejections without error are not crashing the controller 

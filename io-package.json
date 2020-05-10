@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "3.1.3",
+        "version": "3.1.4",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,7 +18,7 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "3.1.3": {
+            "3.1.4": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
                 "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
                 "ru": "исправления и оптимизации, см. CHANGELOG.md",
