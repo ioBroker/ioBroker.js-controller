@@ -703,7 +703,41 @@
         "fa-icon": "exclamation-circle",
         "created": "2020-05-07T00:00:00.000Z",
 	"conditions": {
-            "deconz": "smaller(1.3.6)"
+            "deconz": "smaller(1.3.0)"
+        }
+    },
+    {
+        "title": {
+            "en": "UniFi: Important delete adapter before update",
+	    "de": "UniFi: Wichtiger Adapter vor dem Update löschen",
+	    "ru": "UniFi: важно удалить адаптер перед обновлением",
+	    "pt": "UniFi: Importante excluir adaptador antes da atualização",
+	    "nl": "UniFi: belangrijke verwijderingsadapter voor update",
+	    "fr": "UniFi: suppression importante de l'adaptateur avant la mise à jour",
+	    "it": "UniFi: importante adattatore di cancellazione prima dell'aggiornamento",
+	    "es": "UniFi: adaptador de eliminación importante antes de la actualización",
+	    "pl": "UniFi: Ważne usuń adapter przed aktualizacją",
+	    "zh-cn": "UniFi：重要的是在更新之前删除适配器"
+        },
+        "content": {
+	    "en": "Starting with v0.5.0 the object structure changes. Besides that less information will be pulled into your ioBroker. To start with a clean object structure, please delete the adapter before updating to v0.5.0.",
+	    "de": "Ab Version 0.5.0 ändert sich die Objektstruktur. Außerdem werden weniger Informationen in Ihren ioBroker gezogen. Um mit einer sauberen Objektstruktur zu beginnen, löschen Sie bitte den Adapter, bevor Sie auf v0.5.0 aktualisieren.",
+	    "ru": "Начиная с v0.5.0 структура объекта меняется. Кроме того, в ваш ioBroker будет потрачено меньше информации. Для начала с чистой структурой объекта, пожалуйста, удалите адаптер перед обновлением до v0.5.0.",
+	    "pt": "A partir da v0.5.0, a estrutura do objeto é alterada. Além disso, menos informações serão inseridas no seu ioBroker. Para começar com uma estrutura de objeto limpa, exclua o adaptador antes de atualizar para a v0.5.0.",
+	    "nl": "Vanaf v0.5.0 verandert de objectstructuur. Daarnaast wordt er minder informatie naar uw ioBroker getrokken. Om te beginnen met een schone objectstructuur, moet u de adapter verwijderen voordat u bijwerkt naar v0.5.0.",
+	    "fr": "À partir de la version 0.5.0, la structure de l'objet change. En plus de cela, moins d'informations seront rassemblées dans votre ioBroker. Pour commencer avec une structure d'objet propre, veuillez supprimer l'adaptateur avant de mettre à jour vers la version 0.5.0.",
+	    "it": "A partire dalla v0.5.0 la struttura dell'oggetto cambia. Inoltre, nel tuo ioBroker verranno inserite meno informazioni. Per iniziare con una struttura di oggetti pulita, eliminare l'adattatore prima di aggiornare a v0.5.0.",
+	    "es": "A partir de v0.5.0, la estructura del objeto cambia. Además de eso, se extraerá menos información en su ioBroker. Para comenzar con una estructura de objetos limpia, elimine el adaptador antes de actualizar a v0.5.0.",
+	    "pl": "Począwszy od wersji 0.5.0 zmienia się struktura obiektu. Poza tym do Twojego ioBroker zostanie pobranych mniej informacji. Aby rozpocząć od czystej struktury obiektu, usuń adapter przed aktualizacją do wersji 0.5.0.",
+	    "zh-cn": "从v0.5.0开始，对象结构发生变化。除此之外，更少的信息将被拉到您的ioBroker中。要从干净的对象结构开始，请先删除适配器，然后再更新到v0.5.0。"
+	},
+        "id": "unifiAdapter",
+        "class": "warning",
+        "fa-icon": "exclamation-circle",
+        "created": "2020-05-09T00:00:00.000Z",
+	"repo": "latest",
+	"conditions": {
+            "unifi": "smaller(0.5.0)"
         }
     }
 ]
