@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: Iw9TRNc7yuHLTC6n9EPAN+dwZuKAtJ+a78pbLtWS/t4=
+hash: fIeGvVx0vFNJyI2FSdlQWp1eCKljEcV9j/dOkl0v5k8=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -18,7 +18,7 @@ hash: Iw9TRNc7yuHLTC6n9EPAN+dwZuKAtJ+a78pbLtWS/t4=
 需要node.js 8.0或更高版本以及Admin v3！
 
 适配器通过REST api和CoAP或MQTT协议与Shelly设备通信。
-默认情况下为Shelly固件（无需刷新固件！）。您可以在这里找到有关该设备的更多详细信息：[雪莉](https://shelly.cloud/)
+默认情况下为Shelly固件（无需刷新固件！）。您可以在此处找到有关该设备的更多详细信息：[雪莉](https://shelly.cloud/)
 
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**更多详细信息，请参见下文！
 
@@ -49,18 +49,27 @@ hash: Iw9TRNc7yuHLTC6n9EPAN+dwZuKAtJ+a78pbLtWS/t4=
 | Shelly门窗传感器（SHDW-1）|已验证|已验证|
 | Shelly Bulb Duo（SHBDUO-1）|已验证|未验证|
 | Shelly 3EM（SHEM）|已验证|已验证|
+| Shelly Vintage（SHVIN-1）|已验证|已验证|
 
 ##什么是Sentry，什么报告给服务器？
 Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
 
-### 3.2.5 (13.04.2020)
-* (Apollon77) - Update Dependencies incl shelly-lib to prevent exceptions
-* (Apollon77) - Add Sentry for error/crash reporting (active with js-controller 3.0)
-* (Stübi      - Add for hue two new datapoints for Shelly Bulb and RGBW2
+### 3.2.8 (09.05.2020)
+* (c7j3X) - Add device Shelly Vintage
+* (Stübi) - Add state vibration and tilt to Shelly DW
+
+### 3.2.7 (28.04.2020)
+* (Stübi) - User can enable/disable sentry logging
+
+### 3.2.6 (27.04.2020)
+* (Apollon77)  - Update Dependencies incl shelly-lib to prevent exceptions
+* (Apollon77)  - Add Sentry for error/crash reporting (active with js-controller 3.0)
+* (Stübi       - Add for hue two new datapoints for Shelly Bulb and RGBW2
+* (@SamLowrie) - Add option to set a specific multicast interface for CoAP server
 
 ### 3.2.4 (11.04.2020)
 * (Stübi) - Bugfixing MQTT ext_temperature for Shelly 1

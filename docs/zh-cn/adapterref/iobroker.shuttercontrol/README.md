@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shuttercontrol/README.md
 title: ioBroker.shuttercontrol
-hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
+hash: ZNQY7H9D/tC0wLr+J6jPF4jUN+5924R5t+G925Ji8fE=
 ---
 ![商标](../../../en/adapterref/iobroker.shuttercontrol/admin/shuttercontrol.png)
 
@@ -16,6 +16,8 @@ hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
 ![NPM](https://nodei.co/npm/iobroker.shuttercontrol.png?downloads=true)
 
 ＃ioBroker.shuttercontrol
+该适配器使用服务Sentry.io向开发人员自动向我报告异常和代码错误以及新设备架构。详情请见下文！
+
 **如果您愿意，请考虑捐赠：**
 
 [![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
@@ -29,9 +31,44 @@ hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
 
 [英文说明在这里](docs/en/shuttercontrol.md)
 
+###什么是Sentry.io，什么报告给该公司的服务器？
+Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.6.0 (xx.05.2020)
+* (simatec) added sentry.io
+* (simatec) Added node Support
+* (simatec) node 8 support removed
+* (5G7K) added new feature for sunprotect
+* (5G7K) Added more debug logs
+
+### 0.5.1 (15.04.2020)
+* (simatec) Bugfix for Adapter checker
+* (simatec) Added more debug logs
+* (simatec) Added node Support
+* (simatec) node 8 support removed
+
+### 0.5.0 (06.04.2020)
+* (simatec) Bugfix Goldenhour
+* (simatec) Bugfix delay for sunprotect
+* (simatec) Bugfix Goldhour with living area
+* (simatec) Added auto fill for Position
+* (simatec) many small Bugfixes
+* (simatec) Bugfix Translations
+* (simatec) Bugfix compactmode
+* (5G7K) Added debug log with more Informations
+
+
+### 0.4.3 (29.12.2019)
+* (simatec) Bugfix update process
+
+### 0.4.2 (22.12.2019)
+* (simatec) Fix Trigger added objects
 
 ### 0.4.1 (20.10.2019)
 * (simatec) Fix update process
@@ -145,7 +182,7 @@ hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
 ## License
 MIT License
 
-Copyright (c) 2019 simatec
+Copyright (c) 2019 - 2020 simatec
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

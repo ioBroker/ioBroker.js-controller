@@ -55,12 +55,17 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 * For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours.
 * There are also some reports that there's a strange behavior of the battery value on Deebot 900/901. It's very likely that this is a firmware bug.
   * You can use the corresponding option in the adapter config as a workaround.
+* The "pause" button does not work with Deebot 710/711.
 
 ## FAQ
 
 * Frequently asked questions can be found [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
 ## Changelog
+
+### 0.6.0
+   * Using library version 0.4.10
+   * Several enhancements and fixes
 
 ### 0.5.9
    * Several enhancements and fixes

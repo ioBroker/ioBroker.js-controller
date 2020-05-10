@@ -10,8 +10,6 @@ This ioBroker adapter allows the monitoring of [UniFi devices](http://www.ubnt.c
 ## Important information
 The adapter is still under development. As of now it is only possible to get information from your UniFi controller into your ioBroker. 
 
-**It is not possible to change the configuration of your UniFi controller (e.g. enable/disable WLANs)**
-
 ## Configuration
 ###  Minimum required information
 To get this adapter up and running the following information is needed:
@@ -34,8 +32,15 @@ It is possible to disable the update of selected information or blacklist specif
 | Networks    | Name                                    |
 | Health      | Subsystem                               |
 
+## Control
+### Enable/disable WLANs
+By changing the 'enabled' state of a WLAN it is possible to enable/disable it. Some seconds later the change will be provisioned to the Access Points.
+
 ## Changelog
-### 0.5.0-beta.2 (2020-05-06)
+### __WORK IN PROGRESS__
+* (braindead1) Implemented possibility to enable/disable WLANs
+
+### 0.5.0 (2020-05-09)
 * (braindead1) Implemented configuration of updates
 * (braindead1) Improved JsonLogic
 * (braindead1) Removed legacy code

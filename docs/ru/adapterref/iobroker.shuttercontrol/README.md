@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shuttercontrol/README.md
 title: ioBroker.shuttercontrol
-hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
+hash: ZNQY7H9D/tC0wLr+J6jPF4jUN+5924R5t+G925Ji8fE=
 ---
 ![логотип](../../../en/adapterref/iobroker.shuttercontrol/admin/shuttercontrol.png)
 
@@ -16,6 +16,8 @@ hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
 ![NPM](https://nodei.co/npm/iobroker.shuttercontrol.png?downloads=true)
 
 # IoBroker.shuttercontrol
+Этот адаптер использует сервис Sentry.io, чтобы автоматически сообщать об исключениях и ошибках кода и новых схемах устройств мне как разработчику. Подробнее смотрите ниже!
+
 ** Если вам это нравится, пожалуйста, рассмотрите пожертвование: **
 
 [![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
@@ -29,9 +31,44 @@ hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
 
 [Английское описание здесь](docs/en/shuttercontrol.md)
 
+### Что такое Sentry.io и что сообщается серверам этой компании?
+Sentry.io - это сервис для разработчиков, позволяющий получить обзор ошибок в своих приложениях. И именно это реализовано в этом адаптере.
+
+Когда происходит сбой адаптера или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включался и ваш установочный идентификатор (это просто уникальный идентификатор **без** каких-либо дополнительных сведений о вас, адрес электронной почты, имя или тому подобное). Это позволяет Sentry группировать ошибки и показывать, на сколько уникальных пользователей влияет такая ошибка. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не выходят из строя.
+
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.6.0 (xx.05.2020)
+* (simatec) added sentry.io
+* (simatec) Added node Support
+* (simatec) node 8 support removed
+* (5G7K) added new feature for sunprotect
+* (5G7K) Added more debug logs
+
+### 0.5.1 (15.04.2020)
+* (simatec) Bugfix for Adapter checker
+* (simatec) Added more debug logs
+* (simatec) Added node Support
+* (simatec) node 8 support removed
+
+### 0.5.0 (06.04.2020)
+* (simatec) Bugfix Goldenhour
+* (simatec) Bugfix delay for sunprotect
+* (simatec) Bugfix Goldhour with living area
+* (simatec) Added auto fill for Position
+* (simatec) many small Bugfixes
+* (simatec) Bugfix Translations
+* (simatec) Bugfix compactmode
+* (5G7K) Added debug log with more Informations
+
+
+### 0.4.3 (29.12.2019)
+* (simatec) Bugfix update process
+
+### 0.4.2 (22.12.2019)
+* (simatec) Fix Trigger added objects
 
 ### 0.4.1 (20.10.2019)
 * (simatec) Fix update process
@@ -145,7 +182,7 @@ hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
 ## License
 MIT License
 
-Copyright (c) 2019 simatec
+Copyright (c) 2019 - 2020 simatec
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

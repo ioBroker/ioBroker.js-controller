@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ring/README.md
 title: Ringadapter
-hash: fNNJNWNuBGKkiNXvbDE6w5rFnloRoqkAASNMDJ7fmAk=
+hash: /G0EVcTRCHqW+815LDlrYBPPjKY9NPbIjIu1zPKxEwM=
 ---
 ![Logo](../../../en/adapterref/iobroker.ring/admin/ring.png)
 
@@ -15,13 +15,13 @@ hash: fNNJNWNuBGKkiNXvbDE6w5rFnloRoqkAASNMDJ7fmAk=
 ![NPM](https://nodei.co/npm/iobroker.ring.png?downloads=true)
 
 # Ringadapter
-Benötigt node.js 10.0 oder höher und Admin v3!
+Benötigt node.js 10.0 oder höher und Admin v3.
 
-Der Ringadapter funktioniert mit Ringgeräten wie der Ring Video-Türklingel und der Ring Cam und zeigt an, ob jemand an der Tür klingelt oder ob eine Bewegung erkannt wird. Die Klingel-Video-Türklingel oder -Kamera sendet einen Videostream, wenn eine Bewegung oder Türklingel erkannt wird oder Sie die SIP-Informationen für eine SIP-Videokonferenz mit Ihrem SIP-Client verwenden.
+Der Ringadapter funktioniert mit Ringgeräten wie der Ring Video-Türklingel und der Klingelkamera und zeigt an, ob jemand an der Tür klingelt oder ob eine Bewegung erkannt wird. Die Klingel-Video-Türklingel oder -Kamera sendet einen Videostream, wenn eine Bewegung oder Türklingel erkannt wird oder Sie die SIP-Informationen für eine SIP-Videokonferenz mit Ihrem SIP-Client verwenden.
 Leider funktioniert die Snapshot- und Livestream-Funktion nicht richtig. Leider habe ich keinen Einfluss darauf. Bitte berücksichtigen Sie dies, bevor Sie ein Problem erstellen.
 Der Adapter stellt nicht alle Ringgeräte bereit, da die verwendete API nicht alle Ringgeräte enthält.
 
-Sie können beispielsweise den Blink SIP-Client auf [http://icanblink.com/](http://icanblink.com/) verwenden. Um Videos zum Laufen zu bringen, gehen Sie in die Einstellungen von Blink und wechseln Sie unter "Konten" zu "Medien" und deaktivieren Sie "Audio und Video verschlüsseln" unter "RTP-Optionen". Achten Sie darauf, dass die SIP-Informationen nach einigen Sekunden ablaufen! Hoffentlich kann ich bald einen Videostream unterstützen. Leider hat [ring.com](https://ring.com) keine offizielle API, die diese Funktion unterstützt.
+Sie können beispielsweise den Blink SIP-Client auf [http://icanblink.com/](http://icanblink.com/) verwenden. Um Videos zum Laufen zu bringen, gehen Sie in die Einstellungen von Blink und wechseln Sie unter "Konten" die Registerkarte auf "Medien" und deaktivieren Sie "Audio und Video verschlüsseln" unter "RTP-Optionen". Achten Sie darauf, dass die SIP-Informationen nach einigen Sekunden ablaufen! Hoffentlich kann ich bald einen Videostream unterstützen. Leider hat [ring.com](https://ring.com) keine offizielle API, die diese Funktion unterstützt.
 Wenn Sie die Livestreamrequest-Taste drücken, erhalten Sie neue SIP-Informationen zum Aufbau einer SIP-Videoanrufsitzung. Wenn Sie die Wolke [ring.com](https://ring.com) verwenden, finden Sie im Verlauf einen http-Link zu Ihrem zuletzt aufgezeichneten Video mit Bewegung / Türklingel.
 
 ## Installation & Konfiguration
@@ -64,6 +64,9 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 ```
 
 ## Changelog
+
+### 1.1.3 (06.05.2020)
+* (Stübi) Fixed error of missing objects 
 
 ### 1.1.2 (02.05.2020)
 * (Stübi) Fixed health info like missing battery status (Issue #22, Issue #25) 

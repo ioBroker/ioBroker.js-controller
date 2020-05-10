@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: Iw9TRNc7yuHLTC6n9EPAN+dwZuKAtJ+a78pbLtWS/t4=
+hash: fIeGvVx0vFNJyI2FSdlQWp1eCKljEcV9j/dOkl0v5k8=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -49,6 +49,7 @@ Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdok
 | Shelly Tür- / Fenstersensor (SHDW-1) | verifiziert | verifiziert |
 | Shelly Bulb Duo (SHBDUO-1) | verifiziert | nicht verifiziert |
 | Shelly 3EM (SHEM) | verifiziert | verifiziert |
+| Shelly Vintage (SHVIN-1) | verifiziert | verifiziert |
 
 ## Was ist Sentry und was wird den Servern gemeldet?
 Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendungen. Und genau das ist in diesem Adapter implementiert.
@@ -57,10 +58,18 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 
 ## Changelog
 
-### 3.2.5 (13.04.2020)
-* (Apollon77) - Update Dependencies incl shelly-lib to prevent exceptions
-* (Apollon77) - Add Sentry for error/crash reporting (active with js-controller 3.0)
-* (Stübi      - Add for hue two new datapoints for Shelly Bulb and RGBW2
+### 3.2.8 (09.05.2020)
+* (c7j3X) - Add device Shelly Vintage
+* (Stübi) - Add state vibration and tilt to Shelly DW
+
+### 3.2.7 (28.04.2020)
+* (Stübi) - User can enable/disable sentry logging
+
+### 3.2.6 (27.04.2020)
+* (Apollon77)  - Update Dependencies incl shelly-lib to prevent exceptions
+* (Apollon77)  - Add Sentry for error/crash reporting (active with js-controller 3.0)
+* (Stübi       - Add for hue two new datapoints for Shelly Bulb and RGBW2
+* (@SamLowrie) - Add option to set a specific multicast interface for CoAP server
 
 ### 3.2.4 (11.04.2020)
 * (Stübi) - Bugfixing MQTT ext_temperature for Shelly 1

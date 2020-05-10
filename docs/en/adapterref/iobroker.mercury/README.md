@@ -43,6 +43,9 @@ Returns a buffer as a string
 
 ## Changelog
 
+### 0.1.2
+* (instalator) fixed error serial memory
+
 ### 0.1.1
 * (instalator) fixed Unsigned value current
 * (instalator) fix for serial number > 240

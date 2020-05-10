@@ -558,6 +558,18 @@ Settings that are not listed in the table below are self-explanatory.
             <td>[ { value: -20, color: '#7d3c98' }, { value: 0, color: '#2874a6' } ]</td>
         </tr>
         <tr>
+            <td>tooltip_title</td>
+            <td>title of tooltip</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>tooltip_text</td>
+            <td>ovveride text of tooltip</td>
+            <td>string</td>
+            <td></td>
+        </tr>
+        <tr>
             <td>tooltip_MinDigits</td>
             <td>max decimals of tooltip value</td>
             <td>number</td>
@@ -739,6 +751,12 @@ Settings that are not listed in the table below are self-explanatory.
         <tr>
             <td>line_spanGaps</td>
             <td>draw lines if data has gaps</td>
+            <td>boolean</td>
+            <td>false, true</td>
+        </tr>
+        <tr>
+            <td>line_steppedLine</td>
+            <td>enable stepped line</td>
             <td>boolean</td>
             <td>false, true</td>
         </tr>
@@ -1523,8 +1541,13 @@ ical2CalendarWidget();
 * checkbox: lock option added
 * switch: lock option added
 * bar & pie chart: option for distance between legends points added
+* bar, pie & json chart: tooltip title and value override options added
+* pie chart: orientation change bug fix
+* json & line history chart: stepped line option added
 * table: option for fixed table headline added
 * charts: newline bug fixed
+* charts: tooltip decimal places bug fix
+
 
 ### 0.3.6 (2020-04-29)
 * Input, Select, Autocomplete: default input controll buttons removed

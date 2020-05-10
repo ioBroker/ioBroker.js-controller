@@ -13,6 +13,9 @@
 
 [![NPM](https://nodei.co/npm/iobroker.shuttercontrol.png?downloads=true)](https://nodei.co/npm/iobroker.shuttercontrol/)
 
+This adapter uses the service Sentry.io to automatically report exceptions and code errors and new device schemas to me as the developer. More details see below!
+
+
 **If you like it, please consider a donation:**
   
 [![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
@@ -28,11 +31,25 @@ automatic control for shutters
 
 [English Description here](docs/en/shuttercontrol.md)
 
+
+### What is Sentry.io and what is reported to the servers of that company?
+Sentry.io is a service for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
+
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.
+
+
 *************************************************************************************************************************************
 
 
 
 ## Changelog
+
+### 0.6.0 (xx.05.2020)
+* (simatec) added sentry.io
+* (simatec) Added node Support
+* (simatec) node 8 support removed
+* (5G7K) added new feature for sunprotect
+* (5G7K) Added more debug logs
 
 ### 0.5.1 (15.04.2020)
 * (simatec) Bugfix for Adapter checker

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: xlJKx+n8XaTruzMaaXnSS7AqH/RHxzZ7hT7TWux1hAM=
+hash: kxlvfeduN5DUlfOWjpI4VxfHr3GKeXMXx13A3M+Xj8A=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -26,7 +26,7 @@ hash: xlJKx+n8XaTruzMaaXnSS7AqH/RHxzZ7hT7TWux1hAM=
 * Deebot N79T / W
 * Deebot 601
 * Deebot 710/711
-* Deebot Ozmo 610
+* Deebot奥兹莫610
 * Deebot Ozmo 900
 
 ###这些模型应该可以工作
@@ -39,7 +39,7 @@ hash: xlJKx+n8XaTruzMaaXnSS7AqH/RHxzZ7hT7TWux1hAM=
 ##安装
 建议使用Node.js的版本10或更高版本。
 
-该适配器使用画布库，这可能需要附加安装，否则在iobroker中进行安装可能会导致错误：
+该适配器使用画布库，这可能需要其他安装，否则在iobroker中进行安装可能会导致错误：
 
 ```
 npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
@@ -56,23 +56,28 @@ sudo npm install canvas --unsafe-perm=true
 有关其他系统的说明，请访问https://www.npmjs.com/package/canvas#compiling
 
 ##用法
-*有关如何使用此适配器的信息可在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）
+*有关如何使用此适配器的信息可以在[此处]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）中找到
 
 ＃＃ 已知的问题
-*对于Deebot Ozmo 930，建议每天安排一次[安排重新启动时间]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告大约连接后丢失连接。 24小时。
+*对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告大约连接后丢失连接。 24小时。
 *也有报道称Deebot 900/901的电池电量有奇怪的行为。这很可能是固件错误。
   *您可以使用适配器配置中的相应选项作为解决方法。
+*“暂停”按钮不适用于Deebot 710/711。
 
 ＃＃ 常问问题
 *常见问题可以在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ）
 
-##谢谢和感谢
+##感谢和感谢
 * @joostth（[sucks.js]（https://github.com/joostth/sucks.js））
 * @wpietri（[吸]（https://github.com/wpietri/sucks））
 * @ bmartin5692（[sucks]（https://github.com/bmartin5692/sucks），[bumber]（https://github.com/bmartin5692/bumper））
 * @Ligio（[ozmo]（https://github.com/Ligio/ozmo））
 
 ## Changelog
+
+### 0.6.0
+   * Using library version 0.4.10
+   * Several enhancements and fixes
 
 ### 0.5.9
    * Several enhancements and fixes

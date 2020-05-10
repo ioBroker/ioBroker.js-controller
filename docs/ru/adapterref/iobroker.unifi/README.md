@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
+hash: kFyo7IFLR+tNno50/9qIzmvw1KifmmU9kDFnJPnmmhc=
 ---
 ![логотип](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -18,9 +18,7 @@ hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
 Этот адаптер ioBroker позволяет осуществлять мониторинг [Устройства UniFi](http://www.ubnt.com/), таких как точки доступа UniFi WiFi, с помощью общедоступного веб-API UniFi Controller.
 
 ## Важная информация
-Адаптер находится в стадии разработки. На данный момент в ioBroker можно получить информацию только с вашего контроллера UniFi.
-
-** Невозможно изменить конфигурацию вашего контроллера UniFi (например, включить / отключить WLAN) **
+Адаптер находится в стадии разработки. На данный момент в ваш ioBroker можно получить информацию только с вашего контроллера UniFi.
 
 ## Конфигурация
 ### Минимально необходимая информация
@@ -45,6 +43,10 @@ hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
 | Сети | Имя |
 | Здоровье | Подсистема |
 
+## Контроль
+### Включить / отключить WLAN
+Изменяя состояние «включено» WLAN, можно включить / отключить его. Через несколько секунд изменение будет предоставлено точкам доступа.
+
 ## Ссылки
 Этот адаптер использует функциональность следующих сторонних модулей nodejs:
 
@@ -52,7 +54,10 @@ hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
 * [json-logic-js] (https://github.com/jwadhams/json-logic-js)
 
 ## Changelog
-### 0.5.0-beta.1 (2020-05-01)
+### __WORK IN PROGRESS__
+* (braindead1) Implemented possibility to enable/disable WLANs
+
+### 0.5.0 (2020-05-09)
 * (braindead1) Implemented configuration of updates
 * (braindead1) Improved JsonLogic
 * (braindead1) Removed legacy code

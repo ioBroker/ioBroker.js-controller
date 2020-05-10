@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
+hash: kFyo7IFLR+tNno50/9qIzmvw1KifmmU9kDFnJPnmmhc=
 ---
 ![Logo](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -20,8 +20,6 @@ Dieser ioBroker-Adapter ermöglicht die Überwachung von [UniFi-Geräte](http://
 ## Wichtige Informationen
 Der Adapter befindet sich noch in der Entwicklung. Ab sofort können nur noch Informationen von Ihrem UniFi-Controller in Ihren ioBroker übertragen werden.
 
-** Es ist nicht möglich, die Konfiguration Ihres UniFi-Controllers zu ändern (z. B. WLANs aktivieren / deaktivieren) **
-
 ## Aufbau
 ### Erforderliche Mindestinformationen
 Um diesen Adapter zum Laufen zu bringen, werden die folgenden Informationen benötigt:
@@ -37,13 +35,17 @@ Der Adapter aktualisiert so viele Informationen wie möglich von Ihrem UniFi-Con
 
 Es ist möglich, die Aktualisierung ausgewählter Informationen zu deaktivieren oder bestimmte Elemente dieser Informationen auf die schwarze Liste zu setzen.
 
-| Informationen | Artikel, die von | auf die schwarze Liste gesetzt werden können |
+| Informationen | Artikel auf der schwarzen Liste von |
 |-------------|-----------------------------------------|
 | Kunden | Name, Hostname, IP-Adresse, MAC-Adresse |
 | Geräte | Name, IP-Adresse, MAC-Adresse |
 | WLANs | Name |
 | Netzwerke | Name |
 | Gesundheit | Subsystem |
+
+## Steuerung
+### WLANs aktivieren / deaktivieren
+Durch Ändern des Status 'Aktiviert' eines WLAN kann es aktiviert / deaktiviert werden. Einige Sekunden später wird die Änderung für die Access Points bereitgestellt.
 
 ## Verweise
 Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanbietern:
@@ -52,7 +54,10 @@ Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanb
 * [json-logo-js] (https://github.com/jwadhams/json-logic-js)
 
 ## Changelog
-### 0.5.0-beta.1 (2020-05-01)
+### __WORK IN PROGRESS__
+* (braindead1) Implemented possibility to enable/disable WLANs
+
+### 0.5.0 (2020-05-09)
 * (braindead1) Implemented configuration of updates
 * (braindead1) Improved JsonLogic
 * (braindead1) Removed legacy code

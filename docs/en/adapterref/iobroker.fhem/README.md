@@ -46,6 +46,9 @@ Actually only following attributes are supported:
 
 ## Changelog
 
+### 1.5.0 (2020-05-08)
+* (LausiD) Several fixes and changes
+
 ### 1.4.3 (2020-03-21)
 * (LausiD) fix compact mode
 

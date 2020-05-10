@@ -44,6 +44,7 @@ You find a detailed installation documentation here:
 |Shelly Door/Window Sensor (SHDW-1)|verified|verified|
 |Shelly Bulb Duo (SHBDUO-1)|verified|not verified|
 |Shelly 3EM (SHEM)|verified|verified|
+|Shelly Vintage (SHVIN-1)|verified|verified|
 
 ## What is Sentry and what is reported to the servers?
 Sentry.io is a way for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
@@ -51,6 +52,10 @@ Sentry.io is a way for developers to get an overview about errors from their app
 When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to our own Sentry server hosted in germany. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.
 
 ## Changelog
+
+### 3.2.8 (09.05.2020)
+* (c7j3X) - Add device Shelly Vintage
+* (Stübi) - Add state vibration and tilt to Shelly DW
 
 ### 3.2.7 (28.04.2020)
 * (Stübi) - User can enable/disable sentry logging

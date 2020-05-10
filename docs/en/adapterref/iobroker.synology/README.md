@@ -64,6 +64,10 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 
 ## Changelog
 
+### 0.1.9
+* (instalator) fix get packages for DSM 5.x
+* (instalator) Added option to select services for receiving data
+
 ### 0.1.8
 * (instalator) fix error addDownload
 * (instalator) fixed listRadios

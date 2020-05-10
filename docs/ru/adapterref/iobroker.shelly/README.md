@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: Iw9TRNc7yuHLTC6n9EPAN+dwZuKAtJ+a78pbLtWS/t4=
+hash: fIeGvVx0vFNJyI2FSdlQWp1eCKljEcV9j/dOkl0v5k8=
 ---
 ![логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -49,18 +49,27 @@ hash: Iw9TRNc7yuHLTC6n9EPAN+dwZuKAtJ+a78pbLtWS/t4=
 | Shelly Датчик двери / окна (SHDW-1) | проверено | проверено |
 | Shelly Bulb Duo (SHBDUO-1) | проверено | не проверено |
 | Shelly 3EM (SHEM) | проверено | проверено |
+| Шелли Винтаж (ШВИН-1) | проверено | проверено |
 
 ## Что такое Sentry и что сообщается на серверы?
 Sentry.io позволяет разработчикам получить обзор ошибок в своих приложениях. И именно это реализовано в этом адаптере.
 
-Когда происходит сбой адаптера или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Когда вы разрешили iobroker GmbH собирать диагностические данные, включался и ваш установочный идентификатор (это просто уникальный идентификатор **без** каких-либо дополнительных сведений о вас, адрес электронной почты, имя и т. П.). Это позволяет Sentry группировать ошибки и показывать, на сколько уникальных пользователей влияет такая ошибка. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не выходят из строя.
+Когда происходит сбой адаптера или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Когда вы разрешили iobroker GmbH собирать диагностические данные, включался и ваш установочный идентификатор (это просто уникальный идентификатор **без** каких-либо дополнительных сведений о вас, адрес электронной почты, имя или тому подобное). Это позволяет Sentry группировать ошибки и показывать, на сколько уникальных пользователей влияет такая ошибка. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не выходят из строя.
 
 ## Changelog
 
-### 3.2.5 (13.04.2020)
-* (Apollon77) - Update Dependencies incl shelly-lib to prevent exceptions
-* (Apollon77) - Add Sentry for error/crash reporting (active with js-controller 3.0)
-* (Stübi      - Add for hue two new datapoints for Shelly Bulb and RGBW2
+### 3.2.8 (09.05.2020)
+* (c7j3X) - Add device Shelly Vintage
+* (Stübi) - Add state vibration and tilt to Shelly DW
+
+### 3.2.7 (28.04.2020)
+* (Stübi) - User can enable/disable sentry logging
+
+### 3.2.6 (27.04.2020)
+* (Apollon77)  - Update Dependencies incl shelly-lib to prevent exceptions
+* (Apollon77)  - Add Sentry for error/crash reporting (active with js-controller 3.0)
+* (Stübi       - Add for hue two new datapoints for Shelly Bulb and RGBW2
+* (@SamLowrie) - Add option to set a specific multicast interface for CoAP server
 
 ### 3.2.4 (11.04.2020)
 * (Stübi) - Bugfixing MQTT ext_temperature for Shelly 1

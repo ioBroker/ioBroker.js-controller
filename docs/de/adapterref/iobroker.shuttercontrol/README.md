@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shuttercontrol/README.md
 title: ioBroker.shuttercontrol
-hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
+hash: ZNQY7H9D/tC0wLr+J6jPF4jUN+5924R5t+G925Ji8fE=
 ---
 ![Logo](../../../en/adapterref/iobroker.shuttercontrol/admin/shuttercontrol.png)
 
@@ -16,12 +16,14 @@ hash: okEyMN6w9lBIPn211KXiwluPpjzRUoehGCbq86a8aaA=
 ![NPM](https://nodei.co/npm/iobroker.shuttercontrol.png?downloads=true)
 
 # IoBroker.shuttercontrol
-** Wenn es dir gefällt, erwäge bitte eine Spende: **
+Dieser Adapter verwendet den Dienst Sentry.io, um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. Weitere Details siehe unten!
+
+** Wenn es Ihnen gefällt, ziehen Sie bitte eine Spende in Betracht: **
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=Q4EEXQ6U96ZTQ&source=url)
 
 ## Shuttercontrol Adapter für ioBroker
-automatische Rollladensteuerung
+bestimmte Rollladensteuerung
 
 [Deutsche Beschreibung hier](docs/de/shuttercontrol.md)
 
@@ -29,9 +31,44 @@ automatische Steuerung für Rollläden
 
 [Englische Beschreibung hier](docs/en/shuttercontrol.md)
 
+### Was ist Sentry.io und was wird den Servern dieses Unternehmens gemeldet?
+Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ihren Anwendungen zu erhalten. Und genau das ist in diesem Adapter implementiert.
+
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.6.0 (xx.05.2020)
+* (simatec) added sentry.io
+* (simatec) Added node Support
+* (simatec) node 8 support removed
+* (5G7K) added new feature for sunprotect
+* (5G7K) Added more debug logs
+
+### 0.5.1 (15.04.2020)
+* (simatec) Bugfix for Adapter checker
+* (simatec) Added more debug logs
+* (simatec) Added node Support
+* (simatec) node 8 support removed
+
+### 0.5.0 (06.04.2020)
+* (simatec) Bugfix Goldenhour
+* (simatec) Bugfix delay for sunprotect
+* (simatec) Bugfix Goldhour with living area
+* (simatec) Added auto fill for Position
+* (simatec) many small Bugfixes
+* (simatec) Bugfix Translations
+* (simatec) Bugfix compactmode
+* (5G7K) Added debug log with more Informations
+
+
+### 0.4.3 (29.12.2019)
+* (simatec) Bugfix update process
+
+### 0.4.2 (22.12.2019)
+* (simatec) Fix Trigger added objects
 
 ### 0.4.1 (20.10.2019)
 * (simatec) Fix update process
@@ -145,7 +182,7 @@ automatische Steuerung für Rollläden
 ## License
 MIT License
 
-Copyright (c) 2019 simatec
+Copyright (c) 2019 - 2020 simatec
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -74,6 +74,10 @@ Change the value of programs.selected.BSH_Common_Root_SelectedProgram leads to s
 
 ## Changelog
 
+### 0.0.28 (10.05.2020)
+
+-   (ta2k) fix js controller 3 issues
+
 ### 0.0.27 (13.11.2019)
 
 -   (ta2k) improve option selecting

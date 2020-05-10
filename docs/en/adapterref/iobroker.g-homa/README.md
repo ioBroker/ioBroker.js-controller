@@ -11,6 +11,13 @@ ioBroker adapter for G-Homa Wifi plugs. Provides a local command server so the p
 The inclusion of plugs has to be performed with the app for now, but will soon be supported over ioBroker on WiFi-enabled devices.
 
 ## Changelog
+<!-- 
+	Placeholder for next versions (this needs to be indented):
+	### __WORK IN PROGRESS__
+-->
+
+### 0.5.2 (2020-05-08)
+* (AlCalzone) Don't log `plug added` for known plugs
 
 ### 0.5.1 (2019-10-10)
 * (AlCalzone) Defined missing `info.connection` object

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
+hash: kFyo7IFLR+tNno50/9qIzmvw1KifmmU9kDFnJPnmmhc=
 ---
 ![商标](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -20,8 +20,6 @@ hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
 ##重要信息
 该适配器仍在开发中。到目前为止，只能将信息从UniFi控制器获取到ioBroker中。
 
-**无法更改UniFi控制器的配置（例如，启用/禁用WLAN）**
-
 ##配置
 ###最低要求信息
 要启动此适配器并运行，需要以下信息：
@@ -30,12 +28,12 @@ hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
 * 用户名和密码
 *更新间隔
 
-默认情况下，信息每60秒更新一次。根据您的ioBroker硬件和您的网络大小（客户端，UniFi设备等），不建议进一步缩短间隔。
+默认情况下，信息每60秒更新一次。根据您的ioBroker硬件和网络大小（客户端，UniFi设备等），建议不要进一步缩短间隔。
 
 ###黑名单
 适配器会从您的UniFi控制器中更新尽可能多的信息，但可以限制更新的信息。
 
-可以禁用所选信息的更新，也可以禁用该信息的特定黑名单。
+可以禁用所选信息的更新或将该信息列入黑名单。
 
 |信息|被|列入黑名单的项目 |
 |-------------|-----------------------------------------|
@@ -45,6 +43,10 @@ hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
 |网络|姓名|
 |健康|子系统|
 
+＃＃ 控制
+###启用/禁用WLAN
+通过更改WLAN的“启用”状态，可以启用/禁用它。几秒钟后，更改将被提供给访问点。
+
 ##参考
 该适配器使用以下第三方nodejs模块的功能：
 
@@ -52,7 +54,10 @@ hash: Gv3kbgcW2JklKvQEXDcD3ceaTuYw16CfVjCri7uRGwU=
 * [json-logic-js]（https://github.com/jwadhams/json-logic-js）
 
 ## Changelog
-### 0.5.0-beta.1 (2020-05-01)
+### __WORK IN PROGRESS__
+* (braindead1) Implemented possibility to enable/disable WLANs
+
+### 0.5.0 (2020-05-09)
 * (braindead1) Implemented configuration of updates
 * (braindead1) Improved JsonLogic
 * (braindead1) Removed legacy code

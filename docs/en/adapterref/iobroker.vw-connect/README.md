@@ -112,6 +112,10 @@ Door and window states:
 
 ## Changelog
 
+### 0.0.12
+
+- fix js.controller 3 problems
+
 ### 0.0.11
 
 - fix audi bug with multiple vehicles
