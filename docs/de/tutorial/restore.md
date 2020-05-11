@@ -115,11 +115,11 @@ Hier habt ihr den eigentlichen Wiederherstellungsvorgang gestartet.
 
 In eurem Browser öffnet sich nun ein weiterer Tab, in dem ihr den Wiederherstellungsprozess wie auf der Konsole im WebUI von Backitup verfolgen könnt.
 
-![restoreWebUI.JPG](media/restore/restorewebui.jpg) 
+![restoreWebUI.JPG](media/restore/restoreWebUI.JPG)
 
 Nachdem die Wiederherstellung erfolgreich abgeschlossen wurde, bekommt ihr die Meldung ebenfalls im WebUi des Restores.
 
-![restoreWebUI_finish.JPG](media/restore/restorewebui_finish.jpg) 
+![restoreWebUI_finish.JPG](media/restore/restoreWebUI_finish.JPG)
 
 Die Wiederherstellung kann je nach Leistung des Systems und Größe der alten ioBroker Installation etwas Zeit brauchen.
 Im Normalfall sollte der restore nach ca. 10-15 Minuten erledigt und ioBroker automatisch wieder gestartet sein.
