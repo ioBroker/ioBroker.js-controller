@@ -349,6 +349,9 @@ der Tastenkombination "STRG + F".
    *View Button für Medieninhalte.*
 
 ## Changelog
+### 0.6.4 (2020-05-11)
+* (foxriver76) compatibility with controller v3
+
 ### 0.6.3 (2020-04-02)
 * (foxriver76) try specific python versions first on install
 * (foxriver76) bump dependency, because of auth bug in smartglass

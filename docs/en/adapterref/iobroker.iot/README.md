@@ -248,6 +248,14 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+
+### 1.4.18 (2020-05-11)
+* (Apollon77) Make sure that invalid configured states or values without timestamp do not crash adapter (Sentry IOBROKER-IOT-8)
+* (Apollon77) Make sure publishes after disconnect to not break adapter (Sentry IOBROKER-IOT-A)
+
+### 1.4.17 (2020-05-11)
+* (bluefox) Better error output is implemented
+
 ### 1.4.14 (2020-05-01)
 * (bluefox) Fixed the problem if admin is not on 8081 port
 

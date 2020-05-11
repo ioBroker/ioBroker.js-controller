@@ -245,6 +245,12 @@ sendTo('influxdb.0', 'getEnabledDPs', {}, function (result) {
 
 
 ## Changelog
+
+### 1.8.6 (2020-05-11)
+* (Apollon77) make sure disabling of datapoints while starting adapter do not crash adapter (Sentry IOBROKER-INFLUXDB-7)
+* (Apollon77) Make sure all start values are processed correctly
+* (Apollon77) More checks to make sure to not crash when states are disabled while data are processed (Sentry IOBROKER-INFLUXDB-8)
+
 ### 1.8.5 (2020-05-08)
 * (bluefox) set default history if not yet set
 

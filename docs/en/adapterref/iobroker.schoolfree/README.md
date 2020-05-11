@@ -79,6 +79,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 0.6.1 (11.05.2020)
+* (simatec) added errorhandling for sentry.io
+* (simatec) added node 14 support
+
 ### 0.6.0 (04.05.2020)
 * (simatec) added new features
 * (simatec) Bugfix next day schoolfree

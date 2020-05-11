@@ -32,7 +32,7 @@ This adapter connects ioBroker to various VBus-based devices using resol-vbus, a
 
 ## Configuration hints
 
-* The default setting for the connection type is VBus/USB, but it must be explicitly selected even for VBus/USB, otherwise no connection will be established.
+* The default setting for the connection type is VBus/LAN, but it must be explicitly selected even for VBus/LAN, otherwise no connection will be established.
 * The correct settings for direct LAN access for VBus/LAN, DL3, DL2, KM2 are:
   * Connection type: VBus/LAN or KM2 or DL2 or DL3
   * Connection identifier: IP address or FullyQualifiedHostName (e.g. host1.example.com)
@@ -50,6 +50,10 @@ This adapter connects ioBroker to various VBus-based devices using resol-vbus, a
   * Update interval: time between the update of the recorded values (default 30s)
 
 ## Changelog
+
+### 0.0.5
+
+* (pdbjjens) alpha 5 release improved type and role mapping of adapter values
 
 ### 0.0.4
 

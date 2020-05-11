@@ -16,6 +16,27 @@ Senec stellt derzeit über die Webschnittstelle auch keine zuverlässige Möglic
 Ob andere Systeme (z.B. V3) ebenfalls damit funktionieren, ist davon abhängig, ob diese ebenfalls auf lala.cgi basieren und die gleichen JSON Informationen zur Verfügung stellen.
 Auch bei Einbindung in die Senec.Clound ist nicht gewährleistet, dass die Daten weiterhin über die Webschnittstelle abgerufen werden können (hierzu bitte Erfahrungsberichte).
 
+Systeme, die funktionieren dürften, da sie die gleiche Schnittstelle nutzen sind nachfolgend gelistet. Allerdings können die Datenpunkte unterschiedlich sein (fehlen, zusätzlich, geändert).
+* Senec Home 4.0 / Blei
+* Senec Home 6.0 Pb
+* Senec Home 8.0 / Blei
+* Senec Home 10.0 Pb
+* Senec Home 5.0/7.5/10.0 / Lithium
+* Senec Home 15.0 / Lithium
+* Senec Home V2 5.0/7.5/10.0
+* Senec Home V2 10.0 / Blei
+* Senec Home V2.1 1ph / Lithium
+* Senec.Home V3 Hybrid
+* Senec.Home V3 Hybrid duo
+* Senec Business 30.0 / Blei
+* Senec Business V2 30.0 / Blei
+* Senec Business 25.0 / Lithium
+* Senec Business V2_2ph / Lithium
+* Senec Business V2 3ph / Lithium
+* ADS Tec
+* OEM LG
+* Solarinvert Storage 10.0 / Blei,
+
 ### SENEC.Home
 Es handelt sich um ein System, dessen Herzstück ein Lithium-Ionen-Akku ist, der Strom speichert und wieder abgibt, der von der Solaranlage auf dem Dach erzeugt wird. Das funktioniert genau wie beim Akku im Smartphone, Notebook oder dem Akkuschrauber. Es steckt im Prinzip auch die gleiche bewährte Technologie drin. Wenn du mehr Strom auf dem Dach erzeugst, als du selbst im Haus verbrauchen kannst, fließt der Strom nicht ins Netz, sondern in deinen Speicher. Du kannst ihn dann nutzen, wenn es dunkel wird oder Wolken aufziehen und du weniger oder keinen Strom mehr erzeugst. Dann kannst du auch abends mit deinem eigenen Solarstrom den Fernseher betreiben oder das Essen kochen. 
 
@@ -61,7 +82,7 @@ Zur Suche nach einem bestimmten Datenpunkt empfiehlt sich die Suche mittels der 
 Abhängig vom individuellen System können States nicht existieren oder aber auch nicht dokumentierte States auftreten.
 Falls zu einem State keine Dokumentation vorhanden ist, jemand aber weiß, was der State darstellt, bitte ich um einen entspr. Pull-Request (oder Ticket mit der entspr. Information eröffnen).
 
-### States
+### Beispiel States (verfügbare States sind abhängig von System und Softwarestand)
 
 #### Channel: info
 
@@ -526,6 +547,10 @@ Falls zu einem State keine Dokumentation vorhanden ist, jemand aber weiß, was d
    *Nur lesbarer Text, die die Seriennummern der evtl. vorhandenen Wallboxen 0-3 angibt.*
 
 ## Changelog
+### 1.0.9 (NoBl)
+* IP types are shown as IP again.
+* added datapoints for FACTORY along with more state descriptions for Battery Type, Country and System Type.
+* added datapoints for GRIDCONFIG
 
 ### 1.0.8 (NoBl)
 * Added more states to known states (please feedback if they need special handling (unit, special description, value modification, ...))

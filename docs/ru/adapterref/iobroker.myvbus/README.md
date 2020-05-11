@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.myvbus/README.md
 title: ioBroker.myvbus
-hash: iMl+i8SJ7xeUKK74SFlYHQpUnaOYr2cnDY8dXRS21+M=
+hash: 2TFJDIah+2/TCuImfk5d2OXZ35YZOL4+i+UkQdt7LGw=
 ---
 # IoBroker.myvbus
 ![логотип](../../../en/adapterref/iobroker.myvbus/admin/myvbus.png)
@@ -34,7 +34,7 @@ hash: iMl+i8SJ7xeUKK74SFlYHQpUnaOYr2cnDY8dXRS21+M=
 * Считывание канала 0 DL3 (датчики, напрямую подключенные к устройству DL3) не поддерживается из-за ограничений интерфейса DL3.
 
 ## Советы по настройке
-* Значением по умолчанию для типа подключения является VBus / USB, но оно должно быть явно выбрано даже для VBus / USB, в противном случае соединение не будет установлено.
+* Значением по умолчанию для типа подключения является VBus / LAN, но оно должно быть явно выбрано даже для VBus / LAN, в противном случае соединение не будет установлено.
 * Правильные настройки прямого доступа к локальной сети для VBus / LAN, DL3, DL2, KM2:
   * Тип подключения: VBus / LAN или KM2 или DL2 или DL3
   * Идентификатор соединения: IP-адрес или FullyQualifiedHostName (например, host1.example.com)
@@ -47,16 +47,24 @@ hash: iMl+i8SJ7xeUKK74SFlYHQpUnaOYr2cnDY8dXRS21+M=
   * Идентификатор соединения: vbus.net (или vbus.io) - оба без http:// и через идентификатор!
   * Порт подключения: настройка по умолчанию 7053 не должна изменяться
   * Пароль VBus: YourVBusPassword (по умолчанию: vbus)
-  * Канал DL3: актуально только для DL3 (значения: 1-6, канал 0 не может быть считан)
+  * Канал DL3: относится только к DL3 (значения: 1-6, канал 0 не может быть считан)
   * Через идентификатор: d1234567890 - без http:// before или .vbus.io позади
   * Интервал обновления: время между обновлением записанных значений (по умолчанию 30 с)
 
 ## Юридические уведомления
 RESOL, VBus, VBus.net, DeltaSol и другие являются товарными знаками или зарегистрированными товарными знаками RESOL - Elektronische Regelungen GmbH <https://www.resol.de/en>
 
-Все остальные торговые марки являются собственностью соответствующих владельцев.
+Все остальные торговые марки являются собственностью их соответствующих владельцев.
 
 ## Changelog
+
+### 0.0.5
+
+* (pdbjjens) alpha 5 release improved type and role mapping of adapter values
+
+### 0.0.4
+
+* (pdbjjens) alpha 4 release updated dependency on resol-vbus library to 0.21.0
 
 ### 0.0.3
 

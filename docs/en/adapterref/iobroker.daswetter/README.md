@@ -52,7 +52,7 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
-### 3.0.0 (2020-05-01)
+### 3.0.1 (2020-05-01)
 * (René) breaking change: old data structure is not supported anymore
 * (René) "request" replaced by "bent"
 * (René) "xml2js" replaced by "xml2json"

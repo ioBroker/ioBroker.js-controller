@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.myvbus/README.md
 title: ioBroker.myvbus
-hash: iMl+i8SJ7xeUKK74SFlYHQpUnaOYr2cnDY8dXRS21+M=
+hash: 2TFJDIah+2/TCuImfk5d2OXZ35YZOL4+i+UkQdt7LGw=
 ---
 # IoBroker.myvbus
 ![Logo](../../../en/adapterref/iobroker.myvbus/admin/myvbus.png)
@@ -19,14 +19,14 @@ hash: iMl+i8SJ7xeUKK74SFlYHQpUnaOYr2cnDY8dXRS21+M=
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.myvbus.svg)
 
 ## IoBroker Adapter für Resol VBus
-Dieser Adapter verbindet ioBroker mit verschiedenen VBus-basierten Geräten über resol-vbus, eine JavaScript-Bibliothek zur Erfassung von RESOL VBus-Daten, die von Daniel Wippermann bereitgestellt wird.
+Dieser Adapter verbindet ioBroker über resol-vbus, eine von Daniel Wippermann bereitgestellte JavaScript-Bibliothek zur Erfassung von RESOL VBus-Daten, mit verschiedenen VBus-basierten Geräten.
 
 <https://github.com/danielwippermann/resol-vbus>
 
 <https://www.npmjs.com/package/resol-vbus>
 
 ## Eigenschaften
-* Ermöglicht das Lesen der Messdaten von verschiedenen RESOL (R) VBus (R) -Geräten - vorzugsweise Solar- und Systemsteuerungen der DeltaSol (R) -Serie einschließlich eingebauter Wärmemengenmesser (HQM) - mit DL3- oder DL2-Datenloggern, KM2 Kommunikationsmodule, VBus / LAN-Schnittstellenadapter oder serielle / LAN-Gateways lokal über TCP / IP.
+* Ermöglicht das Lesen der Messdaten von verschiedenen RESOL (R) VBus (R) -Geräten - vorzugsweise Solar- und Systemsteuerungen der DeltaSol (R) -Serie einschließlich eingebauter Wärmemengenmesser (HQM) - mithilfe von DL3- oder DL2-Datenloggern, KM2 Kommunikationsmodule, VBus / LAN-Schnittstellenadapter oder serielle / LAN-Gateways lokal über TCP / IP.
 * Der Gerätezugriff über den seriellen VBus / USB-Schnittstellenadapter oder über VBus.net (R) mit DLx / KMx wird ebenfalls unterstützt.
 * Verarbeitet Live-VBus-Datenströme und stellt sie als ioBroker-Status zur Verfügung.
 * Die Werte werden mit einer konfigurierbaren Zykluszeit aktualisiert.
@@ -34,7 +34,7 @@ Dieser Adapter verbindet ioBroker mit verschiedenen VBus-basierten Geräten übe
 * Das Lesen von DL3-Kanal 0 (Sensoren, die direkt an das DL3-Gerät angeschlossen sind) wird aufgrund von Einschränkungen der DL3-Schnittstelle nicht unterstützt.
 
 ## Konfigurationshinweise
-* Die Standardeinstellung für den Verbindungstyp ist VBus / USB, muss jedoch auch für VBus / USB explizit ausgewählt werden, da sonst keine Verbindung hergestellt wird.
+* Die Standardeinstellung für den Verbindungstyp ist VBus / LAN, muss jedoch auch für VBus / LAN explizit ausgewählt werden, da sonst keine Verbindung hergestellt wird.
 * Die korrekten Einstellungen für den direkten LAN-Zugriff für VBus / LAN, DL3, DL2, KM2 sind:
   * Verbindungstyp: VBus / LAN oder KM2 oder DL2 oder DL3
   * Verbindungskennung: IP-Adresse oder FullyQualifiedHostName (z. B. host1.example.com)
@@ -57,6 +57,14 @@ RESOL, VBus, VBus.net, DeltaSol und andere sind Marken oder eingetragene Marken 
 Alle anderen Marken sind Eigentum ihrer jeweiligen Inhaber.
 
 ## Changelog
+
+### 0.0.5
+
+* (pdbjjens) alpha 5 release improved type and role mapping of adapter values
+
+### 0.0.4
+
+* (pdbjjens) alpha 4 release updated dependency on resol-vbus library to 0.21.0
 
 ### 0.0.3
 

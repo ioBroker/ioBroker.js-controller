@@ -145,6 +145,9 @@ Abschließend sind die in der CCU angelegten Variablen aufgelistet
 ### FAQ
 
 ## Changelog
+### 2.6.7 (2020-05-11)
+* (foxriver76) fixed some edge cases, reported by Sentry
+
 ### 2.6.6 (2020-05-06)
 * (foxriver76) use current time as timestamp if non-existent on initial variables poll
 

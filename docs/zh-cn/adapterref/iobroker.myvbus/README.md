@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.myvbus/README.md
 title: ioBroker.myvbus
-hash: iMl+i8SJ7xeUKK74SFlYHQpUnaOYr2cnDY8dXRS21+M=
+hash: 2TFJDIah+2/TCuImfk5d2OXZ35YZOL4+i+UkQdt7LGw=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.myvbus.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.myvbus.svg)
@@ -26,15 +26,15 @@ hash: iMl+i8SJ7xeUKK74SFlYHQpUnaOYr2cnDY8dXRS21+M=
 <https://www.npmjs.com/package/resol-vbus>
 
 ＃＃ 特征
-*使用DL3或DL2数据记录仪KM2，可以读取来自各种RESOL（R）VBus（R）设备的测量数据-最好是DeltaSol（R）系列的太阳能和系统控制器，包括内置热量表（HQM）通信模块，VBus / LAN接口适配器或通过TCP / IP本地的串行/ LAN网关。
-*还支持使用VBus / USB串行接口适配器或使用DLx / KMx的VBus.net（R）访问设备。
-*处理实时VBus数据流，并将其作为ioBroker状态提供。
+*能够使用DL3或DL2数据记录器KM2从各种RESOL®VBus®设备-最好是DeltaSol®系列的太阳能和系统控制器（包括内置热量表（HQM））读取测量数据通信模块，VBus / LAN接口适配器或通过TCP / IP本地的串行/ LAN网关。
+*还支持使用VBus / USB串行接口适配器或使用DLx / KMx的VBus.net（R）进行设备访问。
+*处理实时VBus数据流，并使它们可作为ioBroker状态使用。
 *值以可配置的周期时间更新。
 *不支持读取或设置VBus设备配置参数。为此应使用Resol提供的工具，例如通过VBus.net或参数化工具RPT。
 *由于DL3接口的限制，不支持读取DL3通道0（直接连接到DL3设备的传感器）。
 
 ##配置提示
-*连接类型的默认设置为VBus / USB，但即使对于VBus / USB也必须明确选择，否则将不会建立连接。
+*连接类型的默认设置为VBus / LAN，但即使对于VBus / LAN，也必须明确选择它，否则将不会建立连接。
 *用于VBus / LAN，DL3，DL2，KM2的直接LAN访问的正确设置是：
   *连接类型：VBus / LAN或KM2或DL2或DL3
   *连接标识符：IP地址或FullyQualifiedHostName（例如host1.example.com）
@@ -57,6 +57,14 @@ RESOL，VBus，VBus.net，DeltaSol等是RESOL的商标或注册商标-Elektronis
 所有其他商标均为其各自所有者的财产。
 
 ## Changelog
+
+### 0.0.5
+
+* (pdbjjens) alpha 5 release improved type and role mapping of adapter values
+
+### 0.0.4
+
+* (pdbjjens) alpha 4 release updated dependency on resol-vbus library to 0.21.0
 
 ### 0.0.3
 

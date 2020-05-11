@@ -185,6 +185,11 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 1.5.7 (11.05.2020)
+* (simatec) bugfix errorhandling sentry.io
+* (simatec) updated dependencies
+* (simatec) added node14 support
+
 ### 1.5.6 (02.05.2020)
 * (simatec) Bugfix reading restore list
 

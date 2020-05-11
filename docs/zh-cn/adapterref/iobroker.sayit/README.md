@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sayit/README.md
 title: ioBroker sayit适配器
-hash: JBYO2UNE9kZnJexGdPCqTf5yzBarVuUpp9jXtW0zWOc=
+hash: WfuAYnt4vJV2TG5k1YUmniPPUgsw7fEd/VeokkOMjkI=
 ---
 ![商标](../../../en/adapterref/iobroker.sayit/admin/sayit.png)
 
@@ -34,7 +34,7 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 -* Chromecast *-在Chromecast设备上播放文字。
 
--* MPD *-在音乐播放器守护程序上播放文本。仅将** http **用于网络适配器，请勿使用https。
+-* MPD *-在音乐播放器守护程序上播放文本。仅将** http **用于Web适配器，请勿使用https。
 
 要在RaspberryPI或linux系统上启用文本语音转换，请在命令```sudo apt-get -y install mpg321```之后调用一次以安装mpg321。
 
@@ -50,7 +50,7 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 要使用Yandex语音，您必须在此处请求API密钥：[https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/](https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/)。 [此服务将在2019年1月1日停用，并由Yandex.cloud代替]要使用Yandex.cloud，您应该在这里注册：[https://cloud.yandex.ru/]，在Cloud中安装SpeechKIT API并获取身份验证令牌和文件夹ID（如API说明中所述）。
 
--Ivona：英语，德语，俄语，意大利语，西班牙语，法语，丹麦语，威尔士语，冰岛语，荷兰语，波兰语，葡萄牙语，罗马尼亚语，瑞典语，土耳其语
+-伊凡娜：英语，德语，俄语，意大利语，西班牙语，法语，丹麦语，威尔士语，冰岛语，荷兰语，波兰语，葡萄牙语，罗马尼亚语，瑞典语，土耳其语
 
         要使用Amazon（Ivona）语音，您需要获取访问密钥和秘密密钥[这里](http://www.ivona.com/us/for-business/speech-cloud/)。
 
@@ -67,7 +67,7 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 -PicoTTS（仅Linux）：英语，德语，意大利语，西班牙语，法语
 
 对于PicoTTS，必须安装以下软件包：libttspico-utils和lame。
-安装命令：“ sudo apt-get install libttspico-utils me脚”
+安装命令：'sudo apt-get install libttspico-utils lame'
 
 ### Cloud and Amazon Web Services Polly文本格式
 您可以使用[语音合成标记语言](http://docs.aws.amazon.com/polly/latest/dg/ssml.html)设置文本格式。
@@ -76,7 +76,7 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 -```<break time =“ 3s” />```--暂停x秒（最多10秒）。
 -```<emphasis> big </ emphasis>```-强调一些单词。
--```<prosody volume =“ + 6dB” rate =“ 90％”>我在说</ prosody>```-控制速度和音量参数。
+-```<prosody volume =“ + 6dB” rate =“ 90％”>我正在说</ prosody>```-控制速度和音量参数。
 -```<say-as interpret-as =“ digits”> 12345 </ say-as>```-分别说出每个数字。
 
 更多[信息](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/speech-synthesis-markup-language-ssml-reference)。
@@ -94,7 +94,7 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 ```myCustomPlayer --option "%s" > /dev/null```
 
-sayIt将根据它生成```myCustomPlayer --option "/opt/iobroker/node_modules/iobroker.sayit/say.mp3" > /dev/null```。
+sayIt将根据它生成§§JJJJJ_0_0§§。
 
 ##用法
 SayIt适配器不能单独使用。必须通过javascript适配器或带有特定窗口小部件的“ vis”进行控制。
@@ -103,18 +103,18 @@ SayIt适配器不能单独使用。必须通过javascript适配器或带有特�
 -sayit.N.tts.text：要说的短语。
 -sayit.N.tts.volume：播放该短语将使用的音量。
 -sayit.N.tts.playing：如果正在播放文本，则为true，否则为false。仅支持“ Windows”和“系统”播放模式。
--sayit.N.tts.cachetext：要缓存的词组，然后无需互联网即可使用。
+-sayit.N.tts.cachetext：要缓存的词组，无需互联网即可使用。
 
-   例如。您可以在此处手动输入“没有互联网”，如果对google.com的ping否定，请将“没有互联网”写入“ tts.text”，它将发音。当然必须启用缓存。
+   例如。您可以在此处手动输入“不连接互联网”，如果对google.com的ping否定，请在“ tts.text”中输入“不连接互联网”，它将发音。当然必须启用缓存。
 
-状态** tts.text **支持扩展语法，因此可以将语言/引擎和音量与文本一起定义。它用于启用多语言text2speech引擎。
+State **tts.text** 持扩展语法，因此语言/引擎和音量可以与文本一起定义。它用于启用多语言text2speech引擎。
 例如。如果适配器具有引擎“ Google-english”，则可以使用词组```de:Sag es```强制使用Google-Deustch语音引擎。
 
-使用§§JJJJJ_0_0§§，我们可以强制使用俄语和75％的语言。
+通过§§JJJJJ_0_0§§，我们可以强制使用俄语和75％的语言。
 
-您可以从当前或给定的音量（不是最大）中指定百分比的公告音量。例如。如果命令是```de;75;Gutes Wetter```§且“播音音量”为50％，则播音将以100％可能的38％的音量播放。
+您可以从当前或给定的音量（不是最大）中指定百分比的公告音量。例如。如果命令是```de;75;Gutes Wetter```§且“播音音量”为50％，则播音将以100％可能的38％音量播放。
 
-也可以指定播放mp3文件的系统命令。如果将其保留为空白，则将使用默认设置：Windows-cmdmp3.exe，OSX-/ usr / bin / afplay，Linux-mpg321或omxplayer（推荐）。
+也可以指定播放mp3文件的系统命令。如果将其保留为空白，则将使用默认设置：windows-cmdmp3.exe，OSX-/ usr / bin / afplay，linux-mpg321或omxplayer（推荐）。
 
 要安装omxplayer，请写```sudo apt-get install omxplayer```或写```sudo apt-get install mpg321```来安装mpg321。
 
@@ -153,7 +153,7 @@ SayIt适配器不能单独使用。必须通过javascript适配器或带有特�
 -** da-DK_CLOUD_Female **-da-DK-女性-眼镜蛇
 -** da-DK_CLOUD_Male **-da-DK-男性-Mads
 -** zh-AU_CLOUD_Female **-zh-AU-女-妮可
--** zh-AU_CLOUD_Male **-zh-AU-马累-罗素
+-** en-AU_CLOUD_Male **-zh-AU-男性-罗素
 -** zh-CN_CLOUD_Female_Amy **-zh-CN-女-艾米
 -** en-GB_CLOUD_Male **-en-GB-男性-Brian
 -** zh-CN_CLOUD_Female_Emma **-zh-CN-女-艾玛
@@ -214,7 +214,7 @@ SayIt适配器不能单独使用。必须通过javascript适配器或带有特�
 -**（zh-CN_AP_Male）**-zh-CN-男性-Joey
 -**（da-DK_AP_Female）**-da-DK-女性-眼镜蛇
 -**（da-DK_AP_Male）**-da-DK-男性-Mads
--**（zh-AU_AP_Female）**-zh-AU-女性-妮可
+-**（zh-CN_AP_Female）**-zh-AU-女-妮可
 -**（zh-AU_AP_Male）**-zh-AU-男性-罗素
 -**（zh-CN_AP_Female_Amy）**-zh-GB-女-艾米
 -**（zh-CN_AP_Male）**-zh-GB-男性-Brian
@@ -259,6 +259,20 @@ SayIt适配器不能单独使用。必须通过javascript适配器或带有特�
 -**（tr-TR_AP_Female）**-tr-TR-女性-Filiz
 
 ## Changelog
+
+### 1.9.4 (2020-05-11)
+* (Apollon77) Fix Blockly
+* (Apollon77) Update dependencies
+
+### 1.9.3 (2020-04-24)
+* (bluefox) Fixed blockly with missing languages
+
+### 1.9.2 (2020-04-21)
+Changed type of top-level object to "meta" in order to comply with js-controller v3
+
+### 1.9.1 (2020-03-12)
+* (foxriver76) removed usage of adapter.getMessage
+
 ### 1.9.0 (2019-11-06)
 * (algar42) Output file extension is changed dynamically based on the engine selected
 
@@ -424,7 +438,7 @@ SayIt适配器不能单独使用。必须通过javascript适配器或带有特�
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

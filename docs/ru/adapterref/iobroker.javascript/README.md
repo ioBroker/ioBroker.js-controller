@@ -2638,7 +2638,7 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
-### 4.6.1 (2020-05-1x)
+### 4.6.1 (2020-05-11)
 * (bluefox) Updated blockly to 3.20200402.1
 * (bluefox) Added to blockly the switch/case block. 
 * (Mic-M) fix log crash

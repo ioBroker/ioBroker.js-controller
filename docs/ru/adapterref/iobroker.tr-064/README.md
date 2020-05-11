@@ -102,6 +102,9 @@ iobroker upload tr-064
 ```
 
 ## Changelog
+### 4.0.3 (2020-05-11)
+* (Apollon77) Make sure adapter no not crash of no calls were returned (Sentry IOBROKER-TR-064-7)
+* (Apollon77) Make sure adapter do not crash when providing a non string to "ring" state (Sentry IOBROKER-TR-064-8) 
 
 ### 4.0.1 (2020-04-23)
 * (Apollon77) handle case where no Phone deflections are available (Sentry IOBROKER-TR-064-1/2)

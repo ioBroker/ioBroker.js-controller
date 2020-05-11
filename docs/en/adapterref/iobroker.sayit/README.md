@@ -238,6 +238,11 @@ Following values for engines are possible:
 - **(tr-TR_AP_Female)** -           tr-TR - Female - Filiz
 
 ## Changelog
+
+### 1.9.4 (2020-05-11)
+* (Apollon77) Fix Blockly
+* (Apollon77) Update dependencies
+
 ### 1.9.3 (2020-04-24)
 * (bluefox) Fixed blockly with missing languages
 
