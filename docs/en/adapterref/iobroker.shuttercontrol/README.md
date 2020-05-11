@@ -44,12 +44,13 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 0.6.0 (xx.05.2020)
+### 0.6.0 (10.05.2020)
 * (simatec) added sentry.io
-* (simatec) Added node Support
+* (simatec) added node Support
+* (simatec) many small Bugfixes
 * (simatec) node 8 support removed
 * (5G7K) added new feature for sunprotect
-* (5G7K) Added more debug logs
+* (5G7K) added more debug logs
 
 ### 0.5.1 (15.04.2020)
 * (simatec) Bugfix for Adapter checker

@@ -112,7 +112,7 @@ Door and window states:
 
 ## Changelog
 
-### 0.0.12
+### 0.0.13
 
 - fix js.controller 3 problems
 
