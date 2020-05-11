@@ -1053,5 +1053,75 @@
         "conditions": {
             "admin": "bigger(3.6.10)"
         }
+    },
+    {
+        "title": {
+            "en": "New JS-Controller 3.1 is available in Latest Repository",
+            "de": "Der neue JS-Controller 3.1 ist im Latest Repository verfügbar",
+            "ru": "Новый JS-Controller 3.1 доступен в последнем репозитории",
+            "pt": "O novo JS-Controller 3.1 está disponível no Repositório Mais Recente",
+            "nl": "Nieuwe JS-Controller 3.1 is beschikbaar in de nieuwste repository",
+            "fr": "Le nouveau JS-Controller 3.1 est disponible dans le dernier référentiel",
+            "it": "Il nuovo controller JS 3.1 è disponibile nell'ultimo repository",
+            "es": "El nuevo JS-Controller 3.1 está disponible en el último repositorio",
+            "pl": "Nowy JS-Controller 3.1 jest dostępny w najnowszym repozytorium",
+            "zh-cn": "最新存储库中提供了新的JS-Controller 3.1"
+        },
+        "content": {
+            "en": "An upgrade for the js-controller is available for your system. This version of the js-controller is compatible with your Node.js version. On installation the new Error/Crash reporting (Sentry) will be activated. Please check the informations displayed during upgrade. More details about this release con be found at https://forum.iobroker.net/post/416056",
+            "de": "Ein Upgrade für den js-Controller ist für Ihr System verfügbar. Diese Version des js-Controllers ist mit Ihrer Node.js-Version kompatibel. Bei der Installation wird die neue Fehler- / Absturzmeldung (Sentry) aktiviert. Bitte überprüfen Sie die während des Upgrades angezeigten Informationen. Weitere Informationen zu dieser Version finden Sie unter https://forum.iobroker.net/post/416056",
+            "ru": "Для вашей системы доступно обновление для js-контроллера. Эта версия js-контроллера совместима с вашей версией Node.js. При установке будет активирован новый отчет об ошибках / сбоях (Sentry). Пожалуйста, проверьте информацию, отображаемую во время обновления. Более подробную информацию об этом выпуске можно найти по адресу https://forum.iobroker.net/post/416056.",
+            "pt": "Uma atualização para o controlador js está disponível para o seu sistema. Esta versão do controlador js é compatível com a sua versão do Node.js. Na instalação, o novo relatório de Erro / Crash (Sentry) será ativado. Por favor, verifique as informações exibidas durante a atualização. Mais detalhes sobre esta versão podem ser encontrados em https://forum.iobroker.net/post/416056",
+            "nl": "Er is een upgrade voor de js-controller beschikbaar voor uw systeem. Deze versie van de js-controller is compatibel met uw Node.js-versie. Bij installatie wordt de nieuwe fout- / crashrapportage (Sentry) geactiveerd. Controleer de informatie die wordt weergegeven tijdens de upgrade. Meer informatie over deze release vindt u op https://forum.iobroker.net/post/416056",
+            "fr": "Une mise à niveau pour le contrôleur js est disponible pour votre système. Cette version du contrôleur js est compatible avec votre version Node.js. Lors de l'installation, le nouveau rapport d'erreur / crash (Sentry) sera activé. Veuillez vérifier les informations affichées lors de la mise à niveau. Plus de détails sur cette version peuvent être trouvés sur https://forum.iobroker.net/post/416056",
+            "it": "Un aggiornamento per il controller js è disponibile per il tuo sistema. Questa versione del controller js è compatibile con la tua versione Node.js. Al momento dell'installazione verrà attivato il nuovo rapporto Errore / Arresto (Sentry). Si prega di controllare le informazioni visualizzate durante l'aggiornamento. Maggiori dettagli su questa versione sono disponibili all'indirizzo https://forum.iobroker.net/post/416056",
+            "es": "Una actualización para el controlador js está disponible para su sistema. Esta versión del controlador js es compatible con su versión Node.js. En la instalación, se activará el nuevo informe de error / bloqueo (Centinela). Compruebe la información que se muestra durante la actualización. Puede encontrar más detalles sobre esta versión en https://forum.iobroker.net/post/416056",
+            "pl": "Uaktualnienie dla kontrolera js jest dostępne dla twojego systemu. Ta wersja kontrolera js jest kompatybilna z twoją wersją Node.js. Podczas instalacji zostanie aktywowane nowe raportowanie błędów / awarii (Sentry). Sprawdź informacje wyświetlane podczas aktualizacji. Więcej informacji na temat tego wydania można znaleźć na https://forum.iobroker.net/post/416056",
+            "zh-cn": "您的系统可以使用js-controller的升级。此版本的js-controller与您的Node.js版本兼容。在安装时，新的错误/崩溃报告（Sentry）将被激活。请检查升级过程中显示的信息。有关此发行版的更多详细信息，请参见https://forum.iobroker.net/post/416056"
+        },
+        "id": "jscontroller-3-latest-nodejs10",
+        "class": "info",
+        "repo": "latest",
+        "fa-icon": "exclamation-circle",
+        "created": "2020-05-10T15:00:00.000Z",
+        "node-version": "bigger(10.0.0)",
+        "conditions": {
+            "js-controller": "smaller(3.1.3)"
+        }
+    },
+    {
+        "title": {
+            "en": "New JS-Controller 3.1 is available in Latest Repository",
+            "de": "Der neue JS-Controller 3.1 ist im Latest Repository verfügbar",
+            "ru": "Новый JS-Controller 3.1 доступен в последнем репозитории",
+            "pt": "O novo JS-Controller 3.1 está disponível no Repositório Mais Recente",
+            "nl": "Nieuwe JS-Controller 3.1 is beschikbaar in de nieuwste repository",
+            "fr": "Le nouveau JS-Controller 3.1 est disponible dans le dernier référentiel",
+            "it": "Il nuovo controller JS 3.1 è disponibile nell'ultimo repository",
+            "es": "El nuevo JS-Controller 3.1 está disponible en el último repositorio",
+            "pl": "Nowy JS-Controller 3.1 jest dostępny w najnowszym repozytorium",
+            "zh-cn": "最新存储库中提供了新的JS-Controller 3.1"
+        },
+        "content": {
+            "en": "An upgrade for the js-controller is available for your system. You need to upgrade Node.js before installing the update!! On installation the new Error/Crash reporting (Sentry) will be activated. Please check the informations displayed during upgrade. More details about this release and the needed Node.js upgrade can be found at https://forum.iobroker.net/post/416056",
+            "de": "Ein Upgrade für den js-Controller ist für Ihr System verfügbar. Sie müssen Node.js aktualisieren, bevor Sie das Update installieren können !! Bei der Installation wird die neue Fehler- / Absturzmeldung (Sentry) aktiviert. Bitte überprüfen Sie die während des Upgrades angezeigten Informationen. Weitere Details zu dieser Version und dem erforderlichen Node.js-Upgrade finden Sie unter https://forum.iobroker.net/post/416056",
+            "ru": "Для вашей системы доступно обновление для js-контроллера. Вам необходимо обновить Node.js перед установкой обновления !! При установке будет активирован новый отчет об ошибках / сбоях (Sentry). Пожалуйста, проверьте информацию, отображаемую во время обновления. Более подробную информацию об этом выпуске и необходимом обновлении Node.js можно найти по адресу https://forum.iobroker.net/post/416056.",
+            "pt": "Uma atualização para o controlador js está disponível para o seu sistema. Você precisa atualizar o Node.js antes de instalar a atualização !! Na instalação, o novo relatório de Erro / Crash (Sentry) será ativado. Por favor, verifique as informações exibidas durante a atualização. Mais detalhes sobre esta versão e a atualização necessária do Node.js. podem ser encontrados em https://forum.iobroker.net/post/416056",
+            "nl": "Er is een upgrade voor de js-controller beschikbaar voor uw systeem. U moet Node.js upgraden voordat u de update installeert !! Bij installatie wordt de nieuwe fout- / crashrapportage (Sentry) geactiveerd. Controleer de informatie die wordt weergegeven tijdens de upgrade. Meer informatie over deze release en de benodigde Node.js-upgrade is te vinden op https://forum.iobroker.net/post/416056",
+            "fr": "Une mise à niveau pour le contrôleur js est disponible pour votre système. Vous devez mettre à jour Node.js avant d'installer la mise à jour !! Lors de l'installation, le nouveau rapport d'erreur / crash (Sentry) sera activé. Veuillez vérifier les informations affichées lors de la mise à niveau. Plus de détails sur cette version et la mise à niveau Node.js nécessaire peuvent être trouvés à https://forum.iobroker.net/post/416056",
+            "it": "Un aggiornamento per il controller js è disponibile per il tuo sistema. Devi aggiornare Node.js prima di installare l'aggiornamento !! Al momento dell'installazione verrà attivato il nuovo rapporto Errore / Arresto (Sentry). Si prega di controllare le informazioni visualizzate durante l'aggiornamento. Maggiori dettagli su questa versione e sull'aggiornamento Node.js necessario sono disponibili su https://forum.iobroker.net/post/416056",
+            "es": "Una actualización para el controlador js está disponible para su sistema. ¡Necesita actualizar Node.js antes de instalar la actualización! En la instalación, se activará el nuevo informe de error / bloqueo (Centinela). Compruebe la información que se muestra durante la actualización. Puede encontrar más detalles sobre esta versión y la actualización necesaria de Node.js en https://forum.iobroker.net/post/416056",
+            "pl": "Uaktualnienie dla kontrolera js jest dostępne dla twojego systemu. Musisz zaktualizować Node.js przed zainstalowaniem aktualizacji !! Podczas instalacji zostanie aktywowane nowe raportowanie błędów / awarii (Sentry). Sprawdź informacje wyświetlane podczas aktualizacji. Więcej informacji na temat tej wersji i wymaganej aktualizacji Node.js można znaleźć na stronie https://forum.iobroker.net/post/416056",
+            "zh-cn": "您的系统可以使用js-controller的升级。您需要在安装更新之前先升级Node.js ！！在安装时，新的错误/崩溃报告（Sentry）将被激活。请检查升级过程中显示的信息。有关此版本和所需的Node.js升级的更多详细信息，请访问https://forum.iobroker.net/post/416056。"
+        },
+        "id": "jscontroller-3-latest-nodejssmaller10",
+        "class": "info",
+        "repo": "latest",
+        "fa-icon": "exclamation-circle",
+        "created": "2020-05-10T15:00:00.000Z",
+        "node-version": "smaller(10.0.0)",
+        "conditions": {
+            "js-controller": "smaller(3.1.3)"
+        }
     }
 ]
