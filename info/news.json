@@ -769,6 +769,7 @@
         "class": "warning",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-11T00:00:00.000Z",
+        "repo": "latest",
         "conditions": {
             "js-controller": "bigger(3.0.0)",
             "pushover": "between(1.2.0,1.2.9)"
@@ -803,6 +804,7 @@
         "class": "warning",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-11T00:00:00.000Z",
+        "repo": "latest",
         "conditions": {
             "js-controller": "bigger(3.0.0)",
             "tr-064": "smaller(4.0.0)"
@@ -837,6 +839,7 @@
         "class": "warning",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-11T00:00:00.000Z",
+        "repo": "latest",
         "conditions": {
             "tr-064-community": "installed",
             "tr-064": "!installed"
@@ -871,6 +874,7 @@
         "class": "warning",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-11T00:00:00.000Z",
+        "repo": "latest",
         "conditions": {
             "js-controller": "bigger(3.0.0)",
             "firetv": "smaller(1.0.0)"
@@ -905,6 +909,7 @@
         "class": "warning",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-11T00:00:00.000Z",
+        "repo": "latest",
         "conditions": {
             "js-controller": "bigger(3.0.0)",
             "wifilight": "smaller(1.1.0)"
@@ -939,6 +944,7 @@
         "class": "warning",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-11T00:00:00.000Z",
+        "repo": "latest",
         "conditions": {
             "firetv-community": "installed",
             "firetv": "!installed"
@@ -973,6 +979,7 @@
         "class": "warning",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-11T00:00:00.000Z",
+        "repo": "latest",
         "conditions": {
             "wifilight-community": "installed",
             "wifilight": "!installed"
@@ -1007,6 +1014,7 @@
         "class": "info",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-11T00:00:00.000Z",
+        "repo": "latest",
         "conditions": {
             "lightify": "installed"
         }
@@ -1041,6 +1049,7 @@
         "class": "warning",
         "fa-icon": "ban",
         "created": "2020-05-11T00:00:00.000Z",
+        "repo": "latest",
         "conditions": {
             "admin": "bigger(3.6.10)"
         }
