@@ -48,7 +48,7 @@
     },
     "devDependencies": {
         "@types/event-stream": "^3.3.34",
-        "@types/iobroker": "^3.0.6",
+        "@types/iobroker": "^3.0.8",
         "@types/mocha": "^7.0.2",
         "@types/node": "^13.13.5",
         "@types/yargs": "^15.0.4",
