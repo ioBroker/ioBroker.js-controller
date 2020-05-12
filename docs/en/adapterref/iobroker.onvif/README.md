@@ -171,6 +171,9 @@ because the adapter works by subscribing to events, the state time of `state.ts`
 
 ## Changelog
 
+### 0.4.4 (2020-05-12)
+* (haba1234) Added new state
+
 ### 0.4.3 (2020-05-08)
 * (haba1234) Snapshot preview is squeezed
 * (haba1234) Preview is buffered and not requested again

@@ -11,6 +11,8 @@ This adapter saves state history into InfluxDB.
 
 **Only InfluxDB >= v0.9 supported, v1.0 recommended**
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ## Direct writes or buffered writes?
 With the default configuration the adapter stores each single datapoint directly into the database and only use the internal buffer if the database is not available. If database was not available the buffer is flushed at the given interval, so it can take the defined interval till the missing points are written!
 

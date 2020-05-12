@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.owntracks/README.md
 title: ioBroker.owntracks
-hash: BaMk8Twp+HBcGMd2T3dPGP8Xy7GcC93ZZrFxYd5H1hk=
+hash: 9p2xJZhQ25yVPI/EITvA+kfPkAnx8O6RuuvJkT6Sv6w=
 ---
 ![Logo](../../../en/adapterref/iobroker.owntracks/admin/owntracks.png)
 
@@ -24,7 +24,7 @@ Link für:
 
 ## Setup-Anweisungen
 ### Verbindungskonfiguration (über MQTT-Server)
-Der OwnTracks Adapter startet an Port 1883 (konfigurierbar) eines MQTT-Servers, um die Nachrichten von Geräten mit Koordinaten zu empfangen.
+Der OwnTracks-Adapter startet an Port 1883 (konfigurierbar) eines MQTT-Servers, um die Nachrichten von Geräten mit Koordinaten zu empfangen.
 Das Problem ist, dass dieser Server über das Internet erreichbar sein muss.
 Normalerweise gibt es einen Router oder eine Firewall, die für die Weiterleitung des Datenverkehrs konfiguriert werden muss.
 
@@ -69,7 +69,7 @@ Verwenden Sie die Standortschaltfläche in der oberen rechten Ecke, um den aktue
 
 ![die Einstellungen](../../../en/adapterref/iobroker.owntracks/img/regions3.jpg)
 
-### Symboleinstellungen (im ioBroker.owntracks-Adapter)
+### Symboleinstellungen (innerhalb des Adapters ioBroker.owntracks)
 Sie können für jeden Benutzer ein Symbol definieren. Laden Sie einfach per Drag & Drop oder per Mausklick Ihr Bild hoch. Es wird automatisch auf 64x64 skaliert.
 
 Der Name muss der Geräte-ID in der OwnTracks-App entsprechen.
@@ -77,6 +77,10 @@ Der Name muss der Geräte-ID in der OwnTracks-App entsprechen.
 ![die Einstellungen](../../../en/adapterref/iobroker.owntracks/img/settings1.png)
 
 ## Changelog
+
+### 0.6.3 (2020-05-12)
+* (Apollon77) updated dependencies
+* (bluefox) fixes some issues
 
 ### 0.6.2 (2019-02-14)
 * (zefau) Added support for [ioBroker compact mode](https://forum.iobroker.net/viewtopic.php?f=24&t=20387#p213466)
@@ -110,7 +114,7 @@ Der Name muss der Geräte-ID in der OwnTracks-App entsprechen.
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 bluefox<dogafox@gmail.com>
+Copyright (c) 2016-2020 bluefox<dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

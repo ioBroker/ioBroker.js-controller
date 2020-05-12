@@ -76,6 +76,10 @@ The name must be equal to DeviceID in OwnTracks app.
 
 ## Changelog
 
+### 0.6.3 (2020-05-12)
+* (Apollon77) updated dependencies
+* (bluefox) fixes some issues
+
 ### 0.6.2 (2019-02-14)
 * (zefau) Added support for [ioBroker compact mode](https://forum.iobroker.net/viewtopic.php?f=24&t=20387#p213466)
 * (zefau) Added support for Gulp translations
@@ -108,7 +112,7 @@ The name must be equal to DeviceID in OwnTracks app.
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 bluefox<dogafox@gmail.com>
+Copyright (c) 2016-2020 bluefox<dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

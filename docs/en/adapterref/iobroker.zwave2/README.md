@@ -21,6 +21,10 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### 0.12.1 (2020-05-12)
+* The cache file is now loaded again correctly. This fixes some missing reports from newer multi channel devices.
+* Nodes are now sent to sleep 1 second after waking up if there are no pending messages. This fixes issues with some devices that expect this behavior.
+
 ### 0.12.0 (2020-05-08)
 * **BREAKING**: Raised minimum Node.js version to 10
 * **BREAKING**: Some duplicate states for the root endpoint have been removed

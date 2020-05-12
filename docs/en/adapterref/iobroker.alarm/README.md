@@ -15,16 +15,25 @@
 
 **[English description](https://github.com/misanorot/ioBroker.alarm/blob/master/lib/Readme_en.md)**
 
-### ioBroker Alarm
+## ioBroker Alarm
 
-#### DER ADAPTER IST NOCH ALPHA
 
-Dies ist ein Adapter, mit dem sich eine kleine Alarmanlage ohne programmiertechnische Vorkenntnisse realisieren lässt.
+Dies ist ein Adapter, mit dem sich eine kleine Alarmanlage ohne große programmiertechnische Vorkenntnisse realisieren lässt.
 Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe oder De- und Aktivierung zu überwachen. Des Weiteren ist
 eine direkte Verknüpfung der jeweiligen Instanz "states", auf andere "states" möglich. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
 
-Neben den Haupteinstellungen, wie die Zeiten der Nachtruhe, Benachrichtigungen über Andere Adapter wie Telegramm, sind die Sicherheitskreise im Reiter Zustände zu konfigurieren.
+----------------------------------------------------------------------------------------------------------------------
 
+### Tab Haupteinstellungen
+
+Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm, Passwort und Benachrichtigungen über Andere Adapter wie z.B. Telegramm, vorgenommen.
+
+----------------------------------------------------------------------------------------------------------------------
+
+### Tab Überwachung
+
+Hier werden die die Kreise der Anlage konfiguriert.
+*die Namen der states lassen sich ändern*
 Die Kreise sind folgendermaßen überwacht:
 
 #### Alarmkreis:
@@ -32,17 +41,51 @@ Alarmanlage lässt sich nicht aktivieren wenn ein konfigurierter state aktiv ist
 
 #### Warnkreis:
 Hier können Dinge überwacht werden die nicht die Priorität "hoch" haben, z.B. Fenster im OG. In den Haupteinstellungen kann man die Überwachung bei der Aktivierung einstellen. Ist die Alarmanlage aktiviert, wird hier bei Veränderung kein Alarm ausgelöst.
+Man kann sich jedoch benachrichtigen lassen.
 
 #### Nachtkreis:
-Wenn man die Option konfiguriert, werden Veränderungen während der Nachtruhe erkannt und ggf. gemeldet.
+Bei aktiver Nachtruhe werden Veränderungen während der erkannt und ggf. gemeldet.
 
 *Sollten Alarm- und Warnkreis pro state aktiviert sein, zählt der Alarmkreis*
 
-Ist eine gewünschte "sayit" Ansage bei Änderung des Zustandes gewünscht, lässt sich das entsprechend auf der Sayit-Tab Seite mit den gewünschten Sätzen konfigurieren.
+----------------------------------------------------------------------------------------------------------------------
 
-Die eigentlichen states um den Adapter zu bedienen, finden sich unter "alarm.x.use.....". Die Status states der Alarmanlage sind unter "alarm.x.status...." zu finden. Ein Log state, der Mitternacht gelöscht wird, findet man unter "alarm.x.info....".
+### Tab Sprachausgabe
 
-Wählt man in den Optionen die Log Ausgabe an, werden gewisse Änderungen im Log des ioBroker geschrieben. Ist man mit diesen Texten nicht zufrieden, besteht die Möglichkeit, sich die Datei "/lib/Logs.js" zu editieren.
+Ist eine gewünschte Sprachausgabe z.B. bei bei Änderung des Zustandes gewünscht, lässt sich das hier mit den gewünschten Sätzen konfigurieren. Lässt man Felder wie z.B. bei der Aktivierung leer,
+so findet keine Sprachausgabe statt. Weitere Optionen wie die wie die Ausgabe von Namen sind hier auch einstellbar.
+*Sayit oder Alexa2 werden unterstüzt*
+
+----------------------------------------------------------------------------------------------------------------------
+
+### Tab Verknüpfungen
+
+Hier ist es möglich Adapter interne states direkt mit externen states zu verknüpfen. Somit ist ein Umweg über ein Skript oder ähnlichen nicht erforderlich.
+Es lässt sich somit z.B. bei Beginn der Nachtruhe, eine Veriegelung des Türschlosses realisieren.
+![Logo](admin/img/short.png)
+
+----------------------------------------------------------------------------------------------------------------------
+
+Der Adapter liefert eine ganze Anzahl an states:
+
+#### "alarm.x.use.....".
+Das sind die eigentlichen states um die Alarmanlage zu bedienen.
+
+#### "alarm.x.status...."
+Hier lässte sich der Zustand der Anlage ablesen.
+
+#### "alarm.x.info...."
+Liefert zusätzliche Informationen wie z.B. welche "Türen offen sind" oder einen Log state.
+Der log_today state wird um Mitternacht geleert.
+
+----------------------------------------------------------------------------------------------------------------------
+
+
+## Probleme
+	- wenn man eine Telegram oder ähnliches über das + hinzufügt, kann man nur ein state der Instanz auswählen und  man muss bis auf *telegram.0* alles löschen.
+
+#### erfahrene ioBroker Nutzer
+*Wählt man in den Optionen die Log Ausgabe an, werden gewisse Änderungen im Log des ioBroker geschrieben. Ist man mit diesen Texten nicht zufrieden, besteht die Möglichkeit, sich die Datei "/lib/Logs.js" zu editieren.*
 
 
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: kFyo7IFLR+tNno50/9qIzmvw1KifmmU9kDFnJPnmmhc=
+hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
 ---
 ![логотип](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -47,6 +47,9 @@ hash: kFyo7IFLR+tNno50/9qIzmvw1KifmmU9kDFnJPnmmhc=
 ### Включить / отключить WLAN
 Изменяя состояние «включено» WLAN, можно включить / отключить его. Через несколько секунд изменение будет предоставлено точкам доступа.
 
+### Создание ваучера
+Используя кнопку 'vouchers.create_vouchers', можно создавать предопределенные ваучеры. Можно настроить количество ваучеров, которые будут созданы, продолжительность действия ваучеров, а также установить ограничения для загрузки и загрузки.
+
 ## Ссылки
 Этот адаптер использует функциональность следующих сторонних модулей nodejs:
 
@@ -56,6 +59,10 @@ hash: kFyo7IFLR+tNno50/9qIzmvw1KifmmU9kDFnJPnmmhc=
 ## Changelog
 ### __WORK IN PROGRESS__
 * (braindead1) Implemented possibility to enable/disable WLANs
+* (braindead1) Implemented voucher creation
+* (braindead1) Updated client states
+* (braindead1) Updated device states
+* (braindead1) Improved error messages
 
 ### 0.5.0 (2020-05-09)
 * (braindead1) Implemented configuration of updates

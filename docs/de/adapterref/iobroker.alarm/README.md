@@ -3,10 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: R0ReV6006oswtZGt1FfkZlgq9Zw8OirVIL0ChlPE+T0=
+hash: Oo0N8/qhdtLo5g1Q28akhuzFt7Tb99WpQO5JzDZ/2jY=
 ---
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
+![Anzahl der Installationen](http://iobroker.live/badges/alarm-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.alarm.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.alarm.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/misanorot/iobroker.alarm.svg)
@@ -19,31 +20,67 @@ hash: R0ReV6006oswtZGt1FfkZlgq9Zw8OirVIL0ChlPE+T0=
 
 **[Englische Beschreibung](https://github.com/misanorot/ioBroker.alarm/blob/master/lib/Readme_en.md)**
 
-### IoBroker Alarm
-#### DER ADAPTER IST NOCH ALPHA
-Dies ist ein Adapter, mit dem sich eine kleine Alarmanlage ohne programmiertechnische Vorkenntnisse realisieren lässt.
-Er Nord die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe oder De- und Aktivierung zu Interessen. Des Weiteren ist eine direkte Kontaktung der Instanz "Staaten", auf andere "Staaten" möglich. Diese Einstellungenungen werden im Reiter Interessenungen anschaulich.
+## IoBroker Alarm
+Dies ist ein Adapter, mit dem sich eine kleine Alarmanlage ohne große programmiertechnische Vorkenntnisse realisieren lässt.
+Er Nord die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe oder De- und Aktivierung zu Interessen. Des Weiteren ist eine direkte Kontaktung der Instanz "Staaten", auf andere "Staaten" möglich. Diese Konflikteungen werden im Reiter Interessenungen anschaulich.
 
-Neben den Haupteinstellungen, wie die Zeiten der Nachtruhe, Berechtigungen über Andere Adapter wie Telegramm, sind die Sicherheitskreise im Reiter Zustände zu konfigurieren.
+----------------------------------------------------------------------------------------------------------------------
 
-Die Kreise sind folgender Berechtigung:
+### Tab Haupteinstellungen
+Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm, Passwort und Berechtigungen über Andere Adapter wie z.B. Telegramm, Folgen.
+
+----------------------------------------------------------------------------------------------------------------------
+
+### Tabschauen
+Hier werden die Kreise der Anlage Verwaltung.
+Die Namen der Staaten lassen sich ändern.
 
 #### Alarmkreis:
 Alarmanlage lässt sich nicht erkennen, wenn ein konfigurierter Zustand aktiv ist. Bei aktivierter Alarmanlage führen eine Möglichkeit sofort zur Auslösung der Anlage.
 
 #### Warnkreis:
-Hier können Dinge, die die nicht sterben, "hoch" haben, z.B. Fenster im OG. In den Haupteinstellungen kann man die Wahrnehmung bei der Wahrnehmung beeinflussen. Ist die Alarmanlage, wird hier bei Veränderungen kein Alarm behandelt.
+Hier können Dinge, die die nicht die richtigen "hoch" haben, z.B. Fenster im OG. In den Haupteinstellungen kann man die Wahrnehmung bei der Wahrnehmung beeinflussen. Ist die Alarmanlage, wird hier bei Veränderungen kein Alarm behandelt.
+Man kann sich doch anders fühlenigen lassen.
 
 #### Nachtkreis:
-Wenn man die Option verliert, werden Sie von der Nachtruhe erkannten und ggf. verwirkt.
+Bei aktiver Nachtruhe werden nach sich gezogen, um der erkannten und ggf. verwirkt.
 
-*Sollten Alarm- und Warnkreis pro Staat wird sein, der Alarmkreis*
+*Sollten Alarm- und Warnkreis für Staat sein, sein der Alarmkreis*
 
-Ist eine Lösung "sayit" Ansage bei der Regel des Zustandses, die sich auf das Sayit-Tab Seite mit den gleichen Sätzen konfigurieren.
+----------------------------------------------------------------------------------------------------------------------
 
-Die eigentlichen Staaten um den Adapter zu finden, finden sich unter "alarm.x.use .....". Die Statuszustände der Alarmanlage sind unter "alarm.x.status ...." zu finden. Ein Log Zustand, der Mitternacht wird wird, findet man unter "alarm.x.info ....".
+### Tab Sprachausgabe
+Ist eine mögliche Sprachausgabe z.B. bei bei der Regel des Zustandses. Länger man Felder wie z.B. bei der Fähigkeit leer, so findet keine Sprachausgabe statt. Weitere Optionen wie die wie die Ausgabe von Namen sind hier auch einstellbar.
+* Sayit oder Alexa2 werden unterstütztüzt *
 
-Wählt man in den Optionen die Log Ausgabe an, wird geändert im Log des ioBroker geschrieben. Ist man mit diesen Texten nicht zufrieden, besteht die Rechte, sich die Datei "/lib/Logs.js" zu editieren.
+----------------------------------------------------------------------------------------------------------------------
+
+### Tab Belohnungen
+Hier ist es möglich Adapter interne Zustände direkt mit zugehörigen Zuständen zu wechseln. Somit ist ein Umweg über ein Skript oder ein anderes nicht erledigt.
+Es lässt sich somit somit z.B. bei Beginn der Nachtruhe, eine Veriegelung des Türschlosses realisieren.
+![Logo](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
+
+----------------------------------------------------------------------------------------------------------------------
+
+Der Adapter heißt eine ganze Anzahl an Staaten:
+
+#### "alarm.x.use .....".
+Das sind die eigentlichen Staaten um die Alarmanlage zu verwalten.
+
+#### "alarm.x.status ...."
+Hier lässte sich der Zustand der Anlage ablesen.
+
+#### "alarm.x.info ...."
+Liefert Informationsinformationen wie z.B. welche "Türen offen sind" oder einen Protokollzustand.
+Der log_today Zustand wird um Mitternacht geleert.
+
+----------------------------------------------------------------------------------------------------------------------
+
+## Probleme
+- wenn man ein Telegramm oder eine Erklärung über das + hin schnitt, kann man nur ein Staat der Instanz verloren und man muss auf *telegramm.0* alles lesen.
+
+#### Unterscheidet ioBroker Benutzer
+*Wählt man in den Optionen die Log Ausgabe an, wird im Log des ioBroker geschrieben. Ist man mit diesen Texten nicht zufrieden, besteht die Rechte, sich die Datei "/lib/Logs.js" zu editieren.*
 
 #### Wichtige, die Berechtigung dieses Adapters zusätzliche auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Berechtigung!
 

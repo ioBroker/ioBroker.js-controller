@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: kFyo7IFLR+tNno50/9qIzmvw1KifmmU9kDFnJPnmmhc=
+hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
 ---
 ![商标](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -47,6 +47,9 @@ hash: kFyo7IFLR+tNno50/9qIzmvw1KifmmU9kDFnJPnmmhc=
 ###启用/禁用WLAN
 通过更改WLAN的“启用”状态，可以启用/禁用它。几秒钟后，更改将被提供给访问点。
 
+###凭证创建
+使用“ vouchers.create_vouchers”按钮可以创建预定义的凭单。可以配置将创建的凭证的数量，凭证的有效期限，还可以设置上传和下载的限制。
+
 ##参考
 该适配器使用以下第三方nodejs模块的功能：
 
@@ -56,6 +59,10 @@ hash: kFyo7IFLR+tNno50/9qIzmvw1KifmmU9kDFnJPnmmhc=
 ## Changelog
 ### __WORK IN PROGRESS__
 * (braindead1) Implemented possibility to enable/disable WLANs
+* (braindead1) Implemented voucher creation
+* (braindead1) Updated client states
+* (braindead1) Updated device states
+* (braindead1) Improved error messages
 
 ### 0.5.0 (2020-05-09)
 * (braindead1) Implemented configuration of updates

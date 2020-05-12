@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.owntracks/README.md
 title: ioBroker.owntracks
-hash: BaMk8Twp+HBcGMd2T3dPGP8Xy7GcC93ZZrFxYd5H1hk=
+hash: 9p2xJZhQ25yVPI/EITvA+kfPkAnx8O6RuuvJkT6Sv6w=
 ---
 ![商标](../../../en/adapterref/iobroker.owntracks/admin/owntracks.png)
 
@@ -15,7 +15,7 @@ hash: BaMk8Twp+HBcGMd2T3dPGP8Xy7GcC93ZZrFxYd5H1hk=
 ＃ioBroker.owntracks
 [自己的曲目](http://owntracks.org/)是适用于Android和iOS的应用程序。
 
-App会将您的位置（设备的位置）连续发送到特定服务器。在我们的例子中，它将是ioBroker服务器。 MQTT协议将用于通信或ioBroker.cloud / ioBroker.iot适配器。
+App会将您的位置（设备的位置）连续发送到特定服务器。在我们的情况下，它将是ioBroker服务器。 MQTT协议将用于通信或ioBroker.cloud / ioBroker.iot适配器。
 
 链接：
 
@@ -42,7 +42,7 @@ OwnTracks适配器在MQTT服务器的端口1883（可配置）上启动，以从
     -owntracks.0.users.Mark.longitude
     -owntracks.0.users.Mark.latitude
 
--连接/标识/ TrackerID-将其写在地图上的用户简称（最多2个字母）。
+-连接/标识/ TrackerID-要在地图上写入的用户简称（最多2个字母）。
 -连接/安全性/ TLS-关闭
 -高级/加密密钥-可选，但建议：添加密码短语以进行加密
 
@@ -65,7 +65,7 @@ OwnTracks适配器在MQTT服务器的端口1883（可配置）上启动，以从
 
 ![设定值](../../../en/adapterref/iobroker.owntracks/img/regions2.jpg)
 
-使用右上角的位置按钮可检索当前位置，或自己在“纬度和经度”中输入位置。此外，指定位置的半径。如果您共享位置，则当您输入/离开位置时，您的好友（请参阅Android / iOS应用的抽屉中的信息）会收到通知。
+使用右上角的位置按钮可以检索当前位置，或者自己在“纬度和经度”中输入位置。此外，指定位置的半径。如果您共享位置，则当您输入/离开位置时，您的好友（请参阅Android / iOS应用的抽屉中的信息）会收到通知。
 
 ![设定值](../../../en/adapterref/iobroker.owntracks/img/regions3.jpg)
 
@@ -77,6 +77,10 @@ OwnTracks适配器在MQTT服务器的端口1883（可配置）上启动，以从
 ![设定值](../../../en/adapterref/iobroker.owntracks/img/settings1.png)
 
 ## Changelog
+
+### 0.6.3 (2020-05-12)
+* (Apollon77) updated dependencies
+* (bluefox) fixes some issues
 
 ### 0.6.2 (2019-02-14)
 * (zefau) Added support for [ioBroker compact mode](https://forum.iobroker.net/viewtopic.php?f=24&t=20387#p213466)
@@ -110,7 +114,7 @@ OwnTracks适配器在MQTT服务器的端口1883（可配置）上启动，以从
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2017 bluefox<dogafox@gmail.com>
+Copyright (c) 2016-2020 bluefox<dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

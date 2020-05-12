@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: kFyo7IFLR+tNno50/9qIzmvw1KifmmU9kDFnJPnmmhc=
+hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
 ---
 ![Logo](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -47,6 +47,9 @@ Es ist möglich, die Aktualisierung ausgewählter Informationen zu deaktivieren 
 ### WLANs aktivieren / deaktivieren
 Durch Ändern des Status 'Aktiviert' eines WLAN kann es aktiviert / deaktiviert werden. Einige Sekunden später wird die Änderung für die Access Points bereitgestellt.
 
+### Gutscheinerstellung
+Mit der Schaltfläche 'vouchers.create_vouchers' können vordefinierte Gutscheine erstellt werden. Es ist möglich, die Anzahl der zu erstellenden Gutscheine, die Gültigkeitsdauer der Gutscheine und Grenzwerte für das Hoch- und Herunterladen zu konfigurieren.
+
 ## Verweise
 Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanbietern:
 
@@ -56,6 +59,10 @@ Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanb
 ## Changelog
 ### __WORK IN PROGRESS__
 * (braindead1) Implemented possibility to enable/disable WLANs
+* (braindead1) Implemented voucher creation
+* (braindead1) Updated client states
+* (braindead1) Updated device states
+* (braindead1) Improved error messages
 
 ### 0.5.0 (2020-05-09)
 * (braindead1) Implemented configuration of updates
