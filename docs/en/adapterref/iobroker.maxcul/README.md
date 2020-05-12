@@ -23,7 +23,7 @@ Before using you must first pair the devcies with ioBroker.
 E.g. for thermostats press longer the "boost" button till the countdown will start.
 
 ## Changelog
-### __WOK IN PROGRESS__
+### 1.3.0 (2020-05-12)
 * (Apollon77) Support nodejs 12+14
 * (Apollon77) Prevent warnings in js-controller 3
 
