@@ -137,10 +137,11 @@ Attribute für das Objekt getState / stateChange / setState:
   0x00 - 00000000 - good (can be undefined or null)
   0x01 - 00000001 - general bad, general problem
   0x02 - 00000010 - no connection problem
-
+  
   0x10 - 00010000 - substitute value from controller
-  0x40 - 00100000 - substitute value from device or instance
-  0x80 - 01000000 - substitute value from sensor
+  0x20 - 00100000 - substitute initial value
+  0x40 - 01000000 - substitute value from device or instance
+  0x80 - 10000000 - substitute value from sensor
 
   0x11 - 01000001 - general problem by instance
   0x41 - 01000001 - general problem by device
