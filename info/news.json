@@ -1014,7 +1014,6 @@
         "class": "info",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-11T00:00:00.000Z",
-        "repo": "latest",
         "conditions": {
             "lightify": "installed"
         }
