@@ -1079,7 +1079,7 @@
             "zh-cn": "您的系统可以使用js-controller的升级。此版本的js-controller与您的Node.js版本兼容。在安装时，新的错误/崩溃报告（Sentry）将被激活。请检查升级过程中显示的信息。有关此发行版的更多详细信息，请参见https://forum.iobroker.net/post/416056"
         },
         "id": "jscontroller-3-latest-nodejs10",
-        "class": "info",
+        "class": "warning",
         "repo": "latest",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-10T15:00:00.000Z",
@@ -1114,7 +1114,7 @@
             "zh-cn": "您的系统可以使用js-controller的升级。您需要在安装更新之前先升级Node.js ！！在安装时，新的错误/崩溃报告（Sentry）将被激活。请检查升级过程中显示的信息。有关此版本和所需的Node.js升级的更多详细信息，请访问https://forum.iobroker.net/post/416056。"
         },
         "id": "jscontroller-3-latest-nodejssmaller10",
-        "class": "info",
+        "class": "warning",
         "repo": "latest",
         "fa-icon": "exclamation-circle",
         "created": "2020-05-10T15:00:00.000Z",
