@@ -4235,10 +4235,10 @@ function init(compactGroupId) {
 
         if (invalidVersion){
             logger.error('ioBroker requires Node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
-            logger.error('Please upgrade your nodejs version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
+            logger.error('Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
 
             console.error('ioBroker requires Node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
-            console.error('Please upgrade your nodejs version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
+            console.error('Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
 
             process.exit(EXIT_CODES.INVALID_NODE_VERSION);
         }
