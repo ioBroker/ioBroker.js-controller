@@ -17,18 +17,17 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 * Deebot Ozmo 950
 
 ### These models are known to work
-* Deebot N79T/W
+* Deebot N79
 * Deebot 601
 * Deebot 710/711
 * Deebot Ozmo 610
 * Deebot Ozmo 900
-
-### These models should work
-* Deebot N79S
-* Deebot M88
-* Deebot 600/605
 * Deebot Ozmo 920
 * Deebot Ozmo Slim 10
+
+### These models should work
+* Deebot M88
+* Deebot 600/605
 
 ## Installation
 
@@ -62,6 +61,10 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 * Frequently asked questions can be found [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
 ## Changelog
+
+### 0.6.1
+   * Using library version 0.4.11
+   * Several enhancements and fixes
 
 ### 0.6.0
    * Using library version 0.4.10

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: kxlvfeduN5DUlfOWjpI4VxfHr3GKeXMXx13A3M+Xj8A=
+hash: v0y/d1CQnMzf7E5kyQmOpGV2AieL9T/V5/kVTq1UUfE=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -23,18 +23,17 @@ hash: kxlvfeduN5DUlfOWjpI4VxfHr3GKeXMXx13A3M+Xj8A=
 * Deebot Ozmo 950
 
 ### Известно, что эти модели работают
-* Deebot N79T / W
+* Deebot N79
 * Deebot 601
 * Deebot 710/711
 * Deebot Ozmo 610
 * Deebot Ozmo 900
-
-### Эти модели должны работать
-* Deebot N79S
-* Deebot M88
-* Deebot 600/605
 * Deebot Ozmo 920
 * Deebot Ozmo Slim 10
+
+### Эти модели должны работать
+* Deebot M88
+* Deebot 600/605
 
 ## Установка
 Рекомендуется использовать версию 10 Node.js или более новую версию.
@@ -74,6 +73,10 @@ sudo npm install canvas --unsafe-perm=true
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.6.1
+   * Using library version 0.4.11
+   * Several enhancements and fixes
 
 ### 0.6.0
    * Using library version 0.4.10
