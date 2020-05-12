@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.2.0 (2020-09-xx) Release G... WIP!!!
+
+
 ## 3.1.4 (2020-05-10) Release Francesca
 * (Apollon77) Update Sentry plugin to be more transparent on temporary disabling reasons
 * (foxriver76) fix error when writing binary States

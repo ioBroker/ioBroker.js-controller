@@ -1,6 +1,6 @@
 {
     "name": "iobroker.js-controller",
-    "version": "3.1.4",
+    "version": "3.2.0",
     "engines": {
         "node": ">=10.0.0"
     },
@@ -21,7 +21,7 @@
         "chokidar": "^3.4.0",
         "daemonize2": "^0.4.2",
         "debug": "^4.1.1",
-        "decache": "^4.5.1",
+        "decache": "^4.6.0",
         "deep-clone": "^3.0.3",
         "event-stream": "^4.0.1",
         "iobroker.objects-redis": "^3.3.8",
@@ -54,7 +54,7 @@
         "@types/yargs": "^15.0.4",
         "chai": "^4.2.0",
         "chai-as-promised": "^7.1.1",
-        "eslint": "^6.8.0",
+        "eslint": "^7.0.0",
         "gulp": "^4.0.2",
         "gulp-jsdoc3": "^3.0.0",
         "gulp-replace": "^1.0.0",
