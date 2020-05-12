@@ -3,8 +3,18 @@
         <title><![CDATA[ ioBroker Blog ]]></title>
         <description><![CDATA[Neuigkeiten, Ankündigungen und Ideen zu ioBroker]]></description>
         <link>https://www.iobroker.net/#de/blog</link>
-        <lastBuildDate>Mon, 14 Oct 2019 06:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Tue, 12 May 2020 06:00:00 GMT</lastBuildDate>
         <ttl>1440</ttl>
+        <item>
+            <title><![CDATA[iob-Server]]></title>
+            <description><![CDATA[
+                <p>Hallo ioBroker-Community,</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#de/blog/2020_05_12</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#de/blog/2020_05_12</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Tue, 12 May 2020 06:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[js-controller 2.0]]></title>
             <description><![CDATA[
