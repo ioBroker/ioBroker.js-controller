@@ -1045,9 +1045,9 @@
         },
         "id": "js-controller",
         "node-version": "smaller(10.0.0)",
-        "class": "warning",
+        "class": "info",
         "fa-icon": "ban",
-        "created": "2020-05-11T00:00:00.000Z",
+        "created": "2020-05-12T00:00:00.000Z",
         "repo": "latest",
         "conditions": {
             "admin": "bigger(3.6.10)"
@@ -1079,10 +1079,10 @@
             "zh-cn": "您的系统可以使用js-controller的升级。此版本的js-controller与您的Node.js版本兼容。在安装时，新的错误/崩溃报告（Sentry）将被激活。请检查升级过程中显示的信息。有关此发行版的更多详细信息，请参见https://forum.iobroker.net/post/416056"
         },
         "id": "jscontroller-3-latest-nodejs10",
-        "class": "warning",
+        "class": "info",
         "repo": "latest",
         "fa-icon": "exclamation-circle",
-        "created": "2020-05-10T15:00:00.000Z",
+        "created": "2020-05-13T00:00:00.000Z",
         "node-version": "bigger(10.0.0)",
         "conditions": {
             "js-controller": "smaller(3.1.3)"
@@ -1114,10 +1114,10 @@
             "zh-cn": "您的系统可以使用js-controller的升级。您需要在安装更新之前先升级Node.js ！！在安装时，新的错误/崩溃报告（Sentry）将被激活。请检查升级过程中显示的信息。有关此版本和所需的Node.js升级的更多详细信息，请访问https://forum.iobroker.net/post/416056。"
         },
         "id": "jscontroller-3-latest-nodejssmaller10",
-        "class": "warning",
+        "class": "info",
         "repo": "latest",
         "fa-icon": "exclamation-circle",
-        "created": "2020-05-10T15:00:00.000Z",
+        "created": "2020-05-13T10:00:00.000Z",
         "node-version": "smaller(10.0.0)",
         "conditions": {
             "js-controller": "smaller(3.1.3)"
