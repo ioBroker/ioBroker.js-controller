@@ -1460,6 +1460,9 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 4.6.2 (2020-05-13)
+* (bluefox) Corrected block: request, exec
+
 ### 4.6.1 (2020-05-11)
 * (bluefox) Updated blockly to 3.20200402.1
 * (bluefox) Added to blockly the switch/case block. 

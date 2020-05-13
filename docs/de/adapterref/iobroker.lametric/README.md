@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: t6Yb4inbjbzPwLyYZKb6qY1L+6/WCcRT0YSC++vKfgQ=
+hash: WC5mIQKmR7+YtXFf0eIZXBipXFHcfbzV4G5YwkZ6zkE=
 ---
 ![Logo](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -13,15 +13,15 @@ hash: t6Yb4inbjbzPwLyYZKb6qY1L+6/WCcRT0YSC++vKfgQ=
 ![Eingerichtet](http://iobroker.live/badges/lametric-installed.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/klein0r/iobroker.lametric.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/klein0r/ioBroker.lametric/badge.svg)
-![Build Status](http://img.shields.io/travis/klein0r/ioBroker.lametric.svg)
+![Build-Status](http://img.shields.io/travis/klein0r/ioBroker.lametric.svg)
 ![NPM](https://nodei.co/npm/iobroker.lametric.png?downloads=true)
 
 # IoBroker.lametric
-Mit diesem Adapter können Sie Statusinformationen zu Ihrer LaMetric Time abrufen und Benachrichtigungen an diese senden.
+Mit diesem Adapter können Sie Statusinformationen zu Ihrer LaMetric-Zeit abrufen und Benachrichtigungen an diese senden.
 Sie benötigen lediglich die IP-Adresse Ihres Geräts und den API-Entwicklerschlüssel.
 
 ## Aufbau
-Sie erhalten Ihren persönlichen Schlüssel [Hier](https://developer.lametric.com/).
+Sie können Ihren persönlichen Schlüssel [Hier](https://developer.lametric.com/) erhalten.
 
 ![API-Schlüssel](../../../en/adapterref/iobroker.lametric/docs/apiKey.png)
 
@@ -29,15 +29,16 @@ Sie erhalten Ihren persönlichen Schlüssel [Hier](https://developer.lametric.co
 Weitere Informationen zu Benachrichtigungen finden Sie hier: https://lametric-documentation.readthedocs.io/en/latest/reference-docs/device-notifications.html
 
 ## Eigenschaften
-- Displayhelligkeit einstellen (Prozent, Auto-Modus / Hand-Modus)
-- Lautstärke einstellen (Prozent)
+- Displayhelligkeit einstellen (Prozent, Auto-Modus / Manueller-Modus)
+- Stellen Sie die Lautstärke ein (Prozent)
 - Bildschirmschoner konfigurieren (aktivieren / deaktivieren, zeitbasiert, wenn es dunkel ist)
-- Bluetooth aktivieren / deaktivieren und Bluetooth-Namen ändern
-- Zwischen Apps wechseln (nächste, vorherige, zu einer bestimmten App gehen)
-- Blockbenachrichtigungen senden (mit konfigurierbarer Priorität, Ton, Symbolen, Text, ...)
+- Aktivieren / Deaktivieren Sie Bluetooth und ändern Sie den Bluetooth-Namen
+- Zwischen Apps wechseln (weiter, vorher, zu einer bestimmten App gehen)
+- Blockierte Benachrichtigungen senden (mit konfigurierbarer Priorität, Sound, Symbolen, Text, ...)
+- Steuern Sie spezielle Apps wie Radio, Stoppuhr und Wetter
 
 ## Blockly
-Sie können eine einfache Zeichenfolge als Nachricht verwenden, die als Einzelbild angezeigt wird
+Sie können eine einfache Zeichenfolge als Nachricht verwenden, die als einzelner Frame angezeigt wird
 
 ![einfach](../../../en/adapterref/iobroker.lametric/docs/blockly1.png)
 
@@ -46,6 +47,14 @@ Um mehrere Frames anzuzeigen, können Sie auch ein Array als Nachricht bereitste
 ![einfach](../../../en/adapterref/iobroker.lametric/docs/blockly2.png)
 
 ## Changelog
+
+### 0.0.8
+
+* (klein0r) Updated dependencies
+
+### 0.0.7
+
+* (klein0r) fixed blockly
 
 ### 0.0.6
 
@@ -77,7 +86,7 @@ Um mehrere Frames anzuzeigen, können Sie auch ein Array als Nachricht bereitste
 
 The MIT License (MIT)
 
-Copyright (c) 2019 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

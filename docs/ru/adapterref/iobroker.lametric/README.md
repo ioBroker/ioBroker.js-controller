@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: t6Yb4inbjbzPwLyYZKb6qY1L+6/WCcRT0YSC++vKfgQ=
+hash: WC5mIQKmR7+YtXFf0eIZXBipXFHcfbzV4G5YwkZ6zkE=
 ---
 ![логотип](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.lametric.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.lametric.svg)
 ![стабильный](http://iobroker.live/badges/lametric-stable.svg)
-![установлен](http://iobroker.live/badges/lametric-installed.svg)
+![установлены](http://iobroker.live/badges/lametric-installed.svg)
 ![Статус зависимости](https://img.shields.io/david/klein0r/iobroker.lametric.svg)
 ![Известные уязвимости](https://snyk.io/test/github/klein0r/ioBroker.lametric/badge.svg)
 ![Статус сборки](http://img.shields.io/travis/klein0r/ioBroker.lametric.svg)
@@ -25,7 +25,7 @@ hash: t6Yb4inbjbzPwLyYZKb6qY1L+6/WCcRT0YSC++vKfgQ=
 
 ![апи-ключ](../../../en/adapterref/iobroker.lametric/docs/apiKey.png)
 
-## Использование
+## Применение
 Вы можете узнать больше об уведомлениях здесь: https://lametric-documentation.readthedocs.io/en/latest/reference-docs/device-notifications.html
 
 ## Особенности
@@ -35,6 +35,7 @@ hash: t6Yb4inbjbzPwLyYZKb6qY1L+6/WCcRT0YSC++vKfgQ=
 - Активировать / деактивировать Bluetooth и изменить имя Bluetooth
 - Переключение между приложениями (следующий, предыдущий, перейти к определенному приложению)
 - Отправлять блочные уведомления (с настраиваемым приоритетом, звуком, значками, текстом, ...)
+- Управляйте специальными приложениями, такими как радио, секундомер и погода
 
 ## Блочно
 В качестве сообщения вы можете использовать простую строку, которая будет отображаться в виде одного кадра.
@@ -46,6 +47,14 @@ hash: t6Yb4inbjbzPwLyYZKb6qY1L+6/WCcRT0YSC++vKfgQ=
 ![просто](../../../en/adapterref/iobroker.lametric/docs/blockly2.png)
 
 ## Changelog
+
+### 0.0.8
+
+* (klein0r) Updated dependencies
+
+### 0.0.7
+
+* (klein0r) fixed blockly
 
 ### 0.0.6
 
@@ -77,7 +86,7 @@ hash: t6Yb4inbjbzPwLyYZKb6qY1L+6/WCcRT0YSC++vKfgQ=
 
 The MIT License (MIT)
 
-Copyright (c) 2019 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -64,6 +64,9 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 4.6.2 (2020-05-13)
+* (bluefox) Corrected block: request, exec
+
 ### 4.6.1 (2020-05-11)
 * (bluefox) Updated blockly to 3.20200402.1
 * (bluefox) Added to blockly the switch/case block. 

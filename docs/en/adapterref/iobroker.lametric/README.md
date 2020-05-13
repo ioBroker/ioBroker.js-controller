@@ -33,6 +33,7 @@ You can read more about notifications here: https://lametric-documentation.readt
 - Activate/Deactivate bluetooth and change bluetooth name
 - Switch between apps (next, previous, go to specific app)
 - Send blockly notifications (with configurable priority, sound, icons, text, ...)
+- Control special apps like radio, stopwatch and weather
 
 ## Blockly
 
@@ -45,6 +46,10 @@ To show multiple frames, you can also provide an array as message
 ![simple](docs/blockly2.png)
 
 ## Changelog
+
+### 0.0.8
+
+* (klein0r) Updated dependencies
 
 ### 0.0.7
 

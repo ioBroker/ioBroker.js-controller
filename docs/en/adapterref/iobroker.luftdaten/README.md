@@ -54,6 +54,7 @@ Wait some minutes until the cronjob collects the data for the first time.
 ### 0.0.12
 
 * (klein0r) Minor bugfixes
+* (dominik-lienemann) Added timestamp of last sensor update
 
 ### 0.0.11
 

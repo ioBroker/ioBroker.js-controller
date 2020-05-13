@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: t6Yb4inbjbzPwLyYZKb6qY1L+6/WCcRT0YSC++vKfgQ=
+hash: WC5mIQKmR7+YtXFf0eIZXBipXFHcfbzV4G5YwkZ6zkE=
 ---
 ![商标](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -34,7 +34,8 @@ hash: t6Yb4inbjbzPwLyYZKb6qY1L+6/WCcRT0YSC++vKfgQ=
 -配置屏幕保护程序（启用/禁用，基于时间，黑暗时）
 -激活/停用蓝牙并更改蓝牙名称
 -在应用之间切换（下一个，上一个，转到特定的应用）
--发送阻止通知（具有可配置的优先级，声音，图标，文本等）
+-发送块状通知（具有可配置的优先级，声音，图标，文本等）
+-控制特殊的应用程序，例如收音机，秒表和天气
 
 ##
 您可以使用简单的字符串作为消息，将其显示为单个框架
@@ -46,6 +47,14 @@ hash: t6Yb4inbjbzPwLyYZKb6qY1L+6/WCcRT0YSC++vKfgQ=
 ![简单](../../../en/adapterref/iobroker.lametric/docs/blockly2.png)
 
 ## Changelog
+
+### 0.0.8
+
+* (klein0r) Updated dependencies
+
+### 0.0.7
+
+* (klein0r) fixed blockly
 
 ### 0.0.6
 
@@ -77,7 +86,7 @@ hash: t6Yb4inbjbzPwLyYZKb6qY1L+6/WCcRT0YSC++vKfgQ=
 
 The MIT License (MIT)
 
-Copyright (c) 2019 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
