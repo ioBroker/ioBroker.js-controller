@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP Cloud AccessPoint适配器
-hash: 1L8QN0bnxd4It79NdO0AdWE2Hug98nic4nObTjvtymY=
+hash: imIQYuotL4N4nhDankZmeV6Bqio97DpYIi1pbbS4MAE=
 ---
 ![商标](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
@@ -15,6 +15,8 @@ hash: 1L8QN0bnxd4It79NdO0AdWE2Hug98nic4nObTjvtymY=
 ![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
 
 ＃ioBroker HomeMatic IP Cloud AccessPoint适配器
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+
 ##说明
 该适配器允许通过Homematic IP Cloud的Rest API与HomematicIP CloudAccessPoint通信
 
@@ -35,22 +37,32 @@ hash: 1L8QN0bnxd4It79NdO0AdWE2Hug98nic4nObTjvtymY=
 谢谢
 
 ##重要信息此适配器可以做什么
-!!!您只能使用可通过原始Homematic IP应用程序触发的此适配器来触发事件。
+!!!您只能使用可以通过原始Homematic IP应用程序触发的此适配器来触发事件。
 例如，设备之间的直接连接在应用程序中没有事件，也无法通过此适配器触发！！！
 
 ##设置
-*输入您的SGTIN（接入点的背面）和PIN（如果之前已设置），然后通过按蓝色LED按钮验证数据。这将创建一个身份验证令牌。
+*输入您的SGTIN（接入点背面）和PIN（如果之前已设置），然后通过按蓝色LED按钮验证数据。这将创建一个身份验证令牌。
 
 ＃＃ 谢谢
-向coreGreenberet获取他的python库（https://github.com/coreGreenberet/homematicip-rest-api）
+到coreGreenberet获得他的python库（https://github.com/coreGreenberet/homematicip-rest-api）
 
-## IoBroker论坛中的Diskussion
+ioBroker论坛中的## Diskussion
 https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 
 ##适配器请求auf GitHub
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 1.0.0 (2020-05-12)
+* (Apollon77) Add Sentry for error/crash reporting
+* (Apollon77) multiple fixes and optimizations
+* (Apollon77) prevent adapter crashes in some places
+* (Apollon77) 
+* (ApolloSK) add vaporAmount for WeatherSensorPro
+* (ApolloSK) fix HmIP-SWO-PR wrong DataType actualTemperature
+* (marcus0303) Added DEVICE_GLOBAL_PUMP_CONTROL, FLOOR_TERMINAL_BLOCK_LOCAL_PUMP_CHANNEL and DEVICE_INCORRECT_POSITIONED, Fixed role in _createWaterSensorChannel and function call in _createWeatherSensorPlusChannel
+* (marcus0303) Added CONTACT_INTERFACE_CHANNEL for HmIP-SCI (see Issue #70 ), Added FLOOR_TERMINAL_BLOCK_CHANNEL, HEAT_DEMAND_CHANNEL, DEHUMIDIFIER_DEMAND_CHANNEL, CHANGE_OVER_CHANNEL, but without functionality, because it's not implemented in REST-API. Only to supress Warnings in Log.
 
 ### 0.0.12
 * (jogibear9988) multiple fixes

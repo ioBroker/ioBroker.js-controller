@@ -3,18 +3,20 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP Cloud AccessPoint-Adapter
-hash: 1L8QN0bnxd4It79NdO0AdWE2Hug98nic4nObTjvtymY=
+hash: imIQYuotL4N4nhDankZmeV6Bqio97DpYIi1pbbS4MAE=
 ---
 ![Logo](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/hmip-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.hmip.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.hmip.svg)
-![Build Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
+![Build-Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
 
 # IoBroker HomeMatic IP Cloud AccessPoint-Adapter
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 ## Beschreibung
 Dieser Adapter ermöglicht die Kommunikation mit einem HomematicIP CloudAccessPoint über die Rest-API der Homematic IP Cloud
 
@@ -23,23 +25,23 @@ Dieser Adapter benötigt Node-Js in Version> = 8.6
 
 Hier ein schrittweises Installationsvideo auf YouTube https://youtu.be/kXWfJRUYJIA
 
-## Info
+## Die Info
 Die meisten Homematic IP-Geräte arbeiten bereits mit der neuesten Adapterversion.
 
-Ich werde es ständig verbessern, aber es wird einige Zeit dauern. Jede Hilfe von der Gemeinschaft durch z.B. Pull Request wäre sehr dankbar.
+Ich werde es ständig verbessern, aber es wird einige Zeit dauern. Jede Hilfe von der Community durch z. Pull Request wäre sehr dankbar.
 
-Wenn HmIP-Geräte nicht funktionieren, erstellen Sie bitte ein Problem mit dieser Information (bitte eine pro Gerät und wenn möglich den technischen Namen im Betreff).
-Schalten Sie die Adapterprotokollierung in ioBroker in den Silly-Modus und fügen Sie den JSON-Wert des Geräts hinzu, der im Protokoll des Problems gedruckt wird.
+Wenn Sie nicht mit HmIP-Geräten arbeiten, erstellen Sie bitte ein Problem mit diesen Informationen (bitte eines pro Gerät und wenn möglich den technischen Namen im Betreff).
+Schalten Sie die Adapterprotokollierung in ioBroker in den dummen Modus und fügen Sie den json des Geräts, das gedruckt wird, dem Protokoll in der Ausgabe hinzu.
 Möglicherweise brauche ich auch einen Statuswechsel.
 
 Vielen Dank
 
-## Wichtige Info, was mit diesem Adapter gemacht werden kann
-!!! Sie können mit diesem Adapter nur Ereignisse auslösen, die über die ursprüngliche Homematic IP-App ausgelöst werden können.
-Beispielsweise haben direkte Verbindungen zwischen Geräten keine Ereignisse in der App und können auch nicht über diesen Adapter ausgelöst werden !!!
+## Wichtige Informationen, was mit diesem Adapter gemacht werden kann
+!!! Mit diesem Adapater können Sie nur Ereignisse auslösen, die über die ursprüngliche Homematic IP-App ausgelöst werden können.
+Zum Beispiel haben direkte Verbindungen zwischen Geräten keine Ereignisse in der App und können auch nicht über diesen Adapter ausgelöst werden !!!
 
 ## Die Einstellungen
-* Geben Sie Ihre SGTIN (Rückseite des Access Points) und die PIN (falls zuvor festgelegt) ein und bestätigen Sie die Daten durch Drücken der blauen LED-Taste. Dadurch wird ein Authentifizierungstoken erstellt.
+* Geben Sie Ihre SGTIN (Rückseite des Access Points) und die PIN (falls zuvor festgelegt) ein und validieren Sie die Daten durch Drücken der blauen LED-Taste. Dadurch wird ein Authentifizierungstoken erstellt.
 
 ## Vielen Dank
 an coreGreenberet für seine Python-Bibliothek (https://github.com/coreGreenberet/homematicip-rest-api)
@@ -51,6 +53,16 @@ https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 1.0.0 (2020-05-12)
+* (Apollon77) Add Sentry for error/crash reporting
+* (Apollon77) multiple fixes and optimizations
+* (Apollon77) prevent adapter crashes in some places
+* (Apollon77) 
+* (ApolloSK) add vaporAmount for WeatherSensorPro
+* (ApolloSK) fix HmIP-SWO-PR wrong DataType actualTemperature
+* (marcus0303) Added DEVICE_GLOBAL_PUMP_CONTROL, FLOOR_TERMINAL_BLOCK_LOCAL_PUMP_CHANNEL and DEVICE_INCORRECT_POSITIONED, Fixed role in _createWaterSensorChannel and function call in _createWeatherSensorPlusChannel
+* (marcus0303) Added CONTACT_INTERFACE_CHANNEL for HmIP-SCI (see Issue #70 ), Added FLOOR_TERMINAL_BLOCK_CHANNEL, HEAT_DEMAND_CHANNEL, DEHUMIDIFIER_DEMAND_CHANNEL, CHANGE_OVER_CHANNEL, but without functionality, because it's not implemented in REST-API. Only to supress Warnings in Log.
 
 ### 0.0.12
 * (jogibear9988) multiple fixes
