@@ -14,7 +14,8 @@
     "react-showdown": "^2.0.3",
     "react-splitter-layout": "^4.0.0",
     "react-typed": "^1.2.0",
-    "react-responsive-carousel": "^3.2.7"
+    "react-responsive-carousel": "^3.2.7",
+    "clsx": "^1.1.0"
   },
   "scripts": {
     "start": "react-scripts start",

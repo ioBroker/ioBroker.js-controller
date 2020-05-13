@@ -116,6 +116,7 @@ const CONVERTER_OPTIONS = {
     splitAdjacentBlockquotes: true
 };
 
+let blogPromise;
 
 class Blog extends Router {
     constructor(props) {
@@ -129,7 +130,7 @@ class Blog extends Router {
         this.load();
 
         // Give 300ms to load the page. After that show the loading indicator.
-        setTimeout(() => !this.state.content && this.setState({loadTimeout: true}), 300);
+        setTimeout(() => !this.state.content && this.setState({ loadTimeout: true }), 300);
 
         this.contentRef = React.createRef();
     }
@@ -152,20 +153,28 @@ class Blog extends Router {
         }
     }
 
-    load() {
-        const d = new Date();
+    static fetchData() {
+        blogPromise = blogPromise || new Promise(resolve =>{
+            const d = new Date();
 
-        fetch(`blog.json?t=${d.getFullYear()}_${d.getMonth()}_${d.getDate()}_${d.getHours()}`)
-            .then(res => res.json())
-            .then(content => {
+            fetch(`blog.json?t=${d.getFullYear()}_${d.getMonth()}_${d.getDate()}_${d.getHours()}`)
+                .then(res => res.json())
+                .then(json => resolve(json));
+        });
+
+        return blogPromise;
+    }
+
+    load() {
+        Blog.fetchData()
+            .then(content =>
                 this.setState({content}, () => {
                     let location = Router.getLocation();
                     this.page = location.page;
                     if (location.page) {
                         this.loadBlog(location.page);
                     }
-                });
-            });
+                }));
     }
 
     loadBlog(page, language) {
@@ -224,7 +233,7 @@ class Blog extends Router {
         const data = this.state.content.pages[page];
 
         return (<Paper key={page} className={this.props.classes.pagePage}>
-            {data.logo ? (<div className={this.props.classes.pageLogoDiv} style={{backgroundImage: 'url(' + data.logo + ')'}}></div>) : null}
+            {data.logo ? (<div className={this.props.classes.pageLogoDiv} style={{backgroundImage: 'url(' + data.logo + ')'}}/>) : null}
             <h2 className={this.props.classes.pageTitle}  style={{cursor: 'pointer'}} onClick={() => this.props.onNavigate(null, null, page)}>{data.title[this.props.language] || data.title.en}</h2>
             <div className={this.props.classes.pagePosted}><strong>{data.author || data.Author}</strong> {I18n.t(' posted on %s', Blog.page2Date(page))}</div>
             <p className={this.props.classes.pageDesc}>{data.desc && (data.desc[this.props.language] || data.desc.en || '').replace(/\\n/g, '\n')}</p>

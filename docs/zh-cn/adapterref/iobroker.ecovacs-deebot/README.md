@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: kxlvfeduN5DUlfOWjpI4VxfHr3GKeXMXx13A3M+Xj8A=
+hash: v0y/d1CQnMzf7E5kyQmOpGV2AieL9T/V5/kVTq1UUfE=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -23,18 +23,17 @@ hash: kxlvfeduN5DUlfOWjpI4VxfHr3GKeXMXx13A3M+Xj8A=
 * Deebot奥兹莫950
 
 ###这些模型可以正常工作
-* Deebot N79T / W
+* Deebot N79
 * Deebot 601
 * Deebot 710/711
-* Deebot奥兹莫610
+* Deebot Ozmo 610
 * Deebot Ozmo 900
-
-###这些模型应该可以工作
-* Deebot N79S
-* Deebot M88
-* Deebot 600/605
 * Deebot奥兹莫920
 * Deebot Ozmo苗条10
+
+###这些模型应该可以工作
+* Deebot M88
+* Deebot 600/605
 
 ##安装
 建议使用Node.js的版本10或更高版本。
@@ -56,7 +55,7 @@ sudo npm install canvas --unsafe-perm=true
 有关其他系统的说明，请访问https://www.npmjs.com/package/canvas#compiling
 
 ##用法
-*有关如何使用此适配器的信息可以在[此处]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）中找到
+*有关如何使用此适配器的信息可在[此处]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）中找到
 
 ＃＃ 已知的问题
 *对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告大约连接后丢失连接。 24小时。
@@ -67,13 +66,17 @@ sudo npm install canvas --unsafe-perm=true
 ＃＃ 常问问题
 *常见问题可以在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ）
 
-##感谢和感谢
+##谢谢和感谢
 * @joostth（[sucks.js]（https://github.com/joostth/sucks.js））
 * @wpietri（[吸]（https://github.com/wpietri/sucks））
 * @ bmartin5692（[sucks]（https://github.com/bmartin5692/sucks），[bumber]（https://github.com/bmartin5692/bumper））
 * @Ligio（[ozmo]（https://github.com/Ligio/ozmo））
 
 ## Changelog
+
+### 0.6.1
+   * Using library version 0.4.11
+   * Several enhancements and fixes
 
 ### 0.6.0
    * Using library version 0.4.10

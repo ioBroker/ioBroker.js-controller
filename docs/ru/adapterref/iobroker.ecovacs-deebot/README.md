@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: kxlvfeduN5DUlfOWjpI4VxfHr3GKeXMXx13A3M+Xj8A=
+hash: v0y/d1CQnMzf7E5kyQmOpGV2AieL9T/V5/kVTq1UUfE=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -23,18 +23,17 @@ hash: kxlvfeduN5DUlfOWjpI4VxfHr3GKeXMXx13A3M+Xj8A=
 * Deebot Ozmo 950
 
 ### Известно, что эти модели работают
-* Deebot N79T / W
+* Deebot N79
 * Deebot 601
 * Deebot 710/711
 * Deebot Ozmo 610
 * Deebot Ozmo 900
-
-### Эти модели должны работать
-* Deebot N79S
-* Deebot M88
-* Deebot 600/605
 * Deebot Ozmo 920
 * Deebot Ozmo Slim 10
+
+### Эти модели должны работать
+* Deebot M88
+* Deebot 600/605
 
 ## Установка
 Рекомендуется использовать версию 10 Node.js или более новую версию.
@@ -45,7 +44,7 @@ hash: kxlvfeduN5DUlfOWjpI4VxfHr3GKeXMXx13A3M+Xj8A=
 npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
 ```
 
-Для систем на основе Linux должны быть выполнены следующие команды (перезагрузка может потребоваться после второй строки):
+Для систем на основе Linux должны быть выполнены следующие команды (может потребоваться перезагрузка после второй строки):
 
 ```
 sudo apt-get update
@@ -56,7 +55,7 @@ sudo npm install canvas --unsafe-perm=true
 Для инструкций для других систем посетите https://www.npmjs.com/package/canvas#compiling
 
 ## Применение
-* Информацию о том, как использовать этот адаптер, можно найти здесь [https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki).
+* Информация о том, как использовать этот адаптер, может быть найдена здесь [https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Известные вопросы
 * Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно после прибл. 24 часа.
@@ -74,6 +73,10 @@ sudo npm install canvas --unsafe-perm=true
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.6.1
+   * Using library version 0.4.11
+   * Several enhancements and fixes
 
 ### 0.6.0
    * Using library version 0.4.10

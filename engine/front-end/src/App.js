@@ -1,5 +1,6 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
+import clsx from 'clsx';
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -66,6 +67,10 @@ const styles = theme => ({
     },
     tab:  {
         minWidth: 'inherit'
+    },
+    tabAction: {
+        backgroundColor: theme.palette.secondary.main,
+        color: 'white'
     },
 
     languageButton: {
@@ -221,9 +226,16 @@ class App extends Router {
             search: '',
             searchResults: null,
             searchFocus: false,
+            lastSeenBlog: window.localStorage.getItem('iobroker.net.lastSeenBlog') ? new Date(window.localStorage.getItem('iobroker.net.lastSeenBlog')).getTime() : 0,
         };
+
         this.contentRef = React.createRef();
         this.updateWindowDimensionsBound = this.updateWindowDimensions.bind(this);
+        Blog.fetchData()
+            .then(json => {
+               let data = Object.keys(json.pages).sort().pop().split('_');
+               this.setState({ latestBlog: new Date(parseInt(data[0], 10), parseInt(data[1], 10) - 1, parseInt(data[2], 10)).getTime() });
+            });
     }
 
     componentDidMount () {
@@ -417,7 +429,10 @@ class App extends Router {
                             menuOpened.splice(pos, 1);
                             this.setState({menuOpened, anchorMenu: null});
                         }
-                    }}>{item.icon || ''}{I18n.t(item.name)}</MenuItem>
+                    }}>
+                        {item.icon || ''}{I18n.t(item.name)}
+                        {this.state.last}
+                    </MenuItem>
                 )}
             </Menu>);
         }
@@ -434,6 +449,11 @@ class App extends Router {
                       variant="standard"
                       onChange={(e, value) => {
                           const selectedPage = Object.keys(PAGES)[value];
+                          if (selectedPage === 'blog') {
+                              window.localStorage.setItem('iobroker.net.lastSeenBlog', new Date().toISOString());
+                              this.setState({lastSeenBlog: Date.now()});
+                          }
+
                           if (PAGES[selectedPage].links) {
                               Utils.openLink(PAGES[selectedPage].links[this.state.language] || PAGES[selectedPage].links.en, PAGES[selectedPage].target);
                           } else
@@ -459,7 +479,13 @@ class App extends Router {
                         this.renderMenu(tab)
                     ];
                 } else {
-                    return (<Tab key={tab} classes={{root: this.props.classes.tab}} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>);
+                    let star = false;
+                    if (tab === 'blog') {
+                        if (this.state.latestBlog > this.state.lastSeenBlog) {
+                            star = true;
+                        }
+                    }
+                    return (<Tab key={tab} classes={{root: clsx(this.props.classes.tab, star && this.props.classes.tabAction) }} fullWidth={false} label={PAGES[tab].icon ? [(<span>{I18n.t(PAGES[tab].name)}</span>), PAGES[tab].icon] : I18n.t(PAGES[tab].name)}/>);
                 }
             })}
 

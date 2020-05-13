@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP Облако Адаптер AccessPoint
-hash: 1L8QN0bnxd4It79NdO0AdWE2Hug98nic4nObTjvtymY=
+hash: imIQYuotL4N4nhDankZmeV6Bqio97DpYIi1pbbS4MAE=
 ---
 ![логотип](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
@@ -15,6 +15,8 @@ hash: 1L8QN0bnxd4It79NdO0AdWE2Hug98nic4nObTjvtymY=
 ![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
 
 # IoBroker Адаптер точки доступа HomeMatic IP CloudPoint
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
+
 ## Описание
 Этот адаптер позволяет обмениваться данными с HomematicIP CloudAccessPoint через API отдыха Homematic IP Cloud.
 
@@ -36,13 +38,13 @@ hash: 1L8QN0bnxd4It79NdO0AdWE2Hug98nic4nObTjvtymY=
 
 ## Важная информация, что можно сделать с помощью этого адаптера
 !!! С помощью этого адаптера вы можете инициировать события, которые могут запускаться только через исходное приложение Homematic IP.
-Например, прямые соединения между устройствами не имеют событий в приложении и также не могут быть инициированы через этот адаптер !!!
+Например, прямые соединения между устройствами не имеют событий в приложении и не могут быть инициированы через этот адаптер !!!
 
 ## Настройки
 * введите свой SGTIN (задняя часть точки доступа) и PIN-код (если он был установлен ранее) и подтвердите данные нажатием синей светодиодной кнопки. Это создаст токен аутентификации.
 
-## Благодарность
-в coreGreenberet за его библиотеку Python (https://github.com/coreGreenberet/homematicip-rest-api)
+## Спасибо
+CoreGreenberet для его библиотеки Python (https://github.com/coreGreenberet/homematicip-rest-api)
 
 ## Дискуссия в форуме ioBroker
 https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
@@ -51,6 +53,16 @@ https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 1.0.0 (2020-05-12)
+* (Apollon77) Add Sentry for error/crash reporting
+* (Apollon77) multiple fixes and optimizations
+* (Apollon77) prevent adapter crashes in some places
+* (Apollon77) 
+* (ApolloSK) add vaporAmount for WeatherSensorPro
+* (ApolloSK) fix HmIP-SWO-PR wrong DataType actualTemperature
+* (marcus0303) Added DEVICE_GLOBAL_PUMP_CONTROL, FLOOR_TERMINAL_BLOCK_LOCAL_PUMP_CHANNEL and DEVICE_INCORRECT_POSITIONED, Fixed role in _createWaterSensorChannel and function call in _createWeatherSensorPlusChannel
+* (marcus0303) Added CONTACT_INTERFACE_CHANNEL for HmIP-SCI (see Issue #70 ), Added FLOOR_TERMINAL_BLOCK_CHANNEL, HEAT_DEMAND_CHANNEL, DEHUMIDIFIER_DEMAND_CHANNEL, CHANGE_OVER_CHANNEL, but without functionality, because it's not implemented in REST-API. Only to supress Warnings in Log.
 
 ### 0.0.12
 * (jogibear9988) multiple fixes
