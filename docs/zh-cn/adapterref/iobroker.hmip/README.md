@@ -15,7 +15,7 @@ hash: imIQYuotL4N4nhDankZmeV6Bqio97DpYIi1pbbS4MAE=
 ![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
 
 ＃ioBroker HomeMatic IP Cloud AccessPoint适配器
-**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参阅[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##说明
 该适配器允许通过Homematic IP Cloud的Rest API与HomematicIP CloudAccessPoint通信
@@ -37,11 +37,11 @@ hash: imIQYuotL4N4nhDankZmeV6Bqio97DpYIi1pbbS4MAE=
 谢谢
 
 ##重要信息此适配器可以做什么
-!!!您只能使用可通过原始Homematic IP应用程序触发的此适配器来触发事件。
+!!!您只能使用可以通过原始Homematic IP应用程序触发的此适配器来触发事件。
 例如，设备之间的直接连接在应用程序中没有事件，也无法通过此适配器触发！！！
 
 ##设置
-*输入您的SGTIN（接入点的背面）和PIN（如果之前已设置），然后通过按下蓝色LED按钮来验证数据。这将创建一个身份验证令牌。
+*输入您的SGTIN（接入点背面）和PIN（如果之前已设置），然后通过按蓝色LED按钮验证数据。这将创建一个身份验证令牌。
 
 ＃＃ 谢谢
 到coreGreenberet获得他的python库（https://github.com/coreGreenberet/homematicip-rest-api）

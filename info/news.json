@@ -1045,9 +1045,9 @@
         },
         "id": "js-controller",
         "node-version": "smaller(10.0.0)",
-        "class": "warning",
+        "class": "info",
         "fa-icon": "ban",
-        "created": "2020-05-11T00:00:00.000Z",
+        "created": "2020-05-12T00:00:00.000Z",
         "repo": "latest",
         "conditions": {
             "admin": "bigger(3.6.10)"
@@ -1082,7 +1082,7 @@
         "class": "info",
         "repo": "latest",
         "fa-icon": "exclamation-circle",
-        "created": "2020-05-10T15:00:00.000Z",
+        "created": "2020-05-13T00:00:00.000Z",
         "node-version": "bigger(10.0.0)",
         "conditions": {
             "js-controller": "smaller(3.1.3)"
@@ -1117,7 +1117,7 @@
         "class": "info",
         "repo": "latest",
         "fa-icon": "exclamation-circle",
-        "created": "2020-05-10T15:00:00.000Z",
+        "created": "2020-05-13T10:00:00.000Z",
         "node-version": "smaller(10.0.0)",
         "conditions": {
             "js-controller": "smaller(3.1.3)"
