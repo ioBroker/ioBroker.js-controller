@@ -940,6 +940,11 @@ function collectDiagInfo(type, callback) {
         callback && callback(null);
     } else {
         objects.getObject('system.config', (err, systemConfig) => {
+            if (err || !systemConfig || !systemConfig.common) {
+                logger.warn('System config object is corrupt, please run "iobroker setup first". Error: ' + err);
+                systemConfig = systemConfig || {};
+                systemConfig.common = systemConfig.common || {};
+            }
             objects.getObject('system.meta.uuid', (err, obj) => {
                 // create uuid
                 if (err || !obj) {
