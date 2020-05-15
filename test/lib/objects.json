@@ -682,14 +682,16 @@
       "paramNumber": 42,
       "paramBoolean": false,
       "username": "tesla",
-      "password": "G\\\b\u000bY\fS"
+      "password": "G\\\b\u000bY\fS",
+      "secondPassword": "$/aes-256-cbc:cb52b76fba6b34778eb3799519dd6c00:4d7f1877553c1e9bb3e195041edd071ab377d7f70c8e91369b474b201d539a3c"
     },
     "protectedNative": [
       "username",
       "password"
     ],
     "encryptedNative": [
-      "password"
+      "password",
+      "secondPassword"
     ],
     "_id": "system.adapter.test.0",
     "type": "adapter"

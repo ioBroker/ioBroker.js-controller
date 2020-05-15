@@ -381,7 +381,8 @@ function register(it, expect, context) {
     it(context.name + ' ' + context.adapterShortName + ' adapter: encrypt decrypt functions', async () => {
         const encrypted = context.adapter.encrypt('topSecret');
         // we only check not equal, because encryption can change and is not always deterministic
-        expect(encrypted).to.not.equal('topSecret');
+        expect(encrypted.length).to.equal(79);
+        expect(encrypted.startsWith('$/aes-256-cbc:')).to.be.true;
         const decrypted = context.adapter.decrypt(encrypted);
         // check that correctly decrypted
         expect(decrypted).to.equal('topSecret');
@@ -389,7 +390,7 @@ function register(it, expect, context) {
     });
 
     /*
-    // Todo: reactivate this tests with 3.1 when setState validation will refuse to set state
+    // Todo: reactivate this tests with 3.2 when setState validation will refuse to set state
     // setState object validation
     for (const method of ['setState', 'setStateChanged', 'setForeignState', 'setForeignStateChanged']) {
         describe(`${context.name} ${context.adapterShortName} adapter: ${method} validates the state object`, () => {
