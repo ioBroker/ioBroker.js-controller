@@ -1122,5 +1122,71 @@
         "conditions": {
             "js-controller": "smaller(3.1.3)"
         }
+    },
+    {
+        "title": {
+            "en": "tr-064 Adapter v4.x requires you to enter your password anew",
+            "de": "Für den tr-064 Adapter v4.x müssen Sie Ihr Kennwort erneut eingeben",
+            "ru": "tr-064 Adapter v4.x требует от вас заново ввести пароль",
+            "pt": "O adaptador tr-064 v4.x requer que você digite sua senha novamente",
+            "nl": "tr-064 Adapter v4.x vereist dat u uw wachtwoord opnieuw invoert",
+            "fr": "L'adaptateur tr-064 v4.x vous oblige à saisir à nouveau votre mot de passe",
+            "it": "L'adattatore v4.x di tr-064 richiede di inserire nuovamente la password",
+            "es": "El adaptador tr-064 v4.x requiere que ingrese su contraseña nuevamente",
+            "pl": "Adapter tr-064 v4.x wymaga ponownego wprowadzenia hasła",
+            "zh-cn": "tr-064适配器v4.x要求您重新输入密码"
+        },
+        "content": {
+            "en": "You use the tr-064 adapter. When you update to v4.x best stop the adapter before and enter the passwort anew in the adapter configuration before you start the adater again. Please also check the logfile afterwards.",
+            "de": "Sie verwenden den Adapter tr-064. Wenn Sie auf v4.x aktualisieren, stoppen Sie den Adapter am besten vorher und geben Sie das Kennwort erneut in die Adapterkonfiguration ein, bevor Sie den Adater erneut starten. Bitte überprüfen Sie auch die Protokolldatei danach.",
+            "ru": "Вы используете адаптер tr-064. При обновлении до v4.x лучше всего остановить адаптер и ввести заново пароль в конфигурацию адаптера, прежде чем снова запустить адатор. Пожалуйста, проверьте файл журнала позже.",
+            "pt": "Você usa o adaptador tr-064. Quando você atualiza para a v4.x, é melhor parar o adaptador antes e inserir a senha novamente na configuração do adaptador antes de iniciar o adater novamente. Por favor, verifique o arquivo de log depois.",
+            "nl": "Je gebruikt de tr-064 adapter. Wanneer u bijwerkt naar v4.x, stop dan eerst de adapter en voer het wachtwoord opnieuw in de adapterconfiguratie in voordat u de adater opnieuw start. Controleer ook het logbestand achteraf.",
+            "fr": "Vous utilisez l'adaptateur tr-064. Lorsque vous effectuez une mise à jour vers v4.x, arrêtez l'adaptateur avant et entrez à nouveau le mot de passe dans la configuration de l'adaptateur avant de redémarrer l'adaptateur. Veuillez également vérifier le fichier journal par la suite.",
+            "it": "Si utilizza l'adattatore tr-064. Quando si aggiorna a v4.x, arrestare prima l'adattatore e immettere nuovamente il passwort nella configurazione dell'adattatore prima di riavviare l'adater. Successivamente, controlla anche il file di registro.",
+            "es": "Utiliza el adaptador tr-064. Cuando actualice a v4.x, detenga el adaptador antes e ingrese el passwort nuevamente en la configuración del adaptador antes de volver a iniciar el adaptador. Por favor, compruebe también el archivo de registro después.",
+            "pl": "Używasz adaptera tr-064. W przypadku aktualizacji do wersji 4.x najlepiej zatrzymać adapter wcześniej i wprowadzić ponownie hasło w konfiguracji adaptera przed ponownym uruchomieniem adatera. Sprawdź również plik dziennika później.",
+            "zh-cn": "您使用tr-064适配器。当您更新到v4.x时，最好先停止适配器，然后在适配器配置中重新输入密码，然后再重新启动适配器。请随后再检查日志文件。"
+        },
+        "id": "tr-064AdapterPasswordReenter",
+        "class": "warning",
+        "fa-icon": "exclamation-circle",
+        "created": "2020-05-16T00:00:00.000Z",
+        "conditions": {
+            "tr-064": "smaller(4.0.0)"
+        }
+    },
+    {
+        "title": {
+            "en": "Pushover Adapter v2.x requires you to enter your token anew",
+            "de": "Für den Pushover-Adapter v2.x müssen Sie Ihr Token erneut eingeben",
+            "ru": "Pushover Adapter v2.x требует от вас заново ввести токен",
+            "pt": "O Pushover Adapter v2.x exige que você insira seu token novamente",
+            "nl": "Pushover Adapter v2.x vereist dat u uw token opnieuw invoert",
+            "fr": "L'adaptateur Pushover v2.x vous oblige à saisir à nouveau votre jeton",
+            "it": "Pushover Adapter v2.x richiede di inserire nuovamente il token",
+            "es": "Pushover Adapter v2.x requiere que ingreses tu token nuevamente",
+            "pl": "Adapter Pushover v2.x wymaga ponownego wprowadzenia tokena",
+            "zh-cn": "Pushover Adapter v2.x要求您重新输入令牌"
+        },
+        "content": {
+            "en": "You use the Pushover adapter. When you update to v2.x best stop the adapter before and enter the token anew in the adapter configuration before you start the adater again. Please also check the logfile afterwards.",
+            "de": "Sie verwenden den Pushover-Adapter. Wenn Sie auf v2.x aktualisieren, stoppen Sie den Adapter am besten vorher und geben Sie das Token erneut in die Adapterkonfiguration ein, bevor Sie den Adater erneut starten. Bitte überprüfen Sie auch die Protokolldatei danach.",
+            "ru": "Вы используете адаптер Pushover. При обновлении до v2.x лучше всего сначала остановить адаптер и заново ввести токен в конфигурацию адаптера, прежде чем снова запустить адатер. Пожалуйста, проверьте файл журнала позже.",
+            "pt": "Você usa o adaptador Pushover. Quando você atualiza para a v2.x, é melhor parar o adaptador antes e inserir o token novamente na configuração do adaptador antes de iniciar o adater novamente. Por favor, verifique o arquivo de log depois.",
+            "nl": "Je gebruikt de Pushover adapter. Wanneer u bijwerkt naar v2.x, stop dan eerst de adapter en voer het token opnieuw in de adapterconfiguratie in voordat u de adater opnieuw start. Controleer ook het logbestand achteraf.",
+            "fr": "Vous utilisez l'adaptateur Pushover. Lorsque vous effectuez une mise à jour vers v2.x, arrêtez l'adaptateur avant et entrez à nouveau le jeton dans la configuration de l'adaptateur avant de redémarrer l'adaptateur. Veuillez également vérifier le fichier journal par la suite.",
+            "it": "Si utilizza l'adattatore Pushover. Quando si aggiorna a v2.x, arrestare meglio l'adattatore prima e immettere nuovamente il token nella configurazione dell'adattatore prima di riavviare l'adater. Successivamente, controlla anche il file di registro.",
+            "es": "Utiliza el adaptador Pushover. Cuando actualice a v2.x, detenga el adaptador antes e ingrese el token nuevamente en la configuración del adaptador antes de volver a iniciar el adaptador. Por favor, compruebe también el archivo de registro después.",
+            "pl": "Używasz adaptera Pushover. W przypadku aktualizacji do wersji 2.x najlepiej zatrzymać adapter wcześniej i wprowadzić token na nowo w konfiguracji adaptera przed ponownym uruchomieniem adatera. Sprawdź również plik dziennika później.",
+            "zh-cn": "您使用Pushover适配器。当您更新到v2.x时，最好先停止适配器，然后在适配器配置中重新输入令牌，然后再次启动适配器。请随后再检查日志文件。"
+        },
+        "id": "PushoverAdapterPasswordReenter",
+        "class": "warning",
+        "fa-icon": "exclamation-circle",
+        "created": "2020-05-16T00:00:00.000Z",
+        "conditions": {
+            "pushover": "smaller(2.0.0)"
+        }
     }
 ]
