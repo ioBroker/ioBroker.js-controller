@@ -2638,7 +2638,10 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
-### 4.6.2 (2020-05-13)
+### 4.6.5 (2020-05-16)
+* (bluefox) Fixed blockly blocks because of deprecated functions
+
+### 4.6.4 (2020-05-15)
 * (bluefox) Corrected block: request, exec
 
 ### 4.6.1 (2020-05-11)

@@ -64,6 +64,9 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 
 ## Changelog
 
+### 0.1.11
+* (SpectreKr*) Adding to FS Sharing
+
 ### 0.1.10
 * (instalator) fixed copy cover file
 * (instalator) fix get packages for DSM 5.x

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vw-connect/README.md
 title: ioBroker.vw-连接
-hash: 7Ssvsv+iQcxD2x7Mxi0uaEBwFQjjcJppGPZKcgXhwbE=
+hash: Pxhcxeh1UyMWL3PUQe48L/FiysnntzRL1N1diLS0jXo=
 ---
 ![商标](../../../en/adapterref/iobroker.vw-connect/admin/vw-connect.png)
 
@@ -16,7 +16,7 @@ hash: 7Ssvsv+iQcxD2x7Mxi0uaEBwFQjjcJppGPZKcgXhwbE=
 
 ＃ioBroker.vw-connect
 ## IoBroker的vw-connect适配器
-大众WeW Connect，myAudi，Skoda Connect和We Connect Go的适配器
+大众的适配器We Connect，myAudi，Skoda Connect和We Connect Go
 
 请在节点10上更新系统。
 <https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten>
@@ -27,9 +27,9 @@ hash: 7Ssvsv+iQcxD2x7Mxi0uaEBwFQjjcJppGPZKcgXhwbE=
 ##状态栏说明
 门窗状态：
 
-*开：1
-*锁定：2
-*封闭时间：3
+-打开：1
+-锁定：2
+-关闭：3
 
 ###条目列表
 ```
@@ -111,6 +111,10 @@ hash: 7Ssvsv+iQcxD2x7Mxi0uaEBwFQjjcJppGPZKcgXhwbE=
 ```
 
 ## Changelog
+
+### 0.0.15
+
+- fix js.controller 3 problems
 
 ### 0.0.11
 

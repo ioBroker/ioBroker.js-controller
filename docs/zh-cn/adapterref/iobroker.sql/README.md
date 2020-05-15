@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: KKY58/u1GJRUBHdwjwvOqO7UzVsWcvagdNl5EiZrOVE=
+hash: RDgV1bwXKB5H4xzfj2awTWF15T0Fo1W/fiOy2XkHZps=
 ---
 ![商标](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -86,7 +86,7 @@ FLUSH PRIVILEGES;
 
 结构体：
 
-|领域|类型描述 |
+|领域类型描述 |
 |-------|--------------------------------------------|-------------------------------------------|
 | id |整数非空主键标识（1,1）|唯一ID |
 |名称| varchar（255）/文字|实例的适配器实例， |
@@ -105,7 +105,7 @@ FLUSH PRIVILEGES;
 
 结构体：
 
-|领域|类型描述 |
+|领域类型说明 |
 |-------|--------------------------------------------|-------------------------------------------------|
 | id |整数非空主键标识（1,1）|唯一ID |
 |名称| varchar（255）/文字|变量的ID，例如hm-rpc.0.JEQ283747.1.STATE |
@@ -114,7 +114,7 @@ FLUSH PRIVILEGES;
 *注意：* MS-SQL使用varchar（255），其他使用TEXT
 
 ###数字
-类型为“数字”的状态的值。 ts表示“时间序列”。
+类型为“数字”的状态的值。 **ts** 示“时间序列”。
 
 | DB |查询名称|
 |------------|-------------------------|
@@ -125,7 +125,7 @@ FLUSH PRIVILEGES;
 
 结构体：
 
-|领域|类型描述 |
+|领域类型说明 |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id |整数| “数据点”表中的状态ID |
 | ts | BIGINT /整数|直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
@@ -147,7 +147,7 @@ FLUSH PRIVILEGES;
 
 结构体：
 
-|领域|类型描述 |
+|领域类型说明 |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id |整数| “数据点”表中的状态ID |
 | ts | BIGINT /整数|直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
@@ -167,7 +167,7 @@ FLUSH PRIVILEGES;
 
 结构体：
 
-|领域|类型描述 |
+|领域类型说明 |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id |整数| “数据点”表中的状态ID |
 | ts | BIGINT |直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
@@ -190,7 +190,7 @@ FLUSH PRIVILEGES;
 
 结构体：
 
-|领域|类型描述 |
+|领域类型说明 |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id |整数| “数据点”表中的状态ID |
 | ts | BIGINT |直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
@@ -215,7 +215,7 @@ sendTo('sql.0', 'query', 'SELECT * FROM datapoints', function (result) {
 });
 ```
 
-或者获取最近一小时的ID = system.adapter.admin.0.memRss条目
+或获取过去一小时的ID = system.adapter.admin.0.memRss的条目
 
 ```
 sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.admin.0.memRss"', function (result) {
@@ -235,7 +235,7 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 
 ## StoreState
 如果要将其他数据写入InfluxDB / SQL，则可以使用内置系统功能** storeState **。
-此功能还可用于转换其他历史记录适配器（如历史记录或SQL）中的数据。
+此功能还可以用于转换其他历史记录适配器（如历史记录或SQL）中的数据。
 
 不会根据ioBroker数据库检查给定的ID，也不需要在其中进行设置，而只能直接访问。
 
@@ -247,8 +247,32 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 
 此外，您可以添加属性`rules: true`来激活所有规则，例如`counter`，`changesOnly`，`de-bounce`等：`{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
 
+##删除状态
+如果要从数据库中删除条目，则可以使用内置系统功能**删除**：
+
+```
+sendTo('sql.0', 'delete', [
+    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809352},
+    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809353}
+], result => console.log('deleted'));
+```
+
+##改变状态
+如果要更改数据库中条目的值，质量或确认标志，则可以使用内置系统功能** update **：
+
+```
+sendTo('sql.0', 'update', [
+    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809352, val: 15, ack: true, q: 0},
+    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809353, val: 16, ack: true, q: 0}
+], result => console.log('deleted'));
+```
+
+`ts`是强制性的。状态对象中必须至少包含一个其他标志。
+
+小心`counters`。数据库中的`counters`§不会被重置，您必须自己处理。
+
 ##获取历史
-除了自定义查询外，您还可以使用内置系统功能** getHistory **：
+除自定义查询外，您还可以使用内置系统功能** getHistory **：
 
 ```
 var end = Date.now();
@@ -267,7 +291,7 @@ sendTo('sql.0', 'getHistory', {
 ```
 
 ##获取计数器
-用户可以询问特定时段内某个计数器的值（类型=数字，计数器=真）。
+用户可以询问特定时间段内某个计数器的值（类型=数字，计数器=真）。
 
 ```
 var now = Date.now();
@@ -283,13 +307,13 @@ sendTo('sql.0', 'getCounter', {
 });
 ```
 
-如果计数器将被替换，它也会被计算。
+如果将更换计数器，则也会对其进行计算。
 
 ##通过Javascript进行历史记录记录管理
-适配器支持通过JavaScript启用和禁用历史记录日志，还支持使用其设置检索启用的数据点列表。
+该适配器支持通过JavaScript启用和禁用历史记录日志，还支持使用其设置检索启用的数据点列表。
 
 ###启用
-该消息需要具有数据点的“ id”。其他可选的“选项”用于定义特定于数据点的设置：
+该消息要求具有数据点的“ id”。其他可选的“选项”用于定义特定于数据点的设置：
 
 ```
 sendTo('sql.0', 'enableHistory', {
@@ -351,7 +375,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 ```
 
 ##连接设置
--** DB类型**：SQL DB的类型：MySQL，PostgreSQL，MS-SQL或SQLite3
+-**数据库类型**：SQL DB的类型：MySQL，PostgreSQL，MS-SQL或SQLite3
 -**主机**：SQL Server的IP地址或主机名
 -**端口**：SQL Server的端口（如果不确定，请留空）
 -**数据库名称**：数据库名称。默认iobroker
@@ -365,11 +389,16 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 ＃＃ 默认设置
 -**反跳间隔**：请勿存储比该间隔更频繁的值。
 -**记录任何不变的值**：每X秒额外写入一次值。
--**从最后一个值到对数的最小差**：两个值之间的最小间隔。
+-**从上一个值到对数值的最小差值**：两个值之间的最小间隔。
 -**存储保留**：值将在数据库中存储多长时间。
 
 ## Changelog
-
+### 1.13.0 (2020-05-14)
+* (bluefox) added changed and delete operations
+ 
+### 1.12.6 (2020-05-08)
+* (bluefox) set default history if not yet set
+ 
 ### 1.12.5 (2020-05-05)
 * (Apollon77) Crash prevented for invalid objects (Sentry IOBROKER-SQL-X) 
 

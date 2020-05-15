@@ -107,6 +107,8 @@ Wählt man in der Titelzeile unter Historie "mit" oder "influxdb.0" aus, werden
 Die Beschreibung einer Installation einer influxDB-Datenbank folgt.
 
 ## Changelog
+### 1.8.7 (2020-05-14)
+* (bluefox) added command to read supported features
 
 ### 1.8.6 (2020-05-11)
 * (Apollon77) make sure disabling of datapoints while starting adapter do not crash adapter (Sentry IOBROKER-INFLUXDB-7)

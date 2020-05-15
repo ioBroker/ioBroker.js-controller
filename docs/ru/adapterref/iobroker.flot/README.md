@@ -113,6 +113,9 @@ History with InfluxDB). Он может быть использован как 
 
 ## Changelog
 
+### 1.10.0 (2020-05-14)
+* (sbormann) preset.html added to display a list of stored flot presets with direct links
+
 ### 1.9.2 (2018-08-18)
 * (Seqway) Translations
 
@@ -287,4 +290,4 @@ History with InfluxDB). Он может быть использован как 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2014-2018 bluefox<dogafox@gmail.com>
+Copyright (c) 2014-2020 bluefox<dogafox@gmail.com>

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: WC5mIQKmR7+YtXFf0eIZXBipXFHcfbzV4G5YwkZ6zkE=
+hash: arHjPFDSFCWhUuDWwkMW6rVlqiIPvhw5gj2ASjboo0M=
 ---
 ![Logo](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -46,7 +46,79 @@ Um mehrere Frames anzuzeigen, können Sie auch ein Array als Nachricht bereitste
 
 ![einfach](../../../en/adapterref/iobroker.lametric/docs/blockly2.png)
 
+## Skripte
+Um die Nachricht in Ihrer la-Metrik anzuzeigen, senden Sie einfach eine Nachricht mit dem Skriptadapter an diese Instanz:
+
+```
+sendTo('lametric.0', 'send', {
+    "priority": "[info|warning|critical]",
+    "icon_type": "[none|info|alert]",
+    "lifeTime": <milliseconds>,
+    "model": {
+    "frames": [
+         {
+            "icon":"<icon id or base64 encoded binary>",
+            "text":"<text>"
+         },
+         {
+           "icon": 298,
+           "text":"text"
+         },
+         {
+             "icon": 120,
+             "goalData":{
+                 "start": 0,
+                 "current": 50,
+                 "end": 100,
+                 "unit": "%"
+             }
+         },
+         {
+             "chartData": [ <comma separated integer values> ] // [ 1, 2, 3, 4, 5, 6, 7 ]
+         }
+         ],
+         "sound": {
+           "category":"[alarms|notifications]",
+             "id":"<sound_id>",
+             "repeat":<repeat count>
+         },
+         "cycles":<cycle count>
+    }
+});
+```
+
+Beispiel, um einige Informationen zyklisch anzuzeigen:
+
+```
+let i = 0;
+function show() {
+    console.log('Show ' + i);
+    sendTo('lametric.0', 'send', {
+        "priority": "info",
+        "icon_type": "info",
+        "lifeTime": 10000,
+        "model": {
+        "frames": [
+                {
+                    "icon":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNWRHWFIAAAAySURBVBhXY4AAYdcKk1lngCSUDwHIfAQbzgLqgDCgIqRLwFkQCYQoBAD5EATl4wQMDADhuxQzaDgX0gAAAABJRU5ErkJggg==",
+                    "text":"Hi " + i
+                }
+            ],
+            "cycles": 0
+        }
+    });
+    i++;
+}
+setInterval(show, 10000);
+show();
+```
+
 ## Changelog
+
+### 0.0.9
+
+* (klein0r) Added missing translations
+* (GermanBluefox) Improved Blockly and main.js
 
 ### 0.0.8
 

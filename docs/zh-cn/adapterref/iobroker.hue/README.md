@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hue/README.md
 title: ioBroker飞利浦Hue桥适配器
-hash: 10nEV1RMDf4icCUXMNVgSJT7m2R6FPlcVAAp6TWz37Q=
+hash: wls35NM9UwV531N1H0YvbRCmPKWBQwnTiWB9dd47wrA=
 ---
 ![商标](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
@@ -18,13 +18,13 @@ hash: 10nEV1RMDf4icCUXMNVgSJT7m2R6FPlcVAAp6TWz37Q=
 ![建立状态](https://github.com/iobroker-community-adapters/ioBroker.hue/workflows/Test%20and%20Release/badge.svg)
 
 ##英语：gb：
-此适配器将您的Philips Hue桥与ioBroker连接，以控制Philips Hue LED灯泡，Hue Hue LED灯，条纹，Osram之类的插头以及其他支持SmartLink的设备（如LivingWhites和某些LivingColors）。
+该适配器将飞利浦Hue桥接器与ioBroker相连，以控制Philips Hue LED灯泡，Hue Hue LED灯，条纹，Osram之类的插头以及其他支持SmartLink的设备（如LivingWhites和某些LivingColors）。
 
 ＃＃＃ 设定
 在ioBroker中安装此适配器后，请相应地创建一个适配器实例。接下来，您需要在适配器设置内将Hue桥与ioBroker连接：
 
 1.如果您使用的不是v2，则将端口配置为80（非https），否则应使用443（https）。
-2.单击“查找网桥”按钮以获取网桥的IP地址。这将搜索您环境中的所有网桥。然后选择要连接的网桥。字段“网桥地址”将填充您所选择的色相网桥的IP地址。
+2.单击“查找网桥”按钮以获取网桥的IP地址。这将搜索您环境中的所有网桥。然后选择要连接的网桥。字段“网桥地址”将填充您所选的色相网桥的IP地址。
 3.接下来，在设置中单击“创建用户”按钮，然后步行至Hue桥接设备（即您的硬件）以按其圆形按钮。您将有30秒钟的时间进行。按下按钮后，应在字段“ Bridge User”中填充生成的字符串。
 4.修改适配器设置中的任何其他选项，然后选择“保存并关闭”。
 5.最后，您已经准备就绪：适配器将生成所有对象，以相应地控制Hue设备。
@@ -34,27 +34,80 @@ hash: 10nEV1RMDf4icCUXMNVgSJT7m2R6FPlcVAAp6TWz37Q=
 ###设置
 |名称|描述|
 |---|---|
-| __桥地址__ |您的色相桥的IP地址，您可以尝试通过按`Find Bridge`按钮来检测它。 |
+| __桥地址__ |您的色相桥的IP地址，您可以尝试通过按`Find Bridge`按钮检测到它。 |
 | __Port__ | Hue网桥的端口，通常为443（SSL）和80（非SSL）。 |
 | __User__ |网桥用户的用户名。您可以通过按`Create User`按钮并按照屏幕说明进行创建。 |
 | __User__ |网桥用户的用户名。您可以通过按“创建用户”按钮并按照屏幕说明进行创建。 |
 | __忽略场景__ |如果选中，则场景将不会由适配器显示/控制。 |
 | __忽略组__ |如果选中，则适配器将不会显示/控制组。
-| __“旧版”结构__ |为了支持向后兼容，可以在ioBroker中保留旧的对象结构。这个旧结构是`hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`。新结构删除了`<brdige_name_channel>`，因此有必要改编旧脚本等。如果适配器检测到现有的旧结构，则将使用该结构而无需选中该复选框。但是，如果需要从旧结构迁移到新结构，请一次删除整个`hue.<instance_number>`命名空间。 |
+| __“旧式”结构__ |为了支持向后兼容，可以在ioBroker中保留旧的对象结构。这个旧结构是`hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`。新结构删除了`<brdige_name_channel>`，因此有必要改编旧脚本等。如果适配器检测到现有的旧结构，则将使用该结构而无需选中该复选框。但是，如果需要从旧结构迁移到新结构，请一次删除整个`hue.<instance_number>`命名空间。 |
 | __同步软件传感器__ |也同步软件传感器。这些是虚拟传感器，例如由Hue Labs场景创建。通过控制此类传感器的`status`数据点，您可以启动/停止遵循此逻辑的场景。在大多数情况下，`0`将场景关闭，而`1`将其打开。 |
-| __同步软件传感器__ |也同步软件传感器。这些是虚拟传感器，例如由Hue Labs场景创建。通过控制此类传感器的“状态”数据点，您可以启动/停止遵循此逻辑的场景。在大多数情况下，“ 0”关闭场景，而“ 1”打开场景。 |
+| __同步软件传感器__ |也同步软件传感器。这些是虚拟传感器，例如由Hue Labs场景创建。通过控制此类传感器的“状态”数据点，您可以按照该逻辑开始/停止场景。在大多数情况下，“ 0”关闭场景，而“ 1”打开场景。 |
 | __轮询__ |如果选中，则适配器将轮询状态更改，否则只能用于控制指示灯，而不能显示其状态。 |
 | __轮询间隔__ |定义轮询状态的频率，然后在ioBroker中进行更新。低轮询间隔可能会在某些设置中导致性能问题。因此，最小允许轮询间隔为2秒。如果将轮询间隔设置为小于2秒，则它将在运行期间设置为2秒。 |
 
+＃＃＃ 附加信息
+在版本3.3.0中，组状态`anyOn`和`allOn`变得可控制，请注意，它们在被控制时的行为就像`on`状态。在某些情况下，可能希望在可视化中具有可控制的`anyOn`状态。
+
 ## Deutsch：de：
 Bindet飞利浦色相/ LivingColors / LivingWhites Lampen ein。
-在Adapter-Settings中，用户名konfiguriert werden属于IP der Hue Bridge。 Um einen用户zu aktivieren einmal auf创建用户drücken和dann innerhalb von 30 Sekunden den Button Button der Hue桥drücken。 Dann wird自动用户übergeben。
+在Adapter-Settings中，使用IP der Hue Bridge软件作为用户名konfiguriert werden。 Um einen用户zu aktivieren einmal auf创建用户drücken和dann innerhalb von 30 Sekunden den Button Button der Hue桥drücken。 Dann wird自动用户übergeben。
 
 ##路线图/ Todo
 *自动桥接发现
 *通过桥接链接按钮自动设置用户
 
 ## Changelog
+### 3.3.2 (2020-05-15)
+* (foxriver76) internal optimizations - polling after change timeout removed, was 150 ms now instant
+
+### 3.3.0 (2020-05-14)
+* (foxriver76) introduce `allOn` state for groups
+* (foxriver76) `anyOn` and `allOn` are now controllable and act like the `on` state
+* (foxriver76) when native turn on/off behaviour is used, the brightness change of partially turned on groups will not turn
+the whole group on, like the hue app does instead it will only change the brightness of the currently turned on lamps
+
+### 3.2.9 (2020-05-12)
+* (foxriver76) fixed issues on user creation
+* (foxriver76) minor frontend (admin config) optimizations
+
+### 3.2.8 (2020-04-26)
+* (foxriver76) replace dots in light/group/sensor/.. names by underscores
+* (foxriver76) fix potential state update delay after state change on lights/groups containing blanks
+
+### 3.2.4 (2020-04-08)
+* (xXBJXx) changed role of battery to `value.battery` and made unit `%`
+
+### 3.2.3 (2020-02-20)
+* (Apollon77) minor fix regarding handleParam called with non-existing id
+
+### 3.2.2 (2020-02-12)
+* (foxriver76) fix potential issues when error type is not HueError
+
+### 3.2.1 (2020-01-26)
+* (foxriver76) if lights/groups/sensors are deleted during runtime, restart of adapter is no longer necessary
+* (foxriver76) if controller supports recursive deletion, device will be deleted automatically
+
+### 3.1.1 (2020-01-15)
+* (foxriver76) added additional frontend validation of polling interval
+* (foxriver76) if errors are hue errors, log message instead of Error
+
+### 3.1.0 (2020-01-12)
+* (foxriver76) added new indicators for entertainment groups (class and activeStream)
+* (foxriver76) added possibility to enable/disable streaming of entertainment group
+
+### 3.0.3 (2020-01-11)
+* (foxriver76) fixed turning on/off switchs like Osram Plug
+
+### 3.0.1 (2020-01-10)
+* (foxriver76) removed queue, because handled by dependency now
+* (foxriver76) improved error handling
+* __Nodejs >= 10 required__
+
+### 2.5.0 (2019-12-23)
+* (foxriver76) implemented a mechanic to prevent regular polling of recently changed state
+* (foxriver76) this prevents fluctuating of buttons on low polling intervals + possible strange triggers in scripts
+
 ### 2.4.7 (2019-12-14)
 * (foxriver76) do not set default values on every adapter start
 * (foxriver76) this is now done only on object creation
@@ -255,5 +308,5 @@ __ATTENTION: Remove all objects once, ids have changed__
 
 Apache 2.0
 
-Copyright (c) 2017-2019 Bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2020 Bluefox <dogafox@gmail.com>
 Copyright (c) 2014-2016 hobbyquaker

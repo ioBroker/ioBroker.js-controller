@@ -26,9 +26,9 @@ Use the state under remote control to control your car remotely.
 
 Door and window states:
 
-* open: 1
-* locked: 2
-* closed: 3
+- open: 1
+- locked: 2
+- closed: 3
 
 ### List of entries
 
@@ -112,7 +112,7 @@ Door and window states:
 
 ## Changelog
 
-### 0.0.13
+### 0.0.15
 
 - fix js.controller 3 problems
 

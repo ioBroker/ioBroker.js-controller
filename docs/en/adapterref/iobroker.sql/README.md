@@ -237,6 +237,30 @@ The Message can have one of the following three formats:
 
 Additionally, you can add attribute `rules: true` to activate all rules, like `counter`, `changesOnly`, `de-bounce` and so on: `{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}` 
 
+## delete state
+If you want to delete entry from the Database you can use the build in system function **delete**:
+
+```
+sendTo('sql.0', 'delete', [
+    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809352}, 
+    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809353}
+], result => console.log('deleted'));
+```
+
+## change state
+If you want to change entry's value, quality or acknowledge flag in the database you can use the build in system function **update**:
+
+```
+sendTo('sql.0', 'update', [
+    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809352, val: 15, ack: true, q: 0}, 
+    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809353, val: 16, ack: true, q: 0}
+], result => console.log('deleted'));
+```
+
+`ts` is mandatory. At least one other flags must be included in state object.
+
+Be careful with `counters`. The `counters` in DB will not be reset and you must handle it yourself. 
+
 ## Get history
 Additional to custom queries, you can use build in system function **getHistory**:
 ```
@@ -357,6 +381,9 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Storage retention**: How long the values will be stored in the DB.
 
 ## Changelog
+### 1.13.0 (2020-05-14)
+* (bluefox) added changed and delete operations
+ 
 ### 1.12.6 (2020-05-08)
 * (bluefox) set default history if not yet set
  

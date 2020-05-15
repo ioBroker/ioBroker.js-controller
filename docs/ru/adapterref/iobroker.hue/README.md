@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.hue/README.md
 title: ioBroker Philips Hue Мостовой адаптер
-hash: 10nEV1RMDf4icCUXMNVgSJT7m2R6FPlcVAAp6TWz37Q=
+hash: wls35NM9UwV531N1H0YvbRCmPKWBQwnTiWB9dd47wrA=
 ---
 ![логотип](../../../en/adapterref/iobroker.hue/admin/hue.jpeg)
 
@@ -23,22 +23,22 @@ hash: 10nEV1RMDf4icCUXMNVgSJT7m2R6FPlcVAAp6TWz37Q=
 ### Настроить
 После того, как вы установили этот адаптер в ioBroker, создайте соответствующий экземпляр адаптера. Далее вам необходимо подключить ваш мост Hue к ioBroker в настройках адаптера:
 
-1. Если вы используете другой мост, кроме v2, настройте порт на 80 (не-https), иначе 443 (https) должен быть подходящим способом.
+1. Если вы используете другой мост, кроме v2, настройте порт на 80 (не-https), иначе 443 (https) должен быть подходящим.
 2. Нажмите кнопку «Найти мост», чтобы получить IP-адрес вашего моста. Это будет искать все мосты в вашей среде. Затем выберите мост, к которому вы хотите подключиться. Поле «Адрес моста» будет заполнено IP-адресом выбранного вами моста Хюэ.
 3. Затем нажмите кнопку «Создать пользователя» в настройках, а затем перейдите к устройству моста Hue, а затем к своему оборудованию, чтобы нажать его круглую кнопку. У тебя будет 30 секунд, чтобы продолжить. После того, как вы нажали кнопку, поле «Пользователь моста» должно быть заполнено сгенерированной строкой.
 4. Измените любые другие параметры в настройках адаптера и затем выберите «сохранить и закрыть».
 5. Наконец, у вас все должно быть готово: адаптер сгенерирует все объекты для соответствующего управления вашими устройствами Hue.
 
-Обратите внимание: кнопка настроек адаптера «Найти мост» будет неактивна, если заполнено поле «Адрес моста», а кнопка «Создать пользователя» будет неактивной, если заполнено поле «Пользователь моста».
+Обратите внимание: кнопка настроек адаптера «Найти мост» будет неактивной, если заполнено поле «Адрес моста», а кнопка «Создать пользователя» будет неактивной, если заполнено поле «Пользователь моста».
 
 ### Настройки
 | Имя | Описание |
 |---|---|
 | __Bridge address__ | IP-адрес вашего моста Hue, вы можете попытаться определить его, нажав кнопку `Find Bridge`. |
-| __Port__ | Порт вашего моста Hue, обычно 443 (SSL) и 80 (не-SSL). |
+| __Порт__ | Порт вашего моста Хюэ, обычно 443 (SSL) и 80 (не-SSL). |
 | __User__ | Имя пользователя вашего моста. Вы можете создать его, нажав кнопку `Create User` и следуя инструкциям на экране. |
 | __User__ | Имя пользователя вашего моста. Вы можете создать его, нажав кнопку «Создать пользователя» и следуя инструкциям на экране. |
-| __Игнорировать сцены__ | Если установлен этот флажок, сцены не будут отображаться / контролироваться адаптером. |
+| __Игнорировать сцены__ | Если отмечено, сцены не будут отображаться / контролироваться адаптером. |
 | __Игнорировать группы__ | Если отмечено, группы не будут отображаться / контролироваться адаптером. |
 | __ «Устаревшая» структура__ | Для поддержки обратной совместимости в ioBroker можно сохранить старую структуру объектов. Эта старая структура `hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`. Новая структура удаляет `<brdige_name_channel>` и, следовательно, делает необходимым адаптировать старые сценарии и т. Д. Если адаптер обнаруживает существующее старое strcuture, структура будет использоваться без установки флажка. Однако, если требуется переход от старой структуры к новой, удалите все пространство имен `hue.<instance_number>` один раз. |
 | __Синхронизировать программные датчики__ | Также синхронизировать программные датчики. Это виртуальные датчики, например созданные сцены Hue Labs. Управляя назначением данных `status` такого датчика, вы можете запускать / останавливать сцены, которые следуют этой логике. В большинстве случаев `0` выключает сцену, а `1` включает ее. |
@@ -46,15 +46,68 @@ hash: 10nEV1RMDf4icCUXMNVgSJT7m2R6FPlcVAAp6TWz37Q=
 | __Polling__ | Если этот флажок установлен, адаптер будет запрашивать изменения состояния, в противном случае его можно использовать только для управления лампами, а не для отображения их состояния. |
 | __Polling interval__ | Определяет, как часто состояния будут опрашиваться и, следовательно, обновляться в ioBroker. Низкие интервалы опроса могут вызвать проблемы с производительностью в некоторых настройках. Следовательно, минимально допустимый интервал опроса составляет 2 секунды. Если интервал опроса установлен менее чем на 2 секунды, он будет установлен на 2 секунды во время выполнения. |
 
+### Дополнительная информация
+С версией 3.3.0 состояния группы `anyOn` и `allOn` стали управляемыми, имейте в виду, что при управлении они будут действовать как состояние `on`. В некоторых случаях может быть желательно иметь управляемое состояние `anyOn` в вашей визуализации.
+
 ## Deutsch: de:
 Bindet Philips Hue / LivingColors / LivingWhites Lampen ein.
-В настройках адаптера необходимо указать IP-адрес Hue Bridge sowie ein Имя пользователя konfiguriert werden. Um einen User zu aktivieren einmal auf создать пользователя drücken und dann innerhalb von 30 Sekunden den Button an der Hue bridge drücken. Dann wird automatisch der User übergeben.
+В настройках адаптера необходимо указать IP-адрес Hue Bridge sowie ein Username konfiguriert werden. Um einen User zu aktivieren einmal auf создать пользователя drücken und dann innerhalb von 30 Sekunden den Button and der Hue bridge drücken. Dann wird automatisch der User übergeben.
 
 ## Дорожная карта / Todo
 * Автоматическое обнаружение моста
 * Автоматическая настройка пользователя с помощью кнопки моста
 
 ## Changelog
+### 3.3.2 (2020-05-15)
+* (foxriver76) internal optimizations - polling after change timeout removed, was 150 ms now instant
+
+### 3.3.0 (2020-05-14)
+* (foxriver76) introduce `allOn` state for groups
+* (foxriver76) `anyOn` and `allOn` are now controllable and act like the `on` state
+* (foxriver76) when native turn on/off behaviour is used, the brightness change of partially turned on groups will not turn
+the whole group on, like the hue app does instead it will only change the brightness of the currently turned on lamps
+
+### 3.2.9 (2020-05-12)
+* (foxriver76) fixed issues on user creation
+* (foxriver76) minor frontend (admin config) optimizations
+
+### 3.2.8 (2020-04-26)
+* (foxriver76) replace dots in light/group/sensor/.. names by underscores
+* (foxriver76) fix potential state update delay after state change on lights/groups containing blanks
+
+### 3.2.4 (2020-04-08)
+* (xXBJXx) changed role of battery to `value.battery` and made unit `%`
+
+### 3.2.3 (2020-02-20)
+* (Apollon77) minor fix regarding handleParam called with non-existing id
+
+### 3.2.2 (2020-02-12)
+* (foxriver76) fix potential issues when error type is not HueError
+
+### 3.2.1 (2020-01-26)
+* (foxriver76) if lights/groups/sensors are deleted during runtime, restart of adapter is no longer necessary
+* (foxriver76) if controller supports recursive deletion, device will be deleted automatically
+
+### 3.1.1 (2020-01-15)
+* (foxriver76) added additional frontend validation of polling interval
+* (foxriver76) if errors are hue errors, log message instead of Error
+
+### 3.1.0 (2020-01-12)
+* (foxriver76) added new indicators for entertainment groups (class and activeStream)
+* (foxriver76) added possibility to enable/disable streaming of entertainment group
+
+### 3.0.3 (2020-01-11)
+* (foxriver76) fixed turning on/off switchs like Osram Plug
+
+### 3.0.1 (2020-01-10)
+* (foxriver76) removed queue, because handled by dependency now
+* (foxriver76) improved error handling
+* __Nodejs >= 10 required__
+
+### 2.5.0 (2019-12-23)
+* (foxriver76) implemented a mechanic to prevent regular polling of recently changed state
+* (foxriver76) this prevents fluctuating of buttons on low polling intervals + possible strange triggers in scripts
+
 ### 2.4.7 (2019-12-14)
 * (foxriver76) do not set default values on every adapter start
 * (foxriver76) this is now done only on object creation
@@ -255,5 +308,5 @@ __ATTENTION: Remove all objects once, ids have changed__
 
 Apache 2.0
 
-Copyright (c) 2017-2019 Bluefox <dogafox@gmail.com>
+Copyright (c) 2017-2020 Bluefox <dogafox@gmail.com>
 Copyright (c) 2014-2016 hobbyquaker

@@ -30,16 +30,29 @@ Please note: Adapter settings button "Find Bridge" will be inactive if field "Br
 |__Ignore scenes__|If checked, scenes will not be shown/controlled by the adapter.|
 |__Ignore groups__|If checked, groups will not be shown/controlled by the adapter.|
 |__"Legacy" structure__|To support backwards compatibility, it is possible to hold an old object structure in ioBroker. This old structure is `hue.<instance_number>.<brdige_name_channel>.<light_or_group_channel>.<state>`. The new structure removes `<brdige_name_channel>` and thus makes it necessary to adapt old scripts, etc. If an existing old strcuture is detected by the adapter, the structure will be used without checking the checkbox. However, if migration from old to new structure is desired, delete the whole `hue.<instance_number>` namespace once.
-|__Native turn off/on behaviour__|If checked, the adapter will turn on/off lights in the same fashion as the native Hue app does. Otherwise, lamps will be set to a level of 100 % when switching on.|
+|__Native turn off/on behaviour__|If checked, the adapter will turn on/off lights in the same fashion as the native Hue app does. Otherwise, lamps will be set to a level of 100 % when switched on. Additionally when a group is already turned on, setting the brightness level will affect only the already turned on lamps and will not turn the lamps on, which are currently turned off.|
 |__Sync software sensors__|Also sync software sensors. These are virtual sensors, e.g. created by Hue Labs scenes. By controlling the `status` datapoint of such a sensor you can start/stop scenes which follow this logic. In most cases `0` turns scene off and `1` turns it on.|
 |__Polling__|If checked, the adapter will poll state changes, otherwise it can only be used to control lamps, not to show their status.|
 |__Polling interval__|Defines how often the states will be polled, and thus updated in ioBroker. Low polling intervals can cause performance issues in some settings. Hence, the minimum allowed polling interval is 2 seconds. If polling interval is set to less than 2 seconds it will be set to 2 seconds during runtime.|
+
+### Additional information
+With version 3.3.0 the group states `anyOn` and `allOn` became controllable, note that they will just act like the `on` state,
+when controlled. In some cases, it may be desirable to have a controllable `anyOn` state in your visualization.
 
 ## Deutsch :de:
 Bindet Philips Hue / LivingColors / LivingWhites Lampen ein. 
 In den Adapter-Settings muss die IP der Hue Bridge sowie ein Username konfiguriert werden. Um einen User zu aktivieren einmal auf create user drücken und dann innerhalb von 30 Sekunden den Button an der Hue bridge drücken. Dann wird automatisch der User übergeben. 
 
 ## Changelog
+### 3.3.2 (2020-05-15)
+* (foxriver76) internal optimizations - polling after change timeout removed, was 150 ms now instant
+
+### 3.3.0 (2020-05-14)
+* (foxriver76) introduce `allOn` state for groups
+* (foxriver76) `anyOn` and `allOn` are now controllable and act like the `on` state
+* (foxriver76) when native turn on/off behaviour is used, the brightness change of partially turned on groups will not turn
+the whole group on, like the hue app does instead it will only change the brightness of the currently turned on lamps
+
 ### 3.2.9 (2020-05-12)
 * (foxriver76) fixed issues on user creation
 * (foxriver76) minor frontend (admin config) optimizations

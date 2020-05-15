@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: WC5mIQKmR7+YtXFf0eIZXBipXFHcfbzV4G5YwkZ6zkE=
+hash: arHjPFDSFCWhUuDWwkMW6rVlqiIPvhw5gj2ASjboo0M=
 ---
 ![商标](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -46,7 +46,79 @@ hash: WC5mIQKmR7+YtXFf0eIZXBipXFHcfbzV4G5YwkZ6zkE=
 
 ![简单](../../../en/adapterref/iobroker.lametric/docs/blockly2.png)
 
+##脚本
+要在您的公制上显示消息，只需使用脚本适配器将消息发送到该实例：
+
+```
+sendTo('lametric.0', 'send', {
+    "priority": "[info|warning|critical]",
+    "icon_type": "[none|info|alert]",
+    "lifeTime": <milliseconds>,
+    "model": {
+    "frames": [
+         {
+            "icon":"<icon id or base64 encoded binary>",
+            "text":"<text>"
+         },
+         {
+           "icon": 298,
+           "text":"text"
+         },
+         {
+             "icon": 120,
+             "goalData":{
+                 "start": 0,
+                 "current": 50,
+                 "end": 100,
+                 "unit": "%"
+             }
+         },
+         {
+             "chartData": [ <comma separated integer values> ] // [ 1, 2, 3, 4, 5, 6, 7 ]
+         }
+         ],
+         "sound": {
+           "category":"[alarms|notifications]",
+             "id":"<sound_id>",
+             "repeat":<repeat count>
+         },
+         "cycles":<cycle count>
+    }
+});
+```
+
+显示一些循环信息的示例：
+
+```
+let i = 0;
+function show() {
+    console.log('Show ' + i);
+    sendTo('lametric.0', 'send', {
+        "priority": "info",
+        "icon_type": "info",
+        "lifeTime": 10000,
+        "model": {
+        "frames": [
+                {
+                    "icon":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNWRHWFIAAAAySURBVBhXY4AAYdcKk1lngCSUDwHIfAQbzgLqgDCgIqRLwFkQCYQoBAD5EATl4wQMDADhuxQzaDgX0gAAAABJRU5ErkJggg==",
+                    "text":"Hi " + i
+                }
+            ],
+            "cycles": 0
+        }
+    });
+    i++;
+}
+setInterval(show, 10000);
+show();
+```
+
 ## Changelog
+
+### 0.0.9
+
+* (klein0r) Added missing translations
+* (GermanBluefox) Improved Blockly and main.js
 
 ### 0.0.8
 

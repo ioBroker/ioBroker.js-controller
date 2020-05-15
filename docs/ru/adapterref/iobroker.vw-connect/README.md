@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vw-connect/README.md
 title: ioBroker.vw-подключения
-hash: 7Ssvsv+iQcxD2x7Mxi0uaEBwFQjjcJppGPZKcgXhwbE=
+hash: Pxhcxeh1UyMWL3PUQe48L/FiysnntzRL1N1diLS0jXo=
 ---
 ![логотип](../../../en/adapterref/iobroker.vw-connect/admin/vw-connect.png)
 
@@ -21,15 +21,15 @@ hash: 7Ssvsv+iQcxD2x7Mxi0uaEBwFQjjcJppGPZKcgXhwbE=
 Пожалуйста, обновите вашу систему на узле 10.
 <Https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten>
 
-## Использование
-Используйте состояние под дистанционным управлением, чтобы управлять своим автомобилем дистанционно.
+## Применение
+Используйте состояние под дистанционным управлением для дистанционного управления автомобилем.
 
 ## Поля статуса Пояснение
 Состояния дверей и окон:
 
-* открыто: 1
-* заблокировано: 2
-* закрыто: 3
+- открыто: 1
+- заблокировано: 2
+- закрыто: 3
 
 ### Список записей
 ```
@@ -111,6 +111,10 @@ hash: 7Ssvsv+iQcxD2x7Mxi0uaEBwFQjjcJppGPZKcgXhwbE=
 ```
 
 ## Changelog
+
+### 0.0.15
+
+- fix js.controller 3 problems
 
 ### 0.0.11
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: KKY58/u1GJRUBHdwjwvOqO7UzVsWcvagdNl5EiZrOVE=
+hash: RDgV1bwXKB5H4xzfj2awTWF15T0Fo1W/fiOy2XkHZps=
 ---
 ![Logo](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -51,7 +51,7 @@ iobroker start sql
 ```
 
 ### MySQL:
-Sie können MySQL wie folgt auf Linux-Systemen installieren:
+Sie können MySQL auf Linux-Systemen wie folgt installieren:
 
 ```
 apt-get install mysql-server mysql-client
@@ -247,6 +247,30 @@ Die Nachricht kann eines der folgenden drei Formate haben:
 
 Zusätzlich können Sie das Attribut `rules: true` hinzufügen, um alle Regeln wie `counter`, `changesOnly`, `de-bounce` usw. zu aktivieren: `{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
 
+## Status löschen
+Wenn Sie einen Eintrag aus der Datenbank löschen möchten, können Sie die eingebaute Systemfunktion **löschen** verwenden:
+
+```
+sendTo('sql.0', 'delete', [
+    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809352},
+    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809353}
+], result => console.log('deleted'));
+```
+
+## Status ändern
+Wenn Sie den Wert, die Qualität oder das Bestätigungsflag des Eintrags in der Datenbank ändern möchten, können Sie die integrierte Systemfunktion **update** verwenden:
+
+```
+sendTo('sql.0', 'update', [
+    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809352, val: 15, ack: true, q: 0},
+    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809353, val: 16, ack: true, q: 0}
+], result => console.log('deleted'));
+```
+
+`ts` ist obligatorisch. Mindestens ein weiteres Flag muss im Statusobjekt enthalten sein.
+
+Seien Sie vorsichtig mit `counters`. Die `counters` in der DB werden nicht zurückgesetzt und müssen selbst behandelt werden.
+
 ## Geschichte abrufen
 Zusätzlich zu benutzerdefinierten Abfragen können Sie die integrierte Systemfunktion **getHistory** verwenden:
 
@@ -266,7 +290,7 @@ sendTo('sql.0', 'getHistory', {
 });
 ```
 
-## Zähler abrufen
+## Zähler holen
 Der Benutzer kann den Wert eines Zählers (Typ = Nummer, Zähler = Wahr) für einen bestimmten Zeitraum erfragen.
 
 ```
@@ -359,7 +383,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Passwort** Passwort für SQL.
 - **Passwort bestätigen** Wiederholen Sie einfach das Passwort hier.
 - **Verschlüsseln** Einige DBs unterstützen die Verschlüsselung.
-- **Real runden auf** Anzahl der Ziffern nach dem Komma.
+- **Real runden auf** Anzahl der Stellen nach dem Komma.
 - **Parallele Anforderungen zulassen** Zulassen gleichzeitiger SQL-Anforderungen an die Datenbank.
 
 ## Standardeinstellungen
@@ -369,7 +393,12 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Speicheraufbewahrung** Wie lange werden die Werte in der Datenbank gespeichert?
 
 ## Changelog
-
+### 1.13.0 (2020-05-14)
+* (bluefox) added changed and delete operations
+ 
+### 1.12.6 (2020-05-08)
+* (bluefox) set default history if not yet set
+ 
 ### 1.12.5 (2020-05-05)
 * (Apollon77) Crash prevented for invalid objects (Sentry IOBROKER-SQL-X) 
 

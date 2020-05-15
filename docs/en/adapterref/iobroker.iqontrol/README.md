@@ -213,8 +213,8 @@ In addition to normal thermostat you can define:
 
 ### <img src="img/icons/door_closed.png" width="32"> Door, <img src="img/icons/window_closed.png" width="32"> Window:
 * **STATE**: *boolean* - display if the door or window is opened or closed
-    * Alternatively you can assign a *value-list*, to display additional states like 'tilted'
-    * You can also assign a *string* to display any text like "3 windows open" or "all closed"
+    * Alternatively you can assign a *value-list*, to display additional states like 'tilted' (in options of windows you can define wich text stands for opened, closed an tilted to display the correct icon)
+    * You can also assign a *string* to display any text like "3 windows open" or "all closed" or a *number*
 * Respect the **linked-view-property**
 
 ### <img src="img/icons/garagedoor_closed.png" width="32"> Garage Door:
@@ -298,6 +298,18 @@ In addition to normal thermostat you can define:
 ****
 
 ## Changelog
+
+### 0.4.1 (2020-05-15)
+* (Sebastian Bormann) Added icons for toplight and tilted to window and enhanced window to recognize tilted position.
+* (Sebastian Bormann) Fixed crash when using some thermostats.
+* (Sebastian Bormann) New gulpfile and fixed translations.
+* (Sebastian Bormann) Further improvement of connection speed.
+* (Sebastian Bormann) Disabled context-menu on long/right-click.
+* (Sebastian Bormann) Revised pressure/forced touch and added option to always use time instead of pressure.
+
+### 0.4.0 (2020-05-13)
+* (Sebastian Bormann) Major change using socket.io without conn.js wich leads to a much faster initial connection.
+* (Sebastian Bormann) Improved loading and scrolling for popups.
 
 ### 0.3.7 (2020-05-06)
 * (Sebastian Bormann) Added more options to timestamp.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vw-connect/README.md
 title: ioBroker.vw-connect
-hash: 7Ssvsv+iQcxD2x7Mxi0uaEBwFQjjcJppGPZKcgXhwbE=
+hash: Pxhcxeh1UyMWL3PUQe48L/FiysnntzRL1N1diLS0jXo=
 ---
 ![Logo](../../../en/adapterref/iobroker.vw-connect/admin/vw-connect.png)
 
@@ -21,15 +21,15 @@ Adapter für VW We Connect, myAudi, Skoda Connect und We Connect Go
 Bitte aktualisieren Sie Ihr System auf Knoten 10.
 <https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten>
 
-## Verwendung
+## Verwendungszweck
 Verwenden Sie den ferngesteuerten Status, um Ihr Auto fernzusteuern.
 
 ## Statusfelder Erläuterung
 Tür- und Fensterzustände:
 
-* offen: 1
-* gesperrt: 2
-* geschlossen: 3
+- offen: 1
+- gesperrt: 2
+- geschlossen: 3
 
 ### Liste der Einträge
 ```
@@ -111,6 +111,10 @@ Tür- und Fensterzustände:
 ```
 
 ## Changelog
+
+### 0.0.15
+
+- fix js.controller 3 problems
 
 ### 0.0.11
 
