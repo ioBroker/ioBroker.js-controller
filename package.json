@@ -51,7 +51,7 @@
         "@types/iobroker": "^3.0.10",
         "@types/mocha": "^7.0.2",
         "@types/node": "^13.13.5",
-        "@types/yargs": "^15.0.4",
+        "@types/yargs": "^15.0.5",
         "chai": "^4.2.0",
         "chai-as-promised": "^7.1.1",
         "eslint": "^7.0.0",
