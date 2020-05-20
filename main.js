@@ -308,7 +308,7 @@ function createStates(onConnect) {
                         // delete too old callbacks IDs
                         const now = Date.now();
                         for (const _id in callbacks) {
-                            if (!callbacks.hasOwnProperty(_id)) {
+                            if (!Object.prototype.hasOwnProperty.call(callbacks, _id)) {
                                 continue;
                             }
                             if (now - callbacks[_id].time > 3600000) {
@@ -387,7 +387,7 @@ function createStates(onConnect) {
                 if (state.val && state.val !== currentLevel && ['silly','debug', 'info', 'warn', 'error'].includes(state.val)) {
                     config.log.level = state.val;
                     for (const transport in logger.transports) {
-                        if (!logger.transports.hasOwnProperty(transport)) {
+                        if (!Object.prototype.hasOwnProperty.call(logger.transports, transport)) {
                             continue;
                         }
                         if (logger.transports[transport].level === currentLevel) {
@@ -811,18 +811,18 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         let modified = false;
         // look for all subscribes from this instance
         for (const pattern in subs) {
-            if (!subs.hasOwnProperty(pattern)) {
+            if (!Object.prototype.hasOwnProperty.call(subs, pattern)) {
                 continue;
             }
             for (const id in subs[pattern]) {
-                if (subs[pattern].hasOwnProperty(id) && id === instance) {
+                if (Object.prototype.hasOwnProperty.call(subs[pattern], id) && id === instance) {
                     modified = true;
                     delete subs[pattern][id];
                 }
             }
             let found = false;
             for (const f in subs[pattern]) {
-                if (subs[pattern].hasOwnProperty(f)) {
+                if (Object.prototype.hasOwnProperty.call(subs[pattern], f)) {
                     found = true;
                     break;
                 }
@@ -2141,7 +2141,7 @@ function processMessage(msg) {
                     // add information about running instances
                     let count = 0;
                     for (const id in procs) {
-                        if (procs.hasOwnProperty(id) && procs[id].process) {
+                        if (Object.prototype.hasOwnProperty.call(procs, id) && procs[id].process) {
                             count++;
                         }
                     }
@@ -2294,7 +2294,7 @@ function processMessage(msg) {
 
                 // Get list of all active adapters and send them message with command checkLogging
                 for (const _id in procs) {
-                    if (procs.hasOwnProperty(_id) && procs[_id].process) {
+                    if (Object.prototype.hasOwnProperty.call(procs, _id) && procs[_id].process) {
                         outputCount++;
                         states.setState(_id + '.checkLogging', {val: true, ack: false, from: hostObjectPrefix});
                     }
@@ -2446,7 +2446,7 @@ function getInstances() {
 
             // first mark all instances as disabled to detect disabled once
             for (const id in procs) {
-                if (procs.hasOwnProperty(id) && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
+                if (Object.prototype.hasOwnProperty.call(procs, id) && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
                     procs[id].config.common.enabled = false;
                 }
             }
@@ -2577,7 +2577,7 @@ function initInstances() {
 
     // Start first admin
     for (id in procs) {
-        if (!procs.hasOwnProperty(id)) {
+        if (!Object.prototype.hasOwnProperty.call(procs, id)) {
             continue;
         }
 
@@ -2604,7 +2604,7 @@ function initInstances() {
     }
 
     for (id in procs) {
-        if (!procs.hasOwnProperty(id)) {
+        if (!Object.prototype.hasOwnProperty.call(procs, id)) {
             continue;
         }
 
@@ -2741,7 +2741,7 @@ function storePids() {
             storeTimer = null;
             const pids = [];
             for (const id in procs) {
-                if (!procs.hasOwnProperty(id)) {
+                if (!Object.prototype.hasOwnProperty.call(procs, id)) {
                     continue;
                 }
 
@@ -2750,7 +2750,7 @@ function storePids() {
                 }
             }
             for (const id in compactProcs) {
-                if (!compactProcs.hasOwnProperty(id)) {
+                if (!Object.prototype.hasOwnProperty.call(compactProcs, id)) {
                     continue;
                 }
 
@@ -3242,7 +3242,7 @@ function startInstance(id, wakeUp) {
                                 if (isStopping) {
                                     logger.silly(`${hostLogPrefix} Check Stopping ${id}`);
                                     for (const i in procs) {
-                                        if (!procs.hasOwnProperty(i)) {
+                                        if (!Object.prototype.hasOwnProperty.call(procs, i)) {
                                             continue;
                                         }
                                         if (procs[i].process) {
@@ -3251,7 +3251,7 @@ function startInstance(id, wakeUp) {
                                         }
                                     }
                                     for (const i in compactProcs) {
-                                        if (!compactProcs.hasOwnProperty(i)) {
+                                        if (!Object.prototype.hasOwnProperty.call(compactProcs, i)) {
                                             continue;
                                         }
                                         if (compactProcs[i].process) {
@@ -3547,7 +3547,7 @@ function startInstance(id, wakeUp) {
                                         if (isStopping) {
                                             logger.silly(hostLogPrefix + ' Check after group exit ' + currentCompactGroup);
                                             for (const i in procs) {
-                                                if (!procs.hasOwnProperty(i)) {
+                                                if (!Object.prototype.hasOwnProperty.call(procs, i)) {
                                                     continue;
                                                 }
                                                 if (procs[i].process) {
@@ -3556,7 +3556,7 @@ function startInstance(id, wakeUp) {
                                                 }
                                             }
                                             for (const i in compactProcs) {
-                                                if (!compactProcs.hasOwnProperty(i)) {
+                                                if (!Object.prototype.hasOwnProperty.call(compactProcs, i)) {
                                                     continue;
                                                 }
                                                 if (compactProcs[i].process) {
@@ -3999,7 +3999,7 @@ function stopInstances(forceStop, callback) {
         }
 
         for (const id in procs) {
-            if (!procs.hasOwnProperty(id)) {
+            if (!Object.prototype.hasOwnProperty.call(procs, id)) {
                 continue;
             }
             stopInstance(id, forceStop); // sends kill signal via sigKill state or a kill after timeouts or if forced
@@ -4008,7 +4008,7 @@ function stopInstances(forceStop, callback) {
             // send instances SIGTERM, only needed if running in background (isDaemon)
             // or slave lost connection to master
             for (const id in compactProcs) {
-                if (!compactProcs.hasOwnProperty(id)) {
+                if (!Object.prototype.hasOwnProperty.call(compactProcs, id)) {
                     continue;
                 }
                 if (compactProcs[id].process) {
@@ -4084,7 +4084,7 @@ function stop(force, callback) {
             logger.info(hostLogPrefix + ' ' + (wasForced ? 'force terminating' : 'terminated'));
             if (wasForced) {
                 for (const i in procs) {
-                    if (!procs.hasOwnProperty(i)) {
+                    if (!Object.prototype.hasOwnProperty.call(procs, i)) {
                         continue;
                     }
                     if (procs[i].process) {
@@ -4094,7 +4094,7 @@ function stop(force, callback) {
                     }
                 }
                 for (const i in compactProcs) {
-                    if (!compactProcs.hasOwnProperty(i)) {
+                    if (!Object.prototype.hasOwnProperty.call(compactProcs, i)) {
                         continue;
                     }
                     if (compactProcs[i].process) {
@@ -4249,7 +4249,7 @@ function init(compactGroupId) {
     }
 
     if (packageJson && packageJson.engines && packageJson.engines.node) {
-        let invalidVersion = false;
+        let invalidVersion;
         try {
             invalidVersion = !semver.satisfies(process.version, packageJson.engines.node);
         } catch {
