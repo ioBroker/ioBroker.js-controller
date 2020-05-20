@@ -3828,8 +3828,10 @@ function stopInstance(id, force, callback) {
                 } else if (!procs[id].startedAsCompactGroup) {
                     states.setState(id + '.sigKill', {val: -1, ack: false, from: hostObjectPrefix}, err => { // send kill signal
                         logger.info(hostLogPrefix + ' stopInstance ' + instance._id + ' send kill signal');
-                        if (!err && procs[id]) {
-                            procs[id].stopping = true;
+                        if (!err) {
+                            if (procs[id]) {
+                                procs[id].stopping = true;
+                            }
                             if (typeof callback === 'function') {
                                 callback();
                                 callback = null;
