@@ -261,16 +261,16 @@ function handleDisconnect() {
 
     connected = false;
     logger.warn(hostLogPrefix + ' Slave controller detected disconnection. Stop all instances.');
-    stop(true, () => {
-        if (compactGroupController) {
-            setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
-        } else {
+    if (compactGroupController) {
+        stop(true);
+    } else {
+        stop(true, () => {
             restartTimeout = setTimeout(() => {
                 processMessage({command: 'cmdExec', message: {data: '_restart'}});
                 setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
             }, 10000);
-        }
-    });
+        });
+    }
 }
 
 function createStates(onConnect) {
@@ -771,7 +771,7 @@ function reportStatus() {
     outputCount = 0;
     if (!isStopping && compactGroupController && started && compactProcesses === 0 && realProcesses === 0) {
         logger.info('Compact group controller ' + compactGroup + ' does not own any processes, stop');
-        stop();
+        stop(false);
     }
 }
 
@@ -4038,6 +4038,12 @@ function stopInstances(forceStop, callback) {
     }, stopTimeout);
 }
 
+/**
+ * Stops the js-controller and all running adapter instances, if no cb provided pids.txt will be deleted and process exit will be called
+ *
+ * @param {boolean} force kills instances under all circumstances
+ * @param {function} [callback] callback function
+ */
 function stop(force, callback) {
     if (force === undefined) {
         force = false;
@@ -4097,10 +4103,23 @@ function stop(force, callback) {
                 }
             }
             states && states.destroy && states.destroy();
+
             if (typeof callback === 'function') {
                 return void callback();
             } else {
-                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
+                setTimeout(() => {
+                    try {
+                        // avoid pids been written after deletion
+                        if (storeTimer) {
+                            clearTimeout(storeTimer);
+                        }
+                        // delete pids.txt
+                        fs.unlinkSync(path.join(__dirname, 'pids.txt'));
+                    } catch (e) {
+                        logger.error(`${hostLogPrefix} Could not delete ${path.join(__dirname, 'pids.txt')}: ${e}`);
+                    }
+                    process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
+                }, 1000);
             }
         });
     });
@@ -4332,7 +4351,7 @@ function init(compactGroupId) {
             if (err.stack) {
                 console.error(err.stack);
             }
-            stop();
+            stop(false);
             return;
         }
         console.error(err.message || err);
@@ -4372,19 +4391,19 @@ function init(compactGroupId) {
             logger.error(hostLogPrefix + ' uncaught exception: ' + err);
             logger.error(hostLogPrefix + ' ' + err.stack);
         }
-        stop();
+        stop(false);
         // Restart itself
         processMessage({command: 'cmdExec', message: {data: '_restart'}});
     };
 
     process.on('SIGINT', () => {
         logger.info(hostLogPrefix + ' received SIGINT');
-        stop();
+        stop(false);
     });
 
     process.on('SIGTERM', () => {
         logger.info(hostLogPrefix + ' received SIGTERM');
-        stop();
+        stop(false);
     });
 
     process.on('uncaughtException', exceptionHandler);
