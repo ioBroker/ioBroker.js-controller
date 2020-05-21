@@ -4,7 +4,7 @@ lastChanged: 25.02.2020
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/admin/adapter.md
-hash: X/Dtk3wCLvsU55QtzcDQDOwJXi0HwE6E/WfBbOR0X4I=
+hash: qvQSbRQZm8KXIQYiTdmaA6YOIfFf6rsf6Qxl3hZaZ1s=
 ---
 ＃适配器选项卡
 在此处显示和管理可用和已安装的适配器。
@@ -19,7 +19,7 @@ hash: X/Dtk3wCLvsU55QtzcDQDOwJXi0HwE6E/WfBbOR0X4I=
 
 此按钮可用于在平铺视图和表格视图之间切换（切换功能）
 
-** 2.）更新广告**
+** 2.）刷新广告**
 
 每次重新启动时，都会自动搜索更新。使用此按钮，您可以手动开始搜索或触发页面刷新。
 
@@ -33,7 +33,7 @@ hash: X/Dtk3wCLvsU55QtzcDQDOwJXi0HwE6E/WfBbOR0X4I=
 
 ![管理员标签](../../de/admin/media/ADMIN_Adapter_Kachel_upgradeable.png)
 
-单击该图标（8）将更新所有可用的适配器。
+单击此图标（8）将更新所有可用的适配器。
 
 ** 5.）从您自己的URL安装适配器**
 
@@ -47,7 +47,7 @@ Octocat图标可用于从您自己的路径（URL或文件路径）或GitHub的�
 
 在*** FROM GITHUB ***选项卡下，只需在下拉菜单中选择所需的适配器，即可安装最新的初始版本。
 
-如果选择*** ANY ***选项卡，则可以在该字段中输入任何文件路径或URL（例如，指向外部适配器开发人员的URL）并安装相应的适配器。
+如果选择*** ANY ***选项卡，则可以在字段中输入任何文件路径或URL（例如，指向外部适配器开发人员的URL）并安装相应的适配器。
 
 ** 6.）开启专家模式**
 

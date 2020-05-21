@@ -4,9 +4,9 @@ lastChanged: 25.02.2020
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/admin/adapter.md
-hash: X/Dtk3wCLvsU55QtzcDQDOwJXi0HwE6E/WfBbOR0X4I=
+hash: qvQSbRQZm8KXIQYiTdmaA6YOIfFf6rsf6Qxl3hZaZ1s=
 ---
-# The Adapter tab
+# The adapter tab
 The available and installed adapters are displayed and managed here.
 
 ## The title line
@@ -19,7 +19,7 @@ in the title bar there are icons for the most important processes. There is cont
 
 This button can be used to switch between the tile view and the table view (toggle function)
 
-** 2.) Update ad **
+** 2.) Refresh ad **
 
 Every time you restart, updates are automatically searched for. With this button you can start the search manually or trigger a refresh of the page.
 
