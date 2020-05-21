@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.myvbus/README.md
 title: ioBroker.myvbus
-hash: 2TFJDIah+2/TCuImfk5d2OXZ35YZOL4+i+UkQdt7LGw=
+hash: igha4uGR5ydtqy+g0mS9tuSe8we5tcsGrBSFBo+4UqU=
 ---
 # IoBroker.myvbus
 ![логотип](../../../en/adapterref/iobroker.myvbus/admin/myvbus.png)
@@ -16,7 +16,6 @@ hash: 2TFJDIah+2/TCuImfk5d2OXZ35YZOL4+i+UkQdt7LGw=
 ![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.myvbus/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.myvbus.png?downloads=true)
 ![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.myvbus/master.svg)
-![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.myvbus.svg)
 
 ## Адаптер ioBroker для Resol VBus
 Этот адаптер соединяет ioBroker с различными устройствами на базе VBus с использованием resol-vbus, библиотеки JavaScript для сбора данных RESOL VBus, предоставленной Дэниелом Випперманом.
@@ -37,26 +36,30 @@ hash: 2TFJDIah+2/TCuImfk5d2OXZ35YZOL4+i+UkQdt7LGw=
 * Значением по умолчанию для типа подключения является VBus / LAN, но оно должно быть явно выбрано даже для VBus / LAN, в противном случае соединение не будет установлено.
 * Правильные настройки прямого доступа к локальной сети для VBus / LAN, DL3, DL2, KM2:
   * Тип подключения: VBus / LAN или KM2 или DL2 или DL3
-  * Идентификатор соединения: IP-адрес или FullyQualifiedHostName (например, host1.example.com)
+  * Идентификатор соединения: IP-адрес (например, 192.168.178.188) или FullyQualifiedHostName (например, host1.example.com)
   * Пароль VBus: YourVBusPassword (по умолчанию: vbus)
   * Порт подключения: настройка по умолчанию 7053 не должна изменяться
   * Канал DL3: относится только к DL3 (значения 1-6, канал 0 не может быть считан)
-  * Интервал обновления: время между обновлениями записанных значений (по умолчанию 30 с)
+  * Интервал обновления: время между обновлениями измеренных значений (по умолчанию 30 с)
 * Правильные настройки для доступа DL3, DL2, KM2 через VBus.net:
   * Тип подключения: DL3 или DL2 или KM2
   * Идентификатор соединения: vbus.net (или vbus.io) - оба без http:// и через идентификатор!
   * Порт подключения: настройка по умолчанию 7053 не должна изменяться
   * Пароль VBus: YourVBusPassword (по умолчанию: vbus)
   * Канал DL3: относится только к DL3 (значения: 1-6, канал 0 не может быть считан)
-  * Через идентификатор: d1234567890 - без http:// before или .vbus.io позади
-  * Интервал обновления: время между обновлением записанных значений (по умолчанию 30 с)
+  * Через идентификатор: YourViaIdentifier (например, d1234567890) - без http:// before или .vbus.io позади
+  * Интервал обновления: время между обновлением измеренных значений (по умолчанию 30 с)
 
 ## Юридические уведомления
 RESOL, VBus, VBus.net, DeltaSol и другие являются товарными знаками или зарегистрированными товарными знаками RESOL - Elektronische Regelungen GmbH <https://www.resol.de/en>
 
-Все остальные торговые марки являются собственностью их соответствующих владельцев.
+Все остальные торговые марки являются собственностью соответствующих владельцев.
 
 ## Changelog
+
+### 0.0.6
+
+* (pdbjjens) alpha 6 release updated dependencies
 
 ### 0.0.5
 

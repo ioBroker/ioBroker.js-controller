@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: Oo0N8/qhdtLo5g1Q28akhuzFt7Tb99WpQO5JzDZ/2jY=
+hash: TO/V4QxSRszN4hqJPa4D9mVgg+pzxB/bgHBfMGgqQoI=
 ---
 ![логотип](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -22,7 +22,7 @@ hash: Oo0N8/qhdtLo5g1Q28akhuzFt7Tb99WpQO5JzDZ/2jY=
 
 ## IoBroker Alarm
 Умирает в адаптере, с его помощью. Аларманирование, программирование, техническое обслуживание.
-Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. Находится на территории De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz «заявляет», auf anddere «заявляет» меглиц. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
+Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. Находится под названием De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz "заявляет", auf anddere "заявляет" меглиц. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -32,8 +32,18 @@ Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Überwachung
-Her werden die die Kreise der Anlage konfiguriert.
-* Die Namen der States lassen Sich ändern * Die Kreise sind folgendermaßen überwacht:
+Hier werden die Kreise der Anlage konfiguriert.
+* умри намеки штатов лассен сич андерн *
+
+Der Alarmkreis hat die Priorität «hoch» and hat be aktivierter Anlage Vorrang vor allen and anderen Keisen. Er dient zur eigentlichen Überwachung der Anlage.
+
+Der Warnkreis hat zwei Funktionen, bei aktivierter Anlage werden diese States nur überwacht und geben ggf. eine Meldung ab wenn eine Änderung stattfand. Die Zweite Funkest besteht darin bei z. B. Anwesenheit und aktivierter internen Uberwachung der Anlage (острая внутренняя часть), Bei Veränderung einer der konfigurierten States ggf. Эйн Мелдунг Абгесетцт Вирд.
+
+Der Nachtkreis hat die gleiche Funktion wie der Warnkreis, jedoch nur während der Nachtruhe. Начинающий ученик Nachtruhe Lost Остаться в живых, падает Активиерт, умереть Uberwachung des Warnkreises (острый внутри) ab.
+
+*Es ist durchaus möglich, dassman für einen State, den Haken bei allen drei Kreisen macht.*
+
+Die Kreise sind folgendermaßen überwacht:
 
 #### Alarmkreis:
 Alarmanlage lässt sich nicht aktivieren wenn ein konfigurierter state aktiv ist. Bei aktivierter Alarmanlage führt eine Veränderung sofort zur Auslösung der Anlage.
@@ -56,7 +66,7 @@ Ist eine gewünschte Sprachausgabe z.B. bei bei Änderung des Zustandes gewünsc
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Verknüpfungen
-Hier ist es möglich Адаптер международных государств, директива по внешним государствам, в целом. Somit is ein Umweg über ein Skript oder ähnlichen nicht erforderlich.
+Hier ist es möglich Адаптер международных государств, директива по внешним государствам, в целом. Somit ist ein Umweg über ein Skript oder ähnlichen nicht erforderlich.
 Es lässt sich somit z.B. Bei Beginn der Nachtruhe, Eine Veriegelung des Türschlosses realisieren.
 ![логотип](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
 
@@ -82,10 +92,39 @@ Der log_today State Wird Um Mitternacht Geleert.
 #### Erfahrene ioBroker Nutzer
 *Wählt человек в логове Опционально умирает Log Ausgabe an, werden gewisse Änderungen im Log des ioBroker geschrieben. Ist man mit diesen Texten nicht zufrieden, besteht die Möglichkeit, sich die Datei "/lib/Logs.js" zu editieren.*
 
-#### Wichtig, die Benutzung dieses.
+#### Wichtig, die Benutzung dieses Адаптеры geschieht auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Haftung übernommen!
 
 ## Changelog
-**[CHANGELOG](https://github.com/misanorot/ioBroker.alarm/blob/master/changelog.md)**
+
+#### 0.5.0 (14.05.2020)
+* (misanorot) added use.list state
+
+#### 0.4.0 (14.05.2020)
+* (misanorot) added warn circuit monitoring
+
+#### 0.3.0 (04.05.2020)
+* (misanorot) expaned speech output
+
+#### 0.2.2 (30.04.2020)
+* (misanorot) added alexa2 speak output
+
+#### 0.2.0 (22.04.2020)
+* (misanorot) added more states
+
+#### 0.1.2 (19.04.2020)
+* (misanorot) status.state  activated
+
+#### 0.1.1 (28.03.2020)
+* (misanorot) added states and lists - fixed issues - translation
+
+#### 0.1.0 ()
+* (misanorot) add password for de/activation -- better logging
+
+#### 0.0.9 (19.02.2020)
+* (misanorot) add sayit
+
+#### 0.0.8 (03.02.2020)
+* (misanorot) initial release
 
 ## License
 MIT License

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
+hash: zPUGyeud4aIM6Mcc2JX7+ut7qxoA+LIE6qPFl3LjWzA=
 ---
 ![Logo](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -11,14 +11,10 @@ hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
 ![Anzahl der Installationen](http://iobroker.live/badges/unifi-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.unifi.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.unifi.svg)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.unifi.svg)
 ![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)
 
 # IoBroker.unifi
-Dieser ioBroker-Adapter ermöglicht die Überwachung von [UniFi-Geräte](http://www.ubnt.com/), z. B. UniFi WiFi Access Points, mithilfe der öffentlichen UniFi Controller-Web-API.
-
-## Wichtige Informationen
-Der Adapter befindet sich noch in der Entwicklung. Ab sofort können nur noch Informationen von Ihrem UniFi-Controller in Ihren ioBroker übertragen werden.
+Dieser ioBroker-Adapter ermöglicht die Überwachung und eingeschränkte Steuerung von [UniFi-Geräte](http://www.ubnt.com/), z. B. UniFi WiFi Access Points, mithilfe der öffentlichen UniFi Controller-Web-API.
 
 ## Aufbau
 ### Erforderliche Mindestinformationen
@@ -35,7 +31,7 @@ Der Adapter aktualisiert so viele Informationen wie möglich von Ihrem UniFi-Con
 
 Es ist möglich, die Aktualisierung ausgewählter Informationen zu deaktivieren oder bestimmte Elemente dieser Informationen auf die schwarze Liste zu setzen.
 
-| Informationen | Artikel auf der schwarzen Liste von |
+| Informationen | Artikel, die von | auf die schwarze Liste gesetzt werden können |
 |-------------|-----------------------------------------|
 | Kunden | Name, Hostname, IP-Adresse, MAC-Adresse |
 | Geräte | Name, IP-Adresse, MAC-Adresse |
@@ -50,16 +46,35 @@ Durch Ändern des Status 'Aktiviert' eines WLAN kann es aktiviert / deaktiviert 
 ### Gutscheinerstellung
 Mit der Schaltfläche 'vouchers.create_vouchers' können vordefinierte Gutscheine erstellt werden. Es ist möglich, die Anzahl der zu erstellenden Gutscheine, die Gültigkeitsdauer der Gutscheine und Grenzwerte für das Hoch- und Herunterladen zu konfigurieren.
 
+## Fehlende Datenpunkte
+Der Adapter verwendet [Node-Unifi](https://github.com/jens-maus/node-unifi), um eine Verbindung zu Ihrem UniFi-Controller herzustellen. Zur Vereinfachung werden nicht alle verfügbaren Datenpunkte in Ihren ioBroker gezogen. Wenn Sie Datenpunkte vermissen, verwenden Sie die folgenden URLs, um die API zu überprüfen. (Hinweis: Sie müssen IP, PORT und SITE durch Ihre Einstellungen ersetzen.)
+
+| Informationen | API URL |
+|-------------|---------------------------------------------|
+| Websites | https:// IP: PORT / api / self / sites |
+| SysInfo | https:// IP: PORT / api / s / SITE / stat / sysinfo |
+| Kunden | https:// IP: PORT / api / s / SITE / stat / sta |
+| Geräte | https:// IP: PORT / api / s / SITE / stat / device |
+| WLANs | https:// IP: PORT / api / s / SITE / rest / wlanconf |
+| Netzwerke | https:// IP: PORT / api / s / SITE / rest / networkconf |
+| Gesundheit | https:// IP: PORT / api / s / SITE / stat / health |
+| Gutscheine | https:// IP: PORT / api / s / SITE / stat / voucher |
+
+## Bekannte Probleme
+* Der Status is_wired von Clients ist falsch, nachdem ein Client offline geschaltet wurde. Dieses Problem ist kein bekanntes Problem des UniFi-Controllers und hängt nicht mit dem Adapter zusammen. (Siehe https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
+
 ## Verweise
 Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanbietern:
 
 * [node-unifi] (https://github.com/jens-maus/node-unifi)
-* [json-logo-js] (https://github.com/jwadhams/json-logic-js)
+* [json-logic-js] (https://github.com/jwadhams/json-logic-js)
 
 ## Changelog
-### __WORK IN PROGRESS__
+### 0.5.1-beta.5 (2020-05-21)
+* (jens-maus) Implemented UniFiOS/UDM-Pro support
 * (braindead1) Implemented possibility to enable/disable WLANs
 * (braindead1) Implemented voucher creation
+* (braindead1) Implemented online state for clients
 * (braindead1) Updated client states
 * (braindead1) Updated device states
 * (braindead1) Improved error messages

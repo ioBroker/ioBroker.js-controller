@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tr-064/README.md
 title: ioBroker.tr-064
-hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
+hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 ---
 ![Logo](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
@@ -22,7 +22,7 @@ Basierend auf diesen [AVM-Dokumentationen](https://avm.de/service/schnittstellen
 - externe IP-Adresse
 
 ### Klingeln (Nummer wählen)
-- Wenn Sie eine Internel-Nummer (wie ** 610) verwenden, klingelt das interne Telefon im Klingelstatus.
+- Wenn Sie eine Internel-Nummer (wie ** 610) verwenden, lässt das Klingeln das interne Telefon klingeln.
 
 z. B.: ** 610 [, Zeitüberschreitung]
 
@@ -33,8 +33,8 @@ Das Standardtelefon kann in der FritsBox unter Telefonie / Gebühren / [Tab] Wah
 
 ### ToPauseState
 - Werte: klingeln, verbinden, beenden
-- Kann verwendet werden, um einen Videoplayer bei einem eingehenden Anruf anzuhalten (Klingeln) oder beim Abheben des Telefons (Verbinden).
-- Der Endwert kann fortgesetzt werden.
+- Kann verwendet werden, um einen Videoplayer bei einem eingehenden Anruf (Klingeln) oder beim Abheben des Telefons (Verbinden) anzuhalten.
+- Die Wiederaufnahme kann am Endwert erfolgen.
 
 ### Präsenz
 Sie können eine Liste der Geräte konfigurieren, die abgehört werden sollen.
@@ -52,7 +52,7 @@ Wenn das Telefonbuch aktiviert ist (Standard), werden die Nummern in Namen aufge
 - Wenn das Telefonbuch aktiviert ist, wird der Name der Telefonnummer des Anrufers abgerufen.
 - Außerdem gibt es drei Zustände, um eine Nummer oder einen Namen aufzulösen. Falls verfügbar, erhalten Sie auch die Bild-URL des Kontakts.
 
-  Beispiel: Wenn Sie das Status-Telefonbuch festlegen, werden alle drei Status, Name, Nummer und Bild auf den gefundenen Kontakt gesetzt. Beachten Sie, dass bei der Suche nach Namen zunächst der vollständige Name verglichen wird. Wenn dieser nicht gefunden wird, wird ein Teil von verwendet.
+  Beispiel: Wenn Sie das Status-Telefonbuch festlegen, werden alle 3 Status, Name, Nummer und Bild auf den gefundenen Kontakt gesetzt. Beachten Sie, dass bei der Suche nach Namen zunächst der vollständige Name verglichen wird. Wenn dieser nicht gefunden wird, wird ein Teil von verwendet.
 
 ### Anruflisten
 Ausgabeformate:
@@ -94,7 +94,7 @@ Um den Anrufmonitor zu aktivieren, wählen Sie ```#96*5*``` und der TCP / IP-Por
 
 ### Vorabversionen
 Prerelease-Versionen sind um npm mit dem Tag dev verfügbar.
-Sie können sie nicht aus dem ioBroker-Stammverzeichnis installieren mit:
+Sie können sie aus dem ioBroker-Stammverzeichnis installieren mit:
 
 ```
 npm install iobroker.tr-064@dev

@@ -64,7 +64,21 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 
 ## Changelog
 
+### 0.1.16
+* (instalator) fixed error
+
+### 0.1.15
+* (instalator) fixed error in parse Info
+* (instalator) fixed api undefined
+
+### 0.1.14
+* (instalator) fixed missing [datapoints](https://github.com/instalator/ioBroker.synology/issues/43)
+* (instalator) refactoring
+* (instalator) Changed the logging of some errors
+* (instalator) Changed format session in syno package
+
 ### 0.1.11
+* (instalator) added motionDetected state
 * (SpectreKr*) Adding to FS Sharing
 
 ### 0.1.10

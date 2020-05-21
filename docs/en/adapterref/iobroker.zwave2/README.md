@@ -21,6 +21,26 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### 0.13.3 (2020-05-21)
+* Initial values for `ready` and `status` states are now read from the nodes
+* Ensure that the adapter notices when a node is ready
+
+### 0.13.2 (2020-05-21)
+* Various stability and speed improvements during the interview
+* Config parameter \#5 has been removed from the `Aeotec WallMote Quad` for firmware versions `<= 1.5`
+
+### 0.13.1 (2020-05-18)
+* Empty node names are now overwritten with the default name
+* Fixed an issue where Multi Channel Associations for older devices were missing
+
+### 0.13.0 (2020-05-17)
+Added a user interface to manage associations between nodes
+
+### 0.12.2 (2020-05-17)
+* Previously missing updates from multi channel devices should now be received again
+* Fixed an issue where the interview process was stalled by requesting information the devices don't understand
+* Fixed a crash that could happen when the adapter is restarted
+
 ### 0.12.1 (2020-05-12)
 * The cache file is now loaded again correctly. This fixes some missing reports from newer multi channel devices.
 * Nodes are now sent to sleep 1 second after waking up if there are no pending messages. This fixes issues with some devices that expect this behavior.

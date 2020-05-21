@@ -248,6 +248,9 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+### 1.5.2 (2020-05-21)
+* (bluefox) Changed requirements for password
+* (bluefox) Do not try load the "sharp" if blood sugar not enabled
 
 ### 1.4.18 (2020-05-11)
 * (Apollon77) Make sure that invalid configured states or values without timestamp do not crash adapter (Sentry IOBROKER-IOT-8)

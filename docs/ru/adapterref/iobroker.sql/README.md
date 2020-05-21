@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: RDgV1bwXKB5H4xzfj2awTWF15T0Fo1W/fiOy2XkHZps=
+hash: 2DsMpgBNo0MBSEZIDRAMLoroxOH4Ef5CM+AYe4fa+n8=
 ---
 ![логотип](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -127,8 +127,8 @@ FLUSH PRIVILEGES;
 
 | Поле | Тип | Описание |
 |--------|--------------------------------------------|-------------------------------------------------|
-| id | INTEGER | Идентификатор состояния из таблицы «Datapoints» |
-| тс | BIGINT / INTEGER | Время в мс до эпохи. Может быть преобразовано во время с «новой датой (ts)» |
+| id | INTEGER | ID состояния из таблицы «Точки данных» |
+| тс | BIGINT / INTEGER | Время в мс до эпохи. Может быть преобразовано во время с помощью «новой даты (ts)» |
 | val | НАСТОЯЩИЙ | Значение |
 | Ack | BIT / BOOLEAN | Признается: 0 - не подтверждено, 1 - подтверждено |
 | _from | INTEGER | Идентификатор источника из таблицы "Источники" |
@@ -149,8 +149,8 @@ FLUSH PRIVILEGES;
 
 | Поле | Тип | Описание |
 |--------|--------------------------------------------|-------------------------------------------------|
-| id | INTEGER | Идентификатор состояния из таблицы «Datapoints» |
-| тс | BIGINT / INTEGER | Время в мс до эпохи. Может быть преобразовано во время с «новой датой (ts)» |
+| id | INTEGER | ID состояния из таблицы «Точки данных» |
+| тс | BIGINT / INTEGER | Время в мс до эпохи. Может быть преобразовано во время с помощью «новой даты (ts)» |
 | val | НАСТОЯЩИЙ | Значение |
 
 В этой таблице хранятся значения, когда счетчик был заменен, и значение не увеличилось, но не удалось обнулить или уменьшить значение.
@@ -169,8 +169,8 @@ FLUSH PRIVILEGES;
 
 | Поле | Тип | Описание |
 |--------|--------------------------------------------|-------------------------------------------------|
-| id | INTEGER | Идентификатор состояния из таблицы «Datapoints» |
-| тс | BIGINT | Время в мс до эпохи. Может быть преобразовано во время с «новой датой (ts)» |
+| id | INTEGER | ID состояния из таблицы «Точки данных» |
+| тс | BIGINT | Время в мс до эпохи. Может быть преобразовано во время с помощью «новой даты (ts)» |
 | val | ТЕКСТ | Значение |
 | Ack | BIT / BOOLEAN | Признается: 0 - не подтверждено, 1 - подтверждено |
 | _from | INTEGER | Идентификатор источника из таблицы "Источники" |
@@ -192,8 +192,8 @@ FLUSH PRIVILEGES;
 
 | Поле | Тип | Описание |
 |--------|--------------------------------------------|-------------------------------------------------|
-| id | INTEGER | Идентификатор состояния из таблицы «Datapoints» |
-| тс | BIGINT | Время в мс до эпохи. Может быть преобразовано во время с «новой датой (ts)» |
+| id | INTEGER | ID состояния из таблицы «Точки данных» |
+| тс | BIGINT | Время в мс до эпохи. Может быть преобразовано во время с помощью «новой даты (ts)» |
 | val | BIT / BOOLEAN | Значение |
 | Ack | BIT / BOOLEAN | Признается: 0 - не подтверждено, 1 - подтверждено |
 | _from | INTEGER | Идентификатор источника из таблицы "Источники" |
@@ -252,9 +252,31 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 ```
 sendTo('sql.0', 'delete', [
     {id: 'mbus.0.counter.xxx, state: {ts: 1589458809352},
-    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809353}
+    {id: 'mbus.0.counter.yyy, state: {ts: 1589458809353}
 ], result => console.log('deleted'));
 ```
+
+Чтобы удалить ВСЕ данные истории для некоторой точки данных, выполните:
+
+```
+sendTo('sql.0', 'deleteAll', [
+    {id: 'mbus.0.counter.xxx}
+    {id: 'mbus.0.counter.yyy}
+], result => console.log('deleted'));
+```
+
+Чтобы удалить данные истории для некоторой точки данных и для некоторого диапазона, выполните:
+
+```
+sendTo('sql.0', 'deleteRange', [
+    {id: 'mbus.0.counter.xxx, start: '2019-01-01T00:00:00.000Z', end: '2019-12-31T23:59:59.999'},
+    {id: 'mbus.0.counter.yyy, start: 1589458809352, end: 1589458809353}
+], result => console.log('deleted'));
+```
+
+Время может быть мс с начала эпохи или строки, которые могут быть преобразованы с помощью объекта даты javascript.
+
+Значения будут удалены, включая определенные ограничения. `ts >= start AND ts <= end`
 
 ## Изменить состояние
 Если вы хотите изменить значение записи, качество или флаг подтверждения в базе данных, вы можете использовать встроенную системную функцию **update**
@@ -266,7 +288,7 @@ sendTo('sql.0', 'update', [
 ], result => console.log('deleted'));
 ```
 
-`ts` является обязательным. По крайней мере еще один флаг должен быть включен в объект состояния.
+`ts` является обязательным. По крайней мере, еще один флаг должен быть включен в объект состояния.
 
 Будьте осторожны с `counters`. `counters` в DB не будет сброшен, и вы должны справиться с этим самостоятельно.
 
@@ -312,7 +334,7 @@ sendTo('sql.0', 'getCounter', {
 Адаптер поддерживает включение и отключение ведения журнала истории через JavaScript, а также получение списка включенных точек данных с их настройками.
 
 ### Включить
-Сообщение должно иметь «id» точки данных. Дополнительно необязательные «options» определяют специфические параметры точки данных:
+Сообщение должно иметь «идентификатор» точки данных. Дополнительно необязательные «параметры» для определения конкретных параметров точки данных:
 
 ```
 sendTo('sql.0', 'enableHistory', {
@@ -336,7 +358,7 @@ sendTo('sql.0', 'enableHistory', {
 ```
 
 ### Отключить
-В сообщении необходимо указать «идентификатор» точки данных.
+Сообщение должно иметь «идентификатор» точки данных.
 
 ```
 sendTo('sql.0', 'disableHistory', {
@@ -387,12 +409,15 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 
 ## Настройки по умолчанию
 - **Интервал отмены отказов** Не хранить значения чаще, чем этот интервал.
-- **Записать неизмененные значения любые** дополнительно записывать значения каждые X секунд.
+- **Записать неизмененные значения любые** записывать значения каждые X секунд.
 - **Минимальная разница от последнего значения к журналу** минимальный интервал между двумя значениями.
 - **Хранение хранения** как долго значения будут храниться в БД.
 
 ## Changelog
-### 1.13.0 (2020-05-14)
+### 1.14.0 (2020-05-20)
+* (bluefox) added the range deletion and the delete all operations
+ 
+### 1.13.1 (2020-05-20)
 * (bluefox) added changed and delete operations
  
 ### 1.12.6 (2020-05-08)
@@ -402,11 +427,11 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 * (Apollon77) Crash prevented for invalid objects (Sentry IOBROKER-SQL-X) 
 
 ### 1.12.4 (2020-05-04)
-* (Apollon77) Potential crash fixed when disabling datapoints too fast (Sentry IOBROKER-SQL-W) 
+* (Apollon77) Potential crash fixed when disabling data points too fast (Sentry IOBROKER-SQL-W) 
 * (Apollon77) Always set "encrypt" flag, even if false because else might en in default true (see https://github.com/tediousjs/tedious/issues/931)
 
 ### 1.12.3 (2020-04-30)
-* (Apollon77) Try to create Indizes on MSSQL to speed up things. Infos are shown if not possible to be able for the user to do it themself. Timeout is 15s
+* (Apollon77) Try to create indexes on MSSQL to speed up things. Infos are shown if not possible to be able for the user to do it themself. Timeout is 15s
 
 ### 1.12.2 (2020-04-30)
 * (Apollon77) MSSQL works again

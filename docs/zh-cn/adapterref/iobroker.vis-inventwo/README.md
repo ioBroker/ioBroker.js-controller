@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 1rYVmy6lpZhG8vlUpYRAhkAU4GuCT7b4xULKhFRrp30=
+hash: cQTP+MdtmqtMAC0+ix9XDvx9WB7mZY0usUIF5JtQy9c=
 ---
-![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
+![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/i1_150.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.vis-inventwo.svg)
@@ -19,7 +19,7 @@ hash: 1rYVmy6lpZhG8vlUpYRAhkAU4GuCT7b4xULKhFRrp30=
 ## Schalter窗口小部件ioBroker.vis适配器
 ![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，然后再运行图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Preview.png)
 
@@ -34,6 +34,12 @@ hash: 1rYVmy6lpZhG8vlUpYRAhkAU4GuCT7b4xULKhFRrp30=
 [![Spende]（admin / spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+＃1.3.5
+-增加了表格的刷新率
+
+＃1.3.4
+-删除了图标和背景，更改了配置，修复了导航
 
 ＃1.3.3
 -修复了背景小部件值选项

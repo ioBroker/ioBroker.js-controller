@@ -1,4 +1,4 @@
-![Logo](admin/i_150.png)
+![Logo](admin/i1_150.png)
 # ioBroker.vis-inventwo
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)](https://www.npmjs.com/package/iobroker.vis-inventwo)
@@ -34,6 +34,12 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog / Änderungsprotokoll
+
+# 1.3.5
+- Added refresh rate for table
+
+# 1.3.4
+- Removed icons and backgrounds, changed config, Fixed navigation
 
 # 1.3.3
 - Fixed background widget value option

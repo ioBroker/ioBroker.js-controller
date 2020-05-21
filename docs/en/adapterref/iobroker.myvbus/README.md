@@ -11,7 +11,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.myvbus.png?downloads=true)](https://nodei.co/npm/iobroker.myvbus/)
 
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.myvbus/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.myvbus) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.myvbus.svg)](https://greenkeeper.io/)
+**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.myvbus/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.myvbus) 
 
 ## ioBroker Adapter for Resol VBus
 
@@ -35,21 +35,25 @@ This adapter connects ioBroker to various VBus-based devices using resol-vbus, a
 * The default setting for the connection type is VBus/LAN, but it must be explicitly selected even for VBus/LAN, otherwise no connection will be established.
 * The correct settings for direct LAN access for VBus/LAN, DL3, DL2, KM2 are:
   * Connection type: VBus/LAN or KM2 or DL2 or DL3
-  * Connection identifier: IP address or FullyQualifiedHostName (e.g. host1.example.com)
+  * Connection identifier: IP address (e.g. 192.168.178.188) or FullyQualifiedHostName (e.g. host1.example.com)
   * VBus password: YourVBusPassword (default: vbus)
   * Connection port: Default setting 7053 should not be changed
-  * DL3 channel: Only relevant for DL3 (values 1-6, channel 0 cannot be read out)
-  * Update interval: time between updates of the recorded values (default 30s)
+  * DL3 channel: Only relevant for DL3 (values 1-6, channel 0 can not be read out)
+  * Update interval: Time between updates of the measured values (default 30s)
 * The correct settings for the DL3, DL2, KM2 access via VBus.net are:
   * Connection type: DL3 or DL2 or KM2
   * Connection identifier: vbus.net (or vbus.io) - both without http:// and Via identifier!
   * Connection port: Default setting 7053 should not be changed
   * VBus password: YourVBusPassword (default: vbus)
   * DL3 channel: Only relevant for DL3 (values: 1-6, channel 0 cannot be read out)
-  * Via identifier: d1234567890 - without http:// before or .vbus.io behind
-  * Update interval: time between the update of the recorded values (default 30s)
+  * Via identifier: YourViaIdentifier (e.g. d1234567890) - without http:// before or .vbus.io behind
+  * Update interval: Time between the update of the measured values (default 30s)
 
 ## Changelog
+
+### 0.0.6
+
+* (pdbjjens) alpha 6 release updated dependencies
 
 ### 0.0.5
 

@@ -5,7 +5,7 @@
 ![Number of Installations](http://iobroker.live/badges/solarlog-installed.svg) ![Number of Installations](http://iobroker.live/badges/solarlog-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.solarlog.svg)](https://www.npmjs.com/package/iobroker.solarlog)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.solarlog.svg)](https://www.npmjs.com/package/iobroker.solarlog)
 
-[![NPM](https://nodei.co/npm/iobroker.solarlog.png?downloads=true)](https://nodei.co/npm/iobroker.solarlog/) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.solarlog.svg)](https://greenkeeper.io/)
+[![NPM](https://nodei.co/npm/iobroker.solarlog.png?downloads=true)](https://nodei.co/npm/iobroker.solarlog/) 
 
 An ioBroker adapter for Solarlog - devices
 

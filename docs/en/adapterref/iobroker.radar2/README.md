@@ -7,7 +7,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.radar2.svg)](https://www.npmjs.com/package/iobroker.radar2)
 [![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.radar2/master.svg)](https://travis-ci.org/frankjoke/ioBroker.radar2)
 
-[German manual - Deutsche Anleitung](README_DE.md)
+[German manual - Deutsche Anleitung](README_de.md)
 
 ## ioBroker radar2 visibility testing for network and bluetooth devices, HP printers, UWZ-warnungs and ECB-currencies
 

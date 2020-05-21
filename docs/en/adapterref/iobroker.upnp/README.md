@@ -1,7 +1,7 @@
 ![Logo](admin/upnp-discovery.png)
 # ioBroker.upnp
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.upnp.svg)](https://greenkeeper.io/)
+
 ![Number of Installations](http://iobroker.live/badges/upnp-installed.svg) ![Number of Installations](http://iobroker.live/badges/upnp-stable.svg) ![Logo](http://img.shields.io/npm/v/iobroker.upnp.svg) ![Image](https://travis-ci.org/Jey-Cee/ioBroker.upnp.svg?branch=master)
 
 
@@ -305,7 +305,7 @@ Breaking change: naming was changed and command to poll has another name - "requ
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016-2019 Jey Cee <jey-cee@live.com>
+Copyright (c) 2016-2020 Jey Cee <jey-cee@live.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -4,9 +4,9 @@ lastChanged: 25.02.2020
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/admin/adapter.md
-hash: qvQSbRQZm8KXIQYiTdmaA6YOIfFf6rsf6Qxl3hZaZ1s=
+hash: X/Dtk3wCLvsU55QtzcDQDOwJXi0HwE6E/WfBbOR0X4I=
 ---
-# The adapter tab
+# The Adapter tab
 The available and installed adapters are displayed and managed here.
 
 ## The title line
@@ -19,7 +19,7 @@ in the title bar there are icons for the most important processes. There is cont
 
 This button can be used to switch between the tile view and the table view (toggle function)
 
-** 2.) Refresh ad **
+** 2.) Update ad **
 
 Every time you restart, updates are automatically searched for. With this button you can start the search manually or trigger a refresh of the page.
 
@@ -47,7 +47,7 @@ After clicking this icon, a corresponding selection window opens:
 
 Under the ***FROM GITHUB*** tab, simply select the desired adapter in the pull-down menu and the latest preliminary version will be installed.
 
-If you select the ***ANY*** tab, you can enter any file path or URL (e.g. a URL to an external adapter developer) in the field and install the corresponding adapter.
+If you select the ***ANY*** tab, any file path or URL (e.g. a URL to an external adapter developer) can be entered in the field and the corresponding adapter installed.
 
 ** 6.) Switch on expert mode **
 

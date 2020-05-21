@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: oKl8aI61rKkyRcLuEGerQ10oKva5p3JoIsihkkS3MNA=
+hash: pvN/AfdOrp+Nc9gCbCBl/JQ6maWKBEoB4f1VAInjmAc=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -14,9 +14,13 @@ hash: oKl8aI61rKkyRcLuEGerQ10oKva5p3JoIsihkkS3MNA=
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
 
 # IoBroker.HeatingControl
+Dieser Adapter verwendet den Dienst Sentry.io, um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. Weitere Details siehe unten!
+
 ** Wenn es Ihnen gefällt, ziehen Sie bitte eine Spende in Betracht: **
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Adapter zur Steuerung Ihres Heizungssystems.
 Eigenschaften:
@@ -32,7 +36,7 @@ Eigenschaften:
 * Räume können innerhalb der Administrationsoberfläche ausgeschlossen werden, wenn ein Raum einen Thermostat enthält, aber nicht gesteuert werden sollte
 * Sensor wird verwendet, um die Zieltemperatur zu reduzieren (z. B. wenn ein Fenster geöffnet ist); optional mit SensorDelay
 * Schnittstelle zum Feiertag-Adapter oder anderen zur Erkennung von Feiertagen. Feiertag kann ein normaler Tag oder wie ein Sonntag sein. (Admin-Einstellung)
-* Manuelle Temperaturüberschreibung für eine bestimmte Zeit
+* Manuelle Temperaturüberschreitung für eine bestimmte Zeit
 * vordefinierte Heizperiode
 * Die Visualisierung von [Pittini] (https://github.com/Pittini/iobroker-heatingcontrol-vis) wird unterstützt. Vielen Dank!
 
@@ -47,7 +51,7 @@ Eigenschaften:
 * Alle Geräte löschen, wenn der Administrator geöffnet wird = sollte deaktiviert sein. Aktivieren Sie es nur, wenn Sie alle Raum-, Aktor- und Sensoreinstellungen löschen müssen. Eine Gerätesuche wird ausgeführt, wenn der Adapteradministrator geöffnet wird
 * Sensor verwendet = Wenn Sie Fenstersensoren haben und die Zieltemperatur bei geöffnetem Fenster senken möchten, aktivieren Sie diese Option
 * Aktuatoren verwendet = wenn Sie Aktuatoren direkt vom Adapter aus steuern möchten. Nur für den Fall, dass keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht.
-* Aktuatoren verwenden, wenn keine Heizperiode = nur gültig mit Aktuatoren. Definiert, wie Aktuatoren eingestellt werden, wenn keine Heizperiode aktiv ist
+* Aktuatoren verwenden, wenn keine Heizperiode = nur gültig für Aktuatoren. Definiert, wie Aktuatoren eingestellt werden, wenn keine Heizperiode aktiv ist
 * Aktuatoren verwenden, wenn kein Thermostat verfügbar ist = nur gültig mit Aktuatoren. Wenn Sie Räume ohne Thermostat, aber mit Heizungsaktuator haben, können Sie diese dauerhaft ein- oder ausschalten
 
 ### Profil
@@ -58,12 +62,12 @@ Eigenschaften:
 * Heizperiode = Start- und Enddatum der Heizperiode. Wird verwendet, um "HeatingPeriodActive" einzustellen
 
 ### Geräte
-* eine Liste aller Räume. Hier können Sie ein Zimmer deaktivieren.
+* eine Liste aller Zimmer. Hier können Sie ein Zimmer deaktivieren.
 * Drücken Sie die Bearbeitungstaste auf der rechten Seite, um das Einstellungsfenster für Thermostate, Aktuatoren und Sensoren für diesen Raum zu öffnen
 
 ### Bearbeitungsraum
 * Hier können Sie Objekt-IDs für Thermostate, Aktoren und Sensoren überprüfen und einstellen
-* Sie können manuell neue Thermostate, Aktuatoren oder Sensoren hinzufügen. Drücken Sie einfach die + Taste. Dann erhalten Sie eine leere Zeile, die ausgefüllt werden muss. Die Schaltfläche Bearbeiten öffnet eine Liste der verfügbaren Geräte im System
+* Sie können manuell neue Thermostate, Aktuatoren oder Sensoren hinzufügen. Drücken Sie einfach die + -Taste. Dann erhalten Sie eine leere Zeile, die ausgefüllt werden muss. Die Schaltfläche Bearbeiten öffnet eine Liste der verfügbaren Geräte im System
 * Thermostate:
 
 ** Name, Temperaturziel-OID und aktuelle Temperatur-OID sollten eingestellt werden.
@@ -91,7 +95,7 @@ Eigenschaften:
 | Gegenwart | wir sind anwesend, wenn wir nicht anwesend sind, verringern wir die Temperatur Verringern Sie die aktuelle Profiltemperatur um Profile.0.room.AbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.AbsentDecrease |
 | VacationAbsent | wir sind abwesend, also auch am wochenende abnehmen | Verringern Sie die aktuelle Profiltemperatur um Profile.0.room.VacationAbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.VacationAbsentDecrease |
 
-* In beiden Fällen wird nur eine Absenkung verwendet (in der vorherigen Version des Adapters konnten mehr als eine Entfettung verwendet werden.)
+* In beiden Fällen wird nur eine Absenkung verwendet (in der vorherigen Version des Adapters konnten mehr als eine Entfettung verwendet werden)
 * Im absoluten Entfettungsszenario werden nur Zielwerte ungleich 0 °C verwendet. Wenn Sie für einen bestimmten Raum keine Absenkung benötigen, halten Sie die Abnahmewerte bei 0 ° C.
 
 ### Keine Heizperiode
@@ -108,7 +112,7 @@ Mit dieser Option können Sie eine Zieltemperatur für jeden Raum verwenden, wen
 * nichts
 
 Mit dieser Option wird nichts an den Thermostat gesendet, wenn keine Heizperiode aktiv ist. Die Zieltemperatur bleibt vom letzten Taget erhalten, als die Heizperiode noch aktiv war.
-In diesem Fall und wenn Sie Aktuatoren aus dem Adapter verwenden, haben Sie die Möglichkeit zu definieren, wie Aktuatoren eingestellt werden sollen (aus, ein oder lassen Sie es wie es ist).
+In diesem Fall und wenn Sie Aktuatoren vom Adapter verwenden, haben Sie die Möglichkeit zu definieren, wie Aktuatoren eingestellt werden sollen (aus, ein oder lassen Sie es wie es ist).
 
 ## Andere
 * HolidayPresent
@@ -122,9 +126,9 @@ Es besteht die Möglichkeit, PublicHoliday wie Sonntag zu behandeln. Diese Optio
 ### Fenster geöffnet
 Wenn "Sensoren verwenden" aktiv ist und die Sensoren für einen Raum konfiguriert sind
 
-a) Verringern Sie die aktuelle Profiltemperatur, wenn das Fenster geöffnet ist (true), um Profiles.0.room.WindowOpenDecrease, wenn die relative Verringerung konfiguriert ist. b) Setzen Sie das Ziel auf Profiles.0.room.absolute.WindowOpenDecrease, wenn das Fenster geöffnet ist (true), wenn die absolute Verringerung vorliegt ist konfiguriert
+a) Verringern Sie die aktuelle Profiltemperatur, wenn das Fenster geöffnet ist (true), um Profiles.0.room.WindowOpenDecrease, wenn die relative Verringerung konfiguriert ist. b) Setzen Sie das Ziel auf Profiles.0.room.absolute.WindowOpenDecrease, wenn das Fenster geöffnet ist (true), wenn das absolute Fenster abnimmt ist konfiguriert
 
-optional kann eine Verzögerung verwendet werden. Wenn das Fenster nur für eine kurze Zeit geöffnet wird, kann eine Sensorverzögerung verhindern, dass sie in sehr kurzen Zeiten reduziert und wieder normal wird.
+Optional kann eine Verzögerung verwendet werden. Wenn das Fenster nur für eine kurze Zeit geöffnet wird, kann eine Sensorverzögerung verhindern, dass sie in sehr kurzen Zeiten reduziert und wieder normalisiert wird.
 
 ## Ical Unterstützung
 Sie können Ihren Kalender verwenden, um Datenpunkte im Adapter zu ändern.
@@ -139,20 +143,38 @@ Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 ## Änderungen vom Thermostat verwenden
 Viele Benutzer fragten nach einer Option, um Änderungen vom Thermostat in den Adapter zu übernehmen. Jetzt sind drei Optionen implementiert:
 
-| Option | Beschreibung | -------------------------- | --------------------- -------------------------------------------------- ---------------- | nein | Wie bis zur Version 0.3.x werden Änderungen am Thermostat ignoriert als Überschreibung | Änderungen vom Thermostat werden als Außerkraftsetzung angesehen; Die Übersteuerungszeit muss im Voraus in der Heizungssteuerung.0.Rooms.RoomName.TemperaturOverrideTime | eingestellt werden | Wenn die Überschreibzeit nicht eingestellt ist, wird die Überschreibung nicht ausgeführt als neue Profileinstellung | Änderungen vom Thermostat werden als Zieltemperatur für die aktuelle Profilperiode verwendet verstellbar pro Raum | Die oben genannten Optionen können pro Raum konfiguriert werden. Datenpunkt Heizung.0.Rooms.RoomName.ChangesFromThermostatMode definiert den Modus: | | 1 - nein | | 2 - als Überschreibung | | 3 - als neue Profileinstellung | | Im Protokoll wird eine Warnung angezeigt, wenn Werte verwendet werden, die niedriger als 0 oder höher als 3 sind
+| Option | Beschreibung | -------------------------- | --------------------- -------------------------------------------------- ---------------- | nein | Wie bis zur Version 0.3.x werden Änderungen am Thermostat ignoriert als Überschreibung | Änderungen vom Thermostat werden als Außerkraftsetzung angesehen; Die Übersteuerungszeit muss im Voraus in der Heizungssteuerung eingestellt werden. 0.Zimmer.Zimmername.Temperaturüberschreitungszeit | | Wenn die Überschreibzeit nicht eingestellt ist, wird die Überschreibung nicht ausgeführt als neue Profileinstellung | Änderungen vom Thermostat werden als Zieltemperatur für die aktuelle Profilperiode verwendet verstellbar pro Raum | Die oben genannten Optionen können pro Raum konfiguriert werden. Datenpunkt Heizungssteuerung.0.Rooms.RoomName.ChangesFromThermostatMode definiert den Modus: | | 1 - nein | | 2 - als Überschreibung | | 3 - als neue Profileinstellung | | Im Protokoll wird eine Warnung angezeigt, wenn Werte verwendet werden, die niedriger als 0 oder höher als 3 sind
 
 ## Bedarf
 * Knotenversion 8 oder höher ist erforderlich
 
 ## Probleme und Funktionsanforderungen
-* Wenn Sie auf Fehler stoßen oder Funktionsanforderungen für diesen Adapter haben, erstellen Sie bitte ein Problem im GitHub-Problemabschnitt des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
+* Wenn Sie auf Fehler stoßen oder Funktionsanforderungen für diesen Adapter haben, erstellen Sie ein Problem im Abschnitt GitHub-Probleme des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
+
+### Was ist Sentry.io und was wird den Servern dieses Unternehmens gemeldet?
+Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ihren Anwendungen zu erhalten. Und genau das ist in diesem Adapter implementiert.
+
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
 
-### 0.4.0 (2020-04-xx)
+### 0.5.1 (2020-05-22)
+* (René) log a warning if actors are configured but UseActors are off
+* (René) sentry added
+* (René) some hints in admin
+
+### 0.5.0 (2020-05-03)
+* (René) see issue #101: sensor close delay added (similar to already existing sensor open delay)
+* (René) see issue #103: date/time format string corrected for vis
+* (René) see issue #104: bug fix to take over changes from vis
+* (René) see issue #102: bug fix change current time period to be shown on vis
+
+
+### 0.4.0 (2020-05-02)
 * (René) see issue #70: use changes from thermostat
 * (René) see issue #91 bug fix: if the same sensor is configured for more than one room thermostat target temperature will be set for all configured rooms
 * (René) script from Pittini integrated to support his visualization [Pittini](https://github.com/Pittini/iobroker-heatingcontrol-vis) 
+* (Dutchman) some refactoring 
 
 ### 0.3.19 (2020-03-15)
 * (René) create correct cron job for sunday if profile type "every day" is used

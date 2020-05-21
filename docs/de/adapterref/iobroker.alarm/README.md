@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: Oo0N8/qhdtLo5g1Q28akhuzFt7Tb99WpQO5JzDZ/2jY=
+hash: TO/V4QxSRszN4hqJPa4D9mVgg+pzxB/bgHBfMGgqQoI=
 ---
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -32,8 +32,18 @@ Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tabschauen
-Hier werden die Kreise der Anlage Verwaltung.
-Die Namen der Staaten lassen sich ändern.
+Hier werden die Kreise der Anlage Infrastruktur.
+* die Namen der Staaten lassen sich ändern *
+
+Der Alarmkreis hat den Verlust „hoch" und den Hut bei aktivierter Anlage Vorrang vor allen anderen Keisen.
+
+Der Warnkreis hat zwei Funktionen, bei aktivierter Anlage werden diese Staaten nur zentrale und geben ggf. eine Meldung ab wenn eine richtige Verantwortung. Die zweite Funktion besteht darin, bei z. B. Haltung und aktivierte interne interne der Anlage, bei Konflikten einer der konfigurierten Staaten ggf. eine Meldung abgesetzt wird.
+
+Der Nachtkreis hat die gleiche Funktion wie der Warnkreis, auch nur die der Nachtruhe. Bei Beginender Nachtruhe fordert diese, fällt ab, die Anzeigen des Warnkreises ab.
+
+*Es ist möglich möglich, dass man für einen Staat, den Haken bei allen drei Kreisen macht.*
+
+Die Kreise sind folgender Berechtigung:
 
 #### Alarmkreis:
 Alarmanlage lässt sich nicht erkennen, wenn ein konfigurierter Zustand aktiv ist. Bei aktivierter Alarmanlage führen eine Möglichkeit sofort zur Auslösung der Anlage.
@@ -45,7 +55,7 @@ Man kann sich doch anders fühlenigen lassen.
 #### Nachtkreis:
 Bei aktiver Nachtruhe werden nach sich gezogen, um der erkannten und ggf. verwirkt.
 
-*Sollten Alarm- und Warnkreis für Staat sein, sein der Alarmkreis*
+*Sollten Alarm- und Warnkreis pro Staat wird sein, gehört der Alarmkreis*
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -77,7 +87,7 @@ Der log_today Zustand wird um Mitternacht geleert.
 ----------------------------------------------------------------------------------------------------------------------
 
 ## Probleme
-- wenn man ein Telegramm oder eine Erklärung über das + hin schnitt, kann man nur ein Staat der Instanz verloren und man muss auf *telegramm.0* alles lesen.
+- wenn man ein Telegramm oder eine Erklärung über das + hin schnittgt, kann man nur ein Zustand der Instanz verloren und man muss auf *telegramm.0* alles lesen.
 
 #### Unterscheidet ioBroker Benutzer
 *Wählt man in den Optionen die Log Ausgabe an, wird im Log des ioBroker geschrieben. Ist man mit diesen Texten nicht zufrieden, besteht die Rechte, sich die Datei "/lib/Logs.js" zu editieren.*
@@ -85,7 +95,36 @@ Der log_today Zustand wird um Mitternacht geleert.
 #### Wichtige, die Berechtigung dieses Adapters zusätzliche auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Berechtigung!
 
 ## Changelog
-**[CHANGELOG](https://github.com/misanorot/ioBroker.alarm/blob/master/changelog.md)**
+
+#### 0.5.0 (14.05.2020)
+* (misanorot) added use.list state
+
+#### 0.4.0 (14.05.2020)
+* (misanorot) added warn circuit monitoring
+
+#### 0.3.0 (04.05.2020)
+* (misanorot) expaned speech output
+
+#### 0.2.2 (30.04.2020)
+* (misanorot) added alexa2 speak output
+
+#### 0.2.0 (22.04.2020)
+* (misanorot) added more states
+
+#### 0.1.2 (19.04.2020)
+* (misanorot) status.state  activated
+
+#### 0.1.1 (28.03.2020)
+* (misanorot) added states and lists - fixed issues - translation
+
+#### 0.1.0 ()
+* (misanorot) add password for de/activation -- better logging
+
+#### 0.0.9 (19.02.2020)
+* (misanorot) add sayit
+
+#### 0.0.8 (03.02.2020)
+* (misanorot) initial release
 
 ## License
 MIT License

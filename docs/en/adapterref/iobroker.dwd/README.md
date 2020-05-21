@@ -19,6 +19,9 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ## Changelog
 
+### 2.4.10 (2020-05-16)
+* (Apollon77) Better handle errors when adapter ends (again Sentry)
+
 ### 2.4.9 (2020-05-11)
 * (Apollon77) Better handle errors when adapter ends (Sentry IOBROKER-DWD-1) 
 

@@ -32,8 +32,17 @@ Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-
 
 ### Tab Überwachung
 
-Hier werden die die Kreise der Anlage konfiguriert.
+Hier werden die Kreise der Anlage konfiguriert.
 *die Namen der states lassen sich ändern*
+
+Der Alarmkreis hat die Priorität „hoch" und hat bei aktivierter Anlage Vorrang vor allen anderen Keisen. Er dient zur eigentlichen Überwachung der Anlage. Dies entspricht einer einfachen Alarmanlage mit nur einem Kreis.
+
+Der Warnkreis hat zwei Funktionen, bei aktivierter Anlage werden diese States nur überwacht und geben ggf. eine Meldung ab wenn eine Änderung stattfand. Die zweite Funktion besteht darin, bei z. B. Anwesenheit und aktivierter internen Überwachung der Anlage (sharp inside), bei Veränderung einer der konfigurierten States ggf. eine Meldung abgesetzt wird.
+
+Der Nachtkreis hat die gleiche Funktion wie der Warnkreis, jedoch nur während der Nachtruhe. Bei beginender Nachtruhe löst diese, falls aktiviert, die Überwachung des Warnkreises (sharp inside) ab.
+
+*Es ist durchaus möglich, dass man für einen State, den Haken bei allen drei Kreisen macht.*
+
 Die Kreise sind folgendermaßen überwacht:
 
 #### Alarmkreis:
@@ -92,8 +101,39 @@ Der log_today state wird um Mitternacht geleert.
 
 #### Wichtig, die Benutzung dieses Adapters geschieht auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Haftung übernommen!
 
+
+
 ## Changelog
-**[CHANGELOG](https://github.com/misanorot/ioBroker.alarm/blob/master/changelog.md)**
+
+#### 0.5.0 (14.05.2020)
+* (misanorot) added use.list state
+
+#### 0.4.0 (14.05.2020)
+* (misanorot) added warn circuit monitoring
+
+#### 0.3.0 (04.05.2020)
+* (misanorot) expaned speech output
+
+#### 0.2.2 (30.04.2020)
+* (misanorot) added alexa2 speak output
+
+#### 0.2.0 (22.04.2020)
+* (misanorot) added more states
+
+#### 0.1.2 (19.04.2020)
+* (misanorot) status.state  activated
+
+#### 0.1.1 (28.03.2020)
+* (misanorot) added states and lists - fixed issues - translation
+
+#### 0.1.0 ()
+* (misanorot) add password for de/activation -- better logging
+
+#### 0.0.9 (19.02.2020)
+* (misanorot) add sayit
+
+#### 0.0.8 (03.02.2020)
+* (misanorot) initial release
 
 ## License
 MIT License

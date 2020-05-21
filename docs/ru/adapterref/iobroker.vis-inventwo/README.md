@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 1rYVmy6lpZhG8vlUpYRAhkAU4GuCT7b4xULKhFRrp30=
+hash: cQTP+MdtmqtMAC0+ix9XDvx9WB7mZY0usUIF5JtQy9c=
 ---
-![логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
+![логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/i1_150.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.vis-inventwo.svg)
@@ -34,6 +34,12 @@ Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen u
 [![Spende] (администратор / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+# 1.3.5
+- Добавлена частота обновления для таблицы
+
+# 1.3.4
+- убраны значки и фоны, изменен конфиг, исправлена навигация
 
 # 1.3.3
 - Исправлена опция значения фонового виджета
@@ -73,7 +79,7 @@ Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen u
 - Добавлен виджет слайдера
 - Добавлена опция для зеркального отображения
 - Добавлены новые иконки
-- Изменены виджеты кнопок для использования шрифта по умолчанию и параметров текста
+- Изменены виджеты кнопок для использования шрифта и текста по умолчанию
 
 ### 1.0.0
 - Фон виджета и непрозрачность контента, Переключатель может быть изменен с логического на значение, изменены значки с белого на черный, добавлены бесшовные фоны

@@ -44,8 +44,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 0.6.2 (13.05.2020)
+### 0.6.2 (18.05.2020)
 * (simatec) errorhandling for sentry.io
+* (simatec) Bugfix getState
 
 ### 0.6.1 (11.05.2020)
 * (simatec) bugfix index_m.html

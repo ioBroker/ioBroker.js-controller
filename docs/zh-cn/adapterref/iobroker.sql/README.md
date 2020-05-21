@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: RDgV1bwXKB5H4xzfj2awTWF15T0Fo1W/fiOy2XkHZps=
+hash: 2DsMpgBNo0MBSEZIDRAMLoroxOH4Ef5CM+AYe4fa+n8=
 ---
 ![商标](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -24,7 +24,7 @@ hash: RDgV1bwXKB5H4xzfj2awTWF15T0Fo1W/fiOy2XkHZps=
 
 ### MS-SQL：
 对主机使用§§JJJJJ_0_0§§并检查已启用的TCP / IP连接。
-https://msdn.microsoft.com/zh-CN/library/bb909712(v=vs.90).aspx
+https://msdn.microsoft.com/zh-cn/library/bb909712(v=vs.90).aspx
 
 ### SQLite：
 是“文件” -DB，不能管理太多事件。如果您有大量数据，请使用真实的数据库，例如PostgreSQL和co。
@@ -88,7 +88,7 @@ FLUSH PRIVILEGES;
 
 |领域类型描述 |
 |-------|--------------------------------------------|-------------------------------------------|
-| id |整数非空主键标识（1,1）|唯一ID |
+| id |整数NOT NULL主键标识（1,1）|唯一ID |
 |名称| varchar（255）/文字|实例的适配器实例， |
 
 *注意：* MS-SQL使用varchar（255），其他使用TEXT
@@ -105,9 +105,9 @@ FLUSH PRIVILEGES;
 
 结构体：
 
-|领域类型说明 |
+|领域类型描述 |
 |-------|--------------------------------------------|-------------------------------------------------|
-| id |整数非空主键标识（1,1）|唯一ID |
+| id |整数NOT NULL主键标识（1,1）|唯一ID |
 |名称| varchar（255）/文字|变量的ID，例如hm-rpc.0.JEQ283747.1.STATE |
 |类型整数| 0-数字，1-字符串，2-布尔值|
 
@@ -125,12 +125,12 @@ FLUSH PRIVILEGES;
 
 结构体：
 
-|领域类型说明 |
+|领域类型描述 |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id |整数| “数据点”表中的状态ID |
 | ts | BIGINT /整数|直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
 | val |真实|价值|
-| ack |比特/布尔|确认：0-不确认，1-确认|
+| ack | BIT /布尔|确认：0-不确认，1-确认|
 | _from |整数|来自“来源”表的来源ID |
 | q |整数|质量如数。您可以找到描述[这里](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states)|
 
@@ -147,7 +147,7 @@ FLUSH PRIVILEGES;
 
 结构体：
 
-|领域类型说明 |
+|领域类型描述 |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id |整数| “数据点”表中的状态ID |
 | ts | BIGINT /整数|直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
@@ -167,12 +167,12 @@ FLUSH PRIVILEGES;
 
 结构体：
 
-|领域类型说明 |
+|领域类型描述 |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id |整数| “数据点”表中的状态ID |
 | ts | BIGINT |直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
 | val |文字|价值|
-| ack |比特/布尔|确认：0-不确认，1-确认|
+| ack | BIT /布尔|确认：0-不确认，1-确认|
 | _from |整数|来自“来源”表的来源ID |
 | q |整数|质量如数。您可以找到描述[这里](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states)|
 
@@ -190,12 +190,12 @@ FLUSH PRIVILEGES;
 
 结构体：
 
-|领域类型说明 |
+|领域类型描述 |
 |--------|--------------------------------------------|-------------------------------------------------|
 | id |整数| “数据点”表中的状态ID |
 | ts | BIGINT |直到纪元为止的时间（以毫秒为单位）。可以使用“新日期（ts）”转换为时间|
-| val |比特/布尔|价值|
-| ack |比特/布尔|确认：0-不确认，1-确认|
+| val | BIT /布尔|价值|
+| ack | BIT /布尔|确认：0-不确认，1-确认|
 | _from |整数|来自“来源”表的来源ID |
 | q |整数|质量如数。您可以找到描述[这里](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states)|
 
@@ -215,7 +215,7 @@ sendTo('sql.0', 'query', 'SELECT * FROM datapoints', function (result) {
 });
 ```
 
-或获取过去一小时的ID = system.adapter.admin.0.memRss的条目
+或者获取最近一小时的ID = system.adapter.admin.0.memRss条目
 
 ```
 sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.admin.0.memRss"', function (result) {
@@ -235,9 +235,9 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 
 ## StoreState
 如果要将其他数据写入InfluxDB / SQL，则可以使用内置系统功能** storeState **。
-此功能还可以用于转换其他历史记录适配器（如历史记录或SQL）中的数据。
+此功能还可用于转换其他历史记录适配器（如历史记录或SQL）中的数据。
 
-不会根据ioBroker数据库检查给定的ID，也不需要在其中进行设置，而只能直接访问。
+给定的ID不会根据ioBroker数据库进行检查，因此不需要在那里进行设置，而只能直接访问。
 
 消息可以具有以下三种格式之一：
 
@@ -253,9 +253,31 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 ```
 sendTo('sql.0', 'delete', [
     {id: 'mbus.0.counter.xxx, state: {ts: 1589458809352},
-    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809353}
+    {id: 'mbus.0.counter.yyy, state: {ts: 1589458809353}
 ], result => console.log('deleted'));
 ```
+
+要删除某个数据点的所有历史记录数据，请执行：
+
+```
+sendTo('sql.0', 'deleteAll', [
+    {id: 'mbus.0.counter.xxx}
+    {id: 'mbus.0.counter.yyy}
+], result => console.log('deleted'));
+```
+
+要删除某个数据点和某个范围的历史数据，请执行以下操作：
+
+```
+sendTo('sql.0', 'deleteRange', [
+    {id: 'mbus.0.counter.xxx, start: '2019-01-01T00:00:00.000Z', end: '2019-12-31T23:59:59.999'},
+    {id: 'mbus.0.counter.yyy, start: 1589458809352, end: 1589458809353}
+], result => console.log('deleted'));
+```
+
+时间可能是自纪元或ans字符串以来的ms，可以由javascript Date对象转换。
+
+值将被删除，包括已定义的限制。 `ts >= start AND ts <= end`
 
 ##改变状态
 如果要更改数据库中条目的值，质量或确认标志，则可以使用内置系统功能** update **：
@@ -310,10 +332,10 @@ sendTo('sql.0', 'getCounter', {
 如果将更换计数器，则也会对其进行计算。
 
 ##通过Javascript进行历史记录记录管理
-该适配器支持通过JavaScript启用和禁用历史记录日志，还支持使用其设置检索启用的数据点列表。
+适配器支持通过JavaScript启用和禁用历史记录日志，还支持使用其设置检索启用的数据点列表。
 
 ###启用
-该消息要求具有数据点的“ id”。其他可选的“选项”用于定义特定于数据点的设置：
+该消息需要具有数据点的“ id”。另外，可选的“选项”用于定义特定于数据点的设置：
 
 ```
 sendTo('sql.0', 'enableHistory', {
@@ -393,7 +415,10 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 -**存储保留**：值将在数据库中存储多长时间。
 
 ## Changelog
-### 1.13.0 (2020-05-14)
+### 1.14.0 (2020-05-20)
+* (bluefox) added the range deletion and the delete all operations
+ 
+### 1.13.1 (2020-05-20)
 * (bluefox) added changed and delete operations
  
 ### 1.12.6 (2020-05-08)
@@ -403,11 +428,11 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 * (Apollon77) Crash prevented for invalid objects (Sentry IOBROKER-SQL-X) 
 
 ### 1.12.4 (2020-05-04)
-* (Apollon77) Potential crash fixed when disabling datapoints too fast (Sentry IOBROKER-SQL-W) 
+* (Apollon77) Potential crash fixed when disabling data points too fast (Sentry IOBROKER-SQL-W) 
 * (Apollon77) Always set "encrypt" flag, even if false because else might en in default true (see https://github.com/tediousjs/tedious/issues/931)
 
 ### 1.12.3 (2020-04-30)
-* (Apollon77) Try to create Indizes on MSSQL to speed up things. Infos are shown if not possible to be able for the user to do it themself. Timeout is 15s
+* (Apollon77) Try to create indexes on MSSQL to speed up things. Infos are shown if not possible to be able for the user to do it themself. Timeout is 15s
 
 ### 1.12.2 (2020-04-30)
 * (Apollon77) MSSQL works again

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
+hash: zPUGyeud4aIM6Mcc2JX7+ut7qxoA+LIE6qPFl3LjWzA=
 ---
 ![商标](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -11,14 +11,10 @@ hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
 ![安装数量](http://iobroker.live/badges/unifi-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.unifi.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.unifi.svg)
-![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.unifi.svg)
 ![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)
 
 ＃ioBroker.unifi
-此ioBroker适配器允许使用公共UniFi控制器Web-API监视[UniFi设备](http://www.ubnt.com/)，例如UniFi WiFi接入点。
-
-##重要信息
-该适配器仍在开发中。到目前为止，只能将信息从UniFi控制器获取到ioBroker中。
+此ioBroker适配器允许使用公共UniFi控制器Web-API监视和限制对[UniFi设备](http://www.ubnt.com/)（例如UniFi WiFi接入点）的控制。
 
 ##配置
 ###最低要求信息
@@ -28,12 +24,12 @@ hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
 * 用户名和密码
 *更新间隔
 
-默认情况下，信息每60秒更新一次。根据您的ioBroker硬件和网络大小（客户端，UniFi设备等），建议不要进一步缩短间隔。
+默认情况下，信息每60秒更新一次。根据您的ioBroker硬件和网络大小（客户端，UniFi设备等），不建议进一步缩短间隔。
 
 ###黑名单
 适配器会从您的UniFi控制器中更新尽可能多的信息，但可以限制更新的信息。
 
-可以禁用所选信息的更新或将该信息列入黑名单。
+可以禁用所选信息的更新，也可以禁用该信息的特定黑名单。
 
 |信息|被|列入黑名单的项目 |
 |-------------|-----------------------------------------|
@@ -50,6 +46,23 @@ hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
 ###凭证创建
 使用“ vouchers.create_vouchers”按钮可以创建预定义的凭单。可以配置将创建的凭证的数量，凭证的有效期限，还可以设置上传和下载的限制。
 
+##缺少数据点
+适配器使用[节点统一](https://github.com/jens-maus/node-unifi)连接到您的UniFi控制器。为简化起见，并非所有可用数据点都被拉到ioBroker中。如果您缺少数据点，请使用以下URL来检查API。 （注意：您必须用设置替换IP，PORT和SITE）
+
+|信息| API URL |
+|-------------|---------------------------------------------|
+|网站| https：// IP：PORT / api / self / sites |
+| SysInfo | https：// IP：PORT / api / s / SITE / stat / sysinfo |
+|客户| https：// IP：PORT / api / s / SITE / stat / sta |
+|设备| https：// IP：PORT / api / s / SITE / stat / device |
+|无线局域网| https：// IP：PORT / api / s / SITE / rest / wlanconf |
+|网络| https：// IP：PORT / api / s / SITE / rest / networkconf |
+|健康| https：// IP：PORT / api / s / SITE / stat / health |
+|优惠券| https：// IP：PORT / api / s / SITE / stat / voucher |
+
+＃＃ 已知的问题
+*客户端下线后，客户端的is_wired状态不正确。此问题不是UniFi控制器的已知问题，并且与适配器无关。 （请参阅https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1）
+
 ##参考
 该适配器使用以下第三方nodejs模块的功能：
 
@@ -57,9 +70,11 @@ hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
 * [json-logic-js]（https://github.com/jwadhams/json-logic-js）
 
 ## Changelog
-### __WORK IN PROGRESS__
+### 0.5.1-beta.5 (2020-05-21)
+* (jens-maus) Implemented UniFiOS/UDM-Pro support
 * (braindead1) Implemented possibility to enable/disable WLANs
 * (braindead1) Implemented voucher creation
+* (braindead1) Implemented online state for clients
 * (braindead1) Updated client states
 * (braindead1) Updated device states
 * (braindead1) Improved error messages

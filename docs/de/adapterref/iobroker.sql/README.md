@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: RDgV1bwXKB5H4xzfj2awTWF15T0Fo1W/fiOy2XkHZps=
+hash: 2DsMpgBNo0MBSEZIDRAMLoroxOH4Ef5CM+AYe4fa+n8=
 ---
 ![Logo](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -51,7 +51,7 @@ iobroker start sql
 ```
 
 ### MySQL:
-Sie können MySQL auf Linux-Systemen wie folgt installieren:
+Sie können MySQL wie folgt auf Linux-Systemen installieren:
 
 ```
 apt-get install mysql-server mysql-client
@@ -253,9 +253,31 @@ Wenn Sie einen Eintrag aus der Datenbank löschen möchten, können Sie die eing
 ```
 sendTo('sql.0', 'delete', [
     {id: 'mbus.0.counter.xxx, state: {ts: 1589458809352},
-    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809353}
+    {id: 'mbus.0.counter.yyy, state: {ts: 1589458809353}
 ], result => console.log('deleted'));
 ```
+
+So löschen Sie ALLE Verlaufsdaten für einen Datenpunkt:
+
+```
+sendTo('sql.0', 'deleteAll', [
+    {id: 'mbus.0.counter.xxx}
+    {id: 'mbus.0.counter.yyy}
+], result => console.log('deleted'));
+```
+
+So löschen Sie Verlaufsdaten für einen Datenpunkt und einen Bereich:
+
+```
+sendTo('sql.0', 'deleteRange', [
+    {id: 'mbus.0.counter.xxx, start: '2019-01-01T00:00:00.000Z', end: '2019-12-31T23:59:59.999'},
+    {id: 'mbus.0.counter.yyy, start: 1589458809352, end: 1589458809353}
+], result => console.log('deleted'));
+```
+
+Die Zeit kann ms seit der Epoche oder eine Zeichenfolge sein, die durch das Javascript-Datumsobjekt konvertiert werden kann.
+
+Werte werden einschließlich definierter Grenzwerte gelöscht. `ts >= start AND ts <= end`
 
 ## Status ändern
 Wenn Sie den Wert, die Qualität oder das Bestätigungsflag des Eintrags in der Datenbank ändern möchten, können Sie die integrierte Systemfunktion **update** verwenden:
@@ -290,7 +312,7 @@ sendTo('sql.0', 'getHistory', {
 });
 ```
 
-## Zähler holen
+## Zähler abrufen
 Der Benutzer kann den Wert eines Zählers (Typ = Nummer, Zähler = Wahr) für einen bestimmten Zeitraum erfragen.
 
 ```
@@ -313,7 +335,7 @@ Wenn der Zähler ersetzt wird, wird er ebenfalls berechnet.
 Der Adapter unterstützt das Aktivieren und Deaktivieren der Verlaufsprotokollierung über JavaScript sowie das Abrufen der Liste der aktivierten Datenpunkte mit ihren Einstellungen.
 
 ### Aktivieren
-Die Nachricht muss die "ID" des Datenpunkts haben. Zusätzlich optionale "Optionen", um die datenpunktspezifischen Einstellungen zu definieren:
+Die Nachricht muss die "ID" des Datenpunkts haben. Zusätzlich optionale "Optionen" zum Definieren der datenpunktspezifischen Einstellungen:
 
 ```
 sendTo('sql.0', 'enableHistory', {
@@ -393,7 +415,10 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Speicheraufbewahrung** Wie lange werden die Werte in der Datenbank gespeichert?
 
 ## Changelog
-### 1.13.0 (2020-05-14)
+### 1.14.0 (2020-05-20)
+* (bluefox) added the range deletion and the delete all operations
+ 
+### 1.13.1 (2020-05-20)
 * (bluefox) added changed and delete operations
  
 ### 1.12.6 (2020-05-08)
@@ -403,11 +428,11 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 * (Apollon77) Crash prevented for invalid objects (Sentry IOBROKER-SQL-X) 
 
 ### 1.12.4 (2020-05-04)
-* (Apollon77) Potential crash fixed when disabling datapoints too fast (Sentry IOBROKER-SQL-W) 
+* (Apollon77) Potential crash fixed when disabling data points too fast (Sentry IOBROKER-SQL-W) 
 * (Apollon77) Always set "encrypt" flag, even if false because else might en in default true (see https://github.com/tediousjs/tedious/issues/931)
 
 ### 1.12.3 (2020-04-30)
-* (Apollon77) Try to create Indizes on MSSQL to speed up things. Infos are shown if not possible to be able for the user to do it themself. Timeout is 15s
+* (Apollon77) Try to create indexes on MSSQL to speed up things. Infos are shown if not possible to be able for the user to do it themself. Timeout is 15s
 
 ### 1.12.2 (2020-04-30)
 * (Apollon77) MSSQL works again

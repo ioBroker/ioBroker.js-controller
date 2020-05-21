@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.myvbus/README.md
 title: ioBroker.myvbus
-hash: 2TFJDIah+2/TCuImfk5d2OXZ35YZOL4+i+UkQdt7LGw=
+hash: igha4uGR5ydtqy+g0mS9tuSe8we5tcsGrBSFBo+4UqU=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.myvbus.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.myvbus.svg)
@@ -13,7 +13,6 @@ hash: 2TFJDIah+2/TCuImfk5d2OXZ35YZOL4+i+UkQdt7LGw=
 ![已知漏洞](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.myvbus/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.myvbus.png?downloads=true)
 ![特拉维斯](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.myvbus/master.svg)
-![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.myvbus.svg)
 
 ＃ioBroker.myvbus
 ![商标](../../../en/adapterref/iobroker.myvbus/admin/myvbus.png)
@@ -34,22 +33,22 @@ hash: 2TFJDIah+2/TCuImfk5d2OXZ35YZOL4+i+UkQdt7LGw=
 *由于DL3接口的限制，不支持读取DL3通道0（直接连接到DL3设备的传感器）。
 
 ##配置提示
-*连接类型的默认设置为VBus / LAN，但即使对于VBus / LAN，也必须明确选择它，否则将不会建立连接。
+*连接类型的默认设置为VBus / LAN，但是即使对于VBus / LAN，也必须明确选择它，否则将不会建立连接。
 *用于VBus / LAN，DL3，DL2，KM2的直接LAN访问的正确设置是：
   *连接类型：VBus / LAN或KM2或DL2或DL3
-  *连接标识符：IP地址或FullyQualifiedHostName（例如host1.example.com）
+  *连接标识符：IP地址（例如192.168.178.188）或FullyQualifiedHostName（例如host1.example.com）
   * VBus密码：YourVBusPassword（默认值：vbus）
   *连接端口：不应更改默认设置7053
   * DL3通道：仅与DL3相关（值1-6，无法读取通道0）
-  *更新间隔：更新记录值之间的时间（默认为30秒）
+  *更新间隔：更新测量值之间的时间（默认为30秒）
 *通过VBus.net访问DL3，DL2，KM2的正确设置是：
   *连接类型：DL3或DL2或KM2
   *连接标识符：vbus.net（或vbus.io）-都没有http：//和Via标识符！
   *连接端口：不应更改默认设置7053
   * VBus密码：YourVBusPassword（默认值：vbus）
   * DL3通道：仅与DL3相关（值：1-6，无法读取通道0）
-  *通过标识符：d1234567890-前面没有http：//或后面是.vbus.io
-  *更新间隔：更新记录值之间的时间（默认为30秒）
+  *通过标识符：YourViaIdentifier（例如d1234567890）-前没有http：//或后有.vbus.io
+  *更新间隔：更新测量值之间的时间（默认为30s）
 
 ＃＃ 法律声明
 RESOL，VBus，VBus.net，DeltaSol等是RESOL的商标或注册商标-Elektronische Regelungen GmbH <https://www.resol.de/en>
@@ -57,6 +56,10 @@ RESOL，VBus，VBus.net，DeltaSol等是RESOL的商标或注册商标-Elektronis
 所有其他商标均为其各自所有者的财产。
 
 ## Changelog
+
+### 0.0.6
+
+* (pdbjjens) alpha 6 release updated dependencies
 
 ### 0.0.5
 

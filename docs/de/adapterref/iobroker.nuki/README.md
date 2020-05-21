@@ -3,13 +3,18 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nuki/README.md
 title: ioBroker.nuki
-hash: P87K8k3QRoNmwnT7cQ1SG6G3xD9B2Ic6N2+SM/BB8YE=
+hash: lSBuy3wO8xLRxMA6Xtr5F9HnepPcxBhxncvEdZEyjtQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.nuki/admin/nuki-logo.png)
 
-![Anzahl der Installationen](http://iobroker.live/badges/nuki-stable.svg)
+![Anzahl der Installationen](http://iobroker.live/badges/nuki-installed.svg)
+![Stabile Version](http://iobroker.live/badges/nuki-stable.svg)
+![NPM-Version](http://img.shields.io/npm/v/iobroker.nuki.svg)
+![Commits seit der letzten Veröffentlichung](https://img.shields.io/github/commits-since/smaragdschlange/ioBroker.nuki/latest.svg)
+![Downloads](https://img.shields.io/npm/dm/iobroker.nuki.svg)
+![NPM](https://nodei.co/npm/iobroker.nuki.png?downloads=true)
 
-# IoBroker.nuki
+# IoBroker.nuki [![Travis CI] (https://travis-ci.com/smaragdschlange/ioBroker.nuki.svg?branch=master)](https://travis-ci.com/smaragdschlange/ioBroker.nuki)
 Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung der [Nuki Smart Lock](https://nuki.io/de/) mithilfe der API der Nuki Bridge.
 
 ## Bedarf
@@ -17,8 +22,8 @@ Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung der [Nuki Sma
 * Ein Nuki Smart Lock und / oder ein Nuki Opener.
 * Eine laufende Instanz von ioBroker.
 
-## Verwendung
-Jede Instanz des Nuki-Adapters repräsentiert eine Nuki-Brücke. Geben Sie beim Erstellen einer Instanz einfach die IP-Adresse, den Port und das Token Ihrer Nuki-Bridge ein. Der Name ist optional und wird automatisch generiert, wenn er leer bleibt. Das Kontrollkästchen "Rückruf verwenden" und der Wert "Rückrufport in ioBroker" sind optional und können gesetzt werden, um die Rückruffunktion des Nuki zu nutzen. Nach dem Speichern einer Instanz wird für jedes Nuki-Schloss, das mit der angegebenen Nuki-Brücke verbunden ist, ein Bridge-Gerät mit einem Kanal erstellt. Die Kanäle liefern den aktuellen Status der Nuki-Sperre als Ausgabeparameter:
+## Verwendungszweck
+Jede Instanz des Nuki-Adapters repräsentiert eine Nuki-Brücke. Geben Sie beim Erstellen einer Instanz einfach die IP-Adresse, den Port und das Token Ihrer Nuki-Bridge ein. Der Name ist optional und wird automatisch generiert, wenn er leer gelassen wird. Das Kontrollkästchen "Rückruf verwenden" und der Wert "Rückrufport in ioBroker" sind optional und können gesetzt werden, um die Rückruffunktion des Nuki zu nutzen. Nach dem Speichern einer Instanz wird für jede Nuki-Sperre, die mit der angegebenen Nuki-Brücke verbunden ist, ein Bridge-Gerät mit einem Kanal erstellt. Die Kanäle liefern den aktuellen Status der Nuki-Sperre als Ausgabeparameter:
 
 * Batteriekritisch: Anzeige für schwache Batterie
 * lockState: Zeigt an, ob Nuki gesperrt ist (nur Nuki Smart Lock)
@@ -36,7 +41,7 @@ Gültige Eingabewerte für Sperren sind:
 * lockAction: Schalter zum Sperren / Entsperren des Nuki (true = entsperren; false = sperren)
 * openAction: Taste zum Entriegeln des Nuki
 * openLocknGoAction: Taste zum Entriegeln und nach einigen Sekunden zum Sperren des Nuki
-* refreshLocknGoAction: Taste zum Entsperren und nach einigen Sekunden zum Sperren des Nuki
+*lockLocknGoAction: Taste zum Entsperren und nach einigen Sekunden zum Sperren des Nuki
 
 Gültige Eingabewerte für Opener sind:
 
@@ -71,6 +76,12 @@ Entfernen:
 Beim Update von 1.0.x auf 1.1.0 oder höher wird empfohlen, alle Instanzen der alten Version zu löschen, bevor Sie die neue Version installieren. Bitte beachten Sie, dass Versionsänderungen, die größer als auf Patch-Ebene sind (-> Änderung nur der letzten Ziffer), immer Änderungen an Datenpunkten enthalten können, z. 1.1.2 bis 1.1.4
 
 ## Changelog
+
+### 1.2.3
+* (smaragdschlange) bug fix: convert to template strings
+
+### 1.2.2
+* (smaragdschlange) bug fix: get device type by state name when not provided by bridge (software bridge)
 
 ### 1.2.0
 * (smaragdschlange) improvement: support of hashed token (set to standard)

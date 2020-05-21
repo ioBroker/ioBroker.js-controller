@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
+hash: zPUGyeud4aIM6Mcc2JX7+ut7qxoA+LIE6qPFl3LjWzA=
 ---
 ![логотип](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -11,14 +11,10 @@ hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
 ![Количество установок](http://iobroker.live/badges/unifi-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.unifi.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.unifi.svg)
-![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.unifi.svg)
 ![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)
 
 # IoBroker.unifi
-Этот адаптер ioBroker позволяет осуществлять мониторинг [Устройства UniFi](http://www.ubnt.com/), таких как точки доступа UniFi WiFi, с помощью общедоступного веб-API UniFi Controller.
-
-## Важная информация
-Адаптер находится в стадии разработки. На данный момент в ваш ioBroker можно получить информацию только с вашего контроллера UniFi.
+Этот адаптер ioBroker позволяет осуществлять мониторинг и ограниченное управление [Устройства UniFi](http://www.ubnt.com/), такими как точки доступа UniFi WiFi, с помощью общедоступного веб-API UniFi Controller.
 
 ## Конфигурация
 ### Минимально необходимая информация
@@ -50,6 +46,23 @@ hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
 ### Создание ваучера
 Используя кнопку 'vouchers.create_vouchers', можно создавать предопределенные ваучеры. Можно настроить количество ваучеров, которые будут созданы, продолжительность действия ваучеров, а также установить ограничения для загрузки и загрузки.
 
+## Отсутствуют точки данных
+Адаптер использует [Узел-Unifi](https://github.com/jens-maus/node-unifi) для подключения к контроллеру UniFi. Чтобы упростить процесс, не все доступные точки данных загружаются в ваш ioBroker. Если вам не хватает точек данных, используйте следующие URL для проверки API. (Примечание: вы должны заменить IP, PORT и SITE своими настройками)
+
+| Информация | API URL |
+|-------------|---------------------------------------------|
+| Сайты | https:// IP: PORT / api / self / sites |
+| СисИнфо | https:// IP: PORT / api / s / SITE / stat / sysinfo |
+| Клиенты | https:// IP: PORT / api / s / SITE / stat / sta |
+| Устройства | https:// IP: PORT / api / s / SITE / stat / device |
+| WLAN | https:// IP: PORT / api / s / SITE / rest / wlanconf |
+| Сети | https:// IP: PORT / api / s / SITE / rest / networkconf |
+| Здоровье | https:// IP: PORT / api / s / SITE / stat / health |
+| Ваучеры | https:// IP: PORT / api / s / SITE / stat / voucher |
+
+## Известные вопросы
+* Состояние is_wired клиентов неверно после того, как клиент перешел в автономный режим. Эта проблема не известна проблема контроллера UniFi и не связана с адаптером. (см. https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
+
 ## Ссылки
 Этот адаптер использует функциональность следующих сторонних модулей nodejs:
 
@@ -57,9 +70,11 @@ hash: pXdTCAWRrKQIuvn6pLCTVrtavb+dnPVbQAEelg+EtLw=
 * [json-logic-js] (https://github.com/jwadhams/json-logic-js)
 
 ## Changelog
-### __WORK IN PROGRESS__
+### 0.5.1-beta.5 (2020-05-21)
+* (jens-maus) Implemented UniFiOS/UDM-Pro support
 * (braindead1) Implemented possibility to enable/disable WLANs
 * (braindead1) Implemented voucher creation
+* (braindead1) Implemented online state for clients
 * (braindead1) Updated client states
 * (braindead1) Updated device states
 * (braindead1) Improved error messages

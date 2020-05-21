@@ -191,6 +191,9 @@ Auszug:
 ## FAQ
 
 ## Changelog
+### 1.14.3 (2020-05-18)
+* (foxriver76) catch edge case error if row.value has no native 
+
 ### 1.14.2 (2020-04-24)
 * (foxriver76) catch errors on rpc client creation
 

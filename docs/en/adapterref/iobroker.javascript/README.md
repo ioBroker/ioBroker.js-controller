@@ -1460,8 +1460,15 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
-### 4.6.5 (2020-05-16)
+### 4.6.14 (2020-05-19)
+* (bluefox) Names for scripts can not have dots anymore. They will be replaced by "_"
+* (bluefox) "schedule" name is not allowed for CRON
+* (bluefox) Convert strings to Date by formatDate
+
+### 4.6.13 (2020-05-19)
 * (bluefox) Fixed blockly blocks because of deprecated functions
+* (bluefox) Corrected schedule wizard
+* (AlCazone) Update monaco editor
 
 ### 4.6.4 (2020-05-15)
 * (bluefox) Corrected block: request, exec

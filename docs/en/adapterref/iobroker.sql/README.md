@@ -120,7 +120,7 @@ Structure:
 
 | Field  | Type                                       | Description                                     |
 |--------|--------------------------------------------|-------------------------------------------------|
-| id     | INTEGER                                    | ID of state from "Datapoints" table             |
+| id     | INTEGER                                    | ID of state from "Data points" table             |
 | ts     | BIGINT / INTEGER                           | Time in ms till epoch. Can be converted to time with "new Date(ts)" |
 | val    | REAL                                       | Value                                           |
 | ack    | BIT/BOOLEAN                                | Is acknowledged: 0 - not ack, 1 - ack           |
@@ -141,7 +141,7 @@ Structure:
 
 | Field  | Type                                       | Description                                     |
 |--------|--------------------------------------------|-------------------------------------------------|
-| id     | INTEGER                                    | ID of state from "Datapoints" table             |
+| id     | INTEGER                                    | ID of state from "Data points" table             |
 | ts     | BIGINT / INTEGER                           | Time in ms till epoch. Can be converted to time with "new Date(ts)" |
 | val    | REAL                                       | Value                                           |
  
@@ -161,7 +161,7 @@ Structure:
 
 | Field  | Type                                       | Description                                     |
 |--------|--------------------------------------------|-------------------------------------------------|
-| id     | INTEGER                                    | ID of state from "Datapoints" table             |
+| id     | INTEGER                                    | ID of state from "Data points" table             |
 | ts     | BIGINT                                     | Time in ms till epoch. Can be converted to time with "new Date(ts)" |
 | val    | TEXT                                       | Value                                           |
 | ack    | BIT/BOOLEAN                                | Is acknowledged: 0 - not ack, 1 - ack           |
@@ -184,7 +184,7 @@ Structure:
 
 | Field  | Type                                       | Description                                     |
 |--------|--------------------------------------------|-------------------------------------------------|
-| id     | INTEGER                                    | ID of state from "Datapoints" table             |
+| id     | INTEGER                                    | ID of state from "Data points" table             |
 | ts     | BIGINT                                     | Time in ms till epoch. Can be converted to time with "new Date(ts)" |
 | val    | BIT/BOOLEAN                                | Value                                           |
 | ack    | BIT/BOOLEAN                                | Is acknowledged: 0 - not ack, 1 - ack           |
@@ -243,9 +243,31 @@ If you want to delete entry from the Database you can use the build in system fu
 ```
 sendTo('sql.0', 'delete', [
     {id: 'mbus.0.counter.xxx, state: {ts: 1589458809352}, 
-    {id: 'mbus.0.counter.xxx, state: {ts: 1589458809353}
+    {id: 'mbus.0.counter.yyy, state: {ts: 1589458809353}
 ], result => console.log('deleted'));
 ```
+
+To delete ALL history data for some data point execute:
+
+```
+sendTo('sql.0', 'deleteAll', [
+    {id: 'mbus.0.counter.xxx} 
+    {id: 'mbus.0.counter.yyy}
+], result => console.log('deleted'));
+``` 
+
+To delete history data for some data point and for some range execute:
+
+```
+sendTo('sql.0', 'deleteRange', [
+    {id: 'mbus.0.counter.xxx, start: '2019-01-01T00:00:00.000Z', end: '2019-12-31T23:59:59.999'}, 
+    {id: 'mbus.0.counter.yyy, start: 1589458809352, end: 1589458809353}
+], result => console.log('deleted'));
+``` 
+
+Time could be ms since epoch or ans string, that could be converted by javascript Date object.
+
+Values will be deleted including defined limits. `ts >= start AND ts <= end`
 
 ## change state
 If you want to change entry's value, quality or acknowledge flag in the database you can use the build in system function **update**:
@@ -301,7 +323,7 @@ If the counter will be replaced it will be calculated too.
 The adapter supports enabling and disabling of history logging via JavaScript and also retrieving the list of enabled data points with their settings.
 
 ### enable
-The message requires to have the "id" of the datapoint.Additionally optional "options" to define the data point specific settings:
+The message requires to have the "id" of the data point. Additionally optional "options" to define the data point specific settings:
 
 ```
 sendTo('sql.0', 'enableHistory', {
@@ -325,7 +347,7 @@ sendTo('sql.0', 'enableHistory', {
 ```
 
 ### disable
-The message requires to have the "id" of the datapoint.
+The message requires to have the "id" of the data point.
 
 ```
 sendTo('sql.0', 'disableHistory', {
@@ -381,7 +403,10 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Storage retention**: How long the values will be stored in the DB.
 
 ## Changelog
-### 1.13.0 (2020-05-14)
+### 1.14.0 (2020-05-20)
+* (bluefox) added the range deletion and the delete all operations
+ 
+### 1.13.1 (2020-05-20)
 * (bluefox) added changed and delete operations
  
 ### 1.12.6 (2020-05-08)
@@ -391,11 +416,11 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 * (Apollon77) Crash prevented for invalid objects (Sentry IOBROKER-SQL-X) 
 
 ### 1.12.4 (2020-05-04)
-* (Apollon77) Potential crash fixed when disabling datapoints too fast (Sentry IOBROKER-SQL-W) 
+* (Apollon77) Potential crash fixed when disabling data points too fast (Sentry IOBROKER-SQL-W) 
 * (Apollon77) Always set "encrypt" flag, even if false because else might en in default true (see https://github.com/tediousjs/tedious/issues/931)
 
 ### 1.12.3 (2020-04-30)
-* (Apollon77) Try to create Indizes on MSSQL to speed up things. Infos are shown if not possible to be able for the user to do it themself. Timeout is 15s
+* (Apollon77) Try to create indexes on MSSQL to speed up things. Infos are shown if not possible to be able for the user to do it themself. Timeout is 15s
 
 ### 1.12.2 (2020-04-30)
 * (Apollon77) MSSQL works again

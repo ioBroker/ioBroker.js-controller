@@ -1,14 +1,11 @@
 ![Logo](admin/unifi.png)
 # ioBroker.unifi
 
-[![Build Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.unifi.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.unifi) ![Number of Installations](http://iobroker.live/badges/unifi-installed.svg) ![Number of Installations](http://iobroker.live/badges/unifi-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.unifi.svg)](https://www.npmjs.com/package/iobroker.unifi) [![Downloads](https://img.shields.io/npm/dm/iobroker.unifi.svg)](https://www.npmjs.com/package/iobroker.unifi) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.unifi.svg)](https://greenkeeper.io/)
+[![Build Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.unifi.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.unifi) ![Number of Installations](http://iobroker.live/badges/unifi-installed.svg) ![Number of Installations](http://iobroker.live/badges/unifi-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.unifi.svg)](https://www.npmjs.com/package/iobroker.unifi) [![Downloads](https://img.shields.io/npm/dm/iobroker.unifi.svg)](https://www.npmjs.com/package/iobroker.unifi) 
 
 [![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)](https://nodei.co/npm/iobroker.unifi/)
 
-This ioBroker adapter allows the monitoring of [UniFi devices](http://www.ubnt.com/), such as UniFi WiFi Access Points using the public UniFi Controller Web-API.
-
-## Important information
-The adapter is still under development. As of now it is only possible to get information from your UniFi controller into your ioBroker. 
+This ioBroker adapter allows the monitoring and limited controlling of [UniFi devices](http://www.ubnt.com/), such as UniFi WiFi Access Points using the public UniFi Controller Web-API.
 
 ## Configuration
 ###  Minimum required information
@@ -39,10 +36,29 @@ By changing the 'enabled' state of a WLAN it is possible to enable/disable it. S
 ### Voucher creation
 Using the 'vouchers.create_vouchers' button it is possible to create predefined vouchers. It is possible to configure the number of vouchers that will be created, the duration the vouchers are valid and also set limits for up- and download.
 
+## Missing datapoints
+The adapter uses [node-unifi](https://github.com/jens-maus/node-unifi) to connect to your UniFi Controller. To simplify things, not all availble datapoints are pulled into your ioBroker. In case you're missing datapoints, use the following URLs to check the API. (Note: You have to replace IP, PORT and SITE with your settings)
+
+| Information | API URL                                     |
+|-------------|---------------------------------------------|
+| Sites       | https://IP:PORT/api/self/sites              |
+| SysInfo     | https://IP:PORT/api/s/SITE/stat/sysinfo     |
+| Clients     | https://IP:PORT/api/s/SITE/stat/sta         |
+| Devices     | https://IP:PORT/api/s/SITE/stat/device      |
+| WLANs       | https://IP:PORT/api/s/SITE/rest/wlanconf    |
+| Networks    | https://IP:PORT/api/s/SITE/rest/networkconf |
+| Health      | https://IP:PORT/api/s/SITE/stat/health      |
+| Vouchers    | https://IP:PORT/api/s/SITE/stat/voucher     |
+
+## Known issues
+* The is_wired state of clients is incorrect after a client went offline. This issue not a known issue of the UniFi controller and is not related to the adapter. (see https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
+
 ## Changelog
-### __WORK IN PROGRESS__
+### 0.5.1-beta.5 (2020-05-21)
+* (jens-maus) Implemented UniFiOS/UDM-Pro support
 * (braindead1) Implemented possibility to enable/disable WLANs
 * (braindead1) Implemented voucher creation
+* (braindead1) Implemented online state for clients
 * (braindead1) Updated client states
 * (braindead1) Updated device states
 * (braindead1) Improved error messages

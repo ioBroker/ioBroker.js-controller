@@ -237,7 +237,7 @@ class Intro extends Component {
                     header={I18n.t('install on linux')}
                     copyTitle={I18n.t('copy to clipboard')}
                     copiedText={I18n.t('copied to clipboard')}
-                    typedText="curl -sL https://iobroker.net/install.sh | bash -"
+                    typedText="curl -sLf https://iobroker.net/install.sh | bash -"
                 />) : null}
             </div>),
             (<SupportUs key="supportus" theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),

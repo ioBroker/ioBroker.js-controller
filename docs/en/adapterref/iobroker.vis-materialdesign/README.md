@@ -1537,16 +1537,18 @@ ical2CalendarWidget();
 
 ## Changelog
 
-### __WORK IN PROGRESS__
-* checkbox: lock option added
-* switch: lock option added
-* bar & pie chart: option for distance between legends points added
-* bar, pie & json chart: tooltip title and value override options added
-* pie chart: orientation change bug fix
-* json & line history chart: stepped line option added
-* table: option for fixed table headline added
-* charts: newline bug fixed
-* charts: tooltip decimal places bug fix
+### 0.3.9 (2020-05-20)
+* (Scrounger): List Widget: subscribe for nested oids and bindings bug fix
+* (Scrounger): Multi State Button Widgets added
+* (Scrounger): checkbox: lock option added
+* (Scrounger): switch: lock option added
+* (Scrounger): bar & pie chart: option for distance between legends points added
+* (Scrounger): bar, pie & json chart: tooltip title and value override options added
+* (Scrounger): pie chart: orientation change bug fix
+* (Scrounger): json & line history chart: stepped line option added
+* (Scrounger): table: option for fixed table headline added
+* (Scrounger): charts: newline bug fixed
+* (Scrounger): charts: tooltip decimal places bug fix
 
 
 ### 0.3.6 (2020-04-29)

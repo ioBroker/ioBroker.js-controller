@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
+hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ---
 ![logo](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
@@ -16,7 +16,7 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 
 [source](https://www.eq-3.de/produkte/homematic.html)
 
-## Homematic ReGaHss adapter
+## Adapter Homematic ReGaHss
 This adapter establishes a connection to the Homematic logic layer "ReGaHSS" (** Re **sidential** Gateway).
 It synchronizes real names, system variables, rooms, trades and programs between Homematic and ioBroker.
 
@@ -24,7 +24,7 @@ If several control centers are to be integrated in ioBroker, a separate instance
 
 With the installation of ReGaHSS an instance of the adapter "hm-rpc" is installed, which should be configured and activated in advance.
 
-An instance of this adapter can manage up to 5 different instances of the Homematic RPC adapter, which provide different services (each service requires its own RPC instance):
+An instance of this adapter can manage up to 5 different instances of the Homematic RPC adapter, which provide different services (each service needs its own RPC instance):
 
 - rfd (CCU radio service for standard components)
 - hs485d (Wired) (for wire bus components)
@@ -61,7 +61,7 @@ The required services are then activated and linked to the appropriate HM-RPC in
 
 Polling
 
-If activated, the RegaHSS data is queried regularly by the CCU based on the seconds set in the Intervals field. The interval should not be set too low, since polling too often can cause the CCU to crash.
+If activated, the RegaHSS data is periodically queried by the CCU based on the seconds set in the Intervals field. The interval should not be set too low, since polling too often can cause the CCU to crash.
 
 Trigger
 

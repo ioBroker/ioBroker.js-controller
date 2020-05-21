@@ -62,6 +62,15 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
+### 0.6.3
+   * Using library version 0.4.13
+   * Some translations added
+
+### 0.6.2
+   * Using library version 0.4.12
+   * (boriswerner) Alternative API call for last clean log info (920/950)
+   * (mrbungle64) Periodically polling of CleanLogs
+
 ### 0.6.1
    * Using library version 0.4.11
    * Several enhancements and fixes

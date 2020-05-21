@@ -3,13 +3,18 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nuki/README.md
 title: ioBroker.nuki
-hash: P87K8k3QRoNmwnT7cQ1SG6G3xD9B2Ic6N2+SM/BB8YE=
+hash: lSBuy3wO8xLRxMA6Xtr5F9HnepPcxBhxncvEdZEyjtQ=
 ---
 ![商标](../../../en/adapterref/iobroker.nuki/admin/nuki-logo.png)
 
-![安装数量](http://iobroker.live/badges/nuki-stable.svg)
+![安装数量](http://iobroker.live/badges/nuki-installed.svg)
+![稳定版](http://iobroker.live/badges/nuki-stable.svg)
+![NPM版本](http://img.shields.io/npm/v/iobroker.nuki.svg)
+![自上次发行以来提交](https://img.shields.io/github/commits-since/smaragdschlange/ioBroker.nuki/latest.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.nuki.svg)
+![NPM](https://nodei.co/npm/iobroker.nuki.png?downloads=true)
 
-＃ioBroker.nuki
+＃ioBroker.nuki [![Travis CI]（https://travis-ci.com/smaragdschlange/ioBroker.nuki.svg?branch=master）](https://travis-ci.com/smaragdschlange/ioBroker.nuki)
 此ioBroker适配器允许使用Nuki Bridge的API控制和监视[Nuki智能锁](https://nuki.io/de/)。
 
 ＃＃ 要求
@@ -31,12 +36,12 @@ Nuki适配器的每个实例都代表一个Nuki桥。创建实例时，只需输
 
 锁的有效输入值为：
 
-0（无动作）1（解锁）2（锁定）3（解锁）4（锁定“ n”前进）5（锁定“ n”进行解锁）
+0（无动作）1（解锁）2（锁定）3（解锁）4（锁定“ n”转到）5（锁定“ n”与解锁一起转到）
 
 * lockAction：锁定/解锁Nuki的开关（true =解锁； false =锁定）
 * openAction：用于解锁Nuki的按钮
-* openLocknGoAction：解锁按钮，并在几秒钟后锁定Nuki
-* unlockLocknGoAction：用于解锁并在锁定Nuki几秒钟后的按钮
+* openLocknGoAction：用于解锁并在锁定Nuki几秒钟后的按钮
+* unlockLocknGoAction：解锁按钮，几秒钟后锁定Nuki
 
 开罐器的有效输入值为：
 
@@ -56,8 +61,8 @@ Nuki适配器的每个实例都代表一个Nuki桥。创建实例时，只需输
 
 {“ token”：“ token123”，“ success”：true}回调函数：
 
-如果使用了回调函数，则在保存实例时，适配器将尝试在Nuki桥上自动设置回调。实例卸载后，回调将再次被删除。激活回调时，Nuki桥将使所有Nuki状态保持最新。
-可以使用以下网址在任何浏览器中设置和删除回调：
+如果使用了回调函数，则在保存实例时，适配器将尝试在Nuki桥上自动设置回调。实例卸载后，回调将再次被删除。激活回调后，Nuki桥将使所有Nuki状态保持最新。
+可以使用以下网址从任何浏览器中设置和删除回调：
 
 组：
 
@@ -68,9 +73,15 @@ Nuki适配器的每个实例都代表一个Nuki桥。创建实例时，只需输
 * http：// <bridge_ip>：<bridge_port> / callback / remove？id = <callback_id>＆token = <bridgeToken>
 
 ##更新
-从1.0.x更新到1.1.0或更高版本时，建议在安装新版本之前删除所有旧版本的实例。请注意，版本更改大于补丁程序级别更改（->仅更改最后一位数字）可能始终包含数据点更改，例如1.1.2至1.1.4
+从1.0.x更新到1.1.0或更高版本时，建议在安装新版本之前删除所有旧版本的实例。请注意，版本更改大于补丁程序级别（->仅更改最后一位数字）可能始终包含对数据点的更改，例如1.1.2至1.1.4
 
 ## Changelog
+
+### 1.2.3
+* (smaragdschlange) bug fix: convert to template strings
+
+### 1.2.2
+* (smaragdschlange) bug fix: get device type by state name when not provided by bridge (software bridge)
 
 ### 1.2.0
 * (smaragdschlange) improvement: support of hashed token (set to standard)

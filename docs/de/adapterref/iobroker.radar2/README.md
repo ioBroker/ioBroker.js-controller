@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.radar2/README.md
 title: Radar2-Netzwerk und reibungslose Verfügbarkeit
-hash: lVE3295PTa4EuFeQwSZc9GB98Y60n9pcML0Hu/1ofjQ=
+hash: TK3OepY8x8TFIMLfQhAqG+RCIVnShj01teU7JE3K9TU=
 ---
 # Radar2-Netzwerk und reibungslose Verfügbarkeit
 ![Logo](../../../en/adapterref/iobroker.radar2/admin/radar2.png)
@@ -13,19 +13,19 @@ hash: lVE3295PTa4EuFeQwSZc9GB98Y60n9pcML0Hu/1ofjQ=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.radar2.svg)
 ![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.radar2/master.svg)
 
-[Deutsches Handbuch - Deutsche Anleitung](README_DE.md)
+[Deutsches Handbuch - Deutsche Anleitung](README_de.md)
 
 ## IoBroker radar2 Sichtbarkeitstests für Netzwerk- und Bluetooth-Geräte, HP Drucker, UWZ-Warnungs- und EZB-Währungen
 Dieser Adapter versucht, die im Netzwerk oder über Bluetooth angegebenen Geräte zu finden. Es zeigt auch die aktuelle externe IP des Netzwerks an, kann den Tintenstatus von HP Druckern lesen und auch Wetterwarnungen von UWZ für mehrere europäische Länder. Es kann auch die täglichen Wechselkurse der EZB ablesen.
 
 Es funktioniert durch:
 
-* Verwenden von Arp-Scan und Ping zum Suchen von Geräten im Netzwerk mit IPv4 und IPv6!
+* Verwenden von Arp-Scan und Ping, um Geräte im Netzwerk mit IPv4 und IPv6 zu suchen!
 * Abhören von DHCP-Nachrichten, die neue Geräte ankündigen, die in das Netzwerk kommen.
 * Es funktioniert auf mehreren Schnittstellen, was bedeutet, dass Ihr System Wlan und LAN in verschiedenen Netzwerken hat und beide LANs sehen kann.
 * Normales Bluetooth und Bluetooth LE werden unterstützt
 * HP-Druckertintenstatus
-* Wechselkurs der europäischen Zentralbank für Euero
+* Wechselkurs der Europäischen Zentralbank für Euero
 * UWZ-Wetterwarnungen für den Bereich, auf den ioBroker eingestellt ist
 * Verwendet Arp-Scan und Ping im Netzwerk als nur expernal-Programme, alles andere ist intern für nodejs.
 * Der Adapter funktioniert auch ohne Root-Rechte, aber vor der Installation sind einige Konfigurationsaktionen erforderlich
@@ -101,7 +101,7 @@ Unter Osx funktioniert auch Bluetooth möglicherweise überhaupt nicht!
 Nach der Konfiguration des Installations-Setup-Adapters können Sie die Demo-Werbebuchungen entfernen.
 
 ### Spezielle Informationen für Arp-Scan:
-Es ist eine Standardbefehlszeile `-lgq --retry=5 --timeout=400` definiert, die auf allen IPv4-Schnittstellen alle 254 Adressen scannt, wenn sie nicht innerhalb von 400 ms antwortet und 5 Mal wiederholt wird! Wenn Sie nur die spezifische Schnittstelle scannen müssen, können Sie beispielsweise ` --interface=br0` hinzufügen, aber normalerweise werden Bridge-Schnittstellen jetzt zu Recht verwendet, aber in Docker-Umgebungen ist dies möglicherweise nicht erforderlich. Die Wiederholung = 5 kann für in 6 oder 7 geändert werden bessere Erkennung, über 7 fand ich keine Verbesserung! Das gleiche gilt für das Timeout, über 500 konnte ich keine Verbesserung feststellen.
+Es ist eine Standardbefehlszeile `-lgq --retry=5 --timeout=400` definiert, die auf allen IPv4-Schnittstellen alle 254 Adressen scannt, wenn sie nicht innerhalb von 400 ms antwortet und 5 Mal wiederholt wird! Wenn Sie nur die spezifische Schnittstelle scannen müssen, können Sie beispielsweise ` --interface=br0` hinzufügen, aber normalerweise werden Bridge-Schnittstellen jetzt zu Recht verwendet, aber in Docker-Umgebungen ist dies möglicherweise nicht erforderlich. Die Wiederholung = 5 kann für auf 6 oder 7 geändert werden bessere Erkennung, über 7 fand ich keine Verbesserung! Das gleiche gilt für das Timeout, über 500 konnte ich keine Verbesserung feststellen.
 
 ### Tipp für diejenigen, die von Radar zu Radar2-Adapter oder von Maschine zu Maschine wechseln
 * Wenn Sie Radaradapter verschieben, können Sie ganz einfach die gesamte Geräteliste oder Einstellungen von kopieren
@@ -110,7 +110,7 @@ Es ist eine Standardbefehlszeile `-lgq --retry=5 --timeout=400` definiert, die a
 * - Ganz rechts in dieser Zeile befindet sich ein Buttom mit einem Bleistift. Klicken Sie darauf
 * - Im Fenster erhalten Sie die Option NATIVE
 * - Sie sollten dann die Konfigurationsfelder sehen, den Inhalt des Felds 'Geräte' auswählen und in die Zwischenablage kopieren
-* - Machen Sie dasselbe auf dem Zielcomputer, indem Sie `system.adapter.radar2.0` in Admin / Objekte auswählen und gehen Sie hier auch zu NATIVE.
+* - Machen Sie dasselbe auf dem Zielcomputer, indem Sie "system.adapter.radar2.0" in "Admin / Objekte" auswählen und gehen Sie hier auch zu "NATIVE".
 * - Löschen Sie den Text im Feld "Geräte" und fügen Sie den alten Text aus der Zwischenablage ein
 * - Speichern Sie die Änderungen
 
@@ -123,7 +123,7 @@ Diese Methode zum Verschieben von Einstellungen funktioniert auch zwischen Syste
 
 ## Changelog
 
-### 1.2.3
+### 1.2.5
 
 * Updated to use the adapter for js-controller 3.0 
 * Updated HP printer routine to understand some newer inkjet printers

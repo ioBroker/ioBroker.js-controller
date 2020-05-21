@@ -17,6 +17,10 @@ Mercedes me adapter for ioBroker
 
 ## Changelog
 
+### 0.0.22
+
+- Rework fuel history, fix js-controller 3 issues
+
 ### 0.0.21
 
 - Removed Socket.io connection

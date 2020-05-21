@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 1rYVmy6lpZhG8vlUpYRAhkAU4GuCT7b4xULKhFRrp30=
+hash: cQTP+MdtmqtMAC0+ix9XDvx9WB7mZY0usUIF5JtQy9c=
 ---
-![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/i_150.png)
+![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/i1_150.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.vis-inventwo.svg)
@@ -34,6 +34,12 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 [![Spende] (admin / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+# 1.3.5
+- Aktualisierungsrate für Tabelle hinzugefügt
+
+# 1.3.4
+- Symbole und Hintergründe entfernt, Konfiguration geändert, Navigation korrigiert
 
 # 1.3.3
 - Die Option für den Hintergrund-Widget-Wert wurde korrigiert
