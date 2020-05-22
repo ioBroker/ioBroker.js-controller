@@ -483,7 +483,7 @@ function register(it, expect, context) {
                 expect(err).to.be.null;
 
                 context.adapter.setForeignState(fGid, 1, false, {user: 'system.user.write-only'}, function (err) {
-                    expect(err).to.be.equal('permissionError');
+                    expect(err.message).to.be.equal('permissionError');
                     done();
                 });
             });
