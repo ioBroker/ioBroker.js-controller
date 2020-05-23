@@ -51,7 +51,7 @@
 * (foxriver76) if buffer is of type object and not a buffer object log a warning - also bufferFrom null will also result in an error, prevent it (Sentry IOBROKER-JS-CONTROLLER-S)
 * (foxriver76) in edge cases def can be an object, we also support this on extend*Object*
 * (foxriver76) make sure stacktrace is there on validateId
-* (foxriver76) avoid error on installAdapters function due to downloadyRetry (Sentry IOBROKER-JS-CONTROLLER-V)
+* (foxriver76) avoid error on installAdapters function due to downloadRetry (Sentry IOBROKER-JS-CONTROLLER-V)
 * (Apollon77) make sure Logfile is rewritten with empty content (Sentry IOBROKER-JS-CONTROLLER-Q)
 * (Apollon77) Update Sentry Plugin to 1.0.0, adds pathBlacklist option, fixes pot. crash reason
 * (foxriver76) ensure backward compatibility with auto decrypt function
@@ -97,7 +97,7 @@
 * (foxriver76) streamline dependencies/globalDependency checks in all places and allow different versions 
 
 ## 3.0.11 (2020-04-15) Release Elena
-* (Apollon77) fix crash when system views are not correctly initalized (Sentry IOBROKER-JS-CONTROLLER-9) 
+* (Apollon77) fix crash when system views are not correctly initialized (Sentry IOBROKER-JS-CONTROLLER-9) 
 
 ## 3.0.10 (2020-04-15) Release Elena
 * (Apollon77) consider the Adapter Stop Timeout also for adapter restarts to give adapters enough time to stop before restarting
@@ -134,7 +134,7 @@
 ## 3.0.4 (2020-04-07) Release Elena
 * (Apollon77) Add "lc" property to list of allowed properties to set (prevent false positive errors with hm-rpc adapter)
 * (Apollon77) Add mock for adapter.states.getState to prevent crashed with Soef Adapters
-* (Apollon77) Make sure extendObject is checking object parts differently, prevent false positive loggings
+* (Apollon77) Make sure extendObject is checking object parts differently, prevent false positive logging
 
 ## 3.0.3 (2020-04-07) Release Elena
 **BREAKING CHANGES**
@@ -226,11 +226,11 @@
 * (foxriver76) fixing issues in backup validation + add some missing commands to cli help
 * (Apollon77) Do not have ioredis autoResubscribe because we do it by our own
 * (Apollon77) change stopTimeout to prevent killing wrong process for long running "stopTimeouts" that were then fast in the end
-* (bluefox) add CLI command "file rm" to delete files from iobroker storage via command line
+* (bluefox) add CLI command "file rm" to delete files from ioBroker storage via command line
 * (AlCalzone) fix some errors
 * (AlCalzone) make sure repository hash is always checked correctly
 * (Apollon77) make sure scheduled starts are also removed when a scheduled instance is stopped
-* (Apollon77) make sure Multihost discovery server does not unexpectedly restart  when trying to stop ioBroker Master
+* (Apollon77) make sure Multi-host discovery server does not unexpectedly restart  when trying to stop ioBroker Master
 * (Apollon77) add feature flag ADAPTER_SET_OBJECT_SETS_DEFAULT_VALUE for adapter class
 * (Apollon77) allow sessions to run longer then 24days (fixes #618, addresses ioBroker/ioBroker.admin#467)
 * (Apollon77) Check a wrong check for os on installation
@@ -238,8 +238,8 @@
 * (bluefox) fix CLI "state set"
 * (Apollon77) Add some more logging to Objects/States DB
 * (foxriver76) check if controller is running on `upgrade self` before controller upgrade (fixes #511)
-* (bluefox) Restart iobroker after applying vendor information
-* (Apollon77) fix pot. crashes happening while logs are rotated or packaged (thanx @mattberther and @rogerc)
+* (bluefox) Restart ioBroker after applying vendor information
+* (Apollon77) fix pot. crashes happening while logs are rotated or packaged (thanks @mattberther and @rogerc)
 
 ## 2.2.7 (2020-01-03) Release Dina
 * (Apollon77) Update deps
@@ -256,7 +256,7 @@
 * (Apollon77) add certificate handling if a local file is specified and do not overwrite if invalid in `setup first`
 * (Apollon77) add check in objects lib
 * (Apollon77) only initialize PacketManager when needed to prevent error messages shown when not relevant
-* (Apollon77) change logging when no packetmanageer found to info
+* (Apollon77) change logging when no packet manager found to info
 * (Apollon77) disable gz-log-rotation on windows; remove added logging from debugging
 * (Apollon77) make sure adapters and instances can be deleted again
 * (Apollon77) make sure Redis simulator only set object data, all other logic is done in objects lib
@@ -412,11 +412,10 @@
 **[Discussion Thread in Forum](https://forum.iobroker.net/topic/25692/js-controller-2-0-ab-sofort-im-latest-repo)**
 * (Apollon77) Also allow states/objects with capital letters as first letter
 * (Apollon77) fix adapter/instance deletion
-* (AlCalzone) fix CLI get state getvalue
+* (AlCalzone) fix CLI get state getValue
 * (Apollon77) increase LUA script timeout
 * (Apollon77) update in objects lib, also update other dependencies
 * (bluefox) small logging optimization
-
 
 ## 2.0.24 (2019-10-02) Release Bella
 * (Apollon77) optimize performance, especially for file/file systems
@@ -445,7 +444,7 @@
 * (Apollon77) allow to specify network family for redis library, defaults to 0 (IPv4 and IPv6)
 
 ## 2.0.17 (2019-10-01) Release Bella
-* (Apollon77) delay parallel start of scheduled instances to prevent system overload scenarios (same rules asd for adapterstart, basically 4s delay)
+* (Apollon77) delay parallel start of scheduled instances to prevent system overload scenarios (same rules asd for adapter start, basically 4s delay)
 * (Apollon77) Optimize some Migration questions
 * (Apollon77) smaller fixes and optimization
 
@@ -454,11 +453,11 @@
   * not set states will always return null now
   * States will set to null completely (not only value) when they expire
   * States will also be published to onChanged handlers when states are in Redis
-* (Apollon77) rework expiry handling for File-States to use Timouts
+* (Apollon77) rework expiry handling for File-States to use Timeouts
 
 ## 2.0.14 (2019-09-29) Release Bella
-* (Apollon77) fix checking if iobroker is running (bug in 2.0.13)
-* (Apollon77) upgrade socketio deps
+* (Apollon77) fix checking if ioBroker is running (bug in 2.0.13)
+* (Apollon77) upgrade socket-io deps
 * (Stabilostick) Randomize Certificate Serial numbers
 
 ## 2.0.13 (2019-09-28) Release Bella
@@ -493,7 +492,7 @@
 ## 2.0.6 (2019-09-21) Release Bella
 * (Apollon77) prevent "keys Not found" error in log, be more redis compatible, fixes #461
 * (Apollon77) prevent "invalid instance object" errors for channel objects, fixes #462
-* (Apollon77) optimize further on compact- and general adapter starting mechanisms to better prevent multistarts
+* (Apollon77) optimize further on compact- and general adapter starting mechanisms to better prevent multi-starts
 * (Apollon77) update objects-ha lib to 1.1.17 to normalize filenames to prevent problems on double-slashes
 
 ## 2.0.5 (2019-09-20) Release Bella
@@ -509,7 +508,7 @@
 ## 2.0.3 (2019-09-19) Release Bella
 * (Apollon77) Log Process-ID for all adapter log messages
 * (Apollon77) When Objects/States connection dies and is no longer able to be restored for adapters we end the adapter process. This prevents us from hanging processes
-* (Apollon77) End adapters with code 11 when they decide to end themself because they are not the current process, so that no additional restarts happen
+* (Apollon77) End adapters with code 11 when they decide to end itself because they are not the current process, so that no additional restarts happen
 
 ## 2.0.2 (2019-09-17) Release Bella
 
@@ -539,7 +538,7 @@
 * (foxriver76) add possibility to validate backup files
 * (alcalzone) Support command `iobroker logs`
 * (Stabilostick) `cert create` CLI commands
-* (Apollon77) Remember installation location for reinstallations. For GitHub installs it gets the exact commit hash to reinstall really the correct version
+* (Apollon77) Remember installation location for re-installations. For GitHub installs it gets the exact commit hash to reinstall really the correct version
 * (Apollon77) Use remembered installation location for automatic adapter installs (e.g. if missing, host move cases)
 
 ### New adapter developer features
@@ -557,7 +556,7 @@
 
 ### Further changes
 * **(Apollon77) Rewrite InMem databases (States & Objects) to TCP (redis compatible) protocol and deprecate socket.io version; will be removed approx. in v2.1. This change should prevent us from "Reconnection to DB" errors**
-* (bluefox) Add adapter handling to prevent "error 7" (adapters will stop themself as soon as PID is not as expected)
+* (bluefox) Add adapter handling to prevent "error 7" (adapters will stop itself as soon as PID is not as expected)
 * (Apollon77) upgrade all dependencies, means: 0 vulnerabilities :-)
 * (AlCalzone) Don't chmod 777 after controller upgrade
 * (alcalzone) refactoring of many CLI commands
@@ -590,9 +589,9 @@
 * (bluefox) optimize multi host upload
 * (Apollon77) Restart stopped adapters at the end of the upload and not before to make sure to not have two adapter restarts on upgrade cases
 * (Apollon77) Enhance checks for failed installations in cli and controller
-* (Apollon77) also update adapter instance statistic objects when no instanceObejcts are defined
+* (Apollon77) also update adapter instance statistic objects when no instanceObjects are defined
 * (Apollon77) "alive" state values are only checked on adapter start if ack=true to allow to start a process if not running
-* (Apollon77) fixes for mutlihost detection
+* (Apollon77) fixes for multi-host detection
 * (Apollon77) fix backup of states
 * (bluefox) Make sure also VIS global CSS is included in backup and restored
 * and many more fixes in various places
@@ -600,9 +599,9 @@
 ## 1.5.13 (2019-06-12) Evolution release (Ann)
 * (Stabilostick) Make sure Info Adapter Tab is displayed automatically on install
 * (Stabilostick) Add CLI host commands to CLI usage help
-* (Stabilostick) Replace winston-syslog dependency to prevent build errors on node.js 10+ when installing or updating iobroker (not needed in 2.0.0)
+* (Stabilostick) Replace winston-syslog dependency to prevent build errors on node.js 10+ when installing or updating ioBroker (not needed in 2.0.0)
 * (Stabilostick) Replace default self signed SSL certificate to prevent errors in Node.Js 10.16+
-* (Apollon77) Also replace default certificate used for all Web and Admin instances if the old cerfificate was used, so restart will use the new certificate
+* (Apollon77) Also replace default certificate used for all Web and Admin instances if the old certificate was used, so restart will use the new certificate
 
 ## 1.5.12 (2019-06-01) Evolution release (Ann)
 * (Apollon77) Install instance of info adapter too on first setup of controller
@@ -694,7 +693,7 @@ Main changes: add instance with desired number, Force using of socket.io 2.1.0, 
 * (bluefox) fix delObject
 * (bluefox) fix restore of backup
 * (bluefox) allow to add instance with desired number
-* (apollon77) fix auto multihost
+* (apollon77) fix auto multi-host
 * (bluefox) fix for adapter update
 * (bluefox) Force using of socket.io 2.1.0
 
@@ -725,8 +724,8 @@ Main changes: socket.io Version downgraded because of bug. Better npm5 support
 ## 1.2.7 (2018-03-06)
 Main changes: support of npm5, Multihost fixed, added promises to adapter.js
 
-* (bluefox) fix multihost connect
-* (bluefox) add "multihost status" command
+* (bluefox) fix multi-host connect
+* (bluefox) add "multi-host status" command
 * (bluefox) make statistics interval adjustable
 * (bluefox) better scan of installed adapters
 * (bluefox) better deletion of adapters
@@ -787,7 +786,7 @@ Main changes: support of npm5, Multihost fixed, added promises to adapter.js
 * (bluefox) catch semver error
 * (bluefox) change interface of getDevices functions
 * (bluefox) change interface of createChannel functions
-* (bluefox) working on multihost service
+* (bluefox) working on multi-host service
 * (bluefox) fix users cli
 * (bluefox) implement defaultNewAcl
 * (bluefox) remove 0.10 and add 8 by tests
@@ -801,7 +800,7 @@ Main changes: support of npm5, Multihost fixed, added promises to adapter.js
 * (Apollon77) optimizations for permission handling
 
 ## 1.1.0 (2017-06-08)
-* (bluefox) BREAKING Changes: For multihost systems the user MUST explicit allow connections from other IPs in /opt/iobroker/iobroker-data/iobroker.json
+* (bluefox) BREAKING Changes: For multi-host systems the user MUST explicit allow connections from other IPs in /opt/iobroker/iobroker-data/iobroker.json
 
 ```
 "host": "127.0.0.1",
@@ -861,7 +860,7 @@ for objects (line 11)  and for states (line 21).
 * (bluefox) write tests
 * (Patrick) adapter.namespace now always int (was int or string mixed)
 * (Patrick) _fixId better results for empty obj and string (return namespace + '.')
-* (bluefox) small fixes for multihost
+* (bluefox) small fixes for multi-host
 * (bluefox) add getInstalledAdapter for autodiscovery
 
 ## 0.15.3 (2017-01-20)
@@ -939,7 +938,7 @@ for objects (line 11)  and for states (line 21).
 * (bluefox) add pushsafer
 
 ## 0.12.2 (2016-09-04)
-* (bluefox) fix read versions by multihost
+* (bluefox) fix read versions by multi-host
 * (bluefox) add owntracks
 * (bluefox) add amazon-dash
 * (bluefox) control enabled for instance over system.adapter.NAME.INSTANCE.alive variable
@@ -950,7 +949,7 @@ for objects (line 11)  and for states (line 21).
 ## 0.12.0 (2016-08-27)
 * (bluefox) working on objects in redis
 * (bluefox) add botvac adapter
-* (bluefox) better multihost
+* (bluefox) better multi-host
 * (bluefox) fix formatDate
 
 ## 0.11.3 (2016-08-24)
@@ -1041,7 +1040,7 @@ for objects (line 11)  and for states (line 21).
 * (bluefox) fix getForeignObjects
 * (bluefox) add telegram
 * (bluefox) enable OEM naming
-* (bluefox) fix small error if multihost not available
+* (bluefox) fix small error if multi-host not available
 * (bluefox) add reinstall script
 * (bluefox) add vis-justgage adapter
 * (bluefox) add mysensors
