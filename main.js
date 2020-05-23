@@ -22,7 +22,7 @@ const pidUsage        = require('pidusage');
 const deepClone       = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const EXIT_CODES      = require('./lib/exitCodes');
-const {PluginHandler} = require('@iobroker/plugin-base');
+const { PluginHandler } = require('@iobroker/plugin-base');
 let pluginHandler;
 
 const exec            = cp.exec;
@@ -1881,7 +1881,7 @@ function processMessage(msg) {
 
                                 // If repo is not yet loaded
                                 if (!repos.native.repositories[active].json || updateRepo) {
-                                    logger.info(hostLogPrefix + ' Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
+                                    logger.info(`${hostLogPrefix} Updating repository "${active}" under "${repos.native.repositories[active].link}"`);
                                     // Load it
                                     tools.getRepositoryFile(repos.native.repositories[active].link, {
                                         hash: repos.native.repositories[active].hash,
@@ -3832,7 +3832,9 @@ function stopInstance(id, force, callback) {
                     states.setState(id + '.sigKill', {val: -1, ack: false, from: hostObjectPrefix}, err => { // send kill signal
                         logger.info(hostLogPrefix + ' stopInstance ' + instance._id + ' send kill signal');
                         if (!err) {
-                            procs[id].stopping = true;
+                            if (procs[id]) {
+                                procs[id].stopping = true;
+                            }
                             if (typeof callback === 'function') {
                                 callback();
                                 callback = null;
