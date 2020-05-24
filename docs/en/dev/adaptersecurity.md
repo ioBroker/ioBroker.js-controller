@@ -61,7 +61,7 @@ const decryptedContent = adapter.decrypt(encryptedContent);
 // Or use your own key (24 byte Hex) for encryption
 const crypto = require('crypto');
 const key = crypto.randomBytes(24).toString('hex');
-const encryptedContent = adapter.encrypt('super secret message', key);
-const decryptedContent = adapter.decrypt(encryptedContent, key);
+const encryptedContent = adapter.encrypt(key, 'super secret message');
+const decryptedContent = adapter.decrypt(key, encryptedContent);
 // decryptedContent === 'super secret message'
 ```
