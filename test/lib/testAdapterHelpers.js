@@ -382,7 +382,7 @@ function register(it, expect, context) {
         const encrypted = context.adapter.encrypt('topSecret');
         // we only check not equal, because encryption can change and is not always deterministic
         expect(encrypted.length).to.equal(79);
-        expect(encrypted.startsWith('$/aes-256-cbc:')).to.be.true;
+        expect(encrypted.startsWith('$/aes-192-cbc:')).to.be.true;
         const decrypted = context.adapter.decrypt(encrypted);
         // check that correctly decrypted
         expect(decrypted).to.equal('topSecret');

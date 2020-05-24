@@ -683,7 +683,7 @@
       "paramBoolean": false,
       "username": "tesla",
       "password": "G\\\b\u000bY\fS",
-      "secondPassword": "$/aes-256-cbc:cb52b76fba6b34778eb3799519dd6c00:4d7f1877553c1e9bb3e195041edd071ab377d7f70c8e91369b474b201d539a3c"
+      "secondPassword": "$/aes-192-cbc:bcc46f0eec2addc9a54e70776c3f3f79:3861c124787cffb3e1a4e575f5acdb51a1e279ccde98a427946e1762075f051f"
     },
     "protectedNative": [
       "username",
