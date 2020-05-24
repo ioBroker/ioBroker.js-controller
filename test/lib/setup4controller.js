@@ -58,22 +58,13 @@ function startController(options, callback) {
         connected: objectsInst => {
             objects = objectsInst;
             // clear all states
-            if (settingsObjects.connection.type === 'redis') {
-                objects.destroyDB(() => {
-                    isObjectConnected = true;
-                    if (isStatesConnected && states) {
-                        console.log('startController: started!');
-                        callback && callback(objects, states);
-                    }
-                });
-            } else {
-                console.log('Objects ok');
+            objects.destroyDB(() => {
                 isObjectConnected = true;
                 if (isStatesConnected && states) {
                     console.log('startController: started!');
                     callback && callback(objects, states);
                 }
-            }
+            });
         },
         change: options.objects.onChange || null
     };
