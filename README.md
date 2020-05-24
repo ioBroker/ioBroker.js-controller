@@ -603,6 +603,11 @@ ioBroker allows to use a Redis Sentinel system. For this you use ```iobroker cus
 
 With such a setup, ioBroker will connect to one of these sentinel processes to get the current Master Redis and then connect to it. When the connection to the Master is disconnected, all data updates are cached and transmitted as soon as a connection to the new master has been established.
 
+##### Using Password for Redis Databases
+**Feature status:** Stable
+
+
+
 ### Certificate Handling
 
 ... CLI
@@ -796,6 +801,40 @@ More details about plugins and their development can be found at the [Plugin-Bas
 New Plugins should always be developed, reviewed and published by ioBroker Core developers! Contact @Apollon77 or @GermanBluefox for this.
 
 Since js-controller 3.0 the sentry plugin is integrated and activated by default in js-controller. See information above.
+
+#### Maintenance mode
+There is a special maintenance mode. It is used by some special adapters, that will clean the objects and states from invalid entries.
+Invalid entries could be: 
+- has invalid ID (e.g. null, empty or with prohibited chars, very long IDs over 2000 chars),
+- has empty object or with no object type.
+- states, that have no according entry in object DB
+
+To make possible to get such an entries, the maintenance mode was implemented.
+To make a call in maintenance mode, you must provide `options` object with at least following attributes:
+```
+{
+    user: 'system.user.admin',
+    maintenance: true,
+}
+```    
+
+Following adapter methods support maintenance mode:
+```
+- adapter.getForeignState
+- adapter.getForeignObject
+- adapter.setObjectWithDefaultValue
+- adapter.setForeignObject
+- adapter.setObjectNotExists
+- adapter.delForeignObject
+
+- adapter.getForeignState
+- adapter.delForeignState
+- adapter.setBinaryState
+- adapter.getBinaryState
+- adapter.delBinaryState
+```
+
+*** Do not use this mode for any other purposes except sanitizing/cleaning/repairing of existing DBs (Object and States)***
 
 ## Release cycle and Development process overview
 

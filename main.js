@@ -12,7 +12,7 @@
 
 const schedule        = require('node-schedule');
 const os              = require('os');
-const fs              = require('fs');
+const fs              = require('fs-extra');
 const path            = require('path');
 const cp              = require('child_process');
 const ioPackage       = require('./io-package.json');
@@ -22,7 +22,7 @@ const pidUsage        = require('pidusage');
 const deepClone       = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const EXIT_CODES      = require('./lib/exitCodes');
-const {PluginHandler} = require('@iobroker/plugin-base');
+const { PluginHandler } = require('@iobroker/plugin-base');
 let pluginHandler;
 
 const exec            = cp.exec;
@@ -120,7 +120,7 @@ function getConfig() {
         process.exit(EXIT_CODES.MISSING_CONFIG_JSON);
         return null;
     } else {
-        const _config = JSON.parse(fs.readFileSync(configFile));
+        const _config = fs.readJSONSync(configFile);
         if (!_config.states)  {
             _config.states  = {type: 'file'};
         }
@@ -261,19 +261,20 @@ function handleDisconnect() {
 
     connected = false;
     logger.warn(hostLogPrefix + ' Slave controller detected disconnection. Stop all instances.');
-    stop(true, () => {
-        if (compactGroupController) {
-            setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
-        } else {
+    if (compactGroupController) {
+        stop(true);
+    } else {
+        stop(true, () => {
             restartTimeout = setTimeout(() => {
                 processMessage({command: 'cmdExec', message: {data: '_restart'}});
                 setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
             }, 10000);
-        }
-    });
+        });
+    }
 }
 
 function createStates(onConnect) {
+    // eslint-disable-next-line no-unused-vars
     const _inst = new States({
         namespace: hostLogPrefix,
         connection: config.states,
@@ -307,7 +308,7 @@ function createStates(onConnect) {
                         // delete too old callbacks IDs
                         const now = Date.now();
                         for (const _id in callbacks) {
-                            if (!callbacks.hasOwnProperty(_id)) {
+                            if (!Object.prototype.hasOwnProperty.call(callbacks, _id)) {
                                 continue;
                             }
                             if (now - callbacks[_id].time > 3600000) {
@@ -386,7 +387,7 @@ function createStates(onConnect) {
                 if (state.val && state.val !== currentLevel && ['silly','debug', 'info', 'warn', 'error'].includes(state.val)) {
                     config.log.level = state.val;
                     for (const transport in logger.transports) {
-                        if (!logger.transports.hasOwnProperty(transport)) {
+                        if (!Object.prototype.hasOwnProperty.call(logger.transports, transport)) {
                             continue;
                         }
                         if (logger.transports[transport].level === currentLevel) {
@@ -513,6 +514,7 @@ function initializeController() {
 
 // create "objects" object
 function createObjects(onConnect) {
+    // eslint-disable-next-line no-unused-vars
     const _inst = new Objects({
         namespace:  hostLogPrefix,
         connection: config.objects,
@@ -592,7 +594,7 @@ function createObjects(onConnect) {
                                     if (procs[id].restartTimer) {
                                         clearTimeout(procs[id].restartTimer);
                                     }
-                                    const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500
+                                    const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500;
                                     procs[id].restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                                 }
                             } else {
@@ -637,7 +639,7 @@ function createObjects(onConnect) {
                         (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)
                     ) {
                         // We should give is a slight delay to allow an pot. former existing process on other host to exit
-                        const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500
+                        const restartTimeout = (procs[id].config.common.stopTimeout || 500) + 2500;
                         procs[id].restartTimer = setTimeout(_id => startInstance(_id), restartTimeout, id);
                     }
                 }
@@ -769,7 +771,7 @@ function reportStatus() {
     outputCount = 0;
     if (!isStopping && compactGroupController && started && compactProcesses === 0 && realProcesses === 0) {
         logger.info('Compact group controller ' + compactGroup + ' does not own any processes, stop');
-        stop();
+        stop(false);
     }
 }
 
@@ -809,18 +811,18 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         let modified = false;
         // look for all subscribes from this instance
         for (const pattern in subs) {
-            if (!subs.hasOwnProperty(pattern)) {
+            if (!Object.prototype.hasOwnProperty.call(subs, pattern)) {
                 continue;
             }
             for (const id in subs[pattern]) {
-                if (subs[pattern].hasOwnProperty(id) && id === instance) {
+                if (Object.prototype.hasOwnProperty.call(subs[pattern], id) && id === instance) {
                     modified = true;
                     delete subs[pattern][id];
                 }
             }
             let found = false;
             for (const f in subs[pattern]) {
-                if (subs[pattern].hasOwnProperty(f)) {
+                if (Object.prototype.hasOwnProperty.call(subs[pattern], f)) {
                     found = true;
                     break;
                 }
@@ -938,6 +940,11 @@ function collectDiagInfo(type, callback) {
         callback && callback(null);
     } else {
         objects.getObject('system.config', (err, systemConfig) => {
+            if (err || !systemConfig || !systemConfig.common) {
+                logger.warn('System config object is corrupt, please run "iobroker setup first". Error: ' + err);
+                systemConfig = systemConfig || {};
+                systemConfig.common = systemConfig.common || {};
+            }
             objects.getObject('system.meta.uuid', (err, obj) => {
                 // create uuid
                 if (err || !obj) {
@@ -1595,8 +1602,7 @@ function setMeta() {
     objects.getObjectView('system', 'state', {startkey: hostObjectPrefix + '.', endkey: hostObjectPrefix + '.\u9999', include_docs: true}, (err, doc) => {
         if (err) {
             logger && logger.error(hostLogPrefix + ' Could not collect ' + hostObjectPrefix + ' states to check for obsolete states: ' + err);
-        }
-        else if (doc.rows) {
+        } else if (doc.rows) {
             // identify existing states for deletion, because they are not in the new tasks-list
             let thishostStates = doc.rows;
             if (!compactGroupController) {
@@ -1806,8 +1812,8 @@ function processMessage(msg) {
 
         case 'cmdExec': {
             const args = [__dirname + '/' + tools.appName + '.js'];
-            if (!msg.message.data) {
-                logger.warn(hostLogPrefix + ' ' + tools.appName + ' Invalid cmdExec object. Expected {"data": "command"}');
+            if (!msg.message.data || typeof msg.message.data !== 'string') {
+                logger.warn(hostLogPrefix + ' ' + tools.appName + ' Invalid cmdExec object. Expected key "data" with the command as string. Got as "data": ' + JSON.stringify(msg.message.data));
             } else {
                 const cmd = msg.message.data.split(' ');
                 for (let i = 0; i < cmd.length; i++) {
@@ -1875,7 +1881,7 @@ function processMessage(msg) {
 
                                 // If repo is not yet loaded
                                 if (!repos.native.repositories[active].json || updateRepo) {
-                                    logger.info(hostLogPrefix + ' Update repository "' + active + '" under "' + repos.native.repositories[active].link + '"');
+                                    logger.info(`${hostLogPrefix} Updating repository "${active}" under "${repos.native.repositories[active].link}"`);
                                     // Load it
                                     tools.getRepositoryFile(repos.native.repositories[active].link, {
                                         hash: repos.native.repositories[active].hash,
@@ -1937,7 +1943,7 @@ function processMessage(msg) {
                             if (doc.rows[i].id === hostObjectPrefix) {
                                 let _ioPack;
                                 try {
-                                    _ioPack = JSON.parse(fs.readFileSync(`${__dirname}/io-package.json`));
+                                    _ioPack = fs.readJSONSync(`${__dirname}/io-package.json`);
                                 } catch (e) {
                                     logger.error(`${hostLogPrefix} cannot read and parse "${__dirname}/io-package.json"`);
                                 }
@@ -1992,7 +1998,7 @@ function processMessage(msg) {
                 let _result = null;
                 if (fs.existsSync(dir + '/io-package.json')) {
                     try {
-                        _result = JSON.parse(fs.readFileSync(dir + '/io-package.json'));
+                        _result = fs.readJSONSync(dir + '/io-package.json');
                     } catch (e) {
                         logger.error(hostLogPrefix + ' cannot read and parse "' + dir + '/io-package.json"');
                     }
@@ -2007,7 +2013,7 @@ function processMessage(msg) {
             if (msg.callback && msg.from) {
                 ioPack = null;
                 try {
-                    ioPack = JSON.parse(fs.readFileSync(__dirname + '/io-package.json'));
+                    ioPack = fs.readJSONSync(__dirname + '/io-package.json');
                 } catch (e) {
                     logger.error(hostLogPrefix + ' cannot read and parse "' + __dirname + '/io-package.json"');
                 }
@@ -2135,7 +2141,7 @@ function processMessage(msg) {
                     // add information about running instances
                     let count = 0;
                     for (const id in procs) {
-                        if (procs.hasOwnProperty(id) && procs[id].process) {
+                        if (Object.prototype.hasOwnProperty.call(procs, id) && procs[id].process) {
                             count++;
                         }
                     }
@@ -2288,7 +2294,7 @@ function processMessage(msg) {
 
                 // Get list of all active adapters and send them message with command checkLogging
                 for (const _id in procs) {
-                    if (procs.hasOwnProperty(_id) && procs[_id].process) {
+                    if (Object.prototype.hasOwnProperty.call(procs, _id) && procs[_id].process) {
                         outputCount++;
                         states.setState(_id + '.checkLogging', {val: true, ack: false, from: hostObjectPrefix});
                     }
@@ -2296,13 +2302,13 @@ function processMessage(msg) {
             })();
             break;
 
-        case 'updateMultihost':
+        case 'updateMultihost': {
             const result = startMultihost();
             if (msg.callback) {
                 sendTo(msg.from, msg.command, {result: result}, msg.callback);
             }
             break;
-
+        }
         case 'getInterfaces':
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {result: os.networkInterfaces()}, msg.callback);
@@ -2346,7 +2352,7 @@ function processMessage(msg) {
                 if (fs.existsSync(configFile)) {
                     try {
                         let config = fs.readFileSync(configFile).toString('utf8');
-                        let stat = fs.lstatSync(configFile);
+                        const stat = fs.lstatSync(configFile);
                         config = JSON.parse(config);
                         sendTo(msg.from, msg.command, {config, isActive: uptimeStart > stat.mtimeMs}, msg.callback);
                     } catch (e) {
@@ -2364,7 +2370,7 @@ function processMessage(msg) {
             }
             break;
 
-        case 'writeBaseSettings':
+        case 'writeBaseSettings': {
             let error;
             if (msg.message) {
                 const configFile = tools.getConfigFileName();
@@ -2415,6 +2421,7 @@ function processMessage(msg) {
             }
 
             break;
+        }
     }
 }
 
@@ -2426,6 +2433,8 @@ function getInstances() {
             //if (states  && states.destroy)  states.destroy();
             //process.exit(1);
             return;
+        } else if (err) {
+            logger.error(hostLogPrefix + ' Can not get instances: ' + err);
         } else if (!doc.rows || doc.rows.length === 0) {
             logger.info(hostLogPrefix + ' no instances found');
         } else {
@@ -2437,7 +2446,7 @@ function getInstances() {
 
             // first mark all instances as disabled to detect disabled once
             for (const id in procs) {
-                if (procs.hasOwnProperty(id) && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
+                if (Object.prototype.hasOwnProperty.call(procs, id) && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
                     procs[id].config.common.enabled = false;
                 }
             }
@@ -2568,7 +2577,7 @@ function initInstances() {
 
     // Start first admin
     for (id in procs) {
-        if (!procs.hasOwnProperty(id)) {
+        if (!Object.prototype.hasOwnProperty.call(procs, id)) {
             continue;
         }
 
@@ -2595,7 +2604,7 @@ function initInstances() {
     }
 
     for (id in procs) {
-        if (!procs.hasOwnProperty(id)) {
+        if (!Object.prototype.hasOwnProperty.call(procs, id)) {
             continue;
         }
 
@@ -2674,7 +2683,10 @@ function checkVersions(id, deps, globalDeps) {
             const instances = {};
             const globInstances = {};
             if (res && res.rows) {
-                res.rows.forEach(item => globInstances[item.value._id] = item.value);
+                res.rows.forEach(item => {
+                    if (!item.value._id) return;
+                    globInstances[item.value._id] = item.value
+                });
                 Object.keys(globInstances).forEach(id => {
                     if (globInstances[id] && globInstances[id].common && globInstances[id].common.host === hostname) {
                         instances[id] = globInstances[id];
@@ -2732,7 +2744,7 @@ function storePids() {
             storeTimer = null;
             const pids = [];
             for (const id in procs) {
-                if (!procs.hasOwnProperty(id)) {
+                if (!Object.prototype.hasOwnProperty.call(procs, id)) {
                     continue;
                 }
 
@@ -2741,7 +2753,7 @@ function storePids() {
                 }
             }
             for (const id in compactProcs) {
-                if (!compactProcs.hasOwnProperty(id)) {
+                if (!Object.prototype.hasOwnProperty.call(compactProcs, id)) {
                     continue;
                 }
 
@@ -3039,7 +3051,7 @@ function startInstance(id, wakeUp) {
     // Check if all required adapters installed and have valid version
     if (instance.common.dependencies || instance.common.globalDependencies) {
         return checkVersions(id, instance.common.dependencies, instance.common.globalDependencies)
-            .then(ok => {
+            .then(() => {
                 delete instance.common.dependencies;
                 delete instance.common.globalDependencies;
                 startInstance(id, wakeUp);
@@ -3107,13 +3119,13 @@ function startInstance(id, wakeUp) {
     // check node.js version if defined in package.json
     if (procs[id].engine) {
         if (!semver.satisfies(process.version.replace(/^v/, ''), procs[id].engine)) {
-            logger.warn(`${hostLogPrefix} startInstance ${name}.${args[0]}: required node.js version ${procs[id].engine}, actual version ${process.version}`);
+            logger.warn(`${hostLogPrefix} startInstance ${name}.${args[0]}: required Node.js version ${procs[id].engine}, actual version ${process.version}`);
             // disable instance
             objects.getObject(id, (err, obj) => {
                 if (obj && obj.common && obj.common.enabled) {
                     obj.common.enabled = false;
                     objects.setObject(obj._id, obj, _err =>
-                        logger.warn(`${hostLogPrefix} startInstance ${name}.${args[0]}: instance disabled because of node.js version mismatch`));
+                        logger.warn(`${hostLogPrefix} startInstance ${name}.${args[0]}: instance disabled because of Node.js version mismatch`));
                 }
             });
             return;
@@ -3233,7 +3245,7 @@ function startInstance(id, wakeUp) {
                                 if (isStopping) {
                                     logger.silly(`${hostLogPrefix} Check Stopping ${id}`);
                                     for (const i in procs) {
-                                        if (!procs.hasOwnProperty(i)) {
+                                        if (!Object.prototype.hasOwnProperty.call(procs, i)) {
                                             continue;
                                         }
                                         if (procs[i].process) {
@@ -3242,7 +3254,7 @@ function startInstance(id, wakeUp) {
                                         }
                                     }
                                     for (const i in compactProcs) {
-                                        if (!compactProcs.hasOwnProperty(i)) {
+                                        if (!Object.prototype.hasOwnProperty.call(compactProcs, i)) {
                                             continue;
                                         }
                                         if (compactProcs[i].process) {
@@ -3343,7 +3355,9 @@ function startInstance(id, wakeUp) {
 
                 // Some parts of the Adapter start logic are async, so "the finalization" is put into this method
                 const handleAdapterProcessStart = () => {
-                    if (!procs[id]) return;
+                    if (!procs[id]) {
+                        return;
+                    }
                     if (!procs[id].process) { // We were not able or should not start as compact mode
                         try {
                             procs[id].process = cp.fork(fileNameFull, args, {
@@ -3536,7 +3550,7 @@ function startInstance(id, wakeUp) {
                                         if (isStopping) {
                                             logger.silly(hostLogPrefix + ' Check after group exit ' + currentCompactGroup);
                                             for (const i in procs) {
-                                                if (!procs.hasOwnProperty(i)) {
+                                                if (!Object.prototype.hasOwnProperty.call(procs, i)) {
                                                     continue;
                                                 }
                                                 if (procs[i].process) {
@@ -3545,7 +3559,7 @@ function startInstance(id, wakeUp) {
                                                 }
                                             }
                                             for (const i in compactProcs) {
-                                                if (!compactProcs.hasOwnProperty(i)) {
+                                                if (!Object.prototype.hasOwnProperty.call(compactProcs, i)) {
                                                     continue;
                                                 }
                                                 if (compactProcs[i].process) {
@@ -3660,7 +3674,9 @@ function startInstance(id, wakeUp) {
                                     logger.error(text);
                                 }
                             }
-                            delete procs[id].process;
+                            if (procs[id]) {
+                                delete procs[id].process;
+                            }
                             storePids(); // Store all pids to make possible kill them all
                         });
                     });
@@ -3692,7 +3708,7 @@ function stopInstance(id, force, callback) {
 
     const instance = procs[id].config;
     if (!instance || !instance.common || !instance.common.mode) {
-        if (procs[id].process) {
+        if (procs[id] && procs[id].process) {
             procs[id].stopping = true;
             if (!procs[id].startedAsCompactGroup) {
                 try {
@@ -3704,12 +3720,12 @@ function stopInstance(id, force, callback) {
             delete procs[id].process;
         }
 
-        if (procs[id].schedule) {
+        if (procs[id] && procs[id].schedule) {
             procs[id].schedule.cancel();
             delete procs[id].schedule;
         }
 
-        if (procs[id].subscribe) {
+        if (procs[id] && procs[id].subscribe) {
             // Remove this id from subsribed on this message
             if (subscribe[procs[id].subscribe] && subscribe[procs[id].subscribe].indexOf(id) !== -1) {
                 subscribe[procs[id].subscribe].splice(subscribe[procs[id].subscribe].indexOf(id), 1);
@@ -3816,7 +3832,9 @@ function stopInstance(id, force, callback) {
                     states.setState(id + '.sigKill', {val: -1, ack: false, from: hostObjectPrefix}, err => { // send kill signal
                         logger.info(hostLogPrefix + ' stopInstance ' + instance._id + ' send kill signal');
                         if (!err) {
-                            procs[id].stopping = true;
+                            if (procs[id]) {
+                                procs[id].stopping = true;
+                            }
                             if (typeof callback === 'function') {
                                 callback();
                                 callback = null;
@@ -3846,7 +3864,9 @@ function stopInstance(id, force, callback) {
                         }, timeoutDuration);
                     }); // if started let it end itself as first try
                 } else {
-                    delete procs[id].process;
+                    if (procs[id]) {
+                        delete procs[id].process;
+                    }
                     if (typeof callback === 'function') {
                         callback();
                         callback = null;
@@ -3856,9 +3876,9 @@ function stopInstance(id, force, callback) {
             break;
 
         case 'schedule':
-            if (!procs[id].schedule) {
+            if (procs[id] && !procs[id].schedule) {
                 !isStopping && logger.debug(hostLogPrefix + ' stopInstance ' + instance._id + ' not scheduled');
-            } else {
+            } else if (procs[id]) {
                 procs[id].schedule.cancel();
                 delete procs[id].schedule;
                 if (scheduledInstances[id]) {
@@ -3984,7 +4004,7 @@ function stopInstances(forceStop, callback) {
         }
 
         for (const id in procs) {
-            if (!procs.hasOwnProperty(id)) {
+            if (!Object.prototype.hasOwnProperty.call(procs, id)) {
                 continue;
             }
             stopInstance(id, forceStop); // sends kill signal via sigKill state or a kill after timeouts or if forced
@@ -3993,7 +4013,7 @@ function stopInstances(forceStop, callback) {
             // send instances SIGTERM, only needed if running in background (isDaemon)
             // or slave lost connection to master
             for (const id in compactProcs) {
-                if (!compactProcs.hasOwnProperty(id)) {
+                if (!Object.prototype.hasOwnProperty.call(compactProcs, id)) {
                     continue;
                 }
                 if (compactProcs[id].process) {
@@ -4023,6 +4043,12 @@ function stopInstances(forceStop, callback) {
     }, stopTimeout);
 }
 
+/**
+ * Stops the js-controller and all running adapter instances, if no cb provided pids.txt will be deleted and process exit will be called
+ *
+ * @param {boolean} force kills instances under all circumstances
+ * @param {function} [callback] callback function
+ */
 function stop(force, callback) {
     if (force === undefined) {
         force = false;
@@ -4063,7 +4089,7 @@ function stop(force, callback) {
             logger.info(hostLogPrefix + ' ' + (wasForced ? 'force terminating' : 'terminated'));
             if (wasForced) {
                 for (const i in procs) {
-                    if (!procs.hasOwnProperty(i)) {
+                    if (!Object.prototype.hasOwnProperty.call(procs, i)) {
                         continue;
                     }
                     if (procs[i].process) {
@@ -4073,7 +4099,7 @@ function stop(force, callback) {
                     }
                 }
                 for (const i in compactProcs) {
-                    if (!compactProcs.hasOwnProperty(i)) {
+                    if (!Object.prototype.hasOwnProperty.call(compactProcs, i)) {
                         continue;
                     }
                     if (compactProcs[i].process) {
@@ -4082,10 +4108,23 @@ function stop(force, callback) {
                 }
             }
             states && states.destroy && states.destroy();
+
             if (typeof callback === 'function') {
                 return void callback();
             } else {
-                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
+                setTimeout(() => {
+                    try {
+                        // avoid pids been written after deletion
+                        if (storeTimer) {
+                            clearTimeout(storeTimer);
+                        }
+                        // delete pids.txt
+                        fs.unlinkSync(path.join(__dirname, 'pids.txt'));
+                    } catch (e) {
+                        logger.error(`${hostLogPrefix} Could not delete ${path.join(__dirname, 'pids.txt')}: ${e}`);
+                    }
+                    process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
+                }, 1000);
             }
         });
     });
@@ -4189,7 +4228,7 @@ function init(compactGroupId) {
                     }, null, 2));
                 } else {
                     // npm3 requires version attribute
-                    const p = JSON.parse(fs.readFileSync(__dirname + '/../../package.json').toString());
+                    const p = fs.readJSONSync(__dirname + '/../../package.json');
                     if (!p.version) {
                         fs.writeFileSync(__dirname + '/../../package.json', JSON.stringify({
                             name: 'iobroker.core',
@@ -4207,19 +4246,43 @@ function init(compactGroupId) {
         logger.info(hostLogPrefix + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
     }
 
+    let packageJson;
+    try {
+        packageJson = fs.readJSONSync(`${__dirname}/package.json`);
+    } catch (err) {
+        logger.error(hostLogPrefix + ' Can not read js-controller package.json');
+    }
+
+    if (packageJson && packageJson.engines && packageJson.engines.node) {
+        let invalidVersion;
+        try {
+            invalidVersion = !semver.satisfies(process.version, packageJson.engines.node);
+        } catch {
+            // semver could also not support the node version or something else ... failsafe
+            invalidVersion = true;
+        }
+
+        if (invalidVersion){
+            logger.error('ioBroker requires Node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
+            logger.error('Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
+
+            console.error('ioBroker requires Node.js in version ' + packageJson.engines.node + ', you have ' + process.version);
+            console.error('Please upgrade your Node.js version. See https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten');
+
+            process.exit(EXIT_CODES.INVALID_NODE_VERSION);
+        }
+    }
+
+    /** @type {import("@iobroker/plugin-base/types").PluginHandlerSettings} */
     const pluginSettings = {
         scope: 'controller',
         namespace: hostObjectPrefix,
         logNamespace: hostLogPrefix,
         log: logger,
         iobrokerConfig: config,
-        parentPackage: null
+        parentPackage: packageJson,
+        controllerVersion: version
     };
-    try {
-        pluginSettings.parentPackage = JSON.parse(fs.readFileSync(__dirname + '/package.json', 'utf8'));
-    } catch (err) {
-        logger.error(hostLogPrefix + ' Can not read js-controller package.json');
-    }
     pluginHandler = new PluginHandler(pluginSettings);
     pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
     pluginHandler.addPlugins(config.plugins, __dirname);           // ... plugins from iobroker.json
@@ -4294,7 +4357,7 @@ function init(compactGroupId) {
             if (err.stack) {
                 console.error(err.stack);
             }
-            stop();
+            stop(false);
             return;
         }
         console.error(err.message || err);
@@ -4334,19 +4397,19 @@ function init(compactGroupId) {
             logger.error(hostLogPrefix + ' uncaught exception: ' + err);
             logger.error(hostLogPrefix + ' ' + err.stack);
         }
-        stop();
+        stop(false);
         // Restart itself
         processMessage({command: 'cmdExec', message: {data: '_restart'}});
     };
 
     process.on('SIGINT', () => {
         logger.info(hostLogPrefix + ' received SIGINT');
-        stop();
+        stop(false);
     });
 
     process.on('SIGTERM', () => {
         logger.info(hostLogPrefix + ' received SIGTERM');
-        stop();
+        stop(false);
     });
 
     process.on('uncaughtException', exceptionHandler);

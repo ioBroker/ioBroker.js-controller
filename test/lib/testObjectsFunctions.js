@@ -1130,7 +1130,7 @@ function register(it, expect, context) {
             }
         });
 
-        expect(obj).to.be.ok,
+        expect(obj).to.be.ok;
 
         state = await context.adapter.getStateAsync('testDefaultValExtend');
         expect(state.val.hello).to.equal('world');
