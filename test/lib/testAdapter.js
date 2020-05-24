@@ -265,8 +265,11 @@ function testAdapter(options) {
             expect(context.adapter.config.paramNumber).to.be.equal(42);
             expect(context.adapter.config.paramBoolean).to.be.equal(false);
             expect(context.adapter.config.username).to.be.equal('tesla');
-            // password has to be winning (decrypted)
+            // password has to be winning (decrypted via legacy - backward compatibility)
             expect(context.adapter.config.password).to.be.equal('winning');
+            // secondPassword should be decrypted with AES-256 correctly
+            expect(context.adapter.config.secondPassword).to.be.equal('ii-€+winning*-³§"');
+
             let count = 0;
 
             context.states.getState('system.adapter.' + context.adapterShortName + '.0.compactMode', function (err, state) {
