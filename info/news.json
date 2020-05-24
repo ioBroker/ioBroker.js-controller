@@ -1188,5 +1188,38 @@
         "conditions": {
             "pushover": "smaller(2.0.0)"
         }
+    },
+    {
+        "title": {
+            "en": "Important information for the Javascript adapter from version 4.6.0",
+            "de": "Wichtige Informationen für den Javascript-Adapter ab Version 4.6.0",
+            "ru": "Важная информация для адаптера Javascript с версии 4.6.0",
+            "pt": "Informações importantes para o adaptador Javascript da versão 4.6.0",
+            "nl": "Belangrijke informatie voor de Javascript-adapter vanaf versie 4.6.0",
+            "fr": "Informations importantes pour l'adaptateur Javascript à partir de la version 4.6.0",
+            "it": "Informazioni importanti per l'adattatore Javascript dalla versione 4.6.0",
+            "es": "Información importante para el adaptador Javascript de la versión 4.6.0",
+            "pl": "Ważna informacja dla adaptera JavaScript od wersji 4.6.0",
+            "zh-cn": "从4.6.0版开始的Java适配器的重要信息"
+        },
+        "content": {
+            "en": "BREAKING: Please check \"stopTimeout\" blocks in your Blockly scripts that the correct timeout name is listed there and correct after the update!",
+            "de": "BREAKING: Bitte überprüfen Sie \"stopTimeout\" -Blöcke in Ihren Blockly-Skripten, ob der richtige Timeout-Name dort aufgeführt ist und korrigieren Sie ihn nach dem Update!",
+            "ru": "BREAKING: Пожалуйста, проверьте блоки \"stopTimeout\" в ваших сценариях Blockly, чтобы там указывалось правильное имя тайм-аута и корректное после обновления!",
+            "pt": "QUEBRANDO: Verifique nos blocos \"stopTimeout\" nos scripts do Blockly que o nome do tempo limite correto está listado lá e corrija após a atualização!",
+            "nl": "BREAKING: Controleer a.u.b. \"stopTimeout\" -blokken in uw Blockly-scripts dat de juiste time-outnaam daar vermeld staat en corrigeer na de update!",
+            "fr": "RUPTURE: Veuillez vérifier les blocs \"stopTimeout\" dans vos scripts Blockly que le nom de timeout correct y est répertorié et corriger après la mise à jour!",
+            "it": "BREAKING: Controllare i blocchi \"stopTimeout\" negli script Blockly che il nome di timeout corretto sia elencato lì e corretto dopo l'aggiornamento!",
+            "es": "ROMPIENDO: Por favor, compruebe los bloques \"stopTimeout\" en sus secuencias de comandos Blockly que el nombre de tiempo de espera correcto aparece allí y es correcto después de la actualización.",
+            "pl": "ŁAMANIE: Sprawdź skrypty „stopTimeout” w swoich skryptach Blockly, czy podana jest tam poprawna nazwa limitu czasu i poprawna po aktualizacji!",
+            "zh-cn": "BREAKING：请检查您的Blockly脚本中的“ stopTimeout”块，其中列出了正确的超时名称，并且在更新后正确！"
+        "id": "JsAdapterBlockly",
+        "class": "warning",
+        "fa-icon": "exclamation-circle",
+        "created": "2020-05-25T00:00:00.000Z",
+        "repo": "latest",    
+        "conditions": {
+            "javascript": "smaller(4.6.0)"
+        }
     }
 ]
