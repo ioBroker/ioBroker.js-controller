@@ -27,7 +27,9 @@ which will be stored encrypted and automatically be decrypted at adapter runtime
 
 Whenever the currently used encryption algorithm gets unsafe, it will be changed in the js-controller.
 
-__Currently used encryption algorithm__: `default`
+__Currently used encryption algorithm__
+- js-controller >= 3.0: `default`
+- js-controller >= 3.2: `aes-192-cbc`
 
 Note, that this feature requires at least js-controller 3.0.0.
 
@@ -41,4 +43,25 @@ __Example__:
   "password": "topSecret"
 }
 ...
+```
+
+## Manually encrypt and decrypt sensitive data
+We also provide adapter methods to encrypt data manually inside your code.
+For this you can use the `adapter.encrypt` and `adapter.decrypt` methods. The key used for encryption and decryption is the 
+systemwide unique secret of the users installation. If you want to use your own key (192 bit Hex) for encryption, you can do so, by passing a second argument to the `encrypt` and `decrypt` methods.
+
+__Example__:
+```javascript
+// encrypt data using users unique secret
+const encryptedContent = adapter.encrypt('super secret message');
+
+const decryptedContent = adapter.decrypt(encryptedContent); 
+// decryptedContent === 'super secret message'
+
+// Or use your own key (24 byte Hex) for encryption
+const crypto = require('crypto');
+const key = crypto.randomBytes(24).toString('hex');
+const encryptedContent = adapter.encrypt(key, 'super secret message');
+const decryptedContent = adapter.decrypt(key, encryptedContent);
+// decryptedContent === 'super secret message'
 ```
