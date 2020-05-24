@@ -9,7 +9,7 @@ lastChanged: "29.03.2019"
     ausführlich erklärt.
 
 ioBroker ist eine Softwarelösung um verschiedene Smarthome-Systeme, die ohne 
-ioBroker Insellösungen bleiben würden in einem Gesamtsystem zu integrieren. 
+ioBroker Insellösungen bleiben würden, in einem Gesamtsystem zu integrieren. 
 
 ioBroker ist daher ***die*** Integrationsplattform für das Internet der Dinge.
 
@@ -67,7 +67,7 @@ Anforderungen schnell umsetzbar sind. Das macht es möglich, dass jeder
 zu ioBroker beitragen kann und auch individuelle Anforderungen umsetzbar sind.
 
 Für Einsteiger in die Programmierung ist die Variante 'Blockly' vorhanden, die es 
-ermöglicht ohne umfangreiche Programmierkenntnisse selber per 'drag and drop' 
+ermöglicht, ohne umfangreiche Programmierkenntnisse selber per 'drag and drop' 
 schnell zu Ergebnissen zu kommen.
 
 ## Visualisierung
