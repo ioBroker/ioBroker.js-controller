@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: TO/V4QxSRszN4hqJPa4D9mVgg+pzxB/bgHBfMGgqQoI=
+hash: 6Eo8Jf+RRmiw2StisaXhUrbLu5493j4zhlWj+OTMXRE=
 ---
 ![商标](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -16,7 +16,7 @@ hash: TO/V4QxSRszN4hqJPa4D9mVgg+pzxB/bgHBfMGgqQoI=
 ![特拉维斯](http://img.shields.io/travis/misanorot/ioBroker.alarm/master.svg)
 
 ＃ioBroker.alarm
-[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
+[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[英文说明](https://github.com/misanorot/ioBroker.alarm/blob/master/lib/Readme_en.md)**
 
@@ -35,7 +35,7 @@ Dies ist ein Adapter，mit dem sich eine kleine Alarmanlage ohnegroßeprogrammie
 更高的werden die Kreise der Anlage konfiguriert。
 *戴姆·德恩州立大学拉森学院
 
-安拉格·沃兰格·沃伦·艾伦·安德烈·基森和阿勒盖克·安特里克·德·阿里奇·德·艾尔格里克都在此工作。
+安拉格·沃兰格·沃伦·艾伦·安德烈·基森和阿勒盖克·安特里克·德·阿里奇·德·艾尔格里克·德·艾尔格里克·德·艾尔格里克都死了。
 
 冯·芬奇根（Funktionen）的儿子，国家图书馆（Nurüberwachtund geben ggf）。 eine Meldung ab wenn eineÄnderungstattfand。 Die zweite Funktion besteht darin，bei z。 B.州立和北部州立大学安格森分校。 eine Meldung Abgesetzt wird。
 
@@ -60,7 +60,7 @@ Bei aktiver Nachtruhe werdenVeränderungenwährendder erkannt和ggf。宝石。
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Sprachausgabe
-伊恩·盖因施特（Est einegewünschte）Sprachausgabe z.B. bei beiÄnderungdes Zustandesgewünscht，sich das hier mit dengewünschtenSätzenkonfigurieren。 Lässtman Felder wie z.B. bei der Aktivierung leer，所以发现了Keine Sprachausgabe statt。 Weitere Optionen wie die ausgabe von Namen sind hier auch einstellbar。
+伊恩·盖因施特（Est einegewünschte）Sprachausgabe z.B. bei beiÄnderungdes Zustandesgewünscht，lässtsich das hier mit dengewünschtenSätzenkonfigurieren。 Lässtman Felder wie z.B. bei der Aktivierung leer，所以发现了Keine Sprachausgabe statt。 Weitere Optionen wie die ausgabe von Namen sind hier auch einstellbar。
 * Sayit oder Alexa2 werdenunterstüzt*
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -75,10 +75,11 @@ Eslässtsich somit z.B.在Nachtruhe的Beginn der河畔，Eerie Veriegelung desT�
 Der Adapter liefert eine ganze Anzahl国家/地区：
 
 ####“ alarm.x.use .....”。
-紧急状态下的警报状态。
+紧急状态下的警报和警报状态。
+Es istmöglich死于Alarmanlage direkt von aktiviert auf“ intern scharf” umzuschalten，死于jedoch nurMöglichWenn死于Alarmanlage nicht奥斯特洛斯特。
 
 ####“ alarm.x.status ....”
-尊贵的祖斯塔德·安拉格能力等级较高的人。
+尊贵的祖斯塔德·安拉格能力阶层。
 
 ####“ alarm.x.info ....”
 LiefertzusätzlicheInformationen wie z.B. welche“Türenoffen sind” oder einen日志状态。
@@ -87,12 +88,12 @@ LiefertzusätzlicheInformationen wie z.B. welche“Türenoffen sind” oder eine
 ----------------------------------------------------------------------------------------------------------------------
 
 ##问题
--温恩·曼恩（Wen Man eine）的电报oderähnlichesüberdas +hinzufügt，坎恩·曼努尔·爱因州立大学（Instanzauswählen）和曼斯·穆斯·比斯·奥斯夫* telegram.0 * Alleslöschen。
+-温恩·曼恩（Wen man eine）的电报oderähnlichesüberdas +hinzufügt，坎恩·曼努尔·爱因州立大学（Instanzauswählen）和曼斯·穆斯·比斯·奥夫* telegram.0 * Alleslöschen。
 
 #### Erfahrene ioBroker Nutzer
 *在Optionen中的人将在Log Ausgabe中，并在Log des ioBroker geschrieben中获得werden gewisseÄnderungen。您可以在以下位置找到自己的名字：* / lib / Logs.js最好的编辑。*
 
-#### Wichtig，死于Benutzung，死于适配器。gechihr，死于衰败，而keine Haftungübernommen！
+#### Wichtig，死于Benutzung，死于适配器。
 
 ## Changelog
 

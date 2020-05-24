@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.plex/README.md
 title: ioBroker.plex
-hash: R+xTNphUZT9QNNpz9rhtHbQNV5aoYGIj4V5w5jDgVfw=
+hash: jXJT6rWqMtSZBhI5P93fF0BtQxWaPG/3qBnjz5B9ryA=
 ---
 ![商标](../../../en/adapterref/iobroker.plex/admin/plex.jpg)
 
@@ -11,7 +11,7 @@ hash: R+xTNphUZT9QNNpz9rhtHbQNV5aoYGIj4V5w5jDgVfw=
 ![安装数量](http://iobroker.live/badges/plex-installed.svg)
 ![稳定版](http://iobroker.live/badges/plex-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.plex.svg)
-![自上次发布以来提交](https://img.shields.io/github/commits-since/Zefau/ioBroker.plex/latest.svg)
+![自上次发行以来提交](https://img.shields.io/github/commits-since/Zefau/ioBroker.plex/latest.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.plex.svg)
 ![NPM](https://nodei.co/npm/iobroker.plex.png?downloads=true)
 
@@ -23,7 +23,7 @@ hash: R+xTNphUZT9QNNpz9rhtHbQNV5aoYGIj4V5w5jDgVfw=
 1. [功能]（＃1-功能）
 2. [设置说明]（＃2-设置说明）
    1. [基本设置]（＃21-基本设置）
-   2. [高级设置]（＃22-advanced-setup-plex-pass-or-tautulli）
+   2. [高级设置]（＃22-高级设置双工或tautulli）
 3. [通道和状态]（＃3通道-状态）
    1. [使用基本设置]（＃31-with-basis-setup）
    2. [使用高级设置]（＃32-高级设置）
@@ -31,8 +31,9 @@ hash: R+xTNphUZT9QNNpz9rhtHbQNV5aoYGIj4V5w5jDgVfw=
 5. [许可证]（＃license）
 
 ## 1.功能
+-接收有关当前播放的媒体项目的详细媒体信息（例如视频比特率，编解码器，字幕信息，音频；请参阅[高级设置]（https://github.com/Zefau/ioBroker.plex/blob/master/README- States.md＃with-advanced-setup）以获取完整列表）
 -从Plex接收“事件”（通过[Plex Webhook]（https://support.plex.tv/articles/115002267687-webhooks/#toc-0）和[Plex通知]（https://support.plex.tv / articles / push-notifications /＃toc-0）使用Plex Pass或通过Tautulli，[__请参阅设置！__]（＃22-advanced-setup-plex-pass-or-tautulli））
--播放器播放控制
+-播放器的播放控制
 -检索服务器
 -检索“库”
 -检索库中的所有项目
@@ -54,23 +55,23 @@ hash: R+xTNphUZT9QNNpz9rhtHbQNV5aoYGIj4V5w5jDgVfw=
 #### 2.2.1。 Plex通行证
 __Webhook__
 
-如果您是Plex Pass用户，则可以在Plex设置中[设置一个webhook](https://support.plex.tv/articles/115002267687-webhooks/#toc-0)从您的Plex Media Server中检索当前事件/动作（播放，暂停，继续，停止，查看和评分）。
+如果您是Plex Pass用户，则可以在Plex设置中[设置一个webhook](https://support.plex.tv/articles/115002267687-webhooks/#toc-0)从Plex Media Server中检索当前事件/动作（播放，暂停，继续，停止，查看和评分）。
 
-导航到Plex Media Server，然后转到```Settings```和```Webhook```§。通过单击§§JJJJJ_2_2§§创建一个新的Webhook，并使用ioBroker.plex设置中指定的自定义端口输入ioBroker IP地址，并在路径中尾随```/plex```路径，例如```http://192.168.178.29:41891/plex```：
+导航到您的Plex Media Server并转到```Settings```和```Webhook```§。通过单击§§JJJJJ_2_2§§创建一个新的Webhook，并使用ioBroker.plex设置中指定的自定义端口输入ioBroker IP地址，并在路径中尾随```/plex```路径，例如```http://192.168.178.29:41891/plex```：
 
 ![Plex Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_plex-webhook.png)
 
 __事件__
 
-有关Plex通知的信息，请[请参阅官方文档](https://support.plex.tv/articles/push-notifications/#toc-0)。要打开Plex Media Server上的通知，请转至`Settings`>`Server`>`General`，然后启用`Push Notifications`首选项。
+有关Plex通知的信息，请[参阅官方文件](https://support.plex.tv/articles/push-notifications/#toc-0)。要打开Plex Media Server上的通知，请转至`Settings`>`Server`>`General`，然后启用`Push Notifications`首选项。
 
 #### 2.2.2.Tautulli
-[Tautulli是第三方应用程序]（https://tautulli.com/#about），您可以与Plex Media Server一起运行以监视活动并跟踪各种统计信息。最重要的是，这些统计信息包括已观看的内容，观看者，观看时间和地点以及观看方式。所有统计信息均以漂亮美观的界面呈现，其中包含许多表格和图表，因此可以轻松地向其他人炫耀您的服务器。签出[Tautulli预览]（https://tautulli.com/#preview）并[将其安装在您的首选系统上](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation)（如果您有兴趣）。
+[Tautulli是第三方应用程序]（https://tautulli.com/#about），可以与Plex Media Server一起运行以监视活动并跟踪各种统计信息。最重要的是，这些统计信息包括已观看的内容，观看者，观看时间和地点以及观看方式。所有统计信息均以漂亮美观的界面呈现，其中包含许多表格和图表，这使向其他人轻松炫耀您的服务器变得容易。签出[Tautulli预览]（https://tautulli.com/#preview）并[将其安装在您的首选系统上](https://github.com/Tautulli/Tautulli-Wiki/wiki/Installation)（如果您有兴趣）。
 
 此适配器连接到[Tautulli API](https://github.com/Tautulli/Tautulli/blob/master/API.md)，并且还从Tautulli接收webhook事件。
 
 ##### 2.2.2.1。 API
-安装Tautulli后，从Tautulli仪表板打开_Settings_页面并导航到_Web Interface_。向下滚动到_API_部分，并确保已选中§§JJJJJ_0_0§§。复制```API key```并将其输入ioBroker.plex设置中。此外，添加Tautulli IP地址和端口以允许API通信。
+安装Tautulli后，从Tautulli仪表板打开_Settings_页面，然后导航到_Web Interface_。向下滚动到_API_部分，并确保已选中§§JJJJJ_0_0§§。复制```API key```并将其输入ioBroker.plex设置中。此外，添加Tautulli IP地址和端口以允许API通信。
 
 ##### 2.2.2.2。 Webhook
 ######概述
@@ -93,9 +94,9 @@ __事件__
 ![Tautulli Webhook](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-webhook.png)此外，为_Webhook方法_选择§§JJJJJ_0_0§§，然后在_Description_中输入您喜欢的任何描述。
 
 3.接下来，转到_Triggers_选项卡，选择所需的（或全部）通知代理。启用的通知代理将触发事件，然后将其发送到ioBroker。 __请确保__在下一步中为每个已启用的通知代理提供必要的数据！
-4.现在，最重要的是__，根据__ [此处找到的通知配置]（README-tautulli.md＃notification-configuration）__填写_Data_选项卡中的相应数据有效负载。
+4.现在，最重要的是__，根据__ [此处的通知配置]（README-tautulli.md＃notification-configuration）__填写_Data_选项卡中的相应数据有效负载。
 
-   在每个文本框中复制上一步中的相关通知代理的通知配置（例如```Playback Start```，```Playback Stop```，§§JJJJ_2_2§§和```Playback Resume```），如下所示。 §JJJJJ_4§§：
+   在每个文本框中复制上一步中相关通知代理的通知配置（例如```Playback Start```，```Playback Stop```，§§JJJJ_2_2§§和```Playback Resume```），如下所示，用于§ §JJJJJ_4§§：
 
    ![Tautulli通知](../../../en/adapterref/iobroker.plex/img/screenshot_tautulli-notification.png)
 
@@ -122,17 +123,21 @@ __事件__
 
 |频道/文件夹|描述备注|
 | ---------------- | ----------- | ------ |
-| __ \ _ playing__ | Plex Media正在播放| Plex Pass或Tautulli的旅行|
+| __ \ _ playing__ | Plex Media正在播放|使用Plex Pass或Tautulli |
 | __统计__ | Plex手表统计信息|仅与Tautulli |
 | __用户__ | Plex用户|仅与Tautulli |
 
 ## Changelog
 
-### 0.8.11 (2019-02-26)
+### 0.9.0 (2020-05-23)
+- (Zefau) added option for webhook Ip address in case Plex is running in a Docker environment (see [#53](https://github.com/Zefau/ioBroker.plex/issues/53))
+- (Zefau) updated dependencies
+
+### 0.8.11 (2020-02-26)
 - (Zefau) fixed error with state retrieval on startup when no states are given
 - (Zefau) updated dependencies
 
-### 0.8.10 (2019-02-16)
+### 0.8.10 (2020-02-16)
 - (Zefau) fixed error with state retrieval on startup when no states are given
 - (Zfeau) fixed incorrect handling of certificates when using secure connection
 - (Zefau) updated dependencies
@@ -140,7 +145,7 @@ __事件__
 ### 0.8.9 (2019-12-14)
 - (Zefau) updated dependencies
 - (Zefau) fixed missing spaces in events (and thus Adapter Web View)
-- (Zefau) fixed using username instead of email for statistics [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
+- (Zefau) fixed using username instead of email for statistics (see [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
 
 ### 0.8.8 (2019-12-05)
 - (Zefau) fixed player controls
@@ -155,7 +160,7 @@ __事件__
 
 ### 0.8.5 (2019-12-01)
 - (Zefau) fixed missing user / library statistics
-- (Zefau) fixed using username instead of email for statistics [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
+- (Zefau) fixed using username instead of email for statistics (see [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
 
 ### 0.8.4 (2019-11-07)
 - (Zefau) added support for remote player control via cloud / iot adapter
@@ -171,18 +176,18 @@ __事件__
 
 ### 0.8.0 (2019-10-28)
 - (Zefau) added support for Plex Notifications including customization in adapter settings
-- (Zefau) added count of streams [#14](https://github.com/Zefau/ioBroker.plex/issues/14))
-- (Zefau) reworked cleaning up states when new webhook is received [#11](https://github.com/Zefau/ioBroker.plex/issues/11))
+- (Zefau) added count of streams (see [#14](https://github.com/Zefau/ioBroker.plex/issues/14))
+- (Zefau) reworked cleaning up states when new webhook is received (see [#11](https://github.com/Zefau/ioBroker.plex/issues/11))
 
 ### 0.7.0 (2019-10-17)
 - (Zefau) reworked duty cycle (clean up of outdated / old states)
-- (Zefau) fixed incorrect states [#15](https://github.com/Zefau/ioBroker.plex/issues/15))
+- (Zefau) fixed incorrect states (see [#15](https://github.com/Zefau/ioBroker.plex/issues/15))
 
 ### 0.6.0 (2019-08-19)
 - (Zefau) replaced password with token authentication
 
 ### 0.5.0 (2019-08-18)
-- (Zefau) added support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
+- (Zefau) added support for Plex Notifications (see [#9](https://github.com/Zefau/ioBroker.plex/issues/9))
 - (Zefau) added support for all Tautulli triggers
 - (Zefau) added Adapter Web Interface that shows the recent events
 
@@ -207,8 +212,8 @@ __事件__
 - (Zefau) updated dependencies to fix security vulnerabilities in depending packages
 
 ### 0.3.0 (2019-05-16)
-- ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 ([#6](https://github.com/Zefau/ioBroker.plex/pull/6))
-- (Zefau) added support / discovery in [iobroker.discovery](https://github.com/ioBroker/ioBroker.discovery) ([#62](https://github.com/ioBroker/ioBroker.discovery/pull/62))
+- ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 (see [#6](https://github.com/Zefau/ioBroker.plex/pull/6))
+- (Zefau) added support / discovery in [iobroker.discovery](https://github.com/ioBroker/ioBroker.discovery) (see [#62](https://github.com/ioBroker/ioBroker.discovery/pull/62))
 - (Zefau) added playlists to states
 - (Zefau) added state description for object tree ```_playing```
 - (Zefau) updated German translation (instead of generating it from English)

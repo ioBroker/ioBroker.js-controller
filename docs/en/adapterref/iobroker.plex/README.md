@@ -27,6 +27,7 @@ Integration of the Plex Media Server in ioBroker (with or without Plex Pass). Fu
 
 
 ## 1. Features
+- Receive detailed media information about the current played media item (such as video bitrate, codec, subtitle information, audio; see [Advanced setup](https://github.com/Zefau/ioBroker.plex/blob/master/README-states.md#with-advanced-setup) for a full list)
 - Receive `events` from Plex (via [Plex Webhook](https://support.plex.tv/articles/115002267687-webhooks/#toc-0) and [Plex Notifications](https://support.plex.tv/articles/push-notifications/#toc-0) using Plex Pass or via Tautulli, [__see setup!__](#22-advanced-setup-plex-pass-or-tautulli))
 - Playback control for players
 - Retrieve `servers`
@@ -126,11 +127,15 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 
 ## Changelog
 
-### 0.8.11 (2019-02-26)
+### 0.9.0 (2020-05-23)
+- (Zefau) added option for webhook Ip address in case Plex is running in a Docker environment (see [#53](https://github.com/Zefau/ioBroker.plex/issues/53))
+- (Zefau) updated dependencies
+
+### 0.8.11 (2020-02-26)
 - (Zefau) fixed error with state retrieval on startup when no states are given
 - (Zefau) updated dependencies
 
-### 0.8.10 (2019-02-16)
+### 0.8.10 (2020-02-16)
 - (Zefau) fixed error with state retrieval on startup when no states are given
 - (Zfeau) fixed incorrect handling of certificates when using secure connection
 - (Zefau) updated dependencies
@@ -138,7 +143,7 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 ### 0.8.9 (2019-12-14)
 - (Zefau) updated dependencies
 - (Zefau) fixed missing spaces in events (and thus Adapter Web View)
-- (Zefau) fixed using username instead of email for statistics [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
+- (Zefau) fixed using username instead of email for statistics (see [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
 
 ### 0.8.8 (2019-12-05)
 - (Zefau) fixed player controls
@@ -153,7 +158,7 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 
 ### 0.8.5 (2019-12-01)
 - (Zefau) fixed missing user / library statistics
-- (Zefau) fixed using username instead of email for statistics [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
+- (Zefau) fixed using username instead of email for statistics (see [#17](https://github.com/Zefau/ioBroker.plex/issues/17))
 
 ### 0.8.4 (2019-11-07)
 - (Zefau) added support for remote player control via cloud / iot adapter
@@ -169,18 +174,18 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 
 ### 0.8.0 (2019-10-28)
 - (Zefau) added support for Plex Notifications including customization in adapter settings
-- (Zefau) added count of streams [#14](https://github.com/Zefau/ioBroker.plex/issues/14))
-- (Zefau) reworked cleaning up states when new webhook is received [#11](https://github.com/Zefau/ioBroker.plex/issues/11))
+- (Zefau) added count of streams (see [#14](https://github.com/Zefau/ioBroker.plex/issues/14))
+- (Zefau) reworked cleaning up states when new webhook is received (see [#11](https://github.com/Zefau/ioBroker.plex/issues/11))
 
 ### 0.7.0 (2019-10-17)
 - (Zefau) reworked duty cycle (clean up of outdated / old states)
-- (Zefau) fixed incorrect states [#15](https://github.com/Zefau/ioBroker.plex/issues/15))
+- (Zefau) fixed incorrect states (see [#15](https://github.com/Zefau/ioBroker.plex/issues/15))
 
 ### 0.6.0 (2019-08-19)
 - (Zefau) replaced password with token authentication
 
 ### 0.5.0 (2019-08-18)
-- (Zefau) added support for Plex Notifications ([#9](https://github.com/Zefau/ioBroker.plex/issues/9))
+- (Zefau) added support for Plex Notifications (see [#9](https://github.com/Zefau/ioBroker.plex/issues/9))
 - (Zefau) added support for all Tautulli triggers
 - (Zefau) added Adapter Web Interface that shows the recent events
 
@@ -205,8 +210,8 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 - (Zefau) updated dependencies to fix security vulnerabilities in depending packages
 
 ### 0.3.0 (2019-05-16)
-- ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 ([#6](https://github.com/Zefau/ioBroker.plex/pull/6))
-- (Zefau) added support / discovery in [iobroker.discovery](https://github.com/ioBroker/ioBroker.discovery) ([#62](https://github.com/ioBroker/ioBroker.discovery/pull/62))
+- ([@Apollon77](https://github.com/Apollon77)) updated testing for Node.js v12 (see [#6](https://github.com/Zefau/ioBroker.plex/pull/6))
+- (Zefau) added support / discovery in [iobroker.discovery](https://github.com/ioBroker/ioBroker.discovery) (see [#62](https://github.com/ioBroker/ioBroker.discovery/pull/62))
 - (Zefau) added playlists to states
 - (Zefau) added state description for object tree ```_playing```
 - (Zefau) updated German translation (instead of generating it from English)

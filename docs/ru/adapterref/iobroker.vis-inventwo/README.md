@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: cQTP+MdtmqtMAC0+ix9XDvx9WB7mZY0usUIF5JtQy9c=
+hash: 9+8BiuncmL0ILxd1hxWS+MVE9jaIl9DgcVGpKDGl6gQ=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/i1_150.png)
 
@@ -35,32 +35,6 @@ Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen u
 
 ---
 
-# 1.3.5
-- Добавлена частота обновления для таблицы
-
-# 1.3.4
-- убраны значки и фоны, изменен конфиг, исправлена навигация
-
-# 1.3.3
-- Исправлена опция значения фонового виджета
-
-# 1.3.2
-- Исправлена ошибка
-
-# 1.3.1
-- Изменено поведение цвета кнопки навигации
-- Добавлены новые иконки
-
-# 1.3.0
-- Добавлена таблица JSON
-- Добавлена задержка для навигации
-- Текст в кнопках теперь может быть HTML
-- Добавлены новые иконки
-
-# 1.2.3
-- Добавлен навигационный активный цвет
-- Исправлен цвет состояния для переключения значения
-
 ## 1.2.2
 - Исправление ошибки: значение слайдера, конфиг
 
@@ -82,7 +56,7 @@ Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen u
 - Изменены виджеты кнопок для использования шрифта и текста по умолчанию
 
 ### 1.0.0
-- Фон виджета и непрозрачность контента, Переключатель может быть изменен с логического на значение, изменены значки с белого на черный, добавлены бесшовные фоны
+- Фон виджета и непрозрачность содержимого. Переключатель можно изменить с логического на значение, изменить значки с белого на черный, добавить бесшовный фон
 
 ### 0.1.2
 - Исправление ошибок
@@ -105,6 +79,36 @@ Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen u
 ---
 
 ## Changelog
+
+### 1.3.6
+- Added set state option for navigation
+- Fixed problem with datapoints without config
+
+### 1.3.5
+- Added refresh rate for table
+
+### 1.3.4
+- Removed icons and backgrounds, changed config, Fixed navigation
+
+### 1.3.3
+- Fixed background widget value option
+
+### 1.3.2
+- Bug fix
+
+### 1.3.1
+- Changed navigation button color behaviour
+- Added new icons
+
+### 1.3.0
+- Added JSON table
+- Added delay for navigations
+- Text in buttons can now be HTML
+- Added new icons
+
+### 1.2.3
+- Added Navigation active color
+- Fixed state color for value switch
 
 ## License
 

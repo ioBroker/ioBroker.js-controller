@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: v0y/d1CQnMzf7E5kyQmOpGV2AieL9T/V5/kVTq1UUfE=
+hash: ONPUYA2vzmcUCgLIx8djjm7QPDQF3pTlCBZhJyJT59Y=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -58,7 +58,8 @@ sudo npm install canvas --unsafe-perm=true
 *有关如何使用此适配器的信息可在[此处]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）中找到
 
 ＃＃ 已知的问题
-*对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告大约连接后丢失连接。 24小时。
+*有报告称Ecovacs当前为Ozmo 920/950提供了空的清洁日志。
+*对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告在大约30分钟后连接断开。 24小时。
 *也有报道称Deebot 900/901的电池电量有奇怪的行为。这很可能是固件错误。
   *您可以使用适配器配置中的相应选项作为解决方法。
 *“暂停”按钮不适用于Deebot 710/711。
@@ -73,6 +74,18 @@ sudo npm install canvas --unsafe-perm=true
 * @Ligio（[ozmo]（https://github.com/Ligio/ozmo））
 
 ## Changelog
+
+### 0.6.4
+   * Some minor fixes
+
+### 0.6.3
+   * Using library version 0.4.13
+   * Some translations added
+
+### 0.6.2
+   * Using library version 0.4.12
+   * (boriswerner) Alternative API call for last clean log info (920/950)
+   * (mrbungle64) Periodically polling of CleanLogs
 
 ### 0.6.1
    * Using library version 0.4.11

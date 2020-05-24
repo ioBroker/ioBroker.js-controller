@@ -79,6 +79,7 @@ Der Adapter liefert eine ganze Anzahl an states:
 
 #### "alarm.x.use.....".
 Das sind die eigentlichen states um die Alarmanlage zu bedienen.
+Es ist möglich die Alarmanlage direkt von aktiviert auf "intern scharf" umzuschalten, dies ist jedoch nur möglich wenn die Alarmanlage nicht ausgelöst hatte.
 
 #### "alarm.x.status...."
 Hier lässte sich der Zustand der Anlage ablesen.

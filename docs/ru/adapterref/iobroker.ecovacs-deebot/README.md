@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: v0y/d1CQnMzf7E5kyQmOpGV2AieL9T/V5/kVTq1UUfE=
+hash: ONPUYA2vzmcUCgLIx8djjm7QPDQF3pTlCBZhJyJT59Y=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -44,7 +44,7 @@ hash: v0y/d1CQnMzf7E5kyQmOpGV2AieL9T/V5/kVTq1UUfE=
 npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
 ```
 
-Для систем на основе Linux должны быть выполнены следующие команды (может потребоваться перезагрузка после второй строки):
+Для систем на основе Linux должны быть выполнены следующие команды (перезагрузка может потребоваться после второй строки):
 
 ```
 sudo apt-get update
@@ -55,9 +55,10 @@ sudo npm install canvas --unsafe-perm=true
 Для инструкций для других систем посетите https://www.npmjs.com/package/canvas#compiling
 
 ## Применение
-* Информация о том, как использовать этот адаптер, может быть найдена здесь [https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
+* Информацию о том, как использовать этот адаптер, можно найти здесь [https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki).
 
 ## Известные вопросы
+* Есть некоторые сообщения, что в настоящее время Ecovacs доставляет пустые журналы очистки для Ozmo 920/950.
 * Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно после прибл. 24 часа.
 * Есть также некоторые сообщения, что на Deebot 900/901 наблюдается странное поведение уровня заряда батареи. Весьма вероятно, что это ошибка прошивки.
   * Вы можете использовать соответствующую опцию в конфигурации адаптера в качестве обходного пути.
@@ -73,6 +74,18 @@ sudo npm install canvas --unsafe-perm=true
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.6.4
+   * Some minor fixes
+
+### 0.6.3
+   * Using library version 0.4.13
+   * Some translations added
+
+### 0.6.2
+   * Using library version 0.4.12
+   * (boriswerner) Alternative API call for last clean log info (920/950)
+   * (mrbungle64) Periodically polling of CleanLogs
 
 ### 0.6.1
    * Using library version 0.4.11

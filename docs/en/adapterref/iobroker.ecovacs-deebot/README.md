@@ -51,6 +51,7 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Known issues
 
+* There are some reports that empty cleaning logs are currently delivered by Ecovacs for Ozmo 920/950.
 * For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours.
 * There are also some reports that there's a strange behavior of the battery value on Deebot 900/901. It's very likely that this is a firmware bug.
   * You can use the corresponding option in the adapter config as a workaround.
@@ -61,6 +62,9 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 * Frequently asked questions can be found [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
 ## Changelog
+
+### 0.6.4
+   * Some minor fixes
 
 ### 0.6.3
    * Using library version 0.4.13

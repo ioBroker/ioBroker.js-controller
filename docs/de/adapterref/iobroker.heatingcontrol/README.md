@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: pvN/AfdOrp+Nc9gCbCBl/JQ6maWKBEoB4f1VAInjmAc=
+hash: rJIYye0OoD6Q9jgnQ1ZV3IAPkfTuwaOqZA0/7pdi32A=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -14,13 +14,11 @@ hash: pvN/AfdOrp+Nc9gCbCBl/JQ6maWKBEoB4f1VAInjmAc=
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
 
 # IoBroker.HeatingControl
-Dieser Adapter verwendet den Dienst Sentry.io, um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. Weitere Details siehe unten!
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ** Wenn es Ihnen gefällt, ziehen Sie bitte eine Spende in Betracht: **
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
-
-** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Adapter zur Steuerung Ihres Heizungssystems.
 Eigenschaften:
@@ -35,7 +33,7 @@ Eigenschaften:
 * Thermostat, Aktuator und Sensor werden pro Raum automatisch erkannt. Hierfür wird die Funktion (zB "Heizen") verwendet.
 * Räume können innerhalb der Administrationsoberfläche ausgeschlossen werden, wenn ein Raum einen Thermostat enthält, aber nicht gesteuert werden sollte
 * Sensor wird verwendet, um die Zieltemperatur zu reduzieren (z. B. wenn ein Fenster geöffnet ist); optional mit SensorDelay
-* Schnittstelle zum Feiertag-Adapter oder anderen zur Erkennung von Feiertagen. Feiertag kann ein normaler Tag oder wie ein Sonntag sein. (Admin-Einstellung)
+* Schnittstelle zum Feiertag-Adapter oder anderen zur Erkennung von Feiertagen. Feiertag kann ein normaler Tag oder wie ein Sonntag sein. (Administratoreinstellung)
 * Manuelle Temperaturüberschreitung für eine bestimmte Zeit
 * vordefinierte Heizperiode
 * Die Visualisierung von [Pittini] (https://github.com/Pittini/iobroker-heatingcontrol-vis) wird unterstützt. Vielen Dank!
@@ -47,7 +45,7 @@ Eigenschaften:
 ### Main
 * Funktion = Funktion zur Erkennung von Thermostaten, Aktuatoren und Sensoren pro Raum. Es ist eines der Systemaufzählungen
 * Zeitzone = Wird für Cron verwendet, um Cron-Jobs anzupassen
-* Pfad zum Feiertag - Adapter = Wenn Sie den Feiertag-Adapter verwenden möchten, um den Feiertag für heute automatisch zu erkennen, legen Sie hier den Pfad fest (z. B. Ereignisseage.0).
+* Pfad zum Feiertag - Adapter = Wenn Sie den Feiertag-Adapter verwenden möchten, um Feiertage für heute automatisch zu erkennen, legen Sie hier den Pfad fest (z. B. Ereignisseage.0).
 * Alle Geräte löschen, wenn der Administrator geöffnet wird = sollte deaktiviert sein. Aktivieren Sie es nur, wenn Sie alle Raum-, Aktor- und Sensoreinstellungen löschen müssen. Eine Gerätesuche wird ausgeführt, wenn der Adapteradministrator geöffnet wird
 * Sensor verwendet = Wenn Sie Fenstersensoren haben und die Zieltemperatur bei geöffnetem Fenster senken möchten, aktivieren Sie diese Option
 * Aktuatoren verwendet = wenn Sie Aktuatoren direkt vom Adapter aus steuern möchten. Nur für den Fall, dass keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht.
@@ -62,7 +60,7 @@ Eigenschaften:
 * Heizperiode = Start- und Enddatum der Heizperiode. Wird verwendet, um "HeatingPeriodActive" einzustellen
 
 ### Geräte
-* eine Liste aller Zimmer. Hier können Sie ein Zimmer deaktivieren.
+* eine Liste aller Räume. Hier können Sie ein Zimmer deaktivieren.
 * Drücken Sie die Bearbeitungstaste auf der rechten Seite, um das Einstellungsfenster für Thermostate, Aktuatoren und Sensoren für diesen Raum zu öffnen
 
 ### Bearbeitungsraum
@@ -83,8 +81,8 @@ Eigenschaften:
 ## Datenpunkte
 | DP-Name | Beschreibung |
 |---------------------|-----------------------------------------------------------------------------------------------------|
-| HeatingPeriodActive | Wenn deaktiviert, werden die Profile nicht verwendet |
-| AktuellesProfil | aktuelles Profil auswählen (1 basiert, bedeutet, dass Profil 1 Datenpunkte unter Heizungssteuerung.0.Profile.0 verwendet) |
+| HeatingPeriodActive | Wenn diese Option deaktiviert ist, werden die Profile nicht verwendet |
+| AktuellesProfil | aktuelles Profil auswählen (1 basierend, bedeutet, dass Profil 1 Datenpunkte unter Heizungssteuerung.0.Profile.0 verwendet) |
 | LastProgramRun | Zeigt das letzte Mal an, wenn der Adapter ausgeführt wird |
 
 ### Temperaturabnahme / -erhöhung
@@ -112,7 +110,7 @@ Mit dieser Option können Sie eine Zieltemperatur für jeden Raum verwenden, wen
 * nichts
 
 Mit dieser Option wird nichts an den Thermostat gesendet, wenn keine Heizperiode aktiv ist. Die Zieltemperatur bleibt vom letzten Taget erhalten, als die Heizperiode noch aktiv war.
-In diesem Fall und wenn Sie Aktuatoren vom Adapter verwenden, haben Sie die Möglichkeit zu definieren, wie Aktuatoren eingestellt werden sollen (aus, ein oder lassen Sie es wie es ist).
+In diesem Fall und wenn Sie Aktuatoren aus dem Adapter verwenden, haben Sie die Möglichkeit zu definieren, wie Aktuatoren eingestellt werden sollen (aus, ein oder lassen Sie es wie es ist).
 
 ## Andere
 * HolidayPresent
@@ -128,7 +126,7 @@ Wenn "Sensoren verwenden" aktiv ist und die Sensoren für einen Raum konfigurier
 
 a) Verringern Sie die aktuelle Profiltemperatur, wenn das Fenster geöffnet ist (true), um Profiles.0.room.WindowOpenDecrease, wenn die relative Verringerung konfiguriert ist. b) Setzen Sie das Ziel auf Profiles.0.room.absolute.WindowOpenDecrease, wenn das Fenster geöffnet ist (true), wenn das absolute Fenster abnimmt ist konfiguriert
 
-Optional kann eine Verzögerung verwendet werden. Wenn das Fenster nur für eine kurze Zeit geöffnet wird, kann eine Sensorverzögerung verhindern, dass sie in sehr kurzen Zeiten reduziert und wieder normalisiert wird.
+Optional kann eine Verzögerung verwendet werden. Wenn das Fenster nur für eine kurze Zeit geöffnet wird, kann eine Sensorverzögerung verhindern, dass sie in sehr kurzen Zeiten reduziert und wieder normal wird.
 
 ## Ical Unterstützung
 Sie können Ihren Kalender verwenden, um Datenpunkte im Adapter zu ändern.
@@ -143,13 +141,13 @@ Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 ## Änderungen vom Thermostat verwenden
 Viele Benutzer fragten nach einer Option, um Änderungen vom Thermostat in den Adapter zu übernehmen. Jetzt sind drei Optionen implementiert:
 
-| Option | Beschreibung | -------------------------- | --------------------- -------------------------------------------------- ---------------- | nein | Wie bis zur Version 0.3.x werden Änderungen am Thermostat ignoriert als Überschreibung | Änderungen vom Thermostat werden als Außerkraftsetzung angesehen; Die Übersteuerungszeit muss im Voraus in der Heizungssteuerung eingestellt werden. 0.Zimmer.Zimmername.Temperaturüberschreitungszeit | | Wenn die Überschreibzeit nicht eingestellt ist, wird die Überschreibung nicht ausgeführt als neue Profileinstellung | Änderungen vom Thermostat werden als Zieltemperatur für die aktuelle Profilperiode verwendet verstellbar pro Raum | Die oben genannten Optionen können pro Raum konfiguriert werden. Datenpunkt Heizungssteuerung.0.Rooms.RoomName.ChangesFromThermostatMode definiert den Modus: | | 1 - nein | | 2 - als Überschreibung | | 3 - als neue Profileinstellung | | Im Protokoll wird eine Warnung angezeigt, wenn Werte verwendet werden, die niedriger als 0 oder höher als 3 sind
+| Option | Beschreibung | -------------------------- | --------------------- -------------------------------------------------- ---------------- | nein | Wie bis zur Version 0.3.x werden Änderungen am Thermostat ignoriert als Überschreibung | Änderungen vom Thermostat werden als Außerkraftsetzung angesehen; Die Übersteuerungszeit muss im Voraus in der Heizungssteuerung.0.Rooms.RoomName.TemperaturOverrideTime | eingestellt werden | Wenn die Überschreibzeit nicht eingestellt ist, wird die Überschreibung nicht ausgeführt als neue Profileinstellung | Änderungen vom Thermostat werden als Zieltemperatur für die aktuelle Profilperiode verwendet verstellbar pro Raum | Die oben genannten Optionen können pro Raum konfiguriert werden. Datenpunkt Heizungssteuerung.0.Rooms.RoomName.ChangesFromThermostatMode definiert den Modus: | | 1 - nein | | 2 - als Überschreibung | | 3 - als neue Profileinstellung | | Im Protokoll wird eine Warnung angezeigt, wenn Werte verwendet werden, die niedriger als 0 oder höher als 3 sind
 
 ## Bedarf
 * Knotenversion 8 oder höher ist erforderlich
 
 ## Probleme und Funktionsanforderungen
-* Wenn Sie auf Fehler stoßen oder Funktionsanforderungen für diesen Adapter haben, erstellen Sie ein Problem im Abschnitt GitHub-Probleme des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
+* Wenn Sie auf Fehler stoßen oder Funktionsanforderungen für diesen Adapter haben, erstellen Sie ein Problem im GitHub-Problemabschnitt des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
 
 ### Was ist Sentry.io und was wird den Servern dieses Unternehmens gemeldet?
 Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ihren Anwendungen zu erhalten. Und genau das ist in diesem Adapter implementiert.

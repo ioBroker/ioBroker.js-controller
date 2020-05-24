@@ -20,6 +20,9 @@ To display the cover as a link to a file, in the file ```c:\Users\{USER}\AppData
 
 ## Changelog
 
+#### 2.0.3
+* (instalator) fixed admin error
+
 #### 2.0.2
 * (instalator) fixed error
 

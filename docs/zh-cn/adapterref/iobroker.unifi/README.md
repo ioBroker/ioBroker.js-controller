@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: zPUGyeud4aIM6Mcc2JX7+ut7qxoA+LIE6qPFl3LjWzA=
+hash: 5Y9ruyZPd6DJzTRKHwrXmHI73/YNalRql7MwJ4yWxZk=
 ---
 ![商标](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -29,7 +29,7 @@ hash: zPUGyeud4aIM6Mcc2JX7+ut7qxoA+LIE6qPFl3LjWzA=
 ###黑名单
 适配器会从您的UniFi控制器中更新尽可能多的信息，但可以限制更新的信息。
 
-可以禁用所选信息的更新，也可以禁用该信息的特定黑名单。
+可以禁用所选信息的更新或将该信息列入黑名单。
 
 |信息|被|列入黑名单的项目 |
 |-------------|-----------------------------------------|
@@ -61,7 +61,7 @@ hash: zPUGyeud4aIM6Mcc2JX7+ut7qxoA+LIE6qPFl3LjWzA=
 |优惠券| https：// IP：PORT / api / s / SITE / stat / voucher |
 
 ＃＃ 已知的问题
-*客户端下线后，客户端的is_wired状态不正确。此问题不是UniFi控制器的已知问题，并且与适配器无关。 （请参阅https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1）
+*客户端下线后，客户端的is_wired状态不正确。这是UniFi控制器的已知问题，与适配器无关。 （请参阅https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1）
 
 ##参考
 该适配器使用以下第三方nodejs模块的功能：
@@ -70,7 +70,7 @@ hash: zPUGyeud4aIM6Mcc2JX7+ut7qxoA+LIE6qPFl3LjWzA=
 * [json-logic-js]（https://github.com/jwadhams/json-logic-js）
 
 ## Changelog
-### 0.5.1-beta.5 (2020-05-21)
+### 0.5.2 (2020-05-23)
 * (jens-maus) Implemented UniFiOS/UDM-Pro support
 * (braindead1) Implemented possibility to enable/disable WLANs
 * (braindead1) Implemented voucher creation

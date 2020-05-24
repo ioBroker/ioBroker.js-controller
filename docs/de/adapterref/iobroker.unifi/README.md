@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: zPUGyeud4aIM6Mcc2JX7+ut7qxoA+LIE6qPFl3LjWzA=
+hash: 5Y9ruyZPd6DJzTRKHwrXmHI73/YNalRql7MwJ4yWxZk=
 ---
 ![Logo](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -31,7 +31,7 @@ Der Adapter aktualisiert so viele Informationen wie möglich von Ihrem UniFi-Con
 
 Es ist möglich, die Aktualisierung ausgewählter Informationen zu deaktivieren oder bestimmte Elemente dieser Informationen auf die schwarze Liste zu setzen.
 
-| Informationen | Artikel, die von | auf die schwarze Liste gesetzt werden können |
+| Informationen | Artikel auf der schwarzen Liste von |
 |-------------|-----------------------------------------|
 | Kunden | Name, Hostname, IP-Adresse, MAC-Adresse |
 | Geräte | Name, IP-Adresse, MAC-Adresse |
@@ -61,16 +61,16 @@ Der Adapter verwendet [Node-Unifi](https://github.com/jens-maus/node-unifi), um 
 | Gutscheine | https:// IP: PORT / api / s / SITE / stat / voucher |
 
 ## Bekannte Probleme
-* Der Status is_wired von Clients ist falsch, nachdem ein Client offline geschaltet wurde. Dieses Problem ist kein bekanntes Problem des UniFi-Controllers und hängt nicht mit dem Adapter zusammen. (Siehe https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
+* Der Status is_wired von Clients ist falsch, nachdem ein Client offline geschaltet wurde. Dies ist ein bekanntes Problem des UniFi-Controllers und hängt nicht mit dem Adapter zusammen. (Siehe https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
 
 ## Verweise
 Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanbietern:
 
 * [node-unifi] (https://github.com/jens-maus/node-unifi)
-* [json-logic-js] (https://github.com/jwadhams/json-logic-js)
+* [json-logo-js] (https://github.com/jwadhams/json-logic-js)
 
 ## Changelog
-### 0.5.1-beta.5 (2020-05-21)
+### 0.5.2 (2020-05-23)
 * (jens-maus) Implemented UniFiOS/UDM-Pro support
 * (braindead1) Implemented possibility to enable/disable WLANs
 * (braindead1) Implemented voucher creation

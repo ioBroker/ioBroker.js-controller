@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: u7SVrmICFQ7OWWuILUZuKdHZUG3uLLg1FzHfQJ7DjWg=
+hash: MdZetRVg4lkrrbaQEtlmqq3TG0ZKMv9u3Y3OFWxpUrk=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -51,7 +51,7 @@ https://github.com/material-components/material-components-web/blob/master/docs/
 ###受支持的浏览器可在移动设备上振动功能
 https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
-ioBroker VIS App
+### IoBroker VIS应用程序
 目前无法正常运行，需要由应用程序标记，请参见https://github.com/ioBroker/ioBroker.vis.cordova
 
 ##材质设计图标和图像
@@ -80,6 +80,8 @@ ioBroker VIS App
 ##进展
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/progress.gif)
 
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/progress_settings.png"></td><td>自定义标签</td><td>对于自定义标签，可以使用属性<code>[#value]</code>显示数据点的实际值。要显示当前百分比，您可以使用<code>[#percent]</code> </td></tr></tbody></table>
+
 ##滑块
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/slider.gif)
 
@@ -105,7 +107,7 @@ ioBroker VIS App
 
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td>菜单数据的方法</td><td>有三种方法可以定义菜单数据。首先是通过编辑器定义它。其次是通过json字符串定义它。第三种方法是通过三个值，标签和图标列表来定义它</td></tr><tr><td>编辑器：菜单项计数</td><td>菜单数据的方法：通过编辑器<br>定义菜单项的数量。各个菜单项可以在菜单项[x]下定义</td></tr><tr><td> JSON字符串</td><td>菜单数据的方法：json字符串<br>在这里，您可以添加JSON字符串以定义菜单项，或使用绑定到包含JSON字符串的数据点。 <br><br> JSON字符串必须具有以下格式： <br><pre> <code> [ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot;, &quot;iconColor&quot;: &quot;red&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot;, &quot;iconColor&quot;: &quot;green&quot; } ]</code> </pre> </td></tr><tr><td>值表</td><td>菜单数据的方法：值列表<br>通过添加将设置到数据点的值来定义菜单条目的数量。条目必须以逗号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关标签。条目必须以逗号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关图标。条目必须用逗号分隔。您可以使用图像路径或“材料设计图标”名称</td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td>菜单数据的方法</td><td>有三种方法可以定义菜单数据。首先是通过编辑器定义它。其次是通过json字符串定义它。第三种方法是通过三个列表分别定义值，标签和图标</td></tr><tr><td>编辑器：菜单项计数</td><td>菜单数据的方法：通过编辑器<br>定义菜单项的数量。各个菜单项可以在菜单项[x]下定义</td></tr><tr><td> JSON字符串</td><td>菜单数据的方法：json字符串<br>在这里，您可以添加JSON字符串以定义菜单项，或使用绑定到包含JSON字符串的数据点。 <br><br> JSON字符串必须具有以下格式： <br><pre> <code> [ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot;, &quot;iconColor&quot;: &quot;red&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot;, &quot;iconColor&quot;: &quot;green&quot; } ]</code> </pre> </td></tr><tr><td>值表</td><td>菜单数据的方法：值列表<br>通过添加将设置到数据点的值来定义菜单条目的数量。条目必须以逗号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关标签。条目必须以逗号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关图标。条目必须用逗号分隔。您可以使用图像路径或“材料设计图标”名称</td></tr></tbody></table>
 
 ###自动完成
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/autocomplete.gif)
@@ -171,15 +173,15 @@ ioBroker VIS App
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> line_pointStyle </td><td>线的点样式</td><td>串</td><td>圆，十字，crossRot，破折号，直线，矩形，rectRounded，rectRot，星形，三角形</td></tr><tr><td> line_pointSize </td><td>线的点大小</td><td>数</td><td> 1，2，3，... </td></tr><tr><td> line_pointSizeHover </td><td>线的点大小</td><td>数</td><td> 1，2，3，... </td></tr><tr><td> line_PointColor </td><td>线点颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_PointColorBorder </td><td>线点的边框颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_PointColorHover </td><td>悬停线点颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_PointColorBorderHover </td><td>线点的边框悬停颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_spanGaps </td><td>如果数据之间存在差距，则画线</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_steppedLine </td><td>启用阶梯线</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_Tension </td><td>线的平滑度</td><td>数</td><td> 0-1 </td></tr><tr><td>线的粗细</td><td>线的厚度</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> line_UseFillColor </td><td>在线条下使用填充颜色</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_FillColor </td><td>在线下填充颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> use_line_gradient_fill_color </td><td>使用渐变填充颜色</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_gradient_fill_color </td><td>渐变颜色阵列</td><td>数组[ <a href="#gradientcolor">gradientColor</a> ] </td><td> [{值：-20，颜色：&#39;＃7d3c98&#39;}，{值：0，颜色：&#39;＃2874a6&#39;}] </td></tr><tr><td> line_FillBetweenLines </td><td>为下一行/上一行填充颜色</td><td>串</td><td> &#39;+1&#39;，&#39;-1&#39;，&#39;+ 2&#39;，... </td></tr></tbody></table>
 
 ####图形条形图spfeicifc
-<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> bar已堆叠</td><td>叠杆</td><td>布尔值</td><td>假，真</td></tr><tr><td> barStackId </td><td>堆栈ID。应该组合到堆栈的栏必须具有相同的ID </td><td>数</td><td> 1，2，5，... </td></tr><tr><td> barColorHover </td><td>悬停颜色栏</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderColor </td><td>条的边框颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderWidth </td><td>条形边框的厚度</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> barBorderColorHover </td><td>条的边框悬停颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderWidthHover </td><td>将鼠标悬停在边框上</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table>
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> bar已堆叠</td><td>叠杆</td><td>布尔值</td><td>假，真</td></tr><tr><td> barStackId </td><td>堆栈ID。应该组合到堆栈的栏必须具有相同的ID </td><td>数</td><td> 1，2，5，... </td></tr><tr><td> barColorHover </td><td>悬停颜色栏</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderColor </td><td>条的边框颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderWidth </td><td>条形边框的厚度</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> barBorderColorHover </td><td>条的边框悬停颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderWidthHover </td><td>悬停条边界</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table>
 
 ####图形y轴
-<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> yAxis_id </td><td> y轴的ID。如果您想将通用y轴用于多图图形数据，请使用相同的ID。 </td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_position </td><td> y轴位置</td><td>串</td><td>左右</td></tr><tr><td> yAxis_show </td><td>显示y轴</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_title_text </td><td> y轴标题</td><td>串</td><td></td></tr><tr><td> yAxis_title_color </td><td>覆盖y轴标题颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_title_font家庭</td><td>覆盖y轴标题字体系列</td><td>串</td><td></td></tr><tr><td> yAxis_title_fontSize </td><td>覆盖y轴标题字体大小</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_min </td><td> y轴最小值</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_max </td><td> y轴最大值</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_step </td><td> y轴步长</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_minimumDigits </td><td> y轴最小小数位数</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_maximumDigits </td><td> y轴最大小数位数</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_maxSteps </td><td> y轴的最大步幅</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_distance </td><td>覆盖y轴值到轴的距离</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_appendix </td><td>将文字附加到y轴值</td><td>串</td><td></td></tr><tr><td> yAxis_color </td><td>覆盖y轴值颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_fontFamily </td><td>覆盖y轴值字体系列</td><td>串</td><td></td></tr><tr><td> yAxis_fontSize </td><td>覆盖y轴值字体大小</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_zeroLineWidth </td><td> y轴零线宽度</td><td>数</td><td> 0.3、1.5、4 ... </td></tr><tr><td> yAxis_zeroLineColor </td><td> y轴零线颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_gridLines_show </td><td>显示y轴网格线</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_gridLines_color </td><td> y轴网格线的颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_gridLines_lineWidth </td><td>网格线的宽度</td><td>数</td><td> 0-1 </td></tr><tr><td> yAxis_gridLines_border_show </td><td>显示y轴网格线的边界</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_gridLines_ticks_show </td><td>显示y轴网格间隔刻度</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_gridLines_ticks_length </td><td> y轴网格刻度的长度</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table>
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> yAxis_id </td><td> y轴的ID。如果您想将通用的y轴用于多图图形数据，请使用相同的ID。 </td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_position </td><td> y轴位置</td><td>串</td><td>左右</td></tr><tr><td> yAxis_show </td><td>显示y轴</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_title_text </td><td> y轴标题</td><td>串</td><td></td></tr><tr><td> yAxis_title_color </td><td>覆盖y轴标题颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_title_font家庭</td><td>覆盖y轴标题字体系列</td><td>串</td><td></td></tr><tr><td> yAxis_title_fontSize </td><td>覆盖y轴标题字体大小</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_min </td><td> y轴最小值</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_max </td><td> y轴最大值</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_step </td><td> y轴步长</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_minimumDigits </td><td> y轴最小小数位数</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_maximumDigits </td><td> y轴最大小数位数</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_maxSteps </td><td> y轴的最大步幅</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_distance </td><td>覆盖y轴值到轴的距离</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_appendix </td><td>将文字附加到y轴值</td><td>串</td><td></td></tr><tr><td> yAxis_color </td><td>覆盖y轴值颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_fontFamily </td><td>覆盖y轴值字体系列</td><td>串</td><td></td></tr><tr><td> yAxis_fontSize </td><td>覆盖y轴值字体大小</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_zeroLineWidth </td><td> y轴零线宽度</td><td>数</td><td> 0.3、1.5、4 ... </td></tr><tr><td> yAxis_zeroLineColor </td><td> y轴零线颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_gridLines_show </td><td>显示y轴网格线</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_gridLines_color </td><td> y轴网格线的颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_gridLines_lineWidth </td><td>网格线的宽度</td><td>数</td><td> 0-1 </td></tr><tr><td> yAxis_gridLines_border_show </td><td>显示y轴网格线的边界</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_gridLines_ticks_show </td><td>显示y轴网格间隔刻度</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_gridLines_ticks_length </td><td> y轴刻度线的长度</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table>
 
 #### GradientColor
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>值</td><td>应当在其中应用颜色的值</td><td>数</td><td> 1，2，5，... </td></tr><tr><td>颜色</td><td>物有所值</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr></tbody></table>
 
-###带时间轴的图表
+###带有时间轴的图表
 JSON图表支持带有时间戳的数据。要使用此功能，数据数组必须具有时间戳记值（x轴值）和值（y轴值）。
 
 ####带有时间戳的值
@@ -251,7 +253,7 @@ JSON图表支持带有时间戳的数据。要使用此功能，数据数组必�
 * [ical Adapter]（https://forum.iobroker.net/topic/29658/material-design-widgets-table-widget/2）
 
 ##响应式布局
-有两个小部件-Masonry Views和Grid Views-可以使用它们创建一个响应式布局（台式机，平板电脑和移动设备的布局）。这两个小部件都集成了多个`view in widget`。
+有两个小部件-Masonry Views和Grid Views-可以使用它们创建响应式布局（台式机，平板电脑和移动设备的布局）。这两个小部件都集成了多个`view in widget`。
 
 ###砌体景观
 Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自动对其进行排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和mobil的一种布局）。
@@ -261,7 +263,7 @@ Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自�
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/masnory.gif)
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2>根据窗口小部件的宽度，可以设置列数和视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td><img src="doc/en/media/masnory_settings_views.png"></td><td>视线宽度[x] </td><td>定义视图的宽度。允许的值为数字，px，％或calc。实施例： <code>100</code> ， <code>100px</code> ， <code>55%</code> <code>calc(60% - 12px)</code> </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2>根据窗口小部件的宽度，可以设置列数和视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td rowspan=2><img src="doc/en/media/masnory_settings_views.png"></td><td>视线宽度[x] </td><td>定义视图的宽度。允许的值为数字，px，％或calc。实施例： <code>100</code> ， <code>100px</code> ， <code>55%</code> <code>calc(60% - 12px)</code> </td></tr><tr><td>视线高度[x] </td><td>您可以在此处指定所用视图的高度。 <br><br>如果您希望高度根据视图变化，则此输入必须为空，并且对于视图中具有最高高度的小部件，位置必须设置为相对，请参见屏幕截图： <br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tr></tbody></table>
 
 ###网格视图
 网格视图具有多个`view in widget`集成，将根据小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和mobil的一种布局）。
@@ -273,14 +275,14 @@ Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自�
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/grid.gif)
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2>根据窗口小部件的宽度，可以从各个窗口小部件的宽度定义可应用各个视图[x]的列跨度的规则以及视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2>根据当前宽度分辨率规则定义视图的列范围。 <br>您还可以在此处指定是仅以高于或低于定义值的分辨率显示视图，还是通过对象ID使其可见。 </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2>根据窗口小部件的宽度，可以从各个窗口小部件的宽度定义适用各个视图[x]的列跨度的规则以及视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td rowspan=2><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2>根据当前宽度分辨率规则定义视图的列范围。 <br>您还可以在此处指定是仅以高于或低于定义值的分辨率显示视图，还是通过对象ID使其可见。 </td></tr><tr><td>视线高度[x] </td><td>您可以在此处指定所用视图的高度。 <br><br>如果您希望高度根据视图变化，则此输入必须为空，并且对于视图中具有最高高度的小部件，位置必须设置为相对，请参见屏幕截图： <br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tbody></table>
 
 ##警报
 可以使用Alerts小部件可以在VIS中显示消息，就像它与Pushover适配器一起使用一样，但是可以直接在VIS中显示。
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/alerts.gif)
 
-Alerts小部件需要JSON字符串作为对象，其结构必须如下：
+Alerts小部件需要一个JSON字符串作为对象，其结构必须如下：
 
 ```
 [
@@ -478,16 +480,27 @@ ical2CalendarWidget();
 
 ## Changelog
 
-### __WORK IN PROGRESS__
-* checkbox: lock option added
-* switch: lock option added
-* bar & pie chart: option for distance between legends points added
-* bar, pie & json chart: tooltip title and value override options added
-* pie chart: orientation change bug fix
-* json & line history chart: stepped line option added
-* table: option for fixed table headline added
-* charts: newline bug fixed
-* charts: tooltip decimal places bug fix
+### 0.3.11 (2020-05-24)
+* (Scrounger): Sentry added
+* (Scrounger): Select & Autocomplete Widget: vibrate on mobil devices added
+* (Scrounger): List Widget: vibrate on mobil devices added
+* (Scrounger): Masonry & Grid Widget: height changed to optional to support widgets using relative position
+* (Scrounger): Progress Widget revised
+* (Scrounger): Progress Circular Widget added
+* (Scrounger): bug fixes
+
+### 0.3.9 (2020-05-20)
+* (Scrounger): List Widget: subscribe for nested oids and bindings bug fix
+* (Scrounger): Multi State Button Widgets added
+* (Scrounger): checkbox: lock option added
+* (Scrounger): switch: lock option added
+* (Scrounger): bar & pie chart: option for distance between legends points added
+* (Scrounger): bar, pie & json chart: tooltip title and value override options added
+* (Scrounger): pie chart: orientation change bug fix
+* (Scrounger): json & line history chart: stepped line option added
+* (Scrounger): table: option for fixed table headline added
+* (Scrounger): charts: newline bug fixed
+* (Scrounger): charts: tooltip decimal places bug fix
 
 
 ### 0.3.6 (2020-04-29)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: cQTP+MdtmqtMAC0+ix9XDvx9WB7mZY0usUIF5JtQy9c=
+hash: 9+8BiuncmL0ILxd1hxWS+MVE9jaIl9DgcVGpKDGl6gQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/i1_150.png)
 
@@ -27,39 +27,13 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ---
 
 ## Besetzung
-Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
+Falls Dir unsere Arbeit ausgewählt und du uns nicht möchtest, wir freuen uns über jede Spende.
 
 (Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
 [![Spende] (admin / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
-
-# 1.3.5
-- Aktualisierungsrate für Tabelle hinzugefügt
-
-# 1.3.4
-- Symbole und Hintergründe entfernt, Konfiguration geändert, Navigation korrigiert
-
-# 1.3.3
-- Die Option für den Hintergrund-Widget-Wert wurde korrigiert
-
-# 1.3.2
-- Bug-Fix
-
-# 1.3.1
-- Das Farbverhalten der Navigationsschaltfläche wurde geändert
-- Neue Symbole hinzugefügt
-
-# 1.3.0
-- JSON-Tabelle hinzugefügt
-- Verzögerung für die Navigation hinzugefügt
-- Text in Schaltflächen kann jetzt HTML sein
-- Neue Symbole hinzugefügt
-
-# 1.2.3
-- Aktive Navigationsfarbe hinzugefügt
-- Feste Zustandsfarbe für Wertschalter
 
 ## 1.2.2
 - Fehlerbehebung: Schiebereglerwert, Konfiguration
@@ -82,7 +56,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Die Schaltflächen-Widgets wurden geändert, um die Standardoptionen für Schriftart und Text zu verwenden
 
 ### 1.0.0
-- Widget-Hintergrund und Inhaltsopazität, Wechsel kann von boolesch auf Wert geändert werden, Symbole von weiß auf schwarz geändert, nahtlose Hintergründe hinzugefügt
+- Widget-Hintergrund und Inhaltsopazität, Umschalten von Boolesch auf Wert, Symbole von Weiß auf Schwarz geändert, nahtlose Hintergründe hinzugefügt
 
 ### 0.1.2
 - Fehlerbehebung
@@ -105,6 +79,36 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 ---
 
 ## Changelog
+
+### 1.3.6
+- Added set state option for navigation
+- Fixed problem with datapoints without config
+
+### 1.3.5
+- Added refresh rate for table
+
+### 1.3.4
+- Removed icons and backgrounds, changed config, Fixed navigation
+
+### 1.3.3
+- Fixed background widget value option
+
+### 1.3.2
+- Bug fix
+
+### 1.3.1
+- Changed navigation button color behaviour
+- Added new icons
+
+### 1.3.0
+- Added JSON table
+- Added delay for navigations
+- Text in buttons can now be HTML
+- Added new icons
+
+### 1.2.3
+- Added Navigation active color
+- Fixed state color for value switch
 
 ## License
 

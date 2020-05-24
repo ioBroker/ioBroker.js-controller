@@ -51,10 +51,10 @@ The adapter uses [node-unifi](https://github.com/jens-maus/node-unifi) to connec
 | Vouchers    | https://IP:PORT/api/s/SITE/stat/voucher     |
 
 ## Known issues
-* The is_wired state of clients is incorrect after a client went offline. This issue not a known issue of the UniFi controller and is not related to the adapter. (see https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
+* The is_wired state of clients is incorrect after a client went offline. This is a known issue of the UniFi controller and is not related to the adapter. (see https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
 
 ## Changelog
-### 0.5.1-beta.5 (2020-05-21)
+### 0.5.2 (2020-05-23)
 * (jens-maus) Implemented UniFiOS/UDM-Pro support
 * (braindead1) Implemented possibility to enable/disable WLANs
 * (braindead1) Implemented voucher creation

@@ -1460,6 +1460,12 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 4.6.16 (2020-05-24)
+* (bluefox) Corrected sendTo and clear delay blocks. 
+
+### 4.6.15 (2020-05-23)
+* (bluefox) BREAKING: Please check "stopTimeout" blocks in your blockly scripts that the correct timeout name is listed there and correct after the update!
+
 ### 4.6.14 (2020-05-19)
 * (bluefox) Names for scripts can not have dots anymore. They will be replaced by "_"
 * (bluefox) "schedule" name is not allowed for CRON

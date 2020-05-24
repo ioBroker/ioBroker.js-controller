@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: zPUGyeud4aIM6Mcc2JX7+ut7qxoA+LIE6qPFl3LjWzA=
+hash: 5Y9ruyZPd6DJzTRKHwrXmHI73/YNalRql7MwJ4yWxZk=
 ---
 ![логотип](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -47,7 +47,7 @@ hash: zPUGyeud4aIM6Mcc2JX7+ut7qxoA+LIE6qPFl3LjWzA=
 Используя кнопку 'vouchers.create_vouchers', можно создавать предопределенные ваучеры. Можно настроить количество ваучеров, которые будут созданы, продолжительность действия ваучеров, а также установить ограничения для загрузки и загрузки.
 
 ## Отсутствуют точки данных
-Адаптер использует [Узел-Unifi](https://github.com/jens-maus/node-unifi) для подключения к контроллеру UniFi. Чтобы упростить процесс, не все доступные точки данных загружаются в ваш ioBroker. Если вам не хватает точек данных, используйте следующие URL для проверки API. (Примечание: вы должны заменить IP, PORT и SITE своими настройками)
+Адаптер использует [Узел-Unifi](https://github.com/jens-maus/node-unifi) для подключения к контроллеру UniFi. Для упрощения, не все доступные точки данных вытягиваются в ваш ioBroker. Если вам не хватает точек данных, используйте следующие URL для проверки API. (Примечание: вы должны заменить IP, PORT и SITE своими настройками)
 
 | Информация | API URL |
 |-------------|---------------------------------------------|
@@ -61,7 +61,7 @@ hash: zPUGyeud4aIM6Mcc2JX7+ut7qxoA+LIE6qPFl3LjWzA=
 | Ваучеры | https:// IP: PORT / api / s / SITE / stat / voucher |
 
 ## Известные вопросы
-* Состояние is_wired клиентов неверно после того, как клиент перешел в автономный режим. Эта проблема не известна проблема контроллера UniFi и не связана с адаптером. (см. https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
+* Состояние is_wired клиентов неверно после того, как клиент перешел в автономный режим. Это известная проблема контроллера UniFi и не связана с адаптером. (см. https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
 
 ## Ссылки
 Этот адаптер использует функциональность следующих сторонних модулей nodejs:
@@ -70,7 +70,7 @@ hash: zPUGyeud4aIM6Mcc2JX7+ut7qxoA+LIE6qPFl3LjWzA=
 * [json-logic-js] (https://github.com/jwadhams/json-logic-js)
 
 ## Changelog
-### 0.5.1-beta.5 (2020-05-21)
+### 0.5.2 (2020-05-23)
 * (jens-maus) Implemented UniFiOS/UDM-Pro support
 * (braindead1) Implemented possibility to enable/disable WLANs
 * (braindead1) Implemented voucher creation

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
+hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 ---
 ![логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -44,7 +44,7 @@ hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
 * Новое: время сна для полной неактивности (например, ночью)
 
 ## Документация
-Пожалуйста, в основном обратитесь к основной документации API, опубликованной Miele
+Пожалуйста, в основном обращайтесь к основной документации API, опубликованной Miele
 
 * [Общая документация] (https://www.miele.com/developer/swagger-ui/index.html)
 * [Предварительные условия для выполнения действий на устройстве] (https://www.miele.com/developer/swagger-ui/put_additional_info.html)
@@ -52,7 +52,7 @@ hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
 Существует несколько точек данных в 2 видах. Как читабельный текст и как число.
 Эти числовые поля данных, принадлежащие текстовому полю, имеют то же имя, но с добавлением «_raw».
 Те поля, которые имеют общее значение, перечислены ниже.
-Поля, которые не перечислены, различаются по своему значению от устройства к устройству и не декументированы Miele.
+Поля, которые не перечислены, различаются по своему значению от устройства к устройству и не деклюцируются Miele.
 Если вам нужно ссылаться в скриптах на эти поля, всегда используйте значения _raw.
 Значения текста могут измениться в будущем, а также зависеть от языка.
 Вот список того, что означают эти необработанные значения:
@@ -63,7 +63,7 @@ hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
  | 1 | СТИРАЛЬНАЯ МАШИНА |
  | 2 | Сушилка для белья |
  | 7 | DISHWASHER |
- | 8 | ПОЛУПРОМЫШЛЕННАЯ ПОСУДА |
+ | 8 | ПОЛУПРОМЫШЛЕННАЯ ПОСЫЛКА |
  | 12 | ПЕЧЬ |
  | 13 | ПЕЧЬ МИКРОВОЛНОВАЯ |
  | 14 | HOB HIGHLIGHT |
@@ -82,7 +82,7 @@ hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
  | 31 | ПАРОВАЯ КОМБИНАЦИЯ |
  | 32 | ВИННЫЙ ШКАФ |
  | 33 | БЛОК КОНДИЦИОНИРОВАНИЯ ВИНА |
- | 34 | БЛОК КОНДИЦИОНИРОВАНИЯ ВИН |
+ | 34 | БЛОК КОНДИЦИОНИРОВАНИЯ ВИНОВ |
  | 39 | ДВОЙНАЯ ПЕЧЬ |
  | 40 | ПЕЧЬ ДЛЯ ДВОЙНОГО ПАРА |
  | 41 | ДВУХКОМПОНЕНТНАЯ ДУХОВНАЯ КОМБИНАЦИЯ |
@@ -134,27 +134,39 @@ hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
  | 5 | Ручной утюг уровень 2 |
  | 6 | Машинное железо |
 
-### ProgramBezeichnung для стиральных машин
-| Необработанная стоимость | государство |
-|----------|-------|
-| 1 | "Баумволле" / "Хлопок" |
-| 27 | "Imprägnieren" / |
-| 123 | "Dunkles / Jeans" / |
+### ProgramBezeichnung
+| Необработанная стоимость | государство | доступно для |
+|----------|-------|---------------|
+| 1 | "Баумволле" / "Хлопок" | Стиральная машина |
+| 27 | "Imprägnieren" / | Стиральная машина |
+| 48 | "Flusen ausspülen" | Стиральная машина сушилка |
+| 50 | "Dunkle Wäsche" / | Стиральная машина сушилка |
+| 123 | "Dunkles / Jeans" | Стиральная машина |
 
-### ProgramPhase для стиральных машин
-| Необработанная стоимость | государство |
-|----------|-------|
-| 260 | "Waschen" / "Мойка" |
-| 261 | "Spülen" / "Полоскание" |
-| 266 | "Schleudern" / "Спиннинг" |
-| 267 | "Knitterschutz" / "" |
-| 268 | "Ende" / "Конец" |
-| 256 | "" |
+### ProgramPhase
+| Необработанная стоимость | государство | доступно для |
+|----------|-------|---------------|
+| 260 | "Waschen" / "Мойка" | Стиральная машина |
+| 261 | "Spülen" / "Полоскание" | Стиральная машина |
+| 266 | "Schleudern" / "Спиннинг" | Стиральная машина |
+| 267 | "Knitterschutz" / "" | Стиральная машина |
+| 268 | "Ende" / "Конец" | Большинство устройств |
+| 256 | "" | | |
+| 514 | "Трокнен" | Стиральная машина сушилка |
+| 519 | "Abkühlen" | Стиральная машина сушилка |
+| 532 | "Flusen ausspülen" | Стиральная машина сушилка |
 
 ## Авторские права
 Copyright (c) 2019, 2020 гризельби <hanjo@hingsen.de>
 
 ## Changelog
+### 1.2.2 (2020-05-23)
+* (grizzelbee) Upd: removed node 8 from testing on travis.com 
+* (grizzelbee) Fix: signalActionRequired should work better now 
+* (grizzelbee) Upd: Updated documentation 
+* (grizzelbee) Upd: Improved error handling in function APISendRequest 
+* (grizzelbee) Fix: Moved testing of Config to On(Ready) and fixed unit tests with this.
+
 ### 1.2.1 (2020-04-22)
 * (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumbledryers, washer dryer and dishwashers. **Dosen't work perfectly currently.**  
 * (grizzelbee) Upd: Updated Documentation 

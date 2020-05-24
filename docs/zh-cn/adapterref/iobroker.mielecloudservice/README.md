@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
+hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 ---
 ![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -18,7 +18,7 @@ hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
 
 ＃ioBroker.MieleCloudService
 ##说明
-该适配器用于从官方Miele 3rd-party API检索有关所有Miele @ Home设备的信息。
+该适配器用于从官方Miele第三方API检索有关所有Miele @ Home设备的信息。
 无论它们是否通过WiFi或XGW3000网关直接连接。它实现了** Miele 3rd Party API V1.0.0 **
 
 ##先决条件
@@ -33,11 +33,11 @@ hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
 1.使用以下命令通过管理员安装
  *稳定的回购-获得当前的稳定版本
  *最新的Repo-获取最新的测试版本（可能不稳定）
- *通过：https://github.com/Grizzelbee/ioBroker.mielecloudservice.git-获取最新的开发版本
+ *通过：https://github.com/Grizzelbee/ioBroker.mielecloudservice.git-获得最新的开发版本
 2.在Miele Smartphone应用程序中为Miele @ Home创建一个应用程序帐户
 3.在https://www.miele.com/f/com/zh-CN/register_api.aspx上创建一个开发人员帐户
 4.将您的Miele设备添加到应用程序（如果未自动添加）
-6.填写从Miele-developer团队收到的client_secret和client_id，以及从应用程序获得的帐户ID和密码。
+6.填写从Miele-developer团队收到的client_secret和client_id以及从应用程序获得的帐户ID和密码。
 
 ＃＃ 下一步
 *新增：（无设备活动时）（更长）轮询间隔
@@ -49,10 +49,10 @@ hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
 * [常规文档]（https://www.miele.com/developer/swagger-ui/index.html）
 * [在设备上执行操作的前提条件]（https://www.miele.com/developer/swagger-ui/put_additional_info.html）
 
-有一些数据点可用2种。作为人类可读的文本和数字。
+有2种可用的数据点。作为人类可读的文本和数字。
 这些属于文本字段的数字数据字段具有相同的名称，但附加了“ _raw”。
-下面列出了具有一般意义的字段。
-未列出的字段因设备而异，并且不受Miele的贬低。
+下面列出了具有一般含义的字段。
+未列出的字段的含义因设备而异，并且不受Miele的贬低。
 如果需要在脚本中引用这些字段，请始终使用_raw值。
 文本值将来可能会更改，并且还取决于语言。
 这些原始值代表的清单如下：
@@ -72,7 +72,7 @@ hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
  | 17 |咖啡系统|
  | 18 |帽子|
  | 19 |电冰箱|
- | 20 |冷冻柜|
+ | 20 |冷冻机|
  | 21 |冰箱/冰柜组合|
  | 23 |真空清洁器，自动机器人真空清洁器|
  | 24 |洗衣机烘干机|
@@ -85,7 +85,7 @@ hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
  | 34 |葡萄酒储存调节装置|
  | 39 |双烤箱|
  | 40 |双蒸炉|
- | 41 |双蒸汽烤箱组合|
+ | 41 |双蒸烤箱组合|
  | 42 |双微波|
  | 43 |双微波炉|
  | 45 |蒸汽烤箱微波组合|
@@ -130,31 +130,43 @@ hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
  | 1 |普通加|
  | 2 |正常|
  | 3 |稍干|
- | 4 |手铁1级|
+ | 4 |手工铁水准1 |
  | 5 |手铁2级|
  | 6 |机铁|
 
-### ProgramBezeichnung洗衣机
-|原始值状态|
-|----------|-------|
-| 1 | “ Baumwolle” /“棉” |
-| 27 | “Imprägnieren” / |
-| 123 | “ Dunkles /牛仔裤” / |
+### ProgramBezeichnung
+|原始值状态|适用于|
+|----------|-------|---------------|
+| 1 | “ Baumwolle” /“棉” |洗衣机|
+| 27 | “Imprägnieren” / |洗衣机|
+| 48 | “弗吕森·奥斯普林” |洗衣机烘干机|
+| 50 | “ DunkleWäsche” / |洗衣机烘干机|
+| 123 | “扣篮/牛仔裤” |洗衣机|
 
-### ProgramPhase洗衣机
-|原始值状态|
-|----------|-------|
-| 260 | “洗涤” /“洗涤” |
-| 261 | “Spülen” /“冲洗” |
-| 266 | “ Schleudern” /“ Spinning” |
-| 267 | “ Knitterschutz” /“” |
-| 268 | “ Ende” /“ End” |
-| 256 | “” |
+### ProgramPhase
+|原始值状态|适用于|
+|----------|-------|---------------|
+| 260 | “洗涤” /“洗涤” |洗衣机|
+| 261 | “Spülen” /“冲洗” |洗衣机|
+| 266 | “ Schleudern” /“ Spinning” |洗衣机|
+| 267 | “ Knitterschutz” /“” |洗衣机|
+| 268 | “ Ende” /“ End” |大多数设备|
+| 256 | “” | | |
+| 514 | “ Trocknen” |洗衣机烘干机|
+| 519 | “阿布库伦” |洗衣机烘干机|
+| 532 | “弗吕森·奥斯普林” |洗衣机烘干机|
 
 ##版权
 版权所有（c）2019、2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 1.2.2 (2020-05-23)
+* (grizzelbee) Upd: removed node 8 from testing on travis.com 
+* (grizzelbee) Fix: signalActionRequired should work better now 
+* (grizzelbee) Upd: Updated documentation 
+* (grizzelbee) Upd: Improved error handling in function APISendRequest 
+* (grizzelbee) Fix: Moved testing of Config to On(Ready) and fixed unit tests with this.
+
 ### 1.2.1 (2020-04-22)
 * (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumbledryers, washer dryer and dishwashers. **Dosen't work perfectly currently.**  
 * (grizzelbee) Upd: Updated Documentation 

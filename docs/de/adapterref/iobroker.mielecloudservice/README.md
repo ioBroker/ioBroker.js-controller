@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: cHZnXqSKgkS+ZfsjuS8RAPeJhcrkA7uHbskCVfHQAzY=
+hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 ---
 ![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -37,7 +37,7 @@ Führen Sie zum Installieren Folgendes aus:
 2. Erstellen Sie in der Miele Smartphone App ein App-Konto für Miele @ Home
 3. Erstellen Sie ein Entwicklerkonto unter https://www.miele.com/f/com/en/register_api.aspx
 4. Fügen Sie Ihre Miele-Geräte zur App hinzu (falls nicht automatisch hinzugefügt)
-6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort von der App ein.
+6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort der App ein.
 
 ## Nächste Schritte
 * Neu: (längeres) Abfrageintervall, wenn kein Gerät aktiv ist
@@ -50,7 +50,7 @@ Bitte beziehen Sie sich hauptsächlich auf die von Miele veröffentlichte API-Ha
 * [Voraussetzungen für die Ausführung einer Aktion auf einem Gerät] (https://www.miele.com/developer/swagger-ui/put_additional_info.html)
 
 Es gibt einige Datenpunkte, die auf zwei Arten verfügbar sind. Als menschlich lesbarer Text und als Zahl.
-Diese numerischen Datenfelder, die zu einem Textfeld gehören, haben denselben Namen, aber ein "_raw" ist angehängt.
+Diese numerischen Datenfelder, die zu einem Textfeld gehören, haben denselben Namen, aber ein "_raw" wird angehängt.
 Die Felder, die eine allgemeine Bedeutung haben, sind unten aufgeführt.
 Die Felder, die nicht aufgelistet sind, unterscheiden sich in ihrer Bedeutung von Gerät zu Gerät und werden von Miele nicht dokumentiert.
 Wenn Sie in Skripten auf diese Felder verweisen müssen, verwenden Sie immer die _raw-Werte.
@@ -73,7 +73,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 18 | HAUBE |
  | 19 | KÜHLSCHRANK |
  | 20 | Gefrierschrank |
- | 21 | KÜHL- / GEFRIERKOMBINATION |
+ | 21 | KÜHLSCHRANK- / GEFRIERKOMBINATION |
  | 23 | VAKUUMREINIGER, AUTOMATISCHER ROBOTER VAKUUMREINIGER |
  | 24 | SCHEIBETROCKNER |
  | 25 | DISH WARMER |
@@ -82,7 +82,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 31 | DAMPFOFENKOMBINATION |
  | 32 | WEINKABINETTE |
  | 33 | WEINKONDITIONIERUNGSEINHEIT |
- | 34 | WEINLAGERKONDITIONIERUNGSEINHEIT |
+ | 34 | WEINLAGERUNGSKONDITIONIERUNGSEINHEIT |
  | 39 | DOPPELTER OFEN |
  | 40 | DOPPELDAMPFOFEN |
  | 41 | DOPPELDAMPFOFENKOMBINATION |
@@ -134,27 +134,39 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 5 | Handeisen Stufe 2 |
  | 6 | Maschineneisen |
 
-### ProgramBezeichnung für Waschmaschinen
-| Rohwert | Staat |
-|----------|-------|
-| 1 | "Baumwolle" / "Baumwolle" |
-| 27 | "Imprägnieren" / |
-| 123 | "Dunkles / Jeans" / |
+### ProgramBezeichnung
+| Rohwert | Staat | verfügbar für |
+|----------|-------|---------------|
+| 1 | "Baumwolle" / "Baumwolle" | Waschmaschine |
+| 27 | "Imprägnieren" / | Waschmaschine |
+| 48 | "Flusen ausspülen" | Waschtrockner |
+| 50 | "Dunkle Wäsche" / | Waschtrockner |
+| 123 | "Dunkles / Jeans" | Waschmaschine |
 
-### ProgramPhase für Waschmaschinen
-| Rohwert | Staat |
-|----------|-------|
-| 260 | "Waschen" / "Waschen" |
-| 261 | "Spülen" / "Spülen" |
-| 266 | "Schleudern" / "Spinnen" |
-| 267 | "Knitterschutz" / "" |
-| 268 | "Ende" / "Ende" |
-| 256 | "" |
+### ProgramPhase
+| Rohwert | Staat | verfügbar für |
+|----------|-------|---------------|
+| 260 | "Waschen" / "Waschen" | Waschmaschine |
+| 261 | "Spülen" / "Spülen" | Waschmaschine |
+| 266 | "Schleudern" / "Spinnen" | Waschmaschine |
+| 267 | "Knitterschutz" / "" | Waschmaschine |
+| 268 | "Ende" / "Ende" | Die meisten Geräte |
+| 256 | "" | | |
+| 514 | "Trocknen" | Waschtrockner |
+| 519 | "Abkühlen" | Waschtrockner |
+| 532 | "Flusen ausspülen" | Waschtrockner |
 
 ## Urheberrechte ©
 Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 1.2.2 (2020-05-23)
+* (grizzelbee) Upd: removed node 8 from testing on travis.com 
+* (grizzelbee) Fix: signalActionRequired should work better now 
+* (grizzelbee) Upd: Updated documentation 
+* (grizzelbee) Upd: Improved error handling in function APISendRequest 
+* (grizzelbee) Fix: Moved testing of Config to On(Ready) and fixed unit tests with this.
+
 ### 1.2.1 (2020-04-22)
 * (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumbledryers, washer dryer and dishwashers. **Dosen't work perfectly currently.**  
 * (grizzelbee) Upd: Updated Documentation 

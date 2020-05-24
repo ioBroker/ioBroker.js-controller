@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fb-checkpresence/README.md
 title: kein Titel
-hash: G+3VyP1KeB3eWta19/yCP3zVMtx6BNH1rOOajZ5zV9g=
+hash: GVLMCLDSgS9hjtRNJ/zi8yBJl+zZMqQ8o9g3Ot0Ikvs=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -16,14 +16,14 @@ hash: G+3VyP1KeB3eWta19/yCP3zVMtx6BNH1rOOajZ5zV9g=
 
 <h1><img src="admin/fb-checkpresence.png" width="64"/> ioBroker.fb-checkpresence </h1>
 
-## Fb-checkpresence adapter für ioBroker
-Der Adapter prüft die Anwesenheit von Familienmitgliedern über die Fritzbox.
+## Fb-checkpresence Adapter für ioBroker
+Der Adapter überprüft die Anwesenheit von Familienmitgliedern über die Fritzbox.
 Sie müssen den Namen des Familienmitglieds und die Mac-Adresse (oder IP-Adresse) des verwendeten Geräts eingeben.
 Der Kommentar ist optional und Sie können das Familienmitglied aktivieren oder deaktivieren.
 Der Datenpunkt basiert auf dem Mitgliedsnamen.
 
-### Adaptervoraussetzungen
-Für die korrekte Funktion muss ein Verlaufsadapter installiert werden. Sie können einen der folgenden Adapter auswählen:
+### Adaptervorbedingungen
+Für die richtige Funktion müssen Sie einen Verlaufsadapter installieren. Sie können einen der folgenden Adapter auswählen:
 
 * Geschichte
 * SQL
@@ -31,54 +31,56 @@ Für die korrekte Funktion muss ein Verlaufsadapter installiert werden. Sie kön
 
 ## Gebrauchtes Gerät
 Für diesen Adapter wird die AVM Fritzbox verwendet. Hier finden Sie Informationen zur Fritzbox https://avm.de/produkte/fritzbox/.
+Die Fritzbox-Dienste werden über das TR-064-Protokoll verwendet.
 
 ### Fritzbox Bedingungen
-Die verwendete TR-064-Schnittstelle zur Fritzbox ist hier beschrieben: https://avm.de/service/schnittstellen/.
+Die verwendete TR-064-Schnittstelle aus der Fritzbox wird hier beschrieben: https://avm.de/service/schnittstellen/.
 Folgende TR-064-Funktionen werden verwendet:
 
 * GetSpecificHostEntry
-* X_AVM-DE_GetSpecificHostEntryByIP (unterstützt ab dem 18.05.2016) -> wird verwendet, um den Status eines Mitglieds über die IP-Adresse zu lesen
+* X_AVM-DE_GetSpecificHostEntryByIP (unterstützt vom 18.05.2016) -> wird verwendet, um den Status eines Mitglieds über die IP-Adresse zu lesen
 * GetHostNumberOfEntries
-* X_AVM-DE_GetHostListPath (Unterstützung ab dem 09.01.2017) -> wird für die Mitgliederkonfiguration verwendet
+* X_AVM-DE_GetHostListPath (Unterstützung vom 09.01.2017) -> wird für die Mitgliederkonfiguration verwendet
 * GetSecurityPort
+* Informationen bekommen
 
-Standardmäßig ist die TR-064-Schnittstelle nicht aktiviert. Dies kann jedoch problemlos über die FritzBox-Weboberfläche geändert werden. Loggen Sie sich dazu in Ihre FritzBox ein und stellen Sie sicher, dass die Expertenansicht aktiviert ist. Dann finden Sie unter &quot;Heimnetzwerk» Heimnetzwerkübersicht »Netzwerkeinstellungen&quot; den Punkt &quot;Zugriff für Anwendungen erlauben&quot;. Dort musst du die Checkbox aktivieren und dann die FritzBox einmal neu starten. <img src="doc/access_settings_network.JPG"/>
+Standardmäßig ist die TR-064-Schnittstelle nicht aktiviert. Dies kann jedoch einfach über die FritzBox-Weboberfläche geändert werden. Melden Sie sich dazu in Ihrer FritzBox an und stellen Sie sicher, dass die Expertenansicht aktiviert ist. Dann finden Sie unter &quot;Heimnetzwerk» Heimnetzwerkübersicht »Netzwerkeinstellungen&quot; den Punkt &quot;Zugriff für Anwendungen zulassen&quot;. Dort müssen Sie das Kontrollkästchen aktivieren und dann die FritzBox einmal neu starten. <img src="doc/access_settings_network.JPG"/>
 
 ## Konfigurationsdialog
 ### Fritzbox IP-Adresse, Benutzer und Passwort
-Die Konfiguration von IP-Adresse, Benutzer und Passwort ist notwendig, um die Gerätedaten von der Fritzbox zu erhalten.
+Die Konfiguration von IP-Adresse, Benutzer und Passwort ist erforderlich, um die Gerätedaten von der fritzbox abzurufen.
 Das Passwort ist verschlüsselt und wurde nicht im Klartext gespeichert.
 
 ### Intervall
-Das Intervall kann von 1 bis 59 Minuten konfiguriert werden. Normalerweise ist ein Wert von 1 bis 5 Minuten ein optimales Intervall zum Lesen der Fritzbox-Daten.
+Das Intervall kann zwischen 1 und 59 Minuten konfiguriert werden. Normalerweise ist ein Wert von 1 bis 5 Minuten ein optimales Intervall zum Lesen der Fritzbox-Daten.
 
 ### Verlaufsadapter
-Über den Historienadapter werden einige Werte berechnet. Sie können wählen, ob der Verlauf, der SQL- oder der Influxdb-Adapter für diese Berechnungen verwendet werden soll. Der Verlaufsadapter muss vorinstalliert werden.
+Über den Verlaufsadapter werden einige Werte berechnet. Sie können wählen, ob für diese Berechnungen der Verlauf, der SQL- oder der Influxdb-Adapter verwendet werden soll. Der Verlaufsadapter muss vorläufig installiert werden.
 
 ### Datumsformat
 Die Optionen für die Datumsformatmaske werden auf dieser Webseite beschrieben: https://www.npmjs.com/package/dateformat.
-Die Formatierungsmaske wird zum Formatieren der HTML- und JSON-Tabellenobjekte verwendet.
+Die Formatmaske wird zum Formatieren der HTML- und JSON-Tabellenobjekte verwendet.
 
 ### Einstellungen für Familienmitglieder
-Für ein konfiguriertes Familienmitglied müssen Sie den Namen, die Mac- oder IP-Adresse, einen Kommentar eingeben und ob das Mitglied für die Berechnung aktiviert ist. Für jedes Mitglied erstellt der Adapter Datenobjekte und prüft, ob das Mitglied vorhanden ist oder nicht.
+Für ein konfiguriertes Familienmitglied müssen Sie den Namen, die Mac- oder IP-Adresse, einen Kommentar und angeben, ob das Mitglied für die Berechnung aktiviert ist. Für jedes Mitglied erstellt der Adapter Datenobjekte und prüft, ob das Mitglied vorhanden ist oder nicht.
 
 ### Whitelist-Einstellungen
-In die Whitelist können Sie jedes bekannte Gerät einfügen. Unbekannte Geräte werden im Blacklist-Objekt aufgelistet.
-Wenn Sie das Kontrollkästchen in der Überschrift der Tabelle aktivieren, werden alle Geräte ausgewählt.
+In die weiße Liste können Sie jedes bekannte Gerät einfügen. Alle unbekannten Geräte werden im Blacklist-Objekt aufgelistet.
+Wenn Sie das Kontrollkästchen in der Überschrift der Tabelle aktivieren, sind alle Geräte ausgewählt.
 
 ## Eigenschaften
 ### Überprüfung der AVM-Unterstützung
-Die Funktion prüft die Verfügbarkeit der genutzten Fritzbox-Features. Die Verfügbarkeit wird als Info protokolliert.
+Die Funktion prüft die Verfügbarkeit der verwendeten Fritzbox-Funktionen. Die Verfügbarkeit wird als Info protokolliert.
 
 ### Gäste holen, schwarze Liste
-In dieser Funktion wird geprüft, ob ein Benutzer als Gast angemeldet ist. Außerdem wird geprüft, ob ein Gerät nicht in der Whitelist aufgeführt ist.
+In dieser Funktion wird geprüft, ob ein Benutzer als Gast angemeldet ist. Wird auch überprüft, ob ein Gerät nicht in der Whitelist aufgeführt ist.
 Diese Geräte werden der Blacklist hinzugefügt.
 
 ### Aktiv werden
-Für jedes Familienmitglied werden die Anwesenheit, die An- und Abreisedaten und einige andere Informationen berechnet und im Mitgliedsobjekt gespeichert.
+Für jedes Familienmitglied werden die Anwesenheit, das Kommen und Gehen sowie mehrere andere Informationen berechnet und im Mitgliedsobjekt gespeichert.
 
 ### Hostnummer, aktive Geräte
-Die Anzahl der Geräte und wie viele aktiv sind, werden von der Fritzbox abgerufen.
+Die Anzahl der Geräte und wie viele aktiv sind, wird von der Fritzbox abgerufen.
 
 ## Objekte
 ### ObjektpräsenzAlle
@@ -88,61 +90,103 @@ Wenn alle Familienmitglieder anwesend sind, ist das Objekt wahr.
 Wenn ein Familienmitglied anwesend ist, ist das Objekt wahr.
 
 ### Objektgeräte
-Dies sind alle in der Fritzbox aufgelisteten Geräte
+Dies sind alles aufgelistete Geräte in der Fritzbox
 
 ### Object activeDevices
 Dies ist die Anzahl aller aktiven Geräte in der Fritzbox
 
 ### Objekt html, json
-Bei diesen Objekten handelt es sich um Tabellen (json und html), in denen die eingehenden und ausgehenden Informationen aller Familienmitglieder aufgeführt sind.
+Diese Objekte sind Tabellen (json und html) mit den kommenden und fortlaufenden Informationen aller Familienmitglieder.
 
 ### Objektinfo
 Hier finden Sie Informationen zum letzten Update und zum Verbindungsstatus des Adapters.
 
 ### Objektgast
-Hier finden Sie Informationen über die Anzahl der aktiven Gäste und Tabellenobjekte mit den darin enthaltenen Geräteinformationen.
+Hier finden Sie Informationen zur Anzahl der aktiven Gäste und Tabellenobjekte mit den darin enthaltenen Geräteinformationen.
 
-### Objekt Blacklist
-Hier finden Sie Informationen über die Anzahl unbekannter Geräte und Tabellenobjekte mit den darin enthaltenen unbekannten Geräteinformationen.
+### Objekt-Blacklist
+Hier finden Sie Informationen zur Anzahl unbekannter Geräte und Tabellenobjekte mit den darin enthaltenen unbekannten Geräteinformationen.
 
 ### Objekt member.present
-Hier finden Sie Informationen über die Anwesenheit eines Mitglieds am aktuellen Tag und wie lange das Mitglied seit der letzten Änderung den Status wahr hat.
+Hier finden Sie Informationen zur Anwesenheit eines Mitglieds am aktuellen Tag und wie lange das Mitglied seit der letzten Änderung den Status wahr hat.
 
 ### Objekt member.absent
-Hier finden Sie Informationen über die Abwesenheit eines Mitglieds am aktuellen Tag und wie lange das Mitglied seit der letzten Änderung den Status false hatte.
+Hier finden Sie Informationen zur Abwesenheit eines Mitglieds am aktuellen Tag und wie lange der Status des Mitglieds seit der letzten Änderung falsch war.
 
 ### Objekt member.comming, member.going
 Hier finden Sie Informationen, wann das Familienmitglied ankommt oder das Haus verlässt.
 
 ### Objekt member.history, member.historyHtml
-Hier finden Sie Informationen zur Geschichte des heutigen Tages.
+Hier finden Sie Informationen zur Geschichte des aktuellen Tages.
 
 ## Changelog
 
-### 0.0.1
-* (Achim Fürhoff) initial release
-### 0.0.2
-* (Achim Fürhoff) optimized features
-### 0.0.3
-* (Achim Fürhoff) guest feature added
-### 0.0.4
-* (Achim Fürhoff) calculation error resolved
-### 0.0.5
-* (Achim Fürhoff) configuration optimized
-### 0.0.6
-* (Achim Fürhoff) bug in json and html table resolved
-### 0.0.7
-* (Achim Fürhoff) Fix bug invalid date. Add debug information.
-### 0.1.0
-* (Achim Fürhoff) Influxdb added, debug information added
-### 0.2.0
-* (Achim Fürhoff) debug and error information optimized, crypto dependency removed, service check and blacklist added   
-### 0.2.1
-* (Achim Fürhoff) getGuests issue resolved, lastVal function and debug information optimized   
+### 1.0.2 (2020-05-24)
+* (afuerhoff) error handling optimized
+* (afuerhoff) external ip implemented
+* (afuerhoff) check if mac or ip are listed in fritzbox
+
+### 1.0.1 (2020-04-12)
+* (afuerhoff) error handling optimized
+* (afuerhoff) history configuration optimized
+* (afuerhoff) re-synchronisation of fb-devices implemented
+
+### 1.0.0 (2020-03-30)
+* (afuerhoff) Configuration dialog optimized
+* (afuerhoff) fbdevice speed added
+* (afuerhoff) present-, absentMembers inserted
+* (afuerhoff) Ip address handling optimized
+* (afuerhoff) iobroker functions changed to async
+* (afuerhoff) instance.0 dependency fixed
+* (afuerhoff) depricated request changed to axios
+
+### 0.3.0
+* (afuerhoff) Documentation optimized
+* (afuerhoff) LastVal error fixed
+* (afuerhoff) Json table failure fixed
+* (afuerhoff) Connection type added
+* (afuerhoff) Ipaddress default value changed
+* (afuerhoff) New feature fb-devices added
+* (afuerhoff) Error messages optimized
+* (afuerhoff) Dateformat default value changed
+* (afuerhoff) Debug info added
+* (afuerhoff) GetDeviceInfo failure fixed
+* (afuerhoff) Update testing
+
 ### 0.2.2
-* (Achim Fürhoff) outdated packages updated, documentation changed, 
+* (afuerhoff) outdated packages updated, documentation changed, 
   history dependency removed, onstate/objectChange removed, scheduler library removed,
   two fixes from publish review
+
+### 0.2.1
+* (afuerhoff) getGuests issue resolved, lastVal function and debug information optimized   
+
+### 0.2.0
+* (afuerhoff) debug and error information optimized, crypto dependency removed, service check and blacklist added   
+
+### 0.1.0
+* (afuerhoff) Influxdb added, debug information added
+
+### 0.0.7
+* (afuerhoff) Fix bug invalid date. Add debug information.
+
+### 0.0.6
+* (afuerhoff) bug in json and html table resolved
+
+### 0.0.5
+* (afuerhoff) configuration optimized
+
+### 0.0.4
+* (afuerhoff) calculation error resolved
+
+### 0.0.3
+* (afuerhoff) guest feature added
+
+### 0.0.2
+* (afuerhoff) optimized features
+
+### 0.0.1
+* (afuerhoff) initial release
 
 ## License
 MIT License

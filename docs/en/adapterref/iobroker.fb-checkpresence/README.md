@@ -26,21 +26,24 @@ For the correct function you have to install a history adapter. You can choose
 one of the following adapters:
 * History
 * SQL
-* InfluxDB 
+* InfluxDB
 
 ## Used device
 For this adapter the AVM Fritzbox is used. Here you can find informations about
 the Fritzbox https://avm.de/produkte/fritzbox/.
+The fritzbox services are used over the TR-064 protocol.
 
 ### Fritzbox conditions
 
-The used TR-064 interface to the fritzbox is described here: https://avm.de/service/schnittstellen/.
+The used TR-064 interface from the fritzbox is described here: https://avm.de/service/schnittstellen/.
 Following TR-064 functions are used:
 * GetSpecificHostEntry 
 * X_AVM-DE_GetSpecificHostEntryByIP (supported from 2016-05-18) -> is used to read the status of a member via the IP address
 * GetHostNumberOfEntries
 * X_AVM-DE_GetHostListPath (support from 2017-01-09) -> is used for member configuration
 * GetSecurityPort
+* GetInfo
+
 
 By default, the TR-064 interface is not activated. However, this can easily be changed via the 
 FritzBox web interface. To do this log in into your FritzBox and ensure that the expert view is activated. 
@@ -126,6 +129,11 @@ Here you will find information when the family member arrives or leaving home.
 Here you will find information about the history of the current day. 
 
 ## Changelog 
+
+### 1.0.2 (2020-05-24)
+* (afuerhoff) error handling optimized
+* (afuerhoff) external ip implemented
+* (afuerhoff) check if mac or ip are listed in fritzbox
 
 ### 1.0.1 (2020-04-12)
 * (afuerhoff) error handling optimized

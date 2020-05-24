@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fb-checkpresence/README.md
 title: 无题
-hash: G+3VyP1KeB3eWta19/yCP3zVMtx6BNH1rOOajZ5zV9g=
+hash: GVLMCLDSgS9hjtRNJ/zi8yBJl+zZMqQ8o9g3Ot0Ikvs=
 ---
 ![安装数量](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -17,7 +17,7 @@ hash: G+3VyP1KeB3eWta19/yCP3zVMtx6BNH1rOOajZ5zV9g=
 <h1><img src="admin/fb-checkpresence.png" width="64"/> ioBroker.fb-checkpresence </h1>
 
 ## IoBroker的fb-checkpresence适配器
-适配器检查在炸框上是否存在家庭成员。
+适配器检查在炸弹箱上是否存在家庭成员。
 您必须填写家庭成员的名称和所用设备的mac地址（或ip地址）。
 注释是可选的，您可以启用或禁用家庭成员。
 数据点基于成员名称。
@@ -30,10 +30,11 @@ hash: G+3VyP1KeB3eWta19/yCP3zVMtx6BNH1rOOajZ5zV9g=
 * InfluxDB
 
 ##二手设备
-对于此适配器，使用AVM Fritzbox。在这里，您可以找到有关Fritzbox的信息https://avm.de/produkte/fritzbox/。
+对于此适配器，使用AVM Fritzbox。在这里您可以找到有关Fritzbox的信息https://avm.de/produkte/fritzbox/。
+fritzbox服务通过TR-064协议使用。
 
 ### Fritzbox条件
-到炸弹盒的TR-064接口已在此处进行了描述：https：//avm.de/service/schnittstellen/。
+此处描述了来自炸弹盒的二手TR-064接口：https：//avm.de/service/schnittstellen/。
 使用以下TR-064功能：
 
 * GetSpecificHostEntry
@@ -41,12 +42,13 @@ hash: G+3VyP1KeB3eWta19/yCP3zVMtx6BNH1rOOajZ5zV9g=
 * GetHostNumberOfEntries
 * X_AVM-DE_GetHostListPath（从2017-01-09开始支持）->用于成员配置
 * GetSecurityPort
+* 获取信息
 
 默认情况下，TR-064接口未激活。但是，可以通过FritzBox Web界面轻松更改此设置。为此，请登录到FritzBox并确保激活了专家视图。然后，您将在“家庭网络»家庭网络概述»网络设置”下面找到“允许访问应用程序”。在那里，您必须激活复选框，然后重新启动FritzBox。 <img src="doc/access_settings_network.JPG"/>
 
 ##配置对话框
 ### Fritzbox IP地址，用户名和密码
-要从fritzbox中获取设备数据，必须配置ip地址，用户名和密码。
+要从fritzbox获取设备数据，必须配置ip地址，用户名和密码。
 密码已加密，未以明文形式保存。
 
 ###时间间隔
@@ -56,11 +58,11 @@ hash: G+3VyP1KeB3eWta19/yCP3zVMtx6BNH1rOOajZ5zV9g=
 在历史记录适配器上，将计算一些值。如果使用历史记录，则可以选择sql或influxdb适配器进行此计算。历史记录适配器必须预先安装。
 
 ＃＃＃ 日期格式
-日期格式掩码选项在以下网页上描述：https：//www.npmjs.com/package/dateformat。
+日期格式掩码选项在以下网页上进行了描述：https://www.npmjs.com/package/dateformat。
 格式掩码用于格式化html和json表对象。
 
 ###家庭成员设置
-对于已配置的家庭成员，您必须输入名称，mac地址或ip地址，注释，以及是否允许该成员进行计算。适配器为每个成员创建数据对象，并检查该成员是否存在。
+对于已配置的家庭成员，您必须输入名称，mac或ip地址，注释，以及是否允许该成员进行计算。适配器为每个成员创建数据对象，并检查该成员是否存在。
 
 ###白名单设置
 在白名单中，您可以插入每个已知设备。黑名单对象中列出了所有未知设备。
@@ -106,7 +108,7 @@ hash: G+3VyP1KeB3eWta19/yCP3zVMtx6BNH1rOOajZ5zV9g=
 以下列出了有关未知设备数量和其中包含未知设备信息的表对象的信息。
 
 ###对象member.present
-在这里，您将找到有关当日成员在场的信息以及自上次更改以来该成员的状态为真的时间。
+在这里，您可以找到有关当日成员的存在以及该成员自上次更改以来一直为真状态的时间的信息。
 
 ###对象member.absent
 在这里，您可以找到有关当日缺少成员以及该成员自上次更改以来一直处于错误状态的信息。
@@ -119,30 +121,72 @@ hash: G+3VyP1KeB3eWta19/yCP3zVMtx6BNH1rOOajZ5zV9g=
 
 ## Changelog
 
-### 0.0.1
-* (Achim Fürhoff) initial release
-### 0.0.2
-* (Achim Fürhoff) optimized features
-### 0.0.3
-* (Achim Fürhoff) guest feature added
-### 0.0.4
-* (Achim Fürhoff) calculation error resolved
-### 0.0.5
-* (Achim Fürhoff) configuration optimized
-### 0.0.6
-* (Achim Fürhoff) bug in json and html table resolved
-### 0.0.7
-* (Achim Fürhoff) Fix bug invalid date. Add debug information.
-### 0.1.0
-* (Achim Fürhoff) Influxdb added, debug information added
-### 0.2.0
-* (Achim Fürhoff) debug and error information optimized, crypto dependency removed, service check and blacklist added   
-### 0.2.1
-* (Achim Fürhoff) getGuests issue resolved, lastVal function and debug information optimized   
+### 1.0.2 (2020-05-24)
+* (afuerhoff) error handling optimized
+* (afuerhoff) external ip implemented
+* (afuerhoff) check if mac or ip are listed in fritzbox
+
+### 1.0.1 (2020-04-12)
+* (afuerhoff) error handling optimized
+* (afuerhoff) history configuration optimized
+* (afuerhoff) re-synchronisation of fb-devices implemented
+
+### 1.0.0 (2020-03-30)
+* (afuerhoff) Configuration dialog optimized
+* (afuerhoff) fbdevice speed added
+* (afuerhoff) present-, absentMembers inserted
+* (afuerhoff) Ip address handling optimized
+* (afuerhoff) iobroker functions changed to async
+* (afuerhoff) instance.0 dependency fixed
+* (afuerhoff) depricated request changed to axios
+
+### 0.3.0
+* (afuerhoff) Documentation optimized
+* (afuerhoff) LastVal error fixed
+* (afuerhoff) Json table failure fixed
+* (afuerhoff) Connection type added
+* (afuerhoff) Ipaddress default value changed
+* (afuerhoff) New feature fb-devices added
+* (afuerhoff) Error messages optimized
+* (afuerhoff) Dateformat default value changed
+* (afuerhoff) Debug info added
+* (afuerhoff) GetDeviceInfo failure fixed
+* (afuerhoff) Update testing
+
 ### 0.2.2
-* (Achim Fürhoff) outdated packages updated, documentation changed, 
+* (afuerhoff) outdated packages updated, documentation changed, 
   history dependency removed, onstate/objectChange removed, scheduler library removed,
   two fixes from publish review
+
+### 0.2.1
+* (afuerhoff) getGuests issue resolved, lastVal function and debug information optimized   
+
+### 0.2.0
+* (afuerhoff) debug and error information optimized, crypto dependency removed, service check and blacklist added   
+
+### 0.1.0
+* (afuerhoff) Influxdb added, debug information added
+
+### 0.0.7
+* (afuerhoff) Fix bug invalid date. Add debug information.
+
+### 0.0.6
+* (afuerhoff) bug in json and html table resolved
+
+### 0.0.5
+* (afuerhoff) configuration optimized
+
+### 0.0.4
+* (afuerhoff) calculation error resolved
+
+### 0.0.3
+* (afuerhoff) guest feature added
+
+### 0.0.2
+* (afuerhoff) optimized features
+
+### 0.0.1
+* (afuerhoff) initial release
 
 ## License
 MIT License

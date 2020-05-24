@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/adaptersecurity.md
 title: Функции безопасности для разработчиков адаптеров
-hash: iXhVBmKdkGTG6U453IC5CTNS5Wb5kjpTybMEUkvUEUs=
+hash: X2HcDsT5TE/W4x20hMFpAqHF23iMYbOPyEK6TXNkyG4=
 ---
 # Функции безопасности для разработчиков адаптеров
 ## Запретить доступ других адаптеров к конфиденциальным данным
@@ -31,7 +31,10 @@ __Пример__:
 
 Всякий раз, когда используемый в настоящее время алгоритм шифрования становится небезопасным, он изменяется в js-контроллере.
 
-__В настоящее время используется алгоритм шифрования__: `default`
+__В настоящее время используется алгоритм шифрования__
+
+- js-controller> = 3.0: `default`
+- js-controller> = 3.2: `aes-192-cbc`
 
 Обратите внимание, что эта функция требует как минимум js-controller 3.0.0.
 
@@ -46,4 +49,25 @@ __Пример__:
   "password": "topSecret"
 }
 ...
+```
+
+## Ручное шифрование и дешифрование конфиденциальных данных
+Мы также предоставляем методы адаптера для шифрования данных вручную в вашем коде.
+Для этого вы можете использовать методы `adapter.encrypt` и `adapter.decrypt`. Ключ, используемый для шифрования и дешифрования, является общесистемным уникальным секретом установки пользователя. Если вы хотите использовать свой собственный ключ (192-битный шестнадцатеричный) для шифрования, вы можете сделать это, передав второй аргумент методам `encrypt` и `decrypt`.
+
+__Пример__:
+
+```javascript
+// encrypt data using users unique secret
+const encryptedContent = adapter.encrypt('super secret message');
+
+const decryptedContent = adapter.decrypt(encryptedContent);
+// decryptedContent === 'super secret message'
+
+// Or use your own key (24 byte Hex) for encryption
+const crypto = require('crypto');
+const key = crypto.randomBytes(24).toString('hex');
+const encryptedContent = adapter.encrypt(key, 'super secret message');
+const decryptedContent = adapter.decrypt(key, encryptedContent);
+// decryptedContent === 'super secret message'
 ```

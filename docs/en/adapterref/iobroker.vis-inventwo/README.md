@@ -35,29 +35,33 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
-# 1.3.5
+### 1.3.6
+- Added set state option for navigation
+- Fixed problem with datapoints without config
+
+### 1.3.5
 - Added refresh rate for table
 
-# 1.3.4
+### 1.3.4
 - Removed icons and backgrounds, changed config, Fixed navigation
 
-# 1.3.3
+### 1.3.3
 - Fixed background widget value option
 
-# 1.3.2
+### 1.3.2
 - Bug fix
 
-# 1.3.1
+### 1.3.1
 - Changed navigation button color behaviour
 - Added new icons
 
-# 1.3.0
+### 1.3.0
 - Added JSON table
 - Added delay for navigations
 - Text in buttons can now be HTML
 - Added new icons
 
-# 1.2.3
+### 1.2.3
 - Added Navigation active color
 - Fixed state color for value switch
 

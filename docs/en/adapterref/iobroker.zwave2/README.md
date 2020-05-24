@@ -21,6 +21,16 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### 0.14.0 (2020-05-24)
+* Added support for secure communication (`S0`) and choosing between secure and non-secure inclusion of nodes
+* Fix: It is now possible to stop inclusion and exclusion processes again
+
+### 0.13.5 (2020-05-24)
+Fixed the frontend that was broken in v0.13.3
+
+### 0.13.4 (2020-05-22)
+User-defined node names are now really preserved
+
 ### 0.13.3 (2020-05-21)
 * Initial values for `ready` and `status` states are now read from the nodes
 * Ensure that the adapter notices when a node is ready

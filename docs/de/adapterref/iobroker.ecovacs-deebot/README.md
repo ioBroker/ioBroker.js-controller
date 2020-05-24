@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: v0y/d1CQnMzf7E5kyQmOpGV2AieL9T/V5/kVTq1UUfE=
+hash: ONPUYA2vzmcUCgLIx8djjm7QPDQF3pTlCBZhJyJT59Y=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -58,8 +58,9 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 * Informationen zur Verwendung dieses Adapters finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Bekannte Probleme
+* Es gibt einige Berichte, dass Ecovacs derzeit leere Reinigungsprotokolle für Ozmo 920/950 liefert.
 * Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da es einige gibt meldet, dass die Verbindung nach ca. 24 Stunden.
-* Es gibt auch Berichte, dass der Batteriewert bei Deebot 900/901 merkwürdig ist. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
+* Es gibt auch einige Berichte, dass der Batteriewert bei Deebot 900/901 merkwürdig ist. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
   * Sie können die entsprechende Option in der Adapterkonfiguration als Problemumgehung verwenden.
 * Die Schaltfläche "Pause" funktioniert nicht mit Deebot 710/711.
 
@@ -73,6 +74,18 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 * @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
 
 ## Changelog
+
+### 0.6.4
+   * Some minor fixes
+
+### 0.6.3
+   * Using library version 0.4.13
+   * Some translations added
+
+### 0.6.2
+   * Using library version 0.4.12
+   * (boriswerner) Alternative API call for last clean log info (920/950)
+   * (mrbungle64) Periodically polling of CleanLogs
 
 ### 0.6.1
    * Using library version 0.4.11

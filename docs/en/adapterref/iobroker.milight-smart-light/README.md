@@ -36,8 +36,11 @@ With adapter you can use both: **v6 Bridge** and **Legacy Bridge**.
 
 
 ## Changelog
+### 0.6.0 (2020-05-23)
+- (steiger04): Added effectBrightness, effectOn, effectOff, effectOnOff for iBox1 and iBox2
+
 ### 0.5.0 (2020-05-21)
-- Bug fix in rgb(w)
+- (steiger04): Bug fix in rgb(w)
 
 ### 0.4.1 (2020-05-04)
 - (steiger04): Some small bug fixes

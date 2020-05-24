@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: u7SVrmICFQ7OWWuILUZuKdHZUG3uLLg1FzHfQJ7DjWg=
+hash: MdZetRVg4lkrrbaQEtlmqq3TG0ZKMv9u3Y3OFWxpUrk=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -79,6 +79,8 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 
 ## Fortschritt
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/progress.gif)
+
+<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/progress_settings.png"></td><td> benutzerdefiniertes Etikett </td><td> Für benutzerdefinierte Beschriftungen können Sie die Eigenschaft <code>[#value]</code> , um den tatsächlichen Wert des Datenpunkts <code>[#value]</code> . Um den aktuellen <code>[#percent]</code> können Sie <code>[#percent]</code> </td></tr></tbody></table>
 
 ## Schieberegler
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/slider.gif)
@@ -261,7 +263,7 @@ Mauerwerksansichten sind besonders nützlich, wenn die enthaltenen Ansichten unt
 
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/masnory.gif)
 
-<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2> Abhängig von der Breite des Widgets können die Anzahl der Spalten und der Abstand zwischen den Ansichten festgelegt werden. Die Einstellungen können unabhängig voneinander für das Hoch- und Querformat vorgenommen werden. Aktivieren Sie den Auflösungsassistenten unter den allgemeinen Einstellungen, um die Breite der Auflösung für die verschiedenen Geräte zu ermitteln. </td></tr><tr><td><img src="doc/en/media/masnory_settings_views.png"></td><td> Sichtweite [x] </td><td> Definieren Sie die Breite der Ansicht. Zulässige Werte sind number, px,% oder calc. Beispiele: <code>100</code> , <code>100px</code> , <code>55%</code> , <code>calc(60% - 12px)</code> </td></tr></tbody></table>
+<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2> Abhängig von der Breite des Widgets können die Anzahl der Spalten und der Abstand zwischen den Ansichten festgelegt werden. Die Einstellungen können unabhängig voneinander für das Hoch- und Querformat vorgenommen werden. Aktivieren Sie den Auflösungsassistenten unter den allgemeinen Einstellungen, um die Breite der Auflösung für die verschiedenen Geräte zu ermitteln. </td></tr><tr><td rowspan=2><img src="doc/en/media/masnory_settings_views.png"></td><td> Sichtweite [x] </td><td> Definieren Sie die Breite der Ansicht. Zulässige Werte sind number, px,% oder calc. Beispiele: <code>100</code> , <code>100px</code> , <code>55%</code> , <code>calc(60% - 12px)</code> </td></tr><tr><td> Sichthöhe [x] </td><td> Hier können Sie die Höhe der verwendeten Ansicht festlegen. <br><br> Wenn Sie möchten, dass die Höhe variabel an die Ansicht angepasst wird, muss diese Eingabe leer sein, und für das Widget mit der höchsten Höhe in der Ansicht muss die Position auf relativ gesetzt werden (siehe Screenshot). <br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tr></tbody></table>
 
 ### Rasteransichten
 In Grid Views sind mehrere `view in widget` integriert, die je nach Breite des Widgets automatisch sortiert werden. Mit diesem Widget ist es möglich, ein ansprechendes Layout zu erstellen (ein Layout für Desktop, Tablet und Handy).
@@ -273,7 +275,7 @@ Rasteransichten sind besonders nützlich, wenn die enthaltenen Ansichten dieselb
 
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/grid.gif)
 
-<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2> Abhängig von der Breite des Widgets wird festgelegt, ab welcher Breite des Widgets die Regeln für die Spaltenspanne der einzelnen Ansichten [x] und der Abstand zwischen den Ansichten angewendet werden können. Die Einstellungen können unabhängig voneinander für das Hoch- und Querformat vorgenommen werden. Aktivieren Sie den Auflösungsassistenten unter den allgemeinen Einstellungen, um die Breite der Auflösung für die verschiedenen Geräte zu ermitteln. </td></tr><tr><td><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2> Definieren Sie die Spaltenspanne der Ansicht in Abhängigkeit von der aktuellen Breitenauflösungsregel. <br> Hier können Sie auch festlegen, ob eine Ansicht nur mit einer Auflösung angezeigt werden soll, die höher oder niedriger als ein definierter Wert ist, oder ob sie über eine Objekt-ID sichtbar sein soll. </td></tr></tbody></table>
+<table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2> Abhängig von der Breite des Widgets wird festgelegt, ab welcher Breite des Widgets die Regeln für die Spaltenspanne der einzelnen Ansichten [x] und der Abstand zwischen den Ansichten angewendet werden können. Die Einstellungen können unabhängig voneinander für das Hoch- und Querformat vorgenommen werden. Aktivieren Sie den Auflösungsassistenten unter den allgemeinen Einstellungen, um die Breite der Auflösung für die verschiedenen Geräte zu ermitteln. </td></tr><tr><td rowspan=2><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2> Definieren Sie die Spaltenspanne der Ansicht in Abhängigkeit von der aktuellen Breitenauflösungsregel. <br> Hier können Sie auch festlegen, ob eine Ansicht nur mit einer Auflösung angezeigt werden soll, die höher oder niedriger als ein definierter Wert ist, oder ob sie über eine Objekt-ID sichtbar sein soll. </td></tr><tr><td> Sichthöhe [x] </td><td> Hier können Sie die Höhe der verwendeten Ansicht festlegen. <br><br> Wenn Sie möchten, dass die Höhe variabel an die Ansicht angepasst wird, muss diese Eingabe leer sein, und für das Widget mit der höchsten Höhe in der Ansicht muss die Position auf relativ gesetzt werden (siehe Screenshot). <br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tbody></table>
 
 ## Warnungen
 Das Warnungs-Widget kann z.B. Anzeigen von Nachrichten im VIS, wie es mit dem Pushover-Adapter funktioniert, jedoch direkt im VIS.
@@ -311,7 +313,7 @@ Das Alerts-Widget erfordert eine JSON-Zeichenfolge als Objekt, die wie folgt str
 
 <table><thead><tr><th> Bildschirmfoto </th><th> Rahmen </th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/alerts_settings.png"></td><td> Anzahl der Spalten </td><td> Anzahl der Spalten definieren </td></tr><tr><td> Objekt Identifikation </td><td> Das Objekt muss eine JSON-Zeichenfolge sein, die wie oben beschrieben strukturiert sein muss </td></tr><tr><td> max. Warnungen </td><td> Maximale Anzahl von Warnungen, die angezeigt werden sollen. </td></tr></tbody></table>
 
-Mit dem folgenden Skript können Sie einfache Nachrichten an Datenpunkte senden, die vom Warnungs-Widget verwendet werden.
+Mit dem folgenden Skript können Sie einfache Nachrichten an den Datenpunkt senden, der vom Warnungs-Widget verwendet wird.
 Das Skript muss in globale Skripte eingefügt werden. Dann ist es möglich, eine Nachricht mit dem folgenden Befehl zu senden
 
 `materialDesignWidgets.sendTo('datapoint_id', 'message', 'color');`
@@ -478,16 +480,27 @@ ical2CalendarWidget();
 
 ## Changelog
 
-### __WORK IN PROGRESS__
-* checkbox: lock option added
-* switch: lock option added
-* bar & pie chart: option for distance between legends points added
-* bar, pie & json chart: tooltip title and value override options added
-* pie chart: orientation change bug fix
-* json & line history chart: stepped line option added
-* table: option for fixed table headline added
-* charts: newline bug fixed
-* charts: tooltip decimal places bug fix
+### 0.3.11 (2020-05-24)
+* (Scrounger): Sentry added
+* (Scrounger): Select & Autocomplete Widget: vibrate on mobil devices added
+* (Scrounger): List Widget: vibrate on mobil devices added
+* (Scrounger): Masonry & Grid Widget: height changed to optional to support widgets using relative position
+* (Scrounger): Progress Widget revised
+* (Scrounger): Progress Circular Widget added
+* (Scrounger): bug fixes
+
+### 0.3.9 (2020-05-20)
+* (Scrounger): List Widget: subscribe for nested oids and bindings bug fix
+* (Scrounger): Multi State Button Widgets added
+* (Scrounger): checkbox: lock option added
+* (Scrounger): switch: lock option added
+* (Scrounger): bar & pie chart: option for distance between legends points added
+* (Scrounger): bar, pie & json chart: tooltip title and value override options added
+* (Scrounger): pie chart: orientation change bug fix
+* (Scrounger): json & line history chart: stepped line option added
+* (Scrounger): table: option for fixed table headline added
+* (Scrounger): charts: newline bug fixed
+* (Scrounger): charts: tooltip decimal places bug fix
 
 
 ### 0.3.6 (2020-04-29)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: TO/V4QxSRszN4hqJPa4D9mVgg+pzxB/bgHBfMGgqQoI=
+hash: 6Eo8Jf+RRmiw2StisaXhUrbLu5493j4zhlWj+OTMXRE=
 ---
 ![логотип](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -22,7 +22,7 @@ hash: TO/V4QxSRszN4hqJPa4D9mVgg+pzxB/bgHBfMGgqQoI=
 
 ## IoBroker Alarm
 Умирает в адаптере, с его помощью. Аларманирование, программирование, техническое обслуживание.
-Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. Находится под названием De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz "заявляет", auf anddere "заявляет" меглиц. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
+Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. Находится на территории De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz «заявляет», auf anddere «заявляет» меглиц. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ Ist eine gewünschte Sprachausgabe z.B. bei bei Änderung des Zustandes gewünsc
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Verknüpfungen
-Hier ist es möglich Адаптер международных государств, директива по внешним государствам, в целом. Somit ist ein Umweg über ein Skript oder ähnlichen nicht erforderlich.
+Hier ist es möglich Адаптер международных государств, директива по внешним государствам, в целом. Somit is ein Umweg über ein Skript oder ähnlichen nicht erforderlich.
 Es lässt sich somit z.B. Bei Beginn der Nachtruhe, Eine Veriegelung des Türschlosses realisieren.
 ![логотип](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
 
@@ -76,6 +76,7 @@ Der Adapter liefet eine ganze Anzahl заявляет:
 
 #### "alarm.x.use .....".
 Das sind die eigentlichen заявляет, что um die Alarmanlage zu bedienen.
+Es ist möglich die Alarmanlage direkt von aktiviert auf "intern scharf" umzuschalten, dies ist jedoch nur möglich wenn die Alarmanlage, не имеющей возможности.
 
 #### "alarm.x.status ...."
 Hier lässte sich der Zustand der Anlage смог.
@@ -92,7 +93,7 @@ Der log_today State Wird Um Mitternacht Geleert.
 #### Erfahrene ioBroker Nutzer
 *Wählt человек в логове Опционально умирает Log Ausgabe an, werden gewisse Änderungen im Log des ioBroker geschrieben. Ist man mit diesen Texten nicht zufrieden, besteht die Möglichkeit, sich die Datei "/lib/Logs.js" zu editieren.*
 
-#### Wichtig, die Benutzung dieses Адаптеры geschieht auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Haftung übernommen!
+#### Wichtig, die Benutzung dieses.
 
 ## Changelog
 

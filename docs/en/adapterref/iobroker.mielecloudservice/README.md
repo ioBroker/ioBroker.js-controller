@@ -37,6 +37,13 @@ To install, excecute the following:
 * New: Sleeptime for complete inactivity (e.g. at night)
 
 ## Changelog
+### 1.2.2 (2020-05-23)
+* (grizzelbee) Upd: removed node 8 from testing on travis.com 
+* (grizzelbee) Fix: signalActionRequired should work better now 
+* (grizzelbee) Upd: Updated documentation 
+* (grizzelbee) Upd: Improved error handling in function APISendRequest 
+* (grizzelbee) Fix: Moved testing of Config to On(Ready) and fixed unit tests with this.
+
 ### 1.2.1 (2020-04-22)
 * (grizzelbee) New: Introduced new boolean state (**signalActionRequired**) that indicates that the machine has finished running, but a human action, like putting the wet clothes to the dryer, ... is needed. State is cleared automatically when the door of the appliance is opened, or it is restarted. State is implemented for washing machines, tumbledryers, washer dryer and dishwashers. **Dosen't work perfectly currently.**  
 * (grizzelbee) Upd: Updated Documentation 
@@ -212,24 +219,29 @@ Here is a list of what these raw values stand for:
  |5 |   Hand iron level 2|
  |6 |   Machine iron|
 
-### ProgramBezeichnung for washing machines
+### ProgramBezeichnung
 
-| Raw value | State|
-|----------|-------|
-|1 | "Baumwolle" / "Cotton"  |
-|27 | "Imprägnieren"  /     |
-|123 | "Dunkles / Jeans"  /     |
+| Raw value | State| avaliable for |
+|----------|-------|---------------|
+|  1 | "Baumwolle" / "Cotton"  | Washing Machine |
+| 27 | "Imprägnieren"  /     | Washing Machine |
+| 48 | "Flusen ausspülen"| Washer Dryer |
+| 50 | "Dunkle Wäsche"/ | Washer Dryer |
+|123 | "Dunkles / Jeans"  |   Washing Machine |
 
-### ProgramPhase for washing machines
+### ProgramPhase
 
-| Raw value | State|
-|----------|-------|
-|260 | "Waschen" / "Washing"  |
-|261 | "Spülen"  / "Rinse"    |
-|266 | "Schleudern" / "Spinning"|
-|267 | "Knitterschutz" / ""|
-|268 |  "Ende" / "End"|
-|256 | "" |
+| Raw value | State| avaliable for |
+|----------|-------|---------------|
+|260 | "Waschen" / "Washing"  | Washing Machine |
+|261 | "Spülen"  / "Rinse"    | Washing Machine |
+|266 | "Schleudern" / "Spinning"| Washing Machine |
+|267 | "Knitterschutz" / ""| Washing Machine |
+|268 |  "Ende" / "End"| Most devices |
+|256 | "" | | |
+|514 | "Trocknen" | Washer Dryer |
+|519 | "Abkühlen" | Washer Dryer |
+|532 | "Flusen ausspülen" | Washer Dryer |
 
 ## License
 The MIT License (MIT)

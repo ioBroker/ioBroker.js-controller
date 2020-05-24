@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: TO/V4QxSRszN4hqJPa4D9mVgg+pzxB/bgHBfMGgqQoI=
+hash: 6Eo8Jf+RRmiw2StisaXhUrbLu5493j4zhlWj+OTMXRE=
 ---
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -22,7 +22,7 @@ hash: TO/V4QxSRszN4hqJPa4D9mVgg+pzxB/bgHBfMGgqQoI=
 
 ## IoBroker Alarm
 Dies ist ein Adapter, mit dem sich eine kleine Alarmanlage ohne große programmiertechnische Vorkenntnisse realisieren lässt.
-Er Nord die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe oder De- und Aktivierung zu Interessen. Des Weiteren ist eine direkte Kontaktung der Instanz "Staaten", auf andere "Staaten" möglich. Diese Konflikteungen werden im Reiter Interessenungen anschaulich.
+Er Nord die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe oder De- und Aktivierung zu Interessen. Des Weiteren ist eine direkte Zugangung der Instanzen "Staaten", auf andere "Staaten" möglich. Diese Konflikteungen werden im Reiter Interessenungen anschaulich.
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -37,7 +37,7 @@ Hier werden die Kreise der Anlage Infrastruktur.
 
 Der Alarmkreis hat den Verlust „hoch" und den Hut bei aktivierter Anlage Vorrang vor allen anderen Keisen.
 
-Der Warnkreis hat zwei Funktionen, bei aktivierter Anlage werden diese Staaten nur zentrale und geben ggf. eine Meldung ab wenn eine richtige Verantwortung. Die zweite Funktion besteht darin, bei z. B. Haltung und aktivierte interne interne der Anlage, bei Konflikten einer der konfigurierten Staaten ggf. eine Meldung abgesetzt wird.
+Der Warnkreis hat zwei Funktionen, bei aktivierter Anlage werden diese Staaten nur zentrale und geben ggf. eine Meldung ab wenn eine richtige Verantwortung. Die zweite Funktion besteht darin, bei z. B. Haltung und aktivierte interne interne der Anlage (scharf innen), bei Befugnissen einer der konfigurierten Staaten ggf. eine Meldung abgesetzt wird.
 
 Der Nachtkreis hat die gleiche Funktion wie der Warnkreis, auch nur die der Nachtruhe. Bei Beginender Nachtruhe fordert diese, fällt ab, die Anzeigen des Warnkreises ab.
 
@@ -53,9 +53,9 @@ Hier können Dinge, die die nicht die richtigen "hoch" haben, z.B. Fenster im OG
 Man kann sich doch anders fühlenigen lassen.
 
 #### Nachtkreis:
-Bei aktiver Nachtruhe werden nach sich gezogen, um der erkannten und ggf. verwirkt.
+Bei aktiver Nachtruhe werden nachsichtshalber der erkannten und ggf. verwirren.
 
-*Sollten Alarm- und Warnkreis pro Staat wird sein, gehört der Alarmkreis*
+*Sollten Alarm- und Warnkreis für Staat sein, sein der Alarmkreis*
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -66,7 +66,7 @@ Ist eine mögliche Sprachausgabe z.B. bei bei der Regel des Zustandses. Länger 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Belohnungen
-Hier ist es möglich Adapter interne Zustände direkt mit zugehörigen Zuständen zu wechseln. Somit ist ein Umweg über ein Skript oder ein anderes nicht erledigt.
+Hier ist es möglich Adapter interne Zustände direkt mit den Zuständen zu hören. Somit ist ein Umweg über ein Skript oder ein anderes nicht erledigt.
 Es lässt sich somit somit z.B. bei Beginn der Nachtruhe, eine Veriegelung des Türschlosses realisieren.
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
 
@@ -76,6 +76,7 @@ Der Adapter heißt eine ganze Anzahl an Staaten:
 
 #### "alarm.x.use .....".
 Das sind die eigentlichen Staaten um die Alarmanlage zu verwalten.
+Es ist möglich, die Alarmanlage direkt von der Anzeige auf "intern scharf" umzuschalten, stirbt ist nur nur möglich, wenn die Alarmanlage nicht verkauft wurde.
 
 #### "alarm.x.status ...."
 Hier lässte sich der Zustand der Anlage ablesen.

@@ -34,6 +34,9 @@ Connect your Philips Hue Lights with ioBroker.
 
 Please also see [release page](https://github.com/Zefau/ioBroker.hue-extended/releases) for changelog and detailed information.
 
+### 1.3.5 (2020-05-23)
+- (Zefau) added action `onOffAllLights` for groups to reflect state of ALL lights and turn on/off all lights at once (respectively, the `on` state for groups reflects the state of `any_on`).
+
 ### 1.3.2 (2020-04-01)
 - (Zefau) fixed `on` state being disappeared
 
