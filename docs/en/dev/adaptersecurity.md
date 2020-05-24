@@ -44,3 +44,24 @@ __Example__:
 }
 ...
 ```
+
+## Manually encrypt and decrypt sensitive data
+We also provide adapter methods to encrypt data manually inside your code.
+For this you can use the `adapter.encrypt` and `adapter.decrypt` methods. The key used for encryption and decryption is the 
+systemwide unique secret of the users installation. If you want to use your own key (192 bit Hex) for encryption, you can do so, by passing a second argument to the `encrypt` and `decrypt` methods.
+
+__Example__:
+```javascript
+// encrypt data using users unique secret
+const encryptedContent = adapter.encrypt('super secret message');
+
+const decryptedContent = adapter.decrypt(encryptedContent); 
+// decryptedContent === 'super secret message'
+
+// Or use your own key (24 byte Hex) for encryption
+const crypto = require('crypto');
+const key = crypto.randomBytes(24).toString('hex');
+const encryptedContent = adapter.encrypt('super secret message', key);
+const decryptedContent = adapter.decrypt(encryptedContent, key);
+// decryptedContent === 'super secret message'
+```
