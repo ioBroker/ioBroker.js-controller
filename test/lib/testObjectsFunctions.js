@@ -1140,6 +1140,19 @@ function register(it, expect, context) {
     });
 
     // files
+    it(testName + 'Should check file existence', async () => {
+        // create meta object
+        await context.objects.setObjectAsync('fileTest.0', {type: 'meta'});
+
+        // file should not exist
+        let exists = await context.adapter.fileExists('fileTest.0', 'testExists.txt');
+        expect(exists).to.be.false;
+
+        // create file and check existence again
+        await context.adapter.writeFileAsync('fileTest.0', 'testExists.txt', 'lorem ipsum..');
+        exists = await context.adapter.fileExists('fileTest.0', 'testExists.txt');
+        expect(exists).to.be.true;
+    });
 }
 
 module.exports.register = register;
