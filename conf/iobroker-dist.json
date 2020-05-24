@@ -28,6 +28,7 @@
         "host": "127.0.0.1",
         "port": 9001,
         "noFileCache": false,
+        "maxQueue": 1000,
         "connectTimeout": 2000,
         "writeFileInterval": 5000,
         "options": {
@@ -54,7 +55,6 @@
         "typeComment": "Possible values: 'file' - [port 9000], 'redis' - [port 6379].",
         "host": "127.0.0.1",
         "port": 9000,
-        "maxQueue": 1000,
         "connectTimeout": 2000,
         "writeFileInterval": 30000,
         "options": {
