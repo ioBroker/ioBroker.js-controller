@@ -27,7 +27,9 @@ which will be stored encrypted and automatically be decrypted at adapter runtime
 
 Whenever the currently used encryption algorithm gets unsafe, it will be changed in the js-controller.
 
-__Currently used encryption algorithm__: `default`
+__Currently used encryption algorithm__
+- js-controller >= 3.0: `default`
+- js-controller >= 3.2: `aes-192-cbc`
 
 Note, that this feature requires at least js-controller 3.0.0.
 
