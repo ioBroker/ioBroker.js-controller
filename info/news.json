@@ -1213,6 +1213,7 @@
             "es": "ROMPIENDO: Por favor, compruebe los bloques \"stopTimeout\" en sus secuencias de comandos Blockly que el nombre de tiempo de espera correcto aparece allí y es correcto después de la actualización.",
             "pl": "ŁAMANIE: Sprawdź skrypty „stopTimeout” w swoich skryptach Blockly, czy podana jest tam poprawna nazwa limitu czasu i poprawna po aktualizacji!",
             "zh-cn": "BREAKING：请检查您的Blockly脚本中的“ stopTimeout”块，其中列出了正确的超时名称，并且在更新后正确！"
+        },
         "id": "JsAdapterBlockly",
         "class": "warning",
         "fa-icon": "exclamation-circle",
