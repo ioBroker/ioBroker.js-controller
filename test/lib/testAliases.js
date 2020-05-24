@@ -393,10 +393,10 @@ function register(it, expect, context) {
         prepareGroupsAndUsers(context.objects)
             .then(() => {
                 context.adapter.setForeignState(gAliasID, 10, false, {user: 'system.user.userD'}, (err, state) => {
-                    expect(err).to.be.equal('permissionError');
+                    expect(err.message).to.be.equal('permissionError');
 
                     context.adapter.getForeignState(gid, {user: 'system.user.userD'}, (err, state) => {
-                        expect(err).to.be.equal('permissionError');
+                        expect(err.message).to.be.equal('permissionError');
                         done();
                     });
                 });

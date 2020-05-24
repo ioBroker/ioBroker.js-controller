@@ -693,18 +693,17 @@ function register(it, expect, context) {
     });
 
     // delObject
-    it(testName + 'Try to delete existing object', function (done) {
-        context.adapter.delObject(gid, function (err) {
+    it(testName + 'Try to delete existing object', done => {
+        context.adapter.delObject(gid, err => {
             expect(err).to.not.be.ok;
 
-            context.adapter.getObject(gid, function (err, obj) {
+            context.adapter.getObject(gid, (err, obj) => {
                 expect(err).to.be.null;
 
                 expect(obj).to.be.null;
 
-                context.adapter.delObject(gid, function (err) {
-                    expect(err).to.equal('Not exists');
-
+                context.adapter.delObject(gid, err => {
+                    expect(err.message).to.equal('Not exists');
                     done();
                 });
             });
@@ -722,8 +721,7 @@ function register(it, expect, context) {
                 expect(obj).to.be.null;
 
                 context.adapter.delForeignObject(context.adapterShortName + 'f.0.' + gid, function (err) {
-                    expect(err).to.equal('Not exists');
-
+                    expect(err.message).to.equal('Not exists');
                     done();
                 });
             });
