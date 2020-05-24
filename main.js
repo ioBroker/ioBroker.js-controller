@@ -261,16 +261,16 @@ function handleDisconnect() {
 
     connected = false;
     logger.warn(hostLogPrefix + ' Slave controller detected disconnection. Stop all instances.');
-    stop(true, () => {
-        if (compactGroupController) {
-            setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
-        } else {
+    if (compactGroupController) {
+        stop(true);
+    } else {
+        stop(true, () => {
             restartTimeout = setTimeout(() => {
                 processMessage({command: 'cmdExec', message: {data: '_restart'}});
                 setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
             }, 10000);
-        }
-    });
+        });
+    }
 }
 
 function createStates(onConnect) {
@@ -308,7 +308,7 @@ function createStates(onConnect) {
                         // delete too old callbacks IDs
                         const now = Date.now();
                         for (const _id in callbacks) {
-                            if (!callbacks.hasOwnProperty(_id)) {
+                            if (!Object.prototype.hasOwnProperty.call(callbacks, _id)) {
                                 continue;
                             }
                             if (now - callbacks[_id].time > 3600000) {
@@ -387,7 +387,7 @@ function createStates(onConnect) {
                 if (state.val && state.val !== currentLevel && ['silly','debug', 'info', 'warn', 'error'].includes(state.val)) {
                     config.log.level = state.val;
                     for (const transport in logger.transports) {
-                        if (!logger.transports.hasOwnProperty(transport)) {
+                        if (!Object.prototype.hasOwnProperty.call(logger.transports, transport)) {
                             continue;
                         }
                         if (logger.transports[transport].level === currentLevel) {
@@ -771,7 +771,7 @@ function reportStatus() {
     outputCount = 0;
     if (!isStopping && compactGroupController && started && compactProcesses === 0 && realProcesses === 0) {
         logger.info('Compact group controller ' + compactGroup + ' does not own any processes, stop');
-        stop();
+        stop(false);
     }
 }
 
@@ -811,18 +811,18 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         let modified = false;
         // look for all subscribes from this instance
         for (const pattern in subs) {
-            if (!subs.hasOwnProperty(pattern)) {
+            if (!Object.prototype.hasOwnProperty.call(subs, pattern)) {
                 continue;
             }
             for (const id in subs[pattern]) {
-                if (subs[pattern].hasOwnProperty(id) && id === instance) {
+                if (Object.prototype.hasOwnProperty.call(subs[pattern], id) && id === instance) {
                     modified = true;
                     delete subs[pattern][id];
                 }
             }
             let found = false;
             for (const f in subs[pattern]) {
-                if (subs[pattern].hasOwnProperty(f)) {
+                if (Object.prototype.hasOwnProperty.call(subs[pattern], f)) {
                     found = true;
                     break;
                 }
@@ -2141,7 +2141,7 @@ function processMessage(msg) {
                     // add information about running instances
                     let count = 0;
                     for (const id in procs) {
-                        if (procs.hasOwnProperty(id) && procs[id].process) {
+                        if (Object.prototype.hasOwnProperty.call(procs, id) && procs[id].process) {
                             count++;
                         }
                     }
@@ -2294,7 +2294,7 @@ function processMessage(msg) {
 
                 // Get list of all active adapters and send them message with command checkLogging
                 for (const _id in procs) {
-                    if (procs.hasOwnProperty(_id) && procs[_id].process) {
+                    if (Object.prototype.hasOwnProperty.call(procs, _id) && procs[_id].process) {
                         outputCount++;
                         states.setState(_id + '.checkLogging', {val: true, ack: false, from: hostObjectPrefix});
                     }
@@ -2446,7 +2446,7 @@ function getInstances() {
 
             // first mark all instances as disabled to detect disabled once
             for (const id in procs) {
-                if (procs.hasOwnProperty(id) && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
+                if (Object.prototype.hasOwnProperty.call(procs, id) && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
                     procs[id].config.common.enabled = false;
                 }
             }
@@ -2577,7 +2577,7 @@ function initInstances() {
 
     // Start first admin
     for (id in procs) {
-        if (!procs.hasOwnProperty(id)) {
+        if (!Object.prototype.hasOwnProperty.call(procs, id)) {
             continue;
         }
 
@@ -2604,7 +2604,7 @@ function initInstances() {
     }
 
     for (id in procs) {
-        if (!procs.hasOwnProperty(id)) {
+        if (!Object.prototype.hasOwnProperty.call(procs, id)) {
             continue;
         }
 
@@ -2744,7 +2744,7 @@ function storePids() {
             storeTimer = null;
             const pids = [];
             for (const id in procs) {
-                if (!procs.hasOwnProperty(id)) {
+                if (!Object.prototype.hasOwnProperty.call(procs, id)) {
                     continue;
                 }
 
@@ -2753,7 +2753,7 @@ function storePids() {
                 }
             }
             for (const id in compactProcs) {
-                if (!compactProcs.hasOwnProperty(id)) {
+                if (!Object.prototype.hasOwnProperty.call(compactProcs, id)) {
                     continue;
                 }
 
@@ -3245,7 +3245,7 @@ function startInstance(id, wakeUp) {
                                 if (isStopping) {
                                     logger.silly(`${hostLogPrefix} Check Stopping ${id}`);
                                     for (const i in procs) {
-                                        if (!procs.hasOwnProperty(i)) {
+                                        if (!Object.prototype.hasOwnProperty.call(procs, i)) {
                                             continue;
                                         }
                                         if (procs[i].process) {
@@ -3254,7 +3254,7 @@ function startInstance(id, wakeUp) {
                                         }
                                     }
                                     for (const i in compactProcs) {
-                                        if (!compactProcs.hasOwnProperty(i)) {
+                                        if (!Object.prototype.hasOwnProperty.call(compactProcs, i)) {
                                             continue;
                                         }
                                         if (compactProcs[i].process) {
@@ -3550,7 +3550,7 @@ function startInstance(id, wakeUp) {
                                         if (isStopping) {
                                             logger.silly(hostLogPrefix + ' Check after group exit ' + currentCompactGroup);
                                             for (const i in procs) {
-                                                if (!procs.hasOwnProperty(i)) {
+                                                if (!Object.prototype.hasOwnProperty.call(procs, i)) {
                                                     continue;
                                                 }
                                                 if (procs[i].process) {
@@ -3559,7 +3559,7 @@ function startInstance(id, wakeUp) {
                                                 }
                                             }
                                             for (const i in compactProcs) {
-                                                if (!compactProcs.hasOwnProperty(i)) {
+                                                if (!Object.prototype.hasOwnProperty.call(compactProcs, i)) {
                                                     continue;
                                                 }
                                                 if (compactProcs[i].process) {
@@ -4004,7 +4004,7 @@ function stopInstances(forceStop, callback) {
         }
 
         for (const id in procs) {
-            if (!procs.hasOwnProperty(id)) {
+            if (!Object.prototype.hasOwnProperty.call(procs, id)) {
                 continue;
             }
             stopInstance(id, forceStop); // sends kill signal via sigKill state or a kill after timeouts or if forced
@@ -4013,7 +4013,7 @@ function stopInstances(forceStop, callback) {
             // send instances SIGTERM, only needed if running in background (isDaemon)
             // or slave lost connection to master
             for (const id in compactProcs) {
-                if (!compactProcs.hasOwnProperty(id)) {
+                if (!Object.prototype.hasOwnProperty.call(compactProcs, id)) {
                     continue;
                 }
                 if (compactProcs[id].process) {
@@ -4043,6 +4043,12 @@ function stopInstances(forceStop, callback) {
     }, stopTimeout);
 }
 
+/**
+ * Stops the js-controller and all running adapter instances, if no cb provided pids.txt will be deleted and process exit will be called
+ *
+ * @param {boolean} force kills instances under all circumstances
+ * @param {function} [callback] callback function
+ */
 function stop(force, callback) {
     if (force === undefined) {
         force = false;
@@ -4083,7 +4089,7 @@ function stop(force, callback) {
             logger.info(hostLogPrefix + ' ' + (wasForced ? 'force terminating' : 'terminated'));
             if (wasForced) {
                 for (const i in procs) {
-                    if (!procs.hasOwnProperty(i)) {
+                    if (!Object.prototype.hasOwnProperty.call(procs, i)) {
                         continue;
                     }
                     if (procs[i].process) {
@@ -4093,7 +4099,7 @@ function stop(force, callback) {
                     }
                 }
                 for (const i in compactProcs) {
-                    if (!compactProcs.hasOwnProperty(i)) {
+                    if (!Object.prototype.hasOwnProperty.call(compactProcs, i)) {
                         continue;
                     }
                     if (compactProcs[i].process) {
@@ -4102,10 +4108,23 @@ function stop(force, callback) {
                 }
             }
             states && states.destroy && states.destroy();
+
             if (typeof callback === 'function') {
                 return void callback();
             } else {
-                setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), 1000);
+                setTimeout(() => {
+                    try {
+                        // avoid pids been written after deletion
+                        if (storeTimer) {
+                            clearTimeout(storeTimer);
+                        }
+                        // delete pids.txt
+                        fs.unlinkSync(path.join(__dirname, 'pids.txt'));
+                    } catch (e) {
+                        logger.error(`${hostLogPrefix} Could not delete ${path.join(__dirname, 'pids.txt')}: ${e}`);
+                    }
+                    process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
+                }, 1000);
             }
         });
     });
@@ -4235,7 +4254,7 @@ function init(compactGroupId) {
     }
 
     if (packageJson && packageJson.engines && packageJson.engines.node) {
-        let invalidVersion = false;
+        let invalidVersion;
         try {
             invalidVersion = !semver.satisfies(process.version, packageJson.engines.node);
         } catch {
@@ -4338,7 +4357,7 @@ function init(compactGroupId) {
             if (err.stack) {
                 console.error(err.stack);
             }
-            stop();
+            stop(false);
             return;
         }
         console.error(err.message || err);
@@ -4378,19 +4397,19 @@ function init(compactGroupId) {
             logger.error(hostLogPrefix + ' uncaught exception: ' + err);
             logger.error(hostLogPrefix + ' ' + err.stack);
         }
-        stop();
+        stop(false);
         // Restart itself
         processMessage({command: 'cmdExec', message: {data: '_restart'}});
     };
 
     process.on('SIGINT', () => {
         logger.info(hostLogPrefix + ' received SIGINT');
-        stop();
+        stop(false);
     });
 
     process.on('SIGTERM', () => {
         logger.info(hostLogPrefix + ' received SIGTERM');
-        stop();
+        stop(false);
     });
 
     process.on('uncaughtException', exceptionHandler);
