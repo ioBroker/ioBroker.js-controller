@@ -1188,5 +1188,39 @@
         "conditions": {
             "pushover": "smaller(2.0.0)"
         }
+    },
+    {
+        "title": {
+            "en": "Important information for Javascript adapter update to 4.6.x",
+            "de": "Wichtige Informationen für das Javascript-Adapter-Update auf 4.6.x.",
+            "ru": "Важная информация для обновления адаптера Javascript до 4.6.x",
+            "pt": "Informações importantes para a atualização do adaptador Javascript para 4.6.x",
+            "nl": "Belangrijke informatie voor het updaten van de Javascript-adapter naar 4.6.x",
+            "fr": "Informations importantes pour la mise à jour de l'adaptateur Javascript vers 4.6.x",
+            "it": "Informazioni importanti per l'aggiornamento dell'adattatore Javascript alla 4.6.x",
+            "es": "Información importante para la actualización del adaptador Javascript a 4.6.x",
+            "pl": "Ważne informacje dotyczące aktualizacji adaptera JavaScript do wersji 4.6.x",
+            "zh-cn": "Javascript适配器更新到4.6.x的重要信息"
+        },
+        "content": {
+            "en": "BREAKING: Please check \"stopTimeout\" blocks in your Blockly scripts that the correct timeout name is listed after the update! Please check this BEFORE updating to the new version or export the affected single scripts as XML and re-import after the update!",
+            "de": "BREAKING: Bitte überprüfen Sie \"stopTimeout\" -Blöcke in Ihren Blockly-Skripten, ob der richtige Timeout-Name nach dem Update aufgeführt ist! Bitte überprüfen Sie dies, BEVOR Sie auf die neue Version aktualisieren oder exportieren Sie die betroffenen Einzelskripte als XML und importieren Sie sie nach dem Update erneut!",
+            "ru": "BREAKING: Пожалуйста, проверьте блоки \"stopTimeout\" в ваших скриптах Blockly, чтобы после обновления отображалось правильное имя тайм-аута! Пожалуйста, проверьте это перед обновлением до новой версии или экспортируйте отдельные уязвимые скрипты в формате XML и повторно импортируйте после обновления!",
+            "pt": "BREAKING: verifique nos blocos \"stopTimeout\" nos scripts do Blockly que o nome do tempo limite correto está listado após a atualização! Por favor, verifique isso ANTES de atualizar para a nova versão ou exporte os scripts únicos afetados como XML e reimporte após a atualização!",
+            "nl": "BREAKING: Controleer de \"stopTimeout\" -blokken in uw Blockly-scripts dat de juiste time-outnaam wordt vermeld na de update! Controleer dit VOORDAT u bijwerkt naar de nieuwe versie of exporteer de betrokken afzonderlijke scripts als XML en importeer opnieuw na de update!",
+            "fr": "RUPTURE: Veuillez vérifier les blocs \"stopTimeout\" dans vos scripts Blockly que le nom de timeout correct est répertorié après la mise à jour! Veuillez vérifier ceci AVANT la mise à jour vers la nouvelle version ou exporter les scripts uniques concernés en XML et réimporter après la mise à jour!",
+            "it": "BREAKING: Controlla i blocchi \"stopTimeout\" negli script Blockly che il nome di timeout corretto sia elencato dopo l'aggiornamento! Controlla questo PRIMA dell'aggiornamento alla nuova versione o esporta i singoli script interessati come XML e reimportali dopo l'aggiornamento!",
+            "es": "ROMPIENDO: Por favor, compruebe los bloques \"stopTimeout\" en sus scripts Blockly que el nombre de tiempo de espera correcto aparece después de la actualización ¡Compruebe esto ANTES de actualizar a la nueva versión o exporte los scripts individuales afectados como XML y vuelva a importar después de la actualización!",
+            "pl": "ŁAMANIE: Sprawdź skrypty „stopTimeout” w swoich skryptach Blockly, czy poprawna nazwa limitu czasu jest podana po aktualizacji! Proszę to sprawdzić PRZED aktualizacją do nowej wersji lub wyeksportować dotknięte nim pojedyncze skrypty jako XML i ponownie zaimportować po aktualizacji!",
+            "zh-cn": "BREAKING：请检查您的Blockly脚本中的“ stopTimeout”块，以确保更新后列出了正确的超时名称！请在更新到新版本之前进行检查，或将受影响的单个脚本导出为XML，并在更新后重新导入！"
+        },
+        "id": "JsAdapterBlockly",
+        "class": "warning",
+        "fa-icon": "exclamation-circle",
+        "created": "2020-05-25T00:00:00.000Z",
+        "repo": "latest",    
+        "conditions": {
+            "javascript": "smaller(4.6.0)"
+        }
     }
 ]
