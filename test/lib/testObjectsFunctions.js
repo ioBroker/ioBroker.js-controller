@@ -572,7 +572,7 @@ function register(it, expect, context) {
     // getObjectView
     it(testName + 'Try to get object view', done => {
         // create the view
-        context.adapter.setForeignObjectAsync( '_design/hm-rpc', {
+        context.adapter.setForeignObjectAsync('_design/hm-rpc', {
             language: 'javascript',
             views: {
                 paramsetDescription: {

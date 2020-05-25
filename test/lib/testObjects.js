@@ -390,7 +390,7 @@ function register(it, expect, context) {
         objects.unlink(testId, 'myFile/abc1.txt', err => {
             expect(err).to.be.not.ok;
             objects.unlink(testId, 'myFile/abc1.txt', err => {
-                expect(err).to.be.equal('Not exists');
+                expect(err.message).to.be.equal('Not exists');
                 done();
             });
         });
