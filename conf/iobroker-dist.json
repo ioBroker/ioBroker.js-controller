@@ -34,7 +34,7 @@
         "dataDir": "",
         "options": {
             "auth_pass": null,
-            "retry_max_delay": 2000,
+            "retry_max_delay": 5000,
             "retry_max_count": 19,
             "db": 0,
             "family": 0
@@ -61,7 +61,7 @@
         "dataDir": "",
         "options": {
             "auth_pass": null,
-            "retry_max_delay": 2000,
+            "retry_max_delay": 5000,
             "retry_max_count": 19,
             "db": 0,
             "family": 0
