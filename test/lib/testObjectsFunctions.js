@@ -693,18 +693,17 @@ function register(it, expect, context) {
     });
 
     // delObject
-    it(testName + 'Try to delete existing object', function (done) {
-        context.adapter.delObject(gid, function (err) {
+    it(testName + 'Try to delete existing object', done => {
+        context.adapter.delObject(gid, err => {
             expect(err).to.not.be.ok;
 
-            context.adapter.getObject(gid, function (err, obj) {
+            context.adapter.getObject(gid, (err, obj) => {
                 expect(err).to.be.null;
 
                 expect(obj).to.be.null;
 
-                context.adapter.delObject(gid, function (err) {
-                    expect(err).to.equal('Not exists');
-
+                context.adapter.delObject(gid, err => {
+                    expect(err.message).to.equal('Not exists');
                     done();
                 });
             });
@@ -722,8 +721,7 @@ function register(it, expect, context) {
                 expect(obj).to.be.null;
 
                 context.adapter.delForeignObject(context.adapterShortName + 'f.0.' + gid, function (err) {
-                    expect(err).to.equal('Not exists');
-
+                    expect(err.message).to.equal('Not exists');
                     done();
                 });
             });
@@ -1140,6 +1138,19 @@ function register(it, expect, context) {
     });
 
     // files
+    it(testName + 'Should check file existence', async () => {
+        // create meta object
+        await context.objects.setObjectAsync('fileTest.0', {type: 'meta'});
+
+        // file should not exist
+        let exists = await context.adapter.fileExists('fileTest.0', 'testExists.txt');
+        expect(exists).to.be.false;
+
+        // create file and check existence again
+        await context.adapter.writeFileAsync('fileTest.0', 'testExists.txt', 'lorem ipsum..');
+        exists = await context.adapter.fileExists('fileTest.0', 'testExists.txt');
+        expect(exists).to.be.true;
+    });
 }
 
 module.exports.register = register;
