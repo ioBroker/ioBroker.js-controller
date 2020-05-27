@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker mihome-真空适配器
-hash: OzbeF+mF8wNlgeVONtaUgbpuiW5a421HTeBy/XuFSiQ=
+hash: HmC70Kx52qe84OihnYTlAL+bjnM+H4Z4i9oR66doEIQ=
 ---
 ![商标](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -25,7 +25,7 @@ hash: OzbeF+mF8wNlgeVONtaUgbpuiW5a421HTeBy/XuFSiQ=
         -[第二机器人]（＃second-robot）
     -[配置Valetudo]（＃valetudo-config）
 -[功能]（＃functions）
-    -[S50命令]（＃s-s50）
+    -[S50命令]（＃s-s-s50）
     -[转到]（＃goto）
 -[区域清洁]（＃zoneclean）
     -[房间]（＃rooms）
@@ -33,7 +33,7 @@ hash: OzbeF+mF8wNlgeVONtaUgbpuiW5a421HTeBy/XuFSiQ=
     -[个人命令]（＃send-your-own-commands）
     -[sendTo挂钩]（＃send-custom-commands-with-sendto）
 -[小工具]（＃widget）
--[错误]（＃bugs）
+-[bug]（＃bugs）
 -[变更日志]（＃changelog）
 
 ##配置
@@ -47,23 +47,23 @@ hash: OzbeF+mF8wNlgeVONtaUgbpuiW5a421HTeBy/XuFSiQ=
 
 ``npm ERR！ canvas@2.6.1安装：node-pre-gyp install --fallback-to-build npm ERR！退出状态1``
 
-请使用以下命令手动安装canvas和libs：
+请使用以下步骤手动安装canvas和libs：
 
 ``sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev``
 
-``sudo npm install canvas --unsafe-perm = true``
+``sudo npm install canvas --unsafe-perm = true''
 
 ###适配器配置
 -对于IP地址，必须以“ 192.168.178.XX”格式输入机器人的IP地址。
--机器人的端口默认设置为“ 54321”，不应更改
+-机器人的端口默认设置为“ 54321”，请勿更改
 -自己的端口，只能由第二个机器人更改
--查询间隔检索机器人状态值的时间（以毫秒为单位）（不应小于10000）
+-查询间隔检索机器人状态值的时间（毫秒）（不应小于10000）
 
 ####控制Alexa
-在配置中，添加alexa状态被激活，这里的hack被设置为附加状态“ clean_home”，这是一个从“ true”开始，到“ false”的开关，它返回首页，它自动成为云中的智能设备创建的适配器名称为“真空吸尘器”，可以在云适配器中进行更改。
+在配置中，添加alexa状态在此处被激活，一个hack被设置为一个附加状态“ clean_home”，这是一个从“ true”开始，在“ false”开始的开关，它自动变为云中的智能设备创建的适配器名称为“真空吸尘器”，可以在云适配器中进行更改。
 
 ####使用开始按钮恢复暂停的区域清洁
-启用此选项后，如果在运行区域清洁期间暂停了“开始”状态，则Vacuum将恢复区域清洁。
+启用此选项后，如果在运行区域清洁期间暂停了“启动”状态，则Vacuum将恢复区域清洁。
 如果禁用此选项，则在发送启动命令时，真空吸尘器将开始新的“常规清洁”，即使在运行区域清洁期间暂停了真空吸尘器。
 
 -实验性：使用复选框“发送自己的命令”创建对象，通过这些对象，您可以向机器人发送和接收自己的命令。
@@ -81,7 +81,7 @@ hash: OzbeF+mF8wNlgeVONtaUgbpuiW5a421HTeBy/XuFSiQ=
 -要使用地图，您必须在配置中选择valetudo或原始地图
 -请求间隔必须大于1000毫秒，这是更新html映射的间隔
 -地图间隔必须超过5000毫秒，此间隔会更新png地图文件（您可以将其用于Telegram或vis或其他任何东西）
--在此为地图示例选择颜色：
+-在那里可以为地图示例选择颜色：
 
 ```
 - #2211FF
@@ -104,8 +104,8 @@ hash: OzbeF+mF8wNlgeVONtaUgbpuiW5a421HTeBy/XuFSiQ=
 ＃＃ 功能
 S50的命令（第二代）
 卡的尺寸始终为52000mm x 52000mm，因此可以设置从0到51999mm的值。
-不幸的是，无法查询卡的位置和位置，这可以随吸力而变化。用作基础的始终是最后一张吸卡，以及在应用程序中。
-如果机器人仅拾取一个区域并始终以相同的方式构建地图，则可以可靠地将其发送到各个地方或对该区域进行清理。
+不幸的是，无法查询卡的位置和位置，这可以随吸力而变化。永远是最后一张吸卡，以及在应用程序中用作基础。
+如果机器人仅拾取一个区域并始终以相同的方式构建地图，则可以可靠地将其发送到地点或对该区域进行清理。
 
 ＃＃＃＃ 去
 为了将真空吸尘器驱动到一个点，必须按以下方式填充“ goTo”对象：
@@ -130,7 +130,7 @@ xVal, yval
 ```
 
 其中x和y是矩形区域的坐标，并“计数”清洁操作。
-您还可以让多个区域一次吸吮：
+您还可以一次吸引多个区域：
 
 ```
 [X1, y1, x2, x2, count], [x3, y3, x4, x4, count2]
@@ -145,13 +145,13 @@ xVal, yval
 ####房间
 具有最新Home App的更新的吸尘器支持房间的定义，请参阅[视频](https://www.youtube.com/watch?v=vEiUZzoXfPg)
 
-当前地图中的每个房间都有一个索引，然后从应用程序将其分配给该房间。从机器人中，我们仅获得带有房间号和索引的映射。适配器每次启动时都会查询这些房间，并为每个房间创建一个通道，然后知道当前房间索引。使用按钮loadRooms手动进行相同的操作。然后可以将此频道分配给ioBroker房间。如果按下了按钮roomClean，则确定卡的索引并将其发送到机械手，以便随后可以清洁该空间。在此之前，将FAN电源设置为单室抽吸。如果您尚无法在应用程序中命名房间，则还可以通过指定地图索引来手动创建此类通道。也可以添加区域坐标而不是mapIndex。
+当前地图中的每个房间都有一个索引，然后从应用程序将其分配给该房间。从机器人中，我们仅获得带有房间号和索引的映射。每次适配器启动时，适配器都会查询这些房间，并为每个房间创建一个通道，然后知道当前房间索引。使用按钮loadRooms手动进行相同的操作。然后可以将此频道分配给ioBroker房间。如果按下了按钮roomClean，则确定卡的索引并将其发送给机械手，以便随后可以清洁该空间。在此之前，将FAN电源设置为单室抽吸。如果您尚无法在应用程序中命名房间，则还可以通过指定地图索引来手动创建此类通道。也可以添加区域坐标而不是mapIndex。
 如果要自发清洁多个房间，可以通过将ioBroker房间分配给该数据点，然后按按钮，通过multiRoomClean进行操作。
 
 ####计时器
 吸尘器一旦支持房间功能（见上文），就可以创建计时器，然后触发相应的房间通道或确定其mapIndexes。
 计时器可以直接通过房间和/或房间通道触发。
-计时器本身是通过config区域创建的，但随后成为数据点。在那里，每个计时器都可以被激活/禁用或跳过一次。也可以直接启动。 ioBroker计时器的优点是可以在VIS中显示和使用它们，并且您可以使机器人与互联网断开连接，因为该应用程序的计时器是从中国触发的。
+计时器本身是通过config区域创建的，但随后成为数据点。在那里，每个计时器都可以被激活/禁用或跳过一次。也可以直接启动。 ioBroker计时器的优点是它们可以在VIS中显示和使用，并且您可以使机器人与互联网断开连接，因为该应用程序的计时器是从中国触发的。
 
 ###发送您自己的命令
 注意：此功能只能由专家使用，因为错误的命令可能会损坏吸盘
@@ -160,7 +160,7 @@ xVal, yval
 在对象“ mihome-vacuum.X.control.X_send_command”下，您可以将自己的命令发送给机械手。
 对象结构必须如下所示： [参数]
 
-发送后，机械手在对象“ mihome-vacuum.X.control.X_get_response”下输入响应。如果查询了参数，它们将以JSON格式显示在此处。如果仅发送了一个命令，则机器人仅响应“ 0”。
+发送后，机械手在对象“ mihome-vacuum.X.control.X_get_response”下输入响应。如果查询了参数，则它们以JSON格式显示在此处。如果仅发送了一个命令，则机器人仅响应“ 0”。
 
 支持以下方法和参数：
 
@@ -179,10 +179,10 @@ xVal, yval
 
 | app_rc_move | [{“ seqnum”：'0-1000'，“ velocity”：VALUE1，“ omega”：VALUE2，“ duration”：VALUE3}]] |移动。序列号必须是连续的，VALUE1（速度）= -0.3-0.3，VALUE2（旋转）= -3.1-3.1，VALUE3（持续时间）
 
-您可以在此处（[链接](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)）找到更多的方法和参数。
+您可以在此处找到更多方法和参数（[链接](https://github.com/MeisterTR/XiaomiRobotVacuumProtocol)）。
 
 ###使用sendTo发送自定义命令
-您还可以使用`sendTo`从其他适配器发送那些自定义命令。与上面定义的`method_id`和`params`结合使用：
+您也可以使用`sendTo`从其他适配器发送那些自定义命令。与上面定义的`method_id`和`params`结合使用：
 
 ```
 sendTo("mihome-vacuum.0", "sendCustomCommand",
@@ -214,10 +214,10 @@ sendTo("mihome-vacuum.0",
 |回到基地| `charge`| -无-| |
 |说“嗨，我在这里！” | `findMe`| -无-| |
 |检查耗材的状态（刷子等）| `getConsumableStatus`| -无-| |
-|重置耗材的状态（刷子等）| `resetConsumables`| `consumable`|字符串：filter_work_time，filter_element_work_time，sensor_dirty_time，main_brush_work_time，side_brush_work_time |
+|重置耗材状态（刷子等）| `resetConsumables`| `consumable`|字符串：filter_work_time，filter_element_work_time，sensor_dirty_time，main_brush_work_time，side_brush_work_time |
 |获取以前所有清洁过程的摘要| `getCleaningSummary`| -无-| |
 |获取先前清洁过程的详细摘要| `getCleaningRecord`| `recordId`| |
-|获取地图| `getMap`| -无-|未知结果如何处理 |
+|获取地图| `getMap`| -无-|未知如何处理结果|
 |获取机器人的当前状态| `getStatus`| -无-| |
 |检索机器人的序列号| `getSerialNumber`| -无-| |
 |获取详细的设备信息| `getDeviceDetails`| -无-| |
@@ -231,11 +231,10 @@ sendTo("mihome-vacuum.0",
 |结束遥控器功能| `stopRemoteControl`| -无-| |
 |无尘室| `cleanRooms`| `rooms`| `rooms`是逗号分隔的字符串，带有enum.rooms.XXX |
 |清洁段| `cleanSegments`| `rooms`| `rooms`是一个具有mapIndex的数组或逗号分隔的具有mapIndex |
-|清洁区| `cleanZone`| `coordinates`| `coordinates`是一个带有坐标和计数的字符串，请参见[zoneClean](#zoneClean)|
+|清洁区| `cleanZone`| `coordinates`| `coordinates`是一个具有坐标和计数的字符串，请参见[zoneClean](#zoneClean)|
 |清洁区| `cleanZone` | `坐标`| `coordinates` ist一个带有坐标和计数的字符串，请参见[zoneClean]（＃zoneClean）|
 
 ##小部件
-抱歉，尚未完成。
 ![小部件](../../../en/adapterref/iobroker.mihome-vacuum/widgets/mihome-vacuum/img/previewControl.png)
 
 ##错误

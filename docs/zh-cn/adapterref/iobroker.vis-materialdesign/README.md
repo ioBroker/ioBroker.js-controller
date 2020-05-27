@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: MdZetRVg4lkrrbaQEtlmqq3TG0ZKMv9u3Y3OFWxpUrk=
+hash: lD9Kro+sDzVTzj6dkEYN2kAnAl4tftbqYJ3tGou0l2w=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -173,7 +173,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> line_pointStyle </td><td>线的点样式</td><td>串</td><td>圆，十字，crossRot，破折号，直线，矩形，rectRounded，rectRot，星形，三角形</td></tr><tr><td> line_pointSize </td><td>线的点大小</td><td>数</td><td> 1，2，3，... </td></tr><tr><td> line_pointSizeHover </td><td>线的点大小</td><td>数</td><td> 1，2，3，... </td></tr><tr><td> line_PointColor </td><td>线点颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_PointColorBorder </td><td>线点的边框颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_PointColorHover </td><td>悬停线点颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_PointColorBorderHover </td><td>线点的边框悬停颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> line_spanGaps </td><td>如果数据之间存在差距，则画线</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_steppedLine </td><td>启用阶梯线</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_Tension </td><td>线的平滑度</td><td>数</td><td> 0-1 </td></tr><tr><td>线的粗细</td><td>线的厚度</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> line_UseFillColor </td><td>在线条下使用填充颜色</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_FillColor </td><td>在线下填充颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> use_line_gradient_fill_color </td><td>使用渐变填充颜色</td><td>布尔值</td><td>假，真</td></tr><tr><td> line_gradient_fill_color </td><td>渐变颜色阵列</td><td>数组[ <a href="#gradientcolor">gradientColor</a> ] </td><td> [{值：-20，颜色：&#39;＃7d3c98&#39;}，{值：0，颜色：&#39;＃2874a6&#39;}] </td></tr><tr><td> line_FillBetweenLines </td><td>为下一行/上一行填充颜色</td><td>串</td><td> &#39;+1&#39;，&#39;-1&#39;，&#39;+ 2&#39;，... </td></tr></tbody></table>
 
 ####图形条形图spfeicifc
-<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> bar已堆叠</td><td>叠杆</td><td>布尔值</td><td>假，真</td></tr><tr><td> barStackId </td><td>堆栈ID。应该组合到堆栈的栏必须具有相同的ID </td><td>数</td><td> 1，2，5，... </td></tr><tr><td> barColorHover </td><td>悬停颜色栏</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderColor </td><td>条的边框颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderWidth </td><td>条形边框的厚度</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> barBorderColorHover </td><td>条的边框悬停颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderWidthHover </td><td>悬停条边界</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table>
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> bar已堆叠</td><td>叠杆</td><td>布尔值</td><td>假，真</td></tr><tr><td> barStackId </td><td>堆栈ID。应该组合到堆栈的栏必须具有相同的ID </td><td>数</td><td> 1，2，5，... </td></tr><tr><td> barColorHover </td><td>悬停颜色栏</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderColor </td><td>条的边框颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderWidth </td><td>条形边框的厚度</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> barBorderColorHover </td><td>条的边框悬停颜色</td><td>颜色数组[颜色] </td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> barBorderWidthHover </td><td>将鼠标悬停在边框上</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table>
 
 ####图形y轴
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> yAxis_id </td><td> y轴的ID。如果您想将通用的y轴用于多图图形数据，请使用相同的ID。 </td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_position </td><td> y轴位置</td><td>串</td><td>左右</td></tr><tr><td> yAxis_show </td><td>显示y轴</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_title_text </td><td> y轴标题</td><td>串</td><td></td></tr><tr><td> yAxis_title_color </td><td>覆盖y轴标题颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_title_font家庭</td><td>覆盖y轴标题字体系列</td><td>串</td><td></td></tr><tr><td> yAxis_title_fontSize </td><td>覆盖y轴标题字体大小</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_min </td><td> y轴最小值</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_max </td><td> y轴最大值</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_step </td><td> y轴步长</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_minimumDigits </td><td> y轴最小小数位数</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_maximumDigits </td><td> y轴最大小数位数</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_maxSteps </td><td> y轴的最大步幅</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_distance </td><td>覆盖y轴值到轴的距离</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_appendix </td><td>将文字附加到y轴值</td><td>串</td><td></td></tr><tr><td> yAxis_color </td><td>覆盖y轴值颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_fontFamily </td><td>覆盖y轴值字体系列</td><td>串</td><td></td></tr><tr><td> yAxis_fontSize </td><td>覆盖y轴值字体大小</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> yAxis_zeroLineWidth </td><td> y轴零线宽度</td><td>数</td><td> 0.3、1.5、4 ... </td></tr><tr><td> yAxis_zeroLineColor </td><td> y轴零线颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_gridLines_show </td><td>显示y轴网格线</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_gridLines_color </td><td> y轴网格线的颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> yAxis_gridLines_lineWidth </td><td>网格线的宽度</td><td>数</td><td> 0-1 </td></tr><tr><td> yAxis_gridLines_border_show </td><td>显示y轴网格线的边界</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_gridLines_ticks_show </td><td>显示y轴网格间隔刻度</td><td>布尔值</td><td>假，真</td></tr><tr><td> yAxis_gridLines_ticks_length </td><td> y轴刻度线的长度</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table>
@@ -193,7 +193,7 @@ JSON图表支持带有时间戳的数据。要使用此功能，数据数组必�
 ##表
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table.gif)
 
-＃＃＃＃＃ 输入数据
+＃＃＃ 输入数据
 输入数据必须是对象的json数组，例如：
 
 ```
@@ -218,24 +218,126 @@ JSON图表支持带有时间戳的数据。要使用此功能，数据数组必�
 		"betriebszeit": "18T 07h 21m",
 		"funk": "2G",
 		"ip": "10.0.0.3"
-	},
-	{
-		"img": "/vis.0/myImages/erlebnis_25.png",
-		"name": "MusicCast - Esszimmer (WX-030)",
-		"betriebszeit": "1h 57m",
-		"funk": "2G",
-		"ip": "10.0.0.4"
-	},
-	{
-		"img": "/vis.0/myImages/erlebnis_75.png",
-		"name": "MusicCast - K�che (ISX-18D)",
-		"betriebszeit": "4h 10m",
-		"funk": "2G",
-		"ip": "10.0.0.5"
 	}
 ]
 ```
 
+####控制元素
+要在表的单元格中生成控件元素（按钮，复选框等），您必须创建一个对象而不是字符串。
+
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table_control_example.gif)
+
+```
+[
+	{
+		"control": {
+			"type": "buttonToggle",
+			"oid": "0_userdata.0.MDW.Buttons.bool",
+			"buttonText": "&nbsp;off",
+			"buttonTextTrue": "&nbsp;on",
+			"image": "home",
+			"imagePosition": "left",
+			"colorBgTrue": "green",
+			"lockEnabled": "true"
+		},
+		"img": "/vis.0/myImages/erlebnis_50.png",
+		"name": "Empire",
+		"betriebszeit": "4h 06m",
+		"funk": "5G"
+	}, {
+		"img": "/vis.0/myImages/erlebnis_100.png",
+		"control": {
+			"type": "buttonToggle",
+			"oid": "0_userdata.0.MDW.Buttons.bool",
+			"buttonText": "off",
+			"buttonTextTrue": "on",
+			"image": "home",
+			"colorBgTrue": "green"
+		},
+		"name": "Handy",
+		"betriebszeit": "13m",
+		"funk": "5G",
+		"ip": "10.0.0.2"
+	}, {
+		"img": "/vis.0/myImages/erlebnis_100.png",
+		"name": "Harmony Hub - Wohnzimmer",
+		"betriebszeit": "18T 07h 21m",
+		"funk": "2G",
+		"ip": "10.0.0.3"
+	}
+]
+```
+
+#####由编辑器生成
+您可以使用编辑器轻松生成控件。只需创建一个受支持的小部件，在编辑器上对其进行配置，然后通过复制并将其粘贴到表wigdet中来导出设置。
+看看下面的动画截图：
+
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table_controls.gif)
+
+＃＃＃＃＃ 一般
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>类型</td><td>控制元件类型</td><td>串</td><td><ul><li> buttonToggle </li><li> buttonToggle_vertical </li><li> buttonToggle_icon </li><li> buttonState </li><li> buttonState_vertical </li><li> buttonState_icon </li><li>进展</li><li> progress_circular </li><li>滑杆</li><li> slide_round </li><li>开关</li><li>复选框</li></ul></td></tr><tr><td>宽度</td><td>控制元素的宽度，以％或px为单位</td><td>串</td><td> 100％| 100像素</td></tr><tr><td>高度</td><td>控件元素的高度，以％或px为单位</td><td>串</td><td> 100％| 100像素</td></tr><tr><td>行跨</td><td>跨x行的单元格</td><td>数</td><td> 1，2，3，... </td></tr><tr><td>科尔斯潘</td><td>跨x列的单元格</td><td>数</td><td> 1，2，3，... </td></tr></tbody></table>
+
+#####按钮切换
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> oid </td><td>对象ID </td><td>串</td><td/></tr><tr><td> buttonStyle </td><td>按钮样式</td><td>串</td><td>文字|提出|未提升概述</td></tr><tr><td>只读</td><td>只读</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> toggleType </td><td>切换类型</td><td>串</td><td>布尔值|值</td></tr><tr><td>按钮</td><td>按钮</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> valueOff </td><td>折价</td><td>串</td><td/></tr><tr><td> valueOn </td><td>的价值</td><td>串</td><td/></tr><tr><td> stateIfNotTrueValue </td><td>说明值是否等于“ on”条件</td><td>串</td><td>在|关</td></tr><tr><td> vibrateOnMobilDevices </td><td>在移动装置上振动[s] </td><td>数</td><td/></tr><tr><td>按钮文字</td><td>按钮文字</td><td>串</td><td/></tr><tr><td> labelTrue </td><td>标签为真</td><td>串</td><td/></tr><tr><td> labelColorFalse </td><td>标签颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> labelColorTrue </td><td>活动标签颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> labelWidth </td><td>文字宽度</td><td>数</td><td/></tr><tr><td>图片</td><td>图片</td><td>习俗</td><td/></tr><tr><td> imageColor </td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> imageTrue </td><td>活动图像</td><td>习俗</td><td/></tr><tr><td> imageTrueColor </td><td>活动图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> iconPosition </td><td>图像位置</td><td>串</td><td>左|对</td></tr><tr><td> iconHeight </td><td>影像高度</td><td>数</td><td/></tr><tr><td> colorBgFalse </td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorBgTrue </td><td>活动背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorPress </td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockEnabled </td><td>启用锁定</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> autoLockAfter </td><td> [s]之后自动锁定</td><td>数</td><td/></tr><tr><td> lockIcon </td><td>图标</td><td>习俗</td><td/></tr><tr><td> lockIconSize </td><td>图标大小</td><td>数</td><td/></tr><tr><td> lockIconColor </td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockFilterGrayscale </td><td>灰色滤镜（如果锁定） </td><td>数</td><td/></tr></tbody></table>
+
+<br>
+
+#####按钮垂直切换
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> oid </td><td>对象ID </td><td>串</td><td/></tr><tr><td> buttonStyle </td><td>按钮样式</td><td>串</td><td>文字|提出|未提升概述</td></tr><tr><td>只读</td><td>只读</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> toggleType </td><td>切换类型</td><td>串</td><td>布尔值|值</td></tr><tr><td>按钮</td><td>按钮</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> valueOff </td><td>折价</td><td>串</td><td/></tr><tr><td> valueOn </td><td>的价值</td><td>串</td><td/></tr><tr><td> stateIfNotTrueValue </td><td>说明值是否等于“ on”条件</td><td>串</td><td>在|关</td></tr><tr><td> vibrateOnMobilDevices </td><td>在移动装置上振动[s] </td><td>数</td><td/></tr><tr><td>按钮文字</td><td>按钮文字</td><td>串</td><td/></tr><tr><td> labelTrue </td><td>标签为真</td><td>串</td><td/></tr><tr><td> labelColorFalse </td><td>标签颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> labelColorTrue </td><td>活动标签颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td>图片</td><td>图片</td><td>习俗</td><td/></tr><tr><td> imageColor </td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> imageTrue </td><td>活动图像</td><td>习俗</td><td/></tr><tr><td> imageTrueColor </td><td>活动图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> iconPosition </td><td>图像位置</td><td>串</td><td>顶部|底部</td></tr><tr><td> iconHeight </td><td>影像高度</td><td>数</td><td/></tr><tr><td> colorBgFalse </td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorBgTrue </td><td>活动背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorPress </td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockEnabled </td><td>启用锁定</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> autoLockAfter </td><td> [s]之后自动锁定</td><td>数</td><td/></tr><tr><td> lockIcon </td><td>图标</td><td>习俗</td><td/></tr><tr><td> lockIconTop </td><td>距顶部的符号距离[％] </td><td>数</td><td/></tr><tr><td> lockIconLeft </td><td>距左的符号距离[％] </td><td>数</td><td/></tr><tr><td> lockIconSize </td><td>图标大小</td><td>数</td><td/></tr><tr><td> lockIconColor </td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockFilterGrayscale </td><td>灰色滤镜（如果锁定） </td><td>数</td><td/></tr></tbody></table>
+
+<br>
+
+#####按钮切换图标
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> oid </td><td>对象ID </td><td>串</td><td/></tr><tr><td>只读</td><td>只读</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> toggleType </td><td>切换类型</td><td>串</td><td>布尔值|值</td></tr><tr><td>按钮</td><td>按钮</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> valueOff </td><td>折价</td><td>串</td><td/></tr><tr><td> valueOn </td><td>的价值</td><td>串</td><td/></tr><tr><td> stateIfNotTrueValue </td><td>说明值是否等于“ on”条件</td><td>串</td><td>在|关</td></tr><tr><td> vibrateOnMobilDevices </td><td>在移动装置上振动[s] </td><td>数</td><td/></tr><tr><td>图片</td><td>图片</td><td>习俗</td><td/></tr><tr><td> imageColor </td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> imageTrue </td><td>活动图像</td><td>习俗</td><td/></tr><tr><td> imageTrueColor </td><td>活动图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> iconHeight </td><td>影像高度</td><td>数</td><td/></tr><tr><td> colorBgFalse </td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorBgTrue </td><td>活动背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorPress </td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockEnabled </td><td>启用锁定</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> autoLockAfter </td><td> [s]之后自动锁定</td><td>数</td><td/></tr><tr><td> lockIcon </td><td>图标</td><td>习俗</td><td/></tr><tr><td> lockIconTop </td><td>距顶部的符号距离[％] </td><td>数</td><td/></tr><tr><td> lockIconLeft </td><td>距左的符号距离[％] </td><td>数</td><td/></tr><tr><td> lockIconSize </td><td>图标大小</td><td>数</td><td/></tr><tr><td> lockIconColor </td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockFilterGrayscale </td><td>灰色滤镜（如果锁定） </td><td>数</td><td/></tr></tbody></table>
+
+<br>
+
+#####按钮状态
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> oid </td><td>对象ID </td><td>串</td><td/></tr><tr><td> buttonStyle </td><td>按钮样式</td><td>串</td><td>文字|提出|未提升概述</td></tr><tr><td>值</td><td>值</td><td>串</td><td/></tr><tr><td>按钮文字</td><td>按钮文字</td><td>串</td><td/></tr><tr><td> colorPress </td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> labelWidth </td><td>文字宽度</td><td>数</td><td/></tr><tr><td> vibrateOnMobilDevices </td><td>在移动装置上振动[s] </td><td>数</td><td/></tr><tr><td>图片</td><td>图片</td><td>习俗</td><td/></tr><tr><td> imageColor </td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> iconPosition </td><td>图像位置</td><td>串</td><td>左|对</td></tr><tr><td> iconHeight </td><td>影像高度</td><td>数</td><td/></tr><tr><td> lockEnabled </td><td>启用锁定</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> autoLockAfter </td><td> [s]之后自动锁定</td><td>数</td><td/></tr><tr><td> lockIcon </td><td>图标</td><td>习俗</td><td/></tr><tr><td> lockIconSize </td><td>图标大小</td><td>数</td><td/></tr><tr><td> lockIconColor </td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockFilterGrayscale </td><td>灰色滤镜（如果锁定） </td><td>数</td><td/></tr></tbody></table>
+
+<br>
+
+#####按钮状态垂直
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> oid </td><td>对象ID </td><td>串</td><td/></tr><tr><td> buttonStyle </td><td>按钮样式</td><td>串</td><td>文字|提出|未提升概述</td></tr><tr><td>值</td><td>值</td><td>串</td><td/></tr><tr><td>按钮文字</td><td>按钮文字</td><td>串</td><td/></tr><tr><td> colorPress </td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> vibrateOnMobilDevices </td><td>在移动装置上振动[s] </td><td>数</td><td/></tr><tr><td>图片</td><td>图片</td><td>习俗</td><td/></tr><tr><td> imageColor </td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> iconPosition </td><td>图像位置</td><td>串</td><td>顶部|底部</td></tr><tr><td> iconHeight </td><td>影像高度</td><td>数</td><td/></tr><tr><td> lockEnabled </td><td>启用锁定</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> autoLockAfter </td><td> [s]之后自动锁定</td><td>数</td><td/></tr><tr><td> lockIcon </td><td>图标</td><td>习俗</td><td/></tr><tr><td> lockIconTop </td><td>距顶部的符号距离[％] </td><td>数</td><td/></tr><tr><td> lockIconLeft </td><td>距左的符号距离[％] </td><td>数</td><td/></tr><tr><td> lockIconSize </td><td>图标大小</td><td>数</td><td/></tr><tr><td> lockIconColor </td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockFilterGrayscale </td><td>灰色滤镜（如果锁定） </td><td>数</td><td/></tr></tbody></table>
+
+<br>
+
+#####按钮状态图标
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> oid </td><td>对象ID </td><td>串</td><td/></tr><tr><td>值</td><td>值</td><td>串</td><td/></tr><tr><td> vibrateOnMobilDevices </td><td>在移动装置上振动[s] </td><td>数</td><td/></tr><tr><td>图片</td><td>图片</td><td>习俗</td><td/></tr><tr><td> imageColor </td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> iconHeight </td><td>影像高度</td><td>数</td><td/></tr><tr><td> colorPress </td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockEnabled </td><td>启用锁定</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> autoLockAfter </td><td> [s]之后自动锁定</td><td>数</td><td/></tr><tr><td> lockIcon </td><td>图标</td><td>习俗</td><td/></tr><tr><td> lockIconTop </td><td>距顶部的符号距离[％] </td><td>数</td><td/></tr><tr><td> lockIconLeft </td><td>距左的符号距离[％] </td><td>数</td><td/></tr><tr><td> lockIconSize </td><td>图标大小</td><td>数</td><td/></tr><tr><td> lockIconColor </td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockFilterGrayscale </td><td>灰色滤镜（如果锁定） </td><td>数</td><td/></tr></tbody></table>
+
+<br>
+
+#####进展
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> oid </td><td>对象ID </td><td>串</td><td></td></tr><tr><td>分</td><td>分</td><td>串</td><td></td></tr><tr><td>最高</td><td>最高</td><td>串</td><td></td></tr><tr><td>逆转</td><td>冲销价值</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> progressRounded </td><td>圆角</td><td>布尔值</td><td>错误|真正</td></tr><tr><td>进度条</td><td>条纹的</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> progressStripedColor </td><td> progressStripedColor </td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorProgressBackground </td><td>背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorProgress </td><td>颜色进度</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorOneCondition </td><td>颜色1进度的条件[&gt;] </td><td>串</td><td></td></tr><tr><td> colorOne </td><td>颜色1进度</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorTwoCondition </td><td>颜色2进度的条件[&gt;] </td><td>串</td><td></td></tr><tr><td> colorTwo </td><td>颜色2进展</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> showValueLabel </td><td>显示价值</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> valueLabelStyle </td><td>价值标题样式</td><td>串</td><td> progressPercent | progressValue | progressCustom </td></tr><tr><td> valueLabelUnit </td><td>单元</td><td>串</td><td></td></tr><tr><td> valueMaxDecimals </td><td>小数点</td><td>数</td><td></td></tr><tr><td> valueLabelCustom </td><td> valueLabelCustom </td><td>串</td><td></td></tr><tr><td> textColor </td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> textFontSize </td><td>字体大小</td><td>数</td><td></td></tr><tr><td> textFontFamily </td><td> textFontFamily </td><td>串</td><td></td></tr><tr><td> textAlign </td><td> textAlign </td><td>串</td><td>开始中心|结束</td></tr></tbody></table>
+
+<br>
+
+#####进度通知
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> oid </td><td>对象ID </td><td>串</td><td/></tr><tr><td>分</td><td>分</td><td>串</td><td/></tr><tr><td>最高</td><td>最高</td><td>串</td><td/></tr><tr><td> progressCircularSize </td><td>尺寸</td><td>数</td><td/></tr><tr><td> progressCircularWidth </td><td>厚度</td><td>数</td><td/></tr><tr><td> progressCircularRotate </td><td>旋转起点</td><td>数</td><td/></tr><tr><td> colorProgressBackground </td><td>背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorProgress </td><td>颜色进度</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> innerColor </td><td>圆圈背景色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorOneCondition </td><td>颜色1进度的条件[&gt;] </td><td>数</td><td/></tr><tr><td> colorOne </td><td>颜色1进度</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorTwoCondition </td><td>颜色2进度的条件[&gt;] </td><td>数</td><td/></tr><tr><td> colorTwo </td><td>颜色2进展</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> showValueLabel </td><td>显示价值</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> valueLabelStyle </td><td>价值标题样式</td><td>串</td><td> progressPercent | progressValue | progressCustom </td></tr><tr><td> valueLabelUnit </td><td>单元</td><td>串</td><td/></tr><tr><td> valueMaxDecimals </td><td>小数点</td><td>数</td><td/></tr><tr><td> valueLabelCustom </td><td> valueLabelCustom </td><td>串</td><td/></tr><tr><td> textColor </td><td>文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> textFontSize </td><td>字体大小</td><td>数</td><td/></tr><tr><td> textFontFamily </td><td> textFontFamily </td><td>串</td><td/></tr></tbody></table>
+
+<br>
+
+#####滑块
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> oid </td><td>对象ID </td><td>串</td><td></td></tr><tr><td> oid工作</td><td>工作对象ID </td><td>串</td><td></td></tr><tr><td>取向</td><td>取向</td><td>串</td><td>卧式|垂直</td></tr><tr><td> reverseSlider </td><td>反转滑块</td><td>布尔值</td><td>错误|真正</td></tr><tr><td>旋钮尺寸</td><td>旋钮大小</td><td>串</td><td>旋钮小|旋钮旋钮大</td></tr><tr><td>只读</td><td>只读</td><td>布尔值</td><td>错误|真正</td></tr><tr><td>分</td><td>分</td><td>串</td><td></td></tr><tr><td>最高</td><td>最高</td><td>串</td><td></td></tr><tr><td>步</td><td>脚步</td><td>串</td><td></td></tr><tr><td> vibrateOnMobilDevices </td><td>在移动装置上振动[s] </td><td>数</td><td></td></tr><tr><td> showTicks </td><td>显示步骤</td><td>串</td><td>没有是的总是</td></tr><tr><td> tickSize </td><td>显示步长</td><td>数</td><td></td></tr><tr><td> tickLabels </td><td>步骤文本（逗号分隔） </td><td>串</td><td></td></tr><tr><td> tickColorBefore </td><td>调节器前的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> tickColorAfter </td><td>调节器后的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorBeforeThumb </td><td>调节器前的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorThumb </td><td>调节器的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorAfterThumb </td><td>调节剂后颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> prepandText </td><td>文字预填</td><td>串</td><td></td></tr><tr><td> prepandTextWidth </td><td> prepandTextWidth </td><td>数</td><td></td></tr><tr><td> prepandTextColor </td><td>预设的文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> prepandTextFontSize </td><td>文字大小</td><td>数</td><td></td></tr><tr><td> prepandTextFontFamily </td><td>预设的文字字体</td><td>串</td><td></td></tr><tr><td> showValueLabel </td><td>显示价值</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> valueLabelUnit </td><td>单元</td><td>串</td><td></td></tr><tr><td> valueLabelMin </td><td>值小于min的文字</td><td>串</td><td></td></tr><tr><td> valueLabelMax </td><td>值大于min的文字</td><td>串</td><td></td></tr><tr><td>值小于</td><td>值文字的“小于”条件</td><td>数</td><td></td></tr><tr><td> textForValueLessThan </td><td>文字“小于” </td><td>串</td><td></td></tr><tr><td>价值大于</td><td>值文字的“大于”条件</td><td>数</td><td></td></tr><tr><td> textForValueGreaterThan </td><td>文字“大于” </td><td>串</td><td></td></tr><tr><td> valueLabelWidth </td><td>距离标签</td><td>数</td><td></td></tr><tr><td> showThumbLabel </td><td>显示标签</td><td>串</td><td>没有是的总是</td></tr><tr><td> thumbSize </td><td>标签尺寸</td><td>数</td><td></td></tr><tr><td> thumbBackgroundColor </td><td>背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> thumbFontColor </td><td>字体颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> thumbFontSize </td><td>字体大小</td><td>数</td><td></td></tr><tr><td> thumbFontFamily </td><td>字形</td><td>串</td><td></td></tr><tr><td> useLabelRules </td><td>使用文字规则</td><td>布尔值</td><td>错误|真正</td></tr></tbody></table>
+
+<br>
+
+#####滑子轮
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> oid </td><td>对象ID </td><td>串</td><td/></tr><tr><td> oid工作</td><td>工作对象ID </td><td>串</td><td/></tr><tr><td>分</td><td>分</td><td>串</td><td/></tr><tr><td>最高</td><td>最高</td><td>串</td><td/></tr><tr><td>步</td><td>脚步</td><td>串</td><td/></tr><tr><td> startAngle </td><td>起始角度</td><td>数</td><td/></tr><tr><td> arcLength </td><td>弧长</td><td>数</td><td/></tr><tr><td> slideWidth </td><td>滑块厚度</td><td>数</td><td/></tr><tr><td> handleSize </td><td>旋钮大小</td><td>数</td><td/></tr><tr><td>手柄缩放</td><td>控制旋钮变焦</td><td>数</td><td/></tr><tr><td> rtl </td><td>滑块从右向左移动</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> vibrateOnMobilDevices </td><td>在移动装置上振动[s] </td><td>数</td><td/></tr><tr><td> colorSliderBg </td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorBeforeThumb </td><td>调节器前的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorThumb </td><td>调节器的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorAfterThumb </td><td>调节剂后颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> valueLabelColor </td><td>值的文字颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> showValueLabel </td><td>显示价值</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> valueLabelVerticalPosition </td><td>值的垂直文本位置</td><td>数</td><td/></tr><tr><td> valueLabelUnit </td><td>单元</td><td>串</td><td/></tr><tr><td> valueLabelMin </td><td>值小于min的文字</td><td>串</td><td/></tr><tr><td> valueLabelMax </td><td>值大于min的文字</td><td>串</td><td/></tr><tr><td>值小于</td><td>值文字的“小于”条件</td><td>数</td><td/></tr><tr><td> textForValueLessThan </td><td>文字“小于” </td><td>串</td><td/></tr><tr><td>价值大于</td><td>值文字的“大于”条件</td><td>数</td><td/></tr><tr><td> textForValueGreaterThan </td><td>文字“大于” </td><td>串</td><td/></tr></tbody></table>
+
+<br>
+
+#####开关
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> oid </td><td>对象ID </td><td>串</td><td/></tr><tr><td>只读</td><td>努尔·莱森德</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> toggleType </td><td>艺术史</td><td>串</td><td>布尔值|值</td></tr><tr><td> valueOff </td><td>耳鸣</td><td>串</td><td/></tr><tr><td> valueOn </td><td>恋爱</td><td>串</td><td/></tr><tr><td> stateIfNotTrueValue </td><td> Zustand，Wenn der Wert nicht der Bedingung&#39;Ein&#39;entspricht </td><td>串</td><td>在|关</td></tr><tr><td> vibrateOnMobilDevices </td><td> auf mobilenGerïtenvibrieren [s] </td><td>数</td><td/></tr><tr><td> labelFalse </td><td>错误</td><td>串</td><td/></tr><tr><td> labelTrue </td><td>真实的</td><td>串</td><td/></tr><tr><td> labelPosition </td><td> labelPosition </td><td>串</td><td>左|对</td></tr><tr><td> labelClickActive </td><td>挑战运动</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> colorSwitchThumb </td><td>诺夫法布·夏尔特斯</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorSwitchTrack </td><td> Schieberfarbe des Schalters </td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorSwitchTrue </td><td>活跃的沙尔特法尔贝</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> colorSwitchHover </td><td> Schalterfarbe selektiert /悬停</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> labelColorFalse </td><td>啤酒节</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> labelColorTrue </td><td>正确无误</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockEnabled </td><td> Verriegeln Aktivieren </td><td>布尔值</td><td>错误|真正</td></tr><tr><td> autoLockAfter </td><td>自动机Verriegeln nach [s] </td><td>数</td><td/></tr><tr><td> lockIcon </td><td>符号</td><td>习俗</td><td/></tr><tr><td> lockIconTop </td><td> Symbolobstand von oben [％] </td><td>数</td><td/></tr><tr><td> lockIconLeft </td><td> Symbolabstand冯链接[％] </td><td>数</td><td/></tr><tr><td> lockIconSize </td><td>符号符号</td><td>数</td><td/></tr><tr><td> lockIconColor </td><td> Symbolfarbe </td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockFilterGrayscale </td><td>温恩·弗瑞格特Graufilter </td><td>数</td><td/></tr></tbody></table>
+
+<br>
+
+#####复选框
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> oid </td><td>对象ID </td><td>串</td><td/></tr><tr><td>只读</td><td>努尔·莱森德</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> toggleType </td><td>艺术史</td><td>串</td><td>布尔值|值</td></tr><tr><td> valueOff </td><td>耳鸣</td><td>串</td><td/></tr><tr><td> valueOn </td><td>恋爱</td><td>串</td><td/></tr><tr><td> stateIfNotTrueValue </td><td> Zustand，Wenn der Wert nicht der Bedingung&#39;Ein&#39;entspricht </td><td>串</td><td>在|关</td></tr><tr><td> vibrateOnMobilDevices </td><td> auf mobilenGerïtenvibrieren [s] </td><td>数</td><td/></tr><tr><td> labelFalse </td><td>错误</td><td>串</td><td/></tr><tr><td> labelTrue </td><td>真实的</td><td>串</td><td/></tr><tr><td> labelPosition </td><td> labelPosition </td><td>串</td><td>左|对</td></tr><tr><td> labelClickActive </td><td>挑战运动</td><td>布尔值</td><td>错误|真正</td></tr><tr><td> colorCheckBox </td><td> Kontrollk�stchenFarbe </td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> labelColorFalse </td><td>啤酒节</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> labelColorTrue </td><td>正确无误</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockEnabled </td><td> Verriegeln Aktivieren </td><td>布尔值</td><td>错误|真正</td></tr><tr><td> autoLockAfter </td><td>自动机Verriegeln nach [s] </td><td>数</td><td/></tr><tr><td> lockIcon </td><td>符号</td><td>习俗</td><td/></tr><tr><td> lockIconTop </td><td> Symbolobstand von oben [％] </td><td>数</td><td/></tr><tr><td> lockIconLeft </td><td> Symbolabstand冯链接[％] </td><td>数</td><td/></tr><tr><td> lockIconSize </td><td>符号符号</td><td>数</td><td/></tr><tr><td> lockIconColor </td><td> Symbolfarbe </td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td> lockFilterGrayscale </td><td>温恩·弗瑞格特Graufilter </td><td>数</td><td/></tr></tbody></table>
+
+<br>
+
+###编辑器设置
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=2><img src="doc/en/media/table_general.png"></td><td>开关</td><td>带有输入数据的类型字符串的数据点，如上所示</td></tr><tr><td>数据作为JSON </td><td>可选，如果未设置oid数据点，则如上所述输入数据</td></tr><tr><td rowspan=4><img src="doc/en/media/table_column.png"></td><td> colType [x] </td><td>如果选择了图像，则对象属性必须具有图像的路径（ <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#input-data">请参见上文</a> ） </td></tr><tr><td>前缀[x] </td><td>可以使用对象属性，内部对象绑定（ <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">请参见下文</a> ）和html的前缀</td></tr><tr><td>后缀[x] </td><td>可以使用对象属性，内部对象绑定（ <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign#internal-object-binding">见下文</a> ）和html的后缀</td></tr><tr><td>用于排序的对象名称[x] </td><td>在这里，您可以定义应用于排序的其他对象属性。 </td></tr></tbody></table>
 
 #####内部对象绑定
@@ -479,6 +581,9 @@ ical2CalendarWidget();
 ```
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+
 
 ### 0.3.11 (2020-05-24)
 * (Scrounger): Sentry added

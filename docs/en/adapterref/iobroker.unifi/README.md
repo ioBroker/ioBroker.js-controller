@@ -16,12 +16,12 @@ To get this adapter up and running the following information is needed:
 
 By default the information is updated every 60 seconds. Depending on your ioBroker hardware and your network size (number of clients, UniFi devices etc.) it is not recommended to further decrease the interval.
 
-### Blacklists
+### Filter objects
 The adapter updates as much information from your UniFi controller as possible, but offers the possibility to limit the updated information.
 
-It is possible to disable the update of selected information or blacklist specific items of that information.
+It is possible to disable the update of selected information or filter specific objects of that information.
 
-| Information | Items blacklistable by                  |
+| Information | Objects filterable by                   |
 |-------------|-----------------------------------------|
 | Clients     | Name, Hostname, IP address, MAC address |
 | Devices     | Name, IP address, MAC address           |

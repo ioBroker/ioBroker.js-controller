@@ -64,6 +64,9 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 
 ## Changelog
 
+### 0.1.17
+* (instalator) added Sentry plugin support
+
 ### 0.1.16
 * (instalator) fixed error
 

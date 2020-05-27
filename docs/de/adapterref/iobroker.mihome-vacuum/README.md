@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mihome-vacuum/README.md
 title: ioBroker Mihome-Vakuumadapter
-hash: OzbeF+mF8wNlgeVONtaUgbpuiW5a421HTeBy/XuFSiQ=
+hash: HmC70Kx52qe84OihnYTlAL+bjnM+H4Z4i9oR66doEIQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.mihome-vacuum/admin/mihome-vacuum.png)
 
@@ -31,7 +31,7 @@ Mit diesem Adapter können Sie den Xiaomi-Staubsauger steuern.
     - [Zimmer] (# Zimmer)
     - [Timer] (# Timer)
     - [Eigene Befehle] (# send-your-own-Befehle)
-    - [sendTo hook] (# send-custom-Befehle-mit-sendto)
+    - [sendTo hook] (# send-custom-befehle-with-sendto)
 - [Widget] (# Widget)
 - [Bugs] (# Bugs)
 - [Changelog] (# changelog)
@@ -56,15 +56,15 @@ Bitte installieren Sie canvas und die Bibliotheken manuell mit:
 ### Adapterkonfiguration
 - Für die IP-Adresse muss die IP-Adresse des Roboters im Format "192.168.178.XX" eingegeben werden.
 - Der Port des Roboters ist standardmäßig auf "54321" eingestellt, dies sollte nicht geändert werden
-- Eigener Port, sollte nur mit zweitem Roboter gewechselt werden
+- Eigener Port, sollte nur mit dem zweiten Roboter gewechselt werden
 - Abfrageintervall Die Zeit in ms, in der die Statuswerte des Roboters abgerufen werden (sollte nicht <10000 sein).
 
 #### Kontrolle über Alexa
-In der Konfiguration wird der Status "Alexa hinzufügen" aktiviert. Hier wird ein Hack gesetzt. Ein zusätzlicher Status "clean_home". Es ist ein Schalter, der bei "true" des Saugers beginnt und bei "false" nach Hause geht. Es wird automatisch ein intelligentes Gerät in der Cloud Adapter mit dem Namen "Staubsauger" erstellt, der im Cloud-Adapter geändert werden kann.
+In der Konfiguration wird der Status alexa hinzufügen aktiviert. Hier wird ein Hack gesetzt. Ein zusätzlicher Status "clean_home" ist ein Schalter, der bei "true" des Saugers beginnt und bei "false" nach Hause geht. Er wird automatisch zu einem intelligenten Gerät in der Cloud Adapter mit dem Namen "Staubsauger" erstellt, der im Cloud-Adapter geändert werden kann.
 
 #### Setzen Sie die angehaltene Zonenreinigung mit der Starttaste fort
 Wenn diese Option aktiviert ist, setzt das Vakuum die Zonenreinigung fort, wenn der Status "Start" auf "true" gesetzt wird, wenn er während einer laufenden Zonenreinigung angehalten wurde.
-Wenn diese Option deaktiviert ist, startet das Vakuum beim Senden des Startbefehls eine neue "normale Reinigung", auch wenn diese während einer laufenden Zonenreinigung angehalten wurde.
+Wenn diese Option deaktiviert ist, startet der Staubsauger beim Senden des Startbefehls eine neue "normale Reinigung", auch wenn dieser während einer laufenden Zonenreinigung angehalten wurde.
 
 - Experimentell: Mit dem Kontrollkästchen "Eigene Befehle senden" werden Objekte erstellt, über die Sie Ihre eigenen Befehle an den Roboter senden und empfangen können.
 
@@ -143,7 +143,7 @@ Beispiel:
 ```
 
 #### Räume
-Neuerer Staubsauger mit der neuesten Home App unterstützt die Definition von Räumen, siehe [Video](https://www.youtube.com/watch?v=vEiUZzoXfPg)
+neuerer Staubsauger mit der neuesten Home App unterstützt die Definition von Räumen, siehe [Video](https://www.youtube.com/watch?v=vEiUZzoXfPg)
 
 Jeder Raum in der aktuellen Karte verfügt über einen Index, der dann über die App dem Raum zugewiesen wird. Vom Roboter erhalten wir nur eine Zuordnung mit Raumnummer und Index. Der Adapter fragt diese Räume bei jedem Start des Adapters ab und erstellt für jeden Raum einen Kanal, der dann den aktuellen Raumindex kennt. Das gleiche passiert manuell mit der Schaltfläche loadRooms. Dieser Kanal kann dann den ioBroker-Räumen zugewiesen werden. Wenn die Taste roomClean gedrückt wird, wird der Index der Karte ermittelt und an den Roboter gesendet, damit dieser diesen Raum absaugen kann. Zuvor ist die Lüfterleistung auf Einzelraumabsaugung eingestellt. Wenn Sie noch nicht die Möglichkeit haben, die Räume in der App zu benennen, besteht auch die Möglichkeit, einen solchen Kanal manuell durch Angabe des Kartenindex zu erstellen. Es ist auch möglich, Zonenkoordinaten anstelle von mapIndex hinzuzufügen.
 Wenn Sie mehrere Räume spontan reinigen möchten, können Sie dies über multiRoomClean tun, indem Sie die ioBroker-Räume diesem Datenpunkt zuweisen und dann die Taste drücken.
@@ -235,7 +235,6 @@ Die unterstützten Befehle sind:
 | saubere Zone | `cleanZone` | `Koordinaten` | `Koordinaten` ist ein String mit Koordinaten und Anzahl, siehe [zoneClean] (# zoneClean) |
 
 ## Widget
-Entschuldigung, noch nicht fertig.
 ![Widget](../../../en/adapterref/iobroker.mihome-vacuum/widgets/mihome-vacuum/img/previewControl.png)
 
 ## Bugs

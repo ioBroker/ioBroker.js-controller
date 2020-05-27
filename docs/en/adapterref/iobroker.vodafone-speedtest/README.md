@@ -18,6 +18,10 @@ Implements same technique as https://speedtest.vodafone.de
 
 ## Changelog
 
+### 0.0.5 (2020-05-26)
+* Added ping results
+* Added calculated values by actual raw data
+
 ### 0.0.4 (2020-04-30)
 * Changed Adapter start type to scheduled (reinstallation might be needed)
 * Bug fixes and feedback implementation

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.fb-checkpresence/README.md
 title: без названия
-hash: GVLMCLDSgS9hjtRNJ/zi8yBJl+zZMqQ8o9g3Ot0Ikvs=
+hash: iAx9LX7lL9ZxpPnYP6Eate95u77FxOZII9VLyznRrBI=
 ---
 ![Количество установок](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -35,14 +35,15 @@ hash: GVLMCLDSgS9hjtRNJ/zi8yBJl+zZMqQ8o9g3Ot0Ikvs=
 
 ### Fritzbox условия
 Используемый интерфейс TR-064 от fritzbox описан здесь: https://avm.de/service/schnittstellen/.
-Используются следующие функции TR-064:
+Используются следующие сервисы и действия TR-064:
 
-* GetSpecificHostEntry
-* X_AVM-DE_GetSpecificHostEntryByIP (поддерживается с 2016-05-18) -> используется для чтения статуса участника через IP-адрес
-* GetHostNumberOfEntries
-* X_AVM-DE_GetHostListPath (поддержка с 2017-01-09) -> используется для конфигурации элемента
-* GetSecurityPort
-* Получить информацию
+* Хосты: 1 - X_AVM-DE_GetHostListPath (поддержка с 2017-01-09)
+* Хосты: 1 - GetSpecificHostEntry
+* Хосты: 1 - X_AVM-DE_GetSpecificHostEntryByIP (поддерживается с 2016-05-18)
+* DeviceInfo: 1 - GetSecurityPort
+* WANPPPConnection: 1 - GetInfo
+* WANIPConnection: 1 - GetInfo
+* DeviceInfo: 1 - GetInfo
 
 По умолчанию интерфейс TR-064 не активирован. Однако это можно легко изменить через веб-интерфейс FritzBox. Для этого войдите в свой FritzBox и убедитесь, что экспертный вид активирован. Тогда вы найдете ниже «Домашняя сеть» Обзор домашней сети »Настройки сети» пункт «Разрешить доступ для приложений». Там вы должны активировать флажок и затем перезапустить FritzBox один раз. <img src="doc/access_settings_network.JPG"/>
 
@@ -120,6 +121,9 @@ hash: GVLMCLDSgS9hjtRNJ/zi8yBJl+zZMqQ8o9g3Ot0Ikvs=
 Здесь вы найдете информацию об истории текущего дня.
 
 ## Changelog
+
+### 1.0.3 (2020-05-26)
+* (afuerhoff) bugfix checking mac or ip
 
 ### 1.0.2 (2020-05-24)
 * (afuerhoff) error handling optimized

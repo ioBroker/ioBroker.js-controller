@@ -238,6 +238,8 @@ Following values for engines are possible:
 - **(tr-TR_AP_Female)** -           tr-TR - Female - Filiz
 
 ## Changelog
+### 1.9.6 (2020-05-24)
+* (bluefox) Show names of SONOS devices
 
 ### 1.9.4 (2020-05-11)
 * (Apollon77) Fix Blockly

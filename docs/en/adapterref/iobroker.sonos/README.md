@@ -1,7 +1,9 @@
 ![Logo](admin/sonos.png)
 # ioBroker.sonos
 
-![Number of Installations](http://iobroker.live/badges/sonos-installed.svg) ![Number of Installations](http://iobroker.live/badges/sonos-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.sonos.svg)](https://www.npmjs.com/package/iobroker.sonos)
+![Number of Installations](http://iobroker.live/badges/sonos-installed.svg) 
+![Number of Installations](http://iobroker.live/badges/sonos-stable.svg) 
+[![NPM version](http://img.shields.io/npm/v/iobroker.sonos.svg)](https://www.npmjs.com/package/iobroker.sonos)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sonos.svg)](https://www.npmjs.com/package/iobroker.sonos)
 
 [![NPM](https://nodei.co/npm/iobroker.sonos.png?downloads=true)](https://nodei.co/npm/iobroker.sonos/)
@@ -10,19 +12,19 @@ Control and monitor SONOS devices with ioBroker.
 
 ## Handling of groups
 * States for handling SONOS groups:
-   * **`coordinator`** *: set/get the coordinator, so the SONOS device which is the master and coordinating the group. It requires the IP address (channel name) of the SONOS device to be the coordinator, but with underscore `_` instead of dot `.`, so use for example `192_168_0_100` for IP address `192.168.0.100`. If the device does not belong to any group, then the value is equal to the own channel name (IP).
-   * **`group_volume`** *: the volume of the group
-   * **`group_muted`** *: mute status of the group.
+   * **`coordinator`**: set/get the coordinator, so the SONOS device which is the master and coordinating the group. It requires the IP address (channel name) of the SONOS device to be the coordinator, but with underscore `_` instead of dot `.`, so use for example `192_168_0_100` for IP address `192.168.0.100`. If the device does not belong to any group, then the value is equal to the own channel name (IP).
+   * **`group_volume`**: the volume of the group
+   * **`group_muted`**: mute status of the group.
    * **`add_to_group`**: Add a certain SONOS device to the SONOS device under which this state is. Use IP address with underscores (see above).
    * **`remove_from_group`**: Remove a certain SONOS device from the SONOS device under which this state is. Use IP address with underscores (see above).
    
 *) These states will be updated if changes are made in the SONOS app.
 
-## Using with the sayit adapter
+## Using with the sayIt adapter
 To use the [sayit adapter](https://github.com/ioBroker/ioBroker.sayit) with this SONOS adapter, ensure that the [web adapter](https://github.com/ioBroker/ioBroker.web) is instantiated and running too. The web adapter is required to allow the SONOS adapter to read the generated MP3 file from the sayit adapter.
 
-### Warning: Stability problems in combination with sayit adapter
-Please note: This SONOS adapter has stability issues if using 'text to speech' with the sayit adapter. Symptoms observed:
+### Warning: Stability problems in combination with sayIt adapter
+Please note: This SONOS adapter has stability issues if using 'text to speech' with the sayIt adapter. Symptoms observed:
 1. Arbitrary change of volume to 0 or 100 %.
 2. No response after a random number of text to speech sequences
 
@@ -31,8 +33,10 @@ Workaround for text to speech is to use the [SONOS HTTP API](https://github.com/
 ## To Do
 * Show queue with covers
 
-
 ## Changelog
+### 2.0.2 (2020-05-25)
+* (bluefox) Refactoring
+
 ### 2.0.1 (2019-11-04)
 * (klein0r) create sonos cache directory
 
@@ -167,7 +171,7 @@ Workaround for text to speech is to use the [SONOS HTTP API](https://github.com/
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

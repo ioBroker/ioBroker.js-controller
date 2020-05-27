@@ -36,14 +36,14 @@ The fritzbox services are used over the TR-064 protocol.
 ### Fritzbox conditions
 
 The used TR-064 interface from the fritzbox is described here: https://avm.de/service/schnittstellen/.
-Following TR-064 functions are used:
-* GetSpecificHostEntry 
-* X_AVM-DE_GetSpecificHostEntryByIP (supported from 2016-05-18) -> is used to read the status of a member via the IP address
-* GetHostNumberOfEntries
-* X_AVM-DE_GetHostListPath (support from 2017-01-09) -> is used for member configuration
-* GetSecurityPort
-* GetInfo
-
+Following TR-064 services and actions are used:
+* Hosts:1 - X_AVM-DE_GetHostListPath (support from 2017-01-09)
+* Hosts:1 - GetSpecificHostEntry
+* Hosts:1 - X_AVM-DE_GetSpecificHostEntryByIP (supported from 2016-05-18)
+* DeviceInfo:1 - GetSecurityPort
+* WANPPPConnection:1 - GetInfo
+* WANIPConnection:1 - GetInfo
+* DeviceInfo:1 - GetInfo
 
 By default, the TR-064 interface is not activated. However, this can easily be changed via the 
 FritzBox web interface. To do this log in into your FritzBox and ensure that the expert view is activated. 
@@ -129,6 +129,9 @@ Here you will find information when the family member arrives or leaving home.
 Here you will find information about the history of the current day. 
 
 ## Changelog 
+
+### 1.0.3 (2020-05-26)
+* (afuerhoff) bugfix checking mac or ip
 
 ### 1.0.2 (2020-05-24)
 * (afuerhoff) error handling optimized

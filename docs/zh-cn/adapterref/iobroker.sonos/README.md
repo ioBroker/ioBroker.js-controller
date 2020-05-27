@@ -3,48 +3,54 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sonos/README.md
 title: ioBroker.sonos
-hash: mmZYqCeLZ17CE0iJUzEBUkEQCTYS3BGyPlOoGn9mZJA=
+hash: WX7IapEXJ5Pw3IWDbAZ4rNE3qM832rRfCn8EnnHrT3U=
 ---
 ![商标](../../../en/adapterref/iobroker.sonos/admin/sonos.png)
 
 ![安装数量](http://iobroker.live/badges/sonos-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sonos.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.sonos.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.sonos.svg)
 ![NPM](https://nodei.co/npm/iobroker.sonos.png?downloads=true)
 
 ＃ioBroker.sonos
-使用ioBroker控制和监控SONOS设备。
+使用ioBroker控制和监视SONOS设备。
 
-##处理组
-*处理SONOS组的国家：
-  * **coordinator`** *：设置/获取协调器，因此SONOS设备是主设备并协调组。它需要SONOS设备的IP地址（通道名称）作为协调器，但是使用下划线`_`而不是点`.`，因此使用例如`192_168_0_100`来获取IP地址`192.168.0.100`。如果设备不属于任何组，则该值等于自己的通道名称（IP）。
-  * **group_volume`** *：组的音量
-  * **group_muted`** *：组的静音状态。
-   * **`add_to_group` **：将某个SONOS设备添加到此状态所在的SONOS设备。使用带下划线的IP地址（见上文）。
-   * **`remove_from_group` **：从SONOS设备中删除某个SONOS设备，此设备处于此状态。使用带下划线的IP地址（见上文）。
+##组的处理
+*处理SONOS组的状态：
+   * **“协调器” **：设置/获取协调器，因此作为主机和协调组的SONOS设备。它要求SONOS设备的IP地址（通道名称）为协调器，但下划线为“ _”而不是点“。”，因此对于IP地址“ 192.168.0.100”，请使用“ 192_168_0_100”。如果设备不属于任何组，则该值等于自己的通道名称（IP）。
+  * **group_volume`** 群组的数量
+  * **group_muted`** 群组的静音状态。
+  * **add_to_group`** 将某个SONOS设备添加到处于该状态的SONOS设备中。使用带下划线的IP地址（请参见上文）。
+  * **remove_from_group`** 从处于此状态的SONOS设备中删除某个SONOS设备。使用带下划线的IP地址（请参见上文）。
 
-*）如果在SONOS应用程序中进行了更改，这些状态将会更新。
+*）如果在SONOS应用中进行了更改，这些状态将被更新。
 
-##与sayit适配器一起使用
-使用[sayit adapter]（https://github.com/ioBroker/ioBroker.sayit）与这个SONOS适配器，确保[web适配器]](https://github.com/ioBroker/ioBroker.web)也是实例化并运行的。需要Web适配器才允许SONOS适配器从sayit适配器读取生成的MP3文件。
+##与sayIt适配器一起使用
+实例化并正在运行[使用此SONOS适配器的sayit适配器]（https://github.com/ioBroker/ioBroker.sayit），请确保[Web适配器](https://github.com/ioBroker/ioBroker.web)。需要使用Web适配器才能使SONOS适配器从sayit适配器读取生成的MP3文件。
 
-###警告：与sayit适配器组合的稳定性问题
-请注意：如果在sayit适配器上使用“text to speech”，则此SONOS适配器会出现稳定性问题。观察到的症状：
+###警告：与sayIt适配器结合使用时出现稳定性问题
+请注意：如果对sayIt适配器使用“文字转语音”，则此SONOS适配器存在稳定性问题。观察到的症状：
 
-1.任意改变音量为0或100％。
-2.随机数量的文本到语音序列后没有响应
+1.任意将音量更改为0或100％。
+2.随机数量的文本到语音序列后无响应
 
-文本到语音的解决方法是使用[SONOS HTTP API](https://github.com/jishi/node-sonos-http-api)。
+文字转语音的解决方法是使用[SONOS HTTP API](https://github.com/jishi/node-sonos-http-api)。
 
 ＃＃ 去做
-*显示带盖的队列
+*带封面显示队列
 
 ##配置
- -  Web服务器 -  [可选]如果启用了Web服务器
- - 端口 - 如果启用了Web服务器，则为此端口。默认8083
- - 更新经过时间（ms） - 以毫秒为单位的间隔，以播放标题时更新已用定时器的频率。 （默认2000）
+-Web服务器-[可选]是否启用Web服务器
+-端口-如果启用了Web服务器，则为此端口。默认值8083
+-更新经过的时间（ms）-以毫秒为单位的间隔，在播放标题时更新经过的计时器的频率。 （默认为2000）
 
 ## Changelog
+### 2.0.2 (2020-05-25)
+* (bluefox) Refactoring
+
+### 2.0.1 (2019-11-04)
+* (klein0r) create sonos cache directory
+
 ### 2.0.0 (2019-08-13)
 * (bluefox) no web server any more
 * (bluefox) update all used npm packages
@@ -171,7 +177,7 @@ hash: mmZYqCeLZ17CE0iJUzEBUkEQCTYS3BGyPlOoGn9mZJA=
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

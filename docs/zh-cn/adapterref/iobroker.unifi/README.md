@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: 5Y9ruyZPd6DJzTRKHwrXmHI73/YNalRql7MwJ4yWxZk=
+hash: 83F6GLkofFfSJa7dSgnC34d982xoVkH62+Bwfk0dnYU=
 ---
 ![商标](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -26,12 +26,12 @@ hash: 5Y9ruyZPd6DJzTRKHwrXmHI73/YNalRql7MwJ4yWxZk=
 
 默认情况下，信息每60秒更新一次。根据您的ioBroker硬件和网络大小（客户端，UniFi设备等），不建议进一步缩短间隔。
 
-###黑名单
+###过滤对象
 适配器会从您的UniFi控制器中更新尽可能多的信息，但可以限制更新的信息。
 
-可以禁用所选信息的更新或将该信息列入黑名单。
+可以禁用所选信息的更新或过滤该信息的特定对象。
 
-|信息|被|列入黑名单的项目 |
+|信息|可过滤的对象|
 |-------------|-----------------------------------------|
 |客户|名称，主机名，IP地址，MAC地址|
 |设备|名称，IP地址，MAC地址|

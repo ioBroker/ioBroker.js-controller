@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: 5Y9ruyZPd6DJzTRKHwrXmHI73/YNalRql7MwJ4yWxZk=
+hash: 83F6GLkofFfSJa7dSgnC34d982xoVkH62+Bwfk0dnYU=
 ---
 ![Logo](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -26,12 +26,12 @@ Um diesen Adapter zum Laufen zu bringen, werden die folgenden Informationen ben�
 
 Standardmäßig werden die Informationen alle 60 Sekunden aktualisiert. Abhängig von Ihrer ioBroker-Hardware und Ihrer Netzwerkgröße (Anzahl der Clients, UniFi-Geräte usw.) wird nicht empfohlen, das Intervall weiter zu verkürzen.
 
-### Blacklists
+### Objekte filtern
 Der Adapter aktualisiert so viele Informationen wie möglich von Ihrem UniFi-Controller, bietet jedoch die Möglichkeit, die aktualisierten Informationen einzuschränken.
 
-Es ist möglich, die Aktualisierung ausgewählter Informationen zu deaktivieren oder bestimmte Elemente dieser Informationen auf die schwarze Liste zu setzen.
+Es ist möglich, die Aktualisierung ausgewählter Informationen zu deaktivieren oder bestimmte Objekte dieser Informationen zu filtern.
 
-| Informationen | Artikel auf der schwarzen Liste von |
+| Informationen | Objekte, die nach | gefiltert werden können |
 |-------------|-----------------------------------------|
 | Kunden | Name, Hostname, IP-Adresse, MAC-Adresse |
 | Geräte | Name, IP-Adresse, MAC-Adresse |

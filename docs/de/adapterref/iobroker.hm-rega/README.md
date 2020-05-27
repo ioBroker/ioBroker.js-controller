@@ -145,6 +145,10 @@ Abschließend sind die in der CCU angelegten Variablen aufgelistet
 ### FAQ
 
 ## Changelog
+### 2.6.8 (2020-05-26)
+* (foxriver76) Script post requests will time out after 15 seconds to prevent 
+stucking in queue if no answer from ccu received
+
 ### 2.6.7 (2020-05-11)
 * (foxriver76) fixed some edge cases, reported by Sentry
 

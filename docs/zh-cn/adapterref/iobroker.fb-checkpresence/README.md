@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fb-checkpresence/README.md
 title: 无题
-hash: GVLMCLDSgS9hjtRNJ/zi8yBJl+zZMqQ8o9g3Ot0Ikvs=
+hash: iAx9LX7lL9ZxpPnYP6Eate95u77FxOZII9VLyznRrBI=
 ---
 ![安装数量](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -35,14 +35,15 @@ fritzbox服务通过TR-064协议使用。
 
 ### Fritzbox条件
 此处描述了来自炸弹盒的二手TR-064接口：https：//avm.de/service/schnittstellen/。
-使用以下TR-064功能：
+使用了以下TR-064服务和操作：
 
-* GetSpecificHostEntry
-* X_AVM-DE_GetSpecificHostEntryByIP（从2016-05-18开始支持）->用于通过IP地址读取成员的状态
-* GetHostNumberOfEntries
-* X_AVM-DE_GetHostListPath（从2017-01-09开始支持）->用于成员配置
-* GetSecurityPort
-* 获取信息
+*主机：1-X_AVM-DE_GetHostListPath（从2017-01-09开始支持）
+*主机：1-GetSpecificHostEntry
+*主机：1-X_AVM-DE_GetSpecificHostEntryByIP（从2016-05-18开始支持）
+* DeviceInfo：1-GetSecurityPort
+* WANPPPConnection：1-GetInfo
+* WANIPConnection：1-GetInfo
+* DeviceInfo：1-GetInfo
 
 默认情况下，TR-064接口未激活。但是，可以通过FritzBox Web界面轻松更改此设置。为此，请登录到FritzBox并确保激活了专家视图。然后，您将在“家庭网络»家庭网络概述»网络设置”下面找到“允许访问应用程序”。在那里，您必须激活复选框，然后重新启动FritzBox。 <img src="doc/access_settings_network.JPG"/>
 
@@ -120,6 +121,9 @@ fritzbox服务通过TR-064协议使用。
 在这里，您将找到有关当天历史的信息。
 
 ## Changelog
+
+### 1.0.3 (2020-05-26)
+* (afuerhoff) bugfix checking mac or ip
 
 ### 1.0.2 (2020-05-24)
 * (afuerhoff) error handling optimized

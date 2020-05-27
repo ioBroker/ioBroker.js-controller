@@ -165,6 +165,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 0.5.2 (2020-05-25)
+* (René) bug fix: log a warning if actors are configured but UseActors are off
+
 ### 0.5.1 (2020-05-22)
 * (René) log a warning if actors are configured but UseActors are off
 * (René) sentry added

@@ -21,6 +21,24 @@ Alternative Z-Wave implementation
 	### __WORK IN PROGRESS__
 -->
 
+### 0.14.3 (2020-05-27)
+* Added a button to generate a new network key
+* Added a tooltip to explain the network key format
+* It is now possible to copy-and-paste a network key (e.g. from the original adapter). The pasted key is automatically cleaned from unnecessary characters.
+* Fixed a crash that happened when removing nodes with associations to a node that only supports `Multi Channel Association CC` V1
+* When a node is removed, its interview process is now canceled
+* When a node is manually woken up, the interview is now immediately continued if the adapter was waiting for a response from the node
+* All non-critical errors are now correctly logged instead of `undefined`
+
+### 0.14.2 (2020-05-27)
+Various fixes related to `Security CC` when the network key is not configured. This means that the adapter will not crash, but in many cases no meaningful communication with secure nodes will happen and interviews will not be completed.
+
+### 0.14.1 (2020-05-25)
+* Fixed various crashes: 
+  * Security CC can only be used when...
+  * issuedCommands.has is not a function
+* _known issue:_ Retransmitting secure messages may cause a crash
+
 ### 0.14.0 (2020-05-24)
 * Added support for secure communication (`S0`) and choosing between secure and non-secure inclusion of nodes
 * Fix: It is now possible to stop inclusion and exclusion processes again

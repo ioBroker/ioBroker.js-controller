@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fb-checkpresence/README.md
 title: kein Titel
-hash: GVLMCLDSgS9hjtRNJ/zi8yBJl+zZMqQ8o9g3Ot0Ikvs=
+hash: iAx9LX7lL9ZxpPnYP6Eate95u77FxOZII9VLyznRrBI=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -35,14 +35,15 @@ Die Fritzbox-Dienste werden über das TR-064-Protokoll verwendet.
 
 ### Fritzbox Bedingungen
 Die verwendete TR-064-Schnittstelle aus der Fritzbox wird hier beschrieben: https://avm.de/service/schnittstellen/.
-Folgende TR-064-Funktionen werden verwendet:
+Folgende TR-064-Dienste und -Aktionen werden verwendet:
 
-* GetSpecificHostEntry
-* X_AVM-DE_GetSpecificHostEntryByIP (unterstützt vom 18.05.2016) -> wird verwendet, um den Status eines Mitglieds über die IP-Adresse zu lesen
-* GetHostNumberOfEntries
-* X_AVM-DE_GetHostListPath (Unterstützung vom 09.01.2017) -> wird für die Mitgliederkonfiguration verwendet
-* GetSecurityPort
-* Informationen bekommen
+* Hosts: 1 - X_AVM-DE_GetHostListPath (Unterstützung vom 09.01.2017)
+* Hosts: 1 - GetSpecificHostEntry
+* Hosts: 1 - X_AVM-DE_GetSpecificHostEntryByIP (unterstützt vom 18.05.2016)
+* DeviceInfo: 1 - GetSecurityPort
+* WANPPPConnection: 1 - GetInfo
+* WANIPConnection: 1 - GetInfo
+* DeviceInfo: 1 - GetInfo
 
 Standardmäßig ist die TR-064-Schnittstelle nicht aktiviert. Dies kann jedoch einfach über die FritzBox-Weboberfläche geändert werden. Melden Sie sich dazu in Ihrer FritzBox an und stellen Sie sicher, dass die Expertenansicht aktiviert ist. Dann finden Sie unter &quot;Heimnetzwerk» Heimnetzwerkübersicht »Netzwerkeinstellungen&quot; den Punkt &quot;Zugriff für Anwendungen zulassen&quot;. Dort müssen Sie das Kontrollkästchen aktivieren und dann die FritzBox einmal neu starten. <img src="doc/access_settings_network.JPG"/>
 
@@ -120,6 +121,9 @@ Hier finden Sie Informationen, wann das Familienmitglied ankommt oder das Haus v
 Hier finden Sie Informationen zur Geschichte des aktuellen Tages.
 
 ## Changelog
+
+### 1.0.3 (2020-05-26)
+* (afuerhoff) bugfix checking mac or ip
 
 ### 1.0.2 (2020-05-24)
 * (afuerhoff) error handling optimized

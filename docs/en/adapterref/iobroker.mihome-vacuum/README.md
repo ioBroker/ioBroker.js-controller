@@ -225,7 +225,6 @@ The supported commands are:
 | clean zone | `cleanZone` | `coordinates` | `coordinates` ist a String with coordinates and count, see [zoneClean](#zoneClean) |
 
 ## Widget
-Sorry, not yet finished.
 ![Widget](widgets/mihome-vacuum/img/previewControl.png)
 
 ## Bugs
