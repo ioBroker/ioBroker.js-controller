@@ -1214,11 +1214,10 @@
             "pl": "ŁAMANIE: Sprawdź skrypty „stopTimeout” w swoich skryptach Blockly, czy poprawna nazwa limitu czasu jest podana po aktualizacji! Proszę to sprawdzić PRZED aktualizacją do nowej wersji lub wyeksportować dotknięte nim pojedyncze skrypty jako XML i ponownie zaimportować po aktualizacji!",
             "zh-cn": "BREAKING：请检查您的Blockly脚本中的“ stopTimeout”块，以确保更新后列出了正确的超时名称！请在更新到新版本之前进行检查，或将受影响的单个脚本导出为XML，并在更新后重新导入！"
         },
-        "id": "JsAdapterBlockly",
+        "id": "JsAdapterBlocklyStable",
         "class": "warning",
         "fa-icon": "exclamation-circle",
-        "created": "2020-05-25T00:00:00.000Z",
-        "repo": "latest",    
+        "created": "2020-05-28T02:00:00.000Z",
         "conditions": {
             "javascript": "smaller(4.6.0)"
         }
