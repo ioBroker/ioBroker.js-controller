@@ -460,6 +460,9 @@
                 "state": {
                     "map": "function(doc) { if (doc.type === 'state') emit(doc._id, doc) }"
                 },
+                "folder": {
+                    "map": "function(doc) { if (doc.type === 'folder') emit(doc._id, doc) }"
+                },
                 "enum": {
                     "map": "function(doc) { if (doc.type === 'enum') emit(doc._id, doc) }"
                 },
