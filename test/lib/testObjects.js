@@ -325,7 +325,7 @@ function register(it, expect, context) {
                         expect(file.file).to.be.equal('abc.txt');
                         expect(file.path).to.be.equal('myFile');
                         objects.readFile(testId, 'myFile/abc.txt', (err, _data, _mimeType) => {
-                            expect(err).to.be.equal('Not exists');
+                            expect(err.message).to.be.equal('Not exists');
                             done();
                         });
                     });
@@ -406,7 +406,7 @@ function register(it, expect, context) {
                     expect(err).to.be.not.ok;
                     expect(data.toString('utf8')).to.be.equal('abcd');
                     objects.readFile(testId, 'myFile1/abcRename.txt', err => {
-                        expect(err).to.be.equal('Not exists');
+                        expect(err.message).to.be.equal('Not exists');
                         done();
                     });
                 });
@@ -473,7 +473,7 @@ function register(it, expect, context) {
     it(textName + 'should not delete non existing object', done => {
         const objects = context.objects;
         objects.delObject(testId + 'not', err => {
-            expect(err).to.be.equal('Not exists');
+            expect(err.message).to.be.equal('Not exists');
             done();
         });
     });
@@ -483,7 +483,7 @@ function register(it, expect, context) {
         objects.delObjectAsync(testId + 'async1').then(() => {
             expect(1).to.be.equal('Should not happen');
         }).catch(err => {
-            expect(err).to.be.equal('Not exists');
+            expect(err.message).to.be.equal('Not exists');
             done();
         });
     });
