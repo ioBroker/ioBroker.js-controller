@@ -89,6 +89,7 @@ function startController(options, callback) {
         Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServerRedis'));
     }
 
+    // eslint-disable-next-line no-unused-vars
     const _objectsInst = new Objects(settingsObjects);
 
     let States;
@@ -150,6 +151,7 @@ function startController(options, callback) {
         change: options.states.onChange || null
     };
 
+    // eslint-disable-next-line no-unused-vars
     const _statesInst = new States(settingsStates);
 }
 
