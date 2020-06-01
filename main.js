@@ -4285,7 +4285,13 @@ function init(compactGroupId) {
     };
     pluginHandler = new PluginHandler(pluginSettings);
     pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
-    pluginHandler.addPlugins(config.plugins, __dirname);           // ... plugins from iobroker.json
+
+    try {
+        pluginHandler.addPlugins(config.plugins, __dirname);           // ... plugins from iobroker.json
+    } catch (e) {
+        logger.error('Cannot load plugins ' + JSON.stringify(config.plugins) + ': ' + e);
+        console.error('Cannot load plugins ' + JSON.stringify(config.plugins) + ': ' + e);
+    }
 
     createObjects(() => {
         objects.subscribe('system.adapter.*');
