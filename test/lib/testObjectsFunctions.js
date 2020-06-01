@@ -275,7 +275,7 @@ function register(it, expect, context) {
             expect(obj.type).to.be.equal('state');
             expect(obj.native.attr1).to.be.equal('11');
             context.adapter.getForeignObject(gid, function (err, obj1) {
-                expect(err).to.be.null;
+                expect(err).to.be.not.ok;
 
                 expect(obj1).to.be.null;
                 done();
@@ -698,7 +698,7 @@ function register(it, expect, context) {
             expect(err).to.not.be.ok;
 
             context.adapter.getObject(gid, (err, obj) => {
-                expect(err).to.be.null;
+                expect(err).to.be.not.ok;
 
                 expect(obj).to.be.null;
 
@@ -716,7 +716,7 @@ function register(it, expect, context) {
             expect(err).to.not.be.ok;
 
             context.adapter.getForeignObject(context.adapterShortName + 'f.0.' + gid, function (err, obj) {
-                expect(err).to.be.null;
+                expect(err).to.be.not.ok;
 
                 expect(obj).to.be.null;
 

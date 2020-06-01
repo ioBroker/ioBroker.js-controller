@@ -119,7 +119,7 @@ function register(it, expect, context) {
             expect(1).to.be.equal('Never happens');
         }).catch(err => {
             console.error(err);
-            expect(err).to.be.equal('permissionError');
+            expect(err.message).to.be.equal('permissionError');
         });
     }).timeout(1000);
 
@@ -129,7 +129,7 @@ function register(it, expect, context) {
             expect(1).to.be.equal('Never happens');
         }).catch(err => {
             console.error(err);
-            expect(err).to.be.equal('permissionError');
+            expect(err.message).to.be.equal('permissionError');
         });
     }).timeout(1000);
 
@@ -148,7 +148,7 @@ function register(it, expect, context) {
         return objects.getObject(secretId, {user: 'system.user.user'}).then(_obj => {
             expect(1).to.be.equal('Never happens');
         }).catch(err => {
-            expect(err).to.be.equal('permissionError');
+            expect(err.message).to.be.equal('permissionError');
         });
     }).timeout(1000);
 }
