@@ -360,213 +360,213 @@ function register(it, expect, context) {
     // setObjectNotExists
     it(testName + 'Try to set existing object', function (done) {
         context.adapter.setObjectNotExists(gid, {
-                common: {
-                    name: 'not must be set'
-                },
-                native: {
-                    pparam: 10
-                },
-                type: 'state'
+            common: {
+                name: 'not must be set'
             },
-            function (err) {
+            native: {
+                pparam: 10
+            },
+            type: 'state'
+        },
+        function (err) {
+            expect(err).to.be.null;
+
+            context.adapter.getObject(gid, function (err, obj1) {
                 expect(err).to.be.null;
 
-                context.adapter.getObject(gid, function (err, obj1) {
+                expect(obj1.native).to.be.ok;
+                expect(obj1.native.pparam).to.be.not.ok;
+
+                context.adapter.setObjectNotExists(gid + 'A', {
+                    common: {
+                        name: 'must be set'
+                    },
+                    native: {
+                        ppparam: 10
+                    },
+                    type: 'state'
+                },
+                function (err) {
                     expect(err).to.be.null;
 
-                    expect(obj1.native).to.be.ok;
-                    expect(obj1.native.pparam).to.be.not.ok;
+                    context.adapter.getObject(gid + 'A', function (err, obj1) {
+                        expect(err).to.be.null;
 
-                    context.adapter.setObjectNotExists(gid + 'A', {
-                            common: {
-                                name: 'must be set'
-                            },
-                            native: {
-                                ppparam: 10
-                            },
-                            type: 'state'
-                        },
-                        function (err) {
-                            expect(err).to.be.null;
-
-                            context.adapter.getObject(gid + 'A', function (err, obj1) {
-                                expect(err).to.be.null;
-
-                                expect(obj1.native).to.be.ok;
-                                expect(obj1.native.ppparam).to.be.equal(10);
-                                done();
-                            });
-                        });
+                        expect(obj1.native).to.be.ok;
+                        expect(obj1.native.ppparam).to.be.equal(10);
+                        done();
+                    });
                 });
             });
+        });
     });
 
     // setForeignObjectNotExists
     it(testName + 'Try to set existing foreign object', function (done) {
         context.adapter.setForeignObjectNotExists(context.adapterShortName + '.0.' + gid, {
-                common: {
-                    name: 'not must be set'
-                },
-                native: {
-                    ppparam: 11
-                },
-                type: 'state'
+            common: {
+                name: 'not must be set'
             },
-            function (err) {
+            native: {
+                ppparam: 11
+            },
+            type: 'state'
+        },
+        function (err) {
+            expect(err).to.be.null;
+
+            context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, function (err, obj1) {
                 expect(err).to.be.null;
 
-                context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, function (err, obj1) {
+                expect(obj1.native).to.be.ok;
+                expect(obj1.native.ppparam).to.be.not.ok;
+
+                context.adapter.setForeignObjectNotExists(context.adapterShortName + 'ff.0.' + gid, {
+                    common: {
+                        name: 'must be set'
+                    },
+                    native: {
+                        ppparam: 9
+                    },
+                    type: 'state'
+                },
+                function (err) {
                     expect(err).to.be.null;
 
-                    expect(obj1.native).to.be.ok;
-                    expect(obj1.native.ppparam).to.be.not.ok;
+                    context.adapter.getForeignObject(context.adapterShortName + 'ff.0.' + gid, function (err, obj1) {
+                        expect(err).to.be.null;
 
-                    context.adapter.setForeignObjectNotExists(context.adapterShortName + 'ff.0.' + gid, {
-                            common: {
-                                name: 'must be set'
-                            },
-                            native: {
-                                ppparam: 9
-                            },
-                            type: 'state'
-                        },
-                        function (err) {
-                            expect(err).to.be.null;
-
-                            context.adapter.getForeignObject(context.adapterShortName + 'ff.0.' + gid, function (err, obj1) {
-                                expect(err).to.be.null;
-
-                                expect(obj1.native).to.be.ok;
-                                expect(obj1.native.ppparam).to.be.equal(9);
-                                done();
-                            });
-                        });
+                        expect(obj1.native).to.be.ok;
+                        expect(obj1.native.ppparam).to.be.equal(9);
+                        done();
+                    });
                 });
             });
+        });
     });
 
     // setForeignObject merge of custom settings
     it(testName + 'Try to merge custom settings', done => {
         context.adapter.setForeignObject(context.adapterShortName + '.0.' + gid, {
+            common: {
+                name: 'Some name',
+                custom: {
+                    history: {enabled: true}
+                }
+            },
+            native: {
+                ppparam: 11
+            },
+            type: 'state'
+        },
+        err => {
+            expect(err).to.be.null;
+            context.adapter.setForeignObject(context.adapterShortName + '.0.' + gid, {
                 common: {
                     name: 'Some name',
                     custom: {
-                        history: {enabled: true}
+                        material: {enabled: true}
                     }
                 },
                 native: {
-                    ppparam: 11
+                    ppparam: 12
                 },
                 type: 'state'
-            },
-            err => {
+            }, err => {
                 expect(err).to.be.null;
-                context.adapter.setForeignObject(context.adapterShortName + '.0.' + gid, {
-                    common: {
-                        name: 'Some name',
-                        custom: {
-                            material: {enabled: true}
-                        }
-                    },
-                    native: {
-                        ppparam: 12
-                    },
-                    type: 'state'
-                }, err => {
+                context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, (err, obj1) => {
                     expect(err).to.be.null;
-                    context.adapter.getForeignObject(context.adapterShortName + '.0.' + gid, (err, obj1) => {
-                        expect(err).to.be.null;
 
-                        expect(obj1.common.custom.material).to.be.ok;
-                        expect(obj1.common.custom.history).to.be.ok;
-                        done();
-                    });
+                    expect(obj1.common.custom.material).to.be.ok;
+                    expect(obj1.common.custom.history).to.be.ok;
+                    done();
                 });
             });
+        });
     });
 
     // setForeignObject merge of custom settings
     it(testName + 'Try to delete custom settings', done => {
         const id = context.adapterShortName + '.0.' + gid;
         context.adapter.setForeignObject(id, {
+            common: {
+                name: 'Some name',
+                custom: {
+                    history: {enabled: true}
+                }
+            },
+            native: {
+                ppparam: 11
+            },
+            type: 'state'
+        },
+        err => {
+            expect(err).to.be.null;
+            context.adapter.setForeignObject(id, {
                 common: {
                     name: 'Some name',
+                    desc: 'Hello',
                     custom: {
-                        history: {enabled: true}
+                        material: null,
+                        history: null
                     }
                 },
                 native: {
-                    ppparam: 11
+                    bluefox: 14
                 },
                 type: 'state'
-            },
-            err => {
+            }, err => {
                 expect(err).to.be.null;
-                context.adapter.setForeignObject(id, {
-                    common: {
-                        name: 'Some name',
-                        desc: 'Hello',
-                        custom: {
-                            material: null,
-                            history: null
-                        }
-                    },
-                    native: {
-                        bluefox: 14
-                    },
-                    type: 'state'
-                }, err => {
+                context.adapter.getForeignObject(id, (err, obj1) => {
                     expect(err).to.be.null;
-                    context.adapter.getForeignObject(id, (err, obj1) => {
-                        expect(err).to.be.null;
 
-                        expect(obj1.common.custom).to.be.not.ok;
-                        done();
-                    });
+                    expect(obj1.common.custom).to.be.not.ok;
+                    done();
                 });
             });
+        });
     });
 
     // setForeignObject merge of custom settings
     it(testName + 'Try to delete custom settings in new object', done => {
         const id = context.adapterShortName + '.0.' + gid + '6';
         context.adapter.setForeignObject(id, {
+            common: {
+                name: 'Some name',
+                custom: {
+                    history: {enabled: true}
+                }
+            },
+            native: {
+                ppparam: 11
+            },
+            type: 'state'
+        },
+        err => {
+            expect(err).to.be.null;
+            context.adapter.setForeignObject(id, {
                 common: {
                     name: 'Some name',
+                    desc: 'Hello',
                     custom: {
-                        history: {enabled: true}
+                        material: null,
+                        history: null
                     }
                 },
                 native: {
-                    ppparam: 11
+                    bluefox: 14
                 },
                 type: 'state'
-            },
-            err => {
+            }, err => {
                 expect(err).to.be.null;
-                context.adapter.setForeignObject(id, {
-                    common: {
-                        name: 'Some name',
-                        desc: 'Hello',
-                        custom: {
-                            material: null,
-                            history: null
-                        }
-                    },
-                    native: {
-                        bluefox: 14
-                    },
-                    type: 'state'
-                }, err => {
+                context.adapter.getForeignObject(id, (err, obj1) => {
                     expect(err).to.be.null;
-                    context.adapter.getForeignObject(id, (err, obj1) => {
-                        expect(err).to.be.null;
 
-                        expect(obj1.common.custom).to.be.not.ok;
-                        done();
-                    });
+                    expect(obj1.common.custom).to.be.not.ok;
+                    done();
                 });
             });
+        });
     });
 
     // getObjectView
@@ -782,17 +782,17 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setObjectNotExists(gid, {
-                    common: {
-                        name: 'must be set'
-                    },
-                    native: {
-                        pparam: 10
-                    },
-                    type: 'state'
+                common: {
+                    name: 'must be set'
                 },
-                err => {
-                    expect(err).to.be.null;
-                });
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            err => {
+                expect(err).to.be.null;
+            });
         });
     });
 
@@ -807,20 +807,20 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setObject(gid, {
-                    common: {
-                        name: 'must be set'
-                    },
-                    native: {
-                        pparam: 10
-                    },
-                    type: 'state'
+                common: {
+                    name: 'must be set'
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                    setTimeout(function () {
-                        done();
-                    }, 2000);
-                });
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            function (err) {
+                expect(err).to.be.null;
+                setTimeout(function () {
+                    done();
+                }, 2000);
+            });
         });
     });
 
@@ -836,17 +836,17 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
-                    common: {
-                        name: 'must be set'
-                    },
-                    native: {
-                        pparam: 10
-                    },
-                    type: 'state'
+                common: {
+                    name: 'must be set'
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                });
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            function (err) {
+                expect(err).to.be.null;
+            });
         });
     });
 
@@ -868,25 +868,25 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setForeignObject('system.adapter.tesla.0', {
-                    common: {
-                        name: 'tesla',
-                        type: 'number',
-                        role: 'level',
-                        members: ['A']
-                    },
-                    native: {
-                        model: 'S P85D',
-                        username: 'tesla',
-                        password: 'winning'
-                    },
-                    protectedNative: [
-                        'username',
-                        'password'
-                    ]
+                common: {
+                    name: 'tesla',
+                    type: 'number',
+                    role: 'level',
+                    members: ['A']
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                });
+                native: {
+                    model: 'S P85D',
+                    username: 'tesla',
+                    password: 'winning'
+                },
+                protectedNative: [
+                    'username',
+                    'password'
+                ]
+            },
+            function (err) {
+                expect(err).to.be.null;
+            });
         });
     });
 
@@ -908,25 +908,25 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setForeignObject('system.adapter.' + context.adapterShortName + '.0', {
-                    common: {
-                        name: 'tesla',
-                        type: 'number',
-                        role: 'level',
-                        members: ['A']
-                    },
-                    native: {
-                        model: 'S P85D',
-                        username: 'tesla',
-                        password: 'winning'
-                    },
-                    protectedNative: [
-                        'username',
-                        'password'
-                    ]
+                common: {
+                    name: 'tesla',
+                    type: 'number',
+                    role: 'level',
+                    members: ['A']
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                });
+                native: {
+                    model: 'S P85D',
+                    username: 'tesla',
+                    password: 'winning'
+                },
+                protectedNative: [
+                    'username',
+                    'password'
+                ]
+            },
+            function (err) {
+                expect(err).to.be.null;
+            });
         });
     });
 
@@ -941,20 +941,20 @@ function register(it, expect, context) {
                 }
             };
             context.adapter.setForeignObject(context.adapterShortName + 'f.0.' + gid, {
-                    common: {
-                        name: 'must be set'
-                    },
-                    native: {
-                        pparam: 10
-                    },
-                    type: 'state'
+                common: {
+                    name: 'must be set'
                 },
-                function (err) {
-                    expect(err).to.be.null;
-                    setTimeout(function () {
-                        done();
-                    }, 2000);
-                });
+                native: {
+                    pparam: 10
+                },
+                type: 'state'
+            },
+            function (err) {
+                expect(err).to.be.null;
+                setTimeout(function () {
+                    done();
+                }, 2000);
+            });
         });
     });
 
