@@ -34,8 +34,10 @@ Required node.js >= 10.x.x
 
 ## Changelog
 
-### 1.3.6
-* fix object definition dimup and dimdown
+### 1.3.8
+* fix colorloopspeed is not working
+* fix set xy has no effect 
+* some small fixes
 
 ### 1.3.7
 * stable re-release

@@ -16,6 +16,9 @@ The inclusion of plugs has to be performed with the app for now, but will soon b
 	### __WORK IN PROGRESS__
 -->
 
+### 0.5.3 (2020-05-31)
+* (AlCalzone) Added more translations
+
 ### 0.5.2 (2020-05-08)
 * (AlCalzone) Don't log `plug added` for known plugs
 
@@ -65,7 +68,7 @@ The inclusion of plugs has to be performed with the app for now, but will soon b
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 AlCalzone <d.griesel@gmx.net>
+Copyright (c) 2017-2020 AlCalzone <d.griesel@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

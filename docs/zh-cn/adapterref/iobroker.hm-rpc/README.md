@@ -135,6 +135,12 @@ CCU / Homematic支持不同的设备类型（有线，无线，HMIP，CUxD）。
 ##常见问题
 
 ## Changelog
+### 1.14.5 (2020-05-29)
+* (foxriver76) fixed edge case problem IOBROKER-HM-RPC-5E
+
+### 1.14.4 (2020-05-28)
+* (jens-maus) updated all device images to latest ones include hmip-wired ones
+
 ### 1.14.3 (2020-05-18)
 * (foxriver76) catch edge case error if row.value has no native 
 

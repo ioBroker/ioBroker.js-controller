@@ -63,6 +63,9 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
+### 1.0.0
+   * Stable Release
+
 ### 0.6.5
    * Set flag for compact mode to false
 

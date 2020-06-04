@@ -34,6 +34,9 @@ Workaround for text to speech is to use the [SONOS HTTP API](https://github.com/
 * Show queue with covers
 
 ## Changelog
+### 2.1.0 (2020-05-31)
+* (bluefox) TTS Refactoring
+
 ### 2.0.2 (2020-05-25)
 * (bluefox) Refactoring
 

@@ -22,11 +22,12 @@ Currently tested devices:
 
 | Model | Type  | Image |
 | :---: | :---: | :---: |
-| [DSP-W215](https://eu.dlink.com/uk/en/products/dsp-w215-smart-plug) | Socket (socket, temperature, current) | ![Image](admin/DSP_W215.png) | 
-| [DCH-S150](https://eu.dlink.com/uk/en/products/dch-s150-motion-sensor) | Motion Detector (last motion detected) | ![Image](admin/DCH_S150.png) |
+| DSP-W215 | Smart Plug (socket, temperature, current) **Needs polling** | ![Image](admin/DSP_W215.png) |
+| DSP-W115 | Smart Plug (socket) | ![Image](admin/DSP_W115.png) | 
+| DCH-S150 | Motion Detector (last motion detected) **Needs polling** | ![Image](admin/DCH_S150.png) |
 
-The adapter needs to poll the devices. So sensor readings and motion detection will be 
-delayed by polling interval (can be set in config).
+The adapter needs to poll some devices. Newer ones do send push messages, which is now supported. Sensor readings and motion detection will be 
+delayed by polling interval, if they need to be polled (can be set in config).
 
 #### Configuration:
 * List of devices, each device with following settings:
@@ -34,18 +35,44 @@ delayed by polling interval (can be set in config).
 <table>
 <tr><td>Name</td><td>set a name here, must be unique (for mydlink devices)</td></tr>
 <tr><td>IP</td><td>fill in IP address here, hostname should also work</td></tr>
-<tr><td>PIN</td><td>PIN is printed on a sticker on the device, probably at the bottom</td></tr>
+<tr><td>PIN</td><td>PIN is printed on a sticker on the device, probably at the bottom. Can be TELNET for DSP-W115, see below.</td></tr>
 <tr><td>Poll interval</td><td>per device poll interval<br /> Set 0 to disable polling. <br /><b>Recommendation:</b> Set a fast poll interval for sensors and a longer one for plugs.</td></tr>
 <tr><td>enable</td><td>if not enabled, will not be polled or controlled. <br />Devices that are not plugged in can be disabled to avoid network traffic and error messages in the log.</td></tr>
 </table>
 
 The adapter does not interfere with the use of the app.
 
+## Setup of DSP-W115
+
+And other *newer* devices use a completely different protocol and a different setup. If you remove the devices from the mydlink app,
+you can just use them as the other devices and enter your usual PIN. 
+
+If you want to keep using the app, you have to put the device into factory mode, following this procedure:
+1. Reset device into recovery mode by holding the wps/reset button during boot until it starts blinking **red** instead of orange.
+2. Now a telnet deamon is running, connect to the device wifi
+3. Run `telnet 192.168.0.20` and login with `admin:123456` (or use putty, don't forget to select `telnet` instead of `ssh`).
+4. Run `nvram_set FactoryMode 1`
+5. Run `reboot; exit;` to reboot the device.
+
+Now you should enter `TELNET` as Pin and the adapter will retrieve the required data from the device itself.
+
 ## Changelog
 <!-- 
 	Placeholder for next versions (this needs to be indented):
 	### __WORK IN PROGRESS__
 -->
+### 1.1.2 (2020-06-01)
+* fixed two possible crashes with offline / wrong devices.
+
+### 1.1.1 (2020-06-01)
+* Improved auto detection of DSP-W115 (but mdns seems very unreliable whit that device)
+* UI should never delete user devices
+
+### 1.1.0 (2020-05-31)
+* Added Support for w115 (and maybe other never myDlink devices, might even do *something* with cameras)
+* Fix relogin to device (i.e. when device was restarted during adapter runtime) 
+* Fix error when switching a socket.
+
 ### 1.0.11 (2020-05-10)
 * Tried to add even more information in case device seems incompatible
 

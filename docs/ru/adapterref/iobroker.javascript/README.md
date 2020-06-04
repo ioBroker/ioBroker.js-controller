@@ -2638,6 +2638,10 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
+
+### 4.6.xx (2020-05-xx)
+* (Apollon77) Prevent wrong errors when setting "null" values for states
+
 ### 4.6.17 (2020-05-25)
 * (bluefox) Fixed error with warnings collapsed blocks
 * (Apollon77) optimize Sentry error reporting to prevent false positives

@@ -128,7 +128,7 @@ After sucessful advanced setup the following channels will _additionally_ be cre
 ## Changelog
 
 ### 0.9.0 (2020-05-23)
-- (Zefau) added option for webhook Ip address in case Plex is running in a Docker environment (see [#53](https://github.com/Zefau/ioBroker.plex/issues/53))
+- (Zefau) added option for webhook IP address in case Plex is running in a Docker environment (see [#53](https://github.com/Zefau/ioBroker.plex/issues/53))
 - (Zefau) updated dependencies
 
 ### 0.8.11 (2020-02-26)

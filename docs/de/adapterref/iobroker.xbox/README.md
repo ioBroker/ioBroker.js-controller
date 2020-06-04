@@ -349,6 +349,9 @@ der Tastenkombination "STRG + F".
    *View Button für Medieninhalte.*
 
 ## Changelog
+### 0.6.5 (2020-05-28)
+* (foxriver76) fixed problem with auth-only states
+
 ### 0.6.4 (2020-05-11)
 * (foxriver76) compatibility with controller v3
 

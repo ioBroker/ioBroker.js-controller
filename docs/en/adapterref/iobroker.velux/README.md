@@ -21,17 +21,21 @@ Enter under module your new target_position. Windows allows only target_position
 
 ## Changelog
 
-### 0.0.4
+### 0.0.6
 
-* Improve room assignment
-  
+-   fix js-controller 3 problem
+
+### 0.0.5
+
+-   Improve room assignment
+
 ### 0.0.2
 
-* add changing target_position for non windows  
-  
+-   add changing target_position for non windows
+
 ### 0.0.1
 
-* (ta2k) initial release
+-   (ta2k) initial release
 
 ## License
 

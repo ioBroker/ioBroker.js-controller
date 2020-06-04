@@ -292,12 +292,14 @@ In addition to normal thermostat you can define:
 	* If ``javascript.0.myimage`` has no value the fallback ``whitestone`` will be used
 
 
-## Developing
-* Have a look at [Operating Principle of Frontend](Operating%20Principle%20of%20Frontend.md)
-
 ****
 
 ## Changelog
+
+### 1.0.0 (2020-06-01)
+* (Sebastian Bormann) Added a few captions to admin.
+* (Sebastian Bormann) Prevent pressure menu when scrolling and after opening menu.
+* (Sebastian Bormann) Corrected a few translations.
 
 ### 0.4.1 (2020-05-15)
 * (Sebastian Bormann) Added icons for toplight and tilted to window and enhanced window to recognize tilted position.

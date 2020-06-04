@@ -248,6 +248,9 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+### 1.5.3 (2020-05-28)
+* (bluefox) Small change for nightscout
+
 ### 1.5.2 (2020-05-21)
 * (bluefox) Changed requirements for password
 * (bluefox) Do not try load the "sharp" if blood sugar not enabled

@@ -23,10 +23,20 @@ Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. b
 eine direkte Verknüpfung der jeweiligen Instanz "states", auf andere "states" möglich. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
 
 ----------------------------------------------------------------------------------------------------------------------
+*Stand 28.05.2020*
+
 
 ### Tab Haupteinstellungen
 
 Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm, Passwort und Benachrichtigungen über Andere Adapter wie z.B. Telegramm, vorgenommen.
+
+*Alle Zeiten sind in Sekunden einzugeben*
+
+- Aktivierzeit -> Zeitverzögerung bis zu Aktivierung wenn man einen delay Datenpunkt benutzt
+- Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf true gesetzt
+- Alarmverzögerung -> Verzögerungszeit bis Einbruch ausgelöst wird (während dieser Zeit wird der Stille Alarm ausgelöst)  
+- Auslösezeit bei Warnungen -> Bei Auslösung eines der Warnkreise(info.warn/night_circuit_changes), wird der jeweils zugehörige Datenpunkt für die Zeit auf true gesetzt
+
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -81,6 +91,23 @@ Der Adapter liefert eine ganze Anzahl an states:
 Das sind die eigentlichen states um die Alarmanlage zu bedienen.
 Es ist möglich die Alarmanlage direkt von aktiviert auf "intern scharf" umzuschalten, dies ist jedoch nur möglich wenn die Alarmanlage nicht ausgelöst hatte.
 
+- use.activate_nightrest -> Aktivierung der Nachtruhe
+- use.deactivate_nightrest -> Deaktivierung der Nachtruhe
+- use.toggle_nightrest -> Deaktivierung/Aktivierung der Nachtruhe
+- use.activate_warn_circuit -> Aktivierung der Überwachung des Warnkreises (intern scharf)
+- use.deactivate_warn_circuit -> Deaktivierung der Überwachung des Warnkreises (intern scharf)
+- use.toggle_warn_circuit -> Deaktivierung/Aktivierung der Überwachung des Warnkreises (intern scharf)
+- use.disable -> Aktivierung der Anlage (Alarmkreis)
+- use.enable -> Deaktivierung der Anlage (Alarmkreis)
+- use.enable_with_delay -> Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
+- use.list -> Deaktivierung/Aktivierung/Warnkreis/Aktivierung mit Verzögerungszeit
+- use.quit_changes -> Rücksetzen der beiden states *info.warn/night_circuit_changes*
+- use.toggle -> Deaktivierung/Aktivierung der Anlage (Alarmkreis)
+- use.toggle_password -> Deaktivierung/Aktivierung der Anlage (Alarmkreis) mit Passwort
+- use.toggle_with_delay -> Deaktivierung/Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
+- use.toggle_with_delay_and_password -> Deaktivierung/Aktivierung der Anlage (Alarmkreis) mit Passwort und Verzögerungszeit
+
+
 #### "alarm.x.status...."
 Hier lässte sich der Zustand der Anlage ablesen.
 
@@ -89,6 +116,7 @@ Liefert zusätzliche Informationen wie z.B. welche "Türen offen sind" oder eine
 Der log_today state wird um Mitternacht geleert.
 
 ----------------------------------------------------------------------------------------------------------------------
+
 
 
 ## Probleme
@@ -105,6 +133,9 @@ Der log_today state wird um Mitternacht geleert.
 
 
 ## Changelog
+
+#### 0.5.0 (31.05.2020)
+* (misanorot) changed speech output
 
 #### 0.5.0 (14.05.2020)
 * (misanorot) added use.list state

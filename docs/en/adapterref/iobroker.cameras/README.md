@@ -23,7 +23,7 @@ sendTo('cameras.0', 'image', {
     height: 50, // optional
     angle: 90   // optional
 }, result => {
-    const img = 'data:image/jpeg;base64,' + result;
+    const img = 'data:' + result.contentType + ';base64,' + result.data;
     console.log('Show image: ' + img);    
 }); 
 ```
@@ -38,7 +38,7 @@ This is normal URL request, where all parameters are in URL. Like `http://mycam/
 This is URL request for image, where all parameters are in URL, but you can provide the credentials for basic authentication. Like `http://mycam/snapshot.jpg`  
 
 ## Changelog
-### 0.1.1
+### 0.1.2 (2020-06-03)
 * (bluefox) implemented get image by message
 
 ### 0.1.0

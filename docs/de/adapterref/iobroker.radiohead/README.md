@@ -289,6 +289,9 @@ Jede Instanz des Adapters stellt die folgenden Informationen bereit:
 Die Zähler der Nachrichten können bei Bedarf durch ein Schreiben in das Objekt `actions.resetCounters` auf 0 zurückgesetzt werden.
 
 ## Changelog
+### 1.0.7 (2020-06-01)
+* (Peter Müller) Fixed bug on deleting incoming data entries.
+
 ### 1.0.5 (2020-04-14)
 * (Peter Müller) Fixed bug in grouping in/out data.
 * (Peter Müller) Added missing translations.

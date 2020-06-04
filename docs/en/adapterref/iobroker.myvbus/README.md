@@ -2,17 +2,16 @@
 
 ![Logo](admin/myvbus.png)
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.myvbus.svg)](https://www.npmjs.com/package/iobroker.myvbus)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.myvbus.svg)](https://www.npmjs.com/package/iobroker.myvbus)
 ![Number of Installations (latest)](http://iobroker.live/badges/myvbus-installed.svg)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.myvbus.svg)](https://www.npmjs.com/package/iobroker.myvbus)
 ![Number of Installations (stable)](http://iobroker.live/badges/myvbus-stable.svg)
+[![NPM version](https://img.shields.io/npm/v/iobroker.myvbus.svg)](https://www.npmjs.com/package/iobroker.myvbus)
 [![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.myvbus.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.myvbus)
 [![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.myvbus/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.myvbus)
-
 [![NPM](https://nodei.co/npm/iobroker.myvbus.png?downloads=true)](https://nodei.co/npm/iobroker.myvbus/)
 
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.myvbus/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.myvbus) 
-
+**Tests:** [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.myvbus/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.myvbus)
+  
 ## ioBroker Adapter for Resol VBus
 
 This adapter connects ioBroker to various VBus-based devices using resol-vbus, a JavaScript library for the acquisition of RESOL VBus data, provided by Daniel Wippermann.
@@ -51,24 +50,29 @@ This adapter connects ioBroker to various VBus-based devices using resol-vbus, a
 
 ## Changelog
 
-### 0.0.6
+### 0.1.0
+* (grizzelbee) Fix: config page shows current settings now (not default anymore) **May raise the need to reenter the password!**
+* (grizzelbee) Fix: "Connected" state is updated correctly now if connection is disrupted.
+* (grizzelbee) New: Added Badge for latest(npm) version to readme
+* (grizzelbee) Fix: removed default password from config to ensure it's encrypted on first config
+* (grizzelbee) Fix: removed Force-ReInit
+* (grizzelbee) Fix: sensor maintenance indicators are working booleans now
+* (grizzelbee) New: added new activity indicator states for each relais.
+* (grizzelbee) New: testing configuration to avoid start with invalid config
 
+### 0.0.6
 * (pdbjjens) alpha 6 release updated dependencies
 
 ### 0.0.5
-
 * (pdbjjens) alpha 5 release improved type and role mapping of adapter values
 
 ### 0.0.4
-
 * (pdbjjens) alpha 4 release updated dependency on resol-vbus library to 0.21.0
 
 ### 0.0.3
-
 * (pdbjjens) alpha 3 release tested with DL3 over local LAN and VBus.net and DeltaSol SLT (0x1001) incl. HQM (0x1011)
 
 ### 0.0.2
-
 * (pdbjjens) alpha 2 release tested with VBus/LAN, KM2, VBus.net and DeltaSol E (0x7721 & 0x7722), DeltaSol M (0x7311 & 0x716), DeltaSol CS Plus (0x2211), Oventrop RQXXL (0x7541)
 
 ### 0.0.1

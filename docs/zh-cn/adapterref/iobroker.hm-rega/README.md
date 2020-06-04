@@ -108,6 +108,9 @@ CCU和info文件夹包含网关的基本信息。
 ＃＃＃ 常问问题
 
 ## Changelog
+### 2.6.9 (2020-05-29)
+* (foxriver76) fixed crash when we cannot determine CCU version
+
 ### 2.6.8 (2020-05-26)
 * (foxriver76) Script post requests will time out after 15 seconds to prevent 
 stucking in queue if no answer from ccu received

@@ -1,8 +1,5 @@
 ![Logo](admin/text2command.png)
-
-# text2command
-
-=================
+# ioBroker.text2command
 
 ![Number of Installations](http://iobroker.live/badges/text2command-installed.svg) ![Number of Installations](http://iobroker.live/badges/text2command-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.text2command.svg)](https://www.npmjs.com/package/iobroker.text2command)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.text2command.svg)](https://www.npmjs.com/package/iobroker.text2command)
@@ -412,7 +409,7 @@ First the command will be processed with your javascript and if javascript will 
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

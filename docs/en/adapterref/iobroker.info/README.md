@@ -316,6 +316,9 @@ Forum entries will be displayed without problems when accessing ioBroker via IP 
 
 ## Changelog
 
+### 1.7.4 (2020-06-01)
+* (Apollon77) Update systeminformation and other deps
+
 ### 1.7.3 (2020-xx-xx)
 * (ldittmar) Added full S.M.A.R.T data. To be able to detect S.M.A.R.T. status on Linux you need to install smartmontools >= 7.0
 

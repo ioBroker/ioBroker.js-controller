@@ -1240,18 +1240,21 @@ Take a look at the animated screenshot below:
             <td>string</td>
             <td>
                 <ul>
-                    <li>buttonToggle</li>
-                    <li>buttonToggle_vertical</li>
-                    <li>buttonToggle_icon</li>
-                    <li>buttonState</li>
-                    <li>buttonState_vertical</li>
-                    <li>buttonState_icon</li>
-                    <li>progress</li>
-                    <li>progress_circular</li>
-                    <li>slider</li>
-                    <li>slider_round</li>
-                    <li>switch</li>
-                    <li>checkbox</li>
+                    <li><a href="#button-toggle-1">buttonToggle</a></li>
+                    <li><a href="#button-toggle-vertical">buttonToggle_vertical</a></li>
+                    <li><a href="#button-toggle-icon">buttonToggle_icon</a></li>
+                    <li><a href="#button-state">buttonState</a></li>
+                    <li><a href="#button-state-vertical">buttonState_vertical</a></li>
+                    <li><a href="#button-state-icon">buttonState_icon</a></li>
+                    <li><a href="#progress-1">progress</a></li>
+                    <li><a href="#progress-circular">progress_circular</a></li>
+                    <li><a href="#slider-1">slider</a></li>
+                    <li><a href="#slider-round">slider_round</a></li>
+                    <li><a href="#switch-1">switch</a></li>
+                    <li><a href="#checkbox-1">checkbox</a></li>
+					<li><a href="#textfield">textfield</a></li>
+					<li><a href="#select-1">select</a></li>
+					<li><a href="#autocomplete-1">autocomplete</a></li>
                 </ul> 
             </td>
         </tr>
@@ -1287,11 +1290,20 @@ Take a look at the animated screenshot below:
                 1, 2, 3, ... 
             </td>
         </tr>
+        <tr>
+            <td>verticalAlign</td>
+            <td>vertical alignment</td>
+            <td>string</td>
+            <td>
+                top | middle | bottom
+            </td>
+        </tr>
     </tbody>
 </table>
 
 ##### Button Toggle 
 
+<details>
 <table>
 	<thead>
 		<tr>
@@ -1478,11 +1490,11 @@ Take a look at the animated screenshot below:
 		</tr>
 	</tbody>
 </table>
-
-<br>
+</details>
 
 ##### Button Toggle Vertical 
 
+<details>
 <table>
 	<thead>
 		<tr>
@@ -1675,11 +1687,11 @@ Take a look at the animated screenshot below:
 		</tr>
 	</tbody>
 </table>
-
-<br>
+</details>
 
 ##### Button Toggle Icon
 
+<details>
 <table>
 	<thead>
 		<tr>
@@ -1836,11 +1848,12 @@ Take a look at the animated screenshot below:
 		</tr>
 	</tbody>
 </table>
+</details>
 
-<br>
 
 ##### Button State
 
+<details>
 <table>
 	<thead>
 		<tr>
@@ -1955,11 +1968,12 @@ Take a look at the animated screenshot below:
 		</tr>
 	</tbody>
 </table>
+</details>
 
-<br>
 
 ##### Button State Vertical 
 
+<details>
 <table>
 	<thead>
 		<tr>
@@ -2080,11 +2094,12 @@ Take a look at the animated screenshot below:
 		</tr>
 	</tbody>
 </table>
+</details>
 
-<br>
 
 ##### Button State Icon
 
+<details>
 <table>
 	<thead>
 		<tr>
@@ -2187,11 +2202,12 @@ Take a look at the animated screenshot below:
 		</tr>
 	</tbody>
 </table>
+</details>
 
-<br>
 
 ##### Progress
 
+<details>
 <table>
     <thead>
         <tr>
@@ -2336,11 +2352,12 @@ Take a look at the animated screenshot below:
 		</tr>
     </tbody>
 </table>
+</details>
 
-<br>
 
 ##### Progress Circular
 
+<details>
 <table>
 	<thead>
 		<tr>
@@ -2479,11 +2496,12 @@ Take a look at the animated screenshot below:
 		</tr>
 	</tbody>
 </table>
+</details>
 
-<br>
 
 ##### Slider
 
+<details>
 <table>
     <thead>
         <tr>
@@ -2639,6 +2657,12 @@ Take a look at the animated screenshot below:
 			<td>false | true</td>
 		</tr>
 		<tr>
+			<td>valueLabelStyle</td>
+			<td>value caption style</td>
+			<td>string</td>
+			<td>sliderPercent | sliderValue</td>
+		</tr>
+		<tr>
 			<td>valueLabelUnit</td>
 			<td>unit</td>
 			<td>string</td>
@@ -2730,11 +2754,12 @@ Take a look at the animated screenshot below:
 		</tr>
     </tbody>
 </table>
+</details>
 
-<br>
 
 ##### Slider Round
 
+<details>
 <table>
 	<thead>
 		<tr>
@@ -2774,6 +2799,12 @@ Take a look at the animated screenshot below:
 			<td>steps</td>
 			<td>string</td>
 			<td/>
+		</tr>
+		<tr>
+			<td>readOnly</td>
+			<td>nur lesend</td>
+			<td>boolean</td>
+			<td>false | true</td>
 		</tr>
 		<tr>
 			<td>startAngle</td>
@@ -2860,6 +2891,12 @@ Take a look at the animated screenshot below:
 			<td/>
 		</tr>
 		<tr>
+			<td>valueLabelStyle</td>
+			<td>value caption style</td>
+			<td>string</td>
+			<td>sliderPercent | sliderValue</td>
+		</tr>
+		<tr>
 			<td>valueLabelUnit</td>
 			<td>unit</td>
 			<td>string</td>
@@ -2903,11 +2940,12 @@ Take a look at the animated screenshot below:
 		</tr>
 	</tbody>
 </table>
+</details>
 
-<br>
 
 ##### Switch
 
+<details>
 <table>
 	<thead>
 		<tr>
@@ -3070,11 +3108,12 @@ Take a look at the animated screenshot below:
 		</tr>
 	</tbody>
 </table>
+</details>
 
-<br>
 
 ##### Checkbox
 
+<details>
 <table>
 	<thead>
 		<tr>
@@ -3219,6 +3258,1507 @@ Take a look at the animated screenshot below:
 		</tr>
 	</tbody>
 </table>
+</details>
+
+
+##### Textfield
+
+<details>
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>oid</td>
+			<td>Object ID</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputType</td>
+			<td>inputType</td>
+			<td>string</td>
+			<td>text | number | date | time | mask</td>
+		</tr>
+		<tr>
+			<td>inputMask</td>
+			<td>inputMask</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputMaxLength</td>
+			<td>inputMaxLength</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputLayout</td>
+			<td>layout</td>
+			<td>string</td>
+			<td>regular | solo | solo-rounded | solo-shaped | filled | filled-rounded | filled-shaped | outlined | outlined-rounded | outlined-shaped</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBackgroundColor</td>
+			<td>background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBackgroundColorHover</td>
+			<td>background color hover</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBackgroundColorSelected</td>
+			<td>background color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBorderColor</td>
+			<td>border color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBorderColorHover</td>
+			<td>border color hover</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBorderColorSelected</td>
+			<td>border color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputTextFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputTextFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputTextColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLabelText</td>
+			<td>text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputLabelColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLabelColorSelected</td>
+			<td>text color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLabelFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputLabelFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputTranslateX</td>
+			<td>offset x</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputTranslateY</td>
+			<td>offset y</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputPrefix</td>
+			<td>prepended text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputSuffix</td>
+			<td>appended text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputAppendixColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputAppendixFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputAppendixFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>showInputMessageAlways</td>
+			<td>always show</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>inputMessage</td>
+			<td>text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputMessageFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputMessageFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputMessageColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>showInputCounter</td>
+			<td>show counter</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>inputCounterColor</td>
+			<td>font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputCounterFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputCounterFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>clearIconShow</td>
+			<td>show text delete icon </td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>clearIcon</td>
+			<td>text delete icon </td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>clearIconSize</td>
+			<td>size of text delete icon </td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>clearIconColor</td>
+			<td>color of text delete icon </td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>prepandIcon</td>
+			<td>prefixed icon</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>prepandIconSize</td>
+			<td>size of prefixed icon</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>prepandIconColor</td>
+			<td>color of prefixed icon</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>prepandInnerIcon</td>
+			<td>inner prefixed symbol</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>prepandInnerIconSize</td>
+			<td>size of inner prefixed symbol</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>prepandInnerIconColor</td>
+			<td>color of inner prefixed symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>appendIcon</td>
+			<td>appended symbol</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>appendIconSize</td>
+			<td>size of appended symbol</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>appendIconColor</td>
+			<td>color of appended symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>appendOuterIcon</td>
+			<td>outer appended symbol</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>appendOuterIconSize</td>
+			<td>size of outer appended symbol</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>appendOuterIconColor</td>
+			<td>color of outer appended symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+	</tbody>
+</table>
+</details>
+
+
+##### Select
+
+<details>
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>oid</td>
+			<td>Object ID</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputType</td>
+			<td>inputType</td>
+			<td>string</td>
+			<td>text | date | time</td>
+		</tr>
+		<tr>
+			<td>vibrateOnMobilDevices</td>
+			<td>vibrate on mobil devices [s]</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputLayout</td>
+			<td>layout</td>
+			<td>string</td>
+			<td>regular | solo | solo-rounded | solo-shaped | filled | filled-rounded | filled-shaped | outlined | outlined-rounded | outlined-shaped</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBackgroundColor</td>
+			<td>background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBackgroundColorHover</td>
+			<td>background color hover</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBackgroundColorSelected</td>
+			<td>background color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBorderColor</td>
+			<td>border color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBorderColorHover</td>
+			<td>border color hover</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBorderColorSelected</td>
+			<td>border color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputTextFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputTextFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputTextColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLabelText</td>
+			<td>text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputLabelColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLabelColorSelected</td>
+			<td>text color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLabelFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputLabelFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputTranslateX</td>
+			<td>offset x</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputTranslateY</td>
+			<td>offset y</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputPrefix</td>
+			<td>prepended text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputSuffix</td>
+			<td>appended text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputAppendixColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputAppendixFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputAppendixFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>showInputMessageAlways</td>
+			<td>always show</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>inputMessage</td>
+			<td>text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputMessageFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputMessageFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputMessageColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>showInputCounter</td>
+			<td>show counter</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>inputCounterColor</td>
+			<td>font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputCounterFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputCounterFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>clearIconShow</td>
+			<td>show text delete icon </td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>clearIcon</td>
+			<td>text delete icon </td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>clearIconSize</td>
+			<td>size of text delete icon </td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>clearIconColor</td>
+			<td>color of text delete icon </td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>collapseIcon</td>
+			<td>menu open symbol</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>collapseIconSize</td>
+			<td>size of menu open symbol</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>collapseIconColor</td>
+			<td>color of menu open symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>prepandIcon</td>
+			<td>prefixed icon</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>prepandIconSize</td>
+			<td>size of prefixed icon</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>prepandIconColor</td>
+			<td>color of prefixed icon</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>prepandInnerIcon</td>
+			<td>inner prefixed symbol</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>prepandInnerIconSize</td>
+			<td>size of inner prefixed symbol</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>prepandInnerIconColor</td>
+			<td>color of inner prefixed symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>appendOuterIcon</td>
+			<td>outer appended symbol</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>appendOuterIconSize</td>
+			<td>size of outer appended symbol</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>appendOuterIconColor</td>
+			<td>color of outer appended symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listDataMethod</td>
+			<td>input method for the menu data</td>
+			<td>string</td>
+			<td>inputPerEditor | jsonStringObject | multistatesObject | valueList</td>
+		</tr>
+		<tr>
+			<td>countSelectItems</td>
+			<td>Editor: count of menu items</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>jsonStringObject</td>
+			<td>JSON string</td>
+			<td>string</td>
+			<td>bindings not working!</td>
+		</tr>
+		<tr>
+			<td>valueList</td>
+			<td>value list</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>valueListLabels</td>
+			<td>value list: labels</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>valueListIcons</td>
+			<td>value list: images</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listPosition</td>
+			<td>position</td>
+			<td>string</td>
+			<td>auto | top | bottom</td>
+		</tr>
+		<tr>
+			<td>listPositionOffset</td>
+			<td>use position offset</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>listItemHeight</td>
+			<td>height of menu item</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemBackgroundColor</td>
+			<td>background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemBackgroundHoverColor</td>
+			<td>hover color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemBackgroundSelectedColor</td>
+			<td>color of selected item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemRippleEffectColor</td>
+			<td>effect color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>showSelectedIcon</td>
+			<td>show icon of selected item</td>
+			<td>string</td>
+			<td>no | prepend | prepend-inner | append-outer</td>
+		</tr>
+		<tr>
+			<td>listIconSize</td>
+			<td>icon size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listIconColor</td>
+			<td>icon color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listIconHoverColor</td>
+			<td>icon hover color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listIconSelectedColor</td>
+			<td>icon color of selected item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemFont</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemFontColor</td>
+			<td>font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemFontHoverColor</td>
+			<td>font hover color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemFontSelectedColor</td>
+			<td>font color of selected item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemSubFontSize</td>
+			<td>second text font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemSubFont</td>
+			<td>second text font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemSubFontColor</td>
+			<td>second text font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemSubFontHoverColor</td>
+			<td>hover color of second text</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemSubFontSelectedColor</td>
+			<td>color of second selected text</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>showValue</td>
+			<td>show value</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>listItemValueFontSize</td>
+			<td>font size of value</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemValueFont</td>
+			<td>font of value</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemValueFontColor</td>
+			<td>font color of value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemValueFontHoverColor</td>
+			<td>hover font color of value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemValueFontSelectedColor</td>
+			<td>font color of selected value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>value<b><i>X</b></i></td>
+			<td>value of menu item X</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>label<b><i>X</b></i></td>
+			<td>label of menu item X</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>subLabel<b><i>X</b></i></td>
+			<td>subLabel of menu item X</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listIcon<b><i>X</b></i></td>
+			<td>listIcon of menu item X</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listIconColor<b><i>X</b></i></td>
+			<td>listIconColor of menu item X</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+</table>
+</details>
+
+
+##### Autocomplete
+
+<details>
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>oid</td>
+			<td>Object ID</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputMode</td>
+			<td>inputMode</td>
+			<td>string</td>
+			<td>write | select</td>
+		</tr>
+		<tr>
+			<td>inputType</td>
+			<td>inputType</td>
+			<td>string</td>
+			<td>text | date | time</td>
+		</tr>
+		<tr>
+			<td>vibrateOnMobilDevices</td>
+			<td>vibrate on mobil devices [s]</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputLayout</td>
+			<td>layout</td>
+			<td>string</td>
+			<td>regular | solo | solo-rounded | solo-shaped | filled | filled-rounded | filled-shaped | outlined | outlined-rounded | outlined-shaped</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBackgroundColor</td>
+			<td>background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBackgroundColorHover</td>
+			<td>background color hover</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBackgroundColorSelected</td>
+			<td>background color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBorderColor</td>
+			<td>border color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBorderColorHover</td>
+			<td>border color hover</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLayoutBorderColorSelected</td>
+			<td>border color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputTextFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputTextFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputTextColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLabelText</td>
+			<td>text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputLabelColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLabelColorSelected</td>
+			<td>text color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputLabelFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputLabelFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputTranslateX</td>
+			<td>offset x</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputTranslateY</td>
+			<td>offset y</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputPrefix</td>
+			<td>prepended text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputSuffix</td>
+			<td>appended text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputAppendixColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputAppendixFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputAppendixFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>showInputMessageAlways</td>
+			<td>always show</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>inputMessage</td>
+			<td>text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputMessageFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputMessageFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputMessageColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>showInputCounter</td>
+			<td>show counter</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>inputCounterColor</td>
+			<td>font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>inputCounterFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>inputCounterFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>clearIconShow</td>
+			<td>show text delete icon </td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>clearIcon</td>
+			<td>text delete icon </td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>clearIconSize</td>
+			<td>size of text delete icon </td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>clearIconColor</td>
+			<td>color of text delete icon </td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>collapseIcon</td>
+			<td>menu open symbol</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>collapseIconSize</td>
+			<td>size of menu open symbol</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>collapseIconColor</td>
+			<td>color of menu open symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>prepandIcon</td>
+			<td>prefixed icon</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>prepandIconSize</td>
+			<td>size of prefixed icon</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>prepandIconColor</td>
+			<td>color of prefixed icon</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>prepandInnerIcon</td>
+			<td>inner prefixed symbol</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>prepandInnerIconSize</td>
+			<td>size of inner prefixed symbol</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>prepandInnerIconColor</td>
+			<td>color of inner prefixed symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>appendOuterIcon</td>
+			<td>outer appended symbol</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>appendOuterIconSize</td>
+			<td>size of outer appended symbol</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>appendOuterIconColor</td>
+			<td>color of outer appended symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listDataMethod</td>
+			<td>input method for the menu data</td>
+			<td>string</td>
+			<td>inputPerEditor | jsonStringObject | multistatesObject | valueList</td>
+		</tr>
+		<tr>
+			<td>countSelectItems</td>
+			<td>Editor: count of menu items</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>jsonStringObject</td>
+			<td>JSON string</td>
+			<td>string</td>
+			<td>bindings not working!</td>
+		</tr>
+		<tr>
+			<td>valueList</td>
+			<td>value list</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>valueListLabels</td>
+			<td>value list: labels</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>valueListIcons</td>
+			<td>value list: images</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listPosition</td>
+			<td>position</td>
+			<td>string</td>
+			<td>auto | top | bottom</td>
+		</tr>
+		<tr>
+			<td>listPositionOffset</td>
+			<td>use position offset</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>listItemHeight</td>
+			<td>height of menu item</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemBackgroundColor</td>
+			<td>background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemBackgroundHoverColor</td>
+			<td>hover color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemBackgroundSelectedColor</td>
+			<td>color of selected item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemRippleEffectColor</td>
+			<td>effect color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>showSelectedIcon</td>
+			<td>show icon of selected item</td>
+			<td>string</td>
+			<td>no | prepend | prepend-inner | append-outer</td>
+		</tr>
+		<tr>
+			<td>listIconSize</td>
+			<td>icon size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listIconColor</td>
+			<td>icon color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listIconHoverColor</td>
+			<td>icon hover color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listIconSelectedColor</td>
+			<td>icon color of selected item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemFont</td>
+			<td>font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemFontColor</td>
+			<td>font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemFontHoverColor</td>
+			<td>font hover color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemFontSelectedColor</td>
+			<td>font color of selected item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemSubFontSize</td>
+			<td>second text font size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemSubFont</td>
+			<td>second text font</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemSubFontColor</td>
+			<td>second text font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemSubFontHoverColor</td>
+			<td>hover color of second text</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemSubFontSelectedColor</td>
+			<td>color of second selected text</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>showValue</td>
+			<td>show value</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>listItemValueFontSize</td>
+			<td>font size of value</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemValueFont</td>
+			<td>font of value</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listItemValueFontColor</td>
+			<td>font color of value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemValueFontHoverColor</td>
+			<td>hover font color of value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>listItemValueFontSelectedColor</td>
+			<td>font color of selected value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>value0</td>
+			<td>value0</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>label0</td>
+			<td>label0</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>subLabel0</td>
+			<td>subLabel0</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listIcon0</td>
+			<td>listIcon0</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listIconColor0</td>
+			<td>listIconColor0</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>value1</td>
+			<td>value1</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>label1</td>
+			<td>label1</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>subLabel1</td>
+			<td>subLabel1</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listIcon1</td>
+			<td>listIcon1</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>listIconColor1</td>
+			<td>listIconColor1</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+	</tbody>
+</table>
+</details>
+
+<br>
+
+##### Material Design Icons
+
+<details>
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>mdwIcon</td>
+			<td><a href="https://materialdesignicons.com/">materialdesignicon name</a></td>
+			<td>string</td>
+			<td>home, place, ...</td>
+		</tr>
+		<tr>
+			<td>mdwIconSize</td>
+			<td>size of icon</td>
+			<td>number</td>
+			<td>0, 1, 2, ... </td>
+		</tr>
+		<tr>
+			<td>mdwIconColor</td>
+			<td>color of icon</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+	</tbody>
+</table>
+</details>
 
 <br>
 
@@ -3611,7 +5151,21 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* (Scrounger): Round Slider lib updated to v0.5.0
+* (Scrounger): Round Slider Widget: readonly option added
+* (Scrounger): Table Widget: background color hover option added
 
+### 0.3.14 (2020-06-01)
+* (Scrounger): Table Widget: bug fixes
+
+### 0.3.13 (2020-05-29)
+* (Scrounger): Multi State Button Widgets: delay option added
+* (Scrounger): Table Widget: option to add ohter Widgets to table added
+* (Scrounger): Slider & Round Slider Widget: option to show value in percent added
+* (Scrounger): Sentry error handling improved
+* (scrounger): Buttons: click bug fix
+* (scrounger): MaterialDesingIcons: extension bug fix
+* (Scrounger): small bug fixes
 
 ### 0.3.11 (2020-05-24)
 * (Scrounger): Sentry added

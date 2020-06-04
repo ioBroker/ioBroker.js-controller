@@ -49,6 +49,11 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
 
+### 1.0.1 (2020-05-16)
+* (Apollon77) Make sure invalid data do not crash adapter (Sentry IOBROKER-HMIP-7)
+* (Apollon77) code cleanup
+* (Apollon77) fix several roles (role info is not allowed)
+
 ### 1.0.0 (2020-05-12)
 * (Apollon77) Add Sentry for error/crash reporting
 * (Apollon77) multiple fixes and optimizations

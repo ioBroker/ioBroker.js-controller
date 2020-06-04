@@ -71,6 +71,10 @@ Die *.tpy Datei aus dem SPS Projekt muss hochgeladen werden. -> Immer wenn am St
 3. Bei "Synchronisierung" bzw. "Einlesen" ist nicht der Werteaustausch der Variablen gemeint sondern die Synchronisierung der Variablen selbst und das anlegen bzw. löschen derselben im ioBroker
 
 ## Changelog
+### 1.2.2 (2020-05-30)
+
+-   (dkleber89) Clear reconnectTimeout on Adapter unload;
+
 ### 1.2.1 (2020-04-20)
 
 - (dkleber89) Add CI over Github Actions; Update Dependencies;
@@ -115,10 +119,6 @@ Die *.tpy Datei aus dem SPS Projekt muss hochgeladen werden. -> Immer wenn am St
 
 -   (Appollon77) Core Files/Testing Update and introduce adapter-core
 -   (dkleber89) Fix Problem 'write after End'
-
-### 0.2.2 (2019-02-11)
-
--   (dkleber89) DEBUG Version -> Still Problems with 'write after end'
 
 ## License
 

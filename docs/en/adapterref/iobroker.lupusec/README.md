@@ -99,6 +99,9 @@ You find your Nuki door opener under 'devices' like the Lupusec devices. The Nuk
 
 ## Changelog
 
+### 1.2.7 (25.05.2020)
+* (Stübi) Add token renew time to expert mode
+
 ### 1.2.6 (02.05.2020)
 * (Stübi) Change logic to get faster sensor states
 * (Stübi) Node 10 recommended 

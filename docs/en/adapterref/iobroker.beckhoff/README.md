@@ -71,6 +71,10 @@ Upload your *.tpy File from your PLC Project -> Every Time you change something 
 3. Sync never meant the Dataexchange of the Symbols. Sync is the create or delete the States in ioBroker dependent on the GlobalVariableTable in the PLC.
 
 ## Changelog
+### 1.2.2 (2020-05-30)
+
+-   (dkleber89) Clear reconnectTimeout on Adapter unload;
+
 ### 1.2.1 (2020-04-20)
 
 - (dkleber89) Add CI over Github Actions; Update Dependencies;
@@ -115,10 +119,6 @@ Upload your *.tpy File from your PLC Project -> Every Time you change something 
 
 -   (Appollon77) Core Files/Testing Update and introduce adapter-core
 -   (dkleber89) Fix Problem 'write after End'
-
-### 0.2.2 (2019-02-11)
-
--   (dkleber89) DEBUG Version -> Still Problems with 'write after end'
 
 ## License
 

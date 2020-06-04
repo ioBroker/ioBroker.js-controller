@@ -64,6 +64,9 @@ sendTo('synology.0', 'getSnapshot', {camId: 2}, (res) => {
 
 ## Changelog
 
+### 0.1.18
+* (instalator) change link for album cover
+
 ### 0.1.17
 * (instalator) added Sentry plugin support
 

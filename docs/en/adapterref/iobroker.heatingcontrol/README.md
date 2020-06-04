@@ -165,6 +165,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 0.5.3 (2020-06-05)
+* (René) bug fix: new temperatures set when current profile is changed
+* (René) refactoring HeatingControlVis to avoid exceptions like "Cannot read property 'val' of null"
+
 ### 0.5.2 (2020-05-25)
 * (René) bug fix: log a warning if actors are configured but UseActors are off
 

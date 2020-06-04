@@ -1460,6 +1460,10 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+
+### 4.6.xx (2020-05-xx)
+* (Apollon77) Prevent wrong errors when setting "null" values for states
+
 ### 4.6.17 (2020-05-25)
 * (bluefox) Fixed error with warnings collapsed blocks
 * (Apollon77) optimize Sentry error reporting to prevent false positives
