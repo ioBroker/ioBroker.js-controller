@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.1.5 (2020-05-10) Release Francesca
+* (Apollon77) Return empty array on non existing directory for readDir
+* (foxriver76) fix "host this" command 
+
 ## 3.1.4 (2020-05-10) Release Francesca
 * (Apollon77) Update Sentry plugin to be more transparent on temporary disabling reasons
 * (foxriver76) fix error when writing binary States
