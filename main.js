@@ -2422,7 +2422,7 @@ function processMessage(msg) {
 
 function getInstances() {
     objects.getObjectView('system', 'instance', {}, (err, doc) => {
-        if (err && err.message.startsWith('Cannot find ')) {
+        if (err && err.message && err.message.startsWith('Cannot find ')) {
             logger.error(hostLogPrefix + ' _design/system missing - call node ' + tools.appName + '.js setup');
             //if (objects.destroy) objects.destroy();
             //if (states  && states.destroy)  states.destroy();
