@@ -128,6 +128,40 @@ and
 }
 ```
 
+The internal convert function has following parameters and looks like:
+```
+function read(val, type, min, max, sType, sMin, sMax) {
+    // val - source value
+    // type - the type of alias
+    // min - minimum limit (if exists) of alias
+    // max - maximum limit (if exists) of alias
+    // sType - the type of "s"ource value
+    // sMin - minimum limit (if exists) of source value
+    // sMax - maximum limit (if exists) of source value
+    return val > max ? max : (val < min ? min : val);
+}
+```
+
+You as user must write only the line with return: `common.alias.read="val > max ? max : (val < min ? min : val)"`.
+ 
+The write function looks accordingly like this: 
+
+```
+function write(val, type, min, max, sType, sMin, sMax) {
+    // val - source value
+    // type - the type of alias
+    // min - minimum limit (if exists) of alias
+    // max - maximum limit (if exists) of alias
+    // tType - the type of target value
+    // tMin - minimum limit (if exists) of target value
+    // tMax - maximum limit (if exists) of target value
+    return val > tMax ? tMax : (val < tMin ? tMin : val);
+}
+```
+You as user must write only the line with return: `common.alias.write="val > tMax ? tMax : (val < tMin ? tMin : val)"`.
+
+**The `max`, `min` and `type` will be provided only from `js-controller >= 3.2.x`** 
+
 The subscriptions will be managed automatically. If alias will be subscribed, so the target ID will be subscribed too.
 
 The ID of target device could be changed dynamically (via admin) and subscription will be updated for new target ID.
