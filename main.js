@@ -2427,7 +2427,7 @@ function processMessage(msg) {
 
 function getInstances() {
     objects.getObjectView('system', 'instance', {}, (err, doc) => {
-        if (err && err.message.startsWith('Cannot find ')) {
+        if (err && err.message && err.message.startsWith('Cannot find ')) {
             logger.error(hostLogPrefix + ' _design/system missing - call node ' + tools.appName + '.js setup');
             //if (objects.destroy) objects.destroy();
             //if (states  && states.destroy)  states.destroy();
@@ -4285,7 +4285,13 @@ function init(compactGroupId) {
     };
     pluginHandler = new PluginHandler(pluginSettings);
     pluginHandler.addPlugins(ioPackage.common.plugins, __dirname); // Plugins from io-package have priority over ...
-    pluginHandler.addPlugins(config.plugins, __dirname);           // ... plugins from iobroker.json
+
+    try {
+        pluginHandler.addPlugins(config.plugins, __dirname);           // ... plugins from iobroker.json
+    } catch (e) {
+        logger.error('Cannot load plugins ' + JSON.stringify(config.plugins) + ': ' + e);
+        console.error('Cannot load plugins ' + JSON.stringify(config.plugins) + ': ' + e);
+    }
 
     createObjects(() => {
         objects.subscribe('system.adapter.*');
