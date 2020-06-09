@@ -591,7 +591,10 @@ function register(it, expect, context) {
                 common: {},
                 native: {}
             }).then(() => {
-                context.adapter.getObjectView('hm-rpc', 'paramsetDescription', {startkey: 'hm-rpc.meta.VALUES', endkey: 'hm-rpc.meta.VALUES.\u9999'}, (err, doc) => {
+                context.adapter.getObjectView('hm-rpc', 'paramsetDescription', {
+                    startkey: 'hm-rpc.meta.VALUES',
+                    endkey: 'hm-rpc.meta.VALUES.\u9999'
+                }, (err, doc) => {
                     expect(err).to.be.null;
                     // the mapping cannot perform emit, thus we currently get an empty array in doc.rows, non existing view would result in error
                     expect(doc.rows).to.be.an('array');
@@ -604,7 +607,7 @@ function register(it, expect, context) {
     // getObjectViewAsync
     it(testName + 'Try to get object view in async setup', done => {
         // create the view
-        context.adapter.setForeignObjectAsync( '_design/hm-rpc', {
+        context.adapter.setForeignObjectAsync('_design/hm-rpc', {
             language: 'javascript',
             views: {
                 paramsetDescription: {
@@ -623,7 +626,10 @@ function register(it, expect, context) {
                 common: {},
                 native: {}
             }).then(() => {
-                context.adapter.getObjectViewAsync('hm-rpc', 'paramsetDescription', {startkey: 'hm-rpc.meta.VALUES', endkey: 'hm-rpc.meta.VALUES.\u9999'}).then(doc => {
+                context.adapter.getObjectViewAsync('hm-rpc', 'paramsetDescription', {
+                    startkey: 'hm-rpc.meta.VALUES',
+                    endkey: 'hm-rpc.meta.VALUES.\u9999'
+                }).then(doc => {
                     // the mapping cannot perform emit, thus we currently get an empty array in doc.rows, non existing view would result in error
                     expect(doc.rows).to.be.an('array');
                     done();
@@ -743,9 +749,11 @@ function register(it, expect, context) {
             'type': 'enum'
         };
         // create our object
-        objects.setObject('tesla.0.model', {type: 'state', native: {}, common: {
-            name: 'Model'
-        }}, () => {
+        objects.setObject('tesla.0.model', {
+            type: 'state', native: {}, common: {
+                name: 'Model'
+            }
+        }, () => {
             // now create the enum with object as member
             objects.setObject('enum.rooms.living_room', enumObj, () => {
                 // delete the object via adapter method
@@ -1163,6 +1171,17 @@ function register(it, expect, context) {
         await context.adapter.writeFileAsync('fileTest.0', 'testExists.txt', 'lorem ipsum..');
         exists = await context.adapter.fileExists('fileTest.0', 'testExists.txt');
         expect(exists).to.be.true;
+    });
+
+    // write file meta check
+    it(testName + 'Should not write file w/o meta', async () => {
+        try {
+            await context.adapter.writeFileAsync('nonExisting.0', 'test.txt', '...');
+        } catch (e) {
+            expect(e.message.includes('is not an object of type "meta"')).to.be.true;
+            return Promise.resolve();
+        }
+        return Promise.reject(new Error('it should have returned before'));
     });
 }
 
