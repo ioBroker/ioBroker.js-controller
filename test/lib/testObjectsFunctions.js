@@ -1145,6 +1145,19 @@ function register(it, expect, context) {
         return Promise.resolve();
     });
 
+    it(testName + 'Should check object existence', async () => {
+        // object should not exist
+        let exists = await context.objects.objectExists('test.0.objectExistenceCheck');
+        expect(exists).to.be.false;
+
+        // create object
+        await context.objects.setObjectAsync('test.0.objectExistenceCheck', {type: 'meta'});
+
+        // object should now exist
+        exists = await context.objects.objectExists('test.0.objectExistenceCheck');
+        expect(exists).to.be.true;
+    });
+
     // files
     it(testName + 'Should check file existence', async () => {
         // create meta object
