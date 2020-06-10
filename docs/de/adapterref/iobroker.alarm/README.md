@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: 6Eo8Jf+RRmiw2StisaXhUrbLu5493j4zhlWj+OTMXRE=
+hash: HtQRzGke7pLNpCxorf6Re5gBtRVUr7f+kyqVQrsWrJU=
 ---
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -22,12 +22,25 @@ hash: 6Eo8Jf+RRmiw2StisaXhUrbLu5493j4zhlWj+OTMXRE=
 
 ## IoBroker Alarm
 Dies ist ein Adapter, mit dem sich eine kleine Alarmanlage ohne große programmiertechnische Vorkenntnisse realisieren lässt.
-Er Nord die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe oder De- und Aktivierung zu Interessen. Des Weiteren ist eine direkte Zugangung der Instanzen "Staaten", auf andere "Staaten" möglich. Diese Konflikteungen werden im Reiter Interessenungen anschaulich.
+Er Nord die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe oder De- und Aktivierung zu Interessen. Des Weiteren ist eine direkte Kontaktung der Instanz "Staaten", auf andere "Staaten" möglich. Diese Konflikteungen werden im Reiter Interessenungen anschaulich.
+
+-------------------------------------------------- -------------------------------------------------- ------------------ *Stand 28.05.2020*
+
+### Tab Haupteinstellungen
+Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm und Passwort Rechte.
+
+*Alle Zeiten sind in Sekundenzahlengeben*
+
+- Aktivierzeit -> Zeitverzögerung bis zu Aktivierung, wenn man einen Verspätung Datenpunkt hat
+- Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf wahrheitsgemäß
+- Alarmverzögerung -> Vertragsfrist bis Einbruch Rechte wird wird
+- Auslösezeit bei Warnungen -> Bei Auslösung eines der Warnkreise (info.warn / night_circuit_changes), wird der jeweils zugehörige Datenpunkt für die Zeit auf wahrheitsgemäß
 
 ----------------------------------------------------------------------------------------------------------------------
 
-### Tab Haupteinstellungen
-Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm, Passwort und Berechtigungen über Andere Adapter wie z.B. Telegramm, Folgen.
+### Tab-Anweisungen
+Berechtigungen über Andere Adapter wie z.B. Telegramm, Email oder andere.
+[Probleme](#Probleme)
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -35,7 +48,7 @@ Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-
 Hier werden die Kreise der Anlage Infrastruktur.
 * die Namen der Staaten lassen sich ändern *
 
-Der Alarmkreis hat den Verlust „hoch" und den Hut bei aktivierter Anlage Vorrang vor allen anderen Keisen.
+Der Alarmkreis hat den Status „hoch" und den Hut bei aktivierter Anlage Vorrang vor allen anderen Keisen. Er dient zur eigentlichen Kontrolle der Anlage. Dies entspricht einer eigenen Alarmanlage mit nur einem Kreis.
 
 Der Warnkreis hat zwei Funktionen, bei aktivierter Anlage werden diese Staaten nur zentrale und geben ggf. eine Meldung ab wenn eine richtige Verantwortung. Die zweite Funktion besteht darin, bei z. B. Haltung und aktivierte interne interne der Anlage (scharf innen), bei Befugnissen einer der konfigurierten Staaten ggf. eine Meldung abgesetzt wird.
 
@@ -53,20 +66,22 @@ Hier können Dinge, die die nicht die richtigen "hoch" haben, z.B. Fenster im OG
 Man kann sich doch anders fühlenigen lassen.
 
 #### Nachtkreis:
-Bei aktiver Nachtruhe werden nachsichtshalber der erkannten und ggf. verwirren.
+Bei aktiver Nachtruhe werden nach sich gezogen, um der erkannten und ggf. verwirkt.
 
-*Sollten Alarm- und Warnkreis für Staat sein, sein der Alarmkreis*
+*Sollten Alarm- und Warnkreis pro Staat wird sein, gehört der Alarmkreis*
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Sprachausgabe
-Ist eine mögliche Sprachausgabe z.B. bei bei der Regel des Zustandses. Länger man Felder wie z.B. bei der Fähigkeit leer, so findet keine Sprachausgabe statt. Weitere Optionen wie die wie die Ausgabe von Namen sind hier auch einstellbar.
-* Sayit oder Alexa2 werden unterstütztüzt *
+Ist eine mögliche Sprachausgabe z.B. bei bei der Regel des Zustandses.
+* Man muss sich sicher sein, dass der der Datenpunkt, mit einem Text geschlossen werden kann! ZUM BEISPIEL. "sayit.0.tts" *
+
+Es ist wichtig, sich die Ausgabe von Namen mit Ansagen zu lassen.
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Belohnungen
-Hier ist es möglich Adapter interne Zustände direkt mit den Zuständen zu hören. Somit ist ein Umweg über ein Skript oder ein anderes nicht erledigt.
+Hier ist es möglich Adapter interne Zustände direkt mit zugehörigen Zuständen zu wechseln. Somit ist ein Umweg über ein Skript oder ein anderes nicht erledigt.
 Es lässt sich somit somit z.B. bei Beginn der Nachtruhe, eine Veriegelung des Türschlosses realisieren.
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
 
@@ -77,6 +92,23 @@ Der Adapter heißt eine ganze Anzahl an Staaten:
 #### "alarm.x.use .....".
 Das sind die eigentlichen Staaten um die Alarmanlage zu verwalten.
 Es ist möglich, die Alarmanlage direkt von der Anzeige auf "intern scharf" umzuschalten, stirbt ist nur nur möglich, wenn die Alarmanlage nicht verkauft wurde.
+
+- use.activate_nightrest -> Aktivierung der Nachtruhe
+- use.deactivate_nightrest -> Deaktivierung der Nachtruhe
+- use.toggle_nightrest -> Deaktivierung / Aktivierung der Nachtruhe
+- use.activate_warn_circuit -> interne der Warnungen des Warnkreises
+- use.deactivate_warn_circuit -> Deaktivierung der öffentlichen des Warnkreises
+- use.toggle_warn_circuit -> Deaktivierung / Aktivierung der Wahrnehmung des Warnkreises
+- use.disable -> Deaktivierung der Anlage
+- use.enable -> Alarm der Anlage
+- use.enable_with_delay -> Alarm der Anlage mit Anlagenzeit
+- use.list -> Deaktivierung
+- use.quit_changes -> Rücksetzen der beiden Staaten *info.warn / night_circuit_changes*
+- use.toggle -> Deaktivierung / Einrichtung der Anlage
+- use.toggle_password -> Deaktivierung / Alarm der Anlage mit Passwort
+- use.toggle_with_delay -> Deaktivierung / Alarm der Einrichtung mit Alarmzeitung
+- use.toggle_with_delay_and_password -> Deaktivierung / Alarm der Anlage mit Passwort und Handlungenzeit
+- use.panic -> Händische Auslösung der Alarmanlage, auch wenn diese deaktiviert ist
 
 #### "alarm.x.status ...."
 Hier lässte sich der Zustand der Anlage ablesen.
@@ -90,12 +122,15 @@ Der log_today Zustand wird um Mitternacht geleert.
 ## Probleme
 - wenn man ein Telegramm oder eine Erklärung über das + hin schnittgt, kann man nur ein Zustand der Instanz verloren und man muss auf *telegramm.0* alles lesen.
 
-#### Unterscheidet ioBroker Benutzer
-*Wählt man in den Optionen die Log Ausgabe an, wird im Log des ioBroker geschrieben. Ist man mit diesen Texten nicht zufrieden, besteht die Rechte, sich die Datei "/lib/Logs.js" zu editieren.*
-
 #### Wichtige, die Berechtigung dieses Adapters zusätzliche auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Berechtigung!
 
 ## Changelog
+
+#### 0.7.0 (07.06.2020)
+* (misanorot) edit notification sentences in admin
+
+#### 0.6.0 (31.05.2020)
+* (misanorot) changed speech output
 
 #### 0.5.0 (14.05.2020)
 * (misanorot) added use.list state

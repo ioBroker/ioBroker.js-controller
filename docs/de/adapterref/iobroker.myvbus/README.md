@@ -3,15 +3,15 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.myvbus/README.md
 title: ioBroker.myvbus
-hash: igha4uGR5ydtqy+g0mS9tuSe8we5tcsGrBSFBo+4UqU=
+hash: +KLCCglI0gxl8hiNQbW/4q2IuBRO9tBBwqoW6Vy+YX8=
 ---
 # IoBroker.myvbus
 ![Logo](../../../en/adapterref/iobroker.myvbus/admin/myvbus.png)
 
-![NPM-Version](http://img.shields.io/npm/v/iobroker.myvbus.svg)
-![Downloads](https://img.shields.io/npm/dm/iobroker.myvbus.svg)
 ![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/myvbus-installed.svg)
+![Downloads](https://img.shields.io/npm/dm/iobroker.myvbus.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/myvbus-stable.svg)
+![NPM-Version](https://img.shields.io/npm/v/iobroker.myvbus.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/iobroker.myvbus.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.myvbus/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.myvbus.png?downloads=true)
@@ -35,20 +35,20 @@ Dieser Adapter verbindet ioBroker mit verschiedenen VBus-basierten Geräten übe
 ## Konfigurationshinweise
 * Die Standardeinstellung für den Verbindungstyp ist VBus / LAN, muss jedoch auch für VBus / LAN explizit ausgewählt werden, da sonst keine Verbindung hergestellt wird.
 * Die korrekten Einstellungen für den direkten LAN-Zugriff für VBus / LAN, DL3, DL2, KM2 sind:
-  * Verbindungstyp: VBus / LAN oder KM2 oder DL2 oder DL3
-  * Verbindungskennung: IP-Adresse (z. B. 192.168.178.188) oder FullyQualifiedHostName (z. B. host1.example.com)
-  * VBus-Passwort: YourVBusPassword (Standard: vbus)
-  * Verbindungsport: Die Standardeinstellung 7053 sollte nicht geändert werden
-  * DL3-Kanal: Nur für DL3 relevant (Werte 1-6, Kanal 0 kann nicht ausgelesen werden)
-  * Aktualisierungsintervall: Zeit zwischen Aktualisierungen der Messwerte (Standard 30s)
+  * Verbindungstyp: VBus / LAN oder KM2 oder DL2 oder DL3
+  * Verbindungskennung: IP-Adresse (z. B. 192.168.178.188) oder FullyQualifiedHostName (z. B. host1.example.com)
+  * VBus-Passwort: YourVBusPassword (Standard: vbus)
+  * Verbindungsport: Die Standardeinstellung 7053 sollte nicht geändert werden
+  * DL3-Kanal: Nur für DL3 relevant (Werte 1-6, Kanal 0 kann nicht ausgelesen werden)
+  * Aktualisierungsintervall: Zeit zwischen Aktualisierungen der Messwerte (Standard 30s)
 * Die korrekten Einstellungen für den DL3-, DL2- und KM2-Zugriff über VBus.net sind:
-  * Verbindungstyp: DL3 oder DL2 oder KM2
-  * Verbindungskennung: vbus.net (oder vbus.io) - beide ohne http:// und Via-Kennung!
-  * Verbindungsport: Die Standardeinstellung 7053 sollte nicht geändert werden
-  * VBus-Passwort: YourVBusPassword (Standard: vbus)
-  * DL3-Kanal: Nur für DL3 relevant (Werte: 1-6, Kanal 0 kann nicht ausgelesen werden)
-  * Über Kennung: YourViaIdentifier (z. B. d1234567890) - ohne http:// vor oder .vbus.io dahinter
-  * Aktualisierungsintervall: Zeit zwischen der Aktualisierung der Messwerte (Standard 30s)
+  * Verbindungstyp: DL3 oder DL2 oder KM2
+  * Verbindungskennung: vbus.net (oder vbus.io) - beide ohne http:// und Via-Kennung!
+  * Verbindungsport: Die Standardeinstellung 7053 sollte nicht geändert werden
+  * VBus-Passwort: YourVBusPassword (Standard: vbus)
+  * DL3-Kanal: Nur für DL3 relevant (Werte: 1-6, Kanal 0 kann nicht ausgelesen werden)
+  * Über Kennung: YourViaIdentifier (z. B. d1234567890) - ohne http:// vor oder .vbus.io dahinter
+  * Aktualisierungsintervall: Zeit zwischen der Aktualisierung der Messwerte (Standard 30s)
 
 ## Rechtliche Hinweise
 RESOL, VBus, VBus.net, DeltaSol und andere sind Marken oder eingetragene Marken der RESOL - Elektronische Regelungen GmbH <https://www.resol.de/en>
@@ -57,24 +57,29 @@ Alle anderen Marken sind Eigentum ihrer jeweiligen Inhaber.
 
 ## Changelog
 
-### 0.0.6
+### 0.1.0
+* (grizzelbee) Fix: config page shows current settings now (not default anymore) **May raise the need to reenter the password!**
+* (grizzelbee) Fix: "Connected" state is updated correctly now if connection is disrupted.
+* (grizzelbee) New: Added Badge for latest(npm) version to readme
+* (grizzelbee) Fix: removed default password from config to ensure it's encrypted on first config
+* (grizzelbee) Fix: removed Force-ReInit
+* (grizzelbee) Fix: sensor maintenance indicators are working booleans now
+* (grizzelbee) New: added new activity indicator states for each relais.
+* (grizzelbee) New: testing configuration to avoid start with invalid config
 
+### 0.0.6
 * (pdbjjens) alpha 6 release updated dependencies
 
 ### 0.0.5
-
 * (pdbjjens) alpha 5 release improved type and role mapping of adapter values
 
 ### 0.0.4
-
 * (pdbjjens) alpha 4 release updated dependency on resol-vbus library to 0.21.0
 
 ### 0.0.3
-
 * (pdbjjens) alpha 3 release tested with DL3 over local LAN and VBus.net and DeltaSol SLT (0x1001) incl. HQM (0x1011)
 
 ### 0.0.2
-
 * (pdbjjens) alpha 2 release tested with VBus/LAN, KM2, VBus.net and DeltaSol E (0x7721 & 0x7722), DeltaSol M (0x7311 & 0x716), DeltaSol CS Plus (0x2211), Oventrop RQXXL (0x7541)
 
 ### 0.0.1

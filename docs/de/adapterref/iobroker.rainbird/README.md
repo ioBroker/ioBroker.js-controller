@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.rainbird/README.md
 title: ioBroker.rainbird
-hash: WL+q1yaT3lsf38E8OWSWmtuH/yJwW0OC/NAFrnIF5Ec=
+hash: KvmP8NrJCEwT8wxVoeV2M2i8GBVTL6MnskcixnV3WQY=
 ---
 ![Logo](../../../en/adapterref/iobroker.rainbird/admin/rainbird.png)
 
@@ -31,6 +31,7 @@ Basierend auf der Python-Bibliothek "pyrainbird" von https://github.com/jbarranc
 `rainbird.X.device.sensors.rain` - True, wenn ein Regensensor angeschlossen ist und Regen erkannt wird.
 
 `rainbird.X.device.settings.rainDelay` - Die für das Gerät eingestellte aktuelle Bewässerungsverzögerung (in Tagen).
+`rainbird.X.device.settings.seasonalAdjust` - Die aktuelle saisonale Anpassung an das Wasserbudget.
 
 `rainbird.X.device.stations.Y.available` - True, wenn Zone Y im Gerät verfügbar ist.
 `rainbird.X.device.stations.Y.irrigation` - True, wenn Zone Y derzeit bewässert wird.
@@ -41,6 +42,11 @@ Basierend auf der Python-Bibliothek "pyrainbird" von https://github.com/jbarranc
 [![paypal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SFLJ8HCW9T698&source=url)
 
 ## Changelog
+
+### 0.2.3
+
+-   Fixed problem with sensor data
+-   Added seasonal water budget adjust information
 
 ### 0.2.2
 

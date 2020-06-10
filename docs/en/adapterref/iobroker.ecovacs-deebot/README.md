@@ -63,6 +63,16 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
+### 1.0.2
+* Initial Support for Ozmo T8 AIVI
+
+### 1.0.1
+   * Compact mode support
+   * New features:
+     * button to save the last used custom area values
+     * buttons to rerun saved custom areas
+   * Some enhancements and fixes
+
 ### 1.0.0
    * Stable Release
 

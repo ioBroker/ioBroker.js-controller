@@ -38,16 +38,19 @@ A german HowTo doc is available here: [howto_de](./doc/howto_de.md)
 * specify the configuration in the settings of the state (admin => objects)
 
 ## Changelog
+### 1.0.0 (2020-05-01)
+* (bluefox) Caught error if structure is invalid
+* (bluefox) Added sentry
 * adapter.getObjectView -> controller > 2.0
 
-### 0.2.3 [2020-01-02]
+### 0.2.3 (2020-01-02)
 * (HIRSCH-DE) bugfix main.js
 * (foxthefox) delete messagehandler
 
-### 0.2.2 [2019-06-29]
+### 0.2.2 (2019-06-29)
 * (foxthefox) adapter logs a warning when invalid values arrive and cancels further processing
 
-### 0.2.1 [2019-06-15]
+### 0.2.1 (2019-06-15)
 * (foxthefox) correction, timecount value was milliseconds instead seconds
 * (foxthefox) other calculations with 2 decimal places after comma
 * (foxthefox) min/max for day/week/month/quarter/year
@@ -55,21 +58,21 @@ A german HowTo doc is available here: [howto_de](./doc/howto_de.md)
 * (foxthefox) fixing the PR with dayMin 0 at 00:00
 * (foxthefox) improvement for timecount when receiving status updates and no real status change
 
-### 0.2.0 [2019-01-08]
+### 0.2.0 (2019-01-08)
 * (foxthefox) compact mode
 
-### 0.1.4 [2019-01-07]
+### 0.1.4 (2019-01-07)
 * (foxthefox) license added in io-package.json
 * (foxthefox) ReadMe updated
 * (foxthefox) type = misc-data
 
-### 0.1.3 [2019-01-06]
+### 0.1.3 (2019-01-06)
 * first npm release
 * (foxthefox) german doc added
 * (foxthefox) error corrections
 * (foxthefox) travis testing corrections
 
-### 0.1.2 [2018-09-08]
+### 0.1.2 (2018-09-08)
 * (bluefox) total refactoring
 
 ### 0.0.3
@@ -86,5 +89,6 @@ A german HowTo doc is available here: [howto_de](./doc/howto_de.md)
 
 The MIT License (MIT)
 
-Copyright (c) 2018 - 2020 foxthefox <foxthefox@wysiwis.net>,
-                   bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2020 foxthefox <foxthefox@wysiwis.net>,
+
+Copyright (c) 2018-2020 bluefox <dogafox@gmail.com>

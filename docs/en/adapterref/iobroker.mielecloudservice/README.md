@@ -6,7 +6,7 @@
 [![NPM version](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)](https://www.npmjs.com/package/iobroker.mielecloudservice)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/grizzelbee/iobroker.mielecloudservice/blob/master/LICENSE) 
 [![Dependency Status](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)](https://david-dm.org/Grizzelbee/iobroker.mielecloudservice)
-[![Known Vulnerabilities](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg)](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice)
+[![Known Vulnerabilities](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice?targetFile=package.json)
 [![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)](https://travis-ci.com/Grizzelbee/ioBroker.mielecloudservice) 
 [![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)](https://nodei.co/npm/iobroker.mielecloudservice/)
 
@@ -21,7 +21,7 @@ Regardless if they are connected directly via WiFi or XGW3000 Gateway. It implem
 * Miele Client_secret (from https://www.miele.com/developer/ )
 
 ## Installation 
-To install, excecute the following:
+To install, do the following:
 
 1. Install via Admin using the 
  * stable Repo - to get the current stable version
@@ -37,6 +37,13 @@ To install, excecute the following:
 * New: Sleeptime for complete inactivity (e.g. at night)
 
 ## Changelog
+### 1.2.4 (2020-06-09)
+* (grizzelbee) Fix: fixed No-Data Bug (introduced in V1.2.3)
+
+### 1.2.3 (2020-06-07)
+* (grizzelbee) Upd: fixed snyk badge
+* (grizzelbee) Upd: Improved error handling 
+
 ### 1.2.2 (2020-05-23)
 * (grizzelbee) Upd: removed node 8 from testing on travis.com 
 * (grizzelbee) Fix: signalActionRequired should work better now 

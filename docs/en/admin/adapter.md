@@ -4,9 +4,9 @@ lastChanged: 25.02.2020
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/admin/adapter.md
-hash: qvQSbRQZm8KXIQYiTdmaA6YOIfFf6rsf6Qxl3hZaZ1s=
+hash: X/Dtk3wCLvsU55QtzcDQDOwJXi0HwE6E/WfBbOR0X4I=
 ---
-# The adapter tab
+# The Adapter tab
 The available and installed adapters are displayed and managed here.
 
 ## The title line
@@ -19,7 +19,7 @@ in the title bar there are icons for the most important processes. There is cont
 
 This button can be used to switch between the tile view and the table view (toggle function)
 
-** 2.) Refresh ad **
+** 2.) Update ad **
 
 Every time you restart, updates are automatically searched for. With this button you can start the search manually or trigger a refresh of the page.
 
@@ -27,7 +27,7 @@ Every time you restart, updates are automatically searched for. With this button
 
 ** 4.) Show adapter with updates **
 
-When this icon is selected, only adapters for which there is an update are displayed (toggle function). The tiles of the updatable adapters have a green header. If there is no update for an adapter, a corresponding message appears.
+When this icon is selected, only adapters for which there is an update are displayed (toggle function) The tiles of the updatable adapters have a green header. If there is no update for an adapter, a corresponding message appears.
 
 Another icon also appears in the title bar:
 
@@ -37,7 +37,7 @@ Clicking this icon (8) updates all available adapters.
 
 ** 5.) Install adapter from your own URL **
 
-** ATTENTION: **** Using this option can lead to problems with your ioBroker installation.** GitHub adapters may not work properly (as they are still under development). It is recommended to wait for a stable version instead of using this option. If you use this icon to install an adapter, you download a development status of an adapter that should not be used in a production system.
+** ATTENTION: **** Using this option can cause problems with your ioBroker installation.** GitHub adapters may not work properly (as they are still under development). It is recommended to wait for a stable version instead of using this option. If you use this icon to install an adapter, you download a development status of an adapter that should not be used in a production system.
 
 The Octocat icon can be used to install adapters from your own paths (URL or file paths) or pre-versions of GitHub.
 

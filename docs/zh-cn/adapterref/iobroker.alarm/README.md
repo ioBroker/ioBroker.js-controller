@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: 6Eo8Jf+RRmiw2StisaXhUrbLu5493j4zhlWj+OTMXRE=
+hash: HtQRzGke7pLNpCxorf6Re5gBtRVUr7f+kyqVQrsWrJU=
 ---
 ![商标](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -16,7 +16,7 @@ hash: 6Eo8Jf+RRmiw2StisaXhUrbLu5493j4zhlWj+OTMXRE=
 ![特拉维斯](http://img.shields.io/travis/misanorot/ioBroker.alarm/master.svg)
 
 ＃ioBroker.alarm
-[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[英文说明](https://github.com/misanorot/ioBroker.alarm/blob/master/lib/Readme_en.md)**
 
@@ -24,10 +24,23 @@ hash: 6Eo8Jf+RRmiw2StisaXhUrbLu5493j4zhlWj+OTMXRE=
 Dies ist ein Adapter，mit dem sich eine kleine Alarmanlage ohnegroßeprogrammiertechnische Vorkenntnisse realisierenlässt。
 二等译成《死刑书》和《死刑书》 Nachtruhe oder De- und Aktivierung zuüberwachen。德斯坦·维特伦主义者·伊恩·迪内克特·德斯坦·威斯坦·因斯坦斯（州），安夫·安德烈（州）莫格利希。 DieseVerknüpfungenwerden im ReiterVeregnüpfungenangelegt。
 
-----------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------- -------------------------------------------------- ------------------ *站位28.05.2020 *
 
 ### Tab Haupteinstellungen
-较高级的电子设备制造商，Sirenezeit，Stiller-Alarm，Passwort和BenachrichtigungenüberAndere适配器制造商是z.B.电报，vorgenommen。
+较高的等级，包括Zeiten der Nachtruhe，Sirenezeit，Stiller-Alarm和Passwort vorgenommen。
+
+* Alle Zeiten在Sekunden einzugeben中犯罪*
+
+-Aktivierzeit->Zeitverzögerungbis zu Aktivierung wenn man einen delay Datenpunkt benutzt
+-Sienenzeit bei Einbruch-> Bei Einbruch wird der Datenpunkt alarm.0.status.sirenfürdie Zeit auf true gesetzt
+-Alarmverzögerung->Verzögerungszeitbis Einbruchausgelöstwird（与瓦伦德·迪塞尔Zeit wird der Stille Alarmausgelöst）
+-Warnungen的Auslösezeitit-> Warnkreise的BeiAuslösungeines der（详细信息）
+
+----------------------------------------------------------------------------------------------------------------------
+
+### Tab Benachrichtigungen
+BenachrichtigungenüberAndere适配器wie z.B.电报，电子邮件或其他。
+[问题](#Probleme)
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -35,9 +48,9 @@ Dies ist ein Adapter，mit dem sich eine kleine Alarmanlage ohnegroßeprogrammie
 更高的werden die Kreise der Anlage konfiguriert。
 *戴姆·德恩州立大学拉森学院
 
-安拉格·沃兰格·沃伦·艾伦·安德烈·基森和阿勒盖克·安特里克·德·阿里奇·德·艾尔格里克·德·艾尔格里克·德·艾尔格里克都死了。
+安拉格·沃尔格·沃伦·沃·艾伦·安德烈·基森和阿里奇·维克特·艾里克·德·艾尔格里克都在“优先”和“优先”的帽子上工作。
 
-冯·芬奇根（Funktionen）的儿子，国家图书馆（Nurüberwachtund geben ggf）。 eine Meldung ab wenn eineÄnderungstattfand。 Die zweite Funktion besteht darin，bei z。 B.州立和北部州立大学安格森分校。 eine Meldung Abgesetzt wird。
+冯·芬奇根（Funktionen）的儿子，国家图书馆（Nurüberwachtund geben ggf）。 eine Meldung ab wenn eineÄnderungstattfand。 Die zweite Funktion besteht darin，bei z。 B.州立商业联合会（GGF）的内华达州立大学（内部十分尖锐）。 eine Meldung Abgesetzt wird。
 
 Nachtkreis的帽子是Funktion wie der Warnkreis，Jedoch nurwährendder Nachtruhe。 Bei初学者Nachtruhelöst死亡，摔倒，死于Überwachungdes Warnkreises（内锋）。
 
@@ -60,14 +73,16 @@ Bei aktiver Nachtruhe werdenVeränderungenwährendder erkannt和ggf。宝石。
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Sprachausgabe
-伊恩·盖因施特（Est einegewünschte）Sprachausgabe z.B. bei beiÄnderungdes Zustandesgewünscht，lässtsich das hier mit dengewünschtenSätzenkonfigurieren。 Lässtman Felder wie z.B. bei der Aktivierung leer，所以发现了Keine Sprachausgabe statt。 Weitere Optionen wie die ausgabe von Namen sind hier auch einstellbar。
-* Sayit oder Alexa2 werdenunterstüzt*
+伊恩·盖恩施特（Est einegewünschte） bei beiÄnderungdes Zustandesgewünscht，sich das hier mit dengewünschtenSätzenkonfigurieren。
+*曼·穆斯·希奇·谢尔森（Mus sich sicher sein），达斯·德·奥斯特瓦特·达滕彭克（das derausgewählteDatenpunkt），麻省理工学院的einem Text beschrieben werden kann！ Z.B. “ sayit.0.tts” *
+
+曼彻斯特人（Ausgabe von Namen mit Ansagen拉森）
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### TabVerknüpfungen
 等级较高的适配器州际直属州外部州zuverknüpfen。 Somit ist ein Umwegüberein Skript oderähnlichennicht erforderlich。
-Eslässtsich somit z.B.在Nachtruhe的Beginn der河畔，Eerie Veriegelung desTürschlossesrealisieren。
+Eslässtsich somit z.B.在Nachtruhe的Beginn der出版社，Eure Veriegelung desTürschlosses的房地产。
 ![商标](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
 
 ----------------------------------------------------------------------------------------------------------------------
@@ -78,8 +93,25 @@ Der Adapter liefert eine ganze Anzahl国家/地区：
 紧急状态下的警报和警报状态。
 Es istmöglich死于Alarmanlage direkt von aktiviert auf“ intern scharf” umzuschalten，死于jedoch nurMöglichWenn死于Alarmanlage nicht奥斯特洛斯特。
 
+-use.activate_nightrest-> Aktivierung der Nachtruhe
+-use.deactivate_nightrest-> Deaktivierung der Nachtruhe
+-use.toggle_nightrest-> Deaktivierung / Aktivierung der Nachtruhe
+-use.activate_warn_circuit->战役实习生（实习生）
+-use.deactivate_warn_circuit-> Warnkreises的实习生（实习生）
+-use.toggle_warn_circuit-> Deaktivierung / Arktivierung der Warkreises（实习生）
+-use.disable-> Deaktivierung der Anlage（Alarmkreis）
+-use.enable-> Aktivierung der Anlage（Alarmkreis）
+-use.enable_with_delay->安提格（Alarmkreis）博物馆（Verzögerungszeit）
+-use.list-> Deaktivierung / Aktivierung / Warnkreis / Aktivierung mitVerzögerungszeit
+-use.quit_changes->贝登州立大学（Rücksetzender beiden）* info.warn / night_circuit_changes *
+-use.toggle-> Deaktivierung / Aktivierung der Anlage（Alarmkreis）
+-use.toggle_password-> Deaktivierung / Aktivierung der Anlage（Alarmkreis）mit Passwort
+-use.toggle_with_delay-> Deaktivierung / Aktivierung der Anlage（Alarmkreis）mitVerzögerungszeit
+-use.toggle_with_delay_and_password-> Dealtivierung / Aktivierung der Anlage（Alarmkreis）mit Passwort undVerzögerungszeit
+-use.panic->HändischeAuslösungder Alarmanlage（Einbruch）
+
 ####“ alarm.x.status ....”
-尊贵的祖斯塔德·安拉格能力阶层。
+尊贵的祖斯塔德·安拉格能力等级较高的人。
 
 ####“ alarm.x.info ....”
 LiefertzusätzlicheInformationen wie z.B. welche“Türenoffen sind” oder einen日志状态。
@@ -88,14 +120,17 @@ LiefertzusätzlicheInformationen wie z.B. welche“Türenoffen sind” oder eine
 ----------------------------------------------------------------------------------------------------------------------
 
 ##问题
--温恩·曼恩（Wen man eine）的电报oderähnlichesüberdas +hinzufügt，坎恩·曼努尔·爱因州立大学（Instanzauswählen）和曼斯·穆斯·比斯·奥夫* telegram.0 * Alleslöschen。
-
-#### Erfahrene ioBroker Nutzer
-*在Optionen中的人将在Log Ausgabe中，并在Log des ioBroker geschrieben中获得werden gewisseÄnderungen。您可以在以下位置找到自己的名字：* / lib / Logs.js最好的编辑。*
+-温恩·曼恩（Wen man eine）的电报，德国坎斯坦·曼努尔州州立大学（Instanzauswählen）和曼斯·穆斯·比斯·奥夫（tesgram）* telegram.0 * alleslöschen。
 
 #### Wichtig，死于Benutzung，死于适配器。
 
 ## Changelog
+
+#### 0.7.0 (07.06.2020)
+* (misanorot) edit notification sentences in admin
+
+#### 0.6.0 (31.05.2020)
+* (misanorot) changed speech output
 
 #### 0.5.0 (14.05.2020)
 * (misanorot) added use.list state

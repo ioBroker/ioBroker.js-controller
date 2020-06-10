@@ -9,7 +9,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ical/README.md
 title: ioBroker iCal适配器
-hash: DZCkUIn1B1AZbmeLAANTZPSFa6IEXmSQOOSolqZeJ00=
+hash: ChebhMhoZ0yebwHjnqwSf3xjQowF2GWOm3TesxP/sy0=
 ---
 ![商标](../../../en/adapterref/iobroker.ical/ical.png)
 
@@ -19,7 +19,7 @@ hash: DZCkUIn1B1AZbmeLAANTZPSFa6IEXmSQOOSolqZeJ00=
 基于适用于（CCU.IO）的iCal适配器[https://github.com/hobbyquaker/ccu.io/tree/master/adapter/ical]来自vader722
 
 ###适配器iCal
-用于ioBroker的iCal适配器从指定的URL读取`.ics`格式的日历文件，并将事件（以预定义的时间间隔）写入ioBroker变量中。另外，也可以使用本地.ics文件（使用文件的绝对路径代替URL）。
+用于ioBroker的iCal适配器从指定的URL读取`.ics`格式的日历文件，并将事件（位于预定义的时间间隔内）写入ioBroker变量。另外，也可以使用本地.ics文件（使用文件的绝对路径代替URL）。
 可以使用`basic html - String (unescaped)`小部件在VIS中显示它们。
 
 创建两个变量：
@@ -51,7 +51,7 @@ hash: DZCkUIn1B1AZbmeLAANTZPSFa6IEXmSQOOSolqZeJ00=
 -`debug`：false＃如果为true，则将扩展输出写入CCU.IO日志
 -`defColor`：`white`＃设置日历项的默认颜色
 -`fulltime`：``＃确定全天约会用哪个字符串替换00:00时间。对于空格（引号之间），全天约会将省略时间
--`replaceDates`：true＃如果为true，则将今天的日期替换为字符串todayString（例如Today）。明天通过字符串明日约会
+-`replaceDates`：true＃如果为true，则将今天的日期替换为字符串TodayString（例如Today）。明天通过字符串明日约会
 -`everyCalOneColor`：false＃如果为true，则多个日历将使每个日历以指定的颜色上色。如果设置了colorize选项，则将不起作用！
 -`Calendar1`：
 -“ calURL”：“ http：//11111.ics”，日历的URL
@@ -62,9 +62,9 @@ hash: DZCkUIn1B1AZbmeLAANTZPSFa6IEXmSQOOSolqZeJ00=
 -`事件`：
 -`name`：“假期”：
 -`enabled`：true＃确定事件是否将被编辑
--`display`：false＃确定该事件是否也显示在iCalEvents中，还是仅评估
+-`display`：false＃确定该事件是否也显示在iCalEvents中，或仅评估
 
-通过设置事件（在此示例中为“ vacation”），可以在日历中搜索字符串“ vacation”。
+通过设置事件（在此示例中为“ vacation”），在日历中搜索字符串“ vacation”。
 如果日历中包含关键字“假期”的约会，则会自动将“名称假日”设置为“真”。如果约会结束，则状态将重置为false。
 在预览期间的每一天都会创建一个状态。危险！搜索一个子串，i。日历“假期”中的条目以及“假日父母”条目均被识别。设置事件时必须考虑到这一点。
 
@@ -73,19 +73,22 @@ hash: DZCkUIn1B1AZbmeLAANTZPSFa6IEXmSQOOSolqZeJ00=
 -`iCalWarn`-今天的换行日历条目
 -`iCalPreWarn`-明天开始行日历输入
 -`iCalNormal`-今天的行尾
--`iCalNormal2`-明天的结束
+-`iCalNormal2`-行的明天结束
 
 ###日历
 #### Apple iCloud日历
 如果先前已共享，则可以查看Apple iCloud日历。最好为Homematic创建自己的日历，因为该日历将与所有人共享。
-为此，请在“日历”应用中右键单击日历，然后选择“共享设置”。现在检查“公共日历”并复制显示的URL。重要提示：网址以webcal开头：// p0X-cale .....
+为此，请在“日历”应用中的日历上单击鼠标右键，然后选择“共享设置”。现在检查“公共日历”并复制显示的URL。重要提示：网址以webcal开头：// p0X-cale .....
 `webcal`必须替换为` http`。然后在defaultURL的设置中输入此URL，或在`read URL`中指定它。 `readURL http: // p-03-calendarws.icloud.com / xxxxxxxxx`
 
 #### Google日历
-要包括Google日历，您必须转到Google日历日历设置（鼠标单击日历旁边的“向下箭头”）。通过单击“专用地址”字段旁边的`ICAL`符号可以找到日历的URL。然后在defaultURL的设置中输入此URL，或者在`read URL`中指定它。 `readURL https: // www.google.com / calendar / ical / xxxxxxxx / basic.ics`。
+要包括Google日历，您必须转到Google日历日历设置（鼠标单击日历旁边的“向下箭头”）。通过单击“专用地址”字段旁边的`ICAL`符号，可以找到日历的URL。然后在defaultURL的设置中输入此URL，或者在`read URL`中指定它。 `readURL https: // www.google.com / calendar / ical / xxxxxxxx / basic.ics`。
 
 #### OwnCloud日历
 要包括OwnCloud的硬日历，您必须在OwnCloud的日历视图中将该日历批准为硬地日历，并在其中链接。
+
+####贝加尔湖轻量级CalDAV + CardDAV服务器
+Baikal服务器提供了“ ics-export”插件，该插件可将日历导出为单个ICal文件。该导出插件是通过URL选择的，并允许与此ioBroker适配器进行无缝集成。请将导出过滤器添加到日历的URL（`https://SERVER/baikal/cal.php/calendars/path/to/calendar?export&accept=ical`）。如果遇到身份验证问题，请在贝加尔湖服务器的WebUI的管理设置中将`WebDAV authentication type`从`DIGEST`更改为`BASIC`。
 
 ### CSS
 在生成的HTML中，包括两种CSS类，以允许设计自由。
@@ -93,12 +96,12 @@ hash: DZCkUIn1B1AZbmeLAANTZPSFa6IEXmSQOOSolqZeJ00=
 ####基于时间的CSS类
 * _iCalNormal _ / _ iCalNormal2_：此事件在今天（仍在运行）之前或之后（三天内）开始，默认颜色（不带CSS且不带日历色）是配置的适配器颜色
 * _iCalWarn _ / _ iCalWarn2_：事件从今天开始，没有CSS且没有calendercolor的默认颜色是“红色”。
-* _iCalPreWarn _ / _ iCalPreWarn2_：活动明天开始，没有CSS和没有calendercolor的默认颜色是“橙色”。
-* _iCalPrePreWarn _ / _ iCalPrePreWarn2_：事件从明天开始开始，没有CSS且没有日历颜色的默认颜色为“黄色”。
+* _iCalPreWarn _ / _ iCalPreWarn2_：活动将于明天开始，没有CSS和没有日历颜色的默认颜色是“橙色”。
+* _iCalPrePreWarn _ / _ iCalPrePreWarn2_：事件从明天开始，不带CSS和不带日历颜色的默认颜色为“黄色”。
 
 第一个CSS类（例如iCalNormal2）用于HTML的日期和时间部分，第二个CSS类（例如iCalNormal2）用于事件名称。
 
-这些CSS类用于格式化输出格式的CSS示例（例如，日期/时间为左+粗体，事件名称为右...）：
+这些CSS类用于格式化输出的CSS示例（例如，日期/时间向左+粗体和事件名称向右...）：
 
 ```
 .icalWarn{
@@ -175,7 +178,7 @@ hash: DZCkUIn1B1AZbmeLAANTZPSFa6IEXmSQOOSolqZeJ00=
 ```
 
 ##筛选
-在实例选项中，可以为每个日历维护一个过滤器。它必须是用分号分隔的列表。如果启用选项`Filter as regular expression`，则过滤器将解释为正则表达式。在日历刷新期间，将排除按描述，位置或摘要匹配的所有事件。
+在实例选项中，可以为每个日历维护一个过滤器。它必须是用分号分隔的列表。如果启用选项`Filter as regular expression`，则过滤器将解释为正则表达式。在日历刷新期间，将排除通过描述，位置或摘要匹配的所有事件。
 
 搜索模式为：
 
@@ -186,7 +189,7 @@ LOCATION:MyLocation
 ```
 
 黑名单：如果要排除特定位置的所有事件，请使用`LOCATION:MyLocation`或简单的`MyLocation`或2个位置`LOCATION:MyLocation;LOCATION:SomewhereElse`。
-白名单：如果只想包含特定位置的事件，请使用正则表达式，如`/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!MyLocation).*)$/`或2个位置`/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!((MyHomeLocation)|(MyWorkLocation))).*)$/`
+白名单：如果您只想包含特定位置的事件，请使用正则表达式，例如`/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!MyLocation).*)$/`或2个位置`/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!((MyHomeLocation)|(MyWorkLocation))).*)$/`
 
 ## Changelog
 ### 1.7.2 (2019-12-02)
@@ -321,7 +324,7 @@ LOCATION:MyLocation
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

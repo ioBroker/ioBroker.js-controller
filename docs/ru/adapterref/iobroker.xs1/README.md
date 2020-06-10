@@ -3,55 +3,63 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.xs1/README.md
 title: ioBroker.xs1
-hash: IeybNGgMEMa/IF18ankudZnwKWWL8wrsSWuzSaS5VS4=
+hash: YDDMrsvKEdeOSKCT1MPhIWYk68X7WT5w1tOQy0vU+BA=
 ---
+# IoBroker.xs1
 ![логотип](../../../en/adapterref/iobroker.xs1/admin/xs1.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.xs1.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.xs1.svg)
 ![Трэвис-CI](http://img.shields.io/travis/frankjoke/ioBroker.xs1/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/frankjoke/ioBroker.xs1?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.xs1.png?downloads=true)
 
-# IoBroker.xs1
-=================
-
-## Адаптер ioBroker zu EZcontrol XS1 Der Adapter kommuniziert über die RestAPI des XS1 and hängt sich auch and das XS1 als listener um alle Änderungen смягчают и меняют iBroker weiterzuleiten.
+## Адаптер ioBroker zu EZcontrol XS1
+Der Adapter kommuniziert über die RestAPI des XS1 and hängt sich auch and das XS1 als listener um alle Änderungen смягчают и утверждают, что iBroker weiterzuleiten.
 Befehle vom ioBroker werden zuerst mit ack = false gesendet und wenn etwas vom Слушатель kommt dann passiert das mit ack = true. Man wei dann zumindest dass XS1 den Befehl gesendet hat.
+
 Der Adapter scannt alle verfügbaren Sensoren (только для чтения) и Aktoren (чтение / запись) и verwendet die am XS1 vergebenen Namen.
 
-Momentan werden keine Spezialinformationen wie Batterielevel.
+Momentan werden keine Spezialinformationen wie Batterielevel unterstützt da diese dem Listener leider nicht weitergegeben werden.
 
-Вы можете связаться с ним по телефону или по телефону. XS1 zugreifen kann.
+Вы можете связаться с ним по электронной почте, чтобы позвонить ему в XS1.
 Моментальные данные Passwort-Zugriff реализованы и реализованы в XS1 kein Passwort gesetzt sein!
 
-  Für Sensoren welche im state eine 'Батарея разряжена' - Meldung anzeigen wird ein .LOWBAT-State erzeugt.
+  Für Sensoren welche im state eine 'Батарея разряжена' - Meldung anzeigen wird ein .LOWBAT-State erzeugt.
 
 Die Copylist erlaubt direktes Gleichschalten zwischen Слушатель и Акторен.
 Damit kann man Aktoren zusammenschalten welche ohne im ioБрокерские скрипы шрайбен цу мюссен.
-Также Wenn Aktor A von XS! Ауф Эйн Гехт Вирд ау Актор Б (и С ..) Ауф Эйн Гешальтет.
-Das ist sinnvoll wenn Aktoren verschiedene Systeme benutzen (Aktor A = FS20, B = AB400, C = HMS) и zusammen geschaltet werden sollen (Ein funksender von FS20 cann dann directct auch einen AB400 Funkstekdose schalten).
+Также Wenn Aktor A von XS! Ауф Эйн Гехт Вирд ау Актор Б (и С ..)
+Das ist sinnvoll wenn Aktoren verschiedene Systeme benutzen (Aktor A = FS20, B = AB400, C = HMS) и zusammen geschaltet werden sollen (Ein funksender von FS20 kann dann directct auch einen AB400 Funkstekdose schalten).
 
-Синтаксис формы ist {"von_a": "auf_b (, auf_c, ...)", "von_b": "auf_c", ....} Отрицательный знак назначения, указанный как запятая, без запутанных ангелов.
-Ein Beispiel von mir: {"UWPumpeT2": "UWPumpe", "UWPumpe": "UWPumpeT2", "Schalter1": "Licht1, Licht2"} Дамит Вирд дер Тастер (UWPumpeT2) с мужским взором в Рихтхюнгене ioBroker nur noch einen Aktor verwenden.
+Синтаксис формы ist {"von_a": "auf_b (, auf_c, ...)", "von_b": "auf_c", ....} Отрицательный знак назначения.
+Ein Beispiel von mir: {"UWPumpeT2": "UWPumpe", "UWPumpe": "UWPumpeT2", "Schalter1": "Licht1, Licht2"} Дамит Вирд дер Тастер (UWPumpeT2) с мужским взором в городе Рихтюн ioBroker nur noch einen Aktor verwenden.
 'Schalter1' würde 'Licht1' и 'Licht2' gleichzeitig mitschalten.
 
-Für die neu hinzugefügte Watchdog-Funktion sollte im XS1 в действии Актуатор намен 'Сторожевой пес' kreiert werden.
+Für die neu hinzugefügte Watchdog-Funktion Sollte Im XS1 в действующей компании «Сторожевой пес» «Watchdog» kreiert werden.
 Dieser wird jede Минутный удар и падение 4 Minuten lan dieser Umschaltvorgang nicht zurückgemeldet wird wird der Adapter neu gestartet.
 
-## Wichtig!
-* Der Adapter benötigt Node> = v4.3!
-* Einen blinden (aber nicht virtuellen) Актуатор с демоном Namen 'Watchdog' erstellen.
+## Wichtig! -
+* Der Adapter benötigt Node> = v6. *!
+* Einen blinden (aber nicht virtuellen) Актуатор с демона Намен «Сторожевой пес» Эрстеллен.
 
 ## Changelog
+
+### 1.1.0
+
+* Added Admin3 capabities and support for new js-controller
+* Adapter runs only with node>=8.16
+
 ### 1.0.2
+
 * Added more sensors. All unknown types will use 'value' role. This can lead to problems if actual type is a boolean, but should work otherwise. As a result all sensors should be listed now.
 
 ### 1.0.0
+
 * Update accepted device list and test for node v 8
 * Tarvis updated to test right repository
 
 ### 0.5.2
+
 * Update variables list and values from XS1 but change values only if they are different than in state not to create false state updates
 
 ### 0.5.1

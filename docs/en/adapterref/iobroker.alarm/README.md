@@ -28,7 +28,7 @@ eine direkte Verknüpfung der jeweiligen Instanz "states", auf andere "states" m
 
 ### Tab Haupteinstellungen
 
-Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm, Passwort und Benachrichtigungen über Andere Adapter wie z.B. Telegramm, vorgenommen.
+Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm und Passwort vorgenommen.
 
 *Alle Zeiten sind in Sekunden einzugeben*
 
@@ -37,6 +37,13 @@ Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-
 - Alarmverzögerung -> Verzögerungszeit bis Einbruch ausgelöst wird (während dieser Zeit wird der Stille Alarm ausgelöst)  
 - Auslösezeit bei Warnungen -> Bei Auslösung eines der Warnkreise(info.warn/night_circuit_changes), wird der jeweils zugehörige Datenpunkt für die Zeit auf true gesetzt
 
+
+----------------------------------------------------------------------------------------------------------------------
+
+### Tab Benachrichtigungen
+
+Benachrichtigungen über Andere Adapter wie z.B. Telegramm, Email oder andere.
+[Probleme](#Probleme)
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -71,9 +78,10 @@ Bei aktiver Nachtruhe werden Veränderungen während der erkannt und ggf. gemeld
 
 ### Tab Sprachausgabe
 
-Ist eine gewünschte Sprachausgabe z.B. bei bei Änderung des Zustandes gewünscht, lässt sich das hier mit den gewünschten Sätzen konfigurieren. Lässt man Felder wie z.B. bei der Aktivierung leer,
-so findet keine Sprachausgabe statt. Weitere Optionen wie die wie die Ausgabe von Namen sind hier auch einstellbar.
-*Sayit oder Alexa2 werden unterstüzt*
+Ist eine gewünschte Sprachausgabe z.B. bei bei Änderung des Zustandes gewünscht, lässt sich das hier mit den gewünschten Sätzen konfigurieren.
+*Man muss sich sicher sein, das der ausgewählte Datenpunkt, mit einem Text beschrieben werden kann! Z.B. "sayit.0.tts"*
+
+Möchte man sich die Ausgabe von Namen mit Ansagen lassen, kann man diese Option anwählen.
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -97,8 +105,8 @@ Es ist möglich die Alarmanlage direkt von aktiviert auf "intern scharf" umzusch
 - use.activate_warn_circuit -> Aktivierung der Überwachung des Warnkreises (intern scharf)
 - use.deactivate_warn_circuit -> Deaktivierung der Überwachung des Warnkreises (intern scharf)
 - use.toggle_warn_circuit -> Deaktivierung/Aktivierung der Überwachung des Warnkreises (intern scharf)
-- use.disable -> Aktivierung der Anlage (Alarmkreis)
-- use.enable -> Deaktivierung der Anlage (Alarmkreis)
+- use.disable -> Deaktivierung der Anlage (Alarmkreis)
+- use.enable -> Aktivierung der Anlage (Alarmkreis)
 - use.enable_with_delay -> Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
 - use.list -> Deaktivierung/Aktivierung/Warnkreis/Aktivierung mit Verzögerungszeit
 - use.quit_changes -> Rücksetzen der beiden states *info.warn/night_circuit_changes*
@@ -106,6 +114,8 @@ Es ist möglich die Alarmanlage direkt von aktiviert auf "intern scharf" umzusch
 - use.toggle_password -> Deaktivierung/Aktivierung der Anlage (Alarmkreis) mit Passwort
 - use.toggle_with_delay -> Deaktivierung/Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
 - use.toggle_with_delay_and_password -> Deaktivierung/Aktivierung der Anlage (Alarmkreis) mit Passwort und Verzögerungszeit
+- use.panic -> Händische Auslösung der Alarmanlage(Einbruch), auch wenn diese deaktiviert ist
+
 
 
 #### "alarm.x.status...."
@@ -117,15 +127,8 @@ Der log_today state wird um Mitternacht geleert.
 
 ----------------------------------------------------------------------------------------------------------------------
 
-
-
 ## Probleme
 	- wenn man eine Telegram oder ähnliches über das + hinzufügt, kann man nur ein state der Instanz auswählen und  man muss bis auf *telegram.0* alles löschen.
-
-#### erfahrene ioBroker Nutzer
-*Wählt man in den Optionen die Log Ausgabe an, werden gewisse Änderungen im Log des ioBroker geschrieben. Ist man mit diesen Texten nicht zufrieden, besteht die Möglichkeit, sich die Datei "/lib/Logs.js" zu editieren.*
-
-
 
 
 #### Wichtig, die Benutzung dieses Adapters geschieht auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Haftung übernommen!
@@ -134,7 +137,10 @@ Der log_today state wird um Mitternacht geleert.
 
 ## Changelog
 
-#### 0.5.0 (31.05.2020)
+#### 0.7.0 (07.06.2020)
+* (misanorot) edit notification sentences in admin
+
+#### 0.6.0 (31.05.2020)
 * (misanorot) changed speech output
 
 #### 0.5.0 (14.05.2020)

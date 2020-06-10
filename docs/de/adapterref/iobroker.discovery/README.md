@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Adapter
-hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
+hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
 ---
 ![Logo](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -68,6 +68,7 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - MiLight-Brücke (v6)
 - Mpd
 - Musiksendung
+- myDlink
 - Mysensoren USB / Seriell (9600, 38400, 57600, 115200)
 - Nuki2
 - Nuss
@@ -125,10 +126,18 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - xs1 (Frankjoke)
 
 ## Changelog
+### 2.3.6 (2020-05-02)
+* (Garfonso) add mydlink adapter
+* (haba1234) New adapter added: Onvif
+* (Apollon77) serial device discovery fixed
+
+### 2.3.4 (2020-04-30)
+* (Apollon77) make sure to check if initialization was done when ending (Sentry IOBROKER-DISCOVERY-8) 
+* (APollon77) fix megad discovery error
 
 ### 2.3.3 (2020-04-23)
-* correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
-* catch http errors better (Sentry IOBROKER-DISCOVERY-2)
+* (Apollon77) correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
+* (Apollon77) catch http errors better (Sentry IOBROKER-DISCOVERY-2)
 
 ### 2.3.2 (2020-04-18)
 * (Apollon77) Fix potential crash in knx discovery

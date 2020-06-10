@@ -25,6 +25,32 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 | --- | --- | --- |
 | ![](docs/de/images/config-params.png) | vs | ![](docs/de/images/config-params-legacy.png) |
 
+## Changelog
+[Older changes](CHANGELOG_OLD.md)
+<!--
+	Placeholder for next versions:
+	### __WORK IN PROGRESS__
+-->
+
+### 1.0.0 (2020-06-04)
+* Changed the compatibility config queries for Danfoss thermostats, so queued setpoint changes are not overwritten
+
+### 0.14.9 (2020-06-03)
+* Placeholder object names (e.g. `Node 003`) for non-reachable nodes are now overwritten with the correct name when the nodes are interviewed.
+
+### 0.14.8 (2020-06-03)
+* Fixed an issue where secure sleeping nodes could block all communication with other nodes
+
+### 0.14.7 (2020-06-03)
+* Fixed an issue where interviews could get stuck for sleeping nodes
+* Fixed a crash that happened when decoding a secure message with an unsupported payload
+
+### 0.14.6 (2020-06-02)
+* Added support for `Protection CC`
+* Fixed several bugs in `Security CC`
+* Updates from a node that span multiple messages are now correctly decoded
+* During the startup, device objects are created for asleep and dead nodes. This allows removing failed devices from the network even after the cache was cleared.
+
 ## License
 
 MIT License

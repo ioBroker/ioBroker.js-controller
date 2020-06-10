@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mydlink/README.md
 title: ioBroker.mydlink
-hash: NK0Lc25HJwJaBrywBx44As6e8fzW1H78ChDFSSi092s=
+hash: yp3apFNnqC6pOAs2BrgvJs4GL5Sw984Xz6MPKoWgIbc=
 ---
 ![логотип](../../../en/adapterref/iobroker.mydlink/admin/mydlink.png)
 
 ![Количество установок](http://iobroker.live/badges/mydlink-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.mydlink.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.mydlink.svg)
-![тесты](https://travis-ci.org/arteck/ioBroker.mydlink.svg?branch=master)
+![тесты](https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.mydlink.png?downloads=true)
 ![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.mydlink.svg)
 
@@ -27,19 +27,84 @@ hash: NK0Lc25HJwJaBrywBx44As6e8fzW1H78ChDFSSi092s=
 
 | Модель | Тип | Изображение |
 | :---: | :---: | :---: |
-| [DSP-W215](https://eu.dlink.com/uk/en/products/dsp-w215-smart-plug) | Розетка (розетка, температура, ток) | ![Образ](../../../en/adapterref/iobroker.mydlink/admin/DSP_W215.png) |
-| [DCH-S150] (https://eu.dlink.com/uk/en/products/dch-s150-motion-sensor) | Детектор движения (последнее обнаруженное движение) | ! [Image] (admin / DCH_S150.png) |
+| DSP-W215 | Smart Plug (розетка, температура, ток) **Требуется опрос** | ![Образ](../../../en/adapterref/iobroker.mydlink/admin/DSP_W215.png) |
+| DCH-S150 | Детектор движения (последнее обнаруженное движение) **Требуется опрос** | ![Образ](../../../en/adapterref/iobroker.mydlink/admin/DCH_S150.png) |
+| DCH-S150 | Детектор движения (последнее обнаруженное движение) **Требуется опрос** | ! [Image] (admin / DCH_S150.png) |
 
-Адаптер должен опрашивать устройства. Таким образом, показания датчика и обнаружение движения будут задерживаться интервалом опроса (может быть установлен в конфигурации).
+Адаптер должен опрашивать некоторые устройства. Более новые отправляют push-сообщения, что теперь поддерживается. Показания датчика и обнаружение движения будут задерживаться интервалом опроса, если они должны быть опрошены (может быть установлено в конфигурации).
 
 #### Конфигурация:
 * Список устройств, каждое устройство со следующими настройками:
 
-<table><tr><td> имя </td><td> установите здесь имя, должно быть уникальным (для устройств mydlink) </td></tr><tr><td> IP </td><td> введите здесь IP-адрес, имя хоста также должно работать </td></tr><tr><td> ШТЫРЬ </td><td> PIN-код напечатан на наклейке на устройстве, вероятно, внизу </td></tr><tr><td> Интервал опроса </td><td> за интервал опроса устройства <br /> Установите 0, чтобы отключить опрос. <br /> <b>Рекомендация:</b> установите быстрый интервал опроса для датчиков и более длинный для штекеров. </td></tr><tr><td> включить </td><td> если не включен, не будет опрашиваться или контролироваться. <br /> Устройства, которые не подключены, можно отключить, чтобы избежать сетевого трафика и сообщений об ошибках в журнале. </td></tr></table>
+<table><tr><td> имя </td><td> установите здесь имя, должно быть уникальным (для устройств mydlink) </td></tr><tr><td> IP </td><td> введите здесь IP-адрес, имя хоста также должно работать </td></tr><tr><td> ШТЫРЬ </td><td> PIN-код напечатан на наклейке на устройстве, вероятно, внизу. Может быть TELNET для DSP-W115, см. Ниже. </td></tr><tr><td> Интервал опроса </td><td> за интервал опроса устройства <br /> Установите 0, чтобы отключить опрос. <br /> <b>Рекомендация:</b> установите быстрый интервал опроса для датчиков и более длинный для штекеров. </td></tr><tr><td> включить </td><td> если не включен, не будет опрашиваться или контролироваться. <br /> Устройства, которые не подключены, можно отключить, чтобы избежать сетевого трафика и сообщений об ошибках в журнале. </td></tr></table>
 
 Адаптер не мешает использованию приложения.
 
+## Настройка DSP-W115
+А другие *более новые* устройства используют совершенно другой протокол и другую настройку. Если вы удалите устройства из приложения mydlink, вы можете просто использовать их как другие устройства и ввести свой обычный PIN-код.
+
+Если вы хотите продолжать использовать приложение, вы должны перевести устройство в заводской режим, выполнив следующую процедуру:
+
+1. Переведите устройство в режим восстановления, удерживая кнопку wps / reset во время загрузки, пока оно не начнет мигать **красным** вместо оранжевого.
+2. Теперь работает Telnet Deamon, подключиться к устройству Wi-Fi
+3. Запустите `telnet 192.168.0.20` и войдите в систему с помощью` admin: 123456` (или используйте putty, не забудьте выбрать `telnet` вместо` ssh`).
+4. Запустите `nvram_set FactoryMode 1`
+5. Запустите перезагрузку; выход; `для перезагрузки устройства.
+
+Теперь вам нужно ввести `TELNET` в качестве PIN-кода, и адаптер получит необходимые данные с самого устройства.
+
 ## Changelog
+<!-- 
+	Placeholder for next versions (this needs to be indented):
+	### __WORK IN PROGRESS__
+-->
+### 1.1.2 (2020-06-01)
+* fixed two possible crashes with offline / wrong devices.
+
+### 1.1.1 (2020-06-01)
+* Improved auto detection of DSP-W115 (but mdns seems very unreliable whit that device)
+* UI should never delete user devices
+
+### 1.1.0 (2020-05-31)
+* Added Support for w115 (and maybe other never myDlink devices, might even do *something* with cameras)
+* Fix relogin to device (i.e. when device was restarted during adapter runtime) 
+* Fix error when switching a socket.
+
+### 1.0.11 (2020-05-10)
+* Tried to add even more information in case device seems incompatible
+
+### 1.0.10 (2020-05-10)
+* Returned to login with user "Admin"
+* Tried to add more debug for incompatible devices.
+
+### 1.0.9 (2020-05-07)
+* Fixed: changes in configuration were not respected once devices were created
+* Fixed: re-login to device on switching if polling is disabled
+* Fixed: Error output on switching now more informative
+
+### 1.0.8 (2020-05-05)
+* Fixed switching, was broken in some circumstances by id changes.
+
+### 1.0.7 (2020-05-02)
+* Made saving config more robust and direct again.
+* Made identify by IP more robust and allows saving right away. 
+* Prevent saving if devices without PIN are configured.
+
+### 1.0.6 (2020-05-02)
+* Prevent creation of empty devices (MYDLINK-6)
+
+### 1.0.5 (2020-05-02)
+* Fixed possible issue with device ids.
+* Improved device creation
+* Adjusted for discovery adapter that not yet stores passwords encrypted.
+
+### 1.0.4 (2020-05-01)
+* Improved connection keepAlive
+* Improved logging of network errors
+
+### 1.0.3 (2020-05-01)
+* Fixed login/identification loop on (possibly) duplicate devices
+
 ### 1.0.2 (2020-04-30)
 * Fixed potential crashes on network errors.
 

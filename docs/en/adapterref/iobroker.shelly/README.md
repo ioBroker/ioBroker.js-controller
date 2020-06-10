@@ -53,6 +53,13 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.2.9 (04.06.2020)
+* (Stübi) - Use only version with Shelly firmware greater equal v1.7.0 . Shelly firmware less v1.7.0 will not be supported by this Shelly adapter version
+* (Stübi) - Add state vibration and tilt to Shelly DW
+* (Stübi) - Add polltime to index_m.html  
+* (Stübi) - Fix RGBW2 with FW 1.7 - Issue #161
+* (Stübi) - Add state Button Type to Shelly 2.5 - Issue #157
+
 ### 3.2.8 (09.05.2020)
 * (c7j3X) - Add device Shelly Vintage
 * (Stübi) - Add state vibration and tilt to Shelly DW

@@ -305,19 +305,20 @@ function sync2Languages(fromLang, toLang, testDir, cb, files) {
 
     const file = files.shift();
     console.log(`Sync ${fromLang} => ${toLang} - ${file}`);
-    translateFile(file, fromLang, toLang).then(translated => {
-        if (translated) {
-            const parts = file.replace(/\\/g, '/').split('/');
-            parts.pop();
+    translateFile(file, fromLang, toLang)
+        .then(translated => {
+            if (translated) {
+                const parts = file.replace(/\\/g, '/').split('/');
+                parts.pop();
 
-            // Copy media files
-            const fls = utils.getAllFiles(parts.join('/'), false).sort();
-            fls.filter(f => !f.match(/\.md$/) && !f.match(/affiliate\.json$/))
-                .forEach(file =>
-                    utils.writeSafe(file.replace('/' + fromLang + '/', '/' + toLang + '/'), fs.readFileSync(file)));
-        }
-        setTimeout(() => sync2Languages(fromLang, toLang, testDir, cb, files), 100);
-    });
+                // Copy media files
+                const fls = utils.getAllFiles(parts.join('/'), false).sort();
+                fls.filter(f => !f.match(/\.md$/) && !f.match(/affiliate\.json$/))
+                    .forEach(file =>
+                        utils.writeSafe(file.replace('/' + fromLang + '/', '/' + toLang + '/'), fs.readFileSync(file)));
+            }
+            setTimeout(() => sync2Languages(fromLang, toLang, testDir, cb, files), 100);
+        });
 }
 
 function processTasks(tasks, testDir, cb) {

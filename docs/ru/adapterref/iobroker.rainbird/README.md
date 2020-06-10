@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.rainbird/README.md
 title: ioBroker.rainbird
-hash: WL+q1yaT3lsf38E8OWSWmtuH/yJwW0OC/NAFrnIF5Ec=
+hash: KvmP8NrJCEwT8wxVoeV2M2i8GBVTL6MnskcixnV3WQY=
 ---
 ![логотип](../../../en/adapterref/iobroker.rainbird/admin/rainbird.png)
 
@@ -18,11 +18,11 @@ hash: WL+q1yaT3lsf38E8OWSWmtuH/yJwW0OC/NAFrnIF5Ec=
 # IoBroker.rainbird
 Адаптер ioBroker для Rain Bird с адаптером LNK WiFi. Этот проект не имеет никакого отношения к Rain Bird.
 
-Основано на библиотеке python "pyrainbird" с https://github.com/jbarrancos/pyrainbird и полностью перенесено на NodeJS. Адаптер устанавливает прямое соединение с устройством через WiFi-соединение и не использует облачный сервис Rain Bird.
+Основано на библиотеке питонов "pyrainbird" с https://github.com/jbarrancos/pyrainbird и полностью перенесено на NodeJS. Адаптер устанавливает прямое соединение с устройством через WiFi-соединение и не использует облачный сервис Rain Bird.
 
 ## Состояния
 `rainbird.X.device.commands.advanceZone` - Когда работает текущая программа, перейдите к следующей зоне орошения и остановите текущую.
-`rainbird.X.device.commands.runProgram` - Запустите указанную программу вручную (от 1 до X), как ранее было настроено на устройстве.
+`rainbird.X.device.commands.runProgram` - Запустите указанную программу вручную (от 1 до X), как ранее было настроено в устройстве.
 `rainbird.X.device.commands.stopIrrigation` - Немедленно прекратить полив во всех зонах.
 
 `rainbird.X.device.irrigation.active` - Полив в настоящее время активен. Если false, это может означать, что вы установили переключатель на устройстве в положение «Стоп».
@@ -31,6 +31,7 @@ hash: WL+q1yaT3lsf38E8OWSWmtuH/yJwW0OC/NAFrnIF5Ec=
 `rainbird.X.device.sensors.rain` - Истина, если подключен датчик дождя и обнаружен дождь.
 
 `rainbird.X.device.settings.rainDelay` - Текущая задержка полива (в днях), установленная для устройства.
+`rainbird.X.device.settings.seasonalAdjust` - Текущая сезонная корректировка для бюджета на воду.
 
 `rainbird.X.device.stations.Y.available` - Истина, если в устройстве доступна зона Y.
 `rainbird.X.device.stations.Y.irrigation` - Истина, если зона Y в настоящее время орошается.
@@ -41,6 +42,11 @@ hash: WL+q1yaT3lsf38E8OWSWmtuH/yJwW0OC/NAFrnIF5Ec=
 [![PayPal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SFLJ8HCW9T698&source=url)
 
 ## Changelog
+
+### 0.2.3
+
+-   Fixed problem with sensor data
+-   Added seasonal water budget adjust information
 
 ### 0.2.2
 

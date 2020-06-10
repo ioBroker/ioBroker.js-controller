@@ -165,7 +165,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 0.5.3 (2020-06-05)
+### 0.5.4 (2020-06-04)
+* (René) bug fix: HeatingControlVis avoid exceptions like "Cannot read property 'val' of null"
+
+### 0.5.3 (2020-06-03)
 * (René) bug fix: new temperatures set when current profile is changed
 * (René) refactoring HeatingControlVis to avoid exceptions like "Cannot read property 'val' of null"
 

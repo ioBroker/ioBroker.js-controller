@@ -10,7 +10,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.worx.png?downloads=true)](https://nodei.co/npm/iobroker.worx/)
 
-**Tests:** [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapter/ioBroker.worx/master.svg)](https://travis-ci.org/iobroker-community-adapter/ioBroker.worx) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.worx.svg)](https://greenkeeper.io/)
+**Tests:** [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapter/ioBroker.worx/master.svg)](https://travis-ci.org/iobroker-community-adapter/ioBroker.worx) 
 
 ## worx adapter for ioBroker
 

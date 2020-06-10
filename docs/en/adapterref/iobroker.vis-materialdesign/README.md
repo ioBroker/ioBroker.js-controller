@@ -5151,9 +5151,14 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* (Scrounger): IconList Widget: Card Background for whole icon list added
+* (Scrounger): Table Wigdet: material design icon widget added
+* (Scrounger): Table Wigdet: alignment option for controls added
+* (Scrounger): materialdesignicons library updated to v5.3.45
 * (Scrounger): Round Slider lib updated to v0.5.0
 * (Scrounger): Round Slider Widget: readonly option added
 * (Scrounger): Table Widget: background color hover option added
+* (Scrounger): bug fixes
 
 ### 0.3.14 (2020-06-01)
 * (Scrounger): Table Widget: bug fixes

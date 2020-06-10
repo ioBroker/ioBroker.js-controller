@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
 title: ioBroker Откройте для себя адаптер
-hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
+hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
 ---
 ![логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -40,7 +40,7 @@ hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
 - Факероку (гармония)
 - FHEM
 - FireTV
-- Fritzdect
+- Фрицдект
 - Фрониус
 - пробки G-Homa
 - Гармония
@@ -68,6 +68,7 @@ hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
 - Мост MiLight (v6)
 - Mpd
 - Musiccast
+- myDlink
 - Mysensors USB / Serial (9600, 38400, 57600, 115200)
 - Nuki2
 - Орех
@@ -93,7 +94,7 @@ hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
 - Wifilight
 - Yamaha
 - Yeelight
-- Z-wave USB (протестировано в Aeon Labs)
+- Z-wave USB (протестировано Aeon Labs)
 
 ### Предлагается в качестве дополнительных адаптеров
 - Облако
@@ -125,10 +126,18 @@ hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
 - xs1 (франкжук)
 
 ## Changelog
+### 2.3.6 (2020-05-02)
+* (Garfonso) add mydlink adapter
+* (haba1234) New adapter added: Onvif
+* (Apollon77) serial device discovery fixed
+
+### 2.3.4 (2020-04-30)
+* (Apollon77) make sure to check if initialization was done when ending (Sentry IOBROKER-DISCOVERY-8) 
+* (APollon77) fix megad discovery error
 
 ### 2.3.3 (2020-04-23)
-* correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
-* catch http errors better (Sentry IOBROKER-DISCOVERY-2)
+* (Apollon77) correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
+* (Apollon77) catch http errors better (Sentry IOBROKER-DISCOVERY-2)
 
 ### 2.3.2 (2020-04-18)
 * (Apollon77) Fix potential crash in knx discovery

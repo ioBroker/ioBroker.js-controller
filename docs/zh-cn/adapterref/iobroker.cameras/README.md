@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.cameras/README.md
 title: ioBroker.cameras
-hash: tgGZ+WAuDMhlzQNxy0DCEAHVpQEER41zfSJB6PgIHbk=
+hash: E0VHSuO8ev33u3VNHfmwai7LW9Wm59pNbVQ9FPlN4oo=
 ---
 ![商标](../../../en/adapterref/iobroker.cameras/admin/cameras.png)
 
@@ -28,7 +28,7 @@ sendTo('cameras.0', 'image', {
     height: 50, // optional
     angle: 90   // optional
 }, result => {
-    const img = 'data:image/jpeg;base64,' + result;
+    const img = 'data:' + result.contentType + ';base64,' + result.data;
     console.log('Show image: ' + img);
 });
 ```
@@ -42,7 +42,7 @@ sendTo('cameras.0', 'image', {
 这是图像的URL请求，其中所有参数都在URL中，但是您可以提供用于基本身份验证的凭据。就像`http://mycam/snapshot.jpg`
 
 ## Changelog
-### 0.1.1
+### 0.1.2 (2020-06-03)
 * (bluefox) implemented get image by message
 
 ### 0.1.0

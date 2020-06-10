@@ -3,55 +3,63 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.xs1/README.md
 title: ioBroker.xs1
-hash: IeybNGgMEMa/IF18ankudZnwKWWL8wrsSWuzSaS5VS4=
+hash: YDDMrsvKEdeOSKCT1MPhIWYk68X7WT5w1tOQy0vU+BA=
 ---
+# IoBroker.xs1
 ![Logo](../../../en/adapterref/iobroker.xs1/admin/xs1.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.xs1.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.xs1.svg)
 ![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.xs1/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/frankjoke/ioBroker.xs1?branch=master&svg=true)
 ![NPM](https://nodei.co/npm/iobroker.xs1.png?downloads=true)
 
-# IoBroker.xs1
-=================
+## IoBroker Adapter zu EZcontrol XS1
+Der Adapter kommuniziert über die RestAPI des XS1 und sich selbst auch das XS1 als Hörer um alle Rechte sofort und den ioBroker weiterzuleiten.
+Befehle vom ioBroker werden mit ack = falsch gemacht und wenn etwas vom Hörer kommt dann wird das mit ack = wahr. Man weiß dann gehört, dass XS1 den Befehl angefordert hat.
 
-## ioBroker adapter zu EZcontrol XS1 Der Adapter kommuniziert über die RestAPI des XS1 und hängt auch an das XS1 als alle anderen Änderungen an dem ioBroker weiterzuleiten.
-Kommando vom ioBroker wird zuerst mit ack = false gesendet und wenn etwas vom Listener kommt dann passiert das mit ack = true. Man weiß dann zumindest XS1 den Befehl gesendet hat.
-Der Adapter scannt alle verfügbaren Sensoren (read-only) und verwendet die XS1 vergebenen Namen.
+Der Adapter scannt alle schreibgeschützten und Aktoren (lesen / schreiben) und verwendet die am XS1 gehörten Namen.
 
-Momentan werden keine Spezialinformationen wie Batterielevel unterstützt.
+Momentan werden keine Spezialinformationen wie Batterielevel gehört da diese dem Listener leider nicht gehört werden.
 
-Der Link ist der gesamte Link zum XS1 kann.
-Momentan ist noch kein Passwort-Zugriff und damit auf dem XS1 kein Passwort gesetzt sein!
+Der Link ist der gesamte Link mit dem Mann sonst im Heimnetz auf dem XS1 gehört kann.
+Momentan ist noch kein Passwort-Zugang berechtigt und damit darf auf dem XS1 kein Passwort gehört sein!
 
-  Für Sensoren, die im Status eine 'Battery low' -Anzeige anzeigen wird ein .LOWBAT-State erzeugt.
+  Für Beanspruchungen, die im Zustand einer "Batterie schwach" -Anmeldung angezeigt werden, wird ein .LOWBAT-Zustand angezeigt.
 
-Die Copylist erlaubt direktes Schalten zwischen Listener und Aktoren.
-Damit kann man Aktoren zusammenschalten, ohne im ioBroker scrips schreiben zu müssen.
-Auch wenn Aktor A von XS! auf ein wird wird auch Aktor B (und C ..) auf ein geschaltet.
-Das ist sinnvoll, wenn Aktoren verschiedene Systeme benutzen (Aktor A = FS20, B = AB400, C = HMS) und zusammen geschaltet werden sollen.
+Die Copylist erlaubt direktes Gleichschalten zwischen Listener und Aktoren.
+Damit kann man Aktoren zusammenschalten welche ohne im ioBroker scrips schreiben zu müssen.
+Auch wenn Aktor A von XS! auf ein geht wird auch Aktor B (und C ..) auf ein geschaltet.
+Das ist, wenn Aktoren unterschiedliche Systeme (Aktor A = FS20, B = AB400, C = HMS) und zusammengeschaltet werden (Ein funksender von FS20 kann dann auch direkt einen AB400 Funkstekdose schalten).
 
-Die Syntax ist {"von_a": "auf_b (, auf_c, ...)", "von_b": "auf_c", ....} Die runden Klammern zeigen, dass mehrere Destinationen mit comma getrennt angegeben werden.
-Ein Beispiel von mir: {"UWPumpeT2": "UWPumpe", "UWPumpe": "UWPumpeT2", "Schalter1": "Licht1, Licht2"} ioBroker nur noch einen Aktor verwenden.
-'Schalter1' würde 'Licht1' und 'Licht2' gleichzeitig mitschalten.
+Die Syntax ist {"von_a": "auf_b (, auf_c, ...)", "von_b": "auf_c", ....} Die runden klammern zeigen, dass mehrere Destinationen mit komma geboten werden können.
+Ein Beispiel von mir: {"UWPumpeT2": "UWPumpe", "UWPumpe": "UWPumpeT2", "Schalter1": "Licht1, Licht2"} Damit wird der Taster (UWPumpeT2) ioBroker nur noch einen Aktor verwendet.
+'Schalter1' würde 'Licht1' und 'Licht2' heißt mitschalten.
 
-Für die neu hinzugefügte Watchdog-Funktion sollte im XS1 ein virtueller Aktuator namens 'Watchdog' kreiert werden.
-Dieser wird jede Minute umgeschaltet und wird zurückgeschaltet werden wird der Adapter neu gestartet.
+Für die neu behördlichen Beförderungs-Wachhund-Funktion wurde im XS1 ein virtueller Aktuator gehört 'Wachhund' kreiert werden.
+Dieser wird jede Minute umgeschaltet und fällt 4 Minuten lan dieser Umschaltvorgang nicht zurückgemeldet wird wird der Adapter neu entwickelt.
 
-## Wichtig!
-* Der Adapter benötigt Node> = v4.3!
-Einen blinden (aber nicht virtuellen) Aktuator mit dem Namen 'Watchdog' erstellen.
+## Wichtig! -
+* Der Adapter befindet Node> = v6. *!
+* Einen blinden Aktuator mit dem Namen 'Watchdog' erstellen.
 
 ## Changelog
+
+### 1.1.0
+
+* Added Admin3 capabities and support for new js-controller
+* Adapter runs only with node>=8.16
+
 ### 1.0.2
+
 * Added more sensors. All unknown types will use 'value' role. This can lead to problems if actual type is a boolean, but should work otherwise. As a result all sensors should be listed now.
 
 ### 1.0.0
+
 * Update accepted device list and test for node v 8
 * Tarvis updated to test right repository
 
 ### 0.5.2
+
 * Update variables list and values from XS1 but change values only if they are different than in state not to create false state updates
 
 ### 0.5.1

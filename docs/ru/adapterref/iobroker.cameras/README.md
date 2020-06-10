@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.cameras/README.md
 title: ioBroker.cameras
-hash: tgGZ+WAuDMhlzQNxy0DCEAHVpQEER41zfSJB6PgIHbk=
+hash: E0VHSuO8ev33u3VNHfmwai7LW9Wm59pNbVQ9FPlN4oo=
 ---
 ![логотип](../../../en/adapterref/iobroker.cameras/admin/cameras.png)
 
@@ -28,7 +28,7 @@ sendTo('cameras.0', 'image', {
     height: 50, // optional
     angle: 90   // optional
 }, result => {
-    const img = 'data:image/jpeg;base64,' + result;
+    const img = 'data:' + result.contentType + ';base64,' + result.data;
     console.log('Show image: ' + img);
 });
 ```
@@ -42,7 +42,7 @@ sendTo('cameras.0', 'image', {
 Это запрос URL для изображения, где все параметры указаны в URL, но вы можете предоставить учетные данные для базовой аутентификации. Нравится `http://mycam/snapshot.jpg`
 
 ## Changelog
-### 0.1.1
+### 0.1.2 (2020-06-03)
 * (bluefox) implemented get image by message
 
 ### 0.1.0

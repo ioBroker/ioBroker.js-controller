@@ -40,6 +40,9 @@ The BSB_LAN Interface brings the BSB (Boiler System Bus) to LAN. This adapter co
 - Numbers, Enums and hr:min types are now writable (of course only writable IDs can be written)
 
 ## Changelog
+### 0.1.2
+* Support INF interface for setting external room temperatures
+
 ### 0.1.1
 * Support unit micro
 * Made robust against invalid or non existing IDs

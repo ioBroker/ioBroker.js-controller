@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.yahka/README.md
 title: iobroker.yahka
-hash: WQ/YjLhugOj3gHo0ZPfKVI0A3f1acCv5zoT5UHnmU4Y=
+hash: DthhW3uXba+vO00KkmIMU8krtcMB8fC6XxcPnUEcIM4=
 ---
 ![商标](../../../en/adapterref/iobroker.yahka/admin/yahka.png)
 
@@ -22,14 +22,17 @@ hash: WQ/YjLhugOj3gHo0ZPfKVI0A3f1acCv5zoT5UHnmU4Y=
 ```sudo apt-get install libavahi-compat-libdnssd-dev```
 
 ##安装最新的**版本**
-只需在“适配器”页面的ioBroker管理面板中单击“ Homekit yahka适配器”后面的“ +”按钮。
+只需点击“适配器”页面上ioBroker管理面板中“ Homekit yahka适配器”后面的“ +”按钮即可
 
 ##安装最新的**测试版**
-如果您想了解最新的Beta版本，可以通过github url安装适配器。 <br> （有时需要额外的上传[fe iobroker upload yahka]和适配器重新启动） <br>
+如果您想了解最新的Beta版本，可以通过github url安装适配器。 <br> （有时需要额外的上载[fe iobroker上载yahka]和适配器重新启动） <br>
+
+##备份与还原
+注意：为了能够在通常的`iobroker backup`和`iobroker restore`之外的其他系统上还原ioBroker.yahka，`/opt/iobroker/iobroker-data`下的`yahka.X.hapdata`文件夹也必须备份，并且，如有必要，请还原。 [Wiki]（https://github.com/jensweigele/ioBroker.yahka/wiki/ioBroker.yahka-auf-ein-anderes-System-umziehen）/ [问题](https://github.com/jensweigele/ioBroker.yahka/issues/176)
 
 ＃＃ 故障排除
 ###并非所有新功能都可用：
-如果yahka更新后并非所有新功能都可用，请尝试上传（例如iobrober yahka上传），然后重新启动适配器。
+如果在yahka更新之后并非所有新功能都可用，请尝试上传（例如iobrober yahka上传），然后重新启动适配器。
 
 ### Missing Avahi守护程序（Linux）
 如果日志中出现以下错误： <br>
@@ -76,14 +79,14 @@ enable-dbus=yes
 -执行：```msiexec / i bonjourcore2.msi / qn`''
 -删除：```del bonjourcore2.msi```
 -下载：```https：// www.samuelattard.com / files / bonjoursdksetup.exe`''
--执行：```bonjoursdksetup.exe / quiet`''
+-执行：```bonjoursdksetup.exe / quiet```
 -删除：```del bonjoursdksetup.exe```
 -设置：```set BONJOUR_SDK_HOME = C：\ Program Files \ Bonjour SDK```
 
 然后安装yahka适配器。
 
 ##关于HomeKit的一些话
-HomeKit的体系结构如下： <br>有“设备”作为逻辑实体。每个设备可以具有多个**服务**，并且每个服务都具有多个**特征**。 <br>最后，特征是可以在其中读取或写入值的端点。 <br>服务可能具有哪些特征，由Apple / HomeKit定义，并由服务类型确定。服务类型也由Apple / HomeKit定义。
+HomeKit的体系结构如下： <br>有“设备”作为逻辑实体。每个设备可以具有多个**服务**，并且每个服务都具有多个**特征**。 <br>最后，特征是可以在其中读取或写入值的端点。 <br>服务可能具有的特征由Apple / HomeKit定义，并由服务类型确定。服务类型也由Apple / HomeKit定义。
 
 例： <br>车库门开启器是一种可以提供两种服务的设备： <br>
 
@@ -96,7 +99,7 @@ HomeKit的体系结构如下： <br>有“设备”作为逻辑实体。每个�
 使用Yahka，可以将ioBroker数据点映射到HomeKit特性。 <br>由于有时需要进行映射（例如，在HomeKit和其他系统之间，车库门的“状态”值不同），因此还可以指定功能来转换这些值。如下所述。 <br>为了避免过多的管理工作，您在Yahka中创建的所有设备都位于所谓的“桥”后面。使用此网桥，您只需将网桥与iOS设备配对即可访问所有设备。否则，您需要将每个Yahka设备与Homekit配对。
 
 ##设置网桥并创建设备和服务
-每个需要与Homekit配对的设备都需要一个具有Mac地址形式的“用户名”。 Yahka自动为每个yahka实例生成一个随机的用户名。 <br> **重要提示：如果您将Yahka与HomeKit配对后更改了用户名，则需要重新配置iOS中的所有设备（房间分配，位置等）。更改用户名意味着使用iOS，这是一个完整的新设备！** <br>除了用户名，您还需要指定一个PIN码，该密码需要在iOS设备上输入。可以通过在Yahka的管理面板中单击“：yahka.0”来指定所有内容。 （单击列表条目后，展开右侧的面板）。桥梁的名称也可以在那里更改。
+每个需要与Homekit配对的设备都需要一个具有Mac地址形式的“用户名”。 Yahka自动为每个yahka实例生成一个随机的用户名。 <br> **重要提示：如果您将Yahka与HomeKit配对后更改了用户名，则需要在iOS中重新配置所有设备（房间分配，位置等）。更改用户名意味着使用iOS，这是一台全新的设备！** <br>除了用户名，您还需要指定一个PIN码，该密码需要在iOS设备上输入。通过在Yahka的管理面板中单击“：yahka.0”可以指定所有内容。 （单击列表条目后，展开右侧的面板）。桥的名称也可以在那里更改。
 
 设置网桥后，可以使用顶部的“添加设备”按钮添加所需的设备。添加/选择设备后，您可以向该设备添加服务。 <br>必须指定服务名称和服务类型。 <br>根据服务类型，可用特征列表会更改<br>
 
@@ -113,31 +116,31 @@ HomeKit的体系结构如下： <br>有“设备”作为逻辑实体。每个�
 |功能|预期参数|描述|
 |---|---|---|
 
-| const | Value |如果HomeKit读取const函数，则const函数始终将“ InOutParameter”中指定的值传递给Conversion Function。如果HomeKit要写入值，则拒绝此操作
+| const | Value |如果HomeKit读取了const函数，则const函数总是将“ InOutParameter”中指定的值传递给Conversion Function。如果HomeKit要写入值，则拒绝此操作
 
-| ioBroker数据点的| ioBroker.State |名称|通过此功能，适配器将指定的ioBroker数据点用于读取和写入操作。所有操作均立即完成，无需缓冲或过滤（将值传递到指定的Conversion函数）|
-| ioBroker数据点的| ioBroker.State.Defered |名称|使用此功能，适配器将指定的ioBroker数据点用于读取和写入操作。来自HomeKit的写入操作直接传递给转换函数。 | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
-| ioBroker数据点的| ioBroker.State.OnlyACK |名称|使用此功能，适配器将指定的ioBroker数据点用于读取和写入操作。来自HomeKit的写入操作直接传递给转换函数。如果设置了“已确认”-标志值，则仅将ioBroker的更改转发到HomeKit。否则，最后确认的值将被传输到HomeKit |。 |
+| ioBroker数据点的| ioBroker.State |名称|使用此功能，适配器将指定的ioBroker数据点用于读取和写入操作。所有操作均立即完成，无需缓冲或过滤（将值传递到指定的Conversion函数）|
+| ioBroker数据点的| ioBroker.State.Defered |名称|使用此功能，适配器将指定的ioBroker数据点用于读写操作。来自HomeKit的写入操作直接传递给转换函数。 | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | | |
+| ioBroker数据点的| ioBroker.State.OnlyACK |名称|使用此功能，适配器将指定的ioBroker数据点用于读写操作。来自HomeKit的写入操作直接传递给转换函数。如果设置了“已确认”-标志值，则仅将ioBroker的更改转发到HomeKit。否则，最后确认的值将被传输到HomeKit |。 |
 | ioBroker.homematic。 <br> HomeMatic级别数据点的WindowCovering.TargetPosition | Id <br>要么<br>具有级别数据点的ID和工作数据点的ID的字符串数组|此功能尤其用于控制HomeMatic窗帘。在移动窗帘时，此功能会延迟将值传输到HomeKit。为避免iOS |中的窗帘滑块闪烁，这是必要的。 |
 
 ##转换功能概述
 |功能|预期参数|描述|
 |---|---|---|
 
-| passthrough | \ <无\> |来自ioBroker的值不进行转换就传递给HomeKit（反之亦然）
+| passthrough | \ <无\> |来自ioBroker的值不经过转换即传递给HomeKit（反之亦然）
 
-| HomematicDirectionTo <br> HomekitPositionState | \ <none\> |此函数将Homematic窗帘的方向枚举映射到HomeKit的PositionState枚举（并返回）|
+| HomematicDirectionTo <br> HomekitPositionState | \ <none\> |此函数将Homematic窗帘的方向枚举映射到HomeKit的PositionState枚举（以及向后）|
 | HomematicControlModeTo <br> HomekitHeathingCoolingState | \ <none\> |此函数将Homematic的ControlMode枚举映射到HomeKit的HeathingCoolingState枚举（并返回）|
-| scaleInt <br> scaleFloat |```{ "homekit.min": <number>, "homekit.max": <number>, "iobroker.min": <number>, "iobroker.max": <number> }```||此函数类似于“ level255”，但更通用。它将ioBroker值的范围从“ iobroker.min”（如果省略，则为0）到“ iobroker.max”转换为HomeKit值，其值范围从“ homekit.min”（如果省略，则为0）到“ homekit.max” （然后回来）。 <br> **例：**如果参数字段为：```{ "homekit.max": 500, "iobroker.max": 250}``` <br>实际上，ioBroker的值会乘以2，然后再将其发送到HomeKit。 <br>** min参数仅在0.8.0及更高版本中可用** |
-| inverse | number |此函数用于“反转” ioBroker中的值。该参数在ioBroker中指定了最大值。公式是：```Parameter - value``` <br> **示例：**如果参数字段为```100```§，则ioBroker的值100将作为0发送到HomeKit，值80将作为20发送到HomeKit等。 |
-| | hue | \ <无\> |此函数是scaleInt的专用版本，具有参数```iobroker.max=65535```和```homekit.max=360```§。 |
-| hue | \ <none \> |此函数是scaleInt的专用版本，具有参数“ iobroker.max = 65535”和“ homekit.max = 360”。 |
+| scaleInt <br> scaleFloat |```{ "homekit.min": <number>, "homekit.max": <number>, "iobroker.min": <number>, "iobroker.max": <number> }```||此函数类似于“ level255”，但更为通用。它将ioBroker值的范围从“ iobroker.min”（如果省略，则为0）到“ iobroker.max”转换为HomeKit值，其值范围从“ homekit.min”（如果省略，则为0）到“ homekit.max” （然后回来）。 <br> **例：**如果参数字段为：```{ "homekit.max": 500, "iobroker.max": 250}```§ <br>实际上，将ioBroker的值乘以2后再将其发送到HomeKit。 <br>** min-Parameters仅在0.8.0及更高版本中可用** |
+| inverse | number |此函数用于“反转” ioBroker中的值。该参数在ioBroker中指定了最大值。公式为：```Parameter - value``` <br> **示例：**如果参数字段是```100```§，则ioBroker的值100将作为0发送到HomeKit，值80将作为20发送到HomeKit等。 |
+|| hue | \ <none \> |此函数是scaleInt的专用版本，具有参数```iobroker.max=65535```和```homekit.max=360```§。 |
+| hue | \ <none \> |此函数是scaleInt的专用版本，带有参数“ iobroker.max = 65535”和“ homekit.max = 360”。 |
 
 ## Homematic盲致动器\窗帘
 要集成Homematic百叶窗执行器（如HM-LC-Bl1PBU-FM），需要以下设置：
 
 *将服务添加到设备
-*将“服务名称”设置为某些名称，并将服务类型设置为“ WindowCovering”。服务子类型可以留空
+*将服务名称设置为某些名称，并将服务类型设置为“ WindowCovering”。服务子类型可以留空
 *启用并填写以下特征：
 
 |特征名称| 1：InOut函数<br> 2：转换函数| 1：InOut参数<br> 2：转换参数|
@@ -148,7 +151,7 @@ HomeKit的体系结构如下： <br>有“设备”作为逻辑实体。每个�
 
 值_ \ <动态对象的路径\> _需要替换为设备的实际路径（例如hm-rpc.0.NEQ0012345）
 
-有关配置掩码的一般信息，请参见：TODO <br>有关配置，InOut函数和转换函数的更多信息，请参见：[维基](https://github.com/jensweigele/ioBroker.yahka/wiki/Configuration,-InOut-Functions-and-Conversion-Functions)
+有关配置掩码的一般信息，请参阅：TODO <br>有关配置，InOut函数和转换函数的更多信息，请参见：[维基](https://github.com/jensweigele/ioBroker.yahka/wiki/Configuration,-InOut-Functions-and-Conversion-Functions)
 
 ## Changelog
 ### 0.10.0 (2020-02-19)

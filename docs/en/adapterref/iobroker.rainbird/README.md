@@ -28,6 +28,7 @@ Based on the python library "pyrainbird" from https://github.com/jbarrancos/pyra
 `rainbird.X.device.sensors.rain` - True if a rain sensor is attached and rain is detected.  
 
 `rainbird.X.device.settings.rainDelay` - The current irrigation delay (in days) set for the device.  
+`rainbird.X.device.settings.seasonalAdjust` - The current seasonal adjust for the water budget.  
 
 `rainbird.X.device.stations.Y.available` - True if zone Y is available in the device.  
 `rainbird.X.device.stations.Y.irrigation` - True if zone Y is currently irrigated.  
@@ -37,6 +38,11 @@ Based on the python library "pyrainbird" from https://github.com/jbarrancos/pyra
 
 
 ## Changelog
+
+### 0.2.3
+
+-   Fixed problem with sensor data
+-   Added seasonal water budget adjust information
 
 ### 0.2.2
 

@@ -3,63 +3,69 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.yamaha/README.md
 title: 无题
-hash: KWvAEhUWeT3Wbp3WUPKbBXlFPp9yVHn7joyGgOEnIlc=
+hash: lXGOOhOdLLITEXW7oIwVl9BUiIyU7vTFrTiTPlvTwIc=
 ---
 ![商标](../../../en/adapterref/iobroker.yamaha/admin/yamaha.png)
 
+![安装数量](http://iobroker.live/badges/yamaha-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.yamaha.svg)
-![测试](http://img.shields.io/travis/soef/ioBroker.yamaha/master.svg)
+![测验](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.yamaha/master.svg)
 ![执照](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
-![建立状态](https://ci.appveyor.com/api/projects/status/t51976au5hcoo2mx?svg=true)
 
 ## IoBroker.yamaha
-<!--
--->
-
 ####说明
-适用于Yamaha AV接收器的适配器
+适用于Yamaha AV接收机的适配器
+
+###初始创建
+该适配器最初是由@soef在https://github.com/soef/ioBroker.yamaha创建的，但不再维护，因此我们将其移至iobroker-community，以便可以修复错误。感谢@soef的工作。
 
 ####配置
-目前没有自动发现，您必须输入接收器的IP
+当前没有自动发现，您必须输入接收者的IP
 
 ####安装
-通过ioBroker管理员。
+通过ioBroker Admin。
 
-Otherweise在iobroker根目录中执行以下命令（例如在/ opt / iobroker中）``npm install iobroker.yamaha iobroker upload yamaha`
+otherweise在iobroker根目录中执行以下命令（例如在/ opt / iobroker中）``npm install iobroker.yamaha iobroker upload yamaha``
 
 ＃＃＃＃ 即时的
-当它们产生时，将创建各州。即使用你的遥控器并改变一些东西，你会看到新的状态。
-yamaha设备只接受一个连接。
+状态累积时将创建它们。即使用您的红外遥控器并更改某些内容，您将看到新的状态。
+yamaha设备仅接受一个连接。
 
 ＃＃＃＃ 要求
-雅马哈Reciver
+雅马哈接收器
 
 您必须在接收器的配置中启用“网络待机”功能
 
 ## Changelog
-###0.3.19
+### 0.3.21
+* (Garfonso) added admin 3 compatibility and more meta-data stuff.
+* (Garfonso) added compact mode support.
+### 0.3.20
+* (Garfonso) adjusted local copy of soef.js to js-controller 3.0
+* (Garfonso) updated meta information (links etc) to iobroker-community-adapters
+### 0.3.19
 * (soef) Changelog added to readme
-###0.3.18
+### 0.3.18
 * (Apollon77) Update utils.js and usage, CI Testing and deps
-###0.3.17
+### 0.3.17
 * (Apollon77) update basic package-file testing
-###0.3.16
+### 0.3.16
 * (soef) node 0.12 removed from testing
-###0.3.15
+### 0.3.15
 * (soef) Enhance CI testing
-###0.3.14
+### 0.3.14
 * (soef) Possible exception in reconnect fixed
-###0.3.12
+### 0.3.12
 * (soef) Version incr. for npm
-###0.3.11
+### 0.3.11
 * (soef) reconnect overworked
-###0.3.10
+### 0.3.10
 * (soef) realtime Ping now configurable
-###0.3.8
+### 0.3.8
 * (soef) realtime states optimized
-###0.3.7
+### 0.3.7
 * (soef) fix typo in creating realtime states
-###0.3.6
+### 0.3.6
 * (soef) timeout to connect reduced
 
 <!--
@@ -67,7 +73,7 @@ yamaha设备只接受一个连接。
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015-2017 soef <soef@gmx.net>
+Copyright (c) 2015-2020 soef <soef@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: 6Eo8Jf+RRmiw2StisaXhUrbLu5493j4zhlWj+OTMXRE=
+hash: HtQRzGke7pLNpCxorf6Re5gBtRVUr7f+kyqVQrsWrJU=
 ---
 ![логотип](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -22,12 +22,25 @@ hash: 6Eo8Jf+RRmiw2StisaXhUrbLu5493j4zhlWj+OTMXRE=
 
 ## IoBroker Alarm
 Умирает в адаптере, с его помощью. Аларманирование, программирование, техническое обслуживание.
-Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. Находится на территории De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz «заявляет», auf anddere «заявляет» меглиц. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
+Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. Находится под названием De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz «заявляет», auf anddere «заявляет» меглиц. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
+
+-------------------------------------------------- -------------------------------------------------- ------------------ *Подставка 28.05.2020*
+
+### Tab Haupteinstellungen
+В настоящее время в нем представлены Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm и Passwort vorgenommen.
+
+*Alle Zeiten sind в Sekunden einzugeben*
+
+- Aktivierzeit -> Zeitverzögerung bis zu Aktivierung wenn man einen delay Datenpunkt benutzt
+- Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf true gesetzt
+- Alarmverzögerung -> Verzögerungszeit bis Einbruch ausgelöst wird (большой вес) Zeit wird der Stille Alarm ausgelöst)
+- Auslösezeit bei Warnungen -> Bei Auslösung eines der Warnkreise (info.warn / night_circuit_changes), ювелирные изделия из драгоценных камней
 
 ----------------------------------------------------------------------------------------------------------------------
 
-### Tab Haupteinstellungen
-Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm, Passwort und Benachrichtigungen über Andere Adapter wie z.B. Телеграмма, воргеноммен.
+### Tab Benachrichtigungen
+Benachrichtigungen über Andere Adapter wie z.B. Телеграмма, электронная почта или андер.
+[Probleme](#Probleme)
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -41,7 +54,7 @@ Der Warnkreis hat zwei Funktionen, bei aktivierter Anlage werden diese States nu
 
 Der Nachtkreis hat die gleiche Funktion wie der Warnkreis, jedoch nur während der Nachtruhe. Начинающий ученик Nachtruhe Lost Остаться в живых, падает Активиерт, умереть Uberwachung des Warnkreises (острый внутри) ab.
 
-*Es ist durchaus möglich, dassman für einen State, den Haken bei allen drei Kreisen macht.*
+* Es ist durchaus möglich, dassman für einen State, den Haken bei allen drei Kreisen Macht
 
 Die Kreise sind folgendermaßen überwacht:
 
@@ -60,8 +73,10 @@ Bei aktiver Nachtruhe werden Veränderungen während der erkannt und ggf. gemeld
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Sprachausgabe
-Ist eine gewünschte Sprachausgabe z.B. bei bei Änderung des Zustandes gewünscht, lässt sich das hier mit den gewünschten Sätzen konfigurieren. Последний человек Фельдер со з.б. bei der Aktivierung leer, so findet keine Sprachausgabe statt. Weitere Optionen wie die wie die Ausgabe von Namen sind hier auch einstellbar.
-* Sayit oder Alexa2 werden unterstüzt *
+Ist eine gewünschte Sprachausgabe z.B. bei bei Änderung des Zustandes gewünscht, lässt sich das hier mit den gewünschten Sätzen konfigurieren.
+* Man muss sich sicher sein, das der ausgewählte Datenpunkt, mit einem Text beschrieben werden kann! Z.B. "sayit.0.tts" *
+
+Möchte man sich die Ausgabe von Namen mit Ansagen lassen, kann man diese Вариант anwählen.
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -75,8 +90,25 @@ Es lässt sich somit z.B. Bei Beginn der Nachtruhe, Eine Veriegelung des Türsch
 Der Adapter liefet eine ganze Anzahl заявляет:
 
 #### "alarm.x.use .....".
-Das sind die eigentlichen заявляет, что um die Alarmanlage zu bedienen.
+Das sind die eigentlichen заявляет, что умирает.
 Es ist möglich die Alarmanlage direkt von aktiviert auf "intern scharf" umzuschalten, dies ist jedoch nur möglich wenn die Alarmanlage, не имеющей возможности.
+
+- use.activate_nightrest -> Активирунг дер Нахтруэ
+- use.deactivate_nightrest -> Deaktivierung der Nachtruhe
+- use.toggle_nightrest -> Deaktivierung / Aktivierung der Nachtruhe
+- use.activate_warn_circuit -> Aktivierung der Uberwachung des Warnkreises (intern scharf)
+- use.deactivate_warn_circuit -> Deaktivierung der Uberwachung des Warnkreises (intern scharf)
+- use.toggle_warn_circuit -> Deaktivierung / Aktivierung der Überwachung des Warnkreises (стажер)
+- use.disable -> Deaktivierung der Anlage (Alarmkreis)
+- use.enable -> Aktivierung der Anlage (Alarmkreis)
+- use.enable_with_delay -> Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
+- use.list -> Deaktivierung / Aktivierung / Warnkreis / Aktivierung mit Verzögerungszeit
+- use.quit_changes -> штаты Рюксетцен дер байден *info.warn / night_circuit_changes*
+- use.toggle -> Deaktivierung / Aktivierung der Anlage (Alarmkreis)
+- use.toggle_password -> Deaktivierung / Aktivierung der Anlage (Alarmkreis) mit Passwort
+- use.toggle_with_delay -> Deaktivierung / Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
+- use.toggle_with_delay_and_password -> Deaktivierung / Aktivierung der Anlage (Alarmkreis) mit Passwort und Verzögerungszeit
+- use.panic -> Händische Auslösung der Alarmanlage (Einbruch), очень хорошо
 
 #### "alarm.x.status ...."
 Hier lässte sich der Zustand der Anlage смог.
@@ -88,14 +120,17 @@ Der log_today State Wird Um Mitternacht Geleert.
 ----------------------------------------------------------------------------------------------------------------------
 
 ## Проблема
-- мужская телеграмма телеграмм, в том числе слова, написанные на английском языке, канзуфюгт, канцман нью эйн дер дер инстанс авансвен и человек мусс бис * телеграмма.
-
-#### Erfahrene ioBroker Nutzer
-*Wählt человек в логове Опционально умирает Log Ausgabe an, werden gewisse Änderungen im Log des ioBroker geschrieben. Ist man mit diesen Texten nicht zufrieden, besteht die Möglichkeit, sich die Datei "/lib/Logs.js" zu editieren.*
+- мужская телеграмма телеграмм, посвященных английским языкам, родным и родным и родным дорогам, телеграммам и телеграммам.
 
 #### Wichtig, die Benutzung dieses.
 
 ## Changelog
+
+#### 0.7.0 (07.06.2020)
+* (misanorot) edit notification sentences in admin
+
+#### 0.6.0 (31.05.2020)
+* (misanorot) changed speech output
 
 #### 0.5.0 (14.05.2020)
 * (misanorot) added use.list state

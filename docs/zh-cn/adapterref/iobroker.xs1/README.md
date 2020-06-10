@@ -3,55 +3,63 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.xs1/README.md
 title: ioBroker.xs1
-hash: IeybNGgMEMa/IF18ankudZnwKWWL8wrsSWuzSaS5VS4=
+hash: YDDMrsvKEdeOSKCT1MPhIWYk68X7WT5w1tOQy0vU+BA=
 ---
-![商标](../../../en/adapterref/iobroker.xs1/admin/xs1.png)
-
 ![NPM版本](http://img.shields.io/npm/v/iobroker.xs1.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.xs1.svg)
-![特拉维斯-CI](http://img.shields.io/travis/frankjoke/ioBroker.xs1/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/frankjoke/ioBroker.xs1?branch=master&svg=true)
+![资料下载](https://img.shields.io/npm/dm/iobroker.xs1.svg)
+![特拉维斯](http://img.shields.io/travis/frankjoke/ioBroker.xs1/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.xs1.png?downloads=true)
 
-#ioBroker.xs1
-=================
+＃ioBroker.xs1
+![商标](../../../en/adapterref/iobroker.xs1/admin/xs1.png)
 
-## ioBroker适配器zu EZcontrol XS1 Der适配器kommuniziertüberdieRestAPI des XS1undhängtsichauch an das XS1 als listener umalleÄnderungensofort an den ioBroker weiterzuleiten。
-Befehle vom ioBroker werden zuerst mit ack = false gesendet und wenn etwas vom Listener kommt dann passiert das mit ack = true。男人weißdannzumindest dass XS1 den Befehl gesendet帽子。
-Der Adapter scanntalleverfügbarenSensoren（只读）和Aktoren（读/写）和verwendet die am XS1 vergebenen Namen。
+## IoBroker适配器zu EZcontrol XS1
+XS1和XS1的适配器都非常适合XS1和监听器，并且可以在代理服务器上使用。
+Beomhle vom ioBroker werden zuerst mit ack = false gesendet和wenn etwas vom Listener kommt dann passiert das mit ack = true。男士XS1 den Befehl gesendet帽子。
 
-Momentan werden keine Spezialinformationen wieBatterielevelunterstütztdadiese dem Listener leider nicht weitergegeben werden。
+XS1 vergebenen Namen的所有适配器和传感器（只读）和Aktoren（读/写）和版本均不可用。
 
-Der link ist die gesamte link mit dem man sonst im Heimnetz auf das XS1 zugreifen kann。
-Momentan ist noch kein Passwort-Zugriff implementiert und damit darf auf dem XS1 kein Passwort gesetzt sein！
+动机侦探侦探侦探侦探侦探尼古丁·韦登werden。
 
-  FürSensorenwelche im state eine'Teed low'-Meldung anzeigen wird ein .LOWBAT-State erzeugt。
+Heimnetz auf das XS1 zugreifen kann。
+Momentan ist noch kein Passwort-Zugriff实施和交易XS1 kein Passwort gesetzt sein！
 
-Die Copylist erlaubt direktes Gleichschalten zwischen Listener und Aktoren。
-Damit kann man Aktoren zusammenschalten welche ohne im ioBroker scrips schreibenzumüssen。
-还有Wenn Aktor A von XS！ auf ein geht wird auch Aktor B（und C ..）auf ein geschaltet。
+  状态传感器为“电池电量低” -Meldung安全状态为LOWBAT状态。
+
+死副本清单erlaubt direktes Gleichschalten zwischen侦听器和Aktoren。
+Damit kann man Aktoren zusammenschalten welche ohne im ioBroker签发schreiben zumüssen。
+也请问Aktor A von XS！听从Aktor B（und C ..）auf ein geschaltet。
 Das ist sinnvoll wenn Aktoren verschiedene Systeme benutzen（Aktor A = FS20，B = AB400，C = HMS）和zusammen geschaltet werden sollen（Ein funksender von FS20 kann dann direkt auch einen AB400 Funkstekdose schalten）。
 
-Die Syntax ist {“von_a”：“auf_b（，auf_c，...）”，“von_b”：“auf_c”，....} Die runden klammern zeigen dass mehrere Destinationen mit comma getrennt angegebenwerdenkönnen。
-Ein Beispiel von mir：{“UWPumpeT2”：“UWPumpe”，“UWPumpe”：“UWPumpeT2”，“Schalter1”：“Licht1，Licht2”} Damit wird der Taster（UWPumpeT2）mit der UWPumpe in beide Richtungen gleichgeschalten und man braucht im ioBroker nur noch einen Aktor verwenden。
-'Schalter1'würde'Licht1'und'Licht2'gleichzeitigmitschalten。
+语法：{“ von_a”：“ auf_b（，auf_c，...）”，“ von_b”：“ auf_c”，....}}
+Ein Beispiel von mir：{“ UWPumpeT2”：“ UWPumpe”，“ UWPumpe”：“ UWPumpeT2”，“ Schalter1”：“ Licht1，Licht2”} ioBroker nur noch einen Aktor verwenden。
+'Schalter1'würde'Licht1'和'Licht2'gleichzeitig mitschalten。
 
-FürdieneuhinzugefügteWeddog-Funktion sollte im XS1 ein virtueller Aktuator namens'Watchdog'kreiert werden。
-Dieser wird jede Minute umgeschaltet und falls 4 Minuten lan dieser Umschaltvorgangnichtzurückgemeldetwirdwird der Adapter neu gestartet。
+XS1的Watchdog-Funktion sollte由Aktuator命名为“ Watchdog” kreiert werden。
+Dieser wird jede分钟umgeschaltet和下降4 Minuten lan dieer Umschaltvorgang nichtzurückgemeldetwird wird der Adapter neu gestartet。
 
-## Wichtig！
-* DerAdapterbenötigtNode> = v4.3！
-* Einen blinden（aber nicht virtuellen）Aktuator mit dem Namen'Watchdog'erstellen。
+## Wichtig！-
+* Der适配器benötigt节点> = v6。*！
+*艾因·布莱恩（Einen blinden）。
 
 ## Changelog
+
+### 1.1.0
+
+* Added Admin3 capabities and support for new js-controller
+* Adapter runs only with node>=8.16
+
 ### 1.0.2
+
 * Added more sensors. All unknown types will use 'value' role. This can lead to problems if actual type is a boolean, but should work otherwise. As a result all sensors should be listed now.
 
 ### 1.0.0
+
 * Update accepted device list and test for node v 8
 * Tarvis updated to test right repository
 
 ### 0.5.2
+
 * Update variables list and values from XS1 but change values only if they are different than in state not to create false state updates
 
 ### 0.5.1

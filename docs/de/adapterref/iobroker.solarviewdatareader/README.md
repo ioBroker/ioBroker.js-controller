@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.solarviewdatareader/README.md
 title: ioBroker.solarviewdatareader
-hash: N2WdT+EmCQqXeNw1uSS9qyLsRAmJtIdcT7DfxuwaPkk=
+hash: 3Tz0iPIs6QrXDjZMM8pPt78Jo3H+StXkUoJrxLr70AU=
 ---
 ![Logo](../../../en/adapterref/iobroker.solarviewdatareader/admin/solarviewdatareader.png)
 
@@ -27,8 +27,9 @@ Um die Daten vom Datenlogger zu erhalten, müssen Sie die IP-Adresse und den Por
 ### D0 Konverter
 Wenn Sie einen D0-Konverter an den Solarview-Datenlogger angeschlossen haben, können Sie diese Option aktivieren.
 
-### Selbstverbrauchsmesser 1 bis 5
+### Selbstverbrauchszählersumme und 1 bis 4
 Wenn Sie ein S0-Messgerät haben, können Sie diese Option aktivieren.
+Sie können bis zu 4 Eigenverbrauchszähler und die Summe aller Zähler haben.
 
 ### Wechselrichter 1 bis 4
 Jeder Wechselrichter kann separat aktiviert werden.
@@ -42,6 +43,8 @@ In dieser Systemvariablen wird der tatsächliche PAC-Wert gespeichert.
 
 ## Changelog
 
+### 0.2.1
+* (Achim Fürhoff) self consumption meter optimized
 ### 0.2.0
 * (Achim Fürhoff) Error handling optimized, self consumption meter implemented
 ### 0.1.0

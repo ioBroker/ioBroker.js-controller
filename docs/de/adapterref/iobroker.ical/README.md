@@ -82,6 +82,9 @@ Zum Einbinden eines Google Kalenders muss die Kalendereinstellung des Google Kal
 #### OwnCloud Kalender
 Zum Einbinden von gesharten Kalendern einer OwnCloud muss man dort in der Kalenderansicht in OwnCloud diesen Kalender als gesharten Kalender freigeben und dort den Link zum Kalender anzeigen lassen und diese URL (https://owncloud.xxxxxx.de/remote.php/dav/calendars/USER/xxxxxxx_shared_by_xxxxxx?export) entsprechend in den ioBroker.ical Adapter mit Nutzername und Passwort angeben.
 
+#### Baikal CalDAV+CardDAV Server
+Der Baikal-Server bringt das "ics-export"-Plugin mit welches den Export eines Kalenders in eine gesammelte ICal-Datei erlaubt. Dieses Plugin wird direkt über die URL ausgewählt und erlaubt eine problemlose Zusammenarbeit mit dem vorliegenden ioBroker-Adapter. Wichtig ist der Exportfilter, welcher einfach an die Kalender-URL angehangen zu werden braucht (`https://SERVER/baikal/cal.php/calendars/path/to/calendar?export&accept=ical`). Bei Anmeldeproblemen bitte in den Admin-Einstellungen der Web-UI des Baikal-Servers unter `Settings` den `WebDAV authentication type` von `DIGEST` auf `BASIC` stellen.
+
 ### CSS
 In dem generierten HTML sind zwei Arten von CSS-Klassen enthalten, um Gestaltungsfreiheit zu ermöglichen.
 

@@ -21,6 +21,9 @@ If you want to be on the edge and test the latest beta, you could install the ad
 (Sometimes an additional upload [f.e. iobroker upload yahka] and adapter restart is needed)
 <br>
 
+## Backup & Restore
+Attention: To be able to restore ioBroker.yahka on another system, in addition to the usual `iobroker backup` and `iobroker restore`, the `yahka.X.hapdata` folder under `/opt/iobroker/iobroker-data` must also be backuped and, if necessary, restored. [Wiki](https://github.com/jensweigele/ioBroker.yahka/wiki/ioBroker.yahka-auf-ein-anderes-System-umziehen) / [Issue](https://github.com/jensweigele/ioBroker.yahka/issues/176)
+
 ## Troubleshooting
 
 ### Not all new features are available:

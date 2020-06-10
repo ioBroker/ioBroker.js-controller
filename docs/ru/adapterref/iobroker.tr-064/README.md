@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.tr-064/README.md
 title: ioBroker.tr-064
-hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
+hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 ---
 ![логотип](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
@@ -22,14 +22,14 @@ hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 - внешний IP-адрес
 
 ### Звонок (набрать номер)
-- При использовании международного номера (например, ** 610) состояние вызова позволит звонить на этот внутренний телефон.
+- При использовании международного номера (например, ** 610) состояние звонка позволяет звонить на этот внутренний телефон.
 
 например: ** 610 [, тайм-аут]
 
 - При использовании внешнего номера состояние вызова соединит вас с внешним номером.
 
 FritzBox позвонит по внешнему номеру, и ваш телефон по умолчанию будет звонить, когда вызываемый телефон будет снят.
-Телефон по умолчанию можно настроить в FritsBox в разделе: Телефон / Anrufe / [Tab] Wahlhilfe / Wählhilfe verwenden
+Телефон по умолчанию может быть настроен в FritsBox в: Телефон / Anrufe / [Tab] Wahlhilfe / Wählhilfe verwenden
 
 ### ToPauseState
 - Значения: кольцо, соединение, конец
@@ -52,7 +52,7 @@ Callmonitor будет создавать состояния в реальном
 - Телефонная книга, если она включена, будет использоваться для получения имени телефона вызывающего абонента.
 - Далее есть три состояния для разрешения числа или имени. Если доступно, вы также получите URL-адрес изображения контакта.
 
-  например: если вы установили телефонную книгу штата. Для всех трех состояний имя, номер и изображение будут установлены для найденного контакта. Обратите внимание, что поиск по имени сначала сравнивает полное имя, если оно не найдено, часть используется.
+  например: если вы установили телефонную книгу штата. Для всех трех состояний имя, номер и изображение будут установлены для найденного контакта. Обратите внимание, что поиск по имени сначала сравнивает полное имя, если оно не найдено, часть используется.
 
 ### Списки звонков
 Выходные форматы:
@@ -102,8 +102,17 @@ iobroker upload tr-064
 ```
 
 ## Changelog
+
+### 4.0.7 (2020-06-09)
+* (Apollon77) Fix Admin UI to allow setting poll Interval correctly again
+
+### 4.0.4 (2020-06-05)
+* (Apollon77) Make sure adapter do not crash of no calls were returned (Sentry IOBROKER-TR-064-D)
+* (Apollon77) Make sure adapter do not crash when invalid parameter are provided (Sentry IOBROKER-TR-064-B)
+* (Apollon77) https is not supported right now (Sentry IOBROKER-TR-064-E)
+
 ### 4.0.3 (2020-05-11)
-* (Apollon77) Make sure adapter no not crash of no calls were returned (Sentry IOBROKER-TR-064-7)
+* (Apollon77) Make sure adapter do not crash of no calls were returned (Sentry IOBROKER-TR-064-7)
 * (Apollon77) Make sure adapter do not crash when providing a non string to "ring" state (Sentry IOBROKER-TR-064-8) 
 
 ### 4.0.1 (2020-04-23)

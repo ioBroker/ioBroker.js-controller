@@ -199,6 +199,9 @@ The following objects are currently implemented:
 * dialog level
 
 ## Changelog
+#### 0.1.5
+* (Scrounger) error handling when device is not reachable
+
 #### 0.1.4
 * (Scrounger) correction of type mismatch (array object)
 

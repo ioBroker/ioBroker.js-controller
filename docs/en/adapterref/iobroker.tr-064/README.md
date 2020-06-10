@@ -95,8 +95,17 @@ iobroker upload tr-064
 ```
 
 ## Changelog
+
+### 4.0.7 (2020-06-09)
+* (Apollon77) Fix Admin UI to allow setting poll Interval correctly again
+
+### 4.0.4 (2020-06-05)
+* (Apollon77) Make sure adapter do not crash of no calls were returned (Sentry IOBROKER-TR-064-D)
+* (Apollon77) Make sure adapter do not crash when invalid parameter are provided (Sentry IOBROKER-TR-064-B)
+* (Apollon77) https is not supported right now (Sentry IOBROKER-TR-064-E)
+
 ### 4.0.3 (2020-05-11)
-* (Apollon77) Make sure adapter no not crash of no calls were returned (Sentry IOBROKER-TR-064-7)
+* (Apollon77) Make sure adapter do not crash of no calls were returned (Sentry IOBROKER-TR-064-7)
 * (Apollon77) Make sure adapter do not crash when providing a non string to "ring" state (Sentry IOBROKER-TR-064-8) 
 
 ### 4.0.1 (2020-04-23)

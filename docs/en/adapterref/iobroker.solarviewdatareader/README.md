@@ -26,8 +26,9 @@ To get the data from the datalogger you must enter the ip-address and the port. 
 ### D0 converter
 If you have a D0 converter connected to the Solarview data logger you can enable this option.
 
-### Self consumption meter 1 to 5
-If you have a S0 meter, you can enable this option.
+### Self consumption meter sum and 1 to 4
+If you have a S0 meter, you can enable this option. 
+You can have up to 4 self consumption meters and the sum from all meters.
 
 ### Inverter 1 to 4
 Every inverter you can enable separately. 
@@ -41,6 +42,8 @@ In this system variable the actual PAC value is saved.
 
 ## Changelog
 
+### 0.2.1
+* (Achim Fürhoff) self consumption meter optimized
 ### 0.2.0
 * (Achim Fürhoff) Error handling optimized, self consumption meter implemented
 ### 0.1.0

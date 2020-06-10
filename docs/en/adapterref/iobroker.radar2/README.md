@@ -132,7 +132,7 @@ Also new is that intervals for HP-Printer, ECB-, UWZ- and normal scans can be de
 
 ## Changelog
 
-### V2.0.0
+### V2.0.1
 
 * Removed node-blöuetooth because package is not updated to run on recent nodejs versions
 * Updated noble to more recent version

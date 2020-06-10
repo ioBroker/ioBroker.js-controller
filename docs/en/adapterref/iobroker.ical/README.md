@@ -84,6 +84,9 @@ To include a Google Calendar, you must go to the Google Calendar calendar settin
 #### OwnCloud Calendar
 To include a hardcooked calendar of an OwnCloud, you have to approve this calendar in the calendar view in OwnCloud as a hardcourt calendar and there the link.
 
+#### Baikal lightweight CalDAV+CardDAV Server
+The Baikal server offers the "ics-export" plugin that allows to export a calendar as a single ICal file. This export plugin is selected with the URL and allows seamless integration with this ioBroker adaptor. Please add the export filter to the URL of your calendar (`https://SERVER/baikal/cal.php/calendars/path/to/calendar?export&accept=ical`). If you encounter authentication issues, please change the `WebDAV authentication type` from `DIGEST` to `BASIC` in the admin settings of the WebUI of the Baikal server.
+
 ### CSS
 In the generated HTML two kind of css classes are included to allow design freedom.
 

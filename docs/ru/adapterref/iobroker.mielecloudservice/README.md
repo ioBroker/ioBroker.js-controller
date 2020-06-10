@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
+hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
 ---
 ![логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -12,7 +12,7 @@ hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Статус зависимости](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
-![Известные уязвимости](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg)
+![Известные уязвимости](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)
 ![Трэвис-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
 
@@ -28,12 +28,12 @@ hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 * Miele Client_secret (из https://www.miele.com/developer/)
 
 ## Установка
-Для установки выполните следующее:
+Для установки сделайте следующее:
 
 1. Установите через Admin, используя
- * стабильный репо - чтобы получить текущую стабильную версию
- * последний репо - получить последнюю тестовую версию (может быть нестабильной)
- * через: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git - чтобы получить последнюю версию для разработки
+ * стабильный репо - чтобы получить текущую стабильную версию
+ * последний репо - получить последнюю тестовую версию (может быть нестабильной)
+ * через: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git - чтобы получить последнюю версию для разработки
 2. создать приложение-аккаунт для Miele @ Home в приложении Miele для смартфонов
 3. Создайте учетную запись разработчика по адресу https://www.miele.com/f/com/en/register_api.aspx.
 4. Добавьте свои Miele-устройства в приложение (если не добавлено автоматически)
@@ -58,62 +58,62 @@ hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 Вот список того, что означают эти необработанные значения:
 
 ### DeviceTypes
- | Необработанная стоимость | государство |
+ | Необработанная стоимость | государство |
  |----------|-------|
- | 1 | СТИРАЛЬНАЯ МАШИНА |
- | 2 | Сушилка для белья |
- | 7 | DISHWASHER |
- | 8 | ПОЛУПРОМЫШЛЕННАЯ ПОСЫЛКА |
- | 12 | ПЕЧЬ |
- | 13 | ПЕЧЬ МИКРОВОЛНОВАЯ |
- | 14 | HOB HIGHLIGHT |
- | 15 | ПАРОВАЯ ПЕЧЬ |
- | 16 | МИКРОВОЛНОВЫЙ |
- | 17 | КОФЕ СИСТЕМА |
- | 18 | HOOD |
- | 19 | ХОЛОДИЛЬНИК |
- | 20 | FREEZER |
- | 21 | ХОЛОДИЛЬНАЯ / МОРОЗИЛЬНАЯ КОМБИНАЦИЯ |
- | 23 | ВАКУУМНЫЙ ОЧИСТИТЕЛЬ, АВТОМАТИЧЕСКИЙ РОБОТИЧЕСКИЙ ВАКУУМНЫЙ ОЧИСТИТЕЛЬ |
- | 24 | СТИРАЛЬНАЯ СУШКА |
- | 25 | БЛЮДА ДЛЯ БЛЮДА |
- | 27 | HOB INDUCTION |
- | 28 | ПЕЧЬ ГАЗА |
- | 31 | ПАРОВАЯ КОМБИНАЦИЯ |
- | 32 | ВИННЫЙ ШКАФ |
- | 33 | БЛОК КОНДИЦИОНИРОВАНИЯ ВИНА |
- | 34 | БЛОК КОНДИЦИОНИРОВАНИЯ ВИНОВ |
- | 39 | ДВОЙНАЯ ПЕЧЬ |
- | 40 | ПЕЧЬ ДЛЯ ДВОЙНОГО ПАРА |
- | 41 | ДВУХКОМПОНЕНТНАЯ ДУХОВНАЯ КОМБИНАЦИЯ |
- | 42 | ДВОЙНОЙ МИКРОВОЛНОВОЙ |
- | 43 | ДВОЙНАЯ МИКРОВОЛНОВАЯ ПЕЧЬ |
- | 45 | ПАРОВОЙ МИКРОВОЛНОВОЙ КОМБИНАЦИИ |
- | 48 | ВАКУУМНЫЙ ЯЩИК |
- | 67 | DIALOGOVEN |
- | 68 | ВИННЫЙ КАБИНЕТ КОМБИНАЦИИ МОРОЗИЛЬНЫХ |
+ | 1 | СТИРАЛЬНАЯ МАШИНА |
+ | 2 | Сушилка для белья |
+ | 7 | DISHWASHER |
+ | 8 | ПОЛУПРОМЫШЛЕННАЯ ПОСЫЛКА |
+ | 12 | ПЕЧЬ |
+ | 13 | ПЕЧЬ МИКРОВОЛНОВАЯ |
+ | 14 | HOB HIGHLIGHT |
+ | 15 | ПАРОВАЯ ПЕЧЬ |
+ | 16 | МИКРОВОЛНОВЫЙ |
+ | 17 | КОФЕ СИСТЕМА |
+ | 18 | HOOD |
+ | 19 | ХОЛОДИЛЬНИК |
+ | 20 | FREEZER |
+ | 21 | ХОЛОДИЛЬНАЯ / МОРОЗИЛЬНАЯ КОМБИНАЦИЯ |
+ | 23 | ВАКУУМНЫЙ ОЧИСТИТЕЛЬ, АВТОМАТИЧЕСКИЙ РОБОТИЧЕСКИЙ ВАКУУМНЫЙ ОЧИСТИТЕЛЬ |
+ | 24 | СТИРАЛЬНАЯ СУШКА |
+ | 25 | БЛЮДА ДЛЯ БЛЮДА |
+ | 27 | HOB INDUCTION |
+ | 28 | ПЕЧЬ ГАЗА |
+ | 31 | ПАРОВАЯ КОМБИНАЦИЯ |
+ | 32 | ВИННЫЙ ШКАФ |
+ | 33 | БЛОК КОНДИЦИОНИРОВАНИЯ ВИНА |
+ | 34 | БЛОК КОНДИЦИОНИРОВАНИЯ ВИНОВ |
+ | 39 | ДВОЙНАЯ ПЕЧЬ |
+ | 40 | ПЕЧЬ ДЛЯ ДВОЙНОГО ПАРА |
+ | 41 | ДВУХКОМПОНЕНТНАЯ ДУХОВНАЯ КОМБИНАЦИЯ |
+ | 42 | ДВОЙНОЙ МИКРОВОЛНОВОЙ |
+ | 43 | ДВОЙНАЯ МИКРОВОЛНОВАЯ ПЕЧЬ |
+ | 45 | Паровая печь с микроволновой печью |
+ | 48 | ВАКУУМНЫЙ ЯЩИК |
+ | 67 | DIALOGOVEN |
+ | 68 | ВИННЫЙ КАБИНЕТ КОМБИНАЦИИ МОРОЗИЛЬНЫХ |
 
 ### Штат / Статус
- | Необработанная стоимость | государство |
+ | Необработанная стоимость | государство |
  |----------|-------|
 | 1 | OFF |
- | 2 | STAND_BY |
- | 3 | ПРОГРАММИРОВАНИЕ |
- | 4 | PROGRAMMED_WAITING_TO_START |
- | 5 | RUNNING |
- | 6 | PAUSE |
- | 7 | END_PROGRAMMED |
- | 8 | FAILURE |
- | 9 | PROGRAMME_INTERRUPTED |
- | 10 | IDLE |
- | 11 | RINSE_HOLD |
- | 12 | СЕРВИС |
- | 13 | суперзамораживания |
- | 14 | переохлаждение |
- | 15 | Перегрев |
- | 144 | DEFAULT |
- | 145 | LOCKED |
- | 146 | SUPERCOOLING_SUPERFREEZING |
+ | 2 | STAND_BY |
+ | 3 | ПРОГРАММИРОВАНИЕ |
+ | 4 | PROGRAMMED_WAITING_TO_START |
+ | 5 | RUNNING |
+ | 6 | PAUSE |
+ | 7 | END_PROGRAMMED |
+ | 8 | FAILURE |
+ | 9 | PROGRAMME_INTERRUPTED |
+ | 10 | IDLE |
+ | 11 | RINSE_HOLD |
+ | 12 | СЕРВИС |
+ | 13 | суперзамораживания |
+ | 14 | переохлаждение |
+ | 15 | Перегрев |
+ | 144 | DEFAULT |
+ | 145 | LOCKED |
+ | 146 | SUPERCOOLING_SUPERFREEZING |
 
 ### ProgramType / Programmart
 | Необработанная стоимость | государство |
@@ -124,15 +124,15 @@ hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 | 3 | Программа очистки / ухода |
 
 ### DryStep / Trockenstufe
- | Необработанная стоимость | государство |
+ | Необработанная стоимость | государство |
  |----------|-------|
- | 0 | Экстра сухой |
- | 1 | Нормал Плюс |
- | 2 | Нормальный |
- | 3 | Слегка сухой |
- | 4 | Ручной утюг уровень 1 |
- | 5 | Ручной утюг уровень 2 |
- | 6 | Машинное железо |
+ | 0 | Экстра сухой |
+ | 1 | Нормал Плюс |
+ | 2 | Нормальный |
+ | 3 | Слегка сухой |
+ | 4 | Ручной утюг уровень 1 |
+ | 5 | Ручной утюг уровень 2 |
+ | 6 | Машинное железо |
 
 ### ProgramBezeichnung
 | Необработанная стоимость | государство | доступно для |
@@ -160,6 +160,13 @@ hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 Copyright (c) 2019, 2020 гризельби <hanjo@hingsen.de>
 
 ## Changelog
+### 1.2.4 (2020-06-09)
+* (grizzelbee) Fix: fixed No-Data Bug (introduced in V1.2.3)
+
+### 1.2.3 (2020-06-07)
+* (grizzelbee) Upd: fixed snyk badge
+* (grizzelbee) Upd: Improved error handling 
+
 ### 1.2.2 (2020-05-23)
 * (grizzelbee) Upd: removed node 8 from testing on travis.com 
 * (grizzelbee) Fix: signalActionRequired should work better now 

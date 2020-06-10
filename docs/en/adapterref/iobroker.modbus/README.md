@@ -62,6 +62,12 @@ There is a software [**Modbus RTU <-> Modbus RTU over TCP**](http://mbus.sourcef
 
 Both solutions **RTU over TCP** and **TCP** works well.
 
+### Do not use multiple registers
+If slave does not support "write multiple registers" command, you can activate it to get warnings, when the multiple registers will be written.
+
+### Write interval
+Delay between two write requests in ms. Default 0.
+
 ## Data types
 
 - uint16be - Unsigned 16 bit (Big Endian): AABB => AABB
@@ -186,6 +192,14 @@ There are some programs in folder *test' to test the TCP communication:
 - mod_RSsim.exe is slave simulator. It can be that you need [Microsoft Visual C++ 2008 SP1 Redistributable Package](https://www.microsoft.com/en-us/download/details.aspx?id=5582) to start it (because of SideBySide error).
 
 ## Changelog
+# 3.0.4 (2020-06-05)
+* (bluefox) Added device ID by export/import
+* (bluefox) Added the write interval parameter
+* (bluefox) Added the disabling of write multiple registers
+
+# 3.0.3 (2020-06-05)
+* (bluefox) Corrected error after refactoring
+
 # 3.0.2 (2020-06-01)
 * (compton-git) Decodes 0xFF00 as coil ON
 

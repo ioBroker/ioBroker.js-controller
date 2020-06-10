@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mysensors/README.md
 title: ioBroker.mysensors
-hash: pqyUZ7lepiWRdgoAZsaiXY3HfA02mg4o2YbQuc5rBQw=
+hash: 8OVhqLSSuVs2O4XGqUqprbqL+6EyGFNFohcyr+vvoPo=
 ---
 ![логотип](../../../en/adapterref/iobroker.mysensors/admin/mysensors.png)
 
@@ -18,11 +18,11 @@ hash: pqyUZ7lepiWRdgoAZsaiXY3HfA02mg4o2YbQuc5rBQw=
 В этом случае выбран Ethernet-шлюз, ioBroker является сервером, который ожидает соединения.
 
 ## TCP-клиент
-Этот параметр работает только вместе с последовательным мостом TCP & lt; = & gt; например, [особ-ссылка](https://github.com/jeelabs/esp-link).
+Этот параметр работает только вместе с последовательным мостом TCP &lt; = &gt; например, [особ-ссылка](https://github.com/jeelabs/esp-link).
 
-## Предварительные требования
+## Предварительно требует
 Для использования последовательного порта в Windows требуется сборка двоичного кода.
-Для использования последовательного порта в linux необходим сборочный python2.7. Чтобы установить их просто напишите:
+Для использования последовательного порта в linux необходим сборочный пакет python2.7. Чтобы установить их просто напишите:
 
 ```
 sudo apt-get update
@@ -31,6 +31,9 @@ sudo apt-get install python2.7
 ```
 
 ## Changelog
+### 2.0.1 (2020-06-01)
+* (jangatzke) compare integer values
+
 ### 2.0.0 (2019-05-15)
 * (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
 
@@ -115,3 +118,25 @@ sudo apt-get install python2.7
 
 ### 0.1.5 (2016-03-02)
 * (bluefox) change tree
+
+The MIT License (MIT)
+
+Copyright (c) 2016-2020, Bluefox<dogafox@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

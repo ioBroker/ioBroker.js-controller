@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
+hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
 ---
 ![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -12,7 +12,7 @@ hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 ![NPM版本](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
 ![执照](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![依赖状态](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
-![已知漏洞](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg)
+![已知漏洞](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)
 ![特拉维斯](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
 
@@ -31,9 +31,9 @@ hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 要安装，请执行以下操作：
 
 1.使用以下命令通过管理员安装
- *稳定的回购-获得当前的稳定版本
- *最新的Repo-获取最新的测试版本（可能不稳定）
- *通过：https://github.com/Grizzelbee/ioBroker.mielecloudservice.git-获得最新的开发版本
+ *稳定的回购-获得当前的稳定版本
+ *最新的Repo-获取最新的测试版本（可能不稳定）
+ *通过：https://github.com/Grizzelbee/ioBroker.mielecloudservice.git-获得最新的开发版本
 2.在Miele Smartphone应用程序中为Miele @ Home创建一个应用程序帐户
 3.在https://www.miele.com/f/com/zh-CN/register_api.aspx上创建一个开发人员帐户
 4.将您的Miele设备添加到应用程序（如果未自动添加）
@@ -52,68 +52,68 @@ hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 有2种可用的数据点。作为人类可读的文本和数字。
 这些属于文本字段的数字数据字段具有相同的名称，但附加了“ _raw”。
 下面列出了具有一般含义的字段。
-未列出的字段的含义因设备而异，并且不受Miele的贬低。
+未列出的字段因设备而异，并且不受Miele的贬低。
 如果需要在脚本中引用这些字段，请始终使用_raw值。
 文本值将来可能会更改，并且还取决于语言。
 这些原始值代表的清单如下：
 
 ###设备类型
- |原始值状态|
+ |原始值状态|
  |----------|-------|
- | 1 |洗衣机|
- | 2 |滚筒干燥机|
- | 7 |洗碗机|
- | 8 |洗碗机半专业|
- | 12 |烤箱|
- | 13 |微波炉|
- | 14 |重点介绍|
- | 15 |蒸汽烤箱|
- | 16 |微波|
- | 17 |咖啡系统|
- | 18 |帽子|
- | 19 |电冰箱|
- | 20 |冷冻机|
- | 21 |冰箱/冰柜组合|
- | 23 |真空清洁器，自动机器人真空清洁器|
- | 24 |洗衣机烘干机|
- | 25 |盘温|
- | 27 |滚刀感应|
- | 28 |燃气|
- | 31 |蒸汽烤箱组合|
- | 32 |酒柜|
- | 33 |酒柜|
- | 34 |葡萄酒储存调节装置|
- | 39 |双烤箱|
- | 40 |双蒸炉|
- | 41 |双蒸烤箱组合|
- | 42 |双微波|
- | 43 |双微波炉|
- | 45 |蒸汽烤箱微波组合|
- | 48 |真空抽屉|
- | 67 | DIALOGOVEN |
- | 68 |葡萄酒柜冷冻组合|
+ | 1 |洗衣机|
+ | 2 |滚筒干燥机|
+ | 7 |洗碗机|
+ | 8 |洗碗机半专业|
+ | 12 |烤箱|
+ | 13 |微波炉|
+ | 14 |重点介绍|
+ | 15 |蒸汽烤箱|
+ | 16 |微波|
+ | 17 |咖啡系统|
+ | 18 |帽子|
+ | 19 |电冰箱|
+ | 20 |冷冻机|
+ | 21 |冰箱/冰柜组合|
+ | 23 |真空清洁器，自动机器人真空清洁器|
+ | 24 |洗衣机烘干机|
+ | 25 |盘温|
+ | 27 |滚刀感应|
+ | 28 |燃气|
+ | 31 |蒸汽烤箱组合|
+ | 32 |酒柜|
+ | 33 |酒柜|
+ | 34 |葡萄酒储存调节装置|
+ | 39 |双烤箱|
+ | 40 |双蒸炉|
+ | 41 |双蒸汽烤箱组合|
+ | 42 |双微波|
+ | 43 |双微波炉|
+ | 45 |蒸汽烤箱微波组合|
+ | 48 |真空抽屉|
+ | 67 | DIALOGOVEN |
+ | 68 |葡萄酒柜冷冻组合|
 
 ###状态/状态
- |原始值状态|
+ |原始值状态|
  |----------|-------|
 | 1 |关闭|
- | 2 | STAND_BY |
- | 3 |已编程|
- | 4 | PROGRAMMED_WAITING_TO_START |
- | 5 |正在运行|
- | 6 |暂停|
- | 7 | END_PROGRAMMED |
- | 8 |失败|
- | 9 | PROGRAMME_INTERRUPTED |
- | 10 |空闲|
- | 11 | RINSE_HOLD |
- | 12 |服务|
- | 13 |超级冷冻|
- | 14 |超冷|
- | 15 |超热|
- | 144 |默认|
- | 145 |锁定|
- | 146 | SUPERCOOLING_SUPERFREEZING |
+ | 2 | STAND_BY |
+ | 3 |已编程|
+ | 4 | PROGRAMMED_WAITING_TO_START |
+ | 5 |正在运行|
+ | 6 |暂停|
+ | 7 | END_PROGRAMMED |
+ | 8 |失败|
+ | 9 | PROGRAMME_INTERRUPTED |
+ | 10 |空闲|
+ | 11 | RINSE_HOLD |
+ | 12 |服务|
+ | 13 |超级冷冻|
+ | 14 |超冷|
+ | 15 |超热|
+ | 144 |默认|
+ | 145 |锁定|
+ | 146 | SUPERCOOLING_SUPERFREEZING |
 
 ### ProgramType / Programmart
 |原始值状态|
@@ -124,15 +124,15 @@ hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 | 3 |清洁/保养程序|
 
 ### DryingStep / Trockenstufe
- |原始值状态|
+ |原始值状态|
  |----------|-------|
- | 0 |超干|
- | 1 |普通加|
- | 2 |正常|
- | 3 |稍干|
- | 4 |手工铁水准1 |
- | 5 |手铁2级|
- | 6 |机铁|
+ | 0 |超干|
+ | 1 |普通加|
+ | 2 |正常|
+ | 3 |稍干|
+ | 4 |手工铁水准1 |
+ | 5 |手铁2级|
+ | 6 |机铁|
 
 ### ProgramBezeichnung
 |原始值状态|适用于|
@@ -160,6 +160,13 @@ hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 版权所有（c）2019、2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 1.2.4 (2020-06-09)
+* (grizzelbee) Fix: fixed No-Data Bug (introduced in V1.2.3)
+
+### 1.2.3 (2020-06-07)
+* (grizzelbee) Upd: fixed snyk badge
+* (grizzelbee) Upd: Improved error handling 
+
 ### 1.2.2 (2020-05-23)
 * (grizzelbee) Upd: removed node 8 from testing on travis.com 
 * (grizzelbee) Fix: signalActionRequired should work better now 

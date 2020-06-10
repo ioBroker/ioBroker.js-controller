@@ -326,10 +326,12 @@ ioBroker的官方适配器数量已经相当可观。 当然，网上还有更�
 
 ## Changelog
 
+### 1.7.5 (2020-06-08)
+* (ldittmar) Check UUID for messages
+* (ldittmar) New field for test messages
+
 ### 1.7.4 (2020-06-01)
 * (Apollon77) Update systeminformation and other deps
-
-### 1.7.3 (2020-xx-xx)
 * (ldittmar) Added full S.M.A.R.T data. To be able to detect S.M.A.R.T. status on Linux you need to install smartmontools >= 7.0
 
 ### 1.7.2 (2020-05-07)

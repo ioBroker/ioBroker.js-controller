@@ -35,6 +35,9 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 1.3.7
+- Fixed problem with navigation on touchscreens
+
 ### 1.3.6
 - Added set state option for navigation
 - Fixed problem with datapoints without config

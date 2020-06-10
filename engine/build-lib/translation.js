@@ -64,20 +64,33 @@ async function translateYandex(text, targetLang, yandex) {
     }
 }
 
+const countGoogle = {
+    start: null,
+    count: 0,
+};
+
 function translateGoogleSync(text, targetLang, sourceLang, cb) {
     if (process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON) {
         fs.writeFileSync(process.env.GOOGLE_APPLICATION_CREDENTIALS, process.env.GOOGLE_APPLICATION_CREDENTIALS_JSON);
     }
 
     if (fs.existsSync(process.env.GOOGLE_APPLICATION_CREDENTIALS)) {
+        // we may not send more than 100.000 chars per minute, so we must calculate it: https://cloud.google.com/translate/quotas
+        if (countGoogle.start && countGoogle.count + text.length >= 99999) {
+            // Wait max one minute and reset stats
+            setTimeout(() => {
+                countGoogle.start = Date.now();
+                countGoogle.count = 0;
+                translateGoogleSync(text, targetLang, sourceLang, cb);
+            }, Math.min(0, countGoogle.start + 60000 - Date.now()))
+        }
+        countGoogle.start = countGoogle.start || Date.now();
+        countGoogle.count += text.length;
+
         translate
             .translate(text, {to: targetLang, from: sourceLang})
-            .then(results => {
-                cb(null, results[0]);
-            })
-            .catch(err => {
-                cb(err);
-            });
+            .then(results => cb(null, results[0]))
+            .catch(err => cb(err));
     } else {
         return cb(null, 'TR: ' + text);
         if (lastRequest && Date.now() - lastRequest < TRANSLATE_DELAY) {
@@ -87,7 +100,9 @@ function translateGoogleSync(text, targetLang, sourceLang, cb) {
         lastRequest = Date.now();
 
         const url = `http://translate.googleapis.com/translate_a/single?client=gtx&sl=${sourceLang || 'en'}&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}&ie=UTF-8&oe=UTF-8`;
+
         console.log(`Translate ${sourceLang} => ${targetLang} : ${text}`);
+
         request(url, (err, state, body) => {
             if (err || !state || state.statusCode !== 200) {
                 if (state.statusCode === 429) {
@@ -592,9 +607,8 @@ function translateMD(fromLang, text, toLang, translatedText, saveNoSource, fileN
 
         console.log(`____________TRANSLATE ${fromLang} => ${toLang}_______________: ${fileName}`);
 
-        partsTranslate(fromLang, partsSource, toLang, partsTarget, parts => {
-            resolve({result: partsSave(parts, saveNoSource), source: partsSave(partsSource)});
-        });
+        partsTranslate(fromLang, partsSource, toLang, partsTarget, parts =>
+            resolve({result: partsSave(parts, saveNoSource), source: partsSave(partsSource)}));
     });
 }
 

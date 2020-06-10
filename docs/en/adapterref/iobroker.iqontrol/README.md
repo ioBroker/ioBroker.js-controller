@@ -289,12 +289,26 @@ In addition to normal thermostat you can define:
     * Example: ``./../iqontrol.meta/userimages/demo/bottle.jpg|./../iqontrol.meta/userimages/demo/{javascript.0.myimage|whitestone}.jpg`` 
 	* This loads ``./../iqontrol.meta/userimages/demo/bottle.jpg`` when you open the view
 	* As soon as the state of ``javascript.0.myimage`` is fetched from the server, the image will be replaced with ``./../iqontrol.meta/userimages/demo/XXX.jpg`` where ``XXX`` is the value of ``javascript.0.myimage``
-	* If ``javascript.0.myimage`` has no value the fallback ``whitestone`` will be used
+	* If ``javascript.0.myimage`` has no value the fallback ``whitestone`` will be used (using the fallback is optional)
+
+
+## Device-Names
+* Just like variables in image-urls you can use variables in device-names. The syntax is the same:
+    * ``Text while loading|Text after loading {iobrokerstate|fallback}``
+    * Example: ``Weather is loading|Weather: {javascript.0.weather|No weather data found}`` 
+	* This shows ``Weather is loading`` when you open the view
+	* As soon as the state of ``javascript.0.weather`` is fetched from the server, the text will be replaced by ``Weather: XXX`` where ``XXX`` is the value of ``javascript.0.weather``
+	* If ``javascript.0.weather`` has no value the fallback ``No weather data found`` will be used (using the fallback is optional)
 
 
 ****
 
 ## Changelog
+
+### 1.0.1 development
+* (Sebastian Bormann) Fixed month for timestamps.
+* (Sebastian Bormann) You can now chose if values are linked states or constants.
+* (Sebastian Bormann) Added the ability to use variables in device-names.
 
 ### 1.0.0 (2020-06-01)
 * (Sebastian Bormann) Added a few captions to admin.

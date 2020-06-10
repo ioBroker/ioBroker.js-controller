@@ -63,6 +63,10 @@ npm install https://github.com/foxthefox/ioBroker.lifx/tarball/master --producti
 - values outside of range cause crash of adapter
 
 ## Changelog:
+### 0.2.1 x
+- (Jarvis020) errorhandling improvements
+- (Jarvis020) fade time
+
 ### 0.2.0
 - lifx-lan-client library instead node-lifx
 - states for vendor, product, version, product features

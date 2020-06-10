@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
+hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
 ---
 ![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
 
@@ -12,7 +12,7 @@ hash: Fb2mAb3ijObgoIEjf+w8x0YypZ8ZlWPcdpz1XPBThwk=
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
 ![Lizenz](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Abhängigkeitsstatus](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg)
+![Bekannte Sicherheitslücken](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)
 ![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
 
@@ -28,16 +28,16 @@ Unabhängig davon, ob sie direkt über WLAN oder XGW3000 Gateway verbunden sind.
 * Miele Client_secret (von https://www.miele.com/developer/)
 
 ## Installation
-Führen Sie zum Installieren Folgendes aus:
+Gehen Sie zur Installation wie folgt vor:
 
 1. Installieren Sie über Admin mit dem
- * Stable Repo - um die aktuelle stabile Version zu erhalten
- * Neuestes Repo - um die neueste Testversion zu erhalten (möglicherweise nicht stabil)
- * via: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git - um die neueste Entwicklungsversion zu erhalten
+ * Stable Repo - um die aktuelle stabile Version zu erhalten
+ * letztes Repo - um die neueste Testversion zu erhalten (möglicherweise nicht stabil)
+ * via: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git - um die neueste Entwicklungsversion zu erhalten
 2. Erstellen Sie in der Miele Smartphone App ein App-Konto für Miele @ Home
 3. Erstellen Sie ein Entwicklerkonto unter https://www.miele.com/f/com/en/register_api.aspx
 4. Fügen Sie Ihre Miele-Geräte zur App hinzu (falls nicht automatisch hinzugefügt)
-6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort der App ein.
+6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort von der App ein.
 
 ## Nächste Schritte
 * Neu: (längeres) Abfrageintervall, wenn kein Gerät aktiv ist
@@ -58,62 +58,62 @@ Die Textwerte können sich in Zukunft ändern und hängen auch von der Sprache a
 Hier ist eine Liste, wofür diese Rohwerte stehen:
 
 ### Gerätetypen
- | Rohwert | Staat |
+ | Rohwert | Staat |
  |----------|-------|
- | 1 | WASCHMASCHINE |
- | 2 | TUMBLE DRYER |
- | 7 | SPÜLMASCHINE |
- | 8 | SPÜLMASCHINE SEMI-PROF |
- | 12 | OFEN |
- | 13 | OFEN MIKROWELLE |
- | 14 | HOB HIGHLIGHT |
- | 15 | DAMPFOFEN |
- | 16 | MIKROWELLE |
- | 17 | KAFFEESYSTEM |
- | 18 | HAUBE |
- | 19 | KÜHLSCHRANK |
- | 20 | Gefrierschrank |
- | 21 | KÜHLSCHRANK- / GEFRIERKOMBINATION |
- | 23 | VAKUUMREINIGER, AUTOMATISCHER ROBOTER VAKUUMREINIGER |
- | 24 | SCHEIBETROCKNER |
- | 25 | DISH WARMER |
- | 27 | HOB INDUKTION |
- | 28 | HOB GAS |
- | 31 | DAMPFOFENKOMBINATION |
- | 32 | WEINKABINETTE |
- | 33 | WEINKONDITIONIERUNGSEINHEIT |
- | 34 | WEINLAGERUNGSKONDITIONIERUNGSEINHEIT |
- | 39 | DOPPELTER OFEN |
- | 40 | DOPPELDAMPFOFEN |
- | 41 | DOPPELDAMPFOFENKOMBINATION |
- | 42 | DOPPELTE MIKROWELLE |
- | 43 | DOPPELTER MIKROWELLENOFEN |
- | 45 | DAMPFOFEN MIKROWELLENKOMBINATION |
- | 48 | VAKUUMSCHUBLADE |
- | 67 | DIALOGOVEN |
- | 68 | WINE CABINET FREEZER COMBINATION |
+ | 1 | WASCHMASCHINE |
+ | 2 | TUMBLE DRYER |
+ | 7 | SPÜLMASCHINE |
+ | 8 | SPÜLMASCHINE SEMI-PROF |
+ | 12 | OFEN |
+ | 13 | OFEN MIKROWELLE |
+ | 14 | HOB HIGHLIGHT |
+ | 15 | DAMPFOFEN |
+ | 16 | MIKROWELLE |
+ | 17 | KAFFEESYSTEM |
+ | 18 | HAUBE |
+ | 19 | KÜHLSCHRANK |
+ | 20 | Gefrierschrank |
+ | 21 | KÜHLSCHRANK- / GEFRIERKOMBINATION |
+ | 23 | VAKUUMREINIGER, AUTOMATISCHER ROBOTER VAKUUMREINIGER |
+ | 24 | SCHEIBETROCKNER |
+ | 25 | DISH WARMER |
+ | 27 | HOB INDUKTION |
+ | 28 | HOB GAS |
+ | 31 | DAMPFOFENKOMBINATION |
+ | 32 | WEINKABINETTE |
+ | 33 | WEINKONDITIONIERUNGSEINHEIT |
+ | 34 | WEINLAGERUNGSKONDITIONIERUNGSEINHEIT |
+ | 39 | DOPPELTER OFEN |
+ | 40 | DOPPELDAMPFOFEN |
+ | 41 | DOPPELDAMPFOFENKOMBINATION |
+ | 42 | DOPPELTE MIKROWELLE |
+ | 43 | DOPPELTER MIKROWELLENOFEN |
+ | 45 | DAMPFOFEN MIKROWELLENKOMBINATION |
+ | 48 | VAKUUMSCHUBLADE |
+ | 67 | DIALOGOVEN |
+ | 68 | WINE CABINET FREEZER COMBINATION |
 
 ### Status / Status
- | Rohwert | Staat |
+ | Rohwert | Staat |
  |----------|-------|
 | 1 | AUS |
- | 2 | STAND_BY |
- | 3 | PROGRAMMIERT |
- | 4 | PROGRAMMED_WAITING_TO_START |
- | 5 | LAUFEN |
- | 6 | PAUSE |
- | 7 | END_PROGRAMMED |
- | 8 | FEHLER |
- | 9 | PROGRAMME_INTERRUPTED |
- | 10 | LEERLAUF |
- | 11 | RINSE_HOLD |
- | 12 | SERVICE |
- | 13 | SUPERFREEZING |
- | 14 | SUPERCOOLING |
- | 15 | ÜBERHITZUNG |
- | 144 | STANDARD |
- | 145 | GESPERRT |
- | 146 | SUPERCOOLING_SUPERFREEZING |
+ | 2 | STAND_BY |
+ | 3 | PROGRAMMIERT |
+ | 4 | PROGRAMMED_WAITING_TO_START |
+ | 5 | LAUFEN |
+ | 6 | PAUSE |
+ | 7 | END_PROGRAMMED |
+ | 8 | FEHLER |
+ | 9 | PROGRAMME_INTERRUPTED |
+ | 10 | LEERLAUF |
+ | 11 | RINSE_HOLD |
+ | 12 | SERVICE |
+ | 13 | SUPERFREEZING |
+ | 14 | SUPERCOOLING |
+ | 15 | ÜBERHITZUNG |
+ | 144 | STANDARD |
+ | 145 | GESPERRT |
+ | 146 | SUPERCOOLING_SUPERFREEZING |
 
 ### ProgramType / Programmart
 | Rohwert | Staat |
@@ -124,15 +124,15 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
 | 3 | Reinigungs- / Pflegeprogramm |
 
 ### TrocknenSchritt / Trockenstufe
- | Rohwert | Staat |
+ | Rohwert | Staat |
  |----------|-------|
- | 0 | Extra trocken |
- | 1 | Normal Plus |
- | 2 | Normal |
- | 3 | Leicht trocken |
- | 4 | Handeisen Stufe 1 |
- | 5 | Handeisen Stufe 2 |
- | 6 | Maschineneisen |
+ | 0 | Extra trocken |
+ | 1 | Normal Plus |
+ | 2 | Normal |
+ | 3 | Leicht trocken |
+ | 4 | Handeisen Stufe 1 |
+ | 5 | Handeisen Stufe 2 |
+ | 6 | Maschineneisen |
 
 ### ProgramBezeichnung
 | Rohwert | Staat | verfügbar für |
@@ -160,6 +160,13 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
 Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 1.2.4 (2020-06-09)
+* (grizzelbee) Fix: fixed No-Data Bug (introduced in V1.2.3)
+
+### 1.2.3 (2020-06-07)
+* (grizzelbee) Upd: fixed snyk badge
+* (grizzelbee) Upd: Improved error handling 
+
 ### 1.2.2 (2020-05-23)
 * (grizzelbee) Upd: removed node 8 from testing on travis.com 
 * (grizzelbee) Fix: signalActionRequired should work better now 

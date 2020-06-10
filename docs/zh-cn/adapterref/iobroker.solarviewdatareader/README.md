@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.solarviewdatareader/README.md
 title: ioBroker.solarviewdatareader
-hash: N2WdT+EmCQqXeNw1uSS9qyLsRAmJtIdcT7DfxuwaPkk=
+hash: 3Tz0iPIs6QrXDjZMM8pPt78Jo3H+StXkUoJrxLr70AU=
 ---
 ![商标](../../../en/adapterref/iobroker.solarviewdatareader/admin/solarviewdatareader.png)
 
@@ -27,21 +27,24 @@ hash: N2WdT+EmCQqXeNw1uSS9qyLsRAmJtIdcT7DfxuwaPkk=
 ### D0转换器
 如果将D0转换器连接到Solarview数据记录器，则可以启用此选项。
 
-###自用电表1至5
+###自我消费表总和和1至4
 如果您有S0表，则可以启用此选项。
+您最多可以有4个自用电表以及所有电表的总和。
 
 ###逆变器1至4
-您可以分别启用每个逆变器。
+您可以单独启用每个逆变器。
 
 ###间隔，间隔开始，间隔结束
 您可以在此处配置时间范围和间隔。
 
 ###设置系统变量CCU，系统变量
 这是Homematic CCU的一项特殊功能。您可以在CCU中定义系统变量。
-在此系统变量中，将存储实际的PAC值。
+在此系统变量中，将保存实际的PAC值。
 
 ## Changelog
 
+### 0.2.1
+* (Achim Fürhoff) self consumption meter optimized
 ### 0.2.0
 * (Achim Fürhoff) Error handling optimized, self consumption meter implemented
 ### 0.1.0

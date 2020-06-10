@@ -1,16 +1,15 @@
+# ioBroker.xs1
+
 ![Logo](admin/xs1.png)
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.xs1.svg)](https://www.npmjs.com/package/iobroker.xs1)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.xs1.svg)](https://www.npmjs.com/package/iobroker.xs1)
-**Tests:** Linux/Mac: [![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.xs1/master.svg)](https://travis-ci.org/frankjoke/ioBroker.xs1)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/frankjoke/ioBroker.xs1?branch=master&svg=true)](https://ci.appveyor.com/project/frankjoke/ioBroker-xs1/)
-
+**Tests:** Linux/Mac/Windows: [![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.xs1/master.svg)](https://travis-ci.org/frankjoke/ioBroker.xs1)
 
 [![NPM](https://nodei.co/npm/iobroker.xs1.png?downloads=true)](https://nodei.co/npm/iobroker.xs1/)
 
-# ioBroker.xs1
-=================
-## ioBroker adapter zu EZcontrol XS1 
+## ioBroker adapter zu EZcontrol XS1
+
   Der Adapter kommuniziert über die RestAPI des XS1 und hängt sich auch 
   an das XS1 als listener um alle Änderungen sofort an den ioBroker weiterzuleiten.
   Befehle vom ioBroker werden zuerst mit ack=false gesendet und wenn etwas vom Listener kommt
@@ -43,19 +42,29 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/frankjo
   Für die neu hinzugefügte Watchdog-Funktion sollte im XS1 ein virtueller Aktuator namens 'Watchdog' kreiert werden.
   Dieser wird jede Minute umgeschaltet und falls 4 Minuten lan dieser Umschaltvorgang nicht zurückgemeldet wird wird der Adapter neu gestartet.
 
-## Wichtig!
-* Der Adapter benötigt Node >=v4.3! 
+## Wichtig!-
+
+* Der Adapter benötigt Node >=v6.*! 
 * Einen blinden (aber nicht virtuellen) Aktuator mit dem Namen 'Watchdog' erstellen. 
 
 ## Changelog
+
+### 1.1.0
+
+* Added Admin3 capabities and support for new js-controller
+* Adapter runs only with node>=8.16
+
 ### 1.0.2
+
 * Added more sensors. All unknown types will use 'value' role. This can lead to problems if actual type is a boolean, but should work otherwise. As a result all sensors should be listed now.
 
 ### 1.0.0
+
 * Update accepted device list and test for node v 8
 * Tarvis updated to test right repository
 
 ### 0.5.2
+
 * Update variables list and values from XS1 but change values only if they are different than in state not to create false state updates
 
 ### 0.5.1

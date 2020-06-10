@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.cameras/README.md
 title: ioBroker.cameras
-hash: tgGZ+WAuDMhlzQNxy0DCEAHVpQEER41zfSJB6PgIHbk=
+hash: E0VHSuO8ev33u3VNHfmwai7LW9Wm59pNbVQ9FPlN4oo=
 ---
 ![Logo](../../../en/adapterref/iobroker.cameras/admin/cameras.png)
 
@@ -28,7 +28,7 @@ sendTo('cameras.0', 'image', {
     height: 50, // optional
     angle: 90   // optional
 }, result => {
-    const img = 'data:image/jpeg;base64,' + result;
+    const img = 'data:' + result.contentType + ';base64,' + result.data;
     console.log('Show image: ' + img);
 });
 ```
@@ -42,7 +42,7 @@ Unterstützte Kameras:
 Dies ist eine URL-Anforderung für ein Bild, bei der alle Parameter in der URL enthalten sind. Sie können jedoch die Anmeldeinformationen für die Basisauthentifizierung angeben. Wie `http://mycam/snapshot.jpg`
 
 ## Changelog
-### 0.1.1
+### 0.1.2 (2020-06-03)
 * (bluefox) implemented get image by message
 
 ### 0.1.0

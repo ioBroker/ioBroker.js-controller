@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.solarviewdatareader/README.md
 title: ioBroker.solarviewdatareader
-hash: N2WdT+EmCQqXeNw1uSS9qyLsRAmJtIdcT7DfxuwaPkk=
+hash: 3Tz0iPIs6QrXDjZMM8pPt78Jo3H+StXkUoJrxLr70AU=
 ---
 ![логотип](../../../en/adapterref/iobroker.solarviewdatareader/admin/solarviewdatareader.png)
 
@@ -16,7 +16,7 @@ hash: N2WdT+EmCQqXeNw1uSS9qyLsRAmJtIdcT7DfxuwaPkk=
 ![Трэвис-CI](http://img.shields.io/travis/afuerhoff/ioBroker.solarviewdatareader/master.svg)
 
 # IoBroker.solarviewdatareader
-## Переходник solarviewdatareader для ioBroker
+## Solarviewdatareader адаптер для ioBroker
 Адаптер считывает данные из регистратора данных Solarview.
 Здесь вы можете найти дополнительную информацию о Solarview: https://www.solarview.info/solarlogger.aspx
 
@@ -27,8 +27,9 @@ hash: N2WdT+EmCQqXeNw1uSS9qyLsRAmJtIdcT7DfxuwaPkk=
 ### D0 конвертер
 Если у вас есть преобразователь D0, подключенный к регистратору данных Solarview, вы можете включить эту опцию.
 
-### Счетчик собственного потребления от 1 до 5
+### Сумма счетчика собственного потребления и от 1 до 4
 Если у вас есть счетчик S0, вы можете включить эту опцию.
+Вы можете иметь до 4 счетчиков собственного потребления и сумму со всех счетчиков.
 
 ### Инвертор с 1 по 4
 Каждый инвертор вы можете включить отдельно.
@@ -37,11 +38,13 @@ hash: N2WdT+EmCQqXeNw1uSS9qyLsRAmJtIdcT7DfxuwaPkk=
 Здесь вы можете настроить диапазон времени и интервал.
 
 ### Установить системную переменную CCU, Системная переменная
-Это особенность гомеатической CCU. Вы можете определить системную переменную в CCU.
+Это особенность для гомеопатического CCU. Вы можете определить системную переменную в CCU.
 В этой системной переменной фактическое значение PAC сохраняется.
 
 ## Changelog
 
+### 0.2.1
+* (Achim Fürhoff) self consumption meter optimized
 ### 0.2.0
 * (Achim Fürhoff) Error handling optimized, self consumption meter implemented
 ### 0.1.0

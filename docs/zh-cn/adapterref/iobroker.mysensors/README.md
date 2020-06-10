@@ -3,26 +3,26 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mysensors/README.md
 title: ioBroker.mysensors
-hash: pqyUZ7lepiWRdgoAZsaiXY3HfA02mg4o2YbQuc5rBQw=
+hash: 8OVhqLSSuVs2O4XGqUqprbqL+6EyGFNFohcyr+vvoPo=
 ---
 ![商标](../../../en/adapterref/iobroker.mysensors/admin/mysensors.png)
 
 ![安装数量](http://iobroker.live/badges/mysensors-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.mysensors.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.mysensors.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.mysensors.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.mysensors.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.mysensors.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.mysensors.png?downloads=true)
 
 ＃ioBroker.mysensors
-此适配器与[mysensors](http://www.mysensors.org)串行或以太网网关（TCP或UDP）通信。
-在这种情况下选择的以太网网关ioBroker是服务器，它需要连接。
+该适配器与[mysensors](http://www.mysensors.org)串行或以太网网关（TCP或UDP）通信。
+在这种情况下，ioBroker选择的以太网网关是服务器，需要连接。
 
 ## TCP客户端
-此选项仅与TCP＆lt; =＆gt;串行桥一起使用，如[ESP-链接](https://github.com/jeelabs/esp-link)。
+该选项仅与TCP串行桥（如[esp链接](https://github.com/jeelabs/esp-link)）一起使用。
 
-##预先要求
+##前提条件
 要在Windows上使用串行端口，需要VS来构建二进制文件。
-要在linux上使用串口，它是构建必需的python2.7。要安装它们，只需写：
+要在Linux上使用串行端口，必须构建必需的python2.7。要安装它们，只需编写：
 
 ```
 sudo apt-get update
@@ -31,6 +31,9 @@ sudo apt-get install python2.7
 ```
 
 ## Changelog
+### 2.0.1 (2020-06-01)
+* (jangatzke) compare integer values
+
 ### 2.0.0 (2019-05-15)
 * (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
 
@@ -115,3 +118,25 @@ sudo apt-get install python2.7
 
 ### 0.1.5 (2016-03-02)
 * (bluefox) change tree
+
+The MIT License (MIT)
+
+Copyright (c) 2016-2020, Bluefox<dogafox@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

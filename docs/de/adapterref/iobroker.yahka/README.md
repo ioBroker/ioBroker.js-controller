@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.yahka/README.md
 title: iobroker.yahka
-hash: WQ/YjLhugOj3gHo0ZPfKVI0A3f1acCv5zoT5UHnmU4Y=
+hash: DthhW3uXba+vO00KkmIMU8krtcMB8fC6XxcPnUEcIM4=
 ---
 ![Logo](../../../en/adapterref/iobroker.yahka/admin/yahka.png)
 
@@ -25,11 +25,14 @@ Bevor Sie den Adapter installieren können, müssen Sie einige Pakete (für Linu
 Klicken Sie einfach auf die Schaltfläche "+" hinter "Homekit yahka adapter" im ioBroker Admin Panel auf der Seite "Adapter"
 
 ## Installiere die neueste **Beta**
-Wenn Sie auf dem neuesten Stand sein und die neueste Beta testen möchten, können Sie den Adapter über eine Github-URL installieren. <br> (Manchmal ist ein zusätzlicher Upload [zB iobroker upload yahka] und ein Neustart des Adapters erforderlich) <br>
+Wenn Sie am Rande sein und die neueste Beta testen möchten, können Sie den Adapter über eine Github-URL installieren. <br> (Manchmal ist ein zusätzlicher Upload [zB iobroker upload yahka] und ein Neustart des Adapters erforderlich) <br>
+
+## Backup wiederherstellen
+Achtung: Um ioBroker.yahka auf einem anderen System wiederherstellen zu können, muss zusätzlich zu den üblichen `iobroker backup` und `iobroker restore` auch der Ordner `yahka.X.hapdata` unter `/opt/iobroker/iobroker-data` gesichert werden und, falls erforderlich restauriert. [Wiki] (https://github.com/jensweigele/ioBroker.yahka/wiki/ioBroker.yahka-auf-ein-anderes-System-umziehen) / [Ausgabe](https://github.com/jensweigele/ioBroker.yahka/issues/176)
 
 ## Fehlerbehebung
 ### Nicht alle neuen Funktionen sind verfügbar:
-Wenn nach einem Yahoo-Update nicht alle neuen Funktionen verfügbar sind, versuchen Sie einen Upload (z. B. iobrober yahka-Upload) und starten Sie den Adapter neu.
+Wenn nach einem Yahoo-Update nicht alle neuen Funktionen verfügbar sind, versuchen Sie einen Upload (z. B. Iobrober-Yahoo-Upload) und starten Sie den Adapter neu.
 
 ### Fehlender Avahi-Daemon (Linux)
 Wenn Sie den folgenden Fehler im Protokoll haben: <br>
@@ -90,7 +93,7 @@ Beispiel: <br> Ein Garagentoröffner ist ein Gerät, das zwei Dienste haben kann
 1. Garagentoröffner
 2. Licht
 
-Der Garagentoröffner-Service selbst kann verschiedene Merkmale aufweisen, z. B. CurrentDoorState, TargetDoorState und viele mehr. <br> Auch der Lichtdienst kann verschiedene Eigenschaften haben, wie: Ein (und viele andere zum Ändern der Lichtfarbe usw.)
+Der Garagentoröffner-Service selbst kann verschiedene Merkmale aufweisen, wie z. B. CurrentDoorState, TargetDoorState und viele mehr. <br> Auch der Lichtdienst kann verschiedene Eigenschaften haben, wie: Ein (und viele andere zum Ändern der Lichtfarbe usw.)
 
 ## Was Yahka macht
 Mit Yahka ist es möglich, einen ioBroker-Datenpunkt einem HomeKit-Merkmal zuzuordnen. <br> Da manchmal Zuordnungen erforderlich sind (z. B. unterscheiden sich die &quot;Status&quot; -Werte eines Garagentors zwischen HomeKit und anderen Systemen), besteht auch die Möglichkeit, Funktionen zum Konvertieren der Werte anzugeben. Dies wird unten beschrieben. <br> Um zu viel Verwaltungsarbeit zu vermeiden, befinden sich alle Geräte, die Sie in Yahka erstellen, hinter einer sogenannten &quot;Brücke&quot;. Bei dieser Bridge müssen Sie die Bridge nur mit Ihrem iOS-Gerät koppeln, um Zugriff auf alle Geräte zu erhalten. Andernfalls müssten Sie jedes Yahka-Gerät mit Homekit koppeln.
@@ -116,7 +119,7 @@ Für jedes Merkmal können Sie die folgenden Eigenschaften angeben:
 | const | Wert | Die const-Funktion übergibt immer den in "InOutParameter" angegebenen Wert an die Konvertierungsfunktion, wenn HomeKit den Wert liest. Wenn HomeKit den Wert schreiben möchte, wird diese Aktion abgelehnt
 
 | ioBroker.State | Name eines ioBroker-Datenpunkts | Mit dieser Funktion verwendet der Adapter den angegebenen ioBroker-Datenpunkt für Lese- und Schreibvorgänge. Alle Operationen werden sofort ohne Pufferung oder Filterung ausgeführt (Werte werden an die angegebenen Konvertierungsfunktionen übergeben) |
-| ioBroker.State.Defered | Name eines ioBroker-Datenpunkts | Mit dieser Funktion verwendet der Adapter den angegebenen ioBroker-Datenpunkt für Lese- und Schreibvorgänge. Schreibvorgänge von HomeKit werden direkt an die Konvertierungsfunktion übergeben. Änderungen von ioBroker werden für 150 ms entprellt. Dies bedeutet, dass der Wert nur an HomeKit übertragen wird, wenn innerhalb von 150 ms keine weitere Änderung vorgenommen wurde |
+| ioBroker.State.Defered | Name eines ioBroker-Datenpunkts | Mit dieser Funktion verwendet der Adapter den angegebenen ioBroker-Datenpunkt für Lese- und Schreibvorgänge. Schreibvorgänge von HomeKit werden direkt an die Konvertierungsfunktion übergeben. Änderungen von ioBroker werden für 150 ms entprellt. Dies bedeutet, dass der Wert nur an HomeKit übertragen wird, wenn innerhalb von 150 ms keine weitere Änderung erfolgt ist |
 | ioBroker.State.OnlyACK | Name eines ioBroker-Datenpunkts | Mit dieser Funktion verwendet der Adapter den angegebenen ioBroker-Datenpunkt für Lese- und Schreibvorgänge. Schreibvorgänge von HomeKit werden direkt an die Konvertierungsfunktion übergeben. Änderungen von ioBroker werden nur an HomeKit weitergeleitet, wenn die "Acknowledged" -Flag des Werts gesetzt ist. Andernfalls wird der zuletzt bestätigte Wert an HomeKit | übertragen |
 | ioBroker.homematic. <br> WindowCovering.TargetPosition | ID des HomeMatic Level-Datenpunkts <br> oder <br> String-Array mit der ID des Level-Datenpunkts und der ID des Arbeitsdatenpunkts | Diese Funktion dient insbesondere zur Steuerung der HomeMatic-Fensterabdeckung. Diese Funktion verzögert die Übertragung von Werten an HomeKit, während sich die Fensterabdeckung bewegt. Dies ist erforderlich, um ein Flackern des Schiebereglers für die Fensterabdeckung in iOS | zu vermeiden |
 
@@ -134,7 +137,7 @@ Für jedes Merkmal können Sie die folgenden Eigenschaften angeben:
 | hue | \ <none \> | Diese Funktion ist eine spezielle Version von scaleInt mit den Parametern `` `iobroker.max = 65535``` und` `` homekit.max = 360```. |
 
 ## Homematischer Blindantrieb \ Fensterabdeckung
-Zur Integration der homematischen Blindaktoren (wie HM-LC-Bl1PBU-FM) sind folgende Einstellungen erforderlich:
+Zur Integration der homematischen Blindaktuatoren (wie HM-LC-Bl1PBU-FM) sind folgende Einstellungen erforderlich:
 
 * Fügen Sie einem Gerät einen Dienst hinzu
 * Setzen Sie den Dienstnamen auf einen Namen und den Diensttyp auf "WindowCovering". Der Service-Subtyp kann leer bleiben

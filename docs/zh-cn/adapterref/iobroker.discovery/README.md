@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.discovery/README.md
 title: ioBroker发现适配器
-hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
+hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
 ---
 ![商标](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -16,10 +16,10 @@ hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
 ＃ioBroker发现适配器
 **使用所有已知方法检测设备。**
 
-这是特殊的适配器，它试图查找主机可以访问的所有可能的设备。
-到目前为止，它可以通过ping，UPnP（串行计划）进行检测。
+这是特殊的适配器，它尝试查找主机可以访问的所有可能的设备。
+到目前为止，它可以通过ping UPnP（串行计划）进行检测。
 
-**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参阅[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##实际支持
 ###自动发现
@@ -68,6 +68,7 @@ hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
 -MiLight桥（v6）
 -MPD
 -音乐广播
+-myDlink
 -Mysensors USB /串行（9600、38400、57600、115200）
 -Nuki2
 -坚果
@@ -125,10 +126,18 @@ hash: E2+Bxeu8RvMiv24uKWlh9Q2ClKltcHa6jfkY/2DevXA=
 -xs1（frankjoke）
 
 ## Changelog
+### 2.3.6 (2020-05-02)
+* (Garfonso) add mydlink adapter
+* (haba1234) New adapter added: Onvif
+* (Apollon77) serial device discovery fixed
+
+### 2.3.4 (2020-04-30)
+* (Apollon77) make sure to check if initialization was done when ending (Sentry IOBROKER-DISCOVERY-8) 
+* (APollon77) fix megad discovery error
 
 ### 2.3.3 (2020-04-23)
-* correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
-* catch http errors better (Sentry IOBROKER-DISCOVERY-2)
+* (Apollon77) correct access to wrong variable (Sentry IOBROKER-DISCOVERY-3)
+* (Apollon77) catch http errors better (Sentry IOBROKER-DISCOVERY-2)
 
 ### 2.3.2 (2020-04-18)
 * (Apollon77) Fix potential crash in knx discovery

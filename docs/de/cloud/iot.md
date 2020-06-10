@@ -11,8 +11,8 @@ dass sie oft im täglichen Leben nicht mehr wegzudenken sind und niemand den Kom
 
 Daher wurde mit viel Aufwand einen skalierbaren und zukunftssicheren Weg ausgedacht, und das ist der IoT-Service.
 
-Dem IoT-Service gehört daher die Zukunft und die
-Assistenten-Funktionen (Alexa, Google-Home und so) werden voraussichtlich ca. Ende 2019 nur noch über den IoT-Service nutzbar sein.
+Dem IoT-Service gehört daher die Zukunft und die Assistenten-Funktionen (Alexa, Google-Home und so) werden voraussichtlich ca. Ende 2020 bei ioBroker.pro nur noch über den IoT-Service nutzbar sein.
+ioBroker.net Cloud hat seit Januar 2020 keine Unterstützung mehr für Alexa und Co Dienste. 
 
 Um sicherzustellen, dass das Setup der IoT-Instanz und die Verbindung dahin funktioniert,
 ist das neue Assistenten-Lizenzpaket erst dann kaufbar, wenn eine Verbindung erfolgreich erstellt wurde,
@@ -35,7 +35,7 @@ Pro-Accounts mit existierender Assistenten- oder Fernzugriffs-Lizenz haben ebens
 
 2. Danach den ioBroker.IoT-Adapter (Cloud-IoT Verbindung) aus dem normalen Repository installieren - einfach nach "IoT" filtern.
 In der Konfiguration des Adapters bitte die Login-Daten von https://iobroker.pro eintragen (E-Mail kleingeschrieben und Passwort!! keinen App-Key oder so!)
-Der "Erhalten Sie neue Verbindungszertifikate" Button wird nur in Fehlerfällen benötigt.
+Die Buttons "Erhalten Sie neue Verbindungszertifikate" oder "Erstellen Sie IoT-Anmeldeinformationen neu" werden nur in Fehlerfällen benötigt.
 
 Falls der IoT-Adapter schon installiert ist bitte prüfen ob Updates vorhanden sind und auf die 0.2.2 aktualisieren.
 
@@ -54,13 +54,8 @@ Die Fehlermeldungen im Log wurden verbessert und sollten nun besser aussagen was
 
 Wenn bisher der Cloud-Adapter genutzt wurde und nur die Alexa-Steuerung nötig ist, dann den Cloud-Adapter am besten deaktivieren, da er jetzt dann nicht mehr benötigt wird!
 
-4. Nach der ersten Verbindung wird eine E-Mail an die beim Pro-Cloud-Account hinterlegte E-Mail versendet.
-Bitte prüft Euer E-Mail-Postfach.
-In dieser E-Mail ist ein initiales Passwort für die Anmeldung beim IoT-Service mit dem Amazon-Skill enthalten.
-
-Sollte die E-Mail nicht kommen, schaut mal in Eurem Spam-Ordner nach.
-Oder ihr habt ggf. schon einmal mit dem IoT-Adapter gespielt und seid schon registriert?
-Wenn das alles nicht zutrifft, bitte ein entsprechendes Posting im Thread "IoT Adapter erfolgreich Verbunden, Steuerung per Alexa klappt nicht" (siehe auch oben) machen. Wir kümmern uns dann drum.
+4. Nach der ersten Verbindung wird automatisch Alexa Account mit dem gleichen Passwort erstellt. Die iobroker.iot Instanz muss "grün" sein. 
+(Änderung: Es kommt kein E-Mail mit dem initialen Passwort mehr). Es kann passieren, dass die Passworte, die # Symbol beinhalten, noch nicht gehen. Das Problem wird untersucht, deswegen, bitte kein # im Passwort benutzen.
 
 5. Am besten alten Skill ("ioBroker SmartHome" bzw. "ioBroker.pro") in der Alexa App zusammen mit allen Geräten löschen. Ggf. werden die Geräte nicht automatisch gelöscht, dann muss das manuell erfolgen!
 

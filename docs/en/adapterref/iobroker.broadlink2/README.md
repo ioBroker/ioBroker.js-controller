@@ -101,6 +101,10 @@ The adapter understands also 'sendTo' commands.
 
 ### 2.0.3
 
+* Beta for v2.1, added RM4 protocol and also check now device names according mac address
+
+### 2.0.3
+
 * changed to new myAdapter to support js-controller 2.0 and 3.0
 
 ### 2.0.1

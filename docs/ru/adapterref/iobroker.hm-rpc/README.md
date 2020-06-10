@@ -135,6 +135,9 @@ CCU / Homematic поддерживает различные типы устро�
 ## FAQ
 
 ## Changelog
+### 1.14.6 (2020-06-05)
+* (foxriver76) added some hmip roles for channel 0
+
 ### 1.14.5 (2020-05-29)
 * (foxriver76) fixed edge case problem IOBROKER-HM-RPC-5E
 

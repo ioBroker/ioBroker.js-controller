@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.radar2/README.md
 title: Radar2-Netzwerk und reibungslose Verfügbarkeit
-hash: TK3OepY8x8TFIMLfQhAqG+RCIVnShj01teU7JE3K9TU=
+hash: Wtiw7LQt90a3utV1rt6j6hK2c7/Ns8UtkF5MOs/0iJo=
 ---
 # Radar2-Netzwerk und reibungslose Verfügbarkeit
 ![Logo](../../../en/adapterref/iobroker.radar2/admin/radar2.png)
@@ -13,7 +13,9 @@ hash: TK3OepY8x8TFIMLfQhAqG+RCIVnShj01teU7JE3K9TU=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.radar2.svg)
 ![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.radar2/master.svg)
 
-[Deutsches Handbuch - Deutsche Anleitung](README_de.md)
+[Deutsche Anleitung übersetzt von Google](https://translate.google.com/translate?sl=en&tl=de&u=https%3A%2F%2Fgithub.com%2Ffrankjoke%2FioBroker.radar2%2Fblob%2Fmaster%2FREADME.md)
+
+[Русские инструкции переведены с гуглом](https://translate.google.com/translate?sl=en&tl=ru&u=https%3A%2F%2Fgithub.com%2Ffrankjoke%2FioBroker.radar2%2Fblob%2Fmaster%2FREADME.md)
 
 ## IoBroker radar2 Sichtbarkeitstests für Netzwerk- und Bluetooth-Geräte, HP Drucker, UWZ-Warnungs- und EZB-Währungen
 Dieser Adapter versucht, die im Netzwerk oder über Bluetooth angegebenen Geräte zu finden. Es zeigt auch die aktuelle externe IP des Netzwerks an, kann den Tintenstatus von HP Druckern lesen und auch Wetterwarnungen von UWZ für mehrere europäische Länder. Es kann auch die täglichen Wechselkurse der EZB ablesen.
@@ -29,6 +31,7 @@ Es funktioniert durch:
 * UWZ-Wetterwarnungen für den Bereich, auf den ioBroker eingestellt ist
 * Verwendet Arp-Scan und Ping im Netzwerk als nur expernal-Programme, alles andere ist intern für nodejs.
 * Der Adapter funktioniert auch ohne Root-Rechte, aber vor der Installation sind einige Konfigurationsaktionen erforderlich
+* Jedes Element kann jetzt mit einer individuellen Zeit konfiguriert werden, bevor es verschwindet, oder es kann auch deaktiviert werden.
 
 Wenn Sie am Ende eines Namens einen `-` einfügen, wird das Gerät nicht im _notHere oder _isHere gezählt.
 
@@ -57,31 +60,17 @@ Daher können Sie die Verwendung in der Adapterkonfiguration separat konfigurier
 Wenn Sie mehrere BT-Geräte verwenden, können Sie die Gerätenummer in der Konfiguration angeben. Die Standardeinstellung ist '-1', wobei die erste verfügbare verwendet wird. Eine Liste aller verfügbaren Geräte kann unter Linux mit `lescan dev` eingesehen werden.
 In demselben Adapter können Sie nur ein Gerät verwenden. Wenn Sie mehrere Geräte scannen möchten, müssen Sie verschiedene Adapter oder Instanzen verwenden.
 
-## Unterschiede zum Radaradapter
-Radar2 setzt Geräte, die sofort sichtbar werden, wenn sie sichtbar werden, auf neue IPs, noch bevor der Scan erneut beginnt.
-Radar2 verwendet NodeJS-Bibliotheken, um Bluetooth-Geräte zu finden, kann jedoch jetzt auch im Benutzerbereich von iobroker ausgeführt werden und muss keinen Root-Zugriff erhalten (siehe unten stehende Installationsanforderungen).
-Sie können mehr als eine IP-Adresse (jetzt IPv4 UND IPv6) oder Hostadresse (keine URLs) in derselben Zeile konfigurieren, sodass Sie auf mehrere Arten an Geräte pingen können.
-`arp-scan` wird verwendet, um nach Mac-Adressen zu suchen. Es wird auf allen Netzwerkschnittstellen mit externem IPv4 ausgeführt (sofern in der Befehlszeile nicht anders angegeben), sodass Geräte, die auf Mac-Adressen in IPv6 basieren, nicht erkannt werden erkennt jetzt Geräte in drahtlosen und festen Netzwerken gleichzeitig!
-
-Die Verfügbarkeit von Geräten wird unterschiedlich gehandhabt. Jedes Gerät erhält einen `_lasthere`-Status, der bei jeder Anzeige mit dem aktuellen Datum und der aktuellen Uhrzeit aktualisiert wird. Am Ende jedes Scans überprüft der Adapter alle letzten Einträge, wenn sie älter als die aktuelle Zeit sind - die konfigurierten Abwesenheitsminuten. Devecies, die noch nie hier waren, haben auch keinen `_lasthere`-Status!
-
-Web-URLs können jetzt https-Server besser verwalten.
-Die Auflösung des Mac-Adressanbieters erfolgt jetzt intern und nicht mehr über das Internet. Nur beim Start des Adapters wird die Datei lib / vendor.json geladen. Wenn diese Datei älter als 31 Tage ist, wird eine neue Version aus dem Internet heruntergeladen - NUR beim Start des Adapters!
-
-Der Bluetooth-Teil wurde so aktualisiert, dass Sie das zu verwendende Bluetooth-Gerät definieren können (0,1, ... Standard: -1 = zuerst). Auf diese Weise können Sie mehrere BT-Sticks verwenden, um mehrere Adapter wie BLE und Radar2 auf demselben Gerät auszuführen (auf Bluetooth LE-Treiber für ein Gerät können nicht mehrere Programme gleichzeitig zugreifen).
-
-Wenn IP-Adressen oder Bluetooth-Geräte gefunden werden, die Sie nicht in Ihrer Geräteliste angegeben haben, werden sie in unbekannten IP- und BT-Listen angezeigt und für jedes Gerät wird ein Status generiert. Auf diese Weise können Sie Personen identifizieren, die sich in Ihrem Netzwerk anmelden, oder ned Geräte, die integriert werden können.
-Wenn Sie nicht möchten, dass sie als unbekannt aufgeführt werden, fügen Sie sie in die entsprechenden bekannten IP / BT-Listen in der Adapterkonfiguration ein.
-
-Neu ist auch, dass Intervalle für HP-Drucker-, EZB-, UWZ- und normale Scans separat definiert werden können.
-
 ## Installation
 Bevor Sie den Adapter in ioBroker installieren, müssen Sie unter Linux `arp-scan` und `libcap2-bin` sowie einige Treiber installieren, die Sie durch Ausführen der folgenden Befehle ausführen können.
 Auf Debian (Raspi-Stretch, Ubuntu, ...) sieht es so aus:
 
 ```
 sudo apt-get install -y coreutils libcap2-bin arp-scan bluetooth bluez libbluetooth-dev libudev-dev net-tools
-# and below need to be run whenever you update nodejs!
+```
+
+und unten müssen ausgeführt werden, wenn Sie oder das System nodejs oder eine der oben installierten Apps aktualisieren!
+
+```
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which arp-scan`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which node`)
 sudo setcap cap_net_admin,cap_net_raw,cap_net_bind_service=+eip $(eval readlink -f `which arp`)
@@ -117,11 +106,41 @@ Es ist eine Standardbefehlszeile `-lgq --retry=5 --timeout=400` definiert, die a
 Diese Methode zum Verschieben von Einstellungen funktioniert auch zwischen Systemen, funktioniert jedoch möglicherweise nicht, wenn ein anderer Adapter eine andere Struktur aufweist. Die Geräteliste ist für Radar und Radar2 gleich. Der einzige Unterschied besteht darin, dass in Radar2 mehrere IP-Adressen / Einträge durch ',' getrennt sein können.
 
 ## Wichtig / Wichtig
-* Adapter benötigt Knoten> = v6. *!
+* Adapter benötigt Knoten> = v10.1! und npm> = 6,4
 * Der Adapter ist möglicherweise nicht für die Verwendung von Bluetooth und Arp-Scan unter OSX verfügbar, sondern nur für Ping oder IP, die keine IP-Mac-Adressen erkennen können!
 * Adapter kann Probleme mit Bluetooth auch unter Windows haben, auch Arp-Scan ist nicht unter Windows verfügbar, verwendet nur Ping dann, die IP-Mac-Adressen nicht erkennen können!.
 
+## Unterschiede zum Radaradapter
+Radar2 setzt Geräte, die sofort sichtbar werden, wenn sie sichtbar werden, auf neue IPs, noch bevor der Scan erneut beginnt.
+Radar2 verwendet NodeJS-Bibliotheken, um Bluetooth-Geräte zu finden, kann jedoch jetzt auch im Benutzerbereich von iobroker ausgeführt werden und muss keinen Root-Zugriff erhalten (siehe unten stehende Installationsanforderungen).
+Sie können mehr als eine IP-Adresse (jetzt IPv4 UND IPv6) oder Hostadresse (keine URLs) in derselben Zeile konfigurieren, sodass Sie auf mehrere Arten an Geräte pingen können.
+`arp-scan` wird verwendet, um nach Mac-Adressen zu suchen. Es wird auf allen Netzwerkschnittstellen mit externem IPv4 ausgeführt (sofern in der Befehlszeile nicht anders angegeben), sodass Geräte, die auf Mac-Adressen in IPv6 basieren, nicht erkannt werden erkennt jetzt Geräte in drahtlosen und festen Netzwerken gleichzeitig!
+
+Die Verfügbarkeit von Geräten wird unterschiedlich gehandhabt. Jedes Gerät erhält einen `_lasthere`-Status, der bei jeder Anzeige mit dem aktuellen Datum und der aktuellen Uhrzeit aktualisiert wird. Am Ende jedes Scans überprüft der Adapter alle letzten Einträge, wenn sie älter als die aktuelle Zeit sind - die konfigurierten Abwesenheitsminuten. Devecies, die noch nie hier waren, haben auch keinen `_lasthere`-Status!
+
+Web-URLs können jetzt https-Server besser verwalten.
+Die Auflösung des Mac-Adressanbieters erfolgt jetzt intern und nicht mehr über das Internet. Nur beim Start des Adapters wird die Datei lib / vendor.json geladen. Wenn diese Datei älter als 31 Tage ist, wird eine neue Version aus dem Internet heruntergeladen - NUR beim Start des Adapters!
+
+Der Bluetooth-Teil wurde so aktualisiert, dass Sie das zu verwendende Bluetooth-Gerät definieren können (0,1, ... Standard: -1 = zuerst). Auf diese Weise können Sie mehrere BT-Sticks verwenden, um mehrere Adapter wie BLE und Radar2 auf demselben Gerät auszuführen (auf Bluetooth LE-Treiber für ein Gerät können nicht mehrere Programme gleichzeitig zugreifen).
+
+Wenn IP-Adressen oder Bluetooth-Geräte gefunden werden, die Sie nicht in Ihrer Geräteliste angegeben haben, werden sie in unbekannten IP- und BT-Listen angezeigt und für jedes Gerät wird ein Status generiert. Auf diese Weise können Sie Personen identifizieren, die sich in Ihrem Netzwerk anmelden, oder ned Geräte, die integriert werden können.
+Wenn Sie nicht möchten, dass sie als unbekannt aufgeführt werden, fügen Sie sie in die entsprechenden bekannten IP / BT-Listen in der Adapterkonfiguration ein.
+
+Neu ist auch, dass Intervalle für HP-Drucker-, EZB-, UWZ- und normale Scans separat definiert werden können.
+
 ## Changelog
+
+### V2.0.1
+
+* Removed node-blöuetooth because package is not updated to run on recent nodejs versions
+* Updated noble to more recent version
+* Completely rewritten logic for pinging BT with l2ping, or hcitool lescan
+* Updated scan methot to reduce process load and also increase hit rate
+* Completely re-written config page with new options
+* Added possibility to switch off storing of _unknown's
+* Added  `._nHere` for each item showing the number of scans device was found, reset to `0` when not found in a scan. This allows to implement delayed here logic.
+* Changes to adapter to run on latest js-controller versions (and on older ones as well)
+* Added `away time` in config for each item, with this you can set time until item is flagged for away individually for different items. Possible settings are -1 for default configured away time, 0 for item disabled or 1-30 for minutes until item is flagged as away.
 
 ### 1.2.5
 

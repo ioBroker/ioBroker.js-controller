@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tr-064/README.md
 title: 的ioBroker.tr-064
-hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
+hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 ---
 ![商标](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
@@ -52,12 +52,12 @@ hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 -电话簿（如果启用）将用于获取呼叫者电话号码的名称。
 -此外，有三种状态可解析数字或名称。如果可用，您还将获得联系人的图像URL。
 
-  例如：如果您设置状态电话簿。将所有3个状态都编号，则姓名，号码和图像将设置为找到的联系人。请注意，按名称搜索将首先比较完整名称，如果找不到，则使用其中的一部分。
+  例如：如果您设置状态电话簿。将所有3个状态都编号，则姓名，号码和图像将设置为找到的联系人。请注意，按名称搜索将首先比较完整名称，如果找不到，则使用其中的一部分。
 
 ###通话清单
 输出格式：
 
--json
+-JSON
 -HTML
 
 呼叫清单是：
@@ -67,7 +67,7 @@ hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 -来电
 -外拨电话
 
-通话次数：通话次数可以设置为0。下一个通话增加1。
+通话次数：通话次数可以设置为0。下一个通话将增加1。
 
 html输出可以通过模板配置
 
@@ -102,8 +102,17 @@ iobroker upload tr-064
 ```
 
 ## Changelog
+
+### 4.0.7 (2020-06-09)
+* (Apollon77) Fix Admin UI to allow setting poll Interval correctly again
+
+### 4.0.4 (2020-06-05)
+* (Apollon77) Make sure adapter do not crash of no calls were returned (Sentry IOBROKER-TR-064-D)
+* (Apollon77) Make sure adapter do not crash when invalid parameter are provided (Sentry IOBROKER-TR-064-B)
+* (Apollon77) https is not supported right now (Sentry IOBROKER-TR-064-E)
+
 ### 4.0.3 (2020-05-11)
-* (Apollon77) Make sure adapter no not crash of no calls were returned (Sentry IOBROKER-TR-064-7)
+* (Apollon77) Make sure adapter do not crash of no calls were returned (Sentry IOBROKER-TR-064-7)
 * (Apollon77) Make sure adapter do not crash when providing a non string to "ring" state (Sentry IOBROKER-TR-064-8) 
 
 ### 4.0.1 (2020-04-23)
