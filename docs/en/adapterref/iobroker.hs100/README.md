@@ -14,10 +14,13 @@ TP-Link adapter for ioBroker
 ------------------------------------------------------------------------------
 
 Switch TP-Link Plug and Bulb
- 
+
 <b>NodeJs >> 8.x.x </b>
 
 ## Changelog
+
+### 2.0.0 (2020-06-05)
+* (arteck) refactoring
 
 ### 1.1.5 (2020-05-08)
 * (arteck) new error handling
@@ -25,14 +28,14 @@ Switch TP-Link Plug and Bulb
 ### 1.1.2 (2020-04-28)
 * (arteck) update create state
 * (arteck) update tplink-smarthome-*
- 
+
 ### 1.1.1 (2020-02-16)
 * (arteck) support compact mode
 
 ### 1.1.00 (2020-01-19)
 * (arteck) support ledstate
 * (arteck) voltage corr
-* 
+*
 ### 1.0.10 (2019-02-09)
 * (arteck) support for compact-mode added
 
@@ -60,46 +63,46 @@ Switch TP-Link Plug and Bulb
 ### 0.1.2 (2017-12-31)
 ### 0.1.1 (2017-12-30)
 * (arteck) add offline device
-    
+
 ### 0.1.0 (2017-12-23)
 ### 0.0.26 (2017-12-23)
 * (arteck) add last update
 
 ### 0.0.25 (2017-12-08)
-### 0.0.24 (2017-12-08) 
+### 0.0.24 (2017-12-08)
 * (arteck) energy log HS110 month values
 
-### 0.0.23 (2017-12-05) 
+### 0.0.23 (2017-12-05)
 * (arteck) energy log HS110
 
-### 0.0.22 (2017-12-05) 
+### 0.0.22 (2017-12-05)
 * (arteck) energy log HS110
 
-### 0.0.21 (2017-12-03) 
+### 0.0.21 (2017-12-03)
 * (arteck) new used api from <a href = https://github.com/plasticrake/tplink-smarthome-api>plasticrake/tplink-smarthome-api</a>
 
 
-### 0.0.19 (2017-11-25) 
-* (arteck)  
+### 0.0.19 (2017-11-25)
+* (arteck)
 
-### 0.0.18 (2017-10-12) 
-* (arteck) HS110 status 
+### 0.0.18 (2017-10-12)
+* (arteck) HS110 status
 
-### 0.0.16 (2017-08-19) 
-* (arteck) HS110 
+### 0.0.16 (2017-08-19)
+* (arteck) HS110
 
-### 0.0.15 (2017-08-19) 
-* (arteck) HS110 
+### 0.0.15 (2017-08-19)
+* (arteck) HS110
 
-### 0.0.14 (2017-08-19) 
+### 0.0.14 (2017-08-19)
 * (arteck) HS110 corr getConsumption
 
-### 0.0.13 (2017-08-12) 
+### 0.0.13 (2017-08-12)
 * (arteck) HS110 getConsumption()
 
 ### 0.0.11 (2017-08-09)
 * (arteck) corr first start
- 
+
 ### 0.0.5 (2017-08-08)
 * (arteck) first free test version
 

@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
+hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 ---
 ![logo](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
@@ -16,15 +16,15 @@ hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 
 [source](https://www.eq-3.de/produkte/homematic.html)
 
-## Adapter Homematic ReGaHss
+## Homematic ReGaHss adapter
 This adapter establishes a connection to the Homematic logic layer "ReGaHSS" (** Re **sidential** Gateway).
 It synchronizes real names, system variables, rooms, trades and programs between Homematic and ioBroker.
 
-If several control centers are to be integrated in ioBroker, a separate instance must be installed and configured for each control center.
+If several control panels are to be integrated in ioBroker, a separate instance must be installed and configured for each control panel.
 
-With the installation of ReGaHSS an instance of the adapter "hm-rpc" is installed, which should be configured and activated in advance.
+With the installation of ReGaHSS an instance of the adapter "hm-rpc" is also installed, which should be configured and activated in advance.
 
-One instance of this adapter can manage up to 5 different instances of the Homematic RPC adapter, which provide different services (each service requires its own RPC instance):
+An instance of this adapter can manage up to 5 different instances of the Homematic RPC adapter, which provide different services (each service needs its own RPC instance):
 
 - rfd (CCU radio service for standard components)
 - hs485d (Wired) (for wire bus components)

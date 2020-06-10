@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hs100/README.md
 title: ioBroker.hs100
-hash: Ns5KSwub++dOnf8pPvsBl6b5U+Ci5dOcy6deoIQ/LhY=
+hash: 1nLPIbmkf4MX5sEbNcsDekF8XUn34s7Y//ptr9EVPTc=
 ---
 ![Logo](../../../en/adapterref/iobroker.hs100/admin/hs100.png)
 
@@ -16,18 +16,31 @@ hash: Ns5KSwub++dOnf8pPvsBl6b5U+Ci5dOcy6deoIQ/LhY=
 # IoBroker.hs100
 =================
 
-TP-Link-Adapter für ioBroker ---------------------------------------- ----------------------------------
+TP-Link Adapter für ioBroker ---------------------------------------- ---------------------------------- ------------------
 
-TP-Link Stecker und Birne wechseln
+TP-Link Stecker und Glühlampe schalten
 
-<b>NodeJs &gt;&gt; 8.xx</b>
+<b>Knoten &gt;&gt; 8.xx.</b>
 
 ## Changelog
+
+### 2.0.0 (2020-06-05)
+* (arteck) refactoring
+
+### 1.1.5 (2020-05-08)
+* (arteck) new error handling
+
+### 1.1.2 (2020-04-28)
+* (arteck) update create state
+* (arteck) update tplink-smarthome-*
+
+### 1.1.1 (2020-02-16)
+* (arteck) support compact mode
 
 ### 1.1.00 (2020-01-19)
 * (arteck) support ledstate
 * (arteck) voltage corr
-* 
+*
 ### 1.0.10 (2019-02-09)
 * (arteck) support for compact-mode added
 
@@ -55,45 +68,68 @@ TP-Link Stecker und Birne wechseln
 ### 0.1.2 (2017-12-31)
 ### 0.1.1 (2017-12-30)
 * (arteck) add offline device
-    
+
 ### 0.1.0 (2017-12-23)
 ### 0.0.26 (2017-12-23)
 * (arteck) add last update
 
 ### 0.0.25 (2017-12-08)
-### 0.0.24 (2017-12-08) 
+### 0.0.24 (2017-12-08)
 * (arteck) energy log HS110 month values
 
-### 0.0.23 (2017-12-05) 
+### 0.0.23 (2017-12-05)
 * (arteck) energy log HS110
 
-### 0.0.22 (2017-12-05) 
+### 0.0.22 (2017-12-05)
 * (arteck) energy log HS110
 
-### 0.0.21 (2017-12-03) 
+### 0.0.21 (2017-12-03)
 * (arteck) new used api from <a href = https://github.com/plasticrake/tplink-smarthome-api>plasticrake/tplink-smarthome-api</a>
 
 
-### 0.0.19 (2017-11-25) 
-* (arteck)  
+### 0.0.19 (2017-11-25)
+* (arteck)
 
-### 0.0.18 (2017-10-12) 
-* (arteck) HS110 status 
+### 0.0.18 (2017-10-12)
+* (arteck) HS110 status
 
-### 0.0.16 (2017-08-19) 
-* (arteck) HS110 
+### 0.0.16 (2017-08-19)
+* (arteck) HS110
 
-### 0.0.15 (2017-08-19) 
-* (arteck) HS110 
+### 0.0.15 (2017-08-19)
+* (arteck) HS110
 
-### 0.0.14 (2017-08-19) 
+### 0.0.14 (2017-08-19)
 * (arteck) HS110 corr getConsumption
 
-### 0.0.13 (2017-08-12) 
+### 0.0.13 (2017-08-12)
 * (arteck) HS110 getConsumption()
 
 ### 0.0.11 (2017-08-09)
 * (arteck) corr first start
- 
+
 ### 0.0.5 (2017-08-08)
 * (arteck) first free test version
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2014-2020 Arthur Rupp arteck@outlook.com
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
