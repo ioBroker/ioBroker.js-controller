@@ -64,9 +64,10 @@ jobs:
           cd ../..
 
       - name: After Success (Linux)
+        continue-on-error: true
         if: ${{ matrix.os == 'ubuntu-18.04' }}
         run: |
           sudo -H npm install -g npm@latest
           npm install --package-lock-only --production
-          npm audit --audit-level moderate
+          npm audit
           npm ls
