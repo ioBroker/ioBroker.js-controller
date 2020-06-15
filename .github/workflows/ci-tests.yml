@@ -1,0 +1,72 @@
+name: CI
+on:
+  push:
+  pull_request:
+  schedule:
+    - cron: '0 0 * * 0' # weekly
+
+jobs:
+  ci:
+    name: ${{ matrix.os }} on node v${{ matrix.node }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [windows-latest, ubuntu-18.04, macos-latest]
+        node: [10, 12, 14]
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v1
+        with:
+          node-version: ${{ matrix.node-version }}
+
+      - name: Prepare installation (Linux)
+        if: ${{ matrix.os == 'ubuntu-18.04' }}
+        run: |
+          sudo add-apt-repository ppa:chris-lea/redis-server -y
+          sudo apt-get update -q
+          sudo apt-get install redis-server redis-sentinel -y
+          sudo systemctl start redis-server
+
+      - name: Prepare installation (MacOS)
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: |
+          brew update
+          brew install redis
+          ln -sfv /usr/local/opt/redis/*.plist ~/Library/LaunchAgents
+          launchctl load ~/Library/LaunchAgents/homebrew.mxcl.redis.plist
+
+      - name: Prepare installation (Windows)
+        if: ${{ matrix.os == 'windows-latest' }}
+        run: |
+          choco install redis-64
+          powershell "Start-Process redis-server.exe -PassThru"
+
+      - name: NPM version
+        run: npm -v
+
+      - name: Install js-controller
+        run: npm i
+
+      - name: Execute Tests
+        run: npm test
+
+      - name: Sentinel Tests (Linux)
+        if: ${{ matrix.os == 'ubuntu-18.04' }}
+        run: |
+          sudo chmod ogu+x test/redis-socket/setup-socket.sh
+          sudo chmod ogu+x test/redis-sentinel/*.sh
+          test/redis-socket/setup-socket.sh
+          cd test/redis-sentinel
+          ./test-sentinel.sh
+          cd ../..
+
+      - name: After Success (Linux)
+        if: ${{ matrix.os == 'ubuntu-18.04' }}
+        run: |
+          sudo -H npm install -g npm@latest
+          npm install --package-lock-only --production
+          npm audit --audit-level moderate
+          npm ls
