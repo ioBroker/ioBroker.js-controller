@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.1.6 (2020-05-10) Release Francesca
+* (foxriver76) fix output of `iobroker plugin status` command
+* (foxriver76) fix deletion of states on instance-deletion
+* (Apollon77) add additional checks to prevent Errors (Sentry)
+* (Apollon77) Make sure Sentry activation info is also shown on upgrade self command
+* (Apollon77) Upgrade winston-daily-rotate-file library to prevent a crash case
+
 ## 3.1.5 (2020-05-10) Release Francesca
 * (Apollon77) Return empty array on non existing directory for readDir
 * (foxriver76) fix "host this" command 
