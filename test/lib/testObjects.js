@@ -5,12 +5,12 @@
 'use strict';
 
 function register(it, expect, context) {
-    const textName = context.name + ' objects: ';
+    const testName = context.name + ' objects: ';
 
     const namespace = 'testObject.0';
     const testId = namespace + '.test2';
 
-    it(textName + 'should create and read object', done => {
+    it(testName + 'should create and read object', done => {
 
         const objects = context.objects;
         objects.setObject(testId, {
@@ -36,7 +36,7 @@ function register(it, expect, context) {
         });
     }).timeout(2000);
 
-    it(textName + 'should create object async', done => {
+    it(testName + 'should create object async', done => {
         const objects = context.objects;
         objects.setObjectAsync(testId + 'async', {
             common: {
@@ -54,7 +54,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should read object async', done => {
+    it(testName + 'should read object async', done => {
         const objects = context.objects;
         objects.getObjectAsync(testId + 'async').then(obj => {
             expect(obj).to.be.ok;
@@ -67,7 +67,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should find object', done => {
+    it(testName + 'should find object', done => {
         const objects = context.objects;
         objects.findObject(testId, (err, id, idOrName) => {
             expect(err).to.be.not.ok;
@@ -95,7 +95,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should find object async', done => {
+    it(testName + 'should find object async', done => {
         const objects = context.objects;
         objects.findObject(testId).then(id => {
             expect(id).to.be.equal(testId);
@@ -116,7 +116,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should read objects by pattern', done => {
+    it(testName + 'should read objects by pattern', done => {
         const objects = context.objects;
         objects.getObjectsByPattern(testId + '*', (err, objs) => {
             expect(err).to.be.not.ok;
@@ -138,7 +138,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should read objects by pattern async', done => {
+    it(testName + 'should read objects by pattern async', done => {
         const objects = context.objects;
         objects.getObjectsByPattern(testId + '*').then(objs => {
             expect(objs.length).to.be.equal(2);
@@ -159,7 +159,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should read keys', done => {
+    it(testName + 'should read keys', done => {
         const objects = context.objects;
         objects.getKeys(testId + '*', (err, keys) => {
             expect(err).to.be.not.ok;
@@ -180,7 +180,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should read keys async', done => {
+    it(testName + 'should read keys async', done => {
         const objects = context.objects;
         objects.getKeys(testId + '*').then(keys => {
             expect(keys.length).to.be.equal(2);
@@ -200,7 +200,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should read objects', done => {
+    it(testName + 'should read objects', done => {
         const objects = context.objects;
         objects.getKeys(testId + '*', (err, keys) => {
             expect(err).to.be.not.ok;
@@ -214,7 +214,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should read objects async', done => {
+    it(testName + 'should read objects async', done => {
         const objects = context.objects;
         let gKeys;
         objects.getKeys(testId + '*').then(keys => {
@@ -230,7 +230,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should extend object', done => {
+    it(testName + 'should extend object', done => {
         const objects = context.objects;
         objects.extendObject(testId, {common: {def: 'default'}}, (err, res, id) => {
             expect(err).to.be.not.ok;
@@ -256,7 +256,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should extend object async', done => {
+    it(testName + 'should extend object async', done => {
         const objects = context.objects;
         objects.extendObject(testId, {common: {def: 'default'}}).then(res => {
             expect(res.id).to.be.equal(testId);
@@ -271,7 +271,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should getObjectList', done => {
+    it(testName + 'should getObjectList', done => {
         const objects = context.objects;
         objects.getObjectList({startkey: namespace, endkey: testId}, (err, res) => {
             console.log(res.rows.map(e => e.id));
@@ -289,7 +289,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should getObjectList async', done => {
+    it(testName + 'should getObjectList async', done => {
         const objects = context.objects;
         objects.getObjectList({startkey: namespace, endkey: testId}).then(res => {
             expect(res.rows.length).to.be.equal(3);
@@ -307,7 +307,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should create and read file', done => {
+    it(testName + 'should create and read file', done => {
         const objects = context.objects;
         objects.setObject(testId, {type: 'meta'}, err => {
             expect(err).to.be.not.ok;
@@ -334,7 +334,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should read directory', done => {
+    it(testName + 'should read directory', done => {
         const objects = context.objects;
         objects.writeFile(testId, 'myFile/abc1.txt', 'dataInFile', err => {
             expect(err).to.be.not.ok;
@@ -352,7 +352,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should read file and prevent path traversing', done => {
+    it(testName + 'should read file and prevent path traversing', done => {
         const objects = context.objects;
         objects.readFile(testId, '../../myFile/abc1.txt', (err, data, mimeType) => {
             expect(err).to.be.not.ok;
@@ -385,7 +385,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should unlink file', done => {
+    it(testName + 'should unlink file', done => {
         const objects = context.objects;
         objects.unlink(testId, 'myFile/abc1.txt', err => {
             expect(err).to.be.not.ok;
@@ -396,7 +396,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should rename file', done => {
+    it(testName + 'should rename file', done => {
         const objects = context.objects;
         objects.writeFile(testId, 'myFile1/abcRename.txt', Buffer.from('abcd'), err => {
             expect(err).to.be.not.ok;
@@ -415,7 +415,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should touch file', done => {
+    it(testName + 'should touch file', done => {
         const objects = context.objects;
         objects.readDir(testId, 'myFile', (err, files) => {
             expect(err).to.be.not.ok;
@@ -434,7 +434,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should create directory', done => {
+    it(testName + 'should create directory', done => {
         const objects = context.objects;
         objects.mkdir(testId, 'myFile' + Math.round(Math.random() * 100000), err => {
             expect(err).to.be.not.ok;
@@ -445,7 +445,7 @@ function register(it, expect, context) {
     // todo chmod
     // tofo chown
 
-    it(textName + 'should enable file cache', done => {
+    it(testName + 'should enable file cache', done => {
         const objects = context.objects;
         objects.enableFileCache(true, err => {
             expect(err).to.be.not.ok;
@@ -453,7 +453,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should delete object', done => {
+    it(testName + 'should delete object', done => {
         const objects = context.objects;
         objects.delObject(testId, err => {
             expect(err).to.be.not.ok;
@@ -461,7 +461,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should delete object async', done => {
+    it(testName + 'should delete object async', done => {
         const objects = context.objects;
         objects.delObjectAsync(testId + 'async').then(() => {
             done();
@@ -470,7 +470,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should not delete non existing object', done => {
+    it(testName + 'should not delete non existing object', done => {
         const objects = context.objects;
         objects.delObject(testId + 'not', err => {
             expect(err.message).to.be.equal('Not exists');
@@ -478,7 +478,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should not delete non existing object async', done => {
+    it(testName + 'should not delete non existing object async', done => {
         const objects = context.objects;
         objects.delObjectAsync(testId + 'async1').then(() => {
             expect(1).to.be.equal('Should not happen');
@@ -488,7 +488,7 @@ function register(it, expect, context) {
         });
     });
 
-    it(textName + 'should close DB', done => {
+    it(testName + 'should close DB', done => {
         const objects = context.objects;
         // we running as a server, so nothing should happens
         objects.destroy();
