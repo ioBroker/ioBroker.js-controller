@@ -28,7 +28,7 @@
         "iobroker.objects-redis": "^4.0.4",
         "ioredis": "^4.17.3",
         "jsonwebtoken": "^8.5.1",
-        "jszip": "^3.4.0",
+        "jszip": "^3.5.0",
         "loadavg-windows": "^1.1.1",
         "mime": "^2.4.6",
         "ncp": "^2.0.0",
