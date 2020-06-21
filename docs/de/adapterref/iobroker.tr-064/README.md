@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tr-064/README.md
 title: ioBroker.tr-064
-hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
+hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 ---
 ![Logo](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
@@ -22,7 +22,7 @@ Basierend auf diesen [AVM-Dokumentationen](https://avm.de/service/schnittstellen
 - externe IP-Adresse
 
 ### Klingeln (Nummer wählen)
-- Wenn Sie eine Internel-Nummer (wie ** 610) verwenden, klingelt der interne Status des internen Telefons.
+- Wenn Sie eine Internel-Nummer (wie ** 610) verwenden, klingelt das interne Telefon im Klingelstatus.
 
 z. B.: ** 610 [, Zeitüberschreitung]
 
@@ -34,7 +34,7 @@ Das Standardtelefon kann in der FritsBox unter Telefonie / Gebühren / [Tab] Wah
 ### ToPauseState
 - Werte: klingeln, verbinden, beenden
 - Kann verwendet werden, um einen Videoplayer bei einem eingehenden Anruf (Klingeln) oder beim Abheben des Telefons (Verbinden) anzuhalten.
-- Die Wiederaufnahme kann am Endwert erfolgen.
+- Der Endwert kann fortgesetzt werden.
 
 ### Präsenz
 Sie können eine Liste der Geräte konfigurieren, die abgehört werden sollen.
@@ -94,7 +94,7 @@ Um den Anrufmonitor zu aktivieren, wählen Sie ```#96*5*``` und der TCP / IP-Por
 
 ### Vorabversionen
 Prerelease-Versionen sind um npm mit dem Tag dev verfügbar.
-Sie können sie aus dem ioBroker-Stammverzeichnis installieren mit:
+Sie können sie nicht aus dem ioBroker-Stammverzeichnis installieren mit:
 
 ```
 npm install iobroker.tr-064@dev
