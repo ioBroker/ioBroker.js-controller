@@ -13,10 +13,21 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 
 **Note:** If in select ID dialog of the ioBroker node you cannot find some variable, restart node-red instance. By restarting the new list of objects will be created.
 
+**Upgrade to 1.17.2:** If you already used Node-Red authentication: Please set your password in the Node-Red instance settings in ioBroker again after the upgrade! Otherwise you cannot login to Node-Red any longer after the upgrade.
+
+
 ## Settings
 - Safe mode - Flows will not be started and you can edit the flows to fix some overload problem.
 
 ## Changelog
+### 2.0.0 (2020-06-20)
+* (Apollon77) check object and not state to detect if an object exists
+* (jwiesel) Updated settings.js to incorporate latest changes up to Node-RED 1.0.6
+* (jwiesel) Replaced HTTP basic authentication by Node-RED login form (adminAuth)
+* (jwiesel) Replaced MD5 password hashing by bcrypt.js as recommended in the Node-RED security guide.
+* (bluefox) Hide the palette manager so all the packets must be installed via ioBroker configuration dialog 
+
+**Caution: For those who already used Node-Red authentication: Please set your password in the Node-Red instance settings in ioBroker again! Otherwise you cannot login to Node-Red any longer after the upgrade.**
 
 ### 1.17.2 (2020-04-29)
 * (Apollon77) check object and not state to detect if an object exists
@@ -24,6 +35,7 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 * (Apollon77) make sure adapter namespace is prepended in all situations and so correct objects are created
 * (Apollon77) fix crash cases
 * (Apollon77) make sure msg topic is not overwritten by null 
+
 
 ### 1.16.5 (2020-03-17)
 * (bluefox) Caught errors if state deleted

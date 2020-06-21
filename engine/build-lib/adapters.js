@@ -82,7 +82,7 @@ function prepareAdapterReadme(lang, repo, data) {
             return resolve();
         }
         if (!repo) {
-            console.error(`File possibly deleted from repository, but still in docs. Run "gulp remove --${data && data.relative && data.relative.splice('/').pop().splice('.').pop()}" to remove it`);
+            console.error(`File possibly deleted from repository, but still in docs. Run "gulp remove --${data && data.relative && data.relative.split('/').pop().split('.').pop()}" to remove it`);
             return resolve();
         }
 

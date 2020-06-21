@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.email/README.md
 title: электронная почта ioBroker
-hash: WQ7ygJ7v6so5j75WbrPYqOkjT++hwfOaJip8a6nGyNI=
+hash: 3i+fboU/+xLYeCNJIcUyCthEA6n+U7wok2Y4ca66zcc=
 ---
 ![логотип](../../../en/adapterref/iobroker.email/admin/email.png)
 
@@ -15,13 +15,15 @@ hash: WQ7ygJ7v6so5j75WbrPYqOkjT++hwfOaJip8a6nGyNI=
 # IoBroker email
 Отправляйте электронные письма от ioBroker.
 
-Вся работа заставляет [nodemailer](https://github.com/nodemailer/nodemailer), а ioBroker просто использует ее.
+Адаптер использует [nodemailer](https://github.com/nodemailer/nodemailer) для обеспечения функциональности.
 
 ** Этот адаптер требует nodejs 6.x или выше !! **
 
-Чтобы использовать Gmail, вам может потребоваться настроить «Разрешить менее безопасные приложения» в своей учетной записи Gmail, если только вы не используете 2FA, в этом случае вам придется создать пароль для конкретного приложения. Вам также может понадобиться разблокировать вашу учетную запись с помощью «Разрешить доступ к вашей учетной записи Google», чтобы использовать SMTP.
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
 
-## Использование
+Чтобы использовать Gmail, вам может потребоваться настроить «Разрешить менее безопасные приложения» в своей учетной записи Gmail, если только вы не используете 2FA, в этом случае вам придется создать пароль для конкретного приложения. Вам также может понадобиться разблокировать свою учетную запись с «Разрешить доступ к вашей учетной записи Google», чтобы использовать SMTP.
+
+## Применение
 Чтобы отправить письмо от ScriptEngine, просто напишите:
 
 ```
@@ -103,6 +105,13 @@ sendTo("email", {
 Для других услуг см. Документацию **Nodemailer** `§§LLLLL_0§§`
 
 ## Changelog
+### 1.0.7 (2020-06-11)
+* (Apollon77) Make sure adapter is not crashing on stop in some edge cases
+* (Apollon77) Add Sentry for crash reporting with js-controller >=3.x
+
+### 1.0.6 (2019-12-29)
+* (bluefox) Compact mode supported
+
 ### 1.0.5 (2019-09-18)
 * (Apollon77/bluefox) js-controller 2.0 compatibility, dependency updates
 
@@ -149,7 +158,7 @@ sendTo("email", {
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019 bluefox
+Copyright (c) 2014-2020 bluefox
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

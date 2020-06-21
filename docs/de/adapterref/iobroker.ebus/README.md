@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: 7ccg+/aNzLiIjNkfd8PVdm5RHJVNDAtu3yLbaDizhCg=
+hash: 5YO7JnlKUT+DbSonXWtQJozXPOnYtBn1d4jbLED37SY=
 ---
 ![Logo](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -33,13 +33,16 @@ aktuell unterstützte ebusd-version: 3.3
 ## Bekannte Probleme
 * Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
+## 2.1.0 (2020-06-17)
+* (René) Refactoring: 'async / await' verwendet
+
 ## 2.0.0 (2020-04-26)
 * (René) "Anfrage" ersetzt durch "gebogen"
 
-## 1.0.0 (15.12.2019)
+## 1.0.0 (2019-12-15)
 * (René) Update auf meinen eigenen Flot 3.0
 
-## 0,8.2 (2019-11-10)
+## 0.8.2 (2019-11-10)
 * (René) einige weitere Fehlermeldungen im Datenpunkt "Fehler"
 
 ## 0.8.1 (2019-10-31)

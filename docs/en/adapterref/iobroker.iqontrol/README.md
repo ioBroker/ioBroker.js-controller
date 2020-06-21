@@ -224,8 +224,8 @@ In addition to normal thermostat you can define:
 * **TOGGLE**: *boolean* - displays a 'Toggle'-Button and is set to true, if pressed
 
 ### <img src="img/icons/door_locked.png" width="32"> Door with lock:
-* **STATE**: *boolean* - display if the door is opened or closed
-* **LOCK_STATE**: *boolean* - display if the door is locked or unlocked
+* **STATE**: *boolean* - display if the door is opened or closed (door/window-contact)
+* **LOCK_STATE**: *boolean* - display and control if the door is locked or unlocked (control is disabled, if STATE is true - because you can't lock a door, that is opened)
 * **LOCK_STATE_UNCERTAIN**: *boolean* - if true, the STATE will be displayed in italic-font to represent that the exact position of the lock is unknown
 * **LOCK_OPEN**: *boolean* - if set to true, the door will open completely
 
@@ -272,6 +272,19 @@ In addition to normal thermostat you can define:
 ### <img src="img/icons/play.png" width="32"> Scene:
 * **STATE**: *boolean* - displays, if the scene is active. If set to true, the scene will be started
 
+### <img src="img/icons/media_on.png" width="32"> Media-Player:
+* **STATE**: *string* - "play", "pause" or "stop" or *boolean* - true for play, false for stop
+    * In device options you can define the value that represents play, pause and stop
+* **COVER_URL**: *string* - url to cover-image
+* **ARTIST, ALBUM, TITLE**: *string* - self explaining
+* **TRACK_NUMBER**: *number* - self explaining
+* **PREV, REWIND, PLAY, PAUSE, STOP, FORWARD, NEXT**: *boolean* - will be set to true, if the corresponding button is pressed
+* **SHUFFLE, MUTE, PLAY_EVERYWHERE, EJECT, POWER_SWITCH**: *boolean* - state for corresponding function
+* **REPEAT**: *boolean* - state for repeat function or *string* - 3 states can be definded via the coressponding options: value for off, repeat-all and repeat-one
+* **DURATION, ELAPSED**: *number* - duration and elapsed time of actual title - used to show a seek-bar
+* **VOLUME**: *number* - for volume-slider
+* **SOURCE, PLAYLIST**: *value-list* - show select-menu to chose a source or a title from playlist
+
 ### <img src="img/icons/popup.png" width="32"> Popup:
 * **STATE**: *any* - can be used to display further information
 * **URL**: CONSTANT *string* - this url will be opened as iframe inside popup
@@ -293,8 +306,9 @@ In addition to normal thermostat you can define:
 
 
 ## Device-Names
-* Just like variables in image-urls you can use variables in device-names. The syntax is the same:
+* Just like variables in image-urls you can use variables in device-names. The syntax is almost the same:
     * ``Text while loading|Text after loading {iobrokerstate|fallback}``
+	* Additionally can put the iobrokerstate into square brackets, then the plain value without its unit will be used: ``Text while loading|Text after loading {[iobrokerstate]|fallback}``
     * Example: ``Weather is loading|Weather: {javascript.0.weather|No weather data found}`` 
 	* This shows ``Weather is loading`` when you open the view
 	* As soon as the state of ``javascript.0.weather`` is fetched from the server, the text will be replaced by ``Weather: XXX`` where ``XXX`` is the value of ``javascript.0.weather``
@@ -305,7 +319,25 @@ In addition to normal thermostat you can define:
 
 ## Changelog
 
-### 1.0.1 development
+### 1.1.2 (2020-06-21)
+* (Sebastian Bormann) Compatibility enhancements for repeat function of Media-Player.
+* (Sebastian Bormann) Made value-list and target-value-list sortable.
+* (Sebastian Bormann) Made sortable lists only draggable in y-axis.
+* (Sebastian Bormann) Add option to enter own value for value-lists.
+* (Sebastian Bormann) Addes PLAY_EVERYWHERE to Media-Player.
+
+### 1.1.1 (2020-06-16)
+* (Sebastian Bormann) Some fixes, styling and enhancements for Media-Player.
+* (Sebastian Bormann) Added option to hide play, pause and stop icon for Media-Player.
+* (Sebastian Bormann) Added function repeat one to Media-Player.
+* (Sebastian Bormann) Maquee is only restarting, if the value of a state has really changed.
+* (Sebastian Bormann) Fixed crash when some ids of linked views were missing.
+* (Sebastian Bormann) Added targetValues to custom configuration, wich allows to send changes of a state to different target-datapoints.
+
+### 1.1.0 (2020-06-13)
+* (Sebastian Bormann) Added Media-Player.
+
+### 1.0.1 (2020-06-10)
 * (Sebastian Bormann) Fixed month for timestamps.
 * (Sebastian Bormann) You can now chose if values are linked states or constants.
 * (Sebastian Bormann) Added the ability to use variables in device-names.

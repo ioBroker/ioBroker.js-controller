@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 9+8BiuncmL0ILxd1hxWS+MVE9jaIl9DgcVGpKDGl6gQ=
+hash: CRUsdqSh2Nmmwu78PH3BCDHkh132LQKtGBee8aU9efk=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/i1_150.png)
 
@@ -19,7 +19,7 @@ hash: 9+8BiuncmL0ILxd1hxWS+MVE9jaIl9DgcVGpKDGl6gQ=
 ## Schalter窗口小部件ioBroker.vis适配器
 ![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，然后再运行图标。 Uhr und Wetter stammen aus anderen Adaptern undmüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Preview.png)
 
@@ -27,13 +27,50 @@ hash: 9+8BiuncmL0ILxd1hxWS+MVE9jaIl9DgcVGpKDGl6gQ=
 ---
 
 ##Unterstützung
-Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗留恩斯überjede Spende。
+Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里恩·乌斯·杰德·斯彭德。
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
 [![Spende]（admin / spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 1.3.8
+-将滑块步进更改为小数
+-解决了数值问题
+
+### 1.3.7
+-解决了触摸屏上导航的问题
+
+### 1.3.6
+-添加了导航的设置状态选项
+-修复了没有配置的数据点问题
+
+### 1.3.5
+-增加了表格的刷新率
+
+### 1.3.4
+-删除了图标和背景，更改了配置，修复了导航
+
+### 1.3.3
+-修复了背景小部件值选项
+
+### 1.3.2
+-错误修复
+
+### 1.3.1
+-更改了导航按钮的颜色行为
+-添加了新图标
+
+### 1.3.0
+-添加了JSON表
+-增加了导航延迟
+-按钮中的文本现在可以是HTML
+-添加了新图标
+
+### 1.2.3
+-添加了导航活动颜色
+-数值开关的固定状态颜色
 
 ## 1.2.2
 -错误修复：滑块值，配置
@@ -43,7 +80,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗留
 
 ### 1.2.0
 -添加了图像小部件
--添加了Slider以更改所有4个角的边界半径（如果此版本是您的更新，则需要单击vis-editor中的每个按钮以恢复默认角）
+-添加了Slider来更改所有4个角的边界半径（如果此版本是您的更新，则需要单击vis-editor中的每个按钮以恢复默认角）
 -添加了新图标
 
 ### 1.1.1
@@ -79,36 +116,6 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗留
 ---
 
 ## Changelog
-
-### 1.3.6
-- Added set state option for navigation
-- Fixed problem with datapoints without config
-
-### 1.3.5
-- Added refresh rate for table
-
-### 1.3.4
-- Removed icons and backgrounds, changed config, Fixed navigation
-
-### 1.3.3
-- Fixed background widget value option
-
-### 1.3.2
-- Bug fix
-
-### 1.3.1
-- Changed navigation button color behaviour
-- Added new icons
-
-### 1.3.0
-- Added JSON table
-- Added delay for navigations
-- Text in buttons can now be HTML
-- Added new icons
-
-### 1.2.3
-- Added Navigation active color
-- Fixed state color for value switch
 
 ## License
 

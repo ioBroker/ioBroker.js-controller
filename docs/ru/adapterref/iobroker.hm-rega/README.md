@@ -108,6 +108,15 @@ IP-адрес CCU можно выбрать в выпадающем меню; и
 ### ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 
 ## Changelog
+### 2.6.14 (2020-06-11)
+* (foxriver76) fix potential problem on enum sync, where to many channels could be deleted
+
+### 2.6.11 (2020-06-11)
+* (foxriver76) timeout of requests increased to 90 seconds (its only important to have a timeout to prevent infinite stucking)
+
+### 2.6.10 (2020-06-10)
+* (foxriver76) fix crash when a user on CCU is a empty string on synchronizing favorites
+
 ### 2.6.9 (2020-05-29)
 * (foxriver76) fixed crash when we cannot determine CCU version
 

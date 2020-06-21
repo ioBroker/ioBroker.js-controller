@@ -3,12 +3,13 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot адаптер для ioBroker
-hash: ONPUYA2vzmcUCgLIx8djjm7QPDQF3pTlCBZhJyJT59Y=
+hash: 0BsoJdp1to0dpftaRdgofMo85IODN7h606XYm4/vnd8=
 ---
 ![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
+![НПМ](https://img.shields.io/npm/dt/iobroker.ecovacs-deebot.svg)
 ![Установлены](http://iobroker.live/badges/ecovacs-deebot-installed.svg)
 ![Трэвис-CI](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
 
@@ -17,36 +18,34 @@ hash: ONPUYA2vzmcUCgLIx8djjm7QPDQF3pTlCBZhJyJT59Y=
 
 ## Модели
 ### Поддерживаемые модели
-* Deebot Slim 2
 * Deebot 900/901
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 
 ### Известно, что эти модели работают
+* Deebot Slim 2
 * Deebot N79
 * Deebot 601
 * Deebot 710/711
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 * Deebot Ozmo 920
-* Deebot Ozmo Slim 10
+* Deebot Ozmo T8 AIVI
 
 ### Эти модели должны работать
 * Deebot M88
 * Deebot 600/605
+* Deebot Ozmo 960
+* Deebot Ozmo Slim 10
 
 ## Установка
 Рекомендуется использовать версию 10 Node.js или более новую версию.
 
-Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок, в противном случае установка в iobroker может привести к ошибке:
+Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок, в противном случае установка в iobroker может привести к ошибке.
 
-```
-npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
-```
+Для систем Linux на основе Debian должны быть выполнены следующие команды (перезагрузка может потребоваться после второй строки):
 
-Для систем на основе Linux должны быть выполнены следующие команды (перезагрузка может потребоваться после второй строки):
-
-```
+```bash
 sudo apt-get update
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 sudo npm install canvas --unsafe-perm=true
@@ -61,19 +60,32 @@ sudo npm install canvas --unsafe-perm=true
 * Есть некоторые сообщения, что в настоящее время Ecovacs доставляет пустые журналы очистки для Ozmo 920/950.
 * Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно после прибл. 24 часа.
 * Есть также некоторые сообщения, что на Deebot 900/901 наблюдается странное поведение уровня заряда батареи. Весьма вероятно, что это ошибка прошивки.
-  * Вы можете использовать соответствующую опцию в конфигурации адаптера в качестве обходного пути.
+  * Вы можете использовать соответствующую опцию в конфигурации адаптера в качестве обходного пути.
 * Кнопка «пауза» не работает с Deebot 710/711.
 
 ## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
-## Спасибо и кредиты
-* @joostth ([sucks.js] (https://github.com/joostth/sucks.js))
-* @wpietri ([отстой] (https://github.com/wpietri/sucks))
-* @ bmartin5692 ([отстой] (https://github.com/bmartin5692/sucks), [bumber] (https://github.com/bmartin5692/bumper))
-* @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
-
 ## Changelog
+
+### 1.0.3
+* Improved Support for Ozmo T8 AIVI
+
+### 1.0.2
+* Initial Support for Ozmo T8 AIVI
+
+### 1.0.1
+   * Compact mode support
+   * New features:
+     * button to save the last used custom area values
+     * buttons to rerun saved custom areas
+   * Some enhancements and fixes
+
+### 1.0.0
+   * Stable Release
+
+### 0.6.5
+   * Set flag for compact mode to false
 
 ### 0.6.4
    * Some minor fixes
@@ -183,6 +195,7 @@ sudo npm install canvas --unsafe-perm=true
 * (mrbungle64) Initial development release
 
 ## License
+
 MIT License
 
 Copyright (c) 2020 Sascha Hölzel <mrb1232@posteo.de>

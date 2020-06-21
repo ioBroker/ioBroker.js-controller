@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.discovery/README.md
 title: ioBroker发现适配器
-hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
+hash: mo/DXV4ctxkpQk1ww63C9u20hQTlban7deTAEGe+iWM=
 ---
 ![商标](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -19,7 +19,7 @@ hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
 这是特殊的适配器，它尝试查找主机可以访问的所有可能的设备。
 到目前为止，它可以通过ping UPnP（串行计划）进行检测。
 
-**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参阅[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##实际支持
 ###自动发现
@@ -70,6 +70,7 @@ hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
 -音乐广播
 -myDlink
 -Mysensors USB /串行（9600、38400、57600、115200）
+-纳米叶灯板/帆布
 -Nuki2
 -坚果
 -安桥
@@ -126,6 +127,10 @@ hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
 -xs1（frankjoke）
 
 ## Changelog
+
+### 2.3.7 (2020-06-11)
+* (Apollon) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
+
 ### 2.3.6 (2020-05-02)
 * (Garfonso) add mydlink adapter
 * (haba1234) New adapter added: Onvif

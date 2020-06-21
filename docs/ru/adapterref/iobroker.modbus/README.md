@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.modbus/README.md
 title: iobroker.modbus
-hash: GfwwDPxEmBmuil/Z8P9Pkvvn5wsDBFhrYyZv2rg7tMA=
+hash: Sned5trIfAFdUgBpKKClgG/rVfUx5J55OH8O7QooxDc=
 ---
 ![логотип](../../../en/adapterref/iobroker.modbus/admin/modbus.png)
 
@@ -13,6 +13,8 @@ hash: GfwwDPxEmBmuil/Z8P9Pkvvn5wsDBFhrYyZv2rg7tMA=
 ![NPM](https://nodei.co/npm/iobroker.modbus.png?downloads=true)
 
 # Iobroker.modbus
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
+
 Внедрение ModBus Slave и Master для ioBroker. Поддерживаются следующие типы:
 
 - Modbus RTU через последовательный интерфейс (мастер)
@@ -89,17 +91,17 @@ IP-адрес партнера Modbus.
 - int32le - 32-разрядный со знаком (Little Endian): ABBCCDD => DDCCBBAA
 - int32sw - 32-разрядный со знаком (перестановка слов с прямым порядком байтов): AABBCCDD => CCDDAABB
 - int32sb - 32-разрядный со знаком (байт с прямым порядком байтов): AABBCCDD => DDCCBBAA
-- uint64be - 64-разрядный без знака (Big Endian): AABBCCDDEEFFGGHH => AABBCCDDEEFFGGHH
+- uint64be - Беззнаковая 64-битная (Big Endian): AABBCCDDEEFFGGHH => AABBCCDDEEFFGGHH
 - uint64le - 64-разрядная без знака (Little Endian): AABBCCDDEEFFGGHH => HHGGFFEEDDCCBBAA
-- uint8be - 8-битный без знака (Big Endian): AA => AA
+- uint8be - 8-битный бит без знака (с прямым порядком байтов)
 - uint8le - 8-битный без знака (Little Endian): AA => AA
 - int8be - 8 бит со знаком (Big Endian): AA => AA
-- int8le - 8 бит со знаком (Little Endian): AA => AA
+- int8le - 8-битный со знаком (Little Endian): AA => AA
 - floatbe - Float (Big Endian): AABBCCDD => AABBCCDD
 - floatle - Float (Little Endian): AABBCCDD => DDCCBBAA
 - floatsw - Float (своп из Big Endian Word): AABBCCDD => CCDDAABB
 - floatsb - Float (байт с байтовым порядком байтов): AABBCCDD => DDCCBBAA
-- doublebe - Double (Big Endian): AABBCCDDEEFFGGHH => AABBCCDDEEFFGGHH
+- doublebe - Double (большой порядок): AABBCCDDEEFFGGHH => AABBCCDDEEFFGGHH
 - doublele - Double (Little Endian): AABBCCDDEEFFGGHH => HHGGFFEEDDCCBBAA
 - строка - строка (нулевой конец): ABCDEF \ 0 => ABCDEF \ 0
 - stringle - String (Little Endian, Zero-end): BADCFE \ 0 => ABCDEF \ 0
@@ -136,16 +138,16 @@ IP-адрес партнера Modbus.
 
 ```Modbus uses a “big-Endian” representation for addresses and data items. This means that when a numerical quantity larger than a single byte is transmitted, the most significant byte is sent first.```
 
-Big-Endian является наиболее часто используемым форматом для сетевых протоколов - настолько распространенным, что его также называют «сетевым порядком».
+Big-Endian является наиболее часто используемым форматом для сетевых протоколов - настолько распространенным, что фактически его также называют «сетевым порядком».
 
-Учитывая, что протокол сообщения Modbus RTU является байтовым порядком байтов, для успешного обмена 32-битным типом данных через сообщение Modbus RTU необходимо учитывать порядок байтов как главного, так и подчиненного устройств. Многие ведущие и ведомые устройства RTU допускают определенный выбор порядка байтов, особенно в случае программно-имитируемых модулей. Нужно просто убедиться, что оба устройства имеют одинаковый порядок байтов.
+Учитывая, что протокол сообщения Modbus RTU является байтовым порядком байтов, для успешного обмена 32-битным типом данных через сообщение Modbus RTU необходимо учитывать порядок байтов как главного, так и подчиненного устройств. Многие ведущие и ведомые устройства RTU допускают конкретный выбор порядка байтов, особенно в случае программно-имитируемых модулей. Нужно просто убедиться, что оба устройства имеют одинаковый порядок байтов.
 
-Как правило, семейство микропроцессора устройства определяет его порядковый номер. Как правило, стиль big-Endian (старший байт сохраняется первым, а затем младший байт) обычно встречается в процессорах, разработанных с процессором Motorola. Стиль с прямым порядком байтов (младший байт сохраняется первым, а затем старший байт) обычно встречается в процессорах, использующих архитектуру Intel. Это вопрос личной перспективы относительно того, какой стиль считается «задом наперед».
+Как правило, семейство микропроцессора устройства определяет его порядковый номер. Как правило, стиль с прямым порядком байтов (старший байт сохраняется первым, а затем младший байт) обычно встречается в процессорах с процессором Motorola. Стиль с прямым порядком байтов (младший байт сохраняется первым, а затем старший байт) обычно встречается в процессорах, использующих архитектуру Intel. Это вопрос личной перспективы относительно того, какой стиль считается «задом наперед».
 
 Однако, если порядок байтов и порядок байтов не являются настраиваемым параметром, вам придется определить, как интерпретировать байт. Это можно сделать, запросив известное значение с плавающей точкой от ведомого. Если возвращается невозможное значение, то есть число с двузначным показателем степени или около того, порядок байтов, скорее всего, нуждается в модификации.
 
 ### Практическая помощь
-Драйверы FieldServer Modbus RTU предлагают несколько перемещений функций, которые обрабатывают 32-разрядные целые и 32-разрядные значения с плавающей запятой. Что еще более важно, эти перемещения функций учитывают все различные формы последовательности байтов. В следующей таблице показано перемещение функции FieldServer, которая копирует два смежных 16-разрядных регистра в 32-разрядное целочисленное значение.
+Драйверы FieldServer Modbus RTU предлагают несколько перемещений функций, которые обрабатывают 32-разрядные целые и 32-разрядные значения с плавающей запятой. Что еще более важно, эти перемещения функций учитывают все различные формы последовательности байтов. В следующей таблице показаны функции FieldServer, которые копируют два смежных 16-разрядных регистра в 32-разрядное целочисленное значение.
 
 | Функциональное ключевое слово | Режим обмена | Исходные байты | Целевые байты |
 |-------------------|--------------------|-----------------|--------------|
@@ -192,152 +194,177 @@ Big-Endian является наиболее часто используемым
 ## Тестовое задание
 В папке * test 'есть несколько программ для проверки связи TCP:
 
-- Ananas32 / 64 является ведомым симулятором (только содержит регистры и входы, без катушек и цифровых входов)
+- Ananas32 / 64 является ведомым симулятором (содержит только регистры и входы, без катушек и цифровых входов)
 - RMMS мастер симулятор
 - mod_RSsim.exe является ведомым симулятором. Возможно, вам потребуется [распространяемый пакет Microsoft Visual C ++ 2008 SP1] (https://www.microsoft.com/en-us/download/details.aspx?id=5582) для его запуска (из-за ошибки SideBySide).
 
-# 3.0.4 (2020-06-05)
-* (bluefox) Добавлен идентификатор устройства при экспорте / импорте
-* (bluefox) Добавлен параметр интервала записи
-* (bluefox) Добавлено отключение записи нескольких регистров
+## Changelog
 
-# 3.0.3 (2020-06-05)
-* (bluefox) Исправлена ошибка после рефакторинга
+### 3.1.3 (2020-06-12)
+* (Apollon77) fix scheduled restart
 
-# 3.0.2 (2020-06-01)
-* (compton-git) Декодирует 0xFF00, когда катушка включена
+### 3.1.2 (2020-06-12)
+* (Apollon77) fix serialport list for Admin
 
-# 3.0.1 (2020-01-23)
-* (BlackBird77) Исправления для серийных таймаутов сделаны
-* (bluefox) Рефакторинг
+### 3.1.1 (2020-06-11)
+* (Apollon77) Add Sentry crash reporting when used with js-controller >=3.x
 
-# 3.0.0 (2019-05-15)
-* (Apollon77) Добавлена поддержка nodejs 12, nodejs 4 больше не поддерживается!
+### 3.1.0 (2020-06-11)
+* (Apollon77) Make sure that regular adapter stops do not terminate the process, so that scheduled restarts still work
+* (Apollon77) update serialport, support nodejs 12/14
 
-# 2.0.9 (2018-10-11)
-* (Bjoern3003) Запись регистров была исправлена
+### 3.0.4 (2020-06-05)
+* (bluefox) Added device ID by export/import
+* (bluefox) Added the write interval parameter
+* (bluefox) Added the disabling of write multiple registers
 
-# 2.0.7 (2018-07-02)
-* (bluefox) Режим сервера был исправлен
+### 3.0.3 (2020-06-05)
+* (bluefox) Corrected error after refactoring
 
-# 2.0.6 (2018-06-26)
-* (bluefox) исправлен основной режим rtu-tcp
+### 3.0.2 (2020-06-01)
+* (compton-git) Decodes 0xFF00 as coil ON
 
-# 2.0.3 (2018-06-16)
-* (bluefox) Исправлено округление чисел
+### 3.0.1 (2020-01-23)
+* (BlackBird77) Fixes for Serial Timeouts done
+* (bluefox) Refactoring
 
-# 2.0.2 (2018-06-12)
-* (bluefox) Исправлена ошибка с чтением блоков
-* (bluefox) Реализовано чтение блока для дискретных значений
+### 3.0.0 (2019-05-15)
+* (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!
 
-# 2.0.1 (2018-05-06)
-* (bluefox) Добавлена поддержка нескольких идентификаторов устройств
+### 2.0.9 (2018-10-11)
+* (Bjoern3003) Write registers was corrected
 
-# 1.1.1 (2018-04-15)
-* (Apollon77) Оптимизация обработки переподключения
+### 2.0.7 (2018-07-02)
+* (bluefox) The server mode was fixed
 
-# 1.1.0 (2018-01-23)
-* (bluefox) Добавлены строки с прямым порядком байтов
-* (Apollon77) Обновление библиотеки Serialport
+### 2.0.6 (2018-06-26)
+* (bluefox) rtu-tcp master mode was fixed
 
-# 1.0.2 (2018-01-20)
-* (bluefox) Исправлено чтение катушек
+### 2.0.3 (2018-06-16)
+* (bluefox) Fixed the rounding of numbers
 
-# 0.5.4 (2017-09-27)
-* (Apollon77) Несколько исправлений
+### 2.0.2 (2018-06-12)
+* (bluefox) The error with blocks reading was fixed
+* (bluefox) The block reading for discrete values was implemented
 
-# 0.5.0 (2017-02-11)
-* (bluefox) Создание всех состояний друг за другом
+### 2.0.1 (2018-05-06)
+* (bluefox) Added the support of multiple device IDs
 
-# 0.4.10 (2017-02-10)
-* (Apollon77) Не создавать заново все точки данных при запуске адаптера
-* (ykuendig) Несколько исправлений оптимизации и формулировок
+### 1.1.1 (2018-04-15)
+* (Apollon77) Optimize reconnect handling
 
-# 0.4.9 (2016-12-20)
-* (bluefox) исправление серийного RTU
+### 1.1.0 (2018-01-23)
+* (bluefox) Little endian strings added
+* (Apollon77) Upgrade Serialport Library
 
-# 0.4.8 (2016-12-15)
-* (Apollon77) обновление библиотеки serialport для совместимости с узлом 6.x
+### 1.0.2 (2018-01-20)
+* (bluefox) Fixed read of coils
 
-# 0.4.7 (2016-11-27)
-* (bluefox) Использовать старую версию jsmodbus
+### 0.5.4 (2017-09-27)
+* (Apollon77) Several Fixes
 
-# 0.4.6 (2016-11-08)
-* (bluefox) обратная совместимость с 0.3.x
+### 0.5.0 (2017-02-11)
+* (bluefox) Create all states each after other
 
-# 0.4.5 (2016-10-25)
-* (bluefox) лучшая обработка буфера на tcp и serial
+### 0.4.10 (2017-02-10)
+* (Apollon77) Do not recreate all datapoints on start of adapter
+* (ykuendig) Multiple optimization and wording fixes
 
-# 0.4.4 (2016-10-21)
-* (bluefox) Исправлена запись в регистры хранения.
+### 0.4.9 (2016-12-20)
+* (bluefox) fix serial RTU
 
-# 0.4.1 (2016-10-19)
-* (bluefox) Поддержка RTU ModBus через последовательный порт и через TCP (только подчиненный)
+### 0.4.8 (2016-12-15)
+* (Apollon77) update serialport library for node 6.x compatibility
 
-# 0.3.11 (2016-08-18)
-* (Apollon77) Исправлено неверное количество байтов в цикле
+### 0.4.7 (2016-11-27)
+* (bluefox) Use old version of jsmodbus
 
-# 0.3.10 (2016-02-01)
-* (bluefox) исправляет потерянные настройки истории.
+### 0.4.6 (2016-11-08)
+* (bluefox) backward compatibility with 0.3.x
 
-# 0.3.9 (2015-11-09)
-* (bluefox) Всегда используйте write_multiple_registers при записи удерживающих регистров.
+### 0.4.5 (2016-10-25)
+* (bluefox) better buffer handling on tcp and serial
 
-# 0.3.7 (2015-11-02)
-* (bluefox) добавляет специальный режим чтения / записи, если «Максимальная длина запроса на чтение» равна 1.
+### 0.4.4 (2016-10-21)
+* (bluefox) Fix write of holding registers
 
-# 0.3.6 (2015-11-01)
-* (bluefox) добавить циклическую запись для хранения регистров (исправлено)
+### 0.4.1 (2016-10-19)
+* (bluefox) Support of ModBus RTU over serial and over TCP (only slave)
 
-# 0.3.5 (2015-10-31)
-* (bluefox) добавить циклическую запись для хранения регистров
+### 0.3.11 (2016-08-18)
+* (Apollon77) Fix wrong byte count in loop
 
-# 0.3.4 (2015-10-28)
-* (Bluefox) добавить двойные и исправить uint64
+### 0.3.10 (2016-02-01)
+* (bluefox) fix lost of history settings.
 
-# 0.3.3 (2015-10-27)
-* (bluefox) исправление регистров хранения
+### 0.3.9 (2015-11-09)
+* (bluefox) Use always write_multiple_registers by write of holding registers.
 
-# 0.3.2 (2015-10-27)
-* (bluefox) исправление импорта из текстового файла
+### 0.3.7 (2015-11-02)
+* (bluefox) add special read/write mode if "Max read request length" is 1.
 
-# 0.3.1 (2015-10-26)
-* (bluefox) исправлена ошибка с длиной блока чтения (мастер)
-* (bluefox) поддержка блоков чтения и максимальной длины запроса на чтение (мастер)
-* (bluefox) может определять поля при импорте
+### 0.3.6 (2015-11-01)
+* (bluefox) add cyclic write for holding registers (fix)
 
-# 0.3.0 (2015-10-24)
-* (bluefox) добавить настройки раунда
-* (bluefox) добавить идентификатор устройства
-* (bluefox) slave поддерживает числа с плавающей запятой, целые числа и строки
+### 0.3.5 (2015-10-31)
+* (bluefox) add cyclic write for holding registers
 
-# 0.2.6 (2015-10-22)
-* (bluefox) добавляет различные типы для inputRegisters и для хранения регистров ТОЛЬКО ДЛЯ MASTER
+### 0.3.4 (2015-10-28)
+* (bluefox) add doubles and fix uint64
 
-# 0.2.5 (2015-10-20)
-* (bluefox) исправляет имена объектов, если используются псевдонимы
+### 0.3.3 (2015-10-27)
+* (bluefox) fix holding registers
 
-# 0.2.4 (2015-10-19)
-* (bluefox) исправлена ошибка добавления новых значений
+### 0.3.2 (2015-10-27)
+* (bluefox) fix import from text file
 
-# 0.2.3 (2015-10-15)
-* (bluefox) исправить ошибку с мастером
+### 0.3.1 (2015-10-26)
+* (bluefox) fix error with length of read block (master)
+* (bluefox) support of read blocks and maximal length of read request (master)
+* (bluefox) can define fields by import
 
-# 0.2.2 (2015-10-14)
-* (bluefox) навесное оборудование
-* (bluefox) изменить модель адресации
+### 0.3.0 (2015-10-24)
+* (bluefox) add round settings
+* (bluefox) add deviceID
+* (bluefox) slave supports floats, integers and strings
 
-# 0.0.1
-* (bluefox) начальная фиксация
+### 0.2.6 (2015-10-22)
+* (bluefox) add different types for inputRegisters and for holding registers ONLY FOR MASTER
 
-Лицензия MIT (MIT)
+### 0.2.5 (2015-10-20)
+* (bluefox) fix names of objects if aliases used
+
+### 0.2.4 (2015-10-19)
+* (bluefox) fix error add new values
+
+### 0.2.3 (2015-10-15)
+* (bluefox) fix error with master
+
+### 0.2.2 (2015-10-14)
+* (bluefox) implement slave
+* (bluefox) change addressing model
+
+### 0.0.1
+* (bluefox) initial commit
+
+The MIT License (MIT)
 
 Copyright (c) 2015-2020 Bluefox <dogafox@gmail.com>
 
-Настоящим предоставляется бесплатное разрешение любому лицу, получающему копию этого программного обеспечения и связанных с ним файлов документации (далее - «Программное обеспечение»), осуществлять операции с Программным обеспечением без ограничений, включая, помимо прочего, права на использование, копирование, изменение, слияние. публиковать, распространять, сублицензировать и / или продавать копии Программного обеспечения, а также разрешать лицам, которым предоставляется Программное обеспечение, делать это при соблюдении следующих условий:
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
 
-Вышеуказанное уведомление об авторском праве и это уведомление о разрешении должны быть включены во все копии или существенные части Программного обеспечения.
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
 
-ПРОГРАММНОЕ ОБЕСПЕЧЕНИЕ ПРЕДОСТАВЛЯЕТСЯ «КАК ЕСТЬ», БЕЗ КАКИХ-ЛИБО ГАРАНТИЙ, ЯВНЫХ ИЛИ ПОДРАЗУМЕВАЕМЫХ, ВКЛЮЧАЯ, НО НЕ ОГРАНИЧИВАЯСЯ ГАРАНТИЙ ТОВАРНОГО ОБЕСПЕЧЕНИЯ, ПРИГОДНОСТИ ДЛЯ ОСОБЫХ ЦЕЛЕЙ И НЕЗАКРЕПЛЕНИЙ. Ни при каких обстоятельствах авторы или держатели авторских прав не несут ответственности за любые претензии, ущерб или другую ответственность, возникающие в результате действия контракта, деликтного или иного действия, возникающие в результате, в результате или в связи с программным обеспечением или использованием в других отношениях. ПРОГРАМНОЕ ОБЕСПЕЧЕНИЕ.
-
-## Changelog
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

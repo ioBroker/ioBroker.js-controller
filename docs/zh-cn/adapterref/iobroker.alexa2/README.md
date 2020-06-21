@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alexa2/README.md
 title: ioBroker.alexa2
-hash: inpuJcrJGC7RESSm0g1nQTMTq4Cpov0itsvJVpeo4nk=
+hash: TNWMr7Aq/2ZKAbSMk++/Qlv7klBRWMN2u4MFYvdWsgQ=
 ---
 ![商标](../../../en/adapterref/iobroker.alexa2/admin/alexa.png)
 
@@ -19,7 +19,7 @@ hash: inpuJcrJGC7RESSm0g1nQTMTq4Cpov0itsvJVpeo4nk=
 
 此适配器使您可以远程控制Alexa（Amazon Echo）设备。
 
-非常感谢soef提供的适配器版本1，感谢Hauke和ruhr70提供的来自ioBroker-Forum的脚本中的想法（尤其是媒体进度更新）！还要感谢meicker对所有这些文档的支持以及ioBroker论坛的许多用户的测试支持！
+非常感谢soef提供该适配器的版本1，并感谢Hauke和ruhr70提供了来自ioBroker-Forum的脚本中的想法（尤其是媒体进度更新）！还要感谢meicker对所有这些文档的支持以及ioBroker论坛的许多用户的测试支持！
 
 ##状态及其含义：
 在适配器名称空间（例如alexa2.0）中，创建了一些通道
@@ -27,7 +27,7 @@ hash: inpuJcrJGC7RESSm0g1nQTMTq4Cpov0itsvJVpeo4nk=
 ### Alexa2.0
 |州名|意思|
 | - | - |
-| *。| |将文本命令发送到虚拟设备，就好像您要说话一样。 |
+|被说服。将文本命令发送到虚拟设备，就像您要对它说话一样。 |
 |回声设备。每个Echo设备的状态，请参见下文|
 |历史记录。有关命令历史记录的信息，请参见下文|
 |智能家居设备。* |每个智能家居设备的状态，以及一般情况，请参见下文|
@@ -35,27 +35,27 @@ hash: inpuJcrJGC7RESSm0g1nQTMTq4Cpov0itsvJVpeo4nk=
 | requestResult | TuneIn和智能家居设备请求的错误信息|
 
 ### Alexa2.0.Bespoken。*
-Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，您可以使用它向“您的” Alexa / Amazon帐户发送命令。使用此工具，您可以触发通常无法通过Alexa应用程序访问的技能操作。从本质上讲，它只能执行与“与您说话的设备”不直接交互的命令，例如执行特定操作并提供答案的普通命令。播放音频或视频或通常由您说出该命令的设备完成的操作将不起作用！
+Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，您可以使用它向“您的” Alexa / Amazon帐户发送命令。这样，您可以触发通常无法通过Alexa应用程序访问的技能操作。从本质上讲，它只能执行与“与您说话的设备”不直接交互的命令，例如执行特定操作并提供答案的普通命令。播放音频或视频或通常由您说出该命令的设备完成的操作将不起作用！
 
-由于发送的文本首先转换为音频，然后发送到Alexa语音服务，然后由Alexa答复并发回，所以Bespoken请求将花费几秒钟。因此，它最多可能需要10秒钟。
+因为发送的文本首先转换为音频，然后发送到Alexa语音服务，然后由Alexa答复并发回，所以Bespoken请求将花费几秒钟。因此，它最多可能需要10秒钟。
 
 |州名|意思|
 | - | - |
 | #sendText |要发送到虚拟设备的文本|
 |回答|来自设备的答复为文本|
-| anwserJson |来自适配器的答复为JSON，可能包含其他信息，例如卡信息或类似|
-|状态|使用bespoken进行通信的状态（确定=完成/等待下一条命令，PROCESSING =等待来自bespoken的答复，FAILURE =处理时发生错误）|
+| anwserJson |来自适配器的答复为JSON，可能包含其他信息，例如卡信息或|
+|状态|使用bespoken进行通信的状态（确定=完成/等待下一个命令，PROCESSING =等待来自bespoken的答复，FAILURE =处理时发生错误）|
 
 ### Alexa2.0.Contacts.ContactId。*
 可用于向其发送文本消息的所有Alexa联系人，包括他本人。自己的联系人在其姓名后得到一个特殊的“（（自我）”）。
 
 |州名|意思|
 | - | - |
-| #clearOwnMessages |仅存在于自己的联系人中，触发器将删除发送给自己的所有消息（还包括通过App或设备发送给自己的消息！） |
+| #clearOwnMessages |仅存在于自己的联系人中，触发器将删除所有发送给自己的消息（还包括通过App或设备发送给自己的消息！） |
 | textMessage |将此文本作为消息发送给用户。此用户的所有设备上均显示“黄色环”。 |
 
 ### Alexa2.0.Echo-Devices.Serialnumber。*
-在“回声设备”下，列出了每个亚马逊回声设备及其序列号。并非每个设备都显示所有状态。每个设备都有自己的状态，如下所述：
+在“回声设备”下，列出了每个亚马逊回声设备及其序列号。并非每个设备都显示所有状态。每个设备都有其自己的状态，如下所述：
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Alarm。*
 每个设备的警报（Wecker）设置（如果有）。
@@ -63,16 +63,16 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 |州名|意思|价值|
 | - | - | - |
 |启用|显示警报状态并允许对其进行更改：以true激活警报-以false停用警报|对/错|
-|时间|警报时间。覆盖现有警报的时间以为此警报设置新时间。如果您已有警报，可以在此处通过简单地以hh：mm：ss格式覆盖时间来更改时间，而无需设置|秒。时间输入|
+|时间|警报时间。覆盖现有警报的时间以为此警报设置新时间。如果您已有警报，可以在此处通过简单地以hh：mm：ss格式覆盖时间来更改时间，而无需设置秒。时间输入|
 |触发如果达到并触发警报，则为true。时钟必须与Amazon和iobroker保持同步，一旦达到闹钟时间，就可以使用此时钟来触发其他操作|对/错|
 |新该设备发出新警报的时间。如果在此处输入值，将创建一个新警报。时间输入（hh：mm：ss，不需要秒） |
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Bluetooth。*
-在这里，您可以找到所有具有MAC地址的已连接或已知的蓝牙设备。每个设备的状态：
+在这里，您可以找到所有已连接或已知具有MAC地址的蓝牙设备。每个设备的状态：
 
 |州名|意思|
 | - | - |
-|连接|显示当前连接状态，并允许连接（设置为true）或断开连接（设置为false） |
+|连接|显示当前连接状态并允许连接（设置为true）或断开连接（设置为false） |
 |不配对|使该设备与echo设备取消配对的按钮。 |
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Commands。*
@@ -80,15 +80,19 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 
 |州名|意思|价值|
 | - | - | - |
-| doNotDisturb |打开/关闭请勿打扰此设备|是/否|
+| doNotDisturb |打开/关闭请勿打扰此设备|对/错|
 |简报|在100秒内进行简报-新闻等。纽扣 |
 |早安|来自Alexa的早上好... |纽扣 |
+|功能|来自Alexa的有趣事实... |纽扣 |
+|笑话来自Alexa的笑话... |纽扣 |
+|清理|像播放聆听模式的开始/结束一样播放“锣”音... |纽扣 |
+|策展人|来自Alexa所选区域的随机句子... |文字（允许使用：“再见”，“确认”，“早安”，“赞美”，“生日”，“晚安”，“ iamhome”）|
 | singasong | Alexa唱了一首歌... |纽扣 |
-|说Alexa说您在这里输入的内容... |文字输入|
-|音量|调整Alexa的语音音量，该音量会在语音通话之前设置好，然后再重新设置| 0-100 |
+|说Alexa说您在此处输入的内容... |文字输入|
+|音量调整Alexa的语音音量，该音量会在语音通话之前设置好，然后再重新设置| 0-100 |
 |讲故事| Alexa讲故事|纽扣 |
 |交通|交通新闻|纽扣 |
-|天气|天气新闻纽扣 |
+|天气天气新闻纽扣 |
 | deviceStop |停止设备上的所有操作|纽扣 |
 |通知|发送文本通知给设备的客户|文字|
 |公告|播放公告（例如讲话，但在文本前加上Bing）|文字|
@@ -121,7 +125,7 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 |亚马逊音乐|玩Amazon Music的短语文字输入|
 |亚马逊音乐播放列表|播放列表可与Amazon Music一起播放|文字输入|
 |我的图书馆|玩“我的书架”的短语文字输入|
-|我的图书馆播放列表|播放列表可与“我的图书馆”一起使用文字输入|
+|我的图书馆播放列表|可与“我的媒体库”一起播放的播放列表|文字输入|
 |调入|播放“ Tune In”的短语文字输入|
 |播放中音调|播放列表可与Tune In一起播放|文字输入|
 
@@ -149,7 +153,7 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 | mediaLength |当前标题的长度|信息|
 | mediaLengthStr |有效媒体长度为（HH：）MM：SS |信息|
 | mainProgress |主动媒体经过时间|信息|
-| mainProgressPercent |有效媒体经过时间百分比信息|
+| mainProgressPercent |有效媒体耗用时间（百分比）|信息|
 | mediaProgressStr |活动媒体进度为（HH：）MM：SS |信息|
 | miniArtUrl |艺术品网址（迷你）|信息|
 |静音| “ MUTE”的状态|信息，对/错，音量= 0被认为是静音|
@@ -165,8 +169,8 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 |州名|意思|价值|
 | - | - | - |
 |启用|显示提醒状态并允许对其进行更改：使用true激活提醒-使用false禁用提醒，禁用后将在一段时间后自动删除。对/错|
-|时间|提醒时间。覆盖现有提醒的时间以设置新时间|时间输入|如果您已有提醒，则可以在此处通过简单地以hh：mm：ss格式覆盖时间来更改时间，而无需设置秒|
-|触发如果达到并触发了提醒，则为true。时钟必须与Amazon和iobroker保持同步，达到提醒时间后，请使用此时钟来触发其他操作|对/错|
+|时间|提醒时间。覆盖现有提醒的时间以设置新时间|时间输入|如果您已有提醒，则可以在此处更改时间，只需以hh：mm：ss格式覆盖时间即可，无需设置秒数。 |
+|触发如果达到并触发了提醒，则为true。时钟必须与Amazon和iobroker保持同步，一旦达到提醒时间，可使用此时钟触发其他操作|对/错|
 
 |新以以下格式添加新的提醒<br>时间（hh：mm），文字<br> |文字输入<br> 12:00，提醒我
 
@@ -198,8 +202,8 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 |州名|意思|价值|
 | - | - | - |
 | #trigger |按钮以获取新的历史记录（更多的当前时间，然后是creationTime中的时间戳），仅在不使用推送连接时才需要|纽扣 |
-| cardContent |如Alexa-App / Echo Show |中所示，更多信息。信息|
-| cardJson |其他信息，如Alexa-App / Echo中所示以JSON格式显示|信息|
+| cardContent |其他信息，如Alexa-App / Echo Show中所示。信息|
+| cardJson |如JSON格式所示，其他信息如Alexa-App / Echo中所示。信息|
 | creationTime |此历史记录条目的日期，仅当此时间戳记|信息|
 | domainApplicationId |其他信息，例如Skill-ID等，可选|信息|
 | domainApplicationName |其他信息，例如技能名称等，可选|信息|
@@ -223,7 +227,7 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 
 | #delete |从Alexa删除智能家居设备|纽扣#enabled |智能家居设备是否处于活动状态？ |信息
 
-| #query |查询此设备的数据，仅当智能家居设备/技能支持检索信息时才可见|纽扣 |
+| #query |查询此设备的数据，仅在智能家居设备/技能支持检索信息时可见|纽扣 |
 |活跃当场景可以被激活/关闭时显示对/错|
 | powerState |打开/关闭电源|多变，对/错|
 | ... |根据智能家居设备的类型，还有更多可能的状态。信息或可变的:-) |
@@ -235,18 +239,18 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 |亮度| HUE灯的亮度|可变0-100％|
 |颜色亮度|色彩清晰度的亮度（以及色相和饱和度，HSV）|信息，0-1％|
 |色相|颜色的色相值（以及亮度和饱和度，HSV）|信息，0-360°|
-|颜色饱和度|颜色的饱和度（以及亮度和色相，HSV）|信息0-1 |
+|颜色饱和度|颜色饱和度（以及亮度和色相，HSV）|信息0-1 |
 | colorRGB |实际颜色的RGB代码由color- *值构建|信息，＃rrggbb |
-| colorName | Alexa定义的颜色名称-固定值|可变以设置颜色0-144 |
+| colorName |由Alexa定义的颜色名称-固定值|可变以设置颜色，0-144 |
 | colorTemperarureInKelvin |开尔文色温|信息，1000-10000K |
 | colorTemperatureName | Alexa定义的色温名称-固定值|可变设置，0-18 |
 
-使用#brightness，您可以调整灯光的亮度，＃colorName是选择一种预定义的颜色（0-144）。对于HUE环境光，您可以在#colorTemperatureName中的0-18值之间选择19个值。使用#powerState可以打开和关闭所有指示灯。
+使用#brightness，您可以调整灯光的亮度，＃colorName是选择一种预定义的颜色（0-144）。对于HUE环境光，您可以在#colorTemperatureName中的19值0-18之间进行选择。使用#powerState可以打开和关闭所有指示灯。
 
 ### Alexa2.0.Info。*
 |州名|意思|价值|
 | - | - | - |
-|连接|如果与Alexa的连接正常|信息->是/否|
+|连接|如果可以连接到Alexa |信息->对/错|
 | Cookie | Alexa cookie，与几个也要访问Alexa API的外部脚本一起使用|信息|
 | csrf | Alexa CSRF，与几个也要访问Alexa API的外部脚本一起使用|信息|
 
@@ -262,7 +266,7 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 ###通过电子邮件/密码确定Cookie的问题
 有时，当Amazon在登录时检测到意外流量时，就会对其进行怪异的检查。
 这可能会导致需要输入验证码才能登录的问题。
-通常，此验证码需要回答一次，此后登录无需验证码即可。
+通常，此验证码需要回答一次，此后无需使用验证码即可登录。
 
 当您需要回答这样的验证码时，请尝试执行以下操作：
 
@@ -275,17 +279,17 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 *您可能需要登录两次或解决验证码
 *最后，您应该看到“ https://alexa.amazon.de/spa/index.html”作为URL，但没有任何实际内容（因为JS仍被禁用），但这完全可以！！！
 *现在尝试再次获取cookie
-*如果仍然无法正常运行，请再次执行该操作，然后从浏览器中检查User-Agent和accept-Language并在下次尝试中使用适配器中的那些
+*如果仍然无法正常工作，请再次执行该操作，然后从浏览器中检查User-Agent和accept-Language并在下次尝试中使用适配器中的内容
 
-此外，Accept-Language-Header（默认为“ de-DE”）需要与您的语言/浏览器语言/您登录的亚马逊页面的语言匹配。
+另外，Accept-Language-Header（默认为“ de-DE”）需要与您的语言/浏览器语言/登录的亚马逊页面的语言匹配。
 
-您也可以尝试使用User-Agent，并使用一种与您使用的系统类型更多匹配项。
+您也可以尝试使用User-Agent并使用一种与您使用的系统类型更多匹配项。
 例如，当ioBroker在Linux系统上运行时，使用User-Agent的示例使用“ Mozilla / 5.0（X11; Linux x86_64）AppleWebKit / 537.36（KHTML，例如Gecko）Chrome / 51.0.2704.103 Safari / 537.36”可以更好地工作。
 
 您可以在适配器配置中覆盖所有这些参数。
 
 ###如何自行确定Cookie？
-如果无法自动确定Cookie，或者您不信任适配器提供电子邮件/密码，那么您可以自己确定Cookie。网路上有几个资讯。这里有一些链接：
+如果无法自动确定Cookie，或者您不信任适配器提供电子邮件/密码，那么您可以自己确定Cookie。网路上有许多资讯。这里有一些链接：
 
 * https://www.gehrig.info/alexa/Alexa.html
 *或使用https://blog.loetzimmer.de/2017/10/amazon-alexa-hort-auf-die-shell-echo.html中的shellscript在外壳上获取它...
@@ -293,11 +297,42 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 但是请注意：Cookie会在若干时间后超时，然后适配器将停止工作并自行禁用。然后，您需要手动获取一个新的cookie！
 
 ##什么是Sentry.io，什么报告给该公司的服务器？
-Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+Sentry.io是一项服务，供开发人员从应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
+
+### 3.2.4 (2020-06-18)
+* (Apollon77) Update Alexa-Remote Library to optimize communication error/timeout cases
+
+### 3.2.3 (2020-06-17)
+* (Apollon77) Fix currentState handling
+
+### 3.2.2 (2020-06-17)
+* (Apollon77) remove goodnight because was not working
+* (Apollon77) Fix Play/Pause states and some media optimizations
+
+### 3.2.1 (2020-06-17)
+* (Apollon77) update amazon-cookie library: another optimization for Node.js 14
+
+### 3.2.0 (2020-06-17)
+* (Apollon77/hive) add new commands, jokes/facts/goodnight/cleanup
+* (Apollon77/hive) add new command curatedtts with allowed values ["goodbye", "confirmations", "goodmorning", "compliments", "birthday", "goodnight", "iamhome"] to play random curated sentences
+* (Apollon77) Prevent some crashes
+* (Apollon77) Make sure Timer are not triggering the state when deleted
+* (Apollon77) make sure that Lists objects are deleted correctly when deleting
+* (Apollon77) Make compatible with nodejs 14
+* (Apollon77) Adjust to changes from Amazon so that initial Proxy process works again
+* (OberstVonGatow) Make sure that for Spotify Media data requests do not have negative effects and stop the playback  
+
+### 3.1.2 (2020-03-18)
+* (Gieskanne/Apollon77) Add Next Timer Date as state
+* (Apollon77) Fix missing history entries
+* (Apollon77) Prevent List deletions from logging errors
+* (Apollon77) optimiztions, dependency updates and fixes
+* (Apollon77) Switch to ioBroker own sentry instance
+* (Apollon77) add Info.softwareVersion
 
 ### 3.0.8 (2020-01-19)
 * (Apollon77) fix some crash cases

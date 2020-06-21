@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: 83F6GLkofFfSJa7dSgnC34d982xoVkH62+Bwfk0dnYU=
+hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
 ---
 ![логотип](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -44,10 +44,10 @@ hash: 83F6GLkofFfSJa7dSgnC34d982xoVkH62+Bwfk0dnYU=
 Изменяя состояние «включено» WLAN, можно включить / отключить его. Через несколько секунд изменение будет предоставлено точкам доступа.
 
 ### Создание ваучера
-Используя кнопку 'vouchers.create_vouchers', можно создавать предопределенные ваучеры. Можно настроить количество ваучеров, которые будут созданы, продолжительность действия ваучеров, а также установить ограничения для загрузки и загрузки.
+Используя кнопку vouchers.create_vouchers, можно создавать предопределенные ваучеры. Можно настроить количество ваучеров, которые будут созданы, продолжительность действия ваучеров, а также установить ограничения для загрузки и загрузки.
 
 ## Отсутствуют точки данных
-Адаптер использует [Узел-Unifi](https://github.com/jens-maus/node-unifi) для подключения к контроллеру UniFi. Для упрощения, не все доступные точки данных вытягиваются в ваш ioBroker. Если вам не хватает точек данных, используйте следующие URL для проверки API. (Примечание: вы должны заменить IP, PORT и SITE своими настройками)
+Адаптер использует [Узел-Unifi](https://github.com/jens-maus/node-unifi) для подключения к контроллеру UniFi. Чтобы упростить задачу, не все доступные точки данных загружаются в ваш ioBroker. Если вам не хватает точек данных, используйте следующие URL для проверки API. (Примечание: вы должны заменить IP, PORT и SITE своими настройками)
 
 | Информация | API URL |
 |-------------|---------------------------------------------|
@@ -59,6 +59,20 @@ hash: 83F6GLkofFfSJa7dSgnC34d982xoVkH62+Bwfk0dnYU=
 | Сети | https:// IP: PORT / api / s / SITE / rest / networkconf |
 | Здоровье | https:// IP: PORT / api / s / SITE / stat / health |
 | Ваучеры | https:// IP: PORT / api / s / SITE / stat / voucher |
+| DPI | https:// IP: PORT / api / s / SITE / stat / dpi |
+
+### Конечные точки UbiOS
+| Информация | API URL |
+|-------------|------------------------------------------------------|
+| Сайты | https:// IP / прокси / сеть / api / self / sites |
+| СисИнфо | https:// IP / прокси / сеть / api / s / SITE / stat / sysinfo |
+| Клиенты | https:// IP / прокси / сеть / api / s / SITE / stat / sta |
+| Устройства | https:// IP / прокси / сеть / api / s / SITE / stat / device |
+| WLAN | https:// IP / прокси / сеть / api / s / SITE / rest / wlanconf |
+| Сети | https:// IP / прокси / сеть / api / s / SITE / rest / networkconf |
+| Здоровье | https:// IP / прокси / сеть / api / s / сайт / статистика / здоровье |
+| Ваучеры | https:// IP / прокси / сеть / api / s / SITE / stat / voucher |
+| DPI | https:// IP / прокси / сеть / api / s / SITE / stat / dpi |
 
 ## Известные вопросы
 * Состояние is_wired клиентов неверно после того, как клиент перешел в автономный режим. Это известная проблема контроллера UniFi и не связана с адаптером. (см. https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
@@ -70,6 +84,17 @@ hash: 83F6GLkofFfSJa7dSgnC34d982xoVkH62+Bwfk0dnYU=
 * [json-logic-js] (https://github.com/jwadhams/json-logic-js)
 
 ## Changelog
+### __WORK IN PROGRESS__
+* (Scrounger, braindead1) Implemented DPI
+
+### 0.5.5 (2020-06-13)
+* (braindead1) Fixed some errors reported via Sentry
+
+### 0.5.4 (2020-06-06)
+* (braindead1) Implemented offset for is_online
+* (braindead1) Fixed some issues related to is_online
+* (braindead1) Prepared whitelisting of clients etc.
+
 ### 0.5.2 (2020-05-23)
 * (jens-maus) Implemented UniFiOS/UDM-Pro support
 * (braindead1) Implemented possibility to enable/disable WLANs

@@ -36,6 +36,10 @@ If not, the user will stay logged in for the configured "login timeout".
 
 ## Changelog
 
+### 3.0.9 (2020-06-11)
+* (Apollon77) Upgrade socketio adapter version
+* (Apollon77) Optimize error handling for webserver initialization again
+
 ### 3.0.8 (2020-05-04)
 * (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
 

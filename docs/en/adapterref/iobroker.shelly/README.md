@@ -45,6 +45,9 @@ You find a detailed installation documentation here:
 |Shelly Bulb Duo (SHBDUO-1)|verified|not verified|
 |Shelly 3EM (SHEM)|verified|verified|
 |Shelly Vintage (SHVIN-1)|verified|verified|
+|Shelly I3 (SHIX3-1)|verified|verified|
+|Shelly Button (SHBTN-1)|no|verified|
+|Shelly Gas (SHGS-1)|verified|verified|
 
 ## What is Sentry and what is reported to the servers?
 Sentry.io is a way for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
@@ -53,12 +56,32 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 3.2.9 (04.06.2020)
-* (Stübi) - Use only version with Shelly firmware greater equal v1.7.0 . Shelly firmware less v1.7.0 will not be supported by this Shelly adapter version
+### 3.3.3 (18.06.2020)
+* (Stübi) - Add Shelly Buttonx
+* (Stübi) - Add Shelly Gas 
+
+### 3.3.2 (13.06.2020)
+* (Stübi) - Bugfixing Shelly RGBW2
+
+### 3.3.1 (13.06.2020)
+* (Stübi) - Change readme
+* (Stübi) - Add state external humidity to Shelly 1 (Bug in  3.3.0)
+* (Stübi) - Renamed state color to lights for Shelly RGBW2 - Issue #169
+* (Stübi) - Renamed state light to lights for Shelly Dimmer
+* (Stübi) - Bugfixng Shelly RGBW, RGBW and Bulb. State ligths.rgbw did not work - Issue #169
+
+### 3.3.0 (04.06.2020)
+* (Stübi) - Use only version with Shelly firmware greater equal v1.7.0 . Shelly firmware less v1.7.0 will not be supported by this Shelly adapter version anymore
 * (Stübi) - Add state vibration and tilt to Shelly DW
 * (Stübi) - Add polltime to index_m.html  
 * (Stübi) - Fix RGBW2 with FW 1.7 - Issue #161
-* (Stübi) - Add state Button Type to Shelly 2.5 - Issue #157
+* (Stübi) - Add state Button Type for Shelly  1, 1PM, 2, 2.5 - Issue #157
+* (Stübi) - Add state Button Reverse for Shelly 1, 1PM, 2, 2.5
+* (Stübi) - Add firmware update button
+* (Stübi) - Fix auto firmware update
+* (Stübi) - Add state external humidity to Shelly 1 / 1PM - Issue #160
+* (Stübi) - Add helper library and cleanup source code
+* (Stübi) - Add Shelly I3
 
 ### 3.2.8 (09.05.2020)
 * (c7j3X) - Add device Shelly Vintage

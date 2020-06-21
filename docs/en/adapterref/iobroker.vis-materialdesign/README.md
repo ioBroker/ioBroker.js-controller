@@ -522,6 +522,8 @@ Settings that are not listed in the table below are self-explanatory.
 </table>
 
 #### graph
+
+<details>
 <table>
     <thead>
         <tr>
@@ -708,11 +710,12 @@ Settings that are not listed in the table below are self-explanatory.
         </tr>
     </tbody>
 </table>
-
+</details>
 
 
 #### graph line chart spfeicifc
 
+<details>
 <table>
     <thead>
         <tr>
@@ -821,10 +824,12 @@ Settings that are not listed in the table below are self-explanatory.
         </tr>
     </tbody>
 </table>
+</details>
 
 
 #### graph bar chart spfeicifc
 
+<details>
 <table>
     <thead>
         <tr>
@@ -879,8 +884,11 @@ Settings that are not listed in the table below are self-explanatory.
         </tr>
     </tbody>
 </table>
+</details>
 
 #### graph y-Axis
+
+<details>
 <table>
     <thead>
         <tr>
@@ -1049,8 +1057,11 @@ Settings that are not listed in the table below are self-explanatory.
         </tr>
     </tbody>
 </table>
+</details>
 
 #### gradientColor
+
+<details>
 <table>
     <thead>
         <tr>
@@ -1075,11 +1086,14 @@ Settings that are not listed in the table below are self-explanatory.
         </tr>
     </tbody>
 </table>
+</details>
 
 ### Chart with time axis
 JSON Chart supports data that have a timestamp. To use this the data array must have values for timestamp (x-axis value) and value (y-axis value).
 
 #### values with timestamp
+
+<details>
 <table>
     <thead>
         <tr>
@@ -1104,8 +1118,11 @@ JSON Chart supports data that have a timestamp. To use this the data array must 
         </tr>
     </tbody>
 </table>
+</details>
 
 #### x-axis settings for data with timestamp
+
+<details>
 <table>
     <thead>
         <tr>
@@ -1136,6 +1153,7 @@ JSON Chart supports data that have a timestamp. To use this the data array must 
         </tr>
     </tbody>
 </table>
+</details>
 
 ## Table
 ![Logo](doc/en/media/table.gif)
@@ -1246,6 +1264,9 @@ Take a look at the animated screenshot below:
                     <li><a href="#button-state">buttonState</a></li>
                     <li><a href="#button-state-vertical">buttonState_vertical</a></li>
                     <li><a href="#button-state-icon">buttonState_icon</a></li>
+                    <li><a href="#button-link">buttonLink</a></li>
+                    <li><a href="#button-link-vertical">buttonLink_vertical</a></li>
+                    <li><a href="#button-link-icon">buttonLink_icon</a></li>
                     <li><a href="#progress-1">progress</a></li>
                     <li><a href="#progress-circular">progress_circular</a></li>
                     <li><a href="#slider-1">slider</a></li>
@@ -2204,6 +2225,225 @@ Take a look at the animated screenshot below:
 </table>
 </details>
 
+
+##### Button Link 
+
+<details>
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>buttonStyle</td>
+			<td>button style</td>
+			<td>string</td>
+			<td>text | raised | unelevated | outlined</td>
+		</tr>
+		<tr>
+			<td>href</td>
+			<td>Link</td>
+			<td>url</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>openNewWindow</td>
+			<td>open in new window</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>buttontext</td>
+			<td>Button text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>colorPress</td>
+			<td>color pressed</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>labelWidth</td>
+			<td>text width</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>vibrateOnMobilDevices</td>
+			<td>vibrate on mobil devices [s]</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>image</td>
+			<td>Image</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>imageColor</td>
+			<td>image color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>iconPosition</td>
+			<td>image position</td>
+			<td>string</td>
+			<td>left | right</td>
+		</tr>
+		<tr>
+			<td>iconHeight</td>
+			<td>image height</td>
+			<td>number</td>
+			<td/>
+		</tr>
+	</tbody>
+</table>
+</details>
+
+##### Button Link Vertical
+
+<details>
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>buttonStyle</td>
+			<td>button style</td>
+			<td>string</td>
+			<td>text | raised | unelevated | outlined</td>
+		</tr>
+		<tr>
+			<td>href</td>
+			<td>Link</td>
+			<td>url</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>openNewWindow</td>
+			<td>open in new window</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>buttontext</td>
+			<td>Button text</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>colorPress</td>
+			<td>color pressed</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>vibrateOnMobilDevices</td>
+			<td>vibrate on mobil devices [s]</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>image</td>
+			<td>Image</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>imageColor</td>
+			<td>image color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>iconPosition</td>
+			<td>image position</td>
+			<td>string</td>
+			<td>top | bottom</td>
+		</tr>
+		<tr>
+			<td>iconHeight</td>
+			<td>image height</td>
+			<td>number</td>
+			<td/>
+		</tr>
+	</tbody>
+</table>
+</details>
+
+##### Button Link Icon
+
+<details>
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>href</td>
+			<td>Link</td>
+			<td>url</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>openNewWindow</td>
+			<td>open in new window</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
+			<td>vibrateOnMobilDevices</td>
+			<td>vibrate on mobil devices [s]</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>image</td>
+			<td>Image</td>
+			<td>custom</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>imageColor</td>
+			<td>image color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>iconHeight</td>
+			<td>image height</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>colorPress</td>
+			<td>color pressed</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+	</tbody>
+</table>
+</details>
 
 ##### Progress
 
@@ -4723,8 +4963,6 @@ Take a look at the animated screenshot below:
 </table>
 </details>
 
-<br>
-
 ##### Material Design Icons
 
 <details>
@@ -5151,7 +5389,11 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* (Scrounger): Fixed some bugs reported via Sentry
+* (Scrounger): prevent set value in vis editor
+* (Scrounger): Grid & Mansonry Widget: visibilty by resoltuin bug fix
 * (Scrounger): IconList Widget: Card Background for whole icon list added
+* (Scrounger): Table Wigdet: button link widget added
 * (Scrounger): Table Wigdet: material design icon widget added
 * (Scrounger): Table Wigdet: alignment option for controls added
 * (Scrounger): materialdesignicons library updated to v5.3.45

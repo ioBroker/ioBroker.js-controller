@@ -28,6 +28,10 @@ Help or hints are welcome.
 
 ## Changelog
 
+### 1.5.0
+
+* support for cooling values and startpage graphs
+
 ### 1.4.11
 
 * support for further heatingtyp WPL25A

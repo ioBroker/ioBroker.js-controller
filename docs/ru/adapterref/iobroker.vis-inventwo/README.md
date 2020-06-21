@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 9+8BiuncmL0ILxd1hxWS+MVE9jaIl9DgcVGpKDGl6gQ=
+hash: CRUsdqSh2Nmmwu78PH3BCDHkh132LQKtGBee8aU9efk=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/i1_150.png)
 
@@ -19,7 +19,7 @@ hash: 9+8BiuncmL0ILxd1hxWS+MVE9jaIl9DgcVGpKDGl6gQ=
 ## Schalter Widgets для адаптера ioBroker.vis
 ![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Set.png)
 
-Mit Hilfe unserer Widgets lassen sich folgende Projekte verwirklichen. Zur Zeit открывает для себя все необходимое Адаптер NUR die reinen Schaltflächen (siehe oben) и die Icons. Uhr und Wetter stammen aus and anderen Adaptern und müssen ggf. zusätzlich installiert werden.
+Mit Hilfe unserer Widgets lassen sich folgende Projekte verwirklichen. Zur Zeit открывает для себя все необходимое. Адаптер NUR die reinen Schaltflächen (siehe oben) и die Icons. Uhr und Wetter stammen aus and anderen Adaptern und müssen ggf. zusätzlich installiert werden.
 
 ![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Preview.png)
 
@@ -29,11 +29,48 @@ Mit Hilfe unserer Widgets lassen sich folgende Projekte verwirklichen. Zur Zeit 
 ## Unterstützung
 Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen uns über jede Spende.
 
-(Dieser Link от компании PayPal-Konto и Steht в Кейнер Verbindung zum ioBroker)
+(Dieser Link для всех в PayPal-Konto и steht в Keiner Verbindung zum ioBroker)
 
 [![Spende] (администратор / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 1.3.8
+- Изменен шаг ползунка до десятичного
+- Исправлена проблема с числовыми значениями
+
+### 1.3.7
+- Исправлена проблема с навигацией на сенсорных экранах
+
+### 1.3.6
+- Добавлена опция установки состояния для навигации
+- Исправлена проблема с точками данных без конфигурации
+
+### 1.3.5
+- Добавлена частота обновления для таблицы
+
+### 1.3.4
+- убраны значки и фоны, изменен конфиг, исправлена навигация
+
+### 1.3.3
+- Исправлена опция значения фонового виджета
+
+### 1.3.2
+- Исправлена ошибка
+
+### 1.3.1
+- Изменено поведение цвета кнопки навигации
+- Добавлены новые иконки
+
+### 1.3.0
+- Добавлена таблица JSON
+- Добавлена задержка для навигации
+- Текст в кнопках теперь может быть HTML
+- Добавлены новые иконки
+
+### 1.2.3
+- Добавлен навигационный активный цвет
+- Исправлен цвет состояния для переключения значения
 
 ## 1.2.2
 - Исправление ошибки: значение слайдера, конфиг
@@ -56,7 +93,7 @@ Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen u
 - Изменены виджеты кнопок для использования шрифта и текста по умолчанию
 
 ### 1.0.0
-- Фон виджета и непрозрачность содержимого. Переключатель можно изменить с логического на значение, изменить значки с белого на черный, добавить бесшовный фон
+- Фон виджета и непрозрачность содержимого, Переключатель может быть изменен с логического значения на значение, изменены значки с белого на черный, добавлены бесшовные фоны
 
 ### 0.1.2
 - Исправление ошибок
@@ -79,36 +116,6 @@ Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen u
 ---
 
 ## Changelog
-
-### 1.3.6
-- Added set state option for navigation
-- Fixed problem with datapoints without config
-
-### 1.3.5
-- Added refresh rate for table
-
-### 1.3.4
-- Removed icons and backgrounds, changed config, Fixed navigation
-
-### 1.3.3
-- Fixed background widget value option
-
-### 1.3.2
-- Bug fix
-
-### 1.3.1
-- Changed navigation button color behaviour
-- Added new icons
-
-### 1.3.0
-- Added JSON table
-- Added delay for navigations
-- Text in buttons can now be HTML
-- Added new icons
-
-### 1.2.3
-- Added Navigation active color
-- Fixed state color for value switch
 
 ## License
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sayit/README.md
 title: ioBroker sayit适配器
-hash: WfuAYnt4vJV2TG5k1YUmniPPUgsw7fEd/VeokkOMjkI=
+hash: 4LM4po1HGU0onQ6qXn4J5z6ZtNCGJq1kDxJoKdWS+Ms=
 ---
 ![商标](../../../en/adapterref/iobroker.sayit/admin/sayit.png)
 
@@ -13,6 +13,8 @@ hash: WfuAYnt4vJV2TG5k1YUmniPPUgsw7fEd/VeokkOMjkI=
 ![NPM](https://nodei.co/npm/iobroker.sayit.png?downloads=true)
 
 ＃ioBroker sayit适配器
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+
 SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 ##配置
@@ -24,7 +26,7 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 -* Home24-MediaPlayer和[FTP服务器]（https://play.google.com/store/apps/details?id=lutey.FTPServer）*-文本将通过Home24-MediaPlayer在Android设备上发送和播放已安装。为此，将使用Google文本语音引擎。生成的mp3文件将通过FTP复制到android设备并与Home24-MediaPlayer一起播放。
 
-    两个应用程序必须具有相同的主目录。 （例如\“ sd卡\”的根目录）。
+    两个应用程序必须具有相同的主目录。 （例如\“ sd卡\”的根目录）。
 
 -*系统*-文本将由运行ioBroker适配器的OS播放。支持以下操作系统：Windows，Linux，Mac OSx。
 
@@ -34,7 +36,7 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 -* Chromecast *-在Chromecast设备上播放文字。
 
--* MPD *-在音乐播放器守护程序上播放文本。仅将** http **用于Web适配器，请勿使用https。
+-* MPD *-在音乐播放器守护程序上播放文本。仅将** http **用于网络适配器，请勿使用https。
 
 要在RaspberryPI或linux系统上启用文本语音转换，请在命令```sudo apt-get -y install mpg321```之后调用一次以安装mpg321。
 
@@ -48,26 +50,26 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 -Google：英语，德语，俄语，意大利语，西班牙语，法语
 -Yandex：俄语
 
-要使用Yandex语音，您必须在此处请求API密钥：[https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/](https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/)。 [此服务将在2019年1月1日停用，并由Yandex.cloud代替]要使用Yandex.cloud，您应该在这里注册：[https://cloud.yandex.ru/]，在Cloud中安装SpeechKIT API并获取身份验证令牌和文件夹ID（如API说明中所述）。
+要使用Yandex语音，您必须在此处请求API密钥：[https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/](https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/)。 [此服务将在2019年1月1日停用，并由Yandex.cloud代替]要使用Yandex.cloud，您应该在此处注册：[https://cloud.yandex.ru/]，在Cloud中安装SpeechKIT API并获取身份验证令牌和文件夹ID（如API说明中所述）。
 
 -伊凡娜：英语，德语，俄语，意大利语，西班牙语，法语，丹麦语，威尔士语，冰岛语，荷兰语，波兰语，葡萄牙语，罗马尼亚语，瑞典语，土耳其语
 
-        要使用Amazon（Ivona）语音，您需要获取访问密钥和秘密密钥[这里](http://www.ivona.com/us/for-business/speech-cloud/)。
+        要使用Amazon（Ivona）语音，您需要获取访问密钥和秘密密钥[这里](http://www.ivona.com/us/for-business/speech-cloud/)。
 
 - 云：
 
-        要使用云语音，您需要配置云适配器。 （可以禁用它，但必须对其进行配置）。该服务使用AWS Polly，可以直接使用。
+        要使用云语音，您需要配置云适配器。 （可以禁用它，但必须对其进行配置）。该服务使用AWS Polly，可以直接使用。
 
 -Amazon Web Services Polly：
 
-        要使用AWS Polly语音，您需要创建访问密钥和秘密密钥[此处]（https://console.aws.amazon.com/iam/home）。您可以在[这里找到Amazon文档](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)。
+        要使用AWS Polly语音，您需要创建访问密钥和秘密密钥[此处]（https://console.aws.amazon.com/iam/home）。您可以在[这里找到Amazon文档](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html)。
 
 离线：
 
 -PicoTTS（仅Linux）：英语，德语，意大利语，西班牙语，法语
 
 对于PicoTTS，必须安装以下软件包：libttspico-utils和lame。
-安装命令：'sudo apt-get install libttspico-utils lame'
+安装命令：“ sudo apt-get install libttspico-utils me脚”
 
 ### Cloud and Amazon Web Services Polly文本格式
 您可以使用[语音合成标记语言](http://docs.aws.amazon.com/polly/latest/dg/ssml.html)设置文本格式。
@@ -76,7 +78,7 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 -```<break time =“ 3s” />```--暂停x秒（最多10秒）。
 -```<emphasis> big </ emphasis>```-强调一些单词。
--```<prosody volume =“ + 6dB” rate =“ 90％”>我正在说</ prosody>```-控制速度和音量参数。
+-```<prosody volume =“ + 6dB” rate =“ 90％”>我在说</ prosody>```-控制速度和音量参数。
 -```<say-as interpret-as =“ digits”> 12345 </ say-as>```-分别说出每个数字。
 
 更多[信息](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/speech-synthesis-markup-language-ssml-reference)。
@@ -86,7 +88,7 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 ```myCustomPlayer --option```
 
-如果选择了“系统”输出，那么sayit适配器将在本地系统上执行以下命令：
+如果选择了** System **输出，那么sayit适配器将在本地系统上执行以下命令：
 
 ```myCustomPlayer --option /opt/iobroker/node_modules/iobroker.sayit/say.mp3```
 
@@ -94,25 +96,25 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 ```myCustomPlayer --option "%s" > /dev/null```
 
-sayIt将根据它生成§§JJJJJ_0_0§§。
+sayIt将根据它生成```myCustomPlayer --option "/opt/iobroker/node_modules/iobroker.sayit/say.mp3" > /dev/null```。
 
 ##用法
-SayIt适配器不能单独使用。必须通过javascript适配器或带有特定窗口小部件的“ vis”进行控制。
+SayIt适配器不能单独使用。必须通过javascript适配器或带有特定小部件的“ vis”进行控制。
 创建适配器实例后，将可以找到以下对象：
 
 -sayit.N.tts.text：要说的短语。
 -sayit.N.tts.volume：播放该短语将使用的音量。
 -sayit.N.tts.playing：如果正在播放文本，则为true，否则为false。仅支持“ Windows”和“系统”播放模式。
--sayit.N.tts.cachetext：要缓存的词组，无需互联网即可使用。
+-sayit.N.tts.cachetext：要缓存的词组，然后无需互联网即可使用。
 
-   例如。您可以在此处手动输入“不连接互联网”，如果对google.com的ping否定，请在“ tts.text”中输入“不连接互联网”，它将发音。当然必须启用缓存。
+   例如。您可以在此处手动输入“不连接互联网”，如果对google.com的ping否定，请在“ tts.text”中输入“不连接互联网”，它将发音。当然必须启用缓存。
 
-State **tts.text** 持扩展语法，因此语言/引擎和音量可以与文本一起定义。它用于启用多语言text2speech引擎。
+状态** tts.text **支持扩展语法，因此可以将语言/引擎和音量与文本一起定义。它用于启用多语言text2speech引擎。
 例如。如果适配器具有引擎“ Google-english”，则可以使用词组```de:Sag es```强制使用Google-Deustch语音引擎。
 
-通过§§JJJJJ_0_0§§，我们可以强制使用俄语和75％的语言。
+使用§§JJJJJ_0_0§§，我们可以强制使用俄语和75％的语言。
 
-您可以从当前或给定的音量（不是最大）中指定百分比的公告音量。例如。如果命令是```de;75;Gutes Wetter```§且“播音音量”为50％，则播音将以100％可能的38％音量播放。
+您可以从当前或给定的数量（不是最大）中指定百分比的公告数量。例如。如果命令是```de;75;Gutes Wetter```§并且“播音音量”为50％，则播音将以100％可能的38％音量播放。
 
 也可以指定播放mp3文件的系统命令。如果将其保留为空白，则将使用默认设置：windows-cmdmp3.exe，OSX-/ usr / bin / afplay，linux-mpg321或omxplayer（推荐）。
 
@@ -123,7 +125,7 @@ State **tts.text** 持扩展语法，因此语言/引擎和音量可以与文本
 ###优先级
 要在文本排队的情况下立即发音，您有两种可能：
 
--放置“！”作为文本中的第一个字符，因此该文本将在当前文本后立即发音。
+-放置“！”作为文本中的第一个字符，因此该文本将在当前文本之后立即发音。
 -将true写入“ tts.clearQueue”状态，队列将被清除。之后，您可以将新文本写入“ tts.text”，但是所有排队的文本都将被丢弃。
 
 ＃＃＃ 引擎
@@ -136,7 +138,7 @@ State **tts.text** 持扩展语法，因此语言/引擎和音量可以与文本
 -** ru **-Русский
 -** uk **-український
 -**-意大利文
--**是**-西班牙文
+-** es **-西班牙文
 -** fr **-法语
 
 #### Yandex
@@ -152,7 +154,7 @@ State **tts.text** 持扩展语法，因此语言/引擎和音量可以与文本
 -** zh-CN_CLOUD_Male **-zh-CN-男性-Joey
 -** da-DK_CLOUD_Female **-da-DK-女性-眼镜蛇
 -** da-DK_CLOUD_Male **-da-DK-男性-Mads
--** zh-AU_CLOUD_Female **-zh-AU-女-妮可
+-** en-AU_CLOUD_Female **-zh-AU-女性-Nicole
 -** en-AU_CLOUD_Male **-zh-AU-男性-罗素
 -** zh-CN_CLOUD_Female_Amy **-zh-CN-女-艾米
 -** en-GB_CLOUD_Male **-en-GB-男性-Brian
@@ -170,7 +172,7 @@ State **tts.text** 持扩展语法，因此语言/引擎和音量可以与文本
 -** zh-CN_CLOUD_Female_Kendra **-zh-CN-女-Kendra
 -** zh-CN_CLOUD_Female_Kimberly **-zh-CN-女-Kimberly
 -** es-ES_CLOUD_Female **-es-ES-女性-Conchita
--** es-ES_CLOUD_Male **-es-ES-男性-Enrique
+-** es-ES_CLOUD_Male **-es-ES-Male-Enrique
 -** es-US_CLOUD_Female **-es-US-女性-Penelope
 -** es-US_CLOUD_Male **-es-US-男性-Miguel
 -** fr-CA_CLOUD_Female **-fr-CA-女性-Chantal
@@ -192,13 +194,13 @@ State **tts.text** 持扩展语法，因此语言/引擎和音量可以与文本
 -** pt-BR_CLOUD_Male **-pt-BR-男性-Ricardo
 -** pt-PT_CLOUD_Male **-pt-PT-男性-克里斯蒂亚诺
 -** pt-PT_CLOUD_Female **-pt-PT-女性-Ines
--** ro-RO_CLOUD_Female **-ro-RO-女性-Carmen
+-** ro-RO_CLOUD_Female **-ro-RO-女-卡门
 -** sv-SE_CLOUD_Female **-sv-SE-女-Astrid
 -** tr-TR_CLOUD_Female **-tr-TR-女-Filiz
 
 #### Pico TTS
 -** zh-CN **-美国英语
--** zh-CN **-英国英语
+-** zh-GB **-英国英语
 -** DE-DE **-德语
 -** it-IT **-Italiano
 -** ES-ES **-西班牙文
@@ -214,7 +216,7 @@ State **tts.text** 持扩展语法，因此语言/引擎和音量可以与文本
 -**（zh-CN_AP_Male）**-zh-CN-男性-Joey
 -**（da-DK_AP_Female）**-da-DK-女性-眼镜蛇
 -**（da-DK_AP_Male）**-da-DK-男性-Mads
--**（zh-CN_AP_Female）**-zh-AU-女-妮可
+-**（zh-CN_AP_Female）**-zh-AU-女性-妮可
 -**（zh-AU_AP_Male）**-zh-AU-男性-罗素
 -**（zh-CN_AP_Female_Amy）**-zh-GB-女-艾米
 -**（zh-CN_AP_Male）**-zh-GB-男性-Brian
@@ -223,14 +225,14 @@ State **tts.text** 持扩展语法，因此语言/引擎和音量可以与文本
 -**（zh-CN-WLS_AP_Male）**-zh-CN-WLS-男性-格林
 -**（cy-GB_AP_Female）**-cy-GB-女性-Gwyneth
 -**（cy-GB_AP_Male）**-cy-GB-男性-格林
--**（zh-IN_AP_Female）**-zh-IN-女-Raveena
+-**（zh-CN_AP_Female）**-zh-IN-女性-Raveena
 -**（zh-CN_AP_Male_Chipmunk）**-zh-CN-男性-花栗鼠
 -**（zh-CN_AP_Male_Eric）**-zh-CN-男性-Eric
 -**（zh-CN_AP_Female_Ivy）**-zh-CN-女性-常春藤
 -**（zh-CN_AP_Female_Jennifer）**-zh-CN-女性-Jennifer
--**（zh-CN_AP_Male_Justin）**-zh-美国-男性-贾斯汀
+-**（zh-CN_AP_Male_Justin）**-zh-CN-男性-贾斯汀
 -**（zh-CN_AP_Female_Kendra）**-zh-CN-女-Kendra
--**（zh-CN_AP_Female_Kimberly）**-zh-美国-女-Kimberly
+-**（zh-CN_AP_Female_Kimberly）**-zh-CN-女-Kimberly
 -**（es-ES_AP_Female）**-es-ES-女性-Conchita
 -**（es-ES_AP_Male）**-es-ES-男性-Enrique
 -**（es-US_AP_Female）**-es-US-女性-Penelope
@@ -259,6 +261,15 @@ State **tts.text** 持扩展语法，因此语言/引擎和音量可以与文本
 -**（tr-TR_AP_Female）**-tr-TR-女性-Filiz
 
 ## Changelog
+
+### 1.9.8 (2020-06-11)
+* (Apollon77) fix error handling on file copy
+
+### 1.9.7 (2020-06-11)
+* (algar42) tts.ogg state added for ogg file type
+
+### 1.9.6 (2020-05-24)
+* (bluefox) Show names of SONOS devices
 
 ### 1.9.4 (2020-05-11)
 * (Apollon77) Fix Blockly

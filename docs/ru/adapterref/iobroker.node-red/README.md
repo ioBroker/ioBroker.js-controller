@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.node-red/README.md
 title: ioBroker - красный адаптер для узла
-hash: EeGMIn33K0Ekn4Qm0pvkHcXoojvGu85RHDuA7OP7ZMY=
+hash: zpelxzM0LIWlw140+rWd0rXt3iauWphgCP6aR0Ta+Ik=
 ---
 ![логотип](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
@@ -16,14 +16,47 @@ hash: EeGMIn33K0Ekn4Qm0pvkHcXoojvGu85RHDuA7OP7ZMY=
 # IoBroker node-red Adapter
 Запускает узел-красный экземпляр и связывается с ним.
 
-Этот адаптер использует нод-красный сервер с https://github.com/node-red/node-red
+Этот адаптер использует красный сервер узла с https://github.com/node-red/node-red
 
 ** Примечание: ** Если в диалоге выбора идентификатора узла ioBroker вы не можете найти какую-либо переменную, перезапустите экземпляр узла красного цвета. При перезапуске будет создан новый список объектов.
+
+** Обновление до 1.17.2: ** Если вы уже использовали аутентификацию Node-Red: пожалуйста, заново установите пароль в настройках экземпляра Node-Red в ioBroker снова после обновления! В противном случае вы не сможете больше войти в Node-Red после обновления.
 
 ## Настройки
 - Безопасный режим - потоки не будут запущены, и вы можете редактировать потоки, чтобы устранить проблему перегрузки.
 
 ## Changelog
+### 2.0.0 (2020-06-20)
+* (Apollon77) check object and not state to detect if an object exists
+* (jwiesel) Updated settings.js to incorporate latest changes up to Node-RED 1.0.6
+* (jwiesel) Replaced HTTP basic authentication by Node-RED login form (adminAuth)
+* (jwiesel) Replaced MD5 password hashing by bcrypt.js as recommended in the Node-RED security guide.
+* (bluefox) Hide the palette manager so all the packets must be installed via ioBroker configuration dialog 
+
+**Caution: For those who already used Node-Red authentication: Please set your password in the Node-Red instance settings in ioBroker again! Otherwise you cannot login to Node-Red any longer after the upgrade.**
+
+### 1.17.2 (2020-04-29)
+* (Apollon77) check object and not state to detect if an object exists
+* (Apollon77) update node-red to 1.0.6 and deps
+* (Apollon77) make sure adapter namespace is prepended in all situations and so correct objects are created
+* (Apollon77) fix crash cases
+* (Apollon77) make sure msg topic is not overwritten by null 
+
+
+### 1.16.5 (2020-03-17)
+* (bluefox) Caught errors if state deleted
+* (bluefox) "Fire on start" for the input node was implemented
+
+### 1.16.4 (2020-03-16)
+* (Apollon77) fix State ID verification regex to allow all characters
+
+### 1.16.3 (2020-03-14)
+* (Apollon77) fix potential crash case in inout node
+
+### 1.16.2 (2020-03-12)
+* (Apollon77) update deps, node-red to 1.0.4
+* (Apollon77) update number of listeners to max 1000 before warning is displayed
+
 ### 1.15.0 (2020-01-06)
 * (mobilutz/bluefox) allow creation of foreign states
 * (SchumyHao) add state unit, min and max for ioBroker out node

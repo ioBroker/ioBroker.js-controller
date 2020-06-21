@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: rJIYye0OoD6Q9jgnQ1ZV3IAPkfTuwaOqZA0/7pdi32A=
+hash: jV3Rk2nBqhz1DoHLRyUtSO2nHs1+VbsUGiGIgXEq91g=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -49,7 +49,7 @@ Eigenschaften:
 * Alle Geräte löschen, wenn der Administrator geöffnet wird = sollte deaktiviert sein. Aktivieren Sie es nur, wenn Sie alle Raum-, Aktor- und Sensoreinstellungen löschen müssen. Eine Gerätesuche wird ausgeführt, wenn der Adapteradministrator geöffnet wird
 * Sensor verwendet = Wenn Sie Fenstersensoren haben und die Zieltemperatur bei geöffnetem Fenster senken möchten, aktivieren Sie diese Option
 * Aktuatoren verwendet = wenn Sie Aktuatoren direkt vom Adapter aus steuern möchten. Nur für den Fall, dass keine direkte Verbindung zwischen Thermostat und Stellantrieb besteht.
-* Aktuatoren verwenden, wenn keine Heizperiode = nur gültig für Aktuatoren. Definiert, wie Aktuatoren eingestellt werden, wenn keine Heizperiode aktiv ist
+* Aktuatoren verwenden, wenn keine Heizperiode = nur gültig mit Aktuatoren. Definiert, wie Aktuatoren eingestellt werden, wenn keine Heizperiode aktiv ist
 * Aktuatoren verwenden, wenn kein Thermostat verfügbar ist = nur gültig mit Aktuatoren. Wenn Sie Räume ohne Thermostat, aber mit Heizungsaktuator haben, können Sie diese dauerhaft ein- oder ausschalten
 
 ### Profil
@@ -81,8 +81,8 @@ Eigenschaften:
 ## Datenpunkte
 | DP-Name | Beschreibung |
 |---------------------|-----------------------------------------------------------------------------------------------------|
-| HeatingPeriodActive | Wenn diese Option deaktiviert ist, werden die Profile nicht verwendet |
-| AktuellesProfil | aktuelles Profil auswählen (1 basierend, bedeutet, dass Profil 1 Datenpunkte unter Heizungssteuerung.0.Profile.0 verwendet) |
+| HeatingPeriodActive | Wenn deaktiviert, werden die Profile nicht verwendet |
+| AktuellesProfil | aktuelles Profil auswählen (1 basiert, bedeutet, dass Profil 1 Datenpunkte unter Heizungssteuerung.0.Profile.0 verwendet) |
 | LastProgramRun | Zeigt das letzte Mal an, wenn der Adapter ausgeführt wird |
 
 ### Temperaturabnahme / -erhöhung
@@ -93,7 +93,7 @@ Eigenschaften:
 | Gegenwart | wir sind anwesend, wenn wir nicht anwesend sind, verringern wir die Temperatur Verringern Sie die aktuelle Profiltemperatur um Profile.0.room.AbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.AbsentDecrease |
 | VacationAbsent | wir sind abwesend, also auch am wochenende abnehmen | Verringern Sie die aktuelle Profiltemperatur um Profile.0.room.VacationAbsentDecrease | Setzen Sie das Ziel auf Profiles.0.room.absolute.VacationAbsentDecrease |
 
-* In beiden Fällen wird nur eine Absenkung verwendet (in der vorherigen Version des Adapters konnten mehr als eine Entfettung verwendet werden)
+* In beiden Fällen wird nur eine Absenkung verwendet (in der vorherigen Version des Adapters konnten mehr als eine Entfettung verwendet werden.)
 * Im absoluten Entfettungsszenario werden nur Zielwerte ungleich 0 °C verwendet. Wenn Sie für einen bestimmten Raum keine Absenkung benötigen, halten Sie die Abnahmewerte bei 0 ° C.
 
 ### Keine Heizperiode
@@ -109,7 +109,7 @@ Mit dieser Option können Sie eine Zieltemperatur für jeden Raum verwenden, wen
 
 * nichts
 
-Mit dieser Option wird nichts an den Thermostat gesendet, wenn keine Heizperiode aktiv ist. Die Zieltemperatur bleibt vom letzten Taget erhalten, als die Heizperiode noch aktiv war.
+Mit dieser Option wird nichts an den Thermostat gesendet, wenn keine Heizperiode aktiv ist. Die Zieltemperatur bleibt vom letzten Tag an, als die Heizperiode noch aktiv war.
 In diesem Fall und wenn Sie Aktuatoren aus dem Adapter verwenden, haben Sie die Möglichkeit zu definieren, wie Aktuatoren eingestellt werden sollen (aus, ein oder lassen Sie es wie es ist).
 
 ## Andere
@@ -124,9 +124,9 @@ Es besteht die Möglichkeit, PublicHoliday wie Sonntag zu behandeln. Diese Optio
 ### Fenster geöffnet
 Wenn "Sensoren verwenden" aktiv ist und die Sensoren für einen Raum konfiguriert sind
 
-a) Verringern Sie die aktuelle Profiltemperatur, wenn das Fenster geöffnet ist (true), um Profiles.0.room.WindowOpenDecrease, wenn die relative Verringerung konfiguriert ist. b) Setzen Sie das Ziel auf Profiles.0.room.absolute.WindowOpenDecrease, wenn das Fenster geöffnet ist (true), wenn das absolute Fenster abnimmt ist konfiguriert
+a) Verringern Sie die aktuelle Profiltemperatur, wenn das Fenster geöffnet ist (true), um Profile.0.room.WindowOpenDecrease, wenn die relative Verringerung konfiguriert ist. b) Setzen Sie das Ziel auf Profiles.0.room.absolute.WindowOpenDecrease, wenn das Fenster geöffnet ist (true), wenn die absolute Verringerung vorliegt ist konfiguriert
 
-Optional kann eine Verzögerung verwendet werden. Wenn das Fenster nur für eine kurze Zeit geöffnet wird, kann eine Sensorverzögerung verhindern, dass sie in sehr kurzen Zeiten reduziert und wieder normal wird.
+optional kann eine Verzögerung verwendet werden. Wenn das Fenster nur für eine kurze Zeit geöffnet wird, kann eine Sensorverzögerung verhindern, dass sie in sehr kurzen Zeiten reduziert und wieder normalisiert wird.
 
 ## Ical Unterstützung
 Sie können Ihren Kalender verwenden, um Datenpunkte im Adapter zu ändern.
@@ -147,7 +147,7 @@ Viele Benutzer fragten nach einer Option, um Änderungen vom Thermostat in den A
 * Knotenversion 8 oder höher ist erforderlich
 
 ## Probleme und Funktionsanforderungen
-* Wenn Sie auf Fehler stoßen oder Funktionsanforderungen für diesen Adapter haben, erstellen Sie ein Problem im GitHub-Problemabschnitt des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
+* Wenn Sie auf Fehler stoßen oder Funktionsanforderungen für diesen Adapter haben, erstellen Sie bitte ein Problem im GitHub-Problemabschnitt des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
 
 ### Was ist Sentry.io und was wird den Servern dieses Unternehmens gemeldet?
 Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ihren Anwendungen zu erhalten. Und genau das ist in diesem Adapter implementiert.
@@ -155,6 +155,20 @@ Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ih
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
+
+### 0.5.6 (2020-06-14)
+* (René) see issue #113: re-order of rooms added
+* (René) see issue #112: bug fix "Fensterübersicht"
+
+### 0.5.4 (2020-06-04)
+* (René) bug fix: HeatingControlVis avoid exceptions like "Cannot read property 'val' of null"
+
+### 0.5.3 (2020-06-03)
+* (René) bug fix: new temperatures set when current profile is changed
+* (René) refactoring HeatingControlVis to avoid exceptions like "Cannot read property 'val' of null"
+
+### 0.5.2 (2020-05-25)
+* (René) bug fix: log a warning if actors are configured but UseActors are off
 
 ### 0.5.1 (2020-05-22)
 * (René) log a warning if actors are configured but UseActors are off

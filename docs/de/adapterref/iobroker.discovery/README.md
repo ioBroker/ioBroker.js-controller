@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Adapter
-hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
+hash: mo/DXV4ctxkpQk1ww63C9u20hQTlban7deTAEGe+iWM=
 ---
 ![Logo](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -70,6 +70,7 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - Musiksendung
 - myDlink
 - Mysensoren USB / Seriell (9600, 38400, 57600, 115200)
+- Nanoleaf Light Panels / Canvas
 - Nuki2
 - Nuss
 - Onkyo
@@ -126,6 +127,10 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - xs1 (Frankjoke)
 
 ## Changelog
+
+### 2.3.7 (2020-06-11)
+* (Apollon) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
+
 ### 2.3.6 (2020-05-02)
 * (Garfonso) add mydlink adapter
 * (haba1234) New adapter added: Onvif

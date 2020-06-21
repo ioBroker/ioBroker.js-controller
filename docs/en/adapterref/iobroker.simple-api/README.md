@@ -550,6 +550,9 @@ If no data source was specified or the noHistory parameter is passed, then only 
 
 ## Changelog
 
+### 2.4.6 (2020-06-11)
+* (Apollon77) Make sure adapter is showing correct error when webserver can not be initialized (Sentry IOBROKER-SIMPLE-API-7)
+
 ### 2.4.5 (2020-05-04)
 * (Apollon77) webserver initialization optimized again to prevent errors with imvalid certificates 
 

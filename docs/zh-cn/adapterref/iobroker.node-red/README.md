@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.node-red/README.md
 title: ioBroker节点红色适配器
-hash: EeGMIn33K0Ekn4Qm0pvkHcXoojvGu85RHDuA7OP7ZMY=
+hash: zpelxzM0LIWlw140+rWd0rXt3iauWphgCP6aR0Ta+Ik=
 ---
 ![商标](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
@@ -20,10 +20,43 @@ hash: EeGMIn33K0Ekn4Qm0pvkHcXoojvGu85RHDuA7OP7ZMY=
 
 **注意：**如果在ioBroker节点的“选择ID”对话框中找不到某些变量，请重新启动红色节点实例。通过重新启动，将创建新的对象列表。
 
+**升级到1.17.2：**如果您已使用Node-Red身份验证：请在升级后再次在ioBroker的Node-Red实例设置中设置密码！否则，升级后您将无法再登录Node-Red。
+
 ##设置
 -安全模式-流程将不会启动，您可以编辑流程以解决某些过载问题。
 
 ## Changelog
+### 2.0.0 (2020-06-20)
+* (Apollon77) check object and not state to detect if an object exists
+* (jwiesel) Updated settings.js to incorporate latest changes up to Node-RED 1.0.6
+* (jwiesel) Replaced HTTP basic authentication by Node-RED login form (adminAuth)
+* (jwiesel) Replaced MD5 password hashing by bcrypt.js as recommended in the Node-RED security guide.
+* (bluefox) Hide the palette manager so all the packets must be installed via ioBroker configuration dialog 
+
+**Caution: For those who already used Node-Red authentication: Please set your password in the Node-Red instance settings in ioBroker again! Otherwise you cannot login to Node-Red any longer after the upgrade.**
+
+### 1.17.2 (2020-04-29)
+* (Apollon77) check object and not state to detect if an object exists
+* (Apollon77) update node-red to 1.0.6 and deps
+* (Apollon77) make sure adapter namespace is prepended in all situations and so correct objects are created
+* (Apollon77) fix crash cases
+* (Apollon77) make sure msg topic is not overwritten by null 
+
+
+### 1.16.5 (2020-03-17)
+* (bluefox) Caught errors if state deleted
+* (bluefox) "Fire on start" for the input node was implemented
+
+### 1.16.4 (2020-03-16)
+* (Apollon77) fix State ID verification regex to allow all characters
+
+### 1.16.3 (2020-03-14)
+* (Apollon77) fix potential crash case in inout node
+
+### 1.16.2 (2020-03-12)
+* (Apollon77) update deps, node-red to 1.0.4
+* (Apollon77) update number of listeners to max 1000 before warning is displayed
+
 ### 1.15.0 (2020-01-06)
 * (mobilutz/bluefox) allow creation of foreign states
 * (SchumyHao) add state unit, min and max for ioBroker out node

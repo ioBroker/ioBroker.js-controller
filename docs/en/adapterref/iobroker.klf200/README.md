@@ -1,183 +1,233 @@
----
-BADGE-Number of Installations: http://iobroker.live/badges/klf200-stable.svg
-BADGE-Travis CI: https://travis-ci.org/MiSchroe/ioBroker.klf200.svg?branch=master
-BADGE-Build status: https://ci.appveyor.com/api/projects/status/t28nlps5c99jy5v7/branch/master?svg=true
-BADGE-GitHub issues: https://img.shields.io/github/issues/MiSchroe/ioBroker.klf200.svg
-BADGE-GitHub license: https://img.shields.io/github/license/MiSchroe/ioBroker.klf200.svg
-BADGE-NPM version: https://img.shields.io/npm/v/iobroker.klf200.svg
-BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.klf200.svg
-BADGE-NPM: https://nodei.co/npm/iobroker.klf200.png?downloads=true
----
-# KLF-200 adapter documentation
+![Logo](admin/klf200.png)
+
+# ioBroker.klf200
+
+![Number of Installations](http://iobroker.live/badges/klf200-installed.svg) ![Stable version](http://iobroker.live/badges/klf200-stable.svg)
+[![Travis CI](https://travis-ci.org/MiSchroe/ioBroker.klf200.svg?branch=master)](https://travis-ci.org/MiSchroe/ioBroker.klf200)
+[![Build status](https://ci.appveyor.com/api/projects/status/t28nlps5c99jy5v7/branch/master?svg=true)](https://ci.appveyor.com/project/MiSchroe/iobroker-klf200/branch/master)
+[![GitHub issues](https://img.shields.io/github/issues/MiSchroe/ioBroker.klf200.svg)](https://github.com/MiSchroe/ioBroker.klf200/issues)
+[![GitHub license](https://img.shields.io/github/license/MiSchroe/ioBroker.klf200.svg)](https://github.com/MiSchroe/ioBroker.klf200/blob/master/LICENSE)
+
+[![NPM version](https://img.shields.io/npm/v/iobroker.klf200.svg)](https://www.npmjs.com/package/iobroker.klf200)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.klf200.svg)](https://www.npmjs.com/package/iobroker.klf200)
+
+[![gitlocalized ](https://gitlocalize.com/repo/1127/whole_project/badge.svg)](https://gitlocalize.com/repo/1127/whole_project?utm_source=badge)
+[![gitlocalized ](https://gitlocalize.com/repo/1127/de/badge.svg)](https://gitlocalize.com/repo/1127/de?utm_source=badge)
+[![gitlocalized ](https://gitlocalize.com/repo/1127/fr/badge.svg)](https://gitlocalize.com/repo/1127/fr?utm_source=badge)
+[![gitlocalized ](https://gitlocalize.com/repo/1127/nl/badge.svg)](https://gitlocalize.com/repo/1127/nl?utm_source=badge)
+[![gitlocalized ](https://gitlocalize.com/repo/1127/it/badge.svg)](https://gitlocalize.com/repo/1127/it?utm_source=badge)
+[![gitlocalized ](https://gitlocalize.com/repo/1127/pl/badge.svg)](https://gitlocalize.com/repo/1127/pl?utm_source=badge)
+[![gitlocalized ](https://gitlocalize.com/repo/1127/pt/badge.svg)](https://gitlocalize.com/repo/1127/pt?utm_source=badge)
+[![gitlocalized ](https://gitlocalize.com/repo/1127/ru/badge.svg)](https://gitlocalize.com/repo/1127/ru?utm_source=badge)
+[![gitlocalized ](https://gitlocalize.com/repo/1127/es/badge.svg)](https://gitlocalize.com/repo/1127/es?utm_source=badge)
+
+[![NPM](https://nodei.co/npm/iobroker.klf200.png?downloads=true)](https://nodei.co/npm/iobroker.klf200/)
 
 This adapter is for controlling a VELUX® KLF-200 interface. This adapter is neither an official VELUX product nor is it supported by the company that owns the VELUX products.
 
-The main intention of this adapter is to control electric roof windows and/or electric blinds or roller shutters. Though the KLF-200 interface is able to connect to further devices like lights, switches, canvas blinds etc. I haven't developed the adapter for use with these kind of devices. Thus, it could be possible, that these devices could be controlled by this adapter, too.
+The main intention of this adapter is to control electric roof windows and/or electric blinds or roller shutters. Though the KLF-200 interface is able to connect to further devices like lights, switches, canvas blinds etc. I haven't tested the adapter for use with these kind of devices. Nonetheless it should be possible, that these devices could be controlled by this adapter, too.
 
-The adapter works with the internal REST API of the KLF-200 interface and you don't need to wire the inputs and outputs of the box, though it's still possible to use them in parallel.
+The adapter works with the official TCP/IP interface of the KLF-200 that was documented with the release of firmware version 2.0.0.71. You don't need to wire the inputs and outputs of the box, but you have to
+connect the KLF-200 to a LAN using an ethernet cable.
 
-----------------------------------------------------------------------------------------------------------------
-
-## Prepare your KLF-200 interface
-
-To use this adapter you have to setup your KLF-200 box in the **interface mode**. It doesn't work if you use your box as a repeater.
-
-> For a detailed explanation of how to accomplish the following tasks please read the manuals that came with your box.
+> ## **ATTENTION: BREAKING CHANGES!**
 >
-> It is assumed that you have successfully logged into your box in a web browser.
-
-
-### Setup products
-
-Each product that you want to control by this adapter has to be registered on the "My products" page. You can register new products either by
-- Copy from another remote control
-- Search for products
-
-If all of your products are registered you should see a list like the following:
-
-![Screenshot of "My products" of the KLF-200 interface](img/ProductList.PNG)
-
-
-### Setup scenes
-
-To record a scene you have to click on the button
-
-![Record program button](img/RecordProgramButton.PNG)
-
-This will open the *Recording in progress* window. Now, use your remote control that comes with your product to change something, e.g. open the window to 40%. Then type in a name for the program and click on *Save program*.
-
-![Screenshot of Recording in progress](img/RecordingInProgress.PNG)
-
-> HINT:
-> * Name your program after product and opening level, e.g. Window bathroom 40%, though the adapter doesn't use any naming conventions.
-> * If your window is closed start with an opening level of 100% and go down with each subsequent program until you reach 0%.
-> * You have a maximum of 32 programs you can save in the box. Therefore, plan your number of steps as there is no real difference in a window opened 30% or 40%.
-
-If you have finished recording programs you will end with a list like the following:
-
-![Screenshot of the program list](img/ProgramList.PNG)
-
-
-### Setup connections
-
-This last step is optional. If you don't use the input and output wires you may have noticed that the tiny LED on the box is flashing all the time. To get rid of the annoying flashing you have to setup at least one connection.
-
-You only have to set it up in the box you don't need to wire anything! Just choose anything you like.
-
-----------------------------------------------------------------------------------------------------------------
-
-## Configure the adapter
-
-![Screenshot of the adapter configuration](img/AdapterConfiguration.PNG)
-
-### Host
-
-Host name of your KLF-200 interface. This is the same you type into the address bar of your web browser to connect to your box.
-
-### Password
-
-The password you need to connect to your KLF-200 interface. It's the same you use when connecting to your box in your web browser.
-
-> The default password of the KLF-200 is `velux123`, but you should have changed it, anyway!
-
-### Polling interval in minutes
-
-<span style="color: #ff0000">**_This option is planned for a future release. If you want to reload the configuratio you have to restart the adapter._**</span>
-
-The number of minutes after which the adapter reloads the configuration from the KLF-200 interface again.
-
-----------------------------------------------------------------------------------------------------------------
-
-## Use the adapter
-
-After the adapter has read the meta data from the KLF-200 interface you will find the following states in the object tree:
-
-Device   | Channel | State         | Data type        | Description
----------|---------|---------------|------------------|------------------------------------------------------
-products |         |               |                  | Has a sub-entry for each product found in the product list of the KLF-200.
-products |         | productsFound | value            | The number of products in the list. Read-only.
-products | 0..n    | category      | text             | Category of the product. Read-only.
-products | 0..n    | level         | level            | Current level of the product. Set to run the corresponding scene. Read/write.
-products | 0..n    | scenesCount   | value            | Number of scenes in which the product is used. Read-only.
-scenes   |         |               |                  | Has a sub-entry for each scene found in the program list of the KLF-200.
-scenes   |         | scenesFound   | value            | The number of scenes in the list. Read-only.
-scenes   | 0..n    | productsCount | value            | Number of products in this scene. Read-only.
-scenes   | 0..n    | run           | button.play      | Indicates if the scene is running. Set to run the scene. Read/write.
-scenes   | 0..n    | silent        | indicator.silent | Indicates if the scene is run in silent mode (if supported by the products of the scene). Read-only.
-
-> **IMPORTANT:**
+> **In case you have an older version of the KLF-200 you have to install the new firmware
+> (at least version 2.0.0.71) to have this adapter work with your
+> KLF-200 interface. Newer versions of the KLF-200 have installed the current firmware, already.**
 >
-> The IDs that are used in the channels are the IDs coming from the KLF-200 interface. If you make changes at the products list or at the program list in your KLF-200 the IDs may change.
+> **This version of the adapter doesn't work with older firmware versions.**
+>
+> **Updating your KLF-200 is strictly at your own risk. In case of a power outage
+> during the update you may loose the functionality of the KLF-200.**
 
-To run a scene you can either set the `run` state of the scene to `true` or you can set the `level` state of the product to a value that corresponds to a scene that sets the product to that level.
+## User documentation
 
-### Example
+You can find the user documentation in several languages:
 
-Assuming your bathroom window is channel `0`. You have a scene on Channel `10` that opens the bathroom window at 40%.
+![English flag](img/united-kingdom-flag-round-icon-16.png) [English documentation](docs/en/ReadMe.md)
 
-````javascript
-// Variant 1: Open the bathroom window at 40% using the scenes run state:
-setState('klf200.0.scenes.10.run', true);
-/* 
-    The following will happen:
-    1. Your window will start to move to 40% opening level.
-    2. After your window has stopped, klf200.0.scenes.10.run will be set to 'false' again.
-    3. klf200.0.products.0.level will be set to 40%.
-*/
+![German flag](img/germany-flag-round-icon-16.png) [Deutsche Dokumentation](docs/de/ReadMe.md)
 
-// Variant 2: Open the bathroom window at 40% using the products level state:
-setState('klf200.0.products.0.level', 40);
-/*
-    The following will happen:
-    1. Your window will start to move to 40% opening level.
-    2. klf200.0.scenes.10.run will be set to true.
-    3. After your window has stopped, klf200.0.scenes.10.run will be set to 'false' again.
-*/
+![France flag](img/france-flag-round-icon-16.png) [Documentation française](docs/fr/ReadMe.md)
 
-// What happens, if we don't have a scene for that level?
-setState('klf200.0.products.0.level', 41);
-/*
-    The following will happen:
-    1. Your window won't move at all!
-    2. klf200.0.products.0.level will be reset to the previous value, e.g. 40
-*/
+![Italien flag](img/italy-flag-round-icon-16.png) [Documentazione italiana](docs/it/ReadMe.md)
 
-````
+![Netherlands flag](img/netherlands-flag-round-icon-16.png) [Nederlandse documentatie](docs/nl/ReadMe.md)
 
+![Poland flag](img/poland-flag-round-icon-16.png) [Polska dokumentacja](docs/pl/ReadMe.md)
 
-----------------------------------------------------------------------------------------------------------------
+![Portuguese flag](img/portugal-flag-round-icon-16.png) [Documentação portuguesa](docs/pt/ReadMe.md)
 
-## Known limitations
+![Russian flag](img/russia-flag-round-icon-16.png) [Российская документация](docs/ru/ReadMe.md)
 
-The adapter controls the KLF-200 using the internal REST API that is used by the web interface of the box. Though we use only a subset of the API there are some restrictions:
+![Spanish flag](img/spain-flag-round-icon-16.png) [Documentación española](docs/es/ReadMe.md)
 
-* The adapter can't read the current opening level of a window. If you control it with your remote control or it will be closed due to rain the adapter doesn't know about it and it will still show the last known value.
-* The KLF-200 interface is limited to a maximum of 32 scenes.
-* The adapter doesn't know, when an action has finished. The running state will stay `true` for at least 30 seconds.
-* Don't run scenes to fast after each other. The KLF-200 may throw errors. (You will find the errors in the log.)
+## Known restrictions
 
-----------------------------------------------------------------------------------------------------------------
+### Technical limitations of the KLF-200 itself:
 
-VELUX and the VELUX logo are registered trademarks of VKR Holding A/S.
+-   The interface is restricted by storing a maximum of 32 scenes in total
+    with a maximum total number of 192 node positions, whichever is reached first.
+-   There is a maximum number of 200 nodes and up to three beacons that can
+    be stored in the interface.
+-   A maximum of two concurrent connections are supported.
+
+### Limitations of the adatper:
+
+-   If you define a new scene, you have to restart the adapter to recognize the new scene.
+-   The adapter doesn't read the room list at the moment, only user groups are read.
+-   The adapter enables the house status monitor at the KLF-200. It will stay enabled
+    after a reboot of the KLF-200. The house status monitor queries the current status of
+    the products at regular intervals. In a factory new KLF-200 the house status monitor
+    is disabled. Usually, this shouldn't be anything to bother about, but you should be
+    informed about it.
+
+## Documentation of the data points
+
+### Devices
+
+The following devices are defined:
+
+-   gateway: Shows global data from the KLF-200 interface itself, like version numbers and current status.
+-   groups: Has a corresponding channel for each user group defined.
+-   info: Connection state between the adapter and the KLF-200.
+-   products: Has a corresponding channel for each product that is registered in the KLF-200.
+-   scenes: Has a corresponding channel for each scene that is defined in the KLF-200.
+
+### Channels
+
+#### Gateway
+
+-   GatewayState - Configuration state of the KLF-200. The KLF-200 can operate
+    as a gateway to control registered products or as a repeater to extend the
+    range of physical remote controls. This adapter is supposed to work with
+    the KLF-200 in gateway mode. It wasn't tested with a KLF-200 in repeater mode.
+    After you have setup your KLF-200 and you have
+    registered you products this state should be GatewayMode_WithActuatorNodes.
+-   GatewaySubState - This state shows if the gateway is currently idle or if
+    it's running a command, a scene of if it's currently in a configuration mode.
+-   HardwareVersion - Version number of the hardware release of the KLF-200
+-   ProductGroup - Product Group of the KLF-200 itself. It's a remote control
+    device and therefore its product group value is always 14.
+-   ProductType - Product type of the KLF-200 itself. It's always 3.
+-   ProtocolVersion - Version number of the protocol with which the adapter communicates with the device.
+-   SoftwareVersion - Version number of the firmware.
+
+#### Groups
+
+-   groupsFound - Number of groups defined.
+-   0...n - Channel for each group
+    -   groupType - Type of the group. A UserGroup is a user defined group
+        and can contain different products of the same category.
+    -   nodeVariation - Defines the special kind of window like top hung, kip, flat roof, sky light
+    -   order - Custom sort order, can be used to sort the products in visualisations. This state is writable.
+    -   placement - Room or house group number. Change this to put the product
+        in another room. This state is writable.
+    -   productsCount - Number of products that are contained in the group.
+    -   targetPosition - Set this state to a value between 0% and 100% to move a
+        complete group. This state is writable.
+    -   targetPositionRaw - Set this state to a value between 0 and 65535 (0x000 - 0xFFFF) to move a
+        complete group. This state reflects the raw value of the target position. This state is writable.
+    -   velocity - Velocity at which the whole group operates. This state is
+        writable.
+
+#### Info
+
+-   connection - Indicates if the adapter has an active connection to the
+    KLF-200. If the connection is lost or can not be established for
+    whatever reason this state will change to false.
+    During the initialization phase of the adapter this state stays at
+    false until all event handlers are in place. If this state is true
+    it's safe to run commands and query states. If this state is false
+    you don't have a connection to the KLF-200 and your commands can't be
+    received and states that you query may not reflect the real value for
+    the product. If the connection to the KLF-200 is lost physically it still
+    takes a few seconds until the adapter gets the information, thus even if
+    the connection state is true there might be a slight chance that your
+    connection is lost, already.
+
+#### Products
+
+-   productsFound - Number of products registered in the interface
+-   0...n - Channel for each registered product
+    -   FP1CurrentPositionRaw - Raw position value of the functional parameter 1; the raw values is in the range of 0-65535
+    -   FP2CurrentPositionRaw - Raw position value of the functional parameter 2; the raw values is in the range of 0-65535
+    -   FP3CurrentPositionRaw - Raw position value of the functional parameter 3; the raw values is in the range of 0-65535
+    -   FP4CurrentPositionRaw - Raw position value of the functional parameter 4; the raw values is in the range of 0-65535
+    -   category - Name of the category, e.g. Window Opener, Roller Shutter
+    -   currentPosition - current position of the product in percent;
+        usually, 0% means window closed, roller shutter up, lights out etc.
+        Based on the raw value and the product category the value is calculated
+        accordingly.
+    -   currentPositionRaw - Current position of the product as raw value
+    -   nodeVariation - Defines the special kind of window like top hung, kip, flat roof, sky light
+    -   order - Custom sort order, can be used to sort the products in visualisations. This state is writable.
+    -   placement - Room or house group number. Change this to put the product
+        in another room. This state is writable.
+    -   powerSaveMode - Kind of power save mode of the product.
+    -   productType - Type of the product. The numbers are not documented, thus
+        the adapter shows the raw numbers.
+    -   remainingTime - Remaining time of the current operation of the product in
+        seconds. Currently, this is only updated at the beginning and at the end
+        of a products movement.
+    -   runStatus - Execution status, possible values are ExecutionCompleted, ExecutionFailed or ExecutionActive.
+    -   serialNumber - Serial number of the product.
+    -   state - The operating state of the product. Can have the following values: NonExecuting, Error, WaitingForPower, Executing, Done, Unknown
+    -   statusReply - If the runStatus of an execution command has failed this
+        state contains the reason.
+    -   stop - Set this state to true to stop a running operation. This state is
+        writable, only.
+    -   subType - Depending on the category the sub type defines special kinds or
+        capabilities, e.g. for a window a '1' means that the window has a rain sensor.
+    -   targetPosition - Set this state to a value between 0% and 100% to move a
+        window or to dim a light. This state is writable.
+    -   targetPositionRaw - This state reflects the target position converted to a
+        raw value.
+    -   timestamp - Timestamp of the last known position in local time.
+    -   typeID - Type of the product, e.g. window, light, roller shutter.
+    -   velocity - Velocity at which the product operates. The velocity depends on
+        the physical capabilites of the product, e.g. a window can move in silend mode or in fast mode, lights may dim at different velocities, but there may
+        be other products which change their position only with a fixed speed.
+    -   wink - Set this state to true to let the product wink. This is used to
+        identify a device, e.g. a window will move its handle, a roller shutter
+        will move up and down a little bit. This state is writable, only.
+
+#### Scenes
+
+-   scenesFound - Number of scenes found in the interface
+-   0..n - Channel for each scene
+    -   productsCount - Number of products that are controlled through this scene
+    -   run - Set this state to true to run the scene. If a scene is running this state is set to true.
+    -   stop - Set this state to stop a running scene. This state is writable, only.
 
 ## Changelog
 
+#### 1.0.0
+
+-   (Michael Schroeder) Support of firmware 2.0.0.71
+
 #### 0.9.5
-* (Michael Schroeder) Bug fixes
+
+-   (Michael Schroeder) Bug fixes
 
 #### 0.9.4
-* (Michael Schroeder) Compatible to Admin 3, add documentation
+
+-   (Michael Schroeder) Compatible to Admin 3, add documentation
 
 #### 0.9.0
-* (Michael Schroeder) Initial public beta release
+
+-   (Michael Schroeder) Initial public beta release
 
 #### 0.0.1
-* (Michael Schroeder) Initial developer release
+
+-   (Michael Schroeder) Initial developer release
 
 ## License
+
 The MIT License (MIT)
 
-Copyright (c) 2018 Michael Schroeder <klf200@gmx.de>
+Copyright (c) 2018-2020 Michael Schroeder <klf200@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -197,6 +247,6 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 
-------------------------------------------------------------------------------
+---
 
 VELUX and the VELUX logo are registered trademarks of VKR Holding A/S.

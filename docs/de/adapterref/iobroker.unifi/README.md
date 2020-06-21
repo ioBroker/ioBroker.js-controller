@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: 83F6GLkofFfSJa7dSgnC34d982xoVkH62+Bwfk0dnYU=
+hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
 ---
 ![Logo](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -44,7 +44,7 @@ Es ist möglich, die Aktualisierung ausgewählter Informationen zu deaktivieren 
 Durch Ändern des Status 'Aktiviert' eines WLAN kann es aktiviert / deaktiviert werden. Einige Sekunden später wird die Änderung für die Access Points bereitgestellt.
 
 ### Gutscheinerstellung
-Mit der Schaltfläche 'vouchers.create_vouchers' können vordefinierte Gutscheine erstellt werden. Es ist möglich, die Anzahl der zu erstellenden Gutscheine, die Gültigkeitsdauer der Gutscheine und Grenzwerte für das Hoch- und Herunterladen zu konfigurieren.
+Mit der Schaltfläche 'vouchers.create_vouchers' können vordefinierte Gutscheine erstellt werden. Es ist möglich, die Anzahl der zu erstellenden Gutscheine, die Gültigkeitsdauer der Gutscheine und Grenzwerte für das Hoch- und Herunterladen festzulegen.
 
 ## Fehlende Datenpunkte
 Der Adapter verwendet [Node-Unifi](https://github.com/jens-maus/node-unifi), um eine Verbindung zu Ihrem UniFi-Controller herzustellen. Zur Vereinfachung werden nicht alle verfügbaren Datenpunkte in Ihren ioBroker gezogen. Wenn Sie Datenpunkte vermissen, verwenden Sie die folgenden URLs, um die API zu überprüfen. (Hinweis: Sie müssen IP, PORT und SITE durch Ihre Einstellungen ersetzen.)
@@ -59,6 +59,20 @@ Der Adapter verwendet [Node-Unifi](https://github.com/jens-maus/node-unifi), um 
 | Netzwerke | https:// IP: PORT / api / s / SITE / rest / networkconf |
 | Gesundheit | https:// IP: PORT / api / s / SITE / stat / health |
 | Gutscheine | https:// IP: PORT / api / s / SITE / stat / voucher |
+| DPI | https:// IP: PORT / api / s / SITE / stat / dpi |
+
+### UbiOS-Endpunkte
+| Informationen | API URL |
+|-------------|------------------------------------------------------|
+| Websites | https:// IP / proxy / network / api / self / sites |
+| SysInfo | https:// IP / proxy / network / api / s / SITE / stat / sysinfo |
+| Kunden | https:// IP / proxy / network / api / s / SITE / stat / sta |
+| Geräte | https:// IP / Proxy / Netzwerk / API / s / SITE / stat / Gerät |
+| WLANs | https:// IP / proxy / network / api / s / SITE / rest / wlanconf |
+| Netzwerke | https:// IP / proxy / network / api / s / SITE / rest / networkconf |
+| Gesundheit | https:// IP / proxy / network / api / s / SITE / stat / health |
+| Gutscheine | https:// IP / proxy / network / api / s / SITE / stat / voucher |
+| DPI | https:// IP / Proxy / Netzwerk / API / s / SITE / stat / dpi |
 
 ## Bekannte Probleme
 * Der Status is_wired von Clients ist falsch, nachdem ein Client offline geschaltet wurde. Dies ist ein bekanntes Problem des UniFi-Controllers und hängt nicht mit dem Adapter zusammen. (Siehe https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
@@ -67,9 +81,20 @@ Der Adapter verwendet [Node-Unifi](https://github.com/jens-maus/node-unifi), um 
 Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanbietern:
 
 * [node-unifi] (https://github.com/jens-maus/node-unifi)
-* [json-logo-js] (https://github.com/jwadhams/json-logic-js)
+* [json-logic-js] (https://github.com/jwadhams/json-logic-js)
 
 ## Changelog
+### __WORK IN PROGRESS__
+* (Scrounger, braindead1) Implemented DPI
+
+### 0.5.5 (2020-06-13)
+* (braindead1) Fixed some errors reported via Sentry
+
+### 0.5.4 (2020-06-06)
+* (braindead1) Implemented offset for is_online
+* (braindead1) Fixed some issues related to is_online
+* (braindead1) Prepared whitelisting of clients etc.
+
 ### 0.5.2 (2020-05-23)
 * (jens-maus) Implemented UniFiOS/UDM-Pro support
 * (braindead1) Implemented possibility to enable/disable WLANs

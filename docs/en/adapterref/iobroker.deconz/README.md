@@ -14,7 +14,7 @@ Connects to deConz software developed by dresden-elektronik. This software aims 
 
 You must first link to deConz.
 1.  a) Enter ip address for deConz 
-    b) Enter port if you have changed it, otherwise leave it empty.
+    b) Enter port if you have changed it, standard is 80.
 2. After IP address and port is entered and saved hit "Create API Key" Button. Now you can enter the credentials for deConz or go to Phoscon APP and register ioBroker as third party APP.
 
 ## Links
@@ -33,6 +33,9 @@ Required node.js >= 10.x.x
 ## [Sponsors](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
 
 ## Changelog
+
+### 1.3.9
+* set default port to 80
 
 ### 1.3.8
 * fix colorloopspeed is not working

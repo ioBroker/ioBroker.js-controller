@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: HtQRzGke7pLNpCxorf6Re5gBtRVUr7f+kyqVQrsWrJU=
+hash: X7c/5B79iq2rCuBdNVDLXgoIGvkK4d+j5mJ0f066S6U=
 ---
 ![логотип](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -22,19 +22,19 @@ hash: HtQRzGke7pLNpCxorf6Re5gBtRVUr7f+kyqVQrsWrJU=
 
 ## IoBroker Alarm
 Умирает в адаптере, с его помощью. Аларманирование, программирование, техническое обслуживание.
-Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. Находится под названием De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz «заявляет», auf anddere «заявляет» меглиц. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
+Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. Находится под названием De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz "заявляет", auf anddere "заявляет" меглиц. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
 
--------------------------------------------------- -------------------------------------------------- ------------------ *Подставка 28.05.2020*
+-------------------------------------------------- -------------------------------------------------- ------------------ *Подставка 14.06.2020*
 
 ### Tab Haupteinstellungen
 В настоящее время в нем представлены Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm и Passwort vorgenommen.
 
 *Alle Zeiten sind в Sekunden einzugeben*
 
-- Aktivierzeit -> Zeitverzögerung bis zu Aktivierung wenn man einen delay Datenpunkt benutzt
+- Aktivierzeit -> Zeitverzögerung bis zu Aktivierung wenn man einen задержка Datenpunkt benutzt
 - Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf true gesetzt
 - Alarmverzögerung -> Verzögerungszeit bis Einbruch ausgelöst wird (большой вес) Zeit wird der Stille Alarm ausgelöst)
-- Auslösezeit bei Warnungen -> Bei Auslösung eines der Warnkreise (info.warn / night_circuit_changes), ювелирные изделия из драгоценных камней
+- Auslösezeit bei Warnungen -> Bei Auslösung eines der Warnkreise (info.warn / night_circuit_changes), ювелирные изделия из драгоценных камней, дата и время выставки: Zeit auf true gesetzt
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -48,13 +48,14 @@ Benachrichtigungen über Andere Adapter wie z.B. Телеграмма, элек�
 Hier werden die Kreise der Anlage konfiguriert.
 * умри намеки штатов лассен сич андерн *
 
-Der Alarmkreis hat die Priorität «hoch» and hat be aktivierter Anlage Vorrang vor allen and anderen Keisen. Er dient zur eigentlichen Überwachung der Anlage.
+Der Alarmkreis hat die Priorität «hoch» and hat bei aktivierter Anlage Vorrang vor allen and anderen Keisen. Er dient zur eigentlichen Überwachung der Anlage.
 
 Der Warnkreis hat zwei Funktionen, bei aktivierter Anlage werden diese States nur überwacht und geben ggf. eine Meldung ab wenn eine Änderung stattfand. Die Zweite Funkest besteht darin bei z. B. Anwesenheit und aktivierter internen Uberwachung der Anlage (острая внутренняя часть), Bei Veränderung einer der konfigurierten States ggf. Эйн Мелдунг Абгесетцт Вирд.
+* !!! Eine beginnende Nachtruhe deaktiviert den scharf intern Kreis !!! *
 
-Der Nachtkreis hat die gleiche Funktion wie der Warnkreis, jedoch nur während der Nachtruhe. Начинающий ученик Nachtruhe Lost Остаться в живых, падает Активиерт, умереть Uberwachung des Warnkreises (острый внутри) ab.
+Der Nachtkreis hat die gleiche Funktion wie der Warnkreis, jedoch nur während der Nachtruhe. Начинающий ученик Nachtruhe не может умереть, падает aktiviert, умереть Überwachung des Warnkreises (острый внутри) ab.
 
-* Es ist durchaus möglich, dassman für einen State, den Haken bei allen drei Kreisen Macht
+*Es ist durchaus möglich, dassman für einen State, den Haken bei allen drei Kreisen macht.*
 
 Die Kreise sind folgendermaßen überwacht:
 
@@ -62,13 +63,13 @@ Die Kreise sind folgendermaßen überwacht:
 Alarmanlage lässt sich nicht aktivieren wenn ein konfigurierter state aktiv ist. Bei aktivierter Alarmanlage führt eine Veränderung sofort zur Auslösung der Anlage.
 
 #### Warnkreis:
-Hier können Dinge überwacht werden die nicht die Priorität "hoch" haben, z.B. Фенстер им О.Г. В зале Haupteinstellungen kann man die Uberwachung bei der Aktivierung einstellen. Ist die Alarmanlage aktiviert, очень странный и тревожный сигнал тревоги.
+Hier können Dinge überwacht werden die nicht die Priorität "hoch" haben, z.B. Фенстер им О.Г. В доме Haupteinstellungen kann man die Uberwachung bei der Aktivierung einstellen. Ist die Alarmanlage aktiviert, очень странный и тревожный сигнал тревоги.
 Человек Кан Сич Джедох Бенахрихтиген Лассен.
 
 #### Nachtkreis:
 Bei aktiver Nachtruhe werden Veränderungen während der erkannt und ggf. gemeldet.
 
-*Sollten Alarm - und Warnkreis pro State aktiviert sein, zählt der Alarmkreis*
+*Sollten Alarm - und Warnkreis Pro State Aktiviert Sein, zählt der Alarmkreis*
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -81,7 +82,7 @@ Möchte man sich die Ausgabe von Namen mit Ansagen lassen, kann man diese Вар
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Verknüpfungen
-Hier ist es möglich Адаптер международных государств, директива по внешним государствам, в целом. Somit is ein Umweg über ein Skript oder ähnlichen nicht erforderlich.
+Hier ist es möglich Адаптер международных государств, директива по внешним отношениям. Somit is ein Umweg über ein Skript oder ähnlichen nicht erforderlich.
 Es lässt sich somit z.B. Bei Beginn der Nachtruhe, Eine Veriegelung des Türschlosses realisieren.
 ![логотип](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
 
@@ -90,7 +91,7 @@ Es lässt sich somit z.B. Bei Beginn der Nachtruhe, Eine Veriegelung des Türsch
 Der Adapter liefet eine ganze Anzahl заявляет:
 
 #### "alarm.x.use .....".
-Das sind die eigentlichen заявляет, что умирает.
+Das sind die eigentlichen заявляет, что um die Alarmanlage zu bedienen.
 Es ist möglich die Alarmanlage direkt von aktiviert auf "intern scharf" umzuschalten, dies ist jedoch nur möglich wenn die Alarmanlage, не имеющей возможности.
 
 - use.activate_nightrest -> Активирунг дер Нахтруэ
@@ -98,17 +99,17 @@ Es ist möglich die Alarmanlage direkt von aktiviert auf "intern scharf" umzusch
 - use.toggle_nightrest -> Deaktivierung / Aktivierung der Nachtruhe
 - use.activate_warn_circuit -> Aktivierung der Uberwachung des Warnkreises (intern scharf)
 - use.deactivate_warn_circuit -> Deaktivierung der Uberwachung des Warnkreises (intern scharf)
-- use.toggle_warn_circuit -> Deaktivierung / Aktivierung der Überwachung des Warnkreises (стажер)
+- use.toggle_warn_circuit -> Deaktivierung / Aktivierung der Überwachung des Warnkreises (intern scharf)
 - use.disable -> Deaktivierung der Anlage (Alarmkreis)
 - use.enable -> Aktivierung der Anlage (Alarmkreis)
 - use.enable_with_delay -> Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
 - use.list -> Deaktivierung / Aktivierung / Warnkreis / Aktivierung mit Verzögerungszeit
-- use.quit_changes -> штаты Рюксетцен дер байден *info.warn / night_circuit_changes*
+- use.quit_changes -> Rücksetzen der beiden States *info.warn / night_circuit_changes*
 - use.toggle -> Deaktivierung / Aktivierung der Anlage (Alarmkreis)
 - use.toggle_password -> Deaktivierung / Aktivierung der Anlage (Alarmkreis) mit Passwort
 - use.toggle_with_delay -> Deaktivierung / Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
 - use.toggle_with_delay_and_password -> Deaktivierung / Aktivierung der Anlage (Alarmkreis) mit Passwort und Verzögerungszeit
-- use.panic -> Händische Auslösung der Alarmanlage (Einbruch), очень хорошо
+- use.panic -> Händische Auslösung der Alarmanlage (Einbruch), в настоящее время не работает
 
 #### "alarm.x.status ...."
 Hier lässte sich der Zustand der Anlage смог.
@@ -120,11 +121,17 @@ Der log_today State Wird Um Mitternacht Geleert.
 ----------------------------------------------------------------------------------------------------------------------
 
 ## Проблема
-- мужская телеграмма телеграмм, посвященных английским языкам, родным и родным и родным дорогам, телеграммам и телеграммам.
+- мужская телеграмма телеграмм, в том числе слова, написанные на английском языке, канзуфюгт, канцер нью эйн дер дер инстанс авансвен и человек мусс бис * телеграмма.
 
 #### Wichtig, die Benutzung dieses.
 
 ## Changelog
+
+#### 0.8.0 (18.06.2020)
+* (misanorot) !!! Changed circuits dramatacly !!!
+
+#### 0.7.5 (14.06.2020)
+* (misanorot) fixed a few little issues
 
 #### 0.7.0 (07.06.2020)
 * (misanorot) edit notification sentences in admin

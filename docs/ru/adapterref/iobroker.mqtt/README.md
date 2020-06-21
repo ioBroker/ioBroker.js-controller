@@ -748,6 +748,14 @@ void loop() {
 получать от нее данные через облачный сервис!
 
 ## Changelog
+### 3.0.0 (2020-06-20)
+* (Apollon77) Update dependencies (mqtt/wss), nodejs 6 is not longer supported, nodejs 10 is minimum
+* (Apollon77) Add info.connection to instance objects to be automatically created
+
+### 2.1.4 (2020-06-20)
+* (Apollon77) websocket do not have setTimeout method
+* (NorbGH) prevent messageID overflow
+
 ### 2.1.3 (2020- 05-17)
 * (bluefox) Caught some errors
 

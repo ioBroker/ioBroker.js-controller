@@ -135,6 +135,9 @@ Here, measured values, control and status data are listed; depending on the func
 ## FAQ
 
 ## Changelog
+### 1.14.10 (2020-06-14)
+* (foxriver76) removed meta data caching completely because meta data can be dynamic due to FW update or CuxD
+
 ### 1.14.6 (2020-06-05)
 * (foxriver76) added some hmip roles for channel 0
 

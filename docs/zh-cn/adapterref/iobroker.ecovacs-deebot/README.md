@@ -3,50 +3,49 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: ONPUYA2vzmcUCgLIx8djjm7QPDQF3pTlCBZhJyJT59Y=
+hash: 0BsoJdp1to0dpftaRdgofMo85IODN7h606XYm4/vnd8=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
+![npm](https://img.shields.io/npm/dt/iobroker.ecovacs-deebot.svg)
 ![已安装](http://iobroker.live/badges/ecovacs-deebot-installed.svg)
 ![特拉维斯](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
 
 ＃适用于ioBroker的Ecovacs Deebot适配器
-此适配器使用[ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js)库。
+该适配器使用[ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js)库。
 
 ＃＃ 楷模
 ###支持的型号
-* Deebot苗条2
 * Deebot 900/901
 * Deebot Ozmo 930
 * Deebot奥兹莫950
 
 ###这些模型可以正常工作
+* Deebot苗条2
 * Deebot N79
 * Deebot 601
 * Deebot 710/711
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 * Deebot奥兹莫920
-* Deebot Ozmo苗条10
+* Deebot Ozmo T8 AIVI
 
 ###这些模型应该可以工作
 * Deebot M88
 * Deebot 600/605
+* Deebot奥兹莫960
+* Deebot Ozmo苗条10
 
 ##安装
 建议使用Node.js的版本10或更高版本。
 
-该适配器使用画布库，这可能需要其他安装，否则在iobroker中进行安装可能会导致错误：
+该适配器使用画布库，这可能需要其他安装，否则在iobroker中安装可能会导致错误。
 
-```
-npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
-```
+对于基于Debian的Linux系统，应执行以下命令（第二行之后可能需要重新启动）：
 
-对于基于Linux的系统，应执行以下命令（第二行之后可能需要重新启动）：
-
-```
+```bash
 sudo apt-get update
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 sudo npm install canvas --unsafe-perm=true
@@ -55,25 +54,38 @@ sudo npm install canvas --unsafe-perm=true
 有关其他系统的说明，请访问https://www.npmjs.com/package/canvas#compiling
 
 ##用法
-*有关如何使用此适配器的信息可在[此处]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）中找到
+*有关如何使用此适配器的信息可以在[此处]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）中找到
 
 ＃＃ 已知的问题
-*有报告称Ecovacs当前为Ozmo 920/950提供了空的清洁日志。
-*对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告在大约30分钟后连接断开。 24小时。
+*有报告称Ecovacs目前为Ozmo 920/950交付了空的清洁日志。
+*对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告大约连接后丢失连接。 24小时。
 *也有报道称Deebot 900/901的电池电量有奇怪的行为。这很可能是固件错误。
-  *您可以使用适配器配置中的相应选项作为解决方法。
+  *您可以使用适配器配置中的相应选项作为解决方法。
 *“暂停”按钮不适用于Deebot 710/711。
 
 ＃＃ 常问问题
 *常见问题可以在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ）
 
-##谢谢和感谢
-* @joostth（[sucks.js]（https://github.com/joostth/sucks.js））
-* @wpietri（[吸]（https://github.com/wpietri/sucks））
-* @ bmartin5692（[sucks]（https://github.com/bmartin5692/sucks），[bumber]（https://github.com/bmartin5692/bumper））
-* @Ligio（[ozmo]（https://github.com/Ligio/ozmo））
-
 ## Changelog
+
+### 1.0.3
+* Improved Support for Ozmo T8 AIVI
+
+### 1.0.2
+* Initial Support for Ozmo T8 AIVI
+
+### 1.0.1
+   * Compact mode support
+   * New features:
+     * button to save the last used custom area values
+     * buttons to rerun saved custom areas
+   * Some enhancements and fixes
+
+### 1.0.0
+   * Stable Release
+
+### 0.6.5
+   * Set flag for compact mode to false
 
 ### 0.6.4
    * Some minor fixes
@@ -183,6 +195,7 @@ sudo npm install canvas --unsafe-perm=true
 * (mrbungle64) Initial development release
 
 ## License
+
 MIT License
 
 Copyright (c) 2020 Sascha Hölzel <mrb1232@posteo.de>

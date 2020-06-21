@@ -32,24 +32,34 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
-### 1.0.0 (2020-06-04)
-* Changed the compatibility config queries for Danfoss thermostats, so queued setpoint changes are not overwritten
+### 1.3.8 (2020-06-18)
+* Fixed transmission issues caused by overlapped secure transactions
 
-### 0.14.9 (2020-06-03)
-* Placeholder object names (e.g. `Node 003`) for non-reachable nodes are now overwritten with the correct name when the nodes are interviewed.
+### 1.3.6 (2020-06-17)
+* Added some details to the `Multi Channel Association CC` interview logging
+* Configured lifeline node associations of newer devices should now be set correctly
+* `CRC-16`-encapsulated commands can now be received
+* The log file is complete again
 
-### 0.14.8 (2020-06-03)
-* Fixed an issue where secure sleeping nodes could block all communication with other nodes
+### 1.3.4 (2020-06-16)
+* The association UI no longer crashes if an empty association object is returned
+* The target endpoint selection for associations is now hidden if an association does not support multiple target endpoints
+* Fixed an incompatibility with nodes that have a different number of "normal" associations than multi channel associations, e.g. _FGRM-222_
+* The association UI now distinguishes between associations to the device and the root endpoint
+* Many fixes related to handling associations and multi channel associations
+* Creating a log file works again
+* Added support for Devolo Dimmer (MT2760) and Shutter (MT2761) (thanks @nicoh88)
+* When the interview process fails to set a lifeline association with `Multi Channel Association CC`, it now tries again with `Association CC`
 
-### 0.14.7 (2020-06-03)
-* Fixed an issue where interviews could get stuck for sleeping nodes
-* Fixed a crash that happened when decoding a secure message with an unsupported payload
+### 1.3.3 (2020-06-15)
+* Logfiles are now logged in the correct order and some unnecessary logging was removed
+* Fixed an error when using the DoorLockCC setValue API when not all configuration values have been received
+* Errors while sending firmware fragments are now caught and logged
+* The adapter no longer crashes when the serial device exists but does not respond
+* Improved compatibility with some devices that send invalid `Multi Channel Endpoint Find Reports`, e.g. _TKB Home TZ74 Dual Switch_
 
-### 0.14.6 (2020-06-02)
-* Added support for `Protection CC`
-* Fixed several bugs in `Security CC`
-* Updates from a node that span multiple messages are now correctly decoded
-* During the startup, device objects are created for asleep and dead nodes. This allows removing failed devices from the network even after the cache was cleared.
+### 1.3.2 (2020-06-15)
+* Fixed a crash that happens when a `Multi Command CC` is received
 
 ## License
 

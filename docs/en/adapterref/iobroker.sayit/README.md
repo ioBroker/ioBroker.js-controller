@@ -5,6 +5,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sayit.svg)](https://www.npmjs.com/package/iobroker.sayit)
 [![NPM](https://nodei.co/npm/iobroker.sayit.png?downloads=true)](https://nodei.co/npm/iobroker.sayit/)
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 SayIt Adapter can convert text to speech and play it on some device.
 
@@ -238,6 +239,13 @@ Following values for engines are possible:
 - **(tr-TR_AP_Female)** -           tr-TR - Female - Filiz
 
 ## Changelog
+
+### 1.9.8 (2020-06-11)
+* (Apollon77) fix error handling on file copy
+
+### 1.9.7 (2020-06-11)
+* (algar42) tts.ogg state added for ogg file type
+
 ### 1.9.6 (2020-05-24)
 * (bluefox) Show names of SONOS devices
 

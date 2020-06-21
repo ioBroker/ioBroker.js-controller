@@ -135,6 +135,9 @@ CCU / Homematic支持不同的设备类型（有线，无线，HMIP，CUxD）。
 ##常见问题
 
 ## Changelog
+### 1.14.10 (2020-06-14)
+* (foxriver76) removed meta data caching completely because meta data can be dynamic due to FW update or CuxD
+
 ### 1.14.6 (2020-06-05)
 * (foxriver76) added some hmip roles for channel 0
 

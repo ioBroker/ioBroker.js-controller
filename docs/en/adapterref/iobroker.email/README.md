@@ -8,9 +8,11 @@
 
 Send emails from ioBroker.
 
-The whole job makes [nodemailer](https://github.com/nodemailer/nodemailer) and ioBroker just use it.
+The adapter uses [nodemailer](https://github.com/nodemailer/nodemailer) to provide the functionality.
 
 **This Adapter requires nodejs 6.x or higher!!**
+
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 To use Gmail you may need to configure "Allow Less Secure Apps" in your Gmail account unless you are using 2FA in which
 case you would have to create an Application Specific password. You also may need to unlock your account with "Allow access to your Google account" to use SMTP.
@@ -99,6 +101,10 @@ To send email from other adapter use **adapter.sendTo** function.
 For other services see documentation of **Nodemailer**: `[https://github.com/nodemailer/nodemailer](https://github.com/nodemailer/nodemailer)`
 
 ## Changelog
+### 1.0.7 (2020-06-11)
+* (Apollon77) Make sure adapter is not crashing on stop in some edge cases
+* (Apollon77) Add Sentry for crash reporting with js-controller >=3.x
+
 ### 1.0.6 (2019-12-29)
 * (bluefox) Compact mode supported
 

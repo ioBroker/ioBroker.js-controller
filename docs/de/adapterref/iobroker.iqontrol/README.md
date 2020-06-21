@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: YxuUuzsiOUb1LkvPMr9batZh1cLy4wI/qSkqsryAr1Y=
+hash: rVRhjx5LUqJW6vxc8uTqzMrjJdPt0eUL7mjATIwXOhU=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -42,8 +42,8 @@ Sie können es als Web-App auf Homescreen speichern und es sieht aus und fühlt 
 
 ## Du brauchst...
 * Knoten 10 oder höher
-* Web-Adapter mit einer Instanz, auf der dasselbe Protokoll (http oder https) wie der Admin-Adapter ausgeführt wird. Socket.IO ist auf "integriert" und "Web-Sockets erzwingen" deaktiviert
-    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu - iQontrol durchsucht die am besten passende Webadapter-Instanz und verwendet sie für die Kommunikation
+* Web-Adapter mit einer Instanz, auf der dasselbe Protokoll (http oder https) wie der Admin-Adapter ausgeführt wird, socket.IO auf "integriert" und "Web-Sockets erzwingen" deaktiviert
+    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu - iQontrol durchsucht die passende passende Webadapter-Instanz und verwendet sie für die Kommunikation
 * Für die Verbindung über *iobroker.pro-Cloud* sollten sowohl der Administrator- als auch der Webadapter auf http (nicht https) eingestellt sein.
 
 ## Fehlerbehebung
@@ -97,8 +97,8 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 
 ## Beschreibung der Rollen und zugehörigen Zustände
 Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Status, die mit einem entsprechenden Io-Broker-Status verknüpft werden können.
-Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem Io-Broker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Zustände wie möglich zuzuordnen.
-Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die durch automatische Erstellung erstellten Geräte bearbeiten.
+Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem io-Broker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Zustände wie möglich zuzuordnen.
+Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die Geräte bearbeiten, die durch die automatische Erstellung erstellt wurden.
 Klicken Sie auf den Stift hinter dem Gerät, um die Rolle und den Status eines Geräts zu bearbeiten. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
 
 ### Ändern der Datenpunktkonfiguration
@@ -142,7 +142,7 @@ Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meiste
 
     * Sie können Ihre eigene Werteliste erstellen, indem Sie den Datenpunkt ändern (Schraubenschlüsselsymbol hinter dem Datenpunkt auf der Registerkarte "Objekte" von iobroker, siehe oben).
 
-Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der STATE eines Switches in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umgeschaltet werden zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
+Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der ZUSTAND eines Schalters in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umgeschaltet werden zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
 
 ### Link zu anderer Ansicht:
 * Hat keine weiteren Zustände
@@ -167,7 +167,7 @@ Optional können Sie folgende Zustände definieren:
 
 * Für farbige LEDs (HSB-Farbraum):
   * **HUE** * number * - Farbe des Lichts von 0-360 ° (Farbtonformat)
-  * **SÄTTIGUNG** * Zahl * - Lichtsättigung (von Weiß zu reiner Farbe)
+  * **SÄTTIGUNG** * Zahl * - Lichtsättigung (von weiß zu reiner Farbe)
   * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (wenn Sie einen LEVEL-Status und keine weißen LEDs haben, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Für weiße LEDs:
   * **CT** * Zahl * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
@@ -209,7 +209,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 ### <img src="img/icons/radiator.png" width="32"> Homematischer Thermostat:
 Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
-* **PARTY_TEMPERATURE** *string* - Spezialformatierter String zum Definieren des Party- oder Feiertagsmodus von homematischen Thermostaten
+* **PARTY_TEMPERATURE** *string* - speziell formatierter String zum Definieren des Party- oder Feiertagsmodus von homematischen Thermostaten
 * **BOOST_STATE** *number* - Zeigt die verbleibende Boost-Zeit von homematischen Thermostaten an
 
 ### <img src="img/icons/temperature.png" width="32"> Temperatursensor, <img src="img/icons/humidity.png" width="32"> Feuchtigkeitssensor:
@@ -229,7 +229,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ### <img src="img/icons/door_closed.png" width="32"> Tür, <img src="img/icons/window_closed.png" width="32"> Fenster:
 * **STATE** *boolean* - Anzeige, ob die Tür oder das Fenster geöffnet oder geschlossen ist
-    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen (in Fensteroptionen können Sie definieren, welche Texte für geöffnet, geschlossen und gekippt stehen, um das richtige Symbol anzuzeigen).
+    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen (in Fensteroptionen können Sie definieren, welche Texte für geöffnet, geschlossen und geneigt stehen, um das richtige Symbol anzuzeigen).
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "3 Fenster offen" oder "alles geschlossen" oder eine * Nummer * anzuzeigen.
 * Respektiere die **Linked-View-Eigenschaft**
 
@@ -240,9 +240,9 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **TOGGLE** *boolean* - Zeigt einen 'Toggle'-Button an und wird auf true gesetzt, wenn gedrückt
 
 ### <img src="img/icons/door_locked.png" width="32"> Tür mit Schloss:
-* **STATE** *boolean* - Anzeige, ob die Tür geöffnet oder geschlossen ist
-* **LOCK_STATE** *boolean* - Anzeige, ob die Tür verriegelt oder entriegelt ist
-* **LOCK_STATE_UNCERTAIN** *boolean* - Wenn true, wird STATE in Kursivschrift angezeigt, um anzuzeigen, dass die genaue Position der Sperre unbekannt ist
+* **STATE** *boolean* - Anzeige, ob die Tür geöffnet oder geschlossen ist (Tür- / Fensterkontakt)
+* **LOCK_STATE** *boolean* - Anzeige und Steuerung, ob die Tür verriegelt oder entriegelt ist (Steuerung ist deaktiviert, wenn STATE wahr ist - weil Sie eine geöffnete Tür nicht verriegeln können)
+* **LOCK_STATE_UNCERTAIN** *boolean* - Wenn true, wird der STATE in Kursivschrift angezeigt, um anzuzeigen, dass die genaue Position des Schlosses unbekannt ist
 * **LOCK_OPEN** *boolean* - Wenn true festgelegt ist, wird die Tür vollständig geöffnet
 
 ### <img src="img/icons/blind_middle.png" width="32"> Blind:
@@ -288,6 +288,19 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ### <img src="img/icons/play.png" width="32"> Szene:
 * **STATE** *boolean* - wird angezeigt, wenn die Szene aktiv ist. Wenn true festgelegt ist, wird die Szene gestartet
 
+### <img src="img/icons/media_on.png" width="32"> Media Player:
+* **STATE** *string* - "play", "pause" oder "stop" oder *boolean* - true für play, false für stop
+    * In den Geräteoptionen können Sie den Wert definieren, der Wiedergabe, Pause und Stopp darstellt
+* **COVER_URL** *string* - URL zum Titelbild
+* **KÜNSTLER, ALBUM, TITEL** *string* - selbsterklärend
+* **TRACK_NUMBER** *Nummer* - selbsterklärend
+* **PREV, REWIND, PLAY, PAUSE, STOP, FORWARD, NEXT** *boolean* - wird auf true gesetzt, wenn die entsprechende Taste gedrückt wird
+* **SHUFFLE, MUTE, PLAY_EVERYWHERE, EJECT, POWER_SWITCH** *Boolescher* - Status für die entsprechende Funktion
+* **REPEAT** *Boolescher* - Status für Wiederholungsfunktion oder *Zeichenfolge* - 3 Zustände können über die entsprechenden Optionen definiert werden: Wert für Aus, Alle wiederholen und Eins wiederholen
+* **DAUER, ABGELAUFEN** *Nummer* - Dauer und verstrichene Zeit des tatsächlichen Titels - wird verwendet, um eine Suchleiste anzuzeigen
+* **VOLUME** *number* - für Lautstärkeregler
+* **QUELLE, PLAYLIST** *Werteliste* - Auswahlmenü anzeigen, um eine Quelle oder einen Titel aus der Wiedergabeliste auszuwählen
+
 ### <img src="img/icons/popup.png" width="32"> Pop-up:
 * **STATE** *any* - kann verwendet werden, um weitere Informationen anzuzeigen
 * **URL** CONSTANT *string* - Diese URL wird als Iframe im Popup geöffnet
@@ -307,8 +320,9 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * Wenn `` javascript.0.myimage`` keinen Wert hat, wird der Fallback `` whitestone`` verwendet (die Verwendung des Fallbacks ist optional)
 
 ## Gerätenamen
-* Genau wie Variablen in Bild-URLs können Sie Variablen in Gerätenamen verwenden. Die Syntax ist dieselbe:
+* Genau wie Variablen in Bild-URLs können Sie Variablen in Gerätenamen verwenden. Die Syntax ist fast dieselbe:
     * `` Text beim Laden | Text nach dem Laden von {iobrokerstate | fallback} ``
+* Kann zusätzlich den iobrokerstate in eckige Klammern setzen, dann wird der einfache Wert ohne seine Einheit verwendet: `` Text beim Laden | Text nach dem Laden von {[iobrokerstate] | fallback} ``
     * Beispiel: `` Wetter wird geladen | Wetter: {javascript.0.weather | Keine Wetterdaten gefunden} ``
 * Dies zeigt "Wetter wird geladen", wenn Sie die Ansicht öffnen
 * Sobald der Status von "javascript.0.weather" vom Server abgerufen wird, wird der Text durch "Weather: XXX" ersetzt, wobei "XXX" der Wert von "javascript.0" ist .wetter``
@@ -318,7 +332,25 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ## Changelog
 
-### 1.0.1 development
+### 1.1.2 (2020-06-21)
+* (Sebastian Bormann) Compatibility enhancements for repeat function of Media-Player.
+* (Sebastian Bormann) Made value-list and target-value-list sortable.
+* (Sebastian Bormann) Made sortable lists only draggable in y-axis.
+* (Sebastian Bormann) Add option to enter own value for value-lists.
+* (Sebastian Bormann) Addes PLAY_EVERYWHERE to Media-Player.
+
+### 1.1.1 (2020-06-16)
+* (Sebastian Bormann) Some fixes, styling and enhancements for Media-Player.
+* (Sebastian Bormann) Added option to hide play, pause and stop icon for Media-Player.
+* (Sebastian Bormann) Added function repeat one to Media-Player.
+* (Sebastian Bormann) Maquee is only restarting, if the value of a state has really changed.
+* (Sebastian Bormann) Fixed crash when some ids of linked views were missing.
+* (Sebastian Bormann) Added targetValues to custom configuration, wich allows to send changes of a state to different target-datapoints.
+
+### 1.1.0 (2020-06-13)
+* (Sebastian Bormann) Added Media-Player.
+
+### 1.0.1 (2020-06-10)
 * (Sebastian Bormann) Fixed month for timestamps.
 * (Sebastian Bormann) You can now chose if values are linked states or constants.
 * (Sebastian Bormann) Added the ability to use variables in device-names.

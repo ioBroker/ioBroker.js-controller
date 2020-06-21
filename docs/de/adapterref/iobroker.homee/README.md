@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.homee/README.md
 title: ioBroker homee Adapter
-hash: 3uRJsfAB9U1IQXaTq33IPCZQe6ORZedhWuJoM4Mp/ZA=
+hash: FhOuxeUOxXI0VM55+mR5qD8k0SJ09JRQMcCp5MY++ds=
 ---
 ![Logo](../../../en/adapterref/iobroker.homee/admin/homee.png)
 
@@ -11,7 +11,7 @@ hash: 3uRJsfAB9U1IQXaTq33IPCZQe6ORZedhWuJoM4Mp/ZA=
 ![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.homee.svg)
 
 # IoBroker homee Adapter
-** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Beschreibung
 Dieser Adapter verbindet ioBroker mit homee und bietet die folgenden Funktionen:
@@ -19,7 +19,7 @@ Dieser Adapter verbindet ioBroker mit homee und bietet die folgenden Funktionen:
 * ermöglicht die Verbindung über IP oder Homee-ID und Benutzername / Passwort
 * Lesen Sie alle Geräte (Knoten) und Status (Attribute) und zeigen Sie deren Werte einschließlich Aktualisierungen in ioBroker an
 * Erlaube das Ändern von Werten in ioBroker und sende sie an homee zurück, um Geräte zu steuern
-* fungiert als ioBroker-Verlaufsanbieter für alle Statusgeräte, bei denen der Verlauf in homee aktiviert ist. Dies bedeutet, dass Sie die in homee gespeicherten Verlaufswerte verwenden können, um sie in ioBroker mithilfe von Flot, Admin oder auch JavaScript anzuzeigen, einschließlich aller Aggregationen auf Datenebene, wie z. Verlaufsadapter
+* fungiert als ioBroker-Verlaufsanbieter für alle Geräte mit Status, bei denen der Verlauf in homee aktiviert ist. Dies bedeutet, dass Sie die in homee gespeicherten Verlaufswerte verwenden können, um sie in ioBroker mithilfe von Flot, Admin oder auch JavaScript anzuzeigen, einschließlich aller Aggregationen auf Datenebene, wie z. Verlaufsadapter
 
 (noch) nicht unterstützt:
 
@@ -36,14 +36,28 @@ Bitte verwenden Sie dazu GitHub-Probleme.
 
 Am besten stellen Sie den Adapter auf den Debug-Protokollmodus (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen abschneidet). Wenn Sie es nicht gerne in der GitHub-Ausgabe bereitstellen, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
 
-## Was ist Sentry und was wird den Servern gemeldet?
-Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendungen. Und genau das ist in diesem Adapter implementiert.
-
-Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server in Deutschland gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
-
 ## Changelog
 
-### 0.5.0 (2020.03.13)
+### 1.0.7 (2020-06-12)
+* (Apollon77) Fix Admin finally
+
+### 1.0.6 (2020-06-12)
+* (Apollon77) Fix Admin
+
+### 1.0.5 (2020.04.12)
+* (Apollon77) update homee lib to prevent a crash case
+
+### 1.0.4 (2020.04.12)
+* (Apollon77) fixes and optimizations
+* (Apollon77) use js-controller 3.0 features if available 
+
+### 1.0.2 (2020.03.22)
+* (Apollon77) fixes and optimizations 
+
+### 1.0.1 (2020.03.18)
+* (Apollon77) fixes and optimizations 
+
+### 1.0.0 (2020.03.13)
 * (Seraphis411) fixed writing of HomeeMode
 * (Seraphis411) bumped version of homee-api to 0.12.0 (no new features adopted)
 * (Seraphis411) now support for nodejs 10 thanks to newer ws-library (^7.1.2) in homee-api

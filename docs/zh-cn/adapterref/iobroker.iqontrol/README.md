@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: YxuUuzsiOUb1LkvPMr9batZh1cLy4wI/qSkqsryAr1Y=
+hash: rVRhjx5LUqJW6vxc8uTqzMrjJdPt0eUL7mjATIwXOhU=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -69,7 +69,7 @@ hash: YxuUuzsiOUb1LkvPMr9batZh1cLy4wI/qSkqsryAr1Y=
 *然后在这些视图上创建设备。
 
 设备具有确定设备功能，使用哪些图标等的角色。
-根据该角色，您可以将多个状态链接到设备。这些将赋予设备其功能。
+根据该角色，您可以将多个状态链接到设备。这些将赋予设备功能。
 如果选择“链接到其他视图”作为角色，则可以创建到其他视图的链接。我建议对链接到具有相同背景的其他视图的外观进行换肤。
 您也可以尝试使用自动创建功能从iobroker-object-tree中选择现有设备。自动创建会尝试找出角色并匹配尽可能多的状态。
 
@@ -80,7 +80,7 @@ hash: YxuUuzsiOUb1LkvPMr9batZh1cLy4wI/qSkqsryAr1Y=
 
 *要为所有内容提供精美的样式，您可以上传自己的图像。
 
-您可以将图像用作背景图像或设备的背景图像。
+您可以将图像用作背景图像或设备图像。
 文件夹“ / usericons”中的图像可用作设备图标。
 免费的内置演示壁纸来自www.pexels.com。
 
@@ -109,7 +109,7 @@ hash: YxuUuzsiOUb1LkvPMr9batZh1cLy4wI/qSkqsryAr1Y=
 *设置Confirm-Flag（强制用户在将更改写入数据点之前进行确认）
 *设置PIN码（强制用户在将更改写入数据点之前输入此PIN码-但要注意：这仅是低安全性，因为在前端检查了PIN码！使用数字显示全屏-pin-pad（如果要求输入代码）
 *设置一个写入目标值的数据点ID（如果实际值和目标值有不同的数据点）
-*修改数据点的单位，分隔零，单数和复数值
+*修改数据点的单位，以零，单数和复数分隔
 *修改数据点的最小值和最大值
 *修改数据点的类型
 *修改数据点的角色
@@ -118,7 +118,7 @@ hash: YxuUuzsiOUb1LkvPMr9batZh1cLy4wI/qSkqsryAr1Y=
 ![CustomDialog调用](img/custom_call.png)![CustomDialog示例](../../../en/adapterref/iobroker.iqontrol/img/custom_dialog.png)
 
 ###一般状态：
-每个角色具有以下三种状态：
+每个角色具有以下三个状态：
 
 * **ADDITIONAL_INFO** *array* 数据点的数组，将显示在信息对话框的底部
 * **BATTERY** *布尔值*-为true或* number *-小于10％时，将显示少许电池电量图标
@@ -142,7 +142,7 @@ hash: YxuUuzsiOUb1LkvPMr9batZh1cLy4wI/qSkqsryAr1Y=
 
     *您可以通过修改数据点来创建自己的值列表（iobroker的objects-tab中数据点后面的扳手图标，请参见上文）
 
-但是，并非每种类型对每个角色都有意义。因此，例如，在大多数情况下，开关的状态将为布尔值，以便可以在开和关之间进行切换。可能会显示一个字符串，但该开关将不起作用。
+但是，并非每种类型对每个角色都有意义。因此，例如，在大多数情况下，开关的状态将为布尔值，以便可以在开和关之间进行切换。可能会显示一个字符串，但是该开关将不起作用。
 
 ###链接到其他视图：
 *没有其他状态
@@ -154,7 +154,7 @@ hash: YxuUuzsiOUb1LkvPMr9batZh1cLy4wI/qSkqsryAr1Y=
 
 ### <img src="img/icons/button.png" width="32">按键：
 * **STATE** *任何*-任何所需的状态类型
-* **SET_VALUE** 常量*字符串*-这是一个常数（不是链接的io-broker状态！），如果按下按钮，它将分配给STATE
+* **SET_VALUE** 常量*字符串*-这是一个常量（不是链接的io-broker-state！），如果按下按钮，它将分配给STATE
 * **OFF_SET_VALUE** 常量*字符串*-这是一个常量（不是链接的io-broker状态！）。如果已定义，则在in选项中定义的时间或100ms后，STATE将重置为该值。
 
 ### <img src="img/icons/light_on.png" width="32">光：
@@ -177,10 +177,10 @@ hash: YxuUuzsiOUb1LkvPMr9batZh1cLy4wI/qSkqsryAr1Y=
 
     如果您的设备不支持使用HUE，SATURATION和COLOR_BRIGHTNESS（HSB / HSV颜色空间），则可以使用多种替代颜色空间。在设备选项中，您可以选择以下颜色空间之一：
 
-    * **RGB** / **RGB** 您可以使用RGB格式（hex），而不是使用HUE，SATURATION和COLOR_BRIGHTNESS，并在前导'＃'处使用
-    * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可选，并以'＃'开头
+    * **RGB** / **RGB** 您可以使用RGB格式（十六进制），而不是使用HUE，SATURATION和COLOR_BRIGHTNESS，并以“＃”开头
+    * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可将其与前导'＃'结合使用
     * **RGBWWCW** / **RGBWWCW** / **RGBCWWW** / **RGBCWWW** ，WW =暖白，CW =冷白），可选，以“＃”开头
-    * **RGB（仅色相）** /** RGB（仅色相）**：除了使用HUE之外，您还可以使用RGB（仅色相）格式（十六进制），前导号为“＃”。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
+    * **RGB（仅色相）** /** RGB（仅色相）**：可以使用RGB（仅色相）格式（十六进制）代替使用HUE，并在前导'＃'处可选。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
     * ** Milight的色相**：这是Milight设备的色相值，在色相色域中使用另一个起点：
 
 ````
@@ -189,7 +189,7 @@ modulo(-3.60 * (MilightHue/2.55 - 66), 360);
 on modulo(n, m){ return ((n % m) + m) %m; }
 ````
 
-切记：转换到替代色彩空间是由前端完成的，因此只有在打开了iQontrol的情况下，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为避免对话循环，建议您要么使用原始的色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
+注意事项：转换到替代色彩空间是由前端完成的，因此只有在打开iQontrol的情况下，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为了避免对话循环，建议您要么使用原始色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
 
 *效果模式：
     * **效果**：*值列表*-播放效果
@@ -228,9 +228,9 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **链接视图属性**直接打开
 
 ### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/window_closed.png" width="32">窗口：
-* **STATE** *布尔值*-在门或窗打开或关闭时显示
-    *或者，您可以分配一个* value-list *，以显示其他状态，例如“倾斜”（在窗口选项中，您可以定义文字文本代表打开，关闭倾斜显示正确的图标）
-    *您还可以分配*字符串*以显示任何文本，例如“ 3个窗口打开”或“全部关闭”或*数字*
+* **STATE** *布尔值*-如果门或窗户被打开或关闭，则显示
+    *或者，您可以分配*值列表*，以显示诸如“倾斜”之类的其他状态（在窗口选项中，您可以定义文字文本代表打开，关闭倾斜显示正确的图标）
+    *您还可以分配*字符串*以显示任何文本，例如“ 3窗口打开”或“全部关闭”或*数字*
 *尊重**链接视图属性**
 
 ### <img src="img/icons/garagedoor_closed.png" width="32">车库门：
@@ -240,8 +240,8 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **TOGGLE** *布尔值*-显示“切换”按钮，如果按下，则设置为true
 
 ### <img src="img/icons/door_locked.png" width="32">带锁门：
-* **STATE** *布尔值*-显示门是打开还是关闭
-* **LOCK_STATE** *布尔值*-显示门是否被锁定或解锁
+* **STATE** *布尔值*-显示门是打开还是关闭（门/窗接触）
+* **LOCK_STATE** *布尔值*-显示和控制门是否被锁定或解锁（如果STATE为true，则禁用控件-因为您无法锁定门而已打开）
 * **LOCK_STATE_UNCERTAIN** *布尔值*-如果为true，则状态将以斜体显示，以表示锁的确切位置未知
 * **LOCK_OPEN** *布尔值*-如果设置为true，则门将完全打开
 
@@ -249,31 +249,31 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **等级**：*数量*-百叶窗高度
 * **方向**：*值列表*-可以是停止，向上和向下。可以配置代表Stop，Up，Down和Unknown的值
 * **STOP** *布尔值*-如果按下停止按钮，则设置为true
-* ** UP ** / ** DOWN **：*布尔值*-如果按下向上/向下按钮（对于使用UP和DOWN数据点而不是LEVEL或除LEVEL之外的设备），则设置为true。另外，您可以通过** UP_SET_VALUE ** / ** DOWN_SET_VALUE **数据点定义一个值。如果已定义，则在按下“向上” /“向下”按钮时将发送此值而不是true
+* ** UP ** / ** DOWN **：*布尔值*-如果按下向上/向下按钮（对于使用UP和DOWN数据点而不是LEVEL或除LEVEL之外的设备），则设置为true。另外，您可以通过** UP_SET_VALUE ** / ** DOWN_SET_VALUE **数据点定义一个值。如果已定义，则在按下“向上” /“向下”按钮时，将发送此值而不是true
 * ** FAVORITE_POSITION **：*布尔值*-可用于调出喜欢的位置。如果按下“收藏夹”按钮（可以在设备设置中配置按钮标题），则将true发送到该数据点。另外，您可以通过** FAVORITE_POSITION_SET_VALUE **数据点定义一个值。如果已定义，则当按下“收藏夹”按钮时，将发送此值而不是true
 * **SLATS_LEVEL** *数量*-百叶板的位置百分比
 
 ### <img src="img/icons/fire_on.png" width="32">火灾传感器：
 * **STATE** *布尔值*-如果为true，则传感器将显示为已触发
-    *或者，您可以分配*值列表*，以显示其他状态，例如“已篡改”
+    *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
     *您还可以分配* string *以显示任何文本，例如“楼上火”
 * **链接视图属性**直接打开
 
 ### <img src="img/icons/flood_on.png" width="32">洪水传感器：
 * **STATE** *布尔值*-如果为true，则传感器将显示为已触发
-    *或者，您可以分配*值列表*，以显示其他状态，例如“已篡改”
+    *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
     *您还可以分配* string *以显示任何文本，例如“楼上洪水”
 * **链接视图属性**直接打开
 
 ### <img src="img/icons/alarm_on.png" width="32">报警：
 * **STATE** *布尔值*-如果为true，则传感器将显示为已触发
-    *或者，您可以分配*值列表*，以显示其他状态，例如“已篡改”
+    *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
     *您还可以分配* string *以显示任何文本，例如“楼上火”
 * **CONTROL_MODE** *值列表*-选择操作模式，例如“武装”和“撤防”
     *在设备选项中，您可以定义代表撤防的值，因此可以显示代表图标
 
 ### <img src="img/icons/battery_full.png" width="32">电池：
-* **州**：*数字*-电池电量百分比
+* **状态**：*数量*-电池电量百分比
 * **CHARGING** *布尔值*-如果为true，则显示一个充电图标
 * **电源**：*数字*-功耗将在右上角以小号显示
 * **VOLTAGE** *数字*-电压将在右上角以小号显示
@@ -287,6 +287,19 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/play.png" width="32">现场：
 * **STATE** *布尔值*-如果场景处于活动状态，则显示。如果设置为true，将开始场景
+
+### <img src="img/icons/media_on.png" width="32">媒体播放器：
+* **STATE** *字符串*-“播放”，“暂停”或“停止”或*布尔值*-播放为true，停止为false
+    *在设备选项中，您可以定义代表播放，暂停和停止的值
+* **COVER_URL** *字符串*-封面图片的网址
+* **艺术家，专辑，标题**：*字符串*-自我说明
+* **TRACK_NUMBER** *数字*-自我说明
+* **PREV，REWIND，PLAY，PAUSE，STOP，FORWARD，NEXT** *布尔值*-如果按下相应按钮，则设置为true
+* **SHUFFLE，MUTE，PLAY_EVERYWHERE，EJECT，POWER_SWITCH** *布尔值*-相应功能的状态
+* **REPEAT** *布尔值*-表示重复功能的状态或* string *-可以通过coressponding选项定义3种状态：off值，all-all和repeat-one
+* **DURATION，ELAPSED** *数字*-实际标题的持续时间和经过的时间-用于显示搜索栏
+* **VOLUME** *数字*-用于音量滑块
+* **源，播放列表**：*值列表*-显示选择菜单以从播放列表中选择来源或标题
 
 ### <img src="img/icons/popup.png" width="32">弹出：
 * **STATE** *任何*-可用于显示更多信息
@@ -307,18 +320,37 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 *如果javascript.0.myimage没有值，将使用后备的whitestone（使用后备是可选的）
 
 ##设备名称
-*就像图片网址中的变量一样，您可以在设备名称中使用变量。语法是一样的：
+*就像图片网址中的变量一样，您可以在设备名称中使用变量。语法几乎相同：
     *“加载时输入文字|加载{iobrokerstate | fallback}之后输入文字”
+*另外，可以将iobrokerstate放在方括号中，然后将使用不带其单位的普通值：“加载时的文本|加载{[iobrokerstate] | fallback}之后的文本”
     *示例：“天气正在加载|天气：{javascript.0.weather |未找到天气数据}”
 *打开视图时显示``天气正在加载''
-*从服务器获取javascript.0.weather状态后，文本将被Weather XXX替换，其中XXX是javascript.0的值。天气``
+*一旦从服务器获取了javascript.0.weather状态，该文本将替换为Weather：XXX，其中XXX是javascript.0的值。天气``
 *如果``javascript.0.weather''没有值，将使用回退``No weather data found''（使用回退是可选的）
 
 ****
 
 ## Changelog
 
-### 1.0.1 development
+### 1.1.2 (2020-06-21)
+* (Sebastian Bormann) Compatibility enhancements for repeat function of Media-Player.
+* (Sebastian Bormann) Made value-list and target-value-list sortable.
+* (Sebastian Bormann) Made sortable lists only draggable in y-axis.
+* (Sebastian Bormann) Add option to enter own value for value-lists.
+* (Sebastian Bormann) Addes PLAY_EVERYWHERE to Media-Player.
+
+### 1.1.1 (2020-06-16)
+* (Sebastian Bormann) Some fixes, styling and enhancements for Media-Player.
+* (Sebastian Bormann) Added option to hide play, pause and stop icon for Media-Player.
+* (Sebastian Bormann) Added function repeat one to Media-Player.
+* (Sebastian Bormann) Maquee is only restarting, if the value of a state has really changed.
+* (Sebastian Bormann) Fixed crash when some ids of linked views were missing.
+* (Sebastian Bormann) Added targetValues to custom configuration, wich allows to send changes of a state to different target-datapoints.
+
+### 1.1.0 (2020-06-13)
+* (Sebastian Bormann) Added Media-Player.
+
+### 1.0.1 (2020-06-10)
 * (Sebastian Bormann) Fixed month for timestamps.
 * (Sebastian Bormann) You can now chose if values are linked states or constants.
 * (Sebastian Bormann) Added the ability to use variables in device-names.

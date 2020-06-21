@@ -3,14 +3,13 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.deconz/README.md
 title: 无题
-hash: q3KR5mKvtQHOYZ6IQR961zO2zHamS9OUjsrQaKqZK/4=
+hash: xzWGUNkAGKRFbpANSBfLaWc62lyPYV1ShIRT4L9XpV0=
 ---
 ![商标](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
 ![安装数量](http://iobroker.live/badges/deconz-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.deconz.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.deconz.svg)
-![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.deconz.svg)
 ![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)
 
 ioBroker deConz dresden-elektronik适配器
@@ -23,7 +22,7 @@ ioBroker deConz dresden-elektronik适配器
 
 1. a）输入deConz的IP地址
 
-    b）如果更改了端口，请输入，否则将其留空。
+    b）输入端口（如果已更改），标准为80。
 
 2.输入并保存IP地址和端口后，单击“创建API密钥”按钮。现在，您可以输入deConz的凭据，或转到Phoscon APP并将ioBroker注册为第三方APP。
 
@@ -38,6 +37,74 @@ ioBroker deConz dresden-elektronik适配器
 ## [赞助商](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
 
 ## Changelog
+
+### 1.3.9
+* set default port to 80
+
+### 1.3.8
+* fix colorloopspeed is not working
+* fix set xy has no effect 
+* some small fixes
+
+### 1.3.7
+* stable re-release
+
+### 1.3.6
+* fix object definition dimup and dimdown
+
+### 1.3.5
+* disable node v8 tests
+* fix createscene object definition
+* prevent websocket to connect if port, api key or ip is missing
+* catch errors on ackStateVal
+* fix "Cannot read property 'id' of undefined" for controlId
+* fix crash on scene actions with js-controller 3
+* catch onStateChange stateObj is null
+* fix level update when bri was set by other deConz instance
+
+### 1.3.4
+* fix message "State value to set is invalid"
+* terminate websocket connection on error to make sure the session is closed
+* check response is not undefined
+* catch request errors and send to sentry
+* prevent sending message with wrong value type
+
+### 1.3.3
+* fix catch response of setLightState is undefined
+* fix ws.terminate at unload
+* catch ip/port undefined at auto updates
+* catch res is undefined at deleteApiKey
+
+### 1.3.2
+* transitiontime now in seconds instead 1/10 seconds
+* fix colorspeed
+* use new class style
+* add sentry for error collection
+* fix transition time if set to 0
+* objects will be now deleted if the device is removed by adapter
+* fix multiple websocket connections
+* try to fix #120 reconnect after 60 seconds
+
+### 1.3.1
+* fix set dimspeed
+* connect to Websocket in any case
+
+### 1.3.0
+* fix websocket connection if there are no upnp broadcast answer from deconz
+* corrected duration role
+* added level to lights and groups
+
+### 1.2.6
+* fix crash by executing commands without parameters
+
+### 1.2.5
+* code cleanup
+* (Zefau) fixed duplicated subscription
+* (Zefau) useless loop within getGroupAttributes()
+* refactor logging
+* refactor state change
+* fix API Key Dialog
+* Websocket reconnect after 60 Seconds if no message is received
 
 ### 1.2.4
 * dynamicly add boolean states for button events
@@ -179,4 +246,4 @@ ioBroker deConz dresden-elektronik适配器
 ## License
 Apache-2.0
 
-Copyright (c) 2017-2019 Jey Cee jey-cee@live.com
+Copyright (c) 2017-2020 Jey Cee jey-cee@live.com

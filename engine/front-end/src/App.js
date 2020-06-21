@@ -1,6 +1,8 @@
 import React from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import clsx from 'clsx';
+import ReactGA from 'react-ga';
+
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -229,6 +231,11 @@ class App extends Router {
             lastSeenBlog: window.localStorage.getItem('iobroker.net.lastSeenBlog') ? new Date(window.localStorage.getItem('iobroker.net.lastSeenBlog')).getTime() : 0,
         };
 
+        // init google analytics
+        ReactGA.initialize('UA-53190753-1', {
+            debug: window.location.hostname === 'localhost'
+        });
+
         this.contentRef = React.createRef();
         this.updateWindowDimensionsBound = this.updateWindowDimensions.bind(this);
         Blog.fetchData()
@@ -242,6 +249,7 @@ class App extends Router {
         super.componentDidMount();
         this.updateWindowDimensions();
         window.addEventListener('resize', this.updateWindowDimensionsBound);
+        ReactGA.pageview(window.location.hash.replace(/^#/, '/') || '/');
     }
 
     componentWillUnmount() {
@@ -274,6 +282,9 @@ class App extends Router {
                 changed = true;
             }
         }
+
+        ReactGA.pageview(window.location.hash.replace(/^#/, '/'));
+
         changed && this.setState(newState);
     }
 

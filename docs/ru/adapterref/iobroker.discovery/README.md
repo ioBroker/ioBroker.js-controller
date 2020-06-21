@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
 title: ioBroker Откройте для себя адаптер
-hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
+hash: mo/DXV4ctxkpQk1ww63C9u20hQTlban7deTAEGe+iWM=
 ---
 ![логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -17,7 +17,7 @@ hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
 ** Обнаружение устройств всеми известными методами. **
 
 Это специальные адаптеры, которые пытаются найти все возможные устройства, которые могут быть доступны с хоста.
-Просто теперь он может обнаруживать с помощью ping, UPnP (последовательный план).
+Просто теперь он может обнаружить с помощью ping, UPnP (последовательный план).
 
 ** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
 
@@ -34,7 +34,7 @@ hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
 - DoorBird
 - Ebus
 - Эки
-- энергетический менеджер (E.ON / Solarwatt)
+- EnergyManager (E.ON / Solarwatt)
 - энет (юнг)
 - Epson Stylus PX830
 - Факероку (гармония)
@@ -70,6 +70,7 @@ hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
 - Musiccast
 - myDlink
 - Mysensors USB / Serial (9600, 38400, 57600, 115200)
+- Светопрозрачные панели / холст
 - Nuki2
 - Орех
 - Onkyo
@@ -126,6 +127,10 @@ hash: Rk5/xtnI6DKWn8lAAdaPcrChahNtWegetDBEPway3RU=
 - xs1 (франкжук)
 
 ## Changelog
+
+### 2.3.7 (2020-06-11)
+* (Apollon) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
+
 ### 2.3.6 (2020-05-02)
 * (Garfonso) add mydlink adapter
 * (haba1234) New adapter added: Onvif

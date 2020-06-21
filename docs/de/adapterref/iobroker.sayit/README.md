@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sayit/README.md
 title: ioBroker sayit Adapter
-hash: WfuAYnt4vJV2TG5k1YUmniPPUgsw7fEd/VeokkOMjkI=
+hash: 4LM4po1HGU0onQ6qXn4J5z6ZtNCGJq1kDxJoKdWS+Ms=
 ---
 ![Logo](../../../en/adapterref/iobroker.sayit/admin/sayit.png)
 
@@ -13,6 +13,8 @@ hash: WfuAYnt4vJV2TG5k1YUmniPPUgsw7fEd/VeokkOMjkI=
 ![NPM](https://nodei.co/npm/iobroker.sayit.png?downloads=true)
 
 # IoBroker sayit Adapter
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 SayIt Adapter kann Text in Sprache umwandeln und auf einem bestimmten Gerät wiedergeben.
 
 ## Aufbau
@@ -24,7 +26,7 @@ Tatsächlich werden folgende Ausgaben unterstützt:
 
 - *Home24 - MediaPlayer und [FTP-Server] (https://play.google.com/store/apps/details?id=lutey.FTPServer)* - Der Text wird mit Home24 - MediaPlayer auf dem Android-Gerät gesendet und abgespielt Eingerichtet. Hierfür wird die Google Text-to-Speech-Engine verwendet. Die generierte MP3-Datei wird über FTP auf ein Android-Gerät kopiert und mit Home24 - MediaPlayer abgespielt.
 
-    Beide Apps müssen dieselben Home-Verzeichnisse haben. (Zum Beispiel Stammverzeichnis von "SD-Karte").
+    Beide Apps müssen dieselben Home-Verzeichnisse haben. (Zum Beispiel Stammverzeichnis von "SD-Karte").
 
 - *System* - Der Text wird vom Betriebssystem abgespielt, auf dem der ioBroker-Adapter ausgeführt wird. Folgende Betriebssysteme werden unterstützt: Windows, Linux, Mac OSx.
 
@@ -52,15 +54,15 @@ Um Yandex-Stimmen zu verwenden, müssen Sie den API-Schlüssel hier anfordern: [
 
 - Ivona: Englisch, Deutsch, Russisch, Italienisch, Spanisch, Französisch, Dansk, Walisisch, Isländisch, Niederländisch, Polnisch, Portugiesisch, Rumänisch, Schwedisch, Türkisch
 
-        Um Amazon (Ivona) -Stimmen verwenden zu können, benötigen Sie den Zugriffsschlüssel und den geheimen Schlüssel [Hier](http://www.ivona.com/us/for-business/speech-cloud/).
+        Um Amazon (Ivona) -Stimmen verwenden zu können, benötigen Sie den Zugriffsschlüssel und den geheimen Schlüssel [Hier](http://www.ivona.com/us/for-business/speech-cloud/).
 
 - Wolke:
 
-        Um Cloud-Stimmen verwenden zu können, benötigen Sie einen konfigurierten Cloud-Adapter. (Es kann deaktiviert werden, muss aber konfiguriert werden). Dieser Service verwendet AWS Polly und kann direkt verwendet werden.
+        Um Cloud-Stimmen verwenden zu können, benötigen Sie einen konfigurierten Cloud-Adapter. (Es kann deaktiviert werden, muss aber konfiguriert werden). Dieser Service verwendet AWS Polly und kann direkt verwendet werden.
 
 - Amazon Web Services Polly:
 
-        Um AWS Polly-Stimmen verwenden zu können, müssen Sie den Zugriffsschlüssel und den geheimen Schlüssel [hier] (https://console.aws.amazon.com/iam/home). Die Amazon-Dokumentation finden Sie [hier](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) erstellen.
+        Um AWS Polly-Stimmen verwenden zu können, müssen Sie den Zugriffsschlüssel und den geheimen Schlüssel [hier] (https://console.aws.amazon.com/iam/home). Die Amazon-Dokumentation finden Sie [hier](http://docs.aws.amazon.com/general/latest/gr/managing-aws-access-keys.html) erstellen.
 
 offline:
 
@@ -105,7 +107,7 @@ Nach der Erstellung der Adapterinstanz werden folgende Objekte gefunden:
 - sayit.N.tts.playing: true, wenn jetzt Text abgespielt wird, und false, wenn nicht. Wird nur für den Wiedergabemodus "Windows" und "System" unterstützt.
 - sayit.N.tts.cachetext: Phrase, die zwischengespeichert werden soll und dann ohne Internet verwendet werden kann.
 
-   Z.B. Sie können hier manuell "Kein Internet" eingeben. Wenn der Ping zu google.com negativ ist, schreiben Sie "Kein Internet" in "tts.text" und es wird ausgesprochen. Natürlich muss der Cache aktiviert sein.
+   Z.B. Sie können hier manuell "Kein Internet" eingeben. Wenn der Ping zu google.com negativ ist, schreiben Sie "Kein Internet" in "tts.text" und es wird ausgesprochen. Natürlich muss der Cache aktiviert sein.
 
 Der Status **tts.text** unterstützt die erweiterte Syntax, sodass Sprache / Engine und Volume zusammen mit Text definiert werden können. Es wird verwendet, um mehrsprachige text2speech-Engines zu aktivieren.
 Z.B. Wenn der Adapter über die Engine "Google-Englisch" verfügt, kann mit der Phrase ```de:Sag es``` die Verwendung der Google-Deustch-Sprach-Engine erzwungen werden.
@@ -114,7 +116,7 @@ Mit ```ru;75;Погода хорошая``` können wir die Verwendung der russi
 
 Sie können das Ansagevolumen in Prozent vom aktuellen oder angegebenen Volumen (nicht vom Maximum) angeben. Z.B. Wenn der Befehl ```de;75;Gutes Wetter``` ist und "Ankündigungslautstärke" 50% beträgt, wird die Ansage mit einer Lautstärke von 38% von 100% möglich abgespielt.
 
-Der Systembefehl zum Abspielen der MP3-Datei kann ebenfalls angegeben werden. Wenn Sie es leer lassen, werden die Standardeinstellungen verwendet: windows - cmdmp3.exe, OSX - / usr / bin / afplay, linux - mpg321 oder omxplayer (empfohlen).
+Der Systembefehl zum Abspielen der MP3-Datei kann ebenfalls angegeben werden. Wenn Sie das Feld leer lassen, werden die Standardeinstellungen verwendet: Windows - cmdmp3.exe, OSX - / usr / bin / afplay, Linux - mpg321 oder Omxplayer (empfohlen).
 
 Um Omxplayer zu installieren, schreiben Sie ```sudo apt-get install omxplayer``` oder schreiben Sie ```sudo apt-get install mpg321```, um mpg321 zu installieren.
 
@@ -184,7 +186,7 @@ Folgende Werte für Motoren sind möglich:
 - **nl-NL_CLOUD_Female** - nl-NL - weiblich - Lotte
 - **nl-NL_CLOUD_Male** - nl-NL - Männlich - Ruben
 - **pl-PL_CLOUD_Female_Agnieszka** - pl-PL - weiblich - Agnieszka
-- **pl-PL_CLOUD_Male_Jacek** - pl-PL - männlich - Jacek
+- **pl-PL_CLOUD_Male_Jacek** - pl-PL - Männlich - Jacek
 - **pl-PL_CLOUD_Female_Ewa** - pl-PL - weiblich - Ewa
 - **pl-PL_CLOUD_Male_Jan** - pl-PL - Männlich - Jan.
 - **pl-PL_CLOUD_Female** - pl-PL - weiblich - Maja
@@ -259,6 +261,15 @@ Folgende Werte für Motoren sind möglich:
 - **(tr-TR_AP_Female)** - tr-TR - weiblich - Filiz
 
 ## Changelog
+
+### 1.9.8 (2020-06-11)
+* (Apollon77) fix error handling on file copy
+
+### 1.9.7 (2020-06-11)
+* (algar42) tts.ogg state added for ogg file type
+
+### 1.9.6 (2020-05-24)
+* (bluefox) Show names of SONOS devices
 
 ### 1.9.4 (2020-05-11)
 * (Apollon77) Fix Blockly

@@ -3,41 +3,108 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.deconz/README.md
 title: kein Titel
-hash: q3KR5mKvtQHOYZ6IQR961zO2zHamS9OUjsrQaKqZK/4=
+hash: xzWGUNkAGKRFbpANSBfLaWc62lyPYV1ShIRT4L9XpV0=
 ---
 ![Logo](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/deconz-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.deconz.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.deconz.svg)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.deconz.svg)
 ![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)
 
 ioBroker deConz dresden-elektronik Adapter
 
 ==============
 
-Englisch -------------------- Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Software soll eine universelle ZigBee-Gateway-Lösung sein, die Hardware von dresden-elektronik, den ConBee-USB-Stick und RaspBee, ein Modul für den Raspberry Pi, verwendet.
+Deutsch -------------------- Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Software soll eine universelle ZigBee Gateway-Lösung sein, die Hardware von dresden-elektronik, den ConBee USB-Stick und RaspBee, ein Modul für den Raspberry Pi, verwendet.
 
 Sie müssen zuerst einen Link zu deConz erstellen.
 
 1. a) Geben Sie die IP-Adresse für deConz ein
 
-    b) Geben Sie den Port ein, wenn Sie ihn geändert haben, andernfalls lassen Sie ihn leer.
+    b) Geben Sie den Port ein, wenn Sie ihn geändert haben. Der Standardwert ist 80.
 
-2. Nachdem die IP-Adresse und der Port eingegeben und gespeichert wurden, klicken Sie auf die Schaltfläche "Create API Key" (API-Schlüssel erstellen). Jetzt können Sie die Anmeldeinformationen für deConz eingeben oder zur Phoscon APP gehen und ioBroker als Drittanbieter-APP registrieren.
+2. Nachdem die IP-Adresse und der Port eingegeben und gespeichert wurden, klicken Sie auf die Schaltfläche "API-Schlüssel erstellen". Jetzt können Sie die Anmeldeinformationen für deConz eingeben oder zur Phoscon-App gehen und ioBroker als APP eines Drittanbieters registrieren.
 
 ## Links
 [deConz](https://www.dresden-elektronik.de/funktechnik/products/software/pc/deconz/) [REST-Plugin](https://github.com/dresden-elektronik/deconz-rest-plugin) [Gateways (Hardware)](https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
 
 ## Beachten
 ### Keine Unterstützung für Beta-Versionen von deConz
-### Erforderliche js-controller Version> 2.x.x
-Erforderlich node.js> = 10.x.x
+### Erforderliche js-controller Version> 2.x.x.
+Erforderlich node.js> = 10.x.x.
 
 ## [Sponsoren](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
 
 ## Changelog
+
+### 1.3.9
+* set default port to 80
+
+### 1.3.8
+* fix colorloopspeed is not working
+* fix set xy has no effect 
+* some small fixes
+
+### 1.3.7
+* stable re-release
+
+### 1.3.6
+* fix object definition dimup and dimdown
+
+### 1.3.5
+* disable node v8 tests
+* fix createscene object definition
+* prevent websocket to connect if port, api key or ip is missing
+* catch errors on ackStateVal
+* fix "Cannot read property 'id' of undefined" for controlId
+* fix crash on scene actions with js-controller 3
+* catch onStateChange stateObj is null
+* fix level update when bri was set by other deConz instance
+
+### 1.3.4
+* fix message "State value to set is invalid"
+* terminate websocket connection on error to make sure the session is closed
+* check response is not undefined
+* catch request errors and send to sentry
+* prevent sending message with wrong value type
+
+### 1.3.3
+* fix catch response of setLightState is undefined
+* fix ws.terminate at unload
+* catch ip/port undefined at auto updates
+* catch res is undefined at deleteApiKey
+
+### 1.3.2
+* transitiontime now in seconds instead 1/10 seconds
+* fix colorspeed
+* use new class style
+* add sentry for error collection
+* fix transition time if set to 0
+* objects will be now deleted if the device is removed by adapter
+* fix multiple websocket connections
+* try to fix #120 reconnect after 60 seconds
+
+### 1.3.1
+* fix set dimspeed
+* connect to Websocket in any case
+
+### 1.3.0
+* fix websocket connection if there are no upnp broadcast answer from deconz
+* corrected duration role
+* added level to lights and groups
+
+### 1.2.6
+* fix crash by executing commands without parameters
+
+### 1.2.5
+* code cleanup
+* (Zefau) fixed duplicated subscription
+* (Zefau) useless loop within getGroupAttributes()
+* refactor logging
+* refactor state change
+* fix API Key Dialog
+* Websocket reconnect after 60 Seconds if no message is received
 
 ### 1.2.4
 * dynamicly add boolean states for button events
@@ -179,4 +246,4 @@ Erforderlich node.js> = 10.x.x
 ## License
 Apache-2.0
 
-Copyright (c) 2017-2019 Jey Cee jey-cee@live.com
+Copyright (c) 2017-2020 Jey Cee jey-cee@live.com

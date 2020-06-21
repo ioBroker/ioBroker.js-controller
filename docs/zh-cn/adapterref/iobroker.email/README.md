@@ -3,23 +3,25 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.email/README.md
 title: ioBroker电子邮件
-hash: WQ7ygJ7v6so5j75WbrPYqOkjT++hwfOaJip8a6nGyNI=
+hash: 3i+fboU/+xLYeCNJIcUyCthEA6n+U7wok2Y4ca66zcc=
 ---
 ![商标](../../../en/adapterref/iobroker.email/admin/email.png)
 
 ![安装数量](http://iobroker.live/badges/email-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.email.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.email.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.email.svg)
 ![NPM](https://nodei.co/npm/iobroker.email.png?downloads=true)
 
 ＃ioBroker电子邮件
 从ioBroker发送电子邮件。
 
-整个工作使[nodemailer](https://github.com/nodemailer/nodemailer)和ioBroker都使用它。
+适配器使用[节点邮件程序](https://github.com/nodemailer/nodemailer)来提供功能。
 
 **此适配器需要nodejs 6.x或更高版本！**
 
-要使用Gmail，您可能需要在Gmail帐户中配置“允许安全程度较低的应用程序”，除非您使用的是2FA，在这种情况下，您必须创建“应用程序专用”密码。您还可能需要使用“允许访问您的Google帐户”来解锁帐户才能使用SMTP。
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+
+要使用Gmail，您可能需要在Gmail帐户中配置“允许安全程度较低的应用程序”，除非您使用的是2FA，在这种情况下，您必须创建“应用程序专用”密码。您可能还需要使用“允许访问您的Google帐户”来解锁您的帐户才能使用SMTP。
 
 ##用法
 要从ScriptEngine发送电子邮件，只需编写：
@@ -103,6 +105,13 @@ sendTo("email", {
 有关其他服务，请参阅** Nodemailer **的文档：`§§LLLLL_0§§`
 
 ## Changelog
+### 1.0.7 (2020-06-11)
+* (Apollon77) Make sure adapter is not crashing on stop in some edge cases
+* (Apollon77) Add Sentry for crash reporting with js-controller >=3.x
+
+### 1.0.6 (2019-12-29)
+* (bluefox) Compact mode supported
+
 ### 1.0.5 (2019-09-18)
 * (Apollon77/bluefox) js-controller 2.0 compatibility, dependency updates
 
@@ -149,7 +158,7 @@ sendTo("email", {
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019 bluefox
+Copyright (c) 2014-2020 bluefox
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

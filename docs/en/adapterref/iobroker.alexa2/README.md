@@ -79,6 +79,10 @@ With Commands you can trigger some actions on your Alexa-Device. If you use thes
 | doNotDisturb | Switch on/off Do not Disturb for this device| true/false |
 | flashbriefing | Briefing in 100 seconds - news etc.pp| Button |
 | goodmorning | Good morning from Alexa ...| Button |
+| funfact | Fun fact from Alexa ...| Button |
+| joke | Joke from Alexa ...| Button |
+| cleanup | Plays a "gong" tone like for start/end of listening mode ...| Button |
+| curatedtts | Random sentence from the choosen area from Alexa ...| Text (allowed: "goodbye", "confirmations", "goodmorning", "compliments", "birthday", "goodnight", "iamhome") |
 | singasong | Alexa sings a song ...| Button |
 | speak | Alexa says what you type in here ...| Text Input |
 | speakvolume | Adjust the speak volume of Alexa, this volume is set before the speak and reset afterwards| 0-100 |
@@ -295,6 +299,29 @@ When the adapter crashes or an other Code error happens, this error message that
 
 
 ## Changelog
+
+### 3.2.4 (2020-06-18)
+* (Apollon77) Update Alexa-Remote Library to optimize communication error/timeout cases
+
+### 3.2.3 (2020-06-17)
+* (Apollon77) Fix currentState handling
+
+### 3.2.2 (2020-06-17)
+* (Apollon77) remove goodnight because was not working
+* (Apollon77) Fix Play/Pause states and some media optimizations
+
+### 3.2.1 (2020-06-17)
+* (Apollon77) update amazon-cookie library: another optimization for Node.js 14
+
+### 3.2.0 (2020-06-17)
+* (Apollon77/hive) add new commands, jokes/facts/goodnight/cleanup
+* (Apollon77/hive) add new command curatedtts with allowed values ["goodbye", "confirmations", "goodmorning", "compliments", "birthday", "goodnight", "iamhome"] to play random curated sentences
+* (Apollon77) Prevent some crashes
+* (Apollon77) Make sure Timer are not triggering the state when deleted
+* (Apollon77) make sure that Lists objects are deleted correctly when deleting
+* (Apollon77) Make compatible with nodejs 14
+* (Apollon77) Adjust to changes from Amazon so that initial Proxy process works again
+* (OberstVonGatow) Make sure that for Spotify Media data requests do not have negative effects and stop the playback  
 
 ### 3.1.2 (2020-03-18)
 * (Gieskanne/Apollon77) Add Next Timer Date as state

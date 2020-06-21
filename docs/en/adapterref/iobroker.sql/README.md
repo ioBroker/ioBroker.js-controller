@@ -403,6 +403,9 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Storage retention**: How long the values will be stored in the DB.
 
 ## Changelog
+### 1.14.1 (2020-06-17)
+* (bluefox) Corrected error for objects with mixed type
+
 ### 1.14.0 (2020-05-20)
 * (bluefox) added the range deletion and the delete all operations
  

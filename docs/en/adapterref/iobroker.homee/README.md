@@ -3,7 +3,7 @@
 ![Number of Installations](http://iobroker.live/badges/homee-installed.svg) ![Number of Installations](http://iobroker.live/badges/homee-stable.svg) 
 [![Greenkeeper badge](https://badges.greenkeeper.io/Apollon77/ioBroker.homee.svg)](https://greenkeeper.io/)
 
-**This adapter uses Sentry libraries to automatically report exceptions and code errors to me as the developer.** More details see below!
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Description
 This adapter connects ioBroker to homee and provides the following features:
@@ -28,13 +28,13 @@ Please use GitHub issues for this.
 
 Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column Log level). Then please get the logfile from disk (subdirectory "log" in ioBroker installation directory and not from Admin because Admin cuts the lines). If you do not like providing it in GitHub issue you can also send it to me via email (iobroker@fischer-ka.de). Please add a reference to the relevant GitHub issue AND also describe what I see in the log at which time.
 
-## What is Sentry and what is reported to the servers?
-Sentry.io is a way for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
-
-When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to our own Sentry server hosted in germany. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.  
-
-
 ## Changelog
+
+### 1.0.7 (2020-06-12)
+* (Apollon77) Fix Admin finally
+
+### 1.0.6 (2020-06-12)
+* (Apollon77) Fix Admin
 
 ### 1.0.5 (2020.04.12)
 * (Apollon77) update homee lib to prevent a crash case

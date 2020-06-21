@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: rJIYye0OoD6Q9jgnQ1ZV3IAPkfTuwaOqZA0/7pdi32A=
+hash: jV3Rk2nBqhz1DoHLRyUtSO2nHs1+VbsUGiGIgXEq91g=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -14,11 +14,11 @@ hash: rJIYye0OoD6Q9jgnQ1ZV3IAPkfTuwaOqZA0/7pdi32A=
 ![NPM](https://nodei.co/npm/iobroker.heatingcontrol.png?downloads=true)
 
 ＃ioBroker.HeatingControl
-**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参阅[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 **如果您愿意，请考虑捐赠：**
 
-[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
 ##用于控制加热系统的适配器。
 特征：
@@ -28,12 +28,12 @@ hash: rJIYye0OoD6Q9jgnQ1ZV3IAPkfTuwaOqZA0/7pdi32A=
 *支持各种homematic和max！温控器
 *支持多个配置文件
 *如果恒温器和执行器之间没有直接连接，则可以直接从适配器中切换执行器
-*当前，当达到设定温度时，执行器直接关闭。只要设定温度低于实际温度，执行器便会打开。 （这样做：实施改进的控制）
+*当前，当达到设定温度时，执行器直接关闭。只要设定温度低于实际温度，执行器便会打开。 （要做的事情：实施改进的控制）
 *支持每个房间无限制的恒温器，执行器和传感器
 *每个房间自动检测恒温器，执行器和传感器。为此使用功能（例如“加热”）。
 *如果房间中装有恒温器，但不应对其进行控制，则可以在管理界面中排除房间
 *传感器用于降低目标温度（例如，如果窗户打开）；可选配SensorDelay
-*与Feiertag-Adapter或任何其他接口，以检测公共假期。公众假期可以是正常的一天，也可以是星期日。 （管理员设置）
+*与Feiertag-Adapter或任何其他接口，以检测公众假期。公众假期可以是正常的一天，也可以是星期日。 （管理员设置）
 *手动控制温度超过一定时间
 *预定加热时间
 *支持[Pittini]（https://github.com/Pittini/iobroker-heatingcontrol-vis）的可视化。谢谢！
@@ -43,25 +43,25 @@ hash: rJIYye0OoD6Q9jgnQ1ZV3IAPkfTuwaOqZA0/7pdi32A=
 ##安装
 ##设置
 ###主要
-*功能=用于检测每个房间的恒温器，执行器和传感器的功能。这是系统枚举之一
+*功能=每个房间用于检测恒温器，执行器和传感器的功能。这是系统枚举之一
 *时区=用于cron调整cron作业
-* Feiertag的路径-适配器=如果您使用Feiertag-Adapter自动检测今天的公共假期，则在此处设置路径（例如feiertage.0）
+* Feiertag的路径-适配器=如果您拥有使用Feiertag-Adapter自动检测今天的公众假期的权限，请在此处设置路径（例如feiertage.0）
 *当管理员打开时删除所有设备=应该被禁用。仅在需要删除所有房间，执行器和传感器设置时才启用它。当适配器管理员打开时，将执行设备搜索
 *使用的传感器=如果您有窗户传感器，并且要在窗户打开时降低目标温度，则启用该选项
 *使用的执行器=如果要直接从适配器控制执行器。万一温控器和执行器之间没有直接连接，以防万一。
-*如果没有加热时间，则使用执行器=仅对执行器有效。定义没有加热时间时如何设置执行器
+*如果没有加热时间=仅对执行器有效，请使用执行器。定义在没有加热时间的情况下如何设置执行器
 *如果没有恒温器，则使用执行器=仅对执行器有效。如果您的房间没有恒温器但带有加热执行器，则可以永久打开或关闭它们
 
 ###个人资料
 *配置文件类型=支持三种不同的配置文件类型（周一-周日，或周一-周五和周六/周日或每天）
 *配置文件数量=如果您需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
 *周期数=定义您需要多少个不同温度的每日区域。设置的越多，将创建更多的数据点。最好使用较低的值（例如5）
-*““公众假期如星期天=如果您想在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
+*““公众假期如星期天=如果您要在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
 * HeatPeriod =加热周期的开始和结束日期。用于设置“ HeatingPeriodActive”
 
 ＃＃＃ 设备
 *所有房间的清单。您可以在此处禁用房间。
-*按右侧的编辑按钮打开该房间的恒温器，执行器和传感器的设置窗口
+*按右侧的编辑按钮可打开该房间的恒温器，执行器和传感器的设置窗口
 
 ###编辑室
 *在这里您可以验证并设置恒温器，执行器和传感器的对象ID
@@ -72,7 +72,7 @@ hash: rJIYye0OoD6Q9jgnQ1ZV3IAPkfTuwaOqZA0/7pdi32A=
 
 *执行器
 
-**应该设置状态的名称和OID
+**应设置状态的名称和OID
 
 *传感器
 
@@ -86,22 +86,22 @@ hash: rJIYye0OoD6Q9jgnQ1ZV3IAPkfTuwaOqZA0/7pdi32A=
 | LastProgramRun |显示适配器运行的最后一次时间 |
 
 ###温度降低/升高
-| DP名称|说明|相对降低的目标温度|绝对降低的目标温度|
+| DP名称|描述|相对降低的目标温度|绝对降低的目标温度|
 |-------------------|------------------------------------------------------------|--------------------------------------------------------------------------------|---------------------------------------------------------------|
 |来宾增加温度，因为客人想变暖|通过Profiles.0.room.GuestIncrease增加当前剖面温度。将目标设置为Profiles.0.room.absolute.GuestIncrease |
-| PartyNow |降低温度，因为温度变高'|通过Profiles.0.room.PartyDecrease降低当前温度曲线|将目标设置为Profiles.0.room.absolute.PartyDecrease |
+| PartyNow |降低温度，因为温度变高'|通过Profiles.0.room.PartyDecrease降低当前轮廓温度|将目标设置为Profiles.0.room.absolute.PartyDecrease |
 |现在|我们在场，如果我们不在场，降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
 |假期缺席|我们缺席，所以周末也减少通过Profiles.0.room.VacationAbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.VacationAbsentDecrease |
 
-*在这两种情况下，仅使用一次降低（在适配器的先前版本中，可以使用一次以上的脱脂）
-*在绝对脱脂配方中，仅使用不等于0°C的目标值。如果不需要降低某个房间的温度，则将降低值保持在0°C
+*在两种情况下，仅使用一次降脂（在适配器的先前版本中，可以使用一次以上的脱脂剂）
+*在绝对脱脂配方中，仅使用不等于0°C的目标值。如果您不需要降低某个房间的温度，则将降低值保持在0°C
 
 ###没有加热时间
 有三种选择
 
 *固定每个房间的温度
 
-如果选择此选项，则将在每个房间的对象树中显示一个新的数据点。您可以在此处设置固定目标温度，该目标温度在加热时间段未激活时设置。
+如果选择此选项，则将在每个房间的对象树中显示一个新的数据点。您可以在此处设置固定目标温度，该目标温度在不激活加热时间时设置。
 
 *修复所有房间的温度
 
@@ -124,13 +124,13 @@ hash: rJIYye0OoD6Q9jgnQ1ZV3IAPkfTuwaOqZA0/7pdi32A=
 ###窗口打开
 如果“使用传感器”处于活动状态并且配置了一个房间的传感器，则
 
-a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降低当前打开时的温度（true）如果配置了相对降低b）设置目标为Profiles.0.room.absolute.WindowOpenDecrease已配置
+a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降低当前窗口温度（true）时通过Profiles.0.room.WindowOpenDecrease b）将窗口打开时将目标设置为Profiles.0.room.absolute.WindowOpenDecrease（true）如果绝对降低已配置
 
 可选地，可以使用延迟。如果仅在短时间内打开窗户，则传感器延迟可以避免在很短的时间内减小并恢复正常。
 
 ##医疗支持
 您可以使用日历来更改适配器中的数据点。
-只需在admin中从ical配置事件。支持的是
+只需在admin中从ical配置事件即可。支持的是
 
 *加热控制0.存在
 *加热控制0.HolidayPresent
@@ -139,22 +139,36 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 * heatingcontrol.0.PartyNow
 
 ##使用恒温器的更改
-许多用户要求一个选项来将恒温器的更改接管适配器。现在实现了三个选项：
+许多用户要求选择从恒温器到适配器的更改。现在实现了三个选项：
 
-|选项|说明| -------------------------- | --------------------- -------------------------------------------------- ---------------- |没有正如我们在0.3.x之前的版本一样，忽略了恒温器的更改|作为替代|温控器的变化被视为优先；必须在heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime中预先设置替代时间。 |如果未设置替代时间，则不执行替代|作为新的配置文件设置|恒温器的变化被视为当前温度曲线期间的目标温度|每个房间可调节|以上选项可以按房间配置。 datapoint heatingcontrol.0.Rooms.RoomName.ChangesFromThermostatMode定义模式： | 1-否| | 2-作为替代| | 3-作为新的配置文件设置| |如果使用小于0或大于3的值，则会在日志中显示警告
+|选项|说明| -------------------------- | --------------------- -------------------------------------------------- ---------------- |没有正如我们在0.3.x版本之前一样，将忽略恒温器的更改|作为替代|温控器的变化被视为优先；必须在heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime中预先设置替代时间。 |如果未设置替代时间，则不执行替代|作为新的配置文件设置|从温度调节器的变化被视为当前曲线期间的目标温度|每个房间可调节|以上选项可以按房间配置。 datapoint heatingcontrol.0.Rooms.RoomName.ChangesFromThermostatMode定义模式： | 1-否| | 2-作为替代| | 3-作为新的配置文件设置| |如果使用小于0或大于3的值，则会在日志中显示警告
 
 ＃＃ 要求
-*需要节点版本8或更高版本
+*需要8版或更高版本的节点
 
 ##问题和功能请求
 *如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
 
 ###什么是Sentry.io，什么报告给该公司的服务器？
-Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+Sentry.io是一项服务，供开发人员从应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。所有这些都帮助我提供了基本上不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
+
+### 0.5.6 (2020-06-14)
+* (René) see issue #113: re-order of rooms added
+* (René) see issue #112: bug fix "Fensterübersicht"
+
+### 0.5.4 (2020-06-04)
+* (René) bug fix: HeatingControlVis avoid exceptions like "Cannot read property 'val' of null"
+
+### 0.5.3 (2020-06-03)
+* (René) bug fix: new temperatures set when current profile is changed
+* (René) refactoring HeatingControlVis to avoid exceptions like "Cannot read property 'val' of null"
+
+### 0.5.2 (2020-05-25)
+* (René) bug fix: log a warning if actors are configured but UseActors are off
 
 ### 0.5.1 (2020-05-22)
 * (René) log a warning if actors are configured but UseActors are off

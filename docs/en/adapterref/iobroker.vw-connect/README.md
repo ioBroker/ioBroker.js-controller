@@ -112,6 +112,10 @@ Door and window states:
 
 ## Changelog
 
+### 0.0.17
+
+-   add support for 2020 models
+
 ### 0.0.16
 
 -   fix js.controller 3 problems

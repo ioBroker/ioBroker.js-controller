@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tuya/README.md
 title: ioBroker.tuya
-hash: OPYx8AWx1cy+97xg1gQ6kgOMDXhT+6AyWkYwcNiBNY0=
+hash: C1duj53AKCj6xjch9tPbFC8CuP1DQfmuE15pNX+TWkE=
 ---
 ![Logo](../../../en/adapterref/iobroker.tuya/admin/tuya.png)
 
@@ -16,80 +16,89 @@ hash: OPYx8AWx1cy+97xg1gQ6kgOMDXhT+6AyWkYwcNiBNY0=
 ![NPM](https://nodei.co/npm/iobroker.tuya.png?downloads=true)
 
 # IoBroker.tuya
-** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
-ioBroker-Adapter zur Verbindung mit mehreren kleinen und billigen WLAN-Geräten, die mit der Tuya Cloud verbunden sind und hauptsächlich die Smartlife App / Alexa-Skill verwenden. Der Adapter unterstützt das Lesen von Echtzeit-Statusaktualisierungen und die Steuerung dieser Geräte, sobald sie mit der jeweiligen Handy-App synchronisiert sind.
+ioBroker-Adapter für die Verbindung mit mehreren kleinen und billigen Wifi-Geräten, die mit der Tuya Cloud verbunden sind und hauptsächlich die Smartlife App / Alexa-Skill verwenden. Der Adapter unterstützt das Lesen von Statusaktualisierungen in Echtzeit und das Steuern dieser Geräte, sobald diese mit der jeweiligen Mobiltelefon-App synchronisiert wurden.
 
 Tuya-Geräte sind ESP8266MOD WiFi-Smart-Geräte von Shenzhen Xenon.
 
-Neben Geräten, die mit der Smart Live App verwendet werden können, sollte auch die Verwendung der Jinvoo Smart App, der Xenon Smart App, der eFamilyCloud, der io.e (Luminea oder einer ähnlichen) App möglich sein. Bitte melden Sie sich bei Erfolg zurück. <img src="https://https://raw.githubusercontent.com/Apollon77/ioBroker.tuya/master/admin/warning.png" width="50" height="50"> **Der Adapter funktioniert nur mit Tuya und kompatiblen Apps, solange deren Version &lt;3.14 (!!) ist**
+Neben Geräten, die mit der Smart Live App verwendet werden können, sollte auch die Verwendung der Jinvoo Smart App, der Xenon Smart App, der eFamilyCloud, der io.e (Luminea oder einer solchen) App möglich sein. Bitte melden Sie sich bei Erfolg zurück. <img src="https://https://raw.githubusercontent.com/Apollon77/ioBroker.tuya/master/admin/warning.png" width="50" height="50"> **Der Adapter funktioniert nur mit Tuya und kompatiblen Apps, solange deren Version &lt;3.14 (!!) ist**
 
-Der Adapter funktioniert nachweislich sehr gut mit allen Geräten, die "immer in WLAN" sind. Geräte, die nur online geschaltet werden, wenn ein Ereignis vorliegt, ihre Daten senden und wieder offline geschaltet werden, werden nicht unterstützt. Dies bedeutet, dass **batteriebetriebene Geräte normalerweise NICHT funktionieren!**
+Der Adapter funktioniert nachweislich sehr gut mit allen Geräten, die "immer über WLAN" verfügen. Geräte, die nur dann online gehen, wenn ein Ereignis vorliegt, ihre Daten senden und wieder offline gehen, werden nicht unterstützt. Dies bedeutet, dass **batteriebetriebene Geräte normalerweise NICHT funktionieren!**
 
 Eine Adapterinstanz kann alle Geräte in einem Netzwerk verarbeiten, die UDP-Pakete weiterleiten.
 
-## Kompatible Mobile Apps und Versionen
-Die aktuellen Versionen des Tuya Smart und auch der Smartlife App sind **nicht mehr kompatibel** mit der Funktionsweise des Adapters, da Tuya den gesamten Datenverkehr verschlüsselt hat, den der Adapter schnüffeln konnte. Vorerst funktionieren noch einige ältere Versionen der Apps ...
+## Kompatible mobile Apps und Versionen
+Die aktuellen Versionen des Tuya Smart und auch der Smartlife App sind **nicht mehr kompatibel** mit der Funktionsweise des Adapters, da Tuya den gesamten Datenverkehr verschlüsselt hat, den der Adapter abhören könnte. Im Moment funktionieren noch einige ältere Versionen der Apps ...
 
 * Smartlife App <3.14, am besten 3.12.6 !!
-* Tuya Smart App <3.14, am besten 3.12.x
-* STL Smart Home App 1.1.1 (zuletzt datiert September 2019)
+* Tuya Smart App <3.14, am besten 3.12.x.
+* STL Smart Home App 1.1.1 (zuletzt vom September 2019)
 * Ucomen Home App (??)
 
 ## Wie der Adapter funktioniert
 ### Grundfunktionalität
-Der Adapter überwacht das lokale Netzwerk auf UDP-Pakete von Tuya-Geräten (alte Firmware, also nur unverschlüsselt). Der ioBroker-Host, auf dem der Adapter ausgeführt wird, muss sich im selben Netzwerksegment befinden wie die Geräte, und UDP-Multicasting muss vom Router unterstützt werden!
+Der Adapter überwacht das lokale Netzwerk auf UDP-Pakete von Tuya-Geräten (alte Firmware, also nur unverschlüsselt). Der ioBroker-Host, auf dem der Adapter ausgeführt wird, muss sich im selben Netzwerksegment wie die Geräte befinden, und UDP-Multicasting muss vom Router unterstützt werden!
 
-Alle erkannten Geräte werden dem Adapter hinzugefügt und als Basisfunktionalität fordert der Adapter Daten im definierten Abfrageintervall an. Ohne eine Synchronisation mit der jeweiligen mobilen App (su) sind KEINE weiteren Funktionen wie Echtzeitupdates oder Controlling möglich.
+Alle erkannten Geräte werden dem Adapter hinzugefügt und als Basisfunktionalität fordert der Adapter Daten im definierten Abfrageintervall an. Ohne eine Synchronisierung mit der jeweiligen mobilen App (siehe unten) sind KEINE weiteren Funktionen wie Echtzeit-Updates oder Controlling möglich.
 
-Neuere verschlüsselte Geräte werden NICHT angezeigt, bevor Sie eine Gerätesynchronisierung durchführen (siehe nächste ...)
+Neuere verschlüsselte Geräte werden NICHT angezeigt, bevor Sie eine Gerätesynchronisierung durchführen (siehe nächste ...).
 
-### Erweiterte Funktionalität nach Gerätesynchronisation
+### Erweiterte Funktionalität nach Gerätesynchronisierung
 Um die volle Funktionalität des Adapters zu erhalten und auch Geräte mit der neuen verschlüsselten Firmware zu unterstützen, muss dem Adapter ein Verschlüsselungsschlüssel bekannt sein.
 
-Der einfachste Weg, diesen Verschlüsselungsschlüssel zu erhalten, besteht darin, sie über die verwendete mobile App abzurufen. Dazu stellt der Adapter einen Proxy bereit, um die Kommunikation der App mit den Tuya-Servern abzufangen und die erforderlichen Informationen abzurufen.
+Der einfachste Weg, diesen Verschlüsselungsschlüssel zu erhalten, besteht darin, ihn von der verwendeten mobilen App abzurufen. Zu diesem Zweck bietet der Adapter einen Proxy, um die Kommunikation der App mit den Tuya-Servern abzufangen und die erforderlichen Informationen abzurufen.
 
-** Wichtiger Hinweis für iOS-Benutzer: ** Der hier beschriebene Proxy-Ansatz funktioniert nicht mehr. Sobald Sie Smart Life App Version 3.10 oder höher haben, ist die Kommunikation von der App für den Proxy nicht mehr sichtbar. Es funktioniert jedoch immer noch mit allen Android-App-Versionen. Der beste Ansatz ist daher ein Androis-Emulator, wie unter https://forum.iobroker.net/topic/23431/aufruf-tuya-adapter-tests-verschl%C3%BCsselte- beschrieben. ger% C3% A4te / 19
+** Wichtiger Hinweis für iOS-Benutzer: ** Der hier beschriebene Proxy-Ansatz funktioniert nicht mehr. Sobald Sie über Smart Life App Version 3.10 oder höher verfügen, ist die Kommunikation von App für den Proxy nicht mehr sichtbar. Da es jedoch immer noch mit allen Android App-Versionen funktioniert, ist der beste Ansatz ein Androis-Emulator, wie er grob unter https://forum.iobroker.net/topic/23431/aufruf-tuya-adapter-tests-verschl%C3%BCsselte- beschrieben wird ger% C3% A4te / 19
 
 Dazu müssen Sie zunächst ein benutzerdefiniertes Root-Zertifikat auf Ihrem Mobilgerät hinzufügen.
-Wenn Sie in der Konfiguration der Adapterinstanz auf "Start Proxy" klicken, wird das Zertifikat für Ihr System erstellt und zeigt einen QR-Code zum Download-Speicherort an. Im Idealfall scannen Sie den QR-Code mit Ihrem Mobilgerät und folgen Sie den Anweisungen, um dieses Root-Zertifikat hinzuzufügen und ihm zu vertrauen.
-Wenn der QR-Code-Speicherort nicht erreichbar ist (kann bei Verwendung von Docker oder ähnlichem vorkommen), öffnen Sie den "Proxy Web Info Port" in Ihrem Browser und klicken Sie in der Navigation auf "Root-CA". Sie können auch die CA-Datei herunterladen.
+Wenn Sie in der Konfiguration der Adapterinstanz auf "Proxy starten" klicken, wird das Zertifikat für Ihr System erstellt und zeigt dem Download-Speicherort einen QR-Code an. Scannen Sie den QR-Code idealerweise mit Ihrem Mobilgerät und befolgen Sie die Anweisungen zum Hinzufügen und Vertrauen dieses Stammzertifikats.
+Wenn der Speicherort des QR-Codes nicht erreichbar ist (kann bei Verwendung von Docker oder Ähnlichem auftreten), öffnen Sie den "Proxy Web Info Port" in Ihrem Browser und klicken Sie in der Navigation auf "Root-CA". Sie können auch die CA-Datei herunterladen.
 
 Stellen Sie nun sicher, dass Sie die entsprechende Tuya Smart App schließen / beenden.
-Fügen Sie anschließend den Proxy-Port und den ioBroker-Host als "Manual" -Proxy für Ihre WLAN-Verbindung auf Ihrem Mobiltelefon hinzu.
+Fügen Sie anschließend den Proxy-Port und den ioBroker-Host als "manuellen" Proxy für Ihre WLAN-Verbindung auf Ihrem Mobiltelefon hinzu.
 
-Öffnen Sie nun die jeweilige Tuya Smart App und / oder laden Sie sie neu.
+Öffnen Sie nun die entsprechende Tuya Smart App und / oder laden Sie sie neu.
 
-Die Admin-Konfiguration zeigt eine Erfolgsmeldung an, wenn das entsprechende Datenpaket empfangen wurde, und schaltet den Proxy 10 Sekunden später aus. Sie können jetzt den Proxy von Ihrem Telefon entfernen und auch das Zertifikat nicht mehr vertrauen.
+Die Admin-Konfiguration zeigt eine Erfolgsmeldung an, wenn das entsprechende Datenpaket empfangen wurde, und schaltet den Proxy 10 Sekunden später aus. Sie können jetzt den Proxy von Ihrem Telefon entfernen und das Zertifikat auch nicht mehr vertrauen.
 
-Direkt danach sollten die Objekte mit aussagekräftigeren Namen aktualisiert werden und von da an automatisch Live-Updates erhalten und kommunizieren können.
+Unmittelbar danach sollten die Objekte mit aussagekräftigeren Namen aktualisiert werden und von da an automatisch Live-Updates erhalten und in der Lage sein, zu kommunizieren.
 
-Die Synchronisierung wird nur zu Beginn oder nach dem Hinzufügen neuer Geräte zu Ihrer App benötigt.
+Die Synchronisierung wird nur anfangs oder nach dem Hinzufügen neuer Geräte zu Ihrer App benötigt.
 
-Einige Bilder für bestimmte mobile Betriebssysteme finden Sie unter [Proxy-Seite](PROXY.md).
+Einige Bilder für einige mobile Betriebssysteme finden Sie unter [Proxy-Seite](PROXY.md).
 
 ## Nicht für batteriebetriebene Geräte
-Batteriebetriebene Geräte werden von diesem Adapter normalerweise NICHT unterstützt! Der Grund dafür ist, dass sie nicht immer online sind, um Strom zu sparen. Wenn sie ein Signal erhalten, gehen Sie online, senden Sie das Update an die Tuya-Cloud-Server und gehen Sie wieder offline. Sie senden keine UDP-Pakete aus oder sind so lange online, dass der Adapter eine Verbindung zu ihnen herstellen kann.
-Sobald jemand eine Möglichkeit findet, Daten direkt aus der Tuya-Cloud abzurufen, kann sich dies ändern.
+Batteriebetriebene Geräte werden normalerweise NICHT von diesem Adapter unterstützt! Der Grund ist, dass sie nicht immer online sind, um Strom zu sparen. Wenn sie ein Signal erhalten, gehen Sie online, senden Sie das Update an die Tuya-Cloud-Server und gehen Sie wieder offline. Sie senden keine UDP-Pakete aus oder sind lange genug online, damit der Adapter eine Verbindung zu ihnen herstellen kann.
+Sobald jemand einen Weg findet, Daten direkt aus der Tuya-Cloud abzurufen, kann sich dies ändern.
 
 ## Credits
 Die Arbeit des Adapters wäre ohne die großartige Arbeit von @codetheweb, @kueblc und @ NorthernMan54 (https://github.com/codetheweb/tuyapi) und https://github.com/clach04/python-tuya nicht möglich gewesen und viele mehr.
 
 ## Machen
-* Verbesserung der Tests: State Checks und SetState's
+* Testen verbessern: Statusprüfungen und setState's
 * Dokumentation verbessern
 
 ## So melden Sie Probleme und Funktionsanforderungen
-Bitte benutzen Sie dazu GitHub.
+Bitte verwenden Sie dazu GitHub-Probleme.
 
-Stellen Sie den Adapter am besten auf den Debug-Protokollmodus ein (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen schneidet). Wenn Sie es nicht in der GitHub-Ausgabe bereitstellen möchten, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
-
-## Was ist Sentry und was wird den Servern gemeldet?
-Sentry.io ist eine Möglichkeit für Entwickler, sich einen Überblick über Fehler in ihren Anwendungen zu verschaffen. Und genau das ist in diesem Adapter implementiert.
-
-Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server gesendet, der in Deutschland gehostet wird. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Namen oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+Am besten stellen Sie den Adapter auf den Debug-Protokollmodus (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen abschneidet). Wenn Sie es nicht gerne in der GitHub-Ausgabe bereitstellen, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
 
 ## Changelog
+
+### 3.3.5 (2020-06-11)
+* (Apollon77) More schema information added
+* (Apollon77) Optimizations and fixes
+
+### 3.3.2 (2020-03-19)
+* (Apollon77) Many new schemas added
+
+### 3.2.3 (2020-03-08)
+* (Apollon77) Many new schemas added
+
+### 3.2.2 (2020-02-08)
+* (Apollon77) New schemas added
+* (Apollon77) Better handle strange case where qrcode library is not existing
 
 ### 3.2.0 (2020-02-05)
 * (Apollon77) Many new schemas added
@@ -205,7 +214,7 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Apollon77 <iobroker@fischer-ka.de>
+Copyright (c) 2018-2020 Apollon77 <iobroker@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

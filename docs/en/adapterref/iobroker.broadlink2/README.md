@@ -5,9 +5,12 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.broadlink2.svg)](https://www.npmjs.com/package/iobroker.broadlink2)
 [![Travis-CI](http://img.shields.io/travis/frankjoke/ioBroker.broadlink2/master.svg)](https://travis-ci.org/frankjoke/ioBroker.broadlink2)
 
-[German manual - Deutsche Anleitung](README_DE.md)
+[Deutsche Anleitung translated by google](https://translate.google.com/translate?sl=en&tl=de&u=https%3A%2F%2Fgithub.com%2Ffrankjoke%2FioBroker.broadlink2%2Fblob%2Fmaster%2FREADME.md)
 
-## Adapter for different Broadlink compatible WLan-devices (RM++,SP++,A1, Floureon, S1C)
+[Русские инструкции переведены с гуглом](https://translate.google.com/translate?sl=en&tl=ru&u=https%3A%2F%2Fgithub.com%2Ffrankjoke%2FioBroker.broadlink2%2Fblob%2Fmaster%2FREADME.md)
+
+
+## Adapter for different Broadlink compatible WLan-devices (RM++,SP++,A1, Floureon, S1C, LB1)
 
 This is an ioBroker adapter for multiple  Broadlink switch like RM2, RM3, RM Plus, SP1, SP2, SP3, Honeywell SP2, SPMini, SPMini2, SPMiniPlus and some OEM products from them.
 ALso remote controllers are supported like RM2, RM Mini, RM Pro Phicomm, RM2 Home Plus, RM2 Home Plus GDT, RM2 Pro Plus, RM2 Pro Plus2 and RM2 Pro Plus BL. Multiple controllers will generate their own entries and need to be trained separately.
@@ -25,28 +28,40 @@ If a device is not answering for 5 minutes in a row it's set to unreachable. ***
 
 Please delete old devices from admin.objects in case you remove them permanentely or renamed them in your router!
 
-### Note
+The adapter tries to find the device at first by it's name and then by it's mac addresses. If name changes due to a change of ip address for example and mac address stays the same then device will continue to use old name. If device changes to a new device with new mac you can use rename device in config to use an old device name instead.
 
-SP1 devices cannot be polled.
+### Note on polling
+
+* SP1 devices cannot be polled.
+* If you use only RM devices polling can be set to 2 minutes (120 seconds) but should not be set higher because otherwise they might not be re-authorized
+* If you use switches which can be switched manually then molling should be 30s-1 minute to reflect changes within a minute.
 
 ## Configuration
 
 * Enter prefix of network address in configuration which should be removed when generating device names
 * Enter the number of seconds between polls. On each poll all SP* devices expluding SP1 are asked what the switch status is. This feature can be disabled by setting the poll delay to 0. On some RM devices with temperature readout the temperature will be updated as well.
+* You can add now ip addresses of to be found/included devices which are also on another network than the network of the adapter. In this case you need to make sure that the computer on which the adapter is running kno0ws by internal or external routing tables how to connect to this other network.
+* The `use IP interface` option can be set to use a specified interface address, this may help if you have lan and wlan on the system running iobroker and you do not want to scan on first interface but on wlan only, it may help also if local interface is different from external one in some docker or VM environments. You need to enter the IPv4 address of the interface to be used as source address, otherwise adapter will use 0.0.0.0 and listen to all local interfaces only.
 
-## How-To learn codes
+## How-To learn codes on RM's
 
 * In Objects of ioBroker you can find "broadlink2.[devicename].Learn or LearnRF for '+' type of devices".
-* For RM(x)+ (Plus) devices you get also a special RS-sweep-lear button which can learn more devices than on normal 433MHz.
+* For RM(x)+ (Plus) devices you get also a special RS-sweep learn button (_LearnRF) which can learn more devices than on normal 433MHz.
 * Set this object to true. (you can click on the button in object view)
 * Now press some button on your remote control within 30 seconds. in normal mode press them shortly with some time in between until learned.
-* in RF-sweep learn you need to press the button first for ~10 seconds, then release it and then press it aggain for short time.
+* In RF-sweep learn you need to long press the button first for ~10-20 seconds, then release it and wait 2-3 seconds before you press it aggain for very short time.
 * An new Object should now appear within the Object "broadlink.[n].[devicename].LearnedState" with the name ">>> Rename learned @ YYYYMMDDTHHmmSS"
 * You can click on the button in object view to send the code.
 * To rename the item click on the name (starting with `_Rename_learned_`) and change the name. It should not include `,`, `.` or `;` as well as some other characters, they will be replaced by '_';
 
 It is also possible to use the codes from [RM-Bridge](http://rm-bridge.fun2code.de/).
 Just create an object (state, type button) with value where you prepend "CODE_" or with native entry `code` without any 'CODE_'.
+
+## Note on new RM4/LB1 devices
+
+* Several new Broadlink-Devices support a new Broadlink-Cloud protocol which is automatically selected when you use the newer broadlink apps to bring in the device into your wifi network. THis new broadlink protocol is not compatible with the broadlink2-Adapter and you cannot use devices using this new protocol.
+* To avoid this problem bring the device into the network using older Broadlink apps like `e smart home` or `e-control` and make sure your phone is on the same 2.4GHz wifi network which you want to bring it in!
+* This newer devices need also re-authentication every 5-10 minutes which adapter does automatically.
 
 ## Use scenes
 
@@ -99,15 +114,21 @@ The adapter understands also 'sendTo' commands.
 
 ## Changelog
 
-### 2.0.3
+### 2.1.0
 
-* Beta for v2.1, added RM4 protocol and also check now device names according mac address
+* Added RM4 protocol for newest RM4 and RM3-Minis 
+* Added LB1 Wifi bulb device support
+* Added finding of devices if name or ip changes according to mac address
+* Added support of devices in other netword with IP address
+* Changed learning and device communication for all RM devices
+* Re-write of 70% nof the code for new js-controllers and nodejs versions.
 
 ### 2.0.3
 
 * changed to new myAdapter to support js-controller 2.0 and 3.0
 
 ### 2.0.1
+
 * Can handle Floureon/Beko thermostats (now with MQTT)
 * Can handle S1C security devices
 * Names device after their name or with their mac to reduce possibility of renaming
@@ -116,7 +137,6 @@ The adapter understands also 'sendTo' commands.
 * Can add device Id's/Types for new devices
 * New communication routines to find & re-find devices
 * New communication protocoll with devices which do not allow that devices can get commands from 2 sources intermixed
-
 
 ### 1.9.1
 
@@ -142,11 +162,7 @@ with ioBroker admin, npm install iobroker.broadlink2 or from <https://github.com
 
 The MIT License (MIT)
 
-<<<<<<< HEAD
-Copyright (c) 2014-2019, frankjoke <frankjoke@hotmail.com>
-=======
-Copyright (c) 2014-2019 Frank Joke <frankjoke@hotmail.com>
->>>>>>> 7aa61304cbc5059e752952ce3a494629cd151962
+Copyright (c) 2014-2020, frankjoke <frankjoke@hotmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

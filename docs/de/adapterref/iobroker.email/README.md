@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.email/README.md
-title: ioBroker-E-Mail
-hash: WQ7ygJ7v6so5j75WbrPYqOkjT++hwfOaJip8a6nGyNI=
+title: ioBroker E-Mail
+hash: 3i+fboU/+xLYeCNJIcUyCthEA6n+U7wok2Y4ca66zcc=
 ---
 ![Logo](../../../en/adapterref/iobroker.email/admin/email.png)
 
@@ -12,17 +12,19 @@ hash: WQ7ygJ7v6so5j75WbrPYqOkjT++hwfOaJip8a6nGyNI=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.email.svg)
 ![NPM](https://nodei.co/npm/iobroker.email.png?downloads=true)
 
-# IoBroker-E-Mail
+# IoBroker E-Mail
 Senden Sie E-Mails von ioBroker.
 
-Der ganze Job macht [Nodemailer](https://github.com/nodemailer/nodemailer) und ioBroker benutzt es einfach.
+Der Adapter verwendet [Nodemailer](https://github.com/nodemailer/nodemailer), um die Funktionalität bereitzustellen.
 
 ** Dieser Adapter benötigt NodeJS 6.x oder höher !! **
 
-Um Google Mail zu verwenden, müssen Sie in Ihrem Google Mail-Konto möglicherweise "Weniger sichere Apps zulassen" konfigurieren, es sei denn, Sie verwenden 2FA. In diesem Fall müssen Sie ein anwendungsspezifisches Kennwort erstellen. Möglicherweise müssen Sie auch Ihr Konto mit "Zugriff auf Ihr Google-Konto zulassen" entsperren, um SMTP zu verwenden.
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
+Um Google Mail verwenden zu können, müssen Sie möglicherweise "Weniger sichere Apps zulassen" in Ihrem Google Mail-Konto konfigurieren, es sei denn, Sie verwenden 2FA. In diesem Fall müssten Sie ein anwendungsspezifisches Kennwort erstellen. Möglicherweise müssen Sie Ihr Konto auch mit "Zugriff auf Ihr Google-Konto zulassen" entsperren, um SMTP verwenden zu können.
 
 ## Verwendungszweck
-Um E-Mails von ScriptEngine zu senden, schreiben Sie einfach:
+Um eine E-Mail von ScriptEngine zu senden, schreiben Sie einfach:
 
 ```
 // send email to all instances of email adapter
@@ -60,14 +62,14 @@ sendTo("email", {
 });
 ```
 
-Verwenden Sie die Funktion **adapter.sendTo** um E-Mails von einem anderen Adapter zu senden.
+Um E-Mails von einem anderen Adapter zu senden, verwenden Sie die Funktion **adapter.sendTo**
 
 ## Unterstützte Dienste
 - 1und1
 - AOL
 - DebugMail.io
 - DynectEmail
-- Fastmail
+- FastMail
 - GandiMail
 - Google Mail
 - Los Papa
@@ -103,6 +105,13 @@ Verwenden Sie die Funktion **adapter.sendTo** um E-Mails von einem anderen Adapt
 Für andere Dienste siehe Dokumentation von **Nodemailer** `§§LLLLL_0§§`
 
 ## Changelog
+### 1.0.7 (2020-06-11)
+* (Apollon77) Make sure adapter is not crashing on stop in some edge cases
+* (Apollon77) Add Sentry for crash reporting with js-controller >=3.x
+
+### 1.0.6 (2019-12-29)
+* (bluefox) Compact mode supported
+
 ### 1.0.5 (2019-09-18)
 * (Apollon77/bluefox) js-controller 2.0 compatibility, dependency updates
 
@@ -149,7 +158,7 @@ Für andere Dienste siehe Dokumentation von **Nodemailer** `§§LLLLL_0§§`
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2019 bluefox
+Copyright (c) 2014-2020 bluefox
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

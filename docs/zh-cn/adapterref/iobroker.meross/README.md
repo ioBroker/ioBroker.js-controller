@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: y3+QIV+o2GNtEgX1E87gArX5VsyJrkw7y8gdInH5Fp4=
+hash: 2DDGzmsR+2E9oZdaoftOY2D5tzTBGG/7b0om9Dx4N6M=
 ---
 ![商标](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
@@ -16,7 +16,7 @@ hash: y3+QIV+o2GNtEgX1E87gArX5VsyJrkw7y8gdInH5Fp4=
 ![NPM](https://nodei.co/npm/iobroker.meross.png?downloads=true)
 
 ＃ioBroker.meross
-**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**更多详细信息，请参见下文！
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##说明
 该适配器允许通过连接到Meross云服务器来控制Meross设备。
@@ -30,21 +30,30 @@ hash: y3+QIV+o2GNtEgX1E87gArX5VsyJrkw7y8gdInH5Fp4=
 * mss310
 * MSS620欧盟/英国
 
-如果有更多设备可用（或无法运行），请通过打开GitHub问题进行报告。
+如果有更多设备可用（或没有其他设备可用），请通过打开GitHub问题进行报告。
 
-##如何报告问题和功能要求
+##如何报告问题和功能请求
 请为此使用GitHub问题。
 
-最好是将适配器设置为“调试”日志模式（“实例”->“专家”模式->“列日志”级别）。然后，请从磁盘获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin会删掉行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
-
-##什么是Sentry，什么报告给服务器？
-Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
-
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+最好是将适配器设置为“调试日志”模式（“实例”->“专家模式”->“列日志级别”）。然后，请从磁盘（ioBroker安装目录中的子目录“ log”而不是Admin）中获取日志文件，因为Admin会打断行。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
 
 ## Changelog
 
-### 1.3.10 (2020.02.04)
+### 1.4.1 (2020-06-12)
+* (Apollon77) Fix Admin finally
+
+### 1.4.0 (2020-06-12)
+* (Apollon77) Fix Admin
+* (Apollon77) Remove the automatic cutting of passwords to 15 characters, but log info message
+
+### 1.3.13 (2020.04.12)
+* (Apollon77) add auto decryption handling with js-controller 3.0
+* (Apollon77) update meross library to prevent some crash cases
+
+### 1.3.12 (2020.03.08)
+* (Apollon77) update dependencies
+
+### 1.3.11 (2020.02.05)
 * (Apollon77) optimize error handling
 * (Apollon77) Switch Sentry to iobroker own instance hosted in germany
 

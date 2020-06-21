@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: 83F6GLkofFfSJa7dSgnC34d982xoVkH62+Bwfk0dnYU=
+hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
 ---
 ![商标](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -59,9 +59,23 @@ hash: 83F6GLkofFfSJa7dSgnC34d982xoVkH62+Bwfk0dnYU=
 |网络| https：// IP：PORT / api / s / SITE / rest / networkconf |
 |健康| https：// IP：PORT / api / s / SITE / stat / health |
 |优惠券| https：// IP：PORT / api / s / SITE / stat / voucher |
+| DPI | https：// IP：PORT / api / s / SITE / stat / dpi |
+
+### UbiOS端点
+|信息| API URL |
+|-------------|------------------------------------------------------|
+|网站| https：// IP / proxy / network / api / self / sites |
+| SysInfo | https：// IP / proxy / network / api / s / SITE / stat / sysinfo |
+|客户| https：// IP / proxy / network / api / s / SITE / stat / sta |
+|设备| https：// IP / proxy / network / api / s / SITE / stat / device |
+|无线局域网| https：// IP / proxy / network / api / s / SITE / rest / wlanconf |
+|网络| https：// IP / proxy / network / api / s / SITE / rest / networkconf |
+|健康| https：// IP / proxy / network / api / s / SITE / stat / health |
+|优惠券| https：// IP / proxy / network / api / s / SITE / stat / voucher |
+| DPI | https：// IP / proxy / network / api / s / SITE / stat / dpi |
 
 ＃＃ 已知的问题
-*客户端下线后，客户端的is_wired状态不正确。这是UniFi控制器的已知问题，与适配器无关。 （请参阅https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1）
+*客户端离线后，客户端的is_wired状态不正确。这是UniFi控制器的已知问题，与适配器无关。 （请参阅https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1）
 
 ##参考
 该适配器使用以下第三方nodejs模块的功能：
@@ -70,6 +84,17 @@ hash: 83F6GLkofFfSJa7dSgnC34d982xoVkH62+Bwfk0dnYU=
 * [json-logic-js]（https://github.com/jwadhams/json-logic-js）
 
 ## Changelog
+### __WORK IN PROGRESS__
+* (Scrounger, braindead1) Implemented DPI
+
+### 0.5.5 (2020-06-13)
+* (braindead1) Fixed some errors reported via Sentry
+
+### 0.5.4 (2020-06-06)
+* (braindead1) Implemented offset for is_online
+* (braindead1) Fixed some issues related to is_online
+* (braindead1) Prepared whitelisting of clients etc.
+
 ### 0.5.2 (2020-05-23)
 * (jens-maus) Implemented UniFiOS/UDM-Pro support
 * (braindead1) Implemented possibility to enable/disable WLANs

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: HtQRzGke7pLNpCxorf6Re5gBtRVUr7f+kyqVQrsWrJU=
+hash: X7c/5B79iq2rCuBdNVDLXgoIGvkK4d+j5mJ0f066S6U=
 ---
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -22,16 +22,16 @@ hash: HtQRzGke7pLNpCxorf6Re5gBtRVUr7f+kyqVQrsWrJU=
 
 ## IoBroker Alarm
 Dies ist ein Adapter, mit dem sich eine kleine Alarmanlage ohne große programmiertechnische Vorkenntnisse realisieren lässt.
-Er Nord die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe oder De- und Aktivierung zu Interessen. Des Weiteren ist eine direkte Kontaktung der Instanz "Staaten", auf andere "Staaten" möglich. Diese Konflikteungen werden im Reiter Interessenungen anschaulich.
+Er Nord die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe oder De- und Aktivierung zu Interessen. Des Weiteren ist eine direkte Kontaktung der Instanz "Staaten", auf andere "Staaten" möglich. Diese Einstellungenungen werden im Reiter Interessenungen anschaulich.
 
--------------------------------------------------- -------------------------------------------------- ------------------ *Stand 28.05.2020*
+-------------------------------------------------- -------------------------------------------------- ------------------ *Stand 14.06.2020*
 
 ### Tab Haupteinstellungen
 Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm und Passwort Rechte.
 
 *Alle Zeiten sind in Sekundenzahlengeben*
 
-- Aktivierzeit -> Zeitverzögerung bis zu Aktivierung, wenn man einen Verspätung Datenpunkt hat
+- Aktivierzeit -> Zeitverzögerung bis zur Aktivierung, wenn man einen Verspätung Datenpunkt hat
 - Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf wahrheitsgemäß
 - Alarmverzögerung -> Vertragsfrist bis Einbruch Rechte wird wird
 - Auslösezeit bei Warnungen -> Bei Auslösung eines der Warnkreise (info.warn / night_circuit_changes), wird der jeweils zugehörige Datenpunkt für die Zeit auf wahrheitsgemäß
@@ -50,7 +50,8 @@ Hier werden die Kreise der Anlage Infrastruktur.
 
 Der Alarmkreis hat den Status „hoch" und den Hut bei aktivierter Anlage Vorrang vor allen anderen Keisen. Er dient zur eigentlichen Kontrolle der Anlage. Dies entspricht einer eigenen Alarmanlage mit nur einem Kreis.
 
-Der Warnkreis hat zwei Funktionen, bei aktivierter Anlage werden diese Staaten nur zentrale und geben ggf. eine Meldung ab wenn eine richtige Verantwortung. Die zweite Funktion besteht darin, bei z. B. Haltung und aktivierte interne interne der Anlage (scharf innen), bei Befugnissen einer der konfigurierten Staaten ggf. eine Meldung abgesetzt wird.
+Der Warnkreis hat zwei Funktionen, bei aktivierter Anlage werden diese Staaten nur zentrale und geben ggf. eine Meldung ab wenn eine richtige Verantwortung. Die zweite Funktion besteht darin, bei z. B. Handlungs- und aktivierte interne interne der Anlage, bei Konflikten einer der konfigurierten Staaten ggf. eine Meldung abgesetzt wird.
+* !!! Eine erstede Nachtruhe deaktiviert den scharfen Praktikanten Kreis !!! *
 
 Der Nachtkreis hat die gleiche Funktion wie der Warnkreis, auch nur die der Nachtruhe. Bei Beginender Nachtruhe fordert diese, fällt ab, die Anzeigen des Warnkreises ab.
 
@@ -59,14 +60,14 @@ Der Nachtkreis hat die gleiche Funktion wie der Warnkreis, auch nur die der Nach
 Die Kreise sind folgender Berechtigung:
 
 #### Alarmkreis:
-Alarmanlage lässt sich nicht erkennen, wenn ein konfigurierter Zustand aktiv ist. Bei aktivierter Alarmanlage führen eine Möglichkeit sofort zur Auslösung der Anlage.
+Alarmanlage lässt sich nicht ändern, wenn ein konfigurierter Zustand aktiv ist. Bei aktivierter Alarmanlage führen eine Möglichkeit sofort zur Auslösung der Anlage.
 
 #### Warnkreis:
 Hier können Dinge, die die nicht die richtigen "hoch" haben, z.B. Fenster im OG. In den Haupteinstellungen kann man die Wahrnehmung bei der Wahrnehmung beeinflussen. Ist die Alarmanlage, wird hier bei Veränderungen kein Alarm behandelt.
 Man kann sich doch anders fühlenigen lassen.
 
 #### Nachtkreis:
-Bei aktiver Nachtruhe werden nach sich gezogen, um der erkannten und ggf. verwirkt.
+Bei aktiver Nachtruhe werden nachsichtshalber der erkannten und ggf. verwirkt.
 
 *Sollten Alarm- und Warnkreis pro Staat wird sein, gehört der Alarmkreis*
 
@@ -74,7 +75,7 @@ Bei aktiver Nachtruhe werden nach sich gezogen, um der erkannten und ggf. verwir
 
 ### Tab Sprachausgabe
 Ist eine mögliche Sprachausgabe z.B. bei bei der Regel des Zustandses.
-* Man muss sich sicher sein, dass der der Datenpunkt, mit einem Text geschlossen werden kann! ZUM BEISPIEL. "sayit.0.tts" *
+* Man muss sich sicher sein, das der Datenpunkte, mit einem Text werden werden können! ZUM BEISPIEL. "sayit.0.tts" *
 
 Es ist wichtig, sich die Ausgabe von Namen mit Ansagen zu lassen.
 
@@ -96,15 +97,15 @@ Es ist möglich, die Alarmanlage direkt von der Anzeige auf "intern scharf" umzu
 - use.activate_nightrest -> Aktivierung der Nachtruhe
 - use.deactivate_nightrest -> Deaktivierung der Nachtruhe
 - use.toggle_nightrest -> Deaktivierung / Aktivierung der Nachtruhe
-- use.activate_warn_circuit -> interne der Warnungen des Warnkreises
-- use.deactivate_warn_circuit -> Deaktivierung der öffentlichen des Warnkreises
+- use.activate_warn_circuit -> interne der Verwaltung des Warnkreises
+- use.deactivate_warn_circuit -> Deaktivierung der internen des Warnkreises
 - use.toggle_warn_circuit -> Deaktivierung / Aktivierung der Wahrnehmung des Warnkreises
 - use.disable -> Deaktivierung der Anlage
 - use.enable -> Alarm der Anlage
 - use.enable_with_delay -> Alarm der Anlage mit Anlagenzeit
 - use.list -> Deaktivierung
 - use.quit_changes -> Rücksetzen der beiden Staaten *info.warn / night_circuit_changes*
-- use.toggle -> Deaktivierung / Einrichtung der Anlage
+- use.toggle -> Deaktivierung / Aktivierung der Anlage
 - use.toggle_password -> Deaktivierung / Alarm der Anlage mit Passwort
 - use.toggle_with_delay -> Deaktivierung / Alarm der Einrichtung mit Alarmzeitung
 - use.toggle_with_delay_and_password -> Deaktivierung / Alarm der Anlage mit Passwort und Handlungenzeit
@@ -120,11 +121,17 @@ Der log_today Zustand wird um Mitternacht geleert.
 ----------------------------------------------------------------------------------------------------------------------
 
 ## Probleme
-- wenn man ein Telegramm oder eine Erklärung über das + hin schnittgt, kann man nur ein Zustand der Instanz verloren und man muss auf *telegramm.0* alles lesen.
+- wenn man ein Telegramm oder eine Erklärung über das + hin schnittgt, kann man nur ein Zustand der Instanz verloren und man muss bis auf *telegramm.0* alles lesen.
 
 #### Wichtige, die Berechtigung dieses Adapters zusätzliche auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Berechtigung!
 
 ## Changelog
+
+#### 0.8.0 (18.06.2020)
+* (misanorot) !!! Changed circuits dramatacly !!!
+
+#### 0.7.5 (14.06.2020)
+* (misanorot) fixed a few little issues
 
 #### 0.7.0 (07.06.2020)
 * (misanorot) edit notification sentences in admin

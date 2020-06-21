@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: fIeGvVx0vFNJyI2FSdlQWp1eCKljEcV9j/dOkl0v5k8=
+hash: +N96mtWy8VbLm0LMossziCqZtqs/3H6zgIC9Bgzlg0Q=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -50,6 +50,9 @@ Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdok
 | Shelly Bulb Duo (SHBDUO-1) | verifiziert | nicht verifiziert |
 | Shelly 3EM (SHEM) | verifiziert | verifiziert |
 | Shelly Vintage (SHVIN-1) | verifiziert | verifiziert |
+| Shelly I3 (SHIX3-1) | verifiziert | verifiziert |
+| Shelly Button (SHBTN-1) | nein | verifiziert |
+| Shelly Gas (SHGS-1) | verifiziert | verifiziert |
 
 ## Was ist Sentry und was wird den Servern gemeldet?
 Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendungen. Und genau das ist in diesem Adapter implementiert.
@@ -57,6 +60,33 @@ Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendu
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server in Deutschland gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
+
+### 3.3.3 (18.06.2020)
+* (Stübi) - Add Shelly Buttonx
+* (Stübi) - Add Shelly Gas 
+
+### 3.3.2 (13.06.2020)
+* (Stübi) - Bugfixing Shelly RGBW2
+
+### 3.3.1 (13.06.2020)
+* (Stübi) - Change readme
+* (Stübi) - Add state external humidity to Shelly 1 (Bug in  3.3.0)
+* (Stübi) - Renamed state color to lights for Shelly RGBW2 - Issue #169
+* (Stübi) - Renamed state light to lights for Shelly Dimmer
+* (Stübi) - Bugfixng Shelly RGBW, RGBW and Bulb. State ligths.rgbw did not work - Issue #169
+
+### 3.3.0 (04.06.2020)
+* (Stübi) - Use only version with Shelly firmware greater equal v1.7.0 . Shelly firmware less v1.7.0 will not be supported by this Shelly adapter version anymore
+* (Stübi) - Add state vibration and tilt to Shelly DW
+* (Stübi) - Add polltime to index_m.html  
+* (Stübi) - Fix RGBW2 with FW 1.7 - Issue #161
+* (Stübi) - Add state Button Type for Shelly  1, 1PM, 2, 2.5 - Issue #157
+* (Stübi) - Add state Button Reverse for Shelly 1, 1PM, 2, 2.5
+* (Stübi) - Add firmware update button
+* (Stübi) - Fix auto firmware update
+* (Stübi) - Add state external humidity to Shelly 1 / 1PM - Issue #160
+* (Stübi) - Add helper library and cleanup source code
+* (Stübi) - Add Shelly I3
 
 ### 3.2.8 (09.05.2020)
 * (c7j3X) - Add device Shelly Vintage

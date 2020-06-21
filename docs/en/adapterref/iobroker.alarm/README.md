@@ -23,7 +23,7 @@ Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. b
 eine direkte Verknüpfung der jeweiligen Instanz "states", auf andere "states" möglich. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
 
 ----------------------------------------------------------------------------------------------------------------------
-*Stand 28.05.2020*
+*Stand 14.06.2020*
 
 
 ### Tab Haupteinstellungen
@@ -55,6 +55,7 @@ Hier werden die Kreise der Anlage konfiguriert.
 Der Alarmkreis hat die Priorität „hoch" und hat bei aktivierter Anlage Vorrang vor allen anderen Keisen. Er dient zur eigentlichen Überwachung der Anlage. Dies entspricht einer einfachen Alarmanlage mit nur einem Kreis.
 
 Der Warnkreis hat zwei Funktionen, bei aktivierter Anlage werden diese States nur überwacht und geben ggf. eine Meldung ab wenn eine Änderung stattfand. Die zweite Funktion besteht darin, bei z. B. Anwesenheit und aktivierter internen Überwachung der Anlage (sharp inside), bei Veränderung einer der konfigurierten States ggf. eine Meldung abgesetzt wird.
+*!!!Eine beginnende Nachtruhe deaktiviert den scharf intern Kreis!!!*
 
 Der Nachtkreis hat die gleiche Funktion wie der Warnkreis, jedoch nur während der Nachtruhe. Bei beginender Nachtruhe löst diese, falls aktiviert, die Überwachung des Warnkreises (sharp inside) ab.
 
@@ -136,6 +137,12 @@ Der log_today state wird um Mitternacht geleert.
 
 
 ## Changelog
+
+#### 0.8.0 (18.06.2020)
+* (misanorot) !!! Changed circuits dramatacly !!!
+
+#### 0.7.5 (14.06.2020)
+* (misanorot) fixed a few little issues
 
 #### 0.7.0 (07.06.2020)
 * (misanorot) edit notification sentences in admin

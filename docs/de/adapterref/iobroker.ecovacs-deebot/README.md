@@ -3,12 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: ONPUYA2vzmcUCgLIx8djjm7QPDQF3pTlCBZhJyJT59Y=
+hash: 0BsoJdp1to0dpftaRdgofMo85IODN7h606XYm4/vnd8=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
+![npm](https://img.shields.io/npm/dt/iobroker.ecovacs-deebot.svg)
 ![Eingerichtet](http://iobroker.live/badges/ecovacs-deebot-installed.svg)
 ![Travis-CI](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
 
@@ -17,36 +18,34 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 
 ## Modelle
 ### Unterstützte Modelle
-* Deebot Slim 2
 * Deebot 900/901
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 
 ### Diese Modelle funktionieren bekanntermaßen
+* Deebot Slim 2
 * Deebot N79
 * Deebot 601
 * Deebot 710/711
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 * Deebot Ozmo 920
-* Deebot Ozmo Slim 10
+* Deebot Ozmo T8 AIVI
 
 ### Diese Modelle sollten funktionieren
 * Deebot M88
 * Deebot 600/605
+* Deebot Ozmo 960
+* Deebot Ozmo Slim 10
 
 ## Installation
 Es wird empfohlen, Version 10 von Node.js oder eine neuere Version zu verwenden.
 
-Dieser Adapter verwendet die Canvas-Bibliothek, für die möglicherweise zusätzliche Installationen erforderlich sind. Andernfalls kann die Installation in iobroker zu einem Fehler führen:
+Dieser Adapter verwendet die Canvas-Bibliothek, für die möglicherweise zusätzliche Installationen erforderlich sind. Andernfalls kann die Installation in iobroker zu einem Fehler führen.
 
-```
-npm ERR! canvas@2.6.1 install: node-pre-gyp install --fallback-to-build npm ERR! Exit status 1
-```
+Für Debian-basierte Linux-Systeme sollten die folgenden Befehle ausgeführt werden (ein Neustart kann nach der zweiten Zeile erforderlich sein):
 
-Für Linux-basierte Systeme sollten die folgenden Befehle ausgeführt werden (ein Neustart kann nach der zweiten Zeile erforderlich sein):
-
-```
+```bash
 sudo apt-get update
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 sudo npm install canvas --unsafe-perm=true
@@ -60,20 +59,33 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 ## Bekannte Probleme
 * Es gibt einige Berichte, dass Ecovacs derzeit leere Reinigungsprotokolle für Ozmo 920/950 liefert.
 * Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da es einige gibt meldet, dass die Verbindung nach ca. 24 Stunden.
-* Es gibt auch einige Berichte, dass der Batteriewert bei Deebot 900/901 merkwürdig ist. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
-  * Sie können die entsprechende Option in der Adapterkonfiguration als Problemumgehung verwenden.
+* Es gibt auch Berichte, dass der Batteriewert bei Deebot 900/901 merkwürdig ist. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
+  * Sie können die entsprechende Option in der Adapterkonfiguration als Problemumgehung verwenden.
 * Die Schaltfläche "Pause" funktioniert nicht mit Deebot 710/711.
 
 ## FAQ
 * Häufig gestellte Fragen finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
-## Danke und Credits
-* @joostth ([saugt.js] (https://github.com/joostth/sucks.js))
-* @wpietri ([saugt] (https://github.com/wpietri/sucks))
-* @ bmartin5692 ([saugt] (https://github.com/bmartin5692/sucks), [bumber] (https://github.com/bmartin5692/bumper))
-* @Ligio ([ozmo] (https://github.com/Ligio/ozmo))
-
 ## Changelog
+
+### 1.0.3
+* Improved Support for Ozmo T8 AIVI
+
+### 1.0.2
+* Initial Support for Ozmo T8 AIVI
+
+### 1.0.1
+   * Compact mode support
+   * New features:
+     * button to save the last used custom area values
+     * buttons to rerun saved custom areas
+   * Some enhancements and fixes
+
+### 1.0.0
+   * Stable Release
+
+### 0.6.5
+   * Set flag for compact mode to false
 
 ### 0.6.4
    * Some minor fixes
@@ -183,6 +195,7 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 * (mrbungle64) Initial development release
 
 ## License
+
 MIT License
 
 Copyright (c) 2020 Sascha Hölzel <mrb1232@posteo.de>

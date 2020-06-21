@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alexa2/README.md
 title: ioBroker.alexa2
-hash: inpuJcrJGC7RESSm0g1nQTMTq4Cpov0itsvJVpeo4nk=
+hash: TNWMr7Aq/2ZKAbSMk++/Qlv7klBRWMN2u4MFYvdWsgQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.alexa2/admin/alexa.png)
 
@@ -36,7 +36,7 @@ Im Adapter-Namespace (z. B. alexa2.0) werden einige Kanäle erstellt
 ### Alexa2.0.Bespoken. *
 Bespoken ist normalerweise ein Dienstleister, der beim automatischen Testen von Fähigkeiten hilft. Tatsächlich können Sie damit Befehle an "Ihr" Alexa / Amazon-Konto senden. Damit können Sie Skill-Aktionen auslösen, auf die normalerweise über die Alexa-App nicht zugegriffen werden kann. Aufgrund der Funktionsweise sind nur Befehle möglich, die nicht direkt mit dem "Gerät, mit dem Sie sprechen" interagieren, wie normale Befehle, die eine bestimmte Aktion ausführen und eine Antwort geben. Die Wiedergabe von Audio oder Video oder dergleichen, die normalerweise von dem Gerät ausgeführt wird, mit dem Sie den Befehl gesprochen haben, funktioniert nicht!
 
-Eine Anfrage an Bespoken dauert einige Sekunden, da der gesendete Text zuerst in Audio umgewandelt wird, das dann an Alexa Voice Services gesendet und dann von Alexa beantwortet und zurückgesendet wird. So kann es leicht bis zu 10s dauern.
+Eine Anfrage an Bespoken dauert einige Sekunden, da der gesendete Text zuerst in Audio umgewandelt wird, das dann an Alexa Voice Services gesendet und dann von Alexa beantwortet und zurückgesendet wird. Es kann also problemlos bis zu 10 Sekunden dauern.
 
 | Staatsname | Bedeutung |
 | - | - |
@@ -61,8 +61,8 @@ Alarmeinstellungen (Wecker) für jedes Gerät, falls verfügbar.
 
 | Staatsname | Bedeutung | Wert |
 | - | - | - |
-| aktiviert | Zeigt den Status des Alarms an und ermöglicht das Ändern: Alarm mit true aktivieren - Alarm mit false deaktivieren | wahr / falsch |
-| Zeit | Zeit für Alarm. Überschreiben Sie die Zeit für den vorhandenen Alarm, um eine neue Zeit für diesen Alarm festzulegen. Falls ein Alarm vorhanden ist, können Sie die Zeit hier ändern, indem Sie einfach die Zeit im Format hh: mm: ss überschreiben. Für die Einstellung von | werden keine Sekunden benötigt Zeiteingabe |
+| aktiviert | Zeigt den Status des Alarms an und ermöglicht das Ändern: Alarm mit wahr aktivieren - Alarm mit falsch deaktivieren | wahr / falsch |
+| Zeit | Zeit für Alarm. Überschreiben Sie die Zeit für einen vorhandenen Alarm, um eine neue Zeit für diesen Alarm festzulegen. Falls ein Alarm vorhanden ist, können Sie die Zeit hier ändern, indem Sie einfach die Zeit im Format hh: mm: ss überschreiben. Für die Einstellung von | werden keine Sekunden benötigt Zeiteingabe |
 | ausgelöst | true, wenn der Alarm erreicht und ausgelöst wird. Die Uhr muss mit Amazon und iobroker synchron sein. Verwenden Sie diese Option, um eine andere Aktion auszulösen, sobald die Alarmzeit erreicht ist wahr / falsch |
 | neu | Zeit für neuen Alarm für dieses Gerät. Wenn Sie hier einen Wert eingeben, wird ein neuer Alarm erstellt Zeiteingabe (hh: mm: ss, Sekunden werden nicht benötigt) |
 
@@ -71,17 +71,21 @@ Hier finden Sie alle verbundenen oder bekannten Bluetooth-Geräte mit MAC-Adress
 
 | Staatsname | Bedeutung |
 | - | - |
-| verbunden | Zeigt den aktuellen Verbindungsstatus an und ermöglicht die Verbindung (auf true gesetzt) oder die Trennung (auf false gesetzt) |
-| entkoppeln | Schaltfläche zum Trennen dieses Geräts vom Echogerät |
+| verbunden | Zeigt den aktuellen Verbindungsstatus an und erlaubt die Verbindung (auf true gesetzt) oder die Trennung (auf false gesetzt) |
+| ungepaart | Schaltfläche zum Trennen dieses Geräts vom Echogerät |
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Commands. *
-Mit Befehlen können Sie einige Aktionen auf Ihrem Alexa-Gerät auslösen. Wenn Sie diese auf einem Multiroom-Gerät verwenden, werden sie unabhängig ausgeführt und *werden* auf den einzelnen Geräten nicht synchron ausgeführt!
+Mit Befehlen können Sie einige Aktionen auf Ihrem Alexa-Gerät auslösen. Wenn Sie diese auf einem Multiroom-Gerät verwenden, werden sie unabhängig voneinander ausgeführt und *werden* auf den einzelnen Geräten nicht synchron ausgeführt!
 
 | Staatsname | Bedeutung | Wert |
 | - | - | - |
 | doNotDisturb | Ein- / Ausschalten Nicht stören für dieses Gerät | wahr / falsch |
 | Flashbriefing | Briefing in 100 Sekunden - Nachrichten etc.pp | Taste |
 | guten morgen | Guten Morgen von Alexa ... | Taste |
+| funfact | Lustige Tatsache von Alexa ... | Taste |
+| Witz | Witz von Alexa ... | Taste |
+| Aufräumen | Spielt einen "Gong" -Ton wie für Start / Ende des Hörmodus ... | Taste |
+| kuratiert | Zufälliger Satz aus dem ausgewählten Bereich von Alexa ... | Text (erlaubt: "Auf Wiedersehen", "Bestätigungen", "Guten Morgen", "Komplimente", "Geburtstag", "Gute Nacht", "iamhome") |
 | singasong | Alexa singt ein Lied ... | Taste |
 | sprechen | Alexa sagt, was Sie hier eingeben ... | Texteingabe |
 | Sprachvolumen | Stellen Sie die Sprechlautstärke von Alexa ein. Diese Lautstärke wird vor dem Sprechen eingestellt und anschließend zurückgesetzt 0-100 |
@@ -148,7 +152,7 @@ Status, um die Wiedergabe des Geräts zu steuern und den aktuellen Status und di
 | mediaLength | Länge des aktuellen Titels | Informationen |
 | mediaLengthStr | aktive Medienlänge als (HH :) MM: SS | Informationen |
 | mainProgress | verstrichene Zeit des aktiven Mediums | Informationen |
-| mainProgressPercent | verstrichene aktive Medienzeit in Prozent | Informationen |
+| mainProgressPercent | verstrichene aktive Medien in Prozent | Informationen |
 | mediaProgressStr | aktiver Medienfortschritt als (HH :) MM: SS | Informationen |
 | miniArtUrl | URL zur Kunst (mini) | Informationen |
 | stumm geschaltet | Zustand von 'MUTE' | Information, wahr / falsch, Volumen = 0 wird als stummgeschaltet betrachtet |
@@ -214,7 +218,7 @@ Beinhaltet alle Smart-Home-Geräte, die Alexa aus Ihren Fähigkeiten kennt. Gibt
 | Staatsname | Bedeutung | Wert |
 | - | - | - |
 
-| deleteAll | löscht alle Smart-Home-Geräte aus Alexa, genau wie die Schaltfläche in der Alexa-App | Taste | removeDevices | findet neue Smart-Home-Geräte, genau wie die Schaltfläche in der Alexa App | Taste | queryAll | fragt alle Geräte ab, die nur sichtbar sind, wenn mindestens ein Gerät Informationen abrufen kann | Taste
+| deleteAll | löscht alle Smart-Home-Geräte aus Alexa, genau wie die Schaltfläche in der Alexa-App | Taste | removeDevices | findet neue Smart-Home-Geräte, genau wie die Schaltfläche in der Alexa App | Taste | queryAll | fragt alle Geräte ab, die nur sichtbar sind, wenn mindestens ein Gerät Informationen abrufen kann Taste
 
 ### Alexa.0.Smart-Home-Devices.SerialNumber. *
 | Staatsname | Bedeutung | Wert |
@@ -240,7 +244,7 @@ Beinhaltet alle Smart-Home-Geräte, die Alexa aus Ihren Fähigkeiten kennt. Gibt
 | colorTemperarureInKelvin | Farbtemperatur in Kelvin | Information, 1000-10000K |
 | colorTemperatureName | Farbtemperaturname wie von Alexa definiert - feste Werte | änderbar auf setzen, 0-18 |
 
-Mit #brightness können Sie die Helligkeit Ihres Lichts anpassen. Mit #colorName können Sie eine vordefinierte Farbe auswählen (0-144). Für HUE Ambient Light können Sie in #colorTemperatureName zwischen 19 Werten von 0-18 wählen. Alle Lichter können mit #powerState ein- und ausgeschaltet werden.
+Mit #brightness können Sie die Helligkeit Ihres Lichts anpassen. Mit #colorName wählen Sie eine vordefinierte Farbe (0-144). Für HUE Ambient Light können Sie in #colorTemperatureName zwischen 19 Werten von 0-18 wählen. Alle Lichter können mit #powerState ein- und ausgeschaltet werden.
 
 ### Alexa2.0.Info. *
 | Staatsname | Bedeutung | Wert |
@@ -283,13 +287,13 @@ Als Beispiel für die Verwendung von "Mozilla / 5.0 (X11; Linux x86_64) AppleWeb
 
 Sie können alle diese Parameter in der Adapterkonfiguration überschreiben.
 
-### Wie bestimme ich Cookie selbst?
+### Wie bestimme ich Cookies selbst?
 Wenn die automatische Cookie-Ermittlung nicht funktioniert oder Sie dem Adapter nicht vertrauen, dass er die E-Mail / das Passwort angibt, können Sie das Cookie selbst bestimmen. Es gibt verschiedene Infos im Web, wie es geht. Hier einige Links:
 
 * https://www.gehrig.info/alexa/Alexa.html
 * oder verwenden Sie das Shellscript von https://blog.loetzimmer.de/2017/10/amazon-alexa-hort-auf-die-shell-echo.html, um es auf Shell zu bekommen ...
 
-Beachten Sie jedoch, dass das Cookie nach einiger Zeit eine Zeitüberschreitung aufweist und der Adapter dann nicht mehr funktioniert und sich selbst deaktiviert. Sie müssen dann manuell einen neuen Cookie erhalten!
+Beachten Sie jedoch, dass das Cookie nach einiger Zeit eine Zeitüberschreitung aufweist und der Adapter dann nicht mehr funktioniert und sich selbst deaktiviert. Sie müssen dann manuell ein neues Cookie erhalten!
 
 ## Was ist Sentry.io und was wird den Servern dieses Unternehmens gemeldet?
 Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ihren Anwendungen zu erhalten. Und genau das ist in diesem Adapter implementiert.
@@ -297,6 +301,37 @@ Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ih
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
+
+### 3.2.4 (2020-06-18)
+* (Apollon77) Update Alexa-Remote Library to optimize communication error/timeout cases
+
+### 3.2.3 (2020-06-17)
+* (Apollon77) Fix currentState handling
+
+### 3.2.2 (2020-06-17)
+* (Apollon77) remove goodnight because was not working
+* (Apollon77) Fix Play/Pause states and some media optimizations
+
+### 3.2.1 (2020-06-17)
+* (Apollon77) update amazon-cookie library: another optimization for Node.js 14
+
+### 3.2.0 (2020-06-17)
+* (Apollon77/hive) add new commands, jokes/facts/goodnight/cleanup
+* (Apollon77/hive) add new command curatedtts with allowed values ["goodbye", "confirmations", "goodmorning", "compliments", "birthday", "goodnight", "iamhome"] to play random curated sentences
+* (Apollon77) Prevent some crashes
+* (Apollon77) Make sure Timer are not triggering the state when deleted
+* (Apollon77) make sure that Lists objects are deleted correctly when deleting
+* (Apollon77) Make compatible with nodejs 14
+* (Apollon77) Adjust to changes from Amazon so that initial Proxy process works again
+* (OberstVonGatow) Make sure that for Spotify Media data requests do not have negative effects and stop the playback  
+
+### 3.1.2 (2020-03-18)
+* (Gieskanne/Apollon77) Add Next Timer Date as state
+* (Apollon77) Fix missing history entries
+* (Apollon77) Prevent List deletions from logging errors
+* (Apollon77) optimiztions, dependency updates and fixes
+* (Apollon77) Switch to ioBroker own sentry instance
+* (Apollon77) add Info.softwareVersion
 
 ### 3.0.8 (2020-01-19)
 * (Apollon77) fix some crash cases

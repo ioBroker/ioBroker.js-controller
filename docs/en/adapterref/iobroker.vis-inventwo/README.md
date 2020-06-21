@@ -35,6 +35,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+## 1.3.8
+- Changed slider step to decimal
+- Fixed problem with numeric values
+
 ### 1.3.7
 - Fixed problem with navigation on touchscreens
 

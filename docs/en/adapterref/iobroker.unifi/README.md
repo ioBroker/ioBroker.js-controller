@@ -49,11 +49,33 @@ The adapter uses [node-unifi](https://github.com/jens-maus/node-unifi) to connec
 | Networks    | https://IP:PORT/api/s/SITE/rest/networkconf |
 | Health      | https://IP:PORT/api/s/SITE/stat/health      |
 | Vouchers    | https://IP:PORT/api/s/SITE/stat/voucher     |
+| DPI         | https://IP:PORT/api/s/SITE/stat/dpi         |
+
+### UbiOS endpoints
+
+| Information | API URL                                              |
+|-------------|------------------------------------------------------|
+| Sites       | https://IP/proxy/network/api/self/sites              |
+| SysInfo     | https://IP/proxy/network/api/s/SITE/stat/sysinfo     |
+| Clients     | https://IP/proxy/network/api/s/SITE/stat/sta         |
+| Devices     | https://IP/proxy/network/api/s/SITE/stat/device      |
+| WLANs       | https://IP/proxy/network/api/s/SITE/rest/wlanconf    |
+| Networks    | https://IP/proxy/network/api/s/SITE/rest/networkconf |
+| Health      | https://IP/proxy/network/api/s/SITE/stat/health      |
+| Vouchers    | https://IP/proxy/network/api/s/SITE/stat/voucher     |
+| DPI         | https://IP/proxy/network/api/s/SITE/stat/dpi         |
+
 
 ## Known issues
 * The is_wired state of clients is incorrect after a client went offline. This is a known issue of the UniFi controller and is not related to the adapter. (see https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
 
 ## Changelog
+### __WORK IN PROGRESS__
+* (Scrounger, braindead1) Implemented DPI
+
+### 0.5.5 (2020-06-13)
+* (braindead1) Fixed some errors reported via Sentry
+
 ### 0.5.4 (2020-06-06)
 * (braindead1) Implemented offset for is_online
 * (braindead1) Fixed some issues related to is_online

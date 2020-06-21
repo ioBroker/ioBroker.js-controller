@@ -32,6 +32,9 @@ current supported ebusd-version: 3.3
    
 ## Changelog
 
+## 2.1.0 (2020-06-17)
+* (René) refactoring:  'async/await' used
+
 ## 2.0.0 (2020-04-26)
 * (René) "request" replaced by "bent"
 

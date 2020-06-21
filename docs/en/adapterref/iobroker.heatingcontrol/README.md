@@ -94,6 +94,7 @@ Features:
 | Present           | we are present, if we are not present decrease temperature | decrease current profile temperature by Profiles.0.room.AbsentDecrease         | set target to Profiles.0.room.absolute.AbsentDecrease         | 
 | VacationAbsent    | we are absent, so decrease also on weekend                 | decrease current profile temperature by Profiles.0.room.VacationAbsentDecrease | set target to Profiles.0.room.absolute.VacationAbsentDecrease | 
 
+
 * in both szenarious only one lowering is used (in previous version of adapter more then one degreases could be used)
 * in absolute degrease szenario only target values not equal 0°C are used. If you do not need any lowering for a certain room then keep decrease-values at 0°C
 
@@ -164,6 +165,10 @@ Sentry.io is a service for developers to get an overview about errors from their
 When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry.  All of this helps me to provide error free adapters that basically never crashs.
 
 ## Changelog
+
+### 0.5.6 (2020-06-14)
+* (René) see issue #113: re-order of rooms added
+* (René) see issue #112: bug fix "Fensterübersicht"
 
 ### 0.5.4 (2020-06-04)
 * (René) bug fix: HeatingControlVis avoid exceptions like "Cannot read property 'val' of null"
