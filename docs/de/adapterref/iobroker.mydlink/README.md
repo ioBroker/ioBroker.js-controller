@@ -1,57 +1,82 @@
 ---
-translatedFrom: en
-translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mydlink/README.md
-title: ioBroker.mydlink
-hash: 8ZmcRc9HDuf1rvpmcj1/4KRrtRQDEhepPhbEKfqYfqA=
+BADGE-Number of Installations: http://iobroker.live/badges/mydlink-stable.svg
+BADGE-NPM version: http://img.shields.io/npm/v/iobroker.mydlink.svg
+BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.mydlink.svg
+BADGE-Tests: https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink.svg?branch=master
+BADGE-NPM: https://nodei.co/npm/iobroker.mydlink.png?downloads=true
+BADGE-Greenkeeper badge: https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.mydlink.svg
 ---
-![Logo](../../../en/adapterref/iobroker.mydlink/admin/mydlink.png)
+![Logo](admin/mydlink.png)
+# ioBroker.mydlink
 
-![Anzahl der Installationen](http://iobroker.live/badges/mydlink-stable.svg)
-![NPM-Version](http://img.shields.io/npm/v/iobroker.mydlink.svg)
-![Downloads](https://img.shields.io/npm/dm/iobroker.mydlink.svg)
-![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink.svg?branch=master)
-![NPM](https://nodei.co/npm/iobroker.mydlink.png?downloads=true)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.mydlink.svg)
 
-# IoBroker.mydlink
-MyDlink Adapter für ioBroker.
--------------------------------------------------- ----------------------------
+![Number of Installations](http://iobroker.live/badges/mydlink-installed.svg) ![Number of Installations](http://iobroker.live/badges/mydlink-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.mydlink.svg)](https://www.npmjs.com/package/iobroker.mydlink)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.mydlink.svg)](https://www.npmjs.com/package/iobroker.mydlink)
+[![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink)
 
-Ermöglicht die Steuerung von Steckdosen oder Bewegungsmeldern über [D-Link](https://eu.dlink.com/uk/en/for-home/smart-home) in ioBroker.
+[![NPM](https://nodei.co/npm/iobroker.mydlink.png?downloads=true)](https://nodei.co/npm/iobroker.mydlink/)
 
-** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
-Dies hilft auch bei der Unterstützung neuer Geräte.
 
-Derzeit getestete Geräte:
 
-| Modell | Geben Sie | ein Bild |
+MyDlink Adapter für ioBroker. 
+------------------------------------------------------------------------------
+
+Dieser Adapter erlaubt es Geräte (Steckdosen und Bewegungsmelder) von 
+[D-Link](https://eu.dlink.com/uk/en/for-home/smart-home) in ioBroker zu 
+integrieren. 
+
+**Dieser Adapter nutzt die Sentry Bibliothek um automatisch Fehler im Adapter an den Entwickler zu schicken.**
+Für mehr Details und wie man die automatische Fehlerberichterstattung 
+abschaltet, siehe die [Dokumentation des Sentry-Plugins](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! 
+Sentry wird erst ab js-controller Version 3.0 unterstützt.
+
+Bisher wurden die folgenden Geräte erfolgreich mit dem Adapter getestet:
+(weitere gerne melden)
+
+| Model | Type  | Image |
 | :---: | :---: | :---: |
-| DSP-W215 | Smart Plug (Buchse, Temperatur, Strom) **Abfrage erforderlich** | ![Bild](../../../en/adapterref/iobroker.mydlink/docs/media/DSP_W215.png) |
-| DCH-S150 | Bewegungsmelder (letzte erkannte Bewegung) **Abfrage erforderlich** | ![Bild](../../../en/adapterref/iobroker.mydlink/docs/media/DCH_S150.png) |
-| DCH-S150 | Bewegungsmelder (letzte erkannte Bewegung) **Abfrage erforderlich** | ! [Bild] (docs / media / DCH_S150.png) |
+| DSP-W215 | Steckdose (schalten, Temperatur, Strom) **Muss gepollt werden** | ![Image](../media/DSP_W215.png) |
+| DSP-W115 | Steckdose (schalten) | ![Image](../media/DSP_W115.png) | 
+| DCH-S150 | Bewegungsmelder **Muss gepollt werden** | ![Image](../media/DCH_S150.png) |
 
-Der Adapter muss einige Geräte abfragen. Neuere senden Push-Nachrichten, was jetzt unterstützt wird. Sensorablesungen und Bewegungserkennung werden um das Abfrageintervall verzögert, wenn sie abgefragt werden müssen (kann in der Konfiguration eingestellt werden).
+Ältere Geräte, wie die DSP-W215 oder der DCH-S150 müssen vom Adapter gepollt werden,
+was bedeutet, dass es immer eine kurze Verzögerung für den Statusreport an ioBroker
+gibt. Das ist besonders beim Bewegungsmelder ungünstig. Der DSP-W115 und andere
+neuere Geräte liefern ihren Status sofort an den ioBroker.
 
-#### Aufbau:
-* Liste der Geräte, jedes Gerät mit folgenden Einstellungen:
+Das Pollintervall kann pro Gerät einzeln eingestellt werden.
 
-<table><tr><td> Name </td><td> hier einen Namen setzen, muss eindeutig sein (für mydlink Geräte) </td></tr><tr><td> IP </td><td> Geben Sie hier die IP-Adresse ein, der Hostname sollte auch funktionieren </td></tr><tr><td> STIFT </td><td> Die PIN befindet sich auf einem Aufkleber auf dem Gerät, wahrscheinlich unten. Kann TELNET für DSP-W115 sein, siehe unten. </td></tr><tr><td> Abfrageintervall </td><td> pro Gerät Abfrageintervall <br /> Setzen Sie 0, um die Abfrage zu deaktivieren. <br /> <b>Empfehlung:</b> Legen Sie ein schnelles Abfrageintervall für Sensoren und ein längeres für Stecker fest. </td></tr><tr><td> aktivieren </td><td> Wenn nicht aktiviert, wird nicht abgefragt oder gesteuert. <br /> Geräte, die nicht angeschlossen sind, können deaktiviert werden, um Netzwerkverkehr und Fehlermeldungen im Protokoll zu vermeiden. </td></tr></table>
+#### Konfiguration:
+* Alle Geräte müssen in der Liste konfiguriert werden:
 
-Der Adapter stört die Nutzung der App nicht.
+<table>
+<tr><td>Name</td><td>Name, beliebig</td></tr>
+<tr><td>IP</td><td>IP Adresse oder Hostname des Geräts</td></tr>
+<tr><td>PIN</td><td>Die PIN steht auf der Gerät, z.B. auf dem Boden. Für DSP-W115 kann hier auch TELNET eingegeben werden, siehe unten.</td></tr>
+<tr><td>Poll interval (in ms)</td><td>Poll interval<br /> Auf 0 setzen um polling abzuschalten. <br /><b>Empfehlung:</b> Nutze ein kurzes Intervall für Bewegungsmelder und ein längeres für Steckdosen.</td></tr>
+<tr><td>enable</td><td>Wenn hier kein Haken ist, wird das Gerät nicht angesprochen.<br />So können Geräte, die eine Zeitlang nicht eingesteckt sind (z.B. für Weihnachtsdeko) einfach deaktiviert werden und der Adapter meldet keine Fehler im log.</td></tr>
+</table>
 
-## Einrichtung von DSP-W115
-Und andere *neuere* Geräte verwenden ein völlig anderes Protokoll und ein anderes Setup. Wenn Sie die Geräte aus der mydlink-App entfernen, können Sie sie einfach als andere Geräte verwenden und Ihre übliche PIN eingeben.
+Für alte Geräte stört die Nutzung des Adapters die Nutzung der App nicht. Für neuere Geräte, wie die DSP-W115 ist das etwas anders, siehe unten.
 
-Wenn Sie die App weiterhin verwenden möchten, müssen Sie das Gerät wie folgt in den Werksmodus versetzen:
+## Einrichten des DSP-W115
 
-1. Setzen Sie das Gerät in den Wiederherstellungsmodus zurück, indem Sie während des Startvorgangs die Taste wps / reset gedrückt halten, bis es **rot** statt orange zu blinken beginnt.
-2. Jetzt läuft ein Telnet-Deamon. Stellen Sie eine Verbindung zum WLAN des Geräts her
-3. Führen Sie "telnet 192.168.0.20" aus und melden Sie sich mit "admin: 123456" an (oder verwenden Sie putty, vergessen Sie nicht, "telnet" anstelle von "ssh" auszuwählen).
-4. Führen Sie `nvram_set FactoryMode 1` aus
-5. Führen Sie `reboot; exit; `um das Gerät neu zu starten.
+Der DSP-W115 und andere *neuere* Geräte nutzen ein völlig anderes Protokoll als die änteren.
+Wenn das Gerät aus der App gelöscht wird, kann, wie früher auch, einfach die PIN
+genutzt werden.
 
-Jetzt sollten Sie `TELNET` als Pin eingeben und der Adapter ruft die erforderlichen Daten vom Gerät selbst ab.
+Ansonsten, wenn die App weiter genutzt werden soll, muss das Gerät in den "factory mode" gesetzt werden.
+Das erreicht man wie folgt:
+1. Das Gerät in den Wiederherstellungsmodus versetzen in dem die WPS/Reset Taste während dem Starten festgehalten wird, bis es **rot** blinkt (statt orange!). 
+2. Jetzt wurde ein telnet Port geöffnet, verbinde nun einen Laptop oder ähnliches mit dem Geräte-Wifi (DSP-W115-XXXX).
+3. Verbinde dich mit telnet `telnet 192.168.0.20` und logge dich ein mit `admin:123456`
+(in Linux einfach auf der Konsole, in Windows geht es über putty, dort muss `telnet` ausgewählt werden).
+4. Aus dem Gerät über telnet ausführen: `nvram_set FactoryMode 1`
+5. Dann mit `reboot; exit;` (auf dem Gerät ausführen) neustarten.
+
+Jetzt kann in der Adapterkonfiguration `TELNET` als Pin eingegeben werden und
+der Adapter holt sich (über den offenen telnet Port) alle Informationen von dem
+Gerät, die er braucht.
 
 ## Changelog
 <!-- 

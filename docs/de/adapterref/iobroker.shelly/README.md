@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: +N96mtWy8VbLm0LMossziCqZtqs/3H6zgIC9Bgzlg0Q=
+hash: T5K/68JPVQ6p72bI/O3PzejXjy7CHK71djExzxAcp4U=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -53,6 +53,7 @@ Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdok
 | Shelly I3 (SHIX3-1) | verifiziert | verifiziert |
 | Shelly Button (SHBTN-1) | nein | verifiziert |
 | Shelly Gas (SHGS-1) | verifiziert | verifiziert |
+| Shelly Dimmer 2 (SHDM-2) | verifiziert | verifiziert |
 
 ## Was ist Sentry und was wird den Servern gemeldet?
 Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendungen. Und genau das ist in diesem Adapter implementiert.
@@ -61,8 +62,11 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 
 ## Changelog
 
+### 3.3.4 (23.06.2020)
+* (Stübi) - Add Shelly Dimmer 2
+
 ### 3.3.3 (18.06.2020)
-* (Stübi) - Add Shelly Buttonx
+* (Stübi) - Add Shelly Button
 * (Stübi) - Add Shelly Gas 
 
 ### 3.3.2 (13.06.2020)
