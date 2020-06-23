@@ -6,7 +6,7 @@
     "device": "Windows",
     "details": "Universal Installer mit<br><ul><li>Node.js + npm</li><li>Visual Studio 2017</li><li>Python, Git, Bonjour, ...</li></ul><br>Für js-controller Update bitte 3. Abschnitt in Info unten lesen.",
     "picture": "windows.png",
-    "info": "https://forum.iobroker.net/topic/33421/iobroker-unter-windows-installieren-ohne-installer/126"
+    "info": "https://forum.iobroker.net/post/446928"
   },
   {
     "file": "ioBroker_Image_RPi_2-3-4_20191127_buster.zip",
