@@ -32,6 +32,11 @@ Get your free API-Key here : http://weerlive.nl/delen.php
 
 ## Changelog
 
+### 0.2.1
+* (DutchmanNL) Updated dependencys
+* (DutchmanNL) Release to stable repository
+* (DutchmanNL) Bugfix : Solve incorrect Latitude/Longtitude configuration
+
 ### 0.2.0
 * (DutchmanNL) improve propper adapter termination instead of guessing by timer
 * (DutchmanNL) Release to stable repository

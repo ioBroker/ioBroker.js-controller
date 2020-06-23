@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: +N96mtWy8VbLm0LMossziCqZtqs/3H6zgIC9Bgzlg0Q=
+hash: T5K/68JPVQ6p72bI/O3PzejXjy7CHK71djExzxAcp4U=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -53,16 +53,20 @@ hash: +N96mtWy8VbLm0LMossziCqZtqs/3H6zgIC9Bgzlg0Q=
 | Shelly I3（SHIX3-1）|已验证|已验证|
 | Shelly Button（SHBTN-1）|否|已验证|
 | Shelly Gas（SHGS-1）|已验证|已验证|
+| Shelly Dimmer 2（SHDM-2）|已验证|已验证|
 
 ##什么是Sentry，什么报告给服务器？
-Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
+Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。正是在此适配器中实现了这一点。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
 
+### 3.3.4 (23.06.2020)
+* (Stübi) - Add Shelly Dimmer 2
+
 ### 3.3.3 (18.06.2020)
-* (Stübi) - Add Shelly Buttonx
+* (Stübi) - Add Shelly Button
 * (Stübi) - Add Shelly Gas 
 
 ### 3.3.2 (13.06.2020)

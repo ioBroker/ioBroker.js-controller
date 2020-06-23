@@ -18,6 +18,8 @@ This adapter loads the weather warnings from the German weather service via JSON
 **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Changelog
+### 2.5.0 (2020-06-21)
+* (bluefox) Compact mode is supported
 
 ### 2.4.10 (2020-05-16)
 * (Apollon77) Better handle errors when adapter ends (again Sentry)

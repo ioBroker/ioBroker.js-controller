@@ -48,6 +48,7 @@ You find a detailed installation documentation here:
 |Shelly I3 (SHIX3-1)|verified|verified|
 |Shelly Button (SHBTN-1)|no|verified|
 |Shelly Gas (SHGS-1)|verified|verified|
+|Shelly Dimmer 2 (SHDM-2)|verified|verified|
 
 ## What is Sentry and what is reported to the servers?
 Sentry.io is a way for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
@@ -56,8 +57,11 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.3.4 (23.06.2020)
+* (Stübi) - Add Shelly Dimmer 2
+
 ### 3.3.3 (18.06.2020)
-* (Stübi) - Add Shelly Buttonx
+* (Stübi) - Add Shelly Button
 * (Stübi) - Add Shelly Gas 
 
 ### 3.3.2 (13.06.2020)
