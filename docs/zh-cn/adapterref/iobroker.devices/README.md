@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.devices/README.md
 title: ioBroker.devices
-hash: Y04evJLVzOEM5HChNnb2Dvb8OVXBXmMD5qJ/0gxhE88=
+hash: Rr7VJJ/6eegjUfDh2sMykC/vpJV/ZdpCLd1XcRN8Vms=
 ---
 ![商标](../../../en/adapterref/iobroker.devices/admin/devices.png)
 
@@ -26,10 +26,10 @@ hash: Y04evJLVzOEM5HChNnb2Dvb8OVXBXmMD5qJ/0gxhE88=
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**
 
 ＃＃ 去做
+-将现有设备克隆到linkeddevices / alias / javascript
 -为频道的所有状态添加图标
 -添加状态说明
--显示有关Google / alisa / alexa的错误
--将现有设备克隆到linkeddevices / alias / javascript
+-显示有关Google / Alisa / alexa的错误
 -检测是否安装了js-controller 2.0
 
 ## Changelog
@@ -67,7 +67,7 @@ hash: Y04evJLVzOEM5HChNnb2Dvb8OVXBXmMD5qJ/0gxhE88=
 ## License
 MIT License
 
-Copyright (c) 2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2019-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

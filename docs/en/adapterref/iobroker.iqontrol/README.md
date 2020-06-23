@@ -56,7 +56,16 @@ You can save it as Web-App on Homescreen and it looks and feels like a native ap
         ![Upload](img/adapter_upload.png)
 	* Clear browser cache
 	* Restart ioBroker
-* Start iQonrol with opened debugging-console of your browser (mostly you need to press F12 to open it) and look for messages in the console-window
+
+### If you have further problems, please provide the log from the debugging-console of your browser and screenshots of the faulty line:
+* Start iQonrol with opened debugging-console of your browser (mostly you need to press F12 to open it) 
+* Switch to the console-window and reproduce the bug
+* Look for messages in the console-window
+* When errors appear, the number of the line, wich caused the error, is listed
+* Please click on this line-number and make a screenshot of the faulty line:
+
+![Troubleshooting console window](img/troubleshooting_consolewindow.png)
+![Troubleshooting faulty line](img/troubleshooting_faultyline.png)
 
 
 ## Forum
@@ -103,13 +112,21 @@ You can modify the configuration of datapoints via the wrench-icon behind a data
 * Set Invert-Flag
 * Set Confirm-Flag (forces the user to confirm before a change is written to a datapoint)
 * Set PIN-Code (forces the user to enter this PIN-Code before a change is written to a datapoint - but take care: this is only of low security, because the pin is checked in frontend! Use a number to display a fullscreen-pin-pad if asked for code)
-* Set a datapoint id, where target values are written to (if you have different data points for the actual and the target value)
 * Modify unit of datapoint, seperate for zero, singular and plural values
 * Modify min and max of datapoint
+* Set the steps that a level-slider takes when it is increased/decreased
 * Modify type of datapoint
 * Modify role of datapoint
+* Set a target-value-id, wich is a datapoint id, where target values are written to (if you have different data points for the actual and the target value)
 * Set or modify a Value-List
-  
+    * Add optinally an option to value list to enter free text
+* Set a target-value-list:
+    * In addition to the target-value-id, you can define different datapoint-ids and target-values for different keys (keys are possible values of the orgiginal datapoint)
+    * You can also use the wildcard * in the keys and in the target-values
+	* Example: 
+	    * Key: "TuneIn-Playlist: *", Target-Datapoint ID: "alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist", Target-Value: "*"
+	    * If the user enters "TuneIn-Playlist: Ambient" the value "Ambient" will be written to "alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist"
+
 ![CustomDialog Call](img/custom_call.png)
 ![CustomDialog Example](img/custom_dialog.png)
   
@@ -323,8 +340,8 @@ In addition to normal thermostat you can define:
 * (Sebastian Bormann) Compatibility enhancements for repeat function of Media-Player.
 * (Sebastian Bormann) Made value-list and target-value-list sortable.
 * (Sebastian Bormann) Made sortable lists only draggable in y-axis.
-* (Sebastian Bormann) Add option to enter own value for value-lists.
-* (Sebastian Bormann) Addes PLAY_EVERYWHERE to Media-Player.
+* (Sebastian Bormann) Added option to enter own value for value-lists.
+* (Sebastian Bormann) Added PLAY_EVERYWHERE to Media-Player.
 
 ### 1.1.1 (2020-06-16)
 * (Sebastian Bormann) Some fixes, styling and enhancements for Media-Player.

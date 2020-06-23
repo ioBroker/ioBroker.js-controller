@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.devices/README.md
 title: ioBroker.devices
-hash: Y04evJLVzOEM5HChNnb2Dvb8OVXBXmMD5qJ/0gxhE88=
+hash: Rr7VJJ/6eegjUfDh2sMykC/vpJV/ZdpCLd1XcRN8Vms=
 ---
 ![Logo](../../../en/adapterref/iobroker.devices/admin/devices.png)
 
@@ -26,10 +26,10 @@ Verwalten und erstellen Sie Geräte für die Verwendung in anderen Adaptern wie 
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. **
 
 ## Machen
+- Klonen Sie ein vorhandenes Gerät in linkeddevices / alias / javascript
 - Fügen Sie Symbole für alle Zustände von Kanälen hinzu
 - Beschreibungen für Zustände hinzufügen
 - Fehler für Google / Alisa / Alexa anzeigen
-- Klonen Sie ein vorhandenes Gerät in linkeddevices / alias / javascript
 - Erkennen, ob js-controller 2.0 installiert ist
 
 ## Changelog
@@ -67,7 +67,7 @@ Verwalten und erstellen Sie Geräte für die Verwendung in anderen Adaptern wie 
 ## License
 MIT License
 
-Copyright (c) 2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2019-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

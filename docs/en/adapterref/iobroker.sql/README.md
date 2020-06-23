@@ -403,6 +403,9 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Storage retention**: How long the values will be stored in the DB.
 
 ## Changelog
+### 1.14.2 (2020-06-23)
+* (bluefox) Fixed error for data storage
+
 ### 1.14.1 (2020-06-17)
 * (bluefox) Corrected error for objects with mixed type
 

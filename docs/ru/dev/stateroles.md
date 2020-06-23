@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/stateroles.md
 title: Государственные роли
-hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
+hash: 1hDoGEQZdvNSocZgNjP8e0vNt3k+OLGv/43GH75ZoQ0=
 ---
 # Государственные роли
 ## Common
@@ -19,12 +19,12 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 ## Датчик (логическое, только для чтения)
 *common.type = логический, common.write = false*
 
-* sensor.window - окно открыто (true) или закрыто (false)
+* sensor.window - окно открытое (true) или закрытое (false)
 * sensor.door - дверь открыта (true) или закрыта (false)
 * sensor.alarm - обычная тревога
 * sensor.alarm.flood - утечка воды
 * sensor.alarm.fire - датчик пожара
-* sensor.alarm.secure - дверь открыта, окно открыто или обнаружено движение во время тревоги.
+* sensor.alarm.secure - дверь открыта, окно открыто или во время тревоги обнаружено движение.
 * sensor.alarm.power - Нет питания (напряжение = 0)
 * sensor.light - сигнал от лампы, что она включена
 * sensor.lock - фактическое положение блокировки
@@ -35,7 +35,7 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 ## Кнопки (логические, только для записи)
 *common.type = boolean, common.write = true, common.read = false*
 
-* кнопка
+кнопка *
 * button.long
 * button.stop - например, остановка,
 * button.start
@@ -46,12 +46,19 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 * button.mode.manual
 * button.mode.silent
 
+## Кнопки как сенсор
+*common.type = логический, common.write = false, common.read = true*
+
+* кнопка - разница, что `common.write = false`. Пожалуйста, избегайте этой роли и используйте `button.press` или` button.long`.
+* button.long
+* button.press
+
 ## Значения (числа, только для чтения)
 *common.type = число, common.write = false*
 
 * стоимость
 * value.window (common.states = {"0": "CLOSED", "1": "TILTED", "2": "OPEN"}) Важно иметь (CLOSED / TILTED / OPEN). Значения могут отличаться.
-* значение.температура (общ. единица = «°C» или «°F» или «K»)
+* value.tempera (common.unit = '°C' или '°F' или 'K')
 * value.humidity
 * value.brightness - уровень яркости (единица измерения: люкс,)
 * value.min
@@ -67,7 +74,7 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 * value.gps.latitude - широта GPS
 * value.gps.elevation - высота GPS
 * value.gps - долгота и широта вместе, как '5.56; 43.45'
-* value.power.cons Потребление (единица измерения = Wh или KWh)
+* значение.процедура
 * value.direction - (common.type = число ~~ или строка ~~, указывает вверх / вниз, влево / вправо, 4-позиционные переключатели, направление ветра, ...)
 * value.curtain - фактическая позиция занавеса
 * value.blind - фактическая позиция слепого
@@ -81,7 +88,7 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 * value.warning - некоторые предупреждения (могут быть предоставлены состояния), более важное значение имеет значение Higher.
 * value.sun.elevation - высота солнца в °
 * value.sun.azimuth - азимут солнца в °
-* value.voltage - напряжение в вольт, единица измерения = V
+* value.voltage - напряжение в вольтах, ед. = V
 * value.current - ток в амперах, ед. = A
 * value.fill - уровень заполнения, ед. = л, мл, м3,%
 * value.blood.sugar - уровень сахара в крови, единица измерения = ммоль, мгдл
@@ -96,9 +103,9 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 * Indicator.working - указывает, что целевые системы выполняют что-то, например, блайнды или открытие замка.
 * Indicator.reachable - если устройство онлайн
 * Indicator.connected - используется только для экземпляров. Используйте индикатор. Доступен для устройств
-* Indicator.maintenance - указывает системные предупреждения / ошибки, аварийные сигналы, сервисные сообщения, разряженный аккумулятор или тому подобное
+* Indicator.maintenance - указывает системные предупреждения / ошибки, аварийные сигналы, сервисные сообщения, аккумулятор разряжен или тому подобное
 * Indicator.maintenance.lowbat
-* Indicator.maintenance.unreach
+* display.maintenance.unreach
 * Indicator.maintenance.alarm
 * Indicator.lowbat - истина, если батарея разряжена
 * Indicator.alarm - так же, как индикатор
@@ -116,7 +123,7 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 * level.co2 - 0-100% качества
 * level.dimmer - яркость тоже тусклее
 * level.blind - установить слепую позицию
-* level.tempera - установить желаемую температуру
+* level.tength - установите желаемую температуру
 * level.valve - уставка для положения клапана
 * level.color.red
 * level.color.green
@@ -126,7 +133,7 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 * level.color.saturation
 * level.color.rgb - шестнадцатеричный цвет, например "#rrggbb"
 * level.color.luminance
-* level.color.tength - цветовая температура в K ° 2200 теплый белый, 6500 ° холодный белый
+* level.color.teuration - цветовая температура в K ° 2200 теплый белый, 6500 ° холодный белый
 * level.timer
 * level.timer.sleep - таймер сна. 0 - выключено или в минутах
 * ...
@@ -138,7 +145,7 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 ## Переключатели (логические, чтение-запись)
 Переключатель управляет логическим устройством (true = ON, false = OFF)
 
-*common.type = логический, common.write = true*
+*common.type = логическое, common.write = true*
 
 * переключатель
 * switch.lock - блокировка (true - открыть блокировку, false - закрыть блокировку)
@@ -174,13 +181,13 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 * media.seek - (common.type = number)%
 * media.mode.shuffle - (common.type = number) 0 - нет, 1 - все, 2 - один
 * media.mode.repeat - (common.type = boolean)
-* media.state - ['play', 'stop', 'pause'] или [0 - pause, 1 - play, 2 - stop] или [true - воспроизведение / false - пауза]
+* media.state - ['play', 'stop', 'pause'] или [0 - пауза, 1 - воспроизведение, 2 - остановка] или [true - воспроизведение / false - пауза]
 * media.artist
 * media.album
 * media.title
 * media.title.next
 * media.cover - URL обложки
-* media.cover.big - URL большой обложки
+* media.cover.big - большой URL-адрес обложки
 * media.cover.small - крошечный URL-адрес обложки
 * media.duration.text - например, 2:35
 * media.duration - (common.type = number) секунд
@@ -189,13 +196,13 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 * media.broadcastDate - (common.type = string) Дата трансляции
 * media.mute - (common.type = boolean) true отключен
 * media.season - (common.type = string) номер сезона (важно, чтобы тип был действительно "string", чтобы иметь возможность указать отсутствие сезона с помощью "")
-* media.episode - (common.type = string) номер эпизода (важно, чтобы тип был действительно "string", чтобы иметь возможность указать отсутствие эпизода с помощью "")
-* media.mute.group - (common.type = логическое) отключение группы устройств
+* media.episode - (common.type = string) номер эпизода (важно, чтобы тип действительно был «string», чтобы иметь возможность указать отсутствие эпизода с помощью «»)
+* media.mute.group - (common.type = boolean) отключение группы устройств
 * media.tts - текст в речь
 * media.bitrate - кбит / с
 * media.genre - жанровая песня
 * media.date - песня года
-* media.track - (common.type = string) идентификатор текущей воспроизводимой дорожки [0 - ~] (важно, чтобы тип действительно был "string", чтобы иметь возможность указать отсутствие дорожки с помощью "")
+* media.track - (common.type = string) идентификатор текущей воспроизводимой дорожки [0 - ~] (важно, чтобы тип был действительно "string", чтобы иметь возможность указать отсутствие дорожки с помощью "")
 * media.playid - идентификатор трека медиаплеера
 * media.add - добавить текущий плейлист
 * media.clear - очистить текущий список воспроизведения (только для записи)
@@ -207,7 +214,7 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 * media.link - состояние с текущим файлом
 * media.input - номер или строка ввода (AUX, AV, TV, SAT, ...)
 * level.bass - уровень баса
-* level.treble - Уровень высоких частот
+* level.treble - Высокий уровень
 * switch.power.zone - зона питания
 
 ```
@@ -255,7 +262,7 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 
 ## Погода
 * значение.температура - фактическая температура
-* value.tempera.ru.windchill - фактический ветер
+* value.tempera.ru.windchill - фактический холод ветра
 * значение.температура. точка росы - фактическая точка росы
 * value.tempera.ru.feelslike - Фактическая температура "по ощущениям"
 * value.teuration.min - минимальная температура за последние 24 часа
@@ -278,7 +285,7 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 * location - Текстовое описание местоположения (например, адрес)
 * weather.icon - фактический URL-адрес значка состояния на данный момент
 * weather.icon.wind - фактический URL-адрес значка ветра на данный момент
-* weather.icon.name - фактическое имя значка состояния на данный момент
+* weather.icon.name - Текущее имя иконки состояния на данный момент
 * weather.state - Актуальное описание погоды
 * value.precipitation - (тип: число, единица измерения: мм) количество осадков за последние 24 часа дождь / снег (Niederschlag heute für Schnee oder Regen / осадки сегодня снега или дождь)
 * value.precipitation.hour - фактический уровень осадков за последний час
@@ -307,7 +314,7 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 * value.pressure.forecast.0 - прогноз давления на сегодня
 * value.teuration.min.forecast.0 - минимальный прогноз температуры на сегодня
 * value.teuration.max.forecast.0 - прогноз максимальной температуры на сегодня
-* value.precipitation.forecast.0 - (тип: число, единица измерения:%) Прогноз вероятности выпадения осадков на сегодня
+* value.precipitation.forecast.0 - (тип: число, единица измерения:%) Прогноз вероятности осадков на сегодня
 * value.precipitation.forecast.0 - (тип: число, единица измерения: мм) Прогноз уровня осадков на сегодня
 * weather.title.forecast.0 - очень краткое описание на завтра
 * value.precipitation.day.forecast.0 - Прогноз осадков на дневное время
@@ -315,7 +322,7 @@ hash: fPczIN+A8fhimFqliqumTtytg8IMyIRCQwP5964BVAE=
 
 * date.forecast.1 - завтрашняя дата
 * weather.icon.forecast.1 - значок завтрашнего дня
-* weather.state.forecast.1 - прогноз погоды на завтра
+* weather.state.forecast.1 - состояние погоды на завтра
 * значение.темпр.мин.прогноз1
 * значение.температура.макс.прогноз1
 * value.precipitation.forecast.1 - (тип: число, единица измерения:%) Прогноз вероятности осадков на завтра

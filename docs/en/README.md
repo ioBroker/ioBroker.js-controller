@@ -4,12 +4,12 @@ lastChanged: 29.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/README.md
-hash: zXmLY37BrXLXEEK0qPTJJS1P7D1xyThnaN6I0EG2bWQ=
+hash: px6bpErZjO66gEuP+0JuB0e6LukKiwa1dCs0CLvZZpk=
 ---
 # Welcome to ioBroker
 !> **Note for beginners** If too many unknown terms have already been used when reading these first words, they are explained again in detail on [next page](./basics/README.md).
 
-ioBroker is a software solution to integrate different smart home systems that would remain without ioBroker stand-alone solutions in one overall system.
+ioBroker is a software solution to integrate various smart home systems that would remain without ioBroker stand-alone solutions in one overall system.
 
 ioBroker is therefore ***the*** integration platform for the Internet of Things.
 
@@ -25,7 +25,7 @@ Anyone dealing with home automation will sooner or later find that systems are o
 ioBroker itself IS at home on almost all platforms. ioBroker can be installed on Windows, Linux, OSX or as a Docker image.
 Preconfigured installation images relieve the user of the installation work.
 
-Remote administration to a locally installed ioBroker system is possible 24/7 via an optional cloud-based access for the user or for system integrators. Access control can be freely configured by the user using users and groups.
+Remote administration to a locally installed ioBroker system is possible for the user or for system integrators via optional cloud-based access. Access control can be freely configured by the user using users and groups.
 
 ## Scalable
 If additional smart home systems are to be connected over time, the user can implement them at any time using additional adapters while the system is running. ioBroker itself is also scalable.
@@ -34,16 +34,16 @@ It is even possible to mix operating system platforms and couple SoC single-boar
 Redis, a particularly fast database, can optionally be integrated for systems with the highest performance requirements.
 
 Programmable
-Optional programming is done with JavaScript, a scripting language that has been continuously developed since 1995. This is easy to learn so that new requirements can be implemented quickly. This makes it possible for everyone to contribute to ioBroker and for individual requirements to be implemented.
+Optional programming is done with JavaScript, a scripting language that has been continuously developed since 1995. This is easy to learn, so that new requirements can be implemented quickly. This makes it possible for everyone to contribute to ioBroker and for individual requirements to be implemented.
 
-For beginners in programming, the 'Blockly' variant is available, which makes it possible to quickly get results yourself using 'drag and drop' without extensive programming knowledge.
+For beginners in programming, the 'Blockly' variant is available, which enables you to quickly get results yourself using 'drag and drop' without extensive programming knowledge.
 
 ## Visualization
 With `VIS` ioBroker provides a powerful tool for creating an individual visualization. Current values from sensors can be displayed graphically, just like historical trends. Live images from surveillance cameras, the implementation of an alarm system, heating systems and air conditioning technology - almost everything that can be imagined can also be implemented.
 
 ![VIS](../de/media/vis2.png) *Example of a self-created VIS user interface*
 
-The user has maximum design freedom. Prefabricated modules for easy use help the user. However, it is not only possible to display information. The control of devices is also quickly implemented via the visualization interface. The user interface can be adapted to a wide variety of end devices - from smartphones to wall tablets with touch functions to personal computers - everything can be done with simple drag and drop.
+The user has maximum design freedom. Prefabricated modules for easy use help the user. But not only the display of information is possible. The control of devices is also quickly implemented via the visualization interface. The user interface can be adapted to a wide variety of end devices - from smartphones to wall tablets with touch functions to personal computers - everything can be done with simple drag and drop.
 
 Simple prefabricated user interfaces can be quickly implemented with the material or HabPanel adapter.
 

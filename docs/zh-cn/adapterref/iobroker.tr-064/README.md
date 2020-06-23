@@ -4,13 +4,13 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tr-064/README.md
 title: 的ioBroker.tr-064
-hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
+hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 ---
 ![商标](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
 ＃ioBroker.tr-064
 ###信息
-该适配器从AVM Fritz！Box读取主要信息，例如呼叫清单或答录机上的消息数。
+该适配器从AVM Fritz！Box读取主要信息，例如呼叫清单或应答机上的消息数。
 基于此[AVM文档](https://avm.de/service/schnittstellen/)
 
 ###简单状态和功能
@@ -29,7 +29,7 @@ hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 -使用外部号码时，振铃状态会将您连接到该外部号码。
 
 当拾起被叫电话时，FritzBox将呼叫外部号码，并且您的默认电话将响铃。
-可以在FritsBox中配置默认电话，如下所示：Telefonie / Anrufe / [Tab] Wahlhilfe /Wählhilfeverwenden
+可以在FritsBox中配置以下默认电话：Telefonie / Anrufe / [Tab] Wahlhilfe /Wählhilfeverwenden
 
 ### ToPauseState
 -值：响铃，连接，结束
@@ -67,12 +67,12 @@ hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 -来电
 -外拨电话
 
-通话次数：通话次数可以设置为0。下一个通话增加1。
+通话次数：通话次数可以设置为0。下一个通话将增加1。
 
 html输出可以通过模板配置
 
 ###命令和命令结果状态
-使用命令状态，您可以从此[文件资料](https://avm.de/service/schnittstellen/)中调用每个tr-064命令。
+使用命令状态，您可以从此[文件资料](https://avm.de/service/schnittstellen/)调用每个tr-064命令。
 例如
 
 ```
@@ -90,7 +90,7 @@ command = {
 
 ###启用通话监控
 要使用呼叫监控功能，必须首先在AVM Fritz！Box中启用它。
-要启用呼叫监控器拨盘```#96*5*```，将打开TCP / IP端口1012。要关闭端口拨盘```#96*4*```。
+要启用呼叫监控器拨号```#96*5*```，将打开TCP / IP端口1012。要关闭端口拨盘```#96*4*```。
 
 ###预发行版本
 预发布版本可在npm处使用标签dev获得。

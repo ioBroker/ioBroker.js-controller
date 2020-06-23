@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.devices/README.md
 title: ioBroker.devices
-hash: Y04evJLVzOEM5HChNnb2Dvb8OVXBXmMD5qJ/0gxhE88=
+hash: Rr7VJJ/6eegjUfDh2sMykC/vpJV/ZdpCLd1XcRN8Vms=
 ---
 ![логотип](../../../en/adapterref/iobroker.devices/admin/devices.png)
 
@@ -26,10 +26,10 @@ hash: Y04evJLVzOEM5HChNnb2Dvb8OVXBXmMD5qJ/0gxhE88=
 ** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. **
 
 ## Делать
+- клонировать существующее устройство в связанные устройства / псевдоним / javascript
 - добавить иконки для всех состояний каналов
 - добавить описания для состояний
 - показать ошибки для Google / Алиса / Алекса
-- клонировать существующее устройство в связанные устройства / псевдоним / javascript
 - определить, установлен ли js-контроллер 2.0
 
 ## Changelog
@@ -67,7 +67,7 @@ hash: Y04evJLVzOEM5HChNnb2Dvb8OVXBXmMD5qJ/0gxhE88=
 ## License
 MIT License
 
-Copyright (c) 2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2019-2020 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
