@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mydlink/README.md
 title: ioBroker.mydlink
-hash: yp3apFNnqC6pOAs2BrgvJs4GL5Sw984Xz6MPKoWgIbc=
+hash: 8ZmcRc9HDuf1rvpmcj1/4KRrtRQDEhepPhbEKfqYfqA=
 ---
 ![商标](../../../en/adapterref/iobroker.mydlink/admin/mydlink.png)
 
@@ -12,7 +12,7 @@ hash: yp3apFNnqC6pOAs2BrgvJs4GL5Sw984Xz6MPKoWgIbc=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.mydlink.svg)
 ![测验](https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.mydlink.png?downloads=true)
-![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.mydlink.svg)
+![保镖徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.mydlink.svg)
 
 ＃ioBroker.mydlink
 ioBroker的MyDlink适配器。
@@ -20,18 +20,18 @@ ioBroker的MyDlink适配器。
 
 允许从ioBroker中的[D-Link](https://eu.dlink.com/uk/en/for-home/smart-home)控制电源插座或运动检测器。
 
-**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参阅[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 这也有助于支持新设备。
 
 当前测试的设备：
 
 |型号|类型图片|
 | :---: | :---: | :---: |
-| DSP-W215 |智能插头（插座，温度，电流）**需要轮询** | ![图片](../../../en/adapterref/iobroker.mydlink/admin/DSP_W215.png)|
-| DCH-S150 |动作检测器（检测到最后动作）**需要轮询** | ![图片](../../../en/adapterref/iobroker.mydlink/admin/DCH_S150.png)|
-| DCH-S150 |动作检测器（检测到最后动作）**需要轮询** | ！[Image]（admin / DCH_S150.png）|
+| DSP-W215 |智能插头（插座，温度，电流）**需要轮询** | ![图片](../../../en/adapterref/iobroker.mydlink/docs/media/DSP_W215.png)|
+| DCH-S150 |动作检测器（检测到最后动作）**需要轮询** | ![图片](../../../en/adapterref/iobroker.mydlink/docs/media/DCH_S150.png)|
+| DCH-S150 |动作检测器（检测到最后动作）**需要轮询** | ！[图片]（docs / media / DCH_S150.png）|
 
-适配器需要轮询某些设备。较新的确实会发送推送消息，现在支持该消息。如果需要对传感器读数和运动检测进行轮询（可以在配置中进行设置），则会通过轮询间隔来延迟它们。
+适配器需要轮询某些设备。较新的确实会发送推送消息，现在支持该消息。如果需要轮询，则传感器的读数和运动检测将被轮询间隔延迟（可以在配置中设置）。
 
 ####配置：
 *设备列表，每个设备具有以下设置：
@@ -57,7 +57,17 @@ ioBroker的MyDlink适配器。
 <!-- 
 	Placeholder for next versions (this needs to be indented):
 	### __WORK IN PROGRESS__
+	npm install @alcalzone/release-script
 -->
+### 1.1.4 (2020-06-23)
+* fixed: sometimes state was always reported as true.
+
+### 1.1.3 (2020-06-18)
+* fixed: if error during login, polling would stop.
+* fixed: can now update device name from config again
+* change: read devices from config in UI again
+* change: in UI do not create +-Button if detected device is already in devices table.
+
 ### 1.1.2 (2020-06-01)
 * fixed two possible crashes with offline / wrong devices.
 

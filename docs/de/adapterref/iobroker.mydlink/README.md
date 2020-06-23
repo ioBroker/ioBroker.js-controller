@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mydlink/README.md
 title: ioBroker.mydlink
-hash: yp3apFNnqC6pOAs2BrgvJs4GL5Sw984Xz6MPKoWgIbc=
+hash: 8ZmcRc9HDuf1rvpmcj1/4KRrtRQDEhepPhbEKfqYfqA=
 ---
 ![Logo](../../../en/adapterref/iobroker.mydlink/admin/mydlink.png)
 
@@ -27,9 +27,9 @@ Derzeit getestete Geräte:
 
 | Modell | Geben Sie | ein Bild |
 | :---: | :---: | :---: |
-| DSP-W215 | Smart Plug (Buchse, Temperatur, Strom) **Abfrage erforderlich** | ![Bild](../../../en/adapterref/iobroker.mydlink/admin/DSP_W215.png) |
-| DCH-S150 | Bewegungsmelder (letzte erkannte Bewegung) **Abfrage erforderlich** | ![Bild](../../../en/adapterref/iobroker.mydlink/admin/DCH_S150.png) |
-| DCH-S150 | Bewegungsmelder (letzte erkannte Bewegung) **Abfrage erforderlich** | ! [Bild] (admin / DCH_S150.png) |
+| DSP-W215 | Smart Plug (Buchse, Temperatur, Strom) **Abfrage erforderlich** | ![Bild](../../../en/adapterref/iobroker.mydlink/docs/media/DSP_W215.png) |
+| DCH-S150 | Bewegungsmelder (letzte erkannte Bewegung) **Abfrage erforderlich** | ![Bild](../../../en/adapterref/iobroker.mydlink/docs/media/DCH_S150.png) |
+| DCH-S150 | Bewegungsmelder (letzte erkannte Bewegung) **Abfrage erforderlich** | ! [Bild] (docs / media / DCH_S150.png) |
 
 Der Adapter muss einige Geräte abfragen. Neuere senden Push-Nachrichten, was jetzt unterstützt wird. Sensorablesungen und Bewegungserkennung werden um das Abfrageintervall verzögert, wenn sie abgefragt werden müssen (kann in der Konfiguration eingestellt werden).
 
@@ -45,7 +45,7 @@ Und andere *neuere* Geräte verwenden ein völlig anderes Protokoll und ein ande
 
 Wenn Sie die App weiterhin verwenden möchten, müssen Sie das Gerät wie folgt in den Werksmodus versetzen:
 
-1. Setzen Sie das Gerät in den Wiederherstellungsmodus zurück, indem Sie die WPS / Reset-Taste während des Startvorgangs gedrückt halten, bis es **rot** statt orange zu blinken beginnt.
+1. Setzen Sie das Gerät in den Wiederherstellungsmodus zurück, indem Sie während des Startvorgangs die Taste wps / reset gedrückt halten, bis es **rot** statt orange zu blinken beginnt.
 2. Jetzt läuft ein Telnet-Deamon. Stellen Sie eine Verbindung zum WLAN des Geräts her
 3. Führen Sie "telnet 192.168.0.20" aus und melden Sie sich mit "admin: 123456" an (oder verwenden Sie putty, vergessen Sie nicht, "telnet" anstelle von "ssh" auszuwählen).
 4. Führen Sie `nvram_set FactoryMode 1` aus
@@ -57,7 +57,17 @@ Jetzt sollten Sie `TELNET` als Pin eingeben und der Adapter ruft die erforderlic
 <!-- 
 	Placeholder for next versions (this needs to be indented):
 	### __WORK IN PROGRESS__
+	npm install @alcalzone/release-script
 -->
+### 1.1.4 (2020-06-23)
+* fixed: sometimes state was always reported as true.
+
+### 1.1.3 (2020-06-18)
+* fixed: if error during login, polling would stop.
+* fixed: can now update device name from config again
+* change: read devices from config in UI again
+* change: in UI do not create +-Button if detected device is already in devices table.
+
 ### 1.1.2 (2020-06-01)
 * fixed two possible crashes with offline / wrong devices.
 

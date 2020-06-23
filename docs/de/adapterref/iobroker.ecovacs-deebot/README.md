@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: 0BsoJdp1to0dpftaRdgofMo85IODN7h606XYm4/vnd8=
+hash: vx4zPqwV3vuwgfDd3f+hjnTOx9rgqNTPwtsIfBlXuEc=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -43,17 +43,22 @@ Es wird empfohlen, Version 10 von Node.js oder eine neuere Version zu verwenden.
 
 Dieser Adapter verwendet die Canvas-Bibliothek, für die möglicherweise zusätzliche Installationen erforderlich sind. Andernfalls kann die Installation in iobroker zu einem Fehler führen.
 
-Für Debian-basierte Linux-Systeme sollten die folgenden Befehle ausgeführt werden (ein Neustart kann nach der zweiten Zeile erforderlich sein):
+Für Debian-basierte Linux-Systeme sollten die folgenden Befehle ausgeführt werden:
 
 ```bash
 sudo apt-get update
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
+```
+
+Möglicherweise ist ein Neustart erforderlich, bevor der nächste Befehl ausgeführt wird
+
+```bash
 sudo npm install canvas --unsafe-perm=true
 ```
 
 Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/canvas#compiling
 
-## Verwendungszweck
+## Verwendung
 * Informationen zur Verwendung dieses Adapters finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Bekannte Probleme

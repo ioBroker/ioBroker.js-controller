@@ -22,9 +22,9 @@ Currently tested devices:
 
 | Model | Type  | Image |
 | :---: | :---: | :---: |
-| DSP-W215 | Smart Plug (socket, temperature, current) **Needs polling** | ![Image](admin/DSP_W215.png) |
-| DSP-W115 | Smart Plug (socket) | ![Image](admin/DSP_W115.png) | 
-| DCH-S150 | Motion Detector (last motion detected) **Needs polling** | ![Image](admin/DCH_S150.png) |
+| DSP-W215 | Smart Plug (socket, temperature, current) **Needs polling** | ![Image](docs/media/DSP_W215.png) |
+| DSP-W115 | Smart Plug (socket) | ![Image](docs/media/DSP_W115.png) | 
+| DCH-S150 | Motion Detector (last motion detected) **Needs polling** | ![Image](docs/media/DCH_S150.png) |
 
 The adapter needs to poll some devices. Newer ones do send push messages, which is now supported. Sensor readings and motion detection will be 
 delayed by polling interval, if they need to be polled (can be set in config).
@@ -62,6 +62,9 @@ Now you should enter `TELNET` as Pin and the adapter will retrieve the required 
 	### __WORK IN PROGRESS__
 	npm install @alcalzone/release-script
 -->
+### 1.1.4 (2020-06-23)
+* fixed: sometimes state was always reported as true.
+
 ### 1.1.3 (2020-06-18)
 * fixed: if error during login, polling would stop.
 * fixed: can now update device name from config again

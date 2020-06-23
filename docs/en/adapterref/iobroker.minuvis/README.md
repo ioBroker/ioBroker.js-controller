@@ -44,6 +44,8 @@ For more information visit https://minukodu.de/en or watch at youtube https://yo
 
 
 ## Changelog
+### 0.0.6 (2020-06-23)
+* updated builder and app to V1.2.1
 ### 0.0.5 (2020-05-14)
 * adaptions for iobroker.repositories
 ### 0.0.4 (2020-05-13)

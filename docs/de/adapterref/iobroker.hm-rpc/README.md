@@ -191,6 +191,9 @@ Auszug:
 ## FAQ
 
 ## Changelog
+### 1.14.11 (2020-06-21)
+* (bluefox) Change name of Instance according to the role (RF, Wired, HMIP)
+
 ### 1.14.10 (2020-06-14)
 * (foxriver76) removed meta data caching completely because meta data can be dynamic due to FW update or CuxD
 

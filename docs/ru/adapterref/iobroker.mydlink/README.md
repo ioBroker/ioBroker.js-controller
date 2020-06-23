@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mydlink/README.md
 title: ioBroker.mydlink
-hash: yp3apFNnqC6pOAs2BrgvJs4GL5Sw984Xz6MPKoWgIbc=
+hash: 8ZmcRc9HDuf1rvpmcj1/4KRrtRQDEhepPhbEKfqYfqA=
 ---
 ![логотип](../../../en/adapterref/iobroker.mydlink/admin/mydlink.png)
 
@@ -27,16 +27,16 @@ hash: yp3apFNnqC6pOAs2BrgvJs4GL5Sw984Xz6MPKoWgIbc=
 
 | Модель | Тип | Изображение |
 | :---: | :---: | :---: |
-| DSP-W215 | Smart Plug (розетка, температура, ток) **Требуется опрос** | ![Образ](../../../en/adapterref/iobroker.mydlink/admin/DSP_W215.png) |
-| DCH-S150 | Детектор движения (последнее обнаруженное движение) **Требуется опрос** | ![Образ](../../../en/adapterref/iobroker.mydlink/admin/DCH_S150.png) |
-| DCH-S150 | Детектор движения (последнее обнаруженное движение) **Требуется опрос** | ! [Image] (admin / DCH_S150.png) |
+| DSP-W215 | Smart Plug (розетка, температура, ток) **Требуется опрос** | ![Образ](../../../en/adapterref/iobroker.mydlink/docs/media/DSP_W215.png) |
+| DCH-S150 | Детектор движения (последнее обнаруженное движение) **Требуется опрос** | ![Образ](../../../en/adapterref/iobroker.mydlink/docs/media/DCH_S150.png) |
+| DCH-S150 | Детектор движения (последнее обнаруженное движение) **Требуется опрос** | ! [Image] (docs / media / DCH_S150.png) |
 
 Адаптер должен опрашивать некоторые устройства. Более новые отправляют push-сообщения, что теперь поддерживается. Показания датчика и обнаружение движения будут задерживаться интервалом опроса, если они должны быть опрошены (может быть установлено в конфигурации).
 
 #### Конфигурация:
 * Список устройств, каждое устройство со следующими настройками:
 
-<table><tr><td> имя </td><td> установите здесь имя, должно быть уникальным (для устройств mydlink) </td></tr><tr><td> IP </td><td> введите здесь IP-адрес, имя хоста также должно работать </td></tr><tr><td> ШТЫРЬ </td><td> PIN-код напечатан на наклейке на устройстве, вероятно, внизу. Может быть TELNET для DSP-W115, см. Ниже. </td></tr><tr><td> Интервал опроса </td><td> за интервал опроса устройства <br /> Установите 0, чтобы отключить опрос. <br /> <b>Рекомендация:</b> установите быстрый интервал опроса для датчиков и более длинный для штекеров. </td></tr><tr><td> включить </td><td> если не включен, не будет опрашиваться или контролироваться. <br /> Устройства, которые не подключены, можно отключить, чтобы избежать сетевого трафика и сообщений об ошибках в журнале. </td></tr></table>
+<table><tr><td> название </td><td> установите здесь имя, должно быть уникальным (для устройств mydlink) </td></tr><tr><td> IP </td><td> введите здесь IP-адрес, имя хоста также должно работать </td></tr><tr><td> ШТЫРЬ </td><td> PIN-код напечатан на наклейке на устройстве, вероятно, внизу. Может быть TELNET для DSP-W115, см. Ниже. </td></tr><tr><td> Интервал опроса </td><td> за интервал опроса устройства <br /> Установите 0, чтобы отключить опрос. <br /> <b>Рекомендация:</b> установите быстрый интервал опроса для датчиков и более длинный для штекеров. </td></tr><tr><td> включить </td><td> если не включен, не будет опрашиваться или контролироваться. <br /> Устройства, которые не подключены, могут быть отключены, чтобы избежать сетевого трафика и сообщений об ошибках в журнале. </td></tr></table>
 
 Адаптер не мешает использованию приложения.
 
@@ -51,13 +51,23 @@ hash: yp3apFNnqC6pOAs2BrgvJs4GL5Sw984Xz6MPKoWgIbc=
 4. Запустите `nvram_set FactoryMode 1`
 5. Запустите перезагрузку; выход; `для перезагрузки устройства.
 
-Теперь вам нужно ввести `TELNET` в качестве PIN-кода, и адаптер получит необходимые данные с самого устройства.
+Теперь вам нужно ввести `TELNET` в качестве Pin, и адаптер извлечет необходимые данные из самого устройства.
 
 ## Changelog
 <!-- 
 	Placeholder for next versions (this needs to be indented):
 	### __WORK IN PROGRESS__
+	npm install @alcalzone/release-script
 -->
+### 1.1.4 (2020-06-23)
+* fixed: sometimes state was always reported as true.
+
+### 1.1.3 (2020-06-18)
+* fixed: if error during login, polling would stop.
+* fixed: can now update device name from config again
+* change: read devices from config in UI again
+* change: in UI do not create +-Button if detected device is already in devices table.
+
 ### 1.1.2 (2020-06-01)
 * fixed two possible crashes with offline / wrong devices.
 
