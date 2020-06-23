@@ -165,7 +165,7 @@ iobroker set admin.0 --port 8081
 
 oder SSL ausschalten:
 ```
-iobroker set admin.0 --ssl false
+iobroker set admin.0 --secure false
 ```
 Dann muss die Instanz am Port (default 8081) zu sehen sein.
 

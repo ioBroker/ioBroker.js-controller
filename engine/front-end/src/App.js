@@ -232,7 +232,7 @@ class App extends Router {
         };
 
         // init google analytics
-        ReactGA.initialize('UA-53190753-1', {
+        ReactGA.initialize('UA-86900958-1', {
             debug: window.location.hostname === 'localhost'
         });
 

@@ -4,7 +4,7 @@ lastChanged: 29.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/README.md
-hash: px6bpErZjO66gEuP+0JuB0e6LukKiwa1dCs0CLvZZpk=
+hash: zXmLY37BrXLXEEK0qPTJJS1P7D1xyThnaN6I0EG2bWQ=
 ---
 # Welcome to ioBroker
 !> **Note for beginners** If too many unknown terms have already been used when reading these first words, they are explained again in detail on [next page](./basics/README.md).
@@ -15,9 +15,9 @@ ioBroker is therefore ***the*** integration platform for the Internet of Things.
 
 An ioBroker system has a modular structure. A variety of ***adapters*** enable communication with over 200 different platforms from A for Alexa to Z for time recording.
 
-Be it the integration of commercial products from almost all areas of life or the integration of a self-made solution - ioBroker makes almost everything possible.
+Be it the integration of commercial products from almost all areas of life or the integration of a self-created solution - ioBroker makes almost everything possible.
 
-!> The documentation is under construction and is constantly being expanded. As a result, links may not yet work or content may be missing. We are grateful for any help with the creation of new articles or for improvements. Information on this is available in [in the forum](https://forum.iobroker.net). <br><br> **Until all content has been transferred, the old documentation is still [found here](https://www.iobroker.net/docu/). It will be gradually replaced by the new documentation.**
+!> The documentation is under construction and is constantly being expanded. As a result, links may not yet work or content may be missing. We are grateful for any help in creating new articles or for improvements. Information on this is available in [in the forum](https://forum.iobroker.net). <br><br> **Until all content has been transferred, the old documentation is still [can be found here](https://www.iobroker.net/docu/). It will be gradually replaced by the new documentation.**
 
 ## Cross-platform
 Anyone dealing with home automation will sooner or later find that systems are often not perfect. Every system has its strengths and weaknesses. ioBroker is therefore cross-platform. Parallel operation with existing solutions is possible at any time. Synergy effects can be used and the best of all worlds can be brought together.
@@ -43,7 +43,7 @@ With `VIS` ioBroker provides a powerful tool for creating an individual visualiz
 
 ![VIS](../de/media/vis2.png) *Example of a self-created VIS user interface*
 
-The user has maximum design freedom. Prefabricated modules for easy use help the user. But not only the display of information is possible. The control of devices is also quickly implemented via the visualization interface. The user interface can be adapted to a wide variety of end devices - from smartphones to wall tablets with touch functions to personal computers - everything can be done with simple drag and drop.
+The user has maximum design freedom. Prefabricated modules for easy use help the user. However, it is not only possible to display information. The control of devices is also quickly implemented via the visualization interface. The user interface can be adapted to a wide variety of end devices - from smartphones to wall tablets with touch functions to personal computers - everything can be done with simple drag and drop.
 
 Simple prefabricated user interfaces can be quickly implemented with the material or HabPanel adapter.
 

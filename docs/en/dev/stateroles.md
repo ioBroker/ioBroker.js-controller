@@ -43,6 +43,13 @@
 * button.mode.manual
 * button.mode.silent
 
+## Buttons as sensor
+*common.type=boolean, common.write=false, common.read=true*
+
+* button         - the difference, that `common.write=false`. Please avoid this role and use `button.press` or `button.long`.
+* button.long
+* button.press
+
 ## Values (numbers, read-only)
 
 *common.type=number, common.write=false*

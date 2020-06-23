@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adaptersecurity.md
 title: 适配器开发人员与安全相关的功能
-hash: X2HcDsT5TE/W4x20hMFpAqHF23iMYbOPyEK6TXNkyG4=
+hash: /NdARX0dTYJRe5UAHsq6Xdl6DY1zMplYgcLpB1LOemU=
 ---
 ＃适配器开发人员与安全相关的功能
 ##防止其他适配器访问敏感数据
@@ -26,7 +26,7 @@ __例__：
 ```
 
 ##自动加密和解密敏感数据
-如果您需要存储用户密码或令牌，以使用户能够访问您提供的服务，则此敏感信息未以明文形式存储可能符合用户的利益。
+如果您需要存储用户密码或令牌，以使用户能够访问您提供的服务，则此敏感信息不会以明文形式存储，这可能对用户有利。
 为此，可以将`encryptedNative`字段添加到`io-package.json`文件中。该字段必须包含所有属性的数组，这些属性存储在适配器的`native`属性中，该属性将被加密存储并在适配器运行时自动解密。
 
 每当当前使用的加密算法变得不安全时，它将在js-controller中进行更改。
@@ -34,7 +34,7 @@ __例__：
 __当前使用的加密算法__
 
 -js-controller> = 3.0：`default'
--js控制器> = 3.2：`aes-192-cbc`
+-JS控制器> = 3.2：`aes-192-cbc`
 
 请注意，此功能至少需要js-controller 3.0.0。
 
