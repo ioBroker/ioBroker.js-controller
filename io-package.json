@@ -18,6 +18,30 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.1.6": {
+                "en": "bugfixes and optimizations, see CHANGELOG.md",
+                "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
+                "ru": "исправления и оптимизации, см. CHANGELOG.md",
+                "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
+                "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
+                "fr": "corrections de bogues et optimisations, voir CHANGELOG.md",
+                "it": "correzioni di errori e ottimizzazioni, vedere CHANGELOG.md",
+                "es": "correcciones de errores y optimizaciones, ver CHANGELOG.md",
+                "pl": "poprawki i optymalizacje, patrz CHANGELOG.md",
+                "zh-cn": "错误修正和优化，请参阅CHANGELOG.md"
+            },
+            "3.1.5": {
+                "en": "bugfixes and optimizations, see CHANGELOG.md",
+                "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
+                "ru": "исправления и оптимизации, см. CHANGELOG.md",
+                "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
+                "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
+                "fr": "corrections de bogues et optimisations, voir CHANGELOG.md",
+                "it": "correzioni di errori e ottimizzazioni, vedere CHANGELOG.md",
+                "es": "correcciones de errores y optimizaciones, ver CHANGELOG.md",
+                "pl": "poprawki i optymalizacje, patrz CHANGELOG.md",
+                "zh-cn": "错误修正和优化，请参阅CHANGELOG.md"
+            },
             "3.1.4": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
                 "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
@@ -138,138 +162,6 @@
                 "pl": "zobacz CHANGELOG.md",
                 "zh-cn": "看到CHANGELOG.md"
             },
-            "2.0.44": {
-                "en": "optimizations and bugfixes",
-                "de": "Optimierungen und Bugfixes",
-                "ru": "оптимизации и исправления",
-                "pt": "otimizações e correções de bugs",
-                "nl": "optimalisaties en bugfixes",
-                "fr": "optimisations et corrections de bugs",
-                "it": "ottimizzazioni e correzioni di bug",
-                "es": "optimizaciones y correcciones de errores",
-                "pl": "optymalizacje i poprawki błędów",
-                "zh-cn": "优化和错误修正"
-            },
-            "2.0.43": {
-                "en": "optimizations and bugfixes",
-                "de": "Optimierungen und Bugfixes",
-                "ru": "оптимизации и исправления",
-                "pt": "otimizações e correções de bugs",
-                "nl": "optimalisaties en bugfixes",
-                "fr": "optimisations et corrections de bugs",
-                "it": "ottimizzazioni e correzioni di bug",
-                "es": "optimizaciones y correcciones de errores",
-                "pl": "optymalizacje i poprawki błędów",
-                "zh-cn": "优化和错误修正"
-            },
-            "2.0.42": {
-                "en": "optimizations and bugfixes",
-                "de": "Optimierungen und Bugfixes",
-                "ru": "оптимизации и исправления",
-                "pt": "otimizações e correções de bugs",
-                "nl": "optimalisaties en bugfixes",
-                "fr": "optimisations et corrections de bugs",
-                "it": "ottimizzazioni e correzioni di bug",
-                "es": "optimizaciones y correcciones de errores",
-                "pl": "optymalizacje i poprawki błędów",
-                "zh-cn": "优化和错误修正"
-            },
-            "2.0.41": {
-                "en": "optimizations and bugfixes",
-                "de": "Optimierungen und Bugfixes",
-                "ru": "оптимизации и исправления",
-                "pt": "otimizações e correções de bugs",
-                "nl": "optimalisaties en bugfixes",
-                "fr": "optimisations et corrections de bugs",
-                "it": "ottimizzazioni e correzioni di bug",
-                "es": "optimizaciones y correcciones de errores",
-                "pl": "optymalizacje i poprawki błędów",
-                "zh-cn": "优化和错误修正"
-            },
-            "2.0.39": {
-                "en": "optimizations and bugfixes",
-                "de": "Optimierungen und Bugfixes",
-                "ru": "оптимизации и исправления",
-                "pt": "otimizações e correções de bugs",
-                "nl": "optimalisaties en bugfixes",
-                "fr": "optimisations et corrections de bugs",
-                "it": "ottimizzazioni e correzioni di bug",
-                "es": "optimizaciones y correcciones de errores",
-                "pl": "optymalizacje i poprawki błędów",
-                "zh-cn": "优化和错误修正"
-            },
-            "2.0.38": {
-                "en": "0_userdata for own states, obejcts and files introduced, optimizations and bugfixes, errors with compact mode on Windows fixed, Logging enhancements",
-                "de": "0_userdata für eigene Zustände, Objekte und Dateien, Optimierungen und Bugfixes, Fehler im Kompaktmodus unter Windows behoben, Logging-Verbesserungen",
-                "ru": "0_userdata для собственных состояний, введенных объектов и файлов, оптимизаций и исправлений, исправлены ошибки с компактным режимом в Windows, улучшения ведения журнала",
-                "pt": "0_userdata para estados próprios, obejts e arquivos introduzidos, otimizações e correções de erros, erros com o modo compacto no Windows corrigido, aprimoramentos de registro",
-                "nl": "0_userdata voor eigen toestanden, geïntroduceerde obejcts en bestanden, optimalisaties en bugfixes, fouten met compacte modus op Windows vast, logboekverbeteringen",
-                "fr": "0_userdata pour les états, objets et fichiers introduits, optimisations et corrections de bugs, erreurs avec le mode compact sur Windows corrigées, améliorations de la journalisation",
-                "it": "0_userdata per propri stati, oggetti e file introdotti, ottimizzazioni e correzioni di errori, errori con modalità compatta su Windows fissi, miglioramenti della registrazione",
-                "es": "0_datos de usuario para estados propios, obejcts y archivos introducidos, optimizaciones y correcciones de errores, errores con modo compacto en Windows fijo, mejoras de registro",
-                "pl": "0_userdata dla własnych stanów, wprowadzone obiekty i pliki, optymalizacje i poprawki błędów, naprawione błędy w trybie kompaktowym w systemie Windows, ulepszenia rejestrowania",
-                "zh-cn": "0_userdata用于自身状态，引入的对象和文件，优化和错误修正，Windows上的紧凑模式下的错误已修复，日志记录增强"
-            },
-            "2.0.35": {
-                "en": "optimizations and bugfixes for alias and more, allow password usage for Redis connections",
-                "de": "Optimierungen und Bugfixes für Alias und mehr ermöglichen die Verwendung von Kennwörtern für Redis-Verbindungen",
-                "ru": "оптимизация и исправления для псевдонима и многое другое, разрешить использование пароля для подключений Redis",
-                "pt": "otimizações e correções de bugs para alias e mais, permitem o uso de senha para conexões Redis",
-                "nl": "optimalisaties en bugfixes voor alias en meer, staan wachtwoordgebruik toe voor Redis-verbindingen",
-                "fr": "optimisations et corrections de bugs pour les alias et plus, autoriser l'utilisation de mots de passe pour les connexions Redis",
-                "it": "ottimizzazioni e correzioni di bug per alias e altro, consentono l'utilizzo della password per le connessioni Redis",
-                "es": "optimizaciones y correcciones de errores para alias y más, permiten el uso de contraseñas para conexiones Redis",
-                "pl": "optymalizacje i poprawki błędów dla aliasu i więcej, pozwalają na użycie hasła do połączeń Redis",
-                "zh-cn": "别名的优化和错误修正等，允许Redis连接使用密码"
-            },
-            "2.0.34": {
-                "en": "Allow custom settings to be removed again if objects are \"file\"",
-                "de": "Ermöglichen, dass benutzerdefinierte Einstellungen wieder entfernt werden, wenn Objekte \"Datei\" sind",
-                "ru": "Разрешить удаление пользовательских настроек еще раз, если объекты \"файл\"",
-                "pt": "Permitir que as configurações personalizadas sejam removidas novamente se os objetos forem \"arquivo\"",
-                "nl": "Toestaan dat aangepaste instellingen opnieuw worden verwijderd als objecten \"bestand\" zijn",
-                "fr": "Autoriser la suppression des paramètres personnalisés si les objets sont \"fichier\"",
-                "it": "Consenti di rimuovere nuovamente le impostazioni personalizzate se gli oggetti sono \"file\"",
-                "es": "Permita que la configuración personalizada se elimine nuevamente si los objetos son \"archivo\"",
-                "pl": "Zezwól, aby ustawienia niestandardowe zostały ponownie usunięte, jeśli obiekty są „plikami”",
-                "zh-cn": "如果对象是“文件”，则允许再次删除自定义设置"
-            },
-            "2.0.33": {
-                "en": "enhance reconnection handling and other optimizations and bug fixes",
-                "de": "Verbesserte Behandlung von Wiederverbindungen und andere Optimierungen und Fehlerkorrekturen",
-                "ru": "улучшить обработку переподключения и другие оптимизации и исправления ошибок",
-                "pt": "aprimorar o manuseio de reconexão e outras otimizações e correções de bugs",
-                "nl": "verbetering van de afhandeling van herverbindingen en andere optimalisaties en bugfixes",
-                "fr": "améliorer la gestion de la reconnexion et d’autres optimisations et corrections de bugs",
-                "it": "migliorare la gestione della riconnessione e altre ottimizzazioni e correzioni di bug",
-                "es": "mejorar el manejo de reconexión y otras optimizaciones y correcciones de errores",
-                "pl": "usprawnij obsługę ponownego łączenia oraz inne optymalizacje i poprawki błędów",
-                "zh-cn": "增强重新连接处理以及其他优化和错误修复"
-            },
-            "2.0.29": {
-                "en": "logs in admin tab fixed and other optimizations and bug fixes",
-                "de": "logs in admin tab behoben und andere optimierungen und fehlerbehebungen",
-                "ru": "исправлены логи в админке и другие оптимизации и исправления ошибок",
-                "pt": "logs na guia admin corrigidos e outras otimizações e correções de bugs",
-                "nl": "logt in admin tab fixed en andere optimalisaties en bugfixes",
-                "fr": "Journaux dans l'onglet administrateur corrigé et autres optimisations et corrections de bugs",
-                "it": "registri nella scheda admin fissi e altre ottimizzazioni e correzioni di bug",
-                "es": "registros en la pestaña de administrador corregidos y otras optimizaciones y correcciones de errores",
-                "pl": "logi w zakładce admin naprawione i inne optymalizacje oraz poprawki błędów",
-                "zh-cn": "修复了管理标签中的登录信息以及其他优化和错误修复"
-            },
-            "2.0.25": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "см. CHANGELOG.md",
-                "pt": "veja CHANGELOG.md",
-                "nl": "zie CHANGELOG.md",
-                "fr": "voir CHANGELOG.md",
-                "it": "vedi CHANGELOG.md",
-                "es": "ver CHANGELOG.md",
-                "pl": "zobacz CHANGELOG.md",
-                "zh-cn": "看到CHANGELOG.md"
-            },
             "1.5.14": {
                 "en": "Make sure Info Adapter tab is displayed automatically on install\nOptimize messages for CLI host commands\nReplace winston-syslog dependency to prevent build errors on node.js 10+ when installing or updating iobroker\nRefresh of default SSL certificates",
                 "de": "Sicherstellen, dass die Registerkarte Info Adapter bei der Installation automatisch angezeigt wird.\nMeldungen für CLI-Hostbefehle optimiert.\nZur Vermeidung von Buildfehler unter node.js 10+ wurde die Abhängigkeit zu winston-syslog angepasst.\nAktualisierung der Standard SSL-Zertifikate für den Admin.",
@@ -305,85 +197,6 @@
                 "es": "Permitir instalar versiones específicas / corregir instalar versiones específicas\nLea la memoria caché del repositorio antes de descargar el archivo completo\nSi npm devuelve el código 1, está bien.\narreglar instancias enumeración\nrevertir la versión de Greenlock a 2.7.1",
                 "pl": "Pozwól zainstalować określone wersje / fix instalując określone wersje\nPrzeczytaj cache repozytorium przed pobraniem całego pliku\njeśli npm zwróci kod 1, jest OK\npoprawiono wyliczanie instancji\nprzywróć wersję Greenlock do wersji 2.7.1",
                 "zh-cn": "允许安装特定版本/修复安装特定版本\n在下载整个文件之前读取存储库的缓存\n如果npm返回代码1就可以了\n修复实例枚举\n将greenlock版本恢复为2.7.1"
-            },
-            "1.5.9": {
-                "en": "Handle optional npm errors correctly on installs\nMake sure to only iterate over correct adapters when names start the same\nInstall correct adapter version when moving or reinstalling\nOnly download repository if changed",
-                "de": "Behandeln Sie optionale npm-Fehler bei Installationen korrekt\nnVergewissern Sie sich, dass die korrekten Adapter nur dann durchlaufen werden, wenn die Namen die gleichen Adapter starten",
-                "ru": "Правильно обрабатывать необязательные ошибки npm при установке\nnУбедитесь в том, что перебираете правильные адаптеры только при одинаковых именах имен",
-                "pt": "Manipule erros opcionais do npm corretamente em instalações\nnCertifique-se de somente iterar sobre adaptadores corretos quando os nomes iniciarem o mesmo\nnInstalar a versão correta do adaptador ao mover ou reinstalar\nnApenas o repositório de download se tiver sido alterado",
-                "nl": "Beheer optionele npm-fouten correct bij installaties\nnControleer zeker alleen correcte adapters als identiteiten hetzelfde beginnen\nnSteek de juiste adapterversie bij het verplaatsen of opnieuw installeren\nnGebruik alleen de repository als deze is gewijzigd",
-                "fr": "Gestion des erreurs npm facultatives correctement lors de l’installation\nnAssurez-vous de n’itérer que sur les bons adaptateurs lorsque les noms commencent par la même version de l’adaptateur correct lors du déplacement ou de la réinstallation du\nnSi-modifié le référentiel de téléchargement.",
-                "it": "Gestisci correttamente gli errori npm opzionali\nnAccertati di eseguire iterazioni solo sugli adattatori corretti quando i nomi iniziano lo stesso\nnInstallare la versione corretta dell'adattatore durante lo spostamento o la reinstallazione\nnSpoglia il repository di download se modificato",
-                "es": "Maneje los errores npm opcionales correctamente en las instalaciones\nnAsegúrese de iterar solo sobre los adaptadores correctos cuando los nombres inicien la misma\nnInstale la versión correcta del adaptador al mover o reinstalar\nnSólo descargue el repositorio si se cambió",
-                "pl": "Prawidłowe obchodzenie się z opcjonalnymi błędami npm w instalacjach n Upewnij się, że iteracja tylko przez prawidłowe karty, gdy nazwy zaczynają się tak samo Zainstaluj poprawną wersję adaptera podczas przenoszenia lub ponownej instalacji Tylko pobranie repozytorium w przypadku zmiany",
-                "zh-cn": "在安装时正确处理可选的npm错误\nn确保仅在名称开始时迭代正确的适配器\nn在移动或重新安装时安装正确的适配器版本\nn仅在下载存储库时更改"
-            },
-            "1.5.7": {
-                "en": "let's encrypt was fixed\nFix iob script\nAlways install the version from repository and not the latest from npm\nRoot should always npm install with --unsafe-perm\niobroker stop was fixed",
-                "de": "Lass uns verschlüsseln wurde behoben\nIob -Skript korrigieren\nInstallieren Sie die Version immer aus dem Repository und nicht die neueste aus npm\nRoot sollte npm immer mit --unsafe-perm installieren\nIobroker-Stopp wurde behoben",
-                "ru": "«давайте шифровать» было исправлено\nИсправить скрипт iob\nВсегда устанавливайте версию из репозитория, а не самую последнюю из npm\nRoot всегда должен устанавливать npm с помощью --unsafe-perm\nостановка iobroker была исправлена",
-                "pt": "vamos criptografar foi corrigido\nCorrigir o script iob\nSempre instale a versão do repositório e não a mais recente do npm\nRaiz deve sempre instalar npm com --unsafe-perm\niobroker stop foi corrigido",
-                "nl": "laten we coderen was opgelost\nFix iob script\nInstalleer altijd de versie van de repository en niet de laatste van npm\nRoot moet altijd npm installeren met --unsafe-perm\niobroker stop was opgelost",
-                "fr": "chiffrons a été corrigé\nCorrection du script iob\nToujours installer la version depuis le référentiel et non la dernière depuis npm\nRoot devrait toujours installer npm avec --unsafe-perm\niobroker stop a été corrigé",
-                "it": "Let's Encrypt è stato corretto\nCorreggere lo script iob\nInstalla sempre la versione dal repository e non l'ultima da npm\nIl root dovrebbe sempre installare npm con --unsafe-perm\nl'arresto di iobroker è stato corretto",
-                "es": "Vamos a cifrar fue corregido\nCorregido el script iob\nSiempre instale la versión desde el repositorio y no la última desde npm\nLa raíz siempre debe instalar npm con --unsafe-perm\nla parada de iobroker fue arreglada",
-                "pl": "zaszyfrujmy zostało naprawione\nNapraw skrypt iob\nZawsze instaluj wersję z repozytorium, a nie najnowszą z npm\nKatalog główny powinien zawsze być npm install with --unsafe-perm\nZatrzymanie iobroker zostało naprawione",
-                "zh-cn": "让我们加密是固定的\n修复iob脚本\n始终从存储库安装版本，而不是从npm安装最新版本\nRoot应始终使用--unsafe-perm安装npm\niobroker停止是固定的"
-            },
-            "1.5.3": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "см. CHANGELOG.md",
-                "pt": "veja CHANGELOG.md",
-                "nl": "zie CHANGELOG.md",
-                "fr": "voir CHANGELOG.md",
-                "it": "vedi CHANGELOG.md",
-                "es": "ver CHANGELOG.md",
-                "pl": "zobacz CHANGELOG.md"
-            },
-            "1.4.2": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "см. CHANGELOG.md",
-                "pt": "veja CHANGELOG.md",
-                "nl": "zie CHANGELOG.md",
-                "fr": "voir CHANGELOG.md",
-                "it": "vedi CHANGELOG.md",
-                "es": "ver CHANGELOG.md",
-                "pl": "zobacz CHANGELOG.md"
-            },
-            "1.4.0": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "см. CHANGELOG.md",
-                "pt": "veja CHANGELOG.md",
-                "nl": "zie CHANGELOG.md",
-                "fr": "voir CHANGELOG.md",
-                "it": "vedi CHANGELOG.md",
-                "es": "ver CHANGELOG.md",
-                "pl": "zobacz CHANGELOG.md"
-            },
-            "1.3.0": {
-                "en": "socket.io Version was downgraded because of bug\nBetter npm5 support",
-                "de": "socket.io Die Version wurde aufgrund eines Fehlers heruntergestuft\nBessere npm5-Unterstützung",
-                "ru": "Версия socket.io была понижена из-за ошибки\nЛучшая поддержка npm5",
-                "pt": "A versão socket.io foi rebaixada por causa do erro\nMelhor suporte npm5",
-                "nl": "socket.io De versie is gedowngraded vanwege een bug\nBetere npm5-ondersteuning",
-                "fr": "La version de socket.io a été déclassée à cause d'un bug\nMeilleur support npm5",
-                "it": "socket.io La versione è stata declassata a causa di un bug\nMigliore supporto per npm5",
-                "es": "La versión de socket.io se ha degradado debido a errores\nMejor soporte npm5",
-                "pl": "Wersja socket.io została obniżona z powodu błędu\nLepsza obsługa npm5"
-            },
-            "1.2.7": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "см. CHANGELOG.md",
-                "pt": "veja CHANGELOG.md",
-                "nl": "zie CHANGELOG.md",
-                "fr": "voir CHANGELOG.md",
-                "it": "vedi CHANGELOG.md",
-                "es": "ver CHANGELOG.md",
-                "pl": "zobacz CHANGELOG.md"
             }
         },
         "desc": {
