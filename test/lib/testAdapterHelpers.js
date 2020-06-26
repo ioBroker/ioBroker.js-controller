@@ -68,7 +68,7 @@ function register(it, expect, context) {
         this.timeout(1000);
 
         //Expecting a callback
-        expect(context.adapter.checkPassword.bind('claus', '1234')).to.throw('checkPassword: no callback');
+        context.adapter.checkPassword('claus', '1234').should.be.rejectedWith('checkPassword: no callback');
 
         //User doesnt exists
         context.adapter.checkPassword('claus', '1234', function(res){
