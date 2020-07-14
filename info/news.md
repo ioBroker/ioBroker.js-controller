@@ -20,7 +20,7 @@ To test the messages, a link to a Json file can be added in the data point "read
 - **npm-version** - Can be used with bigger(x.x.x), smaller(x.x.x), equals(x.x.x) or between(x.x.x,y.y.y) to check the installed npm version (since Info 1.5.5, Admin 3.6.12)
 - **os** - Can be 'aix', 'darwin', 'freebsd', 'linux', 'openbsd', 'sunos', 'win32' and 'android' (since Info 1.5.5, Admin 3.6.10)
 - **repo** - Can be 'latest' or 'default' (since Info 1.5.6, Admin 3.6.12)
-- **uuid** - Sentry can help individual users with problems. For this it is now possible to enter the UUID as a condition. This can either be specified as a string, for example: "uuid": "6778667jkhhh7678zh" or as an array, for example: "uuid": ["jbiuh877h8g80ghoo", "huzhz87g887"]. The UUID is entered as hash sha1. Enter the following before the ID: "iobroker-uuid", followed directly by the ID. For hashing, e.g. this page can be used http://www.sha1-online.com/ (sinse Info 1.7.5, Admin x.x.x) 
+- **uuid** - Sentry can help individual users with problems. For this it is now possible to enter the UUID as a condition. This can either be specified as a string, for example: "uuid": "6778667jkhhh7678zh" or as an array, for example: "uuid": ["jbiuh877h8g80ghoo", "huzhz87g887"]. The UUID is entered as hash sha256. Enter the following before the ID: "iobroker-uuid", followed directly by the ID. For hashing, e.g. this page can be used http://www.sha1-online.com/ (sinse Info 1.7.6, Admin x.x.x) 
 - **conditions** - Object in format ("adapter" : "condition") -> All conditions are linked with "and"
   - **installed** - Adapter is installed (example: "iot": "installed")
   - **!installed** - Adapter is not installed  (example: "cloud": "!installed")
