@@ -3787,7 +3787,7 @@ function stopInstance(id, force, callback) {
                             clearTimeout(stopTimeouts[id].timeout);
                             stopTimeouts[id].timeout = null;
                         }
-                        logger.info(hostLogPrefix + ' stopInstance self ' + instance._id + ' killing pid ' + procs[id].process.pid + (result ? ': ' + result : ''));
+                        logger.info(hostLogPrefix + ' stopInstance self ' + instance._id + ' killing pid ' + (procs[id].process ? procs[id].process.pid : 'undefined') + (result ? ': ' + result : ''));
                         if (procs[id] && procs[id].process && !procs[id].startedAsCompactGroup) {
                             procs[id].stopping = true;
                             try {
