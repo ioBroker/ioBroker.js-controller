@@ -41,7 +41,7 @@ jobs:
       - name: Prepare installation (Windows)
         if: ${{ matrix.os == 'windows-latest' }}
         run: |
-          choco install redis-64
+          choco install redis-64 --version 3.0.503
           powershell "Start-Process redis-server.exe -PassThru"
 
       - name: NPM version
