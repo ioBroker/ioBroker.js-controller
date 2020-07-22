@@ -132,3 +132,30 @@ Ziel
 Die Abonnements werden automatisch verwaltet. Wenn ein Alias abonniert wird, wird auch die Ziel-ID abonniert.
 
 Die ID des Zielgeräts kann dynamisch (über den Administrator) geändert werden, und das Abonnement wird für eine neue Ziel-ID aktualisiert.
+
+Seit Version 3.0 des js-controllers können getrennte Status- und Kommando-Datenpunkte im Alias zusammengeführt werden:
+* alias.id.write enthält die ID des Datenpunktes, der gesetzt wird, wenn der Alias geschrieben wird
+* alias.id.read enthält die ID des Datenpunktes, der durch den Alias gespiegelt wird
+```
+{
+    _id: "alias.0.aliasName",
+    common: {
+        name: 'Test AliasC',
+        type: 'number',
+        role: 'state',
+        min: -10,
+        max: 10,
+        alias: {
+            id: {
+                read: 'state.id.to.read.from',
+                write: 'state.id.to.write.to'
+            }
+            read: 'val * 10 + 1',
+            write: '(val - 1) / 10'
+        }
+    },
+    native: {},
+    type: 'state'
+}
+```
+
