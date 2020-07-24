@@ -4,7 +4,7 @@ lastChanged: 03.12.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/tutorial/restore.md
-hash: 9SyQw5gWCDpvFS0ksEa7NULgmuancyWYV7tkASkVhpg=
+hash: 6M6JLNd7LLD21j0ulNOqyghHCguiQLMi21AkSJnTYyY=
 ---
 # Basics
 How do I correctly restore the ioBroker installation on a Linux system?
@@ -36,10 +36,10 @@ Objects type: redis
 States  type: redis
 ```
 
-If "redis" is in Objects type and / or States type, you must install the Redis server on the new system.
+If objects type and / or states type says "redis", you must install the Redis server on the new system.
 If there is "file" for both types, the Redis server is not required.
 
-If you should no longer have access to the old system and you do not know what exactly was configured there, then install the Redis server in advance.
+If you should no longer have access to the old system and you do not know what was configured there beforehand, then install the Redis server in advance.
 
 #### Redis installed:
 To do this, go to the terminal by putty and execute the following commands:
@@ -51,7 +51,7 @@ sudo usermod -a -G redis iobroker
 sudo reboot now
 ```
 
-Next, you should let the installer fix run through if all rights on the system should not fit somewhere.
+The next step is to run the installer fix if all rights on the system should not fit somewhere.
 This step is only a recommendation and is not absolutely necessary.
 
 ```
@@ -85,12 +85,12 @@ Backitup can also restore from NAS, Dropbox or Google Drive, but the local varia
 If you already have experience with mounting the NAS, this can also be used, especially since you can then directly access the existing directory of the old installation.
 However, this tutorial relates to a locally saved backup.
 
-If ioBroker Backup has been saved successfully, Backitup is now opened and the "Restore" tab is opened.
+If ioBroker Backup has been successfully saved, Backitup is now opened and the "Restore" tab is opened.
 Set the "backup source" to local there and then save.
 
 ![Restore tab](../../de/tutorial/media/restore/1575301096581-restoretab.jpg)
 
-If ALL instances are to start automatically after the restore, the option "Start all adapters after the restore" must be activated and then saved.
+If ALL instances are to start automatically after the restore, the "Start all adapters after restore" option must be activated and then saved.
 If the backup is to be restored on another host, this option should not be used because the IP addresses may have to be adjusted before starting the individual instances.
 
 After saving, the existing backups can be called up on the local path using the "Get backups" button.
@@ -182,7 +182,7 @@ cd /opt/iobroker
 iobroker restore <Dateiname eures Backups>
 ```
 
-!> **It is very important that only an ioBroker backup can be restored using this method.
+!> **Here it is very important that only an ioBroker backup can be restored with this method.
 A Redis backup, Zigbee backup, mySql backup, or the history data cannot be created with this command**
 
 Backitup is required for this, as these were created specifically with Backitup.
@@ -196,7 +196,7 @@ iobroker start
 
 Here too, all adapters are reinstalled individually by ioBroker via npm.
 This may take a while depending on the size of your installation, internet speed and system performance.
-The current status can be tracked in the "Log" tab.
+The current status can be followed in the "Log" tab.
 
 This is now done and the system is newly installed and all settings, scripts, visualizations, etc. restored.
 
