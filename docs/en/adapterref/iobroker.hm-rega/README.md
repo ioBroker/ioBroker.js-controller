@@ -4,13 +4,13 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
+hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ---
 ![logo](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
 # HomeMatic ReGaHSS
 ## Homematic
-> Homematic is the smart home system from eQ-3, which enables comprehensive control of a wide range of functions using scenarios (from simple to complex) in the home or apartment.
+> Homematic is eQ-3's smart home system, which enables comprehensive control of a wide range of functions using scenarios (from simple to complex) in the home or apartment.
 
 > The devices include products for light, roller shutter and heating control, hazard detectors, safety sensors and products for weather data measurement. The radio communication simplifies retrofitting. Wire bus components can be used in new buildings.
 
@@ -24,7 +24,7 @@ If several control centers are to be integrated in ioBroker, a separate instance
 
 With the installation of ReGaHSS an instance of the adapter "hm-rpc" is installed, which should be configured and activated in advance.
 
-An instance of this adapter can manage up to 5 different instances of the Homematic RPC adapter, which provide different services (each service requires its own RPC instance):
+An instance of this adapter can manage up to 5 different instances of the Homematic RPC adapter, which provide different services (each service needs its own RPC instance):
 
 - rfd (CCU radio service for standard components)
 - hs485d (Wired) (for wire bus components)
@@ -66,7 +66,7 @@ If activated, the RegaHSS data is queried regularly by the CCU based on the seco
 Trigger
 
 In order to minimize the active queries from ioBroker to RegaHSS, a trigger can also push the data on a change on the CCU within a program.
-A virtual key of the CCU can be used for this, which is triggered in a CCU program. By default, this is the BidCosRF.50.PRESS_SHORT key (see example program).
+A CCU virtual button that is triggered in a CCU program can be used for this. By default, this is the BidCosRF.50.PRESS_SHORT key (see example program).
 
 ### Sync area
 Here the user can specify which information is to be taken over by the CCU in ioBroker. The corresponding objects and data points are then created in ioBroker.
@@ -79,8 +79,8 @@ Here the user can specify which information is to be taken over by the CCU in io
 - Rooms: Activates the takeover of the rooms and a list of them
 - Trades: Activates the takeover of the trades and a list of them
 
-### Additional Settings area
-Here the user can decide whether https (encrypted and bug-proof connection) should be used. If activated, the user name and the associated password are required
+### Additional settings area
+Here the user can decide whether https (encrypted and tap-proof connection) should be used. If activated, the user name and the associated password are required
 
 Once all settings have been made, the configuration page is completed with the "save and close" command (button below the settings area). The adapter is closed and the instance is started with the new values.
 

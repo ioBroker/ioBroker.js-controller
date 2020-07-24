@@ -4,7 +4,7 @@ lastChanged: 03.12.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/tutorial/restore.md
-hash: 6M6JLNd7LLD21j0ulNOqyghHCguiQLMi21AkSJnTYyY=
+hash: 9SyQw5gWCDpvFS0ksEa7NULgmuancyWYV7tkASkVhpg=
 ---
 ＃ 基本
 如何在Linux系统上正确还原ioBroker安装？
@@ -20,12 +20,12 @@ hash: 6M6JLNd7LLD21j0ulNOqyghHCguiQLMi21AkSJnTYyY=
 可执行的ioBroker安装对于准备工作至关重要。
 
 有两种方法可以做到这一点。
-可以从[下载区](https://www.iobroker.net/#de/download)中获取完成的映像，然后根据此[手册](https://www.iobroker.net/#de/documentation/install/linux.md)来设置自己的Linux操作系统并安装ioBroker。
+可以从[下载区](https://www.iobroker.net/#de/download)中获取完成的映像，然后根据此[手册](https://www.iobroker.net/#de/documentation/install/linux.md)设置自己的Linux操作系统并安装ioBroker。
 
 ＃＃＃ 下一步
 如果旧系统已将状态和/或对象保存在Redis中，则新系统必须首先配备Redis服务器。
 
-如果不确定是否使用Redis并仍然存在对旧系统的访问权，则使用`iobroker status`命令获取所需的信息。“使用Redis时，输出如下：
+如果不确定是否使用Redis并仍然存在对旧系统的访问权，则使用`iobroker status`命令获取所需的信息。
 
 ```
 iobroker is running on this host.
@@ -36,10 +36,10 @@ Objects type: redis
 States  type: redis
 ```
 
-如果对象类型和/或状态类型显示为“ redis”，则必须在新系统上安装Redis服务器。
-如果两种类型都说“文件”，则不需要Redis服务器。
+如果“ redis”为“对象”类型和/或“状态”类型，则必须在新系统上安装Redis服务器。
+如果两种类型都有“文件”，则不需要Redis服务器。
 
-如果您无法再访问旧系统，并且不知道在其中正确配置了什么，请提前安装Redis服务器。
+如果您不再拥有对旧系统的访问权限，并且您不知道在那里正确配置了什么，请提前安装Redis服务器。
 
 #### Redis已安装：
 为此，请通过腻子转到终端并执行以下命令：
@@ -51,7 +51,7 @@ sudo usermod -a -G redis iobroker
 sudo reboot now
 ```
 
-如果系统上的所有权限都不适合某处，则下一步是运行安装程序修复程序。
+接下来，如果系统上的所有权限都不适合某个地方，则应让安装程序修复运行。
 此步骤仅是建议，并非绝对必要。
 
 ```
@@ -73,7 +73,7 @@ sudo apt-get install htop
 这里也有两个选择：
 
 #### ** 1。通过备份自动还原**
-由于此处不需要Linux知识，并且不需要通过Iobroker Web界面进行整个操作，因此自动还原的变体首先使用[把它备份](https://github.com/simatec/ioBroker.backitup/blob/master/README.md)进行。
+由于此处不需要Linux知识，并且不需要通过Iobroker的Web界面进行整个操作，因此自动还原的变体首先使用[把它备份](https://github.com/simatec/ioBroker.backitup/blob/master/README.md)进行。
 
 为此，必须安装适配器Backitup。
 这是通过“适配器”选项卡完成的。在此处搜索备份，然后使用（+）安装实例。
@@ -100,7 +100,7 @@ Backitup也可以从NAS，Dropbox或Google云端硬盘还原，但是本地版�
 
 ![选择备份](../../de/tutorial/media/restore/1575301146928-restoreliste.jpg)
 
-选择之后，将显示一条消息，指示iobroker已停止进行还原，然后再次启动。
+选择后，将显示一条消息，指示iobroker已停止进行还原，然后再次启动。
 
 ![开始还原](../../de/tutorial/media/restore/1575301175231-restorestart.jpg)
 
@@ -139,17 +139,17 @@ iobroker start
 
 恭喜，新安装的系统现已完成，其中包含所有设置，脚本，可视化等。
 
-使用Backitup，现在可以还原更多数据，前提是该数据已预先保存在旧系统上。
+使用Backitup，现在可以还原更多数据，前提是该数据已在旧系统上预先备份。
 您可以按照上述相同的步骤还原Redis数据库，Zigbee数据库，mySql数据库和您的历史记录数据。
 
-然后，检索到的备份列表将类似于此处的示例。
+在示例中，检索到的备份的列表将如下所示。
 
 ![完整清单](../../de/tutorial/media/restore/1575362131512-fullliste.jpg)
 
 *****************************************************************************************************************************************
 
 #### ** 2。使用终端命令手动还原**
-首先，必须通过Putty或类似命令发出一些命令。
+首先，必须通过腻子或类似方法发出一些命令。
 
 首先，必须创建一个备份文件夹：
 
@@ -163,7 +163,7 @@ sudo mkdir /opt/iobroker/backups
 如果状态和对象存储在Redis数据库中，则应首先在此处还原备份的Redis数据库。
 如果只有州在Redis的领导下进行，则不一定必须事先这样做。
 
-完成此操作后，请按以下步骤停止ioBroker：
+完成此操作后，请按照以下步骤停止ioBroker：
 
 ```
 iobroker stop
@@ -175,7 +175,7 @@ iobroker stop
 iobroker status
 ```
 
-如果所有输出均正确并且iobroker已停止，则现在可以使用以下命令通过控制台执行还原：
+如果所有输出均正确且iobroker已停止，则现在可以使用以下命令通过控制台执行还原：
 
 ```
 cd /opt/iobroker
@@ -202,6 +202,6 @@ iobroker start
 
 ###结论：
 基本上，两个变体都会导致相同的结果。
-如果您几乎没有使用终端命令的经验并且感到不安全，则Backitup会很安全。
+如果您几乎没有使用终端命令的经验，并且在那儿感到不安全，则Backitup会很安全。
 
 但是，如果要确切查看系统上发生的情况，则应通过控制台选择手动变量。在这里，您可以在终端中详细查看每个进程。

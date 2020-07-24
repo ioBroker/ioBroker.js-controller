@@ -325,7 +325,13 @@ ioBroker的官方适配器数量已经相当可观。 当然，网上还有更�
 当通过IP或localhost：8081访问ioBroker时，论坛条目将显示没有问题。但是如果你使用像meinhaus.de:8081这样的主机名，你必须在Feednami获得一个免费的API密钥。 要注册，请单击 [此处](https://toolkit.sekando.com/docs/en/setup/hostnames) 并按照说明进行操作。
 
 ## Changelog
-<!-- sdsd -->
+<!-- 
+### __WORK IN PROGRESS__
+ -->
+
+### __WORK IN PROGRESS__
+* (Apollon77) Prevented a crash case (Sentry IOBROKER-INFO-K)
+
 ### 1.7.6 (2020-07-14)
 * (Apollon77) Update systeminformation and other deps
 * (Apollon77) Check for axios existance and exit adapter if not existing to prevent crashes (Sentry IOBROKER-INFO-C)

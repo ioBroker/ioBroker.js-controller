@@ -347,8 +347,9 @@ In addition to normal thermostat you can define:
 * When passing values to these objects, a popup-message (or toast) is displayed
 * You can use html-tags to format the message
 * The duration is the time in ms the message is displayed; if the duration is 0 the message has to be confirmed
-* Alternatively you can set these values via sendTo-command (for example by blockly) with the parameters ``PopupMessage`` and ``PopupDuration``
-
+* Alternatively you can set these values via sendTo-command with the parameters ``PopupMessage`` and ``PopupDuration``. 
+    * Example: ``sendTo("iqontrol", "send", {PopupMessage: 'This is my message', PopupDuration: 2500});``
+* You can also use blockly to send messages to iQontrol
 ![Popup Screenshot](img/popup_screenshot.png)
 ![Popup Blockly](img/popup_blockly.png)
 
@@ -357,6 +358,12 @@ In addition to normal thermostat you can define:
 ****
 
 ## Changelog
+
+### 1.1.6 (2020-07-24)
+* (Sebastian Bormann) Added some roles to recognize water and fire sensors more reliable.
+* (Sebastian Bormann) Added a block to blockly to send popup messages to iQontrol.
+* (Sebastian Bormann) Set option "Always use time instead of pressure" as standard - if you want to use ForcedTouch, disable this option.
+* (Sebastian Bormann) Updated some dependencies.
 
 ### 1.1.5 (2020-07-05)
 * (Sebastian Bormann) Made dialog movable by dragging title.

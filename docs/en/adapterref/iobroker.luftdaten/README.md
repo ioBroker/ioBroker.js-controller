@@ -51,6 +51,10 @@ Wait some minutes until the cronjob collects the data for the first time.
 
 ## Changelog
 
+### 0.0.18
+
+* (klein0r) Added units for pressure and noise
+
 ### 0.0.17
 
 * (klein0r) Added link to sensor map

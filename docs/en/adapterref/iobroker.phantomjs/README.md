@@ -115,6 +115,12 @@ Supported dimension units are: 'mm', 'cm', 'in', 'px'. No unit means 'px'.
 You can read more about phantomJS [here](http://phantomjs.org/api/webpage/property/paper-size.html).
 
 ## Changelog
+
+### 1.0.2 (2020-07-24)
+* (Apollon77) Add config to automatically install libfontconfig when js-controller 3+ is used
+* (Apollon77) Add ignore-ssl-errors=true to parameters to prevent error with self signed ssl certs
+* (Apollon77) Adjust state description to not confuse witha static port number :-)
+
 ### 1.0.1 (2018-05-04)
 * (bluefox) Problem with page size fixed
 
@@ -136,7 +142,7 @@ You can read more about phantomJS [here](http://phantomjs.org/api/webpage/proper
 * (bluefox) initial commit
 
 ## License
-Copyright 2016-2018 bluefox <dogafox@gmail.com>.
+Copyright 2016-2020 bluefox <dogafox@gmail.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 

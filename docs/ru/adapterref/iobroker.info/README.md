@@ -317,7 +317,13 @@ $ sudo apt-get install smartmontools
 Записи форума будут отображаться без проблем при доступе к ioBroker через IP или localhost:8081. Но если вы используете имя хоста, такое как meinhaus.de:8081, вы должны получить бесплатный ключ API в Feednami. Чтобы зарегистрироваться, нажмите [здесь](https://toolkit.sekando.com/docs/en/setup/hostnames) и следуйте инструкциям.
 
 ## Changelog
-<!-- sdsd -->
+<!-- 
+### __WORK IN PROGRESS__
+ -->
+
+### __WORK IN PROGRESS__
+* (Apollon77) Prevented a crash case (Sentry IOBROKER-INFO-K)
+
 ### 1.7.6 (2020-07-14)
 * (Apollon77) Update systeminformation and other deps
 * (Apollon77) Check for axios existance and exit adapter if not existing to prevent crashes (Sentry IOBROKER-INFO-C)

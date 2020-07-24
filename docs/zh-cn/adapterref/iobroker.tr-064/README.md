@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tr-064/README.md
 title: 的ioBroker.tr-064
-hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
+hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 ---
 ![商标](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
@@ -29,7 +29,7 @@ hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 -使用外部号码时，振铃状态会将您连接到该外部号码。
 
 当拾起被叫电话时，FritzBox将呼叫外部号码，并且您的默认电话将响铃。
-可以在FritsBox中配置以下默认电话：Telefonie / Anrufe / [Tab] Wahlhilfe /Wählhilfeverwenden
+可以在FritsBox中的以下位置配置默认电话：Telefonie / Anrufe / [Tab] Wahlhilfe /Wählhilfeverwenden
 
 ### ToPauseState
 -值：响铃，连接，结束
@@ -50,7 +50,7 @@ hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 
 ＃＃＃ 电话簿
 -电话簿（如果启用）将用于获取呼叫者电话号码的名称。
--此外，有三种状态可解析数字或名称。如果可用，您还将获得联系人的图像URL。
+-此外，有三种状态可解析数字或名称。如果有的话，您还将获得联系人的图像URL。
 
   例如：如果您设置状态电话簿。将所有3个状态都编号，则姓名，号码和图像将设置为找到的联系人。请注意，按名称搜索将首先比较完整名称，如果找不到，则使用其中的一部分。
 
@@ -67,12 +67,12 @@ hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 -来电
 -外拨电话
 
-通话次数：通话次数可以设置为0。下一个通话将增加1。
+通话次数：通话次数可以设置为0。下一个通话增加1。
 
 html输出可以通过模板配置
 
 ###命令和命令结果状态
-使用命令状态，您可以从此[文件资料](https://avm.de/service/schnittstellen/)调用每个tr-064命令。
+使用命令状态，您可以从此[文件资料](https://avm.de/service/schnittstellen/)中调用每个tr-064命令。
 例如
 
 ```

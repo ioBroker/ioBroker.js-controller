@@ -43,6 +43,9 @@ On first installation you might want to check if everything works fine and don't
 
 ## Changelog
 
+### 0.3.0
+* (baerengraben)  Wechsel von Scheduled-Adapter nach Deamon-Adapter. Neu ist der Abfrage-Intervall konfigurierbar. Der Adapter terminiert nicht mehr und die erste Abfrage erfolgt 10s nach Start des Adapters. **Achtung:** Bitte für die Installation dieser Version den Adapter ganz löschen und wieder neu installieren (kein update)
+
 ### 0.2.3
 * (baerengraben) Update Dependencies
 
