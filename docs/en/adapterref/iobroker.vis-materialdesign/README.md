@@ -22,6 +22,15 @@ ioBroker Material Design Widgets are based on [Google's material design guidelin
 * [round-slider from thomasloven](https://github.com/thomasloven/round-slider)
 * [Material Design Icons](https://materialdesignicons.com/)
 
+## Sentry
+This adapter uses Sentry libraries to automatically report vis runtime exceptions and code errors caused by the widgets to the developers.
+
+When the vis runtime is first loaded, the file `./iobroker-data/files/vis.0/materialdesign.sentry` is created. This file contains an anonymized id (so-called uuid), which allows the developer to determine whether the error occurs only with one or more users.
+
+<b>To disable sentry</b>, the word 'disabled' must be entered in the file `/iobroker-data/files/vis.0/materialdesign.sentry`. 
+<br>To check if sentry is disabled, open the browser console and look for `sentry is deactivated for vis-materialdesign`.
+
+
 ## Online Example Project
 provided by [iobroker.click](https://iobroker.click/index.html), thanks to bluefox and iobroker.
 
@@ -1319,6 +1328,14 @@ Take a look at the animated screenshot below:
                 top | middle | bottom
             </td>
         </tr>
+        <tr>
+            <td>cellStyleAttrs</td>
+            <td>css style attributes for cell</td>
+            <td>string</td>
+            <td>
+                ...
+            </td>
+        </tr>
     </tbody>
 </table>
 
@@ -1862,6 +1879,18 @@ Take a look at the animated screenshot below:
 			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
 		</tr>
 		<tr>
+			<td>lockIconBackground</td>
+			<td>background color of lock icon</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>lockBackgroundSizeFactor</td>
+			<td>grow factor of background size</td>
+			<td>number</td>
+			<td/>
+		</tr>
+		<tr>
 			<td>lockFilterGrayscale</td>
 			<td>gray filter if locked</td>
 			<td>number</td>
@@ -2214,6 +2243,18 @@ Take a look at the animated screenshot below:
 			<td>icon color</td>
 			<td>string</td>
 			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>lockIconBackground</td>
+			<td>background color of lock icon</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>lockBackgroundSizeFactor</td>
+			<td>grow factor of background size</td>
+			<td>number</td>
+			<td/>
 		</tr>
 		<tr>
 			<td>lockFilterGrayscale</td>
@@ -5389,6 +5430,10 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
+
+### 0.3.19 (2020-07-18)
+* (Scrounger): Icon Button Widget: background color option for lock icon added
+* (Scrounger): possibility to deactivate sentry implemented -> see documentation
 * (Scrounger): Fixed some bugs reported via Sentry
 * (Scrounger): prevent set value in vis editor
 * (Scrounger): Grid & Mansonry Widget: visibilty by resoltuin bug fix

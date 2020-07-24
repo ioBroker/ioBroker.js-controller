@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
+hash: 5H1U+vP44V3HiLwJ5cTYqkOSyoRIGJ1DhsJoacYCftg=
 ---
 ![логотип](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -46,8 +46,8 @@ hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
 ### Создание ваучера
 Используя кнопку vouchers.create_vouchers, можно создавать предопределенные ваучеры. Можно настроить количество ваучеров, которые будут созданы, продолжительность действия ваучеров, а также установить ограничения для загрузки и загрузки.
 
-## Отсутствуют точки данных
-Адаптер использует [Узел-Unifi](https://github.com/jens-maus/node-unifi) для подключения к контроллеру UniFi. Чтобы упростить задачу, не все доступные точки данных загружаются в ваш ioBroker. Если вам не хватает точек данных, используйте следующие URL для проверки API. (Примечание: вы должны заменить IP, PORT и SITE своими настройками)
+## Отсутствующие точки данных
+Адаптер использует [Узел-Unifi](https://github.com/jens-maus/node-unifi) для подключения к контроллеру UniFi. Чтобы упростить процесс, не все доступные точки данных загружаются в ваш ioBroker. Если вам не хватает точек данных, используйте следующие URL для проверки API. (Примечание: вы должны заменить IP, PORT и SITE своими настройками)
 
 | Информация | API URL |
 |-------------|---------------------------------------------|
@@ -60,6 +60,7 @@ hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
 | Здоровье | https:// IP: PORT / api / s / SITE / stat / health |
 | Ваучеры | https:// IP: PORT / api / s / SITE / stat / voucher |
 | DPI | https:// IP: PORT / api / s / SITE / stat / dpi |
+| Сигнализация | https:// IP: PORT / api / s / SITE / stat / alarm |
 
 ### Конечные точки UbiOS
 | Информация | API URL |
@@ -73,19 +74,24 @@ hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
 | Здоровье | https:// IP / прокси / сеть / api / s / сайт / статистика / здоровье |
 | Ваучеры | https:// IP / прокси / сеть / api / s / SITE / stat / voucher |
 | DPI | https:// IP / прокси / сеть / api / s / SITE / stat / dpi |
+| Сигнализация | https:// IP / прокси / сеть / api / s / SITE / stat / alarm |
 
-## Известные вопросы
+## Известные проблемы
 * Состояние is_wired клиентов неверно после того, как клиент перешел в автономный режим. Это известная проблема контроллера UniFi и не связана с адаптером. (см. https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
 
 ## Ссылки
 Этот адаптер использует функциональность следующих сторонних модулей nodejs:
 
-* [node-unifi] (https://github.com/jens-maus/node-unifi)
+* [узел-унифи] (https://github.com/jens-maus/node-unifi)
 * [json-logic-js] (https://github.com/jwadhams/json-logic-js)
 
 ## Changelog
-### __WORK IN PROGRESS__
-* (Scrounger, braindead1) Implemented DPI
+### 0.5.6-beta.2 (2020-07-05)
+* (Scrounger, braindead1) Implemented Alarms, DPI & Gateway Traffic
+* (braindead1) Prevented creation of ghost clients caused by iOS MAC randomization
+* (dklinger) Implemented manual update trigger
+* (braindead1) Implemented deletion of used vouchers
+* (braindead1) Fixed some errors reported via Sentry
 
 ### 0.5.5 (2020-06-13)
 * (braindead1) Fixed some errors reported via Sentry

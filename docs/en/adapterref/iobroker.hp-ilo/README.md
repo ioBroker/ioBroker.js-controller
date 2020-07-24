@@ -28,6 +28,9 @@ Supporting ILO interfaces from V2 upwards.
 
 ## Changelog
 
+### 1.0.6 (2020-07-14)
+* (SebastianSchultz) Changed test scripts
+
 ### 1.0.5 (2019-11-11)
 * (SebastianSchultz) Changed test scripts
 
@@ -48,7 +51,7 @@ Supporting ILO interfaces from V2 upwards.
 
 The MIT License (MIT)
 
-Copyright (c) 2019 Sebastian Schultz.
+Copyright (c) 2020 Sebastian Schultz.
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

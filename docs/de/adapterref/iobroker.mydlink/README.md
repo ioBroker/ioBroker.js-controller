@@ -4,7 +4,6 @@ BADGE-NPM version: http://img.shields.io/npm/v/iobroker.mydlink.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.mydlink.svg
 BADGE-Tests: https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink.svg?branch=master
 BADGE-NPM: https://nodei.co/npm/iobroker.mydlink.png?downloads=true
-BADGE-Greenkeeper badge: https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.mydlink.svg
 ---
 ![Logo](admin/mydlink.png)
 # ioBroker.mydlink

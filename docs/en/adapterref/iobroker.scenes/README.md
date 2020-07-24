@@ -106,8 +106,21 @@ sendTo(
 ```
 The adapter will read all actual values for IDs defined in this scene and save it as configured ones.
 
+## TODO: 
+- Change tooltip for "Bereits gestartetet Befehle anhalten": ??
+- Update selectID dialog
+
 ## Changelog
-### 2.0.11 (2020-06-21)
+### 2.1.2 (2020-07-08)
+* (bluefox) Interval between states was corrected
+
+### 2.0.17 (2020-06-29)
+* (bluefox) GUI error corrected
+
+### 2.0.13 (2020-06-27)
+* (bluefox) Mobile view added
+
+### 2.0.12 (2020-06-26)
 * (bluefox) GUI error corrected
 
 ### 2.0.10 (2020-06-20)

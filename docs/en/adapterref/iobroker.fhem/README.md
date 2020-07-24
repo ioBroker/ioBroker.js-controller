@@ -46,6 +46,9 @@ Actually only following attributes are supported:
 
 ## Changelog
 
+### 1.5.3 (2020-06-30)
+* (LausiD) Several fixes
+
 ### 1.5.2 (2020-05-15)
 * (Apollon77) Fix wrong method calls
 

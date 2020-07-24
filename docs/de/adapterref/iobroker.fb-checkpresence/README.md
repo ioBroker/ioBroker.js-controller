@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fb-checkpresence/README.md
 title: kein Titel
-hash: iAx9LX7lL9ZxpPnYP6Eate95u77FxOZII9VLyznRrBI=
+hash: W3a3b6e6cA34+u0NlNaRWYzKCxwgJbsPlTwrQt6446M=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -45,7 +45,10 @@ Folgende TR-064-Dienste und -Aktionen werden verwendet:
 * WANIPConnection: 1 - GetInfo
 * DeviceInfo: 1 - GetInfo
 
-Standardmäßig ist die TR-064-Schnittstelle nicht aktiviert. Dies kann jedoch einfach über die FritzBox-Weboberfläche geändert werden. Melden Sie sich dazu in Ihrer FritzBox an und stellen Sie sicher, dass die Expertenansicht aktiviert ist. Dann finden Sie unter &quot;Heimnetzwerk» Heimnetzwerkübersicht »Netzwerkeinstellungen&quot; den Punkt &quot;Zugriff für Anwendungen zulassen&quot;. Dort müssen Sie das Kontrollkästchen aktivieren und dann die FritzBox einmal neu starten. <img src="doc/access_settings_network.JPG"/>
+Standardmäßig ist die TR-064-Schnittstelle nicht aktiviert. Dies kann jedoch einfach über die FritzBox-Weboberfläche geändert werden. Melden Sie sich dazu in Ihrer FritzBox an und stellen Sie sicher, dass die Expertenansicht aktiviert ist.
+Dann finden Sie unter "Heimnetzwerk» Heimnetzwerkübersicht »Netzwerkeinstellungen" den Punkt "Zugriff für Anwendungen zulassen". Dort müssen Sie das Kontrollkästchen aktivieren und dann die FritzBox einmal neu starten.
+
+Tipp: Vergessen Sie nach dem Ändern der Optionen nicht den Neustart der Fritzbox! <img src="doc/access_settings_network.JPG"/>
 
 ## Konfigurationsdialog
 ### Fritzbox IP-Adresse, Benutzer und Passwort
@@ -66,7 +69,7 @@ Die Formatmaske wird zum Formatieren der HTML- und JSON-Tabellenobjekte verwende
 Für ein konfiguriertes Familienmitglied müssen Sie den Namen, die Mac- oder IP-Adresse, einen Kommentar und angeben, ob das Mitglied für die Berechnung aktiviert ist. Für jedes Mitglied erstellt der Adapter Datenobjekte und prüft, ob das Mitglied vorhanden ist oder nicht.
 
 ### Whitelist-Einstellungen
-In die weiße Liste können Sie jedes bekannte Gerät einfügen. Alle unbekannten Geräte werden im Blacklist-Objekt aufgelistet.
+In die weiße Liste können Sie jedes bekannte Gerät einfügen. Unbekannte Geräte werden im Blacklist-Objekt aufgelistet.
 Wenn Sie das Kontrollkästchen in der Überschrift der Tabelle aktivieren, sind alle Geräte ausgewählt.
 
 ## Eigenschaften
@@ -81,7 +84,7 @@ Diese Geräte werden der Blacklist hinzugefügt.
 Für jedes Familienmitglied werden die Anwesenheit, das Kommen und Gehen sowie mehrere andere Informationen berechnet und im Mitgliedsobjekt gespeichert.
 
 ### Hostnummer, aktive Geräte
-Die Anzahl der Geräte und wie viele aktiv sind, wird von der Fritzbox abgerufen.
+Die Anzahl der Geräte und wie viele aktiv sind, werden von der Fritzbox abgerufen.
 
 ## Objekte
 ### ObjektpräsenzAlle
@@ -106,10 +109,10 @@ Hier finden Sie Informationen zum letzten Update und zum Verbindungsstatus des A
 Hier finden Sie Informationen zur Anzahl der aktiven Gäste und Tabellenobjekte mit den darin enthaltenen Geräteinformationen.
 
 ### Objekt-Blacklist
-Hier finden Sie Informationen zur Anzahl unbekannter Geräte und Tabellenobjekte mit den darin enthaltenen unbekannten Geräteinformationen.
+Hier finden Sie Informationen zur Anzahl unbekannter Geräte und Tabellenobjekte mit den unbekannten Geräteinformationen.
 
 ### Objekt member.present
-Hier finden Sie Informationen zur Anwesenheit eines Mitglieds am aktuellen Tag und wie lange das Mitglied seit der letzten Änderung den Status wahr hat.
+Hier finden Sie Informationen über die Anwesenheit eines Mitglieds am aktuellen Tag und darüber, wie lange der Status des Mitglieds seit der letzten Änderung wahr war.
 
 ### Objekt member.absent
 Hier finden Sie Informationen zur Abwesenheit eines Mitglieds am aktuellen Tag und wie lange der Status des Mitglieds seit der letzten Änderung falsch war.
@@ -121,6 +124,9 @@ Hier finden Sie Informationen, wann das Familienmitglied ankommt oder das Haus v
 Hier finden Sie Informationen zur Geschichte des aktuellen Tages.
 
 ## Changelog
+
+### 1.0.4 (2020-06-28)
+* (afuerhoff) bugfix json list and guest handling, new object guest.presence
 
 ### 1.0.3 (2020-05-26)
 * (afuerhoff) bugfix checking mac or ip

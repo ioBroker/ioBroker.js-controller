@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: lhfLYHEwCK+SxqzpKxPbFam+cgqQzrYECYRjtvi9I3Y=
+hash: Zd/46tHjPzjqlYI9GqXThAD5sejsPXoB3J9LpiC7b8s=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -25,7 +25,7 @@ hash: lhfLYHEwCK+SxqzpKxPbFam+cgqQzrYECYRjtvi9I3Y=
 
 \ **如果喜欢，请考虑捐赠：**
 
-[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
+[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
 
 ****
 
@@ -38,11 +38,11 @@ hash: lhfLYHEwCK+SxqzpKxPbFam+cgqQzrYECYRjtvi9I3Y=
 它是完全可定制的。
 
 ##添加到主屏幕
-您可以将其另存为主屏幕上的Web-App，它的外观和感觉就像本机应用程序一样：![添加到Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
+您可以将其另存为主屏幕上的Web-App，它的外观和感觉就像是本机应用程序：![添加到Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
 
 ＃＃ 你需要...
-* Nodejs 10或更高版本
-* Web适配器，其一个实例运行与admin-adapter，socket.IO相同的协议（http或https），并且IO设置为“集成”，并且禁用“强制Web-Sockets”
+* Nodejs 10或更高
+* Web适配器，其一个实例运行与admin-adapter，socket.IO相同的协议（http或https），并且IO设置为“集成”，并且禁用了“强制Web-Sockets”
     *如果与其他适配器冲突，只需添加具有上述设置的另一个实例-iQontrol将搜索最合适的web-adapter-instance并将其用于通信
 *为了同时通过* iobroker.pro-Cloud *进行连接，应将admin-和web-adapter设置为http（而非https）
 
@@ -58,7 +58,7 @@ hash: lhfLYHEwCK+SxqzpKxPbFam+cgqQzrYECYRjtvi9I3Y=
 *重新启动ioBroker
 
 ###如果您还有其他问题，请提供浏览器调试控制台中的日志以及错误行的屏幕截图：
-*在浏览器打开的调试控制台中启动iQonrol（通常需要按F12来打开它）
+*使用已打开浏览器的调试控制台启动iQonrol（通常需要按F12来打开它）
 *切换到控制台窗口并重现该错误
 *在控制台窗口中查找消息
 *出现错误时，列出导致错误的行号
@@ -77,9 +77,9 @@ hash: lhfLYHEwCK+SxqzpKxPbFam+cgqQzrYECYRjtvi9I3Y=
 *然后在这些视图上创建设备。
 
 设备具有确定设备功能，使用哪些图标等的角色。
-根据该角色，您可以将多个状态链接到设备。这些将赋予设备功能。
+根据该角色，您可以将多个状态链接到设备。这些将赋予设备其功能。
 如果选择“链接到其他视图”作为角色，则可以创建到其他视图的链接。我建议对链接到具有相同背景的其他视图的外观进行换肤。
-您也可以尝试使用自动创建功能从iobroker-object-tree中选择现有设备。自动创建会尝试找出角色并匹配尽可能多的状态。
+您也可以尝试使用自动创建功能从iobroker-object-tree中选择现有设备。自动创建试图找出角色并匹配尽可能多的状态。
 
 *之后，您可以创建一个工具栏，该工具栏显示为页脚。
 
@@ -105,7 +105,7 @@ hash: lhfLYHEwCK+SxqzpKxPbFam+cgqQzrYECYRjtvi9I3Y=
 
 ##角色和相关状态的描述
 每个设备都有一个角色，该角色定义了设备的功能。每个角色都会生成一组状态，这些状态可以链接到相应的io-broker状态。
-如果使用自动创建功能，则可以从io-broker-object树中选择一个现有设备。自动创建会尝试找出角色并匹配尽可能多的状态。
+如果使用自动创建功能，则可以从io-broker-object树中选择一个现有设备。自动创建试图找出角色并匹配尽可能多的状态。
 这仅适用于已知设备。对于未知设备，以及要赋予设备高级功能，您可以通过（+）-按钮手动添加它们，或编辑由自动创建功能创建的设备。
 要编辑设备的角色和状态，请单击设备后面的铅笔。您将在下面找到角色和使用状态的简短描述：
 
@@ -115,7 +115,7 @@ hash: lhfLYHEwCK+SxqzpKxPbFam+cgqQzrYECYRjtvi9I3Y=
 *设置只读标志
 *设置反转标志
 *设置Confirm-Flag（强制用户在将更改写入数据点之前进行确认）
-*设置PIN码（强制用户在将更改写入数据点之前输入此PIN码-但要注意：这仅是低安全性，因为在前端检查了PIN码！使用数字来显示全屏-pin-pad（如果要求输入代码）
+*设置PIN码（强制用户在将更改写入数据点之前输入此PIN码-但请注意：这仅是低安全性，因为在前端检查了PIN码！使用数字显示全屏-pin-pad（如果要求输入代码）
 *修改数据点的单位，以零，单数和复数分隔
 *修改数据点的最小值和最大值
 *设置水平滑块在增加/减少时采取的步骤
@@ -147,7 +147,7 @@ hash: lhfLYHEwCK+SxqzpKxPbFam+cgqQzrYECYRjtvi9I3Y=
 * *数字*-将显示其对应的单位并在对话框中生成一个滑块
 * *string* 要显示的文本
 * *值列表*-将显示所选值。如果没有写保护，它将在对话框中生成一个下拉菜单
-    *从技术上讲，*值列表*是具有相应转换列表的值，在数据点的'common.custom.iqontrol。<instance> .states'，'native.states'或'common.states'对象中定义：
+    *从技术上讲，“值列表”是具有相应转换列表的值，在数据点的“ common.custom.iqontrol。<instance> .states”，“ native.states”或“ common.states”对象中定义：
 
 ````
 "native": {
@@ -158,23 +158,23 @@ hash: lhfLYHEwCK+SxqzpKxPbFam+cgqQzrYECYRjtvi9I3Y=
 
     *您可以通过修改数据点来创建自己的值列表（iobroker的objects-tab中数据点后面的扳手图标，请参见上文）
 
-但是，并非每种类型对每个角色都有意义。因此，例如，在大多数情况下，开关的状态将为布尔值，以便可以在开和关之间进行切换。可能会显示一个字符串，但该开关将不起作用。
+但是，并非每种类型对每个角色都有意义。因此，例如，在大多数情况下，开关的状态将为布尔值，以便能够在开和关之间进行切换。可能会显示一个字符串，但该开关将不起作用。
 
 ###链接到其他视图：
 *没有其他状态
 * **链接视图属性**直接打开
 
-### <img src="img/icons/switch_on.png" width="32">开关， <img src="img/icons/fan_on.png" width="32">风扇：
+### <img src="img/icons/switch_on.png" width="32">开关：
 * **STATE** *布尔值*-显示和设置开/关状态
 * **电源**：*数字*-功耗将在右上角以小号显示
 
 ### <img src="img/icons/button.png" width="32">按键：
 * **STATE** *任何*-任何所需的状态类型
-* **SET_VALUE** 常量*字符串*-这是一个常数（不是链接的io-broker状态！），如果按下按钮，它将分配给STATE
+* **SET_VALUE** 常量*字符串*-这是一个常量（不是链接的io-broker-state！），如果按下按钮，它将分配给STATE
 * **OFF_SET_VALUE** 常量*字符串*-这是一个常量（不是链接的io-broker状态！）。如果已定义，则将在in选项中定义的时间或100ms之后将STATE重置为该值。
 
 ### <img src="img/icons/light_on.png" width="32">光：
-每个灯可能具有以下一种或两种状态：
+每个指示灯可能具有以下一种或两种状态：
 
 * **STATE** *布尔值*-显示和设置开/关状态
 * **LEVEL** *数字*-显示并设置灯光水平
@@ -191,12 +191,12 @@ hash: lhfLYHEwCK+SxqzpKxPbFam+cgqQzrYECYRjtvi9I3Y=
 *替代色彩空间：
  ***ALTERNATIVE_COLORSPACE_VALUE*** 符串*或*数字*（取决于选择的色彩空间）-替代色彩空间的值
 
-    如果您的设备不支持使用HUE，SATURATION和COLOR_BRIGHTNESS（HSB / HSV颜色空间），则可以使用多种替代颜色空间。在设备选项中，您可以选择以下颜色空间之一：
+    如果您的设备不支持使用HUE，SATURATION和COLOR_BRIGHTNESS（HSB / HSV颜色空间），则可以使用多种替代颜色空间。在设备选项中，可以选择以下颜色空间之一：
 
-    * **RGB** / **RGB** 您可以使用RGB格式（十六进制），而不是使用HUE，SATURATION和COLOR_BRIGHTNESS，并以“＃”开头
-    * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可选，并以'＃'开头
-    * **RGBWWCW** / **RGBWWCW** / **RGBCWWW** / **RGBCWWW** 您可以使用RGBWWCW-或RGBCWWW-Format（十六进制）来代替HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS ，WW =暖白，CW =冷白），可选，以“＃”开头
-    * **RGB（仅色相）** /** RGB（仅色相）**：可以使用RGB（仅色相）格式（十六进制）代替使用HUE，并在前导'＃'处可选。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
+    * **RGB** / **RGB** 您可以使用RGB格式（十六进制），而不是使用HUE，SATURATION和COLOR_BRIGHTNESS，可选，前导'＃'
+    * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可在前导'＃'处使用
+    * **RGBWWCW** / **RGBWWCW** / **RGBCWWW** / **RGBCWWW** 可以使用RGBWWCW-或RGBCWWW-Format（十六进制）代替HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS ，WW =暖白，CW =冷白），可选，以“＃”开头
+    * **RGB（仅色相）** /** RGB（仅色相）**：可以使用RGB（仅色相）格式（十六进制）替代使用HUE，并以“＃”开头。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
     * ** Milight的色相**：这是Milight设备的色相值，在色相色域中使用另一个起点：
 
 ````
@@ -205,7 +205,7 @@ modulo(-3.60 * (MilightHue/2.55 - 66), 360);
 on modulo(n, m){ return ((n % m) + m) %m; }
 ````
 
-注意事项：转换到替代色彩空间是由前端完成的，因此只有在打开了iQontrol的情况下，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为避免对话循环，建议您要么使用原始的色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
+切记：转换到替代色彩空间是由前端完成的，因此只有在打开iQontrol的情况下，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为了避免对话循环，建议您要么使用原始的色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
 
 *效果模式：
     * **效果**：*值列表*-播放效果
@@ -213,6 +213,11 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *布尔值*-如果设置为true，则效果将加快/降低
 *其他：
     * **电源**：*数字*-功耗将在右上角以小号显示
+
+### <img src="img/icons/fan_on.png" width="32">风扇：
+* **STATE** *布尔值*-显示和设置开/关状态
+* **LEVEL** *数字*或*值列表*-风扇速度
+* **电源**：*数字*-功耗将在右上角以小号显示
 
 ### <img src="img/icons/radiator.png" width="32">温控器：
 * **SET_TEMPERATURE** *数字*-目标温度
@@ -225,7 +230,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### <img src="img/icons/radiator.png" width="32">恒温器：
 除常规恒温器外，您还可以定义：
 
-* **PARTY_TEMPERATURE** *字符串*-特殊格式的字符串，用于定义恒温器的聚会或假期模式
+* **PARTY_TEMPERATURE** *字符串*-特殊格式的字符串，用于定义家庭恒温器的聚会或假期模式
 * **BOOST_STATE** *数字*-显示恒温器的剩余启动时间
 
 ### <img src="img/icons/temperature.png" width="32">温度感应器， <img src="img/icons/humidity.png" width="32">湿度传感器：
@@ -245,52 +250,52 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/window_closed.png" width="32">窗口：
 * **STATE** *布尔值*-在门或窗打开或关闭时显示
-    *或者，您可以分配*值列表*，以显示诸如“倾斜”之类的其他状态（在窗口选项中，您可以定义文字文本代表打开，关闭倾斜以显示正确的图标）
-    *您还可以分配*字符串*以显示任何文本，例如“ 3窗口打开”或“全部关闭”或*数字*
+    *或者，您可以分配一个* value-list *，以显示其他状态，例如“倾斜”（在窗口选项中，您可以定义文字文本代表打开，关闭倾斜显示正确的图标）
+    *您还可以分配*字符串*以显示任何文本，例如“ 3个窗口打开”或“全部关闭”或*数字*
 *尊重**链接视图属性**
 
 ### <img src="img/icons/garagedoor_closed.png" width="32">车库门：
 * **STATE** *布尔值*-显示门是打开还是关闭
     *或者，您可以分配*值列表*，以显示其他状态，例如“倾斜”
-    *您还可以分配* string *以显示任何文本，例如“ 3扇门打开”或“全部关闭”
+    *您还可以分配* string *来显示任何文本，例如“ 3扇门打开”或“全部关闭”
 * **TOGGLE** *布尔值*-显示“切换”按钮，如果按下，则设置为true
 
 ### <img src="img/icons/door_locked.png" width="32">带锁门：
 * **STATE** *布尔值*-显示门是打开还是关闭（门/窗接触）
 * **LOCK_STATE** *布尔值*-显示和控制门是否被锁定或解锁（如果STATE为true，则禁用控件-因为您无法锁定门而已打开）
-* **LOCK_STATE_UNCERTAIN** *布尔值*-如果为true，则STATE将以斜体显示，以表示锁的确切位置未知
+* **LOCK_STATE_UNCERTAIN** *布尔值*-如果为true，则状态将以斜体显示，以表示锁的确切位置未知
 * **LOCK_OPEN** *布尔值*-如果设置为true，则门将完全打开
 
 ### <img src="img/icons/blind_middle.png" width="32">盲：
 * **等级**：*数量*-百叶窗高度
-* **方向**：*值列表*-可以是停止，向上和向下。可以配置代表Stop，Up，Down和Unknown的值
+* **方向**：*值列表*-可以是停止，向上和向下。可以配置代表停止，向上，向下和未知的值
 * **STOP** *布尔值*-如果按下停止按钮，则设置为true
-* ** UP ** / ** DOWN **：*布尔值*-如果按下向上/向下按钮（对于使用UP和DOWN数据点而不是LEVEL或除LEVEL以外的设备），则设置为true。另外，您可以通过** UP_SET_VALUE ** / ** DOWN_SET_VALUE **数据点定义一个值。如果已定义，则在按下“向上” /“向下”按钮时，将发送此值而不是true
-* ** FAVORITE_POSITION **：*布尔值*-可用于调出喜欢的位置。如果按下“收藏夹”按钮（可以在设备设置中配置按钮标题），则将true发送给该数据点。另外，您可以通过** FAVORITE_POSITION_SET_VALUE **数据点定义一个值。如果已定义，则当按下“收藏夹”按钮时，将发送此值而不是true
-* **SLATS_LEVEL** *数字*-百叶窗板的位置百分比
+* ** UP ** / ** DOWN **：*布尔值*-如果按下向上/向下按钮（对于使用UP和DOWN数据点而不是LEVEL或除LEVEL之外的设备），则设置为true。另外，您可以通过** UP_SET_VALUE ** / ** DOWN_SET_VALUE **数据点定义一个值。如果已定义，则在按下“向上” /“向下”按钮时，将发送此值而不是true
+* ** FAVORITE_POSITION **：*布尔值*-可用于调出喜欢的位置。如果按下“收藏夹”按钮（可以在设备设置中配置按钮标题），则将true发送到该数据点。另外，您可以通过** FAVORITE_POSITION_SET_VALUE **数据点定义一个值。如果已定义，则当按下“收藏夹”按钮时，将发送此值而不是true
+* **SLATS_LEVEL** *数量*-百叶板的位置百分比
 
 ### <img src="img/icons/fire_on.png" width="32">火灾传感器：
-* **STATE** *布尔值*-如果为true，传感器将显示为已触发
+* **STATE** *布尔值*-如果为true，则传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
-    *您还可以分配* string *以显示任何文本，例如“楼上火”
+    *您还可以分配* string *来显示任何文本，例如“楼上火灾”
 * **链接视图属性**直接打开
 
 ### <img src="img/icons/flood_on.png" width="32">洪水传感器：
-* **STATE** *布尔值*-如果为true，传感器将显示为已触发
+* **STATE** *布尔值*-如果为true，则传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
     *您还可以分配* string *以显示任何文本，例如“楼上洪水”
 * **链接视图属性**直接打开
 
 ### <img src="img/icons/alarm_on.png" width="32">报警：
-* **STATE** *布尔值*-如果为true，传感器将显示为已触发
+* **STATE** *布尔值*-如果为true，则传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
-    *您还可以分配* string *以显示任何文本，例如“楼上火”
+    *您还可以分配* string *来显示任何文本，例如“楼上火灾”
 * **CONTROL_MODE** *值列表*-选择操作模式，例如“武装”和“撤防”
     *在设备选项中，您可以定义代表撤防的值，因此可以显示代表图标
 
 ### <img src="img/icons/battery_full.png" width="32">电池：
-* **州**：*数字*-电池电量百分比
-* **CHARGING** *布尔值*-如果为true，则显示一个充电图标
+* **状态**：*数量*-电池电量百分比
+* **CHARGING** *布尔值*-如果为true，则会显示一个充电图标
 * **电源**：*数字*-功耗将在右上角以小号显示
 * **VOLTAGE** *数字*-电压将在右上角以小号显示
 
@@ -302,7 +307,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **STATE** *布尔值*-如果设置为true，则程序将启动
 
 ### <img src="img/icons/play.png" width="32">现场：
-* **STATE** *布尔值*-如果场景处于活动状态，则显示。如果设置为true，将开始场景
+* **STATE** *布尔值*-如果场景处于活动状态，则显示。根据场景的配置（虚拟组，设置为false启用或禁用false），切换命令将发送true，false，min，0，max或100。有一个选项始终发送true（禁用切换） 。
 
 ### <img src="img/icons/media_on.png" width="32">媒体播放器：
 * **STATE** *字符串*-“播放”，“暂停”或“停止”或*布尔值*-播放为true，停止为false
@@ -312,7 +317,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **TRACK_NUMBER** *数字*-自我说明
 * **PREV，REWIND，PLAY，PAUSE，STOP，FORWARD，NEXT** *布尔值*-如果按下相应的按钮，则设置为true
 * **SHUFFLE，MUTE，PLAY_EVERYWHERE，EJECT，POWER_SWITCH** *布尔值*-相应功能的状态
-* **REPEAT** *布尔值*-表示重复功能的状态或* string *-可以通过coressponding选项定义3种状态：off值，all-all和repeat-one
+* **REPEAT** *布尔值*-重复功能的状态或* string *-可以通过coressponding选项定义3种状态：off值，all-all和repeat-one
 * **DURATION，ELAPSED** *数字*-实际标题的持续时间和经过的时间-用于显示搜索栏
 * **VOLUME** *数字*-用于音量滑块
 * **源，播放列表**：*值列表*-显示选择菜单以从播放列表中选择来源或标题
@@ -328,25 +333,53 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ##图标和背景图片
 *您可以使用内置图像或在“图像”标签下上传的图像或您喜欢的任何免费网址
-*您也可以在图片网址中使用变量。例如，对于天气预报而言，这可能很有用。使用以下模式：
+*您也可以在图片网址中使用变量。例如，这对于天气预报而言可能是有用的。使用此模式：
     *``path / to / firstloaded.png | anotherpath / to / {iobrokerstate | fallback} .png``
     *示例：``./../ iqontrol.meta / userimages / demo / bottle.jpg | ./../ iqontrol.meta / userimages / demo / {javascript.0.myimage | whitestone} .jpg''
-*打开视图时加载``./../iqontrol.meta/userimages/demo/bottle.jpg''
+*在您打开视图时加载``./../iqontrol.meta/userimages/demo/bottle.jpg''
 *从服务器获取javascript.0.myimage的状态后，该图像将立即替换为./../iqontrol.meta/userimages/demo/XXX.jpg，其中XXX是javascript.0.myimage的值
 *如果javascript.0.myimage没有值，将使用后备的whitestone（使用后备是可选的）
+
+###进度条
+*可以结合使用SVG定义和变量而不是图像文件来显示进度条
+*集成了vew模板供您选择，但是您也可以创建自己的SVG
+*有关更多信息，请参见[Wiki]（https://github.com/sbormann/ioBroker.iqontrol/wiki/Progress-Bars）
 
 ##设备名称
 *就像图片网址中的变量一样，您可以在设备名称中使用变量。语法几乎相同：
     *“加载时输入文字|加载{iobrokerstate | fallback}之后输入文字”
-*另外，可以将iobrokerstate放在方括号中，然后将使用不带其单位的普通值：“加载时的文本|加载{[iobrokerstate] | fallback}之后的文本”
+*另外，可以将iobrokerstate放在方括号中，然后将使用不带其单位的纯值：“加载时的文本|加载{[iobrokerstate] | fallback}之后的文本”
     *示例：“天气正在加载|天气：{javascript.0.weather |未找到天气数据}”
 *打开视图时显示``天气正在加载''
-*一旦从服务器获取了javascript.0.weather状态，该文本将替换为Weather：XXX，其中XXX是javascript.0的值。天气``
+*从服务器获取javascript.0.weather状态后，文本将被Weather XXX替换，其中XXX是javascript.0的值。天气``
 *如果``javascript.0.weather''没有值，将使用回退``No weather data found''（使用回退是可选的）
+
+##弹出消息
+*每个实例都会创建对象``iqontrol.x.Popup.Message''和``iqontrol.x.Popup.Duration''
+*将值传递给这些对象时，将显示一个弹出消息（或吐司）
+*您可以使用html标签来格式化邮件
+*持续时间是显示消息的时间，以毫秒为单位；如果持续时间为0，则必须确认消息
+*或者，您可以通过sendTo-command（例如，按块方式）使用参数“ PopupMessage”和“ PopupDuration”设置这些值
+
+![弹出屏幕截图](img/popup_screenshot.png)![弹出式阻止](../../../en/adapterref/iobroker.iqontrol/img/popup_blockly.png)
 
 ****
 
 ## Changelog
+
+### 1.1.5 (2020-07-05)
+* (Sebastian Bormann) Made dialog movable by dragging title.
+* (Sebastian Bormann) Added LEVEL to fan.
+* (Sebastian Bormann) Fixed flickering of SVG-Background change on some devices.
+
+### 1.1.4 (2020-07-03)
+* (Sebastian Bormann) Changed the way popup-iframes are created to allow execution of code inside them.
+* (Sebastian Bormann) Added the possibility to chose progressbars as icons and background-images for devices.
+* (Sebastian Bormann) Added progress-circle of remaining display-time to popup.
+
+### 1.1.3 (2020-06-28)
+* (Sebastian Bormann) Added popup messagen (toast-messagen).
+* (Sebastian Bormann) Enhanced scenes to be able to toggle (added option to always send true, if you need the old behaviour).
 
 ### 1.1.2 (2020-06-21)
 * (Sebastian Bormann) Compatibility enhancements for repeat function of Media-Player.

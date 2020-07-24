@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: T5K/68JPVQ6p72bI/O3PzejXjy7CHK71djExzxAcp4U=
+hash: gEmwf9IDWuvsZ+8a1ID9klDN1HwrM9Fxj7KN6/2RJAk=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -26,44 +26,68 @@ hash: T5K/68JPVQ6p72bI/O3PzejXjy7CHK71djExzxAcp4U=
 您可以在此处找到详细的安装文档：[安装文件](./docs/EN/INSTALL.md)
 
 ##支持的设备
-| Shelly设备|默认（CoAP）| MQTT |
+| Shelly设备| CoAP | MQTT |
 |-------------|--------------|----|
-| Shelly1（SHSW-1）|已验证|已验证|
-| Shelly2（SHSW-21 / SHSW-22）|已验证|已验证|
-| ShellyBulb（SHBLB）|已验证|已验证|
-| Shelly H＆T（SHHT-1）|已验证|已验证|
-| Shelly Smoke（SHSM-01）|已验证|已验证|
-| Shelly 1 1PM（SHSW-PM）|已验证|已验证|
-| Shelly 2.5（SHSW-25）|已验证|已验证|
-| ShellyRGBW（SHRGBWW-01）|已验证|已验证|
-| ShellyRGBW2（SHRGBW2）|已验证|已验证|
-| Shelly2LED（SH2LED）|已验证|已验证|
-| ShellyPlug（SHPLG-1）|已验证|已验证|
-| ShellyPlug S（SHPLG-1）|已验证|已验证|
-| ShellyPlug 2（SHPLG-2）|已验证|已验证|
-| ShellySense（SHSEN-1）|已验证|未验证|
-| Shelly4Pro（SHSW-44）|已验证|未验证|
-| Shelly EM（SHEM）|已验证|已验证|
-| Shelly Flood（SHWT-1）|已验证|已验证|
-| Shelly Dimmer（SHDM-1）|已验证|已验证|
-| Shelly门窗传感器（SHDW-1）|已验证|已验证|
-| Shelly Bulb Duo（SHBDUO-1）|已验证|未验证|
-| Shelly 3EM（SHEM）|已验证|已验证|
-| Shelly Vintage（SHVIN-1）|已验证|已验证|
-| Shelly I3（SHIX3-1）|已验证|已验证|
-| Shelly Button（SHBTN-1）|否|已验证|
-| Shelly Gas（SHGS-1）|已验证|已验证|
-| Shelly Dimmer 2（SHDM-2）|已验证|已验证|
+| Shelly1（SHSW-1）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly2（SHSW-21 / SHSW-22）|从v3.3.0起受支持|从v3.3.0起受支持|
+| ShellyBulb（SHBLB）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly H＆T（SHHT-1）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly Smoke（SHSM-01）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly 1 1PM（SHSW-PM）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly 2.5（SHSW-25）|自v3.3.0起受支持|自v3.3.0起受支持|
+| ShellyRGBW（SHRGBWW-01）|自v3.4.0起不受支持|自v3.4.0起不受支持|
+| ShellyRGBW2（SHRGBW2）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly2LED（SH2LED）|自v3.3.0起受支持|自v3.3.0起受支持|
+| ShellyPlug（SHPLG-1）|自v3.3.0起受支持|自v3.3.0起受支持|
+| ShellyPlug S（SHPLG-1）|自v3.3.0起受支持|自v3.3.0起受支持|
+| ShellyPlug 2（SHPLG-2）|自v3.3.0起受支持|自v3.3.0起受支持|
+| ShellySense（SHSEN-1）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly4Pro（SHSW-44）|自v3.3.5起受支持|自v3.3.5起受支持|
+| Shelly EM（SHEM）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly Flood（SHWT-1）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly Dimmer（SHDM-1）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly门窗传感器（SHDW-1）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly Bulb Duo（SHBDUO-1）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly 3EM（SHEM |自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly Vintage（SHVIN-1）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly I3（SHIX3-1）|自v3.3.0起受支持|自v3.3.0起受支持|
+| Shelly Button（SHBTN-1）|自v3.3.3起受支持|自v3.3.3起受支持|
+| Shelly Gas（SHGS-1）|自v3.3.3起受支持|自v3.3.3起受支持|
+| Shelly Dimmer 2（SHDM-2）|自v3.3.4起受支持|自v3.3.4起受支持|
+| Shelly门窗传感器2（SHDW-2）|自v3.3.5起受支持|自v3.3.5起受支持|
 
 ##什么是Sentry，什么报告给服务器？
-Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。正是在此适配器中实现了这一点。
+Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许ioBroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Update shelly-iot library to prevent some errors
+
+### 3.3.5 (04.07.2020)
+* (Stübi) - Add Shelly 4 Pro
+* (Stübi) - Bugfixing Shelly RGBW2, sate lights.switch color mode
+* (Stübi) - Add Shelly DW2
+* (Stübi) - Add states longpush and input to Shelly Dimmer 1 (CoAP and MQTT)
+* (Stübi) - Add states longpush and input to Shelly Dimmer 2 (CoAP and MQTT)
+* (Stübi) - Add states longpush and input to Shelly 1, 1 PM, 2, 2.5 (CoAP)
+* (Stübi) - Add state input to Shelly RGBW2 (CoAP)
+* (Stübi) - Add state deviceid (Issue #193)
+
 ### 3.3.4 (23.06.2020)
 * (Stübi) - Add Shelly Dimmer 2
+* (Stübi) - Add states longpush and input to Shelly Dimmer 1 (MQTT)
+* (Stübi) - Add states power and energy to Shelly Duo
+* (Stübi) - Get power and energy by CoAP instead of http for Shelly 1 PM
+* (Stübi) - Bugfixing Shelly Button 
+* (Stübi) - Bugfixing Shelly 1 humidity MQTT
+* (Stübi) - Fixed typo error (external temperature) / Shelly 1, 1 PM 
+* (Stübi) - Fixed role for external temperature / Shelly 1, 1 PM 
+* (Stübi) - Changed CoAP concept, because Shelly will change the CoAP payload in one of the future firmware versions. This makes the adjustments later easier. 
+* (Stübi) - Shelly 4 Pro not supported anymore. If you need it please create an GitHub issue.
+* (Stübi) - Shelly RGBW not supported anymore. If you need it please create an GitHub issue .
 
 ### 3.3.3 (18.06.2020)
 * (Stübi) - Add Shelly Button

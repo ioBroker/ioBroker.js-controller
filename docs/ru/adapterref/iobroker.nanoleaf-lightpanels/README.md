@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nanoleaf-lightpanels/README.md
 title: Адаптер ioBroker.nanoleaf-lightpanels
-hash: neG9EXUZ60IWcgHatKc7HaIJoNcD1rvTGCM08MD/y2I=
+hash: /gMSjR122XgKD81je0cHoSR6U6NFssNBgMO2sZJDQc0=
 ---
 ![логотип](../../../en/adapterref/iobroker.nanoleaf-lightpanels/admin/nanoleaf-lightpanels.png)
 
@@ -13,11 +13,16 @@ hash: neG9EXUZ60IWcgHatKc7HaIJoNcD1rvTGCM08MD/y2I=
 ![Статус сборки Appveyor](https://ci.appveyor.com/api/projects/status/29fjgn8ww5w96etq/branch/master?svg=true)
 ![NPM](https://nodei.co/npm/iobroker.nanoleaf-lightpanels.png?downloads=true)
 
-# IoBroker.nanoleaf-lightpanels Адаптер =================
-Это адаптер ioBroker для управления световыми панелями nanoleaf (ранее Aurora nanoleaf) или Canvas nanoleaf через OpenAPI nanoleaf
+# IoBroker.nanoleaf-lightpanels Адаптер
+=================
+
+Это адаптер ioBroker для управления световыми панелями nanoleaf (ранее Aurora nanoleaf) или Canvas nanoleaf через OpenAPI nanoleaf.
 
 ## Подключение к световым панелям nanoleaf / Canvas Controller:
 1. В настройках адаптера необходимо установить IP-адрес и порт контроллера nanoleaf. Для nanoleaf OpenAPI необходим токен авторизации для предоставления доступа к REST-API. Если у вас уже есть один, вы можете ввести токен здесь и пропустить следующий шаг.
+
+   Вы можете использовать функцию поиска устройств на странице администратора, чтобы обнаружить ваши устройства nanoleaf.
+
 2. Если у вас нет авторизационного токена, вам нужно запросить его у nanoleaf OpenAPI.
 
 Для этого установите контроллер nanoleaf в режим сопряжения, нажав и удерживая кнопку питания на устройстве в течение 5-7 секунд, пока светодиоды не начнут попеременно мигать.
@@ -26,8 +31,8 @@ hash: neG9EXUZ60IWcgHatKc7HaIJoNcD1rvTGCM08MD/y2I=
 3. Сохраните настройки.
 4. Веселитесь!
 
-Поскольку nanoleaf OpenAPI не поддерживает длинные опросы или веб-сокеты, единственный способ обновить состояния - это опрос.
-Вы можете установить интервал опроса в настройках адаптера.
+Поскольку версия встроенного ПО Light Panels> 3.1.0 и версия встроенного ПО Canvas> 1.1.0 Отправленные события сервера (SSE) могут использоваться для прямого обновления состояния. Для устройств Canvas сенсорные события поддерживаются.
+Настройка интервала опроса обновления состояния влияет только на устройства с более низкими версиями прошивки, где опрос используется для обновления состояния.
 
 ## Алекса
 Вы можете управлять световыми панелями / холстом nanoleaf с Alexa через ioBroker (Cloud-Adapter).
@@ -43,15 +48,36 @@ hash: neG9EXUZ60IWcgHatKc7HaIJoNcD1rvTGCM08MD/y2I=
 в облачном адаптере под тем же смарт-именем.
 
 ## IoBroker Визуализация
-Световые панели / холст nanoleaf можно контролировать в ioBroker Visualization с помощью базовых виджетов, таких как «Включение / выключение радиокнопок» или ползунков для управления состояниями насыщенности, яркости, оттенка, насыщенности и цветовой температуры.
+Световые панели / холст nanoleaf можно контролировать в ioBroker Visualization, используя базовые виджеты, такие как «Включение / выключение радиокнопок» или ползунки для управления состояниями насыщенности, яркости, оттенка, насыщенности и цветовой температуры.
 
-Для эффектов вы можете использовать виджет «Select ValueList», чтобы использовать его в качестве раскрывающегося списка, а затем сопоставить состояние EffectList со значением и свойством text виджета (тип: «{nanoleaf-lightpanels.0.LightPanels.effectsList}» -> фигурные скобки важны!)
+Для эффектов вы можете использовать виджет «Select ValueList», чтобы использовать его в качестве раскрывающегося списка, а затем сопоставить состояние EffectList со свойством value и text виджета (тип: «{nanoleaf-lightpanels.0.LightPanels.effectsList}» -> фигурные скобки важны!)
 
 Для управления и визуализации цвета необходимо установить виджеты в стиле палитры цветов. Вы можете сопоставить идентификатор RGB с состоянием colorRGB или использовать три состояния HSV.
 
 Вы можете использовать демонстрационный проект nanoleaf vis, который находится в подпапке / vis на github.
 
 ## Changelog
+
+### 1.0.2 (2020-07-06)
+* (daniel_2k) fixed: detection of ssdp:alive notify message for Canvas (fix disconnect/connect issue)
+* (daniel_2k) fixed: sending correct service type for discovery of Canvas devices (fixes no devices found for Canvas devices)
+* (daniel_2k) changed: if unknown nanoleaf device is detected Canvas will be used as fallback and warning will be logged
+* (daniel_2k) fixed: setting rhythmMode was not working
+
+### 1.0.1 (2020-07-05)
+* (daniel_2k) fixed: detection of firmware version for Canvas for enabling SSE (Canvas firmware > 1.1.0 required)
+
+### 1.0.0 (2020-06-18)
+* (daniel_2k) new: using server sent events (SSE) for getting updates instead of polling (firmware > 3.1.0 required)
+* (daniel_2k) new: support touch events for Canvas
+* (daniel_2k) new: searching devices in Admin is now possible
+* (daniel_2k) changed: moved duration for brightness state to separate state (please note: duration of in native part of brightness state will no longer work)
+* (daniel_2k) changed: some minor internal adjustments
+* (daniel_2k) changed: removed Admin2 configuration page
+
+### 0.8.2 (2019-08-02)
+* (daniel_2k) fixed: effects with special characters (german umlauts) can now be set (fixes HTTP error code 422)
+* (daniel_2k) changed: removed fixed effects *Solid* and *Dynamic* for all devices (works also no longer with Light Panels since firmware update)
 
 ### 0.8.1 (2019-01-31)
 * (daniel_2k) new: rhythm module mode (microphone/AUX input) can be changed
@@ -113,3 +139,4 @@ hash: neG9EXUZ60IWcgHatKc7HaIJoNcD1rvTGCM08MD/y2I=
 
 ## License
 The MIT License (MIT)
+Copyright (c) 2019 daniel_2k <daniel_2k@outlook.com>

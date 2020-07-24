@@ -15,6 +15,9 @@ Pings specified IP addresses in defined interval and monitors the results.
 
 ## Changelog
 
+### 1.4.8 (2020-06-29)
+* (Apollon77) Prevent adapter crashes with invalid state/channel names, see error log! (Sentry IOBROKER-PING-H, IOBROKER-PING-P, IOBROKER-PING-B)
+
 ### 1.4.7 (2020-05-02)
 * (Apollon77) finally try to catch spawn errors (Sentry IOBROKER-PING-2)
 

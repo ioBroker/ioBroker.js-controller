@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: X7c/5B79iq2rCuBdNVDLXgoIGvkK4d+j5mJ0f066S6U=
+hash: HTGk4nS62rUA6r2P64RF+fNZf28kh3UB08Sw/nwlbp4=
 ---
 ![логотип](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -21,10 +21,13 @@ hash: X7c/5B79iq2rCuBdNVDLXgoIGvkK4d+j5mJ0f066S6U=
 **[Английское описание](https://github.com/misanorot/ioBroker.alarm/blob/master/lib/Readme_en.md)**
 
 ## IoBroker Alarm
-Умирает в адаптере, с его помощью. Аларманирование, программирование, техническое обслуживание.
-Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. Находится под названием De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz "заявляет", auf anddere "заявляет" меглиц. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
+Умирает в адаптере, с его помощью. Сигнализация.
+Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. Находится на территории De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz «заявляет», auf anddere «заявляет» меглиц. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
 
--------------------------------------------------- -------------------------------------------------- ------------------ *Подставка 14.06.2020*
+-------------------------------------------------- -------------------------------------------------- ------------------ *Стенд 05.07.2020 ab Версия 0.8.0*
+
+#### Wichtig ab 0.8.0
+- Es empfiehlt sich bei Vorinstallationen <0.8.0, beim Update Обновление адаптеров для других устройств! Es haben sich ein paar Datenpunkte geändert.
 
 ### Tab Haupteinstellungen
 В настоящее время в нем представлены Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm и Passwort vorgenommen.
@@ -34,7 +37,7 @@ Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. �
 - Aktivierzeit -> Zeitverzögerung bis zu Aktivierung wenn man einen задержка Datenpunkt benutzt
 - Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf true gesetzt
 - Alarmverzögerung -> Verzögerungszeit bis Einbruch ausgelöst wird (большой вес) Zeit wird der Stille Alarm ausgelöst)
-- Auslösezeit bei Warnungen -> Bei Auslösung eines der Warnkreise (info.warn / night_circuit_changes), ювелирные изделия из драгоценных камней, дата и время выставки: Zeit auf true gesetzt
+- Auslösezeit bei Warnungen / Sirene innen -> Bei Auslösung des Benachrichtigungskreises oder scharf innen Kreises, wird der jeweils zugehörige Datenpunkt für die Zeit auf true gesetzt
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -46,30 +49,21 @@ Benachrichtigungen über Andere Adapter wie z.B. Телеграмма, элек�
 
 ### Tab Überwachung
 Hier werden die Kreise der Anlage konfiguriert.
-* умри намеки штатов лассен сич андерн *
+* умри, но не лассен сич андерн *
 
-Der Alarmkreis hat die Priorität «hoch» and hat bei aktivierter Anlage Vorrang vor allen and anderen Keisen. Er dient zur eigentlichen Überwachung der Anlage.
+Der Alarmkreis hat die Priorität "hoch" and hat bei aktivierter Anlage (scharf) Vorrang vor allen andderen Keisen. Er dient zur eigentlichen Überwachung der Anlage. Умирает в полном объеме. В настоящее время он принимает участие в международном конкурсе молодых людей, а также в международном масштабе.
+* Es ist durchaus möglich, dassman für einen State, den Haken bei allen drei Kreisen macht. *
 
-Der Warnkreis hat zwei Funktionen, bei aktivierter Anlage werden diese States nur überwacht und geben ggf. eine Meldung ab wenn eine Änderung stattfand. Die Zweite Funkest besteht darin bei z. B. Anwesenheit und aktivierter internen Uberwachung der Anlage (острая внутренняя часть), Bei Veränderung einer der konfigurierten States ggf. Эйн Мелдунг Абгесетцт Вирд.
-* !!! Eine beginnende Nachtruhe deaktiviert den scharf intern Kreis !!! *
-
-Der Nachtkreis hat die gleiche Funktion wie der Warnkreis, jedoch nur während der Nachtruhe. Начинающий ученик Nachtruhe не может умереть, падает aktiviert, умереть Überwachung des Warnkreises (острый внутри) ab.
-
-*Es ist durchaus möglich, dassman für einen State, den Haken bei allen drei Kreisen macht.*
-
-Die Kreise sind folgendermaßen überwacht:
+Die Kreise werden folgendermaßen überwacht:
 
 #### Alarmkreis:
-Alarmanlage lässt sich nicht aktivieren wenn ein konfigurierter state aktiv ist. Bei aktivierter Alarmanlage führt eine Veränderung sofort zur Auslösung der Anlage.
+Alarmanlage lässt sich nicht aktivieren (scharf schalten) wenn ein konfigurierter State aktiv ist. Bei aktivierter Alarmanlage führt eine Veränderung sofort zur Auslösung der Anlage.
 
-#### Warnkreis:
-Hier können Dinge überwacht werden die nicht die Priorität "hoch" haben, z.B. Фенстер им О.Г. В доме Haupteinstellungen kann man die Uberwachung bei der Aktivierung einstellen. Ist die Alarmanlage aktiviert, очень странный и тревожный сигнал тревоги.
-Человек Кан Сич Джедох Бенахрихтиген Лассен.
+#### Шарф интерн Крейс:
+Все конфигюриртены констатируют werden beim Zustand scharf intern überwacht und lösen unter anderem den internen Alarm aus.
 
-#### Nachtkreis:
-Bei aktiver Nachtruhe werden Veränderungen während der erkannt und ggf. gemeldet.
-
-*Sollten Alarm - und Warnkreis Pro State Aktiviert Sein, zählt der Alarmkreis*
+#### Meldekreis:
+Der überwacht die konfigurierten заявляет, что умирает.
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -82,9 +76,14 @@ Möchte man sich die Ausgabe von Namen mit Ansagen lassen, kann man diese Вар
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Verknüpfungen
-Hier ist es möglich Адаптер международных государств, директива по внешним отношениям. Somit is ein Umweg über ein Skript oder ähnlichen nicht erforderlich.
+Hier ist es möglich Адаптер международных государств, директива по внешним государствам, в целом. Somit is ein Umweg über ein Skript oder ähnlichen nicht erforderlich.
 Es lässt sich somit z.B. Bei Beginn der Nachtruhe, Eine Veriegelung des Türschlosses realisieren.
 ![логотип](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
+
+#### Eingabeverknüpfungen
+Триггер -> любой = вирд бей хедер Андерунг гетриггерт
+
+Auslösewert -> Ist der Wert, auf welchen getriggert werden soll
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -92,20 +91,14 @@ Der Adapter liefet eine ganze Anzahl заявляет:
 
 #### "alarm.x.use .....".
 Das sind die eigentlichen заявляет, что um die Alarmanlage zu bedienen.
-Es ist möglich die Alarmanlage direkt von aktiviert auf "intern scharf" umzuschalten, dies ist jedoch nur möglich wenn die Alarmanlage, не имеющей возможности.
 
 - use.activate_nightrest -> Активирунг дер Нахтруэ
-- use.deactivate_nightrest -> Deaktivierung der Nachtruhe
-- use.toggle_nightrest -> Deaktivierung / Aktivierung der Nachtruhe
-- use.activate_warn_circuit -> Aktivierung der Uberwachung des Warnkreises (intern scharf)
-- use.deactivate_warn_circuit -> Deaktivierung der Uberwachung des Warnkreises (intern scharf)
-- use.toggle_warn_circuit -> Deaktivierung / Aktivierung der Überwachung des Warnkreises (intern scharf)
+- use.activate_sharp_inside_circuit -> Aktivierung der Uberwachung des Warnkreises (intern scharf)
 - use.disable -> Deaktivierung der Anlage (Alarmkreis)
 - use.enable -> Aktivierung der Anlage (Alarmkreis)
 - use.enable_with_delay -> Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
 - use.list -> Deaktivierung / Aktivierung / Warnkreis / Aktivierung mit Verzögerungszeit
-- use.quit_changes -> Rücksetzen der beiden States *info.warn / night_circuit_changes*
-- use.toggle -> Deaktivierung / Aktivierung der Anlage (Alarmkreis)
+- use.quit_changes -> Rücksetzen der states *info.notification_circuit_changes, info.sharp_inside_siren, status.activation_failed*
 - use.toggle_password -> Deaktivierung / Aktivierung der Anlage (Alarmkreis) mit Passwort
 - use.toggle_with_delay -> Deaktivierung / Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
 - use.toggle_with_delay_and_password -> Deaktivierung / Aktivierung der Anlage (Alarmkreis) mit Passwort und Verzögerungszeit
@@ -114,6 +107,8 @@ Es ist möglich die Alarmanlage direkt von aktiviert auf "intern scharf" umzusch
 #### "alarm.x.status ...."
 Hier lässte sich der Zustand der Anlage смог.
 
+- status.sleep -> Signalisiert den Zustand der automatischen Nachtruhe
+
 #### "alarm.x.info ...."
 Liefert zusätzliche Informationen wie z.B. Welche "Türen offen sind" oder einen Лог государства.
 Der log_today State Wird Um Mitternacht Geleert.
@@ -121,14 +116,26 @@ Der log_today State Wird Um Mitternacht Geleert.
 ----------------------------------------------------------------------------------------------------------------------
 
 ## Проблема
-- мужская телеграмма телеграмм, в том числе слова, написанные на английском языке, канзуфюгт, канцер нью эйн дер дер инстанс авансвен и человек мусс бис * телеграмма.
+- мужская телеграмма телеграмм ünliches über das + hinzufügt, kann man nur ein state der Instanz auswählen und man muss bis auf *telegram.0* alles löschen.
 
 #### Wichtig, die Benutzung dieses.
 
 ## Changelog
 
+#### 1.2.0 (09.07.2020)
+* (misanorot) added countdown speech output
+
+#### 1.1.0 (05.07.2020)
+* (misanorot) Added input shortcuts
+
+#### 1.0.0 (01.07.2020)
+* (misanorot) added alarm and silent flash light
+
+#### 0.9.0 (28.06.2020)
+* (misanorot) Homekit integrated, set shortcuts only when changed
+
 #### 0.8.0 (18.06.2020)
-* (misanorot) !!! Changed circuits dramatacly !!!
+#### (misanorot) !!! Changed circuits dramatacly !!! Please do a new installation when you come from less versions
 
 #### 0.7.5 (14.06.2020)
 * (misanorot) fixed a few little issues

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: 61fEhv2DxfmqAoNBj1Ifds0g5354L6Q/0uNr0BUdeYY=
+hash: 67eXK6ulWrq0ypNcdiWmRASu3wjj7jtEXA0Qr0CAZaw=
 ---
 ![логотип](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -77,7 +77,7 @@ createState(
 
 ### Ввод числа
 Это можно сделать вручную, если в пользовательском диалоге выбран тип объекта input_number.
-Для этого типа могут быть добавлены `min` и `max` значения в `common` и необязательные `step`.
+Для этого типа могут быть добавлены значения `min` и `max` в `common` и необязательные `step`.
 Если вы хотите видеть стрелки вверх и вниз, вы должны установить в пользовательском `mode` значение «число»:
 
 ```
@@ -114,7 +114,7 @@ common: {
     }
 ```
 
-Другими словами, вход также должен быть выбран в IoB.
+другими словами, вход также должен быть выбран в IoB.
 
 ### Таймер
 Таймер может быть смоделирован следующим скриптом:
@@ -302,7 +302,7 @@ createState('location.latitude', 39.5681295, false, {
 
 Я нашел эту ссылку https://github.com/jimz011/homeassistant как интересный ресурс для пользовательских карт.
 
-Часто пользовательские карты хранятся на github как источники и должны быть скомпилированы перед использованием.
+Часто пользовательские карты хранятся на github в качестве источников и должны быть скомпилированы перед использованием.
 Вы должны проверить меню `Releases` на github и попытаться найти там скомпилированные файлы.
 Как этот: [https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases) (Найдите файл `mini-graph-card-bundle.js`)
 
@@ -424,8 +424,13 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 });
 ```
 
+## Исправление проблем
+Если вы испортили код YAML и увидели пустую страницу, но у вас все еще есть верхнее меню, вы можете включить режим редактирования (если он еще не включен) из меню, а затем снова открыть меню, чтобы получить доступ к «Редактору RAW Yaml», в котором вы посмотрите полный код YAML и можете его почистить.
+Если это не поможет, вы можете открыть конфигурацию объекта lovelace. *. В raw-editor в ioBroker и посмотреть там.
+Вы также можете восстановить этот объект из резервной копии. Он содержит полную конфигурацию вашей визуализации.
+
 ## Оригинальные источники для ловеласа
-Использованные источники находятся здесь https://github.com/GermanBluefox/home-assistant-polymer.
+Использованные источники здесь https://github.com/GermanBluefox/home-assistant-polymer.
 
 ## Делать
 Безопасность должна быть взята от текущего пользователя, а не от default_user
@@ -434,8 +439,8 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 ### Версия
 Используемая версия home-assistant-frontend@1.0.0
 
-### Как построить новую версию Lovelace
-Прежде всего фактический https://github.com/home-assistant/home-assistant-polymer (ветвь разработчика) необходимо **вручную** объединить с https://github.com/GermanBluefox/home-assistant-polymer. .git (*** iob *** филиал!).
+### Как собрать новую версию Lovelace
+Прежде всего, фактический https://github.com/home-assistant/frontend (ветвь разработчика) должен быть ** вручную ** объединен с https://github.com/GermanBluefox/home-assistant-polymer.git (* ** iob *** филиал!).
 
 Все изменения для ioBroker помечены комментарием `// IoB`.
 На данный момент (2020.01.12) были изменены следующие файлы:
@@ -444,23 +449,78 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 - `build-scripts / gulp / app.js` - добавлено новое задание gulp
 - `build-scripts / gulp / webpack.js` - добавлено новое задание gulp
 - `src / data / lovelace.ts` - добавлена опция скрытия панели
+- `src / data / weather.ts` - добавлена поддержка отображения значка погоды ioBroker снова.
+- `src / dialogs / more-info / more-info-controls.js` - удалить кнопку настроек объекта
 - `src / dialogs / notifications /tification-box.js` - добавлена кнопка подтверждения всех
 - `src / entrypoints / core.ts` - модифицированный процесс аутентификации
 - `src / layouts / home-assistant-main.ts` - удалить боковую панель приложения
 - `src / Panel / lovelace / hui-root.ts` - добавлены уведомления и голосовое управление
+- `src / Panel / lovelace / cards / hui-weather-forecast-card.ts` - добавлена поддержка отображения значка погоды ioBroker снова.
 
-После этого извлечения измененная версия в папке `./build`. Затем.
+После этой проверки измененная версия в папке `./build`. Затем.
 
 1. Перейдите в каталог ./build.
-2. `git clone https:// github.com / GermanBluefox / home-assistant-Polymer.git` это вилка https://github.com/home-assistant/home-assistant-polymer.git, но некоторые вещи изменены (см. список файлов ранее).
+2. `git clone https:// github.com / GermanBluefox / home-assistant-Polymer.git` это вилка https://github.com/home-assistant/frontend.git, но некоторые вещи изменены ( смотрите список файлов ранее).
 3. «CD-home-assistant-polymer»
 4. `git checkout master`
 5. `npm install`
-6. «gulp build-app» для релиза или «gulp develop-iob» для отладочной версии. Чтобы построить веб после изменений, вы можете вызвать `webpack-dev-app` для более быстрой сборки, но вам все равно нужно вызывать` build-app` после того, как версия будет готова к использованию.
+6. «gulp build-app» для релиза или «gulp develop-iob» для отладочной версии. Чтобы построить веб после изменений, вы можете вызвать `webpack-dev-app` для более быстрой сборки, но вам все равно нужно вызвать` build-app` после того, как версия будет готова к использованию.
 7. Скопируйте все файлы из `. / Build / home-assistant-polymer / hass_frontend` в`. / Hass_frontend` в этом репо
 8. Запустите задачу gulp rename.
 
 ## Changelog
+### 1.2.5 (2020-07-10)
+* (Garfonso) Fixed: Parse initial values the same way as state changes
+* (Garfonso) Added: Work around for (old) common.states of type string
+
+### 1.2.4 (2020-06-29)
+* (Garfonso) Fixed: corrected hass_frontend files and directory
+* (Garfonso) Fixed: Prevent warning and possible crash
+
+### 1.2.3 (2020-06-27)
+* (Garfonso) Added: config to select direction of blinds.
+* (Garfonso) Fixed: missing translation of binary_sensor.states
+* (Garfonso) Fixed: History Graph diagrams for sensor-entities
+
+### 1.2.2 (2020-06-24)
+* (Garfonso) Fixed: Notification-drawer was to wide on narrow screens
+* (Garfonso) Fixed: Clear-all notifications button now has its icon again
+* (Garfonso) Fixed: Notification-button could move unpredictable in toolbar
+* (Garfonso) Fixed: Lock status is now displayed in icon (open/close)
+* (Garfonso) Fixed: Lock status is now received if no dedicated getId exists (by subscribing setId like with other entities)
+* (Garfonso) Added: Support for open-service call (which is not yet? supported in lovelace itself...)
+
+### 1.2.1 (2020-06-23)
+* (Garfonso) Updated Hass Lovelace. Which fixes weather-card, no weather icons with authorization and (maybe?) store credentials
+             Please make sure to update your custom cards! Follwing cards need updates:
+                [mini-graph-card](https://github.com/kalkih/mini-graph-card)
+                [Slideshow](https://github.com/igloo15/slideshow-card)
+                [button-entity-row](https://github.com/mattatcha/button-entity-row)
+* (Garfonso) Fix: yaml editor goes missing on Firefox 
+* (Garfonso) Added: Support for new type of blinds (needs type-detector update)
+
+### 1.2.0 (2020-06-20)
+* (Garfonso) Added: Support for cover entity (cover and input_number entities are now created for blinds)
+* (Garfonso) Added: Support for new blind types which let lovelace determine direction of 0/100%
+* (Garfonso) Fixed: Prefer ON_LIGHT for lights if present, should fix cases where there is also a switch state in a light device.
+* (Garfonso) Added: Enable history support, let's more-info show history of states
+* (Garfonso) Added: zone.home entity from system.config (i.e. lat/long)
+* (Garfonso) Fixed: Make door devices create a device_class door entity
+* (Garfonso) Fixed: Added some missing translations, improved translation a bit, added domain name to translations in custom tab.
+
+### 1.1.0 (2020-05-28)
+* (Garfonso) BREAKING: fixed issue with entity_id generation which now allows umlauts to be replaced by ue/ae/oe.
+* (Garfonso) added windowsTilt device type
+* (Garfonso) reworked friendly name for auto generated entities, allow space in name.
+* (Garfonso) use device_class feature for sensors (where applicable) -> results in translation features of lovelace being used.
+* (Garfonso) multiple fixes/additions to media player (like volume scaling, on/off support, shuffle support, stop support) 
+
+### 1.0.16 (2020-05-04)
+* (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
+
+### 1.0.15 (2020-04-30)
+* (Apollon77) errors on webserver initialization are handled properly
+
 ### 1.0.14 (2020-04-22)
 * (algar42) Call of deprecated getObjectView updated for js-controller v3
 

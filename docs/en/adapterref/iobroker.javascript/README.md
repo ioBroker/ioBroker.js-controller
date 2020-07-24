@@ -185,13 +185,13 @@ The callback function will return the object as parameter with following content
     	'_id' : 'javascript.0.myplayer',
     	'type' : 'state',
     	'common' : {
-    		'def' :    '0',
-            'min'  :   '0',
-            'max'  :   '6',
+    		'def' :    0,
+            'min'  :   0,
+            'max'  :   6,
     		'type' :   'number',
-    		'read' :   'true',
-    		'write' :  'true',
-    		'states' : '0:stop;1:play;2:pause;3:next;4:previous;5:mute;6:unmute',
+    		'read' :   true,
+    		'write' :  true,
+    		'states' : { 0:'stop', 1:'play', 2:'pause', 3:'next', 4:'previous', 5:'mute', 6:'unmute'},
     		'role' :   'media.state',
     		'desc' :   'Player handling',
     		'name' :   'MyPlayer'
@@ -1463,6 +1463,7 @@ Scripts can be activated and deactivated by controlling of this state with ack=f
 
 ### 4.6.xx (2020-05-xx)
 * (Apollon77) Prevent wrong errors when setting "null" values for states
+* (bluefox) Revert changes for sync getState, because "on change" detection is broken 
 
 ### 4.6.17 (2020-05-25)
 * (bluefox) Fixed error with warnings collapsed blocks

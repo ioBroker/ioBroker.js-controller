@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fb-checkpresence/README.md
 title: 无题
-hash: iAx9LX7lL9ZxpPnYP6Eate95u77FxOZII9VLyznRrBI=
+hash: W3a3b6e6cA34+u0NlNaRWYzKCxwgJbsPlTwrQt6446M=
 ---
 ![安装数量](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -17,7 +17,7 @@ hash: iAx9LX7lL9ZxpPnYP6Eate95u77FxOZII9VLyznRrBI=
 <h1><img src="admin/fb-checkpresence.png" width="64"/> ioBroker.fb-checkpresence </h1>
 
 ## IoBroker的fb-checkpresence适配器
-适配器检查在炸弹箱上是否存在家庭成员。
+适配器检查在炸框上是否存在家庭成员。
 您必须填写家庭成员的名称和所用设备的mac地址（或ip地址）。
 注释是可选的，您可以启用或禁用家庭成员。
 数据点基于成员名称。
@@ -34,7 +34,7 @@ hash: iAx9LX7lL9ZxpPnYP6Eate95u77FxOZII9VLyznRrBI=
 fritzbox服务通过TR-064协议使用。
 
 ### Fritzbox条件
-此处描述了来自炸弹盒的二手TR-064接口：https：//avm.de/service/schnittstellen/。
+此处描述了来自炸弹箱的二手TR-064接口：https：//avm.de/service/schnittstellen/。
 使用了以下TR-064服务和操作：
 
 *主机：1-X_AVM-DE_GetHostListPath（从2017-01-09开始支持）
@@ -45,11 +45,14 @@ fritzbox服务通过TR-064协议使用。
 * WANIPConnection：1-GetInfo
 * DeviceInfo：1-GetInfo
 
-默认情况下，TR-064接口未激活。但是，可以通过FritzBox Web界面轻松更改此设置。为此，请登录到FritzBox并确保激活了专家视图。然后，您将在“家庭网络»家庭网络概述»网络设置”下面找到“允许访问应用程序”。在那里，您必须激活复选框，然后重新启动FritzBox。 <img src="doc/access_settings_network.JPG"/>
+默认情况下，TR-064接口未激活。但是，可以通过FritzBox Web界面轻松更改此设置。为此，请登录到FritzBox并确保激活了专家视图。
+然后，您将在“家庭网络»家庭网络概述»网络设置”下面找到“允许访问应用程序”。在那里，您必须激活复选框，然后重新启动FritzBox。
+
+提示：更改选项后，不要忘记重新启动Fritzbox！ <img src="doc/access_settings_network.JPG"/>
 
 ##配置对话框
 ### Fritzbox IP地址，用户名和密码
-要从fritzbox获取设备数据，必须配置ip地址，用户名和密码。
+要从fritzbox中获取设备数据，必须配置ip地址，用户名和密码。
 密码已加密，未以明文形式保存。
 
 ###时间间隔
@@ -59,7 +62,7 @@ fritzbox服务通过TR-064协议使用。
 在历史记录适配器上，将计算一些值。如果使用历史记录，则可以选择sql或influxdb适配器进行此计算。历史记录适配器必须预先安装。
 
 ＃＃＃ 日期格式
-日期格式掩码选项在以下网页上进行了描述：https://www.npmjs.com/package/dateformat。
+日期格式掩码选项在以下网页上描述：https：//www.npmjs.com/package/dateformat。
 格式掩码用于格式化html和json表对象。
 
 ###家庭成员设置
@@ -81,14 +84,14 @@ fritzbox服务通过TR-064协议使用。
 对于每个家庭成员，其存在，到来日期和其他一些信息都会被计算并保存在成员对象中。
 
 ###主机号，活动设备
-设备的数量和活动设备的数量可从fritzbox中获得。
+设备的数量以及活动设备的数量可从fritzbox获得。
 
 ##对象
 ###对象的存在
 如果所有家庭成员都在场，则该对象为真。
 
 ###对象存在
-如果存在一个家庭成员，则该对象为真。
+如果一个家庭成员存在，则该对象为真。
 
 ###对象设备
 这些都是fritzbox中列出的所有设备
@@ -100,7 +103,7 @@ fritzbox服务通过TR-064协议使用。
 这些对象是表（json和html），其中包含所有家庭成员的来往信息。
 
 ###对象信息
-以下是有关适配器的最新更新和连接状态的信息。
+这里列出了有关最后一次更新和适配器的连接状态的信息。
 
 ###对象来宾
 以下列出了有关活动来宾和表对象（其中包含设备信息）数量的信息。
@@ -109,7 +112,7 @@ fritzbox服务通过TR-064协议使用。
 以下列出了有关未知设备数量和其中包含未知设备信息的表对象的信息。
 
 ###对象member.present
-在这里，您可以找到有关当日成员的存在以及该成员自上次更改以来一直为真状态的时间的信息。
+在这里，您将找到有关当日成员在场的信息以及该成员自上次更改以来一直为真状态的时间。
 
 ###对象member.absent
 在这里，您可以找到有关当日缺少成员以及该成员自上次更改以来一直处于错误状态的信息。
@@ -121,6 +124,9 @@ fritzbox服务通过TR-064协议使用。
 在这里，您将找到有关当天历史的信息。
 
 ## Changelog
+
+### 1.0.4 (2020-06-28)
+* (afuerhoff) bugfix json list and guest handling, new object guest.presence
 
 ### 1.0.3 (2020-05-26)
 * (afuerhoff) bugfix checking mac or ip

@@ -87,6 +87,19 @@ Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column
 
 ## Changelog
 
+### 3.3.9 (2020-07-16)
+* (Apollon77) More schema information added
+
+### 3.3.8 (2020-07-09)
+* (Apollon77) Work around invalid data that are returned by some devices
+* (Apollon77) More schema information added
+
+### 3.3.7 (2020-07-01)
+* (Apollon77) More schema information added
+
+### 3.3.6 (2020-06-29)
+* (Apollon77) More schema information added
+
 ### 3.3.5 (2020-06-11)
 * (Apollon77) More schema information added
 * (Apollon77) Optimizations and fixes

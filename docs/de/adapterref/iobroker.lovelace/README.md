@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: 61fEhv2DxfmqAoNBj1Ifds0g5354L6Q/0uNr0BUdeYY=
+hash: 67eXK6ulWrq0ypNcdiWmRASu3wjj7jtEXA0Qr0CAZaw=
 ---
 ![Logo](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -26,7 +26,7 @@ Es gibt zwei Möglichkeiten, wie die Entitäten konfiguriert werden könnten:
 - Handbuch
 
 ### Auto
-Im Auto-Modus wird der gleiche Vorgang wie bei `google home` oder `material adapter` angewendet.
+Im Auto-Modus wird der gleiche Vorgang wie für `google home` oder `material adapter` angewendet.
 
 *** Es werden nur Objekte und Kanäle erkannt, für die Kategorien `function`und `room` definiert sind ***
 
@@ -424,6 +424,11 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 });
 ```
 
+## Fehlerbehebung
+Wenn Sie den YAML-Code durcheinander gebracht haben und eine leere Seite sehen, aber immer noch das Hauptmenü haben, können Sie den Bearbeitungsmodus (falls nicht bereits aktiviert) über das Menü aktivieren und dann das Menü erneut öffnen, um auf den "RAW Yaml Editor" zuzugreifen, in dem Sie sich befinden Sehen Sie sich den vollständigen YAML-Code an und können Sie ihn bereinigen.
+Wenn dies nicht hilft, können Sie die Objekt-Lovelace. *. -Konfiguration im Raw-Editor in ioBroker öffnen und dort nachsehen.
+Sie können dieses Objekt auch aus einer Sicherung wiederherstellen. Es enthält die vollständige Konfiguration Ihrer Visualisierung.
+
 ## Originalquellen für Liebesspiel
 Verwendete Quellen finden Sie hier https://github.com/GermanBluefox/home-assistant-polymer.
 
@@ -435,7 +440,7 @@ Die Sicherheit muss vom aktuellen Benutzer und nicht vom Standardbenutzer übern
 Verwendete Version von home-assistant-frontend@1.0.0
 
 ### Wie erstelle ich die neue Lovelace-Version?
-Zunächst muss der eigentliche https://github.com/home-assistant/home-assistant-polymer (Entwicklungszweig) **manuell** in https://github.com/GermanBluefox/home-assistant-polymer zusammengeführt werden .git (*** iob *** branch!).
+Zunächst muss das eigentliche https://github.com/home-assistant/frontend (Entwicklungszweig) ** manuell ** in https://github.com/GermanBluefox/home-assistant-polymer.git (*) zusammengeführt werden ** iob *** Zweig!).
 
 Alle Änderungen für ioBroker sind mit dem Kommentar `// IoB` gekennzeichnet.
 Vorerst (2020.01.12) wurden folgende Dateien geändert:
@@ -444,15 +449,18 @@ Vorerst (2020.01.12) wurden folgende Dateien geändert:
 - `build-scripts / gulp / app.js` - Neue gulp-Aufgabe hinzugefügt
 - `build-scripts / gulp / webpack.js` - Neue gulp-Aufgabe hinzugefügt
 - `src / data / lovelace.ts` - Option zum Ausblenden der Leiste hinzugefügt
+- `src / data / weather.ts` - Unterstützung hinzufügen, um das ioBroker-Wettersymbol erneut anzuzeigen.
+- `src / dialogs / more-info / more-info-controls.js` - Entitätseinstellungsschaltfläche entfernen
 - `src / dialogs / notifications / notification-drawer.js` - Schaltfläche ack all hinzugefügt
 - `src / entrypoints / core.ts` - geänderter Authentifizierungsprozess
 - `src / layouts / home-Assistant-main.ts` - App-Seitenleiste entfernen
 - `src / panel / lovelace / hui-root.ts` - Benachrichtigungen und Sprachsteuerung hinzugefügt
+- `src / panel / lovelace / maps / hui-weather-Forecast-card.ts` - Unterstützung hinzufügen, um das ioBroker-Wettersymbol erneut anzuzeigen.
 
 Nach dem Auschecken geänderte Version im Ordner `./build`. Dann.
 
 1. Gehen Sie zum Verzeichnis ./build.
-2. `git clone https:// github.com / GermanBluefox / home-Assistant-polymer.git` es ist eine Gabelung von https://github.com/home-assistant/home-assistant-polymer.git, aber einige Dinge werden geändert (siehe die Dateiliste früher).
+2. `git clone https:// github.com / GermanBluefox / home-Assistant-polymer.git` Es ist eine Abzweigung von https://github.com/home-assistant/frontend.git, aber einige Dinge wurden geändert ( siehe die Dateiliste früher).
 3. "CD Home-Assistant-Polymer"
 4. `git checkout master`
 5. `npm install`
@@ -461,6 +469,58 @@ Nach dem Auschecken geänderte Version im Ordner `./build`. Dann.
 8. Starten Sie die Aufgabe "Schlucken umbenennen".
 
 ## Changelog
+### 1.2.5 (2020-07-10)
+* (Garfonso) Fixed: Parse initial values the same way as state changes
+* (Garfonso) Added: Work around for (old) common.states of type string
+
+### 1.2.4 (2020-06-29)
+* (Garfonso) Fixed: corrected hass_frontend files and directory
+* (Garfonso) Fixed: Prevent warning and possible crash
+
+### 1.2.3 (2020-06-27)
+* (Garfonso) Added: config to select direction of blinds.
+* (Garfonso) Fixed: missing translation of binary_sensor.states
+* (Garfonso) Fixed: History Graph diagrams for sensor-entities
+
+### 1.2.2 (2020-06-24)
+* (Garfonso) Fixed: Notification-drawer was to wide on narrow screens
+* (Garfonso) Fixed: Clear-all notifications button now has its icon again
+* (Garfonso) Fixed: Notification-button could move unpredictable in toolbar
+* (Garfonso) Fixed: Lock status is now displayed in icon (open/close)
+* (Garfonso) Fixed: Lock status is now received if no dedicated getId exists (by subscribing setId like with other entities)
+* (Garfonso) Added: Support for open-service call (which is not yet? supported in lovelace itself...)
+
+### 1.2.1 (2020-06-23)
+* (Garfonso) Updated Hass Lovelace. Which fixes weather-card, no weather icons with authorization and (maybe?) store credentials
+             Please make sure to update your custom cards! Follwing cards need updates:
+                [mini-graph-card](https://github.com/kalkih/mini-graph-card)
+                [Slideshow](https://github.com/igloo15/slideshow-card)
+                [button-entity-row](https://github.com/mattatcha/button-entity-row)
+* (Garfonso) Fix: yaml editor goes missing on Firefox 
+* (Garfonso) Added: Support for new type of blinds (needs type-detector update)
+
+### 1.2.0 (2020-06-20)
+* (Garfonso) Added: Support for cover entity (cover and input_number entities are now created for blinds)
+* (Garfonso) Added: Support for new blind types which let lovelace determine direction of 0/100%
+* (Garfonso) Fixed: Prefer ON_LIGHT for lights if present, should fix cases where there is also a switch state in a light device.
+* (Garfonso) Added: Enable history support, let's more-info show history of states
+* (Garfonso) Added: zone.home entity from system.config (i.e. lat/long)
+* (Garfonso) Fixed: Make door devices create a device_class door entity
+* (Garfonso) Fixed: Added some missing translations, improved translation a bit, added domain name to translations in custom tab.
+
+### 1.1.0 (2020-05-28)
+* (Garfonso) BREAKING: fixed issue with entity_id generation which now allows umlauts to be replaced by ue/ae/oe.
+* (Garfonso) added windowsTilt device type
+* (Garfonso) reworked friendly name for auto generated entities, allow space in name.
+* (Garfonso) use device_class feature for sensors (where applicable) -> results in translation features of lovelace being used.
+* (Garfonso) multiple fixes/additions to media player (like volume scaling, on/off support, shuffle support, stop support) 
+
+### 1.0.16 (2020-05-04)
+* (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
+
+### 1.0.15 (2020-04-30)
+* (Apollon77) errors on webserver initialization are handled properly
+
 ### 1.0.14 (2020-04-22)
 * (algar42) Call of deprecated getObjectView updated for js-controller v3
 

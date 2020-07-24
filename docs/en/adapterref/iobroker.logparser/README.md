@@ -32,6 +32,9 @@ Resulting JSON can then be used in VIS for visualization. States for emptying (c
 
 ## Changelog
 
+### 1.0.0
+* (Mic-M) No changes - just prepare versioning to add adapter to stable repository per [Adapter dev docu](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md#versioning)
+
 ### 0.4.11
 * (Mic-M) Adapter is now in latest repository.
 * (Mic-M) Removed unused adapter features 'extra tab' and 'custom state options'

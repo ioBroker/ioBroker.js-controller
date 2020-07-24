@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: lhfLYHEwCK+SxqzpKxPbFam+cgqQzrYECYRjtvi9I3Y=
+hash: Zd/46tHjPzjqlYI9GqXThAD5sejsPXoB3J9LpiC7b8s=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -43,7 +43,7 @@ Sie können es als Web-App auf Homescreen speichern und es sieht aus und fühlt 
 ## Du brauchst...
 * Knoten 10 oder höher
 * Web-Adapter mit einer Instanz, auf der dasselbe Protokoll (http oder https) wie der Admin-Adapter ausgeführt wird, socket.IO auf "integriert" und "Web-Sockets erzwingen" deaktiviert
-    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu - iQontrol durchsucht die passende passende Webadapter-Instanz und verwendet sie für die Kommunikation
+    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu - iQontrol durchsucht die am besten passende Webadapter-Instanz und verwendet sie für die Kommunikation
 * Für die Verbindung über *iobroker.pro-Cloud* sollten sowohl der Administrator- als auch der Webadapter auf http (nicht https) eingestellt sein.
 
 ## Fehlerbehebung
@@ -110,7 +110,7 @@ Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Ger
 Klicken Sie auf den Stift hinter dem Gerät, um die Rolle und den Status eines Geräts zu bearbeiten. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
 
 ### Ändern der Datenpunktkonfiguration
-Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymbol hinter einem Datenpunkt im Dialogfeld "Gerätekonfiguration" oder auf der Registerkarte "Objekte" von iobroker ändern. Hier kannst du:
+Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymbol hinter einem Datenpunkt im Dialogfeld Gerätekonfiguration oder auf der Registerkarte Objekte von iobroker ändern. Hier kannst du:
 
 * Readonly-Flag setzen
 * Invert-Flag setzen
@@ -143,8 +143,8 @@ Jede Rolle hat die folgenden drei Zustände:
 
 Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meisten Fällen stellt dies die Hauptfunktion des Geräts dar. Sie können ihm io-Broker-Zustände der folgenden Typen zuweisen:
 
-* *boolean* - wenn möglich, wird es in einen sinnvollen Text wie "ein / aus", "geöffnet / geschlossen" oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialog ein Kippschalter generiert
-* *Nummer* - wird mit der entsprechenden Einheit angezeigt und generiert einen Schieberegler im Dialogfeld
+* *boolean* - wenn möglich, wird es in einen sinnvollen Text wie "ein / aus", "geöffnet / geschlossen" oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialog ein Flip-Switch generiert
+* *Nummer* - wird mit der entsprechenden Einheit angezeigt und generiert einen Schieberegler im Dialog
 * *string* - Ein anzuzeigender Text
 * *Werteliste* - Der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü generiert
     * Technisch gesehen ist eine * Werteliste * ein Wert mit einer entsprechenden Übersetzungsliste, die im Objekt 'common.custom.iqontrol. <Instanz> .states', 'native.states' oder 'common.states' des Datenpunkts definiert ist ::
@@ -164,8 +164,8 @@ Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der
 * Hat keine weiteren Zustände
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
-### <img src="img/icons/switch_on.png" width="32"> Schalter, <img src="img/icons/fan_on.png" width="32"> Ventilator:
-* **STATE** *boolean* - Anzeige und Ein / Aus-Zustand
+### <img src="img/icons/switch_on.png" width="32"> Schalter:
+* **STATE** *boolean* - Anzeige und Ein / Aus-Status
 * **POWER** *number* - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
 ### <img src="img/icons/button.png" width="32"> Taste:
@@ -183,7 +183,7 @@ Optional können Sie folgende Zustände definieren:
 
 * Für farbige LEDs (HSB-Farbraum):
   * **HUE** * number * - Farbe des Lichts von 0-360 ° (Farbtonformat)
-  * **SÄTTIGUNG** * Zahl * - Lichtsättigung (von weiß bis reiner Farbe)
+  * **SÄTTIGUNG** * Zahl * - Lichtsättigung (von Weiß zu reiner Farbe)
   * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (wenn Sie einen LEVEL-Status und keine weißen LEDs haben, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Für weiße LEDs:
   * **CT** * Zahl * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
@@ -194,7 +194,7 @@ Optional können Sie folgende Zustände definieren:
     Wenn Ihr Gerät die Verwendung von HUE, SATURATION und COLOR_BRIGHTNESS (HSB / HSV-Farbraum) nicht unterstützt, können Sie verschiedene alternative Farbräume verwenden. In den Geräteoptionen können Sie einen der folgenden Farbräume auswählen:
 
     * **RGB** / **# RGB** Anstelle von HUE, SATURATION und COLOR_BRIGHTNESS können Sie das RGB-Format (hex) verwenden, optional mit dem führenden '#'
-    * **RGBW** / **# RGBW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS können Sie das RGBW-Format (hex) verwenden, optional mit führendem '#'
+    * **RGBW** / **# RGBW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS können Sie das RGBW-Format (hex) verwenden, optional mit dem führenden '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS, CT und WHITE_BRIGHTNESS können Sie das RGBWWCW- oder RGBCWWW-Format (hex) verwenden , WW = warmweiß, CW = kaltweiß), optional mit führendem '#'
     * **RGB (nur Farbton)** / **# RGB (nur Farbton)** Anstelle von HUE können Sie auch das RGB-Format (nur Farbton) (hex) verwenden, optional mit dem führenden '#'. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt
     * **Farbton für Milight** Dies ist der Farbtonwert für Milight-Geräte, wobei ein anderer Ausgangspunkt im Farbton-Farbkreis verwendet wird:
@@ -214,11 +214,16 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 * Verschiedenes:
   * **POWER** * number * - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
+### <img src="img/icons/fan_on.png" width="32"> Ventilator:
+* **STATE** *boolean* - Anzeige und Ein / Aus-Status
+* **LEVEL** *number* oder *value-list* - die Lüftergeschwindigkeit
+* **POWER** *number* - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
+
 ### <img src="img/icons/radiator.png" width="32"> Thermostat:
 * **SET_TEMPERATURE** *Nummer* - Zieltemperatur
 * **TEMPERATUR** *Zahl* - Die tatsächliche Temperatur wird in der oberen rechten Ecke klein angezeigt
 * **FEUCHTIGKEIT** *Zahl* - Die tatsächliche Luftfeuchtigkeit wird in der oberen rechten Ecke klein angezeigt
-* **CONTROL_MODE** *Werteliste* - Anzeige und Einstellung des Thermostatmodus
+* **CONTROL_MODE** *Werteliste* - Anzeige und Einstellung des Modus des Thermostats
 * **WINDOW_OPENING_REPORTING** *boolean* - Wenn true, wird ein kleines geöffnetes Fenster angezeigt
 * **VALVE_STATES** Array mit Namen und Nummern - Zeigt die Öffnung der Ventile an, die dem Thermostat zugeordnet sind
 
@@ -245,7 +250,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ### <img src="img/icons/door_closed.png" width="32"> Tür, <img src="img/icons/window_closed.png" width="32"> Fenster:
 * **STATE** *boolean* - Anzeige, ob die Tür oder das Fenster geöffnet oder geschlossen ist
-    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen (in Fensteroptionen können Sie definieren, welche Texte für geöffnet, geschlossen und geneigt stehen, um das richtige Symbol anzuzeigen).
+    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen (in Fensteroptionen können Sie definieren, welche Texte für geöffnet, geschlossen und gekippt stehen, um das richtige Symbol anzuzeigen).
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "3 Fenster offen" oder "alles geschlossen" oder eine * Nummer * anzuzeigen.
 * Respektiere die **Linked-View-Eigenschaft**
 
@@ -258,32 +263,32 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ### <img src="img/icons/door_locked.png" width="32"> Tür mit Schloss:
 * **STATE** *boolean* - Anzeige, ob die Tür geöffnet oder geschlossen ist (Tür- / Fensterkontakt)
 * **LOCK_STATE** *boolean* - Anzeige und Steuerung, ob die Tür verriegelt oder entriegelt ist (Steuerung ist deaktiviert, wenn STATE wahr ist - weil Sie eine geöffnete Tür nicht verriegeln können)
-* **LOCK_STATE_UNCERTAIN** *boolean* - Wenn true, wird STATE in Kursivschrift angezeigt, um anzuzeigen, dass die genaue Position der Sperre unbekannt ist
+* **LOCK_STATE_UNCERTAIN** *boolean* - Wenn true, wird der STATE in Kursivschrift angezeigt, um anzuzeigen, dass die genaue Position des Schlosses unbekannt ist
 * **LOCK_OPEN** *boolean* - Wenn true festgelegt ist, wird die Tür vollständig geöffnet
 
 ### <img src="img/icons/blind_middle.png" width="32"> Blind:
 * **LEVEL** *number* - Höhe des Blinden in Prozent
 * **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein. Die Werte für Stop, Up, Down und Unknown können konfiguriert werden
-* **STOP** *boolean* - wird auf true gesetzt, wenn die Stopptaste gedrückt wird
-* **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Auf- / Ab-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie einen Wert über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Auf- / Ab-Taste gedrückt wird
+* **STOP** *boolean* - wird auf true gesetzt, wenn die Stop-Taste gedrückt wird
+* **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Auf- / Ab-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie einen Wert über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Auf- / Ab-Taste gedrückt wird
 * **FAVORITE_POSITION** *boolean* - kann verwendet werden, um eine Lieblingsposition abzurufen. Wenn die Favoritentaste (Schaltflächenbeschriftung kann in den Geräteeinstellungen konfiguriert werden) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie einen Wert über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird
 * **SLATS_LEVEL** *number* - Position der Lamellen in Prozent
 
 ### <img src="img/icons/fire_on.png" width="32"> Feuersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
-    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
+    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'manipuliert' anzuzeigen.
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "Feuer im Obergeschoss" anzuzeigen.
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ### <img src="img/icons/flood_on.png" width="32"> Hochwassersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
-    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
+    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'manipuliert' anzuzeigen.
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "Flood in Upper Floor" anzuzeigen.
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ### <img src="img/icons/alarm_on.png" width="32"> Alarm:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
-    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
+    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'manipuliert' anzuzeigen.
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "Feuer im Obergeschoss" anzuzeigen.
 * **CONTROL_MODE** *Werteliste* - Betriebsmodus wie "Bewaffnet" und "Entwaffnet" auswählen
     * In den Geräteoptionen können Sie den Wert definieren, der die Deaktivierung darstellt, sodass das Darstellungssymbol angezeigt werden kann
@@ -302,7 +307,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **STATE** *boolean* - Wenn true festgelegt ist, wird das Programm gestartet
 
 ### <img src="img/icons/play.png" width="32"> Szene:
-* **STATE** *boolean* - wird angezeigt, wenn die Szene aktiv ist. Wenn true festgelegt ist, wird die Szene gestartet
+* **STATE** *boolean* - wird angezeigt, wenn die Szene aktiv ist. Abhängig von der Konfiguration der Szene (virtuelle Gruppe, Werte für falsch aktiviert oder deaktiviert festlegen) sendet der Umschaltbefehl true, false, min, 0, max oder 100. Es besteht die Möglichkeit, immer true zu senden (Umschalten deaktivieren). .
 
 ### <img src="img/icons/media_on.png" width="32"> Media Player:
 * **STATE** *string* - "play", "pause" oder "stop" oder *boolean* - true für play, false für stop
@@ -312,8 +317,8 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **TRACK_NUMBER** *number* - selbsterklärend
 * **PREV, REWIND, PLAY, PAUSE, STOP, FORWARD, NEXT** *boolean* - wird auf true gesetzt, wenn die entsprechende Taste gedrückt wird
 * **SHUFFLE, MUTE, PLAY_EVERYWHERE, EJECT, POWER_SWITCH** *Boolescher* - Status für die entsprechende Funktion
-* **REPEAT** *Boolescher* - Status für Wiederholungsfunktion oder *Zeichenfolge* - 3 Zustände können über die entsprechenden Optionen definiert werden: Wert für Aus, Alle wiederholen und Eins wiederholen
-* **DAUER, ABGELAUFEN** *Nummer* - Dauer und verstrichene Zeit des tatsächlichen Titels - wird verwendet, um eine Suchleiste anzuzeigen
+* **REPEAT** *boolescher* - Status für Wiederholungsfunktion oder *Zeichenfolge* - 3 Zustände können über die entsprechenden Optionen definiert werden: Wert für Aus, Alle wiederholen und Eins wiederholen
+* **DAUER, VERLAUFEN** *Nummer* - Dauer und verstrichene Zeit des tatsächlichen Titels - wird verwendet, um eine Suchleiste anzuzeigen
 * **VOLUME** *number* - für Lautstärkeregler
 * **QUELLE, PLAYLIST** *Werteliste* - Auswahlmenü anzeigen, um eine Quelle oder einen Titel aus der Wiedergabeliste auszuwählen
 
@@ -327,7 +332,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **URL** CONSTANT *string* - Diese URL wird geöffnet
 
 ## Icons und Hintergrundbilder
-* Sie können die eingebauten Bilder oder die unter der Registerkarte Bilder hochgeladenen Bilder oder eine beliebige kostenlose URL verwenden
+* Sie können die eingebauten Bilder oder die unter der Registerkarte "Bilder" hochgeladenen Bilder oder eine beliebige kostenlose URL verwenden
 * Sie können auch eine Variable in der Bild-URL verwenden. Dies kann beispielsweise für Wettervorhersagen nützlich sein. Verwenden Sie dieses Muster:
     * `` path / to / firstloaded.png | anotherpath / to / {iobrokerstate | fallback} .png``
     * Beispiel: `` ./../ iqontrol.meta / userimages / demo / Flasche.jpg | ./../ iqontrol.meta / userimages / demo / {javascript.0.myimage | whitestone} .jpg``
@@ -335,18 +340,46 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * Sobald der Status von "javascript.0.myimage" vom Server abgerufen wird, wird das Bild durch "./../ iqontrol.meta / userimages / demo / XXX.jpg" ersetzt, wobei " `XXX`` ist der Wert von` `javascript.0.myimage``
 * Wenn `` javascript.0.myimage`` keinen Wert hat, wird der Fallback `` whitestone`` verwendet (die Verwendung des Fallbacks ist optional)
 
+### Fortschrittsbalken
+* Es ist möglich, SVG-Definitionen in Kombination mit Variablen anstelle von Bilddateien zu verwenden, um Fortschrittsbalken anzuzeigen
+* Es stehen integrierte Vew-Vorlagen zur Auswahl, Sie können jedoch auch eigene SVGs erstellen
+* Weitere Informationen finden Sie unter [Wiki] (https://github.com/sbormann/ioBroker.iqontrol/wiki/Progress-Bars)
+
 ## Gerätenamen
 * Genau wie Variablen in Bild-URLs können Sie Variablen in Gerätenamen verwenden. Die Syntax ist fast dieselbe:
     * `` Text beim Laden | Text nach dem Laden von {iobrokerstate | fallback} ``
 * Kann den iobrokerstate zusätzlich in eckige Klammern setzen, dann wird der einfache Wert ohne seine Einheit verwendet: `` Text beim Laden | Text nach dem Laden von {[iobrokerstate] | fallback} ``
     * Beispiel: `` Wetter wird geladen | Wetter: {javascript.0.weather | Keine Wetterdaten gefunden} ``
 * Dies zeigt "Wetter wird geladen", wenn Sie die Ansicht öffnen
-* Sobald der Status von "Javascript.0.weather" vom Server abgerufen wird, wird der Text durch "Weather: XXX" ersetzt, wobei "XXX" der Wert von "Javascript.0" ist .wetter``
+* Sobald der Status von "javascript.0.weather" vom Server abgerufen wird, wird der Text durch "Weather: XXX" ersetzt, wobei "XXX" der Wert von "javascript.0" ist .wetter``
 * Wenn `` javascript.0.weather`` keinen Wert hat, wird der Fallback `` Keine Wetterdaten gefunden`` verwendet (die Verwendung des Fallbacks ist optional)
+
+## Popup-Nachrichten
+* Jede Instanz erstellt die Objekte "iqontrol.x.Popup.Message" und "iqontrol.x.Popup.Duration"
+* Wenn Sie Werte an diese Objekte übergeben, wird eine Popup-Nachricht (oder ein Toast) angezeigt
+* Sie können HTML-Tags verwenden, um die Nachricht zu formatieren
+* Die Dauer ist die Zeit in ms, in der die Nachricht angezeigt wird. Wenn die Dauer 0 ist, muss die Nachricht bestätigt werden
+* Alternativ können Sie diese Werte über den Befehl sendTo (z. B. blockweise) mit den Parametern `` PopupMessage`` und `` PopupDuration`` einstellen
+
+![Popup-Screenshot](img/popup_screenshot.png) ![Popup Blockly](../../../en/adapterref/iobroker.iqontrol/img/popup_blockly.png)
 
 ****
 
 ## Changelog
+
+### 1.1.5 (2020-07-05)
+* (Sebastian Bormann) Made dialog movable by dragging title.
+* (Sebastian Bormann) Added LEVEL to fan.
+* (Sebastian Bormann) Fixed flickering of SVG-Background change on some devices.
+
+### 1.1.4 (2020-07-03)
+* (Sebastian Bormann) Changed the way popup-iframes are created to allow execution of code inside them.
+* (Sebastian Bormann) Added the possibility to chose progressbars as icons and background-images for devices.
+* (Sebastian Bormann) Added progress-circle of remaining display-time to popup.
+
+### 1.1.3 (2020-06-28)
+* (Sebastian Bormann) Added popup messagen (toast-messagen).
+* (Sebastian Bormann) Enhanced scenes to be able to toggle (added option to always send true, if you need the old behaviour).
 
 ### 1.1.2 (2020-06-21)
 * (Sebastian Bormann) Compatibility enhancements for repeat function of Media-Player.

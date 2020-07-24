@@ -157,7 +157,7 @@ However, not every type makes sense to every role. So the STATE of a switch for 
 * Has no further states
 * The **linked-view-property** is opened directly
 
-### <img src="img/icons/switch_on.png" width="32"> Switch, <img src="img/icons/fan_on.png" width="32"> Fan:
+### <img src="img/icons/switch_on.png" width="32"> Switch:
 * **STATE**: *boolean* - display and set on/off-state
 * **POWER**: *number* - power-consumption that will be displayed in small in the upper right corner
 
@@ -199,6 +199,11 @@ Optional you can define the following states:
 	* **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN**: *boolean* - if set to true, the effect will speed up/down
 * Miscellaneous:
     * **POWER**: *number* - power-consumption that will be displayed in small in the upper right corner
+
+### <img src="img/icons/fan_on.png" width="32"> Fan:
+* **STATE**: *boolean* - display and set on/off-state
+* **LEVEL**: *number* or *value-list* - the fan-speed
+* **POWER**: *number* - power-consumption that will be displayed in small in the upper right corner
 
 ### <img src="img/icons/radiator.png" width="32"> Thermostat:
 * **SET_TEMPERATURE**: *number* - goal-temperature
@@ -287,7 +292,7 @@ In addition to normal thermostat you can define:
 * **STATE**: *boolean* - if set to true, the program will be started
 
 ### <img src="img/icons/play.png" width="32"> Scene:
-* **STATE**: *boolean* - displays, if the scene is active. If set to true, the scene will be started
+* **STATE**: *boolean* - displays, if the scene is active. Depending on the configuration of the scene (virtual group, set values for false enabled or disabled), the toggle-command will send true, false, min, 0, max or 100. There is an option to always send true (disable toggleing).
 
 ### <img src="img/icons/media_on.png" width="32"> Media-Player:
 * **STATE**: *string* - "play", "pause" or "stop" or *boolean* - true for play, false for stop
@@ -321,6 +326,11 @@ In addition to normal thermostat you can define:
 	* As soon as the state of ``javascript.0.myimage`` is fetched from the server, the image will be replaced with ``./../iqontrol.meta/userimages/demo/XXX.jpg`` where ``XXX`` is the value of ``javascript.0.myimage``
 	* If ``javascript.0.myimage`` has no value the fallback ``whitestone`` will be used (using the fallback is optional)
 
+### Progress Bars
+* It is possible, to use SVG-Definitions in combination with variables instead of imagefiles to display progress-bars
+* There are a vew templates integrated to chose from, but you can also create your own SVGs
+* See [Wiki](https://github.com/sbormann/ioBroker.iqontrol/wiki/Progress-Bars) for further informations
+
 
 ## Device-Names
 * Just like variables in image-urls you can use variables in device-names. The syntax is almost the same:
@@ -332,9 +342,35 @@ In addition to normal thermostat you can define:
 	* If ``javascript.0.weather`` has no value the fallback ``No weather data found`` will be used (using the fallback is optional)
 
 
+## Popup-Messages
+* Every instance creates the objects ``iqontrol.x.Popup.Message`` and ``iqontrol.x.Popup.Duration``
+* When passing values to these objects, a popup-message (or toast) is displayed
+* You can use html-tags to format the message
+* The duration is the time in ms the message is displayed; if the duration is 0 the message has to be confirmed
+* Alternatively you can set these values via sendTo-command (for example by blockly) with the parameters ``PopupMessage`` and ``PopupDuration``
+
+![Popup Screenshot](img/popup_screenshot.png)
+![Popup Blockly](img/popup_blockly.png)
+
+
+
 ****
 
 ## Changelog
+
+### 1.1.5 (2020-07-05)
+* (Sebastian Bormann) Made dialog movable by dragging title.
+* (Sebastian Bormann) Added LEVEL to fan.
+* (Sebastian Bormann) Fixed flickering of SVG-Background change on some devices.
+
+### 1.1.4 (2020-07-03)
+* (Sebastian Bormann) Changed the way popup-iframes are created to allow execution of code inside them.
+* (Sebastian Bormann) Added the possibility to chose progressbars as icons and background-images for devices.
+* (Sebastian Bormann) Added progress-circle of remaining display-time to popup.
+
+### 1.1.3 (2020-06-28)
+* (Sebastian Bormann) Added popup messagen (toast-messagen).
+* (Sebastian Bormann) Enhanced scenes to be able to toggle (added option to always send true, if you need the old behaviour).
 
 ### 1.1.2 (2020-06-21)
 * (Sebastian Bormann) Compatibility enhancements for repeat function of Media-Player.

@@ -21,44 +21,68 @@ You find a detailed installation documentation here:
 [Installation Documentation](./docs/EN/INSTALL.md)
 
 ## Supported devices
-|Shelly Device|Default (CoAP)|MQTT|
+|Shelly Device|CoAP|MQTT|
 |-------------|--------------|----|
-|Shelly1 (SHSW-1)|verified|verified|
-|Shelly2 (SHSW-21/SHSW-22)|verified|verified|
-|ShellyBulb (SHBLB)|verified|verified|
-|Shelly H&T (SHHT-1)|verified|verified|
-|Shelly Smoke (SHSM-01)|verified|verified|
-|Shelly 1 1PM (SHSW-PM) |verified|verified|
-|Shelly 2.5 (SHSW-25) |verified|verified|
-|ShellyRGBW (SHRGBWW-01)|verified|verified|
-|ShellyRGBW2 (SHRGBW2)|verified|verified|
-|Shelly2LED (SH2LED)|verified|verified|
-|ShellyPlug (SHPLG-1) |verified|verified|
-|ShellyPlug S (SHPLG-1) |verified|verified|
-|ShellyPlug 2 (SHPLG-2) |verified|verified|
-|ShellySense (SHSEN-1)|verified|not verified|
-|Shelly4Pro (SHSW-44)|verified|not verified|
-|Shelly EM (SHEM)|verified|verified|
-|Shelly Flood (SHWT-1)|verified|verified|
-|Shelly Dimmer (SHDM-1)|verified|verified|
-|Shelly Door/Window Sensor (SHDW-1)|verified|verified|
-|Shelly Bulb Duo (SHBDUO-1)|verified|not verified|
-|Shelly 3EM (SHEM)|verified|verified|
-|Shelly Vintage (SHVIN-1)|verified|verified|
-|Shelly I3 (SHIX3-1)|verified|verified|
-|Shelly Button (SHBTN-1)|no|verified|
-|Shelly Gas (SHGS-1)|verified|verified|
-|Shelly Dimmer 2 (SHDM-2)|verified|verified|
+|Shelly1 (SHSW-1)|supported since v3.3.0|supported since v3.3.0|
+|Shelly2 (SHSW-21/SHSW-22)|supported since v3.3.0|supported since v3.3.0|
+|ShellyBulb (SHBLB)|supported since v3.3.0|supported since v3.3.0|
+|Shelly H&T (SHHT-1)|supported since v3.3.0|supported since v3.3.0|
+|Shelly Smoke (SHSM-01)|supported since v3.3.0|supported since v3.3.0|
+|Shelly 1 1PM (SHSW-PM)|supported since v3.3.0|supported since v3.3.0|
+|Shelly 2.5 (SHSW-25)|supported since v3.3.0|supported since v3.3.0|
+|ShellyRGBW (SHRGBWW-01)|not supported since v3.4.0|not supported since v3.4.0|
+|ShellyRGBW2 (SHRGBW2)|supported since v3.3.0|supported since v3.3.0|
+|Shelly2LED (SH2LED)|supported since v3.3.0|supported since v3.3.0|
+|ShellyPlug (SHPLG-1)|supported since v3.3.0|supported since v3.3.0|
+|ShellyPlug S (SHPLG-1)|supported since v3.3.0|supported since v3.3.0|
+|ShellyPlug 2 (SHPLG-2)|supported since v3.3.0|supported since v3.3.0|
+|ShellySense (SHSEN-1)|supported since v3.3.0|supported since v3.3.0|
+|Shelly4Pro (SHSW-44)|supported since v3.3.5|supported since v3.3.5|
+|Shelly EM (SHEM)|supported since v3.3.0|supported since v3.3.0|
+|Shelly Flood (SHWT-1)|supported since v3.3.0|supported since v3.3.0|
+|Shelly Dimmer (SHDM-1)|supported since v3.3.0|supported since v3.3.0|
+|Shelly Door/Window Sensor (SHDW-1)|supported since v3.3.0|supported since v3.3.0|
+|Shelly Bulb Duo (SHBDUO-1)|supported since v3.3.0|supported since v3.3.0|
+|Shelly 3EM (SHEM|supported since v3.3.0|supported since v3.3.0|
+|Shelly Vintage (SHVIN-1)|supported since v3.3.0|supported since v3.3.0|
+|Shelly I3 (SHIX3-1)|supported since v3.3.0|supported since v3.3.0|
+|Shelly Button (SHBTN-1)|supported since v3.3.3|supported since v3.3.3|
+|Shelly Gas (SHGS-1)|supported since v3.3.3|supported since v3.3.3|
+|Shelly Dimmer 2 (SHDM-2)|supported since v3.3.4|supported since v3.3.4|
+|Shelly Door/Window Sensor 2 (SHDW-2)|supported since v3.3.5|supported since v3.3.5|
 
 ## What is Sentry and what is reported to the servers?
 Sentry.io is a way for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
 
-When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to our own Sentry server hosted in germany. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to our own Sentry server hosted in Germany. When you allowed ioBroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Update shelly-iot library to prevent some errors
+
+### 3.3.5 (04.07.2020)
+* (Stübi) - Add Shelly 4 Pro
+* (Stübi) - Bugfixing Shelly RGBW2, sate lights.switch color mode
+* (Stübi) - Add Shelly DW2
+* (Stübi) - Add states longpush and input to Shelly Dimmer 1 (CoAP and MQTT)
+* (Stübi) - Add states longpush and input to Shelly Dimmer 2 (CoAP and MQTT)
+* (Stübi) - Add states longpush and input to Shelly 1, 1 PM, 2, 2.5 (CoAP)
+* (Stübi) - Add state input to Shelly RGBW2 (CoAP)
+* (Stübi) - Add state deviceid (Issue #193)
+
 ### 3.3.4 (23.06.2020)
 * (Stübi) - Add Shelly Dimmer 2
+* (Stübi) - Add states longpush and input to Shelly Dimmer 1 (MQTT)
+* (Stübi) - Add states power and energy to Shelly Duo
+* (Stübi) - Get power and energy by CoAP instead of http for Shelly 1 PM
+* (Stübi) - Bugfixing Shelly Button 
+* (Stübi) - Bugfixing Shelly 1 humidity MQTT
+* (Stübi) - Fixed typo error (external temperature) / Shelly 1, 1 PM 
+* (Stübi) - Fixed role for external temperature / Shelly 1, 1 PM 
+* (Stübi) - Changed CoAP concept, because Shelly will change the CoAP payload in one of the future firmware versions. This makes the adjustments later easier. 
+* (Stübi) - Shelly 4 Pro not supported anymore. If you need it please create an GitHub issue.
+* (Stübi) - Shelly RGBW not supported anymore. If you need it please create an GitHub issue .
 
 ### 3.3.3 (18.06.2020)
 * (Stübi) - Add Shelly Button

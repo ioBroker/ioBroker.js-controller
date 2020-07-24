@@ -99,6 +99,7 @@ The mode shows if you can change the value. the taken action is described at the
 
 state                |mode | Description
 -------------------- |---- | -----------------------------------------------------
+Alarms               |R/-  | All registered Alarms for this player as JSON
 Album                |R/-  | Name of the current album
 Artist               |R/-  | Name of Artist
 ArtworkUrl           |R/-  | url to the Artwork
@@ -168,6 +169,7 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * reduce dependencys to other packages (squeezenode)
 * more configuration to optionaly turn features on/off to improve memory and performance
 * add playlist widget
+* add browse widget to browse in LMS-Menu
 * add player controlled circle knob widget
 * ~~add telnet communication to get push events from the server to optimize the polling~~
 * ~~implement a command state to place user individual commands (via json) for server and player~~

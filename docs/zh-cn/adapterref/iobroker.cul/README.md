@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.cul/README.md
 title: ioBroker.cul
-hash: nR8o8qUmkCDh2rpzFm+HXBen6bjUhSypsUGdYGuOGdg=
+hash: IWW7OEAnxbcUNoWwj1l1QuRQhHSXf8Kznl9KcAk09ig=
 ---
 ![商标](../../../en/adapterref/iobroker.cul/admin/busware.jpg)
 
@@ -15,6 +15,8 @@ hash: nR8o8qUmkCDh2rpzFm+HXBen6bjUhSypsUGdYGuOGdg=
 
 ＃ioBroker.cul
 ioBroker适配器可通过[CUL](http://busware.de/tiki-index.php?page=CUL)/[ulf](http://culfw.de)控制FS20，Max！，HMS和其他设备。取决于https://github.com/hobbyquaker/cul
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##支持的设备
 -* EM *-EM1000WZ，EMWZ
@@ -31,8 +33,16 @@ ioBroker适配器可通过[CUL](http://busware.de/tiki-index.php?page=CUL)/[ulf]
 基于Javascript / Node.js的Busware CUL USB / culfw适配器
 
 ## Changelog
+
+### 1.3.0 (2020-07-20)
+* (Apollon77) Really update dependencies and Serialport
+
+### 1.2.2 (2020-04-30)
+* (Apollon77) Update dependencies/Serialport 
+
 ### 1.2.1 (2020-03-18)
-* (bluefox) Changed license from non SPDX conform "GPL-2.0" to "GPL-2.0-or-later"
+* (bluefox) Changed license from non SPDX conform 
+    "GPL-2.0" to "GPL-2.0-or-later"
 
 ### 1.2.0 (2020-02-10)
 * (MK-2001) Sending of FS20 cmdRAW possible or via sendTo as described in the readme

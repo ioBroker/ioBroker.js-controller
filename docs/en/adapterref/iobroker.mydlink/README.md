@@ -6,7 +6,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.mydlink.svg)](https://www.npmjs.com/package/iobroker.mydlink)
 [![Tests](https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.mydlink)
 
-[![NPM](https://nodei.co/npm/iobroker.mydlink.png?downloads=true)](https://nodei.co/npm/iobroker.mydlink/) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.mydlink.svg)](https://greenkeeper.io/)
+[![NPM](https://nodei.co/npm/iobroker.mydlink.png?downloads=true)](https://nodei.co/npm/iobroker.mydlink/) 
 
 
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: T5K/68JPVQ6p72bI/O3PzejXjy7CHK71djExzxAcp4U=
+hash: gEmwf9IDWuvsZ+8a1ID9klDN1HwrM9Fxj7KN6/2RJAk=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -26,44 +26,68 @@ Standardmäßig Shelly-Firmware (kein Flashen der Firmware erforderlich!). Weite
 Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdokumentation](./docs/EN/INSTALL.md)
 
 ## Unterstützte Geräte
-| Shelly-Gerät | Standard (CoAP) | MQTT |
+| Shelly-Gerät | CoAP | MQTT |
 |-------------|--------------|----|
-| Shelly1 (SHSW-1) | verifiziert | verifiziert |
-| Shelly2 (SHSW-21 / SHSW-22) | verifiziert | verifiziert |
-| ShellyBulb (SHBLB) | verifiziert | verifiziert |
-| Shelly H & T (SHHT-1) | verifiziert | verifiziert |
-| Shelly Smoke (SHSM-01) | verifiziert | verifiziert |
-| Shelly 1 1PM (SHSW-PM) | verifiziert | verifiziert |
-| Shelly 2.5 (SHSW-25) | verifiziert | verifiziert |
-| ShellyRGBW (SHRGBWW-01) | verifiziert | verifiziert |
-| ShellyRGBW2 (SHRGBW2) | verifiziert | verifiziert |
-| Shelly2LED (SH2LED) | verifiziert | verifiziert |
-| ShellyPlug (SHPLG-1) | verifiziert | verifiziert |
-| ShellyPlug S (SHPLG-1) | verifiziert | verifiziert |
-| ShellyPlug 2 (SHPLG-2) | verifiziert | verifiziert |
-| ShellySense (SHSEN-1) | verifiziert | nicht verifiziert |
-| Shelly4Pro (SHSW-44) | verifiziert | nicht verifiziert |
-| Shelly EM (SHEM) | verifiziert | verifiziert |
-| Shelly Flood (SHWT-1) | verifiziert | verifiziert |
-| Shelly Dimmer (SHDM-1) | verifiziert | verifiziert |
-| Shelly Tür- / Fenstersensor (SHDW-1) | verifiziert | verifiziert |
-| Shelly Bulb Duo (SHBDUO-1) | verifiziert | nicht verifiziert |
-| Shelly 3EM (SHEM) | verifiziert | verifiziert |
-| Shelly Vintage (SHVIN-1) | verifiziert | verifiziert |
-| Shelly I3 (SHIX3-1) | verifiziert | verifiziert |
-| Shelly Button (SHBTN-1) | nein | verifiziert |
-| Shelly Gas (SHGS-1) | verifiziert | verifiziert |
-| Shelly Dimmer 2 (SHDM-2) | verifiziert | verifiziert |
+| Shelly1 (SHSW-1) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly2 (SHSW-21 / SHSW-22) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| ShellyBulb (SHBLB) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly H & T (SHHT-1) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly Smoke (SHSM-01) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly 1 1PM (SHSW-PM) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly 2.5 (SHSW-25) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| ShellyRGBW (SHRGBWW-01) | wird seit Version 3.4.0 nicht mehr unterstützt | wird seit Version 3.4.0 nicht mehr unterstützt |
+| ShellyRGBW2 (SHRGBW2) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly2LED (SH2LED) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| ShellyPlug (SHPLG-1) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| ShellyPlug S (SHPLG-1) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| ShellyPlug 2 (SHPLG-2) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| ShellySense (SHSEN-1) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly4Pro (SHSW-44) | unterstützt seit v3.3.5 | unterstützt seit v3.3.5 |
+| Shelly EM (SHEM) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly Flood (SHWT-1) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly Dimmer (SHDM-1) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly Tür- / Fenstersensor (SHDW-1) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly Bulb Duo (SHBDUO-1) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly 3EM (SHEM | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly Vintage (SHVIN-1) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly I3 (SHIX3-1) | unterstützt seit v3.3.0 | unterstützt seit v3.3.0 |
+| Shelly Button (SHBTN-1) | unterstützt seit v3.3.3 | unterstützt seit v3.3.3 |
+| Shelly Gas (SHGS-1) | unterstützt seit v3.3.3 | unterstützt seit v3.3.3 |
+| Shelly Dimmer 2 (SHDM-2) | unterstützt seit v3.3.4 | unterstützt seit v3.3.4 |
+| Shelly Tür- / Fenstersensor 2 (SHDW-2) | unterstützt seit v3.3.5 | unterstützt seit v3.3.5 |
 
 ## Was ist Sentry und was wird den Servern gemeldet?
 Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendungen. Und genau das ist in diesem Adapter implementiert.
 
-Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server in Deutschland gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server in Deutschland gesendet. Wenn Sie der ioBroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Update shelly-iot library to prevent some errors
+
+### 3.3.5 (04.07.2020)
+* (Stübi) - Add Shelly 4 Pro
+* (Stübi) - Bugfixing Shelly RGBW2, sate lights.switch color mode
+* (Stübi) - Add Shelly DW2
+* (Stübi) - Add states longpush and input to Shelly Dimmer 1 (CoAP and MQTT)
+* (Stübi) - Add states longpush and input to Shelly Dimmer 2 (CoAP and MQTT)
+* (Stübi) - Add states longpush and input to Shelly 1, 1 PM, 2, 2.5 (CoAP)
+* (Stübi) - Add state input to Shelly RGBW2 (CoAP)
+* (Stübi) - Add state deviceid (Issue #193)
+
 ### 3.3.4 (23.06.2020)
 * (Stübi) - Add Shelly Dimmer 2
+* (Stübi) - Add states longpush and input to Shelly Dimmer 1 (MQTT)
+* (Stübi) - Add states power and energy to Shelly Duo
+* (Stübi) - Get power and energy by CoAP instead of http for Shelly 1 PM
+* (Stübi) - Bugfixing Shelly Button 
+* (Stübi) - Bugfixing Shelly 1 humidity MQTT
+* (Stübi) - Fixed typo error (external temperature) / Shelly 1, 1 PM 
+* (Stübi) - Fixed role for external temperature / Shelly 1, 1 PM 
+* (Stübi) - Changed CoAP concept, because Shelly will change the CoAP payload in one of the future firmware versions. This makes the adjustments later easier. 
+* (Stübi) - Shelly 4 Pro not supported anymore. If you need it please create an GitHub issue.
+* (Stübi) - Shelly RGBW not supported anymore. If you need it please create an GitHub issue .
 
 ### 3.3.3 (18.06.2020)
 * (Stübi) - Add Shelly Button

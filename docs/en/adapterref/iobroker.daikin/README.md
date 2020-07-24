@@ -64,6 +64,12 @@ After the Adapter has connected to the Daikin Device a structure of objects are 
 
 ## Changelog
 
+### 1.1.0 (2020-07-21)
+* add compact mode
+* Adjust Texts and translate
+* create daikin.X ads device object and add one role
+* Update dependencies
+
 ### 1.0.4 (2019-06-25)
 * Daikin library updated, communication error handling optimized
 
@@ -96,7 +102,7 @@ After the Adapter has connected to the Daikin Device a structure of objects are 
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2018 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2017-2020 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

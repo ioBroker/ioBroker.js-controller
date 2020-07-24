@@ -97,7 +97,24 @@ You find all connected surveillance cams under 'webcams'. You can copy the link 
 You find your Nuki door opener under 'devices' like the Lupusec devices. The Nuki provides 2 states. The state nuki_state shows you the actuall state of the Nuki door opener like door is locked or unlocked. With the state nuki_action you can open, lock or unlock your door.  
 ![lupusec_obj_nuki](docs/en/img/lupusec_obj_nuki.png)
 
+
+## Troubleshooting
+If you start the Lupusec Adapter and you get the error that the alarm system is not reachable please try to ping the system from a terminal window of your ioBroker system. 
+
+```
+ssh <user>@<iobroker-ip-address> 
+sudo -u iobroker ping <lupsec-ip-address>
+``` 
+If you get the error _ping: icmp open socket: Operation not permitted_ please do following and start afterwards the Lupusec adapter again.
+```
+ls -l `which ping`
+sudo chmod u+s `which ping` 
+``` 
+
 ## Changelog
+
+### 1.2.9 (04.07.2020)
+* (Stübi) Bugfixing
 
 ### 1.2.8 (10.06.2020)
 * (Stübi) Add sentry mode

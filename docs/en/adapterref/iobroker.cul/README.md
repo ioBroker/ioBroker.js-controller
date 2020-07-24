@@ -10,6 +10,8 @@
 ioBroker adapter to control FS20, Max!, HMS and other devices via [CUL](http://busware.de/tiki-index.php?page=CUL) /
 [culfw](http://culfw.de). Depends on https://github.com/hobbyquaker/cul
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ## Supported devices
 
 - *EM* - EM1000WZ, EMWZ
@@ -27,6 +29,10 @@ This command uses the CUL Library of this adapter to send the command to a FS20 
 Javascript/Node.js based Busware CUL USB / culfw adapter
 
 ## Changelog
+
+### 1.3.0 (2020-07-20)
+* (Apollon77) Really update dependencies and Serialport
+
 ### 1.2.2 (2020-04-30)
 * (Apollon77) Update dependencies/Serialport 
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mbus/README.md
 title: ioBroker.mbus
-hash: VS5EObBHmPZwVRQJHeSjIUQ10tgEjK44ZiOuBnjOELI=
+hash: oiNj5I/xfp9TmfIEO61pt3H49lou5lnahVQdFWjJHiQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.mbus/admin/mbus.png)
 
@@ -20,42 +20,55 @@ hash: VS5EObBHmPZwVRQJHeSjIUQ10tgEjK44ZiOuBnjOELI=
 
 [![Code Climate] (https://codeclimate.com/github/Apollon77/ioBroker.mbus/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.mbus)
 
-** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
-Dieser Adapter für ioBroker verbindet sich über TCP oder seriell mit einem M-Bus-Master, um den Status und die Details der angeschlossenen M-Bus-Geräte anzuzeigen.
+Dieser Adapter für ioBroker stellt über TCP oder seriell eine Verbindung zu einem M-Bus-Master her, um den Status und die Details der angeschlossenen M-Bus-Geräte bereitzustellen.
 
 ## Beschreibung der Parameter
 ### Gateway IP / TCP Port
-IP-Adresse und Port des M-Bus Masters / Gateways bei Verwendung von TCP.
+IP-Adresse und Port des M-Bus-Masters / Gateways bei Verwendung von TCP.
 
 ### Serielle Schnittstelle / Baudrate
-Serielle Schnittstelle und Baudrate von M-Bus Master / Gateway.
+Serielle Schnittstelle und Baudrate des M-Bus-Masters / Gateways.
 
 ### Updateintervall
-Intervall in Sekunden zum Aktualisieren der Daten. Die Standardeinstellung (falls leer) ist 3600s (1h). Überlegen Sie, wie die Geräte am M-Bus mit Strom versorgt werden, um ein Entladen der Batterien zu verhindern. Wenn Sie das Intervall auf 0 setzen, wird das Gerät beim Adapterstart nur einmal gelesen, dann aber nicht mehr automatisch.
+Intervall in Sekunden, um die Daten zu aktualisieren. Die Standardeinstellung (falls leer) ist 3600s (1h). Überlegen Sie, wie die Geräte am M-Bus-Bus mit Strom versorgt werden, um ein Entladen der Batterien zu verhindern. Wenn Sie das Intervall auf 0 setzen, wird das Gerät beim Start des Adapters nur einmal gelesen, dann jedoch nicht mehr automatisch.
 
 ### Geräte-IDs
-Sie können primäre (1-250) und sekundäre (16 Zeichen lange) M-Bus-IDs verwenden
+Sie können primäre (1-250) und sekundäre (16 Zeichen lang) M-Bus-IDs verwenden
 
 ## Wie lese ich das Gerät auf Anfrage?
-In den erstellten Zuständen für jedes Gerät existiert ein Zustand mit dem Namen "updateNow". Wenn Sie dies auf true setzen (als Steueraktion mit ack = false), wird das Gerät sofort aktualisiert. Wenn ein Intervall konfiguriert ist, wird das Intervall neu gestartet, nachdem die Daten empfangen wurden.
+In den erstellten Zuständen für jedes Gerät existiert ein Zustand namens "updateNow". Wenn Sie dies auf true setzen (als Steueraktion mit ack = false), wird das Gerät sofort aktualisiert. Wenn ein Intervall konfiguriert ist, wird das Intervall nach dem Empfang der Daten neu gestartet.
 
 ## Machen
-* verschlüsselte Nutzlastverarbeitung (falls von irgendjemandem benötigt)
+* verschlüsselte Nutzlastverarbeitung (falls von jemandem benötigt)
 
 ## So melden Sie Probleme und Funktionsanforderungen
-Bitte benutzen Sie dazu GitHub.
+Bitte verwenden Sie dazu GitHub-Probleme.
 
-Stellen Sie den Adapter am besten auf den Debug-Protokollmodus ein (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen schneidet). Wenn Sie es nicht in der GitHub-Ausgabe bereitstellen möchten, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
-
-## Was ist Sentry und was wird den Servern gemeldet?
-Sentry.io ist eine Möglichkeit für Entwickler, sich einen Überblick über Fehler in ihren Anwendungen zu verschaffen. Und genau das ist in diesem Adapter implementiert.
-
-Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server gesendet, der in Deutschland gehostet wird. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Namen oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+Am besten stellen Sie den Adapter auf den Debug-Protokollmodus (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen abschneidet). Wenn Sie es nicht gerne in der GitHub-Ausgabe bereitstellen, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
 
 ## Changelog
 
-### 2.1.2 (2020-02-04)
+### 2.2.2 (2020-07-23)
+* (Apollon77) crash prevented (Sentry IOBROKER-MBUS-B)
+
+### 2.2.1 (2020-06-30)
+* (Apollon77) prevent crash (Sentry IOBROKER-MBUS-7)
+
+### 2.2.0 (2020-04-13)
+* (Apollon77) make compatible with nodejs 13+
+
+### 2.1.6 (2020-04-12)
+* (Apollon77) update dependencies
+
+### 2.1.5 (2020-03-08)
+* (Apollon77) update dependencies
+
+### 2.1.4 (2020-02-08)
+* (Apollon77) optimize adapter stop logic to prevent crashes (again)
+
+### 2.1.3 (2020-02-05)
 * (Apollon77) optimize adapter stop logic to prevent crashes
 * (Apollon77) Switch Sentry to iobroker own instance hosted in germany
 

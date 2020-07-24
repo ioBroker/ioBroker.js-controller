@@ -107,6 +107,17 @@ Wählt man in der Titelzeile unter Historie "mit" oder "influxdb.0" aus, werden
 Die Beschreibung einer Installation einer influxDB-Datenbank folgt.
 
 ## Changelog
+
+### 1.9.1 (2020-07-22)
+* (Apollon77) crash prevented (Sentry IOBROKER-INFLUXDB-E)
+
+### 1.9.0 (2020-07-21)
+* (Apollon77) Optimize handling in case of write errors and host unavailabilities
+
+### 1.8.8 (2020-07-18)
+* (Apollon77) Some errors prevented
+* (Apollon77) Set timeouts for influxdb connections to make sure connectioens do not run forever
+
 ### 1.8.7 (2020-05-14)
 * (bluefox) added command to read supported features
 

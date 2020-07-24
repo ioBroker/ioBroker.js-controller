@@ -315,6 +315,11 @@ Click on ![Link](img/link.png) to get directly to the forum.
 Forum entries will be displayed without problems when accessing ioBroker via IP or localhost:8081. But if you use a hostname like meinhaus.de:8081, you have to get a free API key at Feednami. To register, click [here](https://toolkit.sekando.com/docs/en/setup/hostnames) and follow the instructions.
 
 ## Changelog
+<!-- sdsd -->
+### 1.7.6 (2020-07-14)
+* (Apollon77) Update systeminformation and other deps
+* (Apollon77) Check for axios existance and exit adapter if not existing to prevent crashes (Sentry IOBROKER-INFO-C)
+* (ldittmar) UUID Hash with SHA256
 
 ### 1.7.5 (2020-06-08)
 * (ldittmar) Check UUID for messages

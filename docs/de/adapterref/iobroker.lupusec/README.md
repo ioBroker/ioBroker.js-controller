@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lupusec/README.md
 title: ioBroker.lupusec
-hash: LsenZYGZwR2+bdJjtVQwX90D40EnitSaUr69a9uemcI=
+hash: 6eC3phPn7QBqnpD1kNkMoEgysEnn6ByIWJjmi1B783U=
 ---
 ![Logo](../../../en/adapterref/iobroker.lupusec/admin/lupusec.png)
 
@@ -34,47 +34,47 @@ Am einfachsten ist es, den Adapter lupusec.iobroker über den Erkennungsadapter 
 Wählen Sie die IP-Adresse oder den Hostnamen aus dem Lupusec-Alarmsystem. Wählen Sie nach Möglichkeit https (empfohlen).
 Um nur den Status zu lesen, wählen Sie einen Benutzer ohne Schreibzugriff aus. Wenn Sie den Status ändern möchten (z. B. das Licht ein- / ausschalten oder den Alarm aktivieren / deaktivieren möchten), wählen Sie einen Benutzer mit Schreibzugriff aus.
 ![admin_main](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin.png) Wenn Sie Überwachungskameras an Ihr Lupusec-Alarmsystem angeschlossen haben, können Sie diese in ioBroker bereitstellen. Der Lupusec-Adapter findet alle Lupusec-Kameras selbst. Sie müssen eine Adresse (Ihre ioBroker IP-Adresse oder 0.0.0.0) und einen Port eingeben, um später eine Verbindung zu den Cams herstellen zu können.
-![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png) Wenn Sie Ihren Nuki-Türöffner an Ihr Lupusec-Alarmsystem angeschlossen haben, können Sie ihn auch von ioBroker aus verwenden. Im Administratormenü der ioBroker-Instanz können Sie Ihren Lupusec-Türsensor eingeben, der an der Nuki-Tür angebracht ist. Wenn Sie jetzt die Tür öffnen, an der der Nuki montiert ist, haben Sie den zusätzlichen Status "Tür geöffnet" statt nur "entriegelt". Wenn Sie keinen Lupusec-Türsensor an der Nuki-Tür haben, sehen Sie nur die Zustände "gesperrt" oder "gesperrt".
+![admin_webcam](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_webcam.png) Wenn Sie Ihren Nuki-Türöffner an Ihr Lupusec-Alarmsystem angeschlossen haben, können Sie ihn auch von ioBroker aus verwenden. Im Administratormenü der ioBroker-Instanz können Sie Ihren Lupusec-Türsensor eingeben, der an der Nuki-Tür angebracht ist. Wenn Sie jetzt die Tür öffnen, an der der Nuki montiert ist, haben Sie den zusätzlichen Status "Tür geöffnet" statt nur "entriegelt". Wenn Sie keinen Lupusec-Türsensor an der Nuki-Tür haben, werden nur die Zustände "gesperrt" oder "gesperrt" angezeigt.
 ![admin_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_admin_nuki.png)
 
 Standardmäßig werden alle Lupusec-Geräte auf der Registerkarte ioBroker-Objekt angezeigt.
 Voll unterstützt und individuell angepasst sind folgende Geräte:
 
-  - Türkontakt / Fensterkontakt (Typ 4)
-  - Wassersensor (Typ 5)
-  - Panikknopf (Typ 7)
-  - Bewegungsmelder / 360-Grad-Bewegungsmelder (Typ 9)
-  - CO-Sensor (Typ 13)
-  - Rauchmelder / Wärmemelder (Typ 14)
-  - Temperatursensor V2 (Typ 20)
-  - Sirene innen (Typ 21)
-  - Statusanzeige / Mini-Innensirene (Typ 22)
-  - Netzschalter (Typ 24)
-  - 1-Kanal-Relais mit ZigBee-Repeater (Typ 24)
-  - 2-Kanal-Relais mit ZigBee-Repeater (Typ 24)
-  - Repater V2 (Typ 26)
-  - Tastatur (Typ 37)
-  - Glassensor (Typ 39)
-  - Sirene innen (Typ 45)
-  - Sirene draußen (Typ 48)
-  - Leistungsschalter (Typ 48)
-  - Stromzähler (Typ 50)
-  - Raumsensor V1 (Typ 54)
-  - LCD-Temperatursensor (Typ 54)
-  - Minitemperatur (Typ 54)
-  - Nuki Türöffner (Typ 57)
-  - Wärmemelder (Typ 58)
-  - Dimmer (Typ 66)
-  - Lichtschalter V2 (Typ 66)
-  - Farbton (Typ 74)
-  - Rollladenrelais V1 (Typ 76)
-  - Kühlerthermostat (Typ 79)
-  - Kühlerthermostat V2 (Typ 79)
-  - Lichtsensor (Typ 78)
-  - Szenarioschalter V2 (Typ 81)
-  - Stoßsensor (Typ 93)
-  - Rauchmelder V2 (Typ 14)
-  - Inwall Relais mit Dimmer V3 (Typ 66)
+  - Türkontakt / Fensterkontakt (Typ 4)
+  - Wassersensor (Typ 5)
+  - Panikknopf (Typ 7)
+  - Bewegungsmelder / 360-Grad-Bewegungsmelder (Typ 9)
+  - CO-Sensor (Typ 13)
+  - Rauchmelder / Wärmemelder (Typ 14)
+  - Temperatursensor V2 (Typ 20)
+  - Sirene innen (Typ 21)
+  - Statusanzeige / Mini-Innensirene (Typ 22)
+  - Netzschalter (Typ 24)
+  - 1-Kanal-Relais mit ZigBee-Repeater (Typ 24)
+  - 2-Kanal-Relais mit ZigBee-Repeater (Typ 24)
+  - Repater V2 (Typ 26)
+  - Tastatur (Typ 37)
+  - Glassensor (Typ 39)
+  - Sirene innen (Typ 45)
+  - Sirene draußen (Typ 48)
+  - Leistungsschalter (Typ 48)
+  - Stromzähler (Typ 50)
+  - Raumsensor V1 (Typ 54)
+  - LCD-Temperatursensor (Typ 54)
+  - Minitemperatur (Typ 54)
+  - Nuki Türöffner (Typ 57)
+  - Wärmemelder (Typ 58)
+  - Dimmer (Typ 66)
+  - Lichtschalter V2 (Typ 66)
+  - Farbton (Typ 74)
+  - Rollladenrelais V1 (Typ 76)
+  - Kühlerthermostat (Typ 79)
+  - Kühlerthermostat V2 (Typ 79)
+  - Lichtsensor (Typ 78)
+  - Szenarioschalter V2 (Typ 81)
+  - Stoßsensor (Typ 93)
+  - Rauchmelder V2 (Typ 14)
+  - Inwall Relais mit Dimmer V3 (Typ 66)
 
 Die beiden Zustände apple_home_a1 und lupusec.0.status.apple_home_a2 für den Apple Homekit-Adapter yahka werden unterstützt. Sie können zusätzlich zu den Lupusec-Zuständen das Alarmsystem für die Bereiche 1 und 2 ein- und ausschalten.
 
@@ -98,6 +98,21 @@ Sie finden alle angeschlossenen Überwachungskameras unter "Webcams". Sie könne
 Sie finden Ihren Nuki-Türöffner unter "Geräten" wie den Lupusec-Geräten. Der Nuki bietet 2 Staaten. Der Status nuki_state zeigt Ihnen den tatsächlichen Status des Nuki-Türöffners an, wenn die Tür verriegelt oder entriegelt ist. Mit dem Status nuki_action können Sie Ihre Tür öffnen, verriegeln oder entriegeln.
 ![lupusec_obj_nuki](../../../en/adapterref/iobroker.lupusec/docs/en/img/lupusec_obj_nuki.png)
 
+## Fehlerbehebung
+Wenn Sie den Lupusec-Adapter starten und die Fehlermeldung erhalten, dass das Alarmsystem nicht erreichbar ist, versuchen Sie bitte, das System über ein Terminalfenster Ihres ioBroker-Systems zu pingen.
+
+```
+ssh <user>@<iobroker-ip-address>
+sudo -u iobroker ping <lupsec-ip-address>
+```
+
+Wenn die Fehlermeldung _ping: icmp open socket: Operation nicht zulässig_ angezeigt wird, gehen Sie bitte wie folgt vor und starten Sie anschließend den Lupusec-Adapter erneut.
+
+```
+ls -l `which ping`
+sudo chmod u+s `which ping`
+```
+
 ## Geplant
 Folgende Dinge sind für die Zukunft geplant:
 
@@ -106,10 +121,19 @@ Folgende Dinge sind für die Zukunft geplant:
 
 ## Changelog
 
+### 1.2.9 (04.07.2020)
+* (Stübi) Bugfixing
+
+### 1.2.8 (10.06.2020)
+* (Stübi) Add sentry mode
+* (Stübi) Now you can hold the reason for the alarm in alarm_status and alarm_status till the alarm ends
+
+### 1.2.7 (25.05.2020)
+* (Stübi) Add token renew time to expert mode
+
 ### 1.2.6 (02.05.2020)
 * (Stübi) Change logic to get faster sensor states
 * (Stübi) Node 10 recommended 
-* (Stübi) Add sentry logging
 * (Stübi) Add old Light sensor (type 78)
 
 ### 1.2.5 (21.01.2019)

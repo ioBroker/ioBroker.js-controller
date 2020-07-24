@@ -248,6 +248,9 @@ Following types are supported:
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
 ## Changelog
+### 1.6.1 (2020-07-10)
+* (bluefox) Used new SelectID Dialog in GUI
+
 ### 1.5.3 (2020-05-28)
 * (bluefox) Small change for nightscout
 

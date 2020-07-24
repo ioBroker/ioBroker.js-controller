@@ -1,6 +1,6 @@
 ![Logo](admin/hue-extended.png)
 # ioBroker.hue-extended
-Connect your Philips Hue Lights with ioBroker.
+Connect your Philips Hue and / or deCONZ devices with ioBroker 
 
 [![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-blue.svg)](https://paypal.me/chvoelkel)
 
@@ -15,6 +15,7 @@ Connect your Philips Hue Lights with ioBroker.
 
 
 ## Features
+- Supports both Philips Hue and deCONZ devices
 - Synchronize Lights
 - Synchronize Groups
 - Synchronize Scenes (including GroupScenes, LightScenes and Scenes from [HueLabs](https://labs.meethue.com/))
@@ -32,7 +33,15 @@ Connect your Philips Hue Lights with ioBroker.
 
 ## Changelog
 
-Please also see [release page](https://github.com/Zefau/ioBroker.hue-extended/releases) for changelog and detailed information.
+### 2.0.0 (2020-07-14)
+- (Zefau) Support for [deCONZ REST API](https://dresden-elektronik.github.io/deconz-rest-doc/) (meaning support for Conbee / Conbee II stick)
+
+### 1.3.8 (2020-07-05)
+- (Zefau) fixed long-time polling for connection retry after connection fails serval times on short-time polling (see [#58](https://github.com/Zefau/ioBroker.hue-extended/issues/58))
+
+### 1.3.7 (2020-07-01)
+- (Zefau) added additional verification checks of the response received from the Hue Bridge (see [#45](https://github.com/Zefau/ioBroker.hue-extended/issues/45))
+- (Zefau) fixed long-time polling for connection retry after connection fails serval times on short-time polling (see [#58](https://github.com/Zefau/ioBroker.hue-extended/issues/58))
 
 ### 1.3.6 (2020-05-31)
 - (Zefau) added long-time polling for connection retry after connection fails serval times on short-time polling (see [#58](https://github.com/Zefau/ioBroker.hue-extended/issues/58))

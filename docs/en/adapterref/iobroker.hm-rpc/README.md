@@ -135,6 +135,19 @@ Here, measured values, control and status data are listed; depending on the func
 ## FAQ
 
 ## Changelog
+### 1.14.15 (2020-07-21)
+* (foxriver76) fix bug on forced reinitialization run
+
+### 1.14.14 (2020-07-10)
+* (bluefox) Added roles for presence sensor
+
+### 1.14.13 (2020-07-07)
+* (foxriver76) fix edge case on EPAPER command (IOBROKER-HM-RPC-5Z)
+* (foxriver76) Catch error on `createDevices` if CCU does not deliver valid ADDRESS (IOBROKER-HM-RPC-5X)
+
+### 1.14.12 (2020-07-03)
+* (foxriver76) Continue execution if error on retrieving a paramset from CCU
+
 ### 1.14.11 (2020-06-21)
 * (bluefox) Change name of Instance according to the role (RF, Wired, HMIP)
 
@@ -212,76 +225,6 @@ of this approach (more requests to CCU on first setup)
 ### 1.10.0 (2019-08-12)
 * (foxriver76) new meta data handling procedure
 * __js-controller >= 1.4.2 required__
-
-### 1.9.17 (2019-08-04)
-* (foxriver76) handle meta values with max 1.01 as 1
-
-### 1.9.16 (2019-07-18)
-* (foxriver76) no longer use adapter.objects if not necessary
-* (foxriver76) added meta data
-
-### 1.9.15 (2019-07-01)
-* (foxriver76) added meta and icon for HB-UNI-Sen-CAP-MOIST
-* (foxriver76) fix type of EPAPER_TONE to string
-
-### 1.9.14 (2019-06-29)
-* (foxriver76) small bug fix for HM-Dis-EP-WM55
-* (foxriver76) catch async errors on bin-rpc connection
-
-### 1.9.13 (2019-06-03)
-* (foxriver76) fixed bug where some meta values where stored in the wrong index
-
-### 1.9.12 (2019-05-27)
-* (foxriver76) fix maintenance channel of HM-Dis-EP-WM55
-* (foxriver76) meta data added
-
-### 1.9.11 (2019-04-21)
-* (foxriver76) create OPERATING_VOLTAGE with unit V
-* (foxriver76) create RSSI_* with unit dBm
-
-### 1.9.10 (2019-04-12)
-* (foxriver76) fix meta
-* (foxriver76) added new meta data
-
-### 1.9.9 (2019-03-17)
-* (foxriver76) window states are now role `value.window`
-
-### 1.9.8 (2019-02-27)
-* (foxriver76) fixes for epaper line and icon type
-* (foxriver76) metas added
-
-### 1.9.7 (2019-02-13)
-* (foxriver76) added metas
-* (foxriver76) when max is 1.005 then set max to 1
-
-### 1.9.6 (2019-02-02)
-* (foxriver76) fix meta for virtual devices
-
-### 1.9.5 (2019-01-29)
-* (foxriver76) ignore alarm states because handled by rega
-
-### 1.9.4 (2019-01-26)
-* (foxriver76) added image
-* (foxriver76) removed homematic path from ui
-
-### 1.9.3 (2019-01-25)
-* (foxriver76) added meta data
-
-### 1.9.2 (2019-01-14)
-* (foxriver76) added chinese
-* (foxriver76) minor optimizations
-
-### 1.9.1 (2019-01-08)
-* (foxriver76) fix compact mode
-
-### 1.9.0 (2019-01-07)
-* (foxriver76) adding custom commands to documentation and logging
-* (Holuba & foxriver76) fixes for virtual devices API
-* (bluefox) enabling compact mode
-* (marvingrieger) adjusting HmIP shutters to a max value of 1
-
-### 1.8.3 (2019-01-04)
-* (foxriver76) fixing dependency
 
 ### Older entries
 [here](OLD_CHANGELOG.md)

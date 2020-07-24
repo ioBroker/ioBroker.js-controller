@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: 61fEhv2DxfmqAoNBj1Ifds0g5354L6Q/0uNr0BUdeYY=
+hash: 67eXK6ulWrq0ypNcdiWmRASu3wjj7jtEXA0Qr0CAZaw=
 ---
 ![商标](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -76,9 +76,9 @@ createState(
 或者您只使用`lovelace.X.control.alarm (entity_id = alarm_control_panel.defaultAlarm)`。
 
 ###数字输入
-如果在自定义对话框中选择了input_number实体类型，则可以手动完成此操作。
-可以添加`common`中必需的`min`和`max`值以及可选的`step`类型。
-如果要查看向上和向下箭头，则应在自定义`mode`中将其设置为“数字”：
+如果选择了自定义对话框中的input_number实体类型，则可以手动完成此操作。
+可以添加`common`中的此类型所需的`min`和`max`值以及可选的`step`。
+如果要查看向上和向下箭头，则应在自定义`mode`中将其设置为'number'：
 
 ```
 common: {
@@ -95,7 +95,7 @@ common: {
 
 ###选择输入
 如果在自定义对话框中选择了input_select实体类型，则可以手动完成此操作。
-应该在标准commom.states对象中提供可供选择的选项列表：
+标准commom.states对象应提供可供选择的选项列表：
 
 ```
 "common": {
@@ -287,7 +287,7 @@ createState('location.latitude', 39.5681295, false, {
 例如。文本`Admin adapter is {a:system.adapter.admin.0.alive;a === true || a === 'true' ? ' ' : 'not '} *alive*.`将在markdown面板中生成文本`Admin adapter is alive`。
 
 ##自定义卡
-###自定义卡的上传
+###上载自定义卡片
 要上传自定义卡，请执行以下操作：
 
 ```iobroker file write PATH_TO_FILE\bignumber-card.js /lovelace.0/cards/```
@@ -307,7 +307,7 @@ createState('location.latitude', 39.5681295, false, {
 像这样：[https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases)（查找文件`mini-graph-card-bundle.js`）
 
 ##自己的图片
-可以通过与自定义卡相同的配置对话框来加载自定义图像（例如用于背景）。并像这样使用它：
+可以通过与自定义卡相同的配置对话框来加载自定义图像（例如背景图片）。并像这样使用它：
 
 `background: center / cover no-repeat url("/cards/background.jpg") fixed`
 
@@ -424,6 +424,11 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 });
 ```
 
+＃＃ 故障排除
+如果您弄乱了YAML代码并看到空白页，但仍具有顶部菜单，则可以从菜单启用编辑模式（如果尚未启用），然后再次打开菜单以访问“ RAW Yaml Editor”查看完整的YAML代码并可以对其进行清理。
+如果那没有帮助，则可以在ioBroker的原始编辑器中打开对象lovelace。*。configuration并在那里查看。
+您也可以从备份中还原该对象。它包含可视化的完整配置。
+
 ## Lovelace的原始来源
 使用的资源在这里https://github.com/GermanBluefox/home-assistant-polymer。
 
@@ -435,7 +440,7 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 二手版本的home-assistant-frontend@1.0.0
 
 ###如何构建新的Lovelace版本
-首先必须将** https：//github.com/home-assistant/home-assistant-polymer（dev分支）实际**手动合并到https://github.com/GermanBluefox/home-assistant-polymer .git（*** iob ***分支！）。
+首先必须将** https：//github.com/home-assistant/frontend（dev分支）实际**手动合并到https://github.com/GermanBluefox/home-assistant-polymer.git（* ** iob ***分支！）。
 
 ioBroker的所有更改都标记有注释`// IoB`。
 现在（2020.01.12）修改了以下文件：
@@ -444,23 +449,78 @@ ioBroker的所有更改都标记有注释`// IoB`。
 -`build-scripts / gulp / app.js`-添加了新的gulp任务
 -`build-scripts / gulp / webpack.js`-添加了新的gulp任务
 -`src / data / lovelace.ts`-添加了隐藏栏选项
+-`src / data / weather.ts`-添加支持以再次显示ioBroker天气图标。
+-`src / dialogs / more-info / more-info-controls.js`-删除实体设置按钮
 -`src / dialogs / notifications / notification-drawer.js`-添加了所有按钮
 -`src / entrypoints / core.ts`-修改的身份验证过程
 -`src / layouts / home-assistant-main.ts`-移除应用程序侧边栏
 -`src / panels / lovelace / hui-root.ts`-添加了通知和语音控制
+-`src / panels / lovelace / cards / hui-weather-forecast-card.ts`-添加支持以再次显示ioBroker天气图标。
 
-之后，在`./build`文件夹中签出修改后的版本。然后。
+之后，在`./build`文件夹中签出修改的版本。然后。
 
 1.转到./build目录。
-2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`这是https://github.com/home-assistant/home-assistant-polymer.git的分支，但有些事物已修改（请参见前面的文件列表）。
+2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`，它是https://github.com/home-assistant/frontend.git的一个分支，但是有一些修改（请参阅前面的文件列表）。
 3.`cd home-assistant-polymer`
 4.`git checkout master`
 5.`npm install`
-6.`gulp build-app`发行版或`gulp development-iob`调试版。要在更改后构建Web，可以调用`webpack-dev-app`以加快构建速度，但是在该版本准备使用后，无论如何都需要调用`build-app`。
-7.在此仓库中将所有文件从./build/home-assistant-polymer/hass_frontend复制到`。/ hass_frontend`。
+6.`gulp build-app`发行版或`gulp development-iob`调试版。要在更改后构建Web，可以调用`webpack-dev-app`以加快构建速度，但是在该版本准备就绪后，无论如何都需要调用`build-app`。
+7.将所有文件从./build/home-assistant-polymer/hass_frontend复制到该仓库中的./hass_frontend中。
 8.启动“ gulp重命名”任务。
 
 ## Changelog
+### 1.2.5 (2020-07-10)
+* (Garfonso) Fixed: Parse initial values the same way as state changes
+* (Garfonso) Added: Work around for (old) common.states of type string
+
+### 1.2.4 (2020-06-29)
+* (Garfonso) Fixed: corrected hass_frontend files and directory
+* (Garfonso) Fixed: Prevent warning and possible crash
+
+### 1.2.3 (2020-06-27)
+* (Garfonso) Added: config to select direction of blinds.
+* (Garfonso) Fixed: missing translation of binary_sensor.states
+* (Garfonso) Fixed: History Graph diagrams for sensor-entities
+
+### 1.2.2 (2020-06-24)
+* (Garfonso) Fixed: Notification-drawer was to wide on narrow screens
+* (Garfonso) Fixed: Clear-all notifications button now has its icon again
+* (Garfonso) Fixed: Notification-button could move unpredictable in toolbar
+* (Garfonso) Fixed: Lock status is now displayed in icon (open/close)
+* (Garfonso) Fixed: Lock status is now received if no dedicated getId exists (by subscribing setId like with other entities)
+* (Garfonso) Added: Support for open-service call (which is not yet? supported in lovelace itself...)
+
+### 1.2.1 (2020-06-23)
+* (Garfonso) Updated Hass Lovelace. Which fixes weather-card, no weather icons with authorization and (maybe?) store credentials
+             Please make sure to update your custom cards! Follwing cards need updates:
+                [mini-graph-card](https://github.com/kalkih/mini-graph-card)
+                [Slideshow](https://github.com/igloo15/slideshow-card)
+                [button-entity-row](https://github.com/mattatcha/button-entity-row)
+* (Garfonso) Fix: yaml editor goes missing on Firefox 
+* (Garfonso) Added: Support for new type of blinds (needs type-detector update)
+
+### 1.2.0 (2020-06-20)
+* (Garfonso) Added: Support for cover entity (cover and input_number entities are now created for blinds)
+* (Garfonso) Added: Support for new blind types which let lovelace determine direction of 0/100%
+* (Garfonso) Fixed: Prefer ON_LIGHT for lights if present, should fix cases where there is also a switch state in a light device.
+* (Garfonso) Added: Enable history support, let's more-info show history of states
+* (Garfonso) Added: zone.home entity from system.config (i.e. lat/long)
+* (Garfonso) Fixed: Make door devices create a device_class door entity
+* (Garfonso) Fixed: Added some missing translations, improved translation a bit, added domain name to translations in custom tab.
+
+### 1.1.0 (2020-05-28)
+* (Garfonso) BREAKING: fixed issue with entity_id generation which now allows umlauts to be replaced by ue/ae/oe.
+* (Garfonso) added windowsTilt device type
+* (Garfonso) reworked friendly name for auto generated entities, allow space in name.
+* (Garfonso) use device_class feature for sensors (where applicable) -> results in translation features of lovelace being used.
+* (Garfonso) multiple fixes/additions to media player (like volume scaling, on/off support, shuffle support, stop support) 
+
+### 1.0.16 (2020-05-04)
+* (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
+
+### 1.0.15 (2020-04-30)
+* (Apollon77) errors on webserver initialization are handled properly
+
 ### 1.0.14 (2020-04-22)
 * (algar42) Call of deprecated getObjectView updated for js-controller v3
 

@@ -44,7 +44,50 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 0.7.0 (2020-06-29)
+### 0.8.4 (2020-07-17)
+* (simatec) small Bugfixes
+* (5G7K) debug log changed
+* (simatec) Dependencies updated
+* (MeisterTR) Time left to detect second sleep
+
+### 0.8.3 (2020-07-07)
+* (simatec) Bugfix IsSummerTime
+* (simatec) Bugfix shutter convert
+
+### 0.8.2 (2020-07-06)
+* (simatec) small Bugfixs
+* (simatec) Buttons for sunprotect operation added
+
+### 0.8.1 (2020-07-03)
+* (simatec) Bugfix shutterstates
+* (simatec) support for KNX
+
+### 0.8.0 (2020-07-02)
+* (simatec) added state for current shutter Action
+* (simatec) added state for current shutter Level
+* (simatec) added Indicator for manual operation in the states
+* (simatec) code cleanup
+* (simatec) complete new structure of the code
+* (simatec) Buttons for manual opening and closing operation added
+* (simatec) Display in the States if the shutter was moved manually
+* (5G7K) Bug fix sunprotect
+
+### 0.7.3 (2020-06-29)
+* (simatec) errorhandling for sentry.io
+* (simatec) bugfixes
+* (simatec) cancel all schedule by unload
+* (rg-engineering) bug fix and documentation
+
+### 0.7.2 (2020-06-26)
+* (simatec) Bugfix sunprotect for outsidetemp
+* (simatec) better translation for all languages
+* (simatec) better overview in the user interface
+
+### 0.7.1 (2020-06-24)
+* (simatec) small bugfixes
+* (simatec) errorhandling for sentry.io
+
+### 0.7.0 (2020-06-23)
 * (rg-engineering) better (userfriendly) check for adjustable times
 * (rg-engineering) datapoint for Holiday incl. internal check and handling
 * (rg-engineering) late all down added 

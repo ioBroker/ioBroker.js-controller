@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: So9qpZFQvZ+qrgK6SKiTIbeoOPVJAB1aOx2RyMFZBiE=
+hash: u0VoAof+ktuz2f0n+voNHIUbz1bXYea78AuxBNH4MKI=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
@@ -22,9 +22,9 @@ hash: So9qpZFQvZ+qrgK6SKiTIbeoOPVJAB1aOx2RyMFZBiE=
 
 Dieser Adapter für ioBroker ermöglicht das Lesen und Parsen von Smartmeter-Protokollen, die der OBIS-Nummernlogik folgen, um deren Daten verfügbar zu machen.
 
-*** Der Adapter benötigt nodejs 4.x um zu funktionieren! ***
+*** Der Adapter benötigt NodeJS 4.x, um zu funktionieren! ***
 
-*** Für diesen Adapter muss ein Git installiert sein! ***
+*** Für die Installation dieses Gitters muss git installiert sein! ***
 
 ## Beschreibung der Parameter
 ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54973
@@ -34,50 +34,53 @@ Unterstützte Protokolle:
 
 * **Sml** SML (SmartMeterLanguage) als Binärformat
 * **D0** D0 (basierend auf IEC 62056-21: 2002 / IEC 61107 / EN 61107) als ASCII-Format (Binärprotokollmodus E wird derzeit nicht unterstützt)
-* **Json-Efr** OBIS-Daten von EFR Smart Grid Hub (JSON-Format)
+* **Json-Efr** OBIS-Daten vom EFR Smart Grid Hub (JSON-Format)
 
 ### Datentransfer
-* **Serieller Empfang** Empfang über serielle Push-Daten (Smartmeter sendet Daten in regelmäßigen Abständen ohne Aufforderung). Wird hauptsächlich für SML verwendet
-* **Serielle bidirektionale Kommunikation** D0-Protokoll in den Modi A, B, C und D (Modus E wird derzeit NICHT unterstützt!) Mit Wakeup-, Signon-, Pot. ACK- und Data-Messages zum Auslesen von Daten (Programmier- / Schreibmodus noch nicht implementiert)
-* **Http-Requests** Lesen Sie Daten über HTTP, indem Sie eine definierte URL anfordern
+* **Serieller Empfang** Empfang über serielle Push-Daten (Smartmeter sendet Daten ohne Anforderung in regelmäßigen Abständen). Wird hauptsächlich für SML verwendet
+* **Serielle bidirektionale Kommunikation** D0-Protokoll in den Modi A, B, C und D (Modus E wird derzeit NICHT unterstützt!) Mit Wakeup-, Signon-, Pot. ACK- und Datennachrichten zum Auslesen von Daten (Programmier- / Schreibmodus bisher nicht implementiert)
+* **HTTP-Anfragen** Lesen Sie Daten über HTTP, indem Sie eine definierte URL anfordern
 * **Lokale Dateien** Liest Daten aus einer lokalen Datei
 
 ### Datenanforderungsintervall
-Anzahl der Sekunden, die auf die nächste Anforderung gewartet oder der serielle Empfang angehalten werden soll. Der Wert 0 kann direkt nach Beendigung einer Nachricht neu gestartet werden.
+Anzahl der Sekunden, die auf die nächste Anforderung gewartet oder der serielle Empfang angehalten werden soll. Wert 0 kann direkt nach Abschluss einer Nachricht neu gestartet werden.
 
-Standardeinstellung: 300 (= 5 Minuten)
+Standard: ist 300 (= 5 Minuten)
 
-### Baudrate des seriellen Geräts
-Baudrate für die erste serielle Verbindung, falls nicht definiert Standardwerte pro Transporttyp verwendet werden (9600 für SerialResponseTransprt und 300 für SerialRequestResponseTransport)
+### Baudrate für serielle Geräte
+Baudrate für die anfängliche serielle Verbindung, wenn nicht definierte Standardwerte pro Transporttyp verwendet werden (9600 für SerialResponseTransprt und 300 für SerialRequestResponseTransport)
 
 ### D0: SignOn-Message-Befehl
-Befehl für SignIn-Nachricht, Standard "?" um Pflichtfelder abzufragen, andere Werte je nach Gerät.
-Beispiel: Der Wärmezähler 2WR5 verwendet "#", um viel mehr Daten abzufragen (optionale Felder zusammen mit allen Pflichtfeldern)
+Befehl für SignIn-Message, Standard "?" um Pflichtfelder abzufragen, andere Werte je nach Gerät.
+Beispiel: Der 2WR5-Wärmezähler verwendet "#", um viel mehr Daten abzufragen (optionale Felder zusammen mit allen obligatorischen)
 
 ### D0: Mode-Overwrite
-Der Adapter versucht, den in den Spezifikationen definierten D0-Protokollmodus zu bestimmen. Es gibt einige Geräte, die nicht den Spezifikationen entsprechen und daher Probleme bereiten. Mit dieser Option können Sie den ermittelten Protokollmodus überschreiben.
+Der Adapter versucht, den in den Spezifikationen definierten D0-Protokollmodus zu bestimmen. Es gibt einige Geräte, die nicht den Spezifikationen entsprechen und daher Probleme verursachen. Mit dieser Option können Sie den festgelegten Protokollmodus überschreiben.
 
-* Mode A: keine Baudratenumschaltung, keine Ack-Message
-* Modus B: Baudratenumschaltung, keine Ack-Meldung
-* Modus C: Baudratenumschaltung und Ack-Message erforderlich
+* Modus A: keine Baudratenumschaltung, keine Bestätigungsnachricht
+* Modus B: Baudratenumschaltung, keine Bestätigungsnachricht
+* Modus C: Baudratenumschaltung und Bestätigungsnachricht erforderlich
 * Modus D: Keine Baudratenumschaltung, Baudrate immer 2400
-* Modus E: Baudratenumschaltung und Ack-Message erforderlich, Benutzerdefinierte Protokolle, werden derzeit nicht unterstützt !! Kontaktieren Sie mich, wenn Sie ein solches Smartmeter haben
+* Modus E: Baudratenumschaltung und Ack-Message erforderlich, benutzerdefinierte Protokolle, nicht korrekt unterstützt !! Kontaktieren Sie mich, wenn Sie ein solches Smartmeter haben
 
 ### D0: Baudrate-Umschaltung-Überschreiben
-Der Adapter versucht, die Baudrate für die Datennachrichten gemäß den Protokollspezifikationen zu ermitteln. Aber wie im Modus liefern einige Smartmeter hier falsche Daten. SO können Sie diese verwenden, um die Baudrate für die Datennachricht nach Bedarf zu überschreiben. Lassen Sie dieses Feld leer, um die vom Smart Meter festgelegte Baudratenumschaltung zu verwenden.
+Der Adapter versucht, die Baudrate für die Datennachrichten gemäß den Protokollspezifikationen zu ermitteln. Aber wie beim Modus liefern einige Smartmeter hier falsche Daten. Sie können dies also verwenden, um die Baudrate für die Datennachricht nach Bedarf zu überschreiben. Lassen Sie das Feld leer, um die vom Smart Meter definierte Baudratenumschaltung zu verwenden.
 
 ## Adapter wird getestet mit ...
-... mindestens:
+... wenigstens:
 
-* Hager eHz Energy Meter (mehrere, z. B. eHZ-IW8E2A5L0EK2P, EHZ363W5)
+* Hager-eHz-Energiezähler (mehrfach, z. B. eHZ-IW8E2A5L0EK2P, EHZ363W5,)
 * EMH-Energiezähler
 * EFR SmartGridHub
-* Siemens 2WR5 Lesegerät von einer Wärmestation
+* Siemens 2WR5-Lesegerät von einer Heizstation
 * Elster AS1440
 * Iskraemeco MT174
 * Iskraemeco MT175
 * Itron EM214 Typ 720
-* Niederländisches Smart Meter mit DSRM-Protokoll (als Protokoll "Nur Daten vom seriellen Gerät lesen" und "D0" verwenden)
+* Landis & Gyr E220
+* Niederländisches Smart Meter mit DSRM-Protokoll (verwenden Sie "Nur Daten zum Lesen serieller Geräte" und "D0" als Protokoll)
+* DZG DWS7412.1T
+  ** WICHTIG* Es scheint einen Firmware-Fehler zu geben und manchmal wird der aktuelle Energieverbrauch negativ! Manuelle Neuberechnung möglich mit Formular von https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736* ... und vielen, vielen mehr
 
 Bitte senden Sie mir Informationen zu Geräten, auf denen Sie die Bibliothek erfolgreich verwendet haben, und ich werde sie hier hinzufügen.
 
@@ -86,18 +89,32 @@ Bitte senden Sie mir Informationen zu Geräten, auf denen Sie die Bibliothek erf
 Es scheint manchmal ein Fehler in der SML-Firmware zu sein und die Werte sind in der SML-Nachricht falsch codiert, aber die Nachricht selbst ist gültig. Die Lösung besteht darin, den Wert mit einem Javascript nachzubearbeiten. Siehe https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736
 
 ## So melden Sie Probleme und Funktionsanforderungen
-Bitte benutzen Sie dazu GitHub.
+Bitte verwenden Sie dazu GitHub-Probleme.
 
-Stellen Sie den Adapter am besten auf den Debug-Protokollmodus ein (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen schneidet). Wenn Sie es nicht in der GitHub-Ausgabe bereitstellen möchten, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
+Am besten stellen Sie den Adapter auf den Debug-Protokollmodus (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen abschneidet). Wenn Sie es nicht gerne in der GitHub-Ausgabe bereitstellen, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
 
 ## Was ist Sentry und was wird den Servern gemeldet?
-Sentry.io ist eine Möglichkeit für Entwickler, sich einen Überblick über Fehler in ihren Anwendungen zu verschaffen. Und genau das ist in diesem Adapter implementiert.
+Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendungen. Und genau das ist in diesem Adapter implementiert.
 
-Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server gesendet, der in Deutschland gehostet wird. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Namen oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
+Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server in Deutschland gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
 
-### 3.0.9 (2020-02-04)
+### 3.1.3 (2020-07-20)
+* (Apollon77) update dependencies to prevent some crash cases
+
+### 3.1.2 (2020-04-12)
+* (Apollon77) catch errors when no memory is available anymore and stop processing
+
+### 3.1.1 (2020-03-11)
+* (Apollon77) fix admin when switching to TCPTransport
+* (Apollon77) bugfixes and optimizations
+
+### 3.1.0 (2020-03-08)
+* (Apollon77) bugfixes and optimizations
+* (Apollon77) experimental TCP support, please give feedback
+
+### 3.0.10 (2020-02-05)
 * (Apollon77) make sure HTTP based smartmeters are also polled frequently when responses are invalid
 * (Apollon77) other optimizations
 * (Apollon77) Switch Sentry to iobroker own instance hosted in germany

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.doorio/README.md
 title: ioBroker.doorio
-hash: LuhsI/3MpnIV58jHpZ51CghSPDkFkf8W27HZ6T6haso=
+hash: QgSlf1YyUrjQa8I4DORzXon8quUpSu++TVOFiois1iY=
 ---
 ![Logo](../../../en/adapterref/iobroker.doorio/admin/doorio.png)
 
@@ -15,11 +15,21 @@ hash: LuhsI/3MpnIV58jHpZ51CghSPDkFkf8W27HZ6T6haso=
 # IoBroker.doorio
 Selbst gemachter DoorStation Adapter für ioBroker
 
+Dieser Adapter stellt über tcp.socket eine Verbindung zum Baresip Sip-Client her, um mit einem Türsprechgerät zu kommunizieren. Als Glockentrigger kann jeder Eingang von ioBroker verwendet werden.
+Der Adapter erkennt auch DTMF-Töne, um die Ausgänge zu wechseln.
+Für die selbstgemachte Türstation kann jede Hardware verwendet werden, auf der Baresip installiert werden kann.
+
+Dieser Adapter gehört sich über tcp.socket mit dem Baresip Sip-Client, um mit einer Türsprechstelle zu gehört. Als Klingelauslöser kann jeder Eingang von ioBroker Verträgen werden. Der Adapter erkennt auch DTMF-Töne um Ausgänge zu schalten.
+Für die Selbstgemachte Türsprechstelle, kann jede Hardware auf die Baresip verlassen werden.
+
 ## Links
 * https://forum.iobroker.net/topic/23413/ich-baue-eine-t%C3%BCrsprechstelle-ohne-cloud
 * https://forum.iobroker.net/topic/22746/test-adapter-doorio-v0-0-x
 
 ## Changelog
+
+### 1.0.8
+* (bettman66) fix dtmf-timeout
 
 ### 1.0.7
 * (bettman66) check states
@@ -38,19 +48,6 @@ Selbst gemachter DoorStation Adapter für ioBroker
 
 ### 1.0.2
 * (bettman66) add selectID.js
-
-This adapter connects to the Baresip Sip client via tcp.socket to communicate
-with a doorphone. As a bell trigger every input from ioBroker can be used.
-The adapter also recognizes DTMF tones to switch outputs.
-For the self-made door station, any hardware on which Baresip can install
-can be used.
-
-Dieser Adapter verbindet sich über tcp.socket mit dem Baresip Sip-Client,
-um mit einer Türsprechstelle zu kommunizieren. Als Klingelauslöser kann jeder
-Eingang von ioBroker genutzt werden. Der Adapter erkennt auch DTMF-Töne um
-Ausgänge zu schalten.
-Für die Selbstgemachte Türsprechstelle, kann jede Hardware auf der sich Baresip
-installieren lässt genutzt werden.
 
 ## License
 The MIT License (MIT)

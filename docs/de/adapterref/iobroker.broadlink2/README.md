@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.broadlink2/README.md
 title: ! [Logo] (./ admin / broadlink2.png) Steuert BroadLink-kompatible Geräte
-hash: Wu14KdJTJSFWbkb4/bCIIoRgWFIPOPdGnxCp67MghtQ=
+hash: u1N/CSfQr6AUa2Dkx1T4WerTCF0AhA0ORYCcGBT8RSU=
 ---
 # ![Logo](../../../en/adapterref/iobroker.broadlink2/./admin/broadlink2.png) Steuert BroadLink-kompatible Geräte
 
@@ -27,7 +27,7 @@ Sie können auch Ihre eigenen neuen Befehle in LearnedStates erstellen, wenn Sie
 
 Der Adapter hat feste Zustände, um Codes von RM-Geräten zu senden oder zu lernen. Er kann auch einzelne Szenen senden (Aktionen auf mehreren Geräten).
 
-Wenn Geräte, die für eine bestimmte IP konfiguriert sind, nicht wiedergefunden werden, werden sie als "nicht erreichbar" gekennzeichnet! Wenn sie wieder verbunden werden, können sie normal verwendet werden.
+Wenn Geräte, die auf einer bestimmten IP konfiguriert sind, nicht wiedergefunden werden, werden sie als "nicht erreichbar" gekennzeichnet! Wenn sie wieder verbunden werden, können sie normal verwendet werden.
 
 Wenn ein Gerät 5 Minuten hintereinander nicht antwortet, ist es nicht erreichbar. ***notReachable*** Geräte geben bei jedem x-Scan eine Protokollwarnmeldung aus. Nach einigen Scans versucht der Adapter, sie unter derselben Mac-Adresse wiederzufinden.
 
@@ -44,7 +44,7 @@ Der Adapter versucht, das Gerät zuerst anhand seines Namens und dann anhand sei
 * Geben Sie in der Konfiguration das Präfix der Netzwerkadresse ein, das beim Generieren von Gerätenamen entfernt werden soll
 * Geben Sie die Anzahl der Sekunden zwischen den Umfragen ein. Bei jeder Abfrage werden alle SP * -Geräte, die SP1 erläutern, nach dem Switch-Status gefragt. Diese Funktion kann deaktiviert werden, indem die Abfrageverzögerung auf 0 gesetzt wird. Bei einigen RM-Geräten mit Temperaturanzeige wird auch die Temperatur aktualisiert.
 * Sie können jetzt IP-Adressen von zu findenden / enthaltenen Geräten hinzufügen, die sich ebenfalls in einem anderen Netzwerk als dem Netzwerk des Adapters befinden. In diesem Fall müssen Sie sicherstellen, dass der Computer, auf dem der Adapter ausgeführt wird, über interne oder externe Routing-Tabellen weiß, wie eine Verbindung zu diesem anderen Netzwerk hergestellt wird.
-* Die Option "IP-Schnittstelle verwenden" kann so eingestellt werden, dass eine bestimmte Schnittstellenadresse verwendet wird. Dies kann hilfreich sein, wenn auf dem System, auf dem iobroker ausgeführt wird, LAN und LAN vorhanden sind und Sie nicht auf der ersten Schnittstelle, sondern nur auf WLAN scannen möchten auch, wenn sich die lokale Schnittstelle in einigen Docker- oder VM-Umgebungen von der externen unterscheidet. Sie müssen die IPv4-Adresse der Schnittstelle eingeben, die als Quelladresse verwendet werden soll. Andernfalls verwendet der Adapter 0.0.0.0 und hört nur alle lokalen Schnittstellen ab.
+* Die Option "IP-Schnittstelle verwenden" kann so eingestellt werden, dass eine bestimmte Schnittstellenadresse verwendet wird. Dies kann hilfreich sein, wenn auf dem System, auf dem iobroker ausgeführt wird, LAN und WLAN vorhanden sind und Sie nicht auf der ersten Schnittstelle, sondern nur auf WLAN scannen möchten. Dies kann hilfreich sein auch, wenn sich die lokale Schnittstelle in einigen Docker- oder VM-Umgebungen von der externen unterscheidet. Sie müssen die IPv4-Adresse der Schnittstelle eingeben, die als Quelladresse verwendet werden soll. Andernfalls verwendet der Adapter 0.0.0.0 und hört nur alle lokalen Schnittstellen ab.
 
 ## How-To-Lernen von Codes auf RMs
 * In Objekte von ioBroker finden Sie "broadlink2. [Gerätename] .Learn oder LearnRF für Geräte vom Typ '+'".
@@ -57,7 +57,7 @@ Der Adapter versucht, das Gerät zuerst anhand seines Namens und dann anhand sei
 * Um das Element umzubenennen, klicken Sie auf den Namen (beginnend mit `_Rename_learned_`) und ändern Sie den Namen. Es sollte nicht ",", "." Oder ";" sowie einige andere Zeichen enthalten, sie werden durch "_" ersetzt.
 
 Es ist auch möglich, die Codes aus [RM-Brücke](http://rm-bridge.fun2code.de/) zu verwenden.
-Erstellen Sie einfach ein Objekt (Status, Typ-Schaltfläche) mit dem Wert, bei dem Sie "CODE_" voranstellen, oder mit dem nativen Eintrag `code` ohne 'CODE_'.
+Erstellen Sie einfach ein Objekt (Status, Schaltfläche Typ) mit dem Wert, bei dem Sie "CODE_" voranstellen, oder mit dem nativen Eintrag `code` ohne 'CODE_'.
 
 ## Hinweis zu neuen RM4 / LB1-Geräten
 * Mehrere neue Broadlink-Geräte unterstützen ein neues Broadlink-Cloud-Protokoll, das automatisch ausgewählt wird, wenn Sie die neueren Broadlink-Apps verwenden, um das Gerät in Ihr WLAN-Netzwerk einzubinden. Dieses neue Broadlink-Protokoll ist nicht mit dem Broadlink2-Adapter kompatibel und Sie können keine Geräte verwenden, die dieses neue Protokoll verwenden.
@@ -65,14 +65,15 @@ Erstellen Sie einfach ein Objekt (Status, Typ-Schaltfläche) mit dem Wert, bei d
 * Diese neueren Geräte müssen außerdem alle 5-10 Minuten erneut authentifiziert werden, was vom Adapter automatisch durchgeführt wird.
 
 ## Szenen verwenden
-* Szenen können IDs oder Namen sowie durch "," getrennte Nummern enthalten. Normalerweise werden die IDs mit einem Zeitunterschied von 100 ms ausgeführt / gesendet. Wenn Sie jedoch eine längere Pause benötigen, können Sie eine Zahl eingeben, die die Millisekunden für das Warten widerspiegelt. Zum Beispiel würde "SP: Dosis = 1, 1000, RM: Ihr.L.StereoEin, 1000, RM: Ihr.L.TVEin" einen drahtlosen Stecker mit dem Namen "SP: Dosis" einschalten und dann eine Sekunde warten (tatsächlich 1,1 Sekunden) ), Schalten Sie den Stero und nach einer weiteren Sekunde den Fernseher ein. Sie können auch Geräte anderer Adapter schalten, z. B. `hm-rpc.0.MEQ1435726.1.STATE = true` würde dieses Homematic-Gerät einschalten! Boolsche Zustände können mit '= 1 / = on / = true / = ein' umgeschaltet werden, wenn Sie es ohne `=` belassen, wird true verwendet. Um ein Gerät auszuschalten, beenden Sie es mit '= 0 / = false / = aus / = off', was ausgeschaltet werden muss!
+* Szenen können IDs oder Namen sowie durch `,` getrennte Nummern enthalten. Normalerweise werden die IDs mit einem Zeitunterschied von 100 ms ausgeführt / gesendet. Wenn Sie jedoch eine längere Pause benötigen, können Sie eine Zahl eingeben, die die Millisekunden für das Warten widerspiegelt. Zum Beispiel würde "SP: Dosis = 1, 1000, RM: Ihr.L.StereoEin, 1000, RM: Ihr.L.TVEin" einen drahtlosen Stecker mit dem Namen "SP: Dosis" einschalten und dann eine Sekunde warten (tatsächlich 1,1 Sekunden) ), Schalten Sie den Stero und nach einer weiteren Sekunde den Fernseher ein. Sie können auch Geräte anderer Adapter schalten, z. B. `hm-rpc.0.MEQ1435726.1.STATE = true` würde dieses Homematic-Gerät einschalten! Boolsche Zustände können mit '= 1 / = on / = true / = ein' umgeschaltet werden, wenn Sie es ohne `=` belassen, wird true verwendet. Um ein Gerät auszuschalten, beenden Sie es mit '= 0 / = false / = aus / = off', was ausgeschaltet werden muss!
 
 ## Zustände verwenden
 * Sie können auch Status für Ihre Geräte erstellen, die Ein- und Ausschaltbefehle zu einem einzigen Status kombinieren, der wie jedes andere Gerät umgeschaltet werden kann.
 * Sie müssen die Befehle zum Ein- und Ausschalten eines Status in den separaten Spalten auflisten. Dies können mehrere sein, damit der Status weiß, wann Ihr Gerät von einem von ihnen ein- und ausgeschaltet wird
 * Wenn Sie den Status nur auf Ein oder Aus setzen, wird der erste Ein / Aus-Befehl gesendet
 * Wenn nur Befehle vorhanden sind, sendet der Switch den entsprechenden Befehl mit einem numerischen Wert von 1, dh er sendet den ersten Befehl, wenn er eine "0" empfängt, den zweiten, wenn er eine "1" empfängt. Auf diese Weise können Sie mehrere Zustände innerhalb eines Zustands simulieren.
-* Wenn Sie nur '+' als Aus-Befehl verwenden, müssen Sie 10 Ein-Befehle eingeben, die durch '' getrennt sind und die Zahlen '0-9' auf der Fernbedienung widerspiegeln. Sie können dem Staat dann eine Nummer senden, wie "123" (max. 9999), und er würde "1", "2" und "3" mit einer Verzögerung von 1/3 Sekunde zwischen ihnen senden! Auf diese Weise können Sie beispielsweise den Kanal im Fernsehen auf '33' setzen, indem Sie einfach 'TVchannel = 33' schreiben, wenn der Statusname TVchannel ist.
+* Wenn Sie nur '+' als Aus-Befehl verwenden, müssen Sie 10 Ein-Befehle eingeben, die durch '' getrennt sind und die Zahlen '0-9' auf der Fernbedienung widerspiegeln. Sie können dem Staat dann eine Nummer wie "123" (max. 9999) senden und er würde "1", "2" und "3" mit einer Verzögerung von 1/3 Sekunde zwischen ihnen senden! Auf diese Weise können Sie beispielsweise den Kanal im Fernsehen auf '33' setzen, indem Sie einfach 'TVchannel = 33' schreiben, wenn der Statusname TVchannel ist.
+* Wenn Sie den Befehl `-number`as off wie` -17` verwenden, können Sie eine Zahl in dem Zustand speichern, in dem 17 subtrahiert und das (x-17) -te Element im eingeschalteten Zustand gesendet wird. Auf diese Weise können Sie unterschiedliche feste Temperaturen für Geräte einrichten, die für jede Temperatur unterschiedliche Codes haben.
 
 ## Verwenden Sie Nachrichten an den Adapter senden
 Der Adapter versteht auch 'sendTo'-Befehle.
@@ -83,7 +84,7 @@ Der Adapter versteht auch 'sendTo'-Befehle.
 * `switch_on` /` switch_off`: sendTo ('broadlink2.0', 'switch_on', 'SP: Ihre Geräte-ID') `
 * `send`:` sendTo ('broadlink2.0', 'send', 'RM: yourdev._Learn') `würde mit dem Lernen beginnen und` sendTo ('broadlink2.0', 'send', 'RM: yourdev.L .yourid ') `würde den Code senden.
 * `send_scene`:` sendTo ('broadlink2.0', 'send_scene', 'scene xxx')
-* `send_code`:` sendTo ('broadlink2.0', 'send_code', 'RM: Ihre remote.CODE_xxxxx')
+* `send_code`:` sendTo ('broadlink2.0', 'send_code', 'RM: your remote.CODE_xxxxx') `würde den CODE_xxxx vom R: your name senden.
 
 ## Floureon- oder Beok313-Thermostate
 * Die meisten Daten können eingestellt werden. Die Zeit kann durch Schreiben von "_setTime" eingestellt werden. In diesem Fall wird die Zeit des Geräts auf die ioBroker-Systemzeit eingestellt. Dies erfolgt automatisch auch beim Adapterstart.
@@ -108,6 +109,19 @@ Der Adapter versteht auch 'sendTo'-Befehle.
 Mit ioBroker admin installiert npm iobroker.broadlink2 oder von <https://github.com/frankjoke/ioBroker.broadlink2>
 
 ## Changelog
+
+### 2.1.5
+
+* beta to try to make 0x5f36 working
+
+### 2.1.4
+
+* bug corrections for RM4 temperatures & Humidity
+
+### 2.1.2
+
+* bug corrections for States and Scenes
+* Names are now taken from DNS end which mean you may rename devices in router and set their fixed IP address there
 
 ### 2.1.0
 

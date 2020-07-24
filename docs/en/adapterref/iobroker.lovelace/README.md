@@ -412,6 +412,11 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 });
 ```
 
+## Trouble Shooting
+If you messed up the YAML Code and see a blank page but still have the top menu, you can enable edit mode (if not already enabled) from the menu and then open the menu again to access the "RAW Yaml Editor" in which you see the complete YAML code and can clean it up.
+If that does not help, you can open the object lovelace.*.configuration in raw-editor in ioBroker and have a look there.
+You can also restore that object from a backup. It contains the complete configuration of your visualization.
+
 ## Original sources for lovelace
 Used sources are here https://github.com/GermanBluefox/home-assistant-polymer .
 
@@ -423,7 +428,7 @@ Security must be taken from current user and not from default_user
 Used version of home-assistant-frontend@1.0.0
 
 ### How to build the new Lovelace version
-First of all the actual https://github.com/home-assistant/home-assistant-polymer (dev branch) must be **manually** merged into https://github.com/GermanBluefox/home-assistant-polymer.git (***iob*** branch!).
+First of all the actual https://github.com/home-assistant/frontend (dev branch) must be **manually** merged into https://github.com/GermanBluefox/home-assistant-polymer.git (***iob*** branch!).
 
 All changes for ioBroker are marked with comment `// IoB`.
 For now (2020.01.12) following files were modified:
@@ -431,15 +436,18 @@ For now (2020.01.12) following files were modified:
 - `build-scripts/gulp/app.js` - Added new gulp task
 - `build-scripts/gulp/webpack.js` - Added new gulp task
 - `src/data/lovelace.ts` - added hide bar option
+- `src/data/weather.ts` - add support to display ioBroker weather icon again.
+- `src/dialogs/more-info/more-info-controls.js` - remove entity settings button
 - `src/dialogs/notifications/notification-drawer.js` - added button ack all
 - `src/entrypoints/core.ts` - modified authentication process
 - `src/layouts/home-assistant-main.ts` - remove app sidebar
 - `src/panels/lovelace/hui-root.ts` - added notifications and voice control
+- `src/panels/lovelace/cards/hui-weather-forecast-card.ts` - add support to display ioBroker weather icon again.
 
 After that checkout modified version in `./build` folder. Then.
 
 1. go to ./build directory.
-2. `git clone https://github.com/GermanBluefox/home-assistant-polymer.git` it is a fork of https://github.com/home-assistant/home-assistant-polymer.git, but some things are modified (see the file list earlier).
+2. `git clone https://github.com/GermanBluefox/home-assistant-polymer.git` it is a fork of https://github.com/home-assistant/frontend.git, but some things are modified (see the file list earlier).
 3. `cd home-assistant-polymer`
 4. `git checkout master`
 5. `npm install`
@@ -448,6 +456,45 @@ After that checkout modified version in `./build` folder. Then.
 8. Start `gulp rename` task.
 
 ## Changelog
+### 1.2.5 (2020-07-10)
+* (Garfonso) Fixed: Parse initial values the same way as state changes
+* (Garfonso) Added: Work around for (old) common.states of type string
+
+### 1.2.4 (2020-06-29)
+* (Garfonso) Fixed: corrected hass_frontend files and directory
+* (Garfonso) Fixed: Prevent warning and possible crash
+
+### 1.2.3 (2020-06-27)
+* (Garfonso) Added: config to select direction of blinds.
+* (Garfonso) Fixed: missing translation of binary_sensor.states
+* (Garfonso) Fixed: History Graph diagrams for sensor-entities
+
+### 1.2.2 (2020-06-24)
+* (Garfonso) Fixed: Notification-drawer was to wide on narrow screens
+* (Garfonso) Fixed: Clear-all notifications button now has its icon again
+* (Garfonso) Fixed: Notification-button could move unpredictable in toolbar
+* (Garfonso) Fixed: Lock status is now displayed in icon (open/close)
+* (Garfonso) Fixed: Lock status is now received if no dedicated getId exists (by subscribing setId like with other entities)
+* (Garfonso) Added: Support for open-service call (which is not yet? supported in lovelace itself...)
+
+### 1.2.1 (2020-06-23)
+* (Garfonso) Updated Hass Lovelace. Which fixes weather-card, no weather icons with authorization and (maybe?) store credentials
+             Please make sure to update your custom cards! Follwing cards need updates:
+                [mini-graph-card](https://github.com/kalkih/mini-graph-card)
+                [Slideshow](https://github.com/igloo15/slideshow-card)
+                [button-entity-row](https://github.com/mattatcha/button-entity-row)
+* (Garfonso) Fix: yaml editor goes missing on Firefox 
+* (Garfonso) Added: Support for new type of blinds (needs type-detector update)
+
+### 1.2.0 (2020-06-20)
+* (Garfonso) Added: Support for cover entity (cover and input_number entities are now created for blinds)
+* (Garfonso) Added: Support for new blind types which let lovelace determine direction of 0/100%
+* (Garfonso) Fixed: Prefer ON_LIGHT for lights if present, should fix cases where there is also a switch state in a light device.
+* (Garfonso) Added: Enable history support, let's more-info show history of states
+* (Garfonso) Added: zone.home entity from system.config (i.e. lat/long)
+* (Garfonso) Fixed: Make door devices create a device_class door entity
+* (Garfonso) Fixed: Added some missing translations, improved translation a bit, added domain name to translations in custom tab.
+
 ### 1.1.0 (2020-05-28)
 * (Garfonso) BREAKING: fixed issue with entity_id generation which now allows umlauts to be replaced by ue/ae/oe.
 * (Garfonso) added windowsTilt device type

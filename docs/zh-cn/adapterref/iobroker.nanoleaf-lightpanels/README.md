@@ -3,55 +3,81 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nanoleaf-lightpanels/README.md
 title: ioBroker.nanoleaf-lightpanels适配器
-hash: neG9EXUZ60IWcgHatKc7HaIJoNcD1rvTGCM08MD/y2I=
+hash: /gMSjR122XgKD81je0cHoSR6U6NFssNBgMO2sZJDQc0=
 ---
 ![商标](../../../en/adapterref/iobroker.nanoleaf-lightpanels/admin/nanoleaf-lightpanels.png)
 
 ![NPM版本](https://img.shields.io/npm/v/iobroker.nanoleaf-lightpanels.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.nanoleaf-lightpanels.svg)
-![建立状态Travis](https://travis-ci.org/daniel-2k/ioBroker.nanoleaf-lightpanels.svg?branch=master)
-![构建状态Appveyor](https://ci.appveyor.com/api/projects/status/29fjgn8ww5w96etq/branch/master?svg=true)
+![资料下载](https://img.shields.io/npm/dm/iobroker.nanoleaf-lightpanels.svg)
+![生成状态Travis](https://travis-ci.org/daniel-2k/ioBroker.nanoleaf-lightpanels.svg?branch=master)
+![建置状态传送带](https://ci.appveyor.com/api/projects/status/29fjgn8ww5w96etq/branch/master?svg=true)
 ![NPM](https://nodei.co/npm/iobroker.nanoleaf-lightpanels.png?downloads=true)
 
-#ioBroker.nanoleaf-lightpanels适配器=================
-这是一个ioBroker适配器，通过nanoleaf OpenAPI控制nanoleaf Light Panels（以前的nanoleaf Aurora）或nanoleaf Canvas。
+＃ioBroker.nanoleaf-lightpanels适配器
+=================
 
-##与nanoleaf Light Panels / Canvas Controller的连接：
-1.在适配器设置中，您必须设置nanoleaf控制器的IP地址和端口。 nanoleaf OpenAPI需要授权令牌来授予对REST-API的访问权限。如果您已经有一个，则可以在此处输入令牌并跳过下一步。
+这是一个ioBroker适配器，用于通过nanoleaf OpenAPI控制nanoleaf光面板（以前称为nanoleaf Aurora）或nanoleaf Canvas。
+
+##连接到nanoleaf灯光面板/画布控制器：
+1.在适配器设置中，您必须设置nanoleaf Controller的IP地址和端口。 nanoleaf OpenAPI需要授权令牌才能授予对REST-API的访问权限。如果已经拥有一个令牌，则可以在此处输入令牌，然后跳过下一步。
+
+   您可以使用管理页面上的搜索设备功能来检测您的纳米叶设备。
+
 2.如果您没有授权令牌，则需要从nanoleaf OpenAPI请求它。
 
-要执行此操作，请按住设备上的电源按钮5-7秒，将nanoleaf控制器设置为配对模式，直到LED交替闪烁。
-然后在30秒内点击“获取授权令牌”按钮（配对模式在30秒后停止）。适配器必须正在运行！如果成功，则应在“Authentification token”字段中查看授权令牌。如果发生错误，您会弹出错误消息（您可以在日志中看到详细信息）。
+为此，通过按住设备上的电源按钮5到7秒钟，直到LED交替闪烁，将nanoleaf Controller设置为配对模式。
+然后在30秒内单击“获取授权令牌”按钮（配对模式在30秒后停止）。适配器必须正在运行！如果成功，则应在“身份验证令牌”字段中看到授权令牌。如果发生错误，则会弹出带有错误消息的窗口（详细信息可以在日志中看到）。
 
 3.保存设置。
 4.玩得开心！
 
-由于nanoleaf OpenAPI不支持长轮询或websockets，更新状态的唯一方法是轮询。
-您可以在适配器设置中设置轮询间隔。
+由于Light Panel固件版本> 3.1.0和Canvas固件版本> 1.1.0，因此服务器发送事件（SSE）可以用于直接状态更新。对于Canvas设备，支持触摸事件。
+状态更新轮询间隔的设置仅影响使用轮询进行状态更新的固件版本较低的设备。
 
 ## Alexa
-您可以通过ioBroker（云适配器）使用Alexa控制nanoleaf Light Panels / Canvas。
-支持电源开/关，亮度，颜色和色温。
+您可以通过ioBroker（云适配器）使用Alexa控制nanoleaf光面板/画布。
+支持电源开/关，亮度，色度和色温。
 您必须设置数据点
 
-*状态（电源开/关）
-*色调（用于颜色）
-*饱和度（颜色）
-*亮度（颜色）
-* colorTemp（色温）
+*状态（用于电源开/关）
+*色相（用于颜色）
+*饱和度（用于颜色）
+*亮度（用于彩色）
+* colorTemp（用于色温）
 
-在云适配器下的同一个smartname。
+在云适配器中使用相同的智能名称。
 
 ## IoBroker可视化
-通过使用基本小部件作为“Radiobuttons开/关”或滑块来控制电源状态，亮度，色调，饱和度和色温状态，可以在ioBroker Visualization中控制nanoleaf Light Panels / Canvas。
+可以在ioBroker可视化中通过使用基本小部件（例如“开/关单选按钮”）或用于控制功率状态，亮度，色相，饱和度和色温状态的滑块来控制ioafroker可视化中的nanoleaf光面板/画布。
 
-对于效果，您可以使用“Select ValueList”小部件将其用作下拉列表，然后将effectsList状态映射到小部件的value和text属性（类型：“{nanoleaf-lightpanels.0.LightPanels.effectsList}” - >花括号很重要！）
+对于效果，您可以使用“选择ValueList”小部件将其用作下拉列表，然后将effectsList状态映射到小部件的value和text属性（类型：“ {nanoleaf-lightpanels.0.LightPanels.effectsList}” ->大括号很重要！）
 
-要控制和可视化颜色，您必须安装颜色选择器样式窗口小部件。您可以将RGB ID映射到colorRGB状态，也可以使用三种HSV状态。
+要控制和显示颜色，您必须安装颜色选择器样式的小部件。您可以将RGB ID映射到colorRGB状态，也可以使用三个HSV状态。
 
-您可以使用github上/ vis子文件夹中的nanoleaf vis demo项目。
+您可以使用在github上的/ vis子文件夹中找到的nanoleaf vis演示项目。
 
 ## Changelog
+
+### 1.0.2 (2020-07-06)
+* (daniel_2k) fixed: detection of ssdp:alive notify message for Canvas (fix disconnect/connect issue)
+* (daniel_2k) fixed: sending correct service type for discovery of Canvas devices (fixes no devices found for Canvas devices)
+* (daniel_2k) changed: if unknown nanoleaf device is detected Canvas will be used as fallback and warning will be logged
+* (daniel_2k) fixed: setting rhythmMode was not working
+
+### 1.0.1 (2020-07-05)
+* (daniel_2k) fixed: detection of firmware version for Canvas for enabling SSE (Canvas firmware > 1.1.0 required)
+
+### 1.0.0 (2020-06-18)
+* (daniel_2k) new: using server sent events (SSE) for getting updates instead of polling (firmware > 3.1.0 required)
+* (daniel_2k) new: support touch events for Canvas
+* (daniel_2k) new: searching devices in Admin is now possible
+* (daniel_2k) changed: moved duration for brightness state to separate state (please note: duration of in native part of brightness state will no longer work)
+* (daniel_2k) changed: some minor internal adjustments
+* (daniel_2k) changed: removed Admin2 configuration page
+
+### 0.8.2 (2019-08-02)
+* (daniel_2k) fixed: effects with special characters (german umlauts) can now be set (fixes HTTP error code 422)
+* (daniel_2k) changed: removed fixed effects *Solid* and *Dynamic* for all devices (works also no longer with Light Panels since firmware update)
 
 ### 0.8.1 (2019-01-31)
 * (daniel_2k) new: rhythm module mode (microphone/AUX input) can be changed
@@ -113,3 +139,4 @@ hash: neG9EXUZ60IWcgHatKc7HaIJoNcD1rvTGCM08MD/y2I=
 
 ## License
 The MIT License (MIT)
+Copyright (c) 2019 daniel_2k <daniel_2k@outlook.com>

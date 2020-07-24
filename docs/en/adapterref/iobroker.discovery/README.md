@@ -123,8 +123,14 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ## Changelog
 
+### 2.3.9 (2020-07-17)
+* (Apollon77) Add error handling to onvif discovery (Sentry IOBROKER-DISCOVERY-13)
+* (Apollon77) Add error handling to smapee discovery (Sentry IOBROKER-DISCOVERY-14)
+* (Apollon77) Add error handling to synology discovery (Sentry IOBROKER-DISCOVERY-1A)
+* (Apollon77) Update mndp library to prevent crashes (Sentry IOBROKER-DISCOVERY-15+)
+
 ### 2.3.7 (2020-06-11)
-* (Apollon) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
+* (Apollon77) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
 
 ### 2.3.6 (2020-05-02)
 * (Garfonso) add mydlink adapter

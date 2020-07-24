@@ -69,7 +69,10 @@ The adapter tries to determine the Baudrate for the data messages as defined in 
 * Iskraemeco MT174
 * Iskraemeco MT175
 * Itron EM214 Typ 720
+* Landis & Gyr E220
 * Dutch smart meter using DSRM protocol (use "Serial Device reading data only" and "D0" as protocol)
+* DZG DWS7412.1T
+    * *IMPORTANT*: There seems to be a Firmware bug and sometimes the current energy consumptions becomes negative! Manual recalculation possible using formular from https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736* ... and many many more
 
 Please send me an info on devices where you have used the library successfully and I will add it here.
 
@@ -91,6 +94,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 
 ## Changelog
+
+### 3.1.3 (2020-07-20)
+* (Apollon77) update dependencies to prevent some crash cases
 
 ### 3.1.2 (2020-04-12)
 * (Apollon77) catch errors when no memory is available anymore and stop processing

@@ -49,6 +49,15 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
 
+### 1.1.1 (2020-07-23)
+* (Apollon77) Crash prevented if object is deleted by state changed (Sentry IOBROKER-HMIP-Y)
+
+### 1.1.0 (2020-07-14)
+* (Apollon77) Remember already sent unknown channel infos to not spam Sentry
+* (Apollon77) Handle reconnects better (Sentry IOBROKER-HMIP-G)
+* (Apollon77) Try to prevent crashes on i valid server reponses, warning is logged
+* (SliX185) Add HMIP-SPDR (PASSAGE_DETECTOR_CHANNEL)
+
 ### 1.0.1 (2020-05-16)
 * (Apollon77) Make sure invalid data do not crash adapter (Sentry IOBROKER-HMIP-7)
 * (Apollon77) code cleanup

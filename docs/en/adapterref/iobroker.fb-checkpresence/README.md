@@ -49,6 +49,8 @@ By default, the TR-064 interface is not activated. However, this can easily be c
 FritzBox web interface. To do this log in into your FritzBox and ensure that the expert view is activated. 
 Then you will find below "Home Network »Home Network Overview» Network Settings" the point 
 "Allow access for applications". There you have to activate the checkbox and then restart the FritzBox once.
+
+Hint: After changing the options, don't forget the restart of the Fritzbox !
 <img src="doc/access_settings_network.JPG"/>
 
 ## Configuration dialog
@@ -129,6 +131,9 @@ Here you will find information when the family member arrives or leaving home.
 Here you will find information about the history of the current day. 
 
 ## Changelog 
+
+### 1.0.4 (2020-06-28)
+* (afuerhoff) bugfix json list and guest handling, new object guest.presence
 
 ### 1.0.3 (2020-05-26)
 * (afuerhoff) bugfix checking mac or ip

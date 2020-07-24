@@ -195,6 +195,19 @@ There are some programs in folder *test' to test the TCP communication:
 
 ## Changelog
 
+### 3.1.7 (2020-07-23)
+* (Apollon77) Fix some Sentry crash reports (IOBROKER-MODBUS-N)
+
+### 3.1.6 (2020-07-06)
+* (bluefox) Fix some Sentry crash reports (IOBROKER-MODBUS-J)
+
+### 3.1.5 (2020-06-29)
+* (Apollon77) Fix some Sentry crash reports (IOBROKER-MODBUS-F)
+
+### 3.1.4 (2020-06-24)
+* (Apollon77) Fix some Sentry crash reports (IOBROKER-MODBUS-4, IOBROKER-MODBUS-7, IOBROKER-MODBUS-6)
+* (Apollon77) Change the way adapter restarts when reconnections do not help
+
 ### 3.1.3 (2020-06-12)
 * (Apollon77) fix scheduled restart
 

@@ -3,21 +3,37 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.innogy-smarthome/README.md
 title: ioBroker.Innogy-SmartHome
-hash: 0MpE/iZh8Vs/Sks6ytcNYbivpUhBpF3IeUUfM60iCUQ=
+hash: Rs8xNlbQlKEQTU86OLLUr0tNLzzFSJ/b4bsgMbaLt/o=
 ---
 ![логотип](../../../en/adapterref/iobroker.innogy-smarthome/admin/innogy-smarthome.png)
 
 ![Количество установок](http://iobroker.live/badges/innogy-smarthome-stable.svg)
-![строить](https://travis-ci.org/PArns/ioBroker.innogy-smarthome.svg?branch=master)
+![Сложение](https://travis-ci.org/PArns/ioBroker.innogy-smarthome.svg?branch=master)
 
 # IoBroker.Innogy-SmartHome
-Этот адаптер используется для подключения устройств SmartHome от Innogy к ioBroker. Вы можете узнать больше о Innogy [Вот](https://www.innogy.com).
+Этот адаптер используется для подключения устройств SmartHome Innogy к ioBroker. Вы можете узнать больше о Innogy [Вот](https://www.innogy.com).
 
-### Требуется узел> 6.x
+### Требуется узел> 8.x
 ## ТРЕБУЕТСЯ ПОМОЩЬ!
 Поскольку этот проект разрабатывается в свободное время, я * активно ищу помощь в поддержке и расширении этой библиотеки! Если вы готовы помочь, напишите мне!
 
 ## Changelog
+
+### 0.3.6
+    Fixed authorization issues
+
+### 0.3.5
+    Updated authorization endpoint
+    Added shutter
+
+### 0.3.4
+    Make Hue bulbs writeable (brightness)
+    
+### 0.3.3
+    Fixed non switchable variables for new installations (missing native ID)
+
+### 0.3.2
+    Added more Hue properties
 
 ### 0.3.1
     Added PowerControl
@@ -179,4 +195,4 @@ hash: 0MpE/iZh8Vs/Sks6ytcNYbivpUhBpF3IeUUfM60iCUQ=
 ## License
 MIT
 
-Copyright (c) 2017 Patrick Arns <iobroker@patrick-arns.de>
+Copyright (c) 2020 Patrick Arns iobroker@patrick-arns.de

@@ -67,6 +67,7 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 
 ### 4.6.xx (2020-05-xx)
 * (Apollon77) Prevent wrong errors when setting "null" values for states
+* (bluefox) Revert changes for sync getState, because "on change" detection is broken 
 
 ### 4.6.17 (2020-05-25)
 * (bluefox) Fixed error with warnings collapsed blocks

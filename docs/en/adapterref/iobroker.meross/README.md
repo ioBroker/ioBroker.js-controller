@@ -36,6 +36,10 @@ Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column
 
 ## Changelog
 
+### 1.5.0 (2020-06-25)
+* (Apollon77) Prevent crash cases (Sentry IOBROKER-MEROSS-G, IOBROKER-MEROSS-F)
+* (Apollon77) Add warning about poll interval and cloud deactivation and reset poll interval to 30s for now
+
 ### 1.4.1 (2020-06-12)
 * (Apollon77) Fix Admin finally
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
+hash: 5H1U+vP44V3HiLwJ5cTYqkOSyoRIGJ1DhsJoacYCftg=
 ---
 ![Logo](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -60,6 +60,7 @@ Der Adapter verwendet [Node-Unifi](https://github.com/jens-maus/node-unifi), um 
 | Gesundheit | https:// IP: PORT / api / s / SITE / stat / health |
 | Gutscheine | https:// IP: PORT / api / s / SITE / stat / voucher |
 | DPI | https:// IP: PORT / api / s / SITE / stat / dpi |
+| Alarme | https:// IP: PORT / api / s / SITE / stat / alarm |
 
 ### UbiOS-Endpunkte
 | Informationen | API URL |
@@ -70,9 +71,10 @@ Der Adapter verwendet [Node-Unifi](https://github.com/jens-maus/node-unifi), um 
 | Geräte | https:// IP / Proxy / Netzwerk / API / s / SITE / stat / Gerät |
 | WLANs | https:// IP / proxy / network / api / s / SITE / rest / wlanconf |
 | Netzwerke | https:// IP / proxy / network / api / s / SITE / rest / networkconf |
-| Gesundheit | https:// IP / proxy / network / api / s / SITE / stat / health |
+| Gesundheit | https:// IP / Proxy / Netzwerk / API / s / SITE / stat / health |
 | Gutscheine | https:// IP / proxy / network / api / s / SITE / stat / voucher |
-| DPI | https:// IP / Proxy / Netzwerk / API / s / SITE / stat / dpi |
+| DPI | https:// IP / proxy / network / api / s / SITE / stat / dpi |
+| Alarme | https:// IP / proxy / network / api / s / SITE / stat / alarm |
 
 ## Bekannte Probleme
 * Der Status is_wired von Clients ist falsch, nachdem ein Client offline geschaltet wurde. Dies ist ein bekanntes Problem des UniFi-Controllers und hängt nicht mit dem Adapter zusammen. (Siehe https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
@@ -81,11 +83,15 @@ Der Adapter verwendet [Node-Unifi](https://github.com/jens-maus/node-unifi), um 
 Dieser Adapter verwendet die Funktionen der folgenden NodeJS-Module von Drittanbietern:
 
 * [node-unifi] (https://github.com/jens-maus/node-unifi)
-* [json-logic-js] (https://github.com/jwadhams/json-logic-js)
+* [json-logo-js] (https://github.com/jwadhams/json-logic-js)
 
 ## Changelog
-### __WORK IN PROGRESS__
-* (Scrounger, braindead1) Implemented DPI
+### 0.5.6-beta.2 (2020-07-05)
+* (Scrounger, braindead1) Implemented Alarms, DPI & Gateway Traffic
+* (braindead1) Prevented creation of ghost clients caused by iOS MAC randomization
+* (dklinger) Implemented manual update trigger
+* (braindead1) Implemented deletion of used vouchers
+* (braindead1) Fixed some errors reported via Sentry
 
 ### 0.5.5 (2020-06-13)
 * (braindead1) Fixed some errors reported via Sentry

@@ -125,6 +125,11 @@ zusätzlich werden für das Empfänger-Protokoll Version 2.0 folgende Datenpunkt
 
 
 ## Changelog
+### 1.0.0
+- Update dependencies
+- BREAKING CHANGE: Drop node 8 support, requires node 10 or above
+- BREAKING CHANGE: js-controller v2.4.0 or above required
+
 ### 0.1.3
 - Update travis.yml, License, Readme
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hue-extended/README.md
 title: ioBroker.hue扩展
-hash: jLtZ+1cQsa9An1Ur/QRqlhsg7yaNh1f7ZGHioNgmOCg=
+hash: sBrCWO4MEpdKluxvRIDbaHch4XEonRKGqBodYFjMWZ8=
 ---
 ![商标](../../../en/adapterref/iobroker.hue-extended/admin/hue-extended.png)
 
@@ -11,14 +11,15 @@ hash: jLtZ+1cQsa9An1Ur/QRqlhsg7yaNh1f7ZGHioNgmOCg=
 ![安装数量](http://iobroker.live/badges/hue-extended-installed.svg)
 ![稳定版](http://iobroker.live/badges/hue-extended-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.hue-extended.svg)
-![自上次发布以来提交](https://img.shields.io/github/commits-since/Zefau/ioBroker.hue-extended/latest.svg)
+![自上次发行以来提交](https://img.shields.io/github/commits-since/Zefau/ioBroker.hue-extended/latest.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.hue-extended.svg)
 ![NPM](https://nodei.co/npm/iobroker.hue-extended.png?downloads=true)
 
-＃ioBroker.hue-extended将Philips Hue灯与ioBroker连接起来。
+＃ioBroker.hue-extended将您的Philips Hue和/或deCONZ设备与ioBroker连接
 [![Travis CI]（https://travis-ci.com/Zefau/ioBroker.hue-extended.svg?branch=master）](https://travis-ci.com/Zefau/ioBroker.hue-extended)
 
 ＃＃ 特征
+-支持Philips Hue和deCONZ设备
 -同步灯
 -同步群组
 -同步场景（包括GroupScenes，LightScenes和[HueLabs]（https://labs.meethue.com/）中的场景）
@@ -35,16 +36,42 @@ hash: jLtZ+1cQsa9An1Ur/QRqlhsg7yaNh1f7ZGHioNgmOCg=
 
 ## Changelog
 
-Please also see [release page](https://github.com/Zefau/ioBroker.hue-extended/releases) for changelog and detailed information.
+### 2.0.0 (2020-07-14)
+- (Zefau) Support for [deCONZ REST API](https://dresden-elektronik.github.io/deconz-rest-doc/) (meaning support for Conbee / Conbee II stick)
 
-### 1.2.3 (2019-02-21)
+### 1.3.8 (2020-07-05)
+- (Zefau) fixed long-time polling for connection retry after connection fails serval times on short-time polling (see [#58](https://github.com/Zefau/ioBroker.hue-extended/issues/58))
+
+### 1.3.7 (2020-07-01)
+- (Zefau) added additional verification checks of the response received from the Hue Bridge (see [#45](https://github.com/Zefau/ioBroker.hue-extended/issues/45))
+- (Zefau) fixed long-time polling for connection retry after connection fails serval times on short-time polling (see [#58](https://github.com/Zefau/ioBroker.hue-extended/issues/58))
+
+### 1.3.6 (2020-05-31)
+- (Zefau) added long-time polling for connection retry after connection fails serval times on short-time polling (see [#58](https://github.com/Zefau/ioBroker.hue-extended/issues/58))
+
+### 1.3.5 (2020-05-23)
+- (Zefau) added action `onOffAllLights` for groups to reflect state of ALL lights and turn on/off all lights at once (respectively, the `on` state for groups reflects the state of `any_on`).
+
+### 1.3.2 (2020-04-01)
+- (Zefau) fixed `on` state being disappeared
+
+### 1.3.1 (2020-03-24)
+- (Zefau) added check for http status code to the response received from the Hue Bridge (see [#45](https://github.com/Zefau/ioBroker.hue-extended/issues/45))
+- (Zefau) second try changing state `on` of a group to match state `any_on` (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))
+
+### 1.3.0 (2020-03-04)
+- (Zefau) added option to only set devices in a group which are already turned on (thus devices which are off are not set) (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))
+- (Zefau) added option to set `brightness` / `level` to 0 when device is not reachable (see [#38](https://github.com/Zefau/ioBroker.hue-extended/issues/38))
+- (Zefau) change state `on` of a group to match state `any_on` (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))
+
+### 1.2.3 (2020-02-21)
 - (Zefau) added `Signify` (formerly Philips Lighting) as official manufacturer
 - (Zefau) updated dependencies
 
-### 1.2.2 (2019-02-04)
-- (Zefau) fixed wrong group state (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))
+### 1.2.2 (2020-02-04)
+- ~(Zefau) fixed wrong group state (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))~
 
-### 1.2.1 (2019-02-03)
+### 1.2.1 (2020-02-03)
 - (Zefau) fixed failing secure connection when selecting default certificates
 
 ### 1.2.0 (2019-11-23)

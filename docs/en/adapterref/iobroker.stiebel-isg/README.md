@@ -28,6 +28,10 @@ Help or hints are welcome.
 
 ## Changelog
 
+### 1.5.1
+
+* new adapter testing and security update
+
 ### 1.5.0
 
 * support for cooling values and startpage graphs

@@ -166,6 +166,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 0.5.7 (2020-07-xx)
+* (René) see issue #116: get MinimumTemperature for vis only if enabled
+
 ### 0.5.6 (2020-06-14)
 * (René) see issue #113: re-order of rooms added
 * (René) see issue #112: bug fix "Fensterübersicht"

@@ -232,19 +232,31 @@ The supported commands are:
 - Widget at the time without function
 
 ## Changelog
+### 2.1.1 (2020-07-10)
+* (bluefox) Refactoring
+* (bluefox) Support of compact mode added
+
+### 2.0.10 (2020-07-05)
+* try to starting of cleaning 3 times, if robot not answers and some fixes
+
 ### 2.0.9 (2020-03-05)
 * (dirkhe) add state info for room channels and change queue info from number to JSON
+
 ### 2.0.8 (2020-02-26)
 * (dirkhe) decreased communication with robot
+
 ### 2.0.7 (2020-02-25)
 * (dirkhe) add Resuming after pause for rooms
+
 ### 2.0.6 (2020-02-17)
 * (MeisterTR) add roooms for s50 with map (cloud or Valetudo needed)
+
 ### 2.0.4 (2020-02-13)
 * (MeisterTR) add cloud login to get token
 * (MeisterTR) add cloud Map
 * (MeisterTR) add new and old Map format
 * (MeisterTR) rebuild config page
+
 ### 1.10.5 (2020-02-11)
 * send Ping only if not connected, otherwise get_status
 * set button states to true, if clicked
@@ -252,6 +264,7 @@ The supported commands are:
 
 ### 1.10.4 (2020-02-06)
 * (MeiserTR) add valetudo map support for gen3 and gen2 2XXX
+
 ### 1.10.1 (2020-01-20)
 * (dirkhe) added zone as room handling
 * (dirkhe) timer could room channels directly
@@ -322,3 +335,26 @@ The supported commands are:
 
 ### 0.0.1 (2017-01-16)
 * (bluefox) initial commit
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2017-2020 bluefox <dogafox@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

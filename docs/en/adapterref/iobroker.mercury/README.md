@@ -43,6 +43,10 @@ Returns a buffer as a string
 
 ## Changelog
 
+### 0.1.3
+* (instalator) fixed error [issues 11](https://github.com/instalator/ioBroker.mercury/issues/11)
+* (instalator) fixed warn [issues 8](https://github.com/instalator/ioBroker.mercury/issues/8)
+
 ### 0.1.2
 * (instalator) fixed error serial memory
 

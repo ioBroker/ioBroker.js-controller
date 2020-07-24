@@ -788,6 +788,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mclighting/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.megad/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.megadd/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.megaesp/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.melcloud/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mercedesme/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mercury/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.meross/README.md
@@ -1164,6 +1165,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mclighting/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.megad/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.megadd/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.megaesp/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.melcloud/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mercedesme/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mercury/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.meross/README.md
@@ -1540,6 +1542,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mclighting/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.megad/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.megadd/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.megaesp/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.melcloud/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mercedesme/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mercury/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.meross/README.md
@@ -1916,6 +1919,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mclighting/README.m
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.megad/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.megadd/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.megaesp/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.melcloud/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mercedesme/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mercury/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.meross/README.md

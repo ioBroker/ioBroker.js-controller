@@ -74,6 +74,10 @@ sudo apt-get install -y snips-injection
 
 ## Changelog
 
+### 1.5.1
+
+* (unltdnetworx) new adapter testing and security update
+
 ### 1.5.0
 
 * (unltdnetworx) removal of language support, may come back

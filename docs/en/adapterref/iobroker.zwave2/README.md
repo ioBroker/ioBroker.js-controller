@@ -32,6 +32,21 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.4.2 (2020-07-05)
+* During the interview, endpoint associations are now converted to node associations if required
+* The interview process no longer fails if a node supports `Notification CC V2`
+
+### 1.4.1 (2020-06-30)
+* If a node fails to respond to `Multi Channel Endpoint Find`, the interview is no longer aborted and sequential endpoints are assumed instead
+* Renamed the manufacturer Goap to Qubino
+* For many Qubino devices, the lifeline now uses a node association
+
+### 1.4.0 (2020-06-26)
+Updated `zwave-js` to v4.0.1. This includes the following features:
+* Improved support for legacy devices that don't include all CCs in the NIF, like `Fibaro FGRM 222`.
+* Added support for `Sound Switch CC`
+* Added support for `Alarm Sensor CC`. This CC will only be used if `Notification CC` is not supported.
+
 ### 1.3.8 (2020-06-18)
 * Fixed transmission issues caused by overlapped secure transactions
 
@@ -40,26 +55,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 * Configured lifeline node associations of newer devices should now be set correctly
 * `CRC-16`-encapsulated commands can now be received
 * The log file is complete again
-
-### 1.3.4 (2020-06-16)
-* The association UI no longer crashes if an empty association object is returned
-* The target endpoint selection for associations is now hidden if an association does not support multiple target endpoints
-* Fixed an incompatibility with nodes that have a different number of "normal" associations than multi channel associations, e.g. _FGRM-222_
-* The association UI now distinguishes between associations to the device and the root endpoint
-* Many fixes related to handling associations and multi channel associations
-* Creating a log file works again
-* Added support for Devolo Dimmer (MT2760) and Shutter (MT2761) (thanks @nicoh88)
-* When the interview process fails to set a lifeline association with `Multi Channel Association CC`, it now tries again with `Association CC`
-
-### 1.3.3 (2020-06-15)
-* Logfiles are now logged in the correct order and some unnecessary logging was removed
-* Fixed an error when using the DoorLockCC setValue API when not all configuration values have been received
-* Errors while sending firmware fragments are now caught and logged
-* The adapter no longer crashes when the serial device exists but does not respond
-* Improved compatibility with some devices that send invalid `Multi Channel Endpoint Find Reports`, e.g. _TKB Home TZ74 Dual Switch_
-
-### 1.3.2 (2020-06-15)
-* Fixed a crash that happens when a `Multi Command CC` is received
 
 ## License
 

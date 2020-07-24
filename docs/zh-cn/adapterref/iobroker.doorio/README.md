@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.doorio/README.md
 title: ioBroker.doorio
-hash: LuhsI/3MpnIV58jHpZ51CghSPDkFkf8W27HZ6T6haso=
+hash: QgSlf1YyUrjQa8I4DORzXon8quUpSu++TVOFiois1iY=
 ---
 ![商标](../../../en/adapterref/iobroker.doorio/admin/doorio.png)
 
@@ -15,11 +15,21 @@ hash: LuhsI/3MpnIV58jHpZ51CghSPDkFkf8W27HZ6T6haso=
 ＃ioBroker.doorio
 ioBroker的自制DoorStation适配器
 
+该适配器通过tcp.socket连接到Baresip Sip客户端，以与门电话进行通信。作为响铃触发器，可以使用ioBroker的每个输入。
+适配器还识别DTMF音调以切换输出。
+对于自制门禁系统，可以使用可以安装Baresip的任何硬件。
+
+Dieser Adapter verbindet sichübertcp.socket mit dem Baresip Sip客户端，um mit einerTürsprechstellezu kommunizieren。 AlsKlingelauslöserkann jeder Eingang von ioBroker genutzt werden。 Der Adapter会因DTMF-TöneumAusgängezu schalten而失效。
+硬件，设备和服务的硬件供应商，德国的硬件制造商Baresip installierenlässtgenutzt werden。
+
 ##链接
 * https://forum.iobroker.net/topic/23413/ich-baue-eine-t%C3%BCrsprechstelle-ohne-cloud
 * https://forum.iobroker.net/topic/22746/test-adapter-doorio-v0-0-x
 
 ## Changelog
+
+### 1.0.8
+* (bettman66) fix dtmf-timeout
 
 ### 1.0.7
 * (bettman66) check states
@@ -38,19 +48,6 @@ ioBroker的自制DoorStation适配器
 
 ### 1.0.2
 * (bettman66) add selectID.js
-
-This adapter connects to the Baresip Sip client via tcp.socket to communicate
-with a doorphone. As a bell trigger every input from ioBroker can be used.
-The adapter also recognizes DTMF tones to switch outputs.
-For the self-made door station, any hardware on which Baresip can install
-can be used.
-
-Dieser Adapter verbindet sich über tcp.socket mit dem Baresip Sip-Client,
-um mit einer Türsprechstelle zu kommunizieren. Als Klingelauslöser kann jeder
-Eingang von ioBroker genutzt werden. Der Adapter erkennt auch DTMF-Töne um
-Ausgänge zu schalten.
-Für die Selbstgemachte Türsprechstelle, kann jede Hardware auf der sich Baresip
-installieren lässt genutzt werden.
 
 ## License
 The MIT License (MIT)

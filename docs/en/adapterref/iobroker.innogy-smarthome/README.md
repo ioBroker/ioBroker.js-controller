@@ -5,13 +5,20 @@
 
 This adapter is used to connect the Innogy smarthome devices to ioBroker. You can read more about Innogy [here](https://www.innogy.com).
 
-###Requires Node > 6.x
+###Requires Node > 8.x
 
 ## HELP WANTED!
 
 As this project is developed during my spare time, I*m actively looking for help to maintain and extend this lib! If you're willing to help, drop me a line!
 
 ## Changelog
+
+### 0.3.6
+    Fixed authorization issues
+
+### 0.3.5
+    Updated authorization endpoint
+    Added shutter
 
 ### 0.3.4
     Make Hue bulbs writeable (brightness)
@@ -182,4 +189,4 @@ As this project is developed during my spare time, I*m actively looking for help
 ## License
 MIT
 
-Copyright (c) 2017 Patrick Arns <iobroker@patrick-arns.de>
+Copyright (c) 2020 Patrick Arns iobroker@patrick-arns.de

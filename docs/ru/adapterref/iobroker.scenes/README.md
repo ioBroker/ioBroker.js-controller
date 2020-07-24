@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.scenes/README.md
 title: Адаптер сцен ioBroker
-hash: G1E4YTsd0Q1l6+A7mv99P5sg5zK8+foyWJ0BN3JhoI4=
+hash: ZMp10ixUfAOKTgCSzrFyreen3NEPoX4iRy/ylfSxlKM=
 ---
 ![логотип](../../../en/adapterref/iobroker.scenes/admin/scenes.png)
 
@@ -32,7 +32,7 @@ _scenes Adapter_ может создавать сцены и выполнять 
   +- hm-rpc.0.TOP_LIGHT.STATE     - true
 ```
 
-Чтобы активировать сцену, мы должны установить для «_scene.allLightInBath_» значение true (например, через скрипт или vis). Тогда оба состояния будут установлены на желаемые значения, **истинно** Значение _scene.allLightInBath_ также будет **true** Если мы вручную переключим верхний источник света, значение _scene.allLightInBath_ изменится на **false** И снова в **true** если мы включим свет вручную.
+Чтобы активировать сцену, мы должны установить для "_scene.allLightInBath_" значение true (например, поверх сценария или vis). Тогда оба состояния будут установлены на желаемые значения, **true** Значение _scene.allLightInBath_ также будет **true** Если мы вручную переключим верхний источник света, значение _scene.allLightInBath_ изменится на **false** И снова в **true** если мы включим свет вручную.
 
 Давайте добавим к **сцене** фанат:
 
@@ -44,7 +44,7 @@ _scenes Adapter_ может создавать сцены и выполнять 
   |- hm-rpc.0.FAN.STATE          - false (delay 60000ms)
 ```
 
-В этом случае вентилятор будет включен при активации **сцены** и будет отключен через одну минуту.
+В этом случае вентилятор будет включен при активации **сцены** и будет выключен через одну минуту.
 После выключения вентилятора значение _scene.allLightInBath_ перейдет в **false** поскольку не все состояния равны требуемым значениям.
 Состояния с задержкой не участвуют в расчетах.
 
@@ -61,7 +61,7 @@ _scenes Adapter_ может создавать сцены и выполнять 
 И каждый раз, когда вы откроете дверь в ванну, все огни с вентилятором будут включены.
 
 ## Группы
-** Группы ** похожи на виртуальные каналы. Вы можете создавать с помощью ** групп ** виртуальное устройство из нескольких исполнительных механизмов и управлять ими вместе, как одно устройство.
+** Группы ** похожи на виртуальные каналы. Вы можете создавать с помощью ** групп ** виртуальное устройство из нескольких приводов и управлять ими вместе, как одно устройство.
 Давайте изменим наш образец с подсветкой ванны.
 
 ```
@@ -97,7 +97,7 @@ _scenes Adapter_ может создавать сцены и выполнять 
 Вы можете создать виртуальную группу для управления всеми ставнями в гостиной. При записи 40% в виртуальную группу все затворы будут установлены на 40%.
 
 ## Сохранить фактические состояния как сцены
-Чтобы сохранить реальные состояния в какой-то сцене, вы можете отправить сообщение адаптеру:
+Для сохранения реальных состояний в какой-либо сцене вы можете отправить сообщение адаптеру:
 
 ```
 sendTo(
@@ -111,11 +111,39 @@ sendTo(
 );
 ```
 
-Адаптер считывает все фактические значения для идентификаторов, определенных в этой сцене, и сохраняет их как настроенные.
+Адаптер прочитает все фактические значения для идентификаторов, определенных в этой сцене, и сохранит их как настроенные.
+
+## ДЕЛАТЬ:
+- Изменить подсказку для "Bereits gestartetet Befehle anhalten": ??
+- Обновить диалог selectID
 
 ## Changelog
+### 2.1.2 (2020-07-08)
+* (bluefox) Interval between states was corrected
+
+### 2.0.17 (2020-06-29)
+* (bluefox) GUI error corrected
+
+### 2.0.13 (2020-06-27)
+* (bluefox) Mobile view added
+
+### 2.0.12 (2020-06-26)
+* (bluefox) GUI error corrected
+
+### 2.0.10 (2020-06-20)
+* (bluefox) Added "Do not overwrite state if it has the required value" option
+
+### 2.0.9 (2020-06-17)
+* (bluefox) The colors are corrected
+
+### 2.0.8 (2020-06-16)
+* (bluefox) The tolerance is implemented
+
+### 2.0.3 (2020-06-14)
+* (bluefox) New GUI based on react
+
 ### 1.1.1 (2019-05-26)
-* (bluefox)Added storing of actual values in scene via message
+* (bluefox) Added storing of actual values in scene via message
 
 ### 1.1.0 (2018-04-24)
 * (bluefox) Works now with Admin3
@@ -176,3 +204,25 @@ sendTo(
 
 ### 0.0.1 (2015-07-29)
 * (bluefox) initial commit
+
+The MIT License (MIT)
+
+Copyright (c) 2015-2020, Bluefox (dogafox@gmail.com)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

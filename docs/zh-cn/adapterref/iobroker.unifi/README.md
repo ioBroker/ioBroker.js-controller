@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
+hash: 5H1U+vP44V3HiLwJ5cTYqkOSyoRIGJ1DhsJoacYCftg=
 ---
 ![商标](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -47,7 +47,7 @@ hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
 使用“ vouchers.create_vouchers”按钮可以创建预定义的凭单。可以配置将创建的凭证的数量，凭证的有效期限，还可以设置上传和下载的限制。
 
 ##缺少数据点
-适配器使用[节点统一](https://github.com/jens-maus/node-unifi)连接到您的UniFi控制器。为简化起见，并非所有可用数据点都被拉到ioBroker中。如果您缺少数据点，请使用以下URL来检查API。 （注意：您必须用设置替换IP，PORT和SITE）
+适配器使用[节点统一](https://github.com/jens-maus/node-unifi)连接到您的UniFi控制器。为了简化起见，并非所有可用的数据点都被拉到ioBroker中。如果您缺少数据点，请使用以下URL检查API。 （注意：您必须用设置替换IP，PORT和SITE）
 
 |信息| API URL |
 |-------------|---------------------------------------------|
@@ -60,6 +60,7 @@ hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
 |健康| https：// IP：PORT / api / s / SITE / stat / health |
 |优惠券| https：// IP：PORT / api / s / SITE / stat / voucher |
 | DPI | https：// IP：PORT / api / s / SITE / stat / dpi |
+|警报器| https：// IP：PORT / api / s / SITE / stat / alarm |
 
 ### UbiOS端点
 |信息| API URL |
@@ -73,6 +74,7 @@ hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
 |健康| https：// IP / proxy / network / api / s / SITE / stat / health |
 |优惠券| https：// IP / proxy / network / api / s / SITE / stat / voucher |
 | DPI | https：// IP / proxy / network / api / s / SITE / stat / dpi |
+|警报器| https：// IP / proxy / network / api / s / SITE / stat / alarm |
 
 ＃＃ 已知的问题
 *客户端离线后，客户端的is_wired状态不正确。这是UniFi控制器的已知问题，与适配器无关。 （请参阅https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1）
@@ -84,8 +86,12 @@ hash: 2iRaXeJCVFRqT9XiEjPhJSCp1bw0GULYKRt5m9Y2rVs=
 * [json-logic-js]（https://github.com/jwadhams/json-logic-js）
 
 ## Changelog
-### __WORK IN PROGRESS__
-* (Scrounger, braindead1) Implemented DPI
+### 0.5.6-beta.2 (2020-07-05)
+* (Scrounger, braindead1) Implemented Alarms, DPI & Gateway Traffic
+* (braindead1) Prevented creation of ghost clients caused by iOS MAC randomization
+* (dklinger) Implemented manual update trigger
+* (braindead1) Implemented deletion of used vouchers
+* (braindead1) Fixed some errors reported via Sentry
 
 ### 0.5.5 (2020-06-13)
 * (braindead1) Fixed some errors reported via Sentry

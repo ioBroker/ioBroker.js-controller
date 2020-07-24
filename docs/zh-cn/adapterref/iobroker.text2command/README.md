@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.text2command/README.md
 title: ioBroker.text2命令
-hash: AbQO0H/J064n6WlPsVLyGpk/h6Tn0PFaXxY20RhIgjU=
+hash: tBNY+azXqKKmYuLkseItUQPyK0VjnJVVSAQASBYk6g0=
 ---
 ![商标](../../../en/adapterref/iobroker.text2command/admin/text2command.png)
 
@@ -17,14 +17,14 @@ hash: AbQO0H/J064n6WlPsVLyGpk/h6Tn0PFaXxY20RhIgjU=
 ##说明
 该适配器可以将普通句子转换，例如*'打开厨房的灯'*到特定命令，并将状态*'adapter.0.device.kitchenLight'*设置为** true **。
 
-单独激活该适配器没有意义。它应与其他适配器一起使用，例如电报或Android应用程序** iobroker.vis **。
+单独激活该适配器没有意义。它应与其他适配器（例如电报或Android应用程序iobroker.vis **）一起使用。
 
 ##用法
 要执行命令，请在语句中写入状态** text2command。<INSTANCE> .text **。您将始终在** text2command。<INSTANCE> .response **中得到答案。
 
-如果您定义“对ID的答案”，答案也将以此ID编写。这对于例如实现语音确认。
+如果您定义“对ID的答案”，答案也将以该ID编写。这对于例如实现语音确认。
 
-您可以从Javascript通过消息框发送消息。答案将在消息中返回：
+您可以通过javascript中的`sendTo`发送消息。答案将在消息中返回：
 
 ```
 sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
@@ -39,11 +39,11 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 关键字的工作方式如下：
 
 -关键字按空格划分
--所有关键字必须出现在句子中才能触发规则：例如关键字：“开灯”将在“开灯”上触发，“在各处点亮”，而不在“开灯”上触发，点亮''
+-所有关键字必须出现在句子中才能触发规则：例如关键字：“开灯”将在“开灯”上触发，“在所有地方开灯”而不会在“开灯”上触发，点亮''
 -一个关键字可以有多种形式。关键字的变体必须除以“ /”。例如。关键字：“ switch / make / do light on / true”将触发：`“ do light true”，“ make please light on”。
 -如果关键字在很多情况下都可以出现（名词，词根，宾格，复数等），则它们都必须以变体形式列出，例如：```lighting / lights on''`。
 
-以下功能将解释为
+以下功能将被解释为
 
 枚举函数：
 
@@ -91,10 +91,10 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 |短语中的关键词|英语中可能的enum.rooms |德语|俄语|
 |-----------------------|---------------------------------|--------------------------|------------------------|
 |无处不在无处不在-| -|
-|生活|客厅| wohnzimmer | зал|
+|生活客厅| wohnzimmer | зал|
 |卧室|卧室/卧室| schlafzimmer | спальня|
 |浴|浴室/浴室| badezimmer /坏| ванная|
-|工作/办公室|办公室| arbeitszimmer | кабинет|
+|工作/办公室|办公室arbeitszimmer | кабинет|
 |儿童/儿童/托儿所|苗圃| kinderzimmer | детская|
 |贵宾室/贵宾室| guestwc | gästewc| гостевойтуалет|
 |厕所/壁橱| wc | wc | туалет|
@@ -107,7 +107,7 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 |花园花园花园сад|
 |法院/院子|法院霍夫двор|
 |客房客房gästezimmer| гостевая|
-|阁楼|阁楼|喷雾器| кладовка|
+|阁楼阁楼喷雾器| кладовка|
 |屋顶屋顶dachstuhl | крыша|
 |终端|终端|鹅掌| | сени|
 |洗手间|洗手间| waschraum | прачечная|
@@ -139,7 +139,7 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 答案是可定制的。默认值：```Inside temperature is %s %u```**％s **将替换为温度，四舍五入为整数。 **％u **将被此状态的单位或系统温度单位替换。
 
 ###按功能打开/关闭
-该命令从枚举中读取信息。它使用``枚举功能''查找设备类型（例如灯光，警报，音乐），并使用``枚举房间''检测房间名称。
+该命令从枚举中读取信息。它使用“枚举功能”查找设备类型（例如灯光，警报，音乐），并使用“枚举室”检测房间名称。
 
 德语示例：![枚举](../../../en/adapterref/iobroker.text2command/img/enums.png)
 
@@ -147,11 +147,11 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 
 要关闭的关键字是：*关闭*，例如§§JJJJJ_0_0§§
 
-如果需要，答案将自动生成：```Switch off %function% in %room%```，其中％function％和％room％将由找到的设备类型和位置替换。
+如果需要，将自动生成答案：```Switch off %function% in %room%```，其中％function％和％room％将由找到的设备类型和位置替换。
 
 命令也接受数值。它具有优先级，例如在§§JJJJJ_0_0§§命令中，灯光将设置为15％，并且不处于* off *状态。
 
-您可以在[]中定义默认房间。例如§§JJJJJ_0_0§§
+您可以在[]中定义默认房间。例如```switch the light on[sleepingroom]```
 
 ###打开/关闭百叶窗
 该命令从枚举中读取信息。它使用** enum.functions.blind **查找百叶窗或百叶窗类型，并使用** enum.rooms **检测房间名称。
@@ -160,12 +160,12 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 
 向下移动百叶窗的关键词是：*向下百叶窗*，例如§§JJJJJ_0_0§§
 
-您可以以百分比指定盲人的确切位置，例如§§JJJJJ_0_0§§
+您可以指定百分数的确切位置，例如§§JJJJJ_0_0§§
 
 如果需要，将自动生成答案：``` in %room%```，其中％room％将替换为找到的设备类型和位置。
 
 ###开启/关闭某些功能
-用户必须指定设备的状态ID（必须控制）和值（必须写入）。
+用户必须指定设备的状态ID，必须对其进行控制，并且必须写入值。
 
 您应该为每个位置创建规则（例如* on *和* off *）。
 
@@ -174,7 +174,7 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 例如。：
 
 -```停用警报```，对象ID：```hm-rpc.0.alarm```，值：```false''`，答案：```警报已停用/停用'' 。在这种情况下，答案将在“警报已停用”和“警报已停用”之间随机分配。
--```激活警报```，对象ID：```hm-rpc.0.alarm```，值：```true''`，回答：```警报已激活/激活/完成` ``。在这种情况下，答案将在*警报已激活*，*已激活*和*完成*之间随机分配。
+-```激活警报```，对象ID：```hm-rpc.0.alarm```，值：```true''`，答案：```警报已激活/已激活/已完成'' ``。在这种情况下，答案将在“警报已激活”，“已激活”和“完成”之间随机分配。
 
 *停用*必须在列表中的第一位，因为它更长。
 
@@ -184,9 +184,9 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 
 -```Set light level''，对象ID：```hm-rpc.0.light.STATE`''，Value：```10''`，Answer：```Level设置为％s ％```。
 
-如果命令类似于```Set light level to 50%```§，则将```hm-rpc.0.light.STATE```写入50，答案将为§§JJJJJ_2_2§§。
+如果命令类似于```Set light level to 50%```，则在```hm-rpc.0.light.STATE```中写入50，答案为```Level set to 50%```。
 
-如果命令类似于```Set light level```§，则将在§§JJJJJ_1_1§§中写入10，答案将为§§JJJJJ_2_2§§。
+如果命令类似于```Set light level```§，则将在```hm-rpc.0.light.STATE```中写入10，答案将为§§JJJJJ_2_2§§。
 
 ###询问一些事情
 用户必须指定设备的状态ID，该值将被读取。
@@ -194,8 +194,8 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 
 例如。：
 
--``打开的窗口''，对象ID：``javascript.0.countOpenedWindows`，确认：``实际的％s窗口已打开''
--```温度卧室''，对象ID：```hm-rpc.0.sleepingRoomSensor.TEMPERATURE''，确认：```卧室的实际温度为％s％u /％s％u ```。在这种情况下，答案将在*卧室的实际温度为％s％u *和*％s％u *之间随机分配。
+-Windows打开，对象ID：javascript.0.countOpenedWindows，确认：％s Windows实际打开
+-```温度卧室''，对象ID：```hm-rpc.0.sleepingRoomSensor.TEMPERATURE''，确认：```卧室的实际温度为％s％u /％s％u ```。在这种情况下，答案将随机分布在*卧室的实际温度为％s％u *和*％s％u *之间。
 
 ###发送文字至状态
 您可以将一些文本写入状态。用户必须指定状态ID才能在其中写入文本。
@@ -215,15 +215,15 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 例如。：
 
 -打开窗口，确认：实际打开的{javascript.0.countOpenedWindows}窗口已打开。
--```temperature sleeproom room```，Acknowledge：```卧室的实际温度为{t：hm-rpc.0.sleepingRoomSensor.TEMPERATURE; Math.round（t）} / {hm-rpc.0.sleepingRoomSensor.TEMPERATURE; round（1）}度在这种情况下，答案将随机分布在*卧室的实际温度为<VALUE> *和* <VALUE> *之间。
+-```temperature sleeproom room''，Acknowledge：```卧室的实际温度为{t：hm-rpc.0.sleepingRoomSensor.TEMPERATURE; Math.round（t）} / {hm-rpc.0.sleepingRoomSensor.TEMPERATURE; round（1）}度在这种情况下，答案将随机分布在*卧室的实际温度为<VALUE> *和* <VALUE> *之间。
 
 您可以在此处阅读有关绑定的更多信息：（对象的绑定）[https://github.com/ioBroker/ioBroker.vis#bindings-of-objects]
 
-另外，您还可以通过{hm-rpc.0.light.STATE.lc; dateinterval}（每12分钟2分钟）或{hm-rpc.0.light.STATE.lc; dateinterval（true）}来获取到现在的时间（ 2分12秒**前**）
+此外，您还可以通过{hm-rpc.0.light.STATE.lc; dateinterval}（每12分钟2分钟）或{hm-rpc.0.light.STATE.lc; dateinterval（true）}来获取到现在的时间（ 2分12秒**前**）
 
 ##使用javascript的外部规则
 有可能使用javascript引擎来处理text2command中的命令。
-为此，您必须在“处理器状态ID”（高级设置）中指定某些状态，并在某些JS或Blockly脚本中侦听此状态。
+为此，必须在“处理器状态ID”（高级设置）中指定某些状态，并在某些JS或Blockly脚本中侦听此状态。
 您可以在admin或脚本中手动创建一些状态。处理脚本如下所示：
 
 ```
@@ -249,117 +249,104 @@ createState("textProcessor", '', function () {
 });
 ```
 
-在text2command **Processor state ID** 设置中将其设置为* javascript.0.textProcessor *，以使此示例正常工作。
+在text2command **Processor state ID** 设置中将其设置为* javascript.0.textProcessor *，以使本示例正常工作。
 
-首先，将使用您的javascript处理该命令，如果javascript在预定义的时间（默认为1秒）内回答“或”，则规则将处理该命令。
+首先，将使用您的javascript处理该命令，如果javascript在预定义的时间内（默认为1秒）以''或不回答，则该命令将由规则处理。
+
+###选项：通过每个命令写入响应
+如果每个命令都激活了该命令（无论请求是通过状态还是sendTo发出的，则`text2command.X.response`都将带有答案）。
 
 ＃ 去做
 -俄语中的男性和女性答案。
 
-##安装
-```iobroker add text2command```
-
 ## Changelog
+### 2.0.3 (2020-07-14)
+* (bluefox) Fixed GUI errors
+
+### 2.0.2 (2020-07-13)
+* (bluefox) Fixed GUI errors
+
+### 2.0.1 (2020-07-08)
+* (bluefox) Fixed select ID dialog
+
+### 2.0.0 (2020-07-06)
+* (bluefox) New GUI
 
 ### 1.3.1 (2019-07-18)
-
 * (unltdnetworx) changed copyright year to 2019, according to issue #41
 * (unltdnetworx) additional words for blinds and functions in english and german
 * (unltdnetworx) fixed typo
 
 ### 1.3.0 (2019-07-18)
-
 * (bluefox) Using the defined language by words
 
 ### 1.2.5 (2019-02-12)
-
 * (unltdnetworx) description in german corrected
 * (unltdnetworx) added percent to true/false rules
 
 ### 1.2.4 (2018-05-05)
-
 * (Apollon77) Fix
 
 ### 1.2.3 (2018-05-01)
-
 * (bluefox) Support of bindings in answer {objId}
 
 ### 1.2.0 (2018-04-23)
-
 * (bluefox) Support of Admin3 (but not materialize style)
 
 ### 1.1.7 (2018-04-04)
-
 * (bluefox) The parsing error was fixed
 
 ### 1.1.6 (2017-10-05)
-
 * (bluefox) Check if units are undefined
 
 ### 1.1.5 (2017-08-14)
-
 * (bluefox) Support of iobroker.pro
 
 ### 1.1.4 (2017-03-27)
-
 * (bluefox) translations
 
 ### 1.1.3 (2016-08-30)
-
 * (bluefox) russian translations
 
 ### 1.1.2 (2016-08-29)
-
 * (bluefox) fix the russian temperature text
 * (bluefox) extend rule "control device" with option 0/1
 * (bluefox) use by control of devices min/max values if set
 
 ### 1.1.1 (2016-08-19)
-
 * (bluefox) add additional info for external text processor
 
 ### 1.1.0 (2016-08-16)
-
 * (bluefox) add text processor state ID
 
 ### 1.0.2 (2016-07-22)
-
 * (bluefox) fix error with detection of numeric values
 
 ### 1.0.1 (2016-06-01)
-
 * (bluefox) fix: send text command
 
 ### 1.0.0 (2016-05-05)
-
 * (bluefox) replace special chars in input text: #'"$&/\!?.,;:(){}^
 
 ### 0.1.10 (2016-03-20)
-
 * (bluefox) fix double pronunciation of some answers
 
 ### 0.1.9 (2016-03-20)
-
 * (bluefox) ignore spaces
 
 ### 0.1.8 (2016-03-15)
-
 * (bluefox) fix error with enums
 
 ### 0.1.7 (2016-03-12)
-
 * (bluefox) implement "say something"
 
 ### 0.1.6 (2016-02-24)
-
 * (bluefox) fix temperature
 
 ### 0.1.5 (2016-02-23)
-
 * (bluefox) fix russian outputs
 
 ### 0.1.4 (2016-02-22)
-
 * (bluefox) fix russian outputs
 
 ### 0.1.3 (2016-02-21)
@@ -367,28 +354,22 @@ createState("textProcessor", '', function () {
 * (bluefox) round temperature in answers
 
 ### 0.1.2 (2016-02-21)
-
 * (bluefox) implement russian time
 
 ### 0.1.1 (2016-02-19)
-
 * (bluefox) check invalid commands
 
 ### 0.1.0 (2016-02-19)
-
 * (bluefox) fix problem with controlling of channels
 * (bluefox) enable write JSON as argument
 
 ### 0.0.3 (2016-02-14)
-
 * (bluefox) remove unused files
 
 ### 0.0.2 (2016-02-10)
-
 * (bluefox) extend readme
 
 ### 0.0.1 (2016-02-09)
-
 * (bluefox) initial commit
 
 ## License

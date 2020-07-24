@@ -3,83 +3,92 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.km200/README.md
 title: ioBroker.km200
-hash: tsPSmDY9afXxyXUew2/p/U3+Q6HOK8EeGGCY7l1Byj4=
+hash: 0jOL48Jt7HVKEcKPFioyMHDFRzdxzYyUjNfUNvtkCA8=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.km200.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.km200.svg)
-![特拉维斯-CI](http://img.shields.io/travis/frankjoke/ioBroker.km200/master.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.km200.svg)
+![安装数量](http://iobroker.live/badges/km200-installed.svg)
+![特拉维斯](http://img.shields.io/travis/frankjoke/ioBroker.km200/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.km200.png?downloads=true)
 
 ＃ioBroker.km200
 ##适用于Buderus KM50 / KM100 / KM200 / KM300和Junkers / Bosch MB LANi
 ![商标](../../../en/adapterref/iobroker.km200/admin/km200.png)
 
-[德语手册](README_DE.md)
+[德文手册](README_DE.md)
 
 适配器支持以下加热系统：
 
-* Buderus与[网络适配器]（https://www.buderus.de/de/produkte/catalogue/alle-produkte/7719_gateway-logamatic-web-km200-km100-km50）KM50，KM100，KM200和KM300
-* Junkers与[网络适配器]（https://www.bosch-smarthome.com/de/mblani）MB LANi
-*博世与[网络适配器]（https://www.bosch-smarthome.com/en/mblani)MB LANi
+*具有[网络适配器]的Buderus（https://www.buderus.de/de/produkte/catalogue/alle-produkte/7719_gateway-logamatic-web-km200-km100-km50）KM50，KM100，KM200和KM300
+*带有[网络适配器]的垃圾邮件（https://www.bosch-smarthome.com/de/mblani）MB LANi
+*带有[网络适配器]的博世（https://www.bosch-smarthome.com/en/mblani）MB LANi
 
-加热系统可以通过Buderus网站（[https://www.buderus-connect.de]）或手机上的'EasyControl'应用程序进行控制。 App和Buderus网站也与Junkers和Bosch供暖系统配合使用。
+为了访问系统，我使用了最初由Andreas Hahn开发并在其博客[在这里输入]（https://www.andreashahn.info/2014/07/kernthema-am-eigenen-leibe）和[在此输入](https://www.andreashahn.info/2014/08/easycontrol-pro-unter-der-lupe-oder-m)中描述的代码。
 
-现在这已成功实现了两个方向，并且适配器已经完全可用。
+可以通过Buderus网站（[https://www.buderus-connect.de]）或通过手机的“ EasyControl”应用程序来控制加热系统。 App and Buderus网站还可以与Junkers和Bosch加热系统配合使用。
 
-为此，首先需要在手机上安装应用程序并设置私人密码。
+现在，这已经在两个方向上都成功了，并且适配器已经完全可用。
+
+为此，必须首先在手机上安装该应用程序并设置一个私人密码。
 该应用程序要求设备密码和设备的登录名。
 
-适配器仍然需要IP（或网络名称，例如'BuderusKM200.fritz.box'）和端口地址（设备上的端口80，但如果您通过路由器更改它...）。
+适配器仍需要IP（或网络名称，例如'BuderusKM200.fritz.box'）和端口地址（设备上的端口80，但是如果通过路由器进行了更改...）。
 
-如果添加'！'在地址的末尾，适配器将在调试模式下工作并提供大量信息！
+如果添加“！”在地址末尾，适配器将在调试模式下工作并提供很多信息！
 
-由于适配器必须查询系统中的数据，因此我已定义了更新间隔，因此每次更新都需要单独的查询，因此设置为最少5分钟。
+由于适配器必须查询系统中的数据，因此我已定义了一个更新间隔，由于每次更新都需要单独的查询，因此将其设置为最少5分钟。
 
-我的系统（2个加热电路和一个热水回路）提供180多个数据点，我不能使用最多，有些是双倍的。
+我的系统（2个加热回路和一个热水回路）提供了180多个数据点，这些数据点我用得最多，有些是双倍的。
 
-这就是我引入黑/推列表来隐藏或显示某些数据的原因。
-该列表由类似于RegExp的字符串组成（它们由适配器转换），然后加热器中的服务随后被过滤掉。
+这就是为什么我引入了一个黑色/推送列表来隐藏或显示某些数据的原因。
+该列表由类似于RegExp的字符串组成（它们被适配器转换为字符串），然后用它们过滤加热器中的服务。
 
-语法是`+`一开始意味着该字段不应该被翻译，即使另一个规则会阻止它。
-`-`就像没有任何东西一样，并且阻止数学状态被阻止。
-每个匹配由`,`分隔，并且可以包括`/`或`^`用于开头，`*`匹配所有内容，`语法是`+`一开始意味着该字段不应该被翻译，即使另一个规则会阻止它。
-`-`就像没有任何东西一样，并且阻止数学状态被阻止。
-每个匹配由`,`分隔，并且可以包括`/`或`^`用于开头，`*`匹配所有内容，用于匹配结尾。
-字符串区分大小写!!!如果您想知道哪些状态可以在调试模式下切换并删除所有阻塞，那么您将找到所有已创建的状态，并且可以使用阻止列表阻止某些不需要的日期。
-示例：使用`+*temp*`，您可以淡入包含'temp'的所有内容，并且使用`_Hourly语法是`+`一开始意味着该字段不应该被翻译，即使另一个规则会阻止它。
-`-`就像没有任何东西一样，并且阻止数学状态被阻止。
-每个匹配由`,`分隔，并且可以包括`/`或`^`用于开头，`*`匹配所有内容，`语法是`+`一开始意味着该字段不应该被翻译，即使另一个规则会阻止它。
-`-`就像没有任何东西一样，并且阻止数学状态被阻止。
-每个匹配由`,`分隔，并且可以包括`/`或`^`用于开头，`*`匹配所有内容，用于匹配结尾。
-字符串区分大小写!!!如果您想知道哪些状态可以在调试模式下切换并删除所有阻塞，那么您将找到所有已创建的状态，并且可以使用阻止列表阻止某些不需要的日期。
-示例：使用`+*temp*`，您可以淡入包含'temp'的所有内容，并且使用您可以阻止最后包含'_Hourly'的所有内容，两者合并将阻止所有_Hourly结尾但没有以他们的名义来临。
+语法是，一开始的`+`意味着不应跳过此字段，即使另一个规则将阻止它。
+`-`就像什么都没有，并且使数学状态被阻止。
+每个匹配项之间均以`,`隔开，开头可以包括`/`或`^`，匹配所有内容的`*`和末尾的`语法是，一开始的`+`意味着不应跳过此字段，即使另一个规则将阻止它。
+`-`就像什么都没有，并且使数学状态被阻止。
+每个匹配项之间均以`,`隔开，开头可以包括`/`或`^`，匹配所有内容的`*`和末尾的以匹配结尾。
+字符串区分大小写！！！如果您想知道找到了哪些状态，请打开调试模式并删除所有阻止，然后您将发现所有声明的已创建状态，并且可以使用阻止列表阻止某些不需要的日期。
+示例：使用`+*temp*`，您可以淡入包含“ temp”的所有内容；使用`_Hourly语法是，一开始的`+`意味着不应跳过此字段，即使另一个规则将阻止它。
+`-`就像什么都没有，并且使数学状态被阻止。
+每个匹配项之间均以`,`隔开，开头可以包括`/`或`^`，匹配所有内容的`*`和末尾的`语法是，一开始的`+`意味着不应跳过此字段，即使另一个规则将阻止它。
+`-`就像什么都没有，并且使数学状态被阻止。
+每个匹配项之间均以`,`隔开，开头可以包括`/`或`^`，匹配所有内容的`*`和末尾的以匹配结尾。
+字符串区分大小写！！！如果您想知道找到了哪些状态，请打开调试模式并删除所有阻止，然后您将发现所有声明的已创建状态，并且可以使用阻止列表阻止某些不需要的日期。
+示例：使用`+*temp*`，您可以淡入包含“ temp”的所有内容；使用，您可以阻止末尾具有“ _Hourly”的所有内容，这两者的组合将阻止所有末尾具有“ _Hourly”的内容临时的名字。
 
-Mye列表看起来像`/gateway*, /recordings*,*SwitchPrograms*,/HeatSource*, *HolidayModes*`并隐藏了我工厂关闭的约180条记录中的90条。
+Mye列表看起来像`/gateway*, /recordings*,*SwitchPrograms*,/HeatSource*, *HolidayModes*`，并且隐藏了我工厂关闭的约180条记录中的90条。
 
-现在还有另外两种时间表，即快速（对于状态轮询比每30分钟快一次），对于在小时或多小时循环中轮询的状态来说速度慢。
-这使您可以跟踪一些信息，如1-5分钟循环的温度和正常20分钟循环中的其他项目。通常不会在一小时内改变的那些（如_Daily $或_Monthly $和severyl其他一般数据）即使每30分钟也不需要阅读，因为它们不会改变。
-这种策略有助于获得更快的重要数据读数和更慢的读数，而不是那么重要。
+现在还有其他两个时间表，快速（对于以30分钟为单位的轮询状态）和慢速（以小时或数小时为周期的轮询状态）。
+这使您可以跟踪某些信息，例如1-5分钟周期内的温度以及正常20分钟周期内的其他项目。通常在一个小时内不会改变的数据（例如_Daily $或_Monthly $和Severyl其他常规数据）即使每30分钟也不需要读取，因为它们不会改变。
+该策略有助于获得重要数据的更快读数，而对于不太重要的数据则可以降低读数。
 
-用于记录的数据是加热系统内的（小）历史数据。有3种不同的可用：_Hourly，_Daily和Monthly。
-在过去48小时内每小时覆盖一次。 _每日过去2个月，每月不超过一年，全部来自当前的读数时间。某些数据点确实显示较少的数据点。
-您必须了解适配器从每个记录的数据点的3个单独调用中收集数据！
+用于记录的数据是加热系统内的（小）历史数据。共有3种可用选项：_小时，_每日和每月。
+每小时通常覆盖过去48小时。 _最近两个月每天一次，每月不超过一年，全部从当前读数时间开始。某些数据点确实显示较少的数据点。
+您必须了解适配器针对每个记录的数据点从3个单独的调用中收集数据！
 
-`switchPrograms`现在也可以重新编写，它是一个反映工作日数组的JSON-String，请不要更改格式，只需更改上传时的数字。似乎数字是分钟只能设置为15分钟增量！
+`switchPrograms`也可以立即编写，它是一个JSON-String，它反映了一个工作日数组，请不要更改格式，上传时请仅更改数字。似乎分钟数只能设置为15分钟增量！
 
-从V 1.1.2开始，括号和逗号可以省略，阻塞/推送值只能用逗号写！
+从V 1.1.2开始，括号和逗号可以省略，被阻止/推入的值只能用逗号写！
 
-系统使用结构类似于目录树的服务，并在适配器中复制。
+该系统使用结构类似于目录树的服务，并将其复制到适配器中。
 
-###如果km200从版本1.1更新，则很重要。*
-如果您输入了64个字符的访问密钥，则不需要密码，但不应将其留空，只需写入任何内容即可！
+###如果km200是从1.1版更新的，则很重要。*
+如果您输入了64个字符的访问密钥，则不需要密码，但不要将其留空，只需输入任何内容即可！
 
 ##重要
 *适配器需要节点> = v6.1。*
 
 ＃＃ 去做
-*附加语言支持和文本翻译
+*其他语言支持和文本翻译
 
 ## Changelog
+
+### 2.0.3
+
+* Adapter config update
+* Blacklist is working now for any combination
+* Added option not to delete unsused states
 
 ### 1.9.9
 
@@ -157,7 +166,8 @@ Cleaning of objects / states for current adapters instance which are not part of
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2016 Frank Joke 
+Copyright (c) 2016-2020 Frank Joke <frankjoke@hotmail.com>
+Includes communications and crypto routines copyright (c) 2014 Andreas Hahn km200@andreashahn.info
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

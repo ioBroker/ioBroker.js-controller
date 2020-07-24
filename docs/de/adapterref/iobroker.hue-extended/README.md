@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hue-extended/README.md
 title: ioBroker.hue-erweitert
-hash: jLtZ+1cQsa9An1Ur/QRqlhsg7yaNh1f7ZGHioNgmOCg=
+hash: sBrCWO4MEpdKluxvRIDbaHch4XEonRKGqBodYFjMWZ8=
 ---
 ![Logo](../../../en/adapterref/iobroker.hue-extended/admin/hue-extended.png)
 
@@ -15,10 +15,11 @@ hash: jLtZ+1cQsa9An1Ur/QRqlhsg7yaNh1f7ZGHioNgmOCg=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.hue-extended.svg)
 ![NPM](https://nodei.co/npm/iobroker.hue-extended.png?downloads=true)
 
-# IoBroker.hue-erweitert Verbinden Sie Ihre Philips Hue Lights mit ioBroker.
+# IoBroker.hue-erweitert Verbinden Sie Ihre Philips Hue- und / oder deCONZ-Geräte mit ioBroker
 [![Travis CI] (https://travis-ci.com/Zefau/ioBroker.hue-extended.svg?branch=master)](https://travis-ci.com/Zefau/ioBroker.hue-extended)
 
 ## Eigenschaften
+- Unterstützt sowohl Philips Hue- als auch deCONZ-Geräte
 - Lichter synchronisieren
 - Gruppen synchronisieren
 - Synchronisieren Sie Szenen (einschließlich GroupScenes, LightScenes und Szenen aus [HueLabs] (https://labs.meethue.com/)).
@@ -29,22 +30,48 @@ hash: jLtZ+1cQsa9An1Ur/QRqlhsg7yaNh1f7ZGHioNgmOCg=
 - Regeln synchronisieren
 - Triggeränderungen bei den Zuständen "Ein / Aus", "Helligkeit" ("Pegel"), "Farbton", "Sättigung", "XY", "Farbtemperatur", "Alarm", "Effekt" und "Übergangszeit"
 - Zusätzliche Trigger basierend auf Farbräumen für `rgb`,` hsv` und` hex`
-- Wenden Sie eine eigene Befehlskombination mit dem Trigger `_commands` an
+- Wenden Sie eine eigene Befehlskombination mit dem Trigger "_commands" an
 - Kontrollieren Sie die Lichter aller Gruppen gleichzeitig mit der Gruppe "0-all"
 - Führen Sie eine Szene aus oder wenden Sie "_scene" auf Licht oder Gruppe an
 
 ## Changelog
 
-Please also see [release page](https://github.com/Zefau/ioBroker.hue-extended/releases) for changelog and detailed information.
+### 2.0.0 (2020-07-14)
+- (Zefau) Support for [deCONZ REST API](https://dresden-elektronik.github.io/deconz-rest-doc/) (meaning support for Conbee / Conbee II stick)
 
-### 1.2.3 (2019-02-21)
+### 1.3.8 (2020-07-05)
+- (Zefau) fixed long-time polling for connection retry after connection fails serval times on short-time polling (see [#58](https://github.com/Zefau/ioBroker.hue-extended/issues/58))
+
+### 1.3.7 (2020-07-01)
+- (Zefau) added additional verification checks of the response received from the Hue Bridge (see [#45](https://github.com/Zefau/ioBroker.hue-extended/issues/45))
+- (Zefau) fixed long-time polling for connection retry after connection fails serval times on short-time polling (see [#58](https://github.com/Zefau/ioBroker.hue-extended/issues/58))
+
+### 1.3.6 (2020-05-31)
+- (Zefau) added long-time polling for connection retry after connection fails serval times on short-time polling (see [#58](https://github.com/Zefau/ioBroker.hue-extended/issues/58))
+
+### 1.3.5 (2020-05-23)
+- (Zefau) added action `onOffAllLights` for groups to reflect state of ALL lights and turn on/off all lights at once (respectively, the `on` state for groups reflects the state of `any_on`).
+
+### 1.3.2 (2020-04-01)
+- (Zefau) fixed `on` state being disappeared
+
+### 1.3.1 (2020-03-24)
+- (Zefau) added check for http status code to the response received from the Hue Bridge (see [#45](https://github.com/Zefau/ioBroker.hue-extended/issues/45))
+- (Zefau) second try changing state `on` of a group to match state `any_on` (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))
+
+### 1.3.0 (2020-03-04)
+- (Zefau) added option to only set devices in a group which are already turned on (thus devices which are off are not set) (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))
+- (Zefau) added option to set `brightness` / `level` to 0 when device is not reachable (see [#38](https://github.com/Zefau/ioBroker.hue-extended/issues/38))
+- (Zefau) change state `on` of a group to match state `any_on` (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))
+
+### 1.2.3 (2020-02-21)
 - (Zefau) added `Signify` (formerly Philips Lighting) as official manufacturer
 - (Zefau) updated dependencies
 
-### 1.2.2 (2019-02-04)
-- (Zefau) fixed wrong group state (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))
+### 1.2.2 (2020-02-04)
+- ~(Zefau) fixed wrong group state (see [#19](https://github.com/Zefau/ioBroker.hue-extended/issues/19))~
 
-### 1.2.1 (2019-02-03)
+### 1.2.1 (2020-02-03)
 - (Zefau) fixed failing secure connection when selecting default certificates
 
 ### 1.2.0 (2019-11-23)

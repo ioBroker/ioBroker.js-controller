@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.innogy-smarthome/README.md
 title: ioBroker.Innogy-SmartHome
-hash: 0MpE/iZh8Vs/Sks6ytcNYbivpUhBpF3IeUUfM60iCUQ=
+hash: Rs8xNlbQlKEQTU86OLLUr0tNLzzFSJ/b4bsgMbaLt/o=
 ---
 ![Logo](../../../en/adapterref/iobroker.innogy-smarthome/admin/innogy-smarthome.png)
 
@@ -11,13 +11,29 @@ hash: 0MpE/iZh8Vs/Sks6ytcNYbivpUhBpF3IeUUfM60iCUQ=
 ![Bauen](https://travis-ci.org/PArns/ioBroker.innogy-smarthome.svg?branch=master)
 
 # IoBroker.Innogy-SmartHome
-Dieser Adapter wird verwendet, um die Innogy SmartHome-Geräte an den ioBroker anzuschließen. Sie können mehr über Innogy [Hier](https://www.innogy.com) lesen.
+Mit diesem Adapter werden die Innogy-Smarthome-Geräte mit ioBroker verbunden. Sie können mehr über Innogy [Hier](https://www.innogy.com) lesen.
 
-### Erfordert Knoten> 6.x
+### Benötigt Knoten> 8.x.
 ## STELLENANGEBOTE!
-Da dieses Projekt in meiner Freizeit entwickelt wird, suche ich aktiv nach Hilfe, um diese Bibliothek zu erhalten und zu erweitern! Wenn Sie bereit sind zu helfen, schreiben Sie mir eine Nachricht!
+Da dieses Projekt in meiner Freizeit entwickelt wird, suche ich aktiv nach Hilfe, um diese Bibliothek zu pflegen und zu erweitern! Wenn Sie bereit sind zu helfen, schreiben Sie mir eine Nachricht!
 
 ## Changelog
+
+### 0.3.6
+    Fixed authorization issues
+
+### 0.3.5
+    Updated authorization endpoint
+    Added shutter
+
+### 0.3.4
+    Make Hue bulbs writeable (brightness)
+    
+### 0.3.3
+    Fixed non switchable variables for new installations (missing native ID)
+
+### 0.3.2
+    Added more Hue properties
 
 ### 0.3.1
     Added PowerControl
@@ -179,4 +195,4 @@ Da dieses Projekt in meiner Freizeit entwickelt wird, suche ich aktiv nach Hilfe
 ## License
 MIT
 
-Copyright (c) 2017 Patrick Arns <iobroker@patrick-arns.de>
+Copyright (c) 2020 Patrick Arns iobroker@patrick-arns.de
