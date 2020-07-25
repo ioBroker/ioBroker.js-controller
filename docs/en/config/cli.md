@@ -336,7 +336,7 @@ Used to modify instance settings from console. Following settings can be modifie
 - enabled - enable/disable the instance (Can be done with ```iobroker start|stop <instance>``` too)
 - ip - change binded ip address
 - auth - enable or disable authentication
-- ssl - switch SSL protocol on or off
+- secure - switch SSL protocol on or off
 - ttl - login timeout in seconds
 
 ## iobroker state get

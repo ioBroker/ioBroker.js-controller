@@ -331,7 +331,7 @@ Zum Ändern von Instanzeinstellungen von der Konsole aus. Folgende Einstellungen
 - enabled - Aktivieren/Deaktivieren der Instanz (Kann auch mit ```iobroker start|stopp <Instanz>``` durchgeführt werden)
 - ip - Gebundene IP-Adresse ändern
 - auth - Authentifizierung aktivieren oder deaktivieren
-- ssl - SSL-Protokoll ein- oder ausschalten
+- secure - SSL-Protokoll ein- oder ausschalten
 - TTL - Login Timeout in Sekunden
 
 ## iobroker state get

@@ -345,7 +345,7 @@ ID可以是带有'\ *'的模式。 '\ *'只能在模式末尾。
 -启用-启用/禁用实例（也可以通过“ iobroker start | stop <instance>`”来完成）
 -ip-更改绑定的IP地址
 -身份验证-启用或禁用身份验证
--ssl-开启或关闭SSL协议
+-secure-开启或关闭SSL协议
 -ttl-登录超时（以秒为单位）
 
 ## Iobroker状态获取
