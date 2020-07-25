@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.deconz/README.md
 title: kein Titel
-hash: Lpc1lMo8cEXyj/BIE9Etwj8yvOpKApVD2rVcdx5k0VI=
+hash: FLHWHrOmg0yl72zz1opWFDy7/2QNeoBUrpsRZPfI38s=
 ---
 ![Logo](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -39,6 +39,15 @@ Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Sof
     * Passwort eingeben (wird beim ersten Login auf der Phoscon APP festgelegt)
   * **Alternative:** Öffnen Sie die Phoscon APP -> Menü -> Einstellungen -> Gateway -> Erweitert -> Gateway entsperren
 
+#### Mehr als einen Befehl gleichzeitig senden
+Zu diesem Zweck gibt es ein Objekt namens "Aktion".
+
+Beispiele:
+
+`"on": true, "xy": [0.6586,0.3138]`
+
+`"on": true, "transitiontime": 5, "hue": 65500`
+
 ## Deutsche
 Verbindet mit der von dresden-elektronik erled deConz-Software. Diese Software soll eine universelle ZigBee Gateway-Lösung sein, die Hardware von dresden-elektronik, ConBee USB-Stick und RaspBee, ein Modul für den Raspberry Pi, verwendet.
 
@@ -57,8 +66,8 @@ Verbindet mit der von dresden-elektronik erled deConz-Software. Diese Software s
     * Passwort
    * **Alterantiv:** Phoscon APP öffnen -> Menü -> Einstellungen -> Gateway -> Erweitert -> Auf "App gehört" klicken
 
-#### Mehr als einen Befehl gleichzeitig senden
-Zu diesem Zweck gibt es ein Objekt namens "Aktion".
+#### Mehr als ein Befehl senden
+Dafür gibt es das Objekt "Aktion".
 
 Beispiele:
 

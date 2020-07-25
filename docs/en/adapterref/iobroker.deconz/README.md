@@ -28,6 +28,15 @@ Connects to deConz software developed by dresden-elektronik. This software aims 
 5.  * Enter username (Standard is delight)
     * Enter password (is set during first login on Phoscon APP)
     * **Alternative:** Open Phoscon APP -> Menu -> Settings -> Gateway -> Advanced -> Unlock Gateway
+    
+#### Send more than one command at the same time
+For this purpose there is a object called "action".
+
+Examples:
+
+`"on": true, "xy": [0.6586,0.3138]`
+
+`"on": true, "transitiontime": 5, "hue": 65500`
 
 ## German
 
@@ -46,10 +55,10 @@ Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Sof
     * Passwort (wird beim ersten Anmelden in der Phoscon APP vergeben) eingeben
      * **Alterantiv:** Phoscon APP öffnen -> Menü -> Einstellungen -> Gateway -> Erweitert -> Auf "App verbinden" klicken
       
-#### Send more than one command at the same time
-For this purpose there is a object called "action".
+#### Mehr als einen Befehl senden
+Dafür gibt es das Objekt "action".
 
-Examples:
+Beispiele:
 
 `"on": true, "xy": [0.6586,0.3138]`
 

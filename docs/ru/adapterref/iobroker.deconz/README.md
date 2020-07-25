@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.deconz/README.md
 title: без названия
-hash: Lpc1lMo8cEXyj/BIE9Etwj8yvOpKApVD2rVcdx5k0VI=
+hash: FLHWHrOmg0yl72zz1opWFDy7/2QNeoBUrpsRZPfI38s=
 ---
 ![логотип](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -39,6 +39,15 @@ ioBroker deConz Дрезден-Электроник Адаптер
     * Введите пароль (устанавливается при первом входе в Phoscon APP)
   * **Альтернатива:** Откройте приложение Phoscon -> Меню -> Настройки -> Шлюз -> Дополнительно -> Разблокировать шлюз
 
+#### Отправлять более одной команды одновременно
+Для этого есть объект под названием «действие».
+
+Примеры:
+
+`"on": true, "xy": [0.6586,0.3138]`
+
+`"on": true, "transitiontime": 5, "hue": 65500`
+
 ## Немецкий
 Verbinde Mit der Von Dresden-Elektronik Entwickelten DeConz-Software. Программное обеспечение Diese от компании ZigBee Gateway-Lösung Sein, Die Die Hardware Аппаратное обеспечение от USB-флешки ConBee и RaspBee, Ein Modul fur den Raspberry Pi, verwendet.
 
@@ -57,10 +66,10 @@ Verbinde Mit der Von Dresden-Elektronik Entwickelten DeConz-Software. Прогр
     * Passwort (вирд бейм эрстен Anmelden в дер Фоскон APP Vergeben) Eingeben
    * **Alterantiv:** Phoscon APP öffnen -> Меню -> Einstellungen -> Ворота -> Erweitert -> Auf "App verbinden" klicken
 
-#### Отправлять более одной команды одновременно
-Для этого есть объект под названием «действие».
+#### Mehr als einen Befehl senden
+Dafür gibt es das Objekt "действие".
 
-Примеры:
+Beispiele:
 
 `"on": true, "xy": [0.6586,0.3138]`
 

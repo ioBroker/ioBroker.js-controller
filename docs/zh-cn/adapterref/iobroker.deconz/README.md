@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.deconz/README.md
 title: 无题
-hash: Lpc1lMo8cEXyj/BIE9Etwj8yvOpKApVD2rVcdx5k0VI=
+hash: FLHWHrOmg0yl72zz1opWFDy7/2QNeoBUrpsRZPfI38s=
 ---
 ![商标](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -39,6 +39,15 @@ ioBroker deConz dresden-elektronik适配器
     *输入密码（在首次登录Phoscon APP时设置）
     * **替代方法：**打开Phoscon APP->菜单->设置->网关->高级->解锁网关
 
+####同时发送多个命令
+为此，存在一个称为“动作”的对象。
+
+例子：
+
+`"on": true, "xy": [0.6586,0.3138]`
+
+`"on": true, "transitiontime": 5, "hue": 65500`
+
 ##德语
 Verbindet mit der von Dresden-elektronik entwickelten deConz软件。 Diese Software独家介绍了ZigBeeGateway-Lösung网关，硬件von Dresden-elektronik，ConBee USB-Stick和RaspBee，Modulfürden Raspberry Pi，verwendet。
 
@@ -57,10 +66,10 @@ Verbindet mit der von Dresden-elektronik entwickelten deConz软件。 Diese Soft
     * Passwort（在Phoscon APP vergeben中的无线beim ersten Anmelden）
      * **替代：** Phoscon应用程序->菜单-> Einstellungen->网关-> Erweitert-> Auf“ App verbinden” klicken
 
-####同时发送多个命令
-为此，存在一个称为“动作”的对象。
+#### Mehr als einen Befehl senden
+Dafürgibt es das Objekt“行动”。
 
-例子：
+贝斯比勒：
 
 `"on": true, "xy": [0.6586,0.3138]`
 
