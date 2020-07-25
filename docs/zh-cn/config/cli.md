@@ -339,7 +339,7 @@ rw-r--r--                    admin  administrator system.adapter.admin.0
 ID可以是带有'\ *'的模式。 '\ *'只能在模式末尾。
 
 ## Iobroker套装
-完整语法：```iobroker set <instance> [--port value] [--enabled true|false] [--ip address] [--auth true|false] [--ssl true|false] [—-ttl value]```§用于从控制台修改实例设置。可以修改以下设置：
+完整语法：```iobroker set <instance> [--port value] [--enabled true|false] [--ip address] [--auth true|false] [--secure true|false] [—-ttl value]```§用于从控制台修改实例设置。可以修改以下设置：
 
 -端口-更改绑定实例的端口
 -启用-启用/禁用实例（也可以通过“ iobroker start | stop <instance>`”来完成）

@@ -330,7 +330,7 @@ rw-r--r--                    admin  administrator system.adapter.admin.0
 ID can be a pattern with '\*'. '\*' can be only at the end of pattern.
 
 ## iobroker set
-Full syntax: ```iobroker set <instance> [--port value] [--enabled true|false] [--ip address] [--auth true|false] [--ssl true|false] [—-ttl value]```
+Full syntax: ```iobroker set <instance> [--port value] [--enabled true|false] [--ip address] [--auth true|false] [--secure true|false] [—-ttl value]```
 Used to modify instance settings from console. Following settings can be modified:
 - port - change port, where the instance is bound
 - enabled - enable/disable the instance (Can be done with ```iobroker start|stop <instance>``` too)

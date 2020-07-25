@@ -339,7 +339,7 @@ rw-r--r--                    admin  administrator system.adapter.admin.0
 Идентификатор может быть шаблоном с '\ *'. '\ *' может быть только в конце шаблона.
 
 ## Iobroker set
-Полный синтаксис: ```iobroker set <instance> [--port value] [--enabled true|false] [--ip address] [--auth true|false] [--ssl true|false] [—-ttl value]``` Используется для изменения настроек экземпляра из консоли. Следующие настройки могут быть изменены:
+Полный синтаксис: ```iobroker set <instance> [--port value] [--enabled true|false] [--ip address] [--auth true|false] [--secure true|false] [—-ttl value]``` Используется для изменения настроек экземпляра из консоли. Следующие настройки могут быть изменены:
 
 - порт - изменить порт, к которому привязан экземпляр
 - enabled - включить / отключить экземпляр (также можно сделать с помощью `` `iobroker start | stop <instance>` ``)

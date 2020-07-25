@@ -323,7 +323,7 @@ rw-r--r--                    admin  administrator system.adapter.admin.0
 ID kann ein Muster mit '\*' sein. '\*' kann nur am Ende des Musters sein.
 
 ## iobroker set
-Vollständige Syntax: ```iobroker set <instance> [--port value] [--enabled true|false] [--ip address] [--auth true|false] [--ssl true|false] [—-ttl value]``` 
+Vollständige Syntax: ```iobroker set <instance> [--port value] [--enabled true|false] [--ip address] [--auth true|false] [--secure true|false] [—-ttl value]``` 
 
 Zum Ändern von Instanzeinstellungen von der Konsole aus. Folgende Einstellungen können geändert werden:
 
