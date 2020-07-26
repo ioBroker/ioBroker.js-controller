@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nuki/README.md
 title: ioBroker.nuki
-hash: lSBuy3wO8xLRxMA6Xtr5F9HnepPcxBhxncvEdZEyjtQ=
+hash: 0NwI4F2l9JM+WLttJWlD5gTrvhhGycNLkvJzpvrV7So=
 ---
 ![Logo](../../../en/adapterref/iobroker.nuki/admin/nuki-logo.png)
 
@@ -22,17 +22,20 @@ Dieser ioBroker-Adapter ermöglicht die Steuerung und Überwachung der [Nuki Sma
 * Ein Nuki Smart Lock und / oder ein Nuki Opener.
 * Eine laufende Instanz von ioBroker.
 
-## Verwendungszweck
-Jede Instanz des Nuki-Adapters repräsentiert eine Nuki-Brücke. Geben Sie beim Erstellen einer Instanz einfach die IP-Adresse, den Port und das Token Ihrer Nuki-Bridge ein. Der Name ist optional und wird automatisch generiert, wenn er leer gelassen wird. Das Kontrollkästchen "Rückruf verwenden" und der Wert "Rückrufport in ioBroker" sind optional und können gesetzt werden, um die Rückruffunktion des Nuki zu nutzen. Nach dem Speichern einer Instanz wird für jede Nuki-Sperre, die mit der angegebenen Nuki-Brücke verbunden ist, ein Bridge-Gerät mit einem Kanal erstellt. Die Kanäle liefern den aktuellen Status der Nuki-Sperre als Ausgabeparameter:
+## Verwendung
+Jede Instanz des Nuki-Adapters repräsentiert eine Nuki-Brücke. Geben Sie beim Erstellen einer Instanz einfach die IP-Adresse, den Port und das Token Ihrer Nuki-Bridge ein. Der Name ist optional und wird automatisch generiert, wenn er leer gelassen wird. Das Kontrollkästchen "Rückruf verwenden" und der Wert "Rückrufport in ioBroker" sind optional und können gesetzt werden, um die Rückruffunktion des Nuki zu nutzen. Nach dem Speichern einer Instanz wird für jedes Nuki-Schloss, das mit der angegebenen Nuki-Brücke verbunden ist, ein Bridge-Gerät mit einem Kanal erstellt. Die Kanäle liefern den aktuellen Status der Nuki-Sperre als Ausgabeparameter:
 
 * Batteriekritisch: Anzeige für schwache Batterie
+* deviceType: Typ des Nuki-Geräts (Smart Lock oder Opener)
+* Modus: Betriebsmodus des Nuki-Geräts
+* doorState: Aktueller (numerischer) Türsensorstatus (Nuki native)
 * lockState: Zeigt an, ob Nuki gesperrt ist (nur Nuki Smart Lock)
 * state: Aktueller (numerischer) Sperrstatus (Nuki native)
 * Zeitstempel: Zuletzt aktualisiert
 
 Zusätzlich bieten die Kanäle Eingangsparameter, die eine grundlegende Steuerung des Nuki-Schlosses ermöglichen:
 
-* action: Numerischer Aktionscode zum Festlegen des Nuki-Status (Nuki native)
+* action: Numerischer Aktionscode zum Einstellen des Nuki-Status (Nuki native)
 
 Gültige Eingabewerte für Sperren sind:
 
@@ -41,7 +44,7 @@ Gültige Eingabewerte für Sperren sind:
 * lockAction: Schalter zum Sperren / Entsperren des Nuki (true = entsperren; false = sperren)
 * openAction: Taste zum Entriegeln des Nuki
 * openLocknGoAction: Taste zum Entriegeln und nach einigen Sekunden zum Sperren des Nuki
-*lockLocknGoAction: Taste zum Entsperren und nach einigen Sekunden zum Sperren des Nuki
+* refreshLocknGoAction: Taste zum Entsperren und nach einigen Sekunden zum Sperren des Nuki
 
 Gültige Eingabewerte für Opener sind:
 
@@ -73,9 +76,12 @@ Entfernen:
 * http:// <bridge_ip>: <bridge_port> / callback / remove? id = <Rückruf-ID> & token = <bridgeToken>
 
 ## Update
-Beim Update von 1.0.x auf 1.1.0 oder höher wird empfohlen, alle Instanzen der alten Version zu löschen, bevor Sie die neue Version installieren. Bitte beachten Sie, dass Versionsänderungen, die größer als auf Patch-Ebene sind (-> Änderung nur der letzten Ziffer), immer Änderungen an Datenpunkten enthalten können, z. 1.1.2 bis 1.1.4
+Bei einem Update von 1.0.x auf 1.1.0 oder höher wird empfohlen, alle Instanzen der alten Version zu löschen, bevor Sie die neue Version installieren. Bitte beachten Sie, dass Versionsänderungen, die größer als auf Patch-Ebene sind (-> Änderung nur der letzten Ziffer), immer Änderungen an Datenpunkten enthalten können, z. 1.1.2 bis 1.1.4
 
 ## Changelog
+
+### 1.3.0
+* (smaragdschlange) improvement: support of doorsensor states
 
 ### 1.2.3
 * (smaragdschlange) bug fix: convert to template strings

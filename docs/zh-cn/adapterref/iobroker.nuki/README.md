@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nuki/README.md
 title: ioBroker.nuki
-hash: lSBuy3wO8xLRxMA6Xtr5F9HnepPcxBhxncvEdZEyjtQ=
+hash: 0NwI4F2l9JM+WLttJWlD5gTrvhhGycNLkvJzpvrV7So=
 ---
 ![商标](../../../en/adapterref/iobroker.nuki/admin/nuki-logo.png)
 
@@ -23,9 +23,12 @@ hash: lSBuy3wO8xLRxMA6Xtr5F9HnepPcxBhxncvEdZEyjtQ=
 * ioBroker的运行实例。
 
 ##用法
-Nuki适配器的每个实例都代表一个Nuki桥。创建实例时，只需输入Nuki网桥的IP地址，端口和令牌。该名称是可选的，如果留空则将自动生成。复选框“使用回调”和值“ ioBroker中的回调端口”是可选的，可以进行设置以便利用Nuki的回调功能。保存实例后，将创建一个桥设备，该桥设备具有一个通道，用于连接到指定Nuki桥的每个Nuki锁。通道提供Nuki锁定的当前状态作为输出参数：
+Nuki适配器的每个实例都代表一个Nuki桥。创建实例时，只需输入Nuki网桥的IP地址，端口和令牌。该名称是可选的，如果留空则将自动生成。复选框“使用回调”和值“ ioBroker中的回调端口”是可选的，可以进行设置以便利用Nuki的回调功能。保存实例后，将创建一个桥设备，该桥设备的每个Nuki锁都有一个通道，该锁连接到指定的Nuki桥。通道提供Nuki锁定的当前状态作为输出参数：
 
 *电池严重：电池电量低指示器
+* deviceType：Nuki设备的类型（Smart Lock或Opener）
+*模式：Nuki设备的操作模式
+* doorState：当前（数字）门传感器状态（Nuki本机）
 * lockState：指示Nuki是否已锁定（仅Nuki Smart Lock）
 *状态：当前（数字）锁定状态（Nuki本机）
 *时间戳：最近更新
@@ -36,12 +39,12 @@ Nuki适配器的每个实例都代表一个Nuki桥。创建实例时，只需输
 
 锁的有效输入值为：
 
-0（无动作）1（解锁）2（锁定）3（解锁）4（锁定“ n”转到）5（锁定“ n”与解锁一起转到）
+0（无动作）1（解锁）2（锁定）3（解锁）4（锁定“ n”前进）5（锁定“ n”进行解锁）
 
 * lockAction：锁定/解锁Nuki的开关（true =解锁； false =锁定）
 * openAction：用于解锁Nuki的按钮
-* openLocknGoAction：用于解锁并在锁定Nuki几秒钟后的按钮
-* unlockLocknGoAction：解锁按钮，几秒钟后锁定Nuki
+* openLocknGoAction：解锁按钮，并在几秒钟后锁定Nuki
+* unlockLocknGoAction：用于解锁并在锁定Nuki几秒钟后的按钮
 
 开罐器的有效输入值为：
 
@@ -61,7 +64,7 @@ Nuki适配器的每个实例都代表一个Nuki桥。创建实例时，只需输
 
 {“ token”：“ token123”，“ success”：true}回调函数：
 
-如果使用了回调函数，则在保存实例时，适配器将尝试在Nuki桥上自动设置回调。实例卸载后，回调将再次被删除。激活回调后，Nuki桥将使所有Nuki状态保持最新。
+如果使用了回调函数，则在保存实例时，适配器将尝试在Nuki桥上自动设置回调。实例卸载后，回调将再次被删除。激活回调时，Nuki桥将使所有Nuki状态保持最新。
 可以使用以下网址从任何浏览器中设置和删除回调：
 
 组：
@@ -73,9 +76,12 @@ Nuki适配器的每个实例都代表一个Nuki桥。创建实例时，只需输
 * http：// <bridge_ip>：<bridge_port> / callback / remove？id = <callback_id>＆token = <bridgeToken>
 
 ##更新
-从1.0.x更新到1.1.0或更高版本时，建议在安装新版本之前删除所有旧版本的实例。请注意，版本更改大于补丁程序级别（->仅更改最后一位数字）可能始终包含对数据点的更改，例如1.1.2至1.1.4
+从1.0.x更新到1.1.0或更高版本时，建议在安装新版本之前删除旧版本的所有实例。请注意，版本更改大于补丁程序级别（->仅更改最后一位数字）可能始终包含对数据点的更改，例如1.1.2至1.1.4
 
 ## Changelog
+
+### 1.3.0
+* (smaragdschlange) improvement: support of doorsensor states
 
 ### 1.2.3
 * (smaragdschlange) bug fix: convert to template strings

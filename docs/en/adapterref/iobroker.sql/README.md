@@ -404,6 +404,9 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 
 ## Changelog
 
+### 1.15.2 (2020-07-26)
+* (Apollon77) prevent wrong errors that realId is missing
+
 ### 1.15.1 (2020-07-20)
 * (Apollon77) implement a workaround for postgres problem
 

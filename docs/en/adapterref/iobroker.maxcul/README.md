@@ -24,7 +24,7 @@ E.g. for thermostats press longer the "boost" button till the countdown will sta
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 1.3.1 (2020-07-26)
 * (bowao) Fix unhandled exception
 * (bowao) Fix serial port selection
 * (Apollon77) Update dependencies

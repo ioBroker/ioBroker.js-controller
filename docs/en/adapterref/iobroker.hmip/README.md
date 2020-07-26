@@ -49,6 +49,10 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
 
+### 1.2.0 (2020-07-26)
+* (saschaabraham) Added an active property INTERNAL and EXTERNAL groups for alarm zones
+* (marcus0303/slix185) added DOOR_CHANNEL properties
+
 ### 1.1.1 (2020-07-23)
 * (Apollon77) Crash prevented if object is deleted by state changed (Sentry IOBROKER-HMIP-Y)
 

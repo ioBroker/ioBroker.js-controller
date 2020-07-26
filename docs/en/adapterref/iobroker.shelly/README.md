@@ -58,8 +58,8 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### __WORK IN PROGRESS__
-* (Apollon77) Update shelly-iot library to prevent some errors
+### 3.3.6 (26.07.2020)
+* (Stübi) - Bugfixing temperature for Shelly Dimmer (Issue #201)
 
 ### 3.3.5 (04.07.2020)
 * (Stübi) - Add Shelly 4 Pro

@@ -123,6 +123,9 @@ Just now it can detect via ping, UPnP (serial planned).
 
 ## Changelog
 
+### 2.3.10 (2020-07-26)
+* (MiSchroe) Discovery Velux KLF-200 updated to new firmware
+
 ### 2.3.9 (2020-07-17)
 * (Apollon77) Add error handling to onvif discovery (Sentry IOBROKER-DISCOVERY-13)
 * (Apollon77) Add error handling to smapee discovery (Sentry IOBROKER-DISCOVERY-14)

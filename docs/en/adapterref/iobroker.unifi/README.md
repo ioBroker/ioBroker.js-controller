@@ -71,7 +71,7 @@ The adapter uses [node-unifi](https://github.com/jens-maus/node-unifi) to connec
 * The is_wired state of clients is incorrect after a client went offline. This is a known issue of the UniFi controller and is not related to the adapter. (see https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
 
 ## Changelog
-### 0.5.6-beta.2 (2020-07-05)
+### 0.5.6 (2020-07-25)
 * (Scrounger, braindead1) Implemented Alarms, DPI & Gateway Traffic
 * (braindead1) Prevented creation of ghost clients caused by iOS MAC randomization
 * (dklinger) Implemented manual update trigger
