@@ -4,7 +4,7 @@ lastChanged: 29.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/README.md
-hash: zXmLY37BrXLXEEK0qPTJJS1P7D1xyThnaN6I0EG2bWQ=
+hash: px6bpErZjO66gEuP+0JuB0e6LukKiwa1dCs0CLvZZpk=
 ---
 # Welcome to ioBroker
 !> **Note for beginners** If too many unknown terms have already been used when reading these first words, they are explained again in detail on [next page](./basics/README.md).
@@ -17,7 +17,7 @@ An ioBroker system has a modular structure. A variety of ***adapters*** enable c
 
 Be it the integration of commercial products from almost all areas of life or the integration of a self-created solution - ioBroker makes almost everything possible.
 
-!> The documentation is under construction and is constantly being expanded. As a result, links may not yet work or content may be missing. We are grateful for any help in creating new articles or for improvements. Information on this is available in [in the forum](https://forum.iobroker.net). <br><br> **Until all content has been adopted, the old documentation is still [can be found here](https://www.iobroker.net/docu/). It will be gradually replaced by the new documentation.**
+!> The documentation is under construction and is constantly being expanded. As a result, links may not yet work or content may be missing. We are grateful for any help in creating new articles or for improvements. Information on this is available in [in the forum](https://forum.iobroker.net). <br><br> **Until all content has been transferred, the old documentation is still [can be found here](https://www.iobroker.net/docu/). It will be gradually replaced by the new documentation.**
 
 ## Cross-platform
 Anyone dealing with home automation will sooner or later find that systems are often not perfect. Every system has its strengths and weaknesses. ioBroker is therefore cross-platform. Parallel operation with existing solutions is possible at any time. Synergy effects can be used and the best of all worlds can be brought together.
@@ -25,7 +25,7 @@ Anyone dealing with home automation will sooner or later find that systems are o
 ioBroker itself IS at home on almost all platforms. ioBroker can be installed on Windows, Linux, OSX or as a Docker image.
 Preconfigured installation images relieve the user of the installation work.
 
-Remote administration to a locally installed ioBroker system is possible 24/7 via an optional cloud-based access for the user or for system integrators. Access control can be freely configured by the user using users and groups.
+Remote administration to a locally installed ioBroker system 24/7 is possible for users or system integrators via optional cloud-based access. Access control can be freely configured by the user using users and groups.
 
 ## Scalable
 If additional smart home systems are to be connected over time, the user can implement them at any time using additional adapters while the system is running. ioBroker itself is also scalable.
@@ -34,9 +34,9 @@ It is even possible to mix operating system platforms and couple SoC single-boar
 For systems with the highest performance requirements, Redis, a particularly fast database, can optionally be integrated.
 
 Programmable
-Optional programming is done with JavaScript, a scripting language that has been continuously developed since 1995. This is easy to learn so that new requirements can be implemented quickly. This makes it possible for everyone to contribute to ioBroker and for individual requirements to be implemented.
+Optional programming is done with JavaScript, a scripting language that has been continuously developed since 1995. This is easy to learn, so that new requirements can be implemented quickly. This makes it possible for everyone to contribute to ioBroker and for individual requirements to be implemented.
 
-For beginners in programming, the 'Blockly' variant is available, which makes it possible to get results quickly by 'drag and drop' without extensive programming knowledge.
+For beginners in programming, the 'Blockly' variant is available, which makes it possible to quickly get results yourself using 'drag and drop' without extensive programming knowledge.
 
 ## Visualization
 With `VIS` ioBroker provides a powerful tool for creating an individual visualization. Current values from sensors can be displayed graphically, just like historical trends. Live images from surveillance cameras, the implementation of an alarm system, heating systems and air conditioning technology - almost everything that can be imagined can also be implemented.

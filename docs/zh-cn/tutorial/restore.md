@@ -4,7 +4,7 @@ lastChanged: 03.12.2019
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/tutorial/restore.md
-hash: 9SyQw5gWCDpvFS0ksEa7NULgmuancyWYV7tkASkVhpg=
+hash: 6M6JLNd7LLD21j0ulNOqyghHCguiQLMi21AkSJnTYyY=
 ---
 ＃ 基本
 如何在Linux系统上正确还原ioBroker安装？
@@ -36,10 +36,10 @@ Objects type: redis
 States  type: redis
 ```
 
-如果“ redis”为“对象”类型和/或“状态”类型，则必须在新系统上安装Redis服务器。
+如果对象类型和/或状态类型显示为“ redis”，则必须在新系统上安装Redis服务器。
 如果两种类型都有“文件”，则不需要Redis服务器。
 
-如果您不再拥有对旧系统的访问权限，并且不知道之前进行了确切的配置，请提前安装Redis服务器。
+如果您无法再访问旧系统，并且不知道在其中正确配置了什么，请提前安装Redis服务器。
 
 #### Redis已安装：
 为此，请通过腻子转到终端并执行以下命令：
@@ -51,7 +51,7 @@ sudo usermod -a -G redis iobroker
 sudo reboot now
 ```
 
-接下来，如果系统上的所有权限都不适合某个地方，则应让安装程序运行修复。
+如果系统上的所有权限都不适合某处，则下一步是运行安装程序修复程序。
 此步骤仅是建议，并非绝对必要。
 
 ```
@@ -73,16 +73,16 @@ sudo apt-get install htop
 这里也有两个选择：
 
 #### ** 1。通过备份自动还原**
-由于这里不需要Linux知识，并且不需要通过Iobroker的Web界面进行整个操作，因此自动还原的变体首先使用[把它备份](https://github.com/simatec/ioBroker.backitup/blob/master/README.md)进行。
+由于此处不需要Linux知识，并且不需要通过Iobroker Web界面进行整个操作，因此首先使用[把它备份](https://github.com/simatec/ioBroker.backitup/blob/master/README.md)来执行自动还原。
 
 为此，必须安装适配器Backitup。
 这是通过“适配器”选项卡完成的。在此处搜索备份，然后使用（+）安装实例。
 
-安装完成后，您可以使用sftp程序（例如FileZilla或WinSCP）将由旧系统创建的“ ioBroker Backup”保存在新系统中，路径为/ opt / iobroker / backups。
+安装完成后，您可以使用sftp程序（例如FileZilla或WinSCP）将由旧系统创建的“ ioBroker Backup”保存在新系统中，位于路径/ opt / iobroker / backups中。
 
 Backitup也可以从NAS，Dropbox或Google云端硬盘还原，但是本地变体出现问题的机会最少。
 
-如果您已经具有安装NAS的经验，那么也可以使用它，特别是因为您可以直接访问旧安装的现有目录。
+如果您已经具有安装NAS的经验，那么也可以使用它，尤其是因为您可以直接访问旧安装的现有目录。
 但是，本教程涉及本地保存的备份。
 
 如果已成功保存ioBroker Backup，则现在将打开Backitup并打开“还原”选项卡。
@@ -100,7 +100,7 @@ Backitup也可以从NAS，Dropbox或Google云端硬盘还原，但是本地变�
 
 ![选择备份](../../de/tutorial/media/restore/1575301146928-restoreliste.jpg)
 
-选择后，将显示一条消息，指示iobroker已停止进行还原，然后再次启动。
+选择之后，将显示一条消息，指示iobroker已停止进行还原，然后再次启动。
 
 ![开始还原](../../de/tutorial/media/restore/1575301175231-restorestart.jpg)
 
@@ -116,13 +116,13 @@ Backitup也可以从NAS，Dropbox或Google云端硬盘还原，但是本地变�
 
 ![restoreWebUI_finish.JPG](../../de/tutorial/media/restore/restoreWebUI_finish.JPG)
 
-恢复可能需要一些时间，具体取决于系统性能和旧ioBroker安装的大小。
+恢复可能需要一些时间，具体取决于系统的性能和旧ioBroker安装的大小。
 通常，还原应在大约10-15分钟后完成，并且ioBroker应该自动重新启动。
 
 ![恢复完成](../../de/tutorial/media/restore/1575301228008-restorefinish.jpg)
 
 在极少数情况下，还原后ioBroker不会自动启动。
-在这种情况下，可以通过控制台使用以下命令手动启动iobroker。
+在这种情况下，您可以通过控制台使用以下命令手动启动iobroker。
 
 ```
 iobroker start
@@ -142,7 +142,7 @@ iobroker start
 使用Backitup，现在可以恢复更多数据，前提是该数据已在旧系统上预先备份。
 您可以按照上述相同步骤还原Redis数据库，Zigbee数据库，mySql数据库和您的历史记录数据。
 
-在示例中，检索到的备份的列表将如下所示。
+然后，检索到的备份列表将类似于此处的示例。
 
 ![完整清单](../../de/tutorial/media/restore/1575362131512-fullliste.jpg)
 
@@ -169,20 +169,20 @@ sudo mkdir /opt/iobroker/backups
 iobroker stop
 ```
 
-之后，请使用以下命令检查是否一切都停止了：
+然后，请使用以下命令检查是否已停止一切操作：
 
 ```
 iobroker status
 ```
 
-如果所有输出均正确并且iobroker已停止，则现在可以使用以下命令通过控制台执行还原：
+如果所有输出均正确且iobroker已停止，则现在可以使用以下命令通过控制台执行还原：
 
 ```
 cd /opt/iobroker
 iobroker restore <Dateiname eures Backups>
 ```
 
-！> **但是，使用此方法只能还原ioBroker备份非常重要。
+！> **在此，使用此方法只能还原ioBroker备份非常重要。
 无法使用此命令**创建Redis备份，Zigbee备份，mySql备份或历史记录数据。
 
 为此需要Backitup，因为这些是专门使用Backitup创建的。
@@ -202,6 +202,6 @@ iobroker start
 
 ###结论：
 基本上，两个变体都会导致相同的结果。
-如果您几乎没有使用终端命令的经验并且感到不安全，则Backitup会很安全。
+如果您几乎没有使用终端命令的经验，并且在那儿感到不安全，则Backitup是安全的方面。
 
-但是，如果要准确查看系统上发生的情况，则应通过控制台选择手动变量。在这里，您可以在终端中详细查看每个进程。
+但是，如果要准确查看系统上发生的情况，则应通过控制台选择手动变量。在这里，您可以在终端中详细查看每个流程。
