@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.tr-064/README.md
 title: ioBroker.tr-064
-hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
+hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 ---
 ![логотип](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
@@ -28,7 +28,7 @@ hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 
 - При использовании внешнего номера состояние вызова соединит вас с внешним номером.
 
-FritzBox позвонит по внешнему номеру, и ваш телефон по умолчанию будет звонить, когда вызываемый телефон поднят.
+FritzBox позвонит по внешнему номеру, и ваш телефон по умолчанию будет звонить, когда вызываемый телефон будет снят.
 Телефон по умолчанию можно настроить в FritsBox в разделе: Телефон / Анруфе / [Tab] Wahlhilfe / Wählhilfe verwenden
 
 ### ToPauseState

@@ -4,9 +4,9 @@ lastChanged: 25.02.2020
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/admin/adapter.md
-hash: qvQSbRQZm8KXIQYiTdmaA6YOIfFf6rsf6Qxl3hZaZ1s=
+hash: X/Dtk3wCLvsU55QtzcDQDOwJXi0HwE6E/WfBbOR0X4I=
 ---
-# The adapter tab
+# The Adapter tab
 The available and installed adapters are displayed and managed here.
 
 ## The title line
@@ -27,7 +27,7 @@ Every time you restart, updates are automatically searched for. With this button
 
 ** 4.) Show adapter with updates **
 
-When this icon is selected, only adapters for which there is an update are displayed (toggle function). The tiles of the updatable adapters have a green header. If there is no update for an adapter, a corresponding message appears.
+When this icon is selected, only adapters are displayed for which there is an update (toggle function). The tiles of the updatable adapters have a green header. If there is no update for an adapter, a corresponding message appears.
 
 Another icon also appears in the title bar:
 
@@ -35,9 +35,9 @@ Another icon also appears in the title bar:
 
 Clicking this icon (8) updates all available adapters.
 
-** 5.) Install adapter from your own URL **
+** 5.) Install adapter from own URL **
 
-** ATTENTION: **** Using this option can lead to problems with your ioBroker installation.** GitHub adapters may not work properly (as they are still under development). It is recommended to wait for a stable version instead of using this option. If you use this icon to install an adapter, you download a development status of an adapter that should not be used in a production system.
+** ATTENTION: **** Using this option can cause problems with your ioBroker installation.** GitHub adapters may not work properly (as they are still under development). It is recommended to wait for a stable version instead of using this option. If you use this icon to install an adapter, you download a development status of an adapter that should not be used in a production system.
 
 The Octocat icon can be used to install adapters from your own paths (URL or file paths) or pre-versions of GitHub.
 
@@ -45,13 +45,13 @@ After clicking this icon, a corresponding selection window opens:
 
 ![Install GitHub](../../de/admin/media/ADMIN_Adapter_GitHub.png)
 
-Under the ***FROM GITHUB*** tab, simply select the desired adapter in the pulldown menu and the latest pre-version will be installed.
+Under the ***FROM GITHUB*** tab, simply select the desired adapter in the pull-down menu and the latest preliminary version will be installed.
 
 If you select the ***ANY*** tab, you can enter any file path or URL (e.g. a URL to an external adapter developer) in the field and install the corresponding adapter.
 
 ** 6.) Switch on expert mode **
 
-Expert mode also allows older versions of an adapter to be installed. If this button (9) is selected, an additional icon appears in the tile which can be used to install earlier versions.
+Expert mode also allows older versions of an adapter to be installed. If this button (9) is selected, an additional icon appears in the tile, which can be used to install earlier versions.
 
 ![Install other versions](../../de/admin/media/ADMIN_Adapter_Kachel_versions.png)
 

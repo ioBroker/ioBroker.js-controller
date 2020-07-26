@@ -4,13 +4,13 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tr-064/README.md
 title: 的ioBroker.tr-064
-hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
+hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 ---
 ![商标](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
 ＃ioBroker.tr-064
 ###信息
-该适配器从AVM Fritz！Box读取主要信息，例如呼叫清单或应答机上的消息数。
+该适配器从AVM Fritz！Box读取主要信息，例如呼叫清单或答录机上的消息数。
 基于此[AVM文档](https://avm.de/service/schnittstellen/)
 
 ###简单状态和功能
@@ -67,7 +67,7 @@ hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 -来电
 -外拨电话
 
-通话计数：通话计数可以设置为0。下一个通话将增加1。
+通话次数：通话次数可以设置为0。下一个通话将增加1。
 
 html输出可以通过模板配置
 

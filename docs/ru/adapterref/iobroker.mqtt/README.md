@@ -748,6 +748,11 @@ void loop() {
 получать от нее данные через облачный сервис!
 
 ## Changelog
+
+### 2.1.5 (2020-07-26)
+* (Apollon77) try to prevent crashes on not existing state values
+* (Apollon77) Sentry added for crash reporting with js-controller 3.x+
+
 ### 2.1.4 (2020-06-20)
 * (Apollon77) websocket do not have setTimeout method
 * (NorbGH) prevent messageID overflow
