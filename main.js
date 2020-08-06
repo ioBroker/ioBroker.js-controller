@@ -2212,9 +2212,12 @@ function processMessage(msg) {
 
         case 'writeDirAsZip':
             zipFiles = zipFiles || require('./lib/zipFiles');
-            zipFiles.writeDirAsZip(objects, msg.message.id, msg.message.name, Buffer.from(msg.message.data, 'base64'), msg.message.options, error =>
-                msg.callback && msg.from && sendTo(msg.from, msg.command, {error}, msg.callback));
-
+            try {
+                zipFiles.writeDirAsZip(objects, msg.message.id, msg.message.name, Buffer.from(msg.message.data, 'base64'), msg.message.options, error =>
+                    msg.callback && msg.from && sendTo(msg.from, msg.command, {error}, msg.callback));
+            } catch (error) {
+                msg.callback && msg.from && sendTo(msg.from, msg.command, {error}, msg.callback);
+            }
             break;
 
         case 'readObjectsAsZip':
