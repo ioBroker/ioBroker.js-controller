@@ -16,8 +16,8 @@ hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
 ＃ioBroker发现适配器
 **使用所有已知方法检测设备。**
 
-这是特殊的适配器，它尝试查找主机可以访问的所有可能的设备。
-到目前为止，它可以通过ping UPnP（串行计划）进行检测。
+这是特殊的适配器，它试图查找主机可以访问的所有可能的设备。
+到目前为止，它可以通过ping，UPnP（串行计划）进行检测。
 
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 

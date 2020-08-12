@@ -59,7 +59,7 @@ Verbindet mit der von Dresden-elektronik entwickelten deConz软件。 Diese Soft
 3. * IP地址
     * Eingeben端口，标准端口80
     * IP和端口无线自动更新
-    * **替代：**适用于架构和功能。
+    * **替代：**适用于架构和应用。
 
     Wurde deConz gefunden总部位于der Maske的IP und Port schon。
 

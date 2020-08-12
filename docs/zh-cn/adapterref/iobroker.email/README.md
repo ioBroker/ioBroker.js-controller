@@ -84,7 +84,7 @@ sendTo("email", {
 -Mailgun
 -Mailjet
 -山d
--纳韦尔
+-纳弗
 -Office365
 -OpenMailBox
 -邮戳
@@ -100,7 +100,7 @@ sendTo("email", {
 -雅虎
 -Yandex
 -Zoho
--特定于用户（手动定义的服务器，端口和安全性）
+-特定于用户（手动定义服务器，端口和安全性）
 
 有关其他服务，请参阅** Nodemailer **的文档：`§§LLLLL_0§§`
 

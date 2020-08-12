@@ -18,7 +18,7 @@ hash: x/QTu0owyv92klKSi7Cn7RXGk5HnDi5EUbAB8ZYEVKE=
 
 该适配器使用https://github.com/node-red/node-red中的node-red服务器
 
-**注意：**如果在ioBroker节点的“选择ID”对话框中找不到某些变量，请重新启动红色节点实例。通过重新启动，将创建新的对象列表。
+**注意：**如果在ioBroker节点的“选择ID”对话框中找不到某些变量，请重新启动node-red实例。通过重新启动，将创建新的对象列表。
 
 **升级至1.17.2：**如果您已使用Node-Red身份验证：请在升级后再次在ioBroker的Node-Red实例设置中设置密码！否则，升级后您将无法再登录Node-Red。
 

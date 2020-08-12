@@ -37,7 +37,7 @@ Das Ergebnis ist immer im Format `jpg`.
 
 Unterstützte Kameras:
 
-### URL-Bild Dies ist eine normale URL-Anforderung, bei der sich alle Parameter in der URL befinden. Wie `http://mycam/snapshot.jpg`
+### URL-Bild Dies ist eine normale URL-Anfrage, bei der sich alle Parameter in der URL befinden. Wie `http://mycam/snapshot.jpg`
 ### URL-Bild mit Basisauthentifizierung
 Dies ist eine URL-Anforderung für ein Bild, bei der alle Parameter in der URL enthalten sind. Sie können jedoch die Anmeldeinformationen für die Basisauthentifizierung angeben. Wie `http://mycam/snapshot.jpg`
 
