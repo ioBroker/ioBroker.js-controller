@@ -37,4 +37,6 @@ You must create a new version of `iobroker.type-detector` npm package.
 
  ## iobroker.devices
  Go to https://github.com/ioBroker/ioBroker.devices/blob/master/src/package.json and update your version there.
+ After that extend the icon's list: https://github.com/ioBroker/ioBroker.devices/blob/master/src/src/Components/TypeIcon.js
  
+ And create a new version too.

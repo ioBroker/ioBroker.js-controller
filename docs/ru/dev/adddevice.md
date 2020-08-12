@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/adddevice.md
 title: Как добавить устройство в alexa или google home
-hash: ixNIo+HK2KxaWApVAIttZBJqp2xZPU4UL7AVJjitqFA=
+hash: 7LOEqf58Vo+Ne7CyV77jozHsy8UjnC7Ghl8TQAR8aD0=
 ---
 # Как добавить устройство в alexa или google home
 Чтобы добавить устройство, у нас есть 4 шага:
@@ -37,12 +37,15 @@ hash: ixNIo+HK2KxaWApVAIttZBJqp2xZPU4UL7AVJjitqFA=
 
 ## Детектор типа
 После добавления всех необходимых ролей найденного тип детектора необходимо расширить.
-Добавьте новый тип устройства в глобальный список: https://github.com/ioBroker/ioBroker.type-detector/blob/master/index.js#L29 Возьмите какое-нибудь устройство за основу и скопируйте его в `patterns` из класс `ChannelDetector`.
+Добавьте новый тип устройства в глобальный список: https://github.com/ioBroker/ioBroker.type-detector/blob/master/index.js#L29 Возьмите какое-нибудь устройство за основу и скопируйте его в `patterns` в класс `ChannelDetector`.
 Детектор типа должен каким-то образом различать устройства, поэтому у вашего устройства должен быть уникальный набор ролей.
 Мы возьмем `level.temperature` и `level.mode.thermostat` в качестве особого шаблона для кондиционера и отметим эти два состояния как `required`.
-Самые сложные устройства должны быть в верхней части списка, поэтому они будут обнаружены первыми, а в конце появятся все более и более простые устройства.
+Самые сложные устройства должны быть наверху в списке, поэтому они будут обнаружены первыми, а в конце будут появляться все больше и больше простых устройств.
 
 Вы должны создать новую версию пакета npm `iobroker.type-detector`.
 
  ## iobroker.devices
- Перейдите на https://github.com/ioBroker/ioBroker.devices/blob/master/src/package.json и обновите там свою версию.
+Перейдите на https://github.com/ioBroker/ioBroker.devices/blob/master/src/package.json и обновите там свою версию.
+После этого расширьте список значков: https://github.com/ioBroker/ioBroker.devices/blob/master/src/src/Components/TypeIcon.js
+
+ И создайте новую версию тоже.
