@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.devices/README.md
 title: ioBroker.devices
-hash: Rr7VJJ/6eegjUfDh2sMykC/vpJV/ZdpCLd1XcRN8Vms=
+hash: BwI4wZaBzqbt1aZcKszEcHW3vHdbJgcceFvET+mdYKY=
 ---
 ![商标](../../../en/adapterref/iobroker.devices/admin/devices.png)
 
@@ -29,10 +29,16 @@ hash: Rr7VJJ/6eegjUfDh2sMykC/vpJV/ZdpCLd1XcRN8Vms=
 -将现有设备克隆到linkeddevices / alias / javascript
 -为频道的所有状态添加图标
 -添加状态说明
--显示有关Google / Alisa / alexa的错误
+-显示google / alisa / alexa的错误
 -检测是否安装了js-controller 2.0
 
+<！-下一个版本的占位符（在该行的开头）：
+
+### __进展中__->
+
 ## Changelog
+### 0.3.8 (2020-08-12)
+* (bluefox) added the air conditioner
 
 ### 0.3.6 (2020-04-17)
 * (Apollon77) Added Sentry error reporting for Frontend/React

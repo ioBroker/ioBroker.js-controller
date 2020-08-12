@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.devices/README.md
 title: ioBroker.devices
-hash: Rr7VJJ/6eegjUfDh2sMykC/vpJV/ZdpCLd1XcRN8Vms=
+hash: BwI4wZaBzqbt1aZcKszEcHW3vHdbJgcceFvET+mdYKY=
 ---
 ![логотип](../../../en/adapterref/iobroker.devices/admin/devices.png)
 
@@ -16,23 +16,29 @@ hash: Rr7VJJ/6eegjUfDh2sMykC/vpJV/ZdpCLd1XcRN8Vms=
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/ioBroker/ioBroker.devices?branch=master&svg=true)
 
 # IoBroker.devices
-## Адаптер устройства для ioBroker
-Управляйте и создавайте устройства для использования в других адаптерах, таких как material, iot, ...
+## Адаптер устройств для ioBroker
+Управляйте и создавайте устройства для использования в других адаптерах, таких как материал, iot, ...
 
-** Важно: включить вкладку в админке, как логи и скрипты **
+** Важно: включить вкладку в админке, например, журнал и скрипты **
 
 ![экран](../../../en/adapterref/iobroker.devices/img/screen.png)
 
-** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. **
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. **
 
 ## Делать
 - клонировать существующее устройство в связанные устройства / псевдоним / javascript
 - добавить иконки для всех состояний каналов
-- добавить описания для состояний
-- показать ошибки для Google / Алиса / Алекса
-- определить, установлен ли js-контроллер 2.0
+- добавить описания состояний
+- показать ошибки для google / alisa / alexa
+- определить, установлен ли js-controller 2.0
+
+<! - Заполнитель для следующей версии (в начале строки):
+
+### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 0.3.8 (2020-08-12)
+* (bluefox) added the air conditioner
 
 ### 0.3.6 (2020-04-17)
 * (Apollon77) Added Sentry error reporting for Frontend/React

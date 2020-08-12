@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.devices/README.md
 title: ioBroker.devices
-hash: Rr7VJJ/6eegjUfDh2sMykC/vpJV/ZdpCLd1XcRN8Vms=
+hash: BwI4wZaBzqbt1aZcKszEcHW3vHdbJgcceFvET+mdYKY=
 ---
 ![Logo](../../../en/adapterref/iobroker.devices/admin/devices.png)
 
@@ -32,7 +32,13 @@ Verwalten und erstellen Sie Geräte für die Verwendung in anderen Adaptern wie 
 - Fehler für Google / Alisa / Alexa anzeigen
 - Erkennen, ob js-controller 2.0 installiert ist
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 0.3.8 (2020-08-12)
+* (bluefox) added the air conditioner
 
 ### 0.3.6 (2020-04-17)
 * (Apollon77) Added Sentry error reporting for Frontend/React

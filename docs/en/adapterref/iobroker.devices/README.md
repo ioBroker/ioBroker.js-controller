@@ -28,7 +28,14 @@ Manage and create devices for using it in other adapters like material, iot,...
 - show errors for google/alisa/alexa
 - detect if js-controller 2.0 installed
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+### 0.3.8 (2020-08-12)
+* (bluefox) added the air conditioner
 
 ### 0.3.6 (2020-04-17)
 * (Apollon77) Added Sentry error reporting for Frontend/React
