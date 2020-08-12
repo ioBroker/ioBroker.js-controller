@@ -3,41 +3,48 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.i2c/README.md
 title: ioBroker Adapter für I2C
-hash: ocC9nqbL123YC+GBR5buH+n/3DyLEAD504/VHnXn6B4=
+hash: 6LeU2QT3MHsl6Bh2FqtsRihb34PN6QOwp+5QpwhKy9E=
 ---
-![I2C-Logo](../../../en/adapterref/iobroker.i2c/admin/i2c.png)
-
 ![Anzahl der Installationen](http://iobroker.live/badges/i2c-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.i2c.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.i2c.svg)
 ![Travis](https://img.shields.io/travis/UncleSamSwiss/ioBroker.i2c.svg)
 ![GitHub Probleme](https://img.shields.io/github/issues/UncleSamSwiss/ioBroker.i2c.svg)
 
-ioBroker-Adapter für I2C
+*** **WICHTIGES UPDATE**
+
+Die Entwicklung dieses Adapters wird im **August 2020** neu gestartet. Bleib dran!
+
+Ich werde zunächst die dringendsten Probleme lösen, gefolgt von einer neuen Hauptversion, die den Adapter auf den neuesten Entwicklungsstandard bringt.
+***.
+
+![I2C-Logo](../../../en/adapterref/iobroker.i2c/admin/i2c.png)
+
+# IoBroker Adapter für I2C
 Kommuniziert mit Geräten, die über den I2C-Bus mit dem lokalen System verbunden sind.
 
-Dieser Adapter sollte auf Linux-Boards wie Raspberry Pi, C.H.I.P., BeagleBone oder Intel Edison funktionieren.
+Dieser Adapter sollte auf Linux-Karten wie Raspberry Pi, C.H.I.P., BeagleBone oder Intel Edison funktionieren.
 
 ## Installieren
-Bitte lesen Sie vor der Installation die [Installationsanleitung des i2c-Busmoduls](https://www.npmjs.com/package/i2c-bus#installation).
+Bitte lesen Sie vor der Installation die [Installationsanleitung des i2c-Bus-Moduls](https://www.npmjs.com/package/i2c-bus#installation).
 
 Stellen Sie insbesondere sicher, dass Sie I2C auf Ihrem System ordnungsgemäß konfiguriert und aktiviert haben (falls erforderlich):
 
-* [Konfigurieren von I2C auf dem Raspberry Pi] (https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md)
-* [Konfigurieren von I2C auf dem Intel Edison Arduino-Basisboard] (https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md)
+* [I2C auf dem Raspberry Pi konfigurieren] (https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md)
+* [Konfigurieren von I2C auf dem Intel Edison Arduino Base Board] (https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md)
 
 Nachdem Sie I2C aktiviert und konfiguriert haben, können Sie diesen Adapter über ioBroker Admin installieren:
 
 1. Starten Sie den Adapter (er muss ausgeführt werden, damit die Erkennung funktioniert).
 2. Öffnen Sie den Instanzkonfigurationsdialog
-3. Klicken Sie auf die Schaltfläche "Search Devices" (Geräte suchen), um alle angeschlossenen I2C-Geräte zu ermitteln. Dies kann einige Zeit dauern.
-4. Konfigurieren Sie alle gefundenen Geräte auf den entsprechenden Registerkarten.
+3. Klicken Sie auf die Schaltfläche "Geräte suchen", um alle angeschlossenen I2C-Geräte zu ermitteln. Dies kann einige Zeit dauern. Seien Sie geduldig!
+4. Konfigurieren Sie alle gefundenen Geräte auf ihren jeweiligen Registerkarten.
 5. Speichern Sie die Konfiguration (dadurch wird der Adapter neu gestartet)
 
 ### Problem mit Zugriffsrechten
-Abhängig vom Alter Ihrer ioBroker-Installation verfügt der Benutzer `iobroker` (oder unter welchem Benutzer auch immer ioBroker ausgeführt wird) möglicherweise nicht über die richtigen Zugriffsrechte für I2C.
+Abhängig vom Alter Ihrer ioBroker-Installation verfügt der Benutzer `iobroker` (oder unter welchem Benutzer auch immer ioBroker ausgeführt wird) möglicherweise nicht über die entsprechenden Rechte für den Zugriff auf I2C.
 
-Wenn Sie ein Gerät angeschlossen haben und es nicht im Konfigurationsbildschirm angezeigt wird, vergewissern Sie sich, dass der Benutzer der Gruppe `i2c` hinzugefügt wurde:
+Wenn Sie ein Gerät angeschlossen haben und es nicht im Konfigurationsbildschirm angezeigt wird, stellen Sie sicher, dass der Benutzer zur Gruppe `i2c` hinzugefügt wurde:
 
 ```sh
 sudo usermod -G i2c iobroker
@@ -61,33 +68,33 @@ Texas Instruments 4x 3,3-kSPS, 12-Bit-ADCs mit interner Referenz.
 Texas Instruments 4x 860-SPS, 16-Bit-ADCs mit interner Referenz.
 
 ### BME280 (76, 77)
-Bosch Digitaler Feuchte-, Druck- und Temperatursensor.
+Bosch Digitaler Feuchtigkeits-, Druck- und Temperatursensor.
 
 ### MCP23008 8-Bit-E / A-Expander (20-27)
-8-Bit-E / A-Expander von Microchip mit serieller Schnittstelle.
+Microchip 8-Bit I / O Expander mit serieller Schnittstelle.
 
 ### MCP23017 16-Bit-E / A-Expander (20-27)
-16-Bit-E / A-Expander von Microchip mit serieller Schnittstelle.
+Microchip 16-Bit-E / A-Expander mit serieller Schnittstelle.
 
 ### PCF8574 8-Bit-E / A-Expander (20-27)
-Texas Instruments Remote 8-Bit-E / A-Expander für I2C-Bus.
+Remote 8-Bit-E / A-Expander von Texas Instruments für I2C-Bus.
 
 ### PCF8574A 8-Bit-E / A-Expander (38-3F)
-Texas Instruments Remote 8-Bit-E / A-Expander für I2C-Bus.
+Remote 8-Bit-E / A-Expander von Texas Instruments für I2C-Bus.
 
-Kompatibilität
+## Kompatibilität
 Die Kompatibilität wurde mit Raspberry Pi 3 getestet.
 
-## Fehlerberichte und Funktionsanfragen
-Verwenden Sie das GitHub-Repository, um Fehler zu melden oder neue Funktionen anzufordern.
+## Fehlerberichte und Funktionsanforderungen
+Bitte verwenden Sie das GitHub-Repository, um Fehler zu melden oder neue Funktionen anzufordern.
 
-Wenn Sie fehlende Abweichungen benötigen, geben Sie bitte den IC-Typ (Marke, Modell, ...) und die Adresse (n) an, die in der Adapterkonfiguration angegeben sind.
+Wenn Sie fehlende Abweichungen benötigen, geben Sie bitte den IC-Typ (Marke, Modell, ...) und dessen Adresse (n) an, wie in der Adapterkonfiguration angegeben.
 
 ## MACHEN
-* Unterstützt Interrupts, anstatt nur nach MCP230xx und PCF8574 abzufragen
+* Unterstützt Interrupts, anstatt nur MCP230xx und PCF8574 abzufragen
 
 ## Vielen Dank
-Dieses Projekt basiert auf dem Modul [i2c-bus](https://www.npmjs.com/package/i2c-bus) NPM. Vielen Dank an fivdi für sein tolles Modul!
+Dieses Projekt basiert auf dem NPM-Modul [i2c-bus](https://www.npmjs.com/package/i2c-bus) NPM. Vielen Dank an fivdi für sein tolles Modul!
 
 ## Lizenzen von Drittanbietern
 ### BME280
@@ -97,11 +104,11 @@ MIT-Lizenz
 
 Copyright (c) 2016 Skylar Stein
 
-Jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, wird hiermit kostenlos die Erlaubnis erteilt, mit der Software uneingeschränkt umzugehen, einschließlich der Rechte zur Nutzung, zum Kopieren, Ändern und Zusammenführen Sie dürfen Kopien der Software unter folgenden Bedingungen veröffentlichen, verbreiten, unterlizenzieren und / oder verkaufen und Personen gestatten, denen die Software zur Verfügung gestellt wird:
+Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
 
-Der obige Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
+Der oben genannte Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
-DIE SOFTWARE WIRD "WIE BESEHEN" OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG, ZUR VERFÜGUNG GESTELLT. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR JEGLICHE HAFTUNGSANSPRÜCHE, SCHÄDEN ODER SONSTIGE HAFTUNGEN, OB AUS VERTRAGSVERHÄLTNISSEN, UNTER BERÜCKSICHTIGUNG ODER IN VERBINDUNG MIT DER SOFTWARE ODER DER VERWENDUNG ODER ANDEREN HANDLUNGEN DER SOFTWARE.
+DIE SOFTWARE WIRD "WIE BESEHEN" OHNE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG ZUR VERFÜGUNG GESTELLT, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR ANSPRÜCHE, SCHÄDEN ODER ANDERE HAFTUNGEN, OB VERTRAGS-, TORT- ODER ANDERWEITIGE MASSNAHMEN, DIE AUS, AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN ANGEBOTE ENTSTEHEN SOFTWARE.
 
 ### ADS1x15
 Der ADS1x15-Code basiert auf https://github.com/alphacharlie/node-ads1x15/blob/master/index.js
@@ -112,11 +119,11 @@ Die MIT-Lizenz (MIT)
 
 Copyright (c) 2016 Adafruit Industries
 
-Jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, wird hiermit kostenlos die Erlaubnis erteilt, mit der Software uneingeschränkt umzugehen, einschließlich der Rechte zur Nutzung, zum Kopieren, Ändern und Zusammenführen Sie dürfen Kopien der Software unter folgenden Bedingungen veröffentlichen, verbreiten, unterlizenzieren und / oder verkaufen und Personen gestatten, denen die Software zur Verfügung gestellt wird:
+Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
 
-Der obige Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
+Der oben genannte Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
-DIE SOFTWARE WIRD "WIE BESEHEN" OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG, ZUR VERFÜGUNG GESTELLT. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR JEGLICHE HAFTUNGSANSPRÜCHE, SCHÄDEN ODER SONSTIGE HAFTUNGEN, OB AUS VERTRAGSVERHÄLTNISSEN, UNTER BERÜCKSICHTIGUNG ODER IN VERBINDUNG MIT DER SOFTWARE ODER DER VERWENDUNG ODER ANDEREN HANDLUNGEN DER SOFTWARE.
+DIE SOFTWARE WIRD "WIE BESEHEN" OHNE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG ZUR VERFÜGUNG GESTELLT, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR ANSPRÜCHE, SCHÄDEN ODER ANDERE HAFTUNGEN, OB VERTRAGS-, TORT- ODER ANDERWEITIGE MASSNAHMEN, DIE AUS, AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN ANGEBOTE ENTSTEHEN SOFTWARE.
 
 ## Changelog
 

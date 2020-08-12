@@ -6,26 +6,26 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.doorio.svg)](https://www.npmjs.com/package/iobroker.doorio)
 [![NPM](https://nodei.co/npm/iobroker.doorio.png?downloads=true)](https://nodei.co/npm/iobroker.doorio/)
 
+## Info
 Homemade DoorStation Adapter for ioBroker
 
 This adapter connects to the Baresip Sip client via tcp.socket to communicate
 with a doorphone. As a bell trigger every input from ioBroker can be used.
-The adapter also recognizes DTMF tones to switch outputs.
-For the self-made door station, any hardware on which Baresip can install
-can be used.
+The adapter also recognizes DTMF tones to switch outputs. For the self-made
+door station, any hardware on which Baresip can install can be used.
 
 Dieser Adapter verbindet sich über tcp.socket mit dem Baresip Sip-Client,
 um mit einer Türsprechstelle zu kommunizieren. Als Klingelauslöser kann jeder
 Eingang von ioBroker genutzt werden. Der Adapter erkennt auch DTMF-Töne um
-Ausgänge zu schalten.
-Für die Selbstgemachte Türsprechstelle, kann jede Hardware auf der sich Baresip
-installieren lässt genutzt werden.
-
-## Links
-* https://forum.iobroker.net/topic/23413/ich-baue-eine-t%C3%BCrsprechstelle-ohne-cloud
-* https://forum.iobroker.net/topic/22746/test-adapter-doorio-v0-0-x
+Ausgänge zu schalten. Für die Selbstgemachte Türsprechstelle, kann jede
+Hardware auf der sich Baresip installieren lässt genutzt werden.
 
 ## Changelog
+### 1.0.10
+* (bettman66) add detour
+
+### 1.0.9
+* (bettman66) fix userconfigerror
 
 ### 1.0.8
 * (bettman66) fix dtmf-timeout
@@ -47,6 +47,10 @@ installieren lässt genutzt werden.
 
 ### 1.0.2
 * (bettman66) add selectID.js
+
+## Links
+* https://forum.iobroker.net/topic/23413/ich-baue-eine-t%C3%BCrsprechstelle-ohne-cloud
+* https://forum.iobroker.net/topic/22746/test-adapter-doorio-v0-0-x
 
 ## License
 The MIT License (MIT)

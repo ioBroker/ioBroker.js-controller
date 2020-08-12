@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iot/README.md
 title: ioBroker IoT Adapter
-hash: AyRn68CYR4s+qIW3NFGuHjhm45ipfK0KTILNm9iI+fY=
+hash: nQ78rpnrcY2c7CIE4NRRm0x4wnpm0YzYP8+/agUS/po=
 ---
 ![Logo](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -14,7 +14,7 @@ hash: AyRn68CYR4s+qIW3NFGuHjhm45ipfK0KTILNm9iI+fY=
 
 # IoBroker IoT Adapter
 Dieser Adapter ist NUR für die Kommunikation mit Amazon Alexa, Google Home und Nightscout vorgesehen.
-Es ist nicht für den Remotezugriff auf Ihre ioBroker-Instanz vorgesehen. Verwenden Sie dazu den ioBroker.cloud-Adapter.
+Es ist nicht für den Remotezugriff auf Ihre ioBroker-Instanz vorgesehen. Verwenden Sie dazu den Adapter ioBroker.cloud.
 
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
@@ -42,10 +42,10 @@ Dies wird jedoch nicht empfohlen, da die Erkennungs-Engine ein weiteres Wort ana
 
 ### AUS-Pegel für Schalter
 Einige Gruppen bestehen aus gemischten Geräten: Dimmer und Schalter. Es ist erlaubt, sie mit "EIN" - und "AUS" -Befehlen und mit Prozenten zu steuern.
-Wenn der Befehl "Auf 30% eingestellt" und der * AUS-Pegel "" 30% "ist, werden die Schalter eingeschaltet. Mit dem Befehl" Auf 25% einstellen "werden alle Schalter ausgeschaltet.
+Wenn der Befehl "Auf 30% einstellen" und der * AUS-Pegel "" 30% "ist, werden die Schalter eingeschaltet. Mit dem Befehl" Auf 25% einstellen "werden alle Schalter ausgeschaltet.
 
 Wenn der Befehl "AUS" ist, speichert der Adapter den aktuellen Dimmerpegel, wenn der tatsächliche Wert über oder gleich "30%" liegt.
-Später, wenn der neue Befehl "EIN" kommt, schaltet der Adapter den Dimmer nicht auf 100%, sondern auf den Pegel im Speicher.
+Später, wenn der neue Befehl "EIN" ertönt, schaltet der Adapter den Dimmer nicht auf 100%, sondern auf den Speicherpegel.
 
 Beispiel:
 
@@ -80,7 +80,7 @@ Alexa, change the kitchen to the color chocolate
 ```
 
 ### Sperren
-Um die Sperren sperren zu können, muss der Status die Rolle "switch.lock" und native.LOCK_VALUE haben, um den Sperrstatus zu bestimmen.
+Um die Sperren sperren zu können, muss der Status die Rolle "switch.lock" und "native.LOCK_VALUE" haben, um den Sperrstatus zu bestimmen. Wenn Sie einen separaten Wert zur Steuerung der Sperre benötigen, können Sie "native.CONTROL VALUE" verwenden.
 
 ```
 Alexa, is "lock name" locked/unlocked
@@ -103,14 +103,14 @@ Folgende Bedingungen müssen erfüllt sein, um den Status in die automatisch gen
 Es kann sein, dass sich der Kanal in den "Funktionen" befindet, sich aber nicht selbst angibt.
 
 - Der Status muss beschreibbar sein: common.write = true
-- Der Zustandsdimmer muss common.type als 'number' haben.
+- Der Zustandsdimmer muss den Typ common.type als 'number' haben.
 - Die Zustandsheizung muss eine gemeinsame Einheit als '°C', '°F' oder '° K' und einen gemeinsamen Typ als 'Nummer' haben.
 
 Befindet sich der Status nur in "Funktionen" und nicht in einem "Raum", wird der Name des Status verwendet.
 
 Die Statusnamen werden aus Funktion und Raum generiert. Z.B. Alle *Lichter* im *Wohnzimmer* werden im virtuellen Gerät *Wohnzimmerlicht* gesammelt.
 Der Benutzer kann diesen Namen nicht ändern, da er automatisch generiert wird.
-Wenn sich der Aufzählungsname ändert, wird auch dieser Name geändert. (z. B. die Funktion "Licht" wurde in "Lichter" geändert, sodass das *Wohnzimmerlicht* in *Wohnzimmerlichter* geändert wird.)
+Wenn sich der Aufzählungsname ändert, wird auch dieser Name geändert. (z. B. die Funktion "Licht" wurde in "Lichter" geändert, so dass das *Wohnzimmerlicht* in *Wohnzimmerlichter* geändert wird)
 
 Alle Regeln werden ignoriert, wenn der Status common.smartName hat. In diesem Fall wird nur der Smart Name verwendet.
 
@@ -197,7 +197,7 @@ Der Adapter liefert die Details in zwei Zuständen mit unterschiedlicher Details
  * **sessionId** enthält eine sessionId der Skill-Sitzung. Sollte identisch sein, wenn mehrere von Amazon gelieferte Befehle gesprochen wurden, ist die Zeichenfolge leer, wenn sie nicht angegeben wird
  * **Benutzer-ID** enthält eine Benutzer-ID des Gerätebesitzers (oder möglicherweise später des Benutzers, der mit der Fertigkeit interagiert hat), die von Amazon bereitgestellt wird, ist eine leere Zeichenfolge, wenn sie nicht angegeben wird
 
- Weitere Informationen darüber, wie die Wörter erkannt werden und welche Art von Abfragen die Alexa Custom Skill unterscheidet, finden Sie unter https://forum.iobroker.net/viewtopic.php?f=37&t=17452.
+ Weitere Informationen darüber, wie die Wörter erkannt werden und welche Art von Abfragen die Alexa Custom Skill unterscheidet, finden Sie unter https://forum.iobroker.net/viewtopic.php?f=37&t=17452.
 
 ** Ergebnis über den Status smart.lastResponse zurückgeben **
 
@@ -264,7 +264,41 @@ Folgende Typen werden unterstützt:
 - `alisa` - mit Yandex Алиса handeln
 - `ifttt` - verhält sich wie IFTTT (eigentlich nicht erforderlich, aber zu Testzwecken)
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+
+### 1.6.4 (2020-08-06)
+* (Apollon77) crash prevented (Sentry IOBROKER-IOT-V)
+
+### 1.6.3 (2020-08-04)
+* (bluefox) Added french letters to allowed symbols
+
+### 1.6.1 (2020-07-10)
+* (bluefox) Used new SelectID Dialog in GUI
+
+### 1.5.3 (2020-05-28)
+* (bluefox) Small change for nightscout
+
+### 1.5.2 (2020-05-21)
+* (bluefox) Changed requirements for password
+* (bluefox) Do not try load the "sharp" if blood sugar not enabled
+
+### 1.4.18 (2020-05-11)
+* (Apollon77) Make sure that invalid configured states or values without timestamp do not crash adapter (Sentry IOBROKER-IOT-8)
+* (Apollon77) Make sure publishes after disconnect to not break adapter (Sentry IOBROKER-IOT-A)
+
+### 1.4.17 (2020-05-11)
+* (bluefox) Better error output is implemented
+
+### 1.4.14 (2020-05-01)
+* (bluefox) Fixed the problem if admin is not on 8081 port
+
+### 1.4.12 (2020-04-30)
+* (Apollon77) error case handled where system.config objects does not exist (Sentry IOBROKER-IOT-5)
+
 ### 1.4.11 (2020-04-26)
 * (bluefox) fixed IOBROKER-IOT-REACT-F
 

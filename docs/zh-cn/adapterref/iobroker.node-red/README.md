@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.node-red/README.md
 title: ioBroker节点红色适配器
-hash: zpelxzM0LIWlw140+rWd0rXt3iauWphgCP6aR0Ta+Ik=
+hash: x/QTu0owyv92klKSi7Cn7RXGk5HnDi5EUbAB8ZYEVKE=
 ---
 ![商标](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
@@ -20,12 +20,19 @@ hash: zpelxzM0LIWlw140+rWd0rXt3iauWphgCP6aR0Ta+Ik=
 
 **注意：**如果在ioBroker节点的“选择ID”对话框中找不到某些变量，请重新启动红色节点实例。通过重新启动，将创建新的对象列表。
 
-**升级到1.17.2：**如果您已使用Node-Red身份验证：请在升级后再次在ioBroker的Node-Red实例设置中设置密码！否则，升级后您将无法再登录Node-Red。
+**升级至1.17.2：**如果您已使用Node-Red身份验证：请在升级后再次在ioBroker的Node-Red实例设置中设置密码！否则，升级后您将无法再登录Node-Red。
 
 ##设置
 -安全模式-流程将不会启动，您可以编辑流程以解决某些过载问题。
 
+<！-下一个版本的占位符（在该行的开头）：
+
+### __进展中__->
+
 ## Changelog
+### 2.0.1 (2020-08-08)
+* (jwiesel) Updated settings.js, node-red and dependencies to latest version.
+
 ### 2.0.0 (2020-06-20)
 * (Apollon77) check object and not state to detect if an object exists
 * (jwiesel) Updated settings.js to incorporate latest changes up to Node-RED 1.0.6

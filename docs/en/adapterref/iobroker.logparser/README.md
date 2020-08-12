@@ -20,6 +20,9 @@ Resulting JSON can then be used in VIS for visualization. States for emptying (c
 ![States](docs/en/img/states.png)
 
 
+**Please note:** This adapter uses Sentry libraries to automatically report exceptions and code errors anonymously to the adapter developer(s). For further details and information on how to disable this error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry). Sentry reporting is used starting with js-controller 3.0.
+
+
 ## Instructions
 
 * **[English Instructions](docs/en/logparser.md)**
@@ -31,6 +34,18 @@ Resulting JSON can then be used in VIS for visualization. States for emptying (c
 ![Vis](docs/de/img/visintro.gif)
 
 ## Changelog
+
+### 1.0.4
+* (Mic-M) Fixed 'Today/Yesterday' updating issue - https://forum.iobroker.net/post/469757. Thanks to (Kuddel) for reporting and (Glasfaser) for further debugging.
+
+### 1.0.3
+* (Mic-M) Added [Sentry](https://github.com/ioBroker/plugin-sentry)
+
+### 1.0.2
+* (Mic-M) Added debug logging for callAtMidnight() and updateTodayYesterday()
+
+### 1.0.1
+* (Mic-M) Updated lodash dependency from 4.17.15 to 4.17.19
 
 ### 1.0.0
 * (Mic-M) No changes - just prepare versioning to add adapter to stable repository per [Adapter dev docu](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md#versioning)

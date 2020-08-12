@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.email/README.md
 title: ioBroker E-Mail
-hash: 3i+fboU/+xLYeCNJIcUyCthEA6n+U7wok2Y4ca66zcc=
+hash: toVqq++uwVaVbxSeS8PlFQ/2PCwgh6XNZ/6O0xhptzM=
 ---
 ![Logo](../../../en/adapterref/iobroker.email/admin/email.png)
 
@@ -23,7 +23,7 @@ Der Adapter verwendet [Nodemailer](https://github.com/nodemailer/nodemailer), um
 
 Um Google Mail verwenden zu können, müssen Sie möglicherweise "Weniger sichere Apps zulassen" in Ihrem Google Mail-Konto konfigurieren, es sei denn, Sie verwenden 2FA. In diesem Fall müssten Sie ein anwendungsspezifisches Kennwort erstellen. Möglicherweise müssen Sie Ihr Konto auch mit "Zugriff auf Ihr Google-Konto zulassen" entsperren, um SMTP verwenden zu können.
 
-## Verwendungszweck
+## Verwendung
 Um eine E-Mail von ScriptEngine zu senden, schreiben Sie einfach:
 
 ```
@@ -36,7 +36,7 @@ sendTo("email.1", "Email body");
 // To specify subject or other options
 sendTo("email", {
     from:    "iobroker@mydomain.com",
-    to:      "aabbcc@gmail.com",
+    to:      "aabbcc@gmail.com, xxyyzz@gmail.com", // comma separated multiple recipients.
     subject: "Message from ioBroker",
     text:    "This is test email to you!"
 });
@@ -62,7 +62,7 @@ sendTo("email", {
 });
 ```
 
-Um E-Mails von einem anderen Adapter zu senden, verwenden Sie die Funktion **adapter.sendTo**
+Verwenden Sie die Funktion **adapter.sendTo** um E-Mails von einem anderen Adapter zu senden.
 
 ## Unterstützte Dienste
 - 1und1

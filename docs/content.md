@@ -143,6 +143,7 @@
   * [Publish](dev/adapterpublish)
   * [JS-Controller](dev/controller)
   * [Best Practices](dev/bestpractices)
+  * [Add new device](dev/adddevice)
 
 * en:System integrators;de:System-Integratoren;ru:Системные интеграторы;zh-cn:系统集成
   * [Introduction](integrators/README)

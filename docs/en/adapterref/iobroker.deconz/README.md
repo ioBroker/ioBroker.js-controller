@@ -8,7 +8,9 @@ ioBroker deConz dresden-elektronik Adapter
 [![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)](https://nodei.co/npm/iobroker.deconz/)
 
 ## Notice
-No Support for Beta Versions of deConz
+No Support for Beta/Pre-release Versions of deConz.
+
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 Required js-controller version >2.x.x, Required node.js >= 10.x.x
 
@@ -74,6 +76,18 @@ Beispiele:
 ## [Sponsors](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
 
 ## Changelog
+
+### 2.0.3
+* fix incoming rename event for sensors
+* fix release_press is set to true at start
+* added websocket port info to configuration
+* added event types handling for websocket messages
+* added backup, deConz update & firmware update states under Gateway_info
+* added touchlink functions
+* fix sensor handling for virtual devices (fsm and vpir)
+
+### 2.0.2
+* Bugfix
 
 ### 2.0.1
 * Bugfixes

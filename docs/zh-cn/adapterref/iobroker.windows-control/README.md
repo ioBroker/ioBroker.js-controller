@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.windows-control/README.md
 title: ioBroker.windows控制
-hash: Kr+lRoHT9v9TWLnQNQKnASNvuGeEXJARhXoQZcGq5mA=
+hash: n0cN2H2xfyKCu0I/mtx+6KUcirwA3gd/7RDk1+6s09E=
 ---
 ![商标](../../../en/adapterref/iobroker.windows-control/admin/windows-control_90.png)
 
@@ -20,20 +20,22 @@ hash: Kr+lRoHT9v9TWLnQNQKnASNvuGeEXJARhXoQZcGq5mA=
 ##用于控制Windows设备的适配器
 该适配器可控制Microsoft Windows设备。需要在要控制的每个Windows设备上安装工具GetAdmin。 <br> <strong>非常感谢[弗拉基米尔·维利索夫（Vladimir Vilisov）](https://blog.instalator.ru)的工具GetAdmin！</strong>
 
+**请注意：**该适配器使用Sentry库自动向适配器开发者匿名报告异常和代码错误。有关如何禁用此错误报告的更多详细信息，请参阅[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)。 Sentry报告从js-controller 3.0开始使用。
+
 ##工具GetAdmin
-要使用此适配器，需要在要控制的每个Windows设备上运行工具GetAdmin（版本2.6）。
-GetAdmin是单个exe文件（776 kB）。它由Delphi中的Vladimir Vilisov编码，并已发布[在他的博客instalator.ru上](https://blog.instalator.ru/archives/47)。
+若要使用此适配器，需要在要控制的每个Windows设备上运行工具GetAdmin（版本2.6）。
+GetAdmin是单个exe文件（776 kB）。它由Delphi的Vladimir Vilisov编码，并已发布[在他的博客instalator.ru上](https://blog.instalator.ru/archives/47)。
 下载：
 
- 1.主要来源：https：//blog.instalator.ru/archives/47
- 2.如果不可用，则可以在此适配器的Github网站上找到一个副本[在“文件”文件夹中]（https://github.com/Mic-M/ioBroker.windows-control/tree/master/files）。
+ 1.主要来源：https：//blog.instalator.ru/archives/47
+ 2.如果不可用，您将在此适配器的Github站点上找到一个副本[在“文件”文件夹中]（https://github.com/Mic-M/ioBroker.windows-control/tree/master/files）。
 
 ###配置
 将`GetAdmin.exe`文件放在Windows设备的任何文件夹中。执行文件并设置以下内容：
 
 1.在“服务器”部分的左上方：
-    * IP：ioBroker服务器的IP地址
-    *端口：“ 8585”是标准端口。通常，无需更改此端口。
+    * IP：ioBroker服务器的IP地址
+    *端口：“ 8585”是标准端口。通常，无需更改此端口。
 2.在“选项”部分的顶部：激活“在托盘上最小化”和“启动”以自动启动最小化到系统托盘的程序。
 3.单击“保存”确认。
 
@@ -41,22 +43,31 @@ GetAdmin是单个exe文件（776 kB）。它由Delphi中的Vladimir Vilisov编�
 
 ### GetAdmin.exe命令列表中各个条目的示例：
 *休眠状态（德语：Ruhezustand）：
-    * Command列：输入m_hibernate或您选择的其他任何名称（请不要使用空格）
-    * PATH或URL列：shutdown
-    *列“ PARAMETERS”：`-h`
+    *“命令”列：输入“ m_hibernate”或您选择的其他任何名称（请不要使用空格）
+    * PATH或URL列：shutdown
+    *列“ PARAMETERS”：`-h`
 *备用（德语：Energie备用）：
-    *“命令”列：输入“ m_sleep”或您选择的其他任何名称（请不要使用空格）
-    * PATH或URL列：rundll32.exe
-    *列“ PARAMETERS”：`powrprof.dll，SetSuspendState`
+    *“命令”列：输入“ m_sleep”或您选择的其他任何名称（请不要使用空格）
+    * PATH或URL列：rundll32.exe
+    *列“ PARAMETERS”：`powrprof.dll，SetSuspendState
 
 ＃＃＃ 更多信息
 * ioBroker论坛：
-    * [适配器Windows控制]（https://forum.iobroker.net/topic/31485/）
-    * [Windows-Steuerung]（https://forum.iobroker.net/topic/1570/windows-steuerung）
-    * [ПрограммауправлениякомпьютеромGetAdmin]（https://forum.iobroker.net/topic/1505/）
+    * [适配器Windows控制]（https://forum.iobroker.net/topic/31485/）
+    * [Windows-Steuerung]（https://forum.iobroker.net/topic/1570/windows-steuerung）
+    * [ПрограммауправлениякомпьютеромGetAdmin]（https://forum.iobroker.net/topic/1505/）
 * GetAdmin的[博客文章]（https://blog.instalator.ru/archives/47）。如果您不熟悉俄语，请使用Google翻译。
 
 ## Changelog
+
+### 0.1.5
+* (Mic-M) Added [Sentry](https://github.com/ioBroker/plugin-sentry)
+
+### 0.1.4
+* (Mic-M) Updated lodash dependency from 4.17.15 to 4.17.19
+
+### 0.1.3
+* (Mic-M) Internal only: Correction to support compatibility with js-adapter 3.x, Use gulp for translations (which is resulting in files under admin/i18n/)
 
 ### 0.1.2
 * (Mic-M) Several fixes.

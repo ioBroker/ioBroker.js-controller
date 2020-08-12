@@ -112,6 +112,13 @@ display the current data (if the timeline is set to the current time).
 
 ## Changelog
 
+### 1.10.2 (2020-08-09)
+* (Apollon77/jlegen) colorpicker in flot edit page fixed
+
+### 1.10.1 (2020-08-02)
+* (sbormann) preset.html updated to allow german umlaute
+* (Apollon77) add www directory to Github to allow GitHub installs
+
 ### 1.10.0 (2020-05-14)
 * (sbormann) preset.html added to display a list of stored flot presets with direct links
 

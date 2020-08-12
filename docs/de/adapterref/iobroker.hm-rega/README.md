@@ -145,6 +145,9 @@ Abschließend sind die in der CCU angelegten Variablen aufgelistet
 ### FAQ
 
 ## Changelog
+### 2.6.15 (2020-08-08)
+* (foxriver76) fix potential issues with scaling of % values as in https://github.com/ioBroker/ioBroker.hm-rpc/issues/263
+
 ### 2.6.14 (2020-06-11)
 * (foxriver76) fix potential problem on enum sync, where to many channels could be deleted
 

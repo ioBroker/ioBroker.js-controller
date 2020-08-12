@@ -18,6 +18,9 @@ This adapter provides controlling Microsoft Windows devices. It is required the 
 <br>
 <strong>Many thanks to [Vladimir Vilisov](https://blog.instalator.ru) for his tool GetAdmin!</strong> 
 
+**Please note:** This adapter uses Sentry libraries to automatically report exceptions and code errors anonymously to the adapter developer(s). For further details and information on how to disable this error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry). Sentry reporting is used starting with js-controller 3.0.
+
+
 ## Tool GetAdmin
 
 To use this adapter, it is required to run the tool GetAdmin (version 2.6) on each Windows device you want to control.
@@ -57,6 +60,12 @@ Place the `GetAdmin.exe` file in any folder of your Windows device. Execute the 
 
 
 ## Changelog
+
+### 0.1.5
+* (Mic-M) Added [Sentry](https://github.com/ioBroker/plugin-sentry)
+
+### 0.1.4
+* (Mic-M) Updated lodash dependency from 4.17.15 to 4.17.19
 
 ### 0.1.3
 * (Mic-M) Internal only: Correction to support compatibility with js-adapter 3.x, Use gulp for translations (which is resulting in files under admin/i18n/)

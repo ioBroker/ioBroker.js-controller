@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.swiss-weather-api/README.md
 title: ioBroker.swiss-weather-api
-hash: GJsLzI7hsrjrvfsCvzvsLffQXvnvvpKOlu4I1vOKqmQ=
+hash: CPZQujwQq0ZDwyiBSYnMo2oF5Ya+m6HBcrh/60BZHrE=
 ---
 ![Logo](../../../en/adapterref/iobroker.swiss-weather-api/admin/swiss-weather-api.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.swiss-weather-api.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.swiss-weather-api.svg)
-![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/swiss-weather-api-installed.svg)
+![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/swiss-weather-api-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/swiss-weather-api-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/baerengraben/iobroker.swiss-weather-api.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/baerengraben/ioBroker.swiss-weather-api/badge.svg)
@@ -36,16 +36,31 @@ Seit Version 0.1.8 bietet SRG-SSR sogar eigene Symbole. So können Sie auswähle
 1. Ermitteln Sie den Längen- / Breitengrad (Dezimalgrad) des ausgewählten Standorts, für den eine Vorhersage erforderlich ist
 1. Installieren Sie diesen Adapter auf ioBroker => Dies kann einige Minuten dauern (~ 7 Minuten auf einem Raspberry Pi 3).
 1. Füllen Sie bei Adapterkonfiguration aus
-   1. ConsumerKey der App
-   1. ConsumerSecret of App
-   1. Längen- / Breitengrad des gewählten Schweizer Standorts, für den eine Prognose erforderlich ist. => Bitte Dezimalgrad verwenden (zum Beispiel Zürich: 47.36667 / 8.5)
+   1. Name der App
+   1. ConsumerKey der App
+   1. ConsumerSecret der App
+   1. Längen- / Breitengrad des gewählten Schweizer Standorts, für den eine Prognose erforderlich ist. => Bitte Dezimalgrad verwenden (zum Beispiel Zürich: 47.36667 / 8.5)
+   1. Abfrageintervall in Minuten (standardmäßig 30 Minuten)
 
-Dies ist ein geplanter Adapter. Es wird alle 30 Minuten geplant und liest die Prognose-API von SRG-SSR. Sie können dieses Intervall in der Instanzansicht (Zeitplan) ändern. Ein niedrigeres Intervall wird nicht empfohlen, da die minimale Prognose 1 Stunde beträgt.
-** Bitte beachten Sie, dass es nach der Installation 30 Minuten dauert, bis die Prognosedaten zum ersten Mal geliefert werden und die Datenobjekte in der Datenansicht erstellt werden. **
-
-Bei der ersten Installation möchten Sie möglicherweise überprüfen, ob alles einwandfrei funktioniert, und nicht 30 Minuten warten. In diesem Fall können Sie den Scheduler auf 1 Minute ändern. => Wenn alles richtig funktioniert, **ändern Sie es bitte wieder auf 30min**
+Die erste Abfrage erfolgt 10 Sekunden nach dem Start des Adapters. Nach dem ersten Start wird die Abfrage regelmäßig gemäß dem Zentrifugationsparameter (Abfrageintervall in Minuten) ausgeführt.
 
 ## Changelog
+
+### 0.3.1
+* (baerengraben)  Adapter-Config attributes longitude & latitude is optional now. If no longitude/latitude is set, the adpater is getting the longitude/latitude from ioBroker System-Attributes (https://github.com/baerengraben/iobroker.swiss-weather-api/issues/6).
+
+### 0.3.0
+* (baerengraben)  Change from Scheduled Adapter to Deamon Adapter(https://github.com/baerengraben/iobroker.swiss-weather-api/issues/11). The query interval is now configurable by parameter. The first query is made 10s after the adapter was started. Attention: For installing this version, please delete the older adapter version completely and install it again.
+
+### 0.2.3
+* (baerengraben) Update Dependencies
+
+### 0.2.2
+* (baerengraben) Some bug fixing
+* (baerengraben) Enhancement https://github.com/baerengraben/iobroker.swiss-weather-api/issues/10
+
+### 0.2.0
+* (baerengraben) Updates in order to commit to iobroker stable
 
 ### 0.1.9
 * (baerengraben) Dependency- and Vulnerabilites-Updates
@@ -53,7 +68,6 @@ Bei der ersten Installation möchten Sie möglicherweise überprüfen, ob alles 
 ### 0.1.8
 * (baerengraben) Added Icons provided by SRGSSR => Thank you!! :)
 * (baerengraben) Added new Object icon-url-srgssr => Contains the url-link to the srgssr Icon
-
 
 ### 0.1.7
 **Attention**: If you have already installed a previous Version of swiss-weather-api (<= 0.1.6) please remove the adapter and install it completely new. This makes shure you get the new Unit-Names for "fff" and "ffx3" which where corrected by SRG. 

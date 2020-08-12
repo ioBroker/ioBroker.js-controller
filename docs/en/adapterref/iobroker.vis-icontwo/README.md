@@ -53,6 +53,26 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.11.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Phones_Tablets)
+
+### 0.10.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.9.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Devices)
+
+### 0.8.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling & Weather)
+
+### 0.7.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
 ### 0.6.0
 
 • (skvarel) - Neue Symbole hinzugefügt (Devices)

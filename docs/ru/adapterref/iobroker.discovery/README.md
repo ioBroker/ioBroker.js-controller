@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
-title: ioBroker Откройте для себя адаптер
-hash: mo/DXV4ctxkpQk1ww63C9u20hQTlban7deTAEGe+iWM=
+title: ioBroker Discover Адаптер
+hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
 ---
 ![логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -14,93 +14,94 @@ hash: mo/DXV4ctxkpQk1ww63C9u20hQTlban7deTAEGe+iWM=
 ![NPM](https://nodei.co/npm/iobroker.discovery.png?downloads=true)
 
 # IoBroker Откройте для себя адаптер
-** Обнаружение устройств всеми известными методами. **
+** Обнаруживайте устройства всеми известными методами. **
 
-Это специальные адаптеры, которые пытаются найти все возможные устройства, которые могут быть доступны с хоста.
-Просто теперь он может обнаружить с помощью ping, UPnP (последовательный план).
+Это специальные адаптеры, которые пытаются найти все возможные устройства, доступные с хоста.
+Только сейчас он может обнаруживать через ping, UPnP (планируется серийный).
 
-** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
-## На самом деле поддерживается
-### Обнаружено автоматически
-- Beckhoff PLC
-- Умный Дом Bosch
+## Фактически поддерживается
+### Обнаруживается автоматически
+- ПЛК Beckhoff
+- Умный дом Bosch
 - Bose Soundtouch
 - Broadlink
 - Chromecast
 - климат-контроль Daikin
 - deConz
-- Денон / Маранц
+- Denon / Marantz
 - DoorBird
-- Ebus
-- Эки
-- EnergyManager (E.ON / Solarwatt)
-- энет (юнг)
+- ebus
+- ekey
+- Энергоменеджер (E.ON / Solarwatt)
+- энет (Юнг)
 - Epson Stylus PX830
 - Факероку (гармония)
 - FHEM
 - FireTV
 - Фрицдект
 - Фрониус
-- пробки G-Homa
+- Заглушки G-Homa
 - Гармония
 - Домашний помощник
 - Homematic CCU (hm-rpc, hm-rega)
-- Домашний пилот
+- Homepilot
 - HP-lio
 - Philips HUE
-- Плекс
+- Plex
 - InfluxDB
-- KLF-200
+- КЛФ-200
 - KNX (фактически отключен)
 - Коди
-- Landroid
+- Ландроид
 - LGTV
-- Освети
-- локсон
-- Lupusec
+- Осветить
+- Локсон
+- Лупусек
 - МАКС! куб
-- McLighting
-- МегаД
-- Миле
-- Mi Home Smarthome
+- Маклайтинг
+- MegaD
+- Miele
+- Облачная служба Miele
+- Умный дом Mi Home
 - Микротик
 - Мост MiLight (v6)
-- Mpd
+- Мпд
 - Musiccast
 - myDlink
-- Mysensors USB / Serial (9600, 38400, 57600, 115200)
-- Светопрозрачные панели / холст
-- Nuki2
+- Mysensors USB / последовательный порт (9600, 38400, 57600, 115200)
+- световые панели / холст nanoleaf
+- Нуки2
 - Орех
 - Onkyo
 - OpenHAB
 - Пинг
-- Плекс
+- Plex
 - Proxmox
-- RFLink (последовательный 57600 бод)
+- RFLink (серийный 57600 бод)
 - SamsungTV
 - Smappee
 - Solarlog
 - Соннен
-- сонос
+- Сонос
 - Stiebel-Eltron / Tecalor ISG (плюс)
 - SQL (MySQL, MSSQL, PostgreSQL)
-- Squeezebox
+- Соковыжималка
 - SqueezeboxRPC
-- Синология
+- Synology
 - TR-064
 - Trådfri
 - UPnP
 - Wifilight
-- Yamaha
+- Ямаха
 - Yeelight
-- Z-wave USB (протестировано Aeon Labs)
+- Z-wave USB (протестировано в Aeon Labs)
 
-### Предлагается в качестве дополнительных адаптеров
+### Предлагаются как дополнительные адаптеры
 - Облако
-- История (если не найден SQL или InfluxDB)
-- flot (предлагается при наличии адаптера истории)
+- История (если SQL или InfluxDB не найдены)
+- flot (предлагается при наличии History-Adapter)
 - JavaScript
 - Информация
 - мобильный
@@ -110,26 +111,41 @@ hash: mo/DXV4ctxkpQk1ww63C9u20hQTlban7deTAEGe+iWM=
 ## Делать
 - артнет? (Bluefox)
 - B-Control-Em? (Bluefox)
-- куль / макскул (блюфокс)
-- Foobar200 (Установщик)
-- fritzbox (ruhr70)
-- км200 (франкжук)
+- Cul / Maxcul (Bluefox)
+- Foobar200 (установщик)
+- фрицбокс (ruhr70)
+- км200 (откровенное шутку)
 - мегаэсп (ausHaus)
 - Modbus (Bluefox)
-- mqtt / mqtt-client (Bluefox)
+- mqtt / mqtt-клиент (Bluefox)
 - owfs (Bluefox)
 - rpi2 (если ioBroker работает на Raspberry)
 - rwe-smarthome (PArns)
 - S7 (Bluefox)
 - смартметр (Apollon77)
-- унифи (дженс маус)
-- волк (улыбающийся джек)
-- xs1 (франкжук)
+- унифи (jens-maus)
+- волк (улыбается-валет)
+- xs1 (откровенный шутник)
+
+<! - Заполнитель для следующей версии (в начале строки):
+
+### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 2.3.11 (2020-08-08)
+* (Grizzelbee) Added MieleCloudService 
+
+### 2.3.10 (2020-07-26)
+* (MiSchroe) Discovery Velux KLF-200 updated to new firmware
+
+### 2.3.9 (2020-07-17)
+* (Apollon77) Add error handling to onvif discovery (Sentry IOBROKER-DISCOVERY-13)
+* (Apollon77) Add error handling to smapee discovery (Sentry IOBROKER-DISCOVERY-14)
+* (Apollon77) Add error handling to synology discovery (Sentry IOBROKER-DISCOVERY-1A)
+* (Apollon77) Update mndp library to prevent crashes (Sentry IOBROKER-DISCOVERY-15+)
 
 ### 2.3.7 (2020-06-11)
-* (Apollon) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
+* (Apollon77) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
 
 ### 2.3.6 (2020-05-02)
 * (Garfonso) add mydlink adapter

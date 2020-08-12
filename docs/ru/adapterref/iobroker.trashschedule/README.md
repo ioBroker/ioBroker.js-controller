@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.trashschedule/README.md
 title: ioBroker.trashschedule
-hash: MuVfAYZ+uQZhX50dSEVv0vyWEguXYftm8gjT5evisuU=
+hash: yh8XvPLUW6JXEm9Kg/mzld7CJMz1EZPbRbApTGMjN1w=
 ---
 ![логотип](../../../en/adapterref/iobroker.trashschedule/admin/trashschedule.png)
 
@@ -17,21 +17,50 @@ hash: MuVfAYZ+uQZhX50dSEVv0vyWEguXYftm8gjT5evisuU=
 ![NPM](https://nodei.co/npm/iobroker.trashschedule.png?downloads=true)
 
 # IoBroker.trashschedule
-Сканирует календарь, чтобы вычислить оставшиеся дни до следующего сбора мусора.
+Сканирует календарь для подсчета дней, оставшихся до следующего вывоза мусора
 
 ## Предварительные условия
-1. Создайте **уникальный экземпляр**
-2. Настройте URL своего календаря (например, календарь Google)
-3. Установите для параметра «Дни предварительного просмотра» диапазон, который включает каждый тип мусора один раз.
-4. Выберите опцию «Скрыть начало-конец событий»
-5. Если вы используете вкладку «события», убедитесь, что для каждого типа события установлен флажок «Отображать», который также следует использовать в расписании корзины (в противном случае событие будет скрыто экземпляром ical).
+1. Создайте **фактический экземпляр**
+2. Настройте URL-адрес вашего календаря (например, календарь Google).
+3. Установите для параметра "Дни предварительного просмотра" диапазон, включающий каждый тип корзины как минимум дважды (например, 30 дней).
+4. Выберите вариант «Скрыть начало и конец событий».
+5. Если вы используете вкладку «События», убедитесь, что для каждого типа события установлен флажок «Отображать», который также должен использоваться в вашем расписании корзины (в противном случае событие будет скрыто экземпляром ical).
 
 ## Конфигурация
-1. Создайте экземпляр расписания корзины и выберите экземпляр ical в качестве источника
-2. Перейдите на вкладку «Типы корзин» и добавьте имена типов и совпадения событий.
-3. Запустите экземпляр
+1. Создайте экземпляр расписания корзины и выберите этот экземпляр в качестве источника.
+2. Перейдите на вкладку типов мусора и добавьте названия типов и совпадения событий.
+3. Запустите экземпляр.
+
+** Вопросы? ** Проверьте FAQ: [Немецкий](https://github.com/klein0r/ioBroker.trashschedule/blob/master/faq_de.md)
 
 ## Changelog
+
+### 0.0.11
+
+* (klein0r) Better error reporting
+
+### 0.0.10
+
+* (klein0r) Added CSS classes for easier customization
+* (klein0r) Added optional glow on due date for vis widget
+
+### 0.0.9
+
+* (klein0r) Fixed color correction calculation issue
+
+### 0.0.8
+
+* (klein0r) Fixed missing VIS translations
+
+### 0.0.7
+
+* (klein0r) Improved logging
+* (klein0r) Several fixes, improved admin and vis (automatic color correction, resizeable widget)
+* (ivosch68) Reset of states if no event matches
+
+### 0.0.6
+
+* (klein0r) updated dependencies
 
 ### 0.0.5
 

@@ -37,7 +37,15 @@ This is normal URL request, where all parameters are in URL. Like `http://mycam/
 ### URL image with basic authentication
 This is URL request for image, where all parameters are in URL, but you can provide the credentials for basic authentication. Like `http://mycam/snapshot.jpg`  
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+### 0.1.3 (2020-08-08)
+* (Hirsch-DE) Parameters were applied
+
 ### 0.1.2 (2020-06-03)
 * (bluefox) implemented get image by message
 

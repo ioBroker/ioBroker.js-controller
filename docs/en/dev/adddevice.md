@@ -31,6 +31,10 @@ Add new device type to the global list: https://github.com/ioBroker/ioBroker.typ
 Take some device as basis and copy that in the `patterns` of the `ChannelDetector` class.
 The type detector must somehow distinguish between devices, so your device must have unique set of roles.
 We will take `level.temperature` and `level.mode.thermostat` as a specific pattern for air conditioner and mark these two states as `required`.
-Most complex devices must be on the top in the list, so they will be detected first and at the end will come more and more simple devices. 
+Most complex devices must be on the top in the list, so they will be detected first and at the end will come more and more simple devices.
+
+You must create a new version of `iobroker.type-detector` npm package.
 
  ## iobroker.devices
+ Go to https://github.com/ioBroker/ioBroker.devices/blob/master/src/package.json and update your version there.
+ 

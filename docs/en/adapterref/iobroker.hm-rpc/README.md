@@ -135,6 +135,10 @@ Here, measured values, control and status data are listed; depending on the func
 ## FAQ
 
 ## Changelog
+### 1.14.18 (2020-08-08)
+* (foxriver76) fix issue when CuxD listDevices does not deliver valid array
+* (foxriver76) fix error with % scaling in some edge cases
+
 ### 1.14.15 (2020-07-21)
 * (foxriver76) fix bug on forced reinitialization run
 

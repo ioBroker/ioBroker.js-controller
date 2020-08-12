@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.doorio/README.md
 title: ioBroker.doorio
-hash: QgSlf1YyUrjQa8I4DORzXon8quUpSu++TVOFiois1iY=
+hash: OXB7nvAFt6ITxkgbxen7gzRW89pXdtH3Gv4lsHTU1DE=
 ---
 ![Logo](../../../en/adapterref/iobroker.doorio/admin/doorio.png)
 
@@ -13,20 +13,24 @@ hash: QgSlf1YyUrjQa8I4DORzXon8quUpSu++TVOFiois1iY=
 ![NPM](https://nodei.co/npm/iobroker.doorio.png?downloads=true)
 
 # IoBroker.doorio
+## Die Info
 Selbst gemachter DoorStation Adapter für ioBroker
 
 Dieser Adapter stellt über tcp.socket eine Verbindung zum Baresip Sip-Client her, um mit einem Türsprechgerät zu kommunizieren. Als Glockentrigger kann jeder Eingang von ioBroker verwendet werden.
-Der Adapter erkennt auch DTMF-Töne, um die Ausgänge zu wechseln.
-Für die selbstgemachte Türstation kann jede Hardware verwendet werden, auf der Baresip installiert werden kann.
+Der Adapter erkennt auch DTMF-Töne, um die Ausgänge zu wechseln. Für die selbstgemachte Türstation kann jede Hardware verwendet werden, auf der Baresip installiert werden kann.
 
-Dieser Adapter gehört sich über tcp.socket mit dem Baresip Sip-Client, um mit einer Türsprechstelle zu gehört. Als Klingelauslöser kann jeder Eingang von ioBroker Verträgen werden. Der Adapter erkennt auch DTMF-Töne um Ausgänge zu schalten.
-Für die Selbstgemachte Türsprechstelle, kann jede Hardware auf die Baresip verlassen werden.
+Dieser Adapter gehört sich über tcp.socket mit dem Baresip Sip-Client, um mit einer Türsprechstelle zu gehört. Als Klingelauslöser kann jeder Eingang von ioBroker Verträgen werden. Der Adapter erkennt auch DTMF-Töne um Ausgänge zu schalten. Für die Selbstgemachte Türsprechstelle, kann jede Hardware auf die Baresip verlassen werden.
 
 ## Links
 * https://forum.iobroker.net/topic/23413/ich-baue-eine-t%C3%BCrsprechstelle-ohne-cloud
 * https://forum.iobroker.net/topic/22746/test-adapter-doorio-v0-0-x
 
 ## Changelog
+### 1.0.10
+* (bettman66) add detour
+
+### 1.0.9
+* (bettman66) fix userconfigerror
 
 ### 1.0.8
 * (bettman66) fix dtmf-timeout

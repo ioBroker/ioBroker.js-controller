@@ -4,32 +4,32 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
+hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ---
 ![商标](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
 ＃HomeMatic ReGaHSS
 ## Homematic
-> Homematic是eQ-3推出的智能家居系统，可使用家庭或公寓中的场景（从简单到复杂）全面控制各种功能。
+> Homematic是eQ-3的智能家居系统，它可以使用房屋或公寓中的场景（从简单到复杂）全面控制各种功能。
 
->这些设备包括用于照明，卷帘和加热控制的产品，危险检测器，安全传感器以及用于天气数据测量的产品。无线电通信简化了改装。电线总线组件可用于新建筑物。
+>这些设备包括用于照明，卷帘和加热控制的产品，危险检测器，安全传感器以及用于测量天气数据的产品。无线电通信简化了改装。电线总线组件可用于新建筑物。
 
 [资源](https://www.eq-3.de/produkte/homematic.html)
 
 ##适配器Homematic ReGaHss
-该适配器建立到Homematic逻辑层“ ReGaHSS”（** Re ** **网关）的连接。
+该适配器建立与Homematic逻辑层“ ReGaHSS”（** ** ** Ga teway）的连接。
 它在Homematic和ioBroker之间同步实名，系统变量，房间，交易和程序。
 
-如果要将多个控制中心集成到ioBroker中，则必须为每个控制中心安装并配置一个单独的实例。
+如果要将多个中央单元集成到ioBroker中，则必须为每个中央单元安装和配置一个单独的实例。
 
 安装ReGaHSS后，将安装适配器“ hm-rpc”的实例，应事先对其进行配置和激活。
 
-该适配器的一个实例最多可以管理5个不同的Homematic RPC适配器实例，这些实例提供不同的服务（每个服务都需要自己的RPC实例）：
+此适配器的一个实例最多可以管理5个不同的Homematic RPC适配器实例，这些实例提供不同的服务（每个服务都需要自己的RPC实例）：
 
 -rfd（标准组件的CCU无线电服务）
--hs485d（有线）（用于总线组件）
+-hs485d（有线）（用于有线总线组件）
 -CuxD（提供通用接口的附加软件）
--Homematic IP（基于IP的组件）
+-Homematic IP（IP支持的组件）
 -虚拟设备
 
 ###安装之前的要求
@@ -37,11 +37,11 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 -带有合适软件（piVCCU（* x）*，RaspberryMatic或类似软件）的无线电模块
 
 ##安装
-适配器的实例通过ioBroker管理界面安装。
+适配器的实例是通过ioBroker管理界面安装的。
 
 安装完成后，配置窗口将自动打开。
 
-在实际配置之前，应创建并配置HM-RPC适配器的实例（使用此适配器创建），或者在必要时创建其他HM-RPC实例。
+在实际配置之前，应创建并配置HM-RPC适配器的实例（与此适配器一起创建），或者，如果需要，还可以创建和配置其他HM-RPC实例。
 
 ##配置
 ![](../../../de/adapterref/iobroker.hm-rega/media/01c7dbc4da0240421b0711b331971d2d.png)**上方的选择菜单**
@@ -61,33 +61,33 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 
 轮询
 
-如果激活，则CCU会根据“间隔”字段中设置的秒数定期查询RegaHSS数据。间隔不应设置得太低，因为轮询过多会导致CCU崩溃。
+如果激活，则CCU会根据“间隔”字段中设置的秒数定期查询RegaHSS数据。不应将时间间隔设置得太短，因为太频繁的轮询会导致CCU崩溃。
 
 触发
 
-为了最大程度地减少从ioBroker到RegaHSS的活动查询，触发器还可以根据程序中CCU上的更改推送数据。
-为此，可以使用CCU的虚拟密钥，该密钥在CCU程序中触发。默认情况下，这是BidCosRF.50.PRESS_SHORT键（请参阅示例程序）。
+为了最大程度地减少从ioBroker到RegaHSS的活动查询，触发器也可以在发生更改时将数据推送到程序内CCU上。
+为此，可以使用CCU程序中触发的CCU虚拟按钮。默认情况下，这是BidCosRF.50.PRESS_SHORT按钮（请参见示例程序）。
 
 ###同步区域
-用户可以在此处指定ioBroker中的CCU将接管哪些信息。然后在ioBroker中创建相应的对象和数据点。
+用户可以在此处指定将从CCU传输到ioBroker的信息。然后在ioBroker中创建相应的对象和数据点。
 
--DutyCycle：激活占空比规格（％）
+-DutyCycle：激活占空比指示（以％为单位）
 -变量：激活从CCU传输系统变量
 -程序：从CCU激活程序名称的传输
 -名称：激活从CCU传输数据点的纯文本名称
--收藏夹：激活收藏夹的传输和列出
--房间：激活房间的接管及其列表
--交易：激活交易的接管及其列表
+-收藏夹：激活收藏夹的传送和列表
+-房间：激活房间的接管并列出房间
+-交易：激活交易的转移及其列表
 
 ###其他设置区域
-用户可以在此处决定是否应使用https（加密和防窃听的连接）。如果激活，则需要用户名和关联的密码
+用户可以在此处决定是否应使用https（加密和防窃听的连接）。如果激活，则需要用户名和密码
 
-完成所有设置后，使用“保存并关闭”命令（设置区域下方的按钮）完成配置页面。关闭适配器，并使用新值启动实例。
+完成所有设置后，使用“保存并关闭”命令（设置区域下方的按钮）关闭配置页面。关闭适配器，并使用新值启动实例。
 
 ###实例
 ![](../../../de/adapterref/iobroker.hm-rega/media/44785b82964bcdc198565b1681787dc0.png)**实例和信号**
 
-现在可以在ioBroker的*实例*区域中找到创建的实例。左侧的交通信号灯系统显示适配器是已激活还是已连接到CCU。
+现在可以在ioBroker的*实例*区域中找到创建的实例。在左侧，交通信号灯系统显示适配器是已激活还是已连接到CCU。
 
 如果将鼠标指针放在符号上，则会获得详细信息。
 
@@ -100,14 +100,17 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 
 第一个文件夹（通常是数字ID）是CCU中包含的程序。
 
-CCU和信息文件夹包含网关的基本信息。
-占空比百分比（如果已激活）。
+CCU和info文件夹包含网关的基本信息，包括。
+占空比的百分比规格（如果已激活）。
 
 最后，列出了在CCU中创建的变量
 
 ＃＃＃ 常问问题
 
 ## Changelog
+### 2.6.15 (2020-08-08)
+* (foxriver76) fix potential issues with scaling of % values as in https://github.com/ioBroker/ioBroker.hm-rpc/issues/263
+
 ### 2.6.14 (2020-06-11)
 * (foxriver76) fix potential problem on enum sync, where to many channels could be deleted
 

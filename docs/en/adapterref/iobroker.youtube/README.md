@@ -26,6 +26,10 @@ To get an API-Key you have to go to [console.developers.google.com](https://cons
 
 ## Changelog
 
+### 0.0.12
+
+* (klein0r) Added json summary
+
 ### 0.0.11
 
 * (klein0r) setTimeout found in main.js, but no clearTimeout detected

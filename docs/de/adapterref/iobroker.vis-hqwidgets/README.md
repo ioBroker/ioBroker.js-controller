@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-hqwidgets/README.md
 title: oBroker.vis-hqWidgets
-hash: Tr25/rGLCShP3cb01xpc6DE4Umea7NwQzg7lJFwe94k=
+hash: YHlrsh/8OGY6ykN13QmuA0w3nbIyPumysYx9AUOHTaU=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-hqwidgets/admin/hqwidgets.png)
 
@@ -18,7 +18,14 @@ hqWidgets - Hochwertige Widgets für ioBroker.vis ![Beispiel](../../../en/adapte
 Für ein Widget wird das jQuery.knob-Plugin (MIT) von Anthony Terrien verwendet.
 http://anthonyterrien.com/knob/ oder https://github.com/aterrien/jQuery-Knob
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 1.1.5 (2020-08-08)
+* (mk176) Resolved the button even if mouse is moved out
+
 ### 1.1.4 (2020-03-28)
 * (bluefox) Fixed blinds widget
 

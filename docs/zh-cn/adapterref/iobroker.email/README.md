@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.email/README.md
 title: ioBroker电子邮件
-hash: 3i+fboU/+xLYeCNJIcUyCthEA6n+U7wok2Y4ca66zcc=
+hash: toVqq++uwVaVbxSeS8PlFQ/2PCwgh6XNZ/6O0xhptzM=
 ---
 ![商标](../../../en/adapterref/iobroker.email/admin/email.png)
 
@@ -36,7 +36,7 @@ sendTo("email.1", "Email body");
 // To specify subject or other options
 sendTo("email", {
     from:    "iobroker@mydomain.com",
-    to:      "aabbcc@gmail.com",
+    to:      "aabbcc@gmail.com, xxyyzz@gmail.com", // comma separated multiple recipients.
     subject: "Message from ioBroker",
     text:    "This is test email to you!"
 });

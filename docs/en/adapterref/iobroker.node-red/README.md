@@ -19,7 +19,15 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 ## Settings
 - Safe mode - Flows will not be started and you can edit the flows to fix some overload problem.
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+    ### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+### 2.0.1 (2020-08-08)
+* (jwiesel) Updated settings.js, node-red and dependencies to latest version.
+
 ### 2.0.0 (2020-06-20)
 * (Apollon77) check object and not state to detect if an object exists
 * (jwiesel) Updated settings.js to incorporate latest changes up to Node-RED 1.0.6

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: K07tNG5QJNKsiaC64HYt+Ci9c8DNEE/P1ZHi7d55jOc=
+hash: EDgS5V9uAE3zHfuNU0OQY0+Gsg8ZqIaiINb4c+skz9E=
 ---
 ![商标](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -16,7 +16,7 @@ hash: K07tNG5QJNKsiaC64HYt+Ci9c8DNEE/P1ZHi7d55jOc=
 ＃ioBroker.sbfspot
 **如果您愿意，请考虑捐赠：**
 
-[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+[![贝宝]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
 该适配器使用sbfspot从SMA电源逆变器读取数据。
 现在支持两种数据库类型（mySQL和sqlite）。
@@ -42,17 +42,21 @@ hash: K07tNG5QJNKsiaC64HYt+Ci9c8DNEE/P1ZHi7d55jOc=
 
 有时必须多次调用npm intall才能成功安装所有必需的软件包
 
-*如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）上创建问题
+*如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）中创建问题
+
+## 4.0.0（2020-07-28）
+*（René）重做以使用异步/等待
+*（René）使用mysql2
 
 ## 3.0.0（2020-04-25）
-*（René）sqlite3包被Better-sqlite3取代
+*（René）sqlite3软件包被Better-sqlite3取代
 * DP的（René）角色工作过度
 *（René）请参阅问题19：仅当添加日光时才获取数据
 *（René）参见问题＃29：小部件轴标签的默认颜色已更改
-*（René）小部件：如果添加的小部件太小，则记录日志
+*（René）小部件：如果添加的小部件太小则记录
 
 ## 2.4.3（2020-04-02）
-*（René）DB_CalcHistory_Today中的错误修正用于小部件
+* DB_CalcHistory_Today中的（René）错误修正用于小部件
 
 ## 2.4.2（2020-02-01）
 *（René）错误修正小工具

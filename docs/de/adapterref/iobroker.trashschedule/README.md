@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.trashschedule/README.md
 title: ioBroker.trashschedule
-hash: MuVfAYZ+uQZhX50dSEVv0vyWEguXYftm8gjT5evisuU=
+hash: yh8XvPLUW6JXEm9Kg/mzld7CJMz1EZPbRbApTGMjN1w=
 ---
 ![Logo](../../../en/adapterref/iobroker.trashschedule/admin/trashschedule.png)
 
@@ -22,16 +22,45 @@ Scannt einen Kalender, um die verbleibenden Tage bis zur nächsten Müllabfuhr z
 ## Voraussetzungen
 1. Erstellen Sie eine **ical Instanz**
 2. Konfigurieren Sie die URL Ihres Kalenders (z. B. Google Kalender).
-3. Stellen Sie "Tage in der Vorschau" auf einen Bereich ein, der jeden Papierkorbtyp einmal enthält
+3. Stellen Sie "Tage in der Vorschau" auf einen Bereich ein, der jeden Papierkorbtyp mindestens zweimal enthält (z. B. 30 Tage).
 4. Wählen Sie die Option "Start-Ende von Ereignissen ausblenden".
 5. Wenn Sie die Registerkarte "Ereignisse" verwenden, aktivieren Sie das Kontrollkästchen "Anzeige" für jeden Ereignistyp, der auch in Ihrem Papierkorbplan verwendet werden soll (andernfalls wird das Ereignis von der ical-Instanz ausgeblendet).
 
 ## Aufbau
-1. Erstellen Sie eine Papierkorbinstanz und wählen Sie die ical-Instanz als Quelle aus
+1. Erstellen Sie eine Papierkorbplaninstanz und wählen Sie die ical-Instanz als Quelle aus
 2. Wechseln Sie zur Registerkarte Papierkorbtypen und fügen Sie Typnamen und Ereignisübereinstimmungen hinzu
 3. Starten Sie die Instanz
 
+** Fragen? ** Überprüfen Sie die FAQ: [Deutsche](https://github.com/klein0r/ioBroker.trashschedule/blob/master/faq_de.md)
+
 ## Changelog
+
+### 0.0.11
+
+* (klein0r) Better error reporting
+
+### 0.0.10
+
+* (klein0r) Added CSS classes for easier customization
+* (klein0r) Added optional glow on due date for vis widget
+
+### 0.0.9
+
+* (klein0r) Fixed color correction calculation issue
+
+### 0.0.8
+
+* (klein0r) Fixed missing VIS translations
+
+### 0.0.7
+
+* (klein0r) Improved logging
+* (klein0r) Several fixes, improved admin and vis (automatic color correction, resizeable widget)
+* (ivosch68) Reset of states if no event matches
+
+### 0.0.6
+
+* (klein0r) updated dependencies
 
 ### 0.0.5
 

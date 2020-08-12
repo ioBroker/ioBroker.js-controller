@@ -31,7 +31,7 @@ sendTo("email.1", "Email body");
 // To specify subject or other options
 sendTo("email", {
     from:    "iobroker@mydomain.com",
-    to:      "aabbcc@gmail.com",
+    to:      "aabbcc@gmail.com, xxyyzz@gmail.com", // comma separated multiple recipients.
     subject: "Message from ioBroker",
     text:    "This is test email to you!"
 });

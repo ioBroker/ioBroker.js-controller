@@ -12,7 +12,15 @@ hqWidgets - High quality widgets for ioBroker.vis
 For one widget the jQuery.knob plugin (MIT) from Anthony Terrien is used.
 http://anthonyterrien.com/knob/ or https://github.com/aterrien/jQuery-Knob 
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+### 1.1.5 (2020-08-08)
+* (mk176) Resolved the button even if mouse is moved out
+
 ### 1.1.4 (2020-03-28)
 * (bluefox) Fixed blinds widget
 

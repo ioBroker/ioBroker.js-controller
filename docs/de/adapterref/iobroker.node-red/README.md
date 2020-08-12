@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.node-red/README.md
 title: ioBroker Node-Red Adapter
-hash: zpelxzM0LIWlw140+rWd0rXt3iauWphgCP6aR0Ta+Ik=
+hash: x/QTu0owyv92klKSi7Cn7RXGk5HnDi5EUbAB8ZYEVKE=
 ---
 ![Logo](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
@@ -18,14 +18,21 @@ Startet die knotenrote Instanz und kommuniziert mit ihr.
 
 Dieser Adapter verwendet den Node-Red-Server von https://github.com/node-red/node-red
 
-** Hinweis: ** Wenn Sie im Dialogfeld "ID auswählen" des ioBroker-Knotens keine Variable finden, starten Sie die knotenrote Instanz neu. Durch einen Neustart wird die neue Objektliste erstellt.
+** Hinweis: ** Wenn Sie im Dialogfeld "ID auswählen" des ioBroker-Knotens keine Variable finden können, starten Sie die knotenrote Instanz neu. Durch einen Neustart wird die neue Objektliste erstellt.
 
-** Upgrade auf 1.17.2: ** Wenn Sie bereits die Node-Red-Authentifizierung verwendet haben: Bitte legen Sie Ihr Passwort nach dem Upgrade erneut in den Node-Red-Instanzeinstellungen in ioBroker fest! Andernfalls können Sie sich nach dem Upgrade nicht mehr bei Node-Red anmelden.
+** Upgrade auf 1.17.2: ** Wenn Sie bereits die Node-Red-Authentifizierung verwendet haben: Bitte legen Sie Ihr Passwort nach dem Upgrade in den Node-Red-Instanzeinstellungen in ioBroker erneut fest! Andernfalls können Sie sich nach dem Upgrade nicht mehr bei Node-Red anmelden.
 
 ## Die Einstellungen
 - Abgesicherter Modus - Flows werden nicht gestartet und Sie können die Flows bearbeiten, um ein Überlastungsproblem zu beheben.
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 2.0.1 (2020-08-08)
+* (jwiesel) Updated settings.js, node-red and dependencies to latest version.
+
 ### 2.0.0 (2020-06-20)
 * (Apollon77) check object and not state to detect if an object exists
 * (jwiesel) Updated settings.js to incorporate latest changes up to Node-RED 1.0.6

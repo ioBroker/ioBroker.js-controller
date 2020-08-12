@@ -52,6 +52,12 @@ For this to work you need to provide the location of the systems global node-mod
 
 ## Changelog
 
+### 3.0.1 (2020-08-08)
+* (Apollon77) set a very high limit (again) on allowed accessories and services because irrelevant 
+
+### 3.0.0 (2020-08-04)
+* (Apollon77) BREAKING: ONLY WORKS WITH HOMEBRIDGE 1.1.x+ AND Node JS >=10.17.0!! Make sure plugins support it AND homebridge is updated to 1.1.x when you use the Global Mode!
+
 ### 1.1.2 (2019-07-08)
 * (Apollon77) Allow more then 149 accessories in wrapper mode
 
@@ -115,7 +121,7 @@ For this to work you need to provide the location of the systems global node-mod
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2018-2020 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

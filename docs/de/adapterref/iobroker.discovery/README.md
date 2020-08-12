@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Adapter
-hash: mo/DXV4ctxkpQk1ww63C9u20hQTlban7deTAEGe+iWM=
+hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
 ---
 ![Logo](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -63,6 +63,7 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - McLighting
 - MegaD
 - Miele
+- Miele Cloud Service
 - Mi Home Smarthome
 - Mikrotik
 - MiLight-Brücke (v6)
@@ -97,7 +98,7 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - Yeelight
 - Z-Wave USB (getestet mit Aeon Labs)
 
-### Wird als zusätzliche Adapter angeboten
+### Wird als zusätzlicher Adapter angeboten
 - Wolke
 - Verlauf (wenn kein SQL oder InfluxDB gefunden wurde)
 - Flot (wird angeboten, wenn ein History-Adapter vorhanden ist)
@@ -126,10 +127,25 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - Wolf (lächelnder Wagenheber)
 - xs1 (Frankjoke)
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 2.3.11 (2020-08-08)
+* (Grizzelbee) Added MieleCloudService 
+
+### 2.3.10 (2020-07-26)
+* (MiSchroe) Discovery Velux KLF-200 updated to new firmware
+
+### 2.3.9 (2020-07-17)
+* (Apollon77) Add error handling to onvif discovery (Sentry IOBROKER-DISCOVERY-13)
+* (Apollon77) Add error handling to smapee discovery (Sentry IOBROKER-DISCOVERY-14)
+* (Apollon77) Add error handling to synology discovery (Sentry IOBROKER-DISCOVERY-1A)
+* (Apollon77) Update mndp library to prevent crashes (Sentry IOBROKER-DISCOVERY-15+)
 
 ### 2.3.7 (2020-06-11)
-* (Apollon) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
+* (Apollon77) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
 
 ### 2.3.6 (2020-05-02)
 * (Garfonso) add mydlink adapter

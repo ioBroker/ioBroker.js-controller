@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-hqwidgets/README.md
 title: oBroker.vis-hqWidgets
-hash: Tr25/rGLCShP3cb01xpc6DE4Umea7NwQzg7lJFwe94k=
+hash: YHlrsh/8OGY6ykN13QmuA0w3nbIyPumysYx9AUOHTaU=
 ---
 ![логотип](../../../en/adapterref/iobroker.vis-hqwidgets/admin/hqwidgets.png)
 
@@ -15,10 +15,17 @@ hash: Tr25/rGLCShP3cb01xpc6DE4Umea7NwQzg7lJFwe94k=
 # OBroker.vis-hqWidgets
 hqWidgets - высококачественные виджеты для ioBroker.vis ![пример](../../../en/adapterref/iobroker.vis-hqwidgets/img/widgets.png)
 
-Для одного виджета используется плагин jQuery.knob (MIT) от Энтони Терриена.
+Для одного виджета используется плагин jQuery.knob (MIT) от Anthony Terrien.
 http://anthonyterrien.com/knob/ или https://github.com/aterrien/jQuery-Knob
 
+<! - Заполнитель для следующей версии (в начале строки):
+
+### __РАБОТА В ПРОЦЕССЕ__ ->
+
 ## Changelog
+### 1.1.5 (2020-08-08)
+* (mk176) Resolved the button even if mouse is moved out
+
 ### 1.1.4 (2020-03-28)
 * (bluefox) Fixed blinds widget
 

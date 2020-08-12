@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.swiss-weather-api/README.md
 title: ioBroker.swiss-погода-апи
-hash: GJsLzI7hsrjrvfsCvzvsLffQXvnvvpKOlu4I1vOKqmQ=
+hash: CPZQujwQq0ZDwyiBSYnMo2oF5Ya+m6HBcrh/60BZHrE=
 ---
 ![логотип](../../../en/adapterref/iobroker.swiss-weather-api/admin/swiss-weather-api.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.swiss-weather-api.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.swiss-weather-api.svg)
-![Количество установок (последняя)](http://iobroker.live/badges/swiss-weather-api-installed.svg)
+![Количество установок (последнее)](http://iobroker.live/badges/swiss-weather-api-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/swiss-weather-api-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/baerengraben/iobroker.swiss-weather-api.svg)
 ![Известные уязвимости](https://snyk.io/test/github/baerengraben/ioBroker.swiss-weather-api/badge.svg)
@@ -17,35 +17,50 @@ hash: GJsLzI7hsrjrvfsCvzvsLffQXvnvvpKOlu4I1vOKqmQ=
 ![Трэвис-CI](http://img.shields.io/travis/baerengraben/ioBroker.swiss-weather-api/master.svg)
 
 # IoBroker.swiss-weather-api
-## Адаптер swiss-weather-api для ioBroker
-Соединяется с отличным API погоды SRG-SSR (https://developer.srgssr.ch/apis/srgssr-weather).
+## Swiss-weather-api адаптер для ioBroker
+Подключается к отличному API погоды SRG-SSR (https://developer.srgssr.ch/apis/srgssr-weather).
 
-API REST Weather SRG-SSR позволяет получать прогнозы погоды и отчеты из более чем 25 000 населенных пунктов по всей Швейцарии.
+SRG-SSR Weather REST API позволяет получать прогнозы погоды и отчеты из более чем 25 000 мест по всей Швейцарии.
 
 ** Иконки **
 
-Значки погоды используются повторно с https://erikflowers.github.io/weather-icons/
+Иконки погоды повторно используются с https://erikflowers.github.io/weather-icons/
 
-Начиная с версии 0.1.8 SRG-SSR даже предоставляет свои собственные значки. Таким образом, вы можете выбрать, какой набор иконок вы хотите использовать.
+Начиная с версии 0.1.8 SRG-SSR даже предоставляет собственные значки. Таким образом, вы можете выбрать, какой набор иконок вы хотите использовать.
 
-** Имейте в виду, что этот адаптер поддерживает только места в Швейцарии. **
+** Имейте в виду, что этот адаптер поддерживает только местоположения в Швейцарии. **
 
 ### Начиная
-1. Получить бесплатную учетную запись на https://developer.srgssr.ch/
-1. Перейдите в «Мои приложения» и создайте новое приложение. Это создаст определенный ConsumerKey и ConsumerSecret
-1. Узнайте долготу / широту (десятичные градусы) выбранного местоположения, для которого нужен прогноз
+1. Получите бесплатный аккаунт на https://developer.srgssr.ch/.
+1. Перейдите в «Мои приложения» и создайте новое приложение. Это создаст определенные ConsumerKey и ConsumerSecret.
+1. Узнайте долготу / широту (в десятичных градусах) выбранного места, для которого требуется прогноз.
 1. Установите этот адаптер на ioBroker => Это может занять несколько минут (~ 7 минут на Raspberry Pi 3)
-1. В настройках адаптера заполните
-   1. ConsumerKey из приложения
-   1. ConsumerSecret of App
-   1. Долгота / Широта выбранного швейцарского местоположения, для которого нужен прогноз. => Пожалуйста, используйте десятичные градусы (например, Цюрих: 47.36667 / 8.5)
+1. В разделе «Конфигурация адаптера» введите
+   1. Название приложения
+   1. ConsumerKey приложения
+   1. ConsumerSecret приложения
+   1. Долгота / широта выбранного места в Швейцарии, для которого требуется прогноз. => Используйте десятичные градусы (например, Цюрих: 47,36667 / 8,5)
+   1. Интервал опроса в минутах (по умолчанию 30 минут)
 
-Это запланированный адаптер. Он запланирован каждые 30 минут и читает прогноз API SRG-SSR. Вы можете изменить этот интервал в режиме просмотра экземпляров (расписание). Нижний интервал не рекомендуется, поскольку минимальный прогноз составляет 1 час.
-** Поэтому имейте в виду, что после установки потребуется 30 минут, пока данные прогноза не будут доставлены в первый раз, а объекты данных в представлении данных будут созданы. **
-
-При первой установке вы можете проверить, все ли работает нормально, и не хотите ждать 30 минут. В этом случае вы можете изменить планировщик на 1 мин. => Если все работает правильно, **, пожалуйста, измените его обратно на 30 минут **.
+Первый запрос выполняется через 10 секунд после запуска адаптера. После первого запуска запрос будет выполняться регулярно в соответствии с параметром конифугирования (Интервал опроса в минутах)
 
 ## Changelog
+
+### 0.3.1
+* (baerengraben)  Adapter-Config attributes longitude & latitude is optional now. If no longitude/latitude is set, the adpater is getting the longitude/latitude from ioBroker System-Attributes (https://github.com/baerengraben/iobroker.swiss-weather-api/issues/6).
+
+### 0.3.0
+* (baerengraben)  Change from Scheduled Adapter to Deamon Adapter(https://github.com/baerengraben/iobroker.swiss-weather-api/issues/11). The query interval is now configurable by parameter. The first query is made 10s after the adapter was started. Attention: For installing this version, please delete the older adapter version completely and install it again.
+
+### 0.2.3
+* (baerengraben) Update Dependencies
+
+### 0.2.2
+* (baerengraben) Some bug fixing
+* (baerengraben) Enhancement https://github.com/baerengraben/iobroker.swiss-weather-api/issues/10
+
+### 0.2.0
+* (baerengraben) Updates in order to commit to iobroker stable
 
 ### 0.1.9
 * (baerengraben) Dependency- and Vulnerabilites-Updates
@@ -53,7 +68,6 @@ API REST Weather SRG-SSR позволяет получать прогнозы п
 ### 0.1.8
 * (baerengraben) Added Icons provided by SRGSSR => Thank you!! :)
 * (baerengraben) Added new Object icon-url-srgssr => Contains the url-link to the srgssr Icon
-
 
 ### 0.1.7
 **Attention**: If you have already installed a previous Version of swiss-weather-api (<= 0.1.6) please remove the adapter and install it completely new. This makes shure you get the new Unit-Names for "fff" and "ffx3" which where corrected by SRG. 

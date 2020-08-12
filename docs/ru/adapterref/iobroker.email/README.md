@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.email/README.md
 title: электронная почта ioBroker
-hash: 3i+fboU/+xLYeCNJIcUyCthEA6n+U7wok2Y4ca66zcc=
+hash: toVqq++uwVaVbxSeS8PlFQ/2PCwgh6XNZ/6O0xhptzM=
 ---
 ![логотип](../../../en/adapterref/iobroker.email/admin/email.png)
 
@@ -12,19 +12,19 @@ hash: 3i+fboU/+xLYeCNJIcUyCthEA6n+U7wok2Y4ca66zcc=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.email.svg)
 ![NPM](https://nodei.co/npm/iobroker.email.png?downloads=true)
 
-# IoBroker email
+# IoBroker электронная почта
 Отправляйте электронные письма от ioBroker.
 
 Адаптер использует [nodemailer](https://github.com/nodemailer/nodemailer) для обеспечения функциональности.
 
-** Этот адаптер требует nodejs 6.x или выше !! **
+** Для этого адаптера требуется nodejs 6.x или выше !! **
 
-** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
-Чтобы использовать Gmail, вам может потребоваться настроить «Разрешить менее безопасные приложения» в своей учетной записи Gmail, если только вы не используете 2FA, в этом случае вам придется создать пароль для конкретного приложения. Вам также может понадобиться разблокировать свою учетную запись с «Разрешить доступ к вашей учетной записи Google», чтобы использовать SMTP.
+Чтобы использовать Gmail, вам может потребоваться настроить «Разрешить менее безопасные приложения» в своей учетной записи Gmail, если вы не используете 2FA, и в этом случае вам придется создать пароль для конкретного приложения. Вам также может потребоваться разблокировать свою учетную запись с помощью «Разрешить доступ к вашей учетной записи Google», чтобы использовать SMTP.
 
-## Применение
-Чтобы отправить письмо от ScriptEngine, просто напишите:
+## Использование
+Чтобы отправить письмо из ScriptEngine, просто напишите:
 
 ```
 // send email to all instances of email adapter
@@ -36,7 +36,7 @@ sendTo("email.1", "Email body");
 // To specify subject or other options
 sendTo("email", {
     from:    "iobroker@mydomain.com",
-    to:      "aabbcc@gmail.com",
+    to:      "aabbcc@gmail.com, xxyyzz@gmail.com", // comma separated multiple recipients.
     subject: "Message from ioBroker",
     text:    "This is test email to you!"
 });
@@ -64,7 +64,7 @@ sendTo("email", {
 
 Для отправки электронной почты с другого адаптера используйте функцию **adapter.sendTo**
 
-## Поддерживаемые сервисы
+## Поддерживаемые услуги
 - 1und1
 - AOL
 - DebugMail.io
@@ -72,13 +72,13 @@ sendTo("email", {
 - FastMail
 - GandiMail
 - Gmail
-- Годадди
+- Godaddy
 - GodaddyAsia
 - GodaddyEurope
 - hot.ee
 - Hotmail
 - iCloud
-- ит
+- i-й
 - mail.ee
 - Mail.ru
 - Mailgun
@@ -87,20 +87,20 @@ sendTo("email", {
 - Naver
 - Office365
 - OpenMailBox
-- Почтовый штемпель
+- Штемпель
 - QQ
 - QQex
 - SendCloud
 - SendGrid
-- SES
+- СЭС
 - SES-US-EAST-1
 - SES-US-WEST-2
 - SES-EU-WEST-1
-- Спаркпост
+- Sparkpost
 - Yahoo
 - Яндекс
 - Зохо
-- Специфично для пользователя (сервер, порт и безопасность определяются вручную)
+- Для конкретного пользователя (сервер, порт и безопасность определяются вручную)
 
 Для других услуг см. Документацию **Nodemailer** `§§LLLLL_0§§`
 

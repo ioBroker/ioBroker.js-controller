@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.cameras/README.md
 title: ioBroker.cameras
-hash: E0VHSuO8ev33u3VNHfmwai7LW9Wm59pNbVQ9FPlN4oo=
+hash: S2DXJveAgZbhf55Ekua2qiIe7Z08WoOTSOJhirISeaA=
 ---
 ![логотип](../../../en/adapterref/iobroker.cameras/admin/cameras.png)
 
@@ -15,11 +15,11 @@ hash: E0VHSuO8ev33u3VNHfmwai7LW9Wm59pNbVQ9FPlN4oo=
 ![Трэвис-CI](http://img.shields.io/travis/ioBroker/ioBroker.cameras/master.svg)
 
 # IoBroker.cameras
-## Адаптер IP-камер для ioBroker
-Вы можете интегрировать свои веб / ip камеры в vis и другие визуализации.
-Если вы настроите камеру с именем `cam1`, она будет доступна на веб-сервере под `http(s)://iobroker-IP:8082/cameras.0/cam1`.
+## Адаптер IP-камеры для ioBroker
+Вы можете интегрировать свои веб- / IP-камеры в визуализацию и другие визуализации.
+Если вы настроите камеру с именем `cam1`, она будет доступна на веб-сервере в разделе `http(s)://iobroker-IP:8082/cameras.0/cam1`.
 
-Кроме того, вы можете запросить изображение через сообщение:
+Кроме того, изображение может быть запрошено через сообщение:
 
 ```
 sendTo('cameras.0', 'image', {
@@ -37,11 +37,18 @@ sendTo('cameras.0', 'image', {
 
 Поддерживаемые камеры:
 
-### URL-изображение Это обычный URL-запрос, в котором все параметры указаны в URL. Нравится `http://mycam/snapshot.jpg`
-### URL-изображение с базовой аутентификацией
-Это запрос URL для изображения, где все параметры указаны в URL, но вы можете предоставить учетные данные для базовой аутентификации. Нравится `http://mycam/snapshot.jpg`
+### URL-изображение Это обычный URL-запрос, все параметры которого указаны в URL. Как `http://mycam/snapshot.jpg`
+### URL изображения с базовой аутентификацией
+Это URL-запрос для изображения, где все параметры указаны в URL-адресе, но вы можете предоставить учетные данные для базовой аутентификации. Как `http://mycam/snapshot.jpg`
+
+<! - Заполнитель для следующей версии (в начале строки):
+
+### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 0.1.3 (2020-08-08)
+* (Hirsch-DE) Parameters were applied
+
 ### 0.1.2 (2020-06-03)
 * (bluefox) implemented get image by message
 
