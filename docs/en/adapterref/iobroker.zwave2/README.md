@@ -32,6 +32,11 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.5.0 (2020-07-30)
+* Added the possibility to send custom commands from scripts ([documentation](docs/en/sendCommand.md)).
+* Added a `reset` state under `Meter CC`
+* Bugfix: Logs are no longer split across multiple files
+
 ### 1.4.2 (2020-07-05)
 * During the interview, endpoint associations are now converted to node associations if required
 * The interview process no longer fails if a node supports `Notification CC V2`
@@ -49,12 +54,6 @@ Updated `zwave-js` to v4.0.1. This includes the following features:
 
 ### 1.3.8 (2020-06-18)
 * Fixed transmission issues caused by overlapped secure transactions
-
-### 1.3.6 (2020-06-17)
-* Added some details to the `Multi Channel Association CC` interview logging
-* Configured lifeline node associations of newer devices should now be set correctly
-* `CRC-16`-encapsulated commands can now be received
-* The log file is complete again
 
 ## License
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.logparser/README.md
 title: ioBroker.logparser
-hash: UDbaxTCx3RNk4uktiXSjd8owbrtbDOwomIhgTgM67nA=
+hash: hFhKajhDIfgI4rFcQpTTJLvbUvIFVnP+VaOy3rtMH2o=
 ---
 ![Logo](../../../en/adapterref/iobroker.logparser/admin/logparser.png)
 
@@ -23,6 +23,8 @@ Das resultierende JSON kann dann in VIS zur Visualisierung verwendet werden. Es 
 
 ![Zustände](../../../en/adapterref/iobroker.logparser/docs/en/img/states.png)
 
+** Bitte beachten Sie: ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch anonym an die Adapterentwickler zu melden. Weitere Details und Informationen zum Deaktivieren dieser Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry). Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 ## Anleitung
 * **[Englische Anweisungen] (docs / de / logparser.md)**
 
@@ -32,6 +34,21 @@ Das resultierende JSON kann dann in VIS zur Visualisierung verwendet werden. Es 
 ![Vis](../../../en/adapterref/iobroker.logparser/docs/de/img/visintro.gif)
 
 ## Changelog
+
+### 1.0.4
+* (Mic-M) Fixed 'Today/Yesterday' updating issue - https://forum.iobroker.net/post/469757. Thanks to (Kuddel) for reporting and (Glasfaser) for further debugging.
+
+### 1.0.3
+* (Mic-M) Added [Sentry](https://github.com/ioBroker/plugin-sentry)
+
+### 1.0.2
+* (Mic-M) Added debug logging for callAtMidnight() and updateTodayYesterday()
+
+### 1.0.1
+* (Mic-M) Updated lodash dependency from 4.17.15 to 4.17.19
+
+### 1.0.0
+* (Mic-M) No changes - just prepare versioning to add adapter to stable repository per [Adapter dev docu](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md#versioning)
 
 ### 0.4.11
 * (Mic-M) Adapter is now in latest repository.

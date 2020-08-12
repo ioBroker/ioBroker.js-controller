@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-hqwidgets/README.md
 title: oBroker.vis-hqWidgets
-hash: Tr25/rGLCShP3cb01xpc6DE4Umea7NwQzg7lJFwe94k=
+hash: YHlrsh/8OGY6ykN13QmuA0w3nbIyPumysYx9AUOHTaU=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-hqwidgets/admin/hqwidgets.png)
 
@@ -18,7 +18,14 @@ hqWidgets-ioBroker.vis![例](../../../en/adapterref/iobroker.vis-hqwidgets/img/w
 对于一个小部件，使用了Anthony Terrien的jQuery.knob插件（MIT）。
 http://anthonyterrien.com/knob/或https://github.com/aterrien/jQuery-Knob
 
+<！-下一个版本的占位符（在该行的开头）：
+
+### __进展中__->
+
 ## Changelog
+### 1.1.5 (2020-08-08)
+* (mk176) Resolved the button even if mouse is moved out
+
 ### 1.1.4 (2020-03-28)
 * (bluefox) Fixed blinds widget
 

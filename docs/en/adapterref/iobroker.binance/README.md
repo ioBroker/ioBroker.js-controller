@@ -21,6 +21,12 @@ You may create an API Key on binance.com - i suggest to restrict it to "read-onl
 ![screenshot-1](screenshot-1.png) ![screenshot-2](screenshot-2.png)
 
 ## Changelog
+### 1.1.3
+- dependency update: lodash
+### 1.1.2
+- version label fix
+### 1.1.1
+- Possibility to disabled download of all prices. Polished options and translations.
 ### 1.1.0
 - added 24hr data for selected symbols
 ### 1.0.5

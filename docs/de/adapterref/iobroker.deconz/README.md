@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.deconz/README.md
 title: kein Titel
-hash: FLHWHrOmg0yl72zz1opWFDy7/2QNeoBUrpsRZPfI38s=
+hash: oGadD+2MVq27J/o275XeRBcmFlhNU672SqfrxrhWpsE=
 ---
 ![Logo](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -17,7 +17,9 @@ ioBroker deConz dresden-elektronik Adapter
 ==============
 
 ## Beachten
-Keine Unterstützung für Beta-Versionen von deConz
+Keine Unterstützung für Beta / Pre-Release-Versionen von deConz.
+
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 Erforderliche js-controller Version> 2.x.x, Erforderliche node.js> = 10.x.x.
 
@@ -85,6 +87,18 @@ Beispiele:
 ## [Sponsoren](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
 
 ## Changelog
+
+### 2.0.3
+* fix incoming rename event for sensors
+* fix release_press is set to true at start
+* added websocket port info to configuration
+* added event types handling for websocket messages
+* added backup, deConz update & firmware update states under Gateway_info
+* added touchlink functions
+* fix sensor handling for virtual devices (fsm and vpir)
+
+### 2.0.2
+* Bugfix
 
 ### 2.0.1
 * Bugfixes

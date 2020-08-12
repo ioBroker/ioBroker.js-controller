@@ -2,7 +2,6 @@
 BADGE-Number of Installations: http://iobroker.live/badges/sonnen-stable.svg
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.sonnen.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.sonnen.svg
-BADGE-Greenkeeper badge: https://badges.greenkeeper.io/foxriver76/ioBroker.sonnen.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.sonnen.png?downloads=true
 ---
 ![Logo](media/sonnen.png)
@@ -48,6 +47,9 @@ Nach Abschluss der Installation einer Adapterinstanz öffnet sich automatisch ei
 |:-------------|:-------------|
 |IP-Adresse    |Hier soll die IP-Adresse der gewünschten sonnenBatterie angegeben werden.|
 
+| Feld         | Beschreibung |                                                                       
+|:-------------|:-------------|
+|Auth-Token    |Hier soll der Auth-Token eingegeben werden, welcher im sonnen Webinterface unter "Software Integration" zu finden ist. Wird kein Auth-Token eingegeben, wird die inoffizielle API genutzt, welche jederzeit abgeschaltet werden kann.|
 
 ### Fenster "Erweiterte Einstellungen"
 ![Advanced Settings](media/advancedSettings.png "Erweiterte Einstellungen")
@@ -304,6 +306,9 @@ der Tastenkombination "STRG + F".
    *Hinweis: Wenn ein ungültiger Wert gesetzt wird, wird dieser trotzdem bestätigt. Die Bestätigung (Acknowledge) des Wertes bedeutet
    lediglich, dass das Kommando an die Batterie übertragen wurde.*
    
+   *Der entsprechende Wert des Sollwerts wird beibehalten, bis die Batterie einen neuen Lade- oder Entladewert erhält.
+    Wenn VPP aktiv ist, wird die Anfrage abgelehnt.*
+   
    *Example:*
     ```javascript
     setState('sonnen.0.control.charge', 1250); // Die Batterie wird mit maximal 1250 Watt geladen
@@ -319,6 +324,9 @@ der Tastenkombination "STRG + F".
     
     *Hinweis: Wenn ein ungültiger Wert gesetzt wird, wird dieser trotzdem bestätigt. Die Bestätigung (Acknowledge) des Wertes bedeutet
     lediglich, dass das Kommando an die Batterie übertragen wurde.*
+    
+    *Der entsprechende Wert des Sollwerts wird beibehalten, bis die Batterie einen neuen Lade- oder Entladewert erhält.
+     Wenn VPP aktiv ist, wird die Anfrage abgelehnt.*
    
    *Example:*
     ```javascript
@@ -326,6 +334,73 @@ der Tastenkombination "STRG + F".
     ```
 
 ## Changelog
+### 1.6.0 (2020-08-09)
+* (foxriver76) added support for official api, automatically used when auth token is given by user
+
+### 1.5.3 (2020-05-18)
+* (foxriver76) poll online status always again if not confirmed that there are differences in api (old solution could lead to false negative)
+* (foxriver76) more specific error handling 
+
+### 1.5.2 (2020-05-16)
+* (foxriver76) check if onlineStatus is supported at adapter start - else do not poll it
+
+### 1.5.0 (2020-05-04)
+* (foxriver76) added online status indicator
+
+### 1.4.2 (2020-04-16)
+* (foxriver76) added more translations
+* (foxriver76) optimizations for compact mode
+
+### 1.4.0
+* (foxriver76) introducing new states with power metering and inverter information (supported on :8080 API)
+* (foxriver76) only minimum support until we know what users need as states
+
+### 1.3.0
+* (foxriver76) introducing new state with configuration information (supported on :8080 API)
+
+### 1.2.0
+* (foxriver76) support of another sonnen api
+
+### 1.1.2
+* (foxriver76) bugfix for control states
+
+### 1.1.1
+* (foxriver76) add compact mode compatibility
+
+### 1.0.2
+* (foxriver76) use adapter-core module
+
+### 1.0.1
+* (foxriver76) take timezone offset into account on time states
+
+### 1.0.0
+* (foxriver76) formal version increment
+
+### 0.0.8
+* (foxriver76) Enhanced debug logging
+* (foxriver76) Prevent crashing when a return code is received
+
+### 0.0.7
+* (foxriver76) Only set info.connection on change
+
+### 0.0.6
+* (foxriver76) Only set states if request was successfull --> prevents adapter crash
+
+### 0.0.5
+* (foxriver76) translations on index_m.html
+* (foxriver76) use 7000 as interval if poll interval is undefined
+
+### 0.0.3
+* (foxriver76) fixed links to bugs, repo etc
+
+### 0.0.2
+* (foxriver76) bugfixes on control states
+* (foxriver76) big readme update
+* (foxriver76) addded more states
+* (foxriver76) added advanced settings
+
+### 0.0.1
+* (foxriver76) initial release
 
 ## License
 The MIT License (MIT)

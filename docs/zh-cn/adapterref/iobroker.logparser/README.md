@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.logparser/README.md
 title: ioBroker.logparser
-hash: UDbaxTCx3RNk4uktiXSjd8owbrtbDOwomIhgTgM67nA=
+hash: hFhKajhDIfgI4rFcQpTTJLvbUvIFVnP+VaOy3rtMH2o=
 ---
 ![商标](../../../en/adapterref/iobroker.logparser/admin/logparser.png)
 
@@ -19,9 +19,11 @@ hash: UDbaxTCx3RNk4uktiXSjd8owbrtbDOwomIhgTgM67nA=
 ＃ioBroker.logparser
 ##所有ioBroker适配器的日志解析器
 该适配器解析（过滤）ioBroker适配器的所有日志，并以JSON形式在设置中配置的每个过滤器的状态下提供结果。
-然后可以在VIS中使用结果JSON进行可视化。还提供了清空（清除）旧日志的状态（例如`logparser.0.filters.Homematic.emptyJson`或`logparser.0.emptyAllJson`清空所有日志。）
+然后可以在VIS中使用结果JSON进行可视化。还提供了清空（清除）旧日志的状态（如`logparser.0.filters.Homematic.emptyJson`或`logparser.0.emptyAllJson`清空所有日志。）
 
 ![状态](../../../en/adapterref/iobroker.logparser/docs/en/img/states.png)
+
+**请注意：**此适配器使用Sentry库自动向适配器开发者匿名报告异常和代码错误。有关如何禁用此错误报告的更多详细信息，请参阅[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)。 Sentry报告从js-controller 3.0开始使用。
 
 ##说明
 * ** [英文说明]（docs / zh / logparser.md）**
@@ -32,6 +34,21 @@ hash: UDbaxTCx3RNk4uktiXSjd8owbrtbDOwomIhgTgM67nA=
 ![可见](../../../en/adapterref/iobroker.logparser/docs/de/img/visintro.gif)
 
 ## Changelog
+
+### 1.0.4
+* (Mic-M) Fixed 'Today/Yesterday' updating issue - https://forum.iobroker.net/post/469757. Thanks to (Kuddel) for reporting and (Glasfaser) for further debugging.
+
+### 1.0.3
+* (Mic-M) Added [Sentry](https://github.com/ioBroker/plugin-sentry)
+
+### 1.0.2
+* (Mic-M) Added debug logging for callAtMidnight() and updateTodayYesterday()
+
+### 1.0.1
+* (Mic-M) Updated lodash dependency from 4.17.15 to 4.17.19
+
+### 1.0.0
+* (Mic-M) No changes - just prepare versioning to add adapter to stable repository per [Adapter dev docu](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md#versioning)
 
 ### 0.4.11
 * (Mic-M) Adapter is now in latest repository.

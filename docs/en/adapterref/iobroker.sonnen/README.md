@@ -5,7 +5,6 @@
 ![Build Status](https://github.com/foxriver76/ioBroker.sonnen/workflows/Test%20and%20Release/badge.svg)
 ![Number of Installations](http://iobroker.live/badges/sonnen-installed.svg) ![Number of Installations](http://iobroker.live/badges/sonnen-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.sonnen.svg)](https://www.npmjs.com/package/iobroker.sonnen)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sonnen.svg)](https://www.npmjs.com/package/iobroker.sonnen)
-[![Greenkeeper badge](https://badges.greenkeeper.io/foxriver76/ioBroker.sonnen.svg)](https://greenkeeper.io/)
 
 
 [![NPM](https://nodei.co/npm/iobroker.sonnen.png?downloads=true)](https://nodei.co/npm/iobroker.sonnen/) 
@@ -33,7 +32,8 @@ Additional to the adapter installation you have to add an instance of the adapte
 2. Navigate to Tab "Adapters"
 3. Click on the three points and then on the "+" symbol of the sonnen adapter
 ![Add Adapter](/docs/en/media/addInstance.png)
-4. Now you can see the main settings of the adapter configuration page --> type in the ip-address of your sonnen battery
+4. Now you can see the main settings of the adapter configuration page --> type in the ip-address of your sonnen battery.
+__It is also strongly recommended, to provide an API key, which can be found in the webinterface of your sonnen battery (Tab: Software Integration). Otherwise, the adapter uses the unofficial API.__
 ![Main Settings](/docs/en/media/mainSettings.png)
 5. If you want to thange the interval in which the states are polled, click on the tab "Advanced Settings"
 6. You can set the poll interval between 2000 ms (2 seconds) and 60000 ms (1 minute), the default value is 7 seconds
@@ -250,7 +250,9 @@ Note, that there are two different sonnen API's so if you are missing states, th
     |number|R/W|
 
    *Number-value which allows you to control the charging rate of the battery in watts. If you set garbage here it will also be acknowledged, because acknowldging just means that the battery received your command.*
-   
+    *The corresponding value of the setpoint is kept until the battery receives a new charging or discharging value.
+    If VPP is active, the request will be rejected.*
+       
    *Example:*
     ```javascript
     setState('sonnen.0.control.charge', 1250); // Do not charge more than 1250 watts
@@ -263,6 +265,8 @@ Note, that there are two different sonnen API's so if you are missing states, th
     |number|R/W|
 
    *Number-value which allows you to control the discharging rate of the battery in watts. If you set garbage here it will also be acknowledged, because acknowldging just means that the battery received your command.*
+   *The corresponding value of the setpoint is kept until the battery receives a new charging or discharging value.
+    If VPP is active, the request will be rejected.*
    
    *Example:*
     ```javascript
@@ -270,17 +274,20 @@ Note, that there are two different sonnen API's so if you are missing states, th
     ```
 
 ## Changelog
-# 1.5.3 (2020-05-18)
+### 1.6.0 (2020-08-09)
+* (foxriver76) added support for official api, automatically used when auth token is given by user
+
+### 1.5.3 (2020-05-18)
 * (foxriver76) poll online status always again if not confirmed that there are differences in api (old solution could lead to false negative)
 * (foxriver76) more specific error handling 
 
-# 1.5.2 (2020-05-16)
+### 1.5.2 (2020-05-16)
 * (foxriver76) check if onlineStatus is supported at adapter start - else do not poll it
 
-# 1.5.0 (2020-05-04)
+### 1.5.0 (2020-05-04)
 * (foxriver76) added online status indicator
 
-# 1.4.2 (2020-04-16)
+### 1.4.2 (2020-04-16)
 * (foxriver76) added more translations
 * (foxriver76) optimizations for compact mode
 

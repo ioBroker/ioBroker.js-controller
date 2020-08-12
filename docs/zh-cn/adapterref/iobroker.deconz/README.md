@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.deconz/README.md
 title: 无题
-hash: FLHWHrOmg0yl72zz1opWFDy7/2QNeoBUrpsRZPfI38s=
+hash: oGadD+2MVq27J/o275XeRBcmFlhNU672SqfrxrhWpsE=
 ---
 ![商标](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -17,7 +17,9 @@ ioBroker deConz dresden-elektronik适配器
 ==============
 
 ＃＃ 注意
-不支持deConz的Beta版本
+不支持deConz的Beta /预发行版本。
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 所需的js-controller版本> 2.x.x，所需的node.js> = 10.x.x
 
@@ -57,7 +59,7 @@ Verbindet mit der von Dresden-elektronik entwickelten deConz软件。 Diese Soft
 3. * IP地址
     * Eingeben端口，标准端口80
     * IP和端口无线自动更新
-    * **替代：**适用于架构和功能。
+    * **替代：**适用于架构和应用。
 
     Wurde deConz gefunden总部位于der Maske的IP und Port schon。
 
@@ -85,6 +87,18 @@ Dafürgibt es das Objekt“行动”。
 ## [赞助商](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
 
 ## Changelog
+
+### 2.0.3
+* fix incoming rename event for sensors
+* fix release_press is set to true at start
+* added websocket port info to configuration
+* added event types handling for websocket messages
+* added backup, deConz update & firmware update states under Gateway_info
+* added touchlink functions
+* fix sensor handling for virtual devices (fsm and vpir)
+
+### 2.0.2
+* Bugfix
 
 ### 2.0.1
 * Bugfixes

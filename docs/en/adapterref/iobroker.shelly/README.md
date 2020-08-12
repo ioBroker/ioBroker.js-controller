@@ -58,8 +58,17 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 4.0.0 (05.08.2020)
+* (Stübi)     - Major Change!! If you use the CoAP protcoll only Shelly devices with Firmware 1.8.x or above supported! All devices with Firmeware below 1.8.x will not working with this release!
+* (@harrym67) - Changing device files 
+harrym67
+* (Stübi)     - Since Firmware 1.8. the Shelly device names like shelly.0.SHBTN-1#A4CF12F454A3#2 ends with #2. It will be changed back to #1 like shelly.0.SHBTN-1#A4CF12F454A3#1. 
+
+
 ### 3.3.6 (26.07.2020)
 * (Stübi) - Bugfixing temperature for Shelly Dimmer (Issue #201)
+* (Stübi) - Tried to fix high CPU load by replacing ping with tpcping (Issue #196, #202)
+* (Stübi) - correct spelling mistake for Shelly DW2 (Issue #205)
 
 ### 3.3.5 (04.07.2020)
 * (Stübi) - Add Shelly 4 Pro

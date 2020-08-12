@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.trashschedule/README.md
 title: ioBroker.trashschedule
-hash: MuVfAYZ+uQZhX50dSEVv0vyWEguXYftm8gjT5evisuU=
+hash: yh8XvPLUW6JXEm9Kg/mzld7CJMz1EZPbRbApTGMjN1w=
 ---
 ![商标](../../../en/adapterref/iobroker.trashschedule/admin/trashschedule.png)
 
@@ -17,21 +17,50 @@ hash: MuVfAYZ+uQZhX50dSEVv0vyWEguXYftm8gjT5evisuU=
 ![NPM](https://nodei.co/npm/iobroker.trashschedule.png?downloads=true)
 
 ＃ioBroker.trashschedule
-扫描日历以计算直到下一次垃圾收集的剩余天数
+扫描日历以计算直到下次垃圾回收的剩余天数
 
 ##前提条件
 1.创建一个**实例**
 2.配置日历的网址（例如Google日历）
-3.将“预览天数”设置为一个范围，其中每个垃圾类型都包含一次
+3.将“预览天数”设置为一个范围，该范围应包括每种垃圾类型至少两次（例如30天）
 4.选择“隐藏事件的开始-结束”选项
-5.如果使用“事件”选项卡，请确保为每个事件类型启用“显示”复选框，该类型也应在垃圾箱计划中使用（否则，该事件将被ical实例隐藏）
+5.如果使用“事件”选项卡，请确保为每个事件类型启用“显示”复选框，该类型也应在垃圾箱计划中使用（否则该事件将被ical实例隐藏）
 
 ##配置
 1.创建一个垃圾箱时间表实例，然后选择该ical实例作为源
 2.转到垃圾箱类型标签，然后添加类型名称和事件匹配项
 3.启动实例
 
+**有问题吗？**检查常见问题解答：[德语](https://github.com/klein0r/ioBroker.trashschedule/blob/master/faq_de.md)
+
 ## Changelog
+
+### 0.0.11
+
+* (klein0r) Better error reporting
+
+### 0.0.10
+
+* (klein0r) Added CSS classes for easier customization
+* (klein0r) Added optional glow on due date for vis widget
+
+### 0.0.9
+
+* (klein0r) Fixed color correction calculation issue
+
+### 0.0.8
+
+* (klein0r) Fixed missing VIS translations
+
+### 0.0.7
+
+* (klein0r) Improved logging
+* (klein0r) Several fixes, improved admin and vis (automatic color correction, resizeable widget)
+* (ivosch68) Reset of states if no event matches
+
+### 0.0.6
+
+* (klein0r) updated dependencies
 
 ### 0.0.5
 

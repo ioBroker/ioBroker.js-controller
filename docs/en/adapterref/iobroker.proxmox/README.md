@@ -24,6 +24,9 @@ this adapter read out the data from your proxmox installation
 At least Node 8.X.X is needed
 
 ## Changelog
+### 1.1.0 (10.08.2020)
+* (Apollon77) Bug Update on features and stability and performance
+* (ThetaGamma) Fix for failing Node shutdown/reboot commands
 ### 1.0.1 (05.03.2020)
 * (MeisterTR) bump version to stable
 ### 0.5.2 (27.11.2019)

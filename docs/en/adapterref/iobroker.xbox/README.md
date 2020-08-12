@@ -4,7 +4,6 @@
 
 ![Build Status](https://github.com/foxriver76/ioBroker.xbox/workflows/Test%20and%20Release/badge.svg)![Number of Installations](http://iobroker.live/badges/xbox-installed.svg) ![Number of Installations](http://iobroker.live/badges/xbox-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.xbox.svg)](https://www.npmjs.com/package/iobroker.xbox)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.xbox.svg)](https://www.npmjs.com/package/iobroker.xbox)
-[![Greenkeeper badge](https://badges.greenkeeper.io/foxriver76/ioBroker.xbox.svg)](https://greenkeeper.io/)
 
 [![NPM](https://nodei.co/npm/iobroker.xbox.png?downloads=true)](https://nodei.co/npm/iobroker.xbox/)
 

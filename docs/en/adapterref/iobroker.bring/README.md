@@ -5,7 +5,6 @@
 ![Build Status](https://github.com/foxriver76/ioBroker.bring/workflows/Test%20and%20Release/badge.svg)
 ![Number of Installations](http://iobroker.live/badges/bring-installed.svg) ![Stable version](http://iobroker.live/badges/bring-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.bring.svg)](https://www.npmjs.com/package/iobroker.bring)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.bring.svg)](https://www.npmjs.com/package/iobroker.bring)
-[![Greenkeeper badge](https://badges.greenkeeper.io/foxriver76/ioBroker.bring.svg)](https://greenkeeper.io/)
 
 [![NPM](https://nodei.co/npm/iobroker.bring.png?downloads=true)](https://nodei.co/npm/iobroker.bring/)
 

@@ -103,6 +103,12 @@ iobroker upload tr-064
 
 ## Changelog
 
+### 4.0.12 (2020-08-06)
+* (Apollon77) Crash prevented (Sentry IOBROKER-TR-064-Y)
+
+### 4.0.11 (2020-07-26)
+* (Apollon77) Crash prevented (Sentry IOBROKER-TR-064-W)
+
 ### 4.0.9 (2020-07-01)
 * (Apollon77) handle cases correctly when no hosts are existing on device (Sentry IOBROKER-TR-064-R)
 

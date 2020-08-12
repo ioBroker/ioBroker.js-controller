@@ -45,6 +45,10 @@ sometimes npm intall must be called more then one time to successfully install a
 
 ## Changelog
 
+## 4.0.0 (2020-07-28)
+* (René) rework to use async/await
+* (René) use mysql2
+
 ## 3.0.0 (2020-04-25)
 * (René) sqlite3 package replaced by better-sqlite3
 * (René) roles of DP overworked

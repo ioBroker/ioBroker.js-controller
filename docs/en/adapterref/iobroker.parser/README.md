@@ -103,6 +103,10 @@ Values can have quality codes:
 
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) ignore self signed ssl certificates
+
 ### 1.0.7 (2018-10-08)
 * (bluefox) Comma will be replaced automatically by point for the offset and for the factor
 

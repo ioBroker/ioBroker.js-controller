@@ -185,6 +185,9 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 1.6.0 (03.08.2020)
+* (Jey-Cee/simatec) adapter configuration revised
+
 ### 1.5.9 (21.07.2020)
 * (simatec) small fixes on mysql backup
 * (simatec) next bugfixs errorhandling sentry.io

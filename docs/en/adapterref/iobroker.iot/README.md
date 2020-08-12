@@ -73,7 +73,7 @@ Alexa, change the kitchen to the color chocolate
 ```
 
 ### Lock
-To have the possibility to lock the locks, the state must have the role "switch.lock" and have native.LOCK_VALUE to determine the lock state.
+To have the possibility to lock the locks, the state must have the role "switch.lock" and have "native.LOCK_VALUE" to determine the lock state. If you need a seperate Value to control the Lock you can use "native.CONTROL VALUE".
 
 ```
 Alexa, is "lock name" locked/unlocked
@@ -247,7 +247,19 @@ Following types are supported:
 - `alisa` - acting with Yandex Алиса
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+
+### 1.6.4 (2020-08-06)
+* (Apollon77) crash prevented (Sentry IOBROKER-IOT-V)
+
+### 1.6.3 (2020-08-04)
+* (bluefox) Added french letters to allowed symbols
+
 ### 1.6.1 (2020-07-10)
 * (bluefox) Used new SelectID Dialog in GUI
 

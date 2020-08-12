@@ -464,12 +464,33 @@ Settings that are not listed in the table below are self-explanatory.
     </thead>
     <tbody>
         <tr>
-            <td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td>
+            <td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td>
             <td>adapter instance</td>
             <td>Instance for the sql or history adapter</td>
         </tr>
         <tr>
-            <td>aggregation</td>
+            <td>controlling time interval using object</td>
+            <td>Id of a datapoint to change the time interval of the chart.<br><br>If the datapoint is from type 'string' it must contain <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">one of the linked values</a><br>If the datapoint is from type 'number', it must contain the starting timestamp of the graph.<br><br>For example, you can use a button here to change the display of the chart during runtime</td>
+        </tr>
+        <tr>
+            <td>boolean object for update</td>
+            <td>Id of adatapoint to trigger a manual refresh of the chart.<br>For example, you can use a button here to refresh the chart during runtime</td>
+        </tr>
+        <tr>
+            <td>chart timeout</td>
+            <td>timeout for loading the chart data. If you get a timeout error message, increase this value</td>
+        </tr>
+        <tr>
+            <td>debug mode</td>
+            <td>if you have problems or errors, activate the debug mode and attach the console log (F12) data to the issue</td>
+        </tr>
+        <tr>
+            <td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td>
+            <td>Object Id</td>
+            <td>datapoint id with activated instance for the sql or history adapter</td>
+        </tr>
+        <tr>
+            <td>display method</td>
             <td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">link</a></td>
         </tr>
         <tr>
@@ -481,12 +502,8 @@ Settings that are not listed in the table below are self-explanatory.
             <td>Optional setting, overrides the 'count' setting.<br>Distance between the individual data points in seconds.<br>For example, if you want to display data points every minute, you have to enter 60 here</td>
         </tr>
         <tr>
-            <td>controlling time interval using object</td>
-            <td>Id of a datapoint to change the time interval of the chart.<br><br>If the datapoint is from type 'string' it must contain <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">one of the linked values</a><br>If the datapoint is from type 'number', it must contain the starting timestamp of the graph.<br><br>For example, you can use a button here to change the display of the chart during runtime</td>
-        </tr>
-        <tr>
-            <td>boolean object for update</td>
-            <td>Id of adatapoint to trigger a manual refresh of the chart.<br>For example, you can use a button here to refresh the chart during runtime</td>
+            <td>data multiply with</td>
+            <td>Optional setting, multiply every datapoint with the given value</td>
         </tr>
         <tr>
             <td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td>
@@ -5430,6 +5447,7 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* (Scrounger): Line History Chart: Breaking Changes !!! aggregate (display) method for every dataset configurable, see documentation for detailed infos!
 
 ### 0.3.19 (2020-07-18)
 * (Scrounger): Icon Button Widget: background color option for lock icon added

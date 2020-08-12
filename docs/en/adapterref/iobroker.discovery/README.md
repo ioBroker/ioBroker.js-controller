@@ -1,7 +1,9 @@
 ![Logo](admin/discovery.png)
 # ioBroker Discover Adapter
 
-![Number of Installations](http://iobroker.live/badges/discovery-installed.svg) ![Number of Installations](http://iobroker.live/badges/discovery-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.discovery.svg)](https://www.npmjs.com/package/iobroker.discovery)
+![Number of Installations](http://iobroker.live/badges/discovery-installed.svg) 
+![Number of Installations](http://iobroker.live/badges/discovery-stable.svg) 
+[![NPM version](http://img.shields.io/npm/v/iobroker.discovery.svg)](https://www.npmjs.com/package/iobroker.discovery)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.discovery.svg)](https://www.npmjs.com/package/iobroker.discovery)
 [![Tests](https://travis-ci.org/ioBroker/ioBroker.discovery.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.discovery)
 
@@ -58,6 +60,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - McLighting
 - MegaD
 - Miele
+- Miele Cloud Service
 - Mi Home Smarthome
 - Mikrotik
 - MiLight bridge (v6)
@@ -121,7 +124,13 @@ Just now it can detect via ping, UPnP (serial planned).
 - wolf (smiling-jack)
 - xs1 (frankjoke)
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
 ## Changelog
+### 2.3.11 (2020-08-08)
+* (Grizzelbee) Added MieleCloudService 
 
 ### 2.3.10 (2020-07-26)
 * (MiSchroe) Discovery Velux KLF-200 updated to new firmware

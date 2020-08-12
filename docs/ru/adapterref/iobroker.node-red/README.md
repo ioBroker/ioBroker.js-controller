@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.node-red/README.md
-title: ioBroker - красный адаптер для узла
-hash: zpelxzM0LIWlw140+rWd0rXt3iauWphgCP6aR0Ta+Ik=
+title: Адаптер ioBroker node-red
+hash: x/QTu0owyv92klKSi7Cn7RXGk5HnDi5EUbAB8ZYEVKE=
 ---
 ![логотип](../../../en/adapterref/iobroker.node-red/admin/node-red.png)
 
@@ -13,19 +13,26 @@ hash: zpelxzM0LIWlw140+rWd0rXt3iauWphgCP6aR0Ta+Ik=
 ![тесты](https://travis-ci.org/ioBroker/ioBroker.node-red.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.node-red.png?downloads=true)
 
-# IoBroker node-red Adapter
-Запускает узел-красный экземпляр и связывается с ним.
+# IoBroker node-red Адаптер
+Запускает экземпляр node-red и связывается с ним.
 
-Этот адаптер использует красный сервер узла с https://github.com/node-red/node-red
+Этот адаптер использует сервер node-red из https://github.com/node-red/node-red
 
-** Примечание: ** Если в диалоге выбора идентификатора узла ioBroker вы не можете найти какую-либо переменную, перезапустите экземпляр узла красного цвета. При перезапуске будет создан новый список объектов.
+** Примечание: ** Если в диалоговом окне выбора идентификатора узла ioBroker вы не можете найти какую-либо переменную, перезапустите экземпляр node-red. При перезапуске будет создан новый список объектов.
 
-** Обновление до 1.17.2: ** Если вы уже использовали аутентификацию Node-Red: пожалуйста, заново установите пароль в настройках экземпляра Node-Red в ioBroker снова после обновления! В противном случае вы не сможете больше войти в Node-Red после обновления.
+** Обновление до 1.17.2: ** Если вы уже использовали аутентификацию Node-Red: снова установите пароль в настройках экземпляра Node-Red в ioBroker после обновления! В противном случае вы больше не сможете войти в Node-Red после обновления.
 
 ## Настройки
-- Безопасный режим - потоки не будут запущены, и вы можете редактировать потоки, чтобы устранить проблему перегрузки.
+- Безопасный режим - потоки не будут запускаться, и вы можете редактировать потоки, чтобы исправить некоторые проблемы с перегрузкой.
+
+<! - Заполнитель для следующей версии (в начале строки):
+
+### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 2.0.1 (2020-08-08)
+* (jwiesel) Updated settings.js, node-red and dependencies to latest version.
+
 ### 2.0.0 (2020-06-20)
 * (Apollon77) check object and not state to detect if an object exists
 * (jwiesel) Updated settings.js to incorporate latest changes up to Node-RED 1.0.6

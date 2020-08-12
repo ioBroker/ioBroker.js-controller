@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.discovery/README.md
 title: ioBroker发现适配器
-hash: mo/DXV4ctxkpQk1ww63C9u20hQTlban7deTAEGe+iWM=
+hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
 ---
 ![商标](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -16,8 +16,8 @@ hash: mo/DXV4ctxkpQk1ww63C9u20hQTlban7deTAEGe+iWM=
 ＃ioBroker发现适配器
 **使用所有已知方法检测设备。**
 
-这是特殊的适配器，它尝试查找主机可以访问的所有可能的设备。
-到目前为止，它可以通过ping UPnP（串行计划）进行检测。
+这是特殊的适配器，它试图查找主机可以访问的所有可能的设备。
+到目前为止，它可以通过ping，UPnP（串行计划）进行检测。
 
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
@@ -63,6 +63,7 @@ hash: mo/DXV4ctxkpQk1ww63C9u20hQTlban7deTAEGe+iWM=
 -McLighting
 -MegaD
 -Miele
+-Miele云服务
 -Mi Home智能家居
 -Mikrotik
 -MiLight桥（v6）
@@ -126,10 +127,25 @@ hash: mo/DXV4ctxkpQk1ww63C9u20hQTlban7deTAEGe+iWM=
 -狼（微笑杰克）
 -xs1（frankjoke）
 
+<！-下一个版本的占位符（在该行的开头）：
+
+### __进展中__->
+
 ## Changelog
+### 2.3.11 (2020-08-08)
+* (Grizzelbee) Added MieleCloudService 
+
+### 2.3.10 (2020-07-26)
+* (MiSchroe) Discovery Velux KLF-200 updated to new firmware
+
+### 2.3.9 (2020-07-17)
+* (Apollon77) Add error handling to onvif discovery (Sentry IOBROKER-DISCOVERY-13)
+* (Apollon77) Add error handling to smapee discovery (Sentry IOBROKER-DISCOVERY-14)
+* (Apollon77) Add error handling to synology discovery (Sentry IOBROKER-DISCOVERY-1A)
+* (Apollon77) Update mndp library to prevent crashes (Sentry IOBROKER-DISCOVERY-15+)
 
 ### 2.3.7 (2020-06-11)
-* (Apollon) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
+* (Apollon77) Add error handling for Synology detection (Sentry IOBROKER-DISCOVERY-E)
 
 ### 2.3.6 (2020-05-02)
 * (Garfonso) add mydlink adapter

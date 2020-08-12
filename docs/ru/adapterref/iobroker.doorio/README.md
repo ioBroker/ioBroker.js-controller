@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.doorio/README.md
 title: ioBroker.doorio
-hash: QgSlf1YyUrjQa8I4DORzXon8quUpSu++TVOFiois1iY=
+hash: OXB7nvAFt6ITxkgbxen7gzRW89pXdtH3Gv4lsHTU1DE=
 ---
 ![логотип](../../../en/adapterref/iobroker.doorio/admin/doorio.png)
 
@@ -13,20 +13,24 @@ hash: QgSlf1YyUrjQa8I4DORzXon8quUpSu++TVOFiois1iY=
 ![NPM](https://nodei.co/npm/iobroker.doorio.png?downloads=true)
 
 # IoBroker.doorio
+## Информация
 Самодельный адаптер DoorStation для ioBroker
 
-Этот адаптер подключается к клиенту Baresip Sip через tcp.socket для связи с домофоном. В качестве триггерного звонка можно использовать любой вход от ioBroker.
-Адаптер также распознает тональные сигналы DTMF для переключения выходов.
-Для самодельной дверной станции можно использовать любое оборудование, на которое можно установить Baresip.
+Этот адаптер подключается к Sip-клиенту Baresip через tcp.socket для связи с домофоном. В качестве триггера звонка можно использовать любой вход от ioBroker.
+Адаптер также распознает тональные сигналы DTMF для переключения выходов. Для самодельной дверной станции можно использовать любую фурнитуру, на которую можно установить Баресип.
 
-Адаптер Dieser verbindet sich über tcp.socket с dem Baresip Sip-Client, um mit einer Türsprechstelle zu kommunizieren. Als Klingelauslöser kann jeder Eingang von ioBroker genutzt werden. Der Adapter erkennt auch DTMF-Töne um Ausgänge zu schalten.
-Für die Selbstgemachte Türsprechstelle, kann jede Аппаратные средства, установленные на данный момент, можно найти здесь.
+Адаптер Dieser позволяет использовать SIP-клиент с Baresip Sip-Client, подключенный к Türsprechstelle zu kommunizieren. Als Klingelauslöser kann jeder Eingang von ioBroker genutzt werden. Der Adapter erkennt auch DTMF-Töne um Ausgänge zu schalten. Für die Selbstgemachte Türsprechstelle, kann jede Hardware auf der sich Baresip installieren lässt genutzt werden.
 
 ## Ссылки
 * https://forum.iobroker.net/topic/23413/ich-baue-eine-t%C3%BCrsprechstelle-ohne-cloud
 * https://forum.iobroker.net/topic/22746/test-adapter-doorio-v0-0-x
 
 ## Changelog
+### 1.0.10
+* (bettman66) add detour
+
+### 1.0.9
+* (bettman66) fix userconfigerror
 
 ### 1.0.8
 * (bettman66) fix dtmf-timeout

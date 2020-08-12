@@ -32,19 +32,21 @@ Since Version 0.1.8 SRG-SSR even provides their own icons. So you can choose whi
 1. Find out Longitude / Latitude (decimal degrees) of the chosen location for which forecast is needed
 1. Install this Adapter on ioBroker => This can take several minutes (~7min on a Raspberry Pi 3)
 1. On Adapter Configuration fill in
+   1. Name of App
    1. ConsumerKey of App
    1. ConsumerSecret of App
    1. Longitude / Latitude of the chosen swiss location for which forecast is needed. => Please use decimal degrees (for example Zürich: 47.36667 / 8.5)
+   1. Poll Interval in Minutes (By default 30 minutes)
 
-This is a scheduled Adapter. It is scheduled every 30 minutes and reads the forecast API of SRG-SSR. You could change this intervall in instance-view (Schedule). A lower intervall is not recomented, since the minimal forecast is 1 hour. 
-**So please keep in mind that, after installation, it will take 30 minutes until the forecast data is delivered the frist time and the data-objects in data view are created.** 
-
-On first installation you might want to check if everything works fine and don't want to wait for 30min. In this case you can change the scheduler to 1min. => If everything is working properly, **please change it back to 30min**.
+The first query is made 10s after the adapter was started. After the first start, the query will be executed regularly according to the conifugation parameter (Poll Interval in Minutes)
 
 ## Changelog
 
+### 0.3.1
+* (baerengraben)  Adapter-Config attributes longitude & latitude is optional now. If no longitude/latitude is set, the adpater is getting the longitude/latitude from ioBroker System-Attributes (https://github.com/baerengraben/iobroker.swiss-weather-api/issues/6).
+
 ### 0.3.0
-* (baerengraben)  Wechsel von Scheduled-Adapter nach Deamon-Adapter. Neu ist der Abfrage-Intervall konfigurierbar. Der Adapter terminiert nicht mehr und die erste Abfrage erfolgt 10s nach Start des Adapters. **Achtung:** Bitte für die Installation dieser Version den Adapter ganz löschen und wieder neu installieren (kein update)
+* (baerengraben)  Change from Scheduled Adapter to Deamon Adapter(https://github.com/baerengraben/iobroker.swiss-weather-api/issues/11). The query interval is now configurable by parameter. The first query is made 10s after the adapter was started. Attention: For installing this version, please delete the older adapter version completely and install it again.
 
 ### 0.2.3
 * (baerengraben) Update Dependencies

@@ -5,7 +5,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.oilfox.svg)](https://www.npmjs.com/package/iobroker.oilfox)
 [![Build Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.oilfox.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.oilfox.svg?branch=master)
 
-[![NPM](https://nodei.co/npm/iobroker.oilfox.png?downloads=true)](https://nodei.co/npm/iobroker.oilfox/) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.oilfox.svg)](https://greenkeeper.io/)
+[![NPM](https://nodei.co/npm/iobroker.oilfox.png?downloads=true)](https://nodei.co/npm/iobroker.oilfox/) 
 
 ## Description
 This adapter allows to get data from the oilfox sensor via the Oilfox Website.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: K07tNG5QJNKsiaC64HYt+Ci9c8DNEE/P1ZHi7d55jOc=
+hash: EDgS5V9uAE3zHfuNU0OQY0+Gsg8ZqIaiINb4c+skz9E=
 ---
 ![Logo](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -43,6 +43,10 @@ In diesem Fall installieren Sie alle npm-Pakete neu
 Manchmal muss npm intall mehrmals aufgerufen werden, um alle erforderlichen Pakete erfolgreich zu installieren
 
 * Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
+
+## 4.0.0 (2020-07-28)
+* (René) Überarbeitung, um async / await zu verwenden
+* (René) benutze mysql2
 
 ## 3.0.0 (2020-04-25)
 * (René) sqlite3-Paket ersetzt durch better-sqlite3
@@ -121,7 +125,7 @@ Achtung: Das Widget ist nicht mit Version 1.x.x kompatibel. Überprüfen Sie ein
 * (René) Fehlerbehebung für Android App> 1.0.6
 
 ### 0.2.5
-* (René) Verwenden Sie das Installationsdatum, um historische Werte zu berechnen
+* (René) verwendet das Installationsdatum, um historische Werte zu berechnen
 
 ### 0.2.4
 * (René) Logo geändert

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: K07tNG5QJNKsiaC64HYt+Ci9c8DNEE/P1ZHi7d55jOc=
+hash: EDgS5V9uAE3zHfuNU0OQY0+Gsg8ZqIaiINb4c+skz9E=
 ---
 ![商标](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -42,7 +42,11 @@ hash: K07tNG5QJNKsiaC64HYt+Ci9c8DNEE/P1ZHi7d55jOc=
 
 有时必须多次调用npm intall才能成功安装所有必需的软件包
 
-*如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）上创建问题
+*如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）中创建问题
+
+## 4.0.0（2020-07-28）
+*（René）重做以使用异步/等待
+*（René）使用mysql2
 
 ## 3.0.0（2020-04-25）
 *（René）sqlite3包被Better-sqlite3取代
@@ -102,17 +106,17 @@ hash: K07tNG5QJNKsiaC64HYt+Ci9c8DNEE/P1ZHi7d55jOc=
 *（René）支持admin3
 
 ### 2.0.0
-*（René），因为我们始终每个小部件使用一个图形，所以现在仅支持一个图形
+*（René），因为我们每个小部件始终使用一个图形，因此现在仅支持一个图形
 
 注意：小部件与1.x.x版本不兼容；安装后只需检查小部件中的设置即可！
 
 ### 1.1.0
-*（René）y轴自动缩放
+*（René）y轴的自动缩放
 * y轴的（René）颜色
 *（René）可调日期格式
 
 ### 1.0.1
-*（René）修复SQLite错误
+*（René）修复SQLite的错误
 
 ### 1.0.0
 *（René）首次稳定发行

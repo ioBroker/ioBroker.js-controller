@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: Y0Bs02j5BLgq6oACGsmEzIH9J4k+sHYuPR/iX74YqeA=
+hash: xpQmqz5wgJ3Ne8T0WsCphYtAXWZnYLVCI8GHzFDu/eQ=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -22,7 +22,7 @@ hash: Y0Bs02j5BLgq6oACGsmEzIH9J4k+sHYuPR/iX74YqeA=
 
 ioBroker物料设计小部件基于[Google的材料设计指南](https://material.io/design/)。适配器使用以下库：
 
-* [用于网络的Google物料组件]（https://github.com/material-components/material-components-web）
+* [适用于Google的网络材料组件]（https://github.com/material-components/material-components-web）
 * [Vuetify]（https://github.com/vuetifyjs/vuetify）
 * [chartjs]（https://www.chartjs.org/）
 * [来自thomasloven的round-slider]（https://github.com/thomasloven/round-slider）
@@ -31,7 +31,7 @@ ioBroker物料设计小部件基于[Google的材料设计指南](https://materia
 ##哨兵
 该适配器使用Sentry库自动将运行时异常和由小部件引起的代码错误报告给开发人员。
 
-首次加载vis运行时时，将创建文件`./iobroker-data/files/vis.0/materialdesign.sentry`。该文件包含一个匿名ID（所谓的uuid），它使开发人员可以确定是否仅由一个或多个用户发生此错误。
+首次加载vis运行时时，将创建文件`./iobroker-data/files/vis.0/materialdesign.sentry`。该文件包含一个匿名ID（所谓的uuid），使开发人员可以确定是否仅由一个或多个用户发生此错误。
 
 <b>要禁用哨兵</b> ，必须在文件`/iobroker-data/files/vis.0/materialdesign.sentry`中输入“ disabled”一词。 <br>要检查哨兵是否已禁用，请打开浏览器控制台并查找`sentry is deactivated for vis-materialdesign`。
 
@@ -87,7 +87,7 @@ ioBroker VIS App
 ##进展
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/progress.gif)
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/progress_settings.png"></td><td>自定义标签</td><td>对于自定义标签，您可以使用属性<code>[#value]</code>显示数据点的实际值。要显示当前百分比，您可以使用<code>[#percent]</code> </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/progress_settings.png"></td><td>自定义标签</td><td>对于自定义标签，可以使用属性<code>[#value]</code>显示数据点的实际值。要显示当前百分比，您可以使用<code>[#percent]</code> </td></tr></tbody></table>
 
 ##滑块
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/slider.gif)
@@ -141,7 +141,7 @@ ioBroker VIS App
 
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td>子菜单数[x] </td><td>定义导航项是否具有子菜单和子菜单的计数。 </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td>标签[x] </td><td>要更改项目的文本，您必须将json对象放入带有查看字段索引的label字段中。 <br>例： <br>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td>子菜单数[x] </td><td>定义导航项是否具有子菜单和子菜单的计数。 </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td>标签[x] </td><td>要更改项目的文本，您必须将json对象放入带有视图字段索引的label字段中。 <br>例： <br>
 
 `{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
 
@@ -167,7 +167,7 @@ ioBroker VIS App
 
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td> SQL或历史记录适配器的实例</td></tr><tr><td>聚合</td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">链接</a> </td></tr><tr><td>最高要显示的数据点数</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] </td><td>可选设置，将覆盖“计数”设置。 <br>各个数据点之间的距离，以秒为单位。 <br>例如，如果要每分钟显示数据点，则必须在此处输入60 </td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。 <br><br>如果数据点来自“字符串”类型，则它必须包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接值之一</a> <br>如果数据点来自“数字”类型，则它必须包含图形的开始时间戳。 <br><br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td> adatapoint的ID，以触发图表的手动刷新。 <br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td> SQL或历史记录适配器的实例</td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。 <br><br>如果数据点来自“字符串”类型，则它必须包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接值之一</a> <br>如果数据点来自“数字”类型，则它必须包含图形的开始时间戳。 <br><br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td> adatapoint的ID，以触发图表的手动刷新。 <br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td>图表超时</td><td>加载图表数据超时。如果收到超时错误消息，请增加此值</td></tr><tr><td>调试模式</td><td>如果您有问题或错误，请激活调试模式并将控制台日志（F12）数据附加到问题上</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td>对象编号</td><td>具有SQL或历史记录适配器的激活实例的数据点ID </td></tr><tr><td>显示方式</td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">链接</a> </td></tr><tr><td>最高要显示的数据点数</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] </td><td>可选设置，将覆盖“计数”设置。 <br>各个数据点之间的距离，以秒为单位。 <br>例如，如果要每分钟显示数据点，则必须在此处输入60 </td></tr><tr><td>数据乘以</td><td>可选设置，将每个数据点乘以给定值</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr></tbody></table>
 
 ### JSON图表
 ＃＃＃＃ 一般
@@ -188,10 +188,10 @@ ioBroker VIS App
 #### GradientColor
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>值</td><td>应当在其中应用颜色的值</td><td>数</td><td> 1，2，5，... </td></tr><tr><td>颜色</td><td>物有所值</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr></tbody></table></details>
 
-###带有时间轴的图表
-JSON图表支持带有时间戳的数据。若要使用此数据数组，必须具有时间戳记值（x轴值）和值（y轴值）。
+###带时间轴的图表
+JSON Chart支持具有时间戳的数据。若要使用此数据数组，必须具有时间戳记值（x轴值）和值（y轴值）。
 
-####个带有时间戳的值
+####带有时间戳的值
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td> Ť </td><td>时间戳-xAxis值</td><td>数</td><td> 1，2，5，... </td></tr><tr><td> ÿ </td><td>时间戳记值-yAxis值</td><td>数</td><td> 1，2，5，... </td></tr></tbody></table></details>
 
 #### X轴设置带有时间戳的数据
@@ -371,7 +371,7 @@ Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自�
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/masnory.gif)
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2>根据窗口小部件的宽度，可以设置列数和视图之间的距离。可以独立设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td rowspan=2><img src="doc/en/media/masnory_settings_views.png"></td><td>视线宽度[x] </td><td>定义视图的宽度。允许的值为数字，px，％或calc。实施例： <code>100</code> ， <code>100px</code> ， <code>55%</code> <code>calc(60% - 12px)</code> </td></tr><tr><td>视线高度[x] </td><td>您可以在此处指定使用的视图的高度。 <br><br>如果您希望高度根据视图进行可变调整，则此输入必须为空，并且对于视图中具有最高高度的小部件，位置必须设置为相对，请参见屏幕截图： <br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/masonry_resolution_settings.png"></td><td colspan=2>根据窗口小部件的宽度，可以设置列数和视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td rowspan=2><img src="doc/en/media/masnory_settings_views.png"></td><td>视线宽度[x] </td><td>定义视图的宽度。允许的值为数字，px，％或calc。实施例： <code>100</code> ， <code>100px</code> ， <code>55%</code> <code>calc(60% - 12px)</code> </td></tr><tr><td>视线高度[x] </td><td>您可以在此处指定使用的视图的高度。 <br><br>如果您希望高度根据视图进行可变调整，则此输入必须为空，并且对于视图中具有最高高度的小部件，位置必须设置为相对，请参见屏幕截图： <br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tr></tbody></table>
 
 ###网格视图
 网格视图具有多个`view in widget`集成，将根据小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和mobil的一种布局）。
@@ -383,7 +383,7 @@ Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自�
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/grid.gif)
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2>根据窗口小部件的宽度，可以从各个窗口小部件的宽度定义适用各个视图[x]的列跨度的规则以及视图之间的距离。可以独立设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td rowspan=2><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2>根据当前的宽度分辨率规则定义视图的列范围。 <br>您还可以在此处指定是仅以高于或低于定义值的分辨率显示视图，还是通过对象ID使其可见。 </td></tr><tr><td>视线高度[x] </td><td>您可以在此处指定使用的视图的高度。 <br><br>如果您希望高度根据视图进行可变调整，则此输入必须为空，并且对于视图中具有最高高度的小部件，位置必须设置为相对，请参见屏幕截图： <br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/grid_settings_resolution.png"></td><td colspan=2>根据窗口小部件的宽度，可以从各个窗口小部件的宽度定义适用各个视图[x]的列跨度的规则以及视图之间的距离。可以分别设置纵向和横向格式的设置。要找出不同设备的分辨率宽度，请在通用设置下激活“分辨率助手”。 </td></tr><tr><td rowspan=2><img src="doc/en/media/grid_settings_view.png"></td><td colspan=2>根据当前宽度分辨率规则定义视图的列范围。 <br>您还可以在此处指定是仅以高于或低于定义值的分辨率显示视图，还是通过对象ID使其可见。 </td></tr><tr><td>视线高度[x] </td><td>您可以在此处指定使用的视图的高度。 <br><br>如果您希望高度根据视图进行可变调整，则此输入必须为空，并且对于视图中具有最高高度的小部件，位置必须设置为相对，请参见屏幕截图： <br><br><img src="doc/en/media/masonry_grid_position_settings.png"></td></tbody></table>
 
 ##警报
 可以使用Alerts小部件可以在VIS中显示消息，就像它与Pushover适配器一起使用一样，但是可以直接在VIS中显示。
@@ -589,6 +589,7 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
+* (Scrounger): Line History Chart: Breaking Changes !!! aggregate (display) method for every dataset configurable, see documentation for detailed infos!
 
 ### 0.3.19 (2020-07-18)
 * (Scrounger): Icon Button Widget: background color option for lock icon added

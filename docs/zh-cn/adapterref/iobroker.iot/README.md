@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iot/README.md
 title: ioBroker物联网适配器
-hash: AyRn68CYR4s+qIW3NFGuHjhm45ipfK0KTILNm9iI+fY=
+hash: nQ78rpnrcY2c7CIE4NRRm0x4wnpm0YzYP8+/agUS/po=
 ---
 ![商标](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -19,7 +19,7 @@ hash: AyRn68CYR4s+qIW3NFGuHjhm45ipfK0KTILNm9iI+fY=
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##设置
-要使用云适配器，您应该首先在ioBroker云[https://iobroker.pro](https://iobroker.pro)上注册。
+要使用云适配器，您应该首先在ioBroker云[https://iobroker.pro](https://iobroker.pro)中注册。
 
 [引用Google API类型设置](https://developers.google.com/actions/smarthome/guides/)
 
@@ -36,13 +36,13 @@ hash: AyRn68CYR4s+qIW3NFGuHjhm45ipfK0KTILNm9iI+fY=
 -如果为true：“多功能厅”，例如“调光客厅”
 
 ###将单词与
-您可以定义将在功能和房间之间放置的单词。例如。在“调光器起居室中”和“调光器起居室”中将是“调光器起居室”。
+您可以定义将在功能和房间之间放置的单词。例如。 “在”中和从“调光器客厅”起，将是“调光器在客厅”。
 
 但不建议这样做，因为识别引擎必须再分析一个单词，否则可能导致误解。
 
 ###开关的OFF等级
 某些组由混合设备组成：调光器和开关。允许使用“ ON”和“ OFF”命令以及百分比来控制它们。
-如果命令为“设置为30％”，而* OFF级别为“ 30％”，则开关将被打开；通过命令“设置为25％”，所有开关将被关闭。
+如果命令为“设置为30％”，而* OFF级别为“ 30％”，则开关将打开。通过命令“设置为25％”，所有开关将关闭。
 
 另外，如果命令为“ OFF”，那么如果实际值大于或等于“ 30％”，则适配器将记住当前的调光器级别。
 稍后，当出现新的“ ON”命令时，适配器会将调光器切换到内存中的电平而不是100％。
@@ -64,7 +64,7 @@ hash: AyRn68CYR4s+qIW3NFGuHjhm45ipfK0KTILNm9iI+fY=
 对于每个命令，都会生成文本响应。您可以在此处定义对象ID，此文本必须写入其中。例如。 *sayit.0.tts.text*
 
 ###颜色
-刚才只有英语alexa支持颜色控制。
+到目前为止，只有英语alexa支持颜色控制。
 通道必须具有以下四个角色的状态：
 
 -level.color.saturation（检测通道所需），
@@ -80,14 +80,14 @@ Alexa, change the kitchen to the color chocolate
 ```
 
 ###锁
-为了能够锁定锁，该状态必须具有角色“ switch.lock”并具有native.LOCK_VALUE才能确定锁定状态。
+为了能够锁定锁，状态必须具有角色“ switch.lock”和“ native.LOCK_VALUE”才能确定锁定状态。如果需要单独的值来控制锁，则可以使用“ native.CONTROL VALUE”。
 
 ```
 Alexa, is "lock name" locked/unlocked
 Alexa, lock the "lock name"
 ```
 
-##如何生成名称
+##名称的产生方式
 适配器尝试生成用于智能家居控制的虚拟设备（例如Amazon Alexa或Google Home）。
 
 这是两个重要的枚举：房间和功能。
@@ -95,12 +95,12 @@ Alexa, lock the "lock name"
 房间就像：客厅，浴室，卧室。
 功能如：灯光，窗帘，暖气。
 
-必须满足以下条件才能在自动生成的列表中获取状态：
+要自动生成列表中的状态，必须满足以下条件：
 
 -状态必须处于某些“功能”枚举中。
 -如果未直接包含在“功能”中，则状态必须具有角色（“状态”，“开关”或“ level。*”，例如level.dimmer）。
 
-可能是该通道位于“功能”中，但未声明其状态。
+可能是通道在“功能”中，但未声明其状态。
 
 -状态必须是可写的：common.write = true
 -状态调光器必须具有common.type作为'number'
@@ -110,16 +110,16 @@ Alexa, lock the "lock name"
 
 状态名称将从功能和房间生成。例如。 “起居室”中的所有“灯”都将收集在虚拟设备“起居室的灯”中。
 用户无法更改此名称，因为它是自动生成的。
-但是，如果枚举名称更改，该名称也将更改。 （例如，“照明”功能更改为“照明”，因此“起居室照明”将更改为“起居室照明*”）
+但是，如果枚举名称更改，该名称也将更改。 （例如，“灯光”功能更改为“灯光”，因此“起居室灯光”将更改为“起居室灯光*”）
 
 如果状态具有common.smartName，则将忽略所有规则。在这种情况下，将仅使用智能名称。
 
-如果* common.smartName *为** false **，则状态或枚举将不包含在列表生成中。
+如果* common.smartName *为** false **，则状态或枚举将不包括在列表生成中。
 
 通过配置对话框，可以轻松删除单个状态并将其添加到虚拟组或作为单个设备。
 ![组态](../../../en/adapterref/iobroker.iot/img/configuration.png)
 
-如果该组只有一个状态，则可以将其重命名，因为将使用该状态的smartName。
+如果该组只有一个状态，则可以重命名，因为将使用该状态的smartName。
 如果该组具有多个状态，则必须通过枚举名称重命名该组。
 
 要创建自己的组，用户可以安装“场景”适配器或在Javascript适配器中创建“脚本”。
@@ -154,7 +154,7 @@ or
 
 ```[GET]https://service.iobroker.in/v1/iotService?service=custom_<NAME>&key=<XXX>&user=<USER_EMAIL>&data=myString```
 
-如果在设置中将“服务白名单”字段设置为名称* custom_test *，并以“ custom_test”作为服务名称进行调用，则状态cloud / 0.services.custom_test将设置为myString *。
+如果您在设置中将“服务白名单”字段设置为名称* custom_test *，并使用“ custom_test”作为服务名称进行调用，则状态** cloud.0.services.custom_test **将设置为* myString *。
 
 您可以在白名单中写上“ *”，然后将允许所有服务。
 
@@ -191,26 +191,26 @@ or
 
 * **smart.lastCommand** 含接收的文本，包括有关查询类型（意图）的信息。示例：“ askDevice StatusRasenmäher”
 * ** smart.lastCommandObj ***包含一个JSON字符串，可以将其解析为包含以下信息的对象
-  *单词包含在数组中的单词
-  * **意图**包含查询的类型。当前可能的值是“ askDevice”，“ controlDevice”，“ actionStart”，“ actionEnd”，“ askWhen”，“ askWhere”，“ askWho”
+  * **单词**将接收到的单词包含在数组中
+  * **意图**包含查询的类型。当前可能的值是“ askDevice”，“ controlDevice”，“ actionStart”，“ actionEnd”，“ askWhen”，“ askWhere”，“ askWho”
  * **deviceId** 含一个设备ID，用于标识由Amazon交付的请求发送到的设备，如果未提供，则为空字符串
  * **sessionId** 含Skill会话的sessionId，如果亚马逊说了多个命令，则应该相同，如果未提供，则为空字符串
- * **userId** 含设备所有者（或稍后与该技能进行交互的用户）的亚马逊用户提供的userId，如果未提供，则为空字符串
+ * **userId** 含来自设备所有者（或稍后与该技能进行交互的用户）的AmazonId，由Amazon提供，如果未提供，则为空字符串
 
- 有关如何检测单词以及Alexa自定义技能区分哪些类型的查询的更多详细信息，请检查https://forum.iobroker.net/viewtopic.php?f=37&t=17452。
+ 有关如何检测单词以及Alexa自定义技能区分哪些类型的查询的更多详细信息，请检查https://forum.iobroker.net/viewtopic.php?f=37&t=17452。
 
 **通过smart.lastResponse状态返回结果**
 
 响应需要在状态为“ smart.lastResponse”的200毫秒内发送，并且可以是简单的文本字符串或JSON对象。
-如果是文本字符串，则此文本将作为对技能的响应发送。
+如果它是一个文本字符串，那么此文本将作为对技能的响应而发送。
 如果文本是JSON对象，则可以使用以下键：
 
 * **responseText** 要包含要返回亚马逊的文本
-*** shouldEndSession **是一个布尔值，用于控制在说出响应后会话是否将关闭或保持打开状态以接受其他语音输入。
+*** shouldEndSession **是一个布尔值，用于控制在说出响应后会话将关闭还是保持打开状态以接受其他语音输入。
 
 **通过消息返回结果到物联网实例**
 
-物联网实例还接受名称为“ alexaCustomResponse”的消息，其中包含键“ response”，该对象可以包含键** responseText **和** shouldEndSession **，如上所述。
+物联网实例还接受名称为“ alexaCustomResponse”的消息，其中包含键“ response”，并且对象可以包含键** responseText **和** shouldEndSession **，如上所述。
 物联网实例将不会对消息做出任何响应！
 
 **使用文字的脚本示例**
@@ -261,10 +261,44 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 
 -`alexa`-使用Amazon Alexa或Amazon Custom Skill进行操作
 -`ghome`-通过Google Home与Google Actions互动
--`alisa`-与YandexАлиса代理
+-`alisa`-与YandexАлиса合作
 -`ifttt`-类似于IFTTT（实际上不是必需的，但出于测试目的）
 
+<！-下一个版本的占位符（在该行的开头）：
+
+### __进展中__->
+
 ## Changelog
+
+### 1.6.4 (2020-08-06)
+* (Apollon77) crash prevented (Sentry IOBROKER-IOT-V)
+
+### 1.6.3 (2020-08-04)
+* (bluefox) Added french letters to allowed symbols
+
+### 1.6.1 (2020-07-10)
+* (bluefox) Used new SelectID Dialog in GUI
+
+### 1.5.3 (2020-05-28)
+* (bluefox) Small change for nightscout
+
+### 1.5.2 (2020-05-21)
+* (bluefox) Changed requirements for password
+* (bluefox) Do not try load the "sharp" if blood sugar not enabled
+
+### 1.4.18 (2020-05-11)
+* (Apollon77) Make sure that invalid configured states or values without timestamp do not crash adapter (Sentry IOBROKER-IOT-8)
+* (Apollon77) Make sure publishes after disconnect to not break adapter (Sentry IOBROKER-IOT-A)
+
+### 1.4.17 (2020-05-11)
+* (bluefox) Better error output is implemented
+
+### 1.4.14 (2020-05-01)
+* (bluefox) Fixed the problem if admin is not on 8081 port
+
+### 1.4.12 (2020-04-30)
+* (Apollon77) error case handled where system.config objects does not exist (Sentry IOBROKER-IOT-5)
+
 ### 1.4.11 (2020-04-26)
 * (bluefox) fixed IOBROKER-IOT-REACT-F
 

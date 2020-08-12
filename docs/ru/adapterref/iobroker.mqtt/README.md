@@ -749,6 +749,14 @@ void loop() {
 
 ## Changelog
 
+### 2.1.7 (2020-08-02)
+* (Apollon77) handle invalid mqtt server settings better (Sentry IOBROKER-MQTT-9)
+
+### 2.1.6 (2020-08-02)
+* (Apollon77) Try to prevent creation of objects with invalid IDs
+* (Apollon77) check that state is set before accessing it (Sentry IOBROKER-MQTT-2)
+* (Apollon77) Better handle disconnection cases (Sentry IOBROKER-MQTT-3, IOBROKER-MQTT-6)
+
 ### 2.1.5 (2020-07-26)
 * (Apollon77) try to prevent crashes on not existing state values
 * (Apollon77) Sentry added for crash reporting with js-controller 3.x+

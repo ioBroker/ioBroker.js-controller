@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.cameras/README.md
 title: ioBroker.cameras
-hash: E0VHSuO8ev33u3VNHfmwai7LW9Wm59pNbVQ9FPlN4oo=
+hash: S2DXJveAgZbhf55Ekua2qiIe7Z08WoOTSOJhirISeaA=
 ---
 ![Logo](../../../en/adapterref/iobroker.cameras/admin/cameras.png)
 
@@ -37,11 +37,18 @@ Das Ergebnis ist immer im Format `jpg`.
 
 Unterstützte Kameras:
 
-### URL-Bild Dies ist eine normale URL-Anforderung, bei der sich alle Parameter in der URL befinden. Wie `http://mycam/snapshot.jpg`
+### URL-Bild Dies ist eine normale URL-Anfrage, bei der sich alle Parameter in der URL befinden. Wie `http://mycam/snapshot.jpg`
 ### URL-Bild mit Basisauthentifizierung
 Dies ist eine URL-Anforderung für ein Bild, bei der alle Parameter in der URL enthalten sind. Sie können jedoch die Anmeldeinformationen für die Basisauthentifizierung angeben. Wie `http://mycam/snapshot.jpg`
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 0.1.3 (2020-08-08)
+* (Hirsch-DE) Parameters were applied
+
 ### 0.1.2 (2020-06-03)
 * (bluefox) implemented get image by message
 

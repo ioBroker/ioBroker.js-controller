@@ -18,7 +18,7 @@ Scans an ical calendar to calculate the days left until next trash pickup
 
 1. Create an **ical instance**
 2. Configure url of your calendar (e.g. google calendar)
-3. Set "Preview days" to a range which includes every trash type once
+3. Set "Preview days" to a range which includes every trash type at least twice (e.g. 30 days)
 4. Choose option to "Hide Start-End of events"
 5. If you use the "events" tab, ensure to enable the "display" checkbox for each event type which should also be used in your trash schedule (otherwise the event will be hidden by the ical instance)
 
@@ -28,7 +28,13 @@ Scans an ical calendar to calculate the days left until next trash pickup
 2. Go to the trash types tab and add type names and event matches
 3. Start the instance
 
+**Questions?** Check the FAQ: [German](https://github.com/klein0r/ioBroker.trashschedule/blob/master/faq_de.md)
+
 ## Changelog
+
+### 0.0.11
+
+* (klein0r) Better error reporting
 
 ### 0.0.10
 
