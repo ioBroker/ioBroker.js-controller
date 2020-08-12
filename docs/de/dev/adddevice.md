@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/adddevice.md
 title: So fügen Sie das Gerät zu alexa oder google home hinzu
-hash: dxvpM1J/sLmVRalZa8zSzteNQrmTXTSsddxQhEG6CW0=
+hash: ixNIo+HK2KxaWApVAIttZBJqp2xZPU4UL7AVJjitqFA=
 ---
 # So fügen Sie das Gerät zu alexa oder google home hinzu
 Um das Gerät hinzuzufügen, haben wir 4 Schritte:
@@ -16,7 +16,7 @@ Um das Gerät hinzuzufügen, haben wir 4 Schritte:
 ## Neue Rollen
 Wir haben 3 (oder noch mehr) Quellen, die überprüft werden müssen, bevor ein neues Gerät hinzugefügt wird:
 
-- Alexa Smarthome API: https://developer.amazon.com/de-DE/docs/alexa/device-apis/alexa-brightnesscontroller.html
+- Alexa smarthome API: https://developer.amazon.com/de-DE/docs/alexa/device-apis/alexa-brightnesscontroller.html
 - Yandex-API: https://yandex.ru/dev/dialogs/alice/doc/smart-home/concepts/device-types-docpage/
 - Google API: https://developers.google.com/assistant/smarthome/guides
 
@@ -39,7 +39,7 @@ Alle anderen Zustände (Leistung, eingestellte Temperatur) sind noch vorhanden.
 Nachdem alle erforderlichen Rollen hinzugefügt wurden, muss der Typdetektor erweitert werden.
 Fügen Sie der globalen Liste einen neuen Gerätetyp hinzu: https://github.com/ioBroker/ioBroker.type-detector/blob/master/index.js#L29 Nehmen Sie ein Gerät als Grundlage und kopieren Sie es in die `patterns` von die Klasse `ChannelDetector`.
 Der Typdetektor muss irgendwie zwischen Geräten unterscheiden, sodass Ihr Gerät eindeutige Rollen haben muss.
-Wir werden `level.temperature` und `level.mode.thermostat` als spezifisches Muster für Klimaanlagen nehmen und diese beiden Zustände als `required` markieren.
+Wir nehmen `level.temperature` und `level.mode.thermostat` als spezifisches Muster für Klimaanlagen und markieren diese beiden Zustände als `required`.
 Die meisten komplexen Geräte müssen ganz oben in der Liste stehen, damit sie zuerst erkannt werden und am Ende immer einfachere Geräte.
 
 Sie müssen eine neue Version des Pakets `iobroker.type-detector` npm erstellen.

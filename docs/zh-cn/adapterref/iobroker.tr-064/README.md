@@ -4,17 +4,17 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tr-064/README.md
 title: 的ioBroker.tr-064
-hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
+hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 ---
 ![商标](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
 ＃ioBroker.tr-064
 ###信息
-该适配器从AVM Fritz！Box读取主要信息，例如呼叫清单或答录机上的消息数。
+该适配器从AVM Fritz！Box读取主要信息，例如呼叫清单或应答机上的消息数。
 基于此[AVM文档](https://avm.de/service/schnittstellen/)
 
 ###简单状态和功能
--打开/关闭2.4GHz和5GHz的wifi，
+-开启/关闭2.4GHz和5GHz的wifi，
 -打开/关闭访客wifi，
 -重新启动Fritz！Box，
 -开始WPS流程，
@@ -24,12 +24,12 @@ hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 ###响铃（拨一个号码）
 -当使用内部号码（例如** 610）时，振铃状态将使该内部电话振铃。
 
-例如：** 610 [，timeout]
+例如：** 610 [，超时]
 
 -使用外部号码时，振铃状态会将您连接到该外部号码。
 
 当拾起被叫电话时，FritzBox将呼叫外部号码，并且您的默认电话将响铃。
-可以在FritsBox中配置默认电话，如下所示：Telefonie / Anrufe / [Tab] Wahlhilfe /Wählhilfeverwenden
+可以在FritsBox中配置默认电话，如下：Telefonie / Anrufe / [Tab] Wahlhilfe /Wählhilfeverwenden
 
 ### ToPauseState
 -值：响铃，连接，结束
@@ -52,7 +52,7 @@ hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 -电话簿（如果启用）将用于获取呼叫者电话号码的名称。
 -此外，有三种状态可解析数字或名称。如果有的话，您还将获得联系人的图像URL。
 
-  例如：如果您设置状态电话簿，则将所有3个状态都编号，则姓名，号码和图像将设置为找到的联系人。请注意，按名称搜索将首先比较完整名称，如果找不到，则使用其中的一部分。
+  例如：如果您设置状态电话簿。将所有3个状态都编号，则姓名，号码和图像将设置为找到的联系人。请注意，按名称搜索将首先比较完整名称，如果找不到，则使用其中的一部分。
 
 ###通话清单
 输出格式：
@@ -67,11 +67,11 @@ hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 -来电
 -外拨电话
 
-通话次数：通话次数可以设置为0。下一个通话增加1。
+通话次数：通话次数可以设置为0。下一个通话将增加1。
 
 html输出可以通过模板配置
 
-### Command＆commandResult状态
+###命令和命令结果状态
 使用命令状态，您可以从此[文件资料](https://avm.de/service/schnittstellen/)调用每个tr-064命令。
 例如
 

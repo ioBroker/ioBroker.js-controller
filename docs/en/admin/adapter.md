@@ -4,7 +4,7 @@ lastChanged: 25.02.2020
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/admin/adapter.md
-hash: X/Dtk3wCLvsU55QtzcDQDOwJXi0HwE6E/WfBbOR0X4I=
+hash: qvQSbRQZm8KXIQYiTdmaA6YOIfFf6rsf6Qxl3hZaZ1s=
 ---
 # The Adapter tab
 The available and installed adapters are displayed and managed here.
@@ -23,11 +23,11 @@ This button can be used to switch between the tile view and the table view (togg
 
 Updates are automatically checked for each restart. This button can be used to initiate the search manually or to refresh the page.
 
-** 3. ) only show installed adapters ** If this icon is selected, only adapters with already installed instances are shown (toggle function)
+** 3. ) only show installed adapters ** If you select this icon, only adapters with already installed instances are shown (toggle function)
 
 ** 4.) Show adapter with updates **
 
-If you select this icon, only adapters for which an update is available are displayed (toggle function). The tiles of the adaptable adapters have a green header. If there is no update for an adapter, a corresponding message appears.
+When you select this icon, only adapters for which an update is available are displayed (toggle function). The tiles of the adapters that can be updated have a green header. If there is no update for an adapter, a corresponding message appears.
 
 Another icon also appears in the title bar:
 
@@ -47,7 +47,7 @@ After clicking this icon, a corresponding selection window opens:
 
 Under the ***FROM GITHUB*** tab, simply select the required adapter in the pull-down menu and the latest preliminary version will be installed.
 
-When you select the ***ANY*** tab, any file path or URL (e.g. a URL to an external adapter developer) can be entered in the field and the corresponding adapter installed.
+When selecting the ***ANY*** tab, any file path or URL (e.g. a URL to an external adapter developer) can be entered in the field and the corresponding adapter installed.
 
 ** 6.) Switch on expert mode **
 
