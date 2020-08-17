@@ -870,7 +870,7 @@ function delObjects(objs, callback) {
         const row = objs.shift();
         if (row && row.id) {
             logger.info(hostLogPrefix + ' Delete state "' + row.id + '"');
-            if (row.value.type === 'state') {
+            if (row.value && row.value.type === 'state') {
                 states.delState(row.id, (/* err */) =>
                     objects.delObject(row.id, (/* err */) =>
                         setImmediate(() => delObjects(objs, callback))));
