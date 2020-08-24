@@ -4,13 +4,13 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tr-064/README.md
 title: 的ioBroker.tr-064
-hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
+hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 ---
 ![商标](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
 ＃ioBroker.tr-064
 ###信息
-该适配器从AVM Fritz！Box读取主要信息，例如呼叫列表或答录机上的消息数。
+该适配器从AVM Fritz！Box读取主要信息，例如呼叫清单或应答机上的消息数。
 基于此[AVM文档](https://avm.de/service/schnittstellen/)
 
 ###简单状态和功能
@@ -33,7 +33,7 @@ hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 
 ### ToPauseState
 -值：响铃，连接，结束
--可用于在来电（振铃）或拿起电话（连接）时暂停视频播放器。
+-可用于在来电（响铃）或拿起电话（连接）时暂停视频播放器。
 -可以对最终值进行恢复。
 
 ###存在
@@ -60,7 +60,7 @@ hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 -json
 -HTML
 
-呼叫清单是：
+通话清单为：
 
 - 所有通话
 - 未接来电
@@ -90,7 +90,7 @@ command = {
 
 ###启用通话监控
 要使用呼叫监控功能，必须首先在AVM Fritz！Box中启用它。
-要启用呼叫监控器拨盘```#96*5*```，将打开TCP / IP端口1012。要关闭端口拨盘```#96*4*```。
+要启用呼叫监控器拨号```#96*5*```，将打开TCP / IP端口1012。要关闭端口拨盘```#96*4*```。
 
 ###预发行版本
 预发布版本可在npm处使用标签dev获得。

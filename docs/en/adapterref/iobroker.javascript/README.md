@@ -1460,7 +1460,7 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
-### 4.6.24 (2020-08-24)
+### 4.6.25 (2020-08-24)
 * (bluefox) Fixed the loading of page
 
 ### 4.6.23 (2020-08-19)
