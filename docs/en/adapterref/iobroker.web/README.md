@@ -34,7 +34,14 @@ After 15th wrong attempt the user must wait 1 hour.
 If this options is selected the user stays logged in for one month.
 If not, the user will stay logged in for the configured "login timeout".
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+### 3.0.12 (2020-08-22)
+* (bluefox) Updated used npm libraries 
 
 ### 3.0.10 (2020-07-28)
 * (Apollon77) socketio pingTimeout and pinInterval increased to prevent too fast reconnections and bigger visualizations

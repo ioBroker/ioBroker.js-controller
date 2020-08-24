@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.accuweather/README.md
 title: ioBroker.accuweather
-hash: VYnLWsiroZZg/hSDQE8NOSwkUUQWCHdk2F1inf/Tpk0=
+hash: Vm6u4S5Hm5i0K/bayhQgQbmkVZfQxch1DGJiUvq19jI=
 ---
 ![Logo](../../../en/adapterref/iobroker.accuweather/admin/accuweather.png)
 
@@ -13,29 +13,32 @@ hash: VYnLWsiroZZg/hSDQE8NOSwkUUQWCHdk2F1inf/Tpk0=
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/algar42/ioBroker.accuweather/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.accuweather.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/algar42/ioBroker.accuweather/master.svg)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.accuweather.svg)
 
 # IoBroker.accuweather
 ## Accuweather Adapter für ioBroker
 Wettervorhersage mit AccuWeather API
 
-Der Adapter empfängt die aktuellen Bedingungen (stündlich aktualisiert), eine tägliche 5-Tage-Vorhersage (einmal täglich um ca. 7 Uhr morgens aktualisiert) und eine 12-Stunden-Vorhersage (alle sechs Stunden um 12 Uhr, 6 Uhr, 12 Uhr und 18 Uhr aktualisiert).
+Der Adapter erhält die aktuellen Bedingungen (stündlich aktualisiert), eine tägliche 5-Tage-Vorhersage (einmal täglich um ca. 7 Uhr aktualisiert) und eine 12-Stunden-Vorhersage (alle sechs Stunden um 12 Uhr, 6 Uhr, 12 Uhr und 18 Uhr aktualisiert).
 
 ## Fertig machen
 ### API-Schlüssel abrufen
 Um den API-Schlüssel zu erhalten, registrieren Sie sich unter https://developer.accuweather.com/ und erstellen Sie eine Anwendung im Menü "Meine Apps". Nach der Erstellung der Anwendung wird der API-Schlüssel generiert.
 Zur kostenlosen Nutzung können pro Tag 50 Anfragen an die API gestellt werden.
+Es wurde angemerkt, dass die folgenden Einstellungen bevorzugt werden, um die API zum Laufen zu bringen (bitte wählen Sie Ihr Land!): ![die Einstellungen](../../../en/adapterref/iobroker.accuweather/admin/image.png)
 
 ### Standortschlüssel abrufen
 Um den Standortschlüssel zu erhalten, gehen Sie zu https://www.accuweather.com/ und geben Sie Ihren Städtenamen ein oder versuchen Sie, Ihre Koordinaten (Breite, Länge) so einzugeben, wie Sie sie haben, z. in den ioBroker-Einstellungen.
 Ihr Standortschlüssel ist die Nummer am Ende der URL der Prognose.
 
 ### Verwendung in der Lovelace-Visualisierung (ab Version 1.1.0)
-Der Zusammenfassungskanal enthält aktuelle und Tagesprognosen mit Rollen / Arten von Zuständen, die vom Typdetektor unterstützt werden.
+Der Zusammenfassungskanal enthält eine aktuelle und eine Tagesprognose mit Rollen / Arten von Zuständen, die vom Typdetektor unterstützt werden.
 Die neue Funktion kann verwendet werden, um die Wettervorhersage in der Lovelace-Benutzeroberfläche anzuzeigen.
 Zur besseren Ansicht wird eine benutzerdefinierte Liebeskarte erstellt - siehe https://github.com/algar42/IoB.lovelace.accuweather-card
 
 ## Changelog
+
+### 1.1.4
+* (HGlab01) small bugfix regarding setTimeout range
 
 ### 1.1.3
 * (algar42) Minor updates for compact mode

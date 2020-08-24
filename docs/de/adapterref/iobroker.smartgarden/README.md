@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartgarden/README.md
 title: ioBroker.smartgarden
-hash: yRQ1kH5yZ+LlZk7k2uqFylv98qOlrWYFKz/AXPuTjfE=
+hash: wVJ/PkrXzfsgkReI3Ht0ofjEMzknM94tm/BhhARUbQc=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartgarden/admin/smartgarden.png)
 
@@ -15,6 +15,10 @@ hash: yRQ1kH5yZ+LlZk7k2uqFylv98qOlrWYFKz/AXPuTjfE=
 ![NPM](https://nodei.co/npm/iobroker.smartgarden.png?downloads=true)
 
 # IoBroker.smartgarden
+** Wenn es Ihnen gefällt, ziehen Sie bitte eine Spende in Betracht: **
+
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8C7M7MH3KPYDC&source=url)
+
 ## IoBroker Smartgarden Adapter für GARDENA Smart System
 Ein Adapter für das GARDENA Smart System unter Verwendung der offiziellen [GARDENA Smart System API](https://developer.husqvarnagroup.cloud/apis/GARDENA+smart+system+API#/general) und des Dienstes.
 
@@ -62,7 +66,7 @@ GARDENA Smart System-Konto, Sie können sich mit diesem Konto anmelden und mit S
 Und natürlich benötigen Sie eine laufende ioBroker-Installation und sollten mindestens einen [GARDENA Smart Device](#supported-devices) besitzen.
 
 ## Inhaltsverzeichnis
-  * [ioBroker Smartgarden-Adapter für GARDENA Smart System] (# iobroker-Smartgarden-Adapter für Gardena-Smart-System)
+  * [ioBroker Smartgarden-Adapter für GARDENA Smart System] (# iobroker-Smartgarden-Adapter für Gardena Smart System)
   * [Unterstützte Geräte] (# unterstützte Geräte)
   * [Anforderungen] (# Anforderungen)
   * [Inhaltsverzeichnis] (# Inhaltsverzeichnis)
@@ -75,7 +79,7 @@ Und natürlich benötigen Sie eine laufende ioBroker-Installation und sollten mi
      * [Für SERVICE_VALVE_SET] (# for-service_valve_set)
      * [Für SERVICE_VALVE] (# for-service_valve)
      * [Für SERVICE_POWER_SOCKET] (# for-service_power_socket)
-     * [Für SERVICE_SENSOR] (# for-service_sensor)
+     * [Für SERVICE_SENSOR] (# für-service_sensor)
      * [Für SERVICE_COMMON] (# for-service_common)
   * [Bewässerung beim Mähen nicht erlaubt] (# Bewässerung beim Mähen nicht erlaubt)
      * [Was ist das Problem?] (# Was ist das Problem)
@@ -84,6 +88,7 @@ Und natürlich benötigen Sie eine laufende ioBroker-Installation und sollten mi
   * [Wünsche für Datenpunkte] (# Wünsche für Datenpunkte)
   * [Anmerkung] (# Anmerkung)
   * [Changelog] (# changelog)
+     * [1.0.1] (# 101)
      * [1.0.0] (# 100)
      * [0.6.0] (# 060)
      * [0.5.1] (# 051)
@@ -138,7 +143,8 @@ Bitte beachten Sie, dass Kennwort und Anwendungsschlüssel im Adapter codiert un
       | TestVar | Verwenden Sie die Testvariable zum Debuggen. Ein-/ Ausschalten; Standard: Aus |
 
 ## Unterstützung bekommen
-Um Hilfe zu erhalten, lesen Sie diese README-Datei und die [FAQ](FAQ.md) sorgfältig durch. Wenn Sie weitere Unterstützung benötigen, treten Sie bitte den [ioBroker Forum Thread](https://forum.iobroker.net/topic/31289/neuer-adapter-smartgarden-adapter-for-gardena-smart-system) bei.
+Um Hilfe zu erhalten, lesen Sie diese [README] (README.md) und die [FAQ](FAQ.md) sorgfältig durch.
+Wenn Sie weitere Unterstützung benötigen, treten Sie bitte den [ioBroker Forum Thread](https://forum.iobroker.net/topic/31289/neuer-adapter-smartgarden-adapter-for-gardena-smart-system) bei.
 
 ## Datenpunkte des Adapters
 Der Adapter dient zur Überwachung und Steuerung von GARDENA Smart System-Geräten.
@@ -248,7 +254,7 @@ Diese Funktion kann in der Konfiguration der Adapterinstanz zusammen mit der Anz
 Um diese Funktion in Betrieb zu nehmen, **stellen Sie bitte sicher, dass mindestens ein Zyklus von Mäh- und Ladeläufen fehlerfrei ist (z. B. nicht manuell unterbrochen oder Sensorsteuerung).** Es ist besser, wenn mindestens drei Läufe fehlerfrei ausgeführt werden.
 Diese Funktion versucht, den Normalfall zu erkennen und geht zunächst davon aus, dass der nächste Prozess ein Normalfall ist. Wenn dies fehlerhaft ist, wird dieser fehlerhafte Lauf als normaler Fall angesehen und die Läufe, die dann normal durchlaufen werden, als Fehlerfall. Wenn während des Laufs ein Fehler auftritt, stoppen Sie bitte den Adapter, löschen Sie die beiden Datenpunkte und starten Sie erneut.
 
-Weitere Informationen zu allgemeinen Prognosemechanismen finden Sie unter [PROGNOSE.md](FORECAST.md).
+Weitere Informationen zu allgemeinen Prognosemechanismen finden Sie in [PROGNOSE.md](FORECAST.md).
 
   **Anmerkungen:**
 
@@ -284,7 +290,7 @@ Verwenden Sie zur Steuerung des Geräts den Datenpunkt
 
   Ändern Sie diesen Datenpunkt, um alle Ventile zu stoppen.
 
-  - Um alle Ventile sofort anzuhalten, verwenden Sie die Zeichenfolge `STOP_UNTIL_NEXT_TASK`
+  - Um alle Ventile sofort zu stoppen, verwenden Sie den String `STOP_UNTIL_NEXT_TASK`
 
 ** Hinweis: ** Zeigen Sie den Wert dieses Datenpunkts in Ihrer Anwendung nicht an, da der Wert größtenteils undefiniert ist. Darüber hinaus kann dieser Datenpunkt nicht als Auslöser für Ihre eigenen Aktionen dienen, da er nach dem Auslösen des Befehls nur auf den Wert *null* gesetzt wird.
 
@@ -318,7 +324,7 @@ Bitte melden Sie, wenn Sie andere Einschränkungen sehen.
 
   - Um den automatischen Betrieb bis zur angegebenen Zeit zu überspringen, ist die aktuell aktiv
 
-Der Vorgang kann abgebrochen werden oder nicht (abhängig vom Gerätemodell). Verwenden Sie die Zeichenfolge `PAUSE_<number_of_seconds>`, z. `PAUSE_86400` für 24 Stunden pausieren
+Der Vorgang kann abgebrochen werden oder nicht (abhängig vom Gerätemodell). Verwenden Sie die Zeichenfolge `PAUSE_<number_of_seconds>`, z. `PAUSE_86400` 24 Stunden pausieren (bitte ein Vielfaches von 60 verwenden)
 
   - Um den automatischen Betrieb wiederherzustellen, wenn er angehalten wurde, verwenden Sie die Zeichenfolge "UNPAUSE"
 
@@ -390,9 +396,9 @@ Die Beschreibung wird bei Bedarf in die Beschreibung anderer DIENSTLEISTUNGEN in
 
 ## Bewässerung beim Mähen nicht erlaubt
 ### Was ist das Problem?
-Wenn Sie sowohl einen Mäher als auch ein Bewässerungssystem mit Aufklappsprinklern haben, besteht die Gefahr, dass Ihr Mäher während der Bewässerung auf einen Aufklappsprinkler stößt und diesen beschädigt oder selbst beschädigt.
+Wenn Sie sowohl einen Mäher als auch ein Bewässerungssystem mit aufklappbaren Sprinklern haben, besteht die Gefahr, dass Ihr Mäher während der Bewässerung auf einen aufklappbaren Sprinkler stößt und diesen beschädigt oder selbst beschädigt.
 
-Um dies zu verhindern, sollte das Bewässerungssystem oder besser einzelne Ventile beim Mähen des Mähers ausgeschaltet werden.
+Um dies zu verhindern, sollte das Bewässerungssystem oder besser einzelne Ventile ausgeschaltet werden, wenn der Mäher mäht.
 
 ### Was wird gemacht?
 Mit dieser Funktion ist es möglich, die Bewässerung zu stoppen, wenn sich der Mäher auf dem Rasen befindet. Dies kann für jedes Ventil separat definiert werden.
@@ -402,7 +408,7 @@ Grundsätzlich hat der Mäher Vorrang vor der Bewässerung, d. H. Wenn der Konfl
 
 Zusätzlich kann definiert werden, dass ein Ventil unabhängig von einem Mäher niemals öffnen darf. Z.B. kann verwendet werden, wenn ein Ventil oder das dahinterliegende Rohr beschädigt ist.
 
-Die gesamte Prüfung kann in der Instanzkonfiguration mit Paraneter *Bewässerungsprüfung* ein- oder ausgeschaltet werden.
+Die gesamte Prüfung kann in der Instanzkonfiguration mit dem Parameter *Bewässerungsprüfung* ein- oder ausgeschaltet werden.
 
 Für jeden `SERVICE_VALVE` stehen drei Datenpunkte zur Verfügung.
 Sie werden zur Konfiguration und zum Melden von Warnungen verwendet.
@@ -411,7 +417,7 @@ Sie werden zur Konfiguration und zum Melden von Warnungen verwendet.
   | - | - | - |
   | `irrigationWhileMowing_allowed_i` | ja | auf `false` setzen, wenn überprüft werden soll, ob eine Bewässerung zulässig ist, während der Mäher auf dem Rasen mäht, andernfalls `true` |
   | `irrigationWhileMowing_warningCode_i` | nein | Der Warncode wird gesetzt, wenn das Ventil öffnet. Mögliche Warncodes siehe nächste Tabelle. Wenn mehr als eine Warnung festgelegt ist, werden Codes mit `+` (z. B. `STOPPED+UNKNOWN_MOWER`) verkettet |
-  | `irrigationWhileMowing_warningCode_i` | nein | Der Warncode wird gesetzt, wenn das Ventil öffnet. Mögliche Warncodes siehe nächste Tabelle. Wenn mehr als eine Warnung festgelegt ist, werden Codes mit "+" verknüpft (z. B. "STOPPED + UNKNOWN_MOWER") |
+  | `irrigationWhileMowing_warningCode_i` | nein | Der Warncode wird gesetzt, wenn das Ventil öffnet. Mögliche Warncodes siehe nächste Tabelle. Wenn mehr als eine Warnung gesetzt ist, werden Codes mit "+" verknüpft (z. B. "STOPPED + UNKNOWN_MOWER") |
 
 * ***Mäher-ID-Format***
 
@@ -428,7 +434,7 @@ Sie können diese Mäher-ID von der Registerkarte Objekte von ioBroker kopieren 
   | `NO_WARNING` | keine Warnung, Ventil geöffnet |
   | `STOPPED` | Ventil automatisch geschlossen, weil Mäher mäht |
   | `FORBIDDEN` | Ventil geschlossen, da im Datenpunkt `IRRIGATION_FORBIDDEN` der Sondercode §§SSSSS_1§§ gesetzt ist |
-  | `FORBIDDEN` | Ventil geschlossen, da im Datenpunkt` irrigationWhileMowing_mowerDefinition_i` | der spezielle Code `IRRIGATION_FORBIDDEN` gesetzt ist |
+  | `FORBIDDEN` | Ventil geschlossen, weil im Datenpunkt` irrigationWhileMowing_mowerDefinition_i` | der spezielle Code `IRRIGATION_FORBIDDEN` gesetzt ist |
 
 Diese Funktion wird jedes Mal ausgeführt, wenn
 
@@ -441,7 +447,7 @@ Das heißt: Wenn eine Konfliktsituation vorliegt und Sie `irrigationWhileMowing_
 ### Grundlegendes Verhalten - WARNUNG
 Diese Funktion kann nicht verhindern, dass sich ein Ventil öffnet, während der Mäher mäht. Dies kann z.B. manuell über die GARDENA App oder automatisch über einen Zeitplan.
 
-Diese Funktion kann das Ventil im Konfliktfall nur so schnell wie möglich schließen. Und ein Konflikt kann auch nicht erkannt werden.
+Diese Funktion kann das Ventil nur im Konfliktfall so schnell wie möglich schließen. Und ein Konflikt kann auch nicht erkannt werden.
 So kann es passieren, dass Wasser durchgelassen wird.
 **Z.B. Es kann nicht verhindert werden, dass sich die Aufklappsprinkler ausfahren und der Mäher auf die Aufklappsprinkler **trifft, aber die Wahrscheinlichkeit, dass dies geschieht, wurde minimiert.
 ** Es liegt also an Ihrer Bewerbung, sicherzustellen, dass dieser Konflikt niemals auftritt.**
@@ -456,15 +462,24 @@ Dies ist ein privates Projekt. Ich bin nicht mit GARDENA oder Husqvarna verbunde
 smartgarden logo: http://www.freepik.com Entworfen von Freepik
 
 ## Changelog
-### 1.0.0
+### 1.0.1
+* (jpgorganizer)
+  - better reconnection to GARDENA smart system server in case of your internet connection was broken
+  - textual changes in io-package.json
+  - improved README and FAQ
+  
+  ### 1.0.0
 * (jpgorganizer)
   - code rework, no functional change expected
-  - support `PAUSE` for SERVICE_VALVE, SERVICE_POWER_SOCKET
+  - support `PAUSE` for SERVICE_VALVE, SERVICE_POWER_SOCKET. e.g. 
+	[Issue 14](https://github.com/jpgorganizer/ioBroker.smartgarden/issues/14)
   - internal representation for all timestamps changed from format like 
     `2020-05-26T05:03:47.613+0000` to `2020-05-26T05:03:47.613Z` to 
-    support Safari browser.
+    support Safari browser e.g. 
+	[Issue 12](https://github.com/jpgorganizer/ioBroker.smartgarden/issues/12).
   - support forecast values for mower id's in format with suffix, 
-    e.g. `d8a1faef-2ee3-421d-a3f8-f8ed577c2ad3:suffix`
+    e.g. `d8a1faef-2ee3-421d-a3f8-f8ed577c2ad3:suffix`, e.g. 
+	[Issue 12](https://github.com/jpgorganizer/ioBroker.smartgarden/issues/12)
   - making the adapter more fault tolerant at startup, e.g. trimming 
     whitespaces from username, etc.
   - README: new chapter *Getting support*, 
@@ -575,4 +590,4 @@ Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 Based on a work at https://github.com/jpgorganizer/ioBroker.smartgarden. 
  
 
-<!--- SVN: $Rev: 2157 $ $Date: 2020-06-11 19:24:52 +0200 (Do, 11 Jun 2020) $ --->
+<!--- SVN: $Rev: 2222 $ $Date: 2020-08-17 11:20:02 +0200 (Mo, 17 Aug 2020) $ --->

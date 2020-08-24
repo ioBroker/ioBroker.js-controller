@@ -144,6 +144,9 @@ Added:
 ```
 
 ## Changelog
+### 0.3.1 (2020-08-22)
+* (bluefox) The compatibility to socket.io 3.0.13 provided
+
 ### 0.3.0 (2020-01-23)
 * (yaming116) fixed pingConnection
 * (bluefox) Changes of the original tileboard were merged

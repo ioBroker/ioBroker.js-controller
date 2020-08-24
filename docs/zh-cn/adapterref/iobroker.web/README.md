@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: a9Z9DdqN4STkXTJENa2X1xlRf2gGuQgICEeqvVHCVpE=
+hash: Z/451y3UB6ewKK/G6larDXYBjhCU5/sln3z+vFBLIGA=
 ---
 ![商标](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -14,7 +14,7 @@ hash: a9Z9DdqN4STkXTJENa2X1xlRf2gGuQgICEeqvVHCVpE=
 ![NPM](https://nodei.co/npm/iobroker.web.png?downloads=true)
 
 ＃ioBroker.web
-基于Node.js的Web服务器，并表示可以从ioBroker DB中读取文件
+基于Node.js的Web服务器，并表示从ioBroker DB中读取文件
 
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
@@ -30,7 +30,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 这些扩展看起来像普通的适配器，但是它们没有正在运行的进程，将由Web服务器调用。
 
 例如。用户可以激活特殊的代理适配器并访问同一Web服务器中的其他设备（例如Web cam）。
-需要使所有服务在一台Web服务器下可用。
+必须让所有服务在一台Web服务器下可用。
 
 ##暴力保护
 如果启用了身份验证，并且用户在一分钟内输入了5次无效密码，则他必须至少等待一分钟才能进行下一次尝试。
@@ -38,9 +38,29 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 
 ##“保持登录状态”选项
 如果选择此选项，则用户将保持登录状态一个月。
-否则，用户将保持已配置的“登录超时”的登录状态。
+否则，用户将保持登录状态，以进行配置的“登录超时”。
+
+<！-下一个版本的占位符（在该行的开头）：
+
+### __进展中__->
 
 ## Changelog
+### 3.0.12 (2020-08-22)
+* (bluefox) Updated used npm libraries 
+
+### 3.0.10 (2020-07-28)
+* (Apollon77) socketio pingTimeout and pinInterval increased to prevent too fast reconnections and bigger visualizations
+
+### 3.0.9 (2020-06-11)
+* (Apollon77) Upgrade socketio adapter version
+* (Apollon77) Optimize error handling for webserver initialization again
+
+### 3.0.8 (2020-05-04)
+* (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
+
+### 3.0.7 (2020-04-30)
+* (Apollon77) errors on webserver initialization are handled properly
+
 ### 3.0.5 (2020-04-23)
 * (bluefox) fixed the sentry warnings
 
@@ -354,3 +374,26 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 
 #### 0.0.1
 * (bluefox) initial commit
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

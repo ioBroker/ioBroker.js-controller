@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: a9Z9DdqN4STkXTJENa2X1xlRf2gGuQgICEeqvVHCVpE=
+hash: Z/451y3UB6ewKK/G6larDXYBjhCU5/sln3z+vFBLIGA=
 ---
 ![Logo](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -29,7 +29,7 @@ Lesen Sie [Hier](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certifi
 Der Webtreiber unterstützt Erweiterungen. Die Erweiterung ist URL-Handler, der aufgerufen wird, wenn eine solche URL-Anforderung angezeigt wird.
 Die Erweiterungen sehen aus wie normale Adapter, haben jedoch keinen laufenden Prozess und werden vom Webserver aufgerufen.
 
-Z.B. Der Benutzer kann einen speziellen Proxy-Adapter aktivieren und andere Geräte (wie Web-Cams) auf demselben Webserver erreichen.
+Z.B. Der Benutzer kann einen speziellen Proxy-Adapter aktivieren und andere Geräte (z. B. Web-Cams) auf demselben Webserver erreichen.
 Es ist erforderlich, dass alle Dienste unter einem Webserver verfügbar sind.
 
 ## Brute-Force-Schutz
@@ -40,7 +40,27 @@ Nach dem 15. Fehlversuch muss der Benutzer 1 Stunde warten.
 Wenn diese Option ausgewählt ist, bleibt der Benutzer einen Monat lang angemeldet.
 Wenn nicht, bleibt der Benutzer für das konfigurierte "Anmeldezeitlimit" angemeldet.
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 3.0.12 (2020-08-22)
+* (bluefox) Updated used npm libraries 
+
+### 3.0.10 (2020-07-28)
+* (Apollon77) socketio pingTimeout and pinInterval increased to prevent too fast reconnections and bigger visualizations
+
+### 3.0.9 (2020-06-11)
+* (Apollon77) Upgrade socketio adapter version
+* (Apollon77) Optimize error handling for webserver initialization again
+
+### 3.0.8 (2020-05-04)
+* (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
+
+### 3.0.7 (2020-04-30)
+* (Apollon77) errors on webserver initialization are handled properly
+
 ### 3.0.5 (2020-04-23)
 * (bluefox) fixed the sentry warnings
 
@@ -354,3 +374,26 @@ Wenn nicht, bleibt der Benutzer für das konfigurierte "Anmeldezeitlimit" angeme
 
 #### 0.0.1
 * (bluefox) initial commit
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

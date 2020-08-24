@@ -456,6 +456,10 @@ After that checkout modified version in `./build` folder. Then.
 8. Start `gulp rename` task.
 
 ## Changelog
+### 1.2.6 (2020-08-13)
+* (Garfonso) Fixed: invalid date in weather cards
+* (Garfonso) Fixed: issues with space in manual entity names.
+
 ### 1.2.5 (2020-07-10)
 * (Garfonso) Fixed: Parse initial values the same way as state changes
 * (Garfonso) Added: Work around for (old) common.states of type string

@@ -44,6 +44,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 0.8.6 (2020-08-21)
+* (simatec) small Bugfixes trigger
+
 ### 0.8.5 (2020-08-03)
 * (simatec) small Bugfixes
 * (5G7K) bugfixes trigger

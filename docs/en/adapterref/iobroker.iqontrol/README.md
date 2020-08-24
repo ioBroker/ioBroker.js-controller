@@ -30,13 +30,24 @@
 
 Fast Web-App for Visualization.
 
-![Example](img/screenshot4.jpg)
-![Example](img/screenshot3.jpg)
+![Screenshot](img/screenshot_kueche.png)
 
-Runs in any Browser.
-It's fully customizable.
 \
-**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+![Screenshot](img/screenshot_licht.png)
+
+\
+![Screenshot](img/screenshot_heizung.png)
+
+\
+![Screenshot](img/screenshot_rauchmelder.png)
+
+\
+![Screenshot](img/screenshot_flot.png)
+
+Runs in any Browser. 
+It's fully customizable and responsive.
+
+> **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 
 ## Add to Homescreen
@@ -76,6 +87,8 @@ Visit [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visu
 
 
 ## How to use
+**Don't be scared from the many options you have.**
+Most things work right out of the box. You *can*, but you don't have to use all the configuration-possibilities iQontrol offers! Just start this way:
 * Start creating views.
 	You can consider views as something like a page.
 * Then create devices on these views.
@@ -140,12 +153,21 @@ Visit [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visu
 
 
 ## Popup-Messages
-* Every instance creates the objects ``iqontrol.x.Popup.Message`` and ``iqontrol.x.Popup.Duration``
-* When passing values to these objects, a popup-message (or toast) is displayed
-* You can use html-tags to format the message
-* The duration is the time in ms the message is displayed; if the duration is 0 the message has to be confirmed
-* Alternatively you can set these values via sendTo-command with the parameters ``PopupMessage`` and ``PopupDuration``. 
-    * Example: ``sendTo("iqontrol", "send", {PopupMessage: 'This is my message', PopupDuration: 2500});``
+* Every instance creates the state ``iqontrol.x.Popup.Message``
+* When passing values to these state, a popup-message (or toast) is displayed
+* You can use html-tags to format the message text
+* There are some additional states for further customization of the displayed popup (these must be set, before the message datapoint is set):
+    * ``Duration``: This is the time in ms the message is displayed; if set to 0 the message has to be confirmed
+    * ``ClickedValue`` and ``ClickedDestinationState``: If the popup is clicked by user, the value from ``ClickedValue`` will be sent to ``iqontrol.x.Popup.POPUP_CLICKED`` and, if specified, additional to the datapoint in ``ClickedDestinationState`` 
+        * If no value is specified, ``true`` will be used
+    * ``ButtonNames``: Here you can specify a comma separated list of buttons, that will be displayed at the bottom of the popup (for example "OK,Abort")
+        * ``ButtonValues`` and ``ButtonDestinationStates``: These are comma separated lists of values that will be sent to ``iqontrol.x.Popup.BUTTON_CLICKED`` and, if specified, additional to the datapoint in ``ButtonDestinationStates``, if the user clickes the corresponding button
+		* If you only use one value (instead of a comma separated list), this value will be used for all buttons
+		* If you leave ``ButtonValues`` empty, the name of the button will be used
+		* If you only use one destination state (instead of a comma separated list), this state will be used for all buttons
+        * ``ButtonCloses``: This is a comma separated list of booleans (``true``/``false``) that specify, if the popup should be closed, when the corresponding button is pressed
+* Alternatively you can set these values via sendTo-command with the parameters ``PopupMessage``, ``PopupDuration``, ``PopupClickedValue`` and so on
+    * Example: ``sendTo("iqontrol", "send", {PopupMessage: 'This is my message', PopupDuration: 2500, PopupClickedValue: 'messageConfirmed'});``
 * You can also use blockly to send messages to iQontrol
 
 ![Popup Screenshot](img/popup_screenshot.png)
@@ -174,13 +196,14 @@ You can modify the configuration of datapoints via the wrench-icon behind a data
     * Add optinally an option to value list to enter free text
 * Set a target-value-list:
     * In addition to the target-value-id, you can define different datapoint-ids and target-values for different keys (keys are possible values of the orgiginal datapoint)
-    * You can also use the wildcard * in the keys and in the target-values
+    * You can also use the wildcard ``*`` in the keys and in the target-values
 	* Example: 
-	    * Key: "TuneIn-Playlist: *", Target-Datapoint ID: "alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist", Target-Value: "*"
-	    * If the user enters "TuneIn-Playlist: Ambient" the value "Ambient" will be written to "alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist"
+	    * Key: ``TuneIn-Playlist: *``, Target-Datapoint ID: ``alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist``, Target-Value: ``*``
+	    * If the user enters ``TuneIn-Playlist: Ambient`` the value ``Ambient`` will be written to ``alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist``
 
 ![CustomDialog Call](img/custom_call.png)
 ![CustomDialog Example](img/custom_dialog.png)
+![Concept of Target-Value-List](img/target-value-list_concept.png)
   
 ### General states:
 Every role has the following three states:
@@ -346,7 +369,7 @@ In addition to normal thermostat you can define:
 ### <img src="img/icons/play.png" width="32"> Scene:
 * **STATE**: *boolean* - displays, if the scene is active. Depending on the configuration of the scene (virtual group, set values for false enabled or disabled), the toggle-command will send true, false, min, 0, max or 100. There is an option to always send true (disable toggleing).
 
-### <img src="img/icons/media_on.png" width="32"> Media-Player:
+### <img src="img/icons/media_on.png" width="32"> Media-Player / Remote Control:
 * **STATE**: *string* - "play", "pause" or "stop" or *boolean* - true for play, false for stop
     * In device options you can define the value that represents play, pause and stop
 * **COVER_URL**: *string* - url to cover-image
@@ -358,6 +381,19 @@ In addition to normal thermostat you can define:
 * **DURATION, ELAPSED**: *number* - duration and elapsed time of actual title - used to show a seek-bar
 * **VOLUME**: *number* - for volume-slider
 * **SOURCE, PLAYLIST**: *value-list* - show select-menu to chose a source or a title from playlist
+
+##### To display a *universal remote control* you can define the following states:
+* **REMOTE_NUMBER**: *string* - shows a num-pad an returnes the corresponding number, if a number is clicked
+* **REMOTE_VOLUME_UP, REMOTE_VOLUME_UP, REMOTE_CH_UP, REMOTE_CH_DOWN**: *string* - shows buttons vor volume up/down and channel up/down and returns 'volumeUp', 'volumeDown', 'chUp' or 'chDown', if the corresponding button is pressed
+* **REMOTE_PAD_DIRECTION, REMOTE_PAD_BACK, REMOTE_PAD_HOME, REMOTE_PAD_MENU**: *string* - shows a trackpad for navigation and returns 
+    * 'ok' if the middle of the pad is clicked, 
+	* 'left', 'right', 'up' or 'down', if the edges of the pad are clicked or the pad is swiped in the corresponding direction or
+	* 'back', 'home' or 'menu*, if the corresponding buttons are clicked
+	* Keep in mind: You can use the Target-Value-List (accessible via the wrench-icon of each datapoint) to link from one datapoint to multiple datapoints, depending on the returned value (see Modifying Datapoints section above)
+* **REMOTE_COLOR**: *string* - shows colored buttons an returnes the corresponding color ('red', 'green', 'yellow' or 'blue'), if a color is clicked
+* **REMOTE_ADDITIONAL_BUTTONS**: *array* - an array of buttons. The name of the button is sent to the corresponding state-id, if the button is clicked
+* **REMOTE_HIDE_REMOTE**: *booelan* - if true, the complete remote control section will be hidden (for example to show it only, if a valid source is selected)
+
 
 ### <img src="img/icons/popup.png" width="32"> Popup:
 * **STATE**: *any* - can be used to display further information
@@ -373,513 +409,546 @@ In addition to normal thermostat you can define:
 
 ## Changelog
 
+### 1.1.13 (2020-08-23)
+* (sbormann) Added option to remote to show vol and ch +/- inside pad.
+* (sbormann) Fixed calculation of blind level.
+* (sbormann) Fixed opening of external links.
+
+### 1.1.12 (2020-08-21)
+* (sbormann) Prevented selection of elements on long click for actual iOS version.
+* (sbormann) Bugfixed tile active conditions for media.
+* (sbormann) Renamed Media-Player to Media-Player / Remote-Control.
+* (bluefox) The compatibility to socket.io 3.0.13 provided
+* (sbormann) Prevented accidentally sorting of tables when clicking buttons.
+
+### 1.1.11 (2020-08-21)
+* (sbormann) Added option to define explicit conditions for a tile to be active.
+* (sbormann) Added wrench icon to edit array dialog.
+
+### 1.1.10 (2020-08-20)
+* (sbormann) Added universal remote control including a track-pad to media-device.
+* (sbormann) Device-Options are now sorted in categories.
+* (sbormann) Collapsibles like additional informations are animated now.
+* (sbormann) Added option for the device button to change the caption of the button in the dialog.
+* (sbormann) Added option to open URL in new window instead of box inside dialog.
+* (sbormann) Made toggeling of a state more fault tolerant if the type is not set correctly (iQontrol presumes now, it is a switch).
+
+### 1.1.9 (2020-08-14)
+* (sbormann) Enhanced popup with the ability to add buttons and confirmation messages.
+* (sbormann) Fixed crash on some toolbar specifications.
+
 ### 1.1.8 (2020-08-02)
-* (Sebastian Bormann) Enhanced rendering of colour-lights with alternative colorspace.
-* (Sebastian Bormann) Added rounded corners to iframe.
-* (Sebastian Bormann) Added sans-serif as standard font-family to iframe (may overwrite your settings - you can overwrite this by marking your own font-family css with '!important').
-* (Sebastian Bormann) Added sentry plugin.
+* (sbormann) Enhanced rendering of colour-lights with alternative colorspace.
+* (sbormann) Added rounded corners to iframe.
+* (sbormann) Added sans-serif as standard font-family to iframe (may overwrite your settings - you can overwrite this by marking your own font-family css with '!important').
+* (sbormann) Added sentry plugin.
 
 ### 1.1.7 (2020-07-28)
-* (Sebastian Bormann) Improved long press and forced touch handling.
-* (Sebastian Bormann) Added URL-Parameters returnAfterTimeDestiationView and returnAfterTimeTreshold.
+* (sbormann) Improved long press and forced touch handling.
+* (sbormann) Added URL-Parameters returnAfterTimeDestiationView and returnAfterTimeTreshold.
 
 ### 1.1.6 (2020-07-24)
-* (Sebastian Bormann) Added some roles to recognize water and fire sensors more reliable.
-* (Sebastian Bormann) Added a block to blockly to send popup messages to iQontrol.
-* (Sebastian Bormann) Set option "Always use time instead of pressure" as standard - if you want to use ForcedTouch, disable this option.
-* (Sebastian Bormann) Updated some dependencies.
+* (sbormann) Added some roles to recognize water and fire sensors more reliable.
+* (sbormann) Added a block to blockly to send popup messages to iQontrol.
+* (sbormann) Set option "Always use time instead of pressure" as standard - if you want to use ForcedTouch, disable this option.
+* (sbormann) Updated some dependencies.
 
 ### 1.1.5 (2020-07-05)
-* (Sebastian Bormann) Made dialog movable by dragging title.
-* (Sebastian Bormann) Added LEVEL to fan.
-* (Sebastian Bormann) Fixed flickering of SVG-Background change on some devices.
+* (sbormann) Made dialog movable by dragging title.
+* (sbormann) Added LEVEL to fan.
+* (sbormann) Fixed flickering of SVG-Background change on some devices.
 
 ### 1.1.4 (2020-07-03)
-* (Sebastian Bormann) Changed the way popup-iframes are created to allow execution of code inside them.
-* (Sebastian Bormann) Added the possibility to chose progressbars as icons and background-images for devices.
-* (Sebastian Bormann) Added progress-circle of remaining display-time to popup.
+* (sbormann) Changed the way popup-iframes are created to allow execution of code inside them.
+* (sbormann) Added the possibility to chose progressbars as icons and background-images for devices.
+* (sbormann) Added progress-circle of remaining display-time to popup.
 
 ### 1.1.3 (2020-06-28)
-* (Sebastian Bormann) Added popup messagen (toast-messagen).
-* (Sebastian Bormann) Enhanced scenes to be able to toggle (added option to always send true, if you need the old behaviour).
+* (sbormann) Added popup messagen (toast-messagen).
+* (sbormann) Enhanced scenes to be able to toggle (added option to always send true, if you need the old behaviour).
 
 ### 1.1.2 (2020-06-21)
-* (Sebastian Bormann) Compatibility enhancements for repeat function of Media-Player.
-* (Sebastian Bormann) Made value-list and target-value-list sortable.
-* (Sebastian Bormann) Made sortable lists only draggable in y-axis.
-* (Sebastian Bormann) Added option to enter own value for value-lists.
-* (Sebastian Bormann) Added PLAY_EVERYWHERE to Media-Player.
+* (sbormann) Compatibility enhancements for repeat function of Media-Player.
+* (sbormann) Made value-list and target-value-list sortable.
+* (sbormann) Made sortable lists only draggable in y-axis.
+* (sbormann) Added option to enter own value for value-lists.
+* (sbormann) Added PLAY_EVERYWHERE to Media-Player.
 
 ### 1.1.1 (2020-06-16)
-* (Sebastian Bormann) Some fixes, styling and enhancements for Media-Player.
-* (Sebastian Bormann) Added option to hide play, pause and stop icon for Media-Player.
-* (Sebastian Bormann) Added function repeat one to Media-Player.
-* (Sebastian Bormann) Maquee is only restarting, if the value of a state has really changed.
-* (Sebastian Bormann) Fixed crash when some ids of linked views were missing.
-* (Sebastian Bormann) Added targetValues to custom configuration, wich allows to send changes of a state to different target-datapoints.
+* (sbormann) Some fixes, styling and enhancements for Media-Player.
+* (sbormann) Added option to hide play, pause and stop icon for Media-Player.
+* (sbormann) Added function repeat one to Media-Player.
+* (sbormann) Maquee is only restarting, if the value of a state has really changed.
+* (sbormann) Fixed crash when some ids of linked views were missing.
+* (sbormann) Added targetValues to custom configuration, wich allows to send changes of a state to different target-datapoints.
 
 ### 1.1.0 (2020-06-13)
-* (Sebastian Bormann) Added Media-Player.
+* (sbormann) Added Media-Player.
 
 ### 1.0.1 (2020-06-10)
-* (Sebastian Bormann) Fixed month for timestamps.
-* (Sebastian Bormann) You can now chose if values are linked states or constants.
-* (Sebastian Bormann) Added the ability to use variables in device-names.
+* (sbormann) Fixed month for timestamps.
+* (sbormann) You can now chose if values are linked states or constants.
+* (sbormann) Added the ability to use variables in device-names.
 
 ### 1.0.0 (2020-06-01)
-* (Sebastian Bormann) Added a few captions to admin.
-* (Sebastian Bormann) Prevent pressure menu when scrolling and after opening menu.
-* (Sebastian Bormann) Corrected a few translations.
+* (sbormann) Added a few captions to admin.
+* (sbormann) Prevent pressure menu when scrolling and after opening menu.
+* (sbormann) Corrected a few translations.
+
+<details>
+<summary>Older Changelog:</summary>
 
 ### 0.4.1 (2020-05-15)
-* (Sebastian Bormann) Added icons for toplight and tilted to window and enhanced window to recognize tilted position.
-* (Sebastian Bormann) Fixed crash when using some thermostats.
-* (Sebastian Bormann) New gulpfile and fixed translations.
-* (Sebastian Bormann) Further improvement of connection speed.
-* (Sebastian Bormann) Disabled context-menu on long/right-click.
-* (Sebastian Bormann) Revised pressure/forced touch and added option to always use time instead of pressure.
+* (sbormann) Added icons for toplight and tilted to window and enhanced window to recognize tilted position.
+* (sbormann) Fixed crash when using some thermostats.
+* (sbormann) New gulpfile and fixed translations.
+* (sbormann) Further improvement of connection speed.
+* (sbormann) Disabled context-menu on long/right-click.
+* (sbormann) Revised pressure/forced touch and added option to always use time instead of pressure.
 
 ### 0.4.0 (2020-05-13)
-* (Sebastian Bormann) Major change using socket.io without conn.js wich leads to a much faster initial connection.
-* (Sebastian Bormann) Improved loading and scrolling for popups.
+* (sbormann) Major change using socket.io without conn.js wich leads to a much faster initial connection.
+* (sbormann) Improved loading and scrolling for popups.
 
 ### 0.3.7 (2020-05-06)
-* (Sebastian Bormann) Added more options to timestamp.
+* (sbormann) Added more options to timestamp.
 
 ### 0.3.6 (2020-05-05)
-* (Sebastian Bormann) Added failback to variables
-* (Sebastian Bormann) Added option to add timestamp to state
+* (sbormann) Added failback to variables
+* (sbormann) Added option to add timestamp to state
 
 ### 0.3.5 (2020-04-26)
-* (Sebastian Bormann) Added variables to icons and backgroundimages (see readme)
-* (Sebastian Bormann) It is now possible to remove toolbar (the first view is then the home view)
+* (sbormann) Added variables to icons and backgroundimages (see readme)
+* (sbormann) It is now possible to remove toolbar (the first view is then the home view)
 
 ### 0.3.3 (2020-04-19)
-* (Sebastian Bormann) Fixed device readonly for toggle state.
+* (sbormann) Fixed device readonly for toggle state.
 * (Sebastian Boramnn) Fixed devices with same name.
-* (Sebastian Bormann) Removed some old code from version <0.3.0.
+* (sbormann) Removed some old code from version <0.3.0.
 
 ### 0.3.2 (2020-04-19)
-* (Sebastian Bormann) Fixed loading toolbar with no entries on linked view.
-* (Sebastian Bormann) Fixed views with quotes in name.
-* (Sebastian Bormann) Fixed Flood-Sensor.
+* (sbormann) Fixed loading toolbar with no entries on linked view.
+* (sbormann) Fixed views with quotes in name.
+* (sbormann) Fixed Flood-Sensor.
 
 ### 0.3.1 (2020-04-16)
-* (Sebastian Bormann) Breaking change: The complete configuration is no longer stored in ioBroker channels and states, but is fetched as one complete object, thus saving the configuration is much much faster than before.
-* (Sebastian Bormann) Views, devices and toolbar entries are now sortable via drag- and drop in the configuration dialog.
-* (Sebastian Bormann) After saving the configuration the instance ist now yellow until the configuration is completely written.
-* (Sebastian Bormann) Added invert UNREACH to device options.
-* (Sebastian Bormann) Added Flood-Sensor.
-* (Sebastian Bormann) Enhanced autocreation-feature by using ioBroker-Type-Detector by bluefox.
-* (Sebastian Bormann) Enhanced hue-lights when using alternative colorspace without white-values and changing ct.
-* (Sebastian Bormann) Enhanced hue-lights when using alternative colorspace to keep uppercase if needed.
+* (sbormann) Breaking change: The complete configuration is no longer stored in ioBroker channels and states, but is fetched as one complete object, thus saving the configuration is much much faster than before.
+* (sbormann) Views, devices and toolbar entries are now sortable via drag- and drop in the configuration dialog.
+* (sbormann) After saving the configuration the instance ist now yellow until the configuration is completely written.
+* (sbormann) Added invert UNREACH to device options.
+* (sbormann) Added Flood-Sensor.
+* (sbormann) Enhanced autocreation-feature by using ioBroker-Type-Detector by bluefox.
+* (sbormann) Enhanced hue-lights when using alternative colorspace without white-values and changing ct.
+* (sbormann) Enhanced hue-lights when using alternative colorspace to keep uppercase if needed.
 
 ### 0.2.20 (2020-04-08)
-* (Sebastian Bormann) If value for POWER is greater than 100, it is rounded without decimal places.
-* (Sebastian Bormann) Bugfixed invert-function with custom min and max.
-* (Sebastian Bormann) Added reload-link to loading page.
-* (Sebastian Bormann) Updated dependencies.
+* (sbormann) If value for POWER is greater than 100, it is rounded without decimal places.
+* (sbormann) Bugfixed invert-function with custom min and max.
+* (sbormann) Added reload-link to loading page.
+* (sbormann) Updated dependencies.
 
 ### 0.2.19 (2020-02-29)
-* (Sebastian Bormann) Updated dependencies.
+* (sbormann) Updated dependencies.
 
 ### 0.2.18 (2020-02-29)
-* (Sebastian Bormann) Updated dependencies.
+* (sbormann) Updated dependencies.
 
 ### 0.2.17 (2020-02-29)
-* (Sebastian Bormann) Added option to open dialog by clicking on tile for View, Window, Door, Fire, Temperatur, Humidity, Brightness and Motion.
-* (Sebastian Bormann) Added option to hide device, if it is inactive (handle with care, as you may not be able to switch it on again).
+* (sbormann) Added option to open dialog by clicking on tile for View, Window, Door, Fire, Temperatur, Humidity, Brightness and Motion.
+* (sbormann) Added option to hide device, if it is inactive (handle with care, as you may not be able to switch it on again).
 
 ### 0.2.16 (2020-01-14)
-* (Sebastian Bormann) Fixed custom step for heating control.
-* (Sebastian Bormann) Fixed universal popup wich was displayed, even when empty.
+* (sbormann) Fixed custom step for heating control.
+* (sbormann) Fixed universal popup wich was displayed, even when empty.
 
 ### 0.2.15 (2020-01-07)
-* (Sebastian Bormann) Added svg as possible image to upload.
-* (Sebastian Bormann) Made URL and HTML universal for nearly all devices, to display custom html code or content of an url inside the dialog (this could be used e.g. to display FLOT-graphs related to the device inside the dialog).
-* (Sebastian Bormann) Fixed disabled custom values with admin 3.7.6+ and js-controller <2.2.
+* (sbormann) Added svg as possible image to upload.
+* (sbormann) Made URL and HTML universal for nearly all devices, to display custom html code or content of an url inside the dialog (this could be used e.g. to display FLOT-graphs related to the device inside the dialog).
+* (sbormann) Fixed disabled custom values with admin 3.7.6+ and js-controller <2.2.
 
 ### 0.2.14 (2019-11-12)
-* (Sebastian Bormann) Fixed icon-switching for thermostats.
+* (sbormann) Fixed icon-switching for thermostats.
 
 ### 0.2.13 (2019-10-23)
-* (Sebastian Bormann) Improved the return after time method.
+* (sbormann) Improved the return after time method.
 * (Bluefox) Fixed translations in custom-dialog.
 
 ### 0.2.12 (2019-10-12)
-* (Sebastian Bormann) Improvement of homematic-thermostat for controler 2.0 compatiility.
+* (sbormann) Improvement of homematic-thermostat for controler 2.0 compatiility.
 
 ### 0.2.11 (2019-10-07)
-* (Sebastian Bormann) Rewritten pincode-section to work with older browsers.
-* (Sebastian Bormann) Pincode now works for buttons as well.
-* (Sebastian Bormann) Modified the return after time function to work with older browsers.
-* (Sebastian Bormann) Fixed missing entrys in long pressure menus in iOS 13.
+* (sbormann) Rewritten pincode-section to work with older browsers.
+* (sbormann) Pincode now works for buttons as well.
+* (sbormann) Modified the return after time function to work with older browsers.
+* (sbormann) Fixed missing entrys in long pressure menus in iOS 13.
 
 ### 0.2.10 (2019-10-05)
 * (Sebatian Bormann) Enhanced PIN-Code to view a num-pad when using an alphanumeric PIN.
 
 ### 0.2.9 (2019-10-02)
-* (Sebastian Bormann) Added optional PIN-Code to custom datapoint-configuration dialog (wrench icon).
-* (Sebastian Bormann) Added option to return to a view after a settable time of inactivity to settings.
+* (sbormann) Added optional PIN-Code to custom datapoint-configuration dialog (wrench icon).
+* (sbormann) Added option to return to a view after a settable time of inactivity to settings.
 
 ### 0.2.8 (2019-09-27)
-* (Sebastian Bormann) Further improvement of index.js for controller 2.0 compatibility.
+* (sbormann) Further improvement of index.js for controller 2.0 compatibility.
 
 ### 0.2.7 (2019-09-27)
-* (Sebastian Bormann) Fixed popup_width and popup_height.
-* (Sebastian Bormann) Further improvement of main.js and index.js for controller 2.0 compatibility.
-* (Sebastian Bormann) Added option showState for Button and Program.
+* (sbormann) Fixed popup_width and popup_height.
+* (sbormann) Further improvement of main.js and index.js for controller 2.0 compatibility.
+* (sbormann) Added option showState for Button and Program.
 
 ### 0.2.6 (2019-09-24)
-* (Sebastian Bormann) Processing the plain text of values is now done after rounding a number value.
-* (Sebastian Bormann) Removed Icon_on for Button.
-* (Sebastian Bormann) Modified main.js for controler 2.0 compatibility.
+* (sbormann) Processing the plain text of values is now done after rounding a number value.
+* (sbormann) Removed Icon_on for Button.
+* (sbormann) Modified main.js for controler 2.0 compatibility.
 
 ### 0.2.5 (2019-09-22)
-* (Sebastian Bormann) Adjusted handling of pressure menu for iOS 13.
-* (Sebastian Bormann) Added Buffer for rendering a view while pressureMenue is beeing created.
-* (Sebastian Bormann) Added POWER and VOLTAGE to battery.
+* (sbormann) Adjusted handling of pressure menu for iOS 13.
+* (sbormann) Added Buffer for rendering a view while pressureMenue is beeing created.
+* (sbormann) Added POWER and VOLTAGE to battery.
 
 ### 0.2.4 (2019-09-15)
-* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
-* (Sebastian Bormann) Minor bugfixes.
+* (sbormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (sbormann) Minor bugfixes.
 
 ### 0.2.3 (2019-09-15)
-* (Sebastian Bormann) Further enhancement of control-mode handling for homematic-thermostat.
-* (Sebastian Bormann) Added handling of alternative states-property-syntax.
+* (sbormann) Further enhancement of control-mode handling for homematic-thermostat.
+* (sbormann) Added handling of alternative states-property-syntax.
 
 ### 0.2.2 (2019-09-14)
-* (Sebastian Bormann) Enhanced handling of control-mode for homematic-thermostat for more compatibility.
-* (Sebastian Bormann) Reduced rate of sending when moving slider for blinds and thermostats. 
+* (sbormann) Enhanced handling of control-mode for homematic-thermostat for more compatibility.
+* (sbormann) Reduced rate of sending when moving slider for blinds and thermostats. 
 
 ### 0.2.1 (2019-09-07)
-* (Sebastian Bormann) Fixed crash of Backend (interchanged index_m.html and custom_m.html).
+* (sbormann) Fixed crash of Backend (interchanged index_m.html and custom_m.html).
 
 ### 0.2.0 (2019-09-06)
-* (Sebastian Bormann) Added slats level to blind.
+* (sbormann) Added slats level to blind.
 
 ### 0.1.15 (2019-09-05)
-* (Sebastian Bormann) Added step to custom dialog, wich allowes to define the resolution of value-sliders.
-* (Sebastian Bormann) Values with unit % and a range from min to max of 0-1 are now scaled to 0-100.
-* (Sebastian Bormann) Fixed conversion to alternative colorspace for hue lights.
+* (sbormann) Added step to custom dialog, wich allowes to define the resolution of value-sliders.
+* (sbormann) Values with unit % and a range from min to max of 0-1 are now scaled to 0-100.
+* (sbormann) Fixed conversion to alternative colorspace for hue lights.
 
 ### 0.1.14 (2019-09-01)
-* (Sebastian Bormann) Fixed missing dropdown-menus for images after sorting or adding items to tables.
-* (Sebastian Bormann) Level-Sliders will have a higher resolution for datapoints with small value ranges.
+* (sbormann) Fixed missing dropdown-menus for images after sorting or adding items to tables.
+* (sbormann) Level-Sliders will have a higher resolution for datapoints with small value ranges.
 
 ### 0.1.13 (2019-08-28)
-* (Sebastian Bormann) Fixed crash of frontend.
-* (Sebastian Bormann) Security updates.
+* (sbormann) Fixed crash of frontend.
+* (sbormann) Security updates.
 
 ### 0.1.12 (2019-08-28)
-* (Sebastian Bormann) Added width and height to options for popup.
-* (Sebastian Bormann) Added option to define free CSS-code to modify frontend.
-* (Sebastian Bormann) Infotext-values are now displayed as plain text or rounded if numbers.
-* (Sebastian Bormann) Added 'Close dialog after execution' to device options for scenes, programs and buttons.
+* (sbormann) Added width and height to options for popup.
+* (sbormann) Added option to define free CSS-code to modify frontend.
+* (sbormann) Infotext-values are now displayed as plain text or rounded if numbers.
+* (sbormann) Added 'Close dialog after execution' to device options for scenes, programs and buttons.
 
 ### 0.1.11 (2019-08-26)
-* (Sebastian Bormann) Bugfix for chrome opacity transition bug.
-* (Sebastian Bormann) Added placeholder for default values for text inputs on options page.
-* (Sebastian Bormann) Added placeholder for default icon and blank icon to device options.
-* (Sebastian Bormann) Extended thermostat CONTROL_MODE by type switch.
-* (Sebastian Bormann) Fixed crash when using thermostat with setpoint an non homematic-devices.
-* (Sebastian Bormann) Added min and max to custom dialog.
-* (Sebastian Bormann) Now you can set none as a devices background image for active devices (formerly this was copied from inactive devices for backward-compatibility-reasons).
+* (sbormann) Bugfix for chrome opacity transition bug.
+* (sbormann) Added placeholder for default values for text inputs on options page.
+* (sbormann) Added placeholder for default icon and blank icon to device options.
+* (sbormann) Extended thermostat CONTROL_MODE by type switch.
+* (sbormann) Fixed crash when using thermostat with setpoint an non homematic-devices.
+* (sbormann) Added min and max to custom dialog.
+* (sbormann) Now you can set none as a devices background image for active devices (formerly this was copied from inactive devices for backward-compatibility-reasons).
  
 ### 0.1.10 (2019-08-20)
-* (Sebastian Bormann) You can now define different units if value is zero or if value is one in custom dialog.
-* (Sebastian Bormann) When changing an image via the new drop-down, save button will be activated now.
+* (sbormann) You can now define different units if value is zero or if value is one in custom dialog.
+* (sbormann) When changing an image via the new drop-down, save button will be activated now.
 * (Sebastian Boramnn) Added option, to remove overlay of tile, if device is active or inactive.
-* (Sebastian Bormann) Enhanced conversion function when converting booelan to number.
-* (Sebastian Bormann) Fixed renaming of image files (links to used images are now also correctly renamed).
-* (Sebastian Bormann) Fixed handling of spaces in image filenames.
+* (sbormann) Enhanced conversion function when converting booelan to number.
+* (sbormann) Fixed renaming of image files (links to used images are now also correctly renamed).
+* (sbormann) Fixed handling of spaces in image filenames.
 
 ### 0.1.9 (2019-08-18)
-* (Sebastian Bormann) Modified cache manifest to remove EISDIR-errors from log.
-* (Sebastian Bormann) Fixed toggle-entry in pressure menu.
-* (Sebastian Bormann) Added multiple file upload to images tab.
-* (Sebastian Bormann) Added check for dead links to other views when saving settings.
-* (Sebastian Bormann) You can now assign external urls to background images and icons (for example to add a weather-live-map).
-* (Sebastian Bormann) Removed options clickOnIconOpensDialog and clickOnTileToggles for Values and Programs as they are not switchable.
-* (Sebastian Bormann) Added OFF_SET_VALUE and the option 'Return to OFF_SET_VALUE after [ms]' to button.
+* (sbormann) Modified cache manifest to remove EISDIR-errors from log.
+* (sbormann) Fixed toggle-entry in pressure menu.
+* (sbormann) Added multiple file upload to images tab.
+* (sbormann) Added check for dead links to other views when saving settings.
+* (sbormann) You can now assign external urls to background images and icons (for example to add a weather-live-map).
+* (sbormann) Removed options clickOnIconOpensDialog and clickOnTileToggles for Values and Programs as they are not switchable.
+* (sbormann) Added OFF_SET_VALUE and the option 'Return to OFF_SET_VALUE after [ms]' to button.
 
 ### 0.1.8 (2019-08-11)
-* (Sebastian Bormann) Further improvements on connecting over iobroker.pro.
-* (Sebastian Bormann) COLOR_BRIGHTNESS and WHITE_BRIGHTNESS are now displayed, if LEVEL is not defined on hue lights.
-* (Sebastian Bormann) Added thumbnail-previews of fonts.
-* (Sebastian Bormann) Added clickOnIconOpensDialog and clickOnTileToggles to device options.
+* (sbormann) Further improvements on connecting over iobroker.pro.
+* (sbormann) COLOR_BRIGHTNESS and WHITE_BRIGHTNESS are now displayed, if LEVEL is not defined on hue lights.
+* (sbormann) Added thumbnail-previews of fonts.
+* (sbormann) Added clickOnIconOpensDialog and clickOnTileToggles to device options.
 
 ### 0.1.7 (2019-08-11)
-* (Sebastian Bormann) Added font-family, -size, -weight and -style to options for toolbar, headers, device-name, device-state and device-info-text.
-* (Sebastian Bormann) Added icon-size, icon-background-size and icon-background-corner-size to options for toolbar.
+* (sbormann) Added font-family, -size, -weight and -style to options for toolbar, headers, device-name, device-state and device-info-text.
+* (sbormann) Added icon-size, icon-background-size and icon-background-corner-size to options for toolbar.
 
 ### 0.1.6 (2019-08-08)
-* (Sebastian Bormann) Next try to connect via iobroker.pro
+* (sbormann) Next try to connect via iobroker.pro
 
 ### 0.1.5 (2019-08-06)
-* (Sebastian Bormann) Added validation to options.
-* (Sebastian Bormann) Extended alarm with CONTROL_MODE-datapoint and icons for disarmed, armed and triggered. 
-* (Sebastian Bormann) To save memory, only used states are saved in local memory (before all used AND all updated states were saved).
-* (Sebastian Bormann) Optimized socket-connectionLink to try to connect via iobroker.pro.
+* (sbormann) Added validation to options.
+* (sbormann) Extended alarm with CONTROL_MODE-datapoint and icons for disarmed, armed and triggered. 
+* (sbormann) To save memory, only used states are saved in local memory (before all used AND all updated states were saved).
+* (sbormann) Optimized socket-connectionLink to try to connect via iobroker.pro.
 
 ### 0.1.4 (2019-08-04)
-* (Sebastian Bormann) Optimized fading of tiles.
-* (Sebastian Bormann) Added toggle-button to blind, if no up/down button is defined.
-* (Sebastian Bormann) Added detection of protocol for socket in admin.
-* (Sebastian Bormann) Added confirm-flag inside custom datapoint configuration dialog to enable asking user to confirm before changing values.
-* (Sebastian Bormann) Added toggle-button to garage door.
+* (sbormann) Optimized fading of tiles.
+* (sbormann) Added toggle-button to blind, if no up/down button is defined.
+* (sbormann) Added detection of protocol for socket in admin.
+* (sbormann) Added confirm-flag inside custom datapoint configuration dialog to enable asking user to confirm before changing values.
+* (sbormann) Added toggle-button to garage door.
 
 ### 0.1.3 (2019-08-01)
-* (Sebastian Bormann) Added seperate background image for active devices.
-* (Sebastian Bormann) Fixed background-options (color and opacity) for active and inactive device tiles.
-* (Sebastian Bormann) Added more space to views bottom.
-* (Sebastian Bormann) Fixed invert level for blinds.
-* (Sebastian Bormann) Organized options in collapsible layout.
+* (sbormann) Added seperate background image for active devices.
+* (sbormann) Fixed background-options (color and opacity) for active and inactive device tiles.
+* (sbormann) Added more space to views bottom.
+* (sbormann) Fixed invert level for blinds.
+* (sbormann) Organized options in collapsible layout.
 
 ### 0.1.2 (2019-07-29)
-* (Sebastian Bormann) Added FAVORITE_POSITION (with configurable button caption) and SET_VALUE for UP, DOWN and FAVORITE_POSITION to Blinds.
-* (Sebastian Bormann) Added 'No Icon' as option to icon configuration.
-* (Sebastian Bormann) Addes icon to 'Link to other view'.
-* (Sebastian Bormann) Added a bunch of new standard-icons.
+* (sbormann) Added FAVORITE_POSITION (with configurable button caption) and SET_VALUE for UP, DOWN and FAVORITE_POSITION to Blinds.
+* (sbormann) Added 'No Icon' as option to icon configuration.
+* (sbormann) Addes icon to 'Link to other view'.
+* (sbormann) Added a bunch of new standard-icons.
 
 ### 0.1.1 (2019-07-28)
-* (Sebastian Bormann) Added usericons.
+* (sbormann) Added usericons.
 
 ### 0.1.0 **stable** (2019-07-27)
-* (Sebastian Bormann) First stable release.
-* (Sebastian Bormann) Added show timestamp to device options to chose default behaviour and a small timestamp-icon in the dialog to show and hide timestamps.
-* (Sebastian Bormann) Fixed readonly handling of control mode for Homematic Thermostats.
+* (sbormann) First stable release.
+* (sbormann) Added show timestamp to device options to chose default behaviour and a small timestamp-icon in the dialog to show and hide timestamps.
+* (sbormann) Fixed readonly handling of control mode for Homematic Thermostats.
 
 ### 0.0.49 (2019-07-27)
-* (Sebastian Bormann) Added common type and common role to custom dialog.
-* (Sebastian Bormann) Added pressure menu for toolbar.
+* (sbormann) Added common type and common role to custom dialog.
+* (sbormann) Added pressure menu for toolbar.
 
 ### 0.0.48 (2019-07-25)
-* (Sebastian Bormann) Datapoint BATTERY can now be a level - the battery-empty-icon will be shown if value is less than 10%.
-* (Sebastian Bormann) Added additional colorspaces for hue lights (RGB, RGBW, RGBWWCW, RGBCWWW, Milight-Hue, RGB Hue Only).
-* (Sebastian Bormann) Added Garage Door.
+* (sbormann) Datapoint BATTERY can now be a level - the battery-empty-icon will be shown if value is less than 10%.
+* (sbormann) Added additional colorspaces for hue lights (RGB, RGBW, RGBWWCW, RGBCWWW, Milight-Hue, RGB Hue Only).
+* (sbormann) Added Garage Door.
 
 ### 0.0.47 (2019-07-22)
-* (Sebastian Bormann) Added targetValueId inside custom datapoint configuration dialog wich allowes to have different datapoints vor actual value and for target value.
-* (Sebastian Bormann) Added invert-flag inside custom datapoint configuration dialog.
+* (sbormann) Added targetValueId inside custom datapoint configuration dialog wich allowes to have different datapoints vor actual value and for target value.
+* (sbormann) Added invert-flag inside custom datapoint configuration dialog.
 
 ### 0.0.46 (2019-07-20)
-* (Sebastian Bormann) Added options to device configuration dialog.
-* (Sebastian Bormann) Added readonly-flag to device options.
-* (Sebastian Bormann) Added invert color temperature flag to device options for lights.
-* (Sebastian Bormann) Added invert flag to device options for blinds.
+* (sbormann) Added options to device configuration dialog.
+* (sbormann) Added readonly-flag to device options.
+* (sbormann) Added invert color temperature flag to device options for lights.
+* (sbormann) Added invert flag to device options for blinds.
 
 ### 0.0.45 (2019-07-15)
-* (Sebastian Bormann) Devices are now zoomed to fit screen (configurable under options).
+* (sbormann) Devices are now zoomed to fit screen (configurable under options).
 
 ### 0.0.44
-* (Sebastian Bormann) Fixed incomplete loading of admin page with some settings.
-* (Sebastian Bormann) Added datapoint-configuration via custom-dialog.
+* (sbormann) Fixed incomplete loading of admin page with some settings.
+* (sbormann) Added datapoint-configuration via custom-dialog.
 
 ### 0.0.43
-* (Sebastian Bormann) Changed initialization of socket.io to an asynchronous process to wait for connection before trying to use file-operations.
-* (Sebastian Bormann) Added general datapoint ADDITIONAL_INFO to display additional datapoints at the bottom of the info-dialog.
-* (Sebastian Bormann) Fixed value list type conflict.
+* (sbormann) Changed initialization of socket.io to an asynchronous process to wait for connection before trying to use file-operations.
+* (sbormann) Added general datapoint ADDITIONAL_INFO to display additional datapoints at the bottom of the info-dialog.
+* (sbormann) Fixed value list type conflict.
 
 ### 0.0.42
-* (Sebastian Bormann) Adjusted pathes of demo-files.
+* (sbormann) Adjusted pathes of demo-files.
 
 ### 0.0.41
-* (Sebastian Bormann) Major Change: The location of the uploaded userimages has changed, so the images can be accessed by backup-function of iobroker - the images will be moved to the new location automatically - please open admin-page for ALL instances and save the settings to adjust the filenames of used images automatically.
-* (Sebastian Bormann) Inverted colortemperature-scale for hue-lights (now it uses the mired-scale = micro reciprocal degree-scale instead of kelvin).
+* (sbormann) Major Change: The location of the uploaded userimages has changed, so the images can be accessed by backup-function of iobroker - the images will be moved to the new location automatically - please open admin-page for ALL instances and save the settings to adjust the filenames of used images automatically.
+* (sbormann) Inverted colortemperature-scale for hue-lights (now it uses the mired-scale = micro reciprocal degree-scale instead of kelvin).
 * (Ansgar Schulte) Added Up and Down Buttons to Blinds.
-* (Sebastian Bormann) When creating a directory it will be entered.
-* (Sebastian Bormann) Added Effect-Section to Light
-* (Sebastian Bormann) If a state is not set yet, a standard value will be used
+* (sbormann) When creating a directory it will be entered.
+* (sbormann) Added Effect-Section to Light
+* (sbormann) If a state is not set yet, a standard value will be used
 
 ### 0.0.40
-* (Sebastian Bormann) Appended missing conn.js in admin-folder.
+* (sbormann) Appended missing conn.js in admin-folder.
 
 ### 0.0.39
-* (Sebastian Bormann) Now file-operations in admin should work (file and directory renaming and deleting).
-* (Sebastian Bormann) Added Image-Popup in admin.
-* (Sebastian Bormann) Renamed demo-images.
+* (sbormann) Now file-operations in admin should work (file and directory renaming and deleting).
+* (sbormann) Added Image-Popup in admin.
+* (sbormann) Renamed demo-images.
 
 ### 0.0.38
-* (Sebastian Bormann) Again changes to forced touch for gained compatibility.
+* (sbormann) Again changes to forced touch for gained compatibility.
 
 ### 0.0.37
-* (Sebastian Bormann) Some more little changes to forced touch.
-* (Sebastian Bormann) Added option to open a view via url by adding 'home=<viewId>' to url-parameters.
+* (sbormann) Some more little changes to forced touch.
+* (sbormann) Added option to open a view via url by adding 'home=<viewId>' to url-parameters.
 
 ### 0.0.36
-* (Sebastian Bormann) Added compatibility for some android devices to forced touch.
-* (Sebastian Bormann) Changed the way hue and ct is displayed for better compatibility to some devices.
+* (sbormann) Added compatibility for some android devices to forced touch.
+* (sbormann) Changed the way hue and ct is displayed for better compatibility to some devices.
 
 ### 0.0.35
-* (Sebastian Bormann) Fixed crash of frontend, if a device has no role and added info to admin to chose a role.
-* (Sebastian Bormann) Removed filtering of states in select-id-dialog for autocreate.
-* (Sebastian Bormann) Further improvments of forced touch with force-indicator and hopefully a better compatibility with more devices.
+* (sbormann) Fixed crash of frontend, if a device has no role and added info to admin to chose a role.
+* (sbormann) Removed filtering of states in select-id-dialog for autocreate.
+* (sbormann) Further improvments of forced touch with force-indicator and hopefully a better compatibility with more devices.
 
 ### 0.0.34
-* (Sebastian Bormann) Added forced touch menu (press hard or press long on unsupported devices), wich will give more room for extended features in future.
-* (Sebastian Bormann) Linked Views can now be set for all roles and are available in the dialog and by a forced touch.
-* (Sebastian Bormann) Added timestamp for Window, Door, Fire, Temperature, Humidity, Brightness and Motion.
-* (Sebastian Bormann) Fixed issure 49 (state for role switch if type is number).
+* (sbormann) Added forced touch menu (press hard or press long on unsupported devices), wich will give more room for extended features in future.
+* (sbormann) Linked Views can now be set for all roles and are available in the dialog and by a forced touch.
+* (sbormann) Added timestamp for Window, Door, Fire, Temperature, Humidity, Brightness and Motion.
+* (sbormann) Fixed issure 49 (state for role switch if type is number).
 
 ### 0.0.33
-* (Sebastian Bormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat.
-* (Sebastian Bormann) Fixed marquee not always starting correctly.
+* (sbormann) Added WINDOW_OPENING_REPORTING to thermostat and homematic-thermostat.
+* (sbormann) Fixed marquee not always starting correctly.
 
 ### 0.0.32
-* (Sebastian Bormann) Added Battery.
-* (Sebastian Bormann) Heaters are displayed as inactive, if set-value is at its minimum.
-* (Sebastian Bormann) Added meta.user object to allow backup of user uploaded files via iobroker backup.
-* (Sebastian Bormann) Added check for existance of common.role before rendering view.
+* (sbormann) Added Battery.
+* (sbormann) Heaters are displayed as inactive, if set-value is at its minimum.
+* (sbormann) Added meta.user object to allow backup of user uploaded files via iobroker backup.
+* (sbormann) Added check for existance of common.role before rendering view.
 
 ### 0.0.31
-* (Sebastian Bormann) Fixed some typos.
-* (Sebastian Bormann) Enhanced colour-mixing of light with seperate brightness-datapoints for color and white.
-* (Sebastian Bormann) Rewritten rendering of view as praparation for further enhancements.
-* (Sebastian Bormann) Rewritten rendering of dialog as praparation for further enhancements.
-* (Sebastian Bormann) Added option to colorize Device-Texts.
+* (sbormann) Fixed some typos.
+* (sbormann) Enhanced colour-mixing of light with seperate brightness-datapoints for color and white.
+* (sbormann) Rewritten rendering of view as praparation for further enhancements.
+* (sbormann) Rewritten rendering of dialog as praparation for further enhancements.
+* (sbormann) Added option to colorize Device-Texts.
 
 ### 0.0.30
-* (Sebastian Bormann) Fixed io-package.json
+* (sbormann) Fixed io-package.json
 
 ### 0.0.29
-* (Sebastian Bormann) changed parts of the code to be backward-compatible to older browsers like ie 11.
-* (Sebastian Bormann) Now its possible to define a value list for a data point under .native.states wich will have a greater priority than a value list under .common.states. 
-* (Sebastian Bormann) Updated dependency for axios to 0.0.19 to fix a scurity issue.
+* (sbormann) changed parts of the code to be backward-compatible to older browsers like ie 11.
+* (sbormann) Now its possible to define a value list for a data point under .native.states wich will have a greater priority than a value list under .common.states. 
+* (sbormann) Updated dependency for axios to 0.0.19 to fix a scurity issue.
 
 ### 0.0.28
-* (Sebastian Bormann) Added datapoint POWER to switch, fan and light.
-* (Sebastian Bormann) Fixed marquee for small info texts in the upper right corner at big screen sizes.
-* (Sebastian Bormann) Added more options for configuring header-colors and device-colors (experimental state). Text-color ist not configurable yet.
+* (sbormann) Added datapoint POWER to switch, fan and light.
+* (sbormann) Fixed marquee for small info texts in the upper right corner at big screen sizes.
+* (sbormann) Added more options for configuring header-colors and device-colors (experimental state). Text-color ist not configurable yet.
 
 ### 0.0.27
-* (Sebastian Bormann) Added marquee (scrolling text) for long states and device names (can be configured  in options). 
-* (Sebastian Bormann) Added more toolbar-options. 
-* (Sebastian Bormann) Enhanced handling of value lists. 
-* (Sebastian Bormann) Disabled swiping when dialog is opened.
+* (sbormann) Added marquee (scrolling text) for long states and device names (can be configured  in options). 
+* (sbormann) Added more toolbar-options. 
+* (sbormann) Enhanced handling of value lists. 
+* (sbormann) Disabled swiping when dialog is opened.
 
 ### 0.0.26
-* (Sebastian Bormann) Added brightness to motion-sensor.
-* (Sebastian Bormann) Added options tab. You can now configure colors of toolbar.
-* (Sebastian Bormann) Fixed rendering of constants.
-* (Sebastian Bormann) Resized the demo-wallpapers for faster loading.
+* (sbormann) Added brightness to motion-sensor.
+* (sbormann) Added options tab. You can now configure colors of toolbar.
+* (sbormann) Fixed rendering of constants.
+* (sbormann) Resized the demo-wallpapers for faster loading.
 
 ### 0.0.25
-* (Sebastian Bormann) Added motion-sensor.
-* (Sebastian Bormann) Added description, how the frontend works: [Operating Principle of Frontend](Operating%20Principle%20of%20Frontend.md).
-* (Sebastian Bormann) Added dialog for editing constants like SET_VALUE, URL or HTML.
-* (Sebastian Bormann) Changed the way arrays are stored.
-* (Sebastian Bormann) Added submit-button for values of type string.
-* (Sebastian Bormann) Added saturation to hue-lights.
-* (Sebastian Bormann) Better icons for color-temperature and brightness-sensor.
+* (sbormann) Added motion-sensor.
+* (sbormann) Added description, how the frontend works: [Operating Principle of Frontend](Operating%20Principle%20of%20Frontend.md).
+* (sbormann) Added dialog for editing constants like SET_VALUE, URL or HTML.
+* (sbormann) Changed the way arrays are stored.
+* (sbormann) Added submit-button for values of type string.
+* (sbormann) Added saturation to hue-lights.
+* (sbormann) Better icons for color-temperature and brightness-sensor.
 
 ### 0.0.24
-* (Sebastian Bormann) Fixed jittering on Safari while scrolling (was related to Pull2Refresh).
-* (Sebastian Bormann) System language of iobroker will be loaded and used.
+* (sbormann) Fixed jittering on Safari while scrolling (was related to Pull2Refresh).
+* (sbormann) System language of iobroker will be loaded and used.
 
 ### 0.0.23
-* (Sebastian Bormann) Rewrote how constant values (instead of linkedStates) are handeled - this is a requirement for further development.
-* (Sebastian Bormann) Fixed Pull2Refresh on android devices / chrome.
-* (Sebastian Bormann) Added external links
-* (Sebastian Bormann) Added popups with iframes
+* (sbormann) Rewrote how constant values (instead of linkedStates) are handeled - this is a requirement for further development.
+* (sbormann) Fixed Pull2Refresh on android devices / chrome.
+* (sbormann) Added external links
+* (sbormann) Added popups with iframes
 
 ### 0.0.22
 * (watcherkb) Improved german translation.
 * (BramTown) Improved german translation.
-* (Sebastian Bormann) Short after another coming reconnect-events (<5s) are ignored now.
+* (sbormann) Short after another coming reconnect-events (<5s) are ignored now.
 
 ### 0.0.21
-* (Sebastian Bormann) Added Pull2Refresh on mobile devices - reloads whole page when pulling down on homepage, otherwise only the acual view is reloaded.
-* (Sebastian Bormann) Improved reloading on reconnect (hoepefully to get it finally good working on iOS 12.2).
+* (sbormann) Added Pull2Refresh on mobile devices - reloads whole page when pulling down on homepage, otherwise only the acual view is reloaded.
+* (sbormann) Improved reloading on reconnect (hoepefully to get it finally good working on iOS 12.2).
 
 ### 0.0.20
-* (Sebastian Bormann) New trial to get it working in iOS 12.2.
+* (sbormann) New trial to get it working in iOS 12.2.
 
 ### 0.0.19
-* (Sebastian Bormann) Improved reloading of page in new PWA-Mode of iOS 12.2.
+* (sbormann) Improved reloading of page in new PWA-Mode of iOS 12.2.
 
 ### 0.0.18
-* (Sebastian Bormann) Improved fetching of VALVE_STATES.
-* (Sebastian Bormann) Changed Button Icon.
-* (Sebastian Bormann) Added Loading-Spinner if disconnected.
-* (Sebastian Bormann) Due to new iOS 12.2 PWA-Mode added visibility-check and connectivity-check.
-* (Sebastian Bormann) Added role-icons to role-selectbox in edit device dialog.
-* (Sebastian Bormann) Fixed missing value-list for states of the type string.
+* (sbormann) Improved fetching of VALVE_STATES.
+* (sbormann) Changed Button Icon.
+* (sbormann) Added Loading-Spinner if disconnected.
+* (sbormann) Due to new iOS 12.2 PWA-Mode added visibility-check and connectivity-check.
+* (sbormann) Added role-icons to role-selectbox in edit device dialog.
+* (sbormann) Fixed missing value-list for states of the type string.
 
 ### 0.0.17
-* (Sebastian Bormann) Changed description of slider (level/dimmer/value/height).
+* (sbormann) Changed description of slider (level/dimmer/value/height).
 
 ### 0.0.16
-* (Sebastian Bormann) Role of device is displayed in devices-table.
-* (Sebastian Bormann) VALVE_STATES is now editable via GUI (show opening of valves associated with a thermostat in percentage).
-* (Sebastian Bormann) Added Role 'Button': You can define a constant SET_VALUE wich will be written to the ID that is linked with STATE if the button is pressed.
-* (Sebastian Bormann) Rewritten parts of front-end to guarentee better compatibility. Boost-Mode for Homematic-Thermostat should work now.
-* (Sebastian Bormann) Added state BOOST_STATE for Homematic-Thermostat - ability to display remaining boost-time if in boost-mode.
-* (Sebastian Bormann) Added dessription of roles and corresponding states.
-* (Sebastian Bormann) Temperature und Humidity-Sensors can now display a STATE at bottom of device, and both, TEMPERATURE and HUMIDITY, in small in the upper right corner.
-* (Sebastian Bormann) Better handling of Auto-Create of Temperature- und Humidity-Sensors.
-* (Sebastian Bormann) German translation: 'geöffnet' lower case.
-* (Sebastian Bormann) Zigbee humidity and temperature added to auto-creation.
-* (Sebastian Bormann) Fixed not scrollable selectbox at devices tab.
+* (sbormann) Role of device is displayed in devices-table.
+* (sbormann) VALVE_STATES is now editable via GUI (show opening of valves associated with a thermostat in percentage).
+* (sbormann) Added Role 'Button': You can define a constant SET_VALUE wich will be written to the ID that is linked with STATE if the button is pressed.
+* (sbormann) Rewritten parts of front-end to guarentee better compatibility. Boost-Mode for Homematic-Thermostat should work now.
+* (sbormann) Added state BOOST_STATE for Homematic-Thermostat - ability to display remaining boost-time if in boost-mode.
+* (sbormann) Added dessription of roles and corresponding states.
+* (sbormann) Temperature und Humidity-Sensors can now display a STATE at bottom of device, and both, TEMPERATURE and HUMIDITY, in small in the upper right corner.
+* (sbormann) Better handling of Auto-Create of Temperature- und Humidity-Sensors.
+* (sbormann) German translation: 'geöffnet' lower case.
+* (sbormann) Zigbee humidity and temperature added to auto-creation.
+* (sbormann) Fixed not scrollable selectbox at devices tab.
 
 ### 0.0.15
-* (Sebastian Bormann) Improved check for value type of states.
-* (Sebastian Bormann) Improved slider-tooltip to lower font-size at large numbers.
+* (sbormann) Improved check for value type of states.
+* (sbormann) Improved slider-tooltip to lower font-size at large numbers.
 
 ### 0.0 14
-* (Sebastian Bormann) If role of state is not further specified, then check for role of parent object.
+* (sbormann) If role of state is not further specified, then check for role of parent object.
 
 ### 0.0.13
-* (Sebastian Bormann) Doors and Windows now force true/false to be translated to opened/closed.
-* (Sebastian Bormann) Double Entrys on WelcomeScreen/Overview removed.
-* (Sebastian Bormann) States are now set with the correct value type.
-* (Sebastian Bormann) Changed recognition of state types. I hope there are no new bugs now!
+* (sbormann) Doors and Windows now force true/false to be translated to opened/closed.
+* (sbormann) Double Entrys on WelcomeScreen/Overview removed.
+* (sbormann) States are now set with the correct value type.
+* (sbormann) Changed recognition of state types. I hope there are no new bugs now!
 
 ### 0.0.12
-* (Sebastian Bormann) Check for unallowed chars in object names.
-* (Sebastian Bormann) Check for duplicates in view names.
-* (Sebastian Bormann) Level fires a slider in dialog - even when it has a state list (HUE again :)).
-* (Sebastian Bormann) Added Blinds (Homematic) - please test it, i don't have one to test.
+* (sbormann) Check for unallowed chars in object names.
+* (sbormann) Check for duplicates in view names.
+* (sbormann) Level fires a slider in dialog - even when it has a state list (HUE again :)).
+* (sbormann) Added Blinds (Homematic) - please test it, i don't have one to test.
 
 ### 0.0.11
-* (Sebastian Bormann) Added compatibility for edge and firefox. 
-* (Sebastian Bormann) Again Hue bugfixes.
-* (Sebastian Bormann) Removed Tooltip from Toolbar.
+* (sbormann) Added compatibility for edge and firefox. 
+* (sbormann) Again Hue bugfixes.
+* (sbormann) Removed Tooltip from Toolbar.
 
 ### 0.0.10
-* (Sebastian Bormann) Added ColorTemperature. Hoepfully HUE works now? Can't test ist, because i do not own any hue lamp :)
+* (sbormann) Added ColorTemperature. Hoepfully HUE works now? Can't test ist, because i do not own any hue lamp :)
 
 ### 0.0.9
-* (Sebastian Bormann) Philips HUE added to autocreate (colortemp is not working yet!).  
-* (Sebastian Bormann) LinkedView now also works on windows, doors and fire-sensor.
-* (Sebastian Bormann) Added translation (thanks ldittmar!).
+* (sbormann) Philips HUE added to autocreate (colortemp is not working yet!).  
+* (sbormann) LinkedView now also works on windows, doors and fire-sensor.
+* (sbormann) Added translation (thanks ldittmar!).
 
 ### 0.0.8
-* (Sebastian Bormann) Added icons to image selectboxes.
+* (sbormann) Added icons to image selectboxes.
 
 ### 0.0.7
-* (Sebastian Bormann) Changed order of tabs
-* (Sebastian Bormann) Autocreate for shelly should work now (i hope so, can't test it here)
+* (sbormann) Changed order of tabs
+* (sbormann) Autocreate for shelly should work now (i hope so, can't test it here)
 
 ### 0.0.6
-* (Sebastian Bormann) Improved speed of select id and autocreate
-* (Sebastian Bormann) Set filter to channel on autocreate
+* (sbormann) Improved speed of select id and autocreate
+* (sbormann) Set filter to channel on autocreate
 
 ### 0.0.5
-* (Sebastian Bormann) Bugfix: creation of many devices schould work now
+* (sbormann) Bugfix: creation of many devices schould work now
 
 ### 0.0.4
-* (Sebastian Bormann) Bugfix: copy device created just a reference to old object
-* (Sebastian Bormann) Addes Toolbar-Icons
+* (sbormann) Bugfix: copy device created just a reference to old object
+* (sbormann) Addes Toolbar-Icons
 
 ### 0.0.3
-* (Sebastian Bormann) various bugfixes
+* (sbormann) various bugfixes
 
 ### 0.0.2
-* (Sebastian Bormann) first partly running version
+* (sbormann) first partly running version
 
 ### 0.0.1
-* (Sebastian Bormann) initial release
+* (sbormann) initial release
+
+</details>
 
 ## License
 MIT License

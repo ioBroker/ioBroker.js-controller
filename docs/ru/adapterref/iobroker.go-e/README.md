@@ -3,26 +3,29 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.go-e/README.md
 title: ioBroker.go-echarger
-hash: f7NZEeyH8CmA8AVvVeOa22e9SopqZuIWzx2E5wfAYF4=
+hash: 8XGVp8IUazkVL8O7QjH7YCwsN0vP19tnu4k4lIQ9rXA=
 ---
-![логотип](../../../en/adapterref/iobroker.go-e/admin/go-echarger.png)
+![Логотип](../../../en/adapterref/iobroker.go-e/admin/go-echarger.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.go-e.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.go-e.svg)
-![Количество установок (последнее)](http://iobroker.live/badges/go-echarger-installed.svg)
-![Количество установок (стабильно)](http://iobroker.live/badges/go-echarger-stable.svg)
-![Статус зависимости](https://img.shields.io/david/MK-2001/iobroker.go-echarger.svg)
-![Известные уязвимости](https://snyk.io/test/github/MK-2001/ioBroker.go-echarger/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.go-e.png?downloads=true)
+![Количество установок (последнее)](http://iobroker.live/badges/go-e-installed.svg)
+![Количество установок (стабильно)](http://iobroker.live/badges/go-e-stable.svg)
+![Статус зависимости](https://img.shields.io/david/MK-2001/iobroker.go-e.svg)
+![Известные уязвимости](https://snyk.io/test/github/MK-2001/ioBroker.go-e/badge.svg)
+![НПМ](https://nodei.co/npm/iobroker.go-e.png?downloads=true)
 
 # IoBroker.go-echarger
 # Настенная коробка go-eCharger
 ![Изображение продукта](../../../en/adapterref/iobroker.go-e/admin/go-eCharger-HOME-Wallbox.png). Для получения более подробной информации посетите https://go-e.co/
 
-## Адаптер go-eCharger для ioBroker
+## Переходник go-eCharger для ioBroker
 ** EN ** go-e - это приглашение к электрическому перемещению. Электронная мобильность - это наша движущая сила, и наша основная компетенция - технология зарядки для электромобилей. От индивидуальных зарядных станций для электромобилей до фотоэлектрических подключений и управления нагрузкой на все здания - мы являемся поставщиками комплексных системных решений для всех требований современной электронной мобильности.
 
 ** DE ** go-e ist die Aufforderung, sich elektrisch zu bewegen. e-Mobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der einzelnen Ladestation für e-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von ganzen Gebäuden, sind wir Anbieter gesamtheitlicher Systemlösungen für sämtliche Anforderungen der modernen e-Mobiliten.
+
+## Руководство по адаптеру
+Руководство по установке и настройке вы можете найти здесь: [Руководство по адаптеру](./docs/Readme.md)
 
 ## Руководство разработчика
 Официальная документация по API: https://github.com/goecharger/go-eCharger-API-v1
@@ -34,17 +37,7 @@ hash: f7NZEeyH8CmA8AVvVeOa22e9SopqZuIWzx2E5wfAYF4=
 
 ## Changelog
 
-### 0.0.1
-* (MK-2001) initial release
-
-### 0.0.2
-* (MK-2001) added requirements to publish the adapter
-
-### 0.0.3
-* (MK-2001) added requirements to publish the adapter again, enabled new writeable interfaces: Access State (ast), Allow Charging (alw), stop_state: ​Automatische Abschaltung (stp), max_load
-
-### 0.0.4
-* (MK-2001, Trunks1982) solved bug with different names.
+[moved here](./docs/CHANGELOG.md)
 
 ## License
                                  Apache License

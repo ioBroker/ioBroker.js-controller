@@ -11,6 +11,10 @@
 [![NPM](https://nodei.co/npm/iobroker.smartgarden.png?downloads=true)](https://nodei.co/npm/iobroker.smartgarden/)
 
 
+**If you like it, please consider a donation:**
+
+[![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8C7M7MH3KPYDC&source=url) 
+  
 
 
 ## ioBroker smartgarden adapter for GARDENA smart system
@@ -76,7 +80,7 @@ To get both things please go to
 And of course you need a running ioBroker installation and you should own 
 at least one [GARDENA smart device](#supported-devices).
 
-
+  
 ## Table of Contents
   * [ioBroker smartgarden adapter for GARDENA smart system](#iobroker-smartgarden-adapter-for-gardena-smart-system)
   * [Supported devices](#supported-devices)
@@ -100,6 +104,7 @@ at least one [GARDENA smart device](#supported-devices).
   * [Wishes for data points](#Wishes-for-data-points)
   * [Note](#note)
   * [Changelog](#changelog)
+     * [1.0.1](#101)
      * [1.0.0](#100)
      * [0.6.0](#060)
      * [0.5.1](#051)
@@ -164,8 +169,9 @@ An description how to install from GitHub is available
   
 ## Getting support
 
-To get help read this README and the [FAQ](FAQ.md) carefully. If you need further support please join
-the [ioBroker forum thread](https://forum.iobroker.net/topic/31289/neuer-adapter-smartgarden-adapter-for-gardena-smart-system).
+To get help read this [README](README.md) and the [FAQ](FAQ.md) carefully. 
+If you need further support please join the 
+[ioBroker forum thread](https://forum.iobroker.net/topic/31289/neuer-adapter-smartgarden-adapter-for-gardena-smart-system).
   
 ## Data points of the adapter
 The adapter is designed to monitor and control GARDENA smart system devices. 
@@ -366,7 +372,7 @@ To control the device use data point
   `STOP_UNTIL_NEXT_TASK`
   - To skip automatic operation until specified time, the currently active 
     operation might or might not be cancelled (depends on device model) use string 
-    `PAUSE_<number_of_seconds>`, e.g. `PAUSE_86400` to pause for 24 hours
+    `PAUSE_<number_of_seconds>`, e.g. `PAUSE_86400` to pause for 24 hours (please use multiples of 60)
   - To restore automatic operation if it was paused use string `UNPAUSE`
   
 - `irrigationWhileMowing_allowed_i` and `irrigationWhileMowing_mowerDefinition_i` 
@@ -466,7 +472,7 @@ regardless of a mower. E.g. can be used if a valve or the pipe
 behind it is damaged.
 
 The whole check can be switched on or off in instance configuration with 
-paraneter *irrigation check*.
+parameter *irrigation check*.
 
 There are three data points available for each `SERVICE_VALVE`. 
 They are used for configuration and for reporting warnings.
@@ -534,17 +540,26 @@ please go to ***Contact us & Leave feedback*** in the footer on the
 This is a private project. I am not in any association with 
 GARDENA or Husqvarna.
 
-  
+
 ## Changelog
-### 1.0.0
+### 1.0.1
+* (jpgorganizer)
+  - better reconnection to GARDENA smart system server in case of your internet connection was broken
+  - textual changes in io-package.json
+  - improved README and FAQ
+  
+  ### 1.0.0
 * (jpgorganizer)
   - code rework, no functional change expected
-  - support `PAUSE` for SERVICE_VALVE, SERVICE_POWER_SOCKET
+  - support `PAUSE` for SERVICE_VALVE, SERVICE_POWER_SOCKET. e.g. 
+	[Issue 14](https://github.com/jpgorganizer/ioBroker.smartgarden/issues/14)
   - internal representation for all timestamps changed from format like 
     `2020-05-26T05:03:47.613+0000` to `2020-05-26T05:03:47.613Z` to 
-    support Safari browser.
+    support Safari browser e.g. 
+	[Issue 12](https://github.com/jpgorganizer/ioBroker.smartgarden/issues/12).
   - support forecast values for mower id's in format with suffix, 
-    e.g. `d8a1faef-2ee3-421d-a3f8-f8ed577c2ad3:suffix`
+    e.g. `d8a1faef-2ee3-421d-a3f8-f8ed577c2ad3:suffix`, e.g. 
+	[Issue 12](https://github.com/jpgorganizer/ioBroker.smartgarden/issues/12)
   - making the adapter more fault tolerant at startup, e.g. trimming 
     whitespaces from username, etc.
   - README: new chapter *Getting support*, 
@@ -660,4 +675,4 @@ Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 Based on a work at https://github.com/jpgorganizer/ioBroker.smartgarden. 
  
 
-<!--- SVN: $Rev: 2157 $ $Date: 2020-06-11 19:24:52 +0200 (Do, 11 Jun 2020) $ --->
+<!--- SVN: $Rev: 2222 $ $Date: 2020-08-17 11:20:02 +0200 (Mo, 17 Aug 2020) $ --->

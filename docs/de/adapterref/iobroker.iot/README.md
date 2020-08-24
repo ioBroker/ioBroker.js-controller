@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iot/README.md
 title: ioBroker IoT Adapter
-hash: nQ78rpnrcY2c7CIE4NRRm0x4wnpm0YzYP8+/agUS/po=
+hash: s0/Kqrn23r8YPYBYI92LZRMyAPIoe+Adle42e0RVTDg=
 ---
 ![Logo](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -14,12 +14,12 @@ hash: nQ78rpnrcY2c7CIE4NRRm0x4wnpm0YzYP8+/agUS/po=
 
 # IoBroker IoT Adapter
 Dieser Adapter ist NUR für die Kommunikation mit Amazon Alexa, Google Home und Nightscout vorgesehen.
-Es ist nicht für den Remotezugriff auf Ihre ioBroker-Instanz vorgesehen. Verwenden Sie dazu den Adapter ioBroker.cloud.
+Es ist nicht für den Remotezugriff auf Ihre ioBroker-Instanz vorgesehen. Verwenden Sie dazu den ioBroker.cloud-Adapter.
 
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Die Einstellungen
-Um einen Cloud-Adapter zu verwenden, müssen Sie sich zuerst in der ioBroker-Cloud registrieren. [https://iobroker.pro](https://iobroker.pro).
+Um den Cloud-Adapter zu verwenden, müssen Sie sich zuerst in der ioBroker-Cloud registrieren. [https://iobroker.pro](https://iobroker.pro).
 
 [Verweis auf die Einstellungen des Google API-Typs](https://developers.google.com/actions/smarthome/guides/)
 
@@ -45,7 +45,7 @@ Einige Gruppen bestehen aus gemischten Geräten: Dimmer und Schalter. Es ist erl
 Wenn der Befehl "Auf 30% einstellen" und der * AUS-Pegel "" 30% "ist, werden die Schalter eingeschaltet. Mit dem Befehl" Auf 25% einstellen "werden alle Schalter ausgeschaltet.
 
 Wenn der Befehl "AUS" ist, speichert der Adapter den aktuellen Dimmerpegel, wenn der tatsächliche Wert über oder gleich "30%" liegt.
-Später, wenn der neue Befehl "EIN" ertönt, schaltet der Adapter den Dimmer nicht auf 100%, sondern auf den Speicherpegel.
+Später, wenn der neue Befehl "EIN" ertönt, schaltet der Adapter den Dimmer nicht auf 100%, sondern auf den Pegel im Speicher.
 
 Beispiel:
 
@@ -103,14 +103,14 @@ Folgende Bedingungen müssen erfüllt sein, um den Status in die automatisch gen
 Es kann sein, dass sich der Kanal in den "Funktionen" befindet, sich aber nicht selbst angibt.
 
 - Der Status muss beschreibbar sein: common.write = true
-- Der Zustandsdimmer muss den Typ common.type als 'number' haben.
+- Der Zustandsdimmer muss common.type als 'number' haben.
 - Die Zustandsheizung muss eine gemeinsame Einheit als '°C', '°F' oder '° K' und einen gemeinsamen Typ als 'Nummer' haben.
 
 Befindet sich der Status nur in "Funktionen" und nicht in einem "Raum", wird der Name des Status verwendet.
 
 Die Statusnamen werden aus Funktion und Raum generiert. Z.B. Alle *Lichter* im *Wohnzimmer* werden im virtuellen Gerät *Wohnzimmerlicht* gesammelt.
 Der Benutzer kann diesen Namen nicht ändern, da er automatisch generiert wird.
-Wenn sich der Aufzählungsname ändert, wird auch dieser Name geändert. (z. B. die Funktion "Licht" wurde in "Lichter" geändert, so dass das *Wohnzimmerlicht* in *Wohnzimmerlichter* geändert wird)
+Wenn sich der Aufzählungsname ändert, wird auch dieser Name geändert. (z. B. wurde die Funktion "Licht" in "Lichter" geändert, sodass das *Wohnzimmerlicht* in *Wohnzimmerlicht* geändert wird.)
 
 Alle Regeln werden ignoriert, wenn der Status common.smartName hat. In diesem Fall wird nur der Smart Name verwendet.
 
@@ -189,13 +189,13 @@ Wenn die Instanz *text2command* definiert ist, muss diese Instanz die Antwort be
 
 Der Adapter liefert die Details in zwei Zuständen mit unterschiedlicher Detailstufe
 
-* **smart.lastCommand** enthält den empfangenen Text einschließlich einer Information über den Abfragetyp (Absicht). Beispiel: "askDevice Status Rasenmäher"
+* **smart.lastCommand** enthält den empfangenen Text einschließlich einer Information über die Art der Abfrage (Absicht). Beispiel: "askDevice Status Rasenmäher"
 * ** smart.lastCommandObj *** enthält eine JSON-Zeichenfolge, die auf ein Objekt analysiert werden kann, das die folgenden Informationen enthält
  * **Wörter** enthält die empfangenen Wörter in einem Array
  * **intent** enthält den Abfragetyp. Mögliche Werte sind derzeit "askDevice", "controlDevice", "actionStart", "actionEnd", "askWhen", "askWhere", "askWho".
- * **Geräte-ID** enthält eine Geräte-ID, die angibt, an welches Gerät, an das die Anforderung gesendet wurde und das von Amazon gesendet wurde, eine leere Zeichenfolge ist, wenn sie nicht angegeben wird
+ * **Geräte-ID** enthält eine Geräte-ID, die angibt, an welches Gerät, an das die Anforderung gesendet wurde und das von Amazon übermittelt wird, eine leere Zeichenfolge ist, wenn sie nicht angegeben wird
  * **sessionId** enthält eine sessionId der Skill-Sitzung. Sollte identisch sein, wenn mehrere von Amazon gelieferte Befehle gesprochen wurden, ist die Zeichenfolge leer, wenn sie nicht angegeben wird
- * **Benutzer-ID** enthält eine Benutzer-ID des Gerätebesitzers (oder möglicherweise später des Benutzers, der mit der Fertigkeit interagiert hat), die von Amazon bereitgestellt wird, ist eine leere Zeichenfolge, wenn sie nicht angegeben wird
+ * **Benutzer-ID** enthält eine Benutzer-ID des Gerätebesitzers (oder später des Benutzers, der mit der Fertigkeit interagiert hat), die von Amazon bereitgestellt wird, ist eine leere Zeichenfolge, wenn sie nicht angegeben wird
 
  Weitere Informationen darüber, wie die Wörter erkannt werden und welche Art von Abfragen die Alexa Custom Skill unterscheidet, finden Sie unter https://forum.iobroker.net/viewtopic.php?f=37&t=17452.
 
@@ -264,11 +264,23 @@ Folgende Typen werden unterstützt:
 - `alisa` - mit Yandex Алиса handeln
 - `ifttt` - verhält sich wie IFTTT (eigentlich nicht erforderlich, aber zu Testzwecken)
 
+## Yandex Алиса
+[Anleitung](doc/alisa.md)
+
 <! - Platzhalter für die nächste Version (am Zeilenanfang):
 
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 1.7.5 (2020-08-21)
+* (Apollon77) Crash prevented (Sentry IOBROKER-IOT-W)
+* (bluefox) Values for modes will be converted to numbers in Alisa
+
+### 1.7.3 (2020-08-16)
+* (bluefox) Added vacuum cleaner to Alisa
+
+### 1.7.1 (2020-08-16)
+* (bluefox) Added blinds, lock and thermostat to Alisa
 
 ### 1.6.4 (2020-08-06)
 * (Apollon77) crash prevented (Sentry IOBROKER-IOT-V)

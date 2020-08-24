@@ -14,7 +14,7 @@ I will start by resolving the most pressing issues followed by a new major relea
 
 Communicates with devices connected to the local system using the I2C bus.
 
-This adapter should work on Linux boards like the Raspberry Pi, C.H.I.P., BeagleBone or Intel Edison. 
+This adapter should work on Linux boards like the Raspberry Pi, C.H.I.P., BeagleBone or Intel Edison.
 
 ## Install
 
@@ -49,7 +49,7 @@ Note: if don't have a standard installation, replace `iobroker` in the above com
 
 This is the number of the I2C bus/adapter to open, 0 for /dev/i2c-0, 1 for /dev/i2c-1, ...
 
-On Raspberry Pi 3, this is "1".
+On Raspberry Pi 3 and 4B, this is "1".
 
 ## Supported Devices
 
@@ -83,9 +83,52 @@ Texas Instruments Remote 8-Bit I/O Expander for I2C Bus.
 
 Texas Instruments Remote 8-Bit I/O Expander for I2C Bus.
 
+### PCA9685 16-channel 12 bit PWM Servo/LED driver (40-7F)
+
+Adafruit PCA9685 breakout board for 16-channel 12 bit PWM. Adapter focused on using the 16 channels from 0..4095 as LED dimmer.
+Can drive many LEDs when PWM (and GND) is attached to a N-channel Mosfet module e.g. based on D4184. Connect LED GND to the MOSFET and +12/24/n V to PSU.
+
+### Generic device (03-77)
+
+Generic I2C device. Registers can be configured depending on the hardware.
+
+## Usage in scripts
+
+Supported commands for `sendTo` in scripts are `search`, `read` and `write`.
+
+`search` takes as message the bus number and returns a JSON string of an array of found addresses on the bus.
+
+`read` takes as message an object containing the address and optional the register and number of bytes to read. It returns a buffer with the read data.
+
+`write` takes as message an object containing the address, the data as buffer and optional the register to write. It returns the written buffer on success.
+
+### Examples for script usage
+
+```js
+sendTo('i2c.0', 'search', 1, (ret) => {
+    log('Ret: ' + ret, 'info');
+});
+
+sendTo('i2c.0', 'read', {
+    address: 0x40,
+    register: 0x02,
+    bytes: 2
+}, (ret) => {
+    log('Ret: ' + ret.inspect(), 'info');
+});
+
+sendTo('i2c.0', 'write', {
+    address: 0x40,
+    register: 0x00,
+    data: Buffer.from([0x44, 0x27])
+}, (ret) => {
+    log('Ret: ' + ret.inspect(), 'info');
+});
+```
+
 ## Compatibility
 
-Compatibility has been tested with Raspberry Pi 3.
+Compatibility has been tested with Raspberry Pi 3 and 4B.
 
 ## Bug Reports and Feature Requests
 
@@ -93,10 +136,15 @@ Please use the GitHub repository to report any bugs or request new features.
 
 If you require a missing devcies, please provide the type of IC (brand, model, ...) and its address(es) as reported in the adapter configuration.
 
-## TODO
-* Support interrupts instead of only polling for MCP230xx and PCF8574
-
 ## Changelog
+
+### 0.0.8 (2020-05-26)
+* (Peter Müller) Added support for Generic device.
+* (Peter Müller) Added support for `read` and `write` commands in scripts using `sendTo`.
+* (Peter Müller) Added support for interrupts on PCF8574, MCP23008, MCP23017 devices.
+
+### 0.0.7 (2020-01-19)
+* (CC1337) Added support for PCA9685.
 
 ### 0.0.6 (2019-03-17)
 * (UncleSamSwiss) Added support for BME280.
@@ -175,3 +223,41 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+### PCA9685
+
+The PCA9685 code is based on https://github.com/adafruit/Adafruit_Python_PCA9685/blob/master/Adafruit_PCA968/PCA9685.py
+
+The MIT License (MIT)
+
+Copyright (c) 2016 Adafruit Industries
+Author: Tony DiCola
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+Also based on: https://github.com/tessel/servo-pca9685/blob/master/index.js
+
+Copyright 2014 Technical Machine, Inc. See the COPYRIGHT
+file at the top-level directory of this distribution.
+
+Licensed under the Apache License, Version 2.0 <LICENSE-APACHE or
+http://www.apache.org/licenses/LICENSE-2.0> or the MIT license
+<LICENSE-MIT or http://opensource.org/licenses/MIT>, at your
+option. This file may not be copied, modified, or distributed
+except according to those terms.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.socketio/README.md
 title: ioBroker socket.io
-hash: kvmr/STXUvUUlD5loJavs7GahNyBQDsN0hBq3IpB90U=
+hash: 2WWkvzj61wWh5yMhLS97vFEGNAVHxv+IwFs5aOj8Ma8=
 ---
 ![商标](../../../en/adapterref/iobroker.socketio/admin/socketio.png)
 
@@ -13,13 +13,13 @@ hash: kvmr/STXUvUUlD5loJavs7GahNyBQDsN0hBq3IpB90U=
 ![NPM](https://nodei.co/npm/iobroker.socketio.png?downloads=true)
 
 ＃ioBroker socket.io
-一些WEB应用程序和适配器使用此适配器，以使用socket.io协议与ioBroker进行通信。
+一些WEB应用程序和适配器使用此适配器，以使用socket.io协议与ioBroker通信。
 
 用户可以使用此适配器通过Web套接字将其产品连接到ioBroker。实际上，Flot，Rickshaw，Vis和mobile使用此适配器从ioBroker提取数据。
 
-您可以在示例[目录](https://github.com/ioBroker/ioBroker.socketio/tree/master/example)示例中找到简单的应用程序，该应用程序使用此接口显示一些数据。
+您可以在示例[目录](https://github.com/ioBroker/ioBroker.socketio/tree/master/example)简单应用程序示例中找到该示例，该应用程序使用此接口显示一些数据。
 
-通过使用socket.io接口，用户应该了解系统的[基本概念](https://github.com/ioBroker/ioBroker)。
+通过使用socket.io接口，用户应了解系统的[基本概念](https://github.com/ioBroker/ioBroker)。
 
 同样，了解[对象的结构](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md)也很有用。
 
@@ -50,7 +50,7 @@ hash: kvmr/STXUvUUlD5loJavs7GahNyBQDsN0hBq3IpB90U=
 ###致谢
 每个州都有“ ack”属性。它显示命令的方向。
 
--如果ack = false，则表示其他适配器要控制（写入）此变量，以便执行命令（例如，将打开灯）。
+-如果ack = false，则表示其他适配器要控制（写入）此变量，以便执行该命令（例如，将打开灯）。
 -如果ack = true，则表示设备通知新值。 （例如，手动打开灯光或检测到运动）
 
 **示例**：我们有一些家庭自动化适配器（HAA），其在地址* haa.0.lamp1 *下连接了一个灯。
@@ -58,7 +58,7 @@ hash: kvmr/STXUvUUlD5loJavs7GahNyBQDsN0hBq3IpB90U=
 -在HAA的帮助下，可以使用物理开关手动打开灯，也可以通过wifi打开灯。
 -如果vis想通过wifi打开灯，则应使用```{value：true，ack：false}`''设置新值。
 -当灯打开时，通常会通知HAA新状态，该值应立即用```{value：true，ack：true}```覆盖。
--如果通过物理开关手动关闭灯，则会通过```{value：false，ack：true}''`通知HAA新状态。
+-如果通过物理开关手动关闭了灯泡，则会通过```{value：false，ack：true}''`通知HAA新状态。
 
 ###质量
 每个数据点都具有** q **-* quality *属性。
@@ -114,7 +114,7 @@ connCallbacks = {
 
 如果使用简单值，则“ ack”将设置为“ false”。
 
--** callback **-```function（error）{}```-在执行向数据库中写入新值时调用（不是在控制设备时）。
+-**回调**-函数（错误）{}`-在执行向数据库中写入新值时调用（不是在控制设备时）。
 
 ### GetStates
 -函数（ID，回调）
@@ -122,14 +122,14 @@ connCallbacks = {
 得到一个以上状态的状态。建立连接后，通常会调用此命令以获取已使用数据点的实际状态。
 
 -** ID **-具有ID的模式或数组。可以省略以获取所有状态。模式可以具有通配符，例如：'* .STATE'，'haa.0。*'
--**回调**-```（功能（错误，状态）{}```-*状态*是类似于```{'id1'：'state1'，'id2'：'state2'，.. 。}```。 *stateX* 具有[[state]以上描述的结构的对象。
+-** callback **-```function（error，States）{}```-* states *是类似于```{'id1'：'state1'，'id2'：'state2'，.. 。}```。 * stateX *是具有[上面]（＃state）描述的结构的对象。
 
 ### HttpGet
 -函数（URL，回调）
 
 从运行socketio适配器的PC调用此URL。
 
--** url **-是致电地址。
+-**网址**-是致电地址。
 -**回调**-函数（数据）{}`-请求的结果（HTML正文）。
 
 ### LogError
@@ -208,7 +208,7 @@ connCallbacks = {
 
 从数据库读取所有对象。
 
--**回调**-```function（error，objs）```-objs看起来像：```{'id1'：'object1'，'id2'：'object2'，...}`` `
+-** callback **-```function（error，objs）```-objs看起来像：```{'id1'：'object1'，'id2'：'object2'，...}`` `
 
 ### ReadDir
 -函数（dirName，回调）
@@ -269,12 +269,12 @@ connCallbacks = {
 ### ReadFile
 -函数（文件名，回调）
 
--**回调**-功能（错误，fileData，mimeType）
+-**回调**-函数（错误，fileData，mimeType）
 
 ### ReadFile64
 -函数（文件名，回调）
 
--**回调**-函数（错误，数据）-数据为{mime：mimeType，数据：base64data}
+-**回调**-函数（错误，数据）-数据为{{mime：mimeType，data：base64data}“
 
 ### WriteFile
 -函数（文件名，数据，模式，回调）
@@ -316,7 +316,35 @@ connCallbacks = {
 在某些网络套接字客户端上，通信存在性能问题。有时，此问题是由于长轮询机制上的socket.io通信回退所致。
 您可以设置选项* Force Web-Sockets *强制仅使用Web套接字传输。
 
+<！-下一个版本的占位符（在该行的开头）：
+
+### __进展中__->
+
 ## Changelog
+### 3.0.13 (2020-08-21)
+* (bluefox) Added getAdapterName method
+
+### 3.0.12 (2020-07-27)
+* (Apollon77) socket.io pingTimeout and pinInterval increased to prevent too fast reconnections and bigger visualizations
+
+### 3.0.11 (2020-07-23)
+* (Apollon77) make sure web adapter gets restarted on socketio adapter upgrade
+
+### 3.0.10 (2020-07-16)
+* (Apollon77) Error catched when trying to write an empty base64 value into a file (Sentry )
+
+### 3.0.9 (2020-06-11)
+* (Apollon77) optimize error handling on webserver initialization again
+
+### 3.0.8 (2020-06-10)
+* (Apollon77) Make sure adapter does not crash if getHttp is called with an invalid URL (Sentry IOBROKER-WEB-R)
+
+### 3.0.7 (2020-05-04)
+* (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
+
+### 3.0.6 (2020-04-30)
+* (bluefox) errors on webserver initialization are handled properly
+
 ### 3.0.5 (2020-04-23)
 * (bluefox) Caught the web server errors
 

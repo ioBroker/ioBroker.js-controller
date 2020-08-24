@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.octoprint/README.md
 title: ioBroker.octoprint
-hash: zZau9Lp7utfo7BOlW8no1PTb/CdiqnHUnL5gHF6P5w8=
+hash: abg3z/tq5hJF+SkNY+lPHM8HD9xgDiM2TVLLIL9GiuU=
 ---
 ![Logo](../../../en/adapterref/iobroker.octoprint/admin/octoprint.png)
 
@@ -20,14 +20,29 @@ hash: zZau9Lp7utfo7BOlW8no1PTb/CdiqnHUnL5gHF6P5w8=
 Adapter zum Verbinden von OctoPrint mit ioBroker
 
 ## Eigenschaften
+### Information
 - Versionsinformationen abrufen
 - Druckerinformationen abrufen
 - Aktuelle Druckauftragsinformationen abrufen
+- Informationen zur Dateiliste abrufen
+
+### Temperaturen
 - Werkzeugtemperatur einstellen
 - Betttemperatur einstellen
-- Verbinden, trennen und starten Sie den Drucker auf Befehl
+
+### Befehle
+- Drucker: Verbinden, trennen und nach Hause
+- Job: Starten, Abbrechen, Neustart
+- SD-Karte: Init, Refresh, Release
+- Benutzerdefinierte Druckerbefehle
+- Systembefehle
+- X-, Y- und Z-Achse bewegen
 
 ## Changelog
+
+### 0.0.5
+
+* (klein0r) Switched to axios lib (replaced request - deprecated)
 
 ### 0.0.4
 

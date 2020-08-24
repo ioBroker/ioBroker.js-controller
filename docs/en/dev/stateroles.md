@@ -164,12 +164,23 @@ Switch controls boolean device (true = ON, false = OFF)
 * `switch.mode.color`     - color mode on/off
 
 ## Air condition or thermostat
-* `level.speed.fan`       - 0-100% or enumeration of `auto, high, low, medium, quiet, turbo`
-* `level.swing`           - angle or enumeration (AUTO, horizontal, stationary, vertical)
-* `level.mode.thermostat` - AUTO, COOL, DRY, ECO, FAN_ONLY, HEAT, OFF
+* `level.mode.fan`        - `AUTO, HIGH, LOW, MEDIUM, QUIET, TURBO`
+* `level.mode.swing`      - `AUTO, HORIZONTAL, STATIONARY, VERTICAL`
+* `level.mode.thermostat` - `AUTO, COOL, DRY, ECO, FAN_ONLY, HEAT, OFF`
  Additionally to these states normally the `level.temperature` and `switch.power` required to map the air conditioner.
 
 TODO: Think about ionization`and oscillation. 
+
+## Vacuum cleaner
+* `level.mode.cleanup`    - Enumeration of `AUTO, ECO, EXPRESS, NORMAL, QUIET`. Only `AUTO` and `NORMAL` are required. 
+* `level.mode.work`       - Enumeration of `AUTO, FAST, MEDIUM, SLOW, TURBO`. Optional state.
+* `value.water`           - 0-100% water level.
+* `value.waste`           - 0-100% waste bin level. (0% - empty, 100% - full)
+* `indicator.maintenance.waste` - Waste bin is fool.
+* `value.state`           - `HOME, CLEANING, PAUSE` and so on.
+
+Additionally to these states normally the `switch.power` required to map the vacuum cleaner. `switch.power` in this case works as: `true` - clean, `false` - back to home.
+Optionally `value.battery` and  
 
 ## Media
 

@@ -3,44 +3,64 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: a9Z9DdqN4STkXTJENa2X1xlRf2gGuQgICEeqvVHCVpE=
+hash: Z/451y3UB6ewKK/G6larDXYBjhCU5/sln3z+vFBLIGA=
 ---
-![логотип](../../../en/adapterref/iobroker.web/admin/web.png)
+![Логотип](../../../en/adapterref/iobroker.web/admin/web.png)
 
 ![Количество установок](http://iobroker.live/badges/web-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.web.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.web.svg)
-![тесты](https://travis-ci.org/ioBroker/ioBroker.web.svg?branch=master)
-![NPM](https://nodei.co/npm/iobroker.web.png?downloads=true)
+![Тесты](https://travis-ci.org/ioBroker/ioBroker.web.svg?branch=master)
+![НПМ](https://nodei.co/npm/iobroker.web.png?downloads=true)
 
 # IoBroker.web
 Веб-сервер на базе Node.js и экспресс для чтения файлов из БД ioBroker
 
-** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Настройка веб-сокетов
-На некоторых клиентах веб-сокетов существует проблема с производительностью связи. Иногда эта проблема возникает из-за сбоя соединения socket.io с длинным механизмом опроса.
+На некоторых клиентах веб-сокетов возникает проблема с производительностью связи. Иногда эта проблема возникает из-за отката связи socket.io с механизмом длительного опроса.
 Вы можете установить опцию *Force Web-Sockets* чтобы принудительно использовать только транспорт веб-сокетов.
 
-## Давайте зашифруем сертификаты
-Читать [Вот](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates)
+## Let's Encrypt Certificates
+Прочтите [Вот](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates)
 
 ## Расширения
-Веб-драйвер поддерживает расширения. Расширением является обработчик URL, который будет вызываться при появлении такого запроса URL.
-Расширения выглядят как обычный адаптер, но они не имеют запущенного процесса и будут вызываться веб-сервером.
+Веб-драйвер поддерживает расширения. Расширение - это обработчик URL-адресов, который будет вызываться при появлении такого URL-запроса.
+Расширения выглядят как обычный адаптер, но у них нет запущенного процесса, и они будут вызываться веб-сервером.
 
-Например. пользователь может активировать специальный прокси-адаптер и подключаться к другим устройствам (например, веб-камерам) на одном веб-сервере.
+Например. пользователь может активировать специальный прокси-адаптер и подключаться к другим устройствам (например, веб-камерам) на том же веб-сервере.
 Требуется, чтобы все службы были доступны на одном веб-сервере.
 
-## Защита от грубой силы
-Если аутентификация включена и пользователь вводит 5 раз неверный пароль в течение одной минуты, он должен подождать не менее одной минуты до следующей попытки.
-После 15-й неправильной попытки пользователь должен ждать 1 час.
+## Защита от перебора
+Если аутентификация включена и пользователь 5 раз вводит неверный пароль в течение одной минуты, он должен подождать не менее одной минуты до следующей попытки.
+После 15-й неправильной попытки пользователь должен подождать 1 час.
 
-## Параметр «Оставаться в системе»
+## Опция «Оставаться в системе»
 Если выбрана эта опция, пользователь остается в системе в течение одного месяца.
-Если нет, пользователь останется в системе в течение настроенного времени ожидания входа.
+В противном случае пользователь останется в системе в течение настроенного «тайм-аута входа».
+
+<! - Заполнитель для следующей версии (в начале строки):
+
+### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 3.0.12 (2020-08-22)
+* (bluefox) Updated used npm libraries 
+
+### 3.0.10 (2020-07-28)
+* (Apollon77) socketio pingTimeout and pinInterval increased to prevent too fast reconnections and bigger visualizations
+
+### 3.0.9 (2020-06-11)
+* (Apollon77) Upgrade socketio adapter version
+* (Apollon77) Optimize error handling for webserver initialization again
+
+### 3.0.8 (2020-05-04)
+* (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
+
+### 3.0.7 (2020-04-30)
+* (Apollon77) errors on webserver initialization are handled properly
+
 ### 3.0.5 (2020-04-23)
 * (bluefox) fixed the sentry warnings
 
@@ -354,3 +374,26 @@ hash: a9Z9DdqN4STkXTJENa2X1xlRf2gGuQgICEeqvVHCVpE=
 
 #### 0.0.1
 * (bluefox) initial commit
+
+## License
+The MIT License (MIT)
+
+Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.

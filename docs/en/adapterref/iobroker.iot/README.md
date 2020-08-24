@@ -247,12 +247,24 @@ Following types are supported:
 - `alisa` - acting with Yandex Алиса
 - `ifttt` - acting like IFTTT (actually not required, but for tests purposes)
 
+## Yandex Алиса
+[instructions](doc/alisa.md)
+
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
 
 ## Changelog
+### 1.7.5 (2020-08-21)
+* (Apollon77) Crash prevented (Sentry IOBROKER-IOT-W)
+* (bluefox) Values for modes will be converted to numbers in Alisa
+
+### 1.7.3 (2020-08-16)
+* (bluefox) Added vacuum cleaner to Alisa
+
+### 1.7.1 (2020-08-16)
+* (bluefox) Added blinds, lock and thermostat to Alisa
 
 ### 1.6.4 (2020-08-06)
 * (Apollon77) crash prevented (Sentry IOBROKER-IOT-V)

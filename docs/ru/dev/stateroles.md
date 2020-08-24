@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/stateroles.md
 title: Государственные роли
-hash: E/kqMM4W2AR0lF9WdPHGakfkckpXTzt+MtgsR3r5a60=
+hash: y41SEhxfILpF9GOEOvXt+AdKLA80EQqHHUecCdWxvOI=
 ---
 # Государственные роли
 ## Общие
@@ -49,7 +49,7 @@ hash: E/kqMM4W2AR0lF9WdPHGakfkckpXTzt+MtgsR3r5a60=
 ## Кнопки как датчик
 *common.type = логическое, common.write = false, common.read = true*
 
-* `button` - разница в том, что` common.write = false`. Избегайте этой роли и используйте button.press или button.long.
+* `button` - разница, что` common.write = false`. Избегайте этой роли и используйте button.press или button.long.
 * `button.long`
 * `button.press`
 
@@ -75,7 +75,7 @@ hash: E/kqMM4W2AR0lF9WdPHGakfkckpXTzt+MtgsR3r5a60=
 * `value.gps.elevation` - высота по GPS
 * `value.gps` - долгота и широта вместе, например '5.56; 43.45'
 * `value.power.consuming` (единица измерения = Втч или кВтч)
-* `value.direction` - (common.type = number ~~ или string ~~, указывает вверх / вниз, влево / вправо, 4-позиционные переключатели, направление ветра, ...)
+* `value.direction` - (common.type = number ~~ или строка ~~, указывает вверх / вниз, влево / вправо, 4-позиционные переключатели, направление ветра, ...)
 * `value.curtain` - фактическое положение занавеса
 * `value.blind` - фактическое положение жалюзи
 * `value.tilt` - фактическое положение наклона
@@ -88,7 +88,7 @@ hash: E/kqMM4W2AR0lF9WdPHGakfkckpXTzt+MtgsR3r5a60=
 * `value.warning` - некоторое предупреждение (можно указать состояния), чем выше, тем важнее
 * `value.sun.elevation` - высота солнца в °
 * `value.sun.azimuth` - азимут солнца в °
-* `value.voltage` - Напряжение в вольтах, единица = В
+* `value.voltage` - Напряжение в вольтах, единица измерения = В
 * `value.current` - Ток в амперах, единица = A
 * `value.fill` - Уровень заполнения, единица = л, мл, м3,%
 * `value.blood.sugar` - значение сахара в крови, единица = ммоль, мгдл
@@ -96,7 +96,7 @@ hash: E/kqMM4W2AR0lF9WdPHGakfkckpXTzt+MtgsR3r5a60=
 ## Индикаторы (логические, только для чтения)
 *common.type = логическое, common.write = false*
 
-Отличие *индикаторов* от *датчиков* состоит в том, что индикаторы отображаются в виде небольшого значка. Датчики как реальная ценность.
+Отличие *индикаторов* от *датчиков* заключается в том, что индикаторы отображаются в виде небольшого значка. Датчики как реальная ценность.
 Так что индикатор может быть не один в канале. Это должно быть какое-то другое главное состояние внутри канала.
 
 * `индикатор`
@@ -122,7 +122,7 @@ hash: E/kqMM4W2AR0lF9WdPHGakfkckpXTzt+MtgsR3r5a60=
 * `уровень`
 * `level.co2` - качество изображения 0-100%
 * `level.dimmer` - яркость тоже тусклее
-* `level.blind` - установить слепое положение
+* `level.blind` - установить слепую позицию
 * `level.temperature` - установить желаемую температуру
 * `level.valve` - уставка положения клапана
 * `level.color.red`
@@ -131,7 +131,7 @@ hash: E/kqMM4W2AR0lF9WdPHGakfkckpXTzt+MtgsR3r5a60=
 * `level.color.white` - rgbW
 * `level.color.hue` - цвет в ° 0-360; 0 = красный, 120 = зеленый, 240 = синий, 360 = красный (циклический)
 * `level.color.saturation`
-* `level.color.rgb` - шестнадцатеричный цвет как '#rrggbb'
+* `level.color.rgb` - шестнадцатеричный цвет вроде '#rrggbb'
 * `level.color.luminance`
 * `level.color.temperature` - цветовая температура в K ° 2200 теплый-белый, 6500 ° холодный белый
 * `level.timer`
@@ -140,7 +140,7 @@ hash: E/kqMM4W2AR0lF9WdPHGakfkckpXTzt+MtgsR3r5a60=
 * `level.volume` - (min = 0, max = 100) - громкость звука, но min, max могут отличаться. мин <макс
 * `level.volume.group` - (min = 0, max = 100) - громкость звука, для группы устройств
 * `level.curtain` - установить положение шторки
-* `level.tilt` - установить наклон жалюзи
+* `level.tilt` - установить положение наклона жалюзи
 
 ## Переключатели (логические, чтение-запись)
 Переключатель управляет логическим устройством (true = ON, false = OFF)
@@ -148,7 +148,7 @@ hash: E/kqMM4W2AR0lF9WdPHGakfkckpXTzt+MtgsR3r5a60=
 *common.type = логический, common.write = true*
 
 * `переключатель`
-* `switch.lock` - замок (true - открыть замок, false - закрыть замок)
+* `switch.lock` - блокировка (true - открыть блокировку, false - закрыть блокировку)
 * `switch.lock.door` - дверной замок
 * `switch.lock.window` - блокировка окна
 * `switch.boost` - запуск / остановка повышенного режима термостата
@@ -164,13 +164,24 @@ hash: E/kqMM4W2AR0lF9WdPHGakfkckpXTzt+MtgsR3r5a60=
 * `switch.mode.color` - включение / выключение цветового режима
 
 ## Кондиционер или термостат
-* `level.speed.fan` - 0-100% или перечисление` auto, high, low, medium, quiet, turbo`
-* `level.swing` - угол или нумерация (АВТО, горизонтальный, стационарный, вертикальный)
-* `level.mode.thermostat` - АВТО, ОХЛАЖДЕНИЕ, ОСУШЕНИЕ, ЭКО, ТОЛЬКО ВЕНТИЛЯТОР, НАГРЕВ, ВЫКЛ.
+* `level.mode.fan` -` AUTO, HIGH, LOW, MEDIUM, QUIET, TURBO`
+* `level.mode.swing` -` АВТО, ГОРИЗОНТАЛЬНО, СТАЦИОНАРНЫЙ, ВЕРТИКАЛЬНЫЙ`
+* `level.mode.thermostat` -` AUTO, COOL, DRY, ECO, FAN_ONLY, HEAT, OFF`
 
  В дополнение к этим состояниям обычно требуются `level.temperature` и `switch.power`, необходимые для отображения кондиционера.
 
 TODO: подумайте об ионизации и колебаниях.
+
+## Пылесос
+* `level.mode.cleanup` - Перечисление` AUTO, ECO, EXPRESS, NORMAL, QUIET`. Требуются только «АВТО» и «НОРМАЛЬНЫЙ».
+* `level.mode.work` - Перечисление` AUTO, FAST, MEDIUM, SLOW, TURBO`. Необязательное состояние.
+* `value.water` - уровень воды 0-100%.
+* `value.waste` - уровень мусорного бака 0-100%. (0% - пустой, 100% - полный)
+* `indicator.main maintenance.waste` - мусорное ведро дурацкое.
+* `value.state` -` HOME, CLEANING, PAUSE` и так далее.
+
+В дополнение к этим состояниям обычно требуются `switch.power`, необходимые для отображения пылесоса. `switch.power` в этом случае работает как: `true` - очистить, `false` - вернуться домой.
+Необязательно `value.battery` и
 
 ## СМИ
 Специальные роли для медиаплееров
@@ -189,17 +200,17 @@ TODO: подумайте об ионизации и колебаниях.
 * `button.volume.down`
 * `media.seek` - (common.type = number)%
 * `media.mode.shuffle` - (common.type = number) 0 - нет, 1 - все, 2 - один
-* `media.mode.repeat` - (common.type = логический)
-* `media.state` - ['play', 'stop', 'pause'] или [0 - пауза, 1 - play, 2 - stop] или [true - воспроизведение / false - пауза]
+* `media.mode.repeat` - (common.type = boolean)
+* `media.state` - ['play', 'stop', 'pause'] или [0 - пауза, 1 - воспроизведение, 2 - стоп] или [true - воспроизведение / false - пауза]
 * `media.artist`
 * `media.album`
 * `media.title`
 * `media.title.next`
 * `media.cover` - URL обложки
-* `media.cover.big` - большая ссылка на обложку
+* `media.cover.big` - большой URL обложки
 * `media.cover.small` - крошечный URL обложки
 * `media.duration.text` - например," 2:35 "
-* `media.duration` - (common.type = number) секунды
+* `media.duration` - (common.type = number) секунд
 * `media.elapsed.text` - например," 1:30 "
 * `media.elapsed` - (common.type = number) секунды
 * `media.broadcastDate` - (common.type = string) Дата трансляции
@@ -273,7 +284,7 @@ TODO: подумайте об ионизации и колебаниях.
 * `value.temperature` - Фактическая температура
 * `value.temperature.windchill` - Фактическое охлаждение ветром
 * `value.temperature.dewpoint` - Фактическая точка росы
-* `value.temperature.feelslike` - Фактическая температура" по ощущениям "
+* `value.temperature.feelslike` - Фактическая температура" ощущается как "
 * `value.temperature.min` - Минимальная температура за последние 24 часа
 * `value.temperature.max` - максимальная температура за последние 24 часа
 * `value.humidity` - фактическая или средняя влажность
@@ -286,7 +297,7 @@ TODO: подумайте об ионизации и колебаниях.
 * `value.direction.wind` - фактическое или среднее направление ветра в градусах
 * `value.direction.max.wind` - фактическое направление ветра в градусах
 * `value.direction.min.wind` - фактическое направление ветра в градусах
-* `weather.direction.wind` - фактическое или среднее направление ветра в виде текста, например ВСВ
+* `weather.direction.wind` - фактическое или среднее направление ветра в виде текста, например NNW
 * `date` - актуальная дата или дата последнего чтения информации
 * `date.sunrise` - восход солнца на сегодня
 * `date.sunset` - Закат на сегодня
@@ -312,8 +323,8 @@ TODO: подумайте об ионизации и колебаниях.
 * `weather.chart.url` - URL-адрес диаграммы для истории погоды
 * `weather.chart.url.forecast` - URL-адрес диаграммы для прогноза погоды
 * `weather.html` - HTML-объект с описанием погоды
-* `weather.title` - очень краткое описание
-* `weather.title.short` - очень-очень короткое описание (одно слово)
+* `weather.title` - Очень краткое описание
+* `weather.title.short` - Очень-очень краткое описание (одно слово)
 * `weather.type` - Тип информации о погоде
 * `weather.json` - объект JSON с конкретными данными
 * `value.speed.wind.forecast.0` - прогноз скорости ветра на сегодня
@@ -323,10 +334,10 @@ TODO: подумайте об ионизации и колебаниях.
 * `value.pressure.forecast.0` - прогноз давления на сегодня
 * `value.temperature.min.forecast.0` - Мин. прогноз температуры на сегодня
 * `value.temperature.max.forecast.0` - Прогноз максимальной температуры на сегодня
-* `value.precipitation.forecast.0` - (тип: число, единица:%) Прогноз вероятности осадков на сегодня
+* `value.precipitation.forecast.0` - (type: number, unit:%) Прогноз вероятности осадков на сегодня
 * `value.precipitation.forecast.0` - (тип: число, единица: мм) Прогноз уровня осадков на сегодня
 * `weather.title.forecast.0` - Очень краткое описание на завтра
-* `value.precipitation.day.forecast.0` - Прогноз осадков в дневное время
+* `value.precipitation.day.forecast.0` - Прогноз осадков на дневное время
 * `value.precipitation.night.forecast.0` - Прогноз осадков в ночное время
 
 * `date.forecast.1` - дата завтра
@@ -335,7 +346,7 @@ TODO: подумайте об ионизации и колебаниях.
 * `значение.температура.мин.прогноз.1`
 * `значение.температура.макс.прогноз.1`
 * `value.precipitation.forecast.1` - (type: number, unit:%) Прогноз вероятности осадков на завтра
-* `value.precipitation.forecast.1` - (type: number, unit: mm) Прогноз количества осадков на завтра
+* `value.precipitation.forecast.1` - (тип: число, единица: мм) Прогноз уровня осадков на завтра
 * `value.direction.wind.forecast.1`
 * `value.speed.wind.forecast.1`
 * `value.pressure.forecast.1`
@@ -355,7 +366,7 @@ TODO: подумайте об ионизации и колебаниях.
 ## Здоровье
 (common.type = число, common.read = true, common.write = false)
 
-* `value.health.fat` - индекс жира в организме в%
+* `value.health.fat` - индекс жировой прослойки в%
 * `value.health.weight` - масса тела в кг, фунтах
 * `value.health.bmi` - индекс bmi
 * `value.health.calories` - сожженные калории

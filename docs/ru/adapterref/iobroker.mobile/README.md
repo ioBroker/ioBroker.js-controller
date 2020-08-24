@@ -3,44 +3,44 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mobile/README.md
 title: ioBroker.mobile
-hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
+hash: UeI6kCqqBtJl00cXKLlIqsbY28eCGpbRXhiiiZNxsCg=
 ---
-![логотип](../../../en/adapterref/iobroker.mobile/admin/mobile.png)
+![Логотип](../../../en/adapterref/iobroker.mobile/admin/mobile.png)
 
 ![Количество установок](http://iobroker.live/badges/mobile-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.mobile.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.mobile.svg)
-![NPM](https://nodei.co/npm/iobroker.mobile.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.mobile.png?downloads=true)
 
-# IoBroker.mobile =================
+# IoBroker.mobile
 Пользовательский интерфейс на основе jQuery Mobile.
 
-![экран](../../../en/adapterref/iobroker.mobile/img/screen.png)
+![Экран](../../../en/adapterref/iobroker.mobile/img/screen.png)
 
 ## Использование
-Для использования мобильного интерфейса вам нужно создать логическую структуру в админке.
+Чтобы использовать мобильный интерфейс, вам необходимо создать логическую структуру в админке.
 
-Например: перейдите на вкладку «Перечисления» и создайте новое перечисление, например, "обычаи".
-![ползунок](../../../en/adapterref/iobroker.mobile/img/starting1.png)
+Например: перейдите на вкладку «Перечисления» и создайте новое перечисление, например "таможня".
+![Слайдер](../../../en/adapterref/iobroker.mobile/img/starting1.png)
 
-Создайте новую группу enum в "enum.customs", например, «контроль» ![ползунок](../../../en/adapterref/iobroker.mobile/img/starting2.png)
+Создайте новую группу перечислений в "enum.customs", например «контролирует» ![Слайдер](../../../en/adapterref/iobroker.mobile/img/starting2.png)
 
-Добавьте некоторые штаты в "enum.customs.controls" ![ползунок](../../../en/adapterref/iobroker.mobile/img/starting3.png)
+Добавьте несколько состояний в "enum.customs.controls" ![Слайдер](../../../en/adapterref/iobroker.mobile/img/starting3.png)
 
-![ползунок](../../../en/adapterref/iobroker.mobile/img/starting4.png)
+![Слайдер](../../../en/adapterref/iobroker.mobile/img/starting4.png)
 
-Перейдите на мобильную страницу, нажмите «Информация» (вверху, справа) и нажмите «Обновить», чтобы загрузить объекты из ioBroker ![ползунок](../../../en/adapterref/iobroker.mobile/img/starting5.png)
+Перейдите на мобильную страницу, нажмите «Информация» (вверху справа) и нажмите «Обновить», чтобы загрузить объекты из ioBroker ![Слайдер](../../../en/adapterref/iobroker.mobile/img/starting5.png)
 
-После перезагрузки вы можете перейти к «Таможня => контроль» ![ползунок](../../../en/adapterref/iobroker.mobile/img/starting6.png)
+После перезагрузки вы можете перейти в «Таможня => Контроль» ![Слайдер](../../../en/adapterref/iobroker.mobile/img/starting6.png)
 
 ## Поддерживаемые типы
 ### Слайдеры:
-![ползунок](../../../en/adapterref/iobroker.mobile/img/widget-slider.png)
+![Слайдер](../../../en/adapterref/iobroker.mobile/img/widget-slider.png)
 
-    - role = "level.dimmer"
-    - role = "level.blind"
-    - роль состоит из «уровня», common.type - это «число», common.write - «истина» и определено common.max
-    - common.type = "число", common.write равно "true" и определено common.max
+    - role = "level.dimmer"
+    - role = "level.blind"
+    - роль состоит из «level», common.type - «number», common.write - «true», а common.max определен
+    - common.type = "number", common.write равно "true", а common.max определен
 
 Пример:
 
@@ -60,13 +60,13 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 }
 ```
 
-### Кнопки (должны быть явно установлены видимыми в режиме редактирования):
-![кнопка](../../../en/adapterref/iobroker.mobile/img/widget-button.png)
+### Кнопки (должны быть явно установлены как видимые в режиме редактирования):
+![Кнопка](../../../en/adapterref/iobroker.mobile/img/widget-button.png)
 
-    - роль состоит "кнопка"
-    - роль состоит из "действия"
+    - роль состоит из «кнопки»
+    - роль состоит из «действия»
 
-Кнопки по умолчанию невидимы. Они просто пишут «правда» при нажатии.
+По умолчанию кнопки невидимы. Они просто пишут "истина" при нажатии.
 
 Пример:
 
@@ -85,9 +85,9 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 ```
 
 ### Переключатель:
-![переключатель](../../../en/adapterref/iobroker.mobile/img/widget-switch.png)
+![Переключатель](../../../en/adapterref/iobroker.mobile/img/widget-switch.png)
 
-    - common.type = "boolean", common.write - "true"
+    - common.type = "boolean", common.write равно "true"
 
 Пример:
 
@@ -107,7 +107,7 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 ### Установить с полем ввода:
 ![Поле ввода](../../../en/adapterref/iobroker.mobile/img/widget-input-number.png)
 
-    - common.type = "число", common.max не определено, common.write равно "true", common.states не определено
+    - common.type = "number", common.max не определен, common.write равен "true", common.states не определен
 
 Пример:
 
@@ -124,10 +124,10 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 }
 ```
 
-### Установить с состояниями:
+### Набор с состояниями:
 ![состояния](../../../en/adapterref/iobroker.mobile/img/widget-value-states.png)
 
-    - common.type = "число", common.max не определено, common.write является "истиной", common.states определено
+    - common.type = "number", common.max не определен, common.write равен "true", common.states определен
 
 Пример:
 
@@ -151,7 +151,7 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 ### Показать логическое значение:
 ![Логическое значение](../../../en/adapterref/iobroker.mobile/img/widget-value-boolean.png)
 
-    - common.write - "ложь", а common.type - "логическое"
+    - common.write имеет значение false, а common.type - логическое.
 
 Пример:
 
@@ -170,7 +170,7 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 ### Показать значение:
 ![Числовое значение](../../../en/adapterref/iobroker.mobile/img/widget-value-number.png)
 
-    - common.write является "ложным", а common.type не является "логическим"
+    - common.write имеет значение false, а common.type не является логическим.
 
 Пример:
 
@@ -187,12 +187,14 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 }
 ```
 
-## Сделать:
-- редактирование Icon
+## Делать:
+- редактирование Иконки
 - показать некоторые виджеты с большим количеством значков
 - вид планшета
 
 ## Changelog
+### 1.0.1 (2020-08-22)
+* (bluefox) The compatibility to socket.io 3.0.13 provided
 
 ### 1.0.0 (2019-01-30)
 * (ldittmar) Add translations

@@ -3,16 +3,16 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.go-e/README.md
 title: ioBroker.go-echarger
-hash: f7NZEeyH8CmA8AVvVeOa22e9SopqZuIWzx2E5wfAYF4=
+hash: 8XGVp8IUazkVL8O7QjH7YCwsN0vP19tnu4k4lIQ9rXA=
 ---
 ![Logo](../../../en/adapterref/iobroker.go-e/admin/go-echarger.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.go-e.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.go-e.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/go-echarger-installed.svg)
-![Anzahl der Installationen (stabil)](http://iobroker.live/badges/go-echarger-stable.svg)
-![Abhängigkeitsstatus](https://img.shields.io/david/MK-2001/iobroker.go-echarger.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/MK-2001/ioBroker.go-echarger/badge.svg)
+![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/go-e-installed.svg)
+![Anzahl der Installationen (stabil)](http://iobroker.live/badges/go-e-stable.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/MK-2001/iobroker.go-e.svg)
+![Bekannte Sicherheitslücken](https://snyk.io/test/github/MK-2001/ioBroker.go-e/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.go-e.png?downloads=true)
 
 # IoBroker.go-echarger
@@ -22,7 +22,10 @@ hash: f7NZEeyH8CmA8AVvVeOa22e9SopqZuIWzx2E5wfAYF4=
 ## Go-eCharger Adapter für ioBroker
 ** DE ** go-e ist eine Einladung, sich elektrisch zu bewegen. Elektromobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnologie für Elektroautos ist. Von der individuellen Ladestation für E-Autos über Photovoltaik-Anschlüsse bis hin zum Lastmanagement ganzer Gebäude bieten wir ganzheitliche Systemlösungen für alle Anforderungen der modernen Elektromobilität.
 
-** DE ** go-e ist die Aufforderung, sich elektrisch zu bewegen. Die e-Mobilität ist unser Antrieb, unsere unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der grundlegenden Ladestation für E-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement
+** DE ** go-e ist die Aufforderung, sich elektrisch zu bewegen. Die e-Mobilität ist unser Antrieb, unsere unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der politischen Ladestation für E-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von Gesamtverwaltung, sind wir für die gesamte Systemlösungen für sämtliche Beziehungen der modernen E-Mobilität.
+
+## Adapterhandbuch
+Das Handbuch zur Installation und Konfiguration finden Sie hier: [Adapterhandbuch](./docs/Readme.md)
 
 ## Entwicklerhandbuch
 Offizielle API-Dokumentation: https://github.com/goecharger/go-eCharger-API-v1
@@ -34,17 +37,7 @@ Copyright (c) 2020 MK-2001 go-e@itinsi.de
 
 ## Changelog
 
-### 0.0.1
-* (MK-2001) initial release
-
-### 0.0.2
-* (MK-2001) added requirements to publish the adapter
-
-### 0.0.3
-* (MK-2001) added requirements to publish the adapter again, enabled new writeable interfaces: Access State (ast), Allow Charging (alw), stop_state: ​Automatische Abschaltung (stp), max_load
-
-### 0.0.4
-* (MK-2001, Trunks1982) solved bug with different names.
+[moved here](./docs/CHANGELOG.md)
 
 ## License
                                  Apache License

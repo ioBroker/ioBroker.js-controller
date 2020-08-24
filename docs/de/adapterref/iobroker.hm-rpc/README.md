@@ -191,6 +191,15 @@ Auszug:
 ## FAQ
 
 ## Changelog
+### 1.14.21 (2020-08-18)
+* (foxriver76) fixed virtual-devices objects being recreated on instance startage (#271)
+
+### 1.14.20 (2020-08-17)
+* (foxriver76) fix for % scaling of float numbers
+
+### 1.14.19 (2020-08-16)
+* (foxriver76) now logging exact command on error
+
 ### 1.14.18 (2020-08-08)
 * (foxriver76) fix issue when CuxD listDevices does not deliver valid array
 * (foxriver76) fix error with % scaling in some edge cases

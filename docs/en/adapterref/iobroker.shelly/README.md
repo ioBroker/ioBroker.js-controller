@@ -58,12 +58,41 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 4.0.0 (05.08.2020)
-* (Stübi)     - Major Change!! If you use the CoAP protcoll only Shelly devices with Firmware 1.8.x or above supported! All devices with Firmeware below 1.8.x will not working with this release!
-* (@harrym67) - Changing device files 
-harrym67
-* (Stübi)     - Since Firmware 1.8. the Shelly device names like shelly.0.SHBTN-1#A4CF12F454A3#2 ends with #2. It will be changed back to #1 like shelly.0.SHBTN-1#A4CF12F454A3#1. 
+### 4.0.4 (2020-08-23)
+* (Stübi) - optimize the destroy function
 
+### 4.0.3 (2020-08-19)
+* (Stübi) - Add a checkbox, to optionally enable updates of objects even if they have not changed (Issue #209)
+* (Stübi) - Calculate temperature fahrenheit for Shelly 1PM and Plug S in MQTT mode
+* (Stübi) - Fixed longpush time for MQTT (Shelly 1, 1PM, 2 and 2.5) 
+* (Stübi) - Add State for changing temperature unit for Shelly HT and DW2
+* (Stübi) - Delete external temperature 4 and external humidity 4 states for Shelly 1 and 1PM because they do not exist
+* (Stübi) - Renamed state temperature to temperatureC for Shelly 1, 1PM, 2, 2.5, Plug S
+* (Stübi) - Add tmperature in Celsius and Fahrenheit for Shelly HT and DW2
+* (Stübi) - Bugfixing. Add missing states to MQTT, which exist for CoAP (Shelly 2, 2.5) 
+* (Stübi) - Polltime for http optimized. 
+* (Stübi) - removed min and max values for temperature states (Issue #236)
+* (Stübi) - Bugfixing. Add timer to Shelly 1, 1PM for CoAP and removed it for MQTT (Shelly 1, 1PM, 2, 2.5) because it is not supported by MQTT
+* (Stübi) - Add overpower value to Shelly 1, 1PM, 2, 2.5 and Plug, Plug S
+* (Stübi) - Removed channel name from Shelly 4 Pro (Issue #238)
+
+### 4.0.2 (2020-08-16)
+* (Stübi) - Bugfixing Shelly DW2 (Issue #220)
+* (Stübi) - Bugfixing manually set object name is overwritten (Issue #224)
+
+### 4.0.1 (2020-08-15)
+* (Stübi) Major Change!! If you use the CoAP protocol only Shelly devices with Firmware 1.8.x or above supported! All devices with Firmware below 1.8.x except Shelly 4Pro will not working with this release!
+* Official release to npm/latest
+
+### 4.0.0 (05.08.2020)
+* (Stübi)     - Major Change!! If you use the CoAP protocol only Shelly devices with Firmware 1.8.x or above supported! All devices with Firmware below 1.8.x except Shelly 4Pro will not working with this release!
+* (@harrym67) - Changing device files 
+* (Stübi)     - Since Firmware 1.8. the Shelly device names like shelly.0.SHBTN-1#A4CF12F454A3#2 ends with #2. It will be changed back to #1 like shelly.0.SHBTN-1#A4CF12F454A3#1. 
+* (@harrym67) - Add state factoryResetFromSwitch for Shelly 1, 1pm, 2, 2.5, Dimmer, Dimmer 2 and RGBW2
+* (@harrym67) - Add states longpushDurationMsMin, longpushDurationMsMax and multipushTimeBetweenPushesMsMax for Shelly IX3
+* (@harrym67) - Add state ChannelName for Shelly 1, 1pm, 2, 2.5, Dimmer, Dimmer 2, 4Pro, EM and 3EM
+* (@harrym67) - Add state StopReason for Shelly 2 and 2.5 in Shuttermode
+* (@harrym67) - Add state name to all Devices (Device Name)
 
 ### 3.3.6 (26.07.2020)
 * (Stübi) - Bugfixing temperature for Shelly Dimmer (Issue #201)

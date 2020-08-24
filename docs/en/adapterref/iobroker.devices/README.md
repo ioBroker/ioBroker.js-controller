@@ -34,7 +34,13 @@ Manage and create devices for using it in other adapters like material, iot,...
 -->
 
 ## Changelog
-### 0.3.8 (2020-08-12)
+### 0.3.13 (2020-08-17)
+* (bluefox) Fixed errors by optional states
+
+### 0.3.12 (2020-08-16)
+* (bluefox) added the vacuum cleaner
+
+### 0.3.10 (2020-08-12)
 * (bluefox) added the air conditioner
 
 ### 0.3.6 (2020-04-17)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adddevice.md
 title: 如何将设备添加到Alexa或Google Home
-hash: KJyj2QNgNPa29Jr/BcB/QJi6yPa8ucW5nGzTU+4Hr+A=
+hash: 7LOEqf58Vo+Ne7CyV77jozHsy8UjnC7Ghl8TQAR8aD0=
 ---
 ＃如何将设备添加到Alexa或Google Home
 要添加设备，我们有4个步骤：
@@ -28,10 +28,10 @@ hash: KJyj2QNgNPa29Jr/BcB/QJi6yPa8ucW5nGzTU+4Hr+A=
 -https://developer.amazon.com/de-DE/docs/alexa/device-apis/alexa-thermostatcontroller.html
 -https://developers.google.com/assistant/smarthome/guides/aircooler
 
-Yandex最全面地了解了州，因此将其作为基础是合理的。
+Yandex最全面地了解了这些州，因此将其作为基础是合理的。
 我们可以看到，对于恒温器模式和摆动位置，文档中没有任何作用。
 
-因此，我们将在此处添加它：https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/stateroles.md#air-condition-or-thermostat
+所以我们将在这里添加：https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/stateroles.md#air-condition-or-thermostat
 
 所有其他状态（功率，设定温度）都存在。
 

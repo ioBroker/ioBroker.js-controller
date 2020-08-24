@@ -306,7 +306,14 @@ If authentication is enabled, so current logged in user will be returned, if aut
 On some web-sockets clients there is performance problem with communication. Sometimes this problem is due to fallback of socket.io communication on long polling mechanism.
 You can set option *Force Web-Sockets* to force using only web-sockets transport.
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+### 3.0.13 (2020-08-21)
+* (bluefox) Added getAdapterName method
 
 ### 3.0.12 (2020-07-27)
 * (Apollon77) socket.io pingTimeout and pinInterval increased to prevent too fast reconnections and bigger visualizations

@@ -22,6 +22,8 @@ Adapter receives Current Conditions (updated every hour), 5 Days daily forecast 
 
 To get API Key, register on https://developer.accuweather.com/ and create application in \"My Apps\" menu. Once application created you will have API key generated. 
 For free use it is possible to make 50 requests to API per day. 
+It was noted that to get API working the following settings are preferred (please choose your country!):
+![settings](admin/image.png)
 
 ### Get Location Key
 

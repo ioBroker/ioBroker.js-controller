@@ -9,22 +9,19 @@
 [![AppVeyor](https://ci.appveyor.com/api/projects/status/eobyt279ncmd9qbi/branch/master?svg=true)](https://ci.appveyor.com/project/iobroker-community-adapters/iobroker-places/branch/master)
 
 ## Description
-This is an ioBroker adapter for processing location information messages which should contain a user, a geoposition and a timestamp as minimum. The adapters analyzes whether the location information is within a radius around the location configuration of ioBroker or optional other places.
+This is an ioBroker adapter for processing location information messages which should contain a user, a geo-position and a timestamp as minimum. 
+The adapters analyzes whether the location information is within a radius around the location configuration of ioBroker or optional other places.
 
 ## Configuration
 
-There is just one mandatory configuration value: the radius (meters) which will be used to identify the current location of a user. The location of ioBroker is used to identify users being "at home", other places can be added as part of the configuration.
+There is just one mandatory configuration value: the radius (meters) which will be used to identify the current location of a user. 
+The location of ioBroker is used to identify users being "at home", other places can be added as part of the configuration.
 
 * **Radius** (_mandatory_) should be the radius in meters used to check whether the user is at a specific place (home or custom).
-
 * **Name for home** can be used to set a custom name for the home place.
-
-* **Google Maps API key** will be used for enabling geocoding. A missing API key will be fetched from a configured vis-map instance (if available) when configuration page has been opened.
-
-* **Google Maps Geocoding** can be activated to get a real address and an elevation for a provided geoposition.
-
+* **Google Maps API key** will be used for enabling geo-coding. A missing API key will be fetched from a configured vis-map instance (if available) when configuration page has been opened.
+* **Google Maps Geocoding** can be activated to get a real address and an elevation for a provided geo-position.
 * **Places** is a flexible list containing custom places where each place should have valid values for name, latitude and longitude.
-
 * **Users** is a flexible list containing user mappings.
 
 ## Usage
@@ -108,7 +105,13 @@ on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
 });
 ```
 
+## Credits
+The implementation is partly based on dschaedls [ioBroker.geofency](https://github.com/ioBroker/ioBroker.geofency) adapter. The logo has been taken from [Free Icons PNG](http://www.freeiconspng.com/images/maps-icon) and has been modified to have a transparent background.
+
 ## Changelog
+### 1.0.0 (2020-08-16)
+* (bluefox) Updated packages
+* (bluefox) Refactoring
 
 ### 0.7.0 (2019-01-12)
 * (BasGo) Added compact mode, replaced integration of iobroker.cloud with iobroker.iot
@@ -161,11 +164,8 @@ on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
 ### 0.1.0
 * (BasGo) Initial release
 
-## Credits
-The implementation is partly based on dschaedls [ioBroker.geofency](https://github.com/ioBroker/ioBroker.geofency) adapter. The logo has been taken from [Free Icons PNG](http://www.freeiconspng.com/images/maps-icon) and has been modified to have a transparent background.
-
 ## License
 
 This adapter is licensed under the [MIT License](../blob/master/LICENSE) which is part of this repository.
 
-Copyright (c) 2018-2019 BasGo <basgo@gmx.de>
+Copyright (c) 2018-2020 BasGo <basgo@gmx.de>

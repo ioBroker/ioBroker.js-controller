@@ -24,7 +24,8 @@ favorit voice assistant(s):
 * use the [_javascript_](https://github.com/ioBroker/ioBroker.javascript) to
   build your own custom logic.
 
-See the [wiki](https://github.com/ylabonte/ioBroker.procon-ip/wiki) for more information.
+See the [wiki](https://github.com/ylabonte/ioBroker.procon-ip/wiki) for more
+information.
 
 
 ### What is the ProCon.IP pool control?
@@ -71,26 +72,13 @@ ProCon.IP firmware **revision 1.7.0.c**.
 
 ## Roadmap
 
-### 1.0.0
-**Stable release:**  
-This should become the release candidate for the official ioBroker adapter
-repository. So as this is literally a milestone for this project, I have
-created such for the relevant issues to keep track of the progress and make
-this more transparent for you.
+### 1.x.x
+There is nothing special on the plan. You can create an issue to suggest new
+features/functionality...
 
-* Fix all open [milestone issues](https://github.com/ylabonte/ioBroker.procon-ip/milestone/1)
-  regarding the ones resulted from the [adapter review](https://github.com/ioBroker/ioBroker.repositories/pull/756#issuecomment-646988248))
-* ~~Add documentation (make the github wiki useful/helpful)~~
-* ~~Show connection status including last refresh timestamp and sys info of
-  the ProCon.IP in tab view (can be activated by activating the corresponding
-  menu entry in the admin adapter)~~
-* ~~Automated tests regarding the functionality of the adapter (eg. unit
-  tests)~~
-
-**What happened the points above which are now striked through?**  
-Well, the documentation was already improved. Now it's up to you to extend the
-wiki or request me using issues to extend the wiki or README.md regarding a
-specific content.  
+**What happened to the points that were on the roadmap, but were not
+implemented with the 1.0.0 release?**  
+Well, the documentation was already improved.   
 The tab view thing seems rather interesting to me. If you would appreciate
 such a feature, just let me know...  
 The absence of automated tests regarding the functionality of the controller
@@ -113,11 +101,31 @@ Useful links for the approach will be
 
 ## Changelog
 
+### 1.0.1
+Hotfix release:
+* Fix Object State updates  
+  For some reason the two js objects used to compare the before and after values
+  of the GetState.csv calls became the same object (before was referencing the
+  new values). That caused the adapter to never update the object states.
+
+### 1.0.0
+Official release in ioBroker adapter repository:  
+The most exciting change with this release is, that it's available from the
+ioBroker adapter repository. Hence you can just install it, without copy/
+pasting the github repo url of this adapter!
+* Fix all open [milestone issues](https://github.com/ylabonte/ioBroker.procon-ip/milestone/1)
+  especially regarding the ones resulted from the [adapter review](https://github.com/ioBroker/ioBroker.repositories/pull/756#issuecomment-646988248))
+* Add/Extend documentation
+  (see [wiki](https://github.com/ylabonte/ioBroker.procon-ip/wiki)).  
+  Now it's up to you to extend the wiki or request me using issues to extend
+  the wiki or README.md regarding a specific content.
+
 ### 0.4.1
 Bugfix release:
 * Fix write actions to the appropriate states of external relays  
-  _This will add auto-recognition on whether the external relays are activated or not
-  and therefore decide on how to handle write actions to the corresponding relay state._
+  _This will add auto-recognition on whether the external relays are activated
+  or not and therefore decide on how to handle write actions to the
+  corresponding relay state._
 
 ### 0.4.0
 Public release version:
@@ -145,8 +153,10 @@ Security update:
 Functional update and minor fixes:
 * Fix object attributes regarding the cloud adapter
 * Optimization for the cloud adapter
-    * Pre-defined `smartName` attributes for active relays and temperature sensors
-    * Recognize relays with 'light', 'licht' or 'leucht' in its name as `smartType` _LIGHT_ 
+    * Pre-defined `smartName` attributes for active relays and temperature
+      sensors
+    * Recognize relays with 'light', 'licht' or 'leucht' in its name as
+      `smartType` _LIGHT_ 
 
 ### 0.0.4
 Security update:

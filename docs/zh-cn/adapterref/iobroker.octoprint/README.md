@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.octoprint/README.md
 title: ioBroker.octoprint
-hash: zZau9Lp7utfo7BOlW8no1PTb/CdiqnHUnL5gHF6P5w8=
+hash: abg3z/tq5hJF+SkNY+lPHM8HD9xgDiM2TVLLIL9GiuU=
 ---
 ![商标](../../../en/adapterref/iobroker.octoprint/admin/octoprint.png)
 
@@ -20,14 +20,29 @@ hash: zZau9Lp7utfo7BOlW8no1PTb/CdiqnHUnL5gHF6P5w8=
 将OctoPrint连接到ioBroker的适配器
 
 ＃＃ 特征
+###信息
 -获取版本信息
 -获取打印机信息
 -获取当前的打印作业信息
+-获取文件列表信息
+
+###温度
 -设定工具温度
 -设定床温
--通过命令连接，断开连接和家用打印机
+
+###命令
+-打印机：连接，断开连接并返回家中
+-作业：开始，取消，重新启动
+-SD卡：初始化，刷新，释放
+-自定义打印机命令
+-系统命令
+-点动X，Y和Z轴
 
 ## Changelog
+
+### 0.0.5
+
+* (klein0r) Switched to axios lib (replaced request - deprecated)
 
 ### 0.0.4
 

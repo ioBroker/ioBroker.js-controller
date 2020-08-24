@@ -16,14 +16,32 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Features
 
+### Information
+
 - Get version information
 - Get printer information
 - Get current print job information
+- Get file list information
+
+### Temperatures
+
 - Set tool temperature
 - Set bed temperature
-- Connect, disconnect and home printer by command
+
+### Commands
+
+- Printer: Connect, disconnect and home
+- Job: Start, Cancel, Restart
+- SD-Card: Init, Refresh, Release
+- Custom Printer Commands
+- System Commands
+- Jog X, Y and Z axis
 
 ## Changelog
+
+### 0.0.5
+
+* (klein0r) Switched to axios lib (replaced request - deprecated)
 
 ### 0.0.4
 

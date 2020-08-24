@@ -3,44 +3,44 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mobile/README.md
 title: ioBroker.mobile
-hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
+hash: UeI6kCqqBtJl00cXKLlIqsbY28eCGpbRXhiiiZNxsCg=
 ---
 ![商标](../../../en/adapterref/iobroker.mobile/admin/mobile.png)
 
 ![安装数量](http://iobroker.live/badges/mobile-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.mobile.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.mobile.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.mobile.svg)
 ![NPM](https://nodei.co/npm/iobroker.mobile.png?downloads=true)
 
-＃ioBroker.mobile =================
+＃ioBroker.mobile
 基于jQuery Mobile的用户界面。
 
 ![屏幕](../../../en/adapterref/iobroker.mobile/img/screen.png)
 
 ##用法
-要使用移动UI，您需要在admin中创建逻辑结构。
+要使用移动用户界面，您需要在admin中创建逻辑结构。
 
-例如：转到“Enums”选项卡并创建新的枚举，例如“海关”。
-![滑块](../../../en/adapterref/iobroker.mobile/img/starting1.png)
+例如：转到标签“枚举”并创建新的枚举，例如“海关”。
+![滑杆](../../../en/adapterref/iobroker.mobile/img/starting1.png)
 
-在“enum.customs”中创建新的枚举组，例如“控制”![滑块](../../../en/adapterref/iobroker.mobile/img/starting2.png)
+在“ enum.customs”中创建新的枚举组，例如“控件”![滑杆](../../../en/adapterref/iobroker.mobile/img/starting2.png)
 
-将一些状态添加到“enum.customs.controls”![滑块](../../../en/adapterref/iobroker.mobile/img/starting3.png)
+将一些状态添加到“ enum.customs.controls”中![滑杆](../../../en/adapterref/iobroker.mobile/img/starting3.png)
 
-![滑块](../../../en/adapterref/iobroker.mobile/img/starting4.png)
+![滑杆](../../../en/adapterref/iobroker.mobile/img/starting4.png)
 
-转到移动页面，按“信息”（顶部，右侧）并按“刷新”以从ioBroker加载对象![滑块](../../../en/adapterref/iobroker.mobile/img/starting5.png)
+转到移动页面，按“信息”（右上），然后按“刷新”以从ioBroker![滑杆](../../../en/adapterref/iobroker.mobile/img/starting5.png)中加载对象
 
-重新加载后，您可以转到“海关=>控制”![滑块](../../../en/adapterref/iobroker.mobile/img/starting6.png)
+重新加载后，您可以转到“海关=>控件”![滑杆](../../../en/adapterref/iobroker.mobile/img/starting6.png)
 
 ##支持的类型
 ###滑块：
-![滑块](../../../en/adapterref/iobroker.mobile/img/widget-slider.png)
+![滑杆](../../../en/adapterref/iobroker.mobile/img/widget-slider.png)
 
-     -  role =“level.dimmer”
-     -  role =“level.blind”
-     -  role包含“level”，common.type是“number”，common.write是“true”，common.max是定义的
-     -  common.type =“number”，common.write为“true”，common.max定义
+    -角色=“ level.dimmer”
+    -角色=“ level.blind”
+    -角色由“级别”，common.type为“数字”，common.write为“ true”和common.max定义
+    -common.type =“ number”，common.write为“ true”，并定义了common.max
 
 例：
 
@@ -61,12 +61,12 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 ```
 
 ###按钮（必须通过编辑模式显式设置为可见）：
-![按键](../../../en/adapterref/iobroker.mobile/img/widget-button.png)
+![纽扣](../../../en/adapterref/iobroker.mobile/img/widget-button.png)
 
-     - 角色包含“按钮”
-     - 角色包括“行动”
+    -角色由“按钮”组成
+    -角色由“动作”组成
 
-默认情况下，按钮是不可见的。如果按下它们只是写“真”。
+默认情况下，按钮是不可见的。如果按下，它们只会写“ true”。
 
 例：
 
@@ -87,7 +87,7 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 ###开关：
 ![开关](../../../en/adapterref/iobroker.mobile/img/widget-switch.png)
 
-     -  common.type =“boolean”，common.write是“true”
+    -common.type =“ boolean”，common.write为“ true”
 
 例：
 
@@ -104,10 +104,10 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 }
 ```
 
-###使用输入字段设置：
-![输入字段](../../../en/adapterref/iobroker.mobile/img/widget-input-number.png)
+###设置输入字段：
+![输入栏](../../../en/adapterref/iobroker.mobile/img/widget-input-number.png)
 
-     -  common.type =“number”，common.max未定义，common.write为“true”，common.states未定义
+    -common.type =“ number”，common.max未定义，common.write为“ true”，common.states未定义
 
 例：
 
@@ -127,7 +127,7 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 ###设置状态：
 ![状态](../../../en/adapterref/iobroker.mobile/img/widget-value-states.png)
 
-     -  common.type =“number”，common.max未定义，common.write为“true”，common.states定义
+    -common.type =“ number”，common.max未定义，common.write为“ true”，common.states已定义
 
 例：
 
@@ -151,7 +151,7 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 ###显示布尔值：
 ![布尔值](../../../en/adapterref/iobroker.mobile/img/widget-value-boolean.png)
 
-     -  common.write是“false”而common.type是“boolean”
+    -common.write为“ false”，common.type为“ boolean”
 
 例：
 
@@ -170,7 +170,7 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 ###显示值：
 ![数值](../../../en/adapterref/iobroker.mobile/img/widget-value-number.png)
 
-     -  common.write是“false”而common.type不是“boolean”
+    -common.write为“ false”，common.type不是“ boolean”
 
 例：
 
@@ -188,11 +188,13 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 ```
 
 ＃＃ 去做：
- - 编辑图标
- - 显示一些带有更多图标的小部件
- - 平板电脑视图
+-编辑图标
+-显示带有更多图标的小部件
+-平板电脑视图
 
 ## Changelog
+### 1.0.1 (2020-08-22)
+* (bluefox) The compatibility to socket.io 3.0.13 provided
 
 ### 1.0.0 (2019-01-30)
 * (ldittmar) Add translations

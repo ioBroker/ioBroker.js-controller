@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.procon-ip/README.md
 title: ioBroker.procon-ip
-hash: WHThC2C72ZK1XeH7fiMjD2Xk2dKMo/A1XKd1OFx4/oc=
+hash: lq6aPK/f3jS9/9tJe0w5W2aqj7uiH6EZYy7TeaZuxg4=
 ---
 ![商标](../../../en/adapterref/iobroker.procon-ip/admin/iobroker-procon-ip.png)
 
@@ -17,12 +17,12 @@ hash: WHThC2C72ZK1XeH7fiMjD2Xk2dKMo/A1XKd1OFx4/oc=
 
 ＃ioBroker.procon-ip
 ## IoBroker的ProCon.IP池控制适配器
-ioBroker适配器，用于ProCon.IP游泳池控制单元的基本支持。它旨在与ioBroker家庭自动化集成，例如。
+ioBroker适配器，用于ProCon.IP游泳池控制单元的基本支持。它旨在与您的ioBroker家庭自动化集成，例如。
 建立涉及其他设备的逻辑或仅与您喜欢的语音助手配对：
 
 *您可以使用[_cloud_]（https://github.com/ioBroker/ioBroker.cloud）或
 
-用于Alexa的[_IoT_](https://github.com/ioBroker/ioBroker.iot)适配器（我认为还有Google Home）和
+适用于Alexa的[_IoT_](https://github.com/ioBroker/ioBroker.iot)适配器（我认为还有Google Home）和
 
 * [_yahka_]（https://github.com/jensweigele/ioBroker.yahka）作为通往
 
@@ -37,8 +37,8 @@ ioBroker适配器，用于ProCon.IP游泳池控制单元的基本支持。它旨
 ###什么是ProCon.IP池控件？
 ![图片来自pooldigital.de](https://www.pooldigital.de/shop/media/image/66/47/a5/ProConIP1_720x600.png)
 
-ProCon.IP池控制是用于家庭游泳池的低预算网络连接控制单元。借助其软件开关继电器，它可以按时间计划简单地计划多个泵（用于池过滤器和不同剂量方面），也可以根据多个输入通道之一的读数/值（例如，I / O流量）进行控制。传感器，达拉斯1-Wire温度计，氧化还原和pH电极）。至少还可以根据需要切换这些继电器，这使得它们也适用于打开/关闭灯（或其他任何想要的开关）。
-并非所有功能都可以通过API获得。实际上，有一个文档化的API可以读取（轮询）CSV格式的值（`/GetState.csv`）。在我的记忆中，还有一个用于通过定时器打开/关闭继电器和打开继电器。但是我找不到第二个了。因此，它甚至不很漂亮，但是具有功能性：ProCon.IP具有两个本机Web界面，可以对给定的功能（例如切换继电器）进行某种反向工程分析。
+ProCon.IP池控制是用于家庭游泳池的低预算网络连接控制单元。借助其软件开关继电器，它可以按时间计划简单地计划多个泵（用于池过滤器和不同剂量方面），也可以根据其多个测量输入通道之一的读数/值（例如，I / O流量）进行控制。传感器，达拉斯1-Wire温度计，氧化还原和pH电极）。至少还有按需切换这些继电器的选项，这使得它们也适用于打开/关闭灯（或其他任何想要的开关）。
+并非所有功能都可以通过API获得。实际上，有一个文档化的API可以读取（轮询）CSV格式的值（`/GetState.csv`）。在我的记忆中，还有一个用于通过定时器打开/关闭继电器和打开继电器。但是我找不到第二个了。因此，它甚至不很漂亮，但具有功能性：ProCon.IP具有两个本机Web界面，可以对给定的功能（例如切换继电器）进行某种反向工程分析。
 
 有关更多信息，请参见以下链接（很抱歉，它仅在德语中；到目前为止尚未找到英文文档/信息）：
 
@@ -54,25 +54,12 @@ ProCon.IP池控制是用于家庭游泳池的低预算网络连接控制单元�
 目前，该适配器已与ProCon.IP固件**修订版1.7.0.c **结合进行测试和开发。
 
 ##路线图
-### 1.0.0
-**稳定的发行版：**这应该成为官方ioBroker适配器存储库的候选发行版。因此，从字面上看，这是该项目的里程碑，因此我为相关问题创建了此类记录，以跟踪进度并使其对您更加透明。
+### 1.x.x
+该计划没有什么特别的。您可以创建一个问题来建议新功能/功能...
 
-*修复所有未解决的[里程碑问题]（https://github.com/ylabonte/ioBroker.procon-ip/milestone/1）
-
-  关于[适配器评论](https://github.com/ioBroker/ioBroker.repositories/pull/756#issuecomment-646988248)产生的结果）
-
-* ~~添加文档（使github Wiki有用/有帮助）~~
-* ~~显示连接状态，包括最近的刷新时间戳和sys信息
-
-标签视图中的ProCon.IP（可以通过激活管理适配器中的相应菜单条目来激活）~~
-
-* ~~关于适配器功能的自动测试（例如，单元
-
-  测试）~~
-
-**现在已经克服了以上几点？**好，文档已经得到改进。现在由您来扩展Wiki或要求我使用问题来扩展有关特定内容的Wiki或README.md。
+**路线图上发生了什么事情，但是在1.0.0版本中没有实现？**嗯，文档已经得到改进。
 标签视图对我来说似乎很有趣。如果您喜欢这种功能，请告诉我...
-缺少关于控制器功能的自动化测试是非常令人不愉快的，但是现在的重点显然是变得稳定，并且为所有现有代码编写良好而有用的测试将花费大量时间（与使用复杂性和该软件项目的目标群体），并可能以进一步的重构而告终。因此，它将是将来的事情，但不再与1.0.0版本相关。
+缺少关于控制器功能的自动化测试是非常令人不愉快的，但是现在的重点显然是变得稳定，并且为所有现有代码编写良好而有用的测试将花费大量时间（与使用复杂性和该软件项目的目标群体），并可能以进一步的重构而告终。因此，它将是将来的事情，但与1.0.0版本不再相关。
 
 ##发展与参与
 如果您希望参与此适配器的开发或文档，请随时与我联系。
@@ -87,11 +74,31 @@ ProCon.IP池控制是用于家庭游泳池的低预算网络连接控制单元�
 
 ## Changelog
 
+### 1.0.1
+Hotfix release:
+* Fix Object State updates  
+  For some reason the two js objects used to compare the before and after values
+  of the GetState.csv calls became the same object (before was referencing the
+  new values). That caused the adapter to never update the object states.
+
+### 1.0.0
+Official release in ioBroker adapter repository:  
+The most exciting change with this release is, that it's available from the
+ioBroker adapter repository. Hence you can just install it, without copy/
+pasting the github repo url of this adapter!
+* Fix all open [milestone issues](https://github.com/ylabonte/ioBroker.procon-ip/milestone/1)
+  especially regarding the ones resulted from the [adapter review](https://github.com/ioBroker/ioBroker.repositories/pull/756#issuecomment-646988248))
+* Add/Extend documentation
+  (see [wiki](https://github.com/ylabonte/ioBroker.procon-ip/wiki)).  
+  Now it's up to you to extend the wiki or request me using issues to extend
+  the wiki or README.md regarding a specific content.
+
 ### 0.4.1
 Bugfix release:
 * Fix write actions to the appropriate states of external relays  
-  _This will add auto-recognition on whether the external relays are activated or not
-  and therefore decide on how to handle write actions to the corresponding relay state._
+  _This will add auto-recognition on whether the external relays are activated
+  or not and therefore decide on how to handle write actions to the
+  corresponding relay state._
 
 ### 0.4.0
 Public release version:
@@ -119,8 +126,10 @@ Security update:
 Functional update and minor fixes:
 * Fix object attributes regarding the cloud adapter
 * Optimization for the cloud adapter
-    * Pre-defined `smartName` attributes for active relays and temperature sensors
-    * Recognize relays with 'light', 'licht' or 'leucht' in its name as `smartType` _LIGHT_ 
+    * Pre-defined `smartName` attributes for active relays and temperature
+      sensors
+    * Recognize relays with 'light', 'licht' or 'leucht' in its name as
+      `smartType` _LIGHT_ 
 
 ### 0.0.4
 Security update:

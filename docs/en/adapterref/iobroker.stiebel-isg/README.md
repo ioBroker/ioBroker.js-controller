@@ -28,6 +28,10 @@ Help or hints are welcome.
 
 ## Changelog
 
+### 1.5.3
+
+* bugfix for latest_value added in statistics for database
+
 ### 1.5.2
 
 * latest_value added in statistics for database

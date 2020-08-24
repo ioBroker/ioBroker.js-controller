@@ -3,39 +3,36 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.places/README.md
 title: ioBroker.places
-hash: Y3qrEVT0D5Z47UdslJXhFWCr5b+utPPUNIt7Du1Kmqo=
+hash: 8+QNTj+EEePm/n7FPJqzRkURNPQcB/Ho3QnbrSqFFd0=
 ---
 ![商标](../../../en/adapterref/iobroker.places/admin/places.png)
 
 ![安装数量](http://iobroker.live/badges/places-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.places.svg)
 ![依赖状态](https://img.shields.io/david/iobroker-community-adapters/iobroker.places.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.places.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.places.svg)
 ![Github问题](http://githubbadges.herokuapp.com/iobroker-community-adapters/ioBroker.places/issues.svg)
-![特拉维斯-CI](https://img.shields.io/travis/iobroker-community-adapters/ioBroker.places/master.svg)
+![特拉维斯](https://img.shields.io/travis/iobroker-community-adapters/ioBroker.places/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/eobyt279ncmd9qbi/branch/master?svg=true)
 
-#ioBroker.places
+＃ioBroker.places
 ##说明
-这是一个ioBroker适配器，用于处理位置信息消息，其中应包含用户，地理位置和时间戳作为最小值。适配器分析位置信息是否在ioBroker的位置配置或其他可选位置周围的半径内。
+这是用于处理位置信息消息的ioBroker适配器，该消息应至少包含用户，地理位置和时间戳。
+适配器分析位置信息是否在ioBroker或其他可选位置的位置配置周围的半径内。
 
 ##配置
-只有一个强制配置值：半径（米），用于标识用户的当前位置。 ioBroker的位置用于识别“在家”的用户，其他地方可以作为配置的一部分添加。
+仅有一个强制性配置值：半径（米），将用于标识用户的当前位置。
+ioBroker的位置用于标识“在家”的用户，其他位置也可以作为配置的一部分添加。
 
-* **半径**（_mandatory_）应该是用于检查用户是否在特定位置（家庭或自定义）的半径（以米为单位）。
-
-* **家庭名称**可用于为家庭场所设置自定义名称。
-
-* ** Google Maps API密钥**将用于启用地理编码。在打开配置页面时，将从配置的vis-map实例（如果可用）中获取缺少的API密钥。
-
-* **可以激活Google地图地理编码**以获取所提供地理位置的真实地址和高程。
-
-* **地方**是一个灵活的列表，其中包含自定义地点，其中每个地方应具有名称，纬度和经度的有效值。
-
-* **用户**是一个包含用户映射的灵活列表。
+*半径*（_mandatory_）应该是用于检查用户是否在特定位置（家庭或自定义）的半径（以米为单位）。
+* **家的名称**可用于设置家的自定义名称。
+* ** Google Maps API密钥**将用于启用地理编码。打开配置页面后，将从配置的vis-map实例（如果有）中获取缺少的API密钥。
+* **可以激活Google Maps Geocoding **，以获取所提供地理位置的真实地址和高程。
+*地点（Places）是一个灵活的列表，其中包含自定义地点，每个地点都应具有名称，纬度和经度的有效值。
+* **用户**是包含用户映射的灵活列表。
 
 ##用法
-要处理位置更新，只需使用以下语法发送消息：
+要处理位置更新，只需使用以下语法发送一条消息：
 
 ```
 // send a message to all instances of places adapter
@@ -64,7 +61,7 @@ sendTo('locations.0', {
 ```
 
 ##返回消息的结构
-以下块显示了响应消息的外观。对于每个值，ioBroker对象树具有相应的状态。
+以下块显示了响应消息的外观。对于每个值，ioBroker对象树都具有相应的状态。
 
 ```
 {
@@ -83,20 +80,20 @@ sendTo('locations.0', {
 
 ##示例：OwnTracks + ioBroker.iot + ioBroker.places
 ### 1.配置iobroker.iot
-在**白名单**下添加自定义服务** xyz **。
+在“服务白名单”下添加自定义服务** xyz **。
 
-### 2.配置OwnTracks移动应用程序
-将模式更改为** HTTP Private **并使用以下地址作为**主机**：https：//iobroker.pro/service/custom_xyz/ <user-app-key>
+### 2.配置OwnTracks移动应用
+将模式更改为“ HTTP专用”，并使用以下地址作为“主机”：https://iobroker.pro/service/custom_xyz/ <user-app-key>
 
 ### 3.配置iobroker.places
-在选项卡集成上，您必须选择云适配器的实例，并选择** xyz **作为服务。适配器将侦听传入的服务请求并开始处理。
+在“集成”选项卡上，您必须选择云适配器的实例和** xyz **作为服务。适配器将侦听该服务的传入请求并开始处理。
 
 ##示例：Telegram + ioBroker.telegram + ioBroker.places
 ### 1.配置iobroker.telegram
-启用**存储原始请求**的选项。
+启用“存储原始请求”选项。
 
 ### 2.创建脚本（ioBroker.javascript）
-创建一个包含原始请求订阅的短脚本，例如。来自** telegram.0.communicate.requestRaw **，并向iobroker.places（或其实例）发送一个新的请求对象：
+创建一个带有原始请求订阅的简短脚本，例如从** telegram.0.communicate.requestRaw **中发送一个新的请求对象到iobroker.places（或它的一个实例）：
 
 ```
 on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
@@ -112,10 +109,13 @@ on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
 });
 ```
 
-##学分
-该实现部分基于dschaedls[ioBroker.geofency]（https://github.com/ioBroker/ioBroker.geofency）适配器。该徽标取自[免费图标PNG](http://www.freeiconspng.com/images/maps-icon)，并已被修改为具有透明背景。
+##积分
+该实现部分基于dschaedls[ioBroker.geofency]（https://github.com/ioBroker/ioBroker.geofency）适配器。徽标取自[免费图标PNG](http://www.freeiconspng.com/images/maps-icon)，并且已被修改为具有透明背景。
 
 ## Changelog
+### 1.0.0 (2020-08-16)
+* (bluefox) Updated packages
+* (bluefox) Refactoring
 
 ### 0.7.0 (2019-01-12)
 * (BasGo) Added compact mode, replaced integration of iobroker.cloud with iobroker.iot
@@ -172,4 +172,4 @@ on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
 
 This adapter is licensed under the [MIT License](../blob/master/LICENSE) which is part of this repository.
 
-Copyright (c) 2018-2019 BasGo <basgo@gmx.de>
+Copyright (c) 2018-2020 BasGo <basgo@gmx.de>

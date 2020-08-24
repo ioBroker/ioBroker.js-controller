@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mobile/README.md
 title: ioBroker.mobile
-hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
+hash: UeI6kCqqBtJl00cXKLlIqsbY28eCGpbRXhiiiZNxsCg=
 ---
 ![Logo](../../../en/adapterref/iobroker.mobile/admin/mobile.png)
 
@@ -12,35 +12,35 @@ hash: rrnhg0+J9eSKVwNKt0JzVwzGOrruU+gtb9Z7PAWHmq0=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.mobile.svg)
 ![NPM](https://nodei.co/npm/iobroker.mobile.png?downloads=true)
 
-# IoBroker.mobile ===================
+# IoBroker.mobile
 jQuery Mobile-basierte Benutzeroberfläche.
 
 ![Bildschirm](../../../en/adapterref/iobroker.mobile/img/screen.png)
 
-## Verwendungszweck
+## Verwendung
 Um die mobile Benutzeroberfläche verwenden zu können, müssen Sie die logische Struktur in admin erstellen.
 
-Beispiel: Gehen Sie zur Registerkarte "Enums" und erstellen Sie eine neue Enumeration, z. "Zoll".
+Zum Beispiel: Gehen Sie zur Registerkarte "Aufzählungen" und erstellen Sie eine neue Aufzählung, z. "Zoll".
 ![Schieberegler](../../../en/adapterref/iobroker.mobile/img/starting1.png)
 
-Erstellen Sie eine neue enum-Gruppe in "enum.customs", z. "Kontrollen" ![Schieberegler](../../../en/adapterref/iobroker.mobile/img/starting2.png)
+Erstellen Sie eine neue Aufzählungsgruppe in "enum.customs", z. "Kontrollen" ![Schieberegler](../../../en/adapterref/iobroker.mobile/img/starting2.png)
 
-Fügen Sie einige Zustände zu "enum.customs.controls" hinzu. ![Schieberegler](../../../en/adapterref/iobroker.mobile/img/starting3.png)
+Fügen Sie "enum.customs.controls" einige Zustände hinzu ![Schieberegler](../../../en/adapterref/iobroker.mobile/img/starting3.png)
 
 ![Schieberegler](../../../en/adapterref/iobroker.mobile/img/starting4.png)
 
-Gehen Sie zur mobilen Seite, drücken Sie "Info" (oben rechts) und drücken Sie "Aktualisieren", um Objekte aus dem ioBroker zu laden. ![Schieberegler](../../../en/adapterref/iobroker.mobile/img/starting5.png)
+Gehen Sie zur mobilen Seite, klicken Sie auf "Info" (oben rechts) und klicken Sie auf "Aktualisieren", um Objekte von ioBroker zu laden. ![Schieberegler](../../../en/adapterref/iobroker.mobile/img/starting5.png)
 
-Nach dem Neuladen können Sie zu "Zoll => Kontrollen" gehen. ![Schieberegler](../../../en/adapterref/iobroker.mobile/img/starting6.png)
+Nach dem Nachladen können Sie zu "Zoll => Kontrollen" ![Schieberegler](../../../en/adapterref/iobroker.mobile/img/starting6.png) gehen
 
 ## Unterstützte Typen
-### Sliders:
+### Schieberegler:
 ![Schieberegler](../../../en/adapterref/iobroker.mobile/img/widget-slider.png)
 
-    - role = "level.dimmer"
-    - role = "level.blind"
-    - Rolle besteht aus "level", common.type ist "number", common.write ist "true" und common.max ist definiert
-    - common.type = "number", common.write ist "true" und common.max ist definiert
+    - role = "level.dimmer"
+    - role = "level.blind"
+    - Die Rolle besteht aus "Ebene", common.type ist "number", common.write ist "true" und common.max ist definiert
+    - common.type = "number", common.write ist "true" und common.max ist definiert
 
 Beispiel:
 
@@ -60,13 +60,13 @@ Beispiel:
 }
 ```
 
-Schaltflächen (muss im Bearbeitungsmodus explizit sichtbar sein):
+### Schaltflächen (müssen explizit im Bearbeitungsmodus sichtbar sein):
 ![Taste](../../../en/adapterref/iobroker.mobile/img/widget-button.png)
 
-    - Rolle besteht aus "Button"
-    - Rolle besteht aus "Aktion"
+    - Rolle besteht aus "Knopf"
+    - Rolle besteht aus "Aktion"
 
-Schaltflächen sind standardmäßig nicht sichtbar. Sie schreiben nur "wahr", wenn sie gedrückt werden.
+Schaltflächen sind standardmäßig unsichtbar. Sie schreiben nur "wahr", wenn sie gedrückt werden.
 
 Beispiel:
 
@@ -87,7 +87,7 @@ Beispiel:
 ### Schalter:
 ![Schalter](../../../en/adapterref/iobroker.mobile/img/widget-switch.png)
 
-    - common.type = "boolean", common.write ist "true"
+    - common.type = "boolean", common.write ist "true"
 
 Beispiel:
 
@@ -104,10 +104,10 @@ Beispiel:
 }
 ```
 
-### Set mit Eingabefeld:
+### Mit Eingabefeld einstellen:
 ![Eingabefeld](../../../en/adapterref/iobroker.mobile/img/widget-input-number.png)
 
-    - common.type = "number", common.max ist undefined, common.write ist "true", common.states ist undefined
+    - common.type = "number", common.max ist undefiniert, common.write ist "true", common.states ist undefiniert
 
 Beispiel:
 
@@ -124,10 +124,10 @@ Beispiel:
 }
 ```
 
-### Set mit Zuständen:
+### Mit Status setzen:
 ![Zustände](../../../en/adapterref/iobroker.mobile/img/widget-value-states.png)
 
-    - common.type = "number", common.max ist undefiniert, common.write ist "true", common.states ist definiert
+    - common.type = "number", common.max ist undefiniert, common.write ist "true", common.states ist definiert
 
 Beispiel:
 
@@ -151,7 +151,7 @@ Beispiel:
 ### Booleschen Wert anzeigen:
 ![Boolescher Wert](../../../en/adapterref/iobroker.mobile/img/widget-value-boolean.png)
 
-    - common.write ist "false" und common.type ist "boolean".
+    - common.write ist "false" und common.type ist "boolean"
 
 Beispiel:
 
@@ -170,7 +170,7 @@ Beispiel:
 ### Wert anzeigen:
 ![Zahlenwert](../../../en/adapterref/iobroker.mobile/img/widget-value-number.png)
 
-    - common.write ist "false" und common.type ist nicht "boolean".
+    - common.write ist "false" und common.type ist nicht "boolean"
 
 Beispiel:
 
@@ -189,10 +189,12 @@ Beispiel:
 
 ## Machen:
 - Bearbeiten des Symbols
-- Zeigt einige Widgets mit mehr Symbolen an
+- Einige Widgets mit mehr Symbolen anzeigen
 - Tablet-Ansicht
 
 ## Changelog
+### 1.0.1 (2020-08-22)
+* (bluefox) The compatibility to socket.io 3.0.13 provided
 
 ### 1.0.0 (2019-01-30)
 * (ldittmar) Add translations

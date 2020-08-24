@@ -29,6 +29,9 @@ npx -p ring-client-api ring-auth-cli
 or
 ```
 # Unix 
+cd /opt/iobroker/node_modules/iobroker.ring/
+npm i ring-client-api
+
 cd /opt/iobroker/node_modules/iobroker.ring/node_modules/ring-client-api
 node ring-auth-cli
 ```
@@ -59,6 +62,9 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 ```
 
 ## Changelog
+
+### 1.1.4 (23.05.2020)
+* (Stübi) Add new libraries  
 
 ### 1.1.3 (06.05.2020)
 * (Stübi) Fixed error of missing objects 

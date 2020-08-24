@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.places/README.md
 title: ioBroker.places
-hash: Y3qrEVT0D5Z47UdslJXhFWCr5b+utPPUNIt7Du1Kmqo=
+hash: 8+QNTj+EEePm/n7FPJqzRkURNPQcB/Ho3QnbrSqFFd0=
 ---
 ![Logo](../../../en/adapterref/iobroker.places/admin/places.png)
 
@@ -17,25 +17,22 @@ hash: Y3qrEVT0D5Z47UdslJXhFWCr5b+utPPUNIt7Du1Kmqo=
 
 # IoBroker.places
 ## Beschreibung
-Dies ist ein ioBroker-Adapter zum Verarbeiten von Standortinformationsnachrichten, der einen Benutzer, eine Geoposition und einen Zeitstempel enthalten muss. Die Adapter analysieren, ob sich die Standortinformationen in einem Umkreis um die Standortkonfiguration von ioBroker oder optional an anderen Orten befinden.
+Dies ist ein ioBroker-Adapter zum Verarbeiten von Standortinformationsnachrichten, die mindestens einen Benutzer, eine Geoposition und einen Zeitstempel enthalten sollten.
+Der Adapter analysiert, ob sich die Standortinformationen innerhalb eines Radius um die Standortkonfiguration von ioBroker oder optional an anderen Orten befinden.
 
 ## Aufbau
-Es gibt nur einen obligatorischen Konfigurationswert: den Radius (Meter), anhand dessen der aktuelle Standort eines Benutzers ermittelt wird. Der Speicherort von ioBroker wird verwendet, um Benutzer zu identifizieren, die "zu Hause" sind, andere Orte können als Teil der Konfiguration hinzugefügt werden.
+Es gibt nur einen obligatorischen Konfigurationswert: den Radius (Meter), mit dem der aktuelle Standort eines Benutzers ermittelt wird.
+Der Speicherort von ioBroker wird verwendet, um Benutzer zu identifizieren, die "zu Hause" sind. Andere Orte können als Teil der Konfiguration hinzugefügt werden.
 
-* **Radius** (_mandatory_) sollte der Radius in Metern sein, der verwendet wird, um zu überprüfen, ob sich der Benutzer an einem bestimmten Ort (zu Hause oder benutzerdefiniert) befindet.
-
+* **Radius** (_mandatory_) sollte der Radius in Metern sein, der verwendet wird, um zu überprüfen, ob sich der Benutzer an einem bestimmten Ort befindet (zu Hause oder benutzerdefiniert).
 * **Name für Zuhause** kann verwendet werden, um einen benutzerdefinierten Namen für den Heimatort festzulegen.
-
-* **Google Maps-API-Schlüssel** wird zur Aktivierung der Geokodierung verwendet. Ein fehlender API-Schlüssel wird von einer konfigurierten vis-map-Instanz abgerufen (sofern verfügbar), wenn die Konfigurationsseite geöffnet wurde.
-
-* **Google Maps Geocoding** kann aktiviert werden, um eine reale Adresse und eine Höhe für eine bereitgestellte Geoposition zu erhalten.
-
-* **Orte** ist eine flexible Liste mit benutzerdefinierten Orten, an denen jeder Ort gültige Werte für Name, Breitengrad und Längengrad enthalten sollte.
-
+* **Der Google Maps API-Schlüssel** wird zum Aktivieren der Geocodierung verwendet. Ein fehlender API-Schlüssel wird von einer konfigurierten vis-map-Instanz (falls verfügbar) abgerufen, wenn die Konfigurationsseite geöffnet wurde.
+* **Google Maps Geocoding** kann aktiviert werden, um eine echte Adresse und eine Höhe für eine angegebene Geoposition zu erhalten.
+* **Orte** ist eine flexible Liste mit benutzerdefinierten Orten, an denen jeder Ort gültige Werte für Name, Breite und Länge haben sollte.
 * **Benutzer** ist eine flexible Liste mit Benutzerzuordnungen.
 
-## Verwendungszweck
-Um die Standortaktualisierung durchzuführen, senden Sie einfach eine Nachricht mit der folgenden Syntax:
+## Verwendung
+Um die Standortaktualisierung zu verarbeiten, senden Sie einfach eine Nachricht mit der folgenden Syntax:
 
 ```
 // send a message to all instances of places adapter
@@ -83,20 +80,20 @@ Der folgende Block zeigt, wie Antwortnachrichten aussehen. Für jeden Wert hat d
 
 ## Beispiel: OwnTracks + ioBroker.iot + ioBroker.places
 ### 1. Konfigurieren Sie iobroker.iot
-Fügen Sie einen benutzerdefinierten Dienst **xyz** unter **Whitelist für Dienste** hinzu.
+Fügen Sie unter **Weiße Liste für Dienste** einen benutzerdefinierten Dienst **xyz** hinzu.
 
-### 2. Konfigurieren Sie die Mobile Apps von OwnTracks
-Ändern Sie den Modus in **HTTP Private** und verwenden Sie die folgende Adresse als **Host** https://iobroker.pro/service/custom_xyz/ <Benutzeranwendung-Schlüssel>
+### 2. Konfigurieren Sie die mobilen OwnTracks-Apps
+Ändern Sie den Modus in **HTTP Private** und verwenden Sie die folgende Adresse als **Host** https://iobroker.pro/service/custom_xyz/ <user-app-key>
 
 ### 3. Konfigurieren Sie iobroker.places
-Auf der Registerkarte Integration müssen Sie die Instanz des Cloud-Adapters und **xyz** als Dienst auswählen. Der Adapter überwacht eingehende Anforderungen für den Dienst und startet die Verarbeitung.
+Auf der Registerkarte Integration müssen Sie die Instanz des Cloud-Adapters und **xyz** als Service auswählen. Der Adapter hört eingehende Anforderungen für den Dienst ab und startet die Verarbeitung.
 
 ## Beispiel: Telegramm + ioBroker.telegram + ioBroker.places
 ### 1. Konfigurieren Sie iobroker.telegram
-Aktivieren Sie die Option zum Speichern von unbearbeiteten Anforderungen.
+Aktivieren Sie die Option zum Speichern von Rohanforderungen.
 
 ### 2. Skript erstellen (ioBroker.javascript)
-Erstellen Sie ein kurzes Skript mit einem Abonnement für die Rohanfrage, z. B. von **telegram.0.communicate.requestRaw** und senden Sie ein neues Anforderungsobjekt an iobroker.places (oder eine Instanz davon):
+Erstellen Sie ein kurzes Skript mit einem Abonnement für die Rohanforderung, z. von **telegram.0.communicate.requestRaw** und senden Sie ein neues Anforderungsobjekt an iobroker.places (oder eine Instanz davon):
 
 ```
 on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
@@ -113,9 +110,12 @@ on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
 ```
 
 ## Credits
-Die Implementierung basiert teilweise auf dschaedls [ioBroker.geofency] (https://github.com/ioBroker/ioBroker.geofency) an. Das Logo stammt von [Free Icons PNG](http://www.freeiconspng.com/images/maps-icon) und wurde geändert, um einen transparenten Hintergrund zu haben.
+Die Implementierung basiert teilweise auf dschaedls [ioBroker.geofency] (https://github.com/ioBroker/ioBroker.geofency) Adapter. Das Logo wurde aus [Free Icons PNG](http://www.freeiconspng.com/images/maps-icon) und wurde geändert, um einen transparenten Hintergrund zu haben.
 
 ## Changelog
+### 1.0.0 (2020-08-16)
+* (bluefox) Updated packages
+* (bluefox) Refactoring
 
 ### 0.7.0 (2019-01-12)
 * (BasGo) Added compact mode, replaced integration of iobroker.cloud with iobroker.iot
@@ -172,4 +172,4 @@ Die Implementierung basiert teilweise auf dschaedls [ioBroker.geofency] (https:/
 
 This adapter is licensed under the [MIT License](../blob/master/LICENSE) which is part of this repository.
 
-Copyright (c) 2018-2019 BasGo <basgo@gmx.de>
+Copyright (c) 2018-2020 BasGo <basgo@gmx.de>

@@ -232,6 +232,10 @@ The supported commands are:
 - Widget at the time without function
 
 ## Changelog
+### 2.2.3 (2020-08-20)
+* (dirkhe) room DP are not deleted, on map change 
+### 2.2.0 (2020-08-13)
+* (MeisterTR) add test for Viomi and Dreame Api 
 ### 2.1.1 (2020-07-10)
 * (bluefox) Refactoring
 * (bluefox) Support of compact mode added

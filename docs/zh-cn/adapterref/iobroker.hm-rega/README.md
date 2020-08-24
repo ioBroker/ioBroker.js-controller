@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
+hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ---
 ![商标](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
@@ -22,7 +22,7 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 
 如果要将多个中央单元集成到ioBroker中，则必须为每个中央单元安装并配置一个单独的实例。
 
-安装ReGaHSS时，还将安装“ hm-rpc”适配器的实例，应事先对其进行配置和激活。
+安装ReGaHSS后，将安装适配器“ hm-rpc”的实例，应事先对其进行配置和激活。
 
 此适配器的一个实例最多可以管理5个不同的Homematic RPC适配器实例，这些实例提供不同的服务（每个服务都需要自己的RPC实例）：
 
@@ -34,14 +34,14 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 
 ###安装之前的要求
 -Homematic网关（CCU / CCU2 / CCU3…）*或*
--带有适当软件（piVCCU（* x）*，RaspberryMatic或类似软件）的无线电模块
+-带有合适软件（piVCCU（* x）*，RaspberryMatic或类似软件）的无线电模块
 
 ##安装
 适配器的实例是通过ioBroker管理界面安装的。
 
 安装完成后，配置窗口将自动打开。
 
-在实际配置之前，应创建和配置HM-RPC适配器的实例（与此适配器一起创建），或者在必要时创建和配置其他HM-RPC实例。
+在实际配置之前，应创建和配置HM-RPC适配器的实例（与此适配器一起创建），或在必要时创建和配置其他HM-RPC实例。
 
 ##配置
 ![](../../../de/adapterref/iobroker.hm-rega/media/01c7dbc4da0240421b0711b331971d2d.png)**上方的选择菜单**
@@ -61,26 +61,26 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 
 轮询
 
-如果激活，则RegaHSS数据将由CCU根据“间隔”字段中设置的秒数定期进行轮询。不应将时间间隔设置得太短，因为太频繁的轮询会导致CCU崩溃。
+如果激活，则CCU会根据“间隔”字段中设置的秒数定期查询RegaHSS数据。间隔不应设置得太低，因为太频繁的轮询会导致CCU崩溃。
 
 触发
 
-为了最大程度地减少从ioBroker到RegaHSS的活动查询，进行更改后，触发器还可以将数据推送到程序内CCU上。
-为此，可以使用CCU程序中触发的CCU虚拟按钮。默认情况下，这是BidCosRF.50.PRESS_SHORT按钮（请参见示例程序）。
+为了最大程度地减少从ioBroker到RegaHSS的活动查询，触发器也可以在进行更改时将数据推送到程序内CCU上。
+为此，可以使用CCU程序中触发的CCU上的虚拟按钮。默认情况下，这是BidCosRF.50.PRESS_SHORT键（请参阅示例程序）。
 
 ###同步区域
-用户可以在此处指定将哪些信息从CCU传输到ioBroker。然后在ioBroker中创建相应的对象和数据点。
+用户可以在此处指定要将哪些信息从CCU传输到ioBroker。然后在ioBroker中创建相应的对象和数据点。
 
--DutyCycle：激活占空比指示（以％为单位）
+-DutyCycle：激活占空比指示（％）
 -变量：激活从CCU传输系统变量
 -程序：从CCU激活程序名称的传输
 -名称：激活从CCU传输数据点的纯文本名称
--收藏夹：激活收藏夹的传输和列出
--房间：激活房间的采用并列出房间
--交易：激活交易的转移并列出它们
+-收藏夹：激活收藏夹的传送和列表
+-房间：激活房间的接管并列出房间
+-交易：激活交易的转移及其列表
 
 ###其他设置区域
-用户可以在此处决定是否应使用https（加密和防窃听的连接）。如果激活，则需要用户名和密码
+用户可以在此处决定是否应使用https（加密和防窃听连接）。如果激活，则需要用户名和关联的密码
 
 完成所有设置后，使用“保存并关闭”命令（设置区域下方的按钮）关闭配置页面。关闭适配器，并使用新值启动实例。
 
@@ -108,6 +108,13 @@ CCU和信息文件夹包含网关的基本信息。
 ＃＃＃ 常问问题
 
 ## Changelog
+### 2.6.19 (2020-08-23)
+* (foxriver76) fixed issue on syncing service message counter when invisible variables are synchronized
+* (foxriver76) fixed issue where value list variables are a string instead of an integer
+
+### 2.6.17 (2020-08-17)
+* (foxriver76) fix for % scaling of float numbers
+
 ### 2.6.15 (2020-08-08)
 * (foxriver76) fix potential issues with scaling of % values as in https://github.com/ioBroker/ioBroker.hm-rpc/issues/263
 

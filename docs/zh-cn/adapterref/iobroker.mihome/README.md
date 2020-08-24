@@ -134,6 +134,8 @@ hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 这些说明是根据我们的知识和信念而制作的。
 
 ## Changelog
+### 1.3.1 (2020-08-19)
+- (Diginix) Fixed calculation for sensor's battery percentage
 
 ### 1.3.0 (2020-01-16)
 * (algar42) Ability to add devices with missing model by their SID ([e.g. for Aqara two-channel relay](https://github.com/algar42/ioBroker.mihome#usage))

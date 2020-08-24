@@ -96,6 +96,9 @@ iobroker upload tr-064
 
 ## Changelog
 
+### 4.0.13 (2020-08-17)
+* (Apollon77) Crash prevented (Sentry IOBROKER-TR-064-10)
+
 ### 4.0.12 (2020-08-06)
 * (Apollon77) Crash prevented (Sentry IOBROKER-TR-064-Y)
 

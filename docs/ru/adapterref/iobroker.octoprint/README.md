@@ -3,31 +3,46 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.octoprint/README.md
 title: ioBroker.octoprint
-hash: zZau9Lp7utfo7BOlW8no1PTb/CdiqnHUnL5gHF6P5w8=
+hash: abg3z/tq5hJF+SkNY+lPHM8HD9xgDiM2TVLLIL9GiuU=
 ---
-![логотип](../../../en/adapterref/iobroker.octoprint/admin/octoprint.png)
+![Логотип](../../../en/adapterref/iobroker.octoprint/admin/octoprint.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.octoprint.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.octoprint.svg)
-![стабильный](http://iobroker.live/badges/octoprint-stable.svg)
+![Стабильный](http://iobroker.live/badges/octoprint-stable.svg)
 ![установлены](http://iobroker.live/badges/octoprint-installed.svg)
 ![Статус зависимости](https://img.shields.io/david/klein0r/iobroker.octoprint.svg)
 ![Известные уязвимости](https://snyk.io/test/github/klein0r/ioBroker.octoprint/badge.svg)
 ![Статус сборки](http://img.shields.io/travis/klein0r/ioBroker.octoprint.svg)
-![NPM](https://nodei.co/npm/iobroker.octoprint.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.octoprint.png?downloads=true)
 
 # IoBroker.octoprint
 Адаптер для подключения OctoPrint к ioBroker
 
-## Особенности
+## Характеристики
+### Информация
 - Получить информацию о версии
-- получить информацию о принтере
-- Получить текущую информацию о задании на печать
-- Установите температуру инструмента
-- Установите температуру кровати
-- Подключите, отключите и домашний принтер по команде
+- Получить информацию о принтере
+- Получить информацию о текущем задании печати
+- Получить информацию о списке файлов
+
+### Температуры
+- Установить температуру инструмента
+- Установить температуру кровати
+
+### Команды
+- Принтер: подключение, отключение и домой
+- Задание: запуск, отмена, перезапуск
+- SD-карта: инициализация, обновление, выпуск
+- Пользовательские команды принтера
+- Системные команды
+- Jog X, Y и Z оси
 
 ## Changelog
+
+### 0.0.5
+
+* (klein0r) Switched to axios lib (replaced request - deprecated)
 
 ### 0.0.4
 

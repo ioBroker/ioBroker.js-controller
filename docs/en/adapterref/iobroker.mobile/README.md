@@ -1,6 +1,5 @@
 ![Logo](admin/mobile.png)
 # ioBroker.mobile
-=================
 
 ![Number of Installations](http://iobroker.live/badges/mobile-installed.svg) ![Number of Installations](http://iobroker.live/badges/mobile-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.mobile.svg)](https://www.npmjs.com/package/iobroker.mobile)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.mobile.svg)](https://www.npmjs.com/package/iobroker.mobile)
@@ -201,6 +200,8 @@ Example:
 - tablet view
 
 ## Changelog
+### 1.0.1 (2020-08-22)
+* (bluefox) The compatibility to socket.io 3.0.13 provided
 
 ### 1.0.0 (2019-01-30)
 * (ldittmar) Add translations

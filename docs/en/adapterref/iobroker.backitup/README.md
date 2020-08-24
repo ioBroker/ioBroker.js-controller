@@ -183,6 +183,9 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 ## Changelog
 
+### 1.6.1 (24.08.2020)
+* (Apollon77) several fixes and optimizations
+
 ### 1.6.0 (03.08.2020)
 * (Jey-Cee/simatec) adapter configuration revised
 

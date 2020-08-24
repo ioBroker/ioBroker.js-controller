@@ -868,7 +868,7 @@ Settings that are not listed in the table below are self-explanatory.
     <tbody>
         <tr>
             <td>barIsStacked</td>
-            <td>stacked bar</td>
+            <td>stacked bar. If you have a comined chart (Line + stacked Bar), then you must also set this value for the line dataset!</td>
             <td>boolean</td>
             <td>false, true</td>
         </tr>

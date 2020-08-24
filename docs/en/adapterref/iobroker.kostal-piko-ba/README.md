@@ -21,6 +21,24 @@ To connect to the Kostal Pico BA inverter type in its IP-address in the config.
 
 ## Changelog
 
+### 0.8.3 (23.08.2020)
+* (HombachC) bumped eslint
+
+### 0.8.3 (22.08.2020)
+* (HombachC) bumped dependencies
+
+### 0.8.2 (18.08.2020)
+* (HombachC) changed scheduling code
+
+### 0.8.1 (18.08.2020)
+* (HombachC) fixed typos in translations
+
+### 0.8.0 (18.08.2020)
+* (HombachC) seperate editable poll timer for statistics data
+
+### 0.7.7 (16.08.2020)
+* (HombachC) fix error with timeout
+
 ### 0.7.6 (26.07.2020)
 * (HombachC) code cleanup
 
@@ -29,9 +47,6 @@ To connect to the Kostal Pico BA inverter type in its IP-address in the config.
 
 ### 0.7.4 (03.07.2020)
 * (HombachC) added sentry.io support
-
-### 0.7.1 (29.06.2020)
-* (HombachC) code optimizations
 
 ### 0.6.1 (28.06.2020)
 * (HombachC) poll of statistics data separated
@@ -44,9 +59,6 @@ To connect to the Kostal Pico BA inverter type in its IP-address in the config.
 
 ### 0.3.0 (19.06.2020)
 * (HombachC) updated dependency 'got' to 11.3.0
-
-### 0.2.5 (17.06.2020)
-* (HombachC) added tests for node.js 14
 
 ### 0.2.0 (15.06.2020)
 * (HombachC) debug phase finished

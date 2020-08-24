@@ -3,39 +3,36 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.places/README.md
 title: ioBroker.places
-hash: Y3qrEVT0D5Z47UdslJXhFWCr5b+utPPUNIt7Du1Kmqo=
+hash: 8+QNTj+EEePm/n7FPJqzRkURNPQcB/Ho3QnbrSqFFd0=
 ---
-![логотип](../../../en/adapterref/iobroker.places/admin/places.png)
+![Логотип](../../../en/adapterref/iobroker.places/admin/places.png)
 
 ![Количество установок](http://iobroker.live/badges/places-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.places.svg)
 ![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.places.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.places.svg)
-![Github Issues](http://githubbadges.herokuapp.com/iobroker-community-adapters/ioBroker.places/issues.svg)
-![Трэвис-CI](https://img.shields.io/travis/iobroker-community-adapters/ioBroker.places/master.svg)
+![Проблемы с Github](http://githubbadges.herokuapp.com/iobroker-community-adapters/ioBroker.places/issues.svg)
+![Трэвис-Си](https://img.shields.io/travis/iobroker-community-adapters/ioBroker.places/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/eobyt279ncmd9qbi/branch/master?svg=true)
 
 # IoBroker.places
 ## Описание
-Это адаптер ioBroker для обработки сообщений с информацией о местоположении, который должен содержать как минимум пользователя, геопозицию и временную метку. Адаптеры анализируют, находится ли информация о местоположении в радиусе вокруг конфигурации местоположения ioBroker или дополнительных других мест.
+Это адаптер ioBroker для обработки сообщений с информацией о местоположении, которые должны содержать как минимум пользователя, географическое положение и временную метку.
+Адаптеры анализируют, находится ли информация о местоположении в радиусе от конфигурации местоположения ioBroker или, возможно, в других местах.
 
 ## Конфигурация
-Существует только одно обязательное значение конфигурации: радиус (в метрах), который будет использоваться для определения текущего местоположения пользователя. Местоположение ioBroker используется для идентификации пользователей, находящихся «дома», другие места могут быть добавлены как часть конфигурации.
+Есть только одно обязательное значение конфигурации: радиус (в метрах), который будет использоваться для определения текущего местоположения пользователя.
+Местоположение ioBroker используется для идентификации пользователей, находящихся «дома», другие места могут быть добавлены как часть конфигурации.
 
-* **Радиус** (_mandatory_) должен быть радиусом в метрах, используемым для проверки того, находится ли пользователь в определенном месте (дома или на заказ).
-
-* **Имя для дома** можно использовать для установки собственного имени для домашнего места.
-
-* **Ключ API Карт Google** будет использоваться для включения геокодирования. Отсутствующий ключ API будет извлечен из настроенного экземпляра vis-map (если он доступен), когда откроется страница конфигурации.
-
-* **Геокодирование Карт Google** можно активировать, чтобы получить реальный адрес и высоту для заданной геопозиции.
-
-* **Места** - это гибкий список, содержащий пользовательские места, где каждое место должно иметь допустимые значения имени, широты и долготы.
-
+* **Радиус** (_обязательный_) должен быть радиусом в метрах, используемым для проверки, находится ли пользователь в определенном месте (дома или в другом месте).
+* **Имя дома** можно использовать для установки собственного имени для дома.
+* **Ключ API Карт Google** будет использоваться для включения геокодирования. Отсутствующий ключ API будет извлечен из настроенного экземпляра vis-map (если доступен) при открытии страницы конфигурации.
+* **Google Maps Geocoding** можно активировать, чтобы получить реальный адрес и высоту для заданного географического положения.
+* **Places** - это гибкий список, содержащий настраиваемые места, где каждое место должно иметь допустимые значения для имени, широты и долготы.
 * **Пользователи** - это гибкий список, содержащий сопоставления пользователей.
 
 ## Использование
-Для обработки обновления местоположения просто отправьте сообщение, используя следующий синтаксис:
+Чтобы обработать обновление местоположения, просто отправьте сообщение, используя следующий синтаксис:
 
 ```
 // send a message to all instances of places adapter
@@ -63,8 +60,8 @@ sendTo('locations.0', {
 }, function (res) { log(JSON.stringify(res)); });
 ```
 
-## Структура для возвращаемых сообщений
-Следующий блок показывает, как выглядят ответные сообщения. Для каждого значения дерево объектов ioBroker имеет соответствующее состояние.
+## Структура возвращенных сообщений
+В следующем блоке показано, как выглядят ответные сообщения. Для каждого значения дерево объектов ioBroker имеет соответствующее состояние.
 
 ```
 {
@@ -82,21 +79,21 @@ sendTo('locations.0', {
 ```
 
 ## Пример: OwnTracks + ioBroker.iot + ioBroker.places
-### 1. Настройте iobroker.iot
-Добавить пользовательские услуги **xyz** в **Белый список для услуг**
+### 1. Настроить iobroker.iot
+Добавьте настраиваемые службы **xyz** в **Белый список служб**
 
 ### 2. Настройка мобильных приложений OwnTracks
 Измените режим на **HTTP Private** и используйте следующий адрес в качестве **Host** https://iobroker.pro/service/custom_xyz/ <user-app-key>
 
-### 3. Настроить iobroker.places
-На вкладке Интеграция необходимо выбрать экземпляр облачного адаптера и **xyz** в качестве службы. Адаптер прослушает входящие запросы на услугу и начнет обработку.
+### 3. Настройте iobroker.places
+На вкладке «Интеграция» необходимо выбрать экземпляр облачного адаптера и **xyz** в качестве службы. Адаптер будет прослушивать входящие запросы к службе и запускать обработку.
 
 ## Пример: Telegram + ioBroker.telegram + ioBroker.places
 ### 1. Настроить iobroker.telegram
-Включите опцию **для хранения необработанных запросов**
+Включите опцию **хранить сырые запросы**
 
 ### 2. Создать скрипт (ioBroker.javascript)
-Создайте короткий скрипт с подпиской на необработанный запрос, например из **telegram.0.communicate.requestRaw** и отправьте новый объект запроса в iobroker.places (или его экземпляр):
+Создайте короткий скрипт с подпиской на необработанный запрос, например. из **telegram.0.communicate.requestRaw** и отправьте новый объект запроса в iobroker.places (или его экземпляр):
 
 ```
 on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
@@ -113,9 +110,12 @@ on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
 ```
 
 ## Кредиты
-Реализация частично основана на dschaedls [ioBroker.geofency] (https://github.com/ioBroker/ioBroker.geofency) адаптер. Логотип был взят из [Бесплатные иконки PNG](http://www.freeiconspng.com/images/maps-icon) и была изменена, чтобы иметь прозрачный фон.
+Реализация частично основана на dschaedls [ioBroker.geofency] (https://github.com/ioBroker/ioBroker.geofency). Логотип был взят из [Бесплатные иконки PNG](http://www.freeiconspng.com/images/maps-icon) и была изменена для обеспечения прозрачного фона.
 
 ## Changelog
+### 1.0.0 (2020-08-16)
+* (bluefox) Updated packages
+* (bluefox) Refactoring
 
 ### 0.7.0 (2019-01-12)
 * (BasGo) Added compact mode, replaced integration of iobroker.cloud with iobroker.iot
@@ -172,4 +172,4 @@ on({id: "telegram.0.communicate.requestRaw", change: "ne"}, function (obj) {
 
 This adapter is licensed under the [MIT License](../blob/master/LICENSE) which is part of this repository.
 
-Copyright (c) 2018-2019 BasGo <basgo@gmx.de>
+Copyright (c) 2018-2020 BasGo <basgo@gmx.de>

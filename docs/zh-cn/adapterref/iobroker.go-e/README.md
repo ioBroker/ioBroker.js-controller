@@ -3,16 +3,16 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.go-e/README.md
 title: ioBroker.go充电器
-hash: f7NZEeyH8CmA8AVvVeOa22e9SopqZuIWzx2E5wfAYF4=
+hash: 8XGVp8IUazkVL8O7QjH7YCwsN0vP19tnu4k4lIQ9rXA=
 ---
 ![商标](../../../en/adapterref/iobroker.go-e/admin/go-echarger.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.go-e.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.go-e.svg)
-![安装数量（最新）](http://iobroker.live/badges/go-echarger-installed.svg)
-![安装数量（稳定）](http://iobroker.live/badges/go-echarger-stable.svg)
-![依赖状态](https://img.shields.io/david/MK-2001/iobroker.go-echarger.svg)
-![已知漏洞](https://snyk.io/test/github/MK-2001/ioBroker.go-echarger/badge.svg)
+![安装数量（最新）](http://iobroker.live/badges/go-e-installed.svg)
+![安装数量（稳定）](http://iobroker.live/badges/go-e-stable.svg)
+![依赖状态](https://img.shields.io/david/MK-2001/iobroker.go-e.svg)
+![已知漏洞](https://snyk.io/test/github/MK-2001/ioBroker.go-e/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.go-e.png?downloads=true)
 
 ＃ioBroker.go-echarger
@@ -20,9 +20,12 @@ hash: f7NZEeyH8CmA8AVvVeOa22e9SopqZuIWzx2E5wfAYF4=
 ![产品图片](../../../en/adapterref/iobroker.go-e/admin/go-eCharger-HOME-Wallbox.png)有关更多详细信息，请访问https://go-e.co/
 
 ## IoBroker的go-eCharger适配器
-** EN ** go-e是电动移动的邀请。电动汽车是我们的动力，而我们的核心竞争力是电动汽车的充电技术。从单个的电动汽车充电站到光伏连接再到整个建筑物的负荷管理，我们都是满足现代电动汽车所有要求的整体系统解决方案提供商。
+** EN ** go-e是电动移动的邀请。电动汽车是我们的动力，而我们的核心竞争力是电动汽车的充电技术。从用于电动汽车的单个充电站到光伏连接，再到整个建筑物的负载管理，我们都是满足现代电动汽车所有要求的整体系统解决方案提供商。
 
 ** DE ** Aufforderung，Sich Elektrisch zu bewegen。 e-Mobilitätist unser Antrieb，wobei unsere Kernkompetenz die LadetechnikfürElektroautos ist。冯·e·恩泽尔嫩·莱德斯特在电动汽车上的应用
+
+##适配器手册
+您可以在此处找到《安装和配置手册》：[适配器手册](./docs/Readme.md)
 
 ##开发人员手册
 官方API文档：https：//github.com/goecharger/go-eCharger-API-v1
@@ -34,17 +37,7 @@ hash: f7NZEeyH8CmA8AVvVeOa22e9SopqZuIWzx2E5wfAYF4=
 
 ## Changelog
 
-### 0.0.1
-* (MK-2001) initial release
-
-### 0.0.2
-* (MK-2001) added requirements to publish the adapter
-
-### 0.0.3
-* (MK-2001) added requirements to publish the adapter again, enabled new writeable interfaces: Access State (ast), Allow Charging (alw), stop_state: ​Automatische Abschaltung (stp), max_load
-
-### 0.0.4
-* (MK-2001, Trunks1982) solved bug with different names.
+[moved here](./docs/CHANGELOG.md)
 
 ## License
                                  Apache License

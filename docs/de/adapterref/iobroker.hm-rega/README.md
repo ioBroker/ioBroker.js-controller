@@ -145,6 +145,13 @@ Abschließend sind die in der CCU angelegten Variablen aufgelistet
 ### FAQ
 
 ## Changelog
+### 2.6.19 (2020-08-23)
+* (foxriver76) fixed issue on syncing service message counter when invisible variables are synchronized
+* (foxriver76) fixed issue where value list variables are a string instead of an integer
+
+### 2.6.17 (2020-08-17)
+* (foxriver76) fix for % scaling of float numbers
+
 ### 2.6.15 (2020-08-08)
 * (foxriver76) fix potential issues with scaling of % values as in https://github.com/ioBroker/ioBroker.hm-rpc/issues/263
 

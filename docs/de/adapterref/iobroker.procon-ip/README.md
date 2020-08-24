@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.procon-ip/README.md
 title: ioBroker.procon-ip
-hash: WHThC2C72ZK1XeH7fiMjD2Xk2dKMo/A1XKd1OFx4/oc=
+hash: lq6aPK/f3jS9/9tJe0w5W2aqj7uiH6EZYy7TeaZuxg4=
 ---
 ![Logo](../../../en/adapterref/iobroker.procon-ip/admin/iobroker-procon-ip.png)
 
@@ -18,7 +18,7 @@ hash: WHThC2C72ZK1XeH7fiMjD2Xk2dKMo/A1XKd1OFx4/oc=
 # IoBroker.procon-ip
 ## ProCon.IP Pool Control Adapter für ioBroker
 ioBroker-Adapter zur grundlegenden Unterstützung der ProCon.IP-Schwimmbadsteuereinheit. Es ist für die Integration in Ihre ioBroker-Hausautomation vorgesehen, z.
-um eine Logik zu erstellen, an der andere Geräte beteiligt sind, oder einfach mit Ihren bevorzugten Sprachassistenten gekoppelt zu werden:
+um eine Logik zu erstellen, an der andere Geräte beteiligt sind, oder um einfach mit Ihren bevorzugten Sprachassistenten gekoppelt zu werden:
 
 * Sie können die [_cloud_] (https://github.com/ioBroker/ioBroker.cloud) oder verwenden
 
@@ -54,23 +54,10 @@ Der Adapter verwendet die `/GetState.csv`-API des ProCon.IP, um seine Werte abzu
 Derzeit wurde der Adapter in Kombination mit der ProCon.IP-Firmware **Version 1.7.0.c** getestet und entwickelt.
 
 ## Roadmap
-### 1.0.0
-** Stabile Version: ** Dies sollte der Release-Kandidat für das offizielle ioBroker-Adapter-Repository werden. Da dies buchstäblich ein Meilenstein für dieses Projekt ist, habe ich einen solchen für die relevanten Themen erstellt, um den Fortschritt zu verfolgen und dies für Sie transparenter zu machen.
+### 1.x.x.
+Es gibt nichts Besonderes auf dem Plan. Sie können ein Problem erstellen, um neue Features / Funktionen vorzuschlagen ...
 
-* Beheben Sie alle offenen [Meilensteinprobleme] (https://github.com/ylabonte/ioBroker.procon-ip/milestone/1).
-
-  in Bezug auf diejenigen, die sich aus den [Adapter Überprüfung](https://github.com/ioBroker/ioBroker.repositories/pull/756#issuecomment-646988248) ergeben)
-
-* ~~ Dokumentation hinzufügen (mach das Github-Wiki nützlich / hilfreich) ~~
-* ~~ Verbindungsstatus einschließlich Zeitstempel der letzten Aktualisierung und Systeminformationen von anzeigen
-
-die ProCon.IP in der Registerkartenansicht (kann durch Aktivieren des entsprechenden Menüeintrags im Admin-Adapter aktiviert werden) ~~
-
-* ~~ Automatisierte Tests bezüglich der Funktionalität des Adapters (z. B. Einheit)
-
-  Tests) ~~
-
-** Was ist mit den Punkten passiert, die jetzt durchgestrichen sind? ** Nun, die Dokumentation wurde bereits verbessert. Jetzt liegt es an Ihnen, das Wiki zu erweitern oder mich zu bitten, Probleme zu verwenden, um das Wiki oder README.md in Bezug auf einen bestimmten Inhalt zu erweitern.
+** Was ist mit den Punkten passiert, die auf der Roadmap standen, aber mit der Version 1.0.0 nicht implementiert wurden? ** Nun, die Dokumentation wurde bereits verbessert.
 Die Tab-Ansicht scheint mir ziemlich interessant zu sein. Wenn Sie eine solche Funktion schätzen würden, lassen Sie es mich einfach wissen ...
 Das Fehlen automatisierter Tests bezüglich der Funktionalität des Controllers ist ziemlich unangenehm, aber der Fokus liegt jetzt eindeutig darauf, stabil zu werden, und das Schreiben guter und nützlicher Tests für den gesamten vorhandenen Code wird viel Zeit kosten (in Bezug auf die Verwendung bezüglich des Komplexität und Zielgruppe dieses Softwareprojekts) und könnte in einem weiteren Refactoring enden. Es wird also etwas für die Zukunft sein, aber für die Version 1.0.0 nicht mehr relevant.
 
@@ -83,15 +70,35 @@ Nützliche Links für den Ansatz werden sein
 
   Ich hatte angefangen von und
 
-* das [Handbuch für Adapterentwickler] (https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md).
+* die [Anleitung für Adapterentwickler] (https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md).
 
 ## Changelog
+
+### 1.0.1
+Hotfix release:
+* Fix Object State updates  
+  For some reason the two js objects used to compare the before and after values
+  of the GetState.csv calls became the same object (before was referencing the
+  new values). That caused the adapter to never update the object states.
+
+### 1.0.0
+Official release in ioBroker adapter repository:  
+The most exciting change with this release is, that it's available from the
+ioBroker adapter repository. Hence you can just install it, without copy/
+pasting the github repo url of this adapter!
+* Fix all open [milestone issues](https://github.com/ylabonte/ioBroker.procon-ip/milestone/1)
+  especially regarding the ones resulted from the [adapter review](https://github.com/ioBroker/ioBroker.repositories/pull/756#issuecomment-646988248))
+* Add/Extend documentation
+  (see [wiki](https://github.com/ylabonte/ioBroker.procon-ip/wiki)).  
+  Now it's up to you to extend the wiki or request me using issues to extend
+  the wiki or README.md regarding a specific content.
 
 ### 0.4.1
 Bugfix release:
 * Fix write actions to the appropriate states of external relays  
-  _This will add auto-recognition on whether the external relays are activated or not
-  and therefore decide on how to handle write actions to the corresponding relay state._
+  _This will add auto-recognition on whether the external relays are activated
+  or not and therefore decide on how to handle write actions to the
+  corresponding relay state._
 
 ### 0.4.0
 Public release version:
@@ -119,8 +126,10 @@ Security update:
 Functional update and minor fixes:
 * Fix object attributes regarding the cloud adapter
 * Optimization for the cloud adapter
-    * Pre-defined `smartName` attributes for active relays and temperature sensors
-    * Recognize relays with 'light', 'licht' or 'leucht' in its name as `smartType` _LIGHT_ 
+    * Pre-defined `smartName` attributes for active relays and temperature
+      sensors
+    * Recognize relays with 'light', 'licht' or 'leucht' in its name as
+      `smartType` _LIGHT_ 
 
 ### 0.0.4
 Security update:

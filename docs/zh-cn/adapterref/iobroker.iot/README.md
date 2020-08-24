@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iot/README.md
 title: ioBroker物联网适配器
-hash: nQ78rpnrcY2c7CIE4NRRm0x4wnpm0YzYP8+/agUS/po=
+hash: s0/Kqrn23r8YPYBYI92LZRMyAPIoe+Adle42e0RVTDg=
 ---
 ![商标](../../../en/adapterref/iobroker.iot/admin/iot.png)
 
@@ -36,13 +36,13 @@ hash: nQ78rpnrcY2c7CIE4NRRm0x4wnpm0YzYP8+/agUS/po=
 -如果为true：“多功能厅”，例如“调光客厅”
 
 ###将单词与
-您可以定义将在功能和房间之间放置的单词。例如。 “在调光器起居室中”和“在调光器起居室中”将是“调光器起居室”。
+您可以定义将在功能和房间之间放置的单词。例如。 “在”中和从“调光器客厅”起将是“调光器在客厅”。
 
-但是不建议这样做，因为识别引擎必须再分析一个单词，否则可能导致误解。
+但不建议这样做，因为识别引擎必须再分析一个单词，否则可能导致误解。
 
-###开关的OFF等级
+###开关的OFF级别
 某些组由混合设备组成：调光器和开关。允许使用“ ON”和“ OFF”命令以及百分比来控制它们。
-如果命令为“设置为30％”，而* OFF级别为“ 30％”，则开关将被打开；通过命令“设置为25％”，所有开关将被关闭。
+如果命令为“设置为30％”，* OFF级别为“ 30％”，则开关将打开。通过命令“设置为25％”，所有开关将关闭。
 
 另外，如果命令为“ OFF”，那么如果实际值大于或等于“ 30％”，则适配器将记住当前的调光器级别。
 稍后，当出现新的“ ON”命令时，适配器会将调光器切换到内存中的电平而不是100％。
@@ -67,7 +67,7 @@ hash: nQ78rpnrcY2c7CIE4NRRm0x4wnpm0YzYP8+/agUS/po=
 刚才只有英语alexa支持颜色控制。
 通道必须具有以下四个角色的状态：
 
--level.color.saturation（用于检测通道），
+-level.color.saturation（检测通道所需），
 -level.color.hue，
 -level.dimmer，
 -开关（可选）
@@ -95,12 +95,12 @@ Alexa, lock the "lock name"
 房间就像：客厅，浴室，卧室。
 功能如：灯光，窗帘，暖气。
 
-必须满足以下条件才能在自动生成的列表中获取状态：
+必须满足以下条件才能在自动生成的列表中获得状态：
 
 -状态必须处于某些“功能”枚举中。
--如果未直接包含在“功能”中，则状态必须具有角色（“状态”，“开关”或“级别*”，例如level.dimmer）。
+-如果未直接包含在“功能”中，则状态必须具有角色（“状态”，“开关”或“ level。*”，例如level.dimmer）。
 
-可能是通道在“功能”中，但未声明其状态。
+可能是通道在“功能”中，但未声明自身。
 
 -状态必须是可写的：common.write = true
 -状态调光器必须具有common.type作为'number'
@@ -110,7 +110,7 @@ Alexa, lock the "lock name"
 
 状态名称将从功能和房间生成。例如。 “起居室”中的所有“灯”都将收集在虚拟设备“起居室的灯”中。
 用户无法更改此名称，因为它是自动生成的。
-但是，如果枚举名称更改，该名称也将更改。 （例如，“灯光”功能更改为“灯光”，因此“起居室灯光”将更改为“起居室灯光*”）
+但是，如果枚举名称更改，该名称也将更改。 （例如，功能“灯光”更改为“灯光”，因此“起居室灯光”将更改为“起居室灯光*”）
 
 如果状态具有common.smartName，则将忽略所有规则。在这种情况下，将仅使用智能名称。
 
@@ -119,7 +119,7 @@ Alexa, lock the "lock name"
 通过配置对话框，可以轻松删除单个状态并将其添加到虚拟组或作为单个设备。
 ![组态](../../../en/adapterref/iobroker.iot/img/configuration.png)
 
-如果该组只有一个状态，则可以将其重命名，为此将使用状态的smartName。
+如果该组只有一个状态，则可以重命名，因为将使用该状态的smartName。
 如果该组具有多个状态，则必须通过枚举名称重命名该组。
 
 要创建自己的组，用户可以安装“场景”适配器或在Javascript适配器中创建“脚本”。
@@ -180,19 +180,19 @@ or
 ### Text2command
 如果在配置对话框中定义了* text2command *实例，那么问题将发送到该实例。
 
-必须配置* text2command *，以便解析期望的短语并给出答案。
+必须配置* text2command *，以解析期望的短语并给出答案。
 
 ### Javascript
 有可能直接使用脚本处理问题。如果未选择* text2command *实例，则默认情况下将其激活。
 
 如果定义了* text2command *实例，那么此实例必须提供答案，而来自* script *的答案将被忽略。
 
-适配器将在两种状态下提供具有不同详细信息级别的详细信息
+适配器将在两种状态下提供具有不同详细程度的详细信息
 
-* **smart.lastCommand** 含接收的文本，包括有关查询类型（意图）的信息。示例：“ askDevice StatusRasenmäher”
+* **smart.lastCommand** 含接收到的文本，包括有关查询类型（意图）的信息。示例：“ askDevice StatusRasenmäher”
 * ** smart.lastCommandObj ***包含一个JSON字符串，可以将其解析为包含以下信息的对象
   * **单词**将接收到的单词包含在数组中
-  * **意图**包含查询的类型。当前可能的值为“ askDevice”，“ controlDevice”，“ actionStart”，“ actionEnd”，“ askWhen”，“ askWhere”，“ askWho”
+  * **意图**包含查询的类型。当前可能的值是“ askDevice”，“ controlDevice”，“ actionStart”，“ actionEnd”，“ askWhen”，“ askWhere”，“ askWho”
  * **deviceId** 含一个设备ID，用于标识由Amazon交付的请求发送到的设备，如果未提供，则为空字符串
  * **sessionId** 含Skill会话的sessionId，如果亚马逊说了多个命令，则应该相同，如果未提供，则为空字符串
  * **userId** 含来自设备所有者（或稍后与该技能进行交互的用户）的AmazonId，由Amazon提供，如果未提供，则为空字符串
@@ -210,7 +210,7 @@ or
 
 **通过消息返回结果到物联网实例**
 
-物联网实例还接受名称为“ alexaCustomResponse”的消息，其中包含键“ response”，该对象可以包含键** responseText **和** shouldEndSession **，如上所述。
+物联网实例还接受名称为“ alexaCustomResponse”的消息，其中包含键“ response”，并且对象可以包含键** responseText **和** shouldEndSession **，如上所述。
 物联网实例将不会对消息做出任何响应！
 
 **使用文字的脚本示例**
@@ -259,16 +259,28 @@ sendTo('iot.0', 'private', {type: 'alisa', request: OBJECT_FROM_ALISA_SERVICE}, 
 
 支持以下类型：
 
--`alexa`-使用Amazon Alexa或Amazon Custom Skill行动
+-`alexa`-使用Amazon Alexa或Amazon Custom Skill进行操作
 -`ghome`-通过Google Home与Google Actions互动
 -`alisa`-与YandexАлиса合作
 -`ifttt`-类似于IFTTT（实际上不是必需的，但出于测试目的）
+
+## YandexАлиса
+[指示](doc/alisa.md)
 
 <！-下一个版本的占位符（在该行的开头）：
 
 ### __进展中__->
 
 ## Changelog
+### 1.7.5 (2020-08-21)
+* (Apollon77) Crash prevented (Sentry IOBROKER-IOT-W)
+* (bluefox) Values for modes will be converted to numbers in Alisa
+
+### 1.7.3 (2020-08-16)
+* (bluefox) Added vacuum cleaner to Alisa
+
+### 1.7.1 (2020-08-16)
+* (bluefox) Added blinds, lock and thermostat to Alisa
 
 ### 1.6.4 (2020-08-06)
 * (Apollon77) crash prevented (Sentry IOBROKER-IOT-V)

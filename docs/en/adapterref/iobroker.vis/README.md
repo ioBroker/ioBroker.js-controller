@@ -193,6 +193,12 @@ Notice that this settings is valid only for reconnection and not for the first c
 ![Dark](img/dark_screen.png)
 
 ## Changelog
+### 1.2.10 (2020-08-23)
+* (gsicilia82/fceller) JSON strings will be parsed in VIS bindings
+
+### 1.2.9 (2020-08-22)
+* (bluefox) Charts are now supported
+
 ### 1.2.6 (2020-03-22)
 * (bluefox) Added the better error message if license could not be parsed
 

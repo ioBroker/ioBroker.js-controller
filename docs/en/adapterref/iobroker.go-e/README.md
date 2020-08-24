@@ -1,14 +1,14 @@
 ![Logo](admin/go-echarger.png)
 # ioBroker.go-echarger
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.go-e.svg)](https://www.npmjs.com/package/@mk2001/iobroker.go-echarger)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.go-e.svg)](https://www.npmjs.com/package/@mk2001/iobroker.go-echarger)
-![Number of Installations (latest)](http://iobroker.live/badges/go-echarger-installed.svg)
-![Number of Installations (stable)](http://iobroker.live/badges/go-echarger-stable.svg)
-[![Dependency Status](https://img.shields.io/david/MK-2001/iobroker.go-echarger.svg)](https://david-dm.org/MK-2001/iobroker.go-echarger)
-[![Known Vulnerabilities](https://snyk.io/test/github/MK-2001/ioBroker.go-echarger/badge.svg)](https://snyk.io/test/github/MK-2001/ioBroker.go-echarger)
+[![NPM version](http://img.shields.io/npm/v/iobroker.go-e.svg)](https://www.npmjs.com/package/iobroker.go-e)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.go-e.svg)](https://www.npmjs.com/package/iobroker.go-e)
+![Number of Installations (latest)](http://iobroker.live/badges/go-e-installed.svg)
+![Number of Installations (stable)](http://iobroker.live/badges/go-e-stable.svg)
+[![Dependency Status](https://img.shields.io/david/MK-2001/iobroker.go-e.svg)](https://david-dm.org/MK-2001/iobroker.go-e)
+[![Known Vulnerabilities](https://snyk.io/test/github/MK-2001/ioBroker.go-e/badge.svg)](https://snyk.io/test/github/MK-2001/ioBroker.go-e)
 
-[![NPM](https://nodei.co/npm/iobroker.go-e.png?downloads=true)](https://nodei.co/npm/@mk2001/iobroker.go-echarger/)
+[![NPM](https://nodei.co/npm/iobroker.go-e.png?downloads=true)](https://nodei.co/npm/iobroker.go-e/)
 
 # The go-eCharger Wallbox
 ![Product Image](admin/go-eCharger-HOME-Wallbox.png)
@@ -20,6 +20,11 @@ go-e is an invitation to move electrically. E-mobility is our drive, whereby our
 
 **DE**
 go-e ist die Aufforderung, sich elektrisch zu bewegen. e-Mobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der einzelnen Ladestation für e-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von ganzen Gebäuden, sind wir Anbieter gesamtheitlicher Systemlösungen für sämtliche Anforderungen der modernen e-Mobilität.
+
+## Adapter manual 
+
+The Manual for Installation and configuration you can find here:
+[Adapter Manual](./docs/Readme.md)
 
 ## Developer manual
 
@@ -33,17 +38,7 @@ https://go-e.co/support/
 
 ## Changelog
 
-### 0.0.1
-* (MK-2001) initial release
-
-### 0.0.2
-* (MK-2001) added requirements to publish the adapter
-
-### 0.0.3
-* (MK-2001) added requirements to publish the adapter again, enabled new writeable interfaces: Access State (ast), Allow Charging (alw), stop_state: ​Automatische Abschaltung (stp), max_load
-
-### 0.0.4
-* (MK-2001, Trunks1982) solved bug with different names.
+[moved here](./docs/CHANGELOG.md)
 
 ## License
                                  Apache License

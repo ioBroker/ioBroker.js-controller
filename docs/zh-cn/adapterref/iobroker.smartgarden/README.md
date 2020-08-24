@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.smartgarden/README.md
 title: ioBroker.smartgarden
-hash: yRQ1kH5yZ+LlZk7k2uqFylv98qOlrWYFKz/AXPuTjfE=
+hash: wVJ/PkrXzfsgkReI3Ht0ofjEMzknM94tm/BhhARUbQc=
 ---
 ![商标](../../../en/adapterref/iobroker.smartgarden/admin/smartgarden.png)
 
@@ -15,6 +15,10 @@ hash: yRQ1kH5yZ+LlZk7k2uqFylv98qOlrWYFKz/AXPuTjfE=
 ![NPM](https://nodei.co/npm/iobroker.smartgarden.png?downloads=true)
 
 ＃ioBroker.smartgarden
+**如果您愿意，请考虑捐赠：**
+
+[![贝宝]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8C7M7MH3KPYDC&source=url)
+
 ##用于GARDENA智能系统的ioBroker smartgarden适配器
 使用官方[GARDENA智能系统API](https://developer.husqvarnagroup.cloud/apis/GARDENA+smart+system+API#/general)和服务的GARDENA智能系统适配器。
 
@@ -59,7 +63,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
     -身份验证API ***和***
 -GARDENA智能系统API。
 
-当然，您需要正在运行的ioBroker安装，并且您应该拥有至少一个[GARDENA智能设备](#supported-devices)。
+当然，您需要运行的ioBroker安装，并且您应至少拥有一个[GARDENA智能设备](#supported-devices)。
 
 ＃＃ 目录
   * [用于GARDENA智能系统的ioBroker smartgarden适配器]（＃iobroker-smartgarden-adapter-for-gardena-smart-system）
@@ -70,7 +74,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
   * [设置适配器]（＃setup-adapter）
   * [获得支持]（＃getting-support）
   * [适配器的数据点]（＃data-points-of-adapter）
-     * [有关数据点的一般知识]（＃general-things-toknow-about-data-points）
+     * [关于数据点的一般知识]（＃general-things-toknow-about-data-points）
      * [For SERVICE_MOWER]（＃for-service_mower）
      * [对于SERVICE_VALVE_SET]（＃for-service_valve_set）
      * [对于SERVICE_VALVE]（＃for-service_valve）
@@ -84,12 +88,13 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
   * [希望获得数据点]（＃希望获得数据点）
   * [注意]（＃note）
   * [变更日志]（＃changelog）
+     * [1.0.1]（＃101）
      * [1.0.0]（＃100）
      * [0.6.0]（＃060）
      * [0.5.1]（＃051）
      * [0.5.0]（＃050）
      * [先前版本]（＃042）
-  * [学分]（＃学分）
+  * [学分]（＃credits）
   * [许可证]（＃license）
 
 ##安装
@@ -123,7 +128,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
       | - | - |
       |预定义状态|预先定义Gardena API的所有状态，无论当前是否在传输它们；打开或关闭；如果打开，则将创建GARDENA智能系统API的所有状态，而不管当前是否由GARDENA服务传输这些状态；默认值：关闭; *（v0.4.0中的新功能）* |
       |预测|将预测用于充电时间和割草机剩余时间；开启/关闭割草机的预测充电和割草时间；默认值：关闭; *（v0.5.0中的新功能）* |
-      |周期| MOWER历史记录周期数；您可以使用3（最小值）中的任何数字，但10（默认值）似乎是一个不错的选择；仅在上述*“预测” *启用时相关； *（v0.5.0中的新功能）* |
+      |周期| MOWER历史周期数；您可以使用3（最小值）中的任何数字，但10（默认值）似乎是一个不错的选择；仅在上述*“预测” *启用时相关； *（v0.5.0中的新功能）* |
       |灌溉检查|检查割草时是否允许灌溉；开/关;默认值：关闭; *（v0.6.0中的新功能）* |
 
 3.3验证系统设置的默认值，并在实例配置中打开/关闭选项。 **大多数用户无需在此标签上进行任何更改。**
@@ -138,7 +143,8 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
       | TestVar |使用测试变量进行调试；开/关;默认值：关闭|
 
 ##获得支持
-要获得帮助，请仔细阅读本自述文件和[常问问题](FAQ.md)。如果您需要进一步的支持，请加入[ioBroker论坛主题](https://forum.iobroker.net/topic/31289/neuer-adapter-smartgarden-adapter-for-gardena-smart-system)。
+要获得帮助，请仔细阅读此[README]（README.md）和[FAQ](FAQ.md)。
+如果您需要进一步的支持，请加入[ioBroker论坛主题](https://forum.iobroker.net/topic/31289/neuer-adapter-smartgarden-adapter-for-gardena-smart-system)。
 
 ##适配器的数据点
 该适配器旨在监视和控制GARDENA智能系统设备。
@@ -165,15 +171,15 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 如果您需要有关数据点的更多信息，请查看[https://developer.husqvarnagroup.cloud/apis/GARDENA+smart+system+API#/swagger](https://developer.husqvarnagroup.cloud/apis/GARDENA+smart+system+API#/swagger)。
 在那里，您将找到每个数据点的描述。除了标记为适配器而不是GARDENA智能系统API的数据点的标记。
 
-选择功能部件时，适配器会为各种功能部件/选项创建自己的数据点。取消选择功能后，这些数据点不会自动删除。如果您不再需要这些数据点，则必须手动删除它们。
+选择功能部件后，适配器会为各种功能部件/选项创建自己的数据点。取消选择功能后，这些数据点不会自动删除。如果您不再需要这些数据点，则必须手动删除它们。
 
 ###关于数据点的一般知识
 适配器不会更改GARDENA智能API传输的任何值。
 唯一要做的事情（从1.0.0版开始）是检查* timestamps *和* numbers *的类型。
 
-|检查描述|
+|检查说明|
 | - | - |
-|时间戳|所有时间戳均以UTC给出；如果接收到的时间戳不是有效时间戳，则使用`01 Jan 1970 00:00:00Z`（Unix时间零）。因此，如果您看到此日期/时间，请报告。 |
+|时间戳|所有时间戳均以UTC给出；如果接收到的时间戳不是有效的时间戳，则使用`01 Jan 1970 00:00:00Z`（Unix时间零）。因此，如果您看到此日期/时间，请报告。 |
 |数字|如果数字不是有效数字，则使用-1代替。因此，如果您看到此号码，请报告。 |
 
 ###对于SERVICE_MOWER
@@ -223,12 +229,12 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
   |`PARKED_TIMER`割草机已根据计时器停放，将在配置的时间再次启动。 |错误 |
   |`PARKED_PARK_SELECTED`割草机已停放，直至另行通知。 |错误 |
   |`PARKED_AUTOTIMER`由于草高不足，割草机跳过了割草工作。 |错误 |
-  |`PAUSED`割草机处于等待状态且舱口关闭。 |错误 |
-  |`OK_CUTTING`割草机正在自动模式下进行切割（计划）。 |真实|
+  |`PAUSED`割草机处于等待状态，舱口关闭。 |错误 |
+  |`OK_CUTTING`割草机正在AUTO模式下进行切割（计划）。 |真实|
   |`OK_CUTTING_TIMER_OVERRIDDEN`割草机正在削减进度。 |真实|
   |`OK_SEARCHING`割草机正在搜索充电站。 |真实|
   |`OK_LEAVING`割草机正在离开充电站。 |真实|
-  |`NONE`未发生任何活动，可能是由于错误。 |真实|
+  |`NONE`没有活动发生，可能是由于错误。 |真实|
   |`NONE`可能由于错误而没有任何活动。 |真实|
   |所有其他值|真实|
 
@@ -245,8 +251,8 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 
 可以在适配器实例配置中打开/关闭此功能，以及历史记录中保存的充电和修剪周期数。
 
-要使该功能投入运行，**请确保至少一个修剪和充电周期无误运行（例如，不要手动中断或传感器控制）。**最好至少完成三个无错运行。
-此函数尝试识别正常情况，并最初假定下一个过程是正常情况。如果这是错误的，则将这种错误的运行视为正常情况，然后将正常通过的运行视为故障情况。如果运行期间发生错误，请停止适配器，删除两个数据点，然后重新启动。
+要使该功能投入运行，**请确保至少一个修剪和充电周期无误运行（例如，不要手动中断或传感器控制）。**最好至少完成三轮无错运行。
+此函数尝试识别正常情况，并最初假定下一个过程是正常情况。如果这是错误的，则将该错误的运行视为正常情况，然后将正常通过的运行视为故障情况。如果运行期间发生错误，请停止适配器，删除两个数据点，然后重新启动。
 
 有关常规预测机制的更多信息，请参见[FORECAST.md](FORECAST.md)。
 
@@ -262,10 +268,10 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 
     3.如果断开割草机与GARDENA智能系统的连接，
 
-再次重新连接它，历史记录将丢失，因为您的割草机在GARDENA智能系统中获得了新的ID。这意味着适配器无法将割草机识别为先前的割草机-可能是第二割草机。
-在这种情况下，建议删除这两个数据点并重新启动适配器，以使以前的（现在是很旧的）历史记录集不会被持续读取和写入。然后，适配器开始建立新的历史记录。
+再次重新连接，历史将丢失，因为您的割草机在GARDENA智能系统中获得了新的ID。这意味着适配器无法将割草机识别为先前的割草机-可能是第二割草机。
+在这种情况下，建议删除这两个数据点并重新启动适配器，以使先前的（现在已很旧的）历史记录集不会被持续读取和写入。然后，适配器开始建立新的历史记录。
 
-4.此功能应适用于多个割草机，但实际上
+4.此功能应适用于多台割草机，但是
 
 未测试*（我不能这样做，因为我只有一个割草机）*。
 如果割草机不止一台，请测试并报告错误，当然还要报告其是否按预期工作。在此先感谢您。
@@ -313,21 +319,21 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
     | GARDENA智能泵| 36000（10小时）|
     | GARDENA智能水控制| 36000（10小时）|
 
-  -要取消当前浇水并继续使用时间表，请使用字符串
+  -要取消当前的浇水并继续使用时间表，请使用字符串
 
   `STOP_UNTIL_NEXT_TASK`
 
   -要跳过自动操作直到指定时间，当前处于活动状态
 
-使用字符串`PAUSE_<number_of_seconds>`可能会或可能不会取消操作（取决于设备型号），例如`PAUSE_86400`暂停24小时
+使用字符串`PAUSE_<number_of_seconds>`可能会或可能不会取消操作（取决于设备型号），例如`PAUSE_86400`暂停24小时（请使用60的倍数）
 
   -要恢复自动操作（如果已暂停），请使用字符串“ UNPAUSE”
 
 -`irrigationWhileMowing_allowed_i`和`irrigationWhileMowing_mowerDefinition_i`
 
-  *此数据点由适配器生成，由于GARDENA智能系统API的缘故，因此不需要。
+  *此数据点是由适配器生成的，由于GARDENA智能系统API的缘故，因此不需要。
 
-这些数据点可控制功能*修剪时不允许灌溉*。
+这些数据点可控制功能*割草时不允许灌溉*。
 仅在实例配置中选择功能时才创建它们。
 有关此功能的说明，请参见章节[割草时不允许灌溉](#Irrigation-not-allowed-while-mowing)。
 
@@ -340,7 +346,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 
   *此数据点是由适配器生成的，由于GARDENA智能系统API的缘故，它不是必需的。*
 
-该值描述了直到阀关闭并停止浇水的分钟数。
+该值描述了直到阀门关闭并停止浇水的分钟数。
 
     -一个整数，一个（`1`）或更大。
     -如果未定义，则为null
@@ -374,7 +380,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 
   *此数据点是由适配器生成的，由于GARDENA智能系统API的缘故，它不是必需的。*
 
-  该值描述关闭电源插座之前的分钟数。
+  该值描述电源插座关闭之前的分钟数。
 
     -一个整数，一个（`1`）或更大。
     -如果未定义，则为null
@@ -392,7 +398,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 
 ##割草时不允许灌溉
 ＃＃＃ 有什么问题？
-如果您同时拥有割草机和带有弹出式喷头的灌溉系统，则可能会在灌溉运行时割草机碰到弹出式喷头并损坏或造成自身损坏。
+如果您同时拥有割草机和带有弹出式洒水装置的灌溉系统，则可能会在灌溉运行时割草机碰到弹出式洒水装置并损坏或造成损坏。
 
 为避免这种情况，割草机割草时应关闭灌溉系统或更好的单个阀门。
 
@@ -400,11 +406,11 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 使用此功能，可以在割草机在草坪上时停止灌溉。可以为每个阀分别定义。
 
 可以为每个阀门定义一个或多个割草机，在割草机割草时不允许打开阀门。
-基本上，割草机的优先级高于灌溉，即，如果发生割草机割草且阀门打开的冲突，则阀门将关闭，并设置相应的警告。
+原则上，割草机的优先级高于灌溉，即，如果出现割草机割草且阀门打开的冲突，则阀门将关闭，并设置相应的警告。
 
-另外，可以定义无论割草机如何，阀都决不能打开。例如。如果阀门或其背后的管道损坏，可以使用。
+另外，可以定义无论割草机如何，阀门都决不能打开。例如。如果阀门或其背后的管道损坏，可以使用。
 
-可以使用paraneter *灌溉检查*在实例配置中打开或关闭整个检查。
+整个检查可以在带有参数* irrigation check *的实例配置中打开或关闭。
 
 每个`SERVICE_VALVE`都有三个数据点。
 它们用于配置和报告警告。
@@ -413,7 +419,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
   | - | - | - |
   |`irrigationWhileMowing_allowed_i`| |是|如果应检查在割草机在草坪上修剪时是否允许灌溉，则设置为`false`，否则|§SSSSS_2§§|
   |`irrigationWhileMowing_warningCode_i`||没有如果阀门打开，则设置警告代码。可能的警告代码请参见下表。如果设置了多个警告，则代码与`+`（例如`STOPPED+UNKNOWN_MOWER`）串联在一起。 |
-  |`irrigationWhileMowing_warningCode_i` ||没有如果阀门打开，则设置警告代码。可能的警告代码请参见下表。如果设置了多个警告，则代码以`+`串联（例如`STOPPED + UNKNOWN_MOWER`）。 |
+  |`irrigationWhileMowing_warningCode_i` ||没有如果阀门打开，则设置警告代码。可能的警告代码请参见下表。如果设置了多个警告，则代码将以“ +”串联（例如“ STOPPED + UNKNOWN_MOWER”）。 |
 
 * ***割草机ID格式***
 
@@ -429,7 +435,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
   | - | - |
   | `NO_WARNING`|无警告，阀门已打开|
   | `STOPPED`|由于割草机在关闭，阀门自动关闭|
-  | `FORBIDDEN`|关闭阀门，因为在数据点`irrigationWhileMowing_mowerDefinition_i`|中设置了特殊代码`IRRIGATION_FORBIDDEN` |
+  | `FORBIDDEN`|关闭了阀门，因为在数据点`irrigationWhileMowing_mowerDefinition_i`|中设置了特殊代码`IRRIGATION_FORBIDDEN` |
   | “ FORBIDDEN”阀关闭，因为在数据点“ irrigationWhileMowing_mowerDefinition_i”中设置了特殊代码“ IRRIGATION_FORBIDDEN”。 |
 
 每次
@@ -443,7 +449,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 ###基本行为-警告
 此功能无法防止割草机在割草时打开阀门。这可以例如通过GARDENA应用程序手动完成或通过时间表自动完成。
 
-该功能只能在发生冲突时尽快关闭阀门。并且冲突也可能不会被识别。
+如果发生冲突，此功能只能尽快关闭阀门。并且冲突也可能不会被识别。
 因此，有可能让水通过。
 **例如。不能防止弹出式喷头伸展并且割草机撞到弹出式喷头**，但这种情况发生的可能性已降至最低。
 **因此，由您的应用程序确定此冲突永远不会发生。**
@@ -454,19 +460,28 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 ＃＃ 注意
 这是一个私人项目。我与GARDENA或Husqvarna没有任何关系。
 
-##学分
+##积分
 smartgarden徽标：http://www.freepik.com由Freepik设计
 
 ## Changelog
-### 1.0.0
+### 1.0.1
+* (jpgorganizer)
+  - better reconnection to GARDENA smart system server in case of your internet connection was broken
+  - textual changes in io-package.json
+  - improved README and FAQ
+  
+  ### 1.0.0
 * (jpgorganizer)
   - code rework, no functional change expected
-  - support `PAUSE` for SERVICE_VALVE, SERVICE_POWER_SOCKET
+  - support `PAUSE` for SERVICE_VALVE, SERVICE_POWER_SOCKET. e.g. 
+	[Issue 14](https://github.com/jpgorganizer/ioBroker.smartgarden/issues/14)
   - internal representation for all timestamps changed from format like 
     `2020-05-26T05:03:47.613+0000` to `2020-05-26T05:03:47.613Z` to 
-    support Safari browser.
+    support Safari browser e.g. 
+	[Issue 12](https://github.com/jpgorganizer/ioBroker.smartgarden/issues/12).
   - support forecast values for mower id's in format with suffix, 
-    e.g. `d8a1faef-2ee3-421d-a3f8-f8ed577c2ad3:suffix`
+    e.g. `d8a1faef-2ee3-421d-a3f8-f8ed577c2ad3:suffix`, e.g. 
+	[Issue 12](https://github.com/jpgorganizer/ioBroker.smartgarden/issues/12)
   - making the adapter more fault tolerant at startup, e.g. trimming 
     whitespaces from username, etc.
   - README: new chapter *Getting support*, 
@@ -577,4 +592,4 @@ Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 Based on a work at https://github.com/jpgorganizer/ioBroker.smartgarden. 
  
 
-<!--- SVN: $Rev: 2157 $ $Date: 2020-06-11 19:24:52 +0200 (Do, 11 Jun 2020) $ --->
+<!--- SVN: $Rev: 2222 $ $Date: 2020-08-17 11:20:02 +0200 (Mo, 17 Aug 2020) $ --->
