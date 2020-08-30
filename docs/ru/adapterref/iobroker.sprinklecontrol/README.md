@@ -3,33 +3,46 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sprinklecontrol/README.md
 title: ioBroker.sprinklecontrol
-hash: gqgDTjupO++e+d5pXYAnkJ3RVvb4T9JXGOihTfDVb/c=
+hash: KObvUGjbQvRq6e7TlYwZqgg7Vo7Cmux/gUGKOE87/zg=
 ---
-![логотип](../../../en/adapterref/iobroker.sprinklecontrol/admin/sprinklecontrol.png)
+![Логотип](../../../en/adapterref/iobroker.sprinklecontrol/admin/sprinklecontrol.png)
 
-![Количество установок](http://iobroker.live/badges/sprinklecontrol-installed.svg)
+![Количество установок](http://iobroker.live/badges/sprinklecontrol-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sprinklecontrol.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sprinklecontrol.svg)
 ![Статус зависимости](https://img.shields.io/david/Dirk-Peter-md/iobroker.sprinklecontrol.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Dirk-Peter-md/ioBroker.sprinklecontrol/badge.svg)
-![Трэвис-CI](http://img.shields.io/travis/Dirk-Peter-md/ioBroker.sprinklecontrol/master.svg)
-![NPM](https://nodei.co/npm/iobroker.sprinklecontrol.png?downloads=true)
+![Трэвис-Си](http://img.shields.io/travis/Dirk-Peter-md/ioBroker.sprinklecontrol/master.svg)
+![НПМ](https://nodei.co/npm/iobroker.sprinklecontrol.png?downloads=true)
 
 # IoBroker.sprinklecontrol
 ## Адаптер sprinklecontrol для ioBroker
 Этот адаптер управляет отдельными контурами полива в саду. В зависимости от погодных и почвенных условий они начинают работать в определенное время или с восходом солнца, как указано в конфигурации.
 
-Wetterabhängige automatische steuerung der Gartenbewässerungs
+Wetterabhängige automatische steuerung der Gartenbewässerung
 
 [Deutsche Beschreibung hier](docs/de/sprinklecontrol.md)
+
+[Deutsche Beschreibung на GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/de/sprinklecontrol.md)
 
 Погодозависимый автоматический контроль полива сада
 
 [Английский Описание здесь](docs/en/sprinklecontrol.md)
 
+[Описание на английском на GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/en/sprinklecontrol.md)
+
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.0.10 (29.08.2020)
+* (Dirk-Peter-md) Bug in der Verarbeitung der Regenvorhersage vom Adapter "Das Wetter"
+
+### 0.0.9 (28.08.2020)
+* (Dirk-Peter-md) integration des Adapters "Das Wetter" <Pfad 2: XML-Datei mit 5-Tage-Wettervorhersage> zur Regenvorhersage (siehe Doku)
+
+### 0.0.8 (17.08.2020)
+* (Dirk-Peter-md) adapter.unload: (setTimeout > 1s) >>> delete
 
 ### 0.0.7 (23.07.2020)
 * (Dirk-Peter-md) history zu festen Zeit 0:05 (nicht über dayNum)

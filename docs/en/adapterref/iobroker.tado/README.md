@@ -19,7 +19,20 @@ If you like my work, please feel free to provide a personal donation
 (this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !  
 [![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.tado/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
-## Changelog
+# Changelog
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
+
+### 0.2.0-beta.1 (2020-08-29)
+* (DutchmanNL) Update dependency's
+* (DutchmanNL) Update testing, remove node 8 and add node 14
+* (DutchmanNL) Implement automated deployment with githubActions
+* (HGlab01) Bugfix : Fix unhandled information found in DoReadDevices 
+* (HGlab01) Bugfix : Add legacyHeatingInstallationsEnabled to DoHome
+* (LutzHelling) Bugfix : legacyHeatingInstallationsEnabled
+* (LutzHelling) Bugfix : Add orientation
 
 ### 0.1.9
 * (DutchmanNL) Implement Sentry

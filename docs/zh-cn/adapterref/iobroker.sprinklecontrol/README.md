@@ -3,11 +3,11 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sprinklecontrol/README.md
 title: ioBroker.sprinkle控件
-hash: gqgDTjupO++e+d5pXYAnkJ3RVvb4T9JXGOihTfDVb/c=
+hash: KObvUGjbQvRq6e7TlYwZqgg7Vo7Cmux/gUGKOE87/zg=
 ---
 ![商标](../../../en/adapterref/iobroker.sprinklecontrol/admin/sprinklecontrol.png)
 
-![安装数量](http://iobroker.live/badges/sprinklecontrol-installed.svg)
+![安装数量](http://iobroker.live/badges/sprinklecontrol-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sprinklecontrol.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sprinklecontrol.svg)
 ![依赖状态](https://img.shields.io/david/Dirk-Peter-md/iobroker.sprinklecontrol.svg)
@@ -23,13 +23,26 @@ hash: gqgDTjupO++e+d5pXYAnkJ3RVvb4T9JXGOihTfDVb/c=
 
 [德意志银行](docs/de/sprinklecontrol.md)
 
+[Deutsche Beschreibung auf GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/de/sprinklecontrol.md)
+
 取决于天气的花园灌溉自动控制
 
 [英文说明在这里](docs/en/sprinklecontrol.md)
 
+[GitHub上的英语描述](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/en/sprinklecontrol.md)
+
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.0.10 (29.08.2020)
+* (Dirk-Peter-md) Bug in der Verarbeitung der Regenvorhersage vom Adapter "Das Wetter"
+
+### 0.0.9 (28.08.2020)
+* (Dirk-Peter-md) integration des Adapters "Das Wetter" <Pfad 2: XML-Datei mit 5-Tage-Wettervorhersage> zur Regenvorhersage (siehe Doku)
+
+### 0.0.8 (17.08.2020)
+* (Dirk-Peter-md) adapter.unload: (setTimeout > 1s) >>> delete
 
 ### 0.0.7 (23.07.2020)
 * (Dirk-Peter-md) history zu festen Zeit 0:05 (nicht über dayNum)

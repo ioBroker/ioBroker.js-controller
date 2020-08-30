@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
+hash: qWPQT0vodXCE5ks4qi6nL4Cxox5g3exb8CS3AJFQwKc=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -56,29 +56,11 @@ Sie können es als Web-App auf Homescreen speichern und es sieht aus und fühlt 
 
 ## Du brauchst...
 * Knoten 10 oder höher
-* Web-Adapter mit einer Instanz, auf der dasselbe Protokoll (http oder https) wie der Admin-Adapter ausgeführt wird. Socket.IO ist auf "integriert" und "Web-Sockets erzwingen" deaktiviert
+* Web-Adapter mit einer Instanz, auf der dasselbe Protokoll (http oder https) wie der Admin-Adapter ausgeführt wird, socket.IO auf "integriert" und "Web-Sockets erzwingen" deaktiviert
     * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu - iQontrol durchsucht die passende passende Webadapter-Instanz und verwendet sie für die Kommunikation
 * Für die Verbindung über *iobroker.pro-Cloud* sollten sowohl der Administrator- als auch der Webadapter auf http (nicht https) eingestellt sein.
 
-## Fehlerbehebung
-* Stellen Sie sicher, dass Sie den Abschnitt "Sie brauchen ..." oben auf dieser Seite erfüllt haben
-* Wenn nach dem Update etwas nicht wie erwartet funktioniert, führen Sie die folgenden Schritte aus:
-    * Starten Sie den Upload des Adapters:
-
-    \
-        ![Hochladen](../../../en/adapterref/iobroker.iqontrol/img/adapter_upload.png)
-
-* Browser-Cache löschen
-* Starten Sie ioBroker neu
-
-### Wenn Sie weitere Probleme haben, geben Sie bitte das Protokoll von der Debugging-Konsole Ihres Browsers und Screenshots der fehlerhaften Zeile an:
-* Starten Sie iQonrol mit der geöffneten Debugging-Konsole Ihres Browsers (meistens müssen Sie F12 drücken, um es zu öffnen).
-* Wechseln Sie zum Konsolenfenster und reproduzieren Sie den Fehler
-* Suchen Sie im Konsolenfenster nach Nachrichten
-* Wenn Fehler auftreten, wird die Nummer der Zeile aufgelistet, die den Fehler verursacht hat
-* Bitte klicken Sie auf diese Zeilennummer und machen Sie einen Screenshot der fehlerhaften Zeile:
-
-![Fehlerbehebung im Konsolenfenster](img/troubleshooting_consolewindow.png) ![Fehlerbehebung bei fehlerhafter Leitung](../../../en/adapterref/iobroker.iqontrol/img/troubleshooting_faultyline.png)
+* Wenn Probleme auftreten, lesen Sie bitte den Abschnitt [Fehlerbehebung] (# Fehlerbehebung) am Ende dieser Readme-Datei
 
 ## Forum
 Besuchen Sie [iobroker Forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol).
@@ -106,7 +88,7 @@ Der erste Symbolleisteneintrag ist Ihre 'Home-View', mit der beim Start geladen 
 
 Sie können Ihre Bilder als Hintergrundbilder für Ansichten oder für Geräte verwenden.
 Bilder im Ordner '/ usericons' können als Symbole für Geräte verwendet werden.
-Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
+Die kostenlos eingebauten Demo-Hintergrundbilder stammen von www.pexels.com.
 
 ## URL-Parameter
 * Das Frontend wird über `` http [s]: // <URL oder IP von iobroker>: <Port des Webadapters> / iqontrol / index.html`` aufgerufen
@@ -174,11 +156,11 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 ## Beschreibung der Rollen und zugehörigen Zustände
 Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Status, die mit einem entsprechenden Io-Broker-Status verknüpft werden können.
 Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem Io-Broker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Zustände wie möglich zuzuordnen.
-Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die Geräte bearbeiten, die durch die automatische Erstellung erstellt wurden.
+Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die durch automatische Erstellung erstellten Geräte bearbeiten.
 Klicken Sie auf den Stift hinter dem Gerät, um die Rolle und den Status eines Geräts zu bearbeiten. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
 
 ### Ändern der Datenpunktkonfiguration
-Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymbol hinter einem Datenpunkt im Gerätekonfigurationsdialog oder auf der Registerkarte "Objekte" von iobroker ändern. Hier kannst du:
+Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymbol hinter einem Datenpunkt im Dialogfeld Gerätekonfiguration oder auf der Registerkarte Objekte von iobroker ändern. Hier kannst du:
 
 * Readonly-Flag setzen
 * Invert-Flag setzen
@@ -186,7 +168,7 @@ Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymb
 * PIN-Code festlegen (zwingt den Benutzer, diesen PIN-Code einzugeben, bevor eine Änderung in einen Datenpunkt geschrieben wird - aber Vorsicht: Dies ist nur von geringer Sicherheit, da die PIN im Frontend überprüft wird! Verwenden Sie eine Nummer, um einen Vollbildmodus anzuzeigen -pin-pad, wenn nach Code gefragt wird)
 * Ändern Sie die Einheit des Datenpunkts, getrennt nach Null-, Singular- und Pluralwerten
 * Ändern Sie min und max des Datenpunkts
-* Legen Sie die Schritte fest, die ein Level-Slider ausführt, wenn er erhöht / verringert wird
+* Legen Sie die Schritte fest, die ein Level-Schieberegler ausführt, wenn er erhöht / verringert wird
 * Ändern Sie den Typ des Datenpunkts
 * Ändern Sie die Rolle des Datenpunkts
 * Legen Sie eine Zielwert-ID fest, bei der es sich um eine Datenpunkt-ID handelt, in die Zielwerte geschrieben werden (wenn Sie unterschiedliche Datenpunkte für den tatsächlichen und den Zielwert haben).
@@ -202,14 +184,8 @@ Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymb
 ![CustomDialog-Aufruf](img/custom_call.png) ![CustomDialog Beispiel](img/custom_dialog.png) ![Konzept der Zielwertliste](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
 
 ### Allgemeine Zustände:
-Jede Rolle hat die folgenden drei Zustände:
-
-* **ADDITIONAL_INFO** *array* - Ein Array von Datenpunkten, das am unteren Rand des Info-Dialogs angezeigt wird
-* **BATTERIE** *Boolescher Wert* - wenn wahr oder *Zahl* - wenn weniger als 10%, wird ein kleines Symbol für leere Batterie angezeigt
-* **ERROR** *boolean* - Wenn true, wird ein kleines Ausrufezeichen angezeigt
-* **UNREACH** *boolean* - Wenn true, wird ein kleines WLAN-Symbol angezeigt
-
-Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meisten Fällen stellt dies die Hauptfunktion des Geräts dar. Sie können ihm io-Broker-Zustände der folgenden Typen zuweisen:
+#### STATE und LEVEL
+Fast alle Rollen haben einen **STATE** - und / oder einen **LEVEL** - Status. In den meisten Fällen stellt dies die Hauptfunktion des Geräts dar. Sie können ihm io-Broker-Zustände der folgenden Typen zuweisen:
 
 * *boolean* - wenn möglich, wird es in einen sinnvollen Text wie "ein / aus", "geöffnet / geschlossen" oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialog ein Kippschalter generiert
 * *Nummer* - wird mit der entsprechenden Einheit angezeigt und generiert einen Schieberegler im Dialogfeld
@@ -225,15 +201,28 @@ Fast alle Rollen haben einen STATE- und / oder einen LEVEL-Status. In den meiste
 ````
 
     * Sie können Ihre eigene Werteliste erstellen, indem Sie den Datenpunkt ändern (Schraubenschlüsselsymbol hinter dem Datenpunkt auf der Registerkarte Objekte von iobroker, siehe oben).
+* Ob die Gerätekachel als aktiv oder inaktiv angezeigt wird, wird ebenfalls aus dem STATE- oder LEVEL-Datenpunkt ermittelt. Sie können das Verhalten jedoch im Optionsbereich "Bedingungen für eine aktive Kachel" frei anpassen. Sie können sogar einen anderen externen Datenpunkt festlegen, der den Status der Kachel bestimmt
 
 Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der ZUSTAND eines Schalters in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umgeschaltet werden zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
+
+### Weitere allgemeine Zustände:
+* **ADDITIONAL_INFO** *array* - Ein Array von Datenpunkten, das am unteren Rand des Info-Dialogs angezeigt wird
+* **URL** CONSTANT *string* - Diese URL wird als Iframe im Dialogfeld geöffnet
+* **HTML** CONSTANT *string* - Dieses Markup wird im iframe angezeigt, wenn kein URL-Datenpunkt angegeben ist
+* **BACKGROUND_URL** CONSTANT *string* - Diese URL wird als Hintergrund der Gerätekachel angezeigt. Es wird über den Hintergrundbildern platziert, aber Sie können es so konfigurieren, dass es ausgeblendet wird, wenn die Kachel aktiv oder inaktiv ist.
+* **BACKGROUND_HTML** CONSTANT *string* - Dieses Markup wird als Hintergrund der Gerätekachel angezeigt, wenn kein BACKGROUND_URL angegeben ist
+* **BATTERIE** *Boolescher Wert* - wenn wahr oder *Zahl* - wenn weniger als 10%, wird ein kleines Symbol für leere Batterie angezeigt
+    * Sie können das Verhalten des Batteriesymbols im Optionsbereich 'BATTERY Empty Icon' weiter anpassen.
+* **ERROR** *boolean* - Wenn true, wird ein kleines Ausrufezeichen angezeigt
+* **UNREACH** *boolean* - Wenn true, wird ein kleines WLAN-Symbol angezeigt
+    * Das Verhalten kann im Abschnitt "Allgemein" der Optionen umgekehrt werden (verwenden Sie "Verbunden" anstelle von "Nicht erreichbar").
 
 ### Link zu anderer Ansicht:
 * Hat keine weiteren Zustände
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ### <img src="img/icons/switch_on.png" width="32"> Schalter:
-* **STATE** *boolean* - Anzeige und Ein / Aus-Zustand
+* **STATE** *boolean* - Anzeige und Ein / Aus-Status
 * **POWER** *number* - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
 ### <img src="img/icons/button.png" width="32"> Taste:
@@ -254,7 +243,7 @@ Optional können Sie folgende Zustände definieren:
   * **SÄTTIGUNG** * Zahl * - Lichtsättigung (von Weiß zu reiner Farbe)
   * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (wenn Sie einen LEVEL-Status und keine weißen LEDs haben, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Für weiße LEDs:
-  * **CT** * Zahl * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
+  * **CT** * Nummer * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
   * **WHITE_BRIGHTNESS** * number * - die Helligkeit der weißen LEDs (wenn Sie einen LEVEL-Status und keine farbigen LEDs haben, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Alternative Farbräume:
   * **ALTERNATIVE_COLORSPACE_VALUE** * string * oder * number * (abhängig vom gewählten Farbraum) - der Wert des alternativen Farbraums
@@ -262,7 +251,7 @@ Optional können Sie folgende Zustände definieren:
     Wenn Ihr Gerät die Verwendung von HUE, SATURATION und COLOR_BRIGHTNESS (HSB / HSV-Farbraum) nicht unterstützt, können Sie verschiedene alternative Farbräume verwenden. In den Geräteoptionen können Sie einen der folgenden Farbräume auswählen:
 
     * **RGB** / **# RGB** Anstelle von HUE, SATURATION und COLOR_BRIGHTNESS können Sie das RGB-Format (hex) verwenden, optional mit dem führenden '#'
-    * **RGBW** / **# RGBW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS können Sie das RGBW-Format (hex) verwenden, optional mit dem führenden '#'
+    * **RGBW** / **# RGBW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS können Sie das RGBW-Format (hex) verwenden, optional mit führendem '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS, CT und WHITE_BRIGHTNESS können Sie das RGBWWCW- oder RGBCWWW-Format (hex) verwenden , WW = warmweiß, CW = kaltweiß), optional mit führendem '#'
     * **RGB (nur Farbton)** / **# RGB (nur Farbton)** Anstelle von HUE können Sie auch das RGB-Format (nur Farbton) (hex) verwenden, optional mit dem führenden '#'. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt
     * **Farbton für Milight** Dies ist der Farbtonwert für Milight-Geräte, wobei ein anderer Ausgangspunkt im Farbton-Farbkreis verwendet wird:
@@ -277,13 +266,13 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 
 * Effektmodus:
   * **EFFECT** * Werteliste * - der zu spielende Effekt
-* **EFFECT_NEXT** *boolean* - Wenn dieser Wert auf true gesetzt ist, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen).
+* **EFFECT_NEXT** *boolean* - Wenn auf true gesetzt, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen).
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - Wenn dieser Wert auf true gesetzt ist, wird der Effekt beschleunigt / verringert
 * Verschiedenes:
   * **POWER** * number * - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
 ### <img src="img/icons/fan_on.png" width="32"> Ventilator:
-* **STATE** *boolean* - Anzeige und Ein / Aus-Zustand
+* **STATE** *boolean* - Anzeige und Ein / Aus-Status
 * **LEVEL** *number* oder *value-list* - die Lüftergeschwindigkeit
 * **POWER** *number* - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
@@ -293,7 +282,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 * **FEUCHTIGKEIT** *Zahl* - Die tatsächliche Luftfeuchtigkeit wird in der oberen rechten Ecke klein angezeigt
 * **CONTROL_MODE** *Werteliste* - Anzeige und Einstellung des Modus des Thermostats
 * **WINDOW_OPENING_REPORTING** *boolean* - Wenn true, wird ein kleines geöffnetes Fenster angezeigt
-* **VALVE_STATES** Array mit Namen und Nummern - Zeigt die Öffnung der Ventile an, die dem Thermostat zugeordnet sind
+* **VALVE_STATES** Array von Namen und Nummern - Zeigt die Öffnung der Ventile an, die dem Thermostat zugeordnet sind
 
 ### <img src="img/icons/radiator.png" width="32"> Homematischer Thermostat:
 Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
@@ -337,7 +326,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ### <img src="img/icons/blind_middle.png" width="32"> Blind:
 * **LEVEL** *number* - Höhe des Blinden in Prozent
 * **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein. Die Werte für Stop, Up, Down und Unknown können konfiguriert werden
-* **STOP** *boolean* - wird auf true gesetzt, wenn die Stopptaste gedrückt wird
+* **STOP** *boolean* - wird auf true gesetzt, wenn die Stop-Taste gedrückt wird
 * **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Auf- / Ab-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie einen Wert über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Auf- / Ab-Taste gedrückt wird
 * **FAVORITE_POSITION** *boolean* - kann verwendet werden, um eine Lieblingsposition abzurufen. Wenn die Favoritentaste (Schaltflächenbeschriftung kann in den Geräteeinstellungen konfiguriert werden) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie einen Wert über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird
 * **SLATS_LEVEL** *number* - Position der Lamellen in Prozent
@@ -359,7 +348,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
     * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'manipuliert' anzuzeigen.
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "Feuer im Obergeschoss" anzuzeigen.
 * **CONTROL_MODE** *Werteliste* - Betriebsmodus wie "Bewaffnet" und "Entwaffnet" auswählen
-    * In den Geräteoptionen können Sie den Wert definieren, der deaktiviert darstellt, sodass das Symbol für die Darstellung angezeigt werden kann
+    * In den Geräteoptionen können Sie den Wert definieren, der die Deaktivierung darstellt, sodass das Darstellungssymbol angezeigt werden kann
 
 ### <img src="img/icons/battery_full.png" width="32"> Batterie:
 * **STATE** *number* - Batteriestand in Prozent
@@ -391,7 +380,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **QUELLE, PLAYLIST** *Werteliste* - Auswahlmenü anzeigen, um eine Quelle oder einen Titel aus der Wiedergabeliste auszuwählen
 
 ##### Um eine *Universalfernbedienung* anzuzeigen, können Sie folgende Zustände definieren:
-* **REMOTE_NUMBER** *string* - zeigt ein Nummernfeld an und gibt die entsprechende Nummer zurück, wenn auf eine Nummer geklickt wird
+* **REMOTE_NUMBER** *string* - Zeigt einen Nummernblock an und gibt die entsprechende Nummer zurück, wenn auf eine Nummer geklickt wird
 * **REMOTE_VOLUME_UP, REMOTE_VOLUME_UP, REMOTE_CH_UP, REMOTE_CH_DOWN** *string* - zeigt die Schaltflächen für Lautstärke hoch / runter und Kanal hoch / runter und gibt 'volumeUp', 'volumeDown', 'chUp' oder 'chDown' zurück, falls dies der Fall ist Taste gedrückt wird
 * **REMOTE_PAD_DIRECTION, REMOTE_PAD_BACK, REMOTE_PAD_HOME, REMOTE_PAD_MENU** *string* - zeigt ein Trackpad für Navigation und Rückkehr
     * 'ok' wenn die Mitte des Pads angeklickt wird,
@@ -404,8 +393,6 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ### <img src="img/icons/popup.png" width="32"> Aufpoppen:
 * **STATE** *any* - kann verwendet werden, um weitere Informationen anzuzeigen
-* **URL** CONSTANT *string* - Diese URL wird als Iframe im Popup geöffnet
-* **HTML** CONSTANT *string* - Dieses Markup wird im Popup angezeigt, wenn keine URL angegeben ist
 
 ### <img src="img/icons/link.png" width="32"> Externer Link:
 * **STATE** *any* - kann verwendet werden, um weitere Informationen anzuzeigen
@@ -413,7 +400,45 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ****
 
+## Fehlerbehebung
+* Stellen Sie sicher, dass Sie den Abschnitt "Sie brauchen ..." oben auf dieser Seite erfüllt haben
+* Wenn nach dem Update etwas nicht wie erwartet funktioniert, führen Sie die folgenden Schritte aus:
+    * Starten Sie den Upload des Adapters:
+
+    \
+        ![Hochladen](../../../en/adapterref/iobroker.iqontrol/img/adapter_upload.png)
+
+* Browser-Cache löschen
+* Starten Sie ioBroker neu
+
+### Wenn Sie weitere Probleme haben, geben Sie bitte das Protokoll von der Debugging-Konsole Ihres Browsers und Screenshots der fehlerhaften Zeile an:
+* Starten Sie iQonrol mit der geöffneten Debugging-Konsole Ihres Browsers (meistens müssen Sie <kbd>F12</kbd> drücken, um es zu öffnen).
+* Wechseln Sie zum Konsolenfenster und reproduzieren Sie den Fehler
+* Suchen Sie im Konsolenfenster nach Nachrichten
+* Wenn Fehler auftreten, wird die Nummer der Zeile aufgelistet, die den Fehler verursacht hat
+* Bitte klicken Sie auf diese Zeilennummer und machen Sie einen Screenshot der fehlerhaften Zeile:
+
+![Fehlerbehebung im Konsolenfenster](img/troubleshooting_consolewindow.png) ![Fehlerbehebung bei fehlerhafter Leitung](../../../en/adapterref/iobroker.iqontrol/img/troubleshooting_faultyline.png)
+
+****
+
 ## Changelog
+
+### 1.2.0 (2020-28-29)
+* (sbormann) Introducing different tile sizes, they can be configured in options for active and inactive state.
+* (sbormann) Added BACKGROUND_URL and BACKGROUND_HTML as universal states to all devices, to display webpages as background of tiles (for FLOT, weather, security-cameras,...).
+* (sbormann) Again better animations for shuffle.js.
+* (sbormann) Reordered remote control sections.
+
+### 1.1.15 (2020-08-27)
+* (sbormann) Bugfixed shuffle.js (better animations, fixed hideIfInactive-Option).
+
+### 1.1.14 (2020-08-24)
+* (sbormann) Made HTML/URL-iFrame resizable (can be turned off by option).
+* (sbormann) Bugfixing remote control.
+* (sbormann) Added option to configure conditions for active battery-empty-icon.
+* (sbormann) Dialog is now repositioned and bigger when phone is rotated to horizontal view.
+* (sbormann) Breaking Change: Using now shuffle.js to reposition the tiles after resizig or orientation change. For now its only a nice effect, but this opens possibilities for future development with different tile-sizes.
 
 ### 1.1.13 (2020-08-23)
 * (sbormann) Added option to remote to show vol and ch +/- inside pad.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/adddevice.md
 title: Как добавить устройство в alexa или google home
-hash: KJyj2QNgNPa29Jr/BcB/QJi6yPa8ucW5nGzTU+4Hr+A=
+hash: 7LOEqf58Vo+Ne7CyV77jozHsy8UjnC7Ghl8TQAR8aD0=
 ---
 # Как добавить устройство в alexa или google home
 Чтобы добавить устройство, у нас есть 4 шага:
@@ -28,7 +28,7 @@ hash: KJyj2QNgNPa29Jr/BcB/QJi6yPa8ucW5nGzTU+4Hr+A=
 - https://developer.amazon.com/de-DE/docs/alexa/device-apis/alexa-thermostatcontroller.html
 - https://developers.google.com/assistant/smarthome/guides/aircooler
 
-Наиболее полная картина состояний у Яндекса, поэтому разумно взять ее за основу.
+Наиболее полное представление о штатах имеет Яндекс, поэтому разумно взять его за основу.
 Мы видели, что для режима термостата и для положения качания в документации нет ролей.
 
 Поэтому мы добавим его сюда: https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/stateroles.md#air-condition-or-thermostat
@@ -48,4 +48,4 @@ hash: KJyj2QNgNPa29Jr/BcB/QJi6yPa8ucW5nGzTU+4Hr+A=
 Перейдите на https://github.com/ioBroker/ioBroker.devices/blob/master/src/package.json и обновите там свою версию.
 После этого расширьте список значков: https://github.com/ioBroker/ioBroker.devices/blob/master/src/src/Components/TypeIcon.js
 
- И создать новую версию тоже.
+ И создайте новую версию тоже.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.deconz/README.md
 title: kein Titel
-hash: oGadD+2MVq27J/o275XeRBcmFlhNU672SqfrxrhWpsE=
+hash: xsfX6P9SJKjs8MpPi1ErX29qGJF07F47JRIY5fLs9UA=
 ---
 ![Logo](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -65,7 +65,7 @@ Verbindet mit der von dresden-elektronik erled deConz-Software. Diese Software s
 
 4. "Erstelle API Key" enthält
 5. * Buntzername (Standard ist Freude) und
-    * Passwort (wird beim ersten Anmelden in der Phoscon APP gehört) gehört
+    * Passwort
    * **Alterantiv:** Phoscon APP öffnen -> Menü -> Einstellungen -> Gateway -> Erweitert -> Auf "App gehört" klicken
 
 #### Mehr als ein Befehl senden
@@ -85,6 +85,10 @@ Beispiele:
 - [Gateways (Hardware)] (https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
 
 ## [Sponsoren](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
+Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für Jey Cee, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=95YZN2LR59Q64&source=url)
+
+## Treten Sie dem Discord-Server bei, um alles über die Integration von ioBroker-deconz zu besprechen!
+<a href="https://discord.gg/uPwfzvR"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
 
 ## Changelog
 

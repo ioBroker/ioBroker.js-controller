@@ -14,6 +14,8 @@ Requires node.js 8.0 or higher and Admin v3!
 The adapter communicates with Shelly devices by REST api and the CoAP or MQTT protocol.    
 By the default Shelly firmware (no flashing of firmware needed!). You will find more and detailed information about the device here : [Shelly](https://shelly.cloud/)
 
+If you use the CoAP protocol Shelly devices with Firmware 1.8.0 or above works only with the Shelly Adapter 4.0.0 or above. If you use devices with Firmware below 1.8.0 except of the Shelly 4Pro you have have to use Shelly Adapter 3.3.6 or below. The Shelly Adapter 4.0.0 or above would not work in this case! 
+
 **This adapter uses Sentry libraries to automatically report exceptions and code errors to me as the developer.** More details see below!
 
 ## Installation
@@ -57,9 +59,13 @@ Sentry.io is a way for developers to get an overview about errors from their app
 When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to our own Sentry server hosted in Germany. When you allowed ioBroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.
 
 ## Changelog
-
+ 
 ### 4.0.4 (2020-08-23)
-* (Stübi) - optimize the destroy function
+* (Stübi) - optimize the destroy function (Bugfixing)
+* (Stübi) - Bugfixing Relay0.Event error for Shelly I3 in MQTT mode (Issue #241)
+* (harrym67) - Shelly 2.5 Roller mode. According to Shelly API: changed existing state swap to swap_input and add state swap.(Issue #240)
+* (Stübi) - Allow setting of customer MQTT prefix (Issue #244)
+* (harrym67) - Add Endpoint dim to Shelly Dimmer 2 (SHDM-2) (Issue #248)
 
 ### 4.0.3 (2020-08-19)
 * (Stübi) - Add a checkbox, to optionally enable updates of objects even if they have not changed (Issue #209)

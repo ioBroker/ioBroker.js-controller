@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: 2DsMpgBNo0MBSEZIDRAMLoroxOH4Ef5CM+AYe4fa+n8=
+hash: /ML03PtQt5IWh9TwmCdZJOWBxobFdQJW1LBeLKq9TRA=
 ---
 ![Logo](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -245,7 +245,7 @@ Die Nachricht kann eines der folgenden drei Formate haben:
 * eine ID und ein Array von Statusobjekten: `{id: 'adapter.0.device.counter', Status: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3 , ts: 10239699}]} `
 * Array mehrerer IDs mit Statusobjekten `[{id: 'adapter.0.device.counter1', Status: {val: 1, ts: 10239499}, {id: 'adapter.0.device.counter2', Status: {val: 2, ts: 10239599}] `
 
-Zusätzlich können Sie das Attribut `rules: true` hinzufügen, um alle Regeln wie `counter`, `changesOnly`, `de-bounce` usw. zu aktivieren: `{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
+Zusätzlich können Sie das Attribut `rules: true` hinzufügen, um alle Regeln zu aktivieren, wie z. B. `counter`, `changesOnly`, `de-bounce` und so weiter: `{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
 
 ## Status löschen
 Wenn Sie einen Eintrag aus der Datenbank löschen möchten, können Sie die eingebaute Systemfunktion **löschen** verwenden:
@@ -312,7 +312,7 @@ sendTo('sql.0', 'getHistory', {
 });
 ```
 
-## Zähler abrufen
+## Zähler holen
 Der Benutzer kann den Wert eines Zählers (Typ = Nummer, Zähler = Wahr) für einen bestimmten Zeitraum erfragen.
 
 ```
@@ -407,6 +407,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Verschlüsseln** Einige DBs unterstützen die Verschlüsselung.
 - **Real runden auf** Anzahl der Stellen nach dem Komma.
 - **Parallele Anforderungen zulassen** Zulassen gleichzeitiger SQL-Anforderungen an die Datenbank.
+- **Datenbank nicht erstellen** Aktivieren Sie diese Option, wenn die Datenbank bereits erstellt wurde (z. B. vom Administrator) und der ioBroker-Benutzer nicht über ausreichende Rechte zum Erstellen einer Datenbank verfügt.
 
 ## Standardeinstellungen
 - **De-Bounce-Intervall** Speichern Sie Werte nicht öfter als dieses Intervall.
@@ -414,7 +415,30 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Minimale Differenz vom letzten Wert zum Protokoll** Das minimale Intervall zwischen zwei Werten.
 - **Speicheraufbewahrung** Wie lange werden die Werte in der Datenbank gespeichert?
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 1.15.3 (2020-08-29)
+* (bluefox) Added the option "Do not create database". E.g. if DB was created and it does not required to do that, because the user does not have enough rights.
+ 
+### 1.15.2 (2020-07-26)
+* (Apollon77) prevent wrong errors that realId is missing
+
+### 1.15.1 (2020-07-20)
+* (Apollon77) implement a workaround for postgres problem
+
+### 1.15.0 (2020-07-19)
+*BREAKING* This version only accepts Node.js 10.x+ (because sqlite3 was upgraded)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-SQL-16, IOBROKER-SQL-15, IOBROKER-SQL-1K)
+
+### 1.14.2 (2020-06-23)
+* (bluefox) Fixed error for data storage
+
+### 1.14.1 (2020-06-17)
+* (bluefox) Corrected error for objects with mixed type
+
 ### 1.14.0 (2020-05-20)
 * (bluefox) added the range deletion and the delete all operations
  

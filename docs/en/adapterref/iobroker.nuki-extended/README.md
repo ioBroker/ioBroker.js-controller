@@ -24,6 +24,7 @@ This ioBroker adapter (formerly ioBroker.Nuki2) allows to control and monitor th
    1. [Lock door at 10pm in the evening](#lock-door-at-10pm-in-the-evening)
    2. [Let Alexa inform you about lock changes](#let-alexa-inform-you-about-lock-changes)
    3. [Let Telegram inform you about lock changes](#let-telegram-inform-you-about-lock-changes)
+   4. [Let Alexa and Telegram inform you about somebody ringing via Opener](#let-telegram-and-alexa-inform-you-about-somebody-ringing-via-opener)
 5. [Changelog](#changelog)
 6. [Credits](#credits)
 7. [Licence](#license)
@@ -474,6 +475,25 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
       say('Door is ' + DOOR_STATES[obj.state.val] + '!')
       msg('Door is ' + DOOR_STATES[obj.state.val] + '!')
     }
+});
+```
+
+### Let Telegram and Alexa inform you about somebody ringing via Opener
+This requires the ioBroker adapter ioBroker.telegram (https://github.com/iobroker-community-adapters/ioBroker.telegram) and the ioBroker adapter ioBroker.alexa2 (https://github.com/Apollon77/ioBroker.alexa2).
+
+```javascript
+/*
+ * Alexa and Telegram to notify on Opener Ringing state
+ *
+ */
+let phrase = 'Somebody is ringing the doorbell.'; // Es hat an der Tür geklingelt
+on({id: 'nuki-extended.0.openers.opener.state.ringStateUpdate', change: "any", ack: true}, function (s) {
+  let state= s && s.state;
+
+  if (state.val === true) {
+    setState("alexa2.0.Echo-Devices.#YOUR ALEXA ID#.Commands.speak"/*speak*/, phrase);
+    sendTo("telegram", "send", { text: phrase });
+  }
 });
 ```
 

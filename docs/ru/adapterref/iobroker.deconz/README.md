@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.deconz/README.md
 title: без названия
-hash: oGadD+2MVq27J/o275XeRBcmFlhNU672SqfrxrhWpsE=
+hash: xsfX6P9SJKjs8MpPi1ErX29qGJF07F47JRIY5fLs9UA=
 ---
-![логотип](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
+![Логотип](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
 ![Количество установок](http://iobroker.live/badges/deconz-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.deconz.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.deconz.svg)
-![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.deconz.png?downloads=true)
 
 ioBroker deConz dresden-elektronik Адаптер
 
@@ -19,7 +19,7 @@ ioBroker deConz dresden-elektronik Адаптер
 ## Уведомление
 Нет поддержки бета / предварительных версий deConz.
 
-** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 Требуемая версия js-контроллера> 2.x.x, Требуемая версия node.js> = 10.x.x
 
@@ -54,7 +54,7 @@ ioBroker deConz dresden-elektronik Адаптер
 Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Software Soll eine universelle ZigBee Gateway-Lösung sein, die die Hardware von dresden-elektronik, ConBee USB-Stick и RaspBee, ein Modul für den Raspberry Pi, verwendet.
 
 ### Эйнрихтен
-1. Dokumentation von deConz / Phoscon lesen, Quellen siehe [Ссылки] (https://github.com/iobroker-community-adapters/ioBroker.deconz#links).
+1. Документация от deConz / Phoscon lesen, Quellen siehe [Ссылки] (https://github.com/iobroker-community-adapters/ioBroker.deconz#links).
 2. Запуск адаптера
 3. * IP-адрес от deConz und
     * Порт eingeben, Стандартный порт ist 80
@@ -66,12 +66,12 @@ Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Sof
 4. Кликен "Erstelle API Key"
 5. * Buntzername (Стандартное удовольствие) и
     * Passwort (wird beim ersten Anmelden in der Phoscon APP vergeben) eingeben
-   * **Alterantiv:** Phoscon APP öffnen -> Menü -> Einstellungen -> Gateway -> Erweitert -> Auf "App verbinden" klicken
+   * **Alterantiv:** Phoscon APP öffnen -> Menü -> Einstellungen -> Gateway -> Erweitert -> Auf "App verbinden" кликен
 
 #### Mehr als einen Befehl senden
 Dafür gibt es das Objekt "действие".
 
-Beispiele:
+Биспиле:
 
 `"on": true, "xy": [0.6586,0.3138]`
 
@@ -85,6 +85,10 @@ Beispiele:
 - [Шлюзы (аппаратные)] (https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)
 
 ## [Спонсоры](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
+Если вам понравилась моя работа, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвования для Jey Cee, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=95YZN2LR59Q64&source=url)
+
+## Присоединяйтесь к серверу Discord, чтобы обсудить все об интеграции ioBroker и deconz!
+<a href="https://discord.gg/uPwfzvR"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
 
 ## Changelog
 

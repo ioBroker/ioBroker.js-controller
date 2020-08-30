@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.wlanthermo-nano/README.md
 title: ioBroker.wlanthermo-nano
-hash: dXyP552FUGUaw44ss0/iVFDKJq+ThYgA/ZrktqJLcXQ=
+hash: uWZeBaWWKa6keB36zElfXjpS1cG3oLU3kjK7ZPomu7U=
 ---
 ![商标](../../../en/adapterref/iobroker.wlanthermo-nano/admin/wlanthermo-nano.png)
 
@@ -24,14 +24,17 @@ hash: dXyP552FUGUaw44ss0/iVFDKJq+ThYgA/ZrktqJLcXQ=
 请在实例配置中输入IP地址，用户名和密码。
 
 ＃＃ 去做
-* []优化pitmaster设置，使状态只能以相关方式写入，否则为只读
+* []优化pitmaster设置，使状态只能以相关方式可写，否则为只读
 * []实现自动设备检测
 * []实现设备在线状态
 * [x]允许多个设备
 * []代码清除
 
+##加入Discord服务器，讨论有关ioBroker-WlanThermo集成的所有内容！
+<a href="https://discord.gg/cNAeGjJ"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
+
 ＃＃ 支持我
-如果您喜欢我的工作，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](http://paypal.me/DutchmanNL)
+如果您喜欢我的作品，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](http://paypal.me/DutchmanNL)
 
 ## Changelog
 

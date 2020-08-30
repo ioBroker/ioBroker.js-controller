@@ -42,6 +42,9 @@ If you have any device transmitting specially encoded information via advertisem
 	### __WORK IN PROGRESS__
 -->
 
+### 0.11.8 (2020-08-25)
+* (AlCalzone) The pressure value reported by Ruuvi Tags is now parsed with two decimal places
+
 ### 0.11.7 (2020-08-20)
 * (AlCalzone) Added a more helpful error message if the adapter terminates with error `EAFNOSUPPORT`
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: 2DsMpgBNo0MBSEZIDRAMLoroxOH4Ef5CM+AYe4fa+n8=
+hash: /ML03PtQt5IWh9TwmCdZJOWBxobFdQJW1LBeLKq9TRA=
 ---
 ![商标](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -12,7 +12,7 @@ hash: 2DsMpgBNo0MBSEZIDRAMLoroxOH4Ef5CM+AYe4fa+n8=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sql.svg)
 ![测验](https://travis-ci.org/ioBroker/ioBroker.sql.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sql.png?downloads=true)
-![环保管理员徽章](https://badges.greenkeeper.io/ioBroker/ioBroker.sql.svg)
+![保镖徽章](https://badges.greenkeeper.io/ioBroker/ioBroker.sql.svg)
 
 ＃ioBroker.sql
 该适配器将状态历史记录保存到SQL DB中。
@@ -23,8 +23,8 @@ hash: 2DsMpgBNo0MBSEZIDRAMLoroxOH4Ef5CM+AYe4fa+n8=
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ### MS-SQL：
-对主机使用§§JJJJJ_0_0§§并检查已启用的TCP / IP连接。
-https://msdn.microsoft.com/zh-cn/library/bb909712(v=vs.90).aspx
+对主机使用```localhost\instance```并检查已启用的TCP / IP连接。
+https://msdn.microsoft.com/zh-CN/library/bb909712(v=vs.90).aspx
 
 ### SQLite：
 是“文件” -DB，不能管理太多事件。如果您有大量数据，请使用真实的数据库，例如PostgreSQL和co。
@@ -76,7 +76,7 @@ FLUSH PRIVILEGES;
 ##数据库的结构
 默认数据库名称为“ iobroker”，但可以在配置中更改。
 
-###来源此表是适配器实例的列表，这些实例已写入条目。 （state.from）
+###源此表是适配器实例的列表，这些实例已写入条目。 （state.from）
 | DB |查询名称|
 |------------|----------------------|
 | MS-SQL | iobroker.dbo.sources |
@@ -215,7 +215,7 @@ sendTo('sql.0', 'query', 'SELECT * FROM datapoints', function (result) {
 });
 ```
 
-或者获取最近一小时的ID = system.adapter.admin.0.memRss条目
+或获取ID = system.adapter.admin.0.memRss的最近一小时的条目
 
 ```
 sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.admin.0.memRss"', function (result) {
@@ -257,7 +257,7 @@ sendTo('sql.0', 'delete', [
 ], result => console.log('deleted'));
 ```
 
-要删除某个数据点的所有历史记录数据，请执行：
+要删除某个数据点的所有历史数据，请执行：
 
 ```
 sendTo('sql.0', 'deleteAll', [
@@ -275,7 +275,7 @@ sendTo('sql.0', 'deleteRange', [
 ], result => console.log('deleted'));
 ```
 
-时间可能是自纪元或ans字符串以来的ms，可以由javascript Date对象转换。
+时间可能是毫秒（自纪元或ans字符串开始），可以由javascript Date对象转换。
 
 值将被删除，包括已定义的限制。 `ts >= start AND ts <= end`
 
@@ -291,7 +291,7 @@ sendTo('sql.0', 'update', [
 
 `ts`是强制性的。状态对象中必须至少包含一个其他标志。
 
-小心`counters`。数据库中的`counters`§不会被重置，您必须自己处理。
+注意`counters`。数据库中的`counters`§不会重置，您必须自己处理。
 
 ##获取历史
 除自定义查询外，您还可以使用内置系统功能** getHistory **：
@@ -329,7 +329,7 @@ sendTo('sql.0', 'getCounter', {
 });
 ```
 
-如果将更换计数器，则也会对其进行计算。
+如果计数器将被替换，它也会被计算。
 
 ##通过Javascript进行历史记录记录管理
 适配器支持通过JavaScript启用和禁用历史记录日志，还支持使用其设置检索启用的数据点列表。
@@ -397,7 +397,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 ```
 
 ##连接设置
--**数据库类型**：SQL DB的类型：MySQL，PostgreSQL，MS-SQL或SQLite3
+-** DB类型**：SQL DB的类型：MySQL，PostgreSQL，MS-SQL或SQLite3
 -**主机**：SQL Server的IP地址或主机名
 -**端口**：SQL Server的端口（如果不确定，请留空）
 -**数据库名称**：数据库名称。默认iobroker
@@ -407,14 +407,38 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 -**加密**：某些数据库支持加密。
 -**实数为**：逗号后的位数。
 -**允许并行请求**：允许同时向DB发送SQL请求。
+-**不创建数据库**：如果已经创建了数据库（例如，由管理员创建）并且ioBroker用户没有足够的权限来创建数据库，则激活此选项。
 
 ＃＃ 默认设置
 -**反跳间隔**：请勿存储比该间隔更频繁的值。
 -**记录任何不变的值**：每X秒额外写入一次值。
--**从上一个值到对数值的最小差值**：两个值之间的最小间隔。
+-**从上一个值到对数值的最小差**：两个值之间的最小间隔。
 -**存储保留**：值将在数据库中存储多长时间。
 
+<！-下一个版本的占位符（在该行的开头）：
+
+### __进展中__->
+
 ## Changelog
+### 1.15.3 (2020-08-29)
+* (bluefox) Added the option "Do not create database". E.g. if DB was created and it does not required to do that, because the user does not have enough rights.
+ 
+### 1.15.2 (2020-07-26)
+* (Apollon77) prevent wrong errors that realId is missing
+
+### 1.15.1 (2020-07-20)
+* (Apollon77) implement a workaround for postgres problem
+
+### 1.15.0 (2020-07-19)
+*BREAKING* This version only accepts Node.js 10.x+ (because sqlite3 was upgraded)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-SQL-16, IOBROKER-SQL-15, IOBROKER-SQL-1K)
+
+### 1.14.2 (2020-06-23)
+* (bluefox) Fixed error for data storage
+
+### 1.14.1 (2020-06-17)
+* (bluefox) Corrected error for objects with mixed type
+
 ### 1.14.0 (2020-05-20)
 * (bluefox) added the range deletion and the delete all operations
  

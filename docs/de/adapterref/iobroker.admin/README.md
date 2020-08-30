@@ -123,6 +123,18 @@ Auch die Repositorien und Sicherheitseinstellungen können hier eingestellt werd
 Eine tiefergehende Beschreibung ist über den Link in dem Titel dieses Abschnitts zu erreichen.
 
 ## Changelog
+
+### 4.1.6 (2020-07-26)
+* (Apollon77) Increased the socket ping Interval and Timeout to maybe prevent the too fast reconnect attempts.
+
+### 4.1.5 (2020-07-26)
+* (ldittmar) Add option to check for active/inactive instances and uuid-hash
+* (Apollon77) prevent Sentry crash IOBROKER-ADMIN-Z
+
+### 4.1.3 (2020-07-25)
+* (bluefox) Added binary state read and write
+* (bluefox) small fixes
+
 ### 4.1.1 (2020-04-25)
 * (bluefox) Started the development of GUI based on React (only for developers)
 

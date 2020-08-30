@@ -3,68 +3,112 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: gEmwf9IDWuvsZ+8a1ID9klDN1HwrM9Fxj7KN6/2RJAk=
+hash: c1sQb6QGJSpneskKrGz7xB92ANEcDuNUiviPkTIyMqE=
 ---
-![логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
+![Логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
 ![Статус сборки](https://travis-ci.org/schmupu/ioBroker.shelly.svg?branch=master)
-![AppVeyor Статус сборки](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.shelly?branch=master&svg=true)
+![Статус сборки AppVeyor](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.shelly?branch=master&svg=true)
 ![Количество установок](http://iobroker.live/badges/shelly-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.shelly.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.shelly.svg)
-![NPM](https://nodei.co/npm/iobroker.shelly.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.shelly.png?downloads=true)
 
 # IoBroker.shelly
 Требуется node.js 8.0 или выше и Admin v3!
 
-Адаптер связывается с устройствами Shelly по REST api и протоколу CoAP или MQTT.
-По умолчанию прошивка Shelly (прошивка прошивки не требуется!). Более подробную информацию об устройстве вы найдете здесь: [изобилующий раковинами](https://shelly.cloud/)
+Адаптер взаимодействует с устройствами Shelly с помощью REST api и протокола CoAP или MQTT.
+По умолчанию прошивка Shelly (прошивка прошивки не требуется!). Вы найдете более подробную информацию об устройстве здесь: [Шелли](https://shelly.cloud/)
 
-** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать об исключениях и ошибках кода мне как разработчику. ** Подробнее см. Ниже!
+Если вы используете протокол CoAP, устройства Shelly с прошивкой 1.8.0 или выше работают только с Shelly Adapter 4.0.0 или выше. Если вы используете устройства с прошивкой ниже 1.8.0, за исключением Shelly 4Pro, вам необходимо использовать адаптер Shelly 3.3.6 или ниже. Адаптер Shelly 4.0.0 и выше в этом случае работать не будет!
+
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать мне как разработчику об исключениях и ошибках кода. ** Подробнее см. Ниже!
 
 ## Монтаж
-Вы найдете подробную документацию по установке здесь: [Документация по установке](./docs/EN/INSTALL.md)
+Вы можете найти подробную документацию по установке здесь: [Документация по установке](./docs/EN/INSTALL.md)
 
 ## Поддерживаемые устройства
-| Шелли Устройство | CoAP | MQTT |
+| Шелли устройство | CoAP | MQTT |
 |-------------|--------------|----|
-| Shelly1 (SHSW-1) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
-| Shelly2 (SHSW-21 / SHSW-22) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
-| ShellyBulb (SHBLB) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
-| Shelly H & T (SHHT-1) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
+| Shelly1 (SHSW-1) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
+| Shelly2 (SHSW-21 / SHSW-22) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
+| ShellyBulb (SHBLB) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
+| Shelly H&T (SHHT-1) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
 | Shelly Smoke (SHSM-01) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
-| Shelly 1 1PM (SHSW-PM) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
+| Shelly 1 1PM (SHSW-PM) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
 | Shelly 2.5 (SHSW-25) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
-| ShellyRGBW (SHRGBWW-01) | не поддерживается с версии v3.4.0 | не поддерживается с версии v3.4.0 |
-| ShellyRGBW2 (SHRGBW2) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
-| Shelly2LED (SH2LED) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
-| ShellyPlug (SHPLG-1) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
-| ShellyPlug S (SHPLG-1) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
-| ShellyPlug 2 (SHPLG-2) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
-| ShellySense (SHSEN-1) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
-| Shelly4Pro (SHSW-44) | поддерживается начиная с версии 3.3.5 | поддерживается начиная с версии 3.3.5 |
-| Shelly EM (SHEM) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
+| ShellyRGBW (SHRGBWW-01) | не поддерживается с v3.4.0 | не поддерживается с v3.4.0 |
+| ShellyRGBW2 (SHRGBW2) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
+| Shelly2LED (SH2LED) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
+| ShellyPlug (SHPLG-1) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
+| ShellyPlug S (SHPLG-1) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
+| ShellyPlug 2 (SHPLG-2) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
+| ShellySense (SHSEN-1) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
+| Shelly4Pro (SHSW-44) | поддерживается с v3.3.5 | поддерживается с v3.3.5 |
+| Shelly EM (SHEM) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
 | Shelly Flood (SHWT-1) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
 | Shelly Dimmer (SHDM-1) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
-| Shelly Door / Window Sensor (SHDW-1) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
-| Shelly Bulb Duo (SHBDUO-1) | поддерживается начиная с версии 3.3.0 | поддерживается начиная с версии 3.3.0 |
+| Датчик двери / окна Shelly (SHDW-1) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
+| Shelly Bulb Duo (SHBDUO-1) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
 | Shelly 3EM (SHEM | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
 | Shelly Vintage (SHVIN-1) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
 | Shelly I3 (SHIX3-1) | поддерживается с v3.3.0 | поддерживается с v3.3.0 |
-| Кнопка Шелли (SHBTN-1) | поддерживается начиная с версии 3.3.3 | поддерживается начиная с версии 3.3.3 |
-| Shelly Gas (SHGS-1) | поддерживается начиная с версии 3.3.3 | поддерживается начиная с версии 3.3.3 |
-| Shelly Dimmer 2 (SHDM-2) | поддерживается начиная с версии 3.3.4 | поддерживается начиная с версии 3.3.4 |
-| Shelly Door / Window Sensor 2 (SHDW-2) | поддерживается начиная с версии 3.3.5 | поддерживается начиная с версии 3.3.5 |
+| Shelly Button (SHBTN-1) | поддерживается с v3.3.3 | поддерживается с v3.3.3 |
+| Shelly Gas (SHGS-1) | поддерживается с v3.3.3 | поддерживается с v3.3.3 |
+| Shelly Dimmer 2 (SHDM-2) | поддерживается с v3.3.4 | поддерживается с v3.3.4 |
+| Датчик двери / окна Shelly 2 (SHDW-2) | поддерживается с v3.3.5 | поддерживается с v3.3.5 |
 
-## Что такое Sentry и что сообщается на серверы?
-Sentry.io позволяет разработчикам получить обзор ошибок в своих приложениях. И именно это реализовано в этом адаптере.
+## Что такое Sentry и что передается на серверы?
+Sentry.io - это способ для разработчиков получить обзор ошибок в своих приложениях. Именно это и реализовано в этом адаптере.
 
-Когда происходит сбой адаптера или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Когда вы разрешили ioBroker GmbH собирать диагностические данные, включался и ваш установочный идентификатор (это просто уникальный идентификатор **без** каких-либо дополнительных сведений о вас, адрес электронной почты, имя или тому подобное). Это позволяет Sentry группировать ошибки и показывать, на сколько уникальных пользователей влияет такая ошибка. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не выходят из строя.
+Когда адаптер дает сбой или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Если вы разрешили ioBroker GmbH собирать диагностические данные, включается также ваш установочный идентификатор (это просто уникальный идентификатор **без** дополнительной информации о вас, электронной почты, имени и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
 
 ## Changelog
+ 
+### 4.0.4 (2020-08-23)
+* (Stübi) - optimize the destroy function (Bugfixing)
+* (Stübi) - Bugfixing Relay0.Event error for Shelly I3 in MQTT mode (Issue #241)
+* (harrym67) - Shelly 2.5 Roller mode. According to Shelly API: changed existing state swap to swap_input and add state swap.(Issue #240)
+* (Stübi) - Allow setting of customer MQTT prefix (Issue #244)
+* (harrym67) - Add Endpoint dim to Shelly Dimmer 2 (SHDM-2) (Issue #248)
 
-### __WORK IN PROGRESS__
-* (Apollon77) Update shelly-iot library to prevent some errors
+### 4.0.3 (2020-08-19)
+* (Stübi) - Add a checkbox, to optionally enable updates of objects even if they have not changed (Issue #209)
+* (Stübi) - Calculate temperature fahrenheit for Shelly 1PM and Plug S in MQTT mode
+* (Stübi) - Fixed longpush time for MQTT (Shelly 1, 1PM, 2 and 2.5) 
+* (Stübi) - Add State for changing temperature unit for Shelly HT and DW2
+* (Stübi) - Delete external temperature 4 and external humidity 4 states for Shelly 1 and 1PM because they do not exist
+* (Stübi) - Renamed state temperature to temperatureC for Shelly 1, 1PM, 2, 2.5, Plug S
+* (Stübi) - Add tmperature in Celsius and Fahrenheit for Shelly HT and DW2
+* (Stübi) - Bugfixing. Add missing states to MQTT, which exist for CoAP (Shelly 2, 2.5) 
+* (Stübi) - Polltime for http optimized. 
+* (Stübi) - removed min and max values for temperature states (Issue #236)
+* (Stübi) - Bugfixing. Add timer to Shelly 1, 1PM for CoAP and removed it for MQTT (Shelly 1, 1PM, 2, 2.5) because it is not supported by MQTT
+* (Stübi) - Add overpower value to Shelly 1, 1PM, 2, 2.5 and Plug, Plug S
+* (Stübi) - Removed channel name from Shelly 4 Pro (Issue #238)
+
+### 4.0.2 (2020-08-16)
+* (Stübi) - Bugfixing Shelly DW2 (Issue #220)
+* (Stübi) - Bugfixing manually set object name is overwritten (Issue #224)
+
+### 4.0.1 (2020-08-15)
+* (Stübi) Major Change!! If you use the CoAP protocol only Shelly devices with Firmware 1.8.x or above supported! All devices with Firmware below 1.8.x except Shelly 4Pro will not working with this release!
+* Official release to npm/latest
+
+### 4.0.0 (05.08.2020)
+* (Stübi)     - Major Change!! If you use the CoAP protocol only Shelly devices with Firmware 1.8.x or above supported! All devices with Firmware below 1.8.x except Shelly 4Pro will not working with this release!
+* (@harrym67) - Changing device files 
+* (Stübi)     - Since Firmware 1.8. the Shelly device names like shelly.0.SHBTN-1#A4CF12F454A3#2 ends with #2. It will be changed back to #1 like shelly.0.SHBTN-1#A4CF12F454A3#1. 
+* (@harrym67) - Add state factoryResetFromSwitch for Shelly 1, 1pm, 2, 2.5, Dimmer, Dimmer 2 and RGBW2
+* (@harrym67) - Add states longpushDurationMsMin, longpushDurationMsMax and multipushTimeBetweenPushesMsMax for Shelly IX3
+* (@harrym67) - Add state ChannelName for Shelly 1, 1pm, 2, 2.5, Dimmer, Dimmer 2, 4Pro, EM and 3EM
+* (@harrym67) - Add state StopReason for Shelly 2 and 2.5 in Shuttermode
+* (@harrym67) - Add state name to all Devices (Device Name)
+
+### 3.3.6 (26.07.2020)
+* (Stübi) - Bugfixing temperature for Shelly Dimmer (Issue #201)
+* (Stübi) - Tried to fix high CPU load by replacing ping with tpcping (Issue #196, #202)
+* (Stübi) - correct spelling mistake for Shelly DW2 (Issue #205)
 
 ### 3.3.5 (04.07.2020)
 * (Stübi) - Add Shelly 4 Pro

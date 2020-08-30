@@ -4,6 +4,7 @@
 
 
 ![Number of Installations](http://iobroker.live/badges/sprinklecontrol-installed.svg) 
+![Number of Installations](http://iobroker.live/badges/sprinklecontrol-stable.svg)
 [![NPM version](http://img.shields.io/npm/v/iobroker.sprinklecontrol.svg)](https://www.npmjs.com/package/iobroker.sprinklecontrol)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sprinklecontrol.svg)](https://www.npmjs.com/package/iobroker.sprinklecontrol)
 [![Dependency Status](https://img.shields.io/david/Dirk-Peter-md/iobroker.sprinklecontrol.svg)](https://david-dm.org/Dirk-Peter-md/iobroker.sprinklecontrol)
@@ -17,18 +18,28 @@
 
 This adapter controls individual irrigation circuits in the garden. Depending on the weather and soil conditions, they start working at a specific time or at sunrise, as specified in the configuration.
 
-Wetterabhängige automatische steuerung der Gartenbewässerungs
+Wetterabhängige automatische steuerung der Gartenbewässerung
 
 [Deutsche Beschreibung hier](docs/de/sprinklecontrol.md)
+
+[Deutsche Beschreibung auf GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/de/sprinklecontrol.md)
 
 Weather-dependent automatic control of garden irrigation
 
 [English Description here](docs/en/sprinklecontrol.md)
 
+[English description on GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/en/sprinklecontrol.md)
+
 *************************************************************************************************************************************
 
 
 ## Changelog
+
+### 0.0.10 (29.08.2020)
+* (Dirk-Peter-md) Bug in der Verarbeitung der Regenvorhersage vom Adapter "Das Wetter"
+
+### 0.0.9 (28.08.2020)
+* (Dirk-Peter-md) integration des Adapters "Das Wetter" <Pfad 2: XML-Datei mit 5-Tage-Wettervorhersage> zur Regenvorhersage (siehe Doku)
 
 ### 0.0.8 (17.08.2020)
 * (Dirk-Peter-md) adapter.unload: (setTimeout > 1s) >>> delete

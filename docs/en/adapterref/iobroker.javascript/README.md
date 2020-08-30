@@ -1460,6 +1460,10 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 4.6.26 (2020-08-24)
+* (Apollon77) Catch error case when npm istallation fails (Sentry IOBROKER-JAVASCRIPT-3K)
+* (Apollon77) Prevent crash case in mirroring (Sentry IOBROKER-JAVASCRIPT-3M)
+
 ### 4.6.25 (2020-08-24)
 * (bluefox) Fixed the loading of page
 
@@ -1471,9 +1475,6 @@ Scripts can be activated and deactivated by controlling of this state with ack=f
 
 ### 4.6.21 (2020-07-28)
 * (Apollon77) catched some more file errors in mirror logic (Sentry IOBROKER-JAVASCRIPT-2X, IOBROKER-JAVASCRIPT-3C)
-
-### 4.6.20 (2020-07-26)
-* (Apollon77) make sure 0_userdata.0 objects/states are not overwritten on createState
 
 ## License
 

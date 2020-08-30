@@ -28,6 +28,10 @@ Please enter IP-adress, username and password in the instance configuration.
 * [x] allow multiple devices
 * [ ] code cleanup
 
+## Join the Discord server to discuss everything about ioBroker-WlanThermo integration!
+
+<a href="https://discord.gg/cNAeGjJ"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
+
 ## Support me
 If you like my work, please feel free to provide a personal donation  
 (this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  

@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
+hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 ---
-![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
+![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
 ![安装数量](http://iobroker.live/badges/mielecloudservice-stable.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
@@ -18,8 +18,8 @@ hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
 
 ＃ioBroker.MieleCloudService
 ##说明
-该适配器用于从官方Miele第三方API检索有关所有Miele @ Home设备的信息。
-无论它们是否通过WiFi或XGW3000网关直接连接。它实现了** Miele 3rd Party API V1.0.0 **
+该适配器用于从Miele 3rd-party官方API检索有关所有Miele @ Home设备的信息。
+无论它们是否通过WiFi或XGW3000网关直接连接。它实现了** Miele 3rd Party API V1.0.3 **
 
 ##先决条件
 * Miele @ Home用户（智能手机应用程序）
@@ -49,13 +49,13 @@ hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
 * [常规文档]（https://www.miele.com/developer/swagger-ui/index.html）
 * [在设备上执行操作的前提条件]（https://www.miele.com/developer/swagger-ui/put_additional_info.html）
 
-有2种可用的数据点。作为人类可读的文本和数字。
+有两种数据点可用。作为人类可读的文本和数字。
 这些属于文本字段的数字数据字段具有相同的名称，但附加了“ _raw”。
 下面列出了具有一般含义的字段。
 未列出的字段因设备而异，并且不受Miele的贬低。
 如果需要在脚本中引用这些字段，请始终使用_raw值。
 文本值将来可能会更改，并且还取决于语言。
-这些原始值代表的清单如下：
+以下是这些原始值代表的列表：
 
 ###设备类型
  |原始值状态|
@@ -89,7 +89,7 @@ hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
  | 42 |双微波|
  | 43 |双微波炉|
  | 45 |蒸汽烤箱微波组合|
- | 48 |真空抽屉|
+ | 48 |真空吸尘器|
  | 67 | DIALOGOVEN |
  | 68 |葡萄酒柜冷冻组合|
 
@@ -108,7 +108,7 @@ hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
  | 10 |空闲|
  | 11 | RINSE_HOLD |
  | 12 |服务|
- | 13 |超级冷冻|
+ | 13 |超冻结|
  | 14 |超冷|
  | 15 |超热|
  | 144 |默认|
@@ -123,15 +123,15 @@ hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
 | 2 |自动程序|
 | 3 |清洁/保养程序|
 
-### DryingStep / Trockenstufe
+### DryStepStep / Trockenstufe
  |原始值状态|
  |----------|-------|
  | 0 |超干|
  | 1 |普通加|
  | 2 |正常|
  | 3 |稍干|
- | 4 |手工铁水准1 |
- | 5 |手铁2级|
+ | 4 |手铁1级|
+ | 5 |手工铁水平2 |
  | 6 |机铁|
 
 ### ProgramBezeichnung
@@ -150,7 +150,7 @@ hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
 | 261 | “Spülen” /“冲洗” |洗衣机|
 | 266 | “ Schleudern” /“ Spinning” |洗衣机|
 | 267 | “ Knitterschutz” /“” |洗衣机|
-| 268 | “ Ende” /“ End” |大多数设备|
+| 268 | “结束” /“结束” |大多数设备|
 | 256 | “” | | |
 | 514 | “ Trocknen” |洗衣机烘干机|
 | 519 | “阿布库伦” |洗衣机烘干机|
@@ -160,6 +160,17 @@ hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
 版权所有（c）2019、2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 2.0.0 - Support for Miele API V1.0.3 (2020-08-25)
+Some breaking changes in this release. Some datapoints changed their type. May require fixes in scripts. **Update with care!**
+Due to the fix that datapoints with invalid values aren't created any longer, I recommend deleting all datapoints in Object view.
+* (grizzelbee) Change: New Icon
+* (grizzelbee) Fix: Number-datapoints are no longer created as strings due to their unit. They are correct numbers with units now.
+* (grizzelbee) Fix: Unit °Celsius is now shown as °C - not longer °Celsius
+* (grizzelbee) New: Introduced support for °Fahrenheit
+* (grizzelbee) New: Introduced support for new Value "plateStep" for Hobs.
+* (grizzelbee) New: Performing a LogOut from Miele API on shutdown to invalidate the Auth-Tokens. 
+* (grizzelbee) Fix: Datapoints with invalid values (null/-32768) are no longer created.
+
 ### 1.2.4 (2020-06-09)
 * (grizzelbee) Fix: fixed No-Data Bug (introduced in V1.2.3)
 

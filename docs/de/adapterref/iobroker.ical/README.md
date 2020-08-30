@@ -188,6 +188,14 @@ Blacklist: Wenn Sie alle Ereignisse eines bestimmten Ortes ausschließen möchte
 Whitelist: Wenn Sie nur Ereignisse einer bestimmten Position einschließen möchten, verwenden Sie reguläre Ausdrücke wie `/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!MyLocation).*)$/` oder für 2 Standorte `/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!((MyHomeLocation)|(MyWorkLocation))).*)$/`
 
 ## Changelog
+
+### 1.7.4 (2020-08-26)
+* (Apollon77) Fix multiple parsing
+
+### 1.7.3 (2020-08-26)
+* (foxriver76) we pin a specific dependency version, because "rrule" package broken
+* (foxriver76) added eslint
+
 ### 1.7.2 (2019-12-02)
 * (bluefox) Documentation was changed
 

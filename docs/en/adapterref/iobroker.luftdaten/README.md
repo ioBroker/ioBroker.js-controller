@@ -51,6 +51,10 @@ Wait some minutes until the cronjob collects the data for the first time.
 
 ## Changelog
 
+### 1.0.0
+
+* (klein0r) First stable release
+
 ### 0.0.18
 
 * (klein0r) Added units for pressure and noise

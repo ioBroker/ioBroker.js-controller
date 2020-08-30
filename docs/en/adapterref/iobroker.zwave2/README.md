@@ -32,6 +32,10 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.6.0 (2020-08-29)
+* Added the possibility to send `Multilevel Sensor Report`s from scripts
+* Dependency updates for bug and security fixes
+
 ### 1.5.0 (2020-07-30)
 * Added the possibility to send custom commands from scripts ([documentation](docs/en/sendCommand.md)).
 * Added a `reset` state under `Meter CC`
@@ -51,9 +55,6 @@ Updated `zwave-js` to v4.0.1. This includes the following features:
 * Improved support for legacy devices that don't include all CCs in the NIF, like `Fibaro FGRM 222`.
 * Added support for `Sound Switch CC`
 * Added support for `Alarm Sensor CC`. This CC will only be used if `Notification CC` is not supported.
-
-### 1.3.8 (2020-06-18)
-* Fixed transmission issues caused by overlapped secure transactions
 
 ## License
 

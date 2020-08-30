@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.unifi/README.md
 title: ioBroker.unifi
-hash: 5H1U+vP44V3HiLwJ5cTYqkOSyoRIGJ1DhsJoacYCftg=
+hash: uzAYLNiazFB+pRFLhUAVnrVOUtlnYN9uaWaHamOgHaE=
 ---
 ![商标](../../../en/adapterref/iobroker.unifi/admin/unifi.png)
 
@@ -14,17 +14,17 @@ hash: 5H1U+vP44V3HiLwJ5cTYqkOSyoRIGJ1DhsJoacYCftg=
 ![NPM](https://nodei.co/npm/iobroker.unifi.png?downloads=true)
 
 ＃ioBroker.unifi
-此ioBroker适配器允许使用公共UniFi控制器Web-API监视和限制对[UniFi设备](http://www.ubnt.com/)（例如UniFi WiFi接入点）的控制。
+此ioBroker适配器允许使用公共UniFi控制器Web-API监视和限制[UniFi设备](http://www.ubnt.com/)，例如UniFi WiFi接入点。
 
 ##配置
 ###最低要求信息
 要启动此适配器并运行，需要以下信息：
 
-* UniFi控制器的IP地址和端口
-* 用户名和密码
+* UniFi控制器的IP地址和端口（如果该控制器在UbiOS（例如UDM Pro）上运行，请将该端口留空）
+*用户名和密码（不支持2FA）
 *更新间隔
 
-默认情况下，信息每60秒更新一次。根据您的ioBroker硬件和网络大小（客户端，UniFi设备等），不建议进一步缩短间隔。
+默认情况下，信息每60秒更新一次。根据您的ioBroker硬件和网络大小（客户端，UniFi设备等），建议不要进一步缩短间隔。
 
 ###过滤对象
 适配器会从您的UniFi控制器中更新尽可能多的信息，但可以限制更新的信息。
@@ -47,7 +47,7 @@ hash: 5H1U+vP44V3HiLwJ5cTYqkOSyoRIGJ1DhsJoacYCftg=
 使用“ vouchers.create_vouchers”按钮可以创建预定义的凭单。可以配置将创建的凭证的数量，凭证的有效期限，还可以设置上传和下载的限制。
 
 ##缺少数据点
-适配器使用[节点统一](https://github.com/jens-maus/node-unifi)连接到您的UniFi控制器。为了简化起见，并非所有可用的数据点都被拉到ioBroker中。如果您缺少数据点，请使用以下URL检查API。 （注意：您必须用设置替换IP，PORT和SITE）
+适配器使用[节点统一](https://github.com/jens-maus/node-unifi)连接到您的UniFi控制器。为简化起见，并非所有可用数据点都被拉到ioBroker中。如果缺少数据点，请使用以下URL检查API。 （注意：您必须用设置替换IP，PORT和SITE）
 
 |信息| API URL |
 |-------------|---------------------------------------------|
@@ -79,6 +79,74 @@ hash: 5H1U+vP44V3HiLwJ5cTYqkOSyoRIGJ1DhsJoacYCftg=
 ＃＃ 已知的问题
 *客户端离线后，客户端的is_wired状态不正确。这是UniFi控制器的已知问题，与适配器无关。 （请参阅https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1）
 
+＃＃ __工作正在进行中__
+### 0.5.8（2020-08-29）
+*（braindead1）修复了与未使用站点有关的问题
+*（braindead1）修复了通过哨兵报告的一些错误
+
+### 0.5.7（2020-07-27）
+*（braindead1）修复了更新后未更新配置导致的Sentry错误
+
+### 0.5.6（2020-07-25）
+*（Scrounger，braindead1）已实施的警报，DPI和网关流量
+*（braindead1）防止了由iOS MAC随机化引起的虚假客户端的创建
+*（dklinger）实施了手动更新触发器
+*（braindead1）已实施已用凭证的删除
+*（braindead1）修复了通过哨兵报告的一些错误
+
+### 0.5.5（2020-06-13）
+*（braindead1）修复了通过哨兵报告的一些错误
+
+### 0.5.4（2020-06-06）
+*（braindead1）为is_online实现的偏移量
+*（braindead1）修复了与is_online相关的一些问题
+*（braindead1）准备客户的白名单等
+
+### 0.5.2（2020-05-23）
+*（jens-maus）已实现UniFiOS / UDM-Pro支持
+*（braindead1）已实现启用/禁用WLAN的可能性
+*（braindead1）已创建凭证
+*（braindead1）为客户端实现了在线状态
+*（braindead1）更新了客户端状态
+*（braindead1）更新了设备状态
+*（braindead1）改进了错误消息
+
+### 0.5.0（2020-05-09）
+*（braindead1）已实施更新配置
+*（braindead1）改进了JsonLogic
+*（braindead1）删除了旧代码
+*（braindead1）实施哨兵
+
+### 0.4.3（2020-04-24）
+*（braindead1）修复了配置问题
+
+### 0.4.2（2020-04-23）
+*（braindead1）子系统问题已修复
+
+### 0.4.1（2020-04-16）
+*（braindead1）增强的重构
+
+### 0.4.0（2020-04-16）
+*（bluefox）重构
+
+### 0.3.1
+*（jens-maus）添加了对多站点环境的支持。
+
+### 0.3.0
+*（jens-maus）添加了访问设备数据查询，并将客户端设备移至“客户端”子树
+
+### 0.2.1
+*（jens-maus）次要修复
+
+### 0.2.0
+*（jens-maus）将lib / unifi.js移至专用的node-unifi nodejs类，并将其添加为依赖项。
+
+### 0.1.0
+*（jens-maus）实现了第一个基本可用的版本，该版本可以从UniFi控制器检索状态信息。
+
+### 0.0.1
+*（jens-maus）非工作开发版本的初始签入
+
 ##参考
 该适配器使用以下第三方nodejs模块的功能：
 
@@ -86,65 +154,10 @@ hash: 5H1U+vP44V3HiLwJ5cTYqkOSyoRIGJ1DhsJoacYCftg=
 * [json-logic-js]（https://github.com/jwadhams/json-logic-js）
 
 ## Changelog
-### 0.5.6-beta.2 (2020-07-05)
-* (Scrounger, braindead1) Implemented Alarms, DPI & Gateway Traffic
-* (braindead1) Prevented creation of ghost clients caused by iOS MAC randomization
-* (dklinger) Implemented manual update trigger
-* (braindead1) Implemented deletion of used vouchers
-* (braindead1) Fixed some errors reported via Sentry
-
-### 0.5.5 (2020-06-13)
-* (braindead1) Fixed some errors reported via Sentry
-
-### 0.5.4 (2020-06-06)
-* (braindead1) Implemented offset for is_online
-* (braindead1) Fixed some issues related to is_online
-* (braindead1) Prepared whitelisting of clients etc.
-
-### 0.5.2 (2020-05-23)
-* (jens-maus) Implemented UniFiOS/UDM-Pro support
-* (braindead1) Implemented possibility to enable/disable WLANs
-* (braindead1) Implemented voucher creation
-* (braindead1) Implemented online state for clients
-* (braindead1) Updated client states
-* (braindead1) Updated device states
-* (braindead1) Improved error messages
-
-### 0.5.0 (2020-05-09)
-* (braindead1) Implemented configuration of updates
-* (braindead1) Improved JsonLogic
-* (braindead1) Removed legacy code
-* (braindead1) Implemented Sentry
-
-### 0.4.3 (2020-04-24)
-* (braindead1) fixed configuration issue
-
-### 0.4.2 (2020-04-23)
-* (braindead1) subsystem issue fixed
-
-### 0.4.1 (2020-04-16)
-* (braindead1) Enhanced refactoring
-
-### 0.4.0 (2020-04-16)
-* (bluefox) Refactoring
-  
-### 0.3.1
-* (jens-maus) added support for multi-site environments.
-
-### 0.3.0
-* (jens-maus) added access device data query and moved the client devices to the 'clients' subtree instead
-
-### 0.2.1
-* (jens-maus) minor fixes
-
-### 0.2.0
-* (jens-maus) moved `lib/unifi.js` to dedicated node-unifi nodejs class and added it as a dependency.
-
-### 0.1.0
-* (jens-maus) implemented a first basically working version which can retrieve status information from a UniFi controller.
-
-### 0.0.1
-* (jens-maus) initial checkin of non-working development version
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
 
 ## License
 The MIT License (MIT)

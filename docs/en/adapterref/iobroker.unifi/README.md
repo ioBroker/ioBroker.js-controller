@@ -10,8 +10,8 @@ This ioBroker adapter allows the monitoring and limited controlling of [UniFi de
 ## Configuration
 ###  Minimum required information
 To get this adapter up and running the following information is needed:
-* IP address and port of your UniFi controller
-* Username and password
+* IP address and port of your UniFi controller (Leave the port empty in case your controller is running on UbiOS (e.g. UDM Pro))
+* Username and password (2FA is not supported)
 * Update interval
 
 By default the information is updated every 60 seconds. Depending on your ioBroker hardware and your network size (number of clients, UniFi devices etc.) it is not recommended to further decrease the interval.
@@ -71,6 +71,16 @@ The adapter uses [node-unifi](https://github.com/jens-maus/node-unifi) to connec
 * The is_wired state of clients is incorrect after a client went offline. This is a known issue of the UniFi controller and is not related to the adapter. (see https://community.ui.com/questions/Wireless-clients-shown-as-wired-clients/49d49818-4dab-473a-ba7f-d51bc4c067d1)
 
 ## Changelog
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
+## __WORK IN PROGRESS__
+
+### 0.5.8 (2020-08-29)
+* (braindead1) Fixed problems related to unused sites
+* (braindead1) Fixed some errors reported via Sentry
+
 ### 0.5.7 (2020-07-27)
 * (braindead1) Fixed Sentry errors caused by not updated configuration after update
 

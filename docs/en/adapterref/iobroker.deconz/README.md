@@ -74,6 +74,13 @@ Beispiele:
 - [Gateways (Hardware)](https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/)  
 
 ## [Sponsors](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
+If you like my work, please feel free to provide a personal donation  
+(this is an personal Donate link for Jey Cee, no relation to the ioBroker Project !)  
+[![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=95YZN2LR59Q64&source=url)
+
+## Join the Discord server to discuss everything about ioBroker-deconz integration!
+
+<a href="https://discord.gg/uPwfzvR"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
 
 ## Changelog
 

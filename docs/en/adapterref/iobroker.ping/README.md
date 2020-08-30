@@ -15,6 +15,9 @@ Pings specified IP addresses in defined interval and monitors the results.
 
 ## Changelog
 
+### 1.4.11 (2020-08-26)
+* (Apollon77) update js-controller dependency to correct version (1.5.8)
+
 ### 1.4.8 (2020-06-29)
 * (Apollon77) Prevent adapter crashes with invalid state/channel names, see error log! (Sentry IOBROKER-PING-H, IOBROKER-PING-P, IOBROKER-PING-B)
 

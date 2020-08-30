@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nuki-extended/README.md
 title: ioBroker.nuki扩展
-hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
+hash: P4wBQswyXDfM+blJgnDZpc+52jPqKyTvebuLngSFV1M=
 ---
 ![商标](../../../en/adapterref/iobroker.nuki-extended/admin/nuki-extended.png)
 
@@ -11,24 +11,25 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 ![安装数量](http://iobroker.live/badges/nuki-extended-installed.svg)
 ![稳定版](http://iobroker.live/badges/nuki-extended-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.nuki-extended.svg)
-![自上次发布以来提交](https://img.shields.io/github/commits-since/Zefau/ioBroker.nuki-extended/latest.svg)
+![自上次发行以来提交](https://img.shields.io/github/commits-since/Zefau/ioBroker.nuki-extended/latest.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.nuki-extended.svg)
 ![NPM](https://nodei.co/npm/iobroker.nuki-extended.png?downloads=true)
 
-＃ioBroker.nuki-extended该ioBroker适配器（以前为ioBroker.Nuki2）允许控制和监视[Nuki Smart Lock]（https://nuki.io/de/smart-lock/）和/或[Nuki Opener]（https://nuki.io/de/opener/）同时使用[Nuki Bridge API （v1.9.0，06.05.2019）]（https://developer.nuki.io/page/nuki-bridge-http-api-170/4/#heading--introduction）和[Nuki Web API（v1。 2.0，31.05.2019）](https://developer.nuki.io/page/nuki-web-api-111/3/)。
+＃ioBroker.nuki-extended这个ioBroker适配器（以前为ioBroker.Nuki2）允许控制和监视[Nuki Smart Lock]（https://nuki.io/de/smart-lock/）和/或[Nuki Opener]（https://nuki.io/de/opener/）同时使用[Nuki Bridge API （v1.9.0，06.05.2019）]（https://developer.nuki.io/page/nuki-bridge-http-api-170/4/#heading--introduction）和[Nuki Web API（v1。 2.0，31.05.2019）](https://developer.nuki.io/page/nuki-web-api-111/3/)。
 [![Travis CI]（https://travis-ci.com/Zefau/ioBroker.nuki-extended.svg?branch=master）](https://travis-ci.com/Zefau/ioBroker.nuki-extended)
 
 **目录**
 
 1. [功能]（＃features）
 2. [安装]（＃installation）
-   1. [Nuki Bridge API]（＃nuki-bridge-api）
-   2. [Nuki Web API]（＃nuki-web-api）
+   1. [Nuki Bridge API]（＃nuki-bridge-api）
+   2. [Nuki Web API]（＃nuki-web-api）
 3. [通道和状态]（＃channels--states）
 4. [使用ioBroker.javascript进行智能家居/ Alexa集成]（＃smart-home--alexa-integration-using-iobrokerjavascript）
-   1. [晚上晚上10点锁门]（晚上10点＃lock-door-at）
-   2. [让Alexa通知您有关锁的更改]（＃let-alexa-告知您有关锁的更改）
-   3. [让电报通知您有关锁的更改]（＃let-telegram-告知您有关锁的更改）
+   1. [晚上晚上10点锁门]（晚上10点＃lock-door-at）
+   2. [让Alexa通知您有关锁的更改]（＃let-alexa-告知您有关锁的更改）
+   3. [让电报通知您有关锁的更改]（＃let-telegram-告知您有关锁的更改）
+   4. [让Alexa和Telegram通知您有人通过Opener振铃]（＃let-telegram和alexa通知您有关有人通过opener振铃）
 5. [变更日志]（＃changelog）
 6. [学分]（＃credits）
 7. [许可证]（＃license）
@@ -37,11 +38,11 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 -支持Nuki Smartlock和Nuki Opener
 -支持Nuki Bridge API和Nuki Web API
 -~~在硬件桥接器上支持哈希令牌（请参阅https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)~~
--如果在Nuki Bridge API上执行的操作失败，则回退到Nuki Web API，例如由于桥接错误503（请参阅https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau）
--重试以防在Nuki Bridge API上执行的操作失败（未使用Nuki Web API时）
+-如果在Nuki Bridge API上执行的操作失败（例如由于桥接错误503（请参阅https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau）
+-如果在Nuki Bridge API上应用的操作失败（不使用Nuki Web API时），请重试
 -选择定期同步而不是使用Bridge API回调（由于硬件Bridge可能会延迟）
 -通过Nuki Bridge API收到回调时，刷新Nuki Web API的所有状态
--检索Nuki Smartlock和Nuki Opener的授权用户（请参见下面的[频道和州]（＃general-information））
+-检索Nuki Smartlock和Nuki Opener的授权用户（请参阅下面的[频道和国家/地区]（＃general-information））
 -检索Nuki Smartlock和Nuki Opener的配置（请参见下面的[Channels＆States]（＃general-config））
 -检索设置Nuki通知（请参见下面的[频道和状态]（＃users））
 -Web界面，显示Nuki Smartlock和Nuki Opener的最近事件：
@@ -52,7 +53,7 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 ### Nuki Bridge API
 如何获取硬件桥令牌（不适用于软件桥）：
 
-1.从网络中的任何浏览器调用“ http：// <bridge_ip>：<bridge_port> / auth”。桥打开其LED。
+1.从网络中的任何浏览器调用“ http：// <bridge_ip>：<bridge_port> / auth`”。桥打开其LED。
 2.在30秒内按下电桥的按钮。
 3.浏览器调用的结果应如下所示：
 
@@ -101,7 +102,7 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 |频道|州|描述 |
 |:------- |:----- |:----------- |
 | -|连接|适配器连接状态|
-| -| bridgeApiSync |指示是否激活了通过Bridge API的同步。 |
+| -| bridgeApiSync |指示是否激活了通过Bridge API的同步|
 | -| bridgeApiLast |最后Bridge API同步的时间戳|
 | -| webApiSync |指示是否激活了通过Web API的同步。 |
 | -| webApiLast |上次Web API同步的时间戳|
@@ -111,10 +112,10 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 | notifications._notificationIndex_.settings._settingsIndex_ | -| -|
 | notifications._notificationIndex_.settings._settingsIndex_ | authIds |一组身份验证ID，用于过滤对某些用户或键盘的推送通知。如果没有为所有用户和键盘触发条目推送通知|
 | notifications._notificationIndex_.settings._settingsIndex_ | smartlockId | Smartlock ID（如果未设置）启用帐户的所有Smart Lock进行推送通知|
-| notifications._notificationIndex_.settings._settingsIndex_ | triggerEvents |一组应该触发推送通知的集合：锁定，解锁，解锁，lockngo，打开，响铃，门磁，警告，smartlock |
+| notifications._notificationIndex_.settings._settingsIndex_ | triggerEvents |一组应触发推送通知的集合：锁定，解锁，解锁，lockngo，打开，响铃，门磁，警告，smartlock |
 | notifications._notificationIndex_ |语言|推送消息的语言|
 | notifications._notificationIndex_ | lastActiveDate |上次有效日期|
-| notifications._notificationIndex_ | notificationId |通知|
+| notifications._notificationIndex_ | notificationId |通知|的唯一ID。 |
 | notifications._notificationIndex_ | os |作业系统<br> `{"0": 'Android', "1": 'iOS', "2": 'Webhook'}`|
 | notifications._notificationIndex_ | pushId | Webhook的推送ID或POST URL |
 | notifications._notificationIndex_ | referenceId |参考ID，标识外部系统的ID |
@@ -122,7 +123,7 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 | notifications._notificationIndex_ |状态|当前激活状态<br> `{“ 0”：&#39;INIT&#39;，“ 1”：&#39;ACTIVE&#39;，“ 2”：&#39;FAILED&#39;}`|
 
 ### Smartlocks和Opener（使用Nuki Bridge API）
-将使用名称模式```door__<name of door>```创建一个锁作为设备。在每个锁中（使用Nuki Bridge API时）将创建以下通道/状态：
+将创建一个名为```door__<name of door>```的锁作为设备。在每个锁中（使用Nuki Bridge API时）将创建以下通道/状态：
 
 |频道|州|描述 |
 |:------- |:----- |:----------- |
@@ -132,7 +133,7 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 | -|类型设备类型 |
 | -| bridgeId | Nuki的网桥ID |
 |状态| -|锁的当前状态 |
-|状态| batteryCritical ** |临界电池电量水平|
+|状态| batteryCritical ** |临界电池电量水平 |
 |状态| lockState ** | Nuki的当前锁定状态 |
 |状态|锁定** |指示门是否锁好 |
 |状态|刷新** |最后更新的时间戳|
@@ -140,7 +141,7 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 如果设置了回调，则_ **标记的状态将在Nuki操作上更新_
 
 ### Smartlocks和Opener（使用Nuki Web API）
-将使用名称模式```door__<name of door>```创建一个锁作为设备。在每个锁中（使用Nuki Web API时）将创建以下通道/状态：
+将创建一个名为```door__<name of door>```的锁作为设备。在每个锁中（使用Nuki Web API时）将创建以下通道/状态：
 
 |频道|州|描述（可能的值）|
 |:------- |:----- |:----------------------------- |
@@ -155,7 +156,7 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 |频道|州|描述（可能的值）|
 |:------- |:----- |:----------------------------- |
 |信息| -|附加信息|
-|信息| accountId |帐号ID |
+|信息| accountId |帐户ID |
 |信息| authId |授权ID |
 |信息|最喜欢的最喜欢的标志 |
 |信息| firmwareVersion |固件版本|
@@ -171,7 +172,7 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 |频道|州|描述（可能的值）|
 |:------- |:----- |:----------------------------- |
 |州| -|锁的当前状态 |
-|州|电池严重|临界电池电量水平|
+|州|电池严重|临界电池电量水平 |
 |州|关闭指示门是否关闭（doorState的布尔值）|
 |州| doorState | Nuki的当前门国|
 |州| lastAction |最后触发动作|
@@ -187,22 +188,22 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 |:------- |:----- |:----------------------------- |
 |配置| -|配置|
 |配置| advertisingMode |广告模式（省电） <br> `{"0": 'AUTOMATIC', "1": 'NORMAL', "2": 'SLOW', "3": 'SLOWEST'}`|
-|配置|自动解锁如果应在解锁时将门解锁，则为真。 |
+|配置|自动解锁|如果应在解锁时将门解锁，则为真。 |
 |配置| buttonEnabled |如果启用了智能锁上的按钮，则为true。 |
-|配置|能力|该功能指示是否可以通过App，RTO或两者同时打开门。 |
+|配置|能力|该功能指示是否可以通过App，RTO或同时通过两者打开门。 |
 |配置| fobAction1 |如果按一次按钮，则为遥控操作<br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}`|
-|配置| fobAction2 |如果按两次按钮，则为遥控钥匙动作<br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}`|
+|配置| fobAction2 |如果按两次按钮，则为遥控钥匙操作<br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}`|
 |配置| fobAction3 |如果按下按钮3次，则显示FOB动作<br> `{"0": 'NONE', "1": 'UNLOCK', "2": 'LOCK', "3": 'LOCK_N_GO', "4": 'INTELLIGENT'}`|
-|配置| fobAction3 |如果按下按钮3次，则显示FOB动作<br> `{“ 0”：“ NONE”，“ 1”：“ UNLOCK”，“ 2”：“ LOCK”，“ 3”：“ LOCK_N_GO”，“ 4”：“ INTELLIGENT”} |
+|配置| fobAction3 |如果按下按钮3次，则显示FOB动作<br> `{“ 0”：&#39;NONE&#39;，“ 1”：&#39;UNLOCK&#39;，“ 2”：&#39;LOCK&#39;，“ 3”：&#39;LOCK_N_GO&#39;，“ 4”：&#39;智能&#39;}} |
 |配置|配对|如果智能钥匙与智能钥匙配对，则为true |
 |配置| gpsLatitude |纬度|
 |配置| homekitState |家庭套件状态<br> `{"0": 'UNAVAILABLE', "1": 'DISABLED', "2": 'ENABLED', "3": 'ENABLED & PAIRED'}`|
-|配置| homekitState |家庭套件状态<br> `{“ 0”：“不可用”，“ 1”：“已禁用”，“ 2”：“已启用”，“ 3”：“已启用和已配对”}`|
+|配置| homekitState |家庭套件状态<br> `{“ 0”：&#39;UNAVAILABLE&#39;，“ 1”：&#39;DISABLED&#39;，“ 2”：&#39;ENABLED&#39;，“ 3”：&#39;ENABLED＆PAIRED&#39;}`|
 |配置|配对如果键盘与smartlock配对，则为true。 |
 |配置| led亮度| LED的亮度：0（关闭）至5（最大）|
-|配置| ledEnabled |如果启用了智能锁上的LED，则为true |
+|配置| ledEnabled |如果启用了智能锁上的LED，则为true。 |
 |配置|名称|新用户的Smartlock名称|
-|配置| operatingMode |开瓶器的操作模式 |
+|配置| operatingMode |开瓶器的操作模式|
 |配置| pairingEnabled |如果通过smartlock按钮允许配对，则为true。 |
 |配置| singleLock |如果智能锁只能锁定一次（而不是两次），则为true。 |
 |配置| timezoneId |时区ID |
@@ -230,18 +231,18 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 |频道|州|描述（可能的值）|
 |:------- |:----- |:----------------------------- |
 | openerAdvancedConfig | -|开瓶器配置|
-| openerAdvancedConfig | intercomId |连接的对讲机的数据库ID |
+| openerAdvancedConfig | intercomId |连接的对讲机的数据库ID。 |
 | openerAdvancedConfig | busModeSwitch |在数据和模拟模式之间切换的方法<br> `{"0": 'DATA MODE', "1": 'ANALOGUE MODE'}`|
-| openerAdvancedConfig | shortCircuitDuration |总线模式切换的短路持续时间（毫秒）|
+| openerAdvancedConfig | shortCircuitDuration | BUS模式切换的短路持续时间（毫秒）|
 | openerAdvancedConfig | electricStrikeDelay |电击激活的延迟，以毫秒为单位（锁定操作3-电击激活后）|
-| openerAdvancedConfig | randomElectricStrikeDelay |随机的electricalStrikeDelay（范围3000-7000 ms）以模拟一个人在内部触发电击 |
+| openerAdvancedConfig | randomElectricStrikeDelay |随机的ElectricStrikeDelay（范围3000-7000毫秒），以模拟内部触发电击的人|
 | openerAdvancedConfig | electricStrikeDuration |电击致动的持续时间（毫秒）（锁定动作3-电击致动-）|
 | openerAdvancedConfig | disableRtoAfterRing |振铃后禁用RTO的标志|
 | openerAdvancedConfig |门铃抑制|门铃抑制模式<br> `{"0": 'NEVER', "1": 'ALWAYS', "2": 'RTO', "3": 'CONTINUOUS', "4": 'CONTINUOUS + RTO'}`|
 | openerAdvancedConfig |门铃抑制|门铃抑制模式<br> `{“ 0”：“从不”，“ 1”：“ ALWAYS”，“ 2”：“ RTO”，“ 3”：“ CONTINUOUS”，“ 4”：“ CONTINUOUS + RTO”} |
 | openerAdvancedConfig |门铃抑制持续时间|门铃抑制的持续时间（毫秒）（仅在工作模式2-Digital Intercom-中）|
 | openerAdvancedConfig | soundRing |响声|
-| openerAdvancedConfig | soundOpen |开放的声音|
+| openerAdvancedConfig | soundOpen |开放的声音 |
 | openerAdvancedConfig | soundRto | RTO的声音|
 | openerAdvancedConfig | soundCm | CM的声音|
 | openerAdvancedConfig | soundConfirmation |声音确认|
@@ -266,7 +267,7 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 | users._userName_ | dateCreated |创建日期|
 | users._userName_ | dateUpdated |更新日期|
 | users._userName_ | dateLastActive |上次有效日期|
-| users._userName_ |启用|如果启用了用户，则为true |
+| users._userName_ |已启用|如果启用了用户，则为true |
 | users._userName_ | id |用户的唯一ID |
 | users._userName_ | lockCount |锁数|
 | users._userName_ |名称|用户名|
@@ -335,9 +336,9 @@ function say(message, alexas = '#YOUR ALEXA ID#') // use alexas = ['#YOUR ALEXA 
 }
 ```
 
-您可以在ioBroker.javascript中使用此功能，使用Alexa```say('Hello World')```或```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])```来表达短语，以从多个设备输出语音。
+您可以在ioBroker.javascript中使用此功能，使用Alexa§§JJJJJ_0_0§或```say('Hello World', ['#YOUR ALEXA ID 1#', '#YOUR ALEXA ID 2#'])```来说出短语，以从多个设备输出语音。
 
-在ioBroker.javascript的“ common”文件夹中创建一个脚本，并将以下侦听器添加到该脚本中。重要说明：用持有锁定状态的状态（例如§§JJJJJ_0_0§§）替换#LOCK STATE ID＃（也替换＃）：
+在ioBroker.javascript的“ common”文件夹中创建一个脚本，并将以下侦听器添加到该脚本中。重要说明：用保持锁定状态的状态（例如§§JJJJJ_0_0§§）替换#LOCK STATE ID＃（也替换＃）：
 
 ```javascript
 const DOOR_STATES = {
@@ -420,7 +421,7 @@ function messenger(content, user = '')
 
 您可以在ioBroker.javascript中使用此功能，以通过§§JJJJJ_0_0§（发送给所有用户）或§§JJJJJ_1_1§§（发送给特定用户）将任何内容发送到Telegram。
 
-在ioBroker.javascript的“ common”文件夹中创建一个脚本，并将以下侦听器添加到该脚本中。重要说明：用持有锁定状态的状态（例如§§JJJJJ_0_0§§）替换#LOCK STATE ID＃（也替换＃）：
+在ioBroker.javascript的“ common”文件夹中创建一个脚本，并将以下侦听器添加到该脚本中。重要说明：用保持锁定状态的状态（例如§§JJJJJ_0_0§§）替换#LOCK STATE ID＃（也替换＃）：
 
 ```javascript
 const DOOR_STATES = {
@@ -477,6 +478,25 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 });
 ```
 
+###让Telegram和Alexa通知您有人通过Opener响铃
+这需要ioBroker适配器ioBroker.telegram（https://github.com/iobroker-community-adapters/ioBroker.telegram）和ioBroker适配器ioBroker.alexa2（https://github.com/Apollon77/ioBroker.alexa2）。
+
+```javascript
+/*
+ * Alexa and Telegram to notify on Opener Ringing state
+ *
+ */
+let phrase = 'Somebody is ringing the doorbell.'; // Es hat an der Tür geklingelt
+on({id: 'nuki-extended.0.openers.opener.state.ringStateUpdate', change: "any", ack: true}, function (s) {
+  let state= s && s.state;
+
+  if (state.val === true) {
+    setState("alexa2.0.Echo-Devices.#YOUR ALEXA ID#.Commands.speak"/*speak*/, phrase);
+    sendTo("telegram", "send", { text: phrase });
+  }
+});
+```
+
 ##积分
 感谢[@ Nik13]（https://github.com/Mik13）用于[Nuki Bridge API实现](https://github.com/Mik13/nuki-bridge-api#nuki-bridge-api)。
 
@@ -486,27 +506,44 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 
 Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
 
-### v2.2.2  (2019-03-04)
+### v2.3.0 (2020-08-10)
+- (Zefau) added support for the door sensor of the Nuki Smartlock ([introduced with Bridge firmware 2.6.0 / 1.16.0](https://developer.nuki.io/t/bridge-beta-fw-2-6-0-1-16-0-with-door-sensor-state/6159))
+- (Zefau) added support for the ring bell action of the Nuki Opener ([introduced with Bridge firmware 2.7.0 / 1.17.0](https://developer.nuki.io/t/bridge-beta-fw-2-7-0-1-17-0/6792))
+
+### v2.2.6 (2020-07-14)
+- (Zefau) fixed Web API not refreshing correctly (see [#59](https://github.com/Zefau/ioBroker.nuki-extended/issues/59))
+- (Zefau) updated dependencies
+
+### v2.2.5 (2020-03-19)
+- (Zefau) fixed incorrect versioning
+
+### v2.2.4 (2020-03-18)
+- (Zefau) fixed incorrect dates of version history (see [#60](https://github.com/Zefau/ioBroker.nuki-extended/issues/60))
+
+### v2.2.3 (2020-03-04)
+- (Zefau) added refresh of configuration (via Nuki Web API) when any config item has been changed in ioBroker
+
+### v2.2.2 (2020-03-04)
 - (Zefau) fixed incorrect error message `Error triggering action via Nuki Bridge API: No Nuki Hex ID given!`
 - (Zefau) added new error message if too many callbacks are already attached to Nuki Bridge (`Callback not attached because too many Callbacks attached to the Nuki Bridge already! Please delete a callback!`)
 
-### v2.2.1  (2019-03-03)
+### v2.2.1 (2020-03-03)
 - (Zefau) fixed incorrect state mapping of state `openerAdvancedConfig.doorbellSuppression`
 
   **Note:** Please delete the state `openerAdvancedConfig.doorbellSuppression` once manually and restart the adapter to take affect!
   
 - (Zefau) updated dependencies
 
-### v2.2.0  (2019-02-16)
+### v2.2.0 (2020-02-16)
 - (Zefau) added possibility to change configuration of Nuki Smartlock or Nuki Opener (when using Web API)
 - (Zefau) updated dependencies
 
-### v2.1.0  (2019-02-03)
+### v2.1.0 (2020-02-03)
 - (Zefau) added (optional) callback IP for Bridge API events (e.g. when ioBroker is run in docker; see [#51](https://github.com/Zefau/ioBroker.nuki-extended/issues/51))
 - (Zefau) added dedicated buttons for each lock / opener action
 - (Zefau) replaced `state.timestamp` with `state.lastDataUpdate` (indicates last data refresh from the APIs) and `state.lastStateUpdate` (indicates the last actual state change)
 
-### v2.0.3  (2019-10-31)
+### v2.0.3 (2019-10-31)
 - (Zefau) reintroduced support for hashed token on hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)
 
 ### v2.0.2 (2019-10-31)

@@ -89,9 +89,15 @@ As first value the name from the warning message must be taken from the log. The
 
 ## Changelog
 
-### 0.5.9 (2020-04-24)
+<!--
+	### __WORK IN PROGRESS__
+	* (DutchmanNL) xxxx
+-->
+
+### 0.6.0 (2020-08-28)
 * (DutchmanNL) Replaced module request with axios
 * (DutchmanNL) Bugfix : Proper error handling of failing API calls (if api not reachable)
+* (Kampfratte) Bugfix : API-Abfrage geändert
 
 ### 0.5.7 (2020-04-17) Continent state attribute information added and warn messages reduced
 * (DutchmanNL) Bugfix : Add continent state attribute definition

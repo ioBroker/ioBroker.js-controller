@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
+hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 ---
-![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.png)
+![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/mielecloudservice-stable.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
@@ -19,7 +19,7 @@ hash: hl2CymREgTmQCCVtzm4oJPgyhnvvFy/u0DOujpp5xjg=
 # IoBroker.MieleCloudService
 ## Beschreibung
 Mit diesem Adapter können Sie Informationen zu allen Ihren Miele @ Home-Geräten von der offiziellen Miele-API eines Drittanbieters abrufen.
-Unabhängig davon, ob sie direkt über WLAN oder XGW3000 Gateway verbunden sind. Es implementiert die **Miele 3rd Party API V1.0.0**
+Unabhängig davon, ob sie direkt über WLAN oder XGW3000 Gateway verbunden sind. Es implementiert die **Miele 3rd Party API V1.0.3**
 
 ## Voraussetzungen
 * Miele @ Home User (Smartphone App)
@@ -32,12 +32,12 @@ Gehen Sie zur Installation wie folgt vor:
 
 1. Installieren Sie über Admin mit dem
  * Stable Repo - um die aktuelle stabile Version zu erhalten
- * letztes Repo - um die neueste Testversion zu erhalten (möglicherweise nicht stabil)
+ * Neuestes Repo - um die neueste Testversion zu erhalten (möglicherweise nicht stabil)
  * via: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git - um die neueste Entwicklungsversion zu erhalten
 2. Erstellen Sie in der Miele Smartphone App ein App-Konto für Miele @ Home
 3. Erstellen Sie ein Entwicklerkonto unter https://www.miele.com/f/com/en/register_api.aspx
 4. Fügen Sie Ihre Miele-Geräte zur App hinzu (falls nicht automatisch hinzugefügt)
-6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort von der App ein.
+6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort der App ein.
 
 ## Nächste Schritte
 * Neu: (längeres) Abfrageintervall, wenn kein Gerät aktiv ist
@@ -82,7 +82,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 31 | DAMPFOFENKOMBINATION |
  | 32 | WEINKABINETTE |
  | 33 | WEINKONDITIONIERUNGSEINHEIT |
- | 34 | WEINLAGERUNGSKONDITIONIERUNGSEINHEIT |
+ | 34 | WEINLAGERKONDITIONIERUNGSEINHEIT |
  | 39 | DOPPELTER OFEN |
  | 40 | DOPPELDAMPFOFEN |
  | 41 | DOPPELDAMPFOFENKOMBINATION |
@@ -160,6 +160,17 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
 Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 2.0.0 - Support for Miele API V1.0.3 (2020-08-25)
+Some breaking changes in this release. Some datapoints changed their type. May require fixes in scripts. **Update with care!**
+Due to the fix that datapoints with invalid values aren't created any longer, I recommend deleting all datapoints in Object view.
+* (grizzelbee) Change: New Icon
+* (grizzelbee) Fix: Number-datapoints are no longer created as strings due to their unit. They are correct numbers with units now.
+* (grizzelbee) Fix: Unit °Celsius is now shown as °C - not longer °Celsius
+* (grizzelbee) New: Introduced support for °Fahrenheit
+* (grizzelbee) New: Introduced support for new Value "plateStep" for Hobs.
+* (grizzelbee) New: Performing a LogOut from Miele API on shutdown to invalidate the Auth-Tokens. 
+* (grizzelbee) Fix: Datapoints with invalid values (null/-32768) are no longer created.
+
 ### 1.2.4 (2020-06-09)
 * (grizzelbee) Fix: fixed No-Data Bug (introduced in V1.2.3)
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.wlanthermo-nano/README.md
 title: ioBroker.wlanthermo-nano
-hash: dXyP552FUGUaw44ss0/iVFDKJq+ThYgA/ZrktqJLcXQ=
+hash: uWZeBaWWKa6keB36zElfXjpS1cG3oLU3kjK7ZPomu7U=
 ---
 ![Logo](../../../en/adapterref/iobroker.wlanthermo-nano/admin/wlanthermo-nano.png)
 
@@ -27,8 +27,11 @@ Bitte geben Sie IP-Adresse, Benutzername und Passwort in die Instanzkonfiguratio
 * [] Pitmaster-Einstellungen optimieren, Zustände nur im verwandten Modus beschreibbar machen, sonst schreibgeschützt
 * [] Automatische Geräteerkennung implementieren
 * [] Implementieren Sie den Online-Status des Geräts
-* [x] erlauben mehrere Geräte
-* [] Code-Bereinigung
+* [x] mehrere Geräte zulassen
+* [] Codebereinigung
+
+## Treten Sie dem Discord-Server bei, um alles über die Integration von ioBroker-WlanThermo zu besprechen!
+<a href="https://discord.gg/cNAeGjJ"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
 
 ## Unterstütze mich
 Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)

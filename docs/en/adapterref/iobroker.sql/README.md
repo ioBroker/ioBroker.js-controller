@@ -395,6 +395,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Encrypt**: Some DBs support encryption.
 - **Round real to**: Number of digits after the comma.
 - **Allow parallel requests**: Allow simultaneous SQL requests to DB.
+- **Do not create database**: Activate this option if database already created (e.g. by administrator) and the ioBroker-user does not have enough rights to create a DB.
 
 ## Default Settings
 - **De-bounce interval**: Do not store values oftener than this interval.
@@ -402,8 +403,15 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Minimum difference from last value to log**: The minimum interval between two values.
 - **Storage retention**: How long the values will be stored in the DB.
 
-## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
 
+## Changelog
+### 1.15.3 (2020-08-29)
+* (bluefox) Added the option "Do not create database". E.g. if DB was created and it does not required to do that, because the user does not have enough rights.
+ 
 ### 1.15.2 (2020-07-26)
 * (Apollon77) prevent wrong errors that realId is missing
 

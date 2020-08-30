@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.deconz/README.md
 title: 无题
-hash: oGadD+2MVq27J/o275XeRBcmFlhNU672SqfrxrhWpsE=
+hash: xsfX6P9SJKjs8MpPi1ErX29qGJF07F47JRIY5fLs9UA=
 ---
 ![商标](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -29,7 +29,7 @@ ioBroker deConz dresden-elektronik适配器
 ＃＃＃ 建立
 1.阅读deConz / Phoscon的文档，请参阅[links]（https://github.com/iobroker-community-adapters/ioBroker.deconz#links）部分。
 2.启动适配器
-3. *输入deConz的IP地址
+3. *输入用于deConz的IP地址
     *输入端口号，标准为80。
     * IP和端口将自动保存
     * **替代：**关闭配置，然后再次打开。
@@ -38,7 +38,7 @@ ioBroker deConz dresden-elektronik适配器
 
 4.单击“创建API密钥”
 5. *输入用户名（标准是喜悦）
-    *输入密码（在Phoscon APP首次登录时设置）
+    *输入密码（在首次登录Phoscon APP时设置）
     * **替代方法：**打开Phoscon APP->菜单->设置->网关->高级->解锁网关
 
 ####同时发送多个命令
@@ -51,7 +51,7 @@ ioBroker deConz dresden-elektronik适配器
 `"on": true, "transitiontime": 5, "hue": 65500`
 
 ##德语
-Verbindet mit der von Dresden-elektronik entwickelten deConz软件。 Diese Software独家介绍了ZigBeeGateway-Lösung网关，硬件von Dresden-elektronik，ConBee USB-Stick和RaspBee，eModulfürden Raspberry Pi，verwendet。
+Verbindet mit der von Dresden-elektronik Entwickelten deConz软件。 Diese Software独家介绍了ZigBeeGateway-Lösung网关，硬件von Dresden-elektronik，ConBee USB-Stick和RaspBee，eModulfürden Raspberry Pi，verwendet。
 
 ### Einrichten
 1. Dokumentation von deConz / Phoscon lesen，Quellen siehe [链接]（https://github.com/iobroker-community-adapters/ioBroker.deconz#links）。
@@ -59,7 +59,7 @@ Verbindet mit der von Dresden-elektronik entwickelten deConz软件。 Diese Soft
 3. * IP地址
     * Eingeben端口，标准端口80
     * IP和端口无线自动更新
-    * **替代：**适用于架构和应用。
+    * **替代：**适用于架构和功能。
 
     Wurde deConz gefunden总部位于der Maske的IP und Port schon。
 
@@ -85,6 +85,10 @@ Dafürgibt es das Objekt“行动”。
 -[网关（硬件）]（https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/）
 
 ## [赞助商](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
+如果您喜欢我的作品，请随时提供个人捐款（这是Jey Cee的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=95YZN2LR59Q64&source=url)
+
+##加入Discord服务器，讨论有关ioBroker-deconz集成的所有内容！
+<a href="https://discord.gg/uPwfzvR"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
 
 ## Changelog
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: gEmwf9IDWuvsZ+8a1ID9klDN1HwrM9Fxj7KN6/2RJAk=
+hash: c1sQb6QGJSpneskKrGz7xB92ANEcDuNUiviPkTIyMqE=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -19,6 +19,8 @@ Benötigt node.js 8.0 oder höher und Admin v3!
 
 Der Adapter kommuniziert mit Shelly-Geräten über die REST-API und das CoAP- oder MQTT-Protokoll.
 Standardmäßig Shelly-Firmware (kein Flashen der Firmware erforderlich!). Weitere und detaillierte Informationen zum Gerät finden Sie hier: [Shelly](https://shelly.cloud/)
+
+Wenn Sie das CoAP-Protokoll verwenden, funktionieren Shelly-Geräte mit Firmware 1.8.0 oder höher nur mit dem Shelly-Adapter 4.0.0 oder höher. Wenn Sie Geräte mit Firmware unter 1.8.0 mit Ausnahme von Shelly 4Pro verwenden, müssen Sie Shelly Adapter 3.3.6 oder niedriger verwenden. Der Shelly Adapter 4.0.0 oder höher würde in diesem Fall nicht funktionieren!
 
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
 
@@ -62,9 +64,51 @@ Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendu
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server in Deutschland gesendet. Wenn Sie der ioBroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
+ 
+### 4.0.4 (2020-08-23)
+* (Stübi) - optimize the destroy function (Bugfixing)
+* (Stübi) - Bugfixing Relay0.Event error for Shelly I3 in MQTT mode (Issue #241)
+* (harrym67) - Shelly 2.5 Roller mode. According to Shelly API: changed existing state swap to swap_input and add state swap.(Issue #240)
+* (Stübi) - Allow setting of customer MQTT prefix (Issue #244)
+* (harrym67) - Add Endpoint dim to Shelly Dimmer 2 (SHDM-2) (Issue #248)
 
-### __WORK IN PROGRESS__
-* (Apollon77) Update shelly-iot library to prevent some errors
+### 4.0.3 (2020-08-19)
+* (Stübi) - Add a checkbox, to optionally enable updates of objects even if they have not changed (Issue #209)
+* (Stübi) - Calculate temperature fahrenheit for Shelly 1PM and Plug S in MQTT mode
+* (Stübi) - Fixed longpush time for MQTT (Shelly 1, 1PM, 2 and 2.5) 
+* (Stübi) - Add State for changing temperature unit for Shelly HT and DW2
+* (Stübi) - Delete external temperature 4 and external humidity 4 states for Shelly 1 and 1PM because they do not exist
+* (Stübi) - Renamed state temperature to temperatureC for Shelly 1, 1PM, 2, 2.5, Plug S
+* (Stübi) - Add tmperature in Celsius and Fahrenheit for Shelly HT and DW2
+* (Stübi) - Bugfixing. Add missing states to MQTT, which exist for CoAP (Shelly 2, 2.5) 
+* (Stübi) - Polltime for http optimized. 
+* (Stübi) - removed min and max values for temperature states (Issue #236)
+* (Stübi) - Bugfixing. Add timer to Shelly 1, 1PM for CoAP and removed it for MQTT (Shelly 1, 1PM, 2, 2.5) because it is not supported by MQTT
+* (Stübi) - Add overpower value to Shelly 1, 1PM, 2, 2.5 and Plug, Plug S
+* (Stübi) - Removed channel name from Shelly 4 Pro (Issue #238)
+
+### 4.0.2 (2020-08-16)
+* (Stübi) - Bugfixing Shelly DW2 (Issue #220)
+* (Stübi) - Bugfixing manually set object name is overwritten (Issue #224)
+
+### 4.0.1 (2020-08-15)
+* (Stübi) Major Change!! If you use the CoAP protocol only Shelly devices with Firmware 1.8.x or above supported! All devices with Firmware below 1.8.x except Shelly 4Pro will not working with this release!
+* Official release to npm/latest
+
+### 4.0.0 (05.08.2020)
+* (Stübi)     - Major Change!! If you use the CoAP protocol only Shelly devices with Firmware 1.8.x or above supported! All devices with Firmware below 1.8.x except Shelly 4Pro will not working with this release!
+* (@harrym67) - Changing device files 
+* (Stübi)     - Since Firmware 1.8. the Shelly device names like shelly.0.SHBTN-1#A4CF12F454A3#2 ends with #2. It will be changed back to #1 like shelly.0.SHBTN-1#A4CF12F454A3#1. 
+* (@harrym67) - Add state factoryResetFromSwitch for Shelly 1, 1pm, 2, 2.5, Dimmer, Dimmer 2 and RGBW2
+* (@harrym67) - Add states longpushDurationMsMin, longpushDurationMsMax and multipushTimeBetweenPushesMsMax for Shelly IX3
+* (@harrym67) - Add state ChannelName for Shelly 1, 1pm, 2, 2.5, Dimmer, Dimmer 2, 4Pro, EM and 3EM
+* (@harrym67) - Add state StopReason for Shelly 2 and 2.5 in Shuttermode
+* (@harrym67) - Add state name to all Devices (Device Name)
+
+### 3.3.6 (26.07.2020)
+* (Stübi) - Bugfixing temperature for Shelly Dimmer (Issue #201)
+* (Stübi) - Tried to fix high CPU load by replacing ping with tpcping (Issue #196, #202)
+* (Stübi) - correct spelling mistake for Shelly DW2 (Issue #205)
 
 ### 3.3.5 (04.07.2020)
 * (Stübi) - Add Shelly 4 Pro

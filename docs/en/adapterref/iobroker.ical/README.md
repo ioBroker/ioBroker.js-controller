@@ -188,6 +188,14 @@ Blacklist: If you want to exclude all events of a specific location use `LOCATIO
 Whitelist: If you only want to include events of a specific location use regular expression like `/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!MyLocation).*)$/` or for 2 locations `/^(SUMMARY:.*)\s*(DESCRIPTION:.*)\s*(LOCATION:(?!((MyHomeLocation)|(MyWorkLocation))).*)$/`
 
 ## Changelog
+
+### 1.7.4 (2020-08-26)
+* (Apollon77) Fix multiple parsing
+
+### 1.7.3 (2020-08-26)
+* (foxriver76) we pin a specific dependency version, because "rrule" package broken
+* (foxriver76) added eslint
+
 ### 1.7.2 (2019-12-02)
 * (bluefox) Documentation was changed
 

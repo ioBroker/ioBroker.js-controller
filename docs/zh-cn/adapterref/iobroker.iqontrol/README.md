@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
+hash: qWPQT0vodXCE5ks4qi6nL4Cxox5g3exb8CS3AJFQwKc=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -25,7 +25,7 @@ hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
 
 \ **如果您喜欢，请考虑捐赠：**
 
-[![贝宝]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
 
 ****
 
@@ -58,33 +58,15 @@ hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
 * Nodejs 10或更高
 * Web适配器，其一个实例运行与admin-adapter，socket.IO相同的协议（http或https），并且IO设置为“集成”，并且禁用了“强制Web-Sockets”
     *如果与其他适配器冲突，只需添加具有上述设置的另一个实例-iQontrol将搜索最合适的web-adapter-instance并将其用于通信
-*为了同时通过* iobroker.pro-Cloud *进行连接，应将admin-和web-adapter设置为http（不是https）
+*为了同时通过* iobroker.pro-Cloud *进行连接，应将admin-和web-adapter设置为http（而非https）
 
-＃＃ 故障排除
-*确保您已满足本页顶部的“您需要...”部分
-*如果更新后某些功能无法正常工作，请尝试以下步骤：
-    *开始上传适配器：
-
-    \
-        ![上载](../../../en/adapterref/iobroker.iqontrol/img/adapter_upload.png)
-
-*清除浏览器缓存
-*重新启动ioBroker
-
-###如果您还有其他问题，请提供浏览器的调试控制台中的日志以及错误行的屏幕截图：
-*在浏览器打开的调试控制台中启动iQonrol（通常需要按F12来打开它）
-*切换到控制台窗口并重现该错误
-*在控制台窗口中查找消息
-*出现错误时，列出导致错误的行号
-*请单击此行号，并进行故障行的屏幕截图：
-
-![故障排除控制台窗口](img/troubleshooting_consolewindow.png)![故障线路故障排除](../../../en/adapterref/iobroker.iqontrol/img/troubleshooting_faultyline.png)
+*如果遇到任何问题，请阅读本自述文件结尾的[疑难解答]（＃troubleshooting）部分
 
 ##论坛
 访问[iobroker论坛](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol)。
 
 ＃＃ 如何使用
-**不要害怕您拥有的许多选择。**大多数事情都是开箱即用的。您可以*，但是不必使用iQontrol提供的所有配置功能！只是这样开始：
+**不要害怕您拥有的许多选择。**大多数事情都是开箱即用的。您可以*，但是您不必使用iQontrol提供的所有配置功能！只是这样开始：
 
 *开始创建视图。
 
@@ -94,15 +76,15 @@ hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
 
 设备具有确定设备功能，使用哪些图标等的角色。
 根据该角色，您可以将多个状态链接到设备。这些将赋予设备其功能。
-如果选择“链接到其他视图”作为角色，则可以创建到其他视图的链接。我建议将链接视图的链接换成具有相同背景的其他视图。
-您也可以尝试使用自动创建功能从iobroker-object-tree中选择现有设备。自动创建试图找出角色并匹配尽可能多的状态。
+如果选择“链接到其他视图”作为角色，则可以创建到其他视图的链接。我建议对链接到具有相同背景的其他视图的外观进行换肤。
+您也可以尝试使用自动创建功能从iobroker-object-tree中选择现有设备。自动创建会尝试找出角色并匹配尽可能多的状态。
 
 *之后，您可以创建一个工具栏，该工具栏显示为页脚。
 
 工具栏条目是视图的链接。
-第一个工具栏条目将是您的“主视图”，并将在开始时加载。
+第一个工具栏条目将是您的“主视图”，并将在启动时加载。
 
-*要为所有内容提供精美的样式，您可以上传自己的图像。
+*要为所有内容提供精美风格，您可以上传自己的图片。
 
 您可以将图像用作背景图像或设备的背景图像。
 文件夹“ / usericons”中的图像可用作设备图标。
@@ -127,11 +109,11 @@ hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
 
 ##图标和背景图片
 *您可以使用内置图像或在“图像”标签下上传的图像或您喜欢的任何免费网址
-*您也可以在图片网址中使用变量。例如，这对于天气预报而言可能是有用的。使用此模式：
-    *``路径/到/firstloaded.png |另一个路径/到/{iobrokerstate|fallback}.png”
+*您也可以在图片网址中使用变量。例如，这对于天气预报而言可能是有用的。使用以下模式：
+    *``path / to / firstloaded.png | anotherpath / to / {iobrokerstate | fallback} .png``
     *示例：``./../ iqontrol.meta / userimages / demo / bottle.jpg | ./../ iqontrol.meta / userimages / demo / {javascript.0.myimage | whitestone} .jpg''
 *打开视图时加载``./../iqontrol.meta/userimages/demo/bottle.jpg''
-*从服务器获取javascript.0.myimage的状态后，该图像将立即替换为``./../iqontrol.meta/userimages/demo/XXX.jpg”，其中“ XXX是javascript.0.myimage的值
+*从服务器获取javascript.0.myimage的状态后，该图像将立即替换为./../iqontrol.meta/userimages/demo/XXX.jpg，其中XXX是javascript.0.myimage的值
 *如果javascript.0.myimage没有值，将使用后备的whitestone（使用后备是可选的）
 
 ###进度条
@@ -144,7 +126,7 @@ hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
 
 ##设备名称
 *就像图片网址中的变量一样，您可以在设备名称中使用变量。语法几乎相同：
-    *“加载时显示文本|加载后{iobrokerstate | fallback}后文本”
+    *“加载时输入文字|加载后{iobrokerstate | fallback}后文字”
 *另外，可以将iobrokerstate放在方括号中，然后将使用不带其单位的普通值：“加载时的文本|加载{[iobrokerstate] | fallback}之后的文本”
     *示例：“天气正在加载|天气：{javascript.0.weather |未找到天气数据}”
 *打开视图时显示``天气正在加载''
@@ -157,25 +139,25 @@ hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
 *您可以使用html标签来格式化消息文本
 *还有一些其他状态可用于进一步自定义显示的弹出窗口（必须在设置消息数据点之前设置这些状态）：
     *``持续时间''：这是显示消息的时间，以毫秒为单位;如果设置为0，则必须确认消息
-    *``ClickedValue''和``ClickedDestinationState''：如果用户单击了弹出窗口，则``ClickedValue''中的值将被发送到``iqontrol.x.Popup.POPUP_CLICKED''，如果指定，则还会附加到``ClickedDestinationState''中的数据点
+    *``ClickedValue''和``ClickedDestinationState''：如果用户单击了弹出窗口，则``ClickedValue''中的值将被发送到``iqontrol.x.Popup.POPUP_CLICKED''中，如果指定，还将附加到``ClickedDestinationState''中的数据点
         *如果未指定任何值，则将使用“ true”
     *“ ButtonNames”：您可以在此处指定以逗号分隔的按钮列表，该列表将显示在弹出窗口的底部（例如“ OK，中止”）
         *``ButtonValues''和``ButtonDestinationStates''：这些是逗号分隔的值列表，这些值将被发送到``iqontrol.x.Popup.BUTTON_CLICKED''，并且如果指定的话，将附加到``ButtonDestinationStates''中的数据点`，如果用户单击相应的按钮
 *如果仅使用一个值（而不是用逗号分隔的列表），则此值将用于所有按钮
-*如果将ButtonValues保留为空，则将使用按钮的名称
+*如果您将“ ButtonValues”留空，则将使用按钮的名称
 *如果仅使用一个目标状态（而不是用逗号分隔的列表），则此状态将用于所有按钮
         *``ButtonCloses``：这是一个用逗号分隔的布尔值列表（``true''/``false''），用于指定在按下相应按钮时是否应关闭弹出窗口
 *或者，您可以通过sendTo-command和参数``PopupMessage''，``PopupDuration''，``PopupClickedValue''等来设置这些值
-    *示例：``sendTo（“ iqontrol”，“ send”，{PopupMessage：'这是我的消息'，PopupDuration：2500，PopupClickedValue：'messageConfirmed'}）;''
+    *例如：``sendTo（“ iqontrol”，“ send”，{PopupMessage：'这是我的消息'，PopupDuration：2500，PopupClickedValue：'messageConfirmed'}）;``
 *您也可以使用块状发送消息到iQontrol
 
 ![弹出屏幕截图](img/popup_screenshot.png)![弹出式阻止](../../../en/adapterref/iobroker.iqontrol/img/popup_blockly.png)
 
 ##角色和相关状态的描述
 每个设备都有一个角色，该角色定义了设备的功能。每个角色都会生成一组状态，这些状态可以链接到相应的io-broker状态。
-如果使用自动创建功能，则可以从io-broker-object树中选择一个现有设备。自动创建试图找出角色并匹配尽可能多的状态。
+如果使用自动创建功能，则可以从io-broker-object树中选择一个现有设备。自动创建会尝试找出角色并匹配尽可能多的状态。
 这仅适用于已知设备。对于未知设备，以及要赋予设备高级功能，您可以通过（+）-按钮手动添加它们，或编辑由自动创建功能创建的设备。
-要编辑设备的角色和状态，请单击设备后面的铅笔。您将在下面找到角色和已用状态的简短描述：
+要编辑设备的角色和状态，请单击设备后面的铅笔。您会在下面找到角色和使用状态的简短描述：
 
 ###修改数据点配置
 您可以通过设备配置对话框或iobroker的objects-tab中数据点后面的扳手图标来修改数据点的配置。在这里您可以：
@@ -183,7 +165,7 @@ hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
 *设置只读标志
 *设置反转标志
 *设置Confirm-Flag（强制用户在将更改写入数据点之前进行确认）
-*设置PIN码（强制用户在将更改写入数据点之前输入此PIN码-但请注意：这仅是低安全性，因为在前端检查了PIN码！使用数字显示全屏-pin-pad（如果要求输入代码）
+*设置PIN码（强制用户在将更改写入数据点之前输入此PIN码-但要注意：这仅是低安全性，因为在前端检查了PIN码！使用数字来显示全屏-pin-pad（如果要求输入代码）
 *修改数据点的单位，以零，单数和复数分隔
 *修改数据点的最小值和最大值
 *设置水平滑块在增加/减少时采取的步骤
@@ -197,19 +179,13 @@ hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
     *您也可以在键和目标值中使用通配符``*''
 *示例：
 *键：``TuneIn-Playlist：*''，目标数据点ID：``alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist''，目标值：``*''
-*如果用户输入``TuneIn-Playlist：Ambient''，则将``Ambient''值写入``alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist``
+*如果用户输入``TuneIn-Playlist：Ambient''，则值``Ambient''将被写入``alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist``
 
 ![CustomDialog调用](img/custom_call.png)![CustomDialog示例](img/custom_dialog.png)![目标值列表的概念](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
 
 ###一般状态：
-每个角色具有以下三种状态：
-
-* **ADDITIONAL_INFO** *array* 数据点的数组，将显示在信息对话框的底部
-* **BATTERY** *布尔值*-为true或* number *-小于10％时，将显示少许电池电量图标
-* **错误**：*布尔值*-为true时，将显示一些感叹号图标
-* **UNREACH** *布尔值*-为true时，将显示一个小的无线图标
-
-几乎所有角色都具有STATE和/或LEVEL状态。在大多数情况下，这代表了设备的主要功能。您可以为其分配以下类型的io-broker-state：
+####状态和级别
+几乎所有角色都具有** STATE **状态和/或** LEVEL **状态。在大多数情况下，这代表了设备的主要功能。您可以为其分配以下类型的io-broker-state：
 
 * *布尔值*-如果可能，它将被翻译为有意义的文本，例如“开/关”，“打开/关闭”或类似内容。如果单击图块的图标，它将尝试切换布尔值（例如，打开或关闭灯）。如果它不是只读的，它将在对话框中生成一个翻转开关。
 * *数字*-将显示其对应的单位并在对话框中生成一个滑块
@@ -225,8 +201,21 @@ hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
 ````
 
     *您可以通过修改数据点来创建自己的值列表（iobroker的objects-tab中数据点后面的扳手图标，请参见上文）
+*还可以根据STATE或LEVEL-Datapoint确定设备磁贴将显示为活动还是非活动。但是，您可以在选项部分“活动磁贴的条件”中自由自定义行为。您甚至可以设置另一个确定贴砖状态的外部数据点
 
 但是，并非每种类型对每个角色都有意义。因此，例如，在大多数情况下，开关的状态将为布尔值，以便可以在开和关之间进行切换。可能会显示一个字符串，但该开关将不起作用。
+
+###其他一般状态：
+* **ADDITIONAL_INFO** *array* 数据点的数组，将显示在信息对话框的底部
+* **URL** 常量*字符串*-该URL将在对话框中以iframe的形式打开
+* **HTML** 常量*字符串*-如果未指定URL-Datapoint，则此标记将显示在iframe中
+* **BACKGROUND_URL** 常量*字符串*-该网址将显示为设备拼贴的背景。它位于背景图像上方，但是如果图块处于活动状态或非活动状态，您可以将其配置为隐藏。
+* **BACKGROUND_HTML** 常量*字符串*-如果未指定Background_URL，则此标记将显示为设备块的背景
+* **BATTERY** *布尔值*-为true或* number *-小于10％时，将显示少许电池电量图标
+    *您可以在选项“电池空图标”部分中进一步自定义电池图标的行为
+* **错误**：*布尔值*-为true时，将显示一些感叹号图标
+* **UNREACH** *布尔值*-为true时，将显示一个小的无线图标
+    *行为可以在选项的“常规”部分中反转（使用连接而不是未连接）
 
 ###链接到其他视图：
 *没有其他状态
@@ -245,7 +234,7 @@ hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
 每个灯可能具有以下一种或两种状态：
 
 * **STATE** *布尔值*-显示和设置开/关状态
-* **LEVEL** *数字*-显示并设置灯光水平
+* **LEVEL** *数字*-显示和设置灯光水平
 
 可选，您可以定义以下状态：
 
@@ -263,7 +252,7 @@ hash: fZgnfUQadd37S8OnotBCzNE9yKM35hlKqKHIyr7O3/U=
 
     * **RGB** / **RGB** 您可以使用RGB格式（十六进制），而不是使用HUE，SATURATION和COLOR_BRIGHTNESS，可选，并以'＃'开头
     * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可将其与前导'＃'结合使用
-    * **RGBWWCW** / **RGBWWCW** / **RGBCWWW** / **RGBCWWW** 可以使用RGBWWCW-或RGBCWWW-Format（十六进制）代替HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS ，WW =暖白，CW =冷白），可选，以“＃”开头
+    * **RGBWWCW** / **RGBWWCW** / **RGBCWWW** / **RGBCWWW** 您可以使用RGBWWCW-或RGBCWWW-Format（十六进制）来代替HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS ，WW =暖白，CW =冷白），可选，以“＃”开头
     * **RGB（仅色相）** /** RGB（仅色相）**：除了使用HUE之外，您还可以使用RGB（仅色相）格式（十六进制），可选，前导'＃'。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
     * ** Milight的色相**：这是Milight设备的色相值，在色相色域中使用另一个起点：
 
@@ -317,21 +306,21 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **链接视图属性**直接打开
 
 ### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/window_closed.png" width="32">窗口：
-* **STATE** *布尔值*-如果门或窗户被打开或关闭，则显示
-    *或者，您可以分配一个* value-list *，以显示其他状态，例如“倾斜”（在窗口选项中，您可以定义文字文本代表打开，关闭倾斜显示正确的图标）
+* **STATE** *布尔值*-在门或窗打开或关闭时显示
+    *或者，您可以分配*值列表*，以显示诸如“倾斜”之类的其他状态（在窗口选项中，您可以定义文字文本代表打开，关闭倾斜显示正确的图标）
     *您还可以分配*字符串*以显示任何文本，例如“ 3个窗口打开”或“全部关闭”或*数字*
 * **链接视图属性**直接打开
 
 ### <img src="img/icons/garagedoor_closed.png" width="32">车库门：
 * **STATE** *布尔值*-显示门是打开还是关闭
-    *另外，您也可以分配*值列表*，以显示“倾斜”等其他状态
-    *您还可以分配*字符串*以显示任何文本，例如“ 3扇门打开”或“全部关闭”
+    *或者，您可以分配*值列表*，以显示其他状态，例如“倾斜”
+    *您还可以分配* string *以显示任何文本，例如“ 3扇门打开”或“全部关闭”
 * **TOGGLE** *布尔值*-显示“切换”按钮，如果按下，则设置为true
 
 ### <img src="img/icons/door_locked.png" width="32">带锁门：
 * **STATE** *布尔值*-显示门是打开还是关闭（门/窗接触）
 * **LOCK_STATE** *布尔值*-显示和控制门是否被锁定或解锁（如果STATE为true，则禁用控件-因为您无法锁定门而已打开）
-* **LOCK_STATE_UNCERTAIN** *布尔值*-如果为true，则状态将以斜体显示，以表示锁的确切位置未知
+* **LOCK_STATE_UNCERTAIN** *布尔值*-如果为true，则STATE将以斜体显示，以表示锁的确切位置未知
 * **LOCK_OPEN** *布尔值*-如果设置为true，则门将完全打开
 
 ### <img src="img/icons/blind_middle.png" width="32">盲：
@@ -345,7 +334,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### <img src="img/icons/fire_on.png" width="32">火灾传感器：
 * **STATE** *布尔值*-如果为true，则传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
-    *您还可以分配* string *以显示任何文本，例如“楼上的火”
+    *您还可以分配* string *来显示任何文本，例如“楼上的火”
 * **链接视图属性**直接打开
 
 ### <img src="img/icons/flood_on.png" width="32">洪水传感器：
@@ -357,7 +346,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### <img src="img/icons/alarm_on.png" width="32">报警：
 * **STATE** *布尔值*-如果为true，则传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
-    *您还可以分配* string *以显示任何文本，例如“楼上的火”
+    *您还可以分配* string *来显示任何文本，例如“楼上的火”
 * **CONTROL_MODE** *值列表*-选择操作模式，例如“武装”和“撤防”
     *在设备选项中，您可以定义代表撤防的值，因此可以显示代表图标
 
@@ -375,7 +364,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **STATE** *布尔值*-如果设置为true，则程序将启动
 
 ### <img src="img/icons/play.png" width="32">现场：
-* **STATE** *布尔值*-如果场景处于活动状态，则显示。根据场景的配置（虚拟组，启用或禁用false的设置值），切换命令将发送true，false，min，0，max或100。有一个选项始终发送true（禁用切换） 。
+* **STATE** *布尔值*-如果场景处于活动状态，则显示。根据场景的配置（虚拟组，设置为false启用或禁用false的值），切换命令将发送true，false，min，0，max或100。有一个选项始终发送true（禁用切换） 。
 
 ### <img src="img/icons/media_on.png" width="32">媒体播放器/遥控器：
 * **STATE** *字符串*-“播放”，“暂停”或“停止”或*布尔值*-播放为true，停止为false
@@ -384,7 +373,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **艺术家，专辑，标题**：*字符串*-自我说明
 * **TRACK_NUMBER** *数字*-自我说明
 * **PREV，REWIND，PLAY，PAUSE，STOP，FORWARD，NEXT** *布尔值*-如果按下相应的按钮，则设置为true
-* **SHUFFLE，MUTE，PLAY_EVERYWHERE，EJECT，POWER_SWITCH** *布尔值*-相应功能的状态
+* **SHUFFLE，MUTE，PLAY_EVERYWHERE，EJECT，POWER_SWITCH** *boolean* 相应功能的状态
 * **REPEAT** *布尔值*-重复功能的状态或* string *-可以通过coressponding选项定义3种状态：off值，all-all和repeat-one
 * **DURATION，ELAPSED** *数字*-实际标题的持续时间和经过的时间-用于显示搜索栏
 * **VOLUME** *数字*-用于音量滑块
@@ -396,7 +385,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **REMOTE_PAD_DIRECTION，REMOTE_PAD_BACK，REMOTE_PAD_HOME，REMOTE_PAD_MENU** *string* 显示用于导航和返回的触控板
     *如果单击打击板的中间位置，则为“确定”，
 *如果单击打击垫的边缘或沿相应的方向滑动打击垫，则为“左”，“右”，“上”或“下”
-*“返回”，“主页”或“菜单*”（如果单击了相应的按钮）
+*'返回'，'主页'或'菜单*，如果单击了相应的按钮
 *注意：您可以使用Target-Value-List（可通过每个数据点的扳手图标访问）将一个数据点链接到多个数据点，具体取决于返回的值（请参见上面的Modifying Datapoints部分）
 * **REMOTE_COLOR** *字符串*-显示彩色按钮，如果单击颜色，则返回相应的颜色（“红色”，“绿色”，“黄色”或“蓝色”）
 * **REMOTE_ADDITIONAL_BUTTONS** *array* 按钮数组。如果单击按钮，则按钮的名称将发送到相应的状态ID
@@ -404,8 +393,6 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/popup.png" width="32">弹出：
 * **STATE** *任何*-可用于显示更多信息
-* **URL** 常量*字符串*-该网址将作为iframe在弹出窗口中打开
-* **HTML** 常量*字符串*-如果未指定URL，此标记将显示在弹出窗口内
 
 ### <img src="img/icons/link.png" width="32">外部链接：
 * **STATE** *任何*-可用于显示更多信息
@@ -413,7 +400,45 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ****
 
+＃＃ 故障排除
+*确保您已满足本页顶部的“您需要...”部分
+*如果更新后某些功能无法正常工作，请尝试以下步骤：
+    *开始上传适配器：
+
+    \
+        ![上载](../../../en/adapterref/iobroker.iqontrol/img/adapter_upload.png)
+
+*清除浏览器缓存
+*重新启动ioBroker
+
+###如果您还有其他问题，请提供浏览器的调试控制台中的日志以及错误行的屏幕截图：
+*使用已打开浏览器的调试控制台启动iQonrol（通常需要按<kbd>F12</kbd>才能打开它）
+*切换到控制台窗口并重现该错误
+*在控制台窗口中查找消息
+*出现错误时，列出导致错误的行号
+*请单击此行号，并进行故障行的屏幕截图：
+
+![故障排除控制台窗口](img/troubleshooting_consolewindow.png)![故障线路故障排除](../../../en/adapterref/iobroker.iqontrol/img/troubleshooting_faultyline.png)
+
+****
+
 ## Changelog
+
+### 1.2.0 (2020-28-29)
+* (sbormann) Introducing different tile sizes, they can be configured in options for active and inactive state.
+* (sbormann) Added BACKGROUND_URL and BACKGROUND_HTML as universal states to all devices, to display webpages as background of tiles (for FLOT, weather, security-cameras,...).
+* (sbormann) Again better animations for shuffle.js.
+* (sbormann) Reordered remote control sections.
+
+### 1.1.15 (2020-08-27)
+* (sbormann) Bugfixed shuffle.js (better animations, fixed hideIfInactive-Option).
+
+### 1.1.14 (2020-08-24)
+* (sbormann) Made HTML/URL-iFrame resizable (can be turned off by option).
+* (sbormann) Bugfixing remote control.
+* (sbormann) Added option to configure conditions for active battery-empty-icon.
+* (sbormann) Dialog is now repositioned and bigger when phone is rotated to horizontal view.
+* (sbormann) Breaking Change: Using now shuffle.js to reposition the tiles after resizig or orientation change. For now its only a nice effect, but this opens possibilities for future development with different tile-sizes.
 
 ### 1.1.13 (2020-08-23)
 * (sbormann) Added option to remote to show vol and ch +/- inside pad.

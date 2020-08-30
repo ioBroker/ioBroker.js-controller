@@ -3,11 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sprinklecontrol/README.md
 title: ioBroker.sprinklecontrol
-hash: gqgDTjupO++e+d5pXYAnkJ3RVvb4T9JXGOihTfDVb/c=
+hash: KObvUGjbQvRq6e7TlYwZqgg7Vo7Cmux/gUGKOE87/zg=
 ---
 ![Logo](../../../en/adapterref/iobroker.sprinklecontrol/admin/sprinklecontrol.png)
 
-![Anzahl der Installationen](http://iobroker.live/badges/sprinklecontrol-installed.svg)
+![Anzahl der Installationen](http://iobroker.live/badges/sprinklecontrol-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.sprinklecontrol.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sprinklecontrol.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/Dirk-Peter-md/iobroker.sprinklecontrol.svg)
@@ -19,17 +19,30 @@ hash: gqgDTjupO++e+d5pXYAnkJ3RVvb4T9JXGOihTfDVb/c=
 ## Sprinklecontrol Adapter für ioBroker
 Dieser Adapter steuert einzelne Bewässerungskreise im Garten. Je nach Wetter und Bodenbedingungen beginnen sie zu einer bestimmten Zeit oder bei Sonnenaufgang zu arbeiten, wie in der Konfiguration angegeben.
 
-Wetterabhängige politische Kontrolle der Gartenbewässerungs
+Wetterabhängige politische Kontrolle der Gartenbewässerung
 
 [Deutsche Beschreibung hier](docs/de/sprinklecontrol.md)
+
+[Deutsche Beschreibung auf GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/de/sprinklecontrol.md)
 
 Wetterabhängige automatische Steuerung der Gartenbewässerung
 
 [Englische Beschreibung hier](docs/en/sprinklecontrol.md)
 
+[Englische Beschreibung auf GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/en/sprinklecontrol.md)
+
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.0.10 (29.08.2020)
+* (Dirk-Peter-md) Bug in der Verarbeitung der Regenvorhersage vom Adapter "Das Wetter"
+
+### 0.0.9 (28.08.2020)
+* (Dirk-Peter-md) integration des Adapters "Das Wetter" <Pfad 2: XML-Datei mit 5-Tage-Wettervorhersage> zur Regenvorhersage (siehe Doku)
+
+### 0.0.8 (17.08.2020)
+* (Dirk-Peter-md) adapter.unload: (setTimeout > 1s) >>> delete
 
 ### 0.0.7 (23.07.2020)
 * (Dirk-Peter-md) history zu festen Zeit 0:05 (nicht über dayNum)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nuki-extended/README.md
 title: ioBroker.nuki-erweitert
-hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
+hash: P4wBQswyXDfM+blJgnDZpc+52jPqKyTvebuLngSFV1M=
 ---
 ![Logo](../../../en/adapterref/iobroker.nuki-extended/admin/nuki-extended.png)
 
@@ -22,13 +22,14 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 
 1. [Funktionen] (# Funktionen)
 2. [Installation] (# Installation)
-   1. [Nuki Bridge API] (# nuki-bridge-api)
-   2. [Nuki Web API] (# nuki-web-api)
+   1. [Nuki Bridge API] (# nuki-bridge-api)
+   2. [Nuki Web API] (# nuki-web-api)
 3. [Kanäle & Zustände] (# Kanäle - Zustände)
 4. [Smart Home / Alexa-Integration mit ioBroker.javascript] (# smart-home - alexa-Integration mit iobrokerjavascript)
-   1. [Tür um 22 Uhr abends abschließen] (# Tür um 22 Uhr abends abschließen)
-   2. [Lassen Sie sich von Alexa über Änderungen an der Sperre informieren] (# Lassen Sie sich von Alexa über Änderungen der Sperre informieren)
-   3. [Lassen Sie sich von Telegramm über Sperränderungen informieren] (# Lassen Sie sich von Telegramm über Sperränderungen informieren)
+   1. [Tür um 22 Uhr abends abschließen] (# Tür um 22 Uhr abends abschließen)
+   2. [Lassen Sie sich von Alexa über Änderungen an der Sperre informieren] (# Lassen Sie sich von Alexa über Änderungen der Sperre informieren)
+   3. [Lassen Sie sich von Telegramm über Änderungen der Sperre informieren] (# Lassen Sie sich von Telegramm über Änderungen der Sperre informieren)
+   4. [Lassen Sie sich von Alexa und Telegram über jemanden informieren, der über Opener klingelt] (# Lassen Sie sich von Telegramm und Alexa über jemanden informieren, der über Opener klingelt)
 5. [Changelog] (# changelog)
 6. [Credits] (# Credits)
 7. [Lizenz] (# Lizenz)
@@ -37,7 +38,7 @@ hash: SRyqV/KzzlUhBsyMJ7ZtHIwi5oPiEJ2o4DU0rX9OVPc=
 - Unterstützung für Nuki Smartlock und Nuki Opener
 - Unterstützung sowohl für die Nuki Bridge API als auch für die Nuki Web API
 - ~~ Unterstützung für Hash-Token auf Hardware-Bridges (siehe https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)~~
-- Fallback auf die Nuki-Web-API für den Fall, dass angewendete Aktionen auf die Nuki-Bridge-API fehlschlagen, z. aufgrund des Brückenfehlers 503 (siehe https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
+- Fallback auf die Nuki-Web-API, falls die auf die Nuki-Bridge-API angewendeten Aktionen fehlschlagen, z. aufgrund des Brückenfehlers 503 (siehe https://developer.nuki.io/t/random-http-503-unavailable/909/85?u=zefau)
 - Wiederholen Sie den Vorgang, falls die auf die Nuki Bridge-API angewendeten Aktionen fehlschlagen (wenn die Nuki-Web-API nicht verwendet wird).
 - Option zur regelmäßigen Synchronisierung anstelle des Bridge-API-Rückrufs (der aufgrund von Hardware Bridge verzögert werden kann)
 - Aktualisieren aller Status der Nuki Web API, wenn ein Rückruf über die Nuki Bridge API empfangen wird
@@ -69,7 +70,7 @@ So erhalten Sie Ihr Hardware-Bridge-Token (funktioniert nicht für Software-Brid
 Gehen Sie wie folgt vor, um die Nuki-Web-API zu verwenden:
 
 1. Rufen Sie ein Token unter https://web.nuki.io/de/#/admin/web-api ab
-2. Verwenden Sie dieses Token im nuki-erweiterten Adapter
+2. Verwenden Sie dieses Token im Nuki-erweiterten Adapter
 3. Stellen Sie sicher, dass Ihre Nuki-Geräte in der Nuki-Web-API veröffentlicht sind (verwenden Sie die Smartphone-App über die Einstellungen "Nuki-Web aktivieren").
 
 ## Kanäle & Staaten
@@ -223,7 +224,7 @@ Als Gerät wird eine Sperre mit dem Namensmuster ```door__<name of door>``` erst
 | advancedConfig | singleLockedPositionOffsetDegrees | Versatz, der die einzelne verriegelte Position ändert |
 | advancedConfig | totalDegrees | Die absolute Gesamtposition in Grad, die während der Kalibrierung erreicht wurde |
 | advancedConfig | unlatchDuration | Dauer in Sekunden, um die Verriegelung in der nicht verriegelten Position zu halten |
-| advancedConfig | UnlockedPositionOffsetDegrees | Versatz, der die entriegelte Position ändert |
+| advancedConfig | UnlockedPositionOffsetDegrees | Versatz, der die entriegelte Position verändert |
 | advancedConfig | UnlockedToLockedTransitionOffsetDegrees | Versatz, der die Position ändert, an der der Übergang von entsperrt zu gesperrt erfolgt |
 
 #### Opener Advanced Config
@@ -234,7 +235,7 @@ Als Gerät wird eine Sperre mit dem Namensmuster ```door__<name of door>``` erst
 | openerAdvancedConfig | busModeSwitch | Methode zum Umschalten zwischen Daten- und Analogmodus <br> `{"0": 'DATA MODE', "1": 'ANALOGUE MODE'}` |
 | openerAdvancedConfig | Kurzschlussdauer | Dauer des Kurzschlusses für die Umschaltung des BUS-Modus in ms |
 | openerAdvancedConfig | electricStrikeDelay | Verzögerung der elektrischen Schlagaktivierung in ms (nach Sperrwirkung 3 - elektrische Schlagbetätigung-) |
-| openerAdvancedConfig | randomElectricStrikeDelay | Random electricStrikeDelay (Bereich 3000 - 7000 ms), um eine Person im Inneren zu simulieren, die den elektrischen Schlag betätigt |
+| openerAdvancedConfig | randomElectricStrikeDelay | Zufällige elektrische Verzögerung (Bereich 3000 - 7000 ms), um eine Person im Inneren zu simulieren, die den elektrischen Schlag betätigt |
 | openerAdvancedConfig | electricStrikeDuration | Dauer der elektrischen Schlagbetätigung in ms (Verriegelungswirkung 3 - elektrische Schlagbetätigung-) |
 | openerAdvancedConfig | disableRtoAfterRing | Flag zum Deaktivieren von RTO nach Klingeln |
 | openerAdvancedConfig | Türklingelunterdrückung | Der Türklingel-Unterdrückungsmodus <br> `{"0": 'NEVER', "1": 'ALWAYS', "2": 'RTO', "3": 'CONTINUOUS', "4": 'CONTINUOUS + RTO'}` |
@@ -418,7 +419,7 @@ function messenger(content, user = '')
 }
 ```
 
-Mit dieser Funktion in ioBroker.javascript können Sie alles über ```msg('Hello World')``` (an alle Benutzer) oder ```msg('Hello World', 'Zefau')``` (an bestimmte Benutzer) an Telegram senden.
+Sie können diese Funktion in ioBroker.javascript verwenden, um alles über ```msg('Hello World')``` (an alle Benutzer) oder ```msg('Hello World', 'Zefau')``` (an bestimmte Benutzer) an Telegram zu senden.
 
 Erstellen Sie ein Skript im Ordner "common" von ioBroker.javascript und fügen Sie den folgenden Listener hinzu. WICHTIG: Ersetzen Sie #LOCK STATE ID # (ersetzen Sie auch #) durch den Status, der den Sperrstatus enthält (z. B. ```nuki-extended.0.door__home_door.status.lockState```):
 
@@ -447,7 +448,7 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 });
 ```
 
-HINWEIS: Wenn Sie sowohl das Alexa- als auch das Telegrammskript verwenden, können Sie für beide Aktionen nur einen Listener definieren:
+HINWEIS: Wenn Sie sowohl das Alexa- als auch das Telegrammskript verwenden, können Sie nur einen Listener für beide Aktionen definieren:
 
 ```javascript
 const DOOR_STATES = {
@@ -477,6 +478,25 @@ on({id: 'nuki-extended.0.smartlocks.home_door.state.lockState', change: 'any'}, 
 });
 ```
 
+### Lassen Sie sich von Telegram und Alexa über jemanden informieren, der über Opener klingelt
+Dies erfordert den ioBroker-Adapter ioBroker.telegram (https://github.com/iobroker-community-adapters/ioBroker.telegram) und den ioBroker-Adapter ioBroker.alexa2 (https://github.com/Apollon77/ioBroker.alea).
+
+```javascript
+/*
+ * Alexa and Telegram to notify on Opener Ringing state
+ *
+ */
+let phrase = 'Somebody is ringing the doorbell.'; // Es hat an der Tür geklingelt
+on({id: 'nuki-extended.0.openers.opener.state.ringStateUpdate', change: "any", ack: true}, function (s) {
+  let state= s && s.state;
+
+  if (state.val === true) {
+    setState("alexa2.0.Echo-Devices.#YOUR ALEXA ID#.Commands.speak"/*speak*/, phrase);
+    sendTo("telegram", "send", { text: phrase });
+  }
+});
+```
+
 ## Credits
 Dank [@ Mik13] (https://github.com/Mik13) für die [Nuki Bridge API-Implementierung](https://github.com/Mik13/nuki-bridge-api#nuki-bridge-api).
 
@@ -486,27 +506,44 @@ Von <a href="https://www.flaticon.com/authors/smashicons" title="Smashicons">Sma
 
 Please see [release page](https://github.com/Zefau/ioBroker.nuki-extended/releases) for changelog and detailed information.
 
-### v2.2.2  (2019-03-04)
+### v2.3.0 (2020-08-10)
+- (Zefau) added support for the door sensor of the Nuki Smartlock ([introduced with Bridge firmware 2.6.0 / 1.16.0](https://developer.nuki.io/t/bridge-beta-fw-2-6-0-1-16-0-with-door-sensor-state/6159))
+- (Zefau) added support for the ring bell action of the Nuki Opener ([introduced with Bridge firmware 2.7.0 / 1.17.0](https://developer.nuki.io/t/bridge-beta-fw-2-7-0-1-17-0/6792))
+
+### v2.2.6 (2020-07-14)
+- (Zefau) fixed Web API not refreshing correctly (see [#59](https://github.com/Zefau/ioBroker.nuki-extended/issues/59))
+- (Zefau) updated dependencies
+
+### v2.2.5 (2020-03-19)
+- (Zefau) fixed incorrect versioning
+
+### v2.2.4 (2020-03-18)
+- (Zefau) fixed incorrect dates of version history (see [#60](https://github.com/Zefau/ioBroker.nuki-extended/issues/60))
+
+### v2.2.3 (2020-03-04)
+- (Zefau) added refresh of configuration (via Nuki Web API) when any config item has been changed in ioBroker
+
+### v2.2.2 (2020-03-04)
 - (Zefau) fixed incorrect error message `Error triggering action via Nuki Bridge API: No Nuki Hex ID given!`
 - (Zefau) added new error message if too many callbacks are already attached to Nuki Bridge (`Callback not attached because too many Callbacks attached to the Nuki Bridge already! Please delete a callback!`)
 
-### v2.2.1  (2019-03-03)
+### v2.2.1 (2020-03-03)
 - (Zefau) fixed incorrect state mapping of state `openerAdvancedConfig.doorbellSuppression`
 
   **Note:** Please delete the state `openerAdvancedConfig.doorbellSuppression` once manually and restart the adapter to take affect!
   
 - (Zefau) updated dependencies
 
-### v2.2.0  (2019-02-16)
+### v2.2.0 (2020-02-16)
 - (Zefau) added possibility to change configuration of Nuki Smartlock or Nuki Opener (when using Web API)
 - (Zefau) updated dependencies
 
-### v2.1.0  (2019-02-03)
+### v2.1.0 (2020-02-03)
 - (Zefau) added (optional) callback IP for Bridge API events (e.g. when ioBroker is run in docker; see [#51](https://github.com/Zefau/ioBroker.nuki-extended/issues/51))
 - (Zefau) added dedicated buttons for each lock / opener action
 - (Zefau) replaced `state.timestamp` with `state.lastDataUpdate` (indicates last data refresh from the APIs) and `state.lastStateUpdate` (indicates the last actual state change)
 
-### v2.0.3  (2019-10-31)
+### v2.0.3 (2019-10-31)
 - (Zefau) reintroduced support for hashed token on hardware bridges (see https://developer.nuki.io/page/nuki-bridge-http-api-190/4#heading--token)
 
 ### v2.0.2 (2019-10-31)
