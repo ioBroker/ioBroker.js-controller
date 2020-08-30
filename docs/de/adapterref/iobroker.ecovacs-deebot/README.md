@@ -3,14 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: vx4zPqwV3vuwgfDd3f+hjnTOx9rgqNTPwtsIfBlXuEc=
+hash: BrqDwPgIQqGknlhLFtzQn++cjgBEsXoiInBaT/TYbGI=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
 ![npm](https://img.shields.io/npm/dt/iobroker.ecovacs-deebot.svg)
-![Eingerichtet](http://iobroker.live/badges/ecovacs-deebot-installed.svg)
 ![Travis-CI](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
 
 # Ecovacs Deebot Adapter für ioBroker
@@ -30,7 +29,7 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 * Deebot Ozmo 920
-* Deebot Ozmo T8 AIVI
+* Deebot Ozmo T8 (AIVI)
 
 ### Diese Modelle sollten funktionieren
 * Deebot M88
@@ -64,7 +63,7 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 ## Bekannte Probleme
 * Es gibt einige Berichte, dass Ecovacs derzeit leere Reinigungsprotokolle für Ozmo 920/950 liefert.
 * Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da es einige gibt meldet, dass die Verbindung nach ca. 24 Stunden.
-* Es gibt auch Berichte, dass der Batteriewert bei Deebot 900/901 merkwürdig ist. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
+* Es gibt auch einige Berichte, dass der Batteriewert bei Deebot 900/901 merkwürdig ist. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
   * Sie können die entsprechende Option in der Adapterkonfiguration als Problemumgehung verwenden.
 * Die Schaltfläche "Pause" funktioniert nicht mit Deebot 710/711.
 

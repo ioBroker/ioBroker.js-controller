@@ -2,18 +2,17 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
-title: Ecovacs Deebot адаптер для ioBroker
-hash: vx4zPqwV3vuwgfDd3f+hjnTOx9rgqNTPwtsIfBlXuEc=
+title: Адаптер Ecovacs Deebot для ioBroker
+hash: BrqDwPgIQqGknlhLFtzQn++cjgBEsXoiInBaT/TYbGI=
 ---
-![логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
+![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.ecovacs-deebot.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.ecovacs-deebot.svg)
-![НПМ](https://img.shields.io/npm/dt/iobroker.ecovacs-deebot.svg)
-![Установлены](http://iobroker.live/badges/ecovacs-deebot-installed.svg)
-![Трэвис-CI](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
+![npm](https://img.shields.io/npm/dt/iobroker.ecovacs-deebot.svg)
+![Трэвис-Си](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
 
-# Ecovacs Deebot адаптер для ioBroker
+# Ecovacs Адаптер Deebot для ioBroker
 Этот адаптер использует библиотеку [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js).
 
 ## Модели
@@ -22,7 +21,7 @@ hash: vx4zPqwV3vuwgfDd3f+hjnTOx9rgqNTPwtsIfBlXuEc=
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 
-### Известно, что эти модели работают
+### Эти модели, как известно, работают
 * Deebot Slim 2
 * Deebot N79
 * Deebot 601
@@ -30,7 +29,7 @@ hash: vx4zPqwV3vuwgfDd3f+hjnTOx9rgqNTPwtsIfBlXuEc=
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 * Deebot Ozmo 920
-* Deebot Ozmo T8 AIVI
+* Deebot Ozmo T8 (AIVI)
 
 ### Эти модели должны работать
 * Deebot M88
@@ -39,33 +38,33 @@ hash: vx4zPqwV3vuwgfDd3f+hjnTOx9rgqNTPwtsIfBlXuEc=
 * Deebot Ozmo Slim 10
 
 ## Монтаж
-Рекомендуется использовать версию 10 Node.js или более новую версию.
+Рекомендуется использовать версию Node.js 10 или более новую.
 
-Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок, в противном случае установка в iobroker может привести к ошибке.
+Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок, иначе установка в iobroker может привести к ошибке.
 
-Для систем Linux на основе Debian должны быть выполнены следующие команды:
+Для систем Linux на базе Debian необходимо выполнить следующие команды:
 
 ```bash
 sudo apt-get update
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 ```
 
-Перед выполнением следующей команды может потребоваться перезагрузка
+Перед выполнением следующей команды может потребоваться перезагрузка.
 
 ```bash
 sudo npm install canvas --unsafe-perm=true
 ```
 
-Для инструкций для других систем посетите https://www.npmjs.com/package/canvas#compiling
+Для получения инструкций для других систем посетите https://www.npmjs.com/package/canvas#compiling.
 
 ## Использование
 * Информацию о том, как использовать этот адаптер, можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Известные проблемы
-* Есть некоторые сообщения, что в настоящее время Ecovacs доставляет пустые журналы очистки для Ozmo 920/950.
-* Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно после прибл. 24 часа.
-* Есть также некоторые сообщения, что на Deebot 900/901 наблюдается странное поведение уровня заряда батареи. Очень вероятно, что это ошибка прошивки.
-  * Вы можете использовать соответствующую опцию в конфигурации адаптера в качестве обходного пути.
+* Есть сообщения, что в настоящее время Ecovacs доставляет пустые журналы очистки для Ozmo 920/950.
+* Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно через прибл. 24 часа.
+* Также есть сообщения о странном поведении заряда батареи Deebot 900/901. Очень вероятно, что это ошибка прошивки.
+  * Вы можете использовать соответствующую опцию в конфигурации адаптера в качестве временного решения.
 * Кнопка «пауза» не работает с Deebot 710/711.
 
 ## ВОПРОСЫ-ОТВЕТЫ
