@@ -151,16 +151,15 @@ function _startMultihost(_config, secret) {
  * Starts or stops the multihost discovery server, depending on the config and temp information
  *
  * @param {object} __config - the iobroker config object
- * @param {boolean?} temp - if server should only be temporarily activated
  * @returns {boolean|void}
  */
-function startMultihost(__config, temp=false) {
+function startMultihost(__config) {
     if (compactGroupController) {
         return;
     }
 
     const _config = __config || getConfig();
-    if ((_config.multihostService && _config.multihostService.enabled) || temp) {
+    if ((_config.multihostService && _config.multihostService.enabled)) {
         if (mhService) {
             try {
                 mhService.close(() => {
@@ -194,12 +193,20 @@ function startMultihost(__config, temp=false) {
             _startMultihost(_config, false);
         }
 
-        if (temp) {
-            setTimeout(() => {
+        if (!_config.multihostService.persist) {
+            setTimeout(async () => {
                 if (mhService) {
-                    mhService.close();
-                    mhService = null;
-                    logger.info(`${hostLogPrefix} Multihost discovery server stopped after 15 minutes, because only temporarily activated`);
+                    try {
+                        mhService.close();
+                        mhService = null;
+                        logger.info(`${hostLogPrefix} Multihost discovery server stopped after 15 minutes, because only temporarily activated`);
+                        _config.multihostService.persist = false;
+                        _config.multihostService.enabled = false;
+                        const configFile = tools.getConfigFileName();
+                        await fs.writeFile(configFile, JSON.stringify(_config, null, 2));
+                    } catch (e) {
+                        logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e}`);
+                    }
                 }
             }, 15 * 60000);
         }
@@ -2324,7 +2331,7 @@ function processMessage(msg) {
             break;
 
         case 'updateMultihost': {
-            const result = startMultihost(null, msg.message && msg.message.temp);
+            const result = startMultihost(null);
             if (msg.callback) {
                 sendTo(msg.from, msg.command, {result: result}, msg.callback);
             }
