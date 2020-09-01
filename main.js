@@ -148,7 +148,7 @@ function _startMultihost(_config, secret) {
 }
 
 /**
- * Starts the multihost discovery server
+ * Starts or stops the multihost discovery server, depending on the config and temp information
  *
  * @param {object} __config - the iobroker config object
  * @param {boolean?} temp - if server should only be temporarily activated
