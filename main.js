@@ -74,6 +74,7 @@ const stopTimeouts          = {};
 let states                  = null;
 let objects                 = null;
 let storeTimer              = null;
+let mhTimer                 = null;
 let isStopping              = null;
 let allInstancesStopped     = true;
 let stopTimeout             = 10000;
@@ -158,6 +159,11 @@ function startMultihost(__config) {
         return;
     }
 
+    if (mhTimer) {
+        clearTimeout(mhTimer);
+        mhTimer = null;
+    }
+
     const _config = __config || getConfig();
     if ((_config.multihostService && _config.multihostService.enabled)) {
         if (mhService) {
@@ -194,7 +200,7 @@ function startMultihost(__config) {
         }
 
         if (!_config.multihostService.persist) {
-            setTimeout(async () => {
+            mhTimer = setTimeout(async () => {
                 if (mhService) {
                     try {
                         mhService.close();
@@ -208,6 +214,7 @@ function startMultihost(__config) {
                         logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e}`);
                     }
                 }
+                mhTimer = null;
             }, 15 * 60000);
         }
 
