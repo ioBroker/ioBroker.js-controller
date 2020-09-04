@@ -4,7 +4,7 @@
     "linux": "Windows 32/64Bit",
     "date": "20191123",
     "device": "Windows",
-    "details": "Universal Installer mit<br><ul><li>Node.js + npm</li><li>Visual Studio 2017</li><li>Python, Git, Bonjour, ...</li></ul><br>Für js-controller Update bitte 3. Abschnitt in Info unten lesen.",
+    "details": "Universal Installer mit<br><ul><li>Node.js + npm</li><li>Visual Studio 2017</li><li>Python, Git, Bonjour, ...</li></ul><br>Bitte UNBEDINGT die Info lesen und bei Neuinstallation und Update befolgen!",
     "picture": "windows.png",
     "info": "https://forum.iobroker.net/post/446928"
   },
