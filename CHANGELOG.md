@@ -1,7 +1,60 @@
 # Changelog
 
 ## 3.2.0 (2020-09-xx) Release G... WIP!!!
-* TBD
+**BREAKING CHANGES**
+* None, Supported are nodejs 10.x, 12.x and 14.x
+
+**Features**
+* (bluefox) Provide min/max for convert alias functions
+* (foxriver76) set connectionName for redis connections and simulator support
+
+**Optimizations and Fixes**
+* (foxriver76) Fix failed logins if username is uppercase, be reworking user logic and caching
+* (bluefox) Set for def states the quality: QUALITY_SUBS_INITIAL
+* (AlCalzone) fix npm uninstall loglevel argument
+* (foxriver76) delete pids.txt when iobroker was stopped
+* (bluefox) Add missing attributes by multihost if Redis is used for objects/states, Remove unused settings from iobroker-dist.json, Remove pass and user from connection settings. Use options.auth_pass
+* (AlCalzone) Package-Manager: log which packages were (already) installed
+* (foxriver76) replace redis "KEYS" command by "SCAN" to optimize redis access performance
+* (foxriver76) optimize redis library usage to prevent errors on redis outages
+* (bluefox) Catch errors by plugins load. At least log will work and could be checked for errors.
+* (foxriver76) allow migration of instances to already existing host 
+* (foxriver76) also allow <adapter>.<instance-nr> for install/add cli command 
+* (AlCalzone) buffer streams that are piped to stdout to fix weird Windows logging cases
+* (foxriver76/AlCalzone) Optimize upgrade/downgrade logic for adapters, ) ask for a downgrade only if lower version is to be installed
+* (foxriver76) allow redis redis migration when changing host of redis - fix bug where process crashes when controller is running when migrating
+* (bluefox) Catch errors for subscribe on alias without target
+* (foxriver76) only perform auto scaling on alias if not null
+* (foxriver76) if repository request fails also use cached sources on updating repository
+* (foxriver76) prevent host deletion from same host - otherwise it will remove the system.host states but instances will still be on the removed host, because transferation happens to itself
+* (foxriver76) use instanceObjects from system.adapter.* object instead from io-package.json
+* (foxriver76) notify of errors on readFileCertificates to show permission problems etc.
+* (foxriver76) multihost discovery now logs ignored messages on debug and also logs the senders address
+* (foxriver76) sync up created objects on instance startage and instance creation by using helper function in tools.js, e.g. .loglevel was missing on instance creation
+* (bluefox) Package-Manager: Filter empty packets out to suppress error message
+* (Apollon77, foxriver, bluefox, AlCalzone) Several fixes for potential crash cases reported by Sentry and other error cases
+
+**Developer relevant DEPRECATIONS/WARNINGS**
+* (foxriver76) we warn if object not exists when setting a state via adapter.set*State* - If this is NOT wanted the adapter needs to be initialized with strictObjectChecks = false!!
+* (foxriver76) readFile should not validate meta object, we now throw on writeFile if id is no valid meta object
+
+**Developer relevant new Features**
+* (foxriver76) use aes-192-cbc as encryption - backward compatible with current encryption
+* (bluefox) Add system view to filter for "folder" objects
+* (bluefox) add set/clearTimeout and set/clearInterval to adapter methods and check on unload that they were all cleared and clear if needed with logging, so developers should make sure to clean up themself!
+* (AlCalzone) Add ...Async version for getChannels - make sure to check before using or use correct js.controller version dependency!
+
+**Developer relevant Optimizations and Fixes**
+* (foxriver76) implement maybeCallback and maybeCallbackWithError and use it in adapter.js
+* (AlCalzone) use fs-extra instead of mkdirp
+* (AlCalzone) read JSON files using fs-extra's readJSONSync
+* (AlCalzone) fix callback definitions in adapter.js, We have signatures for (almost) everything in @types/iobroker and we should use them
+* (AlCalzone) move from Promises to async/await in some places, use a single readyPromise instead of an array
+* (bluefox) Added "http" and "stream" options for logs
+* (foxriver76) migrated ci tests to github actions
+* (foxriver76) resolve adapter main file as tools.js method
+* general dependency updates
+* code style optimizations
 
 ## 3.1.6 (2020-06-18) Release Francesca
 * (foxriver76) fix output of `iobroker plugin status` command
