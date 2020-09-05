@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: CRUsdqSh2Nmmwu78PH3BCDHkh132LQKtGBee8aU9efk=
+hash: FX5sU81e4rfOhyxZWUYuGGm/GfoXT7pYQyzoRIvQAtQ=
 ---
-![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/i1_150.png)
+![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.vis-inventwo.svg)
-![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/vis-inventwo-installed.svg)
+![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/vis-inventwo-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/vis-inventwo-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/inventwo/iobroker.vis-inventwo.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/inventwo/iobroker.vis-inventwo/badge.svg)
@@ -17,6 +17,12 @@ hash: CRUsdqSh2Nmmwu78PH3BCDHkh132LQKtGBee8aU9efk=
 
 # IoBroker.vis-inventwo
 ## Schalter Widgets für den ioBroker.vis Adapter
+ab v 2.0.0
+
+![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Set_new.png)
+
+v 1.3.8
+
 ![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Set.png)
 
 Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehört sich in unserem Adapter NUR die reinen Schaltflächen (siehe oben) und die Icons. Uhr und Wetter gehören aus anderen Adaptern und müssen ggf. geworden werden werden.
@@ -29,11 +35,26 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ## Besetzung
 Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
 
-(Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
+(Dieser Link hat zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
 [![Spende] (admin / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.1.0
+- Datenpunktwerte werden im VIS Editor erhöht!
+
+## 2.0.1
+- Übersetzungsfehler gehört
+- Border Farbe gehört
+- Widget-Untertitel gehört
+
+## 2.0.0
+- Switch, Button, Nav und Background Widget (sowie die kleinen Ausführungen) zu einem eigenen Widget zussammen Verluste -> dem Universal Widget
+- Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können.
+- Image Widget kann nun auf Datenpunkt kaufen
+- Radiobuttons hinzugefügt
+- Werteliste hinzugefügt
 
 ## 1.3.8
 - Der Schieberegler wurde auf dezimal geändert
@@ -56,7 +77,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Die Option für den Hintergrund-Widget-Wert wurde korrigiert
 
 ### 1.3.2
-- Bug-Fix
+- Fehlerbehebung
 
 ### 1.3.1
 - Das Farbverhalten der Navigationsschaltfläche wurde geändert
@@ -84,7 +105,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Neue Symbole hinzugefügt
 
 ### 1.1.1
-- Bug-Fix
+- Fehlerbehebung
 
 ### 1.1.0
 - Slider-Widget hinzugefügt

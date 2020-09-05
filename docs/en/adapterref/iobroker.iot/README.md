@@ -256,6 +256,9 @@ Following types are supported:
 -->
 
 ## Changelog
+### 1.7.7 (2020-09-02)
+* (bluefox) Added information about changed linking process.
+
 ### 1.7.6 (2020-08-25)
 * (bluefox) Some colors were changed in dark mode.
 

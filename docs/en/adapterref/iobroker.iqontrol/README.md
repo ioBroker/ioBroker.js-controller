@@ -206,7 +206,7 @@ Almost all roles have a **STATE**- and/or a **LEVEL**-state. In most cases this 
 
 However, not every type makes sense to every role. So the STATE of a switch for example will be a boolean in most cases, to be able to be toggled between on and off. A string may be displayed, but the switch will not be functional.
 
-### Further general states:
+#### Further general states:
 * **ADDITIONAL_INFO**: *array* - an array of datapoints, that will be displayed at the bottom of the info-dialog
 * **URL**: CONSTANT *string* - this url will be opened as iframe inside the dialog
 * **HTML**: CONSTANT *string* - this markup will be displayed inside the iframe, if no URL-Datapoint is specified
@@ -417,6 +417,20 @@ In addition to normal thermostat you can define:
 ****
 
 ## Changelog
+
+### dev
+* (sbormann) Enhanced TileActiveConditions to even work, if not STATE is definded.
+* (sbormann) Enhanced BACKGROUND_HTML noch to flicker, when changing value.
+* (sbormann) Added option to rename section 'Additional Buttons' for remote.
+* (sbormann) Arrays like REMOTE_ADDITIONAL_BUTTONS are now sortable.
+* (sbormann) Enhanced handling for BACKGROUND_URL/HTML.
+* (sbormann) Added options to change caption of UP, STOP and DOWN for blinds.
+
+### 1.2.1 (2020-28-30)
+* (sbormann) If STATE in Dialog contains (valid) HTML-Code, it is now rendered as HTML and - if state is not readonly - a HTML-Editor is shown.
+* (sbormann) Added option to disable zoom-effect on mouse-over (for HTML-Widgets the zoom-effect may be disturbing).
+* (sbormann) Remote is only shown, if one of the remote datapoints are defined.
+* (sbormann) Added polyfil for older browsers for Array.from in shuffle.js.
 
 ### 1.2.0 (2020-28-29)
 * (sbormann) Introducing different tile sizes, they can be configured in options for active and inactive state.

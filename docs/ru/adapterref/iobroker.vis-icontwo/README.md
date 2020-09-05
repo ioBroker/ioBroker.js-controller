@@ -3,57 +3,121 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: QEhAXJRA/UYNyfx4XHAD7k0yKo4Qoti5i1h0rZ1d3+s=
+hash: aFWs9Y6sGOhasVUIPfH/qjZEroCsTxMOuYxWgb7w5C4=
 ---
-![логотип](../../../en/adapterref/iobroker.vis-icontwo/admin/i2_150.png)
+![Логотип](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.vis-icontwo.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.vis-icontwo.svg)
-![Количество установок (последняя)](http://iobroker.live/badges/vis-icontwo-installed.svg)
+![Количество установок (последнее)](http://iobroker.live/badges/vis-icontwo-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/vis-icontwo-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/inventwo/iobroker.vis-icontwo.svg)
 ![Известные уязвимости](https://snyk.io/test/github/inventwo/iobroker.vis-icontwo/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)
 
 # IoBroker.vis-icontwo
-## Icon Adapter для адаптера ioBroker.vis
-Ein reiner Icon Adapter for Visualisierung.
+## Icon Adapter für den ioBroker.vis Adapter
+Ein reiner Icon Adapter für die Visualisierung.
 
 ![Скриншот](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_001.png)
 
-Все иконы с изображением даты и времени (от имени Эбена)
+Все иконы sind über den Dateimanager (auf der obersten Ebene) im vis-icontwo Ordner zu finden
 
-![Pfad](../../../en/adapterref/iobroker.vis-icontwo/admin/Pfad_001.png)
+![Пфад](../../../en/adapterref/iobroker.vis-icontwo/admin/Pfad_001.png)
 
 ---
 
-## Воршау
-Eine Kleine Vorschau über den Stil der Иконы:
+## Vorschau
+Eine kleine Vorschau über den Stil der Иконки:
 
-Z.B. Lights (Teilauswahl)
+З.Б. Огни (Тейлаусвал)
 
 ![Скриншот](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_002.png)
 
-Z.B. Комнаты (Тейлаусваль)
+З.Б. Комнаты (Teilauswahl)
 
 ![Скриншот](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_003.png)
 
-Z.B. Приборы (Тейлаусваль)
+З.Б. Устройства (Teilauswahl)
 
 ![Скриншот](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_004.png)
 
 ---
 
 ## Unterstützung
-Falls Dir unsere Arbeit gefällt und Du un unterstützen möchtest, wir freuen uns über jede Spende.
+Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen uns über jede Spende.
 
-(Dieser Link для всех в PayPal-Konto и steht в Keiner Verbindung zum ioBroker)
+(Dieser Link führt zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
-[![Spende] (администратор / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
+[![Подписка] (admin / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
 
 ## Changelog
+
+### 0.16.1
+
+• (skvarel) - Code angepasst
+
+### 0.16.0
+
+• (skvarel) - Neue Hintergründe hinzugefügt (Backgrounds)
+
+### 0.15.0
+
+• (skvarel) - Neue Hintergründe hinzugefügt (Backgrounds)
+
+### 0.14.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Schedules)
+
+### 0.13.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Lights)
+
+### 0.12.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Lights)
+
+### 0.11.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Phones_Tablets)
+
+### 0.10.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.9.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Devices)
+
+### 0.8.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling & Weather)
+
+### 0.7.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.6.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Devices)
+
+### 0.5.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Brands)
+
+### 0.4.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.3.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.2.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Brands)
 
 ### 0.1.11
 

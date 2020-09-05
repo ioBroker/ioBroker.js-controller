@@ -64,8 +64,17 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 4.7.1 (2020-09-04)
+* (Bluefox) Fixed styling
+
+### 4.7.0 (2020-09-04)
+* (AlCalzone) Allowed async functions whenever a callback is accepted
+* (AlCalzone) Allowed `true` as 2nd parameter in getObject 
+* (AlCalzone) Forced TypeScript to treat each script as a separate module
+* (Bluefox) Replaced the Select-ID dialog
+
 ### 4.6.26 (2020-08-24)
-* (Apollon77) Catch error case when npm istallation fails (Sentry IOBROKER-JAVASCRIPT-3K)
+* (Apollon77) Catch error case when npm installation fails (Sentry IOBROKER-JAVASCRIPT-3K)
 * (Apollon77) Prevent crash case in mirroring (Sentry IOBROKER-JAVASCRIPT-3M)
 
 ### 4.6.25 (2020-08-24)
@@ -73,12 +82,6 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 
 ### 4.6.23 (2020-08-19)
 * (AlCalzone) fix type resolution for rxjs in TypeScripts
-
-### 4.6.22 (2020-07-30)
-* (Apollon77) catched some more file errors in mirror logic
-
-### 4.6.21 (2020-07-28)
-* (Apollon77) catched some more file errors in mirror logic (Sentry IOBROKER-JAVASCRIPT-2X, IOBROKER-JAVASCRIPT-3C)
 
 ## License
 

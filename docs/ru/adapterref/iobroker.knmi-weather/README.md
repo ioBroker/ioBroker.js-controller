@@ -3,37 +3,53 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.knmi-weather/README.md
 title: ioBroker.knmi-погода
-hash: KAKKSOXGMiMckWzpmH7ML4qcnA8KUcieYkmQXHc60mA=
+hash: 4K7lhE2g1x8O5srmOl0lvYJjZ3JU/YvYk+pXG7jB20w=
 ---
-![логотип](../../../en/adapterref/iobroker.knmi-weather/admin/knmi-weather.png)
+![Логотип](../../../en/adapterref/iobroker.knmi-weather/admin/knmi-weather.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.knmi-weather.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.knmi-weather.svg)
-![Количество установок (последняя)](http://iobroker.live/badges/knmi-weather-installed.svg)
+![Количество установок (последнее)](http://iobroker.live/badges/knmi-weather-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/knmi-weather-stable.svg)
-![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.knmi-weather.svg)
+![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/ioBroker.knmi-weather.svg)
 ![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.knmi-weather/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.knmi-weather.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.knmi-weather/master.svg)
+![НПМ](https://nodei.co/npm/ioBroker.knmi-weather.png?downloads=true)
+![Трэвис-Си](http://img.shields.io/travis/iobroker-community-adapters/iobroker.knmi-weather/master.svg)
 
 # IoBroker.knmi-weather
-## KNMI-Данные о погоде и сигналы тревоги для ioBroker
-KNMI предоставляет API, данные которого обновляются каждые 10 минут на основе всех данных датчика, которые собирает институт.
-Этот адаптер позволяет читать этот API (требуется регистрация!) И сохранять все соответствующие значения в удобных для пользователя состояниях для дальнейшей обработки в уведомлениях (например: Telegram / Pushover) или визуализации.
+## KNMI-Погодные данные и сигналы тревоги для ioBroker
+KNMI предоставляет API, данные которого обновляются каждые 10 минут на основе всех данных датчиков, собираемых учреждением.
+Этот адаптер позволяет читать этот API (требуется регистрация!) И сохранять все соответствующие значения в удобных для пользователя состояниях для дальнейшей обработки в уведомлениях (пример: Telegram / Pushover) или визуализации.
 
-API можно бесплатно использовать до 300 посещений в день, поэтому адаптер планируется каждые 5 минут.
+API можно использовать бесплатно до 300 посещений в день, поэтому адаптер будет планироваться каждые 5 минут.
 
 Доступны следующие данные:
 
-* Текущие условия климат
+* Текущие климатические условия
 * Прогноз сегодня, завтра, послезавтра
-* Погодные будильники
+* Погодная сигнализация
 
 Данные о местоположении основаны на координатах GPS, сохраненных в конфигурации администратора.
 
-Для получения дополнительной информации, пожалуйста, посетите: http://weerlive.nl/index.php. Получите бесплатный API-ключ здесь: http://weerlive.nl/delen.php
+Для получения дополнительной информации посетите: http://weerlive.nl/index.php Получите бесплатный ключ API здесь: http://weerlive.nl/delen.php
+
+## Поддержите меня
+Если вам нравятся мои работы, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/knmi-weather/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### 0.2.2-beta.0 (2020-08-30)
+* (DutchmanNL) Updated dependency's
+* (DutchmanNL) Bugfixes
+
+### 0.2.1
+* (DutchmanNL) Updated dependencys
+* (DutchmanNL) Release to stable repository
+* (DutchmanNL) Bugfix : Solve incorrect Latitude/Longtitude configuration
 
 ### 0.2.0
 * (DutchmanNL) improve propper adapter termination instead of guessing by timer

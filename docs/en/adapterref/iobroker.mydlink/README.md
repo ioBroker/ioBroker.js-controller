@@ -62,6 +62,9 @@ Now you should enter `TELNET` as Pin and the adapter will retrieve the required 
 	### __WORK IN PROGRESS__
 	npm install @alcalzone/release-script
 -->
+### 1.1.5 (2020-09-03)
+* Add: support for DCH-S160 water detector added (needs polling, linke motion detector).
+
 ### 1.1.4 (2020-06-23)
 * fixed: sometimes state was always reported as true.
 

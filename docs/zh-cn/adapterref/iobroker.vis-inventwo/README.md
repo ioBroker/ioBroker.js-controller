@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: CRUsdqSh2Nmmwu78PH3BCDHkh132LQKtGBee8aU9efk=
+hash: FX5sU81e4rfOhyxZWUYuGGm/GfoXT7pYQyzoRIvQAtQ=
 ---
-![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/i1_150.png)
+![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.vis-inventwo.svg)
@@ -17,9 +17,15 @@ hash: CRUsdqSh2Nmmwu78PH3BCDHkh132LQKtGBee8aU9efk=
 
 ＃ioBroker.vis-inventwo
 ## Schalter窗口小部件ioBroker.vis适配器
+Ab v 2.0.0
+
+![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Set_new.png)
+
+v 1.3.8
+
 ![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，然后再运行图标。 Uhr und Wetter stammen aus anderen Adaptern undmüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Preview.png)
 
@@ -27,13 +33,28 @@ hash: CRUsdqSh2Nmmwu78PH3BCDHkh132LQKtGBee8aU9efk=
 ---
 
 ##Unterstützung
-Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里恩·乌斯·杰德·斯彭德。
+Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱恩·乌斯·杰德·斯彭德。
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
 [![Spende]（admin / spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.1.0
+-VIS编辑器中的Datenpunktwerte werden！
+
+## 2.0.1
+-Übersetzungsfehlerbehoben
+-边境Farbe behoben
+-Widget-Untertitel behoben
+
+## 2.0.0
+-开关，按钮，导航和背景小部件（显示小部件）-> dem通用小部件
+-多功能小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere Datenpunkte and Wertegeprüftwerden kann）
+-图像小部件kann nun auf Datenpunktprüfen
+-单选按钮hinzugefügt
+-Wertelistehinzugefügt（Kann Liste aus einem Datenpunkt oder manuell eingetragenem Text erstellen）
 
 ## 1.3.8
 -将滑块步进更改为小数

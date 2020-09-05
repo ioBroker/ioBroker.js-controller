@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
+hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ---
 ![商标](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
@@ -12,12 +12,12 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 ## Homematic
 > Homematic是eQ-3的智能家居系统，它可以使用房屋或公寓中的场景（从简单到复杂）全面控制各种功能。
 
->这些设备包括用于照明，卷帘和加热控制的产品，危险检测器，安全传感器以及用于测量天气数据的产品。无线电通信简化了改装。电线总线组件可用于新建筑物。
+>这些设备包括用于照明，卷帘和加热控制的产品，危险检测器，安全传感器以及用于测量天气数据的产品。无线电通信简化了改造。电线总线组件可用于新建筑物。
 
 [资源](https://www.eq-3.de/produkte/homematic.html)
 
 ##适配器Homematic ReGaHss
-该适配器建立到Homematic逻辑层“ ReGaHSS”的连接（** Re **** Ga** teway）。
+该适配器建立与Homematic逻辑层“ ReGaHSS”（** ** ** Ga teway）的连接。
 它在Homematic和ioBroker之间同步实名，系统变量，房间，交易和程序。
 
 如果要将多个中央单元集成到ioBroker中，则必须为每个中央单元安装并配置一个单独的实例。
@@ -41,7 +41,7 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 
 安装完成后，配置窗口将自动打开。
 
-在实际配置之前，应创建并配置HM-RPC适配器的实例（与此适配器一起创建），或者在必要时创建和配置其他HM-RPC实例。
+在实际配置之前，应创建和配置HM-RPC适配器的实例（与此适配器一起创建），或在必要时创建和配置其他HM-RPC实例。
 
 ##配置
 ![](../../../de/adapterref/iobroker.hm-rega/media/01c7dbc4da0240421b0711b331971d2d.png)**上方的选择菜单**
@@ -61,12 +61,12 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 
 轮询
 
-如果激活，则RegaHSS数据将由CCU根据“间隔”字段中设置的秒数定期进行轮询。不应将时间间隔设置得太短，因为太频繁的轮询会导致CCU崩溃。
+如果激活，则CCU会根据“间隔”字段中设置的秒数定期查询RegaHSS数据。间隔不应设置得太低，因为太频繁的轮询会导致CCU崩溃。
 
 触发
 
-为了最大程度地减少从ioBroker到RegaHSS的活动查询，进行更改后，触发器还可以将数据推送到程序内CCU上。
-为此，可以使用在CCU程序中触发的CCU虚拟按钮。默认情况下，这是BidCosRF.50.PRESS_SHORT键（请参阅示例程序）。
+为了最大程度地减少从ioBroker到RegaHSS的活动查询，触发器也可以在进行更改时将数据推送到程序内CCU上。
+为此，可以使用CCU程序中触发的CCU上的虚拟按钮。默认情况下，这是BidCosRF.50.PRESS_SHORT键（请参阅示例程序）。
 
 ###同步区域
 用户可以在此处指定要将哪些信息从CCU传输到ioBroker。然后在ioBroker中创建相应的对象和数据点。
@@ -75,9 +75,9 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 -变量：激活从CCU传输系统变量
 -程序：从CCU激活程序名称的传输
 -名称：激活从CCU传输数据点的纯文本名称
--收藏夹：激活收藏夹的传输和列出
+-收藏夹：激活收藏夹的传送和列表
 -房间：激活房间的接管并列出房间
--交易：激活交易的转移并列出它们
+-交易：激活交易的转移及其列表
 
 ###其他设置区域
 用户可以在此处决定是否应使用https（加密和防窃听连接）。如果激活，则需要用户名和关联的密码
@@ -87,20 +87,20 @@ hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
 ###实例
 ![](../../../de/adapterref/iobroker.hm-rega/media/44785b82964bcdc198565b1681787dc0.png)**实例和信号**
 
-现在可以在ioBroker的*实例*区域中找到创建的实例。在左侧，交通信号灯系统显示适配器是已激活还是已连接到CCU。
+现在可以在ioBroker的*实例*区域中找到创建的实例。左侧的交通信号灯系统显示适配器是已激活还是已连接到CCU。
 
 如果将鼠标指针放在符号上，则会获得详细信息。
 
 ###适配器的对象
 在对象区域中，适配器从CCU传输的所有值和信息都以树形结构显示。
 
-由于对象是特定于用户的，因此此处仅显示对于所有用户都相同的常规对象。
+由于对象是特定于用户的，因此此处仅显示所有用户都相同的常规对象。
 
 ![](../../../de/adapterref/iobroker.hm-rega/media/c24d8382beda4c970093097959080524.png)**文件夹结构**
 
 第一个文件夹（通常是数字ID）是CCU中包含的程序。
 
-CCU和info文件夹包含网关的基本信息。
+CCU和信息文件夹包含网关的基本信息。
 占空比的百分比规格（如果已激活）。
 
 最后，列出了在CCU中创建的变量

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-material-advanced/README.md
 title: ioBroker.vis-material-advanced
-hash: 5un1eu/U2JI3iwrWNwdkXYl7PE5XKcU6QDoJlBvlOjw=
+hash: dVXCMS4hRnlunf2m9mBAnmT6hOBkbisQm9521M0eSAg=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-material-advanced/admin/vis-material-advanced.png)
 
@@ -28,6 +28,49 @@ aber in 90% umgeschrieben
 
 Mehrere Bugfixes und viele neue Widgets hinzugefügt
 
+## Achtung, alte Widgets (<0.5.0 wird ein wenig beschädigt)
+Sie können sie manuell in vis reparieren oder exportieren, bearbeiten und erneut importieren.
+für Handbuch: Ersetzen Sie "Deckkraftfarbe": "Deckkraft <einige Farbe>" durch "Deckkraft": "<Farbe>". Ersetzen Sie colorizeByTemp durch colorizeByValue
+
+    Beispiel aus sigi234 (example.json) und mein example2.json sind im Github für alle, die sie testen möchten
+
+    Entschuldigen Sie die Unannehmlichkeiten, aber diese Änderungen waren erforderlich, um den Code sauber und verständlich zu halten.
+
+    das sollte nicht mehr sehr oft passieren :)
+
+## Folgende Widgets sind momentan vorhanden:
+### Strom
+ - Temperatur
+ - Feuchtigkeit
+ - Tür
+ - Fenster
+ - Besetzung
+ - Lautstärke
+ - Verschluss
+ - Licht
+ - Dimmer
+ - Lichttemperatur
+ - Boolescher Wert
+
+### In Bearbeitung
+noch nicht endgültig:
+
+ - Garagentor
+ - Radiosender
+
+ Viele Widgets sind noch im Plan
+
+## Optionen
+    In den meisten Widgets stehen folgende Optionen zur Verfügung:
+
+    - Textfarbe
+    - Schnur-Symbol (macht noch nicht überall Sinn, z. B. Dimmer)
+    - Deckkraftfarbe (die Standard-Deckkraftfarbe)
+    - colorizeByValue (abhängig von einigen Werten kann die Deckkraft geändert werden, z. B. wenn es zu heiß ist, machen Sie es rot, zu kaltem Blau)
+    - unten, oben, min, max (die Werte für colorieByValue)
+    - Farbe niedrig / hoch, mittel ... (die Farbe, die verwendet werden soll, wenn der Rand angehoben ist)
+    - schreibgeschützt (einige Widgets können so eingestellt werden, dass sie nur für die Anzeige schreibgeschützt sind)
+
 ### Fertig machen
 Installieren Sie den Adapter und starten Sie VIS im Bearbeitungsmodus.
 Wählen Sie auf der linken Seite vis-material-adapter und dann werden alle Widgets in der Vorschau angezeigt.
@@ -37,6 +80,34 @@ Wählen Sie auf der linken Seite vis-material-adapter und dann werden alle Widge
 ** Sie können die Datei example.json dank @ sigi234 in vis ** importieren
 
 ## Changelog
+
+### 0.5.6
+* type in volume
+
+### 0.5.5
+* no icons anymore for text and number
+
+### 0.5.2
+* removed (obsolete) class which caused Problems in other widgets
+* added possibility to change the icons for the widgets ( except dimmer )
+
+### 0.5.1
+* some icons resized
+* bugfix: all widgets have now default background-color #121212 but can be changed in settings.
+* reorganized the settings to have some common order
+* new Number and Text Widget ( similar to boolean )
+
+
+### 0.5.0
+* opacity now flexible
+* reorg code
+
+### 0.4.8
+* bugfix alter pfade
+* neues Valve Widget für Thermostate
+
+### 0.4.3
+* neues Boolean widget
 
 ### 0.4.2
 * keine Änderungen, nur ein Label für Latest repository

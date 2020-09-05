@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: c1sQb6QGJSpneskKrGz7xB92ANEcDuNUiviPkTIyMqE=
+hash: 29CUGSpUNv2aCSi8t456Aw5o6CC6uIeA8iyPhZL3324=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -41,7 +41,7 @@ hash: c1sQb6QGJSpneskKrGz7xB92ANEcDuNUiviPkTIyMqE=
 | ShellyRGBW2（SHRGBW2）|自v3.3.0起受支持|自v3.3.0起受支持|
 | Shelly2LED（SH2LED）|自v3.3.0起受支持|自v3.3.0起受支持|
 | ShellyPlug（SHPLG-1）|自v3.3.0起受支持|自v3.3.0起受支持|
-| ShellyPlug S（SHPLG-1）|从v3.3.0起受支持|从v3.3.0起受支持|
+| ShellyPlug S（SHPLG-1）|自v3.3.0起受支持|自v3.3.0起受支持|
 | ShellyPlug 2（SHPLG-2）|自v3.3.0起受支持|自v3.3.0起受支持|
 | ShellySense（SHSEN-1）|自v3.3.0起受支持|自v3.3.0起受支持|
 | Shelly4Pro（SHSW-44）|自v3.3.5起受支持|自v3.3.5起受支持|
@@ -57,20 +57,21 @@ hash: c1sQb6QGJSpneskKrGz7xB92ANEcDuNUiviPkTIyMqE=
 | Shelly Gas（SHGS-1）|自v3.3.3起受支持|自v3.3.3起受支持|
 | Shelly Dimmer 2（SHDM-2）|自v3.3.4起受支持|自v3.3.4起受支持|
 | Shelly门窗传感器2（SHDW-2）|自v3.3.5起受支持|自v3.3.5起受支持|
+| Shelly Uni（SHUNI-1）|自v4.0.4起受支持|自v4.0.4起受支持|
 
 ##什么是Sentry，什么报告给服务器？
 Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许ioBroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许ioBroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
  
-### 4.0.4 (2020-08-23)
+### 4.0.4 (2020-09-03)
 * (Stübi) - optimize the destroy function (Bugfixing)
 * (Stübi) - Bugfixing Relay0.Event error for Shelly I3 in MQTT mode (Issue #241)
 * (harrym67) - Shelly 2.5 Roller mode. According to Shelly API: changed existing state swap to swap_input and add state swap.(Issue #240)
 * (Stübi) - Allow setting of customer MQTT prefix (Issue #244)
-* (harrym67) - Add Endpoint dim to Shelly Dimmer 2 (SHDM-2) (Issue #248)
+* (harrym67) - Add Support for Shelly Uni (SHUNI-1)
 
 ### 4.0.3 (2020-08-19)
 * (Stübi) - Add a checkbox, to optionally enable updates of objects even if they have not changed (Issue #209)

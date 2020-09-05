@@ -135,6 +135,9 @@ CCU / Homematic支持不同的设备类型（有线，无线，HMIP，CUxD）。
 ##常见问题
 
 ## Changelog
+### 1.14.23 (2020-09-03)
+* (foxriver76) `value.temperature` will have unit °C no matter of delivered unit by CCU
+
 ### 1.14.21 (2020-08-18)
 * (foxriver76) fixed virtual-devices objects being recreated on instance startage (#271)
 

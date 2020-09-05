@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: qWPQT0vodXCE5ks4qi6nL4Cxox5g3exb8CS3AJFQwKc=
+hash: 6+MZ+ZAib0BWJ2F+DnGtVmr8FLgCxkLrLloNzXXdu1g=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -66,7 +66,7 @@ hash: qWPQT0vodXCE5ks4qi6nL4Cxox5g3exb8CS3AJFQwKc=
 访问[iobroker论坛](https://forum.iobroker.net/topic/22039/neuer-adapter-visualisierung-iqontrol)。
 
 ＃＃ 如何使用
-**不要害怕您拥有的许多选择。**大多数事情都是开箱即用的。您可以*，但是您不必使用iQontrol提供的所有配置功能！只是这样开始：
+**不要害怕您拥有的许多选择。**大多数事情都是开箱即用的。您可以*，但是不必使用iQontrol提供的所有配置功能！只是这样开始：
 
 *开始创建视图。
 
@@ -76,15 +76,15 @@ hash: qWPQT0vodXCE5ks4qi6nL4Cxox5g3exb8CS3AJFQwKc=
 
 设备具有确定设备功能，使用哪些图标等的角色。
 根据该角色，您可以将多个状态链接到设备。这些将赋予设备其功能。
-如果选择“链接到其他视图”作为角色，则可以创建到其他视图的链接。我建议对链接到具有相同背景的其他视图的外观进行换肤。
-您也可以尝试使用自动创建功能从iobroker-object-tree中选择现有设备。自动创建会尝试找出角色并匹配尽可能多的状态。
+如果选择“链接到其他视图”作为角色，则可以创建到其他视图的链接。我建议将链接视图的链接换成具有相同背景的其他视图。
+您也可以尝试使用自动创建功能从iobroker-object-tree中选择现有设备。自动创建试图找出角色并匹配尽可能多的状态。
 
 *之后，您可以创建一个工具栏，该工具栏显示为页脚。
 
 工具栏条目是视图的链接。
 第一个工具栏条目将是您的“主视图”，并将在启动时加载。
 
-*要为所有内容提供精美风格，您可以上传自己的图片。
+*要为所有内容提供精美的样式，您可以上传自己的图像。
 
 您可以将图像用作背景图像或设备的背景图像。
 文件夹“ / usericons”中的图像可用作设备图标。
@@ -109,8 +109,8 @@ hash: qWPQT0vodXCE5ks4qi6nL4Cxox5g3exb8CS3AJFQwKc=
 
 ##图标和背景图片
 *您可以使用内置图像或在“图像”标签下上传的图像或您喜欢的任何免费网址
-*您也可以在图片网址中使用变量。例如，这对于天气预报而言可能是有用的。使用以下模式：
-    *``path / to / firstloaded.png | anotherpath / to / {iobrokerstate | fallback} .png``
+*您也可以在图片网址中使用变量。例如，这对于天气预报而言可能是有用的。使用此模式：
+    *``路径/到/firstloaded.png |另一个路径/到/{iobrokerstate|fallback}.png”
     *示例：``./../ iqontrol.meta / userimages / demo / bottle.jpg | ./../ iqontrol.meta / userimages / demo / {javascript.0.myimage | whitestone} .jpg''
 *打开视图时加载``./../iqontrol.meta/userimages/demo/bottle.jpg''
 *从服务器获取javascript.0.myimage的状态后，该图像将立即替换为./../iqontrol.meta/userimages/demo/XXX.jpg，其中XXX是javascript.0.myimage的值
@@ -130,7 +130,7 @@ hash: qWPQT0vodXCE5ks4qi6nL4Cxox5g3exb8CS3AJFQwKc=
 *另外，可以将iobrokerstate放在方括号中，然后将使用不带其单位的普通值：“加载时的文本|加载{[iobrokerstate] | fallback}之后的文本”
     *示例：“天气正在加载|天气：{javascript.0.weather |未找到天气数据}”
 *打开视图时显示``天气正在加载''
-*一旦从服务器获取了javascript.0.weather状态，该文本将替换为Weather：XXX，其中XXX是javascript.0的值。天气``
+*一旦从服务器获取了javascript.0.weather状态，该文本将被替换为Weather：XXX其中XXX是javascript.0的值。天气``
 *如果``javascript.0.weather''没有值，将使用回退``No weather data found''（使用回退是可选的）
 
 ##弹出消息
@@ -139,23 +139,23 @@ hash: qWPQT0vodXCE5ks4qi6nL4Cxox5g3exb8CS3AJFQwKc=
 *您可以使用html标签来格式化消息文本
 *还有一些其他状态可用于进一步自定义显示的弹出窗口（必须在设置消息数据点之前设置这些状态）：
     *``持续时间''：这是显示消息的时间，以毫秒为单位;如果设置为0，则必须确认消息
-    *``ClickedValue''和``ClickedDestinationState''：如果用户单击了弹出窗口，则``ClickedValue''中的值将被发送到``iqontrol.x.Popup.POPUP_CLICKED''中，如果指定，还将附加到``ClickedDestinationState''中的数据点
+    *``ClickedValue''和``ClickedDestinationState''：如果用户单击了弹出窗口，则``ClickedValue''中的值将被发送到``iqontrol.x.Popup.POPUP_CLICKED''，如果指定，则还会附加到``ClickedDestinationState''中的数据点
         *如果未指定任何值，则将使用“ true”
-    *“ ButtonNames”：您可以在此处指定以逗号分隔的按钮列表，该列表将显示在弹出窗口的底部（例如“ OK，中止”）
+    *“ ButtonNames”：您可以在此处指定以逗号分隔的按钮列表，这些列表将显示在弹出窗口的底部（例如“ OK，中止”）
         *``ButtonValues''和``ButtonDestinationStates''：这些是逗号分隔的值列表，这些值将被发送到``iqontrol.x.Popup.BUTTON_CLICKED''，并且如果指定的话，将附加到``ButtonDestinationStates''中的数据点`，如果用户单击相应的按钮
 *如果仅使用一个值（而不是用逗号分隔的列表），则此值将用于所有按钮
-*如果您将“ ButtonValues”留空，则将使用按钮的名称
+*如果将ButtonValues保留为空，则将使用按钮的名称
 *如果仅使用一个目标状态（而不是用逗号分隔的列表），则此状态将用于所有按钮
         *``ButtonCloses``：这是一个用逗号分隔的布尔值列表（``true''/``false''），用于指定在按下相应按钮时是否应关闭弹出窗口
-*或者，您可以通过sendTo-command和参数``PopupMessage''，``PopupDuration''，``PopupClickedValue''等来设置这些值
-    *例如：``sendTo（“ iqontrol”，“ send”，{PopupMessage：'这是我的消息'，PopupDuration：2500，PopupClickedValue：'messageConfirmed'}）;``
+*或者，您可以通过sendTo-command使用参数“ PopupMessage”，“ PopupDuration”，“ PopupClickedValue”等设置这些值
+    *示例：``sendTo（“ iqontrol”，“ send”，{PopupMessage：'这是我的消息'，PopupDuration：2500，PopupClickedValue：'messageConfirmed'}）;''
 *您也可以使用块状发送消息到iQontrol
 
 ![弹出屏幕截图](img/popup_screenshot.png)![弹出式阻止](../../../en/adapterref/iobroker.iqontrol/img/popup_blockly.png)
 
 ##角色和相关状态的描述
 每个设备都有一个角色，该角色定义了设备的功能。每个角色都会生成一组状态，这些状态可以链接到相应的io-broker状态。
-如果使用自动创建功能，则可以从io-broker-object树中选择一个现有设备。自动创建会尝试找出角色并匹配尽可能多的状态。
+如果使用自动创建功能，则可以从io-broker-object树中选择一个现有设备。自动创建试图找出角色并匹配尽可能多的状态。
 这仅适用于已知设备。对于未知设备，以及要赋予设备高级功能，您可以通过（+）-按钮手动添加它们，或编辑由自动创建功能创建的设备。
 要编辑设备的角色和状态，请单击设备后面的铅笔。您会在下面找到角色和使用状态的简短描述：
 
@@ -203,9 +203,9 @@ hash: qWPQT0vodXCE5ks4qi6nL4Cxox5g3exb8CS3AJFQwKc=
     *您可以通过修改数据点来创建自己的值列表（iobroker的objects-tab中数据点后面的扳手图标，请参见上文）
 *还可以根据STATE或LEVEL-Datapoint确定设备磁贴将显示为活动还是非活动。但是，您可以在选项部分“活动磁贴的条件”中自由自定义行为。您甚至可以设置另一个确定贴砖状态的外部数据点
 
-但是，并非每种类型对每个角色都有意义。因此，例如，在大多数情况下，开关的状态将为布尔值，以便可以在开和关之间进行切换。可能会显示一个字符串，但该开关将不起作用。
+但是，并非每种类型对每个角色都有意义。因此，例如，在大多数情况下，开关的状态将为布尔值，以便可以在开和关之间进行切换。可能会显示一个字符串，但是该开关将不起作用。
 
-###其他一般状态：
+####其他一般状态：
 * **ADDITIONAL_INFO** *array* 数据点的数组，将显示在信息对话框的底部
 * **URL** 常量*字符串*-该URL将在对话框中以iframe的形式打开
 * **HTML** 常量*字符串*-如果未指定URL-Datapoint，则此标记将显示在iframe中
@@ -227,14 +227,14 @@ hash: qWPQT0vodXCE5ks4qi6nL4Cxox5g3exb8CS3AJFQwKc=
 
 ### <img src="img/icons/button.png" width="32">按键：
 * **STATE** *任何*-任何所需的状态类型
-* **SET_VALUE** 常量*字符串*-这是一个常量（不是链接的io-broker-state！），如果按下按钮将分配给STATE
-* **OFF_SET_VALUE** 常量*字符串*-这是一个常量（不是链接的io-broker状态！）。如果已定义，则在in选项中定义的时间或100ms之后，STATE将重置为该值。
+* **SET_VALUE** 常量*字符串*-这是一个常数（不是链接的io-broker状态！），如果按下按钮，它将分配给STATE
+* **OFF_SET_VALUE** 常量*字符串*-这是一个常量（不是链接的io-broker状态！）。如果已定义，则将在in选项中定义的时间或100ms后将STATE重置为该值。
 
 ### <img src="img/icons/light_on.png" width="32">光：
 每个灯可能具有以下一种或两种状态：
 
 * **STATE** *布尔值*-显示和设置开/关状态
-* **LEVEL** *数字*-显示和设置灯光水平
+* **LEVEL** *数字*-显示并设置灯光水平
 
 可选，您可以定义以下状态：
 
@@ -253,7 +253,7 @@ hash: qWPQT0vodXCE5ks4qi6nL4Cxox5g3exb8CS3AJFQwKc=
     * **RGB** / **RGB** 您可以使用RGB格式（十六进制），而不是使用HUE，SATURATION和COLOR_BRIGHTNESS，可选，并以'＃'开头
     * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可将其与前导'＃'结合使用
     * **RGBWWCW** / **RGBWWCW** / **RGBCWWW** / **RGBCWWW** 您可以使用RGBWWCW-或RGBCWWW-Format（十六进制）来代替HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS ，WW =暖白，CW =冷白），可选，以“＃”开头
-    * **RGB（仅色相）** /** RGB（仅色相）**：除了使用HUE之外，您还可以使用RGB（仅色相）格式（十六进制），可选，前导'＃'。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
+    * **RGB（仅色相）** /** RGB（仅色相）**：您可以使用RGB（仅色相）格式（十六进制）替代使用HUE，并以“＃”开头。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
     * ** Milight的色相**：这是Milight设备的色相值，在色相色域中使用另一个起点：
 
 ````
@@ -262,7 +262,7 @@ modulo(-3.60 * (MilightHue/2.55 - 66), 360);
 on modulo(n, m){ return ((n % m) + m) %m; }
 ````
 
-切记：转换到替代色彩空间是由前端完成的，因此只有在打开了iQontrol的情况下，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为了避免对话循环，建议您要么使用原始的色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
+注意事项：转换到替代色彩空间是由前端完成的，因此只有在打开了iQontrol的情况下，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为了避免对话循环，建议您要么使用原始的色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
 
 *效果模式：
     * **效果**：*值列表*-播放效果
@@ -287,7 +287,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### <img src="img/icons/radiator.png" width="32">恒温器：
 除常规恒温器外，您还可以定义：
 
-* **PARTY_TEMPERATURE** *字符串*-特殊格式的字符串，用于定义恒温疗法的聚会或假期模式
+* **PARTY_TEMPERATURE** *字符串*-特殊格式的字符串，用于定义家庭恒温器的聚会或假期模式
 * **BOOST_STATE** *数字*-显示恒温器的剩余启动时间
 
 ### <img src="img/icons/temperature.png" width="32">温度感应器， <img src="img/icons/humidity.png" width="32">湿度传感器：
@@ -307,7 +307,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/window_closed.png" width="32">窗口：
 * **STATE** *布尔值*-在门或窗打开或关闭时显示
-    *或者，您可以分配*值列表*，以显示诸如“倾斜”之类的其他状态（在窗口选项中，您可以定义文字文本代表打开，关闭倾斜显示正确的图标）
+    *或者，您可以分配*值列表*，以显示其他状态，例如“倾斜”（在窗口选项中，您可以定义文本框代表打开，闭合倾斜显示正确的图标）
     *您还可以分配*字符串*以显示任何文本，例如“ 3个窗口打开”或“全部关闭”或*数字*
 * **链接视图属性**直接打开
 
@@ -334,7 +334,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### <img src="img/icons/fire_on.png" width="32">火灾传感器：
 * **STATE** *布尔值*-如果为true，则传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
-    *您还可以分配* string *来显示任何文本，例如“楼上的火”
+    *您还可以分配* string *来显示任何文本，例如“楼上火灾”
 * **链接视图属性**直接打开
 
 ### <img src="img/icons/flood_on.png" width="32">洪水传感器：
@@ -346,7 +346,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### <img src="img/icons/alarm_on.png" width="32">报警：
 * **STATE** *布尔值*-如果为true，则传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
-    *您还可以分配* string *来显示任何文本，例如“楼上的火”
+    *您还可以分配* string *来显示任何文本，例如“楼上火灾”
 * **CONTROL_MODE** *值列表*-选择操作模式，例如“武装”和“撤防”
     *在设备选项中，您可以定义代表撤防的值，因此可以显示代表图标
 
@@ -364,7 +364,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **STATE** *布尔值*-如果设置为true，则程序将启动
 
 ### <img src="img/icons/play.png" width="32">现场：
-* **STATE** *布尔值*-如果场景处于活动状态，则显示。根据场景的配置（虚拟组，设置为false启用或禁用false的值），切换命令将发送true，false，min，0，max或100。有一个选项始终发送true（禁用切换） 。
+* **STATE** *布尔值*-如果场景处于活动状态，则显示。根据场景的配置（虚拟组，启用或禁用false的设置值），切换命令将发送true，false，min，0，max或100。有一个选项始终发送true（禁用切换） 。
 
 ### <img src="img/icons/media_on.png" width="32">媒体播放器/遥控器：
 * **STATE** *字符串*-“播放”，“暂停”或“停止”或*布尔值*-播放为true，停止为false
@@ -374,7 +374,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **TRACK_NUMBER** *数字*-自我说明
 * **PREV，REWIND，PLAY，PAUSE，STOP，FORWARD，NEXT** *布尔值*-如果按下相应的按钮，则设置为true
 * **SHUFFLE，MUTE，PLAY_EVERYWHERE，EJECT，POWER_SWITCH** *boolean* 相应功能的状态
-* **REPEAT** *布尔值*-重复功能的状态或* string *-可以通过coressponding选项定义3种状态：off值，all-all和repeat-one
+* **REPEAT** *布尔值*-表示重复功能的状态或* string *-可以通过coressponding选项定义3种状态：off值，all-all和repeat-one
 * **DURATION，ELAPSED** *数字*-实际标题的持续时间和经过的时间-用于显示搜索栏
 * **VOLUME** *数字*-用于音量滑块
 * **源，播放列表**：*值列表*-显示选择菜单以从播放列表中选择来源或标题
@@ -401,7 +401,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ＃＃ 故障排除
-*确保您已满足本页顶部的“您需要...”部分
+*确保您已满足此页面顶部的“您需要...”部分
 *如果更新后某些功能无法正常工作，请尝试以下步骤：
     *开始上传适配器：
 
@@ -412,7 +412,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 *重新启动ioBroker
 
 ###如果您还有其他问题，请提供浏览器的调试控制台中的日志以及错误行的屏幕截图：
-*使用已打开浏览器的调试控制台启动iQonrol（通常需要按<kbd>F12</kbd>才能打开它）
+*在浏览器打开的调试控制台中启动iQonrol（通常需要按<kbd>F12</kbd>来打开它）
 *切换到控制台窗口并重现该错误
 *在控制台窗口中查找消息
 *出现错误时，列出导致错误的行号
@@ -423,6 +423,20 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### dev
+* (sbormann) Enhanced TileActiveConditions to even work, if not STATE is definded.
+* (sbormann) Enhanced BACKGROUND_HTML noch to flicker, when changing value.
+* (sbormann) Added option to rename section 'Additional Buttons' for remote.
+* (sbormann) Arrays like REMOTE_ADDITIONAL_BUTTONS are now sortable.
+* (sbormann) Enhanced handling for BACKGROUND_URL/HTML.
+* (sbormann) Added options to change caption of UP, STOP and DOWN for blinds.
+
+### 1.2.1 (2020-28-30)
+* (sbormann) If STATE in Dialog contains (valid) HTML-Code, it is now rendered as HTML and - if state is not readonly - a HTML-Editor is shown.
+* (sbormann) Added option to disable zoom-effect on mouse-over (for HTML-Widgets the zoom-effect may be disturbing).
+* (sbormann) Remote is only shown, if one of the remote datapoints are defined.
+* (sbormann) Added polyfil for older browsers for Array.from in shuffle.js.
 
 ### 1.2.0 (2020-28-29)
 * (sbormann) Introducing different tile sizes, they can be configured in options for active and inactive state.

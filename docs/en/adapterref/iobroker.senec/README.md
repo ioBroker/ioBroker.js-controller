@@ -527,6 +527,19 @@ If a state is not documented (or only partially documented) and you know what it
    *Read-only text, which designates the serial number of wallbox [0..3].*
 
 ## Changelog
+### 1.0.10 (NoBl, smartpran)
+* DateType objects are stored as date again
+* changed WIZARD.SETUP_POWER_RULE unit to '%'
+* changed name of STATISTIC.STAT_SUM_E_PU to "STAT_SUM Energy PowerUnit"
+* changed name of STATISTIC.STAT_SUM_E_WB to "STAT_SUM Energy Wallbox"
+* changed name of STATISTIC.LIVE_WB_ENERGY to "Live Wallbox Energy"
+* changed name of STATISTIC.LIVE_PU_ENERGY to "Live PowerUnit Energy"
+* changed name of WIZARD.PWRCFG_PEAK_PV_POWER to "Configured Peak PV Power"
+* enforcing conversion of number values to Number(). Otherwise they are created as String in ioBroker (manually delete existing datapoints in ioBroker to change them!)
+* fixed representation for temp values (off by *10)
+* json delivers a non-value (apparently an error message produced by senec itself). Ignoring that.
+* Added variable mpp_int to high priority and changed unit it. (smartpran)
+
 ### 1.0.9 (NoBl)
 * IP types are shown as IP again.
 * added datapoints for FACTORY along with more state descriptions for Battery Type, Country and System Type.

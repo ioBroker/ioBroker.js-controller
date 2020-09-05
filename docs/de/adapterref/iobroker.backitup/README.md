@@ -185,6 +185,19 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 1.6.4 (04.09.2020)
+* (simatec) small fixes for sentry.io
+* (simatec) small fixes on zigbee backup
+
+
+### 1.6.3 (01.09.2020)
+* (simatec) dependencies for googleapis updated
+* (simatec) dependencies for dropbox-v2-api updated
+* (simatec) devdependencies updated
+
+### 1.6.2 (31.08.2020)
+* (simatec) added whatsapp-cmb support for notifications
+
 ### 1.6.1 (24.08.2020)
 * (Apollon77) several fixes and optimizations
 

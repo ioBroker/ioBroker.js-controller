@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: qWPQT0vodXCE5ks4qi6nL4Cxox5g3exb8CS3AJFQwKc=
+hash: 6+MZ+ZAib0BWJ2F+DnGtVmr8FLgCxkLrLloNzXXdu1g=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -205,10 +205,10 @@ Fast alle Rollen haben einen **STATE** - und / oder einen **LEVEL** - Status. In
 
 Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der ZUSTAND eines Schalters in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umgeschaltet werden zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
 
-### Weitere allgemeine Zustände:
+#### Weitere allgemeine Zustände:
 * **ADDITIONAL_INFO** *array* - Ein Array von Datenpunkten, das am unteren Rand des Info-Dialogs angezeigt wird
 * **URL** CONSTANT *string* - Diese URL wird als Iframe im Dialogfeld geöffnet
-* **HTML** CONSTANT *string* - Dieses Markup wird im iframe angezeigt, wenn kein URL-Datenpunkt angegeben ist
+* **HTML** CONSTANT *string* - Dieses Markup wird im Iframe angezeigt, wenn kein URL-Datenpunkt angegeben ist
 * **BACKGROUND_URL** CONSTANT *string* - Diese URL wird als Hintergrund der Gerätekachel angezeigt. Es wird über den Hintergrundbildern platziert, aber Sie können es so konfigurieren, dass es ausgeblendet wird, wenn die Kachel aktiv oder inaktiv ist.
 * **BACKGROUND_HTML** CONSTANT *string* - Dieses Markup wird als Hintergrund der Gerätekachel angezeigt, wenn kein BACKGROUND_URL angegeben ist
 * **BATTERIE** *Boolescher Wert* - wenn wahr oder *Zahl* - wenn weniger als 10%, wird ein kleines Symbol für leere Batterie angezeigt
@@ -243,7 +243,7 @@ Optional können Sie folgende Zustände definieren:
   * **SÄTTIGUNG** * Zahl * - Lichtsättigung (von Weiß zu reiner Farbe)
   * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (wenn Sie einen LEVEL-Status und keine weißen LEDs haben, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Für weiße LEDs:
-  * **CT** * Nummer * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
+  * **CT** * Zahl * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
   * **WHITE_BRIGHTNESS** * number * - die Helligkeit der weißen LEDs (wenn Sie einen LEVEL-Status und keine farbigen LEDs haben, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Alternative Farbräume:
   * **ALTERNATIVE_COLORSPACE_VALUE** * string * oder * number * (abhängig vom gewählten Farbraum) - der Wert des alternativen Farbraums
@@ -266,7 +266,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 
 * Effektmodus:
   * **EFFECT** * Werteliste * - der zu spielende Effekt
-* **EFFECT_NEXT** *boolean* - Wenn auf true gesetzt, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen).
+* **EFFECT_NEXT** *boolean* - Wenn dieser Wert auf true gesetzt ist, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen).
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - Wenn dieser Wert auf true gesetzt ist, wird der Effekt beschleunigt / verringert
 * Verschiedenes:
   * **POWER** * number * - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
@@ -282,7 +282,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 * **FEUCHTIGKEIT** *Zahl* - Die tatsächliche Luftfeuchtigkeit wird in der oberen rechten Ecke klein angezeigt
 * **CONTROL_MODE** *Werteliste* - Anzeige und Einstellung des Modus des Thermostats
 * **WINDOW_OPENING_REPORTING** *boolean* - Wenn true, wird ein kleines geöffnetes Fenster angezeigt
-* **VALVE_STATES** Array von Namen und Nummern - Zeigt die Öffnung der Ventile an, die dem Thermostat zugeordnet sind
+* **VALVE_STATES** Array mit Namen und Nummern - Zeigt die Öffnung der Ventile an, die dem Thermostat zugeordnet sind
 
 ### <img src="img/icons/radiator.png" width="32"> Homematischer Thermostat:
 Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
@@ -326,7 +326,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ### <img src="img/icons/blind_middle.png" width="32"> Blind:
 * **LEVEL** *number* - Höhe des Blinden in Prozent
 * **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein. Die Werte für Stop, Up, Down und Unknown können konfiguriert werden
-* **STOP** *boolean* - wird auf true gesetzt, wenn die Stop-Taste gedrückt wird
+* **STOP** *boolean* - wird auf true gesetzt, wenn die Stopptaste gedrückt wird
 * **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Auf- / Ab-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie einen Wert über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Auf- / Ab-Taste gedrückt wird
 * **FAVORITE_POSITION** *boolean* - kann verwendet werden, um eine Lieblingsposition abzurufen. Wenn die Favoritentaste (Schaltflächenbeschriftung kann in den Geräteeinstellungen konfiguriert werden) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie einen Wert über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird
 * **SLATS_LEVEL** *number* - Position der Lamellen in Prozent
@@ -348,7 +348,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
     * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'manipuliert' anzuzeigen.
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "Feuer im Obergeschoss" anzuzeigen.
 * **CONTROL_MODE** *Werteliste* - Betriebsmodus wie "Bewaffnet" und "Entwaffnet" auswählen
-    * In den Geräteoptionen können Sie den Wert definieren, der die Deaktivierung darstellt, sodass das Darstellungssymbol angezeigt werden kann
+    * In den Geräteoptionen können Sie den Wert definieren, der deaktiviert darstellt, sodass das Symbol für die Darstellung angezeigt werden kann
 
 ### <img src="img/icons/battery_full.png" width="32"> Batterie:
 * **STATE** *number* - Batteriestand in Prozent
@@ -370,7 +370,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **STATE** *string* - "play", "pause" oder "stop" oder *boolean* - true für play, false für stop
     * In den Geräteoptionen können Sie den Wert definieren, der Wiedergabe, Pause und Stopp darstellt
 * **COVER_URL** *string* - URL zum Titelbild
-* **KÜNSTLER, ALBUM, TITEL** *string* - selbsterklärend
+* **KÜNSTLER, ALBUM, TITEL** *Zeichenfolge* - selbsterklärend
 * **TRACK_NUMBER** *Nummer* - selbsterklärend
 * **PREV, REWIND, PLAY, PAUSE, STOP, FORWARD, NEXT** *boolean* - wird auf true gesetzt, wenn die entsprechende Taste gedrückt wird
 * **SHUFFLE, MUTE, PLAY_EVERYWHERE, EJECT, POWER_SWITCH** *Boolescher* - Status für die entsprechende Funktion
@@ -423,6 +423,20 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ****
 
 ## Changelog
+
+### dev
+* (sbormann) Enhanced TileActiveConditions to even work, if not STATE is definded.
+* (sbormann) Enhanced BACKGROUND_HTML noch to flicker, when changing value.
+* (sbormann) Added option to rename section 'Additional Buttons' for remote.
+* (sbormann) Arrays like REMOTE_ADDITIONAL_BUTTONS are now sortable.
+* (sbormann) Enhanced handling for BACKGROUND_URL/HTML.
+* (sbormann) Added options to change caption of UP, STOP and DOWN for blinds.
+
+### 1.2.1 (2020-28-30)
+* (sbormann) If STATE in Dialog contains (valid) HTML-Code, it is now rendered as HTML and - if state is not readonly - a HTML-Editor is shown.
+* (sbormann) Added option to disable zoom-effect on mouse-over (for HTML-Widgets the zoom-effect may be disturbing).
+* (sbormann) Remote is only shown, if one of the remote datapoints are defined.
+* (sbormann) Added polyfil for older browsers for Array.from in shuffle.js.
 
 ### 1.2.0 (2020-28-29)
 * (sbormann) Introducing different tile sizes, they can be configured in options for active and inactive state.

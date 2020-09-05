@@ -4,13 +4,13 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
+hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ---
 ![logo](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
 # HomeMatic ReGaHSS
 ## Homematic
-> Homematic is the Smart Home System from eQ-3, which enables the comprehensive control of a wide variety of functions using scenarios (from simple to complex) in the house or apartment.
+> Homematic is the smart home system from eQ-3, which enables the comprehensive control of a wide variety of functions using scenarios (from simple to complex) in the house or apartment.
 
 > The devices include products for light, roller shutter and heating control, hazard detectors, safety sensors and products for measuring weather data. The radio communication simplifies retrofitting. Wire bus components can be used in new buildings.
 
@@ -30,7 +30,7 @@ One instance of this adapter can manage up to 5 different instances of the Homem
 - hs485d (Wired) (for wired bus components)
 - CuxD (additional software to provide a universal interface)
 - Homematic IP (IP-supported components)
-- Virtual Devices
+- Virtual devices
 
 ### Requirements before installation
 - Homematic Gateway (CCU / CCU2 / CCU3…) *or*
@@ -61,7 +61,7 @@ The required services are then activated and linked to the appropriate HM-RPC in
 
 Polling
 
-If activated, the RegaHSS data is regularly polled by the CCU, based on the seconds set in the Intervals field. The interval should not be set too low, as too frequent polling can lead to the CCU crashing.
+If activated, the RegaHSS data is regularly queried by the CCU, based on the seconds set in the Intervals field. The interval should not be set too low, as too frequent polling can lead to the CCU crashing.
 
 Trigger
 
@@ -77,7 +77,7 @@ Here the user can specify which information is to be transferred from the CCU to
 - Names: Activates the transfer of the plain text names of the data points from the CCU
 - Favorites: Activates the transfer and listing of favorites
 - Rooms: Activates the takeover of the rooms and a listing of them
-- Trades: Activates the transfer of trades and a listing of them
+- Trades: Activates the transfer of trades and a list of them
 
 ### Additional settings area
 Here the user can decide whether https (encrypted and tap-proof connection) should be used. If activated, the user name and the associated password are required

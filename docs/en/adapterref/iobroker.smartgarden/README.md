@@ -97,6 +97,7 @@ at least one [GARDENA smart device](#supported-devices).
      * [For SERVICE_POWER_SOCKET](#for-service_power_socket)
      * [For SERVICE_SENSOR](#for-service_sensor)
      * [For SERVICE_COMMON](#for-service_common)
+  * [Rate Limits](#rate-limits)
   * [Irrigation not allowed while mowing](#Irrigation-not-allowed-while-mowing)
      * [What's the problem?](#whats-the-problem)
 	 * [What is being done?](#what-is-being-done)
@@ -104,12 +105,10 @@ at least one [GARDENA smart device](#supported-devices).
   * [Wishes for data points](#Wishes-for-data-points)
   * [Note](#note)
   * [Changelog](#changelog)
+     * [1.0.2](#102)
      * [1.0.1](#101)
      * [1.0.0](#100)
-     * [0.6.0](#060)
-     * [0.5.1](#051)
-     * [0.5.0](#050)
-     * [previous versions](#042)
+     * [previous versions](#060)
   * [Credits](#credits)
   * [License](#license)  
   
@@ -160,6 +159,7 @@ An description how to install from GitHub is available
       | Parameter | Description |
       | - | - |
       | Loglevel | Loglevel: 0 = no log, 1 = some logs, 2 = some more logs, 3 = all logs; default: 0|
+	  | monitoring Rate Limits | use monitoring for the rate limits of Gardena smart system API; switch on/off; default: off|	
       | ping frequence | Frequence for sending Ping's to Gardena Webservice (in seconds); default: 150|
       | auth factor  | Factor for validity of authentication token; default: 1.001 |
       | Auth-URL| Authentication host URL; default: [https://api.authentication.husqvarnagroup.dev](https://api.authentication.husqvarnagroup.dev)|
@@ -444,6 +444,62 @@ The `SERVICE_COMMON` provides general information about the device.
 Description is integrated into description of other SERVICE_... where 
 necessary.
 
+## Rate Limits
+
+There are some limits you shoud be aware of. 
+Please see chapter *Rate Limits* in 
+[*README*](https://developer.husqvarnagroup.cloud/apis/GARDENA+smart+system+API#/readme)
+of GARDENA smart system API description.
+
+To help you to see if you hit those rate limits you can switch on monitoring in 
+instance configuration with parameter *monitoring Rate Limits*.
+
+If you've enabled monitoring state `info.RateLimitCounter` gets actualized with every request. 
+This state saves a data structure with the number of requests per month, day, hour and for 
+the last 30 and 31 days.
+
+The structure is in [JSON](https://en.wikipedia.org/wiki/JSON) and looks like
+
+```
+{
+  "2020": {                          <<< year
+    "2020-08": {                     <<< month
+      "count": 21,                   <<< number of requests for month
+      "2020-08-27": {                <<< day
+        "11": {                      <<< hour
+          "count": 3                 <<< number of requests for hour
+        },
+        "12": {                      <<< hour   
+          "count": 13                <<< number of requests for hour
+        },
+        "count": 16                  <<< number of requests for day
+      },
+      "2020-08-28": {                <<< day
+        "14": {                      <<< hour
+          "count": 5                 <<< number of requests for hour 
+        },
+        "count": 5                   <<< number of requests for day
+      }
+    }
+  },
+     ...
+  "last30days": {                     
+    "count": 2021                    <<< number of requests in last 30 days
+  },
+  "last31days": {
+    "count": 2098                    <<< number of requests in last 31 days
+  }
+}
+```
+
+**Note:** 
+  - That hour is hour of time in UTC
+  - That the actual number of requests may be higher. Especially as 
+  long as the respective period is not fully covered by the monitoring.
+  - That this structure becomes very large and is never deleted by the 
+  adapter. So please delete it manually from time to time or switch off 
+  monitoring - at least if you don't have any issues with the rate limits.
+
 
 ## Irrigation not allowed while mowing
 
@@ -542,13 +598,19 @@ GARDENA or Husqvarna.
 
 
 ## Changelog
+### 1.0.2
+* (jpgorganizer)
+  - monitoring rate limits, see chapter [Rate Limits](#rate-limits) and discussion at 
+  [Issue 18](https://github.com/jpgorganizer/ioBroker.smartgarden/issues/18)
+
+
 ### 1.0.1
 * (jpgorganizer)
   - better reconnection to GARDENA smart system server in case of your internet connection was broken
   - textual changes in io-package.json
   - improved README and FAQ
   
-  ### 1.0.0
+### 1.0.0
 * (jpgorganizer)
   - code rework, no functional change expected
   - support `PAUSE` for SERVICE_VALVE, SERVICE_POWER_SOCKET. e.g. 
@@ -675,4 +737,4 @@ Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 Based on a work at https://github.com/jpgorganizer/ioBroker.smartgarden. 
  
 
-<!--- SVN: $Rev: 2222 $ $Date: 2020-08-17 11:20:02 +0200 (Mo, 17 Aug 2020) $ --->
+<!--- SVN: $Rev: 2249 $ $Date: 2020-08-30 12:10:26 +0200 (So, 30 Aug 2020) $ --->

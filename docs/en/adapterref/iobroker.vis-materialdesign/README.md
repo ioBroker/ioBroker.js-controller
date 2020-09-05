@@ -5448,6 +5448,10 @@ ical2CalendarWidget();
 
 ### __WORK IN PROGRESS__
 * (Scrounger): Line History Chart: Breaking Changes !!! aggregate (display) method for every dataset configurable, see documentation for detailed infos!
+* (Scrounger): bug fix for compatibility issues with other widget adapters
+* (Scrounger): Chechbox Widget: option for border and hover color added
+* (Scrounger): Chechbox Widget: ripple effect bug fix
+* (Scrounger): Buttons Vertical: text alignment option added
 
 ### 0.3.19 (2020-07-18)
 * (Scrounger): Icon Button Widget: background color option for lock icon added

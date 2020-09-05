@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nanoleaf-lightpanels/README.md
 title: ioBroker.nanoleaf-lightpanels适配器
-hash: /gMSjR122XgKD81je0cHoSR6U6NFssNBgMO2sZJDQc0=
+hash: FlaVm2XCGKtNst7aFNLgDhkCB6NwfjnVTTD7oyQPlQM=
 ---
 ![商标](../../../en/adapterref/iobroker.nanoleaf-lightpanels/admin/nanoleaf-lightpanels.png)
 
@@ -19,19 +19,18 @@ hash: /gMSjR122XgKD81je0cHoSR6U6NFssNBgMO2sZJDQc0=
 这是一个ioBroker适配器，用于通过nanoleaf OpenAPI控制nanoleaf光面板（以前称为nanoleaf Aurora）或nanoleaf Canvas。
 
 ##连接到nanoleaf灯光面板/画布控制器：
-1.在适配器设置中，您必须设置nanoleaf Controller的IP地址和端口。 nanoleaf OpenAPI需要授权令牌才能授予对REST-API的访问权限。如果已经拥有一个令牌，则可以在此处输入令牌，然后跳过下一步。
+1.在适配器设置中，您必须设置nanoleaf Controller的IP地址或主机名和端口。您可以使用搜索功能来发现网络中的所有纳米叶设备。
+2. nanoleaf OpenAPI需要授权令牌才能授予对OpenAPI的访问权限。如果已经拥有一个令牌，则可以在此处输入令牌，然后跳过下一步。
+3.如果没有授权令牌，则需要从nanoleaf OpenAPI请求它。
 
-   您可以使用管理页面上的搜索设备功能来检测您的纳米叶设备。
-
-2.如果您没有授权令牌，则需要从nanoleaf OpenAPI请求它。
-
-为此，通过按住设备上的电源按钮5到7秒钟，直到LED交替闪烁，将nanoleaf Controller设置为配对模式。
+为此，通过按住设备上的电源按钮5-7秒钟，直到LED交替闪烁，将nanoleaf Controller设置为配对模式。
 然后在30秒内单击“获取授权令牌”按钮（配对模式在30秒后停止）。适配器必须正在运行！如果成功，则应在“身份验证令牌”字段中看到授权令牌。如果发生错误，则会弹出带有错误消息的窗口（详细信息可以在日志中看到）。
 
-3.保存设置。
-4.玩得开心！
+4.保存设置。
+5.玩得开心！
 
 由于Light Panel固件版本> 3.1.0和Canvas固件版本> 1.1.0，因此服务器发送事件（SSE）可以用于直接状态更新。对于Canvas设备，支持触摸事件。
+请注意：要检测nanoleaf设备是否仍然存在，每60秒从nanoleaf设备发送一次SSDP通知消息。请确保您可以在端口1900上接收UDP多播消息（检查防火墙和路由）。否则，您将在适配器中收到有关连接丢失的错误消息。
 状态更新轮询间隔的设置仅影响使用轮询进行状态更新的固件版本较低的设备。
 
 ## Alexa
@@ -40,7 +39,7 @@ hash: /gMSjR122XgKD81je0cHoSR6U6NFssNBgMO2sZJDQc0=
 您必须设置数据点
 
 *状态（用于电源开/关）
-*色相（用于颜色）
+*色调（用于颜色）
 *饱和度（用于颜色）
 *亮度（用于彩色）
 * colorTemp（用于色温）
@@ -50,13 +49,20 @@ hash: /gMSjR122XgKD81je0cHoSR6U6NFssNBgMO2sZJDQc0=
 ## IoBroker可视化
 可以在ioBroker可视化中通过使用基本小部件（例如“开/关单选按钮”）或用于控制功率状态，亮度，色相，饱和度和色温状态的滑块来控制ioafroker可视化中的nanoleaf光面板/画布。
 
-对于效果，您可以使用“选择ValueList”小部件将其用作下拉列表，然后将effectsList状态映射到小部件的value和text属性（类型：“ {nanoleaf-lightpanels.0.LightPanels.effectsList}” ->大括号很重要！）
+对于效果，可以使用“选择ValueList”小部件将其用作下拉列表，然后将effectsList状态映射到小部件的value和text属性（类型：“ {nanoleaf-lightpanels.0.LightPanels.effectsList}” ->大括号很重要！）
 
 要控制和显示颜色，您必须安装颜色选择器样式的小部件。您可以将RGB ID映射到colorRGB状态，也可以使用三个HSV状态。
 
 您可以使用在github上的/ vis子文件夹中找到的nanoleaf vis演示项目。
 
 ## Changelog
+
+### 1.0.3 (2020-08-30)
+* (daniel_2k) fixed: search nanoleaf devices does not work on clean install of adapter
+* (daniel_2k) new: added update of effectsList via SSE
+* (daniel_2k) new: ability to disable of using SSE (for nanoleaf devices that stops sending ssdp:alive messages)
+* (daniel_2k) changed: display nanoleaf device name in admin search result list
+* (daniel_2k) changed: using forked "node-upnp-ssdp" for fixing interface binding
 
 ### 1.0.2 (2020-07-06)
 * (daniel_2k) fixed: detection of ssdp:alive notify message for Canvas (fix disconnect/connect issue)
@@ -139,4 +145,4 @@ hash: /gMSjR122XgKD81je0cHoSR6U6NFssNBgMO2sZJDQc0=
 
 ## License
 The MIT License (MIT)
-Copyright (c) 2019 daniel_2k <daniel_2k@outlook.com>
+Copyright (c) 2020 daniel_2k <daniel_2k@outlook.com>

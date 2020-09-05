@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartgarden/README.md
 title: ioBroker.smartgarden
-hash: wVJ/PkrXzfsgkReI3Ht0ofjEMzknM94tm/BhhARUbQc=
+hash: oqdvuP7M8rFY8Ptbhax1tbUnwZyQ6Km2vJ6Be/UwWdc=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartgarden/admin/smartgarden.png)
 
@@ -79,8 +79,9 @@ Und natürlich benötigen Sie eine laufende ioBroker-Installation und sollten mi
      * [Für SERVICE_VALVE_SET] (# for-service_valve_set)
      * [Für SERVICE_VALVE] (# for-service_valve)
      * [Für SERVICE_POWER_SOCKET] (# for-service_power_socket)
-     * [Für SERVICE_SENSOR] (# für-service_sensor)
+     * [Für SERVICE_SENSOR] (# for-service_sensor)
      * [Für SERVICE_COMMON] (# for-service_common)
+  * [Ratenlimits] (# Ratenlimits)
   * [Bewässerung beim Mähen nicht erlaubt] (# Bewässerung beim Mähen nicht erlaubt)
      * [Was ist das Problem?] (# Was ist das Problem)
 * [Was wird getan?] (# Was wird getan)
@@ -88,12 +89,10 @@ Und natürlich benötigen Sie eine laufende ioBroker-Installation und sollten mi
   * [Wünsche für Datenpunkte] (# Wünsche für Datenpunkte)
   * [Anmerkung] (# Anmerkung)
   * [Changelog] (# changelog)
+     * [1.0.2] (# 102)
      * [1.0.1] (# 101)
      * [1.0.0] (# 100)
-     * [0.6.0] (# 060)
-     * [0.5.1] (# 051)
-     * [0.5.0] (# 050)
-     * [frühere Versionen] (# 042)
+     * [frühere Versionen] (# 060)
   * [Credits] (# Credits)
   * [Lizenz] (# Lizenz)
 
@@ -136,6 +135,7 @@ Bitte beachten Sie, dass Kennwort und Anwendungsschlüssel im Adapter codiert un
       | Parameter | Beschreibung |
       | - | - |
       | Loglevel | Loglevel: 0 = kein Protokoll, 1 = einige Protokolle, 2 = einige weitere Protokolle, 3 = alle Protokolle; Standard: 0 |
+| Überwachungsratengrenzen | Verwenden Sie die Überwachung für die Ratengrenzen der Gardena Smart System API. Ein-/ Ausschalten; Standard: Aus |
       | Ping-Frequenz | Häufigkeit für das Senden von Pings an Gardena Webservice (in Sekunden); Standard: 150 |
       | Auth-Faktor | Faktor für die Gültigkeit des Authentifizierungstokens; Standard: 1.001 |
       | Auth-URL | URL des Authentifizierungshosts; Standard: [https://api.authentication.husqvarnagroup.dev](https://api.authentication.husqvarnagroup.dev) |
@@ -252,9 +252,9 @@ Um einen Wert vorherzusagen, wird eine Historie der letzten Lade- und Mähzyklen
 Diese Funktion kann in der Konfiguration der Adapterinstanz zusammen mit der Anzahl der gespeicherten Lade- und Mähzyklen in der Historie ein- und ausgeschaltet werden.
 
 Um diese Funktion in Betrieb zu nehmen, **stellen Sie bitte sicher, dass mindestens ein Zyklus von Mäh- und Ladeläufen fehlerfrei ist (z. B. nicht manuell unterbrochen oder Sensorsteuerung).** Es ist besser, wenn mindestens drei Läufe fehlerfrei ausgeführt werden.
-Diese Funktion versucht, den Normalfall zu erkennen und geht zunächst davon aus, dass der nächste Prozess ein Normalfall ist. Wenn dies fehlerhaft ist, wird dieser fehlerhafte Lauf als normaler Fall angesehen und die Läufe, die dann normal durchlaufen werden, als Fehlerfall. Wenn während des Laufs ein Fehler auftritt, stoppen Sie bitte den Adapter, löschen Sie die beiden Datenpunkte und starten Sie erneut.
+Diese Funktion versucht, den Normalfall zu erkennen und geht zunächst davon aus, dass der nächste Prozess ein Normalfall ist. Wenn dies fehlerhaft ist, wird dieser fehlerhafte Lauf als Normalfall angesehen und die Läufe, die dann normal durchlaufen werden, als Fehlerfall. Wenn während des Laufs ein Fehler auftritt, stoppen Sie bitte den Adapter, löschen Sie die beiden Datenpunkte und starten Sie erneut.
 
-Weitere Informationen zu allgemeinen Prognosemechanismen finden Sie in [PROGNOSE.md](FORECAST.md).
+Weitere Informationen zu allgemeinen Prognosemechanismen finden Sie unter [PROGNOSE.md](FORECAST.md).
 
   **Anmerkungen:**
 
@@ -290,7 +290,7 @@ Verwenden Sie zur Steuerung des Geräts den Datenpunkt
 
   Ändern Sie diesen Datenpunkt, um alle Ventile zu stoppen.
 
-  - Um alle Ventile sofort zu stoppen, verwenden Sie den String `STOP_UNTIL_NEXT_TASK`
+  - Um alle Ventile sofort zu stoppen, verwenden Sie die Zeichenfolge `STOP_UNTIL_NEXT_TASK`
 
 ** Hinweis: ** Zeigen Sie den Wert dieses Datenpunkts in Ihrer Anwendung nicht an, da der Wert größtenteils undefiniert ist. Darüber hinaus kann dieser Datenpunkt nicht als Auslöser für Ihre eigenen Aktionen dienen, da er nach dem Auslösen des Befehls nur auf den Wert *null* gesetzt wird.
 
@@ -394,9 +394,63 @@ Alle Datenpunkte dienen nur zur Überwachung und Information.
 Die `SERVICE_COMMON` enthalten allgemeine Informationen zum Gerät.
 Die Beschreibung wird bei Bedarf in die Beschreibung anderer DIENSTLEISTUNGEN integriert.
 
+## Ratenlimits
+Es gibt einige Grenzen, die Sie beachten sollten.
+Weitere Informationen finden Sie in Kapitel *Ratenlimits* in [*LIESMICH*](https://developer.husqvarnagroup.cloud/apis/GARDENA+smart+system+API#/readme) der GARDENA Smart System API-Beschreibung.
+
+Um festzustellen, ob Sie diese Ratenlimits erreicht haben, können Sie die Überwachung in der Instanzkonfiguration mit dem Parameter *Monitoring Rate Limits* aktivieren.
+
+Wenn Sie den Überwachungsstatus aktiviert haben, wird `info.RateLimitCounter` bei jeder Anforderung aktualisiert.
+Dieser Status speichert eine Datenstruktur mit der Anzahl der Anforderungen pro Monat, Tag, Stunde und für die letzten 30 und 31 Tage.
+
+Die Struktur befindet sich in [JSON](https://en.wikipedia.org/wiki/JSON) und sieht aus wie
+
+```
+{
+  "2020": {                          <<< year
+    "2020-08": {                     <<< month
+      "count": 21,                   <<< number of requests for month
+      "2020-08-27": {                <<< day
+        "11": {                      <<< hour
+          "count": 3                 <<< number of requests for hour
+        },
+        "12": {                      <<< hour
+          "count": 13                <<< number of requests for hour
+        },
+        "count": 16                  <<< number of requests for day
+      },
+      "2020-08-28": {                <<< day
+        "14": {                      <<< hour
+          "count": 5                 <<< number of requests for hour
+        },
+        "count": 5                   <<< number of requests for day
+      }
+    }
+  },
+     ...
+  "last30days": {
+    "count": 2021                    <<< number of requests in last 30 days
+  },
+  "last31days": {
+    "count": 2098                    <<< number of requests in last 31 days
+  }
+}
+```
+
+**Hinweis:**
+
+  - Diese Stunde ist eine Stunde Zeit in UTC
+  - Dass die tatsächliche Anzahl der Anfragen höher sein kann. Besonders als
+
+  solange der jeweilige Zeitraum nicht vollständig von der Überwachung abgedeckt wird.
+
+  - Dass diese Struktur sehr groß wird und von der nie gelöscht wird
+
+Adapter. Löschen Sie es daher von Zeit zu Zeit manuell oder schalten Sie die Überwachung aus - zumindest, wenn Sie keine Probleme mit den Ratenbeschränkungen haben.
+
 ## Bewässerung beim Mähen nicht erlaubt
 ### Was ist das Problem?
-Wenn Sie sowohl einen Mäher als auch ein Bewässerungssystem mit aufklappbaren Sprinklern haben, besteht die Gefahr, dass Ihr Mäher während der Bewässerung auf einen aufklappbaren Sprinkler stößt und diesen beschädigt oder selbst beschädigt.
+Wenn Sie sowohl einen Mäher als auch ein Bewässerungssystem mit Aufklappsprinklern haben, besteht die Gefahr, dass Ihr Mäher während der Bewässerung auf einen Aufklappsprinkler stößt und diesen beschädigt oder selbst beschädigt.
 
 Um dies zu verhindern, sollte das Bewässerungssystem oder besser einzelne Ventile ausgeschaltet werden, wenn der Mäher mäht.
 
@@ -423,7 +477,7 @@ Sie werden zur Konfiguration und zum Melden von Warnungen verwendet.
 
   `smartgarden.0.LOCATION_xxxxxxxx-xxxxxx-xxxxxx-xxxxxx-xxxxxxxxxxxxxx.DEVICE_xxxxxxxx-xxxxxx-xxxxxx-xxxxxx-xxxxxxxxxxxxxx.SERVICE_MOWER_xxxxxxxx-xxxxxx-xxxxxx-xxxxxxxxxxxxxxxxxxxxx`
 
-Sie können diese Mäher-ID von der Registerkarte Objekte von ioBroker kopieren (siehe roter Pfeil im folgenden Bild).
+Sie können diese Mäher-ID von der Registerkarte Objekte von ioBroker kopieren (siehe roter Pfeil in der folgenden Abbildung).
 
   ![Mäher ID](../../../en/adapterref/iobroker.smartgarden/mowerid.jpg)
 
@@ -447,7 +501,7 @@ Das heißt: Wenn eine Konfliktsituation vorliegt und Sie `irrigationWhileMowing_
 ### Grundlegendes Verhalten - WARNUNG
 Diese Funktion kann nicht verhindern, dass sich ein Ventil öffnet, während der Mäher mäht. Dies kann z.B. manuell über die GARDENA App oder automatisch über einen Zeitplan.
 
-Diese Funktion kann das Ventil nur im Konfliktfall so schnell wie möglich schließen. Und ein Konflikt kann auch nicht erkannt werden.
+Diese Funktion kann das Ventil im Konfliktfall nur so schnell wie möglich schließen. Und ein Konflikt kann auch nicht erkannt werden.
 So kann es passieren, dass Wasser durchgelassen wird.
 **Z.B. Es kann nicht verhindert werden, dass sich die Aufklappsprinkler ausfahren und der Mäher auf die Aufklappsprinkler **trifft, aber die Wahrscheinlichkeit, dass dies geschieht, wurde minimiert.
 ** Es liegt also an Ihrer Bewerbung, sicherzustellen, dass dieser Konflikt niemals auftritt.**
@@ -462,13 +516,19 @@ Dies ist ein privates Projekt. Ich bin nicht mit GARDENA oder Husqvarna verbunde
 smartgarden logo: http://www.freepik.com Entworfen von Freepik
 
 ## Changelog
+### 1.0.2
+* (jpgorganizer)
+  - monitoring rate limits, see chapter [Rate Limits](#rate-limits) and discussion at 
+  [Issue 18](https://github.com/jpgorganizer/ioBroker.smartgarden/issues/18)
+
+
 ### 1.0.1
 * (jpgorganizer)
   - better reconnection to GARDENA smart system server in case of your internet connection was broken
   - textual changes in io-package.json
   - improved README and FAQ
   
-  ### 1.0.0
+### 1.0.0
 * (jpgorganizer)
   - code rework, no functional change expected
   - support `PAUSE` for SERVICE_VALVE, SERVICE_POWER_SOCKET. e.g. 
@@ -590,4 +650,4 @@ Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 Based on a work at https://github.com/jpgorganizer/ioBroker.smartgarden. 
  
 
-<!--- SVN: $Rev: 2222 $ $Date: 2020-08-17 11:20:02 +0200 (Mo, 17 Aug 2020) $ --->
+<!--- SVN: $Rev: 2249 $ $Date: 2020-08-30 12:10:26 +0200 (So, 30 Aug 2020) $ --->

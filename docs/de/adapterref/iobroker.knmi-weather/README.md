@@ -3,22 +3,22 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.knmi-weather/README.md
 title: ioBroker.knmi-Wetter
-hash: KAKKSOXGMiMckWzpmH7ML4qcnA8KUcieYkmQXHc60mA=
+hash: 4K7lhE2g1x8O5srmOl0lvYJjZ3JU/YvYk+pXG7jB20w=
 ---
 ![Logo](../../../en/adapterref/iobroker.knmi-weather/admin/knmi-weather.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.knmi-weather.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.knmi-weather.svg)
-![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/knmi-weather-installed.svg)
+![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/knmi-weather-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/knmi-weather-stable.svg)
-![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/iobroker.knmi-weather.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/ioBroker.knmi-weather.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.knmi-weather/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.knmi-weather.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.knmi-weather/master.svg)
+![NPM](https://nodei.co/npm/ioBroker.knmi-weather.png?downloads=true)
+![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/iobroker.knmi-weather/master.svg)
 
 # IoBroker.knmi-Wetter
 ## KNMI-Wetterdaten und Alarme für ioBroker
-KNMI bietet eine API, deren Daten alle 10 Minuten basierend auf allen Sensordaten aktualisiert werden, die das Institut sammelt.
+KNMI bietet eine API, deren Daten alle 10 Minuten basierend auf allen vom Institut gesammelten Sensordaten aktualisiert werden.
 Mit diesem Adapter können Sie diese API lesen (Registrierung erforderlich!) Und alle relevanten Werte in benutzerfreundlichen Zuständen speichern, um sie in Benachrichtigungen (Beispiel: Telegramm / Pushover) oder Visialisierungen weiterzuverarbeiten.
 
 Die API kann bis zu 300 Attements pro Tag kostenlos verwendet werden, daher wird der Adapter alle 5 Minuten verschoben.
@@ -33,7 +33,23 @@ Die Standortdaten basieren auf GPS-Koordinaten, die in der Administratorkonfigur
 
 Weitere Informationen finden Sie unter: http://weerlive.nl/index.php Holen Sie sich Ihren kostenlosen API-Schlüssel hier: http://weerlive.nl/delen.php
 
+## Unterstütze mich
+Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/knmi-weather/master/admin/button.png)](http://paypal.me/DutchmanNL)
+
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### 0.2.2-beta.0 (2020-08-30)
+* (DutchmanNL) Updated dependency's
+* (DutchmanNL) Bugfixes
+
+### 0.2.1
+* (DutchmanNL) Updated dependencys
+* (DutchmanNL) Release to stable repository
+* (DutchmanNL) Bugfix : Solve incorrect Latitude/Longtitude configuration
 
 ### 0.2.0
 * (DutchmanNL) improve propper adapter termination instead of guessing by timer

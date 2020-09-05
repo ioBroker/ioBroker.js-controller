@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: QEhAXJRA/UYNyfx4XHAD7k0yKo4Qoti5i1h0rZ1d3+s=
+hash: aFWs9Y6sGOhasVUIPfH/qjZEroCsTxMOuYxWgb7w5C4=
 ---
-![商标](../../../en/adapterref/iobroker.vis-icontwo/admin/i2_150.png)
+![商标](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.vis-icontwo.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.vis-icontwo.svg)
@@ -17,11 +17,11 @@ hash: QEhAXJRA/UYNyfx4XHAD7k0yKo4Qoti5i1h0rZ1d3+s=
 
 ＃ioBroker.vis-icontwo
 ##图标适配器来自ioBroker.vis适配器
-视觉识别工具适配器。
+视觉控制图标适配器。
 
 ![屏幕截图](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_001.png)
 
-艾尔·图标·德·伊迪内格（Ab der Obersten Ebene）在视觉上
+视觉上的Alle Icons图片（日期和日期）
 
 ![帕法德](../../../en/adapterref/iobroker.vis-icontwo/admin/Pfad_001.png)
 
@@ -45,7 +45,7 @@ Z.B.设备（Teilauswahl）
 ---
 
 ##Unterstützung
-Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里恩·乌斯·杰德·斯彭德。
+Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱恩·乌斯·杰德·斯彭德。
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
@@ -54,6 +54,70 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里
 ---
 
 ## Changelog
+
+### 0.16.1
+
+• (skvarel) - Code angepasst
+
+### 0.16.0
+
+• (skvarel) - Neue Hintergründe hinzugefügt (Backgrounds)
+
+### 0.15.0
+
+• (skvarel) - Neue Hintergründe hinzugefügt (Backgrounds)
+
+### 0.14.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Schedules)
+
+### 0.13.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Lights)
+
+### 0.12.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Lights)
+
+### 0.11.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Phones_Tablets)
+
+### 0.10.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.9.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Devices)
+
+### 0.8.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling & Weather)
+
+### 0.7.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.6.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Devices)
+
+### 0.5.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Brands)
+
+### 0.4.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.3.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.2.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Brands)
 
 ### 0.1.11
 

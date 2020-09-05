@@ -10,6 +10,8 @@
 
 [![NPM](https://nodei.co/npm/iobroker.wled.png?downloads=true)](https://nodei.co/npm/iobroker.wled/)
 
+**This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors and new device schemas to me as the developer.** More details see below!
+
 ## wled adapter for ioBroker
 
 A fast and feature-rich implementation of an ESP8266/ESP32 webserver to control NeoPixel (WS2812B, WS2811, SK6812, APA102) LEDs!
@@ -39,20 +41,31 @@ If you like my work, please feel free to provide a personal donation
 (this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
 [![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
+## What is Sentry.io and what is reported to the servers of that company?
+Sentry.io is a service for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
+
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.  
+
 # Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ## __WORK IN PROGRESS__
 -->
 
+### 0.5.4 (2020-09-02)
+* (DutchmanNL) Support WLED 0.10.2, new state definitions implemented
+* (DutchmanNL) Update state definitions
+* (DutchmanNL) Remove log messages for missing states (Sentry report only)
+* (DutchmanNL) Bugfix : 0.5.3 decommissioned, update to 0.5.4 !
+
 ### 0.5.2 (2020-08-29)
 * (DutchmanNL) Bugfix : Add missing Attributes with WLED 0.10.0
 
 ### 0.5.1 (20-04-2020) Avoid writing objects unnecessarily, Sentry implemented
-* (Dutchman) Implement Sentry
-* (Dutchman) Bugfix : Devicename
-* (Dutchman) Bugfix : Warning with JS Controler 3.0.7
-* (Dutchman) Bugfix : Avoid writing objects unnecessarily
+* (DutchmanNL) Implement Sentry
+* (DutchmanNL) Bugfix : Devicename
+* (DutchmanNL) Bugfix : Warning with JS Controler 3.0.7
+* (DutchmanNL) Bugfix : Avoid writing objects unnecessarily
 
 ### 0.5.0 Stable release
 * (DutchmanNL) Added translations

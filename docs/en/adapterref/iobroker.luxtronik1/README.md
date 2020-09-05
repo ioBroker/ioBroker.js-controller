@@ -5,7 +5,7 @@
 ![Number of Installations](http://iobroker.live/badges/luxtronik1-installed.svg) ![Number of Installations](http://iobroker.live/badges/luxtronik1-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.luxtronik1.svg)](https://www.npmjs.com/package/iobroker.luxtronik1)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.luxtronik1.svg)](https://www.npmjs.com/package/iobroker.luxtronik1)
 
-[![NPM](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)](https://nodei.co/npm/iobroker.luxtronik1/) [![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.luxtronik1.svg)](https://greenkeeper.io/)
+[![NPM](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)](https://nodei.co/npm/iobroker.luxtronik1/) 
 
 An ioBroker adapter for Luxtronik 1 - heatpump - controllers (i.e. Alpha Innotec, Siemens...)
 

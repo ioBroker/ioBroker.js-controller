@@ -3,39 +3,65 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: kCIU567p3HLKqgoQcJfrWYd3+DYVVDUQpFAtfqomBRI=
+hash: JCFxQRRFictbXP/nF4emHAdc5kdKfXw2Mi1WhYftWEs=
 ---
-![логотип](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
+![Логотип](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.wled.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.wled.svg)
-![Количество установок (последняя)](http://iobroker.live/badges/wled-installed.svg)
+![Количество установок (последнее)](http://iobroker.live/badges/wled-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/wled-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.wled.svg)
 ![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wled/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.wled.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.wled.png?downloads=true)
 
 # IoBroker.wled
-## Сетевой адаптер для ioBroker
+** Этот адаптер использует службу [Sentry.io](https://sentry.io), чтобы автоматически сообщать мне как разработчику об исключениях, ошибках кода и новых схемах устройств. ** Подробнее см. Ниже!
+
+## Wled адаптер для ioBroker
 Быстрая и многофункциональная реализация веб-сервера ESP8266 / ESP32 для управления светодиодами NeoPixel (WS2812B, WS2811, SK6812, APA102)!
 
-[WLED - Github Project](https://github.com/Aircoookie/WLED) @Aircoookie
+[WLED - проект Github](https://github.com/Aircoookie/WLED), автор: @Aircoookie
 
 ## Инструкции
-Адаптер автоматически пытается найти устройства WLED в вашей сети, используя службы Bonjour.
-Известные проблемы: сети с разделением VLAN в основном не маршрутизируют широковещательный трафик, что означает сбой автоматического определения.
+Адаптер автоматически пытается найти устройства WLED в вашей сети с помощью служб Bonjour.
+Известные проблемы: сети с разделением VLAN в основном не маршрутизируют широковещательный трафик, что означает, что автоматическое обнаружение не будет выполнено.
 
 Не волнуйтесь, в этом случае вы можете добавить устройство вручную по IP-адресу.
 
-1) Убедитесь, что ваше устройство WLED работает и доступно по сети. 2) Установите адаптер. 3) Настройте время интервала для опроса данных и автоматического определения cyclus. 4 - A) Запустите адаптер, устройства должны быть обнаружены автоматически. 4 - B) Если отказывает A используйте кнопку «Добавить устройство» и укажите IP-адрес устройства. 5) Адаптер немедленно отправляет изменения и опрашивает данные каждые x секунд (настраивается).
+1) Убедитесь, что ваше устройство WLED работает и доступно по сети 2) Установите адаптер 3) Настройте интервалы времени для опроса данных и автоматического определения цикла 4 - A) Запустите адаптер, устройства должны обнаруживаться автоматически 4 - B) Если A выходит из строя , используйте кнопку Add-Device и укажите IP-адрес устройства. 5) Адаптер немедленно отправит изменения и опрашивает данные каждые x секунд (настраивается)
 
-## Сделать
-* [] Переключение опроса на сокетные соединения, ожидающие реализации на прошивке WLED
+## Делать
+* [] Переключить опрос на сокетные соединения, ожидается реализация в прошивке WLED.
 
 ## Поддержите меня
-Если вам нравится моя работа, пожалуйста, не стесняйтесь предоставить личное пожертвование (это личная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Если вам нравятся мои работы, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)
+
+## Что такое Sentry.io и что передается на серверы этой компании?
+Sentry.io - это сервис, позволяющий разработчикам получать обзор ошибок в своих приложениях. Именно это и реализовано в этом адаптере.
+
+Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включается также ваш идентификатор установки (это просто уникальный идентификатор **без** дополнительной информации о вас, адрес электронной почты, имя и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
 
 ## Changelog
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
+
+### 0.5.4 (2020-09-02)
+* (DutchmanNL) Support WLED 0.10.2, new state definitions implemented
+* (DutchmanNL) Update state definitions
+* (DutchmanNL) Remove log messages for missing states (Sentry report only)
+* (DutchmanNL) Bugfix : 0.5.3 decommissioned, update to 0.5.4 !
+
+### 0.5.2 (2020-08-29)
+* (DutchmanNL) Bugfix : Add missing Attributes with WLED 0.10.0
+
+### 0.5.1 (20-04-2020) Avoid writing objects unnecessarily, Sentry implemented
+* (DutchmanNL) Implement Sentry
+* (DutchmanNL) Bugfix : Devicename
+* (DutchmanNL) Bugfix : Warning with JS Controler 3.0.7
+* (DutchmanNL) Bugfix : Avoid writing objects unnecessarily
 
 ### 0.5.0 Stable release
 * (DutchmanNL) Added translations

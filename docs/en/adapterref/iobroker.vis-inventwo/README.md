@@ -1,4 +1,4 @@
-![Logo](admin/i1_150.png)
+![Logo](admin/inventwo.png)
 # ioBroker.vis-inventwo
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)](https://www.npmjs.com/package/iobroker.vis-inventwo)
@@ -12,7 +12,11 @@
 
 
 ## Schalter Widgets für den ioBroker.vis Adapter
+ab v 2.0.0
 
+![Beispiel](admin/Set_new.png)
+
+v 1.3.8
 
 ![Beispiel](admin/Set.png)
 
@@ -34,6 +38,21 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog / Änderungsprotokoll
+
+## 2.1.0
+- Datenpunktwerte werden im VIS Editor angezeigt!
+
+## 2.0.1
+- Übersetzungsfehler behoben
+- Border Farbe behoben
+- Widget-Untertitel behoben
+
+## 2.0.0
+- Switch, Button, Nav und Background Widget (sowie die kleinen Ausführungen) zu einem einzigen Widget zussammengeführt -> dem Universal Widget 
+- Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte geprüft werden kann (Ähnlich der Signalbild Funktion)
+- Image Widget kann nun auf Datenpunkt prüfen
+- Radiobuttons hinzugefügt
+- Werteliste hinzugefügt (Kann Liste aus einem Datenpunkt oder manuell eingetragenem Text erstellen)
 
 ## 1.3.8
 - Changed slider step to decimal

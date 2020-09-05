@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-material-advanced/README.md
 title: ioBroker.vis-material-advanced
-hash: 5un1eu/U2JI3iwrWNwdkXYl7PE5XKcU6QDoJlBvlOjw=
+hash: dVXCMS4hRnlunf2m9mBAnmT6hOBkbisQm9521M0eSAg=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-material-advanced/admin/vis-material-advanced.png)
 
@@ -28,6 +28,49 @@ hash: 5un1eu/U2JI3iwrWNwdkXYl7PE5XKcU6QDoJlBvlOjw=
 
 Добавлено несколько исправлений и множество новых виджетов.
 
+## Внимание, старые виджеты (<0.5.0 будут немного испорчены)
+вы можете восстановить их вручную в vis или экспортировать, отредактировать и снова импортировать.
+для руководства: замените «opacity-color»: «opac- <somecolor>» на «opacity-color»: «<somecolor>». замените colorizeByTemp на colorizeByValue
+
+    Пример из sigi234 (example.json) и мой example2.json есть в github для всех, кто хочет их протестировать
+
+    Приносим извинения за неудобства, но эти изменения были необходимы, чтобы код оставался чистым и понятным.
+
+    это больше не должно происходить очень часто :)
+
+## Сейчас присутствуют следующие виджеты:
+### Ток
+ - температура
+ - влажность
+ - дверь
+ - Окно
+ - Занятие
+ - Объем
+ - Затвор
+ - Свет
+ - Диммер
+ - Световая температура
+ - логический
+
+### В ходе выполнения
+еще не окончательно:
+
+ - Гаражная дверь
+ - Радио станция
+
+ много виджетов еще в планах
+
+## Параметры
+    В большинстве виджетов доступны следующие параметры:
+
+    - цвет текста
+    - значок шнура (пока не везде имеет смысл, например диммер)
+    - цвет непрозрачности (стандартный цвет непрозрачности)
+    - colorizeByValue (в зависимости от некоторых значений цвет непрозрачности может быть изменен, например, если он слишком горячий, сделайте его красным, на холодный синий)
+    - ниже, выше, мин., макс. (значения для colorieByValue)
+    - цвет низкий / высокий, средний ... (цвет, который будет использоваться, если граница приподнята)
+    - только для чтения (некоторые виджеты можно установить в режим только для чтения только для отображения)
+
 ### Начиная
 установите адаптер и запустите VIS в режиме редактирования.
 Слева выберите vis-material-adapter, и все виджеты будут показаны в предварительном просмотре.
@@ -37,6 +80,34 @@ hash: 5un1eu/U2JI3iwrWNwdkXYl7PE5XKcU6QDoJlBvlOjw=
 ** вы можете импортировать файл example.json в vis ** благодаря @ sigi234
 
 ## Changelog
+
+### 0.5.6
+* type in volume
+
+### 0.5.5
+* no icons anymore for text and number
+
+### 0.5.2
+* removed (obsolete) class which caused Problems in other widgets
+* added possibility to change the icons for the widgets ( except dimmer )
+
+### 0.5.1
+* some icons resized
+* bugfix: all widgets have now default background-color #121212 but can be changed in settings.
+* reorganized the settings to have some common order
+* new Number and Text Widget ( similar to boolean )
+
+
+### 0.5.0
+* opacity now flexible
+* reorg code
+
+### 0.4.8
+* bugfix alter pfade
+* neues Valve Widget für Thermostate
+
+### 0.4.3
+* neues Boolean widget
 
 ### 0.4.2
 * keine Änderungen, nur ein Label für Latest repository

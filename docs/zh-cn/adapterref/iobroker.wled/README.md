@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: kCIU567p3HLKqgoQcJfrWYd3+DYVVDUQpFAtfqomBRI=
+hash: JCFxQRRFictbXP/nF4emHAdc5kdKfXw2Mi1WhYftWEs=
 ---
 ![商标](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -16,6 +16,8 @@ hash: kCIU567p3HLKqgoQcJfrWYd3+DYVVDUQpFAtfqomBRI=
 ![NPM](https://nodei.co/npm/iobroker.wled.png?downloads=true)
 
 ＃ioBroker.wled
+**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备架构。**更多详细信息，请参见下文！
+
 ##用于ioBroker的wled适配器
 ESP8266 / ESP32网络服务器的快速且功能丰富的实现，用于控制NeoPixel（WS2812B，WS2811，SK6812，APA102）LED！
 
@@ -27,7 +29,7 @@ ESP8266 / ESP32网络服务器的快速且功能丰富的实现，用于控制Ne
 
 不用担心，在这种情况下，您可以通过IP地址手动添加设备。
 
-1）确保您的WLED设备正在运行并且可以通过网络访问2）安装适配器3）配置数据轮询和自动检测周期的间隔时间4-A）启动适配器，应自动检测设备4-B）如果A失败，使用添加设备按钮并提供设备IP地址5）适配器将立即发送更改并每x秒轮询一次数据（可配置）
+1）确保WLED设备正在运行并且可以通过网络访问2）安装适配器3）配置数据轮询和自动检测周期的间隔时间4-A）启动适配器，应该自动检测设备4-B）如果A失败，使用添加设备按钮并提供设备IP地址5）适配器将立即发送更改并每x秒轮询一次数据（可配置）
 
 ＃＃ 去做
 * []将轮询切换到套接字连接，等待WLED固件实施
@@ -35,7 +37,31 @@ ESP8266 / ESP32网络服务器的快速且功能丰富的实现，用于控制Ne
 ＃＃ 支持我
 如果您喜欢我的作品，请随时提供个人捐款（这是DutchmanNL的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](http://paypal.me/DutchmanNL)
 
+##什么是Sentry.io，什么报告给该公司的服务器？
+Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+
 ## Changelog
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
+
+### 0.5.4 (2020-09-02)
+* (DutchmanNL) Support WLED 0.10.2, new state definitions implemented
+* (DutchmanNL) Update state definitions
+* (DutchmanNL) Remove log messages for missing states (Sentry report only)
+* (DutchmanNL) Bugfix : 0.5.3 decommissioned, update to 0.5.4 !
+
+### 0.5.2 (2020-08-29)
+* (DutchmanNL) Bugfix : Add missing Attributes with WLED 0.10.0
+
+### 0.5.1 (20-04-2020) Avoid writing objects unnecessarily, Sentry implemented
+* (DutchmanNL) Implement Sentry
+* (DutchmanNL) Bugfix : Devicename
+* (DutchmanNL) Bugfix : Warning with JS Controler 3.0.7
+* (DutchmanNL) Bugfix : Avoid writing objects unnecessarily
 
 ### 0.5.0 Stable release
 * (DutchmanNL) Added translations

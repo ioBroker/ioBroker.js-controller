@@ -35,6 +35,10 @@ Weather-dependent automatic control of garden irrigation
 
 ## Changelog
 
+### 0.0.11 (30.08.2020)
+* (Dirk-Peter-md) Bug in der Verarbeitung der Regenvorhersage vom Adapter "Das Wetter"
+* (Dirk-Peter-md) Bug auf Travis CI
+
 ### 0.0.10 (29.08.2020)
 * (Dirk-Peter-md) Bug in der Verarbeitung der Regenvorhersage vom Adapter "Das Wetter"
 

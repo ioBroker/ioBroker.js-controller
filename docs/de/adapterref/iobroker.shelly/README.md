@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: c1sQb6QGJSpneskKrGz7xB92ANEcDuNUiviPkTIyMqE=
+hash: 29CUGSpUNv2aCSi8t456Aw5o6CC6uIeA8iyPhZL3324=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -57,6 +57,7 @@ Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdok
 | Shelly Gas (SHGS-1) | unterstützt seit v3.3.3 | unterstützt seit v3.3.3 |
 | Shelly Dimmer 2 (SHDM-2) | unterstützt seit v3.3.4 | unterstützt seit v3.3.4 |
 | Shelly Tür- / Fenstersensor 2 (SHDW-2) | unterstützt seit v3.3.5 | unterstützt seit v3.3.5 |
+| Shelly Uni (SHUNI-1) | unterstützt seit v4.0.4 | unterstützt seit v4.0.4 |
 
 ## Was ist Sentry und was wird den Servern gemeldet?
 Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendungen. Und genau das ist in diesem Adapter implementiert.
@@ -65,12 +66,12 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 
 ## Changelog
  
-### 4.0.4 (2020-08-23)
+### 4.0.4 (2020-09-03)
 * (Stübi) - optimize the destroy function (Bugfixing)
 * (Stübi) - Bugfixing Relay0.Event error for Shelly I3 in MQTT mode (Issue #241)
 * (harrym67) - Shelly 2.5 Roller mode. According to Shelly API: changed existing state swap to swap_input and add state swap.(Issue #240)
 * (Stübi) - Allow setting of customer MQTT prefix (Issue #244)
-* (harrym67) - Add Endpoint dim to Shelly Dimmer 2 (SHDM-2) (Issue #248)
+* (harrym67) - Add Support for Shelly Uni (SHUNI-1)
 
 ### 4.0.3 (2020-08-19)
 * (Stübi) - Add a checkbox, to optionally enable updates of objects even if they have not changed (Issue #209)

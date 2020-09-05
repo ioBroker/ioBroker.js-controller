@@ -134,6 +134,9 @@ hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 Инструкции были созданы в меру наших знаний и убеждений.
 
 ## Changelog
+### 1.3.4 (2020-08-31)
+* (Alan) Fixed the crash for non existing attributes 
+
 ### 1.3.3 (2020-08-26)
 * (bluefox) Sentry is activated
 

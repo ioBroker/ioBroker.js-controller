@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.smartgarden/README.md
 title: ioBroker.smartgarden
-hash: wVJ/PkrXzfsgkReI3Ht0ofjEMzknM94tm/BhhARUbQc=
+hash: oqdvuP7M8rFY8Ptbhax1tbUnwZyQ6Km2vJ6Be/UwWdc=
 ---
 ![商标](../../../en/adapterref/iobroker.smartgarden/admin/smartgarden.png)
 
@@ -17,7 +17,7 @@ hash: wVJ/PkrXzfsgkReI3Ht0ofjEMzknM94tm/BhhARUbQc=
 ＃ioBroker.smartgarden
 **如果您愿意，请考虑捐赠：**
 
-[![贝宝]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8C7M7MH3KPYDC&source=url)
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=8C7M7MH3KPYDC&source=url)
 
 ##用于GARDENA智能系统的ioBroker smartgarden适配器
 使用官方[GARDENA智能系统API](https://developer.husqvarnagroup.cloud/apis/GARDENA+smart+system+API#/general)和服务的GARDENA智能系统适配器。
@@ -63,7 +63,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
     -身份验证API ***和***
 -GARDENA智能系统API。
 
-当然，您需要运行的ioBroker安装，并且您应至少拥有一个[GARDENA智能设备](#supported-devices)。
+当然，您需要正在运行的ioBroker安装，并且您应该拥有至少一个[GARDENA智能设备](#supported-devices)。
 
 ＃＃ 目录
   * [用于GARDENA智能系统的ioBroker smartgarden适配器]（＃iobroker-smartgarden-adapter-for-gardena-smart-system）
@@ -81,6 +81,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
      * [对于SERVICE_POWER_SOCKET]（＃for-service_power_socket）
      * [对于SERVICE_SENSOR]（＃for-service_sensor）
      * [For SERVICE_COMMON]（＃for-service_common）
+  * [费率限制]（＃rate-limits）
   * [割草时不允许灌溉]（＃割草时不允许灌溉）
      * [出什么问题？]（＃问题是什么）
 * [正在做什么？]（＃what-is-being-done）
@@ -88,12 +89,10 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
   * [希望获得数据点]（＃希望获得数据点）
   * [注意]（＃note）
   * [变更日志]（＃changelog）
+     * [1.0.2]（＃102）
      * [1.0.1]（＃101）
      * [1.0.0]（＃100）
-     * [0.6.0]（＃060）
-     * [0.5.1]（＃051）
-     * [0.5.0]（＃050）
-     * [先前版本]（＃042）
+     * [先前版本]（＃060）
   * [学分]（＃credits）
   * [许可证]（＃license）
 
@@ -136,6 +135,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
       |参数描述 |
       | - | - |
       |日志级别|日志级别：0 =无日志，1 =一些日志，2 =更多日志，3 =所有日志；默认值：0 |
+|监视速率限制|使用监视来控制Gardena智能系统API的速率限制；开/关;默认值：关闭|
       | ping频率|将Ping发送到Gardena Webservice的频率（以秒为单位）；默认值：150 |
       |授权因素|认证令牌有效性的因素；默认值：1.001 |
       |验证网址|认证主机URL；默认值：[https://api.authentication.husqvarnagroup.dev](https://api.authentication.husqvarnagroup.dev)||
@@ -177,10 +177,10 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 适配器不会更改GARDENA智能API传输的任何值。
 唯一要做的事情（从1.0.0版开始）是检查* timestamps *和* numbers *的类型。
 
-|检查说明|
+|检查描述|
 | - | - |
 |时间戳|所有时间戳均以UTC给出；如果接收到的时间戳不是有效的时间戳，则使用`01 Jan 1970 00:00:00Z`（Unix时间零）。因此，如果您看到此日期/时间，请报告。 |
-|数字|如果数字不是有效数字，则使用-1代替。因此，如果您看到此号码，请报告。 |
+|数字|如果数字不是有效数字，则使用“ -1”代替。因此，如果您看到此号码，请报告。 |
 
 ###对于SERVICE_MOWER
 ####控制
@@ -229,7 +229,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
   |`PARKED_TIMER`割草机已根据计时器停放，将在配置的时间再次启动。 |错误 |
   |`PARKED_PARK_SELECTED`割草机已停放，直至另行通知。 |错误 |
   |`PARKED_AUTOTIMER`由于草高不足，割草机跳过了割草工作。 |错误 |
-  |`PAUSED`割草机处于等待状态，舱口关闭。 |错误 |
+  |`PAUSED`割草机处于关闭舱口的等待状态。 |错误 |
   |`OK_CUTTING`割草机正在AUTO模式下进行切割（计划）。 |真实|
   |`OK_CUTTING_TIMER_OVERRIDDEN`割草机正在削减进度。 |真实|
   |`OK_SEARCHING`割草机正在搜索充电站。 |真实|
@@ -244,7 +244,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 
   *两个数据点均由适配器生成，由于GARDENA智能系统API的缘故，因此不需要。
 
-这些数据点显示了割草机剩余的充电时间和割草时间（以秒为单位）的预测。
+这些数据点显示了割草机的剩余充电时间和割草时间（以秒为单位）。
 仅在实例配置中选择功能时才创建它们。
 
 为了预测值，将最近几个充电和修剪周期的历史记录保存在`info.saveMowingHistory`和`info.saveChargingHistory`两个状态中。
@@ -274,7 +274,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 4.此功能应适用于多台割草机，但是
 
 未测试*（我不能这样做，因为我只有一个割草机）*。
-如果割草机不止一台，请测试并报告错误，当然还要报告其是否按预期工作。在此先感谢您。
+如果割草机不止一个，请测试并报告错误，当然还要报告其是否按预期工作。在此先感谢您。
 
 -`lastErrorCode_value`
 
@@ -380,7 +380,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 
   *此数据点是由适配器生成的，由于GARDENA智能系统API的缘故，它不是必需的。*
 
-  该值描述电源插座关闭之前的分钟数。
+  该值描述关闭电源插座之前的分钟数。
 
     -一个整数，一个（`1`）或更大。
     -如果未定义，则为null
@@ -394,7 +394,61 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 
 ###对于SERVICE_COMMON
 `SERVICE_COMMON`提供有关设备的常规信息。
-必要时，说明会集成到其他SERVICE _...的说明中。
+必要时将说明集成到其他SERVICE _...的说明中。
+
+##速率限制
+您应该注意一些限制。
+请参阅GARDENA智能系统API说明的[*自述*](https://developer.husqvarnagroup.cloud/apis/GARDENA+smart+system+API#/readme)中的“费率限制”一章。
+
+为了帮助您查看是否达到了这些速率限制，您可以使用参数“监视速率限制”来打开实例配置中的监视。
+
+如果启用了监视状态，则`info.RateLimitCounter`将随每个请求而实现。
+此状态将保存一个数据结构，其中包含每月，每天，每小时以及最近30天和31天的请求数。
+
+该结构在[JSON格式](https://en.wikipedia.org/wiki/JSON)中，看起来像
+
+```
+{
+  "2020": {                          <<< year
+    "2020-08": {                     <<< month
+      "count": 21,                   <<< number of requests for month
+      "2020-08-27": {                <<< day
+        "11": {                      <<< hour
+          "count": 3                 <<< number of requests for hour
+        },
+        "12": {                      <<< hour
+          "count": 13                <<< number of requests for hour
+        },
+        "count": 16                  <<< number of requests for day
+      },
+      "2020-08-28": {                <<< day
+        "14": {                      <<< hour
+          "count": 5                 <<< number of requests for hour
+        },
+        "count": 5                   <<< number of requests for day
+      }
+    }
+  },
+     ...
+  "last30days": {
+    "count": 2021                    <<< number of requests in last 30 days
+  },
+  "last31days": {
+    "count": 2098                    <<< number of requests in last 31 days
+  }
+}
+```
+
+**注意：**
+
+  -那个小时是UTC的时间
+  -实际请求数可能会更高。特别是
+
+  只要相关期间未完全涵盖在监控范围之内。
+
+  -这个结构变得很大，并且永远不会被删除
+
+适配器。因此，请不时手动将其删除，或者关闭监视功能-至少在速率限制没有任何问题的情况下。
 
 ##割草时不允许灌溉
 ＃＃＃ 有什么问题？
@@ -403,14 +457,14 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 为避免这种情况，割草机割草时应关闭灌溉系统或更好的单个阀门。
 
 ###正在做什么？
-使用此功能，可以在割草机在草坪上时停止灌溉。可以为每个阀分别定义。
+使用此功能可以在割草机在草坪上时停止灌溉。可以为每个阀分别定义。
 
 可以为每个阀门定义一个或多个割草机，在割草机割草时不允许打开阀门。
 原则上，割草机的优先级高于灌溉，即，如果出现割草机割草且阀门打开的冲突，则阀门将关闭，并设置相应的警告。
 
-另外，可以定义无论割草机如何，阀门都决不能打开。例如。如果阀门或其背后的管道损坏，可以使用。
+另外，可以定义无论割草机如何，阀都决不能打开。例如。如果阀门或其背后的管道损坏，可以使用。
 
-整个检查可以在带有参数* irrigation check *的实例配置中打开或关闭。
+可以在带有参数* irrigation check *的实例配置中打开或关闭整个检查。
 
 每个`SERVICE_VALVE`都有三个数据点。
 它们用于配置和报告警告。
@@ -418,8 +472,8 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
   |数据点|可写数据点描述|
   | - | - | - |
   |`irrigationWhileMowing_allowed_i`| |是|如果应检查在割草机在草坪上修剪时是否允许灌溉，则设置为`false`，否则|§SSSSS_2§§|
-  |`irrigationWhileMowing_warningCode_i`||没有如果阀门打开，则设置警告代码。可能的警告代码请参见下表。如果设置了多个警告，则代码与`+`（例如`STOPPED+UNKNOWN_MOWER`）串联在一起。 |
-  |`irrigationWhileMowing_warningCode_i` ||没有如果阀门打开，则设置警告代码。可能的警告代码请参见下表。如果设置了多个警告，则代码将以“ +”串联（例如“ STOPPED + UNKNOWN_MOWER”）。 |
+  |`irrigationWhileMowing_warningCode_i`||没有如果阀门打开，则设置警告代码。可能的警告代码请参见下表。如果设置了多个警告，则将代码与`+`（例如`STOPPED+UNKNOWN_MOWER`）串联在一起。 |
+  |`irrigationWhileMowing_warningCode_i` ||没有如果阀门打开，则设置警告代码。可能的警告代码请参见下表。如果设置了多个警告，则代码以`+`串联（例如`STOPPED + UNKNOWN_MOWER`）。 |
 
 * ***割草机ID格式***
 
@@ -438,7 +492,7 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
   | `FORBIDDEN`|关闭了阀门，因为在数据点`irrigationWhileMowing_mowerDefinition_i`|中设置了特殊代码`IRRIGATION_FORBIDDEN` |
   | “ FORBIDDEN”阀关闭，因为在数据点“ irrigationWhileMowing_mowerDefinition_i”中设置了特殊代码“ IRRIGATION_FORBIDDEN”。 |
 
-每次
+每次在以下情况下运行此功能
 
 -阀门打开或
 -割草机开始割草
@@ -464,13 +518,19 @@ GARDENA智能系统帐户，您可以使用该帐户登录，然后继续执行�
 smartgarden徽标：http://www.freepik.com由Freepik设计
 
 ## Changelog
+### 1.0.2
+* (jpgorganizer)
+  - monitoring rate limits, see chapter [Rate Limits](#rate-limits) and discussion at 
+  [Issue 18](https://github.com/jpgorganizer/ioBroker.smartgarden/issues/18)
+
+
 ### 1.0.1
 * (jpgorganizer)
   - better reconnection to GARDENA smart system server in case of your internet connection was broken
   - textual changes in io-package.json
   - improved README and FAQ
   
-  ### 1.0.0
+### 1.0.0
 * (jpgorganizer)
   - code rework, no functional change expected
   - support `PAUSE` for SERVICE_VALVE, SERVICE_POWER_SOCKET. e.g. 
@@ -592,4 +652,4 @@ Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 Based on a work at https://github.com/jpgorganizer/ioBroker.smartgarden. 
  
 
-<!--- SVN: $Rev: 2222 $ $Date: 2020-08-17 11:20:02 +0200 (Mo, 17 Aug 2020) $ --->
+<!--- SVN: $Rev: 2249 $ $Date: 2020-08-30 12:10:26 +0200 (So, 30 Aug 2020) $ --->

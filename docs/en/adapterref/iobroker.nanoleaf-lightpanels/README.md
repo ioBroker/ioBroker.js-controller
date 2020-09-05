@@ -12,22 +12,23 @@
 This is an ioBroker Adapter to control the nanoleaf Light Panels (formerly nanoleaf Aurora) or nanoleaf Canvas through the nanoleaf OpenAPI.
 
 ## Connection to the nanoleaf Light Panels/Canvas Controller:
-1. In the adapter settings you have to set the IP address and port of the nanoleaf Controller. The nanoleaf OpenAPI needs an authorization token to grant access to    the REST-API. If you have already one, you can enter the token here and skip the next step.
-   You can use the search devices function on the admin page to detect your nanoleaf devices.
-2. If you don't have an authorization token you need to request it from the nanoleaf OpenAPI.
+1. In the adapter settings you have to set the IP address or hostname and port of the nanoleaf Controller. You can use the search function to discover all nanoleaf devices in your network.
+2. The nanoleaf OpenAPI needs an authorization token to grant access to the OpenAPI. If you have already one, you can enter the token here and skip the next step.
+3. If you don't have an authorization token, you need to request it from the nanoleaf OpenAPI.
    To do this, set the nanoleaf Controller into pairing mode by pressing and holding the power button at the device for 5-7 seconds until the LEDs flash alternately.
    Then click on the button 'Obtain authorization token' within 30 seconds (pairing mode stops after 30 seconds). The adapter must be running!
-   If it was successful the authorization token should be seen in the field 'Authentication token'. If an error occurred you get a pop up with the error message (details you can see in the log).
-3. Save the settings.
-4. Have fun!
+   If it was successful, the authorization token should be seen in the field 'Authentication token'. If an error occurred you get a pop up with the error message (details you can see in the log).
+4. Save the settings.
+5. Have fun!
 
 Since Light Panels firmware version > 3.1.0 and Canvas firmware version > 1.1.0 Server Sent Events (SSE) can be used for direct status updates. For Canvas devices touch events are supported.
+Please note: to detect if nanoleaf device is still alive, SSDP Notify messages were sent from nanoleaf device every 60 seconds. Please ensure you can receive UDP multicast messages on port 1900 (check firewall and routing). Otherwise you will get error messages in the adapter that connection is lost.
 The setting for the status update polling interval only affects devices with lower firmware versions where polling is used for status updates.
 
 ## Alexa
 You can control the nanoleaf Light Panels/Canvas with Alexa via ioBroker (Cloud-Adapter).
 Power on/off, brightness, color and color temperature is supported.
-You have to set up the datapoints
+You have to set up the data points
 * state (for power on/off)
 * hue (for color)
 * saturation (for color)
@@ -46,6 +47,13 @@ To control and visualize the color you have to install the color picker style Wi
 You can use the nanoleaf vis demo project found in the /vis subfolder on github.
 
 ## Changelog
+
+### 1.0.3 (2020-08-30)
+* (daniel_2k) fixed: search nanoleaf devices does not work on clean install of adapter
+* (daniel_2k) new: added update of effectsList via SSE
+* (daniel_2k) new: ability to disable of using SSE (for nanoleaf devices that stops sending ssdp:alive messages)
+* (daniel_2k) changed: display nanoleaf device name in admin search result list
+* (daniel_2k) changed: using forked "node-upnp-ssdp" for fixing interface binding
 
 ### 1.0.2 (2020-07-06)
 * (daniel_2k) fixed: detection of ssdp:alive notify message for Canvas (fix disconnect/connect issue)
@@ -128,4 +136,4 @@ You can use the nanoleaf vis demo project found in the /vis subfolder on github.
 
 ## License
 The MIT License (MIT)
-Copyright (c) 2019 daniel_2k <daniel_2k@outlook.com>
+Copyright (c) 2020 daniel_2k <daniel_2k@outlook.com>

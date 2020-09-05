@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: QEhAXJRA/UYNyfx4XHAD7k0yKo4Qoti5i1h0rZ1d3+s=
+hash: aFWs9Y6sGOhasVUIPfH/qjZEroCsTxMOuYxWgb7w5C4=
 ---
-![Logo](../../../en/adapterref/iobroker.vis-icontwo/admin/i2_150.png)
+![Logo](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.vis-icontwo.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.vis-icontwo.svg)
-![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/vis-icontwo-installed.svg)
+![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/vis-icontwo-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/vis-icontwo-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/inventwo/iobroker.vis-icontwo.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/inventwo/iobroker.vis-icontwo/badge.svg)
@@ -47,13 +47,77 @@ ZUM BEISPIEL. Teilauswahl
 ## Besetzung
 Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
 
-(Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
+(Dieser Link hat zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
 [![Spende] (admin / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
 
 ## Changelog
+
+### 0.16.1
+
+• (skvarel) - Code angepasst
+
+### 0.16.0
+
+• (skvarel) - Neue Hintergründe hinzugefügt (Backgrounds)
+
+### 0.15.0
+
+• (skvarel) - Neue Hintergründe hinzugefügt (Backgrounds)
+
+### 0.14.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Schedules)
+
+### 0.13.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Lights)
+
+### 0.12.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Lights)
+
+### 0.11.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Phones_Tablets)
+
+### 0.10.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.9.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Devices)
+
+### 0.8.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling & Weather)
+
+### 0.7.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.6.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Devices)
+
+### 0.5.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Brands)
+
+### 0.4.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.3.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+
+### 0.2.0
+
+• (skvarel) - Neue Symbole hinzugefügt (Brands)
 
 ### 0.1.11
 
