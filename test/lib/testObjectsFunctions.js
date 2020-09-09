@@ -1145,6 +1145,52 @@ function register(it, expect, context) {
         return Promise.resolve();
     });
 
+    // should use def as default state value on extendForeignObject when obj non existing
+    it(testName + 'Check extendForeignObject state with def', async () => {
+        let obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
+            type: 'state',
+            common: {
+                type: 'string',
+                def: 'Run Forrest, Run!'
+            }
+        });
+
+        expect(obj).to.be.ok;
+
+        let state = await context.adapter.getForeignStateAsync('foreign.0.testDefaultValExtend');
+        expect(state.val).to.equal('Run Forrest, Run!');
+        expect(state.ack).to.equal(true);
+
+        // when state already exists def should not override
+        obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
+            common: {
+                def: 'Please, do not set me up'
+            }
+        });
+
+        expect(obj).to.be.ok;
+
+        state = await context.adapter.getForeignStateAsync('foreign.0.testDefaultValExtend');
+        expect(state.val).to.equal('Run Forrest, Run!');
+
+        // delete state but not object
+        await context.adapter.delForeignStateAsync('foreign.0.testDefaultValExtend');
+        // extend it again - def should be created again, because state has been removed - now we set a def object
+        obj = await context.adapter.extendForeignObjectAsync('foreign.0.testDefaultValExtend', {
+            common: {
+                def: {hello: 'world'}
+            }
+        });
+
+        expect(obj).to.be.ok;
+
+        state = await context.adapter.getForeignStateAsync('foreign.0.testDefaultValExtend');
+        expect(state.val.hello).to.equal('world');
+        expect(state.ack).to.equal(true);
+
+        return Promise.resolve();
+    });
+
     it(testName + 'Should check object existence', async () => {
         // object should not exist
         let exists = await context.objects.objectExists('test.0.objectExistenceCheck');
