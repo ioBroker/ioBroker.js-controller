@@ -40,13 +40,6 @@ declare global {
 			enableFileCache(enabled: boolean, options?: unknown): Promise<boolean>;
 
 			/**
-			 * Enables or disables the file cache
-			 * @param enabled Whether the file cache should be enabled
-			 * @param options (optional) Some internal options
-			 */
-			enableFileCache(enabled: boolean, options?: unknown): Promise<boolean>;
-
-			/**
 			 * Writes a file.
 			 * @param id Name of the root directory. This should be the adapter instance, e.g. "admin.0"
 			 * @param name File name
