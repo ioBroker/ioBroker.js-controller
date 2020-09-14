@@ -985,10 +985,14 @@ function collectDiagInfo(type, callback) {
 
                     if (!_err && doc && doc.rows.length) {
                         doc.rows.sort((a, b) => {
+                            const aVersion = (a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0';
+                            const bVersion = (b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0';
                             try {
-                                return semver.lt((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0', (b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0');
+                                return semver.compare(aVersion, bVersion);
                             } catch (e) {
-                                logger.error(hostLogPrefix + ' Invalid versions: ' + ((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0') + '[' + ((a && a.value && a.value.common) ? a.value.common.name : 'unknown') + '] or ' + ((b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0') + '[' + ((b && b.value && b.value.common) ? b.value.common.name : 'unknown') + ']');
+                                const aName = ((a && a.value && a.value.common) ? a.value.common.name : 'unknown');
+                                const bName = ((b && b.value && b.value.common) ? b.value.common.name : 'unknown');
+                                logger.error(`${hostLogPrefix} Invalid versions: ${aVersion}[${aName}] or ${bVersion}[${bName}]`);
                                 return 0;
                             }
                         });
@@ -1138,7 +1142,6 @@ function setMeta() {
     const id = hostObjectPrefix;
 
     objects.getObject(id, (err, oldObj) => {
-        /** @type {ioBroker.Object} */
         let newObj;
         if (compactGroupController) {
             newObj = {
@@ -1638,8 +1641,8 @@ function setMeta() {
                     if (fs.existsSync(VENDOR_BOOTSTRAP_FILE)) {
                         logger && logger.info(hostLogPrefix + ' Detected vendor file: ' + fs.existsSync(VENDOR_BOOTSTRAP_FILE));
                         try {
-                            let startScript = fs.readFileSync(VENDOR_BOOTSTRAP_FILE).toString('utf-8');
-                            startScript = JSON.parse(startScript);
+                            const startScriptContent = fs.readFileSync(VENDOR_BOOTSTRAP_FILE).toString('utf-8');
+                            const startScript = JSON.parse(startScriptContent);
 
                             if (startScript.password) {
                                 const Vendor = require('./lib/setup/setupVendor');
@@ -1733,7 +1736,7 @@ function getVersionFromHost(hostId, callback) {
 /**
  Helper function that serialize deletion of states
  @param {object} list array with states
- @param {function} cb optional callback
+ @param {function} [cb] optional callback
  */
 function _deleteAllZipPackages(list, cb) {
     if (!list || !list.length) {
