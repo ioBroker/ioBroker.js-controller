@@ -312,7 +312,7 @@ function register(it, expect, context) {
         objects.setObject(testId, {type: 'meta'}, err => {
             expect(err).to.be.not.ok;
             objects.writeFile(testId, 'myFile/abc.txt', 'dataInFile', err => {
-                err && console.error(`Got ${JSON.stringify(objects.getStatus())}: ${err}`);
+                err && console.error(`Got ${JSON.stringify(objects.getStatus())}: ${err.stack}`);
                 expect(err).to.be.not.ok;
 
                 objects.readFile(testId, 'myFile/abc.txt', (err, data, mimeType) => {
