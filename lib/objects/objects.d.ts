@@ -374,6 +374,14 @@ declare global {
 			getConfigKeys(pattern: string, options?: unknown): Promise<NonNullCallbackReturnTypeOf<GetConfigKeysCallback>>;
 
 			/**
+			 * Checks if the given object exists
+			 *
+			 * @param id id of the object
+			 * @param options optional user context
+			 */
+			objectExists(id: string, options?: unknown): Promise<boolean>;
+
+			/**
 			 * Retrieves a copy of the object with the given ID
 			 * @param id Id of the object to find
 			 * @param options (optional) Some internal options.
@@ -542,6 +550,14 @@ declare global {
 			 * @param options (optional) Some internal options.
 			 */
 			findObjectAsync(idOrName: string, type: CommonType | null | undefined, options?: unknown): Promise<NonNullCallbackReturnTypeOf<FindObjectCallback>>;
+
+			/**
+			 * Checks if the given file exists in the objects DB
+			 * @param id id of the namespace
+			 * @param name name of the file
+			 * @param options optional user context
+			 */
+			fileExists(id: string, name?: string, options?: unknown): Promise<boolean>;
 
 			/**
 			 * Deletes all contents of the database. WARNING: This process is irreversible

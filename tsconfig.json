@@ -20,7 +20,9 @@
 
 		/* Strict Type-Checking Options */
 		"strict": false,                            /* Enable all strict type-checking options. */
-		"strictNullChecks": true,
+		// strictNullChecks would be nice, but the way adapter.js is written means that
+		// this would have hundreds of false positives
+		// "strictNullChecks": true,
 		"noImplicitAny": false,                 /* Raise error on expressions and declarations with an implied 'any' type. */
 		// "strictNullChecks": true,              /* Enable strict null checks. */
 		"noImplicitThis": true,                /* Raise error on 'this' expressions with an implied 'any' type. */
