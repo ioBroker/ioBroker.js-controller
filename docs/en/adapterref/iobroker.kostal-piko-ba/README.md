@@ -21,32 +21,17 @@ To connect to the Kostal Pico BA inverter type in its IP-address in the config.
 
 ## Changelog
 
+### 1.0.0 (11.09.2020)
+* (HombachC) first public release for stable repo
+
 ### 0.8.5 (26.08.2020)
-* (HombachC) bumped dependencies
-
-### 0.8.4 (23.08.2020)
-* (HombachC) bumped eslint
-
-### 0.8.3 (22.08.2020)
 * (HombachC) bumped dependencies
 
 ### 0.8.2 (18.08.2020)
 * (HombachC) changed scheduling code
 
-### 0.8.1 (18.08.2020)
-* (HombachC) fixed typos in translations
-
 ### 0.8.0 (18.08.2020)
 * (HombachC) seperate editable poll timer for statistics data
-
-### 0.7.7 (16.08.2020)
-* (HombachC) fix error with timeout
-
-### 0.7.6 (26.07.2020)
-* (HombachC) code cleanup
-
-### 0.7.5 (19.07.2020)
-* (HombachC) dependencies updated
 
 ### 0.7.4 (03.07.2020)
 * (HombachC) added sentry.io support
@@ -56,15 +41,6 @@ To connect to the Kostal Pico BA inverter type in its IP-address in the config.
 
 ### 0.5.1 (22.06.2020)
 * (HombachC) introduced editable poll interval 
-
-### 0.4.0 (21.06.2020)
-* (HombachC) changed poll interval to timeout
-
-### 0.3.0 (19.06.2020)
-* (HombachC) updated dependency 'got' to 11.3.0
-
-### 0.2.0 (15.06.2020)
-* (HombachC) debug phase finished
 
 ### 0.1.0 (15.05.2020)
 * (HombachC) initial working release

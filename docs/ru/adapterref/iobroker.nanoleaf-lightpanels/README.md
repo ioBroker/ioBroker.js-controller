@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nanoleaf-lightpanels/README.md
 title: ioBroker.nanoleaf-lightpanels Адаптер
-hash: FlaVm2XCGKtNst7aFNLgDhkCB6NwfjnVTTD7oyQPlQM=
+hash: JOJd7PfdENk2ezyZ4MVLXehagWUnnuGik3WsCynFRog=
 ---
 ![Логотип](../../../en/adapterref/iobroker.nanoleaf-lightpanels/admin/nanoleaf-lightpanels.png)
 
@@ -11,7 +11,7 @@ hash: FlaVm2XCGKtNst7aFNLgDhkCB6NwfjnVTTD7oyQPlQM=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.nanoleaf-lightpanels.svg)
 ![Статус сборки Трэвис](https://travis-ci.org/daniel-2k/ioBroker.nanoleaf-lightpanels.svg?branch=master)
 ![Статус сборки Appveyor](https://ci.appveyor.com/api/projects/status/29fjgn8ww5w96etq/branch/master?svg=true)
-![НПМ](https://nodei.co/npm/iobroker.nanoleaf-lightpanels.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.nanoleaf-lightpanels.png?downloads=true)
 
 # IoBroker.nanoleaf-lightpanels Адаптер
 =================
@@ -29,13 +29,17 @@ hash: FlaVm2XCGKtNst7aFNLgDhkCB6NwfjnVTTD7oyQPlQM=
 4. Сохраните настройки.
 5. Удачи!
 
+### Прямое обновление статуса через отправленные сервером события (SSE)
 Поскольку версия прошивки световых панелей> 3.1.0 и версия прошивки Canvas> 1.1.0 Server Sent Events (SSE), можно использовать для прямого обновления статуса. Для устройств Canvas поддерживаются события касания.
-Обратите внимание: чтобы определить, живо ли устройство nanoleaf, сообщения SSDP Notify отправлялись с устройства nanoleaf каждые 60 секунд. Убедитесь, что вы можете получать многоадресные сообщения UDP на порт 1900 (проверьте брандмауэр и маршрутизацию). В противном случае вы получите сообщение об ошибке в адаптере, что соединение потеряно.
+
+_Обратите внимание: _ чтобы определить, живо ли устройство nanoleaf, сообщения SSDP Notify отправлялись с устройства nanoleaf каждые 60 секунд. Убедитесь, что вы можете получать многоадресные сообщения UDP на порт 1900 (проверьте брандмауэр и маршрутизацию). В противном случае вы получите сообщение об ошибке в адаптере, что соединение было потеряно. Если у вас возникли проблемы с сохранением активности, установите правильный интерфейс адаптера в настройках администратора для адаптера nanoleaf.
+Для поиска устройств убедитесь, что вы можете получать трафик на UDP-порт 5000.
+
 Настройка интервала опроса обновления статуса влияет только на устройства с более ранними версиями прошивки, где опрос используется для обновления статуса.
 
 ## Алекса
 Вы можете управлять световыми панелями / холстом nanoleaf с помощью Alexa через ioBroker (облачный адаптер).
-Поддерживается включение / выключение, яркость, цвет и цветовая температура.
+Поддержка включения / выключения, яркости, цвета и цветовой температуры.
 Вы должны настроить точки данных
 
 * состояние (для включения / выключения)
@@ -47,7 +51,7 @@ hash: FlaVm2XCGKtNst7aFNLgDhkCB6NwfjnVTTD7oyQPlQM=
 в облачном адаптере под тем же смарт-именем.
 
 ## IoBroker Визуализация
-Световыми панелями / холстом nanoleaf можно управлять в ioBroker Visualization с помощью основных виджетов, таких как «радиокнопки включения / выключения» или ползунков для управления состоянием питания, яркостью, оттенком, насыщенностью и цветовой температурой.
+Световыми панелями / холстом nanoleaf можно управлять в ioBroker Visualization с помощью основных виджетов, таких как «радиокнопки включения / выключения» или ползунков для управления состоянием мощности, яркости, оттенка, насыщенности и цветовой температуры.
 
 Для эффектов вы можете использовать виджет «Выбрать список значений», чтобы использовать его как раскрывающийся список, а затем сопоставить состояние списка эффектов со значением и свойством текста виджета (тип: "{nanoleaf-lightpanels.0.LightPanels.effectsList}" -> фигурные скобки важны!)
 
@@ -56,6 +60,17 @@ hash: FlaVm2XCGKtNst7aFNLgDhkCB6NwfjnVTTD7oyQPlQM=
 Вы можете использовать демонстрационный проект nanoleaf vis, который находится в подпапке / vis на github.
 
 ## Changelog
+
+### 1.0.6 (2020-09-14)
+* (daniel_2k) changed: force status update for Canvas touch events
+* (daniel_2k) new: added debug logging of received data via SSE
+
+### 1.0.5 (2020-09-13)
+* (daniel_2k) fixed: touch channel was not created for nanoleaf devices (bug since 1.0.3)
+
+### 1.0.4 (2020-09-06)
+* (daniel_2k) new: adapter address can be choosen in adapter settings for interfacing binding issues
+* (daniel_2k) changed: use fixed port 5000 for MSEARCH replies for easy setup in firewall
 
 ### 1.0.3 (2020-08-30)
 * (daniel_2k) fixed: search nanoleaf devices does not work on clean install of adapter

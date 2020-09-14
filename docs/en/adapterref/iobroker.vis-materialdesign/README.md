@@ -260,7 +260,8 @@ Settings that are not listed in the table below are self-explanatory.
 		"subText": "sub 1",
 		"value": "val1",
 		"icon": "/vis/icon/info.png",
-        "iconColor": "red"
+        "iconColor": "red",
+        "iconColorSelectedTextField": "red"
 	},
 	{
 		"text": "text 2",
@@ -1176,6 +1177,12 @@ JSON Chart supports data that have a timestamp. To use this the data array must 
             <td>time formats for the x-axis</td>
             <td>String</td>
             <td>Approved time formats must be entered according to the moment.js library, <a href="https://momentjs.com/docs/#/displaying/">see link</a></td>
+        </tr>
+        <tr>
+            <td>xAxis_time_unit</td>
+            <td>force the time format for the x-axis</td>
+            <td>String</td>
+            <td>following units are allowed, <a href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html#time-units">see link</a></td>
         </tr>
     </tbody>
 </table>
@@ -5447,11 +5454,23 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
-* (Scrounger): Line History Chart: Breaking Changes !!! aggregate (display) method for every dataset configurable, see documentation for detailed infos!
+* (Scrounger): Line History Chart Widget: Breaking Changes !!! aggregate (display) method for every dataset configurable, see documentation for detailed infos!
 * (Scrounger): bug fix for compatibility issues with other widget adapters
 * (Scrounger): Chechbox Widget: option for border and hover color added
 * (Scrounger): Chechbox Widget: ripple effect bug fix
 * (Scrounger): Buttons Vertical: text alignment option added
+* (Scrounger): added URL support as source for symbols / images
+* (Scrounger): HTML Card Widget: option to hide title, subtitle and text added
+* (Scrounger): HTML Card Widget: background image refresh options added
+* (Scrounger): Fixed some errors reported via Sentry
+* (Scrounger): Select & Autocomplete Widget: overriding icon color bug fix
+* (Scrounger): Select & Autocomplete Widget: overriding icon bug fix
+* (Scrounger): Select & Autocomplete Widget: colors bug fixes
+* (Scrounger): Select & Autocomplete Widget: option to override the icon color of textfield for selected menu icon
+* (Scrounger): JSON Chart Widget: option to force x-axis time unit added
+* (Scrounger): JSON Chart Widget: gradient colors for multipe dataset bug fixes
+* (Scrounger): JSON Chart: default tooltip title added
+* (Scrounger): Charts Widget: x-Axis time axis bug fixes
 
 ### 0.3.19 (2020-07-18)
 * (Scrounger): Icon Button Widget: background color option for lock icon added

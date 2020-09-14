@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.swiss-weather-api/README.md
 title: ioBroker.swiss-weather-api
-hash: CPZQujwQq0ZDwyiBSYnMo2oF5Ya+m6HBcrh/60BZHrE=
+hash: pLbVrk1AXeOxB8SDnfr8FEkVce9i++LOGy0MotabGSg=
 ---
 ![商标](../../../en/adapterref/iobroker.swiss-weather-api/admin/swiss-weather-api.png)
 
@@ -20,7 +20,7 @@ hash: CPZQujwQq0ZDwyiBSYnMo2oF5Ya+m6HBcrh/60BZHrE=
 ##适用于ioBroker的swiss-weather-api适配器
 连接到出色的SRG-SSR天气API（https://developer.srgssr.ch/apis/srgssr-weather）。
 
-SRG-SSR Weather REST API使您可以从瑞士超过25.000个位置获取天气预报和报告。
+SRG-SSR Weather REST API可让您从瑞士超过25.000个地点获取天气预报和报告。
 
 **图标**
 
@@ -31,7 +31,8 @@ SRG-SSR Weather REST API使您可以从瑞士超过25.000个位置获取天气�
 **请注意，此适配器仅支持瑞士境内的位置。**
 
 ＃＃＃ 入门
-1.在https://developer.srgssr.ch/上免费获得权限
+1.在https://developer.srgssr.ch/上获得免费帐户
+1.确保使用产品“ SRG-SSR-PUBLIC-API-V2”，因为这是他们的免费产品
 1.转到“我的应用程序”并创建一个新的应用程序。这将创建一个特定的ConsumerKey和ConsumerSecret
 1.找出需要进行预测的所选位置的经度/纬度（十进制）
 1.在ioBroker上安装此适配器=>这可能需要几分钟（在Raspberry Pi 3上约为7分钟）
@@ -42,9 +43,12 @@ SRG-SSR Weather REST API使您可以从瑞士超过25.000个位置获取天气�
    1.需要预测的所选瑞士位置的经度/纬度。 =>请使用十进制度数（例如苏黎世：47.36667 / 8.5）
    1.以分钟为单位的轮询间隔（默认为30分钟）
 
-适配器启动后10秒钟进行第一个查询。首次启动后，查询将根据配置参数（以分钟为单位的轮询间隔）定期执行
+适配器启动后10秒钟进行第一个查询。首次启动后，将根据配置参数（以分钟为单位的轮询间隔）定期执行查询
 
 ## Changelog
+
+### 0.3.2
+* (baerengraben)  Fix for https://github.com/baerengraben/iobroker.swiss-weather-api/issues/13.
 
 ### 0.3.1
 * (baerengraben)  Adapter-Config attributes longitude & latitude is optional now. If no longitude/latitude is set, the adpater is getting the longitude/latitude from ioBroker System-Attributes (https://github.com/baerengraben/iobroker.swiss-weather-api/issues/6).

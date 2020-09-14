@@ -183,6 +183,14 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 ## Changelog
 
+### 1.6.6 (08.09.2020)
+* (simatec) Bugfix clean local backups
+* (simatec) Bugfix mount and umount for sentry.io
+
+### 1.6.5 (07.09.2020)
+* (simatec) Bugfix GoogleDrive Rate Limit errors 
+* (simatec) small fixes on zigbee backup
+
 ### 1.6.4 (04.09.2020)
 * (simatec) small fixes for sentry.io
 * (simatec) small fixes on zigbee backup

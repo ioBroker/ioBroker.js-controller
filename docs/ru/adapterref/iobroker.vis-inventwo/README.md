@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: FX5sU81e4rfOhyxZWUYuGGm/GfoXT7pYQyzoRIvQAtQ=
+hash: eGiC4Bt+/L2HwgNbAN17yjT6rDdUT7QYCc4kEmlN78k=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -13,16 +13,14 @@ hash: FX5sU81e4rfOhyxZWUYuGGm/GfoXT7pYQyzoRIvQAtQ=
 ![Количество установок (стабильно)](http://iobroker.live/badges/vis-inventwo-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/inventwo/iobroker.vis-inventwo.svg)
 ![Известные уязвимости](https://snyk.io/test/github/inventwo/iobroker.vis-inventwo/badge.svg)
-![НПМ](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
 
 # IoBroker.vis-inventorywo
 ## Schalter Widgets для адаптера ioBroker.vis
-ab v 2.0.0
+###### .. ab v 2.0.0
+<table><tr><td><center> <b>Универсальный</b> <br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Мульти</b> <br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Образ</b> <br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Стол</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>Список</b> <br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Шатер</b> <br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Переключатель</b> <br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Ползунок вертикальный</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>Слайдер горизонтальный</b> <br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr></table>
 
-![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Set_new.png)
-
-Версия 1.3.8
-
+###### .. v 1.3.8
 ![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Set.png)
 
 Mit Hilfe unserer Widgets lassen sich folgende Projekte verwirklichen. Zur Zeit нашел свое место в Unserem Adapter NUR die reinen Schaltflächen (siehe oben) und die Icons. Uhr und Wetter stammen aus anderen Adaptern und müssen ggf. zusätzlich installiert werden.
@@ -41,6 +39,22 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ---
 
+## 2.2.3
+- Фелер в JSON Tabelle behoben
+
+## 2.2.2
+- Fehler im Multi Widget behoben: Bilder und Text wechseln nicht bei Typ Navigation
+
+## 2.2.1
+- Fehler в JSON Tabelle behoben, wenn kein gültiges JSON-Objekt vorhanden ist
+- Fehler в Value-List behoben: Wert wird nicht aktualisiert
+
+## 2.2.0
+- Datenpunktwerte werden jetzt bei allen Widgets im Editor angezeigt
+- Новый виджет: Marquee (Laufschrift)
+- Универсальный и многосторонний Verweildauer hinzugefügt
+- Виджет списка Abstand zwischen den Einträgen kann eingestell werden
+
 ## 2.1.0
 - Datenpunktwerte werden im VIS Editor angezeigt!
 
@@ -50,7 +64,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Виджет-Untertitel behoben
 
 ## 2.0.0
-- Switch, Button, Nav and Background Widget (sowie die kleinen Ausführungen) zu einem einzigen Widget zussammengeführt -> dem Universal Widget
+- Переключатель, кнопка, навигация и фоновый виджет (sowie die kleinen Ausführungen) zu einem einzigen Widget zussammengeführt -> dem Universal Widget
 - Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte geprüft werden kann (Ähnlich der Signalbild Funktion)
 - Виджет изображения kann nun auf Datenpunkt prüfen
 - Радиокнопки hinzugefügt
@@ -71,7 +85,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Добавлена частота обновления таблицы
 
 ### 1.3.4
-- Удалены значки и фоны, изменен конфиг, Исправлена навигация.
+- Убраны значки и фоны, изменен конфиг, Исправлена навигация.
 
 ### 1.3.3
 - Исправлена опция значения фонового виджета
@@ -101,7 +115,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ### 1.2.0
 - Добавлен виджет изображений
-- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно щелкнуть каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
+- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно нажимать каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
 - Добавлены новые иконки
 
 ### 1.1.1
@@ -127,7 +141,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ...
 
 ### 0.1.0 (Erstveröffentlichung)
-- Виджеты дизайна inventorywo
+- Дизайн-виджеты inventorywo
 
 ...
 

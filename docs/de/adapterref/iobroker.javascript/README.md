@@ -64,24 +64,23 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 4.7.4 (2020-09-10)
+* (Bluefox) Fixed JS editor in blockly
+
+### 4.7.3 (2020-09-06)
+* (Bluefox) Fixed the select ID dialog
+
+### 4.7.2 (2020-09-05)
+* (Bluefox) Fixed blockly problem
+
 ### 4.7.1 (2020-09-04)
 * (Bluefox) Fixed styling
 
-### 4.7.0 (2020-09-04)
+### 4.7.0 (2020-09-03)
 * (AlCalzone) Allowed async functions whenever a callback is accepted
-* (AlCalzone) Allowed `true` as 2nd parameter in getObject 
+* (AlCalzone) Allowed `true` as 2nd parameter in getObject
 * (AlCalzone) Forced TypeScript to treat each script as a separate module
 * (Bluefox) Replaced the Select-ID dialog
-
-### 4.6.26 (2020-08-24)
-* (Apollon77) Catch error case when npm installation fails (Sentry IOBROKER-JAVASCRIPT-3K)
-* (Apollon77) Prevent crash case in mirroring (Sentry IOBROKER-JAVASCRIPT-3M)
-
-### 4.6.25 (2020-08-24)
-* (bluefox) Fixed the loading of page
-
-### 4.6.23 (2020-08-19)
-* (AlCalzone) fix type resolution for rxjs in TypeScripts
 
 ## License
 

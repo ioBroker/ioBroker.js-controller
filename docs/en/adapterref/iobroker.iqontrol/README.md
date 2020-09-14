@@ -69,7 +69,7 @@ Visit [iobroker forum](https://forum.iobroker.net/topic/22039/neuer-adapter-visu
 
 
 ## How to use
-**Don't be scared from the many options you have.**
+**Don't be scared of the many options you have.**
 Most things work right out of the box. You *can*, but you don't have to use all the configuration-possibilities iQontrol offers! Just start this way:
 * Start creating views.
 	You can consider views as something like a page.
@@ -92,12 +92,15 @@ Most things work right out of the box. You *can*, but you don't have to use all 
     * ``<port of web adapter>`` is usually 8082
 * To open a specified instance you can add ``namespace=iqontrol.<instance-number>`` as URL-parameter
 * To open a specified view as homepage you can add ``home=<viewID>`` as URL-parameter
-    * ``<viewID>`` needs to be formated like ``iqontrol.<insctance-number>.Views.<view-name>``
+    * ``<viewID>`` needs to be formatted like ``iqontrol.<instance-number>.Views.<view-name>``
+	* Note: this is case-sensitive!
+* To open a specified dialog while loading the page you can add ``openDialog=<deviceID>`` as URL-parameter
+    * ``<deviceID>`` needs to be formatted like ``iqontrol.<instance-number>.Views.<view-name>.devices.<device-number>`` where ``<device-number>`` starts from 0 (so the first device on a view is device number 0)
 	* Note: this is case-sensitive!
 * To set or override return after time settings, use the following parameters:
-    * ``returnAfterTimeTreshold=<time in seconds>`` to set the time, after wich the destination view is called. Use ``0`` to disable return after time feature.
-	* ``returnAfterTimeDestiationView=<viewID>`` to set the view, wich is called after the treshold. If not specified, the home view will be used.
-	* These options are helpful, if you call iQontrol from an wall mounted tablet, wich should automatically return to home-view after beeing used 
+    * ``returnAfterTimeTreshold=<time in seconds>`` to set the time, after which the destination view is called. Use ``0`` to disable return after time feature.
+	* ``returnAfterTimeDestiationView=<viewID>`` to set the view, which is called after the threshold. If not specified, the home view will be used.
+	* These options are helpful, if you call iQontrol from an wall mounted tablet, which should automatically return to home-view after being used 
 
 **Example:**
 * ``https://192.168.1.1:8082/iqontrol/index.html?namespace=iqontrol.1&home=iqontrol.1.Views.Living-Room``
@@ -136,7 +139,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 
 ## Popup-Messages
 * Every instance creates the state ``iqontrol.x.Popup.Message``
-* When passing values to these state, a popup-message (or toast) is displayed
+* When passing values to this state, a popup-message (or toast) will be displayed
 * You can use html-tags to format the message text
 * There are some additional states for further customization of the displayed popup (these must be set, before the message datapoint is set):
     * ``Duration``: This is the time in ms the message is displayed; if set to 0 the message has to be confirmed
@@ -157,8 +160,8 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 
 
 ## Description of roles and associated states
-Every device has a role, which defines the function of the device. Every role generates a set of states, which can be linked to a corresponding io-broker state.
-If you use the auto-create-function, you can choose an existing device from the io-broker-object tree.  Autocreate tries to find out the role and to match as many states as possible.
+Every device has a role, which defines the function of the device. Every role generates a set of states, which can be linked to a corresponding iobroker state.
+If you use the auto-create-function, you can choose an existing device from the iobroker-object tree.  Autocreate tries to find out the role and to match as many states as possible.
 This will only work for known devices. For unknown devices, and to give devices advanced features, you can add them manually via the (+)-Button or edit the devices that were created by autocreate.
 To edit the role and the states of a device, click on the pencil behind the device. You will find a short description of the roles and the used states below:
 
@@ -168,16 +171,16 @@ You can modify the configuration of datapoints via the wrench-icon behind a data
 * Set Invert-Flag
 * Set Confirm-Flag (forces the user to confirm before a change is written to a datapoint)
 * Set PIN-Code (forces the user to enter this PIN-Code before a change is written to a datapoint - but take care: this is only of low security, because the pin is checked in frontend! Use a number to display a fullscreen-pin-pad if asked for code)
-* Modify unit of datapoint, seperate for zero, singular and plural values
+* Modify unit of datapoint, separate for zero, singular and plural values
 * Modify min and max of datapoint
 * Set the steps that a level-slider takes when it is increased/decreased
 * Modify type of datapoint
 * Modify role of datapoint
-* Set a target-value-id, wich is a datapoint id, where target values are written to (if you have different data points for the actual and the target value)
+* Set a target-value-id, which is a datapoint id, where target values are written to (if you have different data points for the actual and the target value)
 * Set or modify a Value-List
-    * Add optinally an option to value list to enter free text
+    * Add optionally an option to value list to enter free text
 * Set a target-value-list:
-    * In addition to the target-value-id, you can define different datapoint-ids and target-values for different keys (keys are possible values of the orgiginal datapoint)
+    * In addition to the target-value-id, you can define different datapoint-ids and target-values for different keys (keys are possible values of the original datapoint)
     * You can also use the wildcard ``*`` in the keys and in the target-values
 	* Example: 
 	    * Key: ``TuneIn-Playlist: *``, Target-Datapoint ID: ``alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist``, Target-Value: ``*``
@@ -189,7 +192,7 @@ You can modify the configuration of datapoints via the wrench-icon behind a data
   
 ### General states:
 #### STATE and LEVEL
-Almost all roles have a **STATE**- and/or a **LEVEL**-state. In most cases this represents the main function of the device. You can assign io-broker-states of the following types to it:
+Almost all roles have a **STATE**- and/or a **LEVEL**-state. In most cases this represents the main function of the device. You can assign iobroker-states of the following types to it:
 * *boolean* - if possible, it will be translated to a senseful text like 'on/off', 'opened/closed' or similar. If you click on the icon of a tile it tries to toggle the boolean (for example to turn a light on or off). If it is not read-only it will generate a flip-switch in the dialog
 * *number* - will be displayed with its corresponding unit and generate a slider in the dialog
 * *string* - a text to be displayed
@@ -202,7 +205,12 @@ Almost all roles have a **STATE**- and/or a **LEVEL**-state. In most cases this 
         }
         ````
     * You can create your own value list by modifying the datapoint (wrench-icon behind the datapoint in the objects-tab of iobroker, see above)
-	* If the device-tile will be displayed as active or inactive is also determined from the STATE or LEVEL-Datapoint. However, you can freely customize the behavior in the options section 'Conditions for an Active Tile'. You can even set another external datapoint that determines the state of the tile
+	* iQontrol will display a defined valueList as a drop down field in the dialog under the following circumstances:
+	    * if type is 'numbers' and the valueList has exact as many entries, as steps between min- and max of the datapoint or
+		* if type is 'boolean', but role is not 'switch' or
+		* if type is 'string' or
+		* if "Add option to enter free text" is activated
+* If the device-tile will be displayed as active or inactive is also determined from the STATE or LEVEL-Datapoint. Furthermore, you can freely customize the behavior in the options section 'Conditions for an Active Tile'. You can even set another external datapoint that determines the state of the tile
 
 However, not every type makes sense to every role. So the STATE of a switch for example will be a boolean in most cases, to be able to be toggled between on and off. A string may be displayed, but the switch will not be functional.
 
@@ -213,7 +221,7 @@ However, not every type makes sense to every role. So the STATE of a switch for 
 * **BACKGROUND_URL**: CONSTANT *string* - this url will be shown as background of the device-tile. It is placed above the background-images, but you can configure it to be hidden, if the tile is active or inactive.
 * **BACKGROUND_HTML**: CONSTANT *string* - this markup will be displayed as background of the device-tile, if no BACKGROUND_URL is specified
 * **BATTERY**: *boolean* - when true or *number* - when less than 10%, a little battery-empty-icon will be displayed
-    * You can further customize the behavior of the battery-icon in the options section 'BATTERY Empty Icon'
+    * You can further customize the behaviour of the battery-icon in the options section 'BATTERY Empty Icon'
 * **ERROR**: *boolean* - when true, a little exclamation-mark-icon will be displayed
 * **UNREACH**: *boolean* - when true, a little wireless-icon will be displayed
     * Behaviour can be inverted in the 'General' section of options (use connected instead of unreach)
@@ -228,8 +236,8 @@ However, not every type makes sense to every role. So the STATE of a switch for 
 
 ### <img src="img/icons/button.png" width="32"> Button:
 * **STATE**: *any* - any desired type of state
-* **SET_VALUE**: CONSTANT *string* - this is a constant (not a linked io-broker-state!) that will be assigned to the STATE if the button is pressed
-* **OFF_SET_VALUE**: CONSTANT *string* - this is a constant (not a linked io-broker-state!). If defined, STATE will be resetted to this value after the in options defined time or 100ms
+* **SET_VALUE**: CONSTANT *string* - this is a constant (not a linked iobroker-state!) that will be assigned to the STATE if the button is pressed
+* **OFF_SET_VALUE**: CONSTANT *string* - this is a constant (not a linked iobroker-state!). If defined, STATE will be resetted to this value after the in options defined time or 100ms
 
 ### <img src="img/icons/light_on.png" width="32"> Light:
 Every light may have one or both of the following states:
@@ -237,16 +245,16 @@ Every light may have one or both of the following states:
 * **LEVEL**: *number* - show and set the level of the light
 
 Optional you can define the following states:
-* For coloured LEDs (HSB-color-space):
+* For colored LEDs (HSB-color-space):
     * **HUE**: *number* - color of the light from 0-360° (hue format)
     * **SATURATION**: *number* - saturation of the light (from white to pure color)
     * **COLOR_BRIGHTNESS**: *number* - the brightness of the colored LEDs (if you have a LEVEL-State and no white LEDs, this is ignored, because brightness is controled completely by LEVEL)
 * For white LEDs:
     * **CT**: *number* - color-temperature of the light, if it has two shades of white
-    * **WHITE_BRIGHTNESS**: *number* - the brightness of the white LEDs (if you have a LEVEL-State and no coloured LEDs, this is ignored, because brightness is controled completely by LEVEL)
-* Alternative color-spaces:
-    * **ALTERNATIVE_COLORSPACE_VALUE**: *string* or *number* (depending on the chosed colorspace) - the value of the alternative colorspace
-    If your device does not support using HUE, SATURATION and COLOR_BRIGHTNESS (HSB/HSV-color-space) you can use a variety of alternative colorspaces. In the device-options you can chose one of the following colorspaces:	
+    * **WHITE_BRIGHTNESS**: *number* - the brightness of the white LEDs (if you have a LEVEL-State and no colored LEDs, this is ignored, because brightness is controled completely by LEVEL)
+* Alternative colorspaces:
+    * **ALTERNATIVE_COLORSPACE_VALUE**: *string* or *number* (depending on the chosen colorspace) - the value of the alternative colorspace
+    If your device does not support using HUE, SATURATION and COLOR_BRIGHTNESS (HSB/HSV-colorspace) you can use a variety of alternative colorspaces. In the device-options you can chose one of the following colorspaces:	
         * **RGB** / **#RGB**: instead of using HUE, SATURATION and COLOR_BRIGHTNESS you can use the RGB-Format (hex), optional with leading '#'
         * **RGBW** / **#RGBW**: instead of using HUE, SATURATION, COLOR_BRIGHTNESS and WHITE_BRIGHTNESS you can use the RGBW-Format (hex), optional with leading '#'
         * **RGBWWCW** / **#RGBWWCW** / **RGBCWWW** / **#RGBCWWW**: instead of HUE, SATURATION, COLOR_BRIGHTNESS, CT and WHITE_BRIGHTNESS you can use the RGBWWCW- or RGBCWWW-Format (hex, WW = warm white, CW = cold white), optional with leading '#'
@@ -300,7 +308,7 @@ In addition to normal thermostat you can define:
 
 ### <img src="img/icons/door_closed.png" width="32"> Door, <img src="img/icons/window_closed.png" width="32"> Window:
 * **STATE**: *boolean* - display if the door or window is opened or closed
-    * Alternatively you can assign a *value-list*, to display additional states like 'tilted' (in options of windows you can define wich text stands for opened, closed an tilted to display the correct icon)
+    * Alternatively you can assign a *value-list*, to display additional states like 'tilted' (in options of windows you can define which text stands for opened, closed an tilted to display the correct icon)
     * You can also assign a *string* to display any text like "3 windows open" or "all closed" or a *number*
 * The **linked-view-property** is opened directly
 
@@ -321,7 +329,7 @@ In addition to normal thermostat you can define:
 * **DIRECTION**: *value-list* - can be Stop, Up and Down. The values that represent Stop, Up, Down and Unknown can be configured
 * **STOP**: *boolean* - is set to true, if the stop button is pressed
 * **UP** / **DOWN**: *boolean* - is set to true, if the up / down button is pressed (for devices, that use UP and DOWN datapoints instead of or in addition to LEVEL). Additional you can define a value via the **UP_SET_VALUE** / **DOWN_SET_VALUE** Datapoints. If defined, this value will be sent instead of true, when the Up / Down button is pressed
-* **FAVORITE_POSITION**: *boolean* - can be used to recall a favorite position. If the Favorite button (button caption can be configured in the device settings) is pressed, true will be sent to this datapoint. Additional you can define a value via the **FAVORITE_POSITION_SET_VALUE** Datapoint. If defined, this value will be sent instead of true, when the favorite button is pressed 
+* **FAVORITE_POSITION**: *boolean* - can be used to recall a favorite position. If the Favourite button (button caption can be configured in the device settings) is pressed, true will be sent to this datapoint. Additional you can define a value via the **FAVORITE_POSITION_SET_VALUE** Datapoint. If defined, this value will be sent instead of true, when the favorite button is pressed 
 * **SLATS_LEVEL**: *number* - position of slats in percentage
 
 ### <img src="img/icons/fire_on.png" width="32"> Fire-Sensor:
@@ -367,22 +375,22 @@ In addition to normal thermostat you can define:
 * **TRACK_NUMBER**: *number* - self explaining
 * **PREV, REWIND, PLAY, PAUSE, STOP, FORWARD, NEXT**: *boolean* - will be set to true, if the corresponding button is pressed
 * **SHUFFLE, MUTE, PLAY_EVERYWHERE, EJECT, POWER_SWITCH**: *boolean* - state for corresponding function
-* **REPEAT**: *boolean* - state for repeat function or *string* - 3 states can be definded via the coressponding options: value for off, repeat-all and repeat-one
+* **REPEAT**: *boolean* - state for repeat function or *string* - 3 states can be defined via the corresponding options: value for off, repeat-all and repeat-one
 * **DURATION, ELAPSED**: *number* - duration and elapsed time of actual title - used to show a seek-bar
 * **VOLUME**: *number* - for volume-slider
 * **SOURCE, PLAYLIST**: *value-list* - show select-menu to chose a source or a title from playlist
 
 ##### To display a *universal remote control* you can define the following states:
-* **REMOTE_NUMBER**: *string* - shows a num-pad an returnes the corresponding number, if a number is clicked
-* **REMOTE_VOLUME_UP, REMOTE_VOLUME_UP, REMOTE_CH_UP, REMOTE_CH_DOWN**: *string* - shows buttons vor volume up/down and channel up/down and returns 'volumeUp', 'volumeDown', 'chUp' or 'chDown', if the corresponding button is pressed
+* **REMOTE_NUMBER**: *string* - shows a num-pad an returns the corresponding number, if a number is clicked
+* **REMOTE_VOLUME_UP, REMOTE_VOLUME_UP, REMOTE_CH_UP, REMOTE_CH_DOWN**: *string* - shows buttons for volume up/down and channel up/down and returns 'volumeUp', 'volumeDown', 'chUp' or 'chDown', if the corresponding button is pressed
 * **REMOTE_PAD_DIRECTION, REMOTE_PAD_BACK, REMOTE_PAD_HOME, REMOTE_PAD_MENU**: *string* - shows a trackpad for navigation and returns 
     * 'ok' if the middle of the pad is clicked, 
 	* 'left', 'right', 'up' or 'down', if the edges of the pad are clicked or the pad is swiped in the corresponding direction or
 	* 'back', 'home' or 'menu*, if the corresponding buttons are clicked
 	* Keep in mind: You can use the Target-Value-List (accessible via the wrench-icon of each datapoint) to link from one datapoint to multiple datapoints, depending on the returned value (see Modifying Datapoints section above)
-* **REMOTE_COLOR**: *string* - shows colored buttons an returnes the corresponding color ('red', 'green', 'yellow' or 'blue'), if a color is clicked
+* **REMOTE_COLOR**: *string* - shows colored buttons an returns the corresponding color ('red', 'green', 'yellow' or 'blue'), if a color is clicked
 * **REMOTE_ADDITIONAL_BUTTONS**: *array* - an array of buttons. The name of the button is sent to the corresponding state-id, if the button is clicked
-* **REMOTE_HIDE_REMOTE**: *booelan* - if true, the complete remote control section will be hidden (for example to show it only, if a valid source is selected)
+* **REMOTE_HIDE_REMOTE**: *boolean* - if true, the complete remote control section will be hidden (for example to show it only, if a valid source is selected)
 
 ### <img src="img/icons/popup.png" width="32"> Popup:
 * **STATE**: *any* - can be used to display further information
@@ -391,11 +399,15 @@ In addition to normal thermostat you can define:
 * **STATE**: *any* - can be used to display further informations
 * **URL**: CONSTANT *string* - this url will be opened
 
+### <img src="img/icons/widget_on.png" width="32"> Widget:
+This device has some special predefined size- and display-settings to show a website, that can be defined by **BACKGROUND_URL**, as a widget. With default options, a small enlarge-button will be shown on the upper right side.
+* **STATE**: *any* - SPECIAL: If empty, a virtual datapoint will be created, so you can click on the icon, to activate and therefore maximize the size of the widget
+
 
 ****
 
 ## Troubleshooting
-* Make shure you fulfilled the 'You need...' section at top of this page
+* Make sure you fulfilled the 'You need...' section at top of this page
 * If something doesn't work like expected after update please try the following steps:
     * Start upload of adapter:
     \
@@ -407,7 +419,7 @@ In addition to normal thermostat you can define:
 * Start iQonrol with opened debugging-console of your browser (mostly you need to press <kbd>F12</kbd> to open it) 
 * Switch to the console-window and reproduce the bug
 * Look for messages in the console-window
-* When errors appear, the number of the line, wich caused the error, is listed
+* When errors appear, the number of the line, which caused the error, is listed
 * Please click on this line-number and make a screenshot of the faulty line:
 
 ![Troubleshooting console window](img/troubleshooting_consolewindow.png)
@@ -418,13 +430,32 @@ In addition to normal thermostat you can define:
 
 ## Changelog
 
-### dev
-* (sbormann) Enhanced TileActiveConditions to even work, if not STATE is definded.
-* (sbormann) Enhanced BACKGROUND_HTML noch to flicker, when changing value.
+### 1.2.4 (2020-09-14)
+* (sbormann) Ignore readonly for enlarge.
+* (sbormann) Always show enlarge button, if tile is enlarged.
+* (sbormann) Enhanced some styles and marquee detection.
+* (sbormann) Added url-parameter to open a specified dialog on loading the page.
+* (sbormann) Changed the way cover images are loaded.
+* (sbormann) Added option to start with new line for devices.
+* (sbormann) Tiles with no link to other view now open dialog by default.
+* (sbormann) Added mouse cursor styles depending on tile actions (open dialog, toggle, link to view, external link, ...).
+* (sbormann) You can now chose caption and appearance (always visible, collapsible closed, collapsible opened) of ADDITIONAL_INFO.
+
+### 1.2.3 (2020-09-07)
+* (sbormann) Now it will be automatically scrolled to tile that is switched to Screen Size.
+* (sbormann) New options to set tile size for an enlarged state, which can be toggled via a new enlarge-button and via the pressure menu (both needs to be turned on in options).
+* (sbormann) Modified the widget-device to use the new enlarge-button and use a blank icon by default.
+
+### 1.2.2 (2020-09-05)
+* (sbormann) Enhanced TileActiveConditions to even work, if STATE is not defined.
 * (sbormann) Added option to rename section 'Additional Buttons' for remote.
 * (sbormann) Arrays like REMOTE_ADDITIONAL_BUTTONS are now sortable.
-* (sbormann) Enhanced handling for BACKGROUND_URL/HTML.
+* (sbormann) Enhanced handling of BACKGROUND_URL/HTML.
 * (sbormann) Added options to change caption of UP, STOP and DOWN for blinds.
+* (sbormann) Disabled scrolling to top by reconnection.
+* (sbormann) Added more tile size options (full width with different aspects and full screen).
+* (sbormann) Fixed a bug where frontend could crash in endless loop.
+* (sbormann) Added Widget to devices.
 
 ### 1.2.1 (2020-28-30)
 * (sbormann) If STATE in Dialog contains (valid) HTML-Code, it is now rendered as HTML and - if state is not readonly - a HTML-Editor is shown.
@@ -446,7 +477,7 @@ In addition to normal thermostat you can define:
 * (sbormann) Bugfixing remote control.
 * (sbormann) Added option to configure conditions for active battery-empty-icon.
 * (sbormann) Dialog is now repositioned and bigger when phone is rotated to horizontal view.
-* (sbormann) Breaking Change: Using now shuffle.js to reposition the tiles after resizig or orientation change. For now its only a nice effect, but this opens possibilities for future development with different tile-sizes.
+* (sbormann) Breaking Change: Using now shuffle.js to reposition the tiles after resizing or orientation change. For now its only a nice effect, but this opens possibilities for future development with different tile-sizes.
 
 ### 1.1.13 (2020-08-23)
 * (sbormann) Added option to remote to show vol and ch +/- inside pad.
@@ -477,7 +508,7 @@ In addition to normal thermostat you can define:
 * (sbormann) Fixed crash on some toolbar specifications.
 
 ### 1.1.8 (2020-08-02)
-* (sbormann) Enhanced rendering of colour-lights with alternative colorspace.
+* (sbormann) Enhanced rendering of color-lights with alternative colorspace.
 * (sbormann) Added rounded corners to iframe.
 * (sbormann) Added sans-serif as standard font-family to iframe (may overwrite your settings - you can overwrite this by marking your own font-family css with '!important').
 * (sbormann) Added sentry plugin.
@@ -519,7 +550,7 @@ In addition to normal thermostat you can define:
 * (sbormann) Added function repeat one to Media-Player.
 * (sbormann) Maquee is only restarting, if the value of a state has really changed.
 * (sbormann) Fixed crash when some ids of linked views were missing.
-* (sbormann) Added targetValues to custom configuration, wich allows to send changes of a state to different target-datapoints.
+* (sbormann) Added targetValues to custom configuration, which allows to send changes of a state to different target-datapoints.
 
 ### 1.1.0 (2020-06-13)
 * (sbormann) Added Media-Player.
@@ -546,7 +577,7 @@ In addition to normal thermostat you can define:
 * (sbormann) Revised pressure/forced touch and added option to always use time instead of pressure.
 
 ### 0.4.0 (2020-05-13)
-* (sbormann) Major change using socket.io without conn.js wich leads to a much faster initial connection.
+* (sbormann) Major change using socket.io without conn.js which leads to a much faster initial connection.
 * (sbormann) Improved loading and scrolling for popups.
 
 ### 0.3.7 (2020-05-06)
@@ -598,7 +629,7 @@ In addition to normal thermostat you can define:
 
 ### 0.2.16 (2020-01-14)
 * (sbormann) Fixed custom step for heating control.
-* (sbormann) Fixed universal popup wich was displayed, even when empty.
+* (sbormann) Fixed universal popup which was displayed, even when empty.
 
 ### 0.2.15 (2020-01-07)
 * (sbormann) Added svg as possible image to upload.
@@ -665,7 +696,7 @@ In addition to normal thermostat you can define:
 * (sbormann) Added slats level to blind.
 
 ### 0.1.15 (2019-09-05)
-* (sbormann) Added step to custom dialog, wich allowes to define the resolution of value-sliders.
+* (sbormann) Added step to custom dialog, which allowes to define the resolution of value-sliders.
 * (sbormann) Values with unit % and a range from min to max of 0-1 are now scaled to 0-100.
 * (sbormann) Fixed conversion to alternative colorspace for hue lights.
 
@@ -766,7 +797,7 @@ In addition to normal thermostat you can define:
 * (sbormann) Added Garage Door.
 
 ### 0.0.47 (2019-07-22)
-* (sbormann) Added targetValueId inside custom datapoint configuration dialog wich allowes to have different datapoints vor actual value and for target value.
+* (sbormann) Added targetValueId inside custom datapoint configuration dialog which allowes to have different datapoints vor actual value and for target value.
 * (sbormann) Added invert-flag inside custom datapoint configuration dialog.
 
 ### 0.0.46 (2019-07-20)
@@ -823,7 +854,7 @@ In addition to normal thermostat you can define:
 * (sbormann) Further improvments of forced touch with force-indicator and hopefully a better compatibility with more devices.
 
 ### 0.0.34
-* (sbormann) Added forced touch menu (press hard or press long on unsupported devices), wich will give more room for extended features in future.
+* (sbormann) Added forced touch menu (press hard or press long on unsupported devices), which will give more room for extended features in future.
 * (sbormann) Linked Views can now be set for all roles and are available in the dialog and by a forced touch.
 * (sbormann) Added timestamp for Window, Door, Fire, Temperature, Humidity, Brightness and Motion.
 * (sbormann) Fixed issure 49 (state for role switch if type is number).
@@ -840,7 +871,7 @@ In addition to normal thermostat you can define:
 
 ### 0.0.31
 * (sbormann) Fixed some typos.
-* (sbormann) Enhanced colour-mixing of light with seperate brightness-datapoints for color and white.
+* (sbormann) Enhanced color-mixing of light with seperate brightness-datapoints for color and white.
 * (sbormann) Rewritten rendering of view as praparation for further enhancements.
 * (sbormann) Rewritten rendering of dialog as praparation for further enhancements.
 * (sbormann) Added option to colorize Device-Texts.
@@ -850,7 +881,7 @@ In addition to normal thermostat you can define:
 
 ### 0.0.29
 * (sbormann) changed parts of the code to be backward-compatible to older browsers like ie 11.
-* (sbormann) Now its possible to define a value list for a data point under .native.states wich will have a greater priority than a value list under .common.states. 
+* (sbormann) Now its possible to define a value list for a data point under .native.states which will have a greater priority than a value list under .common.states. 
 * (sbormann) Updated dependency for axios to 0.0.19 to fix a scurity issue.
 
 ### 0.0.28
@@ -918,7 +949,7 @@ In addition to normal thermostat you can define:
 ### 0.0.16
 * (sbormann) Role of device is displayed in devices-table.
 * (sbormann) VALVE_STATES is now editable via GUI (show opening of valves associated with a thermostat in percentage).
-* (sbormann) Added Role 'Button': You can define a constant SET_VALUE wich will be written to the ID that is linked with STATE if the button is pressed.
+* (sbormann) Added Role 'Button': You can define a constant SET_VALUE which will be written to the ID that is linked with STATE if the button is pressed.
 * (sbormann) Rewritten parts of front-end to guarentee better compatibility. Boost-Mode for Homematic-Thermostat should work now.
 * (sbormann) Added state BOOST_STATE for Homematic-Thermostat - ability to display remaining boost-time if in boost-mode.
 * (sbormann) Added dessription of roles and corresponding states.

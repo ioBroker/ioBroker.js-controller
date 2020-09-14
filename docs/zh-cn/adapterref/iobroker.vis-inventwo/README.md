@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: FX5sU81e4rfOhyxZWUYuGGm/GfoXT7pYQyzoRIvQAtQ=
+hash: eGiC4Bt+/L2HwgNbAN17yjT6rDdUT7QYCc4kEmlN78k=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -17,12 +17,10 @@ hash: FX5sU81e4rfOhyxZWUYuGGm/GfoXT7pYQyzoRIvQAtQ=
 
 ＃ioBroker.vis-inventwo
 ## Schalter窗口小部件ioBroker.vis适配器
-Ab v 2.0.0
+###### .. ab v 2.0.0
+<table><tr><td><center> <b>普遍</b> <br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>多</b> <br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>图片</b> <br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>表</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>清单</b> <br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>选框</b> <br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>单选按钮</b> <br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>垂直滑块</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>水平滑块</b> <br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr></table>
 
-![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Set_new.png)
-
-v 1.3.8
-
+###### .. v 1.3.8
 ![贝斯皮尔](../../../en/adapterref/iobroker.vis-inventwo/admin/Set.png)
 
 米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
@@ -33,13 +31,29 @@ v 1.3.8
 ---
 
 ##Unterstützung
-Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱恩·乌斯·杰德·斯彭德。
+瀑布下的瀑布，阿尔弗雷德·杰德·斯彭德的瀑布。
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
 [![Spende]（admin / spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.2.3
+-JSON Tabelle behoben中的Fehler
+
+## 2.2.2
+-Fehler im Multi Widget behoben：文本和文字的类型导航
+
+## 2.2.1
+-JSON中的Fehler Tabelle behoben，wen keingültigesJSON-Objekt vorhanden ist
+-价值清单《 behoben》中的费勒：Wert wird nicht aktualisiert
+
+## 2.2.0
+-Datenpunktwerte werden jetzt bei allen Widgets in Editor编辑
+-Neues小部件：Marquee（Laufschrift）
+-通用和多州Verweildauerhinzugefügt
+-列表小部件Abstand zwischen denEinträgenkann eingestell werden
 
 ## 2.1.0
 -VIS编辑器中的Datenpunktwerte werden！
@@ -51,7 +65,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 
 ## 2.0.0
 -开关，按钮，导航和背景小部件（显示小部件）-> dem通用小部件
--多功能小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere Datenpunkte and Wertegeprüftwerden kann）
+-多功能小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere）
 -图像小部件kann nun auf Datenpunktprüfen
 -单选按钮hinzugefügt
 -Wertelistehinzugefügt（Kann Liste aus einem Datenpunkt oder manuell eingetragenem Text erstellen）
@@ -65,7 +79,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 
 ### 1.3.6
 -添加了导航的设置状态选项
--修复了没有配置的数据点问题
+-解决了没有配置的数据点的问题
 
 ### 1.3.5
 -增加了表格的刷新率
@@ -101,7 +115,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 
 ### 1.2.0
 -添加了图像小部件
--添加了Slider来更改所有4个角的边界半径（如果此版本是您的更新，则需要单击vis-editor中的每个按钮以恢复默认角）
+-添加了Slider以更改所有4个角的边界半径（如果此版本是您的更新，则需要单击vis-editor中的每个按钮以恢复默认角）
 -添加了新图标
 
 ### 1.1.1

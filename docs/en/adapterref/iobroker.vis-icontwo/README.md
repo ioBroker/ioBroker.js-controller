@@ -27,17 +27,21 @@ Alle Icons sind über den Dateimanager (auf der obersten Ebene) im vis-icontwo O
 
 Eine kleine Vorschau über den Stil der Icons:
 
-Z.B. Lights (Teilauswahl)
+Z.B. Lights (Teilauswahl):
 
 ![Screenshot](admin/Screen_002.png)
 
-Z.B. Rooms (Teilauswahl)
+Z.B. Rooms (Teilauswahl):
 
 ![Screenshot](admin/Screen_003.png)
 
-Z.B. Devices (Teilauswahl)
+Z.B. Devices (Teilauswahl):
 
 ![Screenshot](admin/Screen_004.png)
+
+Eine vollständige Übersicht aller Icons ist hier zu finden (die Ordnerstruktur ist die selbe, wie im Dateimanager):
+
+-> http://icontwo.inventwo.com <-
 
 ---
 
@@ -52,6 +56,18 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog / Änderungsprotokoll
+
+### 0.19.1
+
+• (skvarel) - Index & Readme angepasst (Icon Overview)
+
+### 0.19.0
+
+• (skvarel) - Neue Icons hinzugefügt (Lights & Alarm)
+
+### 0.18.0
+
+• (skvarel) - Neue Icons hinzugefügt (Rooms)
 
 ### 0.17.1
 

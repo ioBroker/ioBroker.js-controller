@@ -2,10 +2,10 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.swiss-weather-api/README.md
-title: ioBroker.swiss-погода-апи
-hash: CPZQujwQq0ZDwyiBSYnMo2oF5Ya+m6HBcrh/60BZHrE=
+title: ioBroker.swiss-weather-api
+hash: pLbVrk1AXeOxB8SDnfr8FEkVce9i++LOGy0MotabGSg=
 ---
-![логотип](../../../en/adapterref/iobroker.swiss-weather-api/admin/swiss-weather-api.png)
+![Логотип](../../../en/adapterref/iobroker.swiss-weather-api/admin/swiss-weather-api.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.swiss-weather-api.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.swiss-weather-api.svg)
@@ -14,13 +14,13 @@ hash: CPZQujwQq0ZDwyiBSYnMo2oF5Ya+m6HBcrh/60BZHrE=
 ![Статус зависимости](https://img.shields.io/david/baerengraben/iobroker.swiss-weather-api.svg)
 ![Известные уязвимости](https://snyk.io/test/github/baerengraben/ioBroker.swiss-weather-api/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.swiss-weather-api.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/baerengraben/ioBroker.swiss-weather-api/master.svg)
+![Трэвис-Си](http://img.shields.io/travis/baerengraben/ioBroker.swiss-weather-api/master.svg)
 
 # IoBroker.swiss-weather-api
 ## Swiss-weather-api адаптер для ioBroker
 Подключается к отличному API погоды SRG-SSR (https://developer.srgssr.ch/apis/srgssr-weather).
 
-SRG-SSR Weather REST API позволяет получать прогнозы погоды и отчеты из более чем 25 000 мест по всей Швейцарии.
+API REST погоды SRG-SSR позволяет получать прогнозы погоды и отчеты из более чем 25 000 мест по всей Швейцарии.
 
 ** Иконки **
 
@@ -32,6 +32,7 @@ SRG-SSR Weather REST API позволяет получать прогнозы п
 
 ### Начиная
 1. Получите бесплатный аккаунт на https://developer.srgssr.ch/.
+1. Убедитесь, что используете продукт "SRG-SSR-PUBLIC-API-V2", поскольку это их бесплатный продукт.
 1. Перейдите в «Мои приложения» и создайте новое приложение. Это создаст определенные ConsumerKey и ConsumerSecret.
 1. Узнайте долготу / широту (в десятичных градусах) выбранного места, для которого требуется прогноз.
 1. Установите этот адаптер на ioBroker => Это может занять несколько минут (~ 7 минут на Raspberry Pi 3)
@@ -45,6 +46,9 @@ SRG-SSR Weather REST API позволяет получать прогнозы п
 Первый запрос выполняется через 10 секунд после запуска адаптера. После первого запуска запрос будет выполняться регулярно в соответствии с параметром конифугирования (Интервал опроса в минутах)
 
 ## Changelog
+
+### 0.3.2
+* (baerengraben)  Fix for https://github.com/baerengraben/iobroker.swiss-weather-api/issues/13.
 
 ### 0.3.1
 * (baerengraben)  Adapter-Config attributes longitude & latitude is optional now. If no longitude/latitude is set, the adpater is getting the longitude/latitude from ioBroker System-Attributes (https://github.com/baerengraben/iobroker.swiss-weather-api/issues/6).

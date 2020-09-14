@@ -33,33 +33,7 @@ A small excerpt just of the command options:
 ### 1.0.1 (2019-06-20)
 * (arteck) encodeURL
 
-### 1.0.0 (2019-05-22)
-* (arteck) stable
 
-### 0.0.17 (2019-05-01)
-* (arteck) add queue
-
-### 0.0.16 (2019-02-28)
-* (arteck) fix url send
-
-### 0.0.13 (2019-02-09)
-* (arteck) support for compact-mode added
-
-### 0.0.12 (2019-01-04)
-
-### 0.0.11 (2019-01-01)
-* (arteck) exception handling
-
-
-### 0.0.8 (2018-12-22)
-* (arteck) psw field crypted
-*          clear added
- 
-### 0.0.7 (2018-12-16)
-* (arteck) bug 'no config' corr
-
-### 0.0.6 (2018-12-10)
-* (arteck) first free test version
 
 ## License
 The MIT License (MIT)

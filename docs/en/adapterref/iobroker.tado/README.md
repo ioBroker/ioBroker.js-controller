@@ -25,6 +25,9 @@ If you like my work, please feel free to provide a personal donation
     ## __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__ release comment
+* (DutchmanNL) 
+
 ### 0.2.0-beta.1 (2020-08-29)
 * (DutchmanNL) Update dependency's
 * (DutchmanNL) Update testing, remove node 8 and add node 14

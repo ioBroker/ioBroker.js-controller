@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nanoleaf-lightpanels/README.md
 title: ioBroker.nanoleaf-lightpanels Adapter
-hash: FlaVm2XCGKtNst7aFNLgDhkCB6NwfjnVTTD7oyQPlQM=
+hash: JOJd7PfdENk2ezyZ4MVLXehagWUnnuGik3WsCynFRog=
 ---
 ![Logo](../../../en/adapterref/iobroker.nanoleaf-lightpanels/admin/nanoleaf-lightpanels.png)
 
@@ -16,7 +16,7 @@ hash: FlaVm2XCGKtNst7aFNLgDhkCB6NwfjnVTTD7oyQPlQM=
 # IoBroker.nanoleaf-lightpanels Adapter
 =================
 
-Dies ist ein ioBroker-Adapter zur Steuerung der Nanoleaf Light Panels (früher Nanoleaf Aurora) oder des Nanoleaf Canvas über das Nanoleaf OpenAPI.
+Dies ist ein ioBroker-Adapter zur Steuerung der Nanoleaf Light Panels (ehemals Nanoleaf Aurora) oder des Nanoleaf Canvas über das Nanoleaf OpenAPI.
 
 ## Verbindung zum Nanoleaf Light Panels / Canvas Controller:
 1. In den Adaptereinstellungen müssen Sie die IP-Adresse oder den Hostnamen und den Port des Nanoleaf-Controllers festlegen. Mit der Suchfunktion können Sie alle Nanoleaf-Geräte in Ihrem Netzwerk ermitteln.
@@ -29,8 +29,12 @@ Klicken Sie dann innerhalb von 30 Sekunden auf die Schaltfläche 'Autorisierungs
 4. Speichern Sie die Einstellungen.
 5. Viel Spaß!
 
-Da Light Panels-Firmware-Version> 3.1.0 und Canvas-Firmware-Version> 1.1.0 Server Sent Events (SSE) für direkte Statusaktualisierungen verwendet werden können. Für Canvas-Geräte werden Berührungsereignisse unterstützt.
-Bitte beachten Sie: Um festzustellen, ob das Nanoleaf-Gerät noch am Leben ist, wurden alle 60 Sekunden SSDP-Benachrichtigungsnachrichten vom Nanoleaf-Gerät gesendet. Stellen Sie sicher, dass Sie UDP-Multicast-Nachrichten an Port 1900 empfangen können (überprüfen Sie die Firewall und das Routing). Andernfalls erhalten Sie im Adapter eine Fehlermeldung, dass die Verbindung unterbrochen wurde.
+### Direkte Statusaktualisierung über Server Sent Events (SSE)
+Da Light Panels Firmware-Version> 3.1.0 und Canvas-Firmware-Version> 1.1.0 Server Sent Events (SSE) für direkte Statusaktualisierungen verwendet werden können. Für Canvas-Geräte werden Berührungsereignisse unterstützt.
+
+_Bitte beachten Sie: _ Um festzustellen, ob das Nanoleaf-Gerät noch am Leben ist, wurden alle 60 Sekunden SSDP-Benachrichtigungsnachrichten vom Nanoleaf-Gerät gesendet. Stellen Sie sicher, dass Sie UDP-Multicast-Nachrichten an Port 1900 empfangen können (überprüfen Sie die Firewall und das Routing). Andernfalls erhalten Sie im Adapter eine Fehlermeldung, dass die Verbindung unterbrochen wurde. Wenn Sie Probleme mit Keep Alive haben, stellen Sie bitte die richtige Adapterschnittstelle in den Admin-Einstellungen für den Nanoleaf-Adapter ein.
+Stellen Sie zum Suchen von Geräten sicher, dass Sie Datenverkehr über den UDP-Port 5000 empfangen können.
+
 Die Einstellung für das Abfrageintervall für Statusaktualisierungen betrifft nur Geräte mit niedrigeren Firmware-Versionen, bei denen die Abfrage für Statusaktualisierungen verwendet wird.
 
 ## Alexa
@@ -49,13 +53,24 @@ im Cloud-Adapter unter demselben Smartnamen.
 ## IoBroker Visualisierung
 Die Nanoleaf Light Panels / Canvas können in ioBroker Visualization gesteuert werden, indem grundlegende Widgets wie "Radiobuttons on / off" oder Schieberegler zur Steuerung des Leistungszustands, der Helligkeit, des Farbtons, der Sättigung und der Farbtemperatur verwendet werden.
 
-Für Effekte können Sie das Widget "Werteliste auswählen" als Dropdown-Liste verwenden und dann den Status "Effektliste" der Wert- und Texteigenschaft des Widgets zuordnen (Typ: "{nanoleaf-lightpanels.0.LightPanels.effectsList}"). -> die geschweiften Klammern sind wichtig!)
+Für Effekte können Sie das Widget "Werteliste auswählen" verwenden, um es als Dropdown-Liste zu verwenden, und dann den Status der Effektliste der Wert- und Texteigenschaft des Widgets zuordnen (Typ: "{nanoleaf-lightpanels.0.LightPanels.effectsList}") -> die geschweiften Klammern sind wichtig!)
 
 Um die Farbe zu steuern und zu visualisieren, müssen Sie die Widgets im Farbauswahlstil installieren. Sie können die RGB-ID dem colorRGB-Status zuordnen oder auch die drei HSV-Status verwenden.
 
 Sie können das Nanoleaf-Vis-Demo-Projekt verwenden, das sich im Unterordner / vis auf github befindet.
 
 ## Changelog
+
+### 1.0.6 (2020-09-14)
+* (daniel_2k) changed: force status update for Canvas touch events
+* (daniel_2k) new: added debug logging of received data via SSE
+
+### 1.0.5 (2020-09-13)
+* (daniel_2k) fixed: touch channel was not created for nanoleaf devices (bug since 1.0.3)
+
+### 1.0.4 (2020-09-06)
+* (daniel_2k) new: adapter address can be choosen in adapter settings for interfacing binding issues
+* (daniel_2k) changed: use fixed port 5000 for MSEARCH replies for easy setup in firewall
 
 ### 1.0.3 (2020-08-30)
 * (daniel_2k) fixed: search nanoleaf devices does not work on clean install of adapter

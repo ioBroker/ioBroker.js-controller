@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.swiss-weather-api/README.md
 title: ioBroker.swiss-weather-api
-hash: CPZQujwQq0ZDwyiBSYnMo2oF5Ya+m6HBcrh/60BZHrE=
+hash: pLbVrk1AXeOxB8SDnfr8FEkVce9i++LOGy0MotabGSg=
 ---
 ![Logo](../../../en/adapterref/iobroker.swiss-weather-api/admin/swiss-weather-api.png)
 
@@ -32,6 +32,7 @@ Seit Version 0.1.8 bietet SRG-SSR sogar eigene Symbole. So können Sie auswähle
 
 ### Fertig machen
 1. Holen Sie sich ein kostenloses Konto unter https://developer.srgssr.ch/
+1. Stellen Sie sicher, dass Sie das Produkt "SRG-SSR-PUBLIC-API-V2" verwenden, da dies das kostenlose Produkt ist
 1. Gehen Sie zu "Meine Apps" und erstellen Sie eine neue App. Dadurch werden ein spezifischer ConsumerKey und ConsumerSecret erstellt
 1. Ermitteln Sie den Längen- / Breitengrad (Dezimalgrad) des ausgewählten Standorts, für den eine Vorhersage erforderlich ist
 1. Installieren Sie diesen Adapter auf ioBroker => Dies kann einige Minuten dauern (~ 7 Minuten auf einem Raspberry Pi 3).
@@ -45,6 +46,9 @@ Seit Version 0.1.8 bietet SRG-SSR sogar eigene Symbole. So können Sie auswähle
 Die erste Abfrage erfolgt 10 Sekunden nach dem Start des Adapters. Nach dem ersten Start wird die Abfrage regelmäßig gemäß dem Zentrifugationsparameter (Abfrageintervall in Minuten) ausgeführt.
 
 ## Changelog
+
+### 0.3.2
+* (baerengraben)  Fix for https://github.com/baerengraben/iobroker.swiss-weather-api/issues/13.
 
 ### 0.3.1
 * (baerengraben)  Adapter-Config attributes longitude & latitude is optional now. If no longitude/latitude is set, the adpater is getting the longitude/latitude from ioBroker System-Attributes (https://github.com/baerengraben/iobroker.swiss-weather-api/issues/6).

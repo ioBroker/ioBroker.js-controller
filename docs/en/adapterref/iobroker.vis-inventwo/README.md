@@ -12,13 +12,40 @@
 
 
 ## Schalter Widgets für den ioBroker.vis Adapter
-ab v 2.0.0
 
-![Beispiel](admin/Set_new.png)
+###### .. ab v 2.0.0
 
-v 1.3.8
+
+
+<table>
+   <tr>
+        <td><center><b>Universal</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td>
+        <td><center><b>Multi</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td>
+        <td><center><b>Image</b><br><img src="widgets/vis-inventwo/img/Image.png"></td>
+    </tr>
+<tr><td colspan=3></td></tr>   
+    <tr>
+        <td><center><b>Table</b><br><img src="widgets/vis-inventwo/img/Table.png"></td>
+        <td><center><b>List</b><br><img src="widgets/vis-inventwo/img/List.png"></td>
+        <td><center><b>Marquee</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td>
+    </tr>
+<tr><td colspan=3></td></tr>   
+      <tr>
+        <td><center><b>Radio Button</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td>
+        <td><center><b>Slider vertical</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td>
+        <td><center><b>Slider horizontal</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td>
+    </tr>
+</table>
+
+
+
+
+
+###### .. v 1.3.8
 
 ![Beispiel](admin/Set.png)
+
+
 
 Mit Hilfe unserer Widgets lassen sich folgende Projekte verwirklichen. Zur Zeit befinden sich in unserem Adapter NUR die reinen Schaltflächen (siehe oben) und die Icons. Uhr und Wetter stammen aus anderen Adaptern und müssen ggf. zusätzlich installiert werden.
 
@@ -38,6 +65,22 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog / Änderungsprotokoll
+
+## 2.2.3
+- Fehler in JSON Tabelle behoben
+
+## 2.2.2
+- Fehler im Multi Widget behoben: Bilder und Text wechseln nicht bei Typ Navigation
+
+## 2.2.1
+- Fehler in JSON Tabelle behoben, wenn kein gültiges JSON-Objekt vorhanden ist
+- Fehler in Value-List behoben: Wert wird nicht aktualisiert
+
+## 2.2.0
+- Datenpunktwerte werden jetzt bei allen Widgets im Editor angezeigt
+- Neues Widget: Marquee (Laufschrift)
+- Universal und Multi State Verweildauer hinzugefügt
+- List Widget Abstand zwischen den Einträgen kann eingestell werden
 
 ## 2.1.0
 - Datenpunktwerte werden im VIS Editor angezeigt!

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.deconz/README.md
 title: 无题
-hash: xsfX6P9SJKjs8MpPi1ErX29qGJF07F47JRIY5fLs9UA=
+hash: RPlkNSr0oW/Zen2A3Zh6XYcdDhz417DbN3X5joLYeAc=
 ---
 ![商标](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -27,7 +27,7 @@ ioBroker deConz dresden-elektronik适配器
 连接到由dresden-elektronik开发的deConz软件。该软件旨在成为通用的ZigBee网关解决方案，使用来自dresden-elektronik的硬件，ConBee USB棒和RaspBee作为Raspberry Pi的模块。
 
 ＃＃＃ 建立
-1.阅读deConz / Phoscon的文档，请参阅[links]（https://github.com/iobroker-community-adapters/ioBroker.deconz#links）部分。
+1.阅读deConz / Phoscon的文档，查看[links]（https://github.com/iobroker-community-adapters/ioBroker.deconz#links）部分。
 2.启动适配器
 3. *输入用于deConz的IP地址
     *输入端口号，标准为80。
@@ -50,8 +50,23 @@ ioBroker deConz dresden-elektronik适配器
 
 `"on": true, "transitiontime": 5, "hue": 65500`
 
+####创建一个场景
+   1.将组中的所有灯光设置为场景所需的状态
+   2.将场景的名称写到“ createscene”状态
+
+   而已！
+
+＃＃＃＃ 创建组
+   1.将状态“ groups.creategroup”设置为所需的组名称
+
+      这将创建一个空组。
+
+   2.现在可以通过`manage.addtoGroup`添加灯。
+
+      为此，请使用组的ID设置状态。
+
 ##德语
-Verbindet mit der von Dresden-elektronik Entwickelten deConz软件。 Diese Software独家介绍了ZigBeeGateway-Lösung网关，硬件von Dresden-elektronik，ConBee USB-Stick和RaspBee，eModulfürden Raspberry Pi，verwendet。
+Verbindet mit der von Dresden-elektronik Entwickelten deConz软件。 Diese Software独家介绍了ZigBeeGateway-Lösung服务器，硬件von Dresden-elektronik，ConBee USB-Stick和RaspBee，eModulfürden Raspberry Pi，verwendet。
 
 ### Einrichten
 1. Dokumentation von deConz / Phoscon lesen，Quellen siehe [链接]（https://github.com/iobroker-community-adapters/ioBroker.deconz#links）。
@@ -77,6 +92,21 @@ Dafürgibt es das Objekt“行动”。
 
 `"on": true, "transitiontime": 5, "hue": 65500`
 
+#### Erstellen Sie eine Szene
+   1. Stellen Sie alle Lichter in祖鲁斯坦故乡
+   2. Schreiben Sie den Namen Ihrer Szene的状态为“ Erstellt Szene”
+
+   大战！
+
+#### Gruppe erstellen
+   1.州“ groups.creategroup”名称degewünschtenNamen der Gruppe setzen。
+
+      戴米特·威德·伊恩·里尔·格鲁佩·埃斯特尔特。
+
+   2.删除`manage.addtoGroup`的图片。
+
+      达祖·塞茨特（Dazu Setzt Man den State mit der der der Gruppe）。
+
 ##链接
 -[Phoscon APP]（https://phoscon.de/）
 -[支持的设备]（https://github.com/dresden-elektronik/deconz-rest-plugin/wiki/Supported-Devices）
@@ -85,12 +115,24 @@ Dafürgibt es das Objekt“行动”。
 -[网关（硬件）]（https://www.dresden-elektronik.de/funktechnik/solutions/wireless-light-control/gateways/）
 
 ## [赞助商](https://github.com/iobroker-community-adapters/ioBroker.deconz/blob/master/SPONSORS.MD)
-如果您喜欢我的作品，请随时提供个人捐款（这是Jey Cee的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=95YZN2LR59Q64&source=url)
+如果您喜欢我的工作，请随时提供个人捐款（这是Jey Cee的个人捐款链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=95YZN2LR59Q64&source=url)
 
 ##加入Discord服务器，讨论有关ioBroker-deconz集成的所有内容！
 <a href="https://discord.gg/uPwfzvR"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
 
 ## Changelog
+
+### 2.0.5
+* fix buttonpressed not shown
+
+### 2.0.4
+* remove sentry for js-controller version <3
+* replace request with axios
+* use object_definition.js and iobroker-adapter-helpers
+* added channel objects for information and scenes for better overview
+* refactored scenes
+* use only lower case for ids
+* added management for groups and lights
 
 ### 2.0.3
 * fix incoming rename event for sensors

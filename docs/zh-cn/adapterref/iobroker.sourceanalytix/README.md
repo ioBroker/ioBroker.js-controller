@@ -3,22 +3,21 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: cvVNKwzs3MHPMuBDA8ApZxWB+5OR5cSNPbZ5l7xCwE4=
+hash: 0VtNU0rzqFZj2vKQ71+jWiUkiOnJ0Gj7NqRipsERF88=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
 ![安装数量（最新）](http://iobroker.live/badges/sourceanalytix-installed.svg)
 ![安装数量（稳定）](http://iobroker.live/badges/sourceanalytix-stable.svg)
 ![依赖状态](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)
-![已知漏洞](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.sourceanalytix/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
-![特拉维斯](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.sourceanalytix/master.svg)
 
 ＃SourceAnalytix
-＃{开发人员-进行中，版本0.4.0稳定的候选版}
+![测试与发布](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备模式。**更多详细信息，请参见下文！
+
 能源，气体和液体消耗的详细分析可以将任何来源（kWh，Wh，Watt，l / h或m3）用于数据分析：
 
-*每天，每周，每月，每季度，每年跟踪消耗
+*跟踪每天，每周，每月，每季度，每年的消耗量
 *计算成本（当前价格是可配置的）
 *可用于功耗，液体和气体
 *输入值可以是wh / kWh / Watt / m3 / l
@@ -31,39 +30,60 @@ hash: cvVNKwzs3MHPMuBDA8ApZxWB+5OR5cSNPbZ5l7xCwE4=
 @hadering对此进行了改进，并发布在github https://github.com/hdering/homematic_verbrauchszaehler
 
 ＃＃ 已知的问题
-* []期间计算可选，但尚未实施
-* []尚未在计算中实施的每月费用价格
+* []如果对象中定义了默认值，则[]源值将在晚上重置为默认值（JS-Controller中的错误，需要在2.3中修复）
+
+*解决方法：确保未为自创建状态设置默认值*
 
 ＃＃ 去做
 * []文档
+* []期间计算可选，但尚未实施
+* []尚未计算的每月费用价格
 * []根据仪表值重新计算（可按日期配置）
 * []添加可在适配器设置中配置的前[x]天，[x]周，[x]月，[x]季度，[x]年的对象状态
 
 ＃＃ 支持我
-如果您喜欢我的工作，请考虑个人捐赠（这是DutchmanNL的个人捐赠链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png）](http://paypal.me/DutchmanNL)
+如果您喜欢我的作品，请考虑个人捐赠（这是DutchmanNL的个人捐赠链接，与ioBroker项目无关！）[![捐赠]（https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png）](http://paypal.me/DutchmanNL)
+
+##什么是Sentry.io，什么报告给该公司的服务器？
+Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
-### 0.4.5 work in progress
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
+
+### 0.4.7-beta.0 (2020-09-12) Beta release solving NULL error's & daily resets
 * (Dutchman) Implement Sentry
-* (Dutchman) Bugfix : Warn message for week creations (js-controller 3.x)
+* (Dutchman) Implement configuration for Price definitions
+* (Dutchman) Bugfix: NULL value issue  at daily reset
+* (Dutchman) Bugfix: Issue found in selection of category
+* (Dutchman) Bugfix: Category issue (read value of undefined)
+* (Dutchman) Bugfix: Issue in storing meter values by month
+* (Dutchman) Bugfix: Wrong reading value for Watt initialisation
+* (Dutchman) Bugfix: Warnings at object creations (js-controller 3.x)
+* (Dutchman) Bugfix: wrong interpretation of start values at value resets
+* (Dutchman) Bugfix: Proper error message instead of code crash if no cost type defined
+* (Dutchman) Add device name for log messages if device value < than currently known value
+* (Dutchman) Bugfix : Crash at adapter start if chosen Type is not present in instance configuration    
 
 ### 0.4.2 (2020-04-12) BugFixes
 * (Dutchman) Translations updated
-* (Dutchman) Bugfix : Values not resettet at new day start
+* (Dutchman) Bugfix : Values do not reset at new day start
 * (Dutchman) Bugfix : Handle calculations when reading = 0
 * (Dutchman) Bugfix : Handle calculations at initialisation
-* (Dutchman) Bugfix : Pauze all calculation during day-reset
+* (Dutchman) Bugfix : Pause all calculation during day-reset
 * (Dutchman) Do not calculate values is state is update with same value as previous
 
 ### 0.4.0 (2020-04-05) Adapter completely redesigned, please test carefully
 * (Dutchman) Complete code rebuild
-* (Dutchman) Change datapoints to root by year
-* (Dutchman) Delete unneded states automatically
+* (Dutchman) Change data points to root by year
+* (Dutchman) Delete unneeded states automatically
 * (Dutchman) Calculation by quarter implemented
 * (Dutchman) Storage of meter values implemented
 * (Dutchman) Rebuild calculation logic to handle in memory instead of object DB (performance)
-
-To-Do : Migration from < 0.4.0 to new datastructure
 
 ### 0.3.0   
 * (Dutchman) m³ Implemented

@@ -194,6 +194,7 @@ https://doc.iobroker.net/#de/documentation/viz/README.md
 https://doc.iobroker.net/#de/documentation/viz/app.md
 https://doc.iobroker.net/#de/documentation/viz/basic.md
 https://doc.iobroker.net/#de/documentation/viz/fancyswitch.md
+https://doc.iobroker.net/#de/documentation/viz/lovelace.md
 https://doc.iobroker.net/#de/documentation/viz/material.md
 https://doc.iobroker.net/#de/documentation/viz/timeandweather.md
 https://doc.iobroker.net/#de/documentation/viz/vis.md
@@ -334,6 +335,7 @@ https://doc.iobroker.net/#en/documentation/viz/README.md
 https://doc.iobroker.net/#en/documentation/viz/app.md
 https://doc.iobroker.net/#en/documentation/viz/basic.md
 https://doc.iobroker.net/#en/documentation/viz/fancyswitch.md
+https://doc.iobroker.net/#en/documentation/viz/lovelace.md
 https://doc.iobroker.net/#en/documentation/viz/material.md
 https://doc.iobroker.net/#en/documentation/viz/timeandweather.md
 https://doc.iobroker.net/#en/documentation/viz/vis.md
@@ -474,6 +476,7 @@ https://doc.iobroker.net/#ru/documentation/viz/README.md
 https://doc.iobroker.net/#ru/documentation/viz/app.md
 https://doc.iobroker.net/#ru/documentation/viz/basic.md
 https://doc.iobroker.net/#ru/documentation/viz/fancyswitch.md
+https://doc.iobroker.net/#ru/documentation/viz/lovelace.md
 https://doc.iobroker.net/#ru/documentation/viz/material.md
 https://doc.iobroker.net/#ru/documentation/viz/timeandweather.md
 https://doc.iobroker.net/#ru/documentation/viz/vis.md
@@ -614,6 +617,7 @@ https://doc.iobroker.net/#zh-cn/documentation/viz/README.md
 https://doc.iobroker.net/#zh-cn/documentation/viz/app.md
 https://doc.iobroker.net/#zh-cn/documentation/viz/basic.md
 https://doc.iobroker.net/#zh-cn/documentation/viz/fancyswitch.md
+https://doc.iobroker.net/#zh-cn/documentation/viz/lovelace.md
 https://doc.iobroker.net/#zh-cn/documentation/viz/material.md
 https://doc.iobroker.net/#zh-cn/documentation/viz/timeandweather.md
 https://doc.iobroker.net/#zh-cn/documentation/viz/vis.md
@@ -780,6 +784,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lifx/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lightify/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.link/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.linkeddevices/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.linux-control/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.logparser/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.lovelace/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.loxone/README.md
@@ -1164,6 +1169,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lifx/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lightify/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.link/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.linkeddevices/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.linux-control/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.logparser/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.lovelace/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.loxone/README.md
@@ -1548,6 +1554,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lifx/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lightify/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.link/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.linkeddevices/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.linux-control/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.logparser/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.lovelace/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.loxone/README.md
@@ -1932,6 +1939,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lifx/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lightify/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.link/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.linkeddevices/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.linux-control/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.logparser/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.lovelace/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.loxone/README.md

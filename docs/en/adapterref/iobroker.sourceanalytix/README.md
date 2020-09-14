@@ -1,21 +1,18 @@
 # SourceAnalytix
-# { Dev - in Progress, version 0.4.0  stable candidate }
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)](https://www.npmjs.com/package/iobroker.sourceanalytix)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)](https://www.npmjs.com/package/iobroker.sourceanalytix)
 ![Number of Installations (latest)](http://iobroker.live/badges/sourceanalytix-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/sourceanalytix-stable.svg)
 [![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.sourceanalytix)
-[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.sourceanalytix/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.sourceanalytix)
-
 [![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)](https://nodei.co/npm/iobroker.sourceanalytix/)
-
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.sourceanalytix/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.sourceanalytix)
+![Test and Release](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
+**This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors and new device schemas to me as the developer.** More details see below!
 
 Detailed analysis of your Energy, gas and liquid consumptions
 Any source (kWh, Wh, Watt, l/h or m3 )can be used for data analyses :
 
-* Trace comsumption daily, weekly, monthly, quarterly, yearly
+* Trace consumption daily, weekly, monthly, quarterly, yearly
 * calculate costs (current price is configurable)
 * Can be used for Power Consumption, liquids, and GAS
 * Input values can be wh/kWh/Watt/m3/l
@@ -31,13 +28,14 @@ Which has been improved by @hadering and published on github
 https://github.com/hdering/homematic_verbrauchszaehler
 
 ## Known issues
-
-* [ ] Period calculation selectable but not yet implemented
-* [ ] monthly costprice not yet implemented in calculation
+* [ ] Source Values reset to default value at night if default value is defined in an object (bug in JS-Controller, fix needed in 2.3)
+*Workaround : Ensure no default value is set for self-created states*
 
 ## To-Do
 * [ ] Documentation
-* [ ] recalcalation based on meter values (configurable by date)
+* [ ] Period calculation selectable but not yet implemented
+* [ ] monthly cost price not yet implemented in calculation
+* [ ] recalculation based on meter values (configurable by date)
 * [ ] add object states for previous [x]day, [x]week, [x]month, [x]quarter, [x]year configurable in adapter settings
 
 ## Support me
@@ -45,28 +43,46 @@ If you like my work, please consider a personal donation
 (this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
 [![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
-## Changelog
-### 0.4.5 work in progress
+## What is Sentry.io and what is reported to the servers of that company?
+Sentry.io is a service for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
+
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs. 
+
+# Changelog
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
+
+### 0.4.7-beta.0 (2020-09-12) Beta release solving NULL error's & daily resets
 * (Dutchman) Implement Sentry
-* (Dutchman) Bugfix : Warn message for week creations (js-controller 3.x)
+* (Dutchman) Implement configuration for Price definitions
+* (Dutchman) Bugfix: NULL value issue  at daily reset
+* (Dutchman) Bugfix: Issue found in selection of category
+* (Dutchman) Bugfix: Category issue (read value of undefined)
+* (Dutchman) Bugfix: Issue in storing meter values by month
+* (Dutchman) Bugfix: Wrong reading value for Watt initialisation
+* (Dutchman) Bugfix: Warnings at object creations (js-controller 3.x)
+* (Dutchman) Bugfix: wrong interpretation of start values at value resets
+* (Dutchman) Bugfix: Proper error message instead of code crash if no cost type defined
+* (Dutchman) Add device name for log messages if device value < than currently known value
+* (Dutchman) Bugfix : Crash at adapter start if chosen Type is not present in instance configuration    
 
 ### 0.4.2 (2020-04-12) BugFixes
 * (Dutchman) Translations updated
-* (Dutchman) Bugfix : Values not resettet at new day start
+* (Dutchman) Bugfix : Values do not reset at new day start
 * (Dutchman) Bugfix : Handle calculations when reading = 0
 * (Dutchman) Bugfix : Handle calculations at initialisation
-* (Dutchman) Bugfix : Pauze all calculation during day-reset
+* (Dutchman) Bugfix : Pause all calculation during day-reset
 * (Dutchman) Do not calculate values is state is update with same value as previous
 
 ### 0.4.0 (2020-04-05) Adapter completely redesigned, please test carefully
 * (Dutchman) Complete code rebuild
-* (Dutchman) Change datapoints to root by year
-* (Dutchman) Delete unneded states automatically
+* (Dutchman) Change data points to root by year
+* (Dutchman) Delete unneeded states automatically
 * (Dutchman) Calculation by quarter implemented
 * (Dutchman) Storage of meter values implemented
 * (Dutchman) Rebuild calculation logic to handle in memory instead of object DB (performance)
-
-To-Do : Migration from < 0.4.0 to new datastructure
 
 ### 0.3.0   
 * (Dutchman) m³ Implemented

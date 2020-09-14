@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: FX5sU81e4rfOhyxZWUYuGGm/GfoXT7pYQyzoRIvQAtQ=
+hash: eGiC4Bt+/L2HwgNbAN17yjT6rDdUT7QYCc4kEmlN78k=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -17,12 +17,10 @@ hash: FX5sU81e4rfOhyxZWUYuGGm/GfoXT7pYQyzoRIvQAtQ=
 
 # IoBroker.vis-inventwo
 ## Schalter Widgets für den ioBroker.vis Adapter
-ab v 2.0.0
+###### .. ab v 2.0.0
+<table><tr><td><center> <b>Universal</b> <br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Multi</b> <br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Bild</b> <br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Tabelle</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>Aufführen</b> <br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Festzelt</b> <br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Radio knopf</b> <br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Schieberegler vertikal</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>Schieberegler horizontal</b> <br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr></table>
 
-![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Set_new.png)
-
-v 1.3.8
-
+###### .. v 1.3.8
 ![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Set.png)
 
 Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehört sich in unserem Adapter NUR die reinen Schaltflächen (siehe oben) und die Icons. Uhr und Wetter gehören aus anderen Adaptern und müssen ggf. geworden werden werden.
@@ -35,11 +33,27 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ## Besetzung
 Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
 
-(Dieser Link hat zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
+(Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
 [![Spende] (admin / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.2.3
+- Fehler in der JSON Tabelle Spalten
+
+## 2.2.2
+- Fehler im Multi Widget gehört: Bilder und Text ändern nicht bei Typ Navigation
+
+## 2.2.1
+- Fehler in der JSON-Tabelle gehört, wenn kein gehörtiges JSON-Objekt vorhanden ist
+- Fehler in der Werteliste werden: Wert wird nicht aktualisiert
+
+## 2.2.0
+- Datenpunktwerte werden jetzt bei allen Widgets im Editor werden
+- Neues Widget: Laufschrift
+- Universal und Multi State Verweildauer hinzugefügt
+- List Widget Abstand zwischen den Einträgen kann gehörtell werden
 
 ## 2.1.0
 - Datenpunktwerte werden im VIS Editor erhöht!
@@ -51,7 +65,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.0.0
 - Switch, Button, Nav und Background Widget (sowie die kleinen Ausführungen) zu einem eigenen Widget zussammen Verluste -> dem Universal Widget
-- Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können.
+- Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können
 - Image Widget kann nun auf Datenpunkt kaufen
 - Radiobuttons hinzugefügt
 - Werteliste hinzugefügt
@@ -64,7 +78,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Problem mit der Navigation auf Touchscreens behoben
 
 ### 1.3.6
-- Set State Option für die Navigation hinzugefügt
+- Option zum Festlegen des Status für die Navigation hinzugefügt
 - Problem mit Datenpunkten ohne Konfiguration behoben
 
 ### 1.3.5

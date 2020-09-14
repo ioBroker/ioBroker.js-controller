@@ -21,8 +21,12 @@ This is an ioBroker Adapter to control the nanoleaf Light Panels (formerly nanol
 4. Save the settings.
 5. Have fun!
 
+### Direct Status update via Server Sent Events (SSE)
 Since Light Panels firmware version > 3.1.0 and Canvas firmware version > 1.1.0 Server Sent Events (SSE) can be used for direct status updates. For Canvas devices touch events are supported.
-Please note: to detect if nanoleaf device is still alive, SSDP Notify messages were sent from nanoleaf device every 60 seconds. Please ensure you can receive UDP multicast messages on port 1900 (check firewall and routing). Otherwise you will get error messages in the adapter that connection is lost.
+
+_Please note:_ to detect if nanoleaf device is still alive, SSDP Notify messages were sent from nanoleaf device every 60 seconds. Please ensure you can receive UDP multicast messages on port 1900 (check firewall and routing). Otherwise you will get error messages in the adapter that connection was lost. If you have problems with keep alive, please set the correct adapter interface in admin settings for the nanoleaf adapter.
+For searching devices please ensure you can receive traffic on UDP port 5000.
+
 The setting for the status update polling interval only affects devices with lower firmware versions where polling is used for status updates.
 
 ## Alexa
@@ -47,6 +51,17 @@ To control and visualize the color you have to install the color picker style Wi
 You can use the nanoleaf vis demo project found in the /vis subfolder on github.
 
 ## Changelog
+
+### 1.0.6 (2020-09-14)
+* (daniel_2k) changed: force status update for Canvas touch events
+* (daniel_2k) new: added debug logging of received data via SSE
+
+### 1.0.5 (2020-09-13)
+* (daniel_2k) fixed: touch channel was not created for nanoleaf devices (bug since 1.0.3)
+
+### 1.0.4 (2020-09-06)
+* (daniel_2k) new: adapter address can be choosen in adapter settings for interfacing binding issues
+* (daniel_2k) changed: use fixed port 5000 for MSEARCH replies for easy setup in firewall
 
 ### 1.0.3 (2020-08-30)
 * (daniel_2k) fixed: search nanoleaf devices does not work on clean install of adapter

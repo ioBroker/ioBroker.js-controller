@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: aFWs9Y6sGOhasVUIPfH/qjZEroCsTxMOuYxWgb7w5C4=
+hash: esu4vhBEs84Z3J9gPKambhckm37je2rBt6v5o+K/rX8=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
@@ -30,30 +30,54 @@ Alle Icons sind über den Dateimanager (auf der obersten Ebene) im vis-icontwo O
 ## Vorschau
 Eine kleine Vorschau über den Stil der Ikonen:
 
-ZUM BEISPIEL. Teilauswahl
+ZUM BEISPIEL. Teilauswahl:
 
 ![Bildschirmfoto](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_002.png)
 
-ZUM BEISPIEL. Teilauswahl
+ZUM BEISPIEL. Teilauswahl:
 
 ![Bildschirmfoto](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_003.png)
 
-ZUM BEISPIEL. Teilauswahl
+ZUM BEISPIEL. Teilauswahl:
 
 ![Bildschirmfoto](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_004.png)
+
+Eine vollständige Übersicht aller Ikonen ist hier zu finden (die Ordnerstruktur ist die selbe, wie im Dateimanager):
+
+-> http://icontwo.inventwo.com <-
 
 ---
 
 ## Besetzung
 Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
 
-(Dieser Link hat zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
+(Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
 [![Spende] (admin / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
 
 ## Changelog
+
+### 0.19.1
+
+• (skvarel) - Index & Readme angepasst (Icon Overview)
+
+### 0.19.0
+
+• (skvarel) - Neue Icons hinzugefügt (Lights & Alarm)
+
+### 0.18.0
+
+• (skvarel) - Neue Icons hinzugefügt (Rooms)
+
+### 0.17.1
+
+• (skvarel) - Code angepasst
+
+### 0.17.0
+
+• (skvarel) - Neue Icons hinzugefügt (Network)
 
 ### 0.16.1
 

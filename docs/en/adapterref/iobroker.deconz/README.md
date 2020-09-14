@@ -40,6 +40,17 @@ Examples:
 
 `"on": true, "transitiontime": 5, "hue": 65500`
 
+#### Create a scene
+   1. Set all lights in the group to the state you wish for the scene
+   2. Write the name of your scene to the `createscene` state
+   Thats it!
+   
+#### Create group
+   1. Set the state `groups.creategroup` with the desired name of the group
+      This creates an empty group.
+   2. the lamp(s) can now be added with `manage.addtoGroup`. 
+      To do this set the state with the ID of the group. 
+
 ## German
 
 Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Software soll eine universelle ZigBee Gateway-Lösung sein, die die Hardware von dresden-elektronik, ConBee USB-Stick und RaspBee, ein Modul für den Raspberry Pi, verwendet.
@@ -66,6 +77,17 @@ Beispiele:
 
 `"on": true, "transitiontime": 5, "hue": 65500`
 
+#### Erstellen Sie eine Szene
+   1. Stellen Sie alle Lichter in der Gruppe auf den Zustand ein, den Sie für die Szene wünschen
+   2. Schreiben Sie den Namen Ihrer Szene in den Status "Erstellt Szene"
+   Das wars!
+   
+#### Gruppe erstellen
+   1. Den state `groups.creategroup` mit dem gewünschten Namen der Gruppe setzen.
+      Damit wird eine leere Gruppe erstellt.
+   2. Die Lampe(n) können jetzt mit `manage.addtoGroup` hinzugefügt werden. 
+      Dazu setzt man den State mit der ID der Gruppe. 
+
 ## Links
 - [Phoscon APP](https://phoscon.de/)
 - [Supported Devices](https://github.com/dresden-elektronik/deconz-rest-plugin/wiki/Supported-Devices)
@@ -83,6 +105,18 @@ If you like my work, please feel free to provide a personal donation
 <a href="https://discord.gg/uPwfzvR"><img src="https://discordapp.com/api/guilds/743167951875604501/widget.png?style=banner2" width="25%"></a>
 
 ## Changelog
+
+### 2.0.5
+* fix buttonpressed not shown
+
+### 2.0.4
+* remove sentry for js-controller version <3
+* replace request with axios
+* use object_definition.js and iobroker-adapter-helpers
+* added channel objects for information and scenes for better overview
+* refactored scenes
+* use only lower case for ids
+* added management for groups and lights
 
 ### 2.0.3
 * fix incoming rename event for sensors

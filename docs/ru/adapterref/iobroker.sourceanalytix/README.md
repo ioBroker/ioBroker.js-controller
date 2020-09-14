@@ -2,69 +2,88 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sourceanalytix/README.md
-title: SourceAnalytix
-hash: cvVNKwzs3MHPMuBDA8ApZxWB+5OR5cSNPbZ5l7xCwE4=
+title: ИсточникAnalytix
+hash: 0VtNU0rzqFZj2vKQ71+jWiUkiOnJ0Gj7NqRipsERF88=
 ---
 # SourceAnalytix
-# {Dev - in Progress, стабильный кандидат версии 0.4.0}
+![Тестирование и выпуск](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg) **Этот адаптер использует службу [Sentry.io](https://sentry.io) для автоматического сообщения мне как разработчику об исключениях, ошибках кода и новых схемах устройств.** Подробнее см. Ниже!
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
-![Количество установок (последняя)](http://iobroker.live/badges/sourceanalytix-installed.svg)
+![Количество установок (последнее)](http://iobroker.live/badges/sourceanalytix-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/sourceanalytix-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)
-![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.sourceanalytix/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.sourceanalytix/master.svg)
 
-Детальный анализ вашей энергии, газа и жидкости Любой источник (кВтч, Вт, Вт, л / ч или м3) может быть использован для анализа данных:
+Подробный анализ вашего потребления энергии, газа и жидкости Любой источник (кВтч, Втч, Ватт, л / час или м3) может быть использован для анализа данных:
 
-* Отслеживание потребления ежедневно, еженедельно, ежемесячно, ежеквартально, ежегодно
-* рассчитать стоимость (текущая цена настраивается)
-* Может использоваться для энергопотребления, жидкостей и ГАЗА
-* Входные значения могут быть wh / kWh / Watt / m3 / l
+* Отслеживайте потребление ежедневно, еженедельно, ежемесячно, ежеквартально, ежегодно
+* рассчитать затраты (текущая цена настраивается)
+* Может использоваться для потребления энергии, жидкостей и ГАЗА.
+* Входные значения могут быть Вт / кВтч / Вт / м3 / л.
 
 ## Как
 Пожалуйста, оставьте свой отзыв здесь https://forum.iobroker.net/topic/31932/major-update-sourceanalytix-0-4-0-complete-code-rebuild
 
-Этот адаптер имеет свои корни благодаря пикселю в 2016 году https://forum.iobroker.net/viewtopic.php?f=21&t=2262
+Этот адаптер имеет корни благодаря pix еще в 2016 году https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
-Что было улучшено @hadering и опубликовано на github https://github.com/hdering/homematic_verbrauchszaehler
+Что было улучшено с помощью @hadering и опубликовано на github https://github.com/hdering/homematic_verbrauchszaehler
 
-## Известные вопросы
-* [] Расчет периода выбирается, но еще не реализован
-* [] месячная стоимость еще не включена в расчет
+## Известные проблемы
+* [] Исходные значения сбрасываются на значение по умолчанию ночью, если значение по умолчанию определено в объекте (ошибка в JS-Controller, исправление необходимо в 2.3)
+
+*Обходной путь: убедитесь, что для самостоятельно созданных состояний не установлено значение по умолчанию*
 
 ## Делать
 * [ ] Документация
-* [] пересчет на основе значений счетчика (настраивается по дате)
-* [] добавить состояния объекта для предыдущего [x] дня, [x] недели, [x] месяца, [x] квартала, [x] года, настраиваемых в настройках адаптера
+* [] Расчет периода можно выбрать, но еще не реализован
+* [] месячная себестоимость еще не включена в расчет
+* [] пересчет на основе значений счетчиков (настраивается по дате)
+* [] добавить состояния объекта за предыдущий [x] день, [x] неделю, [x] месяц, [x] квартал, [x] год, настраивается в настройках адаптера
 
 ## Поддержите меня
-Если вам нравится моя работа, рассмотрите возможность личного пожертвования (это персональная ссылка на пожертвования для DutchmanNL, никакого отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Если вам нравятся мои работы, рассмотрите возможность личного пожертвования (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.sourceanalytix/master/admin/button.png)](http://paypal.me/DutchmanNL)
+
+## Что такое Sentry.io и что передается на серверы этой компании?
+Sentry.io - это сервис, позволяющий разработчикам получать обзор ошибок в своих приложениях. Именно это и реализовано в этом адаптере.
+
+Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включается также ваш идентификатор установки (это просто уникальный идентификатор **без** дополнительной информации о вас, электронной почты, имени и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
 
 ## Changelog
-### 0.4.5 work in progress
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
+
+### 0.4.7-beta.0 (2020-09-12) Beta release solving NULL error's & daily resets
 * (Dutchman) Implement Sentry
-* (Dutchman) Bugfix : Warn message for week creations (js-controller 3.x)
+* (Dutchman) Implement configuration for Price definitions
+* (Dutchman) Bugfix: NULL value issue  at daily reset
+* (Dutchman) Bugfix: Issue found in selection of category
+* (Dutchman) Bugfix: Category issue (read value of undefined)
+* (Dutchman) Bugfix: Issue in storing meter values by month
+* (Dutchman) Bugfix: Wrong reading value for Watt initialisation
+* (Dutchman) Bugfix: Warnings at object creations (js-controller 3.x)
+* (Dutchman) Bugfix: wrong interpretation of start values at value resets
+* (Dutchman) Bugfix: Proper error message instead of code crash if no cost type defined
+* (Dutchman) Add device name for log messages if device value < than currently known value
+* (Dutchman) Bugfix : Crash at adapter start if chosen Type is not present in instance configuration    
 
 ### 0.4.2 (2020-04-12) BugFixes
 * (Dutchman) Translations updated
-* (Dutchman) Bugfix : Values not resettet at new day start
+* (Dutchman) Bugfix : Values do not reset at new day start
 * (Dutchman) Bugfix : Handle calculations when reading = 0
 * (Dutchman) Bugfix : Handle calculations at initialisation
-* (Dutchman) Bugfix : Pauze all calculation during day-reset
+* (Dutchman) Bugfix : Pause all calculation during day-reset
 * (Dutchman) Do not calculate values is state is update with same value as previous
 
 ### 0.4.0 (2020-04-05) Adapter completely redesigned, please test carefully
 * (Dutchman) Complete code rebuild
-* (Dutchman) Change datapoints to root by year
-* (Dutchman) Delete unneded states automatically
+* (Dutchman) Change data points to root by year
+* (Dutchman) Delete unneeded states automatically
 * (Dutchman) Calculation by quarter implemented
 * (Dutchman) Storage of meter values implemented
 * (Dutchman) Rebuild calculation logic to handle in memory instead of object DB (performance)
-
-To-Do : Migration from < 0.4.0 to new datastructure
 
 ### 0.3.0   
 * (Dutchman) m³ Implemented

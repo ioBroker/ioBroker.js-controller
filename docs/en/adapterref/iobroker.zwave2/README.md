@@ -32,6 +32,9 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.7.0-alpha.2 (2020-09-11)
+* Test compatibility with zwave-js 5.x.
+
 ### 1.6.3 (2020-09-04)
 * Further performance optimization
 * Improved compatibility with devices that send invalid `Multi Channel CC` commands
@@ -45,11 +48,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 ### 1.6.0 (2020-08-29)
 * Added the possibility to send `Multilevel Sensor Report`s from scripts
 * Dependency updates for bug and security fixes
-
-### 1.5.0 (2020-07-30)
-* Added the possibility to send custom commands from scripts ([documentation](docs/en/sendCommand.md)).
-* Added a `reset` state under `Meter CC`
-* Bugfix: Logs are no longer split across multiple files
 
 ## License
 

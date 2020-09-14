@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: Z/451y3UB6ewKK/G6larDXYBjhCU5/sln3z+vFBLIGA=
+hash: 9n6SwG41NXFxJiAyFDGvoXZHtAqZuYCrsYFi/AhHmwE=
 ---
 ![商标](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -19,7 +19,8 @@ hash: Z/451y3UB6ewKK/G6larDXYBjhCU5/sln3z+vFBLIGA=
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##调整Web套接字
-在某些网络套接字客户端上，通信存在性能问题。有时，此问题是由于长轮询机制上的socket.io通信回退所致。
+在某些网络套接字客户端上，通信存在性能问题。
+有时，此问题是由于长轮询机制上的socket.io通信回退所致。
 您可以设置选项* Force Web-Sockets *强制仅使用Web套接字传输。
 
 ##让我们加密证书
@@ -27,9 +28,9 @@ hash: Z/451y3UB6ewKK/G6larDXYBjhCU5/sln3z+vFBLIGA=
 
 ##扩展
 Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类URL请求，则会调用该处理程序。
-这些扩展看起来像普通的适配器，但是它们没有正在运行的进程，将由Web服务器调用。
+这些扩展看起来像普通适配器，但是它们没有正在运行的进程，将由Web服务器调用。
 
-例如。用户可以激活特殊的代理适配器并访问同一Web服务器中的其他设备（例如Web cam）。
+例如。用户可以激活特殊的代理适配器，并访问同一Web服务器中的其他设备（例如Web摄像头）。
 必须让所有服务在一台Web服务器下可用。
 
 ##暴力保护
@@ -38,28 +39,31 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 
 ##“保持登录状态”选项
 如果选择此选项，则用户将保持登录状态一个月。
-否则，用户将保持登录状态，以进行配置的“登录超时”。
+否则，用户将保持登录状态，以配置“登录超时”。
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __进展中__->
+### __正在进行中__->
 
 ## Changelog
+### 3.0.13 (2020-09-06)
+* (bluefox) Added the support of multi-language names for the welcome screen.
+
 ### 3.0.12 (2020-08-22)
 * (bluefox) Updated used npm libraries 
 
 ### 3.0.10 (2020-07-28)
-* (Apollon77) socketio pingTimeout and pinInterval increased to prevent too fast reconnections and bigger visualizations
+* (Apollon77) socketio pingTimeout and pinInterval increased to prevent too fast re-connections and bigger visualizations
 
 ### 3.0.9 (2020-06-11)
-* (Apollon77) Upgrade socketio adapter version
-* (Apollon77) Optimize error handling for webserver initialization again
+* (Apollon77) Upgrade socket-io adapter version
+* (Apollon77) Optimize error handling for web-server initialization again
 
 ### 3.0.8 (2020-05-04)
-* (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
+* (Apollon77) web-server initialization optimized again to prevent errors with invalid certificates 
 
 ### 3.0.7 (2020-04-30)
-* (Apollon77) errors on webserver initialization are handled properly
+* (Apollon77) errors on web-server initialization are handled properly
 
 ### 3.0.5 (2020-04-23)
 * (bluefox) fixed the sentry warnings
@@ -75,7 +79,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 * (Apollon77) Workaround for socket.io bug #3555 added to make sure always the correct client files are delivered
 
 ### 3.0.0 (2020-01-15)
-* (Apollon77) upgrade all dependencies, especially socketio to current version! This might break ipad 1/2 devices
+* (Apollon77) upgrade all dependencies, especially socket-io to current version! This might break iPad 1/2 devices
 
 ### 2.4.10 (2019-11-07)
 * (bluefox) Workaround for material was added
@@ -110,7 +114,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 * (bluefox) URLs were sanitized
 
 ### 2.3.5 (2018-06-09)
-* (bluefox) Used iobroker.socket.io version 2.1.1
+* (bluefox) Used ioBroker.socket.io version 2.1.1
 * (bluefox) Authentication problem was fixed
 
 ### 2.3.4 (2018-04-27)
@@ -138,13 +142,13 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 * (bluefox) Fix link to local admin on welcome screen
 
 ### 2.1.4 (2017-10-02)
-* (bluefox) Support of iobroker.pro
+* (bluefox) Support of ioBroker.pro
 
 ### 2.0.6 (2017-08-05)
 * (bluefox) Fix welcome screen
 
 ### 2.0.5 (2017-05-24)
-* (bluefox) Update socketio lib
+* (bluefox) Update socket-io lib
 
 ### 2.0.4 (2017-04-25)
 * (bluefox) show logout button if connected over cloud
@@ -175,7 +179,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 * (bluefox) Fix unsubscribe of states
 
 ### 1.7.3 (2016-10-11)
-* (bluefox) use new socketio
+* (bluefox) use new socket-io
 * (bluefox) fix config dialog
 
 ### 1.7.2 (2016-09-25)
@@ -191,7 +195,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 * (bluefox) updated SelectID Dialog
 
 ### 1.6.1 (2016-08-27)
-* (bluefox) support of letsencrypt
+* (bluefox) support of letsEncrypt
 
 ### 1.5.4 (2016-08-14)
 * (bluefox) support of web-sockets force
@@ -210,7 +214,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 * (bluefox) update version of socket.io
 
 ### 1.4.8 (2016-06-19)
-* (bluefox) bind socket to specifed IP
+* (bluefox) bind socket to specified IP
 
 ### 1.4.7 (2016-05-24)
 * (bluefox) add version dependency
@@ -239,7 +243,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 * (bluefox) update packages
 
 ### 1.3.4 (2015-12-25)
-* (bluefox) update socketio
+* (bluefox) update socket-io
 
 ### 1.3.3 (2015-12-14)
 * (bluefox) add themes
@@ -249,7 +253,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 
 ### 1.3.2 (2015-12-14)
 * (bluefox) fix selectID.js
-* (bluefox) update socketio
+* (bluefox) update socket-io
 
 ### 1.3.0 (2015-11-15)
 * (bluefox) add version compatibility check
@@ -300,7 +304,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 * (bluefox) add permissions support
 
 ### 0.3.2 (2015-05-20)
-* (bluefox) support of subscribeObjects in socketio
+* (bluefox) support of subscribeObjects in socket-io
 
 ### 0.3.1 (2015-04-24)
 * (bluefox) make "_socket/info.js" available from every directory
@@ -309,7 +313,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 * (bluefox) enable https connection and improve login dialog
 
 ### 0.2.6 (2015-03-07)
-* (bluefox) update socketio
+* (bluefox) update socket-io
 
 ### 0.2.5 (2015-03-04)
 * (bluefox) add sysLang variable to info.js (e.g. for Rickshaw)
@@ -328,7 +332,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 * (bluefox) update select ID dialog
 
 ### 0.2.0 (2015-01-16)
-* (bluefox) support of integrated socket (from iobroker.socketio)
+* (bluefox) support of integrated socket (from ioBroker.socketio)
 
 ### 0.1.12 (2015-01-08)
 * (bluefox) update selectId dialog
@@ -378,7 +382,7 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2020 Bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -28,6 +28,7 @@ Since Version 0.1.8 SRG-SSR even provides their own icons. So you can choose whi
 
 ### Getting started
 1. Get a free accout on https://developer.srgssr.ch/ 
+1. Make sure using the product "SRG-SSR-PUBLIC-API-V2" since this is their free product  
 1. Go to "My Apps" and create a new App. This will create a specific ConsumerKey and ConsumerSecret
 1. Find out Longitude / Latitude (decimal degrees) of the chosen location for which forecast is needed
 1. Install this Adapter on ioBroker => This can take several minutes (~7min on a Raspberry Pi 3)
@@ -41,6 +42,9 @@ Since Version 0.1.8 SRG-SSR even provides their own icons. So you can choose whi
 The first query is made 10s after the adapter was started. After the first start, the query will be executed regularly according to the conifugation parameter (Poll Interval in Minutes)
 
 ## Changelog
+
+### 0.3.2
+* (baerengraben)  Fix for https://github.com/baerengraben/iobroker.swiss-weather-api/issues/13.
 
 ### 0.3.1
 * (baerengraben)  Adapter-Config attributes longitude & latitude is optional now. If no longitude/latitude is set, the adpater is getting the longitude/latitude from ioBroker System-Attributes (https://github.com/baerengraben/iobroker.swiss-weather-api/issues/6).

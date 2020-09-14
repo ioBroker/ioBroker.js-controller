@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: aFWs9Y6sGOhasVUIPfH/qjZEroCsTxMOuYxWgb7w5C4=
+hash: esu4vhBEs84Z3J9gPKambhckm37je2rBt6v5o+K/rX8=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
@@ -17,11 +17,11 @@ hash: aFWs9Y6sGOhasVUIPfH/qjZEroCsTxMOuYxWgb7w5C4=
 
 ＃ioBroker.vis-icontwo
 ##图标适配器来自ioBroker.vis适配器
-视觉控制图标适配器。
+视觉识别工具适配器。
 
 ![屏幕截图](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_001.png)
 
-视觉上的Alle Icons图片（日期和日期）
+视觉图标上的所有图标
 
 ![帕法德](../../../en/adapterref/iobroker.vis-icontwo/admin/Pfad_001.png)
 
@@ -30,22 +30,26 @@ hash: aFWs9Y6sGOhasVUIPfH/qjZEroCsTxMOuYxWgb7w5C4=
 ## Vorschau
 Eine kleine Vorschauüberden Stil der图标：
 
-Z.B.灯（Teilauswahl）
+Z.B.灯（Teilauswahl）：
 
 ![屏幕截图](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_002.png)
 
-Z.B.客房（Teilauswahl）
+Z.B.客房（Teilauswahl）：
 
 ![屏幕截图](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_003.png)
 
-Z.B.设备（Teilauswahl）
+Z.B.设备（Teilauswahl）：
 
 ![屏幕截图](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_004.png)
+
+EinevollständigeÜbersichtaller Icons ist hier zu finden（死于Ordnerstruktur ist die selbe，Wie im Dateimanager）：
+
+-> http://icontwo.inventwo.com <-
 
 ---
 
 ##Unterstützung
-Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱恩·乌斯·杰德·斯彭德。
+瀑布下的瀑布，阿尔弗雷德·杰德·斯彭德的瀑布。
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
@@ -54,6 +58,26 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 ---
 
 ## Changelog
+
+### 0.19.1
+
+• (skvarel) - Index & Readme angepasst (Icon Overview)
+
+### 0.19.0
+
+• (skvarel) - Neue Icons hinzugefügt (Lights & Alarm)
+
+### 0.18.0
+
+• (skvarel) - Neue Icons hinzugefügt (Rooms)
+
+### 0.17.1
+
+• (skvarel) - Code angepasst
+
+### 0.17.0
+
+• (skvarel) - Neue Icons hinzugefügt (Network)
 
 ### 0.16.1
 

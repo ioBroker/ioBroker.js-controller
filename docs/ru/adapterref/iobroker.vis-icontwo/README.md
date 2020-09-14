@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: aFWs9Y6sGOhasVUIPfH/qjZEroCsTxMOuYxWgb7w5C4=
+hash: esu4vhBEs84Z3J9gPKambhckm37je2rBt6v5o+K/rX8=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
@@ -13,7 +13,7 @@ hash: aFWs9Y6sGOhasVUIPfH/qjZEroCsTxMOuYxWgb7w5C4=
 ![Количество установок (стабильно)](http://iobroker.live/badges/vis-icontwo-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/inventwo/iobroker.vis-icontwo.svg)
 ![Известные уязвимости](https://snyk.io/test/github/inventwo/iobroker.vis-icontwo/badge.svg)
-![НПМ](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)
 
 # IoBroker.vis-icontwo
 ## Icon Adapter für den ioBroker.vis Adapter
@@ -30,17 +30,21 @@ Ein reiner Icon Adapter für die Visualisierung.
 ## Vorschau
 Eine kleine Vorschau über den Stil der Иконки:
 
-З.Б. Огни (Тейлаусвал)
+З.Б. Фары (Тейлаусваль):
 
 ![Скриншот](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_002.png)
 
-З.Б. Комнаты (Teilauswahl)
+З.Б. Комнаты (Teilauswahl):
 
 ![Скриншот](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_003.png)
 
-З.Б. Устройства (Teilauswahl)
+З.Б. Устройства (Teilauswahl):
 
 ![Скриншот](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_004.png)
+
+Eine vollständige Übersichtaller Icons ist hier zu finden (die Ordnerstruktur ist die selbe, wie im Dateimanager):
+
+-> http://icontwo.inventwo.com <-
 
 ---
 
@@ -54,6 +58,26 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog
+
+### 0.19.1
+
+• (skvarel) - Index & Readme angepasst (Icon Overview)
+
+### 0.19.0
+
+• (skvarel) - Neue Icons hinzugefügt (Lights & Alarm)
+
+### 0.18.0
+
+• (skvarel) - Neue Icons hinzugefügt (Rooms)
+
+### 0.17.1
+
+• (skvarel) - Code angepasst
+
+### 0.17.0
+
+• (skvarel) - Neue Icons hinzugefügt (Network)
 
 ### 0.16.1
 
