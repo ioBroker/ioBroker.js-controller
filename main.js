@@ -1748,7 +1748,7 @@ function _deleteAllZipPackages(list, cb) {
  This function deletes all ZIP packages that were not downloaded.
  ZIP Package is temporary file, that should be deleted straight after it downloaded and if it still exists, so clear it
 
- @param {function} cb optional callback
+ @param {() => void} [cb] optional callback
  */
 function deleteAllZipPackages(cb) {
     states.getKeys(hostObjectPrefix + '.zip.*',
