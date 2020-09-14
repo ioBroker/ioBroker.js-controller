@@ -63,6 +63,7 @@
 		"iobroker.js",
 		"main.js",
 		"lib/**/*.js",
-		"lib/**/*.d.ts"
+		"lib/**/*.d.ts",
+		"test/**/*.js"
 	]
 }

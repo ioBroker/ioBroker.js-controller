@@ -42,7 +42,9 @@ if (os.platform() === 'win32') {
 
 let title = tools.appName + '.js-controller';
 
+/** @type {ioBroker.ObjectsDBConstructor} */
 let Objects;
+/** @type {ioBroker.StatesDBConstructor} */
 let States;
 let decache;
 
@@ -1234,7 +1236,9 @@ function setMeta() {
         }
     });
 
+    /** @type {ioBroker.SettableObject[]} */
     const tasks = [];
+    /** @type {ioBroker.SettableObject} */
     let obj;
 
     if (!compactGroupController) {

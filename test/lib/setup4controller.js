@@ -69,6 +69,7 @@ function startController(options, callback) {
         change: options.objects.onChange || null
     };
 
+    /** @type {ioBroker.ObjectsDBConstructor} */
     let Objects;
 
     if (options.objects) {
@@ -92,6 +93,7 @@ function startController(options, callback) {
     // eslint-disable-next-line no-unused-vars
     const _objectsInst = new Objects(settingsObjects);
 
+    /** @type {ioBroker.StatesDBConstructor} */
     let States;
     // Just open in memory DB itself
     if (options.states) {

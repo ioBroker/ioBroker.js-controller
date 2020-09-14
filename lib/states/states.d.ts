@@ -2,6 +2,13 @@ export { };
 
 declare global {
 	namespace ioBroker {
+
+		/**
+		 * Defines the shape of the states DB constructor.
+		 * TODO: Specify the arguments
+		 */
+		type StatesDBConstructor = new (...args: any[]) => StatesDB;
+
 		/** Defines the API of the ioBroker states DB */
 		interface StatesDB {
 			/**
