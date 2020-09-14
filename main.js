@@ -2118,7 +2118,7 @@ function processMessage(msg) {
                         .on('end', () => {  // done
                             const lines = text.split('\n');
                             lines.shift();
-                            lines.push(stats.size);
+                            lines.push(stats.size.toString());
                             sendTo(msg.from, msg.command, lines, msg.callback);
                         })
                         .on('error', () => // done
@@ -2694,8 +2694,9 @@ function checkVersions(id, deps, globalDeps) {
             const globInstances = {};
             if (res && res.rows) {
                 res.rows.forEach(item => {
-                    if (!item.value._id) return;
-                    globInstances[item.value._id] = item.value
+                    if (item.value._id) {
+                        globInstances[item.value._id] = item.value;
+                    }
                 });
                 Object.keys(globInstances).forEach(id => {
                     if (globInstances[id] && globInstances[id].common && globInstances[id].common.host === hostname) {
