@@ -3,17 +3,17 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sourceanalytix/README.md
 title: ИсточникAnalytix
-hash: 0VtNU0rzqFZj2vKQ71+jWiUkiOnJ0Gj7NqRipsERF88=
+hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
 ---
 # SourceAnalytix
-![Тестирование и выпуск](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg) **Этот адаптер использует службу [Sentry.io](https://sentry.io) для автоматического сообщения мне как разработчику об исключениях, ошибках кода и новых схемах устройств.** Подробнее см. Ниже!
+![Тестирование и выпуск](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg) **Этот адаптер использует службу [Sentry.io](https://sentry.io), чтобы автоматически сообщать мне как разработчику об исключениях, ошибках кода и новых схемах устройств.** Подробнее см. Ниже!
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
 ![Количество установок (последнее)](http://iobroker.live/badges/sourceanalytix-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/sourceanalytix-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)
-![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
 
 Подробный анализ вашего потребления энергии, газа и жидкости Любой источник (кВтч, Втч, Ватт, л / час или м3) может быть использован для анализа данных:
 
@@ -47,7 +47,7 @@ hash: 0VtNU0rzqFZj2vKQ71+jWiUkiOnJ0Gj7NqRipsERF88=
 ## Что такое Sentry.io и что передается на серверы этой компании?
 Sentry.io - это сервис, позволяющий разработчикам получать обзор ошибок в своих приложениях. Именно это и реализовано в этом адаптере.
 
-Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включается также ваш идентификатор установки (это просто уникальный идентификатор **без** дополнительной информации о вас, электронной почты, имени и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
+Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включается также ваш идентификатор установки (это просто уникальный идентификатор **без** дополнительной информации о вас, адрес электронной почты, имя и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
 
 ## Changelog
 <!--
@@ -55,7 +55,7 @@ Sentry.io - это сервис, позволяющий разработчика
     ## __WORK IN PROGRESS__
 -->
 
-### 0.4.7-beta.0 (2020-09-12) Beta release solving NULL error's & daily resets
+### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry
 * (Dutchman) Implement configuration for Price definitions
 * (Dutchman) Bugfix: NULL value issue  at daily reset

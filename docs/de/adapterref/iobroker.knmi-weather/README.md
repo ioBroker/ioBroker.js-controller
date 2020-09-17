@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.knmi-weather/README.md
 title: ioBroker.knmi-Wetter
-hash: 4K7lhE2g1x8O5srmOl0lvYJjZ3JU/YvYk+pXG7jB20w=
+hash: xQoVApNkHMFgEPOLLmDRliIMEH9gUkuXr61thF7VPAg=
 ---
 ![Logo](../../../en/adapterref/iobroker.knmi-weather/admin/knmi-weather.png)
 
@@ -12,29 +12,30 @@ hash: 4K7lhE2g1x8O5srmOl0lvYJjZ3JU/YvYk+pXG7jB20w=
 ![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/knmi-weather-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/knmi-weather-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/ioBroker.knmi-weather.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.knmi-weather/badge.svg)
 ![NPM](https://nodei.co/npm/ioBroker.knmi-weather.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/iobroker.knmi-weather/master.svg)
 
 # IoBroker.knmi-Wetter
+![Testen und freigeben](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
+
 ## KNMI-Wetterdaten und Alarme für ioBroker
 KNMI bietet eine API, deren Daten alle 10 Minuten basierend auf allen vom Institut gesammelten Sensordaten aktualisiert werden.
 Mit diesem Adapter können Sie diese API lesen (Registrierung erforderlich!) Und alle relevanten Werte in benutzerfreundlichen Zuständen speichern, um sie in Benachrichtigungen (Beispiel: Telegramm / Pushover) oder Visialisierungen weiterzuverarbeiten.
 
-Die API kann bis zu 300 Attements pro Tag kostenlos verwendet werden, daher wird der Adapter alle 5 Minuten verschoben.
+Die API kann bis zu 300 Mal am Tag kostenlos verwendet werden, daher wird der Adapter alle 5 Minuten geplant.
 
 Folgende Daten sind verfügbar:
 
-* Aktuelle klimat Bedingungen
-* Prognose heute, morgen, übermorgen
 * Wetteralarme
+* Aktuelle Klimabedingungen
+* Prognose heute, morgen, übermorgen
+* Karten des aktuellen Regenradars von "[Buienradar] (https://www.buienradar.nl)"
 
-Die Standortdaten basieren auf GPS-Koordinaten, die in der Administratorkonfiguration gespeichert sind.
+Standortdaten beziehen sich auf GPS-Koordinaten, die in der Administratorkonfiguration gespeichert sind.
 
 Weitere Informationen finden Sie unter: http://weerlive.nl/index.php Holen Sie sich Ihren kostenlosen API-Schlüssel hier: http://weerlive.nl/delen.php
 
 ## Unterstütze mich
-Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/knmi-weather/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.knmi-weather/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 <!--
@@ -42,12 +43,12 @@ Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende lei
 	### __WORK IN PROGRESS__
 -->
 
-### 0.2.2-beta.0 (2020-08-30)
-* (DutchmanNL) Updated dependency's
+### 1.0.0 (2020-09-15)
+* (DutchmanNL) Final version release
 * (DutchmanNL) Bugfixes
 
 ### 0.2.1
-* (DutchmanNL) Updated dependencys
+* (DutchmanNL) Updated dependency's
 * (DutchmanNL) Release to stable repository
 * (DutchmanNL) Bugfix : Solve incorrect Latitude/Longtitude configuration
 

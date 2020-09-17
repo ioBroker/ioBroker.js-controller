@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
+hash: gEYoZco3JjDIWm92tdlDwC6tylD4oxv7fsDCncL2V3U=
 ---
 ![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
@@ -18,7 +18,7 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 
 ＃ioBroker.MieleCloudService
 ##说明
-该适配器用于从Miele 3rd-party官方API检索有关所有Miele @ Home设备的信息。
+该适配器用于从官方Miele 3rd-party API检索有关所有Miele @ Home设备的信息。
 无论它们是否通过WiFi或XGW3000网关直接连接。它实现了** Miele 3rd Party API V1.0.3 **
 
 ##先决条件
@@ -33,29 +33,25 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 1.使用以下命令通过管理员安装
  *稳定的回购-获得当前的稳定版本
  *最新的Repo-获取最新的测试版本（可能不稳定）
- *通过：https://github.com/Grizzelbee/ioBroker.mielecloudservice.git-获得最新的开发版本
+ *通过：https://github.com/Grizzelbee/ioBroker.mielecloudservice.git-获取最新的开发版本
 2.在Miele Smartphone应用程序中为Miele @ Home创建一个应用程序帐户
 3.在https://www.miele.com/f/com/zh-CN/register_api.aspx上创建一个开发人员帐户
 4.将您的Miele设备添加到应用程序（如果未自动添加）
 6.填写从Miele-developer团队收到的client_secret和client_id以及从应用程序获得的帐户ID和密码。
 
-＃＃ 下一步
-*新增：（无设备活动时）（更长）轮询间隔
-*新功能：完全不活动的睡眠时间（例如晚上）
-
 ##文档
 请主要参考Miele发布的主要API文档
 
-* [常规文档]（https://www.miele.com/developer/swagger-ui/index.html）
+* [一般文档]（https://www.miele.com/developer/swagger-ui/index.html）
 * [在设备上执行操作的前提条件]（https://www.miele.com/developer/swagger-ui/put_additional_info.html）
 
 有两种数据点可用。作为人类可读的文本和数字。
 这些属于文本字段的数字数据字段具有相同的名称，但附加了“ _raw”。
 下面列出了具有一般含义的字段。
-未列出的字段因设备而异，并且不受Miele的贬低。
+未列出的字段的含义因设备而异，并且不受Miele的贬低。
 如果需要在脚本中引用这些字段，请始终使用_raw值。
 文本值将来可能会更改，并且还取决于语言。
-以下是这些原始值代表的列表：
+这些原始值代表的清单如下：
 
 ###设备类型
  |原始值状态|
@@ -123,7 +119,7 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 | 2 |自动程序|
 | 3 |清洁/保养程序|
 
-### DryStepStep / Trockenstufe
+### DryingStep / Trockenstufe
  |原始值状态|
  |----------|-------|
  | 0 |超干|
@@ -131,7 +127,7 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
  | 2 |正常|
  | 3 |稍干|
  | 4 |手铁1级|
- | 5 |手工铁水平2 |
+ | 5 |手动熨斗2 |
  | 6 |机铁|
 
 ### ProgramBezeichnung
@@ -160,6 +156,18 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 版权所有（c）2019、2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 2.0.3 (2020-09-15)
+* (grizzelbee) Upd: Updated country list in config dialog
+* (grizzelbee) New: Some more debug code
+
+### 2.0.2 (2020-09-15)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on failed authentication preventing a valid error message
+
+### 2.0.1 (2020-09-14)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on logout while invalidating token
+
 ### 2.0.0 - Support for Miele API V1.0.3 (2020-08-25)
 Some breaking changes in this release. Some datapoints changed their type. May require fixes in scripts. **Update with care!**
 Due to the fix that datapoints with invalid values aren't created any longer, I recommend deleting all datapoints in Object view.

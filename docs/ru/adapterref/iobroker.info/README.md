@@ -319,6 +319,9 @@ $ sudo apt-get install smartmontools
 ## Changelog
 <!-- ### __WORK IN PROGRESS__ -->
 
+### 1.7.8 (2020-09-17)
+* (bluefox) Fixed words.js in widget
+
 ### 1.7.7 (2020-07-25)
 * (Apollon77) Prevented a crash case (Sentry IOBROKER-INFO-K)
 
@@ -413,15 +416,15 @@ $ sudo apt-get install smartmontools
 
 ### 1.2.7 (2019-03-17)
 * (ldittmar) little fixes
-* (ldittmar) unknow adapters search new design
+* (ldittmar) unknown adapters search new design
 * (ldittmar) better design for PC monitor
-* (ldittmar) unknow adapters show more informations
+* (ldittmar) unknown adapters show more information
 * (ldittmar) stable version
 
 ### 1.2.5 (2019-03-14)
 * (ldittmar) show adapter requests
 * (ldittmar) show bugs and issues
-* (ldittmar) diyplay important links
+* (ldittmar) display important links
 * (ldittmar) show important popup news
 * (ldittmar) vis widget for popup news
 
@@ -433,7 +436,7 @@ $ sudo apt-get install smartmontools
 * (ldittmar) move to iobroker-community-adapters
 
 ### 1.0.2 (2018-11-30)
-* (ldittmar) fixed problems with Node version info in multihost system
+* (ldittmar) fixed problems with Node version info in multi-host system
 
 ### 1.0.1 (2018-11-27)
 * (ldittmar) search for new adapters on Github
@@ -453,8 +456,8 @@ $ sudo apt-get install smartmontools
 
 ### 0.0.4 (2017-12-08)
 * (ldittmar) some fixes and design correction
-* (ldittmar) show informations about adapters (update/new)
-* (ldittmar) show system informations
+* (ldittmar) show information about adapters (update/new)
+* (ldittmar) show system information
 
 ### 0.0.1 (2017-11-23)
 * (ldittmar) initial commit

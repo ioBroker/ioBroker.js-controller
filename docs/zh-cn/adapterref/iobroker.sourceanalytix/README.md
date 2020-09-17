@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: 0VtNU0rzqFZj2vKQ71+jWiUkiOnJ0Gj7NqRipsERF88=
+hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
@@ -13,9 +13,9 @@ hash: 0VtNU0rzqFZj2vKQ71+jWiUkiOnJ0Gj7NqRipsERF88=
 ![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
 
 ＃SourceAnalytix
-![测试与发布](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备模式。**更多详细信息，请参见下文！
+![测试与发布](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备架构。**更多详细信息，请参见下文！
 
-能源，气体和液体消耗的详细分析可以将任何来源（kWh，Wh，Watt，l / h或m3）用于数据分析：
+详细分析您的能源，气体和液体消耗可以将任何来源（kWh，Wh，Watt，l / h或m3）用于数据分析：
 
 *跟踪每天，每周，每月，每季度，每年的消耗量
 *计算成本（当前价格是可配置的）
@@ -32,7 +32,7 @@ hash: 0VtNU0rzqFZj2vKQ71+jWiUkiOnJ0Gj7NqRipsERF88=
 ＃＃ 已知的问题
 * []如果对象中定义了默认值，则[]源值将在晚上重置为默认值（JS-Controller中的错误，需要在2.3中修复）
 
-*解决方法：确保未为自创建状态设置默认值*
+*解决方法：确保未为自己创建的状态设置默认值*
 
 ＃＃ 去做
 * []文档
@@ -47,7 +47,7 @@ hash: 0VtNU0rzqFZj2vKQ71+jWiUkiOnJ0Gj7NqRipsERF88=
 ##什么是Sentry.io，什么报告给该公司的服务器？
 Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
 <!--
@@ -55,7 +55,7 @@ Sentry.io是一项服务，供开发人员从其应用程序中获取有关错�
     ## __WORK IN PROGRESS__
 -->
 
-### 0.4.7-beta.0 (2020-09-12) Beta release solving NULL error's & daily resets
+### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry
 * (Dutchman) Implement configuration for Price definitions
 * (Dutchman) Bugfix: NULL value issue  at daily reset

@@ -5,8 +5,8 @@
 ![Number of Installations (latest)](http://iobroker.live/badges/sourceanalytix-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/sourceanalytix-stable.svg)
 [![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.sourceanalytix)
-[![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)](https://nodei.co/npm/iobroker.sourceanalytix/)
-![Test and Release](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
+[![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)](https://nodei.co/npm/iobroker.sourceanalytix/)  
+![Test and Release](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)   
 **This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors and new device schemas to me as the developer.** More details see below!
 
 Detailed analysis of your Energy, gas and liquid consumptions
@@ -54,7 +54,7 @@ When the adapter crashes or an other Code error happens, this error message that
     ## __WORK IN PROGRESS__
 -->
 
-### 0.4.7-beta.0 (2020-09-12) Beta release solving NULL error's & daily resets
+### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry
 * (Dutchman) Implement configuration for Price definitions
 * (Dutchman) Bugfix: NULL value issue  at daily reset

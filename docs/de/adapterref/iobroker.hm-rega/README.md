@@ -145,6 +145,9 @@ Abschließend sind die in der CCU angelegten Variablen aufgelistet
 ### FAQ
 
 ## Changelog
+### 2.6.20 (2020-09-15)
+* (foxriver76) set explicit object type on extending object (issue #109)
+
 ### 2.6.19 (2020-08-23)
 * (foxriver76) fixed issue on syncing service message counter when invisible variables are synchronized
 * (foxriver76) fixed issue where value list variables are a string instead of an integer

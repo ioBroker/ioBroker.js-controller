@@ -6,26 +6,24 @@
 ![Number of Installations (latest)](http://iobroker.live/badges/knmi-weather-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/knmi-weather-stable.svg)
 [![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/ioBroker.knmi-weather.svg)](https://david-dm.org/iobroker-community-adapters/ioBroker.knmi-weather)
-[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.knmi-weather/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.knmi-weather)
-
-[![NPM](https://nodei.co/npm/ioBroker.knmi-weather.png?downloads=true)](https://nodei.co/npm/ioBroker.knmi-weather/)
-
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/iobroker.knmi-weather/master.svg)](https://travis-ci.org/iobroker-community-adapters/iobroker.knmi-weather)
+[![NPM](https://nodei.co/npm/ioBroker.knmi-weather.png?downloads=true)](https://nodei.co/npm/ioBroker.knmi-weather/)  
+![Test and Release](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)   
 
 ## KNMI-Weather data and alarms for ioBroker
 
-KNMI provides an API which data is updated every 10 minutes based on all sensor data the instituate collects.
+KNMI provides an API which data is updated every 10 minutes based on all sensor data the institute collects.
 This adapter allows to read this API (registration required !) and store all relevant values in user friendly states to be further processed in notifications (Example : Telegram / Pushover) or visialisations.
 
-The API can be used for free up to 300 attements a day, therefore the adapter is sheduled every 5 minutes.
+The API can be used for free up to 300 times a day, therefore the adapter is scheduled every 5 minutes.
 
-Following data is availaible :
+Following data is available :
 
-* Current klimat conditions
-* Forecast today, tomorrow, day after tomorrow
 * Weather alarms
+* Current climate conditions
+* Forecast today, tomorrow, day after tomorrow
+* Maps of current Rain-Radar provided by "[Buienradar](https://www.buienradar.nl)"
 
-Location data is based on GPS coordinates stored in admin configuration.
+Location data is related to GPS coordinates stored in admin configuration.
 
 For more information please visit : http://weerlive.nl/index.php  
 Get your free API-Key here : http://weerlive.nl/delen.php
@@ -33,7 +31,7 @@ Get your free API-Key here : http://weerlive.nl/delen.php
 ## Support me
 If you like my work, please feel free to provide a personal donation  
 (this is an personal Donate link for DutchmanNL, no relation to the ioBroker Project !)  
-[![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/knmi-weather/master/admin/button.png)](http://paypal.me/DutchmanNL)
+[![Donate](https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.knmi-weather/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 <!--
@@ -41,12 +39,12 @@ If you like my work, please feel free to provide a personal donation
 	### __WORK IN PROGRESS__
 -->
 
-### 0.2.2-beta.0 (2020-08-30)
-* (DutchmanNL) Updated dependency's
+### 1.0.0 (2020-09-15)
+* (DutchmanNL) Final version release
 * (DutchmanNL) Bugfixes
 
 ### 0.2.1
-* (DutchmanNL) Updated dependencys
+* (DutchmanNL) Updated dependency's
 * (DutchmanNL) Release to stable repository
 * (DutchmanNL) Bugfix : Solve incorrect Latitude/Longtitude configuration
 

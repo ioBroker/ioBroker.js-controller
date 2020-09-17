@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: JCFxQRRFictbXP/nF4emHAdc5kdKfXw2Mi1WhYftWEs=
+hash: MkqTbTBnqseI7RNEO+9zp1ShWv9nvH7AsrY+sI6xCM8=
 ---
 ![Logo](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -16,6 +16,8 @@ hash: JCFxQRRFictbXP/nF4emHAdc5kdKfXw2Mi1WhYftWEs=
 ![NPM](https://nodei.co/npm/iobroker.wled.png?downloads=true)
 
 # IoBroker.wled
+![Testen und freigeben](https://github.com/iobroker-community-adapters/ioBroker.wled/workflows/Test%20and%20Release/badge.svg)
+
 ** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
 
 ## Wled Adapter für ioBroker

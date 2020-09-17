@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
+hash: gEYoZco3JjDIWm92tdlDwC6tylD4oxv7fsDCncL2V3U=
 ---
 ![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
@@ -38,10 +38,6 @@ Gehen Sie zur Installation wie folgt vor:
 3. Erstellen Sie ein Entwicklerkonto unter https://www.miele.com/f/com/en/register_api.aspx
 4. Fügen Sie Ihre Miele-Geräte zur App hinzu (falls nicht automatisch hinzugefügt)
 6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort der App ein.
-
-## Nächste Schritte
-* Neu: (längeres) Abfrageintervall, wenn kein Gerät aktiv ist
-* Neu: Schlafzeit für vollständige Inaktivität (z. B. nachts)
 
 ## Dokumentation
 Bitte beziehen Sie sich hauptsächlich auf die von Miele veröffentlichte API-Hauptdokumentation
@@ -160,6 +156,18 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
 Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 2.0.3 (2020-09-15)
+* (grizzelbee) Upd: Updated country list in config dialog
+* (grizzelbee) New: Some more debug code
+
+### 2.0.2 (2020-09-15)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on failed authentication preventing a valid error message
+
+### 2.0.1 (2020-09-14)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on logout while invalidating token
+
 ### 2.0.0 - Support for Miele API V1.0.3 (2020-08-25)
 Some breaking changes in this release. Some datapoints changed their type. May require fixes in scripts. **Update with care!**
 Due to the fix that datapoints with invalid values aren't created any longer, I recommend deleting all datapoints in Object view.

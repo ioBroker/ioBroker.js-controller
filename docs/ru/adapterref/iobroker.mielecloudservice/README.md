@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
+hash: gEYoZco3JjDIWm92tdlDwC6tylD4oxv7fsDCncL2V3U=
 ---
 ![Логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
@@ -38,10 +38,6 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 3. Создайте учетную запись разработчика на странице https://www.miele.com/f/com/en/register_api.aspx.
 4. Добавьте свои устройства Miele-Devices в приложение (если не добавляются автоматически)
 6. Введите client_secret и client_id, полученные от команды разработчиков Miele, а также идентификатор учетной записи и пароль из приложения.
-
-## Следующие шаги
-* Новое: (увеличенный) интервал опроса, когда ни одно устройство не активно
-* Новое: время сна для полного бездействия (например, ночью)
 
 ## Документация
 В основном обращайтесь к основной документации API, опубликованной Miele.
@@ -160,6 +156,18 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 Авторские права (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 2.0.3 (2020-09-15)
+* (grizzelbee) Upd: Updated country list in config dialog
+* (grizzelbee) New: Some more debug code
+
+### 2.0.2 (2020-09-15)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on failed authentication preventing a valid error message
+
+### 2.0.1 (2020-09-14)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on logout while invalidating token
+
 ### 2.0.0 - Support for Miele API V1.0.3 (2020-08-25)
 Some breaking changes in this release. Some datapoints changed their type. May require fixes in scripts. **Update with care!**
 Due to the fix that datapoints with invalid values aren't created any longer, I recommend deleting all datapoints in Object view.

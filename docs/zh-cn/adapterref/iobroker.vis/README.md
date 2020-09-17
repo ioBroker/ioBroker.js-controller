@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis/README.md
 title: 可视化
-hash: G9yoyXutYvJMzgKqJvroSn1St/3YvxcZF7ff3lNsnEg=
+hash: GRVTyES6+6x9SFC0ToSvAP6w0ZE+EV7y6twFs+UqZyw=
 ---
 ![商标](../../../en/adapterref/iobroker.vis/admin/vis.png)
 
@@ -38,7 +38,7 @@ ioBroker平台的Web可视化。
 -`\ +`-添加。参数必须放在方括号中，例如“ +（4.5）”。在此示例中，我们将值添加为4.5。
 -`\ -`-减去。参数必须放在方括号中，例如“-（-674.5）”。在此样本中，我们从值-674.5中减去。
 -`/`-除法。参数必须放在方括号中，例如“ /(0.5）”。在此示例中，我们将值除以0.5。
--`％`-取模。参数必须放在方括号中，例如“％（5）”。在此示例中，我们取模5。
+-`％`-取模。参数必须放在方括号中，例如“％（5）”。在此示例中，我们取5的模。
 -`round`-取整值。
 -`round（N）`-将值四舍五入到点后N个位置，例如34.678; round（1）=> 34.7
 -`hex`-将值转换为十六进制值。所有字母均小写。
@@ -56,6 +56,7 @@ ioBroker平台的Web可视化。
 -`random（R）`-Math.random（）* R，或者如果没有参数则只是Math.random（）
 -`formatValue（decimals）`-根据系统设置格式化值并使用小数
 -`date（format）`-将值格式化为日期。格式如下：“ YYYY-MM-DD hh：mm：ss.sss”
+-`momentDate（format）`-使用Moment.js将值格式化为日期。 [必须根据moment.js库输入批准的格式]（https://momentjs.com/docs/#/displaying/format/）
 -`array（element1，element2 [，element3，element4]）`-返回索引的元素。例如：`{id.ack; array（ack为假，ack为真）}`
 
 您可以在任何文本中使用此模式，例如
@@ -82,7 +83,7 @@ Last change: {objectRed.lc;date(hh:mm)}
 Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(h*h + w*w))}
 ```
 
-`{h:height;w:width;h*w}`将被解释为功能：
+`{h:height;w:width;h*w}`将被解释为以下功能：
 
 ```
 value = (function () {
@@ -112,7 +113,7 @@ Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(Ma
 *`instance`-浏览器实例
 *`login`-是否需要登录（例如显示/隐藏注销按钮）
 
-注意：要在计算中使用“：”（例如在字符串公式中），请使用“ ::”。
+注意：要在计算中使用“：”（例如，在字符串公式中），请使用“ ::”。
 
 **请记住**，样式定义将被解释为绑定，因此请使用`{{style: value}}`或仅
 
@@ -127,7 +128,7 @@ Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(Ma
 ##过滤器
 要在一个视图上可视化窗口小部件的总数，可以使用过滤器减少视图上同时显示的窗口小部件的数量。
 
-每个窗口小部件都有一个字段`filter`。如果您将其设置为某个值，例如`light`，因此您可以使用其他小部件`(bars - filters, filter - dropdown)`来控制哪个过滤器实际处于活动状态。
+每个窗口小部件都有一个字段`filter`。如果您将其设置为某个值，例如`light`，因此您可以使用其他小部件`(bars - filters, filter - dropdown)`控制哪个过滤器实际处于活动状态。
 
 ##控制界面
 Vis创建3个变量：
@@ -194,9 +195,9 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 设置断开连接之间的尝试间隔时间。如果设置为2秒，它将尝试每2秒建立一次连接。
 
 ###黑暗重新连接屏幕
-有时（夜间），必须具有黑暗的加载屏幕。使用此选项可以进行设置。
+有时（夜间），需要具有黑暗的加载屏幕。使用此选项可以进行设置。
 
-请注意，此设置仅对重新连接有效，而对首次连接无效。
+请注意，此设置仅对重新连接有效，而对第一次连接无效。
 
 ![黑暗](../../../en/adapterref/iobroker.vis/img/dark_screen.png)
 
@@ -205,6 +206,14 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 ### __进展中__->
 
 ## Changelog
+### 1.3.0 (2020-09-17)
+* (foxriver76) on pending getStates, try again instead of drop
+* (foxriver76) fixed the file manager typos
+* (Scrounger) Added momentDate for the bindings
+
+### 1.2.12 (2020-09-08)
+* (foxriver76) only parse arrays and json objects, not booleans, normal strings etc
+
 ### 1.2.11 (2020-08-25)
 * (bluefox) The error message about the non-found chart view was fixed. 
 

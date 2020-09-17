@@ -9,6 +9,7 @@
 [![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wled/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.wled)
 
 [![NPM](https://nodei.co/npm/iobroker.wled.png?downloads=true)](https://nodei.co/npm/iobroker.wled/)
+![Test and Release](https://github.com/iobroker-community-adapters/ioBroker.wled/workflows/Test%20and%20Release/badge.svg)
 
 **This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors and new device schemas to me as the developer.** More details see below!
 

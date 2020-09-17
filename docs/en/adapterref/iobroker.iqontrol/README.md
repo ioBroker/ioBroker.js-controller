@@ -430,6 +430,12 @@ This device has some special predefined size- and display-settings to show a web
 
 ## Changelog
 
+### dev
+* (sbormann) Added option to show big icons if device is inactive, active or enlarged.
+* (sbormann) Added forced reload to cover images.
+* (sbormann) Added more tile sizes.
+* (sbormann) Added options to hide device, name or state if inactive, active or enlarged.
+
 ### 1.2.4 (2020-09-14)
 * (sbormann) Ignore readonly for enlarge.
 * (sbormann) Always show enlarge button, if tile is enlarged.
