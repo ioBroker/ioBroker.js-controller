@@ -135,11 +135,11 @@ Vis erstellt 3 Variablen:
 
 - `control.instance` - Hier sollte die Browserinstanz geschrieben werden oder FFFFFFFF, wenn jeder Browser gesteuert werden muss.
 - `control.data` - Parameter für den Befehl. Siehe spezifische Befehlsbeschreibung.
-- `control.command` - Befehlsname. Das Schreiben dieser Variablen löst den Befehl aus. Das heißt, bevor der Befehl geschrieben wird, müssen "Instanz" und "Daten" mit Daten vorbereitet werden.
+- `control.command` - Befehlsname. Das Schreiben dieser Variablen löst den Befehl aus. Das heißt, bevor der Befehl geschrieben wird, müssen die "Instanz" und "Daten" mit Daten vorbereitet werden.
 
 Befehle:
 
-* `alert` - Alarmfenster in vis anzeigen. "control.data" hat das folgende Format "message; title; jquery-icon". Titel und jquery-icon sind optional. Symbolnamen finden Sie [hier] (http://jqueryui.com/themeroller/). Um das Symbol "ui-icon-info" anzuzeigen, schreiben Sie `` `Message ;; info```.
+* `alert` - Alarmfenster in vis anzeigen. "control.data" hat das folgende Format: "message; title; jquery-icon". Titel und Abfragesymbol sind optional. Symbolnamen finden Sie [hier] (http://jqueryui.com/themeroller/). Um das Symbol "ui-icon-info" anzuzeigen, schreiben Sie `` `Message ;; info```.
 * `changeView` - wechselt zur gewünschten Ansicht. "control.data" muss den Namen der Ansicht haben. Sie können den Projektnamen auch als "Projekt / Ansicht" angeben. Das Standardprojekt ist "main".
 * `refresh` - vis neu laden, zum Beispiel nachdem das Projekt geändert wurde, um in allen Browsern neu zu laden.
 * `reload` - wie aktualisieren.
@@ -164,9 +164,9 @@ Wenn der Benutzer die Ansicht ändert oder zu Beginn, werden die Variablen von v
 
 - `control.instance`: Browser-Instanz und` ack = true`
 - `control.data`: Projekt- und Ansichtsname in der Form` project / view`, z. `main / view` (und` ack = true`)
-- `control.command`:` changedView` und `ack = true`
+- `control.command`:` definedView` und `ack = true`
 
-Sie können die JSON-Zeichenfolge oder das Objekt als `{instance: 'AABBCCDD', command: 'cmd', data: 'ddd'}` in control.command schreiben. In diesem Fall werden die Instanz und die Daten vom JSON-Objekt übernommen.
+Sie können den JSON-String oder das Objekt in control.command als `{instance: 'AABBCCDD', command: 'cmd', data: 'ddd'}` schreiben. In diesem Fall werden die Instanz und die Daten vom JSON-Objekt übernommen.
 
 Beispiel für einen Javascript-Adapter:
 
@@ -192,7 +192,7 @@ Es gibt eine Regel, dass nach einer gewissen Unterbrechungszeit die gesamte VIS-
 Sie können es im Menü "Einstellungen ..." konfigurieren. Wenn Sie das Intervall auf "nie" setzen, wird die Seite nie neu geladen.
 
 ### Intervall wieder verbinden
-Legen Sie das Intervall zwischen den Verbindungsversuchen fest, wenn die Verbindung getrennt wird. Wenn Sie 2 Sekunden einstellen, wird versucht, die Verbindung alle 2 Sekunden herzustellen.
+Legen Sie das Intervall zwischen den Verbindungsversuchen fest, wenn die Verbindung getrennt wird. Wenn Sie 2 Sekunden einstellen, wird alle 2 Sekunden versucht, die Verbindung herzustellen.
 
 ### Dunkler Bildschirm zum erneuten Verbinden
 Manchmal (in der Nacht) ist ein dunkler Ladebildschirm erforderlich. Mit dieser Option können Sie es einstellen.

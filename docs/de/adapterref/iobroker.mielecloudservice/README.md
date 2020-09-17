@@ -40,7 +40,7 @@ Gehen Sie zur Installation wie folgt vor:
 6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort der App ein.
 
 ## Dokumentation
-Bitte beziehen Sie sich hauptsächlich auf die von Miele veröffentlichte API-Hauptdokumentation
+Bitte beziehen Sie sich hauptsächlich auf die von Miele veröffentlichte Haupt-API-Dokumentation
 
 * [Allgemeine Dokumentation] (https://www.miele.com/developer/swagger-ui/index.html)
 * [Voraussetzungen für die Ausführung einer Aktion auf einem Gerät] (https://www.miele.com/developer/swagger-ui/put_additional_info.html)
@@ -69,7 +69,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 18 | HAUBE |
  | 19 | KÜHLSCHRANK |
  | 20 | Gefrierschrank |
- | 21 | KÜHLSCHRANK- / GEFRIERKOMBINATION |
+ | 21 | KÜHL- / GEFRIERKOMBINATION |
  | 23 | VAKUUMREINIGER, AUTOMATISCHER ROBOTER VAKUUMREINIGER |
  | 24 | SCHEIBETROCKNER |
  | 25 | DISH WARMER |

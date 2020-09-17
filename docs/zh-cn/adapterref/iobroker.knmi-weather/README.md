@@ -19,7 +19,7 @@ hash: xQoVApNkHMFgEPOLLmDRliIMEH9gUkuXr61thF7VPAg=
 
 ## KNMI天气数据和ioBroker警报
 KNMI提供了一个API，该API可根据研究所收集的所有传感器数据每10分钟更新一次数据。
-该适配器允许读取此API（需要注册！），并以用户友好的状态存储所有相关值，以便在通知（例如：电报/推送）或可视化中进一步处理。
+该适配器允许读取此API（需要注册！），并将所有相关值存储在用户友好状态下，以便在通知（例如：电报/推送）或可视化中进一步处理。
 
 该API每天最多可免费使用300次，因此该适配器每5分钟安排一次。
 
@@ -27,8 +27,8 @@ KNMI提供了一个API，该API可根据研究所收集的所有传感器数据�
 
 *天气警报
 *当前的气候条件
-*今天，明天，后天的预测
-*“ [Buienradar]（https://www.buienradar.nl）”提供的当前Rain-Radar地图
+*今天，明天，后天的天气预报
+*“ [Buienradar]（https://www.buienradar.nl）”提供的当前Rain-Radar的地图
 
 位置数据与管理员配置中存储的GPS坐标有关。
 

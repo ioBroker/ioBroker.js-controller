@@ -12,7 +12,7 @@ hash: xQoVApNkHMFgEPOLLmDRliIMEH9gUkuXr61thF7VPAg=
 ![Количество установок (последнее)](http://iobroker.live/badges/knmi-weather-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/knmi-weather-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/ioBroker.knmi-weather.svg)
-![НПМ](https://nodei.co/npm/ioBroker.knmi-weather.png?downloads=true)
+![NPM](https://nodei.co/npm/ioBroker.knmi-weather.png?downloads=true)
 
 # IoBroker.knmi-weather
 ![Тестирование и выпуск](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
@@ -21,7 +21,7 @@ hash: xQoVApNkHMFgEPOLLmDRliIMEH9gUkuXr61thF7VPAg=
 KNMI предоставляет API, данные которого обновляются каждые 10 минут на основе всех данных датчиков, собираемых институтом.
 Этот адаптер позволяет читать этот API (требуется регистрация!) И сохранять все соответствующие значения в удобных для пользователя состояниях для дальнейшей обработки в уведомлениях (пример: Telegram / Pushover) или визуализации.
 
-API можно использовать бесплатно до 300 раз в день, поэтому переход адаптера выполняется каждые 5 минут.
+API можно использовать бесплатно до 300 раз в день, поэтому адаптер планируется каждые 5 минут.
 
 Доступны следующие данные:
 
@@ -35,7 +35,7 @@ API можно использовать бесплатно до 300 раз в д
 Для получения дополнительной информации посетите: http://weerlive.nl/index.php Получите бесплатный ключ API здесь: http://weerlive.nl/delen.php
 
 ## Поддержите меня
-Если вам нравятся мои работы, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.knmi-weather/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Если вам нравится моя работа, пожалуйста, сделайте личное пожертвование (это личная ссылка для пожертвований для DutchmanNL, не имеющая отношения к проекту ioBroker!) [![Пожертвовать] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.knmi-weather/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
 <!--
