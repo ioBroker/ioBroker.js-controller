@@ -74,6 +74,7 @@ const stopTimeouts          = {};
 let states                  = null;
 let objects                 = null;
 let storeTimer              = null;
+let mhTimer                 = null;
 let isStopping              = null;
 let allInstancesStopped     = true;
 let stopTimeout             = 10000;
@@ -147,13 +148,24 @@ function _startMultihost(_config, secret) {
     }, getIPs(), secret);
 }
 
+/**
+ * Starts or stops the multihost discovery server, depending on the config and temp information
+ *
+ * @param {object} __config - the iobroker config object
+ * @returns {boolean|void}
+ */
 function startMultihost(__config) {
     if (compactGroupController) {
         return;
     }
 
+    if (mhTimer) {
+        clearTimeout(mhTimer);
+        mhTimer = null;
+    }
+
     const _config = __config || getConfig();
-    if (_config.multihostService && _config.multihostService.enabled) {
+    if ((_config.multihostService && _config.multihostService.enabled)) {
         if (mhService) {
             try {
                 mhService.close(() => {
@@ -162,15 +174,16 @@ function startMultihost(__config) {
                 });
                 return;
             } catch (e) {
-                logger.warn(hostLogPrefix + ' Cannot stop multihost: ' + e);
+                logger.warn(`${hostLogPrefix} Cannot stop multihost discovery server: ${e}`);
             }
         }
 
         if ((!_config.objects.host || _config.objects.host === '127.0.0.1' || _config.objects.host === 'localhost') && _config.objects.type === 'file') {
-            logger.warn(hostLogPrefix + ' Multihost Master on this system is not possible, because IP address for objects is ' + _config.objects.host);
-        } else
-        if ((!_config.states.host || _config.states.host === '127.0.0.1' || _config.states.host  === 'localhost') && _config.states.type === 'file') {
-            logger.warn(hostLogPrefix + ' Multihost Master on this system is not possible, because IP address for states is ' + _config.states.host);
+            logger.warn(`${hostLogPrefix} Multihost Master on this system is not possible, because IP address for objects is ${_config.objects.host}`);
+            return false;
+        } else if ((!_config.states.host || _config.states.host === '127.0.0.1' || _config.states.host  === 'localhost') && _config.states.type === 'file') {
+            logger.warn(`${hostLogPrefix} Multihost Master on this system is not possible, because IP address for states is ${_config.states.host}`);
+            return false;
         }
 
         if (_config.multihostService.secure) {
@@ -179,11 +192,30 @@ function startMultihost(__config) {
                     tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
                         _startMultihost(_config, secret));
                 } else {
-                    logger.error(hostLogPrefix + ' Cannot start multihost discovery server: no system.config found (err:' + err + ')');
+                    logger.error(`${hostLogPrefix} Cannot start multihost discovery server: no system.config found (err:${err})`);
                 }
             });
         } else {
             _startMultihost(_config, false);
+        }
+
+        if (!_config.multihostService.persist) {
+            mhTimer = setTimeout(async () => {
+                if (mhService) {
+                    try {
+                        mhService.close();
+                        mhService = null;
+                        logger.info(`${hostLogPrefix} Multihost discovery server stopped after 15 minutes, because only temporarily activated`);
+                        _config.multihostService.persist = false;
+                        _config.multihostService.enabled = false;
+                        const configFile = tools.getConfigFileName();
+                        await fs.writeFile(configFile, JSON.stringify(_config, null, 2));
+                    } catch (e) {
+                        logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e}`);
+                    }
+                }
+                mhTimer = null;
+            }, 15 * 60000);
         }
 
         return true;
@@ -192,7 +224,7 @@ function startMultihost(__config) {
             mhService.close();
             mhService = null;
         } catch (e) {
-            logger.warn(hostLogPrefix + ' Cannot stop multihost discovery: ' + e);
+            logger.warn(`${hostLogPrefix} Cannot stop multihost discovery: ${e}`);
         }
         return false;
     }
@@ -2306,7 +2338,7 @@ function processMessage(msg) {
             break;
 
         case 'updateMultihost': {
-            const result = startMultihost();
+            const result = startMultihost(null);
             if (msg.callback) {
                 sendTo(msg.from, msg.command, {result: result}, msg.callback);
             }
@@ -2687,8 +2719,10 @@ function checkVersions(id, deps, globalDeps) {
             const globInstances = {};
             if (res && res.rows) {
                 res.rows.forEach(item => {
-                    if (!item.value._id) return;
-                    globInstances[item.value._id] = item.value
+                    if (!item.value._id) {
+                        return;
+                    }
+                    globInstances[item.value._id] = item.value;
                 });
                 Object.keys(globInstances).forEach(id => {
                     if (globInstances[id] && globInstances[id].common && globInstances[id].common.host === hostname) {
