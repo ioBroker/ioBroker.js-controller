@@ -884,7 +884,7 @@ function cleanAutoSubscribes(instance, callback) {
         if (res && res.rows) {
             for (let c = res.rows.length - 1; c >= 0; c--) {
                 // remove this instance from autoSubscribe
-                if (res.rows[c].value.common.subscribable) {
+                if (res.rows[c].value && res.rows[c].value.common.subscribable) {
                     count++;
                     cleanAutoSubscribe(instance, res.rows[c].id, () =>
                         !--count && callback && callback());
