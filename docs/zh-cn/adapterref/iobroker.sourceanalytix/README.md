@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: 0VtNU0rzqFZj2vKQ71+jWiUkiOnJ0Gj7NqRipsERF88=
+hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
@@ -55,7 +55,7 @@ Sentry.io是一项服务，供开发人员从其应用程序中获取有关错�
     ## __WORK IN PROGRESS__
 -->
 
-### 0.4.7-beta.0 (2020-09-12) Beta release solving NULL error's & daily resets
+### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry
 * (Dutchman) Implement configuration for Price definitions
 * (Dutchman) Bugfix: NULL value issue  at daily reset

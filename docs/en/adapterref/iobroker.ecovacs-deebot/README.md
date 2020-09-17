@@ -35,7 +35,8 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 
 It is recommended to use version 10 of Node.js or a newer version.
 
-This adapter uses the canvas library which might require additional installations, otherwise the installation in iobroker might result in an error.
+This adapter uses the canvas library which might require additional installations.
+For the full functional range please install the following packages.
 
 For Debian-based Linux systems the following commands should be executed:
 ```bash

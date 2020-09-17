@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: BrqDwPgIQqGknlhLFtzQn++cjgBEsXoiInBaT/TYbGI=
+hash: AD3mmtvGovCd4IDkyHrrQ+wOr8LmKx8Zq8AX71K4EAY=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -40,7 +40,8 @@ hash: BrqDwPgIQqGknlhLFtzQn++cjgBEsXoiInBaT/TYbGI=
 ## Монтаж
 Рекомендуется использовать версию Node.js 10 или более новую.
 
-Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок, иначе установка в iobroker может привести к ошибке.
+Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок.
+Для полного набора функций установите следующие пакеты.
 
 Для систем Linux на базе Debian необходимо выполнить следующие команды:
 

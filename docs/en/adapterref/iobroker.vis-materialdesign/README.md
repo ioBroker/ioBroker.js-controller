@@ -221,6 +221,8 @@ Settings that are not listed in the table below are self-explanatory.
 ### Text input
 ![Logo](doc/en/media/input.gif)
 
+TODO
+
 ### Select
 ![Logo](doc/en/media/select.gif)
 
@@ -5461,16 +5463,23 @@ ical2CalendarWidget();
 * (Scrounger): Buttons Vertical: text alignment option added
 * (Scrounger): added URL support as source for symbols / images
 * (Scrounger): HTML Card Widget: option to hide title, subtitle and text added
-* (Scrounger): HTML Card Widget: background image refresh options added
+* (Scrounger): HTML Card Widget: background image refresh options by datapoint added
 * (Scrounger): Fixed some errors reported via Sentry
 * (Scrounger): Select & Autocomplete Widget: overriding icon color bug fix
 * (Scrounger): Select & Autocomplete Widget: overriding icon bug fix
 * (Scrounger): Select & Autocomplete Widget: colors bug fixes
 * (Scrounger): Select & Autocomplete Widget: option to override the icon color of textfield for selected menu icon
+* (Scrounger): Select & Autocomplete Widget: text alignment option added
+* (Scrounger): Input Widget: text alignment option added
 * (Scrounger): JSON Chart Widget: option to force x-axis time unit added
 * (Scrounger): JSON Chart Widget: gradient colors for multipe dataset bug fixes
 * (Scrounger): JSON Chart: default tooltip title added
+* (Scrounger): Line History Chart: option for point color added
 * (Scrounger): Charts Widget: x-Axis time axis bug fixes
+* (Scrounger): Calendar Widget: option to show calendar week numbers in month view added
+* (Scrounger): Calendar Widget: option for custom date format added
+* (Scrounger): dependencies updated
+* (Scrounger): bug fixes
 
 ### 0.3.19 (2020-07-18)
 * (Scrounger): Icon Button Widget: background color option for lock icon added

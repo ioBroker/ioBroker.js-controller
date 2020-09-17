@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sourceanalytix/README.md
 title: ИсточникAnalytix
-hash: 0VtNU0rzqFZj2vKQ71+jWiUkiOnJ0Gj7NqRipsERF88=
+hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
 ---
 # SourceAnalytix
 ![Тестирование и выпуск](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg) **Этот адаптер использует службу [Sentry.io](https://sentry.io) для автоматического сообщения мне как разработчику об исключениях, ошибках кода и новых схемах устройств.** Подробнее см. Ниже!
@@ -30,7 +30,7 @@ hash: 0VtNU0rzqFZj2vKQ71+jWiUkiOnJ0Gj7NqRipsERF88=
 Что было улучшено с помощью @hadering и опубликовано на github https://github.com/hdering/homematic_verbrauchszaehler
 
 ## Известные проблемы
-* [] Исходные значения сбрасываются на значение по умолчанию ночью, если значение по умолчанию определено в объекте (ошибка в JS-Controller, исправление необходимо в 2.3)
+* [] Исходные значения сбрасываются до значения по умолчанию ночью, если значение по умолчанию определено в объекте (ошибка в JS-Controller, исправление необходимо в 2.3)
 
 *Обходной путь: убедитесь, что для самостоятельно созданных состояний не установлено значение по умолчанию*
 
@@ -55,7 +55,7 @@ Sentry.io - это сервис, позволяющий разработчика
     ## __WORK IN PROGRESS__
 -->
 
-### 0.4.7-beta.0 (2020-09-12) Beta release solving NULL error's & daily resets
+### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry
 * (Dutchman) Implement configuration for Price definitions
 * (Dutchman) Bugfix: NULL value issue  at daily reset

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
+hash: gEYoZco3JjDIWm92tdlDwC6tylD4oxv7fsDCncL2V3U=
 ---
 ![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
@@ -18,7 +18,7 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 
 ＃ioBroker.MieleCloudService
 ##说明
-该适配器用于从Miele 3rd-party官方API检索有关所有Miele @ Home设备的信息。
+该适配器用于从官方Miele 3rd-party API检索有关所有Miele @ Home设备的信息。
 无论它们是否通过WiFi或XGW3000网关直接连接。它实现了** Miele 3rd Party API V1.0.3 **
 
 ##先决条件
@@ -39,10 +39,6 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 4.将您的Miele设备添加到应用程序（如果未自动添加）
 6.填写从Miele-developer团队收到的client_secret和client_id以及从应用程序获得的帐户ID和密码。
 
-＃＃ 下一步
-*新增：（无设备活动时）（更长）轮询间隔
-*新功能：完全不活动的睡眠时间（例如晚上）
-
 ##文档
 请主要参考Miele发布的主要API文档
 
@@ -51,11 +47,11 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 
 有两种数据点可用。作为人类可读的文本和数字。
 这些属于文本字段的数字数据字段具有相同的名称，但附加了“ _raw”。
-下面列出了具有一般含义的字段。
-未列出的字段因设备而异，并且不受Miele的贬低。
+具有一般含义的字段在下面列出。
+未列出的字段的含义因设备而异，并且不受Miele的贬低。
 如果需要在脚本中引用这些字段，请始终使用_raw值。
 文本值将来可能会更改，并且还取决于语言。
-以下是这些原始值代表的列表：
+这些原始值代表的清单如下：
 
 ###设备类型
  |原始值状态|
@@ -89,7 +85,7 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
  | 42 |双微波|
  | 43 |双微波炉|
  | 45 |蒸汽烤箱微波组合|
- | 48 |真空吸尘器|
+ | 48 |真空抽屉|
  | 67 | DIALOGOVEN |
  | 68 |葡萄酒柜冷冻组合|
 
@@ -108,7 +104,7 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
  | 10 |空闲|
  | 11 | RINSE_HOLD |
  | 12 |服务|
- | 13 |超冻结|
+ | 13 |超级冷冻|
  | 14 |超冷|
  | 15 |超热|
  | 144 |默认|
@@ -123,7 +119,7 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 | 2 |自动程序|
 | 3 |清洁/保养程序|
 
-### DryStepStep / Trockenstufe
+### DryingStep / Trockenstufe
  |原始值状态|
  |----------|-------|
  | 0 |超干|
@@ -131,7 +127,7 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
  | 2 |正常|
  | 3 |稍干|
  | 4 |手铁1级|
- | 5 |手工铁水平2 |
+ | 5 |手工熨斗2 |
  | 6 |机铁|
 
 ### ProgramBezeichnung
@@ -139,7 +135,7 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 |----------|-------|---------------|
 | 1 | “ Baumwolle” /“棉” |洗衣机|
 | 27 | “Imprägnieren” / |洗衣机|
-| 48 | “弗吕森·奥斯普林” |洗衣机烘干机|
+| 48 | “弗鲁森·奥斯普林” |洗衣机烘干机|
 | 50 | “ DunkleWäsche” / |洗衣机烘干机|
 | 123 | “扣篮/牛仔裤” |洗衣机|
 
@@ -150,7 +146,7 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 | 261 | “Spülen” /“冲洗” |洗衣机|
 | 266 | “ Schleudern” /“ Spinning” |洗衣机|
 | 267 | “ Knitterschutz” /“” |洗衣机|
-| 268 | “结束” /“结束” |大多数设备|
+| 268 | “ Ende” /“ End” |大多数设备|
 | 256 | “” | | |
 | 514 | “ Trocknen” |洗衣机烘干机|
 | 519 | “阿布库伦” |洗衣机烘干机|
@@ -160,6 +156,18 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 版权所有（c）2019、2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 2.0.3 (2020-09-15)
+* (grizzelbee) Upd: Updated country list in config dialog
+* (grizzelbee) New: Some more debug code
+
+### 2.0.2 (2020-09-15)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on failed authentication preventing a valid error message
+
+### 2.0.1 (2020-09-14)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on logout while invalidating token
+
 ### 2.0.0 - Support for Miele API V1.0.3 (2020-08-25)
 Some breaking changes in this release. Some datapoints changed their type. May require fixes in scripts. **Update with care!**
 Due to the fix that datapoints with invalid values aren't created any longer, I recommend deleting all datapoints in Object view.

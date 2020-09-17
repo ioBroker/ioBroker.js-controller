@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
+hash: gEYoZco3JjDIWm92tdlDwC6tylD4oxv7fsDCncL2V3U=
 ---
 ![Логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
@@ -14,12 +14,12 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 ![Статус зависимости](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)
 ![Трэвис-Си](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
-![НПМ](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
 
 # IoBroker.MieleCloudService
 ## Описание
 Этот адаптер предназначен для получения информации обо всех ваших устройствах Miele @ Home из официального стороннего API Miele.
-Независимо от того, подключены ли они напрямую через Wi-Fi или шлюз XGW3000. В нем реализован **API сторонних разработчиков Miele V1.0.3**
+Независимо от того, подключены ли они напрямую через WiFi или шлюз XGW3000. В нем реализован **API сторонних производителей Miele V1.0.3**
 
 ## Предварительные требования
 * Miele @ Home User (приложение для смартфона)
@@ -34,14 +34,10 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
  * стабильное репо - чтобы получить текущую стабильную версию
  * latest Repo - чтобы получить последнюю тестовую версию (может быть нестабильной)
  * через: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git - чтобы получить последнюю версию для разработки
-2. Создайте учетную запись для Miele @ Home в приложении для смартфона Miele.
+2. Создайте учетную запись для Miele @ Home в приложении Miele для смартфона.
 3. Создайте учетную запись разработчика на странице https://www.miele.com/f/com/en/register_api.aspx.
 4. Добавьте свои устройства Miele-Devices в приложение (если не добавляются автоматически)
 6. Введите client_secret и client_id, полученные от команды разработчиков Miele, а также идентификатор учетной записи и пароль из приложения.
-
-## Следующие шаги
-* Новое: (увеличенный) интервал опроса, когда ни одно устройство не активно
-* Новое: время сна для полного бездействия (например, ночью)
 
 ## Документация
 В основном обращайтесь к основной документации API, опубликованной Miele.
@@ -49,9 +45,9 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 * [Общая документация] (https://www.miele.com/developer/swagger-ui/index.html)
 * [Предварительные условия для выполнения действия на устройстве] (https://www.miele.com/developer/swagger-ui/put_additional_info.html)
 
-Существуют два типа точек данных. В виде удобочитаемого текста и числа.
+Существуют 2 типа точек данных. В виде удобочитаемого текста и числа.
 Эти числовые поля данных, принадлежащие текстовому полю, имеют то же имя, но с добавлением «_raw».
-Те поля, которые имеют общее значение, перечислены ниже.
+Ниже перечислены поля, которые имеют общее значение.
 Поля, которые не указаны в списке, различаются по своему значению от устройства к устройству и не исключаются Miele.
 Если вам нужно ссылаться в скриптах на эти поля, всегда используйте значения _raw.
 Значения текста могут измениться в будущем, а также зависят от языка.
@@ -73,7 +69,7 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
  | 18 | КАПОТ |
  | 19 | ХОЛОДИЛЬНИК |
  | 20 | МОРОЗИЛЬНИК |
- | 21 | КОМБИНАЦИЯ ХОЛОДИЛЬНИКА / МОРОЗИЛЬНИКА |
+ | 21 | КОМБИНАЦИЯ ХОЛОДИЛЬНИК / МОРОЗИЛЬНИК |
  | 23 | ВАКУУМНЫЙ ПЫЛЕСОС, АВТОМАТИЧЕСКИЙ РОБОТЫЙ ПЫЛЕСОС |
  | 24 | СТИРАЛЬНАЯ МАШИНА |
  | 25 | ПОДОГРЕВАТЕЛЬ |
@@ -86,12 +82,12 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
  | 39 | ДВОЙНАЯ ПЕЧЬ |
  | 40 | ДВОЙНАЯ ПАРОВАЯ ПЕЧЬ |
  | 41 | ДВОЙНАЯ ПЕЧЬ КОМБИНАЦИЯ |
- | 42 | ДВОЙНОЙ СВЧ |
+ | 42 | ДВОЙНОЕ СВЧ |
  | 43 | ДВОЙНАЯ МИКРОВОЛНОВАЯ ПЕЧЬ |
  | 45 | ПАРОВАЯ ПЕЧЬ СВЧ-КОМБИНАЦИЯ |
  | 48 | ВАКУУМНЫЙ ЯЩИК |
  | 67 | ДИАЛОГОВЕН |
- | 68 | ВИННЫЙ ШКАФ КОМБИНАЦИЯ МОРОЗИЛЬНИКОВ |
+ | 68 | ВИНА КОМБИНАЦИЯ МОРОЗИЛЬНЫХ КАБИНЕТОВ |
 
 ### Состояние / Статус
  | Исходное значение | Состояние |
@@ -108,7 +104,7 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
  | 10 | IDLE |
  | 11 | RINSE_HOLD |
  | 12 | СЕРВИС |
- | 13 | СУПЕРЗАМОРАЖИВАНИЕ |
+ | 13 | ЗАМОРАЖИВАНИЕ |
  | 14 | ПЕРЕОХЛАЖДЕНИЕ |
  | 15 | ПЕРЕГРЕВ |
  | 144 | ПО УМОЛЧАНИЮ |
@@ -141,14 +137,14 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 | 27 | "Imprägnieren" / | Стиральная машина |
 | 48 | "Flusen ausspülen" | Стиральная машина с сушкой |
 | 50 | "Dunkle Wäsche" / | Стиральная машина с сушкой |
-| 123 | «Дунклз / Джинсы» | Стиральная машина |
+| 123 | «Дунклс / Джинсы» | Стиральная машина |
 
 ### ProgramPhase
 | Исходное значение | Состояние | доступен для |
 |----------|-------|---------------|
 | 260 | «Вашен» / «Стирка» | Стиральная машина |
 | 261 | «Spülen» / «Полоскание» | Стиральная машина |
-| 266 | «Шлейдерн» / «Спиннинг» | Стиральная машина |
+| 266 | "Шлейдерн" / "Прядение" | Стиральная машина |
 | 267 | "Knitterschutz" / "" | Стиральная машина |
 | 268 | «Энде» / «Конец» | Большинство устройств |
 | 256 | "" | | |
@@ -160,6 +156,18 @@ hash: NLdXDZESCf5j6ysJfVwBq9uCEljDcvRwQWn7UjjZg8M=
 Авторские права (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 2.0.3 (2020-09-15)
+* (grizzelbee) Upd: Updated country list in config dialog
+* (grizzelbee) New: Some more debug code
+
+### 2.0.2 (2020-09-15)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on failed authentication preventing a valid error message
+
+### 2.0.1 (2020-09-14)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on logout while invalidating token
+
 ### 2.0.0 - Support for Miele API V1.0.3 (2020-08-25)
 Some breaking changes in this release. Some datapoints changed their type. May require fixes in scripts. **Update with care!**
 Due to the fix that datapoints with invalid values aren't created any longer, I recommend deleting all datapoints in Object view.

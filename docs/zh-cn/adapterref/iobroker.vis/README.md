@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis/README.md
 title: 可视化
-hash: G9yoyXutYvJMzgKqJvroSn1St/3YvxcZF7ff3lNsnEg=
+hash: GRVTyES6+6x9SFC0ToSvAP6w0ZE+EV7y6twFs+UqZyw=
 ---
 ![商标](../../../en/adapterref/iobroker.vis/admin/vis.png)
 
@@ -24,9 +24,9 @@ ioBroker平台的Web可视化。
 通常，大多数小部件都具有ObjectID属性。并且此属性可以与对象ID的某些值绑定。
 但是还有另一种选择如何将窗口小部件的* any *属性绑定到某些ObjectID。
 
-只需写入属性```{object.id}```§中，它将绑定到该对象的值（不在编辑模式下）。
+只需写入属性```{object.id}```§，它将绑定到该对象的值（不在编辑模式下）。
 如果您要使用特殊格式，甚至可以使用它进行一些简单的操作，例如乘法或格式化。
-彭定康的格式如下：
+Patten具有以下格式：
 
 ```
 {objectID;operation1;operation2;...}
@@ -38,7 +38,7 @@ ioBroker平台的Web可视化。
 -`\ +`-添加。参数必须放在方括号中，例如“ +（4.5）”。在此示例中，我们将值添加为4.5。
 -`\ -`-减去。参数必须放在方括号中，例如“-（-674.5）”。在此样本中，我们从值-674.5中减去。
 -`/`-除法。参数必须放在方括号中，例如“ /(0.5）”。在此示例中，我们将值除以0.5。
--`％`-取模。参数必须放在方括号中，例如“％（5）”。在此示例中，我们取模5。
+-`％`-取模。参数必须放在方括号中，例如“％（5）”。在此示例中，我们取5的模。
 -`round`-取整值。
 -`round（N）`-将值四舍五入到点后N个位置，例如34.678; round（1）=> 34.7
 -`hex`-将值转换为十六进制值。所有字母均小写。
@@ -56,7 +56,8 @@ ioBroker平台的Web可视化。
 -`random（R）`-Math.random（）* R，或者如果没有参数则只是Math.random（）
 -`formatValue（decimals）`-根据系统设置格式化值并使用小数
 -`date（format）`-将值格式化为日期。格式如下：“ YYYY-MM-DD hh：mm：ss.sss”
--`array（element1，element2 [，element3，element4]）`-返回索引的元素。例如：`{id.ack; array（ack为假，ack为真）}`
+-`momentDate（format）`-使用Moment.js将值格式化为日期。 [必须根据moment.js库输入批准的格式]（https://momentjs.com/docs/#/displaying/format/）
+-`array（element1，element2 [，element3，element4]）`-返回索引的元素。例如：`{id.ack; array（ack为假，ack为真）}}
 
 您可以在任何文本中使用此模式，例如
 
@@ -103,16 +104,16 @@ Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(Ma
 ###特殊绑定
 有许多不同的内部绑定可在视图中提供其他信息：
 
-*`username`-显示登录的用户
+*`username`-显示已登录的用户
 *`view`-实际视图的名称
 *`wname`-小部件名称
-*`widget`-是具有小部件所有数据的对象。只能在JS部分中使用，例如{{a：a; widget.data.name}`
+*`widget`-是具有小部件所有数据的对象。只能在JS部分中使用，例如`{a：a; widget.data.name}`
 *`wid`-实际小部件的名称
 *`language`-可以是`de`，`en`或`ru`。
 *`instance`-浏览器实例
 *`login`-是否需要登录（例如显示/隐藏注销按钮）
 
-注意：要在计算中使用“：”（例如在字符串公式中），请使用“ ::”。
+注意：要在计算中使用“：”（例如，在字符串公式中），请使用“ ::”。
 
 **请记住**，样式定义将被解释为绑定，因此请使用`{{style: value}}`或仅
 
@@ -125,7 +126,7 @@ Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(Ma
 为了那个原因。
 
 ##过滤器
-要在一个视图上可视化窗口小部件的总数，可以使用过滤器减少视图上同时显示的窗口小部件的数量。
+要在一个视图上可视化所有小部件的数量，可以使用过滤器减少同时显示在视图上的小部件的数量。
 
 每个窗口小部件都有一个字段`filter`。如果您将其设置为某个值，例如`light`，因此您可以使用其他小部件`(bars - filters, filter - dropdown)`来控制哪个过滤器实际处于活动状态。
 
@@ -138,14 +139,14 @@ Vis创建3个变量：
 
 命令：
 
-*`alert`-显示警报窗口。 “ control.data”具有以下格式“ message; title; jquery-icon”。标题和jquery-icon是可选的。图标名称可在[此处]（http://jqueryui.com/themeroller/）找到。要显示图标“ ui-icon-info”，请写“ Message ;; info`”。
+*`alert`-显示可见的警报窗口。 “ control.data”具有以下格式“ message; title; jquery-icon”。标题和jquery-icon是可选的。可以在[here]（http://jqueryui.com/themeroller/）中找到图标名称。要显示图标“ ui-icon-info”，请编写“ Message ;; info`”。
 *`changeView`-切换到所需的视图。 “ control.data”必须具有视图名称。您也可以将项目名称指定为“项目/视图”。默认项目为“ main”。
 *`refresh`-重新加载，例如在将项目更改为在所有浏览器上重新加载后。
 *`reload`-与刷新相同。
 *`dialog`-显示对话框窗口。对话框必须存在于视图中。之一：
 
     -`static-HTML-对话框`，
-    -`static-图标-对话框`，
+    -静态-图标-对话框，
     -`container-HTML-在jqui对话框中查看，
     -`container-ext cmd-在jqui对话框中查看，
     -`container-Icon-在jqui对话框中查看，
@@ -159,7 +160,7 @@ Vis创建3个变量：
 
   您可以在vis中上传自己的文件，并使其像`/vis.0/main/img/myFile.mp3`那样播放。
 
-如果用户更改视图或在开始时，变量将由vis填充
+如果用户更改视图或在开始时变量将由vis填充
 
 -`control.instance`：浏览器实例和`ack = true`
 -`control.data`：以`project / view`形式的项目和视图名称，例如`main / view`（和`ack = true`）
@@ -176,10 +177,10 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 ＃＃ 默认视图
 您可以为每个视图定义所需的分辨率（菜单=>工具=>分辨率）。这只是在编辑模式下的可视边框，可显示特定设备上的屏幕尺寸。在实时模式下，它将不可见，并且边框外的所有小部件都将可见。
 
-此外，您可以定义是否必须将此视图用作此分辨率的默认视图。
+此外，您可以定义是否必须将此视图用作该分辨率的默认视图。
 
 因此，每次调用`index.html`（无`#viewName`）时，都会打开最适合此分辨率视图的视图。
-如果只有一个视图带有*“ Default” *标志，那么将独立于屏幕分辨率或方向打开此视图。
+如果只有一个视图具有*“ Default” *标志，那么将独立于屏幕分辨率或方向打开此视图。
 
 例如。您可以创建两个视图“ Landscape-Mobile”和“ Portrait-Mobile”，并且当您更改方向或屏幕尺寸时，这两个视图将自动切换。
 
@@ -194,7 +195,7 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 设置断开连接之间的尝试间隔时间。如果设置为2秒，它将尝试每2秒建立一次连接。
 
 ###黑暗重新连接屏幕
-有时（夜间），必须具有黑暗的加载屏幕。使用此选项可以进行设置。
+有时（夜间），需要具有黑暗的加载屏幕。使用此选项可以进行设置。
 
 请注意，此设置仅对重新连接有效，而对首次连接无效。
 
@@ -202,9 +203,17 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __进展中__->
+### __正在进行中__->
 
 ## Changelog
+### 1.3.0 (2020-09-17)
+* (foxriver76) on pending getStates, try again instead of drop
+* (foxriver76) fixed the file manager typos
+* (Scrounger) Added momentDate for the bindings
+
+### 1.2.12 (2020-09-08)
+* (foxriver76) only parse arrays and json objects, not booleans, normal strings etc
+
 ### 1.2.11 (2020-08-25)
 * (bluefox) The error message about the non-found chart view was fixed. 
 

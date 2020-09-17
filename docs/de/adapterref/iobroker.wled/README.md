@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: JCFxQRRFictbXP/nF4emHAdc5kdKfXw2Mi1WhYftWEs=
+hash: MkqTbTBnqseI7RNEO+9zp1ShWv9nvH7AsrY+sI6xCM8=
 ---
 ![Logo](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -16,6 +16,8 @@ hash: JCFxQRRFictbXP/nF4emHAdc5kdKfXw2Mi1WhYftWEs=
 ![NPM](https://nodei.co/npm/iobroker.wled.png?downloads=true)
 
 # IoBroker.wled
+![Testen und freigeben](https://github.com/iobroker-community-adapters/ioBroker.wled/workflows/Test%20and%20Release/badge.svg)
+
 ** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
 
 ## Wled Adapter für ioBroker
@@ -32,7 +34,7 @@ Keine Sorge, in diesem Fall können Sie das Gerät manuell über die IP-Adresse 
 1) Stellen Sie sicher, dass Ihr WLED-Gerät läuft und über das Netzwerk erreichbar ist. 2) Installieren Sie den Adapter. 3) Konfigurieren Sie die Intervallzeiten für die Datenabfrage und die automatische Erkennung des Zyklus. 4 - A) Starten Sie den Adapter. Die Geräte sollten automatisch erkannt werden. 4 - B) Wenn A ausfällt Verwenden Sie die Schaltfläche Gerät hinzufügen und geben Sie die IP-Adresse des Geräts an. 5) Der Adapter sendet sofort Änderungen und fragt alle x Sekunden Daten ab (konfigurierbar).
 
 ## Machen
-* [] Polling Polling auf Socket-Verbindungen umstellen, bis die Implementierung der WLED-Firmware abgeschlossen ist
+* [] Schalten Sie die Abfrage auf Socket-Verbindungen um, bis die Implementierung der WLED-Firmware abgeschlossen ist
 
 ## Unterstütze mich
 Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)

@@ -32,11 +32,15 @@ To install, do the following:
 4. Add your Miele-Devices to the App (if not added automatically)
 6. Fill in the client_secret and client_id received from Miele-developer Team and account-id and password from the App.
 
-## Next Steps
-* New: (longer) poll interval when no device is active
-* New: Sleeptime for complete inactivity (e.g. at night)
-
 ## Changelog
+### 2.0.3 (2020-09-15)
+* (grizzelbee) Upd: Updated country list in config dialog
+* (grizzelbee) New: Some more debug code
+
+### 2.0.2 (2020-09-15)
+* (grizzelbee) New: Added some debug Code to find an Error
+* (grizzelbee) Fix: fixed error on failed authentication preventing a valid error message
+
 ### 2.0.1 (2020-09-14)
 * (grizzelbee) New: Added some debug Code to find an Error
 * (grizzelbee) Fix: fixed error on logout while invalidating token

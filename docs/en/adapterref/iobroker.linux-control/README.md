@@ -100,6 +100,12 @@ It is important that the retrieved data is transmitted in the correct type! The 
     ### __WORK IN PROGRESS__
 -->
 
+### 0.3.6 (2020-09-17)
+* (Scrounger) Bug fix for function needrestart if sudo is used
+
+### 0.3.5 (2020-09-15)
+* (Scrounger) Fixed some errors reported via Sentry
+
 ### 0.3.4 (2020-09-09)
 * (Scrounger) bug fixes
 

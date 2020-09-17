@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: JCFxQRRFictbXP/nF4emHAdc5kdKfXw2Mi1WhYftWEs=
+hash: MkqTbTBnqseI7RNEO+9zp1ShWv9nvH7AsrY+sI6xCM8=
 ---
 ![商标](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -16,10 +16,12 @@ hash: JCFxQRRFictbXP/nF4emHAdc5kdKfXw2Mi1WhYftWEs=
 ![NPM](https://nodei.co/npm/iobroker.wled.png?downloads=true)
 
 ＃ioBroker.wled
-**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备架构。**更多详细信息，请参见下文！
+![测试与发布](https://github.com/iobroker-community-adapters/ioBroker.wled/workflows/Test%20and%20Release/badge.svg)
+
+**该适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备架构。**更多详细信息，请参见下文！
 
 ##用于ioBroker的wled适配器
-ESP8266 / ESP32网络服务器的快速且功能丰富的实现，用于控制NeoPixel（WS2812B，WS2811，SK6812，APA102）LED！
+ESP8266 / ESP32 Web服务器的快速且功能丰富的实现，用于控制NeoPixel（WS2812B，WS2811，SK6812，APA102）LED！
 
 @Aircoookie的[WLED-Github项目](https://github.com/Aircoookie/WLED)§
 
@@ -29,7 +31,7 @@ ESP8266 / ESP32网络服务器的快速且功能丰富的实现，用于控制Ne
 
 不用担心，在这种情况下，您可以通过IP地址手动添加设备。
 
-1）确保WLED设备正在运行并且可以通过网络访问2）安装适配器3）配置数据轮询和自动检测周期的间隔时间4-A）启动适配器，应该自动检测设备4-B）如果A失败，使用添加设备按钮并提供设备IP地址5）适配器将立即发送更改并每x秒轮询一次数据（可配置）
+1）确保WLED设备正在运行并且可以通过网络访问2）安装适配器3）配置数据轮询和自动检测周期的间隔时间4-A）启动适配器，应自动检测设备4-B）如果A失败，使用添加设备按钮，并提供设备IP地址5）适配器将立即发送更改并每x秒轮询一次数据（可配置）
 
 ＃＃ 去做
 * []将轮询切换到套接字连接，等待WLED固件实施

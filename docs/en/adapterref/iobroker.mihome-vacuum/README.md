@@ -232,6 +232,8 @@ The supported commands are:
 - Widget at the time without function
 
 ## Changelog
+### 2.2.4 (2020-09-15)
+* (dirkhe) add config for send Pause Before Home
 ### 2.2.3 (2020-08-20)
 * (dirkhe) room DP are not deleted, on map change 
 ### 2.2.0 (2020-08-13)

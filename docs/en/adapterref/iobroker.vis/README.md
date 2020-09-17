@@ -51,6 +51,7 @@ Following operations are supported:
 - `random(R)` - Math.random() * R, or just Math.random() if no argument
 - `formatValue(decimals)` - format value according to system settings and use decimals
 - `date(format)` - format value as date. Format is like: "YYYY-MM-DD hh:mm:ss.sss"
+- `momentDate(format)` - format value as date using Moment.js. [Approved formats must be entered according to the moment.js library](https://momentjs.com/docs/#/displaying/format/)
 - `array(element1,element2[,element3,element4])` - returns the element of index. e.g.: `{id.ack;array(ack is false,ack is true)}`
 
 You can use this pattern in any text, like
@@ -198,6 +199,11 @@ Notice that this settings is valid only for reconnection and not for the first c
 -->
 
 ## Changelog
+### 1.3.0 (2020-09-17)
+* (foxriver76) on pending getStates, try again instead of drop
+* (foxriver76) fixed the file manager typos
+* (Scrounger) Added momentDate for the bindings
+
 ### 1.2.12 (2020-09-08)
 * (foxriver76) only parse arrays and json objects, not booleans, normal strings etc
 
