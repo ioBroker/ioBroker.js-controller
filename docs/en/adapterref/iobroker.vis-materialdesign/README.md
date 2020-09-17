@@ -5478,6 +5478,7 @@ ical2CalendarWidget();
 * (Scrounger): Charts Widget: x-Axis time axis bug fixes
 * (Scrounger): Calendar Widget: option to show calendar week numbers in month view added
 * (Scrounger): Calendar Widget: option for custom date format added
+* (Scrounger): IconList Widget: bug fix for performance issue
 * (Scrounger): dependencies updated
 * (Scrounger): bug fixes
 
