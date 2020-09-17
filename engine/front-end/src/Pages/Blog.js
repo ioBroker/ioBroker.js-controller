@@ -225,7 +225,11 @@ class Blog extends Router {
 
     static page2Date(page) {
         let date = page.substring(0, 10).replace(/_/g, '.');
-        const d = new Date(date);
+        let d = new Date(date);
+        if (isNaN(d.getTime())) {
+            date = page.substring(0, 10).replace(/\./g, '-') + 'T00:00:00';
+            d = new Date(date);
+        }
         return d.toLocaleDateString();
     }
 
