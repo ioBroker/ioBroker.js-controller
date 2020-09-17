@@ -53,6 +53,7 @@
 * (bluefox) Added "http" and "stream" options for logs
 * (foxriver76) migrated ci tests to github actions
 * (foxriver76) resolve adapter main file as tools.js method
+* (foxriver76) optimize extendObject with def value 
 * general dependency updates
 * code style optimizations
 
