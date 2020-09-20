@@ -55,8 +55,7 @@ function startController(options, callback) {
             warn:  msg => console.warn(msg),
             error: msg => console.error(msg)
         },
-        connected: objectsInst => {
-            objects = objectsInst;
+        connected: () => {
             // clear all states
             objects.destroyDB(() => {
                 isObjectConnected = true;
@@ -74,37 +73,31 @@ function startController(options, callback) {
     if (options.objects) {
         if (!options.objects.type || options.objects.type === 'file') {
             console.log('Used class for Objects: objectsInMemServerRedis');
-            Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServerRedis'));
+            Objects = require('@iobroker/db-objects-file').Server;
         } else if (options.objects.type === 'redis') {
-            try {
-                console.log('Used class for Objects: objectsInRedis');
-                Objects = require(path.join(rootDir, 'lib/objects/objectsInRedis'));
-            } catch (e) {
-                console.log('Used class for Objects: iobroker.objects-redis');
-                Objects = require('iobroker.objects-redis');
-            }
+            console.log('Used class for Objects: objectsInRedis');
+            Objects = require('@iobroker/db-objects-file').Client;
         }
     } else {
         console.log('Used class for Objects: objectsInMemServerRedis');
-        Objects = require(path.join(rootDir, 'lib/objects/objectsInMemServerRedis'));
+        Objects = require('@iobroker/db-objects-file').Server;
     }
 
-    // eslint-disable-next-line no-unused-vars
-    const _objectsInst = new Objects(settingsObjects);
+    objects = new Objects(settingsObjects);
 
     let States;
     // Just open in memory DB itself
     if (options.states) {
         if (!options.states.type || options.states.type === 'file') {
             console.log('Used class for States: statesInMemServerRedis');
-            States = require(path.join(rootDir, 'lib/states/statesInMemServerRedis'));
-        } else {
+            States = require('@iobroker/db-states-file').Server;
+        } else if (options.objects.type === 'redis') {
             console.log('Used class for States: statesInRedis');
-            States = require(path.join(rootDir, 'lib/states/statesInRedis'));
+            States = require('@iobroker/db-states-file').Client;
         }
     } else {
         console.log('Used class for States: statesInMemServerRedis');
-        States = require(path.join(rootDir, 'lib/states/statesInMemServerRedis'));
+        States = require('@iobroker/db-states-file').Server;
     }
 
     const settingsStates = {
@@ -128,8 +121,7 @@ function startController(options, callback) {
             warn:  msg => console.warn(msg),
             error: msg => console.error(msg)
         },
-        connected: statesInst => {
-            states = statesInst;
+        connected: () => {
             if (settingsStates.connection.type === 'redis') {
                 states.destroyDB(() => {
                     console.log('States ok');
@@ -151,8 +143,7 @@ function startController(options, callback) {
         change: options.states.onChange || null
     };
 
-    // eslint-disable-next-line no-unused-vars
-    const _statesInst = new States(settingsStates);
+    states = new States(settingsStates);
 }
 
 function stopController(cb) {
