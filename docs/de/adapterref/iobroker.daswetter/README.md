@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.daswetter/README.md
 title: ioBroker.DasWetter.
-hash: DEY5HlXp/lCyqV21CoMhaIZ9fCxdePj71f6b2zaoMMM=
+hash: kfEgeJieyITeTDJH7RePBpBzCH0jn96NceNQjCQ46x8=
 ---
 ![Logo](../../../en/adapterref/iobroker.daswetter/admin/daswettercom.png)
 
@@ -14,6 +14,8 @@ hash: DEY5HlXp/lCyqV21CoMhaIZ9fCxdePj71f6b2zaoMMM=
 ![NPM](https://nodei.co/npm/iobroker.daswetter.png?downloads=true)
 
 # IoBroker.DasWetter.
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 ** Wenn es Ihnen gefällt, ziehen Sie bitte eine Spende in Betracht: **
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
@@ -45,7 +47,7 @@ In den Einstellungen muss eine URL wie http://api.daswetter.com/index.php?api_la
 * DasWetter.com liefert keine aktuellen Wetterwerte
 * aber manchmal ist es hilfreich, die Vorhersage der aktuellen Stunde zur Verfügung zu haben
 * Also haben wir "aktuell" hinzugefügt, was nur eine Kopie der zugehörigen prognostizierten Stundenwerte ist
-* Bitte stellen Sie sicher, dass Sie den Adapter mindestens einmal pro Stunde anrufen, um sicherzustellen, dass "aktuell" gut aktualisiert wird
+* Bitte rufen Sie den Adapter mindestens einmal pro Stunde an, um sicherzustellen, dass "aktuell" gut aktualisiert wird
 * Siehe auch Github-Funktionsanforderung [issue24] (https://github.com/rg-engineering/ioBroker.daswetter/issues/24)
 
 ### Pfad 4
@@ -58,9 +60,17 @@ Jetzt haben wir eine "Autoreparatur" implementiert, die die Struktur in die doku
 
 ## Changelog
 
-### 3.0.0 (2020-03-xx)
+### 3.0.3 (2020-09-19)
+* (René) see issue #66: parse numbers added 
+
+
+### 3.0.1 (2020-05-01)
 * (René) breaking change: old data structure is not supported anymore
 * (René) "request" replaced by "bent"
+* (René) "xml2js" replaced by "xml2json"
+* (René) manual from DasWetter updated in folder \docs
+* (René) see issue #39: create copy of data in hourly data path for next 1, 2, 3 or 6 hours (as an option)
+* (René) copy for current can be disabled now
 
 ### 2.8.2 (2020-03-20)
 * (René) some more logs to find parser errors

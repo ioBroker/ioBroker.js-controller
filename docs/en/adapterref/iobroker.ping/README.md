@@ -15,6 +15,9 @@ Pings specified IP addresses in defined interval and monitors the results.
 
 ## Changelog
 
+### 1.4.12 (2020-09-18)
+* (Apollon77) Prevent crash case when no devices are defined (Sentry IOBROKER-PING-R)
+
 ### 1.4.11 (2020-08-26)
 * (Apollon77) update js-controller dependency to correct version (1.5.8)
 

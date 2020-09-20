@@ -8,6 +8,8 @@
 
 _scenes Adapter_ can create scenes and execute them in ioBroker environment.
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 This adapter can create three types of scenes: 
 - **scenes**
 - **groups**
@@ -111,6 +113,10 @@ The adapter will read all actual values for IDs defined in this scene and save i
 - Update selectID dialog
 
 ## Changelog
+
+### 2.1.3 (2020-09-18)
+* (Apollon77) Prevent crash cases (Sentry IOBROKER-SCENES-B, IOBROKER-SCENES-8, IOBROKER-SCENES-D)
+
 ### 2.1.2 (2020-07-08)
 * (bluefox) Interval between states was corrected
 

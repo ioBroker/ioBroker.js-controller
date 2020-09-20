@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.daswetter/README.md
 title: ioBroker.DasWetter。
-hash: DEY5HlXp/lCyqV21CoMhaIZ9fCxdePj71f6b2zaoMMM=
+hash: kfEgeJieyITeTDJH7RePBpBzCH0jn96NceNQjCQ46x8=
 ---
 ![商标](../../../en/adapterref/iobroker.daswetter/admin/daswettercom.png)
 
@@ -14,9 +14,11 @@ hash: DEY5HlXp/lCyqV21CoMhaIZ9fCxdePj71f6b2zaoMMM=
 ![NPM](https://nodei.co/npm/iobroker.daswetter.png?downloads=true)
 
 ＃ioBroker.DasWetter。
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+
 **如果您愿意，请考虑捐赠：**
 
-[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
 该适配器从DasWetter.com读取天气预报数据。
 
@@ -25,11 +27,11 @@ hash: DEY5HlXp/lCyqV21CoMhaIZ9fCxdePj71f6b2zaoMMM=
 在您的帐户中，您将找到四个不同数据模型的三个URL：
 
 *未来7天的天气预报以及当天的一般信息：高低，风（符号和描述），日符号和天气情况
-*每5天每3个小时的详细信息：每日的常规信息如下：高峰，低谷，大风，阵风，降水，相对湿度，
+*每5天每3个小时的详细信息：每日的常规信息如下：高峰，低谷，风，阵风，降水，相对湿度，
 
 海平面气压，雪线，日出和日落，与月亮有关的日期，当地时间
 
-*每小时预览一次，提供详细数据（仅前2天，然后每3小时）
+*每小时预览详细数据（仅前2天，然后每3小时）
 *每3个小时进行5天的预测（JSON格式）
 
 所有这四个模型均已实现，至少应使用其中一个。
@@ -37,14 +39,14 @@ hash: DEY5HlXp/lCyqV21CoMhaIZ9fCxdePj71f6b2zaoMMM=
 
 ##提示
 vis中使用的###图标
-*访问图标，如“ http：// ip：8082 / adapter / daswetter / icons / tiempo-weather / galeria1 / 1.png”。
+*访问图标，例如“ http：// ip：8082 / adapter / daswetter / icons / tiempo-weather / galeria1 / 1.png”。
 *在galerie6中，原始图标为svg格式。 Vis应用程序可能无法可视化。因此可以使用转换后的png。只需使用选项“使用png”
 *在galerie5中，原始图标为svg和png格式。除了颜色和白色版本
 
 NextHours_Day1中的###“当前”：
 * DasWetter.com不提供实际的当前天气值
 *但有时提供当前小时的预测会有所帮助
-*因此，我们添加了“当前”，这只是相关的预测小时值的副本
+*因此我们添加了“当前”，这只是相关的预测小时值的副本
 *请确保您每小时至少调用一次适配器，以确保正确更新“ current”
 *另请参见github功能请求[issue24]（https://github.com/rg-engineering/ioBroker.daswetter/issues/24）
 
@@ -58,9 +60,17 @@ NextHours_Day1中的###“当前”：
 
 ## Changelog
 
-### 3.0.0 (2020-03-xx)
+### 3.0.3 (2020-09-19)
+* (René) see issue #66: parse numbers added 
+
+
+### 3.0.1 (2020-05-01)
 * (René) breaking change: old data structure is not supported anymore
 * (René) "request" replaced by "bent"
+* (René) "xml2js" replaced by "xml2json"
+* (René) manual from DasWetter updated in folder \docs
+* (René) see issue #39: create copy of data in hourly data path for next 1, 2, 3 or 6 hours (as an option)
+* (René) copy for current can be disabled now
 
 ### 2.8.2 (2020-03-20)
 * (René) some more logs to find parser errors

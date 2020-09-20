@@ -48,11 +48,15 @@ https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
-### __WORK IN PROGRESS__
+
+### 1.3.1 (2020-09-18)
+* (Apollon77) Fix missing write permission for Notification Light "On" channel
+
+### 1.3.0 (2020-09-18)
 * (SliX185) Add MAINS_FAILURE_CHANNEL
 * (Apollon77) Add DEVICE_RECHARGEABLE_WITH_SABOTAGE, ACCESS_CONTROLLER_CHANNEL, FLOOR_TERMINAL_BLOCK_MECHANIC_CHANNEL, DEVICE_BASE_FLOOR_HEATING, MULTI_MODE_INPUT_DIMMER_CHANNEL, MULTI_MODE_INPUT_SWITCH_CHANNEL, ANALOG_OUTPUT_CHANNEL, ACCELERATION_SENSOR_CHANNEL, TILT_VIBRATION_SENSOR_CHANNEL, SHADING_CHANNEL
 * (Apollon77) try to add dim/rgb support for NotificationLight. You might need to delete/recreate the states if it is not working.
-* (Apollon77) add addditional functions for setOperationLock, setClimateControlDisplay, setMinimumloorHeatingValvePosition, setRgbDimLevel. You might need to delete/recreate the states if it is not working.
+* (Apollon77) add additional functions for setOperationLock, setClimateControlDisplay, setMinimumFloorHeatingValvePosition, setRgbDimLevel. You might need to delete/recreate the states if it is not working.
 * (Apollon77) adjusted some roles. You might need to delete/recreate the states if it is not working.
 
 ### 1.2.2 (2020-08-17)

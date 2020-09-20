@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: esu4vhBEs84Z3J9gPKambhckm37je2rBt6v5o+K/rX8=
+hash: y0CXz2XpDAa4UfyDrFb0UnaZpvs7aMoRcFxZkRK0FRU=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
@@ -42,7 +42,7 @@ Z.B.设备（Teilauswahl）：
 
 ![屏幕截图](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_004.png)
 
-EinevollständigeÜbersichtaller Icons ist hier zu finden（死于Ordnerstruktur ist die selbe，Wie im Dateimanager）：
+EinevollständigeÜbersichtaller Icons ist hier zu finden（Die Ordnerstruktur ist die gleiche，wie im Dateimanager）：
 
 -> http://icontwo.inventwo.com <-
 
@@ -58,6 +58,10 @@ EinevollständigeÜbersichtaller Icons ist hier zu finden（死于Ordnerstruktur
 ---
 
 ## Changelog
+
+### 0.19.2
+
+• (skvarel) - Neue Icons hinzugefügt (Heating)
 
 ### 0.19.1
 

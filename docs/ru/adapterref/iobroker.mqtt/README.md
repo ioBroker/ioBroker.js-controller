@@ -749,6 +749,9 @@ void loop() {
 
 ## Changelog
 
+### 2.1.9 (2020-09-17)
+* (Apollon77) Crash cases prevented (Sentry IOBROKER-MQTT-E, IOBROKER-MQTT-F)
+
 ### 2.1.8 (2020-08-24)
 * (Apollon77) Crash case prevented on unsubscribe (Sentry IOBROKER-MQTT-D)
 

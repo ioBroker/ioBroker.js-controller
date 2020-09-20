@@ -8,6 +8,9 @@
 
 [![NPM](https://nodei.co/npm/iobroker.daswetter.png?downloads=true)](https://nodei.co/npm/iobroker.daswetter/)
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** 
+For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 
 
 **If you like it, please consider a donation:**
@@ -52,7 +55,7 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
-### 3.0.2 (2020-09-15)
+### 3.0.3 (2020-09-19)
 * (René) see issue #66: parse numbers added 
 
 

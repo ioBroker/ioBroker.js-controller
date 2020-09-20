@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
+hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -156,6 +156,102 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 
 ![Popup-Screenshot](img/popup_screenshot.png) ![Popup Blockly](../../../en/adapterref/iobroker.iqontrol/img/popup_blockly.png)
 
+## Widgets
+* Jede Kachel hat einen BACKGROUND_URL- und einen BACKGROUND_HTML-Datenpunkt
+* Hier können Sie einen Link (über BACKGROUND_URL) zu einer Website definieren oder direkten HTML-Code (über BACKGROUND_HTML) platzieren, der als Hintergrund der Kachel angezeigt wird
+* Dies gibt Ihnen die Möglichkeit, (interaktive) Inhalte in eine Kachel zu platzieren (wie Uhren, FLOT-Diagramme, Tabellen, Wettervorhersagen usw.)
+* Standardmäßig werden Mausereignisse auf diesen Inhalt gerichtet (daher können Sie nicht mehr auf die Kachel selbst klicken). Sie können dies jedoch mit der Option "Mausereignisse auf die Kachel anstatt auf den Inhalt von BACKGROUND_URL / HTML lenken" deaktivieren.
+* iQontrol bietet eine Geräterolle "Widget" mit einigen vordefinierten Optionen, die hauptsächlich verwendet werden, wenn eine Website als Widget angezeigt wird. Sie können jedoch mit jeder anderen Rolle das gleiche Ergebnis erzielen, indem Sie die Geräteoptionen ordnungsgemäß ändern.
+
+![Popup-Screenshot](../../../en/adapterref/iobroker.iqontrol/img/widget_screenshot.png)
+
+### PostMessage-Communication (nur für Experten)
+* Technisch gesehen befindet sich der Inhalt von BACKGROUND_URL / HTML in einem HTML-Element namens iframe, einer Website innerhalb einer Website
+* Durch Aktivieren der Option "PostMessage-Kommunikation für BACKGROUND_URL / HTML zulassen" können Sie die PostMessage-Kommunikation zwischen der Website in diesem Iframe und iQontrol selbst aktivieren
+* Um Befehle an iQontrol zu senden, können Sie den folgenden Javascript-Befehl verwenden: `` window.parent.postMessage (message, "*"); ``
+    * `` message`` ist ein Javascript-Objekt im Format `` {Befehl: Befehl, stateId: stateId, Wert: Wert} ``
+    * Folgende Nachrichtenbefehle werden unterstützt:
+        * `` {Befehl: "setState", stateId: <stateId>, Wert: <value>} `` - Dies setzt den ioBroker-Status `` <stateId> `` auf den Wert `` <value> `` (` `<Wert>` `kann eine Zeichenfolge, eine Zahl oder ein Boolescher Wert oder ein Objekt wie` `{val: <Wert>, ack: true | false}` `) sein
+        * `` {Befehl: "getState", stateId: <stateId>} `` - Dies bewirkt, dass iQontrol den Wert des ioBroker-Status `` <stateId> `` sendet (siehe unten, wie die Antwortnachricht empfangen wird).
+        * `` {Befehl: "getStateSubscribed", stateId: <stateId>} `` - Dies veranlasst iQontrol, den Wert des ioBroker-Status `` <stateId> `` jetzt und jedes Mal zu senden, wenn sich sein Wert ändert (siehe unten, wie es geht Antwortnachrichten erhalten)
+* Um Nachrichten von iQontrol zu empfangen, müssen Sie einen Ereignis-Listener für das Ereignis "message" mit dem Javascript-Befehl `` window.addEventListener ("message", receivePostMessage, false); `` registrieren
+    * Die Funktion `` receivePostMessage`` empfängt das Objekt `` event``
+* `` event.data`` enthält die Nachricht von iqontrol, die ein Objekt wie das folgende sein wird:
+* `` {Befehl: "getState", stateId: <stateId>, Wert: <Wert>} `` - Dies ist die Antwort auf einen getState-Befehl oder einen getStateSubsribed-Befehl und gibt Ihnen den tatsächlichen `` <Wert> `` -Objekt des ioBroker-Status`` <stateId> ``
+* Das gleiche Konzept kann für den URL / HTML-Status verwendet werden, mit dem eine Website im Dialogfeld eines Geräts angezeigt wird
+* Siehe unten für eine Beispiel-Website:
+
+<details><summary> Beispielwebsite anzeigen, die als Widget mit postMessage-Kommunikation angezeigt werden soll: </summary>
+
+* Sie können den folgenden HTML-Code verwenden und ihn in den BACKGROUND_HTML-Status eines Widgets kopieren (das dann als "Konstante" konfiguriert werden muss).
+* Aktivieren Sie die Option "PostMessage-Kommunikation für BACKGROUND_URL / HTML zulassen".
+* Es wird gezeigt, wie eine bidirektionale Kommunikation zwischen der Website und iQontrol erfolgt
+
+````html
+<!doctype html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<title>iQontrol postMessageTest</title>
+</head>
+<body>
+	<br><br>
+	<button onclick="getState('system.adapter.admin.0.cpu')">getState system.adapter.admin.0.cpu</button><br>
+	<button onclick="getStateSubscribed('system.adapter.admin.0.uptime')">getStateSubscribed system.adapter.admin.0.uptime</button><br>
+	<button onclick="setState('iqontrol.0.Popup.Message', 'Hey, this is a test Message')">setState popup message</button><br>
+	<br>
+	message sent: <span id="messageSent">-</span><br>
+	<br>
+	message received: <span id="messageReceived">-</span><br>
+	<br>
+	this means: <span id="thisMeans">-</span><br>
+	<br>
+    <script type="text/javascript">
+		var countSend = 0;
+		var countReceived = 0;
+
+		//getState
+		function getState(stateId){
+			sendPostMessage("getState", stateId);
+		}
+
+		//getStateSubscribed (this means, everytime the state changes, an update will be received)
+		function getStateSubscribed(stateId){
+			sendPostMessage("getStateSubscribed", stateId);
+		}
+
+		//setState
+		function setState(stateId, value){
+			sendPostMessage("setState", stateId, value);
+		}
+
+		//send postMessages
+		function sendPostMessage(command, stateId, value){
+			countSend++;
+			message = { command: command, stateId: stateId, value: value };
+			document.getElementById('messageSent').innerHTML = countSend + " - " + JSON.stringify(message);
+			window.parent.postMessage(message, "*");
+		}
+
+		//receive postMessages
+		window.addEventListener("message", receivePostMessage, false);
+		function receivePostMessage(event) { //event = {data: message data, origin: url of origin, source: id of sending element}
+			countReceived++;
+			if(event.data) document.getElementById('messageReceived').innerHTML = countReceived + " - " + JSON.stringify(event.data);
+			if(event.data && event.data.command) switch(event.data.command){
+				case "getState":
+				if(event.data.stateId && event.data.value){
+					document.getElementById('thisMeans').innerHTML = "Got State " + event.data.stateId + ": " + JSON.stringify(event.data.value);
+				}
+				break;
+			}
+		}
+	</script>
+</body>
+</html>
+````
+
+</ Details>
+
 ## Beschreibung der Rollen und zugehörigen Zustände
 Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Zuständen, die mit einem entsprechenden iobroker-Zustand verknüpft werden können.
 Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem iobroker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Zustände wie möglich zuzuordnen.
@@ -172,7 +268,7 @@ Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymb
 * Ändern Sie die Einheit des Datenpunkts, getrennt nach Null-, Singular- und Pluralwerten
 * Ändern Sie min und max des Datenpunkts
 * Legen Sie die Schritte fest, die ein Level-Schieberegler ausführt, wenn er erhöht / verringert wird
-* Ändern Sie den Typ des Datenpunkts
+* Ändern Sie den Datenpunkttyp
 * Ändern Sie die Rolle des Datenpunkts
 * Legen Sie eine Zielwert-ID fest, bei der es sich um eine Datenpunkt-ID handelt, in die Zielwerte geschrieben werden (wenn Sie unterschiedliche Datenpunkte für den tatsächlichen und den Zielwert haben).
 * Festlegen oder Ändern einer Werteliste
@@ -193,7 +289,7 @@ Fast alle Rollen haben einen **STATE** - und / oder einen **LEVEL** - Status. In
 * *boolean* - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialog ein Kippschalter generiert
 * *Nummer* - wird mit der entsprechenden Einheit angezeigt und generiert einen Schieberegler im Dialog
 * *string* - Ein anzuzeigender Text
-* *Werteliste* - Der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialogfeld ein Dropdown-Menü generiert
+* *Werteliste* - Der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialog ein Dropdown-Menü generiert
     * Technisch gesehen ist eine * Werteliste * ein Wert mit einer entsprechenden Übersetzungsliste, die im Objekt 'common.custom.iqontrol. <Instanz> .states', 'native.states' oder 'common.states' des Datenpunkts definiert ist ::
 
 ````
@@ -215,10 +311,10 @@ Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der
 
 #### Weitere allgemeine Zustände:
 * **ADDITIONAL_INFO** *array* - Ein Array von Datenpunkten, das am unteren Rand des Info-Dialogs angezeigt wird
-* **URL** CONSTANT *string* - Diese URL wird als Iframe im Dialogfeld geöffnet
-* **HTML** CONSTANT *string* - Dieses Markup wird im iframe angezeigt, wenn kein URL-Datenpunkt angegeben ist
-* **BACKGROUND_URL** CONSTANT *string* - Diese URL wird als Hintergrund der Gerätekachel angezeigt. Es wird über den Hintergrundbildern platziert, aber Sie können es so konfigurieren, dass es ausgeblendet wird, wenn die Kachel aktiv oder inaktiv ist.
-* **BACKGROUND_HTML** CONSTANT *string* - Dieses Markup wird als Hintergrund der Gerätekachel angezeigt, wenn kein BACKGROUND_URL angegeben ist
+* **URL** CONSTANT oder DATAPOINT *string* - Diese URL wird als Iframe im Dialogfeld geöffnet
+* **HTML** CONSTANT oder DATAPOINT *string* - Dieses Markup wird im iframe angezeigt, wenn kein URL-Datenpunkt angegeben ist
+* **BACKGROUND_URL** CONSTANT oder DATAPOINT *string* - Diese URL wird als Hintergrund der Gerätekachel angezeigt. Es wird über den Hintergrundbildern platziert, aber Sie können es so konfigurieren, dass es ausgeblendet wird, wenn die Kachel aktiv oder inaktiv ist. Bitte schauen Sie sich den Widget-Abschnitt dieses Handbuchs genauer an
+* **BACKGROUND_HTML** CONSTANT oder DATAPOINT *string* - Dieses Markup wird als Hintergrund der Gerätekachel angezeigt, wenn kein BACKGROUND_URL angegeben ist
 * **BATTERIE** *Boolescher Wert* - wenn wahr oder *Zahl* - wenn weniger als 10%, wird ein kleines Symbol für leere Batterie angezeigt
     * Sie können das Verhalten des Batteriesymbols im Optionsbereich 'BATTERY Empty Icon' weiter anpassen.
 * **ERROR** *boolean* - Wenn true, wird ein kleines Ausrufezeichen angezeigt
@@ -256,7 +352,7 @@ Optional können Sie folgende Zustände definieren:
 * Alternative Farbräume:
   * **ALTERNATIVE_COLORSPACE_VALUE** * string * oder * number * (abhängig vom gewählten Farbraum) - der Wert des alternativen Farbraums
 
-    Wenn Ihr Gerät die Verwendung von HUE, SATURATION und COLOR_BRIGHTNESS (HSB / HSV-Farbraum) nicht unterstützt, können Sie verschiedene alternative Farbräume verwenden. In den Geräteoptionen können Sie einen der folgenden Farbräume wählen:
+    Wenn Ihr Gerät die Verwendung von HUE, SATURATION und COLOR_BRIGHTNESS (HSB / HSV-Farbraum) nicht unterstützt, können Sie verschiedene alternative Farbräume verwenden. In den Geräteoptionen können Sie einen der folgenden Farbräume auswählen:
 
     * **RGB** / **# RGB** Anstelle von HUE, SATURATION und COLOR_BRIGHTNESS können Sie das RGB-Format (hex) verwenden, optional mit dem führenden '#'
     * **RGBW** / **# RGBW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS können Sie das RGBW-Format (hex) verwenden, optional mit führendem '#'
@@ -288,7 +384,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 * **SET_TEMPERATURE** *Nummer* - Zieltemperatur
 * **TEMPERATUR** *Zahl* - Die tatsächliche Temperatur wird in der oberen rechten Ecke klein angezeigt
 * **FEUCHTIGKEIT** *Zahl* - Die tatsächliche Luftfeuchtigkeit wird in der oberen rechten Ecke klein angezeigt
-* **CONTROL_MODE** *Werteliste* - Anzeige und Einstellung des Modus des Thermostats
+* **CONTROL_MODE** *Werteliste* - Anzeige und Einstellung des Thermostatmodus
 * **WINDOW_OPENING_REPORTING** *boolean* - Wenn true, wird ein kleines geöffnetes Fenster angezeigt
 * **VALVE_STATES** Array von Namen und Nummern - Zeigt die Öffnung der Ventile an, die dem Thermostat zugeordnet sind
 
@@ -436,6 +532,16 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 ****
 
 ## Changelog
+
+### 1.2.5 (2020-09-19)
+* (sbormann) Fix for iOS 14 touch callout.
+* (sbormann) Added option to show big icons if device is inactive, active or enlarged.
+* (sbormann) Added forced reload to cover images.
+* (sbormann) Added more tile sizes.
+* (sbormann) Added options to hide device, name or state if inactive, active or enlarged.
+* (sbormann) Added option direct mouse events to the tile instead to the content of BACKGROUND_URL/HTML.
+* (sbormann) Added postMessage-Communication to allow widget-websites to send commands to iQontrol and receive messages from iQontrol.
+* (sbormann) Added option to disable swiping.
 
 ### 1.2.4 (2020-09-14)
 * (sbormann) Ignore readonly for enlarge.

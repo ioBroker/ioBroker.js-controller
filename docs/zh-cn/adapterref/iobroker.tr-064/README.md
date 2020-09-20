@@ -103,6 +103,11 @@ iobroker upload tr-064
 
 ## Changelog
 
+### 4.1.0 (2020-09-17)
+* (Apollon77) Fix crash case (Sentry IOBROKER-TR-064-14)
+* (bazidibavaria) added tablesort to device search
+* (bazidibavaria) added Fritzbox link to admin
+
 ### 4.0.13 (2020-08-17)
 * (Apollon77) Crash prevented (Sentry IOBROKER-TR-064-10)
 

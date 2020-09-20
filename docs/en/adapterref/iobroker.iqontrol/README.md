@@ -159,6 +159,102 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 ![Popup Blockly](img/popup_blockly.png)
 
 
+## Widgets
+* Every tile has a BACKGROUND_URL and a BACKGROUND_HTML datapoint
+* Here you can define a link (via BACKGROUND_URL) to a website or place direct HTML-Code (via BACKGROUND_HTML), that will be displayed as background of the tile
+* This gives you the possibility to place (interactive) content inside a tile (like clocks, FLOT-charts, tables, weather-forecasts and so on)
+* By default mouse events will be directed to this content (thus you can't click the tile itself any more), but you can disable this with the option "Direct mouse events to the tile instead to the content of BACKGROUND_URL/HTML"
+* iQontrol offers an device-role "Widget" which has some predefined options set that will be mostly used when showing a website as widget. But you can achieve the same result with any other role by modifying the devices options properly.
+
+![Popup Screenshot](img/widget_screenshot.png)
+
+### postMessage-Communication (for experts only)
+* Technically the content of BACKGROUND_URL/HTML is placed inside a HTML-Element called iframe, which is a website inside a website
+* By enabling the option "Allow postMessage-Communication for BACKGROUND_URL/HTML" you can enable postMessage-Communication between the website inside this iframe and iQontrol itself
+* To send commands to iQontrol you can use the following javascript-command: ``window.parent.postMessage(message, "*");`` 
+    * ``message`` is a javascript object of the format ``{ command: command, stateId: stateId, value: value }``
+    * The following message-commands are supported:
+        * ``{ command: "setState", stateId: <stateId>, value: <value> }`` - this will set the ioBroker state ``<stateId>`` to the value ``<value>`` (``<value>`` can be a string, number or boolean or an object like ``{ val: <value>, ack: true|false }``)
+        * ``{ command: "getState", stateId: <stateId> }`` - this will cause iQontrol to send the value of the ioBroker state ``<stateId>`` (see below how to receive the answer-message)
+        * ``{ command: "getStateSubscribed", stateId: <stateId> }`` - this will cause iQontrol to send the value of the ioBroker state ``<stateId>`` now and every time its value changes (see below how to receive the answer-messages)
+* To receive messages from iQontrol, you need to register an event-listener to the "message"-event with the javascript-command ``window.addEventListener("message", receivePostMessage, false);``
+    * The function ``receivePostMessage`` receives the object ``event``
+	* ``event.data`` contains the message from iqontrol, which will be an object like:
+	    * ``{ command: "getState", stateId: <stateId>, value: <value> }`` - this will be the answer to a getState-command or a getStateSubsribed-command and gives you the actual ``<value>``-object of the ioBroker state``<stateId>``
+* The same concept may be used for the URL/HTML-State, which is used to display a website inside the dialog of a device
+* See below for an example-Website:
+
+<details>
+<summary>Show example website to be displayed as widget with postMessage-communication:</summary>
+
+* You can use the following HTML code and copy it to the BACKGROUND_HTML-State of a widget (which then needs to be configured as "Constant") 
+* Acitvate the option "Allow postMessage-Communication for BACKGROUND_URL/HTML"
+* It will demonstrate how a two-way communication between the website and iQontrol is done
+````html
+<!doctype html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<title>iQontrol postMessageTest</title>
+</head>
+<body>
+	<br><br>
+	<button onclick="getState('system.adapter.admin.0.cpu')">getState system.adapter.admin.0.cpu</button><br>
+	<button onclick="getStateSubscribed('system.adapter.admin.0.uptime')">getStateSubscribed system.adapter.admin.0.uptime</button><br>
+	<button onclick="setState('iqontrol.0.Popup.Message', 'Hey, this is a test Message')">setState popup message</button><br>
+	<br>
+	message sent: <span id="messageSent">-</span><br>
+	<br>
+	message received: <span id="messageReceived">-</span><br>
+	<br>
+	this means: <span id="thisMeans">-</span><br>
+	<br>
+    <script type="text/javascript">
+		var countSend = 0;
+		var countReceived = 0;
+		
+		//getState
+		function getState(stateId){
+			sendPostMessage("getState", stateId);
+		}
+
+		//getStateSubscribed (this means, everytime the state changes, an update will be received)
+		function getStateSubscribed(stateId){
+			sendPostMessage("getStateSubscribed", stateId);
+		}
+		
+		//setState
+		function setState(stateId, value){
+			sendPostMessage("setState", stateId, value);
+		}
+
+		//send postMessages
+		function sendPostMessage(command, stateId, value){
+			countSend++;
+			message = { command: command, stateId: stateId, value: value };
+			document.getElementById('messageSent').innerHTML = countSend + " - " + JSON.stringify(message);
+			window.parent.postMessage(message, "*");
+		}
+
+		//receive postMessages
+		window.addEventListener("message", receivePostMessage, false);
+		function receivePostMessage(event) { //event = {data: message data, origin: url of origin, source: id of sending element}
+			countReceived++;
+			if(event.data) document.getElementById('messageReceived').innerHTML = countReceived + " - " + JSON.stringify(event.data);
+			if(event.data && event.data.command) switch(event.data.command){
+				case "getState":
+				if(event.data.stateId && event.data.value){
+					document.getElementById('thisMeans').innerHTML = "Got State " + event.data.stateId + ": " + JSON.stringify(event.data.value);
+				}
+				break;
+			}
+		}	
+	</script>
+</body>
+</html>
+````
+</details>
+
+
 ## Description of roles and associated states
 Every device has a role, which defines the function of the device. Every role generates a set of states, which can be linked to a corresponding iobroker state.
 If you use the auto-create-function, you can choose an existing device from the iobroker-object tree.  Autocreate tries to find out the role and to match as many states as possible.
@@ -216,10 +312,10 @@ However, not every type makes sense to every role. So the STATE of a switch for 
 
 #### Further general states:
 * **ADDITIONAL_INFO**: *array* - an array of datapoints, that will be displayed at the bottom of the info-dialog
-* **URL**: CONSTANT *string* - this url will be opened as iframe inside the dialog
-* **HTML**: CONSTANT *string* - this markup will be displayed inside the iframe, if no URL-Datapoint is specified
-* **BACKGROUND_URL**: CONSTANT *string* - this url will be shown as background of the device-tile. It is placed above the background-images, but you can configure it to be hidden, if the tile is active or inactive.
-* **BACKGROUND_HTML**: CONSTANT *string* - this markup will be displayed as background of the device-tile, if no BACKGROUND_URL is specified
+* **URL**: CONSTANT or DATAPOINT *string* - this url will be opened as iframe inside the dialog
+* **HTML**: CONSTANT or DATAPOINT *string* - this markup will be displayed inside the iframe, if no URL-Datapoint is specified
+* **BACKGROUND_URL**: CONSTANT or DATAPOINT *string* - this url will be shown as background of the device-tile. It is placed above the background-images, but you can configure it to be hidden, if the tile is active or inactive. Please have a further look at the widget-section of this manual
+* **BACKGROUND_HTML**: CONSTANT or DATAPOINT *string* - this markup will be displayed as background of the device-tile, if no BACKGROUND_URL is specified
 * **BATTERY**: *boolean* - when true or *number* - when less than 10%, a little battery-empty-icon will be displayed
     * You can further customize the behaviour of the battery-icon in the options section 'BATTERY Empty Icon'
 * **ERROR**: *boolean* - when true, a little exclamation-mark-icon will be displayed
@@ -430,11 +526,15 @@ This device has some special predefined size- and display-settings to show a web
 
 ## Changelog
 
-### dev
+### 1.2.5 (2020-09-19)
+* (sbormann) Fix for iOS 14 touch callout.
 * (sbormann) Added option to show big icons if device is inactive, active or enlarged.
 * (sbormann) Added forced reload to cover images.
 * (sbormann) Added more tile sizes.
 * (sbormann) Added options to hide device, name or state if inactive, active or enlarged.
+* (sbormann) Added option direct mouse events to the tile instead to the content of BACKGROUND_URL/HTML.
+* (sbormann) Added postMessage-Communication to allow widget-websites to send commands to iQontrol and receive messages from iQontrol.
+* (sbormann) Added option to disable swiping.
 
 ### 1.2.4 (2020-09-14)
 * (sbormann) Ignore readonly for enlarge.

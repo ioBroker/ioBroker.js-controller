@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.scenes/README.md
 title: ioBroker Szenenadapter
-hash: ZMp10ixUfAOKTgCSzrFyreen3NEPoX4iRy/ylfSxlKM=
+hash: T+S1r3KxE3Cf5/KnPfB5zms1Kgmc38oHlYJy5tdahjU=
 ---
 ![Logo](../../../en/adapterref/iobroker.scenes/admin/scenes.png)
 
@@ -14,6 +14,8 @@ hash: ZMp10ixUfAOKTgCSzrFyreen3NEPoX4iRy/ylfSxlKM=
 
 # IoBroker Szenenadapter
 _scenes Adapter_ kann Szenen erstellen und in der ioBroker-Umgebung ausführen.
+
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 Dieser Adapter kann drei Arten von Szenen erstellen:
 
@@ -61,8 +63,8 @@ Zusätzlich können Sie diese **Szene** direkt mit einer anderen Szenen-ID verkn
 Und jedes Mal, wenn Sie die Tür im Bad öffnen, werden alle Lichter mit Ventilator eingeschaltet.
 
 ## Gruppen
-** Gruppen ** sind wie virtuelle Kanäle. Sie können mit Hilfe von ** Gruppen ** virtuelles Gerät aus mehreren Aktoren erstellen und diese wie ein Gerät gemeinsam steuern.
-Lassen Sie uns unsere Probe mit Badlichtern modifizieren.
+** Gruppen ** sind wie virtuelle Kanäle. Sie können mit Hilfe von ** Gruppen ** virtuelles Gerät aus mehreren Aktuatoren erstellen und diese wie ein Gerät gemeinsam steuern.
+Lassen Sie uns unser Beispiel mit Badlichtern modifizieren.
 
 ```
   scene.allLightInBath             "set on true"    "set on false"
@@ -112,13 +114,17 @@ sendTo(
 );
 ```
 
-Der Adapter liest alle tatsächlichen Werte für die in dieser Szene definierten IDs und speichert sie als konfigurierte.
+Der Adapter liest alle tatsächlichen Werte für IDs, die in dieser Szene definiert sind, und speichert sie als konfigurierte.
 
 ## MACHEN:
 - Tooltip für "Bereits Feindet Befehle ändern" ändern: ??
 - SelectID-Dialog aktualisieren
 
 ## Changelog
+
+### 2.1.3 (2020-09-18)
+* (Apollon77) Prevent crash cases (Sentry IOBROKER-SCENES-B, IOBROKER-SCENES-8, IOBROKER-SCENES-D)
+
 ### 2.1.2 (2020-07-08)
 * (bluefox) Interval between states was corrected
 

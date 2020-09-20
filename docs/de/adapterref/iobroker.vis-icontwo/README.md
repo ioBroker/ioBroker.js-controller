@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: esu4vhBEs84Z3J9gPKambhckm37je2rBt6v5o+K/rX8=
+hash: y0CXz2XpDAa4UfyDrFb0UnaZpvs7aMoRcFxZkRK0FRU=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
@@ -42,7 +42,7 @@ ZUM BEISPIEL. Teilauswahl:
 
 ![Bildschirmfoto](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_004.png)
 
-Eine vollständige Übersicht aller Ikonen ist hier zu finden (die Ordnerstruktur ist die selbe, wie im Dateimanager):
+Eine vollständige Übersicht aller Ikonen ist hier zu finden (die Ordnerstruktur ist die gleichen, wie im Dateimanager):
 
 -> http://icontwo.inventwo.com <-
 
@@ -58,6 +58,10 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 ---
 
 ## Changelog
+
+### 0.19.2
+
+• (skvarel) - Neue Icons hinzugefügt (Heating)
 
 ### 0.19.1
 

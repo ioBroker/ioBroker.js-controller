@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
+hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 ---
 ![Логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -49,7 +49,7 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
 Работает в любом браузере.
 Он полностью настраиваемый и отзывчивый.
 
-> **Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода.** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+> **Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода.** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Добавить на домашний экран
 Вы можете сохранить его как веб-приложение на главном экране, и оно будет выглядеть как обычное приложение: ![Добавить в Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
@@ -58,7 +58,7 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
 * Nodejs 10 или выше
 * Web-адаптер с одним экземпляром, работающим по тому же протоколу (http или https), что и админ-адаптер, socket.IO установлен на 'интегрированный' и 'Force Web-Sockets' отключен
     * Если это противоречит другим адаптерам, просто добавьте еще один экземпляр с указанными выше настройками - iQontrol выполнит поиск наиболее подходящего экземпляра веб-адаптера и будет использовать его для связи.
-* Для подключения через *iobroker.pro-Cloud* как админ-, так и веб-адаптер должны быть настроены на http (не https)
+* Для подключения через *iobroker.pro-Cloud* и админ-, и веб-адаптер должны быть настроены на http (не https)
 
 * Если у вас возникнут какие-либо проблемы, ознакомьтесь с разделом [устранение неполадок] (# устранение неполадок) в конце этого файла ознакомительных сведений.
 
@@ -98,10 +98,10 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
     * `` <viewID> '' должен быть отформатирован как `` iqontrol. <instance-number> .Views. <view-name> ''
 * Примечание: это чувствительно к регистру!
 * Чтобы открыть указанный диалог при загрузке страницы, вы можете добавить `` openDialog = <deviceID> '' в качестве URL-параметра
-    * `` <deviceID> `должен быть отформатирован как` `iqontrol. <instance-number> .Views. <view-name> .devices. <device-number> '' где` `<device-number> '' начинается с 0 (поэтому первое устройство в представлении - это устройство с номером 0)
+    * `` <deviceID> '' должен быть отформатирован как `` iqontrol. <instance-number> .Views. <view-name> .devices. <device-number> '' где `` <device-number> '' начинается с 0 (поэтому первое устройство в представлении - это устройство с номером 0)
 * Примечание: это чувствительно к регистру!
 * Чтобы установить или отменить возврат после настроек времени, используйте следующие параметры:
-* `` returnAfterTimeTreshold = <time in seconds> &#39;&#39; для установки времени, по истечении которого вызывается целевой вид. Используйте `` 0 &#39;&#39;, чтобы отключить функцию возврата через время.
+* `` returnAfterTimeTreshold = <time in seconds> ``, чтобы установить время, по истечении которого вызывается целевой вид. Используйте `` 0 &#39;&#39;, чтобы отключить функцию возврата через время.
 * `` returnAfterTimeDestiationView = <viewID> '', чтобы установить представление, которое вызывается после порога. Если не указано, будет использоваться домашний вид.
 * Эти параметры полезны, если вы вызываете iQontrol с настенного планшета, который должен автоматически вернуться к домашнему виду после использования.
 
@@ -154,7 +154,103 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
     * Пример: `sendTo (" iqontrol "," send ", {PopupMessage: 'Это мое сообщение', PopupDuration: 2500, PopupClickedValue: 'messageConfirmed'});` `
 * Вы также можете использовать блочно для отправки сообщений в iQontrol
 
-![Всплывающий снимок экрана](img/popup_screenshot.png) ![Всплывающее окно Blockly](../../../en/adapterref/iobroker.iqontrol/img/popup_blockly.png)
+![Всплывающий снимок экрана](img/popup_screenshot.png) ![Всплывающее окно блочно](../../../en/adapterref/iobroker.iqontrol/img/popup_blockly.png)
+
+## Виджеты
+* Каждая плитка имеет BACKGROUND_URL и точку данных BACKGROUND_HTML.
+* Здесь вы можете определить ссылку (через BACKGROUND_URL) на веб-сайт или разместить прямой HTML-код (через BACKGROUND_HTML), который будет отображаться в качестве фона плитки
+* Это дает вам возможность размещать (интерактивный) контент внутри плитки (например, часы, FLOT-диаграммы, таблицы, прогнозы погоды и т. Д.)
+* По умолчанию события мыши будут направлены на это содержимое (таким образом, вы больше не сможете щелкнуть саму плитку), но вы можете отключить это с помощью параметра «Направлять события мыши на плитку вместо содержимого BACKGROUND_URL / HTML»
+* iQontrol предлагает роль устройства «Виджет», которая имеет несколько предопределенных параметров, которые будут в основном использоваться при отображении веб-сайта в виде виджета. Но вы можете добиться того же результата с любой другой ролью, правильно изменив параметры устройств.
+
+![Всплывающий снимок экрана](../../../en/adapterref/iobroker.iqontrol/img/widget_screenshot.png)
+
+### PostMessage-Communication (только для экспертов)
+* Технически содержимое BACKGROUND_URL / HTML размещается внутри HTML-элемента, называемого iframe, который представляет собой веб-сайт внутри веб-сайта.
+* Включив опцию «Разрешить postMessage-Communication для BACKGROUND_URL / HTML», вы можете включить postMessage-Communication между веб-сайтом внутри этого iframe и самим iQontrol.
+* Для отправки команд в iQontrol вы можете использовать следующую javascript-команду: `` window.parent.postMessage (message, "*"); ``
+    * «message» - это объект javascript формата «{command: command, stateId: stateId, value: value}«
+    * Поддерживаются следующие сообщения-команды:
+        * `` {command: "setState", stateId: <stateId>, value: <value>} `` - это установит для состояния ioBroker `` <stateId> `` значение `` <value> `` (` `<значение>` может быть строкой, числом или логическим значением или объектом вроде `` {val: <value>, ack: true | false} ``)
+        * `` {command: "getState", stateId: <stateId>} `- это заставит iQontrol отправить значение состояния ioBroker` <stateId> `(см. ниже, как получить ответное сообщение)
+        * `` {command: "getStateSubscribed", stateId: <stateId>} `` - это заставит iQontrol отправлять значение состояния ioBroker `` <stateId> `сейчас и каждый раз, когда его значение изменяется (см. ниже, как получать ответные сообщения)
+* Чтобы получать сообщения от iQontrol, вам необходимо зарегистрировать прослушиватель событий для события «message» с помощью javascript-команды `window.addEventListener (« message », receivePostMessage, false);` `
+    * Функция receivePostMessage получает объект event
+* «event.data» содержит сообщение от iqontrol, которое будет таким объектом, как:
+* `` {command: "getState", stateId: <stateId>, value: <value>} `` - это будет ответ на команду getState или getStateSubsribed-команду и даст вам фактическое `<значение> `-объект состояния ioBroker` <stateId>`
+* Та же концепция может быть использована для URL / HTML-State, который используется для отображения веб-сайта внутри диалогового окна устройства.
+* См. Ниже пример веб-сайта:
+
+<details><summary> Показать пример веб-сайта, который будет отображаться как виджет с сообщением postMessage: </summary>
+
+* Вы можете использовать следующий HTML-код и скопировать его в BACKGROUND_HTML-State виджета (который затем необходимо настроить как «Константа»)
+* Активируйте опцию «Разрешить postMessage-Communication для BACKGROUND_URL / HTML»
+* Он продемонстрирует, как осуществляется двусторонняя связь между веб-сайтом и iQontrol.
+
+````html
+<!doctype html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<title>iQontrol postMessageTest</title>
+</head>
+<body>
+	<br><br>
+	<button onclick="getState('system.adapter.admin.0.cpu')">getState system.adapter.admin.0.cpu</button><br>
+	<button onclick="getStateSubscribed('system.adapter.admin.0.uptime')">getStateSubscribed system.adapter.admin.0.uptime</button><br>
+	<button onclick="setState('iqontrol.0.Popup.Message', 'Hey, this is a test Message')">setState popup message</button><br>
+	<br>
+	message sent: <span id="messageSent">-</span><br>
+	<br>
+	message received: <span id="messageReceived">-</span><br>
+	<br>
+	this means: <span id="thisMeans">-</span><br>
+	<br>
+    <script type="text/javascript">
+		var countSend = 0;
+		var countReceived = 0;
+
+		//getState
+		function getState(stateId){
+			sendPostMessage("getState", stateId);
+		}
+
+		//getStateSubscribed (this means, everytime the state changes, an update will be received)
+		function getStateSubscribed(stateId){
+			sendPostMessage("getStateSubscribed", stateId);
+		}
+
+		//setState
+		function setState(stateId, value){
+			sendPostMessage("setState", stateId, value);
+		}
+
+		//send postMessages
+		function sendPostMessage(command, stateId, value){
+			countSend++;
+			message = { command: command, stateId: stateId, value: value };
+			document.getElementById('messageSent').innerHTML = countSend + " - " + JSON.stringify(message);
+			window.parent.postMessage(message, "*");
+		}
+
+		//receive postMessages
+		window.addEventListener("message", receivePostMessage, false);
+		function receivePostMessage(event) { //event = {data: message data, origin: url of origin, source: id of sending element}
+			countReceived++;
+			if(event.data) document.getElementById('messageReceived').innerHTML = countReceived + " - " + JSON.stringify(event.data);
+			if(event.data && event.data.command) switch(event.data.command){
+				case "getState":
+				if(event.data.stateId && event.data.value){
+					document.getElementById('thisMeans').innerHTML = "Got State " + event.data.stateId + ": " + JSON.stringify(event.data.value);
+				}
+				break;
+			}
+		}
+	</script>
+</body>
+</html>
+````
+
+</details>
 
 ## Описание ролей и связанных состояний
 У каждого устройства есть роль, которая определяет функцию устройства. Каждая роль генерирует набор состояний, которые можно связать с соответствующим состоянием iobroker.
@@ -176,7 +272,7 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
 * Изменить роль точки данных
 * Установите идентификатор целевого значения, который является идентификатором точки данных, в который записываются целевые значения (если у вас есть разные точки данных для фактического и целевого значения)
 * Установить или изменить список значений
-    * При желании добавьте возможность в список значений для ввода произвольного текста
+    * При желании добавить опцию в список значений для ввода произвольного текста
 * Установите список целевых значений:
     * В дополнение к идентификатору целевого значения вы можете определить разные идентификаторы точек данных и целевые значения для разных ключей (ключи - это возможные значения исходной точки данных)
   *Вы также можете использовать подстановочный знак ``* '' в ключах и в целевых значениях
@@ -184,16 +280,16 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
 * Ключ: `` TuneIn-Playlist: *'', Target-Datapoint ID: `` alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist '', целевое значение: ``* ''
 * Если пользователь вводит TuneIn-Playlist: Ambient, значение Ambient будет записано в alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist.
 
-![Вызов CustomDialog](img/custom_call.png) ![Пример CustomDialog](img/custom_dialog.png) ![Понятие списка целевых значений](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
+![CustomDialog Call](img/custom_call.png) ![Пример CustomDialog](img/custom_dialog.png) ![Понятие списка целевых значений](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
 
 ### Общие положения:
 #### СОСТОЯНИЕ и УРОВЕНЬ
 Почти все роли имеют состояние **СОСТОЯНИЕ** и / или **УРОВЕНЬ** В большинстве случаев это основная функция устройства. Ему можно присвоить iobroker-состояния следующих типов:
 
-* *boolean* - если возможно, он будет переведен в осмысленный текст, например, «включено / выключено», «открыто / закрыто» или аналогичный. Если вы щелкните значок плитки, она попытается переключить логическое значение (например, включить или выключить свет). Если он не доступен только для чтения, в диалоговом окне будет сгенерирован переключатель.
+* *boolean* - если возможно, он будет переведен в осмысленный текст, например «включено / выключено», «открыто / закрыто» или аналогичный. Если вы щелкните значок плитки, она попытается переключить логическое значение (например, включить или выключить свет). Если он не доступен только для чтения, в диалоговом окне будет сгенерирован переключатель.
 * *число* - будет отображаться с соответствующей единицей измерения и генерировать ползунок в диалоге
 * *строка* - текст для отображения
-* *список-значений* - будет отображаться выбранное значение. Если он не защищен от записи, он будет генерировать раскрывающееся меню в диалоговом окне.
+* *список-значений* - будет отображаться выбранное значение. Если он не защищен от записи, в диалоговом окне появится раскрывающееся меню.
     * Технически * список-значений * - это значение с соответствующим списком трансляций, определенное в объекте 'common.custom.iqontrol. <instance> .states', 'native.states' или 'common.states' точки данных :
 
 ````
@@ -203,22 +299,22 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
 }
 ````
 
-    * Вы можете создать свой собственный список значений, изменив точку данных (значок гаечного ключа за точкой данных на вкладке объектов iobroker, см. Выше)
+    * Вы можете создать свой собственный список значений, изменив точку данных (значок гаечного ключа за точкой данных на вкладке объектов в iobroker, см. Выше)
 * iQontrol будет отображать определенный список значений в виде раскрывающегося поля в диалоговом окне в следующих случаях:
-* если типом является 'числа' и в valueList есть столько записей, сколько шагов между min- и max точки данных или
+* если типом является 'числа' и в valueList точно столько записей, сколько шагов между min- и max точки данных или
 * если тип 'логический', но роль не 'переключатель' или
 * если тип 'строка' или
 * если активирована опция «Добавить возможность ввода произвольного текста»
-* Если устройство-плитка будет отображаться как активная или неактивная, также определяется из STATE или LEVEL-Datapoint. Кроме того, вы можете свободно настроить поведение в разделе параметров «Условия для активной плитки». Вы даже можете установить другую внешнюю точку данных, которая определяет состояние плитки.
+* Если устройство-плитка будет отображаться как активная или неактивная, также определяется из STATE или LEVEL-Datapoint. Кроме того, вы можете свободно настроить поведение в разделе параметров «Условия для активной плитки». Вы даже можете установить другую внешнюю точку данных, которая определяет состояние плитки
 
 Однако не каждый тип подходит для каждой роли. Таким образом, СОСТОЯНИЕ переключателя, например, в большинстве случаев будет логическим, чтобы иметь возможность переключаться между включенным и выключенным. Может отображаться строка, но переключатель не будет работать.
 
 #### Дальнейшие общие положения:
 * **ADDITIONAL_INFO** *array* - массив точек данных, который будет отображаться в нижней части информационного диалога
-* **URL** CONSTANT *string* - этот URL будет открыт как iframe внутри диалога
-* **HTML** CONSTANT *string* - эта разметка будет отображаться внутри iframe, если не указан URL-Datapoint
-* **BACKGROUND_URL** CONSTANT *string* - этот URL будет отображаться как фон плитки устройства. Он размещается над фоновыми изображениями, но вы можете настроить его скрытие, если плитка активна или неактивна.
-* **BACKGROUND_HTML** CONSTANT *string* - эта разметка будет отображаться как фон устройства-тайла, если не указан BACKGROUND_URL
+* **URL** CONSTANT или DATAPOINT *string* - этот URL будет открыт как iframe внутри диалога
+* **HTML** CONSTANT или DATAPOINT *string* - эта разметка будет отображаться внутри iframe, если не указан URL-Datapoint
+* **BACKGROUND_URL** CONSTANT или DATAPOINT *string* - этот URL-адрес будет отображаться в качестве фона плитки устройства. Он размещается над фоновыми изображениями, но вы можете настроить его скрытие, если плитка активна или неактивна. Пожалуйста, просмотрите раздел виджетов в этом руководстве.
+* **BACKGROUND_HTML** CONSTANT или DATAPOINT *string* - эта разметка будет отображаться как фон устройства-тайла, если не указан BACKGROUND_URL
 * **БАТАРЕЯ** *логическое* - если истина или *число* - когда меньше 10%, будет отображаться маленький значок разряда батареи
     * Вы можете дополнительно настроить поведение значка батареи в разделе параметров «Значок батареи пустой».
 * **ERROR** *boolean* - если true, будет отображаться маленький значок восклицательного знака
@@ -328,7 +424,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### <img src="img/icons/door_locked.png" width="32"> Дверь с замком:
 * **СОСТОЯНИЕ** *логическое* - отображать, если дверь открыта или закрыта (дверь / оконный контакт)
 * **LOCK_STATE** *boolean* - отображение и контроль, если дверь заблокирована или разблокирована (управление отключено, если STATE истинно - потому что вы не можете заблокировать дверь, которая открыта)
-* **LOCK_STATE_UNCERTAIN** *boolean* - если true, СОСТОЯНИЕ будет отображаться курсивным шрифтом, чтобы указать, что точное положение замка неизвестно
+* **LOCK_STATE_UNCERTAIN** *boolean* - если true, СОСТОЯНИЕ будет отображаться курсивом, чтобы обозначить, что точное положение замка неизвестно
 * **LOCK_OPEN** *boolean* - если установлено значение true, дверь откроется полностью
 
 ### <img src="img/icons/blind_middle.png" width="32"> Слепой:
@@ -384,7 +480,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **SHUFFLE, MUTE, PLAY_EVERYWHERE, EJECT, POWER_SWITCH** *boolean* - состояние соответствующей функции
 * **REPEAT** *логическое* - состояние для функции повтора или *строка* - 3 состояния могут быть определены с помощью соответствующих опций: значение для выключения, повторения всех и повторения одного
 * **DURATION, ELAPSED** *number* - продолжительность и истекшее время фактического заголовка - используется для отображения строки поиска
-* **VOLUME** *число* - для слайдера громкости
+* **ГРОМКОСТЬ** *число* - для регулятора громкости
 * **SOURCE, PLAYLIST** *value-list* - показать меню выбора для выбора источника или заголовка из списка воспроизведения
 
 ##### Для отображения *универсального пульта дистанционного управления* вы можете определить следующие состояния:
@@ -436,6 +532,16 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### 1.2.5 (2020-09-19)
+* (sbormann) Fix for iOS 14 touch callout.
+* (sbormann) Added option to show big icons if device is inactive, active or enlarged.
+* (sbormann) Added forced reload to cover images.
+* (sbormann) Added more tile sizes.
+* (sbormann) Added options to hide device, name or state if inactive, active or enlarged.
+* (sbormann) Added option direct mouse events to the tile instead to the content of BACKGROUND_URL/HTML.
+* (sbormann) Added postMessage-Communication to allow widget-websites to send commands to iQontrol and receive messages from iQontrol.
+* (sbormann) Added option to disable swiping.
 
 ### 1.2.4 (2020-09-14)
 * (sbormann) Ignore readonly for enlarge.

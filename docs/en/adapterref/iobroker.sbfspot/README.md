@@ -8,6 +8,9 @@
 
 [![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)](https://nodei.co/npm/iobroker.sbfspot/)
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** 
+For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 
 
 **If you like it, please consider a donation:**
@@ -44,6 +47,10 @@ sometimes npm intall must be called more then one time to successfully install a
 * please create issues at [github](https://github.com/rg-engineering/ioBroker.sbfspot/issues) if you find bugs or whish new features
 
 ## Changelog
+
+
+## 4.0.1 (2020-09-22)
+* (René) bug fix based on CI tests
 
 ## 4.0.0 (2020-07-28)
 * (René) rework to use async/await

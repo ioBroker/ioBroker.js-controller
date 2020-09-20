@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.scenes/README.md
 title: ioBroker场景适配器
-hash: ZMp10ixUfAOKTgCSzrFyreen3NEPoX4iRy/ylfSxlKM=
+hash: T+S1r3KxE3Cf5/KnPfB5zms1Kgmc38oHlYJy5tdahjU=
 ---
 ![商标](../../../en/adapterref/iobroker.scenes/admin/scenes.png)
 
@@ -14,6 +14,8 @@ hash: ZMp10ixUfAOKTgCSzrFyreen3NEPoX4iRy/ylfSxlKM=
 
 ＃ioBroker场景适配器
 _scenes Adapter_可以创建场景并在ioBroker环境中执行它们。
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 该适配器可以创建三种类型的场景：
 
@@ -34,7 +36,7 @@ _scenes Adapter_可以创建场景并在ioBroker环境中执行它们。
 
 要激活场景，我们必须将“ _scene.allLightInBath_”设置为true（例如，通过脚本或vis）。然后将两个状态都设置为期望值，即“ true”。
 _scene.allLightInBath_的值也将为“ true”。如果我们手动切换顶部灯，则_scene.allLightInBath_的值将变为** false **。
-如果我们将手动打开灯，则再次为“ true”。
+如果我们将手动打开灯，请再次设为“ true”。
 
 让我们将“风扇”添加到“场景”中：
 
@@ -46,8 +48,8 @@ _scene.allLightInBath_的值也将为“ true”。如果我们手动切换顶�
   |- hm-rpc.0.FAN.STATE          - false (delay 60000ms)
 ```
 
-在这种情况下，风扇将在“场景**”激活时打开，并在一分钟后关闭。
-关闭风扇后，_scene.allLightInBath_的值将变为** false **，因为并非所有状态都等于所需值。
+在这种情况下，风扇将在“现场”激活时打开，并在一分钟后关闭。
+风扇关闭后，_scene.allLightInBath_的值将变为** false **，因为并非所有状态都等于所需值。
 延迟的国家不参与计算。
 
 您可以使用“播放”按钮测试场景。
@@ -60,7 +62,7 @@ _scene.allLightInBath_的值也将为“ true”。如果我们手动切换顶�
     value:     true
 ```
 
-每次打开浴缸门时，所有带风扇的灯都会打开。
+每次您打开浴缸的门时，所有带风扇的灯都会打开。
 
 ##组
 **群组**就像虚拟频道。您可以借助来自多个执行器的“分组”虚拟设备进行创建，并像一台设备一样一起控制它们。
@@ -97,7 +99,7 @@ _scene.allLightInBath_的值也将为“ true”。如果我们手动切换顶�
 
 ##虚拟群组
 **虚拟组**就像虚拟通道和组一样，但可以具有任何类型的值：数字，字符串等。
-您可以创建虚拟组来控制客厅中的所有百叶窗。通过将40％写入虚拟组，所有百叶窗将被设置为40％。
+您可以创建虚拟组来控制客厅中的所有百叶窗。通过将40％写入虚拟组，所有快门将被设置为40％。
 
 ##将实际状态另存为场景
 要在某些场景中保存实际状态，可以向适配器发送消息：
@@ -121,6 +123,10 @@ sendTo(
 -更新selectID对话框
 
 ## Changelog
+
+### 2.1.3 (2020-09-18)
+* (Apollon77) Prevent crash cases (Sentry IOBROKER-SCENES-B, IOBROKER-SCENES-8, IOBROKER-SCENES-D)
+
 ### 2.1.2 (2020-07-08)
 * (bluefox) Interval between states was corrected
 

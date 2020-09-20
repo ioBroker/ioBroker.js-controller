@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: esu4vhBEs84Z3J9gPKambhckm37je2rBt6v5o+K/rX8=
+hash: y0CXz2XpDAa4UfyDrFb0UnaZpvs7aMoRcFxZkRK0FRU=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
@@ -30,7 +30,7 @@ Ein reiner Icon Adapter für die Visualisierung.
 ## Vorschau
 Eine kleine Vorschau über den Stil der Иконки:
 
-З.Б. Фары (Тейлаусваль):
+З.Б. Фары (Тейлаусвал):
 
 ![Скриншот](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_002.png)
 
@@ -42,7 +42,7 @@ Eine kleine Vorschau über den Stil der Иконки:
 
 ![Скриншот](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_004.png)
 
-Eine vollständige Übersichtaller Icons ist hier zu finden (die Ordnerstruktur ist die selbe, wie im Dateimanager):
+Eine vollständige Übersichtaller Icons ist hier zu finden (die Ordnerstruktur ist die gleiche, wie im Dateimanager):
 
 -> http://icontwo.inventwo.com <-
 
@@ -58,6 +58,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog
+
+### 0.19.2
+
+• (skvarel) - Neue Icons hinzugefügt (Heating)
 
 ### 0.19.1
 

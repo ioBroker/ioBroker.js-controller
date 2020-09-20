@@ -39,7 +39,7 @@ Z.B. Devices (Teilauswahl):
 
 ![Screenshot](admin/Screen_004.png)
 
-Eine vollständige Übersicht aller Icons ist hier zu finden (die Ordnerstruktur ist die selbe, wie im Dateimanager):
+Eine vollständige Übersicht aller Icons ist hier zu finden (die Ordnerstruktur ist die gleiche, wie im Dateimanager):
 
 -> http://icontwo.inventwo.com <-
 
@@ -56,6 +56,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog / Änderungsprotokoll
+
+### 0.19.2
+
+• (skvarel) - Neue Icons hinzugefügt (Heating)
 
 ### 0.19.1
 

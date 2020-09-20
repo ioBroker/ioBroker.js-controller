@@ -760,6 +760,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.intesishome/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.iogo/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.iot/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.iqontrol/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.jarvis/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.javascript/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.javascript/blockly.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.jeelink/README.md
@@ -1145,6 +1146,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.intesishome/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.iogo/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.iot/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.iqontrol/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.jarvis/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.javascript/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.javascript/blockly.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.jeelink/README.md
@@ -1530,6 +1532,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.intesishome/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.iogo/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.iot/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.iqontrol/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.jarvis/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.javascript/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.javascript/blockly.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.jeelink/README.md
@@ -1915,6 +1918,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.intesishome/README.
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.iogo/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.iot/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.iqontrol/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.jarvis/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.javascript/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.javascript/blockly.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.jeelink/README.md

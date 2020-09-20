@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: 5TFSzHKxrvvutuM9AGjtI5Z1ZEzTcYkPFzVWRaKkkrs=
+hash: ksm4fKHJcmJGpYWZIjl0n0+Y3ZdvZ83ZfYot9Bmn2so=
 ---
 ![商标](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -14,6 +14,8 @@ hash: 5TFSzHKxrvvutuM9AGjtI5Z1ZEzTcYkPFzVWRaKkkrs=
 ![NPM](https://nodei.co/npm/iobroker.ebus.png?downloads=true)
 
 ＃ioBroker.ebus
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+
 **如果您愿意，请考虑捐赠：**
 
 [![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
@@ -22,7 +24,7 @@ hash: 5TFSzHKxrvvutuM9AGjtI5Z1ZEzTcYkPFzVWRaKkkrs=
 
 -使用html从ebusd提取数据
 
-在这种情况下，ebusd必须运行并且必须能够将数据发送到例如通过http：// IP：port / data（http://192.168.0.123:8889/data）的资源管理器。可以从https://github.com/john30/ebusd复制配置文件。解析所有包含数据，lastup和来自global部分的字段。目前，其他所有内容都将被忽略。
+在这种情况下，ebusd必须运行并且必须能够将数据发送到例如通过http：// IP：port / data（http://192.168.0.123:8889/data）的资源管理器。可以从https://github.com/john30/ebusd复制配置文件。解析所有包含数据，lastup和来自global部分的字段。此刻，所有其他人都将被忽略。
 
 可能会轮询未通过ebusd直接轮询的数据。命令“ read -f”用于强制通过ebus进行读取。
 
@@ -31,7 +33,7 @@ hash: 5TFSzHKxrvvutuM9AGjtI5Z1ZEzTcYkPFzVWRaKkkrs=
 当前支持的ebusd版本：3.3
 
 ＃＃ 已知的问题
-*如果发现错误或希望获得新功能，请在[github]（https://github.com/rg-engineering/ioBroker.ebus/issues）上创建问题
+*如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.ebus/issues）上创建问题
 
 ## 2.1.1（2020-06-27）
 *（René）问题＃26：错误修复：“找不到cmd”仅是调试消息，而不是错误
@@ -70,7 +72,7 @@ hash: 5TFSzHKxrvvutuM9AGjtI5Z1ZEzTcYkPFzVWRaKkkrs=
 *（René）添加错误信息
 
 ### 0.5.2
-*（René）错误修复：在vis 1.x中，某些值未存储
+*（René）错误修复：在vis 1.x中某些值未存储
 
 ### 0.5.1
 *（René）错误修复：如果没有要轮询的内容，则跳过telnet连接

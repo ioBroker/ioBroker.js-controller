@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker.vis-materialdesign
-hash: kc3YsLIO2OW4n3IHaA32wHrmNW91PTECydbvfR94fT8=
+hash: iyKT0XkiAAlqqL8pTlGuQ5ctbpa5iNwUkyYniQsuoiM=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
 
@@ -18,11 +18,11 @@ hash: kc3YsLIO2OW4n3IHaA32wHrmNW91PTECydbvfR94fT8=
 
 ＃ioBroker.vis-materialdesign
 ## IoBroker VIS的材料设计小部件
-[![paypal]（https://www.paypalobjects.com/zh_CN/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
+[![贝宝]（https://www.paypalobjects.com/zh_CN/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
 ioBroker物料设计小部件基于[Google的材料设计指南](https://material.io/design/)。适配器使用以下库：
 
-* [适用于Google的网络材料组件]（https://github.com/material-components/material-components-web）
+* [适用于网络的Google物料组件]（https://github.com/material-components/material-components-web）
 * [Vuetify]（https://github.com/vuetifyjs/vuetify）
 * [chartjs]（https://www.chartjs.org/）
 * [来自thomasloven的round-slider]（https://github.com/thomasloven/round-slider）
@@ -31,7 +31,7 @@ ioBroker物料设计小部件基于[Google的材料设计指南](https://materia
 ##哨兵
 该适配器使用Sentry库自动将运行时异常和由小部件引起的代码错误报告给开发人员。
 
-首次加载vis运行时时，将创建文件`./iobroker-data/files/vis.0/materialdesign.sentry`。该文件包含一个匿名ID（所谓的uuid），可让开发人员确定是否仅由一个或多个用户发生此错误。
+首次加载vis运行时时，将创建文件`./iobroker-data/files/vis.0/materialdesign.sentry`。该文件包含一个匿名ID（所谓的uuid），它使开发人员可以确定是否仅由一个或多个用户发生此错误。
 
 <b>要禁用哨兵</b> ，必须在文件`/iobroker-data/files/vis.0/materialdesign.sentry`中输入“ disabled”。 <br>要检查哨兵是否已禁用，请打开浏览器控制台并查找`sentry is deactivated for vis-materialdesign`。
 
@@ -128,7 +128,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ##带有导航抽屉的顶部应用栏
 带有导航抽屉的顶部应用栏可以与<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>结合使用。
 
-<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
+<b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
 
 #####布局模式：
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/topappbar_modal.gif)
@@ -141,6 +141,35 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ###子菜单
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
 
+#####自0.4.0版以来
+从0.4.0版开始，子菜单必须由JSON字符串定义：
+
+```
+[
+	{
+		"text": "subitem0",
+		"icon": "account",
+		"iconColor": "red"
+	},
+	{
+		"text": "subitem1",
+		"icon": "home",
+		"iconColor": "green",
+		"divider": "true"
+	},
+	{
+		"text": "subitem1",
+		"divider": "true",
+		"icon": "/vis.0/myImages/devices/lxc_iobroker.png",
+		"userGroups": ["administrator", "user"],
+		"behaviorNotInUserGroup": "disabled"
+	}
+]
+```
+
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>文本</td><td>输入文字</td><td>串</td><td></td></tr><tr><td>图标</td><td>图标或图像的输入路径</td><td>串</td><td></td></tr><tr><td> iconColor </td><td>图标颜色（如果使用图像则无法使用） </td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5） </td></tr><tr><td>分频器</td><td>显示分隔线</td><td>布尔值</td><td>假，真</td></tr><tr><td> userGroups </td><td>允许查看和控制此条目的用户组。 </td><td>数组[字符串] </td><td>用户组ID </td></tr><tr><td> behaviorNotInUserGroup </td><td>如果用户不属于用户组，则隐藏或禁用条目</td><td>串</td><td>隐藏，禁用</td></tr></tbody></table>
+
+版本0.4.0之前的#####
 下表中未列出的设置是不言自明的。
 
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td>子菜单数[x] </td><td>定义导航项目是否具有子菜单和子菜单的计数。 </td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td>标签[x] </td><td>要更改项目的文本，您必须将json对象放入带有查看字段索引的label字段中。 <br>例： <br>
@@ -169,7 +198,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td> SQL或历史记录适配器的实例</td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。 <br><br>如果数据点来自“字符串”类型，则它必须包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接值之一</a> <br>如果数据点来自“数字”类型，则它必须包含图形的开始时间戳。 <br><br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td> adatapoint的ID，以触发图表的手动刷新。 <br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td>图表超时</td><td>加载图表数据超时。如果收到超时错误消息，请增加此值</td></tr><tr><td>调试模式</td><td>如果您有问题或错误，请激活调试模式，并将控制台日志（F12）数据附加到问题上</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td>对象编号</td><td>带有SQL或历史记录适配器的激活实例的数据点ID </td></tr><tr><td>显示方式</td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">链接</a> </td></tr><tr><td>最高要显示的数据点数</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] </td><td>可选设置，将覆盖“计数”设置。 <br>各个数据点之间的距离，以秒为单位。 <br>例如，如果要每分钟显示一次数据点，则必须在此处输入60 </td></tr><tr><td>数据乘以</td><td>可选设置，将每个数据点乘以给定值</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td> SQL或历史记录适配器的实例</td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。 <br><br>如果数据点来自“字符串”类型，则它必须包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接值之一</a> <br>如果数据点来自“数字”类型，则它必须包含图形的开始时间戳。 <br><br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td> adatapoint的ID，以触发图表的手动刷新。 <br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td>图表超时</td><td>加载图表数据超时。如果收到超时错误消息，请增加此值</td></tr><tr><td>调试模式</td><td>如果您有问题或错误，请激活调试模式，并将控制台日志（F12）数据附加到问题上</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td>对象编号</td><td>具有SQL或历史记录适配器的激活实例的数据点ID </td></tr><tr><td>显示方式</td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">链接</a> </td></tr><tr><td>最高要显示的数据点数</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] </td><td>可选设置，将覆盖“计数”设置。 <br>各个数据点之间的距离，以秒为单位。 <br>例如，如果要每分钟显示一次数据点，则必须在此处输入60 </td></tr><tr><td>数据乘以</td><td>可选设置，将每个数据点乘以给定值</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a> <br>必须根据moment.js库输入批准的时间格式， <a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a> </td></tr></tbody></table>
 
 ### JSON图表
 ＃＃＃＃ 一般
@@ -366,10 +395,10 @@ JSON图表支持带有时间戳的数据。若要使用此数据数组必须具�
 有两个小部件-Masonry Views和Grid Views-可以使用它们创建一个响应式布局（台式机，平板电脑和移动设备的布局）。这两个小部件都集成了多个`view in widget`。
 
 ###砌体景观
-Masonry Views具有多个`view in widget`集成，将根据窗口小部件的宽度自动排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和mobil的一种布局）。
+Masonry Views集成了多个`view in widget`§，将根据小部件的宽度自动对其进行排序。使用此小部件，可以创建响应式布局（台式机，平板电脑和mobil的一种布局）。
 如果所包含的视图具有不同的高度，则砖石视图特别有用。
 
-<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
+<b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/masnory.gif)
 
@@ -381,7 +410,7 @@ Masonry Views具有多个`view in widget`集成，将根据窗口小部件的宽
 
 <b>网格视图小部件共有12列。如果要使视图的宽度为4列，则必须在相应的视图中将列跨度设置为4 [x]</b>
 
-<b>看一看[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解它是如何工作的。
+<b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/grid.gif)
 
@@ -591,7 +620,8 @@ ical2CalendarWidget();
 ## Changelog
 
 ### __WORK IN PROGRESS__
-* (Scrounger): Line History Chart Widget: Breaking Changes !!! aggregate (display) method for every dataset configurable, see documentation for detailed infos!
+* (Scrounger): Line History Chart Widget: Breaking Changes !!! aggregate (display) method for every dataset configurable, [see documentation for detailed infos](#line-history-chart)!
+* (Scrounger): TopAppBar Widget: Breaking Changes !!! Submenus must now be created using JSON string, [see documentation for detailed infos](#since-version-040)!
 * (Scrounger): bug fix for compatibility issues with other widget adapters
 * (Scrounger): Chechbox Widget: option for border and hover color added
 * (Scrounger): Chechbox Widget: ripple effect bug fix
@@ -609,10 +639,18 @@ ical2CalendarWidget();
 * (Scrounger): JSON Chart Widget: option to force x-axis time unit added
 * (Scrounger): JSON Chart Widget: gradient colors for multipe dataset bug fixes
 * (Scrounger): JSON Chart: default tooltip title added
+* (Scrounger): JSON Chart: option to use Today / Yesterday for x-axis labeling added
+* (Scrounger): JSON Chart: option to use Today / Yesterday for tooltip added
+* (Scrounger): JSON Chart: option to change x-axis label distance added
 * (Scrounger): Line History Chart: option for point color added
+* (Scrounger): Line History Chart: option to use Today / Yesterday for x-axis labeling added
+* (Scrounger): Line History Chart: option to use Today / Yesterday for tooltip added
+* (Scrounger): Line History Chart: tooption change x-axis label distance added
 * (Scrounger): Charts Widget: x-Axis time axis bug fixes
 * (Scrounger): Calendar Widget: option to show calendar week numbers in month view added
 * (Scrounger): Calendar Widget: option for custom date format added
+* (Scrounger): IconList Widget: bug fix for performance issue
+* (Scrounger): TopAppBar Widget: options for user groups added
 * (Scrounger): dependencies updated
 * (Scrounger): bug fixes
 

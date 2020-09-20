@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
+hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -23,7 +23,7 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
 | Linux / Mac / Windows：跨浏览器检查： |
 | --- | --- |
 
-\ **如果您喜欢，请考虑捐赠：**
+\ **如果喜欢，请考虑捐赠：**
 
 [![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
 
@@ -147,7 +147,7 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
     *“ ButtonNames”：您可以在此处指定以逗号分隔的按钮列表，该列表将显示在弹出窗口的底部（例如“ OK，中止”）
         *``ButtonValues''和``ButtonDestinationStates''：这些是逗号分隔的值列表，这些值将被发送到``iqontrol.x.Popup.BUTTON_CLICKED''，并且如果指定的话，将附加到``ButtonDestinationStates''中的数据点`，如果用户单击相应的按钮
 *如果仅使用一个值（而不是用逗号分隔的列表），则此值将用于所有按钮
-*如果将“ ButtonValues”留空，则将使用按钮的名称
+*如果您将“ ButtonValues”留空，则将使用按钮的名称
 *如果仅使用一个目标状态（而不是用逗号分隔的列表），则此状态将用于所有按钮
         *``ButtonCloses``：这是一个用逗号分隔的布尔值列表（``true''/``false''），用于指定在按下相应按钮时是否应关闭弹出窗口
 *或者，您可以通过sendTo-command和参数``PopupMessage''，``PopupDuration''，``PopupClickedValue''等来设置这些值
@@ -155,6 +155,102 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
 *您也可以使用块状发送消息到iQontrol
 
 ![弹出屏幕截图](img/popup_screenshot.png)![弹出式阻止](../../../en/adapterref/iobroker.iqontrol/img/popup_blockly.png)
+
+##小部件
+*每个图块都有一个Background_URL和一个Background_HTML数据点
+*您可以在此处定义到网站的链接（通过Background_URL）或放置直接的HTML代码（通过Background_HTML），这些代码将显示为图块的背景
+*这使您可以将内容（交互式）放置在图块内（如时钟，FLOT图，表格，天气预报等）
+*默认情况下，鼠标事件将定向到该内容（因此，您将无法再单击图块本身），但是可以使用“将鼠标事件直接定向到图块而不是到Background_URL / HTML的内容”选项禁用此功能
+* iQontrol提供了一个设备角色“窗口小部件”，其中具有一些预定义的选项集，这些选项通常在将网站显示为窗口小部件时使用。但是，通过适当地修改设备选项，您可以在任何其他角色上获得相同的结果。
+
+![弹出屏幕截图](../../../en/adapterref/iobroker.iqontrol/img/widget_screenshot.png)
+
+### PostMessage-Communication（仅适用于专家）
+*从技术上讲，BACKGROUND_URL / HTML的内容放置在称为iframe的HTML元素内，该元素是网站内部的网站
+*通过启用选项“允许Background_URL / HTML的postMessage-Communication”，您可以启用此iframe中的网站与iQontrol本身之间的postMessage-Communication。
+*要将命令发送到iQontrol，可以使用以下javascript命令：``window.parent.postMessage（message，“ *”）;''
+    *``message``是格式为``{command：command，stateId：stateId，value：value}''的javascript对象
+    *支持以下消息命令：
+        *``{command：“ setState”，stateId：<stateId>，value：<value>}``-这会将ioBroker状态``<stateId>``设置为值``<value>``（ `<value>``可以是字符串，数字或布尔值，也可以是诸如``{val：<value>，ack：true | false}''之类的对象）
+        *``{command：“ getState”，stateId：<stateId>}``-这将导致iQontrol发送ioBroker状态``<stateId>''的值（请参见下面的接收应答消息的方法）
+        *``{命令：“ getStateSubscribed”，stateId：<stateId>}``-这将导致iQontrol立即以及每次其值更改时发送ioBroker状态“ <stateId>”的值（请参见下面的方法收到答复消息）
+*要从iQontrol接收消息，您需要使用javascript命令``window.addEventListener（“ message”，receivePostMessage，false）;向“ message”事件注册一个事件监听器。
+    *函数``receivePostMessage''接收对象``event''
+*``event.data``包含来自iqontrol的消息，它将是一个类似于以下内容的对象：
+*``{command：“ getState”，stateId：<stateId>，value：<value>}``-这将是对getState-command或getStateSubsribed-command的回答，并为您提供实际的<value> ``-ioBroker状态的对象``<stateId>''
+* URL / HTML-State可以使用相同的概念，用于在设备对话框内显示网站
+*参见以下示例网站：
+
+<details><summary>显示示例网站，将其显示为带有postMessage-communication的小部件： </summary>
+
+*您可以使用以下HTML代码并将其复制到小部件的Background_HTML-State（然后将其配置为“常量”）
+*激活选项“允许对Background_URL / HTML进行postMessage通讯”
+*将演示如何完成网站与iQontrol之间的双向通信
+
+````html
+<!doctype html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<title>iQontrol postMessageTest</title>
+</head>
+<body>
+	<br><br>
+	<button onclick="getState('system.adapter.admin.0.cpu')">getState system.adapter.admin.0.cpu</button><br>
+	<button onclick="getStateSubscribed('system.adapter.admin.0.uptime')">getStateSubscribed system.adapter.admin.0.uptime</button><br>
+	<button onclick="setState('iqontrol.0.Popup.Message', 'Hey, this is a test Message')">setState popup message</button><br>
+	<br>
+	message sent: <span id="messageSent">-</span><br>
+	<br>
+	message received: <span id="messageReceived">-</span><br>
+	<br>
+	this means: <span id="thisMeans">-</span><br>
+	<br>
+    <script type="text/javascript">
+		var countSend = 0;
+		var countReceived = 0;
+
+		//getState
+		function getState(stateId){
+			sendPostMessage("getState", stateId);
+		}
+
+		//getStateSubscribed (this means, everytime the state changes, an update will be received)
+		function getStateSubscribed(stateId){
+			sendPostMessage("getStateSubscribed", stateId);
+		}
+
+		//setState
+		function setState(stateId, value){
+			sendPostMessage("setState", stateId, value);
+		}
+
+		//send postMessages
+		function sendPostMessage(command, stateId, value){
+			countSend++;
+			message = { command: command, stateId: stateId, value: value };
+			document.getElementById('messageSent').innerHTML = countSend + " - " + JSON.stringify(message);
+			window.parent.postMessage(message, "*");
+		}
+
+		//receive postMessages
+		window.addEventListener("message", receivePostMessage, false);
+		function receivePostMessage(event) { //event = {data: message data, origin: url of origin, source: id of sending element}
+			countReceived++;
+			if(event.data) document.getElementById('messageReceived').innerHTML = countReceived + " - " + JSON.stringify(event.data);
+			if(event.data && event.data.command) switch(event.data.command){
+				case "getState":
+				if(event.data.stateId && event.data.value){
+					document.getElementById('thisMeans').innerHTML = "Got State " + event.data.stateId + ": " + JSON.stringify(event.data.value);
+				}
+				break;
+			}
+		}
+	</script>
+</body>
+</html>
+````
+
+</ details>
 
 ##角色和相关状态的描述
 每个设备都有一个角色，该角色定义了设备的功能。每个角色都会生成一组状态，这些状态可以链接到相应的iobroker状态。
@@ -215,10 +311,10 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
 
 ####其他一般状态：
 * **ADDITIONAL_INFO** *array* 数据点的数组，将显示在信息对话框的底部
-* **URL** 常量*字符串*-该URL将在对话框中以iframe的形式打开
-* **HTML** 常量*字符串*-如果未指定URL-Datapoint，则此标记将显示在iframe中
-* **BACKGROUND_URL** 常量*字符串*-该网址将显示为设备拼贴的背景。它位于背景图像上方，但是如果图块处于活动状态或非活动状态，您可以将其配置为隐藏。
-* **BACKGROUND_HTML** 常量*字符串*-如果未指定Background_URL，则此标记将显示为设备块的背景
+* **URL** 常量或DATAPOINT *字符串*-该URL将在对话框中以iframe的形式打开
+* **HTML** 常量或数据点*字符串*-如果未指定URL-Datapoint，则此标记将显示在iframe中
+* **BACKGROUND_URL** CONSTANT或DATAPOINT *string* 该网址将显示为设备拼贴的背景。它位于背景图像上方，但是如果图块处于活动状态或非活动状态，您可以将其配置为隐藏。请进一步查看本手册的小部件部分
+* **BACKGROUND_HTML** CONSTANT或DATAPOINT *字符串*-如果未指定Background_URL，则此标记将显示为设备块的背景
 * **BATTERY** *布尔值*-为true或* number *-小于10％时，将显示一点电池电量图标
     *您可以在选项部分“电池空图标”中进一步自定义电池图标的行为
 * **错误**：*布尔值*-为true时，将显示一些感叹号图标
@@ -236,7 +332,7 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
 ### <img src="img/icons/button.png" width="32">按键：
 * **STATE** *任何*-任何所需的状态类型
 * **SET_VALUE** CONSTANT *string* 这是一个常数（不是链接的iobroker状态！），如果按下按钮，它将分配给STATE
-* **OFF_SET_VALUE** 常量*字符串*-这是一个常数（不是链接的iobroker状态！）。如果已定义，则在in选项中定义的时间或100ms之后，STATE将重置为该值。
+* **OFF_SET_VALUE** 常量*字符串*-这是一个常数（不是链接的iobroker状态！）。如果已定义，则将在in选项中定义的时间或100ms之后将STATE重置为该值。
 
 ### <img src="img/icons/light_on.png" width="32">光：
 每个灯可能具有以下一种或两种状态：
@@ -247,7 +343,7 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
 可选，您可以定义以下状态：
 
 *对于彩色LED（HSB颜色空间）：
-    * **色调**：*数字*-0-360°的灯光颜色（色相格式）
+    * **色调**：*数量*-0-360°的灯光颜色（色相格式）
     * **饱和度**：*数量*-光线的饱和度（从白色到纯色）
  ***COLOR_BRIGHTNESS*** 字*-彩色LED的亮度（如果您处于LEVEL状态且没有白色LED，则将忽略此亮度，因为亮度完全由LEVEL控制）
 *对于白色LED：
@@ -256,10 +352,10 @@ hash: pX/oRf8W4dGvbTp0xVZaTKPGx3F0YMOyof1ihm5yQlQ=
 *替代色彩空间：
  ***ALTERNATIVE_COLORSPACE_VALUE*** 符串*或*数字*（取决于所选的色彩空间）-替代色彩空间的值
 
-    如果您的设备不支持使用HUE，SATURATION和COLOR_BRIGHTNESS（HSB / HSV色彩空间），则可以使用多种替代色彩空间。在设备选项中，可以选择以下颜色空间之一：
+    如果您的设备不支持使用HUE，SATURATION和COLOR_BRIGHTNESS（HSB / HSV色彩空间），则可以使用多种替代色彩空间。在设备选项中，您可以选择以下颜色空间之一：
 
     * **RGB** / **RGB** 您可以使用RGB格式（十六进制），而不是使用HUE，SATURATION和COLOR_BRIGHTNESS，可选，并以'＃'开头
-    * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可在前导'＃'处使用
+    * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可将其与前导'＃'结合使用
     * **RGBWWCW** / **RGBWWCW** / **RGBCWWW** / **RGBCWWW** ，WW =暖白，CW =冷白），可选，以“＃”开头
     * **RGB（仅色相）** /** RGB（仅色相）**：可以使用RGB（仅色相）格式（十六进制）替代使用HUE，并以“＃”开头。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
     * ** Milight的色相**：这是Milight设备的色相值，在色相色域中使用另一个起点：
@@ -270,7 +366,7 @@ modulo(-3.60 * (MilightHue/2.55 - 66), 360);
 on modulo(n, m){ return ((n % m) + m) %m; }
 ````
 
-切记：转换到替代色彩空间是由前端完成的，因此只有在iQontrol在某个地方打开时，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为避免对话循环，建议您要么使用原始色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
+切记：转换到替代色彩空间是由前端完成的，因此只有在打开了iQontrol的情况下，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为避免对话循环，建议您要么使用原始色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
 
 *效果模式：
     * **效果**：*值列表*-播放效果
@@ -327,7 +423,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ### <img src="img/icons/door_locked.png" width="32">带锁门：
 * **STATE** *布尔值*-显示门是打开还是关闭（门/窗接触）
-* **LOCK_STATE** *布尔值*-显示和控制门是否被锁定或解锁（如果STATE为true，则禁用控件-因为您无法锁定门而已打开）
+* **LOCK_STATE** *布尔值*-显示和控制门是否已锁定或未锁定（如果STATE为true，则禁用控件-因为您无法锁定门而已打开）
 * **LOCK_STATE_UNCERTAIN** *布尔值*-如果为true，则状态将以斜体显示，以表示锁的确切位置未知
 * **LOCK_OPEN** *布尔值*-如果设置为true，则门将完全打开
 
@@ -348,7 +444,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ### <img src="img/icons/flood_on.png" width="32">洪水传感器：
 * **STATE** *布尔值*-如果为true，则传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
-    *您还可以分配* string *以显示任何文本，例如“楼上洪水”
+    *您还可以分配* string *来显示任何文本，例如“楼上洪水”
 * **链接视图属性**直接打开
 
 ### <img src="img/icons/alarm_on.png" width="32">报警：
@@ -381,8 +477,8 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **艺术家，专辑，标题**：*字符串*-自我说明
 * **TRACK_NUMBER** *数字*-自我说明
 * **PREV，REWIND，PLAY，PAUSE，STOP，FORWARD，NEXT** *布尔值*-如果按下相应的按钮，则设置为true
-* **SHUFFLE，MUTE，PLAY_EVERYWHERE，EJECT，POWER_SWITCH** *boolean* 相应功能的状态
-* **REPEAT** *布尔值*-重复功能的状态或* string *-可以通过相应的选项定义3种状态：off值，all-all和repeat-one
+* **SHUFFLE，MUTE，PLAY_EVERYWHERE，EJECT，POWER_SWITCH** *布尔值*-相应功能的状态
+* **REPEAT** *布尔值*-重复功能的状态或* string *-可以通过相应的选项定义3种状态：off的值，all-all和repeat-one的值
 * **DURATION，ELAPSED** *数字*-实际标题的持续时间和经过的时间-用于显示搜索栏
 * **VOLUME** *数字*-用于音量滑块
 * **源，播放列表**：*值列表*-显示选择菜单以从播放列表中选择来源或标题
@@ -436,6 +532,16 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### 1.2.5 (2020-09-19)
+* (sbormann) Fix for iOS 14 touch callout.
+* (sbormann) Added option to show big icons if device is inactive, active or enlarged.
+* (sbormann) Added forced reload to cover images.
+* (sbormann) Added more tile sizes.
+* (sbormann) Added options to hide device, name or state if inactive, active or enlarged.
+* (sbormann) Added option direct mouse events to the tile instead to the content of BACKGROUND_URL/HTML.
+* (sbormann) Added postMessage-Communication to allow widget-websites to send commands to iQontrol and receive messages from iQontrol.
+* (sbormann) Added option to disable swiping.
 
 ### 1.2.4 (2020-09-14)
 * (sbormann) Ignore readonly for enlarge.

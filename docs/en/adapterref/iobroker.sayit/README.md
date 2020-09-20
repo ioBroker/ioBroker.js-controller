@@ -240,6 +240,12 @@ Following values for engines are possible:
 
 ## Changelog
 
+### 1.11.4 (2020-09-17)
+* (Apollon77) prevent scheduled restart problems
+
+### 1.11.3 (2020-09-17)
+* (Apollon77) make sure initialize errors do not crash adapter (Sentry IOBROKER-SAYIT-N)
+
 ### 1.11.2 (2020-08-08)
 * (Apollon77) catch errors in MDNS discovery (Sentry IOBROKER-SAYIT-E)
 

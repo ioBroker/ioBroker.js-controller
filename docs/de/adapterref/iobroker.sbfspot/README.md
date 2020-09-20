@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: EDgS5V9uAE3zHfuNU0OQY0+Gsg8ZqIaiINb4c+skz9E=
+hash: kO049CvHdTkfqnldYg28s0I+rNnpPOcnwMtL4VpuZsE=
 ---
 ![Logo](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -14,6 +14,8 @@ hash: EDgS5V9uAE3zHfuNU0OQY0+Gsg8ZqIaiINb4c+skz9E=
 ![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)
 
 # IoBroker.sbfspot
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 ** Wenn es Ihnen gefällt, ziehen Sie bitte eine Spende in Betracht: **
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
@@ -43,6 +45,9 @@ In diesem Fall installieren Sie alle npm-Pakete neu
 Manchmal muss npm intall mehrmals aufgerufen werden, um alle erforderlichen Pakete erfolgreich zu installieren
 
 * Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
+
+## 4.0.1 (2020-09-22)
+* (René) Fehlerbehebung basierend auf CI-Tests
 
 ## 4.0.0 (2020-07-28)
 * (René) Überarbeitung, um async / await zu verwenden
