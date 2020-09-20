@@ -311,8 +311,7 @@ function handleDisconnect() {
 }
 
 function createStates(onConnect) {
-    // eslint-disable-next-line no-unused-vars
-    const _inst = new States({
+    states = new States({
         namespace: hostLogPrefix,
         connection: config.states,
         logger: logger,
@@ -475,9 +474,7 @@ function createStates(onConnect) {
             }
              */
         },
-        connected: handler => {
-            states = handler;
-
+        connected: () => {
             if (statesDisconnectTimeout) {
                 clearTimeout(statesDisconnectTimeout);
                 statesDisconnectTimeout = null;
@@ -545,15 +542,13 @@ function initializeController() {
 
 // create "objects" object
 function createObjects(onConnect) {
-    // eslint-disable-next-line no-unused-vars
-    const _inst = new Objects({
+    objects = new Objects({
         namespace:  hostLogPrefix,
         connection: config.objects,
         controller: true,
         logger:     logger,
         hostname:   hostname,
-        connected:  handler => {
-            objects = handler;
+        connected:  () => {
             // stop disconnect timeout
             if (objectsDisconnectTimeout) {
                 clearTimeout(objectsDisconnectTimeout);
@@ -4190,14 +4185,14 @@ function init(compactGroupId) {
     // Get "objects" object
     // If "file" and on the local machine
     if (config.objects.type === 'file' && (!config.objects.host || config.objects.host === 'localhost' || config.objects.host === '127.0.0.1' || config.objects.host === '0.0.0.0') && !compactGroupController) {
-        Objects = require('./lib/objects/objectsInMemServerRedis');
+        Objects = require('@iobroker/db-objects-file').Server;
     } else {
         Objects = require('./lib/objects');
     }
 
     // Get "states" object
     if (config.states.type === 'file' && (!config.states.host || config.states.host === 'localhost' || config.states.host === '127.0.0.1' || config.states.host === '0.0.0.0') && !compactGroupController) {
-        States  = require('./lib/states/statesInMemServerRedis');
+        States  = require('@iobroker/db-states-file').Server;
     } else {
         States  = require('./lib/states');
     }
