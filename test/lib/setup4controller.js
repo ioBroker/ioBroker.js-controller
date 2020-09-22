@@ -91,7 +91,7 @@ function startController(options, callback) {
         if (!options.states.type || options.states.type === 'file') {
             console.log('Used class for States: statesInMemServerRedis');
             States = require('@iobroker/db-states-file').Server;
-        } else if (options.objects.type === 'redis') {
+        } else if (options.states.type === 'redis') {
             console.log('Used class for States: statesInRedis');
             States = require('@iobroker/db-states-file').Client;
         }
