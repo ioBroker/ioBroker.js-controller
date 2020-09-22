@@ -22,7 +22,7 @@
         "@iobroker/db-states-file": "^0.0.6",
         "@iobroker/db-objects-redis": "^0.0.6",
         "@iobroker/db-objects-file": "^0.0.6",
-        "chokidar": "^3.4.3",
+        "chokidar": "^3.4.2",
         "daemonize2": "^0.4.2",
         "debug": "^4.3.1",
         "decache": "^4.6.0",
