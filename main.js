@@ -3006,7 +3006,7 @@ function startScheduledInstance(callback) {
                 states.setState(instance._id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}, () => {
                     const args = [instance._id.split('.').pop(), instance.common.loglevel || 'info'];
                     try {
-                        procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
+                        procs[id].process = cp.fork(fileNameFull, args);
                     } catch(err) {
                         logger.error(hostLogPrefix + ' instance ' + id + ' could not be started: ' + err);
                         delete procs[id].process;
@@ -3398,8 +3398,7 @@ function startInstance(id, wakeUp) {
                     if (!procs[id].process) { // We were not able or should not start as compact mode
                         try {
                             procs[id].process = cp.fork(fileNameFull, args, {
-                                stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                                windowsHide: true
+                                stdio: ['ignore', 'ignore', 'pipe', 'ipc']
                             });
                         } catch (err) {
                             logger.error(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
@@ -3505,8 +3504,7 @@ function startInstance(id, wakeUp) {
 
                             try {
                                 compactProcs[instance.common.compactGroup].process = cp.fork(path.join(__dirname, 'compactgroupController.js'), compactControllerArgs, {
-                                    stdio: ['ignore', 'ignore', 'pipe', 'ipc'],
-                                    windowsHide: true
+                                    stdio: ['ignore', 'ignore', 'pipe', 'ipc']
                                 });
                             } catch (err) {
                                 delete compactProcs[instance.common.compactGroup].process;
@@ -3686,7 +3684,7 @@ function startInstance(id, wakeUp) {
             //noinspection JSUnresolvedVariable
             if (instance.common.allowInit) {
                 try {
-                    procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
+                    procs[id].process = cp.fork(fileNameFull, args);
                 } catch (err) {
                     logger.info(`${hostLogPrefix} instance ${instance._id} could not be started: ${err}`);
                 }
