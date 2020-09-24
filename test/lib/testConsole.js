@@ -434,7 +434,7 @@ function register(it, expect, context) {
         err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['del', 'local'], {});
         expect(err).to.be.ok;
         // set active repo to default
-        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['set', 'default'], {});
+        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['set', 'stable'], {});
         expect(err).to.be.not.ok;
         // delete non-active repo
         err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['del', 'local'], {});
@@ -448,7 +448,7 @@ function register(it, expect, context) {
         err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['add', 'local1', 'some/path1'], {});
         expect(err).to.be.ok;
         // set active repo to default
-        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['set', 'default'], {});
+        err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['set', 'stable'], {});
         expect(err).to.be.not.ok;
         // try to delete non-active repo
         err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['del', 'local1'], {});
