@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.text2command/README.md
 title: ioBroker.text2command
-hash: tBNY+azXqKKmYuLkseItUQPyK0VjnJVVSAQASBYk6g0=
+hash: 3qwqmhZbgEwQkvW2eL9zqZFH8x+5t0qqeX03CM6fceQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.text2command/admin/text2command.png)
 
@@ -19,10 +19,10 @@ Dieser Adapter kann normale Sätze wie *'Licht in der Küche einschalten'* in ei
 
 Dieser Adapter macht keinen Sinn, um eigenständig aktiviert zu werden. Es sollte mit anderen Adaptern wie Telegramm oder Android App **iobroker.vis** verwendet werden.
 
-## Verwendung
+## Verwendungszweck
 Um den Befehl auszuführen, schreiben Sie den Status **text2command. <INSTANCE> .text** mit dem Satz. Sie erhalten die Antwort immer in **text2command. <INSTANCE> .response**
 
-Wenn Sie **Antwort auf ID** definieren, wird die Antwort auch in diese ID geschrieben. Dies ist z.B. zu erkennen, dass die Stimme bestätigt.
+Wenn Sie **Antwort auf ID** definieren, wird die Antwort auch in diese ID geschrieben. Dies ist z.B. zu erkennen, die Stimme bestätigt.
 
 Sie können eine Nachricht über `sendTo` aus Javascript senden. Die Antwort wird in der Nachricht zurückkommen:
 
@@ -127,7 +127,7 @@ Folgende Befehle werden unterstützt:
 ### Wie spät ist es?
 Antwort: 14:56 (aktuelle Zeit)
 
-### Wie ist dein Name?
+### Wie lautet dein Name?
 Die Antwort ist anpassbar. Voreinstellung: ```My name is Alpha```
 
 ### Wie ist die Außentemperatur?
@@ -147,7 +147,7 @@ Schlüsselwörter zum Einschalten sind: *einschalten* z. ```switch rear light in
 
 Schlüsselwörter zum Ausschalten sind: *Ausschalten* z. ```switch light in living room off```
 
-Die Antwort wird auf Wunsch automatisch generiert: ```Switch off %function% in %room%```, wobei% function% und% room% durch den gefundenen Gerätetyp und -ort ersetzt werden.
+Die Antwort wird auf Wunsch automatisch generiert: ```Switch off %function% in %room%```, wobei% function% und% room% durch den gefundenen Gerätetyp und den gefundenen Standort ersetzt werden.
 
 Befehl akzeptiert auch den numerischen Wert. Es hat Priorität, z. im Befehl ```switch light off in living room on 15%``` wird das Licht auf 15% gesetzt und nicht im *Aus* -Zustand.
 
@@ -178,7 +178,7 @@ Z.B.:
 
 * Deaktivieren * muss an erster Stelle in der Liste stehen, da es länger ist.
 
-Sie können Gleitkommawerte in den Steuerbefehlen verwenden. Wenn der Text einen numerischen Wert enthält, wird dieser als Steuerwert verwendet und der vordefinierte Wert wird ignoriert.
+Sie können Gleitkommawerte in den Steuerbefehlen verwenden. Wenn ein numerischer Wert im Text enthalten ist, wird er als Steuerwert verwendet und der vordefinierte Wert wird ignoriert.
 
 Z.B. für Regel für Regel:
 
@@ -195,7 +195,7 @@ Diese Vorlage wird mit Informationen aus einem bestimmten Bundesstaat beantworte
 Z.B.:
 
 - `` `Fenster geöffnet```, Objekt-ID:` `` javascript.0.countOpenedWindows```, Bestätigung: `` `Tatsächliche %s  Fenster geöffnet```
-- `` `Temperaturschlafzimmer```, Objekt-ID:` `` hm-rpc.0.sleepingRoomSensor.TEMPERATURE```, Bestätigung: `` `Die tatsächliche Temperatur im Schlafzimmer beträgt %s % u /% s% u `` `. In diesem Fall wird die Antwort zufällig zwischen *Die tatsächliche Temperatur im Schlafzimmer beträgt% s% u* und *s% u*
+- `` `Temperaturschlafzimmer```, Objekt-ID:` `` hm-rpc.0.sleepingRoomSensor.TEMPERATURE```, Bestätigung: `` `Die tatsächliche Temperatur im Schlafzimmer beträgt %s % u /% s% u `` `. In diesem Fall wird die Antwort randomisiert zwischen *Die tatsächliche Temperatur im Schlafzimmer beträgt% s% u* und *s% u*
 
 ### Text an Status senden
 Sie können Text in den Status schreiben. Der Benutzer muss die Status-ID angeben, um Text hinein zu schreiben.
@@ -218,7 +218,7 @@ Z.B.:
 
 Weitere Informationen zu Bindungen finden Sie hier: (Bindungen von Objekten) [https://github.com/ioBroker/ioBroker.vis#bindings-of-objects]
 
-Zusätzlich können Sie die Zeit bis jetzt mit {hm-rpc.0.light.STATE.lc; dateinterval} (2 Minuten und 12 Sekunden) oder {hm-rpc.0.light.STATE.lc; dateinterval (true)} ( 2 Minuten und 12 Sekunden **vor**
+Zusätzlich können Sie Zeit bis jetzt durch {hm-rpc.0.light.STATE.lc; Dateinterval} (2 Minuten und 12 Sekunden) oder {hm-rpc.0.light.STATE.lc; Dateinterval (true)} ( 2 Minuten und 12 Sekunden **vor**
 
 ## Externe Regeln mit Javascript
 Es besteht die Möglichkeit, die Javascript-Engine zum Verarbeiten von Befehlen in text2command zu verwenden.
@@ -258,7 +258,14 @@ Wenn dies von jedem Befehl aktiviert wird (unabhängig davon, ob die Anfrage üb
 # Machen
 - in russischen männlichen und weiblichen Antworten.
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 2.0.4 (2020-09-24)
+* (bluefox) Updated the select ID dialog.
+
 ### 2.0.3 (2020-07-14)
 * (bluefox) Fixed GUI errors
 

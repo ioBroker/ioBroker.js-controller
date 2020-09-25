@@ -2638,7 +2638,12 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
-### 4.8.1 (2020-09-18)
+### 4.8.4 (2020-09-21)
+* (bluefox) Make the mirroring instance adjustable
+* (bluefox) Correct the dark mode for blockly
+* (bluefox) Corrected the special variables: isDayTime and dayTime
+
+### 4.8.2 (2020-09-20)
 * (Bluefox) Added the settings for columns in the state selection dialog
 
 ### 4.8.0 (2020-09-17)

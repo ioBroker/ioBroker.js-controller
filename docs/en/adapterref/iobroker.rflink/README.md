@@ -46,7 +46,15 @@ The user has the possibility to send raw commands to device. Just write you comm
 
 E.g: ```10;AB400D;00004d;1;OFF;```. Please read documentation to understand the commands.
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+### 2.1.6 (2020-09-25)
+* (evanes68) The reconnect on the disconnection was added
+* (bluefox) Compact mode was implemented
 
 ### 2.1.5 (2020-05-04)
 * (Apollon77) optimize rebuild handling if needed

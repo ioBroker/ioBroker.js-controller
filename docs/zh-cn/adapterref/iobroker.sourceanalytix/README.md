@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
+hash: jav7W00Tmb6Dgrhx6KWgqe5+nVu+ZDgnD/cmvQTY4uw=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
@@ -13,7 +13,7 @@ hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
 ![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
 
 ＃SourceAnalytix
-![测试与发布](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备架构。**更多详细信息，请参见下文！
+[![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/sourceanalytix/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)![测试与发布](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)] **此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新的设备模式。**更多详细信息，请参见下文！
 
 详细分析您的能源，气体和液体消耗可以将任何来源（kWh，Wh，Watt，l / h或m3）用于数据分析：
 
@@ -30,14 +30,14 @@ hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
 @hadering对此进行了改进，并发布在github https://github.com/hdering/homematic_verbrauchszaehler
 
 ＃＃ 已知的问题
-* []如果对象中定义了默认值，则[]源值将在晚上重置为默认值（JS-Controller中的错误，需要在2.3中修复）
+* []如果在对象中定义了默认值，则源值将在晚上重置为默认值（JS-Controller中的错误，在2.3中需要修复）
 
-*解决方法：确保未为自己创建的状态设置默认值*
+*解决方法：确保未为自创建状态设置默认值*
 
 ＃＃ 去做
 * []文档
 * []期间计算可选，但尚未实施
-* []尚未计算的每月费用价格
+* []尚未在计算中实施的每月费用价格
 * []根据仪表值重新计算（可按日期配置）
 * []添加可在适配器设置中配置的前[x]天，[x]周，[x]月，[x]季度，[x]年的对象状态
 
@@ -47,13 +47,19 @@ hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
 ##什么是Sentry.io，什么报告给该公司的服务器？
 Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ## __WORK IN PROGRESS__
 -->
+
+### __WORK IN PROGRESS__
+* (Dutchman) Add back "currentYear"
+* (Dutchman) **Breaking!!!** Move current values to current year
+* (Dutchman) Removed unneeded settings in configuration
+* (Dutchman) Implemented new configuration for "currentYear"
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry

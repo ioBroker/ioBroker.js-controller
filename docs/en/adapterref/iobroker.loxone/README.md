@@ -7,7 +7,7 @@
 ![Number of Installations (latest)](http://iobroker.live/badges/loxone-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/loxone-stable.svg)
 [![Dependency Status](https://img.shields.io/david/UncleSamSwiss/iobroker.loxone.svg)](https://david-dm.org/UncleSamSwiss/iobroker.loxone)
-[![Known Vulnerabilities](https://snyk.io/test/github/UncleSamSwiss/ioBroker.loxone/badge.svg)](https://snyk.io/test/github/UncleSamSwiss/ioBroker.loxone)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/loxone/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 
 [![NPM](https://nodei.co/npm/iobroker.loxone.png?downloads=true)](https://nodei.co/npm/iobroker.loxone/)
 
@@ -531,6 +531,12 @@ Native value from ioBroker &gt; Objects
 ![Details of missing LightController control](doc/details-missing-control-type.png)
 
 ## Changelog
+
+### 2.0.1 (2020-09-24)
+
+-   (UncleSamSwiss) Fixed percentage states always showing 0% (#49)
+-   (UncleSamSwiss) Fixed analog virtual inputs wouldn't set the value 0 from ioBroker (#47)
+-   (UncleSamSwiss) Added translations to package information.
 
 ### 2.0.0
 

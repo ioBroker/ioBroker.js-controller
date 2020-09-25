@@ -526,6 +526,11 @@ This device has some special predefined size- and display-settings to show a web
 
 ## Changelog
 
+### development
+* (sbormann) Scroll to element when deactivating fullScreen.
+* (sbormann) Fixed toolbarPressureMenu.
+
+
 ### 1.2.5 (2020-09-19)
 * (sbormann) Fix for iOS 14 touch callout.
 * (sbormann) Added option to show big icons if device is inactive, active or enlarged.

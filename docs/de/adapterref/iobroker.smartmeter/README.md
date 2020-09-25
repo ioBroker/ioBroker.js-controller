@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: u0VoAof+ktuz2f0n+voNHIUbz1bXYea78AuxBNH4MKI=
+hash: 1EZwTMOmjPHYrU9Olz0ui1yK1amt0lMCwonFiqeMgAM=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
@@ -32,7 +32,7 @@ ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=549
 ### Datenprotokoll
 Unterstützte Protokolle:
 
-* **Sml** SML (SmartMeterLanguage) als Binärformat
+* **Sml** SML (Smart Message Language) als Binärformat
 * **D0** D0 (basierend auf IEC 62056-21: 2002 / IEC 61107 / EN 61107) als ASCII-Format (Binärprotokollmodus E wird derzeit nicht unterstützt)
 * **Json-Efr** OBIS-Daten vom EFR Smart Grid Hub (JSON-Format)
 
@@ -67,7 +67,7 @@ Der Adapter versucht, den in den Spezifikationen definierten D0-Protokollmodus z
 Der Adapter versucht, die Baudrate für die Datennachrichten gemäß den Protokollspezifikationen zu ermitteln. Aber wie beim Modus liefern einige Smartmeter hier falsche Daten. Sie können dies also verwenden, um die Baudrate für die Datennachricht nach Bedarf zu überschreiben. Lassen Sie das Feld leer, um die vom Smart Meter definierte Baudratenumschaltung zu verwenden.
 
 ## Adapter wird getestet mit ...
-... wenigstens:
+... mindestens:
 
 * Hager-eHz-Energiezähler (mehrfach, z. B. eHZ-IW8E2A5L0EK2P, EHZ363W5,)
 * EMH-Energiezähler
@@ -78,7 +78,7 @@ Der Adapter versucht, die Baudrate für die Datennachrichten gemäß den Protoko
 * Iskraemeco MT175
 * Itron EM214 Typ 720
 * Landis & Gyr E220
-* Niederländisches Smart Meter mit DSRM-Protokoll (verwenden Sie "Nur Daten zum Lesen serieller Geräte" und "D0" als Protokoll)
+* Niederländisches Smart Meter mit DSRM-Protokoll (verwenden Sie "Nur serielle Geräte lesen Daten" und "D0" als Protokoll)
 * DZG DWS7412.1T
   ** WICHTIG* Es scheint einen Firmware-Fehler zu geben und manchmal wird der aktuelle Energieverbrauch negativ! Manuelle Neuberechnung möglich mit Formular von https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736* ... und vielen, vielen mehr
 
@@ -99,6 +99,9 @@ Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendu
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server in Deutschland gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
+
+### 3.1.5 (2020-09-21)
+* (Apollon77) update dependencies to prevent some crash cases and optimize tcp mode
 
 ### 3.1.3 (2020-07-20)
 * (Apollon77) update dependencies to prevent some crash cases

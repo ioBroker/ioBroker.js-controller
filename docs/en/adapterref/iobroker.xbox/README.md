@@ -314,6 +314,9 @@ In this section you can find a description of every state of the adapter.
    *View button for media content.*
    
 ## Changelog
+### 0.6.8 (2020-09-24)
+* (foxriver76) minor optimization
+
 ### 0.6.5 (2020-05-28)
 * (foxriver76) fixed problem with auth-only states
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.modbus/README.md
 title: iobroker.modbus
-hash: Sned5trIfAFdUgBpKKClgG/rVfUx5J55OH8O7QooxDc=
+hash: xVnv+YC0NL+AUzizjvQXhh8ov5ZS+fNV1pdvA/qIU3U=
 ---
 ![Logo](../../../en/adapterref/iobroker.modbus/admin/modbus.png)
 
@@ -86,7 +86,7 @@ Verzögerung zwischen zwei Schreibanforderungen in ms. Standard 0.
 - uint32be - 32 Bit ohne Vorzeichen (Big Endian): AABBCCDD => AABBCCDD
 - uint32le - 32 Bit ohne Vorzeichen (Little Endian): AABBCCDD => DDCCBBAA
 - uint32sw - 32 Bit ohne Vorzeichen (Big Endian Word Swap): AABBCCDD => CCDDAABB
-- uint32sb - 32-Bit ohne Vorzeichen (Big Endian Byte Swap): AABBCCDD => DDCCBBAA
+- uint32sb - 32 Bit ohne Vorzeichen (Big Endian Byte Swap): AABBCCDD => DDCCBBAA
 - int32be - Signiertes 32-Bit (Big Endian): AABBCCDD => AABBCCDD
 - int32le - Signiertes 32-Bit (Little Endian): ABBCCDD => DDCCBBAA
 - int32sw - Signiertes 32-Bit (Big Endian Word Swap): AABBCCDD => CCDDAABB
@@ -108,7 +108,7 @@ Verzögerung zwischen zwei Schreibanforderungen in ms. Standard 0.
 
 Die folgende Beschreibung wurde aus [Hier](http://www.chipkin.com/how-real-floating-point-and-32-bit-data-is-encoded-in-modbus-rtu-messages/) kopiert
 
-Das Punkt-zu-Punkt-Modbus-Protokoll ist eine beliebte Wahl für die RTU-Kommunikation, wenn auch nicht aus einem anderen Grund, der den grundlegenden Komfort bietet. Das Protokoll selbst steuert die Interaktionen jedes Geräts in einem Modbus-Netzwerk, wie das Gerät eine bekannte Adresse erstellt, wie jedes Gerät seine Nachrichten erkennt und wie grundlegende Informationen aus den Daten extrahiert werden. Im Wesentlichen ist das Protokoll die Grundlage des gesamten Modbus-Netzwerks.
+Das Punkt-zu-Punkt-Modbus-Protokoll ist eine beliebte Wahl für die RTU-Kommunikation, wenn auch aus keinem anderen Grund, als es der grundlegende Komfort ist. Das Protokoll selbst steuert die Interaktionen jedes Geräts in einem Modbus-Netzwerk, wie das Gerät eine bekannte Adresse erstellt, wie jedes Gerät seine Nachrichten erkennt und wie grundlegende Informationen aus den Daten extrahiert werden. Im Wesentlichen ist das Protokoll die Grundlage des gesamten Modbus-Netzwerks.
 
 Diese Bequemlichkeit ist jedoch nicht ohne Komplikationen, und das Modbus RTU-Nachrichtenprotokoll ist keine Ausnahme. Das Protokoll selbst wurde basierend auf Geräten mit einer Registerlänge von 16 Bit entwickelt. Folglich waren bei der Implementierung von 32-Bit-Datenelementen besondere Überlegungen erforderlich. Diese Implementierung entschied sich für die Verwendung von zwei aufeinanderfolgenden 16-Bit-Registern, um 32 Datenbits oder im Wesentlichen 4 Datenbytes darzustellen. Innerhalb dieser 4 Datenbytes können Gleitkommadaten mit einfacher Genauigkeit in eine Modbus-RTU-Nachricht codiert werden.
 
@@ -125,7 +125,7 @@ Die Auswirkungen verschiedener Bytereihenfolgen sind signifikant. Zum Beispiel d
 
 Das Ordnen der gleichen Bytes in einer "C D A B" -Sequenz wird als "Wortaustausch" bezeichnet. Auch hier unterscheiden sich die Ergebnisse drastisch vom ursprünglichen Wert von 123456.00:
 
-![Bild3](../../../en/adapterref/iobroker.modbus/img/img3.png)
+![Image3](../../../en/adapterref/iobroker.modbus/img/img3.png)
 
 Darüber hinaus würden sowohl ein "Byte-Swap" als auch ein "Word-Swap" die Reihenfolge der Bytes insgesamt umkehren, um ein weiteres Ergebnis zu erzielen:
 
@@ -156,7 +156,7 @@ Die FieldServer Modbus RTU-Treiber bieten verschiedene Funktionsverschiebungen, 
 | 2.i16-1.i32-sb | Bytetausch | [a b] [c d] | [b a d c] |
 | 2.i16-1.i32-sw | Worttausch | [a b] [c d] | [c d a b] |
 
-Die folgende Tabelle zeigt, wie die FieldServer-Funktion zwei benachbarte 16-Bit-Register in einen 32-Bit-Gleitkommawert kopiert:
+Die folgende Tabelle zeigt, wie die FieldServer-Funktion zwei benachbarte 16-Bit-Register auf einen 32-Bit-Gleitkommawert kopiert:
 
 | Funktionsschlüsselwort | Swap-Modus | Quellbytes | Zielbytes |
 |-------------------|--------------------|-----------------|--------------|
@@ -194,11 +194,33 @@ Man kann dann Bytes und / oder Wörter austauschen, um zu analysieren, welche po
 ## Prüfung
 Es gibt einige Programme im Ordner * test ', um die TCP-Kommunikation zu testen:
 
-- Ananas32 / 64 ist ein Slave-Simulator (enthält nur Register und Eingänge, keine Spulen und digitale Eingänge).
+- Ananas32 / 64 ist ein Slave-Simulator (enthält nur Register und Eingänge, keine Spulen und digitale Eingänge)
 - RMMS ist Mastersimulator
 - mod_RSsim.exe ist ein Slave-Simulator. Möglicherweise benötigen Sie [Microsoft Visual C ++ 2008 SP1 Redistributable Package] (https://www.microsoft.com/en-us/download/details.aspx?id=5582), um es zu starten (aufgrund eines SideBySide-Fehlers).
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 3.1.10 (2020-09-25)
+* (nkleber78) Corrected: the exported data cannot be imported without modification
+
+### 3.1.9 (2020-09-17)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-MODBUS-1C)  
+
+### 3.1.7 (2020-07-23)
+* (Apollon77) Fix some Sentry crash reports (IOBROKER-MODBUS-N)
+
+### 3.1.6 (2020-07-06)
+* (bluefox) Fix some Sentry crash reports (IOBROKER-MODBUS-J)
+
+### 3.1.5 (2020-06-29)
+* (Apollon77) Fix some Sentry crash reports (IOBROKER-MODBUS-F)
+
+### 3.1.4 (2020-06-24)
+* (Apollon77) Fix some Sentry crash reports (IOBROKER-MODBUS-4, IOBROKER-MODBUS-7, IOBROKER-MODBUS-6)
+* (Apollon77) Change the way adapter restarts when reconnections do not help
 
 ### 3.1.3 (2020-06-12)
 * (Apollon77) fix scheduled restart

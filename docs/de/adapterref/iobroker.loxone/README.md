@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.loxone/README.md
 title: ioBroker.loxone
-hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
+hash: Vaxpp7GZIwtLcovK5YzPzm1NMAypZb4LvIzBmQxOWLk=
 ---
 ![Logo](../../../en/adapterref/iobroker.loxone/admin/loxone.png)
 
@@ -12,11 +12,12 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 ![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/loxone-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/loxone-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/UncleSamSwiss/iobroker.loxone.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/UncleSamSwiss/ioBroker.loxone/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.loxone.png?downloads=true)
 ![Travis-CI](http://img.shields.io/travis/UncleSamSwiss/ioBroker.loxone/master.svg)
 
 # IoBroker.loxone
+[![Übersetzungsstatus] (https://weblate.iobroker.net/widgets/adapters/-/loxone/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ![Testen und freigeben](https://github.com/UncleSamSwiss/ioBroker.loxone/workflows/Test%20and%20Release/badge.svg)
 
 ## Loxone-Adapter für ioBroker
@@ -44,11 +45,11 @@ Dies ist der HTTP-Port Ihres Loxone Miniserver.
 Standardmäßig ist der Miniserver so konfiguriert, dass er Port 80 überwacht. Möglicherweise haben Sie ihn jedoch geändert.
 
 ### Miniserver Benutzername
-Geben Sie einen gültigen Benutzernamen an, um auf den Loxone Miniserver zuzugreifen.
+Geben Sie einen gültigen Benutzernamen für den Zugriff auf den Loxone Miniserver an.
 
 Aus Sicherheitsgründen wird dringend empfohlen, einen anderen Benutzer als "admin" zu verwenden.
 
-Der Benutzer benötigt nur Lesezugriff auf die Variablen, die Sie von ioBroker verwenden möchten.
+Der Benutzer benötigt nur Lesezugriff auf die Variablen, die Sie von ioBroker aus verwenden möchten.
 
 ### Miniserver-Passwort
 Geben Sie das Passwort für den angegebenen Benutzernamen ein (siehe oben).
@@ -84,14 +85,14 @@ Standardmäßig verbirgt Loxone Miniserver viele Steuerelemente (und damit deren
 
 Das heißt, sie sind auch vor diesem ioBroker-Adapter verborgen.
 
-Um sicherzustellen, dass alle Ihre Status ordnungsgemäß an ioBroker gemeldet werden, stellen Sie sicher, dass "In Visualisierung verwenden" aktiviert ist:
+Um sicherzustellen, dass alle Ihre Status ordnungsgemäß an ioBroker gemeldet werden, überprüfen Sie bitte, ob "In Visualisierung verwenden" aktiviert ist:
 
 ![Verwendung in den Visualisierungseinstellungen](../../../en/adapterref/iobroker.loxone/doc/loxone-config-use-in-visualization.png)
 
 ## Globale Staaten
 Die folgenden globalen Zustände werden derzeit von diesem Adapter bereitgestellt:
 
-- `operationMode`: Die aktuelle Betriebsartennummer des Loxone Miniserver
+- `operationMode`: Die aktuelle Betriebsmodusnummer des Loxone Miniserver
 - `operationMode-text`: Der aktuelle Betriebsmodus des Loxone Miniserver als Text
 - "Sonnenaufgang": Die Anzahl der Minuten nach Mitternacht, in denen die Sonne heute aufgeht
 - "Sonnenuntergang": Die Anzahl der Minuten nach Mitternacht, in denen die Sonne heute untergeht
@@ -99,7 +100,7 @@ Die folgenden globalen Zustände werden derzeit von diesem Adapter bereitgestell
 - "Änderungen": Die Anzahl der Änderungen
 - Alle anderen globalen Staaten werden einfach als Texte gemeldet
 
-## Unterstützte Steuerungstypen
+## Unterstützte Steuerungsarten
 Die folgenden Steuerelementtypen werden derzeit von diesem Adapter unterstützt.
 
 Hinter dem Namen des Staates sehen Sie den Typ des Staates:
@@ -133,14 +134,14 @@ Bereitgestellt von Burgler Alarm Control.
 - `bewaffnete VerzögerungTotal` (ro) die Gesamtverzögerung der Alarmsteuerung, die aktiviert wird
 - "Sensoren" (ro) die Liste der Sensoren
 - `disabledMove` (rw) die Bewegung ist deaktiviert (true) oder nicht (false)
-- `delayOn` (wo), das einen beliebigen Wert in diesen Zustand schreibt, aktiviert den Alarm mit der konfigurierten Verzögerung
+- `delayOn` (wo), wenn ein Wert in diesen Zustand geschrieben wird, aktiviert den Alarm mit der konfigurierten Verzögerung
 - `quit` (wo) das Schreiben eines Wertes in diesen Zustand bestätigt den Alarm
 
 ### Zentraler Alarm
 Wird von der zentralen Burger-Alarmsteuerung bereitgestellt.
 
 - "bewaffneter" (rw) boolescher Zustand (wahr / falsch) des Alarms; Wenn Sie "true" auf diesen Wert schreiben, wird der Alarm sofort eingeschaltet (ohne die vordefinierte Verzögerung).
-- `delayOn` (wo), das einen beliebigen Wert in diesen Zustand schreibt, aktiviert den Alarm mit der konfigurierten Verzögerung
+- `delayOn` (wo), wenn ein Wert in diesen Zustand geschrieben wird, aktiviert den Alarm mit der konfigurierten Verzögerung
 - `quit` (wo) das Schreiben eines Wertes in diesen Zustand bestätigt den Alarm
 
 ### Wecker
@@ -154,7 +155,7 @@ Wird durch Weckersteuerung bereitgestellt.
 - `prepareDuration` (rw) Vorbereitungszeit in Sekunden
 - `snoozeTime` (ro) Sekunden bis das Schlummern endet
 - `snoozeDuration` (rw) Dauer in Sekunden nach dem Schlafengehen
-- `snooze` (wo), das einen Wert in diesen Zustand schreibt, döst den aktuellen Alarm
+- `snooze` (wo), wenn ein Wert in diesen Zustand geschrieben wird, schaltet den aktuellen Alarm aus
 - Wenn Sie einen Wert in diesen Zustand schreiben, wird der aktuelle Alarm gelöscht
 
 ### AudioZone
@@ -169,7 +170,7 @@ Bereitgestellt von Music Server Zone.
     - 2 = online
 - `playState` (rw) der Wiedergabestatus:
     - -1 = unbekannt (dieser Wert kann nicht eingestellt werden)
-    - 0 = gestoppt (durch Einstellen dieses Werts wird die Wiedergabe angehalten)
+    - 0 = gestoppt (durch Einstellen dieses Werts wird die Wiedergabe unterbrochen)
     - 1 = angehalten (durch Einstellen dieses Werts wird die Wiedergabe angehalten)
     - 2 = Wiedergabe (durch Einstellen dieses Werts wird die Wiedergabe gestartet / fortgesetzt)
 - `clientState` (ro) Status des Clients:
@@ -194,9 +195,9 @@ Bereitgestellt von Music Server Zone.
 - Name des Künstlers (ro)
 - Name der Station (ro)
 - Genre-Name (ro)
-- `Cover` (ro) Song / Album Cover Bild URL
+- URL des Titelbilds (ro) des Songs / Albums
 - `source` (rw) aktuell ausgewählte Quellenkennung (siehe` sourceList` oben)
-- `prev` (wo) das Schreiben eines Wertes in diesen Zustand wechselt zum vorherigen Titel
+- `prev` (wo), wenn ein Wert in diesen Zustand geschrieben wird, wechselt zum vorherigen Titel
 - `next` (wo), wenn ein Wert in diesen Zustand geschrieben wird, wechselt zum nächsten Titel
 
 ### Zentrales Audio
@@ -208,7 +209,7 @@ Wird vom zentralen Musikserver bereitgestellt.
 Dieses Gerät wird nur in einem LightController angezeigt.
 
 - `red` (rw) Rotwert des Farbwählers
-- `Grün` (rw) Grünwert des Farbwählers
+- `grün` (rw) grüner Wert des Farbwählers
 - `blue` (rw) blue Wert des Farbwählers
 
 Wenn Sie einen oder mehrere der oben genannten Zustände von ioBroker aus festlegen, wird erst nach ca. 100 ms ein Befehl an den Miniserver gesendet.
@@ -218,7 +219,7 @@ Dies soll verhindern, dass sich die Farbe für eine einzelne Benutzereingabe meh
 Dieses Gerät wird nur in einem Light Controller V2 in Loxone-Softwareversion 9 und höher angezeigt.
 
 - `red` (rw) Rotwert des Farbwählers
-- `Grün` (rw) Grünwert des Farbwählers
+- `grün` (rw) grüner Wert des Farbwählers
 - `blue` (rw) blue Wert des Farbwählers
 
 Wenn Sie einen oder mehrere der oben genannten Zustände von ioBroker aus festlegen, wird erst nach ca. 100 ms ein Befehl an den Miniserver gesendet.
@@ -348,7 +349,7 @@ Bereitgestellt von Stromzählern.
 - `actual-formatated` (ro) falls konfiguriert, der formatierte Istwert des Status (unter Verwendung des" Unit "-Formats von Loxone Config)
 - `total` (ro) der Gesamtwert (Anzahl)
 - `total-formatated` (ro) falls konfiguriert, der formatierte Gesamtwert des Status (unter Verwendung des" Unit "-Formats von Loxone Config)
-- `reset` (wo) Schreiben eines Wertes in diesen Zustand setzt den Gesamtwert zurück
+- `reset` (wo) Schreiben eines beliebigen Wertes in diesen Zustand setzt den Gesamtwert zurück
 
 ### Druckknopf
 Bereitgestellt durch virtuelle Drucktasteneingaben.
@@ -383,7 +384,7 @@ Bereitgestellt von Stromzählern.
     - 5 = extern
     - 6 = Fernbedienung
 - "Sensoren" (ro) die Liste der Sensoren
-- `acousticAlarm` (ro) Zustand des akustischen Alarms falsch für nicht aktiv und wahr für aktiv
+- `akustischerAlarm` (ro) Zustand des akustischen Alarms falsch für nicht aktiv und wahr für aktiv
 - `testAlarm` (ro) ob testalarm aktiv ist
 - `alarmCause` (ro) die Ursache des Alarms:
     - 1 = nur Rauchmelder
@@ -396,7 +397,7 @@ Bereitgestellt von Stromzählern.
 - `startTime` (ro) Zeitstempel beim Start des Alarms
 - `timeServiceMode` (rw) Verzögerung bis der Servicemodus deaktiviert ist
 - `stumm` (wo) Schreiben eines Wertes in diesen Zustand schaltet die Sirene stumm
-- `quit` (wo) Schreiben eines Wertes in diesen Zustand bestätigt den Rauchmelder
+- `quit` (wo) das Schreiben eines Wertes in diesen Zustand bestätigt den Rauchmelder
 
 ### Schalter
 Wird von virtuellen Eingangsschaltern bereitgestellt.
@@ -404,7 +405,7 @@ Wird von virtuellen Eingangsschaltern bereitgestellt.
 - `active` (rw) der aktuelle Zustand des Schalters
 
 ### TimedSwitch
-Zur Verfügung gestellt von Treppenhaus und Multifunktionsschaltern.
+Bereitgestellt durch Treppenhaus- und Multifunktionsschalter.
 
 - `deactivationDelayTotal` (ro) Sekunden, wie lange der Ausgang aktiv ist, wenn der Timer verwendet wird
 - Countdown "Deaktivierung Verzögerung" (ro), bis der Ausgang deaktiviert wird
@@ -424,9 +425,9 @@ Zur Verfügung gestellt von Treppenhaus und Multifunktionsschaltern.
         - schaltet es aus (vom Countdown oder permanent eingeschaltet)
 
 ### Tracker
-Zur Verfügung gestellt von Treppenhaus und Multifunktionsschaltern.
+Bereitgestellt durch Treppenhaus- und Multifunktionsschalter.
 
-- `entry` (ro) Liste der vom Miniserver zurückgegebenen Einträge
+- `Einträge` (ro) Liste der vom Miniserver zurückgegebenen Einträge
 
 ### WindowMonitor
 Bereitgestellt von Stromzählern.
@@ -436,7 +437,7 @@ Bereitgestellt von Stromzählern.
 - `numTilted` (ro) Anzahl der gekippten Fenster und Türen
 - `numOffline` (ro) Anzahl der Fenster und Türen, die nicht verfügbar sind
 - `numLocked` (ro) Anzahl der verschlossenen Fenster und Türen
-- `numUnlocked` (ro) Anzahl der entsperrten Fenster und Türen
+- `numUnlocked` (ro) Anzahl der unverschlossenen Fenster und Türen
 
 Die Summe der Werte aus all diesen Zuständen entspricht der Anzahl der überwachten Fenster und Türen. Die Fenster / Türen mit zwei Zuständen werden immer zum "schlechtesten" Zustand gezählt.
 
@@ -468,7 +469,7 @@ Jeder Kanal enthält die folgenden Zustände:
 - "niederschlagsformatiert": formatierter Niederschlagswert mit Einheit
 - "relative Luftfeuchtigkeit": numerischer Wert für die relative Luftfeuchtigkeit
 - `relativeHumidity-formatiert`: formatierter relativer Feuchtigkeitswert mit Einheit
-- `solarRadiation`: Sonnenstrahlungswert
+- `solarRadiation`: Wert der Sonnenstrahlung
 - `Temperatur`: numerischer Temperaturwert
 - `temperaturformatiert`: formatierter Temperaturwert mit Einheit
 - `timestamp`: Zeitstempel der Daten als` value.time` (JavaScript-Zeit)
@@ -500,6 +501,12 @@ Dieses Projekt ist weder direkt noch indirekt mit der Firma Loxone Electronics G
 Loxone und Miniserver sind eingetragene Marken der Loxone Electronics GmbH.
 
 ## Changelog
+
+### 2.0.1 (2020-09-24)
+
+-   (UncleSamSwiss) Fixed percentage states always showing 0% (#49)
+-   (UncleSamSwiss) Fixed analog virtual inputs wouldn't set the value 0 from ioBroker (#47)
+-   (UncleSamSwiss) Added translations to package information.
 
 ### 2.0.0
 

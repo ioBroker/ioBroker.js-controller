@@ -3,10 +3,9 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sourceanalytix/README.md
 title: ИсточникAnalytix
-hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
+hash: jav7W00Tmb6Dgrhx6KWgqe5+nVu+ZDgnD/cmvQTY4uw=
 ---
 # SourceAnalytix
-![Тестирование и выпуск](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg) **Этот адаптер использует службу [Sentry.io](https://sentry.io), чтобы автоматически сообщать мне как разработчику об исключениях, ошибках кода и новых схемах устройств.** Подробнее см. Ниже!
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
@@ -15,11 +14,13 @@ hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
 ![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)
 ![НПМ](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
 
+[![Статус перевода] (https://weblate.iobroker.net/widgets/adapters/-/sourceanalytix/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget) ![Тестирование и выпуск](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg) **Этот адаптер использует службу [Sentry.io](https://sentry.io) для автоматического сообщения мне как разработчику об исключениях, ошибках кода и новых схемах устройств.** Подробнее см. Ниже!
+
 Подробный анализ вашего потребления энергии, газа и жидкости Любой источник (кВтч, Втч, Ватт, л / час или м3) может быть использован для анализа данных:
 
 * Отслеживайте потребление ежедневно, еженедельно, ежемесячно, ежеквартально, ежегодно
 * рассчитать затраты (текущая цена настраивается)
-* Может использоваться для потребления энергии, жидкостей и ГАЗА.
+* Может использоваться для потребления энергии, жидкостей и ГАЗА
 * Входные значения могут быть Вт / кВтч / Вт / м3 / л.
 
 ## Как
@@ -34,10 +35,10 @@ hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
 
 *Обходной путь: убедитесь, что для самостоятельно созданных состояний не установлено значение по умолчанию*
 
-## Делать
+## Сделать
 * [ ] Документация
 * [] Расчет периода можно выбрать, но еще не реализован
-* [] месячная себестоимость еще не включена в расчет
+* [] месячная себестоимость еще не учтена в расчетах
 * [] пересчет на основе значений счетчиков (настраивается по дате)
 * [] добавить состояния объекта за предыдущий [x] день, [x] неделю, [x] месяц, [x] квартал, [x] год, настраивается в настройках адаптера
 
@@ -47,13 +48,19 @@ hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
 ## Что такое Sentry.io и что передается на серверы этой компании?
 Sentry.io - это сервис, позволяющий разработчикам получать обзор ошибок в своих приложениях. Именно это и реализовано в этом адаптере.
 
-Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включается также ваш идентификатор установки (это просто уникальный идентификатор **без** дополнительной информации о вас, адрес электронной почты, имя и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
+Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включается также ваш идентификатор установки (это просто уникальный идентификатор **без** дополнительной информации о вас, электронной почты, имени и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ## __WORK IN PROGRESS__
 -->
+
+### __WORK IN PROGRESS__
+* (Dutchman) Add back "currentYear"
+* (Dutchman) **Breaking!!!** Move current values to current year
+* (Dutchman) Removed unneeded settings in configuration
+* (Dutchman) Implemented new configuration for "currentYear"
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.rflink/README.md
 title: ioBroker.rflink
-hash: DJ9qlecqsdcEAcK9qiln1yd3axtyxD/PSo0UE8mUJbY=
+hash: dq7E3hJnTI8V8ikrvCa6PV+wKEl/VPeNGkT6lSAVZys=
 ---
 ![Logo](../../../en/adapterref/iobroker.rflink/admin/rflink.png)
 
@@ -16,12 +16,12 @@ hash: DJ9qlecqsdcEAcK9qiln1yd3axtyxD/PSo0UE8mUJbY=
 # IoBroker.rflink
 =================
 
-Dieser Adapter kommuniziert mit [rflink](http://www.nemcon.nl/blog2/), die auf Arduino-Mega- und RFC-Kommunikation mit 433 MHz / 866 MHz / 2,6 Gz aufbauen.
-Wird zum Empfangen der Daten von Wettersensoren und Funknetzschaltern verwendet.
+Dieser Adapter kommuniziert mit [rflink](http://www.nemcon.nl/blog2/), die auf Arduino Mega und RFC 433MHz / 866MHz / 2.6Gz Kommunikation aufbauen.
+Wird zum Empfangen der Daten von Wettersensoren und drahtlosen Netzschaltern verwendet.
 
 ## Voraussetzungen
-Um die serielle Schnittstelle unter Windows zu verwenden, muss VS die Binärdatei erstellen.
-Um die serielle Schnittstelle unter Linux nutzen zu können, ist ein Build erforderlich. Um es zu installieren, schreiben Sie einfach:
+Um die serielle Schnittstelle unter Windows verwenden zu können, muss die Binärdatei VS erstellt werden.
+Um die serielle Schnittstelle unter Linux verwenden zu können, ist ein Build erforderlich. Um es zu installieren, schreiben Sie einfach:
 
 ```
 sudo apt-get update
@@ -29,32 +29,48 @@ sudo apt-get install build-essential -y
 ```
 
 ## Verwendungszweck
-Um das Lernen von Sensoren zu ermöglichen, müssen Sie den "Einschlussmodus" aktivieren. Der Einschlussmodus wird standardmäßig für 5 Minuten (300000 ms) aktiviert und nach 5 Minuten automatisch deaktiviert.
+Um das Erlernen von Sensoren zu ermöglichen, müssen Sie den "Einschlussmodus" aktivieren. Der Einschlussmodus wird standardmäßig für 5 Minuten (300000 ms) aktiviert und nach 5 Minuten automatisch deaktiviert.
 
 Um den Einschlussmodus für immer zu aktivieren, setzen Sie einfach "Einschlusszeitlimit" auf 0.
 
 ## Paar
 Die Geräte erhalten bei jedem Batteriewechsel die neue Adresse.
 
-Nach dem Batteriewechsel muss also neu gelernt werden.
+Nachdem die Batterie gewechselt wurde, muss sie neu gelernt werden.
 
-Drücken Sie dazu die Pair-Taste kurz vor dem Einlegen des Akkus und das Gerät wird mit neuer Adresse eingelernt.
+Drücken Sie dazu kurz vor dem Einlegen des Akkus die Paartaste, und das Gerät wird mit einer neuen Adresse gelernt.
 
-## Auto Pairing
-Wenn Sie nicht so viele Sensoren in der Nähe haben, können Sie die automatische Neukoppelung aktivieren.
+## Automatische Kopplung
+Wenn Sie nicht so viele Sensoren in der Nähe haben, können Sie die automatische erneute Kopplung aktivieren.
 
-Es ist nur möglich, wenn das Gerät eindeutig identifiziert werden kann.
+Dies ist nur möglich, wenn das Gerät eindeutig identifiziert werden kann.
 
-Das bedeutet, dass nur ein Gerät mit dieser Marke und diesem Typ vorhanden ist. (Zum Beispiel nur ein Temperatursensor von einer Marke)
+Das bedeutet, dass nur ein Gerät mit dieser Marke und diesem Typ vorhanden ist. (Zum Beispiel nur ein Temperatursensor einer Marke)
 
-Wenn das System mehr als ein Gerät mit einem solchen Parameter erkennt, deaktiviert es automatisch den Auto-Re-Pairing-Modus und zeigt problematische Sensoren mit Blitz an.
+Wenn das System mehr als ein Gerät mit einem solchen Parameter erkennt, wird der automatische Pairing-Modus automatisch deaktiviert und Problemsensoren mit Blitz angezeigt.
 
-## Raw-Befehle senden
-Der Benutzer hat die Möglichkeit, unformatierte Befehle an das Gerät zu senden. Schreiben Sie einfach Ihren Befehl in der beschriebenen Form [Hier](http://www.nemcon.nl/blog2/protref).
+## Rohbefehle senden
+Der Benutzer hat die Möglichkeit, Rohbefehle an das Gerät zu senden. Schreiben Sie einfach Ihren Befehl in der beschriebenen Form [Hier](http://www.nemcon.nl/blog2/protref).
 
 Zum Beispiel: ```10;AB400D;00004d;1;OFF;```. Bitte lesen Sie die Dokumentation, um die Befehle zu verstehen.
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 2.1.6 (2020-09-25)
+* (evanes68) The reconnect on the disconnection was added
+* (bluefox) Compact mode was implemented
+
+### 2.1.5 (2020-05-04)
+* (Apollon77) optimize rebuild handling if needed
+
+### 2.1.2 (2020-05-02)
+* (Apollon77) getting port list works again 
+
+### 2.1.0 (2020-04-24)
+* (Apollon77) nodejs 6 is no longer supported!
 
 ### 2.0.0 (2019-05-15)
 * (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!

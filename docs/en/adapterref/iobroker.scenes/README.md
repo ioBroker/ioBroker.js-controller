@@ -110,9 +110,15 @@ The adapter will read all actual values for IDs defined in this scene and save i
 
 ## TODO: 
 - Change tooltip for "Bereits gestartetet Befehle anhalten": ??
-- Update selectID dialog
+
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
 
 ## Changelog
+### 2.1.5 (2020-09-24)
+* (bluefox) Updated the select ID dialog.
 
 ### 2.1.3 (2020-09-18)
 * (Apollon77) Prevent crash cases (Sentry IOBROKER-SCENES-B, IOBROKER-SCENES-8, IOBROKER-SCENES-D)

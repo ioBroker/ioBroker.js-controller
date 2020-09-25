@@ -3,25 +3,25 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.rflink/README.md
 title: ioBroker.rflink
-hash: DJ9qlecqsdcEAcK9qiln1yd3axtyxD/PSo0UE8mUJbY=
+hash: dq7E3hJnTI8V8ikrvCa6PV+wKEl/VPeNGkT6lSAVZys=
 ---
 ![商标](../../../en/adapterref/iobroker.rflink/admin/rflink.png)
 
 ![安装数量](http://iobroker.live/badges/rflink-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.rflink.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.rflink.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.rflink.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.rflink.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.rflink.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.rflink.png?downloads=true)
 
-#ioBroker.rflink
+＃ioBroker.rflink
 =================
 
-此适配器与基于arduino mega和RFC 433MHz / 866MHz / 2.6Gz通信的[rflink](http://www.nemcon.nl/blog2/)进行通信。
-用于接收天气传感器和无线电源开关的数据。
+该适配器与基于arduino mega和RFC 433MHz / 866MHz / 2.6Gz通信的[射频链接](http://www.nemcon.nl/blog2/)通信。
+用于接收来自天气传感器和无线电源开关的数据。
 
-##预先要求
+##先决条件
 要在Windows上使用串行端口，需要VS来构建二进制文件。
-要在linux上使用串口，它是构建必需的。要安装它只需写：
+要在Linux上使用串行端口，它是build-essential所必需的。要安装它，只需编写：
 
 ```
 sudo apt-get update
@@ -29,32 +29,48 @@ sudo apt-get install build-essential -y
 ```
 
 ##用法
-要启用传感器学习，您必须激活“包含模式”。默认情况下，包含模式将启用5分钟（300000毫秒），5分钟后将自动禁用。
+要启用传感器学习功能，必须激活“包含模式”。默认情况下，包含模式将启用5分钟（300000毫秒），并在5分钟后自动禁用。
 
 要永久启用包含模式，只需将“包含超时”设置为0。
 
 ##对
-每次电池更换时，设备都会获得新地址。
+每次更换电池时，设备都会获取新地址。
 
-因此，电池更换后必须重新学习。
+因此，更换电池后必须重新学习。
 
-为此，在插入电池之前按下对按钮，将使用新地址学习设备。
+为此，请在插入电池之前按配对按钮，然后将使用新地址学习该设备。
 
 ##自动配对
-如果您附近没有那么多传感器，您可以激活自动重新配对。
+如果附近没有太多传感器，则可以激活自动重新配对。
 
-只有在可以明确识别设备的情况下才有可能。
+仅在可以明确识别设备的情况下才有可能。
 
-这意味着只有一个具有此品牌和类型的设备存在。 （例如，一个品牌只有一个温度传感器）
+这意味着仅存在一个具有该品牌和类型的设备。 （例如，只有一个品牌的一个温度传感器）
 
-如果系统检测到具有此类参数的多个设备，它将自动停用自动重新配对模式并指示带闪光灯的问题传感器。
+如果系统使用该参数检测到多个设备，它将自动停用自动重新配对模式，并指示问题传感器闪烁。
 
 ##发送原始命令
-用户可以将原始命令发送到设备。只需以[这里](http://www.nemcon.nl/blog2/protref)描述的形式编写命令即可。
+用户可以将原始命令发送到设备。只需以[这里](http://www.nemcon.nl/blog2/protref)所述的形式编写命令即可。
 
-例如：```10;AB400D;00004d;1;OFF;```。请阅读文档以了解命令。
+例如：§§JJJJJ_0_0§§。请阅读文档以了解命令。
+
+<！-下一个版本的占位符（在该行的开头）：
+
+### __正在进行的工程__->
 
 ## Changelog
+### 2.1.6 (2020-09-25)
+* (evanes68) The reconnect on the disconnection was added
+* (bluefox) Compact mode was implemented
+
+### 2.1.5 (2020-05-04)
+* (Apollon77) optimize rebuild handling if needed
+
+### 2.1.2 (2020-05-02)
+* (Apollon77) getting port list works again 
+
+### 2.1.0 (2020-04-24)
+* (Apollon77) nodejs 6 is no longer supported!
 
 ### 2.0.0 (2019-05-15)
 * (Apollon77) Support for nodejs 12 added, nodejs 4 is no longer supported!

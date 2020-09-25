@@ -5,7 +5,7 @@
 ![Number of Installations](http://iobroker.live/badges/luxtronik1-installed.svg) ![Number of Installations](http://iobroker.live/badges/luxtronik1-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.luxtronik1.svg)](https://www.npmjs.com/package/iobroker.luxtronik1)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.luxtronik1.svg)](https://www.npmjs.com/package/iobroker.luxtronik1)
 
-[![NPM](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)](https://nodei.co/npm/iobroker.luxtronik1/) 
+[![NPM](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)](https://nodei.co/npm/iobroker.luxtronik1/)
 
 An ioBroker adapter for Luxtronik 1 - heatpump - controllers (i.e. Alpha Innotec, Siemens...)
 
@@ -31,6 +31,10 @@ Controls Luxtronik 1 by setting values in the 'control' - channel. Controls the 
 Values in the 'control' - channel have to be set with ack=false to trigger an action.
 
 ## Changelog
+
+### 0.2.4
+
+-   comm-errors fixed, 'control'-values are updated now.
 
 ### 0.2.3
 

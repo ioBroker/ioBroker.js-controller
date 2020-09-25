@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.loxone/README.md
 title: ioBroker.loxone
-hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
+hash: Vaxpp7GZIwtLcovK5YzPzm1NMAypZb4LvIzBmQxOWLk=
 ---
 ![商标](../../../en/adapterref/iobroker.loxone/admin/loxone.png)
 
@@ -12,11 +12,12 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 ![安装数量（最新）](http://iobroker.live/badges/loxone-installed.svg)
 ![安装数量（稳定）](http://iobroker.live/badges/loxone-stable.svg)
 ![依赖状态](https://img.shields.io/david/UncleSamSwiss/iobroker.loxone.svg)
-![已知漏洞](https://snyk.io/test/github/UncleSamSwiss/ioBroker.loxone/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.loxone.png?downloads=true)
 ![特拉维斯](http://img.shields.io/travis/UncleSamSwiss/ioBroker.loxone/master.svg)
 
 ＃ioBroker.loxone
+[![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/loxone/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
 ![测试与发布](https://github.com/UncleSamSwiss/ioBroker.loxone/workflows/Test%20and%20Release/badge.svg)
 
 ## IoBroker的loxone适配器
@@ -36,10 +37,10 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 
 ##配置
 ###小型服务器主机名/ IP
-这是Loxone Miniserver或Miniserver Go的IP地址或主机名。
+这是您的Loxone Miniserver或Miniserver Go的IP地址或主机名。
 
 ### Miniserver端口
-这是您的Loxone小型服务器的HTTP端口。
+这是您的Loxone Miniserver的HTTP端口。
 
 默认情况下，Miniserver配置为侦听端口80，但是您可能已对其进行了更改。
 
@@ -56,8 +57,8 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 请注意，此密码不安全地存储在ioBroker中-因此请不要使用“ admin”用户！
 
 ###同步名称
-每当Loxone配置发生更改时，这将更新ioBroker中的名称。
-如果禁用此功能，则仅在第一次检测到控件时才同步名称。
+只要Loxone配置中的名称发生更改，这就会更新ioBroker中的名称。
+如果禁用此选项，则仅在第一次检测到控件时才同步名称。
 
 ###同步房间
 这将用Loxone Miniserver提供的所有房间填充enum.rooms枚举，并将链接所有控件。
@@ -66,7 +67,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 这将使用Loxone Miniserver提供的所有类别填充enum.functions枚举，并将链接所有控件。
 
 ＃＃ 状态
-适配器自动连接到配置的Loxone Miniserver，并为其找到的每个控制状态创建状态。
+适配器自动连接到已配置的Loxone Miniserver，并为其找到的每个控制状态创建状态。
 
 状态的ID格式如下：`loxone.<instance>.<control>.<state>`
 
@@ -80,7 +81,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 有关控件及其状态的更多信息，请查看Loxone API（尤其是结构文件）：https://www.loxone.com/enen/kb/api/
 
 ##控制可见性
-默认情况下，Loxone Miniserver从Web界面隐藏了许多控件（因此也隐藏了它们的状态）。
+默认情况下，Loxone Miniserver从Web界面隐藏许多控件（因此也隐藏它们的状态）。
 
 这意味着它们也从此ioBroker适配器中隐藏。
 
@@ -97,7 +98,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 -`sunset`：今天午夜之后的分钟数
 -`notifications`：通知数
 -`modifications'：修改次数
--所有其他全球州仅以文本形式报告
+-其他所有全球州仅以文本形式报告
 
 ##支持的控件类型
 该适配器当前支持以下控件类型。
@@ -106,12 +107,12 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 
 -`（rw）`：可读可写：可以从ioBroker更改此状态
 -`（ro）`：只读：无法从ioBroker更改此状态
--`（wo）`：仅写：此适配器未报告此状态的值，但可以更改此值，从而触发Loxone小型服务器上的某些操作
+-`（wo）`：仅写：此适配器未报告此状态的值，但可以更改此值，从而触发Loxone Miniserver上的某些操作
 
 ###警报
-由防盗报警器提供。
+由盗贼提供报警控制。
 
--警报的“布防”（rw）布尔状态（是/否）；将“ true”写入此值将立即打开警报（没有预定义的延迟）
+-警报的“武装”（rw）布尔状态（真/假）；将“ true”写入该值将立即打开警报（没有预定义的延迟）
 -`nextLevel`（ro）下一个警报级别的ID
     -1 =静音
     -2 = Acustic
@@ -119,7 +120,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
     -4 =内部
     -5 =外部
     -6 =远程
--`nextLevelDelay`（ro）下一级别的延迟，以秒为单位
+-`nextLevelDelay`（ro）以秒为单位的下一级延迟
 -`nextLevelDelayTotal`（ro）以秒为单位的下一级别的总延迟
 -`level`（ro）当前警报级别的ID
     -1 =静音
@@ -139,7 +140,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 ###中央警报
 由中央汉堡报警控制提供。
 
--警报的“布防”（rw）布尔状态（是/否）；将“ true”写入此值将立即打开警报（没有预定义的延迟）
+-警报的“武装”（rw）布尔状态（真/假）；将“ true”写入该值将立即打开警报（没有预定义的延迟）
 -`delayedOn`（wo）向此状态写入任何值将使警报具有已配置的延迟
 -`quit`（wo）向该状态写入任何值可确认警报
 
@@ -149,13 +150,13 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 -`isEnabled`（rw）闹钟的布尔状态（真/假）
 -`isAlarmActive`（ro）布尔值（true / false）警报当前是否响起
 -`confirmationNeeded`（ro）布尔值（true / false）用户是否需要确认警报
--`ringingTime`（ro）倒数秒，以秒为单位，闹钟将响铃多长时间，直到它再次小睡
+-`ringingTime`（ro）倒数秒，以秒为单位，闹钟将持续响铃直到再次小睡
 -`ringDuration`（rw）持续时间（以秒为单位）
 -`prepareDuration`（rw）准备时间，以秒为单位
 -`snoozeTime`（ro）秒，直到小睡结束
 -`snoozeDuration`（rw）持续时间，以秒为单位
 -`snooze`（wo）向此状态写入任何值都会延缓当前警报
--`dismiss`（wo）向该状态写入任何值均会关闭当前警报
+-`dismiss`（wo）写入任何值到该状态将关闭当前警报
 
 ### AudioZone
 由“音乐服务器区域”提供。
@@ -165,7 +166,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
     --2 =无法到达
     --1 =未知
     -0 =离线
-    -1 =初始化（启动，尝试访问）
+    -1 =初始化（正在启动，尝试访问它）
     -2 =在线
 -`playState`（rw）播放状态：
     --1 =未知（无法设置此值）
@@ -174,7 +175,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
     -2 =播放（设置此值将开始/继续播放）
 -客户端的`clientState`（ro）状态：
     -0 =离线
-    -1 =初始化（启动，尝试访问）
+    -1 =初始化（正在启动，尝试访问它）
     -2 =在线
 -`power`（rw）客户端电源是否处于活动状态
 -`volume`（rw）当前音量
@@ -188,7 +189,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
     -2 =-未使用-
     -3 =重复当前项目
 -`songName`（ro）歌曲名称
--`duration`（ro）整首曲目的长度，如果未知则为-1（流）
+-`duration`（ro）整首曲目的长度，如果不知道，则为-1（流）
 -`progress`（rw）曲目中的当前位置
 -`album`（ro）专辑名称
 -`artist`（ro）艺术家名称
@@ -197,29 +198,29 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 -`cover`（ro）歌曲/专辑封面图片网址
 -`source`（rw）当前选择的源标识符（请参见上面的`sourceList`）
 -`prev`（wo）向此状态写入任何值将移至上一个轨道
--`next`（wo）向该状态写入任何值将移至下一轨道
+-`next`（wo）向该状态写入任何值将移至下一个音轨
 
 ###中央音响
 由中央音乐服务器提供。
 
--`control`（wo）设置所有玩家的比赛状态（“ true” =比赛，“ false” =暂停）
+-`control`（wo）设置所有玩家的比赛状态（“ true” =比赛，`false“ =暂停）
 
 ＃＃＃ 选色器
 该设备仅出现在LightController内部。
 
--颜色选择器的`red`（rw）红色值
+-`red`（rw）颜色选择器的红色值
 -`color`（rw）颜色选择器的绿色值
--拾色器的`blue`（rw）蓝色值
+-`blue`（rw）颜色选择器的蓝色值
 
 从ioBroker设置上述状态中的一个或多个只会在大约100毫秒后将命令发送到Miniserver。
 这是为了防止单个用户输入的颜色多次更改。
 
 ### Colorpicker V2
-此设备仅出现在Loxone软件版本9和更高版本的Light Controller V2内部。
+该设备仅出现在Loxone软件版本9及更高版本的Light Controller V2内部。
 
--颜色选择器的`red`（rw）红色值
+-`red`（rw）颜色选择器的红色值
 -`color`（rw）颜色选择器的绿色值
--拾色器的`blue`（rw）蓝色值
+-`blue`（rw）颜色选择器的蓝色值
 
 从ioBroker设置上述状态中的一个或多个只会在大约100毫秒后将命令发送到Miniserver。
 这是为了防止单个用户输入的颜色多次更改。
@@ -232,7 +233,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 -`max`（ro）当前最大值
 -`step`（ro）当前步进值
 -`on`（wo）将任何值写入此状态会将调光器设置为最后一个已知位置
--`off`（wo）将任何值写入此状态将禁用调光器，将位置设置为0但记住最后一个位置
+-`off`（wo）将任何值写入此状态将禁用调光器，将位置设置为0，但会记住最后一个位置
 
 ＃＃＃ 门
 由门控提供。
@@ -289,15 +290,15 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 -百叶窗的“位置”（ro）位置，从0到1的数字
     -百叶窗较高位置= 0
     -百叶窗下限= 1
--百叶窗（百叶窗）的“ shadePosition`（ro）阴影位置，从0到1的数字
+-百叶窗（窗帘）的“ shadePosition”（ro）阴影位置，从0到1的数字
     -百叶窗没有阴影= 0
     -遮光帘= 1
 -`safetyActive`（ro）仅由具有自动驾驶仪的人使用，表示安全关闭
 -`autoAllowed`（ro）仅由具有自动驾驶仪的人使用
 -`autoActive`（rw）仅由具有自动驾驶仪的人使用
--只有通过自动驾驶仪锁定的（ro）（ro），这代表Loxone Config中的输出QI
--`infoText`（ro）通知例如导致锁定状态的原因，或导致安全性起作用的原因。
--`fullUp`（wo）向该状态写入任何值会触发一次完整运动
+-只有通过自动驾驶仪锁定的“ ro”（ro），代表Loxone Config中的输出QI
+-`infoText`（ro）通知例如导致锁定状态的原因，或者导致安全性起作用的原因。
+-`fullUp`（wo）将任何值写入此状态都会触发完整运动
 -`fullDown`（wo）向此状态写入任何值会触发完全向下运动
 -`shade`（wo）在此状态下写入任何值会将百叶窗阴影调整到最佳位置
 
@@ -305,7 +306,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 由中央百叶窗提供控制。
 
 -`autoActive`（rw）仅由具有自动驾驶仪的人使用
--`fullUp`（wo）向该状态写入任何值会触发一次完整运动
+-`fullUp`（wo）将任何值写入此状态都会触发完整运动
 -`fullDown`（wo）向此状态写入任何值会触发完全向下运动
 -`shade`（wo）将此状态的所有值写入所有百叶窗的阴影至完美位置
 
@@ -325,13 +326,13 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 
 ###灯光控制器V2
 由Loxone软件版本9和更高版本中的（酒店）照明控制器提供。
-情绪只能在Loxone应用程序中进行修改，但可以在ioBroker中进行选择和组合。
+只能在Loxone应用程序中修改心情，但可以在ioBroker中选择和组合心情。
 
 -`moodList`（ro）所有已配置心情名称的列表
 -`activeMoods`（rw）当前活动状态名称列表
 -`favoriteMoods`（ro）最喜欢的心情名称列表
 -`additionalMoods`（ro）不喜欢的心情名称列表
--加号（wo）变为下一个心情
+-加号（wo）更改为下一个心情
 -“减号”（wo）更改为以前的心情
 
 这种类型的频道可能包含其他设备。有关更多信息，请参见相应章节。
@@ -354,7 +355,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 由虚拟按钮输入提供。
 
 -`active`（rw）按钮的当前状态
--`pulse`（wo）向该状态写入任何值将模拟仅在很短时间内按下按钮
+-`pulse`（wo）将任何值写入此状态将模拟仅在很短时间内按下按钮
 
 ###滑块
 由模拟虚拟输入提供。
@@ -414,7 +415,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 -`active`（wo）启用或禁用开关（无停用延迟）
 -`pulse`（wo）脉冲开关：
     -deactivationDelay = 0
-        -开始倒计时，从deactivationDelayTotal到0
+        -将开始倒计时，从deactivationDelayTotal到0
     -如果这是楼梯间开关：
         -deactivationDelay = -1
             -无效，将永久保留。
@@ -426,7 +427,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 ###追踪器
 由楼梯间和多功能开关提供。
 
--小型服务器返回的条目的条目列表（ro）
+-miniserver返回的条目列表（ro）
 
 ### WindowMonitor
 由公用事业仪表提供。
@@ -436,7 +437,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 -`numTilted`（ro）倾斜的门窗数量
 -`numOffline`（ro）不可用的门窗数量
 -`numLocked`（ro）锁定的门窗数量
--`numUnlocked`（ro）解锁门窗的数量
+-`numUnlocked`（ro）解锁的门窗数量
 
 来自所有这些状态的值的总和等于监视的门窗的数量。具有两种状态的窗户/门将始终计为“最差”状态。
 
@@ -451,9 +452,9 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 ##天气服务器
 天气服务器信息作为具有多个通道的设备提供。
 该设备称为`WeatherServer`。
-它包含了：
+它包含：
 
--具有实际天气值的频道“实际”
+-具有当前天气值的频道“实际”
 -每个预测小时的一个频道称为“ HourXX”，其中“ XX”是从现在开始的小时数
 
 每个通道包含以下状态：
@@ -465,7 +466,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 -`perceivedTemperature`：数字感知温度值
 -`perceivedTemperature-formatted`：格式化的感知温度值，单位为
 -`precipitation`：数值降水值
--`precipitation-formatted`：格式化的降水值，单位为
+-`precipitation-formatted`：格式化后的降水值，单位为
 -`relativeHumidity`：相对湿度数值
 -`relativeHumidity-formatted`：格式化的相对湿度值，单位为
 -`solarRadiation`：太阳辐射值
@@ -476,7 +477,7 @@ hash: oUIZKQ/98BobBMLIzzAZ8jIuLPL+R2oiFo8SGajwKhg=
 -`weatherType-text`：天气类型的文本表示
 -`windDirection`：风向值
 -`windSpeed`：风速值
--`windSpeed-formatted`：格式化的风速值，单位
+-`windSpeed-formatted`：以单位格式化的风速值
 
 ##相容性
 已使用Loxone Config 9.0.9.26在Loxone Miniserver Go 9.0.9.26中测试了兼容性。
@@ -500,6 +501,12 @@ ioBroker的本机值＆gt;对象
 Loxone和Miniserver是Loxone Electronics GmbH的注册商标。
 
 ## Changelog
+
+### 2.0.1 (2020-09-24)
+
+-   (UncleSamSwiss) Fixed percentage states always showing 0% (#49)
+-   (UncleSamSwiss) Fixed analog virtual inputs wouldn't set the value 0 from ioBroker (#47)
+-   (UncleSamSwiss) Added translations to package information.
 
 ### 2.0.0
 

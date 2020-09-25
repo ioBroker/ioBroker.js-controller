@@ -183,6 +183,12 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 ## Changelog
 
+### 1.6.8 (24.09.2020)
+* (simatec) Translations update for Weblate
+* (simatec) dependencies updated
+* (simatec) devdependencies updated
+* (weblate) translation updated
+
 ### 1.6.7 (09.09.2020)
 * (simatec) Bugfix error on GoogleDrive
 

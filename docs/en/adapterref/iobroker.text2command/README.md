@@ -255,7 +255,16 @@ If activated so by every command (no matter if the request came via state or sen
 # ToDo
 - in Russian male and female answers.
 
+
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+### 2.0.4 (2020-09-24)
+* (bluefox) Updated the select ID dialog.
+
 ### 2.0.3 (2020-07-14)
 * (bluefox) Fixed GUI errors
 

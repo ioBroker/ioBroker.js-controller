@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.jarvis/README.md
 title: ioBroker.jarvis
-hash: IhzWXCxJtWsJBbYrLXx+E3Kn0vaWsHdtK4vpmH7U1Ro=
+hash: e/osQ26wn5IDTtU1VDSILJGlS47QktHcHZTdoIYHyuM=
 ---
 ![Логотип](../../../en/adapterref/iobroker.jarvis/admin/jarvis.png)
 
@@ -13,7 +13,7 @@ hash: IhzWXCxJtWsJBbYrLXx+E3Kn0vaWsHdtK4vpmH7U1Ro=
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.jarvis.svg)
 ![Совершено с момента последнего выпуска](https://img.shields.io/github/commits-since/Zefau/ioBroker.jarvis/latest.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.jarvis.svg)
-![NPM](https://nodei.co/npm/iobroker.jarvis.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.jarvis.png?downloads=true)
 
 # IoBroker.jarvis jarvis - еще один замечательный vis
 [![Трэвис С.И.] (https://travis-ci.com/Zefau/ioBroker.jarvis.svg?branch=master)](https://travis-ci.com/Zefau/ioBroker.jarvis)
@@ -41,7 +41,7 @@ Die Konfiguration von Modulen kann frei angeordnet werden. Nachfolgend einige Im
 ### Скринкаст / видео
 [![Воспроизвести видео] (https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/play.png)](https://youtu.be/jltXTSDGoQw)
 
-Siehe https://youtu.be/jltXTSDGoQw
+Вы можете найти больше видео в [Каналы YouTube](https://www.youtube.com/channel/UCQ7rw5Uect8PSx1aVzEOlzQ).
 
 ### Скриншоты
 #### Beispiel: Панель управления (3 `columns`)
@@ -53,12 +53,68 @@ Siehe https://youtu.be/jltXTSDGoQw
 #### Beispiel: Statistiken (2 `columns`)
 ![Statistik.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Statistik.png)
 
-#### Beispiel: Статус (3 `columns`, davon 2 leer)
+#### Beispiel: Status (3 `columns`, davon 2 leer)
 ![Status.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Status.png)
 
 ## Changelog
 
 Please also see [release page](https://github.com/Zefau/ioBroker.jarvis/releases) for changelog and detailed information.
+
+
+### v1.0.0-rc.16 - Independence Day (2020-09-23)
+
+#### :star2: newly added features
+- Add standard state keys to device depending on function ([89](https://github.com/Zefau/ioBroker.jarvis/issues/89))
+
+#### :bug: fixed bugs
+- Validate IconStyle and StateStyle ([104](https://github.com/Zefau/ioBroker.jarvis/issues/104))
+- BlindLevelAction: Stop-Button shown even though activity is not given ([100](https://github.com/Zefau/ioBroker.jarvis/issues/100))
+- Group action fails on certain device state configuration ([94](https://github.com/Zefau/ioBroker.jarvis/issues/94))
+- Unhandled promise rejection ([93](https://github.com/Zefau/ioBroker.jarvis/issues/93))
+- Can't add devices to Map module ([92](https://github.com/Zefau/ioBroker.jarvis/issues/92))
+- Map in Widget not shown and jumper is wrongly positioned ([88](https://github.com/Zefau/ioBroker.jarvis/issues/88))
+- Import of alias devices may fail in case of insufficient declaration ([87](https://github.com/Zefau/ioBroker.jarvis/issues/87))
+
+#### core
+- Unhandled promise rejection ([93](https://github.com/Zefau/ioBroker.jarvis/issues/93))
+- Add all required language transitions ([91](https://github.com/Zefau/ioBroker.jarvis/issues/91))
+- Remove `installedFrom` from io-package the deployment process ([90](https://github.com/Zefau/ioBroker.jarvis/issues/90))
+
+
+### v1.0.0-rc.15 - Django Unchained
+
+#### :star2: newly added features
+- Add standard state keys to device depending on function ([89](https://github.com/Zefau/ioBroker.jarvis/issues/89))
+
+#### :bug: fixed bugs
+- BlindLevelAction: Stop-Button shown even though activity is not given ([100](https://github.com/Zefau/ioBroker.jarvis/issues/100))
+- Group action fails on certain device state configuration ([94](https://github.com/Zefau/ioBroker.jarvis/issues/94))
+- Unhandled promise rejection ([93](https://github.com/Zefau/ioBroker.jarvis/issues/93))
+- Can't add devices to Map module ([92](https://github.com/Zefau/ioBroker.jarvis/issues/92))
+- Map in Widget not shown and jumper is wrongly positioned ([88](https://github.com/Zefau/ioBroker.jarvis/issues/88))
+- Import of alias devices may fail in case of insufficient declaration ([87](https://github.com/Zefau/ioBroker.jarvis/issues/87))
+
+#### core
+- Unhandled promise rejection ([93](https://github.com/Zefau/ioBroker.jarvis/issues/93))
+- Add all required language transitions ([91](https://github.com/Zefau/ioBroker.jarvis/issues/91))
+- Remove `installedFrom` from io-package the deployment process ([90](https://github.com/Zefau/ioBroker.jarvis/issues/90))
+
+
+### v1.0.0-rc.10 - Fight Club
+
+#### :star2: newly added features
+- Add standard state keys to device depending on function ([89](https://github.com/Zefau/ioBroker.jarvis/issues/89))
+
+#### :bug: fixed bugs
+- Group action fails on certain device state configuration ([94](https://github.com/Zefau/ioBroker.jarvis/issues/94))
+- Unhandled promise rejection ([93](https://github.com/Zefau/ioBroker.jarvis/issues/93))
+- Can't add devices to Map module ([92](https://github.com/Zefau/ioBroker.jarvis/issues/92))
+- Map in Widget not shown and jumper is wrongly positioned ([88](https://github.com/Zefau/ioBroker.jarvis/issues/88))
+
+#### core
+- Unhandled promise rejection ([93](https://github.com/Zefau/ioBroker.jarvis/issues/93))
+- Add all required language transitions ([91](https://github.com/Zefau/ioBroker.jarvis/issues/91))
+- Remove `installedFrom` from io-package the deployment process ([90](https://github.com/Zefau/ioBroker.jarvis/issues/90))
 
 
 ### v1.0.0-rc.6 - The Matrix Reloaded

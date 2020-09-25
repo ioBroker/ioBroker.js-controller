@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.modbus/README.md
 title: iobroker.modbus
-hash: Sned5trIfAFdUgBpKKClgG/rVfUx5J55OH8O7QooxDc=
+hash: xVnv+YC0NL+AUzizjvQXhh8ov5ZS+fNV1pdvA/qIU3U=
 ---
 ![商标](../../../en/adapterref/iobroker.modbus/admin/modbus.png)
 
@@ -35,7 +35,7 @@ Modbus设备ID。如果使用TCP / Modbus网桥，则很重要。
 从站（服务器）或主站（客户端）。
 
 ###使用别名作为地址
-通常，所有寄存器的地址范围都可以从0到65535。通过使用别名，您可以为每种类型的寄存器定义虚拟地址字段。一般：
+通常，所有寄存器的地址都可以在0到65535之间。通过使用别名，您可以为每种类型的寄存器定义虚拟地址字段。一般：
 
 -离散量输入为10001至20000
 -线圈从1到1000
@@ -46,7 +46,7 @@ Modbus设备ID。如果使用TCP / Modbus网桥，则很重要。
 
 ###不要将地址与单词对齐
 通常，线圈和离散输入地址对齐为16位。从3到20的类似地址将与0到32对齐。
-如果激活此选项，则地址将不对齐。
+如果启用此选项，则地址将不对齐。
 
 ###舍入为
 逗号后的位数为float和double。
@@ -90,32 +90,32 @@ Modbus设备ID。如果使用TCP / Modbus网桥，则很重要。
 -int32be-有符号32位（Big Endian）：AABBCCDD => AABBCCDD
 -int32le-带符号的32位（Little Endian）：ABBCCDD => DDCCBBAA
 -int32sw-有符号32位（大尾数字交换）：AABBCCDD => CCDDAABB
--int32sb-带符号的32位（大字节序交换）：AABBCCDD => DDCCBBAA
+-int32sb-有符号32位（大字节序交换）：AABBCCDD => DDCCBBAA
 -uint64be-无符号64位（Big Endian）：AABBCCDDEEFFGGHH => AABBCCDDEEFFGGHH
 -uint64le-无符号64位（Little Endian）：AABBCCDDEEFFGGHH => HHGGFFEEDDCCBBAA
 -uint8be-无符号8位（Big Endian）：AA => AA
 -uint8le-无符号8位（Little Endian）：AA => AA
 -int8be-有符号8位（Big Endian）：AA => AA
--int8le-有符号8位（小端）：AA => AA
+-int8le-带符号的8位（小端）：AA => AA
 -floatbe-浮动（大尾数法）：AABBCCDD => AABBCCDD
 -浮法-浮法（小尾数法）：AABBCCDD => DDCCBBAA
--floatsw-浮点数（大尾数字交换）：AABBCCDD => CCDDAABB
+-floatsw-浮动（大尾数法交换）：AABBCCDD => CCDDAABB
 -floatsb-浮点数（大尾数字节交换）：AABBCCDD => DDCCBBAA
 -doublebe-Double（Big Endian）：AABBCCDDEEFFGGHH => AABBCCDDEEFFGGHH
 -doublele-Double（Little Endian）：AABBCCDDEEFFGGHH => HHGGFFEEDDCCBBAA
 -字符串-字符串（零结尾）：ABCDEF \ 0 => ABCDEF \ 0
--字符串-字符串（小端，零端）：BADCFE \ 0 => ABCDEF \ 0
+-字符串-字符串（Little Endian，零端）：BADCFE \ 0 => ABCDEF \ 0
 
 以下描述摘自[这里](http://www.chipkin.com/how-real-floating-point-and-32-bit-data-is-encoded-in-modbus-rtu-messages/)
 
-点对点Modbus协议是RTU通信的一种普遍选择，只要它没有其他基本便利就可以了。该协议本身控制着Modbus网络上每个设备的交互，设备如何建立已知地址，每个设备如何识别其消息以及如何从数据中提取基本信息。本质上，该协议是整个Modbus网络的基础。
+点对点Modbus协议是RTU通信的一种普遍选择，只要它没有其他基本便利就可以了。协议本身控制Modbus网络上每个设备的交互，设备如何建立已知地址，每个设备如何识别其消息以及如何从数据中提取基本信息。本质上，该协议是整个Modbus网络的基础。
 
-然而，这种便利并非没有复杂之处，并且Modbus RTU消息协议也不例外。该协议本身是基于具有16位寄存器长度的设备设计的。因此，在实现32位数据元素时需要特别考虑。该实现方案使用两个连续的16位寄存器表示32位数据或本质上为4字节数据。可以在这4个字节的数据内将单精度浮点数据编码为Modbus RTU消息。
+但是，这种便利并非毫无复杂性，而且Modbus RTU消息协议也不例外。协议本身是基于具有16位寄存器长度的设备设计的。因此，在实现32位数据元素时需要特别考虑。该实现方式使用两个连续的16位寄存器表示32位数据或本质上为4字节数据。可以在这4个字节的数据内将单精度浮点数据编码为Modbus RTU消息。
 
 ###字节顺序的重要性
-Modbus本身未定义浮点数据类型，但它被广泛接受，它使用IEEE-754标准实现32位浮点数据。但是，IEEE标准没有明确定义数据有效载荷的字节顺序。因此，处理32位数据时，最重要的考虑因素是按正确的顺序对数据进行寻址。
+Modbus本身未定义浮点数据类型，但它被广泛接受，它使用IEEE-754标准实现32位浮点数据。但是，IEEE标准没有明确定义数据有效载荷的字节顺序。因此，处理32位数据时，最重要的考虑因素是按照正确的顺序对数据进行寻址。
 
-例如，IEEE 754标准中为单精度32位浮点数定义的数字123 / 456.00如下所示：
+例如，在IEEE 754标准中为单精度32位浮点数定义的数字123 / 456.00如下所示：
 
 ![图片1](../../../en/adapterref/iobroker.modbus/img/img1.png)
 
@@ -131,7 +131,7 @@ Modbus本身未定义浮点数据类型，但它被广泛接受，它使用IEEE-
 
 ![图4](../../../en/adapterref/iobroker.modbus/img/img4.png)
 
-显然，当使用诸如Modbus之类的网络协议时，必须严格注意内存字节在传输时如何排序（也称为“字节顺序”）。
+显然，在使用诸如Modbus之类的网络协议时，必须严格注意存储器字节在传输时如何排序（也称为“字节顺序”）。
 
 ###确定字节顺序
 根据Modbus应用协议规范V1.1.b，Modbus协议本身被声明为“ big-Endian”协议：
@@ -140,14 +140,14 @@ Modbus本身未定义浮点数据类型，但它被广泛接受，它使用IEEE-
 
 Big-Endian是网络协议最常用的格式-实际上非常普遍，因此也称为“网络顺序”。
 
-鉴于Modbus RTU消息协议为big-Endian，为了通过Modbus RTU消息成功交换32位数据类型，必须同时考虑主站和从站的字节序。许多RTU主设备和从设备允许特定的字节顺序选择，特别是在软件模拟单元的情况下。只需确保所有两个单元都设置为相同的字节顺序即可。
+假定Modbus RTU消息协议为big-Endian，则为了通过Modbus RTU消息成功交换32位数据类型，必须同时考虑主站和从站的字节序。许多RTU主设备和从设备允许特定的字节顺序选择，特别是在软件模拟单元的情况下。只需确保所有两个单元都设置为相同的字节顺序即可。
 
-根据经验，设备的微处理器家族决定其字节序。通常，在使用Motorola处理器设计的CPU中通常会找到big-Endian样式（先存储高位字节，然后存储低位字节）。 little-Endian样式（低位字节先存储，然后是高位字节）通常在使用Intel架构的CPU中找到。至于哪种样式被视为“后退”，则取决于个人观点。
+根据经验，设备的微处理器家族决定其字节序。通常，在使用Motorola处理器设计的CPU中通常可以找到big-Endian样式（先存储高位字节，然后存储低位字节）。 little-Endian样式（低位字节先存储，然后是高位字节）通常在使用Intel架构的CPU中找到。至于哪种样式被视为“后退”，则取决于个人观点。
 
 但是，如果字节顺序和字节序不是可配置的选项，则必须确定如何解释字节。可以从从站请求一个已知的浮点值来完成。如果返回一个不可能的值，即具有两位数或类似数字的数字，则很可能需要修改字节顺序。
 
 ###实用帮助
-FieldServer Modbus RTU驱动程序提供了几种处理32位整数和32位浮点值的功能。更重要的是，这些功能移动考虑了字节排序的所有不同形式。下表显示了将两个相邻的16位寄存器复制到32位整数值的FieldServer函数移动。
+FieldServer Modbus RTU驱动程序提供了几种处理32位整数和32位浮点值的功能。更重要的是，这些函数移动考虑了字节排序的所有不同形式。下表显示了将两个相邻的16位寄存器复制到32位整数值的FieldServer函数移动。
 
 |功能关键字|交换模式源字节|目标字节|
 |-------------------|--------------------|-----------------|--------------|
@@ -183,9 +183,9 @@ FieldServer Modbus RTU驱动程序提供了几种处理32位整数和32位浮点
 | 0x0020 0xF147 | 2.i16-1.float-sb | 123456.00 | 1.float-2.i16-sb | 0x0020 0xF147 |
 | 0x47F1 0x2000 | 2.i16-1.float-sw | 123456.00 | 1.float-2.i16-sw | 0x47F1 0x2000 |
 
-请注意，不同的字节和单词顺序要求使用适当的FieldServer函数移动。选择适当的功能移动后，即可在两个方向上转换数据。
+请注意，不同的字节和单词顺序要求使用适当的FieldServer函数移动。一旦选择了正确的功能移动，就可以在两个方向上转换数据。
 
-Internet上有许多十六进制到浮点转换器和计算器，实际上很少有允许对字节和字序进行操作的。 www.61131.com/download.htm上有一个这样的实用程序，可以在此下载Linux和Windows版本的实用程序。安装后，该实用程序将作为具有单个对话框界面的可执行文件运行。该实用程序显示的十进制浮点值123456.00如下所示：
+互联网上有许多十六进制至浮点转换器和计算器，实际上很少有允许对字节和字序进行操作的。 www.61131.com/download.htm上有一个这样的实用程序，可以在此下载Linux和Windows版本的实用程序。安装后，该实用程序将作为具有单个对话框界面的可执行文件运行。该实用程序显示十进制浮点值123456.00，如下所示：
 
 ![图片5](../../../en/adapterref/iobroker.modbus/img/img5.png)
 
@@ -198,7 +198,29 @@ Internet上有许多十六进制到浮点转换器和计算器，实际上很少
 -RMMS是主模拟器
 -mod_RSsim.exe是从属模拟器。可能是您需要[Microsoft Visual C ++ 2008 SP1可再发行组件包]（https://www.microsoft.com/zh-cn/download/details.aspx?id=5582）来启动它（由于SideBySide错误）。
 
+<！-下一个版本的占位符（在该行的开头）：
+
+### __正在进行的工程__->
+
 ## Changelog
+### 3.1.10 (2020-09-25)
+* (nkleber78) Corrected: the exported data cannot be imported without modification
+
+### 3.1.9 (2020-09-17)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-MODBUS-1C)  
+
+### 3.1.7 (2020-07-23)
+* (Apollon77) Fix some Sentry crash reports (IOBROKER-MODBUS-N)
+
+### 3.1.6 (2020-07-06)
+* (bluefox) Fix some Sentry crash reports (IOBROKER-MODBUS-J)
+
+### 3.1.5 (2020-06-29)
+* (Apollon77) Fix some Sentry crash reports (IOBROKER-MODBUS-F)
+
+### 3.1.4 (2020-06-24)
+* (Apollon77) Fix some Sentry crash reports (IOBROKER-MODBUS-4, IOBROKER-MODBUS-7, IOBROKER-MODBUS-6)
+* (Apollon77) Change the way adapter restarts when reconnections do not help
 
 ### 3.1.3 (2020-06-12)
 * (Apollon77) fix scheduled restart

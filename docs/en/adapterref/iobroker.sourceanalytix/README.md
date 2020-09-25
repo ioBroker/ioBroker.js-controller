@@ -5,6 +5,7 @@
 ![Number of Installations (latest)](http://iobroker.live/badges/sourceanalytix-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/sourceanalytix-stable.svg)
 [![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.sourceanalytix)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/sourceanalytix/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 [![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)](https://nodei.co/npm/iobroker.sourceanalytix/)  
 ![Test and Release](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)   
 **This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors and new device schemas to me as the developer.** More details see below!
@@ -53,6 +54,12 @@ When the adapter crashes or an other Code error happens, this error message that
     Placeholder for the next version (at the beginning of the line):
     ## __WORK IN PROGRESS__
 -->
+
+### __WORK IN PROGRESS__
+* (Dutchman) Add back "currentYear"
+* (Dutchman) **Breaking!!!** Move current values to current year
+* (Dutchman) Removed unneeded settings in configuration
+* (Dutchman) Implemented new configuration for "currentYear"
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry

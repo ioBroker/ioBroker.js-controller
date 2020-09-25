@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.text2command/README.md
 title: ioBroker.text2命令
-hash: tBNY+azXqKKmYuLkseItUQPyK0VjnJVVSAQASBYk6g0=
+hash: 3qwqmhZbgEwQkvW2eL9zqZFH8x+5t0qqeX03CM6fceQ=
 ---
 ![商标](../../../en/adapterref/iobroker.text2command/admin/text2command.png)
 
@@ -15,14 +15,14 @@ hash: tBNY+azXqKKmYuLkseItUQPyK0VjnJVVSAQASBYk6g0=
 
 ＃ioBroker.text2command
 ##说明
-该适配器可以将普通句子转换，例如*'打开厨房的灯'*到特定命令，并将状态*'adapter.0.device.kitchenLight'*设置为** true **。
+此适配器可以将普通句子转换，例如*'打开厨房的灯'*到特定命令，并将状态*'adapter.0.device.kitchenLight'*设置为** true **。
 
-单独激活该适配器没有意义。它应与其他适配器（例如电报或Android应用程序iobroker.vis **）一起使用。
+单独激活该适配器没有意义。它应与其他适配器一起使用，例如电报或Android应用程序** iobroker.vis **。
 
 ##用法
-要执行命令，请在语句中写入状态** text2command。<INSTANCE> .text **。您将始终在** text2command。<INSTANCE> .response **中得到答案。
+要执行命令，请在语句中写入状态** text2command。<INSTANCE> .text **。您将始终在** text2command。<INSTANCE> .response **中获得答案。
 
-如果您定义“对ID的答案”，答案也将以该ID编写。这对于例如实现语音确认。
+如果您定义“对ID的答案”，答案也将以此ID进行书写。这对于例如实现语音确认。
 
 您可以通过javascript中的`sendTo`发送消息。答案将在消息中返回：
 
@@ -57,7 +57,7 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 -角色-level.backlight
 -角色-switch.backlight
 
-**函数功能。百叶窗/百叶窗**（Rolladen |Жалюзи/окна）
+**函数功能。百叶窗/百叶窗**（Rolladen | |алюзи/окна）
 
 -角色-level.blind
 -角色-switch.blind
@@ -88,10 +88,10 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 
 支持以下房间：
 
-|短语中的关键词|英语中可能的enum.rooms |德语|俄语|
+|短语中的关键字|英语中可能的enum.rooms |德语|俄语|
 |-----------------------|---------------------------------|--------------------------|------------------------|
 |无处不在无处不在-| -|
-|生活客厅| wohnzimmer | зал|
+|生活|客厅| wohnzimmer | зал|
 |卧室|卧室/卧室| schlafzimmer | спальня|
 |浴|浴室/浴室| badezimmer /坏| ванная|
 |工作/办公室|办公室arbeitszimmer | кабинет|
@@ -107,7 +107,7 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 |花园花园花园сад|
 |法院/院子|法院霍夫двор|
 |客房客房gästezimmer| гостевая|
-|阁楼阁楼喷雾器| кладовка|
+|阁楼|阁楼|喷雾器| кладовка|
 |屋顶屋顶dachstuhl | крыша|
 |终端|终端|鹅掌| | сени|
 |洗手间|洗手间| waschraum | прачечная|
@@ -139,15 +139,15 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 答案是可定制的。默认值：```Inside temperature is %s %u```**％s **将替换为温度，四舍五入为整数。 **％u **将被此状态的单位或系统温度单位替换。
 
 ###按功能打开/关闭
-该命令从枚举中读取信息。它使用“枚举功能”查找设备类型（例如灯光，警报，音乐），并使用“枚举室”检测房间名称。
+该命令从枚举中读取信息。它使用``枚举功能''查找设备类型（例如灯光，警报，音乐），并使用``枚举房间''检测房间名称。
 
 德语示例：![枚举](../../../en/adapterref/iobroker.text2command/img/enums.png)
 
-要打开的关键字是：*打开*，例如§§JJJJJ_0_0§§
+要打开的关键字是：*打开*，例如```switch rear light in bath on```
 
-要关闭的关键字是：*关闭*，例如§§JJJJJ_0_0§§
+要关闭的关键字是：*关闭*，例如```switch light in living room off```
 
-如果需要，将自动生成答案：```Switch off %function% in %room%```，其中％function％和％room％将由找到的设备类型和位置替换。
+如果需要，答案将自动生成：```Switch off %function% in %room%```，其中％function％和％room％将由找到的设备类型和位置替换。
 
 命令也接受数值。它具有优先级，例如在§§JJJJJ_0_0§§命令中，灯光将设置为15％，并且不处于* off *状态。
 
@@ -156,16 +156,16 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 ###打开/关闭百叶窗
 该命令从枚举中读取信息。它使用** enum.functions.blind **查找百叶窗或百叶窗类型，并使用** enum.rooms **检测房间名称。
 
-向上移动百叶窗的关键词是：*向上盲目*，例如§§JJJJJ_0_0§§
+向上移动百叶窗的关键词是：*向上盲目*，例如```set blinds up in sleeping room```
 
-向下移动百叶窗的关键词是：*向下百叶窗*，例如§§JJJJJ_0_0§§
+向下移动百叶窗的关键词是：*向下百叶窗*，例如```move blinds down in office```
 
-您可以指定百分数的确切位置，例如§§JJJJJ_0_0§§
+您可以指定百分数的确切位置，例如```move blinds to 40 percent in office```
 
 如果需要，将自动生成答案：``` in %room%```，其中％room％将替换为找到的设备类型和位置。
 
 ###开启/关闭某些功能
-用户必须指定设备的状态ID，必须对其进行控制，并且必须写入值。
+用户必须指定设备的状态ID（必须控制）和值（必须写入）。
 
 您应该为每个位置创建规则（例如* on *和* off *）。
 
@@ -174,7 +174,7 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 例如。：
 
 -```停用警报```，对象ID：```hm-rpc.0.alarm```，值：```false''`，答案：```警报已停用/停用'' 。在这种情况下，答案将在“警报已停用”和“警报已停用”之间随机分配。
--```激活警报```，对象ID：```hm-rpc.0.alarm```，值：```true''`，答案：```警报已激活/已激活/已完成'' ``。在这种情况下，答案将在“警报已激活”，“已激活”和“完成”之间随机分配。
+-```激活警报```，对象ID：```hm-rpc.0.alarm```，值：```true''`，答案：```警报已激活/激活/完成` ``。在这种情况下，答案将在“警报已激活”，“已激活”和“完成”之间随机分配。
 
 *停用*必须在列表中的第一位，因为它更长。
 
@@ -184,9 +184,9 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 
 -```Set light level''，对象ID：```hm-rpc.0.light.STATE`''，Value：```10''`，Answer：```Level设置为％s ％```。
 
-如果命令类似于```Set light level to 50%```，则在```hm-rpc.0.light.STATE```中写入50，答案为```Level set to 50%```。
+如果命令类似于```Set light level to 50%```§，则在§§JJJJJ_1_1§§中将写入50，答案将为§§JJJJJ_2_2§§。
 
-如果命令类似于```Set light level```§，则将在```hm-rpc.0.light.STATE```中写入10，答案将为§§JJJJJ_2_2§§。
+如果命令类似于```Set light level```§，则将在§§JJJJJ_1_1§§中写入10，答案将为§§JJJJJ_2_2§§。
 
 ###询问一些事情
 用户必须指定设备的状态ID，该值将被读取。
@@ -204,10 +204,10 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 单词* to *不需要触发规则，但是将从文本中删除。
 
 ###你很好（只是为了好玩）
-答案是可定制的。默认值：```Thank you```或```You are welcome```
+答案是可定制的。默认值：```Thank you```或```You are welcome```§
 
 ###谢谢（很有趣）
-答案是可定制的。默认值：```No problem```或```You are welcome```
+答案是可定制的。默认值：```No problem```或```You are welcome```§
 
 ###创建答案
 您可以在确认中使用绑定{objectId}生成答案。用于alexa。
@@ -215,15 +215,15 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 例如。：
 
 -打开窗口，确认：实际打开的{javascript.0.countOpenedWindows}窗口已打开。
--```temperature sleeproom room''，Acknowledge：```卧室的实际温度为{t：hm-rpc.0.sleepingRoomSensor.TEMPERATURE; Math.round（t）} / {hm-rpc.0.sleepingRoomSensor.TEMPERATURE; round（1）}度在这种情况下，答案将随机分布在*卧室的实际温度为<VALUE> *和* <VALUE> *之间。
+-```temperature sleep room`''，Acknowledge：```卧室的实际温度为{t：hm-rpc.0.sleepingRoomSensor.TEMPERATURE; Math.round（t）} / {hm-rpc.0.sleepingRoomSensor.TEMPERATURE; round（1）}度在这种情况下，答案将随机分布在*卧室的实际温度为<VALUE> *和* <VALUE> *之间。
 
 您可以在此处阅读有关绑定的更多信息：（对象的绑定）[https://github.com/ioBroker/ioBroker.vis#bindings-of-objects]
 
-此外，您还可以通过{hm-rpc.0.light.STATE.lc; dateinterval}（每12分钟2分钟）或{hm-rpc.0.light.STATE.lc; dateinterval（true）}来获取到现在的时间（ 2分12秒**前**）
+另外，您还可以通过{hm-rpc.0.light.STATE.lc; dateinterval}（每12分钟2分钟）或{hm-rpc.0.light.STATE.lc; dateinterval（true）}来获取到现在的时间2分12秒**前**）
 
 ##使用javascript的外部规则
 有可能使用javascript引擎来处理text2command中的命令。
-为此，必须在“处理器状态ID”（高级设置）中指定某些状态，并在某些JS或Blockly脚本中侦听此状态。
+为此，您必须在“处理器状态ID”（高级设置）中指定一些状态，并在某些JS或Blockly脚本中侦听此状态。
 您可以在admin或脚本中手动创建一些状态。处理脚本如下所示：
 
 ```
@@ -249,17 +249,24 @@ createState("textProcessor", '', function () {
 });
 ```
 
-在text2command **Processor state ID** 设置中将其设置为* javascript.0.textProcessor *，以使本示例正常工作。
+在text2command **Processor state ID** 设置中将其设置为* javascript.0.textProcessor *，以使此示例正常工作。
 
-首先，将使用您的javascript处理该命令，如果javascript在预定义的时间内（默认为1秒）以''或不回答，则该命令将由规则处理。
+首先，将使用您的javascript处理该命令，如果javascript在预定义的时间（默认为1秒）内回答“或”，则规则将处理该命令。
 
 ###选项：通过每个命令写入响应
-如果每个命令都激活了该命令（无论请求是通过状态还是sendTo发出的，则`text2command.X.response`都将带有答案）。
+如果每个命令都激活了该命令（无论请求是通过状态发送还是通过sendTo发出），则`text2command.X.response`都将带有答案。
 
 ＃ 去做
--俄语中的男性和女性答案。
+-俄罗斯男性和女性答案。
+
+<！-下一个版本的占位符（在该行的开头）：
+
+### __正在进行的工程__->
 
 ## Changelog
+### 2.0.4 (2020-09-24)
+* (bluefox) Updated the select ID dialog.
+
 ### 2.0.3 (2020-07-14)
 * (bluefox) Fixed GUI errors
 

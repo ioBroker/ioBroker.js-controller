@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.scenes/README.md
 title: Адаптер сцен ioBroker
-hash: T+S1r3KxE3Cf5/KnPfB5zms1Kgmc38oHlYJy5tdahjU=
+hash: 9GQ2dZLRXU/ZlsMnZnj2+IHhlXFo5/GxKQz3nlrNi1A=
 ---
 ![Логотип](../../../en/adapterref/iobroker.scenes/admin/scenes.png)
 
 ![Количество установок](http://iobroker.live/badges/scenes-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.scenes.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.scenes.svg)
-![NPM](https://nodei.co/npm/iobroker.scenes.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.scenes.png?downloads=true)
 
 Адаптер сцен # ioBroker
 _scenes Adapter_ может создавать сцены и выполнять их в среде ioBroker.
@@ -117,9 +117,14 @@ sendTo(
 
 ## ДЕЛАТЬ:
 - Измените всплывающую подсказку для "Bereits gestartetet Befehle anhalten": ??
-- Обновить диалог selectID
+
+<! - Заполнитель для следующей версии (в начале строки):
+
+### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 2.1.5 (2020-09-24)
+* (bluefox) Updated the select ID dialog.
 
 ### 2.1.3 (2020-09-18)
 * (Apollon77) Prevent crash cases (Sentry IOBROKER-SCENES-B, IOBROKER-SCENES-8, IOBROKER-SCENES-D)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.scenes/README.md
 title: ioBroker Szenenadapter
-hash: T+S1r3KxE3Cf5/KnPfB5zms1Kgmc38oHlYJy5tdahjU=
+hash: 9GQ2dZLRXU/ZlsMnZnj2+IHhlXFo5/GxKQz3nlrNi1A=
 ---
 ![Logo](../../../en/adapterref/iobroker.scenes/admin/scenes.png)
 
@@ -118,9 +118,14 @@ Der Adapter liest alle tatsächlichen Werte für IDs, die in dieser Szene defini
 
 ## MACHEN:
 - Tooltip für "Bereits Feindet Befehle ändern" ändern: ??
-- SelectID-Dialog aktualisieren
+
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 2.1.5 (2020-09-24)
+* (bluefox) Updated the select ID dialog.
 
 ### 2.1.3 (2020-09-18)
 * (Apollon77) Prevent crash cases (Sentry IOBROKER-SCENES-B, IOBROKER-SCENES-8, IOBROKER-SCENES-D)

@@ -108,6 +108,9 @@ CCU和信息文件夹包含网关的基本信息。
 ＃＃＃ 常问问题
 
 ## Changelog
+### 2.6.21 (2020-09-15)
+* (foxriver76) fixed error where alarm states of hm-rpc instances with instance number >= 10 are created for the wrong instance (issue #111)
+
 ### 2.6.20 (2020-09-15)
 * (foxriver76) set explicit object type on extending object (issue #109)
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.scenes/README.md
 title: ioBroker场景适配器
-hash: T+S1r3KxE3Cf5/KnPfB5zms1Kgmc38oHlYJy5tdahjU=
+hash: 9GQ2dZLRXU/ZlsMnZnj2+IHhlXFo5/GxKQz3nlrNi1A=
 ---
 ![商标](../../../en/adapterref/iobroker.scenes/admin/scenes.png)
 
@@ -120,9 +120,14 @@ sendTo(
 
 ＃＃ 去做：
 -更改“ Bereits gestartetet Befehle anhalten”的工具提示：
--更新selectID对话框
+
+<！-下一个版本的占位符（在该行的开头）：
+
+### __正在进行的工程__->
 
 ## Changelog
+### 2.1.5 (2020-09-24)
+* (bluefox) Updated the select ID dialog.
 
 ### 2.1.3 (2020-09-18)
 * (Apollon77) Prevent crash cases (Sentry IOBROKER-SCENES-B, IOBROKER-SCENES-8, IOBROKER-SCENES-D)

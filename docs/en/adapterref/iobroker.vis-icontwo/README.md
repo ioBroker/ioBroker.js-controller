@@ -57,6 +57,18 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.20.0
+
+• (skvarel) - Neue Icons hinzugefügt (Battery)
+
+### 0.19.4
+
+• (skvarel) - Neue Icons hinzugefügt (Weather)
+
+### 0.19.3
+
+• (skvarel) - Neue Icons hinzugefügt (Alarm colored)
+
 ### 0.19.2
 
 • (skvarel) - Neue Icons hinzugefügt (Heating)

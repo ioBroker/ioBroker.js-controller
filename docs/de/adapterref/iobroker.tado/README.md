@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tado/README.md
 title: ioBroker.tado
-hash: QU/K688hdQZb138mx6bivShC+3fIcL/BFBznWd29LDQ=
+hash: ooe+koMCJ4qoikZpsDsD0gd8QQPVasVNmB5EsgYhRpQ=
 ---
 # IoBroker.tado
 
@@ -17,13 +17,46 @@ hash: QU/K688hdQZb138mx6bivShC+3fIcL/BFBznWd29LDQ=
 
 <img src="./admin/tado.png" width="50" height="50">
 
-## Tado Adapter für ioBroker
-tado ° sorgt für ein angenehmes und gesundes Klima und spart gleichzeitig bis zu 31% Ihrer Heizkosten.
+[![Übersetzungsstatus] (https://weblate.iobroker.net/widgets/adapters/-/tado/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
+## Tado-Adapter für ioBroker
+tado ° sorgt für ein angenehmes und gesundes Klima und spart bis zu 31% Ihrer Heizkosten.
 
 ## Unterstütze mich
-Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende übermitteln (dies ist ein persönlicher Spendenlink für DutchmanNL, kein Bezug zum ioBroker-Projekt! [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.tado/master/admin/button.png)](http://paypal.me/DutchmanNL)
+Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt! [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.tado/master/admin/button.png)](http://paypal.me/DutchmanNL)
 
 ## Changelog
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
+
+### __WORK IN PROGRESS__ release comment
+* (DutchmanNL) 
+
+### 0.2.0-beta.1 (2020-08-29)
+* (DutchmanNL) Update dependency's
+* (DutchmanNL) Update testing, remove node 8 and add node 14
+* (DutchmanNL) Implement automated deployment with githubActions
+* (HGlab01) Bugfix : Fix unhandled information found in DoReadDevices 
+* (HGlab01) Bugfix : Add legacyHeatingInstallationsEnabled to DoHome
+* (LutzHelling) Bugfix : legacyHeatingInstallationsEnabled
+* (LutzHelling) Bugfix : Add orientation
+
+### 0.1.9
+* (DutchmanNL) Implement Sentry
+* (DutchmanNL) Bugfix : Better error handling
+* (DutchmanNL) Bugfix : state creation with JS-controller 3.x
+
+### 0.1.8
+* (DutchmanNL) Correct countdown of "remainingtimeinseconds" implemented.
+
+### 0.1.7
+* (DutchmanNL) Fix Unhandable information found in DoZoneState : "openWindowDetected" 
+
+### 0.1.6
+* (DutchmanNL) fix geoTrackingEnabled & atHome
+* (DutchmanNL) fix error preventFromSubscribing
 
 ### 0.1.5  
 * (DutchmanNL) Fix switching on/off heating & related auto mode
@@ -85,7 +118,7 @@ Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende üb
 ## License
 MIT License
 
-Copyright (c) 2019 DutchmanNL <rdrozda@hotmail.com>
+Copyright (c) 2020 DutchmanNL <rdrozda@hotmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.jarvis/README.md
 title: ioBroker.jarvis
-hash: IhzWXCxJtWsJBbYrLXx+E3Kn0vaWsHdtK4vpmH7U1Ro=
+hash: e/osQ26wn5IDTtU1VDSILJGlS47QktHcHZTdoIYHyuM=
 ---
 ![Logo](../../../en/adapterref/iobroker.jarvis/admin/jarvis.png)
 
@@ -41,7 +41,7 @@ Die Konfiguration von Modulen kann frei werden. Nachfolgend einige Impressionen 
 ### Screencast / Video
 [![Video abspielen] (https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/play.png)](https://youtu.be/jltXTSDGoQw)
 
-Siehe https://youtu.be/jltXTSDGoQw
+Weitere Videos finden Sie in den [YouTube-Kanäle](https://www.youtube.com/channel/UCQ7rw5Uect8PSx1aVzEOlzQ).
 
 ### Screenshots
 #### Beispiel: Dashboard (3 `columns`)
@@ -59,6 +59,62 @@ Siehe https://youtu.be/jltXTSDGoQw
 ## Changelog
 
 Please also see [release page](https://github.com/Zefau/ioBroker.jarvis/releases) for changelog and detailed information.
+
+
+### v1.0.0-rc.16 - Independence Day (2020-09-23)
+
+#### :star2: newly added features
+- Add standard state keys to device depending on function ([89](https://github.com/Zefau/ioBroker.jarvis/issues/89))
+
+#### :bug: fixed bugs
+- Validate IconStyle and StateStyle ([104](https://github.com/Zefau/ioBroker.jarvis/issues/104))
+- BlindLevelAction: Stop-Button shown even though activity is not given ([100](https://github.com/Zefau/ioBroker.jarvis/issues/100))
+- Group action fails on certain device state configuration ([94](https://github.com/Zefau/ioBroker.jarvis/issues/94))
+- Unhandled promise rejection ([93](https://github.com/Zefau/ioBroker.jarvis/issues/93))
+- Can't add devices to Map module ([92](https://github.com/Zefau/ioBroker.jarvis/issues/92))
+- Map in Widget not shown and jumper is wrongly positioned ([88](https://github.com/Zefau/ioBroker.jarvis/issues/88))
+- Import of alias devices may fail in case of insufficient declaration ([87](https://github.com/Zefau/ioBroker.jarvis/issues/87))
+
+#### core
+- Unhandled promise rejection ([93](https://github.com/Zefau/ioBroker.jarvis/issues/93))
+- Add all required language transitions ([91](https://github.com/Zefau/ioBroker.jarvis/issues/91))
+- Remove `installedFrom` from io-package the deployment process ([90](https://github.com/Zefau/ioBroker.jarvis/issues/90))
+
+
+### v1.0.0-rc.15 - Django Unchained
+
+#### :star2: newly added features
+- Add standard state keys to device depending on function ([89](https://github.com/Zefau/ioBroker.jarvis/issues/89))
+
+#### :bug: fixed bugs
+- BlindLevelAction: Stop-Button shown even though activity is not given ([100](https://github.com/Zefau/ioBroker.jarvis/issues/100))
+- Group action fails on certain device state configuration ([94](https://github.com/Zefau/ioBroker.jarvis/issues/94))
+- Unhandled promise rejection ([93](https://github.com/Zefau/ioBroker.jarvis/issues/93))
+- Can't add devices to Map module ([92](https://github.com/Zefau/ioBroker.jarvis/issues/92))
+- Map in Widget not shown and jumper is wrongly positioned ([88](https://github.com/Zefau/ioBroker.jarvis/issues/88))
+- Import of alias devices may fail in case of insufficient declaration ([87](https://github.com/Zefau/ioBroker.jarvis/issues/87))
+
+#### core
+- Unhandled promise rejection ([93](https://github.com/Zefau/ioBroker.jarvis/issues/93))
+- Add all required language transitions ([91](https://github.com/Zefau/ioBroker.jarvis/issues/91))
+- Remove `installedFrom` from io-package the deployment process ([90](https://github.com/Zefau/ioBroker.jarvis/issues/90))
+
+
+### v1.0.0-rc.10 - Fight Club
+
+#### :star2: newly added features
+- Add standard state keys to device depending on function ([89](https://github.com/Zefau/ioBroker.jarvis/issues/89))
+
+#### :bug: fixed bugs
+- Group action fails on certain device state configuration ([94](https://github.com/Zefau/ioBroker.jarvis/issues/94))
+- Unhandled promise rejection ([93](https://github.com/Zefau/ioBroker.jarvis/issues/93))
+- Can't add devices to Map module ([92](https://github.com/Zefau/ioBroker.jarvis/issues/92))
+- Map in Widget not shown and jumper is wrongly positioned ([88](https://github.com/Zefau/ioBroker.jarvis/issues/88))
+
+#### core
+- Unhandled promise rejection ([93](https://github.com/Zefau/ioBroker.jarvis/issues/93))
+- Add all required language transitions ([91](https://github.com/Zefau/ioBroker.jarvis/issues/91))
+- Remove `installedFrom` from io-package the deployment process ([90](https://github.com/Zefau/ioBroker.jarvis/issues/90))
 
 
 ### v1.0.0-rc.6 - The Matrix Reloaded

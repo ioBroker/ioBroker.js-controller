@@ -25,6 +25,13 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 | --- | --- | --- |
 | ![](docs/de/images/config-params.png) | vs | ![](docs/de/images/config-params-legacy.png) |
 
+---
+
+## Documentation and usage
+* [FAQ](docs/en/FAQ.md)
+
+---
+
 ## Changelog
 [Older changes](CHANGELOG_OLD.md)
 <!--
@@ -32,8 +39,23 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
-### 1.7.0-alpha.2 (2020-09-11)
-* Test compatibility with zwave-js 5.x.
+### 1.7.0 (2020-09-25)
+* The `quality` parameter is now set for state updates when reading (potentially stale) values from the cache
+* Changed the serialport setting field to use autocomplete instead of a dropdown, added a tip how to use serial-over-tcp connections
+* The adapter will now attempt to restart if starting the driver fails
+* Upgraded `zwave-js` to version 5.0.0. This includes many changes including the following:
+  * The driver has been completely rewritten with state machines for a well-defined program flow and better testability. This should solve issues where communication may get stuck for unknown reasons.
+  * All interview messages now automatically have a lower priority than most other messages, e.g. the ones created by user interaction. This should make the network feel much more responsive while an interview process is active.
+  * Improved performance of reading from the Value DB
+  * A node is no longer marked as dead or asleep if it fails to respond to a `Configuration CC::Get` request. This can happen if the parameter is not supported.
+  * The interview for sensor-type CCs is now skipped if a timeout occurs waiting for a response. Previously the whole interview was aborted.
+  * If a node that is known to be included securely does not respond to the `Security CC` interview, it is no longer assumed to be non-secure
+  * If a node that is assumed to be included non-securely sends secure commands, it is now marked as secure and the interview will be restarted
+  * Added a configuration file for `ABUS CFA3010`.
+  * Added a configuration file for `Everspring AC301`
+  * Removed parameter #5 from `Aeon Labs ZW130` because it doesn't seem to be supported in any firmware version
+  * In addition to real serial ports, serial-over-tcp connections (e.g. by using `ser2net`) are now supported. Use these `ser2net` settings to host a serial port: `<external-port>:raw:0:<path-to-serial>:115200 8DATABITS NONE 1STOPBIT`
+  * Fixed a crash that could occur when assembling a partial message while the driver is not ready yet.
 
 ### 1.6.3 (2020-09-04)
 * Further performance optimization

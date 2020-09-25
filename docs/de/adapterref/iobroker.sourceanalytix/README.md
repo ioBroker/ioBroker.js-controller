@@ -3,10 +3,9 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
+hash: jav7W00Tmb6Dgrhx6KWgqe5+nVu+ZDgnD/cmvQTY4uw=
 ---
 # SourceAnalytix
-![Testen und freigeben](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg) **Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden.** Weitere Details siehe unten!
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
@@ -14,6 +13,8 @@ hash: TGR5LSM3NCMQHg0GvcCj+DQowhk4yqHgv4zfaLb6gxY=
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/sourceanalytix-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)
 ![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
+
+[![Übersetzungsstatus] (https://weblate.iobroker.net/widgets/adapters/-/sourceanalytix/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)![Testen und freigeben](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg) **Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden.** Weitere Details siehe unten!
 
 Detaillierte Analyse Ihres Energie-, Gas- und Flüssigkeitsverbrauchs Für Datenanalysen kann jede Quelle (kWh, Wh, Watt, l / h oder m3) verwendet werden:
 
@@ -37,7 +38,7 @@ Was von @hadering verbessert und auf github https://github.com/hdering/homematic
 ## Machen
 * [] Dokumentation
 * [] Periodenberechnung auswählbar, aber noch nicht implementiert
-* [] monatlicher Selbstkostenpreis noch nicht in Berechnung berechnet
+* [] monatlicher Selbstkostenpreis noch nicht in die Berechnung einbezogen
 * [] Neuberechnung basierend auf Zählerwerten (konfigurierbar nach Datum)
 * [] Objektzustände für vorherigen [x] Tag, [x] Woche, [x] Monat, [x] Quartal, [x] Jahr hinzufügen, die in den Adaptereinstellungen konfiguriert werden können
 
@@ -54,6 +55,12 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
     Placeholder for the next version (at the beginning of the line):
     ## __WORK IN PROGRESS__
 -->
+
+### __WORK IN PROGRESS__
+* (Dutchman) Add back "currentYear"
+* (Dutchman) **Breaking!!!** Move current values to current year
+* (Dutchman) Removed unneeded settings in configuration
+* (Dutchman) Implemented new configuration for "currentYear"
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry

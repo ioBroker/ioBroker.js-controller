@@ -5,6 +5,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.tado.svg)](https://www.npmjs.com/package/iobroker.tado)
 [![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.tado.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.tado)
 [![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.tado/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.tado)
+[![Translation status](https://weblate.iobroker.net/widgets/adapters/-/tado/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
 
 [![NPM](https://nodei.co/npm/iobroker.tado.png?downloads=true)](https://nodei.co/npm/iobroker.tado/)
 
