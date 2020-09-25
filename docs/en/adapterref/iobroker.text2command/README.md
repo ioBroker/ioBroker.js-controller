@@ -262,7 +262,7 @@ If activated so by every command (no matter if the request came via state or sen
 -->
 
 ## Changelog
-### 2.0.4 (2020-09-24)
+### 2.0.5 (2020-09-5)
 * (bluefox) Updated the select ID dialog.
 
 ### 2.0.3 (2020-07-14)
