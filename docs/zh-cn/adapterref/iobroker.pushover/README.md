@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.pushover/README.md
 title: ioBroker推入式适配器
-hash: mrMzTGveYDthpTPCdJ+TTHdRfH8dpRW5jSYXzraxxEs=
+hash: ip5Cjx0p9Ugw7yZ/xLOyJthBGaCDWw9B8Ba5xi8K3RI=
 ---
 ![商标](../../../en/adapterref/iobroker.pushover/admin/pushover.png)
 
@@ -59,9 +59,19 @@ sendTo("pushover", {
 ##什么是Sentry，什么报告给服务器？
 Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**关于您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+
+<！-下一个版本的占位符（在该行的开头）：
+
+### __进展中__->
 
 ## Changelog
+### 2.0.3 (2020-09-25)
+* (klein0r) Removed spaces in the admin config dropdown
+
+### 2.0.2 (2020-04-29)
+* (Apollon77) fixes case that token is not defined/existing (Sentry IOBROKER-PUSHOVER-2)
+
 ### 2.0.1 (2020-04-24)
 * (bluefox) Fixed error in the blockly if language was not "ru/en/de"
 * (bluefox) Breaking change: the encryption of the password was changed, so the token must be entered anew. Store your token before update.

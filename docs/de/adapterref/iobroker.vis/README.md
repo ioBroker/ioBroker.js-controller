@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis/README.md
 title: Visualisierung
-hash: GRVTyES6+6x9SFC0ToSvAP6w0ZE+EV7y6twFs+UqZyw=
+hash: gxMcyyW7ttlzlCOMxgGgChxNRZkvdhTK2DRDT06Hhj8=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis/admin/vis.png)
 
@@ -56,7 +56,7 @@ Folgende Operationen werden unterstützt:
 - `random (R)` - Math.random () * R oder einfach Math.random (), wenn kein Argument vorhanden ist
 - `formatValue (Dezimalstellen)` - Formatieren Sie den Wert gemäß den Systemeinstellungen und verwenden Sie Dezimalstellen
 - `Datum (Format)` - Formatwert als Datum. Das Format lautet wie folgt: "JJJJ-MM-TT hh: mm: ss.sss"
-- `momentDate (format)` - Formatieren Sie den Wert als Datum mit Moment.js. [Genehmigte Formate müssen gemäß der Bibliothek moment.js eingegeben werden] (https://momentjs.com/docs/#/displaying/format/)
+- `momentDate (format, useTodayOrYesterday)` - Formatieren Sie den Wert als Datum mit Moment.js. [Genehmigte Formate müssen gemäß der Bibliothek moment.js eingegeben werden] (https://momentjs.com/docs/#/displaying/format/). Mit `useTodayOrYesterday = true` wird das momentjs-Format` ddd` /` dddd` mit today / gestern überschrieben
 - `array (element1, element2 [, element3, element4])` - gibt das Indexelement zurück. Beispiel: `{id.ack; array (ack ist falsch, ack ist wahr)}`
 
 Sie können dieses Muster in jedem Text verwenden, wie z
@@ -135,11 +135,11 @@ Vis erstellt 3 Variablen:
 
 - `control.instance` - Hier sollte die Browserinstanz geschrieben werden oder FFFFFFFF, wenn jeder Browser gesteuert werden muss.
 - `control.data` - Parameter für den Befehl. Siehe spezifische Befehlsbeschreibung.
-- `control.command` - Befehlsname. Das Schreiben dieser Variablen löst den Befehl aus. Das heißt, bevor der Befehl geschrieben wird, müssen die "Instanz" und "Daten" mit Daten vorbereitet werden.
+- `control.command` - Befehlsname. Das Schreiben dieser Variablen löst den Befehl aus. Das heißt, bevor der Befehl geschrieben wird, müssen "Instanz" und "Daten" mit Daten vorbereitet werden.
 
 Befehle:
 
-* `alert` - Alarmfenster in vis anzeigen. "control.data" hat das folgende Format: "message; title; jquery-icon". Titel und Abfragesymbol sind optional. Symbolnamen finden Sie [hier] (http://jqueryui.com/themeroller/). Um das Symbol "ui-icon-info" anzuzeigen, schreiben Sie `` `Message ;; info```.
+* `alert` - Alarmfenster in vis anzeigen. "control.data" hat das folgende Format "message; title; jquery-icon". Titel und jquery-icon sind optional. Symbolnamen finden Sie [hier] (http://jqueryui.com/themeroller/). Um das Symbol "ui-icon-info" anzuzeigen, schreiben Sie `` `Message ;; info```.
 * `changeView` - wechselt zur gewünschten Ansicht. "control.data" muss den Namen der Ansicht haben. Sie können den Projektnamen auch als "Projekt / Ansicht" angeben. Das Standardprojekt ist "main".
 * `refresh` - vis neu laden, zum Beispiel nachdem das Projekt geändert wurde, um in allen Browsern neu zu laden.
 * `reload` - wie aktualisieren.
@@ -164,9 +164,9 @@ Wenn der Benutzer die Ansicht ändert oder zu Beginn, werden die Variablen von v
 
 - `control.instance`: Browser-Instanz und` ack = true`
 - `control.data`: Projekt- und Ansichtsname in der Form` project / view`, z. `main / view` (und` ack = true`)
-- `control.command`:` definedView` und `ack = true`
+- `control.command`: `angedView` und` ack = true`
 
-Sie können den JSON-String oder das Objekt in control.command als `{instance: 'AABBCCDD', command: 'cmd', data: 'ddd'}` schreiben. In diesem Fall werden die Instanz und die Daten vom JSON-Objekt übernommen.
+Sie können den JSON-String oder das Objekt als Befehl in `{instance: 'AABBCCDD', command: 'cmd', data: 'ddd'}` in control.command schreiben. In diesem Fall werden die Instanz und die Daten vom JSON-Objekt übernommen.
 
 Beispiel für einen Javascript-Adapter:
 
@@ -180,7 +180,7 @@ Sie können für jede Ansicht die gewünschte Auflösung definieren (Menü => Ex
 Außerdem können Sie festlegen, ob diese Ansicht als Standard für diese Auflösung verwendet werden muss.
 
 Jedes Mal, wenn die `index.html` (ohne `#viewName`) aufgerufen werden, wird die für diese Auflösungsansicht am besten geeignete geöffnet.
-Wenn nur eine Ansicht das Flag *"Standard"* hat, wird diese Ansicht unabhängig von der Bildschirmauflösung oder -ausrichtung geöffnet.
+Wenn nur eine Ansicht das Flag "Standard" * hat, wird diese Ansicht unabhängig von der Bildschirmauflösung oder -ausrichtung geöffnet.
 
 Z.B. Sie können zwei Ansichten "Landscape-Mobile" und "Portrait-Mobile" erstellen. Diese beiden Ansichten werden automatisch umgeschaltet, wenn Sie die Ausrichtung oder Bildschirmgröße ändern.
 
@@ -206,6 +206,14 @@ Beachten Sie, dass diese Einstellungen nur für die erneute Verbindung und nicht
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 1.3.3 (2020-09-21)
+* (bluefox) Return de-bounce settings back
+* (bluefox) Corrected error with {username} binding
+* (bluefox) Fixed "show last change" option
+
+### 1.3.1 (2020-09-18)
+* (bluefox) Added the auto-focus option to the input widgets
+
 ### 1.3.0 (2020-09-17)
 * (foxriver76) on pending getStates, try again instead of drop
 * (foxriver76) fixed the file manager typos

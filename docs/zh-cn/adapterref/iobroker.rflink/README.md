@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.rflink/README.md
 title: ioBroker.rflink
-hash: dq7E3hJnTI8V8ikrvCa6PV+wKEl/VPeNGkT6lSAVZys=
+hash: t7zNYfBvUeHk1oVu+fL7aJcJSqDtA6tl4S3S5PDlca4=
 ---
 ![商标](../../../en/adapterref/iobroker.rflink/admin/rflink.png)
 
@@ -14,8 +14,6 @@ hash: dq7E3hJnTI8V8ikrvCa6PV+wKEl/VPeNGkT6lSAVZys=
 ![NPM](https://nodei.co/npm/iobroker.rflink.png?downloads=true)
 
 ＃ioBroker.rflink
-=================
-
 该适配器与基于arduino mega和RFC 433MHz / 866MHz / 2.6Gz通信的[射频链接](http://www.nemcon.nl/blog2/)通信。
 用于接收来自天气传感器和无线电源开关的数据。
 
@@ -29,12 +27,12 @@ sudo apt-get install build-essential -y
 ```
 
 ##用法
-要启用传感器学习功能，必须激活“包含模式”。默认情况下，包含模式将启用5分钟（300000毫秒），并在5分钟后自动禁用。
+要启用传感器的学习，必须激活“包含模式”。默认情况下，包含模式将启用5分钟（300000毫秒），并在5分钟后自动禁用。
 
 要永久启用包含模式，只需将“包含超时”设置为0。
 
 ##对
-每次更换电池时，设备都会获取新地址。
+每次更换电池时，设备都会获得新地址。
 
 因此，更换电池后必须重新学习。
 
@@ -45,9 +43,9 @@ sudo apt-get install build-essential -y
 
 仅在可以明确识别设备的情况下才有可能。
 
-这意味着仅存在一个具有该品牌和类型的设备。 （例如，只有一个品牌的一个温度传感器）
+这意味着仅存在一个具有该品牌和类型的设备。 （例如，一个品牌的一个温度传感器）
 
-如果系统使用该参数检测到多个设备，它将自动停用自动重新配对模式，并指示问题传感器闪烁。
+如果系统检测到多个具有此类参数的设备，它将自动停用自动重新配对模式，并指示问题传感器闪烁。
 
 ##发送原始命令
 用户可以将原始命令发送到设备。只需以[这里](http://www.nemcon.nl/blog2/protref)所述的形式编写命令即可。
@@ -56,7 +54,7 @@ sudo apt-get install build-essential -y
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __正在进行的工程__->
+### __进展中__->
 
 ## Changelog
 ### 2.1.6 (2020-09-25)

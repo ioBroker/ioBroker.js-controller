@@ -4,30 +4,30 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mihome/README.md
 title: ioBroker Mi家庭适配器
-hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
+hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
 ---
-![徽标](../../../de/adapterref/iobroker.mihome/media/mihome.png)
+![商标](../../../de/adapterref/iobroker.mihome/media/mihome.png)
 
 ＃ioBroker Mi家庭适配器通过Mi家庭适配器，将Mi Control集线器（网关）集成到ioBroker系统中，从而使各种小米传感器，开关等能够与ioBroker通信。
-通过ioBroker例如网关的照明和扬声器受到控制。
+ioBroker可以例如网关的照明和扬声器可以控制。
 
-##要求
-* Android或iOS设备上的Mi Home应用程序和解锁的本地网络功能
+＃＃ 要求
+* Android或iOS设备上的Mi Home应用程序并激活了本地网络功能
 *连接的Mi家庭网关
-*就绪的ioBroker系统
+*可操作的ioBroker系统
 
 ###安装Mi Home应用程序并激活本地网络功能
 #### Android
-*在Android设备上下载，安装，打开和打开[Android应用]（https://play.google.com/store/apps/details?id=com.xiaomi.smarthome）
+* [Android应用]（https://play.google.com/store/apps/details?id=com.xiaomi.smarthome）在Android设备上下载，安装，打开并
 
-同意条款和条件。
+同意条款与条件。
 
 *选择*中国大陆*作为国家
 *通过*登录*创建帐户
-*成功注册“ +”后添加设备
-*在*家庭安全下*选择`MI Control Hub`和说明
+*成功登录后，通过“ +”添加设备
+*在*家庭安全下*选择“ MI控制中心”并按照说明进行操作
 
-遵循
+后果
 
 *成功集成网关后，屏幕右上方的三个点
 
@@ -36,46 +36,46 @@ hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 *输入文字*插件版本* 10次以下
 *现在开发人员模式已开启，并且应该在一定时间后
 
-出现另外2个菜单项>如果没有，请再试一次
+出现2个其他菜单项>如果没有，请重试
 
 *选择菜单项“无线通讯协议”
-*打开顶部的滑动开关，记下密码，然后按“确定”确认。
+*打开顶部的滑动开关，记下密码并按“确定”确认。
 
->稍后将需要密码才能安装ioBroker。
+>稍后在ioBroker安装期间将需要密码。
 
-现在，可以使用`+`符号来教授其他设备。
+现在，可以使用`+`符号来教更多的设备。
 
 #### IOS
-* [iOS应用]（https://itunes.apple.com/de/app/mi-home-xiaomi-smarthome/id957323480?mt=8）下载，安装，打开并在iOS设备上打开
+* [iOS应用]（https://itunes.apple.com/de/app/mi-home-xiaomi-smarthome/id957323480?mt=8）在iOS设备上下载，安装，打开，然后
 
 我同意隐私政策
 
-*通过配置文件/设置/国家/地区设置选择国家/地区*。
+*选择国家（地区）*大陆*通过个人资料/设置/国家设置。
 *通过*登录*创建帐户
-*成功注册“ +”后添加设备
-*在*家庭安全下*选择`MI Control Hub`和说明
+*成功登录后，通过“ +”添加设备
+*在*家庭安全下*选择“ MI控制中心”并按照说明进行操作
 
-遵循
+后果
 
 *成功集成网关后，屏幕右上方的三个点
 
 按，然后按*关于*
 
-*反复点击下方的空白区域
+*在下面的空白区域中反复点击
 *现在开发人员模式已开启，并且应该在一定时间后
 
 出现更多菜单项>如果无法立即使用，请重复以下步骤
 
 *选择第四个菜单项
-*打开顶部的滑动开关，记下密码，然后按“确定”确认。
+*打开顶部的滑动开关，记下密码并按“确定”确认。
 
->稍后将需要密码才能安装ioBroker。
+>稍后在ioBroker安装期间将需要密码。
 
-现在，可以使用`+`符号来教授其他设备。
+现在，可以使用`+`符号来教更多的设备。
 
 ###在路由器上设置
-在“关于/集线器信息”下，可以在_localip_之后的文本中确定网关使用的网关的IP地址。该IP应该永久分配给所用路由器中的网关。
-如果不再需要通过应用程序操作示教的设备，则在路由器中对所有设备进行示教后，也可以关闭网关的Internet访问。
+网关使用的网关的IP地址可以在“关于/集线器信息”下_localip_之后的文本中确定。在使用的路由器中，该IP应该永久分配给网关。
+如果您不再希望通过该应用程序操作示教设备，则在路由器中示教所有设备后，也可以关闭网关的Internet访问。
 
 ###支持的设备
 以下列表并不声称是完整的：
@@ -88,9 +88,9 @@ hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 -sensor_switch.aq3-小米Aqara无线开关传感器
 -插头-小米智能插头
 -86plug-小米智能墙插
--86sw2-小米无线双路墙壁开关
+-86sw2-小米无线双壁开关
 -86sw1-小米无线单壁开关
--汽油-小米米家霍尼韦尔气体报警探测器
+-汽油-小米蜜佳霍尼韦尔气体报警探测器
 -烟雾-小米米家霍尼韦尔火灾报警探测器
 -ctrl_ln1-小米Aqara 86消防墙壁开关一键式
 -ctrl_ln1.aq1-小米Aqara墙壁开关LN
@@ -115,21 +115,21 @@ hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 
 ## IoBroker Mi家庭适配器安装
 只能通过ioBroker管理界面进行进一步的设置。
-在*适配器*区域中找到适配器，并使用`+`符号进行安装。
+在*适配器*区域中搜索适配器，然后使用`+`标记进行安装。
 
-![徽标](../../../de/adapterref/iobroker.mihome/media/Adapter.png)
+![商标](../../../de/adapterref/iobroker.mihome/media/Adapter.png)
 
 然后打开以下配置窗口：
 
-![徽标](../../../de/adapterref/iobroker.mihome/media/Adapterconfig1.PNG)
+![商标](../../../de/adapterref/iobroker.mihome/media/Adapterconfig1.PNG)
 
-输入上面在`Default Gateway Key`下确定的密码，然后按*保存* *并关闭*以关闭窗口。然后，正在运行的适配器应在*实例*下以绿色显示：
+输入上面在`Default Gateway Key`下确定的密码，然后使用* save * *关闭窗口并关闭*。然后，正在运行的适配器应在*实例*下以绿色显示：
 
-![徽标](../../../de/adapterref/iobroker.mihome/media/Instanz.PNG)
+![商标](../../../de/adapterref/iobroker.mihome/media/Instanz.PNG)
 
-网关及其学习的设备现在显示在*对象*下：
+网关及其示教的设备现在显示在*对象*下：
 
-![徽标](../../../de/adapterref/iobroker.mihome/media/Objekte.PNG)
+![商标](../../../de/adapterref/iobroker.mihome/media/Objekte.PNG)
 
 这些说明是根据我们的知识和信念而制作的。
 

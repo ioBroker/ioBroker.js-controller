@@ -2,31 +2,31 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.pushover/README.md
-title: ioBroker переходник
-hash: mrMzTGveYDthpTPCdJ+TTHdRfH8dpRW5jSYXzraxxEs=
+title: Адаптер ioBroker pushover
+hash: ip5Cjx0p9Ugw7yZ/xLOyJthBGaCDWw9B8Ba5xi8K3RI=
 ---
-![логотип](../../../en/adapterref/iobroker.pushover/admin/pushover.png)
+![Логотип](../../../en/adapterref/iobroker.pushover/admin/pushover.png)
 
 ![Количество установок](http://iobroker.live/badges/pushover-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.pushover.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.pushover.svg)
-![NPM](https://nodei.co/npm/iobroker.pushover.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.pushover.png?downloads=true)
 
-# IoBroker Адаптер pushover
-Отправлять промежуточные уведомления от ioBroker.
+# IoBroker pushover Adapter
+Отправляйте пустые уведомления от ioBroker.
 
-** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать об исключениях и ошибках кода мне как разработчику. ** Подробнее см. Ниже!
+** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать мне как разработчику об исключениях и ошибках кода. ** Подробнее см. Ниже!
 
 ## Конфигурация
-Прежде всего, требуется учетная запись на pushover.
+В первую очередь требуется аккаунт на пустяке.
 ![Конфигурация Pushover](../../../en/adapterref/iobroker.pushover/img/Screen0.png)
 
-![API-токен](../../../en/adapterref/iobroker.pushover/img/Screen1.png)
+![Токен API](../../../en/adapterref/iobroker.pushover/img/Screen1.png)
 
 ![Групповой токен](../../../en/adapterref/iobroker.pushover/img/Screen3.png)
 
-## Применение
-Чтобы отправить уведомление от ScriptEngine, просто напишите:
+## Использование
+Чтобы отправить уведомление из ScriptEngine, просто напишите:
 
 ```
 // send notification to all instances of pushover adapter
@@ -56,12 +56,22 @@ sendTo("pushover", {
 });
 ```
 
-## Что такое Sentry и что сообщается на серверы?
-Sentry.io позволяет разработчикам получить обзор ошибок в своих приложениях. И именно это реализовано в этом адаптере.
+## Что такое Sentry и что передается на серверы?
+Sentry.io - это способ для разработчиков получить обзор ошибок в своих приложениях. Именно это и реализовано в этом адаптере.
 
-Когда происходит сбой адаптера или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Когда вы разрешили iobroker GmbH собирать диагностические данные, включался и ваш установочный идентификатор (это просто уникальный идентификатор **без** каких-либо дополнительных сведений о вас, адрес электронной почты, имя и т. П.). Это позволяет Sentry группировать ошибки и показывать, на сколько уникальных пользователей влияет такая ошибка. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не выходят из строя.
+Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Когда вы разрешили iobroker GmbH собирать диагностические данные, включается также ваш установочный идентификатор (это просто уникальный идентификатор **без** дополнительной информации о вас, электронной почты, имени и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
+
+<! - Заполнитель для следующей версии (в начале строки):
+
+### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 2.0.3 (2020-09-25)
+* (klein0r) Removed spaces in the admin config dropdown
+
+### 2.0.2 (2020-04-29)
+* (Apollon77) fixes case that token is not defined/existing (Sentry IOBROKER-PUSHOVER-2)
+
 ### 2.0.1 (2020-04-24)
 * (bluefox) Fixed error in the blockly if language was not "ru/en/de"
 * (bluefox) Breaking change: the encryption of the password was changed, so the token must be entered anew. Store your token before update.

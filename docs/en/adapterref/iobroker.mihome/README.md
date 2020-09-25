@@ -4,28 +4,28 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.mihome/README.md
 title: ioBroker Mi Home Adapter
-hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
+hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
 ---
 ![logo](../../../de/adapterref/iobroker.mihome/media/mihome.png)
 
 # IoBroker Mi Home Adapter With the Mi Home Adapter, a Mi Control Hub (gateway) is integrated into an ioBroker system and thus enables various Xiaomi sensors, switches, etc. to communicate with ioBroker.
-Via ioBroker e.g. the lighting and the loudspeaker of the gateway are controlled.
+ioBroker can e.g. the lighting and the loudspeaker of the gateway can be controlled.
 
 ## Requirements
-* Mi Home app on Android or iOS device and unlocked local network function
+* Mi Home app on Android or iOS device and activated local network function
 * Connected Mi Home Gateway
-* Ready ioBroker system
+* Operational ioBroker system
 
 ### Installation of the Mi Home app and activation of the local network function
 #### Android
-* Download, install, open and open the [Android app] (https://play.google.com/store/apps/details?id=com.xiaomi.smarthome) on an Android device
+* [Android App] (https://play.google.com/store/apps/details?id=com.xiaomi.smarthome) on an Android device, download, install, open and
 
 agree to the terms and conditions.
 
 * Select *Mainland China* as the country
 *Create an account via * Login*
-* After successful registration, add a device using `+`
-* Under *Household security* select the `MI Control Hub` and the instructions
+* After successfully logging in, add a device via `+`
+* Under *Household Security* select the `MI Control Hub` and follow the instructions
 
 consequences
 
@@ -33,7 +33,7 @@ consequences
 
 and then press *About*
 
-* Type the text *Plug-in version* below 10 times
+* Type the text *Plug-in version* 10 times below
 * Now the developer mode is switched on and it should after a certain time
 
 2 further menu items appear> If not, try again
@@ -41,19 +41,19 @@ and then press *About*
 * Select the menu item `Wireless communication protocol`
 * Switch on the slide switch at the top, note the password and confirm with `OK`.
 
-> The password will be needed later for the ioBroker installation.
+> The password will be required later during the ioBroker installation.
 
-Now further devices can be taught in using the `+` symbol.
+Now further devices can be taught in using the `+` sign.
 
 #### IOS
-* [iOS app] (https://itunes.apple.com/de/app/mi-home-xiaomi-smarthome/id957323480?mt=8) download, install, open and the on an iOS device
+* [iOS App] (https://itunes.apple.com/de/app/mi-home-xiaomi-smarthome/id957323480?mt=8) on an iOS device, download, install, open and the
 
 I agree to the privacy policy
 
-* Select the country *mainland* via Profile / Settings / Country Settings.
+* Select the country *Mainland* via Profile / Settings / Country Settings.
 *Create an account via * Login*
-* After successful registration, add a device using `+`
-* Under *Household security* select the `MI Control Hub` and the instructions
+* After successfully logging in, add a device via `+`
+* Under *Household Security* select the `MI Control Hub` and follow the instructions
 
 consequences
 
@@ -61,26 +61,26 @@ consequences
 
 press and press *About*
 
-* Repeatedly tap in the empty lower area
+* Tap repeatedly in the empty area below
 * Now the developer mode is switched on and it should after a certain time
 
-further menu items appear> If it doesn't work right away, repeat the steps
+Further menu items appear> If it does not work immediately, repeat the steps
 
 * Select the 4th menu item
 * Switch on the slide switch at the top, note the password and confirm with `OK`.
 
-> The password will be needed later for the ioBroker installation.
+> The password will be required later during the ioBroker installation.
 
-Now further devices can be taught in using the `+` symbol.
+Now further devices can be taught in using the `+` sign.
 
 ### Setting on the router
-Under About / Hub info, the IP address of the gateway used by the gateway can be determined in the text after _localip_. This IP should be permanently assigned to the gateway in the router used.
-If operation of the taught devices via the app is no longer wanted, the gateway's Internet access can also be switched off after all devices have been taught in the router.
+The IP address of the gateway used by the gateway can be determined in the text after _localip_ under About / Hub info. In the router used, this IP should be permanently assigned to the gateway.
+If you no longer want to operate the taught-in devices via the app, the Internet access of the gateway can also be switched off after all devices have been taught-in in the router.
 
 ### Supported devices
 The following list does not claim to be complete:
 
-- gateway - Xiaomi RGB gateway
+- gateway - Xiaomi RGB Gateway
 - sensor_ht - Xiaomi Temperature / Humidity
 - weather.v1 - Xiaomi Temperature / Humidity / Pressure
 - switch - Xiaomi Wireless Switch
@@ -104,7 +104,7 @@ The following list does not claim to be complete:
 - sensor_magnet.aq2 - Xiaomi Aqara Door Sensor
 - curtain - Xiaomi Aqara Smart Curtain
 - motion - Xiaomi motion sensor
-- sensor_motion.aq2 - Xiaomi Aqara motion sensor
+- sensor_motion.aq2 - Xiaomi Aqara Motion Sensor
 - sensor_wleak.aq1 - Xiaomi Aqara water sensor
 - ctrl_ln2.aq1 - Xiaomi Aqara Wall Switch LN (Double)
 - remote.b286acn01 - Xiaomi Aqara Wireless Remote Switch (Double Rocker)
@@ -114,8 +114,8 @@ The following list does not claim to be complete:
 - lock_aq1 - Xiaomi Lock
 
 ## IoBroker Mi Home Adapter installation
-Further settings are only made via the ioBroker admin interface.
-Find the adapter in the *Adapter* area and install it using the `+` symbol.
+Further settings can only be made via the ioBroker admin interface.
+Search for the adapter in the area *Adapter* and install it using the `+` sign.
 
 ![logo](../../../de/adapterref/iobroker.mihome/media/Adapter.png)
 
@@ -123,15 +123,15 @@ The following configuration window then opens:
 
 ![logo](../../../de/adapterref/iobroker.mihome/media/Adapterconfig1.PNG)
 
-Enter the password determined above under `Default Gateway Key` and press * save * * and close * to close the window. The running adapter should then be displayed in green under * Instances *:
+Enter the password determined above under `Default Gateway Key` and close the window with * save * * and close *. The running adapter should then be displayed in green under * Instances *:
 
 ![logo](../../../de/adapterref/iobroker.mihome/media/Instanz.PNG)
 
-The gateway and its learned devices are now displayed under *Objects*
+The gateway and its taught-in devices are now displayed under *Objects*
 
 ![logo](../../../de/adapterref/iobroker.mihome/media/Objekte.PNG)
 
-The instructions were created to the best of our knowledge and belief.
+The instructions have been created to the best of our knowledge and belief.
 
 ## Changelog
 

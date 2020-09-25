@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.pushover/README.md
 title: ioBroker Pushover Adapter
-hash: mrMzTGveYDthpTPCdJ+TTHdRfH8dpRW5jSYXzraxxEs=
+hash: ip5Cjx0p9Ugw7yZ/xLOyJthBGaCDWw9B8Ba5xi8K3RI=
 ---
 ![Logo](../../../en/adapterref/iobroker.pushover/admin/pushover.png)
 
@@ -25,7 +25,7 @@ Zunächst ist ein Konto bei Pushover erforderlich.
 
 ![Gruppen-Token](../../../en/adapterref/iobroker.pushover/img/Screen3.png)
 
-## Verwendungszweck
+## Verwendung
 Um eine Benachrichtigung von ScriptEngine zu senden, schreiben Sie einfach:
 
 ```
@@ -61,7 +61,17 @@ Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendu
 
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server in Deutschland gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 2.0.3 (2020-09-25)
+* (klein0r) Removed spaces in the admin config dropdown
+
+### 2.0.2 (2020-04-29)
+* (Apollon77) fixes case that token is not defined/existing (Sentry IOBROKER-PUSHOVER-2)
+
 ### 2.0.1 (2020-04-24)
 * (bluefox) Fixed error in the blockly if language was not "ru/en/de"
 * (bluefox) Breaking change: the encryption of the password was changed, so the token must be entered anew. Store your token before update.

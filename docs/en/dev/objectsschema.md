@@ -506,7 +506,7 @@ id `system.adapter.<adapter.name>`
 
 *Notice:* all flags are optional except special marked as **mandatory**.
 
-* `common.adminColumns`       - Custom attributes, that must be shown in admin in the object browser. Like: `[{"name": {"en": "KNX address"}, "path": "native.address", "width": 100}, {"name": "DPT", "path": "native.dpt", "width": 100, "edit": true}]`
+* `common.adminColumns`       - Custom attributes, that must be shown in admin in the object browser. Like: `[{"name": {"en": "KNX address"}, "path": "native.address", "width": 100, "align": "left"}, {"name": "DPT", "path": "native.dpt", "width": 100, "align": "right", "type": "number", "edit": true, "objTypes": ["state", "channel"]}]`. `type` is a type of the attribute (e.g. string, number, boolean) and only needed if edit is enabled. `objTypes` is a list of the object types, that could have such attribute. Used only in edit mode too.
 * `common.adminTab.fa-icon`   - Font-Awesome icon name for TAB.
 * `common.adminTab.ignoreConfigUpdate` - do not update config TAB if configuration changed (to enable configure settings in TAB)
 * `common.adminTab.link`      - link for iframe in the TAB. You can use parameters replacement like this: "http://%ip%:%port%". IP will be replaced with host IP. "port" will be extracted from native.port.

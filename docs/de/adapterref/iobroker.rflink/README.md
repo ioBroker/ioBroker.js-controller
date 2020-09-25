@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.rflink/README.md
 title: ioBroker.rflink
-hash: dq7E3hJnTI8V8ikrvCa6PV+wKEl/VPeNGkT6lSAVZys=
+hash: t7zNYfBvUeHk1oVu+fL7aJcJSqDtA6tl4S3S5PDlca4=
 ---
 ![Logo](../../../en/adapterref/iobroker.rflink/admin/rflink.png)
 
@@ -14,8 +14,6 @@ hash: dq7E3hJnTI8V8ikrvCa6PV+wKEl/VPeNGkT6lSAVZys=
 ![NPM](https://nodei.co/npm/iobroker.rflink.png?downloads=true)
 
 # IoBroker.rflink
-=================
-
 Dieser Adapter kommuniziert mit [rflink](http://www.nemcon.nl/blog2/), die auf Arduino Mega und RFC 433MHz / 866MHz / 2.6Gz Kommunikation aufbauen.
 Wird zum Empfangen der Daten von Wettersensoren und drahtlosen Netzschaltern verwendet.
 
@@ -28,7 +26,7 @@ sudo apt-get update
 sudo apt-get install build-essential -y
 ```
 
-## Verwendungszweck
+## Verwendung
 Um das Erlernen von Sensoren zu ermöglichen, müssen Sie den "Einschlussmodus" aktivieren. Der Einschlussmodus wird standardmäßig für 5 Minuten (300000 ms) aktiviert und nach 5 Minuten automatisch deaktiviert.
 
 Um den Einschlussmodus für immer zu aktivieren, setzen Sie einfach "Einschlusszeitlimit" auf 0.
@@ -47,7 +45,7 @@ Dies ist nur möglich, wenn das Gerät eindeutig identifiziert werden kann.
 
 Das bedeutet, dass nur ein Gerät mit dieser Marke und diesem Typ vorhanden ist. (Zum Beispiel nur ein Temperatursensor einer Marke)
 
-Wenn das System mehr als ein Gerät mit einem solchen Parameter erkennt, wird der automatische Pairing-Modus automatisch deaktiviert und Problemsensoren mit Blitz angezeigt.
+Wenn das System mehr als ein Gerät mit einem solchen Parameter erkennt, wird der automatische Neukopplungsmodus automatisch deaktiviert und Problemsensoren mit Blitz angezeigt.
 
 ## Rohbefehle senden
 Der Benutzer hat die Möglichkeit, Rohbefehle an das Gerät zu senden. Schreiben Sie einfach Ihren Befehl in der beschriebenen Form [Hier](http://www.nemcon.nl/blog2/protref).

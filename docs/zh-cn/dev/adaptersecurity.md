@@ -3,12 +3,12 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adaptersecurity.md
 title: 适配器开发人员与安全相关的功能
-hash: X2HcDsT5TE/W4x20hMFpAqHF23iMYbOPyEK6TXNkyG4=
+hash: /NdARX0dTYJRe5UAHsq6Xdl6DY1zMplYgcLpB1LOemU=
 ---
 ＃适配器开发人员与安全相关的功能
 ##防止其他适配器访问敏感数据
 如果您需要存储用户密码或令牌，以使用户能够访问您提供的服务，则可能对用户有利，外部适配器无法访问此信息。
-为此，可以将`protectedNative`字段添加到`io-package.json`文件中。此字段必须包含所有属性的数组，这些属性存储在将受保护的适配器的`native`属性中。
+为此，可以将`protectedNative`字段添加到`io-package.json`文件中。该字段必须包含所有属性的数组，这些属性存储在将受保护的适配器的`native`属性中。
 
 请注意，管理员适配器将始终有权访问受保护的属性，从而使用户能够在适配器自己的配置页中读取属性，并手动编辑`system.adapter.<namepsace>.<instance>`中的受保护字段。
 
