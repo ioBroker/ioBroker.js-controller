@@ -1210,5 +1210,38 @@
         "conditions": {
             "javascript": "smaller(4.6.0)"
         }
+    },
+    {
+        "title": {
+            "en": "Attention! Breaking changes in material design widgets 0.4",
+            "de": "Beachtung! Breaking changes in Materialdesign-Widgets 0.4",
+            "ru": "Внимание! Критические изменения в виджетах материального дизайна 0.4",
+            "pt": "Atenção! Quebrando mudanças em widgets de design de material 0,4",
+            "nl": "Aandacht! Veranderingen in materiaalontwerpwidgets doorbreken 0.4",
+            "fr": "Attention! Changements de rupture dans les widgets de conception de matériaux 0.4",
+            "it": "Attenzione! Cambiamenti decisivi nei widget di material design 0.4",
+            "es": "¡Atención! Cambios importantes en los widgets de material design 0.4",
+            "pl": "Uwaga! Przełomowe zmiany w widgetach Material Design 0.4",
+            "zh-cn": "注意！材料设计小部件的重大更改0.4"
+        },
+        "content": {
+            "en": "<li><ul>Line History Chart Widget: Breaking Changes !!! aggregate (display) method for every dataset configurable, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#line-history-chart'>see documentation for detailed infos!</a></ul><ul>TopAppBar Widget: Breaking Changes !!! Submenus must now be created using JSON string, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#since-version-040'>see documentation for detailed infos!</a></ul></li>",
+            "de": "<li><ul> Zeilenverlaufsdiagramm-Widget: Änderungen brechen !!! Aggregatmethode (Anzeige) für jeden konfigurierbaren Datensatz, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#line-history-chart'>detaillierte Informationen finden Sie in der Dokumentation!</a> </ul><ul> TopAppBar Widget: Änderungen brechen !!! Untermenüs müssen jetzt mit einer JSON-Zeichenfolge erstellt werden. Detaillierte Informationen finden <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#since-version-040'>Sie in der Dokumentation!</a> </ul></li>",
+            "ru": "<li><ul> Виджет графика истории линий: критические изменения !!! метод агрегирования (отображения) для каждого настраиваемого набора данных, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#line-history-chart'>подробную информацию см. в документации!</a> </ul><ul> Виджет TopAppBar: критические изменения !!! Подменю теперь необходимо создавать с использованием строки JSON, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#since-version-040'>подробную информацию см. В документации!</a> </ul></li>",
+            "pt": "<li><ul> Widget de gráfico de histórico de linha: Quebrando mudanças !!! método de agregação (exibição) para cada conjunto de dados configurável, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#line-history-chart'>consulte a documentação para informações detalhadas!</a> </ul><ul> Widget TopAppBar: Quebrando mudanças !!! Os submenus agora devem ser criados usando a string JSON, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#since-version-040'>consulte a documentação para informações detalhadas!</a> </ul></li>",
+            "nl": "<li><ul> Line History Chart Widget: veranderingen doorbreken !!! geaggregeerde (weergave) methode voor elke configureerbare dataset, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#line-history-chart'>zie documentatie voor gedetailleerde info!</a> </ul><ul> TopAppBar Widget: veranderingen doorbreken !!! Submenu's moeten nu worden gemaakt met behulp van een JSON-string, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#since-version-040'>zie documentatie voor gedetailleerde informatie!</a> </ul></li>",
+            "fr": "<li><ul> Widget de graphique d'historique de ligne: changements de rupture !!! méthode d'agrégation (affichage) pour chaque jeu de données configurable, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#line-history-chart'>voir la documentation pour des informations détaillées!</a> </ul><ul> Widget TopAppBar: changements de rupture !!! Les sous-menus doivent maintenant être créés en utilisant la chaîne JSON, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#since-version-040'>voir la documentation pour des informations détaillées!</a> </ul></li>",
+            "it": "<li><ul> Widget grafico cronologico delle linee: modifiche rivoluzionarie !!! metodo di aggregazione (visualizzazione) per ogni set di dati configurabile, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#line-history-chart'>vedere la documentazione per informazioni dettagliate!</a> </ul><ul> Widget di TopAppBar: modifiche rivoluzionarie !!! I sottomenu devono ora essere creati utilizzando la stringa JSON, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#since-version-040'>vedere la documentazione per informazioni dettagliate!</a> </ul></li>",
+            "es": "<li><ul> Widget de gráfico de historial de líneas: cambios importantes !!! Método agregado (visualización) para cada conjunto de datos configurable, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#line-history-chart'>consulte la documentación para obtener información detallada.</a> </ul><ul> Widget TopAppBar: ¡¡¡Cambios importantes !!! Los submenús ahora deben crearse utilizando una cadena JSON, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#since-version-040'>consulte la documentación para obtener información detallada.</a> </ul></li>",
+            "pl": "<li><ul> Widżet wykresu historii linii: Przełomowe zmiany !!! metoda agregacji (wyświetlania) dla każdego konfigurowalnego zestawu danych, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#line-history-chart'>szczegółowe informacje można znaleźć w dokumentacji!</a> </ul><ul> TopAppBar Widget: Przełomowe zmiany !!! Podmenu należy teraz tworzyć za pomocą łańcucha JSON, <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#since-version-040'>szczegółowe informacje można znaleźć w dokumentacji!</a> </ul></li>",
+            "zh-cn": "<li><ul>折线图图表小部件：重大更改!!!每个可配置数据集的聚合（显示）方法， <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#line-history-chart'>请参阅文档以获取详细信息！</a> </ul><ul> TopAppBar小部件：重大更改!!!现在必须使用JSON字符串创建子菜单， <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#since-version-040'>有关详细信息</a> ， <a target='_blank' href='https://github.com/Scrounger/ioBroker.vis-materialdesign#since-version-040'>请参阅文档！</a> </ul></li>"
+        },
+        "id": "materialDesignWidget",
+        "created": "2020-09-25T00:00:00.000Z",
+        "class": "danger",
+        "fa-icon": "bolt",
+        "conditions": {
+            "vis-materialdesign": "smaller(0.4.0)"
+        }
     }
 ]
