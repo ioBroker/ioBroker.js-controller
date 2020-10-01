@@ -46,10 +46,7 @@ gulp.task('updateRepo', done => {
     const adapters = Object.keys(sources);
 
     processAdapters(sources, adapters, result => {
-        for (const adapter in result) {
-            if (!result.hasOwnProperty(adapter)) {
-                continue;
-            }
+        for (const adapter of Object.keys(result)) {
             const meta = sources[adapter].meta;
             const url  = sources[adapter].url;
             sources[adapter] = result[adapter];
@@ -191,10 +188,7 @@ gulp.task('replaceCore', done => {
 
 gulp.task('cleanRepo', done => {
     const sources = fs.readJSONSync(__dirname + '/conf/sources-dist.json');
-    for (const adapter in sources) {
-        if (!sources.hasOwnProperty(adapter)) {
-            continue;
-        }
+    for (const adapter of Object.keys(sources)) {
         const meta = sources[adapter].meta;
         const url  = sources[adapter].url;
         const icon = sources[adapter].icon;
