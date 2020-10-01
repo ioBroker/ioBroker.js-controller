@@ -966,134 +966,169 @@ function checkHost(callback) {
     });
 }
 
-// collect short diag information
-function collectDiagInfo(type, callback) {
+/**
+ * Collects the dialog information, e.g. used by Admin "System Settings"
+ *
+ * @param {'extended'|'normal'|'no-city'} type - type of required information
+ * @returns {Promise<object>|void}
+ */
+async function collectDiagInfo(type) {
     if (type !== 'extended' && type !== 'normal' && type !== 'no-city') {
-        callback && callback(null);
+        throw new Error(`Unsupported type "${type}" for collectDiagInfo`);
     } else {
-        objects.getObject('system.config', (err, systemConfig) => {
-            if (err || !systemConfig || !systemConfig.common) {
-                logger.warn('System config object is corrupt, please run "iobroker setup first". Error: ' + err);
-                systemConfig = systemConfig || {};
-                systemConfig.common = systemConfig.common || {};
-            }
-            objects.getObject('system.meta.uuid', (err, obj) => {
-                // create uuid
-                if (err || !obj) {
-                    obj = {native: {uuid: 'not found'}};
+        let systemConfig;
+        let err;
+
+        try {
+            systemConfig = await objects.getObjectAsync('system.config');
+        } catch (e) {
+            err = e;
+        }
+
+        if (err || !systemConfig || !systemConfig.common) {
+            logger.warn(`System config object is corrupt, please run "iobroker setup first". Error: ${err.message}`);
+            systemConfig = systemConfig || {};
+            systemConfig.common = systemConfig.common || {};
+        }
+
+        let obj;
+        try {
+            obj = await objects.getObjectAsync('system.meta.uuid');
+        } catch {
+            // ignore obj is undefined
+        }
+
+        // create uuid
+        if (!obj) {
+            obj = {native: {uuid: 'not found'}};
+        }
+
+        let doc;
+        err = null;
+
+        try {
+            doc = await objects.getObjectViewAsync('system', 'host', {});
+        } catch (e) {
+            err = e;
+        }
+
+        // we need to show city and country at the beginning, so include it now and delete it later if not allowed.
+        const diag = {
+            uuid:           obj.native.uuid,
+            language:       systemConfig.common.language,
+            country:        '',
+            city:           '',
+            hosts:          [],
+            node:           process.version,
+            arch:           os.arch(),
+            adapters:       {},
+            statesType:     config.states.type, // redis or file
+            objectsType:    config.objects.type // redis or file
+        };
+        if (type === 'extended' || type === 'no-city') {
+            const cpus     = os.cpus();
+
+            diag.country = systemConfig.common.country;
+            diag.model   = cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown';
+            diag.cpus    = cpus ? cpus.length : 1;
+            diag.mem     = os.totalmem();
+            diag.ostype  = os.type();
+            delete diag.city;
+        }
+        if (type === 'extended') {
+            diag.city = systemConfig.common.city;
+        } else if (type === 'normal') {
+            delete diag.city;
+            delete diag.country;
+        }
+
+        if (!err && doc && doc.rows.length) {
+            doc.rows.sort((a, b) => {
+                try {
+                    return semver.lt((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0', (b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0');
+                } catch (e) {
+                    logger.error(`${hostLogPrefix} Invalid versions: ${(a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0'}[${(a && a.value && a.value.common) ? a.value.common.name : 'unknown'}] or ${(b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0'}[${(b && b.value && b.value.common) ? b.value.common.name : 'unknown'}]`);
+                    return 0;
                 }
-                objects.getObjectView('system', 'host', {}, (_err, doc) => {
-                    // we need to show city and country at the beginning, so include it now and delete it later if not allowed.
-                    const diag = {
-                        uuid:           obj.native.uuid,
-                        language:       systemConfig.common.language,
-                        country:        '',
-                        city:           '',
-                        hosts:          [],
-                        node:           process.version,
-                        arch:           os.arch(),
-                        adapters:       {},
-                        statesType:     config.states.type, // redis or file
-                        objectsType:    config.objects.type // redis or file
-                    };
-                    if (type === 'extended' || type === 'no-city') {
-                        const cpus     = os.cpus();
+            });
 
-                        diag.country = systemConfig.common.country;
-                        diag.model   = cpus && cpus[0] && cpus[0].model ? cpus[0].model : 'unknown';
-                        diag.cpus    = cpus ? cpus.length : 1;
-                        diag.mem     = os.totalmem();
-                        diag.ostype  = os.type();
-                        delete diag.city;
-                    }
-                    if (type === 'extended') {
-                        diag.city = systemConfig.common.city;
-                    } else if (type === 'normal') {
-                        delete diag.city;
-                        delete diag.country;
-                    }
+            // Read installed versions of all hosts
+            for (const row of doc.rows) {
+                diag.hosts.push({
+                    version:  row.value.common.installedVersion,
+                    platform: row.value.common.platform,
+                    type:     row.value.native.os.platform
+                });
+            }
+        }
 
-                    if (!_err && doc && doc.rows.length) {
-                        doc.rows.sort((a, b) => {
-                            try {
-                                return semver.lt((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0', (b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0');
-                            } catch (e) {
-                                logger.error(hostLogPrefix + ' Invalid versions: ' + ((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0') + '[' + ((a && a.value && a.value.common) ? a.value.common.name : 'unknown') + '] or ' + ((b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0') + '[' + ((b && b.value && b.value.common) ? b.value.common.name : 'unknown') + ']');
-                                return 0;
-                            }
-                        });
+        doc = null;
+        err = null;
 
-                        // Read installed versions of all hosts
-                        for (let i = 0; i < doc.rows.length; i++) {
-                            diag.hosts.push({
-                                version:  doc.rows[i].value.common.installedVersion,
-                                platform: doc.rows[i].value.common.platform,
-                                type:     doc.rows[i].value.native.os.platform
-                            });
-                        }
-                    }
-                    objects.getObjectView('system', 'adapter', {}, (__err, doc) => {
-                        let visFound = false;
-                        if (!_err && doc && doc.rows.length) {
-                            // Read installed versions of all adapters
-                            for (let i = 0; i < doc.rows.length; i++) {
-                                diag.adapters[doc.rows[i].value.common.name] = {
-                                    version:  doc.rows[i].value.common.version,
-                                    platform: doc.rows[i].value.common.platform
-                                };
-                                if (doc.rows[i].value.common.name === 'vis') {
-                                    visFound = true;
+        try {
+            doc = await objects.getObjectViewAsync('system', 'adapter', {});
+        } catch (e) {
+            err = e;
+        }
+
+        let visFound = false;
+        if (!err && doc && doc.rows.length) {
+            // Read installed versions of all adapters
+            for (const row of doc.rows) {
+                diag.adapters[row.value.common.name] = {
+                    version:  row.value.common.version,
+                    platform: row.value.common.platform
+                };
+                if (row.value.common.name === 'vis') {
+                    visFound = true;
+                }
+            }
+        }
+        // read number of vis datapoints
+        if (visFound) {
+            const visUtils = require('./lib/vis/states');
+            try {
+                return new Promise(resolve => {
+                    visUtils(objects, null, 0, null, (err, points) => {
+                        let total = null;
+                        const tasks = [];
+                        if (points && points.length) {
+                            for (const point of points) {
+                                if (point.id === 'vis.0.datapoints.total') {
+                                    total = point.val;
                                 }
-                            }
-                        }
-                        // read number of vis datapoints
-                        if (visFound) {
-                            const visUtils = require('./lib/vis/states');
-                            try {
-                                visUtils(objects, null, 0, null, (err, points) => {
-                                    let total = null;
-                                    const tasks = [];
-                                    if (points && points.length) {
-                                        for (let i = 0; i < points.length; i++) {
-                                            if (points[i].id === 'vis.0.datapoints.total') {
-                                                total = points[i].val;
-                                            }
-                                            tasks.push({
-                                                _id: points[i].id,
-                                                type: 'state',
-                                                native: {},
-                                                common: {
-                                                    name: 'Datapoints count',
-                                                    role: 'state',
-                                                    type: 'number',
-                                                    read: true,
-                                                    write: false
-                                                },
-                                                state: {
-                                                    val: points[i].val,
-                                                    ack: true
-                                                }
-                                            });
-                                        }
+                                tasks.push({
+                                    _id: point.id,
+                                    type: 'state',
+                                    native: {},
+                                    common: {
+                                        name: 'Datapoints count',
+                                        role: 'state',
+                                        type: 'number',
+                                        read: true,
+                                        write: false
+                                    },
+                                    state: {
+                                        val: point.val,
+                                        ack: true
                                     }
-                                    if (total !== null) {
-                                        diag.vis = total;
-                                    }
-                                    extendObjects(tasks, () => callback && callback(diag));
                                 });
-                            } catch (e) {
-                                logger.error(hostLogPrefix + ' cannot call visUtils: ' + e);
-                                if (typeof callback === 'function') {
-                                    callback(diag);
-                                }
                             }
-                        } else if (typeof callback === 'function') {
-                            callback(diag);
                         }
+                        if (total !== null) {
+                            diag.vis = total;
+                        }
+
+                        extendObjects(tasks, () => resolve(diag));
                     });
                 });
-            });
-        });
+            } catch (e) {
+                logger.error(`${hostLogPrefix} cannot call visUtils: ${e}`);
+                return diag;
+            }
+        } else {
+            return diag;
+        }
     }
 }
 
@@ -1818,7 +1853,7 @@ function startAdapterUpload() {
 }
 
 // Process message to controller, like execute some script
-function processMessage(msg) {
+async function processMessage(msg) {
     let ioPack;
     // important: Do not forget to update the list of protected commands in iobroker.admin/lib/socket.js for "socket.on('sendToHost'"
     // and iobroker.socketio/lib/socket.js
@@ -1885,10 +1920,15 @@ function processMessage(msg) {
 
         case 'getRepository':
             if (msg.callback && msg.from) {
-                objects.getObject('system.config', (err, systemConfig) => {
+                objects.getObject('system.config', async (err, systemConfig) => {
                     // Collect statistics
                     if (systemConfig && systemConfig.common && systemConfig.common.diag) {
-                        collectDiagInfo(systemConfig.common.diag, obj => obj && tools.sendDiagInfo(obj));
+                        try {
+                            const obj = await collectDiagInfo(systemConfig.common.diag);
+                            tools.sendDiagInfo(obj);
+                        } catch {
+                            tools.sendDiagInfo(null);
+                        }
                     }
 
                     objects.getObject('system.repositories', (err, repos) => {
@@ -2064,7 +2104,12 @@ function processMessage(msg) {
         case 'getDiagData':
             if (msg.callback && msg.from) {
                 if (msg.message) {
-                    collectDiagInfo(msg.message, obj => sendTo(msg.from, msg.command, obj, msg.callback));
+                    try {
+                        const obj = await collectDiagInfo(msg.message);
+                        sendTo(msg.from, msg.command, obj, msg.callback);
+                    } catch {
+                        sendTo(msg.from, msg.command, null, msg.callback);
+                    }
                 } else {
                     sendTo(msg.from, msg.command, null, msg.callback);
                 }
