@@ -31,23 +31,20 @@ All of this helps me to provide error free adapters that basically never crashs.
 
 
 ## Changelog
+### 1.0.5 (26.09.2020)
+* (HombachC) battery.temperature rounded
+
+### 1.0.4 (25.09.2020)
+* (HombachC) code cleanup; bumped mocha
+
 ### 1.0.3 (23.09.2020)
 * (HombachC) bumbed got; added battery.temperature
 
 ### 1.0.2 (23.09.2020)
 * (HombachC) optimized object roles
 
-### 1.0.1 (22.09.2020)
-* (HombachC) bumped dependencies; added some clearing of timeouts
-
 ### 1.0.0 (11.09.2020)
 * (HombachC) first public release for stable repo
-
-### 0.8.5 (26.08.2020)
-* (HombachC) bumped dependencies
-
-### 0.8.2 (18.08.2020)
-* (HombachC) changed scheduling code
 
 ### 0.8.0 (18.08.2020)
 * (HombachC) seperate editable poll timer for statistics data

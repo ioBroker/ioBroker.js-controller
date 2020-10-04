@@ -27,6 +27,17 @@ This adapter allows you to push your ioBroker log into the system of [Seq](https
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### 0.2.1 (2020-10-01)
+* (IdleBit) added forgetting native...
+
+### 0.2.0 (2020-10-01)
+* (IdleBit) Optional selective logging on adapter basis
+
+### 0.1.0 (2020-09-26)
+* (IdleBit) API key is no longer not displayed in clear text 
+* (IdleBit) API key is now stored encrypted
+  * ***Attention: The API key will be lost and must be set again!***
+* (IdleBit) Higher dependencies of the js-controller (>=3.1.0)
 
 ### 0.0.5 (2020-09-23)
 * (IdleBit) add param SystemName for display in Seq

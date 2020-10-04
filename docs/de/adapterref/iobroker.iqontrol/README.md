@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
+hash: r3CdNsq+QT1O9zMwkmU8QfjKhX75QuUDMXPcmO3AffQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -94,14 +94,17 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * Das Frontend wird über `` http [s]: // <URL oder IP von iobroker>: <Port des Webadapters> / iqontrol / index.html`` aufgerufen
     * `` <Port des Webadapters> `` ist normalerweise 8082
 * Um eine angegebene Instanz zu öffnen, können Sie `` namespace = iqontrol. <Instanznummer> `` als URL-Parameter hinzufügen
-* Um eine angegebene Ansicht als Homepage zu öffnen, können Sie `` home = <viewID> `` als URL-Parameter hinzufügen
+* Um eine bestimmte Ansicht zu öffnen, können Sie als URL-Parameter "renderView = <viewID>" hinzufügen.
     * `` <viewID> `` muss wie `` iqontrol. <Instanznummer> .Views. <Ansichtsname> `` formatiert sein
 * Hinweis: Hierbei wird zwischen Groß- und Kleinschreibung unterschieden!
-* Um einen bestimmten Dialog beim Laden der Seite zu öffnen, können Sie als URL-Parameter `` openDialog = <deviceID> `` hinzufügen
-    * `` <GerätID> `` muss wie `` iqontrol. <Instanznummer> .Views. <Ansichtsname> .Geräte. <Gerätennummer> `` wobei `` <Gerätennummer> `` formatiert werden beginnt bei 0 (das erste Gerät in einer Ansicht ist also Gerätenummer 0)
+* Um eine angegebene Ansicht als Homepage zu öffnen, können Sie `` home = <viewID> `` als URL-Parameter hinzufügen. Dadurch wird auch die verknüpfte Ansicht des ersten Symbolleisteneintrags geändert!
+    * `` <viewID> `` muss wie `` iqontrol. <Instanznummer> .Views. <Ansichtsname> `` formatiert sein
+* Hinweis: Hierbei wird zwischen Groß- und Kleinschreibung unterschieden!
+* Um einen bestimmten Dialog beim Laden der Seite zu öffnen, können Sie als URL-Parameter "openDialog = <GerätID>" hinzufügen
+    * `` <GerätID> `` muss wie `` iqontrol. <Instanznummer> .Views. <Ansichtsname> .Geräte. <Gerätennummer> `` formatiert werden, wobei `` <Gerätennummer> `` beginnt bei 0 (das erste Gerät in einer Ansicht ist also Gerätenummer 0)
 * Hinweis: Hierbei wird zwischen Groß- und Kleinschreibung unterschieden!
 * Verwenden Sie die folgenden Parameter, um die Rückkehr nach Zeiteinstellungen festzulegen oder zu überschreiben:
-* `` returnAfterTimeTreshold = <time in seconds> `` um die Zeit einzustellen, nach der die Zielansicht aufgerufen wird. Verwenden Sie `` 0``, um die Rückgabe nach Zeit zu deaktivieren.
+* `` returnAfterTimeTreshold =<time in seconds> `` um die Zeit einzustellen, nach der die Zielansicht aufgerufen wird. Verwenden Sie `` 0``, um die Rückgabe nach Zeit zu deaktivieren.
 * `` returnAfterTimeDestiationView = <viewID> ``, um die Ansicht festzulegen, die nach dem Schwellenwert aufgerufen wird. Wenn nicht angegeben, wird die Startansicht verwendet.
 * Diese Optionen sind hilfreich, wenn Sie iQontrol von einem an der Wand montierten Tablet aus aufrufen, das nach der Verwendung automatisch zur Startansicht zurückkehren sollte
 
@@ -146,6 +149,8 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
         * Wenn kein Wert angegeben ist, wird `` true`` verwendet
     * `` ButtonNames``: Hier können Sie eine durch Kommas getrennte Liste von Schaltflächen angeben, die am unteren Rand des Popups angezeigt wird (zum Beispiel "OK, Abort").
         * `` ButtonValues`` und `` ButtonDestinationStates``: Dies sind durch Kommas getrennte Wertelisten, die an `` iqontrol.x.Popup.BUTTON_CLICKED`` und, falls angegeben, zusätzlich zum Datenpunkt in `` ButtonDestinationStates` gesendet werden `, wenn der Benutzer auf die entsprechende Schaltfläche klickt
+* Anstelle eines Datenpunkts können Sie die Befehle `` COMMAND: renderView`` und `` COMMAND: openDialog`` als ButtonDestinationState verwenden, um eine Ansicht zu rendern oder einen Dialog zu öffnen
+* Der ButtonValue gibt dann die Ansicht bzw. Dialog und muss im Format `` iqontrol. <Instanznummer> .Views. <Ansichtsname> `` resp. `` Iqontrol. <Instanznummer> .Views. <Ansichtsname> .Geräte. <Gerätenummer> `` wobei `` <Gerätenummer> `` bei 0 beginnt (das erste Gerät in einer Ansicht ist also Gerät Nummer 0)
 * Wenn Sie nur einen Wert verwenden (anstelle einer durch Kommas getrennten Liste), wird dieser Wert für alle Schaltflächen verwendet
 * Wenn Sie `` ButtonValues`` leer lassen, wird der Name der Schaltfläche verwendet
 * Wenn Sie nur einen Zielstatus verwenden (anstelle einer durch Kommas getrennten Liste), wird dieser Status für alle Schaltflächen verwendet
@@ -174,14 +179,16 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
         * `` {Befehl: "setState", stateId: <stateId>, Wert: <value>} `` - Dies setzt den ioBroker-Status `` <stateId> `` auf den Wert `` <value> `` (` `<Wert>` `kann eine Zeichenfolge, eine Zahl oder ein Boolescher Wert oder ein Objekt wie` `{val: <Wert>, ack: true | false}` `) sein
         * `` {Befehl: "getState", stateId: <stateId>} `` - Dies bewirkt, dass iQontrol den Wert des ioBroker-Status `` <stateId> `` sendet (siehe unten, wie die Antwortnachricht empfangen wird).
         * `` {Befehl: "getStateSubscribed", stateId: <stateId>} `` - Dies veranlasst iQontrol, den Wert des ioBroker-Status `` <stateId> `` jetzt und jedes Mal zu senden, wenn sich sein Wert ändert (siehe unten, wie es geht Antwortnachrichten erhalten)
+        * `` {Befehl: "renderView", Wert: <viewID>} `` - Dies weist iQontrol an, eine Ansicht zu rendern, wobei `` <viewID> `` wie `` iqontrol. <Instanznummer> formatiert werden muss .Views. <Ansichtsname> `` (Groß- und Kleinschreibung beachten)
+        * `` {Befehl: "openDialog", Wert: <deviceID>} `` - Dies weist iQontrol an, einen Dialog zu öffnen, in dem `` <deviceID> `` wie `` iqontrol. <Instanznummer> formatiert werden muss .Views. <Ansichtsname> .Geräte. <Gerätenummer> `` wobei `` <Gerätenummer> `` bei 0 beginnt (das erste Gerät in einer Ansicht ist also Gerätenummer 0)
 * Um Nachrichten von iQontrol zu empfangen, müssen Sie einen Ereignis-Listener für das Ereignis "message" mit dem Javascript-Befehl `` window.addEventListener ("message", receivePostMessage, false); `` registrieren
-    * Die Funktion `` receivePostMessage`` empfängt das Objekt `` event``
-* `` event.data`` enthält die Nachricht von iqontrol, die ein Objekt wie das folgende sein wird:
+    * Die Funktion "receivePostMessage" empfängt das Objekt "event"
+* `` `Event.data`` enthält die Nachricht von iqontrol, die ein Objekt sein wird wie:
 * `` {Befehl: "getState", stateId: <stateId>, Wert: <Wert>} `` - Dies ist die Antwort auf einen getState-Befehl oder einen getStateSubsribed-Befehl und gibt Ihnen den tatsächlichen `` <Wert> `` -Objekt des ioBroker-Status`` <stateId> ``
 * Das gleiche Konzept kann für den URL / HTML-Status verwendet werden, mit dem eine Website im Dialogfeld eines Geräts angezeigt wird
 * Siehe unten für eine Beispiel-Website:
 
-<details><summary> Beispielwebsite anzeigen, die als Widget mit postMessage-Kommunikation angezeigt werden soll: </summary>
+<details><summary>Beispielwebsite anzeigen, die als Widget mit postMessage-Kommunikation angezeigt werden soll:</summary>
 
 * Sie können den folgenden HTML-Code verwenden und ihn in den BACKGROUND_HTML-Status eines Widgets kopieren (das dann als "Konstante" konfiguriert werden muss).
 * Aktivieren Sie die Option "PostMessage-Kommunikation für BACKGROUND_URL / HTML zulassen".
@@ -198,6 +205,8 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 	<button onclick="getState('system.adapter.admin.0.cpu')">getState system.adapter.admin.0.cpu</button><br>
 	<button onclick="getStateSubscribed('system.adapter.admin.0.uptime')">getStateSubscribed system.adapter.admin.0.uptime</button><br>
 	<button onclick="setState('iqontrol.0.Popup.Message', 'Hey, this is a test Message')">setState popup message</button><br>
+	<button onclick="renderView('iqontrol.0.Views.Home')">renderView 'Home'</button><br>
+	<button onclick="openDialog('iqontrol.0.Views.Home.devices.0')">openDialog 1st device on 'Home'</button><br>
 	<br>
 	message sent: <span id="messageSent">-</span><br>
 	<br>
@@ -222,6 +231,16 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 		//setState
 		function setState(stateId, value){
 			sendPostMessage("setState", stateId, value);
+		}
+
+		//renderView
+		function renderView(viewId){
+			sendPostMessage("renderView", null, viewId);
+		}
+
+		//openDialog
+		function openDialog(deviceId){
+			sendPostMessage("openDialog", null, deviceId);
 		}
 
 		//send postMessages
@@ -259,7 +278,7 @@ Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um den
 Klicken Sie auf den Stift hinter dem Gerät, um die Rolle und den Status eines Geräts zu bearbeiten. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
 
 ### Ändern der Datenpunktkonfiguration
-Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymbol hinter einem Datenpunkt im Dialogfeld Gerätekonfiguration oder auf der Registerkarte Objekte von iobroker ändern. Hier kannst du:
+Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymbol hinter einem Datenpunkt im Gerätekonfigurationsdialog oder auf der Registerkarte "Objekte" von iobroker ändern. Hier kannst du:
 
 * Readonly-Flag setzen
 * Invert-Flag setzen
@@ -277,8 +296,8 @@ Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymb
     * Zusätzlich zur Zielwert-ID können Sie verschiedene Datenpunkt-IDs und Zielwerte für verschiedene Schlüssel definieren (Schlüssel sind mögliche Werte des ursprünglichen Datenpunkts).
   *Sie können auch den Platzhalter ``* `` in den Schlüsseln und in den Zielwerten verwenden
 * Beispiel:
-* Schlüssel: `` TuneIn-Playlist: *``, Zieldatenpunkt-ID: `` alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist``, Zielwert: ``* ``
-* Wenn der Benutzer "TuneIn-Playlist: Ambient" eingibt, wird der Wert "Ambient" in "alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist" geschrieben
+* Schlüssel: `` TuneIn-Playlist: *``, Zieldatenpunkt-ID: `` alalexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist``, Zielwert: ``* ``
+* Wenn der Benutzer "TuneIn-Playlist: Ambient" eingibt, wird der Wert "Ambient" in "Alxa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist" geschrieben
 
 ![CustomDialog-Aufruf](img/custom_call.png) ![CustomDialog Beispiel](img/custom_dialog.png) ![Konzept der Zielwertliste](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
 
@@ -286,8 +305,8 @@ Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymb
 #### STATE und LEVEL
 Fast alle Rollen haben einen **STATE** - und / oder einen **LEVEL** - Status. In den meisten Fällen stellt dies die Hauptfunktion des Geräts dar. Sie können ihm iobroker-Zustände der folgenden Typen zuweisen:
 
-* *boolean* - wenn möglich, wird es in einen sinnvollen Text wie 'ein / aus', 'geöffnet / geschlossen' oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialog ein Kippschalter generiert
-* *Nummer* - wird mit der entsprechenden Einheit angezeigt und generiert einen Schieberegler im Dialog
+* *boolean* - Wenn möglich, wird es in einen sinnvollen Text wie "Ein / Aus", "Geöffnet / Geschlossen" oder ähnliches übersetzt. Wenn Sie auf das Symbol einer Kachel klicken, wird versucht, den Booleschen Wert umzuschalten (z. B. um ein Licht ein- oder auszuschalten). Wenn es nicht schreibgeschützt ist, wird im Dialog ein Kippschalter generiert
+* *Nummer* - wird mit der entsprechenden Einheit angezeigt und generiert einen Schieberegler im Dialogfeld
 * *string* - Ein anzuzeigender Text
 * *Werteliste* - Der ausgewählte Wert wird angezeigt. Wenn es nicht schreibgeschützt ist, wird im Dialog ein Dropdown-Menü generiert
     * Technisch gesehen ist eine * Werteliste * ein Wert mit einer entsprechenden Übersetzungsliste, die im Objekt 'common.custom.iqontrol. <Instanz> .states', 'native.states' oder 'common.states' des Datenpunkts definiert ist ::
@@ -310,6 +329,8 @@ Fast alle Rollen haben einen **STATE** - und / oder einen **LEVEL** - Status. In
 Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der ZUSTAND eines Schalters in den meisten Fällen ein Boolescher Wert, um zwischen Ein und Aus umgeschaltet werden zu können. Möglicherweise wird eine Zeichenfolge angezeigt, der Schalter ist jedoch nicht funktionsfähig.
 
 #### Weitere allgemeine Zustände:
+* **INFO_A** und **INFO_B** *Array* - Ein Array von Datenpunkten und Symbolen, die zyklisch oben rechts auf der Kachel angezeigt werden
+* **ADDITIONAL_CONTROLS** *array* - Ein Array von Datenpunkten, die zusätzliche Steuerelemente definieren, die im Info-Dialog angezeigt werden
 * **ADDITIONAL_INFO** *array* - Ein Array von Datenpunkten, das am unteren Rand des Info-Dialogs angezeigt wird
 * **URL** CONSTANT oder DATAPOINT *string* - Diese URL wird als Iframe im Dialogfeld geöffnet
 * **HTML** CONSTANT oder DATAPOINT *string* - Dieses Markup wird im iframe angezeigt, wenn kein URL-Datenpunkt angegeben ist
@@ -319,22 +340,22 @@ Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der
     * Sie können das Verhalten des Batteriesymbols im Optionsbereich 'BATTERY Empty Icon' weiter anpassen.
 * **ERROR** *boolean* - Wenn true, wird ein kleines Ausrufezeichen angezeigt
 * **UNREACH** *boolean* - Wenn true, wird ein kleines WLAN-Symbol angezeigt
-    * Das Verhalten kann im Abschnitt "Allgemein" der Optionen umgekehrt werden (verwenden Sie "Verbunden" anstelle von "Nicht erreichen").
+    * Das Verhalten kann im Abschnitt "Allgemein" der Optionen umgekehrt werden (verwenden Sie "Verbunden" anstelle von "Nicht erreichbar").
 
 ### Link zu anderer Ansicht:
 * Hat keine weiteren Zustände
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
-### <img src="img/icons/switch_on.png" width="32"> Schalter:
-* **STATE** *boolean* - Anzeigen und Ein- / Ausschalten
+###<img src="img/icons/switch_on.png" width="32"> Schalter:
+* **STATE** *boolean* - Anzeige und Ein / Aus-Status
 * **POWER** *number* - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
-### <img src="img/icons/button.png" width="32"> Taste:
+###<img src="img/icons/button.png" width="32"> Taste:
 * **STATE** *any* - jede gewünschte Art von Zustand
 * **SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter Iobroker-Status!), Die dem STATE zugewiesen wird, wenn die Taste gedrückt wird
 * **OFF_SET_VALUE** CONSTANT *string* - Dies ist eine Konstante (kein verknüpfter Iobroker-Status!). Wenn definiert, wird STATE nach der in den Optionen definierten Zeit oder 100 ms auf diesen Wert zurückgesetzt
 
-### <img src="img/icons/light_on.png" width="32"> Licht:
+###<img src="img/icons/light_on.png" width="32"> Licht:
 Jedes Licht kann einen oder beide der folgenden Zustände haben:
 
 * **STATE** *boolean* - show und set on / off-state
@@ -344,7 +365,7 @@ Optional können Sie folgende Zustände definieren:
 
 * Für farbige LEDs (HSB-Farbraum):
   * **HUE** * number * - Farbe des Lichts von 0-360 ° (Farbtonformat)
-  * **SÄTTIGUNG** * Zahl * - Lichtsättigung (von weiß zu reiner Farbe)
+  * **SÄTTIGUNG** * Zahl * - Lichtsättigung (von Weiß zu reiner Farbe)
   * **COLOR_BRIGHTNESS** * number * - die Helligkeit der farbigen LEDs (wenn Sie einen LEVEL-Status und keine weißen LEDs haben, wird dies ignoriert, da die Helligkeit vollständig von LEVEL gesteuert wird)
 * Für weiße LEDs:
   * **CT** * Zahl * - Farbtemperatur des Lichts, wenn es zwei Weißtöne hat
@@ -372,15 +393,15 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
   * **EFFECT** * Werteliste * - der zu spielende Effekt
 * **EFFECT_NEXT** *boolean* - Wenn true festgelegt ist, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen).
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - Wenn dieser Wert auf true gesetzt ist, wird der Effekt beschleunigt / verringert
-* Verschiedenes:
+* Sonstiges:
   * **POWER** * number * - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
-### <img src="img/icons/fan_on.png" width="32"> Ventilator:
-* **STATE** *boolean* - Anzeigen und Ein- / Ausschalten
+###<img src="img/icons/fan_on.png" width="32"> Ventilator:
+* **STATE** *boolean* - Anzeige und Ein / Aus-Status
 * **LEVEL** *number* oder *value-list* - die Lüftergeschwindigkeit
 * **POWER** *number* - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
-### <img src="img/icons/radiator.png" width="32"> Thermostat:
+###<img src="img/icons/radiator.png" width="32"> Thermostat:
 * **SET_TEMPERATURE** *Nummer* - Zieltemperatur
 * **TEMPERATUR** *Zahl* - Die tatsächliche Temperatur wird in der oberen rechten Ecke klein angezeigt
 * **FEUCHTIGKEIT** *Zahl* - Die tatsächliche Luftfeuchtigkeit wird in der oberen rechten Ecke klein angezeigt
@@ -388,94 +409,94 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 * **WINDOW_OPENING_REPORTING** *boolean* - Wenn true, wird ein kleines geöffnetes Fenster angezeigt
 * **VALVE_STATES** Array von Namen und Nummern - Zeigt die Öffnung der Ventile an, die dem Thermostat zugeordnet sind
 
-### <img src="img/icons/radiator.png" width="32"> Homematischer Thermostat:
+###<img src="img/icons/radiator.png" width="32"> Homematischer Thermostat:
 Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 * **PARTY_TEMPERATURE** *string* - Speziell formatierter String zum Definieren des Party- oder Feiertagsmodus von homematischen Thermostaten
 * **BOOST_STATE** *number* - Zeigt die verbleibende Boost-Zeit von homematischen Thermostaten an
 
-### <img src="img/icons/temperature.png" width="32"> Temperatursensor, <img src="img/icons/humidity.png" width="32"> Feuchtigkeitssensor:
+###<img src="img/icons/temperature.png" width="32"> Temperatursensor,<img src="img/icons/humidity.png" width="32"> Feuchtigkeitssensor:
 * **STATE** *number* - Temperatur oder Luftfeuchtigkeit, die im unteren Teil des Geräts angezeigt werden
 * **TEMPERATUR** *Zahl* - Temperatur, die in der oberen rechten Ecke klein angezeigt wird
 * **FEUCHTIGKEIT** *Zahl* - Luftfeuchtigkeit, die in der oberen rechten Ecke klein angezeigt wird
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
-### <img src="img/icons/brightness_light.png" width="32"> Helligkeitssensor:
+###<img src="img/icons/brightness_light.png" width="32"> Helligkeitssensor:
 * **STATE** *number* - Helligkeit, die im unteren Teil des Geräts angezeigt wird
 * **HELLIGKEIT** *Zahl* - Helligkeit, die in der oberen rechten Ecke klein angezeigt wird
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
-### <img src="img/icons/motion_on.png" width="32"> Bewegungssensor:
+###<img src="img/icons/motion_on.png" width="32"> Bewegungssensor:
 * **STATE** *boolean* - Anzeige, ob eine Bewegung erkannt wird oder nicht
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
-### <img src="img/icons/door_closed.png" width="32"> Tür, <img src="img/icons/window_closed.png" width="32"> Fenster:
+###<img src="img/icons/door_closed.png" width="32"> Tür,<img src="img/icons/window_closed.png" width="32"> Fenster:
 * **STATE** *boolean* - Anzeige, ob die Tür oder das Fenster geöffnet oder geschlossen ist
     * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen (in den Fensteroptionen können Sie festlegen, welcher Text für geöffnet, geschlossen und gekippt steht, um das richtige Symbol anzuzeigen).
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "3 Fenster offen" oder "alles geschlossen" oder eine * Nummer * anzuzeigen.
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
-### <img src="img/icons/garagedoor_closed.png" width="32"> Garagentor:
+###<img src="img/icons/garagedoor_closed.png" width="32"> Garagentor:
 * **STATE** *boolean* - Anzeige, ob die Tür geöffnet oder geschlossen ist
     * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen.
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "3 Türen offen" oder "Alle geschlossen" anzuzeigen.
 * **TOGGLE** *boolean* - Zeigt einen 'Toggle'-Button an und wird auf true gesetzt, wenn gedrückt
 
-### <img src="img/icons/door_locked.png" width="32"> Tür mit Schloss:
+###<img src="img/icons/door_locked.png" width="32"> Tür mit Schloss:
 * **STATE** *boolean* - Anzeige, ob die Tür geöffnet oder geschlossen ist (Tür- / Fensterkontakt)
 * **LOCK_STATE** *boolean* - Anzeige und Steuerung, ob die Tür verriegelt oder entriegelt ist (Steuerung ist deaktiviert, wenn STATE wahr ist - weil Sie eine geöffnete Tür nicht verriegeln können)
 * **LOCK_STATE_UNCERTAIN** *boolean* - Wenn true, wird der STATE in Kursivschrift angezeigt, um anzuzeigen, dass die genaue Position des Schlosses unbekannt ist
 * **LOCK_OPEN** *boolean* - Wenn true festgelegt ist, wird die Tür vollständig geöffnet
 
-### <img src="img/icons/blind_middle.png" width="32"> Blind:
+###<img src="img/icons/blind_middle.png" width="32"> Blind:
 * **LEVEL** *number* - Höhe des Blinden in Prozent
 * **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein. Die Werte für Stop, Up, Down und Unknown können konfiguriert werden
 * **STOP** *boolean* - wird auf true gesetzt, wenn die Stopptaste gedrückt wird
 * **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Auf- / Ab-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie einen Wert über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Auf- / Ab-Taste gedrückt wird
-* **FAVORITE_POSITION** *boolean* - kann verwendet werden, um eine Lieblingsposition abzurufen. Wenn die Favoritentaste (Schaltflächenbeschriftung kann in den Geräteeinstellungen konfiguriert werden) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie einen Wert über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird
+* **FAVORITE_POSITION** *boolean* - kann verwendet werden, um eine Lieblingsposition abzurufen. Wenn die Schaltfläche Favorit (Schaltflächenbeschriftung kann in den Geräteeinstellungen konfiguriert werden) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie einen Wert über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird
 * **SLATS_LEVEL** *number* - Position der Lamellen in Prozent
 
-### <img src="img/icons/fire_on.png" width="32"> Feuersensor:
+###<img src="img/icons/fire_on.png" width="32"> Feuersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
     * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "Feuer im Obergeschoss" anzuzeigen.
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
-### <img src="img/icons/flood_on.png" width="32"> Hochwassersensor:
+###<img src="img/icons/flood_on.png" width="32"> Hochwassersensor:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
     * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "Flood in Upper Floor" anzuzeigen.
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
-### <img src="img/icons/alarm_on.png" width="32"> Alarm:
+###<img src="img/icons/alarm_on.png" width="32"> Alarm:
 * **STATE** *boolean* - Wenn true, wird der Sensor als ausgelöst angezeigt
     * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie "manipuliert" anzuzeigen.
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "Feuer im Obergeschoss" anzuzeigen.
 * **CONTROL_MODE** *Werteliste* - Betriebsmodus wie "Bewaffnet" und "Entwaffnet" auswählen
     * In den Geräteoptionen können Sie den Wert definieren, der die Deaktivierung darstellt, sodass das Darstellungssymbol angezeigt werden kann
 
-### <img src="img/icons/battery_full.png" width="32"> Batterie:
+###<img src="img/icons/battery_full.png" width="32"> Batterie:
 * **STATE** *number* - Batteriestand in Prozent
 * **CHARGING** *boolean* - Wenn true, wird ein Ladesymbol angezeigt
 * **POWER** *number* - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 * **VOLTAGE** *number* - Spannung, die in der oberen rechten Ecke klein angezeigt wird
 
-### <img src="img/icons/value_on.png" width="32"> Wert:
+###<img src="img/icons/value_on.png" width="32"> Wert:
 * **STATE** *any* - jeder gültige Status, der angezeigt werden soll (siehe Abschnitt "Allgemeine Status")
 * **LEVEL** *number* - erzeugt einen Schieberegler im Dialog
 
-### <img src="img/icons/play_on.png" width="32"> Programm:
+###<img src="img/icons/play_on.png" width="32"> Programm:
 * **STATE** *boolean* - Wenn true festgelegt ist, wird das Programm gestartet
 
-### <img src="img/icons/play.png" width="32"> Szene:
+###<img src="img/icons/play.png" width="32"> Szene:
 * **STATE** *boolean* - wird angezeigt, wenn die Szene aktiv ist. Abhängig von der Konfiguration der Szene (virtuelle Gruppe, Werte für falsch aktiviert oder deaktiviert festlegen) sendet der Umschaltbefehl true, false, min, 0, max oder 100. Es besteht die Möglichkeit, immer true zu senden (Umschalten deaktivieren). .
 
-### <img src="img/icons/media_on.png" width="32"> Media-Player / Fernbedienung:
+###<img src="img/icons/media_on.png" width="32"> Media-Player / Fernbedienung:
 * **STATE** *string* - "play", "pause" oder "stop" oder *boolean* - true für play, false für stop
     * In den Geräteoptionen können Sie den Wert definieren, der Wiedergabe, Pause und Stopp darstellt
 * **COVER_URL** *string* - URL zum Titelbild
 * **KÜNSTLER, ALBUM, TITEL** *string* - selbsterklärend
-* **TRACK_NUMBER** *Nummer* - selbsterklärend
+* **TRACK_NUMBER** *number* - selbsterklärend
 * **PREV, REWIND, PLAY, PAUSE, STOP, FORWARD, NEXT** *boolean* - wird auf true gesetzt, wenn die entsprechende Taste gedrückt wird
 * **SHUFFLE, MUTE, PLAY_EVERYWHERE, EJECT, POWER_SWITCH** *Boolescher* - Status für die entsprechende Funktion
 * **REPEAT** *Boolescher* - Status für Wiederholungsfunktion oder *Zeichenfolge* - 3 Zustände können über die entsprechenden Optionen definiert werden: Wert für Aus, Alle wiederholen und Eins wiederholen
@@ -495,14 +516,14 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **REMOTE_ADDITIONAL_BUTTONS** *array* - ein Array von Schaltflächen. Der Name der Schaltfläche wird an die entsprechende Status-ID gesendet, wenn auf die Schaltfläche geklickt wird
 * **REMOTE_HIDE_REMOTE** *boolean* - Wenn true, wird der gesamte Abschnitt der Fernbedienung ausgeblendet (z. B. um ihn nur anzuzeigen, wenn eine gültige Quelle ausgewählt ist).
 
-### <img src="img/icons/popup.png" width="32"> Aufpoppen:
+###<img src="img/icons/popup.png" width="32"> Aufpoppen:
 * **STATE** *any* - kann verwendet werden, um weitere Informationen anzuzeigen
 
-### <img src="img/icons/link.png" width="32"> Externer Link:
+###<img src="img/icons/link.png" width="32"> Externer Link:
 * **STATE** *any* - kann verwendet werden, um weitere Informationen anzuzeigen
 * **URL** CONSTANT *string* - Diese URL wird geöffnet
 
-### <img src="img/icons/widget_on.png" width="32"> Widget:
+###<img src="img/icons/widget_on.png" width="32"> Widget:
 Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeigeeinstellungen, um eine Website anzuzeigen, die von **BACKGROUND_URL** als Widget definiert werden kann. Bei den Standardoptionen wird oben rechts eine kleine Vergrößerungsschaltfläche angezeigt.
 
 * **STATE** *any* - SPECIAL: Wenn leer, wird ein virtueller Datenpunkt erstellt, sodass Sie auf das Symbol klicken können, um das Widget zu aktivieren und damit die Größe zu maximieren
@@ -532,6 +553,26 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 ****
 
 ## Changelog
+
+### dev
+* (sbormann) Breaking change: completely removed presssure detection and replaced it by long clicks to open context menu.
+* (sbormann) Bank icons don't catch mouse and touch-events any more.
+* (sbormann) Added option to disable virtual datapoint (switch) for widgetes.
+* (sbormann) Fixed url-parameter home.
+
+### 1.2.7 (2020-09-30)
+* (sbormann) Added ADDITIONAL_CONTROLS as universal datapoint to define an array of additional control items that will be displayed inside dialog.
+* (sbormann) Added possibility to renderViews and openDialogs via popup-buttons and postMessage-commands for iframes.
+* (sbormann) Changed behaviour of url-parameter home (this will now also change the link of the first toolbar entry) and added new url-parameter renderView.
+
+### 1.2.6 (2020-09-27)
+* (sbormann) Scroll to element when deactivating fullScreen.
+* (sbormann) Enhanced picture selection drop down and rearranged some images - maybe you need to clear cache to get this working.
+* (sbormann) Added INFO_A and INFO_B to display additional informations in the tile.
+* (sbormann) Added possibility to hide views name.
+* (sbormann) Added possibility to upload html, css and js files and added drop down menu for these files for URL- and BACKGROUND_URL-State.
+* (sbormann) Added option to hide icon, if device is enlarged.
+* (sbormann) Added option set visibility of BACKGROUND_URL/HTML, if device is enlarged.
 
 ### 1.2.5 (2020-09-19)
 * (sbormann) Fix for iOS 14 touch callout.

@@ -108,7 +108,7 @@ Finally, the variables created in the CCU are listed
 ### FAQ
 
 ## Changelog
-### 2.6.21 (2020-09-15)
+### 2.6.22 (2020-09-29)
 * (foxriver76) fixed error where alarm states of hm-rpc instances with instance number >= 10 are created for the wrong instance (issue #111)
 
 ### 2.6.20 (2020-09-15)

@@ -185,6 +185,9 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 1.6.9 (30.09.2020)
+* (simatec) Timeout fix for backup process
+
 ### 1.6.8 (24.09.2020)
 * (simatec) Translations update for Weblate
 * (simatec) dependencies updated

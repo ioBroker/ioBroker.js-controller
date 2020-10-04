@@ -26,17 +26,15 @@ If you like my work, please feel free to provide a personal donation
     ## __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__ release comment
-* (DutchmanNL) 
-
-### 0.2.0-beta.1 (2020-08-29)
+### 0.2.0 (2020-09-29)
 * (DutchmanNL) Update dependency's
 * (DutchmanNL) Update testing, remove node 8 and add node 14
 * (DutchmanNL) Implement automated deployment with githubActions
-* (HGlab01) Bugfix : Fix unhandled information found in DoReadDevices 
-* (HGlab01) Bugfix : Add legacyHeatingInstallationsEnabled to DoHome
-* (LutzHelling) Bugfix : legacyHeatingInstallationsEnabled
+* (HGlab01) Support incident Detection
 * (LutzHelling) Bugfix : Add orientation
+* (LutzHelling) Bugfix : legacyHeatingInstallationsEnabled
+* (HGlab01) Bugfix : Add legacyHeatingInstallationsEnabled to DoHome
+* (HGlab01) Bugfix : Fix unhandled information found in DoReadDevices 
 
 ### 0.1.9
 * (DutchmanNL) Implement Sentry

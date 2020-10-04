@@ -33,6 +33,9 @@ Die aktuellen Messdaten werden von dem Adapter standardmäßig im Stundentakt ak
 
 
 ## Changelog
+### 1.0.6 (2020-10-01)
+* (Peter Müller) Updated dependencies, Hopefully fixed a bug where adapter did not exit as expected
+
 ### 1.0.5 (2020-02-05)
 * (Peter Müller) Use of `extendObject` to update names of existing objects.
 

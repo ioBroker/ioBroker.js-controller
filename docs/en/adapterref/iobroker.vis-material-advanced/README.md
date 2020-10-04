@@ -5,8 +5,8 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.vis-material-advanced.svg)](https://www.npmjs.com/package/iobroker.vis-material-advanced)
 ![Number of Installations (latest)](http://iobroker.live/badges/vis-material-advanced-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/vis-material-advanced-stable.svg)
-[![Dependency Status](https://img.shields.io/david/EdgarM73/iobroker.vis-material-advanced.svg)](https://david-dm.org/EdgarM73/iobroker.vis-material-advanced)
-[![Known Vulnerabilities](https://snyk.io/test/github/EdgarM73/ioBroker.vis-material-advanced/badge.svg)](https://snyk.io/test/github/EdgarM73/ioBroker.vis-material-advanced)
+[![Dependency Status](https://img.shields.io/david/EdgarM73/iobroker.vis-material-advanced.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.vis-material-advanced)
+[![Known Vulnerabilities](https://snyk.io/test/github/EdgarM73/ioBroker.vis-material-advanced/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.vis-material-advanced)
 
 [![NPM](https://nodei.co/npm/iobroker.vis-material-advanced.png?downloads=true)](https://nodei.co/npm/iobroker.vis-material-advanced/)
 
@@ -22,31 +22,28 @@ but rewritten in 90%
 
 Several bugfixes and lots of new widgets added 
 
-## Attention, old widgets ( < 0.5.0 will be corrupted a little bit)
-    you can repair them manually in vis or export them, edit them, and import them again.
-    for manual : replace "opacity-color": "opac-<somecolor>" with "opacity-color": "<somecolor>". replace colorizeByTemp with colorizeByValue
-
-    Example from sigi234 ( example.json ) and my example2.json are in the github for everybody who wants to test them
-
-    Sorry for the inconveniance, but these changes were neccessary to keep code clean and understandable.
-
-    this should not happen very often any more :)
 
 ## following widgets are present right now:
 
 ### current
- - Temperature
- - Humidity
  - Door
  - Window
- - Occupacy
- - Volume
- - Shutter
+ - Temperature
+ - Humidity
+ - Pressure
+ - Temp&Humidity
+ - Occupancy
  - Light
  - Dimmer
  - Light-temperature
+ - Shutter
+ - Volume
+ - Thermostat
  - Boolean
-
+ - Number
+ - Text
+ - Valve
+ 
 ### in progress
 not yet final:
  - Garagedoor
@@ -59,12 +56,15 @@ not yet final:
     following options are available in most of the widgets:
     
     - text-color
-    - cord-icon ( does not yet make sense everywhere, e.g. dimmer )
+    - cardIcon ( does not yet make sense everywhere, e.g. dimmer )
     - opacity color ( the standard opacity color )
     - colorizeByValue ( depending on some values the opacity color can be changed e.g. if it is too hot make it red, to cold blue )
-    - below,above, min, max ( the values for colorieByValue )
+    - below,above, min, max ( the values for colorizeByValue )
     - color-low/high,medium... ( the color to use if border is raised)
     - read-only ( some widgets can be set to read only mode for display only)
+    - border-radius to enable and change the round corner
+    - valueAlign Align the Value field left,center or right
+    - value-vetical Align the Value field top,botton or middle
 
 
 ### Getting started
@@ -78,111 +78,33 @@ On left side choose vis-material-adapter and than all widgets are shown in previ
 thanks to @sigi234
 
 ## Changelog
+<!--
+    Placeholder
+    ### __WORK IN PROGRESS__
+* 
+-->
 
-### 0.5.6
-* type in volume
+### 0.8.14 (2020-10-04)
+* border-fix due to changes in css
 
-### 0.5.5
-* no icons anymore for text and number
+### 0.8.13 (2020-10-03)
+* bugfix LightIcon not switching
+* bugfix Volume Icon not shown if no object is set
 
-### 0.5.2
-* removed (obsolete) class which caused Problems in other widgets
-* added possibility to change the icons for the widgets ( except dimmer )
-
-### 0.5.1
-* some icons resized
-* bugfix: all widgets have now default background-color #121212 but can be changed in settings.
-* reorganized the settings to have some common order
-* new Number and Text Widget ( similar to boolean )
-
-
-### 0.5.0
-* opacity now flexible
-* reorg code
-
-### 0.4.8
-* bugfix alter pfade
-* neues Valve Widget für Thermostate
-
-### 0.4.3
-* neues Boolean widget
-
-### 0.4.2
-* keine Änderungen, nur ein Label für Latest repository
-
-### 0.3.5
-* opacity kann beim Luftdruck frei geählt werden. Erstmal nur um es testen zu können
-
-### 0.3.4
-* Folgende Readonly Widgets: Light,LightDim,LightTemperature,Volume,Shutter
-
-### 0.3.2
-* npm ist erstellt, Pull Request für latest Repo gestellt
-* volume widget hinzugrfügt
-* erste Version vom Garagentor Widget ist erstellt, infos fehlen noch
-* migration von vis-material zu vis-material-advanced ist bestätigt 
-    Wer es sich traut, hier eine "Anleitung" für den Umzug:
-
-    In vis alle widgets markieren und dann auf widgets exportieren klicken.
-
-    Im Editor öffnen und folgende 2 "Suchen und ersetzen" ausführen:
-
-    suchen: widgets/material
-    ersetzen: widgets/vis-material-advanced
-
-    suchen: "widgetSet": "material"
-    ersetzen: "widgetSet": "vis-material-advanced"
-
-    wieder importieren in vis.
-
-### 0.1.0
-* (EdgarM73) copied all functionality to new git and new Adapter
-### 0.0.1
-* (EdgarM73) initial release
+### 0.8.12 (2020-10-01)
+* Value font-size can be changed now
 
 
-### Best Practices
-We've collected some [best practices](https://github.com/ioBroker/ioBroker.repositories#development-and-coding-best-practices) regarding ioBroker development and coding in general. If you're new to ioBroker or Node.js, you should
-check them out. If you're already experienced, you should also take a look at them - you might learn something new :)
+### 0.8.11 (2020-09-30)
+* bugfix fo rwrong htm lin Shutter Widget, thx Sigi234
 
-### Scripts in `package.json`
-Several npm scripts are predefined for your convenience. You can run them using `npm run <scriptname>`
-| Script name | Description                                              |
-|-------------|----------------------------------------------------------|
-| `test:package`    | Ensures your `package.json` and `io-package.json` are valid. |
-| `test` | Performs a minimal test run on package files. |
 
-### Publishing the widget
-Since you have chosen GitHub Actions as your CI service, you can 
-enable automatic releases on npm whenever you push a new git tag that matches the form 
-`v<major>.<minor>.<patch>`. The necessary steps are described in `.github/workflows/test-and-release.yml`.
+### 0.8.10 (2020-09-30)
+* rebase to iobroker-ocmmunity-adapter
+* added option to center Icon
+* added option to have ONLY Title and no subtitle
 
-To get your widget released in ioBroker, please refer to the documentation 
-of [ioBroker.repositories](https://github.com/ioBroker/ioBroker.repositories#requirements-for-adapter-to-get-added-to-the-latest-repository).
 
-### Test the adapter manually on a local ioBroker installation
-In order to install the adapter locally without publishing, the following steps are recommended:
-1. Create a tarball from your dev directory:  
-    ```bash
-    npm pack
-    ```
-1. Upload the resulting file to your ioBroker host
-1. Install it locally (The paths are different on Windows):
-    ```bash
-    cd /opt/iobroker
-    npm i /path/to/tarball.tgz
-    ```
-
-For later updates, the above procedure is not necessary. Just do the following:
-1. Overwrite the changed files in the adapter directory (`/opt/iobroker/node_modules/iobroker.vis-material-advanced`)
-1. Execute `iobroker upload vis-material-advanced` on the ioBroker host
-
-## Changelog
-
-### 0.1.0
-* (EdgarM73) copied all functionality to new git and new Adapter
-### 0.0.1
-* (EdgarM73) initial release
 
 ## License
 MIT License

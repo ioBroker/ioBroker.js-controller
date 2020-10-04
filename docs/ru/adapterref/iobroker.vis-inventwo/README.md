@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: eGiC4Bt+/L2HwgNbAN17yjT6rDdUT7QYCc4kEmlN78k=
+hash: YWH+yCTsCRhLwqXaBGqzNxaKMuAJ35eONHps+0LkY3Y=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -18,16 +18,16 @@ hash: eGiC4Bt+/L2HwgNbAN17yjT6rDdUT7QYCc4kEmlN78k=
 # IoBroker.vis-inventorywo
 ## Schalter Widgets для адаптера ioBroker.vis
 ###### .. ab v 2.0.0
-<table><tr><td><center> <b>Универсальный</b> <br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Мульти</b> <br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Образ</b> <br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Стол</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>Список</b> <br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Шатер</b> <br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Переключатель</b> <br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Ползунок вертикальный</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>Слайдер горизонтальный</b> <br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr></table>
+<table><tr><td><center><b>Универсальный</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Мульти</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Образ</b><br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Таблица</b><br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>Список</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Шатер</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Переключатель</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Ползунок вертикальный</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>Слайдер горизонтальный</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr></table>
 
 ###### .. v 1.3.8
-![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Set.png)
+![Beispiel](http://resources.inventwo.com/github/inventwo/Set.png)
 
 Mit Hilfe unserer Widgets lassen sich folgende Projekte verwirklichen. Zur Zeit нашел свое место в Unserem Adapter NUR die reinen Schaltflächen (siehe oben) und die Icons. Uhr und Wetter stammen aus anderen Adaptern und müssen ggf. zusätzlich installiert werden.
 
-![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Preview.png)
+![Beispiel](http://resources.inventwo.com/github/inventwo/Preview.png)
 
-![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Preview2.png)
+![Beispiel](http://resources.inventwo.com/github/inventwo/Preview2.png)
 ---
 
 ## Unterstützung
@@ -35,9 +35,20 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 (Dieser Link führt zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
-[![Подписка] (admin / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
+[![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.3.2
+- Fehler bei der Navigation mit dem Widget 'View in Widget' behoben
+
+## 2.3.1
+- Фелер в JSON Tabelle behoben
+
+## 2.3.0
+- Problem behoben, bei dem Schaltflächen zweimal Werte senden
+- Datum / Uhrzeit und Bildformat für Tabellenzellen hinzugefügt
+- Универсальный и мульти-виджет-атрибут, указанный в клике, на актуальном виджете
 
 ## 2.2.3
 - Фелер в JSON Tabelle behoben
@@ -115,7 +126,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ### 1.2.0
 - Добавлен виджет изображений
-- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно нажимать каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
+- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно щелкнуть каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
 - Добавлены новые иконки
 
 ### 1.1.1
@@ -128,7 +139,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Изменены виджеты кнопок для использования шрифта и текста по умолчанию.
 
 ### 1.0.0
-- Фон виджета и прозрачность контента, переключатель можно изменить с логического на значение, значки изменены с белого на черный, добавлены бесшовные фоны
+- Фон виджета и прозрачность содержимого, переключатель можно изменить с логического на значение, значки изменены с белого на черный, добавлены бесшовные фоны
 
 ### 0.1.2
 - Исправление ошибок

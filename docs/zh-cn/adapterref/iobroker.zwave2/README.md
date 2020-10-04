@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.zwave2/README.md
 title: ioBroker.zwave2
-hash: 76AaZKaIGzIjbBAgaRyCEbClKkElMkOe7YyuXCZS9mI=
+hash: 2uuGJ31fJ0ME2V3pOopBkWGfYyiOBQ5GSYngapKRVYo=
 ---
 ![商标](../../../en/adapterref/iobroker.zwave2/admin/zwave2.svg)
 
@@ -22,7 +22,7 @@ Z-Wave 2是用于ioBroker的全新Z-Wave实现。它基于[`zwave-js`](https://g
 
 除非[ioBroker.zwave](https://github.com/ioBroker/ioBroker.zwave/)，它不需要`OpenZWave`。这意味着安装和更新速度很快，无需编译静态库和其他复杂步骤。
 
-此外，某些设备无法在原始适配器中使用，例如Fibaro卷帘门3。
+此外，有些设备只是无法在原始适配器中使用，例如Fibaro卷帘门3。
 
 在整个开发过程中，始终牢记在ioBroker中易于使用。例如，某些设备重用配置参数来配置许多不同的东西。在此适配器中，它们中的大多数都分为单独的状态，不需要复杂的数学运算：
 
@@ -34,6 +34,7 @@ Z-Wave 2是用于ioBroker的全新Z-Wave实现。它基于[`zwave-js`](https://g
 
 ##文档和用法
 * [FAQ]（docs / zh / FAQ.md）
+* [故障排除]（docs / en / troubleshooting.md）·[贝问题]（docs / de / bei-problemen.md）
 
 ---
 
@@ -43,6 +44,24 @@ Z-Wave 2是用于ioBroker的全新Z-Wave实现。它基于[`zwave-js`](https://g
 	Placeholder for next versions:
 	### __WORK IN PROGRESS__
 -->
+
+### 1.7.3 (2020-10-03)
+* Fixed two crashes during the `Notification CC` interview
+
+### 1.7.2 (2020-10-01)
+* Added an option to improve the compatibility with legacy switches. If this option is enabled, `targetValue` (Binary and Multilevel Switch) will be overwritten with `currentValue` whenever `currentValue` is updated.
+* When healing the network, the progress should now show up immediately
+* Fixed two crash sources
+* Several improvements to `Notification CC`
+  * The interview now detects whether a node is push or pull
+  * Push nodes now have their supporting values set to idle if no value is yet known
+  * Pull nodes are now auto-refreshed every 6 hours and on wakeup
+* Including secure devices now fails if the device takes too long to respond (as required by the specifications)
+
+### 1.7.1 (2020-09-29)
+* Added two options to increase the driver timeouts and/or send attempts. This should allow increasing the network stability at the cost of decreased responsiveness.
+* Added support for `User Code CC V2`
+* Fix: Nodes are no longer marked as dead or asleep if they acknowledge a message but don't respond to it
 
 ### 1.7.0 (2020-09-25)
 * The `quality` parameter is now set for state updates when reading (potentially stale) values from the cache
@@ -65,16 +84,6 @@ Z-Wave 2是用于ioBroker的全新Z-Wave实现。它基于[`zwave-js`](https://g
 ### 1.6.3 (2020-09-04)
 * Further performance optimization
 * Improved compatibility with devices that send invalid `Multi Channel CC` commands
-
-### 1.6.2 (2020-09-04)
-* Reduced CPU load in large networks
-
-### 1.6.1 (2020-09-01)
-* Fixed interview issues with devices that claim they support `Basic CC`, but don't respond
-
-### 1.6.0 (2020-08-29)
-* Added the possibility to send `Multilevel Sensor Report`s from scripts
-* Dependency updates for bug and security fixes
 
 ## License
 

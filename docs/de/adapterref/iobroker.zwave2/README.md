@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.zwave2/README.md
 title: ioBroker.zwave2
-hash: 76AaZKaIGzIjbBAgaRyCEbClKkElMkOe7YyuXCZS9mI=
+hash: 2uuGJ31fJ0ME2V3pOopBkWGfYyiOBQ5GSYngapKRVYo=
 ---
 ![Logo](../../../en/adapterref/iobroker.zwave2/admin/zwave2.svg)
 
@@ -20,7 +20,7 @@ hash: 76AaZKaIGzIjbBAgaRyCEbClKkElMkOe7YyuXCZS9mI=
 
 Z-Wave 2 ist eine brandneue Z-Wave-Implementierung für ioBroker. Es basiert auf [`zwave-js`](https://github.com/AlCalzone/node-zwave-js), die von Grund auf zu Ihrem Vorteil geschrieben wurden.
 
-Sofern nicht [`ioBroker.zwave`](https://github.com/ioBroker/ioBroker.zwave/), sind keine `OpenZWave` erforderlich. Dies bedeutet, dass die Installation und Aktualisierungen schnell sind und keine Kompilierung statischer Bibliotheken und anderer komplizierter Schritte erforderlich ist.
+Sofern nicht ["BioBroker.zwave"](https://github.com/ioBroker/ioBroker.zwave/), sind keine `OpenZWave` erforderlich. Dies bedeutet, dass die Installation und Aktualisierungen schnell sind und keine Kompilierung statischer Bibliotheken und anderer komplizierter Schritte erforderlich ist.
 
 Darüber hinaus funktionieren einige Geräte im Originaladapter einfach nicht, z. der Fibaro Rollladen 3.
 
@@ -28,12 +28,13 @@ Die einfache Verwendung in ioBroker wurde während der gesamten Entwicklung ber�
 
 | Konfigurationsparameter in ioBroker.zwave2 | vs | Konfigurationsparameter in ioBroker.zwave |
 | ![] (docs / de / images / config-params.png) | vs | ! [](../../../en/adapterref/iobroker.zwave2/docs/de/images/config-params-legacy.png) |
-| ! [] (docs / de / images / config-params.png) | vs | ! [] (docs / de / images / config-params-legacy.png) |
+| ! [] (docs / de / images / config-params.png) | vs | ! [] (docs / de / images / config-params-Legacy.png) |
 
 ---
 
 ## Dokumentation und Verwendung
 * [FAQ] (docs / de / FAQ.md)
+* [Fehlerbehebung] (docs / de / Troubleshooting.md) · [bei Beschwerden] (docs / de / bei-problemen.md)
 
 ---
 
@@ -43,6 +44,24 @@ Die einfache Verwendung in ioBroker wurde während der gesamten Entwicklung ber�
 	Placeholder for next versions:
 	### __WORK IN PROGRESS__
 -->
+
+### 1.7.3 (2020-10-03)
+* Fixed two crashes during the `Notification CC` interview
+
+### 1.7.2 (2020-10-01)
+* Added an option to improve the compatibility with legacy switches. If this option is enabled, `targetValue` (Binary and Multilevel Switch) will be overwritten with `currentValue` whenever `currentValue` is updated.
+* When healing the network, the progress should now show up immediately
+* Fixed two crash sources
+* Several improvements to `Notification CC`
+  * The interview now detects whether a node is push or pull
+  * Push nodes now have their supporting values set to idle if no value is yet known
+  * Pull nodes are now auto-refreshed every 6 hours and on wakeup
+* Including secure devices now fails if the device takes too long to respond (as required by the specifications)
+
+### 1.7.1 (2020-09-29)
+* Added two options to increase the driver timeouts and/or send attempts. This should allow increasing the network stability at the cost of decreased responsiveness.
+* Added support for `User Code CC V2`
+* Fix: Nodes are no longer marked as dead or asleep if they acknowledge a message but don't respond to it
 
 ### 1.7.0 (2020-09-25)
 * The `quality` parameter is now set for state updates when reading (potentially stale) values from the cache
@@ -65,16 +84,6 @@ Die einfache Verwendung in ioBroker wurde während der gesamten Entwicklung ber�
 ### 1.6.3 (2020-09-04)
 * Further performance optimization
 * Improved compatibility with devices that send invalid `Multi Channel CC` commands
-
-### 1.6.2 (2020-09-04)
-* Reduced CPU load in large networks
-
-### 1.6.1 (2020-09-01)
-* Fixed interview issues with devices that claim they support `Basic CC`, but don't respond
-
-### 1.6.0 (2020-08-29)
-* Added the possibility to send `Multilevel Sensor Report`s from scripts
-* Dependency updates for bug and security fixes
 
 ## License
 

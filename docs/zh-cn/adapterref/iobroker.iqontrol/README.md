@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
+hash: r3CdNsq+QT1O9zMwkmU8QfjKhX75QuUDMXPcmO3AffQ=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -23,7 +23,7 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 | Linux / Mac / Windows：跨浏览器检查： |
 | --- | --- |
 
-\ **如果喜欢，请考虑捐赠：**
+\ **如果您喜欢，请考虑捐赠：**
 
 [![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=LDHZMNPXKRX2N&source=url)
 
@@ -94,14 +94,17 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 *通过``http [s]：// <iobroker的URL或ip>：<Web适配器的端口> /iqontrol/index.html调用前端
     *``<网络适配器端口>''通常是8082
 *要打开指定的实例，您可以添加“ namespace = iqontrol。<instance-number>”作为URL参数
-*要打开指定的视图作为主页，可以添加“ home = <viewID>”作为URL参数
-    *``<viewID>``的格式必须像``iqontrol。<instance-number> .Views。<view-name>``
+*要打开指定的视图，可以添加“ renderView = <viewID>”作为URL参数。
+    *``<viewID>``需要像`iqontrol。<instance-number> .Views。<view-name>``一样格式化
 *注意：这是区分大小写的！
-*要在加载页面时打开指定的对话框，可以添加“ openDialog = <deviceID>”作为URL参数
-    *``<deviceID>''的格式必须类似于``iqontrol。<instance-number> .Views。<view-name> .devices。<device-number>``，其中``<device-number>``从0开始（因此视图中的第一个设备是设备号0）
+*要打开指定的视图作为主页，可以添加“ home = <viewID>”作为URL参数。这也将更改第一个工具栏条目的链接视图！
+    *``<viewID>``需要像`iqontrol。<instance-number> .Views。<view-name>``一样格式化
+*注意：这是区分大小写的！
+*要在加载页面时打开指定的对话框，您可以添加“ openDialog = <deviceID>”作为URL参数
+    *``<deviceID>''的格式必须类似于ʻʻiqontrol。<instance-number> .Views。<view-name> .devices。<device-number>``，其中``<device-number>``从0开始（因此视图中的第一个设备是设备号0）
 *注意：这是区分大小写的！
 *要设置或覆盖时间设置后的返回，请使用以下参数：
-*``returnAfterTimeTreshold = <time in seconds> ``设置时间，之后将调用目标视图。使用``0&#39;&#39;禁用定时返回功能。
+*``returnAfterTimeTreshold =<time in seconds> ``设置时间，之后将调用目标视图。使用``0&#39;&#39;禁用定时返回功能。
 *``returnAfterTimeDestiationView = <viewID>``设置视图，在阈值之后调用。如果未指定，将使用主视图。
 *如果您从壁挂式平板电脑上调用iQontrol，这些选项会很有用，使用后该平板电脑应自动返回主视图
 
@@ -112,10 +115,10 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 
 ##图标和背景图片
 *您可以使用内置图像或在“图像”标签下上传的图像或您喜欢的任何免费网址
-*您也可以在图片网址中使用变量。例如，这对于天气预报而言可能是有用的。使用此模式：
+*您也可以在图片网址中使用变量。例如，这对于天气预报而言可能是有用的。使用以下模式：
     *``路径/到/firstloaded.png |另一个路径/到/{iobrokerstate|fallback}.png”
     *示例：``./../ iqontrol.meta / userimages / demo / bottle.jpg | ./../ iqontrol.meta / userimages / demo / {javascript.0.myimage | whitestone} .jpg''
-*打开视图时加载``./../iqontrol.meta/userimages/demo/bottle.jpg''
+*打开视图时加载``./../ iqontrol.meta / userimages / demo / bottle.jpg``
 *从服务器获取javascript.0.myimage的状态后，图像将立即替换为./../iqontrol.meta/userimages/demo/XXX.jpg，其中XXX是javascript.0.myimage的值
 *如果javascript.0.myimage没有值，将使用后备的whitestone（使用后备是可选的）
 
@@ -133,19 +136,21 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 *另外，可以将iobrokerstate放在方括号中，然后将使用不带其单位的普通值：“加载时的文本|加载{[iobrokerstate] | fallback}之后的文本”
     *示例：“天气正在加载|天气：{javascript.0.weather |未找到天气数据}”
 *打开视图时显示``天气正在加载''
-*从服务器获取javascript.0.weather状态后，文本将被Weather XXX替换，其中XXX是javascript.0的值。天气``
+*一旦从服务器获取了javascript.0.weather状态，该文本将替换为Weather：XXX，其中XXX是javascript.0的值。天气``
 *如果``javascript.0.weather''没有值，将使用回退``No weather data found''（使用回退是可选的）
 
 ##弹出消息
-*每个实例都会创建状态``iqontrol.x.Popup.Message''
+*每个实例都会创建状态“ iqontrol.x.Popup.Message”
 *将值传递到此状态时，将显示弹出消息（或吐司）
 *您可以使用html标签来格式化消息文本
 *还有一些其他状态可以进一步自定义显示的弹出窗口（必须在设置消息数据点之前设置这些状态）：
     *``持续时间''：这是显示消息的时间，以毫秒为单位;如果设置为0，则必须确认消息
-    *``ClickedValue''和``ClickedDestinationState''：如果用户单击了弹出窗口，则``ClickedValue''中的值将发送到``iqontrol.x.Popup.POPUP_CLICKED''中，如果指定了其他值到``ClickedDestinationState''中的数据点
+    *“ ClickedValue”和“ ClickedDestinationState”：如果用户单击了弹出窗口，则“ ClickedValue”中的值将被发送到“ iqontrol.x.Popup.POPUP_CLICKED”，如果指定，还将附加到``ClickedDestinationState''中的数据点
         *如果未指定任何值，则将使用“ true”
     *“ ButtonNames”：您可以在此处指定以逗号分隔的按钮列表，该列表将显示在弹出窗口的底部（例如“ OK，中止”）
-        *``ButtonValues''和``ButtonDestinationStates''：这些是逗号分隔的值列表，这些值将被发送到``iqontrol.x.Popup.BUTTON_CLICKED''，并且如果指定的话，将附加到``ButtonDestinationStates''中的数据点`，如果用户单击相应的按钮
+        *“ ButtonValues”和“ ButtonDestinationStates”：这些是逗号分隔的值列表，这些值将被发送到“ iqontrol.x.Popup.BUTTON_CLICKED”，并且，如果指定的话，将附加到“ ButtonDestinationStates”中的数据点。 `，如果用户单击相应的按钮
+*您可以使用命令COMMAND：renderView和COMMAND：openDialog作为ButtonDestinationState来代替数据点，以呈现视图或打开对话框
+*然后，ButtonValue指定视图的响应。对话框，格式必须为“ iqontrol。<实例号>。视图”。<视图名称> iqontrol。<instance-number> .Views。<view-name> .devices。<device-number>``其中，<device-number>``从0开始（因此视图中的第一个设备是device数字0）
 *如果仅使用一个值（而不是用逗号分隔的列表），则此值将用于所有按钮
 *如果您将“ ButtonValues”留空，则将使用按钮的名称
 *如果仅使用一个目标状态（而不是用逗号分隔的列表），则此状态将用于所有按钮
@@ -161,7 +166,7 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 *您可以在此处定义到网站的链接（通过Background_URL）或放置直接的HTML代码（通过Background_HTML），这些代码将显示为图块的背景
 *这使您可以将内容（交互式）放置在图块内（如时钟，FLOT图，表格，天气预报等）
 *默认情况下，鼠标事件将定向到该内容（因此，您将无法再单击图块本身），但是可以使用“将鼠标事件直接定向到图块而不是到Background_URL / HTML的内容”选项禁用此功能
-* iQontrol提供了一个设备角色“窗口小部件”，其中具有一些预定义的选项集，这些选项通常在将网站显示为窗口小部件时使用。但是，通过适当地修改设备选项，您可以在任何其他角色上获得相同的结果。
+* iQontrol提供了一个设备角色“窗口小部件”，其中具有一些预定义的选项集，这些选项将在将网站显示为窗口小部件时主要使用。但是，通过适当地修改设备选项，您可以在任何其他角色上获得相同的结果。
 
 ![弹出屏幕截图](../../../en/adapterref/iobroker.iqontrol/img/widget_screenshot.png)
 
@@ -169,19 +174,21 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 *从技术上讲，BACKGROUND_URL / HTML的内容放置在称为iframe的HTML元素内，该元素是网站内部的网站
 *通过启用选项“允许Background_URL / HTML的postMessage-Communication”，您可以启用此iframe中的网站与iQontrol本身之间的postMessage-Communication。
 *要将命令发送到iQontrol，可以使用以下javascript命令：``window.parent.postMessage（message，“ *”）;''
-    *``message``是格式为``{command：command，stateId：stateId，value：value}''的javascript对象
+    *``message``是一个JavaScript对象，其格式为``{command：command，stateId：stateId，value：value}``
     *支持以下消息命令：
         *``{command：“ setState”，stateId：<stateId>，value：<value>}``-这会将ioBroker状态``<stateId>``设置为值``<value>``（ `<value>``可以是字符串，数字或布尔值，也可以是诸如``{val：<value>，ack：true | false}''之类的对象）
         *``{command：“ getState”，stateId：<stateId>}``-这将导致iQontrol发送ioBroker状态``<stateId>''的值（请参见下面的接收应答消息的方法）
         *``{命令：“ getStateSubscribed”，stateId：<stateId>}``-这将导致iQontrol立即以及每次其值更改时发送ioBroker状态“ <stateId>”的值（请参见下面的方法收到答复消息）
+        *``{命令：“ renderView”，值：<viewID>}``-这将指示iQontrol渲染视图，其中的<viewID>必须像`iqontrol一样格式化。<instance-number> .views。<视图名称>``（区分大小写）
+        *``{命令：“ openDialog”，值：<deviceID>}``-这将指示iQontrol打开对话框，其中“ <deviceID>”的格式必须与`ʻiqontrol。<instance-number> .views。<视图名称> .devices。<设备编号>``，其中``<设备编号>``从0开始（因此视图上的第一个设备是设备编号0）
 *要从iQontrol接收消息，您需要使用javascript命令``window.addEventListener（“ message”，receivePostMessage，false）;向“ message”事件注册一个事件监听器。
-    *函数``receivePostMessage''接收对象``event''
-*``event.data``包含来自iqontrol的消息，它将是一个类似于以下内容的对象：
+    *函数``receivePostMessage''接收对象`ʻevent``
+*`event.data``包含来自iqontrol的消息，该消息将是一个对象，例如：
 *``{command：“ getState”，stateId：<stateId>，value：<value>}``-这将是对getState-command或getStateSubsribed-command的回答，并为您提供实际的<value> ``-ioBroker状态的对象``<stateId>''
 * URL / HTML-State可以使用相同的概念，用于在设备对话框内显示网站
 *参见以下示例网站：
 
-<details><summary>显示示例网站，将其显示为带有postMessage-communication的小部件： </summary>
+<details><summary>显示示例网站，将其显示为带有postMessage-communication的小部件：</summary>
 
 *您可以使用以下HTML代码并将其复制到小部件的Background_HTML-State（然后将其配置为“常量”）
 *激活选项“允许对Background_URL / HTML进行postMessage通讯”
@@ -198,6 +205,8 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 	<button onclick="getState('system.adapter.admin.0.cpu')">getState system.adapter.admin.0.cpu</button><br>
 	<button onclick="getStateSubscribed('system.adapter.admin.0.uptime')">getStateSubscribed system.adapter.admin.0.uptime</button><br>
 	<button onclick="setState('iqontrol.0.Popup.Message', 'Hey, this is a test Message')">setState popup message</button><br>
+	<button onclick="renderView('iqontrol.0.Views.Home')">renderView 'Home'</button><br>
+	<button onclick="openDialog('iqontrol.0.Views.Home.devices.0')">openDialog 1st device on 'Home'</button><br>
 	<br>
 	message sent: <span id="messageSent">-</span><br>
 	<br>
@@ -222,6 +231,16 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 		//setState
 		function setState(stateId, value){
 			sendPostMessage("setState", stateId, value);
+		}
+
+		//renderView
+		function renderView(viewId){
+			sendPostMessage("renderView", null, viewId);
+		}
+
+		//openDialog
+		function openDialog(deviceId){
+			sendPostMessage("openDialog", null, deviceId);
 		}
 
 		//send postMessages
@@ -256,7 +275,7 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 每个设备都有一个角色，该角色定义了设备的功能。每个角色都会生成一组状态，这些状态可以链接到相应的iobroker状态。
 如果使用自动创建功能，则可以从iobroker-object树中选择一个现有设备。自动创建会尝试找出角色并匹配尽可能多的状态。
 这仅适用于已知设备。对于未知设备，以及要赋予设备高级功能，您可以通过（+）-按钮手动添加它们，或编辑由自动创建功能创建的设备。
-要编辑设备的角色和状态，请单击设备后面的铅笔。您将在下面找到角色和已用状态的简短描述：
+要编辑设备的角色和状态，请单击设备后面的铅笔。您会在下面找到角色和使用状态的简短描述：
 
 ###修改数据点配置
 您可以通过设备配置对话框或iobroker的objects-tab中数据点后面的扳手图标来修改数据点的配置。在这里您可以：
@@ -264,7 +283,7 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 *设置只读标志
 *设置反转标志
 *设置Confirm-Flag（强制用户在将更改写入数据点之前进行确认）
-*设置PIN码（强制用户在将更改写入数据点之前输入此PIN码-但要注意：这仅是低安全性，因为在前端检查了PIN码！使用数字来显示全屏-pin-pad（如果要求输入代码）
+*设置PIN码（强制用户在将更改写入数据点之前输入此PIN码-但要注意：这仅是低安全性，因为在前端检查了PIN码！使用数字显示全屏-pin-pad（如果要求输入代码）
 *修改数据点的单位，以零，单数和复数形式分开
 *修改数据点的最小值和最大值
 *设置水平滑块在增加/减少时采取的步骤
@@ -277,8 +296,8 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
     *除了目标值ID外，您还可以为不同的键定义不同的数据点ID和目标值（键是原始数据点的可能值）
     *您也可以在键和目标值中使用通配符``*''
 *示例：
-*键：``TuneIn-Playlist：*''，目标数据点ID：``alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist''，目标值：``*''
-*如果用户输入``TuneIn-Playlist：Ambient''，则值``Ambient''将被写入``alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist``
+*键：“ TuneIn-Playlist：*”，目标数据点ID：“ʻalexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist”，目标值：“ *”
+*如果用户输入“ TuneIn-Playlist：Ambient”，则将“ Ambient”值写入“ alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist”
 
 ![CustomDialog调用](img/custom_call.png)![CustomDialog示例](img/custom_dialog.png)![目标值列表的概念](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
 
@@ -301,15 +320,17 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
 
     *您可以通过修改数据点来创建自己的值列表（iobroker的objects-tab中数据点后面的扳手图标，请参见上文）
 *在以下情况下，iQontrol将在对话框中显示定义的valueList作为下拉字段：
-*如果type是'numbers'，并且valueList的条目数与数据点的最小值和最大值之间的步数完全相同，或者
+*如果type是'numbers'并且valueList的条目数与数据点的最小值和最大值之间的步数完全相同，或者
 *如果类型为“布尔值”，但角色不是“开关”或
 *如果类型为“字符串”或
 *如果激活了“添加选项以输入自由文本”
-*是否通过状态或级别数据点确定设备块将显示为活动还是不活动。此外，您可以在选项部分“活动图块的条件”中自由自定义行为。您甚至可以设置另一个确定贴砖状态的外部数据点
+*还可以根据STATE或LEVEL-Datapoint确定设备磁贴将显示为活动还是非活动。此外，您可以在选项部分“活动图块的条件”中自由自定义行为。您甚至可以设置另一个确定贴砖状态的外部数据点
 
 但是，并非每种类型对每个角色都有意义。因此，例如，在大多数情况下，开关的状态将为布尔值，以便可以在开和关之间进行切换。可能会显示一个字符串，但是该开关将不起作用。
 
 ####其他一般状态：
+* ** INFO_A **和** INFO_B **：* array *-数据点和图标的数组，将周期性地显示在图块的右上方
+* **ADDITIONAL_CONTROLS** *array* 数据点数组，定义了将在信息对话框中显示的其他控制元素
 * **ADDITIONAL_INFO** *array* 数据点的数组，将显示在信息对话框的底部
 * **URL** 常量或DATAPOINT *字符串*-该URL将在对话框中以iframe的形式打开
 * **HTML** 常量或数据点*字符串*-如果未指定URL-Datapoint，则此标记将显示在iframe中
@@ -319,22 +340,22 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
     *您可以在选项部分“电池空图标”中进一步自定义电池图标的行为
 * **错误**：*布尔值*-为true时，将显示一些感叹号图标
 * **UNREACH** *布尔值*-为true时，将显示一个小的无线图标
-    *行为可以在选项的“常规”部分中反转（使用连接而不是未连接）
+    *行为可以在选项的“常规”部分中反转（使用已连接而不是未连接）
 
 ###链接到其他视图：
 *没有其他状态
 * **链接视图属性**直接打开
 
-### <img src="img/icons/switch_on.png" width="32">开关：
+###<img src="img/icons/switch_on.png" width="32">开关：
 * **STATE** *布尔值*-显示和设置开/关状态
 * **电源**：*数字*-功耗将在右上角以小号显示
 
-### <img src="img/icons/button.png" width="32">按键：
+###<img src="img/icons/button.png" width="32">按键：
 * **STATE** *任何*-任何所需的状态类型
 * **SET_VALUE** CONSTANT *string* 这是一个常数（不是链接的iobroker状态！），如果按下按钮，它将分配给STATE
 * **OFF_SET_VALUE** 常量*字符串*-这是一个常数（不是链接的iobroker状态！）。如果已定义，则将在in选项中定义的时间或100ms之后将STATE重置为该值。
 
-### <img src="img/icons/light_on.png" width="32">光：
+###<img src="img/icons/light_on.png" width="32">光：
 每个灯可能具有以下一种或两种状态：
 
 * **STATE** *布尔值*-显示和设置开/关状态
@@ -350,7 +371,7 @@ hash: 2GhH9UoWvRSwLxgKGfwPnXD3w4/sMFM1Yg1L9Wl07SA=
  ***CT*** 字*-灯光的色温（如果有两个白色阴影）
  ***WHITE_BRIGHTNESS*** 字*-白色LED的亮度（如果您处于LEVEL状态且没有彩色LED，则将忽略此亮度，因为亮度完全由LEVEL控制）
 *替代色彩空间：
- ***ALTERNATIVE_COLORSPACE_VALUE*** 符串*或*数字*（取决于所选的色彩空间）-替代色彩空间的值
+ ***ALTERNATIVE_COLORSPACE_VALUE*** 符串*或*数字*（取决于所选色彩空间）-替代色彩空间的值
 
     如果您的设备不支持使用HUE，SATURATION和COLOR_BRIGHTNESS（HSB / HSV色彩空间），则可以使用多种替代色彩空间。在设备选项中，您可以选择以下颜色空间之一：
 
@@ -366,7 +387,7 @@ modulo(-3.60 * (MilightHue/2.55 - 66), 360);
 on modulo(n, m){ return ((n % m) + m) %m; }
 ````
 
-切记：转换到替代色彩空间是由前端完成的，因此只有在打开了iQontrol的情况下，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为避免对话循环，建议您要么使用原始色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
+切记：转换到替代色彩空间是由前端完成的，因此只有在iQontrol在某个地方打开时，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为避免对话循环，建议您要么使用原始色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
 
 *效果模式：
     * **效果**：*值列表*-播放效果
@@ -375,12 +396,12 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 *其他：
     * **电源**：*数字*-功耗将在右上角以小号显示
 
-### <img src="img/icons/fan_on.png" width="32">风扇：
+###<img src="img/icons/fan_on.png" width="32">风扇：
 * **STATE** *布尔值*-显示和设置开/关状态
-* **LEVEL** *数字*或*值列表*-风扇速度
+* **等级**：*数字*或*值列表*-风扇速度
 * **电源**：*数字*-功耗将在右上角以小号显示
 
-### <img src="img/icons/radiator.png" width="32">温控器：
+###<img src="img/icons/radiator.png" width="32">温控器：
 * **SET_TEMPERATURE** *数字*-目标温度
 * **温度**：*数字*-实际温度在右上角以小号显示
 * **湿度**：*数字*-实际湿度在右上角以小号显示
@@ -388,89 +409,89 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **WINDOW_OPENING_REPORTING** *布尔值*-如果为true，则显示一个打开的小窗口
 * **VALVE_STATES** 名称和数字数组-显示与恒温器关联的阀门的开度
 
-### <img src="img/icons/radiator.png" width="32">恒温器：
+###<img src="img/icons/radiator.png" width="32">恒温器：
 除常规恒温器外，您还可以定义：
 
 * **PARTY_TEMPERATURE** *字符串*-特殊格式的字符串，用于定义恒温器的聚会或假期模式
 * **BOOST_STATE** *数字*-显示恒温器的剩余启动时间
 
-### <img src="img/icons/temperature.png" width="32">温度感应器， <img src="img/icons/humidity.png" width="32">湿度传感器：
+###<img src="img/icons/temperature.png" width="32">温度感应器，<img src="img/icons/humidity.png" width="32">湿度传感器：
 * **STATE** *数字*-将在设备下部显示的温度或湿度
 * **温度**：*数字*-温度将在右上角以小号显示
 * **湿度**：*数字*-湿度将在右上角以小号显示
 * **链接视图属性**直接打开
 
-### <img src="img/icons/brightness_light.png" width="32">亮度传感器：
+###<img src="img/icons/brightness_light.png" width="32">亮度传感器：
 * **STATE** *数字*-将在设备下部显示的亮度
 * **亮度**：*数字*-亮度将在右上角以小号显示
 * **链接视图属性**直接打开
 
-### <img src="img/icons/motion_on.png" width="32">运动传感器：
+###<img src="img/icons/motion_on.png" width="32">运动传感器：
 * **STATE** *布尔值*-显示是否检测到运动
 * **链接视图属性**直接打开
 
-### <img src="img/icons/door_closed.png" width="32">门， <img src="img/icons/window_closed.png" width="32">窗口：
+###<img src="img/icons/door_closed.png" width="32">门，<img src="img/icons/window_closed.png" width="32">窗口：
 * **STATE** *布尔值*-在门或窗打开或关闭时显示
-    *或者，您可以分配*值列表*，以显示其他状态，例如“倾斜”（在窗口选项中，您可以定义代表打开的文本，代表倾斜的文本以显示正确的图标）
+    *或者，您可以分配*值列表*，以显示其他状态，例如“倾斜”（在窗口选项中，您可以定义代表打开，倾斜的文本代表正确的图标）
     *您还可以分配*字符串*以显示任何文本，例如“ 3个窗口打开”或“全部关闭”或*数字*
 * **链接视图属性**直接打开
 
-### <img src="img/icons/garagedoor_closed.png" width="32">车库门：
+###<img src="img/icons/garagedoor_closed.png" width="32">车库门：
 * **STATE** *布尔值*-显示门是打开还是关闭
     *或者，您可以分配*值列表*，以显示其他状态，例如“倾斜”
     *您还可以分配* string *以显示任何文本，例如“ 3扇门打开”或“全部关闭”
 * **TOGGLE** *布尔值*-显示“切换”按钮，如果按下，则设置为true
 
-### <img src="img/icons/door_locked.png" width="32">带锁门：
+###<img src="img/icons/door_locked.png" width="32">带锁门：
 * **STATE** *布尔值*-显示门是打开还是关闭（门/窗接触）
-* **LOCK_STATE** *布尔值*-显示和控制门是否已锁定或未锁定（如果STATE为true，则禁用控件-因为您无法锁定门而已打开）
+* **LOCK_STATE** *布尔值*-显示和控制门是否被锁定或解锁（如果STATE为true，则禁用控件-因为您无法锁定门而已打开）
 * **LOCK_STATE_UNCERTAIN** *布尔值*-如果为true，则状态将以斜体显示，以表示锁的确切位置未知
 * **LOCK_OPEN** *布尔值*-如果设置为true，则门将完全打开
 
-### <img src="img/icons/blind_middle.png" width="32">盲：
+###<img src="img/icons/blind_middle.png" width="32">盲：
 * **等级**：*数量*-百叶窗高度
 * **方向**：*值列表*-可以是停止，向上和向下。可以配置代表Stop，Up，Down和Unknown的值
 * **STOP** *布尔值*-如果按下停止按钮，则设置为true
-* ** UP ** / ** DOWN **：*布尔值*-如果按下向上/向下按钮（对于使用UP和DOWN数据点而不是LEVEL或除LEVEL之外的设备），则设置为true。另外，您可以通过** UP_SET_VALUE ** / ** DOWN_SET_VALUE **数据点定义一个值。如果已定义，则在按下“向上” /“向下”按钮时，将发送此值而不是true
+* ** UP ** / ** DOWN **：*布尔值*-如果按下向上/向下按钮（对于使用UP和DOWN数据点而不是LEVEL或除LEVEL之外的设备），则设置为true。另外，您可以通过** UP_SET_VALUE ** / ** DOWN_SET_VALUE **数据点定义一个值。如果已定义，则在按下“向上/向下”按钮时将发送此值，而不是发送真值
 * ** FAVORITE_POSITION **：*布尔值*-可用于调出喜欢的位置。如果按下“收藏夹”按钮（可以在设备设置中配置按钮标题），则将true发送到该数据点。另外，您可以通过** FAVORITE_POSITION_SET_VALUE **数据点定义一个值。如果已定义，则当按下“收藏夹”按钮时，将发送此值而不是true
 * **SLATS_LEVEL** *数量*-百叶板的位置百分比
 
-### <img src="img/icons/fire_on.png" width="32">火灾传感器：
-* **STATE** *布尔值*-如果为true，则传感器将显示为已触发
+###<img src="img/icons/fire_on.png" width="32">火灾传感器：
+* **STATE** *布尔值*-如果为true，传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
     *您还可以分配* string *来显示任何文本，例如“楼上火灾”
 * **链接视图属性**直接打开
 
-### <img src="img/icons/flood_on.png" width="32">洪水传感器：
-* **STATE** *布尔值*-如果为true，则传感器将显示为已触发
+###<img src="img/icons/flood_on.png" width="32">洪水传感器：
+* **STATE** *布尔值*-如果为true，传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
     *您还可以分配* string *来显示任何文本，例如“楼上洪水”
 * **链接视图属性**直接打开
 
-### <img src="img/icons/alarm_on.png" width="32">报警：
-* **STATE** *布尔值*-如果为true，则传感器将显示为已触发
+###<img src="img/icons/alarm_on.png" width="32">报警：
+* **STATE** *布尔值*-如果为true，传感器将显示为已触发
     *或者，您可以分配*值列表*，以显示其他状态，例如“篡改”
     *您还可以分配* string *来显示任何文本，例如“楼上火灾”
 * **CONTROL_MODE** *值列表*-选择操作模式，例如“武装”和“撤防”
     *在设备选项中，您可以定义代表撤防的值，因此可以显示代表图标
 
-### <img src="img/icons/battery_full.png" width="32">电池：
-* **状态**：*数量*-电池电量百分比
+###<img src="img/icons/battery_full.png" width="32">电池：
+* **州**：*数字*-电池电量百分比
 * **CHARGING** *布尔值*-如果为true，则显示一个充电图标
 * **电源**：*数字*-功耗将在右上角以小号显示
 * **VOLTAGE** *数字*-电压将在右上角以小号显示
 
-### <img src="img/icons/value_on.png" width="32">值：
+###<img src="img/icons/value_on.png" width="32">值：
 * **STATE** *任何*-要显示的任何有效状态（请查看“常规状态”部分）
 * **等级**：*数字*-将在对话框中产生一个滑块
 
-### <img src="img/icons/play_on.png" width="32">程序：
+###<img src="img/icons/play_on.png" width="32">程序：
 * **STATE** *布尔值*-如果设置为true，则程序将启动
 
-### <img src="img/icons/play.png" width="32">现场：
+###<img src="img/icons/play.png" width="32">现场：
 * **STATE** *布尔值*-如果场景处于活动状态，则显示。根据场景的配置（虚拟组，启用或禁用false的设置值），切换命令将发送true，false，min，0，max或100。有一个选项始终发送true（禁用切换） 。
 
-### <img src="img/icons/media_on.png" width="32">媒体播放器/遥控器：
+###<img src="img/icons/media_on.png" width="32">媒体播放器/遥控器：
 * **STATE** *字符串*-“播放”，“暂停”或“停止”或*布尔值*-播放为true，停止为false
     *在设备选项中，您可以定义代表播放，暂停和停止的值
 * **COVER_URL** *字符串*-封面图片的网址
@@ -486,7 +507,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 #####要显示“通用遥控器”，您可以定义以下状态：
 * **REMOTE_NUMBER** *字符串*-显示数字键盘，如果单击数字，则返回相应的数字
 * **REMOTE_VOLUME_UP，REMOTE_VOLUME_UP，REMOTE_CH_UP，REMOTE_CH_DOWN** *string* 显示音量调高/调低和频道调高/调低的按钮，如果对应，则返回“ volumeUp”，“ volumeDown”，“ chUp”或“ chDown”按下按钮
-* **REMOTE_PAD_DIRECTION，REMOTE_PAD_BACK，REMOTE_PAD_HOME，REMOTE_PAD_MENU** *字符串*-显示用于导航和返回的触控板
+* **REMOTE_PAD_DIRECTION，REMOTE_PAD_BACK，REMOTE_PAD_HOME，REMOTE_PAD_MENU** *string* 显示用于导航和返回的触控板
     *如果单击打击板的中间位置，则为“确定”，
 *如果单击打击垫的边缘或沿相应的方向滑动打击垫，则为“左”，“右”，“上”或“下”
 *'返回'，'主页'或'菜单*，如果单击了相应的按钮
@@ -495,22 +516,22 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **REMOTE_ADDITIONAL_BUTTONS** *array* 按钮数组。如果单击按钮，则按钮的名称将发送到相应的状态ID
 * **REMOTE_HIDE_REMOTE** *布尔值*-如果为true，则将隐藏完整的远程控制部分（例如，如果选择了有效的信号源，则仅显示该部分）
 
-### <img src="img/icons/popup.png" width="32">弹出：
+###<img src="img/icons/popup.png" width="32">弹出：
 * **STATE** *任何*-可用于显示更多信息
 
-### <img src="img/icons/link.png" width="32">外部链接：
+###<img src="img/icons/link.png" width="32">外部链接：
 * **STATE** *任何*-可用于显示更多信息
 * **URL** 常量* string *-该URL将被打开
 
-### <img src="img/icons/widget_on.png" width="32">小部件：
-该设备具有一些特殊的预定义大小和显示设置，以显示网站，可以通过** BACKGROUND_URL **将其定义为小部件。在默认选项下，小放大按钮将显示在右上方。
+###<img src="img/icons/widget_on.png" width="32">小部件：
+该设备具有一些特殊的预定义大小和显示设置，以显示网站，可以通过** BACKGROUND_URL **将其定义为小部件。使用默认选项时，右上方会显示一个小的放大按钮。
 
 * **STATE** *任何*-特殊：如果为空，将创建一个虚拟数据点，因此您可以单击该图标以激活并因此最大化小部件的大小
 
 ****
 
 ＃＃ 故障排除
-*确保您已满足本页顶部的“您需要...”部分
+*确保您已完成本页顶部的“您需要...”部分
 *如果更新后某些功能无法正常工作，请尝试以下步骤：
     *开始上传适配器：
 
@@ -532,6 +553,26 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ****
 
 ## Changelog
+
+### dev
+* (sbormann) Breaking change: completely removed presssure detection and replaced it by long clicks to open context menu.
+* (sbormann) Bank icons don't catch mouse and touch-events any more.
+* (sbormann) Added option to disable virtual datapoint (switch) for widgetes.
+* (sbormann) Fixed url-parameter home.
+
+### 1.2.7 (2020-09-30)
+* (sbormann) Added ADDITIONAL_CONTROLS as universal datapoint to define an array of additional control items that will be displayed inside dialog.
+* (sbormann) Added possibility to renderViews and openDialogs via popup-buttons and postMessage-commands for iframes.
+* (sbormann) Changed behaviour of url-parameter home (this will now also change the link of the first toolbar entry) and added new url-parameter renderView.
+
+### 1.2.6 (2020-09-27)
+* (sbormann) Scroll to element when deactivating fullScreen.
+* (sbormann) Enhanced picture selection drop down and rearranged some images - maybe you need to clear cache to get this working.
+* (sbormann) Added INFO_A and INFO_B to display additional informations in the tile.
+* (sbormann) Added possibility to hide views name.
+* (sbormann) Added possibility to upload html, css and js files and added drop down menu for these files for URL- and BACKGROUND_URL-State.
+* (sbormann) Added option to hide icon, if device is enlarged.
+* (sbormann) Added option set visibility of BACKGROUND_URL/HTML, if device is enlarged.
 
 ### 1.2.5 (2020-09-19)
 * (sbormann) Fix for iOS 14 touch callout.

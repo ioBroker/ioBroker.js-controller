@@ -43,15 +43,15 @@
 
 ###### .. v 1.3.8
 
-![Beispiel](admin/Set.png)
+![Beispiel](http://resources.inventwo.com/github/inventwo/Set.png)
 
 
 
 Mit Hilfe unserer Widgets lassen sich folgende Projekte verwirklichen. Zur Zeit befinden sich in unserem Adapter NUR die reinen Schaltflächen (siehe oben) und die Icons. Uhr und Wetter stammen aus anderen Adaptern und müssen ggf. zusätzlich installiert werden.
 
-![Beispiel](admin/Preview.png)
+![Beispiel](http://resources.inventwo.com/github/inventwo/Preview.png)
 
-![Beispiel](admin/Preview2.png)
+![Beispiel](http://resources.inventwo.com/github/inventwo/Preview2.png)
 ---
 
 ## Unterstützung
@@ -60,11 +60,23 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 (Dieser Link führt zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
-[![Spende](admin/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
+[![Spende](http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
 
 ## Changelog / Änderungsprotokoll
+
+## 2.3.2
+- Fehler bei der Navigation mit dem Widget 'View in Widget' behoben
+
+## 2.3.1
+- Fehler in JSON Tabelle behoben
+
+
+## 2.3.0
+- Problem behoben, bei dem Schaltflächen zweimal Werte senden
+- Datum / Uhrzeit und Bildformat für Tabellenzellen hinzugefügt
+- Universal- und Multi-Widget-Attribute werden beim Klicken auf Widget aktualisiert
 
 ## 2.2.3
 - Fehler in JSON Tabelle behoben

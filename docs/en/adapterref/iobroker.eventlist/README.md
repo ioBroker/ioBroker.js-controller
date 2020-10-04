@@ -55,6 +55,55 @@ The PDF file could be accesses via:
 
 **The icons could not be shown in PDF.**
 
+## Message box
+User can add custom events to the list via javascript:
+```
+// add custom event to event list
+sendTo('eventlist.0', 'insert', {
+    event: 'My custom text', 
+    id: 'ID.that.linked.with.this.event',  // optional 
+    ts: new Date('2020-09-25T16:11:00',    // optional. Default is Date.now()
+    val: 5,                                // optional 
+    duration: 5                            // in ms
+});
+
+// Or simple
+sendTo('eventlist.0', 'insert', 'My custom text');
+// or
+setState('eventlist.0.insert', 'My custom text');
+// or
+setState('eventlist.0.insert', {event: 'My custom text %s', val: 5});
+```
+
+User can request formatted JSON list for specific ID. Of course the ID must be enabled in the `eventlist` before.
+```
+// add custom event to event list
+sendTo('eventlist.0', 'list', {
+    ids: ['my.0.state.id1', 'my.0.state.id2'],
+    max: 10, // optional limit of maximal lines in table 
+}, result => {
+    console.log(JSON.stringify(result)); // array with events
+    // result = [{id: 'my.0.state.id1', 
+    //
+});
+
+// or 
+sendTo('eventlist.0', 'list', 'my.0.state.id1', result => {
+    console.log(JSON.stringify(result)); // array with events
+});
+```
+
+## Patterns
+In the event texts and in the state texts the following patterns could be used:
+- %s - value (`State changed to %s` => `State changed to 5`), 
+- %u - unit (`State changed to %s%u` => `State changed to 5%`), 
+- %n - name (`%n changed state to %s` => `Device A changed state to 5`), 
+- %t - time (`State changed state on %t` => `State changed state on Sep Fr, 16:32:00`), 
+- %r - relative time (`State changed state %r` => `State changed state 5 seconds ago`),
+- %d - duration (`State was in previous state for %d` => `State was in previous state for 5s`), 
+- %g - value difference (`State was changed on %g%` => `State was changed on 1%`),
+- %o - value difference (`State changed value from %o to %` => `State was changed on 1%`)
+
 ## Todo
 - Many predefined icons (minimum 100)
 - Material widget
@@ -66,6 +115,9 @@ The PDF file could be accesses via:
 -->
 
 ## Changelog
+### 0.2.6 (2020-09-25)
+* (bluefox) Corrected error in pdf creation  
+
 ### 0.2.5 (2020-09-24)
 * (bluefox) Extended icon selector 
  

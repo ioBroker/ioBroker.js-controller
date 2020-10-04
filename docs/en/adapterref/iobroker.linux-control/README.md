@@ -100,6 +100,9 @@ It is important that the retrieved data is transmitted in the correct type! The 
     ### __WORK IN PROGRESS__
 -->
 
+### 1.0.0 (2020-09-30)
+* (Scrounger) bump to stable
+
 ### 0.3.7 (2020-09-19)
 * (Scrounger) subscribe bug fix for user commands
 

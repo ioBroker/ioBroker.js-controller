@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: eGiC4Bt+/L2HwgNbAN17yjT6rDdUT7QYCc4kEmlN78k=
+hash: YWH+yCTsCRhLwqXaBGqzNxaKMuAJ35eONHps+0LkY3Y=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -18,16 +18,16 @@ hash: eGiC4Bt+/L2HwgNbAN17yjT6rDdUT7QYCc4kEmlN78k=
 # IoBroker.vis-inventwo
 ## Schalter Widgets für den ioBroker.vis Adapter
 ###### .. ab v 2.0.0
-<table><tr><td><center> <b>Universal</b> <br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Multi</b> <br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Bild</b> <br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Tabelle</b> <br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>Aufführen</b> <br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Festzelt</b> <br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Radio knopf</b> <br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Schieberegler vertikal</b> <br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>Schieberegler horizontal</b> <br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr></table>
+<table><tr><td><center><b>Universal</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Multi</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Bild</b><br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Tabelle</b><br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>Liste</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Festzelt</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Radio knopf</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Schieberegler vertikal</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>Schieberegler horizontal</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr></table>
 
 ###### .. v 1.3.8
-![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Set.png)
+![Beispiel](http://resources.inventwo.com/github/inventwo/Set.png)
 
 Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehört sich in unserem Adapter NUR die reinen Schaltflächen (siehe oben) und die Icons. Uhr und Wetter gehören aus anderen Adaptern und müssen ggf. geworden werden werden.
 
-![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Preview.png)
+![Beispiel](http://resources.inventwo.com/github/inventwo/Preview.png)
 
-![Beispiel](../../../en/adapterref/iobroker.vis-inventwo/admin/Preview2.png)
+![Beispiel](http://resources.inventwo.com/github/inventwo/Preview2.png)
 ---
 
 ## Besetzung
@@ -35,19 +35,30 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 (Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
-[![Spende] (admin / spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
+[![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.3.2
+- Fehler bei der Navigation mit dem Widget 'In Widget anzeigen' versucht
+
+## 2.3.1
+- Fehler in der JSON Tabelle Spalten
+
+## 2.3.0
+- Problem gehört, bei dem Schaltflächen gleichen Werte senden
+- Datum / Uhrzeit und Bildformat für Tabellenzellen hinzugefügt
+- Universal- und Multi-Widget-Attribut werden beim Ändern auf Widgetschauen
 
 ## 2.2.3
 - Fehler in der JSON Tabelle Spalten
 
 ## 2.2.2
-- Fehler im Multi Widget gehört: Bilder und Text ändern nicht bei Typ Navigation
+- Fehler im Multi Widget Rechte: Bilder und Text ändern nicht bei Typ Navigation
 
 ## 2.2.1
 - Fehler in der JSON-Tabelle gehört, wenn kein gehörtiges JSON-Objekt vorhanden ist
-- Fehler in der Werteliste werden: Wert wird nicht aktualisiert
+- Fehler in der Werteliste Werden: Wert wird nicht aktualisiert
 
 ## 2.2.0
 - Datenpunktwerte werden jetzt bei allen Widgets im Editor werden
@@ -65,7 +76,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.0.0
 - Switch, Button, Nav und Background Widget (sowie die kleinen Ausführungen) zu einem eigenen Widget zussammen Verluste -> dem Universal Widget
-- Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können
+- Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können.
 - Image Widget kann nun auf Datenpunkt kaufen
 - Radiobuttons hinzugefügt
 - Werteliste hinzugefügt
@@ -91,7 +102,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Die Option für den Hintergrund-Widget-Wert wurde korrigiert
 
 ### 1.3.2
-- Fehlerbehebung
+- Bug-Fix
 
 ### 1.3.1
 - Das Farbverhalten der Navigationsschaltfläche wurde geändert
@@ -119,7 +130,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Neue Symbole hinzugefügt
 
 ### 1.1.1
-- Fehlerbehebung
+- Bug-Fix
 
 ### 1.1.0
 - Slider-Widget hinzugefügt

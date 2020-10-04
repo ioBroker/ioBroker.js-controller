@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: y0CXz2XpDAa4UfyDrFb0UnaZpvs7aMoRcFxZkRK0FRU=
+hash: 72WS4s8cc56kUSAQATi2R5vLibKignv4GBw8I3piY9Y=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
@@ -19,11 +19,11 @@ hash: y0CXz2XpDAa4UfyDrFb0UnaZpvs7aMoRcFxZkRK0FRU=
 ##图标适配器来自ioBroker.vis适配器
 视觉识别工具适配器。
 
-![屏幕截图](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_001.png)
+![屏幕截图](http://resources.inventwo.com/github/icontwo/Screen_001.png)
 
 视觉图标上的所有图标
 
-![帕法德](../../../en/adapterref/iobroker.vis-icontwo/admin/Pfad_001.png)
+![帕法德](http://resources.inventwo.com/github/icontwo/Pfad_001.png)
 
 ---
 
@@ -32,15 +32,15 @@ Eine kleine Vorschauüberden Stil der图标：
 
 Z.B.灯（Teilauswahl）：
 
-![屏幕截图](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_002.png)
+![屏幕截图](http://resources.inventwo.com/github/icontwo/Screen_002.png)
 
 Z.B.客房（Teilauswahl）：
 
-![屏幕截图](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_003.png)
+![屏幕截图](http://resources.inventwo.com/github/icontwo/Screen_003.png)
 
 Z.B.设备（Teilauswahl）：
 
-![屏幕截图](../../../en/adapterref/iobroker.vis-icontwo/admin/Screen_004.png)
+![屏幕截图](http://resources.inventwo.com/github/icontwo/Screen_004.png)
 
 EinevollständigeÜbersichtaller Icons ist hier zu finden（Die Ordnerstruktur ist die gleiche，wie im Dateimanager）：
 
@@ -49,154 +49,199 @@ EinevollständigeÜbersichtaller Icons ist hier zu finden（Die Ordnerstruktur i
 ---
 
 ##Unterstützung
-瀑布下的瀑布，阿尔弗雷德·杰德·斯彭德的瀑布。
+瀑布下的阿尔贝特教堂和地下教堂
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
-[![Spende]（admin / spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
+[![Spende]（http://resources.inventwo.com/github/icontwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
 
 ## Changelog
 
+### 0.24.0
+
+• Neue Icons hinzugefügt (Network)
+
+### 0.23.0
+
+• Neue Icons hinzugefügt (Amazon Echo)
+
+### 0.22.2
+
+• Bug-Fix
+
+### 0.22.1
+
+• Icongröße angepasst
+
+### 0.22.0
+
+• Neue Icons hinzugefügt (Amazon Echo)
+
+### 0.21.1
+
+• Code angepasst
+
+### 0.21.0
+
+• Neue Icons hinzugefügt (Electricity)
+
+### 0.20.1
+
+• Code angepasst (adminTab & localLink)
+
+
+### 0.20.0
+
+• Neue Icons hinzugefügt (Battery)
+
+### 0.19.4
+
+• Neue Icons hinzugefügt (Weather)
+
+### 0.19.3
+
+• Neue Icons hinzugefügt (Alarm colored)
+
 ### 0.19.2
 
-• (skvarel) - Neue Icons hinzugefügt (Heating)
+• Neue Icons hinzugefügt (Heating)
 
 ### 0.19.1
 
-• (skvarel) - Index & Readme angepasst (Icon Overview)
+• Index & Readme angepasst (Icon Overview)
 
 ### 0.19.0
 
-• (skvarel) - Neue Icons hinzugefügt (Lights & Alarm)
+• Neue Icons hinzugefügt (Lights & Alarm)
 
 ### 0.18.0
 
-• (skvarel) - Neue Icons hinzugefügt (Rooms)
+• Neue Icons hinzugefügt (Rooms)
 
 ### 0.17.1
 
-• (skvarel) - Code angepasst
+• Code angepasst
 
 ### 0.17.0
 
-• (skvarel) - Neue Icons hinzugefügt (Network)
+• Neue Icons hinzugefügt (Network)
 
 ### 0.16.1
 
-• (skvarel) - Code angepasst
+• Code angepasst
 
 ### 0.16.0
 
-• (skvarel) - Neue Hintergründe hinzugefügt (Backgrounds)
+• Neue Hintergründe hinzugefügt (Backgrounds)
 
 ### 0.15.0
 
-• (skvarel) - Neue Hintergründe hinzugefügt (Backgrounds)
+• Neue Hintergründe hinzugefügt (Backgrounds)
 
 ### 0.14.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Schedules)
+• Neue Icons hinzugefügt (Schedules)
 
 ### 0.13.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Lights)
+• Neue Icons hinzugefügt (Lights)
 
 ### 0.12.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Lights)
+• Neue Icons hinzugefügt (Lights)
 
 ### 0.11.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Phones_Tablets)
+• Neue Icons hinzugefügt (Phones_Tablets)
 
 ### 0.10.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+• Neue Icons hinzugefügt (Cooling)
 
 ### 0.9.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Devices)
+• Neue Icons hinzugefügt (Devices)
 
 ### 0.8.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Cooling & Weather)
+• Neue Icons hinzugefügt (Cooling & Weather)
 
 ### 0.7.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+• Neue Icons hinzugefügt (Cooling)
 
 ### 0.6.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Devices)
+• Neue Icons hinzugefügt (Devices)
 
 ### 0.5.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Brands)
+• Neue Icons hinzugefügt (Brands)
 
 ### 0.4.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+• Neue Icons hinzugefügt (Cooling)
 
 ### 0.3.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Cooling)
+• Neue Icons hinzugefügt (Cooling)
 
 ### 0.2.0
 
-• (skvarel) - Neue Symbole hinzugefügt (Brands)
+• Neue Icons hinzugefügt (Brands)
 
 ### 0.1.11
 
-• (skvarel) - Bug-Fix
+• Bug-Fix
 
 ### 0.1.10
 
-• (skvarel) - Neue Symbole hinzugefügt (Brands)
+• Neue Icons hinzugefügt (Brands)
 
 ### 0.1.9
 
-• (skvarel) - Neue Symbole hinzugefügt (Weather)
+• Neue Icons hinzugefügt (Weather)
 
 ### 0.1.8
 
-• (skvarel) - Bug-Fix
+• Bug-Fix
 
 ### 0.1.7
 
-• (skvarel) - Code angepasst
+• Code angepasst
 
 ### 0.1.6
 
-• (skvarel) - Neue Symbole hinzugefügt (Nav and Lights)
+• Neue Icons hinzugefügt (Nav and Lights)
 
 ### 0.1.5
 
-• (skvarel) - Neue Symbole hinzugefügt (Garage)
+• Neue Icons hinzugefügt (Garage)
 
 ### 0.1.4
 
-• (skvarel) - Neue Symbole hinzugefügt (Lampen)
+• Neue Icons hinzugefügt (Lampen)
 
 ### 0.1.3
 
-• (skvarel) - Neue Symbole hinzugefügt
+• Neue Icons hinzugefügt
 
 ### 0.1.2
 
-• (skvarel) - Code angepasst
+• Code angepasst
 
 ### 0.1.1
 
-• (skvarel) - Bug-Fix
+• Bug-Fix
 
 ### 0.1.0
 
-• (skvarel) - Erstveröffentlichung
+• Erstveröffentlichung
 
 ### 0.0.1
-• (skvarel) - Die Idee ist geboren
+• Die Idee ist geboren
 
 ## License
 

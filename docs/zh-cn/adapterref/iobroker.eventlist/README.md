@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.eventlist/README.md
 title: ioBroker.eventlist
-hash: auofOnwss1vveKXRxK7rZmb4tpajlTLLVP7Mvgv5ULU=
+hash: v709NHsaAqhAF725XphiM3VzVjMl7bw44UszQGuigE4=
 ---
 ![商标](../../../en/adapterref/iobroker.eventlist/admin/eventlist.png)
 
@@ -62,6 +62,58 @@ hash: auofOnwss1vveKXRxK7rZmb4tpajlTLLVP7Mvgv5ULU=
 
 **图标无法显示为PDF。**
 
+##消息框
+用户可以通过javascript将自定义事件添加到列表中：
+
+```
+// add custom event to event list
+sendTo('eventlist.0', 'insert', {
+    event: 'My custom text',
+    id: 'ID.that.linked.with.this.event',  // optional
+    ts: new Date('2020-09-25T16:11:00',    // optional. Default is Date.now()
+    val: 5,                                // optional
+    duration: 5                            // in ms
+});
+
+// Or simple
+sendTo('eventlist.0', 'insert', 'My custom text');
+// or
+setState('eventlist.0.insert', 'My custom text');
+// or
+setState('eventlist.0.insert', {event: 'My custom text %s', val: 5});
+```
+
+用户可以为特定的ID请求格式化的JSON列表。当然，必须在`eventlist`中启用该ID。
+
+```
+// add custom event to event list
+sendTo('eventlist.0', 'list', {
+    ids: ['my.0.state.id1', 'my.0.state.id2'],
+    max: 10, // optional limit of maximal lines in table
+}, result => {
+    console.log(JSON.stringify(result)); // array with events
+    // result = [{id: 'my.0.state.id1',
+    //
+});
+
+// or
+sendTo('eventlist.0', 'list', 'my.0.state.id1', result => {
+    console.log(JSON.stringify(result)); // array with events
+});
+```
+
+##模式
+在事件文本和状态文本中，可以使用以下模式：
+
+-％s-值（状态更改为％s =>状态更改为5），
+-％u-单位（状态更改为％s％u =>状态更改为5％），
+-％n-名称（“％n将状态更改为％s” =>“设备A的状态更改为5”），
+-％t-时间（`状态更改状态为％t` =>`状态更改状态为Sep Fr，16：32：00`），
+-％r-相对时间（“状态已更改状态％r” =>“状态已更改状态5秒前”），
+-％d-持续时间（“状态处于％d的先前状态=>“状态处于5s的先前状态”），
+-％g-值差（“状态已更改为％g％” =>“状态已更改为1％”），
+-％o-值差（状态从％o更改为％o =>状态在1％上更改）
+
 ＃＃ 去做
 -许多预定义的图标（最少100个）
 -材质小部件
@@ -72,6 +124,9 @@ hash: auofOnwss1vveKXRxK7rZmb4tpajlTLLVP7Mvgv5ULU=
 ### __正在进行的工程__->
 
 ## Changelog
+### 0.2.6 (2020-09-25)
+* (bluefox) Corrected error in pdf creation  
+
 ### 0.2.5 (2020-09-24)
 * (bluefox) Extended icon selector 
  

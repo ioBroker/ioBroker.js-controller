@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.eventlist/README.md
 title: ioBroker.eventlist
-hash: auofOnwss1vveKXRxK7rZmb4tpajlTLLVP7Mvgv5ULU=
+hash: v709NHsaAqhAF725XphiM3VzVjMl7bw44UszQGuigE4=
 ---
 ![Logo](../../../en/adapterref/iobroker.eventlist/admin/eventlist.png)
 
@@ -23,7 +23,7 @@ Die Liste kann in admin, web, vis angezeigt, als PDF gespeichert, Material (noch
 
 Zusätzlich können Sie Ereignisse per Telegramm oder WhatsApp senden.
 
-![Aufführen](../../../en/adapterref/iobroker.eventlist/img/list.png)
+![Liste](../../../en/adapterref/iobroker.eventlist/img/list.png)
 
 ![PDF](../../../en/adapterref/iobroker.eventlist/img/pdf.png)
 
@@ -62,6 +62,58 @@ Auf die PDF-Datei kann zugegriffen werden über:
 
 ** Die Symbole konnten nicht als PDF angezeigt werden. **
 
+## Nachrichtenbox
+Der Benutzer kann der Liste benutzerdefinierte Ereignisse über Javascript hinzufügen:
+
+```
+// add custom event to event list
+sendTo('eventlist.0', 'insert', {
+    event: 'My custom text',
+    id: 'ID.that.linked.with.this.event',  // optional
+    ts: new Date('2020-09-25T16:11:00',    // optional. Default is Date.now()
+    val: 5,                                // optional
+    duration: 5                            // in ms
+});
+
+// Or simple
+sendTo('eventlist.0', 'insert', 'My custom text');
+// or
+setState('eventlist.0.insert', 'My custom text');
+// or
+setState('eventlist.0.insert', {event: 'My custom text %s', val: 5});
+```
+
+Der Benutzer kann eine formatierte JSON-Liste für eine bestimmte ID anfordern. Natürlich muss die ID vorher in den `eventlist` aktiviert sein.
+
+```
+// add custom event to event list
+sendTo('eventlist.0', 'list', {
+    ids: ['my.0.state.id1', 'my.0.state.id2'],
+    max: 10, // optional limit of maximal lines in table
+}, result => {
+    console.log(JSON.stringify(result)); // array with events
+    // result = [{id: 'my.0.state.id1',
+    //
+});
+
+// or
+sendTo('eventlist.0', 'list', 'my.0.state.id1', result => {
+    console.log(JSON.stringify(result)); // array with events
+});
+```
+
+## Muster
+In den Veranstaltungstexten und in den Staatstexten könnten folgende Muster verwendet werden:
+
+- %s  - Wert (`Status geändert in% s` =>` Status geändert in 5`),
+-% u - unit (`Status geändert in %s % u` =>` Status geändert in 5% `),
+-% n - Name (`% n hat den Status in %s ` geändert =>` Gerät A hat den Status in 5` geändert),
+-% t - Zeit (`Status geändert Status auf% t` =>` Status geändert Status am Sep Fr, 16: 32: 00`),
+-% r - relative Zeit (`Zustand geändert Zustand% r` =>` Zustand geändert Zustand vor 5 Sekunden`),
+-% d - Dauer (`Zustand war für% d im vorherigen Zustand = =` `Zustand war für 5s im vorherigen Zustand`),
+-% g - Wertdifferenz (`Status wurde auf% g% geändert` => `Status wurde auf 1% geändert`),
+-% o - Wertdifferenz (`Status geändert Wert von% o auf%` => `Status wurde auf 1% geändert`)
+
 ## Machen
 - Viele vordefinierte Symbole (mindestens 100)
 - Material Widget
@@ -72,6 +124,9 @@ Auf die PDF-Datei kann zugegriffen werden über:
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.2.6 (2020-09-25)
+* (bluefox) Corrected error in pdf creation  
+
 ### 0.2.5 (2020-09-24)
 * (bluefox) Extended icon selector 
  

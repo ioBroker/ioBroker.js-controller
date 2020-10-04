@@ -44,6 +44,17 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 1.0.0 (2020-09-28)
+* (simatec) some Bugfixes
+* (simatec) code cleaning
+* (simatec) DEPENDENCIES updated
+* (simatec) Dev-DEPENDENCIES updated
+* (FoxRo) Added buttons for Sunprotect Living and Sunprotect Sleep
+* (FoxRo) Included Living-Auto and Sleep-Auto in Buttons for Open/Close Sleep and Living
+* (FoxRo) KeepSunprotect added
+* (FoxRo) Drive after close added
+* (FoxRo) Extend status handling
+
 ### 0.8.7 (2020-09-22)
 * (simatec) small Bugfix for weekend
 

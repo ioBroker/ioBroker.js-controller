@@ -117,7 +117,7 @@ The adapter will read all actual values for IDs defined in this scene and save i
 -->
 
 ## Changelog
-### 2.1.5 (2020-09-24)
+### 2.1.6 (2020-09-25)
 * (bluefox) Updated the select ID dialog.
 
 ### 2.1.3 (2020-09-18)

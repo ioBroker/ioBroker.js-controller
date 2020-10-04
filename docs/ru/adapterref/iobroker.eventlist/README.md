@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.eventlist/README.md
 title: ioBroker.eventlist
-hash: auofOnwss1vveKXRxK7rZmb4tpajlTLLVP7Mvgv5ULU=
+hash: v709NHsaAqhAF725XphiM3VzVjMl7bw44UszQGuigE4=
 ---
 ![Логотип](../../../en/adapterref/iobroker.eventlist/admin/eventlist.png)
 
@@ -13,7 +13,7 @@ hash: auofOnwss1vveKXRxK7rZmb4tpajlTLLVP7Mvgv5ULU=
 ![Количество установок (стабильно)](http://iobroker.live/badges/eventlist-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/bluefox/iobroker.eventlist.svg)
 ![Известные уязвимости](https://snyk.io/test/github/bluefox/ioBroker.eventlist/badge.svg)
-![НПМ](https://nodei.co/npm/iobroker.eventlist.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.eventlist.png?downloads=true)
 
 # IoBroker.eventlist
 ## Адаптер списка событий для ioBroker
@@ -31,11 +31,11 @@ hash: auofOnwss1vveKXRxK7rZmb4tpajlTLLVP7Mvgv5ULU=
 События могли генерироваться только в режиме тревоги.
 Режимом тревоги можно управлять с помощью переменной `eventlist.X.alarm`.
 
-Кроме того, сообщения в мессенджеры могут быть отправлены, только если включен режим тревоги.
+Кроме того, сообщения в мессенджеры могут быть отправлены только при включенном режиме тревоги.
 
 Пример использования:
 
-- Например, датчик двери может отправлять сообщения, только если никого нет дома. В противном случае события об открытии дверей будут собираться только в списке событий.
+- Например. датчик двери может отправлять сообщения, только если никого нет дома. В противном случае события об открытии дверей будут собираться только в списке событий.
 
 ## Возможные презентации
 ### В Admin как вкладка
@@ -53,14 +53,66 @@ hash: auofOnwss1vveKXRxK7rZmb4tpajlTLLVP7Mvgv5ULU=
 Заголовок документа может состоять из даты создания, если вы поместите в него шаблон: `Event list on {{YYYY MM DD}}`.
 Точное описание формата времени можно найти здесь: https://momentjs.com/docs/#/displaying/format/
 
-Создание PDF-файла может быть инициировано записью `true` в `eventlist.0.triggerPDF`.
+Генерацию PDF можно запустить, записав `true` в `eventlist.0.triggerPDF`.
 
 Доступ к файлу PDF можно получить через:
 
 - web: `http:// <IP>: 8082 / eventlist / eventlist / report.pdf`
 - admin: `http:// <IP>: 8081 / files / eventlist / report.pdf`
 
-** Значки не могли отображаться в PDF. **
+** Значки не могут быть отображены в PDF. **
+
+## Окно сообщения
+Пользователь может добавлять собственные события в список с помощью javascript:
+
+```
+// add custom event to event list
+sendTo('eventlist.0', 'insert', {
+    event: 'My custom text',
+    id: 'ID.that.linked.with.this.event',  // optional
+    ts: new Date('2020-09-25T16:11:00',    // optional. Default is Date.now()
+    val: 5,                                // optional
+    duration: 5                            // in ms
+});
+
+// Or simple
+sendTo('eventlist.0', 'insert', 'My custom text');
+// or
+setState('eventlist.0.insert', 'My custom text');
+// or
+setState('eventlist.0.insert', {event: 'My custom text %s', val: 5});
+```
+
+Пользователь может запросить отформатированный список JSON для определенного идентификатора. Конечно, ID должен быть включен в `eventlist` раньше.
+
+```
+// add custom event to event list
+sendTo('eventlist.0', 'list', {
+    ids: ['my.0.state.id1', 'my.0.state.id2'],
+    max: 10, // optional limit of maximal lines in table
+}, result => {
+    console.log(JSON.stringify(result)); // array with events
+    // result = [{id: 'my.0.state.id1',
+    //
+});
+
+// or
+sendTo('eventlist.0', 'list', 'my.0.state.id1', result => {
+    console.log(JSON.stringify(result)); // array with events
+});
+```
+
+## Шаблоны
+В текстах событий и в текстах состояний могут использоваться следующие шаблоны:
+
+- %s  - значение (`Состояние изменено на% s` =>` Состояние изменено на 5`),
+-% u - unit (`Состояние изменено на %s % u` =>` Состояние изменено на 5% `),
+-% n - имя (`% n изменено состояние на %s ` =>` Устройство A изменило состояние на 5`),
+-% t - время (`Состояние изменилось на% t` =>` Состояние изменилось состояние в сен Fr, 16: 32: 00`),
+-% r - относительное время (`Состояние изменилось состояние% r` =>` Состояние изменилось 5 секунд назад`),
+-% d - продолжительность (`State was in previous state for% d` =>` State was in previous state for 5s`),
+-% g - разница значений (`Состояние было изменено на% g%` => `Состояние было изменено на 1%`),
+-% o - разница значений (`Состояние изменено значение с% o на%` => `Состояние было изменено на 1%`)
 
 ## Сделать
 - Множество предустановленных значков (минимум 100)
@@ -72,6 +124,9 @@ hash: auofOnwss1vveKXRxK7rZmb4tpajlTLLVP7Mvgv5ULU=
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 0.2.6 (2020-09-25)
+* (bluefox) Corrected error in pdf creation  
+
 ### 0.2.5 (2020-09-24)
 * (bluefox) Extended icon selector 
  

@@ -14,6 +14,8 @@
 
 ## Smart Control Adapter for ioBroker
 
+
+
 In our [ioBroker](https://github.com/ioBroker/ioBroker) home automation we have several triggers, e.g.
  * motion sensor in the corridor triggers, 
  * a wall switch is pressed, 
@@ -87,6 +89,56 @@ This is just to provide you an overview of the adapter options.
 * Adapter icon made by [freepik](https://www.flaticon.com/authors/freepik) from [flaticon.com](https://www.flaticon.com/).</sup></sub>
 
 ## Changelog
+
+### 0.5.4
+* (Mic-M) New feature: TARGET DEVICES - add delay option for delayed switching on of target device.
+
+### 0.5.3
+* (Mic-M) New feature: ZONES - target devices: you can now assign a delay in seconds to wait until the device is being switched on
+* (Mic-M) Various fixes
+
+### 0.5.2
+* (Mic-M) Fix: Removed redundant column in Target Devices table
+* (Mic-M) Fix: Under the hood (admin/index_m.js, admin/tsconfig.json, admin/admin.d.ts)
+
+### 0.5.1
+* (Mic-M) Fixed clearing timeout while adapter is stopping.
+
+### 0.5.0
+* (Mic-M) New feature: ZONES - New option "Delay for switching zone on (in seconds)" - [issue #31](https://github.com/Mic-M/ioBroker.smartcontrol/issues/31)
+* (Mic-M) New feature: ZONES - New option "Never switch off if..." - [issue #32](https://github.com/Mic-M/ioBroker.smartcontrol/issues/32)
+
+
+### 0.4.4
+* (Mic-M) New feature: allow comparison operators `!=` / `<>` in 'TRIGGERS -> Other triggers' to trigger if state value is unequal. Example: `<>30` or `!=30` - see [Forum](https://forum.iobroker.net/post/496133)
+* (Mic-M) Fix: Don't create `smartcontrol.x.options.TargetDevices.` states for enums since this does not make sense for enums.
+* (Mic-M) Fix: Don't create `smartcontrol.x.targetDevices.` states for enums since this does not make sense for enums.
+* (Mic-M) Moved log `Trigger xyz was already activated x seconds ago and is ignored...` from regular info log to debug/'extended info log' - [Forum](https://forum.iobroker.net/post/496604)
+
+
+### 0.4.3
+* (Mic-M) New feature in adapter options: configure number of entries in 'smartcontrol.x.info.log.zoneActivations.json'
+* (Mic-M) Extend adapter documentation by adding new 0.4.0 features 
+* (Mic-M) Fixed issue regarding 'smartcontrol.x.userstates.xxx' creation
+
+### 0.4.2
+* (Mic-M) Fix code
+
+### 0.4.1
+* (Mic-M) Fixed io-package.json
+
+
+### 0.4.0
+* (Mic-M) New feature: Tab 'Target Devices': New table 'Targets: Enum functions' to **support enum functions**, and optionally limit to certain enum rooms. [issue #29](https://github.com/Mic-M/ioBroker.smartcontrol/issues/29).
+* (Mic-M) New feature: New JSON state for recent zone activations: 'smartcontrol.x.info.log.zoneActivations.json'. [issue #30](https://github.com/Mic-M/ioBroker.smartcontrol/issues/30).
+* (Mic-M) Code fixes
+
+
+### 0.3.10
+* (Mic-M) Fixed io-package.json
+
+### 0.3.9
+* (Mic-M) New feature: Table "Additional Conditions" is now allowing comparators like `> 30`, `<= 25` etc. in column 'State value'. See [issue #28](https://github.com/Mic-M/ioBroker.smartcontrol/issues/28)
 
 ### 0.3.8
 * (Mic-M) Updated readme since adapter [is now in latest repository](https://github.com/ioBroker/ioBroker.repositories/pull/930)

@@ -113,6 +113,9 @@ sudo chmod u+s `which ping`
 
 ## Changelog
 
+### 1.2.9 (03.10.2020)
+* (Stübi) minimize CPU Load
+
 ### 1.2.9 (04.07.2020)
 * (Stübi) Bugfixing
 

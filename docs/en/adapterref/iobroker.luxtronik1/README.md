@@ -32,6 +32,10 @@ Values in the 'control' - channel have to be set with ack=false to trigger an ac
 
 ## Changelog
 
+### 0.2.5
+
+-   outlet-data added by @pingus01.
+
 ### 0.2.4
 
 -   comm-errors fixed, 'control'-values are updated now.

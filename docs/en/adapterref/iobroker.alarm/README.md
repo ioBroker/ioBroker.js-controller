@@ -135,6 +135,7 @@ Der log_today state wird um Mitternacht geleert.
 
 ## Changelog
 
+
 #### 1.2.0 (09.07.2020)
 * (misanorot) added countdown speech output
 
