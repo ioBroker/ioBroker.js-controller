@@ -61,8 +61,8 @@ function savePackages(root) {
     if (fs.existsSync(root + '/package.json')) {
         const actual = require(root + '/package.json');
         actual.dependencies = actual.dependencies || {};
-        for (const pack in newPack.dependencies) {
-            if (newPack.dependencies.hasOwnProperty(pack) && (!actual.dependencies[pack] || !actual.dependencies[pack].match(/^file:/)) ) {
+        for (const pack of Object.keys(newPack.dependencies)) {
+            if (!actual.dependencies[pack] || !actual.dependencies[pack].match(/^file:/)) {
                 actual.dependencies[pack] = newPack.dependencies[pack];
             }
         }
