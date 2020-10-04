@@ -1926,7 +1926,8 @@ async function processMessage(msg) {
                         try {
                             const obj = await collectDiagInfo(systemConfig.common.diag);
                             tools.sendDiagInfo(obj);
-                        } catch {
+                        } catch (err) {
+                            logger.error(hostLogPrefix + ' cannot collect diagnostics: ' + err);
                             tools.sendDiagInfo(null);
                         }
                     }
