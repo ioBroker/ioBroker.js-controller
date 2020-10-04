@@ -1,8 +1,6 @@
 ---
 title: Enums
 lastChanged: 14.09.2018
-translatedFrom: de
-translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/admin/enums.md
 hash: D7MAS/uEgXnpYxUjm87fT1ofzV90HsJzSj2pvxO/hY0=
 ---
