@@ -1,8 +1,6 @@
 ---
-title: Admin
+title: Enums
 lastChanged: 14.09.2018
-translatedFrom: de
-translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/admin/enums.md
 hash: D7MAS/uEgXnpYxUjm87fT1ofzV90HsJzSj2pvxO/hY0=
 ---
@@ -10,7 +8,7 @@ hash: D7MAS/uEgXnpYxUjm87fT1ofzV90HsJzSj2pvxO/hY0=
 ?> ***This is a wildcard*** . <br><br> Help with ioBroker and extend this article. Please note the [ioBroker style guide](community/styleguidedoc), so that the changes can be adopted more easily.
 
 # The tab Enumerations
-Here the favorites, trades and rooms are listed. If there is a HomeMatic installation, the lists contained in it are taken over. You can also create your own lists, which then can be used in scripts.
+Here the favorites, functions and rooms are listed. If there is a HomeMatic installation, the lists contained in it are taken over. You can also create your own lists, which then can be used in scripts.
 
 ![The enumerations in the tile view](../../de/admin/media/ADMIN_Aufzaehlungen_kachel.png)
 
@@ -32,7 +30,7 @@ With this button a new enumeration is created. This opens a new window
 
 ![Create a new enumeration](../../de/admin/media/ADMIN_Aufzaehlungen_liste_erstellen.png)
 
-**Surname**
+**Name**
 
 Here the desired name for the enumeration is entered. Optionally, an icon for this enumeration can also be dragged and dropped into this field.
 
