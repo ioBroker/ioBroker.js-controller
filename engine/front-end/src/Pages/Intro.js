@@ -9,6 +9,7 @@ import {FaComments as IconPosts} from 'react-icons/fa';
 import {FaComment as IconThemes} from 'react-icons/fa';
 import {MdCloud as IconCloud} from 'react-icons/md';
 import ServerImg from '../assets/iob-server.png';
+import HausAutomatisierungImg from '../assets/haus_automatisierung.png';
 
 import Footer from '../Footer';
 import ForumInfo from '../Components/ForumInfo';
@@ -99,6 +100,13 @@ const styles = theme => ({
         display: 'inline-block',
         verticalAlign: 'top',
     },
+    hausButtonImage: {
+        width: 75,
+        height: 40,
+        marginRight: 10,
+        verticalAlign: 'top',
+        marginTop: -8,
+    },
     cloudButtonIcon: {
         width: 32,
         height: 32,
@@ -184,7 +192,7 @@ class Intro extends Component {
 
         const long = I18n.getLanguage() === 'ru';
 
-        return (<div
+        return <div
                     style={{
                         marginTop: smallMargin ? 10 : undefined,
                         width: long ? 500 : 350,
@@ -198,8 +206,30 @@ class Intro extends Component {
         >
             <img className={ this.props.classes.serverButtonImage } src={ServerImg} alt="server"/>
             <div className={ this.props.classes.serverButtonText }>{I18n.t('buy IOB server')}</div>
-        </div>)
+        </div>;
     }
+
+    renderHausAutomatisierung() {
+        const smallMargin = window.screen.height < 500;
+
+        return <div
+            style={{
+                marginTop: smallMargin ? 10 : undefined,
+                width: 550,
+                marginLeft: 'calc(50% - 275px)',
+                background: '#144578',
+            }}
+            className={ this.props.classes.serverButton }
+            onClick={() => {
+                const win = window.open('https://shop.haus-automatisierung.com/iobroker-master-kurs.html?refid=iobroker', '_blank');
+                win.focus();
+            }}
+        >
+            <img className={ this.props.classes.hausButtonImage } src={HausAutomatisierungImg} alt="server"/>
+            <div className={ this.props.classes.serverButtonText }>{I18n.t('Video course from our partner')}</div>
+        </div>;
+    }
+
 
     // What differs ioBroker from other open source automation platforms?
     //
@@ -222,6 +252,8 @@ class Intro extends Component {
     render() {
         let i = 0;
 
+        const link = new Date().getMinutes() % 3;
+
         return [
             (<div className={this.props.classes.content + ' ' + this.props.classes.backImage} key="content">
                 <div className={this.props.classes.title}>
@@ -231,8 +263,9 @@ class Intro extends Component {
                         <div  className={this.props.classes.titleDescription}>Open source automation platform</div>
                     </div>
                 </div>
-                {/*this.renderCloud()*/}
-                {this.renderServer()}
+                {link === 0 ? this.renderCloud() : null}
+                {link === 1 ? this.renderServer() : null}
+                {link === 2 ? this.renderHausAutomatisierung() : null}
                 {!this.props.mobile ? (<LinusShell
                     header={I18n.t('install on linux')}
                     copyTitle={I18n.t('copy to clipboard')}
