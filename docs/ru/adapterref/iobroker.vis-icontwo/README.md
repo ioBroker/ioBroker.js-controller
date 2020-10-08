@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: 72WS4s8cc56kUSAQATi2R5vLibKignv4GBw8I3piY9Y=
+hash: heQmDo1f+3qYDPNfkb06bmRe+DJlxvHUAXhvVHC3ejo=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
@@ -13,7 +13,7 @@ hash: 72WS4s8cc56kUSAQATi2R5vLibKignv4GBw8I3piY9Y=
 ![Количество установок (стабильно)](http://iobroker.live/badges/vis-icontwo-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/inventwo/iobroker.vis-icontwo.svg)
 ![Известные уязвимости](https://snyk.io/test/github/inventwo/iobroker.vis-icontwo/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)
 
 # IoBroker.vis-icontwo
 ## Icon Adapter für den ioBroker.vis Adapter
@@ -58,6 +58,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog
+
+### 0.25.0
+
+• Neue Icons hinzugefügt (Navigation)
 
 ### 0.24.0
 

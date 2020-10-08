@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.deconz/README.md
 title: без названия
-hash: RPlkNSr0oW/Zen2A3Zh6XYcdDhz417DbN3X5joLYeAc=
+hash: c/ieNVG2u8ve69akIpyJrgAjBtTpIM+oW6/aN2D2AIQ=
 ---
 ![Логотип](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
 ![Количество установок](http://iobroker.live/badges/deconz-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.deconz.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.deconz.svg)
-![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.deconz.png?downloads=true)
 
 ioBroker deConz dresden-elektronik Адаптер
 
@@ -21,10 +21,10 @@ ioBroker deConz dresden-elektronik Адаптер
 
 ** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
-Требуемая версия js-контроллера> 2.x.x, Обязательный node.js> = 10.x.x
+Требуемая версия js-контроллера> 2.x.x, обязательная версия node.js> = 10.x.x
 
 ## Английский
-Подключается к программному обеспечению deConz, разработанному dresden-elektronik. Это программное обеспечение призвано стать универсальным решением для шлюзов ZigBee, использующим оборудование от dresden-elektronik, USB-накопитель ConBee и модуль RaspBee для Raspberry Pi.
+Подключается к программному обеспечению deConz, разработанному dresden-elektronik. Это программное обеспечение призвано стать универсальным решением ZigBee Gateway с использованием оборудования от dresden-elektronik, USB-накопителя ConBee и модуля RaspBee для Raspberry Pi.
 
 ### Настроить
 1. Прочтите документацию deConz / Phoscon, посмотрите раздел [ссылки] (https://github.com/iobroker-community-adapters/ioBroker.deconz#links).
@@ -37,7 +37,7 @@ ioBroker deConz dresden-elektronik Адаптер
     Если deConz был найден IP и порт отображается сейчас.
 
 4. Нажмите «Создать ключ API».
-5. * Введите имя пользователя (Стандартное восторг)
+5. * Введите имя пользователя (Стандартное удовольствие)
     * Введите пароль (устанавливается при первом входе в приложение Phoscon)
   * **Альтернатива:** Откройте приложение Phoscon -> Меню -> Настройки -> Шлюз -> Дополнительно -> Разблокировать шлюз
 
@@ -61,7 +61,7 @@ ioBroker deConz dresden-elektronik Адаптер
 
       Это создает пустую группу.
 
-   2. лампы теперь можно добавить с помощью `manage.addtoGroup`.
+   2. лампы теперь могут быть добавлены с помощью `manage.addtoGroup`.
 
       Для этого установите состояние с идентификатором группы.
 
@@ -79,9 +79,9 @@ Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Sof
     Wurde deConz gefunden steht jetzt IP und Port schon in der Maske.
 
 4. Кликен "Erstelle API Key"
-5. * Buntzername (Стандартное удовольствие) и
+5. * Benutzername (Стандартное наслаждение) и
     * Passwort (wird beim ersten Anmelden in der Phoscon APP vergeben) eingeben
-   * **Alterantiv:** Phoscon APP öffnen -> Menü -> Einstellungen -> Gateway -> Erweitert -> Auf "App verbinden" klicken
+   * **Alterantiv:** Phoscon APP öffnen -> Menü -> Einstellungen -> Gateway -> Erweitert -> Auf "App verbinden" кликен
 
 #### Mehr als einen Befehl senden
 Dafür gibt es das Objekt "действие".
@@ -99,7 +99,7 @@ Dafür gibt es das Objekt "действие".
    Das wars!
 
 #### Gruppe erstellen
-   1. Обозначьте состояние «groups.creategroup» с помощью демоверсии Namen der Gruppe setzen.
+   1. Обозначьте состояние «groups.creategroup» с дем gewünschten Namen der Gruppe setzen.
 
       Damit wird eine leere Gruppe erstellt.
 

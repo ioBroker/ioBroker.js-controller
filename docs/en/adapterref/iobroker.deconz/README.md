@@ -64,7 +64,7 @@ Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Sof
     * **Alterantiv:** Adpterkonfiguration schließen und erneut öffnen.
     Wurde deConz gefunden steht jetzt IP und Port schon in der Maske.
 4.  "Erstelle API Key" Klicken
-5.  * Buntzername (Standard ist delight) und
+5.  * Benutzername (Standard ist delight) und
     * Passwort (wird beim ersten Anmelden in der Phoscon APP vergeben) eingeben
      * **Alterantiv:** Phoscon APP öffnen -> Menü -> Einstellungen -> Gateway -> Erweitert -> Auf "App verbinden" klicken
       

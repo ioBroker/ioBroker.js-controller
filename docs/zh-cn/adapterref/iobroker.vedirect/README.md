@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vedirect/README.md
 title: ioBroker.vedirect
-hash: xB+rOCOuY6hia3dBJqbIlFGSYKosLiHFRDaoB3jYDSg=
+hash: 7XNvA+1JUCXcUnBj6qxY5StWb18llbHqRoWjRTyC6xk=
 ---
 ![商标](../../../en/adapterref/iobroker.vedirect/admin/vedirect.png)
 
@@ -19,9 +19,19 @@ hash: xB+rOCOuY6hia3dBJqbIlFGSYKosLiHFRDaoB3jYDSg=
 通过USB <->串行连接从具有vedirect连接器的Victron设备读取VE.direct数据。
 
 ###配置
-在适配器配置中设置适当的设备（例如/ dev / ttyUSB0）。
+在适配器配置中设置正确的设备（例如/ dev / ttyUSB0）。
 
 ## Changelog
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
+
+### 0.1.2 (2020-10-06)
+* (DutchmanNL) Fix sentry issue, error in opening USB-Port
+
+### 0.1.1
+* (DutchmanNL) Set state to NULL if no data received within 2 seconds.
 
 ### 0.1.0
 * (Andiling) error in device modes corrected
@@ -40,7 +50,7 @@ hash: xB+rOCOuY6hia3dBJqbIlFGSYKosLiHFRDaoB3jYDSg=
 ## License
 MIT License
 
-Copyright (c) 2019 DutchmanNL <rdrozda@hotmail.com>
+Copyright (c) 2020 DutchmanNL <rdrozda@hotmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

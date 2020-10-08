@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.jarvis/README.md
 title: ioBroker.jarvis
-hash: e/osQ26wn5IDTtU1VDSILJGlS47QktHcHZTdoIYHyuM=
+hash: ledklbjt0059ZB5hxqHfUsuptPQ31mL3qGreLAwC8U0=
 ---
 ![商标](../../../en/adapterref/iobroker.jarvis/admin/jarvis.png)
 
@@ -18,43 +18,46 @@ hash: e/osQ26wn5IDTtU1VDSILJGlS47QktHcHZTdoIYHyuM=
 ＃ioBroker.jarvis jarvis-另一个杰出的视觉
 [![Travis CI]（https://travis-ci.com/Zefau/ioBroker.jarvis.svg?branch=master）](https://travis-ci.com/Zefau/ioBroker.jarvis)
 
-## Ist是贾维斯吗？
-Jarvis ist eine Material Design Visualisierung，请参见[材质界面](https://material-ui.com/)basiert。 Jarvis gibt eine Struktur和Module vor，来自视觉界的工程师，Aber sehr flexibel konfiguriert werden专家。
+##德文版
+[德国联邦国防军](README.de.md).
 
-Jarvis ist[*反应迅速*](https://de.wikipedia.org/wiki/Responsive_Webdesign)和屏幕保护程序已失效。
+##什么是贾维斯？
+jarvis是基于[材质用户界面](https://material-ui.com/)的材料设计可视化。 jarvis提供了一个结构和模块，可用于可视化并灵活配置。
 
-Das Layout ist flexibel konfigurierbar。 Eskönnen可选（beliebig viele）Tabs verwendet werden。 Jeder Tab kann封装`fullscreen`sein oder beliebig viele`columns`haben，死于einzelnen`modules`中更灵活的Reihenfolge beinhalten。
+jarvis为[*反应迅速*](https://de.wikipedia.org/wiki/Responsive_Webdesign)，并适应浏览器的屏幕大小。
 
-Jedes Modul的演讲人Konfigurationsmöglichkeiten（[维基百科](https://github.com/Zefau/ioBroker.jarvis/wiki/de-Modules)）。
+布局可灵活配置。您可以根据需要添加任意多个标签。每个选项卡可以是`fullscreen`，也可以具有任意数量的`columns`，其中每一列以灵活的顺序保存`modules`。
 
-## Warum jarvis？
-jarvis ist weitaus weniger flexibel als ioBroker.vis，aber bietetdafürein standardisiertes Design，um schnell eine Visualisierung zusammenzustellen。 Wer besonders spezifische Anforderungen hat，sollte（weiterhin）ioBroker.vis verwendet。
+每个模块都有自己的配置可能性（[参见维基](https://github.com/Zefau/ioBroker.jarvis/wiki/de-Modules)）。
 
-##安装和维修信息
-[Mehr Informationen-知识点配置-Gibt es im Wiki](https://github.com/Zefau/ioBroker.jarvis/wiki).
+##为什么要贾维斯？
+jarvis不像ioBroker.vis那样灵活，但是提供了快速可视化的标准设计。
+
+##安装和更多信息
+[可以在Wiki中找到更多信息-特别是繁琐的配置-](https://github.com/Zefau/ioBroker.jarvis/wiki).
 
 _____
 
-##印象
-模范·冯·模块·坎恩·弗雷Nachfolgend einige Impressionen / Beispiele：
+##印象数
+模块的配置可以自由对齐。随后的一些印象/例子：
 
 ###截屏视频
-[![播放视频]（https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/play.png）](https://youtu.be/jltXTSDGoQw)
+[![播放视频]（https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/play.png）](https://youtu.be/jltXTSDGoQw)
 
 您可以在[YouTube频道](https://www.youtube.com/channel/UCQ7rw5Uect8PSx1aVzEOlzQ)上找到更多视频。
 
 ###截图
-#### Beispiel：资讯主页（3`columns`）
-![Dashboard.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Dashboard.png)
+####范例：资讯主页（3`columns`）
+![Dashboard.png](https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/Dashboard.png)
 
-#### Beispiel：Karte（Vollbild）
-![Map.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Map.png)
+####示例：地图（全屏）
+![Map.png](https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/Map.png)
 
-#### Beispiel：Statistiken（2`columns`）
-![Statistik.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Statistik.png)
+####示例：统计信息（2`columns`）
+![Statistik.png](https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/Statistik.png)
 
-#### Beispiel：状态（3`columns`，davon 2 leer）
-![Status.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Status.png)
+####示例：状态（3`columns`，davon 2 leer）
+![Status.png](https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/Status.png)
 
 ## Changelog
 

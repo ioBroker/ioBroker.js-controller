@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.deconz/README.md
 title: kein Titel
-hash: RPlkNSr0oW/Zen2A3Zh6XYcdDhz417DbN3X5joLYeAc=
+hash: c/ieNVG2u8ve69akIpyJrgAjBtTpIM+oW6/aN2D2AIQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -27,7 +27,7 @@ Erforderliche js-controller Version> 2.x.x, Erforderliche node.js> = 10.x.x.
 Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Software soll eine universelle ZigBee Gateway-Lösung sein, die Hardware von dresden-elektronik, den ConBee USB-Stick und RaspBee, ein Modul für den Raspberry Pi, verwendet.
 
 ### Konfiguration
-1. Lesen Sie die Dokumentation zu deConz / Phoscon und lesen Sie den Abschnitt [links] (https://github.com/iobroker-community-adapters/ioBroker.deconz#links).
+1. Lesen Sie die Dokumentation zu deConz / Phoscon im Abschnitt [links] (https://github.com/iobroker-community-adapters/ioBroker.deconz#links).
 2. Starten Sie den Adapter
 3. * Geben Sie die IP-Adresse für deConz ein
     * Geben Sie die Portnummer ein, Standard ist 80.
@@ -41,7 +41,7 @@ Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Sof
     * Passwort eingeben (wird beim ersten Login auf der Phoscon APP festgelegt)
   * **Alternative:** Öffnen Sie die Phoscon APP -> Menü -> Einstellungen -> Gateway -> Erweitert -> Gateway entsperren
 
-#### Senden Sie mehrere Befehle gleichzeitig
+#### Mehr als einen Befehl gleichzeitig senden
 Zu diesem Zweck gibt es ein Objekt namens "Aktion".
 
 Beispiele:
@@ -79,8 +79,8 @@ Verbindet mit der von dresden-elektronik erled deConz-Software. Diese Software s
     Wurde deConz gefunden steht jetzt IP und Port schon in der Maske.
 
 4. "Erstelle API Key" enthält
-5. * Buntzername (Standard ist Freude) und
-    * Passwort
+5. * Nameame (Standard ist Freude) und
+    * Passwort (wird beim ersten Anmelden in der Phoscon APP gehört) gehört
    * **Alterantiv:** Phoscon APP öffnen -> Menü -> Einstellungen -> Gateway -> Erweitert -> Auf "App gehört" klicken
 
 #### Mehr als ein Befehl senden

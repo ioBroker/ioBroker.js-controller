@@ -35,6 +35,9 @@ Weather-dependent automatic control of garden irrigation
 
 ## Changelog
 
+### 0.0.12 (10.10.2020)
+* (Dirk-Peter-md) Bewässerung über eine 2. Pumpe (Zisterne mit Vorrangschaltung) in abhängigkeit vom Füllstand hinzugefügt.
+
 ### 0.0.11 (30.08.2020)
 * (Dirk-Peter-md) Bug in der Verarbeitung der Regenvorhersage vom Adapter "Das Wetter"
 * (Dirk-Peter-md) Bug auf Travis CI

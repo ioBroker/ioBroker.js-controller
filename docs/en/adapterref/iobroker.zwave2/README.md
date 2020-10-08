@@ -40,6 +40,15 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.7.4 (2020-10-05)
+* Added a configuration file for `Electronic Solutions DBMZ EU`
+* Fixed a crash when receiving truncated messages
+* Fixed a crash when trying to send secure commands with an expired nonce (`Security CC requires a nonce to be sent!`)
+* Several fixes regarding battery-powered nodes (this should prevent the dreaded `E5` error on some thermostats, which was back since v1.7.0), including: 
+  * Battery-powered nodes are actively sent to sleep again when they have no pending messages
+  * Compatibility queries are now discarded when the node is asleep, avoiding duplicate queries on wakeup
+  * Sending a node to sleep now continues to work even if it failed once
+
 ### 1.7.3 (2020-10-03)
 * Fixed two crashes during the `Notification CC` interview
 
@@ -75,10 +84,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
   * Removed parameter #5 from `Aeon Labs ZW130` because it doesn't seem to be supported in any firmware version
   * In addition to real serial ports, serial-over-tcp connections (e.g. by using `ser2net`) are now supported. Use these `ser2net` settings to host a serial port: `<external-port>:raw:0:<path-to-serial>:115200 8DATABITS NONE 1STOPBIT`
   * Fixed a crash that could occur when assembling a partial message while the driver is not ready yet.
-
-### 1.6.3 (2020-09-04)
-* Further performance optimization
-* Improved compatibility with devices that send invalid `Multi Channel CC` commands
 
 ## License
 

@@ -14,23 +14,20 @@
 
 **Travis CI-Tests:**: [![Travis-CI](http://img.shields.io/travis/hombach/ioBroker.kostal-piko-ba/master.svg)](https://travis-ci.org/hombach/ioBroker.kostal-piko-ba)
 
-This adapter uses the service Sentry.io to automatically report exceptions and code errors and new device schemas to me as the developer. More details see below!
-
 ## Adapter for reading Kostal Piko BA data for iOBroker
-Adapter for reading Kostal Piko BA data. Adapter creates some states and updates sequentially.
+Adapter for reading Kostal Piko BA data. Adapter creates some states and updates them sequentially.
 
-### Settings
-To connect to the Kostal Pico BA inverter type in its IP-address in the config.
+## Settings
+To connect to the Kostal Pico BA inverter noting its IP-address into the config is mandatory.
+You could also edit the update frequencies of live, daily and livetime data.
 
-### What is Sentry.io and what is reported to the servers of that company?
-Sentry.io is a service for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
-When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry.
-When you allowed iobroker GmbH to collect diagnostic data then also your installation ID is included.
-This allows Sentry to group errors and show how many unique users are affected by such an error.
-All of this helps me to provide error free adapters that basically never crashs.
-
+## Notes
+* This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Changelog
+### 1.0.6 (05.10.2020)
+* (HombachC) added battery.ChargeCycles
+
 ### 1.0.5 (26.09.2020)
 * (HombachC) battery.temperature rounded
 

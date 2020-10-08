@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.deconz/README.md
 title: 无题
-hash: RPlkNSr0oW/Zen2A3Zh6XYcdDhz417DbN3X5joLYeAc=
+hash: c/ieNVG2u8ve69akIpyJrgAjBtTpIM+oW6/aN2D2AIQ=
 ---
 ![商标](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -24,7 +24,7 @@ ioBroker deConz dresden-elektronik适配器
 所需的js-controller版本> 2.x.x，所需的node.js> = 10.x.x
 
 ＃＃ 英语
-连接到由dresden-elektronik开发的deConz软件。该软件旨在成为通用的ZigBee网关解决方案，使用来自dresden-elektronik的硬件，ConBee USB棒和RaspBee作为Raspberry Pi的模块。
+连接到由dresden-elektronik开发的deConz软件。该软件旨在成为通用的ZigBee网关解决方案，使用来自dresden-elektronik的硬件，ConBee USB记忆棒和RaspBee作为Raspberry Pi的模块。
 
 ＃＃＃ 建立
 1.阅读deConz / Phoscon的文档，查看[links]（https://github.com/iobroker-community-adapters/ioBroker.deconz#links）部分。
@@ -57,7 +57,7 @@ ioBroker deConz dresden-elektronik适配器
    而已！
 
 ＃＃＃＃ 创建组
-   1.将状态“ groups.creategroup”设置为所需的组名称
+   1.将状态`groups.creategroup`设置为所需的组名
 
       这将创建一个空组。
 
@@ -66,7 +66,7 @@ ioBroker deConz dresden-elektronik适配器
       为此，请使用组的ID设置状态。
 
 ##德语
-Verbindet mit der von Dresden-elektronik Entwickelten deConz软件。 Diese Software独家介绍了ZigBeeGateway-Lösung服务器，硬件von Dresden-elektronik，ConBee USB-Stick和RaspBee，eModulfürden Raspberry Pi，verwendet。
+Verbindet mit der von Dresden-elektronik Entwickelten deConz软件。 Diese Software独家介绍了ZigBeeGateway-Lösung服务器，硬件von Dresden-elektronik，ConBee USB-Stick和RaspBee，Modulfürden Raspberry Pi，verwendet。
 
 ### Einrichten
 1. Dokumentation von deConz / Phoscon lesen，Quellen siehe [链接]（https://github.com/iobroker-community-adapters/ioBroker.deconz#links）。
@@ -79,7 +79,7 @@ Verbindet mit der von Dresden-elektronik Entwickelten deConz软件。 Diese Soft
     Wurde deConz gefunden总部位于der Maske的IP und Port schon。
 
 4.“ Erstelle API密钥” Klicken
-5. * Buntzername（标准IST喜悦）和
+5. * Benutzername（标准IST喜悦）和
     * Passwort（在Phoscon APP vergeben中的无线beim ersten Anmelden）
      * **替代：** Phoscon应用程序->菜单-> Einstellungen->网关-> Erweitert-> Auf“ App verbinden” klicken
 
@@ -103,7 +103,7 @@ Dafürgibt es das Objekt“行动”。
 
       戴米特·威德·伊恩·里尔·格鲁佩·埃斯特尔特。
 
-   2.删除`manage.addtoGroup`的图片。
+   2. Die Lampe（n）请访问`manage.addtoGroup`hinzugefügtwerden。
 
       达祖·塞茨特（Dazu Setzt Man den State mit der der der Gruppe）。
 

@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.mihome/README.md
 title: ioBroker Mi Home Adapter
-hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
+hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
 ---
 ![logo](../../../de/adapterref/iobroker.mihome/media/mihome.png)
 
@@ -39,7 +39,7 @@ and then press *About*
 2 further menu items appear> If not, try again
 
 * Select the menu item `Wireless communication protocol`
-* Turn on the slide switch at the top, note the password and confirm with `OK`.
+* Switch on the slide switch above, note the password and confirm with ʻOK`.
 
 > The password will be required later during the ioBroker installation.
 
@@ -64,17 +64,17 @@ press and press *About*
 * Tap repeatedly in the empty area below
 * Now the developer mode is switched on and it should after a certain time
 
-further menu items appear> If it does not work immediately, repeat the steps
+Further menu items appear> If it does not work immediately, repeat the steps
 
 * Select the 4th menu item
-* Turn on the slide switch at the top, note the password and confirm with `OK`.
+* Switch on the slide switch above, note the password and confirm with ʻOK`.
 
 > The password will be required later during the ioBroker installation.
 
 Now further devices can be taught in using the `+` sign.
 
 ### Setting on the router
-Under About / Hub info, the IP address of the gateway used by the gateway can be determined in the text after _localip_. In the router used, this IP should be permanently assigned to the gateway.
+The IP address of the gateway used by the gateway can be determined in the text after _localip_ under About / Hub info. In the router used, this IP should be permanently assigned to the gateway.
 If you no longer want to operate the taught-in devices via the app, the gateway's Internet access can also be switched off after all devices have been taught-in in the router.
 
 ### Supported devices
@@ -123,7 +123,7 @@ The following configuration window then opens:
 
 ![logo](../../../de/adapterref/iobroker.mihome/media/Adapterconfig1.PNG)
 
-Enter the password determined above under `Default Gateway Key` and close the window with * save * * and close * The running adapter should then be displayed in green under * Instances *:
+Enter the password determined above under `Default Gateway Key` and close the window with * save * * and close *. The running adapter should then be displayed in green under * Instances *:
 
 ![logo](../../../de/adapterref/iobroker.mihome/media/Instanz.PNG)
 
@@ -131,7 +131,7 @@ The gateway and its taught-in devices are now displayed under *Objects*
 
 ![logo](../../../de/adapterref/iobroker.mihome/media/Objekte.PNG)
 
-The instructions were created to the best of our knowledge and belief.
+The instructions have been created to the best of our knowledge and belief.
 
 ## Changelog
 ### 1.3.6 (2020-09-25)

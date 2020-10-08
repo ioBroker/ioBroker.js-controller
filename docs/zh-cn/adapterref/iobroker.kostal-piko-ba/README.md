@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.kostal-piko-ba/README.md
 title: ioBroker.kostal-皮科巴
-hash: n4Ot9pfMU0UfRGYsADnc9pRw0XapMD0jittPQnQcxrQ=
+hash: ncW/TovkE6kxtCtILlsaebdiWM/4yPqivyEAo2o85Cw=
 ---
 ![商标](../../../en/adapterref/iobroker.kostal-piko-ba/admin/picoba.png)
 
@@ -19,39 +19,34 @@ hash: n4Ot9pfMU0UfRGYsADnc9pRw0XapMD0jittPQnQcxrQ=
 
 ![Node.js CI](https://github.com/hombach/ioBroker.kostal-piko-ba/workflows/Node.js%20CI/badge.svg)
 
-该适配器使用服务Sentry.io向开发人员自动向我报告异常和代码错误以及新设备架构。详情请见下文！
-
 ##用于读取iOBroker的Kostal Piko BA数据的适配器
-用于读取Kostal Piko BA数据的适配器。适配器创建一些状态并顺序更新。
+用于读取Kostal Piko BA数据的适配器。适配器创建一些状态并顺序更新它们。
 
-###设置
-要连接到Kostal Pico BA逆变器，请在配置中输入其IP地址。
+##设置
+要连接到Kostal Pico BA逆变器，必须将其IP地址记入配置。
+您还可以编辑实时，每日和实时数据的更新频率。
 
-###什么是Sentry.io，什么报告给该公司的服务器？
-Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。
-当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID。
-这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。
-所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+##注意
+*此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[Sentry-Plugin文档]（https://github.com/ioBroker/plugin -sentry＃plugin-sentry）！ Sentry报告从js-controller 3.0开始使用。
 
 ## Changelog
+### 1.0.6 (05.10.2020)
+* (HombachC) added battery.ChargeCycles
+
+### 1.0.5 (26.09.2020)
+* (HombachC) battery.temperature rounded
+
+### 1.0.4 (25.09.2020)
+* (HombachC) code cleanup; bumped mocha
+
 ### 1.0.3 (23.09.2020)
 * (HombachC) bumbed got; added battery.temperature
 
 ### 1.0.2 (23.09.2020)
 * (HombachC) optimized object roles
 
-### 1.0.1 (22.09.2020)
-* (HombachC) bumped dependencies; added some clearing of timeouts
-
 ### 1.0.0 (11.09.2020)
 * (HombachC) first public release for stable repo
-
-### 0.8.5 (26.08.2020)
-* (HombachC) bumped dependencies
-
-### 0.8.2 (18.08.2020)
-* (HombachC) changed scheduling code
 
 ### 0.8.0 (18.08.2020)
 * (HombachC) seperate editable poll timer for statistics data

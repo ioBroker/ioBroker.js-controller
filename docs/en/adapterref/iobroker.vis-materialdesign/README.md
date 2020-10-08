@@ -2609,6 +2609,12 @@ Take a look at the animated screenshot below:
 			<td></td>
 		</tr>
 		<tr>
+			<td>indeterminate</td>
+			<td>indeterminate - continuously animates</td>
+			<td>boolean</td>
+			<td>false | true</td>
+		</tr>
+		<tr>
 			<td>min</td>
 			<td>min</td>
 			<td>string</td>
@@ -5564,6 +5570,8 @@ ical2CalendarWidget();
 * (Scrounger): Calendar Widget: option for custom date format added
 * (Scrounger): IconList Widget: bug fix for performance issue
 * (Scrounger): TopAppBar Widget: options for user groups added
+* (Scrounger): Masonry & Grid View Widget: default width for handy portrait and landscape view changed
+* (Scrounger): Progress Widget: option for indeterminate style added
 * (Scrounger): dependencies updated
 * (Scrounger): bug fixes
 

@@ -255,7 +255,7 @@ class Intro extends Component {
         const link = new Date().getMinutes() % 3;
 
         return [
-            (<div className={this.props.classes.content + ' ' + this.props.classes.backImage} key="content">
+            <div className={this.props.classes.content + ' ' + this.props.classes.backImage} key="content">
                 <div className={this.props.classes.title}>
                     <div className={this.props.classes.titleDiv}>
                         <div className={this.props.classes.titleMain}>ioBroker</div>
@@ -272,15 +272,15 @@ class Intro extends Component {
                     copiedText={I18n.t('copied to clipboard')}
                     typedText="curl -sLf https://iobroker.net/install.sh | bash -"
                 />) : null}
-            </div>),
-            (<SupportUs key="supportus" theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
-            (<ForumInfo key="forum" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
-            (<About key="about" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
-            (<Subscribe key="subscribe" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
-            (<Press key="press" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>),
-            (<Adapters key="adapters" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language} onNavigate={this.props.onNavigate}/>),
-            (<Screenshots key="screenshots" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language} onNavigate={this.props.onNavigate}/>),
-            (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>),
+            </div>,
+            <SupportUs key="supportus" theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>,
+            <ForumInfo key="forum" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>,
+            <About key="about" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>,
+            <Subscribe key="subscribe" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>,
+            <Press key="press" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language}/>,
+            <Adapters key="adapters" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language} onNavigate={this.props.onNavigate}/>,
+            <Screenshots key="screenshots" backClass={(i++ % 2) ? this.props.classes.darkPart : this.props.classes.lightPart} theme={this.props.theme} mobile={this.props.mobile} language={this.props.language} onNavigate={this.props.onNavigate}/>,
+            <Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>,
         ];
     }
 }

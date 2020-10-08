@@ -52,12 +52,22 @@ When the adapter crashes or an other Code error happens, this error message that
 # Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
-    ## __WORK IN PROGRESS__
+    ### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 0.4.8-alpha.2 (2020-10-08)
+* (Dutchman) Bugfix : Cannot read property 'stateDetails' of null
+
+### 0.4.8-alpha.1 (2020-10-08)
+* (Dutchman) Fix calculations for "previous" values
+
+### 0.4.8-alpha.0 (2020-10-06)
+* (Dutchman) **Breaking!!! Move current values to currentYear**
 * (Dutchman) Add back "currentYear"
-* (Dutchman) **Breaking!!!** Move current values to current year
+* (Dutchman) Code cleanup
+* (Dutchman) Optimized error reporting (Sentry)
+* (Dutchman) implemented weekly reset of weekdays
+* (Dutchman) implemented calculation for all states
 * (Dutchman) Removed unneeded settings in configuration
 * (Dutchman) Implemented new configuration for "currentYear"
 

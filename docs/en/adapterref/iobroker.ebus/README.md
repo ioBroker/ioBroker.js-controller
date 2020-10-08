@@ -35,9 +35,12 @@ current supported ebusd-version: 3.3
    
 ## Changelog
 
+## 2.2.0 (2020-09-06)
+* (René) change DP only if necessary to reduce system load
+* (René) update dependencies
+
 ## 2.1.1 (2020-06-27)
 * (René) issue #26: bug fix: "cmd not found" is only debug message instead of error
-
 
 ## 2.1.0 (2020-06-17)
 * (René) refactoring:  'async/await' used

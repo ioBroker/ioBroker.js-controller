@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.jarvis/README.md
 title: ioBroker.jarvis
-hash: e/osQ26wn5IDTtU1VDSILJGlS47QktHcHZTdoIYHyuM=
+hash: ledklbjt0059ZB5hxqHfUsuptPQ31mL3qGreLAwC8U0=
 ---
 ![Логотип](../../../en/adapterref/iobroker.jarvis/admin/jarvis.png)
 
@@ -16,45 +16,48 @@ hash: e/osQ26wn5IDTtU1VDSILJGlS47QktHcHZTdoIYHyuM=
 ![НПМ](https://nodei.co/npm/iobroker.jarvis.png?downloads=true)
 
 # IoBroker.jarvis jarvis - еще один замечательный vis
-[![Трэвис С.И.] (https://travis-ci.com/Zefau/ioBroker.jarvis.svg?branch=master)](https://travis-ci.com/Zefau/ioBroker.jarvis)
+[![Travis CI] (https://travis-ci.com/Zefau/ioBroker.jarvis.svg?branch=master)](https://travis-ci.com/Zefau/ioBroker.jarvis)
 
-## Это был Джарвис?
-jarvis ist eine Material Design Visualisierung, die auf [Материал UI](https://material-ui.com/) basiert. jarvis gibt eine Struktur und Module vor, die zur Visualisierung genutzt werden, aber sehr flexibel konfiguriert werden können.
+## Немецкая версия
+[Hier gibt es die deutsche Übersetzung](README.de.md).
 
-jarvis ist [*отзывчивый*](https://de.wikipedia.org/wiki/Responsive_Webdesign) und passt sich der Größe des Screens an.
+## Что такое джарвис?
+jarvis - это визуализация материального дизайна, основанная на [Материал UI](https://material-ui.com/). jarvis предоставляет структуру и модули, которые можно использовать для визуализации и гибко настраивать.
 
-Das Layout - это flexibel konfigurierbar. Es können optional (Bellybig viele) Tabs verwendet werden. Jeder Tab kann entweder `fullscreen` sein oder libebig viele `columns` haben, die die einzelnen `modules` в flexibler Reihenfolge beinhalten.
+jarvis - это [*отзывчивый*](https://de.wikipedia.org/wiki/Responsive_Webdesign) и адаптируется к размеру экрана браузера.
 
-Jedes Modul hat spezielle Konfigurationsmöglichkeiten ([siehe Wiki je Modul](https://github.com/Zefau/ioBroker.jarvis/wiki/de-Modules)).
+Макет гибко настраивается. Вы можете добавить любое количество вкладок. Каждая вкладка может быть либо `fullscreen`, либо иметь любое количество `columns`, где каждый столбец содержит `modules` в гибком порядке.
 
-## Варум Джарвис?
-jarvis ist weitaus weniger flexibel als ioBroker.vis, aber bietet dafür ein standardisiertes Design, um schnell eine Visualisierung zusammenzustellen. Wer besonders spezifische Anforderungen hat, sollte (weiterhin) ioBroker.vis verwendet.
+Каждый модуль имеет свои собственные возможности конфигурации ([см. вики](https://github.com/Zefau/ioBroker.jarvis/wiki/de-Modules)).
+
+## Почему Джарвис?
+jarvis не такой гибкий, как ioBroker.vis, но предлагает стандартный дизайн для быстрой визуализации.
 
 ## Установка и дополнительная информация
-[Mehr Informationen - insbesondere zur Konfiguration - gibt es im Wiki](https://github.com/Zefau/ioBroker.jarvis/wiki).
+[Более подробную информацию - особенно о конфигурации перенаправления - можно найти в Wiki.](https://github.com/Zefau/ioBroker.jarvis/wiki).
 
 _____
 
-## Impressionen
-Die Konfiguration von Modulen kann frei angeordnet werden. Nachfolgend einige Impressionen / Beispiele:
+## Впечатления
+Конфигурация модулей может быть произвольно согласована. Далее несколько впечатлений / примеров:
 
 ### Скринкаст / видео
-[![Воспроизвести видео] (https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/play.png)](https://youtu.be/jltXTSDGoQw)
+[![Воспроизвести видео] (https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/play.png)](https://youtu.be/jltXTSDGoQw)
 
 Вы можете найти больше видео в [Каналы YouTube](https://www.youtube.com/channel/UCQ7rw5Uect8PSx1aVzEOlzQ).
 
 ### Скриншоты
-#### Beispiel: Панель управления (3 `columns`)
-![Dashboard.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Dashboard.png)
+#### Пример: панель управления (3 `columns`)
+![Dashboard.png](https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/Dashboard.png)
 
-#### Beispiel: Karte (Vollbild)
-![Map.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Map.png)
+#### Пример: карта (полноэкранный режим)
+![Map.png](https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/Map.png)
 
-#### Beispiel: Statistiken (2 `columns`)
-![Statistik.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Statistik.png)
+#### Пример: Статистика (2 `columns`)
+![Statistik.png](https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/Statistik.png)
 
-#### Beispiel: Status (3 `columns`, davon 2 leer)
-![Status.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Status.png)
+#### Пример: Статус (3 `columns`, Дэвон 2 ухмыляется)
+![Status.png](https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/Status.png)
 
 ## Changelog
 

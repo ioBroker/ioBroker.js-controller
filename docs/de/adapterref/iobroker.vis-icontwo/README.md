@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: 72WS4s8cc56kUSAQATi2R5vLibKignv4GBw8I3piY9Y=
+hash: heQmDo1f+3qYDPNfkb06bmRe+DJlxvHUAXhvVHC3ejo=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
@@ -42,14 +42,14 @@ ZUM BEISPIEL. Teilauswahl:
 
 ![Bildschirmfoto](http://resources.inventwo.com/github/icontwo/Screen_004.png)
 
-Eine vollständige Übersicht aller Ikonen ist hier zu finden (die Ordnerstruktur ist die gleichen, wie im Dateimanager):
+Eine vollständige Übersicht aller Ikonen ist hier zu finden.
 
 -> http://icontwo.inventwo.com <-
 
 ---
 
 ## Besetzung
-Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
+Falls Dir unsere Arbeit ausgewählt und du uns nicht gehört möchtest, wir freuen uns über jede Spende.
 
 (Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
@@ -58,6 +58,10 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 ---
 
 ## Changelog
+
+### 0.25.0
+
+• Neue Icons hinzugefügt (Navigation)
 
 ### 0.24.0
 

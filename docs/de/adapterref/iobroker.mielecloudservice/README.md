@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: gEYoZco3JjDIWm92tdlDwC6tylD4oxv7fsDCncL2V3U=
+hash: ZhI0kyBgHKHF8oNuwZ8xWY+rOe+UPZw9Hnlp1wUxChc=
 ---
 ![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
@@ -40,7 +40,7 @@ Gehen Sie zur Installation wie folgt vor:
 6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort der App ein.
 
 ## Dokumentation
-Bitte beziehen Sie sich hauptsächlich auf die von Miele veröffentlichte Haupt-API-Dokumentation
+Bitte beziehen Sie sich hauptsächlich auf die von Miele veröffentlichte API-Hauptdokumentation
 
 * [Allgemeine Dokumentation] (https://www.miele.com/developer/swagger-ui/index.html)
 * [Voraussetzungen für die Ausführung einer Aktion auf einem Gerät] (https://www.miele.com/developer/swagger-ui/put_additional_info.html)
@@ -69,7 +69,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 18 | HAUBE |
  | 19 | KÜHLSCHRANK |
  | 20 | Gefrierschrank |
- | 21 | KÜHL- / GEFRIERKOMBINATION |
+ | 21 | KÜHLSCHRANK- / GEFRIERKOMBINATION |
  | 23 | VAKUUMREINIGER, AUTOMATISCHER ROBOTER VAKUUMREINIGER |
  | 24 | SCHEIBETROCKNER |
  | 25 | DISH WARMER |
@@ -134,6 +134,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
 | Rohwert | Staat | verfügbar für |
 |----------|-------|---------------|
 | 1 | "Baumwolle" / "Baumwolle" | Waschmaschine |
+| 23 | "Oberhemden" / | Waschmaschine |
 | 27 | "Imprägnieren" / | Waschmaschine |
 | 48 | "Flusen ausspülen" | Waschtrockner |
 | 50 | "Dunkle Wäsche" / | Waschtrockner |
@@ -147,7 +148,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
 | 266 | "Schleudern" / "Spinnen" | Waschmaschine |
 | 267 | "Knitterschutz" / "" | Waschmaschine |
 | 268 | "Ende" / "Ende" | Die meisten Geräte |
-| 256 | "" | | |
+| 256 | "Vorbügeln" | Waschmaschine |
 | 514 | "Trocknen" | Waschtrockner |
 | 519 | "Abkühlen" | Waschtrockner |
 | 532 | "Flusen ausspülen" | Waschtrockner |

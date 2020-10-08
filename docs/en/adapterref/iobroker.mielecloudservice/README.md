@@ -250,6 +250,7 @@ Here is a list of what these raw values stand for:
 | Raw value | State| avaliable for |
 |----------|-------|---------------|
 |  1 | "Baumwolle" / "Cotton"  | Washing Machine |
+| 23 | "Oberhemden" /  | Washing Machine |
 | 27 | "Imprägnieren"  /     | Washing Machine |
 | 48 | "Flusen ausspülen"| Washer Dryer |
 | 50 | "Dunkle Wäsche"/ | Washer Dryer |
@@ -264,7 +265,7 @@ Here is a list of what these raw values stand for:
 |266 | "Schleudern" / "Spinning"| Washing Machine |
 |267 | "Knitterschutz" / ""| Washing Machine |
 |268 |  "Ende" / "End"| Most devices |
-|256 | "" | | |
+|256 | "Vorbügeln" | Washing Machine |
 |514 | "Trocknen" | Washer Dryer |
 |519 | "Abkühlen" | Washer Dryer |
 |532 | "Flusen ausspülen" | Washer Dryer |

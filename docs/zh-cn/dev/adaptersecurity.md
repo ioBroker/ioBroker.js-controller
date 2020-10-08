@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adaptersecurity.md
 title: 适配器开发人员与安全相关的功能
-hash: X2HcDsT5TE/W4x20hMFpAqHF23iMYbOPyEK6TXNkyG4=
+hash: /NdARX0dTYJRe5UAHsq6Xdl6DY1zMplYgcLpB1LOemU=
 ---
 ＃适配器开发人员与安全相关的功能
 ##防止其他适配器访问敏感数据
@@ -34,7 +34,7 @@ __例__：
 __当前使用的加密算法__
 
 -js-controller> = 3.0：`default'
--JS控制器> = 3.2：`aes-192-cbc`
+-JS控制器> = 3.2：ʻaes-192-cbc`
 
 请注意，此功能至少需要js-controller 3.0.0。
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: 72WS4s8cc56kUSAQATi2R5vLibKignv4GBw8I3piY9Y=
+hash: heQmDo1f+3qYDPNfkb06bmRe+DJlxvHUAXhvVHC3ejo=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
@@ -17,11 +17,11 @@ hash: 72WS4s8cc56kUSAQATi2R5vLibKignv4GBw8I3piY9Y=
 
 ＃ioBroker.vis-icontwo
 ##图标适配器来自ioBroker.vis适配器
-视觉识别工具适配器。
+可视化工具图标适配器。
 
 ![屏幕截图](http://resources.inventwo.com/github/icontwo/Screen_001.png)
 
-视觉图标上的所有图标
+艾尔·图标·德·伊迪内格（Af der Obersten Ebene）在视觉上
 
 ![帕法德](http://resources.inventwo.com/github/icontwo/Pfad_001.png)
 
@@ -42,14 +42,14 @@ Z.B.设备（Teilauswahl）：
 
 ![屏幕截图](http://resources.inventwo.com/github/icontwo/Screen_004.png)
 
-EinevollständigeÜbersichtaller Icons ist hier zu finden（Die Ordnerstruktur ist die gleiche，wie im Dateimanager）：
+EinevollständigeÜbersichtaller Icons ist hier zu finden（死于Ordnerstruktur ist die gleiche，Wie im Dateimanager）：
 
 -> http://icontwo.inventwo.com <-
 
 ---
 
 ##Unterstützung
-瀑布下的阿尔贝特教堂和地下教堂
+Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱恩·乌斯·杰德·斯彭德。
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
@@ -58,6 +58,10 @@ EinevollständigeÜbersichtaller Icons ist hier zu finden（Die Ordnerstruktur i
 ---
 
 ## Changelog
+
+### 0.25.0
+
+• Neue Icons hinzugefügt (Navigation)
 
 ### 0.24.0
 

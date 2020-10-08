@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.kostal-piko-ba/README.md
 title: ioBroker.kostal-piko-ba
-hash: n4Ot9pfMU0UfRGYsADnc9pRw0XapMD0jittPQnQcxrQ=
+hash: ncW/TovkE6kxtCtILlsaebdiWM/4yPqivyEAo2o85Cw=
 ---
 ![Логотип](../../../en/adapterref/iobroker.kostal-piko-ba/admin/picoba.png)
 
@@ -19,39 +19,34 @@ hash: n4Ot9pfMU0UfRGYsADnc9pRw0XapMD0jittPQnQcxrQ=
 
 ![Node.js CI](https://github.com/hombach/ioBroker.kostal-piko-ba/workflows/Node.js%20CI/badge.svg)
 
-Этот адаптер использует службу Sentry.io для автоматического сообщения мне как разработчику об исключениях, ошибках кода и новых схемах устройств. Подробнее см. Ниже!
-
 ## Адаптер для чтения данных Kostal Piko BA для iOBroker
-Адаптер для чтения данных Косталь Пико БА. Адаптер последовательно создает несколько состояний и обновляет.
+Адаптер для чтения данных Костал Пико БА. Адаптер создает несколько состояний и последовательно обновляет их.
 
-### Настройки
-Для подключения к инвертору Kostal Pico BA введите его IP-адрес в config.
+## Настройки
+Для подключения к инвертору Kostal Pico BA обязательно указание его IP-адреса в конфиге.
+Вы также можете редактировать частоту обновления данных в реальном времени, за день и в реальном времени.
 
-### Что такое Sentry.io и что передается на серверы этой компании?
-Sentry.io - это сервис, позволяющий разработчикам получать обзор ошибок в своих приложениях. Именно это и реализовано в этом адаптере.
-Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry.
-Когда вы разрешили iobroker GmbH собирать диагностические данные, также включается ваш идентификатор установки.
-Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой.
-Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
+## Заметки
+* Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin] (https://github.com/ioBroker/plugin -sentry # плагин-часовой)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Changelog
+### 1.0.6 (05.10.2020)
+* (HombachC) added battery.ChargeCycles
+
+### 1.0.5 (26.09.2020)
+* (HombachC) battery.temperature rounded
+
+### 1.0.4 (25.09.2020)
+* (HombachC) code cleanup; bumped mocha
+
 ### 1.0.3 (23.09.2020)
 * (HombachC) bumbed got; added battery.temperature
 
 ### 1.0.2 (23.09.2020)
 * (HombachC) optimized object roles
 
-### 1.0.1 (22.09.2020)
-* (HombachC) bumped dependencies; added some clearing of timeouts
-
 ### 1.0.0 (11.09.2020)
 * (HombachC) first public release for stable repo
-
-### 0.8.5 (26.08.2020)
-* (HombachC) bumped dependencies
-
-### 0.8.2 (18.08.2020)
-* (HombachC) changed scheduling code
 
 ### 0.8.0 (18.08.2020)
 * (HombachC) seperate editable poll timer for statistics data

@@ -44,6 +44,16 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 1.0.2 (2020-10-08)
+* (simatec) fix uptime for childrenarea
+
+### 1.0.1 (2020-10-06)
+* (simatec) Adjustment of the configuration menu
+* (simatec) time settings for the children's area added
+* (simatec) button for closing the children's area added
+* (simatec) button for opening the children's area added
+* (simatec) button for sun protection of the children's area added
+
 ### 1.0.0 (2020-09-28)
 * (simatec) some Bugfixes
 * (simatec) code cleaning
@@ -138,9 +148,9 @@ When the adapter crashes or an other Code error happens, this error message that
 * (simatec) Added more debug logs
 * (simatec) Added node Support
 * (simatec) node 8 support removed
-* (Ren�) late all down added
-* (Ren�) late all down configurable per shutter
-* (Ren�) in summer time not to move down (configurable)
+* (Rene) late all down added
+* (Rene) late all down configurable per shutter
+* (Rene) in summer time not to move down (configurable)
 
 ### 0.5.0 (06.04.2020)
 * (simatec) Bugfix Goldenhour

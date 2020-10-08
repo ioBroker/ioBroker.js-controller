@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.jarvis/README.md
 title: ioBroker.jarvis
-hash: e/osQ26wn5IDTtU1VDSILJGlS47QktHcHZTdoIYHyuM=
+hash: ledklbjt0059ZB5hxqHfUsuptPQ31mL3qGreLAwC8U0=
 ---
 ![Logo](../../../en/adapterref/iobroker.jarvis/admin/jarvis.png)
 
@@ -18,43 +18,46 @@ hash: e/osQ26wn5IDTtU1VDSILJGlS47QktHcHZTdoIYHyuM=
 # IoBroker.jarvis jarvis - nur ein weiterer bemerkenswerter vis
 [![Travis CI] (https://travis-ci.com/Zefau/ioBroker.jarvis.svg?branch=master)](https://travis-ci.com/Zefau/ioBroker.jarvis)
 
-## War ist jarvis?
-jarvis ist eine Material Design Visualisierung, die auf [Material-Benutzeroberfläche](https://material-ui.com/) basiert. jarvis gibt eine Struktur und Modul vor, die zur Visualisierung werden werden, aber sehr flexibel werden können können.
+## Deutsche Version
+[Hier gibt es die deutsche Übersetzung](README.de.md).
 
-jarvis ist [*reaktionsschnell*](https://de.wikipedia.org/wiki/Responsive_Webdesign) und passt sich der Größe des Screens an.
+## Was ist Jarvis?
+jarvis ist eine Materialdesign-Visualisierung, die auf [Material-Benutzeroberfläche](https://material-ui.com/) basiert. jarvis bietet eine Struktur und Module, die für die Visualisierung verwendet und flexibel konfiguriert werden können.
 
-Das Layout ist flexibel konfigurierbar. Es können optional (beliebig viele) Tabs verwendet werden. Jeder Tab kann gleich `fullscreen` sein oder beliebig viele `columns` haben, die sterben `modules` in flexibler gehören gehören.
+jarvis ist [*reaktionsschnell*](https://de.wikipedia.org/wiki/Responsive_Webdesign) und passt sich der Bildschirmgröße des Browsers an.
 
-Jedes Modul hat persönliche Konfigurationsbefugnisse ([siehe Wiki je Modul](https://github.com/Zefau/ioBroker.jarvis/wiki/de-Modules)).
+Das Layout ist flexibel konfigurierbar. Sie können beliebig viele Registerkarten hinzufügen. Jede Registerkarte kann entweder `fullscreen` sein oder so viele `columns` wie bevorzugt haben, wobei jede Spalte die `modules` in einer flexiblen Reihenfolge enthält.
 
-## Warum jarvis?
-Es ist wichtig, dass Sie weniger flexibel sind als ioBroker.vis, aber nordweit ein standardisiertes Design, um schnell eine Visualisierung zusammengesetzt. Wer hat sich davon getrennt?
+Jedes Modul hat seine eigenen Konfigurationsmöglichkeiten ([siehe Wiki](https://github.com/Zefau/ioBroker.jarvis/wiki/de-Modules)).
 
-## Installation und mehr Informationen
-[Mehr Informationen - heißt zur Konfiguration - gibt es im Wiki](https://github.com/Zefau/ioBroker.jarvis/wiki).
+## Warum Jarvis?
+jarvis ist nicht so flexibel wie ioBroker.vis, bietet jedoch ein Standarddesign für eine schnelle Visualisierung.
+
+## Installation und weitere Informationen
+[Weitere Informationen - insbesondere zum Redarding der Konfiguration - finden Sie im Wiki](https://github.com/Zefau/ioBroker.jarvis/wiki).
 
 _____
 
 ## Impressionen
-Die Konfiguration von Modulen kann frei werden. Nachfolgend einige Impressionen / Beispiele:
+Die Konfiguration der Module kann frei ausgerichtet werden. Nachfolgend einige Eindrücke / Beispiele:
 
 ### Screencast / Video
-[![Video abspielen] (https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/play.png)](https://youtu.be/jltXTSDGoQw)
+[![Video abspielen] (https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/play.png)](https://youtu.be/jltXTSDGoQw)
 
 Weitere Videos finden Sie in den [YouTube-Kanäle](https://www.youtube.com/channel/UCQ7rw5Uect8PSx1aVzEOlzQ).
 
 ### Screenshots
 #### Beispiel: Dashboard (3 `columns`)
-![Dashboard.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Dashboard.png)
+![Dashboard.png](https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/Dashboard.png)
 
 #### Beispiel: Karte (Vollbild)
-![Map.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Map.png)
+![Map.png](https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/Map.png)
 
-#### Beispiel: Werden (2 `columns`)
-![Statistik.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Statistik.png)
+#### Beispiel: Statistik (2 `columns`)
+![Statistik.png](https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/Statistik.png)
 
 #### Beispiel: Status (3 `columns`, davon 2 leer)
-![Status.png](https://raw.githubusercontent.com/Zefau/jarvis/master/documentation/App/Status.png)
+![Status.png](https://raw.githubusercontent.com/Zefau/ioBroker.jarvis/master/App/Status.png)
 
 ## Changelog
 

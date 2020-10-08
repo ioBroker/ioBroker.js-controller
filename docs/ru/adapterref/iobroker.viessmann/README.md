@@ -3,16 +3,16 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: py7WH/sT7A9CXgu/xcGjnCdIpEIKKXYdeErNrQ8IoFo=
+hash: m2KxXpGacYVnj+s8CqCvqKvKkRAqFQhzno5PxB0mQuU=
 ---
-![логотип](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
+![Логотип](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
 ![Количество установок](http://iobroker.live/badges/viessmann-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.viessmann.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.viessmann.svg)
-![Трэвис-CI](http://img.shields.io/travis/misanorot/ioBroker.viessmann/master.svg)
+![Трэвис-Си](http://img.shields.io/travis/misanorot/ioBroker.viessmann/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/misanorot/ioBroker.viessmann?branch=master&svg=true)
-![NPM](https://nodei.co/npm/iobroker.viessmann.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.viessmann.png?downloads=true)
 
 # IoBroker.viessmann
 =================
@@ -21,21 +21,21 @@ hash: py7WH/sT7A9CXgu/xcGjnCdIpEIKKXYdeErNrQ8IoFo=
 
 **[Английское описание](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
 
-Mit Diesem Adapter ist es möglich, Werte aus einer Viessmann Steuerung die mit dem Programm, [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, в Objekten zu speichern.
-Ebenso ist das Setzen von Werten, умерший в сейнере Vito.xml, изображающий шляпу меглиха.
+Mit diesem Adapter ist es möglich, Werte aus einer Viessmann Steuerung die mit dem Programm [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, in Objekten zu speichern.
+Ebenso ist das Setzen von Werten, die man in seiner Vito.xml konfiguriert hat möglich.
 
-#### (хост Host)
-Sollte Vcontrold auf dem gleichen Принимающая сторона с IOBroker laufen, так и под Linux.
-* (Vorausgesetzt, sie liegt in dem Standard Pfad: /etc/vcontrold/vito.xml)*
+#### (Selber Host)
+Управление Vcontrold на хосте с установленным IOBroker laufen, таким образом, Linux имеет собственное значение Veränderung в Adminkonfiguration, но не в формате .xml Dateien einzulesen.
+* (Vorausgesetzt, находится в стандартной документации: /etc/vcontrold/vito.xml)*
 
-#### (Anderer Host)
-Ist Vcontrold auf einem andderen Принимающая компания, работающая по SSH Zugang die .xml Dateien einlesen.
+#### (хост Anderer)
+Ist Vcontrold auf einem anderen Host installiert, cann man per SSH Zugang die .xml Dateien einlesen.
 Hierfür die nötigen Informationen in dem SSH Tab eingeben.
 * (Eine funktionierende SSH Verbindung wird vorausgesetzt.) *
 
-Nach dem Neustart der Instanz, странный человек, известный как человек, любящий человека в своей жизни.
+Nach dem Neustart der Instanz, wird diese dann automatisch eingelesen, man kann nun in der Konfiguration der Instanz die Werte einstellen.
 
-#### Die Struktur der vito.xml muss in der folgenden Форма aufgebaugt sein:
+#### Die Struktur der vito.xml muss in der folgenden Form aufgebaugt sein:
 		```<vito>
 			<devices>
 				<device ID="2094" name="V200KW1" protocol="KW2"/>
@@ -56,21 +56,75 @@ Nach dem Neustart der Instanz, странный человек, известны
 			</commands>
 		</vito>```
 
-Eine Sortierung der Befehle, является самым популярным отелем.
+Eine Sortierung der Befehle, ist durch klicken auf den Tabellenkopf möglich.
 
 ## Wichtig !:
-- Бей Джедем Нойен Эйнлезен дер Вито Датен, Верден Г.Г.Ф. умереть "alten" Einstellungen gelöscht.
+- Bei jedem neuen einlesen der Vito Daten, werden ggf. die "alten" Einstellungen gelöscht.
 
-Es ist empfehlenswert, bei reltiv unwichtigen Abfragewerten, ein möglichst grosses Abfrageintervall zu wählen.
+Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst grosses Abfrageintervall zu wählen.
 Es ist ebenso möglich, einen Wert ausserhalb des Abfragezyklus abzufragen. Hierzu muss der Datenpunkt *force_polling* mit dem gewünschten *get* Wert beschrieben werden.
 
-*die benutzten Bilder Stammen von www.viessmann.com.*
+*die benutzten Bilder stammen von www.viessmann.com.*
 
 ## Сделать
 - Anderung der Vito.xml ohne Verlust der Einstellungen
-- Внедрение блока вкл / выкл
+- Включение / выключение блока внедрения
 
-**[CHANGELOG](https://github.com/misanorot/ioBroker.viessmann/blob/master/changelog.md)**
+## Changelog
+
+	### 1.3.1 (17.09.2020)
+	* (misanorot) fixed little issues
+
+	### 1.2.5 (26.07.2020)
+	* (misanorot) new config style
+
+	#### 1.2.4 (01.02.2020)
+	* (misanorot) add trigger state and two second polling
+
+	#### 1.2.0 (10.08.2019)
+	* (misanorot) added reconnect time
+
+	#### 1.1.2 (06.08.2019)
+	* (misanorot) fixed issue with reconnect
+
+	#### 1.0.0 (16.06.2019)
+	* (misanorot) fixes little issues in compact modus
+
+	#### 0.9.5 (13.01.2019)
+	* (misanorot) Compact modus added
+
+	#### 0.9.2 (13.01.2018)
+	* (misanorot) Fixed little issue with new xml read
+
+	#### 0.9.0 (11.12.2018)
+	* (misanorot) create types from vcontrold.xml to states (require a new config)
+	* (misanorot) add sort tables
+
+	#### 0.8.0 (11.11.2018)
+	* (misanorot) create units from vcontrold.xml (require a new config)
+
+	#### 0.7.0 (01.11.2018)
+	* (Bjoern3003) added lastPoll state
+
+	#### 0.6.0 (24.09.2018)
+	* (misanorot) os:linux--> read vito.xml from /etc/vcontrold from the same host
+	* (misanorot) use a ssh connection to read the vito.xml from a other server
+
+	#### 0.5.0 (13.07.2018)
+	* (misanorot) option to create only states if you use
+	* (misanorot) option to restart the connection after to many errors
+
+	#### 0.4.0 (28.01.2018)
+	* (misanorot) parse vito.xml file
+
+	#### 0.3.0 (22.01.2018)
+	* (misanorot) ready for admin V3
+
+	#### 0.2.6
+	* (misanorot) add option to use format values
+
+	#### 0.0.1
+	* (misanorot) initial release
 
 ## License
 

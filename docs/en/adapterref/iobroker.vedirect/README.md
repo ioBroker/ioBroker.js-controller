@@ -16,9 +16,16 @@ Read VE.direct data from a Victron device with vedirect connector over USB <-> s
 
 ### Configuration
 
-Set the propper device (example /dev/ttyUSB0) in adapter config.
+Set the proper device (example /dev/ttyUSB0) in adapter config.
 
-## Changelog
+# Changelog
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
+
+### 0.1.2 (2020-10-06)
+* (DutchmanNL) Fix sentry issue, error in opening USB-Port
 
 ### 0.1.1
 * (DutchmanNL) Set state to NULL if no data received within 2 seconds.
@@ -40,7 +47,7 @@ Set the propper device (example /dev/ttyUSB0) in adapter config.
 ## License
 MIT License
 
-Copyright (c) 2019 DutchmanNL <rdrozda@hotmail.com>
+Copyright (c) 2020 DutchmanNL <rdrozda@hotmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -13,7 +13,7 @@
 
 ## Icon Adapter für den ioBroker.vis Adapter
 
-Ein reiner Icon Adapter für die Visualisierung.
+Ein reiner Icon Adapter für die Visualisierung. 
 
 ![Screenshot](http://resources.inventwo.com/github/icontwo/Screen_001.png)
 
@@ -56,6 +56,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog / Änderungsprotokoll
+
+### 0.25.0
+
+• Neue Icons hinzugefügt (Navigation)
 
 ### 0.24.0
 

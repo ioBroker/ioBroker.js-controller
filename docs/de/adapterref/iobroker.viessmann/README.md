@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: py7WH/sT7A9CXgu/xcGjnCdIpEIKKXYdeErNrQ8IoFo=
+hash: m2KxXpGacYVnj+s8CqCvqKvKkRAqFQhzno5PxB0mQuU=
 ---
 ![Logo](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
@@ -21,21 +21,21 @@ hash: py7WH/sT7A9CXgu/xcGjnCdIpEIKKXYdeErNrQ8IoFo=
 
 **[Englische Beschreibung](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
 
-Mit diesem Adapter ist es möglich, Werte aus einer Viessmann-Steuerung mit dem Programm [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, in Objekten zu speichern.
-Ebenso ist das Setzen von Werten, das man in seiner Vito.xml konfiguriert hat möglich.
+Mit diesem Adapter ist es möglich, Werte aus einer Viessmann-Steuerung die mit dem Programm
+Dies ist das Setzen von Werten, der Mann in seinem Vito.xml.
 
-#### (selber Host)
-Sollte Vcontrold auf dem gleichen Host wie auch IOBroker laufen, so ist unter Linux eigentlich keine weitere Veränderung in der Adminkonfiguration nötig um die .xml Dateien einzulesen.
-* (Vorausgesetzt, sie liegt in dem Standardpfad: /etc/vcontrold/vito.xml)*
+#### (Selber Host)
+Viele Vcontrold auf dem gleichen Host wie auch IOBroker laufen, so ist es unter Linux eigentlich keine weitere weitere in der Adminkonfiguration gehört um die .xml gehört gehörtesen.
+* (Vorausgesetzt, sie liegt im Standard Pfad: /etc/vcontrold/vito.xml)*
 
 #### (Anderer Host)
-Ist Vcontrold auf einem anderen Host installiert, kann man per SSH Zugang die .xml Dateien einlesen.
-Hierfür die notwendigen Informationen in das SSH Tab eingeben.
-* (Eine funktionierende SSH Verbindung wird vorausgesetzt.) *
+Ist Vcontrold auf einem anderen Host installiert, kann man per SSH Zugang die .xml entfernen einlesen.
+Hierfür die nötigen Informationen in der SSH Tab.
+* (Eine funktionierende SSH Verbindung wird erledigt.) *
 
-Nach dem Neustart der Instanz, wird dieser Vorgang automatisch gestartet, man kann nun in der Konfiguration der Instanz die Werte einstellen.
+Nach dem Neustart der Instanz, wird diese dann soziale Rechteesen, Mann kann Nonne in der Konfiguration der Instanz die Werte werden.
 
-#### Die Struktur der vito.xml muss in der folgenden Form aufgebaugt werden:
+#### Die Struktur der vito.xml muss in der folgenden Form aufgebaugt sein:
 		```<vito>
 			<devices>
 				<device ID="2094" name="V200KW1" protocol="KW2"/>
@@ -56,21 +56,75 @@ Nach dem Neustart der Instanz, wird dieser Vorgang automatisch gestartet, man ka
 			</commands>
 		</vito>```
 
-A sortierung der befehle ist durch klicken auf den tabellenkopf möglich.
+Eine Sortierung der Befehle, ist durch Klicken auf den Tabellenkopf möglich.
 
-## Wichtig !:
-- Bei jedem neuen einlesen der Vito Daten, werden ggf. die "alten" Einstellungen gelöscht.
+## Wicht!!
+- Bei jedem neuen einlesen der Vito Daten, werden ggf. die "alten" Einstellungen eingestellt.
 
-Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst grosses Abfrageintervall zu wählen.
-Es ist ebenfalls möglich, einen Wert ausserhalb des Abfragezyklus abzufragen. Hierzu muss der Datenpunkt *force_polling* mit dem gewünschten *get* Wert beschrieben werden.
+Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst Grosses Abfrageintervall zu gehört.
+Es ist möglich möglich, einen Wert ausserhalb des Abfragezyklus abzufragen. Hierzu muss der Datenpunkt *force_polling* mit dem verloren *get* Wert werden werden.
 
-*die benutzten Bilder stammen von www.viessmann.com.*
+*die benlichen Bilder Bilder von www.viessmann.com.*
 
 ## Machen
 - Anderung der Vito.xml ohne Verlust der Einstellungen
-- Implementierungseinheit ein / aus
+- Ein-Einheit ein / aus
 
-**[ÄNDERUNGSPROTOKOLL](https://github.com/misanorot/ioBroker.viessmann/blob/master/changelog.md)**
+## Changelog
+
+	### 1.3.1 (17.09.2020)
+	* (misanorot) fixed little issues
+
+	### 1.2.5 (26.07.2020)
+	* (misanorot) new config style
+
+	#### 1.2.4 (01.02.2020)
+	* (misanorot) add trigger state and two second polling
+
+	#### 1.2.0 (10.08.2019)
+	* (misanorot) added reconnect time
+
+	#### 1.1.2 (06.08.2019)
+	* (misanorot) fixed issue with reconnect
+
+	#### 1.0.0 (16.06.2019)
+	* (misanorot) fixes little issues in compact modus
+
+	#### 0.9.5 (13.01.2019)
+	* (misanorot) Compact modus added
+
+	#### 0.9.2 (13.01.2018)
+	* (misanorot) Fixed little issue with new xml read
+
+	#### 0.9.0 (11.12.2018)
+	* (misanorot) create types from vcontrold.xml to states (require a new config)
+	* (misanorot) add sort tables
+
+	#### 0.8.0 (11.11.2018)
+	* (misanorot) create units from vcontrold.xml (require a new config)
+
+	#### 0.7.0 (01.11.2018)
+	* (Bjoern3003) added lastPoll state
+
+	#### 0.6.0 (24.09.2018)
+	* (misanorot) os:linux--> read vito.xml from /etc/vcontrold from the same host
+	* (misanorot) use a ssh connection to read the vito.xml from a other server
+
+	#### 0.5.0 (13.07.2018)
+	* (misanorot) option to create only states if you use
+	* (misanorot) option to restart the connection after to many errors
+
+	#### 0.4.0 (28.01.2018)
+	* (misanorot) parse vito.xml file
+
+	#### 0.3.0 (22.01.2018)
+	* (misanorot) ready for admin V3
+
+	#### 0.2.6
+	* (misanorot) add option to use format values
+
+	#### 0.0.1
+	* (misanorot) initial release
 
 ## License
 

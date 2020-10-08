@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: ksm4fKHJcmJGpYWZIjl0n0+Y3ZdvZ83ZfYot9Bmn2so=
+hash: Smtq1F2TYSMQV5ZnsZeQO6He7+Y0k7OJXrjM3JGVbJ4=
 ---
 ![Logo](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -24,7 +24,7 @@ Dieser Adapter liest
 
 - Daten von ebusd mit HTML
 
-In diesem Fall muss ebusd ausgeführt werden und in der Lage sein, Daten an z. Explorer über http:// IP: port / data (http://192.168.0.123:8889/data) Aktuelle Version von ebusd inkl. Konfigurationsdateien können von https://github.com/john30/ebusd kopiert werden. Alle Felder mit Daten, Lastup und aus dem globalen Abschnitt werden analysiert. Alle anderen werden im Moment ignoriert.
+In diesem Fall muss ebusd ausgeführt werden und Daten an z. Explorer über http:// IP: port / data (http://192.168.0.123:8889/data) Aktuelle Version von ebusd inkl. Konfigurationsdateien können von https://github.com/john30/ebusd kopiert werden. Alle Felder mit Daten, Lastup und aus dem globalen Abschnitt werden analysiert. Alle anderen werden im Moment ignoriert.
 
 Es besteht die Möglichkeit, Daten abzufragen, die nicht direkt von ebusd abgefragt werden. Der Befehl 'read -f' wird verwendet, um das Lesen über den E-Bus zu erzwingen.
 
@@ -35,6 +35,10 @@ aktuell unterstützte ebusd-version: 3.3
 ## Bekannte Probleme
 * Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
+## 2.2.0 (2020-09-06)
+* (René) DP nur bei Bedarf ändern, um die Systemlast zu reduzieren
+* (René) Abhängigkeiten aktualisieren
+
 ## 2.1.1 (2020-06-27)
 * (René) Problem Nr. 26: Fehlerbehebung: "cmd nicht gefunden" ist nur eine Debug-Meldung anstelle eines Fehlers
 
@@ -44,7 +48,7 @@ aktuell unterstützte ebusd-version: 3.3
 ## 2.0.0 (2020-04-26)
 * (René) "Anfrage" ersetzt durch "gebogen"
 
-## 1.0.0 (2019-12-15)
+## 1.0.0 (15.12.2019)
 * (René) Update auf meinen eigenen Flot 3.0
 
 ## 0.8.2 (2019-11-10)
@@ -75,7 +79,7 @@ aktuell unterstützte ebusd-version: 3.3
 * (René) Fehlerbehebung: In vis 1.x werden einige Werte nicht gespeichert
 
 ### 0.5.1
-* (René) Fehlerbehebung: Wenn nichts abgefragt werden muss, überspringen Sie die Telnet-Verbindung
+* (René) Fehlerbehebung: Wenn nichts abzufragen ist, überspringen Sie die Telnet-Verbindung
 
 ### 0.5.0
 * (René) Datum über TCP in ebusd schreiben
