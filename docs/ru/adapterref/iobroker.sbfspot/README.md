@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: kO049CvHdTkfqnldYg28s0I+rNnpPOcnwMtL4VpuZsE=
+hash: jd9BgNo5pX4TKImcxV35XMy4WBvFO8nVTCUheVhfS+A=
 ---
 ![Логотип](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -14,17 +14,17 @@ hash: kO049CvHdTkfqnldYg28s0I+rNnpPOcnwMtL4VpuZsE=
 ![NPM](https://nodei.co/npm/iobroker.sbfspot.png?downloads=true)
 
 # IoBroker.sbfspot
-** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ** Если вам это нравится, рассмотрите возможность пожертвования: **
 
 [![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
-Этот адаптер считывает данные с преобразователей питания SMA с помощью sbfspot.
+Этот адаптер считывает данные с преобразователей мощности SMA с помощью sbfspot.
 Теперь поддерживаются оба типа баз данных (mySQL и sqlite).
-Начиная с версии 0.2.3 есть собственный виджет vis, основанный на flot, доступный для отображения исторических данных.
+Начиная с версии 0.2.3 существует собственный виджет vis, основанный на flot, доступный для отображения исторических данных.
 
-## Монтаж
+## Установка
 следуйте инструкциям по установке sbfspot на странице https://github.com/SBFspot/SBFspot/wiki
 
 [детальная установка на системы на базе arm](docs/en/install_arm.md)
@@ -46,7 +46,7 @@ hash: kO049CvHdTkfqnldYg28s0I+rNnpPOcnwMtL4VpuZsE=
 
 * пожалуйста, создавайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), если вы обнаружите ошибки или захотите новые функции
 
-## 4.0.1 (2020-09-22)
+## 4.0.2 (2020-10-09)
 * (René) исправление ошибки на основе тестов CI
 
 ## 4.0.0 (28.07.2020)
@@ -60,7 +60,7 @@ hash: kO049CvHdTkfqnldYg28s0I+rNnpPOcnwMtL4VpuZsE=
 * (Рене) см. Проблему # 29: изменен цвет по умолчанию для метки оси виджета
 * (René) widget: журнал, если виджет слишком маленький, добавлен
 
-## 2.4.3 (02.04.2020)
+## 2.4.3 (2020-04-02)
 * (René) исправление ошибки в DB_CalcHistory_Today, используемой для виджета
 
 ## 2.4.2 (01.02.2020)
@@ -83,7 +83,7 @@ hash: kO049CvHdTkfqnldYg28s0I+rNnpPOcnwMtL4VpuZsE=
 * (Рене) добавить дополнительную информацию об ошибке в журнал
 
 ### 2.2.5 (26.11.2018)
-* (Рене) пакеты обновления
+* (René) пакеты обновления
 
 ### 2.2.5 (04.11.2018)
 * (Рене) сбрасывает доход, если с сегодняшнего дня нет нового значения

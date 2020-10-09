@@ -49,7 +49,7 @@ sometimes npm intall must be called more then one time to successfully install a
 ## Changelog
 
 
-## 4.0.1 (2020-09-22)
+## 4.0.2 (2020-10-09)
 * (René) bug fix based on CI tests
 
 ## 4.0.0 (2020-07-28)

@@ -2638,6 +2638,14 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
+### 4.9.0 (2020-10-09)
+* (bluefox) All scripts support now `await` calls. THIS COULD HAVE SOME SIDE-EFFECT (unknown yet). 
+* (AlCalzone) Matched the exact ID if the $ selector contains no wildcard
+* (bluefox) Added new block in blockly: "pause" 
+* (bluefox) Changed the order of folders and scripts to "folders first".
+* (bluefox) Extend the documentation.
+* (bluefox) Corrected the error with blockly and "day of week" conversion. 
+
 ### 4.8.4 (2020-09-21)
 * (bluefox) Make the mirroring instance adjustable
 * (bluefox) Correct the dark mode for blockly
@@ -2652,12 +2660,6 @@ return 'your result';
 
 ### 4.7.4 (2020-09-10)
 * (Bluefox) Fixed JS editor in blockly
-
-### 4.7.3 (2020-09-06)
-* (Bluefox) Fixed the select ID dialog
-
-### 4.7.2 (2020-09-05)
-* (Bluefox) Fixed blockly problem
 
 ## License
 

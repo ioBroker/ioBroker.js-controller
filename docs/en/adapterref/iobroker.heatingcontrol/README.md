@@ -166,7 +166,12 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 0.6.0 (2020-09-xx)
+### 1.0.0 (2020-10-09)
+* (matida538) added better Handling of strings in HandleThermostat (convert to Number, instead of warn) (e.g. fhem connector for fht80)
+* (matida538) changed Check4ValidTemperature to convert strings to Number instead of Int (else we lose information e.g. 18.5 will be 18)
+* (René) some smaller code optimisations
+
+### 0.6.0 (2020-09-15)
 * (René) see issue #123: use window open / close delay only when window state changed
 * (René) see issue #122: better log for different type warning
 * (René) see issue #120: override from thermostat only if it's different to current settings
