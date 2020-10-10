@@ -4,7 +4,7 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.mihome/README.md
 title: ioBroker Mi Home Adapter
-hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
+hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
 ---
 ![logo](../../../de/adapterref/iobroker.mihome/media/mihome.png)
 
@@ -39,7 +39,7 @@ and then press *About*
 2 further menu items appear> If not, try again
 
 * Select the menu item `Wireless communication protocol`
-* Switch on the slide switch at the top, note the password and confirm with ʻOK`.
+* Switch on the slide switch above, note the password and confirm with ʻOK`.
 
 > The password will be required later during the ioBroker installation.
 
@@ -64,10 +64,10 @@ press and press *About*
 * Tap repeatedly in the empty area below
 * Now the developer mode is switched on and it should after a certain time
 
-further menu items appear> If it does not work immediately, repeat the steps
+Further menu items appear> If it does not work immediately, repeat the steps
 
 * Select the 4th menu item
-* Switch on the slide switch at the top, note the password and confirm with ʻOK`.
+* Switch on the slide switch above, note the password and confirm with ʻOK`.
 
 > The password will be required later during the ioBroker installation.
 

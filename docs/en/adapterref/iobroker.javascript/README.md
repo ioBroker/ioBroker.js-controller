@@ -38,6 +38,7 @@ chapters: {"pages":{"en/adapterref/iobroker.javascript/README.md":{"title":{"en"
     - [existsState](#existsState)
     - [getObject](#getobject)
     - [setObject](#setobject)
+    - [existsObject](#existsObject)
     - [extendObject](#extendobject)
     - [deleteObject](#deleteobject)
     - [getIdByName](#getidbyname)
@@ -50,6 +51,7 @@ chapters: {"pages":{"en/adapterref/iobroker.javascript/README.md":{"title":{"en"
     - [clearInterval](#clearinterval)
     - [setTimeout](#settimeout)
     - [clearTimeout](#cleartimeout)
+    - [setImmediate](#setImmediate)
     - [formatDate](#formatdate)
     - [getDateObject](#getDateObject)
     - [formatValue](#formatvalue)
@@ -62,8 +64,11 @@ chapters: {"pages":{"en/adapterref/iobroker.javascript/README.md":{"title":{"en"
     - [onStop](#onstop)
     - [getHistory](#gethistory)
     - [runScript](#runscript)
+    - [runScriptAsync](#runScriptAsync)
     - [startScript](#startscript)
+    - [startScriptAsync](#startscript)
     - [stopScript](#stopscript)
+    - [stopScriptAsync](#stopScriptAsync)
     - [isScriptActive](#isscriptactive)
     - [name](#name)
     - [instance](#instance)
@@ -72,6 +77,8 @@ chapters: {"pages":{"en/adapterref/iobroker.javascript/README.md":{"title":{"en"
     - [onMessageUnregister](#onmessageunregister)
     - [onLog](#onlog)
     - [onLogUnregister](#onlogunregister)
+    - [wait](#wait)
+    - [sleep](#sleep)
 
 - [Scripts activity](#scripts-activity)
 - [Changelog](#changelog)
@@ -791,7 +798,7 @@ Returns state with the given id in the following form:
 ```
 
 If state does not exist, a warning will be printed in the logs and the object: ```{val: null, notExist: true}``` will be returned.
-To surpress the warning check if the state exists before calling getState (see [existsState](#existsState)).
+To suppress the warning check if the state exists before calling getState (see [existsState](#existsState)).
 
 ### getBinaryState
 ```js
@@ -807,7 +814,7 @@ This function must be always used with callback. "data" is a buffer.
 existsState(id, function (err, isExists) {});
 ```
 
-If option "Do not subscribe all states on start" is deactivated, you can use simplier call:
+If option "Do not subscribe all states on start" is deactivated, you can use simpler call:
 
 ```js
 existsState(id)
@@ -844,6 +851,21 @@ setObject('adapter.N.objectName', obj, function (err) {
     if (err) log('Cannot write object: ' + err);
 });
 ```
+
+### existsObject
+```js
+existsObject(id, function (err, isExists) {});
+```
+
+If option "Do not subscribe all states on start" is deactivated, you can use simpler call:
+
+```js
+existsObject(id)
+```
+the function returns in this case true or false.
+
+Checks if a object exists.
+
 
 ### extendObject
 ```js
@@ -1018,6 +1040,12 @@ Same as javascript `setTimeout`.
 clearTimeout(id);
 ```
 Same as javascript `clearTimeout`.
+
+### setImmediate
+```js
+setImmediate(callback, arg1, arg2, arg3, arg4);
+```
+Same as javascript `setImmediate` and almost the same as `setTimeout(callback, 0, arg1, arg2, arg3, arg4)` but with higher priority.
 
 ### formatDate
 ```js
@@ -1295,7 +1323,10 @@ getHistory({
 
 ### runScript
 ```js
-runScript('scriptName');
+runScript('scriptName', function () {
+    // Callback is optional
+    console.log('Srcipt started, but not yet executed');
+});
 ```
 
 Starts or restarts other scripts (and itself too) by name.
@@ -1305,9 +1336,40 @@ Starts or restarts other scripts (and itself too) by name.
 runScript('groupName.scriptName1');
 ```
 
+### runScriptAsync
+Same as runScript, but with `promise`.
+```js
+runScriptAsync('scriptName')
+    .then(() => console.log('Script started, but not yet executed'));
+
+// or
+
+await runScriptAsync('scriptName');
+console.log(`Script was restarted`);
+```
+
 ### startScript
 ```js
 startScript('scriptName', ignoreIfStarted, callback);
+```
+
+Starts the script. If ignoreIfStarted set to true, nothing will be done if script yet running, elsewise the script will be restarted.
+
+```js
+startScript('scriptName', true); // start script if not started
+```
+
+### startScriptAsync
+Same as runScript, but with `promise`.
+
+```js
+startScriptAsync('scriptName', ignoreIfStarted)
+    .then(started => console.log(`Script was ${started ? 'started' : 'already started'}`));
+
+// or
+
+const started = await startScriptAsync('scriptName', ignoreIfStarted);
+console.log(`Script was ${started ? 'started' : 'already started'}`);
 ```
 
 Starts the script. If ignoreIfStarted set to true, nothing will be done if script yet running, elsewise the script will be restarted.
@@ -1327,6 +1389,23 @@ If stopScript is called without arguments, it will stop itself:
 stopScript();
 ```
 
+### stopScriptAsync
+Same as stopScript, but with `promise`:
+```js
+stopScriptAsync('scriptName')
+    .then(stopped => console.log(`Script was ${stopped ? 'stopped' : 'already stopped'}`));
+
+//or
+const stopped = await stopScriptAsync('scriptName');
+console.log(`Script was ${stopped ? 'stopped' : 'already stopped'}`);
+```
+
+If stopScript is called without arguments, it will stop itself:
+
+```js
+stopScript();
+```
+
 ### isScriptActive
 ```js
 isScriptActive('scriptName');
@@ -1334,19 +1413,22 @@ isScriptActive('scriptName');
 
 Returns if script enabled or disabled. Please note, that that does not give back if the script now running or not. Script can be finished, but still activated.
 
-### name
-```js
-log('Script ' + name + ' started!');
-```
-
-It is not a function. It is a variable with script name, that is visible in script's scope.
-
-### instance
-```js
-log('Script ' + name + ' started by ' + instance + '!');
-```
-
 It is not a function. It is a variable with javascript instance, that is visible in script's scope.
+
+### toInt
+### toFloat
+### toBoolean
+### jsonataExpression
+
+### wait
+Just pause the execution of the script.
+Warning this function is `promise` and must be called as follows:
+```
+await wait(1000);
+```
+
+### sleep
+Same as [wait](#wait)
 
 ### messageTo
 ```
@@ -1435,6 +1517,24 @@ onLogUnregister('warn');
 
 Unsubscribes from this logs.
 
+## Global script variables
+### scriptName
+scriptName - The name of the script.
+
+```js
+log('Script ' + scriptName + ' started!');
+```
+
+It is not a function. 
+It is a variable with script name, that is visible in script's scope.
+
+### instance
+The javascript instance where script is executed.
+
+```js
+log('Script ' + name + ' started by ' + instance + '!');
+```
+
 ## Option - "Do not subscribe all states on start"
 There are two modes of subscribe on states:
 - Adapter subscribes on all changes at start and receives all changes of all states (it is easy to use getStates(id), but required more CPU and RAM):
@@ -1460,6 +1560,14 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 4.9.0 (2020-10-09)
+* (bluefox) All scripts support now `await` calls. THIS COULD HAVE SOME SIDE-EFFECT (unknown yet). 
+* (AlCalzone) Matched the exact ID if the $ selector contains no wildcard
+* (bluefox) Added new block in blockly: "pause" 
+* (bluefox) Changed the order of folders and scripts to "folders first".
+* (bluefox) Extend the documentation.
+* (bluefox) Corrected the error with blockly and "day of week" conversion. 
+
 ### 4.8.4 (2020-09-21)
 * (bluefox) Make the mirroring instance adjustable
 * (bluefox) Correct the dark mode for blockly
@@ -1474,12 +1582,6 @@ Scripts can be activated and deactivated by controlling of this state with ack=f
 
 ### 4.7.4 (2020-09-10)
 * (Bluefox) Fixed JS editor in blockly
-
-### 4.7.3 (2020-09-06)
-* (Bluefox) Fixed the select ID dialog
-
-### 4.7.2 (2020-09-05)
-* (Bluefox) Fixed blockly problem
 
 ## License
 

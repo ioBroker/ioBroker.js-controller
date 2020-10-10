@@ -552,6 +552,8 @@ This device has some special predefined size- and display-settings to show a web
 * (sbormann) Added REMOTE_CHANNELS to display channel buttons inside remote control.
 * (sbormann) Enhanced positioning of dialog if URL/HTML is set.
 * (sbormann) When writing data to an iframe replace encoded cr chars.
+* (sbormann) Added option to remove overlay of tile, if device is enlarged.
+* (sbormann) Added possibility to add and edit html/css/js files to folder /userwidgets.
 
 ### 1.3.1 (2020-10-04)
 * (sbormann) Breaking change: completely removed presssure detection and replaced it by long clicks to open context menu.

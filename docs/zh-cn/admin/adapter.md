@@ -4,7 +4,7 @@ lastChanged: 25.02.2020
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/admin/adapter.md
-hash: qvQSbRQZm8KXIQYiTdmaA6YOIfFf6rsf6Qxl3hZaZ1s=
+hash: X/Dtk3wCLvsU55QtzcDQDOwJXi0HwE6E/WfBbOR0X4I=
 ---
 ＃适配器选项卡
 在此处显示和管理可用和已安装的适配器。
@@ -21,13 +21,13 @@ hash: qvQSbRQZm8KXIQYiTdmaA6YOIfFf6rsf6Qxl3hZaZ1s=
 
 ** 2.）更新显示**
 
-每次重新启动都会自动检查更新。此按钮可用于手动启动搜索或刷新页面。
+每次重新启动都会自动检查更新。您可以使用此按钮手动开始搜索或刷新页面。
 
 ** 3。 ）仅显示已安装的适配器**如果选择此图标，则仅显示具有已安装实例的适配器（切换功能）
 
 ** 4.）显示带有更新的适配器**
 
-选择此图标时，仅显示有可用更新的适配器（切换功能）。如果没有适配器的更新，则会出现相应的消息。
+选择此图标时，仅显示可用更新的适配器（切换功能），可以更新的适配器磁贴具有绿色标题。如果没有适配器的更新，则会出现相应的消息。
 
 标题栏中还会出现另一个图标：
 
@@ -47,7 +47,7 @@ hash: qvQSbRQZm8KXIQYiTdmaA6YOIfFf6rsf6Qxl3hZaZ1s=
 
 在*** FROM GITHUB ***选项卡下，只需在下拉菜单中选择所需的适配器，即可安装最新的初始版本。
 
-选择*** ANY ***选项卡时，可以在该字段中输入任何文件路径或URL（例如，指向外部适配器开发人员的URL），并安装相应的适配器。
+当您选择*** ANY ***选项卡时，可以在该字段中输入任何文件路径或URL（例如，指向外部适配器开发人员的URL）并安装相应的适配器。
 
 ** 6.）开启专家模式**
 
