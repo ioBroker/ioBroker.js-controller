@@ -554,6 +554,8 @@ This device has some special predefined size- and display-settings to show a web
 * (sbormann) When writing data to an iframe replace encoded cr chars.
 * (sbormann) Added option to remove overlay of tile, if device is enlarged.
 * (sbormann) Added possibility to add and edit html/css/js files to folder /userwidgets.
+* (sbormann) Withdrawn changes to blank icons (now they catch mouse events again) - but for that added an option to optionally ignore mouse events for icons.
+* (sbormann) Added option which sections of remote are opened at start.
 
 ### 1.3.1 (2020-10-04)
 * (sbormann) Breaking change: completely removed presssure detection and replaced it by long clicks to open context menu.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.kostal-piko-ba/README.md
 title: ioBroker.kostal-皮科巴
-hash: ncW/TovkE6kxtCtILlsaebdiWM/4yPqivyEAo2o85Cw=
+hash: PQef6od3e+kcptptF8Xr92y1gezEXtggyMUuz2FxTQo=
 ---
 ![商标](../../../en/adapterref/iobroker.kostal-piko-ba/admin/picoba.png)
 
@@ -21,32 +21,27 @@ hash: ncW/TovkE6kxtCtILlsaebdiWM/4yPqivyEAo2o85Cw=
 
 ##用于读取iOBroker的Kostal Piko BA数据的适配器
 用于读取Kostal Piko BA数据的适配器。适配器创建一些状态并顺序更新它们。
+适配器还可以与Kostal Piko 15逆变器一起使用。
+如果您验证其他逆变器的功能并向我发送注释，将不胜感激。
 
 ##设置
-要连接到Kostal Pico BA逆变器，必须将其IP地址记入配置。
+要连接到Kostal Pico BA逆变器，必须在配置中注明其IP地址。
 您还可以编辑实时，每日和实时数据的更新频率。
 
 ##注意
 *此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[Sentry-Plugin文档]（https://github.com/ioBroker/plugin -sentry＃plugin-sentry）！ Sentry报告从js-controller 3.0开始使用。
 
 ## Changelog
-### 1.0.6 (05.10.2020)
+### 1.1.1 (09.10.2020)
+* (HombachC) minor documentation tweaks; DC current accuracy changed to mA
+
+### 1.1.0 (09.10.2020)
+* (tobstare) added DC1-3 Current, Voltage and Power
 * (HombachC) added battery.ChargeCycles
-
-### 1.0.5 (26.09.2020)
-* (HombachC) battery.temperature rounded
-
-### 1.0.4 (25.09.2020)
-* (HombachC) code cleanup; bumped mocha
-
-### 1.0.3 (23.09.2020)
-* (HombachC) bumbed got; added battery.temperature
+* (HombachC) bumbed dependencies; added battery.temperature
 
 ### 1.0.2 (23.09.2020)
-* (HombachC) optimized object roles
-
-### 1.0.0 (11.09.2020)
-* (HombachC) first public release for stable repo
+* (HombachC) public release for stable repo
 
 ### 0.8.0 (18.08.2020)
 * (HombachC) seperate editable poll timer for statistics data

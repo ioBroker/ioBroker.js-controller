@@ -67,6 +67,17 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
+### 1.0.4
+* Bump library to 0.4.21
+* Remove canvas from dependencies
+* Add support for Ozmo T8 (without AIVI)
+* Several bugfixes and improvements (especially for N79 series)
+* Possibility to specify the number of reruns for a spot area
+* Spot areas in the "control" channel are now created automatically
+* Remove number of spot areas from adapter settings
+* Some refactoring
+* Bump dependencies
+
 ### 1.0.3
 * Improved Support for Ozmo T8 AIVI
 

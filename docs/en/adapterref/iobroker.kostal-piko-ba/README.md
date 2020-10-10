@@ -16,6 +16,8 @@
 
 ## Adapter for reading Kostal Piko BA data for iOBroker
 Adapter for reading Kostal Piko BA data. Adapter creates some states and updates them sequentially.
+Adapter also working with Kostal Piko 15 inverter. 
+It's greatly appreciated if you verify functionality with other inverters and please send me a note.
 
 ## Settings
 To connect to the Kostal Pico BA inverter noting its IP-address into the config is mandatory.
@@ -25,23 +27,16 @@ You could also edit the update frequencies of live, daily and livetime data.
 * This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Changelog
-### 1.0.6 (05.10.2020)
+### 1.1.1 (09.10.2020)
+* (HombachC) minor documentation tweaks; DC current accuracy changed to mA
+
+### 1.1.0 (09.10.2020)
+* (tobstare) added DC1-3 Current, Voltage and Power
 * (HombachC) added battery.ChargeCycles
-
-### 1.0.5 (26.09.2020)
-* (HombachC) battery.temperature rounded
-
-### 1.0.4 (25.09.2020)
-* (HombachC) code cleanup; bumped mocha
-
-### 1.0.3 (23.09.2020)
-* (HombachC) bumbed got; added battery.temperature
+* (HombachC) bumbed dependencies; added battery.temperature
 
 ### 1.0.2 (23.09.2020)
-* (HombachC) optimized object roles
-
-### 1.0.0 (11.09.2020)
-* (HombachC) first public release for stable repo
+* (HombachC) public release for stable repo
 
 ### 0.8.0 (18.08.2020)
 * (HombachC) seperate editable poll timer for statistics data

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/adddevice.md
 title: So fügen Sie das Gerät zu alexa oder google home hinzu
-hash: 7LOEqf58Vo+Ne7CyV77jozHsy8UjnC7Ghl8TQAR8aD0=
+hash: KJyj2QNgNPa29Jr/BcB/QJi6yPa8ucW5nGzTU+4Hr+A=
 ---
 # So fügen Sie das Gerät zu alexa oder google home hinzu
 Um das Gerät hinzuzufügen, haben wir 4 Schritte:
@@ -16,11 +16,11 @@ Um das Gerät hinzuzufügen, haben wir 4 Schritte:
 ## Neue Rollen
 Wir haben 3 (oder noch mehr) Quellen, die überprüft werden müssen, bevor ein neues Gerät hinzugefügt wird:
 
-- Alexa Smarthome API: https://developer.amazon.com/de-DE/docs/alexa/device-apis/alexa-brightnesscontroller.html
+- Alexa smarthome API: https://developer.amazon.com/de-DE/docs/alexa/device-apis/alexa-brightnesscontroller.html
 - Yandex-API: https://yandex.ru/dev/dialogs/alice/doc/smart-home/concepts/device-types-docpage/
 - Google API: https://developers.google.com/assistant/smarthome/guides
 
-Außerdem kann es nützlich sein, das vorhandene Gerät in einem Adapter zu überprüfen.
+Zusätzlich kann es nützlich sein, das vorhandene Gerät in einem Adapter zu überprüfen.
 
 Nehmen wir als Beispiel die Klimaanlage. Wir haben:
 
