@@ -54,7 +54,7 @@ Here the desired repository is selected from the pulldown menu from which the ve
 ioBroker can get the adapter list from different sources. The following sources are listed during installation:
 
 * default (= stable): http://download.iobroker.net/sources-dist.json
-* latest (latest versions): http://download.iobroker.net/sources-dist-latest.json
+* latest (= beta): http://download.iobroker.net/sources-dist-latest.json
 
 If other repositories are entered here from an older installation, they should be deleted as they are no longer maintained.
 
