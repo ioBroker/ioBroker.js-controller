@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lcn/README.md
 title: ioBroker.lcn
-hash: XsIZz+rYQ0zWl3hpNnx571PIlwCFV26kGdvcRx+HE40=
+hash: oHwz0i8ruJc4gnX7bkTWCtf1HJx+7bMjXbH3Qwq+4B0=
 ---
 ![Logo](../../../en/adapterref/iobroker.lcn/admin/lcn.png)
 
@@ -23,14 +23,14 @@ Mit diesem Adapter kann das lokale Steuerungsnetzwerk [LCN](https://www.lcn.eu/)
 
 ![pke](../../../en/adapterref/iobroker.lcn/img/lcn-pku.png)
 
-** Vergiss nicht, dass ioBroker.lcn eine LCN-Verbindungslizenz blockiert. **
+** Vergessen Sie nicht, dass ioBroker.lcn eine LCN-Verbindungslizenz blockiert. **
 
-Die Konfiguration und Module werden automatisch durch einen Scan erkannt, der manuell über den Konfigurationsdialog ausgelöst werden muss und jederzeit wiederholt werden kann.
+Die Konfiguration und die Module werden automatisch durch einen Scan erkannt, der manuell über den Konfigurationsdialog ausgelöst werden muss und jederzeit erneut wiederholt werden kann.
 
-## Types
+## Typen
 Folgende Lese- und Schreibgruppen werden unterstützt:
 
-- Analogwerte (Ausgang / Eingang)
+- Analoge Werte (Ausgang / Eingang)
 - Relais (Ausgang)
 - Sensoren (Eingang)
 - LEDs (Ausgang / Eingang)
@@ -40,21 +40,27 @@ Folgende Lese- und Schreibgruppen werden unterstützt:
 Um die gültigen Konvertierungsfunktionen auf Variablen anzuwenden, müssen die Variablen die gültigen Rollen haben. Folgende Rollen werden unterstützt:
 
 - **Wert.Temperatur** - Temperatur in Celsius
-- **Wert.Helligkeit** - Lux (I-Eingang) in Lux
+- **value.brightness** - Lux (I-Eingang) in Lux
 - **value.speed.wind** - Windgeschwindigkeit in m / s
-- **Spannungswert** - Spannung in Volt
+- **Wert.Spannung** - Spannung in Volt
 - **value.current** - Strom in Ampere
 - **value.sun.azimuth** - Sonnenazimut
 - **value.sun.elevation** - Sonnenstand
 
+## Anzeige
+Für jedes Gerät können Sie aktivieren, ob es ein Display hat oder nicht.
+
+## Regler (Regler)
+Für jedes Gerät können Sie aktivieren, ob es Regler hat oder nicht.
+
 ## Die Einstellungen
-- Wiederverbindungsintervall (Sek.) - Wie oft Adapter versuchen, eine Verbindung herzustellen. Standard alle 30 Sekunden.
-- Verbindungs-Timeout (ms) - wie lange der Adapter auf die Antwort der Verbindung einschließlich Authentifizierung wartet. Standard 6 Sekunden.
-- Scan-Antwort-Timeout (ms) - Wie lange der Adapter auf Antworten wartet, indem er die Module scannt.
+- Intervall für erneutes Verbinden (Sek.) - Wie oft versuchen Adapter, eine Verbindung herzustellen. Standard alle 30 Sekunden.
+- Verbindungszeitlimit (ms) - Wie lange der Adapter auf die Verbindungsantwort einschließlich Authentifizierung wartet. Standard 6 Sekunden.
+- Antwortzeitlimit für Scan (ms) - Wie lange der Adapter auf Antworten durch Scannen von Modulen wartet.
 - Antwortzeitlimit (ms) - Zeitlimit für Steuerbefehle
-- Ping-Intervall (Sek.) - wie oft der Adapter Ping-Anforderungen sendet
-- Ping Response Timeout (ms) - Zeitlimit für Ping-Anforderungen
-- IN / OUT-Relais sind gleich - wenn das "out" - und das "in" -Relais dasselbe sind oder wenn diese Relais unterschiedlich sind.
+- Ping-Intervall (Sek.) - Wie oft der Adapter Ping-Anforderungen sendet
+- Zeitlimit für Ping-Antwort (ms) - Zeitlimit für Ping-Anforderungen
+- IN / OUT-Relais sind gleich - wenn die Relais "out" und "in" gleich sind oder wenn diese Relais unterschiedlich sind.
 
 ```
 // =====================  Same relays =============================
@@ -80,14 +86,21 @@ Um die gültigen Konvertierungsfunktionen auf Variablen anzuwenden, müssen die 
 ```
 
 ## Wie benutzt man
-Nach dem ersten Start müssen die Geräte gescannt werden. Dies kann im Konfigurationsdialog mit der Schaltfläche Scannen erfolgen
+Nach dem ersten Start müssen die Geräte gescannt werden. Dies kann im Konfigurationsdialog mit der Scan-Schaltfläche erfolgen
 
 ![Scan](../../../en/adapterref/iobroker.lcn/img/scanButton.png)
 
 ## Machen
 - Konfigurationsdialog zum Definieren des Variablentyps.
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 1.0.2 (2020-10-11)
+* (bluefox) Implemented the regulators and the display support.
+
 ### 0.6.3 (2019-12-18)
 * (bluefox) General relays mode implemented
 
@@ -121,6 +134,6 @@ Nach dem ersten Start müssen die Geräte gescannt werden. Dies kann im Konfigur
 ## License
 CC-BY-NC-4.0
 
-Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2020 bluefox <dogafox@gmail.com>
 
 Up to 10 devices can be connected for free. If you need more devices, you must buy a commercial license.

@@ -180,34 +180,48 @@ Most things work right out of the box. You *can*, but you don't have to use all 
     * ``message`` is a javascript object of the format ``{ command: command, stateId: stateId, value: value }``
     * The following message-commands are supported:
         * ``{ command: "setState", stateId: <stateId>, value: <value> }`` - this will set the ioBroker state ``<stateId>`` to the value ``<value>`` (``<value>`` can be a string, number or boolean or an object like ``{ val: <value>, ack: true|false }``)
+        * ``{ command: "setWidgetState", stateId: <widgetStateId>, value: <value> }`` - this will set the ioBroker state ``iqontrol.<instance>.Widgets.<widgetStateId>`` to the value ``<value>`` (``<value>`` can be a string, number or boolean or an object like ``{ val: <value>, ack: true|false }``)
         * ``{ command: "getState", stateId: <stateId> }`` - this will cause iQontrol to send the value of the ioBroker state ``<stateId>`` (see below how to receive the answer-message)
+        * ``{ command: "getWidgetState", stateId: <widgetStateId> }`` - this will cause iQontrol to send the value of the ioBroker state ``iqontrol.<instance>.Widgets.<widgetStateId>`` (see below how to receive the answer-message)
         * ``{ command: "getStateSubscribed", stateId: <stateId> }`` - this will cause iQontrol to send the value of the ioBroker state ``<stateId>`` now and every time its value changes (see below how to receive the answer-messages)
+        * ``{ command: "getWidgetStateSubscribed", stateId: <widgetStateId> }`` - this will cause iQontrol to send the value of the ioBroker state ``iqontrol.<instance>.Widgets.<widgetStateId>`` now and every time its value changes (see below how to receive the answer-messages)
         * ``{ command: "renderView", value: <viewID> }`` - this will instruct iQontrol to render a view, where ``<viewID>`` needs to be formatted like ``iqontrol.<instance-number>.Views.<view-name>`` (case-sensitive)
         * ``{ command: "openDialog", value: <deviceID> }`` - this will instruct iQontrol to open a dialog, where ``<deviceID>`` needs to be formatted like ``iqontrol.<instance-number>.Views.<view-name>.devices.<device-number>`` where ``<device-number>`` starts from 0 (so the first device on a view is device number 0)
 * To receive messages from iQontrol, you need to register an event-listener to the "message"-event with the javascript-command ``window.addEventListener("message", receivePostMessage, false);``
     * The function ``receivePostMessage`` receives the object ``event``
 	* ``event.data`` contains the message from iqontrol, which will be an object like:
 	    * ``{ command: "getState", stateId: <stateId>, value: <value> }`` - this will be the answer to a getState-command or a getStateSubsribed-command and gives you the actual ``<value>``-object of the ioBroker state``<stateId>``
+* To instruct iQontrol to generate a widgetState under ``iqontrol.<instance>.Widgets`` you can use a meta-tag inside the head-section of the widget-website. Use the following syntax:
+    * ``<meta name="widget-datapoint" content="WidgetName.StateName" data-type="string" data-role="text" />``
+	* You can further configure the datapoint by using data-type (which can be set to string, number or boolean), data-role, data-name, data-min, data-max, data-def and data-unit attributes
+    * The corresponding datapoint is only then created, if the widget-website is added to a device as URL or BACKGROUND_URL	
 * The same concept may be used for the URL/HTML-State, which is used to display a website inside the dialog of a device
-* See below for an example-Website:
+* See below for an example widget-website:
 
 <details>
-<summary>Show example website to be displayed as widget with postMessage-communication:</summary>
+<summary>Show example widget-website to be displayed as widget with postMessage-communication:</summary>
 
 * You can use the following HTML code and copy it to the BACKGROUND_HTML-State of a widget (which then needs to be configured as "Constant") 
 * Acitvate the option "Allow postMessage-Communication for BACKGROUND_URL/HTML"
 * It will demonstrate how a two-way communication between the website and iQontrol is done
 ````html
 <!doctype html>
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<title>iQontrol postMessageTest</title>
+	<meta name="widget-datapoint" content="postMessageTest.test" data-type="string" data-role="text" />
+ 	<title>iQontrol postMessageTest</title>
 </head>
 <body>
 	<br><br>
+	<button onclick="getWidgetState('postMessageTest.test')">getWidgetState postMessageTest.test</button><br>
+	<button onclick="getWidgetStateSubscribed('postMessageTest.test')">getWidgetStateSubscribed postMessageTest.test</button><br>
+	<button onclick="setWidgetState('postMessageTest.test', 'Hello world')">setWidgetState postMessageTest.test to 'Hello world'</button><br>
+  	<br><br>
 	<button onclick="getState('system.adapter.admin.0.cpu')">getState system.adapter.admin.0.cpu</button><br>
 	<button onclick="getStateSubscribed('system.adapter.admin.0.uptime')">getStateSubscribed system.adapter.admin.0.uptime</button><br>
 	<button onclick="setState('iqontrol.0.Popup.Message', 'Hey, this is a test Message')">setState popup message</button><br>
+  	<br><br>
 	<button onclick="renderView('iqontrol.0.Views.Home')">renderView 'Home'</button><br>
 	<button onclick="openDialog('iqontrol.0.Views.Home.devices.0')">openDialog 1st device on 'Home'</button><br>
 	<br>
@@ -221,12 +235,28 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 		var countSend = 0;
 		var countReceived = 0;
 		
+		//getWidgetState
+		function getWidgetState(stateId){
+			sendPostMessage("getWidgetState", stateId);
+		}
+      
+		//getWidgetStateSubscribed (this means, everytime the state changes, an update will be received)
+		function getWidgetStateSubscribed(stateId){
+			sendPostMessage("getWidgetStateSubscribed", stateId);
+		}
+		
+		//setWidgetState
+		function setWidgetState(stateId, value){
+			sendPostMessage("setWidgetState", stateId, value);
+		}
+
+      
 		//getState
 		function getState(stateId){
 			sendPostMessage("getState", stateId);
 		}
 
-		//getStateSubscribed (this means, everytime the state changes, an update will be received)
+      //getStateSubscribed (this means, everytime the state changes, an update will be received)
 		function getStateSubscribed(stateId){
 			sendPostMessage("getStateSubscribed", stateId);
 		}
@@ -235,6 +265,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 		function setState(stateId, value){
 			sendPostMessage("setState", stateId, value);
 		}
+      
 
 		//renderView
 		function renderView(viewId){
@@ -246,6 +277,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 			sendPostMessage("openDialog", null, deviceId);
 		}
 
+      
 		//send postMessages
 		function sendPostMessage(command, stateId, value){
 			countSend++;
@@ -556,6 +588,7 @@ This device has some special predefined size- and display-settings to show a web
 * (sbormann) Added possibility to add and edit html/css/js files to folder /userwidgets.
 * (sbormann) Withdrawn changes to blank icons (now they catch mouse events again) - but for that added an option to optionally ignore mouse events for icons.
 * (sbormann) Added option which sections of remote are opened at start.
+* (sbormann) Added new postMessage-communication options for widgets and allow widgets to create datapoints unter iqontrol.x.Widgets by using a meta-tag inside html-code.
 
 ### 1.3.1 (2020-10-04)
 * (sbormann) Breaking change: completely removed presssure detection and replaced it by long clicks to open context menu.

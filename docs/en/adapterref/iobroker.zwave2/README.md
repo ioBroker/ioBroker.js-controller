@@ -40,6 +40,11 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.7.5 (2020-10-11)
+* Fixed the creation of some missing states (`Alarm Sensor CC` in idle state, `Multilevel Switch CC` V1/V2)
+* When a message should be sent to a node that is assumed to be dead, the node is now pinged first to check if it is really dead
+* Improved compatibility with devices that support `Notification CC V2+` but send `V1` commands.
+
 ### 1.7.4 (2020-10-05)
 * Added a configuration file for `Electronic Solutions DBMZ EU`
 * Fixed a crash when receiving truncated messages
@@ -66,24 +71,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 * Added two options to increase the driver timeouts and/or send attempts. This should allow increasing the network stability at the cost of decreased responsiveness.
 * Added support for `User Code CC V2`
 * Fix: Nodes are no longer marked as dead or asleep if they acknowledge a message but don't respond to it
-
-### 1.7.0 (2020-09-25)
-* The `quality` parameter is now set for state updates when reading (potentially stale) values from the cache
-* Changed the serialport setting field to use autocomplete instead of a dropdown, added a tip how to use serial-over-tcp connections
-* The adapter will now attempt to restart if starting the driver fails
-* Upgraded `zwave-js` to version 5.0.0. This includes many changes including the following:
-  * The driver has been completely rewritten with state machines for a well-defined program flow and better testability. This should solve issues where communication may get stuck for unknown reasons.
-  * All interview messages now automatically have a lower priority than most other messages, e.g. the ones created by user interaction. This should make the network feel much more responsive while an interview process is active.
-  * Improved performance of reading from the Value DB
-  * A node is no longer marked as dead or asleep if it fails to respond to a `Configuration CC::Get` request. This can happen if the parameter is not supported.
-  * The interview for sensor-type CCs is now skipped if a timeout occurs waiting for a response. Previously the whole interview was aborted.
-  * If a node that is known to be included securely does not respond to the `Security CC` interview, it is no longer assumed to be non-secure
-  * If a node that is assumed to be included non-securely sends secure commands, it is now marked as secure and the interview will be restarted
-  * Added a configuration file for `ABUS CFA3010`.
-  * Added a configuration file for `Everspring AC301`
-  * Removed parameter #5 from `Aeon Labs ZW130` because it doesn't seem to be supported in any firmware version
-  * In addition to real serial ports, serial-over-tcp connections (e.g. by using `ser2net`) are now supported. Use these `ser2net` settings to host a serial port: `<external-port>:raw:0:<path-to-serial>:115200 8DATABITS NONE 1STOPBIT`
-  * Fixed a crash that could occur when assembling a partial message while the driver is not ready yet.
 
 ## License
 

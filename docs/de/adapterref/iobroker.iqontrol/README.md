@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: r3CdNsq+QT1O9zMwkmU8QfjKhX75QuUDMXPcmO3AffQ=
+hash: TWHOYvZuFqFf9pUrbsgHnzicou/Gxc9qYfmHqZbm8uQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -94,13 +94,13 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * Das Frontend wird über `` http [s]: // <URL oder IP von iobroker>: <Port des Webadapters> / iqontrol / index.html`` aufgerufen
     * `` <Port des Webadapters> `` ist normalerweise 8082
 * Um eine angegebene Instanz zu öffnen, können Sie `` namespace = iqontrol. <Instanznummer> `` als URL-Parameter hinzufügen
-* Um eine bestimmte Ansicht zu öffnen, können Sie als URL-Parameter "renderView = <viewID>" hinzufügen.
+* Um eine angegebene Ansicht zu öffnen, können Sie als URL-Parameter "renderView = <viewID>" hinzufügen.
     * `` <viewID> `` muss wie `` iqontrol. <Instanznummer> .Views. <Ansichtsname> `` formatiert sein
 * Hinweis: Hierbei wird zwischen Groß- und Kleinschreibung unterschieden!
 * Um eine angegebene Ansicht als Homepage zu öffnen, können Sie `` home = <viewID> `` als URL-Parameter hinzufügen. Dadurch wird auch die verknüpfte Ansicht des ersten Symbolleisteneintrags geändert!
     * `` <viewID> `` muss wie `` iqontrol. <Instanznummer> .Views. <Ansichtsname> `` formatiert sein
 * Hinweis: Hierbei wird zwischen Groß- und Kleinschreibung unterschieden!
-* Um einen bestimmten Dialog beim Laden der Seite zu öffnen, können Sie als URL-Parameter "openDialog = <GerätID>" hinzufügen
+* Um einen bestimmten Dialog beim Laden der Seite zu öffnen, können Sie als URL-Parameter `` openDialog = <deviceID> `` hinzufügen
     * `` <GerätID> `` muss wie `` iqontrol. <Instanznummer> .Views. <Ansichtsname> .Geräte. <Gerätennummer> `` formatiert werden, wobei `` <Gerätennummer> `` beginnt bei 0 (das erste Gerät in einer Ansicht ist also Gerätenummer 0)
 * Hinweis: Hierbei wird zwischen Groß- und Kleinschreibung unterschieden!
 * Verwenden Sie die folgenden Parameter, um die Rückkehr nach Zeiteinstellungen festzulegen oder zu überschreiben:
@@ -177,18 +177,25 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
     * `` message`` ist ein Javascript-Objekt im Format `` {Befehl: Befehl, stateId: stateId, Wert: Wert} ``
     * Folgende Nachrichtenbefehle werden unterstützt:
         * `` {Befehl: "setState", stateId: <stateId>, Wert: <value>} `` - Dies setzt den ioBroker-Status `` <stateId> `` auf den Wert `` <value> `` (` `<Wert>` `kann eine Zeichenfolge, eine Zahl oder ein Boolescher Wert oder ein Objekt wie` `{val: <Wert>, ack: true | false}` `) sein
+        * `` {Befehl: "setWidgetState", stateId: <widgetStateId>, Wert: <value>} `` - dies setzt den ioBroker-Status `` iqontrol. <Instanz> .Widgets. <widgetStateId> `` auf den Wert ` `<Wert>` `(` `<Wert>` `kann eine Zeichenfolge, eine Zahl oder ein Boolescher Wert oder ein Objekt wie` `{val: <Wert>, ack: true | false}` `sein)
         * `` {Befehl: "getState", stateId: <stateId>} `` - Dies bewirkt, dass iQontrol den Wert des ioBroker-Status `` <stateId> `` sendet (siehe unten, wie die Antwortnachricht empfangen wird).
+        * `` {Befehl: "getWidgetState", stateId: <widgetStateId>} `` - dies veranlasst iQontrol, den Wert des ioBroker-Status `` iqontrol. <Instanz> .Widgets. <widgetStateId> `` zu senden (siehe unten, wie um die Antwortnachricht zu erhalten)
         * `` {Befehl: "getStateSubscribed", stateId: <stateId>} `` - Dies veranlasst iQontrol, den Wert des ioBroker-Status `` <stateId> `` jetzt und jedes Mal zu senden, wenn sich sein Wert ändert (siehe unten, wie es geht Antwortnachrichten erhalten)
+        * `` {Befehl: "getWidgetStateSubscribed", stateId: <widgetStateId>} `` - Dies veranlasst iQontrol, den Wert des ioBroker-Status `` iqontrol. <Instanz> .Widgets. <widgetStateId> `` jetzt und jedes Mal zu senden sein Wert ändert sich (siehe unten, wie man die Antwortnachrichten empfängt)
         * `` {Befehl: "renderView", Wert: <viewID>} `` - Dies weist iQontrol an, eine Ansicht zu rendern, wobei `` <viewID> `` wie `` iqontrol. <Instanznummer> formatiert werden muss .Views. <Ansichtsname> `` (Groß- und Kleinschreibung beachten)
         * `` {Befehl: "openDialog", Wert: <deviceID>} `` - Dies weist iQontrol an, einen Dialog zu öffnen, in dem `` <deviceID> `` wie `` iqontrol. <Instanznummer> formatiert werden muss .Views. <Ansichtsname> .Geräte. <Gerätenummer> `` wobei `` <Gerätenummer> `` bei 0 beginnt (das erste Gerät in einer Ansicht ist also Gerätenummer 0)
 * Um Nachrichten von iQontrol zu empfangen, müssen Sie einen Ereignis-Listener für das Ereignis "message" mit dem Javascript-Befehl `` window.addEventListener ("message", receivePostMessage, false); `` registrieren
     * Die Funktion "receivePostMessage" empfängt das Objekt "event"
 * `` `Event.data`` enthält die Nachricht von iqontrol, die ein Objekt sein wird wie:
 * `` {Befehl: "getState", stateId: <stateId>, Wert: <Wert>} `` - Dies ist die Antwort auf einen getState-Befehl oder einen getStateSubsribed-Befehl und gibt Ihnen den tatsächlichen `` <Wert> `` -Objekt des ioBroker-Status`` <stateId> ``
+* Um iQontrol anzuweisen, einen WidgetState unter "iqontrol. <Instanz> .Widgets" zu generieren, können Sie ein Meta-Tag im Kopfbereich der Widget-Website verwenden. Verwenden Sie die folgende Syntax:
+* ``<meta name="widget-datapoint" content="WidgetName.StateName" data-type="string" data-role="text" /> ``
+* Sie können den Datenpunkt weiter konfigurieren, indem Sie die Attribute Datentyp (der auf Zeichenfolge, Zahl oder Boolescher Wert festgelegt werden kann), Datenrolle, Datenname, Datenmin, Datenmaximum, Datendef. Und Dateneinheit verwenden
+    * Der entsprechende Datenpunkt wird erst dann erstellt, wenn die Widget-Website einem Gerät als URL oder BACKGROUND_URL hinzugefügt wird
 * Das gleiche Konzept kann für den URL / HTML-Status verwendet werden, mit dem eine Website im Dialogfeld eines Geräts angezeigt wird
-* Siehe unten für eine Beispiel-Website:
+* Unten finden Sie eine Beispiel-Widget-Website:
 
-<details><summary>Beispielwebsite anzeigen, die als Widget mit postMessage-Kommunikation angezeigt werden soll:</summary>
+<details><summary>Beispiel-Widget-Website anzeigen, die als Widget mit postMessage-Kommunikation angezeigt werden soll:</summary>
 
 * Sie können den folgenden HTML-Code verwenden und ihn in den BACKGROUND_HTML-Status eines Widgets kopieren (das dann als "Konstante" konfiguriert werden muss).
 * Aktivieren Sie die Option "PostMessage-Kommunikation für BACKGROUND_URL / HTML zulassen".
@@ -196,15 +203,22 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 
 ````html
 <!doctype html>
+<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
-	<title>iQontrol postMessageTest</title>
+	<meta name="widget-datapoint" content="postMessageTest.test" data-type="string" data-role="text" />
+ 	<title>iQontrol postMessageTest</title>
 </head>
 <body>
 	<br><br>
+	<button onclick="getWidgetState('postMessageTest.test')">getWidgetState postMessageTest.test</button><br>
+	<button onclick="getWidgetStateSubscribed('postMessageTest.test')">getWidgetStateSubscribed postMessageTest.test</button><br>
+	<button onclick="setWidgetState('postMessageTest.test', 'Hello world')">setWidgetState postMessageTest.test to 'Hello world'</button><br>
+  	<br><br>
 	<button onclick="getState('system.adapter.admin.0.cpu')">getState system.adapter.admin.0.cpu</button><br>
 	<button onclick="getStateSubscribed('system.adapter.admin.0.uptime')">getStateSubscribed system.adapter.admin.0.uptime</button><br>
 	<button onclick="setState('iqontrol.0.Popup.Message', 'Hey, this is a test Message')">setState popup message</button><br>
+  	<br><br>
 	<button onclick="renderView('iqontrol.0.Views.Home')">renderView 'Home'</button><br>
 	<button onclick="openDialog('iqontrol.0.Views.Home.devices.0')">openDialog 1st device on 'Home'</button><br>
 	<br>
@@ -218,12 +232,28 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 		var countSend = 0;
 		var countReceived = 0;
 
+		//getWidgetState
+		function getWidgetState(stateId){
+			sendPostMessage("getWidgetState", stateId);
+		}
+
+		//getWidgetStateSubscribed (this means, everytime the state changes, an update will be received)
+		function getWidgetStateSubscribed(stateId){
+			sendPostMessage("getWidgetStateSubscribed", stateId);
+		}
+
+		//setWidgetState
+		function setWidgetState(stateId, value){
+			sendPostMessage("setWidgetState", stateId, value);
+		}
+
+
 		//getState
 		function getState(stateId){
 			sendPostMessage("getState", stateId);
 		}
 
-		//getStateSubscribed (this means, everytime the state changes, an update will be received)
+      //getStateSubscribed (this means, everytime the state changes, an update will be received)
 		function getStateSubscribed(stateId){
 			sendPostMessage("getStateSubscribed", stateId);
 		}
@@ -232,6 +262,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 		function setState(stateId, value){
 			sendPostMessage("setState", stateId, value);
 		}
+
 
 		//renderView
 		function renderView(viewId){
@@ -242,6 +273,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 		function openDialog(deviceId){
 			sendPostMessage("openDialog", null, deviceId);
 		}
+
 
 		//send postMessages
 		function sendPostMessage(command, stateId, value){
@@ -340,7 +372,7 @@ Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der
     * Sie können das Verhalten des Batteriesymbols im Optionsbereich 'BATTERY Empty Icon' weiter anpassen.
 * **ERROR** *boolean* - Wenn true, wird ein kleines Ausrufezeichen angezeigt
 * **UNREACH** *boolean* - Wenn true, wird ein kleines WLAN-Symbol angezeigt
-    * Das Verhalten kann im Abschnitt "Allgemein" der Optionen umgekehrt werden (verwenden Sie "Verbunden" anstelle von "Nicht erreichbar").
+    * Das Verhalten kann im Abschnitt "Allgemein" der Optionen umgekehrt werden (verwenden Sie "Verbunden" anstelle von "Nicht erreichen").
 
 ### Link zu anderer Ansicht:
 * Hat keine weiteren Zustände
@@ -376,7 +408,7 @@ Optional können Sie folgende Zustände definieren:
     Wenn Ihr Gerät die Verwendung von HUE, SATURATION und COLOR_BRIGHTNESS (HSB / HSV-Farbraum) nicht unterstützt, können Sie verschiedene alternative Farbräume verwenden. In den Geräteoptionen können Sie einen der folgenden Farbräume auswählen:
 
     * **RGB** / **# RGB** Anstelle von HUE, SATURATION und COLOR_BRIGHTNESS können Sie das RGB-Format (hex) verwenden, optional mit dem führenden '#'
-    * **RGBW** / **# RGBW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS können Sie das RGBW-Format (hex) verwenden, optional mit führendem '#'
+    * **RGBW** / **# RGBW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS können Sie das RGBW-Format (hex) verwenden, optional mit dem führenden '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS, CT und WHITE_BRIGHTNESS können Sie das RGBWWCW- oder RGBCWWW-Format (hex) verwenden , WW = warmweiß, CW = kaltweiß), optional mit führendem '#'
     * **RGB (nur Farbton)** / **# RGB (nur Farbton)** Anstelle von HUE können Sie auch das RGB-Format (nur Farbton) (hex) verwenden, optional mit dem führenden '#'. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt
     * **Farbton für Milight** Dies ist der Farbtonwert für Milight-Geräte, wobei ein anderer Ausgangspunkt im Farbton-Farbkreis verwendet wird:
@@ -391,7 +423,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 
 * Effektmodus:
   * **EFFECT** * Werteliste * - der zu spielende Effekt
-* **EFFECT_NEXT** *boolean* - Wenn true festgelegt ist, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen).
+* **EFFECT_NEXT** *boolean* - Wenn auf true gesetzt, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen).
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - Wenn dieser Wert auf true gesetzt ist, wird der Effekt beschleunigt / verringert
 * Sonstiges:
   * **POWER** * number * - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
@@ -405,14 +437,14 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 * **SET_TEMPERATURE** *Nummer* - Zieltemperatur
 * **TEMPERATUR** *Zahl* - Die tatsächliche Temperatur wird in der oberen rechten Ecke klein angezeigt
 * **FEUCHTIGKEIT** *Zahl* - Die tatsächliche Luftfeuchtigkeit wird in der oberen rechten Ecke klein angezeigt
-* **CONTROL_MODE** *Werteliste* - Anzeige und Einstellung des Thermostatmodus
+* **CONTROL_MODE** *Werteliste* - Anzeige und Einstellung des Modus des Thermostats
 * **WINDOW_OPENING_REPORTING** *boolean* - Wenn true, wird ein kleines geöffnetes Fenster angezeigt
 * **VALVE_STATES** Array von Namen und Nummern - Zeigt die Öffnung der Ventile an, die dem Thermostat zugeordnet sind
 
 ###<img src="img/icons/radiator.png" width="32"> Homematischer Thermostat:
 Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
-* **PARTY_TEMPERATURE** *string* - Speziell formatierter String zum Definieren des Party- oder Feiertagsmodus von homematischen Thermostaten
+* **PARTY_TEMPERATURE** *string* - speziell formatierter String zum Definieren des Party- oder Feiertagsmodus von homematischen Thermostaten
 * **BOOST_STATE** *number* - Zeigt die verbleibende Boost-Zeit von homematischen Thermostaten an
 
 ###<img src="img/icons/temperature.png" width="32"> Temperatursensor,<img src="img/icons/humidity.png" width="32"> Feuchtigkeitssensor:
@@ -445,7 +477,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 ###<img src="img/icons/door_locked.png" width="32"> Tür mit Schloss:
 * **STATE** *boolean* - Anzeige, ob die Tür geöffnet oder geschlossen ist (Tür- / Fensterkontakt)
 * **LOCK_STATE** *boolean* - Anzeige und Steuerung, ob die Tür verriegelt oder entriegelt ist (Steuerung ist deaktiviert, wenn STATE wahr ist - weil Sie eine geöffnete Tür nicht verriegeln können)
-* **LOCK_STATE_UNCERTAIN** *boolean* - Wenn true, wird der STATE in Kursivschrift angezeigt, um anzuzeigen, dass die genaue Position des Schlosses unbekannt ist
+* **LOCK_STATE_UNCERTAIN** *boolean* - Wenn true, wird STATE in Kursivschrift angezeigt, um anzuzeigen, dass die genaue Position der Sperre unbekannt ist
 * **LOCK_OPEN** *boolean* - Wenn true festgelegt ist, wird die Tür vollständig geöffnet
 
 ###<img src="img/icons/blind_middle.png" width="32"> Blind:
@@ -495,18 +527,18 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **STATE** *string* - "play", "pause" oder "stop" oder *boolean* - true für play, false für stop
     * In den Geräteoptionen können Sie den Wert definieren, der Wiedergabe, Pause und Stopp darstellt
 * **COVER_URL** *string* - URL zum Titelbild
-* **KÜNSTLER, ALBUM, TITEL** *string* - selbsterklärend
+* **KÜNSTLER, ALBUM, TITEL** *Zeichenfolge* - selbsterklärend
 * **TRACK_NUMBER** *number* - selbsterklärend
 * **PREV, REWIND, PLAY, PAUSE, STOP, FORWARD, NEXT** *boolean* - wird auf true gesetzt, wenn die entsprechende Taste gedrückt wird
 * **SHUFFLE, MUTE, PLAY_EVERYWHERE, EJECT, POWER_SWITCH** *Boolescher* - Status für die entsprechende Funktion
 * **REPEAT** *Boolescher* - Status für Wiederholungsfunktion oder *Zeichenfolge* - 3 Zustände können über die entsprechenden Optionen definiert werden: Wert für Aus, Alle wiederholen und Eins wiederholen
-* **DAUER, ABLAUFEN** *Nummer* - Dauer und verstrichene Zeit des tatsächlichen Titels - wird verwendet, um eine Suchleiste anzuzeigen
+* **DAUER, VERLOREN** *Nummer* - Dauer und verstrichene Zeit des tatsächlichen Titels - wird verwendet, um eine Suchleiste anzuzeigen
 * **VOLUME** *number* - für Lautstärkeregler
 * **QUELLE, PLAYLIST** *Werteliste* - Auswahlmenü anzeigen, um eine Quelle oder einen Titel aus der Wiedergabeliste auszuwählen
 
 ##### Um eine *Universalfernbedienung* anzuzeigen, können Sie folgende Zustände definieren:
 * **REMOTE_NUMBER** *string* - zeigt ein Nummernfeld an und gibt die entsprechende Nummer zurück, wenn auf eine Nummer geklickt wird
-* **REMOTE_VOLUME_UP, REMOTE_VOLUME_UP, REMOTE_CH_UP, REMOTE_CH_DOWN** *string* - zeigt Schaltflächen für Lautstärke hoch / runter und Kanal hoch / runter und gibt 'volumeUp', 'volumeDown', 'chUp' oder 'chDown' zurück, falls dies der Fall ist Taste gedrückt wird
+* **REMOTE_VOLUME_UP, REMOTE_VOLUME_UP, REMOTE_CH_UP, REMOTE_CH_DOWN** *string* - Zeigt Schaltflächen für Lautstärke hoch / runter und Kanal hoch / runter an und gibt 'volumeUp', 'volumeDown', 'chUp' oder 'chDown' zurück, falls zutreffend Taste gedrückt wird
 * **REMOTE_PAD_DIRECTION, REMOTE_PAD_BACK, REMOTE_PAD_HOME, REMOTE_PAD_MENU** *string* - zeigt ein Trackpad für Navigation und Rückkehr
     * 'ok' wenn die Mitte des Pads angeklickt wird,
 * 'left', 'right', 'up' oder 'down', wenn auf die Kanten des Pads geklickt oder das Pad in die entsprechende Richtung gewischt wird oder
@@ -555,10 +587,24 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 ## Changelog
 
 ### dev
+* (sbormann) Added icons to REMOTE_ADDITIONAL_BUTTONS of remote control.
+* (sbormann) Added REMOTE_CHANNELS to display channel buttons inside remote control.
+* (sbormann) Enhanced positioning of dialog if URL/HTML is set.
+* (sbormann) When writing data to an iframe replace encoded cr chars.
+* (sbormann) Added option to remove overlay of tile, if device is enlarged.
+* (sbormann) Added possibility to add and edit html/css/js files to folder /userwidgets.
+* (sbormann) Withdrawn changes to blank icons (now they catch mouse events again) - but for that added an option to optionally ignore mouse events for icons.
+* (sbormann) Added option which sections of remote are opened at start.
+* (sbormann) Added new postMessage-communication options for widgets and allow widgets to create datapoints unter iqontrol.x.Widgets by using a meta-tag inside html-code.
+
+### 1.3.1 (2020-10-04)
 * (sbormann) Breaking change: completely removed presssure detection and replaced it by long clicks to open context menu.
-* (sbormann) Bank icons don't catch mouse and touch-events any more.
+* (sbormann) Blank icons don't catch mouse and touch-events any more.
 * (sbormann) Added option to disable virtual datapoint (switch) for widgetes.
 * (sbormann) Fixed url-parameter home.
+* (sbormann) Added collapsible sections to device options.
+* (sbormann) Enhanced channel detector for autocreate devices function.
+* (sbormann) Enhanced dropdown-menus on admin-page to work better on mobile devices.
 
 ### 1.2.7 (2020-09-30)
 * (sbormann) Added ADDITIONAL_CONTROLS as universal datapoint to define an array of additional control items that will be displayed inside dialog.

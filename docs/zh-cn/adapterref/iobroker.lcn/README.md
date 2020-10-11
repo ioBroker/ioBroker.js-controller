@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lcn/README.md
 title: ioBroker.lcn
-hash: XsIZz+rYQ0zWl3hpNnx571PIlwCFV26kGdvcRx+HE40=
+hash: oHwz0i8ruJc4gnX7bkTWCtf1HJx+7bMjXbH3Qwq+4B0=
 ---
 ![商标](../../../en/adapterref/iobroker.lcn/admin/lcn.png)
 
@@ -19,7 +19,7 @@ hash: XsIZz+rYQ0zWl3hpNnx571PIlwCFV26kGdvcRx+HE40=
 
 ![ke](../../../en/adapterref/iobroker.lcn/img/lcn-pke.png)
 
--LCN-PKU与LCN-PCHK
+-与LCN-PCHK的LCN-PKU
 
 ![ke](../../../en/adapterref/iobroker.lcn/img/lcn-pku.png)
 
@@ -42,10 +42,16 @@ hash: XsIZz+rYQ0zWl3hpNnx571PIlwCFV26kGdvcRx+HE40=
 -**温度值**-摄氏温度
 -**值。亮度**-勒克斯（I-输入）勒克斯
 -** value.speed.wind **-风速，m / s
--**值。电压**-电压（伏）
+-**值电压**-电压（伏）
 -** value.current **-电流（安培）
 -** value.sun.azimuth **-太阳方位角
 -** value.sun.elevation **-太阳高度
+
+##显示
+对于每台设备，如果有显示，您都可以激活。
+
+##调节器（Regler）
+对于每个设备，无论是否具有调节器，都可以激活。
 
 ##设置
 -重新连接间隔（秒）-适配器尝试连接的频率。默认为30秒。
@@ -87,7 +93,14 @@ hash: XsIZz+rYQ0zWl3hpNnx571PIlwCFV26kGdvcRx+HE40=
 ＃＃ 去做
 -定义变量类型的配置对话框。
 
+<！-下一个版本的占位符（在该行的开头）：
+
+### __正在进行的工程__->
+
 ## Changelog
+### 1.0.2 (2020-10-11)
+* (bluefox) Implemented the regulators and the display support.
+
 ### 0.6.3 (2019-12-18)
 * (bluefox) General relays mode implemented
 
@@ -121,6 +134,6 @@ hash: XsIZz+rYQ0zWl3hpNnx571PIlwCFV26kGdvcRx+HE40=
 ## License
 CC-BY-NC-4.0
 
-Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2020 bluefox <dogafox@gmail.com>
 
 Up to 10 devices can be connected for free. If you need more devices, you must buy a commercial license.

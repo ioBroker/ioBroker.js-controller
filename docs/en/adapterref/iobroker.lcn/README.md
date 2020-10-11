@@ -40,6 +40,12 @@ To apply the valid convert functions to variables, the variables must have the v
 - **value.sun.azimuth** - sun azimuth
 - **value.sun.elevation** - sun elevation
 
+## Display
+For every device you can activate if it has display or not.
+
+## Regulator (Regler)
+For every device you can activate if it has regulators or not.
+
 ## Settings
 - Reconnect interval(sec) - how often adapters tries to connect. Default ever 30 seconds. 
 - Connect timeout(ms) - how long adapter waits for connection response inclusive authentication. Default 6 seconds. 
@@ -79,7 +85,14 @@ After the first start the devices must be scanned. It can be done in the configu
 ## ToDO
 - Configuration dialog to define type of variables.
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
 ## Changelog
+### 1.0.2 (2020-10-11)
+* (bluefox) Implemented the regulators and the display support.
+
 ### 0.6.3 (2019-12-18)
 * (bluefox) General relays mode implemented
 
@@ -113,6 +126,6 @@ After the first start the devices must be scanned. It can be done in the configu
 ## License
 CC-BY-NC-4.0
 
-Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2020 bluefox <dogafox@gmail.com>
 
 Up to 10 devices can be connected for free. If you need more devices, you must buy a commercial license.
