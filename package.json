@@ -54,7 +54,7 @@
         "@types/mocha": "^8.0.3",
         "@types/node": "^14.11.8",
         "@types/semver": "^7.3.4",
-        "@types/yargs": "^15.0.7",
+        "@types/yargs": "^15.0.8",
         "chai": "^4.2.0",
         "chai-as-promised": "^7.1.1",
         "eslint": "^7.11.0",
