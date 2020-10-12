@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: TWHOYvZuFqFf9pUrbsgHnzicou/Gxc9qYfmHqZbm8uQ=
+hash: Ay2RQh7lfazCKbYvUZDwexffhHec/t/lvj6dsFDX46k=
 ---
 ![Логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -176,20 +176,39 @@ hash: TWHOYvZuFqFf9pUrbsgHnzicou/Gxc9qYfmHqZbm8uQ=
 * Для отправки команд в iQontrol вы можете использовать следующую javascript-команду: `` window.parent.postMessage (message, "*"); ``
     * «message» - это объект javascript формата «{command: command, stateId: stateId, value: value}«
     * Поддерживаются следующие команды сообщений:
-        * `` {command: "setState", stateId: <stateId>, value: <value>} `` - это установит для состояния ioBroker `` <stateId> `` значение `` <value> `` (` `<значение>` может быть строкой, числом или логическим значением или объектом типа `` {val: <value>, ack: true | false} ``)
         * `` {command: "setWidgetState", stateId: <widgetStateId>, value: <value>} `` - это установит состояние ioBroker `ʻiqontrol. <instance> .Widgets. <widgetStateId>` `на значение` `<value>` `(` `<value>` может быть строкой, числом или логическим значением или объектом вроде `` {val: <value>, ack: true | false} ``)
-        * `` {command: "getState", stateId: <stateId>} `- это заставит iQontrol отправить значение состояния ioBroker` <stateId> `(см. ниже, как получить ответное сообщение)
         * `` {command: "getWidgetState", stateId: <widgetStateId>} `- это заставит iQontrol отправить значение состояния ioBroker` ʻiqontrol. <instance> .Widgets. <widgetStateId> `` (см. ниже, как получить ответ-сообщение)
-        * `` {command: "getStateSubscribed", stateId: <stateId>} `` - это заставит iQontrol отправлять значение состояния ioBroker `` <stateId> `сейчас и каждый раз, когда его значение изменяется (см. ниже, как получать ответные сообщения)
         * `` {command: "getWidgetStateSubscribed", stateId: <widgetStateId>} `` - это заставит iQontrol отправлять значение состояния ioBroker `ʻiqontrol. <instance> .Widgets. <widgetStateId>` `сейчас и каждый раз его значение меняется (см. ниже, как получать ответные сообщения)
+        * `` {command: "setState", stateId: <stateId>, value: <value>} `` - это установит для состояния ioBroker `` <stateId> `` значение `` <value> `` (` `<значение>` может быть строкой, числом или логическим значением или объектом типа `` {val: <value>, ack: true | false} ``)
+        * `` {command: "getState", stateId: <stateId>} `- это заставит iQontrol отправить значение состояния ioBroker` <stateId> `(см. ниже, как получить ответное сообщение)
+        * `` {command: "getStateSubscribed", stateId: <stateId>} `` - это заставит iQontrol отправлять значение состояния ioBroker `` <stateId> `сейчас и каждый раз, когда его значение изменяется (см. ниже, как получать ответные сообщения)
         * `` {command: "renderView", value: <viewID>} `` - это проинструктирует iQontrol визуализировать представление, где <viewID> `должен быть отформатирован как ʻiqontrol. <instance-number> .Views. <view-name> `` (с учетом регистра)
         * `` {command: "openDialog", значение: <deviceID>} `- это проинструктирует iQontrol открыть диалоговое окно, в котором <deviceID>` должен быть отформатирован как ʻiqontrol. <instance-number> .Views. <view-name> .devices. <device-number>, где `` <device-number> '' начинается с 0 (так что первое устройство в представлении - это устройство с номером 0)
 * Чтобы получать сообщения от iQontrol, вам необходимо зарегистрировать прослушиватель событий для события «message» с помощью javascript-команды `window.addEventListener (« message », receivePostMessage, false);` `
     * Функция «receivePostMessage» получает объект «событие».
 * ʻEvent.data` содержит сообщение от iqontrol, которое будет таким объектом, как:
-* `` {command: "getState", stateId: <stateId>, value: <value>} `` - это будет ответ на команду getState или getStateSubsribed-команду и даст вам фактическое `<значение> `-объект состояния ioBroker` <stateId>`
-* Чтобы указать iQontrol сгенерировать widgetState под «iqontrol. <instance> .Widgets», вы можете использовать метатег внутри раздела заголовка веб-сайта виджетов. Используйте следующий синтаксис:
-* ``<meta name="widget-datapoint" content="WidgetName.StateName" data-type="string" data-role="text" /> ``
+* event.data = `` {command: "getState", stateId: <stateId>, value: <stateObject>} `` - это будет ответ на команду getState или команду getStateSubsribed и даст вам фактический ` `<значение>` -объект состояния ioBroker` <stateId> `
+* `` <stateObject> '' сам по себе является объектом вроде
+
+			````javascript
+			event.data.value = {
+				val: <value>,
+				unit: "<unit>",
+				plainText: "<clear text of val, for example taken from valuelist>",
+				ack: <true|false>,
+				readonly: <true|false>,
+				custom: {<object with custom settings>},
+				from: "<source of state>",
+				lc: <timestamp of last change>,
+				ts: <timestamp of last actualization>,
+				q: <quality of signal>,
+				role: "<role of state>",
+				type: "<string|number|boolean>"
+			}
+			````
+
+* Чтобы указать iQontrol сгенерировать widgetState в «iqontrol. <instance> .Widgets», вы можете использовать метатег внутри раздела заголовка веб-сайта виджетов:
+* Синтаксис: ``<meta name="widget-datapoint" content="WidgetName.StateName" data-type="string" data-role="text" /> ``
 * Вы можете дополнительно настроить точку данных, используя атрибуты data-type (который может быть установлен как строка, число или логическое значение), data-role, data-name, data-min, data-max, data-def и data-unit.
     * Соответствующая точка данных создается только тогда, если сайт-виджет добавлен на устройство как URL или BACKGROUND_URL
 * Та же концепция может использоваться для URL / HTML-State, который используется для отображения веб-сайта в диалоговом окне устройства.
@@ -198,6 +217,7 @@ hash: TWHOYvZuFqFf9pUrbsgHnzicou/Gxc9qYfmHqZbm8uQ=
 <details><summary>Показать пример сайта-виджета, который будет отображаться как виджет с сообщением postMessage:</summary>
 
 * Вы можете использовать следующий HTML-код и скопировать его в BACKGROUND_HTML-State виджета (который затем необходимо настроить как «Константа»)
+* В качестве альтернативы вы можете загрузить этот код в виде html-файла в подкаталог / userwidgets и указать его на BACKGROUND_URL-State (которое затем также необходимо настроить как «Константа»).
 * Активируйте опцию «Разрешить postMessage-Communication для BACKGROUND_URL / HTML»
 * Он продемонстрирует, как осуществляется двусторонняя связь между веб-сайтом и iQontrol.
 
@@ -292,6 +312,276 @@ hash: TWHOYvZuFqFf9pUrbsgHnzicou/Gxc9qYfmHqZbm8uQ=
 				case "getState":
 				if(event.data.stateId && event.data.value){
 					document.getElementById('thisMeans').innerHTML = "Got State " + event.data.stateId + ": " + JSON.stringify(event.data.value);
+				}
+				break;
+			}
+		}
+	</script>
+</body>
+</html>
+````
+
+</details>
+
+### Дальнейшая настройка виджетов
+* Существуют дополнительные мета-теги, которые вы можете использовать в разделе заголовка вашего сайта-виджета, чтобы настроить поведение виджета:
+* 'описание-виджета'
+* синтаксис: &#39;&#39;<meta name="widget-description" content="Please see www.mywebsite.com for further informations. (C) by me"/> ``
+* Это будет отображаться при выборе виджета как URL или BACKGROUND_URL
+* 'параметры-виджета'
+* синтаксис: &#39;&#39;<meta name="widget-options" content="{'noZoomOnHover': 'true', 'hideDeviceName': 'true'}"/> ``
+* См. Расширяемый раздел ниже, чтобы узнать о возможных параметрах, которые можно настроить с помощью этого метатега.
+
+<details><summary>Показать возможные параметры, которые можно настроить с помощью метатега widget-options:</summary>
+
+* Иконки:
+* ʻIcon_on` (значок включен):
+* По умолчанию: ""
+* `ʻIcon_off`` (значок выключен):
+* По умолчанию: ""
+* Параметры для конкретных устройств:
+* `noVirtualState` (не использовать виртуальную точку данных для STATE (скрыть переключатель, если STATE пуст)):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* Общее:
+* `` readonly`` (только чтение):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* ʻInvertUnreach` (Инвертировать UNREACH (использовать connected вместо unreach)):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* ʻAdditionalControlsSectionType` (Внешний вид ADDITIONAL_CONTROLS):
+* Возможные значения: "none" | "collapsible" | "collapsible open"
+* По умолчанию: «разборный».
+* ʻAdditionalControlsCaption` (подпись для ADDITIONAL_CONTROLS):
+* По умолчанию: «Дополнительные элементы управления».
+* ʻAdditionalInfoSectionType` (Внешний вид ADDITIONAL_INFO):
+* Возможные значения: "none" | "collapsible" | "collapsible open"
+* По умолчанию: «разборный».
+* ʻAdditionalInfoCaption` (подпись для ADDITIONAL_INFO):
+* По умолчанию: «Дополнительная информация»
+* БАТАРЕЯ Пустой значок:
+* `` batteryActiveCondition '' (Условие):
+* Возможные значения: "" | "at" | "af" | "eqt" | "eqf" | "eq" | "ne" | "gt" | "ge" | "lt" | "le"
+* По умолчанию: ""
+* `` batteryActiveConditionValue`` (значение условия):
+* По умолчанию: ""
+* Поведение плитки (общее):
+* `` clickOnIconOpensDialog`` (щелчок по значку открывает диалоговое окно (вместо переключения)):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` noZoomOnHover`` (Отключить эффект масштабирования при наведении):
+* Возможные значения: «true» | «false»
+* По умолчанию: "true"
+* `hideDeviceName` (Скрыть имя устройства):
+* Возможные значения: «true» | «false»
+* По умолчанию: "true"
+* Tile-Behavior, если устройство неактивно:
+* `` sizeInactive`` (Размер плитки, если устройство неактивно):
+* Возможные значения: "" | "thinIfInactive shortIfInactive" | "thinIfInactive" | "thinIfInactive highIfInactive" | "thinIfInactive xhighIfInactive" | "shortIfInactive" | "shortIfInactive wideIfInactive" | "shortIfInactive xwideIfInactive" | "wideIfInactive" xwideIfInactive "|" wideIfInactive " "|" xhighIfInactive "|" wideIfInactive highIfInactive "|" xwideIfInactive highIfInactive "|" wideIfInactive xhighIfInactive "|" xwideIfInactive xhighIfInactive "|" fullWidthIfInactive аспект-1-1IfidthInactive "|" fullWidthIfIfIfInactive "|" fullWidthIfIfInactive 2IfInactive "|" fullWidthIfInactive аспект-16-9IfInactive "|" fullWidthIfInactive аспект-21-9IfInactive "|" fullWidthIfInactive fullHeightIfInactive "|"
+* По умолчанию: «xwideIfInactive highIfInactive»
+* bigIconInactive (показывать большой значок, если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* ʻIconNoPointerEventsInactive` (игнорировать события мыши для значка, если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` noOverlayInactive`` (убрать наложение плитки, если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: "true"
+* `hideBackgroundURLInactive` (Скрыть фон из BACKGROUND_URL / HTML, если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `hideDeviceNameIfInactive` (Скрыть имя устройства, если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `hideStateIfInactive` (Скрыть состояние, если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: "true" * ``
+* `hideDeviceIfInactive` (Скрыть устройство, если оно неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: "false" * ``
+* Tile-Behavior, если устройство активно:
+* `` sizeActive`` (Размер плитки, если устройство активно):
+* Возможные значения: «» | «thinIfActive shortIfActive» | «thinIfActive» | «thinIfActive highIfActive» | «УзкийIfActive xhighIfActive» | «shortIfActive» | «shortIfActive wideIfActive» | «shortIfActive xwideIfActive» | «wideIfActive» xwideIfActive | «wideIfActive» | "|" xhighIfActive "|" wideIfActive highIfActive "|" xwideIfActive highIfActive "|" wideIfActive xhighIfActive "|" xwideIfActive xhighIfActive "|" fullWidthIfActive аспект-1-1IfActive "|" fullWidth- 4IfActive "|" fullWidth- 4IfActive " 2IfActive "|" fullWidthIfActive аспект-16-9IfActive "|" fullWidthIfActive аспект-21-9IfActive "|" fullWidthIfActive fullHeightIfActive "|"
+* bigIconActive (показывать большой значок, если устройство активно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* ʻIconNoPointerEventsActive` (игнорировать события мыши для значка, если устройство активно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* noOverlayActive (убрать наложение плитки, если устройство активно):
+* Возможные значения: «true» | «false»
+* По умолчанию: "true"
+* `hideBackgroundURLActive` (Скрыть фон из BACKGROUND_URL / HTML, если устройство активно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `hideDeviceNameIfActive` (Скрыть имя устройства, если устройство активно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `hideStateIfActive` (Скрыть состояние, если устройство активно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `hideDeviceIfActive` (Скрыть устройство, если оно активно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* Поведение плитки при увеличении устройства:
+* `` sizeEnlarged`` (размер плитки, если устройство увеличено):
+* Возможные значения: "" | "узкийIfEnlarged shortIfEnlarged" | "узкийIfEnlarged" | "узкийIfEnlarged highIfEnlarged" | "slimIfEnlarged xhighIfEnlarged" | "shortIfEnlarged" | "shortIfEnlarged расширенный "IfEnlarged" xlarged wide "IfEnlarged " "|" xhighIfEnlarged "|" wideIfEnlarged highIfEnlarged "|" xwideIfEnlarged highIfEnlarged "|" wideIfEnlarged xhighIfEnlarged "|" xwideIfEnlarged xhighIfEnlarged "|" xwideIfEnlarged xhighIfEnlarged "|" fullWiredIfEnlarged "| 2IfEnlarged "|" fullWidthIfEnlarged аспект-16-9IfEnlarged "|" fullWidthIfEnlarged аспект-21-9IfEnlarged "|" fullWidthIfEnlarged fullHeightIfEnlarged "|"
+* `` bigIconEnlarged`` (показывать большой значок, если устройство увеличено):
+* Возможные значения: «true» | «false»
+* По умолчанию: "true"
+* ʻIconNoPointerEventsEnlarged` (игнорировать события мыши для значка, если устройство увеличено):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` noOverlayEnlarged`` (убрать наложение плитки, если устройство увеличено):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` tileEnlargeStartEnlarged`` (плитка увеличивается при запуске):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` tileEnlargeShowButtonInactive` (Показать кнопку увеличения, если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: "true"
+* `` tileEnlargeShowButtonActive`` (Показать кнопку увеличения, если устройство активно):
+* Возможные значения: «true» | «false»
+* По умолчанию: "true"
+* `` tileEnlargeShowInPressureMenuInactive`` (Показать увеличение в меню, если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: "true"
+* `` tileEnlargeShowInPressureMenuActive`` (Показать увеличение в меню, если устройство активно)
+* Возможные значения: «true» | «false»
+* По умолчанию: "true"
+* `` visibilityBackgroundURLEnlarged`` (Видимость фона из BACKGROUND_URL / HTML, если устройство увеличено):
+* Возможные значения: "" | "visibleIfEnlarged" | "hideIfEnlarged"
+* По умолчанию: ""
+* `hideDeviceNameIfEnlarged` (Скрыть имя устройства, если устройство увеличено):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* hideStateIfEnlarged (Скрыть состояние, если устройство увеличено):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* hideIconEnlarged (скрыть значок, если устройство увеличено):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* Условия для активной плитки:
+* `` tileActiveStateId` (идентификатор состояния (будет использоваться пустой = СОСТОЯНИЕ / УРОВЕНЬ)):
+* По умолчанию: ""
+* tileActiveCondition (Условие):
+* Возможные значения: "" | "at" | "af" | "eqt" | "eqf" | "eq" | "ne" | "gt" | "ge" | "lt" | "le"
+* По умолчанию: ""
+* tileActiveConditionValue (значение условия):
+* По умолчанию: ""
+* Отметка времени:
+* ʻAddTimestampToState` (добавить метку времени в состояние):
+* Возможные значения: "" | "SA" | "ST" | "STA" | "SE" | "SEA" | "SE." | "SE.A" | "Se" | "SeA" | "STE" | "СТЭ" | "СТЭ." | "СТЕ.А" | "СТЕ" | "СТЕА" | "Т" | "ТА" | "ТЕ" | "ЧАЙ" | "ТЕ." | "ТЕ.А" | «Te» | «TeA» | «E» | «EA» | «E.» | «EA» | «e» | «eA» | «N»
+* По умолчанию: «N»
+* showTimestamp (Показать отметку времени в диалоге):
+* Возможные значения: "" | "да" | "нет" | "всегда" | "никогда"
+* По умолчанию: ""
+* URL / HTML:
+* `popupWidth` (Ширина [пикселей] для URL / HTML-блока):
+* По умолчанию: ""
+* `popupHeight` (Высота [пикс] для URL / HTML-блока):
+* По умолчанию: ""
+* `` popupFixed`` (исправлено (размер нельзя изменить)):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* ʻOpenURLExternal` (Открыть URL-адрес в новом окне (вместо отображения окна в диалоговом окне)):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` popupAllowPostMessage`` (Разрешить сообщение postMessage для URL / HTML):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` backgroundURLAllowPostMessage`` (Разрешить postMessage-Communication для BACKGROUND_URL / HTML):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` backgroundURLNoPointerEvents`` (прямые события мыши на плитку, а не на содержимое BACKGROUND_URL / HTML):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+
+</details>
+
+<details><summary>Покажите пример сайта-виджета, который создает карту с указанными выше настройками:</summary>
+
+* Вы можете загрузить следующий HTML-код в виде html-файла в подкаталог / userwidgets и указать его на BACKGROUND_URL-State (который затем необходимо настроить как «Константа»)
+* При добавлении виджета отображается описание
+* Затем вас спросят, хотите ли вы применить содержащиеся параметры
+* Для управления положением карты создаются три точки данных: iqontrol.x.Widgets.Map.Posision.latitude, .altitude и .zoom.
+
+````html
+<!doctype html>
+<html style="width: 100%; height: 100%; margin: 0px;">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="widget-description" content="This is a map widget, please provide coordinates at iqontrol.x.Widgets.Map.Posision. (C) by Sebastian Bormann"/>
+	<meta name="widget-options" content="{'noZoomOnHover': 'true', 'hideDeviceName': 'true', 'sizeInactive': 'xwideIfInactive highIfInactive', 'iconNoPointerEventsInactive': 'true', 'hideDeviceNameIfInactive': 'true', 'hideStateIfInactive': 'true', 'sizeActive': 'fullWidthIfActive fullHeightIfActive', 'bigIconActive': 'true', 'iconNoPointerEventsActive': 'true', 'hideDeviceNameIfActive': 'true', 'hideStateIfActive': 'true', 'sizeEnlarged': 'fullWidthIfEnlarged fullHeightIfEnlarged', 'bigIconEnlarged': 'true', 'iconNoPointerEventsEnlarged': 'false', 'noOverlayEnlarged': 'true', 'hideDeviceNameIfEnlarged': 'true', 'hideStateIfEnlarged': 'true', 'popupAllowPostMessage': 'true', 'backgroundURLAllowPostMessage': 'true', 'backgroundURLNoPointerEvents': 'false'}"/>
+	<meta name="widget-datapoint" content="Map.Position.latitude" data-type="number" data-role="value.gps.latitude" />
+	<meta name="widget-datapoint" content="Map.Position.longitude" data-type="number" data-role="value.gps.longitude" />
+	<meta name="widget-datapoint" content="Map.Position.zoom" data-type="number" data-role="value.zoom" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<title>iQontrol Map Widget</title>
+</head>
+<body style="width: 100%; height: 100%; margin: 0px;">
+	<div id="mapid" style="width: 100%; height: 100%; margin: 0px;"></div>
+	<script type="text/javascript">
+		//Declarations
+		var mapPositionLatitude = 0;
+		var mapPositionLongitude = 0;
+		var mapPositionZoom = 10;
+		var mymap = false;
+
+		//Subscribe to WidgetDatapoints now
+		sendPostMessage("getWidgetStateSubscribed", "Map.Position.latitude");
+		sendPostMessage("getWidgetStateSubscribed", "Map.Position.longitude");
+		sendPostMessage("getWidgetStateSubscribed", "Map.Position.zoom");
+
+		//Initialize map (with timeout to give script the time go get the initial position values)
+		setTimeout(function(){
+			console.log("Init map: " + mapPositionLatitude + "|" + mapPositionLongitude + "|" + mapPositionZoom);
+			mymap = L.map('mapid').setView([mapPositionLatitude, mapPositionLongitude], mapPositionZoom);
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				'attribution':  'Kartendaten &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> Mitwirkende',
+				'useCache': true
+			}).addTo(mymap);
+		}, 250);
+
+		//Reposition map
+		function repositionMap(){
+			console.log("Reposition map: " + mapPositionLatitude + "|" + mapPositionLongitude + "|" + mapPositionZoom);
+			if(mymap) mymap.setView([mapPositionLatitude, mapPositionLongitude], mapPositionZoom); else console.log("   Abort, map not initialized yet");
+		}
+
+		//send postMessages
+		function sendPostMessage(command, stateId, value){
+			message = { command: command, stateId: stateId, value: value };
+			window.parent.postMessage(message, "*");
+		}
+
+		//receive postMessages
+		window.addEventListener("message", receivePostMessage, false);
+		function receivePostMessage(event){ //event = {data: message data, origin: url of origin, source: id of sending element}
+			if(event.data && event.data.command) switch(event.data.command){
+				case "getState":
+				if(event.data.stateId && event.data.value) switch(event.data.stateId){
+					case "Map.Position.latitude":
+					console.log("Set latitude to " + event.data.value.val);
+					mapPositionLatitude = parseFloat(event.data.value.val) || 0;
+					if(mymap) repositionMap();
+					break;
+
+					case "Map.Position.longitude":
+					console.log("Set longitude to " + event.data.value.val);
+					mapPositionLongitude = parseFloat(event.data.value.val) || 0;
+					if(mymap) repositionMap();
+					break;
+
+					case "Map.Position.zoom":
+					console.log("Set zoom to " + event.data.value.val);
+					mapPositionZoom = parseFloat(event.data.value.val) || 0;
+					if(mymap) repositionMap();
+					break;
 				}
 				break;
 			}
@@ -587,6 +877,10 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ## Changelog
 
 ### dev
+* (sbormann) Fixed applying of widget-options for newly devices that havn't been saved before.
+* (sbormann) Enhanced postMessage-Communication to deliver the complete stateObject if a state is requested.
+
+### 1.3.2 (2020-10-12)
 * (sbormann) Added icons to REMOTE_ADDITIONAL_BUTTONS of remote control.
 * (sbormann) Added REMOTE_CHANNELS to display channel buttons inside remote control.
 * (sbormann) Enhanced positioning of dialog if URL/HTML is set.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: YWH+yCTsCRhLwqXaBGqzNxaKMuAJ35eONHps+0LkY3Y=
+hash: otFFaZnPFB5qEWeAOJdCPtN42uFe9c81mVYO7Km0QnQ=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -38,6 +38,17 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 [![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.4.2
+- Исправлена ошибка
+
+## 2.4.1
+- Исправлена ошибка
+
+## 2.4.0
+- Randstil zur JSON-Tabelle hinzugefügt
+- Farbauswahö für Icons zu allen Widgets hinzugefügt
+- Fehlerbehebung
 
 ## 2.3.2
 - Fehler bei der Navigation mit dem Widget 'View in Widget' behoben
@@ -75,7 +86,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Виджет-Untertitel behoben
 
 ## 2.0.0
-- Переключатель, кнопка, навигация и фоновый виджет (sowie die kleinen Ausführungen) zu einem einzigen Widget zussammengeführt -> dem Universal Widget
+- Переключатель, кнопка, виджет навигации и фона (sowie die kleinen Ausführungen) zu einem einzigen Widget zussammengeführt -> dem Universal Widget
 - Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte geprüft werden kann (Ähnlich der Signalbild Funktion)
 - Виджет изображения kann nun auf Datenpunkt prüfen
 - Радиокнопки hinzugefügt

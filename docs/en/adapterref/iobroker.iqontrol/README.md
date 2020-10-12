@@ -179,20 +179,37 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 * To send commands to iQontrol you can use the following javascript-command: ``window.parent.postMessage(message, "*");`` 
     * ``message`` is a javascript object of the format ``{ command: command, stateId: stateId, value: value }``
     * The following message-commands are supported:
-        * ``{ command: "setState", stateId: <stateId>, value: <value> }`` - this will set the ioBroker state ``<stateId>`` to the value ``<value>`` (``<value>`` can be a string, number or boolean or an object like ``{ val: <value>, ack: true|false }``)
         * ``{ command: "setWidgetState", stateId: <widgetStateId>, value: <value> }`` - this will set the ioBroker state ``iqontrol.<instance>.Widgets.<widgetStateId>`` to the value ``<value>`` (``<value>`` can be a string, number or boolean or an object like ``{ val: <value>, ack: true|false }``)
-        * ``{ command: "getState", stateId: <stateId> }`` - this will cause iQontrol to send the value of the ioBroker state ``<stateId>`` (see below how to receive the answer-message)
         * ``{ command: "getWidgetState", stateId: <widgetStateId> }`` - this will cause iQontrol to send the value of the ioBroker state ``iqontrol.<instance>.Widgets.<widgetStateId>`` (see below how to receive the answer-message)
-        * ``{ command: "getStateSubscribed", stateId: <stateId> }`` - this will cause iQontrol to send the value of the ioBroker state ``<stateId>`` now and every time its value changes (see below how to receive the answer-messages)
         * ``{ command: "getWidgetStateSubscribed", stateId: <widgetStateId> }`` - this will cause iQontrol to send the value of the ioBroker state ``iqontrol.<instance>.Widgets.<widgetStateId>`` now and every time its value changes (see below how to receive the answer-messages)
+        * ``{ command: "setState", stateId: <stateId>, value: <value> }`` - this will set the ioBroker state ``<stateId>`` to the value ``<value>`` (``<value>`` can be a string, number or boolean or an object like ``{ val: <value>, ack: true|false }``)
+        * ``{ command: "getState", stateId: <stateId> }`` - this will cause iQontrol to send the value of the ioBroker state ``<stateId>`` (see below how to receive the answer-message)
+        * ``{ command: "getStateSubscribed", stateId: <stateId> }`` - this will cause iQontrol to send the value of the ioBroker state ``<stateId>`` now and every time its value changes (see below how to receive the answer-messages)
         * ``{ command: "renderView", value: <viewID> }`` - this will instruct iQontrol to render a view, where ``<viewID>`` needs to be formatted like ``iqontrol.<instance-number>.Views.<view-name>`` (case-sensitive)
         * ``{ command: "openDialog", value: <deviceID> }`` - this will instruct iQontrol to open a dialog, where ``<deviceID>`` needs to be formatted like ``iqontrol.<instance-number>.Views.<view-name>.devices.<device-number>`` where ``<device-number>`` starts from 0 (so the first device on a view is device number 0)
 * To receive messages from iQontrol, you need to register an event-listener to the "message"-event with the javascript-command ``window.addEventListener("message", receivePostMessage, false);``
     * The function ``receivePostMessage`` receives the object ``event``
 	* ``event.data`` contains the message from iqontrol, which will be an object like:
-	    * ``{ command: "getState", stateId: <stateId>, value: <value> }`` - this will be the answer to a getState-command or a getStateSubsribed-command and gives you the actual ``<value>``-object of the ioBroker state``<stateId>``
-* To instruct iQontrol to generate a widgetState under ``iqontrol.<instance>.Widgets`` you can use a meta-tag inside the head-section of the widget-website. Use the following syntax:
-    * ``<meta name="widget-datapoint" content="WidgetName.StateName" data-type="string" data-role="text" />``
+	    * event.data = ``{ command: "getState", stateId: <stateId>, value: <stateObject> }`` - this will be the answer to a getState-command or a getStateSubsribed-command and gives you the actual ``<value>``-object of the ioBroker state``<stateId>``
+		* ``<stateObject>`` itself is an object like 
+			````javascript
+			event.data.value = {
+				val: <value>,
+				unit: "<unit>",
+				plainText: "<clear text of val, for example taken from valuelist>",
+				ack: <true|false>,
+				readonly: <true|false>,
+				custom: {<object with custom settings>},
+				from: "<source of state>",
+				lc: <timestamp of last change>,
+				ts: <timestamp of last actualization>,
+				q: <quality of signal>,
+				role: "<role of state>",
+				type: "<string|number|boolean>"
+			}
+			````
+* To instruct iQontrol to generate a widgetState under ``iqontrol.<instance>.Widgets`` you can use a meta-tag inside the head-section of the widget-website:
+    * Syntax: ``<meta name="widget-datapoint" content="WidgetName.StateName" data-type="string" data-role="text" />``
 	* You can further configure the datapoint by using data-type (which can be set to string, number or boolean), data-role, data-name, data-min, data-max, data-def and data-unit attributes
     * The corresponding datapoint is only then created, if the widget-website is added to a device as URL or BACKGROUND_URL	
 * The same concept may be used for the URL/HTML-State, which is used to display a website inside the dialog of a device
@@ -202,6 +219,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 <summary>Show example widget-website to be displayed as widget with postMessage-communication:</summary>
 
 * You can use the following HTML code and copy it to the BACKGROUND_HTML-State of a widget (which then needs to be configured as "Constant") 
+* As an alternative you can upload this code as html-file into the /userwidgets subdirectory and reference it to BACKGROUND_URL-State (which then also needs to be configured as "Constant")
 * Acitvate the option "Allow postMessage-Communication for BACKGROUND_URL/HTML"
 * It will demonstrate how a two-way communication between the website and iQontrol is done
 ````html
@@ -305,6 +323,274 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 ````
 </details>
 
+### Further configuration of widgets
+* There are additional meta-tags, you can use inside the head-section of your widget-website to configure the behavior of the widget:
+	* 'widget-description'
+		* syntax: ``<meta name="widget-description" content="Please see www.mywebsite.com for further informations. (C) by me"/>``
+		* This will be displayed when chosing the widget as URL or BACKGROUND_URL
+	* 'widget-options'
+		* syntax: ``<meta name="widget-options" content="{'noZoomOnHover': 'true', 'hideDeviceName': 'true'}"/>``
+		* See the expandable section below for the possible options that can be configured by this meta-tag
+
+<details>
+<summary>Show possible options that can be configured by the meta-tag 'widget-options':</summary>
+
+* Icons:
+	* ``icon_on`` (Icon on):
+		* Default: ""
+	* ``icon_off`` (Icon off):
+		* Default: ""
+* Device Specific Options:
+	* ``noVirtualState`` (Do not use a virtual datapoint for STATE (hide switch, if STATE is empty)):
+		* Possible values: "true"|"false"
+		* Default: "false" 
+* General:
+	* ``readonly`` (Readonly):
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``invertUnreach`` (Invert UNREACH (use connected instead of unreach)):
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``additionalControlsSectionType`` (Appereance of ADDITIONAL_CONTROLS):
+		* Possible values: "none"|"collapsible"|"collapsible open"
+		* Default: "collapsible"
+	* ``additionalControlsCaption`` (Caption for ADDITIONAL_CONTROLS):
+		* Default: "Additional Controls"
+	* ``additionalInfoSectionType`` (Appereance of ADDITIONAL_INFO):
+		* Possible values: "none"|"collapsible"|"collapsible open"
+		* Default: "collapsible"
+	* ``additionalInfoCaption`` (Caption for ADDITIONAL_INFO):
+		* Default: "Additional Infos"
+* BATTERY Empty Icon:
+	* ``batteryActiveCondition`` (Condition):
+		* Possible values: ""|"at"|"af"|"eqt"|"eqf"|"eq"|"ne"|"gt"|"ge"|"lt"|"le"
+		* Default: ""
+	* ``batteryActiveConditionValue`` (Condition value):
+		* Default: ""
+* Tile-Behaviour (general):
+	* ``clickOnIconOpensDialog`` (Click on icon opens dialog (instead of toggling)):
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``noZoomOnHover`` (Disable zoom-effect on hover):
+		* Possible values: "true"|"false"
+		* Default: "true"
+	* ``hideDeviceName`` (Hide device name):
+		* Possible values: "true"|"false"
+		* Default: "true"
+* Tile-Behaviour if device is inactive:
+	* ``sizeInactive`` (Size of tile, if device is inactive):
+		* Possible values: ""|"narrowIfInactive shortIfInactive"|"narrowIfInactive"|"narrowIfInactive highIfInactive"|"narrowIfInactive xhighIfInactive"|"shortIfInactive"|"shortIfInactive wideIfInactive"|"shortIfInactive xwideIfInactive"|"wideIfInactive"|"xwideIfInactive"|"highIfInactive"|"xhighIfInactive"|"wideIfInactive highIfInactive"|"xwideIfInactive highIfInactive"|"wideIfInactive xhighIfInactive"|"xwideIfInactive xhighIfInactive"|"fullWidthIfInactive aspect-1-1IfInactive"|"fullWidthIfInactive aspect-4-3IfInactive"|"fullWidthIfInactive aspect-3-2IfInactive"|"fullWidthIfInactive aspect-16-9IfInactive"|"fullWidthIfInactive aspect-21-9IfInactive"|"fullWidthIfInactive fullHeightIfInactive"|"
+		* Default: "xwideIfInactive highIfInactive"
+	* ``bigIconInactive`` (Show big icon, if device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``iconNoPointerEventsInactive`` (Ignore mouse events for the icon, if device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``noOverlayInactive`` (Remove overlay of tile, if device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "true" 
+	* ``hideBackgroundURLInactive`` (Hide background from BACKGROUND_URL/HTML, if device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``hideDeviceNameIfInactive`` (Hide device name, if the device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``hideStateIfInactive`` (Hide state, if the device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "true"	* ``
+	* ``hideDeviceIfInactive`` (Hide device, if it is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"	* ``
+* Tile-Behaviour if device is active:
+	* ``sizeActive`` (Size of tile, if device is active):
+		* Possible values: ""|"narrowIfActive shortIfActive"|"narrowIfActive"|"narrowIfActive highIfActive"|"narrowIfActive xhighIfActive"|"shortIfActive"|"shortIfActive wideIfActive"|"shortIfActive xwideIfActive"|"wideIfActive"|"xwideIfActive"|"highIfActive"|"xhighIfActive"|"wideIfActive highIfActive"|"xwideIfActive highIfActive"|"wideIfActive xhighIfActive"|"xwideIfActive xhighIfActive"|"fullWidthIfActive aspect-1-1IfActive"|"fullWidthIfActive aspect-4-3IfActive"|"fullWidthIfActive aspect-3-2IfActive"|"fullWidthIfActive aspect-16-9IfActive"|"fullWidthIfActive aspect-21-9IfActive"|"fullWidthIfActive fullHeightIfActive"|"
+	* ``bigIconActive`` (Show big icon, if device is active):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``iconNoPointerEventsActive`` (Ignore mouse events for the icon, if device is active):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``noOverlayActive`` (Remove overlay of tile, if device is active):
+		* Possible values: "true"|"false"
+		* Default: "true"
+	* ``hideBackgroundURLActive`` (Hide background from BACKGROUND_URL/HTML, if device is active):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``hideDeviceNameIfActive`` (Hide device name, if the device is active):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``hideStateIfActive`` (Hide state, if the device is active):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``hideDeviceIfActive`` (Hide device, if it is active):
+		* Possible values: "true"|"false"
+		* Default: "false"
+* Tile-Behaviour if device is enlarged:
+	* ``sizeEnlarged`` (Size of tile, if device is enlarged):
+		* Possible values: ""|"narrowIfEnlarged shortIfEnlarged"|"narrowIfEnlarged"|"narrowIfEnlarged highIfEnlarged"|"narrowIfEnlarged xhighIfEnlarged"|"shortIfEnlarged"|"shortIfEnlarged wideIfEnlarged"|"shortIfEnlarged xwideIfEnlarged"|"wideIfEnlarged"|"xwideIfEnlarged"|"highIfEnlarged"|"xhighIfEnlarged"|"wideIfEnlarged highIfEnlarged"|"xwideIfEnlarged highIfEnlarged"|"wideIfEnlarged xhighIfEnlarged"|"xwideIfEnlarged xhighIfEnlarged"|"fullWidthIfEnlarged aspect-1-1IfEnlarged"|"fullWidthIfEnlarged aspect-4-3IfEnlarged"|"fullWidthIfEnlarged aspect-3-2IfEnlarged"|"fullWidthIfEnlarged aspect-16-9IfEnlarged"|"fullWidthIfEnlarged aspect-21-9IfEnlarged"|"fullWidthIfEnlarged fullHeightIfEnlarged"|"
+	* ``bigIconEnlarged`` (Show big icon, if device is enlarged):
+		* Possible values: "true"|"false"
+		* Default: "true"
+	* ``iconNoPointerEventsEnlarged`` (Ignore mouse events for the icon, if device is enlarged):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``noOverlayEnlarged`` (Remove overlay of tile, if device is enlarged):
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``tileEnlargeStartEnlarged`` (Tile is enlarged on start):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``tileEnlargeShowButtonInactive`` (Show Enlarge-Button, if device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "true" 
+	* ``tileEnlargeShowButtonActive`` (Show Enlarge-Button, if device is active):
+		* Possible values: "true"|"false"
+		* Default: "true" 
+	* ``tileEnlargeShowInPressureMenuInactive`` (Show Enlarge in Menu, if device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "true" 
+	* ``tileEnlargeShowInPressureMenuActive`` (Show Enlarge in Menu, if device is active)
+		* Possible values: "true"|"false"
+		* Default: "true" 
+	* ``visibilityBackgroundURLEnlarged`` (Visibility of background from BACKGROUND_URL/HTML, if device is enlarged):
+		* Possible values: ""|"visibleIfEnlarged"|"hideIfEnlarged"
+		* Default: ""
+	* ``hideDeviceNameIfEnlarged`` (Hide device name, if the device is enlarged):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``hideStateIfEnlarged`` (Hide state, if the device is enlarged):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``hideIconEnlarged`` (Hide icon, if device is enlarged):
+		* Possible values: "true"|"false"
+		* Default: "false"
+* Conditions for an Active Tile:
+	* ``tileActiveStateId`` (State ID (empty = STATE/LEVEL will be used)):
+		* Default: ""
+	* ``tileActiveCondition`` (Condition):
+		* Possible values: ""|"at"|"af"|"eqt"|"eqf"|"eq"|"ne"|"gt"|"ge"|"lt"|"le"
+		* Default: ""
+	* ``tileActiveConditionValue`` (Condition value):
+		* Default: ""
+* Timestamp:
+	* ``addTimestampToState`` (Add timestamp to state):
+		* Possible values: ""|"SA"|"ST"|"STA"|"SE"|"SEA"|"SE."|"SE.A"|"Se"|"SeA"|"STE"|"STEA"|"STE."|"STE.A"|"STe"|"STeA"|"T"|"TA"|"TE"|"TEA"|"TE."|"TE.A"|"Te"|"TeA"|"E"|"EA"|"E."|"E.A"|"e"|"eA"|"N"
+		* Default: "N"
+	* ``showTimestamp`` (Show Timestamp in dialog):
+		* Possible values: ""|"yes"|"no"|"always"|"never"
+		* Default: ""
+* URL/HTML:
+	* ``popupWidth`` (Width [px] for URL/HTML-Box):
+		* Default: "" 
+	* ``popupHeight`` (Height [px] for URL/HTML-Box):
+		* Default: ""
+	* ``popupFixed`` (Fixed (not resizable)):
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``openURLExternal`` (Open URL in new window (instead of showing as box in dialog)):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``popupAllowPostMessage`` (Allow postMessage-Communication for URL/HTML):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``backgroundURLAllowPostMessage`` (Allow postMessage-Communication for BACKGROUND_URL/HTML):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``backgroundURLNoPointerEvents`` (Direct mouse events to the tile instead to the content of BACKGROUND_URL/HTML):
+		* Possible values: "true"|"false"
+		* Default: "false"
+</details>
+
+<details>
+<summary>Show example widget-website that creates a map with the above settings:</summary>
+
+* You can upload the following HTML code as html-file into the /userwidgets subdirectory and reference it to BACKGROUND_URL-State (which then needs to be configured as "Constant")
+* When adding the widget a description is displayed
+* Then you are asked, if you would like to apply the contained options
+* Three datapoints are created to control the position of the map: iqontrol.x.Widgets.Map.Posision.latitude, .altitude and .zoom
+````html
+<!doctype html>
+<html style="width: 100%; height: 100%; margin: 0px;">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="widget-description" content="This is a map widget, please provide coordinates at iqontrol.x.Widgets.Map.Posision. (C) by Sebastian Bormann"/> 
+	<meta name="widget-options" content="{'noZoomOnHover': 'true', 'hideDeviceName': 'true', 'sizeInactive': 'xwideIfInactive highIfInactive', 'iconNoPointerEventsInactive': 'true', 'hideDeviceNameIfInactive': 'true', 'hideStateIfInactive': 'true', 'sizeActive': 'fullWidthIfActive fullHeightIfActive', 'bigIconActive': 'true', 'iconNoPointerEventsActive': 'true', 'hideDeviceNameIfActive': 'true', 'hideStateIfActive': 'true', 'sizeEnlarged': 'fullWidthIfEnlarged fullHeightIfEnlarged', 'bigIconEnlarged': 'true', 'iconNoPointerEventsEnlarged': 'false', 'noOverlayEnlarged': 'true', 'hideDeviceNameIfEnlarged': 'true', 'hideStateIfEnlarged': 'true', 'popupAllowPostMessage': 'true', 'backgroundURLAllowPostMessage': 'true', 'backgroundURLNoPointerEvents': 'false'}"/>
+	<meta name="widget-datapoint" content="Map.Position.latitude" data-type="number" data-role="value.gps.latitude" />
+	<meta name="widget-datapoint" content="Map.Position.longitude" data-type="number" data-role="value.gps.longitude" />
+	<meta name="widget-datapoint" content="Map.Position.zoom" data-type="number" data-role="value.zoom" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<title>iQontrol Map Widget</title>
+</head>
+<body style="width: 100%; height: 100%; margin: 0px;">
+	<div id="mapid" style="width: 100%; height: 100%; margin: 0px;"></div>
+	<script type="text/javascript">
+		//Declarations
+		var mapPositionLatitude = 0;
+		var mapPositionLongitude = 0;
+		var mapPositionZoom = 10;
+		var mymap = false;
+
+		//Subscribe to WidgetDatapoints now
+		sendPostMessage("getWidgetStateSubscribed", "Map.Position.latitude");
+		sendPostMessage("getWidgetStateSubscribed", "Map.Position.longitude");
+		sendPostMessage("getWidgetStateSubscribed", "Map.Position.zoom");
+
+		//Initialize map (with timeout to give script the time go get the initial position values)
+		setTimeout(function(){
+			console.log("Init map: " + mapPositionLatitude + "|" + mapPositionLongitude + "|" + mapPositionZoom);
+			mymap = L.map('mapid').setView([mapPositionLatitude, mapPositionLongitude], mapPositionZoom);        
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				'attribution':  'Kartendaten &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> Mitwirkende',
+				'useCache': true
+			}).addTo(mymap);
+		}, 250);
+
+		//Reposition map
+		function repositionMap(){
+			console.log("Reposition map: " + mapPositionLatitude + "|" + mapPositionLongitude + "|" + mapPositionZoom);
+			if(mymap) mymap.setView([mapPositionLatitude, mapPositionLongitude], mapPositionZoom); else console.log("   Abort, map not initialized yet");
+		}
+
+		//send postMessages
+		function sendPostMessage(command, stateId, value){
+			message = { command: command, stateId: stateId, value: value };
+			window.parent.postMessage(message, "*");
+		}
+
+		//receive postMessages
+		window.addEventListener("message", receivePostMessage, false);
+		function receivePostMessage(event){ //event = {data: message data, origin: url of origin, source: id of sending element}
+			if(event.data && event.data.command) switch(event.data.command){
+				case "getState":
+				if(event.data.stateId && event.data.value) switch(event.data.stateId){
+					case "Map.Position.latitude":
+					console.log("Set latitude to " + event.data.value.val);
+					mapPositionLatitude = parseFloat(event.data.value.val) || 0;
+					if(mymap) repositionMap();
+					break;
+
+					case "Map.Position.longitude":
+					console.log("Set longitude to " + event.data.value.val);
+					mapPositionLongitude = parseFloat(event.data.value.val) || 0;
+					if(mymap) repositionMap();
+					break;
+
+					case "Map.Position.zoom":
+					console.log("Set zoom to " + event.data.value.val);
+					mapPositionZoom = parseFloat(event.data.value.val) || 0;
+					if(mymap) repositionMap();
+					break;
+				}
+				break;
+			}
+		}
+	</script>
+</body>
+</html>
+````
+</details>
 
 ## Description of roles and associated states
 Every device has a role, which defines the function of the device. Every role generates a set of states, which can be linked to a corresponding iobroker state.
@@ -580,6 +866,10 @@ This device has some special predefined size- and display-settings to show a web
 ## Changelog
 
 ### dev
+* (sbormann) Fixed applying of widget-options for newly devices that havn't been saved before.
+* (sbormann) Enhanced postMessage-Communication to deliver the complete stateObject if a state is requested.
+
+### 1.3.2 (2020-10-12)
 * (sbormann) Added icons to REMOTE_ADDITIONAL_BUTTONS of remote control.
 * (sbormann) Added REMOTE_CHANNELS to display channel buttons inside remote control.
 * (sbormann) Enhanced positioning of dialog if URL/HTML is set.

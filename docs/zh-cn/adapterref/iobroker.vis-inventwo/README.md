@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: YWH+yCTsCRhLwqXaBGqzNxaKMuAJ35eONHps+0LkY3Y=
+hash: otFFaZnPFB5qEWeAOJdCPtN42uFe9c81mVYO7Km0QnQ=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -23,7 +23,7 @@ hash: YWH+yCTsCRhLwqXaBGqzNxaKMuAJ35eONHps+0LkY3Y=
 ###### .. v 1.3.8
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Preview.png)
 
@@ -39,8 +39,19 @@ hash: YWH+yCTsCRhLwqXaBGqzNxaKMuAJ35eONHps+0LkY3Y=
 
 ---
 
+## 2.4.2
+-错误修正
+
+## 2.4.1
+-错误修正
+
+## 2.4.0
+-Randstil zur JSON-Tabellehinzugefügt
+-FarbauswahöfürIcons zu allen小部件hinzugefügt
+-Fehlerbehebung
+
 ## 2.3.2
--Fehler bei der der mit mit小部件“在小部件中查看” behoben
+-Fehler bei der der mit dem Widget'在部件中查看'behoben
 
 ## 2.3.1
 -JSON Tabelle behoben中的Fehler
@@ -54,7 +65,7 @@ hash: YWH+yCTsCRhLwqXaBGqzNxaKMuAJ35eONHps+0LkY3Y=
 -JSON Tabelle behoben中的Fehler
 
 ## 2.2.2
--Fehler im Multi Widget behoben：Bilder und Text wechseln nicht bei Typ Navigation
+-Fehler im Multi Widget behoben：文本和文字的类型导航
 
 ## 2.2.1
 -JSON中的Fehler Tabelle behoben，wen keingültigesJSON-Objekt vorhanden ist

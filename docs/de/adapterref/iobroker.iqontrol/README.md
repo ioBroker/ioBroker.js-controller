@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: TWHOYvZuFqFf9pUrbsgHnzicou/Gxc9qYfmHqZbm8uQ=
+hash: Ay2RQh7lfazCKbYvUZDwexffhHec/t/lvj6dsFDX46k=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -176,20 +176,39 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * Um Befehle an iQontrol zu senden, können Sie den folgenden Javascript-Befehl verwenden: `` window.parent.postMessage (message, "*"); ``
     * `` message`` ist ein Javascript-Objekt im Format `` {Befehl: Befehl, stateId: stateId, Wert: Wert} ``
     * Folgende Nachrichtenbefehle werden unterstützt:
-        * `` {Befehl: "setState", stateId: <stateId>, Wert: <value>} `` - Dies setzt den ioBroker-Status `` <stateId> `` auf den Wert `` <value> `` (` `<Wert>` `kann eine Zeichenfolge, eine Zahl oder ein Boolescher Wert oder ein Objekt wie` `{val: <Wert>, ack: true | false}` `) sein
         * `` {Befehl: "setWidgetState", stateId: <widgetStateId>, Wert: <value>} `` - dies setzt den ioBroker-Status `` iqontrol. <Instanz> .Widgets. <widgetStateId> `` auf den Wert ` `<Wert>` `(` `<Wert>` `kann eine Zeichenfolge, eine Zahl oder ein Boolescher Wert oder ein Objekt wie` `{val: <Wert>, ack: true | false}` `sein)
-        * `` {Befehl: "getState", stateId: <stateId>} `` - Dies bewirkt, dass iQontrol den Wert des ioBroker-Status `` <stateId> `` sendet (siehe unten, wie die Antwortnachricht empfangen wird).
         * `` {Befehl: "getWidgetState", stateId: <widgetStateId>} `` - dies veranlasst iQontrol, den Wert des ioBroker-Status `` iqontrol. <Instanz> .Widgets. <widgetStateId> `` zu senden (siehe unten, wie um die Antwortnachricht zu erhalten)
-        * `` {Befehl: "getStateSubscribed", stateId: <stateId>} `` - Dies veranlasst iQontrol, den Wert des ioBroker-Status `` <stateId> `` jetzt und jedes Mal zu senden, wenn sich sein Wert ändert (siehe unten, wie es geht Antwortnachrichten erhalten)
         * `` {Befehl: "getWidgetStateSubscribed", stateId: <widgetStateId>} `` - Dies veranlasst iQontrol, den Wert des ioBroker-Status `` iqontrol. <Instanz> .Widgets. <widgetStateId> `` jetzt und jedes Mal zu senden sein Wert ändert sich (siehe unten, wie man die Antwortnachrichten empfängt)
+        * `` {Befehl: "setState", stateId: <stateId>, Wert: <value>} `` - Dies setzt den ioBroker-Status `` <stateId> `` auf den Wert `` <value> `` (` `<Wert>` `kann eine Zeichenfolge, eine Zahl oder ein Boolescher Wert oder ein Objekt wie` `{val: <Wert>, ack: true | false}` `) sein
+        * `` {Befehl: "getState", stateId: <stateId>} `` - Dies bewirkt, dass iQontrol den Wert des ioBroker-Status `` <stateId> `` sendet (siehe unten, wie die Antwortnachricht empfangen wird).
+        * `` {Befehl: "getStateSubscribed", stateId: <stateId>} `` - Dies veranlasst iQontrol, den Wert des ioBroker-Status `` <stateId> `` jetzt und jedes Mal zu senden, wenn sich sein Wert ändert (siehe unten, wie es geht Antwortnachrichten erhalten)
         * `` {Befehl: "renderView", Wert: <viewID>} `` - Dies weist iQontrol an, eine Ansicht zu rendern, wobei `` <viewID> `` wie `` iqontrol. <Instanznummer> formatiert werden muss .Views. <Ansichtsname> `` (Groß- und Kleinschreibung beachten)
         * `` {Befehl: "openDialog", Wert: <deviceID>} `` - Dies weist iQontrol an, einen Dialog zu öffnen, in dem `` <deviceID> `` wie `` iqontrol. <Instanznummer> formatiert werden muss .Views. <Ansichtsname> .Geräte. <Gerätenummer> `` wobei `` <Gerätenummer> `` bei 0 beginnt (das erste Gerät in einer Ansicht ist also Gerätenummer 0)
 * Um Nachrichten von iQontrol zu empfangen, müssen Sie einen Ereignis-Listener für das Ereignis "message" mit dem Javascript-Befehl `` window.addEventListener ("message", receivePostMessage, false); `` registrieren
     * Die Funktion "receivePostMessage" empfängt das Objekt "event"
 * `` `Event.data`` enthält die Nachricht von iqontrol, die ein Objekt sein wird wie:
-* `` {Befehl: "getState", stateId: <stateId>, Wert: <Wert>} `` - Dies ist die Antwort auf einen getState-Befehl oder einen getStateSubsribed-Befehl und gibt Ihnen den tatsächlichen `` <Wert> `` -Objekt des ioBroker-Status`` <stateId> ``
-* Um iQontrol anzuweisen, einen WidgetState unter "iqontrol. <Instanz> .Widgets" zu generieren, können Sie ein Meta-Tag im Kopfbereich der Widget-Website verwenden. Verwenden Sie die folgende Syntax:
-* ``<meta name="widget-datapoint" content="WidgetName.StateName" data-type="string" data-role="text" /> ``
+* event.data = `` {Befehl: "getState", stateId: <stateId>, Wert: <stateObject>} `` - Dies ist die Antwort auf einen getState-Befehl oder einen getStateSubsribed-Befehl und gibt Ihnen den tatsächlichen ` `<Wert>` `-Objekt des ioBroker-Status`` <stateId>` `
+* `` <stateObject> `` selbst ist ein Objekt wie
+
+			````javascript
+			event.data.value = {
+				val: <value>,
+				unit: "<unit>",
+				plainText: "<clear text of val, for example taken from valuelist>",
+				ack: <true|false>,
+				readonly: <true|false>,
+				custom: {<object with custom settings>},
+				from: "<source of state>",
+				lc: <timestamp of last change>,
+				ts: <timestamp of last actualization>,
+				q: <quality of signal>,
+				role: "<role of state>",
+				type: "<string|number|boolean>"
+			}
+			````
+
+* Um iQontrol anzuweisen, einen WidgetState unter `` iqontrol. <Instanz> .Widgets`` zu generieren, können Sie ein Meta-Tag im Kopfbereich der Widget-Website verwenden:
+* Syntax: ``<meta name="widget-datapoint" content="WidgetName.StateName" data-type="string" data-role="text" /> ``
 * Sie können den Datenpunkt weiter konfigurieren, indem Sie die Attribute Datentyp (der auf Zeichenfolge, Zahl oder Boolescher Wert festgelegt werden kann), Datenrolle, Datenname, Datenmin, Datenmaximum, Datendef. Und Dateneinheit verwenden
     * Der entsprechende Datenpunkt wird erst dann erstellt, wenn die Widget-Website einem Gerät als URL oder BACKGROUND_URL hinzugefügt wird
 * Das gleiche Konzept kann für den URL / HTML-Status verwendet werden, mit dem eine Website im Dialogfeld eines Geräts angezeigt wird
@@ -198,6 +217,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 <details><summary>Beispiel-Widget-Website anzeigen, die als Widget mit postMessage-Kommunikation angezeigt werden soll:</summary>
 
 * Sie können den folgenden HTML-Code verwenden und ihn in den BACKGROUND_HTML-Status eines Widgets kopieren (das dann als "Konstante" konfiguriert werden muss).
+* Alternativ können Sie diesen Code als HTML-Datei in das Unterverzeichnis / userwidgets hochladen und auf BACKGROUND_URL-State verweisen (der dann auch als "Konstante" konfiguriert werden muss).
 * Aktivieren Sie die Option "PostMessage-Kommunikation für BACKGROUND_URL / HTML zulassen".
 * Es wird gezeigt, wie eine bidirektionale Kommunikation zwischen der Website und iQontrol erfolgt
 
@@ -292,6 +312,276 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 				case "getState":
 				if(event.data.stateId && event.data.value){
 					document.getElementById('thisMeans').innerHTML = "Got State " + event.data.stateId + ": " + JSON.stringify(event.data.value);
+				}
+				break;
+			}
+		}
+	</script>
+</body>
+</html>
+````
+
+</ Details>
+
+### Weitere Konfiguration von Widgets
+* Es gibt zusätzliche Meta-Tags, die Sie im Kopfbereich Ihrer Widget-Website verwenden können, um das Verhalten des Widgets zu konfigurieren:
+* 'Widget-Beschreibung'
+* Syntax: ``<meta name="widget-description" content="Please see www.mywebsite.com for further informations. (C) by me"/> ``
+* Dies wird angezeigt, wenn Sie das Widget als URL oder BACKGROUND_URL auswählen
+* 'Widget-Optionen'
+* Syntax: ``<meta name="widget-options" content="{'noZoomOnHover': 'true', 'hideDeviceName': 'true'}"/> ``
+* Im erweiterbaren Abschnitt unten finden Sie die möglichen Optionen, die von diesem Meta-Tag konfiguriert werden können
+
+<details><summary>Zeigen Sie mögliche Optionen an, die mit dem Meta-Tag &#39;Widget-Optionen&#39; konfiguriert werden können:</summary>
+
+* Symbole:
+* `ʻIcon_on`` (Symbol an):
+* Standard: ""
+* `ʻIcon_off`` (Symbol aus):
+* Standard: ""
+* Gerätespezifische Optionen:
+* `` noVirtualState`` (Verwenden Sie keinen virtuellen Datenpunkt für STATE (Schalter ausblenden, wenn STATE leer ist)):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* Allgemeines:
+* `` readonly`` (Readonly):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` `InvertUnreach`` (Invert UNREACH (benutze verbunden statt nicht zu erreichen)):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` AdditionsControlsSectionType`` (Aussehen von ADDITIONAL_CONTROLS):
+* Mögliche Werte: "keine" | "zusammenklappbar" | "zusammenklappbar offen"
+* Standard: "zusammenklappbar"
+* `` AdditionalControlsCaption`` (Beschriftung für ADDITIONAL_CONTROLS):
+* Standard: "Zusätzliche Steuerelemente"
+* `` AdditionsinfoSectionType`` (Aussehen von ADDITIONAL_INFO):
+* Mögliche Werte: "keine" | "zusammenklappbar" | "zusammenklappbar offen"
+* Standard: "zusammenklappbar"
+* `` AdditionalInfoCaption`` (Beschriftung für ADDITIONAL_INFO):
+* Standard: "Zusätzliche Informationen"
+* Leere BATTERIE-Symbol:
+* `` batterieAktivzustand`` (Zustand):
+* Mögliche Werte: "" | "bei" | "af" | "eqt" | "eqf" | "eq" | "ne" | "gt" | "ge" | "lt" | "le"
+* Standard: ""
+* `` batterieActiveConditionValue`` (Bedingungswert):
+* Standard: ""
+* Fliesenverhalten (allgemein):
+* `` clickOnIconOpensDialog`` (Klicken Sie auf das Symbol, um den Dialog zu öffnen (anstatt umzuschalten)):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` noZoomOnHover`` (Zoom-Effekt beim Hover deaktivieren):
+* Mögliche Werte: "true" | "false"
+* Standard: "true"
+* `` hideDeviceName`` (Gerätenamen ausblenden):
+* Mögliche Werte: "true" | "false"
+* Standard: "true"
+* Kachelverhalten bei inaktivem Gerät:
+* `` sizeInactive`` (Größe der Kachel, wenn das Gerät inaktiv ist):
+* Mögliche Werte: "" | "strictIfInactive shortIfInactive" | "strictIfInactive" | "strictIfInactive highIfInactive" | "strictIfInactive xhighIfInactive" | "shortIfInactive" | "shortIfInactive wideIfInactive" | "shortIfInactive xwideIfInactive" | " "|" xhighIfInactive "|" wideIfInactive highIfInactive "|" xwideIfInactive highIfInactive "|" wideIfInactive xhighIfInactive "|" xwideIfInactive xhighIfInactive "|" fullWidthIfInactive Aspekt-1-1IfInactive "|" fullWidth 2IfInactive "|" fullWidthIfInactive Aspekt-16-9IfInactive "|" fullWidthIfInactive Aspekt-21-9IfInactive "|" fullWidthIfInactive fullHeightIfInactive "|"
+* Standard: "xwideIfInactive highIfInactive"
+* `` bigIconInactive`` (Großes Symbol anzeigen, wenn Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `ʻIconNoPointerEventsInactive`` (Mausereignisse für das Symbol ignorieren, wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` noOverlayInactive`` (Überlagerung der Kachel entfernen, wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "true"
+* `` hideBackgroundURLInactive`` (Hintergrund vor BACKGROUND_URL / HTML ausblenden, wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` hideDeviceNameIfInactive`` (Gerätenamen ausblenden, wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` hideStateIfInactive`` (Status ausblenden, wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "true" * ``
+* `` hideDeviceIfInactive`` (Gerät ausblenden, wenn es inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false" * ``
+* Kachelverhalten bei aktivem Gerät:
+* `` sizeActive`` (Größe der Kachel, wenn das Gerät aktiv ist):
+* Mögliche Werte: "" | "engIfAktiv kurzIfAktiv" | "schmalIfAktiv" | "engIfAktiv hochIfAktiv" | "schmalIfAktiv xhighIfAktiv" | "kurzIfAktiv" | "kurzIfAktiv breitIfAktiv" | "kurzIfAktiv xweitIfAktiv" "|" xhighIfActive "|" wideIfActive highIfActive "|" xwideIfActive highIfActive "|" wideIfActive xhighIfActive "|" xwideIfActive xhighIfActive "|" fullWidthIfActive Aspekt-1-1IfActive "|" fullWid- 2IfActive "|" fullWidthIfActive-Aspekt-16-9IfActive "|" fullWidthIfActive-Aspekt-21-9IfActive "|" fullWidthIfActive fullHeightIfActive "|"
+* `` bigIconActive`` (Großes Symbol anzeigen, wenn Gerät aktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `ʻIconNoPointerEventsActive`` (Mausereignisse für das Symbol ignorieren, wenn das Gerät aktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` noOverlayActive`` (Überlagerung der Kachel entfernen, wenn das Gerät aktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "true"
+* `` hideBackgroundURLActive`` (Hintergrund vor BACKGROUND_URL / HTML ausblenden, wenn das Gerät aktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` hideDeviceNameIfActive`` (Gerätenamen ausblenden, wenn das Gerät aktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` hideStateIfActive`` (Status ausblenden, wenn das Gerät aktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` hideDeviceIfActive`` (Gerät ausblenden, falls es aktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* Fliesenverhalten bei vergrößertem Gerät:
+* `` sizeEnlarged`` (Größe der Kachel, wenn das Gerät vergrößert ist):
+* Mögliche Werte: "" | "schmal, wenn vergrößert" | "schmal, vergrößert, vergrößert" | "schmal, vergrößert, vergrößert" | "|" xhighIfEnlarged "|" wideIfEnlarged highIfEnlarged "|" xwideIfEnlarged highIfEnlarged "|" wideIfEnlarged xhighIfEnlarged "|" xwideIfEnlarged xhighIfEnlarged "|" fullWidthIfEnlarged aspekt 1-1IfEnlarged "|" fullWidthIfEnlarged aspekt 4-3IfEnlarged "|" fullWidthIfEnlarged Aspekt-3- 2Wenn vergrößert "|" fullWidthIfEnlarged Aspekt-16-9IfEnlarged "|" fullWidthIfEnlarged Aspekt-21-9IfEnlarged "|" fullWidthIfEnlarged fullHeightIfEnlarged "|"
+* `` bigIconEnlarged`` (Großes Symbol anzeigen, wenn das Gerät vergrößert ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "true"
+* `` `iconNoPointerEventsEnlarged`` (Mausereignisse für das Symbol ignorieren, wenn das Gerät vergrößert ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` noOverlayEnlarged`` (Überlagerung der Kachel entfernen, wenn das Gerät vergrößert ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` tileEnlargeStartEnlarged`` (Kachel wird beim Start vergrößert):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` tileEnlargeShowButtonInactive`` (Vergrößerungsschaltfläche anzeigen, wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "true"
+* `` tileEnlargeShowButtonActive`` (Vergrößerungsschaltfläche anzeigen, wenn Gerät aktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "true"
+* `` tileEnlargeShowInPressureMenuInactive`` (Vergrößern im Menü anzeigen, wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "true"
+* `` tileEnlargeShowInPressureMenuActive`` (Vergrößern im Menü anzeigen, wenn das Gerät aktiv ist)
+* Mögliche Werte: "true" | "false"
+* Standard: "true"
+* `` sichtbarkeitBackgroundURLEnlarged`` (Sichtbarkeit des Hintergrunds von BACKGROUND_URL / HTML, wenn das Gerät vergrößert ist):
+* Mögliche Werte: "" | "visibleIfEnlarged" | "hideIfEnlarged"
+* Standard: ""
+* `` hideDeviceNameIfEnlarged`` (Gerätenamen ausblenden, wenn das Gerät vergrößert ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` hideStateIfEnlarged`` (Status ausblenden, wenn das Gerät vergrößert ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` hideIconEnlarged`` (Symbol ausblenden, wenn das Gerät vergrößert ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* Bedingungen für eine aktive Kachel:
+* `` tileActiveStateId`` (Status-ID (leer = STATE / LEVEL wird verwendet)):
+* Standard: ""
+* `` tileActiveCondition`` (Bedingung):
+* Mögliche Werte: "" | "bei" | "af" | "eqt" | "eqf" | "eq" | "ne" | "gt" | "ge" | "lt" | "le"
+* Standard: ""
+* `` tileActiveConditionValue`` (Bedingungswert):
+* Standard: ""
+* Zeitstempel:
+* `` `AddTimestampToState`` (Zeitstempel zum Status hinzufügen):
+* Mögliche Werte: "" | "SA" | "ST" | "STA" | "SE" | "SEA" | "SE" | "SE.A" | "Se" | "SeA" | "STE" | "STEA" | "STE" | "STE.A" | "STe" | "STeA" | "T" | "TA" | "TE" | "TEA" | "TE." | "TE.A" | "Te" | "TeA" | "E" | "EA" | "E." | "EA" | "e" | "eA" | "N"
+* Standard: "N"
+* `` showTimestamp`` (Zeitstempel im Dialog anzeigen):
+* Mögliche Werte: "" | "ja" | "nein" | "immer" | "nie"
+* Standard: ""
+* URL / HTML:
+* `` popupWidth`` (Breite [px] für URL / HTML-Box):
+* Standard: ""
+* `` popupHeight`` (Höhe [px] für URL / HTML-Box):
+* Standard: ""
+* `` popupFixed`` (Behoben (nicht in der Größe veränderbar)):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` OpenURLExternal`` (URL in neuem Fenster öffnen (anstatt im Dialogfeld als Feld angezeigt zu werden)):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` popupAllowPostMessage`` (PostMessage-Kommunikation für URL / HTML zulassen):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` backgroundURLAllowPostMessage`` (PostMessage-Kommunikation für BACKGROUND_URL / HTML zulassen):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` backgroundURLNoPointerEvents`` (Direkte Mausereignisse auf die Kachel anstatt auf den Inhalt von BACKGROUND_URL / HTML):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+
+</ Details>
+
+<details><summary>Zeigen Sie eine Beispiel-Widget-Website, die eine Karte mit den oben genannten Einstellungen erstellt:</summary>
+
+* Sie können den folgenden HTML-Code als HTML-Datei in das Unterverzeichnis / userwidgets hochladen und auf BACKGROUND_URL-State verweisen (der dann als "Konstante" konfiguriert werden muss).
+* Beim Hinzufügen des Widgets wird eine Beschreibung angezeigt
+* Dann werden Sie gefragt, ob Sie die enthaltenen Optionen anwenden möchten
+* Es werden drei Datenpunkte erstellt, um die Position der Karte zu steuern: iqontrol.x.Widgets.Map.Posision.latitude, .altitude und .zoom
+
+````html
+<!doctype html>
+<html style="width: 100%; height: 100%; margin: 0px;">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="widget-description" content="This is a map widget, please provide coordinates at iqontrol.x.Widgets.Map.Posision. (C) by Sebastian Bormann"/>
+	<meta name="widget-options" content="{'noZoomOnHover': 'true', 'hideDeviceName': 'true', 'sizeInactive': 'xwideIfInactive highIfInactive', 'iconNoPointerEventsInactive': 'true', 'hideDeviceNameIfInactive': 'true', 'hideStateIfInactive': 'true', 'sizeActive': 'fullWidthIfActive fullHeightIfActive', 'bigIconActive': 'true', 'iconNoPointerEventsActive': 'true', 'hideDeviceNameIfActive': 'true', 'hideStateIfActive': 'true', 'sizeEnlarged': 'fullWidthIfEnlarged fullHeightIfEnlarged', 'bigIconEnlarged': 'true', 'iconNoPointerEventsEnlarged': 'false', 'noOverlayEnlarged': 'true', 'hideDeviceNameIfEnlarged': 'true', 'hideStateIfEnlarged': 'true', 'popupAllowPostMessage': 'true', 'backgroundURLAllowPostMessage': 'true', 'backgroundURLNoPointerEvents': 'false'}"/>
+	<meta name="widget-datapoint" content="Map.Position.latitude" data-type="number" data-role="value.gps.latitude" />
+	<meta name="widget-datapoint" content="Map.Position.longitude" data-type="number" data-role="value.gps.longitude" />
+	<meta name="widget-datapoint" content="Map.Position.zoom" data-type="number" data-role="value.zoom" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<title>iQontrol Map Widget</title>
+</head>
+<body style="width: 100%; height: 100%; margin: 0px;">
+	<div id="mapid" style="width: 100%; height: 100%; margin: 0px;"></div>
+	<script type="text/javascript">
+		//Declarations
+		var mapPositionLatitude = 0;
+		var mapPositionLongitude = 0;
+		var mapPositionZoom = 10;
+		var mymap = false;
+
+		//Subscribe to WidgetDatapoints now
+		sendPostMessage("getWidgetStateSubscribed", "Map.Position.latitude");
+		sendPostMessage("getWidgetStateSubscribed", "Map.Position.longitude");
+		sendPostMessage("getWidgetStateSubscribed", "Map.Position.zoom");
+
+		//Initialize map (with timeout to give script the time go get the initial position values)
+		setTimeout(function(){
+			console.log("Init map: " + mapPositionLatitude + "|" + mapPositionLongitude + "|" + mapPositionZoom);
+			mymap = L.map('mapid').setView([mapPositionLatitude, mapPositionLongitude], mapPositionZoom);
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				'attribution':  'Kartendaten &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> Mitwirkende',
+				'useCache': true
+			}).addTo(mymap);
+		}, 250);
+
+		//Reposition map
+		function repositionMap(){
+			console.log("Reposition map: " + mapPositionLatitude + "|" + mapPositionLongitude + "|" + mapPositionZoom);
+			if(mymap) mymap.setView([mapPositionLatitude, mapPositionLongitude], mapPositionZoom); else console.log("   Abort, map not initialized yet");
+		}
+
+		//send postMessages
+		function sendPostMessage(command, stateId, value){
+			message = { command: command, stateId: stateId, value: value };
+			window.parent.postMessage(message, "*");
+		}
+
+		//receive postMessages
+		window.addEventListener("message", receivePostMessage, false);
+		function receivePostMessage(event){ //event = {data: message data, origin: url of origin, source: id of sending element}
+			if(event.data && event.data.command) switch(event.data.command){
+				case "getState":
+				if(event.data.stateId && event.data.value) switch(event.data.stateId){
+					case "Map.Position.latitude":
+					console.log("Set latitude to " + event.data.value.val);
+					mapPositionLatitude = parseFloat(event.data.value.val) || 0;
+					if(mymap) repositionMap();
+					break;
+
+					case "Map.Position.longitude":
+					console.log("Set longitude to " + event.data.value.val);
+					mapPositionLongitude = parseFloat(event.data.value.val) || 0;
+					if(mymap) repositionMap();
+					break;
+
+					case "Map.Position.zoom":
+					console.log("Set zoom to " + event.data.value.val);
+					mapPositionZoom = parseFloat(event.data.value.val) || 0;
+					if(mymap) repositionMap();
+					break;
 				}
 				break;
 			}
@@ -587,6 +877,10 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 ## Changelog
 
 ### dev
+* (sbormann) Fixed applying of widget-options for newly devices that havn't been saved before.
+* (sbormann) Enhanced postMessage-Communication to deliver the complete stateObject if a state is requested.
+
+### 1.3.2 (2020-10-12)
 * (sbormann) Added icons to REMOTE_ADDITIONAL_BUTTONS of remote control.
 * (sbormann) Added REMOTE_CHANNELS to display channel buttons inside remote control.
 * (sbormann) Enhanced positioning of dialog if URL/HTML is set.

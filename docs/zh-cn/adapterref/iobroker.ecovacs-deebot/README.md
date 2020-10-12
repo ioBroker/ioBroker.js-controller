@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: AD3mmtvGovCd4IDkyHrrQ+wOr8LmKx8Zq8AX71K4EAY=
+hash: tsRMKoc9AaHXtrg+0sErqousym8nUy7W5qEZ/oCJyi0=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -29,13 +29,14 @@ hash: AD3mmtvGovCd4IDkyHrrQ+wOr8LmKx8Zq8AX71K4EAY=
 * Deebot奥兹莫610
 * Deebot Ozmo 900
 * Deebot奥兹莫920
-* Deebot Ozmo T8（AIVI）
+* Deebot Ozmo T8 AIVI
 
 ###这些模型应该可以工作
 * Deebot M88
 * Deebot 600/605
 * Deebot奥兹莫960
 * Deebot Ozmo苗条10
+* Deebot Ozmo T8（+）
 
 ##安装
 建议使用Node.js版本10或更高版本。
@@ -59,10 +60,10 @@ sudo npm install canvas --unsafe-perm=true
 有关其他系统的说明，请访问https://www.npmjs.com/package/canvas#compiling
 
 ##用法
-*有关如何使用此适配器的信息可以在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）
+*有关如何使用此适配器的信息可在[此处]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）中找到
 
 ＃＃ 已知的问题
-*有报告称Ecovacs当前为Ozmo 920/950交付了空的清洁日志。
+*有报告称Ecovacs当前为Ozmo 920/950提供了空的清洁日志。
 *对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告在大约30分钟后连接断开。 24小时。
 *也有报道称Deebot 900/901的电池电量有奇怪的行为。这很可能是固件错误。
   *您可以使用适配器配置中的相应选项作为解决方法。
@@ -72,6 +73,17 @@ sudo npm install canvas --unsafe-perm=true
 *常见问题可以在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ）
 
 ## Changelog
+
+### 1.0.4
+* Bump library to 0.4.21
+* Remove canvas from dependencies
+* Add support for Ozmo T8 (without AIVI)
+* Several bugfixes and improvements (especially for N79 series)
+* Possibility to specify the number of reruns for a spot area
+* Spot areas in the "control" channel are now created automatically
+* Remove number of spot areas from adapter settings
+* Some refactoring
+* Bump dependencies
 
 ### 1.0.3
 * Improved Support for Ozmo T8 AIVI

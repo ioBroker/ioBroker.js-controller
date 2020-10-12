@@ -1560,6 +1560,10 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 4.9.3 (2020-10-12)
+* (bluefox) Corrected the function calls.
+* (AlCalzone) Optimized the typescript compilation
+
 ### 4.9.0 (2020-10-09)
 * (bluefox) All scripts support now `await` calls. THIS COULD HAVE SOME SIDE-EFFECT (unknown yet). 
 * (AlCalzone) Matched the exact ID if the $ selector contains no wildcard

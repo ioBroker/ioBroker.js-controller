@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: YWH+yCTsCRhLwqXaBGqzNxaKMuAJ35eONHps+0LkY3Y=
+hash: otFFaZnPFB5qEWeAOJdCPtN42uFe9c81mVYO7Km0QnQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -39,6 +39,17 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ---
 
+## 2.4.2
+- Bug-Fix
+
+## 2.4.1
+- Bug-Fix
+
+## 2.4.0
+- Randstil zur JSON-Tabelle hinzugefügt
+- Farbauswahö für Icons zu allen Widgets hinzugefügt
+- Fehlerbehebung
+
 ## 2.3.2
 - Fehler bei der Navigation mit dem Widget 'In Widget anzeigen' versucht
 
@@ -46,7 +57,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehler in der JSON Tabelle Spalten
 
 ## 2.3.0
-- Problem gehört, bei dem Schaltflächen gleichen Werte senden
+- Problem gehört, bei dem Schaltschaltenden eigenen Werte senden
 - Datum / Uhrzeit und Bildformat für Tabellenzellen hinzugefügt
 - Universal- und Multi-Widget-Attribut werden beim Ändern auf Widgetschauen
 
@@ -71,7 +82,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.0.1
 - Übersetzungsfehler gehört
-- Border Farbe gehört
+- Border Farbe wird anders
 - Widget-Untertitel gehört
 
 ## 2.0.0
@@ -151,7 +162,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ...
 
-### 0.1.0 (Erstveröffentlichung)
+### 0.1.0 (Erstveröffentlichungung)
 - Erfinde zwei Design-Widgets
 
 ...

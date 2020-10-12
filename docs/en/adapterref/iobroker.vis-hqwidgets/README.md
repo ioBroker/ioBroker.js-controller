@@ -18,6 +18,9 @@ http://anthonyterrien.com/knob/ or https://github.com/aterrien/jQuery-Knob
 -->
 
 ## Changelog
+### 1.1.6 (2020-10-12)
+* (bluefox) Corrected the after comma digits for the valve
+
 ### 1.1.5 (2020-08-08)
 * (mk176) Resolved the button even if mouse is moved out
 

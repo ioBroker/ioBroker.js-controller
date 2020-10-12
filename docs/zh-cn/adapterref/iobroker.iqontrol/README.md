@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: TWHOYvZuFqFf9pUrbsgHnzicou/Gxc9qYfmHqZbm8uQ=
+hash: Ay2RQh7lfazCKbYvUZDwexffhHec/t/lvj6dsFDX46k=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -176,20 +176,39 @@ hash: TWHOYvZuFqFf9pUrbsgHnzicou/Gxc9qYfmHqZbm8uQ=
 *要将命令发送到iQontrol，可以使用以下javascript命令：``window.parent.postMessage（message，“ *”）;''
     *``message``是一个JavaScript对象，其格式为``{command：command，stateId：stateId，value：value}``
     *支持以下消息命令：
-        *``{command：“ setState”，stateId：<stateId>，value：<value>}``-这会将ioBroker状态``<stateId>``设置为值``<value>``（ `<value>``可以是字符串，数字或布尔值，也可以是诸如``{val：<value>，ack：true | false}''之类的对象）
         *``{命令：“ setWidgetState”，stateId：<widgetStateId>，值：<value>}``-这会将ioBroker状态`iqontrol。<instance> .Widgets。<widgetStateId>“设置为值` `<value>``（``<value>``可以是字符串，数字或布尔值，也可以是类似{{val：<value>，ack：true | false}''的对象）
-        *``{command：“ getState”，stateId：<stateId>}``-这将导致iQontrol发送ioBroker状态``<stateId>''的值（请参见下面的接收应答消息的方法）
         *``{命令：“ getWidgetState”，stateId：<widgetStateId>}``-这将导致iQontrol发送ioBroker状态`iqontrol.'instance> .Widgets。<widgetStateId>'的值（请参阅下面的方法接收答复消息）
-        *``{命令：“ getStateSubscribed”，stateId：<stateId>}``-这将导致iQontrol立即以及每次其值更改时发送ioBroker状态“ <stateId>”的值（请参见下面的方法收到答复消息）
         *``{命令：“ getWidgetStateSubscribed”，stateId：<widgetStateId>}``-这将导致iQontrol立即且每次都发送ioBroker状态`iqontrol。<instance> .Widgets。<widgetStateId>的值其值会发生变化（请参见下面的如何接收答复消息）
+        *``{command：“ setState”，stateId：<stateId>，value：<value>}``-这会将ioBroker状态``<stateId>``设置为值``<value>``（ `<value>``可以是字符串，数字或布尔值，也可以是诸如``{val：<value>，ack：true | false}''之类的对象）
+        *``{command：“ getState”，stateId：<stateId>}``-这将导致iQontrol发送ioBroker状态``<stateId>''的值（请参见下面的接收应答消息的方法）
+        *``{命令：“ getStateSubscribed”，stateId：<stateId>}``-这将导致iQontrol立即以及每次其值更改时发送ioBroker状态“ <stateId>”的值（请参见下面的方法收到答复消息）
         *``{命令：“ renderView”，值：<viewID>}``-这将指示iQontrol渲染视图，其中的<viewID>必须像`iqontrol一样格式化。<instance-number> .views。<视图名称>``（区分大小写）
         *``{命令：“ openDialog”，值：<deviceID>}``-这将指示iQontrol打开对话框，其中“ <deviceID>”的格式必须类似于`ʻiqontrol。<instance-number> .views。<视图名称> .devices。<设备编号>``，其中``<设备编号>``从0开始（因此视图上的第一个设备是设备编号0）
 *要从iQontrol接收消息，您需要使用javascript命令``window.addEventListener（“ message”，receivePostMessage，false）;向“ message”事件注册事件监听器。
     *函数``receivePostMessage''接收对象`ʻevent``
 *`event.data``包含来自iqontrol的消息，该消息将是一个对象，例如：
-*``{command：“ getState”，stateId：<stateId>，value：<value>}``-这将是对getState-command或getStateSubsribed-command的回答，并为您提供实际的<value> ``-ioBroker状态的对象``<stateId>''
-*要指示iQontrol在“ iqontrol。<instance> .Widgets”下生成一个widgetState，您可以在widget网站的头部内使用一个meta标签。使用以下语法：
-*``<meta name="widget-datapoint" content="WidgetName.StateName" data-type="string" data-role="text" /> ``
+* event.data =``{command：“ getState”，stateId：<stateId>，value：<stateObject>}``-这将是对getState-command或getStateSubsribed-command的回答，并为您提供实际的` `<value>``-ioBroker状态的对象<stateId>
+*``<stateObject>''本身是一个像
+
+			````javascript
+			event.data.value = {
+				val: <value>,
+				unit: "<unit>",
+				plainText: "<clear text of val, for example taken from valuelist>",
+				ack: <true|false>,
+				readonly: <true|false>,
+				custom: {<object with custom settings>},
+				from: "<source of state>",
+				lc: <timestamp of last change>,
+				ts: <timestamp of last actualization>,
+				q: <quality of signal>,
+				role: "<role of state>",
+				type: "<string|number|boolean>"
+			}
+			````
+
+*要指示iQontrol在`iqontrol。<instance> .Widgets下生成一个widgetState，可以在widget网站的头部内使用一个meta标签：
+*语法：``<meta name="widget-datapoint" content="WidgetName.StateName" data-type="string" data-role="text" /> ``
 *您可以使用数据类型（可以设置为字符串，数字或布尔值），数据角色，数据名称，数据最小，数据最大，数据定义和数据单位属性来进一步配置数据点
     *如果将小部件网站作为URL或Background_URL添加到设备，则仅创建相应的数据点
 * URL / HTML-State可以使用相同的概念，用于在设备对话框内显示网站
@@ -198,6 +217,7 @@ hash: TWHOYvZuFqFf9pUrbsgHnzicou/Gxc9qYfmHqZbm8uQ=
 <details><summary>显示示例小部件网站，将其与postMessage-communication一起显示为小部件：</summary>
 
 *您可以使用以下HTML代码并将其复制到小部件的Background_HTML-State（然后需要将其配置为“常量”）
+*作为替代方案，您可以将此代码作为html文件上传到/ userwidgets子目录中，并将其引用到Background_URL-State（然后还需要将其配置为“常量”）
 *激活“允许对Background_URL / HTML进行postMessage通讯”选项
 *将演示如何完成网站与iQontrol之间的双向通信
 
@@ -292,6 +312,276 @@ hash: TWHOYvZuFqFf9pUrbsgHnzicou/Gxc9qYfmHqZbm8uQ=
 				case "getState":
 				if(event.data.stateId && event.data.value){
 					document.getElementById('thisMeans').innerHTML = "Got State " + event.data.stateId + ": " + JSON.stringify(event.data.value);
+				}
+				break;
+			}
+		}
+	</script>
+</body>
+</html>
+````
+
+</ details>
+
+###小部件的进一步配置
+*还有其他元标记，您可以在小部件网站的头部内部使用以配置小部件的行为：
+*“小部件描述”
+*语法：``<meta name="widget-description" content="Please see www.mywebsite.com for further informations. (C) by me"/> ``
+*在将小部件选择为URL或Background_URL时将显示
+*“小部件选项”
+*语法：``<meta name="widget-options" content="{'noZoomOnHover': 'true', 'hideDeviceName': 'true'}"/> ``
+*有关此元标记可以配置的可能选项，请参见下面的展开部分
+
+<details><summary>显示可以由元标记“ widget-options”配置的可能选项：</summary>
+
+*图标：
+*`ʻicon_on``（图标开启）：
+*默认值：“”
+*`icon_off``（图标关闭）：
+*默认值：“”
+*设备特定选项：
+*``noVirtualState``（不要将虚拟数据点用于STATE（如果STATE为空，请隐藏开关））：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+* 一般：
+*``readonly``（只读）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*`invertUnreach``（反转UNREACH（使用已连接而不是未到达））：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*`additionalControlsSectionType``（ADDITIONAL_CONTROLS的外观）：
+*可能的值：“无” |“可折叠” |“可折叠打开”
+*默认值：“可折叠”
+*`additionalControlsCaption``（ADDITIONAL_CONTROLS的标题）：
+*默认值：“其他控件”
+*`additionalInfoSectionType``（ADDITIONAL_INFO的外观）：
+*可能的值：“无” |“可折叠” |“可折叠打开”
+*默认值：“可折叠”
+*`additionalInfoCaption``（ADDITIONAL_INFO的标题）：
+*默认值：“其他信息”
+*电池空图标：
+*``batteryActiveCondition``（条件）：
+*可能的值：“” |“ at” |“ af” |“ eqt” |“ eqf” |“ eq” |“ ne” |“ gt” |“ ge” |“ lt” |“ le”
+*默认值：“”
+*``batteryActiveConditionValue``（条件值）：
+*默认值：“”
+*瓷砖行为（常规）：
+*``clickOnIconOpensDialog``（单击图标打开对话框（而不是切换））：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``noZoomOnHover``（在悬停时禁用缩放效果）：
+*可能的值：“ true” |“ false”
+*默认值：“ true”
+*``hideDeviceName``（隐藏设备名称）：
+*可能的值：“ true” |“ false”
+*默认值：“ true”
+*如果设备处于非活动状态，则为平铺行为：
+*``sizeInactive``（磁贴的大小，如果设备处于非活动状态）：
+*可能的值：“” |“ narrowIfInactive shortIfInactive” |“ narrowIfInactive” |“ narrowIfInactive highIfInactive” |“ narrowIfInactive xhighIfInactive” |“ shortIfInactive” |“ shortIfInactive wideIfInactive” |“ shortIfInactive xwideIfInactive” |“ wideIfInactive” || xwideIfInactive“ |” xwideIfInactive“ “ |” xhighIfInactive“ |” wideIfInactive highIfInactive“ |” xwideIfInactive highIfInactive“ |” wideIfInactive xhighIfInactive“ |” xwideIfInactive xhighIfInactive“ |” fullWidthIfInactive“ -1-1IfInactive” |“ fullWidthIfInactive Aspect-4-3IfInactive” |“ fullWidthIfInactive Aspect-3- 2IfInactive“ |” fullWidthIfInactive方面16-9IfInactive“ |” fullWidthIfInactive方面21-9IfInactive“ |” fullWidthIfInactive fullHeightIfInactive“ |”
+*默认值：“ xwideIfInactive highIfInactive”
+*``bigIconInactive``（如果设备处于非活动状态，则显示大图标）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*ʻiconNoPointerEventsInactive（如果设备处于非活动状态，则忽略该图标的鼠标事件）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``noOverlayInactive``（如果设备处于非活动状态，则删除图块的覆盖）：
+*可能的值：“ true” |“ false”
+*默认值：“ true”
+*``hideBackgroundURLInactive``（如果设备处于非活动状态，则隐藏Background_URL / HTML的背景）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``hideDeviceNameIfInactive``（隐藏设备名称，如果设备处于非活动状态）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``hideStateIfInactive``（隐藏状态，如果设备处于非活动状态）：
+*可能的值：“ true” |“ false”
+*默认：“ true” *``
+*``hideDeviceIfInactive``（隐藏设备，如果它是非活动的）：
+*可能的值：“ true” |“ false”
+*默认值：“ false” *“
+*瓷砖行为（如果设备处于活动状态）：
+*``sizeActive``（图块的大小，如果设备处于活动状态）：
+*可能的值：“” |“ narrowIfActive shortIfActive” |“ narrowIfActive” |“ narrowIfActive highIfActive” |“ narrowIfActive xhighIfActive” |“ shortIfActive” |“ shortIfActive wideIfActive” |“ shortIfActive xwideIfActive” |“ wideIfActive” |“ xwideIfActive” |“ highIfActive” “ |” xhighIfActive“ |” wideIfActive highIfActive“ |” xwideIfActive highIfActive“ |” wideIfActive xhighIfActive“ |” xwideIfActive xhighIfActive“ |” fullWidthIfActive Aspect-1-1IfActive“ |” fullWidthIfActive Aspect-4-3IfActive“ |” fullWidthIfActive Aspect-3- 2IfActive“ |” fullWidthIfActive Aspect-16-9IfActive“ |” fullWidthIfActive Aspect-21-9IfActive“ |” fullWidthIfActive fullHeightIfActive“ |”
+*``bigIconActive``（如果设备处于活动状态则显示大图标）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*`iconNoPointerEventsActive``（如果设备处于活动状态，则忽略该图标的鼠标事件）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``noOverlayActive``（如果设备处于活动状态，则删除图块的覆盖图）：
+*可能的值：“ true” |“ false”
+*默认值：“ true”
+*``hideBackgroundURLActive``（如果设备处于活动状态，则隐藏Background_URL / HTML的背景）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``hideDeviceNameIfActive``（隐藏设备名称，如果设备处于活动状态）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``hideStateIfActive``（隐藏状态，如果设备处于活动状态）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``hideDeviceIfActive``（隐藏设备，如果它是活动的）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*如果将设备放大，则会显示平铺行为：
+*``sizeEnlarged``（图块的大小，如果设备被放大）：
+*可能的值：“” |“ narrowIfEnlarged shortIfEnlarged” |“ narrowIfEnlarged” |“ narrowIfEnlarged highIfEnlarged” |“ narrowIfEnlarged xhighIfEnlarged” |“ shortIfEnlarged” |“ shortIfEnlarged wideIfEnlarged” |“ shortIfEnlargedxwideIfEnlarged” |“如果Ifenlarged” |“ “ |” xhighIfEnlarged“ |” wideIfEnlarged highIfEnlarged“ |” xwideIfEnlarged highIfEnlarged“ |” wideIfEnlargedxhighIfEnlarged“ |” xwideIfEnlarged xhighIfEnlarged“ |” fullWidthIfEnlarged宽高比-1-1IfEnlarged“ |” fullWidthIfEnlarged宽宽比| -4-3IfEnlarged“ 2IfEnlarged“ |”“ fullWidthIfEnlarged方面-16-9IfEnlarged” |“ fullWidthIfEnlarged方面-21-9IfEnlarged” |“ fullWidthIfEnlarged fullHeightIfEnlarged” |“
+*``bigIconEnlarged``（如果设备放大则显示大图标）：
+*可能的值：“ true” |“ false”
+*默认值：“ true”
+*`iconNoPointerEventsEnlarged``（如果设备放大，则忽略图标的鼠标事件）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``noOverlayEnlarged``（如果设备被放大，则删除图块的覆盖图）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``tileEnlargeStartEnlarged``（开始时将瓷砖放大）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``tileEnlargeShowButtonInactive``（显示放大按钮，如果设备处于非活动状态）：
+*可能的值：“ true” |“ false”
+*默认值：“ true”
+*``tileEnlargeShowButtonActive``（显示放大按钮，如果设备处于活动状态）：
+*可能的值：“ true” |“ false”
+*默认值：“ true”
+*``tileEnlargeShowInPressureMenuInactive''（如果设备处于非活动状态，则在菜单中显示放大）：
+*可能的值：“ true” |“ false”
+*默认值：“ true”
+*``tileEnlargeShowInPressureMenuActive``（如果设备处于活动状态，则在菜单中显示放大）
+*可能的值：“ true” |“ false”
+*默认值：“ true”
+*``visibilityBackgroundURLEnlarged``（如果设备被放大，则来自Background_URL / HTML的背景可见性）：
+*可能的值：“” |“ visibleIfEnlarged” |“ hideIfEnlarged”
+*默认值：“”
+*``hideDeviceNameIfEnlarged``（隐藏设备名称，如果设备被放大）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``hideStateIfEnlarged``（隐藏状态，如果设备被放大）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``hideIconEnlarged``（隐藏图标，如果设备已放大）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*活动磁贴的条件：
+*``tileActiveStateId``（状态ID（将使用空= STATE / LEVEL））：
+*默认值：“”
+*``tileActiveCondition``（条件）：
+*可能的值：“” |“ at” |“ af” |“ eqt” |“ eqf” |“ eq” |“ ne” |“ gt” |“ ge” |“ lt” |“ le”
+*默认值：“”
+*``tileActiveConditionValue``（条件值）：
+*默认值：“”
+*时间戳记：
+*ʻaddTimestampToState``（添加时间戳到状态）：
+*可能的值：“” |“ SA” |“ ST” |“ STA” |“ SE” |“ SEA” |“ SE。” |“ SE.A” |“ Se” |“ SeA” |“ STE” | “ STEA” |“ STE。” |“ STE.A” |“ STe” |“ STeA” |“ T” |“ TA” |“ TE” |“ TEA” |“ TE。” |“ TE.A” | “ Te” |“ TeA” |“ E” |“ EA” |“ E.” |“ EA” |“ e” |“ eA” |“ N”
+*默认值：“ N”
+*``showTimestamp``（在对话框中显示时间戳）：
+*可能的值：“” |“是” |“否” |“始终” |“从不”
+*默认值：“”
+* URL / HTML：
+*``popupWidth``（URL / HTML-Box的宽度[px]）：
+*默认值：“”
+*``popupHeight``（URL / HTML-Box的高度[px]）：
+*默认值：“”
+*``popupFixed``（已修复（不可调整大小））：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*`openURLExternal``（在新窗口中打开URL（而不是在对话框中显示为框））：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``popupAllowPostMessage``（允许URL / HTML的postMessage-Communication）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``backgroundURLAllowPostMessage``（允许Background_URL / HTML的postMessage-Communication）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``backgroundURLNoPointerEvents``（将鼠标事件直接定向到图块而不是Background_URL / HTML的内容）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+
+</ details>
+
+<details><summary>显示示例小部件网站，该网站使用上述设置创建地图：</summary>
+
+*您可以将以下HTML代码作为html文件上传到/ userwidgets子目录中，并将其引用到Background_URL-State（然后需要将其配置为“常量”）
+*添加小部件时，显示说明
+*然后询问您是否要应用包含的选项
+*创建了三个数据点来控制地图的位置：iqontrol.x.Widgets.Map.Posision.latitude，.altitude和.zoom
+
+````html
+<!doctype html>
+<html style="width: 100%; height: 100%; margin: 0px;">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+	<meta name="widget-description" content="This is a map widget, please provide coordinates at iqontrol.x.Widgets.Map.Posision. (C) by Sebastian Bormann"/>
+	<meta name="widget-options" content="{'noZoomOnHover': 'true', 'hideDeviceName': 'true', 'sizeInactive': 'xwideIfInactive highIfInactive', 'iconNoPointerEventsInactive': 'true', 'hideDeviceNameIfInactive': 'true', 'hideStateIfInactive': 'true', 'sizeActive': 'fullWidthIfActive fullHeightIfActive', 'bigIconActive': 'true', 'iconNoPointerEventsActive': 'true', 'hideDeviceNameIfActive': 'true', 'hideStateIfActive': 'true', 'sizeEnlarged': 'fullWidthIfEnlarged fullHeightIfEnlarged', 'bigIconEnlarged': 'true', 'iconNoPointerEventsEnlarged': 'false', 'noOverlayEnlarged': 'true', 'hideDeviceNameIfEnlarged': 'true', 'hideStateIfEnlarged': 'true', 'popupAllowPostMessage': 'true', 'backgroundURLAllowPostMessage': 'true', 'backgroundURLNoPointerEvents': 'false'}"/>
+	<meta name="widget-datapoint" content="Map.Position.latitude" data-type="number" data-role="value.gps.latitude" />
+	<meta name="widget-datapoint" content="Map.Position.longitude" data-type="number" data-role="value.gps.longitude" />
+	<meta name="widget-datapoint" content="Map.Position.zoom" data-type="number" data-role="value.zoom" />
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+	<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+	<title>iQontrol Map Widget</title>
+</head>
+<body style="width: 100%; height: 100%; margin: 0px;">
+	<div id="mapid" style="width: 100%; height: 100%; margin: 0px;"></div>
+	<script type="text/javascript">
+		//Declarations
+		var mapPositionLatitude = 0;
+		var mapPositionLongitude = 0;
+		var mapPositionZoom = 10;
+		var mymap = false;
+
+		//Subscribe to WidgetDatapoints now
+		sendPostMessage("getWidgetStateSubscribed", "Map.Position.latitude");
+		sendPostMessage("getWidgetStateSubscribed", "Map.Position.longitude");
+		sendPostMessage("getWidgetStateSubscribed", "Map.Position.zoom");
+
+		//Initialize map (with timeout to give script the time go get the initial position values)
+		setTimeout(function(){
+			console.log("Init map: " + mapPositionLatitude + "|" + mapPositionLongitude + "|" + mapPositionZoom);
+			mymap = L.map('mapid').setView([mapPositionLatitude, mapPositionLongitude], mapPositionZoom);
+			L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+				'attribution':  'Kartendaten &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> Mitwirkende',
+				'useCache': true
+			}).addTo(mymap);
+		}, 250);
+
+		//Reposition map
+		function repositionMap(){
+			console.log("Reposition map: " + mapPositionLatitude + "|" + mapPositionLongitude + "|" + mapPositionZoom);
+			if(mymap) mymap.setView([mapPositionLatitude, mapPositionLongitude], mapPositionZoom); else console.log("   Abort, map not initialized yet");
+		}
+
+		//send postMessages
+		function sendPostMessage(command, stateId, value){
+			message = { command: command, stateId: stateId, value: value };
+			window.parent.postMessage(message, "*");
+		}
+
+		//receive postMessages
+		window.addEventListener("message", receivePostMessage, false);
+		function receivePostMessage(event){ //event = {data: message data, origin: url of origin, source: id of sending element}
+			if(event.data && event.data.command) switch(event.data.command){
+				case "getState":
+				if(event.data.stateId && event.data.value) switch(event.data.stateId){
+					case "Map.Position.latitude":
+					console.log("Set latitude to " + event.data.value.val);
+					mapPositionLatitude = parseFloat(event.data.value.val) || 0;
+					if(mymap) repositionMap();
+					break;
+
+					case "Map.Position.longitude":
+					console.log("Set longitude to " + event.data.value.val);
+					mapPositionLongitude = parseFloat(event.data.value.val) || 0;
+					if(mymap) repositionMap();
+					break;
+
+					case "Map.Position.zoom":
+					console.log("Set zoom to " + event.data.value.val);
+					mapPositionZoom = parseFloat(event.data.value.val) || 0;
+					if(mymap) repositionMap();
+					break;
 				}
 				break;
 			}
@@ -403,14 +693,14 @@ hash: TWHOYvZuFqFf9pUrbsgHnzicou/Gxc9qYfmHqZbm8uQ=
  ***CT*** 字*-灯光的色温（如果有两个白色阴影）
  ***WHITE_BRIGHTNESS*** 字*-白色LED的亮度（如果您处于LEVEL状态且没有彩色LED，则将忽略此亮度，因为亮度完全由LEVEL控制）
 *替代色彩空间：
- ***ALTERNATIVE_COLORSPACE_VALUE*** 符串*或*数字*（取决于所选的色彩空间）-替代色彩空间的值
+ ***ALTERNATIVE_COLORSPACE_VALUE*** 符串*或*数字*（取决于所选色彩空间）-替代色彩空间的值
 
     如果您的设备不支持使用HUE，SATURATION和COLOR_BRIGHTNESS（HSB / HSV色彩空间），则可以使用多种替代色彩空间。在设备选项中，您可以选择以下颜色空间之一：
 
     * **RGB** / **RGB** 您可以使用RGB格式（十六进制），而不是使用HUE，SATURATION和COLOR_BRIGHTNESS，可选，并以'＃'开头
-    * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可将其与前导'＃'结合使用
+    * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可在开头的＃号上使用
     * **RGBWWCW** / **RGBWWCW** / **RGBCWWW** / **RGBCWWW** ，WW =暖白，CW =冷白），可选，以“＃”开头
-    * **RGB（仅色相）** /** RGB（仅色相）**：可以使用RGB（仅色相）格式（十六进制）代替使用HUE，并在前导'＃'处可选。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
+    * **RGB（仅色相）** /** RGB（仅色相）**：可以使用RGB（仅色相）格式（十六进制）替代使用HUE，并以“＃”开头。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
     * ** Milight的色相**：这是Milight设备的色相值，在色相色域中使用另一个起点：
 
 ````
@@ -587,6 +877,10 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ## Changelog
 
 ### dev
+* (sbormann) Fixed applying of widget-options for newly devices that havn't been saved before.
+* (sbormann) Enhanced postMessage-Communication to deliver the complete stateObject if a state is requested.
+
+### 1.3.2 (2020-10-12)
 * (sbormann) Added icons to REMOTE_ADDITIONAL_BUTTONS of remote control.
 * (sbormann) Added REMOTE_CHANNELS to display channel buttons inside remote control.
 * (sbormann) Enhanced positioning of dialog if URL/HTML is set.

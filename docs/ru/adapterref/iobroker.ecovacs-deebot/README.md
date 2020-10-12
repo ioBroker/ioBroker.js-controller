@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: AD3mmtvGovCd4IDkyHrrQ+wOr8LmKx8Zq8AX71K4EAY=
+hash: tsRMKoc9AaHXtrg+0sErqousym8nUy7W5qEZ/oCJyi0=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -29,15 +29,16 @@ hash: AD3mmtvGovCd4IDkyHrrQ+wOr8LmKx8Zq8AX71K4EAY=
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 * Deebot Ozmo 920
-* Deebot Ozmo T8 (AIVI)
+* Deebot Ozmo T8 AIVI
 
 ### Эти модели должны работать
 * Deebot M88
 * Deebot 600/605
 * Deebot Ozmo 960
 * Deebot Ozmo Slim 10
+* Deebot Ozmo T8 (+)
 
-## Монтаж
+## Установка
 Рекомендуется использовать версию Node.js 10 или более новую.
 
 Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок.
@@ -58,7 +59,7 @@ sudo npm install canvas --unsafe-perm=true
 
 Для получения инструкций для других систем посетите https://www.npmjs.com/package/canvas#compiling.
 
-## Использование
+## Применение
 * Информацию о том, как использовать этот адаптер, можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Известные проблемы
@@ -72,6 +73,17 @@ sudo npm install canvas --unsafe-perm=true
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
 ## Changelog
+
+### 1.0.4
+* Bump library to 0.4.21
+* Remove canvas from dependencies
+* Add support for Ozmo T8 (without AIVI)
+* Several bugfixes and improvements (especially for N79 series)
+* Possibility to specify the number of reruns for a spot area
+* Spot areas in the "control" channel are now created automatically
+* Remove number of spot areas from adapter settings
+* Some refactoring
+* Bump dependencies
 
 ### 1.0.3
 * Improved Support for Ozmo T8 AIVI

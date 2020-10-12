@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: AD3mmtvGovCd4IDkyHrrQ+wOr8LmKx8Zq8AX71K4EAY=
+hash: tsRMKoc9AaHXtrg+0sErqousym8nUy7W5qEZ/oCJyi0=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -29,13 +29,14 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 * Deebot Ozmo 920
-* Deebot Ozmo T8 (AIVI)
+* Deebot Ozmo T8 AIVI
 
 ### Diese Modelle sollten funktionieren
 * Deebot M88
 * Deebot 600/605
 * Deebot Ozmo 960
 * Deebot Ozmo Slim 10
+* Deebot Ozmo T8 (+)
 
 ## Installation
 Es wird empfohlen, Version 10 von Node.js oder eine neuere Version zu verwenden.
@@ -58,13 +59,13 @@ sudo npm install canvas --unsafe-perm=true
 
 Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/canvas#compiling
 
-## Verwendung
+## Verwendungszweck
 * Informationen zur Verwendung dieses Adapters finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Bekannte Probleme
 * Es gibt einige Berichte, dass Ecovacs derzeit leere Reinigungsprotokolle für Ozmo 920/950 liefert.
 * Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da es einige gibt meldet, dass die Verbindung nach ca. 24 Stunden.
-* Es gibt auch Berichte, dass der Batteriewert des Deebot 900/901 merkwürdig ist. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
+* Es gibt auch einige Berichte, dass der Batteriewert bei Deebot 900/901 merkwürdig ist. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
   * Sie können die entsprechende Option in der Adapterkonfiguration als Problemumgehung verwenden.
 * Die Schaltfläche "Pause" funktioniert nicht mit Deebot 710/711.
 
@@ -72,6 +73,17 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 * Häufig gestellte Fragen finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
 ## Changelog
+
+### 1.0.4
+* Bump library to 0.4.21
+* Remove canvas from dependencies
+* Add support for Ozmo T8 (without AIVI)
+* Several bugfixes and improvements (especially for N79 series)
+* Possibility to specify the number of reruns for a spot area
+* Spot areas in the "control" channel are now created automatically
+* Remove number of spot areas from adapter settings
+* Some refactoring
+* Bump dependencies
 
 ### 1.0.3
 * Improved Support for Ozmo T8 AIVI
