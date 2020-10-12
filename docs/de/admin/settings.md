@@ -60,7 +60,7 @@ Unterseite “Verwahrungsorte” aufgelisteten Repositories zur Verfügung
 ioBroker kann die Adapterliste von unterschiedlichen Quellen beziehen. Bei der Installation sind folgende Quellen eingetragen:
 
 * default (=stable): http://download.iobroker.net/sources-dist.json
-* latest (neueste Versionen): http://download.iobroker.net/sources-dist-latest.json
+* latest (=beta): http://download.iobroker.net/sources-dist-latest.json
 
 Sollten aus einer älteren Installation hier noch andere Repositories eingetragen sein, 
 sollten diese gelöscht werden, da sie nicht mehr gepflegt werden.
