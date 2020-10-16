@@ -135,6 +135,9 @@ CCU / Homematic поддерживает различные типы устро�
 ## FAQ
 
 ## Changelog
+### 1.14.24 (2020-10-15)
+* (foxriver76) fixed error with some blinds if no adapter restart has been performed
+
 ### 1.14.23 (2020-09-03)
 * (foxriver76) `value.temperature` will have unit °C no matter of delivered unit by CCU
 

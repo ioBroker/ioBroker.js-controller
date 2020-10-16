@@ -10,7 +10,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.eventlist.png?downloads=true)](https://nodei.co/npm/iobroker.eventlist/)
 
-## eventlist adapter for ioBroker
+## Event-List adapter for ioBroker
 Allows to define the states that must be logged in event list.
 
 The list can be shown in admin, web, vis, saved as PDF, material (not yet implemented).
@@ -80,7 +80,8 @@ User can request formatted JSON list for specific ID. Of course the ID must be e
 // add custom event to event list
 sendTo('eventlist.0', 'list', {
     ids: ['my.0.state.id1', 'my.0.state.id2'],
-    max: 10, // optional limit of maximal lines in table 
+    count: 10, // optional limit of maximal lines in table,
+    allowRelative: false, // optional if relative times, e.g. "one minute ago", may be used (Default: true)
 }, result => {
     console.log(JSON.stringify(result)); // array with events
     // result = [{id: 'my.0.state.id1', 
@@ -115,6 +116,10 @@ In the event texts and in the state texts the following patterns could be used:
 -->
 
 ## Changelog
+### 0.2.8 (2020-10-14)
+* (bluefox) Corrected error in pdf settings  
+* (bluefox) Implemented the recalculation of the relative time every 10 seconds  
+
 ### 0.2.6 (2020-09-25)
 * (bluefox) Corrected error in pdf creation  
 

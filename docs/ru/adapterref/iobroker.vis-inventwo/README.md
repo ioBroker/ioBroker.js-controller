@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: otFFaZnPFB5qEWeAOJdCPtN42uFe9c81mVYO7Km0QnQ=
+hash: jXZqZmIPNSo5kXUJMkf8HDu9l6AM2bBh0Z/V+A9C/DM=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -13,7 +13,7 @@ hash: otFFaZnPFB5qEWeAOJdCPtN42uFe9c81mVYO7Km0QnQ=
 ![Количество установок (стабильно)](http://iobroker.live/badges/vis-inventwo-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/inventwo/iobroker.vis-inventwo.svg)
 ![Известные уязвимости](https://snyk.io/test/github/inventwo/iobroker.vis-inventwo/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
 
 # IoBroker.vis-inventorywo
 ## Schalter Widgets для адаптера ioBroker.vis
@@ -39,6 +39,9 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ---
 
+## 2.4.3
+- Исправлена ошибка
+
 ## 2.4.2
 - Исправлена ошибка
 
@@ -54,7 +57,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Fehler bei der Navigation mit dem Widget 'View in Widget' behoben
 
 ## 2.3.1
-- Фелер в JSON Tabelle behoben
+- Fehler в JSON Tabelle behoben
 
 ## 2.3.0
 - Problem behoben, bei dem Schaltflächen zweimal Werte senden
@@ -62,7 +65,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Универсальный и мульти-виджет-атрибут, указанный в клике, на актуальном виджете
 
 ## 2.2.3
-- Фелер в JSON Tabelle behoben
+- Fehler в JSON Tabelle behoben
 
 ## 2.2.2
 - Fehler im Multi Widget behoben: Bilder und Text wechseln nicht bei Typ Navigation
@@ -90,7 +93,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte geprüft werden kann (Ähnlich der Signalbild Funktion)
 - Виджет изображения kann nun auf Datenpunkt prüfen
 - Радиокнопки hinzugefügt
-- Werteliste hinzugefügt (Kann Liste aus einem Datenpunkt oder manuell eingetragenem Text erstellen)
+- Werteliste hinzugefügt (Kann Liste aus einem Datenpunkt или manuell eingetragenem Text erstellen)
 
 ## 1.3.8
 - Шаг ползунка изменен на десятичный
@@ -107,7 +110,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Добавлена частота обновления таблицы
 
 ### 1.3.4
-- Убраны значки и фоны, изменен конфиг, Исправлена навигация.
+- Удалены значки и фоны, изменен конфиг, Исправлена навигация.
 
 ### 1.3.3
 - Исправлена опция значения фонового виджета
@@ -150,7 +153,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Изменены виджеты кнопок для использования шрифта и текста по умолчанию.
 
 ### 1.0.0
-- Фон виджета и прозрачность содержимого, переключатель можно изменить с логического на значение, значки изменены с белого на черный, добавлены бесшовные фоны
+- Фон виджета и прозрачность контента, переключатель можно изменить с логического на значение, значки изменены с белого на черный, добавлены бесшовные фоны
 
 ### 0.1.2
 - Исправление ошибок
@@ -163,7 +166,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ...
 
 ### 0.1.0 (Erstveröffentlichung)
-- Дизайн-виджеты inventorywo
+- Виджеты дизайна inventorywo
 
 ...
 

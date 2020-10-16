@@ -40,6 +40,11 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.7.6 (2020-10-15)
+* The roles of states are now determined depending on the value they represent instead of just `"value"`
+* Added a new option to configure if user-defined names for states may be overwritten
+* The `targetValue` state of `Color Switch CC` no longer has `write` set to `false`
+
 ### 1.7.5 (2020-10-11)
 * Fixed the creation of some missing states (`Alarm Sensor CC` in idle state, `Multilevel Switch CC` V1/V2)
 * When a message should be sent to a node that is assumed to be dead, the node is now pinged first to check if it is really dead
@@ -66,11 +71,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
   * Push nodes now have their supporting values set to idle if no value is yet known
   * Pull nodes are now auto-refreshed every 6 hours and on wakeup
 * Including secure devices now fails if the device takes too long to respond (as required by the specifications)
-
-### 1.7.1 (2020-09-29)
-* Added two options to increase the driver timeouts and/or send attempts. This should allow increasing the network stability at the cost of decreased responsiveness.
-* Added support for `User Code CC V2`
-* Fix: Nodes are no longer marked as dead or asleep if they acknowledge a message but don't respond to it
 
 ## License
 

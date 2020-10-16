@@ -252,7 +252,7 @@ class Intro extends Component {
     render() {
         let i = 0;
 
-        const link = new Date().getMinutes() % 2;
+        const link = new Date().getMinutes() % 3;
 
         return [
             <div className={this.props.classes.content + ' ' + this.props.classes.backImage} key="content">
@@ -264,8 +264,8 @@ class Intro extends Component {
                     </div>
                 </div>
                 {link === 0 ? this.renderCloud() : null}
-                {link === 1 ? this.renderHausAutomatisierung() : null}
-                {link === 2 ? this.renderServer() : null}
+                {link === 1 && I18n.getLanguage() === 'de' ? this.renderHausAutomatisierung() : null}
+                {link === 2 || (link === 1 && I18n.getLanguage() !== 'de') ? this.renderServer() : null}
                 {!this.props.mobile ? (<LinusShell
                     header={I18n.t('install on linux')}
                     copyTitle={I18n.t('copy to clipboard')}

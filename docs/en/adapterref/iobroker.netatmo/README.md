@@ -1,7 +1,7 @@
 ![Logo](admin/netatmo.png)
 # ioBroker.netatmo
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.netatmo.svg)](https://www.npmjs.com/package/iobroker.netatmo)
+![Number of Installations](http://iobroker.live/badges/netatmo-installed.svg) ![Number of Installations](http://iobroker.live/badges/netatmo-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.netatmo.svg)](https://www.npmjs.com/package/iobroker.netatmo)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.netatmo.svg)](https://www.npmjs.com/package/iobroker.netatmo)
 
 [![NPM](https://nodei.co/npm/iobroker.netatmo.png?downloads=true)](https://nodei.co/npm/iobroker.netatmo/)

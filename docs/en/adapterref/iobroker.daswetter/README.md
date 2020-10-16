@@ -55,9 +55,11 @@ Now we have implemented a "auto-repair" which changes to structure to documented
 
 ## Changelog
 
+### 3.0.4 (2020-10-16)
+* (René) see issue #76: parse rain values as float instead integer 
+
 ### 3.0.3 (2020-09-19)
 * (René) see issue #66: parse numbers added 
-
 
 ### 3.0.1 (2020-05-01)
 * (René) breaking change: old data structure is not supported anymore

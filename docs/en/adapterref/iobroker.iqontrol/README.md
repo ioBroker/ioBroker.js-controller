@@ -194,9 +194,14 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 		* ``<stateObject>`` itself is an object like 
 			````javascript
 			event.data.value = {
-				val: <value>,
+				val: <value (rounded)>,
 				unit: "<unit>",
+				valFull: <value (not rounded)>,
 				plainText: "<clear text of val, for example taken from valuelist>",
+				min: <minimum>,
+				max: <maximum>,
+				valuelist: {<object with possible values and corresponding clear text>},
+				targetValues: {<target value list>},
 				ack: <true|false>,
 				readonly: <true|false>,
 				custom: {<object with custom settings>},
@@ -213,6 +218,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* You can further configure the datapoint by using data-type (which can be set to string, number or boolean), data-role, data-name, data-min, data-max, data-def and data-unit attributes
     * The corresponding datapoint is only then created, if the widget-website is added to a device as URL or BACKGROUND_URL	
 * The same concept may be used for the URL/HTML-State, which is used to display a website inside the dialog of a device
+* To create an icon for your widget place a .png file with the same filename as the widget into the widgets directory
 * See below for an example widget-website:
 
 <details>
@@ -862,12 +868,14 @@ This device has some special predefined size- and display-settings to show a web
 
 
 ****
-
+    
 ## Changelog
 
 ### dev
 * (sbormann) Fixed applying of widget-options for newly devices that havn't been saved before.
 * (sbormann) Enhanced postMessage-Communication to deliver the complete stateObject if a state is requested.
+* (sbormann) Drop-Down-Menus in admin-page are now bigger.
+* (sbormann) Added Autocreate Widget to devices tab.
 
 ### 1.3.2 (2020-10-12)
 * (sbormann) Added icons to REMOTE_ADDITIONAL_BUTTONS of remote control.

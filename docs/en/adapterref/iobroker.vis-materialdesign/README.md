@@ -41,7 +41,7 @@ provided by [iobroker.click](https://iobroker.click/index.html), thanks to bluef
 * [Weather View](https://forum.iobroker.net/topic/32232/material-design-widgets-wetter-view)
 * [Skript Status](https://forum.iobroker.net/topic/30662/material-design-widgets-skript-status)
 * [Adapter Status](https://forum.iobroker.net/topic/30661/material-design-widgets-adapter-status)
-* [UniFi Netzwerk Status](https://forum.iobroker.net/topic/30875/material-design-widgets-unifi-netzwerk-status)
+* [UniFi Netzwerk Status](https://github.com/Scrounger/ioBroker.vis-materialdesign/tree/master/examples/UnifiNetworkState)
 
 ## Questions and answers about the widgets
 If you have questions about the individual widgets, then first look at the topics of the individual widgets
@@ -1388,6 +1388,8 @@ Take a look at the animated screenshot below:
 					<li><a href="#textfield">textfield</a></li>
 					<li><a href="#select-1">select</a></li>
 					<li><a href="#autocomplete-1">autocomplete</a></li>
+                    <li><a href="#material-design-icons">Material Design Icons</a></li>
+                    <li><a href="#html">Html</a></li>
                 </ul> 
             </td>
         </tr>
@@ -3404,7 +3406,7 @@ Take a look at the animated screenshot below:
 			<td>labelPosition</td>
 			<td>labelPosition</td>
 			<td>string</td>
-			<td>left | right</td>
+			<td>left | right | off</td>
 		</tr>
 		<tr>
 			<td>labelClickActive</td>
@@ -3433,6 +3435,12 @@ Take a look at the animated screenshot below:
 		<tr>
 			<td>colorSwitchHover</td>
 			<td>Schalterfarbe selektiert / hover</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>colorSwitchHoverTrue</td>
+			<td>Schalterfarbe selektiert / hover für Aktiviert</td>
 			<td>string</td>
 			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
 		</tr>
@@ -3675,6 +3683,12 @@ Take a look at the animated screenshot below:
 			<td>inputType</td>
 			<td>string</td>
 			<td>text | number | date | time | mask</td>
+		</tr>
+		<tr>
+			<td>inputAlignment</td>
+			<td>text alignment</td>
+			<td>string</td>
+			<td>left | center | right</td>
 		</tr>
 		<tr>
 			<td>inputMask</td>
@@ -3999,6 +4013,12 @@ Take a look at the animated screenshot below:
 			<td>inputType</td>
 			<td>string</td>
 			<td>text | date | time</td>
+		</tr>
+		<tr>
+			<td>inputAlignment</td>
+			<td>text alignment</td>
+			<td>string</td>
+			<td>left | center | right</td>
 		</tr>
 		<tr>
 			<td>vibrateOnMobilDevices</td>
@@ -4556,6 +4576,12 @@ Take a look at the animated screenshot below:
 			<td>inputType</td>
 			<td>string</td>
 			<td>text | date | time</td>
+		</tr>
+		<tr>
+			<td>inputAlignment</td>
+			<td>text alignment</td>
+			<td>string</td>
+			<td>left | center | right</td>
 		</tr>
 		<tr>
 			<td>vibrateOnMobilDevices</td>
@@ -5148,6 +5174,35 @@ Take a look at the animated screenshot below:
 </table>
 </details>
 
+##### Html
+
+<details>
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>html</td>
+			<td>any html element</td>
+			<td>string</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>oid</td>
+			<td>Object Id to use in html. In html use '[#value]' for the value</td>
+			<td>string</td>
+			<td></td>
+		</tr>
+	</tbody>
+</table>
+</details>
+
 <br>
 
 ### Editor Settings
@@ -5570,6 +5625,7 @@ ical2CalendarWidget();
 * (Scrounger): Calendar Widget: option for custom date format added
 * (Scrounger): IconList Widget: bug fix for performance issue
 * (Scrounger): TopAppBar Widget: options for user groups added
+* (Scrounger): Table Widget: html element added
 * (Scrounger): Masonry & Grid View Widget: default width for handy portrait and landscape view changed
 * (Scrounger): Progress Widget: option for indeterminate style added
 * (Scrounger): dependencies updated

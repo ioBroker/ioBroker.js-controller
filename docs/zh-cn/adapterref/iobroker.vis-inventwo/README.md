@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: otFFaZnPFB5qEWeAOJdCPtN42uFe9c81mVYO7Km0QnQ=
+hash: jXZqZmIPNSo5kXUJMkf8HDu9l6AM2bBh0Z/V+A9C/DM=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -23,7 +23,7 @@ hash: otFFaZnPFB5qEWeAOJdCPtN42uFe9c81mVYO7Km0QnQ=
 ###### .. v 1.3.8
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Preview.png)
 
@@ -31,13 +31,16 @@ hash: otFFaZnPFB5qEWeAOJdCPtN42uFe9c81mVYO7Km0QnQ=
 ---
 
 ##Unterstützung
-瀑布下的阿尔贝特教堂和地下教堂
+Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里恩·乌斯·杰德·斯彭德。
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
 [![Spende]（http://resources.inventwo.com/github/inventwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.4.3
+-错误修正
 
 ## 2.4.2
 -错误修正
@@ -65,14 +68,14 @@ hash: otFFaZnPFB5qEWeAOJdCPtN42uFe9c81mVYO7Km0QnQ=
 -JSON Tabelle behoben中的Fehler
 
 ## 2.2.2
--Fehler im Multi Widget behoben：文本和文字的类型导航
+-Fehler im Multi Widget behoben：Bilder und Text wechseln nicht bei Typ Navigation
 
 ## 2.2.1
 -JSON中的Fehler Tabelle behoben，wen keingültigesJSON-Objekt vorhanden ist
 -价值清单behoben中的费勒：Wert wird nicht aktualisiert
 
 ## 2.2.0
--编辑器中的Datenpunktwerte werden jetzt bei allen Widgets
+-Datenpunktwerte werden jetzt bei allen Widgets in Editor angezeigt
 -Neues小部件：Marquee（Laufschrift）
 -通用和多州Verweildauerhinzugefügt
 -列表小部件Abstand zwischen denEinträgenkann eingestell werden
@@ -82,12 +85,12 @@ hash: otFFaZnPFB5qEWeAOJdCPtN42uFe9c81mVYO7Km0QnQ=
 
 ## 2.0.1
 -Übersetzungsfehlerbehoben
--Border Farbe behoben
+-边境Farbe behoben
 -Widget-Untertitel behoben
 
 ## 2.0.0
 -开关，按钮，导航和背景小部件（显示小部件）-> dem通用小部件
--多种小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere）
+-多种小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere Datenpunkte und Wertegeprüftwerden kann（Ähnlichder Signalbild Funktion）
 -图像小部件kann nun auf Datenpunktprüfen
 -单选按钮hinzugefügt
 -Wertelistehinzugefügt（Kann Liste aus einem Datenpunkt oder manuell eingetragenem Text erstellen）
@@ -101,7 +104,7 @@ hash: otFFaZnPFB5qEWeAOJdCPtN42uFe9c81mVYO7Km0QnQ=
 
 ### 1.3.6
 -添加了导航的设置状态选项
--解决了没有配置的数据点的问题
+-修复了没有配置的数据点问题
 
 ### 1.3.5
 -增加了表格的刷新率

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: otFFaZnPFB5qEWeAOJdCPtN42uFe9c81mVYO7Km0QnQ=
+hash: jXZqZmIPNSo5kXUJMkf8HDu9l6AM2bBh0Z/V+A9C/DM=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -31,13 +31,16 @@ Mit Hilfe unserer Widgets lassen sich seine Projekte projizieren. Zur Zeit gehö
 ---
 
 ## Besetzung
-Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns über jede Spende.
+Falls Dir unsere Arbeit ausgewählt und du uns nicht gehört möchtest, wir freuen uns über jede Spende.
 
 (Dieser Link gehört zu unserem PayPal-Konto und steht in keiner Verbindung zum ioBroker)
 
 [![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.4.3
+- Bug-Fix
 
 ## 2.4.2
 - Bug-Fix
@@ -57,7 +60,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehler in der JSON Tabelle Spalten
 
 ## 2.3.0
-- Problem gehört, bei dem Schaltschaltenden eigenen Werte senden
+- Problem gehört, bei dem Schaltschaltenden persönlichen Werte senden
 - Datum / Uhrzeit und Bildformat für Tabellenzellen hinzugefügt
 - Universal- und Multi-Widget-Attribut werden beim Ändern auf Widgetschauen
 
@@ -82,7 +85,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.0.1
 - Übersetzungsfehler gehört
-- Border Farbe wird anders
+- Border Farbe gehört
 - Widget-Untertitel gehört
 
 ## 2.0.0
@@ -90,7 +93,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können.
 - Image Widget kann nun auf Datenpunkt kaufen
 - Radiobuttons hinzugefügt
-- Werteliste hinzugefügt
+- Werteliste hinzugefügt (Kann Liste aus einem Datenpunkt oder manuellem Zugriff Text)
 
 ## 1.3.8
 - Der Schieberegler wurde auf dezimal geändert
@@ -100,7 +103,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Problem mit der Navigation auf Touchscreens behoben
 
 ### 1.3.6
-- Option zum Festlegen des Status für die Navigation hinzugefügt
+- Set State Option für die Navigation hinzugefügt
 - Problem mit Datenpunkten ohne Konfiguration behoben
 
 ### 1.3.5
@@ -150,7 +153,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Die Schaltflächen-Widgets wurden geändert, um die Standardoptionen für Schriftart und Text zu verwenden
 
 ### 1.0.0
-- Widget-Hintergrund und Inhaltsopazität, Wechsel kann von boolesch auf Wert geändert werden, Symbole von weiß auf schwarz geändert, nahtlose Hintergründe hinzugefügt
+- Widget-Hintergrund und Inhaltsopazität, Umschalten von Boolesch auf Wert, Symbole von Weiß auf Schwarz geändert, nahtlose Hintergründe hinzugefügt
 
 ### 0.1.2
 - Fehlerbehebung
@@ -162,7 +165,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ...
 
-### 0.1.0 (Erstveröffentlichungung)
+### 0.1.0 (Erstveröffentlichung)
 - Erfinde zwei Design-Widgets
 
 ...

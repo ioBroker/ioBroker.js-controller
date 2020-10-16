@@ -157,7 +157,68 @@ lrwxrwxrwx 1 root root 0 Nov  2 11:18 28-0000077b9fea -> ../../../devices/w1_bus
 lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_master1
 ```
 
+## Integration of sensors from a remote raspberry pi
+
+It's also possible to integrate sensors which are connected a remote raspberry pi.
+For this purpose, the corresponding directory is shared on the remote Raspberry Pi using *samba* and then mounted on the ioBorker system.
+
+### Configuration on the remote raspberry pi
+
+Installation of samba:
+```sh
+sudo apt install samba
+```
+
+Configuration in `/etc/samba/smb.conf`:
+```ini
+[ds1820]
+path = /sys/devices/w1_bus_master1
+comment = DS1820 Temperature sensors.
+available = yes
+browseable = yes
+guest ok = yes
+writeable = no
+force user = root
+force group = root
+```
+
+Restart samba to apply the changes:
+```sh
+sudo systemctl restart samba
+```
+
+### Configuration on the ioBroker system
+
+Installation of samba client:
+```sh
+sudo apt install smbclient
+```
+
+Add an entry for the mount in `/etc/fstab`:
+```
+//<IP-ADRESS-REMOTE-RPI>/ds1820 /mnt/remote-ds1820 cifs defaults,vers=1.0 0 0
+```
+
+Create directory for the mount point:
+```sh
+sudo mkdir -p /mnt/remote-ds1820
+```
+
+Mount it:
+```sh
+sudo mount /mnt/remote-ds1820
+```
+
+### Adapter configuration
+In the adapter configuration you have to set the system path for the 1-wire devices to the mountpoint `/mnt/remote-ds1820`.
+
+If there are also sensors directly connected to the ioBroker system, you should add an extra instance of the adapter for the remote sensors.
+
 ## Changelog
+### 1.1.5 (2020-10-14)
+* (Peter Müller) Fixed incorrect data type of object
+* (Peter Müller) Updated dependencies
+
 ### 1.1.4 (2020-02-03)
 * (Peter Müller) Updated connectionType and dataSource in io-package.json.
 

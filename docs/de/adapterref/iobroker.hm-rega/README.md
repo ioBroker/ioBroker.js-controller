@@ -145,6 +145,9 @@ Abschließend sind die in der CCU angelegten Variablen aufgelistet
 ### FAQ
 
 ## Changelog
+### 2.6.23 (2020-10-15)
+* (foxriver76) fixes for edge case crashes
+
 ### 2.6.22 (2020-09-29)
 * (foxriver76) fixed error where alarm states of hm-rpc instances with instance number >= 10 are created for the wrong instance (issue #111)
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.eventlist/README.md
 title: ioBroker.eventlist
-hash: v709NHsaAqhAF725XphiM3VzVjMl7bw44UszQGuigE4=
+hash: RfdHdRKzFlvVs7lLAzyKLdcQBEbYl4meUH7nmlVhG5Y=
 ---
 ![Логотип](../../../en/adapterref/iobroker.eventlist/admin/eventlist.png)
 
@@ -13,22 +13,22 @@ hash: v709NHsaAqhAF725XphiM3VzVjMl7bw44UszQGuigE4=
 ![Количество установок (стабильно)](http://iobroker.live/badges/eventlist-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/bluefox/iobroker.eventlist.svg)
 ![Известные уязвимости](https://snyk.io/test/github/bluefox/ioBroker.eventlist/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.eventlist.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.eventlist.png?downloads=true)
 
 # IoBroker.eventlist
-## Адаптер списка событий для ioBroker
+## Адаптер Event-List для ioBroker
 Позволяет определить состояния, которые необходимо регистрировать в списке событий.
 
-Список может быть отображен в админке, веб, vis, сохранен как PDF, материал (еще не реализован).
+Список может быть показан в админке, веб, vis, сохранен как PDF, материал (еще не реализован).
 
-Кроме того, вы можете отправлять события через Telegram или WhatsApp.
+Дополнительно вы можете отправлять события через Telegram или WhatsApp.
 
 ![Список](../../../en/adapterref/iobroker.eventlist/img/list.png)
 
 ![PDF](../../../en/adapterref/iobroker.eventlist/img/pdf.png)
 
 ## Режим тревоги
-События могли генерироваться только в режиме тревоги.
+События могли генерироваться только в тревожном режиме.
 Режимом тревоги можно управлять с помощью переменной `eventlist.X.alarm`.
 
 Кроме того, сообщения в мессенджеры могут быть отправлены только при включенном режиме тревоги.
@@ -50,10 +50,10 @@ hash: v709NHsaAqhAF725XphiM3VzVjMl7bw44UszQGuigE4=
 ### Создание PDF
 Есть возможность сгенерировать PDF-документ со всеми событиями.
 
-Заголовок документа может состоять из даты создания, если вы поместите в него шаблон: `Event list on {{YYYY MM DD}}`.
+Заголовок документа может содержать дату создания, если вы поместите в него шаблон: `Event list on {{YYYY MM DD}}`.
 Точное описание формата времени можно найти здесь: https://momentjs.com/docs/#/displaying/format/
 
-Генерацию PDF можно запустить, записав `true` в `eventlist.0.triggerPDF`.
+Создание PDF-файла можно запустить, записав `true` в `eventlist.0.triggerPDF`.
 
 Доступ к файлу PDF можно получить через:
 
@@ -89,7 +89,8 @@ setState('eventlist.0.insert', {event: 'My custom text %s', val: 5});
 // add custom event to event list
 sendTo('eventlist.0', 'list', {
     ids: ['my.0.state.id1', 'my.0.state.id2'],
-    max: 10, // optional limit of maximal lines in table
+    count: 10, // optional limit of maximal lines in table,
+    allowRelative: false, // optional if relative times, e.g. "one minute ago", may be used (Default: true)
 }, result => {
     console.log(JSON.stringify(result)); // array with events
     // result = [{id: 'my.0.state.id1',
@@ -108,8 +109,8 @@ sendTo('eventlist.0', 'list', 'my.0.state.id1', result => {
 - %s  - значение (`Состояние изменено на% s` =>` Состояние изменено на 5`),
 -% u - unit (`Состояние изменено на %s % u` =>` Состояние изменено на 5% `),
 -% n - имя (`% n изменено состояние на %s ` =>` Устройство A изменило состояние на 5`),
--% t - время (`Состояние изменилось на% t` =>` Состояние изменилось состояние в сен Fr, 16: 32: 00`),
--% r - относительное время (`Состояние изменилось состояние% r` =>` Состояние изменилось 5 секунд назад`),
+-% t - время (`Состояние изменено на% t` =>` Состояние изменилось состояние в сен Fr, 16: 32: 00`),
+-% r - относительное время (`Состояние изменено, состояние% r` =>` Состояние изменилось состояние 5 секунд назад`),
 -% d - продолжительность (`State was in previous state for% d` =>` State was in previous state for 5s`),
 -% g - разница значений (`Состояние было изменено на% g%` => `Состояние было изменено на 1%`),
 -% o - разница значений (`Состояние изменено значение с% o на%` => `Состояние было изменено на 1%`)
@@ -124,6 +125,10 @@ sendTo('eventlist.0', 'list', 'my.0.state.id1', result => {
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 0.2.8 (2020-10-14)
+* (bluefox) Corrected error in pdf settings  
+* (bluefox) Implemented the recalculation of the relative time every 10 seconds  
+
 ### 0.2.6 (2020-09-25)
 * (bluefox) Corrected error in pdf creation  
 

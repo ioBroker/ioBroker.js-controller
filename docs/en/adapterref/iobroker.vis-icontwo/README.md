@@ -57,6 +57,14 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.27.0
+
+• Neue Icons hinzugefügt (Computer)
+
+### 0.26.0
+
+• Neue Icons hinzugefügt (Computer)
+
 ### 0.25.0
 
 • Neue Icons hinzugefügt (Navigation)

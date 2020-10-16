@@ -84,27 +84,20 @@ thanks to @sigi234
 * 
 -->
 
-### 0.8.14 (2020-10-04)
-* border-fix due to changes in css
+### 1.1.0 (2020-10-15)
+* Travis changes
 
-### 0.8.13 (2020-10-03)
-* bugfix LightIcon not switching
-* bugfix Volume Icon not shown if no object is set
+### 1.0.0 (2020-10-14)
+* no changes, upgrading to 1.0
 
-### 0.8.12 (2020-10-01)
-* Value font-size can be changed now
+### 0.9.1 (2020-10-13)
+* some colorizeByValue options did not work
 
+### 0.9.0 (2020-10-13)
+* bugfix for ListNumber and ListText, Icon should never been shown
 
-### 0.8.11 (2020-09-30)
-* bugfix fo rwrong htm lin Shutter Widget, thx Sigi234
-
-
-### 0.8.10 (2020-09-30)
-* rebase to iobroker-ocmmunity-adapter
-* added option to center Icon
-* added option to have ONLY Title and no subtitle
-
-
+### 0.8.15 (2020-10-13)
+* position of Elements and min - height finally? fixed :)
 
 ## License
 MIT License

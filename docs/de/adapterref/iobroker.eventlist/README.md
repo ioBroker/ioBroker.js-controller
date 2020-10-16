@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.eventlist/README.md
 title: ioBroker.eventlist
-hash: v709NHsaAqhAF725XphiM3VzVjMl7bw44UszQGuigE4=
+hash: RfdHdRKzFlvVs7lLAzyKLdcQBEbYl4meUH7nmlVhG5Y=
 ---
 ![Logo](../../../en/adapterref/iobroker.eventlist/admin/eventlist.png)
 
@@ -89,7 +89,8 @@ Der Benutzer kann eine formatierte JSON-Liste für eine bestimmte ID anfordern. 
 // add custom event to event list
 sendTo('eventlist.0', 'list', {
     ids: ['my.0.state.id1', 'my.0.state.id2'],
-    max: 10, // optional limit of maximal lines in table
+    count: 10, // optional limit of maximal lines in table,
+    allowRelative: false, // optional if relative times, e.g. "one minute ago", may be used (Default: true)
 }, result => {
     console.log(JSON.stringify(result)); // array with events
     // result = [{id: 'my.0.state.id1',
@@ -110,9 +111,9 @@ In den Veranstaltungstexten und in den Staatstexten könnten folgende Muster ver
 -% n - Name (`% n hat den Status in %s ` geändert =>` Gerät A hat den Status in 5` geändert),
 -% t - Zeit (`Status geändert Status auf% t` =>` Status geändert Status am Sep Fr, 16: 32: 00`),
 -% r - relative Zeit (`Zustand geändert Zustand% r` =>` Zustand geändert Zustand vor 5 Sekunden`),
--% d - Dauer (`Zustand war für% d im vorherigen Zustand = =` `Zustand war für 5s im vorherigen Zustand`),
+-% d - Dauer (`Zustand war für% d im vorherigen Zustand = =` Zustand war für 5s im vorherigen Zustand`),
 -% g - Wertdifferenz (`Status wurde auf% g% geändert` => `Status wurde auf 1% geändert`),
--% o - Wertdifferenz (`Status geändert Wert von% o auf%` => `Status wurde auf 1% geändert`)
+-% o - Wertdifferenz (`Status geändert Wert von% o zu%` => `Status wurde auf 1% geändert`)
 
 ## Machen
 - Viele vordefinierte Symbole (mindestens 100)
@@ -124,6 +125,10 @@ In den Veranstaltungstexten und in den Staatstexten könnten folgende Muster ver
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.2.8 (2020-10-14)
+* (bluefox) Corrected error in pdf settings  
+* (bluefox) Implemented the recalculation of the relative time every 10 seconds  
+
 ### 0.2.6 (2020-09-25)
 * (bluefox) Corrected error in pdf creation  
 
