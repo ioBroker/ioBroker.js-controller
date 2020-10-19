@@ -24,17 +24,19 @@ For more details and for information how to disable the error reporting see [Sen
 Features:
 * Control the setpoint temperature levels of all thermostats per schedules
 * Configure multiple heating periods for each day and night 
-* Supports various homematic and max! thermostats
+* Supports all kind of thermostats (precondition: it must be available in ioBroker)
+* Homematic device autodetection 
 * supports multiple profiles
 * If there is no direct connection between the thermostat and the actuator, the actuator can be switched directly out of the adapter
 * Currently, the actuator is switched off directly when the setpoint temperature is reached. As soon as the setpoint temperature is below the actual temperature, the actuator will be switched on. (To do: implement improved control)
-* unlimited thermostat, actuator and sonsor per room are supported
+* unlimited number of thermostats, actuators and sonsors per room are supported
 * Thermostat, actuator and sensor are automatically detected per room. The function (eg "heating") is used for this.
 * Rooms can be excluded within the admin interface, if a room contains a thermostat but should not be controlled
 * sensor is used to reduce target temperature (e.g. if a window is open); optionally with SensorDelay
 * interface to Feiertag-Adapter or any others to detect public holiday. Public holiday can be a normal day or like sundays. (admin setting)
 * manual temperature override for a certain time
 * predefined heating period
+* take over changes from thermostat (optional)
 * visualization from [Pittini](https://github.com/Pittini/iobroker-heatingcontrol-vis) is supported. Thank you!
 
 [FAQ](doc/FAQ.md)
@@ -165,6 +167,12 @@ Sentry.io is a service for developers to get an overview about errors from their
 When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry.  All of this helps me to provide error free adapters that basically never crashs.
 
 ## Changelog
+
+### 1.1.0 (2020-10-xx)
+* (René) see issue #132: timer before on and off for actuators 
+* (René) see issue #143: additional checks to avoid unneccessary override 
+* (René) see issue #140: use guests present also as counter like present (as a option); add adjustable limit for present and guest present
+
 
 ### 1.0.0 (2020-10-09)
 * (matida538) added better Handling of strings in HandleThermostat (convert to Number, instead of warn) (e.g. fhem connector for fht80)

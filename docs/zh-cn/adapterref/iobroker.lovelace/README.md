@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: 67eXK6ulWrq0ypNcdiWmRASu3wjj7jtEXA0Qr0CAZaw=
+hash: M/ZKMacVtSQQnZoxMJzS6xNQxxlnDOHUBemCtbTexMo=
 ---
 ![商标](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -34,7 +34,7 @@ hash: 67eXK6ulWrq0ypNcdiWmRASu3wjj7jtEXA0Qr0CAZaw=
 
 ###手册
 可以在对象树（如sql或histroy）中手动定义对象。必须提供实体的类型以及对象的名称（可选）。
-使用此方法，只能创建简单实体，例如input_number，input_text或input_boolean。它不能具有多个状态或属性。
+使用此方法，只能创建简单实体，例如input_number，input_text或input_boolean。它可能没有多个状态或属性。
 
 ##面板
 ###警报面板
@@ -77,7 +77,7 @@ createState(
 
 ###数字输入
 如果选择了自定义对话框中的input_number实体类型，则可以手动完成此操作。
-可以添加`common`中的此类型所需的`min`和`max`值以及可选的`step`。
+可以添加`common`中的这种必需的`min`和`max`值以及可选的`step`。
 如果要查看向上和向下箭头，则应在自定义`mode`中将其设置为'number'：
 
 ```
@@ -95,7 +95,7 @@ common: {
 
 ###选择输入
 如果在自定义对话框中选择了input_select实体类型，则可以手动完成此操作。
-标准commom.states对象应提供可供选择的选项列表：
+应该在标准commom.states对象中提供可供选择的选项列表：
 
 ```
 "common": {
@@ -287,8 +287,8 @@ createState('location.latitude', 39.5681295, false, {
 例如。文本`Admin adapter is {a:system.adapter.admin.0.alive;a === true || a === 'true' ? ' ' : 'not '} *alive*.`将在markdown面板中生成文本`Admin adapter is alive`。
 
 ##自定义卡
-###上载自定义卡片
-要上传自定义卡，请执行以下操作：
+###自定义卡的上传
+要上传自定义卡，请输入以下内容：
 
 ```iobroker file write PATH_TO_FILE\bignumber-card.js /lovelace.0/cards/```
 
@@ -296,7 +296,7 @@ createState('location.latitude', 39.5681295, false, {
 
 以下定制卡可以成功测试：
 
--bignumber-card：https://github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
+-bignumber-card：https：//github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
 -simple-thermostat：https：//github.com/nervetattoo/simple-thermostat/releases（采用最新版本）
 -恒温器：https://github.com/ciotlosm/custom-lovelace/tree/master/thermostat-card（都需要.js和.lib.js文件）
 
@@ -315,7 +315,7 @@ createState('location.latitude', 39.5681295, false, {
 
 `background: center / cover no-repeat url("/local/custom_ui/background.jpg") fixed`
 
-在lovelace配置文件中。阅读有关lovelace[这里](https://www.home-assistant.io/lovelace/views/#background)中的背景的更多信息。
+在lovelace配置文件中。阅读更多有关lovelace[这里](https://www.home-assistant.io/lovelace/views/#background)中的背景的信息。
 
 ##主题
 可以在ioBroker的配置对话框中定义主题。
@@ -443,7 +443,7 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 首先必须将** https：//github.com/home-assistant/frontend（dev分支）实际**手动合并到https://github.com/GermanBluefox/home-assistant-polymer.git（* ** iob ***分支！）。
 
 ioBroker的所有更改都标记有注释`// IoB`。
-现在（2020.01.12）修改了以下文件：
+目前（2020.06.20）修改了以下文件：
 
 -`.gitignore`-添加了`.idea`忽略
 -`build-scripts / gulp / app.js`-添加了新的gulp任务
@@ -457,151 +457,16 @@ ioBroker的所有更改都标记有注释`// IoB`。
 -`src / panels / lovelace / hui-root.ts`-添加了通知和语音控制
 -`src / panels / lovelace / cards / hui-weather-forecast-card.ts`-添加支持以再次显示ioBroker天气图标。
 
-之后，在`./build`文件夹中签出修改的版本。然后。
+之后，在`./build`文件夹中签出修改后的版本。然后。
 
 1.转到./build目录。
-2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`，它是https://github.com/home-assistant/frontend.git的一个分支，但是有一些修改（请参阅前面的文件列表）。
+2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`，它是https://github.com/home-assistant/frontend.git的一个分支，但是有些东西被修改了（请参阅前面的文件列表）。
 3.`cd home-assistant-polymer`
 4.`git checkout master`
 5.`npm install`
 6.`gulp build-app`发行版或`gulp development-iob`调试版。要在更改后构建Web，可以调用`webpack-dev-app`以加快构建速度，但是在该版本准备就绪后，无论如何都需要调用`build-app`。
 7.将所有文件从./build/home-assistant-polymer/hass_frontend复制到该仓库中的./hass_frontend中。
 8.启动“ gulp重命名”任务。
-
-## Changelog
-### 1.2.5 (2020-07-10)
-* (Garfonso) Fixed: Parse initial values the same way as state changes
-* (Garfonso) Added: Work around for (old) common.states of type string
-
-### 1.2.4 (2020-06-29)
-* (Garfonso) Fixed: corrected hass_frontend files and directory
-* (Garfonso) Fixed: Prevent warning and possible crash
-
-### 1.2.3 (2020-06-27)
-* (Garfonso) Added: config to select direction of blinds.
-* (Garfonso) Fixed: missing translation of binary_sensor.states
-* (Garfonso) Fixed: History Graph diagrams for sensor-entities
-
-### 1.2.2 (2020-06-24)
-* (Garfonso) Fixed: Notification-drawer was to wide on narrow screens
-* (Garfonso) Fixed: Clear-all notifications button now has its icon again
-* (Garfonso) Fixed: Notification-button could move unpredictable in toolbar
-* (Garfonso) Fixed: Lock status is now displayed in icon (open/close)
-* (Garfonso) Fixed: Lock status is now received if no dedicated getId exists (by subscribing setId like with other entities)
-* (Garfonso) Added: Support for open-service call (which is not yet? supported in lovelace itself...)
-
-### 1.2.1 (2020-06-23)
-* (Garfonso) Updated Hass Lovelace. Which fixes weather-card, no weather icons with authorization and (maybe?) store credentials
-             Please make sure to update your custom cards! Follwing cards need updates:
-                [mini-graph-card](https://github.com/kalkih/mini-graph-card)
-                [Slideshow](https://github.com/igloo15/slideshow-card)
-                [button-entity-row](https://github.com/mattatcha/button-entity-row)
-* (Garfonso) Fix: yaml editor goes missing on Firefox 
-* (Garfonso) Added: Support for new type of blinds (needs type-detector update)
-
-### 1.2.0 (2020-06-20)
-* (Garfonso) Added: Support for cover entity (cover and input_number entities are now created for blinds)
-* (Garfonso) Added: Support for new blind types which let lovelace determine direction of 0/100%
-* (Garfonso) Fixed: Prefer ON_LIGHT for lights if present, should fix cases where there is also a switch state in a light device.
-* (Garfonso) Added: Enable history support, let's more-info show history of states
-* (Garfonso) Added: zone.home entity from system.config (i.e. lat/long)
-* (Garfonso) Fixed: Make door devices create a device_class door entity
-* (Garfonso) Fixed: Added some missing translations, improved translation a bit, added domain name to translations in custom tab.
-
-### 1.1.0 (2020-05-28)
-* (Garfonso) BREAKING: fixed issue with entity_id generation which now allows umlauts to be replaced by ue/ae/oe.
-* (Garfonso) added windowsTilt device type
-* (Garfonso) reworked friendly name for auto generated entities, allow space in name.
-* (Garfonso) use device_class feature for sensors (where applicable) -> results in translation features of lovelace being used.
-* (Garfonso) multiple fixes/additions to media player (like volume scaling, on/off support, shuffle support, stop support) 
-
-### 1.0.16 (2020-05-04)
-* (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
-
-### 1.0.15 (2020-04-30)
-* (Apollon77) errors on webserver initialization are handled properly
-
-### 1.0.14 (2020-04-22)
-* (algar42) Call of deprecated getObjectView updated for js-controller v3
-
-### 1.0.13 (2020-04-13)
-* (bluefox) The translation was corrected in the custom settings.
-
-### 1.0.12 (2020-03-16)
-* (Garfonso) Added option to restrict auto entity creation to alias.0.*
-
-### 1.0.10 (2020-02-13)
-* (Garfonso) Fixed handling of malformed / null RGB string
-* (algar42)  Binary sensor added
-* (Garfonso) fixed manual dimmer 
-* (algar42)  fixed for duplicated states via websockets
-* (Garfonso) fixed handling of deleted objects 
-
-### 1.0.9 (2020-01-29)
-* (bluefox) Dimmer control was fixed
-
-### 1.0.8 (2020-01-13)
-* (Garfonso) process max value of saturation and hue
-* (Garfonso) disable extensive debug logging
-* (Garfonso) many changes done concerning detection of devices and processing of states
-* (bluefox) Update hass lovelace
-
-### 1.0.7 (2019-12-17)
-* (bluefox) Invalid objects will be filtered out.
-
-### 1.0.6 (2019-12-06)
-* (bluefox) Fixed disconnection behavior
-
-### 1.0.5 (2019-11-27)
-* (algar42) getting back broken update of internal_entities
-
-### 1.0.4 (2019-11-25)
-* (bluefox) Implemented bindings ala vis in markdown
-* (bluefox) protect access to states
-
-### 0.2.5 (2019-11-18)
-* (algar42) Dimmer light is now switched on with the previous brightness level and not 100%
-* (algar42) Added ability to correctly control light brightness from Card and from more_info dialog as well
-* (algar42) input_boolean processing correct and initial value added to entity
-* (algar42) input_select processing added
-* (algar42) Entities object updates with new states added (resolved issue #46 showing old values on page refresh)
-* (algar42) Switch entity updated to show two state buttons in GUI (assumed_state attribute set to true)
-* (algar42) Russian translation updated
-* (algar42) Language support added. Lovelace runs with IoB System Language
-
-### 0.2.4 (2019-11-05)
-* (ldittmar) Fixed translations
-
-### 0.2.3 (2019-10-22)
-* (bluefox) The custom settings were corrected
-
-### 0.2.1 (2019-10-15)
-* (bluefox) Processing of empty states was corrected
-
-### 0.2.0 (2019-09-19)
-* (Scrounger) Some bugs on "Custom Dialog" were fixed
-* (Scrounger) bug fix: if value set by lovelace and max is not 100
-* (Scrounger) log warn if no max value set for light entity
-* (bluefox) Version of home-assistant-polymer was updated to 1.0.0
-
-### 0.1.5 (2019-08-26)
-* (bluefox) fixed timestamp conversion
-
-### 0.1.3 (2019-07-18)
-* (SchumyHao) If no ACTUAL is discovered, use SET value as switch entity value
-
-### 0.1.2 (2019-07-14)
-* (SchumyHao) Translate Chinese words to pinyin
-
-### 0.1.1 (2019-06-10)
-* (bluefox) Fixed control of states
-
-### 0.1.0 (2019-06-06)
-* (bluefox) Authentication could be disabled
-* (bluefox) Lovelace compiled extra for ioBroker
-
-### 0.0.3 (2019-06-02)
-* (bluefox) initial release
 
 ## License
 

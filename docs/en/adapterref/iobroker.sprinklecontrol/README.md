@@ -22,13 +22,9 @@ Wetterabhängige automatische steuerung der Gartenbewässerung
 
 [Deutsche Beschreibung hier](docs/de/sprinklecontrol.md)
 
-[Deutsche Beschreibung auf GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/de/sprinklecontrol.md)
-
 Weather-dependent automatic control of garden irrigation
 
 [English Description here](docs/en/sprinklecontrol.md)
-
-[English description on GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/en/sprinklecontrol.md)
 
 *************************************************************************************************************************************
 

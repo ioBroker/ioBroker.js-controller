@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sprinklecontrol/README.md
 title: ioBroker.sprinklecontrol
-hash: KObvUGjbQvRq6e7TlYwZqgg7Vo7Cmux/gUGKOE87/zg=
+hash: ArGsY6VmAnDUvYUoeX8320WMkUOG18KS0LiZJVuVmMk=
 ---
 ![Логотип](../../../en/adapterref/iobroker.sprinklecontrol/admin/sprinklecontrol.png)
 
@@ -13,7 +13,7 @@ hash: KObvUGjbQvRq6e7TlYwZqgg7Vo7Cmux/gUGKOE87/zg=
 ![Статус зависимости](https://img.shields.io/david/Dirk-Peter-md/iobroker.sprinklecontrol.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Dirk-Peter-md/ioBroker.sprinklecontrol/badge.svg)
 ![Трэвис-Си](http://img.shields.io/travis/Dirk-Peter-md/ioBroker.sprinklecontrol/master.svg)
-![НПМ](https://nodei.co/npm/iobroker.sprinklecontrol.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.sprinklecontrol.png?downloads=true)
 
 # IoBroker.sprinklecontrol
 ## Адаптер sprinklecontrol для ioBroker
@@ -23,17 +23,20 @@ Wetterabhängige automatische steuerung der Gartenbewässerung
 
 [Deutsche Beschreibung hier](docs/de/sprinklecontrol.md)
 
-[Deutsche Beschreibung на GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/de/sprinklecontrol.md)
-
 Погодозависимый автоматический контроль полива сада
 
 [Английский Описание здесь](docs/en/sprinklecontrol.md)
 
-[Описание на английском на GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/en/sprinklecontrol.md)
-
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.0.12 (10.10.2020)
+* (Dirk-Peter-md) Bewässerung über eine 2. Pumpe (Zisterne mit Vorrangschaltung) in abhängigkeit vom Füllstand hinzugefügt.
+
+### 0.0.11 (30.08.2020)
+* (Dirk-Peter-md) Bug in der Verarbeitung der Regenvorhersage vom Adapter "Das Wetter"
+* (Dirk-Peter-md) Bug auf Travis CI
 
 ### 0.0.10 (29.08.2020)
 * (Dirk-Peter-md) Bug in der Verarbeitung der Regenvorhersage vom Adapter "Das Wetter"

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adddevice.md
 title: 如何将设备添加到Alexa或Google Home
-hash: 7LOEqf58Vo+Ne7CyV77jozHsy8UjnC7Ghl8TQAR8aD0=
+hash: KJyj2QNgNPa29Jr/BcB/QJi6yPa8ucW5nGzTU+4Hr+A=
 ---
 ＃如何将设备添加到Alexa或Google Home
 要添加设备，我们有4个步骤：
@@ -48,4 +48,4 @@ Yandex最全面地了解了州，因此将其作为基础是合理的。
 转到https://github.com/ioBroker/ioBroker.devices/blob/master/src/package.json并在那里更新您的版本。
 之后，扩展图标的列表：https://github.com/ioBroker/ioBroker.devices/blob/master/src/src/Components/TypeIcon.js
 
- 并创建一个新版本。
+ 并也创建一个新版本。

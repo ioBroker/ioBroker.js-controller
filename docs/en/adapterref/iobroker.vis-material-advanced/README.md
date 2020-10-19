@@ -84,6 +84,10 @@ thanks to @sigi234
 * 
 -->
 
+### 1.1.1 (2020-10-18)
+* url wrong in package.json
+
+
 ### 1.1.0 (2020-10-15)
 * Travis changes
 
@@ -95,9 +99,6 @@ thanks to @sigi234
 
 ### 0.9.0 (2020-10-13)
 * bugfix for ListNumber and ListText, Icon should never been shown
-
-### 0.8.15 (2020-10-13)
-* position of Elements and min - height finally? fixed :)
 
 ## License
 MIT License

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sprinklecontrol/README.md
 title: ioBroker.sprinklecontrol
-hash: KObvUGjbQvRq6e7TlYwZqgg7Vo7Cmux/gUGKOE87/zg=
+hash: ArGsY6VmAnDUvYUoeX8320WMkUOG18KS0LiZJVuVmMk=
 ---
 ![Logo](../../../en/adapterref/iobroker.sprinklecontrol/admin/sprinklecontrol.png)
 
@@ -23,17 +23,20 @@ Wetterabhängige politische Kontrolle der Gartenbewässerung
 
 [Deutsche Beschreibung hier](docs/de/sprinklecontrol.md)
 
-[Deutsche Beschreibung auf GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/de/sprinklecontrol.md)
-
 Wetterabhängige automatische Steuerung der Gartenbewässerung
 
 [Englische Beschreibung hier](docs/en/sprinklecontrol.md)
 
-[Englische Beschreibung auf GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/en/sprinklecontrol.md)
-
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.0.12 (10.10.2020)
+* (Dirk-Peter-md) Bewässerung über eine 2. Pumpe (Zisterne mit Vorrangschaltung) in abhängigkeit vom Füllstand hinzugefügt.
+
+### 0.0.11 (30.08.2020)
+* (Dirk-Peter-md) Bug in der Verarbeitung der Regenvorhersage vom Adapter "Das Wetter"
+* (Dirk-Peter-md) Bug auf Travis CI
 
 ### 0.0.10 (29.08.2020)
 * (Dirk-Peter-md) Bug in der Verarbeitung der Regenvorhersage vom Adapter "Das Wetter"

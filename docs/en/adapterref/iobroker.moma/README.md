@@ -36,6 +36,9 @@ MoMa needs at least nodejs version 8 / ES9 / ECMAScript2018.
 
 ## Changelog
 
+### 1.2.7 (2020-10-18)
+* (AWhiteKnight) remove leading i in names that are not a number, systeminformation lib 4.27.0 
+
 ### 1.2.6 (2020-04-27)
 * (AWhiteKnight) fix typo, precise error location, systeminformation lib 4.23.6 
 
