@@ -339,10 +339,7 @@ function createStates(onConnect) {
 
                         // delete too old callbacks IDs
                         const now = Date.now();
-                        for (const _id in callbacks) {
-                            if (!Object.prototype.hasOwnProperty.call(callbacks, _id)) {
-                                continue;
-                            }
+                        for (const _id of Object.keys(callbacks)) {
                             if (now - callbacks[_id].time > 3600000) {
                                 delete callbacks[_id];
                             }
@@ -418,10 +415,7 @@ function createStates(onConnect) {
                 let currentLevel = config.log.level;
                 if (state.val && state.val !== currentLevel && ['silly','debug', 'info', 'warn', 'error'].includes(state.val)) {
                     config.log.level = state.val;
-                    for (const transport in logger.transports) {
-                        if (!Object.prototype.hasOwnProperty.call(logger.transports, transport)) {
-                            continue;
-                        }
+                    for (const transport of Object.keys(logger.transports)) {
                         if (logger.transports[transport].level === currentLevel) {
                             logger.transports[transport].level = state.val;
                         }
@@ -842,24 +836,16 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         }
         let modified = false;
         // look for all subscribes from this instance
-        for (const pattern in subs) {
-            if (!Object.prototype.hasOwnProperty.call(subs, pattern)) {
-                continue;
-            }
-            for (const id in subs[pattern]) {
-                if (Object.prototype.hasOwnProperty.call(subs[pattern], id) && id === instance) {
+        for (const pattern of Object.keys(subs)) {
+            for (const id of Object.keys(subs[pattern])) {
+                if (id === instance) {
                     modified = true;
                     delete subs[pattern][id];
                 }
             }
-            let found = false;
-            for (const f in subs[pattern]) {
-                if (Object.prototype.hasOwnProperty.call(subs[pattern], f)) {
-                    found = true;
-                    break;
-                }
-            }
-            if (!found) {
+
+            // check if array is now empty
+            if (!Object.keys(subs[pattern].length)) {
                 modified = true;
                 delete subs[pattern];
             }
@@ -2218,8 +2204,8 @@ async function processMessage(msg) {
                     data.Uptime = Math.round((Date.now() - uptimeStart) / 1000);
                     // add information about running instances
                     let count = 0;
-                    for (const id in procs) {
-                        if (Object.prototype.hasOwnProperty.call(procs, id) && procs[id].process) {
+                    for (const id of Object.keys(procs)) {
+                        if (procs[id].process) {
                             count++;
                         }
                     }
@@ -2374,8 +2360,8 @@ async function processMessage(msg) {
                 });
 
                 // Get list of all active adapters and send them message with command checkLogging
-                for (const _id in procs) {
-                    if (Object.prototype.hasOwnProperty.call(procs, _id) && procs[_id].process) {
+                for (const _id of Object.keys(procs)) {
+                    if (procs[_id].process) {
                         outputCount++;
                         states.setState(_id + '.checkLogging', {val: true, ack: false, from: hostObjectPrefix});
                     }
@@ -2526,8 +2512,8 @@ function getInstances() {
             let count = 0;
 
             // first mark all instances as disabled to detect disabled once
-            for (const id in procs) {
-                if (Object.prototype.hasOwnProperty.call(procs, id) && procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
+            for (const id of Object.keys(procs)) {
+                if (procs[id].config && procs[id].config.common && procs[id].config.common.enabled) {
                     procs[id].config.common.enabled = false;
                 }
             }
@@ -2657,11 +2643,7 @@ function initInstances() {
     let id;
 
     // Start first admin
-    for (id in procs) {
-        if (!Object.prototype.hasOwnProperty.call(procs, id)) {
-            continue;
-        }
-
+    for (id of Object.keys(procs)) {
         if (procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)) {
             if (id.startsWith('system.adapter.admin')) {
                 // do not process if still running. It will be started when old one will be finished
@@ -2684,11 +2666,7 @@ function initInstances() {
         }
     }
 
-    for (id in procs) {
-        if (!Object.prototype.hasOwnProperty.call(procs, id)) {
-            continue;
-        }
-
+    for (id of Object.keys(procs)) {
         if (procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)) {
             if (!id.startsWith('system.adapter.admin')) {
                 // do not process if still running. It will be started when old one will be finished
@@ -2783,11 +2761,7 @@ function checkVersions(id, deps, globalDeps) {
 
             // check local dependencies: required adapter must be installed on the same host
             try {
-                for (const dep in deps) {
-                    if (!Object.prototype.hasOwnProperty.call(deps, dep)) {
-                        continue;
-                    }
-
+                for (const dep of Object.keys(deps)) {
                     if (!checkVersion(id, dep, deps[dep], instances)) {
                         return reject(new Error());
                     }
@@ -2800,11 +2774,7 @@ function checkVersions(id, deps, globalDeps) {
 
             // check global dependencies: required adapter must be NOT installed on the same host
             try {
-                for (const gDep in globalDeps) {
-                    if (!Object.prototype.hasOwnProperty.call(globalDeps, gDep)) {
-                        continue;
-                    }
-
+                for (const gDep of Object.keys(globalDeps)) {
                     if (!checkVersion(id, gDep, globalDeps[gDep], globInstances)) {
                         return reject(new Error());
                     }
@@ -2826,20 +2796,12 @@ function storePids() {
         storeTimer = setTimeout(() => {
             storeTimer = null;
             const pids = [];
-            for (const id in procs) {
-                if (!Object.prototype.hasOwnProperty.call(procs, id)) {
-                    continue;
-                }
-
+            for (const id of Object.keys(procs)) {
                 if (procs[id].process && procs[id].process.pid && !procs[id].startedAsCompactGroup) {
                     pids.push(procs[id].process.pid);
                 }
             }
-            for (const id in compactProcs) {
-                if (!Object.prototype.hasOwnProperty.call(compactProcs, id)) {
-                    continue;
-                }
-
+            for (const id of Object.keys(compactProcs)) {
                 if (compactProcs[id].process && compactProcs[id].process.pid) {
                     pids.push(compactProcs[id].process.pid);
                 }
@@ -3327,19 +3289,13 @@ function startInstance(id, wakeUp) {
 
                                 if (isStopping) {
                                     logger.silly(`${hostLogPrefix} Check Stopping ${id}`);
-                                    for (const i in procs) {
-                                        if (!Object.prototype.hasOwnProperty.call(procs, i)) {
-                                            continue;
-                                        }
+                                    for (const i of Object.keys(procs)) {
                                         if (procs[i].process) {
                                             logger.silly(`${hostLogPrefix} ${procs[i].config.common.name} still running`);
                                             return;
                                         }
                                     }
-                                    for (const i in compactProcs) {
-                                        if (!Object.prototype.hasOwnProperty.call(compactProcs, i)) {
-                                            continue;
-                                        }
+                                    for (const i of Object.keys(compactProcs)) {
                                         if (compactProcs[i].process) {
                                             logger.silly(`${hostLogPrefix} Compact group ${i} still running`);
                                             return;
@@ -3630,19 +3586,13 @@ function startInstance(id, wakeUp) {
 
                                         if (isStopping) {
                                             logger.silly(hostLogPrefix + ' Check after group exit ' + currentCompactGroup);
-                                            for (const i in procs) {
-                                                if (!Object.prototype.hasOwnProperty.call(procs, i)) {
-                                                    continue;
-                                                }
+                                            for (const i of Object.keys(procs)) {
                                                 if (procs[i].process) {
                                                     logger.silly(hostLogPrefix + ' ' + procs[i].config.common.name + ' still running');
                                                     return;
                                                 }
                                             }
-                                            for (const i in compactProcs) {
-                                                if (!Object.prototype.hasOwnProperty.call(compactProcs, i)) {
-                                                    continue;
-                                                }
+                                            for (const i of Object.keys(compactProcs)) {
                                                 if (compactProcs[i].process) {
                                                     logger.silly(hostLogPrefix + ' Compact group ' + i + ' still running (compact)');
                                                     return;
@@ -4084,19 +4034,13 @@ function stopInstances(forceStop, callback) {
             callback = null;
         }
 
-        for (const id in procs) {
-            if (!Object.prototype.hasOwnProperty.call(procs, id)) {
-                continue;
-            }
+        for (const id of Object.keys(procs)) {
             stopInstance(id, forceStop); // sends kill signal via sigKill state or a kill after timeouts or if forced
         }
         if (forceStop || isDaemon) {
             // send instances SIGTERM, only needed if running in background (isDaemon)
             // or slave lost connection to master
-            for (const id in compactProcs) {
-                if (!Object.prototype.hasOwnProperty.call(compactProcs, id)) {
-                    continue;
-                }
+            for (const id of Object.keys(compactProcs)) {
                 if (compactProcs[id].process) {
                     compactProcs[id].process.kill();
                 } // TODO better?
@@ -4169,20 +4113,14 @@ function stop(force, callback) {
         states.setState(hostObjectPrefix + '.alive', {val: false, ack: true, from: hostObjectPrefix}, () => {
             logger.info(hostLogPrefix + ' ' + (wasForced ? 'force terminating' : 'terminated'));
             if (wasForced) {
-                for (const i in procs) {
-                    if (!Object.prototype.hasOwnProperty.call(procs, i)) {
-                        continue;
-                    }
+                for (const i of Object.keys(procs)) {
                     if (procs[i].process) {
                         if (procs[i].config && procs[i].config.common && procs[i].config.common.name) {
                             logger.info(hostLogPrefix + ' Adapter ' + procs[i].config.common.name + ' still running');
                         }
                     }
                 }
-                for (const i in compactProcs) {
-                    if (!Object.prototype.hasOwnProperty.call(compactProcs, i)) {
-                        continue;
-                    }
+                for (const i of Object.keys(compactProcs)) {
                     if (compactProcs[i].process) {
                         logger.info(hostLogPrefix + ' Compact group controller ' + i + ' still running');
                     }
