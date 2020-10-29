@@ -845,7 +845,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
             }
 
             // check if array is now empty
-            if (!Object.keys(subs[pattern].length)) {
+            if (!Object.keys(subs[pattern]).length) {
                 modified = true;
                 delete subs[pattern];
             }
