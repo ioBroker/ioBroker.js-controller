@@ -1,40 +1,31 @@
 ---
 title:       "Linux"
-lastChanged: "28.03.2019"
+lastChanged: "30.10.2020"
 ---
 
 # ioBroker Installation unter Linux
 
 
-!> Diese Anleitung gilt NICHT für fertige Images der Webseite!!!
+!> Diese Anleitung gilt NICHT für fertige Images der Webseite!
+Die manuelle Installation ist jedoch einem Image gegenüber zu bevorzugen. 
 
-Die Installation-Routine für ioBroker wurde vollständig überarbeitet und einige 
-Installations-Probleme (welcher Installationsuser, Autostart, usw.) wurden behoben.
-
-Die Installation erfolgt nun über ein Script, welches zur Laufzeit die benötigten Installationsschritte 
-und Softwarepakete. nachlädt. Während der Installation wird ein neuer Benutzer “iobroker” angelegt, 
-sowie ein zugehöriges Home-Verzeichnis (/home/iobroker). Ab sofort läuft ioBroker unter dem User 
-iobroker und nicht mehr als Root.
+Die Installation erfolgt über ein Skript, welches zur Laufzeit die benötigten Installationsschritte durchführt und evtl. noch erforderliche Softwarepakete nachlädt.
+Während der Installation wird im System ein neuer Benutzer “iobroker” angelegt sowie ein zugehöriges Home-Verzeichnis (/home/iobroker). 
+Der ioBroker läuft dann unter diesem User. 
 
 Wem das Nachladen eines Skripts zu gefährlich ist der kann das Skript vorher unter 
 [diesem Link](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh) prüfen.
 
-Diese Installationsanleitung für ioBroker zeigt die Installation auf Linux am Beispiel vom Raspberry PI 
-mit dem System Stretch. Die eigentliche Anleitung zur Installation von nodejs und ioBroker kann 
-für nahezu alle anderen Linux-Systeme verwendet werden.
+Diese Installationsanleitung für ioBroker zeigt die Installation auf Linux am Beispiel vom Raspberry Pi 
+mit Raspberry OS 'Buster'. 
 
 Es kann auf Grund von Abhängigkeiten zu anderen Paketen oder zusätzlichen Installationen 
 bei der Installation immer wieder zu Besonderheiten kommen.
 
-Sollten noch Fragen offen sein, diese bitte im Forum posten.
+## Benötigte Hardware
+### Raspberry Pi 2/3/4
 
-Bei der hier veröffentlichen Anleitung wird bei jedem Kernel Update wenn vorhanden 
-auch automatisch die node.js Versionen aktualisiert.
-
-## benötigte Hardware
-### Raspberry Pi 2/3, 
-oder jede andere beliebige Hardware mit einem gängigen Linux (Debian, Ubuntu, 
-usw.), oder auch ein Mac.
+oder jede andere beliebige Hardware mit einem gängigen Linux. Empfohlen wird jedoch Debian, Ubuntu oder eine der darauf basierenden Distributionen. 
 
 Wir raten davon ab, einen Pi 1 als Master einzusetzen. Dieser ist einfach nicht leistungsstark 
 genug (500 MB RAM, usw.). Aufgrund der unterschiedlichen Hardware passt diese Anleitung 
@@ -44,6 +35,8 @@ Auch ein Pi 2 oder Pi 3 hat nur max. 1 GB RAM. Bei 15 Adapter-Instanzen sollte d
 ausreichen, aber darüberhinaus kann es knapp werden. Jede Adapter-Instanz benötigt etwa 40 MB 
 (und auch schon mal 200MB und mehr) an RAM. Daher sollte man immer die RAM-Auslastung 
 im Auge behalten werden, bevor weitere Adapter-Instanzen aktiviert werden – 1 GB RAM sind endlich.
+
+Daher empfiehlt sich aus der Raspberry-Reihe der Raspberry4 mit 4, besser 8 GB RAM. 
 
 ### Netzteil
 es ist wichtig ein gutes Netzteil zu haben. Mit schwachem Netzteil sind Stabilitätsprobleme zu erwarten
