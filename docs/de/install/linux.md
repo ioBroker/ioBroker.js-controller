@@ -9,7 +9,7 @@ lastChanged: "30.10.2020"
 !> Diese Anleitung gilt NICHT für fertige Images der Webseite!
 Die manuelle Installation ist jedoch einem Image gegenüber zu bevorzugen. 
 
-Die Installation erfolgt über ein Skript, welches zur Laufzeit die benötigten Installationsschritte durchführt und evtl. noch erforderliche Softwarepakete nachlädt.
+Die Installation erfolgt über ein Skript, welches die benötigten Installationsschritte durchführt und evtl. noch erforderliche Softwarepakete nachlädt.
 Während der Installation wird im System ein neuer Benutzer “iobroker” angelegt sowie ein zugehöriges Home-Verzeichnis (/home/iobroker). 
 Der ioBroker läuft dann unter diesem User. 
 
