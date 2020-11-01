@@ -117,6 +117,10 @@ The adapter will read all actual values for IDs defined in this scene and save i
 -->
 
 ## Changelog
+
+### 2.1.7 (2020-10-30)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-SCENES-E, IOBROKER-SCENES-G, IOBROKER-SCENES-A)
+
 ### 2.1.6 (2020-09-25)
 * (bluefox) Updated the select ID dialog.
 

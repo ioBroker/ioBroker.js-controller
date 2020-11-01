@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.pushover/README.md
 title: ioBroker推入式适配器
-hash: ip5Cjx0p9Ugw7yZ/xLOyJthBGaCDWw9B8Ba5xi8K3RI=
+hash: c5Imzg+xdaAI5z1XO+xdJJq9QlsjoXmHDkHiUVJ6Vlo=
 ---
 ![商标](../../../en/adapterref/iobroker.pushover/admin/pushover.png)
 
@@ -53,7 +53,23 @@ sendTo("pushover", {
    url_title,             // optional  - a title for your supplementary URL, otherwise just the URL is shown
    device,                // optional  - your user's device name to send the message directly to that device, rather than all of the user's devices
    timestamp              // optional  - a Unix timestamp of your message's date and time to display to the user, rather than the time your message is received by our API
+   html                   // optional  - 1 to enable parsing of HTML formating for bold, italic, underlined and font color
+   monospace              // optional  - 1 to display the message in monospace font
+                          //    either html or monospace is allowed
 });
+
+// Example for HTML format in the message
+sendTo("pushover", {
+    message: 'This message includes <b>bold</b>, <i>italic</i> and <u>underlined</u> text <font color=green>in</font> <font color=#ffa500>different</font> <font color=red>colors</font>.',
+    html:    1
+});
+
+// Example for monospace font in the message
+sendTo("pushover", {
+    message:   'This message is in monospace font.',
+    monospace: 1
+});
+
 ```
 
 ##什么是Sentry，什么报告给服务器？

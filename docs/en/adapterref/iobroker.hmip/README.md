@@ -30,6 +30,8 @@ I may also need a json of a state change.
 
 Thank you
 
+If you are looking for the information, if the alarm settings are active you have to check the active status of the group INTERNAL and EXTERNAL, they represent in combination the three alarm states. INTERNAL and EXTERNAL actives means Away, only EXTERNAL active means only Perimeter active.
+
 ## Important Info what can be done with this adapter
 
 !!! You can only trigger events with this adapater that can be triggered thru the original Homematic IP app. 
@@ -48,6 +50,10 @@ https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 1.4.0 (2020-10-29)
+* (Apollon77) Add ROTARY_WHEEL_CHANNEL and RAIN_DETECTION_CHANNEL, ACCESS_CONTROLLER_WIRED_CHANNEL
+* (Apollon77) Read home anew if no home object is provided for SECURITY_JOURNAL_CHANGED event
 
 ### 1.3.1 (2020-09-18)
 * (Apollon77) Fix missing write permission for Notification Light "On" channel

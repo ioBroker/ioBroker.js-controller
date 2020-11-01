@@ -3,22 +3,25 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: jXZqZmIPNSo5kXUJMkf8HDu9l6AM2bBh0Z/V+A9C/DM=
+hash: kfyRFoRcowosL9C9ZM5czQXir34tHauHJf2s0L4hp5c=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)
+![Anzahl der Installationen (stabil)](http://iobroker.live/badges/vis-inventwo-stable.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.vis-inventwo.svg)
 ![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/vis-inventwo-installed.svg)
-![Anzahl der Installationen (stabil)](http://iobroker.live/badges/vis-inventwo-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/inventwo/iobroker.vis-inventwo.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/inventwo/iobroker.vis-inventwo/badge.svg)
+![Build-Status](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
+![Lizenz](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+![Paypal-Spende](https://img.shields.io/badge/paypal-donate%20%7C%20spenden-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
 
 # IoBroker.vis-inventwo
 ## Schalter Widgets für den ioBroker.vis Adapter
 ###### .. ab v 2.0.0
-<table><tr><td><center><b>Universal</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Multi</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Bild</b><br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Tabelle</b><br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>Liste</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Festzelt</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Radio knopf</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Schieberegler vertikal</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>Schieberegler horizontal</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr></table>
+<table><tr><td><center><b>Universal</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Multi</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Bild</b><br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Tabelle</b><br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>Aufführen</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Festzelt</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Radio knopf</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Schieberegler vertikal</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>Schieberegler horizontal</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Kippschalter</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td><td></td><td></td></tr></table>
 
 ###### .. v 1.3.8
 ![Beispiel](http://resources.inventwo.com/github/inventwo/Set.png)
@@ -38,6 +41,25 @@ Falls Dir unsere Arbeit ausgewählt und du uns nicht gehört möchtest, wir freu
 [![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.5.5
+- Bug-Fix
+
+## 2.5.4
+- Bugfix (Status: doppeltes senden dese Wertes bei touch)
+
+## 2.5.3
+- Grauer Kippschalter hinzugefügt
+
+## 2.5.2
+- Bug-Fix
+
+## 2.5.1
+- Bug-Fix
+
+## 2.5.0
+- Kippschalter hinzugefügt
+- Bug-Fix
 
 ## 2.4.3
 - Bug-Fix

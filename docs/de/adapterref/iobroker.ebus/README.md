@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: Smtq1F2TYSMQV5ZnsZeQO6He7+Y0k7OJXrjM3JGVbJ4=
+hash: tB2ZoSeU+uiU1nCXjDPAxzxsj46Lg9vwLIwzPOdlofg=
 ---
 ![Logo](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -34,6 +34,9 @@ aktuell unterstützte ebusd-version: 3.3
 
 ## Bekannte Probleme
 * Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
+
+## 2.2.3 (2020-10-24)
+* (René) Verlauf DP erstellen, falls nicht verfügbar
 
 ## 2.2.0 (2020-09-06)
 * (René) DP nur bei Bedarf ändern, um die Systemlast zu reduzieren
@@ -79,7 +82,7 @@ aktuell unterstützte ebusd-version: 3.3
 * (René) Fehlerbehebung: In vis 1.x werden einige Werte nicht gespeichert
 
 ### 0.5.1
-* (René) Fehlerbehebung: Wenn nichts abzufragen ist, überspringen Sie die Telnet-Verbindung
+* (René) Fehlerbehebung: Wenn nichts abgefragt werden muss, überspringen Sie die Telnet-Verbindung
 
 ### 0.5.0
 * (René) Datum über TCP in ebusd schreiben

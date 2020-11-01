@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.eventlist/README.md
 title: ioBroker.eventlist
-hash: RfdHdRKzFlvVs7lLAzyKLdcQBEbYl4meUH7nmlVhG5Y=
+hash: 6CeAXDBZIHaPC8FtlHWmHFXrCY/WQcW2pFi/x9MRhps=
 ---
 ![Logo](../../../en/adapterref/iobroker.eventlist/admin/eventlist.png)
 
@@ -23,7 +23,7 @@ Die Liste kann in admin, web, vis angezeigt, als PDF gespeichert, Material (noch
 
 Zusätzlich können Sie Ereignisse per Telegramm oder WhatsApp senden.
 
-![Liste](../../../en/adapterref/iobroker.eventlist/img/list.png)
+![Aufführen](../../../en/adapterref/iobroker.eventlist/img/list.png)
 
 ![PDF](../../../en/adapterref/iobroker.eventlist/img/pdf.png)
 
@@ -103,6 +103,25 @@ sendTo('eventlist.0', 'list', 'my.0.state.id1', result => {
 });
 ```
 
+Der Benutzer kann einige oder alle Ereignisse aus der Ereignisliste löschen.
+
+```
+// delete all events
+sendTo('eventlist.0', 'delete', '*', result => {
+    console.log(`Deleted ${result.count} events`);
+});
+
+// delete all events for specific state ID
+sendTo('eventlist.0', 'delete', 'hm-rpc.0.AEOI99389408.1.STATE', result => {
+    console.log(`Deleted ${result.count} events`);
+});
+
+// delete one event by timestamp
+sendTo('eventlist.0', 'delete', '2020-10-20T21:00:12.000Z', result => {
+    console.log(`Deleted ${result.count} events`);
+});
+```
+
 ## Muster
 In den Veranstaltungstexten und in den Staatstexten könnten folgende Muster verwendet werden:
 
@@ -111,7 +130,7 @@ In den Veranstaltungstexten und in den Staatstexten könnten folgende Muster ver
 -% n - Name (`% n hat den Status in %s ` geändert =>` Gerät A hat den Status in 5` geändert),
 -% t - Zeit (`Status geändert Status auf% t` =>` Status geändert Status am Sep Fr, 16: 32: 00`),
 -% r - relative Zeit (`Zustand geändert Zustand% r` =>` Zustand geändert Zustand vor 5 Sekunden`),
--% d - Dauer (`Zustand war für% d im vorherigen Zustand = =` Zustand war für 5s im vorherigen Zustand`),
+-% d - Dauer (`Zustand war für% d im vorherigen Zustand =>` Zustand war für 5s im vorherigen Zustand`),
 -% g - Wertdifferenz (`Status wurde auf% g% geändert` => `Status wurde auf 1% geändert`),
 -% o - Wertdifferenz (`Status geändert Wert von% o zu%` => `Status wurde auf 1% geändert`)
 
@@ -119,12 +138,17 @@ In den Veranstaltungstexten und in den Staatstexten könnten folgende Muster ver
 - Viele vordefinierte Symbole (mindestens 100)
 - Material Widget
 - Senden Sie Nachrichten an syslog (möglicherweise Splunk) https://www.npmjs.com/package/splunk-logging
+- Filtern nach ID in Admin oder Widget
 
 <! - Platzhalter für die nächste Version (am Zeilenanfang):
 
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.2.9 (2020-10-20)
+* (bluefox) Corrected error in GUI by disabling of state
+* (bluefox) Implemented the deletion of events from the event list
+
 ### 0.2.8 (2020-10-14)
 * (bluefox) Corrected error in pdf settings  
 * (bluefox) Implemented the recalculation of the relative time every 10 seconds  

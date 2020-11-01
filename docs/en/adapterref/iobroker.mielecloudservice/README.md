@@ -1,14 +1,15 @@
 ![Logo](admin/mielecloudservice.svg)
 # ioBroker.MieleCloudService
 ![Number of Installations](http://iobroker.live/badges/mielecloudservice-installed.svg)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)](https://www.npmjs.com/package/iobroker.mielecloudservice)
 ![Number of Installations](http://iobroker.live/badges/mielecloudservice-stable.svg)
 [![NPM version](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)](https://www.npmjs.com/package/iobroker.mielecloudservice)
-[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/grizzelbee/iobroker.mielecloudservice/blob/master/LICENSE) 
 [![Dependency Status](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)](https://david-dm.org/Grizzelbee/iobroker.mielecloudservice)
 [![Known Vulnerabilities](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice?targetFile=package.json)
 [![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)](https://travis-ci.com/Grizzelbee/ioBroker.mielecloudservice) 
 [![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)](https://nodei.co/npm/iobroker.mielecloudservice/)
+
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/grizzelbee/iobroker.mielecloudservice/blob/master/LICENSE) 
+[![Downloads](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)](https://www.npmjs.com/package/iobroker.mielecloudservice)
 
 ## Description
 This adapter is for retrieving information about all your Miele@Home devices from the official Miele 3rd-party API. 
@@ -253,8 +254,9 @@ Here is a list of what these raw values stand for:
 | 23 | "Oberhemden" /  | Washing Machine |
 | 27 | "Imprägnieren"  /     | Washing Machine |
 | 48 | "Flusen ausspülen"| Washer Dryer |
-| 50 | "Dunkle Wäsche"/ | Washer Dryer |
-|123 | "Dunkles / Jeans"  |   Washing Machine |
+| 50 | "Dunkle Wäsche" / | Washer Dryer |
+| 122 | "Express 20" / | Washer Dryer |
+| 123 | "Dunkles / Jeans"  |   Washing Machine |
 
 ### ProgramPhase
 

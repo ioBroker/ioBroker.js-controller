@@ -3,18 +3,18 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: ZhI0kyBgHKHF8oNuwZ8xWY+rOe+UPZw9Hnlp1wUxChc=
+hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
 ---
 ![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/mielecloudservice-stable.svg)
-![Downloads](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
-![Lizenz](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Abhängigkeitsstatus](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)
 ![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
+![Lizenz](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+![Downloads](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
 
 # IoBroker.MieleCloudService
 ## Beschreibung
@@ -69,7 +69,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 18 | HAUBE |
  | 19 | KÜHLSCHRANK |
  | 20 | Gefrierschrank |
- | 21 | KÜHLSCHRANK- / GEFRIERKOMBINATION |
+ | 21 | KÜHL- / GEFRIERKOMBINATION |
  | 23 | VAKUUMREINIGER, AUTOMATISCHER ROBOTER VAKUUMREINIGER |
  | 24 | SCHEIBETROCKNER |
  | 25 | DISH WARMER |
@@ -138,6 +138,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
 | 27 | "Imprägnieren" / | Waschmaschine |
 | 48 | "Flusen ausspülen" | Waschtrockner |
 | 50 | "Dunkle Wäsche" / | Waschtrockner |
+| 122 | "Express 20" / | Waschtrockner |
 | 123 | "Dunkles / Jeans" | Waschmaschine |
 
 ### ProgramPhase

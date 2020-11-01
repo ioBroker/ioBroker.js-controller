@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: arHjPFDSFCWhUuDWwkMW6rVlqiIPvhw5gj2ASjboo0M=
+hash: rrTTa+nRCnAnxHgtZ/Fhl4BSAKkLMlo5Y1JRqNIm9+Q=
 ---
 ![Logo](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -21,11 +21,13 @@ Mit diesem Adapter können Sie Statusinformationen zu Ihrer LaMetric-Zeit abrufe
 Sie benötigen lediglich die IP-Adresse Ihres Geräts und den API-Entwicklerschlüssel.
 
 ## Aufbau
+Getestet mit LaMetric Firmware *2.0.28* und *2.1.2* (empfohlen)
+
 Sie können Ihren persönlichen Schlüssel [Hier](https://developer.lametric.com/) erhalten.
 
 ![API-Schlüssel](../../../en/adapterref/iobroker.lametric/docs/apiKey.png)
 
-## Verwendungszweck
+## Verwendung
 Weitere Informationen zu Benachrichtigungen finden Sie hier: https://lametric-documentation.readthedocs.io/en/latest/reference-docs/device-notifications.html
 
 ## Eigenschaften
@@ -36,6 +38,8 @@ Weitere Informationen zu Benachrichtigungen finden Sie hier: https://lametric-do
 - Zwischen Apps wechseln (weiter, vorher, zu einer bestimmten App gehen)
 - Blockierte Benachrichtigungen senden (mit konfigurierbarer Priorität, Sound, Symbolen, Text, ...)
 - Steuern Sie spezielle Apps wie Radio, Stoppuhr und Wetter
+
+Funktionen sind durch die [offizielle API-Funktionen](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html) begrenzt.
 
 ## Blockly
 Sie können eine einfache Zeichenfolge als Nachricht verwenden, die als einzelner Frame angezeigt wird
@@ -114,6 +118,10 @@ show();
 ```
 
 ## Changelog
+
+### 0.0.10
+
+* (klein0r) Switched to axios lib
 
 ### 0.0.9
 

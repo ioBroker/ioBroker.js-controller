@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.cloud/README.md
-title: ioBroker Cloud-Adapter
-hash: FSkpNQoml2w+OoHO8MMRFHzZeypm1KRKbim/xZiTs/0=
+title: ioBroker Cloud Adapter
+hash: nbORrtNISimrwJ9owEX4UVDGB+9rHqZvXcqkSzyyTxo=
 ---
 ![Logo](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
 
@@ -13,7 +13,7 @@ hash: FSkpNQoml2w+OoHO8MMRFHzZeypm1KRKbim/xZiTs/0=
 ![NPM](https://nodei.co/npm/iobroker.cloud.png?downloads=true)
 
 # IoBroker Cloud Adapter
-Dieser Adapter ermöglicht die Verbindung vom Internet über die ioBroker-Cloud zur lokalen Installation von ioBroker.
+Dieser Adapter ermöglicht die Verbindung vom Internet über die ioBroker Cloud zur lokalen Installation von ioBroker.
 
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
@@ -21,7 +21,7 @@ Dieser Adapter ermöglicht die Verbindung vom Internet über die ioBroker-Cloud 
 ### APP-KEY
 Um einen Cloud-Adapter zu verwenden, sollten Sie zuerst den APP-Schlüssel auf [https://iobroker.net](https://iobroker.net) erhalten.
 
-Dies ist der Anwendungsschlüssel, den der Benutzer auf der Website [https://iobroker.net](https://iobroker.net) erhalten kann. Bitte holen Sie sich dort den Schlüssel und geben Sie ihn hier ein.
+Dies ist der Anwendungsschlüssel, den der Benutzer auf der Website [https://iobroker.net](https://iobroker.net) erhalten kann. Bitte besorgen Sie sich dort den Schlüssel und geben Sie ihn hier ein.
 
 ![Intro](../../../en/adapterref/iobroker.cloud/img/intro.png)
 
@@ -51,7 +51,7 @@ Wenn Sie in den Einstellungen im Feld "Weiße Liste für Dienste" den Namen *cus
 
 Sie können "*" in die weiße Liste schreiben und alle Dienste werden zugelassen.
 
-Ab Version 2.0.5 können Sie die GET-Anfrage in der Form ```[GET]https://iobroker.net/service/custom_<NAME>/<user-app-key>/<data>``` verwenden, um die **\ zu platzieren <data\>** in **cloud.0.services.custom_ \ <NAME\>**
+Ab Version 2.0.5 können Sie die GET-Anfrage in der Form ```[GET]https://iobroker.net/service/custom_<NAME>/<user-app-key>/<data>``` verwenden, um die **\ zu platzieren<data\>** in **cloud.0.services.custom_ \<NAME\>**
 
 Hier finden Sie Anweisungen zur Verwendung mit [Tasker](doc/tasker.md).
 
@@ -65,9 +65,24 @@ Sie können "text2command" in eine weiße Liste schreiben. Sie können eine POST
 "X" kann in den Einstellungen mit der Option "text2command-Instanz verwenden" definiert werden.
 
 ### SimpleApi
-*machen*
+Sie können folgende Befehle verwenden (nur Pro):
+
+- `` `[GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / get / stateID``` - um den Statuswert zu lesen =>` {"val": 103.516, "ack ": true," ts ": 1604132484682," q ": 0," from ":" system.adapter.admin.0 "," lc ": 1604132469672," result ":" OK "}`
+- `` `[GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / getPlainValue / stateID``` - um den Statuswert zu lesen =>` 103.641`
+- `` `[GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / set / stateID? Value = 1``` - um den Statuswert festzulegen =>` {"result": "OK"} `
+
+** Vergessen Sie nicht, `simpleApi` zu zulässigen Diensten in der Konfiguration hinzuzufügen. **
 
 ## Changelog
+### 3.1.0 (2020-10-31)
+* (bluefox) Implemented the easy simpleApi commands (not all)
+
+### 3.0.5 (2020-10-30)
+* (Apollon77) Make sure that subscribe patterns are strings (Sentry IOBROKER-CLOUD-D)
+
+### 3.0.4 (2020-07-16)
+* (Apollon77) crash prevented when socket is not connected (Sentry IOBROKER-CLOUD-8)
+
 ### 3.0.3 (2020-04-14)
 * (bluefox) Updated socket.io version
 * (bluefox) Added sentry.io reporting

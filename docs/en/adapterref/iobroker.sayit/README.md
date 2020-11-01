@@ -25,6 +25,8 @@ Actual following outputs are supported:
 
 - *Sonos* - play text on sonos device. Be sure the Web Adapter is enabled. It is required to enable SONOS to read the generated mp3 files.
 
+- *Heos* - play text on heos device. Be sure the Web Adapter is enabled. It is required to enable HEOS to read the generated mp3 files.
+
 - *Chromecast* - play text on Chromecast device.
 
 - *MPD* - play text on Music Player Daemon. Use only **http** for web adapter, don't use https.
@@ -239,6 +241,8 @@ Following values for engines are possible:
 - **(tr-TR_AP_Female)** -           tr-TR - Female - Filiz
 
 ## Changelog
+### 1.12.0 (2020-10-19)
+* (withstu) Support for HEOS was added
 
 ### 1.11.5 (2020-09-24)
 * (Apollon77) prevent scheduled restart problems

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.cul/README.md
 title: ioBroker.cul
-hash: IWW7OEAnxbcUNoWwj1l1QuRQhHSXf8Kznl9KcAk09ig=
+hash: K4rCOBSVFqE1jD3svv7aukvEal1t2fI6QVtX90V21KE=
 ---
 ![商标](../../../en/adapterref/iobroker.cul/admin/busware.jpg)
 
@@ -29,10 +29,24 @@ ioBroker适配器可通过[CUL](http://busware.de/tiki-index.php?page=CUL)/[ulf]
 ###例如，将命令发送到FS20设备。的JavaScript
 ```sendTo("cul.0", "send", {"protocol":"FS20", "housecode":"A1B2", "address":"01", "command":"00"});```
 
-此命令使用此适配器的CUL库将命令发送到FS20设备。
+###使用JavaSript发送原始命令（例如，发送到InterTechno设备）
+```sendTo("cul.0", "sendraw", {"command": 'is0FFFFF0FFFFF'});```
+
+此命令使用此适配器的CUL库向设备发送命令。
 基于Javascript / Node.js的Busware CUL USB / culfw适配器
 
 ## Changelog
+
+### 1.3.3 (2020-09-25)
+* (EvilEls) Added raw command support with cul.write()
+
+### 1.3.2 (2020-08-23)
+* (Apollon77) check that all needed objects are existing on start (Sentry IOBROKER-CUL-C)
+* (Apollon77) fix Moritz device crash case (Sentry IOBROKER-CUL-7)
+
+### 1.3.1 (2020-07-26)
+* (Apollon77) make sure connection check do not crash adapter (Sentry IOBROKER-CUL-3)
+* (Apollon77) crashes preventd (Sentry IOBROKER-CUL-5, IOBROKER-CUL-8)
 
 ### 1.3.0 (2020-07-20)
 * (Apollon77) Really update dependencies and Serialport

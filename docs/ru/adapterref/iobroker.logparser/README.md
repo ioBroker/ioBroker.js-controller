@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.logparser/README.md
 title: ioBroker.logparser
-hash: hFhKajhDIfgI4rFcQpTTJLvbUvIFVnP+VaOy3rtMH2o=
+hash: ifv1iQUi4BEJcBOYxOUWRM3ZGbwpOTmRqWNoxbsg+KI=
 ---
-![логотип](../../../en/adapterref/iobroker.logparser/admin/logparser.png)
+![Логотип](../../../en/adapterref/iobroker.logparser/admin/logparser.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.logparser.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.logparser.svg)
@@ -13,27 +13,61 @@ hash: hFhKajhDIfgI4rFcQpTTJLvbUvIFVnP+VaOy3rtMH2o=
 ![Количество установок (стабильно)](http://iobroker.live/badges/logparser-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/Mic-M/iobroker.logparser.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Mic-M/ioBroker.logparser/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.logparser.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/Mic-M/ioBroker.logparser/master.svg)
+![НПМ](https://nodei.co/npm/iobroker.logparser.png?downloads=true)
+![Трэвис-Си](http://img.shields.io/travis/Mic-M/ioBroker.logparser/master.svg)
 
 # IoBroker.logparser
 ## Log Parser для всех адаптеров ioBroker
 Этот адаптер анализирует (фильтрует) все журналы адаптеров ioBroker и предоставляет результаты в виде JSON в состояниях для каждого фильтра, как указано в настройках.
-Полученный JSON можно затем использовать в VIS для визуализации. Также предусмотрены состояния для очистки (очистки) старых журналов (например, `logparser.0.filters.Homematic.emptyJson` или `logparser.0.emptyAllJson`, чтобы очистить все).
+Полученный JSON можно затем использовать в VIS для визуализации. Также предусмотрены состояния для очистки старых журналов (например, `logparser.0.filters.Homematic.emptyJson` или `logparser.0.emptyAllJson`, чтобы очистить все).
 
 ![состояния](../../../en/adapterref/iobroker.logparser/docs/en/img/states.png)
 
-** Обратите внимание: ** Этот адаптер использует библиотеки Sentry для автоматического анонимного сообщения об исключениях и ошибках кода разработчикам адаптеров. Дополнительные сведения и информацию о том, как отключить этот отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry). Сторожевые отчеты используются начиная с js-controller 3.0.
+## Установка
+Просто регулярно устанавливайте адаптер через интерфейс администратора ioBroker. Адаптер находится как в последней версии, так и в стабильном репозитории.
 
 ## Инструкции
-* **[Инструкции на английском языке] (docs / en / logparser.md)**
+Я включил все инструкции прямо в настройки администратора этого адаптера.
 
-* **[Deutsche Anleitung] (docs / de / logparser.md)**
+Также вы можете прочитать большинство этих инструкций здесь:
+
+* [** Основные инструкции адаптера **] (https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/start_en.md) - для немецкого языка [щелкните здесь (Deutsch) ] (https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/start_de.md)
+* [** Правила парсера (фильтры) **] (https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/table-parser-rules_en.md) - для немецкого [щелкните здесь (Deutsch)] (https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/table-parser-rules_de.md)
+* [** Global Blacklist **] (https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/table-global-blacklist_en.md) - для немецкого языка [нажмите здесь (Deutsch)] (https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/table-global-blacklist_de.md)
 
 ## Пример визуализации (анимированный gif)
 ![Vis](../../../en/adapterref/iobroker.logparser/docs/de/img/visintro.gif)
 
+## Скриншоты вариантов адаптера
+Обратите внимание, что эти снимки экрана являются снимками и не отражают последние параметры адаптера.
+Это просто для того, чтобы предоставить вам обзор вариантов адаптера.
+
+![Параметры парсера журнала](../../../en/adapterref/iobroker.logparser/admin/img/option-screenshots/tab-start.png)
+
+![Параметры парсера журнала](../../../en/adapterref/iobroker.logparser/admin/img/option-screenshots/tab-parser-rules.png)
+
+![Параметры парсера журнала](../../../en/adapterref/iobroker.logparser/admin/img/option-screenshots/tab-further-settings.png)
+
+![Параметры парсера журнала](../../../en/adapterref/iobroker.logparser/admin/img/option-screenshots/tab-vis.png)
+
+![Параметры парсера журнала](../../../en/adapterref/iobroker.logparser/admin/img/option-screenshots/tab-global-blacklist.png)
+
+![Параметры парсера журнала](../../../en/adapterref/iobroker.logparser/admin/img/option-screenshots/tab-expert-settings.png)
+
+## Ссылки и ресурсы
+* [** Log Parser ioBroker Forum Link (Splash Page) **] (https://forum.iobroker.net/topic/37793/log-parser-adapter-splash-page)
+
+## Примечания
+* Этот адаптер использует библиотеки Sentry для автоматического анонимного сообщения об исключениях и ошибках кода разработчикам адаптера. Дополнительные сведения и информацию о том, как отключить этот отчет об ошибках, см. В [Документация по Sentry-Plugin] (https://github.com/ioBroker/plugin-sentry#plugin-sentry). Сторожевые отчеты используются начиная с js-controller 3.0.
+
 ## Changelog
+
+### 1.1.0
+* (Mic-M) Fixed issue [#15](https://github.com/Mic-M/ioBroker.logparser/issues/15) regarding regex for tab "Parser Rules", column "Blacklist"
+* (Mic-M) Enhancement [#16](https://github.com/Mic-M/ioBroker.logparser/issues/16) - add specific CSS classes to any element of the JSON log per adapter option.
+* (Mic-M) Major improvement: Implemented entire documentation into adapter itself to significantly improve usability.
+* (Mic-M) A few improvements under the hood.
+
 
 ### 1.0.4
 * (Mic-M) Fixed 'Today/Yesterday' updating issue - https://forum.iobroker.net/post/469757. Thanks to (Kuddel) for reporting and (Glasfaser) for further debugging.

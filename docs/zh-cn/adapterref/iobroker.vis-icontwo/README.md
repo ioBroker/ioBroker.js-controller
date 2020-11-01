@@ -3,16 +3,19 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: heQmDo1f+3qYDPNfkb06bmRe+DJlxvHUAXhvVHC3ejo=
+hash: 2XDBQbxJtEV1KshcJ5PhL4kpokOFcG3Z6thdre0/cmE=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.vis-icontwo.svg)
-![资料下载](https://img.shields.io/npm/dm/iobroker.vis-icontwo.svg)
-![安装数量（最新）](http://iobroker.live/badges/vis-icontwo-installed.svg)
 ![安装数量（稳定）](http://iobroker.live/badges/vis-icontwo-stable.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.vis-icontwo.svg?)
+![安装数量（最新）](http://iobroker.live/badges/vis-icontwo-installed.svg)
 ![依赖状态](https://img.shields.io/david/inventwo/iobroker.vis-icontwo.svg)
 ![已知漏洞](https://snyk.io/test/github/inventwo/iobroker.vis-icontwo/badge.svg)
+![建造状态](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
+![执照](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+![贝宝捐赠](https://img.shields.io/badge/paypal-donate%20|%20spenden-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)
 
 ＃ioBroker.vis-icontwo
@@ -42,14 +45,14 @@ Z.B.设备（Teilauswahl）：
 
 ![屏幕截图](http://resources.inventwo.com/github/icontwo/Screen_004.png)
 
-EinevollständigeÜbersichtaller Icons ist hier zu finden（死于Ordnerstruktur ist die gleiche，Wie im Dateimanager）：
+EinevollständigeÜbersichtaller Icons ist hier zu finden（Die Ordnerstruktur ist die gleiche，wie im Dateimanager）：
 
 -> http://icontwo.inventwo.com <-
 
 ---
 
 ##Unterstützung
-Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱恩·乌斯·杰德·斯彭德。
+Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里恩·乌斯·杰德·斯彭德。
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
@@ -58,6 +61,38 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 ---
 
 ## Changelog
+
+### 0.31.0
+
+• Neue Icons hinzugefügt (Spa & Fitness, Electricity, Lights, Rooms)
+
+### 0.30.1
+
+• Bug Fix
+
+### 0.30.0
+
+• Neue Icons hinzugefügt (Network, Devices)
+
+### 0.29.0
+
+• Neue Icons hinzugefügt (Electricity)
+
+### 0.28.0
+
+• Neue Icons hinzugefügt (Arrows, Shopping, Electricity)
+
+### 0.27.1
+
+• Bug Fix
+
+### 0.27.0
+
+• Neue Icons hinzugefügt (Computer)
+
+### 0.26.0
+
+• Neue Icons hinzugefügt (Computer)
 
 ### 0.25.0
 

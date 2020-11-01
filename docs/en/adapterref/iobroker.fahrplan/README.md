@@ -93,6 +93,7 @@ Mit dem +-Button können neue Einträge zur Tabelle hinzugefügt werden.
 | Via 2                       | Fahrt über bestimmten Ort angegeben als numerische ID (optional, sonst leer)
 | Verkehrsmittel              | Auswahl des Verkehrsmittels, z.B. Bus, S-Bahn, usw. Standardmäßig werden alle Verkehrsmittel ausgewählt
 | Max. Umstiege               | Maximale Anzahl an Umstiegen. 0 für nur direkte Verbindungen.
+| Abfahrten                   | Anzahl abzurufender Fahrten
 | Fahrradmitnahme             | Nur Verbindungen mit Fahrradmitnahme auswählen
 
 #### Tab Verspätungsalarm
@@ -125,6 +126,7 @@ Mit dem +-Button können neue Einträge zur Tabelle hinzugefügt werden.
 | Aktiv                       | Wenn der Eintrag aktiviert ist wird dieser abgerufen
 | Von                         | Numerische ID von Startbahnhof oder Starthaltestelle (Ermittlung über Suche)
 | Von (Eigener Name)          | Benutzerdefinierter Name von Startbahnhof oder Starthaltestelle, für HTML-Ausgabe verwendet
+| Abfahrten                   | Anzahl abzurufender Abfahrten
 
 
 ### English
@@ -163,6 +165,7 @@ With +-Button new entries can be added to the table.
 | Via 2                       | Ride over special station as numeric ID (optional, empty per default)
 | Vehicle                     | Selection of vehicle, e.g. Bus, S-Bahn, etc. Per default all vehicles are selected
 | Max. transfers              | Maximum transfers on route, 0 for direct connections only
+| Departures                  | Number of departures to receive
 | Bycicle                     | Select only connections where bycicles allowed
 
 #### Tab Delay alarm
@@ -195,6 +198,7 @@ With +-Button new entries can be added to the table.
 | Activ                       | Connection information is updated when item is activ
 | From                        | Numeric ID of start station oder start stop
 | From (Custom name)          | Custom name for start station oder start stop, used in HTML- and delay notification output
+| Departures                  | Number of departures to receive
 
 ## Changelog
 
@@ -204,10 +208,12 @@ With +-Button new entries can be added to the table.
 -->
 
 ### __WORK IN PROGRESS__
+* (Gaudes) Configurable number of journeys in routes
 * (Gaudes) Configurable number of departures in departure timetable
 * (Gaudes) Show product in departure timetable
 * (Gaudes) Fix platform handling in departure timetable
 * (Gaudes) Update Adapter template from 1.27.0 to 1.29.0
+* (Gaudes) Include Dependabot updates
 
 ### 0.2.0 (2020-09-23)
 * (Gaudes) Include Departure Timetable for configured stations

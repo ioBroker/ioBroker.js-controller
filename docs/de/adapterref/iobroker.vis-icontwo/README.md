@@ -3,16 +3,19 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: heQmDo1f+3qYDPNfkb06bmRe+DJlxvHUAXhvVHC3ejo=
+hash: 2XDBQbxJtEV1KshcJ5PhL4kpokOFcG3Z6thdre0/cmE=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.vis-icontwo.svg)
-![Downloads](https://img.shields.io/npm/dm/iobroker.vis-icontwo.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/vis-icontwo-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/vis-icontwo-stable.svg)
+![Downloads](https://img.shields.io/npm/dm/iobroker.vis-icontwo.svg?)
+![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/vis-icontwo-installed.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/inventwo/iobroker.vis-icontwo.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/inventwo/iobroker.vis-icontwo/badge.svg)
+![Build-Status](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
+![Lizenz](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+![Paypal-Spende](https://img.shields.io/badge/paypal-donate%20|%20spenden-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)
 
 # IoBroker.vis-icontwo
@@ -42,7 +45,7 @@ ZUM BEISPIEL. Teilauswahl:
 
 ![Bildschirmfoto](http://resources.inventwo.com/github/icontwo/Screen_004.png)
 
-Eine vollständige Übersicht aller Ikonen ist hier zu finden.
+Eine vollständige Übersicht aller Ikonen ist hier zu finden (die Ordnerstruktur ist die gleichen, wie im Dateimanager):
 
 -> http://icontwo.inventwo.com <-
 
@@ -58,6 +61,38 @@ Falls Dir unsere Arbeit ausgewählt und du uns nicht gehört möchtest, wir freu
 ---
 
 ## Changelog
+
+### 0.31.0
+
+• Neue Icons hinzugefügt (Spa & Fitness, Electricity, Lights, Rooms)
+
+### 0.30.1
+
+• Bug Fix
+
+### 0.30.0
+
+• Neue Icons hinzugefügt (Network, Devices)
+
+### 0.29.0
+
+• Neue Icons hinzugefügt (Electricity)
+
+### 0.28.0
+
+• Neue Icons hinzugefügt (Arrows, Shopping, Electricity)
+
+### 0.27.1
+
+• Bug Fix
+
+### 0.27.0
+
+• Neue Icons hinzugefügt (Computer)
+
+### 0.26.0
+
+• Neue Icons hinzugefügt (Computer)
 
 ### 0.25.0
 

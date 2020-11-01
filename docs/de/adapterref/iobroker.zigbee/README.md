@@ -34,8 +34,12 @@ Zigbee-Geräte die nicht in der Liste aufgeführt sind, können zwar gepairt wer
 Es gibt noch ein [Freundschaftprojekt](https://github.com/koenkk/zigbee2mqtt) mit gleichen Funktionen und gleicher Technologie, welcher mit denselben Geräten über ein MQTT Protokoll kommuniziert. Wenn irgendwelche Verbesserungen oder neu unterstütze Geräte im Projekt Zigbee2MQTT eingefügt werden, können jene auch in dieses Projekt hinzugefügt werden. Solltet Ihr unterschiede merken, schreibt bitte ein Issue, wir kümmern uns darum
 
 ## Changelog
+### 1.3.1 (2020-10-30)
+* [Experimental Zigate support](https://github.com/Koenkk/zigbee-herdsman/issues/242) (zigbee-herdsman)
+* New devices by: 
+    asgothian, arteck, kirovilya, PaulchenPlump
 
-### 1.3.0 (2020-10-)
+### 1.3.0 (2020-10-07)
 * More stable (zigbee-herdsman)
 * Backup prior database and nv-data (for z-stack 3) before start adapter
 * Allow to select bind cluster

@@ -17,6 +17,8 @@ All you need is the IP address of your device and the api developer key.
 
 ## Configuration
 
+Tested with LaMetric firmware *2.0.28* and *2.1.2* (recommended)
+
 You can get your personal key [here](https://developer.lametric.com/).
 
 ![api-key](docs/apiKey.png)
@@ -34,6 +36,8 @@ You can read more about notifications here: https://lametric-documentation.readt
 - Switch between apps (next, previous, go to specific app)
 - Send blockly notifications (with configurable priority, sound, icons, text, ...)
 - Control special apps like radio, stopwatch and weather
+
+Features are limited by the [official API features](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html).
 
 ## Blockly
 
@@ -111,6 +115,10 @@ show();
 ```
 
 ## Changelog
+
+### 0.0.10
+
+* (klein0r) Switched to axios lib
 
 ### 0.0.9
 

@@ -2,7 +2,7 @@
 # ioBroker.countdown
 
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/jack-blackson/ioBroker.countdown.svg)](https://greenkeeper.io/) 
+[![Greenkeeper badge](https://snyk.io/test/github/jack-blackson/ioBroker.countdown/badge.svg)](https://snyk.io/test/github/jack-blackson/ioBroker.countdown)
 [![NPM version](http://img.shields.io/npm/v/iobroker.countdown.svg)](https://www.npmjs.com/package/iobroker.countdown) 
 [![Build Status Travis](https://travis-ci.com/jack-blackson/ioBroker.countdown.svg?branch=master)](https://travis-ci.com/jack-blackson/ioBroker.countdown)  
 [![Downloads](https://img.shields.io/npm/dm/iobroker.countdown.svg)](https://www.npmjs.com/package/iobroker.countdown) 

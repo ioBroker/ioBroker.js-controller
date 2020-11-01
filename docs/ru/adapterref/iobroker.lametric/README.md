@@ -3,51 +3,55 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: arHjPFDSFCWhUuDWwkMW6rVlqiIPvhw5gj2ASjboo0M=
+hash: rrTTa+nRCnAnxHgtZ/Fhl4BSAKkLMlo5Y1JRqNIm9+Q=
 ---
-![логотип](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
+![Логотип](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.lametric.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.lametric.svg)
-![стабильный](http://iobroker.live/badges/lametric-stable.svg)
-![установлены](http://iobroker.live/badges/lametric-installed.svg)
+![Стабильный](http://iobroker.live/badges/lametric-stable.svg)
+![установлен](http://iobroker.live/badges/lametric-installed.svg)
 ![Статус зависимости](https://img.shields.io/david/klein0r/iobroker.lametric.svg)
 ![Известные уязвимости](https://snyk.io/test/github/klein0r/ioBroker.lametric/badge.svg)
 ![Статус сборки](http://img.shields.io/travis/klein0r/ioBroker.lametric.svg)
-![NPM](https://nodei.co/npm/iobroker.lametric.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.lametric.png?downloads=true)
 
 # IoBroker.lametric
-Этот адаптер позволяет вам получать информацию о состоянии вашего LaMetric Time и отправлять на него уведомления.
+Этот адаптер позволяет получать информацию о состоянии вашего LaMetric Time и отправлять на него уведомления.
 Все, что вам нужно, это IP-адрес вашего устройства и ключ разработчика API.
 
 ## Конфигурация
-Вы можете получить свой личный ключ [Вот](https://developer.lametric.com/).
+Протестировано с прошивкой LaMetric *2.0.28* и *2.1.2* (рекомендуется)
 
-![апи-ключ](../../../en/adapterref/iobroker.lametric/docs/apiKey.png)
+Вы можете получить личный ключ [Вот](https://developer.lametric.com/).
+
+![API-ключ](../../../en/adapterref/iobroker.lametric/docs/apiKey.png)
 
 ## Применение
 Вы можете узнать больше об уведомлениях здесь: https://lametric-documentation.readthedocs.io/en/latest/reference-docs/device-notifications.html
 
-## Особенности
+## Характеристики
 - Установите яркость дисплея (в процентах, автоматический режим / ручной режим)
 - Установить громкость звука (в процентах)
-- Настроить заставку (включить / отключить, по времени, когда темно)
+- Настроить заставку (включить / выключить, по времени, в темноте)
 - Активировать / деактивировать Bluetooth и изменить имя Bluetooth
-- Переключение между приложениями (следующий, предыдущий, перейти к определенному приложению)
-- Отправлять блочные уведомления (с настраиваемым приоритетом, звуком, значками, текстом, ...)
+- Переключение между приложениями (следующее, предыдущее, перейти к определенному приложению)
+- Отправлять блочные уведомления (с настраиваемым приоритетом, звуком, значками, текстом и т. Д.)
 - Управляйте специальными приложениями, такими как радио, секундомер и погода
 
+Возможности ограничены [официальные функции API](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html).
+
 ## Блочно
-В качестве сообщения вы можете использовать простую строку, которая будет отображаться в виде одного кадра.
+Вы можете использовать простую строку в качестве сообщения, которое будет отображаться в виде одного кадра
 
 ![просто](../../../en/adapterref/iobroker.lametric/docs/blockly1.png)
 
-Чтобы показать несколько кадров, вы также можете предоставить массив в качестве сообщения
+Чтобы показать несколько кадров, вы также можете предоставить массив как сообщение
 
 ![просто](../../../en/adapterref/iobroker.lametric/docs/blockly2.png)
 
-## Сценарии
-Чтобы показать сообщение в вашей метрике, просто отправьте сообщение этому экземпляру с помощью адаптера сценария:
+## Скрипты
+Чтобы отобразить сообщение на вашей метрике la, просто отправьте сообщение этому экземпляру с помощью адаптера сценария:
 
 ```
 sendTo('lametric.0', 'send', {
@@ -87,7 +91,7 @@ sendTo('lametric.0', 'send', {
 });
 ```
 
-Пример, чтобы показать некоторую информацию циклически:
+Пример для отображения некоторой информации циклически:
 
 ```
 let i = 0;
@@ -114,6 +118,10 @@ show();
 ```
 
 ## Changelog
+
+### 0.0.10
+
+* (klein0r) Switched to axios lib
 
 ### 0.0.9
 

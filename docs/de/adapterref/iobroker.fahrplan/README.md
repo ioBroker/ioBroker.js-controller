@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fahrplan/README.md
 title: ioBroker.fahrplan
-hash: OGH4laJxFO/bc21hTeQh6/5wIYYCLsRAWdBwSgPF4I8=
+hash: mKkOuWLEONeQnNK12CHQxy049d7Izp+sL132jYzPt5A=
 ---
 ![Logo](../../../en/adapterref/iobroker.fahrplan/admin/fahrplan.png)
 
@@ -19,16 +19,16 @@ hash: OGH4laJxFO/bc21hTeQh6/5wIYYCLsRAWdBwSgPF4I8=
 
 ## Fahrplan Adapter für ioBroker
 ### Deutsch
-Dieser Adapter für ioBroker verwendet die mobile API von HAFAS verwendet. HAFAS steht für HaCon Fahrplan-Auskunfts-System und wird von vielen europäischen Verkehrsunternehmen verwendet, untersteuert auch von der Deutschen Bahn.
+Dieser Adapter für ioBroker verwendet die mobile API von HAFAS verwendet. HAFAS steht für HaCon Fahrplan-Auskunfts-System und wird von vielen europäischen Verkehrsunternehmen verwendet, untergesteuert auch von der Deutschen Bahn.
 Der Zugriff auf HAFAS gehört hierbei über [HAFAS-Client](https://github.com/public-transport/hafas-client).
 
 Der Adapter Nord hierbei drei Funktionen:
 
 #### Fahrplan für Verbindungen (Routen)
-Die erforderlichen Routen müssen in der Adapterkonfiguration behandelt und werden.
-Über einen konfigurierbaren Intervall ruft den Adapter dann wird die Verbindungsinformationen ab.
+Die einzelnen Routen müssen in der Adapterkonfiguration behandelt und werden werden.
+Über einen konfigurierbaren Intervall ruft den Adapter dann führt die Verbindungsinformationen ab.
 Die gemeinsamen drei Verbindungen werden als HTML und optional auch detailliert als Objekte in ioBroker Darstellung.
-Das HTML-Objekt kann einfach in VIS verbundenunden werden.
+Das HTML-Objekt kann einfach in VIS verwendetunden werden.
 
 #### Beanspruchung bei Verspätungen der Routen
 Für die konfigurierten Routen kann ein Verspätungsalarm werden werden. So kann eine bestimmte Ablehnung per Telegramm oder Alexa Vertretung, fällt alle oder eine persönliche Verbindung verspätet ist.
@@ -39,7 +39,7 @@ Hierbei werden die verschiedenen drei Abfahrten einer Station behandelt und als 
 
 ### Englisch
 Dieser Adapter für ioBroker verwendet die mobile API von HAFAS. HAFAS ist ein Managementsystem für den öffentlichen Verkehr, das von Anbietern öffentlicher Verkehrsmittel in ganz Europa verwendet wird, z. Deutsche Bahn.
-Mit [HAFAS-Client](https://github.com/public-transport/hafas-client) wird auf HAFAS zugegriffen.
+[HAFAS-Client](https://github.com/public-transport/hafas-client) wird verwendet, um auf HAFAS zuzugreifen.
 
 Der Adapter bietet drei Funktionen:
 
@@ -53,7 +53,7 @@ Das HTML-Objekt kann problemlos in VIS verwendet werden.
 Für konfigurierte Routen kann eine Verzögerungsbenachrichtigung aktiviert werden. Beispielsweise kann eine Benachrichtigung per Telegramm oder Alexa erfolgen, wenn die gesamte oder eine bestimmte Verbindung verzögert wird.
 
 #### Abfahrtsplan für Stationen
-Zusätzlich bietet der Adapter einen Abfahrtsplan für konfigurierte Stationen.
+Zusätzlich bietet der Adapter einen Abfahrtszeitplan für konfigurierte Stationen.
 Hier werden die nächsten drei Verbindungen wiederbelebt und als Objekte und HTML erstellt.
 
 ## Konfiguration
@@ -64,9 +64,9 @@ Eine solche Funktion ist im Tab Einstellungen.
 #### Tab Einstellungen
 ![](../../../en/adapterref/iobroker.fahrplan/docs/de/img/settings.png)
 
-| Einstellung | Beschreibung | ------------------------------ | --- | Angebote | Auswahl des zu gehörenenden Empfängers, aktueller DB und ÖBB | Aktualisierungsintervall | Intervall in dem die Route aktualisiert werden, Angabe in Minuten | Verspätet entfernen ab | Verspätung in Minuten ab der Verbindung als verspätet wird wird. Standardmäßig werden nur Verspätungen ab zwei Minuten HTML-Ansicht zeigt | Ertritt pro Route eine konfigurierbare HTML-Tabelle in einem Objekt | Detailierte Objekte erhalten | Konfiguration der Interessengebenden Objekte | JSON-Elemente speichern | Die Rückgabe von HAFAS gehört als JSON, diese werden zur Fehlerbehebung werden
+| Einstellung | Beschreibung | ------------------------------ | --- | Angebote | Auswahl des zu gehörenenden Empfängers, aktuelle DB und ÖBB | Aktualisierungsintervall | Intervall in dem die Route aktualisiert werden, Angabe in Minuten | Verspätet entfernen ab | Verspätung in Minuten ab der Verbindung als verspätet wird wird. Standardmäßig werden nur Verspätungen ab zwei Minuten HTML-Ansicht zeigt | Ertritt pro Route eine konfigurierbare HTML-Tabelle in einem Objekt | Detailierte Objekte erhalten | Konfiguration der Interessengebenden Objekte | JSON-Elemente speichern | Die Rückgabe von HAFAS gehört als JSON, diese werden zur Fehlerbehebung werden
 
-Auf der rechten Seite ist die Suchfunktion gehört. Dies muss ein Gespräch gehört werden.
+Auf der rechten Seite ist die Suchfunktion gehört. Dies muss ein persönliches Aussehen werden.
 Die Suche nach dem Suchfeld und der Suche nach einer Station wurde gesucht.
 Die Suchenden der neuen Suche werden in der Tabelle aufgeführt.
 
@@ -75,27 +75,27 @@ Die Suchenden der neuen Suche werden in der Tabelle aufgeführt.
 
 Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 
-| Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer gehört dem Unterknoten in den Besitz und wird in die Lage genommen.
+| Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer gehört dem Unterknoten in den Besitz und wird zu Recht gehört.
 | Aktiv | Wenn die Route wird, werden die Verbindungsinfos aktualisiert | Von | Numerische ID von Startbahnhof oder Starthaltestelle | Von (Eigenername) | Benutzerdefinierter Name von Startbahnhof oder Starthaltestelle, für HTML- und Verspätungstext verwendet | Nach | Numerische ID von Zielbahnhof oder Zielhaltestelle | Nach (Eigenername) | Benutzerdefinierter Name von Zielbahnhof oder Zielhaltestelle, für HTML- und Verspätungstext verwendet | Über 1 | Fahrt über den gleichen Ort als numerische ID (optional, sonst leer) | Über 2 | Fahrt über den gleichen Ort als numerische ID (optional, sonst leer) | Verkehrsmittel | Auswahl des Verkehrsmittels, z.B. Bus, S-Bahn, usw. Standardmäßig werden alle Verkehrsmittelwechsel | Max. Umstiege | Maximale Anzahl an Umstiegen. 0 für nur direkte Verbindungen.
-| Fahrradmitnahme | Nur Verbindungen mit Fahrradmitnahme treten
+| Abfahrten | Anzahl abserder Fahrten | Fahrradmitnahme | Nur Verbindungen mit Fahrradmitnahme treten
 
 #### Tab Verspätungsalarm
 ![](../../../en/adapterref/iobroker.fahrplan/docs/de/img/settings_delaynotification.png)
 
 Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 
-| Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer gehört dem Unterknoten in den Besitz und wird in die Lage genommen.
-| Aktiv | Wenn der Verspätungsalarm-Vertrag wird wird diese Aufgaben | Route | Route auf die sich der Alarm gehört soll | Geplante Abfahrt | Geplante Abfahrtszeit der zu prüfenden Route | Wochentag | Wochentage an die die Befragung soll | Schuldigung in Minuten | Anzahl der Minuten vor der Abfahrt Objekt für Ausgabetext | Angabe eines bekannten Objekts
+| Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer gehört dem Unterknoten in den Besitz und wird zu Recht gehört.
+| Aktiv | Wenn der Verspätungsalarm behandelt wird wird diese Aufgaben | Route | Route auf die sich der Alarm gehört soll | Geplante Abfahrt | Geplante Abfahrtszeit der zu prüfenden Route | Wochentag | Wochentage an die die Befragung soll | Schuldigung in Minuten | Anzahl der Minuten vor der Abfahrt, in den folgendenigt werden soll | Objekt für Ausgabetext | Angabe eines bekannten Objekts
 
-Hinweis zum Ausgabetext: Hier kann neben dem eigenen Kontakt für VIS z.B. auch das "sprechen" -Objekt des Alexa-Adapters oder das "Antwort" -Objekt des Telegramm-Adapters werden werden.
+Hinweis zum Ausgabetext: Hier kann neben dem eigenen Kontakt für VIS z.B. auch das "sprechen" -Objekt des Alexa-Adapters oder das "Antwort" -Objekt des Telegramm-Adapters werden verwendet.
 
 #### Tab Abfahrtstafeln
 ![](../../../en/adapterref/iobroker.fahrplan/docs/de/img/settings_departuretimetables.png)
 
 Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 
-| Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer gehört dem Unterknoten in den Besitz und wird in die Lage genommen.
-| Aktiv | Wenn der nachtragungsberechtigt ist, wird nach dieser Ansicht | Von | Numerische ID von Startbahnhof oder Starthaltestelle | Von (Eigenername) | Benutzerdefinierter Name von Startbahnhof oder Starthaltestelle, für HTML-Ausgabe verwendet
+| Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer gehört dem Unterknoten in den Besitz und wird zu Recht gehört.
+| Aktiv | Wenn der nachtragungsberechtigt ist, wird dieser nachlassen | Von | Numerische ID von Startbahnhof oder Starthaltestelle | Von (Eigenername) | Benutzerdefinierter Name von Startbahnhof oder Starthaltestelle, für HTML-Ausgabe verwendet | Abfahrten | Anzahl abserder Abfahrten
 
 ### Englisch
 Start und Ziel sowie Zwischenstopps müssen mit einer numerischen ID gekennzeichnet sein.
@@ -111,7 +111,7 @@ Die Suchfunktion für diese IDs ist in die Registerkarteneinstellungen integrier
 
 Mit der + -Taste können neue Einträge zur Tabelle hinzugefügt werden.
 
-| Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer stimmt mit dem Unterknoten in Objekten überein und wird automatisch zugewiesen Aktiv | Die Verbindungsinformationen werden aktualisiert, wenn die Route aktiviert ist Von | Numerische ID der Startstation oder des Startstopps | Von (Benutzerdefinierter Name) | Benutzerdefinierter Name für Startstation oder Startstopp, der in der Ausgabe von HTML- und Verzögerungsbenachrichtigungen verwendet wird Zu | Numerische ID der Zielstation oder Zielhaltestelle | Von (Benutzerdefinierter Name) | Benutzerdefinierter Name für Zielstation oder Zielstopp, der in der HTML- und Verzögerungsbenachrichtigungsausgabe verwendet wird Über 1 | Fahren Sie als numerische ID über eine spezielle Station (optional, standardmäßig leer) Über 2 | Fahren Sie als numerische ID über eine spezielle Station (optional, standardmäßig leer) Fahrzeug | Auswahl des Fahrzeugs, z.B. Bus, S-Bahn usw. Standardmäßig sind alle Fahrzeuge ausgewählt Max. Übertragungen | Maximale Übertragungen auf der Route, 0 nur für direkte Verbindungen | Bycicle | Wählen Sie nur Verbindungen aus, bei denen Fahrzeuge zulässig sind
+| Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer stimmt mit dem Unterknoten in Objekten überein und wird automatisch zugewiesen Aktiv | Die Verbindungsinformationen werden aktualisiert, wenn die Route aktiviert ist Von | Numerische ID der Startstation oder des Startstopps | Von (Benutzerdefinierter Name) | Benutzerdefinierter Name für Startstation oder Startstopp, der in der HTML- und Verzögerungsbenachrichtigungsausgabe verwendet wird Zu | Numerische ID der Zielstation oder Zielhaltestelle | Von (Benutzerdefinierter Name) | Benutzerdefinierter Name für Zielstation oder Zielstopp, der in der HTML- und Verzögerungsbenachrichtigungsausgabe verwendet wird Über 1 | Fahren Sie als numerische ID über eine spezielle Station (optional, standardmäßig leer) Über 2 | Fahren Sie als numerische ID über eine spezielle Station (optional, standardmäßig leer) Fahrzeug | Auswahl des Fahrzeugs, z.B. Bus, S-Bahn usw. Standardmäßig sind alle Fahrzeuge ausgewählt Max. Übertragungen | Maximale Übertragungen auf der Route, 0 nur für direkte Verbindungen | Abfahrten | Anzahl der zu empfangenden Abfahrten Bycicle | Wählen Sie nur Verbindungen aus, bei denen Fahrzeuge zulässig sind
 
 #### Tab Verzögerungsalarm
 ![](../../../en/adapterref/iobroker.fahrplan/docs/en/img/settings_delaynotification.png)
@@ -120,14 +120,14 @@ Mit der + -Taste können neue Einträge zur Tabelle hinzugefügt werden.
 
 | Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer stimmt mit dem Unterknoten in Objekten überein und wird automatisch zugewiesen Aktiv | Auf Verzögerungsalarm prüfen ist aktiviert | Route | Route bezüglich dieses Verzögerungsalarms | Geplante Abreise | Geplante Abfahrt der zu prüfenden Verbindung (leer = Alle Routen) | Wochentage | Wochentage, an denen die Verbindung überprüft werden soll | Benachrichtigung in Minuten | Minuten vor Abflug, wenn der Verzögerungsalarm aktiv ist Objekt für Ausgabetext | ioBroker-Status für die Textausgabe
 
-Hinweis für "Objekt für Ausgabetext": Es können einfache Status für die Verwendung in VIS verwendet werden, aber auch "Sprechen" -Zustand des Alexa-Adapters oder "Antwort" -Zustand des Telegrammadapters.
+Hinweis für "Objekt für Ausgabetext": Es können einfache Status für die Verwendung in VIS verwendet werden, aber auch der Status "Sprechen" des Alexa-Adapters oder der Status "Antwort" des Telegrammadapters.
 
 #### Registerkarte Abfahrtszeitpläne
 ![](../../../en/adapterref/iobroker.fahrplan/docs/en/img/settings_departuretimetables.png)
 
 Mit der + -Taste können neue Einträge zur Tabelle hinzugefügt werden.
 
-| Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer stimmt mit dem Unterknoten in Objekten überein und wird automatisch zugewiesen Aktiv | Die Verbindungsinformationen werden aktualisiert, wenn das Element aktiviert ist Von | Numerische ID der Startstation oder des Startstopps | Von (Benutzerdefinierter Name) | Benutzerdefinierter Name für Startstation oder Startstopp, der in der Ausgabe von HTML- und Verzögerungsbenachrichtigungen verwendet wird
+| Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer stimmt mit dem Unterknoten in Objekten überein und wird automatisch zugewiesen Aktiv | Die Verbindungsinformationen werden aktualisiert, wenn das Element aktiviert ist Von | Numerische ID der Startstation oder des Startstopps | Von (Benutzerdefinierter Name) | Benutzerdefinierter Name für Startstation oder Startstopp, der in der HTML- und Verzögerungsbenachrichtigungsausgabe verwendet wird Abfahrten | Anzahl der zu empfangenden Abfahrten
 
 ## Changelog
 
@@ -137,8 +137,12 @@ Mit der + -Taste können neue Einträge zur Tabelle hinzugefügt werden.
 -->
 
 ### __WORK IN PROGRESS__
+* (Gaudes) Configurable number of journeys in routes
 * (Gaudes) Configurable number of departures in departure timetable
+* (Gaudes) Show product in departure timetable
+* (Gaudes) Fix platform handling in departure timetable
 * (Gaudes) Update Adapter template from 1.27.0 to 1.29.0
+* (Gaudes) Include Dependabot updates
 
 ### 0.2.0 (2020-09-23)
 * (Gaudes) Include Departure Timetable for configured stations

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.cul/README.md
 title: ioBroker.cul
-hash: IWW7OEAnxbcUNoWwj1l1QuRQhHSXf8Kznl9KcAk09ig=
+hash: K4rCOBSVFqE1jD3svv7aukvEal1t2fI6QVtX90V21KE=
 ---
 ![Logo](../../../en/adapterref/iobroker.cul/admin/busware.jpg)
 
@@ -29,10 +29,24 @@ ioBroker-Adapter zur Steuerung von FS20, Max!, HMS und anderen Geräten über [C
 ### Senden Sie einen Befehl an ein FS20-Gerät in z. JavaScript
 ```sendTo("cul.0", "send", {"protocol":"FS20", "housecode":"A1B2", "address":"01", "command":"00"});```
 
-Dieser Befehl verwendet die CUL-Bibliothek dieses Adapters, um den Befehl an ein FS20-Gerät zu senden.
+### Senden Sie mit JavaSript einen Raw-Befehl (z. B. an ein InterTechno-Gerät)
+```sendTo("cul.0", "sendraw", {"command": 'is0FFFFF0FFFFF'});```
+
+Diese Befehle verwenden die CUL-Bibliothek dieses Adapters, um den Befehlen ein Gerät zu senden.
 Javascript / Node.js basierter Busware CUL USB / Culfw Adapter
 
 ## Changelog
+
+### 1.3.3 (2020-09-25)
+* (EvilEls) Added raw command support with cul.write()
+
+### 1.3.2 (2020-08-23)
+* (Apollon77) check that all needed objects are existing on start (Sentry IOBROKER-CUL-C)
+* (Apollon77) fix Moritz device crash case (Sentry IOBROKER-CUL-7)
+
+### 1.3.1 (2020-07-26)
+* (Apollon77) make sure connection check do not crash adapter (Sentry IOBROKER-CUL-3)
+* (Apollon77) crashes preventd (Sentry IOBROKER-CUL-5, IOBROKER-CUL-8)
 
 ### 1.3.0 (2020-07-20)
 * (Apollon77) Really update dependencies and Serialport

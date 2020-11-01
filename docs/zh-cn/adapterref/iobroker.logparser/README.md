@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.logparser/README.md
 title: ioBroker.logparser
-hash: hFhKajhDIfgI4rFcQpTTJLvbUvIFVnP+VaOy3rtMH2o=
+hash: ifv1iQUi4BEJcBOYxOUWRM3ZGbwpOTmRqWNoxbsg+KI=
 ---
 ![商标](../../../en/adapterref/iobroker.logparser/admin/logparser.png)
 
@@ -23,17 +23,51 @@ hash: hFhKajhDIfgI4rFcQpTTJLvbUvIFVnP+VaOy3rtMH2o=
 
 ![状态](../../../en/adapterref/iobroker.logparser/docs/en/img/states.png)
 
-**请注意：**该适配器使用Sentry库自动向适配器开发者匿名报告异常和代码错误。有关如何禁用此错误报告的更多详细信息，请参阅[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)。 Sentry报告从js-controller 3.0开始使用。
+##安装
+只需通过ioBroker管理界面定期安装适配器。该适配器位于最新的稳定存储库中。
 
 ##说明
-* ** [英文说明]（docs / zh / logparser.md）**
+我已经在此适配器的管理员设置中包括了所有说明。
 
-* ** [Deutsche Anleitung]（docs / de / logparser.md）**
+另外，您也可以在此处阅读大多数说明：
+
+* [**基本适配器说明**]（https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/start_en.md）-对于德语[单击此处（德语） ]（https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/start_de.md）
+* [**解析器规则（过滤器）**]（https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/table-parser-rules_en.md）-德语[单击此处（德语）]（https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/table-parser-rules_de.md）
+* [**全球黑名单**]（https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/table-global-blacklist_en.md）-对于德语[点击此处（德语）]（https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/table-global-blacklist_de.md）
 
 ##可视化示例（动画gif）
 ![可见](../../../en/adapterref/iobroker.logparser/docs/de/img/visintro.gif)
 
+##适配器选项的屏幕截图
+请注意，这些屏幕截图是快照，并不反映最新的适配器选项。
+这只是为您提供适配器选项的概述。
+
+![日志解析器选项](../../../en/adapterref/iobroker.logparser/admin/img/option-screenshots/tab-start.png)
+
+![日志解析器选项](../../../en/adapterref/iobroker.logparser/admin/img/option-screenshots/tab-parser-rules.png)
+
+![日志解析器选项](../../../en/adapterref/iobroker.logparser/admin/img/option-screenshots/tab-further-settings.png)
+
+![日志解析器选项](../../../en/adapterref/iobroker.logparser/admin/img/option-screenshots/tab-vis.png)
+
+![日志解析器选项](../../../en/adapterref/iobroker.logparser/admin/img/option-screenshots/tab-global-blacklist.png)
+
+![日志解析器选项](../../../en/adapterref/iobroker.logparser/admin/img/option-screenshots/tab-expert-settings.png)
+
+##链接和资源
+* [** Log Parser ioBroker论坛链接（启动页面）**]（https://forum.iobroker.net/topic/37793/log-parser-adapter-splash-page）
+
+##注意
+*此适配器使用Sentry库自动向适配器开发人员匿名报告异常和代码错误。有关如何禁用此错误报告的更多详细信息，请参阅[Sentry-Plugin文档]（https://github.com/ioBroker/plugin-sentry#plugin-sentry）。 Sentry报告从js-controller 3.0开始使用。
+
 ## Changelog
+
+### 1.1.0
+* (Mic-M) Fixed issue [#15](https://github.com/Mic-M/ioBroker.logparser/issues/15) regarding regex for tab "Parser Rules", column "Blacklist"
+* (Mic-M) Enhancement [#16](https://github.com/Mic-M/ioBroker.logparser/issues/16) - add specific CSS classes to any element of the JSON log per adapter option.
+* (Mic-M) Major improvement: Implemented entire documentation into adapter itself to significantly improve usability.
+* (Mic-M) A few improvements under the hood.
+
 
 ### 1.0.4
 * (Mic-M) Fixed 'Today/Yesterday' updating issue - https://forum.iobroker.net/post/469757. Thanks to (Kuddel) for reporting and (Glasfaser) for further debugging.

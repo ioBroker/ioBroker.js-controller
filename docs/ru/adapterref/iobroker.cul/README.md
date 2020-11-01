@@ -3,20 +3,20 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.cul/README.md
 title: ioBroker.cul
-hash: IWW7OEAnxbcUNoWwj1l1QuRQhHSXf8Kznl9KcAk09ig=
+hash: K4rCOBSVFqE1jD3svv7aukvEal1t2fI6QVtX90V21KE=
 ---
-![логотип](../../../en/adapterref/iobroker.cul/admin/busware.jpg)
+![Логотип](../../../en/adapterref/iobroker.cul/admin/busware.jpg)
 
 ![Количество установок](http://iobroker.live/badges/cul-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.cul.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.cul.svg)
-![тесты](https://travis-ci.org/ioBroker/ioBroker.cul.svg?branch=master)
-![NPM](https://nodei.co/npm/iobroker.cul.png?downloads=true)
+![Тесты](https://travis-ci.org/ioBroker/ioBroker.cul.svg?branch=master)
+![НПМ](https://nodei.co/npm/iobroker.cul.png?downloads=true)
 
 # IoBroker.cul
 Адаптер ioBroker для управления FS20, Max !, HMS и другими устройствами через [CUL](http://busware.de/tiki-index.php?page=CUL) / [culfw](http://culfw.de). Зависит от https://github.com/hobbyquaker/cul
 
-** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить создание отчетов об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Поддерживаемые устройства
 - *EM* - EM1000WZ, EMWZ
@@ -26,13 +26,27 @@ hash: IWW7OEAnxbcUNoWwj1l1QuRQhHSXf8Kznl9KcAk09ig=
 - *WS* - KS300TH, S300TH, WS2000 / WS7000
 
 ## Как
-### Отправить команду на устройство FS20, например, JavaScript
+### Отправьте команду на устройство FS20, например, в JavaScript
 ```sendTo("cul.0", "send", {"protocol":"FS20", "housecode":"A1B2", "address":"01", "command":"00"});```
 
-Эта команда использует библиотеку CUL этого адаптера для отправки команды на устройство FS20.
+### Отправьте необработанную команду (например, на устройство InterTechno) с помощью JavaSript
+```sendTo("cul.0", "sendraw", {"command": 'is0FFFFF0FFFFF'});```
+
+Эти команды используют библиотеку CUL этого адаптера для отправки команд устройству.
 Адаптер Busware CUL USB / culfw на основе Javascript / Node.js
 
 ## Changelog
+
+### 1.3.3 (2020-09-25)
+* (EvilEls) Added raw command support with cul.write()
+
+### 1.3.2 (2020-08-23)
+* (Apollon77) check that all needed objects are existing on start (Sentry IOBROKER-CUL-C)
+* (Apollon77) fix Moritz device crash case (Sentry IOBROKER-CUL-7)
+
+### 1.3.1 (2020-07-26)
+* (Apollon77) make sure connection check do not crash adapter (Sentry IOBROKER-CUL-3)
+* (Apollon77) crashes preventd (Sentry IOBROKER-CUL-5, IOBROKER-CUL-8)
 
 ### 1.3.0 (2020-07-20)
 * (Apollon77) Really update dependencies and Serialport

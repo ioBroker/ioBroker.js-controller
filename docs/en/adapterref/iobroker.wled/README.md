@@ -15,7 +15,7 @@
 
 ## wled adapter for ioBroker
 
-A fast and feature-rich implementation of an ESP8266/ESP32 webserver to control NeoPixel (WS2812B, WS2811, SK6812, APA102) LEDs!
+A fast and feature-rich implementation of an ESP8266/ESP32 webserver to control NeoPixel (WS2812B, WS2811, SK6812, APA102)LEDs or also SPI based chipsets like the WS2801!
 
 [WLED - Github Project](https://github.com/Aircoookie/WLED) by @Aircoookie
 

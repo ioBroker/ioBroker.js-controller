@@ -3,23 +3,26 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-icontwo/README.md
 title: ioBroker.vis-icontwo
-hash: heQmDo1f+3qYDPNfkb06bmRe+DJlxvHUAXhvVHC3ejo=
+hash: 2XDBQbxJtEV1KshcJ5PhL4kpokOFcG3Z6thdre0/cmE=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-icontwo/admin/icontwo.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.vis-icontwo.svg)
-![Загрузки](https://img.shields.io/npm/dm/iobroker.vis-icontwo.svg)
-![Количество установок (последнее)](http://iobroker.live/badges/vis-icontwo-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/vis-icontwo-stable.svg)
+![Загрузки](https://img.shields.io/npm/dm/iobroker.vis-icontwo.svg?)
+![Количество установок (последнее)](http://iobroker.live/badges/vis-icontwo-installed.svg)
 ![Статус зависимости](https://img.shields.io/david/inventwo/iobroker.vis-icontwo.svg)
 ![Известные уязвимости](https://snyk.io/test/github/inventwo/iobroker.vis-icontwo/badge.svg)
+![Статус сборки](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
+![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+![Пожертвование Paypal](https://img.shields.io/badge/paypal-donate%20|%20spenden-green.svg)
 ![НПМ](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)
 
 # IoBroker.vis-icontwo
 ## Icon Adapter für den ioBroker.vis Adapter
 Ein reiner Icon Adapter für die Visualisierung.
 
-![Скриншот](http://resources.inventwo.com/github/icontwo/Screen_001.png)
+![Снимок экрана](http://resources.inventwo.com/github/icontwo/Screen_001.png)
 
 Все иконы sind über den Dateimanager (auf der obersten Ebene) im vis-icontwo Ordner zu finden
 
@@ -32,15 +35,15 @@ Eine kleine Vorschau über den Stil der Иконки:
 
 З.Б. Фары (Тейлаусваль):
 
-![Скриншот](http://resources.inventwo.com/github/icontwo/Screen_002.png)
+![Снимок экрана](http://resources.inventwo.com/github/icontwo/Screen_002.png)
 
 З.Б. Комнаты (Teilauswahl):
 
-![Скриншот](http://resources.inventwo.com/github/icontwo/Screen_003.png)
+![Снимок экрана](http://resources.inventwo.com/github/icontwo/Screen_003.png)
 
 З.Б. Устройства (Teilauswahl):
 
-![Скриншот](http://resources.inventwo.com/github/icontwo/Screen_004.png)
+![Снимок экрана](http://resources.inventwo.com/github/icontwo/Screen_004.png)
 
 Eine vollständige Übersichtaller Icons ist hier zu finden (die Ordnerstruktur ist die gleiche, wie im Dateimanager):
 
@@ -58,6 +61,38 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog
+
+### 0.31.0
+
+• Neue Icons hinzugefügt (Spa & Fitness, Electricity, Lights, Rooms)
+
+### 0.30.1
+
+• Bug Fix
+
+### 0.30.0
+
+• Neue Icons hinzugefügt (Network, Devices)
+
+### 0.29.0
+
+• Neue Icons hinzugefügt (Electricity)
+
+### 0.28.0
+
+• Neue Icons hinzugefügt (Arrows, Shopping, Electricity)
+
+### 0.27.1
+
+• Bug Fix
+
+### 0.27.0
+
+• Neue Icons hinzugefügt (Computer)
+
+### 0.26.0
+
+• Neue Icons hinzugefügt (Computer)
 
 ### 0.25.0
 

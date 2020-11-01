@@ -807,6 +807,10 @@ Congratulations! Now you can control the system ioBroker and receive data via a 
 
 ## Changelog
 
+### 2.1.10 (2020-10-30)
+* (Apollon77) Crash cases prevented (Sentry IOBROKER-MQTT-G)
+* (Apollon77) prevent errors on mqtt connection test
+
 ### 2.1.9 (2020-09-17)
 * (Apollon77) Crash cases prevented (Sentry IOBROKER-MQTT-E, IOBROKER-MQTT-F)
 

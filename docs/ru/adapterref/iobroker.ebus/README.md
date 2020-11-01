@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: Smtq1F2TYSMQV5ZnsZeQO6He7+Y0k7OJXrjM3JGVbJ4=
+hash: tB2ZoSeU+uiU1nCXjDPAxzxsj46Lg9vwLIwzPOdlofg=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -18,13 +18,13 @@ hash: Smtq1F2TYSMQV5ZnsZeQO6He7+Y0k7OJXrjM3JGVbJ4=
 
 ** Если вам это нравится, рассмотрите возможность пожертвования: **
 
-[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
 Этот адаптер читает
 
 - данные из ebusd с использованием html
 
-В этом случае ebusd должен быть запущен и должен иметь возможность отправлять данные, например, проводник через http:// IP: порт / данные (http://192.168.0.123:8889/data) Текущая версия ebusd, вкл. файлы конфигурации можно скопировать с https://github.com/john30/ebusd. Все поля с данными, lastup и из глобального раздела анализируются. Все остальные на данный момент игнорируются.
+В этом случае ebusd должен работать и должен иметь возможность отправлять данные, например, проводник через http:// IP: порт / данные (http://192.168.0.123:8889/data) Текущая версия ebusd, вкл. файлы конфигурации можно скопировать с https://github.com/john30/ebusd. Все поля с данными, lastup и из глобального раздела анализируются. Все остальные на данный момент игнорируются.
 
 Существует возможность опроса данных, которые не опрашиваются напрямую ebusd. Команда read -f используется для принудительного чтения через ebus.
 
@@ -34,6 +34,9 @@ hash: Smtq1F2TYSMQV5ZnsZeQO6He7+Y0k7OJXrjM3JGVbJ4=
 
 ## Известные проблемы
 * пожалуйста, создавайте проблемы на [github] (https://github.com/rg-engineering/ioBroker.ebus/issues), если вы обнаружите ошибки или захотите новые функции
+
+## 2.2.3 (2020-10-24)
+* (Рене) создать историю DP, если она недоступна
 
 ## 2.2.0 (06.09.2020)
 * (Рене) меняйте DP только в случае необходимости, чтобы снизить нагрузку на систему

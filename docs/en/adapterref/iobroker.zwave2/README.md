@@ -40,6 +40,28 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.7.9 (2020-11-01)
+* Fixed a crash in the adapter settings when a node's device type is not yet set
+
+### 1.7.8 (2020-10-25)
+* Fixed a crash while sending a `Door Lock` command under specific circumstances
+* The timespan that a node is assumed to be awake is now prolonged when it acknowledges a command
+* Fixed a bug where `Alarm Sensor CC` reports could be assigned to a non-existing node
+* Including nodes which can act as controllers is now supported
+* For nodes with an `unknown` status, the "remove failed node" button is now enabled
+* The loglevel for warnings about insecure communication because of a missing network key has been reduced to warning.
+
+### 1.7.7 (2020-10-21)
+* Objects and states are now created for all nodes immediately after the driver is ready
+* States are no longer marked as stale (orange) after a node was interviewed for the first time
+* Fixed an error that would cause the interview of nodes with `User Code CC` V1 to abort
+* Fixed an error that would cause the interview of nodes which support `Central Scene CC` but not `Association Group Information CC` to abort
+* For several CCs, the interview now continues without a fresh value if the node does not respond to a non-critical request
+* Fixed the secure inclusion process for some devices that would behave strangely when nonces were sent without requesting an acknowledgement
+* Fixed an error during logging of a `DoorLockCC::ConfigurationSet` command
+* After a complete interview, battery-powered nodes that are temporarily mains-powered (e.g. Multisensor 6 with USB power), are no longer sent into a "go to sleep" loop
+* When a node requests multiple nonces in a short timespan, only respond to the most recent request
+
 ### 1.7.6 (2020-10-15)
 * The roles of states are now determined depending on the value they represent instead of just `"value"`
 * Added a new option to configure if user-defined names for states may be overwritten
@@ -49,28 +71,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 * Fixed the creation of some missing states (`Alarm Sensor CC` in idle state, `Multilevel Switch CC` V1/V2)
 * When a message should be sent to a node that is assumed to be dead, the node is now pinged first to check if it is really dead
 * Improved compatibility with devices that support `Notification CC V2+` but send `V1` commands.
-
-### 1.7.4 (2020-10-05)
-* Added a configuration file for `Electronic Solutions DBMZ EU`
-* Fixed a crash when receiving truncated messages
-* Fixed a crash when trying to send secure commands with an expired nonce (`Security CC requires a nonce to be sent!`)
-* Several fixes regarding battery-powered nodes (this should prevent the dreaded `E5` error on some thermostats, which was back since v1.7.0), including: 
-  * Battery-powered nodes are actively sent to sleep again when they have no pending messages
-  * Compatibility queries are now discarded when the node is asleep, avoiding duplicate queries on wakeup
-  * Sending a node to sleep now continues to work even if it failed once
-
-### 1.7.3 (2020-10-03)
-* Fixed two crashes during the `Notification CC` interview
-
-### 1.7.2 (2020-10-01)
-* Added an option to improve the compatibility with legacy switches. If this option is enabled, `targetValue` (Binary and Multilevel Switch) will be overwritten with `currentValue` whenever `currentValue` is updated.
-* When healing the network, the progress should now show up immediately
-* Fixed two crash sources
-* Several improvements to `Notification CC`
-  * The interview now detects whether a node is push or pull
-  * Push nodes now have their supporting values set to idle if no value is yet known
-  * Pull nodes are now auto-refreshed every 6 hours and on wakeup
-* Including secure devices now fails if the device takes too long to respond (as required by the specifications)
 
 ## License
 

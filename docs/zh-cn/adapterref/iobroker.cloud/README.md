@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.cloud/README.md
 title: ioBroker云适配器
-hash: FSkpNQoml2w+OoHO8MMRFHzZeypm1KRKbim/xZiTs/0=
+hash: nbORrtNISimrwJ9owEX4UVDGB+9rHqZvXcqkSzyyTxo=
 ---
 ![商标](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
 
@@ -34,24 +34,24 @@ hash: FSkpNQoml2w+OoHO8MMRFHzZeypm1KRKbim/xZiTs/0=
 ### Alexa设置
 ***`cloud`适配器不再支持Alexa。为此使用ioBroker.iot适配器。***
 
-一段时间后，它仍然对`.pro`用户有效，并且该文档可在[这里](doc/alexa.md)中获得。
+一段时间以来，它仍然对`.pro`用户有效，并且该文档可在[这里](doc/alexa.md)中获得。
 
 ## IFTTT
 [指示](doc/ifttt.md)
 
 ＃＃ 服务
 可以将消息发送到云适配器。
-如果调用```[POST]https://iobroker.net/service/custom_<NAME>/<user-app-key>```und值作为有效负载。
+如果将```[POST]https://iobroker.net/service/custom_<NAME>/<user-app-key>```und值称为有效负载。
 
 ```
 curl --data "myString" https://iobroker.net/service/custom_test/<user-app-key>
 ```
 
-如果在设置中将“服务白名单”字段设置为名称* custom_test *，并以“ custom_test”作为服务名称进行调用，则状态cloud / 0.services.custom_test将设置为myString *。
+如果您在设置中将“服务白名单”字段设置为名称* custom_test *，并以“ custom_test”作为服务名称进行调用，则状态** cloud.0.services.custom_test **将设置为* myString *。
 
 您可以在白名单中写上“ *”，然后将允许所有服务。
 
-从2.0.5版开始，您可以使用```[GET]https://iobroker.net/service/custom_<NAME>/<user-app-key>/<data>```格式的GET请求来放置** \ <data\> **进入** cloud.0.services.custom_ \ <NAME\> **。
+从2.0.5版开始，您可以使用```[GET]https://iobroker.net/service/custom_<NAME>/<user-app-key>/<data>```格式的GET请求来放置** \<data\> **进入** cloud.0.services.custom_ \<NAME\> **。
 
 在这里，您可以找到有关如何与[任务者](doc/tasker.md)一起使用的说明。
 
@@ -65,9 +65,24 @@ curl --data "myString" https://iobroker.net/service/custom_test/<user-app-key>
 可以通过“使用text2command实例”选项在设置中定义“ X”。
 
 ### SimpleApi
-*去做*
+您可以使用以下命令（仅限专业人士）：
+
+-```[GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / get / stateID```-读取状态值=>`{“ val”：103.516，“ ack “：true，” ts“：1604132484682，” q“：0，”来自“：” system.adapter.admin.0“，” lc“：1604132469672，”结果“：” OK“}`
+-```[GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / getPlainValue / stateID``-读取状态值=>`103.641`
+-```[GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / set / stateID？value = 1''`-设置状态值=>`{“结果”： “确定”}`
+
+**不要忘记将`simpleApi`添加到配置中允许的服务中。**
 
 ## Changelog
+### 3.1.0 (2020-10-31)
+* (bluefox) Implemented the easy simpleApi commands (not all)
+
+### 3.0.5 (2020-10-30)
+* (Apollon77) Make sure that subscribe patterns are strings (Sentry IOBROKER-CLOUD-D)
+
+### 3.0.4 (2020-07-16)
+* (Apollon77) crash prevented when socket is not connected (Sentry IOBROKER-CLOUD-8)
+
 ### 3.0.3 (2020-04-14)
 * (bluefox) Updated socket.io version
 * (bluefox) Added sentry.io reporting

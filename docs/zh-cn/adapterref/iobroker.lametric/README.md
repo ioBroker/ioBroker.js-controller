@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: arHjPFDSFCWhUuDWwkMW6rVlqiIPvhw5gj2ASjboo0M=
+hash: rrTTa+nRCnAnxHgtZ/Fhl4BSAKkLMlo5Y1JRqNIm9+Q=
 ---
 ![商标](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -17,10 +17,12 @@ hash: arHjPFDSFCWhUuDWwkMW6rVlqiIPvhw5gj2ASjboo0M=
 ![NPM](https://nodei.co/npm/iobroker.lametric.png?downloads=true)
 
 ＃ioBroker.lametric
-使用此适配器，您可以获取有关LaMetric Time的状态信息并向其发送通知。
-您需要的只是设备的IP地址和api开发人员密钥。
+该适配器使您可以获取有关LaMetric Time的状态信息并向其发送通知。
+您所需要的只是设备的IP地址和api开发人员密钥。
 
 ##配置
+经LaMetric固件* 2.0.28 *和* 2.1.2 *测试（推荐）
+
 您可以获取个人密钥[这里](https://developer.lametric.com/)。
 
 ![api键](../../../en/adapterref/iobroker.lametric/docs/apiKey.png)
@@ -32,10 +34,12 @@ hash: arHjPFDSFCWhUuDWwkMW6rVlqiIPvhw5gj2ASjboo0M=
 -设置显示亮度（百分比，自动模式/手动模式）
 -设置音量（百分比）
 -配置屏幕保护程序（启用/禁用，基于时间，黑暗时）
--激活/停用蓝牙并更改蓝牙名称
+-激活/禁用蓝牙并更改蓝牙名称
 -在应用之间切换（下一个，上一个，转到特定的应用）
--发送块状通知（具有可配置的优先级，声音，图标，文本等）
+-发送阻止通知（具有可配置的优先级，声音，图标，文本等）
 -控制特殊的应用程序，例如收音机，秒表和天气
+
+功能受[官方API功能](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html)的限制。
 
 ##
 您可以使用简单的字符串作为消息，将其显示为单个框架
@@ -47,7 +51,7 @@ hash: arHjPFDSFCWhUuDWwkMW6rVlqiIPvhw5gj2ASjboo0M=
 ![简单](../../../en/adapterref/iobroker.lametric/docs/blockly2.png)
 
 ##脚本
-要在您的公制上显示消息，只需使用脚本适配器将消息发送到该实例：
+要在您的公制上显示消息，只需使用脚本适配器将消息发送到此实例：
 
 ```
 sendTo('lametric.0', 'send', {
@@ -114,6 +118,10 @@ show();
 ```
 
 ## Changelog
+
+### 0.0.10
+
+* (klein0r) Switched to axios lib
 
 ### 0.0.9
 

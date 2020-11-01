@@ -319,6 +319,9 @@ $ sudo apt-get install smartmontools
 ## Changelog
 <!-- ### __WORK IN PROGRESS__ -->
 
+### 1.7.9 (2020-11-01)
+* (bluefox) Corrected socket.io in widget
+
 ### 1.7.8 (2020-09-17)
 * (bluefox) Fixed words.js in widget
 

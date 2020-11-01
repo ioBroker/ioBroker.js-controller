@@ -3,71 +3,86 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.cloud/README.md
 title: Облачный адаптер ioBroker
-hash: FSkpNQoml2w+OoHO8MMRFHzZeypm1KRKbim/xZiTs/0=
+hash: nbORrtNISimrwJ9owEX4UVDGB+9rHqZvXcqkSzyyTxo=
 ---
-![логотип](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
+![Логотип](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
 
 ![Количество установок](http://iobroker.live/badges/cloud-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.cloud.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.cloud.svg)
-![NPM](https://nodei.co/npm/iobroker.cloud.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.cloud.png?downloads=true)
 
 # IoBroker облачный адаптер
 Этот адаптер позволяет подключаться из Интернета через облако ioBroker к локальной установке ioBroker.
 
-** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. ** Более подробную информацию и информацию о том, как отключить отчеты об ошибках, см. В [Sentry-Plugin Документация](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry report используется начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Настройки
-### APP-ключ
-Для использования облачного адаптера вы должны сначала получить ключ APP на [https://iobroker.net](https://iobroker.net).
+### APP-KEY
+Чтобы использовать облачный адаптер, вы должны сначала получить ключ приложения в [https://iobroker.net](https://iobroker.net).
 
-Это ключ приложения, который пользователь может получить на сайте [https://iobroker.net](https://iobroker.net). Пожалуйста, получите ключ и введите его здесь.
+Это ключ приложения, который пользователь может получить на сайте [https://iobroker.net](https://iobroker.net). Пожалуйста, получите там ключ и введите его здесь.
 
 ![вступление](../../../en/adapterref/iobroker.cloud/img/intro.png)
 
 ### Пример
-Все запросы от облачного адаптера будут перенаправлены в какой-либо WEB-экземпляр. Пользователь должен указать здесь экземпляр WEB, который будет показан пользователю при входе на сайт https://iobroker.net.
+Все запросы от облачного адаптера будут перенаправлены на какой-либо WEB-экземпляр. Пользователь должен указать здесь WEB-экземпляр, который будет показан пользователю, когда он войдет на сайт https://iobroker.net.
 
 ### Разрешить самозаверяющие сертификаты
 Если вы используете стандартное облако iobroker.net, вы можете отключить его. Эта опция важна, только если используется собственное облако.
 
-### Настройки Алекса
+### Настройки Alexa
 *** Alexa больше не поддерживается в адаптере `cloud`. Для этого используйте адаптер ioBroker.iot. ***
 
-В течение некоторого времени он все еще будет работать для пользователей `.pro`, а документация доступна [Вот](doc/alexa.md).
+Некоторое время он все еще будет работать для пользователей `.pro`, а документация доступна [Вот](doc/alexa.md).
 
 ## IFTTT
 [инструкции](doc/ifttt.md)
 
 ## Сервисы
 Есть возможность отправлять сообщения в облачный адаптер.
-Если вы называете ```[POST]https://iobroker.net/service/custom_<NAME>/<user-app-key>``` und value как полезную нагрузку.
+Если вы вызываете ```[POST]https://iobroker.net/service/custom_<NAME>/<user-app-key>``` и value в качестве полезной нагрузки.
 
 ```
 curl --data "myString" https://iobroker.net/service/custom_test/<user-app-key>
 ```
 
-Если вы зададите в настройках для поля «Белый список служб» имя *custom_test* и вызовете с именем «custom_test» в качестве имени службы, состояние **cloud.0.services.custom_test** будет установлено на *myString*
+Если в настройках в поле «Белый список для сервисов» указать имя *custom_test* а при вызове с именем сервиса «custom_test», состояние **cloud.0.services.custom_test** будет установлено на *myString*
 
 Вы можете написать «*» в белом списке, и все услуги будут разрешены.
 
-Начиная с версии 2.0.5 вы можете использовать запрос GET в форме ```[GET]https://iobroker.net/service/custom_<NAME>/<user-app-key>/<data>``` для размещения **\ <data\>** в **cloud.0.services.custom_ \ <NAME\>**
+Начиная с версии 2.0.5 вы можете использовать GET-запрос в форме ```[GET]https://iobroker.net/service/custom_<NAME>/<user-app-key>/<data>``` для размещения **\<data\>** в **cloud.0.services.custom_ \<NAME\>**
 
-Здесь вы можете найти инструкции, как использовать его с [Tasker](doc/tasker.md).
+Здесь вы можете найти инструкции, как использовать его с [исполнитель](doc/tasker.md).
 
 Услуга IFTTT разрешена, только если установлен ключ IFTTT.
 
 Зарезервированные имена: «ifttt», «text2command», «simpleApi», «swagger». Они должны использоваться без префикса ```"custom_"```.
 
 ### Text2command
-Вы можете написать «text2command» в белый список, вы можете отправить запрос POST в ```https://iobroker.net/service/text2command/<user-app-key>``` для записи данных в переменную *text2command.X.text*
+Вы можете написать «text2command» в белом списке, вы можете отправить запрос POST на ```https://iobroker.net/service/text2command/<user-app-key>``` для записи данных в переменную *text2command.X.text*
 
 «X» можно определить в настройках с помощью опции «Использовать экземпляр text2command».
 
 ### SimpleApi
-*делать*
+Вы можете использовать следующие команды (только Pro):
+
+- `` `[GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / get / stateID`` - для чтения значения состояния =>` {"val": 103.516, "ack ": true," ts ": 1604132484682," q ": 0," from ":" system.adapter.admin.0 "," lc ": 1604132469672," result ":" OK "}`
+- `` [GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / getPlainValue / stateID`` - для чтения значения состояния => `103.641`
+- `` [GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / set / stateID? Value = 1`` - для установки значения состояния => `{" результат ": "ОК"} `
+
+** Не забудьте добавить `simpleApi` к разрешенным службам в конфигурации. **
 
 ## Changelog
+### 3.1.0 (2020-10-31)
+* (bluefox) Implemented the easy simpleApi commands (not all)
+
+### 3.0.5 (2020-10-30)
+* (Apollon77) Make sure that subscribe patterns are strings (Sentry IOBROKER-CLOUD-D)
+
+### 3.0.4 (2020-07-16)
+* (Apollon77) crash prevented when socket is not connected (Sentry IOBROKER-CLOUD-8)
+
 ### 3.0.3 (2020-04-14)
 * (bluefox) Updated socket.io version
 * (bluefox) Added sentry.io reporting

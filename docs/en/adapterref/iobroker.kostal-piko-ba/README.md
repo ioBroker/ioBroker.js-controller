@@ -24,18 +24,21 @@ To connect to the Kostal Pico BA inverter noting its IP-address into the config 
 You could also edit the update frequencies of live, daily and livetime data.
 
 ## Notes
-* This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Changelog
-### 1.1.1 (09.10.2020)
+### 1.1.2 (26.10.2020)
+* (HombachC) bumped dependencies
+
+### 1.1.1 (09.10.2020) stable
 * (HombachC) minor documentation tweaks; DC current accuracy changed to mA
 
 ### 1.1.0 (09.10.2020)
 * (tobstare) added DC1-3 Current, Voltage and Power
 * (HombachC) added battery.ChargeCycles
-* (HombachC) bumbed dependencies; added battery.temperature
+* (HombachC) bumped dependencies; added battery.temperature
 
-### 1.0.2 (23.09.2020)
+### 1.0.2 (23.09.2020) stable
 * (HombachC) public release for stable repo
 
 ### 0.8.0 (18.08.2020)

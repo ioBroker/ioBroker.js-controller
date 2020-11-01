@@ -2,14 +2,17 @@
 # ioBroker.vis-inventwo
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)](https://www.npmjs.com/package/iobroker.vis-inventwo)
+![Number of Installations (stable)](http://iobroker.live/badges/vis-inventwo-stable.svg)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.vis-inventwo.svg)](https://www.npmjs.com/package/iobroker.vis-inventwo)
 ![Number of Installations (latest)](http://iobroker.live/badges/vis-inventwo-installed.svg)
-![Number of Installations (stable)](http://iobroker.live/badges/vis-inventwo-stable.svg)
 [![Dependency Status](https://img.shields.io/david/inventwo/iobroker.vis-inventwo.svg)](https://david-dm.org/inventwo/iobroker.vis-inventwo)
 [![Known Vulnerabilities](https://snyk.io/test/github/inventwo/iobroker.vis-inventwo/badge.svg)](https://snyk.io/test/github/inventwo/iobroker.vis-inventwo)
+[![Build status](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)](https://ci.appveyor.com/project/inventwo/iobroker-vis-inventwo)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/inventwo/iobroker.vis-inventwo/LICENSE)
+
+[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20%7C%20spenden-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 [![NPM](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)](https://nodei.co/npm/iobroker.vis-inventwo/)
-
 
 ## Schalter Widgets für den ioBroker.vis Adapter
 
@@ -35,6 +38,12 @@
         <td><center><b>Slider vertical</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td>
         <td><center><b>Slider horizontal</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td>
     </tr>
+    <tr><td colspan=3></td></tr>   
+          <tr>
+            <td><center><b>Toggle Switch</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td>
+            <td></td>
+            <td></td>
+        </tr>
 </table>
 
 
@@ -65,6 +74,26 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog / Änderungsprotokoll
+
+## 2.5.5
+- Bugfix
+
+## 2.5.4
+- Bugfix (State: doppeltes senden dese Wertes bei touch)
+
+
+## 2.5.3
+- Grauer Kippschalter hinzugefügt
+
+## 2.5.2
+- Bugfix
+
+## 2.5.1
+- Bugfix
+
+## 2.5.0
+- Kippschalter hinzugefügt
+- Bugfix
 
 ## 2.4.3
 - Bugfix

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.eventlist/README.md
 title: ioBroker.eventlist
-hash: RfdHdRKzFlvVs7lLAzyKLdcQBEbYl4meUH7nmlVhG5Y=
+hash: 6CeAXDBZIHaPC8FtlHWmHFXrCY/WQcW2pFi/x9MRhps=
 ---
 ![Логотип](../../../en/adapterref/iobroker.eventlist/admin/eventlist.png)
 
@@ -48,7 +48,7 @@ hash: RfdHdRKzFlvVs7lLAzyKLdcQBEbYl4meUH7nmlVhG5Y=
 Список событий может отображаться как виджет vis.
 
 ### Создание PDF
-Есть возможность сгенерировать PDF-документ со всеми событиями.
+Есть возможность сгенерировать PDF документ со всеми событиями.
 
 Заголовок документа может содержать дату создания, если вы поместите в него шаблон: `Event list on {{YYYY MM DD}}`.
 Точное описание формата времени можно найти здесь: https://momentjs.com/docs/#/displaying/format/
@@ -103,28 +103,52 @@ sendTo('eventlist.0', 'list', 'my.0.state.id1', result => {
 });
 ```
 
+Пользователь может удалить некоторые или все события из списка событий.
+
+```
+// delete all events
+sendTo('eventlist.0', 'delete', '*', result => {
+    console.log(`Deleted ${result.count} events`);
+});
+
+// delete all events for specific state ID
+sendTo('eventlist.0', 'delete', 'hm-rpc.0.AEOI99389408.1.STATE', result => {
+    console.log(`Deleted ${result.count} events`);
+});
+
+// delete one event by timestamp
+sendTo('eventlist.0', 'delete', '2020-10-20T21:00:12.000Z', result => {
+    console.log(`Deleted ${result.count} events`);
+});
+```
+
 ## Шаблоны
 В текстах событий и в текстах состояний могут использоваться следующие шаблоны:
 
 - %s  - значение (`Состояние изменено на% s` =>` Состояние изменено на 5`),
 -% u - unit (`Состояние изменено на %s % u` =>` Состояние изменено на 5% `),
 -% n - имя (`% n изменено состояние на %s ` =>` Устройство A изменило состояние на 5`),
--% t - время (`Состояние изменено на% t` =>` Состояние изменилось состояние в сен Fr, 16: 32: 00`),
--% r - относительное время (`Состояние изменено, состояние% r` =>` Состояние изменилось состояние 5 секунд назад`),
+-% t - время (`Состояние изменилось состояние% t` =>` Состояние изменилось состояние в сен Fr, 16: 32: 00`),
+-% r - относительное время (`Состояние изменилось% r` =>` Состояние изменилось 5 секунд назад`),
 -% d - продолжительность (`State was in previous state for% d` =>` State was in previous state for 5s`),
 -% g - разница значений (`Состояние было изменено на% g%` => `Состояние было изменено на 1%`),
 -% o - разница значений (`Состояние изменено значение с% o на%` => `Состояние было изменено на 1%`)
 
-## Сделать
+## Делать
 - Множество предустановленных значков (минимум 100)
 - Виджет материалов
 - Отправлять сообщения в системный журнал (может быть splunk) https://www.npmjs.com/package/splunk-logging
+- Фильтр по ID в админке или виджете
 
 <! - Заполнитель для следующей версии (в начале строки):
 
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 0.2.9 (2020-10-20)
+* (bluefox) Corrected error in GUI by disabling of state
+* (bluefox) Implemented the deletion of events from the event list
+
 ### 0.2.8 (2020-10-14)
 * (bluefox) Corrected error in pdf settings  
 * (bluefox) Implemented the recalculation of the relative time every 10 seconds  

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tuya/README.md
 title: ioBroker.tuya
-hash: C1duj53AKCj6xjch9tPbFC8CuP1DQfmuE15pNX+TWkE=
+hash: 09sh7wWxdIAJsfqPHmSdx3JsHUHPMMDrmq9PZtzKgPg=
 ---
 ![Logo](../../../en/adapterref/iobroker.tuya/admin/tuya.png)
 
@@ -22,7 +22,7 @@ ioBroker-Adapter für die Verbindung mit mehreren kleinen und billigen Wifi-Ger�
 
 Tuya-Geräte sind ESP8266MOD WiFi-Smart-Geräte von Shenzhen Xenon.
 
-Neben Geräten, die mit der Smart Live App verwendet werden können, sollte auch die Verwendung der Jinvoo Smart App, der Xenon Smart App, der eFamilyCloud, der io.e (Luminea oder einer solchen) App möglich sein. Bitte melden Sie sich bei Erfolg zurück. <img src="https://https://raw.githubusercontent.com/Apollon77/ioBroker.tuya/master/admin/warning.png" width="50" height="50"> **Der Adapter funktioniert nur mit Tuya und kompatiblen Apps, solange deren Version &lt;3.14 (!!) ist**
+Neben Geräten, die mit der Smart Live App verwendet werden können, sollte auch die Verwendung der Jinvoo Smart App, der Xenon Smart App, der eFamilyCloud, der io.e (Luminea oder einer solchen) App möglich sein. Bitte melden Sie sich bei Erfolg zurück.<img src="https://https://raw.githubusercontent.com/Apollon77/ioBroker.tuya/master/admin/warning.png" width="50" height="50"> **Der Adapter funktioniert nur mit Tuya und kompatiblen Apps, solange deren Version &lt;3.14 (!!) ist**
 
 Der Adapter funktioniert nachweislich sehr gut mit allen Geräten, die "immer über WLAN" verfügen. Geräte, die nur dann online gehen, wenn ein Ereignis vorliegt, ihre Daten senden und wieder offline gehen, werden nicht unterstützt. Dies bedeutet, dass **batteriebetriebene Geräte normalerweise NICHT funktionieren!**
 
@@ -36,11 +36,14 @@ Die aktuellen Versionen des Tuya Smart und auch der Smartlife App sind **nicht m
 * STL Smart Home App 1.1.1 (zuletzt vom September 2019)
 * Ucomen Home App (??)
 
+## Wichtige Notiz
+Wenn die Geräte über ihre UDP-Pakete nicht korrekt erkannt werden, können Sie die IP manuell festlegen, indem Sie das Geräteobjekt bearbeiten. Siehe https://github.com/Apollon77/ioBroker.tuya/issues/221#issuecomment-702392636
+
 ## Wie der Adapter funktioniert
 ### Grundfunktionalität
-Der Adapter überwacht das lokale Netzwerk auf UDP-Pakete von Tuya-Geräten (alte Firmware, also nur unverschlüsselt). Der ioBroker-Host, auf dem der Adapter ausgeführt wird, muss sich im selben Netzwerksegment wie die Geräte befinden, und UDP-Multicasting muss vom Router unterstützt werden!
+Der Adapter überwacht das lokale Netzwerk auf UDP-Pakete von Tuya-Geräten (alte Firmware, also nur unverschlüsselt). Der ioBroker-Host, auf dem der Adapter ausgeführt wird, muss sich im selben Netzwerksegment befinden wie die Geräte, und UDP-Multicasting muss vom Router unterstützt werden!
 
-Alle erkannten Geräte werden dem Adapter hinzugefügt und als Basisfunktionalität fordert der Adapter Daten im definierten Abfrageintervall an. Ohne eine Synchronisierung mit der jeweiligen mobilen App (siehe unten) sind KEINE weiteren Funktionen wie Echtzeit-Updates oder Controlling möglich.
+Alle erkannten Geräte werden dem Adapter hinzugefügt und als Basisfunktionalität fordert der Adapter Daten im definierten Abfrageintervall an. Ohne Synchronisation mit der jeweiligen mobilen App (siehe unten) sind KEINE weiteren Funktionen wie Echtzeit-Updates oder Controlling möglich.
 
 Neuere verschlüsselte Geräte werden NICHT angezeigt, bevor Sie eine Gerätesynchronisierung durchführen (siehe nächste ...).
 
@@ -52,7 +55,7 @@ Der einfachste Weg, diesen Verschlüsselungsschlüssel zu erhalten, besteht dari
 ** Wichtiger Hinweis für iOS-Benutzer: ** Der hier beschriebene Proxy-Ansatz funktioniert nicht mehr. Sobald Sie über Smart Life App Version 3.10 oder höher verfügen, ist die Kommunikation von App für den Proxy nicht mehr sichtbar. Da es jedoch immer noch mit allen Android App-Versionen funktioniert, ist der beste Ansatz ein Androis-Emulator, wie er grob unter https://forum.iobroker.net/topic/23431/aufruf-tuya-adapter-tests-verschl%C3%BCsselte- beschrieben wird ger% C3% A4te / 19
 
 Dazu müssen Sie zunächst ein benutzerdefiniertes Root-Zertifikat auf Ihrem Mobilgerät hinzufügen.
-Wenn Sie in der Konfiguration der Adapterinstanz auf "Proxy starten" klicken, wird das Zertifikat für Ihr System erstellt und zeigt dem Download-Speicherort einen QR-Code an. Scannen Sie den QR-Code idealerweise mit Ihrem Mobilgerät und befolgen Sie die Anweisungen zum Hinzufügen und Vertrauen dieses Stammzertifikats.
+Wenn Sie in der Konfiguration der Adapterinstanz auf "Proxy starten" klicken, wird das Zertifikat für Ihr System erstellt und zeigt dem Download-Speicherort einen QR-Code an. Scannen Sie den QR-Code idealerweise mit Ihrem Mobilgerät und folgen Sie den Anweisungen, um dieses Stammzertifikat hinzuzufügen und ihm zu vertrauen.
 Wenn der Speicherort des QR-Codes nicht erreichbar ist (kann bei Verwendung von Docker oder Ähnlichem auftreten), öffnen Sie den "Proxy Web Info Port" in Ihrem Browser und klicken Sie in der Navigation auf "Root-CA". Sie können auch die CA-Datei herunterladen.
 
 Stellen Sie nun sicher, dass Sie die entsprechende Tuya Smart App schließen / beenden.
@@ -66,10 +69,10 @@ Unmittelbar danach sollten die Objekte mit aussagekräftigeren Namen aktualisier
 
 Die Synchronisierung wird nur anfangs oder nach dem Hinzufügen neuer Geräte zu Ihrer App benötigt.
 
-Einige Bilder für einige mobile Betriebssysteme finden Sie unter [Proxy-Seite](PROXY.md).
+Einige Bilder für ein mobiles Betriebssystem finden Sie unter [Proxy-Seite](PROXY.md).
 
 ## Nicht für batteriebetriebene Geräte
-Batteriebetriebene Geräte werden normalerweise NICHT von diesem Adapter unterstützt! Der Grund ist, dass sie nicht immer online sind, um Strom zu sparen. Wenn sie ein Signal erhalten, gehen Sie online, senden Sie das Update an die Tuya-Cloud-Server und gehen Sie wieder offline. Sie senden keine UDP-Pakete aus oder sind lange genug online, damit der Adapter eine Verbindung zu ihnen herstellen kann.
+Batteriebetriebene Geräte werden normalerweise NICHT von diesem Adapter unterstützt! Der Grund ist, dass sie nicht immer online sind, um Strom zu sparen. Immer wenn sie ein Signal erhalten, gehen sie online, senden das Update an die Tuya-Cloud-Server und gehen wieder offline. Sie senden keine UDP-Pakete aus oder sind lange genug online, damit der Adapter eine Verbindung zu ihnen herstellen kann.
 Sobald jemand einen Weg findet, Daten direkt aus der Tuya-Cloud abzurufen, kann sich dies ändern.
 
 ## Credits
@@ -85,6 +88,38 @@ Bitte verwenden Sie dazu GitHub-Probleme.
 Am besten stellen Sie den Adapter auf den Debug-Protokollmodus (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen abschneidet). Wenn Sie es nicht gerne in der GitHub-Ausgabe bereitstellen, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
 
 ## Changelog
+
+### 3.4.0 (2020-10-29)
+* (Apollon77) update tuya-api library
+
+### 3.3.15 (2020-10-29)
+* (Apollon77) More schema information added
+
+### 3.3.14 (2020-09-15)
+* (Apollon77) More schema information added
+
+### 3.3.12 (2020-08-26)
+* (Apollon77) More schema information added
+* (Apollon77) Crash case prevented (Sentry IOBROKER-TUYA-89)
+
+### 3.3.11 (2020-08-18)
+* (Apollon77) More schema information added
+
+### 3.3.10 (2020-08-02)
+* (Apollon77) More schema information added
+
+### 3.3.9 (2020-07-16)
+* (Apollon77) More schema information added
+
+### 3.3.8 (2020-07-09)
+* (Apollon77) Work around invalid data that are returned by some devices
+* (Apollon77) More schema information added
+
+### 3.3.7 (2020-07-01)
+* (Apollon77) More schema information added
+
+### 3.3.6 (2020-06-29)
+* (Apollon77) More schema information added
 
 ### 3.3.5 (2020-06-11)
 * (Apollon77) More schema information added

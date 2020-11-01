@@ -125,6 +125,9 @@ zusätzlich werden für das Empfänger-Protokoll Version 2.0 folgende Datenpunkt
 
 
 ## Changelog
+### 1.0.1
+- fix bug in interrupt detection for protocol V2
+
 ### 1.0.0
 - Update dependencies
 - BREAKING CHANGE: Drop node 8 support, requires node 10 or above

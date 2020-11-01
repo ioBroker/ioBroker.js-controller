@@ -183,6 +183,11 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 ## Changelog
 
+### 1.7.0 (26.10.2020)
+* (simatec) small Bugfix for umount on cifs/nfs mount
+* (simatec) Dev-Dependencies updated
+* (simatec) Dependencies updated
+
 ### 1.6.9 (30.09.2020)
 * (simatec) Timeout fix for backup process
 

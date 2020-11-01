@@ -32,6 +32,9 @@ The currently versions of the Tuya Smart and also Smartlife App are **no longer 
 * STL Smart Home App 1.1.1 (last dated Sept 2019)
 * Ucomen Home App (??)
 
+## Important note
+If the devices are not correctly detected via their UDP packages you can set the IP manually by editing the device object. see https://github.com/Apollon77/ioBroker.tuya/issues/221#issuecomment-702392636
+
 ## How the adapter works
 
 ### Basic functionality
@@ -87,7 +90,10 @@ Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.4.0 (2020-10-29)
+* (Apollon77) update tuya-api library
+
+### 3.3.15 (2020-10-29)
 * (Apollon77) More schema information added
 
 ### 3.3.14 (2020-09-15)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP Cloud AccessPoint适配器
-hash: imIQYuotL4N4nhDankZmeV6Bqio97DpYIi1pbbS4MAE=
+hash: UnHTzvzWwdbWm+eHXhoedg6zjQvgT8aPkvmVK20Teq8=
 ---
 ![商标](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
@@ -12,7 +12,6 @@ hash: imIQYuotL4N4nhDankZmeV6Bqio97DpYIi1pbbS4MAE=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.hmip.svg)
 ![建立状态](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
-![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
 
 ＃ioBroker HomeMatic IP Cloud AccessPoint适配器
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
@@ -31,20 +30,22 @@ hash: imIQYuotL4N4nhDankZmeV6Bqio97DpYIi1pbbS4MAE=
 我会不断改进它，但是这需要时间。社区的任何帮助，例如拉取请求将不胜感激。
 
 对于无法正常使用的HmIP设备，请创建与此信息有关的问题（每台设备一个，如果可能，请在主题中提供技术名称）。
-将在ioBroker中登录的适配器切换为傻模式，并将打印的设备的json添加到问题中的日志中。
+将在ioBroker中登录的适配器切换为傻模式，然后将打印的设备的json添加到问题中的日志中。
 我可能还需要状态更改的json。
 
 谢谢
 
+如果您要查找信息，并且警报设置处于活动状态，则必须检查组INTERNAL和EXTERNAL的活动状态，它们组合表示三种警报状态。 “内部”和“外部”活动表示“离开”，仅“外部”活动表示仅“外围”活动。
+
 ##重要信息此适配器可以做什么
-!!!您只能使用可以通过原始Homematic IP应用程序触发的此适配器来触发事件。
+!!!您只能使用可通过原始Homematic IP应用程序触发的此适配器来触发事件。
 例如，设备之间的直接连接在应用程序中没有事件，也无法通过此适配器触发！！！
 
 ##设置
-*输入您的SGTIN（接入点背面）和PIN（如果之前已设置），然后通过按蓝色LED按钮验证数据。这将创建一个身份验证令牌。
+*输入您的SGTIN（接入点的背面）和PIN（如果之前已设置），然后通过按蓝色LED按钮来验证数据。这将创建一个身份验证令牌。
 
 ＃＃ 谢谢
-到coreGreenberet获得他的python库（https://github.com/coreGreenberet/homematicip-rest-api）
+到coreGreenberet获取他的python库（https://github.com/coreGreenberet/homematicip-rest-api）
 
 ioBroker论坛中的## Diskussion
 https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
@@ -53,6 +54,44 @@ https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 1.4.0 (2020-10-29)
+* (Apollon77) Add ROTARY_WHEEL_CHANNEL and RAIN_DETECTION_CHANNEL, ACCESS_CONTROLLER_WIRED_CHANNEL
+* (Apollon77) Read home anew if no home object is provided for SECURITY_JOURNAL_CHANGED event
+
+### 1.3.1 (2020-09-18)
+* (Apollon77) Fix missing write permission for Notification Light "On" channel
+
+### 1.3.0 (2020-09-18)
+* (SliX185) Add MAINS_FAILURE_CHANNEL
+* (Apollon77) Add DEVICE_RECHARGEABLE_WITH_SABOTAGE, ACCESS_CONTROLLER_CHANNEL, FLOOR_TERMINAL_BLOCK_MECHANIC_CHANNEL, DEVICE_BASE_FLOOR_HEATING, MULTI_MODE_INPUT_DIMMER_CHANNEL, MULTI_MODE_INPUT_SWITCH_CHANNEL, ANALOG_OUTPUT_CHANNEL, ACCELERATION_SENSOR_CHANNEL, TILT_VIBRATION_SENSOR_CHANNEL, SHADING_CHANNEL
+* (Apollon77) try to add dim/rgb support for NotificationLight. You might need to delete/recreate the states if it is not working.
+* (Apollon77) add additional functions for setOperationLock, setClimateControlDisplay, setMinimumFloorHeatingValvePosition, setRgbDimLevel. You might need to delete/recreate the states if it is not working.
+* (Apollon77) adjusted some roles. You might need to delete/recreate the states if it is not working.
+
+### 1.2.2 (2020-08-17)
+* (Apollon77) Prevent Crash case (Sentry IOBROKER-HMIP-1B)
+
+### 1.2.1 (2020-08-10)
+* (Apollon77) Fix pairing process
+
+### 1.2.0 (2020-07-26)
+* (saschaabraham) Added an active property INTERNAL and EXTERNAL groups for alarm zones
+* (marcus0303/slix185) added DOOR_CHANNEL properties
+
+### 1.1.1 (2020-07-23)
+* (Apollon77) Crash prevented if object is deleted by state changed (Sentry IOBROKER-HMIP-Y)
+
+### 1.1.0 (2020-07-14)
+* (Apollon77) Remember already sent unknown channel infos to not spam Sentry
+* (Apollon77) Handle reconnects better (Sentry IOBROKER-HMIP-G)
+* (Apollon77) Try to prevent crashes on i valid server reponses, warning is logged
+* (SliX185) Add HMIP-SPDR (PASSAGE_DETECTOR_CHANNEL)
+
+### 1.0.1 (2020-05-16)
+* (Apollon77) Make sure invalid data do not crash adapter (Sentry IOBROKER-HMIP-7)
+* (Apollon77) code cleanup
+* (Apollon77) fix several roles (role info is not allowed)
 
 ### 1.0.0 (2020-05-12)
 * (Apollon77) Add Sentry for error/crash reporting

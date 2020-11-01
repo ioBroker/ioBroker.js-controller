@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.kostal-piko-ba/README.md
 title: ioBroker.kostal-piko-ba
-hash: PQef6od3e+kcptptF8Xr92y1gezEXtggyMUuz2FxTQo=
+hash: F7w0+SsGPU+Ue1vOL2ZMjRGagdqFvH/kPUnUD8tR5UM=
 ---
 ![Logo](../../../en/adapterref/iobroker.kostal-piko-ba/admin/picoba.png)
 
@@ -22,25 +22,28 @@ hash: PQef6od3e+kcptptF8Xr92y1gezEXtggyMUuz2FxTQo=
 ## Adapter zum Lesen von Kostal Piko BA-Daten für iOBroker
 Adapter zum Lesen von Kostal Piko BA-Daten. Der Adapter erstellt einige Status und aktualisiert sie nacheinander.
 Adapter funktioniert auch mit Kostal Piko 15 Wechselrichter.
-Es wird sehr geschätzt, wenn Sie die Funktionalität mit anderen Wechselrichtern überprüfen und mir eine Nachricht senden.
+Es wird sehr geschätzt, wenn Sie die Funktionalität mit anderen Wechselrichtern überprüfen und mir bitte eine Nachricht senden.
 
 ## Die Einstellungen
 Um eine Verbindung zum Kostal Pico BA-Wechselrichter herzustellen, muss die IP-Adresse in der Konfiguration angegeben werden.
 Sie können auch die Aktualisierungshäufigkeiten von Live-, Tages- und Livetime-Daten bearbeiten.
 
 ## Anmerkungen
-* Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Informationen und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation] (https://github.com/ioBroker/plugin) -sentry # plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Changelog
-### 1.1.1 (09.10.2020)
+### 1.1.2 (26.10.2020)
+* (HombachC) bumped dependencies
+
+### 1.1.1 (09.10.2020) stable
 * (HombachC) minor documentation tweaks; DC current accuracy changed to mA
 
 ### 1.1.0 (09.10.2020)
 * (tobstare) added DC1-3 Current, Voltage and Power
 * (HombachC) added battery.ChargeCycles
-* (HombachC) bumbed dependencies; added battery.temperature
+* (HombachC) bumped dependencies; added battery.temperature
 
-### 1.0.2 (23.09.2020)
+### 1.0.2 (23.09.2020) stable
 * (HombachC) public release for stable repo
 
 ### 0.8.0 (18.08.2020)

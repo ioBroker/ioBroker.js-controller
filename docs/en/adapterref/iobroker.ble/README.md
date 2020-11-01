@@ -42,144 +42,147 @@ If you have any device transmitting specially encoded information via advertisem
 	### __WORK IN PROGRESS__
 -->
 
+### 0.12.0 (2020-10-29)
+* Scanning is now done in a separate process, so uncatchable errors in `noble` no longer bring down the main process
+
 ### 0.11.8 (2020-08-25)
-* (AlCalzone) The pressure value reported by Ruuvi Tags is now parsed with two decimal places
+* The pressure value reported by Ruuvi Tags is now parsed with two decimal places
 
 ### 0.11.7 (2020-08-20)
-* (AlCalzone) Added a more helpful error message if the adapter terminates with error `EAFNOSUPPORT`
+* Added a more helpful error message if the adapter terminates with error `EAFNOSUPPORT`
 
 ### 0.11.6 (2020-05-07)
-* (AlCalzone) Ignore unhandled out of range error somewhere in `noble`
+* Ignore unhandled out of range error somewhere in `noble`
 
 ### 0.11.4 (2020-04-23)
-* (AlCalzone) Utilize JS-Controller's auto module rebuild if possible
+* Utilize JS-Controller's auto module rebuild if possible
 
 ### 0.11.3 (2020-04-22)
-* (AlCalzone) Fixed a crash that happens when `noble` can not be loaded.
+* Fixed a crash that happens when `noble` can not be loaded.
 
 ### 0.11.2 (2020-04-19)
-* (AlCalzone) Avoid setting `undefined` as a state value to be compatible with JS-Controller 3.0
+* Avoid setting `undefined` as a state value to be compatible with JS-Controller 3.0
 
 ### 0.11.1 (2020-04-11)
-* (AlCalzone) Fixed typo in Ruuvi Tag plugin: `motionCounter` -> `movementCounter`
+* Fixed typo in Ruuvi Tag plugin: `motionCounter` -> `movementCounter`
 
 ### 0.11.0 (2020-03-25)
-* (AlCalzone) Removed compact support. `noble` sometimes throws errors in callbacks that cannot be handled and would bring the whole compact group down.
-* (AlCalzone) Added support for the Xiaomi Kettle
-* (AlCalzone) Encrypted packets are no longer decoded (for now) to avoid creating thousands of `unknown (0xabcd)` states
+* Removed compact support. `noble` sometimes throws errors in callbacks that cannot be handled and would bring the whole compact group down.
+* Added support for the Xiaomi Kettle
+* Encrypted packets are no longer decoded (for now) to avoid creating thousands of `unknown (0xabcd)` states
 
 ### 0.10.1 (2019-10-13)
-* (AlCalzone) Fixed crash in JS-Controller 2.0
+* Fixed crash in JS-Controller 2.0
 
 ### 0.10.0 (2019-09-26)
-* (AlCalzone) `xiaomi` plugin: test the received data instead of relying on MAC prefixes
+* `xiaomi` plugin: test the received data instead of relying on MAC prefixes
 
 ### 0.9.2 (2019-09-26)
-* (AlCalzone) Add `e7:2e:00` as an alternative mac prefix for MiTemperature
+* Add `e7:2e:00` as an alternative mac prefix for MiTemperature
 
 ### 0.9.1 (2019-09-22)
-* (AlCalzone) Fix compact mode crashes
+* Fix compact mode crashes
 
 ### 0.9.0 (2019-09-04)
-* (AlCalzone) Devices without service data but with manufacturer data are no longer treated as empty
-* (AlCalzone) `_default` plugin: Create states for manufacturer data
-* (AlCalzone) `ruuvi-tag` plugin: Set `"Ruuvi Tag"` as the default name for the device object
+* Devices without service data but with manufacturer data are no longer treated as empty
+* `_default` plugin: Create states for manufacturer data
+* `ruuvi-tag` plugin: Set `"Ruuvi Tag"` as the default name for the device object
 
 ### 0.8.4 (2019-09-03)
-* (AlCalzone) `ruuvi-tag` plugin: Fix parsing of data format 3 and 5
+* `ruuvi-tag` plugin: Fix parsing of data format 3 and 5
 
 ### 0.8.3 (2019-08-26)
-* (AlCalzone) Add `80:ea:ca` as an alternative mac prefix for FlowerCare
+* Add `80:ea:ca` as an alternative mac prefix for FlowerCare
 
 ### 0.8.2 (2019-08-14)
-* (AlCalzone) Add `3f:5b:7d` as an alternative mac prefix for the Xiaomi watch
+* Add `3f:5b:7d` as an alternative mac prefix for the Xiaomi watch
 
 ### 0.8.1 (2019-07-26)
-* (AlCalzone) Added support for the Xiaomi Mosquito Repellent (read-only!)
+* Added support for the Xiaomi Mosquito Repellent (read-only!)
 
 ### 0.7.4 (2019-07-03)
-* (AlCalzone) Removed dependency to admin instance on slaves
-* (AlCalzone) Several dependency updates
+* Removed dependency to admin instance on slaves
+* Several dependency updates
 
 ### 0.7.3 (2019-04-05)
-* (AlCalzone) Add MiTemperature watch with E-Ink display
+* Add MiTemperature watch with E-Ink display
 
 ### 0.7.2 (2019-04-05)
-* (AlCalzone) Add `58:2d:34` as an alternative mac prefix for MiTemperature
+* Add `58:2d:34` as an alternative mac prefix for MiTemperature
 
 ### 0.7.0 (2019-02-05)
-* (AlCalzone) Support MaterializeCSS (Admin v3)
-* (AlCalzone) Support compact mode
-* (AlCalzone) Use @iobroker/testing for tests
+* Support MaterializeCSS (Admin v3)
+* Support compact mode
+* Use @iobroker/testing for tests
 
 ### 0.6.0 (2018-12-23)
-* (AlCalzone) Add NodeJS 10 support
-* (AlCalzone) Add an option to disallow new devices
+* Add NodeJS 10 support
+* Add an option to disallow new devices
 
 ### 0.5.5 (2018-11-29)
-* (AlCalzone) Bugfix: Preserving object properties works again
+* Bugfix: Preserving object properties works again
 
 ### 0.5.3 (2018-11-23)
-* (AlCalzone) Cache objects for a short while instead of retrieving them from ioBroker all the time
-* (AlCalzone) Support negative temperatures from Xiaomi devices
+* Cache objects for a short while instead of retrieving them from ioBroker all the time
+* Support negative temperatures from Xiaomi devices
 
 ### 0.5.2 (2018-03-28)
-* (AlCalzone) Fixed `isHandling` for the `ruuvi-tag` plugin
+* Fixed `isHandling` for the `ruuvi-tag` plugin
 
 ### 0.5.1 (2018-03-28)
-* (AlCalzone) Restored accidentally deleted `mi-flora` plugin.
+* Restored accidentally deleted `mi-flora` plugin.
 
 ### 0.5.0 (2018-03-27)
 * (JonasR & AlCalzone) Added support for the Ruuvi Tag with the `ruuvi-tag` plugin
 
 ### 0.4.2 (2018-03-27)
-* (AlCalzone) Fixed the parsing of temperature+humidity packets from the Xiaomi temperature sensor
+* Fixed the parsing of temperature+humidity packets from the Xiaomi temperature sensor
 
 ### 0.4.1 (2018-03-24)
-* (AlCalzone) Forgot to load legacy `mi-flora` plugin
-* (AlCalzone) Fixed an error when a plugin defines no objects
+* Forgot to load legacy `mi-flora` plugin
+* Fixed an error when a plugin defines no objects
 
 ### 0.4.0 (2018-03-24)
 * (zuvielx9 & AlCalzone) Support for all Xiaomi bluetooth sensors using the `xiaomi` plugin
-* (AlCalzone) reworked plugin system slightly
+* reworked plugin system slightly
 
 ### 0.3.5 (2018-03-18)
-* (AlCalzone) Bugfix: Next attempt at preserving object properties like history and name
+* Bugfix: Next attempt at preserving object properties like history and name
 
 ### 0.3.4 (2018-01-01)
-* (AlCalzone) Bugfix: Keep `history` settings by not overriding existing objects
-* (AlCalzone) Bugfix: When plugins return `undefined`, ignore the packet
+* Bugfix: Keep `history` settings by not overriding existing objects
+* Bugfix: When plugins return `undefined`, ignore the packet
 
 ### 0.3.3 (2017-11-24)
-* (AlCalzone) Enable logging of RSSI
+* Enable logging of RSSI
 
 ### 0.3.2 (2017-09-27)
-* (AlCalzone) Add * wildcard for "all services"
+* Add * wildcard for "all services"
 
 ### 0.3.1 (2017-09-27)
-* (AlCalzone) Bugfix: don't throw error when RSSI state doens't exist
+* Bugfix: don't throw error when RSSI state doens't exist
 
 ### 0.3.0 (2017-09-27)
-* (AlCalzone) Support throttling of RSSI updates
+* Support throttling of RSSI updates
 
 ### 0.2.2 (2017-09-27)
-* (AlCalzone) Bugfix: Only monitor services from _enabled_ plugins
+* Bugfix: Only monitor services from _enabled_ plugins
 
 ### 0.2.1 (2017-09-27)
-* (AlCalzone) Bugfix: last patch broke the service filtering
+* Bugfix: last patch broke the service filtering
 
 ### 0.2.0 (2017-09-26)
-* (AlCalzone) Modularized the adapter code into a plugin system
-* (AlCalzone) Added Mi-Flora plugin
+* Modularized the adapter code into a plugin system
+* Added Mi-Flora plugin
 
 ### 0.1.0 (2017-09-06)
-* (AlCalzone) Support selection of bluetooth devices
+* Support selection of bluetooth devices
 
 ### 0.0.2 (2017-09-06)
-* (AlCalzone) Store more information, improved object structure.
+* Store more information, improved object structure.
 
 ### 0.0.1
-* (AlCalzone) initial release
+* initial release
 
 ## License
 The MIT License (MIT)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ebus/README.md
 title: ioBroker.ebus
-hash: Smtq1F2TYSMQV5ZnsZeQO6He7+Y0k7OJXrjM3JGVbJ4=
+hash: tB2ZoSeU+uiU1nCXjDPAxzxsj46Lg9vwLIwzPOdlofg=
 ---
 ![商标](../../../en/adapterref/iobroker.ebus/admin/ebus.png)
 
@@ -34,6 +34,9 @@ hash: Smtq1F2TYSMQV5ZnsZeQO6He7+Y0k7OJXrjM3JGVbJ4=
 
 ＃＃ 已知的问题
 *如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.ebus/issues）上创建问题
+
+## 2.2.3（2020-10-24）
+*（René）创建历史记录DP（如果不可用）
 
 ## 2.2.0（2020-09-06）
 *（René）仅在必要时才更改DP以减轻系统负载

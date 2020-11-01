@@ -3,22 +3,25 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: jXZqZmIPNSo5kXUJMkf8HDu9l6AM2bBh0Z/V+A9C/DM=
+hash: kfyRFoRcowosL9C9ZM5czQXir34tHauHJf2s0L4hp5c=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)
+![Количество установок (стабильно)](http://iobroker.live/badges/vis-inventwo-stable.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.vis-inventwo.svg)
 ![Количество установок (последнее)](http://iobroker.live/badges/vis-inventwo-installed.svg)
-![Количество установок (стабильно)](http://iobroker.live/badges/vis-inventwo-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/inventwo/iobroker.vis-inventwo.svg)
 ![Известные уязвимости](https://snyk.io/test/github/inventwo/iobroker.vis-inventwo/badge.svg)
+![Статус сборки](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
+![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+![Пожертвование Paypal](https://img.shields.io/badge/paypal-donate%20%7C%20spenden-green.svg)
 ![НПМ](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
 
 # IoBroker.vis-inventorywo
 ## Schalter Widgets для адаптера ioBroker.vis
 ###### .. ab v 2.0.0
-<table><tr><td><center><b>Универсальный</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Мульти</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Образ</b><br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Таблица</b><br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>Список</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Шатер</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Переключатель</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Ползунок вертикальный</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>Слайдер горизонтальный</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr></table>
+<table><tr><td><center><b>Универсальный</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Мульти</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Образ</b><br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Таблица</b><br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>Список</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Шатер</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Переключатель</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Ползунок вертикальный</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>Слайдер горизонтальный</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Переключить переключатель</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td><td></td><td></td></tr></table>
 
 ###### .. v 1.3.8
 ![Beispiel](http://resources.inventwo.com/github/inventwo/Set.png)
@@ -38,6 +41,25 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 [![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.5.5
+- Исправлена ошибка
+
+## 2.5.4
+- Исправление (состояние: doppeltes senden dese Wertes bei touch)
+
+## 2.5.3
+- Grauer Kippschalter hinzugefügt
+
+## 2.5.2
+- Исправлена ошибка
+
+## 2.5.1
+- Исправлена ошибка
+
+## 2.5.0
+- Kippschalter hinzugefügt
+- Исправлена ошибка
 
 ## 2.4.3
 - Исправлена ошибка
@@ -71,7 +93,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Fehler im Multi Widget behoben: Bilder und Text wechseln nicht bei Typ Navigation
 
 ## 2.2.1
-- Fehler в JSON Tabelle behoben, wenn kein gültiges JSON-Objekt vorhanden ist
+- Фелер в JSON Tabelle behoben, wenn kein gültiges JSON-Objekt vorhanden ist
 - Fehler в Value-List behoben: Wert wird nicht aktualisiert
 
 ## 2.2.0
@@ -93,7 +115,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte geprüft werden kann (Ähnlich der Signalbild Funktion)
 - Виджет изображения kann nun auf Datenpunkt prüfen
 - Радиокнопки hinzugefügt
-- Werteliste hinzugefügt (Kann Liste aus einem Datenpunkt или manuell eingetragenem Text erstellen)
+- Werteliste hinzugefügt (Kann Liste aus einem Datenpunkt oder manuell eingetragenem Text erstellen)
 
 ## 1.3.8
 - Шаг ползунка изменен на десятичный
@@ -153,7 +175,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Изменены виджеты кнопок для использования шрифта и текста по умолчанию.
 
 ### 1.0.0
-- Фон виджета и прозрачность контента, переключатель можно изменить с логического на значение, значки изменены с белого на черный, добавлены бесшовные фоны
+- Фон виджета и непрозрачность содержимого, переключатель можно изменить с логического на значение, значки изменены с белого на черный, добавлены бесшовные фоны
 
 ### 0.1.2
 - Исправление ошибок

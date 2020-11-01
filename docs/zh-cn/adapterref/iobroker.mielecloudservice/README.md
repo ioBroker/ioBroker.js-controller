@@ -3,18 +3,18 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: ZhI0kyBgHKHF8oNuwZ8xWY+rOe+UPZw9Hnlp1wUxChc=
+hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
 ---
 ![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
 ![安装数量](http://iobroker.live/badges/mielecloudservice-stable.svg)
-![资料下载](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
-![执照](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![依赖状态](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
 ![已知漏洞](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)
 ![特拉维斯](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
+![执照](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+![资料下载](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
 
 ＃ioBroker.MieleCloudService
 ##说明
@@ -138,6 +138,7 @@ hash: ZhI0kyBgHKHF8oNuwZ8xWY+rOe+UPZw9Hnlp1wUxChc=
 | 27 | “Imprägnieren” / |洗衣机|
 | 48 | “弗吕森·奥斯普林” |洗衣机烘干机|
 | 50 | “ DunkleWäsche” / |洗衣机烘干机|
+| 122 | “快递20”洗衣机烘干机|
 | 123 | “扣篮/牛仔裤” |洗衣机|
 
 ### ProgramPhase

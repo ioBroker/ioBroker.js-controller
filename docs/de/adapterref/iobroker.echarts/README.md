@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: 1Y9h+wuBNP7tu4L/xaB614qdiEzhp6ZO1mX+WJ9maR8=
+hash: HZMqnIYJpRdZhcSBH9zMKwYeK5yhLIkznc2+sDE5aN0=
 ---
 ![Logo](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -19,6 +19,35 @@ Erstellen Sie nützliche Diagramme in ioBroker:
 
 ![Bildschirmfoto](../../../en/adapterref/iobroker.echarts/img/screenshot1.png)
 
+## Verwendung
+Fügen Sie nach dem Neustart die Registerkarte in admin hinzu: ![Administrator](../../../en/adapterref/iobroker.echarts/img/admin.png)
+
+### Serverseitiges Rendern
+Sie können die Voreinstellungen auf dem Server rendern und als base64-URL abrufen oder auf der Festplatte in ioBroker DB speichern:
+
+```
+sendTo('echarts.0', {
+    renderer: 'svg',         // svg | png | jpg | pdf, default: svg
+    width: 1024,             // default 1024
+    height: 300,             // default 300
+    height: 300,             // default 300
+    title: 'ioBroker Chart', // Title of PDF document
+    quality: 0.8,            // quality of JPG
+    compressionLevel: 3,     // Compression level of PNG
+    filters: 8,              // Filters of PNG (Bit combination https://github.com/Automattic/node-canvas/blob/master/types/index.d.ts#L10)
+    fileOnDisk: '',          // Path on disk to save the file
+    fileName: '',            // Path in ioBroker DB to save the files on 'echarts.0',
+    background: '',          // Background color
+    theme: 'light',          // Theme type: 'light', 'dark'
+}, result => {
+    if (result.error) {
+        console.error(result.error);
+    } else {
+        console.log(result.data);
+    }
+});
+```
+
 ## Entwicklerhandbuch
 Sie können Ansichtsdiagramme lokal debuggen mit:
 
@@ -29,13 +58,28 @@ Sie können Ansichtsdiagramme lokal debuggen mit:
 ## Machen
 - Widget für vis (Schaltfläche)
 - Widget für Material
-- chart.png generieren
-- Binärdiagramme
-- Die Flächenfarbe muss mit der Linie übereinstimmen
+- Aufzählungssymbole in Ordnern oder in deren Nähe anzeigen
+
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.3.1 (2020-10-31)
+* (bluefox) Added the color of export button 
+* (bluefox) The interpolated values are shown now
+* (bluefox) Server-side rendering is implemented
 
-### 0.1.0 (2020-10-19)
+### 0.2.1 (2020-10-25)
+* (bluefox) GUI fixes
+
+### 0.2.0 (2020-10-22)
+* (bluefox) Implemented the grouping by category.
+
+### 0.1.2 (2020-10-21)
+* (bluefox) Added support of multiple charts
+
+### 0.1.1 (2020-10-21)
 * (bluefox) initial release
 
 ## License

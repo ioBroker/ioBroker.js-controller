@@ -90,6 +90,35 @@ This is just to provide you an overview of the adapter options.
 
 ## Changelog
 
+### 0.5.13
+* (Mic-M) Issue #35 should be finally fixed.
+* (Mic-M) Enhancement: New state `info.log.switchedTargetDevices.json` for recently switched target devices
+* (Mic-M) Code improvements
+
+
+### 0.5.12
+* (Mic-M) Another fix of 0.5.10 and improvement of debug log
+
+### 0.5.11
+* (Mic-M) Fix of 0.5.10
+
+### 0.5.10
+* (Mic-M) Potential fix / workaround: for issue #35 to verify if schedule was called before at the same time
+
+
+### 0.5.9
+* (Mic-M) **Breaking Change** New feature: 'Target Devices' -> 'Target URLs': added separate URL field to switch device off. This is breaking, since adapter admin config will have blank fields of 'Target URLs' once you update the adapter, and state ids will change as well. 
+* (Mic-M) Enhancement: 'Target Devices' -> 'Target URLs' : [Allow DNS name](https://forum.iobroker.net/post/510154)
+
+### 0.5.8
+* (Mic-M) Fixed admin options
+
+### 0.5.7
+* (Mic-M) Various code fixes and improvements
+* (Mic-M) Potentially fix of [issue #35](https://github.com/Mic-M/ioBroker.smartcontrol/issues/35) - to be tested
+* (Mic-M) Enhancement for 'Target Devices': Add table to call URLs als target (implementation of [issue #1](https://github.com/Mic-M/ioBroker.smartcontrol/issues/1))
+
+
 ### 0.5.6
 * (Mic-M) Hotfix: loading admin settings for enums
 

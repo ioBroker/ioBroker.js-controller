@@ -28,7 +28,7 @@
 
 ## iqontrol adapter for ioBroker
 
-Fast Web-App for Visualization.
+Fast Web-App for Visualization. 
 
 ![Screenshot](img/screenshot_kueche.png)
 
@@ -45,7 +45,7 @@ Fast Web-App for Visualization.
 ![Screenshot](img/screenshot_flot.png)
 
 Runs in any Browser. 
-It's fully customizable and responsive.
+Easy to setup, allthough it's fully customizable and responsive.
 
 > **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
@@ -86,6 +86,11 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	Images in the folder '/usericons' can be used as icons for devices.
 	The free builtin demo-wallpapers are from www.pexels.com.
 
+### Use Autocreate
+* You'll find a ``Autocreate Views``-Button inside the  ``Views``-Tab
+* If you have well maintained ioBroker enumerations like Rooms or Functions, you can use this function to automatically build Views with the devices listed inside this enumerations
+* Keep in mind, because of the large numbers of different adapters and devices inside the ioBroker-univese, the autocration feature can not maintain all devices 100% correctly. You may need to rework some of the settings by hand to get the best results. But autocreate offers you a good starting point to build your own visualization in seconds. 
+
 
 ## URL-Parameters
 * The frontend is called via ``http[s]://<url or ip of iobroker>:<port of web adapter>/iqontrol/index.html``
@@ -108,7 +113,6 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 **Example:**
 * ``https://192.168.1.1:8082/iqontrol/index.html?namespace=iqontrol.1&home=iqontrol.1.Views.Living-Room``
     * Note upper and lower case
-
 
 
 ## Icons and Background-Images
@@ -960,6 +964,7 @@ However, not every type makes sense to every role. So the STATE of a switch for 
 * **ERROR**: *boolean* - when true, a little exclamation-mark-icon will be displayed
 * **UNREACH**: *boolean* - when true, a little wireless-icon will be displayed
     * Behaviour can be inverted in the 'General' section of options (use connected instead of unreach)
+* **ENLARGE_TILE**: *boolean* - when true, the tile will be set as enlarged. You can overwrite that by clicking the enlarge/reduce button. But everytime the state of ENLARGE_TILE changes, it will take over control of the tiles enlargement state again. If the role of ENLARGE_TILE is *button*, then every state change will toggle the enlargement state
 
 ### Link to other view:
 * Has no further states
@@ -1165,8 +1170,41 @@ This device has some special predefined size- and display-settings to show a web
     
 ## Changelog
 
-### dev
+### 1.4.1 (2020-11-01)
+* (sbormann) Fixed drag-sorting or tables and usage of comboboxes on mobile (touch) devices.
+* (sbormann) Enhanced demo for new instances.
+* (sbormann) Enhanced autocreate views function.
+
+### 1.4.0 (2020-10-30)
+* (sbormann) Added Autocreate views, which will help you create entire configurations out of ioBroker lists (for example rooms or functions).
+* (sbormann) Added state ENLARGE_TILE, which can be used to trigger enlargement of tile via external datapoint.
+* (sbormann) Enhanced dynamic zoom for BACKGROUND_URL/HTML to be more accurate when resizing the tile.
+* (sbormann) Drag-Sort of lists should now work on touch devices too.
+
+### 1.3.6 (2020-10-29)
+* (sbormann) Added option for transparent background.
+* (sbormann) Enhanced handling of temporary states for color lights.
+* (sbormann) Added option for dynamic zoom for BACKGROUND_URL/HTML.
+* (sbormann) Fixed creating of widget-datapoints.
+
+### 1.3.5 (2020-10-27)
+* (sbormann) Fix for line 6034 (capitalze).
+
+### 1.3.4 (2020-10-27)
 * (sbormann) Added clock widget.
+* (sbormann) Added ability to create symbolic links instead of real copys of devices.
+* (sbormann) Added options to hide INFO_A and INFO_B if device is inactive/active/enlarged.
+* (sbormann) Added optional delay of cover reload for media.
+* (sbormann) Added new size optione for tiles (full width with aspect ratio but limited to screen height).
+* (sbormann) Added option to center tiles (options / tiles / general / tiles centered).
+* (sbormann) Changed scrollbar layout.
+* (sbormann) Fixed scrolling to top when clicking on a large dialog.
+* (sbormann) Fixed colour lights if using alterntive_color_space.
+* (sbormann) Added blank symbol.
+* (sbormann) Removed up/down arrows from lists (because of sort-by-dragging not necessary any more and they broke symbolic links).
+* (sbormann) Added option to apply padding to BACKGROUND_URL/HTML.
+* (sbormann) Enhanced recognition of tilted state for windows.
+* (sbormann) Added backup and restore of settings and userfiles (under options / backup and restore).
 
 ### 1.3.3 (2020-10-17)
 * (sbormann) Fixed applying of widget-options for newly devices that havn't been saved before.

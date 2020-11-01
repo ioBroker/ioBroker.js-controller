@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.wled/README.md
 title: ioBroker.wled
-hash: MkqTbTBnqseI7RNEO+9zp1ShWv9nvH7AsrY+sI6xCM8=
+hash: A4BU5mIekOJUya3Lt5RdoOhPusUNE4/eshBSmlQ/Jm4=
 ---
 ![Logo](../../../en/adapterref/iobroker.wled/admin/wled_large.png)
 
@@ -21,7 +21,7 @@ hash: MkqTbTBnqseI7RNEO+9zp1ShWv9nvH7AsrY+sI6xCM8=
 ** Dieser Adapter verwendet den Dienst [Sentry.io](https://sentry.io), um Ausnahmen und Codefehler sowie neue Geräteschemata automatisch an mich als Entwickler zu melden. ** Weitere Details siehe unten!
 
 ## Wled Adapter für ioBroker
-Eine schnelle und funktionsreiche Implementierung eines ESP8266 / ESP32-Webservers zur Steuerung von NeoPixel-LEDs (WS2812B, WS2811, SK6812, APA102)!
+Eine schnelle und funktionsreiche Implementierung eines ESP8266 / ESP32-Webservers zur Steuerung von NeoPixel-LEDs (WS2812B, WS2811, SK6812, APA102) oder auch SPI-basierten Chipsätzen wie dem WS2801!
 
 [WLED - Github-Projekt](https://github.com/Aircoookie/WLED) von @Aircoookie
 
@@ -34,7 +34,7 @@ Keine Sorge, in diesem Fall können Sie das Gerät manuell über die IP-Adresse 
 1) Stellen Sie sicher, dass Ihr WLED-Gerät läuft und über das Netzwerk erreichbar ist. 2) Installieren Sie den Adapter. 3) Konfigurieren Sie die Intervallzeiten für die Datenabfrage und die automatische Erkennung des Zyklus. 4 - A) Starten Sie den Adapter. Die Geräte sollten automatisch erkannt werden. 4 - B) Wenn A ausfällt Verwenden Sie die Schaltfläche Gerät hinzufügen und geben Sie die IP-Adresse des Geräts an. 5) Der Adapter sendet sofort Änderungen und fragt alle x Sekunden Daten ab (konfigurierbar).
 
 ## Machen
-* [] Schalten Sie die Abfrage auf Socket-Verbindungen um, bis die Implementierung der WLED-Firmware abgeschlossen ist
+* [] Polling Polling auf Socket-Verbindungen umstellen, bis die Implementierung der WLED-Firmware abgeschlossen ist
 
 ## Unterstütze mich
 Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende leisten (dies ist ein persönlicher Spendenlink für DutchmanNL, keine Beziehung zum ioBroker-Projekt!) [![Spenden] (https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.wled/master/admin/button.png)](http://paypal.me/DutchmanNL)

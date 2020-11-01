@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.eventlist/README.md
 title: ioBroker.eventlist
-hash: RfdHdRKzFlvVs7lLAzyKLdcQBEbYl4meUH7nmlVhG5Y=
+hash: 6CeAXDBZIHaPC8FtlHWmHFXrCY/WQcW2pFi/x9MRhps=
 ---
 ![商标](../../../en/adapterref/iobroker.eventlist/admin/eventlist.png)
 
@@ -103,6 +103,25 @@ sendTo('eventlist.0', 'list', 'my.0.state.id1', result => {
 });
 ```
 
+用户可以从事件列表中删除部分或全部事件。
+
+```
+// delete all events
+sendTo('eventlist.0', 'delete', '*', result => {
+    console.log(`Deleted ${result.count} events`);
+});
+
+// delete all events for specific state ID
+sendTo('eventlist.0', 'delete', 'hm-rpc.0.AEOI99389408.1.STATE', result => {
+    console.log(`Deleted ${result.count} events`);
+});
+
+// delete one event by timestamp
+sendTo('eventlist.0', 'delete', '2020-10-20T21:00:12.000Z', result => {
+    console.log(`Deleted ${result.count} events`);
+});
+```
+
 ##模式
 在事件文本和状态文本中，可以使用以下模式：
 
@@ -119,12 +138,17 @@ sendTo('eventlist.0', 'list', 'my.0.state.id1', result => {
 -许多预定义的图标（最少100个）
 -材质小部件
 -将消息发送到syslog（可能是splunk）https://www.npmjs.com/package/splunk-logging
+-在管理员或小部件中按ID过滤
 
 <！-下一个版本的占位符（在该行的开头）：
 
 ### __进展中__->
 
 ## Changelog
+### 0.2.9 (2020-10-20)
+* (bluefox) Corrected error in GUI by disabling of state
+* (bluefox) Implemented the deletion of events from the event list
+
 ### 0.2.8 (2020-10-14)
 * (bluefox) Corrected error in pdf settings  
 * (bluefox) Implemented the recalculation of the relative time every 10 seconds  

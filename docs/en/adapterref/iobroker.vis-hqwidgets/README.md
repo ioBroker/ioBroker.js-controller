@@ -18,7 +18,7 @@ http://anthonyterrien.com/knob/ or https://github.com/aterrien/jQuery-Knob
 -->
 
 ## Changelog
-### 1.1.6 (2020-10-12)
+### 1.1.7 (2020-10-31)
 * (bluefox) Corrected the after comma digits for the valve
 
 ### 1.1.5 (2020-08-08)

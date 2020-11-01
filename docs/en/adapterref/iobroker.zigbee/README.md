@@ -36,8 +36,12 @@ There are knowledge bases that can be useful for working with Zigbee-devices and
 * in Russian https://github.com/kirovilya/ioBroker.zigbee/wiki
 
 ## Changelog
+### 1.3.1 (2020-10-30)
+* [Experimental Zigate support](https://github.com/Koenkk/zigbee-herdsman/issues/242) (zigbee-herdsman)
+* New devices by: 
+    asgothian, arteck, kirovilya, PaulchenPlump
 
-### 1.3.0 (2020-10-)
+### 1.3.0 (2020-10-07)
 * More stable (zigbee-herdsman)
 * Backup prior database and nv-data (for z-stack 3) before start adapter
 * Allow to select bind cluster

@@ -3,11 +3,11 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.meteoalarm
-hash: 1qF1F3sF76A7SsE8czndOHy0mUHbge1glmr0Dulmlgg=
+hash: dSIeHPUsGeGD6TJaFSBoVxbTLJFv/IL/lp8haqD9UHg=
 ---
 ![Logo](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/jack-blackson/ioBroker.meteoalarm.svg)
+![Greenkeeper-Abzeichen](https://snyk.io/test/github/jack-blackson/ioBroker.meteoalarm/badge.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.meteoalarm.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.meteoalarm.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/meteoalarm-stable.svg)
@@ -73,7 +73,7 @@ Option 2: Gehen Sie zu http://meteoalarm.eu und wählen Sie Ihre Region aus. Geh
 ## Unterstützte Länder
 * Österreich
 * Kroatien
-* Tschechische Republik
+* Tschechien
 * Finnland
 * Deutschland
 * Griechenland
@@ -106,13 +106,16 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem auf github, und 
 ## Zu implementierende Funktionen
 * Behandeln Sie mehrere Alarme an einem Tag
 
-## 1.1.0 (29.03.2020)
+## 1.1.1 (2020-10-28)
+* (jack-blackson) Bugfix HTML-Daten
+
+## 1.1.0 (2020-03-29)
 * (Jack-Blackson) Bugfix Deutschland
 
 ## 1.0.9 (2020-02-06)
 * (Jack-Blackson) Bugfix Deutschland
 
-## 1.0.8 (2019-11-15)
+## 1.0.8 (15.11.2019)
 * (jack-blackson) Hinzugefügt Polen, Moldawien, Griechenland, Rumänien
 * (jack-blackson) Neuer Datenpunkt hinzugefügt, um einen Link zur Wetterkarte zu erhalten
 
@@ -128,7 +131,7 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem auf github, und 
 ## 1.0.4 (2019-09-11)
 * (Jack-Blackson) Travis-Fehler
 
-## 1.0.3 (09.09.2019)
+## 1.0.3 (2019-09-09)
 * (jack-blackson) Kleine Bugfixes, ändern Sie von Typ "deamon" zu "Zeitplan"
 
 ## 1.0.2 (2019-08-25)
@@ -141,7 +144,7 @@ Wenn Sie Ihr Land nicht finden, erstellen Sie bitte ein Problem auf github, und 
 * (Jack-Blackson) Release-Version
 
 ### 0.6.0 (05.08.2019)
-* (jack-blackson) Speichern Sie die Wettersymbole lokal im Adapter
+* (Jack-Blackson) Speichern Sie die Wettersymbole lokal im Adapter
 
 ### 0.5.0 (2019-07-21)
 * (Jack-Blackson) Handle Timeouts

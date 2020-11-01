@@ -168,11 +168,14 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 1.1.0 (2020-10-xx)
+### 1.1.0 (2020-11-01)
+* (René) see issue #149: bug fix: calculate current period in case we are still in last period from yesterday
+
+### 1.1.0 (2020-10-20)
 * (René) see issue #132: timer before on and off for actuators 
 * (René) see issue #143: additional checks to avoid unneccessary override 
-* (René) see issue #140: use guests present also as counter like present (as a option); add adjustable limit for present and guest present
-
+* (René) see issue #140: use guests present and party now DP's also as counter like present (as a option); add adjustable counter limit for present, party now and guest present
+* (René) see issue #145: avoid reset of target temperatur by profile settings in option "until next profil point" when set by thermostat 
 
 ### 1.0.0 (2020-10-09)
 * (matida538) added better Handling of strings in HandleThermostat (convert to Number, instead of warn) (e.g. fhem connector for fht80)

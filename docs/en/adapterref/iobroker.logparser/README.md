@@ -20,20 +20,59 @@ Resulting JSON can then be used in VIS for visualization. States for emptying (c
 ![States](docs/en/img/states.png)
 
 
-**Please note:** This adapter uses Sentry libraries to automatically report exceptions and code errors anonymously to the adapter developer(s). For further details and information on how to disable this error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry). Sentry reporting is used starting with js-controller 3.0.
+## Installation
 
+Just install the adapter regularly through the ioBroker admin interface. The adapter is both in the latest and stable repository.
 
 ## Instructions
 
-* **[English Instructions](docs/en/logparser.md)**
+I have included all instructions right in the admin settings of this adapter.
 
-* **[Deutsche Anleitung](docs/de/logparser.md)**
+Also, you can read most of these instructions here as well:
+* [**Basic Adapter Instructions**](https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/start_en.md) - for German [click here (Deutsch)](https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/start_de.md)
+* [**Parser Rules (Filters)**](https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/table-parser-rules_en.md) - for German [click here (Deutsch)](https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/table-parser-rules_de.md)
+* [**Global Blacklist**](https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/table-global-blacklist_en.md) - for German [click here (Deutsch)](https://github.com/Mic-M/ioBroker.logparser/blob/master/admin/doc-md/table-global-blacklist_de.md)
+
 
 ## Visualization Example (animated gif)
 
 ![Vis](docs/de/img/visintro.gif)
 
+## Screenshots of adapter options
+
+Please note that these screenshots are a snapshot and do not reflect the latest adapter options.
+This is just to provide you an overview of the adapter options. 
+
+![Log Parser Options](admin/img/option-screenshots/tab-start.png)
+
+![Log Parser Options](admin/img/option-screenshots/tab-parser-rules.png)
+
+![Log Parser Options](admin/img/option-screenshots/tab-further-settings.png)
+
+![Log Parser Options](admin/img/option-screenshots/tab-vis.png)
+
+![Log Parser Options](admin/img/option-screenshots/tab-global-blacklist.png)
+
+![Log Parser Options](admin/img/option-screenshots/tab-expert-settings.png)
+
+
+## Links and resources
+* [**Log Parser ioBroker Forum Link (Splash Page)**](https://forum.iobroker.net/topic/37793/log-parser-adapter-splash-page)
+
+
+## Notes
+* This adapter uses Sentry libraries to automatically report exceptions and code errors anonymously to the adapter developer(s). For further details and information on how to disable this error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry). Sentry reporting is used starting with js-controller 3.0.
+
+
+
 ## Changelog
+
+### 1.1.0
+* (Mic-M) Fixed issue [#15](https://github.com/Mic-M/ioBroker.logparser/issues/15) regarding regex for tab "Parser Rules", column "Blacklist"
+* (Mic-M) Enhancement [#16](https://github.com/Mic-M/ioBroker.logparser/issues/16) - add specific CSS classes to any element of the JSON log per adapter option.
+* (Mic-M) Major improvement: Implemented entire documentation into adapter itself to significantly improve usability.
+* (Mic-M) A few improvements under the hood.
+
 
 ### 1.0.4
 * (Mic-M) Fixed 'Today/Yesterday' updating issue - https://forum.iobroker.net/post/469757. Thanks to (Kuddel) for reporting and (Glasfaser) for further debugging.

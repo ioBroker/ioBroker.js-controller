@@ -24,8 +24,6 @@ eine direkte Verknüpfung der jeweiligen Instanz "states", auf andere "states" m
 
 ----------------------------------------------------------------------------------------------------------------------
 *Stand 05.07.2020 ab Version 0.8.0*
-#### Wichtig ab 0.8.0
-	- Es empfiehlt sich bei Vorinstallationen < 0.8.0, beim Update des Adapters diesen vorher zu deinstallieren! Es haben sich ein paar Datenpunkte geändert.  
 
 ### Tab Haupteinstellungen
 

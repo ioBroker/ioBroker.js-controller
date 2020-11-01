@@ -1,115 +1,113 @@
 ---
 title: Linux
-lastChanged: 28.03.2019
+lastChanged: 30.10.2020
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/linux.md
-hash: rtMx/qa0LqA7eeV08PZdBVj8FPqOecmz9LxsJzryiKk=
+hash: NmvIaHAR0NHBlJRvYPIT+R0Lnz857Oz4KVPJG+g9pF0=
 ---
 # IoBroker installation on Linux
-!> These instructions do NOT apply to finished images of the website !!!
+!> These instructions do NOT apply to finished images of the website! However, manual installation is preferable to an image.
 
-The installation routine for ioBroker has been completely revised and some installation problems (which installation user, autostart, etc.) have been fixed.
+The installation is carried out using a script that carries out the required installation steps and reloads any software packages that may be required.
+During the installation, a new user “iobroker” and an associated home directory (/ home / iobroker) are created in the system.
+The ioBroker then runs under this user.
 
-The installation is now carried out via a script, which at runtime contains the required installation steps and software packages. reloads. During the installation, a new user "iobroker" is created, as well as an associated home directory (/ home / iobroker). From now on ioBroker runs under the user iobroker and no longer as root.
+If reloading a script is too dangerous for you, you can check the script beforehand under [this link](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh).
 
-If the reloading of a script is too dangerous for you, you can check the script beforehand under [this link](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh).
+These installation instructions for ioBroker show the installation on Linux using the example of the Raspberry Pi with Raspberry OS 'Buster'.
 
-This installation guide for ioBroker shows the installation on Linux using the example of the Raspberry PI with the System Stretch. The actual instructions for installing nodejs and ioBroker can be used for almost all other Linux systems.
-
-Due to dependencies on other packages or additional installations, there may always be special features during the installation.
-
-If you still have questions, please post them in the forum.
-
-With the instructions published here, the node.js versions are automatically updated with every kernel update, if available.
+Due to dependencies on other packages or additional installations, special features can occur again and again during the installation.
 
 ## Required hardware
-### Raspberry Pi 2/3,
-or any other hardware with a common Linux (Debian, Ubuntu, etc.), or even a Mac.
+### Raspberry Pi 2/3/4
+or any other hardware with a common Linux. However, Debian, Ubuntu or one of the distributions based on them is recommended.
 
-We do not recommend using a Pi 1 as a master. It is simply not powerful enough (500 MB RAM, etc.). Due to the different hardware, these instructions are not suitable for a Pi 1 anyway.
+We do not recommend using a Pi 1 as a master. It's just not powerful enough (500MB RAM, etc.). Due to the different hardware, these instructions do not fit a Pi 1 anyway.
 
-A Pi 2 or Pi 3 also has only max. 1 GB RAM. With 15 adapter instances, this should still be sufficient, but beyond that it can become scarce. Each adapter instance needs about 40 MB (and sometimes 200MB and more) of RAM. Therefore, you should always keep an eye on the RAM utilization before activating additional adapter instances - 1 GB RAM are finite.
+Even a Pi 2 or Pi 3 only has a max. 1 GB RAM. With 15 adapter instances this should be sufficient, but beyond that it can be tight. Each adapter instance requires around 40 MB (and sometimes 200MB and more) of RAM. You should therefore always keep an eye on the RAM usage before activating additional adapter instances - 1 GB of RAM is finite.
+
+Therefore the Raspberry4 with 4, better 8 GB RAM is recommended from the Raspberry series.
 
 ### Power adapter
-it is important to have a good power supply. With a weak power supply, stability problems can be expected
+it is important to have a good power supply. Stability problems are to be expected with a weak power supply
 
 ### Memory card
 or SSD, USB stick, etc. (depending on the hardware used)
 
-## Required / important links
+## Needed / important links
 * Download Image: https://www.raspberrypi.org/downloads/raspbian/
 * Win32DiskImager: https://sourceforge.net/projects/win32diskimager/ **or**
 * Balena Etcher: https://www.balena.io/etcher/
 * Putty: http://www.putty.org/
 
 ## Installation Guide
-### Operating system installation
+### Installation of the operating system
 * Install the desired basic operating system (Raspian Stretch, Ubuntu, Debian, etc.) - depending on the hardware used.
 
 Help and instructions for the respective versions are available on the corresponding support pages, YouTube, etc.
 
-* ONLY if root access via SSH or sftp is absolutely required, **CAN** also
+* ONLY if root access via SSH or sftp is absolutely necessary, **CAN** also
 
 Root access for SSH can be activated.
 
-We advise against this, based on the known security aspects. For the installation of ioBroker it is sufficient to use the sudo command and to put it in front of the respective command.
+For the well-known safety aspects, we advise against it. To install ioBroker, it is sufficient to use the sudo command and precede the respective command.
 
 ### Installation Node.js
-The following instructions should also be used when downgrading.
+The following instructions should also be used for a downgrade.
 
-The currently recommended version is node 10.x; with js-controller 1.5.7 also node 8.x, then in step 4.1. exchange the “10.x” for 8.x ”.
+The currently recommended version is node 10.x; with js-controller 1.5.7 also node 8.x, then in step 4.1. replace the “10.x” with 8.x ”.
 
 !> Debian Buster requires node.js v10.x !!
 
-<span style="color:red">Odd versions of nodejs are generally not recommended as they are developer versions.</span>
+<span style="color:red">Odd nodejs versions are generally not recommended as they are developer versions.</span>
 
-1.System update: `` sudo apt-get update && sudo apt-get upgrade ''
+1. System update: `` sudo apt-get update && sudo apt-get upgrade ''
 
 Depending on the OS used, the update can also be carried out using ``sudo apt update && sudo apt upgrade``.
 
 2. Test for existing versions of nodejs and npm.
 
-    ``node -v``
+    ``node -v``
 
-    ``nodejs -v``
+    ``nodejs -v``
 
-    ``npm -v``
+    ``npm -v``
 
-only if **ALL** these commands have no result (i.e. no longer display the version number) continue with step 4 of this section, otherwise, or if the version does not correspond to the desired one, do the following beforehand:
+only if **ALL** these commands do not produce any result (i.e. no longer display the version number) continue with step 4 of this section, otherwise, or if the version does not correspond to the desired, do the following beforehand:
 
 3. Uninstall the existing node & node.js versions
 
-    ``sudo apt-get --purge remove node`` (It may be that an error message appears here. Please continue!)
+    ``sudo apt-get --purge remove node`` (It may be that an error message appears here. Please continue!)
 
-    ``sudo apt-get --purge remove nodejs``
+    ``sudo apt-get --purge remove nodejs``
 
-    ``sudo apt-get autoremove``
+    ``sudo apt-get autoremove``
 
-    ``sudo reboot``
+    ``sudo reboot``
 
 4. Reinstall Node.js for Linux and Raspberry 2/3
 
-    ``curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -``
+    ``curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -``
 
-    ``sudo apt install -y nodejs``
+    ``sudo apt install -y nodejs``
 
-    ``sudo reboot``
+    ``sudo reboot``
 
-After installation, the commands “node -v” and “nodejs -v” must return the same version number.
+After the installation, the commands “node -v” and “nodejs -v” must return the same version number.
 
-    If ``node -v`` generates an error message like“ not found ”, then please
+    If ``node -v`` generates an error message like" not found ", then please enter
 
-    Execute ``sudo ln -s /usr/local/bin/nodejs /usr/bin/node`` on the console.
+    Execute ``sudo ln -s /usr/local/bin/nodejs /usr/bin/node`` on the console.
 
-If the versions are different, please work through the section [Installation of Node.js](#installation-nodejs) again
+If the versions are different, please go through section [Installation Node.js](#installation-nodejs) again
 
-    As a final check, please check the version of npm using ``npm -v``.
+    As a final check, please check the version of npm using ``npm -v``.
 
-If this results in a version <6, please carry out an npm update with ``sudo -H npm install -g npm@6``
+If this results in a version <6, please perform an npm update with ``sudo -H npm install -g npm@6``
 
-### IoBroker installation
-The installation can be done with the user pi or with the user root.
+### Installation of ioBroker
+The installation can be carried out with the user pi but also with the user root.
 
 Run on the console:
 
@@ -117,7 +115,7 @@ Run on the console:
 
 ---
 
-Installation takes place in 4 steps:
+The installation takes place in 4 steps:
 
 ``Installing prerequisites (1/4)``
 
@@ -127,7 +125,7 @@ Installation takes place in 4 steps:
 
 ``Finalizing installation (4/4)``
 
-Finally, there is the message
+At the end there is the message
 
 ``ioBroker was installed successfully``
 
@@ -135,7 +133,7 @@ Finally, there is the message
 
 ---
 
-Now call up ioBroker via the specified IP in the web browser: ``http://<IP-Adresse>:8081``
+Now call ioBroker via the specified IP in the web browser: ``http://<IP-Adresse>:8081``
 
 **Note:**
 
@@ -152,9 +150,9 @@ instead must
 
 * sudo systemctl stop iobroker
 
-or the other equivalents are used
+or the other equivalents can be used
 
-Rights issues could also arise.
+In addition, there could be rights problems.
 
 In this case, please use the installation fixer:
 

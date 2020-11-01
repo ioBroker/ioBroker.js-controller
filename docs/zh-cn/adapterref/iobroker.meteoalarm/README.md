@@ -3,18 +3,18 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meteoalarm/README.md
 title: ioBroker.metalarm
-hash: 1qF1F3sF76A7SsE8czndOHy0mUHbge1glmr0Dulmlgg=
+hash: dSIeHPUsGeGD6TJaFSBoVxbTLJFv/IL/lp8haqD9UHg=
 ---
 ![商标](../../../en/adapterref/iobroker.meteoalarm/admin/meteoalarm.png)
 
-![环保管理员徽章](https://badges.greenkeeper.io/jack-blackson/ioBroker.meteoalarm.svg)
+![保镖徽章](https://snyk.io/test/github/jack-blackson/ioBroker.meteoalarm/badge.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.meteoalarm.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.meteoalarm.svg)
 ![安装数量](http://iobroker.live/badges/meteoalarm-stable.svg)
 ![NPM](https://nodei.co/npm/iobroker.meteoalarm.png?downloads=true)
 
 ＃ioBroker.meteoalarm
-ioBroker的meteoalarm适配器---------------------------------------------- --------------------------------此适配器从meteoalarm.eu获取天气警报，包括风，雪，雨，高温和低温等。此信息以本地语言和特定区域提供。
+ioBroker的meteoalarm适配器---------------------------------------------- --------------------------------此适配器从meteoalarm.eu获取天气警报，其中包括风，雪，雨，高温和低温等。此信息以本地语言和特定区域提供。
 
 ＃＃ 如何使用它
 有两种方法可以获取链接以检索气象警报信息。
@@ -46,7 +46,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 |图标|报警类型图标|
 
 ##警报类型
-|警报类型|描述|
+|报警类型|说明|
 |:---:|:---:|
 | 1 |风|
 | 2 |雪/冰|
@@ -66,9 +66,9 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 |警报级别|描述|
 |:---:|:---:|
 |绿色|当前无警告。 |
-|黄色|天气潜在危险。预计的天气现象并不罕见，但应更加重视面临气象风险的活动。使自己了解预期的气象状况，并且不要承担任何可避免的风险。 |
+|黄色|天气潜在危险。预计的天气现象并不罕见，但应更加重视暴露于气象风险的活动。使自己了解预期的气象状况，并且不要承担任何可避免的风险。 |
 |橙色|天气很危险。已经预测到异常的气象现象。可能会造成损坏和事故。要非常细心和小心，并与预期的气象条件保持同步。 |
-|红色|天气非常危险。可以预料到异常强烈的气象现象。经常在大面积上发生的极端损坏和事故危及生命和财产。 |
+|红色|天气非常危险。可以预料到异常强烈的气象现象。经常在大面积上发生的极端破坏和事故危及生命和财产。 |
 
 ##支持的国家
 *奥地利
@@ -100,11 +100,14 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 
 ##不可能的国家
 *法国（没有RSS提要）
-*葡萄牙（不可分裂）
+*葡萄牙（不可拆分）
 *斯洛文尼亚（没有RSS提要）
 
 ##要实现的功能
 *一天处理多个警报
+
+## 1.1.1（2020-10-28）
+*（jack-blackson）错误修正HTML资料
 
 ## 1.1.0（2020-03-29）
 *（杰克·布莱克森）Bugfix德国
@@ -129,7 +132,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 *（杰克·布莱克森）特拉维斯错误
 
 ## 1.0.3（2019-09-09）
-*（jack-blackson）的一些小错误修正，从“恶魔”类型更改为“时间表”
+*（jack-blackson）的小错误修正，从“恶魔”类型更改为“时间表”
 
 ## 1.0.2（2019-08-25）
 *（jack-blackson）重新排序了发布信息
@@ -141,7 +144,7 @@ ioBroker的meteoalarm适配器---------------------------------------------- ---
 *（jack-blackson）发行版本
 
 ### 0.6.0（2019-08-05）
-*（jack-blackson）将天气图标存储在适配器本地
+*（jack-blackson）将天气图标本地存储在适配器中
 
 ### 0.5.0（2019-07-21）
 *（jack-blackson）处理超时

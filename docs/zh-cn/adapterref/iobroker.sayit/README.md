@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sayit/README.md
 title: ioBroker sayit适配器
-hash: 4LM4po1HGU0onQ6qXn4J5z6ZtNCGJq1kDxJoKdWS+Ms=
+hash: 1t/hWEq7UmmlP2nziw/Oalk/8j5YH9r1tj1CC+ZZu6Q=
 ---
 ![商标](../../../en/adapterref/iobroker.sayit/admin/sayit.png)
 
@@ -22,11 +22,11 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 -*浏览器*-文本将由打开iobroker.vis页面的浏览器播放。几乎所有台式机浏览器和少数便携式浏览器都支持它。
 
--* [Home24- MediaPlayer]（http://www.home-24.net/index.php?app=media）*-文本将被发送并播放到安装了Home24-MediaPlayer的Android设备上。为此，将使用内置在Android文本到语音引擎中的引擎。无法更改该端口并将其设置为50000。
+-* [Home24- MediaPlayer]（http://www.home-24.net/index.php?app=media）*-文本将被发送并播放到装有Home24-MediaPlayer的Android设备上。为此，将使用内置在Android文本到语音引擎中的引擎。无法更改该端口并将其设置为50000。
 
 -* Home24-MediaPlayer和[FTP服务器]（https://play.google.com/store/apps/details?id=lutey.FTPServer）*-文本将通过Home24-MediaPlayer在Android设备上发送和播放已安装。为此，将使用Google文本语音引擎。生成的mp3文件将通过FTP复制到android设备并与Home24-MediaPlayer一起播放。
 
-    两个应用程序必须具有相同的主目录。 （例如\“ sd卡\”的根目录）。
+    这两个应用程序必须具有相同的主目录。 （例如\“ sd卡\”的根目录）。
 
 -*系统*-文本将由运行ioBroker适配器的OS播放。支持以下操作系统：Windows，Linux，Mac OSx。
 
@@ -34,9 +34,11 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 -* Sonos *-在Sonos设备上播放文本。确保已启用Web适配器。需要使SONOS能够读取生成的mp3文件。
 
+-* Heos *-在heos设备上播放文字。确保已启用Web适配器。需要使HEOS读取生成的mp3文件。
+
 -* Chromecast *-在Chromecast设备上播放文字。
 
--* MPD *-在音乐播放器守护程序上播放文本。仅将** http **用于网络适配器，请勿使用https。
+-* MPD *-在音乐播放器守护程序上播放文本。仅将** http **用于Web适配器，请勿使用https。
 
 要在RaspberryPI或linux系统上启用文本语音转换，请在命令```sudo apt-get -y install mpg321```之后调用一次以安装mpg321。
 
@@ -50,7 +52,7 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 -Google：英语，德语，俄语，意大利语，西班牙语，法语
 -Yandex：俄语
 
-要使用Yandex语音，您必须在此处请求API密钥：[https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/](https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/)。 [此服务将在2019年1月1日停用，并由Yandex.cloud代替]要使用Yandex.cloud，您应该在此处注册：[https://cloud.yandex.ru/]，在Cloud中安装SpeechKIT API并获取身份验证令牌和文件夹ID（如API说明中所述）。
+要使用Yandex语音，您必须在此处请求API密钥：[https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/](https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/)。 [此服务将在2019年1月1日停用，并由Yandex.cloud代替]要使用Yandex.cloud，您应该在这里注册：[https://cloud.yandex.ru/]，在Cloud中安装SpeechKIT API并获取身份验证令牌和文件夹ID（如API说明中所述）。
 
 -伊凡娜：英语，德语，俄语，意大利语，西班牙语，法语，丹麦语，威尔士语，冰岛语，荷兰语，波兰语，葡萄牙语，罗马尼亚语，瑞典语，土耳其语
 
@@ -71,14 +73,14 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 对于PicoTTS，必须安装以下软件包：libttspico-utils和lame。
 安装命令：“ sudo apt-get install libttspico-utils me脚”
 
-### Cloud and Amazon Web Services Polly文本格式
+### Cloud和Amazon Web Services Polly文本格式
 您可以使用[语音合成标记语言](http://docs.aws.amazon.com/polly/latest/dg/ssml.html)设置文本格式。
 
 最有用的功能：
 
 -```<break time =“ 3s” />```--暂停x秒（最多10秒）。
--```<emphasis> big </ emphasis>```-强调一些单词。
--```<prosody volume =“ + 6dB” rate =“ 90％”>我在说</ prosody>```-控制速度和音量参数。
+-```<emphasis> big </ emphasis>```-强调某些单词。
+-```<prosody volume =“ + 6dB” rate =“ 90％”>我正在说</ prosody>```-控制速度和音量参数。
 -```<say-as interpret-as =“ digits”> 12345 </ say-as>```-分别说出每个数字。
 
 更多[信息](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/docs/speech-synthesis-markup-language-ssml-reference)。
@@ -96,10 +98,10 @@ SayIt Adapter可以将文本转换为语音并在某些设备上播放。
 
 ```myCustomPlayer --option "%s" > /dev/null```
 
-sayIt将根据它生成```myCustomPlayer --option "/opt/iobroker/node_modules/iobroker.sayit/say.mp3" > /dev/null```。
+sayIt将根据它生成§§JJJJJ_0_0§§。
 
 ##用法
-SayIt适配器不能单独使用。必须通过javascript适配器或带有特定小部件的“ vis”进行控制。
+SayIt适配器不能单独使用。必须通过javascript适配器或带有特定窗口小部件的“ vis”进行控制。
 创建适配器实例后，将可以找到以下对象：
 
 -sayit.N.tts.text：要说的短语。
@@ -110,13 +112,13 @@ SayIt适配器不能单独使用。必须通过javascript适配器或带有特�
    例如。您可以在此处手动输入“不连接互联网”，如果对google.com的ping否定，请在“ tts.text”中输入“不连接互联网”，它将发音。当然必须启用缓存。
 
 状态** tts.text **支持扩展语法，因此可以将语言/引擎和音量与文本一起定义。它用于启用多语言text2speech引擎。
-例如。如果适配器具有引擎“ Google-english”，则可以使用词组```de:Sag es```强制使用Google-Deustch语音引擎。
+例如。如果适配器具有引擎“ Google-english”，则短语```de:Sag es```可能会强制使用Google-Deustch语音引擎。
 
 使用§§JJJJJ_0_0§§，我们可以强制使用俄语和75％的语言。
 
-您可以从当前或给定的数量（不是最大）中指定百分比的公告数量。例如。如果命令是```de;75;Gutes Wetter```§并且“播音音量”为50％，则播音将以100％可能的38％音量播放。
+您可以从当前或给定的数量（不是最大）中指定百分比的公告数量。例如。如果命令为```de;75;Gutes Wetter```§且“播音音量”为50％，则播音将以100％可能的38％的音量播放。
 
-也可以指定播放mp3文件的系统命令。如果将其保留为空白，则将使用默认设置：windows-cmdmp3.exe，OSX-/ usr / bin / afplay，linux-mpg321或omxplayer（推荐）。
+也可以指定播放mp3文件的系统命令。如果将其保留为空白，则将使用默认设置：Windows-cmdmp3.exe，OSX-/ usr / bin / afplay，Linux-mpg321或omxplayer（推荐）。
 
 要安装omxplayer，请写```sudo apt-get install omxplayer```或写```sudo apt-get install mpg321```来安装mpg321。
 
@@ -133,11 +135,11 @@ SayIt适配器不能单独使用。必须通过javascript适配器或带有特�
 
 ＃＃＃＃ 谷歌
 -** zh **-英语
--** de **-德语
+-** de **-德文
 -** pl **-Polski
 -** ru **-Русский
 -** uk **-український
--**-意大利文
+-**它-Italiano
 -** es **-西班牙文
 -** fr **-法语
 
@@ -154,12 +156,12 @@ SayIt适配器不能单独使用。必须通过javascript适配器或带有特�
 -** zh-CN_CLOUD_Male **-zh-CN-男性-Joey
 -** da-DK_CLOUD_Female **-da-DK-女性-眼镜蛇
 -** da-DK_CLOUD_Male **-da-DK-男性-Mads
--** en-AU_CLOUD_Female **-zh-AU-女性-Nicole
--** en-AU_CLOUD_Male **-zh-AU-男性-罗素
+-** en-AU_CLOUD_Female **-en-AU-女性-Nicole
+-** en-AU_CLOUD_Male **-zh-AU-男性-Russell
 -** zh-CN_CLOUD_Female_Amy **-zh-CN-女-艾米
 -** en-GB_CLOUD_Male **-en-GB-男性-Brian
 -** zh-CN_CLOUD_Female_Emma **-zh-CN-女-艾玛
--** en-GB-WLS_CLOUD_Female **-en-GB-WLS-女-Gwyneth
+-** zh-CN-WLS_CLOUD_Female **-zh-CN-GB-WLS-女-Gwyneth
 -** en-GB-WLS_CLOUD_Male **-en-GB-WLS-男性-格林
 -** cy-GB_CLOUD_Female **-cy-GB-女-Gwyneth
 -** cy-GB_CLOUD_Male **-cy-GB-男性-格林
@@ -167,12 +169,12 @@ SayIt适配器不能单独使用。必须通过javascript适配器或带有特�
 -** zh-CN_CLOUD_Male_Chipmunk **-zh-CN-男性-花栗鼠
 -** en-US_CLOUD_Male_Eric **-zh-CN-男性-Eric
 -** zh-CN_CLOUD_Female_Ivy **-zh-CN-女-常春藤
--** zh-CN_CLOUD_Female_Jennifer **-zh-CN-女-Jennifer
+-** en-US_CLOUD_Female_Jennifer **-zh-CN-女性-Jennifer
 -** zh-CN_CLOUD_Male_Justin **-zh-CN-男性-贾斯汀
 -** zh-CN_CLOUD_Female_Kendra **-zh-CN-女-Kendra
 -** zh-CN_CLOUD_Female_Kimberly **-zh-CN-女-Kimberly
 -** es-ES_CLOUD_Female **-es-ES-女性-Conchita
--** es-ES_CLOUD_Male **-es-ES-Male-Enrique
+-** es-ES_CLOUD_Male **-es-ES-男性-Enrique
 -** es-US_CLOUD_Female **-es-US-女性-Penelope
 -** es-US_CLOUD_Male **-es-US-男性-Miguel
 -** fr-CA_CLOUD_Female **-fr-CA-女性-Chantal
@@ -194,7 +196,7 @@ SayIt适配器不能单独使用。必须通过javascript适配器或带有特�
 -** pt-BR_CLOUD_Male **-pt-BR-男性-Ricardo
 -** pt-PT_CLOUD_Male **-pt-PT-男性-克里斯蒂亚诺
 -** pt-PT_CLOUD_Female **-pt-PT-女性-Ines
--** ro-RO_CLOUD_Female **-ro-RO-女-卡门
+-** ro-RO_CLOUD_Female **-ro-RO-女性-Carmen
 -** sv-SE_CLOUD_Female **-sv-SE-女-Astrid
 -** tr-TR_CLOUD_Female **-tr-TR-女-Filiz
 
@@ -222,15 +224,15 @@ SayIt适配器不能单独使用。必须通过javascript适配器或带有特�
 -**（zh-CN_AP_Male）**-zh-GB-男性-Brian
 -**（zh-CN_AP_Female_Emma）**-zh-CN-女-艾玛
 -**（zh-CN-WLS_AP_Female）**-zh-GB-WLS-女-Gwyneth
--**（zh-CN-WLS_AP_Male）**-zh-CN-WLS-男性-格林
+-**（zh-CN-WLS_AP_Male）**-zh-GB-WLS-男性-格林
 -**（cy-GB_AP_Female）**-cy-GB-女性-Gwyneth
 -**（cy-GB_AP_Male）**-cy-GB-男性-格林
 -**（zh-CN_AP_Female）**-zh-IN-女性-Raveena
 -**（zh-CN_AP_Male_Chipmunk）**-zh-CN-男性-花栗鼠
 -**（zh-CN_AP_Male_Eric）**-zh-CN-男性-Eric
--**（zh-CN_AP_Female_Ivy）**-zh-CN-女性-常春藤
--**（zh-CN_AP_Female_Jennifer）**-zh-CN-女性-Jennifer
--**（zh-CN_AP_Male_Justin）**-zh-CN-男性-贾斯汀
+-**（zh-CN_AP_Female_Ivy）**-zh-美国-女性-常春藤
+-**（zh-CN_AP_Female_Jennifer）**-zh-美国-女-詹妮弗
+-**（zh-CN_AP_Male_Justin）**-zh-美国-男性-贾斯汀
 -**（zh-CN_AP_Female_Kendra）**-zh-CN-女-Kendra
 -**（zh-CN_AP_Female_Kimberly）**-zh-CN-女-Kimberly
 -**（es-ES_AP_Female）**-es-ES-女性-Conchita
@@ -261,6 +263,34 @@ SayIt适配器不能单独使用。必须通过javascript适配器或带有特�
 -**（tr-TR_AP_Female）**-tr-TR-女性-Filiz
 
 ## Changelog
+### 1.12.0 (2020-10-19)
+* (withstu) Support for HEOS was added
+
+### 1.11.5 (2020-09-24)
+* (Apollon77) prevent scheduled restart problems
+
+### 1.11.3 (2020-09-17)
+* (Apollon77) make sure initialize errors do not crash adapter (Sentry IOBROKER-SAYIT-N)
+
+### 1.11.2 (2020-08-08)
+* (Apollon77) catch errors in MDNS discovery (Sentry IOBROKER-SAYIT-E)
+
+### 1.11.1 (2020-08-06)
+* (Apollon77) handle errors from process spawn better (Sentry IOBROKER-SAYIT-D)
+
+### 1.11.0 (2020-08-02)
+* (Apollon77) Move the generated mp3 file to an own directory in iobroker-data instead of inside node_modules (Hopefully not breaking)
+* (Apollon77) Change File write to use Sync methods to make sure they can not run in parallel
+
+### 1.10.2 (2020-07-19)
+* (Apollon77) Crash case prevented (Sentry IOBROKER-SAYIT-8)
+
+### 1.10.1 (2020-07-16)
+* (Apollon77) Handle edge cases and prevent crashes (Sentry IOBROKER-SAYIT-4, IOBROKER-SAYIT-6)
+* (Apollon77) try to get caching working again for Yandex
+
+### 1.10.0 (2020-07-07)
+* (algar42) GUI updated to fill drop-downs correctly. Premium voices added to Yandex.Cloud engine
 
 ### 1.9.8 (2020-06-11)
 * (Apollon77) fix error handling on file copy

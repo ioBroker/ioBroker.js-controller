@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.fahrplan/README.md
 title: ioBroker.fahrplan
-hash: OGH4laJxFO/bc21hTeQh6/5wIYYCLsRAWdBwSgPF4I8=
+hash: mKkOuWLEONeQnNK12CHQxy049d7Izp+sL132jYzPt5A=
 ---
 ![Логотип](../../../en/adapterref/iobroker.fahrplan/admin/fahrplan.png)
 
@@ -19,7 +19,7 @@ hash: OGH4laJxFO/bc21hTeQh6/5wIYYCLsRAWdBwSgPF4I8=
 
 ## Адаптер Fahrplan для ioBroker
 ### Deutsch
-Dieser Adapter для мобильного API от HAFAS verwendet. HAFAS steht für HaCon Fahrplan-Auskunfts-System und wird von vielen europäischen Verkehrsunternehmen verwendet, unter anderem auch von der Deutschen Bahn.
+Адаптер Dieser для работы с мобильным API от HAFAS. HAFAS steht für HaCon Fahrplan-Auskunfts-System und wird von vielen europäischen Verkehrsunternehmen verwendet, unter anderem auch von der Deutschen Bahn.
 Der Zugriff auf HAFAS erfolgt hierbei über [HAFAS-Клиент](https://github.com/public-transport/hafas-client).
 
 Der Adapter bietet hierbei drei Funktionen:
@@ -27,11 +27,11 @@ Der Adapter bietet hierbei drei Funktionen:
 #### Fahrplan für Verbindungen (Routen)
 Die gewünschten Routen müssen in der Adapterkonfiguration eingerichtet und aktiviert werden.
 Über einen konfigurierbaren Intervall ruft der Adapter dann regelmäßig die Verbindungsinformationen ab.
-Неизвестно, какие вербиндинги вердены на HTML, а также дополнительные детали, как на Objekte в ioBroker dargestellt.
+Неизвестно, какие вербиндунги вердены на HTML и дополнительные детали, как на объекты в ioBroker dargestellt.
 Das HTML-Objekt kann einfach in VIS eingebunden werden.
 
 #### Benachrichtigung bei Verspätungen der Routen
-Für die konfigurierten Routen kann ein Verspätungsalarm aktiviert werden. Таким образом, kann beispielsweise eine Benachrichtigung через Telegram или Alexa erfolgen, попадает во все другие предложения Verbindung verspätet ist.
+Für die konfigurierten Routen kann ein Verspätungsalarm aktiviert werden. Таким образом, kann beispielsweise eine Benachrichtigung через Telegram или Alexa erfolgen, попадает во все, что вам нравится, Verbindung verspätet ist.
 
 #### Abfahrtstafeln für Stationen
 Zusätzlich bietet der Adapter eine Abfahrtstafel für konfigurierte Stationen.
@@ -47,12 +47,12 @@ Hierbei werden die nächsten drei Abfahrten einer Station abgerufen und als Obje
 Желаемые маршруты должны быть настроены и включены в конфигурации адаптера.
 Адаптер автоматически получает информацию о соединении с заданным интервалом.
 Следующие три соединения сохраняются в ioBroker как HTML и необязательно как подробные объекты.
-HTML-объект можно легко использовать в VIS.
+HTML-объект может быть легко использован в VIS.
 
 #### Уведомление о задержках на маршрутах
 Уведомление о задержке может быть активировано для настроенных маршрутов. Например, Telegram или Alexa может получать уведомление, когда все или одно конкретное соединение задерживается.
 
-#### Расписание отправления по станциям
+#### Расписание отправлений по станциям
 Кроме того, адаптер предоставляет расписание отправлений для настроенных станций.
 Здесь следующие три соединения обнаруживаются и создаются как объекты и HTML.
 
@@ -67,7 +67,7 @@ Eine suchfunktion ist im Tab Einstellungen integriert.
 | Einstellung | Beschreibung | ------------------------------ | --- | Анбитер | Auswahl des zu verwendenden Anbieters, aktuell DB und ÖBB | Aktualisierungsintervall | Intervall in dem die Route aktualisiert werden, Ангабе в Минутене | Verspätet markieren ab | Verspätung в Minuten ab der die Verbindung als verspätet markiert wird. Standardmäßig werden nur Verspätungen ab zwei Minuten markiert | HTML-Ansicht erzeugen | Erzeugt pro Route eine konfigurierbare HTML-tabelle in einem Objekt | Детальерте специальные объекты | Konfiguration der auszugebenden Objekte | JSON-Elemente speichern | Die Rückgabe von HAFAS erfolgt als JSON, diese sollten zur Fehlerbehebung gespeichert werden
 
 Auf der rechten Seite ist die suchfunktion integriert. Zuerst muss ein Anbieter ausgewählt werden.
-Данах канн über дас Сухфельд и Дрюккен де Кнопфс "Суше" найнер Станция gesucht werden.
+Данах канн über das Сучфельд и Drücken des Knopfs "Suche" nach einer Station gesucht werden.
 Die Suchergebnisse der aktuellen Suche werden in der Tabelle angezeigt.
 
 #### Вкладка Routen
@@ -77,7 +77,7 @@ Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 
 | Einstellung | Beschreibung | ----------------------------- | --- | № | Die Nummer entspricht dem Unterknoten in den Objekten und wird automatisch vergeben.
 | Актив | Wenn die Route aktiviert ist werden die Verbindungsinfos aktualisiert | Фон | Numerische ID von Startbahnhof или Starthaltestelle (Ermittlung über Suche) | Фон (имя Эйгенера) | Benutzerdefinierter Name von Startbahnhof или Starthaltestelle, für HTML- и Verspätungstext verwendet | Нач | Numerische ID von Zielbahnhof oder Zielhaltestelle (Ermittlung über Suche) | Нах (имя Айгенер) | Benutzerdefinierter Name von Zielbahnhof oder Zielhaltestelle, für HTML- и Verspätungstext verwendet | Via 1 | Fahrt über bestimmten Ort angegeben als numerische ID (необязательно, sonst leer) | Via 2 | Fahrt über bestimmten Ort angegeben als numerische ID (необязательно, sonst leer) | Verkehrsmittel | Auswahl des Verkehrsmittels, z.B. Автобус, S-Bahn, usw. Standardmäßig werden all Verkehrsmittel ausgewählt | Максимум. Umstiege | Maximale Anzahl an Umstiegen. 0 für nur direkte Verbindungen.
-| Fahrradmitnahme | Nur Verbindungen mit Fahrradmitnahme auswählen
+| Абфахртен | Анзал абзуруфендер Фартен | Fahrradmitnahme | Nur Verbindungen mit Fahrradmitnahme auswählen
 
 #### Вкладка Verspätungsalarm
 ![](../../../en/adapterref/iobroker.fahrplan/docs/de/img/settings_delaynotification.png)
@@ -85,7 +85,7 @@ Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 
 | Einstellung | Beschreibung | ----------------------------- | --- | № | Die Nummer entspricht dem Unterknoten in den Objekten und wird automatisch vergeben.
-| Актив | Wenn der Verspätungsalarm aktiviert ist wird dieser geprüft | Маршрут | Route auf die sich der Alarm beziehen soll | Geplante Abfahrt | Geplante Abfahrtszeit der zu prüfenden Route (Leer = Alle Verbindungen) | Wochentag | Wochentage an denen die Prüfung erfolgen soll | Benachrichtigung в Минутене | Anzahl der Minuten vor der Abfahrt, in denen benachrichtigt werden soll | Objekt für Ausgabetext | Angabe eines vorhandenen Objekts
+| Актив | Wenn der Verspätungsalarm aktiviert ist wird dieser geprüft | Маршрут | Route auf die sich der Alarm beziehen soll | Geplante Abfahrt | Geplante Abfahrtszeit der zu prüfenden Route (Leer = Alle Verbindungen) | Wochentag | Wochentage an denen die Prüfung erfolgen soll | Benachrichtigung в Минутене | Anzahl der Minuten vor der Abfahrt, в денен бенахрихтигт верден соль | Objekt für Ausgabetext | Angabe eines vorhandenen Objekts
 
 Hinweis zum Ausgabetext: Hier kann neben einfachen Objekten für VIS z.B. auch das "Speak" -Objekt des Alexa-Adapters или das "reponse" -Objekt des Telegram-Adapters verwendet werden.
 
@@ -95,7 +95,7 @@ Hinweis zum Ausgabetext: Hier kann neben einfachen Objekten für VIS z.B. auch d
 Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 
 | Einstellung | Beschreibung | ----------------------------- | --- | № | Die Nummer entspricht dem Unterknoten in den Objekten und wird automatisch vergeben.
-| Актив | Венн дер Эйнтраг активный активист вирд dieser abgerufen | Фон | Numerische ID von Startbahnhof или Starthaltestelle (Ermittlung über Suche) | Фон (имя Эйгенера) | Benutzerdefinierter Name von Startbahnhof или Starthaltestelle, für HTML-Ausgabe verwendet
+| Актив | Венн дер Эйнтраг активный активист вирд dieser abgerufen | Фон | Numerische ID von Startbahnhof или Starthaltestelle (Ermittlung über Suche) | Фон (имя Эйгенера) | Benutzerdefinierter Name von Startbahnhof или Starthaltestelle, für HTML-Ausgabe verwendet | Абфахртен | Анзал абзуруфендер Абфахртен
 
 ### Английский
 Начало, пункт назначения и остановки должны быть обозначены числовым идентификатором.
@@ -104,14 +104,14 @@ Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 #### Настройки вкладки
 ![](../../../en/adapterref/iobroker.fahrplan/docs/en/img/settings.png)
 
-| Настройка | Описание | ----------------------------- | --- | Провайдер | Выбор поставщика общественного транспорта, в настоящее время DB und ÖBB | Интервал обновления | Интервал обновления маршрутов в минутах | Отметка задерживается после задержки в | Определить минуты после того, как задержка должна быть помечена как задержка, по умолчанию задержка отмечается, когда задержка превышает одну минуту | Создать представление HTML | Создает для каждого маршрута настраиваемую таблицу HTML в объекте | Сохранить подробные объекты | Конфигурация объектов вывода | Сохранить элементы JSON | Возврат из HAFAS - это JSON, следует сохранить для устранения неполадок.
+| Настройка | Описание | ----------------------------- | --- | Провайдер | Выбор поставщика общественного транспорта, в настоящее время DB und ÖBB | Интервал обновления | Интервал обновления маршрутов в минутах | Марк задерживается после задержки в | Определить минуты после того, как задержка должна быть помечена как задержка, по умолчанию задержка отмечается, когда задержка превышает одну минуту | Создать представление HTML | Создает для каждого маршрута настраиваемую таблицу HTML в объекте | Сохранить подробные объекты | Конфигурация объектов вывода | Сохранить элементы JSON | Возврат из HAFAS - это JSON, следует сохранить для устранения неполадок.
 
 #### Вкладка Маршруты
 ![](../../../en/adapterref/iobroker.fahrplan/docs/en/img/settings_routes.png)
 
 С помощью + -Button новые записи могут быть добавлены в таблицу.
 
-| Настройка | Описание | ----------------------------- | --- | № | Номер соответствует подузлу в объектах и присваивается автоматически | Activ | Информация о подключении обновляется, когда активен маршрут | От | Числовой идентификатор начальной станции или начальной остановки | От (Пользовательское имя) | Пользовательское имя для начальной станции или start stop, используется в выводе HTML- и задержек уведомлений | К | Числовой идентификатор станции назначения или остановки назначения | От (Пользовательское имя) | Пользовательское имя станции назначения или остановки назначения, используемое в выводе HTML- и задержек уведомления | Via 1 | Проехать через специальную станцию с числовым идентификатором (необязательно, по умолчанию пусто) | Via 2 | Проехать через специальную станцию с числовым идентификатором (необязательно, по умолчанию пусто) | Автомобиль | Выбор автомобиля, например Автобус, S-Bahn и т. Д. По умолчанию выбраны все автомобили | Максимум. трансферы | Максимальное количество пересадок по маршруту, 0 только для прямых пересадок | Bycicle | Выбирать только те соединения, где разрешены велосипеды
+| Настройка | Описание | ----------------------------- | --- | № | Номер соответствует подузлу в объектах и присваивается автоматически | Activ | Информация о подключении обновляется, когда активен маршрут | От | Числовой идентификатор начальной станции или начальной остановки | От (Пользовательское имя) | Пользовательское имя для начальной станции или начальной остановки, используется в выводе HTML-уведомлений и уведомлений о задержках | К | Числовой идентификатор станции назначения или остановки назначения | От (Пользовательское имя) | Пользовательское имя для станции назначения или остановки назначения, используемое в выводе HTML-уведомлений и уведомлений о задержке | Via 1 | Проехать через специальную станцию в виде числового идентификатора (необязательно, по умолчанию пусто) | Via 2 | Проехать через специальную станцию как числовой идентификатор (необязательно, по умолчанию пусто) | Автомобиль | Выбор автомобиля, например Автобус, S-Bahn и т. Д. По умолчанию выбраны все автомобили | Максимум. трансферы | Максимальное количество пересадок по маршруту, 0 только для прямых пересадок | Отправления | Количество отправлений для приема | Bycicle | Выбирайте только те соединения, где разрешены велосипеды
 
 #### Тревога задержки табуляции
 ![](../../../en/adapterref/iobroker.fahrplan/docs/en/img/settings_delaynotification.png)
@@ -127,7 +127,7 @@ Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 
 С помощью + -Button новые записи могут быть добавлены в таблицу.
 
-| Настройка | Описание | ----------------------------- | --- | № | Номер соответствует подузлу в объектах и присваивается автоматически | Activ | Информация о подключении обновляется, когда элемент активен | От | Числовой идентификатор начальной станции или начальной остановки | От (Пользовательское имя) | Пользовательское имя для начальной станции или начальной остановки, используется в выводе HTML-уведомлений и уведомлений о задержке
+| Настройка | Описание | ----------------------------- | --- | № | Номер соответствует подузлу в объектах и присваивается автоматически | Activ | Информация о подключении обновляется, когда элемент активен | От | Числовой идентификатор начальной станции или начальной остановки | От (Пользовательское имя) | Пользовательское имя для начальной станции или начальной остановки, используется в выводе HTML-уведомлений и уведомлений о задержках | Отправления | Количество отправлений для приема
 
 ## Changelog
 
@@ -137,8 +137,12 @@ Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 -->
 
 ### __WORK IN PROGRESS__
+* (Gaudes) Configurable number of journeys in routes
 * (Gaudes) Configurable number of departures in departure timetable
+* (Gaudes) Show product in departure timetable
+* (Gaudes) Fix platform handling in departure timetable
 * (Gaudes) Update Adapter template from 1.27.0 to 1.29.0
+* (Gaudes) Include Dependabot updates
 
 ### 0.2.0 (2020-09-23)
 * (Gaudes) Include Departure Timetable for configured stations

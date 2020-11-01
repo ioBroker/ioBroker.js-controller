@@ -61,16 +61,15 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 4.0.5 (2020-09-25)
-* (Stübi) - Bugfix EM3, unit of comsumed power Wh instead of kWH
-
 ### 4.0.4 (2020-09-25)
+* (Stübi) - Bugfix EM3, unit of comsumed power Wh instead of kWH
 * (Stübi) - optimize the destroy function (Bugfixing)
 * (Stübi) - Bugfixing Relay0.Event error for Shelly I3 in MQTT mode (Issue #241)
 * (harrym67) - Shelly 2.5 Roller mode. According to Shelly API: changed existing state swap to swap_input and add state swap.(Issue #240)
 * (Stübi) - Allow setting of customer MQTT prefix (Issue #244)
 * (harrym67) - Add Support for Shelly Uni (SHUNI-1)
-* (harrym67) . Bugfix EM3 (Issue #256)
+* (harrym67) - Bugfix EM3 (Issue #256)
+* (foxriver76) - Bugix MQTT password check (Issue #264) 
 
 ### 4.0.3 (2020-08-19)
 * (Stübi) - Add a checkbox, to optionally enable updates of objects even if they have not changed (Issue #209)

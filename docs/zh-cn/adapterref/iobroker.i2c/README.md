@@ -2,25 +2,24 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.i2c/README.md
-title: 用于I2C的ioBroker适配器
-hash: 9yLvFVolYnohYVz2xeO0SFDxNSYS0MgRquEsMgvBf88=
+title: ioBroker.i2c
+hash: la5rIqhMp2LjxDFzsghRF91IP9I5i3GxI203+1eZ1zU=
 ---
-![安装数量](http://iobroker.live/badges/i2c-stable.svg)
+![商标](../../../en/adapterref/iobroker.i2c/admin/i2c.png)
+
 ![NPM版本](http://img.shields.io/npm/v/iobroker.i2c.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.i2c.svg)
-![特拉维斯](https://img.shields.io/travis/UncleSamSwiss/ioBroker.i2c.svg)
-![GitHub问题](https://img.shields.io/github/issues/UncleSamSwiss/ioBroker.i2c.svg)
+![安装数量（最新）](http://iobroker.live/badges/i2c-installed.svg)
+![安装数量（稳定）](http://iobroker.live/badges/i2c-stable.svg)
+![依赖状态](https://img.shields.io/david/UncleSamSwiss/iobroker.i2c.svg)
+![已知漏洞](https://snyk.io/test/github/UncleSamSwiss/ioBroker.i2c/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.i2c.png?downloads=true)
+![特拉维斯](http://img.shields.io/travis/UncleSamSwiss/ioBroker.i2c/master.svg)
 
-*** **重要更新**
+＃ioBroker.i2c
+![测试与发布](https://github.com/UncleSamSwiss/ioBroker.i2c/workflows/Test%20and%20Release/badge.svg)
 
-此适配器的开发将于2020年8月重新开始。敬请关注！
-
-我将首先解决最紧迫的问题，然后再发布新的主要版本，使适配器达到最新的开发标准。
-***
-
-![I2C徽标](../../../en/adapterref/iobroker.i2c/admin/i2c.png)
-
-＃用于I2C的ioBroker适配器
+## IoBroker的I2C适配器
 使用I2C总线与连接到本地系统的设备进行通信。
 
 该适配器应该可以在Raspberry Pi，C.H.I.P.，BeagleBone或Intel Edison等Linux板上使用。
@@ -30,8 +29,8 @@ hash: 9yLvFVolYnohYVz2xeO0SFDxNSYS0MgRquEsMgvBf88=
 
 尤其要确保已在系统上正确配置并启用了I2C（如果需要）：
 
-* [在Raspberry Pi上配置I2C]（https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md）
-* [在英特尔Edison Arduino主板上配置I2C]（https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md）
+-[在Raspberry Pi上配置I2C]（https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md）
+-[在Intel Edison Arduino主板上配置I2C]（https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md）
 
 启用并配置I2C之后，可以通过ioBroker Admin安装此适配器：
 
@@ -90,7 +89,7 @@ Adafruit PCA9685转接板，用于16通道12位PWM。适配器专注于使用0..
 通用I2C设备。可以根据硬件配置寄存器。
 
 ##脚本中的用法
-脚本中的`sendTo`支持的命令是`search`，`read`和`write`。
+脚本中的`sendTo`支持的命令为`search`，`read`和`write`。
 
 `search`将总线编号作为消息，并返回总线上找到的地址数组的JSON字符串。
 
@@ -104,21 +103,31 @@ sendTo('i2c.0', 'search', 1, (ret) => {
     log('Ret: ' + ret, 'info');
 });
 
-sendTo('i2c.0', 'read', {
-    address: 0x40,
-    register: 0x02,
-    bytes: 2
-}, (ret) => {
-    log('Ret: ' + ret.inspect(), 'info');
-});
+sendTo(
+    'i2c.0',
+    'read',
+    {
+        address: 0x40,
+        register: 0x02,
+        bytes: 2,
+    },
+    (ret) => {
+        log('Ret: ' + ret.inspect(), 'info');
+    },
+);
 
-sendTo('i2c.0', 'write', {
-    address: 0x40,
-    register: 0x00,
-    data: Buffer.from([0x44, 0x27])
-}, (ret) => {
-    log('Ret: ' + ret.inspect(), 'info');
-});
+sendTo(
+    'i2c.0',
+    'write',
+    {
+        address: 0x40,
+        register: 0x00,
+        data: Buffer.from([0x44, 0x27]),
+    },
+    (ret) => {
+        log('Ret: ' + ret.inspect(), 'info');
+    },
+);
 ```
 
 ##相容性
@@ -128,6 +137,42 @@ sendTo('i2c.0', 'write', {
 请使用GitHub存储库报告任何错误或请求新功能。
 
 如果您需要缺少设备，请提供适配器配置中报告的IC类型（品牌，型号，...）及其地址。
+
+##发展
+### VS Code和Devcontainer
+该存储库已建立，因此可以使用VS Code和Devcontainer进行开发。只需使用VS Code打开此存储库的根文件夹，然后确认切换到Devcontainer。
+
+###远程I2C
+如果您是在台式PC上进行开发并想在SBC（例如Raspberry Pi）上测试I2C，则可以执行以下操作：
+
+-使用I2C在SBC上安装ioBroker
+-在SBC上安装此适配器
+-在SBC上手动配置适配器实例，以在“本地”中包含“ serverPort”设置：
+
+```json
+  "native": {
+    "busNumber": 1,
+    "serverPort": 5555
+  }
+```
+
+-您无需在此处配置任何I2C设备
+-将适配器实例添加到桌面ioBroker（或如上所述使用Devcontainer）
+-在台式机上手动配置适配器实例，使其在“本地”中包含“ clientAddress”设置：
+
+```json
+  "native": {
+    "busNumber": 1,
+    "clientAddress": "http://<your-ip-address>:5555/rpc"
+  }
+```
+
+-确保使用正确的IP地址和端口（设备上配置的IP地址和端口）
+-重新启动台式机上的适配器实例
+-适配器现在将在已配置的SBC而不是本地执行所有I2C命令
+-您可以在台式机上打开适配器实例设置，并像在真正的SBC上一样扫描I2C设备
+
+请记住，RPC服务器是完全不安全的，因此只能用于安全网络内部的开发！
 
 ＃＃ 谢谢
 该项目基于[i2c总线](https://www.npmjs.com/package/i2c-bus)NPM模块。感谢fivdi的出色模块！
@@ -140,7 +185,7 @@ BME280代码基于https://github.com/skylarstein/bme280-sensor：
 
 版权所有（c）2016 Skylar Stein
 
-特此免费授予获得此软件和相关文档文件（“软件”）副本的任何人无限制地处理软件的权利，包括但不限于使用，复制，修改，合并的权利，发布，分发，再许可和/或出售本软件的副本，并允许具备软件的人员这样做，但须满足以下条件：
+特此免费授予获得该软件和相关文档文件（“软件”）副本的任何人无限制使用软件的权利，包括但不限于使用，复制，修改，合并的权利，发布，分发，再许可和/或出售本软件的副本，并允许具备软件的人员这样做，但须满足以下条件：
 
 以上版权声明和本许可声明应包含在本软件的所有副本或大部分内容中。
 
@@ -155,7 +200,7 @@ MIT许可证（MIT）
 
 版权所有（c）2016 Adafruit Industries
 
-特此免费授予获得此软件和相关文档文件（“软件”）副本的任何人无限制地处理软件的权利，包括但不限于使用，复制，修改，合并的权利，发布，分发，再许可和/或出售本软件的副本，并允许具备软件的人员这样做，但须满足以下条件：
+特此免费授予获得该软件和相关文档文件（“软件”）副本的任何人无限制使用软件的权利，包括但不限于使用，复制，修改，合并的权利，发布，分发，再许可和/或出售本软件的副本，并允许具备软件的人员这样做，但须满足以下条件：
 
 以上版权声明和本许可声明应包含在本软件的所有副本或大部分内容中。
 
@@ -168,7 +213,7 @@ MIT许可证（MIT）
 
 版权所有（c）2016 Adafruit Industries作者：Tony DiCola
 
-特此免费授予获得此软件和相关文档文件（“软件”）副本的任何人无限制地处理软件的权利，包括但不限于使用，复制，修改，合并的权利，发布，分发，再许可和/或出售本软件的副本，并允许具备软件的人员这样做，但须满足以下条件：
+特此免费授予获得该软件和相关文档文件（“软件”）副本的任何人无限制使用软件的权利，包括但不限于使用，复制，修改，合并的权利，发布，分发，再许可和/或出售本软件的副本，并允许具备软件的人员这样做，但须满足以下条件：
 
 以上版权声明和本许可声明应包含在本软件的所有副本或大部分内容中。
 
@@ -182,30 +227,47 @@ MIT许可证（MIT）
 
 ## Changelog
 
+### 1.0.1 (2020-10-27)
+
+-   (UncleSamSwiss) Removed unneeded files in NPM package
+
+### 1.0.0 (2020-10-27)
+
+-   (UncleSamSwiss) Updated to the latest development tools and changed to the TypeScript language
+-   (UncleSamSwiss) Rewrote entire UI in React with TypeScript
+
 ### 0.0.8 (2020-05-26)
-* (Peter Müller) Added support for Generic device.
-* (Peter Müller) Added support for `read` and `write` commands in scripts using `sendTo`.
-* (Peter Müller) Added support for interrupts on PCF8574, MCP23008, MCP23017 devices.
+
+-   (Peter Müller) Added support for Generic device.
+-   (Peter Müller) Added support for `read` and `write` commands in scripts using `sendTo`.
+-   (Peter Müller) Added support for interrupts on PCF8574, MCP23008, MCP23017 devices.
 
 ### 0.0.7 (2020-01-19)
-* (CC1337) Added support for PCA9685.
+
+-   (CC1337) Added support for PCA9685.
 
 ### 0.0.6 (2019-03-17)
-* (UncleSamSwiss) Added support for BME280.
-* (UncleSamSwiss) Added support for ADS1015 / ADS1115.
+
+-   (UncleSamSwiss) Added support for BME280.
+-   (UncleSamSwiss) Added support for ADS1015 / ADS1115.
 
 ### 0.0.5 (2019-01-12)
-* (UncleSamSwiss) Added support for MCP23008.
+
+-   (UncleSamSwiss) Added support for MCP23008.
 
 ### 0.0.4 (2018-07-23)
-* (UncleSamSwiss) Improved stability of MCP23017.
-* (Apollon77) Latest ioBroker utils and testing including node 10.
+
+-   (UncleSamSwiss) Improved stability of MCP23017.
+-   (Apollon77) Latest ioBroker utils and testing including node 10.
 
 ### 0.0.3 (2017-11-12)
-* (UncleSamSwiss) Added support for MCP23017.
+
+-   (UncleSamSwiss) Added support for MCP23017.
 
 ### 0.0.2 (2017-07-30)
-* (UncleSamSwiss) Added support for inverting PCF8574 inputs and outputs.
+
+-   (UncleSamSwiss) Added support for inverting PCF8574 inputs and outputs.
 
 ### 0.0.1 (2017-07-27)
-* (UncleSamSwiss) Initial version
+
+-   (UncleSamSwiss) Initial version

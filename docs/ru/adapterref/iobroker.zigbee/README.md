@@ -34,8 +34,12 @@ BADGE-NPM: https://nodei.co/npm/iobroker.zigbee.png?downloads=true
 Поэтому, если какие-либо улучшения или поддержка новых zigbee-устройств происходит в проекте Zigbee2MQTT, то можно перенести и добавить этот же функционал в этот драйвер. Если заметили это, то напиши issue - перенесем.
 
 ## Changelog
+### 1.3.1 (2020-10-30)
+* [Experimental Zigate support](https://github.com/Koenkk/zigbee-herdsman/issues/242) (zigbee-herdsman)
+* New devices by: 
+    asgothian, arteck, kirovilya, PaulchenPlump
 
-### 1.3.0 (2020-10-)
+### 1.3.0 (2020-10-07)
 * More stable (zigbee-herdsman)
 * Backup prior database and nv-data (for z-stack 3) before start adapter
 * Allow to select bind cluster

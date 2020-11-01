@@ -3,22 +3,25 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: jXZqZmIPNSo5kXUJMkf8HDu9l6AM2bBh0Z/V+A9C/DM=
+hash: kfyRFoRcowosL9C9ZM5czQXir34tHauHJf2s0L4hp5c=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
 ![NPM版本](http://img.shields.io/npm/v/iobroker.vis-inventwo.svg)
+![安装数量（稳定）](http://iobroker.live/badges/vis-inventwo-stable.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.vis-inventwo.svg)
 ![安装数量（最新）](http://iobroker.live/badges/vis-inventwo-installed.svg)
-![安装数量（稳定）](http://iobroker.live/badges/vis-inventwo-stable.svg)
 ![依赖状态](https://img.shields.io/david/inventwo/iobroker.vis-inventwo.svg)
 ![已知漏洞](https://snyk.io/test/github/inventwo/iobroker.vis-inventwo/badge.svg)
+![建造状态](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
+![执照](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+![贝宝捐赠](https://img.shields.io/badge/paypal-donate%20%7C%20spenden-green.svg)
 ![NPM](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
 
 ＃ioBroker.vis-inventwo
 ## Schalter窗口小部件ioBroker.vis适配器
 ###### .. ab v 2.0.0
-<table><tr><td><center><b>普遍</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center><b>多</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center><b>图片</b><br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center><b>表</b><br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center><b>清单</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center><b>选框</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center><b>单选按钮</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center><b>垂直滑块</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center><b>水平滑块</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr></table>
+<table><tr><td><center><b>普遍</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center><b>多</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center><b>图片</b><br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center><b>表</b><br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center><b>清单</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center><b>选框</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center><b>单选按钮</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center><b>垂直滑块</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center><b>水平滑块</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center><b>拨动开关</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td><td></td><td></td></tr></table>
 
 ###### .. v 1.3.8
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Set.png)
@@ -38,6 +41,25 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里
 [![Spende]（http://resources.inventwo.com/github/inventwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.5.5
+-错误修正
+
+## 2.5.4
+-错误修正（状态：多普特斯·森德·德·维尔特斯·贝触摸）
+
+## 2.5.3
+-Grauer Kippschalterhinzugefügt
+
+## 2.5.2
+-错误修正
+
+## 2.5.1
+-错误修正
+
+## 2.5.0
+-Kippschalterhinzugefügt
+-错误修正
 
 ## 2.4.3
 -错误修正
@@ -75,7 +97,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里
 -价值清单behoben中的费勒：Wert wird nicht aktualisiert
 
 ## 2.2.0
--Datenpunktwerte werden jetzt bei allen Widgets in Editor angezeigt
+-Datenpunktwerte werden jetzt bei allen Widgets in Editor编辑
 -Neues小部件：Marquee（Laufschrift）
 -通用和多州Verweildauerhinzugefügt
 -列表小部件Abstand zwischen denEinträgenkann eingestell werden
@@ -90,7 +112,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里
 
 ## 2.0.0
 -开关，按钮，导航和背景小部件（显示小部件）-> dem通用小部件
--多种小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere Datenpunkte und Wertegeprüftwerden kann（Ähnlichder Signalbild Funktion）
+-多种小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere）
 -图像小部件kann nun auf Datenpunktprüfen
 -单选按钮hinzugefügt
 -Wertelistehinzugefügt（Kann Liste aus einem Datenpunkt oder manuell eingetragenem Text erstellen）

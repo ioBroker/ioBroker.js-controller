@@ -77,7 +77,7 @@ mit dem gewünschten *get* Wert beschrieben werden.
 
 ### Changelog
 
-	### 1.3.1 (17.09.2020)
+	### 1.3.2 (17.09.2020)
 	* (misanorot) fixed little issues
 
 	### 1.2.5 (26.07.2020)

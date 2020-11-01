@@ -50,7 +50,23 @@ sendTo("pushover", {
    url_title,             // optional  - a title for your supplementary URL, otherwise just the URL is shown
    device,                // optional  - your user's device name to send the message directly to that device, rather than all of the user's devices
    timestamp              // optional  - a Unix timestamp of your message's date and time to display to the user, rather than the time your message is received by our API
+   html                   // optional  - 1 to enable parsing of HTML formating for bold, italic, underlined and font color
+   monospace              // optional  - 1 to display the message in monospace font
+                          //    either html or monospace is allowed
 });
+
+// Example for HTML format in the message
+sendTo("pushover", {
+    message: 'This message includes <b>bold</b>, <i>italic</i> and <u>underlined</u> text <font color=green>in</font> <font color=#ffa500>different</font> <font color=red>colors</font>.',
+    html:    1
+});
+
+// Example for monospace font in the message
+sendTo("pushover", {
+    message:   'This message is in monospace font.',
+    monospace: 1
+});
+
 ```
 
 ## What is Sentry and what is reported to the servers?

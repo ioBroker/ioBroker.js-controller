@@ -2,11 +2,15 @@
 # ioBroker.vis-icontwo
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.vis-icontwo.svg)](https://www.npmjs.com/package/iobroker.vis-icontwo)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.vis-icontwo.svg)](https://www.npmjs.com/package/iobroker.vis-icontwo)
-![Number of Installations (latest)](http://iobroker.live/badges/vis-icontwo-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/vis-icontwo-stable.svg)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.vis-icontwo.svg?)](https://www.npmjs.com/package/iobroker.vis-icontwo)
+![Number of Installations (latest)](http://iobroker.live/badges/vis-icontwo-installed.svg)
 [![Dependency Status](https://img.shields.io/david/inventwo/iobroker.vis-icontwo.svg)](https://david-dm.org/inventwo/iobroker.vis-icontwo)
 [![Known Vulnerabilities](https://snyk.io/test/github/inventwo/iobroker.vis-icontwo/badge.svg)](https://snyk.io/test/github/inventwo/iobroker.vis-icontwo)
+[![Build status](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)](https://ci.appveyor.com/project/inventwo/iobroker-vis-icontwo)
+[![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/inventwo/iobroker.vis-icontow/LICENSE)
+
+[![Paypal Donation](https://img.shields.io/badge/paypal-donate%20|%20spenden-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 [![NPM](https://nodei.co/npm/iobroker.vis-icontwo.png?downloads=true)](https://nodei.co/npm/iobroker.vis-icontwo/)
 
@@ -56,6 +60,26 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog / Änderungsprotokoll
+
+### 0.31.0
+
+• Neue Icons hinzugefügt (Spa & Fitness, Electricity, Lights, Rooms)
+
+### 0.30.1
+
+• Bug Fix
+
+### 0.30.0
+
+• Neue Icons hinzugefügt (Network, Devices)
+
+### 0.29.0
+
+• Neue Icons hinzugefügt (Electricity)
+
+### 0.28.0
+
+• Neue Icons hinzugefügt (Arrows, Shopping, Electricity)
 
 ### 0.27.1
 

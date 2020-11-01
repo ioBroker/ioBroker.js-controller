@@ -3,124 +3,122 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: HTGk4nS62rUA6r2P64RF+fNZf28kh3UB08Sw/nwlbp4=
+hash: 1h0xd/ee+enAhM1sc14+Mcu9AWiM6U6cDO8oSCsN1og=
 ---
-![логотип](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
+![Логотип](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
 ![Количество установок](http://iobroker.live/badges/alarm-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.alarm.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.alarm.svg)
 ![Статус зависимости](https://img.shields.io/david/misanorot/iobroker.alarm.svg)
 ![Известные уязвимости](https://snyk.io/test/github/misanorot/ioBroker.alarm/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.alarm.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/misanorot/ioBroker.alarm/master.svg)
+![НПМ](https://nodei.co/npm/iobroker.alarm.png?downloads=true)
+![Трэвис-Си](http://img.shields.io/travis/misanorot/ioBroker.alarm/master.svg)
 
 # IoBroker.alarm
-[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
+[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[Английское описание](https://github.com/misanorot/ioBroker.alarm/blob/master/lib/Readme_en.md)**
 
 ## IoBroker Alarm
-Умирает в адаптере, с его помощью. Сигнализация.
-Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. Находится на территории De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz «заявляет», auf anddere «заявляет» меглиц. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
+Dies ist ein Adapter, mit dem sich eine kleine Alarmanlage ohne große programmiertechnische Vorkenntnisse realisieren lässt.
+Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe или De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz "состояния", auf andere "состояния" möglich. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
 
 -------------------------------------------------- -------------------------------------------------- ------------------ *Стенд 05.07.2020 ab Версия 0.8.0*
 
-#### Wichtig ab 0.8.0
-- Es empfiehlt sich bei Vorinstallationen <0.8.0, beim Update Обновление адаптеров для других устройств! Es haben sich ein paar Datenpunkte geändert.
-
 ### Tab Haupteinstellungen
-В настоящее время в нем представлены Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm и Passwort vorgenommen.
+Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm und Passwort vorgenommen.
 
 *Alle Zeiten sind в Sekunden einzugeben*
 
-- Aktivierzeit -> Zeitverzögerung bis zu Aktivierung wenn man einen задержка Datenpunkt benutzt
+- Aktivierzeit -> Zeitverzögerung bis zu Aktivierung wenn man einen delay Datenpunkt benutzt
 - Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf true gesetzt
-- Alarmverzögerung -> Verzögerungszeit bis Einbruch ausgelöst wird (большой вес) Zeit wird der Stille Alarm ausgelöst)
+- Alarmverzögerung -> Verzögerungszeit bis Einbruch ausgelöst wird (während dieser Zeit wird der Stille Alarm ausgelöst)
 - Auslösezeit bei Warnungen / Sirene innen -> Bei Auslösung des Benachrichtigungskreises oder scharf innen Kreises, wird der jeweils zugehörige Datenpunkt für die Zeit auf true gesetzt
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Benachrichtigungen
-Benachrichtigungen über Andere Adapter wie z.B. Телеграмма, электронная почта или андер.
-[Probleme](#Probleme)
+Benachrichtigungen über Andere Adapter wie z.B. Telegramm, электронная почта или другое.
+[Проблема](#Probleme)
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Überwachung
 Hier werden die Kreise der Anlage konfiguriert.
-* умри, но не лассен сич андерн *
+* die Namen der states lassen sich ändern *
 
-Der Alarmkreis hat die Priorität "hoch" and hat bei aktivierter Anlage (scharf) Vorrang vor allen andderen Keisen. Er dient zur eigentlichen Überwachung der Anlage. Умирает в полном объеме. В настоящее время он принимает участие в международном конкурсе молодых людей, а также в международном масштабе.
-* Es ist durchaus möglich, dassman für einen State, den Haken bei allen drei Kreisen macht. *
+Der Alarmkreis hat die Priorität „hoch" und hat bei aktivierter Anlage (scharf) Vorrang vor allen anderen Keisen. Er dient zur eigentlichen Überwachung der Anlage. scharf intern befindet. Der Meldekreis dient nur zur Meldung während der Zustände scharf, scharf intern und bei der der Nachtruhe.
+* Es ist durchaus möglich, dass man für einen State, den Haken bei allen drei Kreisen macht. *
 
 Die Kreise werden folgendermaßen überwacht:
 
-#### Alarmkreis:
-Alarmanlage lässt sich nicht aktivieren (scharf schalten) wenn ein konfigurierter State aktiv ist. Bei aktivierter Alarmanlage führt eine Veränderung sofort zur Auslösung der Anlage.
+#### Алармкрайс:
+Alarmanlage lässt sich nicht aktivieren (scharf schalten) wenn ein konfigurierter state aktiv ist. Bei aktivierter Alarmanlage führt eine Veränderung sofort zur Auslösung der Anlage.
 
-#### Шарф интерн Крейс:
-Все конфигюриртены констатируют werden beim Zustand scharf intern überwacht und lösen unter anderem den internen Alarm aus.
+#### Стажер Scharf Крайс:
+Alle hier konfigurierten states werden beim Zustand scharf intern überwacht und lösen unter anderem den internen Alarm aus.
 
-#### Meldekreis:
-Der überwacht die konfigurierten заявляет, что умирает.
+#### Мелдекрейс:
+Der überwacht die konfigurierten states auf Veränderungen und meldet dies.
 
 ----------------------------------------------------------------------------------------------------------------------
 
-### Tab Sprachausgabe
+### Вкладка Sprachausgabe
 Ist eine gewünschte Sprachausgabe z.B. bei bei Änderung des Zustandes gewünscht, lässt sich das hier mit den gewünschten Sätzen konfigurieren.
-* Man muss sich sicher sein, das der ausgewählte Datenpunkt, mit einem Text beschrieben werden kann! Z.B. "sayit.0.tts" *
+* Man muss sich sicher sein, das der ausgewählte Datenpunkt, mit einem Text beschrieben werden kann! З.Б. "sayit.0.tts" *
 
-Möchte man sich die Ausgabe von Namen mit Ansagen lassen, kann man diese Вариант anwählen.
+Möchte man sich die Ausgabe von Namen mit Ansagen lassen, kann man diese Option anwählen.
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Verknüpfungen
-Hier ist es möglich Адаптер международных государств, директива по внешним государствам, в целом. Somit is ein Umweg über ein Skript oder ähnlichen nicht erforderlich.
-Es lässt sich somit z.B. Bei Beginn der Nachtruhe, Eine Veriegelung des Türschlosses realisieren.
-![логотип](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
+Hier ist es möglich Adapter interne states direkt mit externen states zu verknüpfen. Somit ist ein Umweg über ein Skript oder ähnlichen nicht erforderlich.
+Es lässt sich somit z.B. bei Beginn der Nachtruhe, eine Veriegelung des Türschlosses realisieren.
+![Логотип](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
 
 #### Eingabeverknüpfungen
-Триггер -> любой = вирд бей хедер Андерунг гетриггерт
+Триггер -> any = es wird bei jeder Änderung getriggert ne = es wird nur getriggert wenn der Wert sich geändert
 
 Auslösewert -> Ist der Wert, auf welchen getriggert werden soll
 
 ----------------------------------------------------------------------------------------------------------------------
 
-Der Adapter liefet eine ganze Anzahl заявляет:
+Der Adapter liefert eine ganze Anzahl an заявляет:
 
 #### "alarm.x.use .....".
-Das sind die eigentlichen заявляет, что um die Alarmanlage zu bedienen.
+Das sind die eigentlichen состояния um die Alarmanlage zu bedienen.
 
-- use.activate_nightrest -> Активирунг дер Нахтруэ
-- use.activate_sharp_inside_circuit -> Aktivierung der Uberwachung des Warnkreises (intern scharf)
+- use.activate_nightrest -> Aktivierung der Nachtruhe
+- use.activate_sharp_inside_circuit -> Aktivierung der Überwachung des Warnkreises (intern scharf)
 - use.disable -> Deaktivierung der Anlage (Alarmkreis)
-- use.enable -> Aktivierung der Anlage (Alarmkreis)
+- use.enable -> Aktivierung der Anlage (Алармкрейс)
 - use.enable_with_delay -> Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
 - use.list -> Deaktivierung / Aktivierung / Warnkreis / Aktivierung mit Verzögerungszeit
-- use.quit_changes -> Rücksetzen der states *info.notification_circuit_changes, info.sharp_inside_siren, status.activation_failed*
+- use.quit_changes -> Rücksetzen der состояния *info.notification_circuit_changes, info.sharp_inside_siren, status.activation_failed*
 - use.toggle_password -> Deaktivierung / Aktivierung der Anlage (Alarmkreis) mit Passwort
 - use.toggle_with_delay -> Deaktivierung / Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
 - use.toggle_with_delay_and_password -> Deaktivierung / Aktivierung der Anlage (Alarmkreis) mit Passwort und Verzögerungszeit
-- use.panic -> Händische Auslösung der Alarmanlage (Einbruch), в настоящее время не работает
+- use.panic -> Händische Auslösung der Alarmanlage (Einbruch), auch wenn diese deaktiviert ist
 
 #### "alarm.x.status ...."
-Hier lässte sich der Zustand der Anlage смог.
+Hier lässte sich der Zustand der Anlageablesen.
 
 - status.sleep -> Signalisiert den Zustand der automatischen Nachtruhe
 
 #### "alarm.x.info ...."
-Liefert zusätzliche Informationen wie z.B. Welche "Türen offen sind" oder einen Лог государства.
-Der log_today State Wird Um Mitternacht Geleert.
+Liefert zusätzliche Informationen wie z.B. welche "Türen offen sind" oder einen Состояние журнала.
+Der log_today State Wird um Mitternacht geleert.
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ## Проблема
-- мужская телеграмма телеграмм ünliches über das + hinzufügt, kann man nur ein state der Instanz auswählen und man muss bis auf *telegram.0* alles löschen.
+- wenn man eine Telegram oder ähnliches über das + hinzufügt, kann man nur ein state der Instanz auswählen und man muss bis auf *telegram.0* alles löschen.
 
-#### Wichtig, die Benutzung dieses.
+#### Wichtig, die Benutzung dieses Адаптеры geschieht auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Haftung übernommen!
 
 ## Changelog
+
 
 #### 1.2.0 (09.07.2020)
 * (misanorot) added countdown speech output

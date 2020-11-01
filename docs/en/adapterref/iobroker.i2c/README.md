@@ -1,16 +1,20 @@
-***
-**IMPORTANT UPDATE**
+![Logo](admin/i2c.png)
 
-Development of this adapter will restart in **August 2020**. Stay tuned!
+# ioBroker.i2c
 
-I will start by resolving the most pressing issues followed by a new major release that brings the adapter up to the latest development standards.
-***
+[![NPM version](http://img.shields.io/npm/v/iobroker.i2c.svg)](https://www.npmjs.com/package/iobroker.i2c)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.i2c.svg)](https://www.npmjs.com/package/iobroker.i2c)
+![Number of Installations (latest)](http://iobroker.live/badges/i2c-installed.svg)
+![Number of Installations (stable)](http://iobroker.live/badges/i2c-stable.svg)
+[![Dependency Status](https://img.shields.io/david/UncleSamSwiss/iobroker.i2c.svg)](https://david-dm.org/UncleSamSwiss/iobroker.i2c)
+[![Known Vulnerabilities](https://snyk.io/test/github/UncleSamSwiss/ioBroker.i2c/badge.svg)](https://snyk.io/test/github/UncleSamSwiss/ioBroker.i2c)
 
-![I2C Logo](admin/i2c.png)
+[![NPM](https://nodei.co/npm/iobroker.i2c.png?downloads=true)](https://nodei.co/npm/iobroker.i2c/)
 
-# ioBroker adapter for I2C
+**Tests:** [![Travis-CI](http://img.shields.io/travis/UncleSamSwiss/ioBroker.i2c/master.svg)](https://travis-ci.org/UncleSamSwiss/ioBroker.i2c)
+![Test and Release](https://github.com/UncleSamSwiss/ioBroker.i2c/workflows/Test%20and%20Release/badge.svg)
 
-![Number of Installations](http://iobroker.live/badges/i2c-installed.svg) ![Number of Installations](http://iobroker.live/badges/i2c-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.i2c.svg)](https://www.npmjs.com/package/iobroker.i2c) [![Downloads](https://img.shields.io/npm/dm/iobroker.i2c.svg)](https://www.npmjs.com/package/iobroker.i2c) [![Travis](https://img.shields.io/travis/UncleSamSwiss/ioBroker.i2c.svg)](https://travis-ci.org/UncleSamSwiss/ioBroker.i2c/) [![GitHub issues](https://img.shields.io/github/issues/UncleSamSwiss/ioBroker.i2c.svg)](https://github.com/UncleSamSwiss/ioBroker.i2c/issues)
+## I2C adapter for ioBroker
 
 Communicates with devices connected to the local system using the I2C bus.
 
@@ -21,10 +25,12 @@ This adapter should work on Linux boards like the Raspberry Pi, C.H.I.P., Beagle
 Before installing, please read the [installation guide of the i2c-bus module](https://www.npmjs.com/package/i2c-bus#installation).
 
 Especially make sure, that you have properly configured and enabled I2C on your system (if needed):
-* [Configuring I2C on the Raspberry Pi](https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md)
-* [Configuring I2C on the Intel Edison Arduino Base Board](https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md)
+
+-   [Configuring I2C on the Raspberry Pi](https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md)
+-   [Configuring I2C on the Intel Edison Arduino Base Board](https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md)
 
 After you have enabled and configured I2C, you can install this adapter via ioBroker Admin:
+
 1. Start the adapter (it must run for the discovery to work)
 2. Open instance config dialog
 3. Press the "Search Devices" button to discover all connected I2C devices - this will take some time, be patient!
@@ -109,21 +115,31 @@ sendTo('i2c.0', 'search', 1, (ret) => {
     log('Ret: ' + ret, 'info');
 });
 
-sendTo('i2c.0', 'read', {
-    address: 0x40,
-    register: 0x02,
-    bytes: 2
-}, (ret) => {
-    log('Ret: ' + ret.inspect(), 'info');
-});
+sendTo(
+    'i2c.0',
+    'read',
+    {
+        address: 0x40,
+        register: 0x02,
+        bytes: 2,
+    },
+    (ret) => {
+        log('Ret: ' + ret.inspect(), 'info');
+    },
+);
 
-sendTo('i2c.0', 'write', {
-    address: 0x40,
-    register: 0x00,
-    data: Buffer.from([0x44, 0x27])
-}, (ret) => {
-    log('Ret: ' + ret.inspect(), 'info');
-});
+sendTo(
+    'i2c.0',
+    'write',
+    {
+        address: 0x40,
+        register: 0x00,
+        data: Buffer.from([0x44, 0x27]),
+    },
+    (ret) => {
+        log('Ret: ' + ret.inspect(), 'info');
+    },
+);
 ```
 
 ## Compatibility
@@ -136,35 +152,91 @@ Please use the GitHub repository to report any bugs or request new features.
 
 If you require a missing devcies, please provide the type of IC (brand, model, ...) and its address(es) as reported in the adapter configuration.
 
+## Development
+
+### VS Code & Devcontainer
+
+This repository is set up so development can be done using VS Code and Devcontainer. Simply open the root folder of this repository with VS Code and and acknowledge to switch to Devcontainer.
+
+### Remote I2C
+
+If you are developing on a desktop PC and want to test I2C on a SBC (e.g. a Raspberry Pi), you can do the following:
+
+-   Install ioBroker on the SBC with I2C
+-   Install this adapter on the SBC
+-   Configure the adapter instance on the SBC manually to contain the `"serverPort"` setting in `"native"`:
+
+```json
+  "native": {
+    "busNumber": 1,
+    "serverPort": 5555
+  }
+```
+
+-   You don't need to configure any I2C devices here
+-   Add an adapter instance to your desktop ioBroker (or use Devcontainer as described above)
+-   Configure the adapter instance on your desktop PC manually to contain the `"clientAddress"` setting in `"native"`:
+
+```json
+  "native": {
+    "busNumber": 1,
+    "clientAddress": "http://<your-ip-address>:5555/rpc"
+  }
+```
+
+-   Ensure you use the right IP address and port (the one configured on the device)
+-   Restart the adapter instance on your desktop PC
+-   The adapter will now execute all I2C commands on the configured SBC instead of locally
+-   You can open the adapter instance settings on your desktop PC and scan for I2C devices like you would on the real SBC
+
+Keep in mind that the RPC server is completely unsecured, so this should only be used for development inside a secure network!
+
 ## Changelog
 
+### 1.0.1 (2020-10-27)
+
+-   (UncleSamSwiss) Removed unneeded files in NPM package
+
+### 1.0.0 (2020-10-27)
+
+-   (UncleSamSwiss) Updated to the latest development tools and changed to the TypeScript language
+-   (UncleSamSwiss) Rewrote entire UI in React with TypeScript
+
 ### 0.0.8 (2020-05-26)
-* (Peter Müller) Added support for Generic device.
-* (Peter Müller) Added support for `read` and `write` commands in scripts using `sendTo`.
-* (Peter Müller) Added support for interrupts on PCF8574, MCP23008, MCP23017 devices.
+
+-   (Peter Müller) Added support for Generic device.
+-   (Peter Müller) Added support for `read` and `write` commands in scripts using `sendTo`.
+-   (Peter Müller) Added support for interrupts on PCF8574, MCP23008, MCP23017 devices.
 
 ### 0.0.7 (2020-01-19)
-* (CC1337) Added support for PCA9685.
+
+-   (CC1337) Added support for PCA9685.
 
 ### 0.0.6 (2019-03-17)
-* (UncleSamSwiss) Added support for BME280.
-* (UncleSamSwiss) Added support for ADS1015 / ADS1115.
+
+-   (UncleSamSwiss) Added support for BME280.
+-   (UncleSamSwiss) Added support for ADS1015 / ADS1115.
 
 ### 0.0.5 (2019-01-12)
-* (UncleSamSwiss) Added support for MCP23008.
+
+-   (UncleSamSwiss) Added support for MCP23008.
 
 ### 0.0.4 (2018-07-23)
-* (UncleSamSwiss) Improved stability of MCP23017.
-* (Apollon77) Latest ioBroker utils and testing including node 10.
+
+-   (UncleSamSwiss) Improved stability of MCP23017.
+-   (Apollon77) Latest ioBroker utils and testing including node 10.
 
 ### 0.0.3 (2017-11-12)
-* (UncleSamSwiss) Added support for MCP23017.
+
+-   (UncleSamSwiss) Added support for MCP23017.
 
 ### 0.0.2 (2017-07-30)
-* (UncleSamSwiss) Added support for inverting PCF8574 inputs and outputs.
+
+-   (UncleSamSwiss) Added support for inverting PCF8574 inputs and outputs.
 
 ### 0.0.1 (2017-07-27)
-* (UncleSamSwiss) Initial version
+
+-   (UncleSamSwiss) Initial version
 
 ## Thanks
 
@@ -173,6 +245,7 @@ This project is based on the [i2c-bus](https://www.npmjs.com/package/i2c-bus) NP
 ## Third Party Licenses
 
 ### BME280
+
 The BME280 code is based on https://github.com/skylarstein/bme280-sensor:
 
 MIT License
@@ -198,6 +271,7 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 
 ### ADS1x15
+
 The ADS1x15 code is based on https://github.com/alphacharlie/node-ads1x15/blob/master/index.js
 
 node-ads1x15 itself is based on https://github.com/adafruit/Adafruit_Python_ADS1x15

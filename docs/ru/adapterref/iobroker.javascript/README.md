@@ -2638,6 +2638,15 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
+### 4.9.8 (2020-11-01)
+* (bluefox) Corrected search in blockly
+
+### 4.9.7 (2020-10-28)
+* (Apollon77) Fix possible crash case (Sentry IOBROKER-JAVASCRIPT-47, IOBROKER-JAVASCRIPT-44)
+* (AlCalzone) pass ID as the result, not the error to the callback of createState
+* (AlCalzone) update the editor's type declarations when switching scripts
+* (AlCalzone) The corrections for typescript were added
+
 ### 4.9.4 (2020-10-19)
 * (AlCalzone) corrected the crash IOBROKER-JAVASCRIPT-40
 * (AlCalzone) corrected typescript for async/await

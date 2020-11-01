@@ -2,25 +2,24 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.i2c/README.md
-title: ioBroker Adapter für I2C
-hash: 9yLvFVolYnohYVz2xeO0SFDxNSYS0MgRquEsMgvBf88=
+title: ioBroker.i2c
+hash: la5rIqhMp2LjxDFzsghRF91IP9I5i3GxI203+1eZ1zU=
 ---
-![Anzahl der Installationen](http://iobroker.live/badges/i2c-stable.svg)
+![Logo](../../../en/adapterref/iobroker.i2c/admin/i2c.png)
+
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.i2c.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.i2c.svg)
-![Travis](https://img.shields.io/travis/UncleSamSwiss/ioBroker.i2c.svg)
-![GitHub Probleme](https://img.shields.io/github/issues/UncleSamSwiss/ioBroker.i2c.svg)
+![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/i2c-installed.svg)
+![Anzahl der Installationen (stabil)](http://iobroker.live/badges/i2c-stable.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/UncleSamSwiss/iobroker.i2c.svg)
+![Bekannte Sicherheitslücken](https://snyk.io/test/github/UncleSamSwiss/ioBroker.i2c/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.i2c.png?downloads=true)
+![Travis-CI](http://img.shields.io/travis/UncleSamSwiss/ioBroker.i2c/master.svg)
 
-*** **WICHTIGES UPDATE**
+# IoBroker.i2c
+![Testen und freigeben](https://github.com/UncleSamSwiss/ioBroker.i2c/workflows/Test%20and%20Release/badge.svg)
 
-Die Entwicklung dieses Adapters wird im **August 2020** neu gestartet. Bleib dran!
-
-Ich werde zunächst die dringendsten Probleme lösen, gefolgt von einer neuen Hauptversion, die den Adapter auf den neuesten Entwicklungsstandard bringt.
-***.
-
-![I2C-Logo](../../../en/adapterref/iobroker.i2c/admin/i2c.png)
-
-# IoBroker Adapter für I2C
+## I2C-Adapter für ioBroker
 Kommuniziert mit Geräten, die über den I2C-Bus mit dem lokalen System verbunden sind.
 
 Dieser Adapter sollte auf Linux-Boards wie Raspberry Pi, C.H.I.P., BeagleBone oder Intel Edison funktionieren.
@@ -30,8 +29,8 @@ Bitte lesen Sie vor der Installation die [Installationsanleitung des i2c-Bus-Mod
 
 Stellen Sie insbesondere sicher, dass Sie I2C auf Ihrem System ordnungsgemäß konfiguriert und aktiviert haben (falls erforderlich):
 
-* [I2C auf dem Raspberry Pi konfigurieren] (https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md)
-* [Konfigurieren von I2C auf dem Intel Edison Arduino Base Board] (https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md)
+- [I2C auf dem Raspberry Pi konfigurieren] (https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md)
+- [I2C auf dem Intel Edison Arduino Base Board konfigurieren] (https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md)
 
 Nachdem Sie I2C aktiviert und konfiguriert haben, können Sie diesen Adapter über ioBroker Admin installieren:
 
@@ -104,21 +103,31 @@ sendTo('i2c.0', 'search', 1, (ret) => {
     log('Ret: ' + ret, 'info');
 });
 
-sendTo('i2c.0', 'read', {
-    address: 0x40,
-    register: 0x02,
-    bytes: 2
-}, (ret) => {
-    log('Ret: ' + ret.inspect(), 'info');
-});
+sendTo(
+    'i2c.0',
+    'read',
+    {
+        address: 0x40,
+        register: 0x02,
+        bytes: 2,
+    },
+    (ret) => {
+        log('Ret: ' + ret.inspect(), 'info');
+    },
+);
 
-sendTo('i2c.0', 'write', {
-    address: 0x40,
-    register: 0x00,
-    data: Buffer.from([0x44, 0x27])
-}, (ret) => {
-    log('Ret: ' + ret.inspect(), 'info');
-});
+sendTo(
+    'i2c.0',
+    'write',
+    {
+        address: 0x40,
+        register: 0x00,
+        data: Buffer.from([0x44, 0x27]),
+    },
+    (ret) => {
+        log('Ret: ' + ret.inspect(), 'info');
+    },
+);
 ```
 
 ## Kompatibilität
@@ -128,6 +137,42 @@ Die Kompatibilität wurde mit Raspberry Pi 3 und 4B getestet.
 Verwenden Sie das GitHub-Repository, um Fehler zu melden oder neue Funktionen anzufordern.
 
 Wenn Sie fehlende Abweichungen benötigen, geben Sie bitte den IC-Typ (Marke, Modell, ...) und dessen Adresse (n) an, wie in der Adapterkonfiguration angegeben.
+
+## Entwicklung
+### VS Code & Devcontainer
+Dieses Repository ist so eingerichtet, dass die Entwicklung mit VS Code und Devcontainer durchgeführt werden kann. Öffnen Sie einfach den Stammordner dieses Repositorys mit VS-Code und bestätigen Sie, dass Sie zu Devcontainer wechseln.
+
+### Remote I2C
+Wenn Sie auf einem Desktop-PC entwickeln und I2C auf einem SBC (z. B. einem Raspberry Pi) testen möchten, können Sie Folgendes tun:
+
+- Installieren Sie ioBroker mit I2C auf dem SBC
+- Installieren Sie diesen Adapter auf dem SBC
+- Konfigurieren Sie die Adapterinstanz auf dem SBC manuell so, dass sie die Einstellung "serverPort" in "native" enthält:
+
+```json
+  "native": {
+    "busNumber": 1,
+    "serverPort": 5555
+  }
+```
+
+- Sie müssen hier keine I2C-Geräte konfigurieren
+- Fügen Sie Ihrem Desktop-ioBroker eine Adapterinstanz hinzu (oder verwenden Sie Devcontainer wie oben beschrieben).
+- Konfigurieren Sie die Adapterinstanz auf Ihrem Desktop-PC manuell so, dass sie die Einstellung "clientAddress" in "native" enthält:
+
+```json
+  "native": {
+    "busNumber": 1,
+    "clientAddress": "http://<your-ip-address>:5555/rpc"
+  }
+```
+
+- Stellen Sie sicher, dass Sie die richtige IP-Adresse und den richtigen Port verwenden (den auf dem Gerät konfigurierten).
+- Starten Sie die Adapterinstanz auf Ihrem Desktop-PC neu
+- Der Adapter führt jetzt alle I2C-Befehle auf dem konfigurierten SBC anstatt lokal aus
+- Sie können die Einstellungen der Adapterinstanz auf Ihrem Desktop-PC öffnen und wie auf dem echten SBC nach I2C-Geräten suchen
+
+Beachten Sie, dass der RPC-Server vollständig ungesichert ist und daher nur für die Entwicklung in einem sicheren Netzwerk verwendet werden sollte!
 
 ## Vielen Dank
 Dieses Projekt basiert auf dem NPM-Modul [i2c-bus](https://www.npmjs.com/package/i2c-bus) NPM. Vielen Dank an fivdi für sein tolles Modul!
@@ -140,7 +185,7 @@ MIT-Lizenz
 
 Copyright (c) 2016 Skylar Stein
 
-Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
+Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , Veröffentlichung, Vertrieb, Unterlizenzierung und / oder Verkauf von Kopien der Software und Erlaubnis von Personen, denen die Software zur Verfügung gestellt wird, unter folgenden Bedingungen:
 
 Der oben genannte Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
@@ -155,7 +200,7 @@ Die MIT-Lizenz (MIT)
 
 Copyright (c) 2016 Adafruit Industries
 
-Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
+Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , Veröffentlichung, Vertrieb, Unterlizenzierung und / oder Verkauf von Kopien der Software und Erlaubnis von Personen, denen die Software zur Verfügung gestellt wird, unter folgenden Bedingungen:
 
 Der oben genannte Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
@@ -168,7 +213,7 @@ Die MIT-Lizenz (MIT)
 
 Copyright (c) 2016 Adafruit Industries Autor: Tony DiCola
 
-Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
+Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , Veröffentlichung, Vertrieb, Unterlizenzierung und / oder Verkauf von Kopien der Software und Erlaubnis von Personen, denen die Software zur Verfügung gestellt wird, unter folgenden Bedingungen:
 
 Der oben genannte Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
@@ -182,30 +227,47 @@ Lizenziert unter der Apache-Lizenz, Version 2.0 <LICENSE-APACHE oder http://www.
 
 ## Changelog
 
+### 1.0.1 (2020-10-27)
+
+-   (UncleSamSwiss) Removed unneeded files in NPM package
+
+### 1.0.0 (2020-10-27)
+
+-   (UncleSamSwiss) Updated to the latest development tools and changed to the TypeScript language
+-   (UncleSamSwiss) Rewrote entire UI in React with TypeScript
+
 ### 0.0.8 (2020-05-26)
-* (Peter Müller) Added support for Generic device.
-* (Peter Müller) Added support for `read` and `write` commands in scripts using `sendTo`.
-* (Peter Müller) Added support for interrupts on PCF8574, MCP23008, MCP23017 devices.
+
+-   (Peter Müller) Added support for Generic device.
+-   (Peter Müller) Added support for `read` and `write` commands in scripts using `sendTo`.
+-   (Peter Müller) Added support for interrupts on PCF8574, MCP23008, MCP23017 devices.
 
 ### 0.0.7 (2020-01-19)
-* (CC1337) Added support for PCA9685.
+
+-   (CC1337) Added support for PCA9685.
 
 ### 0.0.6 (2019-03-17)
-* (UncleSamSwiss) Added support for BME280.
-* (UncleSamSwiss) Added support for ADS1015 / ADS1115.
+
+-   (UncleSamSwiss) Added support for BME280.
+-   (UncleSamSwiss) Added support for ADS1015 / ADS1115.
 
 ### 0.0.5 (2019-01-12)
-* (UncleSamSwiss) Added support for MCP23008.
+
+-   (UncleSamSwiss) Added support for MCP23008.
 
 ### 0.0.4 (2018-07-23)
-* (UncleSamSwiss) Improved stability of MCP23017.
-* (Apollon77) Latest ioBroker utils and testing including node 10.
+
+-   (UncleSamSwiss) Improved stability of MCP23017.
+-   (Apollon77) Latest ioBroker utils and testing including node 10.
 
 ### 0.0.3 (2017-11-12)
-* (UncleSamSwiss) Added support for MCP23017.
+
+-   (UncleSamSwiss) Added support for MCP23017.
 
 ### 0.0.2 (2017-07-30)
-* (UncleSamSwiss) Added support for inverting PCF8574 inputs and outputs.
+
+-   (UncleSamSwiss) Added support for inverting PCF8574 inputs and outputs.
 
 ### 0.0.1 (2017-07-27)
-* (UncleSamSwiss) Initial version
+
+-   (UncleSamSwiss) Initial version

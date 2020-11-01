@@ -37,13 +37,18 @@ The fritzbox services are used over the TR-064 protocol.
 
 The used TR-064 interface from the fritzbox is described here: https://avm.de/service/schnittstellen/.
 Following TR-064 services and actions are used:
-* Hosts:1 - X_AVM-DE_GetHostListPath (support from 2017-01-09)
+* Hosts:1 - X_AVM-DE_GetHostListPath (supported since 2017-01-09)
+* Hosts:1 - X_AVM-DE_GetMeshListPath
 * Hosts:1 - GetSpecificHostEntry
-* Hosts:1 - X_AVM-DE_GetSpecificHostEntryByIP (supported from 2016-05-18)
+* Hosts:1 - X_AVM-DE_GetSpecificHostEntryByIP (supported since 2016-05-18)
 * DeviceInfo:1 - GetSecurityPort
+* DeviceInfo:1 - GetInfo
 * WANPPPConnection:1 - GetInfo
 * WANIPConnection:1 - GetInfo
-* DeviceInfo:1 - GetInfo
+* WLANConfiguration3 - SetEnable
+* WLANConfiguration3 - GetInfo
+* X_AVM-DE_HostFilter - DisallowWANAccessByIP
+* X_AVM-DE_HostFilter - GetWANAccessByIP
 
 By default, the TR-064 interface is not activated. However, this can easily be changed via the 
 FritzBox web interface. To do this log in into your FritzBox and ensure that the expert view is activated. 
@@ -55,20 +60,37 @@ Hint: After changing the options, don't forget the restart of the Fritzbox !
 
 ## Configuration dialog
 
+### General
+The configuration values are validated and only correct values can be saved. Otherwise the save button is disabled.
+
 ### Fritzbox IP-address, user and password
 The configuration of ip-address, user and password is necessary to get the device data from the fritzbox. 
-The password is encrypted and wasn't saved in clear text.
+The password is encrypted and wasn't saved in clear text. The user name and password may have a maximum of 
+32 characters. See for information: https://service.avm.de/help/de/FRITZ-Box-Fon-WLAN-7490/014/hilfe_zeichen_fuer_kennwoerter#:~:text=Namen%20f%C3%BCr%20Benutzer,Kennwortfeld%20darf%20nicht%20leer%20sein.
 
 ### Interval
-The interval can be configured from 1 to 59 minutes. Normally a value of 1 to 5 minutes is an optimal interval 
-to read the fritzbox data.
+You have separate intervals for family members and Fritzbox devices.
+The interval for Fritzbox devices can be configured from 1 to 59 minutes. Normally a value between 1 and 5 minutes is an optimal interval to read the fritzbox data. Family members could be configured from 10s to 600s. Every new cycle starts if the previous cycle 
+is finished. 
 
 ### History adapter
-Over the history adapter some values are calculated. You can choose, if the history,  the sql or the influxdb adapter is used for this calculations. The history adapter must be installed preliminary. 
+Over the history adapter some values are calculated. You can choose, if the history, the sql or the influxdb adapter is used for this calculations. The history adapter must be installed preliminary and can then selected in the configuration dialog. 
+If the history configuration is disabled then the calculation of some values could not be realized. 
 
 ### Dateformat
 The date format mask options are described on this web page: https://www.npmjs.com/package/dateformat.
 The format mask is used for formatting the html and json table objects. 
+
+### Creation of FB devices
+If this option is checked, the objects for every device in the Fritzbox device list are created.
+If this option is disabled, then also the mesh informations are disabled.
+
+### Resynchronisation of FB device objects
+If this option is checked, then the FB device object are re-synchronized with the device list fom Fritzbox.
+
+### Creation of mesh information
+This option can be checked if the creation of FB devices is allowed. If this option is checked, 
+the mesh objects for every device in the Fritzbox device list are created.
 
 ### Family member settings
 For a configured family member you must enter the Name, the mac- or ip-address, a comment and if the member is enabled for calculating. For every member the adapter creates data objects and checks if the member is present or absent. 
@@ -80,14 +102,22 @@ If you check the checkbox in the headline of the table all devices are selected.
 ## Features
 
 ### AVM support check
-The function checks the availability of used fritzbox features. The availability is logged as info.
+The function checks the availability of used fritzbox features. The availability is logged as info. If you have problems
+look if the features are all set to true.
+
+### Switch on / off the guest wlan
+Under the folder guest you can set the state wlan to true or false and then the guest wlan switches on or off.
+
+### Switch on / off the internet access of Fritzbox devices
+Under the folder FB-devices you could set the disabled state to true or false and the the internet access of this device
+is blocked in the Fritzbox.
 
 ### Get guests, blacklist
-In this function is checked if any user is logged in as guest. Also is checked if any device is not in the white list listed.
+In this function it is checked if any user is logged in as guest. Also is checked if any device is not in the white list listed.
 This devices are added to the blacklist.
 
 ### Get Active
-For every family member the presence, the comming and going dates and several other infos are calculated and saved in the member object. 
+For every family member the presence, the comming and going dates and several other infos are calculated and saved in the member object if a history adapter is selected. 
 
 ### Host number, active devices
 The amount of devices and how many are active are get from the fritzbox.
@@ -131,6 +161,19 @@ Here you will find information when the family member arrives or leaving home.
 Here you will find information about the history of the current day. 
 
 ## Changelog 
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
+
+### 1.1.0 (2020-10-24)
+* (afuerhoff) second interval for family members implemented
+* (afuerhoff) mesh info added
+* (afuerhoff) configuration validation added
+* (afuerhoff) switch on, off guest wlan
+* (afuerhoff) switch on, off internet access of devices 
+* (afuerhoff) structural changes
+* (afuerhoff) code optimization
 
 ### 1.0.4 (2020-06-28)
 * (afuerhoff) bugfix json list and guest handling, new object guest.presence
@@ -148,63 +191,6 @@ Here you will find information about the history of the current day.
 * (afuerhoff) history configuration optimized
 * (afuerhoff) re-synchronisation of fb-devices implemented
 
-### 1.0.0 (2020-03-30)
-* (afuerhoff) Configuration dialog optimized
-* (afuerhoff) fbdevice speed added
-* (afuerhoff) present-, absentMembers inserted
-* (afuerhoff) Ip address handling optimized
-* (afuerhoff) iobroker functions changed to async
-* (afuerhoff) instance.0 dependency fixed
-* (afuerhoff) depricated request changed to axios
-
-### 0.3.0
-* (afuerhoff) Documentation optimized
-* (afuerhoff) LastVal error fixed
-* (afuerhoff) Json table failure fixed
-* (afuerhoff) Connection type added
-* (afuerhoff) Ipaddress default value changed
-* (afuerhoff) New feature fb-devices added
-* (afuerhoff) Error messages optimized
-* (afuerhoff) Dateformat default value changed
-* (afuerhoff) Debug info added
-* (afuerhoff) GetDeviceInfo failure fixed
-* (afuerhoff) Update testing
-
-### 0.2.2
-* (afuerhoff) outdated packages updated, documentation changed, 
-  history dependency removed, onstate/objectChange removed, scheduler library removed,
-  two fixes from publish review
-
-### 0.2.1
-* (afuerhoff) getGuests issue resolved, lastVal function and debug information optimized   
-
-### 0.2.0
-* (afuerhoff) debug and error information optimized, crypto dependency removed, service check and blacklist added   
-
-### 0.1.0
-* (afuerhoff) Influxdb added, debug information added
-
-### 0.0.7
-* (afuerhoff) Fix bug invalid date. Add debug information.
-
-### 0.0.6
-* (afuerhoff) bug in json and html table resolved
-
-### 0.0.5
-* (afuerhoff) configuration optimized
-
-### 0.0.4
-* (afuerhoff) calculation error resolved
-
-### 0.0.3
-* (afuerhoff) guest feature added
-
-### 0.0.2
-* (afuerhoff) optimized features
-
-### 0.0.1
-* (afuerhoff) initial release
- 
 ## License
 MIT License
 

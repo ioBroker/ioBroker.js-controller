@@ -3,27 +3,27 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.fb-checkpresence/README.md
 title: без названия
-hash: W3a3b6e6cA34+u0NlNaRWYzKCxwgJbsPlTwrQt6446M=
+hash: C8GTh5RNmhNJJQYm93XhRUqCeQqUWDGVoxL3qMPOCgc=
 ---
 ![Количество установок](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.fb-checkpresence.svg)
 ![Статус зависимости](https://img.shields.io/david/afuerhoff/iobroker.fb-checkpresence.svg)
 ![Известные уязвимости](https://snyk.io/test/github/afuerhoff/ioBroker.fb-checkpresence/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.fb-checkpresence.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/afuerhoff/ioBroker.fb-checkpresence/master.svg)
+![НПМ](https://nodei.co/npm/iobroker.fb-checkpresence.png?downloads=true)
+![Трэвис-Си](http://img.shields.io/travis/afuerhoff/ioBroker.fb-checkpresence/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/afuerhoff/ioBroker.fb-checkpresence?branch=master&svg=true)
 
-<h1><img src="admin/fb-checkpresence.png" width="64"/> ioBroker.fb-checkpresence </h1>
+<h1><img src="admin/fb-checkpresence.png" width="64"/>ioBroker.fb-checkpresence</h1>
 
 ## Адаптер fb-checkpresence для ioBroker
-Адаптер проверяет присутствие членов семьи через fritzbox.
+Адаптер проверяет присутствие членов семьи над фритцбоксом.
 Вы должны указать имя члена семьи и mac-адрес (или ip-адрес) используемого устройства.
 Комментарий не является обязательным, и вы можете включить или отключить члена семьи.
-Назначение данных основано на имени члена.
+Точка данных основана на имени члена.
 
-### Адаптер предварительных условий
-Для правильной работы необходимо установить адаптер истории. Вы можете выбрать один из следующих адаптеров:
+### Предварительные условия адаптера
+Для правильной работы вам необходимо установить адаптер истории. Вы можете выбрать один из следующих адаптеров:
 
 * История
 * SQL
@@ -31,99 +31,138 @@ hash: W3a3b6e6cA34+u0NlNaRWYzKCxwgJbsPlTwrQt6446M=
 
 ## Используемое устройство
 Для этого адаптера используется AVM Fritzbox. Здесь вы можете найти информацию о Fritzbox https://avm.de/produkte/fritzbox/.
-Службы fritzbox используются по протоколу TR-064.
+Сервисы fritzbox используются по протоколу TR-064.
 
-### Fritzbox условия
+### Условия Fritzbox
 Используемый интерфейс TR-064 от fritzbox описан здесь: https://avm.de/service/schnittstellen/.
-Используются следующие сервисы и действия TR-064:
+Используются следующие услуги и действия TR-064:
 
-* Хосты: 1 - X_AVM-DE_GetHostListPath (поддержка с 2017-01-09)
+* Хосты: 1 - X_AVM-DE_GetHostListPath (поддерживается с 2017-01-09)
+* Хосты: 1 - X_AVM-DE_GetMeshListPath
 * Хосты: 1 - GetSpecificHostEntry
-* Хосты: 1 - X_AVM-DE_GetSpecificHostEntryByIP (поддерживается с 2016-05-18)
+* Хосты: 1 - X_AVM-DE_GetSpecificHostEntryByIP (поддерживается с 18 мая 2016 г.)
 * DeviceInfo: 1 - GetSecurityPort
+* DeviceInfo: 1 - GetInfo
 * WANPPPConnection: 1 - GetInfo
 * WANIPConnection: 1 - GetInfo
-* DeviceInfo: 1 - GetInfo
+* WLANConfiguration3 - SetEnable
+* WLANConfiguration3 - GetInfo
+* X_AVM-DE_HostFilter - DisallowWANAccessByIP
+* X_AVM-DE_HostFilter - GetWANAccessByIP
 
-По умолчанию интерфейс TR-064 не активирован. Однако это легко изменить через веб-интерфейс FritzBox. Для этого войдите в свой FritzBox и убедитесь, что экспертный вид активирован.
-Затем вы найдете под «Домашняя сеть» Обзор домашней сети »Настройки сети» пункт «Разрешить доступ для приложений». Там вы должны активировать флажок, а затем перезапустить FritzBox один раз.
+По умолчанию интерфейс TR-064 не активирован. Однако это можно легко изменить через веб-интерфейс FritzBox. Для этого войдите в свой FritzBox и убедитесь, что активирован режим эксперта.
+Затем вы найдете ниже «Домашняя сеть» Обзор домашней сети »Настройки сети» пункт «Разрешить доступ для приложений». Здесь вы должны установить флажок, а затем перезапустить FritzBox один раз.
 
-Подсказка: после изменения параметров не забудьте перезагрузить Fritzbox! <img src="doc/access_settings_network.JPG"/>
+Подсказка: после изменения параметров не забудьте перезапустить Fritzbox!<img src="doc/access_settings_network.JPG"/>
 
 ## Диалог конфигурации
-### Fritzbox IP-адрес, пользователь и пароль
+### Генеральная
+Значения конфигурации проверены, и можно сохранить только правильные значения. В противном случае кнопка сохранения неактивна.
+
+### IP-адрес, пользователь и пароль Fritzbox
 Конфигурация ip-адреса, пользователя и пароля необходима для получения данных устройства из fritzbox.
-Пароль зашифрован и не был сохранен в виде открытого текста.
+Пароль зашифрован и не был сохранен в виде открытого текста. Имя пользователя и пароль могут состоять максимум из 32 символов. См. Информацию: https://service.avm.de/help/de/FRITZ-Box-Fon-WLAN-7490/014/hilfe_zeichen_fuer_kennwoerter#:~:text=Namen%20f%C3%BCr%20Benutzer,Kennwortfeld%20darf % 20nicht% 20leer% 20sein.
 
 ### Интервал
-Интервал можно настроить от 1 до 59 минут. Обычно значение от 1 до 5 минут является оптимальным интервалом для чтения данных fritzbox.
+У вас есть отдельные интервалы для членов семьи и устройств Fritzbox.
+Интервал для устройств Fritzbox можно настроить от 1 до 59 минут. Обычно значение от 1 до 5 минут является оптимальным интервалом для чтения данных fritzbox. Члены семьи могут быть настроены от 10 до 600. Каждый новый цикл начинается, если предыдущий цикл завершен.
 
 ### Адаптер истории
-Для адаптера истории вычисляются некоторые значения. Вы можете выбрать, если для этих расчетов используется история, адаптер sql или effxdb. Адаптер истории должен быть установлен предварительно.
+По адаптеру истории вычисляются некоторые значения. Вы можете выбрать, будет ли использоваться история, sql или адаптер infxdb для этих вычислений. Адаптер истории должен быть установлен предварительно, после чего его можно будет выбрать в диалоговом окне конфигурации.
+Если конфигурация истории отключена, то вычисление некоторых значений не может быть выполнено.
 
 ### Формат даты
 Параметры маски формата даты описаны на этой веб-странице: https://www.npmjs.com/package/dateformat.
-Маска форматирования используется для форматирования объектов таблиц html и json.
+Маска формата используется для форматирования объектов таблиц html и json.
 
-### Настройки члена семьи
-Для настроенного члена семьи вы должны ввести Имя, MAC- или IP-адрес, комментарий и, если член включен для расчета. Для каждого члена адаптер создает объекты данных и проверяет, присутствует ли член или отсутствует.
+### Создание FB устройств
+Если этот параметр отмечен, объекты создаются для каждого устройства в списке устройств Fritzbox.
+Если этот параметр отключен, информация о сетке также отключена.
+
+### Ресинхронизация объектов устройства FB
+Если этот параметр отмечен, то объект устройства FB повторно синхронизируется со списком устройств из Fritzbox.
+
+### Создание информации о сетке
+Этот параметр можно проверить, если создание устройств FB разрешено. Если этот флажок установлен, объекты сетки создаются для каждого устройства в списке устройств Fritzbox.
+
+### Настройки членов семьи
+Для настроенного члена семьи вы должны ввести Имя, MAC- или IP-адрес, комментарий и указать, включен ли член для расчета. Для каждого члена адаптер создает объекты данных и проверяет, присутствует ли член или нет.
 
 ### Настройки белого списка
-В белый список можно вставить любое известное устройство. Любые неизвестные устройства перечислены в черном списке объекта.
-Если вы установите флажок в заголовке таблицы, все устройства будут выбраны.
+В белый список вы можете вставить все известные устройства. Любые неизвестные устройства занесены в черный список.
+Если вы установите флажок в заголовке таблицы, будут выбраны все устройства.
 
 ## Характеристики
 ### Проверка поддержки AVM
-Функция проверяет доступность используемых функций fritzbox. Доступность регистрируется как информация.
+Функция проверяет наличие используемых функций fritzbox. Доступность регистрируется как информация. Если у вас есть проблемы, посмотрите, все ли функции установлены на true.
+
+### Включение / выключение гостевой wlan
+В гостевой папке вы можете установить для состояния wlan значение true или false, а затем гостевой wlan включится или выключится.
+
+### Включение / выключение доступа в Интернет устройств Fritzbox
+В папке FB-devices вы можете установить для отключенного состояния значение true или false, а доступ в Интернет для этого устройства будет заблокирован в Fritzbox.
 
 ### Получить гостей, черный список
-В этой функции проверяется, зарегистрирован ли какой-либо пользователь как гость. Также проверяется, нет ли какого-либо устройства в белом списке.
+В этой функции проверяется, вошел ли какой-либо пользователь в систему как гость. Также проверяется, нет ли какого-либо устройства в белом списке.
 Эти устройства добавлены в черный список.
 
-### Активируйся
-Для каждого члена семьи вычисляются и сохраняются в объекте-члене присутствие, даты прихода и отправления и несколько других сведений.
+### Стань активным
+Для каждого члена семьи вычисляется присутствие, даты приезда и отъезда, а также некоторые другие сведения, которые сохраняются в объекте члена, если выбран адаптер истории.
 
 ### Номер хоста, активные устройства
-Количество устройств и количество активных извлекаются из fritzbox.
+Количество устройств и количество активных берется из fritzbox.
 
 ## Объекты
-### Присутствие объектаВсе
-Если присутствуют все члены семьи, тогда объект верный.
+### Присутствие объекта Все
+Если присутствуют все члены семьи, то объект верен.
 
 ### Наличие объекта
-Если один из членов семьи не присутствует, то объект является истинным.
+Если присутствует один член семьи, значит, объект верен.
 
 ### Объектные устройства
-Это все перечисленные устройства в fritzbox
+Все эти устройства перечислены в fritzbox.
 
 ### Объект activeDevices
-Это количество всех активных устройств в fritzbox.
+Это количество всех активных устройств в fritzbox
 
 ### Объект html, json
-Эти объекты являются таблицами (json и html) с информацией о приходе и переходе всех членов семьи.
+Эти объекты представляют собой таблицы (json и html) с входящей и исходящей информацией всех членов семьи в них.
 
 ### Информация об объекте
-Ниже приведена информация о последнем обновлении и состоянии подключения адаптера.
+Здесь перечислены сведения о последнем обновлении и состоянии подключения адаптера.
 
 ### Объект гость
-Ниже приведена информация о количестве активных гостей и табличных объектов с информацией об устройстве.
+Здесь перечислены сведения о количестве активных гостей и объекты таблицы с информацией об устройстве в ней.
 
 ### Черный список объектов
-Ниже приведена информация о количестве неизвестных устройств и табличных объектов с информацией о неизвестном устройстве.
+Здесь перечислены сведения о количестве неизвестных устройств и объекты таблицы с информацией о неизвестных устройствах.
 
 ### Объект member.present
-Здесь вы найдете информацию о присутствии участника в текущий день и о том, как долго участник имеет статус «истина» с момента последнего изменения.
+Здесь вы найдете информацию о присутствии участника в текущий день и о том, как долго этот участник имел статус истинный с момента последнего изменения.
 
 ### Объект member.absent
-Здесь вы найдете информацию об отсутствии участника в текущий день и о том, как долго участник имеет статус ложного с момента последнего изменения.
+Здесь вы найдете информацию об отсутствии участника в текущий день и о том, как долго этот участник находился в статусе false с момента последнего изменения.
 
 ### Объект member.comming, member.going
-Здесь вы найдете информацию, когда член семьи прибывает или покидает дом.
+Здесь вы найдете информацию, когда член семьи прибывает или выходит из дома.
 
 ### Объект member.history, member.historyHtml
 Здесь вы найдете информацию об истории текущего дня.
 
 ## Changelog
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ## __WORK IN PROGRESS__
+-->
+
+### 1.1.0 (2020-10-24)
+* (afuerhoff) second interval for family members implemented
+* (afuerhoff) mesh info added
+* (afuerhoff) configuration validation added
+* (afuerhoff) switch on, off guest wlan
+* (afuerhoff) switch on, off internet access of devices 
+* (afuerhoff) structural changes
+* (afuerhoff) code optimization
 
 ### 1.0.4 (2020-06-28)
 * (afuerhoff) bugfix json list and guest handling, new object guest.presence
@@ -140,63 +179,6 @@ hash: W3a3b6e6cA34+u0NlNaRWYzKCxwgJbsPlTwrQt6446M=
 * (afuerhoff) error handling optimized
 * (afuerhoff) history configuration optimized
 * (afuerhoff) re-synchronisation of fb-devices implemented
-
-### 1.0.0 (2020-03-30)
-* (afuerhoff) Configuration dialog optimized
-* (afuerhoff) fbdevice speed added
-* (afuerhoff) present-, absentMembers inserted
-* (afuerhoff) Ip address handling optimized
-* (afuerhoff) iobroker functions changed to async
-* (afuerhoff) instance.0 dependency fixed
-* (afuerhoff) depricated request changed to axios
-
-### 0.3.0
-* (afuerhoff) Documentation optimized
-* (afuerhoff) LastVal error fixed
-* (afuerhoff) Json table failure fixed
-* (afuerhoff) Connection type added
-* (afuerhoff) Ipaddress default value changed
-* (afuerhoff) New feature fb-devices added
-* (afuerhoff) Error messages optimized
-* (afuerhoff) Dateformat default value changed
-* (afuerhoff) Debug info added
-* (afuerhoff) GetDeviceInfo failure fixed
-* (afuerhoff) Update testing
-
-### 0.2.2
-* (afuerhoff) outdated packages updated, documentation changed, 
-  history dependency removed, onstate/objectChange removed, scheduler library removed,
-  two fixes from publish review
-
-### 0.2.1
-* (afuerhoff) getGuests issue resolved, lastVal function and debug information optimized   
-
-### 0.2.0
-* (afuerhoff) debug and error information optimized, crypto dependency removed, service check and blacklist added   
-
-### 0.1.0
-* (afuerhoff) Influxdb added, debug information added
-
-### 0.0.7
-* (afuerhoff) Fix bug invalid date. Add debug information.
-
-### 0.0.6
-* (afuerhoff) bug in json and html table resolved
-
-### 0.0.5
-* (afuerhoff) configuration optimized
-
-### 0.0.4
-* (afuerhoff) calculation error resolved
-
-### 0.0.3
-* (afuerhoff) guest feature added
-
-### 0.0.2
-* (afuerhoff) optimized features
-
-### 0.0.1
-* (afuerhoff) initial release
 
 ## License
 MIT License

@@ -3,23 +3,23 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: ZhI0kyBgHKHF8oNuwZ8xWY+rOe+UPZw9Hnlp1wUxChc=
+hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
 ---
 ![Логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
 ![Количество установок](http://iobroker.live/badges/mielecloudservice-stable.svg)
-![Загрузки](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
-![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Статус зависимости](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)
 ![Трэвис-Си](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
 ![НПМ](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
+![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
+![Загрузки](https://img.shields.io/npm/dm/iobroker.mielecloudservice.svg)
 
 # IoBroker.MieleCloudService
 ## Описание
 Этот адаптер предназначен для получения информации обо всех ваших устройствах Miele @ Home из официального стороннего API Miele.
-Независимо от того, подключены ли они напрямую через WiFi или шлюз XGW3000. В нем реализован **API сторонних разработчиков Miele V1.0.3**
+Независимо от того, подключены ли они напрямую через Wi-Fi или шлюз XGW3000. В нем реализован **API сторонних разработчиков Miele V1.0.3**
 
 ## Предварительные требования
 * Miele @ Home User (приложение для смартфона)
@@ -47,7 +47,7 @@ hash: ZhI0kyBgHKHF8oNuwZ8xWY+rOe+UPZw9Hnlp1wUxChc=
 
 Существуют два типа точек данных. В виде удобочитаемого текста и числа.
 Эти числовые поля данных, принадлежащие текстовому полю, имеют то же имя, но с добавлением «_raw».
-Те поля, которые имеют общее значение, перечислены ниже.
+Ниже перечислены поля, которые имеют общее значение.
 Поля, которые не указаны в списке, различаются по своему значению от устройства к устройству и не исключаются Miele.
 Если вам нужно ссылаться в скриптах на эти поля, всегда используйте значения _raw.
 Значения текста могут измениться в будущем, а также зависят от языка.
@@ -104,7 +104,7 @@ hash: ZhI0kyBgHKHF8oNuwZ8xWY+rOe+UPZw9Hnlp1wUxChc=
  | 10 | IDLE |
  | 11 | RINSE_HOLD |
  | 12 | СЕРВИС |
- | 13 | ЗАМОРАЖИВАНИЕ |
+ | 13 | СУПЕРЗАМОРАЖИВАНИЕ |
  | 14 | ПЕРЕОХЛАЖДЕНИЕ |
  | 15 | ПЕРЕГРЕВ |
  | 144 | ПО УМОЛЧАНИЮ |
@@ -138,6 +138,7 @@ hash: ZhI0kyBgHKHF8oNuwZ8xWY+rOe+UPZw9Hnlp1wUxChc=
 | 27 | "Imprägnieren" / | Стиральная машина |
 | 48 | "Flusen ausspülen" | Стиральная машина с сушкой |
 | 50 | "Dunkle Wäsche" / | Стиральная машина с сушкой |
+| 122 | «Экспресс 20» / | Стиральная машина с сушкой |
 | 123 | «Дунклз / Джинсы» | Стиральная машина |
 
 ### ProgramPhase

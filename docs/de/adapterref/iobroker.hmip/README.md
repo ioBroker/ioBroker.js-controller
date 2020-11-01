@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP Cloud AccessPoint-Adapter
-hash: imIQYuotL4N4nhDankZmeV6Bqio97DpYIi1pbbS4MAE=
+hash: UnHTzvzWwdbWm+eHXhoedg6zjQvgT8aPkvmVK20Teq8=
 ---
 ![Logo](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
@@ -12,7 +12,6 @@ hash: imIQYuotL4N4nhDankZmeV6Bqio97DpYIi1pbbS4MAE=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.hmip.svg)
 ![Build-Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.hmip.svg)
 
 # IoBroker HomeMatic IP Cloud AccessPoint-Adapter
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
@@ -36,6 +35,8 @@ Möglicherweise brauche ich auch einen Statuswechsel.
 
 Vielen Dank
 
+Wenn Sie nach Informationen suchen und die Alarmeinstellungen aktiv sind, müssen Sie den aktiven Status der Gruppe INTERN und EXTERN überprüfen. Diese repräsentieren in Kombination die drei Alarmzustände. INTERNE und EXTERNE Wirkstoffe bedeuten Auswärts, nur EXTERN aktiv bedeutet nur Perimeter aktiv.
+
 ## Wichtige Informationen, was mit diesem Adapter gemacht werden kann
 !!! Mit diesem Adapater können Sie nur Ereignisse auslösen, die über die ursprüngliche Homematic IP-App ausgelöst werden können.
 Zum Beispiel haben direkte Verbindungen zwischen Geräten keine Ereignisse in der App und können auch nicht über diesen Adapter ausgelöst werden !!!
@@ -53,6 +54,44 @@ https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 1.4.0 (2020-10-29)
+* (Apollon77) Add ROTARY_WHEEL_CHANNEL and RAIN_DETECTION_CHANNEL, ACCESS_CONTROLLER_WIRED_CHANNEL
+* (Apollon77) Read home anew if no home object is provided for SECURITY_JOURNAL_CHANGED event
+
+### 1.3.1 (2020-09-18)
+* (Apollon77) Fix missing write permission for Notification Light "On" channel
+
+### 1.3.0 (2020-09-18)
+* (SliX185) Add MAINS_FAILURE_CHANNEL
+* (Apollon77) Add DEVICE_RECHARGEABLE_WITH_SABOTAGE, ACCESS_CONTROLLER_CHANNEL, FLOOR_TERMINAL_BLOCK_MECHANIC_CHANNEL, DEVICE_BASE_FLOOR_HEATING, MULTI_MODE_INPUT_DIMMER_CHANNEL, MULTI_MODE_INPUT_SWITCH_CHANNEL, ANALOG_OUTPUT_CHANNEL, ACCELERATION_SENSOR_CHANNEL, TILT_VIBRATION_SENSOR_CHANNEL, SHADING_CHANNEL
+* (Apollon77) try to add dim/rgb support for NotificationLight. You might need to delete/recreate the states if it is not working.
+* (Apollon77) add additional functions for setOperationLock, setClimateControlDisplay, setMinimumFloorHeatingValvePosition, setRgbDimLevel. You might need to delete/recreate the states if it is not working.
+* (Apollon77) adjusted some roles. You might need to delete/recreate the states if it is not working.
+
+### 1.2.2 (2020-08-17)
+* (Apollon77) Prevent Crash case (Sentry IOBROKER-HMIP-1B)
+
+### 1.2.1 (2020-08-10)
+* (Apollon77) Fix pairing process
+
+### 1.2.0 (2020-07-26)
+* (saschaabraham) Added an active property INTERNAL and EXTERNAL groups for alarm zones
+* (marcus0303/slix185) added DOOR_CHANNEL properties
+
+### 1.1.1 (2020-07-23)
+* (Apollon77) Crash prevented if object is deleted by state changed (Sentry IOBROKER-HMIP-Y)
+
+### 1.1.0 (2020-07-14)
+* (Apollon77) Remember already sent unknown channel infos to not spam Sentry
+* (Apollon77) Handle reconnects better (Sentry IOBROKER-HMIP-G)
+* (Apollon77) Try to prevent crashes on i valid server reponses, warning is logged
+* (SliX185) Add HMIP-SPDR (PASSAGE_DETECTOR_CHANNEL)
+
+### 1.0.1 (2020-05-16)
+* (Apollon77) Make sure invalid data do not crash adapter (Sentry IOBROKER-HMIP-7)
+* (Apollon77) code cleanup
+* (Apollon77) fix several roles (role info is not allowed)
 
 ### 1.0.0 (2020-05-12)
 * (Apollon77) Add Sentry for error/crash reporting

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adddevice.md
 title: 如何将设备添加到Alexa或Google Home
-hash: KJyj2QNgNPa29Jr/BcB/QJi6yPa8ucW5nGzTU+4Hr+A=
+hash: 7LOEqf58Vo+Ne7CyV77jozHsy8UjnC7Ghl8TQAR8aD0=
 ---
 ＃如何将设备添加到Alexa或Google Home
 要添加设备，我们有4个步骤：
@@ -37,7 +37,7 @@ Yandex最全面地了解了州，因此将其作为基础是合理的。
 
 ##类型检测器
 添加所有必需的角色后，必须扩展类型检测器。
-将新设备类型添加到全局列表：https://github.com/ioBroker/ioBroker.type-detector/blob/master/index.js#L29以某台设备为基础，并将其复制到以下设备的`patterns`中`ChannelDetector`类。
+将新设备类型添加到全局列表：https://github.com/ioBroker/ioBroker.type-detector/blob/master/index.js#L29以某个设备为基础，并将其复制到以下设备的`patterns`中`ChannelDetector`类。
 类型检测器必须以某种方式区分设备，因此您的设备必须具有唯一的角色集。
 我们将`level.temperature`和`level.mode.thermostat`作为空调的特定模式，并将这两个状态标记为`required`。
 大多数复杂的设备必须位于列表的顶部，因此将首先检测到它们，最后将出现越来越多的简单设备。
@@ -48,4 +48,4 @@ Yandex最全面地了解了州，因此将其作为基础是合理的。
 转到https://github.com/ioBroker/ioBroker.devices/blob/master/src/package.json并在那里更新您的版本。
 之后，扩展图标的列表：https://github.com/ioBroker/ioBroker.devices/blob/master/src/src/Components/TypeIcon.js
 
- 并也创建一个新版本。
+ 并创建一个新版本。

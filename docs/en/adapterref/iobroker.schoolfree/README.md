@@ -79,6 +79,12 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 0.7.0 (27.10.2020)
+* (simatec) Changeover from request to axios for data retrieval
+* (simatec) Conversion of the code structure
+* (simatec) code cleaned
+* (simatec) dependencies updated
+
 ### 0.6.4 (06.07.2020)
 * (simatec) small Bugfixes
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sayit/README.md
 title: ioBroker sayit Adapter
-hash: 4LM4po1HGU0onQ6qXn4J5z6ZtNCGJq1kDxJoKdWS+Ms=
+hash: 1t/hWEq7UmmlP2nziw/Oalk/8j5YH9r1tj1CC+ZZu6Q=
 ---
 ![Logo](../../../en/adapterref/iobroker.sayit/admin/sayit.png)
 
@@ -34,6 +34,8 @@ Tatsächlich werden folgende Ausgaben unterstützt:
 
 - *Sonos* - Text auf dem Sonos-Gerät abspielen. Stellen Sie sicher, dass der Webadapter aktiviert ist. Es ist erforderlich, dass SONOS die generierten MP3-Dateien lesen kann.
 
+- *Heos* - Text auf dem Heos-Gerät abspielen. Stellen Sie sicher, dass der Webadapter aktiviert ist. Es ist erforderlich, dass HEOS die generierten MP3-Dateien lesen kann.
+
 - *Chromecast* - Text auf einem Chromecast-Gerät abspielen.
 
 - *MPD* - Text auf dem Music Player Daemon abspielen. Verwenden Sie nur **http** für den Webadapter, verwenden Sie kein https.
@@ -50,7 +52,7 @@ online:
 - Google: Englisch, Deutsch, Russisch, Italienisch, Spanisch, Französisch
 - Yandex: Russisch
 
-Um Yandex-Stimmen zu verwenden, müssen Sie den API-Schlüssel hier anfordern: [https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/](https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/). [Dieser Dienst wird am 1. Januar 2019 deaktiviert und durch Yandex.cloud ersetzt.] Um Yandex.cloud zu verwenden, sollten Sie sich hier registrieren: [https://cloud.yandex.ru/] Installieren Sie die SpeechKIT-API in der Cloud und rufen Sie das Auth-Token ab und Ordner-ID wie in den API-Anweisungen beschrieben.
+Um Yandex-Stimmen zu verwenden, müssen Sie den API-Schlüssel hier anfordern: [https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/](https://tech.yandex.ru/speechkit/cloud/doc/dg/concepts/About-docpage/). [Dieser Dienst wird am 1. Januar 2019 deaktiviert und durch Yandex.cloud ersetzt.] Um Yandex.cloud zu verwenden, sollten Sie sich hier registrieren: [https://cloud.yandex.ru/] Installieren Sie die SpeechKIT-API in der Cloud und holen Sie sich das Auth-Token und Ordner-ID wie in den API-Anweisungen beschrieben.
 
 - Ivona: Englisch, Deutsch, Russisch, Italienisch, Spanisch, Französisch, Dansk, Walisisch, Isländisch, Niederländisch, Polnisch, Portugiesisch, Rumänisch, Schwedisch, Türkisch
 
@@ -98,7 +100,7 @@ Wenn der Dateiname irgendwo in der Mitte bleiben muss, können Sie mit *%s* ange
 
 sayIt wird daraus ```myCustomPlayer --option "/opt/iobroker/node_modules/iobroker.sayit/say.mp3" > /dev/null``` machen.
 
-## Verwendungszweck
+## Verwendung
 Der SayIt-Adapter kann nicht alleine verwendet werden. Es muss vom Javascript-Adapter oder von "vis" mit einem bestimmten Widget gesteuert werden.
 Nach der Erstellung der Adapterinstanz werden folgende Objekte gefunden:
 
@@ -114,7 +116,7 @@ Z.B. Wenn der Adapter über die Engine "Google-Englisch" verfügt, kann mit der 
 
 Mit ```ru;75;Погода хорошая``` können wir die Verwendung der russischen Sprache und des Volumens zu 75% erzwingen.
 
-Sie können das Ansagevolumen in Prozent vom aktuellen oder angegebenen Volumen (nicht vom Maximum) angeben. Z.B. Wenn der Befehl ```de;75;Gutes Wetter``` ist und "Ankündigungslautstärke" 50% beträgt, wird die Ansage mit einer Lautstärke von 38% von 100% möglich abgespielt.
+Sie können das Ansagevolumen in Prozent vom aktuellen oder vorgegebenen Volumen (nicht vom Maximum) angeben. Z.B. Wenn der Befehl ```de;75;Gutes Wetter``` ist und "Ankündigungslautstärke" 50% beträgt, wird die Ansage mit einer Lautstärke von 38% von 100% möglich abgespielt.
 
 Der Systembefehl zum Abspielen der MP3-Datei kann ebenfalls angegeben werden. Wenn Sie das Feld leer lassen, werden die Standardeinstellungen verwendet: Windows - cmdmp3.exe, OSX - / usr / bin / afplay, Linux - mpg321 oder Omxplayer (empfohlen).
 
@@ -186,7 +188,7 @@ Folgende Werte für Motoren sind möglich:
 - **nl-NL_CLOUD_Female** - nl-NL - weiblich - Lotte
 - **nl-NL_CLOUD_Male** - nl-NL - Männlich - Ruben
 - **pl-PL_CLOUD_Female_Agnieszka** - pl-PL - weiblich - Agnieszka
-- **pl-PL_CLOUD_Male_Jacek** - pl-PL - Männlich - Jacek
+- **pl-PL_CLOUD_Male_Jacek** - pl-PL - männlich - Jacek
 - **pl-PL_CLOUD_Female_Ewa** - pl-PL - weiblich - Ewa
 - **pl-PL_CLOUD_Male_Jan** - pl-PL - Männlich - Jan.
 - **pl-PL_CLOUD_Female** - pl-PL - weiblich - Maja
@@ -261,6 +263,34 @@ Folgende Werte für Motoren sind möglich:
 - **(tr-TR_AP_Female)** - tr-TR - weiblich - Filiz
 
 ## Changelog
+### 1.12.0 (2020-10-19)
+* (withstu) Support for HEOS was added
+
+### 1.11.5 (2020-09-24)
+* (Apollon77) prevent scheduled restart problems
+
+### 1.11.3 (2020-09-17)
+* (Apollon77) make sure initialize errors do not crash adapter (Sentry IOBROKER-SAYIT-N)
+
+### 1.11.2 (2020-08-08)
+* (Apollon77) catch errors in MDNS discovery (Sentry IOBROKER-SAYIT-E)
+
+### 1.11.1 (2020-08-06)
+* (Apollon77) handle errors from process spawn better (Sentry IOBROKER-SAYIT-D)
+
+### 1.11.0 (2020-08-02)
+* (Apollon77) Move the generated mp3 file to an own directory in iobroker-data instead of inside node_modules (Hopefully not breaking)
+* (Apollon77) Change File write to use Sync methods to make sure they can not run in parallel
+
+### 1.10.2 (2020-07-19)
+* (Apollon77) Crash case prevented (Sentry IOBROKER-SAYIT-8)
+
+### 1.10.1 (2020-07-16)
+* (Apollon77) Handle edge cases and prevent crashes (Sentry IOBROKER-SAYIT-4, IOBROKER-SAYIT-6)
+* (Apollon77) try to get caching working again for Yandex
+
+### 1.10.0 (2020-07-07)
+* (algar42) GUI updated to fill drop-downs correctly. Premium voices added to Yandex.Cloud engine
 
 ### 1.9.8 (2020-06-11)
 * (Apollon77) fix error handling on file copy

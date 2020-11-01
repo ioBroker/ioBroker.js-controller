@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: HTGk4nS62rUA6r2P64RF+fNZf28kh3UB08Sw/nwlbp4=
+hash: 1h0xd/ee+enAhM1sc14+Mcu9AWiM6U6cDO8oSCsN1og=
 ---
 ![商标](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -16,18 +16,15 @@ hash: HTGk4nS62rUA6r2P64RF+fNZf28kh3UB08Sw/nwlbp4=
 ![特拉维斯](http://img.shields.io/travis/misanorot/ioBroker.alarm/master.svg)
 
 ＃ioBroker.alarm
-[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[英文说明](https://github.com/misanorot/ioBroker.alarm/blob/master/lib/Readme_en.md)**
 
 ## IoBroker警报
 Dies ist ein Adapter（适配器适配器），mit dem sich eine kleine Alarmanlage ohnegroßeprogrammiertechnische Vorkenntnisse realisierenlässt。
-二等译本Nachtruhe oder De- und Aktivierung zuüberwachen。德斯坦·维特伦主义者·伊恩·迪内克特·德斯坦·威斯坦·因斯坦斯（州），安德·安德里（auf andere）“州”。 DieseVerknüpfungenwerden im ReiterVeregnüpfungenangelegt。
+二等译本Nachtruhe oder De- und Aktivierung zuüberwachen。德斯坦·维特伦主义者·伊恩·迪内克特·德斯坦·威斯坦·因斯坦斯（州），安夫·安德里（auf andere）“州”。 DieseVerknüpfungenwerden im ReiterVeregnüpfungenangelegt。
 
 -------------------------------------------------- -------------------------------------------------- ------------------ *站位05.07.2020 ab版本0.8.0 *
-
-#### Wichtig抗体0.8.0
--如果安装<0.8.0，请更新适配器，然后再安装！ Es haben sich ein paar Datenpunktegeändert。
 
 ### Tab Haupteinstellungen
 较高的等级，包括Zeiten der Nachtruhe，Sirenezeit，Stiller-Alarm和Passwort vorgenommen。
@@ -36,8 +33,8 @@ Dies ist ein Adapter（适配器适配器），mit dem sich eine kleine Alarmanl
 
 -Aktivierzeit->Zeitverzögerungbis zu Aktivierung wenn man einen delay Datenpunkt benutzt
 -Sienenzeit bei Einbruch-> Bei Einbruch wird der Datenpunkt alarm.0.status.sirenfürdie Zeit auf true gesetzt
--Alarmverzögerung->Verzögerungszeitbis Einbruchausgelöstwird（währenddieser Zeit wird der Stille Alarmausgelöst）
--Warnungen / Sirene innen的Auslösezeitit-> Benachrichtigungskreises ods scharf innen的北AuslösungeKreises，jewerilszugehörigeDatenpunktfürdie Zeit auf true gesetzt
+-Alarmverzögerung->Verzögerungszeitbis Einbruchausgelöstwird（瓦莱德·迪瑟Zeit wird der Stille Alarmausgelöst）
+-Warnungen / Sirene innen的Auslösezeitit-> Benachrichtigungskreises ods scharf innen的北Auslösungzekreises，wier der jeweilszugehörigeDatenpunktfürdie Zeit auf true gesetzt
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -51,7 +48,7 @@ BenachrichtigungenüberAndere适配器wie z.B.电报，电子邮件或其他。
 werden die Kreise der Anlage konfiguriert。
 *戴姆·德恩州立大学拉森学院
 
-阿尔赫拉克（Achage）的优先权和“帽子”优先（scharf）Vorrang vor allen anderen Keisen。阿尔赫拉特（Al dient zur eigentlichenÜberwachungder Anlage）死了。结束了实习生的工作，开始了实习生和实习生的工作。
+阿尔赫拉克（Achage）的优先权和“帽子”的优先权（Vorrang vor Allen Anderen Keisen。Er dient zur eigentlichenÜberwachungder Anlage）实习生的故事，实习生和纳赫特鲁的实习生。
 * Es ist durchausmöglich，艾斯州立大学，登哈肯·贝艾伦·德雷·克赖森马克特。
 
 Die Kreise werdenfolgendermaßenüberwacht：
@@ -60,24 +57,24 @@ Die Kreise werdenfolgendermaßenüberwacht：
 阿兰基拉格州议会议员（沙尔夫·沙尔滕）您可以在警报器中查看警报。
 
 #### Scharf实习生Kreis：
-Alle hier konfigurierten州werden beim Zustand scharf实习生überwachtundLösen实习生anerem den internen报警澳大利亚。
+Alle hier konfigurierten州werden beim Zustand scharf实习生überwachtundLösen实习生anerem den internen
 
 #### Meldekreis：
-维也纳州立大学和维尔京群岛死了。
+维也纳州立大学和维尔京群岛都死了。
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Sprachausgabe
 Iine eewgewünschteSprachausgabe z.B. bei beiÄnderungdes Zustandesgewünscht，lässtsich das hier mit dengewünschtenSätzenkonfigurieren。
-*曼·穆斯·希奇·谢尔·塞恩（Mus sich sicher sein），达斯·奥斯特瓦特·达滕彭克（das derausgewählteDatenpunkt），麻省理工学院的einem Text beschrieben werden kann！ Z.B. “ sayit.0.tts” *
+*曼斯·西斯·谢尔·塞恩（Mus sich sicher sein），达斯·德·奥斯特瓦特·达滕彭克（das derausgewählteDatenpunkt），麻省理工学院的einem Text beschrieben werden kann！ Z.B. “ sayit.0.tts” *
 
-曼彻斯特人（Ausgabe von Namen mit Ansagen lassen），坎恩曼彻斯（Kann man diese）选择anwählen。
+曼彻斯特人（Ausgabe von Namen mit Ansagen lassen），坎恩曼彻斯（anangense）选择anwählen。
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### TabVerknüpfungen
-等级较高的适配器州际直属州外部州zuverknüpfen。 Somit ist ein Umwegüberein Skript oderähnlichennicht erforderlich。
-Eslässtsich somit z.B.在Nachtruhe的Beginn der初创公司中，Veriegelung desTürschlosses成为了现实。
+等级较高的适配器州际直辖市外部州zuverknüpfen。 Somit ist ein Umwegüberein Skript oderähnlichennicht erforderlich。
+Eslässtsich somit z.B.房地产初创公司
 ![商标](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
 
 ####Eingabeverknüpfungen
@@ -96,7 +93,7 @@ Der Adapter liefert eine ganze Anzahl国家/地区：
 -use.activate_sharp_inside_circuit->战役实习生（实习生）
 -use.disable-> Deaktivierung der Anlage（Alarmkreis）
 -use.enable-> Aktivierung der Anlage（Alarmkreis）
--use.enable_with_delay->安提格（Alarmkreis）博物馆
+-use.enable_with_delay-> Antiv（Alarmkreis）mitVerzögerungszeit
 -use.list-> Deaktivierung / Aktivierung / Warnkreis / Aktivierung mitVerzögerungszeit
 -use.quit_changes->状态设置* info.notification_circuit_changes，info.sharp_inside_siren，status.activation_failed *
 -use.toggle_password-> Deaktivierung / Aktivierung der Anlage（Alarmkreis）mit Passwort
@@ -105,22 +102,23 @@ Der Adapter liefert eine ganze Anzahl国家/地区：
 -use.panic->HändischeAuslösungder Alarmanlage（Einbruch）
 
 ####“ alarm.x.status ....”
-尊贵的祖斯塔德·安拉格能力较高的人。
+尊贵的祖斯塔德·安拉格能力阶层。
 
--status.sleep->自动发送信号Nachtruhe
+-status.sleep->自动信号处理机Nachtruhe
 
 ####“ alarm.x.info ....”
 LiefertzusätzlicheInformationen wie z.B. welche“Türenoffen sind” oder einen日志状态。
-Mitternacht Geleert的log_today状态。
+由Mitternacht Geleert提供的log_today状态。
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ##问题
--温恩·曼恩（Wen Man eine）的电报oderähnlichesüberdas +hinzufügt，坎恩·曼努尔·爱因州立大学斯坦斯·奥斯威伦州和曼斯·穆斯·比斯·奥夫* telegram.0 * Alleslöschen。
+-温恩·曼恩（Wen man eine）的电报oderähnlichesüberdas +hinzufügt，坎恩·曼努尔·爱因州立大学（Instanzauswählen）和曼斯·穆斯·比斯·奥斯夫* telegram.0 *
 
-#### Wichtig，死于Benutzung，死于适配器。
+#### Wichtig，死于Benutzung，死于适配器。gechihr，死于衰败，而keine Haftungübernommen！
 
 ## Changelog
+
 
 #### 1.2.0 (09.07.2020)
 * (misanorot) added countdown speech output
