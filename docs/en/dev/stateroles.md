@@ -34,9 +34,14 @@
 * `button`
 * `button.long`
 * `button.stop`           - e.g. rollo stop,
+* `button.stop.tilt`
 * `button.start`
 * `button.open.door`
 * `button.open.window`
+* `button.open.blind`
+* `button.open.tilt`
+* `button.close.blind`
+* `button.close.tilt`
 * `button.mode.`*
 * `button.mode.auto`
 * `button.mode.manual`
@@ -75,7 +80,11 @@
 * `value.direction`       - (common.type=number ~~or string~~, indicates up/down, left/right, 4-way switches, wind-direction, ... )
 * `value.curtain`         - actual position of curtain
 * `value.blind`           - actual position of blind
+* `value.open.blind`      - actual position of blind position in % open with 100% = fully open and 0% = fully closed
+* `value.close.blind`     - actual position of blind position in % close with 100% = fully closed and 0% = fully opened
 * `value.tilt`            - actual tilt position
+* `value.open.tilt`       - actual tilt position in % open with 100% = fully open and 0% = fully closed.
+* `value.close.tilt`      - actual tilt position in % close with 100% = fully closed and 0% = fully open.
 * `value.lock`            - actual position of lock
 * `value.speed`           - wind speed
 * `value.pressure`        - (unit: mbar)
@@ -122,6 +131,8 @@ With **levels** you can control or set some number value.
 * `level.co2`             - 0-100% ait quality
 * `level.dimmer`          - brightness is dimmer too
 * `level.blind`           - set blind position
+* `level.open.blind`      - set blind position in % open with 100% = fully open and 0% = fully closed
+* `level.close.blind`     - set blind position in % close with 100% = fully closed and 0% = fully opened
 * `level.temperature`     - set desired temperature
 * `level.valve`           - set point for valve position
 * `level.color.red`
@@ -140,6 +151,8 @@ With **levels** you can control or set some number value.
 * `level.volume.group`   - (min=0, max=100) - sound volume, for the group of devices
 * `level.curtain`        - set the curtain position
 * `level.tilt`           - set the tilt position of blinds
+* `level.open.tilt`      - set the tilt position in % open with 100% = fully open and 0% = fully closed.
+* `level.close.tilt`     - set the tilt position in % close with 100% = fully closed and 0% = fully open.
 
 ## Switches (booleans, read-write)
 
