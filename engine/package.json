@@ -10,7 +10,7 @@
     "x509": "^0.3.4"
   },
   "devDependencies": {
-    "@google-cloud/translate": "^6.0.0",
+    "@google-cloud/translate": "^6.0.3",
     "gulp": "^4.0.2",
     "request": "^2.88.2"
   },

@@ -33,7 +33,7 @@ function loadDocuments(lang, dir, root, docs) {
                 const id = name.replace(/\\/g, '/').replace(root + '/', '');
                 const title = header.title || utils.getTitle(result.body);
                 if (title.indexOf('object') !== -1) {
-                    console.log(JSON.stringify(title));
+                    console.log(`Strange title of ${name}: ${JSON.stringify(title)}`);
                 }
                 titles[lang] = titles[lang] || {};
                 titles[lang][id] = {title};
