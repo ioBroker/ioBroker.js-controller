@@ -1,9 +1,9 @@
 name: Publish
 
 on:
-  push
   schedule:
     - cron:  '0 2 */3 * *'
+  # push
 
 jobs:
   translate:
