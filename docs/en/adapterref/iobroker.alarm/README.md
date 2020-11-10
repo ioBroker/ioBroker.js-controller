@@ -29,7 +29,7 @@ eine direkte Verknüpfung der jeweiligen Instanz "states", auf andere "states" m
 
 Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm und Passwort vorgenommen.
 
-*Alle Zeiten sind in Sekunden einzugeben*
+*Bis 1.2.4, sind  alle Zeiten sind in Sekunden einzugeben*
 
 - Aktivierzeit -> Zeitverzögerung bis zu Aktivierung wenn man einen delay Datenpunkt benutzt
 - Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf true gesetzt
@@ -133,6 +133,17 @@ Der log_today state wird um Mitternacht geleert.
 
 ## Changelog
 
+#### 1.6.0 (08.11.2020)
+* (misanorot) changed time inputs to numbers
+
+#### 1.5.0 (08.11.2020)
+* (misanorot) added stop inside alarm with disable
+
+#### 1.4.0 (05.11.2020)
+* (misanorot) added silent alarm selection for every state
+
+#### 1.3.0 (01.11.2020)
+* (misanorot) added diffrent time options
 
 #### 1.2.0 (09.07.2020)
 * (misanorot) added countdown speech output

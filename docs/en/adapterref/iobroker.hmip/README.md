@@ -51,6 +51,12 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
 
+### 1.5.0 (2020-11-09)
+* (Apollon77) Add control options for primary/secondaryShadingLevel datapoints
+
+### 1.4.1 (2020-11-03)
+* (Apollon77) fix potential crash case (Sentry IOBROKER-HMIP-1N)
+
 ### 1.4.0 (2020-10-29)
 * (Apollon77) Add ROTARY_WHEEL_CHANNEL and RAIN_DETECTION_CHANNEL, ACCESS_CONTROLLER_WIRED_CHANNEL
 * (Apollon77) Read home anew if no home object is provided for SECURITY_JOURNAL_CHANGED event

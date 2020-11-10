@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: 1h0xd/ee+enAhM1sc14+Mcu9AWiM6U6cDO8oSCsN1og=
+hash: 4mGLoOsNPkarT+c2AZRtw61ymIsoXLmGGM+Rva+RVN8=
 ---
 ![商标](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -22,14 +22,14 @@ hash: 1h0xd/ee+enAhM1sc14+Mcu9AWiM6U6cDO8oSCsN1og=
 
 ## IoBroker警报
 Dies ist ein Adapter（适配器适配器），mit dem sich eine kleine Alarmanlage ohnegroßeprogrammiertechnische Vorkenntnisse realisierenlässt。
-二等译本Nachtruhe oder De- und Aktivierung zuüberwachen。德斯坦·维特伦主义者·伊恩·迪内克特·德斯坦·威斯坦·因斯坦斯（州），安夫·安德里（auf andere）“州”。 DieseVerknüpfungenwerden im ReiterVeregnüpfungenangelegt。
+比喻《死于悲剧3》和《死因》 Nachtruhe oder De- und Aktivierung zuüberwachen。德斯坦·维特伦主义者·伊恩·迪内克特·德斯坦·威斯坦·因斯坦斯（州），安夫·安德里（auf andere）“州”。 DieseVerknüpfungenwerden im ReiterVeregnüpfungenangelegt。
 
 -------------------------------------------------- -------------------------------------------------- ------------------ *站位05.07.2020 ab版本0.8.0 *
 
 ### Tab Haupteinstellungen
 较高的等级，包括Zeiten der Nachtruhe，Sirenezeit，Stiller-Alarm和Passwort vorgenommen。
 
-* Alle Zeiten在Sekunden einzugeben中犯罪*
+*根据1.2.4，Side Alle Zeiten在Sekunden einzugeben中犯罪*
 
 -Aktivierzeit->Zeitverzögerungbis zu Aktivierung wenn man einen delay Datenpunkt benutzt
 -Sienenzeit bei Einbruch-> Bei Einbruch wird der Datenpunkt alarm.0.status.sirenfürdie Zeit auf true gesetzt
@@ -48,16 +48,16 @@ BenachrichtigungenüberAndere适配器wie z.B.电报，电子邮件或其他。
 werden die Kreise der Anlage konfiguriert。
 *戴姆·德恩州立大学拉森学院
 
-阿尔赫拉克（Achage）的优先权和“帽子”的优先权（Vorrang vor Allen Anderen Keisen。Er dient zur eigentlichenÜberwachungder Anlage）实习生的故事，实习生和纳赫特鲁的实习生。
+阿尔赫拉克（Achage）的优先权和“帽子”的优先权（Vorrang vor Allen Anderen Keisen。Er dient zur eigentlichenÜberwachungder Anlage）脱胎换骨。脱胎换骨，脱胎换骨，脱胎换骨，脱胎换骨。
 * Es ist durchausmöglich，艾斯州立大学，登哈肯·贝艾伦·德雷·克赖森马克特。
 
 Die Kreise werdenfolgendermaßenüberwacht：
 
 #### Alarmkreis：
-阿兰基拉格州议会议员（沙尔夫·沙尔滕）您可以在警报器中查看警报。
+阿兰基拉格国家广播公司（沙夫沙尔滕）您可以在警报器中查看警报。
 
 #### Scharf实习生Kreis：
-Alle hier konfigurierten州werden beim Zustand scharf实习生überwachtundLösen实习生anerem den internen
+Alle hier konfigurierten州werden beim Zustand scharf实习生überwachtundLösen实习生anerem den internen报警澳大利亚。
 
 #### Meldekreis：
 维也纳州立大学和维尔京群岛都死了。
@@ -68,13 +68,13 @@ Alle hier konfigurierten州werden beim Zustand scharf实习生überwachtundLöse
 Iine eewgewünschteSprachausgabe z.B. bei beiÄnderungdes Zustandesgewünscht，lässtsich das hier mit dengewünschtenSätzenkonfigurieren。
 *曼斯·西斯·谢尔·塞恩（Mus sich sicher sein），达斯·德·奥斯特瓦特·达滕彭克（das derausgewählteDatenpunkt），麻省理工学院的einem Text beschrieben werden kann！ Z.B. “ sayit.0.tts” *
 
-曼彻斯特人（Ausgabe von Namen mit Ansagen lassen），坎恩曼彻斯（anangense）选择anwählen。
+曼彻斯特人（Ausgabe von Namen mit Ansagen拉森）
 
 ----------------------------------------------------------------------------------------------------------------------
 
 ### TabVerknüpfungen
 等级较高的适配器州际直辖市外部州zuverknüpfen。 Somit ist ein Umwegüberein Skript oderähnlichennicht erforderlich。
-Eslässtsich somit z.B.房地产初创公司
+Eslässtsich somit z.B.在Nachtruhe的Beginn der Nachtruhe的帮助下，Eine Veriegelung desTürschlossesrealisieren。
 ![商标](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
 
 ####Eingabeverknüpfungen
@@ -113,12 +113,23 @@ LiefertzusätzlicheInformationen wie z.B. welche“Türenoffen sind” oder eine
 ----------------------------------------------------------------------------------------------------------------------
 
 ##问题
--温恩·曼恩（Wen man eine）的电报oderähnlichesüberdas +hinzufügt，坎恩·曼努尔·爱因州立大学（Instanzauswählen）和曼斯·穆斯·比斯·奥斯夫* telegram.0 *
+-温恩·曼恩（Wen man eine）的电报，德国坎斯坦·曼努尔州州立大学（Instanzauswählen）和曼斯·穆斯·比斯·奥夫（tesgram）* telegram.0 * alleslöschen。
 
-#### Wichtig，死于Benutzung，死于适配器。gechihr，死于衰败，而keine Haftungübernommen！
+#### Wichtig，死于Benutzung，死于适配器。
 
 ## Changelog
 
+#### 1.6.0 (08.11.2020)
+* (misanorot) changed time inputs to numbers
+
+#### 1.5.0 (08.11.2020)
+* (misanorot) added stop inside alarm with disable
+
+#### 1.4.0 (05.11.2020)
+* (misanorot) added silent alarm selection for every state
+
+#### 1.3.0 (01.11.2020)
+* (misanorot) added diffrent time options
 
 #### 1.2.0 (09.07.2020)
 * (misanorot) added countdown speech output

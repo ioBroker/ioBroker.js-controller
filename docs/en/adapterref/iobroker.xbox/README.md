@@ -14,7 +14,7 @@
 
 ## Requirements
 
-* You need to have Python >= 3.6 installed
+* You need to have Python >= 3.7 installed
 * For Linux additional packages are required.
    
    The required packages will automatically be installed. Due to this fact root privileges are required as well as the 
@@ -171,10 +171,18 @@ In this section you can find a description of every state of the adapter.
 
 * settings.gameDvr
 
-    *Button which records the previous minute of gameplay. The button is available when
-    authenticate is turned on in the settings. You have to be logged in on your Xbox with the same account
-    as you are authenticated with. A game needs to be in foreground.*
+    |Data type|Permission|
+    |:---:|:---:|
+    |string|W|
 
+    *Writable string which records the defined time of gameplay. The state is available when
+    authenticate is turned on in the settings. You have to be logged in on your Xbox with the same account
+    as you are authenticated with. A game needs to be in the foreground.
+    
+    *Example:*
+   ```javascript
+   setState('settings.gameDvr', '-60,30', false); // record last 60 seconds until the next 30 seconds (total of 90 seconds)
+   ```
 ### Channel Gamepad
 
 * gamepad.a
@@ -314,6 +322,16 @@ In this section you can find a description of every state of the adapter.
    *View button for media content.*
    
 ## Changelog
+### 0.7.0 (2020-11-04)
+* (foxriver76) replaced deprecated requests module by axios
+* (foxriver76) migrated to xbox-smartglass 1.3
+* (foxriver76) removed Python3.6 support 
+* (foxriver76) event based rest server startage (faster and more robust)
+* (foxriver76) GameDVR now supports custom time
+
+### 0.6.9 (2020-11-02)
+* (foxriver76) dependency upgrade, fixes installation problems
+
 ### 0.6.8 (2020-09-24)
 * (foxriver76) minor optimization
 

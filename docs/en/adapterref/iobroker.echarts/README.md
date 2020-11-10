@@ -22,18 +22,22 @@ You can render the presets on server and get it as base64 URL or save it on disk
 
 ```
 sendTo('echarts.0', {
-    renderer: 'svg',         // svg | png | jpg | pdf, default: svg
-    width: 1024,             // default 1024
-    height: 300,             // default 300
-    height: 300,             // default 300
-    title: 'ioBroker Chart', // Title of PDF document 
-    quality: 0.8,            // quality of JPG
-    compressionLevel: 3,     // Compression level of PNG
-    filters: 8,              // Filters of PNG (Bit combination https://github.com/Automattic/node-canvas/blob/master/types/index.d.ts#L10)
-    fileOnDisk: '',          // Path on disk to save the file
-    fileName: '',            // Path in ioBroker DB to save the files on 'echarts.0',
-    background: '',          // Background color
-    theme: 'light',          // Theme type: 'light', 'dark'
+    preset:   'echarts.0.myPreset', // the only mandatory attribute
+
+    renderer: 'svg',                // svg | png | jpg | pdf, default: svg
+
+    width: 1024,                    // default 1024
+    height: 300,                    // default 300
+    background: '#000000',          // Background color
+    theme: 'light',                 // Theme type: 'light', 'dark'
+
+    title: 'ioBroker Chart',        // Title of PDF document 
+    quality: 0.8,                   // quality of JPG
+    compressionLevel: 3,            // Compression level of PNG
+    filters: 8,                     // Filters of PNG (Bit combination https://github.com/Automattic/node-canvas/blob/master/types/index.d.ts#L10)
+
+    fileOnDisk: '',                 // Path on disk to save the file
+    fileName: '',                   // Path in ioBroker DB to save the files on 'echarts.0',
 }, result => {
     if (result.error) {
         console.error(result.error);
@@ -53,12 +57,16 @@ You can debug view charts locally with:
 - widget for vis (button)
 - widget for material
 - show enum icons on folders or near it
+- drag & drop of presets for reorder
 
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### 0.3.4 (2020-11-08)
+* (bluefox) Corrected server-side rendering of PNG 
+
 ### 0.3.1 (2020-10-31)
 * (bluefox) Added the color of export button 
 * (bluefox) The interpolated values are shown now

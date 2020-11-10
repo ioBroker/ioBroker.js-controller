@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sonos/README.md
 title: ioBroker.sonos
-hash: WX7IapEXJ5Pw3IWDbAZ4rNE3qM832rRfCn8EnnHrT3U=
+hash: 6jEag0CWH8dCJXRGxsY8E66yJywGyTXx1xXfWnNc72A=
 ---
 ![商标](../../../en/adapterref/iobroker.sonos/admin/sonos.png)
 
@@ -17,22 +17,22 @@ hash: WX7IapEXJ5Pw3IWDbAZ4rNE3qM832rRfCn8EnnHrT3U=
 
 ##组的处理
 *处理SONOS组的状态：
-   * **“协调器” **：设置/获取协调器，因此作为主机和协调组的SONOS设备。它要求SONOS设备的IP地址（通道名称）为协调器，但下划线为“ _”而不是点“。”，因此对于IP地址“ 192.168.0.100”，请使用“ 192_168_0_100”。如果设备不属于任何组，则该值等于自己的通道名称（IP）。
-  * **group_volume`** 群组的数量
-  * **group_muted`** 群组的静音状态。
-  * **add_to_group`** 将某个SONOS设备添加到处于该状态的SONOS设备中。使用带下划线的IP地址（请参见上文）。
-  * **remove_from_group`** 从处于此状态的SONOS设备中删除某个SONOS设备。使用带下划线的IP地址（请参见上文）。
+   * **“协调器” **：设置/获取协调器，因此SONOS设备是主机和协调组。它要求SONOS设备的IP地址（通道名称）为协调器，但下划线为“ _”而不是点“。”，因此对于IP地址“ 192.168.0.100”，请使用“ 192_168_0_100”。如果设备不属于任何组，则该值等于自己的通道名称（IP）。
+  * **group_volume`** 群组的数量
+  * **group_muted`** 群组的静音状态。
+  * **add_to_group`** 将某个SONOS设备添加到处于该状态的SONOS设备中。使用带下划线的IP地址（请参见上文）。
+  * **remove_from_group`** 从处于此状态的SONOS设备中删除某个SONOS设备。使用带下划线的IP地址（请参见上文）。
 
 *）如果在SONOS应用中进行了更改，这些状态将被更新。
 
 ##与sayIt适配器一起使用
-实例化并正在运行[使用此SONOS适配器的sayit适配器]（https://github.com/ioBroker/ioBroker.sayit），请确保[Web适配器](https://github.com/ioBroker/ioBroker.web)。需要使用Web适配器才能使SONOS适配器从sayit适配器读取生成的MP3文件。
+实例化并正在运行[使用此SONOS适配器的sayit适配器]（https://github.com/ioBroker/ioBroker.sayit），请确保[Web适配器](https://github.com/ioBroker/ioBroker.web)。需要Web适配器以允许SONOS适配器从sayit适配器读取生成的MP3文件。
 
 ###警告：与sayIt适配器结合使用时出现稳定性问题
 请注意：如果对sayIt适配器使用“文字转语音”，则此SONOS适配器存在稳定性问题。观察到的症状：
 
-1.任意将音量更改为0或100％。
-2.随机数量的文本到语音序列后无响应
+1.将音量任意更改为0或100％。
+2.随机数的文本到语音序列后无响应
 
 文字转语音的解决方法是使用[SONOS HTTP API](https://github.com/jishi/node-sonos-http-api)。
 
@@ -45,6 +45,13 @@ hash: WX7IapEXJ5Pw3IWDbAZ4rNE3qM832rRfCn8EnnHrT3U=
 -更新经过的时间（ms）-以毫秒为单位的间隔，在播放标题时更新经过的计时器的频率。 （默认为2000）
 
 ## Changelog
+
+### 2.1.1 (2020-11-08)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-JS-CONTROLLER-S7, #78)
+
+### 2.1.0 (2020-05-31)
+* (bluefox) TTS Refactoring
+
 ### 2.0.2 (2020-05-25)
 * (bluefox) Refactoring
 

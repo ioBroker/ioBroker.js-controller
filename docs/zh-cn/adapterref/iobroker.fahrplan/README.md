@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fahrplan/README.md
 title: ioBroker.fahrplan
-hash: mKkOuWLEONeQnNK12CHQxy049d7Izp+sL132jYzPt5A=
+hash: /Y+XydeKv9XJuVr50Bb1grwEQi7nB/GoVK8L7wkTUeg=
 ---
 ![商标](../../../en/adapterref/iobroker.fahrplan/admin/fahrplan.png)
 
@@ -19,8 +19,8 @@ hash: mKkOuWLEONeQnNK12CHQxy049d7Izp+sL132jYzPt5A=
 
 ## Fahrplan适配器适用于ioBroker
 ###德文
-移动API或HAFAS verwendet的Dieser Adapter。 HAFAS负责HaCon Fahrplan-Auskunfts-System和von vieleneuropäischenVerkehrsunternehmen verwendet，以及德国铁路公司的合同。
-DFA[HAFAS-客户](https://github.com/public-transport/hafas-client)。
+移动API或HAFAS verwendet的Dieser Adapter。 HAFAS负责HaCon Fahrplan-Auskunfts系统和von vieleneuropäischenVerkehrsunternehmen verwendet，以及德国铁路公司的业务。
+[HAFAS-客户](https://github.com/public-transport/hafas-client)的Der Zugriff auf HAFAS erfolgt hierbeiüber。
 
 Der Adapter bietet hierbei drei Funktionen：
 
@@ -31,11 +31,13 @@ Der Adapter bietet hierbei drei Funktionen：
 VIS eingebunden werden中的Das HTML-Objekt kann einfach。
 
 #### Benenrichrichung beiVerspätungender Routen
-路线图路线图路线图道路图。因此，通过Telegram oder Alexa erfolgen的kann beispielsweise eine Benachrichtigung，跌倒了Allbin oder eine bestimmte Verbindungverspätetist。
+路线图路线图路线图道路图。因此，通过Telegram oder Alexa erfolgen的kann beispielsweise eine Benachrichtigung，跌倒了Allbin oder eine bestimmte Verbindung版本的专家。
 
 #### AbfahrtstafelnfürStationen
 Zusätzlich适配器适配器作者Abfahrtstafelfürkonfigurierte Stationen。
 Hierbei werden dienächstendrei Abfahrten einer Station Abgerufen und als Objekte和HTML dargestellt。
+
+** Dieser Adapter可以自动访问哨兵和自动售票机。** Weitere的详细信息以及[哨兵插件](https://github.com/ioBroker/plugin-sentry#plugin-sentry)的详细信息！ Sentry Reporting with ab JS-Controller 3.0 verwendet。
 
 ＃＃＃ 英语
 ioBroker的此适配器使用HAFAS的移动API。 HAFAS是整个欧洲的公共交通提供商使用的公共交通管理系统，例如德意志铁路。
@@ -50,11 +52,13 @@ ioBroker的此适配器使用HAFAS的移动API。 HAFAS是整个欧洲的公共�
 HTML对象可以很容易地在VIS中使用。
 
 ####路线延迟通知
-可以为配置的路由激活延迟通知。例如，当所有或一个特定的连接被延迟时，可以通过Telegram或Alexa发出通知。
+可以为配置的路由激活延迟通知。例如，当所有或一个特定的连接延迟时，Telegram或Alexa可能会发出通知。
 
 ####车站发车时刻表
 另外，适配器为配置的工作站提供了出发时间表。
 在这里，接下来的三个连接被公开并创建为对象和HTML。
+
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ## Konfiguration
 ###德文
@@ -64,7 +68,7 @@ Eine Suchfunktion ist in Tab Einstellungen integriert。
 #### Tab Einstellungen
 ![](../../../en/adapterref/iobroker.fahrplan/docs/de/img/settings.png)
 
-| Einstellung | Beschreibung | ------------------------------ | --- | | Anbieter | Auswahl des zu verwendenden Anbieters，aktuell DB和ÖBB| Aktualisierungsintervall |在Minuten的Angabe路线aktualisiert werden中的间隔| Verspätetmarkieren ab | Minbinn ab der die Verbindung地区的Verspätung地区。 Standardmäßigwerden nurVerspätungenab zwei Minuten markiert | HTML-Ansicht erzeugen | Erineugt专业版路线einem Objekt中的Route Eine konfigurierbare HTML-Tabelle | Detailierte Objekte speichern |遵守法律| JSON-Elemente speichern | DieRückgabevon HAFAS erfolgt als JSON，死了zur Fehlerbehebung gespeichert werden
+| Einstellung | Beschreibung | ------------------------------ | --- | | Anbieter | Auswahl des zu verwendenden Anbieters，aktuell DB和ÖBB| Aktualisierungsintervall |在Minuten的Angabe路线aktualisiert werden中的间隔| Verspätetmarkieren ab | Minbinn ab der die Verbindung地区的Verspätung地区。 Standardmäßigwerden nurVerspätungenab zwei Minuten markiert | HTML-Ansicht erzeugen | Erineugt专业版路线einem Objekt中的Route Eine konfigurierbare HTML-Tabelle | Detailierte Objekte speichern |遵守法律| JSON-Elemente speichern | DieRückgabevon HAFAS erfolgt als JSON，diese sollten zur Fehlerbehebung gespeichert werden
 
 这样的集成是非常有用的。 Zuerst muss ein Anbieterausgewähltwerden。
 Danach kannüberdas Suchfeld和Drückendes Knopfs“探索”纳赫艾纳站gesucht werden。
@@ -85,9 +89,9 @@ Mit dem + -ButtonkönnenneueEinträgezur Tabellehinzugefügtwerden。
 Mit dem + -ButtonkönnenneueEinträgezur Tabellehinzugefügtwerden。
 
 | Einstellung | Beschreibung | ----------------------------- | --- | | Nr | Die Unmmer Entspricht dem Unterknoten in Objekten und wird automatisch vergeben。
-| Aktiv | Wenn derVerspätungsalarmist Wird Diesergeprüft|路线|发出警报的路线| Geplante Abfahrt | Geplante Abfahrtszeit der zuprüfenden路线（Leer = Alle Verbindungen）| Wochentag | Wochentage an denen diePrüfungerfolgen soll |在Minuten的Benachrichtigung |阿萨尔·德·米诺滕·沃·阿布法尔特文字说明| Angabe eines vorhandenen Objekts
+| Aktiv | Wenn derVerspätungsalarmist Wird Diesergeprüft|路线|发出警报的路线| Geplante Abfahrt | Geplante Abfahrtszeit der zuprüfenden路线（Leer = Alle Verbindungen）| Wochentag | Wochentage an denen diePrüfungerfolgen soll |在Minuten的Benachrichtigung |阿萨尔·德·米诺滕·沃·阿布法尔特，在denen benachrichtigt werden soll |文字说明| Angabe eines vorhandenen Objekts
 
-Hinweis zum Ausgabetext：来自VIS z.B.的kann neben einfachen Objekten “说”-Alexa适配器的对象，而“响应”-Telegram适配器对象的对象。
+Hinweis zum Ausgabetext：来自VIS z.B.的kann neben einfachen Objekten “说”-Alexa适配器的对象，“响应”-Telegram适配器对象的对象。
 
 #### Tab Abfahrtstafeln
 ![](../../../en/adapterref/iobroker.fahrplan/docs/de/img/settings_departuretimetables.png)
@@ -136,11 +140,12 @@ Mit dem + -ButtonkönnenneueEinträgezur Tabellehinzugefügtwerden。
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 0.2.1 (2020-11-09)
 * (Gaudes) Configurable number of journeys in routes
 * (Gaudes) Configurable number of departures in departure timetable
 * (Gaudes) Show product in departure timetable
 * (Gaudes) Fix platform handling in departure timetable
+* (Gaudes) Include Sentry error reporting
 * (Gaudes) Update Adapter template from 1.27.0 to 1.29.0
 * (Gaudes) Include Dependabot updates
 

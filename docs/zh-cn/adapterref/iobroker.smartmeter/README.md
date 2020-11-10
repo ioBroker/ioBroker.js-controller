@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: 1EZwTMOmjPHYrU9Olz0ui1yK1amt0lMCwonFiqeMgAM=
+hash: cJvtg9H09nVIVUCkFepdcrH8lcR+QaJpUbDehwf07HM=
 ---
 ![商标](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
@@ -18,16 +18,16 @@ hash: 1EZwTMOmjPHYrU9Olz0ui1yK1amt0lMCwonFiqeMgAM=
 ＃ioBroker.smartmeter
 [![代码气候]（https://codeclimate.com/github/Apollon77/ioBroker.smartmeter/badges/gpa.svg）](https://codeclimate.com/github/Apollon77/ioBroker.smartmeter)
 
-**该适配器使用Sentry库自动向开发人员报告异常和代码错误。**更多详细信息，请参见下文！
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**更多详细信息，请参见下文！
 
 ioBroker的此适配器允许读取和解析遵循OBIS编号逻辑的智能电表协议，以使其数据可用。
 
-***适配器需要nodejs 4.x才能工作！***
+***适配器需要nodejs 8.x +才能工作！***
 
 ***此适配器当前需要安装git才能安装！***
 
 ##参数说明
-ioBroker-Forum-Thread：http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54973
+ioBroker-论坛线程：http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54973
 
 ###数据协议
 支持的协议：
@@ -38,8 +38,8 @@ ioBroker-Forum-Thread：http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54
 
 ＃＃＃ 数据传输
 * **串行接收**：通过串行推送数据接收（智能电表定期发送数据，而无需任何请求）。主要用于SML
-* **双向双向通讯**：模式A，B，C和D（当前不支持模式E！）的D0协议，带有Wakeup-，Signon-，pot。 ACK和数据消息以读取数据（到目前为止尚未实现编程/写入模式）
-* **Http-Requests** 通过请求定义的URL通过HTTP读取数据
+* **双向双向通信**：模式A，B，C和D（当前不支持模式E！）的D0协议，带有Wakeup-，Signon-，pot。 ACK和数据消息以读取数据（到目前为止尚未实现编程/写入模式）
+* **Http-Requests** 通过HTTP请求一个已定义的URL来读取数据
 * **本地文件**：从本地文件读取数据
 
 ###数据请求间隔
@@ -72,7 +72,7 @@ ioBroker-Forum-Thread：http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54
 * Hager eHz电能表（多个，例如eHZ-IW8E2A5L0EK2P，EHZ363W5，）
 * EMH电能表
 * EFR SmartGridHub
-*来自热站的Siemens 2WR5阅读器
+*西门子2WR5加热站读取器
 * Elster AS1440
 *伊斯克拉梅科MT174
 *伊斯克拉梅科MT175
@@ -80,23 +80,23 @@ ioBroker-Forum-Thread：http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54
 *兰迪斯＆吉尔E220
 *使用DSRM协议的荷兰智能电表（使用“仅串行设备读取数据”和“ D0”作为协议）
 * DZG DWS7412.1T
-    * *重要*：似乎存在固件错误，有时当前的能耗为负！可以使用来自https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736*的公式进行手动重新计算... ...还有更多
+    * *重要*：似乎存在固件错误，有时当前的能源消耗为负！可以使用来自https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736*的公式进行手动重新计算...以及更多
 
 请向我发送有关您已成功使用该库的设备的信息，我将在此处添加它。
 
 ##特殊的智能电表和问题
 ### DZG DVS74
-有时似乎SML固件中有错误，并且SML消息中的值编码错误，但是消息本身是有效的。解决方案是使用Javascript对值进行后期处理。参见https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736
+有时SML固件中似乎有错误，并且SML消息中的值编码错误，但是消息本身是有效的。解决方案是使用Java语言对值进行后期处理。参见https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736
 
 ##如何报告问题和功能请求
 请为此使用GitHub问题。
 
-最好是将适配器设置为“调试日志”模式（“实例”->“专家模式”->“列日志级别”）。然后，请从磁盘中获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin会打断行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
+最好是将适配器设置为“调试日志”模式（“实例”->“专家模式”->“列日志级别”）。然后，请从磁盘（ioBroker安装目录中的子目录“ log”而不是Admin）中获取日志文件，因为Admin会打断行。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
 
 ##什么是Sentry，什么报告给服务器？
 Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
 

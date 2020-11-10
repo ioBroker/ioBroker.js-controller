@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.linux-control/README.md
 title: ioBroker.linux-control
-hash: dK7NHAYUOt8m7SjzhfXb++SHUc69QIU7mbuljXYBBxk=
+hash: UWL76LQz+eRlIMa6yQbcb9u3fZ4fo19J2QtVuW58jDc=
 ---
 ![Logo](../../../en/adapterref/iobroker.linux-control/admin/linux-control.png)
 
@@ -34,12 +34,12 @@ Steuern Sie Linux-Geräte und erhalten Sie Informationen zu Ihrem System
 | Datenpunkt-ID | ID, unter der alle Datenpunkte gespeichert werden sollen |
 | IP | IP-Adresse Ihres Linux-Geräts |
 | Port | SSH Port Ihres Linux-Geräts |
-| Abfrageintervall | Abfrageintervall in Minuten. <br> Um die Abfrage zu deaktivieren, können Sie &#39;0&#39; verwenden oder leer lassen |
+| Abfrageintervall | Abfrageintervall in Minuten.<br> Um die Abfrage zu deaktivieren, können Sie &#39;0&#39; verwenden oder leer lassen |
 | user | ssh user für login |
 | password / passpharse | ssh Passwort für die Anmeldung oder passpharse, wenn Sie einen rsa-Schlüssel verwenden |
 | benutze Sudo | mit sudo |
 | rsa key | Pfad und Dateiname Ihres rsa-Schlüssels. Zugriffsrechte müssen verfügbar sein! |
-| Timeout | Verbindungs-Timeout |
+| Zeitüberschreitung | Verbindungszeitüberschreitung |
 
 ### Datenpunkte
 ![Datenpunkte](../../../en/adapterref/iobroker.linux-control/docs/en/img/datapoints.gif)
@@ -90,9 +90,9 @@ Es ist wichtig, dass die abgerufenen Daten im richtigen Typ übertragen werden! 
 | aktiviert | aktiviert oder deaktiviert die Aktualisierung des Befehls |
 | Host | Host, der verwendet werden soll |
 | Datenpunkt-ID | ID, unter der Datenpunkte gespeichert werden sollen |
-| Abfrageintervall | Unterschiedliches Abfrageintervall nur für den Befehl. Zum Deaktivieren verwenden Sie `0` oder lassen Sie das Feld leer, dann wird das Abfrageintervall vom Host verwendet |
-| Befehl | Befehl, der verwendet werden soll <br><br> Wenn Sie einen Benutzer verwenden, der `sudo` benötigt, müssen Sie Ihrem eigenen Befehl `sudo -S` hinzufügen! |
-| Befehl | Befehl, der verwendet werden soll <br><br> Wenn Sie einen Benutzer verwenden, der &quot;sudo&quot; benötigt, müssen Sie &quot;sudo -S&quot; zu Ihrem eigenen Befehl hinzufügen! |
+| Abfrageintervall | Unterschiedliches Abfrageintervall in Sekunden nur für den Befehl. Zum Deaktivieren verwenden Sie `0` oder lassen Sie das Feld leer, dann wird das Abfrageintervall vom Host verwendet |
+| Befehl | Befehl, der verwendet werden soll<br><br> Wenn Sie einen Benutzer verwenden, der `sudo` benötigt, müssen Sie Ihrem eigenen Befehl `sudo -S` hinzufügen! |
+| Befehl | Befehl, der verwendet werden soll<br><br> Wenn Sie einen Benutzer verwenden, der &quot;sudo&quot; benötigt, müssen Sie &quot;sudo -S&quot; zu Ihrem eigenen Befehl hinzufügen! |
 | Typ | Typ des Datenpunkts |
 | Einheit | Einheit des Datenpunkts |
 
@@ -102,6 +102,21 @@ Es ist wichtig, dass die abgerufenen Daten im richtigen Typ übertragen werden! 
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 1.0.1 (2020-11-04)
+* (Scrounger) translation for polling interval optimized
+
+### 1.0.0 (2020-09-30)
+* (Scrounger) bump to stable
+
+### 0.3.7 (2020-09-19)
+* (Scrounger) subscribe bug fix for user commands
+
+### 0.3.6 (2020-09-17)
+* (Scrounger) Bug fix for function needrestart if sudo is used
+
+### 0.3.5 (2020-09-15)
+* (Scrounger) Fixed some errors reported via Sentry
 
 ### 0.3.4 (2020-09-09)
 * (Scrounger) bug fixes

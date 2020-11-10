@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fahrplan/README.md
 title: ioBroker.fahrplan
-hash: mKkOuWLEONeQnNK12CHQxy049d7Izp+sL132jYzPt5A=
+hash: /Y+XydeKv9XJuVr50Bb1grwEQi7nB/GoVK8L7wkTUeg=
 ---
 ![Logo](../../../en/adapterref/iobroker.fahrplan/admin/fahrplan.png)
 
@@ -19,7 +19,7 @@ hash: mKkOuWLEONeQnNK12CHQxy049d7Izp+sL132jYzPt5A=
 
 ## Fahrplan Adapter für ioBroker
 ### Deutsch
-Dieser Adapter für ioBroker verwendet die mobile API von HAFAS verwendet. HAFAS steht für HaCon Fahrplan-Auskunfts-System und wird von vielen europäischen Verkehrsunternehmen verwendet, untergesteuert auch von der Deutschen Bahn.
+Dieser Adapter für ioBroker verwendet die mobile API von HAFAS verwendet. HAFAS steht für HaCon Fahrplan-Auskunfts-System und wird von vielen europäischen Verkehrsunternehmen verwendet, untersteuert auch von der Deutschen Bahn.
 Der Zugriff auf HAFAS gehört hierbei über [HAFAS-Client](https://github.com/public-transport/hafas-client).
 
 Der Adapter Nord hierbei drei Funktionen:
@@ -36,6 +36,8 @@ Für die konfigurierten Routen kann ein Verspätungsalarm werden werden. So kann
 #### Abfahrtstafeln für Stationen
 Viele Nord der Adapter eine Abfahrtstafel für konfigurierte Stationen.
 Hierbei werden die verschiedenen drei Abfahrten einer Station behandelt und als Objekte und HTML angezeigt.
+
+** Dieser Adapter verwendet die Sentry Bibliotheken um die automatische Abstürze und Programmfehler und die Entwickler zu überstehen. Sentry Reporting wird ab JS-Controller 3.0 verwendet.
 
 ### Englisch
 Dieser Adapter für ioBroker verwendet die mobile API von HAFAS. HAFAS ist ein Managementsystem für den öffentlichen Verkehr, das von Anbietern öffentlicher Verkehrsmittel in ganz Europa verwendet wird, z. Deutsche Bahn.
@@ -55,6 +57,8 @@ Für konfigurierte Routen kann eine Verzögerungsbenachrichtigung aktiviert werd
 #### Abfahrtsplan für Stationen
 Zusätzlich bietet der Adapter einen Abfahrtszeitplan für konfigurierte Stationen.
 Hier werden die nächsten drei Verbindungen wiederbelebt und als Objekte und HTML erstellt.
+
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Konfiguration
 ### Deutsch
@@ -120,7 +124,7 @@ Mit der + -Taste können neue Einträge zur Tabelle hinzugefügt werden.
 
 | Einstellung | Beschreibung | ----------------------------- | --- | Nr | Die Nummer stimmt mit dem Unterknoten in Objekten überein und wird automatisch zugewiesen Aktiv | Auf Verzögerungsalarm prüfen ist aktiviert | Route | Route bezüglich dieses Verzögerungsalarms | Geplante Abreise | Geplante Abfahrt der zu prüfenden Verbindung (leer = Alle Routen) | Wochentage | Wochentage, an denen die Verbindung überprüft werden soll | Benachrichtigung in Minuten | Minuten vor Abflug, wenn der Verzögerungsalarm aktiv ist Objekt für Ausgabetext | ioBroker-Status für die Textausgabe
 
-Hinweis für "Objekt für Ausgabetext": Es können einfache Status für die Verwendung in VIS verwendet werden, aber auch der Status "Sprechen" des Alexa-Adapters oder der Status "Antwort" des Telegrammadapters.
+Hinweis für "Objekt für Ausgabetext": Es können einfache Zustände für die Verwendung in VIS verwendet werden, aber auch "Sprechen" -Zustand des Alexa-Adapters oder "Antwort" -Zustand des Telegrammadapters.
 
 #### Registerkarte Abfahrtszeitpläne
 ![](../../../en/adapterref/iobroker.fahrplan/docs/en/img/settings_departuretimetables.png)
@@ -136,11 +140,12 @@ Mit der + -Taste können neue Einträge zur Tabelle hinzugefügt werden.
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 0.2.1 (2020-11-09)
 * (Gaudes) Configurable number of journeys in routes
 * (Gaudes) Configurable number of departures in departure timetable
 * (Gaudes) Show product in departure timetable
 * (Gaudes) Fix platform handling in departure timetable
+* (Gaudes) Include Sentry error reporting
 * (Gaudes) Update Adapter template from 1.27.0 to 1.29.0
 * (Gaudes) Include Dependabot updates
 

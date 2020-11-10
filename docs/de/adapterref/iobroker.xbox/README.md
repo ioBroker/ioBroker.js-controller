@@ -182,7 +182,7 @@ der Tastenkombination "STRG + F".
    Die Title ID eines aktiven Spiels kann durch den info.currentTitles State herausgefunden werden.
    Der State wird bestätigt, sobald er an die Xbox übermittelt wurde, was nicht heißt, dass der Befehl auch ausgeführt wurde.*
 
-   *Example:*
+   *Beispiel:*
     ```javascript
     setState('settings.launchTitle', '2340236c', false); // Starte Red Dead Redemption 2
     ```
@@ -197,17 +197,25 @@ der Tastenkombination "STRG + F".
    Nachricht zu versenden oder einen Code einzugeben.
    Der State wird bestätigt, sobald er an die Xbox übermittelt wurde, was nicht heißt, dass der Befehl auch ausgeführt wurde.*
 
-   *Example:*
+   *Beispiel:*
    ```javascript
    setState('settings.inputText', 'H1 M8 h0w d0 u do?', false); // Versendet einen nerdigen Text
    ```
 
 * settings.gameDvr
 
-    *Button, welcher bei Druck die vergangene Minute eines Spiels aufzeichnet. Der Button ist
+    |Datentyp|Berechtigung|
+    |:---:|:---:|
+    |string|W|
+    *Schreibbarer String, welcher die definierte Zeit eines Spiels aufzeichnet. Der State ist
     verfügbar, wenn die Authentifizierung in den Einstellungen vorgenommen wurde.
     Ebenfalls muss der authentifizierte Account auf der Xbox angemeldet sein und ein Spiel
     muss sich im Vordergrund befinden.
+    
+    *Beispiel:*
+   ```javascript
+   setState('settings.gameDvr', '-60,30', false); // zeichne die letzten 60 Sekunden bis zu den nächsten 30 Sekunden auf (90 Sekunden gesamt)
+   ```
 
 ### Channel: Gamepad
 
@@ -348,6 +356,16 @@ der Tastenkombination "STRG + F".
    *View Button für Medieninhalte.*
 
 ## Changelog
+### 0.7.0 (2020-11-04)
+* (foxriver76) replaced deprecated requests module by axios
+* (foxriver76) migrated to xbox-smartglass 1.3
+* (foxriver76) removed Python3.6 support 
+* (foxriver76) event based rest server startage (faster and more robust)
+* (foxriver76) GameDVR now supports custom time
+
+### 0.6.9 (2020-11-02)
+* (foxriver76) dependency upgrade, fixes installation problems
+
 ### 0.6.8 (2020-09-24)
 * (foxriver76) minor optimization
 

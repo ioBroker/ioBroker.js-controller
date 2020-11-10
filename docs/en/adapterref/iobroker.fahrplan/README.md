@@ -31,6 +31,9 @@ Für die konfigurierten Routen kann ein Verspätungsalarm aktiviert werden. So k
 Zusätzlich bietet der Adapter eine Abfahrtstafel für konfigurierte Stationen.
 Hierbei werden die nächsten drei Abfahrten einer Station abgerufen und als Objekte und HTML dargestellt.
 
+**Dieser Adapter verwendet die Sentry Bibliotheken um automatisch Abstürze und Programmfehler an die Entwickler zu übermitteln.** 
+Weitere Details und für Informationen zur Deaktivierung der Fehlerberichterstattung in der [Sentry-Plugin Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab JS-Controller 3.0 verwendet.
+
 
 ### English
 This adapter for ioBroker uses the mobile API of HAFAS. HAFAS is a public transport management system used by public transport providers across Europe, e.g. Deutsche Bahn.
@@ -50,6 +53,9 @@ A delay notification can be activated for configured routes. For example, there 
 #### Departure timetable for stations
 Additionally the Adapter provides a departure timetable for configured stations.
 Here the next three connections are reveived and created as objects and HTML.
+
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** 
+For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Konfiguration
 
@@ -207,11 +213,12 @@ With +-Button new entries can be added to the table.
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 0.2.1 (2020-11-09)
 * (Gaudes) Configurable number of journeys in routes
 * (Gaudes) Configurable number of departures in departure timetable
 * (Gaudes) Show product in departure timetable
 * (Gaudes) Fix platform handling in departure timetable
+* (Gaudes) Include Sentry error reporting
 * (Gaudes) Update Adapter template from 1.27.0 to 1.29.0
 * (Gaudes) Include Dependabot updates
 

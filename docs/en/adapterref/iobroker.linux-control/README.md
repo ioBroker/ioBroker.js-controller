@@ -86,7 +86,7 @@ It is important that the retrieved data is transmitted in the correct type! The 
 |enabled|enabled or disable updating of the command|
 |Host|Host which should be used|
 |datapoint id|id under which datapoints are to be stored|
-|polling interval|diffrent polling interval for the command only. For deactivating use `0` or leave the field blank, then the polling interval from the host is used|
+|polling interval|diffrent polling interval in seconds for the command only. For deactivating use `0` or leave the field blank, then the polling interval from the host is used|
 |description|description / name of the datapoint|
 |command|command that should be used <br><br>If you use a user that needs `sudo` then you have to add `sudo -S` to your own command!|
 |type|type of the datapoint|
@@ -99,6 +99,9 @@ It is important that the retrieved data is transmitted in the correct type! The 
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 1.0.1 (2020-11-04)
+* (Scrounger) translation for polling interval optimized
 
 ### 1.0.0 (2020-09-30)
 * (Scrounger) bump to stable

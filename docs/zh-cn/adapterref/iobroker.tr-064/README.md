@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tr-064/README.md
 title: 的ioBroker.tr-064
-hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
+hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 ---
 ![商标](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
@@ -22,14 +22,14 @@ hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 -外部IP地址
 
 ###响铃（拨一个号码）
--当使用内部号码（例如** 610）时，响铃状态将使该内部电话响铃。
+-当使用内部号码（例如** 610）时，振铃状态将使该内部电话振铃。
 
 例如：** 610 [，超时]
 
 -使用外部号码时，振铃状态会将您连接到该外部号码。
 
 当拾起被叫电话时，FritzBox将呼叫外部号码，并且您的默认电话将响铃。
-可以在FritsBox中配置以下默认电话：Telefonie / Anrufe / [Tab] Wahlhilfe /Wählhilfeverwenden
+可以在FritsBox中配置默认电话，如下所示：Telefonie / Anrufe / [Tab] Wahlhilfe /Wählhilfeverwenden
 
 ### ToPauseState
 -值：响铃，连接，结束
@@ -60,14 +60,14 @@ hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 -json
 -HTML
 
-通话清单为：
+呼叫清单是：
 
 - 所有通话
 - 未接来电
 -来电
 -外拨电话
 
-通话次数：通话次数可以设置为0。下一个通话增加1。
+通话次数：通话次数可以设置为0。下一个通话将增加1。
 
 html输出可以通过模板配置
 
@@ -90,7 +90,7 @@ command = {
 
 ###启用通话监控
 要使用呼叫监控功能，必须首先在AVM Fritz！Box中启用它。
-要启用呼叫监控器拨盘```#96*5*```，将打开TCP / IP端口1012。要关闭端口拨盘```#96*4*```。
+要启用呼叫监控器拨号```#96*5*```，将打开TCP / IP端口1012。要关闭端口拨盘```#96*4*```。
 
 ###预发行版本
 预发布版本可在npm处使用标签dev获得。
@@ -102,6 +102,13 @@ iobroker upload tr-064
 ```
 
 ## Changelog
+
+### 4.2.0 (2020-11-09)
+* (Apollon77) Crash case prevented (Sentry IOBROKER-TR-064-15, IOBROKER-TR-064-16)
+* (Apollon77) Try to solve error 500 problem with offline devices
+* (SliX185) Add IPv6 states
+* (foxriver76) optimizations
+* (Apollon77) Fix initialization if ip/host
 
 ### 4.1.0 (2020-09-17)
 * (Apollon77) Fix crash case (Sentry IOBROKER-TR-064-14)

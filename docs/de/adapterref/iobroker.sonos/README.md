@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sonos/README.md
 title: ioBroker.sonos
-hash: WX7IapEXJ5Pw3IWDbAZ4rNE3qM832rRfCn8EnnHrT3U=
+hash: 6jEag0CWH8dCJXRGxsY8E66yJywGyTXx1xXfWnNc72A=
 ---
 ![Logo](../../../en/adapterref/iobroker.sonos/admin/sonos.png)
 
@@ -17,11 +17,11 @@ Steuern und überwachen Sie SONOS-Geräte mit ioBroker.
 
 ## Umgang mit Gruppen
 * Zustände für den Umgang mit SONOS-Gruppen:
-  * **`Koordinator`** Setze den Koordinator, also das SONOS-Gerät, das der Master ist und die Gruppe koordiniert. Es erfordert, dass die IP-Adresse (Kanalname) des SONOS-Geräts der Koordinator ist, jedoch mit dem Unterstrich "_" anstelle des Punkts ".". Verwenden Sie daher beispielsweise "192_168_0_100" für die IP-Adresse "192.168.0.100". Wenn das Gerät keiner Gruppe angehört, entspricht der Wert dem eigenen Kanalnamen (IP).
-  * **`group_volume`** das Volumen der Gruppe
-  * **`group_muted`** Stummschaltungsstatus der Gruppe.
-  * **`add_to_group`** Fügen Sie dem SONOS-Gerät, unter dem sich dieser Status befindet, ein bestimmtes SONOS-Gerät hinzu. Verwenden Sie die IP-Adresse mit Unterstrichen (siehe oben).
-  * **`remove_from_group`** Entfernen Sie ein bestimmtes SONOS-Gerät von dem SONOS-Gerät, unter dem sich dieser Status befindet. Verwenden Sie die IP-Adresse mit Unterstrichen (siehe oben).
+  * **`Koordinator`** Setze den Koordinator, also das SONOS-Gerät, das der Master ist und die Gruppe koordiniert. Es erfordert, dass die IP-Adresse (Kanalname) des SONOS-Geräts der Koordinator ist, jedoch mit einem Unterstrich "_" anstelle eines Punkts ".". Verwenden Sie daher beispielsweise "192_168_0_100" für die IP-Adresse "192.168.0.100". Wenn das Gerät keiner Gruppe angehört, entspricht der Wert dem eigenen Kanalnamen (IP).
+  * **`group_volume`** das Volumen der Gruppe
+  * **`group_muted`** Stummschaltungsstatus der Gruppe.
+  * **ʻadd_to_group`** Fügen Sie dem SONOS-Gerät, unter dem sich dieser Status befindet, ein bestimmtes SONOS-Gerät hinzu. Verwenden Sie die IP-Adresse mit Unterstrichen (siehe oben).
+  * **`remove_from_group`** Entfernen Sie ein bestimmtes SONOS-Gerät von dem SONOS-Gerät, unter dem sich dieser Status befindet. Verwenden Sie die IP-Adresse mit Unterstrichen (siehe oben).
 
 *) Diese Zustände werden aktualisiert, wenn Änderungen in der SONOS-App vorgenommen werden.
 
@@ -45,6 +45,13 @@ Problemumgehung für Text zu Sprache ist die Verwendung der [SONOS HTTP API](htt
 - Aktualisierung der verstrichenen Zeit (ms) - Intervall in ms, wie oft der verstrichene Timer aktualisiert werden soll, wenn der Titel abgespielt wird. (Standard 2000)
 
 ## Changelog
+
+### 2.1.1 (2020-11-08)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-JS-CONTROLLER-S7, #78)
+
+### 2.1.0 (2020-05-31)
+* (bluefox) TTS Refactoring
+
 ### 2.0.2 (2020-05-25)
 * (bluefox) Refactoring
 

@@ -2638,6 +2638,25 @@ return 'your result';
 Вы можете использовать этот блок как обычные блоки в своих скриптах.
 
 ## Changelog
+### 4.10.4 (2020-11-09)
+* (bluefox) null timeouts are checked now
+* (AlCalzone) Correction for the typescript with async functions
+
+### 4.10.3 (2020-11-08)
+* (bluefox) Corrected search in scripts
+
+### 4.10.1 (2020-11-04)
+* (AlCalzone) In global TypeScripts, `import` can now be used
+* (AlCalzone) Iteration of `$(...)` query results in TypeScript no longer causes compilation to fail
+* (AlCalzone) Already-compiled TypeScripts are now recompiled after an update of the adapter to benefit of potential fixes
+* (bluefox) Corrected schedule on date object
+* (bluefox) Corrected the moving of scripts
+* (bluefox) Corrected search tab
+* (bluefox) Corrected the calculation of isDayTime variable
+* (bluefox) Corrected `trim()` issue by CRON builder  
+* (bluefox) Corrected functions call in blockly
+* (bluefox) Corrected CRON name in blockly
+
 ### 4.9.8 (2020-11-01)
 * (bluefox) Corrected search in blockly
 
@@ -2646,30 +2665,6 @@ return 'your result';
 * (AlCalzone) pass ID as the result, not the error to the callback of createState
 * (AlCalzone) update the editor's type declarations when switching scripts
 * (AlCalzone) The corrections for typescript were added
-
-### 4.9.4 (2020-10-19)
-* (AlCalzone) corrected the crash IOBROKER-JAVASCRIPT-40
-* (AlCalzone) corrected typescript for async/await
-
-### 4.9.3 (2020-10-12)
-* (bluefox) Corrected the function calls.
-* (AlCalzone) Optimized the typescript compilation
-
-### 4.9.0 (2020-10-09)
-* (bluefox) All scripts support now `await` calls. THIS COULD HAVE SOME SIDE-EFFECT (unknown yet). 
-* (AlCalzone) Matched the exact ID if the $ selector contains no wildcard
-* (bluefox) Added new block in blockly: "pause" 
-* (bluefox) Changed the order of folders and scripts to "folders first".
-* (bluefox) Extend the documentation.
-* (bluefox) Corrected the error with blockly and "day of week" conversion. 
-
-### 4.8.4 (2020-09-21)
-* (bluefox) Make the mirroring instance adjustable
-* (bluefox) Correct the dark mode for blockly
-* (bluefox) Corrected the special variables: isDayTime and dayTime
-
-### 4.8.2 (2020-09-20)
-* (Bluefox) Added the settings for columns in the state selection dialog
 
 ## License
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-material-advanced/README.md
 title: ioBroker.vis-material-advanced
-hash: dHGIWO7/K7u161Br1l1mdAHBmXQiZkcMA3n9j5UqZ7Y=
+hash: UhKFsvE/MazLo9kNokhslQ8lqDoHst5L1wvq4yedao0=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-material-advanced/admin/vis-material-advanced.png)
 
@@ -16,7 +16,7 @@ hash: dHGIWO7/K7u161Br1l1mdAHBmXQiZkcMA3n9j5UqZ7Y=
 ![NPM](https://nodei.co/npm/iobroker.vis-material-advanced.png?downloads=true)
 
 ＃ioBroker.vis-material-advanced
-##用于ioBroker的vis-material-advanced适配器
+## IoBroker的可见材料高级适配器
 该适配器为ioBroker中的vis提供了标准化的小部件。许多不同的预定义小部件
 
 该适配器的基础已经由创建：
@@ -61,14 +61,15 @@ hash: dHGIWO7/K7u161Br1l1mdAHBmXQiZkcMA3n9j5UqZ7Y=
 
     -文字颜色
     -cardIcon（并非在所有地方都有意义，例如dimmer）
-    -不透明度颜色（标准不透明度颜色）
-    -colorizeByValue（根据某些值可以更改不透明度颜色，例如如果太热则将其设为红色，变为冷蓝色）
+    -不透明颜色（标准不透明颜色）
+    -colorizeByValue（根据某些值可以更改不透明度颜色，例如，如果太热则将其设为红色，变为冷蓝色）
     -下方，上方，最小值，最大值（colorizeByValue的值）
     -彩色低/高，中...（抬高边框时使用的颜色）
     -只读（可以将某些小部件设置为只读模式以仅用于显示）
     -边界半径以启用和更改圆角
     -valueAlign将“值”字段左，中或右对齐
     -value-vetical将“值”字段的顶部，底部或中间对齐
+    -borderColor边框的颜色（如果已激活）
 
 ＃＃＃ 入门
 安装适配器并在“编辑”模式下启动VIS。
@@ -76,7 +77,9 @@ hash: dHGIWO7/K7u161Br1l1mdAHBmXQiZkcMA3n9j5UqZ7Y=
 
 .............缺少许多文档...................
 
-**由于有了@ sigi234，您可以将example.json文件导入vis **
+**这是example2.png，将其导入并实时显示****![](../../../en/adapterref/iobroker.vis-material-advanced/widgets/door_example.png)
+
+**由于@ sigi234，您可以将example.json文件导入vis **
 
 ## Changelog
 <!--
@@ -84,26 +87,23 @@ hash: dHGIWO7/K7u161Br1l1mdAHBmXQiZkcMA3n9j5UqZ7Y=
     ### __WORK IN PROGRESS__
 * 
 -->
+### 1.2.0 (2020-11-04)
+* added option to round every corner different/not 
+* added option to change color of border
+* added option for shadow and size of shadow
 
-### 0.8.14 (2020-10-04)
-* border-fix due to changes in css
-
-### 0.8.13 (2020-10-03)
-* bugfix LightIcon not switching
-* bugfix Volume Icon not shown if no object is set
-
-### 0.8.12 (2020-10-01)
-* Value font-size can be changed now
+### 1.1.1 (2020-10-18)
+* url wrong in package.json
 
 
-### 0.8.11 (2020-09-30)
-* bugfix fo rwrong htm lin Shutter Widget, thx Sigi234
+### 1.1.0 (2020-10-15)
+* Travis changes
 
+### 1.0.0 (2020-10-14)
+* no changes, upgrading to 1.0
 
-### 0.8.10 (2020-09-30)
-* rebase to iobroker-ocmmunity-adapter
-* added option to center Icon
-* added option to have ONLY Title and no subtitle
+### 0.9.1 (2020-10-13)
+* some colorizeByValue options did not work
 
 ## License
 MIT License

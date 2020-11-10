@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: r+nd3Qt+5/jw9zRUnJi1229DUG9F4duLLv7odqTaYEs=
+hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -46,6 +46,9 @@ Schnelle Web-App zur Visualisierung.
 \
 ![Bildschirmfoto](../../../en/adapterref/iobroker.iqontrol/img/screenshot_flot.png)
 
+\
+![Bildschirmfoto](../../../en/adapterref/iobroker.iqontrol/img/screenshot_dslraser.jpg "&Kopieren; von dslraser")
+
 Läuft in jedem Browser.
 Einfach einzurichten, obwohl es vollständig anpassbar und reaktionsschnell ist.
 
@@ -57,7 +60,7 @@ Sie können es als Web-App auf Homescreen speichern und es sieht aus und fühlt 
 ## Du brauchst...
 * Knoten 10 oder höher
 * Web-Adapter mit einer Instanz, auf der dasselbe Protokoll (http oder https) wie der Admin-Adapter ausgeführt wird. Socket.IO ist auf "integriert" und "Web-Sockets erzwingen" deaktiviert
-    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu - iQontrol durchsucht die passende passende Webadapterinstanz und verwendet sie für die Kommunikation
+    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu - iQontrol durchsucht die passende passende Webadapter-Instanz und verwendet sie für die Kommunikation
 * Für die Verbindung über *iobroker.pro-Cloud* sollten sowohl der Administrator- als auch der Webadapter auf http (nicht https) eingestellt sein.
 
 * Wenn Probleme auftreten, lesen Sie bitte den Abschnitt [Fehlerbehebung] (# Fehlerbehebung) am Ende dieser Readme-Datei
@@ -112,6 +115,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * `` returnAfterTimeTreshold =<time in seconds> `` um die Zeit einzustellen, nach der die Zielansicht aufgerufen wird. Verwenden Sie `` 0``, um die Rückgabe nach Zeit zu deaktivieren.
 * `` returnAfterTimeDestiationView = <viewID> ``, um die Ansicht festzulegen, die nach dem Schwellenwert aufgerufen wird. Wenn nicht angegeben, wird die Startansicht verwendet.
 * Diese Optionen sind hilfreich, wenn Sie iQontrol von einem an der Wand montierten Tablet aus aufrufen, das nach der Verwendung automatisch zur Startansicht zurückkehren sollte
+* Um die Seite ohne Symbolleiste zu laden, können Sie `` noToolbar = true`` hinzufügen
 
 **Beispiel:**
 
@@ -155,7 +159,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
     * `` ButtonNames``: Hier können Sie eine durch Kommas getrennte Liste von Schaltflächen angeben, die am unteren Rand des Popups angezeigt wird (zum Beispiel "OK, Abort").
         * `` ButtonValues`` und `` ButtonDestinationStates``: Dies sind durch Kommas getrennte Wertelisten, die an `` iqontrol.x.Popup.BUTTON_CLICKED`` und, falls angegeben, zusätzlich zum Datenpunkt in `` ButtonDestinationStates` gesendet werden `, wenn der Benutzer auf die entsprechende Schaltfläche klickt
 * Anstelle eines Datenpunkts können Sie die Befehle `` COMMAND: renderView`` und `` COMMAND: openDialog`` als ButtonDestinationState verwenden, um eine Ansicht zu rendern oder einen Dialog zu öffnen
-* Der ButtonValue gibt dann die Ansicht bzw. Dialog und muss im Format `` iqontrol. <Instanznummer> .Views. <Ansichtsname> `` resp. `` Iqontrol. <Instanznummer> .Views. <Ansichtsname> .Geräte. <Gerätenummer> `` wobei `` <Gerätenummer> `` bei 0 beginnt (das erste Gerät in einer Ansicht ist also Gerät Nummer 0)
+* Der ButtonValue gibt dann die Ansicht bzw. Dialog und muss im Format `` iqontrol. <Instanznummer> .Views. <Ansichtsname> `` resp. `` Iqontrol. <Instanznummer> .Views. <Ansichtsname> .Geräte. <Gerätennummer> `` wobei `` <Gerätenummer> `` bei 0 beginnt (das erste Gerät in einer Ansicht ist also Gerät Nummer 0)
 * Wenn Sie nur einen Wert verwenden (anstelle einer durch Kommas getrennten Liste), wird dieser Wert für alle Schaltflächen verwendet
 * Wenn Sie `` ButtonValues`` leer lassen, wird der Name der Schaltfläche verwendet
 * Wenn Sie nur einen Zielstatus verwenden (anstelle einer durch Kommas getrennten Liste), wird dieser Status für alle Schaltflächen verwendet
@@ -170,27 +174,29 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * Jede Kachel hat einen BACKGROUND_URL- und einen BACKGROUND_HTML-Datenpunkt
 * Hier können Sie einen Link (über BACKGROUND_URL) zu einer Website definieren oder direkten HTML-Code (über BACKGROUND_HTML) platzieren, der als Hintergrund der Kachel angezeigt wird
 * Dies gibt Ihnen die Möglichkeit, (interaktive) Inhalte in eine Kachel zu platzieren (wie Uhren, FLOT-Diagramme, Tabellen, Wettervorhersagen usw.)
-* Standardmäßig werden Mausereignisse auf diesen Inhalt gerichtet (daher können Sie nicht mehr auf die Kachel selbst klicken). Sie können dies jedoch mit der Option "Mausereignisse auf die Kachel anstatt auf den Inhalt von BACKGROUND_URL / HTML lenken" deaktivieren.
+* Standardmäßig werden Mausereignisse auf diesen Inhalt gerichtet (daher können Sie nicht mehr auf die Kachel selbst klicken). Sie können dies jedoch mit der Option "Mausereignisse auf die Kachel anstatt auf den Inhalt von BACKGROUND_VIEW / URL / HTML lenken" deaktivieren ""
 * iQontrol bietet eine Geräterolle "Widget" mit einigen vordefinierten Optionen, die hauptsächlich verwendet werden, wenn eine Website als Widget angezeigt wird. Sie können jedoch mit jeder anderen Rolle das gleiche Ergebnis erzielen, indem Sie die Geräteoptionen ordnungsgemäß ändern.
 
 ![Popup-Screenshot](../../../en/adapterref/iobroker.iqontrol/img/widget_screenshot.png)
 
 ### PostMessage-Communication (nur für Experten)
-* Technisch gesehen wird der Inhalt von BACKGROUND_URL / HTML in ein HTML-Element namens iframe eingefügt, bei dem es sich um eine Website innerhalb einer Website handelt
-* Durch Aktivieren der Option "PostMessage-Kommunikation für BACKGROUND_URL / HTML zulassen" können Sie die PostMessage-Kommunikation zwischen der Website in diesem Iframe und iQontrol selbst aktivieren
+* Technisch gesehen befindet sich der Inhalt von BACKGROUND_VIEW / URL / HTML in einem HTML-Element namens iframe, einer Website innerhalb einer Website
+* Durch Aktivieren der Option "PostMessage-Kommunikation für BACKGROUND_VIEW / URL / HTML zulassen" können Sie die PostMessage-Kommunikation zwischen der Website in diesem Iframe und iQontrol selbst aktivieren
 * Um Befehle an iQontrol zu senden, können Sie den folgenden Javascript-Befehl verwenden: `` window.parent.postMessage (message, "*"); ``
     * `` message`` ist ein Javascript-Objekt im Format `` {Befehl: Befehl, stateId: stateId, Wert: Wert} ``
     * Folgende Nachrichtenbefehle werden unterstützt:
         * `` {Befehl: "setWidgetState", stateId: <widgetStateId>, Wert: <value>} ``
 * Dadurch wird der ioBroker-Status `` iqontrol. <Instanz> .Widgets. <widgetStateId> `` auf den Wert `` <Wert> `` gesetzt (`` <Wert> `` kann eine Zeichenfolge, eine Zahl oder ein Boolescher Wert oder ein sein Objekt wie `` {val: <Wert>, ack: true | false} ``)
         * `` {Befehl: "getWidgetState", stateId: <widgetStateId>} ``
-* Dadurch sendet iQontrol den Wert des ioBroker-Status `` iqontrol. <Instanz> .Widgets. <widgetStateId> `` (siehe unten, wie die Antwortnachricht empfangen wird).
+* Dies führt dazu, dass iQontrol den Wert des ioBroker-Status `` iqontrol. <Instanz> .Widgets. <widgetStateId> `` sendet (siehe unten, wie die Antwortnachricht empfangen wird).
         * `` {Befehl: "getWidgetStateSubscribed", stateId: <widgetStateId>} ``
 * Dadurch sendet iQontrol den Wert des ioBroker-Status `` iqontrol. <Instanz> .Widgets. <widgetStateId> `` jetzt und jedes Mal, wenn sich sein Wert ändert (siehe unten, wie die Antwortnachrichten empfangen werden).
         * `` {Befehl: "setWidgetDeviceState", stateId: <widgetDeviceState>, Wert: <Wert>} ``
 * Dadurch wird der ioBroker-Datenpunkt, der den Geräten STATE `` <widgetDeviceState> `` (zum Beispiel der Datenpunkt, der LEVEL zugewiesen ist) zugewiesen wird, auf den Wert `` <Wert> `` (`` <Wert> `gesetzt `kann eine Zeichenfolge, eine Zahl oder ein Boolescher Wert oder ein Objekt wie` `{val: <Wert>, ack: true | false}` `) sein
         * `` {Befehl: "getWidgetDeviceState", stateId: <widgetDeviceState>} ``
-* Dadurch sendet iQontrol den Wert des ioBroker-Datenpunkts, der den Geräten STATE `` <widgetDeviceState> `` zugewiesen ist (z. B. den Datenpunkt, der LEVEL zugewiesen ist; siehe unten, wie die Antwortnachricht empfangen wird).
+* Dadurch sendet iQontrol den Wert des ioBroker-Datenpunkts, der dem Gerät STATE `` <widgetDeviceState> `` zugewiesen ist (z. B. den Datenpunkt, der LEVEL zugewiesen ist; siehe unten, wie die Antwortnachricht empfangen wird).
+        * `` {Befehl: "getWidgetDeviceStateSubscribed", stateId: <widgetDeviceState>} ``
+* Dies veranlasst iQontrol, den Wert des ioBroker-Datenpunkts, der dem Gerät STATE `` <widgetDeviceState> `` (zum Beispiel dem Datenpunkt, der LEVEL zugewiesen ist) zuzuweisen, jetzt und jedes Mal, wenn sich sein Wert ändert (siehe unten) wie man die Antwortnachricht erhält)
         * `` {Befehl: "setState", stateId: <stateId>, Wert: <value>} ``
 * Dadurch wird der ioBroker-Status `` <stateId> `` auf den Wert `` <value> `` gesetzt (`` <value> `` kann eine Zeichenfolge, eine Zahl oder ein Boolescher Wert oder ein Objekt wie `` {val: <sein Wert>, ack: true | false} ``)
         * `` {Befehl: "getState", stateId: <stateId>} ``
@@ -215,11 +221,13 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 				plainText: "<clear text of val, for example taken from valuelist>",
 				min: <minimum>,
 				max: <maximum>,
+				step: <step-width>,
 				valuelist: {<object with possible values and corresponding clear text>},
 				targetValues: {<target value list>},
 				ack: <true|false>,
 				readonly: <true|false>,
 				custom: {<object with custom settings>},
+				id: <id of the iobroker datapoint>,
 				from: "<source of state>",
 				lc: <timestamp of last change>,
 				ts: <timestamp of last actualization>,
@@ -241,7 +249,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 
 * Sie können den folgenden HTML-Code verwenden und ihn in den BACKGROUND_HTML-Status eines Widgets kopieren (das dann als "Konstante" konfiguriert werden muss).
 * Alternativ können Sie diesen Code als HTML-Datei in das Unterverzeichnis / userwidgets hochladen und auf BACKGROUND_URL-State verweisen (der dann auch als "Konstante" konfiguriert werden muss).
-* Aktivieren Sie die Option "PostMessage-Kommunikation für BACKGROUND_URL / HTML zulassen".
+* Aktivieren Sie die Option "PostMessage-Kommunikation für BACKGROUND_VIEW / URL / HTML zulassen".
 * Es wird gezeigt, wie eine bidirektionale Kommunikation zwischen der Website und iQontrol erfolgt
 
 ````html
@@ -384,11 +392,14 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 ### Weitere Konfiguration von Widgets
 * Es gibt zusätzliche Meta-Tags, die Sie im Kopfbereich Ihrer Widget-Website verwenden können, um das Verhalten des Widgets zu konfigurieren:
 * 'Widget-Beschreibung'
-* Syntax: ``<meta name="widget-description" content="Please see www.mywebsite.com for further informations. (C) by me"/> ``
+* Syntax: `` <meta name="widget-description" content="Please see www.mywebsite.com for further informations. (C) by me"/> ``
 * Der Inhalt wird angezeigt, wenn Sie das Widget als URL oder BACKGROUND_URL auswählen oder wenn Sie ein Widget automatisch erstellen
 * 'Widget-URL-Parameter'
-* Syntax: ``<meta name="widget-urlparameters" content="parameter/default value/description;parameter2/default value2/description2"/> ``
+* Syntax: `` <meta name="widget-urlparameters" content="parameter/default value/description/type;parameter2/default value2/description2/type2"/> ``
 * Der Benutzer wird nach diesen Parametern gefragt, wenn er das Widget als URL oder BACKGROUND_URL auswählt oder ein Widget automatisch erstellt
+* `` type`` ist optional und kann `` text`` (dies ist ein Fehler), `` number``, `` checkbox``, `` color``, `` select`` oder `` multipleSelect` sein `
+* Wenn der Typ `` select`` oder `` multipleSelect`` ist, müssen Sie die möglichen Optionen angeben, indem Sie `` / <selectOptions> `` hinzufügen, wobei `` <selectOptions> `` eine Zeichenfolge im Format `` ist <Wert1>, <Caption1> / <Wert2>, <Caption2> / ... ``
+* Wenn der Typ `` number`` ist, können Sie min, max und step-width angeben, indem Sie `` / <numberOptions> `` hinzufügen, wobei `` <numberOptions> `` eine Zeichenfolge im Format `` <min> ist. <max>, <step> ``
 * Alle diese Parameter werden der Widget-Website über eine URL-Parameter-Zeichenfolge (wie `` widget.html? Parameter = value & parameter2 = value2``) mitgeteilt.
 * Sie können diese Einstellungen in Ihrer Widget-Website verwenden, indem Sie die URL-Parameter mit einer Funktion wie der folgenden anfordern:
 
@@ -423,12 +434,12 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * `` `InvertUnreach`` (Invert UNREACH (benutze verbunden statt nicht zu erreichen)):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
-* `` AdditionalControlsSectionType`` (Aussehen von ADDITIONAL_CONTROLS):
+* `` AdditionsControlsSectionType`` (Aussehen von ADDITIONAL_CONTROLS):
 * Mögliche Werte: "keine" | "zusammenklappbar" | "zusammenklappbar offen"
 * Standard: "zusammenklappbar"
 * `` AdditionalControlsCaption`` (Beschriftung für ADDITIONAL_CONTROLS):
 * Standard: "Zusätzliche Steuerelemente"
-* `` AdditionsInfoSectionType`` (Aussehen von ADDITIONAL_INFO):
+* `` 'AdditionsInfoSectionType`` (Aussehen von ADDITIONAL_INFO):
 * Mögliche Werte: "keine" | "zusammenklappbar" | "zusammenklappbar offen"
 * Standard: "zusammenklappbar"
 * `` AdditionsinfoCaption`` (Beschriftung für ADDITIONAL_INFO):
@@ -451,7 +462,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * Standard: "true"
 * Kachelverhalten bei inaktivem Gerät:
 * `` sizeInactive`` (Größe der Kachel, wenn das Gerät inaktiv ist):
-* Mögliche Werte: "| "|" xhighIfInactive "|" wideIfInactive highIfInactive "|" xwideIfInactive highIfInactive "|" wideIfInactive xhighIfInactive "|" xwideIfInactive xhighIfInactive "|" fullWidthIfInactive Aspekt-1-1IfInactive "|" fullWidth 2IfInactive "|" fullWidthIfInactive Aspekt-16-9IfInactive "|" fullWidthIfInactive Aspekt-21-9IfInactive "|" fullWidthIfInactive fullHeightIfInactive "|"
+* Mögliche Werte: "" | "strictIfInactive shortIfInactive" | "strictIfInactive" | "strictIfInactive highIfInactive" | "strictIfInactive xhighIfInactive" | "shortIfInactive" | "shortIfInactive wideIfInactive" | "shortIfInactive xwideIfInactive" | " "|" xhighIfInactive "|" wideIfInactive highIfInactive "|" xwideIfInactive highIfInactive "|" wideIfInactive xhighIfInactive "|" xwideIfInactive xhighIfInactive "|" fullWidthIfInactive Aspekt-1-1IfInactive "|" fullWid -In 2IfInactive "|" fullWidthIfInactive Aspekt-16-9IfInactive "|" fullWidthIfInactive Aspekt-21-9IfInactive "|" fullWidthIfInactive fullHeightIfInactive "|"
 * Standard: "xwideIfInactive highIfInactive"
 * `` bigIconInactive`` (Großes Symbol anzeigen, wenn Gerät inaktiv ist):
 * Mögliche Werte: "true" | "false"
@@ -462,7 +473,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * `` noOverlayInactive`` (Überlagerung der Kachel entfernen, wenn das Gerät inaktiv ist):
 * Mögliche Werte: "true" | "false"
 * Standard: "true"
-* `` hideBackgroundURLInactive`` (Hintergrund vor BACKGROUND_URL / HTML ausblenden, wenn das Gerät inaktiv ist):
+* `` hideBackgroundURLInactive`` (Hintergrund vor BACKGROUND_VIEW / URL / HTML ausblenden, wenn das Gerät inaktiv ist):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
 * `` hideDeviceNameIfInactive`` (Gerätenamen ausblenden, wenn das Gerät inaktiv ist):
@@ -486,7 +497,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * `` noOverlayActive`` (Überlagerung der Kachel entfernen, wenn das Gerät aktiv ist):
 * Mögliche Werte: "true" | "false"
 * Standard: "true"
-* `` hideBackgroundURLActive`` (Hintergrund vor BACKGROUND_URL / HTML ausblenden, wenn das Gerät aktiv ist):
+* `` hideBackgroundURLActive`` (Hintergrund vor BACKGROUND_VIEW / URL / HTML ausblenden, wenn das Gerät aktiv ist):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
 * `` hideDeviceNameIfActive`` (Gerätenamen ausblenden, wenn das Gerät aktiv ist):
@@ -525,7 +536,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * `` tileEnlargeShowInPressureMenuActive`` (Vergrößern im Menü anzeigen, wenn das Gerät aktiv ist)
 * Mögliche Werte: "true" | "false"
 * Standard: "true"
-* `` sichtbarkeitBackgroundURLEnlarged`` (Sichtbarkeit des Hintergrunds von BACKGROUND_URL / HTML, wenn das Gerät vergrößert ist):
+* `` sichtbarkeitBackgroundURLEnlarged`` (Sichtbarkeit des Hintergrunds von BACKGROUND_VIEW / URL / HTML, wenn das Gerät vergrößert ist):
 * Mögliche Werte: "" | "visibleIfEnlarged" | "hideIfEnlarged"
 * Standard: ""
 * `` hideDeviceNameIfEnlarged`` (Gerätenamen ausblenden, wenn das Gerät vergrößert ist):
@@ -566,10 +577,10 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * `` popupAllowPostMessage`` (PostMessage-Kommunikation für URL / HTML zulassen):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
-* `` backgroundURLAllowPostMessage`` (PostMessage-Kommunikation für BACKGROUND_URL / HTML zulassen):
+* `` backgroundURLAllowPostMessage`` (PostMessage-Kommunikation für BACKGROUND_VIEW / URL / HTML zulassen):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
-* `` backgroundURLNoPointerEvents`` (Direkte Mausereignisse auf die Kachel anstatt auf den Inhalt von BACKGROUND_URL / HTML):
+* `` backgroundURLNoPointerEvents`` (Direkte Mausereignisse auf die Kachel anstatt auf den Inhalt von BACKGROUND_VIEW / URL / HTML):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
 
@@ -907,7 +918,7 @@ Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Ger
 Klicken Sie auf den Stift hinter dem Gerät, um die Rolle und den Status eines Geräts zu bearbeiten. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
 
 ### Ändern der Datenpunktkonfiguration
-Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymbol hinter einem Datenpunkt im Gerätekonfigurationsdialog oder auf der Registerkarte "Objekte" von iobroker ändern. Hier kannst du:
+Sie können die Konfiguration von Datenpunkten über das Schraubenschlüsselsymbol hinter einem Datenpunkt im Dialogfeld Gerätekonfiguration oder auf der Registerkarte Objekte von iobroker ändern. Hier kannst du:
 
 * Readonly-Flag setzen
 * Invert-Flag setzen
@@ -947,7 +958,7 @@ Fast alle Rollen haben einen **STATE** - und / oder einen **LEVEL** - Status. In
 }
 ````
 
-    * Sie können Ihre eigene Werteliste erstellen, indem Sie den Datenpunkt ändern (Schraubenschlüsselsymbol hinter dem Datenpunkt auf der Registerkarte Objekte von iobroker, siehe oben).
+    * Sie können Ihre eigene Werteliste erstellen, indem Sie den Datenpunkt ändern (Schraubenschlüsselsymbol hinter dem Datenpunkt auf der Registerkarte "Objekte" von iobroker, siehe oben).
 * iQontrol zeigt unter folgenden Umständen eine definierte Werteliste als Dropdown-Feld im Dialogfeld an:
 * Wenn der Typ 'Zahlen' ist und die Werteliste genau so viele Einträge enthält wie Schritte zwischen min- und max des Datenpunkts oder
 * Wenn der Typ 'boolean' ist, die Rolle jedoch nicht 'switch' oder
@@ -1021,7 +1032,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
 
 * Effektmodus:
   * **EFFECT** * Werteliste * - der zu spielende Effekt
-* **EFFECT_NEXT** *boolean* - Wenn auf true gesetzt, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen).
+* **EFFECT_NEXT** *boolean* - Wenn true festgelegt ist, wird der nächste Effekt abgespielt (als Alternative für Geräte, die die EFFECT-Werteliste nicht unterstützen).
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *boolean* - Wenn dieser Wert auf true gesetzt ist, wird der Effekt beschleunigt / verringert
 * Verschiedenes:
   * **POWER** * number * - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
@@ -1062,7 +1073,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 
 ###<img src="img/icons/door_closed.png" width="32"> Tür,<img src="img/icons/window_closed.png" width="32"> Fenster:
 * **STATE** *boolean* - Anzeige, ob die Tür oder das Fenster geöffnet oder geschlossen ist
-    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie 'gekippt' anzuzeigen (in den Fensteroptionen können Sie festlegen, welcher Text für geöffnet, geschlossen und gekippt steht, um das richtige Symbol anzuzeigen).
+    * Alternativ können Sie eine * Werteliste * zuweisen, um zusätzliche Zustände wie "geneigt" anzuzeigen (in den Fensteroptionen können Sie festlegen, welcher Text für geöffnet, geschlossen und geneigt steht, um das richtige Symbol anzuzeigen).
     * Sie können auch eine * Zeichenfolge * zuweisen, um Text wie "3 Fenster offen" oder "alles geschlossen" oder eine * Nummer * anzuzeigen.
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
@@ -1082,7 +1093,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **LEVEL** *number* - Höhe des Blinden in Prozent
 * **RICHTUNG** *Werteliste* - kann Stop, Up und Down sein. Die Werte für Stop, Up, Down und Unknown können konfiguriert werden
 * **STOP** *boolean* - wird auf true gesetzt, wenn die Stop-Taste gedrückt wird
-* **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Auf- / Ab-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle von oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie einen Wert über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Auf- / Ab-Taste gedrückt wird
+* **UP** / **DOWN** *boolean* - wird auf true gesetzt, wenn die Auf- / Ab-Taste gedrückt wird (für Geräte, die UP- und DOWN-Datenpunkte anstelle oder zusätzlich zu LEVEL verwenden). Zusätzlich können Sie einen Wert über die Datenpunkte **UP_SET_VALUE** / **DOWN_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Auf- / Ab-Taste gedrückt wird
 * **FAVORITE_POSITION** *boolean* - kann verwendet werden, um eine Lieblingsposition abzurufen. Wenn die Favoritentaste (Schaltflächenbeschriftung kann in den Geräteeinstellungen konfiguriert werden) gedrückt wird, wird true an diesen Datenpunkt gesendet. Zusätzlich können Sie einen Wert über den Datenpunkt **FAVORITE_POSITION_SET_VALUE** definieren. Wenn definiert, wird dieser Wert anstelle von true gesendet, wenn die Favoritentaste gedrückt wird
 * **SLATS_LEVEL** *number* - Position der Lamellen in Prozent
 
@@ -1184,6 +1195,21 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 
 ## Changelog
 
+### dev
+* (sbormann) Added Flot-Chart widget.
+* (sbormann) Enhanced adding of widgets with a new settings dialog.
+* (sbormann) Added some new options for widget-developers (the meta-tag url-datapoints was enhanced for example to ask for a color with a color-picker, postMessage-answeres now contain the id of the original datapoint).
+* (sbormann) Removed space when using new-line-option.
+* (sbormann) Added role "button" in custom dialog.
+* (sbormann) Enhanced timing of repositioning dialogs after loading.
+* (sbormann) Added noToolbar to URL-parameters.
+* (sbormann) Added BACKGROUND_VIEW, to define a view which will be displayed as background of a tile.
+* (sbormann) Added the option 'Open linked view in parent instance, if this view is used as a BACKGROUND_VIEW' for links to other views. 
+* (sbormann) Added a panel which can be placed on left side of the screen and display a BACKGROUND_VIEW/URL/HTML and is widely configurable.
+* (sbormann) Added showing of swipe goals (can be hidden via option in options/miscellaneous/swiping).
+* (sbormann) Fixed crash when enlarging a hidden tile.
+* (sbormann) Reworked some borders and scrolling parameters.
+
 ### 1.4.1 (2020-11-01)
 * (sbormann) Fixed drag-sorting or tables and usage of comboboxes on mobile (touch) devices.
 * (sbormann) Enhanced demo for new instances.
@@ -1192,13 +1218,13 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 ### 1.4.0 (2020-10-30)
 * (sbormann) Added Autocreate views, which will help you create entire configurations out of ioBroker lists (for example rooms or functions).
 * (sbormann) Added state ENLARGE_TILE, which can be used to trigger enlargement of tile via external datapoint.
-* (sbormann) Enhanced dynamic zoom for BACKGROUND_URL/HTML to be more accurate when resizing the tile.
+* (sbormann) Enhanced dynamic zoom for BACKGROUND_VIEW/URL/HTML to be more accurate when resizing the tile.
 * (sbormann) Drag-Sort of lists should now work on touch devices too.
 
 ### 1.3.6 (2020-10-29)
 * (sbormann) Added option for transparent background.
 * (sbormann) Enhanced handling of temporary states for color lights.
-* (sbormann) Added option for dynamic zoom for BACKGROUND_URL/HTML.
+* (sbormann) Added option for dynamic zoom for BACKGROUND_VIEW/URL/HTML.
 * (sbormann) Fixed creating of widget-datapoints.
 
 ### 1.3.5 (2020-10-27)
@@ -1216,7 +1242,7 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 * (sbormann) Fixed colour lights if using alterntive_color_space.
 * (sbormann) Added blank symbol.
 * (sbormann) Removed up/down arrows from lists (because of sort-by-dragging not necessary any more and they broke symbolic links).
-* (sbormann) Added option to apply padding to BACKGROUND_URL/HTML.
+* (sbormann) Added option to apply padding to BACKGROUND_VIEW/URL/HTML.
 * (sbormann) Enhanced recognition of tilted state for windows.
 * (sbormann) Added backup and restore of settings and userfiles (under options / backup and restore).
 
@@ -1260,7 +1286,7 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 * (sbormann) Added possibility to hide views name.
 * (sbormann) Added possibility to upload html, css and js files and added drop down menu for these files for URL- and BACKGROUND_URL-State.
 * (sbormann) Added option to hide icon, if device is enlarged.
-* (sbormann) Added option set visibility of BACKGROUND_URL/HTML, if device is enlarged.
+* (sbormann) Added option set visibility of BACKGROUND_VIEW/URL/HTML, if device is enlarged.
 
 ### 1.2.5 (2020-09-19)
 * (sbormann) Fix for iOS 14 touch callout.
@@ -1268,7 +1294,7 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 * (sbormann) Added forced reload to cover images.
 * (sbormann) Added more tile sizes.
 * (sbormann) Added options to hide device, name or state if inactive, active or enlarged.
-* (sbormann) Added option direct mouse events to the tile instead to the content of BACKGROUND_URL/HTML.
+* (sbormann) Added option direct mouse events to the tile instead to the content of BACKGROUND_VIEW/URL/HTML.
 * (sbormann) Added postMessage-Communication to allow widget-websites to send commands to iQontrol and receive messages from iQontrol.
 * (sbormann) Added option to disable swiping.
 
@@ -1292,7 +1318,7 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 * (sbormann) Enhanced TileActiveConditions to even work, if STATE is not defined.
 * (sbormann) Added option to rename section 'Additional Buttons' for remote.
 * (sbormann) Arrays like REMOTE_ADDITIONAL_BUTTONS are now sortable.
-* (sbormann) Enhanced handling of BACKGROUND_URL/HTML.
+* (sbormann) Enhanced handling of BACKGROUND_VIEW/URL/HTML.
 * (sbormann) Added options to change caption of UP, STOP and DOWN for blinds.
 * (sbormann) Disabled scrolling to top by reconnection.
 * (sbormann) Added more tile size options (full width with different aspects and full screen).

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartmeter/README.md
 title: ioBroker.smartmeter
-hash: 1EZwTMOmjPHYrU9Olz0ui1yK1amt0lMCwonFiqeMgAM=
+hash: cJvtg9H09nVIVUCkFepdcrH8lcR+QaJpUbDehwf07HM=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartmeter/admin/smartmeter.png)
 
@@ -22,9 +22,9 @@ hash: 1EZwTMOmjPHYrU9Olz0ui1yK1amt0lMCwonFiqeMgAM=
 
 Dieser Adapter für ioBroker ermöglicht das Lesen und Parsen von Smartmeter-Protokollen, die der OBIS-Nummernlogik folgen, um deren Daten verfügbar zu machen.
 
-*** Der Adapter benötigt NodeJS 4.x, um zu funktionieren! ***
+*** Der Adapter benötigt NodeJS 8.x +, um zu funktionieren! ***
 
-*** Für die Installation dieses Gitters muss git installiert sein! ***
+*** Auf diesem Adapter muss git zur Installation installiert sein! ***
 
 ## Beschreibung der Parameter
 ioBroker-Forum-Thread: http://forum.iobroker.net/viewtopic.php?f=23&t=5047&p=54973
@@ -64,7 +64,7 @@ Der Adapter versucht, den in den Spezifikationen definierten D0-Protokollmodus z
 * Modus E: Baudratenumschaltung und Ack-Message erforderlich, benutzerdefinierte Protokolle, nicht korrekt unterstützt !! Kontaktieren Sie mich, wenn Sie ein solches Smartmeter haben
 
 ### D0: Baudrate-Umschaltung-Überschreiben
-Der Adapter versucht, die Baudrate für die Datennachrichten gemäß den Protokollspezifikationen zu ermitteln. Aber wie beim Modus liefern einige Smartmeter hier falsche Daten. Sie können dies also verwenden, um die Baudrate für die Datennachricht nach Bedarf zu überschreiben. Lassen Sie das Feld leer, um die vom Smart Meter definierte Baudratenumschaltung zu verwenden.
+Der Adapter versucht, die Baudrate für die Datennachrichten zu bestimmen, wie in den Protokollspezifikationen definiert. Aber wie beim Modus liefern einige Smartmeter hier falsche Daten. Sie können dies also verwenden, um die Baudrate für die Datennachricht nach Bedarf zu überschreiben. Lassen Sie das Feld leer, um die vom Smart Meter definierte Baudratenumschaltung zu verwenden.
 
 ## Adapter wird getestet mit ...
 ... mindestens:
@@ -78,7 +78,7 @@ Der Adapter versucht, die Baudrate für die Datennachrichten gemäß den Protoko
 * Iskraemeco MT175
 * Itron EM214 Typ 720
 * Landis & Gyr E220
-* Niederländisches Smart Meter mit DSRM-Protokoll (verwenden Sie "Nur serielle Geräte lesen Daten" und "D0" als Protokoll)
+* Niederländisches Smart Meter mit DSRM-Protokoll (verwenden Sie "Nur Daten zum Lesen serieller Geräte" und "D0" als Protokoll)
 * DZG DWS7412.1T
   ** WICHTIG* Es scheint einen Firmware-Fehler zu geben und manchmal wird der aktuelle Energieverbrauch negativ! Manuelle Neuberechnung möglich mit Formular von https://github.com/Apollon77/smartmeter-obis/issues/75#issuecomment-581650736* ... und vielen, vielen mehr
 

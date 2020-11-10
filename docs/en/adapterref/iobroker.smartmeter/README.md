@@ -16,7 +16,7 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon
 
 This adapter for ioBroker allows the reading and parsing of smartmeter protocols that follow the OBIS number logic to make their data available.
 
-***The Adapter needs nodejs 4.x to work!***
+***The Adapter needs nodejs 8.x+ to work!***
 
 ***This Adapter needs to have git installed currently for installing!***
 

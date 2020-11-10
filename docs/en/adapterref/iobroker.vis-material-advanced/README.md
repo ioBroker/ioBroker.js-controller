@@ -65,6 +65,7 @@ not yet final:
     - border-radius to enable and change the round corner
     - valueAlign Align the Value field left,center or right
     - value-vetical Align the Value field top,botton or middle
+    - borderColor Color of the Border if activated
 
 
 ### Getting started
@@ -73,6 +74,11 @@ install the Adapter and start VIS in Edit mode.
 On left side choose vis-material-adapter and than all widgets are shown in preview.
 
 ............. lots of docu missing ......................
+
+**this is example2.png, import it and see it live**
+![](widgets/door_example.png)
+
+
 
 **you can import the example.json file into vis**
 thanks to @sigi234
@@ -83,6 +89,10 @@ thanks to @sigi234
     ### __WORK IN PROGRESS__
 * 
 -->
+### 1.2.0 (2020-11-04)
+* added option to round every corner different/not 
+* added option to change color of border
+* added option for shadow and size of shadow
 
 ### 1.1.1 (2020-10-18)
 * url wrong in package.json
@@ -96,9 +106,6 @@ thanks to @sigi234
 
 ### 0.9.1 (2020-10-13)
 * some colorizeByValue options did not work
-
-### 0.9.0 (2020-10-13)
-* bugfix for ListNumber and ListText, Icon should never been shown
 
 ## License
 MIT License

@@ -117,6 +117,14 @@ The adapter will read all actual values for IDs defined in this scene and save i
 -->
 
 ## Changelog
+### __WORK IN PROGRESS__
+* (bluefox) Implemented drag&drop for the reorder of scenes in folders
+
+### 2.3.1 (2020-11-06)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-SCENES-M)
+
+### 2.3.0 (2020-11-02)
+* (bluefox) Fixed GUI errors
 
 ### 2.1.7 (2020-10-30)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-SCENES-E, IOBROKER-SCENES-G, IOBROKER-SCENES-A)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.i2c/README.md
 title: ioBroker.i2c
-hash: la5rIqhMp2LjxDFzsghRF91IP9I5i3GxI203+1eZ1zU=
+hash: 40EqvTkUuNxAOD12jqOvRsYZd+CwfQoIYUc7z7Cr6bI=
 ---
 ![商标](../../../en/adapterref/iobroker.i2c/admin/i2c.png)
 
@@ -14,10 +14,11 @@ hash: la5rIqhMp2LjxDFzsghRF91IP9I5i3GxI203+1eZ1zU=
 ![依赖状态](https://img.shields.io/david/UncleSamSwiss/iobroker.i2c.svg)
 ![已知漏洞](https://snyk.io/test/github/UncleSamSwiss/ioBroker.i2c/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.i2c.png?downloads=true)
-![特拉维斯](http://img.shields.io/travis/UncleSamSwiss/ioBroker.i2c/master.svg)
 
 ＃ioBroker.i2c
-![测试与发布](https://github.com/UncleSamSwiss/ioBroker.i2c/workflows/Test%20and%20Release/badge.svg)
+[![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/i2c/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
+**测试：**![测试与发布](https://github.com/UncleSamSwiss/ioBroker.i2c/workflows/Test%20and%20Release/badge.svg)
 
 ## IoBroker的I2C适配器
 使用I2C总线与连接到本地系统的设备进行通信。
@@ -60,6 +61,9 @@ sudo usermod -G i2c iobroker
 ##支持的设备
 当前支持以下设备。括号中的数字是十六进制格式的设备的已知地址（无读取位）。
 
+### Adafruit STEMMA土壤传感器（36）
+Adafruit STEMMA土壤传感器-使用ATSAMD10芯片的I2C电容式湿度传感器。
+
 ### ADS1015（48-4B）
 德州仪器（TI）具有内部基准的4个3.3kSPS，12位ADC。
 
@@ -69,11 +73,23 @@ sudo usermod -G i2c iobroker
 ### BME280（76，77）
 博世数字湿度，压力和温度传感器。
 
+### GY-US42声纳测距仪（70）
+MaxSonar GY-US42声纳测距仪20-720厘米。
+
+### HMC5883L 3轴数字罗盘（1E）
+霍尼韦尔3轴数字罗盘IC。
+
+### INA219电流/功率监控器（40-4F）
+德州仪器（TI）零漂移双向电流/功率监控器。
+
 ### MCP23008 8位I / O扩展器（20-27）
 具有串行接口的Microchip 8位I / O扩展器。
 
 ### MCP23017 16位I / O扩展器（20-27）
 具有串行接口的Microchip 16位I / O扩展器。
+
+### MCP4725 12位数模转换器（60-67）
+具有EEPROM存储器的Microchip 12位数模转换器。
 
 ### PCF8574 8位I / O扩展器（20-27）
 德州仪器（TI）用于I2C总线的远程8位I / O扩展器。
@@ -84,6 +100,24 @@ sudo usermod -G i2c iobroker
 ### PCA9685 16通道12位PWM伺服/ LED驱动器（40-7F）
 Adafruit PCA9685转接板，用于16通道12位PWM。适配器专注于使用0..4095中的16个通道作为LED调光器。
 当PWM（和GND）连接到N通道Mosfet模块时，可以驱动许多LED，例如基于D4184。将LED GND连接至MOSFET，并将+ 12/24 / n V连接至PSU。
+
+### QMC5883L 3轴磁传感器（0D）
+QST 3轴磁传感器。
+
+### SHT3x湿度和温度传感器（44-45）
+Sensirion SHT3x湿度和温度传感器。
+
+### SRF02超声波测距仪（70）
+Devantech超声波测距仪16-600cm。
+
+### SX1507带LED驱动器的4通道电平转换GPIO（3E，3F，70、71）
+具有4个通道LED驱动器的Semtech World最低电压电平转换GPIO。
+
+### SX1508具有LED驱动器和键盘引擎的8通道电平转换GPIO（20-23）
+具有8个通道的带LED驱动器和键盘引擎的Semtech World最低电压电平转换GPIO。
+
+### SX1509 16通道电平转换GPIO，带有LED驱动器和键盘引擎（3E，3F，70、71）
+具有16个通道的带LED驱动器和键盘引擎的Semtech World最低电压电平转换GPIO。
 
 ###通用设备（03-77）
 通用I2C设备。可以根据硬件配置寄存器。
@@ -189,7 +223,7 @@ BME280代码基于https://github.com/skylarstein/bme280-sensor：
 
 以上版权声明和本许可声明应包含在本软件的所有副本或大部分内容中。
 
-本软件按“原样”提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性，特定目的的适用性和非侵权性的保证。无论是由于软件，使用或其他方式产生的，与之有关或与之有关的合同，侵权或其他形式的任何索赔，损害或其他责任，作者或版权所有者概不负责。软件。
+本软件按“原样”提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性，特定目的的适用性和非侵权性的保证。无论是由于软件，使用或其他方式产生的，与之有关或与之有关的合同，侵权或其他形式的任何索赔，损害或其他责任，作者或版权所有者概不负责软件。
 
 ### ADS1x15
 ADS1x15代码基于https://github.com/alphacharlie/node-ads1x15/blob/master/index.js
@@ -204,7 +238,7 @@ MIT许可证（MIT）
 
 以上版权声明和本许可声明应包含在本软件的所有副本或大部分内容中。
 
-本软件按“原样”提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性，特定目的的适用性和非侵权性的保证。无论是由于软件，使用或其他方式产生的，与之有关或与之有关的合同，侵权或其他形式的任何索赔，损害或其他责任，作者或版权所有者概不负责。软件。
+本软件按“原样”提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性，特定目的的适用性和非侵权性的保证。无论是由于软件，使用或其他方式产生的，与之有关或与之有关的合同，侵权或其他形式的任何索赔，损害或其他责任，作者或版权所有者概不负责软件。
 
 ### PCA9685
 PCA9685代码基于https://github.com/adafruit/Adafruit_Python_PCA9685/blob/master/Adafruit_PCA968/PCA9685.py
@@ -217,7 +251,7 @@ MIT许可证（MIT）
 
 以上版权声明和本许可声明应包含在本软件的所有副本或大部分内容中。
 
-本软件按“原样”提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性，特定目的的适用性和非侵权性的保证。无论是由于软件，使用或其他方式产生的，与之有关或与之有关的合同，侵权或其他形式的任何索赔，损害或其他责任，作者或版权所有者概不负责。软件。
+本软件按“原样”提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性，特定目的的适用性和非侵权性的保证。无论是由于软件，使用或其他方式产生的，与之有关或与之有关的合同，侵权或其他形式的任何索赔，损害或其他责任，作者或版权所有者概不负责软件。
 
 也基于：https://github.com/tessel/servo-pca9685/blob/master/index.js
 
@@ -226,6 +260,16 @@ MIT许可证（MIT）
 根据Apache许可证2.0版<LICENSE-APACHE或http://www.apache.org/licenses/LICENSE-2.0>或MIT许可证<LICENSE-MIT或http://opensource.org/licenses/MIT>许可，由您选择。除非按照这些条款，否则不得复制，修改或分发此文件。
 
 ## Changelog
+
+### 1.1.0 (2020-11-05)
+
+-   (UncleSamSwiss) Added support for SX1507, SX1508 and SX1509.
+-   (UncleSamSwiss) Added support for MCP4725.
+-   (UncleSamSwiss) Added support for HMC5883L and QMC5883L.
+-   (UncleSamSwiss) Added support for Adafruit STEMMA Soil Sensor.
+-   (UncleSamSwiss) Added support for INA219.
+-   (UncleSamSwiss) Changed polling interval of ADS1x15 to milliseconds.
+-   (UncleSamSwiss) Fixed several bugs.
 
 ### 1.0.1 (2020-10-27)
 
@@ -271,3 +315,20 @@ MIT许可证（MIT）
 ### 0.0.1 (2017-07-27)
 
 -   (UncleSamSwiss) Initial version
+
+## License
+
+Copyright 2020 UncleSamSwiss
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.

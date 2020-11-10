@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: 1h0xd/ee+enAhM1sc14+Mcu9AWiM6U6cDO8oSCsN1og=
+hash: 4mGLoOsNPkarT+c2AZRtw61ymIsoXLmGGM+Rva+RVN8=
 ---
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -29,9 +29,9 @@ Er Nord die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei
 ### Tab Haupteinstellungen
 Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm und Passwort Rechte.
 
-*Alle Zeiten sind in Sekundenzahlengeben*
+*Bis 1.2.4, sind alle Zeiten sind in Sekundenzahlengeben*
 
-- Aktivierzeit -> Zeitverzögerung bis zu Aktivierung, wenn man einen Verspätung Datenpunkt hat
+- Aktivierzeit -> Zeitverzögerung bis zur Aktivierung, wenn man einen Verspätung Datenpunkt hat
 - Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf wahrheitsgemäß
 - Alarmverzögerung -> Vertragsfrist bis Einbruch Rechte wird wird
 - Auslösezeit bei Warnungen /> Sirene innen -> Bei Auslösung des berechtigungskreises oder scharf innen kreises, wird der jeweils zugehörigen Datenpunkt für die Zeit auf wahres Vermögen
@@ -48,7 +48,7 @@ Berechtigungen über Andere Adapter wie z.B. Telegramm, Email oder andere.
 Hier werden die Kreise der Anlage Infrastruktur.
 * die Namen der Staaten lassen sich ändern *
 
-Der Alarmkreis hat die Rechte „hoch" und hat bei aktivierter Anlage (scharf) Vorrang vor allen anderen Keisen. Er dient zur eigentlichen Wahrnehmung der Anlage. Dies ist der Vollschutz einer Alarmanlage scharf melde intern.
+Der Alarmkreis hat die Rechte „hoch" und hat bei aktivierter Anlage (scharf) Vorrang vor allen anderen Keisen. Er dient zur eigentlichen Wahrnehmung der Anlage. Dies ist der Vollschutz einer Alarmanlage scharf melde intern. Der Meldekreis dient nur zur Meldung der der scharfen, scharfen Praktikanten und bei der Nachtruhe.
 * Es ist möglich möglich, dass man für einen Staat, den Haken bei allen drei Kreisen macht. *
 
 Die Kreise werden folgender gehört:
@@ -66,7 +66,7 @@ Der Ablauf der konfigurierten Staaten auf Ansprüche und meldet stirbt.
 
 ### Tab Sprachausgabe
 Ist eine mögliche Sprachausgabe z.B. bei bei der Regel des Zustandses.
-* Man muss sich sicher sein, das der Ausgewählte Datenpunkt, mit Einem Text beschrieben Werden Kann! ZUM BEISPIEL. "sayit.0.tts" *
+* Man muss sich sicher sein, das der Datenpunkte, mit einem Text werden werden können! ZUM BEISPIEL. "sayit.0.tts" *
 
 Es ist wichtig, sich die Ausgabe von Namen mit Ansagen zu lassen.
 
@@ -95,7 +95,7 @@ Das sind die eigentlichen Staaten um die Alarmanlage zu verwalten.
 - use.enable -> Alarm der Anlage
 - use.enable_with_delay -> Alarm der Anlage mit Arbeitszeit
 - use.list -> Deaktivierung
-- use.quit_changes -> Rücksetzen der Staaten *info.notification_circuit_changes, info.sharp_inside_siren, status.activation_failed*
+- use.quit_changes -> Rücksetzen der Zustände *info.notification_circuit_changes, info.sharp_inside_siren, status.activation_failed*
 - use.toggle_password -> Deaktivierung / Alarm der Anlage mit Passwort
 - use.toggle_with_delay -> Deaktivierung / Aktivierung der Anlage mit Alarmzeitung
 - use.toggle_with_delay_and_password -> Deaktivierung / Alarm der Anlage mit Passwort und Handlungenplanung
@@ -119,6 +119,17 @@ Der log_today Zustand wird um Mitternacht geleert.
 
 ## Changelog
 
+#### 1.6.0 (08.11.2020)
+* (misanorot) changed time inputs to numbers
+
+#### 1.5.0 (08.11.2020)
+* (misanorot) added stop inside alarm with disable
+
+#### 1.4.0 (05.11.2020)
+* (misanorot) added silent alarm selection for every state
+
+#### 1.3.0 (01.11.2020)
+* (misanorot) added diffrent time options
 
 #### 1.2.0 (09.07.2020)
 * (misanorot) added countdown speech output

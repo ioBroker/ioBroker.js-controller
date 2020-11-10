@@ -34,6 +34,10 @@ Workaround for text to speech is to use the [SONOS HTTP API](https://github.com/
 * Show queue with covers
 
 ## Changelog
+
+### 2.1.1 (2020-11-08)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-JS-CONTROLLER-S7, #78)
+
 ### 2.1.0 (2020-05-31)
 * (bluefox) TTS Refactoring
 

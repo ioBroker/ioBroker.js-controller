@@ -32,6 +32,20 @@ Scans an ical calendar to calculate the days left until next trash pickup
 
 ## Changelog
 
+### 1.0.2
+
+* (klein0r) Added color picker
+
+### 1.0.1
+
+* (klein0r) Fixed date calculation issue in VIS
+
+### 1.0.0
+
+* (klein0r) BREAKING CHANGE: Renamed data types - check your scripts!
+* (klein0r) First stable release
+* (klein0r) Added iobroker sentry
+
 ### 0.0.11
 
 * (klein0r) Better error reporting

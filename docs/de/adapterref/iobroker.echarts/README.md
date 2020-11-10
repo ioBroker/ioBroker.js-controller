@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: HZMqnIYJpRdZhcSBH9zMKwYeK5yhLIkznc2+sDE5aN0=
+hash: JyOvcim9n28Qm0LRcmvtB4ihyR6nR5gEN6Q9Wd9/vKQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -27,18 +27,22 @@ Sie können die Voreinstellungen auf dem Server rendern und als base64-URL abruf
 
 ```
 sendTo('echarts.0', {
-    renderer: 'svg',         // svg | png | jpg | pdf, default: svg
-    width: 1024,             // default 1024
-    height: 300,             // default 300
-    height: 300,             // default 300
-    title: 'ioBroker Chart', // Title of PDF document
-    quality: 0.8,            // quality of JPG
-    compressionLevel: 3,     // Compression level of PNG
-    filters: 8,              // Filters of PNG (Bit combination https://github.com/Automattic/node-canvas/blob/master/types/index.d.ts#L10)
-    fileOnDisk: '',          // Path on disk to save the file
-    fileName: '',            // Path in ioBroker DB to save the files on 'echarts.0',
-    background: '',          // Background color
-    theme: 'light',          // Theme type: 'light', 'dark'
+    preset:   'echarts.0.myPreset', // the only mandatory attribute
+
+    renderer: 'svg',                // svg | png | jpg | pdf, default: svg
+
+    width: 1024,                    // default 1024
+    height: 300,                    // default 300
+    background: '#000000',          // Background color
+    theme: 'light',                 // Theme type: 'light', 'dark'
+
+    title: 'ioBroker Chart',        // Title of PDF document
+    quality: 0.8,                   // quality of JPG
+    compressionLevel: 3,            // Compression level of PNG
+    filters: 8,                     // Filters of PNG (Bit combination https://github.com/Automattic/node-canvas/blob/master/types/index.d.ts#L10)
+
+    fileOnDisk: '',                 // Path on disk to save the file
+    fileName: '',                   // Path in ioBroker DB to save the files on 'echarts.0',
 }, result => {
     if (result.error) {
         console.error(result.error);
@@ -59,12 +63,16 @@ Sie können Ansichtsdiagramme lokal debuggen mit:
 - Widget für vis (Schaltfläche)
 - Widget für Material
 - Aufzählungssymbole in Ordnern oder in deren Nähe anzeigen
+- Ziehen und Ablegen von Voreinstellungen zur Neuordnung
 
 <! - Platzhalter für die nächste Version (am Zeilenanfang):
 
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.3.4 (2020-11-08)
+* (bluefox) Corrected server-side rendering of PNG 
+
 ### 0.3.1 (2020-10-31)
 * (bluefox) Added the color of export button 
 * (bluefox) The interpolated values are shown now

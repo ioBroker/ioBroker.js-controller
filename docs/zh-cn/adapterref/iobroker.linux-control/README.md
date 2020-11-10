@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.linux-control/README.md
 title: ioBroker.linux控制
-hash: dK7NHAYUOt8m7SjzhfXb++SHUc69QIU7mbuljXYBBxk=
+hash: UWL76LQz+eRlIMa6yQbcb9u3fZ4fo19J2QtVuW58jDc=
 ---
 ![商标](../../../en/adapterref/iobroker.linux-control/admin/linux-control.png)
 
@@ -18,7 +18,7 @@ hash: dK7NHAYUOt8m7SjzhfXb++SHUc69QIU7mbuljXYBBxk=
 
 ＃ioBroker.linux-control
 ##用于ioBroker的Linux控制适配器
-[![paypal]（https://www.paypalobjects.com/zh_CN/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
+[![贝宝]（https://www.paypalobjects.com/zh_CN/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
 控制Linux设备并获取有关系统的信息
 
@@ -31,12 +31,12 @@ hash: dK7NHAYUOt8m7SjzhfXb++SHUc69QIU7mbuljXYBBxk=
 |设置|描述|
 |-------|-----------|
 |启用|启用或禁用主机更新|
-|要存储所有数据点的数据点ID | ID |
-| IP |您的Linux设备的IP地址|
+|要存储所有数据点的| datapoint id | id |
+|| IP |您的Linux设备的IP地址|
 |端口| Linux设备的SSH端口|
-|轮询间隔|轮询间隔，以分钟为单位。 <br>要取消轮询，您可以使用“ 0”或将其留空|
+|轮询间隔|轮询间隔，以分钟为单位。<br>要取消轮询，您可以使用“ 0”或将其保留为空白|
 | user | ssh登录用户|
-|密码/密码| ssh登录密码或密码（如果使用rsa键）|
+| password / passpharse | ssh登录密码或使用rsa密钥的passpharse |
 |使用Sudo |使用sudo |
 | rsa密钥| rsa密钥的路径和文件名。访问权限必须可用！ |
 |超时|连接超时|
@@ -45,9 +45,9 @@ hash: dK7NHAYUOt8m7SjzhfXb++SHUc69QIU7mbuljXYBBxk=
 ![数据点](../../../en/adapterref/iobroker.linux-control/docs/en/img/datapoints.gif)
 
 适配器将创建预定义的数据点，其中包含信息以及控制Linux设备的可能性。这些可以在这里选择。
-另外，对于每个单独的主机，可以通过拖放将单独的数据点或整个通道放置在黑名单中，这样就不会为主机创建它们。
+另外，对于每个单独的主机，可以通过拖放将单独的数据点或整个通道放在黑名单中，这样就不会为该主机创建它们。
 
-请注意，如果要将整个频道添加到黑名单，则必须将频道节点拖放到黑名单。只有这样，整个频道才会被忽略-请参见下面的sreenshot：
+请注意，如果要将整个通道添加到黑名单，则必须将通道节点拖放到黑名单。只有这样，整个频道才会被忽略-参见下面的sreenshot：
 
 ![数据点](../../../en/adapterref/iobroker.linux-control/docs/en/img/all_to_blacklist.gif)
 
@@ -71,7 +71,7 @@ hash: dK7NHAYUOt8m7SjzhfXb++SHUc69QIU7mbuljXYBBxk=
 |-------|-----------|
 |启用|启用或禁用文件夹更新|
 |主机|应使用的主机|
-|要存储所有数据点的数据点ID | ID |
+|要存储所有数据点的| datapoint id | id |
 |路径|文件夹的路径|
 ||文件名模式|应重新显示的文件名的模式。 |
 |单位|尺寸单位|
@@ -90,7 +90,7 @@ hash: dK7NHAYUOt8m7SjzhfXb++SHUc69QIU7mbuljXYBBxk=
 |启用|启用或禁用命令更新|
 |主机|应使用的主机|
 |要存储数据点的数据点ID | ID |
-| polling interval |不同的轮询间隔仅针对命令。要取消激活，请使用`0`或将该字段留空，然后使用来自主机的轮询间隔|
+| polling interval |不同的轮询间隔（以秒为单位），仅用于命令。要取消激活，请使用`0`或将该字段留空，然后使用来自主机的轮询间隔|
 |命令|应使用的命令<br><br>如果您使用需要`sudo`的用户，则必须在您自己的命令中添加`sudo -S`！ |
 |命令|应使用的命令<br><br>如果您使用需要`sudo`的用户，则必须在您自己的命令中添加`sudo -S`！ |
 |类型|数据点的类型|
@@ -102,6 +102,21 @@ hash: dK7NHAYUOt8m7SjzhfXb++SHUc69QIU7mbuljXYBBxk=
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 1.0.1 (2020-11-04)
+* (Scrounger) translation for polling interval optimized
+
+### 1.0.0 (2020-09-30)
+* (Scrounger) bump to stable
+
+### 0.3.7 (2020-09-19)
+* (Scrounger) subscribe bug fix for user commands
+
+### 0.3.6 (2020-09-17)
+* (Scrounger) Bug fix for function needrestart if sudo is used
+
+### 0.3.5 (2020-09-15)
+* (Scrounger) Fixed some errors reported via Sentry
 
 ### 0.3.4 (2020-09-09)
 * (Scrounger) bug fixes

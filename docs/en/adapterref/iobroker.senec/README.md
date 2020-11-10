@@ -527,6 +527,9 @@ If a state is not documented (or only partially documented) and you know what it
    *Read-only text, which designates the serial number of wallbox [0..3].*
 
 ## Changelog
+### 1.0.12 (NoBl)
+* Just set 'supportCustoms' to false so it won't show up in admin custom config.
+
 ### 1.0.11 (NoBl)
 * Update to current adapter template
 * Added Datapoints: PV1.MPP_CUR, MPP_VOL, MPP_POWER (former: MPP_INT which is unused at this moment but does still exist)

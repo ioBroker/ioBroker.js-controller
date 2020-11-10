@@ -21,6 +21,9 @@ Ausgänge zu schalten. Für die Selbstgemachte Türsprechstelle, kann jede
 Hardware auf der sich Baresip installieren lässt genutzt werden.
 
 ## Changelog
+### 1.1.1
+* (bettman66) add timeout for ring
+
 ### 1.1.0
 * (bettman66) code optimization
 
@@ -32,30 +35,6 @@ Hardware auf der sich Baresip installieren lässt genutzt werden.
 
 ### 1.0.10
 * (bettman66) add detour
-
-### 1.0.9
-* (bettman66) fix userconfigerror
-
-### 1.0.8
-* (bettman66) fix dtmf-timeout
-
-### 1.0.7
-* (bettman66) check states
-
-### 1.0.6
-* (bettman66) clearTimeouts
-
-### 1.0.5
-* (bettman66) update stable
-
-### 1.0.4
-* (bettman66) new config
-
-### 1.0.3
-* (bettman66) update adapter-core
-
-### 1.0.2
-* (bettman66) add selectID.js
 
 ## Links
 * https://forum.iobroker.net/topic/23413/ich-baue-eine-t%C3%BCrsprechstelle-ohne-cloud

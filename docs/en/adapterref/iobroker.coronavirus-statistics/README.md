@@ -94,6 +94,14 @@ As first value the name from the warning message must be taken from the log. The
 	* (DutchmanNL) xxxx
 -->
 
+### 0.6.3 (2020-11-04)
+* (DutchmanNL) Bugfix : Error warnings to wrong type in states
+* (DutchmanNL) Bugfix : Error values.features is not iterable solved
+
+### 0.6.2 (2020-11-02)
+* (stan23) 
+add "Cases per 100k" in total & during the last 7 days for Germany's Bundesländer
+
 ### 0.6.1 (2020-09-25)
 * (stan23) Added cases per 100k during the last 7 days for Germany
 

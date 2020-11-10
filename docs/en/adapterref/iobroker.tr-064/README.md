@@ -96,6 +96,13 @@ iobroker upload tr-064
 
 ## Changelog
 
+### 4.2.0 (2020-11-09)
+* (Apollon77) Crash case prevented (Sentry IOBROKER-TR-064-15, IOBROKER-TR-064-16)
+* (Apollon77) Try to solve error 500 problem with offline devices
+* (SliX185) Add IPv6 states
+* (foxriver76) optimizations
+* (Apollon77) Fix initialization if ip/host
+
 ### 4.1.0 (2020-09-17)
 * (Apollon77) Fix crash case (Sentry IOBROKER-TR-064-14)
 * (bazidibavaria) added tablesort to device search

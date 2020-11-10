@@ -189,6 +189,10 @@ Whitelist: Wenn Sie nur Ereignisse einer bestimmten Position einschließen möch
 
 ## Changelog
 
+### 1.7.5 (2020-11-08)
+* (Apollon77) Only handle events with a start date (Sentry IOBROKER-ICAL-1, IOBROKER-ICAL-2, IOBROKER-ICAL-4)
+* (JensMaus) Update dependencies, fix some more issues
+
 ### 1.7.4 (2020-08-26)
 * (Apollon77) Fix multiple parsing
 

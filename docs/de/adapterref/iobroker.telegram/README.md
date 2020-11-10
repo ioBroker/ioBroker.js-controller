@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.telegram/README.md
 title: ioBroker Telegrammadapter
-hash: BuYkubzMLypshKqNbVufMZM5m/zjagIRqR6vJCVHuOQ=
+hash: OwLL43QuVRbZExiw0MJJ85F4Poi5RGngQJUmbMjLGEE=
 ---
 ![Logo](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
 
@@ -15,7 +15,7 @@ hash: BuYkubzMLypshKqNbVufMZM5m/zjagIRqR6vJCVHuOQ=
 
 # IoBroker Telegrammadapter
 ## Aufbau
-Bitten Sie [@ BotFather](https://telegram.me/botfather), einen neuen Bot zu erstellen ```/newbot```.
+Bitten Sie [@ BotFather](https://telegram.me/botfather), einen neuen Bot ```/newbot``` zu erstellen.
 
 Sie werden aufgefordert, den Namen des Bots und dann den Benutzernamen einzugeben.
 Danach erhalten Sie das Token.
@@ -41,14 +41,31 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 });
 ```
 
-Wenn Sie das obige Beispiel verwenden, beachten Sie, dass Sie 'Benutzername' entweder durch den Vornamen oder den öffentlichen Telegramm-Benutzernamen des Benutzers ersetzen müssen, an den Sie die Nachricht senden möchten. (Hängt davon ab, ob die Einstellung "Benutzername nicht Vorname speichern" in den Adaptereinstellungen aktiviert ist oder nicht.) Wenn die Option aktiviert ist und der Benutzer in seinem Telegrammkonto keinen öffentlichen Benutzernamen angegeben hat, verwendet der Adapter weiterhin den Vornamen von Benutzer. Beachten Sie, dass, wenn der Benutzer später (nach der Authentifizierung bei Ihrem Bot) einen öffentlichen Benutzernamen festlegt, der gespeicherte Vorname beim nächsten Senden einer Nachricht an den Bot durch den Benutzernamen ersetzt wird.
+Wenn Sie das obige Beispiel verwenden, beachten Sie, dass Sie 'Benutzername' entweder durch den Vornamen oder den öffentlichen Telegramm-Benutzernamen des Benutzers ersetzen müssen, an den Sie die Nachricht senden möchten. (Hängt davon ab, ob die Einstellung "Benutzername nicht Vorname speichern" in den Adaptereinstellungen aktiviert ist oder nicht.) Wenn die Option aktiviert ist und der Benutzer in seinem Telegrammkonto keinen öffentlichen Benutzernamen angegeben hat, verwendet der Adapter weiterhin den Vornamen von Nutzer. Beachten Sie, dass, wenn der Benutzer später (nach der Authentifizierung bei Ihrem Bot) einen öffentlichen Benutzernamen festlegt, der gespeicherte Vorname beim nächsten Senden einer Nachricht an den Bot durch den Benutzernamen ersetzt wird.
 
 Es ist möglich, mehr als einen Empfänger anzugeben (trennen Sie einfach die Benutzernamen durch Komma).
 Zum Beispiel: Empfänger: "Benutzer1, Benutzer4, Benutzer5"
 
-Sie können eine Nachricht auch über den Status senden. Setzen Sie einfach den Status *"telegram.INSTANCE.communicate.response"* mit dem Wert *"@ userName Test message"*
+Sie können eine Nachricht auch über den Status senden. Setzen Sie einfach den Status *"telegram.INSTANCE.communicate.response"* mit dem Wert *"@ userName Test message"* oder mit einem JSON-Objekt:
 
-## Verwendungszweck
+```
+{
+    text: "Test message"
+}
+```
+
+Die JSON-Syntax ermöglicht auch das Hinzufügen von Optionen aus den [Telegramm-Bots-API](https://core.telegram.org/bots/api) sowie das Festlegen des Benutzers oder der Chat-ID:
+
+```
+{
+    text: "Test message, but with *bold*",
+    parse_mode: "Markdown",
+    chatId: "1234567890",
+    user: "UserName"
+}
+```
+
+## Verwendung
 Sie können das Telegramm mit dem Adapter [text2command](https://github.com/ioBroker/ioBroker.text2command) verwenden. Es gibt vordefinierte Kommunikationsschemata und Sie können in Textform zu Ihnen nach Hause befehlen.
 
 Um ein Foto zu senden, senden Sie einfach einen Pfad zur Datei anstelle von Text oder URL: `sendTo('telegram', 'absolute/path/file.png')` oder `sendTo('telegram', 'https://telegram.org/img/t_logo.png')`.
@@ -110,7 +127,7 @@ sendTo('telegram.0', {
 **Möglichkeiten**:
 
 - *disable_notification* Sendet die Nachricht still. iOS-Benutzer erhalten keine Benachrichtigung, Android-Benutzer erhalten eine Benachrichtigung ohne Ton. (alle Arten)
-- *parse_mode* Markdown oder HTML senden, wenn Telegramm-Apps fett, kursiv, Text mit fester Breite oder Inline-URLs in der Nachricht Ihres Bots anzeigen sollen. Mögliche Werte: "Markdown", "HTML" (Nachricht)
+- *parse_mode* Markdown oder HTML senden, wenn Telegramm-Apps fett, kursiv, Text mit fester Breite oder Inline-URLs in der Nachricht Ihres Bots anzeigen sollen. Mögliche Werte: "Markdown", "MarkdownV2", "HTML" (Nachricht)
 - *disable_web_page_preview* Deaktiviert die Linkvorschau für Links in dieser Nachricht (Nachricht)
 - *Bildunterschrift* Bildunterschrift für das Dokument, Foto oder Video, 0-200 Zeichen (Video, Audio, Foto, Dokument)
 - *Dauer* Dauer des gesendeten Videos oder Audios in Sekunden (Audio, Video)
@@ -321,9 +338,9 @@ Sie können mehr [Hier](https://github.com/yagop/node-telegram-bot-api/blob/mast
 ## Auf Benutzerantworten / -nachrichten reagieren
 Angenommen, Sie verwenden nur JavaScript ohne *text2command* Sie haben Ihrem Benutzer bereits eine Nachricht / Frage mit *sendTo ()* gesendet, wie oben beschrieben. Der Benutzer antwortet darauf, indem er eine Taste drückt oder eine Nachricht schreibt. Sie können den Befehl extrahieren und Ihrem Benutzer Feedback geben, Befehle ausführen oder den Status in iobroker wechseln.
 
- - telegram.0 ist Ihre iobroker Telegram-Instanz, die Sie verwenden möchten
- - Benutzer ist der bei Ihnen registrierte Benutzer TelegramBot, der die Nachricht gesendet hat
- - Befehl ist der Befehl, den Ihr TelegramBot erhalten hat
+ - telegram.0 ist Ihre iobroker Telegram-Instanz, die Sie verwenden möchten
+ - Benutzer ist der bei Ihnen registrierte Benutzer TelegramBot, der die Nachricht gesendet hat
+ - Befehl ist der Befehl, den Ihr TelegramBot erhalten hat
 
 ```
 on({id: 'telegram.0.communicate.request', change: 'any'}, function (obj) {
@@ -418,9 +435,9 @@ sendTo('telegram.0', 'call', {
 
 Mögliche Werte für die Sprache:
 
-- `ar-XA-Standard-A` - Arabisch (weibliche Stimme)
-- `ar-XA-Standard-B` - Arabisch (männliche Stimme)
-- `ar-XA-Standard-C` - Arabisch (männlich 2 Stimme)
+- "ar-XA-Standard-A" - Arabisch (weibliche Stimme)
+- "ar-XA-Standard-B" - Arabisch (männliche Stimme)
+- "ar-XA-Standard-C" - Arabisch (männlich 2 Stimme)
 - `cs-CZ-Standard-A` - Tschechisch (Tschechische Republik) (Frauenstimme)
 - `da-DK-Standard-A` - Dänisch (Dänemark) (Frauenstimme)
 - `nl-NL-Standard-A` - Niederländisch (Niederlande) (weibliche Stimme - wird verwendet, wenn die Systemsprache NL ist und keine Sprache angegeben wurde)
@@ -428,21 +445,21 @@ Mögliche Werte für die Sprache:
 - `nl-NL-Standard-C` - Niederländisch (Niederlande) (männlich 2 Stimmen)
 - `nl-NL-Standard-D` - Niederländisch (Niederlande) (weibliche 2 Stimme)
 - `nl-NL-Standard-E` - Niederländisch (Niederlande) (3 Frauen)
-- `en-AU-Standard-A` - Englisch (Australien) (weibliche Stimme)
-- `en-AU-Standard-B` - Englisch (Australien) (männliche Stimme)
-- `en-AU-Standard-C` - Englisch (Australien) (2 Frauen)
-- `en-AU-Standard-D` - Englisch (Australien) (männlich 2 Stimme)
-- `en-IN-Standard-A` - Englisch (Indien) (weibliche Stimme)
-- `en-IN-Standard-B` - Englisch (Indien) (männliche Stimme)
-- `en-IN-Standard-C` - Englisch (Indien) (männlich 2 Stimme)
-- `en-GB-Standard-A` - Englisch (UK) (weibliche Stimme - wird verwendet, wenn die Systemsprache EN ist und keine Sprache angegeben wurde)
-- `en-GB-Standard-B` - Englisch (UK) (männliche Stimme)
-- `en-GB-Standard-C` - Englisch (UK) (weibliche 2 Stimme)
-- `en-GB-Standard-D` - Englisch (UK) (männlich 2 Stimme)
-- `en-US-Standard-B` - Englisch (US) (männliche Stimme)
-- `en-US-Standard-C` - Englisch (US) (weibliche Stimme)
-- `en-US-Standard-D` - Englisch (US) (männlich 2 Stimme)
-- `en-US-Standard-E` - Englisch (US) (weibliche 2 Stimme)
+- ʻen-AU-Standard-A` - Englisch (Australien) (weibliche Stimme)
+- ʻen-AU-Standard-B` - Englisch (Australien) (männliche Stimme)
+- ʻen-AU-Standard-C` - Englisch (Australien) (2 Frauen)
+- ʻen-AU-Standard-D` - Englisch (Australien) (männlich 2 Stimmen)
+- ʻen-IN-Standard-A` - Englisch (Indien) (weibliche Stimme)
+- ʻen-IN-Standard-B` - Englisch (Indien) (männliche Stimme)
+- ʻen-IN-Standard-C` - Englisch (Indien) (männlich 2 Stimmen)
+- ʻen-GB-Standard-A` - Englisch (UK) (weibliche Stimme - wird verwendet, wenn die Systemsprache EN ist und keine Sprache angegeben wurde)
+- ʻen-GB-Standard-B` - Englisch (UK) (männliche Stimme)
+- ʻen-GB-Standard-C` - Englisch (UK) (2 Frauen)
+- ʻen-GB-Standard-D` - Englisch (UK) (männlich 2 Stimmen)
+- ʻen-US-Standard-B` - Englisch (US) (männliche Stimme)
+- ʻen-US-Standard-C` - Englisch (US) (weibliche Stimme)
+- ʻen-US-Standard-D` - Englisch (US) (männlich 2 Stimmen)
+- ʻen-US-Standard-E` - Englisch (US) (weibliche 2 Stimme)
 - `fil-PH-Standard-A` - Philippinisch (Philippinen) (weibliche Stimme)
 - `fi-FI-Standard-A` - Finnisch (Finnland) (Frauenstimme)
 - `fr-CA-Standard-A` - Französisch (Kanada) (weibliche Stimme)
@@ -451,27 +468,27 @@ Mögliche Werte für die Sprache:
 - `fr-CA-Standard-D` - Französisch (Kanada) (männlich 2 Stimme)
 - `fr-FR-Standard-A` - Französisch (Frankreich) (weibliche Stimme - wird verwendet, wenn die Systemsprache FR ist und keine Sprache angegeben wurde)
 - `fr-FR-Standard-B` - Französisch (Frankreich) (Männerstimme)
-- `fr-FR-Standard-C` - Französisch (Frankreich) (weiblich 2 Stimme)
+- `fr-FR-Standard-C` - Französisch (Frankreich) (weibliche 2 Stimme)
 - `fr-FR-Standard-D` - Französisch (Frankreich) (männlich 2 Stimme)
 - `de-DE-Standard-A` - Deutsch (Deutschland) (Frauenstimme - wird verwendet, wenn die Systemsprache DE ist und keine Sprache angegeben wurde)
 - `de-DE-Standard-B` - Deutsch (Deutschland) (Männerstimme)
-- `el-GR-Standard-A` - Griechisch (Griechenland) (Frauenstimme)
+- ʻel-GR-Standard-A` - Griechisch (Griechenland) (Frauenstimme)
 - `hi-IN-Standard-A` - Hindi (Indien) (weibliche Stimme)
 - `hi-IN-Standard-B` - Hindi (Indien) (männliche Stimme)
 - `hi-IN-Standard-C` - Hindi (Indien) (männlich 2 Stimme)
 - `hu-HU-Standard-A` - Ungarisch (Ungarn) (Frauenstimme)
-- `id-ID-Standard-A` - Indonesisch (Indonesien) (weibliche Stimme)
-- `id-ID-Standard-B` - Indonesisch (Indonesien) (männliche Stimme)
-- `id-ID-Standard-C` - Indonesisch (Indonesien) (männlich 2 Stimme)
-- `it-IT-Standard-A` - Italienisch (Italien) (weibliche Stimme - wird verwendet, wenn die Systemsprache IT ist und keine Sprache angegeben wurde)
-- `it-IT-Standard-B` - Italienisch (Italien) (2 Frauen)
-- `it-IT-Standard-C` - Italienisch (Italien) (Männerstimme)
-- `it-IT-Standard-D` - Italienisch (Italien) (männlich 2 Stimme)
+- "ID-ID-Standard-A" - Indonesisch (Indonesien) (weibliche Stimme)
+- "ID-ID-Standard-B" - Indonesisch (Indonesien) (männliche Stimme)
+- "ID-ID-Standard-C" - Indonesisch (Indonesien) (männlich 2 Stimme)
+- "it-IT-Standard-A" - Italienisch (Italien) (weibliche Stimme - wird verwendet, wenn die Systemsprache IT ist und keine Sprache angegeben wurde)
+- "it-IT-Standard-B" - Italienisch (Italien) (2 Frauen)
+- "it-IT-Standard-C" - Italienisch (Italien) (männliche Stimme)
+- "it-IT-Standard-D" - Italienisch (Italien) (männlich 2 Stimmen)
 - `ja-JP-Standard-A` - Japanisch (Japan) (weibliche Stimme)
 - `ja-JP-Standard-B` - Japanisch (Japan) (weibliche 2 Stimme)
 - `ja-JP-Standard-C` - Japanisch (Japan) (männliche Stimme)
 - `ja-JP-Standard-D` - Japanisch (Japan) (männlich 2 Stimme)
-- `ko-KR-Standard-A` - Koreanisch (Südkorea) (Frauenstimme)
+- `ko-KR-Standard-A` - Koreanisch (Südkorea) (weibliche Stimme)
 - `ko-KR-Standard-B` - Koreanisch (Südkorea) (2 Frauen)
 - `ko-KR-Standard-C` - Koreanisch (Südkorea) (Männerstimme)
 - `ko-KR-Standard-D` - Koreanisch (Südkorea) (männliche 2 Stimme)
@@ -484,28 +501,28 @@ Mögliche Werte für die Sprache:
 - `nb-NO-Standard-D` - Norwegisch (Norwegen) (männlich 2 Stimme)
 - `nb-no-Standard-E` - Norwegisch (Norwegen) (3 Frauen)
 - `pl-PL-Standard-A` - Polnisch (Polen) (weibliche Stimme - wird verwendet, wenn die Systemsprache PL ist und keine Sprache angegeben wurde)
-- `pl-PL-Standard-B` - Polnisch (Polen) (männliche Stimme)
+- `pl-PL-Standard-B` - Polnisch (Polen) (Männerstimme)
 - `pl-PL-Standard-C` - Polnisch (Polen) (männlich 2 Stimme)
 - `pl-PL-Standard-D` - Polnisch (Polen) (weibliche 2 Stimme)
 - `pl-PL-Standard-E` - Polnisch (Polen) (3 Frauen)
 - `pt-BR-Standard-A` - Portugiesisch (Brasilien) (weibliche Stimme - wird verwendet, wenn die Systemsprache PT ist und keine Sprache angegeben wurde)
 - `pt-PT-Standard-A` - Portugiesisch (Portugal) (weibliche Stimme)
 - `pt-PT-Standard-B` - Portugiesisch (Portugal) (männliche Stimme)
-- `pt-PT-Standard-C` - Portugiesisch (Portugal) (männlich 2 Stimme)
+- `pt-PT-Standard-C` - Portugiesisch (Portugal) (männlich 2 Stimmen)
 - `pt-PT-Standard-D` - Portugiesisch (Portugal) (2 Frauen)
 - `ru-RU-Standard-A` - Russisch (Russland) (weibliche Stimme - wird verwendet, wenn die Systemsprache RU ist und keine Sprache angegeben wurde)
 - `ru-RU-Standard-B` - Russisch (Russland) (Männerstimme)
-- `ru-RU-Standard-C` - Russisch (Russland) (2 Frauen)
+- `ru-RU-Standard-C` - Russisch (Russland) (weibliche 2 Stimme)
 - `ru-RU-Standard-D` - Russisch (Russland) (männlich 2 Stimme)
 - `sk-SK-Standard-A` - Slowakisch (Slowakei) (Frauenstimme)
-- `es-ES-Standard-A` - Spanisch (Spanien) (weibliche Stimme - wird verwendet, wenn die Systemsprache ES ist und keine Sprache angegeben wurde)
-- `sv-SE-Standard-A` - Schwedisch (Schweden) (weibliche Stimme)
+- ʻes-ES-Standard-A` - Spanisch (Spanien) (weibliche Stimme - wird verwendet, wenn die Systemsprache ES ist und keine Sprache angegeben wurde)
+- `sv-SE-Standard-A` - Schwedisch (Schweden) (Frauenstimme)
 - `tr-TR-Standard-A` - Türkisch (Türkei) (Frauenstimme)
 - `tr-TR-Standard-B` - Türkisch (Türkei) (Männerstimme)
 - `tr-TR-Standard-C` - Türkisch (Türkei) (weibliche 2 Stimme)
 - `tr-TR-Standard-D` - Türkisch (Türkei) (3 Frauen)
 - `tr-TR-Standard-E` - Türkisch (Türkei) (Männerstimme)
-- `uk-UA-Standard-A` - Ukrainisch (Ukraine) (weibliche Stimme)
+- ʻuk-UA-Standard-A` - Ukrainisch (Ukraine) (Frauenstimme)
 - `vi-VN-Standard-A` - Vietnamesisch (Vietnam) (weibliche Stimme)
 - `vi-VN-Standard-B` - Vietnamesisch (Vietnam) (männliche Stimme)
 - `vi-VN-Standard-C` - Vietnamesisch (Vietnam) (weibliche 2 Stimme)
@@ -543,7 +560,7 @@ Wenn Sie auf `Door lamp ?` klicken, erhalten Sie `Door lamp  => switched off`.
 Wenn aktiviert, werden keine EIN / AUS-Tasten angezeigt, nur ein `Door lamp ?`.
 
 ### Änderungen melden
-Wenn sich der Status des Geräts ändert (z. B. wenn jemand die Lampe physisch eingeschaltet hat), wird der neue Status an das Telegramm gesendet.
+Wenn sich der Status des Geräts geändert hat (z. B. hat jemand die Lampe physisch eingeschaltet), wird der neue Status an das Telegramm gesendet.
 Z.B. `Door lamp  => switched on`.
 
 ### Schaltflächen in der Linie
@@ -604,7 +621,36 @@ You: Disable
 BotFather: Success! The new status is: DISABLED. /help
 ```
 
+## So senden Sie Nachrichten über Node-Red
+Für einfache Textnachrichten an alle Benutzer fügen Sie den Text einfach in die Nutzdaten der Nachricht ein und senden Sie ihn an den ioBroker-Status *"telegram.INSTANCE.communicate.response"*
+
+Wenn Sie zusätzliche Optionen festlegen möchten, füllen Sie die Nutzdaten mit einem JSON-Objekt, z.
+
+```
+msg.payload = {
+    /* text is the only mandatory field here */
+    "text": "*bold _italic bold ~italic bold strikethrough~ __underline italic bold___ bold*",
+    /* optional chatId or user, the receipient of the message */
+    "chatId": "1234567890",
+    /* optional settings from the telegram bots API */
+    "parse_mode": "MarkdownV2"
+}
+```
+
 ## Changelog
+
+### 1.6.0 (2020-11-09)
+* (MarkRohrbacher) Allow overriding chatId / user when writing JSON objects to telegram.INSTANCE.communicate.response
+* (blazeis) Fix Send message via Response field with Username
+* (Garfonso) fill requestRaw also for callbackQuery
+
+### 1.5.9 (2020-05-04)
+* (Apollon77) potential error fixed when sending messages
+* (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
+
+### 1.5.8 (2020-04-30)
+* (Apollon77) errors on webserver initialization are handled properly
+
 ### 1.5.6 (2020-04-04)
 * (bluefox) Fixed missing languages for blockly
 * (bluefox) Added description of easy-keyboard

@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tr-064/README.md
 title: ioBroker.tr-064
-hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
+hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 ---
 ![Logo](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
@@ -22,7 +22,7 @@ Basierend auf diesen [AVM-Dokumentationen](https://avm.de/service/schnittstellen
 - externe IP-Adresse
 
 ### Klingeln (Nummer wählen)
-- Wenn Sie eine Internel-Nummer (wie ** 610) verwenden, lässt das Klingeln das interne Telefon klingeln.
+- Wenn Sie eine Internel-Nummer (wie ** 610) verwenden, klingelt das interne Telefon im Klingelstatus.
 
 z. B.: ** 610 [, Zeitüberschreitung]
 
@@ -33,7 +33,7 @@ Das Standardtelefon kann in der FritsBox unter Telefonie / Gebühren / [Tab] Wah
 
 ### ToPauseState
 - Werte: klingeln, verbinden, beenden
-- Kann verwendet werden, um einen Videoplayer bei einem eingehenden Anruf (Klingeln) oder beim Abheben des Telefons (Verbinden) anzuhalten.
+- Kann verwendet werden, um einen Videoplayer bei einem eingehenden Anruf anzuhalten (Klingeln) oder beim Abheben des Telefons (Verbinden).
 - Die Wiederaufnahme kann am Endwert erfolgen.
 
 ### Präsenz
@@ -89,12 +89,12 @@ command = {
 Der Befehlsstatus sollte auf einen JSON der obigen Zeilen gesetzt werden. Also {...} (ohne Befehl = und Zeilenumbrüche) Der Rückruf des Aufrufs setzt den Befehl commandResult-Status.
 
 ### Anrufüberwachung aktivieren
-Um die Anrufüberwachungsfunktion verwenden zu können, muss sie zuerst in der AVM Fritz! Box aktiviert werden.
+Um die Anrufüberwachungsfunktion nutzen zu können, muss sie zuerst in der AVM Fritz! Box aktiviert sein.
 Um den Anrufmonitor zu aktivieren, wählen Sie ```#96*5*``` und der TCP / IP-Port 1012 wird geöffnet. Um den Port zu schließen, wählen Sie ```#96*4*```.
 
 ### Vorabversionen
 Prerelease-Versionen sind um npm mit dem Tag dev verfügbar.
-Sie können sie aus dem ioBroker-Stammverzeichnis installieren mit:
+Sie können sie nicht aus dem ioBroker-Stammverzeichnis installieren mit:
 
 ```
 npm install iobroker.tr-064@dev
@@ -102,6 +102,13 @@ iobroker upload tr-064
 ```
 
 ## Changelog
+
+### 4.2.0 (2020-11-09)
+* (Apollon77) Crash case prevented (Sentry IOBROKER-TR-064-15, IOBROKER-TR-064-16)
+* (Apollon77) Try to solve error 500 problem with offline devices
+* (SliX185) Add IPv6 states
+* (foxriver76) optimizations
+* (Apollon77) Fix initialization if ip/host
 
 ### 4.1.0 (2020-09-17)
 * (Apollon77) Fix crash case (Sentry IOBROKER-TR-064-14)

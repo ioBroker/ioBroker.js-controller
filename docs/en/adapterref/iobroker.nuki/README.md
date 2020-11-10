@@ -85,6 +85,9 @@ When updating from 1.0.x to 1.1.0 or higher it is recommended to delete all inst
 
 ## Changelog
 
+### 1.4.1
+* (smaragdschlange) bug fix: references fixed
+
 ### 1.4.0
 * (smaragdschlange) improvement: support of keypad battery state 
 * (smaragdschlange) improvement: support of ring action states for opener

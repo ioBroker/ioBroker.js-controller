@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.telegram/README.md
 title: ioBroker电报适配器
-hash: BuYkubzMLypshKqNbVufMZM5m/zjagIRqR6vJCVHuOQ=
+hash: OwLL43QuVRbZExiw0MJJ85F4Poi5RGngQJUmbMjLGEE=
 ---
 ![商标](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
 
@@ -15,7 +15,7 @@ hash: BuYkubzMLypshKqNbVufMZM5m/zjagIRqR6vJCVHuOQ=
 
 ＃ioBroker电报适配器
 ##配置
-要求[@BotFather](https://telegram.me/botfather)创建新的bot```/newbot```。
+要求[@BotFather](https://telegram.me/botfather)创建新的机器人```/newbot```。
 
 系统将要求您输入漫游器的名称，然后输入用户名。
 之后，您将获得令牌。
@@ -24,11 +24,11 @@ hash: BuYkubzMLypshKqNbVufMZM5m/zjagIRqR6vJCVHuOQ=
 
 您应该在配置对话框中设置通信密码。此后，启动适配器。
 
-要与您的机器人进行对话，您需要使用“ / passwordphrase”对用户进行身份验证，其中“ phrase **”是您配置的密码。因此，在Telegram中与您生成的Bot进行新的对话，然后需要输入密码作为第一个命令。
+要与您的机器人进行对话，您需要使用“ / passwordphrase”对用户进行身份验证，其中“ phrase **”是您配置的密码。因此，与您在Telegram中生成的Bot进行新的对话，然后需要输入密码作为第一个命令。
 
 **注意：**您可以使用缩写形式“ / p短语”。
 
-要添加精美的头像图片，请在“ BotFather”聊天中输入`/setuserpic`并将其上载所需的图片（512x512像素），例如[商标](img/logo.png)。
+要添加精美的头像图片，请在“ BotFather”聊天中输入`/setuserpic`并将其上传到所需的图片（512x512像素），例如[商标](img/logo.png)。
 
 您可以通过messageBox`sendTo('telegram', 'Test message')`向所有经过身份验证的用户或特定用户`sendTo('telegram', '@userName Test message')`发送消息。
 用户必须先经过身份验证。
@@ -46,12 +46,29 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 可以指定多个收件人（只需用逗号分隔用户名）。
 例如：收件人：“ User1，User4，User5”
 
-您也可以通过状态发送消息，只需将状态*“ telegram.INSTANCE.communicate.response” *设置为值*“ @ userName测试消息” *。
+您也可以通过状态发送消息，只需将状态*“ telegram.INSTANCE.communicate.response” *设置为值*“ @ userName测试消息” *或使用JSON对象即可：
+
+```
+{
+    text: "Test message"
+}
+```
+
+JSON语法还允许添加[电报机器人API](https://core.telegram.org/bots/api)中的选项，以及设置用户或chatId：
+
+```
+{
+    text: "Test message, but with *bold*",
+    parse_mode: "Markdown",
+    chatId: "1234567890",
+    user: "UserName"
+}
+```
 
 ##用法
 您可以将电报与[text2command](https://github.com/ioBroker/ioBroker.text2command)适配器一起使用。有预定义的通信模式，您可以以文本形式命令您回家。
 
-要发送照片，只需发送文件而不是文本或URL的路径：`sendTo('telegram', 'absolute/path/file.png')`或`sendTo('telegram', 'https://telegram.org/img/t_logo.png')`§。
+要发送照片，只需发送文件的路径而不是文本或URL：`sendTo('telegram', 'absolute/path/file.png')`或`sendTo('telegram', 'https://telegram.org/img/t_logo.png')`§。
 
 示例如何从网络摄像头向电报发送屏幕截图：
 
@@ -86,7 +103,7 @@ on("someState", function (obj) {
 
 以下消息保留用于操作：
 
--*键入*-对于短信，
+-*输入*-对于短信，
 -* upload_photo *-用于照片，
 -* upload_video *-对于视频，
 -* record_video *-对于视频，
@@ -110,9 +127,9 @@ sendTo('telegram.0', {
 **可能的选项**：
 
 -* disable_notification *：静默发送消息。 iOS用户将不会收到通知，Android用户将不会收到通知。 （所有类型）
--* parse_mode *：如果希望Telegram应用在机器人消息中显示粗体，斜体，固定宽度的文本或内联URL，则发送Markdown或HTML。可能的值：“ Markdown”，“ HTML”（消息）
+-* parse_mode *：如果希望Telegram应用在机器人消息中显示粗体，斜体，固定宽度的文本或嵌入式URL，则发送Markdown或HTML。可能的值：“ Markdown”，“ MarkdownV2”，“ HTML”（消息）
 -* disable_web_page_preview *：禁用此消息中链接的链接预览（消息）
--*说明*：用于文档，图片或视频的标题，0-200个字符（视频，音频，图片，文档）
+-*标题*：用于文档，照片或视频的标题，0-200个字符（视频，音频，照片，文档）
 -*持续时间*：发送的视频或音频的持续时间（以秒为单位）（音频，视频）
 -*表演者*：音频文件的表演者（音频）
 -* title *：音频文件的轨道名称（音频）
@@ -121,7 +138,7 @@ sendTo('telegram.0', {
 
 适配器尝试检测消息的类型（照片，视频，音频，文档，标签，动作，位置）取决于消息中的文本（如果文本是现有文件的路径），它将根据类型发送。
 
-将在属性纬度上检测位置：
+将根据属性纬度检测位置：
 
 ```
 sendTo('telegram.0', {
@@ -179,7 +196,7 @@ sendTo('telegram', {
 
 您可以阅读更多的[此处]（https://core.telegram.org/bots/api#inlinekeyboardmarkup）和[此处](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating)。
 
-**注意：** *用户按下回叫按钮后，Telegram客户端将显示进度条，直到您调用answerCallbackQuery。因此，即使不需要通知用户，也必须通过调用answerCallbackQuery做出反应（例如，不指定任何可选参数）。*
+**注意：** *用户按下回叫按钮后，Telegram客户端将显示进度条，直到您调用answerCallbackQuery。因此，即使不需要向用户发送通知，也必须通过调用answerCallbackQuery做出反应（例如，不指定任何可选参数）。*
 
 ### AnswerCallbackQuery
 使用此方法可以将答案发送给从嵌入式键盘发送的回调查询。答案将作为通知显示在用户的聊天屏幕顶部或作为警报。成功后，将返回* True *。
@@ -298,7 +315,7 @@ if (command === "1_2") {
 ### DeleteMessage
 使用此方法可以删除一条消息，包括服务消息，但有以下限制：
 
--仅在48小时前发送过的邮件才能删除。
+-如果邮件的发送时间少于48小时，则只能将其删除。
 
 成功返回* True *。
 
@@ -319,11 +336,11 @@ if (command === "delete") {
 您可以阅读更多的[这里](https://github.com/yagop/node-telegram-bot-api/blob/master/doc/api.md#TelegramBot+deleteMessage)。
 
 ##对用户回复/消息做出反应
-假设您仅使用不带* text2command *的JavaScript。如上所述，您已经使用* sendTo（）*向您的用户发送了一条消息/问题。用户通过按下按钮或写消息来回复。您可以提取命令并向用户提供反馈，执行命令或在iobroker中切换状态。
+假设您仅使用不带* text2command *的JavaScript。如上所述，您已经使用* sendTo（）*向您的用户发送了一条消息/问题。用户通过按下按钮或编写消息来回复。您可以提取命令并向用户提供反馈，执行命令或在iobroker中切换状态。
 
- -telegram.0是您要使用的iobroker Telegram实例
- -用户是向您发送消息的TelegramBot注册的用户
- -命令是您的TelegramBot收到的命令
+ -telegram.0是您要使用的iobroker Telegram实例
+ -用户是向您发送消息的TelegramBot注册的用户
+ -命令是您的TelegramBot收到的命令
 
 ```
 on({id: 'telegram.0.communicate.request', change: 'any'}, function (obj) {
@@ -362,7 +379,7 @@ on({id: 'telegram.0.communicate.request', change: 'any'}, function (obj) {
 ```
 
 ##轮询或服务器模式
-如果使用轮询模式，则默认情况下，适配器每300毫秒对电报服务器进行一次轮询以进行更新。它使用流量，并且消息可能会延迟最长轮询间隔。轮询间隔可以在适配器配置中定义。
+如果使用轮询模式，则适配器默认每300毫秒对电报服务器进行一次轮询以进行更新。它使用流量，并且消息可能会延迟最长轮询间隔。轮询间隔可以在适配器配置中定义。
 
 要使用服务器模式，您的ioBroker实例必须可以通过互联网访问（例如，使用noip.com动态DNS服务）。
 
@@ -372,7 +389,7 @@ on({id: 'telegram.0.communicate.request', change: 'any'}, function (obj) {
 
 -URL-格式为https://yourdomain.com:8443。
 -IP-IP地址，将绑定服务器。默认值为0.0.0.0。如果不确定，请不要更改它。
--端口-报文实际上仅支持443、80、88、8443端口，但是您可以通过路由器将端口转发给任何一个端口。
+-端口-电报实际上仅支持443、80、88、8443端口，但是您可以通过路由器将端口转发给任何一个端口。
 -公共证书-如果禁用“允许加密”，则为必需。
 -私钥-如果禁用“允许加密”，则为必填项。
 -连锁证书（可选）
@@ -418,9 +435,9 @@ sendTo('telegram.0', 'call', {
 
 语言的可能值：
 
--`ar-XA-Standard-A`-阿拉伯语（女声）
--`ar-XA-Standard-B`-阿拉伯语（男声）
--`ar-XA-Standard-C`-阿拉伯语（男性2种声音）
+-ʻar-XA-Standard-A`-阿拉伯语（女声）
+-ʻar-XA-Standard-B`-阿拉伯语（男声）
+-ʻar-XA-Standard-C`-阿拉伯语（男性2种声音）
 -`cs-CZ-Standard-A`-捷克（捷克共和国）（女声）
 -`da-DK-Standard-A`-丹麦文（丹麦）（女声）
 -`nl-NL-Standard-A`-荷兰语（荷兰）（如果系统语言为NL且未提供任何语言，则将使用女性声音）
@@ -455,7 +472,7 @@ sendTo('telegram.0', 'call', {
 -`fr-FR-Standard-D`-法语（法国）（男性2种声音）
 -`de-DE-Standard-A`-德语（德国）（如果系统语言为DE并且未提供任何语言，则将使用女性声音）
 -`de-DE-Standard-B`-德语（德国）（男声）
--`el-GR-Standard-A`-希腊语（希腊）（女声）
+-ʻel-GR-Standard-A`-希腊语（希腊）（女声）
 -`hi-IN-Standard-A`-印地语（印度）（女声）
 -`hi-IN-Standard-B`-印地语（印度）（男声）
 -`hi-IN-Standard-C`-印地语（印度）（男性2种声音）
@@ -463,7 +480,7 @@ sendTo('telegram.0', 'call', {
 -`id-ID-Standard-A`-印度尼西亚语（印度尼西亚）（女声）
 -`id-ID-Standard-B`-印度尼西亚语（印度尼西亚）（男声）
 -`id-ID-Standard-C`-印度尼西亚语（印度尼西亚）（男性2种声音）
--`it-IT-Standard-A`-意大利语（意大利）（如果系统语言为IT，并且未提供任何语言，则使用女性声音）
+-`it-IT-Standard-A`-意大利语（意大利）（如果系统语言为IT，且未提供任何语言，则使用女性声音）
 -`it-IT-Standard-B`-意大利语（意大利）（女性2种声音）
 -`it-IT-Standard-C`-意大利语（意大利）（男声）
 -`it-IT-Standard-D`-意大利语（意大利）（男性2种声音）
@@ -472,7 +489,7 @@ sendTo('telegram.0', 'call', {
 -`ja-JP-Standard-C`-日语（日本）（男声）
 -`ja-JP-Standard-D`-日语（日本）（男2种声音）
 -`ko-KR-Standard-A`-韩国（韩国）（女声）
--`ko-KR-Standard-B`-韩语（韩国）（女2声音）
+-`ko-KR-Standard-B`-韩国（韩国）（女2声音）
 -`ko-KR-Standard-C`-韩文（韩国）（男声）
 -`ko-KR-Standard-D`-韩文（韩国）（男2种声音）
 -`cmn-CN-Standard-A`-普通话（女声）
@@ -483,7 +500,7 @@ sendTo('telegram.0', 'call', {
 -`nb-NO-Standard-C`-挪威语（挪威）（女2声音）
 -`nb-NO-Standard-D`-挪威文（挪威）（男性2种声音）
 -`nb-no-Standard-E`-挪威语（挪威语）（女3声音）
--`pl-PL-Standard-A`-波兰语（波兰）（如果系统语言为PL并且未提供任何语言，则将使用女性声音）
+-`pl-PL-Standard-A`-波兰语（波兰）（如果系统语言为PL而未提供任何语言，则将使用女性声音）
 -`pl-PL-Standard-B`-波兰语（波兰）（男声）
 -`pl-PL-Standard-C`-波兰语（波兰）（男2种声音）
 -`pl-PL-Standard-D`-波兰语（波兰）（女性2种声音）
@@ -493,7 +510,7 @@ sendTo('telegram.0', 'call', {
 -`pt-PT-Standard-B`-葡萄牙语（葡萄牙）（男声）
 -`pt-PT-Standard-C`-葡萄牙语（葡萄牙）（男性2种声音）
 -`pt-PT-Standard-D`-葡萄牙语（葡萄牙）（女性2种声音）
--`ru-RU-Standard-A`-俄语（俄罗斯）（如果系统语言为RU且未提供任何语言，则将使用女性声音）
+-`ru-RU-Standard-A`-俄语（俄罗斯）（如果系统语言为RU并且未提供任何语言，则将使用女性语音）
 -`ru-RU-Standard-B`-俄语（俄罗斯）（男声）
 -`ru-RU-Standard-C`-俄语（俄罗斯）（女性2种声音）
 -`ru-RU-Standard-D`-俄语（俄罗斯）（男性2种声音）
@@ -506,7 +523,7 @@ sendTo('telegram.0', 'call', {
 -`tr-TR-Standard-D`-土耳其语（土耳其）（女性3种声音）
 -`tr-TR-Standard-E`-土耳其文（土耳其）（男性配音）
 -`uk-UA-Standard-A`-乌克兰语（乌克兰）（女声）
--`vi-VN-Standard-A`-越南文（越南）（女声）
+-`vi-VN-Standard-A`-越南语（越南）（女声）
 -`vi-VN-Standard-B`-越南文（越南）（男声）
 -`vi-VN-Standard-C`-越南语（越南）（女2声音）
 -`vi-VN-Standard-D`-越南文（越南）（男性2种声音）
@@ -526,7 +543,7 @@ sendTo('telegram.0', 'call', {
 
 在电报适配器的配置对话框中，“ / cmds”可以替换为任何文本（例如“？”）。
 
-如果在电报适配器的配置对话框中启用了“在键盘命令中使用房间”选项，那么在第一步中将显示房间列表。 ***尚未实现***
+如果在电报适配器的配置对话框中启用了“在键盘命令中使用房间”选项，则在第一步中将显示房间列表。 ***尚未实现***
 
 ###设置状态
 首先必须启用配置。
@@ -540,10 +557,10 @@ sendTo('telegram.0', 'call', {
 如果单击`Door lamp ?`，您将获得`Door lamp  => switched off`。
 
 ＃＃＃ 只读
-如果激活，将不显示任何ON / OFF按钮，仅显示`Door lamp ?`。
+如果激活，则不会显示ON / OFF按钮，而只会显示`Door lamp ?`。
 
 ###报告更改
-如果设备的状态发生了变化（例如有人物理地打开了灯），则新的状态将被传送到电报中。
+如果设备的状态发生了变化（例如有人物理地打开了灯），则新状态将被传送到电报中。
 例如。 `Door lamp  => switched on`。
 
 ###行中的按钮
@@ -553,7 +570,7 @@ sendTo('telegram.0', 'call', {
 ![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings3.png)
 
 ###只写
-如果激活，则不会显示任何状态查询（`Door lamp ?`）按钮。
+如果激活，则不会显示状态查询（`Door lamp ?`）按钮。
 ![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings4.png)
 
 ### ON命令
@@ -564,7 +581,7 @@ sendTo('telegram.0', 'call', {
 
 ### ON文字
 状态报告将显示哪些文本。
-例如。 `Door lamp => activated`如果设备的状态更改为true且“ ON Text”为`activated`
+例如。 `Door lamp => activated`如果设备的状态更改为true并且“ ON Text”为`activated`
 
 仅当“报告更改”被激活时，才会显示开/关文本。
 
@@ -604,7 +621,36 @@ You: Disable
 BotFather: Success! The new status is: DISABLED. /help
 ```
 
+##如何通过节点红色发送消息
+对于发送给所有用户的简单文本消息，只需将文本放入消息的有效负载中，然后将其发送到ioBroker状态*“ telegram.INSTANCE.communicate.response” *。
+
+如果要设置其他选项，请用JSON对象填充有效负载，例如：
+
+```
+msg.payload = {
+    /* text is the only mandatory field here */
+    "text": "*bold _italic bold ~italic bold strikethrough~ __underline italic bold___ bold*",
+    /* optional chatId or user, the receipient of the message */
+    "chatId": "1234567890",
+    /* optional settings from the telegram bots API */
+    "parse_mode": "MarkdownV2"
+}
+```
+
 ## Changelog
+
+### 1.6.0 (2020-11-09)
+* (MarkRohrbacher) Allow overriding chatId / user when writing JSON objects to telegram.INSTANCE.communicate.response
+* (blazeis) Fix Send message via Response field with Username
+* (Garfonso) fill requestRaw also for callbackQuery
+
+### 1.5.9 (2020-05-04)
+* (Apollon77) potential error fixed when sending messages
+* (Apollon77) webserver initialization optimized again to prevent errors with invalid certificates 
+
+### 1.5.8 (2020-04-30)
+* (Apollon77) errors on webserver initialization are handled properly
+
 ### 1.5.6 (2020-04-04)
 * (bluefox) Fixed missing languages for blockly
 * (bluefox) Added description of easy-keyboard

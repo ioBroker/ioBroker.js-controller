@@ -41,7 +41,24 @@ If the option is set and the user did not specify a public username in his teleg
 It is possible to specify more than one recipient (just separate the User names by comma).
 For example: Recipient: "User1,User4,User5"
 
-You can send message over state too, just set state *"telegram.INSTANCE.communicate.response"* with value *"@userName Test message"*.
+You can send message over state too, just set state *"telegram.INSTANCE.communicate.response"* with value *"@userName Test message"* or with a JSON object:
+
+```
+{
+    text: "Test message"
+}
+```
+
+The JSON syntax also allows to add options from the [telegram bots API](https://core.telegram.org/bots/api), as well as setting the user or chatId:
+
+```
+{
+    text: "Test message, but with *bold*",
+    parse_mode: "Markdown",
+    chatId: "1234567890",
+    user: "UserName"
+}
+```
 
 ## Usage
 You can use telegram with [text2command](https://github.com/ioBroker/ioBroker.text2command) adapter. There are predefined communication schema and you can command to you home in text form.
@@ -104,7 +121,7 @@ sendTo('telegram.0', {
 
 **Possible options**:
 - *disable_notification*: Sends the message silently. iOS users will not receive a notification, Android users will receive a notification with no sound. (all types)
-- *parse_mode*: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message. Possible values: "Markdown", "HTML" (message)
+- *parse_mode*: Send Markdown or HTML, if you want Telegram apps to show bold, italic, fixed-width text or inline URLs in your bot's message. Possible values: "Markdown", "MarkdownV2", "HTML" (message)
 - *disable_web_page_preview*: Disables link previews for links in this message (message)
 - *caption*: Caption for the document, photo or video, 0-200 characters (video, audio, photo, document)
 - *duration*: Duration of sent video or audio in seconds (audio, video)
@@ -597,8 +614,29 @@ You: Disable
 
 BotFather: Success! The new status is: DISABLED. /help
 ```
- 
+
+## How to send messages via node-red
+For simple text messages to all users, just put the text within the payload of the message and
+send it to the ioBroker state *"telegram.INSTANCE.communicate.response"*.
+
+If you want to set additional options, fill the payload with a JSON object, such as:
+```
+msg.payload = {
+    /* text is the only mandatory field here */
+    "text": "*bold _italic bold ~italic bold strikethrough~ __underline italic bold___ bold*",
+    /* optional chatId or user, the receipient of the message */
+    "chatId": "1234567890",
+    /* optional settings from the telegram bots API */
+    "parse_mode": "MarkdownV2"
+}
+```
+
 ## Changelog
+
+### 1.6.0 (2020-11-09)
+* (MarkRohrbacher) Allow overriding chatId / user when writing JSON objects to telegram.INSTANCE.communicate.response
+* (blazeis) Fix Send message via Response field with Username
+* (Garfonso) fill requestRaw also for callbackQuery
 
 ### 1.5.9 (2020-05-04)
 * (Apollon77) potential error fixed when sending messages

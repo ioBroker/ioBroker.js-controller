@@ -74,6 +74,7 @@ This channel contains information about the AC side of the inverter. Most import
 `plenticore.X.devices.local.battery.Charge_P` - the current battery charging power (0 if discharging)  
 `plenticore.X.devices.local.battery.Discharge_P` - the current battery discharging power (0 if charging)  
 `[**] plenticore.X.devices.local.battery.SmartBatteryControl` - true if the smart battery management is enabled. Regarding the official manual this shall only be enabled if there is no further AC source like a second inverter involved  
+`[**] plenticore.X.devices.local.battery.ExternControl` - 0 to enable internal control, 1 for external digital I/O, 2 for external Modbus TCP
 `plenticore.X.devices.local.battery.SoC` - the current state of charge of the battery  
 
 #### plenticore.X.devices.local.inverter

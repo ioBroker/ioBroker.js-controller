@@ -256,8 +256,13 @@ Following types are supported:
 -->
 
 ## Changelog
+### 1.7.15 (2020-11-05)
+* (Morluktom) Corrected the request for temperature
 
-### 1.7.13 (2020-10-30)
+### 1.7.14 (2020-11-05)
+* (bluefox) Updated the select ID dialog.
+
+#### 1.7.13 (2020-10-30)
 * (foxriver76) add eraseOnUpload flag for js-controller 3.2+
 
 ### 1.7.12 (2020-09-25)

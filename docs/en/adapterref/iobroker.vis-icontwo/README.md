@@ -61,6 +61,10 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.32.0
+
+• Neue Icons hinzugefügt (Stop)
+
 ### 0.31.0
 
 • Neue Icons hinzugefügt (Spa & Fitness, Electricity, Lights, Rooms)

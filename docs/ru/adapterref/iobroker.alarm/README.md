@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: 1h0xd/ee+enAhM1sc14+Mcu9AWiM6U6cDO8oSCsN1og=
+hash: 4mGLoOsNPkarT+c2AZRtw61ymIsoXLmGGM+Rva+RVN8=
 ---
 ![Логотип](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -16,7 +16,7 @@ hash: 1h0xd/ee+enAhM1sc14+Mcu9AWiM6U6cDO8oSCsN1og=
 ![Трэвис-Си](http://img.shields.io/travis/misanorot/ioBroker.alarm/master.svg)
 
 # IoBroker.alarm
-[![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
+[![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[Английское описание](https://github.com/misanorot/ioBroker.alarm/blob/master/lib/Readme_en.md)**
 
@@ -29,7 +29,7 @@ Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. b
 ### Tab Haupteinstellungen
 Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm und Passwort vorgenommen.
 
-*Alle Zeiten sind в Sekunden einzugeben*
+*Bis 1.2.4, sind alle Zeiten sind в Sekunden einzugeben*
 
 - Aktivierzeit -> Zeitverzögerung bis zu Aktivierung wenn man einen delay Datenpunkt benutzt
 - Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf true gesetzt
@@ -92,7 +92,7 @@ Das sind die eigentlichen состояния um die Alarmanlage zu bedienen.
 - use.activate_nightrest -> Aktivierung der Nachtruhe
 - use.activate_sharp_inside_circuit -> Aktivierung der Überwachung des Warnkreises (intern scharf)
 - use.disable -> Deaktivierung der Anlage (Alarmkreis)
-- use.enable -> Aktivierung der Anlage (Алармкрейс)
+- use.enable -> Aktivierung der Anlage (Alarmkreis)
 - use.enable_with_delay -> Aktivierung der Anlage (Alarmkreis) mit Verzögerungszeit
 - use.list -> Deaktivierung / Aktivierung / Warnkreis / Aktivierung mit Verzögerungszeit
 - use.quit_changes -> Rücksetzen der состояния *info.notification_circuit_changes, info.sharp_inside_siren, status.activation_failed*
@@ -119,6 +119,17 @@ Der log_today State Wird um Mitternacht geleert.
 
 ## Changelog
 
+#### 1.6.0 (08.11.2020)
+* (misanorot) changed time inputs to numbers
+
+#### 1.5.0 (08.11.2020)
+* (misanorot) added stop inside alarm with disable
+
+#### 1.4.0 (05.11.2020)
+* (misanorot) added silent alarm selection for every state
+
+#### 1.3.0 (01.11.2020)
+* (misanorot) added diffrent time options
 
 #### 1.2.0 (09.07.2020)
 * (misanorot) added countdown speech output

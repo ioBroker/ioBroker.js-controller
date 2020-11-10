@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-material-advanced/README.md
 title: ioBroker.vis-material-advanced
-hash: dHGIWO7/K7u161Br1l1mdAHBmXQiZkcMA3n9j5UqZ7Y=
+hash: UhKFsvE/MazLo9kNokhslQ8lqDoHst5L1wvq4yedao0=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-material-advanced/admin/vis-material-advanced.png)
 
@@ -69,12 +69,15 @@ noch nicht endgültig:
     - Randradius zum Aktivieren und Ändern der runden Ecke
     - valueAlign Richten Sie das Feld Value links, mittig oder rechts aus
     - value-vetical Richten Sie das Feld Value oben, unten oder in der Mitte aus
+    - borderColor Farbe des Rahmens, falls aktiviert
 
-### Anfangen
+### Beginnen
 Installieren Sie den Adapter und starten Sie VIS im Bearbeitungsmodus.
 Wählen Sie auf der linken Seite vis-material-adapter und dann werden alle Widgets in der Vorschau angezeigt.
 
 ............. viele Dokumente fehlen ......................
+
+** das ist example2.png, importiere es und sieh es live ** ![](../../../en/adapterref/iobroker.vis-material-advanced/widgets/door_example.png)
 
 ** Sie können die Datei example.json dank @ sigi234 in vis ** importieren
 
@@ -84,26 +87,23 @@ Wählen Sie auf der linken Seite vis-material-adapter und dann werden alle Widge
     ### __WORK IN PROGRESS__
 * 
 -->
+### 1.2.0 (2020-11-04)
+* added option to round every corner different/not 
+* added option to change color of border
+* added option for shadow and size of shadow
 
-### 0.8.14 (2020-10-04)
-* border-fix due to changes in css
-
-### 0.8.13 (2020-10-03)
-* bugfix LightIcon not switching
-* bugfix Volume Icon not shown if no object is set
-
-### 0.8.12 (2020-10-01)
-* Value font-size can be changed now
+### 1.1.1 (2020-10-18)
+* url wrong in package.json
 
 
-### 0.8.11 (2020-09-30)
-* bugfix fo rwrong htm lin Shutter Widget, thx Sigi234
+### 1.1.0 (2020-10-15)
+* Travis changes
 
+### 1.0.0 (2020-10-14)
+* no changes, upgrading to 1.0
 
-### 0.8.10 (2020-09-30)
-* rebase to iobroker-ocmmunity-adapter
-* added option to center Icon
-* added option to have ONLY Title and no subtitle
+### 0.9.1 (2020-10-13)
+* some colorizeByValue options did not work
 
 ## License
 MIT License

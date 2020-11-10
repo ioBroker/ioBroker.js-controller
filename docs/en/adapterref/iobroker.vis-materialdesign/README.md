@@ -23,13 +23,9 @@ ioBroker Material Design Widgets are based on [Google's material design guidelin
 * [Material Design Icons](https://materialdesignicons.com/)
 
 ## Sentry
-This adapter uses Sentry libraries to automatically report vis runtime exceptions and code errors caused by the widgets to the developers.
-
-When the vis runtime is first loaded, the file `./iobroker-data/files/vis.0/materialdesign.sentry` is created. This file contains an anonymized id (so-called uuid), which allows the developer to determine whether the error occurs only with one or more users.
-
-<b>To disable sentry</b>, the word 'disabled' must be entered in the file `/iobroker-data/files/vis.0/materialdesign.sentry`. 
-<br>To check if sentry is disabled, open the browser console and look for `sentry is deactivated for vis-materialdesign`.
-
+**This adapter uses Sentry libraries to automatically report exceptions and code errors anonymously to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)!
+<br><br>
+You can active or deactivate it in the adapter settings.
 
 ## Online Example Project
 provided by [iobroker.click](https://iobroker.click/index.html), thanks to bluefox and iobroker.

@@ -63,6 +63,9 @@ on({id: "ring.0.doorbell_4711.kind"/*Kind*/},  (obj) => {
 
 ## Changelog
 
+### 1.1.5 (04.11.2020)
+* (Stübi) Add floodlight
+
 ### 1.1.4 (23.05.2020)
 * (Stübi) Add new libraries  
 

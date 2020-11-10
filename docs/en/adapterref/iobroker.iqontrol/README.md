@@ -44,6 +44,9 @@ Fast Web-App for Visualization.
 \
 ![Screenshot](img/screenshot_flot.png)
 
+\
+![Screenshot](img/screenshot_dslraser.jpg "&copy; by dslraser")
+
 Runs in any Browser. 
 Easy to setup, allthough it's fully customizable and responsive.
 
@@ -109,6 +112,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
     * ``returnAfterTimeTreshold=<time in seconds>`` to set the time, after which the destination view is called. Use ``0`` to disable return after time feature.
 	* ``returnAfterTimeDestiationView=<viewID>`` to set the view, which is called after the threshold. If not specified, the home view will be used.
 	* These options are helpful, if you call iQontrol from an wall mounted tablet, which should automatically return to home-view after being used 
+* To load the page without toolbar you can add ``noToolbar=true``
 
 **Example:**
 * ``https://192.168.1.1:8082/iqontrol/index.html?namespace=iqontrol.1&home=iqontrol.1.Views.Living-Room``
@@ -172,14 +176,14 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 * Every tile has a BACKGROUND_URL and a BACKGROUND_HTML datapoint
 * Here you can define a link (via BACKGROUND_URL) to a website or place direct HTML-Code (via BACKGROUND_HTML), that will be displayed as background of the tile
 * This gives you the possibility to place (interactive) content inside a tile (like clocks, FLOT-charts, tables, weather-forecasts and so on)
-* By default mouse events will be directed to this content (thus you can't click the tile itself any more), but you can disable this with the option "Direct mouse events to the tile instead to the content of BACKGROUND_URL/HTML"
+* By default mouse events will be directed to this content (thus you can't click the tile itself any more), but you can disable this with the option "Direct mouse events to the tile instead to the content of BACKGROUND_VIEW/URL/HTML"
 * iQontrol offers an device-role "Widget" which has some predefined options set that will be mostly used when showing a website as widget. But you can achieve the same result with any other role by modifying the devices options properly.
 
 ![Popup Screenshot](img/widget_screenshot.png)
 
 ### postMessage-Communication (for experts only)
-* Technically the content of BACKGROUND_URL/HTML is placed inside a HTML-Element called iframe, which is a website inside a website
-* By enabling the option "Allow postMessage-Communication for BACKGROUND_URL/HTML" you can enable postMessage-Communication between the website inside this iframe and iQontrol itself
+* Technically the content of BACKGROUND_VIEW/URL/HTML is placed inside a HTML-Element called iframe, which is a website inside a website
+* By enabling the option "Allow postMessage-Communication for BACKGROUND_VIEW/URL/HTML" you can enable postMessage-Communication between the website inside this iframe and iQontrol itself
 * To send commands to iQontrol you can use the following javascript-command: ``window.parent.postMessage(message, "*");`` 
     * ``message`` is a javascript object of the format ``{ command: command, stateId: stateId, value: value }``
     * The following message-commands are supported:
@@ -193,6 +197,8 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 			* This will set the ioBroker datapoint that is assigned to the devices STATE ``<widgetDeviceState>`` (for example the datapoint, that is assigned to LEVEL) to the value ``<value>`` (``<value>`` can be a string, number or boolean or an object like ``{ val: <value>, ack: true|false }``)
         * ``{ command: "getWidgetDeviceState", stateId: <widgetDeviceState> }``
 			* This will cause iQontrol to send the value of the ioBroker datapoint, that is assigned to the devices STATE ``<widgetDeviceState>`` (for example the datapoint, that is assigned to LEVEL; see below how to receive the answer-message)
+        * ``{ command: "getWidgetDeviceStateSubscribed", stateId: <widgetDeviceState> }``
+			* This will cause iQontrol to send the value of the ioBroker datapoint, that is assigned to the devices STATE ``<widgetDeviceState>`` (for example the datapoint, that is assigned to LEVEL) now and every time its value changes (see below how to receive the answer-message)
         * ``{ command: "setState", stateId: <stateId>, value: <value> }``
 			* This will set the ioBroker state ``<stateId>`` to the value ``<value>`` (``<value>`` can be a string, number or boolean or an object like ``{ val: <value>, ack: true|false }``)
         * ``{ command: "getState", stateId: <stateId> }``
@@ -216,11 +222,13 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 				plainText: "<clear text of val, for example taken from valuelist>",
 				min: <minimum>,
 				max: <maximum>,
+				step: <step-width>,
 				valuelist: {<object with possible values and corresponding clear text>},
 				targetValues: {<target value list>},
 				ack: <true|false>,
 				readonly: <true|false>,
 				custom: {<object with custom settings>},
+				id: <id of the iobroker datapoint>,
 				from: "<source of state>",
 				lc: <timestamp of last change>,
 				ts: <timestamp of last actualization>,
@@ -242,7 +250,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 
 * You can use the following HTML code and copy it to the BACKGROUND_HTML-State of a widget (which then needs to be configured as "Constant") 
 * As an alternative you can upload this code as html-file into the /userwidgets subdirectory and reference it to BACKGROUND_URL-State (which then also needs to be configured as "Constant")
-* Acitvate the option "Allow postMessage-Communication for BACKGROUND_URL/HTML"
+* Acitvate the option "Allow postMessage-Communication for BACKGROUND_VIEW/URL/HTML"
 * It will demonstrate how a two-way communication between the website and iQontrol is done
 ````html
 <!doctype html>
@@ -386,8 +394,11 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 		* syntax: ``<meta name="widget-description" content="Please see www.mywebsite.com for further informations. (C) by me"/>``
 		* The content will be displayed when chosing the widget as URL or BACKGROUND_URL or if you autocreate a widget
 	* 'widget-urlparameters'
-		* syntax: ``<meta name="widget-urlparameters" content="parameter/default value/description;parameter2/default value2/description2"/>``
+		* syntax: ``<meta name="widget-urlparameters" content="parameter/default value/description/type;parameter2/default value2/description2/type2"/>``
 		* The user will be asked for these parameter when chosing the widget as URL or BACKGROUND_URL or autocreates a widget
+		* ``type`` is optional and may be ``text`` (this is dafault), ``number``, ``checkbox``, ``color``, ``select`` or ``multipleSelect``
+		    * If type is ``select`` or ``multipleSelect`` then you need to specify the possible options by adding ``/<selectOptions>``, where ``<selectOptions>`` is a string of the format ``<value1>,<caption1>/<value2>,<caption2>/...``
+		    * If type is ``number`` then can specify min, max and step-width by adding ``/<numberOptions>``, where ``<numberOptions>`` is a string of the format ``<min>,<max>,<step>``
 		* All these parameters will be given to the widget-website via an url-parameter-string (like ``widget.html?parameter=value&parameter2=value2``)
 		* You can use these settings inside your widget-website by requesting the url-parameters with a function like this:
 			````javascript
@@ -461,7 +472,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``noOverlayInactive`` (Remove overlay of tile, if device is inactive):
 		* Possible values: "true"|"false"
 		* Default: "true" 
-	* ``hideBackgroundURLInactive`` (Hide background from BACKGROUND_URL/HTML, if device is inactive):
+	* ``hideBackgroundURLInactive`` (Hide background from BACKGROUND_VIEW/URL/HTML, if device is inactive):
 		* Possible values: "true"|"false"
 		* Default: "false"
 	* ``hideDeviceNameIfInactive`` (Hide device name, if the device is inactive):
@@ -485,7 +496,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``noOverlayActive`` (Remove overlay of tile, if device is active):
 		* Possible values: "true"|"false"
 		* Default: "true"
-	* ``hideBackgroundURLActive`` (Hide background from BACKGROUND_URL/HTML, if device is active):
+	* ``hideBackgroundURLActive`` (Hide background from BACKGROUND_VIEW/URL/HTML, if device is active):
 		* Possible values: "true"|"false"
 		* Default: "false"
 	* ``hideDeviceNameIfActive`` (Hide device name, if the device is active):
@@ -524,7 +535,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``tileEnlargeShowInPressureMenuActive`` (Show Enlarge in Menu, if device is active)
 		* Possible values: "true"|"false"
 		* Default: "true" 
-	* ``visibilityBackgroundURLEnlarged`` (Visibility of background from BACKGROUND_URL/HTML, if device is enlarged):
+	* ``visibilityBackgroundURLEnlarged`` (Visibility of background from BACKGROUND_VIEW/URL/HTML, if device is enlarged):
 		* Possible values: ""|"visibleIfEnlarged"|"hideIfEnlarged"
 		* Default: ""
 	* ``hideDeviceNameIfEnlarged`` (Hide device name, if the device is enlarged):
@@ -565,10 +576,10 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``popupAllowPostMessage`` (Allow postMessage-Communication for URL/HTML):
 		* Possible values: "true"|"false"
 		* Default: "false"
-	* ``backgroundURLAllowPostMessage`` (Allow postMessage-Communication for BACKGROUND_URL/HTML):
+	* ``backgroundURLAllowPostMessage`` (Allow postMessage-Communication for BACKGROUND_VIEW/URL/HTML):
 		* Possible values: "true"|"false"
 		* Default: "false"
-	* ``backgroundURLNoPointerEvents`` (Direct mouse events to the tile instead to the content of BACKGROUND_URL/HTML):
+	* ``backgroundURLNoPointerEvents`` (Direct mouse events to the tile instead to the content of BACKGROUND_VIEW/URL/HTML):
 		* Possible values: "true"|"false"
 		* Default: "false"
 </details>
@@ -1170,6 +1181,21 @@ This device has some special predefined size- and display-settings to show a web
     
 ## Changelog
 
+### dev
+* (sbormann) Added Flot-Chart widget.
+* (sbormann) Enhanced adding of widgets with a new settings dialog.
+* (sbormann) Added some new options for widget-developers (the meta-tag url-datapoints was enhanced for example to ask for a color with a color-picker, postMessage-answeres now contain the id of the original datapoint).
+* (sbormann) Removed space when using new-line-option.
+* (sbormann) Added role "button" in custom dialog.
+* (sbormann) Enhanced timing of repositioning dialogs after loading.
+* (sbormann) Added noToolbar to URL-parameters.
+* (sbormann) Added BACKGROUND_VIEW, to define a view which will be displayed as background of a tile.
+* (sbormann) Added the option 'Open linked view in parent instance, if this view is used as a BACKGROUND_VIEW' for links to other views. 
+* (sbormann) Added a panel which can be placed on left side of the screen and display a BACKGROUND_VIEW/URL/HTML and is widely configurable.
+* (sbormann) Added showing of swipe goals (can be hidden via option in options/miscellaneous/swiping).
+* (sbormann) Fixed crash when enlarging a hidden tile.
+* (sbormann) Reworked some borders and scrolling parameters.
+
 ### 1.4.1 (2020-11-01)
 * (sbormann) Fixed drag-sorting or tables and usage of comboboxes on mobile (touch) devices.
 * (sbormann) Enhanced demo for new instances.
@@ -1178,13 +1204,13 @@ This device has some special predefined size- and display-settings to show a web
 ### 1.4.0 (2020-10-30)
 * (sbormann) Added Autocreate views, which will help you create entire configurations out of ioBroker lists (for example rooms or functions).
 * (sbormann) Added state ENLARGE_TILE, which can be used to trigger enlargement of tile via external datapoint.
-* (sbormann) Enhanced dynamic zoom for BACKGROUND_URL/HTML to be more accurate when resizing the tile.
+* (sbormann) Enhanced dynamic zoom for BACKGROUND_VIEW/URL/HTML to be more accurate when resizing the tile.
 * (sbormann) Drag-Sort of lists should now work on touch devices too.
 
 ### 1.3.6 (2020-10-29)
 * (sbormann) Added option for transparent background.
 * (sbormann) Enhanced handling of temporary states for color lights.
-* (sbormann) Added option for dynamic zoom for BACKGROUND_URL/HTML.
+* (sbormann) Added option for dynamic zoom for BACKGROUND_VIEW/URL/HTML.
 * (sbormann) Fixed creating of widget-datapoints.
 
 ### 1.3.5 (2020-10-27)
@@ -1202,7 +1228,7 @@ This device has some special predefined size- and display-settings to show a web
 * (sbormann) Fixed colour lights if using alterntive_color_space.
 * (sbormann) Added blank symbol.
 * (sbormann) Removed up/down arrows from lists (because of sort-by-dragging not necessary any more and they broke symbolic links).
-* (sbormann) Added option to apply padding to BACKGROUND_URL/HTML.
+* (sbormann) Added option to apply padding to BACKGROUND_VIEW/URL/HTML.
 * (sbormann) Enhanced recognition of tilted state for windows.
 * (sbormann) Added backup and restore of settings and userfiles (under options / backup and restore).
 
@@ -1246,7 +1272,7 @@ This device has some special predefined size- and display-settings to show a web
 * (sbormann) Added possibility to hide views name.
 * (sbormann) Added possibility to upload html, css and js files and added drop down menu for these files for URL- and BACKGROUND_URL-State.
 * (sbormann) Added option to hide icon, if device is enlarged.
-* (sbormann) Added option set visibility of BACKGROUND_URL/HTML, if device is enlarged.
+* (sbormann) Added option set visibility of BACKGROUND_VIEW/URL/HTML, if device is enlarged.
 
 ### 1.2.5 (2020-09-19)
 * (sbormann) Fix for iOS 14 touch callout.
@@ -1254,7 +1280,7 @@ This device has some special predefined size- and display-settings to show a web
 * (sbormann) Added forced reload to cover images.
 * (sbormann) Added more tile sizes.
 * (sbormann) Added options to hide device, name or state if inactive, active or enlarged.
-* (sbormann) Added option direct mouse events to the tile instead to the content of BACKGROUND_URL/HTML.
+* (sbormann) Added option direct mouse events to the tile instead to the content of BACKGROUND_VIEW/URL/HTML.
 * (sbormann) Added postMessage-Communication to allow widget-websites to send commands to iQontrol and receive messages from iQontrol.
 * (sbormann) Added option to disable swiping.
 
@@ -1278,7 +1304,7 @@ This device has some special predefined size- and display-settings to show a web
 * (sbormann) Enhanced TileActiveConditions to even work, if STATE is not defined.
 * (sbormann) Added option to rename section 'Additional Buttons' for remote.
 * (sbormann) Arrays like REMOTE_ADDITIONAL_BUTTONS are now sortable.
-* (sbormann) Enhanced handling of BACKGROUND_URL/HTML.
+* (sbormann) Enhanced handling of BACKGROUND_VIEW/URL/HTML.
 * (sbormann) Added options to change caption of UP, STOP and DOWN for blinds.
 * (sbormann) Disabled scrolling to top by reconnection.
 * (sbormann) Added more tile size options (full width with different aspects and full screen).

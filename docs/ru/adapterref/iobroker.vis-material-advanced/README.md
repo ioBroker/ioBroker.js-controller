@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-material-advanced/README.md
 title: ioBroker.vis-material-advanced
-hash: dHGIWO7/K7u161Br1l1mdAHBmXQiZkcMA3n9j5UqZ7Y=
+hash: UhKFsvE/MazLo9kNokhslQ8lqDoHst5L1wvq4yedao0=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-material-advanced/admin/vis-material-advanced.png)
 
@@ -13,7 +13,7 @@ hash: dHGIWO7/K7u161Br1l1mdAHBmXQiZkcMA3n9j5UqZ7Y=
 ![Количество установок (стабильно)](http://iobroker.live/badges/vis-material-advanced-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/EdgarM73/iobroker.vis-material-advanced.svg)
 ![Известные уязвимости](https://snyk.io/test/github/EdgarM73/ioBroker.vis-material-advanced/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.vis-material-advanced.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.vis-material-advanced.png?downloads=true)
 
 # IoBroker.vis-material-advanced
 ## Адаптер vis-material-advanced для ioBroker
@@ -37,14 +37,14 @@ hash: dHGIWO7/K7u161Br1l1mdAHBmXQiZkcMA3n9j5UqZ7Y=
  - Давление
  - Температура и влажность
  - Вместимость
- - Свет
+ - Легкий
  - Диммер
  - Световая температура
  - Затвор
  - Объем
  - термостат
- - логическое
- - Число
+ - логический
+ - Номер
  - текст
  - клапан
 
@@ -69,12 +69,15 @@ hash: dHGIWO7/K7u161Br1l1mdAHBmXQiZkcMA3n9j5UqZ7Y=
     - border-radius для включения и изменения круглого угла
     - valueAlign Выровнять поле Value по левому, центру или правому краю
     - значение-vetical Выровняйте поле Value вверху, внизу или по середине
+    - borderColor Цвет границы, если активирован
 
 ### Начиная
 установите адаптер и запустите VIS в режиме редактирования.
 Слева выберите vis-material-adapter, и все виджеты будут показаны в предварительном просмотре.
 
 ............. многие документы отсутствуют ......................
+
+** это example2.png, импортируйте его и посмотрите вживую ** ![](../../../en/adapterref/iobroker.vis-material-advanced/widgets/door_example.png)
 
 ** вы можете импортировать файл example.json в vis ** благодаря @ sigi234
 
@@ -84,26 +87,23 @@ hash: dHGIWO7/K7u161Br1l1mdAHBmXQiZkcMA3n9j5UqZ7Y=
     ### __WORK IN PROGRESS__
 * 
 -->
+### 1.2.0 (2020-11-04)
+* added option to round every corner different/not 
+* added option to change color of border
+* added option for shadow and size of shadow
 
-### 0.8.14 (2020-10-04)
-* border-fix due to changes in css
-
-### 0.8.13 (2020-10-03)
-* bugfix LightIcon not switching
-* bugfix Volume Icon not shown if no object is set
-
-### 0.8.12 (2020-10-01)
-* Value font-size can be changed now
+### 1.1.1 (2020-10-18)
+* url wrong in package.json
 
 
-### 0.8.11 (2020-09-30)
-* bugfix fo rwrong htm lin Shutter Widget, thx Sigi234
+### 1.1.0 (2020-10-15)
+* Travis changes
 
+### 1.0.0 (2020-10-14)
+* no changes, upgrading to 1.0
 
-### 0.8.10 (2020-09-30)
-* rebase to iobroker-ocmmunity-adapter
-* added option to center Icon
-* added option to have ONLY Title and no subtitle
+### 0.9.1 (2020-10-13)
+* some colorizeByValue options did not work
 
 ## License
 MIT License

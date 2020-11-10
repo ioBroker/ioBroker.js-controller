@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: kfyRFoRcowosL9C9ZM5czQXir34tHauHJf2s0L4hp5c=
+hash: FF+Bre1Q/B31awOi0exXfiTAj93P6lpFyRQj5n/g1Qk=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -34,13 +34,22 @@ hash: kfyRFoRcowosL9C9ZM5czQXir34tHauHJf2s0L4hp5c=
 ---
 
 ##Unterstützung
-Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里恩·乌斯·杰德·斯彭德。
+Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱恩·乌斯·杰德·斯彭德。
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
 [![Spende]（http://resources.inventwo.com/github/inventwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.5.8
+-错误修正
+
+## 2.5.7
+-错误修正
+
+## 2.5.6
+-错误修正
 
 ## 2.5.5
 -错误修正
@@ -97,7 +106,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗里
 -价值清单behoben中的费勒：Wert wird nicht aktualisiert
 
 ## 2.2.0
--Datenpunktwerte werden jetzt bei allen Widgets in Editor编辑
+-Datenpunktwerte werden jetzt bei allen Widgets in Editor angezeigt
 -Neues小部件：Marquee（Laufschrift）
 -通用和多州Verweildauerhinzugefügt
 -列表小部件Abstand zwischen denEinträgenkann eingestell werden

@@ -547,6 +547,9 @@ Falls zu einem State keine Dokumentation vorhanden ist, jemand aber weiß, was d
    *Nur lesbarer Text, die die Seriennummern der evtl. vorhandenen Wallboxen 0-3 angibt.*
 
 ## Changelog
+### 1.0.12 (NoBl)
+* Just set 'supportCustoms' to false so it won't show up in admin custom config.
+
 ### 1.0.11 (NoBl)
 * Update to current adapter template
 * Added Datapoints: PV1.MPP_CUR, MPP_VOL, MPP_POWER (former: MPP_INT which is unused at this moment but does still exist)

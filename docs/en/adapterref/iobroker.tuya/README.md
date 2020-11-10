@@ -90,6 +90,10 @@ Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column
 
 ## Changelog
 
+### 3.4.1 (2020-11-05)
+* (Apollon77) More schema information added
+* (Apollon77) fix IP lookup via UDP
+
 ### 3.4.0 (2020-10-29)
 * (Apollon77) update tuya-api library
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.i2c/README.md
 title: ioBroker.i2c
-hash: la5rIqhMp2LjxDFzsghRF91IP9I5i3GxI203+1eZ1zU=
+hash: 40EqvTkUuNxAOD12jqOvRsYZd+CwfQoIYUc7z7Cr6bI=
 ---
 ![Logo](../../../en/adapterref/iobroker.i2c/admin/i2c.png)
 
@@ -14,10 +14,11 @@ hash: la5rIqhMp2LjxDFzsghRF91IP9I5i3GxI203+1eZ1zU=
 ![Abhängigkeitsstatus](https://img.shields.io/david/UncleSamSwiss/iobroker.i2c.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/UncleSamSwiss/ioBroker.i2c/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.i2c.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/UncleSamSwiss/ioBroker.i2c/master.svg)
 
 # IoBroker.i2c
-![Testen und freigeben](https://github.com/UncleSamSwiss/ioBroker.i2c/workflows/Test%20and%20Release/badge.svg)
+[![Übersetzungsstatus] (https://weblate.iobroker.net/widgets/adapters/-/i2c/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
+** Tests: ** ![Testen und freigeben](https://github.com/UncleSamSwiss/ioBroker.i2c/workflows/Test%20and%20Release/badge.svg)
 
 ## I2C-Adapter für ioBroker
 Kommuniziert mit Geräten, die über den I2C-Bus mit dem lokalen System verbunden sind.
@@ -60,6 +61,9 @@ Bei Raspberry Pi 3 und 4B ist dies "1".
 ## Unterstützte Geräte
 Die folgenden Geräte werden derzeit unterstützt. Die Zahlen in Klammern sind die bekannten Adressen des Geräts im Hexadezimalformat (ohne das Lesebit).
 
+### Adafruit STEMMA Bodensensor (36)
+Adafruit STEMMA Bodensensor - Kapazitiver Feuchtigkeitssensor I2C mit dem ATSAMD10-Chip.
+
 ### ADS1015 (48-4B)
 Texas Instruments 4x 3,3-kSPS, 12-Bit-ADCs mit interner Referenz.
 
@@ -69,11 +73,23 @@ Texas Instruments 4x 860-SPS, 16-Bit-ADCs mit interner Referenz.
 ### BME280 (76, 77)
 Bosch Digitaler Feuchtigkeits-, Druck- und Temperatursensor.
 
+### GY-US42 Sonar-Entfernungsmesser (70)
+MaxSonar GY-US42 Sonar-Entfernungsmesser 20 - 720 cm.
+
+### HMC5883L 3-Achsen-Digitalkompass (1E)
+Honeywell 3-Achsen-Digitalkompass-IC.
+
+### INA219 Strom- / Leistungsüberwachung (40-4F)
+Zero-Drift, bidirektionaler Strom- / Leistungsmonitor von Texas Instruments.
+
 ### MCP23008 8-Bit-E / A-Expander (20-27)
 Microchip 8-Bit I / O Expander mit serieller Schnittstelle.
 
 ### MCP23017 16-Bit-E / A-Expander (20-27)
 Microchip 16-Bit I / O Expander mit serieller Schnittstelle.
+
+### MCP4725 12-Bit-Digital-Analog-Wandler (60-67)
+Mikrochip 12-Bit-Digital-Analog-Wandler mit EEPROM-Speicher.
 
 ### PCF8574 8-Bit-E / A-Expander (20-27)
 Remote 8-Bit-E / A-Expander von Texas Instruments für I2C-Bus.
@@ -84,6 +100,24 @@ Remote 8-Bit-E / A-Expander von Texas Instruments für I2C-Bus.
 ### PCA9685 16-Kanal 12-Bit-PWM-Servo- / LED-Treiber (40-7F)
 Adafruit PCA9685 Breakout Board für 16-Kanal 12-Bit PWM. Der Adapter konzentrierte sich auf die Verwendung der 16 Kanäle von 0..4095 als LED-Dimmer.
 Kann viele LEDs ansteuern, wenn PWM (und GND) an ein N-Kanal-Mosfet-Modul angeschlossen sind, z. basierend auf D4184. Verbinden Sie die LED GND mit dem MOSFET und +12 / 24 / n V mit dem Netzteil.
+
+### QMC5883L 3-Achsen-Magnetsensor (0D)
+QST 3-Achsen-Magnetsensor.
+
+### SHT3x Feuchtigkeits- und Temperatursensor (44-45)
+Sensirion SHT3x Feuchtigkeits- und Temperatursensor.
+
+### SRF02 Ultraschall-Ranger-Finder (70)
+Devantech Ultrasonic Ranger Finder 16 - 600cm.
+
+### SX1507 4-Kanal-Pegelverschiebungs-GPIO mit LED-Treiber (3E, 3F, 70, 71)
+Semtech Worlds GPIO mit der niedrigsten Spannungspegelverschiebung und LED-Treiber für 4 Kanäle.
+
+### SX1508 8-Kanal-Pegelverschiebungs-GPIO mit LED-Treiber und Tastaturmotor (20-23)
+Semtech Worlds GPIO mit der niedrigsten Spannungspegelverschiebung mit LED-Treiber und Tastaturmotor für 8 Kanäle.
+
+### SX1509 GPIO mit 16 Kanalpegelverschiebung mit LED-Treiber und Tastaturmotor (3E, 3F, 70, 71)
+Semtech Worlds GPIO mit der niedrigsten Spannungspegelverschiebung mit LED-Treiber und Tastaturmotor für 16 Kanäle.
 
 ### Generisches Gerät (03-77)
 Generisches I2C-Gerät. Register können je nach Hardware konfiguriert werden.
@@ -185,7 +219,7 @@ MIT-Lizenz
 
 Copyright (c) 2016 Skylar Stein
 
-Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , Veröffentlichung, Vertrieb, Unterlizenzierung und / oder Verkauf von Kopien der Software und Erlaubnis von Personen, denen die Software zur Verfügung gestellt wird, unter folgenden Bedingungen:
+Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
 
 Der oben genannte Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
@@ -200,7 +234,7 @@ Die MIT-Lizenz (MIT)
 
 Copyright (c) 2016 Adafruit Industries
 
-Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , Veröffentlichung, Vertrieb, Unterlizenzierung und / oder Verkauf von Kopien der Software und Erlaubnis von Personen, denen die Software zur Verfügung gestellt wird, unter folgenden Bedingungen:
+Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
 
 Der oben genannte Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
@@ -213,7 +247,7 @@ Die MIT-Lizenz (MIT)
 
 Copyright (c) 2016 Adafruit Industries Autor: Tony DiCola
 
-Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , Veröffentlichung, Vertrieb, Unterlizenzierung und / oder Verkauf von Kopien der Software und Erlaubnis von Personen, denen die Software zur Verfügung gestellt wird, unter folgenden Bedingungen:
+Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
 
 Der oben genannte Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
@@ -226,6 +260,16 @@ Copyright 2014 Technical Machine, Inc. Siehe die COPYRIGHT-Datei im obersten Ver
 Lizenziert unter der Apache-Lizenz, Version 2.0 <LICENSE-APACHE oder http://www.apache.org/licenses/LICENSE-2.0> oder der MIT-Lizenz <LICENSE-MIT oder http://opensource.org/licenses/MIT> nach Ihrer Wahl. Diese Datei darf nur gemäß diesen Bedingungen kopiert, geändert oder verteilt werden.
 
 ## Changelog
+
+### 1.1.0 (2020-11-05)
+
+-   (UncleSamSwiss) Added support for SX1507, SX1508 and SX1509.
+-   (UncleSamSwiss) Added support for MCP4725.
+-   (UncleSamSwiss) Added support for HMC5883L and QMC5883L.
+-   (UncleSamSwiss) Added support for Adafruit STEMMA Soil Sensor.
+-   (UncleSamSwiss) Added support for INA219.
+-   (UncleSamSwiss) Changed polling interval of ADS1x15 to milliseconds.
+-   (UncleSamSwiss) Fixed several bugs.
 
 ### 1.0.1 (2020-10-27)
 
@@ -271,3 +315,20 @@ Lizenziert unter der Apache-Lizenz, Version 2.0 <LICENSE-APACHE oder http://www.
 ### 0.0.1 (2017-07-27)
 
 -   (UncleSamSwiss) Initial version
+
+## License
+
+Copyright 2020 UncleSamSwiss
+
+Licensed under the Apache License, Version 2.0 (the "License");
+you may not use this file except in compliance with the License.
+You may obtain a copy of the License at
+
+http://www.apache.org/licenses/LICENSE-2.0
+
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS,
+WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+
+See the License for the specific language governing permissions and
+limitations under the License.

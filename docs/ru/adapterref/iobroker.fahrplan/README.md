@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.fahrplan/README.md
 title: ioBroker.fahrplan
-hash: mKkOuWLEONeQnNK12CHQxy049d7Izp+sL132jYzPt5A=
+hash: /Y+XydeKv9XJuVr50Bb1grwEQi7nB/GoVK8L7wkTUeg=
 ---
 ![Логотип](../../../en/adapterref/iobroker.fahrplan/admin/fahrplan.png)
 
@@ -31,11 +31,13 @@ Die gewünschten Routen müssen in der Adapterkonfiguration eingerichtet und akt
 Das HTML-Objekt kann einfach in VIS eingebunden werden.
 
 #### Benachrichtigung bei Verspätungen der Routen
-Für die konfigurierten Routen kann ein Verspätungsalarm aktiviert werden. Таким образом, kann beispielsweise eine Benachrichtigung через Telegram или Alexa erfolgen, попадает во все, что вам нравится, Verbindung verspätet ist.
+Für die konfigurierten Routen kann ein Verspätungsalarm aktiviert werden. Таким образом, kann beispielsweise eine Benachrichtigung через Telegram или Alexa erfolgen, попадает во все, что связано с Verbindung verspätet ist.
 
 #### Abfahrtstafeln für Stationen
 Zusätzlich bietet der Adapter eine Abfahrtstafel für konfigurierte Stationen.
 Hierbei werden die nächsten drei Abfahrten einer Station abgerufen und als Objekte und HTML dargestellt.
+
+** Адаптер Dieser доступен для Sentry Bibliotheken um automatisch Abstürze und Programmfehler an die Entwickler zu übermitteln. ** Подробная информация и информация о Deaktivierung der Fehlerberichterstattung в [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting сообщает о версии JS-Controller 3.0.
 
 ### Английский
 Этот адаптер для ioBroker использует мобильный API HAFAS. HAFAS - это система управления общественным транспортом, используемая поставщиками общественного транспорта по всей Европе, например Deutsche Bahn.
@@ -55,6 +57,8 @@ HTML-объект может быть легко использован в VIS.
 #### Расписание отправлений по станциям
 Кроме того, адаптер предоставляет расписание отправлений для настроенных станций.
 Здесь следующие три соединения обнаруживаются и создаются как объекты и HTML.
+
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Конфигурация
 ### Deutsch
@@ -85,7 +89,7 @@ Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 
 | Einstellung | Beschreibung | ----------------------------- | --- | № | Die Nummer entspricht dem Unterknoten in den Objekten und wird automatisch vergeben.
-| Актив | Wenn der Verspätungsalarm aktiviert ist wird dieser geprüft | Маршрут | Route auf die sich der Alarm beziehen soll | Geplante Abfahrt | Geplante Abfahrtszeit der zu prüfenden Route (Leer = Alle Verbindungen) | Wochentag | Wochentage an denen die Prüfung erfolgen soll | Benachrichtigung в Минутене | Anzahl der Minuten vor der Abfahrt, в денен бенахрихтигт верден соль | Objekt für Ausgabetext | Angabe eines vorhandenen Objekts
+| Актив | Wenn der Verspätungsalarm aktiviert ist wird dieser geprüft | Маршрут | Route auf die sich der Alarm beziehen soll | Geplante Abfahrt | Geplante Abfahrtszeit der zu prüfenden Route (Leer = Alle Verbindungen) | Wochentag | Wochentage an denen die Prüfung erfolgen soll | Benachrichtigung в Минутене | Anzahl der Minuten vor der Abfahrt, in denen benachrichtigt werden soll | Objekt für Ausgabetext | Angabe eines vorhandenen Objekts
 
 Hinweis zum Ausgabetext: Hier kann neben einfachen Objekten für VIS z.B. auch das "Speak" -Objekt des Alexa-Adapters или das "reponse" -Objekt des Telegram-Adapters verwendet werden.
 
@@ -111,14 +115,14 @@ Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 
 С помощью + -Button новые записи могут быть добавлены в таблицу.
 
-| Настройка | Описание | ----------------------------- | --- | № | Номер соответствует подузлу в объектах и присваивается автоматически | Activ | Информация о подключении обновляется, когда активен маршрут | От | Числовой идентификатор начальной станции или начальной остановки | От (Пользовательское имя) | Пользовательское имя для начальной станции или начальной остановки, используется в выводе HTML-уведомлений и уведомлений о задержках | К | Числовой идентификатор станции назначения или остановки назначения | От (Пользовательское имя) | Пользовательское имя для станции назначения или остановки назначения, используемое в выводе HTML-уведомлений и уведомлений о задержке | Via 1 | Проехать через специальную станцию в виде числового идентификатора (необязательно, по умолчанию пусто) | Via 2 | Проехать через специальную станцию как числовой идентификатор (необязательно, по умолчанию пусто) | Автомобиль | Выбор автомобиля, например Автобус, S-Bahn и т. Д. По умолчанию выбраны все автомобили | Максимум. трансферы | Максимальное количество пересадок по маршруту, 0 только для прямых пересадок | Отправления | Количество отправлений для приема | Bycicle | Выбирайте только те соединения, где разрешены велосипеды
+| Настройка | Описание | ----------------------------- | --- | № | Номер соответствует подузлу в объектах и присваивается автоматически | Activ | Информация о подключении обновляется, когда активен маршрут | От | Числовой идентификатор начальной станции или начальной остановки | От (Пользовательское имя) | Пользовательское имя для начальной станции или начальной остановки, используется в выводе HTML-уведомлений и уведомлений о задержках | К | Числовой идентификатор станции назначения или остановки назначения | От (Пользовательское имя) | Пользовательское имя для станции назначения или остановки назначения, используемое в выводе HTML-уведомлений и уведомлений о задержке | Via 1 | Проехать через специальную станцию в виде числового идентификатора (необязательно, по умолчанию пусто) | Via 2 | Проехать через специальную станцию в виде числового идентификатора (необязательно, по умолчанию пусто) | Автомобиль | Выбор автомобиля, например Автобус, S-Bahn и т. Д. По умолчанию выбраны все автомобили | Максимум. трансферы | Максимальное количество пересадок по маршруту, 0 только для прямых пересадок | Отправления | Количество отправлений для приема | Bycicle | Выбирайте только те соединения, где разрешены велосипеды
 
 #### Тревога задержки табуляции
 ![](../../../en/adapterref/iobroker.fahrplan/docs/en/img/settings_delaynotification.png)
 
 С помощью + -Button новые записи могут быть добавлены в таблицу.
 
-| Einstellung | Beschreibung | ----------------------------- | --- | № | Номер соответствует подузлу в объектах и присваивается автоматически | Activ | Активирована проверка задержки сигнала тревоги | Маршрут | Маршрут относительно этого сигнала задержки | Планируемый отъезд | Планируемое отправление соединения для проверки (Пусто = Все маршруты) | Будни | Будни, когда нужно проверять соединение | Уведомление за считанные минуты | Минуты до отправления при активном сигнале задержки | Объект для вывода текста | Состояние ioBroker для вывода текста
+| Einstellung | Beschreibung | ----------------------------- | --- | № | Номер соответствует подузлу в объектах и присваивается автоматически | Activ | Активирована проверка задержки сигнала тревоги | Маршрут | Маршрут относительно этого сигнала задержки | Планируемый отъезд | Планируемое отправление соединения подлежит проверке (Пусто = Все маршруты) | Будни | Будни, когда нужно проверять соединение | Уведомление за считанные минуты | Минуты до отправления при активном сигнале задержки | Объект для вывода текста | Состояние ioBroker для вывода текста
 
 Подсказка для «Объект для вывода текста»: могут использоваться простые состояния для использования в VIS, но также «говорить» -состояние адаптера Alexa или «ответ» -состояние адаптера Telegram.
 
@@ -136,11 +140,12 @@ Mit dem + -Button können neue Einträge zur Tabelle hinzugefügt werden.
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 0.2.1 (2020-11-09)
 * (Gaudes) Configurable number of journeys in routes
 * (Gaudes) Configurable number of departures in departure timetable
 * (Gaudes) Show product in departure timetable
 * (Gaudes) Fix platform handling in departure timetable
+* (Gaudes) Include Sentry error reporting
 * (Gaudes) Update Adapter template from 1.27.0 to 1.29.0
 * (Gaudes) Include Dependabot updates
 

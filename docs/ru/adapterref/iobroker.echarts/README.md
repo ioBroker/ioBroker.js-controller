@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: HZMqnIYJpRdZhcSBH9zMKwYeK5yhLIkznc2+sDE5aN0=
+hash: JyOvcim9n28Qm0LRcmvtB4ihyR6nR5gEN6Q9Wd9/vKQ=
 ---
 ![Логотип](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -14,7 +14,7 @@ hash: HZMqnIYJpRdZhcSBH9zMKwYeK5yhLIkznc2+sDE5aN0=
 ![НПМ](https://nodei.co/npm/iobroker.echarts.png?downloads=true)
 
 # IoBroker.echarts
-## Echarts адаптер для ioBroker
+## Адаптер электронных схем для ioBroker
 Создавайте полезные графики в ioBroker:
 
 ![Снимок экрана](../../../en/adapterref/iobroker.echarts/img/screenshot1.png)
@@ -27,18 +27,22 @@ hash: HZMqnIYJpRdZhcSBH9zMKwYeK5yhLIkznc2+sDE5aN0=
 
 ```
 sendTo('echarts.0', {
-    renderer: 'svg',         // svg | png | jpg | pdf, default: svg
-    width: 1024,             // default 1024
-    height: 300,             // default 300
-    height: 300,             // default 300
-    title: 'ioBroker Chart', // Title of PDF document
-    quality: 0.8,            // quality of JPG
-    compressionLevel: 3,     // Compression level of PNG
-    filters: 8,              // Filters of PNG (Bit combination https://github.com/Automattic/node-canvas/blob/master/types/index.d.ts#L10)
-    fileOnDisk: '',          // Path on disk to save the file
-    fileName: '',            // Path in ioBroker DB to save the files on 'echarts.0',
-    background: '',          // Background color
-    theme: 'light',          // Theme type: 'light', 'dark'
+    preset:   'echarts.0.myPreset', // the only mandatory attribute
+
+    renderer: 'svg',                // svg | png | jpg | pdf, default: svg
+
+    width: 1024,                    // default 1024
+    height: 300,                    // default 300
+    background: '#000000',          // Background color
+    theme: 'light',                 // Theme type: 'light', 'dark'
+
+    title: 'ioBroker Chart',        // Title of PDF document
+    quality: 0.8,                   // quality of JPG
+    compressionLevel: 3,            // Compression level of PNG
+    filters: 8,                     // Filters of PNG (Bit combination https://github.com/Automattic/node-canvas/blob/master/types/index.d.ts#L10)
+
+    fileOnDisk: '',                 // Path on disk to save the file
+    fileName: '',                   // Path in ioBroker DB to save the files on 'echarts.0',
 }, result => {
     if (result.error) {
         console.error(result.error);
@@ -59,12 +63,16 @@ sendTo('echarts.0', {
 - виджет для vis (кнопка)
 - виджет для материала
 - показывать значки перечислений в папках или рядом с ними
+- перетаскивание пресетов для изменения порядка
 
 <! - Заполнитель для следующей версии (в начале строки):
 
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 0.3.4 (2020-11-08)
+* (bluefox) Corrected server-side rendering of PNG 
+
 ### 0.3.1 (2020-10-31)
 * (bluefox) Added the color of export button 
 * (bluefox) The interpolated values are shown now
