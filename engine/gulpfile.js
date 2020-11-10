@@ -519,4 +519,14 @@ gulp.task('default', gulp.series(
     '9.build'               // build react site
 ));
 
+gulp.task('buildOnly', gulp.series(
+    '0.clean',              // clean dir
+    '1.blog',               // translate and copy blogs
+    '5.faq',                // combine FAQ together
+    '6.documentation',      // create content for documentation
+    '7.copyFiles',          // copy all adapters and docs to public
+    '8.createSitemap',      // create sitemap for google
+    '9.build'               // build react site
+));
+
 
