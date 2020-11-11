@@ -89,17 +89,17 @@ function prepareAdapterReadme(lang, repo, data) {
 
         let {header, body} = utils.extractHeader(text);
 
-        header.adapter = true;
-        header.editLink = data.editLink;
-        header.license = repo.license;
-        header.authors = repo.authors ? repo.authors.map(item => getAuthor(item)).join(', ') : getAuthor(repo.author);
+        header.adapter     = true;
+        header.editLink    = data.editLink;
+        header.license     = repo.license;
+        header.authors     = repo.authors ? repo.authors.map(item => getAuthor(item)).join(', ') : getAuthor(repo.author);
         header.description = repo.desc ? (repo.desc[lang] || repo.desc.en || repo.desc) : '';
-        header.title = repo.titleLang ? repo.titleLang[lang] || repo.title : repo.title;
-        header.keywords = repo.keywords ? repo.keywords.join(', ') : '';
-        header.readme = repo.readme;
-        header.mode = repo.mode;
+        header.title       = repo.titleLang ? repo.titleLang[lang] || repo.title : repo.title;
+        header.keywords    = repo.keywords ? repo.keywords.join(', ') : '';
+        header.readme      = repo.readme;
+        header.mode        = repo.mode;
         header.materialize = repo.materialize || false;
-        header.compact = repo.compact || false;
+        header.compact     = repo.compact || false;
         if (repo.published) {
             header.published = repo.published;
         }
@@ -190,7 +190,11 @@ function prepareAdapterReadme(lang, repo, data) {
             }));*/
 
         //Promise.all(promises).then(() => {
-            resolve({body: utils.addHeader(lines.join('\n'), header), name: data.link ? data.link.replace(data.relative, '') : 'README.md'});
+            resolve({
+                body: utils.addHeader(lines.join('\n'), header),
+                name: data.link ? data.link.replace(data.relative, '') : 'README.md',
+                logo: header.logo
+            });
         //});
     });
 }
@@ -633,8 +637,21 @@ function copyAdapterToFrontEnd(lang, adapter) {
                         relative: dirName,
                         link:     file,
                         editLink: link.replace('raw.githubusercontent.com', 'github.com').replace('/master/', '/edit/master/')
-                    }).then(result =>
-                        result && utils.writeSafe(`${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}${result.name}`, result.body));
+                    }).then(result => {
+                        if (result) {
+                            if (result.logo) {
+                                const src = `${consts.FRONT_END_DIR}${result.logo}`;
+                                const dst = `${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}/${repo[adapter].extIcon.split('/').pop().split('?')[0]}`;
+                                if (!fs.existsSync(dst)) {
+                                    const logo = fs.readFileSync(src);
+                                    // copy logo into main dir
+                                    utils.writeSafe(dst, logo);
+                                }
+
+                            }
+                            utils.writeSafe(`${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}${result.name}`, result.body);
+                        }
+                    });
                 }));
             } else {
                 console.error('No local files found for ' + adapter + ' in ' + lang);

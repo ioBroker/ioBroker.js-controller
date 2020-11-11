@@ -427,9 +427,8 @@ gulp.task('6.documentation', () =>
     documentation.processContent(path.join(consts.SRC_DOC_DIR, 'content.md')));
 
 // copy all docs/LN/adapterref/* => engine/front-end/public/LN/adapterref/*
-gulp.task('7.copyFiles', () => {
-    return Promise.all([adapters.copyAllAdaptersToFrontEnd(), documentation.processFiles(consts.SRC_DOC_DIR)]);
-});
+gulp.task('7.copyFiles', () =>
+    Promise.all([adapters.copyAllAdaptersToFrontEnd(), documentation.processFiles(consts.SRC_DOC_DIR)]));
 
 function scanDir(folder, root, result) {
     result  = result || [];
