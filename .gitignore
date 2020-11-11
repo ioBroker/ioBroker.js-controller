@@ -15,3 +15,4 @@
 /engine/front-end/data
 /engine/front-end/node_modules
 /engine/front-end/package-lock.json
+/engine/front-end/public/blog.json
