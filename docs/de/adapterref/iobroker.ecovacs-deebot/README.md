@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: tsRMKoc9AaHXtrg+0sErqousym8nUy7W5qEZ/oCJyi0=
+hash: DkBGxHrRk4kYPdcFnwkVADB89lV/GdFdorsw6J4rtmc=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -59,7 +59,7 @@ sudo npm install canvas --unsafe-perm=true
 
 Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/canvas#compiling
 
-## Verwendungszweck
+## Verwendung
 * Informationen zur Verwendung dieses Adapters finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Bekannte Probleme
@@ -72,12 +72,20 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 ## FAQ
 * Häufig gestellte Fragen finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
+## Haftungsausschluss
+Ich bin in keiner Weise mit ECOVACS verbunden.
+
 ## Changelog
+
+### 1.0.5
+* Bump library to 0.4.25
+* Initial support for Ozmo T8 and T8+
+* Implement buttons for ResetLifeSpan cmd (currently 900/901/930 only)
+* Several enhancements and fixes
 
 ### 1.0.4
 * Bump library to 0.4.21
 * Remove canvas from dependencies
-* Add support for Ozmo T8 (without AIVI)
 * Several bugfixes and improvements (especially for N79 series)
 * Possibility to specify the number of reruns for a spot area
 * Spot areas in the "control" channel are now created automatically

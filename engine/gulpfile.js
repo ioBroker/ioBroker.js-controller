@@ -1,21 +1,21 @@
 /*!
  * Copyright 2019, bluefox <dogafox@gmail.com>
  * ioBroker gulpfile
- * Date: 2019-03-17
+ * Date: 2019-11-11
  * Build documentation site
  */
 'use strict';
 
-const gulp = require('gulp');
+const gulp          = require('gulp');
+const path          = require('path');
+const fs            = require('fs');
+const request       = require('request');
 const documentation = require('./build-lib/documentaion');
-const faq = require('./build-lib/faq');
-const adapters = require('./build-lib/adapters');
-const blog = require('./build-lib/blog');
-const consts = require('./build-lib/consts');
-const utils = require('./build-lib/utils');
-const path = require('path');
-const fs = require('fs');
-const request = require('request');
+const faq           = require('./build-lib/faq');
+const adapters      = require('./build-lib/adapters');
+const blog          = require('./build-lib/blog');
+const consts        = require('./build-lib/consts');
+const utils         = require('./build-lib/utils');
 const EMPTY = '';
 const fileName = 'temp_words.js';
 
@@ -400,13 +400,6 @@ gulp.task('2.downloadAdapters', () =>
         .then(content =>
             console.log(JSON.stringify(content))));
 
-// build adapters.json
-gulp.task('2.5buildAdapters', () =>
-    adapters.buildAdapterContent(true)
-        .then(content =>
-            console.log(JSON.stringify(content))));
-
-
 gulp.task('3.downloadVisCordova', done => {
     request('https://raw.githubusercontent.com/ioBroker/ioBroker.vis.cordova/master/README.md', (err, state, body) => {
         fs.writeFileSync(path.join(consts.SRC_DOC_DIR, 'en/viz/app.md'),
@@ -502,6 +495,8 @@ gulp.task('9.build', done => {
     const { exec } = require('child_process');
     const SRC_DATA_DIR = __dirname + '/front-end/build/data';
     const TGT_DATA_DIR = __dirname + '/front-end/data';
+
+    // save data folder
     if (fs.existsSync(SRC_DATA_DIR)) {
         !fs.existsSync(TGT_DATA_DIR) && fs.mkdirSync(TGT_DATA_DIR);
 
@@ -515,6 +510,7 @@ gulp.task('9.build', done => {
             const child_ = exec('npm run build', {stdio: [process.stdin, process.stdout, process.stderr], cwd: __dirname + '/front-end'});
             child_.on('exit', (code, signal) => {
 
+                // restore data folder
                 !fs.existsSync(SRC_DATA_DIR) && fs.mkdirSync(SRC_DATA_DIR, {recursive: true});
                 fs.existsSync(TGT_DATA_DIR) && fs.readdirSync(TGT_DATA_DIR)
                     .forEach(name => fs.writeFileSync(SRC_DATA_DIR + '/' + name, fs.readFileSync(TGT_DATA_DIR + '/' + name)));
@@ -526,6 +522,7 @@ gulp.task('9.build', done => {
         const child = exec('npm run build', {stdio: [process.stdin, process.stdout, process.stderr], cwd: __dirname + '/front-end'});
         child.on('exit', (code, signal) => {
 
+            // restore data folder
             !fs.existsSync(SRC_DATA_DIR) && fs.mkdirSync(SRC_DATA_DIR, {recursive: true});
             fs.existsSync(TGT_DATA_DIR) && fs.readdirSync(TGT_DATA_DIR)
                 .forEach(name => fs.writeFileSync(SRC_DATA_DIR + '/' + name, fs.readFileSync(TGT_DATA_DIR + '/' + name)));
@@ -544,18 +541,17 @@ gulp.task('default', gulp.series(
     '5.faq',                // combine FAQ together
     '6.documentation',      // create content for documentation
     '7.copyFiles',          // copy all adapters and docs to public
-    '8.createSitemap',      // create sitemap for google
+    '8.createSitemap',      // create site-map for google
     '9.build'               // build react site
 ));
 
 gulp.task('buildOnly', gulp.series(
     '0.clean',              // clean dir
     '1.blog',               // translate and copy blogs
-    '2.5buildAdapters',     // combine FAQ together
     '5.faq',                // combine FAQ together
     '6.documentation',      // create content for documentation
     '7.copyFiles',          // copy all adapters and docs to public
-    '8.createSitemap',      // create sitemap for google
+    '8.createSitemap',      // create site-map for google
     '9.build'               // build react site
 ));
 

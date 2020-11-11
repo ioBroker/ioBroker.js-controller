@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: tsRMKoc9AaHXtrg+0sErqousym8nUy7W5qEZ/oCJyi0=
+hash: DkBGxHrRk4kYPdcFnwkVADB89lV/GdFdorsw6J4rtmc=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -41,7 +41,7 @@ hash: tsRMKoc9AaHXtrg+0sErqousym8nUy7W5qEZ/oCJyi0=
 ## Установка
 Рекомендуется использовать версию Node.js 10 или более новую.
 
-Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок.
+Этот адаптер использует библиотеку холста, для которой может потребоваться дополнительная установка.
 Для полного набора функций установите следующие пакеты.
 
 Для систем Linux на базе Debian необходимо выполнить следующие команды:
@@ -69,15 +69,23 @@ sudo npm install canvas --unsafe-perm=true
   * Вы можете использовать соответствующую опцию в конфигурации адаптера в качестве временного решения.
 * Кнопка «пауза» не работает с Deebot 710/711.
 
-## ВОПРОСЫ-ОТВЕТЫ
+## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
+## Отказ от ответственности
+Я никоим образом не связан с ECOVACS.
+
 ## Changelog
+
+### 1.0.5
+* Bump library to 0.4.25
+* Initial support for Ozmo T8 and T8+
+* Implement buttons for ResetLifeSpan cmd (currently 900/901/930 only)
+* Several enhancements and fixes
 
 ### 1.0.4
 * Bump library to 0.4.21
 * Remove canvas from dependencies
-* Add support for Ozmo T8 (without AIVI)
 * Several bugfixes and improvements (especially for N79 series)
 * Possibility to specify the number of reruns for a spot area
 * Spot areas in the "control" channel are now created automatically

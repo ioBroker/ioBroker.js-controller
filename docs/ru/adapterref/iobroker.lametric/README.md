@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: rrTTa+nRCnAnxHgtZ/Fhl4BSAKkLMlo5Y1JRqNIm9+Q=
+hash: uXHMTTKiiRLqyA7Y/Zwqw5IlOhiqYnVLHtmPHwoI2Fs=
 ---
 ![Логотип](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -42,7 +42,7 @@ hash: rrTTa+nRCnAnxHgtZ/Fhl4BSAKkLMlo5Y1JRqNIm9+Q=
 Возможности ограничены [официальные функции API](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html).
 
 ## Блочно
-Вы можете использовать простую строку в качестве сообщения, которое будет отображаться в виде одного кадра
+В качестве сообщения можно использовать простую строку, которая будет отображаться в виде одного кадра.
 
 ![просто](../../../en/adapterref/iobroker.lametric/docs/blockly1.png)
 
@@ -118,6 +118,12 @@ show();
 ```
 
 ## Changelog
+
+### 1.0.0
+
+* (klein0r) First stable release
+* (klein0r) Added iobroker sentry
+* (klein0r) Added brightness and volume limit information (min, max)
 
 ### 0.0.10
 

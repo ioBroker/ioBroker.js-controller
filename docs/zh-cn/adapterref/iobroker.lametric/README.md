@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: rrTTa+nRCnAnxHgtZ/Fhl4BSAKkLMlo5Y1JRqNIm9+Q=
+hash: uXHMTTKiiRLqyA7Y/Zwqw5IlOhiqYnVLHtmPHwoI2Fs=
 ---
 ![商标](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -118,6 +118,12 @@ show();
 ```
 
 ## Changelog
+
+### 1.0.0
+
+* (klein0r) First stable release
+* (klein0r) Added iobroker sentry
+* (klein0r) Added brightness and volume limit information (min, max)
 
 ### 0.0.10
 

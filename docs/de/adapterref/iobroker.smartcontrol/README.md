@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartcontrol/README.md
 title: ioBroker.smartcontrol
-hash: 3Lfh+x1TuePJBZ/FvSma67lLwKMdoATC64t1nXYaDs4=
+hash: xvqF8Mvd+RJ1qAySIWxcbQbtWUZjricx134V+xc9ZbY=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartcontrol/admin/smartcontrol-banner.png)
 
@@ -18,6 +18,30 @@ hash: 3Lfh+x1TuePJBZ/FvSma67lLwKMdoATC64t1nXYaDs4=
 
 # IoBroker.smartcontrol
 ## Smart Control Adapter für ioBroker
+*[Klicken Sie hier, um zum Abschnitt Einführung zu springen](#introduction)*
+
+Dieser Adapter würde ohne die großartigen und wertvollen Beiträge der ioBroker-Community zu Benutzeroberfläche, Funktionsanfragen, Tests und Fehlerberichten usw. nicht existieren. Vielen Dank an alle, die dazu beigetragen haben!
+
+Dies als Zusammenfassung der sehr positiven Rückmeldungen aus der Community, die ich mit Ihnen teilen möchte 😊 (erröten) (vom ältesten zum neuesten und auf Deutsch):
+
+* *Ein Toller Adapter und Entwicklungsarbeit!* [Quelle] (https://forum.iobroker.net/post/461724)
+* *Ich finde das Hilfssystem einfach Genial.👍* [Quelle] (https://forum.iobroker.net/post/463066)
+* *die Auswahl ist so viel viel Übersichtlicher! Bist mein absoluter Held! 🙂 Die Eierlegende selbstversorgende Wollmilchsau ist am Laufen .. 🙂* [Quelle] (https://forum.iobroker.net/post/470948)
+* *erstmal ein Dankeschön für die Arbeit. Wissente nicht wissen wieviele Stunden da drin gehört 👍* [Quelle] (https://forum.iobroker.net/post/474350)
+* *Auch ich muss sagen: TOP Arbeit!* [Quelle] (https://forum.iobroker.net/post/476116)
+* *super, du hast echt klasse Ideen und hat diese sehr benutzerfreundlich um!* [Quelle] (https://forum.iobroker.net/post/476117)
+* *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * )
+* *ich bin auch rechtmäßig von dem Adapter, schöne Arbeit. Hab jetzt schon länger Zeit immer mal wieder wieder Systeme Systeme getestet, FHEM, Nodered und jetzt seit gehören Iobroker. So schnell hab ich meine Lichtsteuerung über Bewegungsmelder noch nie hinbekommen.* [Quelle] (https://forum.iobroker.net/post/482899)
+* *super sache die du da bauen hast 🙂* [Quelle] (https://forum.iobroker.net/post/485306)
+* *Der Adapter ist bei mir im Einsatz und läuft sehr gut. Danke für Deine Arbeit.* [Quelle] (https://forum.iobroker.net/post/485463)
+* * Ich finde es nicht möglich, sich mit der Wahrnehmung und der Steuerung zu befassen. RESPEKT<br> Bis jetzt war ich anders als alles war ich so ein Blockly´s hatte in den Adapter migrieren, echt toll.<br> Ich würde mir sagen, wenn der Adapter so weit fertig ist, das Du Dir dein ein oder andere Adapter vornimmst, &quot;forkst&quot; und diese dann auch so usernah erkennenelst / 488090)
+* *erstmal Hut ab. Der Adapter ist echt gut gelungen und lässt sich nach einer persönlichen Arbeitszeit in der Adapterlogik sehr viele meiner Setzungen damit adaptieren. (...) Bestehen nochmal dickes Lob, viele Dinge laufen damit seit Jahren Zeit und übersichtlicher als via Skript. 👍* [Quelle] (https://forum.iobroker.net/post/492035)
+* *Danke für den coolen Adapter - da kann ich nur meine Hut davor ziehen!* [Quelle] (https://forum.iobroker.net/post/496452)
+* *ein dickes Lob für den Adapter und Deine vorbildliche Arbeit 👍* [Quelle] (https://forum.iobroker.net/post/497110)
+* *viele Dank für die wahnsinnig gute Arbeit!* [Quelle] (https://forum.iobroker.net/post/500373)
+* *Danke, man das Teil ist so mächtig geworden, aber GENIAL!* [Quelle] (https://forum.iobroker.net/post/500518)
+
+## Einführung
 In unserer [ioBroker](https://github.com/ioBroker/ioBroker) Hausautomation haben wir mehrere Auslöser, z.
 
  * Bewegungssensor im Korridor löst aus,
@@ -82,13 +106,56 @@ Dies dient nur dazu, Ihnen einen Überblick über die Adapteroptionen zu geben.
 ![SmartControl-Optionen](../../../en/adapterref/iobroker.smartcontrol/admin/img/option-screenshots/tab-further-options.png)
 
 ## Links und Ressourcen
-* [** Permanenter Smart Control ioBroker-Forum-Link (Begrüßungsseite) **] (https://forum.iobroker.net/topic/36728/smart-control-adapter-splash-page)
+* [** Permanenter Smart Control ioBroker Forum Link (Begrüßungsseite) **] (https://forum.iobroker.net/topic/36728/smart-control-adapter-splash-page)
 
 ## Anmerkungen
 * Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Informationen und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation] (https://github.com/ioBroker/plugin) -sentry # plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 * Adaptersymbol von [freepik] (https://www.flaticon.com/authors/freepik) von [flaticon.com] (https://www.flaticon.com/). </ Sup> </ sub>
 
 ## Changelog
+
+### 1.0.0 
+* (Mic-M) No changes - just prepared versioning to add adapter to stable repository per adapter development documentation, [Versioning section](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md).
+
+### 0.6.0
+* (Mic-M) Several code improvements / fixes
+* (Mic-M) Enhancement: New 'Linked devices' options for tab '3. TRIGGER', motion sensors.
+
+### 0.5.13
+* (Mic-M) Issue #35 should be finally fixed.
+* (Mic-M) Enhancement: New state `info.log.switchedTargetDevices.json` for recently switched target devices
+* (Mic-M) Code improvements
+
+### 0.5.12
+* (Mic-M) Another fix of 0.5.10 and improvement of debug log
+
+### 0.5.11
+* (Mic-M) Fix of 0.5.10
+
+### 0.5.10
+* (Mic-M) Potential fix / workaround: for issue #35 to verify if schedule was called before at the same time
+
+
+### 0.5.9
+* (Mic-M) **Breaking Change** New feature: 'Target Devices' -> 'Target URLs': added separate URL field to switch device off. This is breaking, since adapter admin config will have blank fields of 'Target URLs' once you update the adapter, and state ids will change as well. 
+* (Mic-M) Enhancement: 'Target Devices' -> 'Target URLs' : [Allow DNS name](https://forum.iobroker.net/post/510154)
+
+### 0.5.8
+* (Mic-M) Fixed admin options
+
+### 0.5.7
+* (Mic-M) Various code fixes and improvements
+* (Mic-M) Potentially fix of [issue #35](https://github.com/Mic-M/ioBroker.smartcontrol/issues/35) - to be tested
+* (Mic-M) Enhancement for 'Target Devices': Add table to call URLs als target (implementation of [issue #1](https://github.com/Mic-M/ioBroker.smartcontrol/issues/1))
+
+
+### 0.5.6
+* (Mic-M) Hotfix: loading admin settings for enums
+
+### 0.5.5
+* (Mic-M) Fixed error (reported by [Sentry](https://github.com/Mic-M/ioBroker.smartcontrol#notes)): `Cannot read property 'log' of undefined` in _asyncSetTargetDevices_processZone()
+* (Mic-M) Fixed issue: Tab TARGET DEVICES > Enumerations: functions and rooms selection were sometimes blank, and chosen item was sometimes deleted after saving and reopening admin options.
+* (Mic-M) Future - Early preparation work, not yet visible and not yet activated! - Tab TARGET DEVICES: new table for URLs as targets will be added ([see issue](https://github.com/Mic-M/ioBroker.smartcontrol/issues/1))
 
 ### 0.5.4
 * (Mic-M) New feature: TARGET DEVICES - add delay option for delayed switching on of target device.

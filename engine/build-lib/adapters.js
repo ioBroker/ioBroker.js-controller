@@ -624,7 +624,7 @@ function copyAdapterToFrontEnd(lang, adapter) {
                         } else {
                             link = repo[adapter].readme.replace('/blob/master/README.md', '')
                                 .replace('/master/README.md', '')
-                                .replace('github.com', 'raw.githubusercontent.com') + '/master/' + file.replace(dirName, '');
+                                .replace('github.com', 'raw.githubusercontent.com') + '/master/' + file.replace(dirName.endsWith('/') ? dirName : dirName + '/', '');
                         }
                     }
 

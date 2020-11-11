@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: JyOvcim9n28Qm0LRcmvtB4ihyR6nR5gEN6Q9Wd9/vKQ=
+hash: AWCG11wAv5HwidztyUdT9Jug+3OY2bvpu96BKrYK490=
 ---
 ![商标](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -41,8 +41,8 @@ sendTo('echarts.0', {
     compressionLevel: 3,            // Compression level of PNG
     filters: 8,                     // Filters of PNG (Bit combination https://github.com/Automattic/node-canvas/blob/master/types/index.d.ts#L10)
 
-    fileOnDisk: '',                 // Path on disk to save the file
-    fileName: '',                   // Path in ioBroker DB to save the files on 'echarts.0',
+    fileOnDisk: '',                 // Path on disk to save the file.
+    fileName: '',                   // Path in ioBroker DB to save the files on 'echarts.0'. E.g. if your set "chart.svg", so you can access your picture via http(s)://ip:8082/echarts.0/chart.png
 }, result => {
     if (result.error) {
         console.error(result.error);
@@ -70,6 +70,9 @@ sendTo('echarts.0', {
 ### __进展中__->
 
 ## Changelog
+### 0.3.5 (2020-11-10)
+* (bluefox) Corrected SENTRY errors
+
 ### 0.3.4 (2020-11-08)
 * (bluefox) Corrected server-side rendering of PNG 
 
