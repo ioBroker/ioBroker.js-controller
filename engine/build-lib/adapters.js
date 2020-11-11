@@ -646,7 +646,7 @@ function copyAdapterToFrontEnd(lang, adapter) {
                                 const src = `${consts.FRONT_END_DIR}${result.logo}`;
 
                                 // copy logo into main dir
-                                if (fs.existsSync(src)) {
+                                if (fs.existsSync(src) && (src.toLowerCase().endsWith('.png') || src.toLowerCase().endsWith('.svg') || src.toLowerCase().endsWith('.jpg'))) {
                                     const logo = fs.readFileSync(src);
                                     utils.writeSafe(dst, logo);
                                 } else {
