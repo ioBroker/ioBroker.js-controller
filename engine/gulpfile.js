@@ -551,7 +551,6 @@ gulp.task('buildOnly', gulp.series(
     '5.faq',                // combine FAQ together
     '6.documentation',      // create content for documentation
     '7.copyFiles',          // copy all adapters and docs to public
-    '8.createSitemap',      // create site-map for google
     '9.build'               // build react site
 ));
 
