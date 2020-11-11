@@ -26,6 +26,14 @@ Documentation:
 * [Deutsche Beschreibung](https://github.com/Black-Thunder/ioBroker.melcloud/tree/master/docs/de/melcloud.md)
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### __WORK IN PROGRESS__
+* (Black-Thunder) added release-script and Dependabot
+* (Black-Thunder) updated dependecies
 
 ### 1.0.6 28.06.2020
 * (Black-Thunder) implemented queue mechanism for sending requests to cloud

@@ -8,10 +8,6 @@
 # testing
 /coverage
 
-# production
-/build
-/docu
-
 # misc
 .DS_Store
 .env.local

@@ -9,7 +9,6 @@ module.exports = {
     GITHUB_EDIT_ROOT: 'https://github.com/ioBroker/ioBroker.docs/edit/master/',
     LANGUAGES: ['de', 'en', 'ru', 'zh-cn'],
 
-
     OVERVIEW: {
         "en": "Overview",
         "de": "Überblick",

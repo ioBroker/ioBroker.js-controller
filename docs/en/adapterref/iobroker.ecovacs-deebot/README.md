@@ -68,10 +68,15 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
+### 1.0.5
+* Bump library to 0.4.25
+* Initial support for Ozmo T8 and T8+
+* Implement buttons for ResetLifeSpan cmd (currently 900/901/930 only)
+* Several enhancements and fixes
+
 ### 1.0.4
 * Bump library to 0.4.21
 * Remove canvas from dependencies
-* Add support for Ozmo T8 (without AIVI)
 * Several bugfixes and improvements (especially for N79 series)
 * Possibility to specify the number of reruns for a spot area
 * Spot areas in the "control" channel are now created automatically
@@ -204,6 +209,10 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ### 0.0.1
 * (mrbungle64) Initial development release
+
+## Disclaimer
+
+I am in no way affiliated with ECOVACS.
 
 ## License
 

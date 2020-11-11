@@ -34,7 +34,7 @@ function downloadImagesForReadme(lang, repo, data) {
         let {body} = utils.extractHeader(text);
         const result = fixImages(lang, repo.name, body);
 
-        const localDirName = consts.SRC_DOC_DIR + lang + '/adapterref/iobroker.' + repo.name + '/';
+        const localDirName = `${consts.SRC_DOC_DIR + lang}/adapterref/iobroker.${repo.name}/`;
 
         // check that all images are exists
         const promises = result.doDownload.map(link =>
@@ -62,8 +62,9 @@ function downloadImagesForReadme(lang, repo, data) {
                 }
             }));
 
-        Promise.all(promises).then(() =>
-            resolve({body: data.body, name: data.link ? data.link.replace(data.relative, '') : 'README.md'}));
+        Promise.all(promises)
+            .then(() =>
+                resolve({body: data.body, name: data.link ? data.link.replace(data.relative, '') : 'README.md'}));
     });
 }
 
@@ -254,8 +255,7 @@ function getReadme(lang, dirName, repo, adapter) {
             }
 
             const promises = links.map(link =>
-                getUrl(link).then(body =>
-                {return {body, downloaded: true, link}}));
+                getUrl(link).then(body => ({body, downloaded: true, link})));
 
             return new Promise(resolve =>
                 Promise.all(promises)
@@ -269,16 +269,16 @@ function getReadme(lang, dirName, repo, adapter) {
                             // insert the changelog, logo, licenses, badges info from readme into first file
                             const {badges} = fixImages(lang, adapter, readmeParsed.body);
                             const linkParsed = utils.extractHeader(results[0].body) || {};
-                            Object.keys(badges).forEach(name => {
-                                linkParsed.header['BADGE-' + name] = badges[name];
-                            });
+
+                            Object.keys(badges).forEach(name =>
+                                linkParsed.header['BADGE-' + name] = badges[name]);
 
                             if (readmeParsed.logo) {
                                 linkParsed.logo = linkParsed.logo || readmeParsed.logo
                             }
-                            const logValid = utils.extractLicenseAndChangelog(readmeParsed.body);
+                            const logValid   = utils.extractLicenseAndChangelog(readmeParsed.body);
                             const logInvalid = utils.extractLicenseAndChangelog(linkParsed.body);
-                            linkParsed.body = utils.addChangelogAndLicense(logInvalid.body, logValid.changelog, logValid.license);
+                            linkParsed.body  = utils.addChangelogAndLicense(logInvalid.body, logValid.changelog, logValid.license);
 
                             results[0].body = utils.addHeader(linkParsed.body, linkParsed.header);
                         } else {
@@ -316,7 +316,7 @@ function getReadme(lang, dirName, repo, adapter) {
 
                                     // merge headers
                                     results[0].body = utils.addHeader(localLog.body, Object.assign(remoteHeader.header, localResult.header));
-                                    results[0].editLink = consts.GITHUB_EDIT_ROOT + 'docs/' + lang + '/adapterref/iobroker.' + adapter + '/README.md';
+                                    results[0].editLink = `${consts.GITHUB_EDIT_ROOT}docs/${lang}/adapterref/iobroker.${adapter}/README.md`;
                                 } else {
                                     console.warn(`Cannot parse ${lang} ${adapter}`);
                                 }
@@ -326,14 +326,14 @@ function getReadme(lang, dirName, repo, adapter) {
                         if (!local) {
                             // check may be locally other languages exists.
                             const isLocalExist = consts.LANGUAGES.find(lang => {
-                                const file = consts.SRC_DOC_DIR + lang + '/adapterref/iobroker.' + adapter + '/README.md';
+                                const file = `${consts.SRC_DOC_DIR + lang}/adapterref/iobroker.${adapter}/README.md`;
                                 if (fs.existsSync(file)) {
                                     const {header} = utils.extractHeader(fs.readFileSync(file).toString('utf-8'));
                                     return header.local;
                                 }
                             });
                             if (isLocalExist) {
-                                console.log('Ignore ' + lang + ' for ' + adapter + ' because locally exists in ' + isLocalExist);
+                                console.log(`Ignore ${lang} for ${adapter} because locally exists in ${isLocalExist}`);
                                 // ignore the whole info
                                 return resolve([]);
                             } else {
@@ -417,12 +417,13 @@ function processAdapterLang(adapter, repo, lang, content) {
     const dirName = ADAPTERS_DIR.replace('/LANG/', '/' + lang + '/') + 'iobroker.' + adapter;
 
     let iconName = repo.extIcon && repo.extIcon.split('/').pop();
+    iconName = iconName.split('?')[0];
 
     // download logo
     return getIcon(repo.extIcon, consts.FRONT_END_DIR + consts.LANGUAGES[0] + '/adapterref/iobroker.' + adapter + '/' + iconName)
         .then(icon => {
             if (icon) {
-                utils.writeSafe(consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + '/' + iconName, icon);
+                utils.writeSafe(`${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}/${iconName}`, icon);
             } else if (adapter !== 'js-controller') {
                 console.error('ADAPTER has no icon: ' + adapter);
             }
@@ -451,7 +452,7 @@ function processAdapterLang(adapter, repo, lang, content) {
                         const chapters = {pages: {}};
                         // add title to every file
                         results.forEach(item => {
-                            const name = lang + '/adapterref/iobroker.' + adapter + '/' + item.link.replace(item.relative, '');
+                            const name = `${lang}/adapterref/iobroker.${adapter}/${item.link.replace(item.relative, '')}`;
                             const title = utils.getTitle(item.body);
                             chapters.pages[name] = {title: {[lang]: title}, content: name};
                         });
@@ -554,13 +555,10 @@ function buildAdapterContent(adapter, noDownload) {
                     }
                 }};
 
-                let promises;
-                if (!noDownload) {
-                    promises = Object.keys(repo)
-                        .filter(a => a !== 'js-controller' && (!adapter || a === adapter))
-                        .map(adapter =>
-                            processAdapter(adapter, repo[adapter], content));
-                }
+                let promises = Object.keys(repo)
+                    .filter(a => a !== 'js-controller' && (!adapter || a === adapter))
+                    .map(adapter =>
+                        processAdapter(adapter, repo[adapter], content));
 
                 downloadStatistics()
                     .then(stat => {
@@ -605,16 +603,18 @@ function copyAdapterToFrontEnd(lang, adapter) {
                 files.forEach(file => {
                     if (!file.match(/\.md$/i)) {
                         const data = fs.readFileSync(file);
-                        utils.writeSafe(consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + file.replace(dirName, ''), data);
+                        utils.writeSafe(`${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}${file.replace(dirName, '')}`, data);
                     }
                 });
+
                 return Promise.all(files.filter(f => f.match(/\.md$/i)).map(file => {
                     const text = fs.readFileSync(file).toString('utf-8');
                     const {header} = utils.extractHeader(text);
                     let link = '';
                     if (header.local) {
-                        link = consts.GITHUB_EDIT_ROOT.replace('/edit/', '/').replace('github.com', 'raw.githubusercontent.com') +
-                            'docs/' + lang + '/adapterref/iobroker.' + adapter + file.replace(dirName, '');
+                        link = `${consts.GITHUB_EDIT_ROOT
+                            .replace('/edit/', '/')
+                            .replace('github.com', 'raw.githubusercontent.com')}docs/${lang}/adapterref/iobroker.${adapter}${file.replace(dirName, '')}`;
                     } else {
                         if (!repo[adapter]) {
                             console.error(`Invalid adapter entry for ${adapter}. Please fix it!!!!`);
@@ -629,12 +629,12 @@ function copyAdapterToFrontEnd(lang, adapter) {
                     }
 
                     return prepareAdapterReadme(lang, repo[adapter], {
-                        body: text,
+                        body:     text,
                         relative: dirName,
-                        link: file,
+                        link:     file,
                         editLink: link.replace('raw.githubusercontent.com', 'github.com').replace('/master/', '/edit/master/')
                     }).then(result =>
-                        result && utils.writeSafe(consts.FRONT_END_DIR + lang + '/adapterref/iobroker.' + adapter + result.name, result.body));
+                        result && utils.writeSafe(`${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}${result.name}`, result.body));
                 }));
             } else {
                 console.error('No local files found for ' + adapter + ' in ' + lang);

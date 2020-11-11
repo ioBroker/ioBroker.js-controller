@@ -1,0 +1,148 @@
+{
+  "pages": {
+    "2020_05_12": {
+      "date": "2020.05.12",
+      "title": {
+        "de": "iob-Server",
+        "en": "iob-Server",
+        "ru": "iob сервер",
+        "zh-cn": "IOB服务器"
+      },
+      "logo": "de/blog/images/2020_05_12.png",
+      "type": "news",
+      "originalName": "2020_05_12.md",
+      "desc": {
+        "de": "Hallo ioBroker-Community,",
+        "en": "Hello ioBroker community,",
+        "ru": "Привет сообщество ioBroker,",
+        "zh-cn": "您好ioBroker社区，"
+      }
+    },
+    "2019_10_14": {
+      "date": "2019.10.14",
+      "title": {
+        "de": "js-controller 2.0",
+        "en": "js-controller 2.0",
+        "ru": "JS-контроллер 2.0",
+        "zh-cn": "js-controller 2.0"
+      },
+      "logo": "de/blog/images/2019_10_14.jpg",
+      "type": "news",
+      "originalName": "2019_10_14.md",
+      "desc": {
+        "de": "Hallo ioBroker-Community,",
+        "en": "Hello ioBroker community,",
+        "ru": "Привет сообщество ioBroker,",
+        "zh-cn": "您好ioBroker社区，"
+      }
+    },
+    "2019_06_12": {
+      "date": "2019.06.12",
+      "title": {
+        "de": "Windows-Installer",
+        "en": "Windows Installer",
+        "ru": "Установщик Windows",
+        "zh-cn": "Windows安装程序"
+      },
+      "logo": "de/blog/images/2019_06_12.jpg",
+      "type": "news",
+      "originalName": "2019_06_12.md",
+      "desc": {
+        "de": "Heute haben wir Informationen zu ioBroker auf Windows-Rechnern und ein Update zur TeamSpeak-Community. \\nWeiterhin geben wir Euch einen Überblick über neue Visualisierungs-Adapter. Seid gespannt.",
+        "en": "Today we have information about ioBroker on Windows machines and an update on the TeamSpeak community.\\nFurthermore, we give you an overview of new visualization adapters. Be curious.",
+        "ru": "Сегодня у нас есть информация о ioBroker на машинах Windows и обновленная информация о сообществе TeamSpeak.\\nКроме того, мы даем вам обзор новых адаптеров визуализации. Будь любопытным.",
+        "zh-cn": "今天我们在Windows机器上有关于ioBroker的信息，以及TeamSpeak社区的更新。\\n此外，我们还概述了新的可视化适配器。好奇。"
+      }
+    },
+    "2019_06_11": {
+      "date": "2019.06.11",
+      "title": {
+        "de": "Neue ioBroker-Webseite",
+        "en": "New ioBroker website",
+        "ru": "Новый сайт ioBroker",
+        "zh-cn": "新的ioBroker网站"
+      },
+      "logo": "de/blog/images/2019_06_11.jpg",
+      "type": "news",
+      "originalName": "2019_06_11.md",
+      "desc": {
+        "de": "Heute haben wir Neuigkeiten zur ioBroker-Webseite, dem neuen **js-controller** 1.5.12 und zu Verbesserungen im Admin- und Info-Adapter.\\nAuch ein paar neue Adapter dürfen natürlich nicht fehlen.",
+        "en": "Today we have news about the ioBroker website, the new **js-controller** 1.5.12 and improvements in the admin and info adapter.\\nAlso a few new adapters should not be missing.",
+        "ru": "Сегодня у нас есть новости о сайте ioBroker, новом **js-controller** 1.5.12 и улучшениях в админке и информационном адаптере.\\nТакже не должно быть несколько новых адаптеров.",
+        "zh-cn": "今天我们有关于ioBroker网站的新闻，新的** js-controller ** 1.5.12以及管理和信息适配器的改进。\\n也不应该缺少一些新的适配器。"
+      }
+    },
+    "2019_02_27": {
+      "date": "2019.02.27",
+      "title": {
+        "de": "ioBroker Newsletter Februar 2019",
+        "en": "ioBroker Newsletter February 2019",
+        "ru": "Информационный бюллетень ioBroker, февраль 2019 г.",
+        "zh-cn": "ioBroker时事通讯2019年2月"
+      },
+      "logo": "de/blog/images/2019_02_27.jpg",
+      "type": "news",
+      "originalName": "2019_02_27.md",
+      "desc": {
+        "de": "Heute gibt es wieder einige ioBroker-News:\\nDie Forum-Umstellung ist erfolgt und das neue Forum ist online. Der neue js-controller 1.5.7 ist jetzt für erweitere Tests im Latest Repository verfügbar und auch der Installations-Fixer wurde veröffentlicht um bestehende Installationen auf den gleichen Stand wie neue zu bringen. Wichtige Informationen zum Tankerkönig-Adapter und einigen neuen Adaptern haben wir natürlich auch.",
+        "en": "Today there are some ioBroker news again:\\nThe forum conversion is done and the new forum is online. The new js-controller 1.5.7 is now available for advanced testing in the Latest Repository, and also the installer fixer has been released to bring existing installations to the same level as new ones. Of course, we also have important information about the Tanker King adapter and some new adapters.",
+        "ru": "Сегодня снова новости от ioBroker:\\nПреобразование форума завершено, и новый форум находится в сети. Новый js-контроллер 1.5.7 теперь доступен для расширенного тестирования в Последнем репозитории, а также был выпущен установщик исправлений, чтобы привести существующие установки на тот же уровень, что и новые. Конечно, у нас также есть важная информация об адаптере Tanker King и некоторых новых адаптерах.",
+        "zh-cn": "今天还有一些ioBroker新闻：论坛转换已经发生，新论坛在线。新的js-controller 1.5.7现在可用于最新存储库中的高级测试，并且已发布安装程序修复程序以将现有安装与新安装相同。当然，我们也有关于Tanker King适配器和一些新适配器的重要信息。"
+      }
+    },
+    "2019_02_25": {
+      "date": "2019.02.25",
+      "title": {
+        "de": "js-controller 1.5.7 im Latest Repository verfügbar",
+        "en": "js-controller 1.5.7 available in the Latest Repository",
+        "ru": "JS-контроллер 1.5.7 доступен в последнем репозитории",
+        "zh-cn": "最新存储库中提供了js-controller 1.5.7"
+      },
+      "logo": "de/blog/images/2019_02_25.jpg",
+      "type": "news",
+      "originalName": "2019_02_25.md",
+      "desc": {
+        "de": "Nach einiger Verzögerung und vielen intensiven Tests mit großer Unterstützung aus der Community und hier im Forum freuen wir uns die nächste Version des js-controllers zu offiziellen weiteren Tests für alle interessierten User freizugeben.",
+        "en": "After some delay and many intensive tests with great support from the community and here in the forum, we are pleased to release the next version of the js-controller for official further tests for all interested users.",
+        "ru": "После некоторой задержки и многочисленных интенсивных тестов при большой поддержке сообщества и здесь, на форуме, мы рады выпустить следующую версию js-controller для официальных дальнейших тестов для всех заинтересованных пользователей.",
+        "zh-cn": "经过一些延迟和许多密集测试以及社区和论坛的大力支持，我们很高兴发布下一版本的js-controller，供所有感兴趣的用户进行官方进一步测试。"
+      }
+    },
+    "2019_02_22": {
+      "date": "2019.02.22",
+      "title": {
+        "de": "ioBroker Installation \"Fixer\" Beta verfügbar",
+        "en": "ioBroker installation \"Fixer\" beta available",
+        "ru": "Доступна бета-версия установки ioBroker \"Fixer",
+        "zh-cn": "ioBroker安装“Fixer”测试版可用"
+      },
+      "logo": "de/blog/images/2019_02_22.png",
+      "type": "news",
+      "originalName": "2019_02_22.md",
+      "desc": {
+        "de": "Ende 2018 und vor allem im Januar 2019 hat @AlCalzone den ioBroker Installer komplett überarbeitet und damit gehören in den inzwischen aktuellen Version von Anfang Februar 2019 auch alle Rechteprobleme der Vergangenheit. ioBroker läuft damit nicht mehr als \"root\" sondern unter einem eigenen User der alles darf was er für die aktuellen ioBroker Adapter können muss.\\nFür alle neuen Installation ist also alles bestens.",
+        "en": "At the end of 2018 and especially in January 2019, @AlCalzone has completely overhauled the ioBroker installer, which means that in the meanwhile most current version from the beginning of February 2019 all rights issues are a thing of the past. ioBroker is no longer running as \"root\" but under its own user who can do whatever he needs for the current ioBroker adapters.\\nEverything is fine for all new installations.",
+        "ru": "В конце 2018 года и особенно в январе 2019 года @AlCalzone полностью пересмотрела программу установки ioBroker, что означает, что в самой последней версии с начала февраля 2019 года все проблемы с правами остались в прошлом. ioBroker больше не работает как «root», а под своим собственным пользователем, который может делать все, что ему нужно для текущих адаптеров ioBroker.\\nВсе хорошо для всех новых установок.",
+        "zh-cn": "在2018年底，尤其是2019年1月，@ AlCalzone彻底改造了ioBroker安装程序，这意味着在2019年2月初的最新版本中，所有权利问题都已成为过去。 ioBroker不再以“root”身份运行，而是以其自己的用户身份运行，他们可以为当前的ioBroker适配器做任何他需要的事情。\\n所有新装置都可以。"
+      }
+    },
+    "2018_03_17": {
+      "date": "2018.03.17",
+      "title": {
+        "de": "Cloud-Adapter-Version",
+        "en": "Cloud Adapter Version",
+        "ru": "Облако адаптер Версия",
+        "zh-cn": "云适配器版本"
+      },
+      "logo": "de/blog/images/2018_03_17.png",
+      "type": "news",
+      "originalName": "2018_03_17.md",
+      "desc": {
+        "de": "Es wurde die neue Cloud-Adapter-Version vorbereitet.",
+        "en": "The new cloud adapter version has been prepared.",
+        "ru": "Новая версия облачного адаптера подготовлена.",
+        "zh-cn": "已经准备了新的云适配器版本。"
+      }
+    }
+  }
+}

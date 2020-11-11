@@ -36,8 +36,8 @@ sendTo('echarts.0', {
     compressionLevel: 3,            // Compression level of PNG
     filters: 8,                     // Filters of PNG (Bit combination https://github.com/Automattic/node-canvas/blob/master/types/index.d.ts#L10)
 
-    fileOnDisk: '',                 // Path on disk to save the file
-    fileName: '',                   // Path in ioBroker DB to save the files on 'echarts.0',
+    fileOnDisk: '',                 // Path on disk to save the file. 
+    fileName: '',                   // Path in ioBroker DB to save the files on 'echarts.0'. E.g. if your set "chart.svg", so you can access your picture via http(s)://ip:8082/echarts.0/chart.png
 }, result => {
     if (result.error) {
         console.error(result.error);
@@ -64,6 +64,9 @@ You can debug view charts locally with:
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### 0.3.5 (2020-11-10)
+* (bluefox) Corrected SENTRY errors
+
 ### 0.3.4 (2020-11-08)
 * (bluefox) Corrected server-side rendering of PNG 
 

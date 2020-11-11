@@ -136,6 +136,10 @@ In the event texts and in the state texts the following patterns could be used:
 -->
 
 ## Changelog
+### 0.4.0 (2020-11-10)
+* (bluefox) Added setting of even/odd background for widget
+* (bluefox) Added filter
+
 ### 0.2.9 (2020-10-20)
 * (bluefox) Corrected error in GUI by disabling of state
 * (bluefox) Implemented the deletion of events from the event list

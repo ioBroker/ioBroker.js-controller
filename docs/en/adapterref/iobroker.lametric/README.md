@@ -50,7 +50,9 @@ To show multiple frames, you can also provide an array as message
 ![simple](docs/blockly2.png)
 
 ## Scripts
+
 To show the message on your la metric just send a message to this instance with script adapter:
+
 ```
 sendTo('lametric.0', 'send', {
     "priority": "[info|warning|critical]",
@@ -90,6 +92,7 @@ sendTo('lametric.0', 'send', {
 ```
 
 Example to show some information cyclic:
+
 ```
 let i = 0;
 function show() {
@@ -115,6 +118,12 @@ show();
 ```
 
 ## Changelog
+
+### 1.0.0
+
+* (klein0r) First stable release
+* (klein0r) Added iobroker sentry
+* (klein0r) Added brightness and volume limit information (min, max)
 
 ### 0.0.10
 

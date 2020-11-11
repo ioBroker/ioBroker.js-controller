@@ -51,6 +51,10 @@ Wait some minutes until the cronjob collects the data for the first time.
 
 ## Changelog
 
+### 1.0.1
+
+* (klein0r) Added iobroker sentry
+
 ### 1.0.0
 
 * (klein0r) First stable release

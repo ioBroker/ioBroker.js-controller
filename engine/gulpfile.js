@@ -500,16 +500,38 @@ gulp.task('8.createSitemap', done => {
 
 gulp.task('9.build', done => {
     const { exec } = require('child_process');
+    const SRC_DATA_DIR = __dirname + '/front-end/build/data';
+    const TGT_DATA_DIR = __dirname + '/front-end/data';
+    if (fs.existsSync(SRC_DATA_DIR)) {
+        !fs.existsSync(TGT_DATA_DIR) && fs.mkdirSync(TGT_DATA_DIR);
+
+        fs.readdirSync(SRC_DATA_DIR)
+            .forEach(name => fs.writeFileSync(TGT_DATA_DIR + '/' + name, fs.readFileSync(SRC_DATA_DIR + '/' + name)));
+    }
 
     if (!fs.existsSync(__dirname + '/front-end/node_modules')) {
         const child = exec('npm install', {stdio: [process.stdin, process.stdout, process.stderr], cwd: __dirname + '/front-end'});
         child.on('exit', (code, signal) => {
             const child_ = exec('npm run build', {stdio: [process.stdin, process.stdout, process.stderr], cwd: __dirname + '/front-end'});
-            child_.on('exit', (code, signal) => done());
+            child_.on('exit', (code, signal) => {
+
+                !fs.existsSync(SRC_DATA_DIR) && fs.mkdirSync(SRC_DATA_DIR, {recursive: true});
+                fs.existsSync(TGT_DATA_DIR) && fs.readdirSync(TGT_DATA_DIR)
+                    .forEach(name => fs.writeFileSync(SRC_DATA_DIR + '/' + name, fs.readFileSync(TGT_DATA_DIR + '/' + name)));
+
+                done();
+            });
         });
     } else {
         const child = exec('npm run build', {stdio: [process.stdin, process.stdout, process.stderr], cwd: __dirname + '/front-end'});
-        child.on('exit', (code, signal) => done());
+        child.on('exit', (code, signal) => {
+
+            !fs.existsSync(SRC_DATA_DIR) && fs.mkdirSync(SRC_DATA_DIR, {recursive: true});
+            fs.existsSync(TGT_DATA_DIR) && fs.readdirSync(TGT_DATA_DIR)
+                .forEach(name => fs.writeFileSync(SRC_DATA_DIR + '/' + name, fs.readFileSync(TGT_DATA_DIR + '/' + name)));
+
+            done();
+        });
     }
 });
 
