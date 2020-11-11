@@ -641,19 +641,18 @@ function copyAdapterToFrontEnd(lang, adapter) {
                         if (result) {
                             utils.writeSafe(`${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}${result.name}`, result.body);
 
-                            if (result.logo) {
+                            const dst = `${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}/${repo[adapter].extIcon.split('/').pop().split('?')[0]}`;
+                            if (!fs.existsSync(dst)) {
                                 const src = `${consts.FRONT_END_DIR}${result.logo}`;
-                                const dst = `${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}/${repo[adapter].extIcon.split('/').pop().split('?')[0]}`;
-                                if (!fs.existsSync(dst)) {
-                                    // copy logo into main dir
-                                    if (fs.existsSync(src)) {
-                                        const logo = fs.readFileSync(src);
-                                        utils.writeSafe(dst, logo);
-                                    } else {
-                                        return getIcon(repo[adapter].extIcon)
-                                            .then(icon =>
-                                                icon && utils.writeSafe(dst, icon));
-                                    }
+
+                                // copy logo into main dir
+                                if (fs.existsSync(src)) {
+                                    const logo = fs.readFileSync(src);
+                                    utils.writeSafe(dst, logo);
+                                } else {
+                                    return getIcon(repo[adapter].extIcon)
+                                        .then(icon =>
+                                            icon && utils.writeSafe(dst, icon));
                                 }
                             }
                         }
