@@ -538,7 +538,12 @@ function downloadStatistics() {
 // For every adapter in latest repo
 //    execute processAdapter (it downloads the readme from repo and stores it in docs)
 // and then save adapters.json with the full list of adapters.
-function buildAdapterContent(adapter) {
+function buildAdapterContent(adapter, noDownload) {
+    if (typeof adapter === 'boolean') {
+        noDownload = adapter;
+        adapter = null;
+    }
+
     return downloadRepo()
         .then(repo =>
             new Promise(resolve => {
@@ -549,10 +554,13 @@ function buildAdapterContent(adapter) {
                     }
                 }};
 
-                const promises = Object.keys(repo)
-                    .filter(a => a !== 'js-controller' && (!adapter || a === adapter))
-                    .map(adapter =>
-                        processAdapter(adapter, repo[adapter], content));
+                let promises;
+                if (!noDownload) {
+                    promises = Object.keys(repo)
+                        .filter(a => a !== 'js-controller' && (!adapter || a === adapter))
+                        .map(adapter =>
+                            processAdapter(adapter, repo[adapter], content));
+                }
 
                 downloadStatistics()
                     .then(stat => {
@@ -563,9 +571,9 @@ function buildAdapterContent(adapter) {
                                        content.pages[type].pages[a].installs = stat.adapters[a];
 
                                        content.pages[type].pages[a].weekDownloads = repo[a].weekDownloads;
-                                       content.pages[type].pages[a].stars = repo[a].stars;
+                                       content.pages[type].pages[a].stars  = repo[a].stars;
                                        content.pages[type].pages[a].issues = repo[a].issues;
-                                       content.pages[type].pages[a].score = repo[a].score;
+                                       content.pages[type].pages[a].score  = repo[a].score;
                                        return true;
                                    }
                                 });

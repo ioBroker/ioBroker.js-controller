@@ -400,6 +400,13 @@ gulp.task('2.downloadAdapters', () =>
         .then(content =>
             console.log(JSON.stringify(content))));
 
+// build adapters.json
+gulp.task('2.5buildAdapters', () =>
+    adapters.buildAdapterContent(true)
+        .then(content =>
+            console.log(JSON.stringify(content))));
+
+
 gulp.task('3.downloadVisCordova', done => {
     request('https://raw.githubusercontent.com/ioBroker/ioBroker.vis.cordova/master/README.md', (err, state, body) => {
         fs.writeFileSync(path.join(consts.SRC_DOC_DIR, 'en/viz/app.md'),
@@ -522,6 +529,7 @@ gulp.task('default', gulp.series(
 gulp.task('buildOnly', gulp.series(
     '0.clean',              // clean dir
     '1.blog',               // translate and copy blogs
+    '2.5buildAdapters',     // combine FAQ together
     '5.faq',                // combine FAQ together
     '6.documentation',      // create content for documentation
     '7.copyFiles',          // copy all adapters and docs to public
