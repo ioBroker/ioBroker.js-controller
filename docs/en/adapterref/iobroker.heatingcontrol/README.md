@@ -168,7 +168,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 1.1.0 (2020-11-01)
+### 1.1.2 (2020-11-11)
+* (René) bug fix: activate actors after temperatur change
+
+### 1.1.1 (2020-11-01)
 * (René) see issue #149: bug fix: calculate current period in case we are still in last period from yesterday
 
 ### 1.1.0 (2020-10-20)

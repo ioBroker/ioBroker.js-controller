@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: M/ZKMacVtSQQnZoxMJzS6xNQxxlnDOHUBemCtbTexMo=
+hash: ZNKMNBwj/Ckj6HnlyQStaxeCU2B9xBva3tY0haLxQPY=
 ---
 ![商标](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -76,9 +76,9 @@ createState(
 或者您只使用`lovelace.X.control.alarm (entity_id = alarm_control_panel.defaultAlarm)`。
 
 ###数字输入
-如果选择了自定义对话框中的input_number实体类型，则可以手动完成此操作。
-可以添加`common`中的这种必需的`min`和`max`值以及可选的`step`。
-如果要查看向上和向下箭头，则应在自定义`mode`中将其设置为'number'：
+如果在自定义对话框中选择了input_number实体类型，则可以手动完成此操作。
+可以添加`common`中必需的`min`和`max`值以及可选的`step`类型。
+如果要查看向上和向下箭头，则应在自定义`mode`中将其设置为“数字”：
 
 ```
 common: {
@@ -296,7 +296,7 @@ createState('location.latitude', 39.5681295, false, {
 
 以下定制卡可以成功测试：
 
--bignumber-card：https：//github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
+-bignumber-card：https://github.com/custom-cards/bignumber-card/blob/master/bignumber-card.js
 -simple-thermostat：https：//github.com/nervetattoo/simple-thermostat/releases（采用最新版本）
 -恒温器：https://github.com/ciotlosm/custom-lovelace/tree/master/thermostat-card（都需要.js和.lib.js文件）
 
@@ -437,30 +437,32 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 
 ##发展
 ###版本
-二手版本的home-assistant-frontend@1.0.0
+二手版本的home-assistant-frontend@20201021.4
 
 ###如何构建新的Lovelace版本
 首先必须将** https：//github.com/home-assistant/frontend（dev分支）实际**手动合并到https://github.com/GermanBluefox/home-assistant-polymer.git（* ** iob ***分支！）。
 
 ioBroker的所有更改都标记有注释`// IoB`。
-目前（2020.06.20）修改了以下文件：
+目前（20201021.4）已修改以下文件：
 
--`.gitignore`-添加了`.idea`忽略
--`build-scripts / gulp / app.js`-添加了新的gulp任务
--`build-scripts / gulp / webpack.js`-添加了新的gulp任务
--`src / data / lovelace.ts`-添加了隐藏栏选项
--`src / data / weather.ts`-添加支持以再次显示ioBroker天气图标。
--`src / dialogs / more-info / more-info-controls.js`-删除实体设置按钮
--`src / dialogs / notifications / notification-drawer.js`-添加了所有按钮
+-`.gitignore`-添加`.idea`忽略
+-`build-scripts / gulp / app.js`-添加新的gulp任务
+-`build-scripts / gulp / webpack.js`-添加新的gulp任务
+-`src / data / lovelace.ts`-添加隐藏工具栏选项
+-`src / dialogs / more-info / ha-more-info-dialog.ts`-删除实体设置按钮并删除天气状态和历史记录
 -`src / entrypoints / core.ts`-修改的身份验证过程
 -`src / layouts / home-assistant-main.ts`-移除应用程序侧边栏
 -`src / panels / lovelace / hui-root.ts`-添加了通知和语音控制
--`src / panels / lovelace / cards / hui-weather-forecast-card.ts`-添加支持以再次显示ioBroker天气图标。
+-`src / util / documentation-url.ts`-用于链接到iobroker帮助而不是家庭助手。
+-`src / dialogs / more-info / controls / more-info-weather.ts`-添加了从URL显示天气图标的支持。
+-`src / data / weather.ts`-添加支持以显示来自网址的天气图标。
+-`src / panels / lovelace / cards / hui-weather-forecast-card.ts`-添加支持以显示来自网址的天气图标。
+-`src / panels / lovelace / entity-rows / hui-weather-entity-row.ts`-添加支持以通过auth从网址显示天气图标。
 
 之后，在`./build`文件夹中签出修改后的版本。然后。
 
 1.转到./build目录。
-2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`，它是https://github.com/home-assistant/frontend.git的一个分支，但是有些东西被修改了（请参阅前面的文件列表）。
+2.`git clone https：// github.com / GermanBluefox / home-assistant-polymer.git`，它是https://github.com/home-assistant/frontend.git的分支，但有些东西被修改了（请参阅前面的文件列表）。
 3.`cd home-assistant-polymer`
 4.`git checkout master`
 5.`npm install`

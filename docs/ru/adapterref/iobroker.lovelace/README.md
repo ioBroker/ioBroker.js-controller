@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: M/ZKMacVtSQQnZoxMJzS6xNQxxlnDOHUBemCtbTexMo=
+hash: ZNKMNBwj/Ckj6HnlyQStaxeCU2B9xBva3tY0haLxQPY=
 ---
 ![Логотип](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -23,17 +23,17 @@ hash: M/ZKMacVtSQQnZoxMJzS6xNQxxlnDOHUBemCtbTexMo=
 Есть два способа настройки сущностей:
 
 - авто
-- руководство по эксплуатации
+- руководство
 
 ### Авто
 В автоматическом режиме будет применяться тот же процесс, что и для `google home` или `material adapter`.
 
-*** Будут обнаружены только объекты и каналы, для которых определены категории `function` и `room` ***
+*** Будут обнаружены только объекты и канал, для которых определены категории `function` и `room` ***
 
 Вы можете определить понятные имена, и они будут использоваться в сущностях.
 
-### Руководство по эксплуатации
-Объекты могут быть определены вручную в дереве объектов, например sql или histroy. Должен быть предоставлен тип объекта и, необязательно, имя объекта.
+### Руководство
+Объекты можно определить вручную в дереве объектов, например sql или histroy. Должен быть предоставлен тип объекта и, необязательно, имя объекта.
 С помощью этого метода могут быть созданы только простые сущности, такие как input_number, input_text или input_boolean. Он не может иметь более одного состояния или атрибута.
 
 ## Панели
@@ -77,7 +77,7 @@ createState(
 
 ### Ввод числа
 Это можно сделать вручную, если в настраиваемом диалоговом окне выбран тип сущности input_number.
-Для этого типа требуются значения `min` и `max` в `common` и могут быть добавлены необязательные `step`.
+Для этого типа требуются значения `min` и `max` в `common` и могут быть добавлены дополнительные `step`.
 Если вы хотите видеть стрелки вверх и вниз, вы должны установить в пользовательском `mode` значение 'number':
 
 ```
@@ -302,7 +302,7 @@ createState('location.latitude', 39.5681295, false, {
 
 Я нашел эту ссылку https://github.com/jimz011/homeassistant как интересный ресурс для пользовательских карточек.
 
-Часто пользовательские карты хранятся на github как исходники и перед использованием должны быть скомпилированы.
+Часто пользовательские карты хранятся на github в качестве источников и должны быть скомпилированы перед использованием.
 Вам следует проверить меню `Releases` на github и попытаться найти там скомпилированные файлы.
 Как этот: [https://github.com/kalkih/mini-graph-card/releases](https://github.com/kalkih/mini-graph-card/releases) (Найдите файл `mini-graph-card-bundle.js`)
 
@@ -432,32 +432,34 @@ on({id: 'lovelace.0.conversation', ack: false, change: 'any'}, obj => {
 ## Первоисточники lovelace
 Используемые источники находятся здесь https://github.com/GermanBluefox/home-assistant-polymer.
 
-## Сделать
+## Делать
 Безопасность должна быть взята у текущего пользователя, а не у default_user
 
 ## Разработка
 ### Версия
-Используемая версия home-assistant-frontend@1.0.0
+Использованная версия home-assistant-frontend@20201021.4
 
 ### Как собрать новую версию Лавлейс
 Прежде всего, фактический https://github.com/home-assistant/frontend (ветка dev) должен быть ** вручную ** объединен с https://github.com/GermanBluefox/home-assistant-polymer.git (* ** iob *** ветка!).
 
 Все изменения для ioBroker отмечены комментарием `// IoB`.
-На данный момент (2020.06.20) были изменены следующие файлы:
+На данный момент (20201021.4) были изменены следующие файлы:
 
-- `.gitignore` - добавлен` .idea` ignore
-- `build-scripts / gulp / app.js` - Добавлена новая задача gulp
-- `build-scripts / gulp / webpack.js` - Добавлена новая задача gulp
-- `src / data / lovelace.ts` - добавлена опция скрытия панели
-- `src / data / weather.ts` - добавить поддержку для отображения значка погоды ioBroker снова.
-- `src / dialogs / more-info / more-info-controls.js` - кнопка удаления настроек объекта
-- `src / dialogs / notifications / notification-drawer.js` - добавлена кнопка подтверждения всем
+- `.gitignore` - добавить` .idea` ignore
+- `build-scripts / gulp / app.js` - Добавить новую задачу gulp
+- `build-scripts / gulp / webpack.js` - Добавить новую задачу gulp
+- `src / data / lovelace.ts` - добавить опцию скрытия панели инструментов
+- `src / dialogs / more-info / ha-more-info-dialog.ts` - удалить кнопку настроек объекта и удалить состояние погоды и историю
 - `src / entrypoints / core.ts` - измененный процесс аутентификации
 - `src / layouts / home-assistant-main.ts` - удалить боковую панель приложения
 - `src / panel / lovelace / hui-root.ts` - добавлены уведомления и голосовое управление
-- `src / panel / lovelace / cards / hui-weather-прогноз-card.ts` - добавить поддержку для отображения значка погоды ioBroker снова.
+- `src / util / documentation-url.ts` - для ссылки на справку iobroker вместо homeassistant.
+- `src / dialogs / more-info / controls / more-info-weather.ts` - добавить поддержку для отображения значка погоды по URL-адресу.
+- `src / data / weather.ts` - добавить поддержку отображения значка погоды по URL-адресу.
+- `src / panel / lovelace / cards / hui-weather-прогноз-card.ts` - добавить поддержку отображения значка погоды по URL-адресу.
+- `src / panel / lovelace / entity-rows / hui-weather-entity-row.ts` - добавить поддержку для отображения значка погоды по URL-адресу с аутентификацией.
 
-После этого оформляйте измененную версию в папке `./build`. Потом.
+После этого оформляйте измененную версию в папке `./build`. Затем.
 
 1. перейдите в каталог ./build.
 2. `git clone https:// github.com / GermanBluefox / home-assistant-polymer.git` это форк https://github.com/home-assistant/frontend.git, но некоторые вещи изменены ( см. список файлов ранее).

@@ -272,8 +272,21 @@ Note, that there are two different sonnen API's so if you are missing states, th
     ```javascript
     setState('sonnen.0.control.discharge', 1250); // Do not discharge more than 1250 watts
     ```
+#### Channel: powermeter
+This channel has two subchannels, e.g. `4_1` and `4_2` where one represents consumption and the other one production.
+ 
+The both channels have the identical states. All states are read-only numbers.
+
+### Channel: inverter
+The channel consists of read-only states of type `number`, providing information about the inverter of your battery.
 
 ## Changelog
+### 1.7.0 (2020-11-12)
+* (foxriver76) new channels for powermeter and inverter
+
+### 1.6.1 (2020-11-11)
+* (foxriver76) fixed charge and discharge not working with api v2
+
 ### 1.6.0 (2020-08-09)
 * (foxriver76) added support for official api, automatically used when auth token is given by user
 

@@ -332,8 +332,22 @@ der Tastenkombination "STRG + F".
     ```javascript
     setState('sonnen.0.control.discharge', 1250); // Die Batterie wird maximal mit 1250 Watt entladen
     ```
+  
+#### Channel: powermeter
+Dieser Kanal hat zwei Unterkanäle, z.B. `4_1` und `4_2`, wobei einer den Konsum und der andere die Produktion repräsentiert.
+ 
+Die beiden Kanäle haben die identischen Zustände. Alle Zustände sind schreibgeschützt und vom Typ `number`.
+
+### Channel: inverter
+Der Kanal besteht aus schreibgeschützten Zuständen vom Typ `number`, die Informationen über den Wechselrichter der sonnenBatterie liefern.
 
 ## Changelog
+### 1.7.0 (2020-11-12)
+* (foxriver76) new channels for powermeter and inverter
+
+### 1.6.1 (2020-11-11)
+* (foxriver76) fixed charge and discharge not working with api v2
+
 ### 1.6.0 (2020-08-09)
 * (foxriver76) added support for official api, automatically used when auth token is given by user
 
