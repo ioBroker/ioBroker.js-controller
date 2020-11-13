@@ -425,24 +425,27 @@ Security must be taken from current user and not from default_user
 
 ## Development
 ### Version
-Used version of home-assistant-frontend@1.0.0
+Used version of home-assistant-frontend@20201021.4
 
 ### How to build the new Lovelace version
 First of all the actual https://github.com/home-assistant/frontend (dev branch) must be **manually** merged into https://github.com/GermanBluefox/home-assistant-polymer.git (***iob*** branch!).
 
 All changes for ioBroker are marked with comment `// IoB`.
-For now (2020.06.20) following files were modified:
-- `.gitignore` - added `.idea` ignore
-- `build-scripts/gulp/app.js` - Added new gulp task
-- `build-scripts/gulp/webpack.js` - Added new gulp task
-- `src/data/lovelace.ts` - added hide bar option
-- `src/data/weather.ts` - add support to display ioBroker weather icon again.
-- `src/dialogs/more-info/more-info-controls.js` - remove entity settings button
-- `src/dialogs/notifications/notification-drawer.js` - added button ack all
+For now (20201021.4) following files were modified:
+- `.gitignore` - add `.idea` ignore
+- `build-scripts/gulp/app.js` - Add new gulp task
+- `build-scripts/gulp/webpack.js` - Add new gulp task
+- `src/data/lovelace.ts` - add hide toolbar option
+- `src/dialogs/more-info/ha-more-info-dialog.ts` - remove entity settings button and remove weather state & history
 - `src/entrypoints/core.ts` - modified authentication process
 - `src/layouts/home-assistant-main.ts` - remove app sidebar
 - `src/panels/lovelace/hui-root.ts` - added notifications and voice control
-- `src/panels/lovelace/cards/hui-weather-forecast-card.ts` - add support to display ioBroker weather icon again.
+- `src/util/documentation-url.ts` - for link to iobroker help instead of homeassistant.
+- `src/dialogs/more-info/controls/more-info-weather.ts` - add support to display weather icon from url.
+- `src/data/weather.ts` - add support to display weather icon from url.
+- `src/panels/lovelace/cards/hui-weather-forecast-card.ts` - add support to display weather icon from url.
+- `src/panels/lovelace/entity-rows/hui-weather-entity-row.ts` - add support to display weather icon from url with auth.
+
 
 After that checkout modified version in `./build` folder. Then.
 

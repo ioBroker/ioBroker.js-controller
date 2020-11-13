@@ -31,6 +31,13 @@ the personsId is the id within the "Known" persons folder
 
 ## Changelog
 
+### 1.3.3
+* (PArns) removed person history
+
+### 1.3.2
+* (PArns) Updated libs & merged pending patches
+* (PArns) Changed update interval from 5 to 10 minutes (requested by Netatmo)
+
 ### 1.3.1
 * (PArns) Fixed event cleanup crash
 

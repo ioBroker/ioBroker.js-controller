@@ -256,6 +256,9 @@ Following types are supported:
 -->
 
 ## Changelog
+### 1.8.0 (2020-11-12)
+* (bluefox) The google home table was rewritten
+
 ### 1.7.15 (2020-11-05)
 * (Morluktom) Corrected the request for temperature
 

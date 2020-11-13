@@ -7,26 +7,26 @@ translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sonnen/README.md
 title: 声纳适配器
-hash: 2OHpDJNtX/XILxjP2Vlf4UusEWvFSwmt5wRzak854bI=
+hash: sji7Vk7L1ru2xOORB4OM6cKSlk2BrONMW9eFqpQMHLs=
 ---
 ![商标](../../../de/adapterref/iobroker.sonnen/media/sonnen.png)
 
 ＃Sonnen适配器
-sonnen适配器使sonnenBatterie可以集成到ioBroker中。
+sonnen适配器可将sonnenBatterie集成到ioBroker中。
 
 ##概述
 ### Sonnen电池
-借助sonnenBatterie，来自太阳能系统的自生能量可以存储起来供个人使用，并在需要时准确使用。这样就可以使自己独立于匿名的能源公司，并成为自己的自给自足的电力生产商。借助集成的能源管理器，智能高科技蓄电系统可确保为家庭提供尽可能最佳的电力。
+借助sonnenBatterie，来自太阳能系统的自生能量可以存储起来供个人使用，并在需要时准确使用。这样就可以使自己独立于匿名的能源公司，并成为一个自给自足的电力生产商。借助集成的能源管理器，智能高科技蓄电系统可确保为家庭提供尽可能最佳的电力。
 这不仅价格便宜，而且环保！ sonnenBatterie有多种灵活的存储型号。
 
 ### Sonnen适配器
-Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适配器（TODO：链接），可以在网络中自动找到sonnenBatterien。 <br/>适配器以对象形式创建用于监视和控制sonnenBatterie的状态。大多数状态仅用于监视电池，而电池也可以通过描述某些状态来控制。
+Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适配器（TODO：链接），可以在网络中自动找到sonnenBatterien。<br/>适配器以对象的形式创建用于监视和控制sonnenBatterie的状态。大多数状态仅用于监视电池，而可以通过描述某些状态来另外控制电池。
 
 ##安装前的要求
-使用ioBroker操作sonnenBatterie的前提是，电工已成功设置了电池。电池还必须与ioBroker位于同一网络中。
+使用ioBroker操作sonnenBatterie的前提是电池已由电工成功安装。电池还必须与ioBroker位于同一网络中。
 
 ###安装
-适配器的实例是通过ioBroker管理界面安装的。有关必要安装步骤的详细说明，请参见此处（TODO：LINK）。 <br/><br/>适配器实例的安装完成后，配置窗口将自动打开。
+适配器的实例是通过ioBroker管理界面安装的。有关必要安装步骤的详细说明，请参见此处（TODO：LINK）。<br/><br/>完成适配器实例的安装后，配置窗口将自动打开。
 
 ##配置
 ###“主要设置”窗口
@@ -34,31 +34,31 @@ Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适
 
 |领域描述 |
 |:-------------|:-------------|
-| | IP地址|所需sonnenBatterie的IP地址应在此处输入。 |
+| IP地址|所需sonnenBatterie的IP地址应在此处输入。 |
 
 |领域描述 |
 |:-------------|:-------------|
-| Auth-Token |应该在此处输入Auth-Token，可以在sonnen Web界面的“软件集成”下找到它。如果没有输入身份验证令牌，则使用非官方的API，可以随时将其关闭。 |
+| Auth-Token |应该在此处输入Auth-Token，可以在sonnen Web界面的“软件集成”下找到它。如果没有输入Auth-Token，则使用非官方的API，可以随时将其关闭。 |
 
 ###“高级设置”窗口
 ![高级设置](../../../de/adapterref/iobroker.sonnen/media/advancedSettings.png "高级设置")
 
 |领域描述 |
 |:-------------|:-------------|
-|查询间隔|在此处可以设置替代值（以毫秒为单位）。在此间隔中更新sonnenBatterie的状态。 |
+|查询间隔|可以在此处设置替代值（以毫秒为单位）。在此间隔中更新sonnenBatterie的状态。 |
 
 完成配置后，使用`SPEICHERN UND SCHLIEßEN`退出配置对话框。
 这将导致适配器重新启动。
 
 ##个实例
-适配器的安装已在`Objekte`节中创建了Sonnen适配器的活动实例。 <br/><br/> ![实例](../../../de/adapterref/iobroker.sonnen/media/instance.png "实例") <span style="color:grey">*一审*</span>
+适配器的安装已在`Objekte`节中创建了Sonnen适配器的活动实例。<br/><br/> ![实例](../../../de/adapterref/iobroker.sonnen/media/instance.png "实例") <span style="color:grey">*一审*</span>
 
-可以在ioBroker服务器上创建多个sonnen Adapter实例。相反，sonnenBatterie也可以与多个ioBroker服务器一起运行。如果一个ioBroker服务器要控制多个设备，则应为每个电池创建一个实例。 <br/><br/>实例的状态字段的颜色指示适配器是已激活还是已连接到电池。如果鼠标指针指向该符号，则会显示更多详细信息。
+可以在ioBroker服务器上创建多个sonnen Adapter实例。相反，sonnenBatterie也可以与多个ioBroker服务器一起运行。如果一个ioBroker服务器要控制多个设备，则应为每个电池创建一个实例。<br/><br/>实例的状态字段的颜色指示适配器是激活的还是连接到电池的。如果鼠标指针指向该符号，则会显示更多详细信息。
 
 ##适配器的对象
-在`Objekte`节中，树状结构中列出了集线器中适配器识别的所有设备和活动。另外，还提供关于与集线器的通信是否顺利进行的信息。
+在`Objekte`部分中，树状结构中列出了集线器中适配器识别的所有设备和活动。另外，还提供关于与集线器的通信是否顺利进行的信息。
 
-![对象](../../../de/adapterref/iobroker.sonnen/media/objects.png "太阳物体") <span style="color:grey">*</span> Sonnen <span style="color:grey">适配器的对象*</span>
+![对象](../../../de/adapterref/iobroker.sonnen/media/objects.png "太阳物体") <span style="color:grey">*</span> Sonnen<span style="color:grey">适配器的对象*</span>
 
 在下文中，对象分为状态和按钮。由于有两种不同的API取决于电池，因此仅创建相应电池支持的状态。
 列出了每个数据点及其关联的数据类型及其授权。
@@ -80,7 +80,7 @@ Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适
     |:---:|:---:|
     |时间戳记| R |
 
-   *只读时间戳，每次更新数据时都会更新。
+   *只读时间戳记，每次更新数据时都会更新。
 
 *信息配置
 
@@ -96,7 +96,7 @@ Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适
     |:---:|:---:|
     |字符串| R |
 
-   *仅可读的JSON字符串，带有sonnenBatterie的当前测量信息。
+   *唯一可读的JSON字符串，带有sonnenBatterie的当前测量信息。
 
 *信息逆变器
 
@@ -104,7 +104,7 @@ Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适
     |:---:|:---:|
     |字符串| R |
 
-   *唯一可读的JSON字符串，带有sonnenBatterie的逆变器信息。
+   *仅可读的JSON字符串，带有来自sonnenBatterie的逆变器信息。
 
 ####频道：状态
 * status.consumption
@@ -113,7 +113,7 @@ Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适
     |:---:|:---:|
     |号| R |
 
-   *仅可读的数字值，其中包含以瓦特为单位的房屋电流消耗。
+   *仅可读数字值，其中包含以瓦特为单位的房屋电流消耗。
 
 * status.production
 
@@ -130,7 +130,7 @@ Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适
     |号| R |
 
 *可读的数值，表示变频器的交流电源。
-如果该值大于0，则将电池放电；如果该值小于0，则将电池充电。
+如果该值大于0，则电池将放电；如果该值小于0，则电池将被充电。
 
 * status.relativeSoc
 
@@ -138,7 +138,7 @@ Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适
     |:---:|:---:|
     |号| R |
 
-   *仅可读的数字值，代表当前的电池电量。
+   *仅可读数字值，代表当前电池的电量。
 
 * status.userSoc
 
@@ -146,7 +146,7 @@ Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适
     |:---:|:---:|
     |号| R |
 
-   *仅可读的数字值，代表当前的电池电量。
+   *仅可读数字值，代表当前电池的电量。
 
 * status.acFrequency
 
@@ -162,7 +162,7 @@ Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适
     |:---:|:---:|
     |号| R |
 
-   *可读的数字值，代表逆变器的当前AC（交流）电压。
+   *仅可读的数字值，代表变频器的当前AC（交流）电压。
 
 * status.batteryVoltage
 
@@ -250,7 +250,7 @@ Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适
     |:---:|:---:|
     |号| R |
 
-*可读数字值，代表当前正在馈入或从电网汲取的电量（瓦）。
+*只读数字值，代表当前正在馈入或从电网抽取的电量（瓦）。
 如果该值为正，则表示当前正在将电网馈入电网；如果为负，则表示正在从电网中汲取电量。
 
 * status.onlineStatus
@@ -259,7 +259,7 @@ Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适
     |:---:|:---:|
     |布尔值| R |
 
-   *仅可读的布尔值，为true，sonnenBatterie在线。
+   *仅可读的布尔值（为true），sonnenBatterie在线。
 
 ####频道：控制
 *控制费
@@ -268,7 +268,7 @@ Sonnen适配器可以监视和控制网络中的SonnenBatterie。借助发现适
     |:---:|:---:|
     |号| R / W |
 
-   *数字值，可将电池的最大放电功率指定为瓦特。
+   *数字值，可指定以瓦特为单位的电池最大放电量。
 
 *注意：如果设置了无效值，则无论如何都会被确认。确认（确认）该值仅表示该命令已发送到电池。
 
@@ -287,7 +287,7 @@ setState('sonnen.0.control.charge', 1250); // Die Batterie wird mit maximal 1250
     |:---:|:---:|
     |号| R / W |
 
-   *数字值，可以指定电池的最大电量（瓦）。
+   *数字值，可让您指定电池的最大电量（瓦）。
 
 *注意：如果设置了无效值，则无论如何都会被确认。确认（确认）该值仅表示该命令已发送到电池。
 
@@ -300,7 +300,21 @@ setState('sonnen.0.control.charge', 1250); // Die Batterie wird mit maximal 1250
 setState('sonnen.0.control.discharge', 1250); // Die Batterie wird maximal mit 1250 Watt entladen
 ```
 
+####通道：功率计
+此频道有两个子频道，例如`4_1`和`4_2`，其中一个代表消费，另一个代表生产。
+
+这两个通道具有相同的状态。所有状态均为写保护，类型为`number`。
+
+###通道：逆变器
+该通道由`number`类型的写保护状态组成，这些状态提供有关太阳能电池逆变器的信息。
+
 ## Changelog
+### 1.7.0 (2020-11-12)
+* (foxriver76) new channels for powermeter and inverter
+
+### 1.6.1 (2020-11-11)
+* (foxriver76) fixed charge and discharge not working with api v2
+
 ### 1.6.0 (2020-08-09)
 * (foxriver76) added support for official api, automatically used when auth token is given by user
 

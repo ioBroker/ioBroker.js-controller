@@ -71,7 +71,7 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 ### 1.0.5
 * Bump library to 0.4.25
 * Initial support for Ozmo T8 and T8+
-* Implement buttons for ResetLifeSpan cmd (currently 900/901/930 only)
+* Implement buttons for resetting consumable values (currently Deebot 900/901 and Ozmo 930 only)
 * Several enhancements and fixes
 
 ### 1.0.4

@@ -3,8 +3,8 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.fahrplan.svg)](https://www.npmjs.com/package/iobroker.fahrplan)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.fahrplan.svg)](https://www.npmjs.com/package/iobroker.fahrplan)
-![Number of Installations (latest)](http://iobroker.live/badges/fahrplan-installed.svg)
-![Number of Installations (stable)](http://iobroker.live/badges/fahrplan-stable.svg)
+![Number of Installations (latest)](https://iobroker.live/badges/fahrplan-installed.svg)
+![Number of Installations (stable)](https://iobroker.live/badges/fahrplan-stable.svg)
 [![Dependency Status](https://img.shields.io/david/gaudes/iobroker.fahrplan.svg)](https://david-dm.org/gaudes/iobroker.fahrplan)
 ![Test and Release](https://github.com/gaudes/ioBroker.fahrplan/workflows/Test%20and%20Release/badge.svg)
 
@@ -213,8 +213,9 @@ With +-Button new entries can be added to the table.
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 0.2.2 (2020-11-11)
 * (Gaudes) Fixing some errors
+* (Gaudes) Integrating Duration for Journey
 
 ### 0.2.1 (2020-11-09)
 * (Gaudes) Configurable number of journeys in routes

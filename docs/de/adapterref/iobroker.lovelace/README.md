@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lovelace/README.md
 title: ioBroker.lovelace
-hash: M/ZKMacVtSQQnZoxMJzS6xNQxxlnDOHUBemCtbTexMo=
+hash: ZNKMNBwj/Ckj6HnlyQStaxeCU2B9xBva3tY0haLxQPY=
 ---
 ![Logo](../../../en/adapterref/iobroker.lovelace/admin/lovelace.png)
 
@@ -437,25 +437,27 @@ Die Sicherheit muss vom aktuellen Benutzer und nicht vom Standardbenutzer übern
 
 ## Entwicklung
 ### Ausführung
-Verwendete Version von home-assistant-frontend@1.0.0
+Verwendete Version von home-assistant-frontend@20201021.4
 
 ### Wie erstelle ich die neue Lovelace-Version?
 Zunächst muss das eigentliche https://github.com/home-assistant/frontend (Entwicklungszweig) ** manuell ** in https://github.com/GermanBluefox/home-assistant-polymer.git (*) zusammengeführt werden ** iob *** Zweig!).
 
 Alle Änderungen für ioBroker sind mit dem Kommentar `// IoB` gekennzeichnet.
-Vorerst (2020.06.20) wurden folgende Dateien geändert:
+Vorerst (20201021.4) wurden folgende Dateien geändert:
 
-- `.gitignore` -` .idea` ignorieren hinzugefügt
-- `build-scripts / gulp / app.js` - Neue gulp-Aufgabe hinzugefügt
-- `build-scripts / gulp / webpack.js` - Neue gulp-Aufgabe hinzugefügt
-- `src / data / lovelace.ts` - Option zum Ausblenden der Leiste hinzugefügt
-- `src / data / weather.ts` - Unterstützung hinzufügen, um das ioBroker-Wettersymbol erneut anzuzeigen.
-- `src / dialogs / more-info / more-info-controls.js` - Entitätseinstellungsschaltfläche entfernen
-- `src / dialogs / notifications / notification-drawer.js` - Schaltfläche ack all hinzugefügt
+- `.gitignore` - füge` .idea` ignorieren hinzu
+- `build-scripts / gulp / app.js` - Neue gulp-Aufgabe hinzufügen
+- `build-scripts / gulp / webpack.js` - Neue gulp-Aufgabe hinzufügen
+- `src / data / lovelace.ts` - Option zum Ausblenden der Symbolleiste hinzufügen
+- `src / dialogs / more-info / ha-more-info-dialog.ts` - Entitätseinstellungsschaltfläche entfernen und Wetterstatus & Verlauf entfernen
 - `src / entrypoints / core.ts` - geänderter Authentifizierungsprozess
 - `src / layouts / home-Assistant-main.ts` - App-Seitenleiste entfernen
 - `src / panel / lovelace / hui-root.ts` - Benachrichtigungen und Sprachsteuerung hinzugefügt
-- `src / panel / lovelace / maps / hui-weather-Forecast-card.ts` - Unterstützung hinzufügen, um das ioBroker-Wettersymbol erneut anzuzeigen.
+- `src / util / documentation-url.ts` - für den Link zur iobroker-Hilfe anstelle von homeassistant.
+- `src / dialogs / more-info / controls / more-info-weather.ts` - Unterstützung hinzufügen, um das Wettersymbol von der URL anzuzeigen.
+- `src / data / weather.ts` - Unterstützung für die Anzeige des Wettersymbols über die URL hinzufügen.
+- `src / panel / lovelace / maps / hui-weather-Forecast-card.ts` - Unterstützung für die Anzeige des Wettersymbols über die URL hinzufügen.
+- `src / panel / lovelace / entity-rows / hui-weather-entity-row.ts` - Unterstützung hinzufügen, um das Wettersymbol von der URL mit auth anzuzeigen.
 
 Nach dem Auschecken geänderte Version im Ordner `./build`. Dann.
 
