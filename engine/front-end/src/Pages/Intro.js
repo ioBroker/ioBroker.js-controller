@@ -252,7 +252,11 @@ class Intro extends Component {
     render() {
         let i = 0;
 
-        const link = new Date().getMinutes() % 3;
+        let link = new Date().getMinutes() % 2;
+
+        if (I18n.getLanguage() !== 'de') {
+            link = 0;
+        }
 
         return [
             <div className={this.props.classes.content + ' ' + this.props.classes.backImage} key="content">
