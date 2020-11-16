@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: DkBGxHrRk4kYPdcFnwkVADB89lV/GdFdorsw6J4rtmc=
+hash: yER+/imYzeItfUhRw4hxFecG2vyfbpgbui7O2N1Nz8I=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -63,9 +63,9 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 * Informationen zur Verwendung dieses Adapters finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Bekannte Probleme
-* Es gibt einige Berichte, dass Ecovacs derzeit leere Reinigungsprotokolle für Ozmo 920/950 liefert.
+* Es gibt einige Berichte, dass derzeit leere Reinigungsprotokolle von Ecovacs für Ozmo 920/950 und Ozmo T8 / T8 + / T8 AIVI geliefert werden.
 * Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da es einige gibt meldet, dass die Verbindung nach ca. 24 Stunden.
-* Es gibt auch einige Berichte, dass der Batteriewert bei Deebot 900/901 merkwürdig ist. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
+* Der Batteriewert des Deebot 900/901 weist ein merkwürdiges Verhalten auf. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
   * Sie können die entsprechende Option in der Adapterkonfiguration als Problemumgehung verwenden.
 * Die Schaltfläche "Pause" funktioniert nicht mit Deebot 710/711.
 
@@ -80,7 +80,7 @@ Ich bin in keiner Weise mit ECOVACS verbunden.
 ### 1.0.5
 * Bump library to 0.4.25
 * Initial support for Ozmo T8 and T8+
-* Implement buttons for ResetLifeSpan cmd (currently 900/901/930 only)
+* Implement buttons for resetting consumable values (currently Deebot 900/901 and Ozmo 930 only)
 * Several enhancements and fixes
 
 ### 1.0.4

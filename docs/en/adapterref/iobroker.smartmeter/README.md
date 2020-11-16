@@ -95,6 +95,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.1.6 (2020-11-15)
+* (Apollon77) update OpenSML lib to support Holley DTZ541 wrongly implemented CRC Algorithm
+
 ### 3.1.5 (2020-09-21)
 * (Apollon77) update dependencies to prevent some crash cases and optimize tcp mode
 

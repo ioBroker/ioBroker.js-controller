@@ -61,12 +61,8 @@ The purpose of this adapter is to to provide you a very **user-friendly environm
 Also, if your are using Javascripts/Blockly, you should be typically able to replace several scripts with this adapter, which will also ensure more consistency, a stable environment, and especially a way user-friendlier configuration.
 
 ## Installation
-This adapter is in the "latest repository", but not yet in "stable": If your active ioBroker repository (ioBroker admin -> click the 'wrench symbol' top left -> MAIN SETTINGS -> 'Active repository) is ...
-   * ...latest: Just install regularly
-   * ...stable: [Install adapter from own URL](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/admin/adapter.md)
 
-Once done, add an adapter instance accordingly.
-
+Just install the adapter regularly through the ioBroker admin interface. The adapter is both in the latest and stable repository.<br>Once done, add an adapter instance accordingly.
 
 ## Instructions
 

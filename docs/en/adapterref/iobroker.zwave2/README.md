@@ -40,6 +40,15 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.8.0 (2020-11-14)
+* Improved config files for Fibaro Keyfob (no special chars anymore) and Shenzhen Neo PD03Z
+* Non-critical steps during the interview of `Central Scene CC`, `Configuration CC V3+` and `Association Group Info CC` are now skipped when the node does not respond or responds incorrectly
+* Multi Channel Lifeline Associations are no longer created automatically if the device does not support the `Multi Channel CC` - this should fix compatibility with most Qubino devices
+* Fixed an issue where marking nodes with active transaction as asleep would mess up the serial communication with the controller
+* Empty user codes are now also handled as strings instead of Buffer objects
+* The `targetValue` property for the `Binary Switch`, `Multilevel Switch` and `Basic` CCs is now created even if it has no value
+* Values for Notification events (one-time events) are now created. Previously only Notification variables were available as states
+
 ### 1.7.10 (2020-11-04)
 * Improved compatibility with devices that don't follow the `User Code CC` and `Notification CC` specifications correctly (like Zipato Keypad)
 * Added the ability to edit binary values (e.g. RFID codes) using hexadecimal strings, e.g. `0xbada55`.
@@ -65,11 +74,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 * Fixed an error during logging of a `DoorLockCC::ConfigurationSet` command
 * After a complete interview, battery-powered nodes that are temporarily mains-powered (e.g. Multisensor 6 with USB power), are no longer sent into a "go to sleep" loop
 * When a node requests multiple nonces in a short timespan, only respond to the most recent request
-
-### 1.7.6 (2020-10-15)
-* The roles of states are now determined depending on the value they represent instead of just `"value"`
-* Added a new option to configure if user-defined names for states may be overwritten
-* The `targetValue` state of `Color Switch CC` no longer has `write` set to `false`
 
 ## License
 

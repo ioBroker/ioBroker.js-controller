@@ -1195,6 +1195,11 @@ This device has some special predefined size- and display-settings to show a web
 * (sbormann) Added showing of swipe goals (can be hidden via option in options/miscellaneous/swiping).
 * (sbormann) Fixed crash when enlarging a hidden tile.
 * (sbormann) Reworked some borders and scrolling parameters.
+* (sbormann) Fixed comboboxes (selecbox with progressbars).
+* (sbormann) Added option to close panel after opening a linked view in parent instance.
+* (sbormann) Padding bottom is only applied when minimizing a tile to give enough room for scrolling to tiles top.
+* (sbormann) Fixed setState false for postMessage-Communication.
+* (sbormann) Enhanced padding bottom and scroll to enlarged tile.
 
 ### 1.4.1 (2020-11-01)
 * (sbormann) Fixed drag-sorting or tables and usage of comboboxes on mobile (touch) devices.

@@ -96,6 +96,9 @@ iobroker upload tr-064
 
 ## Changelog
 
+### 4.2.1 (2020-11-13)
+* (Apollon77) try to fix pot. not working disabling commands
+
 ### 4.2.0 (2020-11-09)
 * (Apollon77) Crash case prevented (Sentry IOBROKER-TR-064-15, IOBROKER-TR-064-16)
 * (Apollon77) Try to solve error 500 problem with offline devices

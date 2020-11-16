@@ -64,6 +64,9 @@ You can debug view charts locally with:
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### 0.3.6 (2020-11-13)
+* (bluefox) The copy of charts is implemented
+
 ### 0.3.5 (2020-11-10)
 * (bluefox) Corrected SENTRY errors
 

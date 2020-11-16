@@ -17,6 +17,10 @@ Mercedes me adapter for ioBroker
 
 ## Changelog
 
+### 0.0.31
+
+- Support for new app
+
 ### 0.0.22
 
 - Rework fuel history, fix js-controller 3 issues

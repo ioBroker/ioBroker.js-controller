@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.smartcontrol/README.md
 title: ioBroker.smartcontrol
-hash: xvqF8Mvd+RJ1qAySIWxcbQbtWUZjricx134V+xc9ZbY=
+hash: y63P7D4JHpiNxcmrfSNZ+TM4WLO6T28M5z5koFMqX68=
 ---
 ![商标](../../../en/adapterref/iobroker.smartcontrol/admin/smartcontrol-banner.png)
 
@@ -20,25 +20,25 @@ hash: xvqF8Mvd+RJ1qAySIWxcbQbtWUZjricx134V+xc9ZbY=
 ## IoBroker的智能控制适配器
 *[单击此处跳到下面的“简介”部分](#introduction)*
 
-没有ioBroker社区有关UI，功能请求，测试和错误报告等方面的宝贵宝贵意见，就不会有该适配器。非常感谢所有贡献者！
+没有ioBroker社区有关UI，功能请求，测试和错误报告等方面的宝贵宝贵意见，就不会存在该适配器。非常感谢所有贡献者！
 
-以下是我想与您分享的社区非常积极反馈的摘要（lush）（从最旧到最新，以及德语）：
+以下是我想与您分享的社区非常积极反馈的摘要：lush（脸红）（从最旧到最新，以及德语）：
 
 * * Ein收费适配器和Entwicklungsarbeit！* [来源]（https://forum.iobroker.net/post/461724）
-* *我找到了Hilfssystem einfachGenial。👍* [来源]（https://forum.iobroker.net/post/463066）
-* *奥斯瓦尔（Auswahl ist）死了！绝对要举行！ 🙂Die Eierlegende selbstversorgende Wollmilchsau ist amlaufen..🙂* [来源]（https://forum.iobroker.net/post/470948）
-* *人在阿尔贝克特（EstDanmalschönfürdie Arbeit）。 Möchtenicht wissen wieviele Stunden da drin stecken👍* [来源]（https://forum.iobroker.net/post/474350）
-* *还包括mus susgen：顶级Arbeit！* [来源]（https://forum.iobroker.net/post/476116）
-* *超级用户，超级用户和用户集！* [来源]（https://forum.iobroker.net/post/476117）
-* *Die Geschwindigkeit mit der der Den den Adapter nach vorne treibst ist echt erschreckend，所以schlimm und schnell das manches mal mit dem testen nicht hinterher kommt👍RESPEKTABEL* [来源]（https://forum.iobroker.net/post/204 ）
+* * Ich finde das Hilfssystem einfachGenial.👍* [来源]（https://forum.iobroker.net/post/463066）
+* *死奥斯威斯坦教徒这么卑鄙的Übersichtlicher！绝对要举行！ 🙂Die Eierlegende selbstversorgende Wollmilchsau ist amlaufen..🙂* [来源]（https://forum.iobroker.net/post/470948）
+* *人在阿尔贝克（Erstmal einDankeschönfürdie Arbeit）。 Möchtenicht wissen wieviele Stunden da drin stecken👍* [来源]（https://forum.iobroker.net/post/474350）
+* *还包括mus susgen：TOP Arbeit！* [来源]（https://forum.iobroker.net/post/476116）
+* *超级用户，超级用户和用户群！* [来源]（https://forum.iobroker.net/post/476117）
+* *Die Geschwindigkeit mit der der Den den Adapter nach vorne treibst ist echt erschreckend，因此schlimm und schnell das manching Mal mit dem testen nicht hinterher kommt👍RESPEKTABEL* [source]（https://forum.iobroker.net/post/204 ）
 * ICH斌奥赫recht begeistert冯DEM适配器，SCHÖNEArbeit。 Hab jetzt schonlängereZeit浸泡式mal wieder verschiedene Systeme getestet，FHEM，Nodered和jetzt seit kurzem Iobroker。所以schnell hab ich meine LichtsteuerungüberBewegungsmelder noch nie hinbekommen。* [source]（https://forum.iobroker.net/post/482899）
 * * Super Sache die du da gebaut hast🙂* [来源]（https://forum.iobroker.net/post/485306）
-* *适配器由北米尔·伊姆萨茨和洛伊特·塞特尔提供。 DankefürDeine Arbeit。* [来源]（https://forum.iobroker.net/post/485463）
+* *适配器由贝米尔米尔·伊因萨兹和洛伊特·塞古特提供。 DankefürDeine Arbeit。* [来源]（https://forum.iobroker.net/post/485463）
 * *发现不符合要求的人，必须在适配器和其他适配器之间进行连接。回复<br>Bis jetzt konnte ichtatsächlichalles如此，所以这是Blockly在apt migrieren的收费地区。<br> Ichwürdemirwünschen，温特·德·适配器，所以，他的适配器，“ forkst”和diesen dann ebenfalls，所以usernah weiterentwickelst🙄* [来源]（https://forum.iobrokerker.net/post / 488090）
-* * Ersmal Hut Ab。在Adapterlog上的适配器和lass sich nach einer gewissen的Einarbeitungszeit适配器。 （...）Trotzdem nochmal dickes Lob，viele Dinge laufen damit seit einiger Zeit reibungslos undübersichtlicherals via Skript。 👍* [来源]（https://forum.iobroker.net/post/492035）
+* * Ersmal Hut Ab。在Adapterlog上的适配器和lass sich nach einer gewissen的Einarbeitungszeit适配器。 （...）Trotzdem nochmal dickes Lob，viele Dinge laufen damit seit einiger Zeit reibungslos和übersichtlicherals通过Skript。 👍* [来源]（https://forum.iobroker.net/post/492035）
 * * Dankefürden coolen适配器-da kann ich nur meinen Hut davor ziehen！* [来源]（https://forum.iobroker.net/post/496452）
 * * ein dickes Lobfürden Adapter und Deine vorbildliche Arbeit👍* [来源]（https://forum.iobroker.net/post/497110）
-** *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** **
+** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
 * * Danke，man das Teil ist somächtiggeworden，aber GENIAL！* [来源]（https://forum.iobroker.net/post/500518）
 
 ＃＃ 介绍
@@ -48,7 +48,7 @@ hash: xvqF8Mvd+RJ1qAySIWxcbQbtWUZjricx134V+xc9ZbY=
  *按下墙壁开关，
  *发生特定时间（例如，日落之后30分钟或周一至周五的7:00）
 
-一旦触发了这样的触发条件，我们通常希望（不）满足其他条件（例如，“今天是假期”，“客厅窗户打开”，亮度大于100勒克斯等）。
+一旦触发了此类触发器，我们通常希望（不）满足其他条件（例如，“今天是假期”，“客厅窗户打开”，亮度大于100勒克斯等）。
 
 这些可选验证通过后，应切换目标状态（即“目标设备” **）。
 
@@ -57,28 +57,23 @@ hash: xvqF8Mvd+RJ1qAySIWxcbQbtWUZjricx134V+xc9ZbY=
 所有这些都可以通过此适配器轻松完成，甚至更多;-)
 
 该适配器的目的是为您提供各种需求的非常“用户友好”的环境**，尽管以上只是使用IFTTT的一个简单示例（*如果是，那么*），您可以配置您家中的许多不同情况（在适配器选项中称为“区域”）。
-另外，如果您使用的是Javascript / Blockly，通常应该能够使用此适配器替换多个脚本，这还将确保更高的一致性，更稳定的环境，尤其是用户友好的配置方式。
+另外，如果您使用的是Javascript / Blockly，通常应该可以使用此适配器替换多个脚本，这还将确保更高的一致性，更稳定的环境，尤其是用户友好的配置方式。
 
 ##安装
-该适配器位于“最新存储库”中，但尚未位于“稳定”中：如果您的活动ioBroker存储库（ioBroker管理员->单击左上角的“扳手符号”->主设置->'活动存储库）为...
-
-   * ...最新：只需定期安装
-   * ...稳定：[从自己的URL安装适配器]（https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/admin/adapter.md）
-
-完成后，相应地添加适配器实例。
+只需通过ioBroker管理界面定期安装适配器。该适配器位于最新的稳定存储库中。<br>完成后，相应地添加适配器实例。
 
 ##说明
-我已经在此适配器的管理员设置中包括了所有说明。
+我已经在此适配器的管理员设置中包含了所有说明。
 
 <sub>原因：我们有一个很好的德语用语[Medienbruch](https://de.wikipedia.org/wiki/Medienbruch)，这对于“破坏”当前媒体并切换到其他媒体（例如不同的网站，程序等）来执行/完成是不必要的要求任务等。由于这很麻烦，因此我已在此适配器的管理员设置中包括了所有说明。</sub>
 
 另外，您也可以在此处阅读大多数说明：
 
 * [**基本适配器说明**]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/start_en.md）-对于德语[单击此处（德语） ]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/start_de.md）
-* [**目标设备**]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-target-devices_en.md）-对于德语[点击此处（德语）]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-target-devices_de.md）
+* [**目标设备**]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-target-devices_en.md）-对于德语[单击此处（德语）]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-target-devices_de.md）
 * [**附加条件**]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-conditions_en.md）-对于德语[点击此处（德语）]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-conditions_de.md）
 * [**触发器：运动传感器**]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-trigger-motion_zh.md）-对于德语[单击此处（德语）]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-trigger-motion_de.md）
-* [**触发器：其他设备（墙壁开关等）**]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-trigger-devices_en .md）-对于德语[点击此处（德语）]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-trigger-devices_de.md）
+* [**触发：其他设备（墙壁开关等）**]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-trigger-devices_en .md）-对于德语[单击此处（德语）]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-trigger-devices_de.md）
 * [**触发器：与时间有关**]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc/md/table-trigger-times_en.md）-对于德语[单击此处（德语）]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-trigger-times_de.md）
 * [**区域**]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-zones_en.md）-对于德语[点击此处（德语） ]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-zones_de.md）
 * [**执行设置**]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-execution_en.md）-对于德语[点击此处（德语）]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-execution_de.md）
@@ -110,7 +105,7 @@ hash: xvqF8Mvd+RJ1qAySIWxcbQbtWUZjricx134V+xc9ZbY=
 
 ##注意
 *此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[Sentry-Plugin文档]（https://github.com/ioBroker/plugin -sentry＃plugin-sentry）！ Sentry报告从js-controller 3.0开始使用。
-*由[flatpi.com]（https://www.flaticon.com/）的[freepik]（https://www.flaticon.com/authors/freepik）制作的适配器图标。</ sup> </ sub>
+*由[flaticon.com]（https://www.flaticon.com/）的[freepik]（https://www.flaticon.com/authors/freepik）制作的适配器图标。</ sup> </ sub>
 
 ## Changelog
 

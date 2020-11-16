@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: DkBGxHrRk4kYPdcFnwkVADB89lV/GdFdorsw6J4rtmc=
+hash: yER+/imYzeItfUhRw4hxFecG2vyfbpgbui7O2N1Nz8I=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -63,16 +63,16 @@ sudo npm install canvas --unsafe-perm=true
 * Информацию о том, как использовать этот адаптер, можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Известные проблемы
-* Есть сообщения, что в настоящее время Ecovacs доставляет пустые журналы очистки для Ozmo 920/950.
+* Есть сообщения, что в настоящее время Ecovacs доставляет пустые журналы очистки для Ozmo 920/950 и Ozmo T8 / T8 + / T8 AIVI.
 * Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно через прибл. 24 часа.
-* Также есть сообщения о странном поведении заряда батареи Deebot 900/901. Очень вероятно, что это ошибка прошивки.
+* На Deebot 900/901 наблюдается странное поведение заряда батареи. Очень вероятно, что это ошибка прошивки.
   * Вы можете использовать соответствующую опцию в конфигурации адаптера в качестве временного решения.
 * Кнопка «пауза» не работает с Deebot 710/711.
 
 ## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
-## Отказ от ответственности
+## Заявление об ограничении ответственности
 Я никоим образом не связан с ECOVACS.
 
 ## Changelog
@@ -80,7 +80,7 @@ sudo npm install canvas --unsafe-perm=true
 ### 1.0.5
 * Bump library to 0.4.25
 * Initial support for Ozmo T8 and T8+
-* Implement buttons for ResetLifeSpan cmd (currently 900/901/930 only)
+* Implement buttons for resetting consumable values (currently Deebot 900/901 and Ozmo 930 only)
 * Several enhancements and fixes
 
 ### 1.0.4

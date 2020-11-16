@@ -61,7 +61,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 4.0.4 (2020-09-25)
+### 4.0.4 (2020-11-15)
+* (Apollon77) update dependencies and shelly-iot lib
+
+### 4.0.4-beta (2020-09-25)
 * (Stübi) - Bugfix EM3, unit of comsumed power Wh instead of kWH
 * (Stübi) - optimize the destroy function (Bugfixing)
 * (Stübi) - Bugfixing Relay0.Event error for Shelly I3 in MQTT mode (Issue #241)
@@ -69,7 +72,7 @@ When the adapter crashes or an other Code error happens, this error message that
 * (Stübi) - Allow setting of customer MQTT prefix (Issue #244)
 * (harrym67) - Add Support for Shelly Uni (SHUNI-1)
 * (harrym67) - Bugfix EM3 (Issue #256)
-* (foxriver76) - Bugix MQTT password check (Issue #264) 
+* (foxriver76) - Bugfix MQTT password check (Issue #264) 
 
 ### 4.0.3 (2020-08-19)
 * (Stübi) - Add a checkbox, to optionally enable updates of objects even if they have not changed (Issue #209)

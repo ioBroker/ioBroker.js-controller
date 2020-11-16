@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartcontrol/README.md
 title: ioBroker.smartcontrol
-hash: xvqF8Mvd+RJ1qAySIWxcbQbtWUZjricx134V+xc9ZbY=
+hash: y63P7D4JHpiNxcmrfSNZ+TM4WLO6T28M5z5koFMqX68=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartcontrol/admin/smartcontrol-banner.png)
 
@@ -27,15 +27,15 @@ Dies als Zusammenfassung der sehr positiven Rückmeldungen aus der Community, di
 * *Ein Toller Adapter und Entwicklungsarbeit!* [Quelle] (https://forum.iobroker.net/post/461724)
 * *Ich finde das Hilfssystem einfach Genial.👍* [Quelle] (https://forum.iobroker.net/post/463066)
 * *die Auswahl ist so viel viel Übersichtlicher! Bist mein absoluter Held! 🙂 Die Eierlegende selbstversorgende Wollmilchsau ist am Laufen .. 🙂* [Quelle] (https://forum.iobroker.net/post/470948)
-* *erstmal ein Dankeschön für die Arbeit. Wissente nicht wissen wieviele Stunden da drin gehört 👍* [Quelle] (https://forum.iobroker.net/post/474350)
+* * erstmal ein Dankeschön für die Arbeit. (Https://forum.iobroker.net/post/474350)
 * *Auch ich muss sagen: TOP Arbeit!* [Quelle] (https://forum.iobroker.net/post/476116)
 * *super, du hast echt klasse Ideen und hat diese sehr benutzerfreundlich um!* [Quelle] (https://forum.iobroker.net/post/476117)
-* *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * *** * )
+* *Die mit der geschwindigkeit Du den Adapter nach vorne treibst ist echt erschreckend, so schlimm und schnell das man manches Mal with the testen nicht hinterher kommt 👍 RESPEKTABEL* [Quelle] (https://forum.iobroker.net/post/477204 )
 * *ich bin auch rechtmäßig von dem Adapter, schöne Arbeit. Hab jetzt schon länger Zeit immer mal wieder wieder Systeme Systeme getestet, FHEM, Nodered und jetzt seit gehören Iobroker. So schnell hab ich meine Lichtsteuerung über Bewegungsmelder noch nie hinbekommen.* [Quelle] (https://forum.iobroker.net/post/482899)
 * *super sache die du da bauen hast 🙂* [Quelle] (https://forum.iobroker.net/post/485306)
 * *Der Adapter ist bei mir im Einsatz und läuft sehr gut. Danke für Deine Arbeit.* [Quelle] (https://forum.iobroker.net/post/485463)
-* * Ich finde es nicht möglich, sich mit der Wahrnehmung und der Steuerung zu befassen. RESPEKT<br> Bis jetzt war ich anders als alles war ich so ein Blockly´s hatte in den Adapter migrieren, echt toll.<br> Ich würde mir sagen, wenn der Adapter so weit fertig ist, das Du Dir dein ein oder andere Adapter vornimmst, &quot;forkst&quot; und diese dann auch so usernah erkennenelst / 488090)
-* *erstmal Hut ab. Der Adapter ist echt gut gelungen und lässt sich nach einer persönlichen Arbeitszeit in der Adapterlogik sehr viele meiner Setzungen damit adaptieren. (...) Bestehen nochmal dickes Lob, viele Dinge laufen damit seit Jahren Zeit und übersichtlicher als via Skript. 👍* [Quelle] (https://forum.iobroker.net/post/492035)
+* * Ich finde es nicht möglich, sich mit der Wahrnehmung und der Steuerung zu befassen. RESPEKT<br> Bis jetzt war ich anders als alles war ich so ein Blockly´s hatte in den Adapter migrieren, echt toll.<br> Ich würde mir sagen, wenn der Adapter so weit fertig ist, das Du Dir dein ein oder andere Adapter vornimmst, &quot;forkst&quot; und diese dann auch so usernah erkennenelst [* [Quelle] (https://forum.iobroker.net/post / 488090)
+* *erstmal Hut ab. Der Adapter ist echt gut gelungen und lässt sich nach einer persönlichen Arbeitszeit in der Adapterlogik sehr viele meiner Setzungen damit adaptieren. (...) Bestehen nochmal dickes Lob, viele Dinge laufen damit seit seit Zeit Zeit und übersichtlicher als via Skript. 👍* [Quelle] (https://forum.iobroker.net/post/492035)
 * *Danke für den coolen Adapter - da kann ich nur meine Hut davor ziehen!* [Quelle] (https://forum.iobroker.net/post/496452)
 * *ein dickes Lob für den Adapter und Deine vorbildliche Arbeit 👍* [Quelle] (https://forum.iobroker.net/post/497110)
 * *viele Dank für die wahnsinnig gute Arbeit!* [Quelle] (https://forum.iobroker.net/post/500373)
@@ -60,12 +60,7 @@ Der Zweck dieses Adapters ist es, Ihnen eine sehr **benutzerfreundliche Umgebung
 Wenn Sie Javascripts / Blockly verwenden, sollten Sie in der Regel mehrere Skripte durch diesen Adapter ersetzen können. Dies gewährleistet außerdem mehr Konsistenz, eine stabile Umgebung und insbesondere eine benutzerfreundlichere Konfiguration.
 
 ## Installation
-Dieser Adapter befindet sich im "neuesten Repository", aber noch nicht im "stabilen": Wenn Ihr aktives ioBroker-Repository (ioBroker-Administrator -> Klicken Sie oben links auf das Schraubenschlüsselsymbol -> HAUPTEINSTELLUNGEN -> 'Aktives Repository) ...
-
-   * ... spätestens: Einfach regelmäßig installieren
-   * ... stabil: [Adapter von eigener URL installieren] (https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/admin/adapter.md)
-
-Fügen Sie anschließend eine entsprechende Adapterinstanz hinzu.
+Installieren Sie den Adapter einfach regelmäßig über die ioBroker-Administrationsoberfläche. Der Adapter befindet sich sowohl im neuesten als auch im stabilen Repository.<br> Fügen Sie anschließend eine entsprechende Adapterinstanz hinzu.
 
 ## Anleitung
 Ich habe alle Anweisungen direkt in die Admin-Einstellungen dieses Adapters aufgenommen.

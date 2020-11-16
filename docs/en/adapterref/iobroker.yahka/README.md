@@ -156,7 +156,8 @@ For more information about the Configuration, the InOut Functions and Conversion
 
 ### 0.10.0
   (jw) updated dependencies<br>
-  (apollon77) removed support for NodeJS 4 - NodeJS 6 is now the minimum required NodeJS version (merged #109)<br>
+  (apollon77) removed support for NodeJS 4 - NodeJS 6 is now the minimum required NodeJS version (merged #109)<br>  
+  (yaming116) fixed scale conversion to support min values others than 0<br>
 
 ### 0.9.2
   (jw) fixed a bug where the adapter didn't start anymore<br>

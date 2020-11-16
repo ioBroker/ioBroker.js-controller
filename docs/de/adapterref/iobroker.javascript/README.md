@@ -64,6 +64,9 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 ![Instanz Javascript Adapter wählen](img/screen.jpg)
 
 ## Changelog
+### 4.10.5 (2020-11-15)
+* (bluefox) null timeouts are checked now
+
 ### 4.10.4 (2020-11-09)
 * (bluefox) null timeouts are checked now
 * (AlCalzone) Correction for the typescript with async functions
@@ -85,12 +88,6 @@ Sollte im Skript ein schwerwiegender Fehler sein, beendet sich nur diese zusätz
 
 ### 4.9.8 (2020-11-01)
 * (bluefox) Corrected search in blockly
-
-### 4.9.7 (2020-10-28)
-* (Apollon77) Fix possible crash case (Sentry IOBROKER-JAVASCRIPT-47, IOBROKER-JAVASCRIPT-44)
-* (AlCalzone) pass ID as the result, not the error to the callback of createState
-* (AlCalzone) update the editor's type declarations when switching scripts
-* (AlCalzone) The corrections for typescript were added
 
 ## License
 
