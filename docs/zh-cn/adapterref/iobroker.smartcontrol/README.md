@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.smartcontrol/README.md
 title: ioBroker.smartcontrol
-hash: y63P7D4JHpiNxcmrfSNZ+TM4WLO6T28M5z5koFMqX68=
+hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
 ---
 ![商标](../../../en/adapterref/iobroker.smartcontrol/admin/smartcontrol-banner.png)
 
@@ -14,9 +14,10 @@ hash: y63P7D4JHpiNxcmrfSNZ+TM4WLO6T28M5z5koFMqX68=
 ![依赖状态](https://img.shields.io/david/Mic-M/iobroker.smartcontrol.svg)
 ![已知漏洞](https://snyk.io/test/github/Mic-M/ioBroker.smartcontrol/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.smartcontrol.png?downloads=true)
-![特拉维斯](http://img.shields.io/travis/Mic-M/ioBroker.smartcontrol/master.svg)
 
 ＃ioBroker.smartcontrol
+**测试：**![测试与发布](https://github.com/Mic-M/ioBroker.smartcontrol/workflows/Test%20and%20Release/badge.svg)
+
 ## IoBroker的智能控制适配器
 *[单击此处跳到下面的“简介”部分](#introduction)*
 
@@ -108,6 +109,15 @@ hash: y63P7D4JHpiNxcmrfSNZ+TM4WLO6T28M5z5koFMqX68=
 *由[flaticon.com]（https://www.flaticon.com/）的[freepik]（https://www.flaticon.com/authors/freepik）制作的适配器图标。</ sup> </ sub>
 
 ## Changelog
+
+### 1.1.1 
+* (Mic-M) Fix: Most likely finally fixes [issue #43](https://github.com/Mic-M/ioBroker.smartcontrol/issues/43) as well as workaround for [issue #35](https://github.com/Mic-M/ioBroker.smartcontrol/issues/35) (scheduleJob() of node-schedule module: now applying 'cancel' method prior to reschedule every midnight)
+* (Mic-M) Update adapter documentation
+
+### 1.1.0 
+* (Mic-M) Improvement: if multiple motion sensors assigned to zone, zone will not switch off if any other motion sensor assigned to same zone is still motion=true (addresses [issue #45](https://github.com/Mic-M/ioBroker.smartcontrol/issues/45))
+* (Mic-M) Internal: align testing with latest adapter creator (remove travis and use github test only)
+
 
 ### 1.0.0 
 * (Mic-M) No changes - just prepared versioning to add adapter to stable repository per adapter development documentation, [Versioning section](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md).

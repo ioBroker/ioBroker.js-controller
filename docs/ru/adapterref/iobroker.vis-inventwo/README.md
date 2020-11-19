@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: FF+Bre1Q/B31awOi0exXfiTAj93P6lpFyRQj5n/g1Qk=
+hash: p8fldRtCejm0TtZlo+aYx4l54ib0GW4JVVH4pjU34Z0=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -16,7 +16,7 @@ hash: FF+Bre1Q/B31awOi0exXfiTAj93P6lpFyRQj5n/g1Qk=
 ![Статус сборки](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Пожертвование Paypal](https://img.shields.io/badge/paypal-donate%20%7C%20spenden-green.svg)
-![НПМ](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
 
 # IoBroker.vis-inventorywo
 ## Schalter Widgets для адаптера ioBroker.vis
@@ -41,6 +41,13 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 [![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.5.10
+- Исправлена ошибка
+
+## 2.5.9
+- Der Prozess der Bildfarbfilterung wurde geändert
+- Die Bildfarbe kann jetzt ein Datenpunkt sein
 
 ## 2.5.8
 - Исправлена ошибка
@@ -88,7 +95,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Fehler bei der Navigation mit dem Widget 'View in Widget' behoben
 
 ## 2.3.1
-- Fehler в JSON Tabelle behoben
+- Фелер в JSON Tabelle behoben
 
 ## 2.3.0
 - Problem behoben, bei dem Schaltflächen zweimal Werte senden
@@ -96,13 +103,13 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Универсальный и мульти-виджет-атрибут, указанный в клике, на актуальном виджете
 
 ## 2.2.3
-- Fehler в JSON Tabelle behoben
+- Фелер в JSON Tabelle behoben
 
 ## 2.2.2
 - Fehler im Multi Widget behoben: Bilder und Text wechseln nicht bei Typ Navigation
 
 ## 2.2.1
-- Фелер в JSON Tabelle behoben, wenn kein gültiges JSON-Objekt vorhanden ist
+- Fehler в JSON Tabelle behoben, wenn kein gültiges JSON-Objekt vorhanden ist
 - Fehler в Value-List behoben: Wert wird nicht aktualisiert
 
 ## 2.2.0
@@ -120,7 +127,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Виджет-Untertitel behoben
 
 ## 2.0.0
-- Переключатель, кнопка, виджет навигации и фона (sowie die kleinen Ausführungen) zu einem einzigen Widget zussammengeführt -> dem Universal Widget
+- Переключатель, кнопка, навигация и фоновый виджет (sowie die kleinen Ausführungen) zu einem einzigen Widget zussammengeführt -> dem Universal Widget
 - Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte geprüft werden kann (Ähnlich der Signalbild Funktion)
 - Виджет изображения kann nun auf Datenpunkt prüfen
 - Радиокнопки hinzugefügt
@@ -141,7 +148,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Добавлена частота обновления таблицы
 
 ### 1.3.4
-- Удалены значки и фоны, изменен конфиг, Исправлена навигация.
+- Убраны значки и фоны, изменен конфиг, Исправлена навигация.
 
 ### 1.3.3
 - Исправлена опция значения фонового виджета
@@ -171,7 +178,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ### 1.2.0
 - Добавлен виджет изображений
-- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно щелкнуть каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
+- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно нажимать каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
 - Добавлены новые иконки
 
 ### 1.1.1
@@ -197,7 +204,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ...
 
 ### 0.1.0 (Erstveröffentlichung)
-- Виджеты дизайна inventorywo
+- Дизайн-виджеты inventorywo
 
 ...
 

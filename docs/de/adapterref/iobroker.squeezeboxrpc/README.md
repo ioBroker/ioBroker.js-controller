@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.squeezeboxrpc/README.md
 title: ioBroker Logitech Squeezebox Adapter über JSON / RPC-Protokoll
-hash: VAAjzwtqfoWPdBpRdOVyLTjTrb5VKJZ24KvYqE73p+I=
+hash: qKPsRUM5+1VQuVVtnDRARZTTlf1qsUsPvAGN0hZljgE=
 ---
 ![Logo](../../../en/adapterref/iobroker.squeezeboxrpc/admin/squeezeboxrpc.png)
 
@@ -31,9 +31,9 @@ Die eigentliche Hauptwebschnittstelle des LMS verwendet auch das rpc / json-Prot
 ## Eigenschaften
 - Die meisten Daten, die der LMS-Service bereitstellt, sind im Adapter verfügbar
 - Detaillierte Informationen zu Player-Status, Songtitel, Künstler, Album, Bildmaterial und Wiedergabeliste
-- Viele Steuerfunktionen zum Abspielen, Anhalten, Stoppen, Vorwärtsspulen, Zurückspulen, Wiederholen, Mischen, Favoriten spielen, Zur Zeit springen (absolut und relativ), Zum Wiedergabelistenindex springen (absolut und relativ), Ein- / Ausschalten und voreingestellte Tasten
+- Viele Steuerungsfunktionen zum Abspielen, Anhalten, Stoppen, Vorwärtsspulen, Zurückspulen, Wiederholen, Mischen, Favoriten spielen, Zur Zeit springen (absolut und relativ), Zum Wiedergabelistenindex springen (absolut und relativ), Ein- / Ausschalten und voreingestellte Tasten
 - Alle Favoriten und alle Unterebenen vom Server
-- Viele Widgets für die iobroker-vis-Komponente sind enthalten, um eigene Steuerungsbenutzeroberflächen zu erstellen (Player auswählen, Favoriten auswählen, Synchronisationsgruppen verwalten, Schaltflächen für Wiedergabe / Pause, FWD, Rew, Wiederholungsmodus und Auswahl des Zufallsmodus).
+- Viele Widgets für die iobroker-vis-Komponente sind enthalten, um eigene Steuerungsbenutzeroberflächen zu erstellen (Player auswählen, Favoriten auswählen, Synchronisierungsgruppen verwalten, Schaltflächen für Wiedergabe / Pause, Vorwärts-, Rückwärts-, Wiederholungsmodus und Auswahl des Zufallsmodus).
 
 Die Dokumentation für die vis-Widgets ist in vis oder [Widget-Dokumentation / Deutsch](https://htmlpreview.github.io/?https://github.com/oweitman/ioBroker.squeezeboxrpc/blob/master/widgets/squeezeboxrpc/doc.html) verfügbar
 
@@ -80,7 +80,7 @@ Zustand | Beschreibung ----------------- | ------------------------------ Name |
 ### Spieler
 für jeden Spieler Der Modus zeigt an, ob Sie den Wert ändern können. Die ergriffene Aktion wird im Attribut beschrieben
 
-state | mode | Beschreibung -------------------- | ---- | -------------------------------------------------- --- Alarme | R / - | Alle registrierten Alarme für diesen Player als JSON Album | R / - | Name des aktuellen Albums Artist | R / - | Name des Künstlers ArtworkUrl | R / - | URL zum Artwork Bitrate | R / - | Bitrate der Spur Verbunden | R / - | Verbindungsstatus des Spielers (0/1) Dauer | R / - | Dauer des Titels Genre | R / - | Genre des Titels IP | R / - | IP des Spielermodus | R / - | play / pause / stop Playername | R / - | Name des Spielers PlayerID | R / - | Player ID Playlist | R / - | Die aktuelle Wiedergabeliste als JSON PlaylistCurrentIndex | R / W | Gehen Sie zu einer absoluten Position, indem Sie den Spurindex angeben, oder gehen Sie am Anfang relativ mit einem + oder -. Beispiel 10, -3, + 2 PlaylistRepeat | R / W | Song (1) / Wiedergabeliste (2) wiederholen / nicht wiederholen (0) PlaylistShuffle | R / W | Shuffle-Wiedergabeliste (1) / Shuffle-Album (2) / Nicht mischen (0) Power | R / W | Powerstatus des Players ausschalten / ausschalten (0) / ein (1) RadioName | R / - | Name der Radiostationsrate | R / - | Bewertung des Songs Remote | R / - | Wenn Remote-Stream (1) SyncMaster | R / - | ID / MAC von Syncmaster SyncSlaves | R / - | ID / Mac der Spieler in Syncgroup Time | R / - | verstrichene Songzeit Titel | R / - | Songtitel Typ | R / - | Medientyp (z. B. MP3-Radio) URL | R / - | URL des Tracks / Streams Volume | R / W | Get / Set Lautstärke des Player-Status (0-100) | R / W | Spielstatus abrufen / einstellen: Pause (0), Wiedergabe (1), Stopp (2)
+state | mode | Beschreibung -------------------- | ---- | -------------------------------------------------- --- Alarme | R / - | Alle registrierten Alarme für diesen Player als JSON Album | R / - | Name des aktuellen Albums Artist | R / - | Name des Künstlers ArtworkUrl | R / - | URL zum Artwork Bitrate | R / - | Bitrate der Spur Verbunden | R / - | Verbindungsstatus des Spielers (0/1) Dauer | R / - | Dauer des Titels Genre | R / - | Genre des Titels IP | R / - | IP des Spielermodus | R / - | play / pause / stop Playername | R / - | Name des Spielers PlayerID | R / - | Player ID Playlist | R / - | Die aktuelle Wiedergabeliste als JSON PlaylistCurrentIndex | R / W | Gehen Sie zu einer absoluten Position, indem Sie den Trackindex angeben, oder gehen Sie am Anfang mit einem + oder - relativ. Beispiel 10, -3, + 2 PlaylistRepeat | R / W | Wiederholen Sie das Lied (1) / Wiedergabeliste (2) / Wiederholen Sie nicht (0) PlaylistShuffle | R / W | Shuffle-Wiedergabeliste (1) / Shuffle-Album (2) / Nicht mischen (0) Power | R / W | Powerstatus des Players ausschalten / einstellen aus (0) / ein (1) RadioName | R / - | Name der Radiostationsrate | R / - | Bewertung des Songs Remote | R / - | Wenn Remote-Stream (1) SyncMaster | R / - | ID / MAC von Syncmaster SyncSlaves | R / - | ID / Mac der Spieler in Syncgroup Time | R / - | verstrichene Songzeit Titel | R / - | Songtitel Typ | R / - | Medientyp (z. B. MP3-Radio) URL | R / - | URL des Tracks / Streams Volume | R / W | Get / Set Lautstärke des Player-Status (0-100) | R / W | Spielstatus abrufen / einstellen: Pause (0), Wiedergabe (1), Stopp (2)
 
 Die Wiedergabeliste enthält tatsächlich die folgenden Attribute, sofern diese in LMS verfügbar sind.
 Somme-Attribute hängen von der Art der Songs ab (Stream / Datei / ...). Alle Attribute sind schreibgeschützt
@@ -102,8 +102,10 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * Wiedergabelisten-Widget hinzufügen
 * Browser-Widget hinzufügen, um im LMS-Menü zu surfen
 * Spielergesteuertes Kreisknopf-Widget hinzufügen
+* Hör auf zu spielen, wenn die Lieblingstaste erneut gedrückt wird.
+* cmdGeneral für Server.
 * ~~ Telnet-Kommunikation hinzufügen, um Push-Ereignisse vom Server abzurufen und die Abfrage zu optimieren ~~
-* ~~ Implementiere einen Befehlsstatus, um benutzerspezifische Befehle (über json) für Server und Player ~~ zu platzieren
+* ~~ Implementieren Sie einen Befehlsstatus, um benutzerdefinierte Benutzerbefehle (über JSON) für Server und Player ~~ zu platzieren
 * ~~ Weitere Steuerungsfunktionen implementieren (Wiedergabelistenposition zum Abspielen auswählen, ffwd, frew, zu einer Zeitposition im Song springen, Song wiederholen, zufälliger Song) ~~
 * ~~ füge die Wiedergabeliste als json-Array zu den Spielerdaten hinzu ~~
 * ~~ Grafik (Sender-Logo / Playlist-Cover) für Favoriten hinzufügen ~~

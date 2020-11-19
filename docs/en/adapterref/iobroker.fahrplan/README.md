@@ -213,6 +213,10 @@ With +-Button new entries can be added to the table.
 	### __WORK IN PROGRESS__
 -->
 
+### 0.2.4 (2020-11-16)
+* (Gaudes) Fixing connection errors to HAFAS
+* (Gaudes) Sending more details about errors in Sentry
+
 ### 0.2.3 (2020-11-13)
 * (Gaudes) Verifying configuration
 * (Gaudes) Fixing some more errors

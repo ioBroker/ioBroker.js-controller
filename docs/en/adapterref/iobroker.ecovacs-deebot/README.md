@@ -28,7 +28,6 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 ### These models should work
 * Deebot M88
 * Deebot 600/605
-* Deebot Ozmo 960
 * Deebot Ozmo Slim 10
 * Deebot Ozmo T8 (+)
 

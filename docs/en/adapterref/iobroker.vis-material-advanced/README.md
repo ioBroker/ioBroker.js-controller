@@ -89,6 +89,14 @@ thanks to @sigi234
     ### __WORK IN PROGRESS__
 * 
 -->
+
+### 1.3.0 (2020-11-16)
+* released new version
+
+
+### 1.2.1 (2020-11-16)
+* changed position of properties to be alomst same everywhere
+
 ### 1.2.0 (2020-11-04)
 * added option to round every corner different/not 
 * added option to change color of border
@@ -100,12 +108,6 @@ thanks to @sigi234
 
 ### 1.1.0 (2020-10-15)
 * Travis changes
-
-### 1.0.0 (2020-10-14)
-* no changes, upgrading to 1.0
-
-### 0.9.1 (2020-10-13)
-* some colorizeByValue options did not work
 
 ## License
 MIT License

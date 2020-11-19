@@ -749,6 +749,9 @@ void loop() {
 
 ## Changelog
 
+### 2.1.13 (2020-11-16)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-MQTT-Q)
+
 ### 2.1.12 (2020-11-08)
 * (Apollon77) Crash cases prevented (Sentry IOBROKER-MQTT-M)
 

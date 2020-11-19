@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: FF+Bre1Q/B31awOi0exXfiTAj93P6lpFyRQj5n/g1Qk=
+hash: p8fldRtCejm0TtZlo+aYx4l54ib0GW4JVVH4pjU34Z0=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -26,7 +26,7 @@ hash: FF+Bre1Q/B31awOi0exXfiTAj93P6lpFyRQj5n/g1Qk=
 ###### .. v 1.3.8
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Preview.png)
 
@@ -34,13 +34,20 @@ hash: FF+Bre1Q/B31awOi0exXfiTAj93P6lpFyRQj5n/g1Qk=
 ---
 
 ##Unterstützung
-Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱恩·乌斯·杰德·斯彭德。
+瀑布下的阿尔贝特教堂和地下教堂
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
 [![Spende]（http://resources.inventwo.com/github/inventwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.5.10
+-错误修正
+
+## 2.5.9
+-Dur Prozess der Bildfarbfilterung wurdegeändert
+-Die Bildfarbe kann jetzt ein Datenpunkt sein
 
 ## 2.5.8
 -错误修正
@@ -102,11 +109,11 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 -Fehler im Multi Widget behoben：Bilder und Text wechseln nicht bei Typ Navigation
 
 ## 2.2.1
--JSON中的Fehler Tabelle behoben，wen keingültigesJSON-Objekt vorhanden ist
+-JSON中的Fehler Tabelle behoben，wenn keingültigesJSON-Objekt vorhanden ist
 -价值清单behoben中的费勒：Wert wird nicht aktualisiert
 
 ## 2.2.0
--Datenpunktwerte werden jetzt bei allen Widgets in Editor angezeigt
+-编辑器中的Datenpunktwerte werden jetzt bei allen Widgets
 -Neues小部件：Marquee（Laufschrift）
 -通用和多州Verweildauerhinzugefügt
 -列表小部件Abstand zwischen denEinträgenkann eingestell werden
@@ -116,7 +123,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 
 ## 2.0.1
 -Übersetzungsfehlerbehoben
--边境Farbe behoben
+-Border Farbe behoben
 -Widget-Untertitel behoben
 
 ## 2.0.0
@@ -135,7 +142,7 @@ Falls Dir unsere Arbeitgefälltund Du unsunterstützenmöchtest，弗尔·弗莱
 
 ### 1.3.6
 -添加了导航的设置状态选项
--修复了没有配置的数据点问题
+-解决了没有配置的数据点的问题
 
 ### 1.3.5
 -增加了表格的刷新率

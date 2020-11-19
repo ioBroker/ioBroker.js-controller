@@ -1200,6 +1200,11 @@ This device has some special predefined size- and display-settings to show a web
 * (sbormann) Padding bottom is only applied when minimizing a tile to give enough room for scrolling to tiles top.
 * (sbormann) Fixed setState false for postMessage-Communication.
 * (sbormann) Enhanced padding bottom and scroll to enlarged tile.
+* (sbormann) Fixed postMessage-Communication.
+* (sbormann) Enhanced performance of comboboxes.
+* (sbormann) Added option to define border-radius (rounded corners) of tiles.
+* (sbormann) Added option to define text-shadow-color of toolbar.
+* (sbormann) Added fallback to loading iframe content for non fitting mime types.
 
 ### 1.4.1 (2020-11-01)
 * (sbormann) Fixed drag-sorting or tables and usage of comboboxes on mobile (touch) devices.

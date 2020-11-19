@@ -75,6 +75,13 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+## 2.5.10
+- Bugfix
+
+## 2.5.9
+- Der Prozess der Bildfarbfilterung wurde geändert
+- Die Bildfarbe kann jetzt ein Datenpunkt sein
+
 ## 2.5.8
 - Bugfix
 

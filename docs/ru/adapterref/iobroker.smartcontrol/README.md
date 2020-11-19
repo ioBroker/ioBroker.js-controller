@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.smartcontrol/README.md
 title: ioBroker.smartcontrol
-hash: y63P7D4JHpiNxcmrfSNZ+TM4WLO6T28M5z5koFMqX68=
+hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
 ---
 ![Логотип](../../../en/adapterref/iobroker.smartcontrol/admin/smartcontrol-banner.png)
 
@@ -14,9 +14,10 @@ hash: y63P7D4JHpiNxcmrfSNZ+TM4WLO6T28M5z5koFMqX68=
 ![Статус зависимости](https://img.shields.io/david/Mic-M/iobroker.smartcontrol.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Mic-M/ioBroker.smartcontrol/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.smartcontrol.png?downloads=true)
-![Трэвис-Си](http://img.shields.io/travis/Mic-M/ioBroker.smartcontrol/master.svg)
 
 # IoBroker.smartcontrol
+** Тесты: ** ![Тестирование и выпуск](https://github.com/Mic-M/ioBroker.smartcontrol/workflows/Test%20and%20Release/badge.svg)
+
 ## Адаптер Smart Control для ioBroker
 *[нажмите здесь, чтобы перейти к разделу "Введение" ниже](#introduction)*
 
@@ -108,6 +109,15 @@ hash: y63P7D4JHpiNxcmrfSNZ+TM4WLO6T28M5z5koFMqX68=
 * Значок адаптера сделан [freepik] (https://www.flaticon.com/authors/freepik) из [flaticon.com] (https://www.flaticon.com/). </sup> </sub>
 
 ## Changelog
+
+### 1.1.1 
+* (Mic-M) Fix: Most likely finally fixes [issue #43](https://github.com/Mic-M/ioBroker.smartcontrol/issues/43) as well as workaround for [issue #35](https://github.com/Mic-M/ioBroker.smartcontrol/issues/35) (scheduleJob() of node-schedule module: now applying 'cancel' method prior to reschedule every midnight)
+* (Mic-M) Update adapter documentation
+
+### 1.1.0 
+* (Mic-M) Improvement: if multiple motion sensors assigned to zone, zone will not switch off if any other motion sensor assigned to same zone is still motion=true (addresses [issue #45](https://github.com/Mic-M/ioBroker.smartcontrol/issues/45))
+* (Mic-M) Internal: align testing with latest adapter creator (remove travis and use github test only)
+
 
 ### 1.0.0 
 * (Mic-M) No changes - just prepared versioning to add adapter to stable repository per adapter development documentation, [Versioning section](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md).

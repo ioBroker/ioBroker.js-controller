@@ -171,6 +171,8 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * add playlist widget
 * add browse widget to browse in LMS-Menu
 * add player controlled circle knob widget
+* stop playing if favorite button is pressed again.
+* cmdGeneral für Server.
 * ~~add telnet communication to get push events from the server to optimize the polling~~
 * ~~implement a command state to place user individual commands (via json) for server and player~~
 * ~~implement more control features (select playlist pos to play,ffwd,frew,jump to a time position in song,repeat song,random song)~~
