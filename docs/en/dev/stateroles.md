@@ -80,9 +80,7 @@
 * `value.direction`       - (common.type=number ~~or string~~, indicates up/down, left/right, 4-way switches, wind-direction, ... )
 * `value.curtain`         - actual position of curtain
 * `value.blind`           - actual position of blind (100% = fully open, 0% = fully closed)
-* `value.tilt`            - actual tilt position
-* `value.open.tilt`       - actual tilt position in % open with 100% = fully open and 0% = fully closed.
-* `value.close.tilt`      - actual tilt position in % close with 100% = fully closed and 0% = fully open.
+* `value.tilt`            - actual tilt position (100% = fully open, 0% = fully closed)
 * `value.lock`            - actual position of lock
 * `value.speed`           - wind speed
 * `value.pressure`        - (unit: mbar)
