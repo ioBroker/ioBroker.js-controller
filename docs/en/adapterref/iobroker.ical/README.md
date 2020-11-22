@@ -189,6 +189,9 @@ Whitelist: If you only want to include events of a specific location use regular
 
 ## Changelog
 
+### 1.8.1 (2020-11-20)
+* (klein0r) Fixed past event calculation in html view
+
 ### 1.8.0 (2020-11-14)
 * (klein0r) Moved html options to separate tab
 * (klein0r) Added option to hide "arrow" on for running events

@@ -3,11 +3,10 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: 2DDGzmsR+2E9oZdaoftOY2D5tzTBGG/7b0om9Dx4N6M=
+hash: DEmu79QyoO7Q/RLZLaUmSTTsinVQ8rp2HBTvJY2Cp9M=
 ---
 ![Logo](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.meross.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/meross-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.meross.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.meross.svg)
@@ -38,6 +37,10 @@ Bitte verwenden Sie dazu GitHub-Probleme.
 Am besten stellen Sie den Adapter auf den Debug-Protokollmodus (Instanzen -> Expertenmodus -> Spaltenprotokollstufe). Dann holen Sie sich bitte die Protokolldatei von der Festplatte (Unterverzeichnis "log" im ioBroker-Installationsverzeichnis und nicht von Admin, da Admin die Zeilen abschneidet). Wenn Sie es nicht gerne in der GitHub-Ausgabe bereitstellen, können Sie es mir auch per E-Mail senden (iobroker@fischer-ka.de). Bitte fügen Sie einen Verweis auf das relevante GitHub-Problem hinzu UND beschreiben Sie auch, was ich zu welchem Zeitpunkt im Protokoll sehe.
 
 ## Changelog
+
+### 1.5.0 (2020-06-25)
+* (Apollon77) Prevent crash cases (Sentry IOBROKER-MEROSS-G, IOBROKER-MEROSS-F)
+* (Apollon77) Add warning about poll interval and cloud deactivation and reset poll interval to 30s for now
 
 ### 1.4.1 (2020-06-12)
 * (Apollon77) Fix Admin finally

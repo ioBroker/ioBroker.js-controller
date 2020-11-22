@@ -31,6 +31,13 @@ Work in progress. Feedback appreciated.
 
 ## Changelog
 
+### 0.1.11
+* (holomekc) update dependencies
+* (holomekc) changes due to new ioBroker lib
+* (holomekc) add connection indicator
+* (holomekc) increase delay for timeout for longpolling to 2s
+* (holomekc) low not set as lowbat role in ioBroker anymore
+
 ### 0.1.10
 * (holomekc) Add .npmignore to cleanup installation files
 

@@ -3,34 +3,42 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: Ivpn1zre1xc7fA6qtZmIA7xfvR3u8CW+qSHXYCvy6Ug=
+hash: nlEB+RIKLMo+NbCzZJ59gkbuM+xcucJL4s4qgN8eT2c=
 ---
-![Logo](../../../en/adapterref/iobroker.worx/admin/worx.png)
-
 ![Anzahl der Installationen](http://iobroker.live/badges/worx-installed.svg)
 ![stabile Version](http://iobroker.live/badges/worx-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.worx.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.worx.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapter/ioBroker.worx/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.worx.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/iobroker-community-adapter/ioBroker.worx/master.svg)
+
+[![TESTS] (https://github.com/iobroker-community-adapters/ioBroker.worx/workflows/Test%20and%20Release/badge.svg)](https://github.com/iobroker-community-adapters/ioBroker.worx/commits/master)
+
+![Logo](../../../en/adapterref/iobroker.worx/admin/worx.png)
 
 # IoBroker.worx
-[![Abhängigkeiten Status] (https://david-dm.org/iobroker-community-adapter/iobroker.worx/status.svg)](https://david-dm.org/iobroker-community-adapter/iobroker.worx)
+## Worx-Adapter (Kress und Landxcape) für ioBroker
+Steuerung über Cloud und mqtt
 
-## Worx Adapter für ioBroker
-Steuerung über Cloud und MQTT
-
-Dieser Adapter verbindet ioBroker über die Cloud mit Ihrem Landroid S / M / L.
-Temperaturen, Mähzeiten, Batteriestand und verschiedene andere Daten werden vom Mäher ausgelesen. Der Adapter kann den Mäher steuern und Sie können Konfigurationsparameter wie Mähzeiten ändern.
+Dieser Adapter verbindet ioBroker über Cloud mit Ihrem Landroid Kress- oder Landxcape-Mäher.
+Temperaturen, Mähzeiten, Batteriestand und verschiedene andere Daten werden vom Mäher ausgelesen.
+Der Adapter kann den Mäher steuern und Sie können Konfigurationsparameter wie Mähzeiten ändern.
 
 <img src="admin/worx_ada2.png" alt="Zeichnung" width="100%"/>
 
 ## Die Einstellungen
-- Um sich mit dem Mäher zu verbinden, geben Sie E-Mail und Passwort von Ihrem worx-Konto in der Konfiguration ein.
-- Verzögerung für Kantenschnitt: Wenn der Kantenschnitt in einer Kurve oder Kurve beginnt, kann der Rasenmäher den Draht verlieren und mit einem Fehler anhalten, oder die Messer drehen sich möglicherweise nicht. Zu diesem Zweck kann der Startpunkt eingestellt werden, an dem sich die Schaufeln zu drehen beginnen.
+- Um eine Verbindung zum Mäher herzustellen, geben Sie E-Mail und Passwort von Ihrem Worx-Konto in der Konfiguration ein.
+- Verzögerung für Kantenschnitt: Wenn der Kantenschnitt in einer Kurve oder Biegung beginnt, kann der Rasenmäher den Draht verlieren und mit einem Fehler anhalten, oder die Messer drehen sich möglicherweise nicht. Zu diesem Zweck kann der Startpunkt eingestellt werden, an dem sich die Klingen zu drehen beginnen.
 
 ## Changelog
+### 1.2.4 (15.11.2020)
+* (MeisterTR) Bugfix (error type of sc...)
+* (MeisterTR) change Testing to git
+### 1.2.3 (29.08.2020)
+* (MeisterTR) add option to crate a Json Obj to set mowtime with scripts 
+* (MeisterTR) add option to disable weather
+* (MeisterTR) add double Shedule, oneTimeShedule, PartyMode
+* (MeisterTR) fix setIntervall => setTimeout
+* (MeisterTR) fix error with Meter and Min. in Config
+* (MeisterTR) add Kress and Landxcape
 ### 1.0.0 (03.12.2019)
 * (MeisterTR) bump Version
 * (MeisterTR) transfer to community
@@ -53,7 +61,7 @@ Temperaturen, Mähzeiten, Batteriestand und verschiedene andere Daten werden vom
 ## License
 MIT License
 
-Copyright (c) 2019 MeisterTR
+Copyright (c) 2020 MeisterTR
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -133,6 +133,9 @@ Der log_today state wird um Mitternacht geleert.
 
 ## Changelog
 
+#### 1.7.0 (20.11.2020)
+* (misanorot) changed notifications and fixed little issues
+
 #### 1.6.0 (08.11.2020)
 * (misanorot) changed time inputs to numbers
 

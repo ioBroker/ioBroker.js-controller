@@ -27,16 +27,40 @@ These objects are created for each of the 5 circuits the Ecocompteur reads plus 
 
 A further object is created to store the TIC interface value.
 
+### Note the Ecocompteur's Fragile IP Stack
+
+Through testing it has been noted that the Ecocompteur has a rather fragile IP stack. Sometimes the stack can 'hang' and stop responding to requests, although in the author's experience, that was tracked to non-RFC compliant requests coming from another home automation device.
+
+Nevertheless, it would be prudent to mitigate for this risk by placing the device behind a simple Nginx micro-caching reverse proxy. Example Nginx configuration for an Ecocompteur at http://192.168.0.10/ (hence set *BaseURL* settings for this adapter to *http://&lt;Nginx address&gt;:8080/le/*):
+
+```
+proxy_cache_path /tmp/cache keys_zone=cache:32k levels=1 inactive=10s max_size=256k;
+
+server {
+    listen 8080;
+
+    proxy_cache cache;
+    proxy_cache_valid 200 1s;
+    location /le/ {
+        proxy_pass http://192.168.0.10/;
+    }
+}
+```
+
 ### Configuration
 
 The following configuration is required:
 
-- IP Address of device.
+- Base URL of device.
 - JSON polling interval (in seconds).
 - Index polling interval (in seconds).
 - Validation: maximum circuit reading (in Watts).
 
 ## Changelog
+
+### 0.0.6
+* (Robin Rainton) Change IP address setting to base URL. **Settings will need to be updated.**
+* (Robin Rainton) Fixed timeout handling. Parse readings from index HTML. Refactor to use more promises & single interval timer.
 
 ### 0.0.4
 * (Robin Rainton) Added reading validation filter.

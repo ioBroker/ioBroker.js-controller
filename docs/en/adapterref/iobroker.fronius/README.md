@@ -5,14 +5,12 @@
 
 ![Number of Installations](http://iobroker.live/badges/fronius-installed.svg) ![Number of Installations](http://iobroker.live/badges/fronius-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.fronius.svg)](https://www.npmjs.com/package/iobroker.fronius)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.fronius.svg)](https://www.npmjs.com/package/iobroker.fronius)
-[![Dependency Status](https://img.shields.io/david/iobroker-community-adapters/iobroker.fronius.svg)](https://david-dm.org/iobroker-community-adapters/iobroker.fronius)
 [![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.fronius/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.fronius)
 
 [![NPM](https://nodei.co/npm/iobroker.fronius.png?downloads=true)](https://nodei.co/npm/iobroker.fronius/)
 
 **Tests:** Linux/Mac: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.fronius/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.fronius)
 Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.fronius?branch=master&svg=true)](https://ci.appveyor.com/project/iobroker-community-adapters/ioBroker-fronius/) 
-[![Greenkeeper badge](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.fronius.svg)](https://greenkeeper.io/)
 
 ## A Fronius inverter adapter for ioBroker
 
@@ -20,7 +18,11 @@ This is an ioBroker adapter for your Fronius PV inverter with Fronius Datalogger
 
 ## Changelog
 
-### 1.0.5
+### 1.0.6 (2020-xx-xx)
+* (nkleber78) Implementation change for support of SYMO GEN24
+* (nkleber78) Fix issue with adapters connected state
+
+### 1.0.5 (2019-01-18)
 * (ldittmar) compact mode compatibility added
 * (ldittmar) add chinese support
 
@@ -59,7 +61,7 @@ This is an ioBroker adapter for your Fronius PV inverter with Fronius Datalogger
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 ldittmar <iobroker@lmdsoft.de>
+Copyright (c) 2020 ldittmar <iobroker@lmdsoft.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

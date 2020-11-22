@@ -64,8 +64,9 @@ After the Adapter has connected to the Daikin Device a structure of objects are 
 
 ## Changelog
 
-### __WORK IN PROGRESS__
-* try to also support devices that need the lpw parameter
+### 1.1.3 (2020-11-19)
+* add experimental support for lpw parameter
+* crash cases prevented (Sentry IOBROKER-DAIKIN-7)
 
 ### 1.1.2 (2020-08-06)
 * crash cases prevented (Sentry IOBROKER-DAIKIN-2, IOBROKER-DAIKIN-3, IOBROKER-DAIKIN-4)

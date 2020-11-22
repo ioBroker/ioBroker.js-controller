@@ -3,11 +3,10 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.meross/README.md
 title: ioBroker.meross
-hash: 2DDGzmsR+2E9oZdaoftOY2D5tzTBGG/7b0om9Dx4N6M=
+hash: DEmu79QyoO7Q/RLZLaUmSTTsinVQ8rp2HBTvJY2Cp9M=
 ---
 ![商标](../../../en/adapterref/iobroker.meross/admin/meross-logo.png)
 
-![环保管理员徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.meross.svg)
 ![安装数量](http://iobroker.live/badges/meross-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.meross.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.meross.svg)
@@ -30,14 +29,18 @@ hash: 2DDGzmsR+2E9oZdaoftOY2D5tzTBGG/7b0om9Dx4N6M=
 * mss310
 * MSS620欧盟/英国
 
-如果有更多设备可用（或没有其他设备可用），请通过打开GitHub问题进行报告。
+如果有更多设备可用（或无法运行），请通过打开GitHub问题进行报告。
 
 ##如何报告问题和功能请求
 请为此使用GitHub问题。
 
-最好是将适配器设置为“调试日志”模式（“实例”->“专家模式”->“列日志级别”）。然后，请从磁盘（ioBroker安装目录中的子目录“ log”而不是Admin）中获取日志文件，因为Admin会打断行。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
+最好是将适配器设置为“调试日志”模式（“实例”->“专家模式”->“列日志级别”）。然后，请从磁盘中获取日志文件（ioBroker安装目录中的子目录“ log”，而不是Admin，因为Admin会打断行）。如果您不喜欢在GitHub问题中提供它，也可以通过电子邮件（iobroker@fischer-ka.de）将其发送给我。请添加对相关GitHub问题的引用，并描述我在日志中什么时候看到的内容。
 
 ## Changelog
+
+### 1.5.0 (2020-06-25)
+* (Apollon77) Prevent crash cases (Sentry IOBROKER-MEROSS-G, IOBROKER-MEROSS-F)
+* (Apollon77) Add warning about poll interval and cloud deactivation and reset poll interval to 30s for now
 
 ### 1.4.1 (2020-06-12)
 * (Apollon77) Fix Admin finally

@@ -26,6 +26,9 @@ If you like my work, please feel free to provide a personal donation
     ## __WORK IN PROGRESS__
 -->
 
+### 0.2.4 (2020-11-19)
+* (HGlab01) Improve overlay modes + solve merge issue of version 0.2.3 
+
 ### 0.2.3 (2020-11-18)
 * (HGlab01) add overlay methods 'timer'
 * (HGlab01) deal with JSON object overlay or openWindow is null

@@ -45,7 +45,7 @@ If not, the user will stay logged in for the configured "login timeout".
 
 ### 3.0.14 (2020-10-30)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-WEB-1D)
-* (foxriver76) Support html <video> tag on Safari (iOS)
+* (foxriver76) Support html \<video\> tag on Safari (iOS)
 
 ### 3.0.13 (2020-09-06)
 * (bluefox) Added the support of multi-language names for the welcome screen.

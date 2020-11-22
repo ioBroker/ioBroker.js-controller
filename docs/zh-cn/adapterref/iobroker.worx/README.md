@@ -3,26 +3,24 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: Ivpn1zre1xc7fA6qtZmIA7xfvR3u8CW+qSHXYCvy6Ug=
+hash: nlEB+RIKLMo+NbCzZJ59gkbuM+xcucJL4s4qgN8eT2c=
 ---
-![商标](../../../en/adapterref/iobroker.worx/admin/worx.png)
-
 ![安装数量](http://iobroker.live/badges/worx-installed.svg)
 ![稳定版](http://iobroker.live/badges/worx-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.worx.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.worx.svg)
-![已知漏洞](https://snyk.io/test/github/iobroker-community-adapter/ioBroker.worx/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.worx.png?downloads=true)
-![特拉维斯](http://img.shields.io/travis/iobroker-community-adapter/ioBroker.worx/master.svg)
+
+[![测试]（https://github.com/iobroker-community-adapters/ioBroker.worx/workflows/Test%20and%20Release/badge.svg）](https://github.com/iobroker-community-adapters/ioBroker.worx/commits/master)
+
+![商标](../../../en/adapterref/iobroker.worx/admin/worx.png)
 
 ＃ioBroker.worx
-[![依赖状态]（https://david-dm.org/iobroker-community-adapter/iobroker.worx/status.svg）](https://david-dm.org/iobroker-community-adapter/iobroker.worx)
-
-## IoBroker的worx适配器
+##适用于ioBroker的Worx（Kress和Landxcape）适配器
 通过云和mqtt控制
 
-该适配器通过Cloud将ioBroker与您的Landroid S / M / L连接。
-从割草机读取温度，割草时间，电池电量和其他各种数据适配器可以控制割草机，并且您可以更改割草时间等配置参数。
+该适配器通过Cloud将ioBroker与您的Landroid Kress或Landxcape割草机相连。
+从割草机中读取温度，割草时间，电池电量和其他各种数据。
+适配器可以控制割草机，并且您可以更改配置参数，例如割草时间。
 
 <img src="admin/worx_ada2.png" alt="画画" width="100%"/>
 
@@ -31,6 +29,16 @@ hash: Ivpn1zre1xc7fA6qtZmIA7xfvR3u8CW+qSHXYCvy6Ug=
 -切边的延迟：如果切边以弯曲或弯曲开始，则割草机可能会掉线并因故障而停止，或者刀片可能无法旋转。为此，可以设置叶片开始旋转的起始点。
 
 ## Changelog
+### 1.2.4 (15.11.2020)
+* (MeisterTR) Bugfix (error type of sc...)
+* (MeisterTR) change Testing to git
+### 1.2.3 (29.08.2020)
+* (MeisterTR) add option to crate a Json Obj to set mowtime with scripts 
+* (MeisterTR) add option to disable weather
+* (MeisterTR) add double Shedule, oneTimeShedule, PartyMode
+* (MeisterTR) fix setIntervall => setTimeout
+* (MeisterTR) fix error with Meter and Min. in Config
+* (MeisterTR) add Kress and Landxcape
 ### 1.0.0 (03.12.2019)
 * (MeisterTR) bump Version
 * (MeisterTR) transfer to community
@@ -53,7 +61,7 @@ hash: Ivpn1zre1xc7fA6qtZmIA7xfvR3u8CW+qSHXYCvy6Ug=
 ## License
 MIT License
 
-Copyright (c) 2019 MeisterTR
+Copyright (c) 2020 MeisterTR
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

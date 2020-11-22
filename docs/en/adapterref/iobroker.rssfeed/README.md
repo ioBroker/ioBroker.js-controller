@@ -153,6 +153,9 @@ Z7: Without output. This line closed the javascript loop . Everything that was d
 * ~~Widget für Laufschrift mit den Titeln https://forum.iobroker.net/topic/31242/nachrichten-ticker-newsticker-via-php-in-vis-einbinden/2~~
 
 ## Changelog
+
+### 0.0.30
+* add some template examples to the widget documentation
 ### 0.0.29
 * improve error messages
 * remove deprecated widget / change widget beta flag

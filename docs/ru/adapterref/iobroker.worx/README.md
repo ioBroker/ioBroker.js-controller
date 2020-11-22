@@ -3,34 +3,42 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: Ivpn1zre1xc7fA6qtZmIA7xfvR3u8CW+qSHXYCvy6Ug=
+hash: nlEB+RIKLMo+NbCzZJ59gkbuM+xcucJL4s4qgN8eT2c=
 ---
-![логотип](../../../en/adapterref/iobroker.worx/admin/worx.png)
-
 ![Количество установок](http://iobroker.live/badges/worx-installed.svg)
 ![Стабильная версия](http://iobroker.live/badges/worx-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.worx.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.worx.svg)
-![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapter/ioBroker.worx/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.worx.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapter/ioBroker.worx/master.svg)
+
+[![ТЕСТЫ] (https://github.com/iobroker-community-adapters/ioBroker.worx/workflows/Test%20and%20Release/badge.svg)](https://github.com/iobroker-community-adapters/ioBroker.worx/commits/master)
+
+![Логотип](../../../en/adapterref/iobroker.worx/admin/worx.png)
 
 # IoBroker.worx
-[![Статус зависимостей] (https://david-dm.org/iobroker-community-adapter/iobroker.worx/status.svg)](https://david-dm.org/iobroker-community-adapter/iobroker.worx)
-
-## WORX адаптер для ioBroker
+## Адаптер Worx (Kress и Landxcape) для ioBroker
 управление через облако и mqtt
 
-Этот адаптер соединяет ioBroker с вашим Landroid S / M / L через Cloud.
-Температура, время кошения, уровень заряда батареи и другие данные считываются из газонокосилки. Адаптер может управлять газонокосилкой, и вы можете изменять параметры конфигурации, например, время косилки.
+Этот адаптер соединяет ioBroker с вашей косилкой Landroid Kress или Landxcape через облако.
+Температура, время кошения, уровень заряда батареи и другие данные считываются с косилки.
+Адаптер может управлять косилкой, и вы можете изменять параметры конфигурации, такие как время работы.
 
-<img src="admin/worx_ada2.png" alt="рисунок" width="100%"/>
+<img src="admin/worx_ada2.png" alt="Рисование" width="100%"/>
 
 ## Настройки
-- для подключения к газонокосилке введите адрес электронной почты и пароль от своей учетной записи worx в Конфиг.
-- Задержка срезания кромки: если срез кромки начинается по кривой или изгибу, газонокосилка может потерять провод и остановиться из-за неисправности, или лезвия могут не вращаться. Для этого можно установить начальную точку, в которой начинают вращаться лопасти.
+- для подключения к газонокосилке введите адрес электронной почты и пароль от вашей учетной записи worx в Config.
+- Задержка для обрезки кромки: если обрезка кромки начинается с поворота или изгиба, газонокосилка может потерять проволоку и остановиться из-за неисправности, или лезвия могут не вращаться. Для этого можно установить начальную точку, в которой лопасти начинают вращаться.
 
 ## Changelog
+### 1.2.4 (15.11.2020)
+* (MeisterTR) Bugfix (error type of sc...)
+* (MeisterTR) change Testing to git
+### 1.2.3 (29.08.2020)
+* (MeisterTR) add option to crate a Json Obj to set mowtime with scripts 
+* (MeisterTR) add option to disable weather
+* (MeisterTR) add double Shedule, oneTimeShedule, PartyMode
+* (MeisterTR) fix setIntervall => setTimeout
+* (MeisterTR) fix error with Meter and Min. in Config
+* (MeisterTR) add Kress and Landxcape
 ### 1.0.0 (03.12.2019)
 * (MeisterTR) bump Version
 * (MeisterTR) transfer to community
@@ -53,7 +61,7 @@ hash: Ivpn1zre1xc7fA6qtZmIA7xfvR3u8CW+qSHXYCvy6Ug=
 ## License
 MIT License
 
-Copyright (c) 2019 MeisterTR
+Copyright (c) 2020 MeisterTR
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

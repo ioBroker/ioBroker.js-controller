@@ -3,13 +3,13 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.legrand-ecocompteur/README.md
 title: ioBroker.legrand-ecocompteur
-hash: GskKx1N3hLFOVqoNql58dpwzh/PEP8DA+YvzQmanxac=
+hash: a73AiyFhTrm8yGm4x+3V6E38/K+jNg56NsBwZYyJ+MY=
 ---
 ![Logo](../../../en/adapterref/iobroker.legrand-ecocompteur/admin/legrand-ecocompteur.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.legrand-ecocompteur.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.legrand-ecocompteur.svg)
-![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/legrand-ecocompteur-installed.svg)
+![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/legrand-ecocompteur-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/legrand-ecocompteur-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/raintonr/iobroker.legrand-ecocompteur.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/raintonr/ioBroker.legrand-ecocompteur/badge.svg)
@@ -32,15 +32,38 @@ Diese Objekte werden für jeden der 5 vom Ecocompteur gelesenen Schaltkreise plu
 
 Ein weiteres Objekt wird erstellt, um den TIC-Schnittstellenwert zu speichern.
 
+### Beachten Sie den fragilen IP-Stack des Ecocompteurs
+Durch Tests wurde festgestellt, dass der Ecocompteur einen ziemlich fragilen IP-Stack hat. Manchmal kann der Stack hängen bleiben und nicht mehr auf Anfragen reagieren, obwohl dies nach Erfahrung des Autors auf nicht RFC-konforme Anfragen von einem anderen Hausautomationsgerät zurückgeführt wurde.
+
+Es wäre jedoch ratsam, dieses Risiko zu mindern, indem das Gerät hinter einem einfachen Nginx-Micro-Caching-Reverse-Proxy platziert wird. Beispiel für eine Nginx-Konfiguration für einen Ecocompteur unter http://192.168.0.10/ (setzen Sie daher die *BaseURL* -Einstellungen für diesen Adapter auf *http:// &lt; Nginx-Adresse &gt;: 8080 / le /* :
+
+```
+proxy_cache_path /tmp/cache keys_zone=cache:32k levels=1 inactive=10s max_size=256k;
+
+server {
+    listen 8080;
+
+    proxy_cache cache;
+    proxy_cache_valid 200 1s;
+    location /le/ {
+        proxy_pass http://192.168.0.10/;
+    }
+}
+```
+
 ### Aufbau
 Die folgende Konfiguration ist erforderlich:
 
-- IP-Adresse des Geräts.
+- Basis-URL des Geräts.
 - JSON-Abfrageintervall (in Sekunden).
 - Indexabfrageintervall (in Sekunden).
 - Validierung: Maximaler Schaltungswert (in Watt).
 
 ## Changelog
+
+### 0.0.6
+* (Robin Rainton) Change IP address setting to base URL. **Settings will need to be updated.**
+* (Robin Rainton) Fixed timeout handling. Parse readings from index HTML. Refactor to use more promises & single interval timer.
 
 ### 0.0.4
 * (Robin Rainton) Added reading validation filter.

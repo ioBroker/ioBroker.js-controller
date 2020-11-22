@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.legrand-ecocompteur/README.md
 title: ioBroker.legrand-ecocompteur
-hash: GskKx1N3hLFOVqoNql58dpwzh/PEP8DA+YvzQmanxac=
+hash: a73AiyFhTrm8yGm4x+3V6E38/K+jNg56NsBwZYyJ+MY=
 ---
 ![商标](../../../en/adapterref/iobroker.legrand-ecocompteur/admin/legrand-ecocompteur.png)
 
@@ -28,19 +28,42 @@ Legrand Ecocompteur模块的适配器（又名Legrand测量集中器EMDX³412000
 这些对象是为Ecocompteur读取的5条回路中的每条回路加上总总数创建的：
 
 -瞬时功率（瓦）。
--适配器运行时测量的总累积能量（以kWh为单位）。
+-适配器运行时测得的总累积能量（以kWh为单位）。
 
 创建另一个对象来存储TIC接口值。
+
+###注意Ecocompteur的脆弱IP堆栈
+通过测试发现，Ecocompteur具有相当脆弱的IP堆栈。有时堆栈可能会“挂起”并停止响应请求，尽管根据作者的经验，这已跟踪到来自另一台家庭自动化设备的不符合RFC的请求。
+
+尽管如此，通过将设备放在简单的Nginx微缓存反向代理后面来减轻这种风险是谨慎的。位于http://192.168.0.10/的Ecocompteur的示例Nginx配置（因此将此适配器的* BaseURL *设置设置为* http：// <Nginx地址>：8080 / le / *）：
+
+```
+proxy_cache_path /tmp/cache keys_zone=cache:32k levels=1 inactive=10s max_size=256k;
+
+server {
+    listen 8080;
+
+    proxy_cache cache;
+    proxy_cache_valid 200 1s;
+    location /le/ {
+        proxy_pass http://192.168.0.10/;
+    }
+}
+```
 
 ###配置
 需要以下配置：
 
--设备的IP地址。
+-设备的基本网址。
 -JSON轮询间隔（以秒为单位）。
 -索引轮询间隔（以秒为单位）。
 -验证：最大电路读数（以瓦特为单位）。
 
 ## Changelog
+
+### 0.0.6
+* (Robin Rainton) Change IP address setting to base URL. **Settings will need to be updated.**
+* (Robin Rainton) Fixed timeout handling. Parse readings from index HTML. Refactor to use more promises & single interval timer.
 
 ### 0.0.4
 * (Robin Rainton) Added reading validation filter.

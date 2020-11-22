@@ -1,23 +1,19 @@
-![Logo](admin/worx.png)
-# ioBroker.worx
 [![Number of Installations](http://iobroker.live/badges/worx-installed.svg)](http://iobroker.live/badges/worx-installed.svg)
 [![Stable version](http://iobroker.live/badges/worx-stable.svg)](http://iobroker.live/badges/worx-stable.svg)
-
 [![NPM version](http://img.shields.io/npm/v/iobroker.worx.svg)](https://www.npmjs.com/package/iobroker.worx)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.worx.svg)](https://www.npmjs.com/package/iobroker.worx)
-[![dependencies Status](https://david-dm.org/iobroker-community-adapter/iobroker.worx/status.svg)](https://david-dm.org/iobroker-community-adapter/iobroker.worx)
-[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapter/ioBroker.worx/badge.svg)](https://snyk.io/test/github/iobroker-community-adapter/ioBroker.worx)
+[![TESTS](https://github.com/iobroker-community-adapters/ioBroker.worx/workflows/Test%20and%20Release/badge.svg)](https://github.com/iobroker-community-adapters/ioBroker.worx/commits/master) 
 
-[![NPM](https://nodei.co/npm/iobroker.worx.png?downloads=true)](https://nodei.co/npm/iobroker.worx/)
 
-**Tests:** [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapter/ioBroker.worx/master.svg)](https://travis-ci.org/iobroker-community-adapter/ioBroker.worx) 
+![Logo](admin/worx.png)
+# ioBroker.worx
 
-## worx adapter for ioBroker
+## Worx (Kress and Landxcape) adapter for ioBroker
 
 control via cloud and mqtt
 
-This adapter connects IoBroker with your Landroid S/M/L via Cloud. 
-Temperatures, mowing times, battery level and various other data are read out from the mower
+This adapter connects IoBroker with your Landroid Kress or Landxcape mower via Cloud. 
+Temperatures, mowing times, battery level and various other data are read out from the mower.
 The adapter can control the mower and you can change config params like mowtimes.
 
 <img src="admin/worx_ada2.png" alt="drawing" width="100%"/>
