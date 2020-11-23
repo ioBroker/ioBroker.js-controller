@@ -34,9 +34,14 @@
 * `button`
 * `button.long`
 * `button.stop`           - e.g. rollo stop,
+* `button.stop.tilt`
 * `button.start`
 * `button.open.door`
 * `button.open.window`
+* `button.open.blind`
+* `button.open.tilt`
+* `button.close.blind`
+* `button.close.tilt`
 * `button.mode.`*
 * `button.mode.auto`
 * `button.mode.manual`
@@ -74,8 +79,8 @@
 * `value.power.consumption` (unit=Wh or KWh)
 * `value.direction`       - (common.type=number ~~or string~~, indicates up/down, left/right, 4-way switches, wind-direction, ... )
 * `value.curtain`         - actual position of curtain
-* `value.blind`           - actual position of blind
-* `value.tilt`            - actual tilt position
+* `value.blind`           - actual position of blind (100% = fully open, 0% = fully closed)
+* `value.tilt`            - actual tilt position (100% = fully open, 0% = fully closed)
 * `value.lock`            - actual position of lock
 * `value.speed`           - wind speed
 * `value.pressure`        - (unit: mbar)
@@ -121,7 +126,7 @@ With **levels** you can control or set some number value.
 * `level`
 * `level.co2`             - 0-100% ait quality
 * `level.dimmer`          - brightness is dimmer too
-* `level.blind`           - set blind position
+* `level.blind`           - set blind position (100% = fully open, 0% = fully closed)
 * `level.temperature`     - set desired temperature
 * `level.valve`           - set point for valve position
 * `level.color.red`
@@ -139,7 +144,7 @@ With **levels** you can control or set some number value.
 * `level.volume`         - (min=0, max=100) - sound volume, but min, max can differ. min < max
 * `level.volume.group`   - (min=0, max=100) - sound volume, for the group of devices
 * `level.curtain`        - set the curtain position
-* `level.tilt`           - set the tilt position of blinds
+* `level.tilt`           - set the tilt position of blinds (100% = fully open, 0% = fully closed)
 
 ## Switches (booleans, read-write)
 
