@@ -1181,7 +1181,7 @@ This device has some special predefined size- and display-settings to show a web
     
 ## Changelog
 
-### dev
+### 1.5.0 (2020-11-24)
 * (sbormann) Added Flot-Chart widget.
 * (sbormann) Enhanced adding of widgets with a new settings dialog.
 * (sbormann) Added some new options for widget-developers (the meta-tag url-datapoints was enhanced for example to ask for a color with a color-picker, postMessage-answeres now contain the id of the original datapoint).
@@ -1190,18 +1190,14 @@ This device has some special predefined size- and display-settings to show a web
 * (sbormann) Enhanced timing of repositioning dialogs after loading.
 * (sbormann) Added noToolbar to URL-parameters.
 * (sbormann) Added BACKGROUND_VIEW, to define a view which will be displayed as background of a tile.
-* (sbormann) Added the option 'Open linked view in parent instance, if this view is used as a BACKGROUND_VIEW' for links to other views. 
+* (sbormann) Added the option 'Open linked view in parent instance, if this view is used as a BACKGROUND_VIEW' and the option 'close panel after opening link' for links to other views. 
 * (sbormann) Added a panel which can be placed on left side of the screen and display a BACKGROUND_VIEW/URL/HTML and is widely configurable.
 * (sbormann) Added showing of swipe goals (can be hidden via option in options/miscellaneous/swiping).
 * (sbormann) Fixed crash when enlarging a hidden tile.
 * (sbormann) Reworked some borders and scrolling parameters.
-* (sbormann) Fixed comboboxes (selecbox with progressbars).
-* (sbormann) Added option to close panel after opening a linked view in parent instance.
+* (sbormann) Fixed comboboxes (selecbox with progressbars in admin).
 * (sbormann) Padding bottom is only applied when minimizing a tile to give enough room for scrolling to tiles top.
-* (sbormann) Fixed setState false for postMessage-Communication.
-* (sbormann) Enhanced padding bottom and scroll to enlarged tile.
-* (sbormann) Fixed postMessage-Communication.
-* (sbormann) Enhanced performance of comboboxes.
+* (sbormann) Fixed setState to false for postMessage-Communication.
 * (sbormann) Added option to define border-radius (rounded corners) of tiles.
 * (sbormann) Added option to define text-shadow-color of toolbar.
 * (sbormann) Added fallback to loading iframe content for non fitting mime types.

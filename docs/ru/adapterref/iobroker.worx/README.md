@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: nlEB+RIKLMo+NbCzZJ59gkbuM+xcucJL4s4qgN8eT2c=
+hash: DIPP4cv3+MLfuu8e8jV0SkS6rQrumVNbJNOmYf1dqjQ=
 ---
 ![Количество установок](http://iobroker.live/badges/worx-installed.svg)
 ![Стабильная версия](http://iobroker.live/badges/worx-stable.svg)
@@ -28,7 +28,12 @@ hash: nlEB+RIKLMo+NbCzZJ59gkbuM+xcucJL4s4qgN8eT2c=
 - для подключения к газонокосилке введите адрес электронной почты и пароль от вашей учетной записи worx в Config.
 - Задержка для обрезки кромки: если обрезка кромки начинается с поворота или изгиба, газонокосилка может потерять проволоку и остановиться из-за неисправности, или лезвия могут не вращаться. Для этого можно установить начальную точку, в которой лопасти начинают вращаться.
 
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+
 ## Changelog
+### 1.2.6 (24.11.2020)
+* (MeisterTR) add sentry
+*(MeisterTR) Bugfix (error type of sc... again) (IOBROKER-WORX-3)
 ### 1.2.4 (15.11.2020)
 * (MeisterTR) Bugfix (error type of sc...)
 * (MeisterTR) change Testing to git

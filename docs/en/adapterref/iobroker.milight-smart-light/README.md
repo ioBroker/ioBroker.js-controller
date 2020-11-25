@@ -1,12 +1,15 @@
-![milight-smart-light Logo](public/milight-smart-light-logo.png)
+![milight-smart-light Logo](admin/milight-smart-light.png)
 
 # ioBroker.milight-smart-light
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.milight-smart-light.svg)](https://www.npmjs.com/package/milight-smart-light)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.milight-smart-light.svg)](https://www.npmjs.com/package/iobroker.milight-smart-light)
-[![Tests](http://img.shields.io/travis/Steiger04/ioBroker.milight-smart-light/master.svg)](https://travis-ci.org/Steiger04/ioBroker.milight-smart-light)
 [![stable](http://iobroker.live/badges/milight-smart-light-stable.svg)](http://iobroker.live/badges/milight-smart-light-stable.svg)
 [![installed](http://iobroker.live/badges/milight-smart-light-installed.svg)](http://iobroker.live/badges/milight-smart-light-installed.svg)
+[![Dependency Status](https://img.shields.io/david/steiger04/iobroker.milight-smart-light.svg)](https://david-dm.org/steiger04/iobroker.milight-smart-light)
+[![Known Vulnerabilities](https://snyk.io/test/github/steiger04/ioBroker.milight-smart-light/badge.svg)](https://snyk.io/test/github/steiger04/ioBroker.milight-smart-light)
+
+![Test and Release](https://github.com/steiger04/ioBroker.milight-smart-light/workflows/Test%20and%20Release/badge.svg)
 
 [![NPM](https://nodei.co/npm/iobroker.milight-smart-light.png?downloads=true)](https://nodei.co/npm/milight-smart-light/)
 
@@ -36,7 +39,7 @@ With adapter you can use both: **v6 Bridge** and **Legacy Bridge**.
 
 
 ## Changelog
-### 1.0.0 (2020-11-21)
+### 1.0.1 (2020-11-21)
 - (steiger04) Added admin-UI based on Vue and Quasar
 ### 0.6.0 (2020-05-23)
 - (steiger04): Added effectBrightness, effectOn, effectOff, effectOnOff for iBox1 and iBox2

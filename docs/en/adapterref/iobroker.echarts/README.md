@@ -14,11 +14,16 @@ Build useful charts in ioBroker:
 ![Screenshot](img/screenshot1.png)
 
 ## Usage
-Add after restart the tab in admin:
+Add after the restart the tab in the admin:
 ![Admin](img/admin.png)
 
+### Tooltip
+Lower case `i` indicates that the value was interpolated from the 2 neighbour values, and it does not exist at this time stamp.
+
+![Tooltipt](img/tooltip.png) 
+
 ### Server side rendering
-You can render the presets on server and get it as base64 URL or save it on disk on in ioBroker DB:
+You can render the presets on the server and get it as base64 URL or save it on disk on in ioBroker DB:
 
 ```
 sendTo('echarts.0', {
@@ -64,6 +69,9 @@ You can debug view charts locally with:
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### 0.3.7 (2020-11-17)
+* (bluefox) Hide nulls in hover details
+
 ### 0.3.6 (2020-11-13)
 * (bluefox) The copy of charts is implemented
 

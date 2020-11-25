@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alexa2/README.md
 title: ioBroker.alexa2
-hash: TNWMr7Aq/2ZKAbSMk++/Qlv7klBRWMN2u4MFYvdWsgQ=
+hash: zj7LU0BT+AR9UjXZ2wMraJr5ZbvbA/XX7MQn6BgKFNM=
 ---
 ![商标](../../../en/adapterref/iobroker.alexa2/admin/alexa.png)
 
@@ -12,14 +12,14 @@ hash: TNWMr7Aq/2ZKAbSMk++/Qlv7klBRWMN2u4MFYvdWsgQ=
 ![建立状态](https://travis-ci.org/Apollon77/ioBroker.alexa2.svg?branch=master)
 ![建造状态](https://ci.appveyor.com/api/projects/status/c92hrxu79mvs1qxo?svg=true)
 ![执照](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
-![环保管理员徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.alexa2.svg)
+![保镖徽章](https://badges.greenkeeper.io/Apollon77/ioBroker.alexa2.svg)
 
 ＃ioBroker.alexa2
 **此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备架构。**更多详细信息，请参见下文！
 
 此适配器使您可以远程控制Alexa（Amazon Echo）设备。
 
-非常感谢soef提供该适配器的版本1，并感谢Hauke和ruhr70提供了来自ioBroker-Forum的脚本中的想法（尤其是媒体进度更新）！还要感谢meicker对所有这些文档的支持以及ioBroker论坛的许多用户的测试支持！
+非常感谢soef提供的适配器版本1，感谢Hauke和ruhr70提供的来自ioBroker-Forum的脚本中的想法（尤其是媒体进度更新）！还要感谢meicker对所有这些文档的支持以及ioBroker论坛的众多用户的测试支持！
 
 ##状态及其含义：
 在适配器名称空间（例如alexa2.0）中，创建了一些通道
@@ -27,7 +27,7 @@ hash: TNWMr7Aq/2ZKAbSMk++/Qlv7klBRWMN2u4MFYvdWsgQ=
 ### Alexa2.0
 |州名|意思|
 | - | - |
-|被说服。将文本命令发送到虚拟设备，就像您要对它说话一样。 |
+| *。将文本命令发送到虚拟设备，就好像您要说话一样。 |
 |回声设备。每个Echo设备的状态，请参见下文|
 |历史记录。有关命令历史记录的信息，请参见下文|
 |智能家居设备。* |每个智能家居设备的状态，以及一般情况，请参见下文|
@@ -35,16 +35,16 @@ hash: TNWMr7Aq/2ZKAbSMk++/Qlv7klBRWMN2u4MFYvdWsgQ=
 | requestResult | TuneIn和智能家居设备请求的错误信息|
 
 ### Alexa2.0.Bespoken。*
-Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，您可以使用它向“您的” Alexa / Amazon帐户发送命令。这样，您可以触发通常无法通过Alexa应用程序访问的技能操作。从本质上讲，它只能执行与“与您说话的设备”不直接交互的命令，例如执行特定操作并提供答案的普通命令。播放音频或视频或通常由您说出该命令的设备完成的操作将不起作用！
+Bespoken通常是帮助自动测试技能的服务提供商。但实际上，您可以使用它向“您的” Alexa / Amazon帐户发送命令。这样，您可以触发通常无法通过Alexa应用程序访问的技能操作。从本质上讲，它只能执行与“与您说话的设备”不直接交互的命令，例如执行特定操作并提供答案的普通命令。播放音频或视频或通常由您说出该命令的设备完成的操作将不起作用！
 
-因为发送的文本首先转换为音频，然后发送到Alexa语音服务，然后由Alexa答复并发回，所以Bespoken请求将花费几秒钟。因此，它最多可能需要10秒钟。
+由于发送的文本首先转换为音频，然后发送到Alexa语音服务，然后由Alexa答复并发回，所以Bespoken请求将花费几秒钟。因此，它最多可能需要10秒钟。
 
 |州名|意思|
 | - | - |
 | #sendText |要发送到虚拟设备的文本|
-|回答|来自设备的答复为文本|
-| anwserJson |来自适配器的答复为JSON，可能包含其他信息，例如卡信息或|
-|状态|使用bespoken进行通信的状态（确定=完成/等待下一个命令，PROCESSING =等待来自bespoken的答复，FAILURE =处理时发生错误）|
+|回答|来自设备的答案为文字|
+| anwserJson |来自适配器的答案为JSON，可能包含其他信息，例如卡信息或|
+|状态|使用bespoken进行通信的状态（确定=完成/等待下一个命令，正在处理=等待来自bespoken的答复，FAILURE =处理时发生错误）|
 
 ### Alexa2.0.Contacts.ContactId。*
 可用于向其发送文本消息的所有Alexa联系人，包括他本人。自己的联系人在其姓名后得到一个特殊的“（（自我）”）。
@@ -52,35 +52,35 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 |州名|意思|
 | - | - |
 | #clearOwnMessages |仅存在于自己的联系人中，触发器将删除所有发送给自己的消息（还包括通过App或设备发送给自己的消息！） |
-| textMessage |将此文本作为消息发送给用户。此用户的所有设备上均显示“黄色环”。 |
+| textMessage |将此文本作为消息发送给用户。此用户的所有设备上均以“黄色环”显示。 |
 
 ### Alexa2.0.Echo-Devices.Serialnumber。*
-在“回声设备”下，列出了每个亚马逊回声设备及其序列号。并非每个设备都显示所有状态。每个设备都有其自己的状态，如下所述：
+在“回声设备”下，列出了每个亚马逊回声设备及其序列号。并非每个设备都显示所有状态。每个设备都有自己的状态，如下所述：
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Alarm。*
 每个设备的警报（Wecker）设置（如果有）。
 
 |州名|意思|价值|
 | - | - | - |
-|启用|显示警报状态并允许对其进行更改：以true激活警报-以false停用警报|对/错|
-|时间|警报时间。覆盖现有警报的时间以为此警报设置新时间。如果您已有警报，可以在此处通过简单地以hh：mm：ss格式覆盖时间来更改时间，而无需设置秒。时间输入|
+|启用|显示警报状态并允许对其进行更改：启用为true的警报-禁用为false的警报|对/错|
+|时间|警报时间。覆盖现有警报的时间以为此警报设置新时间。如果您已有警报，则可以通过简单地以hh：mm：ss格式覆盖时间来在此处更改时间，而无需设置秒。时间输入|
 |触发如果达到并触发警报，则为true。时钟必须与Amazon和iobroker保持同步，一旦达到闹钟时间，就可以使用此时钟来触发其他操作|对/错|
 |新该设备发出新警报的时间。如果在此处输入值，将创建一个新警报。时间输入（hh：mm：ss，不需要秒） |
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Bluetooth。*
-在这里，您可以找到所有已连接或已知具有MAC地址的蓝牙设备。每个设备的状态：
+在这里，您可以找到所有具有MAC地址的已连接或已知的蓝牙设备。每个设备的状态：
 
 |州名|意思|
 | - | - |
-|连接|显示当前连接状态并允许连接（设置为true）或断开连接（设置为false） |
+|连接|显示当前连接状态，并允许连接（设置为true）或断开连接（设置为false） |
 |不配对|使该设备与echo设备取消配对的按钮。 |
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Commands。*
-使用命令，您可以在Alexa设备上触发一些操作。如果您在多房间设备上使用它们，那么它们将独立执行，并且*将不会*在单个设备上同步运行！
+使用命令，您可以在Alexa设备上触发一些操作。如果您在多房间设备上使用它们，那么它们将独立执行，并且*不会*在单个设备上同步运行！
 
 |州名|意思|价值|
 | - | - | - |
-| doNotDisturb |打开/关闭请勿打扰此设备|对/错|
+| doNotDisturb |打开/关闭请勿打扰此设备|是/否|
 |简报|在100秒内进行简报-新闻等。纽扣 |
 |早安|来自Alexa的早上好... |纽扣 |
 |功能|来自Alexa的有趣事实... |纽扣 |
@@ -88,20 +88,20 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 |清理|像播放聆听模式的开始/结束一样播放“锣”音... |纽扣 |
 |策展人|来自Alexa所选区域的随机句子... |文字（允许使用：“再见”，“确认”，“早安”，“赞美”，“生日”，“晚安”，“ iamhome”）|
 | singasong | Alexa唱了一首歌... |纽扣 |
-|说Alexa说您在此处输入的内容... |文字输入|
-|音量调整Alexa的语音音量，该音量会在语音通话之前设置好，然后再重新设置| 0-100 |
+|说Alexa说您在这里输入的内容... |文字输入|
+|音量|调整Alexa的语音音量，该音量会在语音通话之前设置好，然后再重新设置| 0-100 |
 |讲故事| Alexa讲故事|纽扣 |
 |交通|交通新闻|纽扣 |
-|天气天气新闻纽扣 |
+|天气|天气新闻纽扣 |
 | deviceStop |停止设备上的所有操作|纽扣 |
 |通知|发送文本通知给设备的客户|文字|
 |公告|播放公告（例如讲话，但在文本前加上Bing）|文字|
 | ssml |说出SSML XML字符串|文字|
 
-详细信息发言：在此处输入您想让Alexa说的内容。您还可以通过在文本前输入百分比来调整Alexa的音量。
+详细信息发言和公告：在此处输入您想让Alexa说的内容。您还可以通过在文本前输入一个百分比来调整Alexa的音量。
 例如：10; Alexa说Alexa的音量为10％，而100; Alexa的音量为100％。
 通常，每个语音命令只能发送250个字符。通过使用分号，只要用分号分隔250个字符，就可以编写任意数量的文字。
-然后，Alexa将稍稍休息一下，然后彼此说出文字。您还可以通过编写#Volume;＃Block1;＃Block2，a.s.o将音量与更多255个块一起使用。此处设置的音量将用于定义的语音音量。
+然后，Alexa将稍稍休息一下，然后彼此说出文字。您还可以通过编写#Volume;＃Block1;＃Block2，a.s.o将音量与255个以上的块一起使用，此处设置的音量将用于定义的语音音量。
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Info。*
 有关Alexa设备的信息
@@ -110,7 +110,7 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 | - | - | - |
 |能力| alexa设备提供的功能|信息|
 | deviceType |来自亚马逊的设备类型|信息|
-| deviceTypeString |设备类型为字符串|信息|
+| deviceTypeString |设备类型为字符串信息|
 | isMultiroomDevice |是多房间设备-多房间是虚拟设备组|信息，对/错|
 | isMultiroomMember |是Multiroom成员-如果为true，则该设备属于Multiroom设备组|信息，对/错|
 |多人家长|如果此设备是多房间设备组的一部分，则此状态显示父组设备|信息|
@@ -118,7 +118,7 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 |序列号| Alexa设备的序列号|
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Music-Provider。*
-直接告诉Alexa播放音乐或受支持的音乐提供商的播放列表。实际支持的是：“我的图书馆”，“ Amazon音乐”，“调入”。您还可以在短语中加入一个多房间设备组名称，以便在该组中播放（例如“ SWR3 auf Erdgeschoss”）
+直接告诉Alexa播放音乐或受支持的音乐提供商的播放列表。实际支持的是：“我的图书馆”，“ Amazon音乐”，“调入”。您还可以在短语中加入多房间设备组名称，以便在该组中播放（例如“ SWR3 auf Erdgeschoss”）
 
 |州名|意思|价值|
 | - | - | - |
@@ -146,14 +146,14 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 | controlShuffle |切换为播放器启用或禁用随机播放模式|对/错|
 | currentAlbum |当前正在播放专辑信息|
 | currentArtist |当前正在演奏的艺术家|信息|
-| currentState |如果播放-> true，则为false |对/错|
+| currentState |如果播放-> true，否则为false |对/错|
 | currentTitle |当前正在播放的标题|信息|
 | imageURL |相册图像的URL |信息|
 | mainArtURL |当前主要艺术作品的网址|信息|
 | mediaLength |当前标题的长度|信息|
 | mediaLengthStr |有效媒体长度为（HH：）MM：SS |信息|
 | mainProgress |主动媒体经过时间|信息|
-| mainProgressPercent |有效媒体耗用时间（百分比）|信息|
+| mainProgressPercent |有效媒体耗用时间百分比信息|
 | mediaProgressStr |活动媒体进度为（HH：）MM：SS |信息|
 | miniArtUrl |艺术品网址（迷你）|信息|
 |静音| “ MUTE”的状态|信息，对/错，音量= 0被认为是静音|
@@ -172,10 +172,10 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 |时间|提醒时间。覆盖现有提醒的时间以设置新时间|时间输入|如果您已有提醒，则可以在此处更改时间，只需以hh：mm：ss格式覆盖时间即可，无需设置秒数。 |
 |触发如果达到并触发了提醒，则为true。时钟必须与Amazon和iobroker保持同步，一旦达到提醒时间，可使用此时钟触发其他操作|对/错|
 
-|新以以下格式添加新的提醒<br>时间（hh：mm），文字<br> |文字输入<br> 12:00，提醒我
+|新以以下格式添加新的提醒<br>时间（hh：mm），文字<br>|文字输入<br>12:00，提醒我
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Routines。*
-在Alexa App中设置的例程概述。自行创建的例程具有序列号，Amazon显示为“ preconfigured：...”（预配置：...），每个例程都可以通过按钮触发一次，以运行一次。
+Alexa App中设置的例程概述。自行创建的例程具有序列号，Amazon显示为“ preconfigured：...”（预配置：...），每个例程都可以通过按钮触发一次，以运行一次。
 
 |州名|意思|价值|
 | - | - | - |
@@ -183,7 +183,7 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 |例程的序列号或内部名称|例程名称|纽扣
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Timer。*
-您可以在每个Alexa设备上运行一个或多个计时器。由于计时器具有非常动态的性质，因此不会再创建像“警报”或“提醒”这样的其他对象，但是存在一种获取触发信息的方法。
+您可以在每个Alexa设备上运行一个或多个计时器。由于计时器具有非常动态的特性，因此不会再创建像“警报”或“提醒”这样的其他对象，但是存在一种获取触发信息的方法。
 
 |州名|意思|价值|
 | - | - | - |
@@ -201,11 +201,11 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 ### Alexa2.0。历史
 |州名|意思|价值|
 | - | - | - |
-| #trigger |按钮以获取新的历史记录（更多的当前时间，然后是creationTime中的时间戳），仅在不使用推送连接时才需要|纽扣 |
+| #trigger |按钮以获取新的历史记录（更多的当前时间，然后是creationTime中的时间戳），仅在不使用推连接时需要纽扣 |
 | cardContent |其他信息，如Alexa-App / Echo Show中所示。信息|
-| cardJson |如JSON格式所示，其他信息如Alexa-App / Echo中所示。信息|
+| cardJson |其他信息，如Alexa-App / Echo中所示以JSON格式显示|信息|
 | creationTime |此历史记录条目的日期，仅当此时间戳记|信息|
-| domainApplicationId |其他信息，例如Skill-ID等，可选|信息|
+| domainApplicationId |其他信息，例如Skill-ID或类似信息，可选|信息|
 | domainApplicationName |其他信息，例如技能名称等，可选|信息|
 | json |最后命令数据的Json能够处理所有信息，例如用自己的JavaScript | JSON |
 |名称|上次请求的设备名称|信息|
@@ -239,9 +239,9 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 |亮度| HUE灯的亮度|可变0-100％|
 |颜色亮度|色彩清晰度的亮度（以及色相和饱和度，HSV）|信息，0-1％|
 |色相|颜色的色相值（以及亮度和饱和度，HSV）|信息，0-360°|
-|颜色饱和度|颜色饱和度（以及亮度和色相，HSV）|信息0-1 |
+|颜色饱和度|颜色的饱和度（以及亮度和色相，HSV）|信息0-1 |
 | colorRGB |实际颜色的RGB代码由color- *值构建|信息，＃rrggbb |
-| colorName |由Alexa定义的颜色名称-固定值|可变以设置颜色，0-144 |
+| colorName | Alexa定义的颜色名称-固定值|可变以设置颜色，0-144 |
 | colorTemperarureInKelvin |开尔文色温|信息，1000-10000K |
 | colorTemperatureName | Alexa定义的色温名称-固定值|可变设置，0-18 |
 
@@ -250,7 +250,7 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 ### Alexa2.0.Info。*
 |州名|意思|价值|
 | - | - | - |
-|连接|如果可以连接到Alexa |信息->对/错|
+|连接|如果与Alexa的连接正常|信息->对/错|
 | Cookie | Alexa cookie，与几个也要访问Alexa API的外部脚本一起使用|信息|
 | csrf | Alexa CSRF，与几个也要访问Alexa API的外部脚本一起使用|信息|
 
@@ -260,17 +260,17 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 *如果cookie / csrf无效，则自动停用
 
 ##安装
-像往常一样，使用稳定的存储库，最新的存储库或使用GitHub的ioBroker“安装”选项
+像往常一样使用稳定的存储库，最新的存储库或使用GitHub的ioBroker“安装”选项
 
 ＃＃ 故障排除
 ###通过电子邮件/密码确定Cookie的问题
 有时，当Amazon在登录时检测到意外流量时，就会对其进行怪异的检查。
 这可能会导致需要输入验证码才能登录的问题。
-通常，此验证码需要回答一次，此后无需使用验证码即可登录。
+通常，此验证码需要回答一次，此后无需验证码即可登录。
 
 当您需要回答这样的验证码时，请尝试执行以下操作：
 
-*使用常见的浏览器（例如Chrome）
+*使用通用浏览器（例如Chrome）
 *禁用Javascript！
 *清除Amazon可能存在的所有cookie或使用浏览器的Proivate / Incognito模式
 *致电https://alexa.amazon.de
@@ -279,29 +279,53 @@ Bespoken通常是帮助自动测试技能的服务提供商。但是实际上，
 *您可能需要登录两次或解决验证码
 *最后，您应该看到“ https://alexa.amazon.de/spa/index.html”作为URL，但没有任何实际内容（因为JS仍被禁用），但这完全可以！！！
 *现在尝试再次获取cookie
-*如果仍然无法正常工作，请再次执行该操作，然后从浏览器中检查User-Agent和accept-Language并在下次尝试中使用适配器中的内容
+*如果仍然无法正常运行，请再次执行此操作，然后从浏览器中检查User-Agent和accept-Language，然后在适配器中使用它们，下次尝试
 
-另外，Accept-Language-Header（默认为“ de-DE”）需要与您的语言/浏览器语言/登录的亚马逊页面的语言匹配。
+另外，Accept-Language-Header（默认为“ de-DE”）需要与您的语言/浏览器语言/您登录的亚马逊页面的语言匹配。
 
-您也可以尝试使用User-Agent并使用一种与您使用的系统类型更多匹配项。
+您也可以尝试使用User-Agent，并使用一种与您使用的系统类型更多匹配项。
 例如，当ioBroker在Linux系统上运行时，使用User-Agent的示例使用“ Mozilla / 5.0（X11; Linux x86_64）AppleWebKit / 537.36（KHTML，例如Gecko）Chrome / 51.0.2704.103 Safari / 537.36”可以更好地工作。
 
 您可以在适配器配置中覆盖所有这些参数。
 
 ###如何自行确定Cookie？
-如果无法自动确定Cookie，或者您不信任适配器提供电子邮件/密码，那么您可以自己确定Cookie。网路上有许多资讯。这里有一些链接：
+如果无法自动确定Cookie，或者您不信任适配器提供电子邮件/密码，那么您可以自己确定Cookie。 Web上有一些信息，该如何做。这里有一些链接：
 
 * https://www.gehrig.info/alexa/Alexa.html
 *或使用https://blog.loetzimmer.de/2017/10/amazon-alexa-hort-auf-die-shell-echo.html中的shellscript在外壳上获取它...
 
-但是请注意：Cookie会在若干时间后超时，然后适配器将停止工作并自行禁用。然后，您需要手动获取一个新的cookie！
+但是请注意：Cookie会在若干时间后超时，然后适配器将停止工作并自行禁用。然后，您需要手动获取新的Cookie！
 
 ##什么是Sentry.io，什么报告给该公司的服务器？
-Sentry.io是一项服务，供开发人员从应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
+
+### 3.3.2 (2020-11-23)
+* (Apollon77) prevent crash cases and optimize reconnection handling
+
+### 3.3.1 (2020-07-24)
+* (Apollon77) Further optimize Cookie handling
+
+### 3.3.0 (2020-07-19)
+* (Apollon77) Hopefully allow easier upgrades if old deviceId is invalid now
+* (Apollon77) Allow to have separate deviceIds per instance
+
+### 3.2.8 (2020-07-16)
+* (Apollon77) Work around Amazon Security changes and make proxy working again
+
+### 3.2.7 (2020-07-15)
+* (Apollon77) Work around Amazon Security changes and make proxy working again
+* (arteck) add echo studio
+
+### 3.2.6 (2020-07-15)
+* (Apollon77) Work around Amazon Security changes and make proxy working again 
+
+### 3.2.5 (2020-07-13)
+* (Apollon77) Work around Amazon Security changes and make proxy working again 
+* (Apollon77) fix Sentry crash case when Amazon do not respond correctly (IOBROKER-ALEXA2-1C)
 
 ### 3.2.4 (2020-06-18)
 * (Apollon77) Update Alexa-Remote Library to optimize communication error/timeout cases

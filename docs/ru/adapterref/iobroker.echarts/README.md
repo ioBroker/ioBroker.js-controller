@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: AWCG11wAv5HwidztyUdT9Jug+3OY2bvpu96BKrYK490=
+hash: lgjbpu0vQLXd/XJmpkuioaqrA5OhyhBzRTn4gYi13o0=
 ---
 ![Логотип](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -14,16 +14,21 @@ hash: AWCG11wAv5HwidztyUdT9Jug+3OY2bvpu96BKrYK490=
 ![НПМ](https://nodei.co/npm/iobroker.echarts.png?downloads=true)
 
 # IoBroker.echarts
-## Адаптер электронных схем для ioBroker
+## Echarts адаптер для ioBroker
 Создавайте полезные графики в ioBroker:
 
 ![Снимок экрана](../../../en/adapterref/iobroker.echarts/img/screenshot1.png)
 
 ## Применение
-Добавить после перезапуска вкладки в админке: ![Админ](../../../en/adapterref/iobroker.echarts/img/admin.png)
+Добавьте после перезагрузки вкладку в админке: ![Админ](../../../en/adapterref/iobroker.echarts/img/admin.png)
+
+### Подсказка
+`i` в нижнем регистре указывает, что значение было интерполировано из двух соседних значений и не существует на данной отметке времени.
+
+![Подсказка](../../../en/adapterref/iobroker.echarts/img/tooltip.png)
 
 ### Рендеринг на стороне сервера
-Вы можете отобразить пресеты на сервере и получить их как URL-адрес base64 или сохранить на диске в базе данных ioBroker:
+Вы можете отобразить пресеты на сервере и получить их как URL-адрес base64 или сохранить на диске в ioBroker DB:
 
 ```
 sendTo('echarts.0', {
@@ -70,6 +75,12 @@ sendTo('echarts.0', {
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 0.3.7 (2020-11-17)
+* (bluefox) Hide nulls in hover details
+
+### 0.3.6 (2020-11-13)
+* (bluefox) The copy of charts is implemented
+
 ### 0.3.5 (2020-11-10)
 * (bluefox) Corrected SENTRY errors
 

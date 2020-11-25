@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: AWCG11wAv5HwidztyUdT9Jug+3OY2bvpu96BKrYK490=
+hash: lgjbpu0vQLXd/XJmpkuioaqrA5OhyhBzRTn4gYi13o0=
 ---
 ![Logo](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -20,10 +20,15 @@ Erstellen Sie nützliche Diagramme in ioBroker:
 ![Bildschirmfoto](../../../en/adapterref/iobroker.echarts/img/screenshot1.png)
 
 ## Verwendung
-Fügen Sie nach dem Neustart die Registerkarte in admin hinzu: ![Administrator](../../../en/adapterref/iobroker.echarts/img/admin.png)
+Fügen Sie nach dem Neustart die Registerkarte im Admin hinzu: ![Administrator](../../../en/adapterref/iobroker.echarts/img/admin.png)
+
+### Tooltip
+Kleinbuchstaben `i` zeigen an, dass der Wert aus den 2 Nachbarwerten interpoliert wurde und zu diesem Zeitpunkt nicht vorhanden ist.
+
+![Tooltipt](../../../en/adapterref/iobroker.echarts/img/tooltip.png)
 
 ### Serverseitiges Rendern
-Sie können die Voreinstellungen auf dem Server rendern und als base64-URL abrufen oder auf der Festplatte in ioBroker DB speichern:
+Sie können die Voreinstellungen auf dem Server rendern und als base64-URL abrufen oder in ioBroker DB auf der Festplatte speichern:
 
 ```
 sendTo('echarts.0', {
@@ -70,6 +75,12 @@ Sie können Ansichtsdiagramme lokal debuggen mit:
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.3.7 (2020-11-17)
+* (bluefox) Hide nulls in hover details
+
+### 0.3.6 (2020-11-13)
+* (bluefox) The copy of charts is implemented
+
 ### 0.3.5 (2020-11-10)
 * (bluefox) Corrected SENTRY errors
 

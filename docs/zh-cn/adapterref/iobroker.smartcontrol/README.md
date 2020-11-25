@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.smartcontrol/README.md
 title: ioBroker.smartcontrol
-hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
+hash: LTyXvXQ7NKSdp3PDFlpGo1n1Fm0yT+V45+Ss1T7j24o=
 ---
 ![商标](../../../en/adapterref/iobroker.smartcontrol/admin/smartcontrol-banner.png)
 
@@ -28,7 +28,7 @@ hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
 * * Ein收费适配器和Entwicklungsarbeit！* [来源]（https://forum.iobroker.net/post/461724）
 * * Ich finde das Hilfssystem einfachGenial.👍* [来源]（https://forum.iobroker.net/post/463066）
 * *死奥斯威斯坦教徒这么卑鄙的Übersichtlicher！绝对要举行！ 🙂Die Eierlegende selbstversorgende Wollmilchsau ist amlaufen..🙂* [来源]（https://forum.iobroker.net/post/470948）
-* *人在阿尔贝克（Erstmal einDankeschönfürdie Arbeit）。 Möchtenicht wissen wieviele Stunden da drin stecken👍* [来源]（https://forum.iobroker.net/post/474350）
+* *人在阿尔伯特（EstDanmalschönfürdie Arbeit）。 Möchtenicht wissen wieviele Stunden da drin stecken👍* [来源]（https://forum.iobroker.net/post/474350）
 * *还包括mus susgen：TOP Arbeit！* [来源]（https://forum.iobroker.net/post/476116）
 * *超级用户，超级用户和用户群！* [来源]（https://forum.iobroker.net/post/476117）
 * *Die Geschwindigkeit mit der der Den den Adapter nach vorne treibst ist echt erschreckend，因此schlimm und schnell das manching Mal mit dem testen nicht hinterher kommt👍RESPEKTABEL* [source]（https://forum.iobroker.net/post/204 ）
@@ -39,7 +39,7 @@ hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
 * * Ersmal Hut Ab。在Adapterlog上的适配器和lass sich nach einer gewissen的Einarbeitungszeit适配器。 （...）Trotzdem nochmal dickes Lob，viele Dinge laufen damit seit einiger Zeit reibungslos和übersichtlicherals通过Skript。 👍* [来源]（https://forum.iobroker.net/post/492035）
 * * Dankefürden coolen适配器-da kann ich nur meinen Hut davor ziehen！* [来源]（https://forum.iobroker.net/post/496452）
 * * ein dickes Lobfürden Adapter und Deine vorbildliche Arbeit👍* [来源]（https://forum.iobroker.net/post/497110）
-** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
+** * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * **
 * * Danke，man das Teil ist somächtiggeworden，aber GENIAL！* [来源]（https://forum.iobroker.net/post/500518）
 
 ＃＃ 介绍
@@ -49,7 +49,7 @@ hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
  *按下墙壁开关，
  *发生特定时间（例如，日落之后30分钟或周一至周五的7:00）
 
-一旦触发了此类触发器，我们通常希望（不）满足其他条件（例如，“今天是假期”，“客厅窗户打开”，亮度大于100勒克斯等）。
+一旦触发了这样的触发条件，我们通常会希望（不）满足其他条件（例如，“今天是假期”，“客厅窗户打开”，亮度大于100勒克斯等）。
 
 这些可选验证通过后，应切换目标状态（即“目标设备” **）。
 
@@ -66,7 +66,7 @@ hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
 ##说明
 我已经在此适配器的管理员设置中包含了所有说明。
 
-<sub>原因：我们有一个很好的德语用语[Medienbruch](https://de.wikipedia.org/wiki/Medienbruch)，这对于“破坏”当前媒体并切换到其他媒体（例如不同的网站，程序等）来执行/完成是不必要的要求任务等。由于这很麻烦，因此我已在此适配器的管理员设置中包括了所有说明。</sub>
+<sub>原因：我们有一个很好的德语用语[Medienbruch](https://de.wikipedia.org/wiki/Medienbruch)，这对于“破坏”当前媒体并切换到其他媒体（例如不同的网站，程序等）来执行/完成是不必要的要求任务等。由于这很麻烦，因此我已将所有说明包括在此适配器的管理设置中。</sub>
 
 另外，您也可以在此处阅读大多数说明：
 
@@ -79,7 +79,7 @@ hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
 * [**区域**]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-zones_en.md）-对于德语[点击此处（德语） ]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-zones_de.md）
 * [**执行设置**]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-execution_en.md）-对于德语[点击此处（德语）]（https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-execution_de.md）
 
-##适配器选项的屏幕截图
+##适配器选项的屏幕截图（2020年9月17日）
 请注意，这些屏幕截图是快照，并不反映最新的适配器选项。
 这只是为您提供适配器选项的概述。
 
@@ -106,9 +106,14 @@ hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
 
 ##注意
 *此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[Sentry-Plugin文档]（https://github.com/ioBroker/plugin -sentry＃plugin-sentry）！ Sentry报告从js-controller 3.0开始使用。
-*由[flaticon.com]（https://www.flaticon.com/）的[freepik]（https://www.flaticon.com/authors/freepik）制作的适配器图标。</ sup> </ sub>
+*由[flatpi.com]（https://www.flaticon.com/）的[freepik]（https://www.flaticon.com/authors/freepik）制作的适配器图标。</ sup> </ sub>
 
 ## Changelog
+
+### Latest Development Version (not yet published on npm)
+* (Mic-M) Fix: [#60 - Linked triggers of motion sensors issue](https://github.com/Mic-M/ioBroker.smartcontrol/issues/60)
+* (Mic-M) Several code improvements
+
 
 ### 1.1.1 
 * (Mic-M) Fix: Most likely finally fixes [issue #43](https://github.com/Mic-M/ioBroker.smartcontrol/issues/43) as well as workaround for [issue #35](https://github.com/Mic-M/ioBroker.smartcontrol/issues/35) (scheduleJob() of node-schedule module: now applying 'cancel' method prior to reschedule every midnight)

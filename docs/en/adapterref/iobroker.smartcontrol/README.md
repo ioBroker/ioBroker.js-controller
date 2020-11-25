@@ -80,7 +80,7 @@ Also, you can read most of these instructions here as well:
 * [**Zones**](https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-zones_en.md) - for German [click here (Deutsch)](https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-zones_de.md)
 * [**Execution Settings**](https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-execution_en.md) - for German [click here (Deutsch)](https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-execution_de.md)
 
-## Screenshots of adapter options
+## Screenshots of adapter options (17-Sep-2020)
 
 Please note that these screenshots are a snapshot and do not reflect the latest adapter options.
 This is just to provide you an overview of the adapter options. 
@@ -113,6 +113,11 @@ This is just to provide you an overview of the adapter options.
 * Adapter icon made by [freepik](https://www.flaticon.com/authors/freepik) from [flaticon.com](https://www.flaticon.com/).</sup></sub>
 
 ## Changelog
+
+### Latest Development Version (not yet published on npm)
+* (Mic-M) Fix: [#60 - Linked triggers of motion sensors issue](https://github.com/Mic-M/ioBroker.smartcontrol/issues/60)
+* (Mic-M) Several code improvements
+
 
 ### 1.1.1 
 * (Mic-M) Fix: Most likely finally fixes [issue #43](https://github.com/Mic-M/ioBroker.smartcontrol/issues/43) as well as workaround for [issue #35](https://github.com/Mic-M/ioBroker.smartcontrol/issues/35) (scheduleJob() of node-schedule module: now applying 'cancel' method prior to reschedule every midnight)

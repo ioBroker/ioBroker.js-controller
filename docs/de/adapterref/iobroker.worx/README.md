@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: nlEB+RIKLMo+NbCzZJ59gkbuM+xcucJL4s4qgN8eT2c=
+hash: DIPP4cv3+MLfuu8e8jV0SkS6rQrumVNbJNOmYf1dqjQ=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/worx-installed.svg)
 ![stabile Version](http://iobroker.live/badges/worx-stable.svg)
@@ -28,7 +28,12 @@ Der Adapter kann den Mäher steuern und Sie können Konfigurationsparameter wie 
 - Um eine Verbindung zum Mäher herzustellen, geben Sie E-Mail und Passwort von Ihrem Worx-Konto in der Konfiguration ein.
 - Verzögerung für Kantenschnitt: Wenn der Kantenschnitt in einer Kurve oder Biegung beginnt, kann der Rasenmäher den Draht verlieren und mit einem Fehler anhalten, oder die Messer drehen sich möglicherweise nicht. Zu diesem Zweck kann der Startpunkt eingestellt werden, an dem sich die Klingen zu drehen beginnen.
 
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 ## Changelog
+### 1.2.6 (24.11.2020)
+* (MeisterTR) add sentry
+*(MeisterTR) Bugfix (error type of sc... again) (IOBROKER-WORX-3)
 ### 1.2.4 (15.11.2020)
 * (MeisterTR) Bugfix (error type of sc...)
 * (MeisterTR) change Testing to git

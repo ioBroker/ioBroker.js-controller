@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.worx/README.md
 title: ioBroker.worx
-hash: nlEB+RIKLMo+NbCzZJ59gkbuM+xcucJL4s4qgN8eT2c=
+hash: DIPP4cv3+MLfuu8e8jV0SkS6rQrumVNbJNOmYf1dqjQ=
 ---
 ![安装数量](http://iobroker.live/badges/worx-installed.svg)
 ![稳定版](http://iobroker.live/badges/worx-stable.svg)
@@ -28,7 +28,12 @@ hash: nlEB+RIKLMo+NbCzZJ59gkbuM+xcucJL4s4qgN8eT2c=
 -要连接到割草机，请从您在Config中的worx帐户输入电子邮件和密码。
 -切边的延迟：如果切边以弯曲或弯曲开始，则割草机可能会掉线并因故障而停止，或者刀片可能无法旋转。为此，可以设置叶片开始旋转的起始点。
 
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+
 ## Changelog
+### 1.2.6 (24.11.2020)
+* (MeisterTR) add sentry
+*(MeisterTR) Bugfix (error type of sc... again) (IOBROKER-WORX-3)
 ### 1.2.4 (15.11.2020)
 * (MeisterTR) Bugfix (error type of sc...)
 * (MeisterTR) change Testing to git

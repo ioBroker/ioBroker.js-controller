@@ -116,7 +116,8 @@ Many thanks to [backfisch](https://github.com/backfisch88) for the initial idea 
 
 ## Changelog
 
-
+### 0.3.5
+* (Bart19) fix for new netatmo website
 ### 0.3.4
 * (Bart19) optimizes error handling
 ### 0.3.3

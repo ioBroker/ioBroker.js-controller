@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.i2c/README.md
 title: ioBroker.i2c
-hash: 40EqvTkUuNxAOD12jqOvRsYZd+CwfQoIYUc7z7Cr6bI=
+hash: PP4lNA7dovkN4gO2daBhn2zOhZwvcQ+RKn8JGnotQ4E=
 ---
 ![Logo](../../../en/adapterref/iobroker.i2c/admin/i2c.png)
 
@@ -47,7 +47,7 @@ Abhängig vom Alter Ihrer ioBroker-Installation verfügt der Benutzer `iobroker`
 Wenn Sie ein Gerät angeschlossen haben und es nicht im Konfigurationsbildschirm angezeigt wird, stellen Sie bitte sicher, dass der Benutzer zur Gruppe `i2c` hinzugefügt wurde:
 
 ```sh
-sudo usermod -G i2c iobroker
+sudo usermod -aG i2c iobroker
 ```
 
 Hinweis: Wenn Sie keine Standardinstallation haben, ersetzen Sie `iobroker` im obigen Befehl durch den Benutzer, der Ihre ioBroker-Installation ausführt (überprüfen Sie dies mit `ps`).
@@ -80,7 +80,7 @@ MaxSonar GY-US42 Sonar-Entfernungsmesser 20 - 720 cm.
 Honeywell 3-Achsen-Digitalkompass-IC.
 
 ### INA219 Strom- / Leistungsüberwachung (40-4F)
-Zero-Drift, bidirektionaler Strom- / Leistungsmonitor von Texas Instruments.
+Zero In-Drift, bidirektionaler Strom- / Leistungsmonitor von Texas Instruments.
 
 ### MCP23008 8-Bit-E / A-Expander (20-27)
 Microchip 8-Bit I / O Expander mit serieller Schnittstelle.
@@ -111,7 +111,7 @@ Sensirion SHT3x Feuchtigkeits- und Temperatursensor.
 Devantech Ultrasonic Ranger Finder 16 - 600cm.
 
 ### SX1507 4-Kanal-Pegelverschiebungs-GPIO mit LED-Treiber (3E, 3F, 70, 71)
-Semtech Worlds GPIO mit der niedrigsten Spannungspegelverschiebung und LED-Treiber für 4 Kanäle.
+Semtech Worlds niedrigster GPIO mit Spannungspegelverschiebung und LED-Treiber für 4 Kanäle.
 
 ### SX1508 8-Kanal-Pegelverschiebungs-GPIO mit LED-Treiber und Tastaturmotor (20-23)
 Semtech Worlds GPIO mit der niedrigsten Spannungspegelverschiebung mit LED-Treiber und Tastaturmotor für 8 Kanäle.
@@ -221,7 +221,7 @@ Copyright (c) 2016 Skylar Stein
 
 Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
 
-Der oben genannte Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
+Der obige Urheberrechtshinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
 DIE SOFTWARE WIRD "WIE BESEHEN" OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG ZUR VERFÜGUNG GESTELLT, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR JEGLICHE ANSPRÜCHE, SCHÄDEN ODER ANDERE HAFTUNGEN, OB VERTRAGS-, TORT- ODER ANDERWEITIGE MASSNAHMEN AUS, AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN ANGEBOTE SOFTWARE.
 
@@ -236,7 +236,7 @@ Copyright (c) 2016 Adafruit Industries
 
 Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
 
-Der oben genannte Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
+Der obige Urheberrechtshinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
 DIE SOFTWARE WIRD "WIE BESEHEN" OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG ZUR VERFÜGUNG GESTELLT, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR JEGLICHE ANSPRÜCHE, SCHÄDEN ODER ANDERE HAFTUNGEN, OB VERTRAGS-, TORT- ODER ANDERWEITIGE MASSNAHMEN AUS, AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN ANGEBOTE SOFTWARE.
 
@@ -249,7 +249,7 @@ Copyright (c) 2016 Adafruit Industries Autor: Tony DiCola
 
 Hiermit wird jeder Person, die eine Kopie dieser Software und der zugehörigen Dokumentationsdateien (die "Software") erhält, kostenlos die Erlaubnis erteilt, uneingeschränkt mit der Software umzugehen, einschließlich, jedoch nicht beschränkt auf die Rechte zur Nutzung, zum Kopieren, Ändern, Zusammenführen , veröffentlichen, vertreiben, unterlizenzieren und / oder verkaufen Kopien der Software und erlauben Personen, denen die Software zur Verfügung gestellt wird, dies unter den folgenden Bedingungen:
 
-Der oben genannte Copyright-Hinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
+Der obige Urheberrechtshinweis und dieser Erlaubnishinweis sind in allen Kopien oder wesentlichen Teilen der Software enthalten.
 
 DIE SOFTWARE WIRD "WIE BESEHEN" OHNE JEGLICHE AUSDRÜCKLICHE ODER STILLSCHWEIGENDE GEWÄHRLEISTUNG ZUR VERFÜGUNG GESTELLT, EINSCHLIESSLICH DER GEWÄHRLEISTUNG FÜR MARKTGÄNGIGKEIT, EIGNUNG FÜR EINEN BESTIMMTEN ZWECK UND NICHTVERLETZUNG. IN KEINEM FALL HAFTEN DIE AUTOREN ODER COPYRIGHT-INHABER FÜR JEGLICHE ANSPRÜCHE, SCHÄDEN ODER ANDERE HAFTUNGEN, OB VERTRAGS-, TORT- ODER ANDERWEITIGE MASSNAHMEN AUS, AUS ODER IM ZUSAMMENHANG MIT DER SOFTWARE ODER DER NUTZUNG ODER ANDEREN ANGEBOTE SOFTWARE.
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: AWCG11wAv5HwidztyUdT9Jug+3OY2bvpu96BKrYK490=
+hash: lgjbpu0vQLXd/XJmpkuioaqrA5OhyhBzRTn4gYi13o0=
 ---
 ![商标](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -20,7 +20,12 @@ hash: AWCG11wAv5HwidztyUdT9Jug+3OY2bvpu96BKrYK490=
 ![屏幕截图](../../../en/adapterref/iobroker.echarts/img/screenshot1.png)
 
 ##用法
-重新启动后，在admin中添加选项卡：![管理员](../../../en/adapterref/iobroker.echarts/img/admin.png)
+重新启动后，在管理员中添加选项卡：![管理员](../../../en/adapterref/iobroker.echarts/img/admin.png)
+
+###工具提示
+小写的`i`指示该值是从2个邻居值中插入的，并且在此时间戳时不存在。
+
+![工具提示](../../../en/adapterref/iobroker.echarts/img/tooltip.png)
 
 ###服务器端渲染
 您可以在服务器上呈现预设并将其作为base64 URL获得，或将其保存在ioBroker DB中的磁盘上：
@@ -55,7 +60,7 @@ sendTo('echarts.0', {
 ##开发人员手册
 您可以使用以下命令在本地调试视图图表：
 
--光盘iobroker.echarts / src-chart
+-cd iobroker.echarts / src-chart
 -npm运行开始
 -浏览器：http：// localhost：8081 / adapter / echarts / tab.html？dev = true
 
@@ -67,9 +72,15 @@ sendTo('echarts.0', {
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __进展中__->
+### __正在进行的工程__->
 
 ## Changelog
+### 0.3.7 (2020-11-17)
+* (bluefox) Hide nulls in hover details
+
+### 0.3.6 (2020-11-13)
+* (bluefox) The copy of charts is implemented
+
 ### 0.3.5 (2020-11-10)
 * (bluefox) Corrected SENTRY errors
 

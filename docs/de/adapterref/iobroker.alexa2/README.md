@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alexa2/README.md
 title: ioBroker.alexa2
-hash: TNWMr7Aq/2ZKAbSMk++/Qlv7klBRWMN2u4MFYvdWsgQ=
+hash: zj7LU0BT+AR9UjXZ2wMraJr5ZbvbA/XX7MQn6BgKFNM=
 ---
 ![Logo](../../../en/adapterref/iobroker.alexa2/admin/alexa.png)
 
@@ -36,7 +36,7 @@ Im Adapter-Namespace (z. B. alexa2.0) werden einige Kanäle erstellt
 ### Alexa2.0.Bespoken. *
 Bespoken ist normalerweise ein Dienstleister, der beim automatischen Testen von Fähigkeiten hilft. Tatsächlich können Sie damit Befehle an "Ihr" Alexa / Amazon-Konto senden. Damit können Sie Skill-Aktionen auslösen, auf die normalerweise über die Alexa-App nicht zugegriffen werden kann. Aufgrund der Funktionsweise sind nur Befehle möglich, die nicht direkt mit dem "Gerät, mit dem Sie sprechen" interagieren, wie normale Befehle, die eine bestimmte Aktion ausführen und eine Antwort geben. Die Wiedergabe von Audio oder Video oder dergleichen, die normalerweise von dem Gerät ausgeführt wird, mit dem Sie den Befehl gesprochen haben, funktioniert nicht!
 
-Eine Anfrage an Bespoken dauert einige Sekunden, da der gesendete Text zuerst in Audio umgewandelt wird, das dann an Alexa Voice Services gesendet und dann von Alexa beantwortet und zurückgesendet wird. Es kann also problemlos bis zu 10 Sekunden dauern.
+Eine Anfrage an Bespoken dauert einige Sekunden, da der gesendete Text zuerst in Audio umgewandelt wird, das dann an Alexa Voice Services gesendet und dann von Alexa beantwortet und zurückgesendet wird. So kann es leicht bis zu 10s dauern.
 
 | Staatsname | Bedeutung |
 | - | - |
@@ -61,7 +61,7 @@ Alarmeinstellungen (Wecker) für jedes Gerät, falls verfügbar.
 
 | Staatsname | Bedeutung | Wert |
 | - | - | - |
-| aktiviert | Zeigt den Status des Alarms an und ermöglicht das Ändern: Alarm mit wahr aktivieren - Alarm mit falsch deaktivieren | wahr / falsch |
+| aktiviert | Zeigt den Status des Alarms an und ermöglicht das Ändern: Alarm mit true aktivieren - Alarm mit false deaktivieren | wahr / falsch |
 | Zeit | Zeit für Alarm. Überschreiben Sie die Zeit für einen vorhandenen Alarm, um eine neue Zeit für diesen Alarm festzulegen. Falls ein Alarm vorhanden ist, können Sie die Zeit hier ändern, indem Sie einfach die Zeit im Format hh: mm: ss überschreiben. Für die Einstellung von | werden keine Sekunden benötigt Zeiteingabe |
 | ausgelöst | true, wenn der Alarm erreicht und ausgelöst wird. Die Uhr muss mit Amazon und iobroker synchron sein. Verwenden Sie diese Option, um eine andere Aktion auszulösen, sobald die Alarmzeit erreicht ist wahr / falsch |
 | neu | Zeit für neuen Alarm für dieses Gerät. Wenn Sie hier einen Wert eingeben, wird ein neuer Alarm erstellt Zeiteingabe (hh: mm: ss, Sekunden werden nicht benötigt) |
@@ -71,11 +71,11 @@ Hier finden Sie alle verbundenen oder bekannten Bluetooth-Geräte mit MAC-Adress
 
 | Staatsname | Bedeutung |
 | - | - |
-| verbunden | Zeigt den aktuellen Verbindungsstatus an und erlaubt die Verbindung (auf true gesetzt) oder die Trennung (auf false gesetzt) |
+| verbunden | Zeigt den aktuellen Verbindungsstatus an und ermöglicht die Verbindung (auf true gesetzt) oder die Trennung (auf false gesetzt) |
 | ungepaart | Schaltfläche zum Trennen dieses Geräts vom Echogerät |
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Commands. *
-Mit Befehlen können Sie einige Aktionen auf Ihrem Alexa-Gerät auslösen. Wenn Sie diese auf einem Multiroom-Gerät verwenden, werden sie unabhängig voneinander ausgeführt und *werden* auf den einzelnen Geräten nicht synchron ausgeführt!
+Mit Befehlen können Sie einige Aktionen auf Ihrem Alexa-Gerät auslösen. Wenn Sie diese auf einem Multiroom-Gerät verwenden, werden sie unabhängig ausgeführt und *werden* auf den einzelnen Geräten nicht synchron ausgeführt!
 
 | Staatsname | Bedeutung | Wert |
 | - | - | - |
@@ -95,9 +95,9 @@ Mit Befehlen können Sie einige Aktionen auf Ihrem Alexa-Gerät auslösen. Wenn 
 | deviceStop | Beenden Sie alle Aktionen auf dem Gerät Taste |
 | Benachrichtigung | Senden Sie eine Textbenachrichtigung an den Kunden des Geräts Text |
 | Ankündigung | Ansage abspielen (wie sprechen, aber mit Bing vor dem Text) | Text |
-| ssml | Sprechen Sie die SSML-XML-Zeichenfolge | Text |
+| ssml | Sprechen Sie SSML XML-Zeichenfolge | Text |
 
-Detaillierte Informationen Sprechen: Geben Sie hier ein, was Alexa sagen soll. Sie können die Lautstärke von Alexa auch anpassen, indem Sie vor Ihrem Text einen Prozentsatz angeben.
+Detaillierte Informationen Sprechen und Ankündigung: Geben Sie hier ein, was Alexa sagen soll. Sie können die Lautstärke von Alexa auch anpassen, indem Sie vor Ihrem Text einen Prozentsatz angeben.
 Beispiel: 10; Alexa sagt Alexa mit 10% Volumen, während 100; Alexa 100% Volumen ist.
 Normalerweise können Sie nur 250 Zeichen pro Sprachbefehl senden. Mit dem Semikolon können Sie so viel schreiben, wie Sie möchten, solange Sie 250 Zeichen durch ein Semikolon trennen.
 Alexa wird dann den Text mit einer kleinen Pause nacheinander sprechen. Sie können das Volume auch zusammen mit mehr als 255 Blöcken verwenden, indem Sie #Volume; # Block1; # Block2, a.s.o schreiben. Ein hier festgelegtes Volume wird über einem definierten Speak-Volume verwendet.
@@ -126,17 +126,17 @@ Weisen Sie Alexa direkt an, Musik oder eine Wiedergabeliste von unterstützten M
 | Meine Bibliothek | Phrase zum Spielen mit My Library | Texteingabe |
 | Meine-Bibliothek-Wiedergabeliste | Wiedergabeliste zum Spielen mit Meine Bibliothek | Texteingabe |
 | Einschalten | Phrase zum Spielen mit Tune In | Texteingabe |
-| Wiedergabeliste einschalten | Wiedergabeliste zum Spielen mit Tune In | Texteingabe |
+| Tune-In-Playlist | Wiedergabeliste zum Spielen mit Tune In | Texteingabe |
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Player. *
-Status, um die Wiedergabe des Geräts zu steuern und den aktuellen Status und die Medieninformationen anzuzeigen
+Gibt an, dass die Wiedergabe des Geräts gesteuert und der aktuelle Status und die Medieninformationen angezeigt werden sollen
 
 | Staatsname | Bedeutung | Wert |
 | - | - | - |
 | TuneIn-Station | Textfeld zum Eingeben eines Sendernamens zum Abspielen dieser Station auf diesem Gerät. Es ist auch möglich, die Sendernummer (s123456 ...), eine Show- / Podcast-ID (p1234567 ...) oder eine Themen-ID (t123456789 ...) | einzugeben Texteingabe |
 | ContentType | Textfeld zum Einfügen des gewünschten Inhalts zur Wiedergabe auf diesem Gerät | Informationen |
 | controlForward | Taste zum Auslösen des Vorwärtsbefehls des Spielers (30s) | Taste |
-| controlNext | Taste zum Auslösen des Befehls "Weiter" des Spielers | Taste |
+| controlNext | Taste zum Auslösen des "nächsten" Befehls des Spielers | Taste |
 | controlPause | Taste zum Auslösen des Befehls "Pause" des Spielers | Taste |
 | controlPlay | Taste zum Auslösen des Befehls "Abspielen" des Spielers | Taste |
 | controlPrevious | Taste zum Auslösen des "vorherigen" Befehls des Spielers | Taste |
@@ -151,8 +151,8 @@ Status, um die Wiedergabe des Geräts zu steuern und den aktuellen Status und di
 | mainArtURL | URL zum aktuellen Hauptbild | Informationen |
 | mediaLength | Länge des aktuellen Titels | Informationen |
 | mediaLengthStr | aktive Medienlänge als (HH :) MM: SS | Informationen |
-| mainProgress | verstrichene Zeit des aktiven Mediums | Informationen |
-| mainProgressPercent | verstrichene aktive Medien in Prozent | Informationen |
+| mainProgress | verstrichene Zeit der aktiven Medien | Informationen |
+| mainProgressPercent | verstrichene aktive Medienzeit in Prozent | Informationen |
 | mediaProgressStr | aktiver Medienfortschritt als (HH :) MM: SS | Informationen |
 | miniArtUrl | URL zur Kunst (mini) | Informationen |
 | stumm geschaltet | Zustand von 'MUTE' | Information, wahr / falsch, Volumen = 0 wird als stummgeschaltet betrachtet |
@@ -171,7 +171,7 @@ Erinnerungseinstellungen für jedes Gerät, falls verfügbar.
 | Zeit | Zeit zur Erinnerung. Überschreiben Sie die Zeit für die vorhandene Erinnerung, um eine neue Zeit festzulegen Zeiteingabe | Wenn Sie bereits eine Erinnerung haben, können Sie die Zeit hier ändern, indem Sie einfach die Zeit im Format hh: mm: ss überschreiben. Zum Einstellen von | werden keine Sekunden benötigt |
 | ausgelöst | true, wenn die Erinnerung erreicht und ausgelöst wird. Die Uhr muss mit Amazon und iobroker synchron sein. Verwenden Sie diese Option, um eine andere Aktion auszulösen, sobald die Erinnerungszeit erreicht ist wahr / falsch |
 
-| neu | Fügen Sie eine neue Erinnerung im Format hinzu <br> Zeit (hh: mm), Text <br> | Text Eingabe <br> 12: 00, Erinnere mich
+| neu | Fügen Sie eine neue Erinnerung im Format hinzu<br> Zeit (hh: mm), Text<br> | Text Eingabe<br> 12: 00, Erinnere mich
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Routines. *
 Übersicht über die in der Alexa App eingerichteten Routinen. Selbst erstellte Routinen haben eine Seriennummer, die Amazon als "vorkonfiguriert: ..." anzeigt. Jede Routine kann mit einer Schaltfläche ausgelöst werden, die einmal ausgeführt werden soll.
@@ -200,7 +200,7 @@ Ist dieses Alexa-Gerät online und mit der Amazon Cloud verbunden?
 ### Alexa2.0.Geschichte
 | Staatsname | Bedeutung | Wert |
 | - | - | - |
-| #trigger | Schaltfläche zum Abrufen eines neuen Verlaufs (aktueller als der Zeitstempel in CreationTime), der nur benötigt wird, wenn die Push-Verbindung | nicht verwendet wird Taste |
+| #trigger | Schaltfläche zum Abrufen eines neuen Verlaufs (aktueller als Zeitstempel in CreationTime), der nur benötigt wird, wenn die Push-Verbindung | nicht verwendet wird Taste |
 | cardContent | Zusätzliche Informationen wie in Alexa-App / Echo Show | gezeigt Informationen |
 | cardJson | Zusätzliche Informationen wie in Alexa-App / Echo Show im JSON-Format | angezeigt Informationen |
 | Erstellungszeit | Datum dieses Verlaufseintrags, neue Verlaufseinträge werden nur berücksichtigt, wenn sie später als dieser Zeitstempel gelten Informationen |
@@ -244,7 +244,7 @@ Beinhaltet alle Smart-Home-Geräte, die Alexa aus Ihren Fähigkeiten kennt. Gibt
 | colorTemperarureInKelvin | Farbtemperatur in Kelvin | Information, 1000-10000K |
 | colorTemperatureName | Farbtemperaturname wie von Alexa definiert - feste Werte | änderbar auf setzen, 0-18 |
 
-Mit #brightness können Sie die Helligkeit Ihres Lichts anpassen. Mit #colorName wählen Sie eine vordefinierte Farbe (0-144). Für HUE Ambient Light können Sie in #colorTemperatureName zwischen 19 Werten von 0-18 wählen. Alle Lichter können mit #powerState ein- und ausgeschaltet werden.
+Mit #helligkeit können Sie die Helligkeit Ihres Lichts anpassen. Mit #colorName wählen Sie eine vordefinierte Farbe (0-144). Für HUE Ambient Light können Sie in #colorTemperatureName zwischen 19 Werten von 0-18 wählen. Alle Lichter können mit #powerState ein- und ausgeschaltet werden.
 
 ### Alexa2.0.Info. *
 | Staatsname | Bedeutung | Wert |
@@ -274,11 +274,11 @@ Wenn Sie ein solches Captcha beantworten müssen, versuchen Sie Folgendes:
 * Löschen Sie alle Cookies, die möglicherweise für Amazon existieren, oder verwenden Sie den Proivate / Incognito-Modus des Browsers
 * Rufen Sie https://alexa.amazon.de an
 * Sie sollten ein Anmeldeformular erhalten (normalerweise für ältere mobile Browser angezeigt).
-* Melden Sie sich dort mit Ihren Amazon-Anmeldeinformationen an, bei denen das Echo / Alexa registriert ist
+* Melden Sie sich dort mit Ihren Amazon-Anmeldeinformationen an, in denen das Echo / Alexa registriert ist
 * Möglicherweise müssen Sie sich zweimal anmelden oder ein Captcha lösen
 * Am Ende sollte "https://alexa.amazon.de/spa/index.html" als URL angezeigt werden, jedoch ohne echten Inhalt (da JS immer noch deaktiviert ist), ABER DAS IST VOLLSTÄNDIG OK !!!!
 * Versuchen Sie jetzt erneut, einen Cookie zu erhalten
-* Wenn es immer noch nicht funktioniert, wiederholen Sie den Vorgang und überprüfen Sie den User-Agent und die Accept-Language in Ihrem Browser. Verwenden Sie diese beim nächsten Versuch im Adapter
+* Wenn es immer noch nicht funktioniert, wiederholen Sie den User-Agent und die Accept-Language in Ihrem Browser und verwenden Sie diese beim nächsten Versuch im Adapter
 
 Zusätzlich muss der Accept-Language-Header (standardmäßig "de-DE") mit Ihrer Sprache / der Browsersprache / der Sprache der Amazon-Seite übereinstimmen, auf der Sie sich anmelden.
 
@@ -301,6 +301,30 @@ Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ih
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
+
+### 3.3.2 (2020-11-23)
+* (Apollon77) prevent crash cases and optimize reconnection handling
+
+### 3.3.1 (2020-07-24)
+* (Apollon77) Further optimize Cookie handling
+
+### 3.3.0 (2020-07-19)
+* (Apollon77) Hopefully allow easier upgrades if old deviceId is invalid now
+* (Apollon77) Allow to have separate deviceIds per instance
+
+### 3.2.8 (2020-07-16)
+* (Apollon77) Work around Amazon Security changes and make proxy working again
+
+### 3.2.7 (2020-07-15)
+* (Apollon77) Work around Amazon Security changes and make proxy working again
+* (arteck) add echo studio
+
+### 3.2.6 (2020-07-15)
+* (Apollon77) Work around Amazon Security changes and make proxy working again 
+
+### 3.2.5 (2020-07-13)
+* (Apollon77) Work around Amazon Security changes and make proxy working again 
+* (Apollon77) fix Sentry crash case when Amazon do not respond correctly (IOBROKER-ALEXA2-1C)
 
 ### 3.2.4 (2020-06-18)
 * (Apollon77) Update Alexa-Remote Library to optimize communication error/timeout cases

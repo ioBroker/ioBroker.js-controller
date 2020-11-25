@@ -105,6 +105,7 @@ https://doc.iobroker.net/#de/documentation/config/multihost.md
 https://doc.iobroker.net/#de/documentation/config/redis.md
 https://doc.iobroker.net/#de/documentation/config/userrights.md
 https://doc.iobroker.net/#de/documentation/dev/README.md
+https://doc.iobroker.net/#de/documentation/dev/adapter-dev-faq.md
 https://doc.iobroker.net/#de/documentation/dev/adapterdebug.md
 https://doc.iobroker.net/#de/documentation/dev/adapterdev.md
 https://doc.iobroker.net/#de/documentation/dev/adapterdocstyleguide.md
@@ -246,6 +247,7 @@ https://doc.iobroker.net/#en/documentation/config/multihost.md
 https://doc.iobroker.net/#en/documentation/config/redis.md
 https://doc.iobroker.net/#en/documentation/config/userrights.md
 https://doc.iobroker.net/#en/documentation/dev/README.md
+https://doc.iobroker.net/#en/documentation/dev/adapter-dev-faq.md
 https://doc.iobroker.net/#en/documentation/dev/adapterdebug.md
 https://doc.iobroker.net/#en/documentation/dev/adapterdev.md
 https://doc.iobroker.net/#en/documentation/dev/adapterdocstyleguide.md
@@ -387,6 +389,7 @@ https://doc.iobroker.net/#ru/documentation/config/multihost.md
 https://doc.iobroker.net/#ru/documentation/config/redis.md
 https://doc.iobroker.net/#ru/documentation/config/userrights.md
 https://doc.iobroker.net/#ru/documentation/dev/README.md
+https://doc.iobroker.net/#ru/documentation/dev/adapter-dev-faq.md
 https://doc.iobroker.net/#ru/documentation/dev/adapterdebug.md
 https://doc.iobroker.net/#ru/documentation/dev/adapterdev.md
 https://doc.iobroker.net/#ru/documentation/dev/adapterdocstyleguide.md
@@ -528,6 +531,7 @@ https://doc.iobroker.net/#zh-cn/documentation/config/multihost.md
 https://doc.iobroker.net/#zh-cn/documentation/config/redis.md
 https://doc.iobroker.net/#zh-cn/documentation/config/userrights.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/README.md
+https://doc.iobroker.net/#zh-cn/documentation/dev/adapter-dev-faq.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/adapterdebug.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/adapterdev.md
 https://doc.iobroker.net/#zh-cn/documentation/dev/adapterdocstyleguide.md
@@ -721,6 +725,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.fullybrowser/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.g-homa/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.geofency/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.go-e/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.growatt/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.gruenbeck/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.habpanel/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.haier/README.md
@@ -1114,6 +1119,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.fullybrowser/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.g-homa/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.geofency/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.go-e/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.growatt/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.gruenbeck/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.habpanel/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.haier/README.md
@@ -1507,6 +1513,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.fullybrowser/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.g-homa/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.geofency/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.go-e/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.growatt/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.gruenbeck/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.habpanel/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.haier/README.md
@@ -1900,6 +1907,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.fullybrowser/README
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.g-homa/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.geofency/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.go-e/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.growatt/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.gruenbeck/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.habpanel/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.haier/README.md

@@ -44,7 +44,7 @@ Depending on the age of your ioBroker installation, the `iobroker` user (or unde
 If you have connected a device and it is not showing up in the configuration screen, please make sure the user is added to the `i2c` group:
 
 ```sh
-sudo usermod -G i2c iobroker
+sudo usermod -aG i2c iobroker
 ```
 
 Note: if don't have a standard installation, replace `iobroker` in the above command with the user running your ioBroker installation (check with `ps`).

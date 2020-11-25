@@ -94,7 +94,7 @@ With Commands you can trigger some actions on your Alexa-Device. If you use thes
 | announcement | Play announcement (like speak but with Bing before text) | Text |
 | ssml | Speak SSML XML string | Text |
 
-Detailed information Speak: Type in here what you want Alexa to say. You can also adjust the volume of Alexa by giving a percentage before your text.
+Detailed information Speak and Announcement: Type in here what you want Alexa to say. You can also adjust the volume of Alexa by giving a percentage before your text.
 Example: 10;Alexa is saying Alexa with 10% volume, while 100;Alexa is 100% volume.
 Normally you only can send 250 characters per speak command. By using the semicolon it is possible to write as much as you want, as long as you separate 250 characters with a semicolon.
 Alexa will then speak the text after each other with a small break. You also can use the volume together with more 255 blocks by writing #Volume;#Block1;#Block2, a.s.o A volume set here will be used over a defined speak-volume.
@@ -299,6 +299,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 
 ## Changelog
+
+### 3.3.2 (2020-11-23)
+* (Apollon77) prevent crash cases and optimize reconnection handling
 
 ### 3.3.1 (2020-07-24)
 * (Apollon77) Further optimize Cookie handling

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.smartcontrol/README.md
 title: ioBroker.smartcontrol
-hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
+hash: LTyXvXQ7NKSdp3PDFlpGo1n1Fm0yT+V45+Ss1T7j24o=
 ---
 ![Логотип](../../../en/adapterref/iobroker.smartcontrol/admin/smartcontrol-banner.png)
 
@@ -13,7 +13,7 @@ hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
 ![Количество установок (стабильно)](http://iobroker.live/badges/smartcontrol-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/Mic-M/iobroker.smartcontrol.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Mic-M/ioBroker.smartcontrol/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.smartcontrol.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.smartcontrol.png?downloads=true)
 
 # IoBroker.smartcontrol
 ** Тесты: ** ![Тестирование и выпуск](https://github.com/Mic-M/ioBroker.smartcontrol/workflows/Test%20and%20Release/badge.svg)
@@ -51,7 +51,7 @@ hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
 
 При срабатывании такого триггера мы часто хотим, чтобы выполнялись (не) дополнительные условия (например, «сегодня выходной», «окно гостиной открыто», яркость больше 100 люкс и т. Д.).
 
-После прохождения этих дополнительных проверок необходимо переключить целевые состояния (например, **Целевые устройства** .
+После прохождения этих дополнительных проверок целевые состояния (т.е. **Целевые устройства** должны быть переключены.
 
 Кроме того, после срабатывания датчика движения должен запускаться таймер, который (как только движение прекращается) отключает целевые устройства через заданное количество секунд.
 
@@ -79,9 +79,9 @@ hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
 * [** Zones **] (https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-zones_en.md) - для немецкого языка [щелкните здесь (Deutsch) ] (https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-zones_de.md)
 * [** Настройки выполнения **] (https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-execution_en.md) - для немецкого языка [щелкните здесь (Deutsch )] (https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-execution_de.md)
 
-## Скриншоты вариантов адаптера
+## Скриншоты вариантов адаптера (17-сен-2020)
 Обратите внимание, что эти снимки экрана являются снимками и не отражают последние параметры адаптера.
-Это просто, чтобы предоставить вам обзор вариантов адаптера.
+Это просто для того, чтобы предоставить вам обзор вариантов адаптера.
 
 ![Параметры SmartControl](../../../en/adapterref/iobroker.smartcontrol/admin/img/option-screenshots/tab-start.png)
 
@@ -105,10 +105,15 @@ hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
 * [** Постоянная ссылка на форум ioBroker для Smart Control (заставка) **] (https://forum.iobroker.net/topic/36728/smart-control-adapter-splash-page)
 
 ## Примечания
-* Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Для получения дополнительных сведений и информации о том, как отключить отчет об ошибках, см. [Документация Sentry-Plugin] (https://github.com/ioBroker/plugin -sentry # плагин-часовой)! Сторожевые отчеты используются начиная с js-controller 3.0.
+* Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin] (https://github.com/ioBroker/plugin -sentry # плагин-часовой)! Сторожевые отчеты используются начиная с js-controller 3.0.
 * Значок адаптера сделан [freepik] (https://www.flaticon.com/authors/freepik) из [flaticon.com] (https://www.flaticon.com/). </sup> </sub>
 
 ## Changelog
+
+### Latest Development Version (not yet published on npm)
+* (Mic-M) Fix: [#60 - Linked triggers of motion sensors issue](https://github.com/Mic-M/ioBroker.smartcontrol/issues/60)
+* (Mic-M) Several code improvements
+
 
 ### 1.1.1 
 * (Mic-M) Fix: Most likely finally fixes [issue #43](https://github.com/Mic-M/ioBroker.smartcontrol/issues/43) as well as workaround for [issue #35](https://github.com/Mic-M/ioBroker.smartcontrol/issues/35) (scheduleJob() of node-schedule module: now applying 'cancel' method prior to reschedule every midnight)

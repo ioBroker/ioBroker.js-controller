@@ -22,7 +22,14 @@ The adapter can control the mower and you can change config params like mowtimes
 - to connect to the mower type in email and password from your worx account in the Config.
 - Delay for Edgecut : If the edgecut starts in a curve or bend, the lawnmower may lose the wire and stop with a fault, or the blades may not rotate. For this purpose, the starting point at which the blades start to rotate can be set.
 
+
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
+
 ## Changelog
+### 1.2.6 (24.11.2020)
+* (MeisterTR) add sentry
+*(MeisterTR) Bugfix (error type of sc... again) (IOBROKER-WORX-3)
 ### 1.2.4 (15.11.2020)
 * (MeisterTR) Bugfix (error type of sc...)
 * (MeisterTR) change Testing to git

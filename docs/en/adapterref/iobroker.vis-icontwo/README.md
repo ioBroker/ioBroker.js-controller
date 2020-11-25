@@ -61,6 +61,14 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+### 0.33.1
+
+• Bug Fix
+
+### 0.33.0
+
+• Neue Icons hinzugefügt (Maps)
+
 ### 0.32.0
 
 • Neue Icons hinzugefügt (Stop)

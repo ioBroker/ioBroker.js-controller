@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: p8fldRtCejm0TtZlo+aYx4l54ib0GW4JVVH4pjU34Z0=
+hash: uW4oGgCfURlnIjIR1v9AmWXKc2caTb/k4RrpheVMpJE=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -41,6 +41,9 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 [![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.5.11
+- Bug-Fix
 
 ## 2.5.10
 - Bug-Fix
@@ -98,7 +101,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehler in der JSON Tabelle Spalten
 
 ## 2.3.0
-- Problem gehört, bei dem Schaltflächen gleichen Werte senden
+- Problem gehört, bei dem Schaltschaltenden eigenen Werte senden
 - Datum / Uhrzeit und Bildformat für Tabellenzellen hinzugefügt
 - Universal- und Multi-Widget-Attribut werden beim Ändern auf Widgetschauen
 
@@ -106,7 +109,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehler in der JSON Tabelle Spalten
 
 ## 2.2.2
-- Fehler im Multi Widget Rechte: Bilder und Text ändern nicht bei Typ Navigation
+- Fehler im Multi Widget gehört: Bilder und Text ändern nicht bei Typ Navigation
 
 ## 2.2.1
 - Fehler in der JSON-Tabelle gehört, wenn kein gehörtiges JSON-Objekt vorhanden ist
@@ -131,7 +134,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können.
 - Image Widget kann nun auf Datenpunkt kaufen
 - Radiobuttons hinzugefügt
-- Werteliste hinzugefügt (Kann Liste aus einem Datenpunkt oder manuellem Zugriff Text)
+- Werteliste hinzugefügt
 
 ## 1.3.8
 - Der Schieberegler wurde auf dezimal geändert

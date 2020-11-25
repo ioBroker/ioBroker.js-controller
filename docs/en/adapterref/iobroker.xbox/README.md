@@ -322,6 +322,11 @@ In this section you can find a description of every state of the adapter.
    *View button for media content.*
    
 ## Changelog
+### 0.7.2 (2020-11-23)
+* (foxriver76) removed logging of error on adapter stoppage due to rest server termination
+* (foxriver76) removed warn logging for debugging
+* (foxriver76) fixed currentTitles and activeTitle states
+
 ### 0.7.0 (2020-11-04)
 * (foxriver76) replaced deprecated requests module by axios
 * (foxriver76) migrated to xbox-smartglass 1.3

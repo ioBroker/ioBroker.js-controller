@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.smartcontrol/README.md
 title: ioBroker.smartcontrol
-hash: 0dyoGH5u7oldqXlI87YBmuJQbMhB+egG4F25N005Cpg=
+hash: LTyXvXQ7NKSdp3PDFlpGo1n1Fm0yT+V45+Ss1T7j24o=
 ---
 ![Logo](../../../en/adapterref/iobroker.smartcontrol/admin/smartcontrol-banner.png)
 
@@ -36,7 +36,7 @@ Dies als Zusammenfassung der sehr positiven Rückmeldungen aus der Community, di
 * *super sache die du da bauen hast 🙂* [Quelle] (https://forum.iobroker.net/post/485306)
 * *Der Adapter ist bei mir im Einsatz und läuft sehr gut. Danke für Deine Arbeit.* [Quelle] (https://forum.iobroker.net/post/485463)
 * * Ich finde es nicht möglich, sich mit der Wahrnehmung und der Steuerung zu befassen. RESPEKT<br> Bis jetzt war ich anders als alles war ich so ein Blockly´s hatte in den Adapter migrieren, echt toll.<br> Ich würde mir sagen, wenn der Adapter so weit fertig ist, das Du Dir dein ein oder andere Adapter vornimmst, &quot;forkst&quot; und diese dann auch so usernah erkennenelst [* [Quelle] (https://forum.iobroker.net/post / 488090)
-* *erstmal Hut ab. Der Adapter ist echt gut gelungen und lässt sich nach einer persönlichen Arbeitszeit in der Adapterlogik sehr viele meiner Setzungen damit adaptieren. (...) Bestehen nochmal dickes Lob, viele Dinge laufen damit seit seit Zeit Zeit und übersichtlicher als via Skript. 👍* [Quelle] (https://forum.iobroker.net/post/492035)
+* *erstmal Hut ab. Der Adapter ist echt gut gelungen und lässt sich nach einer Arbeitszeit in der Adapterlogik sehr viele meiner Setzungen damit adaptieren. (...) Bestehen nochmal dickes Lob, viele Dinge laufen damit seit seit Zeit Zeit und übersichtlicher als via Skript. 👍* [Quelle] (https://forum.iobroker.net/post/492035)
 * *Danke für den coolen Adapter - da kann ich nur meine Hut davor ziehen!* [Quelle] (https://forum.iobroker.net/post/496452)
 * *ein dickes Lob für den Adapter und Deine vorbildliche Arbeit 👍* [Quelle] (https://forum.iobroker.net/post/497110)
 * *viele Dank für die wahnsinnig gute Arbeit!* [Quelle] (https://forum.iobroker.net/post/500373)
@@ -49,7 +49,7 @@ In unserer [ioBroker](https://github.com/ioBroker/ioBroker) Hausautomation haben
  * ein Wandschalter wird gedrückt,
  * Eine bestimmte Zeit tritt ein (z. B. 30 Minuten nach Sonnenuntergang oder Mo-Fr um 7:00 Uhr).
 
-Sobald ein solcher Auslöser ausgelöst wird, möchten wir häufig, dass zusätzliche Bedingungen (nicht) erfüllt sind (z. B. "Heute ist ein Feiertag", "Wohnzimmerfenster ist offen", Helligkeit größer als 100 Lux usw.).
+Sobald ein solcher Auslöser ausgelöst wird, möchten wir häufig, dass zusätzliche Bedingungen (nicht) erfüllt werden (z. B. "Heute ist ein Feiertag", "Wohnzimmerfenster ist offen", Helligkeit größer als 100 Lux usw.).
 
 Sobald diese optionalen Überprüfungen bestanden wurden, sollten die Zielzustände (d. H. **Zielgeräte** umgeschaltet werden.
 
@@ -79,7 +79,7 @@ Die meisten dieser Anweisungen können Sie auch hier lesen:
 * [** Zonen **] (https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-zones_en.md) - für Deutsch [hier klicken (Deutsch) ] (https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-zones_de.md)
 * [** Ausführungseinstellungen **] (https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-execution_en.md) - für Deutsch [hier klicken (Deutsch )] (https://github.com/Mic-M/ioBroker.smartcontrol/blob/master/admin/doc-md/table-execution_de.md)
 
-## Screenshots der Adapteroptionen
+## Screenshots der Adapteroptionen (17.09.2020)
 Bitte beachten Sie, dass diese Screenshots eine Momentaufnahme sind und nicht die neuesten Adapteroptionen widerspiegeln.
 Dies dient nur dazu, Ihnen einen Überblick über die Adapteroptionen zu geben.
 
@@ -102,13 +102,18 @@ Dies dient nur dazu, Ihnen einen Überblick über die Adapteroptionen zu geben.
 ![SmartControl-Optionen](../../../en/adapterref/iobroker.smartcontrol/admin/img/option-screenshots/tab-further-options.png)
 
 ## Links und Ressourcen
-* [** Permanenter Smart Control ioBroker Forum Link (Begrüßungsseite) **] (https://forum.iobroker.net/topic/36728/smart-control-adapter-splash-page)
+* [** Permanenter Smart Control ioBroker-Forum-Link (Begrüßungsseite) **] (https://forum.iobroker.net/topic/36728/smart-control-adapter-splash-page)
 
 ## Anmerkungen
 * Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Informationen und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation] (https://github.com/ioBroker/plugin) -sentry # plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 * Adaptersymbol von [freepik] (https://www.flaticon.com/authors/freepik) von [flaticon.com] (https://www.flaticon.com/). </ Sup> </ sub>
 
 ## Changelog
+
+### Latest Development Version (not yet published on npm)
+* (Mic-M) Fix: [#60 - Linked triggers of motion sensors issue](https://github.com/Mic-M/ioBroker.smartcontrol/issues/60)
+* (Mic-M) Several code improvements
+
 
 ### 1.1.1 
 * (Mic-M) Fix: Most likely finally fixes [issue #43](https://github.com/Mic-M/ioBroker.smartcontrol/issues/43) as well as workaround for [issue #35](https://github.com/Mic-M/ioBroker.smartcontrol/issues/35) (scheduleJob() of node-schedule module: now applying 'cancel' method prior to reschedule every midnight)

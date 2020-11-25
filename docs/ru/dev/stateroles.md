@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/stateroles.md
 title: Государственные роли
-hash: y41SEhxfILpF9GOEOvXt+AdKLA80EQqHHUecCdWxvOI=
+hash: tX7Pefv6nYuw1+I22SRVNyX5QMvcbEo7y/cHwb7BVSc=
 ---
 # Государственные роли
 ## Общие
@@ -38,9 +38,14 @@ hash: y41SEhxfILpF9GOEOvXt+AdKLA80EQqHHUecCdWxvOI=
 * `button`
 * `button.long`
 * `button.stop` - например, ролло-стоп,
+* `button.stop.tilt`
 * `button.start`
 * `button.open.door`
 * `button.open.window`
+* `button.open.blind`
+* `button.open.tilt`
+* `button.close.blind`
+* `button.close.tilt`
 *`button.mode.`*
 * `button.mode.auto`
 * `button.mode.manual`
@@ -75,10 +80,10 @@ hash: y41SEhxfILpF9GOEOvXt+AdKLA80EQqHHUecCdWxvOI=
 * `value.gps.elevation` - высота по GPS
 * `value.gps` - долгота и широта вместе, например '5.56; 43.45'
 * `value.power.consuming` (единица измерения = Втч или кВтч)
-* `value.direction` - (common.type = number ~~ или строка ~~, указывает вверх / вниз, влево / вправо, 4-позиционные переключатели, направление ветра, ...)
+* `value.direction` - (common.type = number ~~ или string ~~, указывает вверх / вниз, влево / вправо, 4-позиционные переключатели, направление ветра, ...)
 * `value.curtain` - фактическое положение занавеса
-* `value.blind` - фактическое положение жалюзи
-* `value.tilt` - фактическое положение наклона
+* `value.blind` - фактическое положение жалюзи (100% = полностью открыто, 0% = полностью закрыто)
+* `value.tilt` - фактическое положение наклона (100% = полностью открыто, 0% = полностью закрыто)
 * `value.lock` - фактическое положение замка
 * `value.speed` - скорость ветра
 * `value.pressure` - (единица измерения: мбар)
@@ -88,7 +93,7 @@ hash: y41SEhxfILpF9GOEOvXt+AdKLA80EQqHHUecCdWxvOI=
 * `value.warning` - некоторое предупреждение (можно указать состояния), чем выше, тем важнее
 * `value.sun.elevation` - высота солнца в °
 * `value.sun.azimuth` - азимут солнца в °
-* `value.voltage` - Напряжение в вольтах, единица измерения = В
+* `value.voltage` - Напряжение в вольтах, единица = В
 * `value.current` - Ток в амперах, единица = A
 * `value.fill` - Уровень заполнения, единица = л, мл, м3,%
 * `value.blood.sugar` - значение сахара в крови, единица = ммоль, мгдл
@@ -96,14 +101,14 @@ hash: y41SEhxfILpF9GOEOvXt+AdKLA80EQqHHUecCdWxvOI=
 ## Индикаторы (логические, только для чтения)
 *common.type = логическое, common.write = false*
 
-Отличие *индикаторов* от *датчиков* заключается в том, что индикаторы отображаются в виде небольшого значка. Датчики как реальная ценность.
+Отличие *индикаторов* от *датчиков* в том, что индикаторы отображаются в виде небольшого значка. Датчики как реальная ценность.
 Так что индикатор может быть не один в канале. Это должно быть какое-то другое главное состояние внутри канала.
 
 * `индикатор`
 * `indicator.working` - указывает, что целевые системы что-то выполняют, например, жалюзи или открывание замка.
 * `indicator.reachable` - если устройство в сети
 * `indicator.connected` - используется только для экземпляров. Используйте indicator.reachable для устройств
-* `indicator.main maintenance` - указывает системные предупреждения / ошибки, аварийные сигналы, служебные сообщения, разряд батареи и тому подобное
+* `indicator.main maintenance` - указывает системные предупреждения / ошибки, сигналы тревоги, служебные сообщения, разряд батареи и тому подобное
 * `indicator.main maintenance.lowbat`
 * `indicator.main maintenance.unreach`
 * `indicator.main maintenance.alarm`
@@ -122,7 +127,7 @@ hash: y41SEhxfILpF9GOEOvXt+AdKLA80EQqHHUecCdWxvOI=
 * `уровень`
 * `level.co2` - качество изображения 0-100%
 * `level.dimmer` - яркость тоже тусклее
-* `level.blind` - установить слепую позицию
+* `level.blind` - установить положение жалюзи (100% = полностью открыто, 0% = полностью закрыто)
 * `level.temperature` - установить желаемую температуру
 * `level.valve` - уставка положения клапана
 * `level.color.red`
@@ -131,16 +136,16 @@ hash: y41SEhxfILpF9GOEOvXt+AdKLA80EQqHHUecCdWxvOI=
 * `level.color.white` - rgbW
 * `level.color.hue` - цвет в ° 0-360; 0 = красный, 120 = зеленый, 240 = синий, 360 = красный (циклический)
 * `level.color.saturation`
-* `level.color.rgb` - шестнадцатеричный цвет вроде '#rrggbb'
+* `level.color.rgb` - шестнадцатеричный цвет как '#rrggbb'
 * `level.color.luminance`
-* `level.color.temperature` - цветовая температура в K ° 2200 теплый-белый, 6500 ° холодный белый
+* `level.color.temperature` - цветовая температура в К ° 2200 теплый-белый, 6500 ° холодный белый
 * `level.timer`
 * `level.timer.sleep` - таймер сна. 0 - выкл или через минуты
 * ...
 * `level.volume` - (min = 0, max = 100) - громкость звука, но min, max могут отличаться. мин <макс
 * `level.volume.group` - (min = 0, max = 100) - громкость звука, для группы устройств
 * `level.curtain` - установить положение шторки
-* `level.tilt` - установить положение наклона жалюзи
+* `level.tilt` - установить положение наклона жалюзи (100% = полностью открыто, 0% = полностью закрыто)
 
 ## Переключатели (логические, чтение-запись)
 Переключатель управляет логическим устройством (true = ON, false = OFF)
@@ -148,7 +153,7 @@ hash: y41SEhxfILpF9GOEOvXt+AdKLA80EQqHHUecCdWxvOI=
 *common.type = логический, common.write = true*
 
 * `переключатель`
-* `switch.lock` - блокировка (true - открыть блокировку, false - закрыть блокировку)
+* `switch.lock` - замок (true - открыть замок, false - закрыть замок)
 * `switch.lock.door` - дверной замок
 * `switch.lock.window` - блокировка окна
 * `switch.boost` - запуск / остановка повышенного режима термостата
@@ -176,14 +181,14 @@ TODO: подумайте об ионизации и колебаниях.
 * `level.mode.cleanup` - Перечисление` AUTO, ECO, EXPRESS, NORMAL, QUIET`. Требуются только «АВТО» и «НОРМАЛЬНЫЙ».
 * `level.mode.work` - Перечисление` AUTO, FAST, MEDIUM, SLOW, TURBO`. Необязательное состояние.
 * `value.water` - уровень воды 0-100%.
-* `value.waste` - уровень мусорного бака 0-100%. (0% - пустой, 100% - полный)
+* `value.waste` - уровень мусора 0-100%. (0% - пусто, 100% - полно)
 * `indicator.main maintenance.waste` - мусорное ведро дурацкое.
 * `value.state` -` HOME, CLEANING, PAUSE` и так далее.
 
 В дополнение к этим состояниям обычно требуются `switch.power`, необходимые для отображения пылесоса. `switch.power` в этом случае работает как: `true` - очистить, `false` - вернуться домой.
 Необязательно `value.battery` и
 
-## СМИ
+## Средства массовой информации
 Специальные роли для медиаплееров
 
 * `button.stop`
@@ -201,13 +206,13 @@ TODO: подумайте об ионизации и колебаниях.
 * `media.seek` - (common.type = number)%
 * `media.mode.shuffle` - (common.type = number) 0 - нет, 1 - все, 2 - один
 * `media.mode.repeat` - (common.type = boolean)
-* `media.state` - ['play', 'stop', 'pause'] или [0 - пауза, 1 - воспроизведение, 2 - стоп] или [true - воспроизведение / false - пауза]
+* `media.state` - ['play', 'stop', 'pause'] или [0 - пауза, 1 - воспроизведение, 2 - остановка] или [true - воспроизведение / false - пауза]
 * `media.artist`
 * `media.album`
 * `media.title`
 * `media.title.next`
 * `media.cover` - URL обложки
-* `media.cover.big` - большой URL обложки
+* `media.cover.big` - большая ссылка на обложку
 * `media.cover.small` - крошечный URL обложки
 * `media.duration.text` - например," 2:35 "
 * `media.duration` - (common.type = number) секунд
@@ -324,7 +329,7 @@ TODO: подумайте об ионизации и колебаниях.
 * `weather.chart.url.forecast` - URL-адрес диаграммы для прогноза погоды
 * `weather.html` - HTML-объект с описанием погоды
 * `weather.title` - Очень краткое описание
-* `weather.title.short` - Очень-очень краткое описание (одно слово)
+* `weather.title.short` - Очень-очень короткое описание (одно слово)
 * `weather.type` - Тип информации о погоде
 * `weather.json` - объект JSON с конкретными данными
 * `value.speed.wind.forecast.0` - прогноз скорости ветра на сегодня
@@ -335,18 +340,18 @@ TODO: подумайте об ионизации и колебаниях.
 * `value.temperature.min.forecast.0` - Мин. прогноз температуры на сегодня
 * `value.temperature.max.forecast.0` - Прогноз максимальной температуры на сегодня
 * `value.precipitation.forecast.0` - (type: number, unit:%) Прогноз вероятности осадков на сегодня
-* `value.precipitation.forecast.0` - (тип: число, единица: мм) Прогноз уровня осадков на сегодня
+* `value.precipitation.forecast.0` - (тип: число, единица измерения: мм) Прогноз уровня осадков на сегодня
 * `weather.title.forecast.0` - Очень краткое описание на завтра
 * `value.precipitation.day.forecast.0` - Прогноз осадков на дневное время
 * `value.precipitation.night.forecast.0` - Прогноз осадков в ночное время
 
-* `date.forecast.1` - дата завтра
+* `date.forecast.1` - завтрашняя дата
 * `weather.icon.forecast.1` - значок завтра
 * `weather.state.forecast.1` - состояние погоды на завтра
 * `значение.температура.мин.прогноз.1`
 * `значение.температура.макс.прогноз.1`
 * `value.precipitation.forecast.1` - (type: number, unit:%) Прогноз вероятности осадков на завтра
-* `value.precipitation.forecast.1` - (тип: число, единица: мм) Прогноз уровня осадков на завтра
+* `value.precipitation.forecast.1` - (type: number, unit: mm) Прогноз количества осадков на завтра
 * `value.direction.wind.forecast.1`
 * `value.speed.wind.forecast.1`
 * `value.pressure.forecast.1`

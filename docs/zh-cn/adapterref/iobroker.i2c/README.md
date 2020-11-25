@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.i2c/README.md
 title: ioBroker.i2c
-hash: 40EqvTkUuNxAOD12jqOvRsYZd+CwfQoIYUc7z7Cr6bI=
+hash: PP4lNA7dovkN4gO2daBhn2zOhZwvcQ+RKn8JGnotQ4E=
 ---
 ![商标](../../../en/adapterref/iobroker.i2c/admin/i2c.png)
 
@@ -23,7 +23,7 @@ hash: 40EqvTkUuNxAOD12jqOvRsYZd+CwfQoIYUc7z7Cr6bI=
 ## IoBroker的I2C适配器
 使用I2C总线与连接到本地系统的设备进行通信。
 
-该适配器应该可以在Raspberry Pi，C.H.I.P.，BeagleBone或Intel Edison等Linux板上使用。
+该适配器应可在Raspberry Pi，C.H.I.P.，BeagleBone或Intel Edison等Linux板上使用。
 
 ##安装
 在安装之前，请阅读[i2c总线模块的安装指南](https://www.npmjs.com/package/i2c-bus#installation)。
@@ -31,7 +31,7 @@ hash: 40EqvTkUuNxAOD12jqOvRsYZd+CwfQoIYUc7z7Cr6bI=
 尤其要确保已在系统上正确配置并启用了I2C（如果需要）：
 
 -[在Raspberry Pi上配置I2C]（https://github.com/fivdi/i2c-bus/blob/master/doc/raspberry-pi-i2c.md）
--[在Intel Edison Arduino主板上配置I2C]（https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md）
+-[在英特尔Edison Arduino主板上配置I2C]（https://github.com/fivdi/i2c-bus/blob/master/doc/edison-adruino-base-board-i2c.md）
 
 启用并配置I2C之后，可以通过ioBroker Admin安装此适配器：
 
@@ -47,13 +47,13 @@ hash: 40EqvTkUuNxAOD12jqOvRsYZd+CwfQoIYUc7z7Cr6bI=
 如果已连接设备，但未在配置屏幕中显示该设备，请确保将用户添加到`i2c`组：
 
 ```sh
-sudo usermod -G i2c iobroker
+sudo usermod -aG i2c iobroker
 ```
 
 注意：如果没有标准安装，请用运行ioBroker安装的用户替换上述命令中的`iobroker`（检查`ps`）。
 
 ##配置
-###巴士号码
+###公交车号
 这是要打开的I2C总线/适配器的编号，/ dev / i2c-0为0，/ dev / i2c-1为1，...
 
 在Raspberry Pi 3和4B上，该值为“ 1”。
@@ -129,7 +129,7 @@ Devantech超声波测距仪16-600cm。
 
 `read`将包含地址和可选寄存器以及要读取的字节数的对象作为消息。它返回包含读取数据的缓冲区。
 
-`write`将包含地址，数据作为缓冲区和可选写入寄存器的对象作为消息。成功时将返回写入缓冲区。
+`write`将包含地址，数据作为缓冲区和可选写入寄存器的对象作为消息。成功返回它的写入缓冲区。
 
 ###脚本用法示例
 ```js
@@ -203,8 +203,8 @@ sendTo(
 
 -确保使用正确的IP地址和端口（设备上配置的IP地址和端口）
 -重新启动台式机上的适配器实例
--适配器现在将在已配置的SBC而不是本地执行所有I2C命令
--您可以在台式机上打开适配器实例设置，并像在真正的SBC上一样扫描I2C设备
+-适配器现在将在已配置的SBC而非本地执行所有I2C命令
+-您可以在台式机上打开适配器实例设置，并像在实际SBC上一样扫描I2C设备
 
 请记住，RPC服务器是完全不安全的，因此只能用于安全网络内部的开发！
 
@@ -219,11 +219,11 @@ BME280代码基于https://github.com/skylarstein/bme280-sensor：
 
 版权所有（c）2016 Skylar Stein
 
-特此免费授予获得该软件和相关文档文件（“软件”）副本的任何人无限制使用软件的权利，包括但不限于使用，复制，修改，合并的权利，发布，分发，再许可和/或出售本软件的副本，并允许具备软件的人员这样做，但须满足以下条件：
+特此免费授予获得此软件和相关文档文件（“软件”）副本的任何人无限制地处理软件的权利，包括但不限于使用，复制，修改，合并的权利，发布，分发，再许可和/或出售本软件的副本，并允许具备软件的人员这样做，但须满足以下条件：
 
 以上版权声明和本许可声明应包含在本软件的所有副本或大部分内容中。
 
-本软件按“原样”提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性，特定目的的适用性和非侵权性的保证。无论是由于软件，使用或其他方式产生的，与之有关或与之有关的合同，侵权或其他形式的任何索赔，损害或其他责任，作者或版权所有者概不负责软件。
+本软件按“原样”提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性，特定目的的适用性和非侵权性的保证。无论是由于软件，使用或其他方式产生的，与之有关或与之有关的合同，侵权或其他形式的任何索赔，损害或其他责任，作者或版权所有者概不负责。软件。
 
 ### ADS1x15
 ADS1x15代码基于https://github.com/alphacharlie/node-ads1x15/blob/master/index.js
@@ -234,11 +234,11 @@ MIT许可证（MIT）
 
 版权所有（c）2016 Adafruit Industries
 
-特此免费授予获得该软件和相关文档文件（“软件”）副本的任何人无限制使用软件的权利，包括但不限于使用，复制，修改，合并的权利，发布，分发，再许可和/或出售本软件的副本，并允许具备软件的人员这样做，但须满足以下条件：
+特此免费授予获得此软件和相关文档文件（“软件”）副本的任何人无限制地处理软件的权利，包括但不限于使用，复制，修改，合并的权利，发布，分发，再许可和/或出售本软件的副本，并允许具备软件的人员这样做，但须满足以下条件：
 
 以上版权声明和本许可声明应包含在本软件的所有副本或大部分内容中。
 
-本软件按“原样”提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性，特定目的的适用性和非侵权性的保证。无论是由于软件，使用或其他方式产生的，与之有关或与之有关的合同，侵权或其他形式的任何索赔，损害或其他责任，作者或版权所有者概不负责软件。
+本软件按“原样”提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性，特定目的的适用性和非侵权性的保证。无论是由于软件，使用或其他方式产生的，与之有关或与之有关的合同，侵权或其他形式的任何索赔，损害或其他责任，作者或版权所有者概不负责。软件。
 
 ### PCA9685
 PCA9685代码基于https://github.com/adafruit/Adafruit_Python_PCA9685/blob/master/Adafruit_PCA968/PCA9685.py
@@ -247,11 +247,11 @@ MIT许可证（MIT）
 
 版权所有（c）2016 Adafruit Industries作者：Tony DiCola
 
-特此免费授予获得该软件和相关文档文件（“软件”）副本的任何人无限制使用软件的权利，包括但不限于使用，复制，修改，合并的权利，发布，分发，再许可和/或出售本软件的副本，并允许具备软件的人员这样做，但须满足以下条件：
+特此免费授予获得此软件和相关文档文件（“软件”）副本的任何人无限制地处理软件的权利，包括但不限于使用，复制，修改，合并的权利，发布，分发，再许可和/或出售本软件的副本，并允许具备软件的人员这样做，但须满足以下条件：
 
 以上版权声明和本许可声明应包含在本软件的所有副本或大部分内容中。
 
-本软件按“原样”提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性，特定目的的适用性和非侵权性的保证。无论是由于软件，使用或其他方式产生的，与之有关或与之有关的合同，侵权或其他形式的任何索赔，损害或其他责任，作者或版权所有者概不负责软件。
+本软件按“原样”提供，不提供任何形式的明示或暗示担保，包括但不限于对适销性，特定目的的适用性和非侵权性的保证。无论是由于软件，使用或其他方式产生的，与之有关或与之有关的合同，侵权或其他形式的任何索赔，损害或其他责任，作者或版权所有者概不负责。软件。
 
 也基于：https://github.com/tessel/servo-pca9685/blob/master/index.js
 

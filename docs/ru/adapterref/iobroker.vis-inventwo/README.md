@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: p8fldRtCejm0TtZlo+aYx4l54ib0GW4JVVH4pjU34Z0=
+hash: uW4oGgCfURlnIjIR1v9AmWXKc2caTb/k4RrpheVMpJE=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -16,7 +16,7 @@ hash: p8fldRtCejm0TtZlo+aYx4l54ib0GW4JVVH4pjU34Z0=
 ![Статус сборки](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Пожертвование Paypal](https://img.shields.io/badge/paypal-donate%20%7C%20spenden-green.svg)
-![NPM](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
 
 # IoBroker.vis-inventorywo
 ## Schalter Widgets для адаптера ioBroker.vis
@@ -41,6 +41,9 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 [![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.5.11
+- Исправлена ошибка
 
 ## 2.5.10
 - Исправлена ошибка
@@ -95,7 +98,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Fehler bei der Navigation mit dem Widget 'View in Widget' behoben
 
 ## 2.3.1
-- Фелер в JSON Tabelle behoben
+- Fehler в JSON Tabelle behoben
 
 ## 2.3.0
 - Problem behoben, bei dem Schaltflächen zweimal Werte senden
@@ -103,7 +106,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Универсальный и мульти-виджет-атрибут, указанный в клике, на актуальном виджете
 
 ## 2.2.3
-- Фелер в JSON Tabelle behoben
+- Fehler в JSON Tabelle behoben
 
 ## 2.2.2
 - Fehler im Multi Widget behoben: Bilder und Text wechseln nicht bei Typ Navigation
@@ -178,7 +181,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ### 1.2.0
 - Добавлен виджет изображений
-- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно нажимать каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
+- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно щелкнуть каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
 - Добавлены новые иконки
 
 ### 1.1.1

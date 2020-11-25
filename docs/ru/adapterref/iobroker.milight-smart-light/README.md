@@ -3,18 +3,21 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.milight-smart-light/README.md
 title: ioBroker.milight-smart-light
-hash: sNYZ4pRzYCdPo+Z1noG5Vu/siGKkapBbADx0hC8kKOA=
+hash: nxsm7kl4CELqAk5+YPohNOy8qyvS3IIUZSu4SG2eaJE=
 ---
-![Логотип milight-smart-light](../../../en/adapterref/iobroker.milight-smart-light/public/milight-smart-light-logo.png)
+![Логотип milight-smart-light](../../../en/adapterref/iobroker.milight-smart-light/admin/milight-smart-light.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.milight-smart-light.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.milight-smart-light.svg)
-![Тесты](http://img.shields.io/travis/Steiger04/ioBroker.milight-smart-light/master.svg)
 ![стабильный](http://iobroker.live/badges/milight-smart-light-stable.svg)
 ![установлен](http://iobroker.live/badges/milight-smart-light-installed.svg)
-![NPM](https://nodei.co/npm/iobroker.milight-smart-light.png?downloads=true)
+![Статус зависимости](https://img.shields.io/david/steiger04/iobroker.milight-smart-light.svg)
+![Известные уязвимости](https://snyk.io/test/github/steiger04/ioBroker.milight-smart-light/badge.svg)
+![НПМ](https://nodei.co/npm/iobroker.milight-smart-light.png?downloads=true)
 
 # IoBroker.milight-smart-light
+![Тестирование и выпуск](https://github.com/steiger04/ioBroker.milight-smart-light/workflows/Test%20and%20Release/badge.svg)
+
 Этот адаптер для ioBroker управляет светодиодными лампами и светодиодными лентами Milight и основан на модуле узла от mwittig.
 
 mwittig / [node-milight-обещание](https://github.com/mwittig/node-milight-promise)
@@ -39,7 +42,7 @@ mwittig / [node-milight-обещание](https://github.com/mwittig/node-miligh
 - **iobroker.admin** используйте версию 3.5.10 или выше.
 
 ## Changelog
-### 1.0.0 (2020-11-21)
+### 1.0.1 (2020-11-21)
 - (steiger04) Added admin-UI based on Vue and Quasar
 ### 0.6.0 (2020-05-23)
 - (steiger04): Added effectBrightness, effectOn, effectOff, effectOnOff for iBox1 and iBox2
