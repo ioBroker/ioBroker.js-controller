@@ -11,12 +11,64 @@ Feel free to add any questions and according answers to this page. The only limi
 
 *Note:* This is not going to be an official documentation. Any hints, workarounds, links to even older forum posts, etc. are welcome. The intention is to quickly support and help developers on frequently asked dev questions. If you have issues in writing in English here, please use your local language like German, Russian, etc., we will be happy to help and translate later.
 
-All easy going here ;)
+For updating the table of contents, you can use a TOC generator, e.g. [luciopaiva.com/markdown-toc](https://luciopaiva.com/markdown-toc/)
 
 
-## FAQ
 
-### Adapter Configuration (admin/index_m.html)
+# Table of contents
+
+- [Adapter Updates](#adapter-updates)
+  - [Publishing Adapter Updates](#publishing-adapter-updates)
+- [Adapter Testing and Error Reporting](#adapter-testing-and-error-reporting)
+  - [Compact Mode](#compact-mode)
+  - [Sentry](#sentry)
+- [Adapter Configuration UI (admin/index_m.html)](#adapter-configuration-ui-adminindexmhtml)
+  - [Input Validation](#input-validation)
+
+
+---
+
+### Adapter Updates
+
+#### Publishing Adapter Updates
+
+**Question:** In which files do I need to change the version number?
+
+**Answer:** Basically, you need to touch 3 files:
+ * `io-package.json`: change version number and add the recent change log
+ * `package.json`: change version number only
+ * `README.md`: add new version number and the change log
+
+Please note that it is required to use [Semantic Versioning](https://semver.org/), see [Versioning](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md#versioning).
+<br>(25-Nov-2020)
+
+**Question:** My adapter is in the latest repository. I updated the adapter on Github and published on NPM as well. When will the users see the new version in the Admin?
+
+**Answer:** ioBroker scans for any version changes twice daily.
+<br>(25-Nov-2020)
+
+**Question:** How can I add a new adapter to the latest repository?
+
+**Answer:** See [Add a new adapter to the latest repository](https://github.com/ioBroker/ioBroker.repositories#add-a-new-adapter-to-the-latest-repository)
+<br>(25-Nov-2020)
+
+### Adapter Testing and Error Reporting
+
+#### Compact Mode
+
+**Question:** How can I test the Compact Mode?
+
+**Answer:** See [Compact Mode testen](https://forum.iobroker.net/topic/32789/anleitung-f%C3%BCr-adapter-entwickler-compact-mode-testen) (in German)
+<br>(25-Nov-2020)
+
+#### Sentry
+
+**Question:** How can I add Sentry to my adapter?
+
+**Answer:** See [Sentry Read.me](https://github.com/ioBroker/plugin-sentry#readme)
+<br>(25-Nov-2020)
+
+### Adapter Configuration UI (admin/index_m.html)
 
 #### Input Validation
 
