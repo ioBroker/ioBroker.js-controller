@@ -61,6 +61,9 @@ Wenn bisher der Cloud-Adapter genutzt wurde und nur die Alexa-Steuerung nötig i
 
 6. Dann den neuen "ioBroker.iot" [Skill](https://www.amazon.de/ioBroker-ioBroker-iot/dp/B07L66BFF9) installieren und auf "Aktivieren" klicken. Dann sollte die Login-Maske des IoT-Service erscheinen.
 Hier die E-Mail-Adresse des Pro-Cloud-Accounts und das initiale Passwort verwenden.
+
+**Bitte das Login klein schreiben: `MyEmail@gmx.de` ist falsch; `myemail@gmx.de` ist richtig!**
+
 Ihr werdet dann aufgefordert das Passwort zu ändern. Ab dann gilt das Initiale PW nicht mehr, sondern nur das Neue. Eine Empfehlung ist das gleiche Passwort wie bei Pro zu verwenden, da ggf später der Login in die Pro-Cloud auf dieses Passwort umgestellt wird (keine Angst, wir informieren rechtzeitig vorher wenn das geplant ist!)
 
 Wer bereits die IoT-Services nutzt (früher oder mit dem Custom-Skill) loggt sich einfach direkt mit seinen IoT-Zugangsdaten bei der Skill-Aktivierung ein.
@@ -70,7 +73,7 @@ Wer bereits die IoT-Services nutzt (früher oder mit dem Custom-Skill) loggt sic
 Nach einem erfolgreichen Login kommt eine Erfolgsmeldung und der Skill ist aktiviert.
 Falls nicht bitte Zugangsdaten prüfen (vor allem Initialpasswort vs. geändertes Passwort und so) und nochmals versuchen.
 
-7. Jetzt sollte Euch Amazon die Gerätesuche anbieten.
+7. Jetzt sollte Euch Amazon die Geräte-Suche anbieten.
 Nachdem diese gelaufen ist sollten alle im IoT-Adapter hinterlegten Geräte auch in Amazon zu finden sein.
 
 8. Bitte jetzt prüfen ob Eure Geräte per Sprache oder Alexa-App schaltbar sind.
