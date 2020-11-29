@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: aBmdaoGWO2ljGVbWQt5RUSWTCet+PJRr64BvVyuYySg=
+hash: yk5U6cZpi1vr4MAnRb+S96DdU2ZGKTH4Xe3ih//Tk/g=
 ---
 ![商标](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -53,7 +53,7 @@ sendTo('iogo', {title: 'News', text: 'New message'}, function (res) {
 });
 ```
 
-只需将路径发送到图像而不是文本即可，或使用url属性```sendTo('iogo.0', 'absolute/path/file.png')```
+只需将路径发送到图像而不是文本，或使用url属性```sendTo('iogo.0', 'absolute/path/file.png')```
 
 ```
 sendTo('iogo', {
@@ -70,6 +70,7 @@ sendTo('iogo', {
 -*文本*：消息本身
 -* title *：通知的标题
 -* url *：图片的绝对路径
+-*到期时间*：到期时间（以秒为单位）
 
 ## Changelog
 
@@ -93,7 +94,7 @@ sendTo('iogo', {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 - 2019 Nis Nagel <support@nisnagel.de>
+Copyright (c) 2018 - 2020 Nis Nagel <info@iogo.app>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

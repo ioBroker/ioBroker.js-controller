@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: 9n6SwG41NXFxJiAyFDGvoXZHtAqZuYCrsYFi/AhHmwE=
+hash: 44jVs/zK2VzhG/oNEYKlUu9L9p9HrLI9eZnRlE7BMYU=
 ---
 ![Logo](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -30,7 +30,7 @@ Lesen Sie [Hier](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certifi
 Der Webtreiber unterstützt Erweiterungen. Die Erweiterung ist URL-Handler, der aufgerufen wird, wenn eine solche URL-Anforderung angezeigt wird.
 Die Erweiterungen sehen aus wie normale Adapter, haben jedoch keinen laufenden Prozess und werden vom Webserver aufgerufen.
 
-Z.B. Der Benutzer kann einen speziellen Proxy-Adapter aktivieren und andere Geräte (wie Web-Cams) auf demselben Webserver erreichen.
+Z.B. Der Benutzer kann einen speziellen Proxy-Adapter aktivieren und andere Geräte (z. B. Web-Cams) auf demselben Webserver erreichen.
 Es ist erforderlich, dass alle Dienste unter einem Webserver verfügbar sind.
 
 ## Brute-Force-Schutz
@@ -44,8 +44,19 @@ Wenn nicht, bleibt der Benutzer für das konfigurierte "Anmeldezeitlimit" angeme
 <! - Platzhalter für die nächste Version (am Zeilenanfang):
 
 ### __WORK IN PROGRESS__ ->
+## Option "Basisauthentifizierung"
+Ermöglicht die Anmeldung über die Standardauthentifizierung durch Senden von `401` Nicht autorisiert mit einem `WWW-Authenticate`-Header.
+Dies kann für Anwendungen wie *FullyBrowser* verwendet werden. Wenn Sie einmal die falschen Anmeldeinformationen eingeben, werden Sie zur Anmeldeseite weitergeleitet.
 
 ## Changelog
+
+### 3.1.0 (2020-11-26)
+* (foxriver76) Add option for Basic Auth
+
+### 3.0.14 (2020-10-30)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-WEB-1D)
+* (foxriver76) Support html \<video\> tag on Safari (iOS)
+
 ### 3.0.13 (2020-09-06)
 * (bluefox) Added the support of multi-language names for the welcome screen.
 

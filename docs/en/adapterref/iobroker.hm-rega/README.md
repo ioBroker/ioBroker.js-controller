@@ -4,13 +4,13 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
+hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ---
 ![logo](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
 # HomeMatic ReGaHSS
 ## Homematic
-> Homematic is the Smart Home System from eQ-3, which enables the comprehensive control of a wide variety of functions using scenarios (from simple to complex) in the house or apartment.
+> Homematic is the smart home system from eQ-3, which enables the comprehensive control of a wide variety of functions using scenarios (from simple to complex) in the house or apartment.
 
 > The devices include products for light, roller shutter and heating control, hazard detectors, safety sensors and products for measuring weather data. The radio communication simplifies retrofitting. Wire bus components can be used in new buildings.
 
@@ -22,7 +22,7 @@ It synchronizes real names, system variables, rooms, trades and programs between
 
 If several central units are to be integrated into ioBroker, a separate instance must be installed and configured for each central unit.
 
-With the installation of ReGaHSS an instance of the adapter "hm-rpc" is installed, which should be configured and activated in advance.
+With the installation of ReGaHSS an instance of the adapter "hm-rpc" is also installed, which should be configured and activated in advance.
 
 One instance of this adapter can manage up to 5 different instances of the Homematic RPC adapter, which provide different services (each service requires its own RPC instance):
 
@@ -87,7 +87,7 @@ Once all settings have been made, the configuration page is closed with the comm
 ### Instance
 ![](../../../de/adapterref/iobroker.hm-rega/media/44785b82964bcdc198565b1681787dc0.png) **Instance and Signal**
 
-The created instance (s) can now be found in the *Instances* area of the ioBroker. On the left, the traffic light system shows whether the adapter is activated or connected to the CCU.
+The created instance (s) can now be found in the *Instances* area of the ioBroker. The traffic light system on the left shows whether the adapter is activated or connected to the CCU.
 
 If you place the mouse pointer on a symbol, you get detailed information.
 

@@ -3,9 +3,9 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.tradfri/README.md
 title: ioBroker.tradfri
-hash: wCRFsvNTOwcQ7dNNzURGLTQpKapsCsi2SxdETCGwcDM=
+hash: waY56Oxf+bx+srdcpDHrwGSMihR7UNSfR/l/TSCILIE=
 ---
-![логотип](../../../en/adapterref/iobroker.tradfri/admin/tradfri.png)
+![Логотип](../../../en/adapterref/iobroker.tradfri/admin/tradfri.png)
 
 ![Всего предупреждений](https://img.shields.io/lgtm/alerts/g/AlCalzone/ioBroker.tradfri.svg?logo=lgtm&logoWidth=18)
 ![Количество установок](http://iobroker.live/badges/tradfri-stable.svg)
@@ -19,20 +19,20 @@ hash: wCRFsvNTOwcQ7dNNzURGLTQpKapsCsi2SxdETCGwcDM=
 * Trådfri шлюз
 
 ## Установка
-1. Установите этот адаптер через интерфейс администратора iobroker или через `npm install iobroker.tradfri --production`
-1. В графическом интерфейсе ioBroker добавьте экземпляр адаптера.
-1. Настройте экземпляр, введя IP / имя хоста вашего шлюза и код безопасности, который можно найти на ярлыке внизу.
+1. Установите этот адаптер через графический интерфейс администратора iobroker или через `npm install iobroker.tradfri --production`
+1. В графическом интерфейсе пользователя ioBroker добавьте экземпляр адаптера.
+1. Сконфигурируйте экземпляр, введя IP / имя хоста вашего шлюза и код безопасности, который можно найти на этикетке внизу.
 
 ### Устранение неполадок при установке:
 #### Linux / OSX:
-Убедитесь, что вы установили самую последнюю выпущенную версию. Если есть ошибки компиляции, вам может потребоваться установить build-essential:
+Убедитесь, что вы установили самую последнюю выпущенную версию. Если есть ошибки компиляции, возможно, вам придется установить build-essential:
 
 ```
 apt-get -y install build-essential
 ```
 
 #### Windows:
-Если вы работаете в более старых версиях NodeJS (<10), установка может завершиться ошибкой со следующей ошибкой где-то в журнале:
+Если вы используете старые версии NodeJS (<10), установка может завершиться ошибкой со следующей ошибкой где-нибудь в журнале:
 
 ```
 Can't find Python executable "python", you can set the PYTHON env variable.
@@ -40,9 +40,9 @@ Can't find Python executable "python", you can set the PYTHON env variable.
 
 Чтобы решить эту проблему, откройте административную оболочку:
 
-1. Нажмите <kbd>клавишу Windows</kbd>
-2. Введите `cmd`, нажмите <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>
-3. Подтвердите приглашение UAC
+1. Нажмите <kbd>клавишу ⊞ Windows.</kbd>
+2. Введите cmd, нажмите <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter.</kbd>
+3. Подтвердите запрос UAC.
 
 и выполните следующую команду:
 
@@ -50,10 +50,10 @@ Can't find Python executable "python", you can set the PYTHON env variable.
 npm install --add-python-to-path --global windows-build-tools
 ```
 
-Это может занять некоторое время ... после этого установка должна пройти успешно.
+Это может занять некоторое время ... после этого установка должна завершиться успешно.
 
 ## Отправка пользовательских пакетов CoAP
-Вы можете отправлять пользовательские пакеты CoAP из других адаптеров, используя `sendTo`. Пример из JavaScript:
+Вы можете отправлять пользовательские пакеты CoAP с других адаптеров с помощью `sendTo`. Пример из JavaScript:
 
 ```js
 sendTo("tradfri.0", "request", options, (ret) => {
@@ -71,7 +71,7 @@ sendTo("tradfri.0", "request", options, (ret) => {
 }
 ```
 
-Объект результата `ret` выглядит следующим образом:
+Результат объекта `ret` выглядит следующим образом:
 
 ```js
 {
@@ -84,6 +84,28 @@ sendTo("tradfri.0", "request", options, (ret) => {
 ```
 
 ## Changelog
+<!--
+	Placeholder for next release:
+	### __WORK IN PROGRESS__
+-->
+
+### 2.6.4 (2020-11-29)
+* Fix: Updated `node-tradfri-client` to suppress warnings about unknown property `9109`
+
+### 2.6.3 (2020-06-01)
+* Bugfix: Changed the role of RGB states to `level.color.rgb`
+
+### 2.6.2 (2020-04-29)
+* Bugfix: The unhandled error handler should now correctly log the error even if `adapter` is not defined
+
+### 2.6.1 (2020-04-17)
+* Bugfix: Blinds would not always be stopped
+
+### 2.6.0 (2020-03-17)
+* Support stopping blinds at their current position
+
+### 2.5.2 (2020-01-26)
+* Fix: Suppress log warnings for Symfonisk remotes
 
 ### 2.5.1 (2019-12-23)
 * Made it possible to operate plugs using virtual groups
@@ -302,7 +324,7 @@ sendTo("tradfri.0", "request", options, (ret) => {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 AlCalzone <d.griesel@gmx.net>
+Copyright (c) 2017-2020 AlCalzone <d.griesel@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

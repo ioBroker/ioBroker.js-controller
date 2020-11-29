@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.kostal-piko-ba/README.md
 title: ioBroker.kostal-piko-ba
-hash: F7w0+SsGPU+Ue1vOL2ZMjRGagdqFvH/kPUnUD8tR5UM=
+hash: EIW18yaoylVnvsqYxbPVrnIhJgYn2pPq4A6ID4wbp+s=
 ---
 ![Логотип](../../../en/adapterref/iobroker.kostal-piko-ba/admin/picoba.png)
 
@@ -29,9 +29,13 @@ hash: F7w0+SsGPU+Ue1vOL2ZMjRGagdqFvH/kPUnUD8tR5UM=
 Вы также можете редактировать частоту обновления данных в реальном времени, за день и в реальном времени.
 
 ## Примечания
-Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить сообщение об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать разработчикам об исключениях и ошибках кода. Для получения дополнительной информации и информации о том, как отключить сообщение об ошибках, см. [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Changelog
+
+### 1.1.3 (23.11.2020)
+* (HombachC) added battery.Voltage; added additional error handler; bumped dependencies
+
 ### 1.1.2 (26.10.2020)
 * (HombachC) bumped dependencies
 

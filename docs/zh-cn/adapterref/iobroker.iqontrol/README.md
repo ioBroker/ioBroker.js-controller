@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
+hash: Xz+vsxva7VIM1jMw61JoeEHStjiMNFPigNpdvGKt0QM=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -55,7 +55,7 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 > **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##添加到主屏幕
-您可以将其另存为主屏幕上的Web-App，它的外观和感觉就像是本机应用程序：![添加到Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
+您可以将其另存为主屏幕上的Web-App，它的外观和感觉就像本机应用程序一样：![添加到Homescreeen](../../../en/adapterref/iobroker.iqontrol/img/add_to_homescreen.png)
 
 ＃＃ 你需要...
 * Nodejs 10或更高
@@ -103,19 +103,21 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
     *``<网络适配器端口>''通常是8082
 *要打开指定的实例，您可以添加“ namespace = iqontrol。<instance-number>”作为URL参数
 *要打开指定的视图，您可以添加“ renderView = <viewID>”作为URL参数。
-    *``<viewID>``需要像`iqontrol。<instance-number> .Views。<view-name>``一样格式化
+    *``<viewID>``的格式必须类似于``iqontrol。<instance-number> .Views。<view-name>``
 *注意：这是区分大小写的！
 *要打开指定的视图作为主页，可以添加“ home = <viewID>”作为URL参数。这也将更改第一个工具栏条目的链接视图！
-    *``<viewID>``需要像`iqontrol。<instance-number> .Views。<view-name>``一样格式化
+    *``<viewID>``的格式必须类似于``iqontrol。<instance-number> .Views。<view-name>``
 *注意：这是区分大小写的！
-*要在加载页面时打开指定对话框，您可以添加“ openDialog = <deviceID>”作为URL参数
-    *``<deviceID>''的格式需要类似ʻʻiqontrol。<instance-number> .Views。<view-name> .devices。<device-number>``，其中``<device-number>``从0开始（因此视图中的第一个设备是设备号0）
+*要在加载页面时打开指定的对话框，您可以添加``openDialog = <deviceID>''作为URL参数
+    *``<deviceID>''的格式必须类似于``iqontrol。<instance-number> .Views。<view-name> .devices。<device-number>``其中``<device-number>``从0开始（因此视图中的第一个设备是设备号0）
 *注意：这是区分大小写的！
 *要设置或覆盖时间设置后的返回，请使用以下参数：
 *``returnAfterTimeTreshold =<time in seconds> ``设置时间，之后将调用目标视图。使用``0&#39;&#39;禁用时间后返回功能。
 *``returnAfterTimeDestiationView = <viewID>``设置视图，在阈值之后调用。如果未指定，将使用主视图。
 *如果您从壁挂式平板电脑上调用iQontrol，这些选项会很有用，使用后该平板电脑应自动返回主视图
 *要加载没有工具栏的页面，您可以添加``noToolbar = true''
+*要加载没有面板的页面，您可以添加``noPanel = true''
+*要加载不带工具栏和面板的页面，不激活滑动，不带加载纺锤且具有透明加载屏幕的页面，您可以添加“ isBackgroundView = true”
 
 **例：**
 
@@ -127,7 +129,7 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 *您也可以在图片网址中使用变量。例如，这对于天气预报而言可能是有用的。使用此模式：
     *``path / to / firstloaded.png | anotherpath / to / {iobrokerstate | fallback} .png``
     *示例：``./../ iqontrol.meta / userimages / demo / bottle.jpg | ./../ iqontrol.meta / userimages / demo / {javascript.0.myimage | whitestone} .jpg''
-*打开视图时加载``./../ iqontrol.meta / userimages / demo / bottle.jpg``
+*打开视图时加载``./../iqontrol.meta/userimages/demo/bottle.jpg''
 *从服务器获取javascript.0.myimage的状态后，该图像将立即替换为./../iqontrol.meta/userimages/demo/XXX.jpg，其中XXX是javascript.0.myimage的值
 *如果javascript.0.myimage没有值，将使用后备的whitestone（使用后备是可选的）
 
@@ -149,23 +151,23 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 *如果``javascript.0.weather''没有值，将使用回退``No weather data found''（使用回退是可选的）
 
 ##弹出消息
-*每个实例都会创建状态“ iqontrol.x.Popup.Message”
+*每个实例都会创建状态``iqontrol.x.Popup.Message''
 *将值传递到此状态时，将显示弹出消息（或吐司）
 *您可以使用html标签来格式化消息文本
 *还有一些其他状态可用于进一步自定义显示的弹出窗口（必须在设置消息数据点之前设置这些状态）：
     *``持续时间''：这是显示消息的时间，以毫秒为单位;如果设置为0，则必须确认消息
-    *“ ClickedValue”和“ ClickedDestinationState”：如果用户单击了弹出窗口，则“ ClickedValue”中的值将被发送到“ iqontrol.x.Popup.POPUP_CLICKED”，如果指定，还将附加到``ClickedDestinationState''中的数据点
+    *``ClickedValue''和``ClickedDestinationState''：如果用户单击了弹出窗口，则``ClickedValue''中的值将发送到``iqontrol.x.Popup.POPUP_CLICKED''中，如果指定，则还会附加到``ClickedDestinationState''中的数据点
         *如果未指定任何值，则将使用“ true”
     *“ ButtonNames”：您可以在此处指定以逗号分隔的按钮列表，这些列表将显示在弹出窗口的底部（例如“ OK，中止”）
-        *“ ButtonValues”和“ ButtonDestinationStates”：这些是逗号分隔的值列表，这些值将被发送到“ iqontrol.x.Popup.BUTTON_CLICKED”，并且，如果指定的话，将附加到“ ButtonDestinationStates”中的数据点。 `，如果用户单击相应的按钮
-*可以使用命令COMMAND：renderView和COMMAND：openDialog作为ButtonDestinationState来代替数据点，以呈现视图或打开对话框
-*然后，ButtonValue指定视图的响应。对话框，格式必须为“ iqontrol。<实例号>。视图”。<视图名称> iqontrol。<instance-number> .Views。<view-name> .devices。<device-number>``其中，<device-number>``从0开始（所以视图上的第一个设备是device数字0）
+        *``ButtonValues''和``ButtonDestinationStates''：这些是逗号分隔的值列表，这些值将被发送到``iqontrol.x.Popup.BUTTON_CLICKED''，并且如果指定的话，将附加到``ButtonDestinationStates''中的数据点`，如果用户单击相应的按钮
+*您可以使用命令COMMAND：renderView和COMMAND：openDialog作为ButtonDestinationState来代替数据点，以呈现视图或打开对话框
+*然后，ButtonValue指定视图的响应。对话框，格式为``iqontrol。<实例编号>。视图。<视图名称>``。 ``iqontrol。<实例编号> .Views。<视图名称> .devices。<设备编号>``，其中``<设备编号>``从0开始（因此视图上的第一个设备是设备数字0）
 *如果仅使用一个值（而不是用逗号分隔的列表），则此值将用于所有按钮
 *如果将“ ButtonValues”留空，则将使用按钮的名称
 *如果仅使用一个目标状态（而不是用逗号分隔的列表），则此状态将用于所有按钮
         *``ButtonCloses``：这是一个用逗号分隔的布尔值列表（``true''/``false''），用于指定在按下相应按钮时是否应关闭弹出窗口
-*或者，您可以通过sendTo-command和参数``PopupMessage''，``PopupDuration''，``PopupClickedValue''等来设置这些值
-    *例如：``sendTo（“ iqontrol”，“ send”，{PopupMessage：'这是我的消息'，PopupDuration：2500，PopupClickedValue：'messageConfirmed'}）;``
+*或者，您可以通过sendTo-command使用参数“ PopupMessage”，“ PopupDuration”，“ PopupClickedValue”等设置这些值
+    *示例：``sendTo（“ iqontrol”，“ send”，{PopupMessage：'这是我的消息'，PopupDuration：2500，PopupClickedValue：'messageConfirmed'}）;``
 *您也可以使用块状发送消息到iQontrol
 
 ![弹出屏幕截图](img/popup_screenshot.png)![弹出式阻止](../../../en/adapterref/iobroker.iqontrol/img/popup_blockly.png)
@@ -173,9 +175,9 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 ##小部件
 *每个图块都有一个Background_URL和一个Background_HTML数据点
 *在这里，您可以定义到网站的链接（通过Background_URL）或放置直接HTML代码（通过Background_HTML），这些代码将显示为图块的背景
-*这使您可以将内容（交互式）放置在图块中（例如时钟，FLOT图，表格，天气预报等）
+*这使您可以将内容（交互式）放置在图块内（例如时钟，FLOT图，表格，天气预报等）
 *默认情况下，鼠标事件将定向到该内容（因此，您将无法再单击图块本身），但是可以使用“将鼠标事件直接定向到图块，而不是Background_VIEW / URL / HTML的内容”选项禁用此功能”
-* iQontrol提供了一个设备角色“窗口小部件”，其中具有一些预定义的选项集，这些选项将在将网站显示为窗口小部件时主要使用。但是，通过适当地修改设备选项，您可以与其他任何角色一起获得相同的结果。
+* iQontrol提供了一个设备角色“窗口小部件”，其中具有一些预定义的选项集，这些选项集在将网站显示为窗口小部件时将主要使用。但是，通过适当地修改设备选项，您可以与其他任何角色一起获得相同的结果。
 
 ![弹出屏幕截图](../../../en/adapterref/iobroker.iqontrol/img/widget_screenshot.png)
 
@@ -186,30 +188,30 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
     *``message``是格式为``{command：command，stateId：stateId，value：value}''的JavaScript对象
     *支持以下消息命令：
         *``{命令：“ setWidgetState”，stateId：<widgetStateId>，值：<value>}''
-*这会将ioBroker状态`iqontrol。<instance> .Widgets。<widgetStateId>``设置为值``<value>``（``<value>``可以是字符串，数字或布尔值或对象，例如“ {val：<value>，ack：true | false}”）
+*这会将ioBroker状态``iqontrol。<instance> .Widgets。<widgetStateId>``设置为值``<value>``（``<value>``可以是字符串，数字或布尔值或对象，例如“ {val：<value>，ack：true | false}”）
         *``{命令：“ getWidgetState”，stateId：<widgetStateId>}``
-*这将导致iQontrol发送ioBroker状态“ iqontrol。<instance> .Widgets。<widgetStateId>”的值（请参见下面的如何接收应答消息）
+*这将导致iQontrol发送ioBroker状态``iqontrol。<instance> .Widgets。<widgetStateId>''的值（请参见下面的接收应答消息的方式）
         *``{命令：“ getWidgetStateSubscribed”，stateId：<widgetStateId>}``
-*这将导致iQontrol立即且每次其值更改时发送ioBroker状态`iqontrol。<instance> .Widgets。<widgetStateId>``的值（请参阅下面的如何接收应答消息）
+*这将导致iQontrol立即且每次其值更改时都发送ioBroker状态``iqontrol。
         *``{命令：“ setWidgetDeviceState”，stateId：<widgetDeviceState>，值：<value>}''
 *这会将设置为设备状态``<widgetDeviceState>''的ioBroker数据点（例如，分配给LEVEL的数据点）设置为值``<value>''（``<value>` `可以是字符串，数字或布尔值，也可以是诸如“ {val：<value>，ack：true | false}``之类的对象）
         *``{命令：“ getWidgetDeviceState”，stateId：<widgetDeviceState>}``
-*这将导致iQontrol发送分配给设备STATE``<widgetDeviceState>''的ioBroker数据点的值（例如，分配给LEVEL的数据点；请参见下面的方法，接收应答消息）
+*这将使iQontrol发送分配给设备STATE``<widgetDeviceState>''的ioBroker数据点的值（例如，分配给LEVEL的数据点；请参阅下面的方法，接收应答消息）
         *``{命令：“ getWidgetDeviceStateSubscribed”，stateId：<widgetDeviceState>}``
-*这将导致iQontrol现在以及每次其值更改时发送ioBroker数据点的值，该值已分配给设备STATE``<widgetDeviceState>``（例如，数据点，其已分配给LEVEL）（请参见下文）如何接收答案消息）
+*这将导致iQontrol现在以及每次其值更改时发送ioBroker数据点的值，该值已分配给设备STATE``<widgetDeviceState>``（例如，已分配给LEVEL的数据点）。如何接收答案消息）
         *``{命令：“ setState”，stateId：<stateId>，值：<value>}''
 *这会将ioBroker状态``<stateId>''设置为值``<value>``（``<value>``可以是字符串，数字或布尔值，也可以是``{val：<值>，ack：true | false}``）
         *``{命令：“ getState”，stateId：<stateId>}``
 *这将导致iQontrol发送ioBroker状态``<stateId>''的值（请参阅下面的如何接收应答消息）
         *``{命令：“ getStateSubscribed”，stateId：<stateId>}``
-*这将导致iQontrol现在以及每次其值更改时发送ioBroker状态``<stateId>''的值（请参见下面的接收应答消息的方式）
+*这将导致iQontrol现在以及每次其值更改时发送ioBroker状态``<stateId>''的值（请参阅下面的如何接收答案消息）
         *``{命令：“ renderView”，值：<viewID>}``
-*这将指示iQontrol渲染视图，其中<viewID>的格式必须类似于ʻiqontrol。<instance-number> .Views。<view-name>``（区分大小写）
+*这将指示iQontrol渲染视图，其中的<viewID>必须像iqontrol。<instance-number> .Views。<view-name>``一样格式化（区分大小写）
         *``{命令：“ openDialog”，值：<deviceID>}``
-*这将指示iQontrol打开一个对话框，其中<deviceID>的格式必须类似于`ʻiqontrol。<instance-number> .Views。<view-name> .devices。<device-number>``其中``<设备号>''从0开始（因此视图中的第一个设备是设备号0）
+*这将指示iQontrol打开一个对话框，其中的<deviceID>必须像iqontrol。<instance-number> .Views。<view-name> .devices。<device-number>``一样格式化其中``<设备号>''从0开始（因此视图中的第一个设备是设备号0）
 *要从iQontrol接收消息，您需要使用javascript命令``window.addEventListener（“ message”，receivePostMessage，false）;向“ message”事件注册一个事件监听器。
-    *函数``receivePostMessage''接收对象`ʻevent``
-*`event.data``包含来自iqontrol的消息，该消息将是一个对象，例如：
+    *函数``receivePostMessage''接收对象``event''
+*``event.data``包含来自iqontrol的消息，它将是一个类似于以下内容的对象：
 * event.data =``{command：“ getState”，stateId：<stateId>，value：<stateObject>}``-这将是对getState-command或getStateSubsribed-command的回答，并为您提供实际的` `<value>``-ioBroker状态的对象<stateId>
 *``<stateObject>``本身是一个像
 
@@ -237,11 +239,11 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 			}
 			````
 
-*要指示iQontrol在`iqontrol。<instance> .Widgets下生成一个widgetState，您可以在widget网站的头部内使用一个meta标签：
+*要指示iQontrol在“ iqontrol。<instance> .Widgets”下生成一个widgetState，您可以在widget网站的头部内使用一个meta标签：
 *语法：``<meta name="widget-datapoint" content="WidgetName.StateName" data-type="string" data-role="text" /> ``
 *您可以使用数据类型（可以设置为字符串，数字或布尔值），数据角色，数据名称，数据最小，数据最大，数据定义和数据单位属性来进一步配置数据点
     *如果将小部件网站作为URL或Background_URL添加到设备，则仅创建相应的数据点
-* URL / HTML-State可以使用相同的概念，用于在设备对话框内显示网站
+* URL / HTML-State可以使用相同的概念，用于在设备的对话框中显示网站
 *要为小部件创建图标，请将与小部件具有相同文件名的.png文件放入小部件目录中
 *请参见以下示例窗口小部件网站：
 
@@ -419,9 +421,9 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 <details><summary>显示可以由元标记“ widget-options”配置的可能选项：</summary>
 
 *图标：
-*`ʻicon_on``（图标开启）：
+*``icon_on``（图标开启）：
 *默认值：“”
-*`ʻicon_off``（图标关闭）：
+*``icon_off``（图标关闭）：
 *默认值：“”
 *设备特定选项：
 *``noVirtualState``（不要对STATE使用虚拟数据点（如果STATE为空，请隐藏开关））：
@@ -431,18 +433,18 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 *``readonly``（只读）：
 *可能的值：“ true” |“ false”
 *默认值：“ false”
-*`invertUnreach``（反转UNREACH（使用已连接而不是未到达））：
+*``invertUnreach``（反转UNREACH（使用连接而不是未到达））：
 *可能的值：“ true” |“ false”
 *默认值：“ false”
-*`additionalControlsSectionType'（ADDITIONAL_CONTROLS的外观）：
+*``additionalControlsSectionType``（ADDITIONAL_CONTROLS的外观）：
 *可能的值：“无” |“可折叠” |“可折叠打开”
 *默认值：“可折叠”
-*`additionalControlsCaption``（ADDITIONAL_CONTROLS的标题）：
+*``additionalControlsCaption``（ADDITIONAL_CONTROLS的标题）：
 *默认值：“其他控件”
-*`additionalInfoSectionType``（ADDITIONAL_INFO的外观）：
+*``additionalInfoSectionType``（ADDITIONAL_INFO的外观）：
 *可能的值：“无” |“可折叠” |“可折叠打开”
 *默认值：“可折叠”
-*`additionalInfoCaption``（ADDITIONAL_INFO的标题）：
+*``additionalInfoCaption``（ADDITIONAL_INFO的标题）：
 *默认值：“其他信息”
 *电池空图标：
 *``batteryActiveCondition``（条件）：
@@ -467,7 +469,7 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 *``bigIconInactive``（如果设备处于非活动状态，则显示大图标）：
 *可能的值：“ true” |“ false”
 *默认值：“ false”
-*ʻiconNoPointerEventsInactive（如果设备处于非活动状态，则忽略该图标的鼠标事件）：
+*``iconNoPointerEventsInactive``（如果设备处于非活动状态，则忽略图标的鼠标事件）：
 *可能的值：“ true” |“ false”
 *默认值：“ false”
 *``noOverlayInactive``（如果设备处于非活动状态，则删除图块的覆盖）：
@@ -491,7 +493,7 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 *``bigIconActive``（如果设备处于活动状态，则显示大图标）：
 *可能的值：“ true” |“ false”
 *默认值：“ false”
-*`iconNoPointerEventsActive``（如果设备处于活动状态，则忽略该图标的鼠标事件）：
+*``iconNoPointerEventsActive``（如果设备处于活动状态，则忽略该图标的鼠标事件）：
 *可能的值：“ true” |“ false”
 *默认值：“ false”
 *``noOverlayActive``（如果设备处于活动状态，则删除图块的覆盖图）：
@@ -515,7 +517,7 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 *``bigIconEnlarged``（如果设备放大则显示大图标）：
 *可能的值：“ true” |“ false”
 *默认值：“ true”
-*`iconNoPointerEventsEnlarged``（如果设备放大，则忽略图标的鼠标事件）：
+*``iconNoPointerEventsEnlarged``（如果设备放大则忽略图标的鼠标事件）：
 *可能的值：“ true” |“ false”
 *默认值：“ false”
 *``noOverlayEnlarged``（如果设备被放大，则删除图块的覆盖图）：
@@ -557,8 +559,8 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 *``tileActiveConditionValue``（条件值）：
 *默认值：“”
 *时间戳记：
-*`addTimestampToState``（添加时间戳到状态）：
-*可能的值：“” |“ SA” |“ ST” |“ STA” |“ SE” |“ SEA” |“ SE。” |“ SE.A” |“ Se” |“ SeA” |“ STE” | “ STEA” |“ STE。” |“ STE.A” |“ STe” |“ STeA” |“ T” |“ TA” |“ TE” |“ TEA” |“ TE。” |“ TE.A” | “ Te” |“ TeA” |“ E” |“ EA” |“ E.” ||“ EA” |“ e” |“ eA” |“ N”
+*``addTimestampToState``（添加时间戳到状态）：
+*可能的值：“” |“ SA” |“ ST” |“ STA” |“ SE” |“ SEA” |“ SE。” |“ SE.A” |“ Se” |“ SeA” |“ STE” | “ STEA” |“ STE。” |“ STEA” |“ STe” |“ STeA” |“ T” |“ TA” |“ TE” |“ TEA” |“ TE。” |“ TE.A” | “ Te” |“ TeA” |“ E” |“ EA” |“ E.” |“ EA” |“ e” |“ eA” |“ N”
 *默认值：“ N”
 *``showTimestamp``（在对话框中显示时间戳）：
 *可能的值：“” |“是” |“否” |“始终” |“从不”
@@ -571,7 +573,7 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 *``popupFixed``（已修复（不可调整大小））：
 *可能的值：“ true” |“ false”
 *默认值：“ false”
-*`openURLExternal``（在新窗口中打开URL（而不是在对话框中显示为框））：
+*``openURLExternal``（在新窗口中打开URL（而不是在对话框中显示为框））：
 *可能的值：“ true” |“ false”
 *默认值：“ false”
 *``popupAllowPostMessage``（允许URL / HTML的postMessage-Communication）：
@@ -588,7 +590,7 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 
 <details><summary>显示使用上述设置创建地图的示例窗口小部件网站：</summary>
 
-*您可以将以下HTML代码作为html文件上传到/ userwidgets子目录中，并将其引用到Background_URL-State（然后需要将其配置为“常量”）
+*您可以将以下HTML代码作为html文件上传到/ userwidgets子目录，并将其引用到Background_URL-State（然后需要将其配置为“常量”）
 *添加小部件时，显示说明
 *然后询问您是否要应用包含的选项
 *创建了三个数据点来控制地图的位置：iqontrol.x.Widgets.Map.Posision.latitude，.altitude和.zoom
@@ -679,7 +681,7 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 
 <details><summary>显示一个更高级的示例：</summary>
 
-*您可以将以下HTML代码作为html文件上传到/ userwidgets子目录中，并将其引用到Background_URL-State（然后需要将其配置为“常量”）
+*您可以将以下HTML代码作为html文件上传到/ userwidgets子目录，并将其引用到Background_URL-State（然后需要将其配置为“常量”）
 *添加小部件时，显示说明
 *询问标题的网址参数
 *然后询问您是否要应用包含的选项
@@ -914,7 +916,7 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 ##角色和相关状态的描述
 每个设备都有一个角色，该角色定义了设备的功能。每个角色都会生成一组状态，这些状态可以链接到相应的iobroker状态。
 如果使用自动创建功能，则可以从iobroker-object树中选择一个现有设备。自动创建试图找出角色并匹配尽可能多的状态。
-这仅适用于已知设备。对于未知设备，以及要使设备具有高级功能，您可以通过（+）-按钮手动添加它们，或编辑由自动创建功能创建的设备。
+这仅适用于已知设备。对于未知设备，以及要赋予设备高级功能，您可以通过（+）按钮手动添加它们，或编辑由自动创建功能创建的设备。
 要编辑设备的角色和状态，请单击设备后面的铅笔。您将在下面找到角色和已用状态的简短描述：
 
 ###修改数据点配置
@@ -936,8 +938,8 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
     *除了目标值ID外，您还可以为不同的键定义不同的数据点ID和目标值（键是原始数据点的可能值）
     *您也可以在键和目标值中使用通配符``*''
 *示例：
-*键：“ TuneIn-Playlist：*”，目标数据点ID：“ʻalexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist”，目标值：“ *”
-*如果用户输入“ TuneIn-Playlist：Ambient”，则将“ Ambient”值写入“ alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist”
+*键：``TuneIn-Playlist：*''，目标数据点ID：``alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist``，目标值：``*''
+*如果用户输入``TuneIn-Playlist：Ambient''，则值``Ambient''将被写入``alexa2.0.Echo-Devices.XYZ.Music-Provider.TuneIn-Playlist``
 
 ![CustomDialog调用](img/custom_call.png)![CustomDialog示例](img/custom_dialog.png)![目标值列表的概念](../../../en/adapterref/iobroker.iqontrol/img/target-value-list_concept.png)
 
@@ -993,8 +995,8 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
 
 ###<img src="img/icons/button.png" width="32">按键：
 * **STATE** *任何*-任何所需的状态类型
-* **SET_VALUE** CONSTANT *字符串*-这是一个常数（不是链接的iobroker状态！），如果按下按钮，它将分配给STATE
-* **OFF_SET_VALUE** 常量*字符串*-这是一个常量（不是链接的iobroker状态！）。如果已定义，则在in选项中定义的时间或100ms之后，STATE将重置为该值。
+* **SET_VALUE** CONSTANT *string* 这是一个常数（不是链接的iobroker状态！），如果按下按钮，它将分配给STATE
+* **OFF_SET_VALUE** 常量*字符串*-这是一个常量（不是链接的iobroker状态！）。如果已定义，则将在in选项中定义的时间或100ms之后将STATE重置为该值。
 
 ###<img src="img/icons/light_on.png" width="32">光：
 每个灯可能具有以下一种或两种状态：
@@ -1017,7 +1019,7 @@ hash: 0xM+Cv3GDUYENkaSO2gntIgKM9WHUJDFvIPPNQLr6a8=
     如果您的设备不支持使用HUE，SATURATION和COLOR_BRIGHTNESS（HSB / HSV色彩空间），则可以使用多种替代色彩空间。在设备选项中，可以选择以下颜色空间之一：
 
     * **RGB** / **RGB** 您可以使用RGB格式（十六进制），而不是使用HUE，SATURATION和COLOR_BRIGHTNESS，可选，前导'＃'
-    * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可在前导'＃'处使用
+    * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可在前导'＃'中使用
     * **RGBWWCW** / **RGBWWCW** / **RGBCWWW** / **RGBCWWW** 您可以使用RGBWWCW-或RGBCWWW-Format（十六进制）来代替HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS ，WW =暖白，CW =冷白），可选，以“＃”开头
     * **RGB（仅色相）** /** RGB（仅色相）**：可以使用RGB（仅色相）格式（十六进制）替代使用HUE，并以“＃”开头。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
     * ** Milight的色相**：这是Milight设备的色相值，在色相色域中使用另一个起点：
@@ -1032,7 +1034,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 *效果模式：
     * **效果**：*值列表*-播放效果
-* **EFFECT_NEXT** *布尔值*-如果设置为true，将播放下一个效果（作为不支持EFFECT值列表的设备的替代）
+* **EFFECT_NEXT** *布尔值*-如果设置为true，则会播放下一个效果（作为不支持EFFECT值列表的设备的替代）
 * **EFFECT_SPEED_UP** / **EFFECT_SPEED_DOWN** *布尔值*-如果设置为true，则效果将加快/降低
 *其他：
     * **电源**：*数字*-功耗将在右上角以小号显示
@@ -1140,7 +1142,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **TRACK_NUMBER** *数字*-自我说明
 * **PREV，REWIND，PLAY，PAUSE，STOP，FORWARD，NEXT** *布尔值*-如果按下相应的按钮，则设置为true
 * **SHUFFLE，MUTE，PLAY_EVERYWHERE，EJECT，POWER_SWITCH** *布尔值*-相应功能的状态
-* **REPEAT** *布尔值*-表示重复功能的状态或* string *-可以通过相应的选项定义3种状态：off的值，all-all和repeat-one的值
+* **REPEAT** *布尔值*-重复功能的状态或* string *-可以通过相应的选项定义3种状态：off的值，all-all和repeat-one的值
 * **DURATION，ELAPSED** *数字*-实际标题的持续时间和经过的时间-用于显示搜索栏
 * **VOLUME** *数字*-用于音量滑块
 * **源，播放列表**：*值列表*-显示选择菜单以从播放列表中选择来源或标题
@@ -1155,7 +1157,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 *注意：您可以使用Target-Value-List（可通过每个数据点的扳手图标访问）将一个数据点链接到多个数据点，具体取决于返回的值（请参见上面的“修改数据点”部分）
 * **REMOTE_COLOR** *字符串*-显示彩色按钮，如果单击了颜色，则返回相应的颜色（“红色”，“绿色”，“黄色”或“蓝色”）
 * **REMOTE_ADDITIONAL_BUTTONS** *array* 按钮数组。如果单击按钮，则按钮的名称将发送到相应的状态ID
-* **REMOTE_HIDE_REMOTE** *布尔值*-如果为true，则将隐藏完整的远程控制部分（例如，如果选择了有效的信号源，则仅显示该部分）
+* **REMOTE_HIDE_REMOTE** *布尔值*-如果为true，则将隐藏完整的远程控制部分（例如，如果选择了有效源，则仅显示该部分）
 
 ###<img src="img/icons/popup.png" width="32">弹出：
 * **STATE** *任何*-可用于显示更多信息
@@ -1182,7 +1184,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 *清除浏览器缓存
 *重新启动ioBroker
 
-###如果您还有其他问题，请提供浏览器的调试控制台中的日志以及错误行的屏幕截图：
+###如果您还有其他问题，请提供浏览器调试控制台中的日志以及错误行的屏幕截图：
 *在浏览器打开的调试控制台中启动iQonrol（通常需要按<kbd>F12</kbd>来打开它）
 *切换到控制台窗口并重现该错误
 *在控制台窗口中查找消息
@@ -1196,6 +1198,10 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 ## Changelog
 
 ### dev
+* (sbormann) Added url-paremeter noPanel.
+* (sbormann) changed fetching of ioBroker Objects.
+
+### 1.5.0 (2020-11-24)
 * (sbormann) Added Flot-Chart widget.
 * (sbormann) Enhanced adding of widgets with a new settings dialog.
 * (sbormann) Added some new options for widget-developers (the meta-tag url-datapoints was enhanced for example to ask for a color with a color-picker, postMessage-answeres now contain the id of the original datapoint).
@@ -1204,11 +1210,17 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * (sbormann) Enhanced timing of repositioning dialogs after loading.
 * (sbormann) Added noToolbar to URL-parameters.
 * (sbormann) Added BACKGROUND_VIEW, to define a view which will be displayed as background of a tile.
-* (sbormann) Added the option 'Open linked view in parent instance, if this view is used as a BACKGROUND_VIEW' for links to other views. 
+* (sbormann) Added the option 'Open linked view in parent instance, if this view is used as a BACKGROUND_VIEW' and the option 'close panel after opening link' for links to other views. 
 * (sbormann) Added a panel which can be placed on left side of the screen and display a BACKGROUND_VIEW/URL/HTML and is widely configurable.
 * (sbormann) Added showing of swipe goals (can be hidden via option in options/miscellaneous/swiping).
 * (sbormann) Fixed crash when enlarging a hidden tile.
 * (sbormann) Reworked some borders and scrolling parameters.
+* (sbormann) Fixed comboboxes (selecbox with progressbars in admin).
+* (sbormann) Padding bottom is only applied when minimizing a tile to give enough room for scrolling to tiles top.
+* (sbormann) Fixed setState to false for postMessage-Communication.
+* (sbormann) Added option to define border-radius (rounded corners) of tiles.
+* (sbormann) Added option to define text-shadow-color of toolbar.
+* (sbormann) Added fallback to loading iframe content for non fitting mime types.
 
 ### 1.4.1 (2020-11-01)
 * (sbormann) Fixed drag-sorting or tables and usage of comboboxes on mobile (touch) devices.

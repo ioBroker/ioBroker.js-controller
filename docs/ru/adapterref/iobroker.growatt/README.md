@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.growatt/README.md
 title: ioBroker.growatt
-hash: 9DQt0xD93CdRjMp2rdZ8KsjvnnGOmlkbDKtjXdmmip8=
+hash: tXmagMsqudjCn/PupKABd7yRlnTk1g53bn8Uk5R9HuE=
 ---
 ![Логотип](../../../en/adapterref/iobroker.growatt/admin/glogo.png)
 
@@ -16,7 +16,7 @@ hash: 9DQt0xD93CdRjMp2rdZ8KsjvnnGOmlkbDKtjXdmmip8=
 ![НПМ](https://nodei.co/npm/iobroker.growatt.png?downloads=true)
 
 # IoBroker.growatt
-## Адаптер Growatt для ioBroker
+## Адаптер growatt для ioBroker
 ioBroker Growatt Адаптер для связи с Growatt Shine Server.
 Я не аффилирован.
 Обычно данные отправляются из регистратора данных в облако каждые 5 минут.
@@ -30,11 +30,20 @@ ioBroker Growatt Адаптер для связи с Growatt Shine Server.
 ### Пользователь и пароль
 Введите имя и пароль, которые вы также используете в приложении Shine или на веб-портале.
 
+### Войти с общим ключом
+На веб-сайте Growatt в разделе «Энергия, управление заводом, инструменты управления» вы можете отправить себе ключ по электронной почте.
+
 ### Прочитать данные о заводе
 Эта запись данных содержит сохраненные основные данные
 
 ### Прочитать данные о статусе
-Эти данные доступны не для всех растений. Этот набор данных содержит данные в реальном времени.
+Эти данные доступны не для всех заводов (кроме INV / MAX / TLX). Этот набор данных содержит данные в реальном времени.
+
+### Прочитать последние данные графика
+Эти данные доступны только для установок без считывания данных о состоянии (INV / MAX / TLX). Ищутся последние действительные данные за день.
+
+### Прочитать данные диаграммы
+Эти данные доступны только для установок без считывания данных о состоянии и требуют считывания последних данных диаграммы (INV / MAX / TLX). Данные записываются и хранятся в виде строки JSON.
 
 ### Прочитать общие данные
 Эта запись данных содержит данные агрегирования.
@@ -46,6 +55,17 @@ ioBroker Growatt Адаптер для связи с Growatt Shine Server.
 Этот набор данных содержит прогноз погоды.
 
 ## Changelog
+### 0.0.12 (27.11.2020)
+* (PLCHome) wrong initialization for shared key: string instead of boolean
+
+### 0.0.11 (27.11.2020)
+* (PLCHome) Read me
+
+### 0.0.10 (26.11.2020)
+* (PLCHome) Shared key login
+* (PLCHome) Last value of the graph if there are no live data.
+* (PLCHome) Change of the polling interval
+
 ### 0.0.9 (05.10.2020)
 * (PLCHome) fix no feature 'ADAPTER_AUTO_DECRYPT_NATIVE'
 

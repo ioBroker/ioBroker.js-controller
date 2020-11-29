@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/dev/adddevice.md
 title: Как добавить устройство в alexa или google home
-hash: KJyj2QNgNPa29Jr/BcB/QJi6yPa8ucW5nGzTU+4Hr+A=
+hash: 7LOEqf58Vo+Ne7CyV77jozHsy8UjnC7Ghl8TQAR8aD0=
 ---
 # Как добавить устройство в alexa или google home
 Чтобы добавить устройство, у нас есть 4 шага:
 
 - При необходимости расширите государственные роли необходимыми новыми ролями.
 - Расширьте тип детектора новым устройством
-- Добавьте устройство в iobroker.devices, чтобы можно было смоделировать его.
+- Добавьте устройство в iobroker.devices, чтобы можно было его смоделировать.
 - Добавить устройство в alexa / google and co
 
 ## Новые роли
@@ -48,4 +48,4 @@ hash: KJyj2QNgNPa29Jr/BcB/QJi6yPa8ucW5nGzTU+4Hr+A=
 Перейдите на https://github.com/ioBroker/ioBroker.devices/blob/master/src/package.json и обновите там свою версию.
 После этого расширьте список значков: https://github.com/ioBroker/ioBroker.devices/blob/master/src/src/Components/TypeIcon.js
 
- И создать новую версию тоже.
+ И создайте новую версию тоже.

@@ -479,7 +479,7 @@
           "title": {
             "en": "IoT cloud",
             "de": "IoT Cloud",
-            "ru": "Интернет вещей",
+            "ru": "Облако Интернета вещей",
             "zh-cn": "物联网云"
           },
           "content": "cloud/iot.md"

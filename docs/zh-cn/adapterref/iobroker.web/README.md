@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: 9n6SwG41NXFxJiAyFDGvoXZHtAqZuYCrsYFi/AhHmwE=
+hash: 44jVs/zK2VzhG/oNEYKlUu9L9p9HrLI9eZnRlE7BMYU=
 ---
 ![商标](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -28,9 +28,9 @@ hash: 9n6SwG41NXFxJiAyFDGvoXZHtAqZuYCrsYFi/AhHmwE=
 
 ##扩展
 Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类URL请求，则会调用该处理程序。
-这些扩展看起来像普通适配器，但是它们没有正在运行的进程，将由Web服务器调用。
+这些扩展看起来像普通的适配器，但是它们没有正在运行的进程，将由Web服务器调用。
 
-例如。用户可以激活特殊的代理适配器，并访问同一Web服务器中的其他设备（例如Web摄像头）。
+例如。用户可以激活特殊的代理适配器并访问同一Web服务器中的其他设备（例如Web cam）。
 必须让所有服务在一台Web服务器下可用。
 
 ##暴力保护
@@ -43,9 +43,20 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __正在进行中__->
+### __进展中__->
+##“基本身份验证”选项
+通过发送未经授权的`WWW-Authenticate`标头允许`401`，允许通过基本身份验证登录。
+可以用于* FullyBrowser *之类的应用程序。一旦输入了错误的凭据，您将被重定向到登录页面。
 
 ## Changelog
+
+### 3.1.0 (2020-11-26)
+* (foxriver76) Add option for Basic Auth
+
+### 3.0.14 (2020-10-30)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-WEB-1D)
+* (foxriver76) Support html \<video\> tag on Safari (iOS)
+
 ### 3.0.13 (2020-09-06)
 * (bluefox) Added the support of multi-language names for the welcome screen.
 

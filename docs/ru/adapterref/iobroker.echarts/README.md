@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: lgjbpu0vQLXd/XJmpkuioaqrA5OhyhBzRTn4gYi13o0=
+hash: FcRsukxWLJbNuZMkihZrspoEwyxoJGgukVLW2r2ePT0=
 ---
 ![Логотип](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -14,7 +14,7 @@ hash: lgjbpu0vQLXd/XJmpkuioaqrA5OhyhBzRTn4gYi13o0=
 ![НПМ](https://nodei.co/npm/iobroker.echarts.png?downloads=true)
 
 # IoBroker.echarts
-## Echarts адаптер для ioBroker
+## Адаптер электронных схем для ioBroker
 Создавайте полезные графики в ioBroker:
 
 ![Снимок экрана](../../../en/adapterref/iobroker.echarts/img/screenshot1.png)
@@ -23,7 +23,7 @@ hash: lgjbpu0vQLXd/XJmpkuioaqrA5OhyhBzRTn4gYi13o0=
 Добавьте после перезагрузки вкладку в админке: ![Админ](../../../en/adapterref/iobroker.echarts/img/admin.png)
 
 ### Подсказка
-`i` в нижнем регистре указывает, что значение было интерполировано из двух соседних значений и не существует на данной отметке времени.
+`i` в нижнем регистре указывает, что значение было интерполировано из двух соседних значений, и его не существует на данной отметке времени.
 
 ![Подсказка](../../../en/adapterref/iobroker.echarts/img/tooltip.png)
 
@@ -58,6 +58,8 @@ sendTo('echarts.0', {
 ```
 
 ## Руководство разработчика
+** Для не-разработчика эта ссылка не работает! **
+
 Вы можете отлаживать графики просмотра локально с помощью:
 
 - cd iobroker.echarts / src-chart
@@ -68,13 +70,21 @@ sendTo('echarts.0', {
 - виджет для vis (кнопка)
 - виджет для материала
 - показывать значки перечислений в папках или рядом с ними
-- перетаскивание пресетов для изменения порядка
 
 <! - Заполнитель для следующей версии (в начале строки):
 
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 0.4.0 (2020-11-28)
+* (bluefox) Added new option: no background
+
+### 0.3.9 (2020-11-28)
+* (bluefox) Corrected error with the chart. 
+
+### 0.3.8 (2020-11-27)
+* (bluefox) Implemented the conversion of the flot presets into echarts. 
+
 ### 0.3.7 (2020-11-17)
 * (bluefox) Hide nulls in hover details
 

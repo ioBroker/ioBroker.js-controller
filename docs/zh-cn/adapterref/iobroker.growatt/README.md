@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.growatt/README.md
 title: ioBroker.growatt
-hash: 9DQt0xD93CdRjMp2rdZ8KsjvnnGOmlkbDKtjXdmmip8=
+hash: tXmagMsqudjCn/PupKABd7yRlnTk1g53bn8Uk5R9HuE=
 ---
 ![商标](../../../en/adapterref/iobroker.growatt/admin/glogo.png)
 
@@ -30,11 +30,20 @@ ioBroker Growatt适配器可与Growatt Shine Server通信。
 ###用户和密码
 请输入您在Shine应用程序或Web门户中也使用的名称和密码。
 
+###使用共享密钥登录
+在Growatt网站上的能源，工厂管理，操作工具下，您可以通过电子邮件向自己发送密钥。
+
 ###读取工厂数据
 该数据记录包含存储的主数据
 
 ###读取状态数据
-这些数据并非适用于所有工厂。该数据集包含实时数据。
+这些数据不适用于所有工厂（不是INV / MAX / TLX）。该数据集包含实时数据。
+
+###读取图表的最后数据
+这些数据仅适用于没有读取状态数据（INV / MAX / TLX）的工厂。搜索当天的最后有效数据。
+
+###读取图表数据
+这些数据仅适用于没有读取状态数据的工厂，并且需要读取图表的最后数据（INV / MAX / TLX）。数据被写入并存储为JSON字符串。
 
 ###读取总数据
 该数据记录包含聚合数据。
@@ -46,6 +55,17 @@ ioBroker Growatt适配器可与Growatt Shine Server通信。
 该数据集包含天气预报。
 
 ## Changelog
+### 0.0.12 (27.11.2020)
+* (PLCHome) wrong initialization for shared key: string instead of boolean
+
+### 0.0.11 (27.11.2020)
+* (PLCHome) Read me
+
+### 0.0.10 (26.11.2020)
+* (PLCHome) Shared key login
+* (PLCHome) Last value of the graph if there are no live data.
+* (PLCHome) Change of the polling interval
+
 ### 0.0.9 (05.10.2020)
 * (PLCHome) fix no feature 'ADAPTER_AUTO_DECRYPT_NATIVE'
 

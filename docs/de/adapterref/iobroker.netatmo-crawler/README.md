@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.netatmo-crawler/README.md
 title: ioBroker.netatmo-crawler
-hash: AYa9Q5Mw0yMB4rTjN7+q7Mdfy4JXM4iM36AlT6b8hH0=
+hash: pPbXHYl8EtQujC5VkbkrJRJ+fqthxmTa9bXWSMkRbdk=
 ---
 ![Logo](../../../en/adapterref/iobroker.netatmo-crawler/img/netatmo-logo.png)
 
@@ -34,6 +34,7 @@ Inhaltsverzeichnis
 * [Druck] (# Druck)
 * [Temperatur] (# Temperatur)
 * [Wind] (# Wind)
+* [Information] (# Information)
 * [Credits] (# Credits)
 * [Changelog] (# changelog)
 * [Lizenz] (# Lizenz)
@@ -65,14 +66,14 @@ Der „Netatmo Crawler“ analysiert viele echte lokale Informationen in Ihrer N
 
 Luftfeuchtigkeit -------- Netatmo verwendet die relative Luftfeuchtigkeit. Dies ist das Verhältnis der aktuellen absoluten Luftfeuchtigkeit zur höchstmöglichen absoluten Luftfeuchtigkeit (abhängig von der aktuellen Lufttemperatur). Ein Wert von 100 Prozent relativer Luftfeuchtigkeit bedeutet, dass die Luft vollständig mit Wasserdampf gesättigt ist und nicht mehr halten kann, wodurch die Möglichkeit von Regen entsteht. Dies bedeutet nicht, dass die relative Luftfeuchtigkeit 100 Prozent betragen muss, damit es regnen kann - es muss 100 Prozent sein, wo sich die Wolken bilden, aber die relative Luftfeuchtigkeit in Bodennähe könnte viel geringer sein.
 
-Regen ---- Verwendet die Einheit Millimeter. Wenn Sie die Einheit Liter pro Meter Würfel wünschen, können Sie diese trotzdem verwenden. Sie können es zum Beispiel zum Gießen im Garten verwenden.
+Regen ---- Verwendet die Millimetereinheit. Wenn Sie die Einheit Liter pro Meter Würfel wünschen, können Sie diese trotzdem verwenden. Sie können es zum Beispiel zum Gießen im Garten verwenden.
 
 Druck -------- Die Luft um dich herum hat Gewicht und drückt gegen alles, was sie berührt. Dieser Druck wird Atmosphärendruck oder Luftdruck genannt.
 Was sollen Sie mit diesem Wert machen? So einfach es klingt: Wettervorhersage! Hoher Druck = gutes Wetter, niedriger Druck = schlechtes Wetter.
 Der normale Mittelwert liegt bei 1013 mBar.
 Für eine „echte“ Wettervorhersage sollten Sie einige Stunden lang einen Druckverlauf benötigen (ich verwende vier Stunden).
 Wenn es fällt, sollte es in Zukunft schlechtes Wetter sein, wenn es steigt, sollte es gutes Wetter sein.
-Ich habe einen [Skript zur Vorhersage hier](http://www.beteljuice.co.uk/zambretti/forecast.html) gefunden (er wird als Zambretti-Methode für eine 90% -Prognose bezeichnet).
+Ich habe ein [Skript zur Vorhersage hier](http://www.beteljuice.co.uk/zambretti/forecast.html) gefunden (es wird Zambretti-Methode für eine 90% -Prognose genannt).
 Andere Einheiten: 1 mbar = 100 Pa = 1 hPa
 
 Temperatur ----------- Hier können Sie das Kühltemperaturniveau berechnen. Für niedrige Temperaturen kann der Windchill (10 °C oder niedriger, mit Wind rechnen) für hohe Temperaturen den Hitzeindex (25 ° C oder höher, mit Luftfeuchtigkeit berechnen) verwenden.
@@ -103,6 +104,8 @@ Wind ---- Windgeschwindigkeit ist ein Maß für Luft, die sich von hohem zu nied
 Die Böenstärke ist der höchste Windwert, gemessen in kurzer Zeit (etwa drei Sekunden).
 Sie sollten ein Skript für Ihre Markise oder für die Zambretti-Methode erstellen (siehe oben).
 
+Information ---- **Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden.** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 Credits
 
 =======
@@ -111,7 +114,14 @@ Vielen Dank an [backfisch](https://github.com/backfisch88) für die erste Idee u
 
 ## Changelog
 
-
+### 0.3.8
+* (Bart19) small fix in error handling
+### 0.3.7
+* (Bart19) caches authorization token
+### 0.3.6
+* (Bart19) adds Sentry for error reporting
+### 0.3.5
+* (Bart19) fix for new netatmo website
 ### 0.3.4
 * (Bart19) optimizes error handling
 ### 0.3.3

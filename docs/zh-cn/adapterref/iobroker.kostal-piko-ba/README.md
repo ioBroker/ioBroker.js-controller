@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.kostal-piko-ba/README.md
 title: ioBroker.kostal-皮科巴
-hash: F7w0+SsGPU+Ue1vOL2ZMjRGagdqFvH/kPUnUD8tR5UM=
+hash: EIW18yaoylVnvsqYxbPVrnIhJgYn2pPq4A6ID4wbp+s=
 ---
 ![商标](../../../en/adapterref/iobroker.kostal-piko-ba/admin/picoba.png)
 
@@ -29,9 +29,13 @@ hash: F7w0+SsGPU+Ue1vOL2ZMjRGagdqFvH/kPUnUD8tR5UM=
 您还可以编辑实时，每日和实时数据的更新频率。
 
 ##注意
-该适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
+该适配器使用Sentry库自动向开发人员报告异常和代码错误。有关更多详细信息以及有关如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ## Changelog
+
+### 1.1.3 (23.11.2020)
+* (HombachC) added battery.Voltage; added additional error handler; bumped dependencies
+
 ### 1.1.2 (26.10.2020)
 * (HombachC) bumped dependencies
 

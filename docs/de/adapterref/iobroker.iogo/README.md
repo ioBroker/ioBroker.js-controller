@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iogo/README.md
 title: ioBroker.iogo
-hash: aBmdaoGWO2ljGVbWQt5RUSWTCet+PJRr64BvVyuYySg=
+hash: yk5U6cZpi1vr4MAnRb+S96DdU2ZGKTH4Xe3ih//Tk/g=
 ---
 ![Logo](../../../en/adapterref/iobroker.iogo/admin/iogo.png)
 
@@ -16,22 +16,22 @@ hash: aBmdaoGWO2ljGVbWQt5RUSWTCet+PJRr64BvVyuYySg=
 # IoBroker.iogo
 =================
 
-Dieser Adapter erweitert die SmartHome-App ioGo um zusätzliche Funktionen: https://play.google.com/store/apps/details?id=de.nisnagel.iogo.
-Bitte besuchen Sie www.iogo.app, um weitere Informationen zu erhalten.
+Dieser Adapter fügt der smarthome-App ioGo https://play.google.com/store/apps/details?id=de.nisnagel.iogo zusätzliche Funktionen hinzu.
+Bitte besuchen Sie www.iogo.app für weitere Informationen zu den ersten Schritten.
 
 ## Aufbau
-Sie benötigen einen gültigen Lizenzschlüssel, um diesen Adapter zu verwenden.
-Eine Lizenz kann gekauft werden, nachdem ein Konto unter https://www.iogo.app erstellt wurde.
+Sie benötigen einen gültigen Lizenzschlüssel, um diesen Adapter verwenden zu können.
+Eine Lizenz kann nach dem Erstellen eines Kontos unter https://www.iogo.app erworben werden.
 
 Bitte geben Sie Ihre Kontoinformationen (E-Mail / Passwort) in die Instanzkonfiguration ein.
 
 ## Verwendung
-Sie können Nachrichten an alle authentifizierten Benutzer über die Nachrichtenbox ```sendTo('iogo', 'New message')``` oder an bestimmte Benutzer ```sendTo('iogo', {user: 'Username', text: 'Test message'})``` senden.
-Der Benutzer muss zuvor erstellt worden sein (weitere Details finden Sie in der Anwendungsdokumentation).
+Sie können eine Nachricht an alle authentifizierten Benutzer über messageBox ```sendTo('iogo', 'New message')``` oder an einen bestimmten Benutzer ```sendTo('iogo', {user: 'Username', text: 'Test message'})``` senden.
+Der Benutzer muss zuvor erstellt worden sein (weitere Informationen finden Sie in der Anwendungsdokumentation).
 
-Es ist möglich, mehr als einen Empfänger anzugeben (trennen Sie die Benutzernamen einfach durch Komma). Beispiel: Empfänger: "Benutzer1, Benutzer4, Benutzer5"
+Es ist möglich, mehr als einen Empfänger anzugeben (trennen Sie einfach die Benutzernamen durch Komma). Zum Beispiel: Empfänger: "Benutzer1, Benutzer4, Benutzer5"
 
-Beispiel für das Senden einer benutzerdefinierten Benachrichtigung mit Javascript:
+Beispiel für das Senden einer benutzerdefinierten Benachrichtigungsnachricht mit Javascript:
 
 ```
 sendTo('iogo', {
@@ -43,9 +43,9 @@ sendTo('iogo', {
 
 Und ein Beispiel mit blockly:
 
-![blockhaft](../../../en/adapterref/iobroker.iogo/img/blockly.png)
+![blockartig](../../../en/adapterref/iobroker.iogo/img/blockly.png)
 
-Callbacks werden ebenfalls unterstützt:
+Rückrufe werden ebenfalls unterstützt:
 
 ```
 sendTo('iogo', {title: 'News', text: 'New message'}, function (res) {
@@ -67,9 +67,10 @@ sendTo('iogo', {
 **Möglichkeiten**:
 
 - *Benutzer* Einzelbenutzer oder Benutzerliste
-- *Text* Die Nachricht selbst
+- *text* Die Nachricht selbst
 - *title* Der Titel der Benachrichtigung
 - *url* Absoluter Pfad zu einem Bild
+- *Ablauf* Ablaufzeit in Sekunden
 
 ## Changelog
 
@@ -93,7 +94,7 @@ sendTo('iogo', {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 - 2019 Nis Nagel <support@nisnagel.de>
+Copyright (c) 2018 - 2020 Nis Nagel <info@iogo.app>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

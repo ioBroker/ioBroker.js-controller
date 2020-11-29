@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: 29CUGSpUNv2aCSi8t456Aw5o6CC6uIeA8iyPhZL3324=
+hash: mfGvqbr1ILQHaKyiD3jrGqQ2180YJdt7BQ1ZhTmvopA=
 ---
 ![Логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -20,11 +20,11 @@ hash: 29CUGSpUNv2aCSi8t456Aw5o6CC6uIeA8iyPhZL3324=
 Адаптер взаимодействует с устройствами Shelly с помощью REST api и протокола CoAP или MQTT.
 По умолчанию прошивка Shelly (прошивка прошивки не требуется!). Вы найдете более подробную информацию об устройстве здесь: [Шелли](https://shelly.cloud/)
 
-Если вы используете протокол CoAP, устройства Shelly с прошивкой 1.8.0 или выше работают только с Shelly Adapter 4.0.0 или выше. Если вы используете устройства с прошивкой ниже 1.8.0, за исключением Shelly 4Pro, вам необходимо использовать адаптер Shelly 3.3.6 или ниже. Адаптер Shelly 4.0.0 и выше в этом случае работать не будет!
+Если вы используете протокол CoAP, устройства Shelly с прошивкой 1.8.0 или выше работают только с Shelly Adapter 4.0.0 или выше. Если вы используете устройства с прошивкой ниже 1.8.0, за исключением Shelly 4Pro, вам необходимо использовать Shelly Adapter 3.3.6 или ниже. Адаптер Shelly 4.0.0 и выше в этом случае работать не будет!
 
 ** Этот адаптер использует библиотеки Sentry, чтобы автоматически сообщать мне как разработчику об исключениях и ошибках кода. ** Подробнее см. Ниже!
 
-## Монтаж
+## Установка
 Вы можете найти подробную документацию по установке здесь: [Документация по установке](./docs/EN/INSTALL.md)
 
 ## Поддерживаемые устройства
@@ -58,20 +58,30 @@ hash: 29CUGSpUNv2aCSi8t456Aw5o6CC6uIeA8iyPhZL3324=
 | Shelly Dimmer 2 (SHDM-2) | поддерживается с v3.3.4 | поддерживается с v3.3.4 |
 | Датчик двери / окна Shelly 2 (SHDW-2) | поддерживается с v3.3.5 | поддерживается с v3.3.5 |
 | Shelly Uni (SHUNI-1) | поддерживается с v4.0.4 | поддерживается с v4.0.4 |
+| Shelly 1L (SHSW-L) | поддерживается с v4.0.5 | поддерживается с v4.0.5 |
 
 ## Что такое Sentry и что передается на серверы?
 Sentry.io - это способ для разработчиков получить обзор ошибок в своих приложениях. Именно это и реализовано в этом адаптере.
 
-Когда адаптер дает сбой или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Когда вы разрешили ioBroker GmbH собирать диагностические данные, включается также ваш идентификатор установки (это просто уникальный идентификатор **без** дополнительной информации о вас, адрес электронной почты, имя и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
+Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Когда вы разрешили ioBroker GmbH собирать диагностические данные, включается также ваш установочный идентификатор (это просто уникальный идентификатор **без** дополнительной информации о вас, электронной почты, имени и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
 
 ## Changelog
- 
-### 4.0.4 (2020-09-03)
+
+### 4.0.5-beta (2020-11-27)
+* (Matze2010) - Add Support for Shelly Uni (SHSW-L)
+* (Matze2010) - Shelly 2.5 Roller: Support for favorite positions 
+* (Stübi) - Bugfixing TypeError in Shelly Plug implementation (Issue #281)
+
+### 4.0.4 (2020-11-15)
+* (Apollon77) update dependencies and shelly-iot lib
+* (Stübi) - Bugfix EM3, unit of comsumed power Wh instead of kWH
 * (Stübi) - optimize the destroy function (Bugfixing)
 * (Stübi) - Bugfixing Relay0.Event error for Shelly I3 in MQTT mode (Issue #241)
 * (harrym67) - Shelly 2.5 Roller mode. According to Shelly API: changed existing state swap to swap_input and add state swap.(Issue #240)
 * (Stübi) - Allow setting of customer MQTT prefix (Issue #244)
 * (harrym67) - Add Support for Shelly Uni (SHUNI-1)
+* (harrym67) - Bugfix EM3 (Issue #256)
+* (foxriver76) - Bugfix MQTT password check (Issue #264) 
 
 ### 4.0.3 (2020-08-19)
 * (Stübi) - Add a checkbox, to optionally enable updates of objects even if they have not changed (Issue #209)

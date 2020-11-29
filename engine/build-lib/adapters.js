@@ -420,7 +420,12 @@ function getReadme(lang, dirName, repo, adapter) {
 function processAdapterLang(adapter, repo, lang, content) {
     const dirName = ADAPTERS_DIR.replace('/LANG/', '/' + lang + '/') + 'iobroker.' + adapter;
 
-    let iconName = repo.extIcon && repo.extIcon.split('/').pop();
+    let iconName = repo.extIcon ? repo.extIcon.split('/').pop() : '';
+
+    if (!iconName) {
+        console.error('!!!! ADAPTER has no extIcon: ' + adapter);
+    }
+
     iconName = iconName.split('?')[0];
 
     // download logo
@@ -429,7 +434,7 @@ function processAdapterLang(adapter, repo, lang, content) {
             if (icon) {
                 utils.writeSafe(`${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}/${iconName}`, icon);
             } else if (adapter !== 'js-controller') {
-                console.error('ADAPTER has no icon: ' + adapter);
+                console.error('!!!! ADAPTER has no icon: ' + adapter);
             }
 
             content.pages[repo.type] = content.pages[repo.type] || {title: consts.ADAPTER_TYPES[repo.type] || {en: repo.type}, pages: {}};
@@ -641,7 +646,11 @@ function copyAdapterToFrontEnd(lang, adapter) {
                         if (result) {
                             utils.writeSafe(`${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}${result.name}`, result.body);
 
-                            const dst = `${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}/${repo[adapter].extIcon.split('/').pop().split('?')[0]}`;
+                            if (!repo[adapter].extIcon) {
+                                console.error(`WARNING adapter ${adapter} has no extIcon!!`);
+                            }
+
+                            const dst = `${consts.FRONT_END_DIR + lang}/adapterref/iobroker.${adapter}/${(repo[adapter].extIcon || '').split('/').pop().split('?')[0]}`;
                             if (!fs.existsSync(dst)) {
                                 const src = `${consts.FRONT_END_DIR}${result.logo}`;
 

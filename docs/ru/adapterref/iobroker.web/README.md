@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: 9n6SwG41NXFxJiAyFDGvoXZHtAqZuYCrsYFi/AhHmwE=
+hash: 44jVs/zK2VzhG/oNEYKlUu9L9p9HrLI9eZnRlE7BMYU=
 ---
 ![Логотип](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -11,7 +11,7 @@ hash: 9n6SwG41NXFxJiAyFDGvoXZHtAqZuYCrsYFi/AhHmwE=
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.web.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.web.svg)
 ![Тесты](https://travis-ci.org/ioBroker/ioBroker.web.svg?branch=master)
-![NPM](https://nodei.co/npm/iobroker.web.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.web.png?downloads=true)
 
 # IoBroker.web
 Веб-сервер на базе Node.js и экспресс для чтения файлов из БД ioBroker
@@ -31,10 +31,10 @@ hash: 9n6SwG41NXFxJiAyFDGvoXZHtAqZuYCrsYFi/AhHmwE=
 Расширения выглядят как обычный адаптер, но у них нет запущенного процесса, и они будут вызываться веб-сервером.
 
 Например. пользователь может активировать специальный прокси-адаптер и подключаться к другим устройствам (например, веб-камерам) на том же веб-сервере.
-Требуется, чтобы все сервисы были доступны на одном веб-сервере.
+Требуется, чтобы все службы были доступны на одном веб-сервере.
 
 ## Защита от перебора
-Если аутентификация включена и пользователь 5 раз вводит неверный пароль в течение одной минуты, он должен подождать не менее одной минуты до следующей попытки.
+Если аутентификация включена и пользователь вводит неверный пароль 5 раз в течение одной минуты, он должен подождать не менее одной минуты до следующей попытки.
 После 15-й неправильной попытки пользователь должен подождать 1 час.
 
 ## Опция «Оставаться в системе»
@@ -44,8 +44,19 @@ hash: 9n6SwG41NXFxJiAyFDGvoXZHtAqZuYCrsYFi/AhHmwE=
 <! - Заполнитель для следующей версии (в начале строки):
 
 ### __РАБОТА В ПРОЦЕССЕ__ ->
+## Опция «Обычная проверка подлинности»
+Разрешает вход через базовую аутентификацию, отправляя `401` Неавторизованный с заголовком `WWW-Authenticate`.
+Это можно использовать для таких приложений, как *FullyBrowser* При однократном вводе неправильных учетных данных вы будете перенаправлены на страницу входа.
 
 ## Changelog
+
+### 3.1.0 (2020-11-26)
+* (foxriver76) Add option for Basic Auth
+
+### 3.0.14 (2020-10-30)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-WEB-1D)
+* (foxriver76) Support html \<video\> tag on Safari (iOS)
+
 ### 3.0.13 (2020-09-06)
 * (bluefox) Added the support of multi-language names for the welcome screen.
 

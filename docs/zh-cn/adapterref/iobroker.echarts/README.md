@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: lgjbpu0vQLXd/XJmpkuioaqrA5OhyhBzRTn4gYi13o0=
+hash: FcRsukxWLJbNuZMkihZrspoEwyxoJGgukVLW2r2ePT0=
 ---
 ![商标](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -23,7 +23,7 @@ hash: lgjbpu0vQLXd/XJmpkuioaqrA5OhyhBzRTn4gYi13o0=
 重新启动后，在管理员中添加选项卡：![管理员](../../../en/adapterref/iobroker.echarts/img/admin.png)
 
 ###工具提示
-小写的`i`指示该值是从2个邻居值中插入的，并且在此时间戳时不存在。
+小写的`i`表示该值是从2个邻居值中插入的，并且在此时间戳时不存在。
 
 ![工具提示](../../../en/adapterref/iobroker.echarts/img/tooltip.png)
 
@@ -58,9 +58,11 @@ sendTo('echarts.0', {
 ```
 
 ##开发人员手册
+**对于非开发人员，此链接无效！**
+
 您可以使用以下命令在本地调试视图图表：
 
--cd iobroker.echarts / src-chart
+-光盘iobroker.echarts / src-chart
 -npm运行开始
 -浏览器：http：// localhost：8081 / adapter / echarts / tab.html？dev = true
 
@@ -68,13 +70,21 @@ sendTo('echarts.0', {
 -可见部件（按钮）
 -材料小部件
 -在文件夹或其附近显示枚举图标
--拖放预设以重新排序
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __正在进行的工程__->
+### __进展中__->
 
 ## Changelog
+### 0.4.0 (2020-11-28)
+* (bluefox) Added new option: no background
+
+### 0.3.9 (2020-11-28)
+* (bluefox) Corrected error with the chart. 
+
+### 0.3.8 (2020-11-27)
+* (bluefox) Implemented the conversion of the flot presets into echarts. 
+
 ### 0.3.7 (2020-11-17)
 * (bluefox) Hide nulls in hover details
 

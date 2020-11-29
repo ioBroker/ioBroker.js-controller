@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.growatt/README.md
 title: ioBroker.growatt
-hash: 9DQt0xD93CdRjMp2rdZ8KsjvnnGOmlkbDKtjXdmmip8=
+hash: tXmagMsqudjCn/PupKABd7yRlnTk1g53bn8Uk5R9HuE=
 ---
 ![Logo](../../../en/adapterref/iobroker.growatt/admin/glogo.png)
 
@@ -30,11 +30,20 @@ Derzeit können nur Daten gelesen werden, das Schreiben von Parametern oder das 
 ### Benutzer und Passwort
 Bitte geben Sie den Namen und das Passwort ein, die Sie auch in der Shine-App oder im Webportal verwenden.
 
+### Mit gemeinsamem Schlüssel anmelden
+Auf der Growatt-Website unter Energie, Anlagenmanagement, Betriebstools können Sie sich einen Schlüssel per E-Mail senden.
+
 ### Anlagendaten lesen
 Dieser Datensatz enthält die gespeicherten Stammdaten
 
 ### Statusdaten lesen
-Diese Daten sind nicht für alle Pflanzen verfügbar. Dieser Datensatz enthält Live-Daten.
+Diese Daten sind nicht für alle Anlagen verfügbar (nicht INV / MAX / TLX). Dieser Datensatz enthält Live-Daten.
+
+### Letzte Daten des Diagramms lesen
+Diese Daten sind nur für Anlagen ohne Lesestatusdaten (INV / MAX / TLX) verfügbar. Es wird nach den letzten gültigen Daten für den Tag gesucht.
+
+### Daten des Diagramms lesen
+Diese Daten sind nur für Anlagen ohne Lesestatusdaten verfügbar und erfordern gelesene letzte Daten der Tabelle (INV / MAX / TLX). Die Daten werden als JSON-Zeichenfolge geschrieben und gespeichert.
 
 ### Gesamtdaten lesen
 Dieser Datensatz enthält Aggregationsdaten.
@@ -46,6 +55,17 @@ Dieser Datensatz enthält einige Daten vom Gerät. Einige Daten sind auch in den
 Dieser Datensatz enthält die Wettervorhersage.
 
 ## Changelog
+### 0.0.12 (27.11.2020)
+* (PLCHome) wrong initialization for shared key: string instead of boolean
+
+### 0.0.11 (27.11.2020)
+* (PLCHome) Read me
+
+### 0.0.10 (26.11.2020)
+* (PLCHome) Shared key login
+* (PLCHome) Last value of the graph if there are no live data.
+* (PLCHome) Change of the polling interval
+
 ### 0.0.9 (05.10.2020)
 * (PLCHome) fix no feature 'ADAPTER_AUTO_DECRYPT_NATIVE'
 

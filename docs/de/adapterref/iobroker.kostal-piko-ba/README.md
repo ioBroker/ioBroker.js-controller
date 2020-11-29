@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.kostal-piko-ba/README.md
 title: ioBroker.kostal-piko-ba
-hash: F7w0+SsGPU+Ue1vOL2ZMjRGagdqFvH/kPUnUD8tR5UM=
+hash: EIW18yaoylVnvsqYxbPVrnIhJgYn2pPq4A6ID4wbp+s=
 ---
 ![Logo](../../../en/adapterref/iobroker.kostal-piko-ba/admin/picoba.png)
 
@@ -29,9 +29,13 @@ Um eine Verbindung zum Kostal Pico BA-Wechselrichter herzustellen, muss die IP-A
 Sie können auch die Aktualisierungshäufigkeiten von Live-, Tages- und Livetime-Daten bearbeiten.
 
 ## Anmerkungen
-Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Changelog
+
+### 1.1.3 (23.11.2020)
+* (HombachC) added battery.Voltage; added additional error handler; bumped dependencies
+
 ### 1.1.2 (26.10.2020)
 * (HombachC) bumped dependencies
 

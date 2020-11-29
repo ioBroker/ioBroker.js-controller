@@ -3,25 +3,25 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tradfri/README.md
 title: ioBroker.tradfri
-hash: wCRFsvNTOwcQ7dNNzURGLTQpKapsCsi2SxdETCGwcDM=
+hash: waY56Oxf+bx+srdcpDHrwGSMihR7UNSfR/l/TSCILIE=
 ---
 ![Logo](../../../en/adapterref/iobroker.tradfri/admin/tradfri.png)
 
-![Total Warnungen](https://img.shields.io/lgtm/alerts/g/AlCalzone/ioBroker.tradfri.svg?logo=lgtm&logoWidth=18)
+![Total Alerts](https://img.shields.io/lgtm/alerts/g/AlCalzone/ioBroker.tradfri.svg?logo=lgtm&logoWidth=18)
 ![Anzahl der Installationen](http://iobroker.live/badges/tradfri-stable.svg)
 
 # IoBroker.tradfri
-![Build Status](https://action-badges.now.sh/AlCalzone/ioBroker.tradfri)
+![Build-Status](https://action-badges.now.sh/AlCalzone/ioBroker.tradfri)
 
 ## Bedarf
 * Linux (z. B. Raspberry Pi) / OSX / Windows
-* NodeJS> = 6.x
+* NodeJS> = 6.x.
 * Trådfri Gateway
 
 ## Installation
-1. Installieren Sie diesen Adapter über die iobroker Admin-GUI oder über `npm install iobroker.tradfri --production`
-1. Fügen Sie in der ioBroker-GUI eine Adapterinstanz hinzu.
-1. Konfigurieren Sie die Instanz, indem Sie die IP-Adresse / den Hostnamen Ihres Gateways und den Sicherheitscode eingeben, der sich auf dem Etikett unten befindet.
+1. Installieren Sie diesen Adapter über die iobroker-Administrator-GUI oder über `npm install iobroker.tradfri --production`
+1. Fügen Sie in der ioBroker-Benutzeroberfläche eine Adapterinstanz hinzu.
+1. Konfigurieren Sie die Instanz, indem Sie die IP / den Hostnamen Ihres Gateways und den Sicherheitscode eingeben, der sich auf dem Etikett unten befindet.
 
 ### Fehlerbehebung bei Installationsproblemen:
 #### Linux / OSX:
@@ -32,15 +32,15 @@ apt-get -y install build-essential
 ```
 
 #### Windows:
-Wenn Sie mit älteren NodeJS-Versionen (<10) arbeiten, schlägt die Installation möglicherweise mit dem folgenden Fehler im Protokoll fehl:
+Wenn Sie mit älteren NodeJS-Versionen (<10) arbeiten, schlägt die Installation möglicherweise mit dem folgenden Fehler irgendwo im Protokoll fehl:
 
 ```
 Can't find Python executable "python", you can set the PYTHON env variable.
 ```
 
-Öffnen Sie eine Verwaltungsshell, um das Problem zu lösen:
+Öffnen Sie zur Lösung eine Verwaltungsshell:
 
-1. <kbd>Drücken Sie die Windows-</kbd> Taste
+1. <kbd>Drücken Sie die Windows-</kbd> Taste <kbd>⊞</kbd>
 2. Geben Sie &quot;cmd&quot; ein und drücken Sie <kbd>Strg</kbd> + <kbd>Umschalt</kbd> + <kbd>Eingabetaste</kbd>
 3. Bestätigen Sie die UAC-Eingabeaufforderung
 
@@ -53,7 +53,7 @@ npm install --add-python-to-path --global windows-build-tools
 Dies kann eine Weile dauern ... danach sollte die Installation erfolgreich sein.
 
 ## Senden von benutzerdefinierten CoAP-Paketen
-Mit `sendTo` können Sie benutzerdefinierte CoAP-Pakete von anderen Adaptern senden. Beispiel aus JavaScript:
+Sie können benutzerdefinierte CoAP-Pakete von anderen Adaptern mithilfe von `sendTo` senden. Beispiel aus JavaScript:
 
 ```js
 sendTo("tradfri.0", "request", options, (ret) => {
@@ -61,7 +61,7 @@ sendTo("tradfri.0", "request", options, (ret) => {
 });
 ```
 
-Das Objekt `options` sieht folgendermaßen aus:
+Das Objekt `options` sieht wie folgt aus:
 
 ```js
 {
@@ -71,7 +71,7 @@ Das Objekt `options` sieht folgendermaßen aus:
 }
 ```
 
-Das Ergebnisobjekt `ret` sieht folgendermaßen aus:
+Das Ergebnisobjekt `ret` sieht wie folgt aus:
 
 ```js
 {
@@ -84,6 +84,28 @@ Das Ergebnisobjekt `ret` sieht folgendermaßen aus:
 ```
 
 ## Changelog
+<!--
+	Placeholder for next release:
+	### __WORK IN PROGRESS__
+-->
+
+### 2.6.4 (2020-11-29)
+* Fix: Updated `node-tradfri-client` to suppress warnings about unknown property `9109`
+
+### 2.6.3 (2020-06-01)
+* Bugfix: Changed the role of RGB states to `level.color.rgb`
+
+### 2.6.2 (2020-04-29)
+* Bugfix: The unhandled error handler should now correctly log the error even if `adapter` is not defined
+
+### 2.6.1 (2020-04-17)
+* Bugfix: Blinds would not always be stopped
+
+### 2.6.0 (2020-03-17)
+* Support stopping blinds at their current position
+
+### 2.5.2 (2020-01-26)
+* Fix: Suppress log warnings for Symfonisk remotes
 
 ### 2.5.1 (2019-12-23)
 * Made it possible to operate plugs using virtual groups
@@ -302,7 +324,7 @@ Das Ergebnisobjekt `ret` sieht folgendermaßen aus:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 AlCalzone <d.griesel@gmx.net>
+Copyright (c) 2017-2020 AlCalzone <d.griesel@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

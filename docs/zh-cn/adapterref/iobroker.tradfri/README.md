@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tradfri/README.md
 title: ioBroker.tradfri
-hash: wCRFsvNTOwcQ7dNNzURGLTQpKapsCsi2SxdETCGwcDM=
+hash: waY56Oxf+bx+srdcpDHrwGSMihR7UNSfR/l/TSCILIE=
 ---
 ![商标](../../../en/adapterref/iobroker.tradfri/admin/tradfri.png)
 
@@ -25,14 +25,14 @@ hash: wCRFsvNTOwcQ7dNNzURGLTQpKapsCsi2SxdETCGwcDM=
 
 ###解决安装问题：
 #### Linux / OSX：
-确保安装最新发行的版本。如果存在编译错误，则可能必须安装build-essential：
+确保安装最新发行的版本。如果有编译错误，则可能必须安装build-essential：
 
 ```
 apt-get -y install build-essential
 ```
 
 #### Windows：
-如果您在旧的NodeJS版本（<10）上运行，则安装可能会失败，并在日志中某处出现以下错误：
+如果您在较低版本的NodeJS（<10）上运行，则安装可能会失败，并在日志中的某处出现以下错误：
 
 ```
 Can't find Python executable "python", you can set the PYTHON env variable.
@@ -40,7 +40,7 @@ Can't find Python executable "python", you can set the PYTHON env variable.
 
 要解决此问题，请打开管理外壳程序：
 
-1.按the <kbd>Windows</kbd>键
+1.按<kbd>⊞Windows</kbd>键
 2.输入`cmd`，按<kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>Enter</kbd>
 3.确认UAC提示
 
@@ -84,6 +84,28 @@ sendTo("tradfri.0", "request", options, (ret) => {
 ```
 
 ## Changelog
+<!--
+	Placeholder for next release:
+	### __WORK IN PROGRESS__
+-->
+
+### 2.6.4 (2020-11-29)
+* Fix: Updated `node-tradfri-client` to suppress warnings about unknown property `9109`
+
+### 2.6.3 (2020-06-01)
+* Bugfix: Changed the role of RGB states to `level.color.rgb`
+
+### 2.6.2 (2020-04-29)
+* Bugfix: The unhandled error handler should now correctly log the error even if `adapter` is not defined
+
+### 2.6.1 (2020-04-17)
+* Bugfix: Blinds would not always be stopped
+
+### 2.6.0 (2020-03-17)
+* Support stopping blinds at their current position
+
+### 2.5.2 (2020-01-26)
+* Fix: Suppress log warnings for Symfonisk remotes
 
 ### 2.5.1 (2019-12-23)
 * Made it possible to operate plugs using virtual groups
@@ -302,7 +324,7 @@ sendTo("tradfri.0", "request", options, (ret) => {
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017-2019 AlCalzone <d.griesel@gmx.net>
+Copyright (c) 2017-2020 AlCalzone <d.griesel@gmx.net>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

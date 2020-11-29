@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tr-064/README.md
 title: 的ioBroker.tr-064
-hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
+hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 ---
 ![商标](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 

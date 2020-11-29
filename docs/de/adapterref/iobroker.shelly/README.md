@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: 29CUGSpUNv2aCSi8t456Aw5o6CC6uIeA8iyPhZL3324=
+hash: mfGvqbr1ILQHaKyiD3jrGqQ2180YJdt7BQ1ZhTmvopA=
 ---
 ![Logo](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -58,6 +58,7 @@ Eine ausführliche Installationsdokumentation finden Sie hier: [Installationsdok
 | Shelly Dimmer 2 (SHDM-2) | unterstützt seit v3.3.4 | unterstützt seit v3.3.4 |
 | Shelly Tür- / Fenstersensor 2 (SHDW-2) | unterstützt seit v3.3.5 | unterstützt seit v3.3.5 |
 | Shelly Uni (SHUNI-1) | unterstützt seit v4.0.4 | unterstützt seit v4.0.4 |
+| Shelly 1L (SHSW-L) | unterstützt seit v4.0.5 | unterstützt seit v4.0.5 |
 
 ## Was ist Sentry und was wird den Servern gemeldet?
 Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendungen. Und genau das ist in diesem Adapter implementiert.
@@ -65,13 +66,22 @@ Mit Sentry.io erhalten Entwickler einen Überblick über Fehler in ihren Anwendu
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an unseren eigenen Sentry-Server in Deutschland gesendet. Wenn Sie der ioBroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
- 
-### 4.0.4 (2020-09-03)
+
+### 4.0.5-beta (2020-11-27)
+* (Matze2010) - Add Support for Shelly Uni (SHSW-L)
+* (Matze2010) - Shelly 2.5 Roller: Support for favorite positions 
+* (Stübi) - Bugfixing TypeError in Shelly Plug implementation (Issue #281)
+
+### 4.0.4 (2020-11-15)
+* (Apollon77) update dependencies and shelly-iot lib
+* (Stübi) - Bugfix EM3, unit of comsumed power Wh instead of kWH
 * (Stübi) - optimize the destroy function (Bugfixing)
 * (Stübi) - Bugfixing Relay0.Event error for Shelly I3 in MQTT mode (Issue #241)
 * (harrym67) - Shelly 2.5 Roller mode. According to Shelly API: changed existing state swap to swap_input and add state swap.(Issue #240)
 * (Stübi) - Allow setting of customer MQTT prefix (Issue #244)
 * (harrym67) - Add Support for Shelly Uni (SHUNI-1)
+* (harrym67) - Bugfix EM3 (Issue #256)
+* (foxriver76) - Bugfix MQTT password check (Issue #264) 
 
 ### 4.0.3 (2020-08-19)
 * (Stübi) - Add a checkbox, to optionally enable updates of objects even if they have not changed (Issue #209)

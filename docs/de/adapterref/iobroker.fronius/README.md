@@ -2,27 +2,32 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fronius/README.md
-title: kein Titel
-hash: rKpemGzj26qLZjuzhdgtDp0lBXcaaPCOgdQXZ9rN2jU=
+title: ioBroker.fronius
+hash: e4eLXLM1VVzjytY4m6uIjTUlmxeHzZYTDWCuyQ4Wcgk=
 ---
-![Anzahl der Installationen](http://iobroker.live/badges/fronius-stable.svg)
+![Logo](../../../en/adapterref/iobroker.fronius/admin/fronius.png)
+
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.fronius.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.fronius.svg)
-![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/iobroker.fronius.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.fronius/badge.svg)
+![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/fronius-installed.svg)
+![Anzahl der Installationen (stabil)](http://iobroker.live/badges/fronius-stable.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/ldittmar81/iobroker.fronius.svg)
+![Bekannte Sicherheitslücken](https://snyk.io/test/github/ldittmar81/ioBroker.fronius/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.fronius.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.fronius/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.fronius?branch=master&svg=true)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.fronius.svg)
 
-<h1><img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.fronius/master/admin/fronius.png" width="64"/> ioBroker.fronius </h1>
+# IoBroker.fronius
+** Tests: ** ![Testen und freigeben](https://github.com/ldittmar81/ioBroker.fronius/workflows/Test%20and%20Release/badge.svg)
 
-## Ein Fronius-Wechselrichteradapter für ioBroker
-Dies ist ein ioBroker-Adapter für Ihren Fronius PV-Wechselrichter mit Fronius Datalogger Web ab Version 2.0.4-1 oder Fronius Datamanager ab Version 3.0.3-1.
+## Ein Fronius Wechselrichteradapter für ioBroker
+Dies ist ein ioBroker-Adapter für Ihren Fronius PV-Wechselrichter mit Fronius Datalogger Web ab Version 2.0.4-1, Fronius Datamanager ab Version 3.0.3-1 und Symo Gen24.
 
 ## Changelog
 
-### 1.0.5
+### 1.1.0 (2020-11-24)
+* (nkleber78) Implementation change for support of SYMO GEN24
+* (nkleber78) Fix issue with adapters connected state
+
+### 1.0.5 (2019-01-18)
 * (ldittmar) compact mode compatibility added
 * (ldittmar) add chinese support
 
@@ -61,7 +66,7 @@ Dies ist ein ioBroker-Adapter für Ihren Fronius PV-Wechselrichter mit Fronius D
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 ldittmar <iobroker@lmdsoft.de>
+Copyright (c) 2020 ldittmar <iobroker@lmdsoft.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

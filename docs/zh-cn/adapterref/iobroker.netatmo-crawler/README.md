@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.netatmo-crawler/README.md
 title: ioBroker.netatmo-crawler
-hash: AYa9Q5Mw0yMB4rTjN7+q7Mdfy4JXM4iM36AlT6b8hH0=
+hash: pPbXHYl8EtQujC5VkbkrJRJ+fqthxmTa9bXWSMkRbdk=
 ---
 ![商标](../../../en/adapterref/iobroker.netatmo-crawler/img/netatmo-logo.png)
 
@@ -21,7 +21,7 @@ ioBroker的netatmo-crawler适配器
 
 =================
 
-从公共Netatmo站抓取信息
+从Netatmo公用站检索信息
 
 目录
 
@@ -34,7 +34,8 @@ ioBroker的netatmo-crawler适配器
 * [压力]（＃压力）
 * [温度]（＃temperature）
 * [Wind]（＃wind）
-* [学分]（＃学分）
+* [信息]（＃信息）
+* [学分]（＃credits）
 * [变更日志]（＃changelog）
 * [许可证]（＃license）
 
@@ -61,9 +62,9 @@ ioBroker的netatmo-crawler适配器
 
 ===================
 
-“ Netatmo Crawler”解析您附近的许多实际本地信息。您如何处理所有这些信息？以下是一些一般事实和示例：
+“ Netatmo Crawler”会解析您附近的许多实际本地信息。您如何处理所有这些信息？以下是一些一般事实和示例：
 
-湿度-------- Netatmo使用相对湿度，这是当前绝对湿度与最高可能绝对湿度（取决于当前空气温度）的比率。相对湿度为100％的读数表示空气完全被水蒸气饱和，不能再容纳任何水，从而导致下雨。这并不意味着要下雨就必须使相对湿度为100％-云正在形成的地方必须为100％，但是靠近地面的相对湿度可能要小得多。
+湿度-------- Netatmo使用相对湿度，这是当前绝对湿度与最高可能绝对湿度（取决于当前空气温度）的比率。相对湿度为100％的读数表示空气完全被水蒸气饱和，不能再容纳更多的水，从而可能下雨。这并不意味着要下雨就必须使相对湿度为100％-云正在形成的地方必须为100％，但是靠近地面的相对湿度可能要小得多。
 
 雨----用单位毫米。如果您希望每米立方米的单位升，则仍然可以使用。您可以将其用于在花园中浇水（例如）。
 
@@ -99,9 +100,11 @@ function heat(temperature, humidity) {
 }
 ```
 
-风----风速是衡量空气从高压到低压运动的一种手段，通常是由于温度变化引起的。
+风----风速是衡量空气从高压向低压移动的一种方法，通常是由于温度变化引起的。
 阵风强度是风的最高值，在短时间内（大约三秒钟）测量。
 您应该为遮阳篷或Zambretti方法（上图）做一个脚本。
+
+信息---- **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 学分
 
@@ -111,7 +114,14 @@ function heat(temperature, humidity) {
 
 ## Changelog
 
-
+### 0.3.8
+* (Bart19) small fix in error handling
+### 0.3.7
+* (Bart19) caches authorization token
+### 0.3.6
+* (Bart19) adds Sentry for error reporting
+### 0.3.5
+* (Bart19) fix for new netatmo website
 ### 0.3.4
 * (Bart19) optimizes error handling
 ### 0.3.3

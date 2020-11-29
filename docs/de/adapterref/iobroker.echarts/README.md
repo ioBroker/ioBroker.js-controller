@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: lgjbpu0vQLXd/XJmpkuioaqrA5OhyhBzRTn4gYi13o0=
+hash: FcRsukxWLJbNuZMkihZrspoEwyxoJGgukVLW2r2ePT0=
 ---
 ![Logo](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -25,10 +25,10 @@ Fügen Sie nach dem Neustart die Registerkarte im Admin hinzu: ![Administrator](
 ### Tooltip
 Kleinbuchstaben `i` zeigen an, dass der Wert aus den 2 Nachbarwerten interpoliert wurde und zu diesem Zeitpunkt nicht vorhanden ist.
 
-![Tooltipt](../../../en/adapterref/iobroker.echarts/img/tooltip.png)
+![Tooltip](../../../en/adapterref/iobroker.echarts/img/tooltip.png)
 
 ### Serverseitiges Rendern
-Sie können die Voreinstellungen auf dem Server rendern und als base64-URL abrufen oder in ioBroker DB auf der Festplatte speichern:
+Sie können die Voreinstellungen auf dem Server rendern und als base64-URL abrufen oder auf der Festplatte in ioBroker DB speichern:
 
 ```
 sendTo('echarts.0', {
@@ -58,6 +58,8 @@ sendTo('echarts.0', {
 ```
 
 ## Entwicklerhandbuch
+** Für Nichtentwickler funktioniert dieser Link nicht! **
+
 Sie können Ansichtsdiagramme lokal debuggen mit:
 
 - cd iobroker.echarts / src-chart
@@ -68,13 +70,21 @@ Sie können Ansichtsdiagramme lokal debuggen mit:
 - Widget für vis (Schaltfläche)
 - Widget für Material
 - Aufzählungssymbole in Ordnern oder in deren Nähe anzeigen
-- Ziehen und Ablegen von Voreinstellungen zur Neuordnung
 
 <! - Platzhalter für die nächste Version (am Zeilenanfang):
 
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.4.0 (2020-11-28)
+* (bluefox) Added new option: no background
+
+### 0.3.9 (2020-11-28)
+* (bluefox) Corrected error with the chart. 
+
+### 0.3.8 (2020-11-27)
+* (bluefox) Implemented the conversion of the flot presets into echarts. 
+
 ### 0.3.7 (2020-11-17)
 * (bluefox) Hide nulls in hover details
 

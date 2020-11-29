@@ -2,27 +2,32 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fronius/README.md
-title: 无题
-hash: rKpemGzj26qLZjuzhdgtDp0lBXcaaPCOgdQXZ9rN2jU=
+title: ioBroker.fronius
+hash: e4eLXLM1VVzjytY4m6uIjTUlmxeHzZYTDWCuyQ4Wcgk=
 ---
-![安装数量](http://iobroker.live/badges/fronius-stable.svg)
-![NPM版本](http://img.shields.io/npm/v/iobroker.fronius.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.fronius.svg)
-![依赖状态](https://img.shields.io/david/iobroker-community-adapters/iobroker.fronius.svg)
-![已知的漏洞](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.fronius/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.fronius.png?downloads=true)
-![特拉维斯-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.fronius/master.svg)
-![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.fronius?branch=master&svg=true)
-![Greenkeeper徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.fronius.svg)
+![商标](../../../en/adapterref/iobroker.fronius/admin/fronius.png)
 
-<h1><img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.fronius/master/admin/fronius.png" width="64"/> ioBroker.fronius </h1>
+![NPM版本](http://img.shields.io/npm/v/iobroker.fronius.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.fronius.svg)
+![安装数量（最新）](http://iobroker.live/badges/fronius-installed.svg)
+![安装数量（稳定）](http://iobroker.live/badges/fronius-stable.svg)
+![依赖状态](https://img.shields.io/david/ldittmar81/iobroker.fronius.svg)
+![已知漏洞](https://snyk.io/test/github/ldittmar81/ioBroker.fronius/badge.svg)
+![NPM](https://nodei.co/npm/iobroker.fronius.png?downloads=true)
+
+＃ioBroker.fronius
+**测试：**![测试与发布](https://github.com/ldittmar81/ioBroker.fronius/workflows/Test%20and%20Release/badge.svg)
 
 ##用于ioBroker的Fronius逆变器适配器
-这是适用于Fronius PV逆变器的ioBroker适配器，带有Fronius Datalogger Web 2.0.4-1版本或Fronius Datamanager 3.0.3-1版本。
+这是适用于Fronius PV逆变器的ioBroker适配器，具有版本2.0.4-1起的Fronius Datalogger Web，版本3.0.3-1起的Fronius Datamanager和Symo Gen24。
 
 ## Changelog
 
-### 1.0.5
+### 1.1.0 (2020-11-24)
+* (nkleber78) Implementation change for support of SYMO GEN24
+* (nkleber78) Fix issue with adapters connected state
+
+### 1.0.5 (2019-01-18)
 * (ldittmar) compact mode compatibility added
 * (ldittmar) add chinese support
 
@@ -61,7 +66,7 @@ hash: rKpemGzj26qLZjuzhdgtDp0lBXcaaPCOgdQXZ9rN2jU=
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 ldittmar <iobroker@lmdsoft.de>
+Copyright (c) 2020 ldittmar <iobroker@lmdsoft.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
