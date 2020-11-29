@@ -52,6 +52,9 @@ For this to work you need to provide the location of the systems global node-mod
 
 ## Changelog
 
+### 3.0.2 (2020-11-29)
+* (Apollon77) update homebridge in wrapper to 1.1.6 (latest as of today)
+
 ### 3.0.1 (2020-08-08)
 * (Apollon77) set a very high limit (again) on allowed accessories and services because irrelevant 
 

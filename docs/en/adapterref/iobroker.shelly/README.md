@@ -53,6 +53,7 @@ You find a detailed installation documentation here:
 |Shelly Dimmer 2 (SHDM-2)|supported since v3.3.4|supported since v3.3.4|
 |Shelly Door/Window Sensor 2 (SHDW-2)|supported since v3.3.5|supported since v3.3.5|
 |Shelly Uni (SHUNI-1)|supported since v4.0.4|supported since v4.0.4|
+|Shelly 1L (SHSW-L)|supported since v4.0.5|supported since v4.0.5|
 
 ## What is Sentry and what is reported to the servers?
 Sentry.io is a way for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
@@ -61,10 +62,13 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 4.0.5-beta (2020-11-27)
+* (Matze2010) - Add Support for Shelly Uni (SHSW-L)
+* (Matze2010) - Shelly 2.5 Roller: Support for favorite positions 
+* (Stübi) - Bugfixing TypeError in Shelly Plug implementation (Issue #281)
+
 ### 4.0.4 (2020-11-15)
 * (Apollon77) update dependencies and shelly-iot lib
-
-### 4.0.4-beta (2020-09-25)
 * (Stübi) - Bugfix EM3, unit of comsumed power Wh instead of kWH
 * (Stübi) - optimize the destroy function (Bugfixing)
 * (Stübi) - Bugfixing Relay0.Event error for Shelly I3 in MQTT mode (Issue #241)

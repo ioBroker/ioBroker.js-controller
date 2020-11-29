@@ -20,7 +20,7 @@ Add after the restart the tab in the admin:
 ### Tooltip
 Lower case `i` indicates that the value was interpolated from the 2 neighbour values, and it does not exist at this time stamp.
 
-![Tooltipt](img/tooltip.png) 
+![Tooltip](img/tooltip.png) 
 
 ### Server side rendering
 You can render the presets on the server and get it as base64 URL or save it on disk on in ioBroker DB:
@@ -53,6 +53,8 @@ sendTo('echarts.0', {
 ```
 
 ## Developer manual
+**For non-developer this link does not work!**
+
 You can debug view charts locally with: 
 - cd iobroker.echarts/src-chart
 - npm run start
@@ -62,13 +64,21 @@ You can debug view charts locally with:
 - widget for vis (button)
 - widget for material
 - show enum icons on folders or near it
-- drag & drop of presets for reorder
 
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### 0.4.0 (2020-11-28)
+* (bluefox) Added new option: no background
+
+### 0.3.9 (2020-11-28)
+* (bluefox) Corrected error with the chart. 
+
+### 0.3.8 (2020-11-27)
+* (bluefox) Implemented the conversion of the flot presets into echarts. 
+
 ### 0.3.7 (2020-11-17)
 * (bluefox) Hide nulls in hover details
 

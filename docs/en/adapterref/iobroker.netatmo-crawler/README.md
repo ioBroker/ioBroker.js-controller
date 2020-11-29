@@ -26,6 +26,7 @@ Table of contents
 	* [Pressure](#pressure)
 	* [Temperature](#temperature)
 	* [Wind](#wind)
+	* [Information](#information)
 * [Credits](#credits)
 * [Changelog](#changelog)
 * [License](#license)
@@ -51,7 +52,6 @@ To find the url of your preferred weather station, follow these steps:
 
 General information
 ===================
-
 
 The “Netatmo Crawler” parse a lot of real local information near you. What do you do with all this information? 
 Here are some general facts and examples:
@@ -106,6 +106,9 @@ The gust strength is the highest value of wind, measured in a short time (someth
 You should do a script for your awning or for the Zambretti method (look above).
 
 
+Information
+----
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 Credits
 =======
@@ -116,6 +119,12 @@ Many thanks to [backfisch](https://github.com/backfisch88) for the initial idea 
 
 ## Changelog
 
+### 0.3.8
+* (Bart19) small fix in error handling
+### 0.3.7
+* (Bart19) caches authorization token
+### 0.3.6
+* (Bart19) adds Sentry for error reporting
 ### 0.3.5
 * (Bart19) fix for new netatmo website
 ### 0.3.4

@@ -39,6 +39,11 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Changelog
 
+### 1.0.2
+
+* (klein0r) Added name for OctoPrint Instance
+* (klein0r) Fixed admin translation issue (syntax error)
+
 ### 1.0.1
 
 * (klein0r) Added iobroker sentry

@@ -65,6 +65,66 @@ You may find more videos on the [YouTube Channels](https://www.youtube.com/chann
 Please also see [release page](https://github.com/Zefau/ioBroker.jarvis/releases) for changelog and detailed information.
 
 
+### v2.0.0-rc.1 - City of God (2020-11-27)
+
+#### :exclamation: BREAKING CHANGES
+- hiddenstates / ignoredstates removed ([227](https://github.com/Zefau/ioBroker.jarvis/issues/227))
+
+#### :star2: newly added features
+- Modul StateListHorizontal: Anzeige sekundärer Datenpunkte ([364](https://github.com/Zefau/ioBroker.jarvis/issues/364))
+- Button 'Speichern und schließen' für die Einstellungen ([318](https://github.com/Zefau/ioBroker.jarvis/issues/318))
+- jarvis hinter Reverse Proxy / im Docker ([304](https://github.com/Zefau/ioBroker.jarvis/issues/304))
+- Calender: Support for local ical / ics files ([270](https://github.com/Zefau/ioBroker.jarvis/issues/270))
+- add warning if state is not part of history adapter ([255](https://github.com/Zefau/ioBroker.jarvis/issues/255))
+- Calendar Widget - Add List Layout ([253](https://github.com/Zefau/ioBroker.jarvis/issues/253))
+- Backup / Restore ([224](https://github.com/Zefau/ioBroker.jarvis/issues/224))
+- ImportDevices: add bulk (un)selection ([223](https://github.com/Zefau/ioBroker.jarvis/issues/223))
+- add option for Widget justification ([210](https://github.com/Zefau/ioBroker.jarvis/issues/210))
+- Scale contents to fit widget height ([208](https://github.com/Zefau/ioBroker.jarvis/issues/208))
+- add option for minHeight and maxHeight to widget ([191](https://github.com/Zefau/ioBroker.jarvis/issues/191))
+- DevicesPage: Group devices by functions and allow collapsing groups ([190](https://github.com/Zefau/ioBroker.jarvis/issues/190))
+- Allow JavaScript in CustomHTML module ([181](https://github.com/Zefau/ioBroker.jarvis/issues/181))
+- Improve connection error screen ([179](https://github.com/Zefau/ioBroker.jarvis/issues/179))
+- Change unit input in device configuration to json ([168](https://github.com/Zefau/ioBroker.jarvis/issues/168))
+- Import devices: Display states of device that have been retrieved ([160](https://github.com/Zefau/ioBroker.jarvis/issues/160))
+- Import devices: Display which states are supported ([159](https://github.com/Zefau/ioBroker.jarvis/issues/159))
+- Settings may be changed via ioBroker directly (outside jarvis) ([145](https://github.com/Zefau/ioBroker.jarvis/issues/145))
+- Multiple views via adapter instances ([142](https://github.com/Zefau/ioBroker.jarvis/issues/142))
+- add calendar week to DateTime ([137](https://github.com/Zefau/ioBroker.jarvis/issues/137))
+- add setting to adapt columns based on screen width ([134](https://github.com/Zefau/ioBroker.jarvis/issues/134))
+- add custom device label to StateListHorizontal (same as in StateList) ([128](https://github.com/Zefau/ioBroker.jarvis/issues/128))
+- hide last update in the status ([121](https://github.com/Zefau/ioBroker.jarvis/issues/121))
+- add option for a fullscreen Widget  ([116](https://github.com/Zefau/ioBroker.jarvis/issues/116))
+- add possibility to configure options for Body and Action Components ([115](https://github.com/Zefau/ioBroker.jarvis/issues/115))
+- add new module DisplayImage ([110](https://github.com/Zefau/ioBroker.jarvis/issues/110))
+- add a CheckboxAction ([109](https://github.com/Zefau/ioBroker.jarvis/issues/109))
+- Dark Mode ([108](https://github.com/Zefau/ioBroker.jarvis/issues/108))
+- Customize button labels of groups ([105](https://github.com/Zefau/ioBroker.jarvis/issues/105))
+- Support additional functions ([103](https://github.com/Zefau/ioBroker.jarvis/issues/103))
+- Support images as icons ([101](https://github.com/Zefau/ioBroker.jarvis/issues/101))
+- add component for user input to StateList module ([99](https://github.com/Zefau/ioBroker.jarvis/issues/99))
+- add Donation Page ([96](https://github.com/Zefau/ioBroker.jarvis/issues/96))
+- Hide icon and / or title in the TopBar ([95](https://github.com/Zefau/ioBroker.jarvis/issues/95))
+- add further HomeMatic and HomeMatic IP devices to the Device Import ([85](https://github.com/Zefau/ioBroker.jarvis/issues/85))
+- ButtonAction without label ([83](https://github.com/Zefau/ioBroker.jarvis/issues/83))
+- Module for custom HTML ([75](https://github.com/Zefau/ioBroker.jarvis/issues/75))
+- add new module Calendar ([70](https://github.com/Zefau/ioBroker.jarvis/issues/70))
+- Default icon for device ([42](https://github.com/Zefau/ioBroker.jarvis/issues/42))
+- DeviceStateDetails: Custom Device popup configuration ([40](https://github.com/Zefau/ioBroker.jarvis/issues/40))
+- Add option to send usage data to developer ([36](https://github.com/Zefau/ioBroker.jarvis/issues/36))
+- add new module Weather ([32](https://github.com/Zefau/ioBroker.jarvis/issues/32))
+- Quick jump: Quick access to groups ([8](https://github.com/Zefau/ioBroker.jarvis/issues/8))
+
+#### :bug: fixed bugs
+- Keep same colors for chart lines ([174](https://github.com/Zefau/ioBroker.jarvis/issues/174))
+- States may not contain whitespaces ([171](https://github.com/Zefau/ioBroker.jarvis/issues/171))
+- Change unit input in device configuration to json ([168](https://github.com/Zefau/ioBroker.jarvis/issues/168))
+- Remove device from layout when deleted ([136](https://github.com/Zefau/ioBroker.jarvis/issues/136))
+
+#### core
+- Improve rendering performance on configuration page ([39](https://github.com/Zefau/ioBroker.jarvis/issues/39))
+
+
 ### v1.0.0-rc.16 - Independence Day (2020-09-23)
 
 #### :star2: newly added features

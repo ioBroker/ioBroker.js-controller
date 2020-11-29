@@ -1581,6 +1581,11 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### __WORK IN PROGRESS__
+* (AlCalzone) TypeScripts which augment the global scope are now correctly compiled
+* (AlCalzone) If no type declarations are found for an installed package, `require` will no longer show the error "module not found"
+* (AlCalzone) Removed the `--prefix` argument in `npm install`, so package installations on Windows no longer mess up the install directory
+
 ### 4.10.5 (2020-11-15)
 * (bluefox) null timeouts are checked now
 

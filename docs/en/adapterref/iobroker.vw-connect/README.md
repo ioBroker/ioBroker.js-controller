@@ -112,6 +112,10 @@ Door and window states:
 
 ## Changelog
 
+### 0.0.19
+
+-   save status objects in state by id instead of consecutive numbers 
+
 ### 0.0.18
 
 -   fix battery status for 2020 models

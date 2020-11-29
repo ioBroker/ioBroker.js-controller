@@ -133,6 +133,9 @@ Der log_today state wird um Mitternacht geleert.
 
 ## Changelog
 
+#### 1.7.0 (26.11.2020)
+* (misanorot) added status.state_list to shortcuts
+
 #### 1.7.0 (20.11.2020)
 * (misanorot) changed notifications and fixed little issues
 

@@ -32,6 +32,7 @@ Documentation:
 -->
 
 ### __WORK IN PROGRESS__
+* (Black-Thunder) adapter connection state now correctly set accordingly to the cloud connection
 * (Black-Thunder) added release-script and Dependabot
 * (Black-Thunder) updated dependecies
 

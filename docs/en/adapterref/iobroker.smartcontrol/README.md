@@ -114,9 +114,10 @@ This is just to provide you an overview of the adapter options.
 
 ## Changelog
 
-### Latest Development Version (not yet published on npm)
+### 1.2.0
 * (Mic-M) Fix: [#60 - Linked triggers of motion sensors issue](https://github.com/Mic-M/ioBroker.smartcontrol/issues/60)
 * (Mic-M) Several code improvements
+* (Mic-M) Issues [#35](https://github.com/Mic-M/ioBroker.smartcontrol/issues/35) and [#43](https://github.com/Mic-M/ioBroker.smartcontrol/issues/43) confirmed as resolved, therefore all workaround code removed.
 
 
 ### 1.1.1 

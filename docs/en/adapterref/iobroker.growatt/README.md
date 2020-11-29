@@ -26,11 +26,20 @@ Currently only data can be read, writing parameters or changing parameters is no
 ### User and Password
 Please enter the name and password that you also use in the Shine app or in the web portal.
 
+### Login with shared key
+On the Growatt website under energy, plant management, operating tools you can send yourself a key by e-mail.
+
 ### Read plant data
 This data record contains the stored master data
 
 ### Read status data
-These data are not available for all plants. This dataset contains live data.
+These data are not available for all plants (not INV/MAX/TLX). This dataset contains live data.
+
+### Read last data of chart
+These data are only available for the plants without read status data (INV/MAX/TLX). The last valid data for the day is searched for.
+
+### Read data of chart
+These data are only available for the plants without read status data and requires read last data of chart (INV/MAX/TLX). The data is written and stored as a JSON string.
 
 ### Read total data
 This data record contains aggregation data.
@@ -45,6 +54,17 @@ This data set contains the weather forecast.
 
 
 ## Changelog
+### 0.0.12 (27.11.2020)
+* (PLCHome) wrong initialization for shared key: string instead of boolean
+
+### 0.0.11 (27.11.2020)
+* (PLCHome) Read me
+
+### 0.0.10 (26.11.2020)
+* (PLCHome) Shared key login
+* (PLCHome) Last value of the graph if there are no live data.
+* (PLCHome) Change of the polling interval
+
 ### 0.0.9 (05.10.2020)
 * (PLCHome) fix no feature 'ADAPTER_AUTO_DECRYPT_NATIVE'
 

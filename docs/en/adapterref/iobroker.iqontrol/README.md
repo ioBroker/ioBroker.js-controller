@@ -113,6 +113,8 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``returnAfterTimeDestiationView=<viewID>`` to set the view, which is called after the threshold. If not specified, the home view will be used.
 	* These options are helpful, if you call iQontrol from an wall mounted tablet, which should automatically return to home-view after being used 
 * To load the page without toolbar you can add ``noToolbar=true``
+* To load the page without panel you can add ``noPanel=true``
+* To load the page without toolbar and panel, swiping deactivated, no loading-spinner and with transparent loading-screen you can add ``isBackgroundView=true``
 
 **Example:**
 * ``https://192.168.1.1:8082/iqontrol/index.html?namespace=iqontrol.1&home=iqontrol.1.Views.Living-Room``
@@ -1180,6 +1182,10 @@ This device has some special predefined size- and display-settings to show a web
 ****
     
 ## Changelog
+
+### dev
+* (sbormann) Added url-paremeter noPanel.
+* (sbormann) changed fetching of ioBroker Objects.
 
 ### 1.5.0 (2020-11-24)
 * (sbormann) Added Flot-Chart widget.

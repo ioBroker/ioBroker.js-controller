@@ -237,6 +237,10 @@ Keep in mind that the RPC server is completely unsecured, so this should only be
 
 ## Changelog
 
+### 1.1.1 (2020-11-29)
+
+-   (UncleSamSwiss) Fixed issue with device search not working (#53).
+
 ### 1.1.0 (2020-11-05)
 
 -   (UncleSamSwiss) Added support for SX1507, SX1508 and SX1509.

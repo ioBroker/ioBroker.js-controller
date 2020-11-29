@@ -11,7 +11,7 @@
 
 ![Test and Release](https://github.com/steiger04/ioBroker.milight-smart-light/workflows/Test%20and%20Release/badge.svg)
 
-[![NPM](https://nodei.co/npm/iobroker.milight-smart-light.png?downloads=true)](https://nodei.co/npm/milight-smart-light/)
+[![NPM](https://nodei.co/npm/iobroker.milight-smart-light.png?downloads=true)](https://nodei.co/npm/iobroker.milight-smart-light/)
 
 This adapter for ioBroker controls Milight LED bulbs and LED strips and
 based on the node module from mwittig.

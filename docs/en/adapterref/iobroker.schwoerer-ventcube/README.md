@@ -60,7 +60,7 @@ The ioBroker adapter was tested sucessfully with:
 ## License
 MIT License
 
-Copyright (c) 2020 Excodibur <excodibur@posteo.de>
+Copyright (c) 2020 Excodibur <non@existant.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

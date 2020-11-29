@@ -58,6 +58,9 @@ The following configuration is required:
 
 ## Changelog
 
+### 1.0.0
+* (Robin Rainton) Stable release.
+
 ### 0.0.6
 * (Robin Rainton) Change IP address setting to base URL. **Settings will need to be updated.**
 * (Robin Rainton) Fixed timeout handling. Parse readings from index HTML. Refactor to use more promises & single interval timer.

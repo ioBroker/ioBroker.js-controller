@@ -27,26 +27,30 @@ This is an ioBroker adapter for your Sony Bravia Smart-TV with Android OS. Teste
 
 ## Changelog
 
-#### 1.0.1
+### 1.0.2
+* (raintonr) Added info.powerStatusActive
+* (raintonr) Optimizations
+
+### 1.0.1
 * (ldittmar) compact mode compatibility added
 * (ldittmar) add chinese support
 
-#### 1.0.0
+### 1.0.0
 * (ldittmar) Support of admin3
 
-#### 0.1.0
+### 0.1.0
 * (ldittmar) Test phase terminated. Adapter enabled.
 
-#### 0.0.5
+### 0.0.5
 * (ldittmar) Open beta test phase - please test it and give me feedback here as a issue or in the forum http://forum.iobroker.net/viewtopic.php?f=23&t=6406
 
-#### 0.0.1
+### 0.0.1
 * (ldittmar) initial release
 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2018 ldittmar <iobroker@lmdsoft.de>
+Copyright (c) 2018-2020 ldittmar <iobroker@lmdsoft.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

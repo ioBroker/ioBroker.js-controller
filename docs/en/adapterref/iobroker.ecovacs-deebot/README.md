@@ -12,6 +12,7 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 
 ### Supported models
 * Deebot 900/901
+* Deebot Ozmo 920
 * Deebot Ozmo 930
 * Deebot Ozmo 950
 

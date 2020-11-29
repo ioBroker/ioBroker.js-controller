@@ -35,7 +35,7 @@ You have to enable "network standby" function in the configuration of your recei
 
 
 ## Changelog
-### 0.3.21
+### 0.4.0
 * (Garfonso) added admin 3 compatibility and more meta-data stuff.
 * (Garfonso) added compact mode support.
 ### 0.3.20

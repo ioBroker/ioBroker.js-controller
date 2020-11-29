@@ -185,6 +185,14 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 1.8.0-beta.1 (28.11.2020)
+* (simatec) influxDB Backup added
+* (simatec) influxDB Restore added
+* (simatec) Postgresql Backup added
+* (simatec) Postgresql Restore added
+* (simatec) translation added
+* (simatec) new zigbee Restore added
+
 ### 1.7.0 (26.10.2020)
 * (simatec) small Bugfix for umount on cifs/nfs mount
 * (simatec) Dev-Dependencies updated

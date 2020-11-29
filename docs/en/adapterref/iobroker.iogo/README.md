@@ -61,6 +61,7 @@ sendTo('iogo', {
 - *text*: The message itself
 - *title*: The notification's title
 - *url*: Absolute path to an image
+- *expiry*: Expiration time in seconds
 
 ## Changelog
 

@@ -1,24 +1,24 @@
-<h1>
-  <img src="https://raw.githubusercontent.com/iobroker-community-adapters/ioBroker.fronius/master/admin/fronius.png" width="64"/>
-  ioBroker.fronius
-</h1>
+![Logo](admin/fronius.png)
+# ioBroker.fronius
 
-![Number of Installations](http://iobroker.live/badges/fronius-installed.svg) ![Number of Installations](http://iobroker.live/badges/fronius-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.fronius.svg)](https://www.npmjs.com/package/iobroker.fronius)
+[![NPM version](http://img.shields.io/npm/v/iobroker.fronius.svg)](https://www.npmjs.com/package/iobroker.fronius)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.fronius.svg)](https://www.npmjs.com/package/iobroker.fronius)
-[![Known Vulnerabilities](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.fronius/badge.svg)](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.fronius)
+![Number of Installations (latest)](http://iobroker.live/badges/fronius-installed.svg)
+![Number of Installations (stable)](http://iobroker.live/badges/fronius-stable.svg)
+[![Dependency Status](https://img.shields.io/david/ldittmar81/iobroker.fronius.svg)](https://david-dm.org/ldittmar81/iobroker.fronius)
+[![Known Vulnerabilities](https://snyk.io/test/github/ldittmar81/ioBroker.fronius/badge.svg)](https://snyk.io/test/github/ldittmar81/ioBroker.fronius)
 
 [![NPM](https://nodei.co/npm/iobroker.fronius.png?downloads=true)](https://nodei.co/npm/iobroker.fronius/)
 
-**Tests:** Linux/Mac: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.fronius/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.fronius)
-Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/iobroker-community-adapters/ioBroker.fronius?branch=master&svg=true)](https://ci.appveyor.com/project/iobroker-community-adapters/ioBroker-fronius/) 
+**Tests:** ![Test and Release](https://github.com/ldittmar81/ioBroker.fronius/workflows/Test%20and%20Release/badge.svg)
 
 ## A Fronius inverter adapter for ioBroker
 
-This is an ioBroker adapter for your Fronius PV inverter with Fronius Datalogger Web from version 2.0.4-1 onwards or Fronius Datamanager from version 3.0.3-1 onwards.
+This is an ioBroker adapter for your Fronius PV inverter with Fronius Datalogger Web from version 2.0.4-1 onwards, Fronius Datamanager from version 3.0.3-1 onwards and Symo Gen24.
 
 ## Changelog
 
-### 1.0.6 (2020-xx-xx)
+### 1.1.0 (2020-11-24)
 * (nkleber78) Implementation change for support of SYMO GEN24
 * (nkleber78) Fix issue with adapters connected state
 
