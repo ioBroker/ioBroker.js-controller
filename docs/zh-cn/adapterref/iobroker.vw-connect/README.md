@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vw-connect/README.md
 title: ioBroker.vw-连接
-hash: F5e36MWlcxPNKeHYkbd+v18ZPT+gyZNm1o1OYN2mIEI=
+hash: Pxhcxeh1UyMWL3PUQe48L/FiysnntzRL1N1diLS0jXo=
 ---
 ![商标](../../../en/adapterref/iobroker.vw-connect/admin/vw-connect.png)
 
@@ -16,7 +16,7 @@ hash: F5e36MWlcxPNKeHYkbd+v18ZPT+gyZNm1o1OYN2mIEI=
 
 ＃ioBroker.vw-connect
 ## IoBroker的vw-connect适配器
-大众WeW Connect，myAudi，Skoda Connect和We Connect Go的适配器
+大众的适配器We Connect，myAudi，Skoda Connect和We Connect Go
 
 请在节点10上更新系统。
 <https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten>
@@ -112,47 +112,63 @@ hash: F5e36MWlcxPNKeHYkbd+v18ZPT+gyZNm1o1OYN2mIEI=
 
 ## Changelog
 
+### 0.0.20
+
+- fix audi login, add ID login
+
+### 0.0.19
+
+- save status objects in state by id instead of consecutive numbers
+
+### 0.0.18
+
+- fix battery status for 2020 models
+
+### 0.0.17
+
+- add support for 2020 models
+
 ### 0.0.16
 
--   fix js.controller 3 problems
+- fix js.controller 3 problems
 
 ### 0.0.11
 
--   fix audi bug with multiple vehicles
--   hide status update error if feature is not available
+- fix audi bug with multiple vehicles
+- hide status update error if feature is not available
 
 ### 0.0.9
 
--   set default trip type to none
+- set default trip type to none
 
 ### 0.0.7
 
--   add we connect go and remote standheizung and lock/unlock
+- add we connect go and remote standheizung and lock/unlock
 
 ### 0.0.6
 
--   add audi
+- add audi
 
 ### 0.0.5
 
--   add honk and flash, fix address format
+- add honk and flash, fix address format
 
 ### 0.0.4
 
--   add Skoda support
+- add Skoda support
 
 ### 0.0.3
 
--   (ta2k) add more information
--   (ta2k) add remote controls
+- (ta2k) add more information
+- (ta2k) add remote controls
 
 ### 0.0.2
 
--   (ta2k) add car status capturing
+- (ta2k) add car status capturing
 
 ### 0.0.1
 
--   (ta2k) initial release
+- (ta2k) initial release
 
 ## License
 

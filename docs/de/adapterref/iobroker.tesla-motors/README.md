@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tesla-motors/README.md
 title: ioBroker.tesla-Motoren
-hash: kp6leltbRQIjsPgMbOLtAqkQ38kWJ0diAbSaBIGbx/w=
+hash: exSkZOo4rWuvSAZ3ldy3L4RuQ0nnHcTQRqgG2X6mVj8=
 ---
 ![Logo](../../../en/adapterref/iobroker.tesla-motors/admin/tesla-motors.png)
 
@@ -12,12 +12,12 @@ hash: kp6leltbRQIjsPgMbOLtAqkQ38kWJ0diAbSaBIGbx/w=
 ![Eingerichtet](http://iobroker.live/badges/tesla-motors-installed.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/dbweb-ch/iobroker.tesla-motors.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/dbweb-ch/ioBroker.tesla-motors/badge.svg)
-![Build Status](http://img.shields.io/travis/dbweb-ch/ioBroker.tesla-motors.svg)
+![Build-Status](http://img.shields.io/travis/dbweb-ch/ioBroker.tesla-motors.svg)
 ![NPM](https://nodei.co/npm/iobroker.tesla-motors.png?downloads=true)
 
-# IoBroker.tesla-motors
+# IoBroker.tesla-motoren
 ## Tesla motors adapter für ioBroker
-Dieser Adapter gibt ioBroker die Kontrolle über Ihr Tesla-Auto.
+Dieser Adapter erweitert ioBroker um die Kontrolle über Ihr Tesla-Auto.
 
 ## Aufbau
 1. Erstellen Sie eine neue Instanz des Adapters. Jedes Auto benötigt eine eigene Instanz.
@@ -26,42 +26,49 @@ Dieser Adapter gibt ioBroker die Kontrolle über Ihr Tesla-Auto.
 3. Klicken Sie auf "Token abrufen", um ein Token und ein Aktualisierungstoken von Tesla anzufordern.
 4. Wählen Sie Ihr Auto in der Dropdown-Liste.
 
-### <a name="refreshRate"></a> Aktualisierungsrate
-Um die Batterie zu schonen, wechselt das Auto nach einer bestimmten Zeit ohne Aktivität in den Ruhemodus. <br /> Das Abrufen von Informationen aus dem Auto ist nur möglich, wenn das Auto wach ist. <br /> Benutzer berichteten, dass das Auto bis zu 10 km Reichweite pro Tag verbrauchen kann, wenn es nicht in den Ruhezustand geht. <br /> Um dies zu verhindern, können Sie die gewünschte Aktualisierungsrate auswählen:
+###<a name="refreshRate"></a> Aktualisierungsrate
+Um Batterie zu sparen, geht das Auto nach einer bestimmten Zeit ohne Aktivität in den Schlafmodus.<br /> Das Abrufen von Informationen aus dem Auto ist nur möglich, wenn das Auto wach ist.<br /> Benutzer berichteten, dass das Auto bis zu 10 km Reichweite pro Tag verbrauchen kann, wenn es nicht in den Ruhezustand wechselt.<br /> Um dies zu verhindern, können Sie die gewünschte Aktualisierungsrate auswählen:
 
-* **Aus** - Der Adapter weckt das Auto nicht automatisch auf. Es weckt das Auto nur auf Anfrage (wenn Sie einen Zustand einstellen).
+* **Aus** - Der Adapter weckt das Auto nicht von selbst auf. Das Auto wird nur auf Anfrage geweckt (wenn Sie einen Status festlegen).
 
-<br /> Wenn das Auto von alleine aufgewacht ist, fordert der Adapter einmalig Fahrzeugdaten an.
+<br />Wenn das Auto von selbst aufgewacht ist, fordert der Adapter einmal Fahrzeugdaten an.
 
-* **Gemäßigt** - Der Adapter weckt das Auto einmal pro Stunde auf, um seinen Zustand zu ermitteln.
-* **Aggressiv** - Der Adapter weckt das Auto einmal pro Minute auf.
-* **Smart** - Der Adapter versucht, intelligent zu sein. Es wird der Auto-Schlafzustand beobachtet. Wenn das Auto aufwacht,
+* **Gemäßigt** - Der Adapter weckt das Auto einmal pro Stunde, um seinen Zustand zu ermitteln.
+* **Aggressiv** - Der Adapter weckt das Auto einmal pro Minute.
+* **Smart** - Der Adapter versucht, intelligent zu sein. Es wird den Schlafzustand des Autos beobachten. Wenn das Auto aufwacht,
 
-Es wird davon ausgegangen, dass bald jemand fährt, und der Status wird jede Minute für 10 Minuten abgefragt.
-Wenn nichts passiert ist (kein Klima, kein Fahren, kein Laden), fordert der Adapter 15 Minuten lang nicht mehr an, das Auto einschlafen zu lassen. In jedem Fall wird das Auto aufgeweckt und nach 12 Stunden Daten abgerufen.
+Es wird davon ausgegangen, dass jemand bald fährt, und der Staat wird 10 Minuten lang jede Minute nach dem Status gefragt.
+Wenn nichts passiert ist (kein Klima, kein Fahren, kein Laden), fordert der Adapter 15 Minuten lang nicht mehr auf, das Auto einschlafen zu lassen. In jedem Fall wird das Auto geweckt und nach 12 Stunden werden Daten abgerufen.
 
-## Adapter verwenden
-Der Adapter erstellt mehrere Zustände. Die sind gruppiert nach ihren Themen:
+## Verwenden des Adapters
+Der Adapter erstellt mehrere Zustände. Sie sind nach ihren Themen gruppiert:
 
-* **chargeState** - zum Laden, Akku und Reichweite.
-* **climateState** - Temperaturen und Fensterzustände.
+* **loadState** - Informationen zu Ladung, Akku und Reichweite.
+* **ClimateState** - Temperaturen und Fensterzustände.
 * **driveState** - Position und Geschwindigkeit
 * **softwareUpdate** - Informationen zu ausstehenden Softwareupdates
 * **Fahrzeug** - Informationen zu Ihrem Fahrzeug
 
-Es gibt eine spezielle Gruppe mit dem Namen **command** in der Sie alle Befehle zur Steuerung Ihres Autos finden.
-Einige von ihnen arbeiten in beide Richtungen, zum Beispiel wird sich der Klimazustand ändern, wenn das Klima durch das Auto abgeschaltet wird. Sie können dies in der Spalte "Senden / Empfangen" sehen.
+Es gibt eine spezielle Gruppe namens **Befehl** in der Sie alle Befehle zur Steuerung Ihres Autos finden.
+Einige von ihnen arbeiten in beide Richtungen, zum Beispiel ändert sich der Klimazustand, wenn das Klima vom Auto abgeschaltet wird. Sie können dies in der Spalte "Senden / Empfangen" sehen.
 
-Name | Beschreibung | **S** end / **R** ecieve -------------- | -------------- | -------------- ChargePort | Ladeöffnung öffnen / schließen | SR UnlockChargePort | Schaltet den Ladeanschluss frei S Aufladen | Laden starten / beenden | SR Klima | Klima starten / stoppen | SR RemoteStart | Fernstart aktivieren / deaktivieren | SR SentryMode | Sentry-Modus aktivieren / deaktivieren | SR SetChargeLimit | Gebührenlimit in% | einstellen SR SetTemperature | Solltemperatur einstellen. Vergiss nicht, das Klima einzuschalten! | SR SpeedLimit | Geschwindigkeitsbegrenzung aktivieren | SR SpeedLimitValue | Geschwindigkeitsgrenzwert | SR StartSoftwareUpdate | Starten Sie das Software-Update | SR SunRoofVent | Sonnendachentlüftung | SR ValetMode | Valet Mode | SR ValetPin | Valet Pin | SR Standby | Wenn sich das Auto im Standby-Modus befindet (Stellen Sie dies ein, um es manuell aufzuwecken) | SR Türschloss | Schlösser / Öffnet die Tür SR Taschenlampen | Blink die Lichter | S honkHorn | Hupen Sie das Horn | S openFrunk | Frunk öffnen (nicht erhalten) | S openTrunk | Kofferraum öffnen (kein Empfang) | S seat_heater_left | Sitzheizung Linke Ebene (0-3) | SR seat_heater_rear_center | Sitzheizung Mitte hinten (0-3) | SR seat_heater_rear_left | Sitzheizung hinten links (0-3) | SR seat_heater_rear_right | Sitzheizung hinten rechts (0-3) | SR seat_heater_right | Sitzheizung Rechte Ebene (0-3) | SR lenkradheizung | Lenkradheizung | SR windowVent | Fensterlüfter | SR
+Name | Beschreibung | **S** end / **R** ecieve -------------- | -------------- | -------------- ChargePort | Ladeanschluss öffnen / schließen | SR UnlockChargePort | Schaltet den Ladeanschluss | frei S Aufladen | Laden starten / stoppen | SR Klima | Klima starten / stoppen | SR RemoteStart | Fernstart aktivieren / deaktivieren | SR SentryMode | Sentry-Modus aktivieren / deaktivieren | SR SetChargeLimit | Gebührenlimit in% | einstellen SR SetTemperature | Zieltemperatur einstellen. Vergessen Sie nicht, das Klima einzuschalten! | SR SpeedLimit | Geschwindigkeitsbegrenzung aktivieren | SR SpeedLimitValue | Geschwindigkeitsbegrenzungswert | SR StartSoftwareUpdate | Starten Sie das Software-Update | SR SunRoofVent | Sonnendachentlüftung | SR ValetMode | Parkservice | SR ValetPin | Valet Pin | SR Standby | Wenn sich das Auto im Standby-Modus befindet (Stellen Sie dies so ein, dass es manuell aufwacht) SR Türschloss | Schließt / öffnet die Tür | SR Blitzlichter | Blink die Lichter | S honkHorn | Hupen | S openFrunk | Open Frunk (kein Empfang) | S openTrunk | Kofferraum öffnen (kein Empfang) | S seat_heater_left | Sitzheizung Linke Ebene (0-3) | SR seat_heater_rear_center | Sitzheizung hinten hinten (0-3) | SR seat_heater_rear_left | Sitzheizung hinten links (0-3) | SR seat_heater_rear_right | Rücksitzheizung rechts (0-3) | SR seat_heater_right | Sitzheizung Rechte Ebene (0-3) | SR Lenkradheizung | Lenkradheizung | SR windowVent | Fensterlüftung | SR
 
 ## Sicherheit &amp; Referenzen
-Die Tesla-API verwendet einen Token-basierten Sicherheitsansatz. <br /> Das Token läuft ab (derzeit nach 45 Tagen), aber das System kann ein neues Token mit dem Refresh Token abrufen. <br /> Ihre Anmeldeinformationen müssen nicht gespeichert werden, damit der Adapter funktioniert. Wenn Sie jedoch Probleme beim Aktualisieren des Tokens haben, kann dies die Stabilität erhöhen, da der Adapter jederzeit ein neues Token erhalten kann. <br /><aside class="warning"> Warnung: <br /> Mit Ihren Tesla-Anmeldeinformationen können Sie das while-Auto einschließlich geöffneter Fenster steuern und sogar herumfahren. Bewahren Sie Ihre Anmeldeinformationen auf! <br /> Um alle Token abzulehnen, ändern Sie das Passwort Ihres Tesla-Kontos! </aside>
+Die Tesla-API verwendet einen Token-basierten Sicherheitsansatz.<br /> Das Token läuft ab (derzeit nach 45 Tagen), aber das System kann mithilfe des Aktualisierungstokens ein neues Token abrufen.<br /> Ihre Anmeldeinformationen müssen nicht gespeichert werden, damit der Adapter funktioniert. Wenn Sie jedoch Probleme beim Aktualisieren des Tokens haben, kann dies zu einer Stabilisierung des Tokens führen, da der Adapter jederzeit ein vollständig neues Token erhalten kann.<br /><aside class="warning"> Warnung:<br /> Mit Ihren Tesla-Anmeldeinformationen können Sie das Auto steuern, einschließlich geöffneter Fenster und sogar herumfahren. Bewahren Sie Ihre Anmeldeinformationen auf!<br /> Um alle Token abzulehnen, ändern Sie das Passwort Ihres Tesla-Kontos!</aside>
 
 ## Mitwirkende
 * dbweb-ch
 * Apollon77
+* Hombach
 
 ## Changelog
+### 0.3.0
+* (Hombach) Removed tests for node 8; updated dependencies
+### 0.2.3
+* (dbweb-ch) Refresh info every 5 seconds when car is moving
+### 0.2.2
+* (dbweb-ch) Use decrypt from ioBrokerTools, fix issue with selecting car
 ### 0.2.1
 * (dbweb-ch) Fix bug with odomoter, refactor object creation, fix issues with compact mode
 ### 0.2.0
@@ -85,7 +92,7 @@ Die Tesla-API verwendet einen Token-basierten Sicherheitsansatz. <br /> Das Toke
 ## License
 MIT License
 
-Copyright (c) 2019 Dominic Blattmann <nick@dbweb.ch>
+Copyright (c) 2020 Dominic Blattmann <nick@dbweb.ch>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

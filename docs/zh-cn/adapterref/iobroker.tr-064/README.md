@@ -4,7 +4,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tr-064/README.md
 title: 的ioBroker.tr-064
-hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
+hash: D59HzSVYkdStJaSDx6e91FA6u2/6TTOD7QeUisJd0X0=
 ---
 ![商标](../../../en/adapterref/iobroker.tr-064/media/tr-064.png)
 
@@ -22,7 +22,7 @@ hash: rN4KkHkTgQi739/0GZDQZ274L23nvqhd+4OxJHA44Ww=
 -外部IP地址
 
 ###响铃（拨一个号码）
--当使用内部号码（例如** 610）时，振铃状态将使该内部电话振铃。
+-当使用内部号码（例如** 610）时，响铃状态将使该内部电话响铃。
 
 例如：** 610 [，超时]
 

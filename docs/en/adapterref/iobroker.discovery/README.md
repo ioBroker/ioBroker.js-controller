@@ -41,6 +41,7 @@ Just now it can detect via ping, UPnP (serial planned).
 - Fronius
 - G-Homa plugs
 - Harmony
+- Heos
 - Home Assistant
 - Homematic CCU (hm-rpc, hm-rega)
 - Homepilot
@@ -129,6 +130,10 @@ Just now it can detect via ping, UPnP (serial planned).
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+
+### 2.4.0 (2020-11-29)
+* (withstu) add heos
+
 ### 2.3.11 (2020-08-08)
 * (Grizzelbee) Added MieleCloudService 
 

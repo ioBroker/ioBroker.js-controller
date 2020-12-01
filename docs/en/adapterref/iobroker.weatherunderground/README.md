@@ -68,6 +68,10 @@ http://forum.iobroker.org/viewtopic.php?f=20&t=2042&sid=a863d19838bc49439759bef8
 There is a still a problem with encoding. The addresses with "äüöß" will be shown wrong.
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) icons sometimes did not had a correct extension
+
 ### 3.2.1
 * (raintonr) Corrected 'Imperial' terminology.
 

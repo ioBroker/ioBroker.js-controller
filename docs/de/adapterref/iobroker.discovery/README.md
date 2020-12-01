@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Adapter
-hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
+hash: dtvHuKU+rdPUHU6HT/193yc5+i6OifknfuMqFHRb7Gg=
 ---
 ![Logo](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -44,6 +44,7 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - Fronius
 - G-Homa-Stecker
 - Harmonie
+- Heos
 - Heimassistent
 - Homematische CCU (hm-rpc, hm-rega)
 - Homepilot
@@ -98,7 +99,7 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 - Yeelight
 - Z-Wave USB (getestet mit Aeon Labs)
 
-### Wird als zusätzlicher Adapter angeboten
+### Wird als zusätzliche Adapter angeboten
 - Wolke
 - Verlauf (wenn kein SQL oder InfluxDB gefunden wurde)
 - Flot (wird angeboten, wenn ein History-Adapter vorhanden ist)
@@ -132,6 +133,10 @@ Gerade jetzt kann es über Ping UPnP (seriell geplant) erkennen.
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+
+### 2.4.0 (2020-11-29)
+* (withstu) add heos
+
 ### 2.3.11 (2020-08-08)
 * (Grizzelbee) Added MieleCloudService 
 

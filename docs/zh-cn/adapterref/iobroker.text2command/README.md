@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.text2command/README.md
 title: ioBroker.text2命令
-hash: 3qwqmhZbgEwQkvW2eL9zqZFH8x+5t0qqeX03CM6fceQ=
+hash: EJKyI8ZO0IeFIyxLvHk2Zt/zsWCaU+vR7TAxE2A0oaI=
 ---
 ![商标](../../../en/adapterref/iobroker.text2command/admin/text2command.png)
 
@@ -22,7 +22,7 @@ hash: 3qwqmhZbgEwQkvW2eL9zqZFH8x+5t0qqeX03CM6fceQ=
 ##用法
 要执行命令，请在语句中写入状态** text2command。<INSTANCE> .text **。您将始终在** text2command。<INSTANCE> .response **中获得答案。
 
-如果您定义“对ID的答案”，答案也将以此ID进行书写。这对于例如实现语音确认。
+如果您定义“对ID的答案”，答案也将写在该ID中。这对于例如实现语音确认。
 
 您可以通过javascript中的`sendTo`发送消息。答案将在消息中返回：
 
@@ -127,7 +127,7 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 ＃＃＃ 现在是几奌？
 答：14：56（当前时间）
 
-＃＃＃ 你叫什么名字？
+＃＃＃ 请问你贵姓大名？
 答案是可定制的。默认值：```My name is Alpha```
 
 ###室外温度是多少？
@@ -139,7 +139,7 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 答案是可定制的。默认值：```Inside temperature is %s %u```**％s **将替换为温度，四舍五入为整数。 **％u **将被此状态的单位或系统温度单位替换。
 
 ###按功能打开/关闭
-该命令从枚举中读取信息。它使用``枚举功能''查找设备类型（例如灯光，警报，音乐），并使用``枚举房间''检测房间名称。
+该命令从枚举中读取信息。它使用“枚举功能”查找设备类型（例如灯光，警报，音乐），并使用“枚举室”检测房间名称。
 
 德语示例：![枚举](../../../en/adapterref/iobroker.text2command/img/enums.png)
 
@@ -186,7 +186,7 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 
 如果命令类似于```Set light level to 50%```§，则在§§JJJJJ_1_1§§中将写入50，答案将为§§JJJJJ_2_2§§。
 
-如果命令类似于```Set light level```§，则将在§§JJJJJ_1_1§§中写入10，答案将为§§JJJJJ_2_2§§。
+如果命令类似于```Set light level```§，则将在```hm-rpc.0.light.STATE```中写入10，答案将为```Level set to 10%```。
 
 ###询问一些事情
 用户必须指定设备的状态ID，该值将被读取。
@@ -219,7 +219,7 @@ sendTo('text2command', 'Switch light in kitchen on', function (err, response) {
 
 您可以在此处阅读有关绑定的更多信息：（对象的绑定）[https://github.com/ioBroker/ioBroker.vis#bindings-of-objects]
 
-另外，您还可以通过{hm-rpc.0.light.STATE.lc; dateinterval}（每12分钟2分钟）或{hm-rpc.0.light.STATE.lc; dateinterval（true）}来获取到现在的时间2分12秒**前**）
+另外，您还可以通过{hm-rpc.0.light.STATE.lc; dateinterval}（每12分钟2分钟）或{hm-rpc.0.light.STATE.lc; dateinterval（true）}来获取到现在的时间（ 2分12秒**前**）
 
 ##使用javascript的外部规则
 有可能使用javascript引擎来处理text2command中的命令。
@@ -251,10 +251,10 @@ createState("textProcessor", '', function () {
 
 在text2command **Processor state ID** 设置中将其设置为* javascript.0.textProcessor *，以使此示例正常工作。
 
-首先，将使用您的javascript处理该命令，如果javascript在预定义的时间（默认为1秒）内回答“或”，则规则将处理该命令。
+首先，将使用您的javascript处理该命令，如果javascript在预定义的时间内（默认为1秒）以''或不回答，则该命令将由规则处理。
 
 ###选项：通过每个命令写入响应
-如果每个命令都激活了该命令（无论请求是通过状态发送还是通过sendTo发出），则`text2command.X.response`都将带有答案。
+如果每个命令都激活了该命令（无论请求是通过状态发送还是通过sendTo发出），则`text2command.X.response`都会带有答案。
 
 ＃ 去做
 -俄罗斯男性和女性答案。
@@ -264,7 +264,11 @@ createState("textProcessor", '', function () {
 ### __正在进行的工程__->
 
 ## Changelog
-### 2.0.4 (2020-09-24)
+
+### __WORK IN PROGRESS__
+* (Apollon77) Prevent crash case (Sentry IOBROKER-TEXT2COMMAND-D, IOBROKER-TEXT2COMMAND-C)
+
+### 2.0.5 (2020-09-5)
 * (bluefox) Updated the select ID dialog.
 
 ### 2.0.3 (2020-07-14)

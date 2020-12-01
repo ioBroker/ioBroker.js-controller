@@ -73,8 +73,10 @@ The name must be equal to DeviceID in OwnTracks app.
 
 ![Settings](img/settings1.png)
 
-
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) respect "bind" configuration
 
 ### 0.6.3 (2020-05-12)
 * (Apollon77) updated dependencies

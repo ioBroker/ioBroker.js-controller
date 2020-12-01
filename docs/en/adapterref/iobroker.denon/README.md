@@ -829,9 +829,10 @@ If you are missing any functions or detected a bug, please open an [issue](https
 The adapter is tested with an DENON AVR-X1200W and a Marantz SR5009.
    
 ## Changelog
-### 1.8.0 (2020-11-29)
+### 1.8.1 (2020-11-29)
 * (foxriver76) added states for atmos speakers `channelVolumeSurroundDolbyRight/Left` and `channelVolumeFrontDolbyLeft/Right`
 * (foxriver76) fixed bug with setting channelVolume of other zones than main
+* (foxriver76) added states `channelVolumeFrontHeightRight/Left` and `channelVolumeSurroundHeightLeft/Right`
 
 ### 1.7.7 (2020-04-28)
 * (foxriver76) fixed timing issue which could lead to state creation procedure triggered more than once

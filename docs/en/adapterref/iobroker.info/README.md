@@ -317,6 +317,10 @@ Forum entries will be displayed without problems when accessing ioBroker via IP 
 ## Changelog
 <!-- ### __WORK IN PROGRESS__ -->
 
+### 1.7.11 (2020-11-30)
+* (Apollon77) fix crash case (Sentry IOBROKER-INFO-1F)
+* Add Weblate translations
+
 ### 1.7.10 (2020-11-09)
 * (Apollon77) fix crash case (Sentry IOBROKER-INFO-13)
 

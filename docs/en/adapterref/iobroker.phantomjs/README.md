@@ -20,6 +20,15 @@ On some linux systems the additional library "libfontconfig" is required. It can
 sudo apt-get install libfontconfig
 ```
 
+## Install Errors
+If you get an error like
+
+```
+Unexpected platform or architecture: linux/armIt seems there is no binary available for your platform/architecture Try to install PhantomJS globally
+```
+
+during install then we are sorry. You need to Google and search  on how to install phantomjs globally on your system.
+
 ## Usage
 There are two ways how to create images.
 

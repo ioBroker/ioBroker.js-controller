@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.discovery/README.md
 title: ioBroker发现适配器
-hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
+hash: dtvHuKU+rdPUHU6HT/193yc5+i6OifknfuMqFHRb7Gg=
 ---
 ![商标](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
@@ -16,7 +16,7 @@ hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
 ＃ioBroker发现适配器
 **使用所有已知方法检测设备。**
 
-这是特殊的适配器，它试图查找主机可以访问的所有可能的设备。
+这是特殊的适配器，它尝试查找主机可以访问的所有可能的设备。
 到目前为止，它可以通过ping，UPnP（串行计划）进行检测。
 
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
@@ -44,6 +44,7 @@ hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
 -Fronius
 -G-Homa插头
 -和谐
+-Heos
 -家庭助理
 -Homematic CCU（hm-rpc，hm-rega）
 -飞行员
@@ -129,9 +130,13 @@ hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __进展中__->
+### __正在进行的工程__->
 
 ## Changelog
+
+### 2.4.0 (2020-11-29)
+* (withstu) add heos
+
 ### 2.3.11 (2020-08-08)
 * (Grizzelbee) Added MieleCloudService 
 

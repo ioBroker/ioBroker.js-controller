@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.text2command/README.md
 title: ioBroker.text2command
-hash: 3qwqmhZbgEwQkvW2eL9zqZFH8x+5t0qqeX03CM6fceQ=
+hash: EJKyI8ZO0IeFIyxLvHk2Zt/zsWCaU+vR7TAxE2A0oaI=
 ---
 ![Logo](../../../en/adapterref/iobroker.text2command/admin/text2command.png)
 
@@ -15,11 +15,11 @@ hash: 3qwqmhZbgEwQkvW2eL9zqZFH8x+5t0qqeX03CM6fceQ=
 
 # IoBroker.text2command
 ## Beschreibung
-Dieser Adapter kann normale Sätze wie *'Licht in der Küche einschalten'* in einen bestimmten Befehl konvertieren und den Status *'adapter.0.device.kitchenLight'* auf **true** setzen.
+Dieser Adapter kann normale Sätze wie *'Licht in der Küche einschalten'* in einen bestimmten Befehl umwandeln und den Status *'adapter.0.device.kitchenLight'* auf **true** setzen.
 
 Dieser Adapter macht keinen Sinn, um eigenständig aktiviert zu werden. Es sollte mit anderen Adaptern wie Telegramm oder Android App **iobroker.vis** verwendet werden.
 
-## Verwendungszweck
+## Verwendung
 Um den Befehl auszuführen, schreiben Sie den Status **text2command. <INSTANCE> .text** mit dem Satz. Sie erhalten die Antwort immer in **text2command. <INSTANCE> .response**
 
 Wenn Sie **Antwort auf ID** definieren, wird die Antwort auch in diese ID geschrieben. Dies ist z.B. zu erkennen, die Stimme bestätigt.
@@ -263,7 +263,11 @@ Wenn dies von jedem Befehl aktiviert wird (unabhängig davon, ob die Anfrage üb
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
-### 2.0.4 (2020-09-24)
+
+### __WORK IN PROGRESS__
+* (Apollon77) Prevent crash case (Sentry IOBROKER-TEXT2COMMAND-D, IOBROKER-TEXT2COMMAND-C)
+
+### 2.0.5 (2020-09-5)
 * (bluefox) Updated the select ID dialog.
 
 ### 2.0.3 (2020-07-14)

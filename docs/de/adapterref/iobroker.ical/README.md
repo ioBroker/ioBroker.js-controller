@@ -189,6 +189,12 @@ Whitelist: Wenn Sie nur Ereignisse einer bestimmten Position einschließen möch
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) Prevent crash case (Sentry IOBROKER-ICAL-C)
+
+### 1.8.2 (2020-11-29)
+* (klein0r) Several fixes and optimizations
+
 ### 1.8.1 (2020-11-20)
 * (klein0r) Fixed past event calculation in html view
 

@@ -3,51 +3,60 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.phantomjs/README.md
 title: ioBroker.phantomjs
-hash: KmrYOg4he1pDLC0UEj6QJjD/fbJqHICW6wvFjORg11I=
+hash: wB5lseMg/xyHiORnWgccglXroLLv8OmrbnMbjHmG0Y4=
 ---
 ![商标](../../../en/adapterref/iobroker.phantomjs/admin/phantomjs.png)
 
 ![安装数量](http://iobroker.live/badges/phantomjs-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.phantomjs.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.phantomjs.svg)
-![测试](https://travis-ci.org/ioBroker/ioBroker.phantomjs.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.phantomjs.svg)
+![测验](https://travis-ci.org/ioBroker/ioBroker.phantomjs.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.phantomjs.png?downloads=true)
 
 ＃ioBroker.phantomjs
-此适配器允许您创建网页的屏幕截图（例如flot）并将其保存为png文件或通过内部WEB服务器共享。
+使用此适配器，您可以创建网页的屏幕截图（例如flot）并将其保存为png文件或通过内部WEB服务器共享。
 
-用户以后可以通过电子邮件或电报或其他方式发送此文件。
+用户以后可以通过电子邮件，电报或其他方式发送此文件。
 
-如果图表将每x分钟自动生成，则慢速Web客户端可以显示图表。
+如果每隔x分钟自动生成图表，则慢速Web客户端可以显示图表。
 
-##预先要求
-它是使用预制的phantomjs包。如果您的系统不存在prebuild，则无法使用此适配器。
-在某些Linux系统上，需要额外的库“libfontconfig”。它可以安装如下：
+##先决条件
+它用于phantomjs的预构建包。如果对于您的系统，预构建不存在，则不能使用此适配器。
+在某些linux系统上，需要附加库“ libfontconfig”。可以如下安装：
 
 ```
 sudo apt-get install libfontconfig
 ```
 
+##安装错误
+如果出现类似
+
+```
+Unexpected platform or architecture: linux/armIt seems there is no binary available for your platform/architecture Try to install PhantomJS globally
+```
+
+在安装过程中，我们很抱歉。您需要使用Google并搜索如何在系统上全局安装phantomjs。
+
 ##用法
-有两种方法可以创建图像。
+有两种创建图像的方法。
 
-###通过各州
-通过创建状态实例将创建：
+###通过状态
+通过创建实例，将创建状态：
 
- - **filename** - 文件名，将保存图片。如果path不是绝对的，它将相对于```/ iobroker / node_modules / iobroker.phantomjs```。
- -  **宽度**  - 图片的宽度。默认值800px。
- -  **高度**  - 图片的高度。默认值600px。
- - **paging** - PDF页面的格式。文件名必须以“.pdf”结尾
- - **renderTime** - 等待直到页面呈现的ms的间隔。
- -  **在线**  - 如果请求的URL图片必须上传到内部Web服务器。然后可以通过http：// ip：8082 / state / phantomjs.0.pictures.filename_png访问它
- - **clipTop** - 剪辑矩形的顶部位置。默认值0px。
- - **clipLeft** - 剪辑矩形的左侧位置。默认值0px。
- - **clipWidth** - 剪辑矩形的宽度。默认值与宽度相等。注意每次宽度变化都会覆盖此值。
- - **clipHeight** - 剪辑矩形的高度位置。默认值与高度相等。注意每次高度变化都会覆盖此值。
- - **scrollTop** - 滚动顶部位置。默认值0px。
- - **scrollLeft** - 向左滚动位置。默认值0px。
+-**文件名**-文件名，图片将保存在其中。如果path不是绝对的，它将相对于```... / iobroker / node_modules / iobroker.phantomjs``。
+-**宽度**-图片的宽度。预设值800px。
+-**高度**-图片的高度。预设值600px。
+-**分页**-PDF页面格式。文件名必须以“ .pdf”结尾
+-** renderTime **-间隔，以毫秒为单位，直到页面被渲染为止。
+-**在线**-如果需要，URL图片必须上传到内部Web服务器。然后可以通过http：// ip：8082 / state / phantomjs.0.pictures.filename_png进行访问
+-** clipTop **-剪辑矩形的顶部位置。预设值为0px。
+-** clipLeft **-剪辑矩形的左侧位置。预设值为0px。
+-** clipWidth **-剪辑矩形的宽度。默认值等于宽度。注意，每次更改宽度都会覆盖该值。
+-** clipHeight **-剪辑矩形的高度位置。默认值等于高度。注意，每次更改高度都会覆盖此值。
+-** scrollTop **-滚动顶部位置。预设值为0px。
+-** scrollLeft **-向左滚动。预设值为0px。
 
-写入url状态后，适配器会尝试创建图片，并在创建时将** url ** state的ack标志更改为true。
+写入url状态后，适配器尝试创建图片，并在创建图片时将** url **状态的ack标志更改为true。
 
 ###通过消息
 使用脚本代码，如下所示：
@@ -83,7 +92,7 @@ sendTo('phantomjs.0', 'send', {
 });
 ```
 
-您可以创建一些URL的屏幕截图。只有** url **字段是强制性的，所有其他字段都是可选的，将从当前设置填充。
+您可以创建一些URL的屏幕截图。仅** url **字段为必填字段，其他均为可选字段，并将由当前设置填充。
 
 ### PDF生成
 ```
@@ -119,11 +128,23 @@ sendTo('phantomjs.0', 'send', {
 });
 ```
 
-支持的尺寸单位为：'mm'，'cm'，'in'，'px'。没有单位意味着'px'。
+支持的尺寸单位为：“ mm”，“ cm”，“ in”，“ px”。没有单位表示“ px”。
 
 您可以阅读有关phantomJS[这里](http://phantomjs.org/api/webpage/property/paper-size.html)的更多信息。
 
 ## Changelog
+
+### 1.1.2 (2020-07-28)
+* (Apollon77) added ssl handling to ignore self signed ssl certificates
+
+### 1.1.1 (2020-07-27)
+* (Apollon77) libfontconfig automatically installed
+
+### 1.0.2 (2020-07-24)
+* (Apollon77) Add config to automatically install libfontconfig when js-controller 3+ is used
+* (Apollon77) Add ignore-ssl-errors=true to parameters to prevent error with self signed ssl certs
+* (Apollon77) Adjust state description to not confuse witha static port number :-)
+
 ### 1.0.1 (2018-05-04)
 * (bluefox) Problem with page size fixed
 
@@ -145,7 +166,7 @@ sendTo('phantomjs.0', 'send', {
 * (bluefox) initial commit
 
 ## License
-Copyright 2016-2018 bluefox <dogafox@gmail.com>.
+Copyright 2016-2020 bluefox <dogafox@gmail.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 

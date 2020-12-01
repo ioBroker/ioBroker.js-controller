@@ -3,21 +3,21 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.discovery/README.md
 title: ioBroker Discover Адаптер
-hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
+hash: dtvHuKU+rdPUHU6HT/193yc5+i6OifknfuMqFHRb7Gg=
 ---
-![логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
+![Логотип](../../../en/adapterref/iobroker.discovery/admin/discovery.png)
 
 ![Количество установок](http://iobroker.live/badges/discovery-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.discovery.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.discovery.svg)
-![тесты](https://travis-ci.org/ioBroker/ioBroker.discovery.svg?branch=master)
-![NPM](https://nodei.co/npm/iobroker.discovery.png?downloads=true)
+![Тесты](https://travis-ci.org/ioBroker/ioBroker.discovery.svg?branch=master)
+![НПМ](https://nodei.co/npm/iobroker.discovery.png?downloads=true)
 
 # IoBroker Откройте для себя адаптер
 ** Обнаруживайте устройства всеми известными методами. **
 
 Это специальные адаптеры, которые пытаются найти все возможные устройства, доступные с хоста.
-Только сейчас он может обнаруживать через ping, UPnP (планируется серийный).
+Только сейчас он может определять через ping, UPnP (планируется серийный).
 
 ** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
@@ -44,6 +44,7 @@ hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
 - Фрониус
 - Заглушки G-Homa
 - Гармония
+- Heos
 - Домашний помощник
 - Homematic CCU (hm-rpc, hm-rega)
 - Homepilot
@@ -59,7 +60,7 @@ hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
 - Осветить
 - Локсон
 - Лупусек
-- МАКС! куб
+- МАКС! Куб
 - Маклайтинг
 - MegaD
 - Miele
@@ -70,7 +71,7 @@ hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
 - Мпд
 - Musiccast
 - myDlink
-- Mysensors USB / последовательный порт (9600, 38400, 57600, 115200)
+- Mysensors USB / Serial (9600, 38400, 57600, 115200)
 - световые панели / холст nanoleaf
 - Нуки2
 - Орех
@@ -84,7 +85,7 @@ hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
 - Smappee
 - Solarlog
 - Соннен
-- Сонос
+- Sonos
 - Stiebel-Eltron / Tecalor ISG (плюс)
 - SQL (MySQL, MSSQL, PostgreSQL)
 - Соковыжималка
@@ -125,13 +126,17 @@ hash: YYvgZGQYh0gr84LLbiD+zRsUnQ8XcY5RRBU51PaAi8Y=
 - смартметр (Apollon77)
 - унифи (jens-maus)
 - волк (улыбается-валет)
-- xs1 (откровенный шутник)
+- xs1 (откровенный шуток)
 
 <! - Заполнитель для следующей версии (в начале строки):
 
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+
+### 2.4.0 (2020-11-29)
+* (withstu) add heos
+
 ### 2.3.11 (2020-08-08)
 * (Grizzelbee) Added MieleCloudService 
 

@@ -30,6 +30,9 @@ Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column
 
 ## Changelog
 
+### 1.1.0 (2020-11-30)
+* (Apollon77) Update to homee 2.30
+
 ### 1.0.7 (2020-06-12)
 * (Apollon77) Fix Admin finally
 

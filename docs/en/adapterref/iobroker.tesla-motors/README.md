@@ -11,7 +11,7 @@
 
 ## tesla motors adapter for ioBroker
 
-This Adapter adds control over your tesla car to ioBroker.
+This Adapter adds control over your Tesla car to ioBroker.
 
 ## Configuration
 1. Create a new instance of the adapter, each car needs its own instance.
@@ -35,7 +35,7 @@ If nothing happend (no Climate, no Driving, no Charging) the adapter stops reque
 to let the car fall asleep. In any case, it will wake up the car and get data after 12 hours.
 
 ## Using the adapter
-The Adapter creates several states. The are group by their topics:
+The Adapter creates several states. They are grouped by their topics:
 * **chargeState** - about charging, battery and range.
 * **climateState** - Temperatures and window states.
 * **driveState** - Position and speed
@@ -91,8 +91,11 @@ Keep your credentials save! <br />To reject all Tokens, change your Tesla accoun
 ## Contributors
 * dbweb-ch
 * Apollon77
+* Hombach
 
 ## Changelog
+### 0.3.0
+* (Hombach) Removed tests for node 8; updated dependencies
 ### 0.2.3
 * (dbweb-ch) Refresh info every 5 seconds when car is moving
 ### 0.2.2

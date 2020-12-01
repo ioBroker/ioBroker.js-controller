@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.phantomjs/README.md
 title: ioBroker.phantomjs
-hash: KmrYOg4he1pDLC0UEj6QJjD/fbJqHICW6wvFjORg11I=
+hash: wB5lseMg/xyHiORnWgccglXroLLv8OmrbnMbjHmG0Y4=
 ---
 ![Logo](../../../en/adapterref/iobroker.phantomjs/admin/phantomjs.png)
 
@@ -14,40 +14,49 @@ hash: KmrYOg4he1pDLC0UEj6QJjD/fbJqHICW6wvFjORg11I=
 ![NPM](https://nodei.co/npm/iobroker.phantomjs.png?downloads=true)
 
 # IoBroker.phantomjs
-Mit diesem Adapter können Sie Screenshots von Webseiten (z. B. Flot) erstellen und als PNG-Datei speichern oder über den internen WEB-Server freigeben.
+Mit diesem Adapter können Sie Screenshots von Webseiten (z. B. Flot) erstellen und als PNG-Datei speichern oder über einen internen WEB-Server freigeben.
 
-Benutzer können diese Datei später per E-Mail oder per Telegramm oder was auch immer senden.
+Der Benutzer kann diese Datei später per E-Mail oder per Telegramm oder was auch immer senden.
 
-Langsame Web-Clients können die Diagramme anzeigen, wenn die Diagramme alle x Minuten automatisch generiert werden.
+Langsame Webclients können die Diagramme anzeigen, wenn die Diagramme automatisch alle x Minuten generiert werden.
 
-## Voraussetzen
-Es wird ein vorgefertigtes Paket von Phantomen verwendet. Wenn für Ihr System die Vorkonstruktion nicht vorhanden ist, können Sie diesen Adapter nicht verwenden.
-Auf einigen Linux-Systemen wird die zusätzliche Bibliothek "libfontconfig" benötigt. Es kann wie folgt installiert werden:
+## Voraussetzung
+Es wird ein vorgefertigtes Paket von Phantomjs verwendet. Wenn für Ihr System der Prebuild nicht vorhanden ist, können Sie diesen Adapter nicht verwenden.
+Auf einigen Linux-Systemen ist die zusätzliche Bibliothek "libfontconfig" erforderlich. Es kann wie folgt installiert werden:
 
 ```
 sudo apt-get install libfontconfig
 ```
 
-## Verwendungszweck
-Es gibt zwei Möglichkeiten, um Bilder zu erstellen.
+## Fehler installieren
+Wenn Sie einen Fehler wie erhalten
+
+```
+Unexpected platform or architecture: linux/armIt seems there is no binary available for your platform/architecture Try to install PhantomJS globally
+```
+
+Während der Installation tut es uns dann leid. Sie müssen googeln und suchen, wie Phantomjs global auf Ihrem System installiert werden können.
+
+## Verwendung
+Es gibt zwei Möglichkeiten, Bilder zu erstellen.
 
 ### Über Staaten
-Durch das Anlegen der Instanz werden Zustände erzeugt:
+Durch die Erstellung der Instanz für Staaten werden erstellt:
 
-- **Dateiname** - Dateiname, in dem das Bild gespeichert wird. Wenn der Pfad nicht absolut ist, ist er relativ zu `` `... / iobroker / node_modules / iobroker.phantomjs````.
-- **width** - Breite des Bildes. Standardwert 800px.
+- **Dateiname** - Dateiname, in dem das Bild gespeichert wird. Wenn der Pfad nicht absolut ist, ist er relativ zu `` `... / iobroker / node_modules / iobroker.phantomjs```.
+- **Breite** - Breite des Bildes. Standardwert 800px.
 - **Höhe** - Höhe des Bildes. Standardwert 600px.
-- **Paging** - Format der PDF-Seite. Dateiname muss mit ".pdf" enden
-- **renderTime** - Wartezeit in ms, bis die Seite gerendert wird.
-- **online** - Auf Wunsch muss das URL-Bild auf den internen Webserver hochgeladen werden. Sie können dann über http:// ip: 8082 / state / phantomjs.0.pictures.filename_png darauf zugreifen
+- **Paging** - Format der PDF-Seite. Der Dateiname muss mit ".pdf" enden.
+- **renderTime** - Intervall in ms, um zu warten, bis die Seite gerendert wird.
+- **online** - Auf Anfrage muss das URL-Bild auf den internen Webserver hochgeladen werden. Der Zugriff kann dann über http:// ip: 8082 / state / phantomjs.0.pictures.filename_png erfolgen
 - **clipTop** - obere Position des Clip-Rechtecks. Standardwert 0px.
-- **clipLeft** - Linke Position des Clip-Rechtecks. Standardwert 0px.
-- **clipWidth** - Breite des Clip-Rechtecks. Der Standardwert entspricht der Breite. Achtung, dieser Wert wird bei jeder Breitenänderung überschrieben.
-- **clipHeight** - Höhenposition des Clip-Rechtecks. Der Standardwert entspricht der Höhe. Achtung, dieser Wert wird bei jeder Höhenänderung überschrieben.
-- **scrollTop** - Scrolle nach oben. Standardwert 0px.
+- **clipLeft** - linke Position des Clip-Rechtecks. Standardwert 0px.
+- **clipWidth** - Breite des Clip-Rechtecks. Der Standardwert entspricht der Breite. Achtung, dieser Wert wird jedes Mal durch die Änderung der Breite überschrieben.
+- **clipHeight** - Höhenposition des Cliprechtecks. Der Standardwert entspricht der Höhe. Achtung, dieser Wert wird jedes Mal durch die Höhenänderung überschrieben.
+- **scrollTop** - Bildlauf nach oben. Standardwert 0px.
 - **scrollLeft** - Bildlauf nach links. Standardwert 0px.
 
-Nachdem der URL-Status geschrieben wurde, versucht der Adapter, das Bild zu erstellen, und ändert dabei das Bestätigungs-Flag des URL-Status in true.
+Nachdem der URL-Status geschrieben wurde, versucht der Adapter, das Bild zu erstellen, und ändert beim Erstellen das Bestätigungsflag des Status **url** in true.
 
 ### Über Nachrichten
 Mit dem Skriptcode wie folgt:
@@ -83,7 +92,7 @@ sendTo('phantomjs.0', 'send', {
 });
 ```
 
-Sie können einen Screenshot einer URL erstellen. Nur das **url** -Feld ist obligatorisch, alle anderen Felder sind optional und werden mit den aktuellen Einstellungen ausgefüllt.
+Sie können einen Screenshot einer URL erstellen. Nur das Feld **url** ist obligatorisch, alle anderen sind optional und werden aus den aktuellen Einstellungen ausgefüllt.
 
 ### PDF-Generierung
 ```
@@ -124,6 +133,18 @@ Unterstützte Maßeinheiten sind: 'mm', 'cm', 'in', 'px'. Keine Einheit bedeutet
 Sie können mehr über phantomJS [Hier](http://phantomjs.org/api/webpage/property/paper-size.html) lesen.
 
 ## Changelog
+
+### 1.1.2 (2020-07-28)
+* (Apollon77) added ssl handling to ignore self signed ssl certificates
+
+### 1.1.1 (2020-07-27)
+* (Apollon77) libfontconfig automatically installed
+
+### 1.0.2 (2020-07-24)
+* (Apollon77) Add config to automatically install libfontconfig when js-controller 3+ is used
+* (Apollon77) Add ignore-ssl-errors=true to parameters to prevent error with self signed ssl certs
+* (Apollon77) Adjust state description to not confuse witha static port number :-)
+
 ### 1.0.1 (2018-05-04)
 * (bluefox) Problem with page size fixed
 
@@ -145,7 +166,7 @@ Sie können mehr über phantomJS [Hier](http://phantomjs.org/api/webpage/propert
 * (bluefox) initial commit
 
 ## License
-Copyright 2016-2018 bluefox <dogafox@gmail.com>.
+Copyright 2016-2020 bluefox <dogafox@gmail.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 

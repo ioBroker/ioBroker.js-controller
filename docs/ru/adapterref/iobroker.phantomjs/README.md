@@ -3,54 +3,63 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.phantomjs/README.md
 title: ioBroker.phantomjs
-hash: KmrYOg4he1pDLC0UEj6QJjD/fbJqHICW6wvFjORg11I=
+hash: wB5lseMg/xyHiORnWgccglXroLLv8OmrbnMbjHmG0Y4=
 ---
-![логотип](../../../en/adapterref/iobroker.phantomjs/admin/phantomjs.png)
+![Логотип](../../../en/adapterref/iobroker.phantomjs/admin/phantomjs.png)
 
 ![Количество установок](http://iobroker.live/badges/phantomjs-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.phantomjs.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.phantomjs.svg)
-![тесты](https://travis-ci.org/ioBroker/ioBroker.phantomjs.svg?branch=master)
-![NPM](https://nodei.co/npm/iobroker.phantomjs.png?downloads=true)
+![Тесты](https://travis-ci.org/ioBroker/ioBroker.phantomjs.svg?branch=master)
+![НПМ](https://nodei.co/npm/iobroker.phantomjs.png?downloads=true)
 
 # IoBroker.phantomjs
-Этот адаптер позволяет создавать снимки экрана веб-страниц (например, flot) и сохранять его в виде файла png или делиться им через внутренний WEB-сервер.
+Этот адаптер позволяет создавать скриншоты веб-страниц (например, flot) и сохранять их как файл png или делиться ими через внутренний WEB-сервер.
 
-Пользователь может позже отправить этот файл по электронной почте или по телеграмме или что-то еще.
+Позже пользователь может отправить этот файл по электронной почте, телеграммой или другим способом.
 
-Медленные веб-клиенты могут отображать графики, если графики будут генерироваться автоматически каждые x минут.
+Медленные веб-клиенты могут отображать диаграммы, если диаграммы будут автоматически генерироваться каждые x минут.
 
 ## Prerequire
-Используется готовый пакет фантомов. Если для вашей системы предварительная сборка не существует, вы не можете использовать этот адаптер.
-В некоторых системах Linux требуется дополнительная библиотека "libfontconfig". Он может быть установлен следующим образом:
+Используется готовый пакет phantomjs. Если для вашей системы не существует предварительной сборки, вы не можете использовать этот адаптер.
+В некоторых системах Linux требуется дополнительная библиотека libfontconfig. Его можно установить следующим образом:
 
 ```
 sudo apt-get install libfontconfig
 ```
 
-## Использование
+## Ошибки установки
+Если вы получите сообщение об ошибке
+
+```
+Unexpected platform or architecture: linux/armIt seems there is no binary available for your platform/architecture Try to install PhantomJS globally
+```
+
+во время установки мы извиняемся. Вам нужно зайти в Google и поискать, как установить phantomjs глобально в вашу систему.
+
+## Применение
 Есть два способа создания изображений.
 
-### Через штаты
+### Через состояния
 При создании экземпляра для состояний будут созданы:
 
-- **имя файла** - имя файла, в котором будет сохранена картинка. Если путь не является абсолютным, он будет относиться к `` `... / iobroker / node_modules / iobroker.phantomjs```.
-- **ширина** - ширина картинки. Значение по умолчанию 800px.
-- **высота** - высота картинки. Значение по умолчанию 600px.
-- **paging** - Формат страницы PDF. Имя файла должно заканчиваться на «.pdf»
+- **filename** - имя файла, в котором будет сохранена картинка. Если путь не абсолютный, он будет относиться к `` ... / iobroker / node_modules / iobroker.phantomjs``.
+- **width** - ширина рисунка. Значение по умолчанию 800 пикселей.
+- **высота** - высота рисунка. Значение по умолчанию 600 пикселей.
+- **paging** - Формат страницы PDF. Имя файла должно заканчиваться на «.pdf».
 - **renderTime** - Интервал в мс для ожидания отображения страницы.
-- **онлайн** - если запрошенная картинка URL должна быть загружена на внутренний веб-сервер. Доступ к нему можно получить через http:// ip: 8082 / state / phantomjs.0.pictures.filename_png.
-- **clipTop** - верхняя позиция прямоугольника клипа. Значение по умолчанию 0px.
-- **clipLeft** - левая позиция прямоугольника клипа. Значение по умолчанию 0px.
-- **clipWidth** - ширина прямоугольника клипа. Значение по умолчанию равно ширине. Внимание это значение будет перезаписываться каждый раз при изменении ширины.
-- **clipHeight** - высота положения прямоугольника клипа. Значение по умолчанию равно высоте. Внимание это значение будет перезаписываться каждый раз при изменении высоты.
-- **scrollTop** - Прокрутить верхнюю позицию. Значение по умолчанию 0px.
-- **scrollLeft** - Прокрутить левую позицию. Значение по умолчанию 0px.
+- **онлайн** - если запрошенный URL-адрес должен быть загружен на внутренний веб-сервер. Тогда к нему можно было получить доступ через http:// ip: 8082 / state / phantomjs.0.pictures.filename_png
+- **clipTop** - верхняя позиция прямоугольника клипа. Значение по умолчанию 0 пикселей.
+- **clipLeft** - левое положение прямоугольника клипа. Значение по умолчанию 0 пикселей.
+- **clipWidth** - ширина прямоугольника клипа. Значение по умолчанию равно ширине. Внимание, это значение будет перезаписываться каждый раз при изменении ширины.
+- **clipHeight** - высота прямоугольника клипа. Значение по умолчанию равно высоте. Внимание, это значение будет перезаписываться каждый раз при изменении высоты.
+- **scrollTop** - верхняя позиция прокрутки. Значение по умолчанию 0 пикселей.
+- **scrollLeft** - прокрутка влево. Значение по умолчанию 0 пикселей.
 
-После записи состояния url адаптер пытается создать изображение и при его создании флаг ack состояния **url** изменяется на true.
+После того, как состояние URL-адреса записано, адаптер пытается создать изображение и при его создании изменяет флаг подтверждения состояния **url** на true.
 
 ### Через сообщения
-С кодом скрипта, вот так:
+С кодом сценария, например:
 
 ```
 sendTo('phantomjs.0', 'send', {
@@ -83,9 +92,9 @@ sendTo('phantomjs.0', 'send', {
 });
 ```
 
-Вы можете создать снимок экрана некоторого URL. Только поле **url** является обязательным, все остальные являются необязательными и будут заполнены из текущих настроек.
+вы можете создать снимок экрана с некоторым URL. Только поле **url** является обязательным, все остальные необязательны и будут заполнены исходя из текущих настроек.
 
-### Генерация PDF
+### Создание PDF
 ```
 sendTo('phantomjs.0', 'send', {
     url:                    'http://localhost:8082/flot/index.html?l%5B0%5D%5Bid%5D=system.adapter.admin.0.memHeapTotal&l%5B0%5D%5Boffset%5D=0&l%5B0%5D%5Bart%5D=average&l%5B0%5D%5Bcolor%5D=%23FF0000&l%5B0%5D%5Bthickness%5D=3&l%5B0%5D%5Bshadowsize%5D=3&timeArt=relative&relativeEnd=now&range=10&live=false&aggregateType=step&aggregateSpan=300&hoverDetail=false&useComma=false&zoom=false',
@@ -119,11 +128,23 @@ sendTo('phantomjs.0', 'send', {
 });
 ```
 
-Поддерживаемые размерные единицы: «мм», «см», «дюйм», «px». Отсутствие единицы означает «px».
+Поддерживаемые единицы измерения: «мм», «см», «дюйм», «пиксели». Отсутствие единицы означает «пикс».
 
-Вы можете прочитать больше о phantomJS [Вот](http://phantomjs.org/api/webpage/property/paper-size.html).
+Вы можете узнать больше о phantomJS [Вот](http://phantomjs.org/api/webpage/property/paper-size.html).
 
 ## Changelog
+
+### 1.1.2 (2020-07-28)
+* (Apollon77) added ssl handling to ignore self signed ssl certificates
+
+### 1.1.1 (2020-07-27)
+* (Apollon77) libfontconfig automatically installed
+
+### 1.0.2 (2020-07-24)
+* (Apollon77) Add config to automatically install libfontconfig when js-controller 3+ is used
+* (Apollon77) Add ignore-ssl-errors=true to parameters to prevent error with self signed ssl certs
+* (Apollon77) Adjust state description to not confuse witha static port number :-)
+
 ### 1.0.1 (2018-05-04)
 * (bluefox) Problem with page size fixed
 
@@ -145,7 +166,7 @@ sendTo('phantomjs.0', 'send', {
 * (bluefox) initial commit
 
 ## License
-Copyright 2016-2018 bluefox <dogafox@gmail.com>.
+Copyright 2016-2020 bluefox <dogafox@gmail.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may not use this file except in compliance with the License. You may obtain a copy of the License at
 

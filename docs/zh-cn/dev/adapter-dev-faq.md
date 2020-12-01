@@ -3,24 +3,24 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adapter-dev-faq.md
 title: 常见的适配器开发问题
-hash: vAedyXkcC+wYcnNf+WP6LfPgxlS1ayqADzQwmtv2pzQ=
+hash: Q0u88eZutx+EI0w9GtrsGf/NIfeparGmyL3IkYxQzc8=
 ---
 ＃常见的适配器开发问题
 ＃＃ 介绍
 该页面的目的是收集有关ioBroker适配器开发的常见问题。
-Ralf于2020年11月24日在ioBroker #adapter Discord频道中与Mic讨论一个问题时提出了这个想法。
+这个想法是由拉尔夫（Ralf）于2020年11月24日在ioBroker #adapter Discord频道中与麦克讨论的问题中提出的。
 
 ##请贡献（这很简单！）
 随时在此页面添加任何问题和相应答案。唯一的限制是：确保为答案添加日期。无需完美主义，只需发布在适配器开发中对您有帮助的内容。也非常欢迎链接到实现该问题的适配器。我们的开发人员喜欢看实现示例：-)
 
-*注意：*这不会成为正式文档。欢迎任何提示，解决方法，甚至更老的论坛帖子的链接等。目的是快速支持和帮助开发人员解决常见的开发问题。如果您在此处用英语书写时遇到问题，请使用德语，俄语等当地语言，我们很乐意为您提供帮助，以后再翻译。
+*注意：*这不会成为正式文档。欢迎任何提示，解决方法，甚至更老的论坛帖子的链接等。目的是快速支持和帮助开发人员解决常见的开发问题。如果您在此处用英语书写时遇到问题，请使用德语，俄语等当地语言，我们将很乐意为您提供帮助，以后再翻译。
 
 为了更新目录，您可以使用TOC生成器，例如[luciopaiva.com/markdown-toc](https://luciopaiva.com/markdown-toc/)
 
 ＃ 目录
 -[适配器更新]（＃adapter-updates）
   -[发布适配器更新]（＃publishing-adapter-updates）
--[适配器测试和错误报告]（＃适配器测试和错误报告）
+-[适配器测试和错误报告]（＃adapter测试和错误报告）
   -[紧凑模式]（＃compact-mode）
   -[哨兵]（＃sentry）
 -[适配器配置UI（admin / index_m.html）]（＃adapter-configuration-ui-adminindexmhtml）
@@ -36,7 +36,7 @@ Ralf于2020年11月24日在ioBroker #adapter Discord频道中与Mic讨论一个�
 
  *`io-package.json`：更改版本号并添加最近的更改日志
  *`package.json`：仅更改版本号
- *`README.md`：添加新的版本号和更改日志
+ *`README.md`：添加新版本号和更改日志
 
 请注意，必须使用[语义版本控制]（https://semver.org/），请参阅[版本控制](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md#versioning)。<br> （2020年11月25日）
 

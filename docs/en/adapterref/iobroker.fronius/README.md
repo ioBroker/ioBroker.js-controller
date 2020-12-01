@@ -18,6 +18,10 @@ This is an ioBroker adapter for your Fronius PV inverter with Fronius Datalogger
 
 ## Changelog
 
+### 1.1.1 (2020-11-30)
+* (schweigel) Added missing units
+* (schweigel) Added inverterinfo
+
 ### 1.1.0 (2020-11-24)
 * (nkleber78) Implementation change for support of SYMO GEN24
 * (nkleber78) Fix issue with adapters connected state
