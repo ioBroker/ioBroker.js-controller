@@ -4210,11 +4210,6 @@ function init(compactGroupId) {
 
     logger = require('./lib/logger.js')(config.log);
 
-    if (!compactGroupController) {
-        // Delete all log files older than x days
-        logger.activateDateChecker(true, config.log.maxDays);
-    }
-
     // If installed as npm module
     adapterDir = adapterDir.split('/');
     if (adapterDir.pop() === 'node_modules') {
