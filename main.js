@@ -108,6 +108,11 @@ function getErrorText(code) {
     return code;
 }
 
+/**
+ * Get the config directly from fs - never cached
+ *
+ * @returns {null|object}
+ */
 function getConfig() {
     const configFile = tools.getConfigFileName();
     if (!fs.existsSync(configFile)) {
