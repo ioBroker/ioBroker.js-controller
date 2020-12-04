@@ -4216,7 +4216,7 @@ function init(compactGroupId) {
     try {
         logger = require('./lib/logger.js')(config.log);
     } catch (e) {
-        if (e.code === 'EACCES') {
+        if (e.code === 'EACCES_LOG') {
             // We could not access logging directory - e.g. because of restored backup
             console.error(`Could not access logging directory "${e.path}", fallback to default`);
 
