@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vw-connect/README.md
 title: ioBroker.vw-connect
-hash: Pxhcxeh1UyMWL3PUQe48L/FiysnntzRL1N1diLS0jXo=
+hash: YBWgB09BCzGVxV5MNMGSRmsS3JZugKLttPxrLSd0448=
 ---
 ![Logo](../../../en/adapterref/iobroker.vw-connect/admin/vw-connect.png)
 
@@ -16,7 +16,7 @@ hash: Pxhcxeh1UyMWL3PUQe48L/FiysnntzRL1N1diLS0jXo=
 
 # IoBroker.vw-connect
 ## Vw-connect Adapter für ioBroker
-Adapter für VW We Connect, myAudi, Skoda Connect und We Connect Go
+Adapter für VW Wir verbinden, wir verbinden ID, myAudi, Skoda Connect und wir verbinden Go
 
 Bitte aktualisieren Sie Ihr System auf Knoten 10.
 <https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten>
@@ -111,6 +111,10 @@ Tür- und Fensterzustände:
 ```
 
 ## Changelog
+
+### 0.0.21
+
+- add remotes for id
 
 ### 0.0.20
 

@@ -23,7 +23,7 @@ Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. b
 eine direkte Verknüpfung der jeweiligen Instanz "states", auf andere "states" möglich. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
 
 ----------------------------------------------------------------------------------------------------------------------
-*Stand 05.07.2020 ab Version 0.8.0*
+### AB VERSION 1.7.x SIND DIE EINSTELLUNGEN FÜR DEN STILLEN ALARM ZU PRÜFEN
 
 ### Tab Haupteinstellungen
 
@@ -53,6 +53,8 @@ Hier werden die Kreise der Anlage konfiguriert.
 
 Der Alarmkreis hat die Priorität „hoch" und hat bei aktivierter Anlage (scharf) Vorrang vor allen anderen Keisen. Er dient zur eigentlichen Überwachung der Anlage. Dies entspricht den Vollschutz  einer Alarmanlage. Der scharf intern Kreis wird überwacht, wenn die Anlage sich im Zustand scharf intern befindet. Der Meldekreis dient nur zur Meldung während der Zustände scharf, scharf intern und bei der der Nachtruhe.
 *Es ist durchaus möglich, dass man für einen State, den Haken bei allen drei Kreisen macht.*
+
+Sollte man einen Kontakt haben, der den Alarmkreis nicht sofort auslösen soll, kann man das Häckchen bei stiller Alarm aktivieren. Dadurch wird nach Ablauf der eingestellten Zeit (Haupteinstellungen), der Alarm ausgelöst.
 
 Die Kreise werden folgendermaßen überwacht:
 
@@ -133,7 +135,7 @@ Der log_today state wird um Mitternacht geleert.
 
 ## Changelog
 
-#### 1.7.0 (26.11.2020)
+#### 1.8.0 (26.11.2020)
 * (misanorot) added status.state_list to shortcuts
 
 #### 1.7.0 (20.11.2020)

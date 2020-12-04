@@ -2,9 +2,9 @@
 # ioBroker.device-reminder
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.device-reminder.svg)](https://www.npmjs.com/package/iobroker.device-reminder)
-<!-- ![Number of Installations (stable)](http://iobroker.live/badges/device-reminder-installed-stable.svg) -->
 [![Downloads](https://img.shields.io/npm/dm/iobroker.device-reminder.svg)](https://www.npmjs.com/package/iobroker.device-reminder)
-![Number of Installations (latest)](http://iobroker.live/badges/device-reminder-installed.svg)
+![Number of Installations (stable)](http://iobroker.live/badges/device-reminder-installed-stable.svg)
+<!-- ![Number of Installations (latest)](http://iobroker.live/badges/device-reminder-installed.svg) -->
 [![Dependency Status](https://img.shields.io/david/xenon-s/iobroker.device-reminder.svg)](https://david-dm.org/xenon-s/iobroker.device-reminder)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/xenon-s/iobroker.device-reminder/LICENSE)
 ![Test and Release](https://github.com/xenon-s/iobroker.device-reminder/workflows/Test%20and%20Release/badge.svg)

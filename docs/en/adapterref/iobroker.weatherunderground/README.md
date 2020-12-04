@@ -69,8 +69,9 @@ There is a still a problem with encoding. The addresses with "äüöß" will be 
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 3.2.2 (2020-12-02)
 * (Apollon77) icons sometimes did not had a correct extension
+* (Apollon77) Correct some cases with different types of locations when reading data
 
 ### 3.2.1
 * (raintonr) Corrected 'Imperial' terminology.

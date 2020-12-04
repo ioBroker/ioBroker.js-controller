@@ -60,7 +60,7 @@ For use adapter need start adb server.
 
 ## Changelog
 
-### 0.0.4
+### 0.0.5
 * (om2804) js-controller dependency upgraded to > 2.0.0
 
 ### 0.0.3

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.telegram/README.md
 title: ioBroker电报适配器
-hash: OwLL43QuVRbZExiw0MJJ85F4Poi5RGngQJUmbMjLGEE=
+hash: qnN6C3/RYS+HjTlA77HGatWAuS6cU9E3bsHJFQJCnmQ=
 ---
 ![商标](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
 
@@ -15,22 +15,22 @@ hash: OwLL43QuVRbZExiw0MJJ85F4Poi5RGngQJUmbMjLGEE=
 
 ＃ioBroker电报适配器
 ##配置
-要求[@BotFather](https://telegram.me/botfather)创建新的机器人```/newbot```。
+要求[@BotFather](https://telegram.me/botfather)创建新的漫游器```/newbot```。
 
-系统将要求您输入漫游器的名称，然后输入用户名。
+系统将要求您输入机器人的名称，然后输入用户名。
 之后，您将获得令牌。
 
 ![屏幕截图](../../../en/adapterref/iobroker.telegram/img/chat.png)
 
 您应该在配置对话框中设置通信密码。此后，启动适配器。
 
-要与您的机器人进行对话，您需要使用“ / passwordphrase”对用户进行身份验证，其中“ phrase **”是您配置的密码。因此，与您在Telegram中生成的Bot进行新的对话，然后需要输入密码作为第一个命令。
+要与您的机器人进行对话，您需要使用`/password phrase`对用户进行身份验证，其中**`phrase`**是您配置的密码。因此，在Telegram中与您生成的Bot进行新的对话，然后需要输入密码作为第一个命令。
 
-**注意：**您可以使用缩写形式“ / p短语”。
+**注意：**您可以使用缩写`/p phrase`。
 
-要添加精美的头像图片，请在“ BotFather”聊天中输入`/setuserpic`并将其上传到所需的图片（512x512像素），例如[商标](img/logo.png)。
+要添加精美的头像图片，请在“ BotFather”聊天中输入`/setuserpic`并将其上载所需图片（512x512像素），例如[商标](img/logo.png)。
 
-您可以通过messageBox`sendTo('telegram', 'Test message')`向所有经过身份验证的用户或特定用户`sendTo('telegram', '@userName Test message')`发送消息。
+您可以通过messageBox`sendTo('telegram', 'Test message')`将消息发送给所有经过身份验证的用户，也可以将消息发送给特定的用户`sendTo('telegram', '@userName Test message')`。
 用户必须先经过身份验证。
 
 您也可以通过这种方式指定用户：
@@ -41,7 +41,7 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 });
 ```
 
-如果使用上面的示例，请注意，您必须将“ UserName”替换为您要向其发送消息的用户的名字或Public-Telegram-Username。 （取决于是否启用了Adaptersettings中的'Store username not firstname'设置）如果设置了该选项并且用户未在电报帐户中指定公共用户名，则适配器将继续使用该用户名。用户。请记住，如果用户稍后（在对您的机器人进行身份验证之后）设置了公共用户名，则下次用户向机器人发送消息时，保存的名字将被用户名替换。
+如果使用上面的示例，请注意，您必须将“ UserName”替换为您要向其发送消息的用户的名字或Public-Telegram-Username。 （取决于是否启用了适配器设置中的“存储用户名不是名字”设置）如果设置了该选项并且用户未在电报帐户中指定公共用户名，则适配器将继续使用的名字用户。请记住，如果用户稍后（在对您的机器人进行身份验证之后）设置了公共用户名，则下次用户向机器人发送消息时，保存的名字将被用户名替换。
 
 可以指定多个收件人（只需用逗号分隔用户名）。
 例如：收件人：“ User1，User4，User5”
@@ -54,7 +54,7 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 }
 ```
 
-JSON语法还允许添加[电报机器人API](https://core.telegram.org/bots/api)中的选项，以及设置用户或chatId：
+JSON语法还允许从[电报机器人API](https://core.telegram.org/bots/api)添加选项，以及设置用户或chatId：
 
 ```
 {
@@ -65,12 +65,20 @@ JSON语法还允许添加[电报机器人API](https://core.telegram.org/bots/api
 }
 ```
 
+为了向群组发送消息，您必须邀请漫游器加入您希望漫游器加入的群组。
+通过为JSON消息有效负载提供`chat_id`，您实际上可以将消息发送到这些组。
+
+为了找出`chat_id`，您必须将适配器的日志级别设置为`debug`。
+然后，您可以仅在您希望机器人向其发送消息的组中对机器人进行ping操作。
+确保在消息前面放置一个`/`，以便机器人可以看到该消息（[如果漫游器隐私已打开](#How-to-receive-messages-in-group-chats-using-telegram-adapter)）。
+然后，iobroker日志将在日志中显示聊天ID。
+
 ##用法
 您可以将电报与[text2command](https://github.com/ioBroker/ioBroker.text2command)适配器一起使用。有预定义的通信模式，您可以以文本形式命令您回家。
 
 要发送照片，只需发送文件的路径而不是文本或URL：`sendTo('telegram', 'absolute/path/file.png')`或`sendTo('telegram', 'https://telegram.org/img/t_logo.png')`§。
 
-示例如何从网络摄像头向电报发送屏幕截图：
+如何将网络摄像头的屏幕快照发送到电报的示例：
 
 ```
 var request = require('request');
@@ -103,7 +111,7 @@ on("someState", function (obj) {
 
 以下消息保留用于操作：
 
--*输入*-对于短信，
+-*键入*-对于短信，
 -* upload_photo *-用于照片，
 -* upload_video *-对于视频，
 -* record_video *-对于视频，
@@ -127,10 +135,10 @@ sendTo('telegram.0', {
 **可能的选项**：
 
 -* disable_notification *：静默发送消息。 iOS用户将不会收到通知，Android用户将不会收到通知。 （所有类型）
--* parse_mode *：如果希望Telegram应用在机器人消息中显示粗体，斜体，固定宽度的文本或嵌入式URL，则发送Markdown或HTML。可能的值：“ Markdown”，“ MarkdownV2”，“ HTML”（消息）
+-* parse_mode *：如果希望Telegram应用在机器人的消息中显示粗体，斜体，固定宽度的文本或嵌入式URL，则发送Markdown或HTML。可能的值：“ Markdown”，“ MarkdownV2”，“ HTML”（消息）
 -* disable_web_page_preview *：禁用此消息中链接的链接预览（消息）
 -*标题*：用于文档，照片或视频的标题，0-200个字符（视频，音频，照片，文档）
--*持续时间*：发送的视频或音频的持续时间（以秒为单位）（音频，视频）
+-*持续时间*：以秒为单位发送视频或音频的持续时间（音频，视频）
 -*表演者*：音频文件的表演者（音频）
 -* title *：音频文件的轨道名称（音频）
 -*宽度*：视频宽度（视频）
@@ -241,7 +249,7 @@ sendTo('telegram.0', 'ask', {
 `sendTo('telegram.0', {text: 'Message to chat', chatId: 'SOME-CHAT-ID-123');`
 
 ##更新消息
-通过以下方法，您可以更改消息历史记录中的现有消息，而不是通过操作结果发送新消息。这对于使用*嵌入式键盘*的带有回调查询的消息最有用，但也可以帮助减少与常规聊天机器人进行对话时的混乱情况。
+通过以下方法，您可以更改消息历史记录中的现有消息，而不是通过操作结果发送新消息。这对于使用*内置键盘*的带有回调查询的消息最有用，但也可以帮助减少与常规聊天机器人进行对话时的混乱情况。
 
 ### EditMessageText
 使用此方法来编辑由机器人或通过机器人（对于嵌入式机器人）发送的文本。成功后，如果漫游器发送了已编辑的消息，则返回已编辑的消息，否则返回* True *。
@@ -315,7 +323,7 @@ if (command === "1_2") {
 ### DeleteMessage
 使用此方法可以删除一条消息，包括服务消息，但有以下限制：
 
--如果邮件的发送时间少于48小时，则只能将其删除。
+-仅在少于48小时前发送过的邮件才能删除。
 
 成功返回* True *。
 
@@ -379,7 +387,7 @@ on({id: 'telegram.0.communicate.request', change: 'any'}, function (obj) {
 ```
 
 ##轮询或服务器模式
-如果使用轮询模式，则适配器默认每300毫秒对电报服务器进行一次轮询以进行更新。它使用流量，并且消息可能会延迟最长轮询间隔。轮询间隔可以在适配器配置中定义。
+如果使用轮询模式，则默认情况下，适配器每300毫秒对电报服务器进行一次轮询以进行更新。它使用流量，并且消息可以延迟最多轮询间隔。轮询间隔可以在适配器配置中定义。
 
 要使用服务器模式，您的ioBroker实例必须可以通过互联网访问（例如，使用noip.com动态DNS服务）。
 
@@ -389,14 +397,14 @@ on({id: 'telegram.0.communicate.request', change: 'any'}, function (obj) {
 
 -URL-格式为https://yourdomain.com:8443。
 -IP-IP地址，将绑定服务器。默认值为0.0.0.0。如果不确定，请不要更改它。
--端口-电报实际上仅支持443、80、88、8443端口，但是您可以通过路由器将端口转发给任何一个端口。
+-端口-报文实际上仅支持443、80、88、8443端口，但是您可以通过路由器将端口转发给任何一个端口。
 -公共证书-如果禁用“允许加密”，则为必需。
--私钥-如果禁用“允许加密”，则为必填项。
+-私钥-必需，如果禁用“允许加密”。
 -连锁证书（可选）
 -让我们加密选项-设置“让我们加密”证书非常容易。请阅读[here]（https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certificates）。
 
 ##通过电报电话
-借助[Callmebot](https://www.callmebot.com/)api，您可以拨打电报帐户，并且一些文本将通过TTS引擎读取。
+借助[Callmebot](https://www.callmebot.com/)api，您可以拨打电报帐户，一些文本将通过TTS引擎读取。
 
 要从javascript适配器执行此操作，只需调用：
 
@@ -435,9 +443,9 @@ sendTo('telegram.0', 'call', {
 
 语言的可能值：
 
--ʻar-XA-Standard-A`-阿拉伯语（女声）
--ʻar-XA-Standard-B`-阿拉伯语（男声）
--ʻar-XA-Standard-C`-阿拉伯语（男性2种声音）
+-`ar-XA-Standard-A`-阿拉伯语（女声）
+-`ar-XA-Standard-B`-阿拉伯语（男声）
+-`ar-XA-Standard-C`-阿拉伯语（男性2种声音）
 -`cs-CZ-Standard-A`-捷克（捷克共和国）（女声）
 -`da-DK-Standard-A`-丹麦文（丹麦）（女声）
 -`nl-NL-Standard-A`-荷兰语（荷兰）（如果系统语言为NL且未提供任何语言，则将使用女性声音）
@@ -470,9 +478,9 @@ sendTo('telegram.0', 'call', {
 -`fr-FR-Standard-B`-法语（法国）（男声）
 -`fr-FR-Standard-C`-法语（法国）（女性2种声音）
 -`fr-FR-Standard-D`-法语（法国）（男性2种声音）
--`de-DE-Standard-A`-德语（德国）（如果系统语言为DE并且未提供任何语言，则将使用女性声音）
+-`de-DE-Standard-A`-德语（德国）（如果系统语言为DE并且未提供语言，则将使用女性声音）
 -`de-DE-Standard-B`-德语（德国）（男声）
--ʻel-GR-Standard-A`-希腊语（希腊）（女声）
+-`el-GR-Standard-A`-希腊语（希腊）（女声）
 -`hi-IN-Standard-A`-印地语（印度）（女声）
 -`hi-IN-Standard-B`-印地语（印度）（男声）
 -`hi-IN-Standard-C`-印地语（印度）（男性2种声音）
@@ -492,25 +500,25 @@ sendTo('telegram.0', 'call', {
 -`ko-KR-Standard-B`-韩国（韩国）（女2声音）
 -`ko-KR-Standard-C`-韩文（韩国）（男声）
 -`ko-KR-Standard-D`-韩文（韩国）（男2种声音）
--`cmn-CN-Standard-A`-普通话（女声）
+-`cmn-CN-Standard-A`-国语（女声）
 -`cmn-CN-Standard-B`-普通话（男声）
 -`cmn-CN-Standard-C`-普通话（男2语音）
 -`nb-NO-Standard-A`-挪威语（挪威语）（女声）
 -`nb-NO-Standard-B`-挪威语（挪威语）（男声）
--`nb-NO-Standard-C`-挪威语（挪威）（女2声音）
--`nb-NO-Standard-D`-挪威文（挪威）（男性2种声音）
+-`nb-NO-Standard-C`-挪威语（挪威语）（女2声音）
+-`nb-NO-Standard-D`-挪威文（挪威）（男2种声音）
 -`nb-no-Standard-E`-挪威语（挪威语）（女3声音）
 -`pl-PL-Standard-A`-波兰语（波兰）（如果系统语言为PL而未提供任何语言，则将使用女性声音）
 -`pl-PL-Standard-B`-波兰语（波兰）（男声）
 -`pl-PL-Standard-C`-波兰语（波兰）（男2种声音）
 -`pl-PL-Standard-D`-波兰语（波兰）（女性2种声音）
--`pl-PL-Standard-E`-波兰语（波兰）（女性3种声音）
+-`pl-PL-Standard-E`-波兰语（波兰）（女3声音）
 -`pt-BR-Standard-A`-葡萄牙语（巴西）（如果系统语言为PT且未提供任何语言，则将使用女性语音）
 -`pt-PT-Standard-A`-葡萄牙语（葡萄牙）（女声）
 -`pt-PT-Standard-B`-葡萄牙语（葡萄牙）（男声）
 -`pt-PT-Standard-C`-葡萄牙语（葡萄牙）（男性2种声音）
 -`pt-PT-Standard-D`-葡萄牙语（葡萄牙）（女性2种声音）
--`ru-RU-Standard-A`-俄语（俄罗斯）（如果系统语言为RU并且未提供任何语言，则将使用女性语音）
+-`ru-RU-Standard-A`-俄语（俄罗斯）（如果系统语言为RU并且未提供任何语言，则将使用女性声音）
 -`ru-RU-Standard-B`-俄语（俄罗斯）（男声）
 -`ru-RU-Standard-C`-俄语（俄罗斯）（女性2种声音）
 -`ru-RU-Standard-D`-俄语（俄罗斯）（男性2种声音）
@@ -545,7 +553,7 @@ sendTo('telegram.0', 'call', {
 
 如果在电报适配器的配置对话框中启用了“在键盘命令中使用房间”选项，则在第一步中将显示房间列表。 ***尚未实现***
 
-###设置状态
+###状态下的设置
 首先必须启用配置。
 
 ####别名
@@ -557,15 +565,15 @@ sendTo('telegram.0', 'call', {
 如果单击`Door lamp ?`，您将获得`Door lamp  => switched off`。
 
 ＃＃＃ 只读
-如果激活，则不会显示ON / OFF按钮，而只会显示`Door lamp ?`。
+如果激活，将不显示任何ON / OFF按钮，仅显示`Door lamp ?`。
 
 ###报告更改
-如果设备的状态发生了变化（例如有人物理地打开了灯），则新状态将被传送到电报中。
+如果设备的状态发生变化（例如有人物理地打开了灯），则新的状态将被传送到电报中。
 例如。 `Door lamp  => switched on`。
 
 ###行中的按钮
 一台设备的行中必须显示多少个按钮。
-由于名称太长，最好在该行中仅显示2个（或什至只显示一个）按钮。
+由于名字很长，最好只在行中显示2个（甚至只有一个）按钮。
 
 ![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings3.png)
 
@@ -574,14 +582,14 @@ sendTo('telegram.0', 'call', {
 ![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings4.png)
 
 ### ON命令
-哪些文本将显示在“打开”按钮上。
+哪个文本将显示在`ON`按钮上。
 就像这里：![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings5.png)
 
 将产生以下键盘：![设定](../../../en/adapterref/iobroker.telegram/img/stateSettings6.png)
 
 ### ON文字
 状态报告将显示哪些文本。
-例如。 `Door lamp => activated`如果设备的状态更改为true并且“ ON Text”为`activated`
+例如。 `Door lamp => activated`如果设备的状态更改为true且“ ON Text”为`activated`
 
 仅当“报告更改”被激活时，才会显示开/关文本。
 
@@ -637,7 +645,14 @@ msg.payload = {
 }
 ```
 
+<！-下一个版本的占位符（在该行的开头）：
+
+### __正在进行的工程__->
+
 ## Changelog
+
+### 1.6.1 (2020-12-01)
+* (ChristianB86) Added option to set the amount of repeats for telegram call.
 
 ### 1.6.0 (2020-11-09)
 * (MarkRohrbacher) Allow overriding chatId / user when writing JSON objects to telegram.INSTANCE.communicate.response

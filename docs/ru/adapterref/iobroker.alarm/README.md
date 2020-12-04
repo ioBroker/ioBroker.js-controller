@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: 4mGLoOsNPkarT+c2AZRtw61ymIsoXLmGGM+Rva+RVN8=
+hash: gYWLurBbi1dxqxxkHpR68IGwUaFd5z+gIxIDJX99OgY=
 ---
 ![Логотип](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -22,10 +22,11 @@ hash: 4mGLoOsNPkarT+c2AZRtw61ymIsoXLmGGM+Rva+RVN8=
 
 ## IoBroker Alarm
 Dies ist ein Adapter, mit dem sich eine kleine Alarmanlage ohne große programmiertechnische Vorkenntnisse realisieren lässt.
-Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe или De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz "состояния", auf andere "состояния" möglich. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
+Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei Nachtruhe oder De- und Aktivierung zu überwachen. Des Weiteren ist eine direkte Verknüpfung der jeweiligen Instanz "состояния", auf andere "состояния" möglich. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
 
--------------------------------------------------- -------------------------------------------------- ------------------ *Стенд 05.07.2020 ab Версия 0.8.0*
+----------------------------------------------------------------------------------------------------------------------
 
+### AB ВЕРСИЯ 1.7.x SIND DIE EINSTELLUNGEN FÜR DEN STILLEN ALARM ZU PRÜFEN
 ### Tab Haupteinstellungen
 Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm und Passwort vorgenommen.
 
@@ -50,6 +51,8 @@ Hier werden die Kreise der Anlage konfiguriert.
 
 Der Alarmkreis hat die Priorität „hoch" und hat bei aktivierter Anlage (scharf) Vorrang vor allen anderen Keisen. Er dient zur eigentlichen Überwachung der Anlage. scharf intern befindet. Der Meldekreis dient nur zur Meldung während der Zustände scharf, scharf intern und bei der der Nachtruhe.
 * Es ist durchaus möglich, dass man für einen State, den Haken bei allen drei Kreisen macht. *
+
+Sollte man einen Kontakt haben, der den Alarmkreis nicht sofort auslösen soll, kann man das Häckchen bei stiller Alarm aktivieren. Dadurch wird nach Ablauf der eingestellten Zeit (Haupteinstellungen), der Alarm ausgelöst.
 
 Die Kreise werden folgendermaßen überwacht:
 
@@ -118,6 +121,12 @@ Der log_today State Wird um Mitternacht geleert.
 #### Wichtig, die Benutzung dieses Адаптеры geschieht auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Haftung übernommen!
 
 ## Changelog
+
+#### 1.8.0 (26.11.2020)
+* (misanorot) added status.state_list to shortcuts
+
+#### 1.7.0 (20.11.2020)
+* (misanorot) changed notifications and fixed little issues
 
 #### 1.6.0 (08.11.2020)
 * (misanorot) changed time inputs to numbers

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vw-connect/README.md
 title: ioBroker.vw-connect
-hash: Pxhcxeh1UyMWL3PUQe48L/FiysnntzRL1N1diLS0jXo=
+hash: YBWgB09BCzGVxV5MNMGSRmsS3JZugKLttPxrLSd0448=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vw-connect/admin/vw-connect.png)
 
@@ -16,7 +16,7 @@ hash: Pxhcxeh1UyMWL3PUQe48L/FiysnntzRL1N1diLS0jXo=
 
 # IoBroker.vw-connect
 ## Адаптер vw-connect для ioBroker
-Адаптер для VW We Connect, myAudi, Skoda Connect и We Connect Go
+Адаптер для VW We Connect, We Connect ID, myAudi, Skoda Connect и We Connect Go
 
 Пожалуйста, обновите вашу систему на узле 10.
 <https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten>
@@ -111,6 +111,10 @@ hash: Pxhcxeh1UyMWL3PUQe48L/FiysnntzRL1N1diLS0jXo=
 ```
 
 ## Changelog
+
+### 0.0.21
+
+- add remotes for id
 
 ### 0.0.20
 

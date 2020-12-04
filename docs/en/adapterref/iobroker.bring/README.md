@@ -127,6 +127,9 @@ For every shopping list a channel with the following states will be created:
     *Read only json string, which contains a dictionary to translate the swiss item names to the list language.*
 
 ## Changelog
+### 1.7.4 (2020-12-04)
+* (foxriver76) we now render the widget immediately
+
 ### 1.7.3 (2020-10-26)
 * (foxriver76) bring module now returns real errors instead of strings, handle them correct
 

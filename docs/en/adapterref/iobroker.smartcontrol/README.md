@@ -114,6 +114,10 @@ This is just to provide you an overview of the adapter options.
 
 ## Changelog
 
+
+### 1.2.1
+* (Mic-M) Enhancement: Now, all adapter config validations take place while saving the adapter configuration, and all identified errors are shown in a dialog. Addresses issue [#61](https://github.com/Mic-M/ioBroker.smartcontrol/issues/61)
+
 ### 1.2.0
 * (Mic-M) Fix: [#60 - Linked triggers of motion sensors issue](https://github.com/Mic-M/ioBroker.smartcontrol/issues/60)
 * (Mic-M) Several code improvements

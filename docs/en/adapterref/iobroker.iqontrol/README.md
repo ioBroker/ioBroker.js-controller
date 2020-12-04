@@ -1183,9 +1183,9 @@ This device has some special predefined size- and display-settings to show a web
     
 ## Changelog
 
-### dev
+### 1.5.1 (2020-12-01)
 * (sbormann) Added url-paremeter noPanel.
-* (sbormann) changed fetching of ioBroker Objects.
+* (sbormann) Changed fetching-method of ioBroker Objects.
 
 ### 1.5.0 (2020-11-24)
 * (sbormann) Added Flot-Chart widget.

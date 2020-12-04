@@ -263,7 +263,7 @@ If activated so by every command (no matter if the request came via state or sen
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 2.0.6 (2020-12-03)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-TEXT2COMMAND-D, IOBROKER-TEXT2COMMAND-C)
 
 ### 2.0.5 (2020-09-5)

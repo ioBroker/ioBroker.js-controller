@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: FcRsukxWLJbNuZMkihZrspoEwyxoJGgukVLW2r2ePT0=
+hash: 93HYJ0QCC/JA0ONusjFwzyEf24ZyHM9d0J9AMMqfZR8=
 ---
 ![Логотип](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -14,7 +14,7 @@ hash: FcRsukxWLJbNuZMkihZrspoEwyxoJGgukVLW2r2ePT0=
 ![НПМ](https://nodei.co/npm/iobroker.echarts.png?downloads=true)
 
 # IoBroker.echarts
-## Адаптер электронных схем для ioBroker
+## Echarts адаптер для ioBroker
 Создавайте полезные графики в ioBroker:
 
 ![Снимок экрана](../../../en/adapterref/iobroker.echarts/img/screenshot1.png)
@@ -22,8 +22,12 @@ hash: FcRsukxWLJbNuZMkihZrspoEwyxoJGgukVLW2r2ePT0=
 ## Применение
 Добавьте после перезагрузки вкладку в админке: ![Админ](../../../en/adapterref/iobroker.echarts/img/admin.png)
 
+Созданный пресет также доступен в веб-адаптере. URL: `http://IP:8082/echarts/index.html?preset=echarts.0.PRESETID`.
+
+Для Виса есть специальный виджет с удобным выбором пресетов.
+
 ### Подсказка
-`i` в нижнем регистре указывает, что значение было интерполировано из двух соседних значений, и его не существует на данной отметке времени.
+`i` в нижнем регистре указывает, что значение было интерполировано из двух соседних значений и не существует на этой отметке времени.
 
 ![Подсказка](../../../en/adapterref/iobroker.echarts/img/tooltip.png)
 
@@ -58,7 +62,7 @@ sendTo('echarts.0', {
 ```
 
 ## Руководство разработчика
-** Для не-разработчика эта ссылка не работает! **
+** Для не-разработчиков ссылка не работает! **
 
 Вы можете отлаживать графики просмотра локально с помощью:
 
@@ -76,6 +80,12 @@ sendTo('echarts.0', {
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 0.4.2 (2020-11-29)
+* (bluefox) Corrected the error with overflow of axis.
+
+### 0.4.1 (2020-11-29)
+* (bluefox) Disconnection errors are caught now.
+
 ### 0.4.0 (2020-11-28)
 * (bluefox) Added new option: no background
 

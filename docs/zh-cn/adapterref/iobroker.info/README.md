@@ -327,6 +327,9 @@ ioBroker的官方适配器数量已经相当可观。 当然，网上还有更�
 ## Changelog
 <!-- ### __WORK IN PROGRESS__ -->
 
+### 1.7.12 (2020-12-02)
+* (Apollon77) fix crash case (Sentry IOBROKER-INFO-1G)
+
 ### 1.7.11 (2020-11-30)
 * (Apollon77) fix crash case (Sentry IOBROKER-INFO-1F)
 * Add Weblate translations

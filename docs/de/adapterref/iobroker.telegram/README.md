@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.telegram/README.md
 title: ioBroker Telegrammadapter
-hash: OwLL43QuVRbZExiw0MJJ85F4Poi5RGngQJUmbMjLGEE=
+hash: qnN6C3/RYS+HjTlA77HGatWAuS6cU9E3bsHJFQJCnmQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.telegram/admin/telegram.png)
 
@@ -24,13 +24,13 @@ Danach erhalten Sie das Token.
 
 Sie sollten das Passwort für die Kommunikation im Konfigurationsdialog festlegen. Danach starten Sie den Adapter.
 
-Um ein Gespräch mit Ihrem Bot zu beginnen, müssen Sie den Benutzer mit "/ password Phrase" authentifizieren, wobei **Phrase** Ihr konfiguriertes Passwort ist. Öffnen Sie also eine neue Konversation mit Ihrem generierten Bot in Telegram und geben Sie das Passwort als ersten Befehl ein.
+Um ein Gespräch mit Ihrem Bot zu beginnen, müssen Sie den Benutzer mit `/password phrase` authentifizieren, wobei **`phrase`** Ihr konfiguriertes Passwort ist. Öffnen Sie also eine neue Konversation mit Ihrem generierten Bot in Telegram und geben Sie das Passwort als ersten Befehl ein.
 
-** Hinweis: ** Sie können die Kurzform "/ p Phrase" verwenden.
+** Hinweis: ** Sie können die Kurzform `/p phrase` verwenden.
 
 Um ein schönes Avatar-Bild hinzuzufügen, geben Sie `/setuserpic` in **BotFather** Chat ein und laden Sie das gewünschte Bild (512x512 Pixel) hoch, wie dieses [Logo](img/logo.png).
 
-Sie können eine Nachricht an alle authentifizierten Benutzer über messageBox `sendTo('telegram', 'Test message')` oder an einen bestimmten Benutzer `sendTo('telegram', '@userName Test message')` senden.
+Sie können die Nachricht an alle authentifizierten Benutzer über messageBox `sendTo('telegram', 'Test message')` oder an einen bestimmten Benutzer `sendTo('telegram', '@userName Test message')` senden.
 Der Benutzer muss zuvor authentifiziert sein.
 
 Sie können den Benutzer auch folgendermaßen angeben:
@@ -41,7 +41,7 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 });
 ```
 
-Wenn Sie das obige Beispiel verwenden, beachten Sie, dass Sie 'Benutzername' entweder durch den Vornamen oder den öffentlichen Telegramm-Benutzernamen des Benutzers ersetzen müssen, an den Sie die Nachricht senden möchten. (Hängt davon ab, ob die Einstellung "Benutzername nicht Vorname speichern" in den Adaptereinstellungen aktiviert ist oder nicht.) Wenn die Option aktiviert ist und der Benutzer in seinem Telegrammkonto keinen öffentlichen Benutzernamen angegeben hat, verwendet der Adapter weiterhin den Vornamen von Nutzer. Beachten Sie, dass, wenn der Benutzer später (nach der Authentifizierung bei Ihrem Bot) einen öffentlichen Benutzernamen festlegt, der gespeicherte Vorname beim nächsten Senden einer Nachricht an den Bot durch den Benutzernamen ersetzt wird.
+Wenn Sie das obige Beispiel verwenden, beachten Sie, dass Sie 'Benutzername' entweder durch den Vornamen oder den öffentlichen Telegramm-Benutzernamen des Benutzers ersetzen müssen, an den Sie die Nachricht senden möchten. (Hängt davon ab, ob die Einstellung "Benutzername nicht Vorname speichern" in den Adaptereinstellungen aktiviert ist oder nicht.) Wenn die Option aktiviert ist und der Benutzer in seinem Telegrammkonto keinen öffentlichen Benutzernamen angegeben hat, verwendet der Adapter weiterhin den Vornamen von der Nutzer. Beachten Sie, dass, wenn der Benutzer später (nach der Authentifizierung bei Ihrem Bot) einen öffentlichen Benutzernamen festlegt, der gespeicherte Vorname beim nächsten Senden einer Nachricht an den Bot durch den Benutzernamen ersetzt wird.
 
 Es ist möglich, mehr als einen Empfänger anzugeben (trennen Sie einfach die Benutzernamen durch Komma).
 Zum Beispiel: Empfänger: "Benutzer1, Benutzer4, Benutzer5"
@@ -64,6 +64,14 @@ Die JSON-Syntax ermöglicht auch das Hinzufügen von Optionen aus den [Telegramm
     user: "UserName"
 }
 ```
+
+Um Nachrichten an Gruppen zu senden, müssen Sie den Bot zu der Gruppe einladen, in der der Bot posten soll.
+Durch Bereitstellen der `chat_id` für die JSON-Nachrichtennutzdaten können Sie tatsächlich Nachrichten an diese Gruppen senden.
+
+Um die `chat_id` herauszufinden, müssen Sie die Protokollstufe des Adapters auf `debug` setzen.
+Sie können Ihren Bot dann einfach in den Gruppen anpingen, an die der Bot Nachrichten senden soll.
+Stellen Sie sicher, dass Sie einen `/` vor die Nachricht setzen, damit der Bot die Nachricht sehen kann ([wenn der Bot-Datenschutz aktiviert ist](#How-to-receive-messages-in-group-chats-using-telegram-adapter)).
+Das iobroker-Protokoll zeigt Ihnen dann die Chat-ID in den Protokollen an.
 
 ## Verwendung
 Sie können das Telegramm mit dem Adapter [text2command](https://github.com/ioBroker/ioBroker.text2command) verwenden. Es gibt vordefinierte Kommunikationsschemata und Sie können in Textform zu Ihnen nach Hause befehlen.
@@ -136,7 +144,7 @@ sendTo('telegram.0', {
 - *width* Videobreite (Video)
 - *Höhe* Videohöhe (Video)
 
-Der Adapter versucht, den Nachrichtentyp (Foto, Video, Audio, Dokument, Aufkleber, Aktion, Speicherort) zu erkennen. Dies hängt vom Text in der Nachricht ab. Wenn der Text der Pfad zu einer vorhandenen Datei ist, wird er als entsprechender Typ gesendet.
+Der Adapter versucht, den Nachrichtentyp (Foto, Video, Audio, Dokument, Aufkleber, Aktion, Speicherort) zu ermitteln. Dies hängt vom Text in der Nachricht ab. Wenn der Text der Pfad zu einer vorhandenen Datei ist, wird er als entsprechender Typ gesendet.
 
 Der Standort wird anhand des Attributspielraums ermittelt:
 
@@ -177,7 +185,7 @@ sendTo('telegram.0', {
 });
 ```
 
-Sie können mehr [hier] (https://core.telegram.org/bots/api#replykeyboardmarkup) und [hier](https://core.telegram.org/bots#keyboards) lesen.
+Sie können mehr lesen [hier] (https://core.telegram.org/bots/api#replykeyboardmarkup) und [hier](https://core.telegram.org/bots#keyboards).
 
 Sie können die Tastatur **InlineKeyboardMarkup** im Client anzeigen:
 
@@ -194,7 +202,7 @@ sendTo('telegram', {
 });
 ```
 
-Sie können mehr [hier] (https://core.telegram.org/bots/api#inlinekeyboardmarkup) und [hier](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating) lesen.
+Sie können mehr lesen [hier] (https://core.telegram.org/bots/api#inlinekeyboardmarkup) und [hier](https://core.telegram.org/bots#inline-keyboards-and-on-the-fly-updating).
 
 ** HINWEIS: ** *Nachdem der Benutzer eine Rückruftaste gedrückt hat, zeigen Telegrammclients einen Fortschrittsbalken an, bis Sie answerCallbackQuery aufrufen. Es ist daher erforderlich, durch Aufrufen von answerCallbackQuery zu reagieren, auch wenn keine Benachrichtigung des Benutzers erforderlich ist (z. B. ohne Angabe eines der optionalen Parameter).*
 
@@ -213,7 +221,7 @@ if (command ==="1_2") {
 }
 ```
 
-Sie können mehr [Hier](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegrambotanswercallbackquerycallbackqueryid-text-showalert-options--promise) lesen.
+Sie können mehr lesen [Hier](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegrambotanswercallbackquerycallbackqueryid-text-showalert-options--promise).
 
 ### Frage
 Sie können die Nachricht per Telegramm senden und die nächste Antwort wird im Rückruf zurückgegeben.
@@ -284,7 +292,7 @@ if (command ==="1_2") {
 }
 ```
 
-Sie können mehr [Hier](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegramboteditmessagetexttext-options--promise) lesen.
+Sie können mehr lesen [Hier](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegramboteditmessagetexttext-options--promise).
 
 ### EditMessageReplyMarkup
 Verwenden Sie diese Methode, um nur das Antwort-Markup von Nachrichten zu bearbeiten, die vom Bot oder über den Bot gesendet wurden (für Inline-Bots). Bei Erfolg wird die bearbeitete Nachricht zurückgegeben, wenn der Bot eine bearbeitete Nachricht sendet, andernfalls wird *True* zurückgegeben.
@@ -310,7 +318,7 @@ if (command === "1_2") {
 }
 ```
 
-Sie können mehr [Hier](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegramboteditmessagereplymarkupreplymarkup-options--promise) lesen.
+Sie können mehr lesen [Hier](https://github.com/yagop/node-telegram-bot-api/blob/release/doc/api.md#telegramboteditmessagereplymarkupreplymarkup-options--promise).
 
 ### Nachricht löschen
 Verwenden Sie diese Methode, um eine Nachricht, einschließlich Dienstnachrichten, mit den folgenden Einschränkungen zu löschen:
@@ -333,7 +341,7 @@ if (command === "delete") {
 }
 ```
 
-Sie können mehr [Hier](https://github.com/yagop/node-telegram-bot-api/blob/master/doc/api.md#TelegramBot+deleteMessage) lesen.
+Sie können mehr lesen [Hier](https://github.com/yagop/node-telegram-bot-api/blob/master/doc/api.md#TelegramBot+deleteMessage).
 
 ## Auf Benutzerantworten / -nachrichten reagieren
 Angenommen, Sie verwenden nur JavaScript ohne *text2command* Sie haben Ihrem Benutzer bereits eine Nachricht / Frage mit *sendTo ()* gesendet, wie oben beschrieben. Der Benutzer antwortet darauf, indem er eine Taste drückt oder eine Nachricht schreibt. Sie können den Befehl extrahieren und Ihrem Benutzer Feedback geben, Befehle ausführen oder den Status in iobroker wechseln.
@@ -435,9 +443,9 @@ sendTo('telegram.0', 'call', {
 
 Mögliche Werte für die Sprache:
 
-- "ar-XA-Standard-A" - Arabisch (weibliche Stimme)
-- "ar-XA-Standard-B" - Arabisch (männliche Stimme)
-- "ar-XA-Standard-C" - Arabisch (männlich 2 Stimme)
+- `ar-XA-Standard-A` - Arabisch (weibliche Stimme)
+- `ar-XA-Standard-B` - Arabisch (männliche Stimme)
+- `ar-XA-Standard-C` - Arabisch (männlich 2 Stimme)
 - `cs-CZ-Standard-A` - Tschechisch (Tschechische Republik) (Frauenstimme)
 - `da-DK-Standard-A` - Dänisch (Dänemark) (Frauenstimme)
 - `nl-NL-Standard-A` - Niederländisch (Niederlande) (weibliche Stimme - wird verwendet, wenn die Systemsprache NL ist und keine Sprache angegeben wurde)
@@ -445,21 +453,21 @@ Mögliche Werte für die Sprache:
 - `nl-NL-Standard-C` - Niederländisch (Niederlande) (männlich 2 Stimmen)
 - `nl-NL-Standard-D` - Niederländisch (Niederlande) (weibliche 2 Stimme)
 - `nl-NL-Standard-E` - Niederländisch (Niederlande) (3 Frauen)
-- ʻen-AU-Standard-A` - Englisch (Australien) (weibliche Stimme)
-- ʻen-AU-Standard-B` - Englisch (Australien) (männliche Stimme)
-- ʻen-AU-Standard-C` - Englisch (Australien) (2 Frauen)
-- ʻen-AU-Standard-D` - Englisch (Australien) (männlich 2 Stimmen)
-- ʻen-IN-Standard-A` - Englisch (Indien) (weibliche Stimme)
-- ʻen-IN-Standard-B` - Englisch (Indien) (männliche Stimme)
-- ʻen-IN-Standard-C` - Englisch (Indien) (männlich 2 Stimmen)
-- ʻen-GB-Standard-A` - Englisch (UK) (weibliche Stimme - wird verwendet, wenn die Systemsprache EN ist und keine Sprache angegeben wurde)
-- ʻen-GB-Standard-B` - Englisch (UK) (männliche Stimme)
-- ʻen-GB-Standard-C` - Englisch (UK) (2 Frauen)
-- ʻen-GB-Standard-D` - Englisch (UK) (männlich 2 Stimmen)
-- ʻen-US-Standard-B` - Englisch (US) (männliche Stimme)
-- ʻen-US-Standard-C` - Englisch (US) (weibliche Stimme)
-- ʻen-US-Standard-D` - Englisch (US) (männlich 2 Stimmen)
-- ʻen-US-Standard-E` - Englisch (US) (weibliche 2 Stimme)
+- `en-AU-Standard-A` - Englisch (Australien) (weibliche Stimme)
+- `en-AU-Standard-B` - Englisch (Australien) (männliche Stimme)
+- `en-AU-Standard-C` - Englisch (Australien) (weibliche 2 Stimme)
+- `en-AU-Standard-D` - Englisch (Australien) (männlich 2 Stimme)
+- `en-IN-Standard-A` - Englisch (Indien) (weibliche Stimme)
+- `en-IN-Standard-B` - Englisch (Indien) (männliche Stimme)
+- `en-IN-Standard-C` - Englisch (Indien) (männlich 2 Stimme)
+- `en-GB-Standard-A` - Englisch (UK) (weibliche Stimme - wird verwendet, wenn die Systemsprache EN ist und keine Sprache angegeben wurde)
+- `en-GB-Standard-B` - Englisch (UK) (männliche Stimme)
+- `en-GB-Standard-C` - Englisch (UK) (weibliche 2 Stimme)
+- `en-GB-Standard-D` - Englisch (UK) (männlich 2 Stimme)
+- `en-US-Standard-B` - Englisch (US) (männliche Stimme)
+- `en-US-Standard-C` - Englisch (US) (weibliche Stimme)
+- `en-US-Standard-D` - Englisch (US) (männlich 2 Stimme)
+- `en-US-Standard-E` - Englisch (US) (weibliche 2 Stimme)
 - `fil-PH-Standard-A` - Philippinisch (Philippinen) (weibliche Stimme)
 - `fi-FI-Standard-A` - Finnisch (Finnland) (Frauenstimme)
 - `fr-CA-Standard-A` - Französisch (Kanada) (weibliche Stimme)
@@ -472,23 +480,23 @@ Mögliche Werte für die Sprache:
 - `fr-FR-Standard-D` - Französisch (Frankreich) (männlich 2 Stimme)
 - `de-DE-Standard-A` - Deutsch (Deutschland) (Frauenstimme - wird verwendet, wenn die Systemsprache DE ist und keine Sprache angegeben wurde)
 - `de-DE-Standard-B` - Deutsch (Deutschland) (Männerstimme)
-- ʻel-GR-Standard-A` - Griechisch (Griechenland) (Frauenstimme)
+- `el-GR-Standard-A` - Griechisch (Griechenland) (Frauenstimme)
 - `hi-IN-Standard-A` - Hindi (Indien) (weibliche Stimme)
 - `hi-IN-Standard-B` - Hindi (Indien) (männliche Stimme)
 - `hi-IN-Standard-C` - Hindi (Indien) (männlich 2 Stimme)
 - `hu-HU-Standard-A` - Ungarisch (Ungarn) (Frauenstimme)
-- "ID-ID-Standard-A" - Indonesisch (Indonesien) (weibliche Stimme)
-- "ID-ID-Standard-B" - Indonesisch (Indonesien) (männliche Stimme)
-- "ID-ID-Standard-C" - Indonesisch (Indonesien) (männlich 2 Stimme)
-- "it-IT-Standard-A" - Italienisch (Italien) (weibliche Stimme - wird verwendet, wenn die Systemsprache IT ist und keine Sprache angegeben wurde)
-- "it-IT-Standard-B" - Italienisch (Italien) (2 Frauen)
-- "it-IT-Standard-C" - Italienisch (Italien) (männliche Stimme)
-- "it-IT-Standard-D" - Italienisch (Italien) (männlich 2 Stimmen)
+- `id-ID-Standard-A` - Indonesisch (Indonesien) (weibliche Stimme)
+- `id-ID-Standard-B` - Indonesisch (Indonesien) (männliche Stimme)
+- `id-ID-Standard-C` - Indonesisch (Indonesien) (männlich 2 Stimme)
+- `it-IT-Standard-A` - Italienisch (Italien) (weibliche Stimme - wird verwendet, wenn die Systemsprache IT ist und keine Sprache angegeben wurde)
+- `it-IT-Standard-B` - Italienisch (Italien) (weibliche 2 Stimme)
+- `it-IT-Standard-C` - Italienisch (Italien) (Männerstimme)
+- `it-IT-Standard-D` - Italienisch (Italien) (männlich 2 Stimmen)
 - `ja-JP-Standard-A` - Japanisch (Japan) (weibliche Stimme)
 - `ja-JP-Standard-B` - Japanisch (Japan) (weibliche 2 Stimme)
 - `ja-JP-Standard-C` - Japanisch (Japan) (männliche Stimme)
 - `ja-JP-Standard-D` - Japanisch (Japan) (männlich 2 Stimme)
-- `ko-KR-Standard-A` - Koreanisch (Südkorea) (weibliche Stimme)
+- `ko-KR-Standard-A` - Koreanisch (Südkorea) (Frauenstimme)
 - `ko-KR-Standard-B` - Koreanisch (Südkorea) (2 Frauen)
 - `ko-KR-Standard-C` - Koreanisch (Südkorea) (Männerstimme)
 - `ko-KR-Standard-D` - Koreanisch (Südkorea) (männliche 2 Stimme)
@@ -499,7 +507,7 @@ Mögliche Werte für die Sprache:
 - `nb-NO-Standard-B` - Norwegisch (Norwegen) (männliche Stimme)
 - `nb-NO-Standard-C` - Norwegisch (Norwegen) (2 Frauen)
 - `nb-NO-Standard-D` - Norwegisch (Norwegen) (männlich 2 Stimme)
-- `nb-no-Standard-E` - Norwegisch (Norwegen) (3 Frauen)
+- `nb-no-Standard-E` - Norwegisch (Norwegen) (weibliche 3 Stimme)
 - `pl-PL-Standard-A` - Polnisch (Polen) (weibliche Stimme - wird verwendet, wenn die Systemsprache PL ist und keine Sprache angegeben wurde)
 - `pl-PL-Standard-B` - Polnisch (Polen) (Männerstimme)
 - `pl-PL-Standard-C` - Polnisch (Polen) (männlich 2 Stimme)
@@ -508,24 +516,24 @@ Mögliche Werte für die Sprache:
 - `pt-BR-Standard-A` - Portugiesisch (Brasilien) (weibliche Stimme - wird verwendet, wenn die Systemsprache PT ist und keine Sprache angegeben wurde)
 - `pt-PT-Standard-A` - Portugiesisch (Portugal) (weibliche Stimme)
 - `pt-PT-Standard-B` - Portugiesisch (Portugal) (männliche Stimme)
-- `pt-PT-Standard-C` - Portugiesisch (Portugal) (männlich 2 Stimmen)
+- `pt-PT-Standard-C` - Portugiesisch (Portugal) (männlich 2 Stimme)
 - `pt-PT-Standard-D` - Portugiesisch (Portugal) (2 Frauen)
 - `ru-RU-Standard-A` - Russisch (Russland) (weibliche Stimme - wird verwendet, wenn die Systemsprache RU ist und keine Sprache angegeben wurde)
 - `ru-RU-Standard-B` - Russisch (Russland) (Männerstimme)
 - `ru-RU-Standard-C` - Russisch (Russland) (weibliche 2 Stimme)
 - `ru-RU-Standard-D` - Russisch (Russland) (männlich 2 Stimme)
 - `sk-SK-Standard-A` - Slowakisch (Slowakei) (Frauenstimme)
-- ʻes-ES-Standard-A` - Spanisch (Spanien) (weibliche Stimme - wird verwendet, wenn die Systemsprache ES ist und keine Sprache angegeben wurde)
+- `es-ES-Standard-A` - Spanisch (Spanien) (weibliche Stimme - wird verwendet, wenn die Systemsprache ES ist und keine Sprache angegeben wurde)
 - `sv-SE-Standard-A` - Schwedisch (Schweden) (Frauenstimme)
 - `tr-TR-Standard-A` - Türkisch (Türkei) (Frauenstimme)
 - `tr-TR-Standard-B` - Türkisch (Türkei) (Männerstimme)
 - `tr-TR-Standard-C` - Türkisch (Türkei) (weibliche 2 Stimme)
 - `tr-TR-Standard-D` - Türkisch (Türkei) (3 Frauen)
 - `tr-TR-Standard-E` - Türkisch (Türkei) (Männerstimme)
-- ʻuk-UA-Standard-A` - Ukrainisch (Ukraine) (Frauenstimme)
+- `uk-UA-Standard-A` - Ukrainisch (Ukraine) (weibliche Stimme)
 - `vi-VN-Standard-A` - Vietnamesisch (Vietnam) (weibliche Stimme)
 - `vi-VN-Standard-B` - Vietnamesisch (Vietnam) (männliche Stimme)
-- `vi-VN-Standard-C` - Vietnamesisch (Vietnam) (weibliche 2 Stimme)
+- `vi-VN-Standard-C` - Vietnamesisch (Vietnam) (2 Frauen)
 - `vi-VN-Standard-D` - Vietnamesisch (Vietnam) (männliche 2 Stimme)
 
 MACHEN:
@@ -560,12 +568,12 @@ Wenn Sie auf `Door lamp ?` klicken, erhalten Sie `Door lamp  => switched off`.
 Wenn aktiviert, werden keine EIN / AUS-Tasten angezeigt, nur ein `Door lamp ?`.
 
 ### Änderungen melden
-Wenn sich der Status des Geräts geändert hat (z. B. hat jemand die Lampe physisch eingeschaltet), wird der neue Status an das Telegramm gesendet.
+Wenn sich der Status des Geräts ändert (z. B. wenn jemand die Lampe physisch eingeschaltet hat), wird der neue Status an das Telegramm gesendet.
 Z.B. `Door lamp  => switched on`.
 
 ### Schaltflächen in der Linie
 Wie viele Schaltflächen müssen in der Zeile für ein Gerät angezeigt werden?
-Aufgrund des langen Namens ist es möglicherweise besser, nur 2 (oder sogar nur eine) Schaltflächen in der Zeile anzuzeigen.
+Aufgrund des langen Namens ist es vielleicht besser, nur 2 (oder sogar nur eine) Schaltflächen in der Zeile anzuzeigen.
 
 ![die Einstellungen](../../../en/adapterref/iobroker.telegram/img/stateSettings3.png)
 
@@ -574,7 +582,7 @@ Wenn aktiviert, wird die Schaltfläche Statusabfrage (`Door lamp ?`) nicht angez
 ![die Einstellungen](../../../en/adapterref/iobroker.telegram/img/stateSettings4.png)
 
 ### Auf Befehl
-Welcher Text wird auf der Schaltfläche EIN angezeigt?
+Welcher Text wird auf der Schaltfläche `ON` angezeigt?
 Wie hier: ![die Einstellungen](../../../en/adapterref/iobroker.telegram/img/stateSettings5.png)
 
 Erzeugt folgende Tastatur: ![die Einstellungen](../../../en/adapterref/iobroker.telegram/img/stateSettings6.png)
@@ -637,7 +645,14 @@ msg.payload = {
 }
 ```
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+
+### 1.6.1 (2020-12-01)
+* (ChristianB86) Added option to set the amount of repeats for telegram call.
 
 ### 1.6.0 (2020-11-09)
 * (MarkRohrbacher) Allow overriding chatId / user when writing JSON objects to telegram.INSTANCE.communicate.response

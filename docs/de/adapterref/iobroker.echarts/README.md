@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: FcRsukxWLJbNuZMkihZrspoEwyxoJGgukVLW2r2ePT0=
+hash: 93HYJ0QCC/JA0ONusjFwzyEf24ZyHM9d0J9AMMqfZR8=
 ---
 ![Logo](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -22,13 +22,17 @@ Erstellen Sie nützliche Diagramme in ioBroker:
 ## Verwendung
 Fügen Sie nach dem Neustart die Registerkarte im Admin hinzu: ![Administrator](../../../en/adapterref/iobroker.echarts/img/admin.png)
 
+Auf die erstellte Voreinstellung kann auch im Webadapter zugegriffen werden. URL: `http://IP:8082/echarts/index.html?preset=echarts.0.PRESETID`.
+
+Für vis gibt es ein spezielles Widget mit einfacher Auswahl von Voreinstellungen.
+
 ### Tooltip
 Kleinbuchstaben `i` zeigen an, dass der Wert aus den 2 Nachbarwerten interpoliert wurde und zu diesem Zeitpunkt nicht vorhanden ist.
 
 ![Tooltip](../../../en/adapterref/iobroker.echarts/img/tooltip.png)
 
 ### Serverseitiges Rendern
-Sie können die Voreinstellungen auf dem Server rendern und als base64-URL abrufen oder auf der Festplatte in ioBroker DB speichern:
+Sie können die Voreinstellungen auf dem Server rendern und als base64-URL abrufen oder in ioBroker DB auf der Festplatte speichern:
 
 ```
 sendTo('echarts.0', {
@@ -76,6 +80,12 @@ Sie können Ansichtsdiagramme lokal debuggen mit:
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.4.2 (2020-11-29)
+* (bluefox) Corrected the error with overflow of axis.
+
+### 0.4.1 (2020-11-29)
+* (bluefox) Disconnection errors are caught now.
+
 ### 0.4.0 (2020-11-28)
 * (bluefox) Added new option: no background
 

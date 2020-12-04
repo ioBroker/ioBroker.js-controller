@@ -23,6 +23,10 @@ Use objects under remote to control the vehicle
 
 ## Changelog
 
+### 0.0.3
+
+* (TA2k) fix preclimate
+
 ### 0.0.2
 
 * (TA2k) initial release

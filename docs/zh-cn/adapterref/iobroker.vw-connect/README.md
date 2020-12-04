@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vw-connect/README.md
 title: ioBroker.vw-连接
-hash: Pxhcxeh1UyMWL3PUQe48L/FiysnntzRL1N1diLS0jXo=
+hash: YBWgB09BCzGVxV5MNMGSRmsS3JZugKLttPxrLSd0448=
 ---
 ![商标](../../../en/adapterref/iobroker.vw-connect/admin/vw-connect.png)
 
@@ -16,7 +16,7 @@ hash: Pxhcxeh1UyMWL3PUQe48L/FiysnntzRL1N1diLS0jXo=
 
 ＃ioBroker.vw-connect
 ## IoBroker的vw-connect适配器
-大众的适配器We Connect，myAudi，Skoda Connect和We Connect Go
+大众WeW Connect适配器，We Connect ID，myAudi，Skoda Connect和We Connect Go
 
 请在节点10上更新系统。
 <https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten>
@@ -111,6 +111,10 @@ hash: Pxhcxeh1UyMWL3PUQe48L/FiysnntzRL1N1diLS0jXo=
 ```
 
 ## Changelog
+
+### 0.0.21
+
+- add remotes for id
 
 ### 0.0.20
 

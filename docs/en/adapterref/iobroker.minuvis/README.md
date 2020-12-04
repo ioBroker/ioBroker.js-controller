@@ -44,6 +44,8 @@ For more information visit https://minukodu.de/en or watch at youtube https://yo
 
 
 ## Changelog
+### 1.1.0 (2020-12-01)
+* updated builder and app to V1.10.0
 ### 1.0.0 (2020-11-22)
 * create version V1.0.0 
 ### 0.0.12 (2020-11-19)

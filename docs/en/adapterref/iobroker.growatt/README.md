@@ -54,6 +54,9 @@ This data set contains the weather forecast.
 
 
 ## Changelog
+### 0.0.14 (01.12.2020)
+* (PLCHome) improvement for objects not returned from Growatt website
+
 ### 0.0.12 (27.11.2020)
 * (PLCHome) wrong initialization for shared key: string instead of boolean
 

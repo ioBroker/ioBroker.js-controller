@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: FcRsukxWLJbNuZMkihZrspoEwyxoJGgukVLW2r2ePT0=
+hash: 93HYJ0QCC/JA0ONusjFwzyEf24ZyHM9d0J9AMMqfZR8=
 ---
 ![商标](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -22,8 +22,12 @@ hash: FcRsukxWLJbNuZMkihZrspoEwyxoJGgukVLW2r2ePT0=
 ##用法
 重新启动后，在管理员中添加选项卡：![管理员](../../../en/adapterref/iobroker.echarts/img/admin.png)
 
+创建的预设也可以在Web适配器中访问。网址：`http://IP:8082/echarts/index.html?preset=echarts.0.PRESETID`。
+
+可见，有一个特殊的小部件，可以轻松选择预设。
+
 ###工具提示
-小写的`i`表示该值是从2个邻居值中插入的，并且在此时间戳时不存在。
+小写的`i`指示该值是从2个邻居值中插入的，并且在此时间戳时不存在。
 
 ![工具提示](../../../en/adapterref/iobroker.echarts/img/tooltip.png)
 
@@ -62,7 +66,7 @@ sendTo('echarts.0', {
 
 您可以使用以下命令在本地调试视图图表：
 
--光盘iobroker.echarts / src-chart
+-cd iobroker.echarts / src-chart
 -npm运行开始
 -浏览器：http：// localhost：8081 / adapter / echarts / tab.html？dev = true
 
@@ -73,9 +77,15 @@ sendTo('echarts.0', {
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __进展中__->
+### __正在进行的工程__->
 
 ## Changelog
+### 0.4.2 (2020-11-29)
+* (bluefox) Corrected the error with overflow of axis.
+
+### 0.4.1 (2020-11-29)
+* (bluefox) Disconnection errors are caught now.
+
 ### 0.4.0 (2020-11-28)
 * (bluefox) Added new option: no background
 

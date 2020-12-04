@@ -17,13 +17,13 @@ After that you will get the Token.
 
 You should set password for communication in configuration dialog. After this start the adapter.
 
-To start a conversation with your bot you need to authenticate user with "/password phrase", where **phrase** is your configured password. So open a new conversation with your generated Bot in Telegram and then you need to enter the passwort as first command.
+To start a conversation with your bot you need to authenticate user with `/password phrase`, where **`phrase`** is your configured password. So open a new conversation with your generated Bot in Telegram and then you need to enter the passwort as first command.
 
-**Note:** you can use short form "/p phrase".
+**Note:** you can use short form `/p phrase`.
 
 To add nice avatar picture enter `/setuserpic` in **BotFather** chat and upload him desired picture (512x512 pixels), like this one [logo](img/logo.png).
 
-You can send message to all authenticated users over messageBox `sendTo('telegram', 'Test message')`
+You can send the message to all authenticated users over messageBox `sendTo('telegram', 'Test message')`
 or to specific user `sendTo('telegram', '@userName Test message')`.
 User must be authenticated before.
 
@@ -35,7 +35,7 @@ sendTo('telegram', {user: 'UserName', text: 'Test message'}, function (res) {
 });
 ```
 
-If you use the example above be aware of that you have to replace 'UserName' with either the first name or the Public-Telegram-Username of the User you want to send the message to. (Depends on if the 'Store username not firstname' setting in the Adaptersettings is enabled or not)
+If you use the example above be aware of that you have to replace 'UserName' with either the first name or the Public-Telegram-Username of the User you want to send the message to. (Depends on if the 'Store username not firstname' setting in the adapter settings is enabled or not)
 If the option is set and the user did not specify a public username in his telegram account, then the adapter will continue to use the firstname of the user. Keep in mind that if the user sets a public username later (after authenticating to your bot) the saved firstname will be replaced by the username the next time the user sends a message to the bot.
 
 It is possible to specify more than one recipient (just separate the User names by comma).
@@ -60,12 +60,20 @@ The JSON syntax also allows to add options from the [telegram bots API](https://
 }
 ```
 
+In order to send messages to groups, you have to invite the bot to the group you want the bot to post in. 
+By providing the `chat_id` to the JSON message payload you can actually send messages to those groups. 
+
+In order to find out the `chat_id` you have to set the adapter's log level to `debug`. 
+You can then just ping your bot in the groups you want the bot to send messages to. 
+Make sure you put a `/` in front of the message in order for the bot to see the message ([if the bot privacy is turned on](#How-to-receive-messages-in-group-chats-using-telegram-adapter)).
+The iobroker log will then show you the chat id in the logs.
+
 ## Usage
 You can use telegram with [text2command](https://github.com/ioBroker/ioBroker.text2command) adapter. There are predefined communication schema and you can command to you home in text form.
 
-To send photo, just send a path to file instead of text or URL: `sendTo('telegram', 'absolute/path/file.png')` or `sendTo('telegram', 'https://telegram.org/img/t_logo.png')`.
+To send a photo, just send a path to file instead of text or URL: `sendTo('telegram', 'absolute/path/file.png')` or `sendTo('telegram', 'https://telegram.org/img/t_logo.png')`.
 
-Example how to send screenshot from web-cam to telegram:
+Example how to send a screen shot from web-cam to telegram:
 
 ```
 var request = require('request');
@@ -556,8 +564,8 @@ If the status of device changed (e.g. some one turned the lamp on physically), t
 E.g. `Door lamp  => switched on`.
 
 ### Buttons in line
-How many button must be shown in the line for one device. 
-Because of the long name may be it is better to show only 2 (or even just one) buttons in the line.
+How many buttons must be shown in the line for one device. 
+Because of the long name maybe it is better to show only 2 (or even just one) buttons in the line.
   
 ![settings](img/stateSettings3.png)
 
@@ -566,7 +574,7 @@ If activated, no the status query (`Door lamp ?`) button will be shown.
  ![settings](img/stateSettings4.png)
  
 ### ON Command
-Which text will be shown on ON button.
+Which text will be shown on `ON` button.
 Like here: 
 ![settings](img/stateSettings5.png)
 
@@ -593,7 +601,7 @@ E.g. for buttons, they have no OFF state. In this case no OFF button will be sho
 
 ## How to receive messages in group chats using telegram adapter
 If telegram bot receives messages sent by user to the bot in private chats, but not receives messages sent by users in group chats. 
-In this case you must to talk to @botfather and disable the privacy mode.
+In this case you must talk to @botfather and disable the privacy mode.
 
 BotFather chat:
 
@@ -631,7 +639,15 @@ msg.payload = {
 }
 ```
 
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+
+### 1.6.1 (2020-12-01)
+* (ChristianB86) Added option to set the amount of repeats for telegram call.
 
 ### 1.6.0 (2020-11-09)
 * (MarkRohrbacher) Allow overriding chatId / user when writing JSON objects to telegram.INSTANCE.communicate.response

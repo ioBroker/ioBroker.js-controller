@@ -17,6 +17,10 @@ Build useful charts in ioBroker:
 Add after the restart the tab in the admin:
 ![Admin](img/admin.png)
 
+The created preset can be accessed in web adapter too. URL: `http://IP:8082/echarts/index.html?preset=echarts.0.PRESETID`.
+
+For vis there is a special widget with easy selection of presets.  
+
 ### Tooltip
 Lower case `i` indicates that the value was interpolated from the 2 neighbour values, and it does not exist at this time stamp.
 

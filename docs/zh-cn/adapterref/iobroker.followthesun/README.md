@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.followthesun/README.md
 title: ioBroker。跟随太阳
-hash: peusFRgbVhXo0fyM/NvX9Za+llkbDYEFFB8+JxbUSaQ=
+hash: EFSupr1mifOl9n38SjyWQdy62u/FQmUOEWV5xqA8g0A=
 ---
 ![商标](../../../en/adapterref/iobroker.followthesun/admin/followthesun.png)
 
@@ -14,11 +14,12 @@ hash: peusFRgbVhXo0fyM/NvX9Za+llkbDYEFFB8+JxbUSaQ=
 ![依赖状态](https://img.shields.io/david/HGlab01/iobroker.followthesun.svg)
 ![已知漏洞](https://snyk.io/test/github/HGlab01/ioBroker.followthesun/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.followthesun.png?downloads=true)
-![特拉维斯](http://img.shields.io/travis/HGlab01/ioBroker.followthesun/master.svg)
 
 ＃ioBroker.followthesun
+![测试与发布](https://github.com/HGlab01/ioBroker.followthesun/workflows/Test%20and%20Release/badge.svg)
+
 ## Followthesun ioBroker适配器
-该适配器根据地理位置计算当前的海拔高度和太阳方位角。
+该适配器根据地理区域计算当前的海拔高度和太阳方位角。
 它使用配置中定义的地理位置。可以在实例首选项中定义计算间隔。
 
 ## Changelog
@@ -27,8 +28,8 @@ hash: peusFRgbVhXo0fyM/NvX9Za+llkbDYEFFB8+JxbUSaQ=
     ### __WORK IN PROGRESS__
 -->
 
-### 0.1.0-3 (2020-11-29)
-* (HGlab01) prepare first beta release
+### 0.1.0 (2020-11-30)
+* (HGlab01) first beta release
 
 ### 0.0.7-0 (2020-07-21)
 * (HGlab01) alpha version

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.followthesun/README.md
 title: ioBroker.followthesun
-hash: peusFRgbVhXo0fyM/NvX9Za+llkbDYEFFB8+JxbUSaQ=
+hash: EFSupr1mifOl9n38SjyWQdy62u/FQmUOEWV5xqA8g0A=
 ---
 ![Logo](../../../en/adapterref/iobroker.followthesun/admin/followthesun.png)
 
@@ -14,9 +14,10 @@ hash: peusFRgbVhXo0fyM/NvX9Za+llkbDYEFFB8+JxbUSaQ=
 ![Abhängigkeitsstatus](https://img.shields.io/david/HGlab01/iobroker.followthesun.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/HGlab01/ioBroker.followthesun/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.followthesun.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/HGlab01/ioBroker.followthesun/master.svg)
 
 # IoBroker.followthesun
+![Testen und freigeben](https://github.com/HGlab01/ioBroker.followthesun/workflows/Test%20and%20Release/badge.svg)
+
 ## Followthesun Adapter für ioBroker
 Dieser Adapter berechnet die aktuelle Höhe und den Azimut der Sonne basierend auf der Geoposition.
 Es wird die in der Konfiguration definierte Geoposition verwendet. Das Berechnungsintervall kann in Instanzeinstellungen definiert werden.
@@ -27,8 +28,8 @@ Es wird die in der Konfiguration definierte Geoposition verwendet. Das Berechnun
     ### __WORK IN PROGRESS__
 -->
 
-### 0.1.0-3 (2020-11-29)
-* (HGlab01) prepare first beta release
+### 0.1.0 (2020-11-30)
+* (HGlab01) first beta release
 
 ### 0.0.7-0 (2020-07-21)
 * (HGlab01) alpha version

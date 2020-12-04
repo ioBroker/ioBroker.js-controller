@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.followthesun/README.md
 title: ioBroker. следуйте за солнцем
-hash: peusFRgbVhXo0fyM/NvX9Za+llkbDYEFFB8+JxbUSaQ=
+hash: EFSupr1mifOl9n38SjyWQdy62u/FQmUOEWV5xqA8g0A=
 ---
 ![Логотип](../../../en/adapterref/iobroker.followthesun/admin/followthesun.png)
 
@@ -14,12 +14,13 @@ hash: peusFRgbVhXo0fyM/NvX9Za+llkbDYEFFB8+JxbUSaQ=
 ![Статус зависимости](https://img.shields.io/david/HGlab01/iobroker.followthesun.svg)
 ![Известные уязвимости](https://snyk.io/test/github/HGlab01/ioBroker.followthesun/badge.svg)
 ![НПМ](https://nodei.co/npm/iobroker.followthesun.png?downloads=true)
-![Трэвис-Си](http://img.shields.io/travis/HGlab01/ioBroker.followthesun/master.svg)
 
 # IoBroker.followthesun
+![Тестирование и выпуск](https://github.com/HGlab01/ioBroker.followthesun/workflows/Test%20and%20Release/badge.svg)
+
 ## Followthesun адаптер для ioBroker
 Этот адаптер рассчитывает текущую высоту и азимут солнца на основе геопозиции.
-Он использует географическое положение, определенное в конфигурации. Интервал расчета можно определить в настройках экземпляра.
+Он использует географическое положение, указанное в конфигурации. Интервал расчета можно определить в настройках экземпляра.
 
 ## Changelog
 <!--
@@ -27,8 +28,8 @@ hash: peusFRgbVhXo0fyM/NvX9Za+llkbDYEFFB8+JxbUSaQ=
     ### __WORK IN PROGRESS__
 -->
 
-### 0.1.0-3 (2020-11-29)
-* (HGlab01) prepare first beta release
+### 0.1.0 (2020-11-30)
+* (HGlab01) first beta release
 
 ### 0.0.7-0 (2020-07-21)
 * (HGlab01) alpha version
