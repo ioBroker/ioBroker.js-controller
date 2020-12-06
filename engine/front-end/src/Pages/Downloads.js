@@ -304,7 +304,7 @@ class Downloads extends Router {
                 {I18n.t('instruction2')}<br/><br/>
                 <b>1. </b>{I18n.t('instruction3')}
                 <pre className={this.props.classes.instructionCode}>
-                    curl -sLf https://deb.nodesource.com/setup_10.x | sudo -E bash -<br/>
+                    curl -sLf https://deb.nodesource.com/setup_12.x | sudo -E bash -<br/>
                     sudo apt-get install -y nodejs<br/>
                     <IconButton
                         className={this.props.classes.instructionCopy}
