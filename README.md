@@ -459,6 +459,13 @@ The following fields are allowed in the alias structure:
 * `alias.read` can optionally contain a read script (will be evaluated) to calculate the alias value when the target state changes
 * `alias.write` can optionally contain a write script (will be evaluated) to calculate the target value if the alias value is changed
 
+Note, that alias states will be automatically scaled if the following conditions match:
+
+* target and source state are of type `number`
+* either the alias state or (not both) the source state are of unit `%`
+* no `read` or `write` function is defined
+* the state which is not of unit `%` has a valid `min` and `max` property
+
 To set the alias properties without a JavaScript or in adapter code you can also use the cli commands like:
 
 ```
