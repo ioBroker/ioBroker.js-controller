@@ -145,7 +145,7 @@ If no entry exists for the current language, the description in english will be 
 * `enabled`: optional. When set to true, the instance will be activated after addition.
 * `license`: license name under what the adapter is licensed;
 * `loglevel`: initial log level that will be set after creation of instance. Can be `debug`, `info`, `warn` or `error`
-* `readmev: link to readme page in internet. Used by admin adapter to show the link if "?" button clicked.
+* `readme`: link to readme page in internet. Used by admin adapter to show the link if "?" button clicked.
 * `icon`: icon name (not the path) of adapter icon. This icon must be in admin directory of adapter.
 * `extIcon`: icon path in internet to show the icon for adapter if the adapter is not yet installed.
 * `keywords`: key words as array to enable search in admin adapter.
