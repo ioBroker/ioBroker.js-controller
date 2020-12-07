@@ -65,12 +65,13 @@ Root Zugang für SSH freigeschaltet werden.
 reicht es aus, den Befehl sudo zu verwenden und dem jeweiligen Befehl voran zu stellen.
 
 ### Installation Node.js
+!> mit dem aktuellen Installer von ioBroker (siehe unten) wird **auf einem System ohne node.js** automatisch die aktuell empfohlene Version von node.js mit installiert!
 
 Die folgende Anleitung ist auch bei einem Downgrade zu verwenden.
 
-Die momentan empfohlene Version ist node 10.x; mit js-controller 1.5.7 auch node 8.x, dann in Schritt 4.1. die “10.x” gegen 8.x” austauschen.
+Die momentan empfohlene Version ist node 12.x; bei anderen gewünschten Versionen in Schritt 4.1. die “12.x” gegen Y.x” austauschen.
 
-!> Debian Buster erfordert node.js v10.x!!
+!> Debian Buster erfordert mindestens node.js v10.x!!
 
 
 <span style="color:red"> ungerade nodejs-Versionen sind grundsätzlich nicht empfohlen, da es sich um Entwicklerversionen handelt. </span>
@@ -105,7 +106,7 @@ gewünschten entspricht folgendes vorher ausführen:
 
 4. Node.js neu installieren für Linux und Raspberry 2/3
     
-    ``curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -``
+    ``curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -``
     
     ``sudo apt install -y nodejs``
 
@@ -126,12 +127,14 @@ Versionsnummer zurückgeben.
     Ergibt dies eine Version < 6, bitte noch mit ``sudo -H npm install -g npm@6`` ein 
 npm-Update durchführen
 
+---
+
 ### Installation ioBroker
 Die Installation kann mit dem User pi aber auch mit dem User root erfolgen. 
 
 An der Konsole ausführen:
 
-``curl -sL https://iobroker.net/install.sh | bash -``
+``curl -sLf https://iobroker.net/install.sh | bash -``
 
 ---
 
