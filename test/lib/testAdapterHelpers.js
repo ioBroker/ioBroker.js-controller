@@ -386,7 +386,6 @@ function register(it, expect, context) {
         const decrypted = context.adapter.decrypt(encrypted);
         // check that correctly decrypted
         expect(decrypted).to.equal('topSecret');
-        return Promise.resolve();
     });
 
     /*
