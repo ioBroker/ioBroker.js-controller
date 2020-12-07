@@ -14,14 +14,26 @@
 
 ## followthesun adapter for ioBroker
 
-This adapter calculates the current altitude and azimuth of the sun based on the geoposition .
+This adapter calculates the current altitude and azimuth of the sun based on the geoposition. Additionally compass direction and the movement (sunrise or sunset) of the sun is stored.
 It is using the geo-position defined in the configuration. Calculation interval can be defined in instance preferences.
+Solar-noon values for some days like today, tomorrow or beginn of spring/summer/autumn/winter are stored as well.
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### __WORK IN PROGRESS__
+* (HGlab01) 
+
+### 0.2.2 (2020-12-07)
+* (HGlab01) Decrease log-level
+
+### 0.2.1 (2020-12-07)
+* (HGlab01) update dependecies
+* (HGlab01) add solar-noon information
+* (HGlab01) add compass information
+* (HGlab01) breaking change! states moved from root to "current"
 
 ### 0.1.0 (2020-11-30)
 * (HGlab01) first beta release

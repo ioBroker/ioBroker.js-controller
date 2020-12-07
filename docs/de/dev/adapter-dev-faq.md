@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/adapter-dev-faq.md
 title: Häufig gestellte Fragen zur Adapterentwicklung
-hash: Q0u88eZutx+EI0w9GtrsGf/NIfeparGmyL3IkYxQzc8=
+hash: vAedyXkcC+wYcnNf+WP6LfPgxlS1ayqADzQwmtv2pzQ=
 ---
 # Häufig gestellte Fragen zur Adapterentwicklung
 ## Einführung
@@ -61,6 +61,6 @@ Bitte beachten Sie, dass die Verwendung von [Semantische Versionierung] (https:/
 
 ### Benutzeroberfläche für die Adapterkonfiguration (admin / index_m.html)
 #### Eingabevalidierung
-** Frage: ** Ich möchte Felder der Adapterkonfiguration mithilfe der Kernadaptermethoden sowie der Klassen / Methoden des Adaptercodes von node.j validieren. Die Validierung sollte stattfinden, sobald ein Benutzer in der Adapterkonfiguration auf "Speichern" klickt, wodurch dann `save()` von `admin/index_m.html` aufgerufen werden.
+** Frage: ** Ich möchte Felder der Adapterkonfiguration mithilfe der Kernadaptermethoden sowie der Klassen / Methoden des Adaptercodes von node.j validieren. Die Validierung sollte erfolgen, sobald ein Benutzer in der Adapterkonfiguration auf "Speichern" klickt und dann `save()` von `admin/index_m.html` aufruft.
 
-** Antwort: ** Sie können die Methode `sendTo()` verwenden, um die Variable `obj` von `admin/index_m.html` an den Adaptercode zu senden, den Inhalt dort zu validieren und dann das Ergebnis per Rückruf an zu liefern `sendTo()` von `admin/index_m.html`.<br> Beispiel: Dies ist im Adapter [Fahrplan](https://github.com/gaudes/ioBroker.fahrplan) implementiert.<br> HINWEIS: Möglicherweise müssen Sie Ihre `io-package.json` ändern, siehe z. B. [ioBroker-Forum: sendTo () funktioniert nicht](https://forum.iobroker.net/topic/5205/gel%C3%B6st-sendto-in-eigenem-adapter-funktioniert-nicht/)<br> (24.11.2020)
+** Antwort: ** Sie können die Methode `sendTo()` verwenden, um die Variable `obj` von `admin/index_m.html` an den Adaptercode zu senden, den Inhalt dort zu validieren und das Ergebnis per Rückruf an zu übermitteln `sendTo()` von `admin/index_m.html`.<br> Beispiel: Dies ist im Adapter [Fahrplan](https://github.com/gaudes/ioBroker.fahrplan) implementiert.<br> HINWEIS: Möglicherweise müssen Sie Ihre `io-package.json` ändern, siehe z. B. [ioBroker-Forum: sendTo () funktioniert nicht](https://forum.iobroker.net/topic/5205/gel%C3%B6st-sendto-in-eigenem-adapter-funktioniert-nicht/)<br> (24.11.2020)

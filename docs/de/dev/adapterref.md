@@ -4,7 +4,7 @@ lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/adapterref.md
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
-hash: mkyOCOATGB6OPsXizLqQQTSKyaB0TR/9t4xz3wjriio=
+hash: Pc2ieRRwfM3/TwXKAf+uQpuAfbO9vFy550NsNpmtL98=
 ---
 # Adapterreferenz
 ## Datenstruktur - Objekte und Zustände
@@ -111,13 +111,13 @@ Hinweis: lib / utils.js ist eine gemeinsame Datei für alle Adapter, mit der die
 Der Adapter muss einer Namenskonvention entsprechen, um vom ioBroker-Controller akzeptiert und gestartet zu werden.
 
 * Auf github (oder woanders) muss es den Namen *io **B** roker.adapterName* haben.
-* Wenn der Adapter auf npm verfügbar sein soll, muss er den Namen iobroker.adapterName haben, da npm doe Rotz Großbuchstaben in Paketnamen zulässt. Es kann in package.json definiert werden
+* Wenn der Adapter auf npm verfügbar sein soll, muss er den Namen iobroker.adapterName haben, da npm doe snot Großbuchstaben in Paketnamen zulässt. Es kann in package.json definiert werden
 * Die GUI-HTML-Datei für die Konfiguration des Adapters muss den Namen admin / index.html haben. Es können mehr Dateien im Verzeichnis "admin" sein, aber index.html muss vorhanden sein.
 * Die Startdatei des Adapters muss den Namen main.js oder adapterName.js haben.
 * Der Name des Adapters muss eindeutig sein, in Kleinbuchstaben, ohne Sonderzeichen und ohne Leerzeichen. "-", "_" sind im Namen des Adapters zulässig.
 
 ## Struktur von io-package.json
-io-package.json wird von js-controller verwendet, um Informationen zum Adapter anzuzeigen und zu wissen, wie er behandelt wird. Eine vollständige Beschreibung aller Felder im gemeinsamen Teil finden Sie hier
+io-package.json wird von js-controller verwendet, um Informationen zum Adapter anzuzeigen und zu wissen, wie er zu behandeln ist. Eine vollständige Beschreibung aller Felder im gemeinsamen Teil finden Sie hier
 
 io-package.json wird von "admin" gelesen, um die Online-Version des Adapters herauszufinden.
 
@@ -215,7 +215,7 @@ Einige bestimmte Objekte oder Objekte mit Typzuständen können in `instanceObje
 
 Für jede erstellte Instanz werden alle Einträge aus dem Feld `instanceObjects` erstellt.
 
-Zum Beispiel erstellt der Adapter `hm-rpc` für jede Instanz den Status `updated`, um einem anderen Adapter ein Signal zu geben, dass einige neue Geräte im Datenspeicher erscheinen und dass sie von `hm-rega` verarbeitet werden müssen.
+Zum Beispiel erstellt der Adapter `hm-rpc` den Status `updated` für jede Instanz, um einem anderen Adapter ein Signal zu geben, dass einige neue Geräte im Datenspeicher erscheinen und dass sie von `hm-rega` verarbeitet werden müssen.
 
 ```
 "instanceObjects": [
@@ -324,14 +324,14 @@ Wenn Sie ein Widget oder einen Adapter mit einem Widget erstellen möchten, such
 var utils = require(__dirname + '/lib/utils'); // Get common adapter utils - mandatory
 ```
 
-Diese Zeile lädt das Modul `lib/utils.js`. Es ist für alle Adapterfunktionen gleich, die Wurzel von `iobroker.js-controller` zu finden.
+Diese Zeile lädt das Modul `lib/utils.js`. Allen Adapterfunktionen ist es gemeinsam, die Wurzel von `iobroker.js-controller` zu finden.
 Weil der Adapter in drei verschiedenen Pfaden installiert werden kann:
 
 * `... / iobroker / node_modules / iobroker.adapterName` - Dies ist der Standardpfad und wird zur Verwendung empfohlen
 * `... / iobroker.js-controller / node_modules / iobroker.adapterName` - wird beim Debuggen verwendet
 * `... / iobroker.js-controller / adapter / adapterName` - alter Stil (veraltet)
 
-utils.js sucht nur nach der Datei `iobroker.js-controller/lib/adapter.js` und lädt sie.
+utils.js macht nichts anderes als sucht nach der Datei `iobroker.js-controller/lib/adapter.js` und lädt sie.
 
 ```
 var adapter = utils.adapter('adapterName'); // - mandatory
@@ -361,7 +361,7 @@ Anschließend können Sie alle anderen im Adapter erforderlichen Module laden, z
 Vergessen Sie nur nicht, sie in `package.json` zu deklarieren.
 
 ### Optionen des Adapters
-Sie können Adapterobjekte nur mit Namen wie `utils.adapter('adapterName')` oder mit zusätzlichen Parametern wie: erstellen
+Sie können Adapterobjekte nur mit Namen wie `utils.adapter('adapterName')` oder mit zusätzlichen Parametern wie: erstellen.
 
 ```
 var adapter = utils.adapter({
@@ -530,7 +530,7 @@ Um eigene Ereignisse zu abonnieren, muss der folgende Befehl aufgerufen werden:
 
 So abonnieren Sie andere Veranstaltungen:
 
-`adapter.subscribeForeignStates('yr.*.forecast.html');` // Variable abonnieren `forecast.html` aller Adapterinstanzen `yr`.
+`adapter.subscribeForeignStates('yr.*.forecast.html');` // Abonnieren der Variablen `forecast.html` aller Adapterinstanzen `yr`.
 
 Der Platzhalter "*" kann in beiden Funktionen verwendet werden.
 
@@ -569,17 +569,17 @@ Selbst wenn der Benutzer das Licht physisch einschaltet, wird der neue Status mi
 Z.B. wenn der Benutzer in `vis` die Taste gedrückt und den Befehl `hm-rpc.0.kitchen.light=ON` gesendet hat.
 Der Socket-io-Adapter sendet den neuen Status mit `kitchen.light = {val: 1, ack: false}` an die Instanz `hm-rpc.0`.
 
-Der Homematikadapter ist für alle Zustände von `hm-rpc.0` abonniert, und wenn der neue Zustand mit `ack=false` empfangen wird, sendet er den neuen Wert an den physischen Schalter.
+Der homematische Adapter ist für alle Zustände von `hm-rpc.0` abonniert, und wenn der neue Zustand mit `ack=false` empfangen wird, sendet er den neuen Wert an den physischen Schalter.
 
 Der physische Schalter führt den Befehl aus und sendet den neuen eigenen Status EIN an den `hm-rpc` Adapter.
 Der Adapter `hm-rpc.0` veröffentlicht den neuen Status des Staates `hm-rpc.0.kitchen.light={val: 1, ack: true}` (mit Zeitstempeln).
 
 Diese Änderung wird vom hm-rpc-Adapter nicht ausgeführt, da ack true ist. Und dies ist eine Bestätigung vom physischen Gerät.
 
-#### Wie schreibe ich den Status
+#### Wie schreibe ich den Status?
 Zustände können als Befehle oder als Status geschrieben werden. Dafür müssen `adapter.setState` und `adapter.setForeignState` verwendet werden:
 
-`adapter.setForeignState('otherAdapter.X.someState', 1);` // Andere Adapter steuern (es ist nicht erforderlich, den eigenen Status zu steuern, wir können dies direkt tun)
+`adapter.setForeignState('otherAdapter.X.someState', 1);` // Andere Adapter steuern (es besteht keine Notwendigkeit, den eigenen Status zu steuern, wir können dies direkt tun)
 
 `adapter.setState('myState', 1, true);` // neuen Status des eigenen Staates anzeigen
 
@@ -616,13 +616,13 @@ Der Adapter kann in verschiedenen Modi ausgeführt werden. Der Modus für den Ad
 
 * `none` - Dieser Adapter wird nicht gestartet.
 * `daemon` - immer laufender Prozess (wird neu gestartet, wenn der Prozess beendet wird)
-* `subscribe` - wird gestartet, wenn der Status system.adapter ... lebendig auf true wechselt. Wird beendet, wenn .alive in false geändert wird, und setzt .alive auf false, wenn der Prozess beendet wird (wird beim Beenden des Prozesses nicht neu gestartet)
+* `subscribe` - wird gestartet, wenn der Status system.adapter ... lebendig auf true wechselt. Wird beendet, wenn .alive in false geändert wird, und setzt .alive auf false, wenn der Prozess beendet wird (wird beim Beenden des Prozesses nicht neu gestartet).
 * `Zeitplan` - wird nach dem in system.adapter ... common.schedule gefundenen Zeitplan gestartet - reagiert auf Änderungen des .schedule durch Neuplanung mit neuem Status
 * `einmal` - Dieser Adapter wird jedes Mal gestartet, wenn das Objekt system.adapter .. geändert wird. Es wird nach Beendigung nicht neu gestartet.
 
 Normalerweise sollten Adapter den Modus-Daemon verwenden.
 
-Wenn der Adapter nur alle X Minuten etwas überprüft, sollte er den Modus `schedule` verwenden und den Cron-Zeitplan in einem gemeinsamen Zeitplan definieren (z. B. `1 * * * *` - jede Stunde).
+Wenn der Adapter nur alle X Minuten etwas überprüft, sollte er den Modus `schedule` verwenden und den Cron-Zeitplan gemeinsam definieren (z. B. `1 * * * *` - jede Stunde).
 
 #### Wie lese ich ein Objekt?
 Objekte können mit dem Befehl getObject oder getForeignObject gelesen werden:
@@ -658,7 +658,7 @@ Zum Schreiben der Objekte können im Allgemeinen zwei Funktionen verwendet werde
 * `createState, deleteState`
 * `addStateToEnum, deleteStateFromEnum`
 
-extensObject liest nur das Objekt, verschmilzt mit dem angegebenen Objekt und schreibt das Objekt zurück.
+extensObject liest nur ein Objekt, verschmilzt mit einem bestimmten Objekt und schreibt ein Objekt zurück.
 
 Der Unterschied zwischen `xxxObject` und `xxxForeignObject` besteht darin, dass `xxxObject` die Objekt-ID automatisch um `adapter.instance.` Text erweitert.
 
@@ -781,7 +781,7 @@ Vor der Veröffentlichung in npm: In ioBroker / node_modules kopieren, zu `admin
 * Instanz des Adapters deaktivieren
 * Starten Sie WebStorm
 * Konfiguration für Debug mit node.js erstellen
-* Flags für die Anwendung: `--force, Instanz, Protokollebene` (Sie können den Adapter als` Knoten xxx.js 1 Debug --force` starten, 1 ist Instanzindex (standardmäßig 0, Debug ist Protokollebene und `- -force` bedeutet, dass die Einstellungen "enabled: false" ignoriert werden.)
+* Flags für die Anwendung: `--force, instance, log level` (Sie können den Adapter als` node xxx.js 1 debug --force` starten, 1 ist der Instanzindex (standardmäßig 0, debug ist die Protokollebene und `- -force` bedeutet, dass die Einstellungen "enabled: false" ignoriert werden.)
 
 ## Admin.html
 ```

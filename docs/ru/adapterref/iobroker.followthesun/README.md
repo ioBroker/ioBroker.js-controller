@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.followthesun/README.md
 title: ioBroker. следуйте за солнцем
-hash: EFSupr1mifOl9n38SjyWQdy62u/FQmUOEWV5xqA8g0A=
+hash: J/g7F0hU1yfdbMFD+ncBg6RxzgsDKkfV0mQEdpoqZwg=
 ---
 ![Логотип](../../../en/adapterref/iobroker.followthesun/admin/followthesun.png)
 
@@ -19,14 +19,26 @@ hash: EFSupr1mifOl9n38SjyWQdy62u/FQmUOEWV5xqA8g0A=
 ![Тестирование и выпуск](https://github.com/HGlab01/ioBroker.followthesun/workflows/Test%20and%20Release/badge.svg)
 
 ## Followthesun адаптер для ioBroker
-Этот адаптер рассчитывает текущую высоту и азимут солнца на основе геопозиции.
-Он использует географическое положение, указанное в конфигурации. Интервал расчета можно определить в настройках экземпляра.
+Этот адаптер рассчитывает текущую высоту и азимут солнца на основе геопозиции. Дополнительно сохраняется направление компаса и движение солнца (восход или закат).
+Он использует географическое положение, определенное в конфигурации. Интервал расчета можно определить в настройках экземпляра.
+Также сохраняются значения солнечно-полудня для некоторых дней, таких как сегодня, завтра или начало весны / лета / осени / зимы.
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### __WORK IN PROGRESS__
+* (HGlab01) 
+
+### 0.2.2 (2020-12-07)
+* (HGlab01) Decrease log-level
+
+### 0.2.1 (2020-12-07)
+* (HGlab01) update dependecies
+* (HGlab01) add solar-noon information
+* (HGlab01) add compass information
+* (HGlab01) breaking change! states moved from root to "current"
 
 ### 0.1.0 (2020-11-30)
 * (HGlab01) first beta release

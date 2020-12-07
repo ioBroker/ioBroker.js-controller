@@ -185,7 +185,7 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
-### 1.8.0-beta.3 (03.12.2020)
+### 1.8.1 (07.12.2020)
 * (simatec) influxDB Backup added
 * (simatec) influxDB Restore added
 * (simatec) Postgresql Backup added
@@ -196,6 +196,8 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 * (simatec) many small bugfixes
 * (simatec) new redis Restore added
 * (simatec) enable/disable option for Sentry Plugin
+* (simatec) smb 3.02 support added
+* (simatec) smb 3.1.1 support added
 
 ### 1.7.0 (26.10.2020)
 * (simatec) small Bugfix for umount on cifs/nfs mount

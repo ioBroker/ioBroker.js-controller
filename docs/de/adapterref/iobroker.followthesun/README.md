@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.followthesun/README.md
 title: ioBroker.followthesun
-hash: EFSupr1mifOl9n38SjyWQdy62u/FQmUOEWV5xqA8g0A=
+hash: J/g7F0hU1yfdbMFD+ncBg6RxzgsDKkfV0mQEdpoqZwg=
 ---
 ![Logo](../../../en/adapterref/iobroker.followthesun/admin/followthesun.png)
 
@@ -19,14 +19,26 @@ hash: EFSupr1mifOl9n38SjyWQdy62u/FQmUOEWV5xqA8g0A=
 ![Testen und freigeben](https://github.com/HGlab01/ioBroker.followthesun/workflows/Test%20and%20Release/badge.svg)
 
 ## Followthesun Adapter für ioBroker
-Dieser Adapter berechnet die aktuelle Höhe und den Azimut der Sonne basierend auf der Geoposition.
+Dieser Adapter berechnet die aktuelle Höhe und den Azimut der Sonne basierend auf der Geoposition. Zusätzlich werden die Kompassrichtung und die Bewegung (Sonnenaufgang oder Sonnenuntergang) der Sonne gespeichert.
 Es wird die in der Konfiguration definierte Geoposition verwendet. Das Berechnungsintervall kann in Instanzeinstellungen definiert werden.
+Solar-Mittag-Werte für einige Tage wie heute, morgen oder den Beginn von Frühling / Sommer / Herbst / Winter werden ebenfalls gespeichert.
 
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### __WORK IN PROGRESS__
+* (HGlab01) 
+
+### 0.2.2 (2020-12-07)
+* (HGlab01) Decrease log-level
+
+### 0.2.1 (2020-12-07)
+* (HGlab01) update dependecies
+* (HGlab01) add solar-noon information
+* (HGlab01) add compass information
+* (HGlab01) breaking change! states moved from root to "current"
 
 ### 0.1.0 (2020-11-30)
 * (HGlab01) first beta release
