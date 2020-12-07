@@ -25,18 +25,18 @@ Additionally you can send events via Telegram or WhatsApp.
 The events could be generated only in alarm mode.
 The alarm mode could be controlled by variable `eventlist.X.alarm`.
  
-Additionally the messages to messengers could be sent only if alarm mode is ON.
+Additionally, the messages to messengers could be sent only if alarm mode is ON.
 
 Use case:
-- E.g. door sensor can send the messages only if nobody is home. Elsewise the events about door opening will be only collected in the event list.  
+- E.g. door sensor can send the messages only if nobody is home. Else the events about door opening will be only collected in the event list.  
 
 ## Possible presentations
 
 ### In Admin as tab
-You can enable the event list as a tab in admin.
+You can enable the event list as a tab in the admin.
 
 ### Web
-Event list could be shown under `http://<IP>:8082/eventlist/index.html`
+Event list could be shown under `http://<IP>:8082/eventlist/index.html`. (for instances > 0: `http://<IP>:8082/eventlist/index.html?X`, where X is the instance number)
 
 ### Vis Widget
 Event list can be displayed as vis widget. 
@@ -50,8 +50,8 @@ The exactly description of time format could be found here: https://momentjs.com
 The generation of PDF can be triggered by writing a `true` into `eventlist.0.triggerPDF`. 
 
 The PDF file could be accesses via:
-- web: `http://<IP>:8082/eventlist/eventlist/report.pdf`
-- admin: `http://<IP>:8081/files/eventlist/report.pdf`
+- web: `http://<IP>:8082/eventlist/eventlist/report.pdf` (for instances > 0: `http://<IP>:8082/eventlist/eventlist/report-X.pdf`, where X is the instance number)
+- admin: `http://<IP>:8081/files/eventlist/report.pdf` (for instances > 0: `http://<IP>:8081/files/eventlist/report-X.pdf`, where X is the instance number)
 
 **The icons could not be shown in PDF.**
 
@@ -94,24 +94,23 @@ sendTo('eventlist.0', 'list', 'my.0.state.id1', result => {
 });
 ```
 
-User can delete some or all of events from the event list.
+User can delete some or all events from the event list.
 ```
 // delete all events
 sendTo('eventlist.0', 'delete', '*', result => {
-    console.log(`Deleted ${result.count} events`);
+    console.log(`Deleted ${result.deleted} events`);
 });
 
 // delete all events for specific state ID
 sendTo('eventlist.0', 'delete', 'hm-rpc.0.AEOI99389408.1.STATE', result => {
-    console.log(`Deleted ${result.count} events`);
+    console.log(`Deleted ${result.deleted} events`);
 });
 
 // delete one event by timestamp
 sendTo('eventlist.0', 'delete', '2020-10-20T21:00:12.000Z', result => {
-    console.log(`Deleted ${result.count} events`);
+    console.log(`Deleted ${result.deleted} events`);
 });
 ```
-
 
 ## Patterns
 In the event texts and in the state texts the following patterns could be used:
@@ -124,11 +123,16 @@ In the event texts and in the state texts the following patterns could be used:
 - %g - value difference (`State was changed on %g%` => `State was changed on 1%`),
 - %o - value difference (`State changed value from %o to %` => `State was changed on 1%`)
 
+## Usage of multiple instances in web
+E.g. you can show specific list for instance 2, like `http://IP:8082/eventlist/index.htmlindex.html?2`.
+
+The generated report will be stored for instance 0 in `eventlist/report.pdf`, but for instance 1 in `eventlist/report-1.pdf`.
+
 ## Todo
+- Change initial texts in PDF in according language
 - Many predefined icons (minimum 100)
 - Material widget
-- Send messages to syslog (may be splunk) https://www.npmjs.com/package/splunk-logging
-- Filter by ID in Admin or Widget
+- Send messages to syslog (maybe splunk) https://www.npmjs.com/package/splunk-logging
 
 <!--
 	Placeholder for the next version (at the beginning of the line):
@@ -136,6 +140,11 @@ In the event texts and in the state texts the following patterns could be used:
 -->
 
 ## Changelog
+### 0.4.2 (2020-12-05)
+* (bluefox) Added possibility to add multiple states
+* (bluefox) Moved the duration to previous state
+* (bluefox) Support of multiple instances
+
 ### 0.4.0 (2020-11-10)
 * (bluefox) Added setting of even/odd background for widget
 * (bluefox) Added filter

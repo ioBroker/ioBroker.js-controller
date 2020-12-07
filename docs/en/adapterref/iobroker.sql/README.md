@@ -224,6 +224,17 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 });
 ```
 
+*Note:*
+
+Depending on the database, the database name or database name + schema must be inserted before the table name - see boxes above under 'Structure of the DBs'.
+
+Example if your database is called 'iobroker':
+
+| DB         | Name in query                            |
+|------------|------------------------------------------|
+| MS-SQL     | SELECT * FROM iobroker.dbo.datapoints ...|
+| MySQL      | SELECT * FROM iobroker.datapoints ...    |
+
 ## storeState
 If you want to write other data into the InfluxDB/SQL you can use the build in system function **storeState**.
 This function can also be used to convert data from other History adapters like History or SQL.

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mytime/README.md
 title: ioBroker.mytime
-hash: 8kCk0k4ECkwdp9kJHWGLhj4/4+kEv5E7p/CgD8oyCSA=
+hash: g+bbSc5/i8dSqQwu4rvQiojAbcNnraQEUdfDWvWvpVo=
 ---
 ![商标](../../../en/adapterref/iobroker.mytime/admin/mytime.png)
 
@@ -64,6 +64,7 @@ hash: 8kCk0k4ECkwdp9kJHWGLhj4/4+kEv5E7p/CgD8oyCSA=
 |结束|结束|停止倒计时。倒计时设置为0 |
 | setstop2timer | setstop2timer |将停止行为配置设置为计时器|
 | setstop2zero | setstop2zero |将停止行为配置设置为零|
+|保存保存将数据点中定义的配置保存到iobroker配置|
 
 #####设置倒数计时器的值的格式
 您可以将倒计时设置为无限时间。
@@ -229,6 +230,8 @@ Nixie-Tube / LED风格的倒数计时小部件
 ## Changelog
 
 
+### 0.5.2
+* fix an issue and introduce a new command save to save the configuration defined in datapoints to the iobroker configuration data
 ### 0.5.1
 * Migration of old counters
 ### 0.5.0

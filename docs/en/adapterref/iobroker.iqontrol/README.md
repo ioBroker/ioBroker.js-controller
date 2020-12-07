@@ -1183,6 +1183,10 @@ This device has some special predefined size- and display-settings to show a web
     
 ## Changelog
 
+### 1.5.2 (2020-12-06)
+* (sbormann) Design-Adjustments for iPhones without home button and devices with notch and rounded corners.
+* (sbormann) Prevent opening of context menu when closing app.
+
 ### 1.5.1 (2020-12-01)
 * (sbormann) Added url-paremeter noPanel.
 * (sbormann) Changed fetching-method of ioBroker Objects.

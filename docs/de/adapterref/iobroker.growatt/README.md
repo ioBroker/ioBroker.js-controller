@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.growatt/README.md
 title: ioBroker.growatt
-hash: tXmagMsqudjCn/PupKABd7yRlnTk1g53bn8Uk5R9HuE=
+hash: c5Xjzht6mVy+sswSnlkxM0CkP6Hf9CsG1chBO67Eoto=
 ---
 ![Logo](../../../en/adapterref/iobroker.growatt/admin/glogo.png)
 
@@ -12,7 +12,6 @@ hash: tXmagMsqudjCn/PupKABd7yRlnTk1g53bn8Uk5R9HuE=
 ![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/growatt-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/growatt-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/PLCHome/ioBroker.growatt.svg)
-![Bekannte Sicherheitslücken](https://snyk.io/test/github/PLCHome/ioBroker.growatt/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.growatt.png?downloads=true)
 
 # IoBroker.growatt
@@ -54,7 +53,15 @@ Dieser Datensatz enthält einige Daten vom Gerät. Einige Daten sind auch in den
 ### Wetter lesen
 Dieser Datensatz enthält die Wettervorhersage.
 
+ende
+
 ## Changelog
+### 0.0.15 (04.12.2020)
+* (PLCHome) npm package version update
+
+### 0.0.14 (01.12.2020)
+* (PLCHome) improvement for objects not returned from Growatt website
+
 ### 0.0.12 (27.11.2020)
 * (PLCHome) wrong initialization for shared key: string instead of boolean
 

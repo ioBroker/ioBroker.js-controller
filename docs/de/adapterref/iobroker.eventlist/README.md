@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.eventlist/README.md
 title: ioBroker.eventlist
-hash: 6CeAXDBZIHaPC8FtlHWmHFXrCY/WQcW2pFi/x9MRhps=
+hash: hQOkMxbQz5BkSiNLUi4kTJIMgwYjUKKcRXzYX29yPtc=
 ---
 ![Logo](../../../en/adapterref/iobroker.eventlist/admin/eventlist.png)
 
@@ -39,10 +39,10 @@ Anwendungsfall:
 
 ## Mögliche Präsentationen
 ### In Admin als Registerkarte
-Sie können die Ereignisliste als Registerkarte in admin aktivieren.
+Sie können die Ereignisliste als Registerkarte im Administrator aktivieren.
 
 ### Netz
-Die Ereignisliste kann unter `http://<IP>:8082/eventlist/index.html` angezeigt werden
+Die Ereignisliste kann unter `http://<IP>:8082/eventlist/index.html` angezeigt werden. (für Instanzen> 0: `http://<IP>:8082/eventlist/index.html?X`, wobei X die Instanznummer ist)
 
 ### Vis Widget
 Die Ereignisliste kann als vis-Widget angezeigt werden.
@@ -57,8 +57,8 @@ Die Erzeugung von PDF kann durch Schreiben eines `true` in `eventlist.0.triggerP
 
 Auf die PDF-Datei kann zugegriffen werden über:
 
-- web: `http:// <IP>: 8082 / eventlist / eventlist / report.pdf`
-- admin: `http:// <IP>: 8081 / files / eventlist / report.pdf`
+- web: `http:// <IP>: 8082 / eventlist / eventlist / report.pdf` (für Instanzen> 0:` http: // <IP>: 8082 / eventlist / eventlist / report-X.pdf`, wobei X die Instanznummer ist)
+- admin: `http:// <IP>: 8081 / files / eventlist / report.pdf` (für Instanzen> 0:` http: // <IP>: 8081 / files / eventlist / report-X.pdf`, wobei X die Instanznummer ist)
 
 ** Die Symbole konnten nicht als PDF angezeigt werden. **
 
@@ -108,17 +108,17 @@ Der Benutzer kann einige oder alle Ereignisse aus der Ereignisliste löschen.
 ```
 // delete all events
 sendTo('eventlist.0', 'delete', '*', result => {
-    console.log(`Deleted ${result.count} events`);
+    console.log(`Deleted ${result.deleted} events`);
 });
 
 // delete all events for specific state ID
 sendTo('eventlist.0', 'delete', 'hm-rpc.0.AEOI99389408.1.STATE', result => {
-    console.log(`Deleted ${result.count} events`);
+    console.log(`Deleted ${result.deleted} events`);
 });
 
 // delete one event by timestamp
 sendTo('eventlist.0', 'delete', '2020-10-20T21:00:12.000Z', result => {
-    console.log(`Deleted ${result.count} events`);
+    console.log(`Deleted ${result.deleted} events`);
 });
 ```
 
@@ -130,21 +130,35 @@ In den Veranstaltungstexten und in den Staatstexten könnten folgende Muster ver
 -% n - Name (`% n hat den Status in %s ` geändert =>` Gerät A hat den Status in 5` geändert),
 -% t - Zeit (`Status geändert Status auf% t` =>` Status geändert Status am Sep Fr, 16: 32: 00`),
 -% r - relative Zeit (`Zustand geändert Zustand% r` =>` Zustand geändert Zustand vor 5 Sekunden`),
--% d - Dauer (`Zustand war für% d im vorherigen Zustand =>` Zustand war für 5s im vorherigen Zustand`),
+-% d - Dauer (`Zustand war für% d im vorherigen Zustand = =` `Zustand war für 5s im vorherigen Zustand`),
 -% g - Wertdifferenz (`Status wurde auf% g% geändert` => `Status wurde auf 1% geändert`),
--% o - Wertdifferenz (`Status geändert Wert von% o zu%` => `Status wurde auf 1% geändert`)
+-% o - Wertdifferenz (`Status geändert Wert von% o auf%` => `Status wurde auf 1% geändert`)
+
+## Verwendung mehrerer Instanzen im Web
+Z.B. Sie können eine bestimmte Liste zum Beispiel 2 anzeigen, z. B. `http://IP:8082/eventlist/index.htmlindex.html?2`.
+
+Der generierte Bericht wird zum Beispiel 0 in `eventlist/report.pdf` gespeichert, zum Beispiel 1 in `eventlist/report-1.pdf`.
 
 ## Machen
+- Ändern Sie die ersten Texte in PDF in der entsprechenden Sprache
 - Viele vordefinierte Symbole (mindestens 100)
 - Material Widget
 - Senden Sie Nachrichten an syslog (möglicherweise Splunk) https://www.npmjs.com/package/splunk-logging
-- Filtern nach ID in Admin oder Widget
 
 <! - Platzhalter für die nächste Version (am Zeilenanfang):
 
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.4.2 (2020-12-05)
+* (bluefox) Added possibility to add multiple states
+* (bluefox) Moved the duration to previous state
+* (bluefox) Support of multiple instances
+
+### 0.4.0 (2020-11-10)
+* (bluefox) Added setting of even/odd background for widget
+* (bluefox) Added filter
+
 ### 0.2.9 (2020-10-20)
 * (bluefox) Corrected error in GUI by disabling of state
 * (bluefox) Implemented the deletion of events from the event list

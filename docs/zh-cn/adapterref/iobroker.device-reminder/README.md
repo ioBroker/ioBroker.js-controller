@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.device-reminder/README.md
 title: ioBroker.device-reminder
-hash: SRMXl0qsuHqzAA+RWOOECK/cQXeUgdaPIBNu+ajv1Jc=
+hash: v0ysrVwfjVl2oncnvJg9n/4HMqK570WaT9eGF7kuops=
 ---
 ![商标](../../../en/adapterref/iobroker.device-reminder/admin/icon.png)
 
-![NPM版本](http://img.shields.io/npm/v/iobroker.device-reminder.svg)
-![安装数量（稳定）](http://iobroker.live/badges/device-reminder-installed-stable.svg)
-![资料下载](https://img.shields.io/npm/dm/iobroker.device-reminder.svg)
+![安装数量（稳定）](http://iobroker.live/badges/device-reminder-stable.svg)
 ![安装数量（最新）](http://iobroker.live/badges/device-reminder-installed.svg)
+![NPM版本](http://img.shields.io/npm/v/iobroker.device-reminder.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.device-reminder.svg)
 ![依赖状态](https://img.shields.io/david/xenon-s/iobroker.device-reminder.svg)
 ![执照](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![贝宝捐赠](https://img.shields.io/badge/paypal-donate%20%7C%20spenden-blue.svg)
@@ -19,16 +19,16 @@ hash: SRMXl0qsuHqzAA+RWOOECK/cQXeUgdaPIBNu+ajv1Jc=
 ＃ioBroker.device-reminder
 ![测试与发布](https://github.com/xenon-s/iobroker.device-reminder/workflows/Test%20and%20Release/badge.svg)
 
-##需要德国自述文件吗？<br> [德语自述](https://github.com/Xenon-s/ioBroker.device-reminder/blob/master/README_GER.md)
+##需要德国自述文件？<br> [德语自述](https://github.com/Xenon-s/ioBroker.device-reminder/blob/master/README_GER.md)
 <br>
 
 **注意**：如果您使用的版本小于0.4，则绝对有必要删除所有现有实例！
 
 ##用于监视设备状态的适配器
-该适配器可通过测量插座检测设备是否已打开，正在运行或已关闭，并对此做出反应。然后可以通过电报，whatsapp，alexa和sayit自动输出消息（可以在每个设备上进行多次选择）。也可以在过程完成后（也有时间延迟）自动关闭套接字。 （以前开发此适配器的项目：https://github.com/Xenon-s/js.device-reminder）
+该适配器可以通过测量插座检测设备是否已打开，正在运行或已关闭，并对此做出反应。然后可以通过电报，whatsapp，alexa和sayit自动输出消息（可以在每个设备上进行多次选择）。也可以在过程完成后（也有时间延迟）自动关闭套接字。 （以前开发此适配器的项目：https://github.com/Xenon-s/js.device-reminder）
 
 ##应该考虑什么？
-对于大多数设备，从“实时消耗值（平均值**” _ energy“ **）”开始的刷新间隔不应超过10秒，否则可能会有非常延迟的消息。<br> Tasmota控制台中的命令：TelePeriod 10<br>
+对于大多数设备，从“实时消耗值（意味着**” _ energy“ **）”开始的刷新间隔不应超过10秒，否则可能会有非常延迟的消息。<br> Tasmota控制台中的命令：TelePeriod 10<br>
 
 ##目前可以监视哪些设备？
 以下设备具有默认值：
@@ -43,14 +43,14 @@ hash: SRMXl0qsuHqzAA+RWOOECK/cQXeUgdaPIBNu+ajv1Jc=
 <br>此外，还提供5种自定义设备。这些可以由用户根据需要配置。所有设备类型的阈值也可以手动调整。<br>
 
 ##每个设备可能有什么？
--设备启动时的通知
+-设备启动时通知
 -每次设备启动结束时发出通知
 -电报通知（可以有多个ID）
 -Alexa通知（可以使用多个ID）
 -WhatsApp通知可能有多个ID）
--通知可以自由创建，也可以通过外部脚本进行预定义
+-通知可以自由创建，也可以由外部脚本预定义
 -具有当前状态，实时消耗和最后发送的状态消息的数据点，以在其他脚本中使用此适配器的值
--确认过程已完成时，如有必要（也有时间延迟）关闭设备<br>
+-在确认过程已完成时，如有必要（也有时间延迟）关闭设备<br>
 
 <br> <br>
 
@@ -64,8 +64,8 @@ hash: SRMXl0qsuHqzAA+RWOOECK/cQXeUgdaPIBNu+ajv1Jc=
 
 -**设备名称**：可自由选择的名称
 -**设备类型**：在这里您必须选择它是哪个设备，以便可以正确执行适配器中的计算
--**路径消耗/能量**：单击带有三个白点的按钮以打开对象管理。您必须选择显示“当前实时消耗量**”的数据点。
--**路径开关开/关**：单击带有三个白点的按钮以打开对象管理。您必须选择用于打开/关闭插座的数据点（非强制性）
+-**路径消耗/能量**：单击带有三个白点的按钮以打开对象管理。您必须选择显示“当前实时消耗量”的数据点。
+-**路径开关开/关**：单击带有三个白点的按钮以打开对象管理。您必须选择打开/关闭套接字的数据点**（非强制性）
 -**开始文本**：设备启动时将发送通知（也可以使用特殊字符）。不能有“。”在文字结尾！
 -**结束文本**：设备完成其处理后将发送通知（也可以使用特殊字符）。不能有“。”在文字结尾！
 
@@ -78,10 +78,10 @@ hash: SRMXl0qsuHqzAA+RWOOECK/cQXeUgdaPIBNu+ajv1Jc=
 -** alexa“公告” /“说话” **：在这里，您必须**选择使Alexa说话的数据点。要选择数据点，只需单击带有三个小白点的按钮。
 -**音量0-100 **：*可选*在这里您可以设置音量（默认值：50）。介于0到100之间的值是可能的。
 
-最后4个字段可用于创建允许您的Alexa讲话的时间段。默认情况下，从00:00-23:59的时间段处于活动状态。
+最后4个字段可用于创建允许Alexa发言的时间段。默认情况下，从00:00-23:59的时间段处于活动状态。
 
 -**“活动时间”：以小时为单位的开始时间
--**“活动时间最小” **：以分钟为单位的开始时间
+-**“活动时间最小” **：开始时间（以分钟为单位）
 -“非活动时间”：以小时为单位的结束时间
 -**“非活动时间最小值” **：以分钟为单位的结束时间
 
@@ -94,7 +94,7 @@ hash: SRMXl0qsuHqzAA+RWOOECK/cQXeUgdaPIBNu+ajv1Jc=
 -** sayit路径“ ../text” **“：在相应的sayIt设备文件夹中选择数据点“ text”。文本输出将发送到此文件夹。
 -**音量0-100 **：*可选*在这里您可以设置音量（默认值：50）。介于0到100之间的值是可能的。
 -**“活动时间”：以小时为单位的开始时间
--**“活动时间最小” **：以分钟为单位的开始时间
+-**“活动时间最小” **：开始时间（以分钟为单位）
 -“非活动时间”：以小时为单位的结束时间
 -**“非活动时间最小值” **：以分钟为单位的结束时间
 
@@ -109,31 +109,39 @@ hash: SRMXl0qsuHqzAA+RWOOECK/cQXeUgdaPIBNu+ajv1Jc=
 <br> <br>
 
 ##保存配置
-插入所有设备和Messenger后，您必须通过按页面上的“保存”按钮**单击此处重新加载**进行保存！这将更新标签“ **设备**”中的表格。由于显示出现问题，因此生成表的时间很短。<br> *注意：*如果您更改现有设备的名称，然后单击“单击此处重新加载”按钮，则会在表中重新创建该设备，并且必须进行相应的配置（分配alexa等）。
+插入所有设备和Messenger后，您必须通过单击页面上的保存按钮**单击此处重新加载**进行保存！这将更新标签“ **设备**”中的表格。由于显示出现问题，因此生成表的时间很小。<br> *注意：*如果您更改现有设备的名称，然后单击“单击此处重新加载”按钮，则会在表中重新创建该设备，并且必须进行相应的配置（分配alexa等）。
 
 ![save_device2.png](../../../en/adapterref/iobroker.device-reminder/admin/save_device2.png)<br>仅当插入新设备或更改现有设备时，该按钮才有效！<br><br>
 
 ＃配置设备
-[ConfigureDevices.png]（admin / configureDevices.png）在“配置”页面上单击“ **单击此处重新加载**”按钮后，将显示所有创建的设备，并可对其进行进一步配置。
+![configureDevices.png](../../../en/adapterref/iobroker.device-reminder/admin/configureDevices.png)
 
--**激活**：默认情况下处于激活状态。您可以在此处暂时停用设备，以使其不再发送任何通知
+##配置您自己的设备状态
+-运作中**：设备运行时显示的状态。
+-**待机**：设备处于待机状态时显示的状态。
+-**设备关闭**：设备关闭时显示的状态。
+
+##配置设备
+在“配置”页面上单击“ **单击此处重新加载**”按钮后，将显示所有创建的设备，并可对其进行进一步配置。
+
+-**活跃**：默认为激活。您可以在此处暂时停用设备，以使其不再发送任何通知
 -**设备名称**：自动创建
 -** Alexa设备**：此处列出了所有以前创建的Alexa，可以通过单击添加
 -** sayit ID **：此处列出了所有以前创建的sayit设备，可以通过单击添加
 -** whatsapp用户**：此处列出了所有以前创建的whatsapp用户，可以通过单击添加
--**电报用户名**：此处将显示所有可用的电报用户，并可通过单击将其分配给设备。
+-**电报用户名**：此处显示所有可用的电报用户，并可通过单击将其分配给设备。
 
-**如果不显示任何名称：**检查“ telegram.X.communicate.users”下的条目（X代表相应实例，例如0）是否包含以下结构：“ {” ID IN NUMBERS” ：{“ firstName”：“ User1”}}“，如果没有，可以轻松调整。适配器同时搜索** firstName **和** userName **。
+**如果不显示任何名称：**检查“ telegram.X.communicate.users”下的条目（X代表相应实例，例如0）是否包含以下结构：“ {” ID IN NUMBERS” ：{“ firstName”：“ User1”}}“，如果没有，则可以轻松调整。适配器同时搜索** first **和** userName **。您可以决定要使用哪个名称。只能选择“名字”或“用户名”！
 
 -**自动关闭**：如果选择此选项，则在过程完成后电源插座将自动关闭
--**计时器**：您可以在此处选择以**分钟**为单位输入超时。超时时间过后，如果激活了自动关闭功能，则电源插座将关闭。设备的结束通知不受超时的影响！
+-**计时器**：您可以在此处选择以**分钟**为单位输入超时。超时到期后，*如果激活了自动关闭功能，则电源插座将关闭。设备的结束通知不受超时的影响！
 
 单击“ **保存并关闭**”后，现在在* Objects-> device-reminder *下为每个新创建的Device创建一个文件夹，其中
 
 -当前运行时间：hh：mm：ss
 -当前运行时间（以毫秒为单位）
 -设备的当前状态
--当前的实时消费（从“路径消耗/能量*”获取）和
+-当前的实时消耗量（从*路径消耗/能量*获取）和
 -给信使的信息
 -averageConsumption（可用作确定自己的阈值的辅助手段）
 -请勿打扰（如果激活，则不会发送任何消息）
@@ -147,7 +155,7 @@ hash: SRMXl0qsuHqzAA+RWOOECK/cQXeUgdaPIBNu+ajv1Jc=
 
 -**起始值**：必须以瓦特为单位的起始值才能将设备识别为已启动
 -**最终值**：必须以瓦特为单位的最终值，以便可以将设备识别为已完成
--值“开始” **的数量：在此指定“开始” **必须连续超过**的频率。如果该值一次低于该值，则启动中止。这些值的平均值必须高于起始值才能被识别为已启动。
+-值“开始” **的数量：在此指定“必须连续”超过“开始值” **的频率**。如果该值一次低于该值，则启动中止。这些值的平均值必须高于起始值才能被识别为已启动。
 
 *示例：该值应为10W，并连续超过3次。 1. 15W，2. 1W，15W =>启动阶段被中止，因为第二个值低于10. *。
 
@@ -155,9 +163,9 @@ hash: SRMXl0qsuHqzAA+RWOOECK/cQXeUgdaPIBNu+ajv1Jc=
 
 <br> <br>
 
-*简短的示例计算：*消耗值每10秒出现一次。 **终值**设置为50，**值结束**设置为100。在设备被识别为启动后，将记录100个值（*持续100个值x 10秒= 1000秒*），然后才记录平均值计算值。如果平均值低于50，则在大约16.5分钟后（我们记得“值结束”** = 100个值）被识别为“完成”，并发出一条消息（如果已配置）。如果该值大于50，则不会发生任何事情，因为该设备仍在运行。现在，每个其他值都将替换最旧的值，并在每个新值之后计算一个新的平均值。<br><br>
+*简短的示例计算：*消耗值每10秒出现一次。 **终值**设置为50，**值结束**设置为100。设备被识别为启动后，将记录100个值（*持续100个值x 10秒= 1000秒*）。计算值。如果平均值低于50，则在大约16.5分钟后（我们记得“值结束”** = 100个值）被识别为“完成”，并发出一条消息（如果已配置）。如果该值大于50，则不会发生任何事情，因为该设备仍在运行。现在，每个其他值都将替换最旧的值，并在每个新值之后计算一个新的平均值。<br><br>
 
-如果您到目前为止已经阅读但仍然认为需要自定义值，则可以使用** 5种自定义类型**进行免费设计。
+如果您到目前为止已阅读但仍认为需要自定义值，则可以使用** 5种自定义类型**进行免费设计。
 custom-devices.png]（admin / custom-devices.png）
 
 要了解有关该功能的更多信息，只需在“ **默认设备**”中阅读有关此功能的信息。
@@ -172,6 +180,17 @@ custom-devices.png]（admin / custom-devices.png）
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+
+### 0.6.2 (2020-12-04)
+* (xenon-s) bugfix index_m
+
+### 0.6.1 (2020-12-04)
+* (xenon-s) bugfix: wrong status was displayed in the data point
+
+### 0.6.0 (2020-12-03)
+* (xenon-s) bugfix: alexa speak-volume when input is empty
+* (xenon-s) bugfix: telegram now shows both names, otherwise there were errors in the notifications 
+* (xenon-s) add: Device status can now be configured yourself
 
 ### 0.5.4 (2020-11-28)
 * (xenon-s) calculation optimised, custom / default values may have to be adjusted if they have been changed by the user

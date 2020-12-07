@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.growatt/README.md
 title: ioBroker.growatt
-hash: tXmagMsqudjCn/PupKABd7yRlnTk1g53bn8Uk5R9HuE=
+hash: c5Xjzht6mVy+sswSnlkxM0CkP6Hf9CsG1chBO67Eoto=
 ---
 ![商标](../../../en/adapterref/iobroker.growatt/admin/glogo.png)
 
@@ -12,7 +12,6 @@ hash: tXmagMsqudjCn/PupKABd7yRlnTk1g53bn8Uk5R9HuE=
 ![安装数量（最新）](http://iobroker.live/badges/growatt-installed.svg)
 ![安装数量（稳定）](http://iobroker.live/badges/growatt-stable.svg)
 ![依赖状态](https://img.shields.io/david/PLCHome/ioBroker.growatt.svg)
-![已知漏洞](https://snyk.io/test/github/PLCHome/ioBroker.growatt/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.growatt.png?downloads=true)
 
 ＃ioBroker.growatt
@@ -54,7 +53,15 @@ ioBroker Growatt适配器可与Growatt Shine Server通信。
 ###阅读天气
 该数据集包含天气预报。
 
+恩德
+
 ## Changelog
+### 0.0.15 (04.12.2020)
+* (PLCHome) npm package version update
+
+### 0.0.14 (01.12.2020)
+* (PLCHome) improvement for objects not returned from Growatt website
+
 ### 0.0.12 (27.11.2020)
 * (PLCHome) wrong initialization for shared key: string instead of boolean
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: /ML03PtQt5IWh9TwmCdZJOWBxobFdQJW1LBeLKq9TRA=
+hash: KAPiga+EB8Me3aBVyUvORD0MpVesJ46LGyA+8h5fYp8=
 ---
 ![商标](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -23,7 +23,7 @@ hash: /ML03PtQt5IWh9TwmCdZJOWBxobFdQJW1LBeLKq9TRA=
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ### MS-SQL：
-对主机使用```localhost\instance```并检查已启用的TCP / IP连接。
+对主机使用§§JJJJJ_0_0§§并检查已启用的TCP / IP连接。
 https://msdn.microsoft.com/zh-CN/library/bb909712(v=vs.90).aspx
 
 ### SQLite：
@@ -69,14 +69,14 @@ FLUSH PRIVILEGES;
 
 在“ Windows”上，可以通过安装程序轻松安装它：https://dev.mysql.com/downloads/installer/。
 
-注意身份验证方法。 `node.js`尚不支持MySQL 8.0中的新加密算法，您必须选择旧式身份验证方法。
+注意身份验证方法。 `node.js`尚不支持MySQL 8.0中的新加密算法，您必须选择传统身份验证方法。
 
 ![视窗](../../../en/adapterref/iobroker.sql/img/WindowsMySQLinstaller.png)
 
 ##数据库的结构
 默认数据库名称为“ iobroker”，但可以在配置中更改。
 
-###源此表是适配器实例的列表，这些实例已写入条目。 （state.from）
+###来源此表是适配器实例的列表，这些实例已写入条目。 （state.from）
 | DB |查询名称|
 |------------|----------------------|
 | MS-SQL | iobroker.dbo.sources |
@@ -88,7 +88,7 @@ FLUSH PRIVILEGES;
 
 |领域类型描述 |
 |-------|--------------------------------------------|-------------------------------------------|
-| id |整数NOT NULL主键标识（1,1）|唯一ID |
+| id |整数非空主键标识（1,1）|唯一ID |
 |名称| varchar（255）/文字|实例的适配器实例， |
 
 *注意：* MS-SQL使用varchar（255），其他使用TEXT
@@ -107,7 +107,7 @@ FLUSH PRIVILEGES;
 
 |领域类型描述 |
 |-------|--------------------------------------------|-------------------------------------------------|
-| id |整数NOT NULL主键标识（1,1）|唯一ID |
+| id |整数非空主键标识（1,1）|唯一ID |
 |名称| varchar（255）/文字|变量的ID，例如hm-rpc.0.JEQ283747.1.STATE |
 |类型整数| 0-数字，1-字符串，2-布尔值|
 
@@ -215,7 +215,7 @@ sendTo('sql.0', 'query', 'SELECT * FROM datapoints', function (result) {
 });
 ```
 
-或获取ID = system.adapter.admin.0.memRss的最近一小时的条目
+或获取最近一小时的ID = system.adapter.admin.0.memRss的条目
 
 ```
 sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.admin.0.memRss"', function (result) {
@@ -233,16 +233,27 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 });
 ```
 
+*注意：*
+
+根据数据库的不同，必须在表名称之前插入数据库名称或数据库名称+模式-请参见上方“数据库结构”下的框。
+
+如果您的数据库名为“ iobroker”，则示例：
+
+| DB |查询名称|
+|------------|------------------------------------------|
+| MS-SQL |选择* FROM iobroker.dbo.datapoints ... |
+| MySQL |选择*从iobroker.datapoints ... |
+
 ## StoreState
 如果要将其他数据写入InfluxDB / SQL，则可以使用内置系统功能** storeState **。
-此功能还可用于转换其他历史记录适配器（如历史记录或SQL）中的数据。
+此功能还可用于转换来自其他历史记录适配器（如历史记录或SQL）的数据。
 
 给定的ID不会根据ioBroker数据库进行检查，因此不需要在那里进行设置，而只能直接访问。
 
 消息可以具有以下三种格式之一：
 
 *一个ID和一个状态对象：`{id：'adapter.0.device.counter'，状态：{val：1，ts：10239499}}`
-*一个ID和状态对象的数组：`{id：'adapter.0.device.counter'，state：[{val：1，ts：10239499}，{val：2，ts：10239599}，{val：3 ，ts：10239699}]}`
+*一个ID和状态对象数组：`{id：'adapter.0.device.counter'，state：[{val：1，ts：10239499}，{val：2，ts：10239599}，{val：3 ，ts：10239699}]}`
 *具有状态对象`[{{id：'adapter.0.device.counter1'，state：{val：1，ts：10239499}，{id：'adapter.0.device.counter2'，state： {val：2，ts：10239599}]`
 
 此外，您可以添加属性`rules: true`来激活所有规则，例如`counter`，`changesOnly`，`de-bounce`等：`{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
@@ -257,7 +268,7 @@ sendTo('sql.0', 'delete', [
 ], result => console.log('deleted'));
 ```
 
-要删除某个数据点的所有历史数据，请执行：
+要删除某个数据点的所有历史记录数据，请执行：
 
 ```
 sendTo('sql.0', 'deleteAll', [
@@ -275,11 +286,11 @@ sendTo('sql.0', 'deleteRange', [
 ], result => console.log('deleted'));
 ```
 
-时间可能是毫秒（自纪元或ans字符串开始），可以由javascript Date对象转换。
+时间可能是自纪元或ans字符串以来的ms，可以由javascript Date对象转换。
 
 值将被删除，包括已定义的限制。 `ts >= start AND ts <= end`
 
-##改变状态
+##更改状态
 如果要更改数据库中条目的值，质量或确认标志，则可以使用内置系统功能** update **：
 
 ```
@@ -406,20 +417,21 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 -**密码确认**：只需在此处重复密码。
 -**加密**：某些数据库支持加密。
 -**实数为**：逗号后的位数。
--**允许并行请求**：允许同时向DB发送SQL请求。
--**不创建数据库**：如果已经创建了数据库（例如，由管理员创建）并且ioBroker用户没有足够的权限来创建数据库，则激活此选项。
+-**允许并行请求**：允许同时向数据库发送SQL请求。
+-**不创建数据库**：如果已经创建数据库（例如，由管理员创建）并且ioBroker用户没有足够的权限来创建数据库，则激活此选项。
 
 ＃＃ 默认设置
 -**反跳间隔**：请勿存储比该间隔更频繁的值。
 -**记录任何不变的值**：每X秒额外写入一次值。
--**从上一个值到对数值的最小差**：两个值之间的最小间隔。
+-**从上一个值到对数值的最小差值**：两个值之间的最小间隔。
 -**存储保留**：值将在数据库中存储多长时间。
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __进展中__->
+### __正在进行的工程__->
 
 ## Changelog
+
 ### 1.15.3 (2020-08-29)
 * (bluefox) Added the option "Do not create database". E.g. if DB was created and it does not required to do that, because the user does not have enough rights.
  

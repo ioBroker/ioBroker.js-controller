@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.scenes/README.md
 title: ioBroker Szenenadapter
-hash: 9GQ2dZLRXU/ZlsMnZnj2+IHhlXFo5/GxKQz3nlrNi1A=
+hash: twASJxCRZq+yqe5SjyTCaHNRF2nZdHP/VeGPh8flq/k=
 ---
 ![Logo](../../../en/adapterref/iobroker.scenes/admin/scenes.png)
 
@@ -51,7 +51,7 @@ Nach dem Ausschalten des Lüfters geht der Wert von _scene.allLightInBath_ auf *
 Staaten mit Verspätung nehmen nicht an Berechnungen teil.
 
 Sie können die Szene mit einem "Play" -Button testen.
-Zusätzlich können Sie diese **Szene** direkt mit einer anderen Szenen-ID verknüpfen. Wenn Sie beispielsweise einen Sensor an der Tür haben, können Sie ihn als Auslöser auswählen:
+Zusätzlich können Sie diese **Szene** direkt mit einer anderen Szenen-ID verknüpfen. Z.B. Wenn Sie einen Sensor an der Tür haben, können Sie ihn als Auslöser auswählen:
 
 ```
   trigger
@@ -64,7 +64,7 @@ Und jedes Mal, wenn Sie die Tür im Bad öffnen, werden alle Lichter mit Ventila
 
 ## Gruppen
 ** Gruppen ** sind wie virtuelle Kanäle. Sie können mit Hilfe von ** Gruppen ** virtuelles Gerät aus mehreren Aktuatoren erstellen und diese wie ein Gerät gemeinsam steuern.
-Lassen Sie uns unser Beispiel mit Badlichtern modifizieren.
+Lassen Sie uns unsere Probe mit den Lichtern des Bades modifizieren.
 
 ```
   scene.allLightInBath             "set on true"    "set on false"
@@ -87,7 +87,7 @@ Wenn Sie diese **Gruppe** mit dem Türsensor verknüpfen, wie:
 ```
 
 Jedes Mal, wenn Sie die Tür öffnen, werden alle Lichter in einem Bad eingeschaltet. Der Wert von _scene.allLightInBath_ wird auf **true** gesetzt.
-Wenn Sie die Tür schließen, werden die Lichter ausgeschaltet. Und der Wert von _scene.allLightInBath_ geht zu **false**
+Wenn Sie die Tür schließen, werden die Lichter ausgeschaltet und der Wert von _scene.allLightInBath_ geht auf **false**
 
 Es ist nutzlos, aber es ist ein gutes Beispiel.
 
@@ -116,15 +116,26 @@ sendTo(
 
 Der Adapter liest alle tatsächlichen Werte für IDs, die in dieser Szene definiert sind, und speichert sie als konfigurierte.
 
-## MACHEN:
-- Tooltip für "Bereits Feindet Befehle ändern" ändern: ??
-
 <! - Platzhalter für die nächste Version (am Zeilenanfang):
 
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
-### 2.1.5 (2020-09-24)
+### 2.3.3 (2020-12-06)
+* (bluefox) Implemented drag&drop for the reorder of scenes in folders
+* (bluefox) Implemented Easy mode
+* (bluefox) Possibility to use set point from other state
+
+### 2.3.1 (2020-11-06)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-SCENES-M)
+
+### 2.3.0 (2020-11-02)
+* (bluefox) Fixed GUI errors
+
+### 2.1.7 (2020-10-30)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-SCENES-E, IOBROKER-SCENES-G, IOBROKER-SCENES-A)
+
+### 2.1.6 (2020-09-25)
 * (bluefox) Updated the select ID dialog.
 
 ### 2.1.3 (2020-09-18)

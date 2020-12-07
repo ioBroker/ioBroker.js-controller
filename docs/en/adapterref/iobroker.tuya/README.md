@@ -90,6 +90,10 @@ Best is to set the adapter to Debug log mode (Instances -> Expert mode -> Column
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) More schema information added
+* (Apollon77) Try to decode "raw" values via base64
+
 ### 3.4.3 (2020-11-29)
 * (Apollon77) More schema information added
 

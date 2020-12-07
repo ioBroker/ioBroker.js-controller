@@ -4,7 +4,7 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.homeconnect.svg)](https://www.npmjs.com/package/iobroker.homeconnect)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.homeconnect.svg)](https://www.npmjs.com/package/iobroker.homeconnect)
-[![Build Status](https://travis-ci.org/dna909/ioBroker.homeconnect.svg?branch=master)](https://travis-ci.org/dna909/ioBroker.homeconnect)
+[![Build Status](https://travis-ci.org/iobroker-community-adapters/ioBroker.homeconnect.svg?branch=master)](https://travis-ci.org/iobroker-community-adapters/ioBroker.homeconnect)
 
 ## Voraussetzungen vor der Installation
 

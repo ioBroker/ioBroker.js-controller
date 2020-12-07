@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mytime/README.md
 title: ioBroker.mytime
-hash: 8kCk0k4ECkwdp9kJHWGLhj4/4+kEv5E7p/CgD8oyCSA=
+hash: g+bbSc5/i8dSqQwu4rvQiojAbcNnraQEUdfDWvWvpVo=
 ---
 ![Logo](../../../en/adapterref/iobroker.mytime/admin/mytime.png)
 
@@ -64,6 +64,7 @@ Nach der Konfiguration eines neuen Countdowns erstellt der Adapter die folgenden
 | Ende | Ende | stoppt den Countdown. Der Countdown wird auf 0 | gesetzt |
 | setstop2timer | setstop2timer | Setzen Sie die Konfiguration des Stoppverhaltens auf Timer |
 | setstop2zero | setstop2zero | Setzen Sie die Konfiguration des Stoppverhaltens auf Nullen |
+| speichern | speichern | Speichern Sie die in Datenpunkten definierte Konfiguration in der iobroker-Konfiguration |
 
 ##### Format des Werts zum Einstellen des Countdown-Timers
 Sie können den Countdown auf eine unbegrenzte Zeit einstellen.
@@ -229,6 +230,8 @@ Wenn Sie die Größe des Countdown-Nixieclock anpassen möchten, können Sie unt
 ## Changelog
 
 
+### 0.5.2
+* fix an issue and introduce a new command save to save the configuration defined in datapoints to the iobroker configuration data
 ### 0.5.1
 * Migration of old counters
 ### 0.5.0

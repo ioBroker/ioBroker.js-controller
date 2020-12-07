@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.growatt/README.md
 title: ioBroker.growatt
-hash: tXmagMsqudjCn/PupKABd7yRlnTk1g53bn8Uk5R9HuE=
+hash: c5Xjzht6mVy+sswSnlkxM0CkP6Hf9CsG1chBO67Eoto=
 ---
 ![Логотип](../../../en/adapterref/iobroker.growatt/admin/glogo.png)
 
@@ -12,11 +12,10 @@ hash: tXmagMsqudjCn/PupKABd7yRlnTk1g53bn8Uk5R9HuE=
 ![Количество установок (последнее)](http://iobroker.live/badges/growatt-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/growatt-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/PLCHome/ioBroker.growatt.svg)
-![Известные уязвимости](https://snyk.io/test/github/PLCHome/ioBroker.growatt/badge.svg)
-![НПМ](https://nodei.co/npm/iobroker.growatt.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.growatt.png?downloads=true)
 
 # IoBroker.growatt
-## Адаптер growatt для ioBroker
+## Адаптер Growatt для ioBroker
 ioBroker Growatt Адаптер для связи с Growatt Shine Server.
 Я не аффилирован.
 Обычно данные отправляются из регистратора данных в облако каждые 5 минут.
@@ -54,7 +53,15 @@ ioBroker Growatt Адаптер для связи с Growatt Shine Server.
 ### Читать погоду
 Этот набор данных содержит прогноз погоды.
 
+ende
+
 ## Changelog
+### 0.0.15 (04.12.2020)
+* (PLCHome) npm package version update
+
+### 0.0.14 (01.12.2020)
+* (PLCHome) improvement for objects not returned from Growatt website
+
 ### 0.0.12 (27.11.2020)
 * (PLCHome) wrong initialization for shared key: string instead of boolean
 

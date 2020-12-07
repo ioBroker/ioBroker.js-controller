@@ -3,12 +3,11 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.growatt.svg)](https://www.npmjs.com/package/iobroker.growatt)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.growatt.svg)](https://www.npmjs.com/package/iobroker.growatt)
-![Number of Installations (latest)](http://iobroker.live/badges/growatt-installed.svg)
+[![Number of Installations (latest)](http://iobroker.live/badges/growatt-installed.svg)
 ![Number of Installations (stable)](http://iobroker.live/badges/growatt-stable.svg)
-[![Dependency Status](https://img.shields.io/david/PLCHome/ioBroker.growatt.svg)](https://david-dm.org/PLCHome/ioBroker.growatt)
-[![Known Vulnerabilities](https://snyk.io/test/github/PLCHome/ioBroker.growatt/badge.svg)](https://snyk.io/test/github/PLCHome/ioBroker.growatt)
+![Dependency Status](https://img.shields.io/david/PLCHome/ioBroker.growatt.svg)](https://david-dm.org/PLCHome/ioBroker.growatt)
 
-[![NPM](https://nodei.co/npm/iobroker.growatt.png?downloads=true)](https://nodei.co/npm/ioBroker.growatt/)
+[![NPM](https://nodei.co/npm/iobroker.growatt.png?downloads=true)](https://nodei.co/npm/iobroker.growatt/)
 
 ## growatt adapter for ioBroker
 
@@ -48,12 +47,15 @@ This data record contains aggregation data.
 This data record contains some data from the device. Some data are also available in the other categories.
 
 ### Read weather
-This data set contains the weather forecast. 
+This data set contains the weather forecast.
 
 
-
+ende
 
 ## Changelog
+### 0.0.15 (04.12.2020)
+* (PLCHome) npm package version update
+
 ### 0.0.14 (01.12.2020)
 * (PLCHome) improvement for objects not returned from Growatt website
 
@@ -86,7 +88,7 @@ This data set contains the weather forecast.
 * (PLCHome) initial release.
 
 ### 0.0.1
-* (PLCHome) initial release. 
+* (PLCHome) initial release.
 
 
 

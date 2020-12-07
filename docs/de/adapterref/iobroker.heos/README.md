@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heos/README.md
 title: ioBroker.heos
-hash: hE6ToxZKTxiOM031WbCm3VmfoAcE1V7Lh3Wo8jJeECY=
+hash: DCjvEfljhMQR9HEQnV7G6zbATno+KP5R6w8X5bmIxLk=
 ---
 ![Logo](../../../en/adapterref/iobroker.heos/admin/heos.png)
 
@@ -29,21 +29,21 @@ HEOS CLI-Spezifikation: http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecifica
 ### HEOS-Befehlsstatus
 * "system / connect": Versuchen Sie, eine Verbindung zu HEOS herzustellen
 * "System / Trennen": Trennen Sie die Verbindung zum HEOS
-* "system / reconnect": Trennen und verbinden
+* "System / Wiederverbindung": Trennen und Verbinden
 * "system / load_sources": Quellen neu laden
 * "group / set_group? pid = <pid1>, <pid2>, ...": Gruppe mit der Liste der Spieler-IDs festlegen, z. "group / set_group? pid = 12345678,12345679".
 * "group / set_group? pid = <pid1>": Löschen Sie eine vorhandene Gruppe, z. "group / set_group? pid = 12345678"
 * "group / ungroup_all": Alle Gruppen löschen
 * "group / group_all": Gruppiert alle Spieler in einer Gruppe
 * "player / [cmd]": Sende den Befehl an alle Spieler. z.B. player / set_mute & state = on
-* "Anführer / [cmd]": Senden Sie den Befehl an alle führenden Spieler. z.B. player / set_mute & state = on
+* "Anführer / [cmd]": Senden Sie den Befehl an alle führenden Spieler. z.B. Leader / set_mute & state = on
 * "scope / [cmd]": Senden Sie den Befehl an den konfigurierten Bereich aller Spieler, führenden Spieler oder durch Kommas getrennten Spieler-Pids in scope_pids
 * "...": Alle anderen Befehle werden versucht, an HEOS zu senden
 
 ### Player-Befehlsstatus
 Hinweis: Mehrere Befehle sind möglich, wenn sie mit der Pipe getrennt sind, z. set_volume & level = 20 | play_preset & preset = 1
 
-* "set_volume & level = 0 | 1 | .. | 100": Stellen Sie die Lautstärke des Players ein
+* "set_volume & level = 0 | 1 | .. | 100": Stellen Sie die Player-Lautstärke ein
 * "set_play_state & state = play | pause | stop": Legt den Player-Status fest
 * "set_play_mode & repeat = on_all | on_one | off & shuffle = on | off": Set Repeat and Shuffle-Modus
 * "set_mute & state = on | off": Spieler stumm schalten
@@ -56,10 +56,10 @@ Hinweis: Mehrere Befehle sind möglich, wenn sie mit der Pipe getrennt sind, z. 
 * "add_to_queue & sid = 1025 & aid = 4 & cid = [CID]": Wiedergabeliste mit [CID] auf dem Player abspielen (Hilfe: 1 - jetzt spielen; 2 - als nächstes spielen; 3 - zum Ende hinzufügen; 4 - ersetzen und spielen)
 
 ## Regex stumm schalten
-In der Konfiguration können Sie eine Funktion aktivieren, um den Player basierend auf einer Regex-Übereinstimmung mit den Songinformationen stummzuschalten. Dies kann verwendet werden, um Anzeigen automatisch stummzuschalten. Für Spotify können Sie beispielsweise den folgenden regulären Ausdruck verwenden: ```spotify:ad:|Advertisement```.
+In der Konfiguration können Sie eine Funktion aktivieren, um den Player basierend auf einer Regex-Übereinstimmung mit den Songinformationen stummzuschalten. Damit können Anzeigen automatisch stummgeschaltet werden. Für Spotify können Sie beispielsweise den folgenden regulären Ausdruck verwenden: ```spotify:ad:|Advertisement```.
 
 ## Quellen durchsuchen
-Um den Statusbetrag in ioBroker zu reduzieren, werden automatisch nur Wiedergabelisten und Voreinstellungen in den Status gespeichert. Zunächst müssen Sie jedoch auf die Schaltfläche Durchsuchen im Ordner Wiedergabelisten oder Voreinstellungen klicken. Sie finden und steuern sie im Ordner "Quellen". Wenn Sie die Musik einer Quelle durchsuchen möchten, klicken Sie einfach auf die Schaltfläche Durchsuchen. Sie finden das Suchergebnis im Status "sources.browse_result". Es gibt auch Befehle, um tiefer zu navigieren oder eine Ressource abzuspielen. Fügen Sie einfach die Befehle in das globale HEOS-Befehlsfeld ein. Wenn es sich um einen Durchsuchungsbefehl handelt, finden Sie das Ergebnis im Status browse_result. In der Konfiguration finden Sie eine Option, um den Umfang der Wiedergabebefehle zu steuern. Damit können Sie steuern, ob die Spielbefehle an alle Spieler, an alle Anführer und Nicht-Gruppenspieler oder an eine Liste von Spieler-IDs gehen, die im Status command_scope_pid definiert sind.
+Um den Statusbetrag in ioBroker zu reduzieren, werden automatisch nur Wiedergabelisten und Voreinstellungen in den Status gespeichert. Zuerst müssen Sie jedoch auf die Schaltfläche Durchsuchen im Ordner Wiedergabelisten oder Voreinstellungen klicken. Sie finden und steuern sie im Ordner "Quellen". Wenn Sie die Musik einer Quelle durchsuchen möchten, klicken Sie einfach auf die Schaltfläche Durchsuchen. Sie finden das Suchergebnis im Status "sources.browse_result". Es gibt auch Befehle, um tiefer zu navigieren oder eine Ressource abzuspielen. Fügen Sie einfach die Befehle in das globale HEOS-Befehlsfeld ein. Wenn es sich um einen Durchsuchungsbefehl handelt, finden Sie das Ergebnis im Status browse_result. In der Konfiguration finden Sie eine Option zur Steuerung des Umfangs der Wiedergabebefehle. Damit können Sie steuern, ob die Spielbefehle an alle Spieler, an alle Anführer und Nicht-Gruppenspieler oder an eine Liste von Spieler-IDs gehen, die im Status command_scope_pid definiert sind.
 
 Für die VIS-Integration können Sie das browse_result und das folgende Skript verwenden, um eine HTML-Tabelle zu generieren (diese ist nicht im Adapter integriert, sodass Sie die Möglichkeit haben, sie zu formatieren). Alternativ verwenden Sie das Skript von Uhula https://forum.iobroker.net/post/498779:
 

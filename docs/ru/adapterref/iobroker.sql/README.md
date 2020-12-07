@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: /ML03PtQt5IWh9TwmCdZJOWBxobFdQJW1LBeLKq9TRA=
+hash: KAPiga+EB8Me3aBVyUvORD0MpVesJ46LGyA+8h5fYp8=
 ---
 ![Логотип](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -11,7 +11,7 @@ hash: /ML03PtQt5IWh9TwmCdZJOWBxobFdQJW1LBeLKq9TRA=
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sql.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sql.svg)
 ![Тесты](https://travis-ci.org/ioBroker/ioBroker.sql.svg?branch=master)
-![НПМ](https://nodei.co/npm/iobroker.sql.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.sql.png?downloads=true)
 ![Значок Greenkeeper](https://badges.greenkeeper.io/ioBroker/ioBroker.sql.svg)
 
 # IoBroker.sql
@@ -20,7 +20,7 @@ hash: /ML03PtQt5IWh9TwmCdZJOWBxobFdQJW1LBeLKq9TRA=
 Поддерживает PostgreSQL, mysql, Microsoft SQL Server и sqlite.
 Вы можете оставить порт 0, если требуется порт по умолчанию.
 
-** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ### MS-SQL:
 Используйте ```localhost\instance``` для хоста и проверьте, включены ли соединения TCP / IP.
@@ -51,7 +51,7 @@ iobroker start sql
 ```
 
 ### MySQL:
-Вы можете установить mysql в системах Linux следующим образом:
+Вы можете установить mysql в Linux-системах следующим образом:
 
 ```
 apt-get install mysql-server mysql-client
@@ -65,11 +65,11 @@ FLUSH PRIVILEGES;
 
 При необходимости отредактируйте */ etc / mysql / my.cnf* чтобы установить привязку к IP-адресу для удаленного подключения.
 
-** Предупреждение **: пользователь iobroker - «admin». При необходимости предоставьте пользователю iobroker ограниченные права.
+** Предупреждение **: пользователь iobroker - «администратор». При необходимости предоставьте пользователю iobroker ограниченные права.
 
 На "windows" его легко установить через установщик: https://dev.mysql.com/downloads/installer/.
 
-Обратите внимание на метод аутентификации. Новый алгоритм шифрования в MySQL 8.0 еще не поддерживается `node.js`, и вы должны выбрать устаревший метод аутентификации.
+Обратите внимание на метод аутентификации. Новый алгоритм шифрования в MySQL 8.0 пока не поддерживается `node.js`, и вы должны выбрать устаревший метод аутентификации.
 
 ![Windows](../../../en/adapterref/iobroker.sql/img/WindowsMySQLinstaller.png)
 
@@ -84,7 +84,7 @@ FLUSH PRIVILEGES;
 | PostgreSQL | источники |
 | SQLite | источники |
 
-Структура:
+Состав:
 
 | Поле | Тип | Описание |
 |-------|--------------------------------------------|-------------------------------------------|
@@ -103,13 +103,13 @@ FLUSH PRIVILEGES;
 | PostgreSQL | точки данных |
 | SQLite | точки данных |
 
-Структура:
+Состав:
 
 | Поле | Тип | Описание |
 |-------|--------------------------------------------|-------------------------------------------------|
 | id | ИДЕНТИЧНОСТЬ ПЕРВИЧНОГО КЛЮЧА INTEGER NOT NULL (1,1) | уникальный ID |
 | имя | varchar (255) / ТЕКСТ | ID переменной, например hm-rpc.0.JEQ283747.1.STATE |
-| тип | INTEGER | 0 - число, 1 - строка, 2 - логическое |
+| тип | INTEGER | 0 - число, 1 - строка, 2 - логическое значение |
 
 * Примечание: * MS-SQL использует varchar (255), а другие используют ТЕКСТ
 
@@ -123,7 +123,7 @@ FLUSH PRIVILEGES;
 | PostgreSQL | ts_number |
 | SQLite | ts_number |
 
-Структура:
+Состав:
 
 | Поле | Тип | Описание |
 |--------|--------------------------------------------|-------------------------------------------------|
@@ -134,9 +134,9 @@ FLUSH PRIVILEGES;
 | _from | INTEGER | ID источника из таблицы «Источники» |
 | q | INTEGER | Качество как число. Вы можете найти описание [Вот](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
 
-* Примечание: * MS-SQL использует BIT, а другие используют BOOLEAN. SQLite использует ts INTEGER и все остальные BIGINT.
+* Примечание: * MS-SQL использует BIT, а другие используют BOOLEAN. SQLite использует для ts INTEGER и всех остальных BIGINT.
 
-Пользователь может определить дополнительные к типу `number` функции «счетчиков». Для этого создается следующая таблица:
+Пользователь может определить дополнительные к типу `number` функционал «счетчиков». Для этого создается следующая таблица:
 
 | DB | Имя в запросе |
 |------------|-------------------------|
@@ -145,7 +145,7 @@ FLUSH PRIVILEGES;
 | PostgreSQL | ts_counter |
 | SQLite | ts_counter |
 
-Структура:
+Состав:
 
 | Поле | Тип | Описание |
 |--------|--------------------------------------------|-------------------------------------------------|
@@ -165,7 +165,7 @@ FLUSH PRIVILEGES;
 | PostgreSQL | ts_string |
 | SQLite | ts_string |
 
-Структура:
+Состав:
 
 | Поле | Тип | Описание |
 |--------|--------------------------------------------|-------------------------------------------------|
@@ -176,9 +176,9 @@ FLUSH PRIVILEGES;
 | _from | INTEGER | ID источника из таблицы «Источники» |
 | q | INTEGER | Качество как число. Вы можете найти описание [Вот](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
 
-* Примечание: * MS-SQL использует BIT, а другие используют BOOLEAN. SQLite использует ts INTEGER и все остальные BIGINT.
+* Примечание: * MS-SQL использует BIT, а другие используют BOOLEAN. SQLite использует для ts INTEGER и всех остальных BIGINT.
 
-### Логические
+### Логические значения
 Значения для состояний с типом «логическое».
 
 | DB | Имя в запросе |
@@ -188,7 +188,7 @@ FLUSH PRIVILEGES;
 | PostgreSQL | ts_bool |
 | SQLite | ts_bool |
 
-Структура:
+Состав:
 
 | Поле | Тип | Описание |
 |--------|--------------------------------------------|-------------------------------------------------|
@@ -199,7 +199,7 @@ FLUSH PRIVILEGES;
 | _from | INTEGER | ID источника из таблицы «Источники» |
 | q | INTEGER | Качество как число. Вы можете найти описание [Вот](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#states) |
 
-* Примечание: * MS-SQL использует BIT, а другие используют BOOLEAN. SQLite использует ts INTEGER и все остальные BIGINT.
+* Примечание: * MS-SQL использует BIT, а другие используют BOOLEAN. SQLite использует для ts INTEGER и всех остальных BIGINT.
 
 ## Пользовательские запросы
 Пользователь может выполнять пользовательские запросы к таблицам из адаптера javascript:
@@ -215,7 +215,7 @@ sendTo('sql.0', 'query', 'SELECT * FROM datapoints', function (result) {
 });
 ```
 
-Или получите записи за последний час для ID = system.adapter.admin.0.memRss
+Или получить записи за последний час для ID = system.adapter.admin.0.memRss
 
 ```
 sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.admin.0.memRss"', function (result) {
@@ -233,6 +233,17 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 });
 ```
 
+*Заметка:*
+
+В зависимости от базы данных, имя базы данных или имя базы данных + схема должны быть вставлены перед именем таблицы - см. Поля выше в разделе «Структура баз данных».
+
+Пример, если ваша база данных называется iobroker:
+
+| DB | Имя в запросе |
+|------------|------------------------------------------|
+| MS-SQL | ВЫБРАТЬ * ИЗ iobroker.dbo.datapoints ... |
+| MySQL | ВЫБРАТЬ * ИЗ iobroker.datapoints ... |
+
 ## StoreState
 Если вы хотите записать другие данные в InfluxDB / SQL, вы можете использовать встроенную системную функцию **storeState** Эту функцию также можно использовать для преобразования данных из других адаптеров истории, таких как History или SQL.
 
@@ -242,9 +253,9 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 
 * один идентификатор и один объект состояния: `{id: 'adapter.0.device.counter', state: {val: 1, ts: 10239499}}`
 * один идентификатор и массив объектов состояния: `{id: 'adapter.0.device.counter', state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3 , ts: 10239699}]} `
-* массив нескольких идентификаторов с объектами состояния `[{id: 'adapter.0.device.counter1', state: {val: 1, ts: 10239499}, {id: 'adapter.0.device.counter2', state: {val: 2, ts: 10239599}] `
+* массив из нескольких идентификаторов с объектами состояния `[{id: 'adapter.0.device.counter1', state: {val: 1, ts: 10239499}, {id: 'adapter.0.device.counter2', state: {val: 2, ts: 10239599}] `
 
-Кроме того, вы можете добавить атрибут `rules: true` для активации всех правил, таких как `counter`, `changesOnly`, `de-bounce` и т. Д .: `{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
+Кроме того, вы можете добавить атрибут `rules: true`, чтобы активировать все правила, такие как `counter`, `changesOnly`, `de-bounce` и так далее: `{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
 
 ## Удалить состояние
 Если вы хотите удалить запись из базы данных, вы можете использовать встроенную системную функцию **delete**
@@ -404,7 +415,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Пароль** пароль для SQL.
 - **Подтверждение пароля** просто повторите пароль здесь.
 - **Шифрование** некоторые БД поддерживают шифрование.
-- **Округлить действительное число до** количество цифр после запятой.
+- **Округлить вещественное число до** количество цифр после запятой.
 - **Разрешить параллельные запросы** разрешить одновременные запросы SQL к БД.
 - **Не создавать базу данных** активируйте эту опцию, если база данных уже создана (например, администратором) и у пользователя ioBroker недостаточно прав для создания БД.
 
@@ -419,6 +430,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+
 ### 1.15.3 (2020-08-29)
 * (bluefox) Added the option "Do not create database". E.g. if DB was created and it does not required to do that, because the user does not have enough rights.
  

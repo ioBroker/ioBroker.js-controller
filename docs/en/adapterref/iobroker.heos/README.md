@@ -34,7 +34,7 @@ HEOS CLI specification: http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecifica
 * "group/ungroup_all" : Delete all groups
 * "group/group_all" : Group all player in one group
 * "player/[cmd]": Send the command to all players. e.g. player/set_mute&state=on 
-* "leader/[cmd]": Send the command to all leading players. e.g. player/set_mute&state=on
+* "leader/[cmd]": Send the command to all leading players. e.g. leader/set_mute&state=on
 * "scope/[cmd]": Send the command to the configured scope all players, leading players or comma separated player pids in scope_pids
 * "...": All other commands are tried to send to HEOS
 

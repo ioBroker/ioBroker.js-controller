@@ -843,10 +843,10 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.musiccast/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mydlink/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.myq/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mysensors/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mystrom/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.mytime/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.myvbus/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nanoleaf-lightpanels/README.md
-https://doc.iobroker.net/#de/adapters/adapterref/iobroker.nello/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.net-tools/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.netatmo/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.netatmo-crawler/README.md
@@ -1245,10 +1245,10 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.musiccast/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mydlink/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.myq/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mysensors/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mystrom/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.mytime/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.myvbus/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nanoleaf-lightpanels/README.md
-https://doc.iobroker.net/#en/adapters/adapterref/iobroker.nello/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.net-tools/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.netatmo/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.netatmo-crawler/README.md
@@ -1647,10 +1647,10 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.musiccast/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mydlink/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.myq/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mysensors/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mystrom/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.mytime/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.myvbus/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nanoleaf-lightpanels/README.md
-https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.nello/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.net-tools/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.netatmo/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.netatmo-crawler/README.md
@@ -2049,10 +2049,10 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.musiccast/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mydlink/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.myq/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mysensors/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mystrom/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.mytime/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.myvbus/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nanoleaf-lightpanels/README.md
-https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.nello/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.net-tools/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.netatmo/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.netatmo-crawler/README.md

@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.device-reminder/README.md
 title: ioBroker.device-Erinnerung
-hash: SRMXl0qsuHqzAA+RWOOECK/cQXeUgdaPIBNu+ajv1Jc=
+hash: v0ysrVwfjVl2oncnvJg9n/4HMqK570WaT9eGF7kuops=
 ---
 ![Logo](../../../en/adapterref/iobroker.device-reminder/admin/icon.png)
 
-![NPM-Version](http://img.shields.io/npm/v/iobroker.device-reminder.svg)
-![Anzahl der Installationen (stabil)](http://iobroker.live/badges/device-reminder-installed-stable.svg)
-![Downloads](https://img.shields.io/npm/dm/iobroker.device-reminder.svg)
+![Anzahl der Installationen (stabil)](http://iobroker.live/badges/device-reminder-stable.svg)
 ![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/device-reminder-installed.svg)
+![NPM-Version](http://img.shields.io/npm/v/iobroker.device-reminder.svg)
+![Downloads](https://img.shields.io/npm/dm/iobroker.device-reminder.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/xenon-s/iobroker.device-reminder.svg)
 ![Lizenz](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Paypal-Spende](https://img.shields.io/badge/paypal-donate%20%7C%20spenden-blue.svg)
@@ -49,7 +49,7 @@ Es gibt Standardwerte für die folgenden Geräte:
 - Alexa-Benachrichtigung (mehrere IDs sind möglich)
 - WhatsApp-Benachrichtigung mit mehreren IDs möglich)
 - Benachrichtigungen können frei erstellt oder durch ein externes Skript vordefiniert werden
-- Datenpunkte mit dem aktuellen Status, dem Live-Verbrauch und der zuletzt gesendeten Statusmeldung, um Werte von diesem Adapter in anderen Skripten zu verwenden
+- Datenpunkte mit dem aktuellen Status, dem Live-Verbrauch und der zuletzt gesendeten Statusmeldung, um die Werte dieses Adapters in anderen Skripten zu verwenden
 - Schalten Sie Geräte bei Bedarf aus (auch zeitverzögert), wenn der Vorgang als abgeschlossen erkannt wurde<br>
 
 <br> <br>
@@ -57,7 +57,7 @@ Es gibt Standardwerte für die folgenden Geräte:
 # Anleitung
 ![config.png](../../../en/adapterref/iobroker.device-reminder/admin/config.png)
 
-Zunächst müssen alle gewünschten Geräte, Alexas usw. in der Konfiguration erstellt werden, bevor sie verwendet werden können. Wenn alle Einträge vollständig sind, müssen Sie auf ** "hier klicken, um neu zu laden" ** klicken. Erst dann werden die Geräte wirklich erstellt und können in der Registerkarte "** GERÄTE **" weiter konfiguriert werden.
+Zunächst müssen alle gewünschten Geräte, Alexas usw. in der Konfiguration erstellt werden, bevor sie verwendet werden können. Wenn alle Einträge abgeschlossen sind, müssen Sie auf ** "hier klicken, um neu zu laden" ** klicken. Erst dann werden die Geräte wirklich erstellt und können in der Registerkarte "** GERÄTE **" weiter konfiguriert werden.
 
 ## Gerät erstellen
 Zuerst muss ein neuer Eintrag mit dem **"+ Gerät hinzufügen"** erstellt werden. Dadurch wird die folgende Tabellenzeile erstellt: ![addDevice.png](../../../en/adapterref/iobroker.device-reminder/admin/addDevice.png)
@@ -114,7 +114,15 @@ Wenn alle Geräte und Messenger eingefügt wurden, müssen Sie speichern, indem 
 ![save_device2.png](../../../en/adapterref/iobroker.device-reminder/admin/save_device2.png)<br> Die Schaltfläche ist nur aktiv, wenn neue Geräte eingefügt oder vorhandene geändert werden!<br><br>
 
 # Geräte konfigurieren
-configureDevices.png] (admin / configureDevices.png) Nachdem Sie auf der Seite Config auf die Schaltfläche "** hier klicken, um neu zu laden **" geklickt haben, werden alle erstellten Geräte angezeigt und können weiter konfiguriert werden.
+![configureDevices.png](../../../en/adapterref/iobroker.device-reminder/admin/configureDevices.png)
+
+## Konfigurieren Sie Ihren eigenen Gerätestatus
+- **in Aktion** Status, der angezeigt wird, wenn das Gerät in Betrieb ist.
+- **im Standby** Status, der angezeigt wird, wenn sich das Gerät im Standby befindet.
+- **Gerät aus** Status, der angezeigt wird, wenn das Gerät ausgeschaltet wird.
+
+## Gerät konfigurieren
+Nach dem Klicken auf die Schaltfläche "** hier klicken, um neu zu laden **" auf der Konfigurationsseite werden alle erstellten Geräte angezeigt und können weiter konfiguriert werden.
 
 - **aktiv** Ist standardmäßig aktiviert. Hier können Sie ein Gerät vorübergehend deaktivieren, damit es keine Benachrichtigungen mehr sendet
 - **Gerätename** wird automatisch erstellt
@@ -123,7 +131,7 @@ configureDevices.png] (admin / configureDevices.png) Nachdem Sie auf der Seite C
 - **WhatsApp-Benutzer** Alle zuvor erstellten WhatsApp-Benutzer werden hier aufgelistet und können durch Klicken hinzugefügt werden
 - **Telegramm-Benutzername** Hier werden alle verfügbaren Telegramm-Benutzer angezeigt und können dem Gerät durch Klicken zugewiesen werden.
 
-** Wenn keine Namen angezeigt werden sollen: ** Prüfen Sie, ob der Eintrag unter "telegram.X.communicate.users" (das X steht für die jeweilige Instanz, zB 0) folgende Struktur enthält: "{" ID IN NUMBERS " : {"firstName": "User1"}} ", wenn nicht, kann es einfach angepasst werden. Der Adapter sucht sowohl nach ** Vorname ** als auch nach ** Benutzername **.
+** Wenn keine Namen angezeigt werden sollen: ** Prüfen Sie, ob der Eintrag unter "telegram.X.communicate.users" (das X steht für die jeweilige Instanz, zB 0) folgende Struktur enthält: "{" ID IN NUMBERS " : {"firstName": "User1"}} ", wenn nicht, kann es einfach angepasst werden. Der Adapter sucht sowohl nach ** Vorname ** als auch nach ** Benutzername **. Sie können entscheiden, welchen Namen Sie verwenden möchten. Es kann nur entweder der ** Vorname ** oder der ** Benutzername ** ausgewählt werden!
 
 - **Auto Off** Wenn diese Option ausgewählt ist, wird die Steckdose nach Abschluss des Vorgangs automatisch ausgeschaltet
 - **Timer** Hier können Sie optional eine Zeitüberschreitung in **Minuten** eingeben. Nach Ablauf der Zeitüberschreitung wird die Steckdose ausgeschaltet *wenn die automatische Abschaltung aktiviert ist* Die Endbenachrichtigung des Geräts ist von einer Zeitüberschreitung nicht betroffen!
@@ -135,7 +143,7 @@ Nach dem Klicken auf "** Speichern und schließen **" wird nun unter *Objekte ->
 - den aktuellen Status des Geräts
 - den aktuellen Live-Verbrauch (abgerufen aus dem *Pfadverbrauch / Energie* und
 - die Nachricht an die Boten
-- durchschnittlicher Verbrauch (Kann als Hilfe zur Bestimmung Ihrer eigenen Schwellenwerte verwendet werden)
+- durchschnittlicher Verbrauch (Kann als Hilfsmittel zur Bestimmung Ihrer eigenen Schwellenwerte verwendet werden)
 - nicht stören (wenn aktiviert, werden keine Nachrichten gesendet)
 
 wird angezeigt.<br><br>
@@ -160,7 +168,7 @@ In der ersten Tabelle werden die "Standard" -Werte angezeigt. Diese Werte wurden
 Wenn Sie bisher gelesen haben und immer noch der Meinung sind, dass Sie benutzerdefinierte Werte benötigen, stehen **5 benutzerdefinierte Typen** für das kostenlose Design zur Verfügung.
 benutzerdefinierte Geräte.png] (admin / benutzerdefinierte Geräte.png)
 
-Um mehr über die Funktion zu erfahren, lesen Sie sie einfach hier unter "** Standardgeräte **".
+Um mehr über die Funktion zu erfahren, lesen Sie einfach hier unter "** Standardgeräte **".
 
 # Unterstützung
 ** Wenn dir meine Arbeit gefällt: **<br>
@@ -172,6 +180,17 @@ Um mehr über die Funktion zu erfahren, lesen Sie sie einfach hier unter "** Sta
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+
+### 0.6.2 (2020-12-04)
+* (xenon-s) bugfix index_m
+
+### 0.6.1 (2020-12-04)
+* (xenon-s) bugfix: wrong status was displayed in the data point
+
+### 0.6.0 (2020-12-03)
+* (xenon-s) bugfix: alexa speak-volume when input is empty
+* (xenon-s) bugfix: telegram now shows both names, otherwise there were errors in the notifications 
+* (xenon-s) add: Device status can now be configured yourself
 
 ### 0.5.4 (2020-11-28)
 * (xenon-s) calculation optimised, custom / default values may have to be adjusted if they have been changed by the user

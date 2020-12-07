@@ -39,6 +39,10 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Changelog
 
+### 1.0.3
+
+* (klein0r) Fixed filament information (volume and length)
+
 ### 1.0.2
 
 * (klein0r) Added name for OctoPrint Instance

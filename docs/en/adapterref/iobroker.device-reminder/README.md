@@ -1,10 +1,10 @@
 ![Logo](admin/icon.png)
 # ioBroker.device-reminder
 
+![Number of Installations (stable)](http://iobroker.live/badges/device-reminder-stable.svg)
+![Number of Installations (latest)](http://iobroker.live/badges/device-reminder-installed.svg)
 [![NPM version](http://img.shields.io/npm/v/iobroker.device-reminder.svg)](https://www.npmjs.com/package/iobroker.device-reminder)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.device-reminder.svg)](https://www.npmjs.com/package/iobroker.device-reminder)
-![Number of Installations (stable)](http://iobroker.live/badges/device-reminder-installed-stable.svg)
-<!-- ![Number of Installations (latest)](http://iobroker.live/badges/device-reminder-installed.svg) -->
 [![Dependency Status](https://img.shields.io/david/xenon-s/iobroker.device-reminder.svg)](https://david-dm.org/xenon-s/iobroker.device-reminder)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)](https://github.com/xenon-s/iobroker.device-reminder/LICENSE)
 ![Test and Release](https://github.com/xenon-s/iobroker.device-reminder/workflows/Test%20and%20Release/badge.svg)
@@ -116,7 +116,16 @@ The button is only active when new devices are inserted or existing ones are cha
 <br>
 
 # Configure Devices
-configureDevices.png](admin/configureDevices.png)
+![configureDevices.png](admin/configureDevices.png)
+
+## configure your own device status
+
+- **in action**: Status to be displayed when the device is operating.
+- **in standby**: Status to be displayed when the device is in standby.
+- **device off**: Status to be displayed when the device is turned off.
+
+## configure device
+
 After clicking on the button "**click here to reload**" on the Config page, all created devices are displayed and can be further configured.
 
 - **active**: Is activated by default. Here you can deactivate a device temporarily, so that it doesn't send any notifications anymore
@@ -127,7 +136,7 @@ After clicking on the button "**click here to reload**" on the Config page, all 
 - **Telegram username**: Here all available Telegram Users are displayed and can be assigned to the device by clicking on them. 
 
     **If no names should be displayed:**
-    Check, if the entry under "telegram.X.communicate.users" (the X stands for the respective instance, e.g. 0) contains the following structure: "{"ID IN NUMBERS":{"firstName": "User1"}}", if not it can be easily adjusted. The adapter searches for both **firstName** and **userName**.
+    Check, if the entry under "telegram.X.communicate.users" (the X stands for the respective instance, e.g. 0) contains the following structure: "{"ID IN NUMBERS":{"firstName": "User1"}}", if not it can be easily adjusted. The adapter searches for both **firstName** and **userName**. You can decide which name you want to use. Only either the **firstName** or the **userName** can be selected!
 
 - **auto off**: If selected, the power outlet will automatically switch off after the process is finished
 - **timer**: Here you can optionally enter a timeout in **minutes**. After the timeout has expired, the power outlet will be switched off *if auto off is activated*. The end notification of the device is not affected by a timeout!
@@ -180,6 +189,17 @@ To find out more about the function, simply read about it here at "**default dev
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+
+### 0.6.2 (2020-12-04)
+* (xenon-s) bugfix index_m
+
+### 0.6.1 (2020-12-04)
+* (xenon-s) bugfix: wrong status was displayed in the data point
+
+### 0.6.0 (2020-12-03)
+* (xenon-s) bugfix: alexa speak-volume when input is empty
+* (xenon-s) bugfix: telegram now shows both names, otherwise there were errors in the notifications 
+* (xenon-s) add: Device status can now be configured yourself
 
 ### 0.5.4 (2020-11-28)
 * (xenon-s) calculation optimised, custom / default values may have to be adjusted if they have been changed by the user

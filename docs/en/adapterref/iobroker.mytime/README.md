@@ -64,6 +64,7 @@ After configuration of a new countdown the adapter creates the following datapoi
 | end           | end                  | stops the countdown. the countdown is set to 0                                               |
 | setstop2timer | setstop2timer        | set stop behaviour configuration to timer                                                    |
 | setstop2zero  | setstop2zero         | set stop behaviour configuration to zeros                                                    |
+| save          | save                 | save the configuration defined in datapoints to the iobroker configuration                   |
 
 ##### Format of the value for setting the countdown timer
 
@@ -272,6 +273,8 @@ Group CSS-Common / transform "scale(0.5)"
 ## Changelog
 
 
+### 0.5.2
+* fix an issue and introduce a new command save to save the configuration defined in datapoints to the iobroker configuration data
 ### 0.5.1
 * Migration of old counters
 ### 0.5.0

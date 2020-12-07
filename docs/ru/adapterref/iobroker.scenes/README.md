@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.scenes/README.md
 title: Адаптер сцен ioBroker
-hash: 9GQ2dZLRXU/ZlsMnZnj2+IHhlXFo5/GxKQz3nlrNi1A=
+hash: twASJxCRZq+yqe5SjyTCaHNRF2nZdHP/VeGPh8flq/k=
 ---
 ![Логотип](../../../en/adapterref/iobroker.scenes/admin/scenes.png)
 
 ![Количество установок](http://iobroker.live/badges/scenes-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.scenes.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.scenes.svg)
-![НПМ](https://nodei.co/npm/iobroker.scenes.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.scenes.png?downloads=true)
 
 Адаптер сцен # ioBroker
 _scenes Adapter_ может создавать сцены и выполнять их в среде ioBroker.
@@ -51,7 +51,7 @@ _scenes Adapter_ может создавать сцены и выполнять 
 Состояния с опозданием в расчетах не участвуют.
 
 Вы можете протестировать сцену с помощью кнопки «play».
-Кроме того, вы можете напрямую связать эту **сцену** с другим идентификатором сцены. Например, если у вас есть датчик на двери, вы можете выбрать его как триггер:
+Кроме того, вы можете напрямую связать эту **сцену** с другим идентификатором сцены. Например. если у вас есть датчик на двери, вы можете выбрать его как триггер:
 
 ```
   trigger
@@ -60,7 +60,7 @@ _scenes Adapter_ может создавать сцены и выполнять 
     value:     true
 ```
 
-И каждый раз, когда вы открываете дверь в ванну, включается свет с вентилятором.
+И каждый раз, когда вы открываете дверь в ванной, включается свет с вентилятором.
 
 ## Группы
 ** Группы ** похожи на виртуальные каналы. Вы можете создать с помощью ** групп ** виртуальное устройство из нескольких исполнительных механизмов и управлять ими вместе, как одним устройством.
@@ -86,7 +86,7 @@ _scenes Adapter_ может создавать сцены и выполнять 
     value:     false
 ```
 
-Каждый раз, когда вы открываете дверь, в ванной будет включаться свет. Значение _scene.allLightInBath_ станет **true** Если вы закроете дверь, свет погаснет. И значение _scene.allLightInBath_ станет **false**
+Каждый раз, когда вы открываете дверь, в ванной будет включаться свет. Значение _scene.allLightInBath_ станет **true** Если вы закроете дверь, свет погаснет, а значение _scene.allLightInBath_ станет **false**
 
 Это бесполезно, но как пример хорош.
 
@@ -115,15 +115,26 @@ sendTo(
 
 Адаптер прочитает все фактические значения идентификаторов, определенных в этой сцене, и сохранит их как настроенные.
 
-## ДЕЛАТЬ:
-- Измените всплывающую подсказку для "Bereits gestartetet Befehle anhalten": ??
-
 <! - Заполнитель для следующей версии (в начале строки):
 
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
-### 2.1.5 (2020-09-24)
+### 2.3.3 (2020-12-06)
+* (bluefox) Implemented drag&drop for the reorder of scenes in folders
+* (bluefox) Implemented Easy mode
+* (bluefox) Possibility to use set point from other state
+
+### 2.3.1 (2020-11-06)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-SCENES-M)
+
+### 2.3.0 (2020-11-02)
+* (bluefox) Fixed GUI errors
+
+### 2.1.7 (2020-10-30)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-SCENES-E, IOBROKER-SCENES-G, IOBROKER-SCENES-A)
+
+### 2.1.6 (2020-09-25)
 * (bluefox) Updated the select ID dialog.
 
 ### 2.1.3 (2020-09-18)

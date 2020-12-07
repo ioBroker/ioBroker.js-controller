@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mytime/README.md
 title: ioBroker.mytime
-hash: 8kCk0k4ECkwdp9kJHWGLhj4/4+kEv5E7p/CgD8oyCSA=
+hash: g+bbSc5/i8dSqQwu4rvQiojAbcNnraQEUdfDWvWvpVo=
 ---
 ![Логотип](../../../en/adapterref/iobroker.mytime/admin/mytime.png)
 
@@ -64,6 +64,7 @@ Datapoints предварительно настроены для обратно
 | конец | конец | останавливает обратный отсчет. обратный отсчет установлен на 0 |
 | setstop2timer | setstop2timer | установить конфигурацию поведения остановки на таймер |
 | setstop2zero | setstop2zero | установить нулевую конфигурацию поведения остановки |
+| сохранить | сохранить | сохранить конфигурацию, определенную в datapoints, в конфигурацию iobroker |
 
 ##### Формат значения для установки таймера обратного отсчета
 вы можете установить обратный отсчет на неограниченное время.
@@ -229,6 +230,8 @@ Datapoints предварительно настроены для обратно
 ## Changelog
 
 
+### 0.5.2
+* fix an issue and introduce a new command save to save the configuration defined in datapoints to the iobroker configuration data
 ### 0.5.1
 * Migration of old counters
 ### 0.5.0

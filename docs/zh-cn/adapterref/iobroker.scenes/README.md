@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.scenes/README.md
 title: ioBroker场景适配器
-hash: 9GQ2dZLRXU/ZlsMnZnj2+IHhlXFo5/GxKQz3nlrNi1A=
+hash: twASJxCRZq+yqe5SjyTCaHNRF2nZdHP/VeGPh8flq/k=
 ---
 ![商标](../../../en/adapterref/iobroker.scenes/admin/scenes.png)
 
@@ -26,7 +26,7 @@ _scenes Adapter_可以创建场景并在ioBroker环境中执行它们。
 ##场景
 如果未使用“设置为假”设置，将创建“场景”。
 每个场景都可以单独配置，因此您可以在一个适配器实例中拥有“场景”和“组”。
-场景只是状态ID和值的列表，这些状态必须通过激活场景才能具有。例如。我们已经在场景“ _scene.allLightInBath_”上创建了：
+场景只是状态ID和值的列表，这些状态必须通过激活场景才能具有。例如。我们在场景“ _scene.allLightInBath_”上创建了：
 
 ```
   scene.allLightInBath
@@ -48,12 +48,12 @@ _scene.allLightInBath_的值也将为“ true”。如果我们手动切换顶�
   |- hm-rpc.0.FAN.STATE          - false (delay 60000ms)
 ```
 
-在这种情况下，风扇将在“现场”激活时打开，并在一分钟后关闭。
+在这种情况下，风扇将在“场景”激活时打开，并在一分钟后关闭。
 风扇关闭后，_scene.allLightInBath_的值将变为** false **，因为并非所有状态都等于所需值。
 延迟的国家不参与计算。
 
 您可以使用“播放”按钮测试场景。
-另外，您可以将此“场景”直接与其他场景ID链接。例如，如果门上有传感器，则可以将其选作触发器：
+此外，您可以将此“场景”直接与其他场景ID链接。例如。如果门上有传感器，则可以选择它作为触发器：
 
 ```
   trigger
@@ -89,7 +89,7 @@ _scene.allLightInBath_的值也将为“ true”。如果我们手动切换顶�
 ```
 
 每次打开门时，浴池中的所有灯都会打开。 _scene.allLightInBath_的值将变为** true **。
-如果您要关上门，照明灯将关闭。 _scene.allLightInBath_的值将变为** false **。
+如果关上门，灯将关闭，并且_scene.allLightInBath_的值将变为** false **。
 
 它没有用，但是很好地举例说明。
 
@@ -118,15 +118,26 @@ sendTo(
 
 适配器将读取该场景中定义的ID的所有实际值，并将其保存为已配置的ID。
 
-＃＃ 去做：
--更改“ Bereits gestartetet Befehle anhalten”的工具提示：
-
 <！-下一个版本的占位符（在该行的开头）：
 
 ### __正在进行的工程__->
 
 ## Changelog
-### 2.1.5 (2020-09-24)
+### 2.3.3 (2020-12-06)
+* (bluefox) Implemented drag&drop for the reorder of scenes in folders
+* (bluefox) Implemented Easy mode
+* (bluefox) Possibility to use set point from other state
+
+### 2.3.1 (2020-11-06)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-SCENES-M)
+
+### 2.3.0 (2020-11-02)
+* (bluefox) Fixed GUI errors
+
+### 2.1.7 (2020-10-30)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-SCENES-E, IOBROKER-SCENES-G, IOBROKER-SCENES-A)
+
+### 2.1.6 (2020-09-25)
 * (bluefox) Updated the select ID dialog.
 
 ### 2.1.3 (2020-09-18)

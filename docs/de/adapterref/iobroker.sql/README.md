@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sql/README.md
 title: ioBroker.sql
-hash: /ML03PtQt5IWh9TwmCdZJOWBxobFdQJW1LBeLKq9TRA=
+hash: KAPiga+EB8Me3aBVyUvORD0MpVesJ46LGyA+8h5fYp8=
 ---
 ![Logo](../../../en/adapterref/iobroker.sql/admin/sql.png)
 
@@ -233,6 +233,17 @@ sendTo('sql.0', 'query', 'SELECT id FROM datapoints WHERE name="system.adapter.a
 });
 ```
 
+*Hinweis:*
+
+Abhängig von der Datenbank muss der Datenbankname oder der Datenbankname + das Schema vor dem Tabellennamen eingefügt werden - siehe Felder oben unter 'Struktur der DBs'.
+
+Beispiel, wenn Ihre Datenbank 'iobroker' heißt:
+
+| DB | Name in Abfrage |
+|------------|------------------------------------------|
+| MS-SQL | SELECT * FROM iobroker.dbo.datapoints ... |
+| MySQL | SELECT * FROM iobroker.datapoints ... |
+
 ## StoreState
 Wenn Sie andere Daten in die InfluxDB / SQL schreiben möchten, können Sie die eingebaute Systemfunktion **storeState** verwenden.
 Diese Funktion kann auch zum Konvertieren von Daten aus anderen Verlaufsadaptern wie Verlauf oder SQL verwendet werden.
@@ -245,7 +256,7 @@ Die Nachricht kann eines der folgenden drei Formate haben:
 * eine ID und ein Array von Statusobjekten: `{id: 'adapter.0.device.counter', Status: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3 , ts: 10239699}]} `
 * Array mehrerer IDs mit Statusobjekten `[{id: 'adapter.0.device.counter1', Status: {val: 1, ts: 10239499}, {id: 'adapter.0.device.counter2', Status: {val: 2, ts: 10239599}] `
 
-Zusätzlich können Sie das Attribut `rules: true` hinzufügen, um alle Regeln zu aktivieren, wie z. B. `counter`, `changesOnly`, `de-bounce` und so weiter: `{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
+Zusätzlich können Sie das Attribut `rules: true` hinzufügen, um alle Regeln wie `counter`, `changesOnly`, `de-bounce` usw. zu aktivieren: `{id: 'adapter.0.device.counter', rules: true, state: [{val: 1, ts: 10239499}, {val: 2, ts: 10239599}, {val: 3, ts: 10239699}]}`
 
 ## Status löschen
 Wenn Sie einen Eintrag aus der Datenbank löschen möchten, können Sie die eingebaute Systemfunktion **löschen** verwenden:
@@ -312,7 +323,7 @@ sendTo('sql.0', 'getHistory', {
 });
 ```
 
-## Zähler holen
+## Zähler abrufen
 Der Benutzer kann den Wert eines Zählers (Typ = Nummer, Zähler = Wahr) für einen bestimmten Zeitraum erfragen.
 
 ```
@@ -407,7 +418,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 - **Verschlüsseln** Einige DBs unterstützen die Verschlüsselung.
 - **Real runden auf** Anzahl der Stellen nach dem Komma.
 - **Parallele Anforderungen zulassen** Zulassen gleichzeitiger SQL-Anforderungen an die Datenbank.
-- **Datenbank nicht erstellen** Aktivieren Sie diese Option, wenn die Datenbank bereits erstellt wurde (z. B. vom Administrator) und der ioBroker-Benutzer nicht über ausreichende Rechte zum Erstellen einer Datenbank verfügt.
+- **Datenbank nicht erstellen** Aktivieren Sie diese Option, wenn die Datenbank bereits erstellt wurde (z. B. vom Administrator) und der ioBroker-Benutzer nicht über genügend Rechte zum Erstellen einer Datenbank verfügt.
 
 ## Standardeinstellungen
 - **De-Bounce-Intervall** Speichern Sie Werte nicht öfter als dieses Intervall.
@@ -420,6 +431,7 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+
 ### 1.15.3 (2020-08-29)
 * (bluefox) Added the option "Do not create database". E.g. if DB was created and it does not required to do that, because the user does not have enough rights.
  

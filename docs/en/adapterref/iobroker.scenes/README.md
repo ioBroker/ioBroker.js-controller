@@ -18,7 +18,7 @@ This adapter can create three types of scenes:
 ## Scenes
 **Scenes** will be created if setting "set on false" are not used. 
 Every scene can be configured individually, so you can have **scenes** and **groups** in one instance of adapter.
-The **scene** is just list of states id and values, that these states must have by activation of the scene. E.g. we have created on scene "_scene.allLightInBath_":
+The **scene** is just list of states id and values, that these states must have by activation of the scene. E.g. we have created on the scene "_scene.allLightInBath_":
 
 ```
   scene.allLightInBath
@@ -26,7 +26,7 @@ The **scene** is just list of states id and values, that these states must have 
   +- hm-rpc.0.TOP_LIGHT.STATE     - true
 ```
 
-To activate scene we must set "_scene.allLightInBath_" to true (e.g over script or vis). Then both states will be set to desired values, to **true**. 
+To activate the scene we must set "_scene.allLightInBath_" to true (e.g. over script or vis). Then both states will be set to desired values, to **true**. 
 The value of _scene.allLightInBath_ will be **true** too. If we manually switch of the top light the value of the _scene.allLightInBath_ will go to **false**.
 And again to **true** if we will switch manually the light on.
 
@@ -45,7 +45,7 @@ After the fan will be switched off the value of _scene.allLightInBath_ will go t
 States with delay are not participate in calculations.
 
 You can test the scene with a "play" button.
-Additionally you can link this **scene** direct with other scene ID. E.g if you have a sensor on the door you can select it as a trigger:
+Additionally, you can link this **scene** direct with other scene ID. E.g. if you have a sensor on the door you can select it as a trigger:
 
 ```
   trigger
@@ -58,7 +58,7 @@ And every time you will open the door in the bath all lights with fan will be sw
 
 ## Groups
 **Groups** are like virtual channels. You can create with the help of **groups** virtual device from several actuators and control them together, like one device.
-Let's modify our sample with bath's lights.  
+Let's modify our sample with the bath's lights.  
 
 ```
   scene.allLightInBath             "set on true"    "set on false" 
@@ -66,7 +66,7 @@ Let's modify our sample with bath's lights.
   +- hm-rpc.0.TOP_LIGHT.STATE     - true             false
 ```
 
-If you will link this **group** with the door sensor like:
+If you link this **group** with the door sensor like:
 
 ```
   trigger on true
@@ -81,7 +81,7 @@ If you will link this **group** with the door sensor like:
 ```
 
 Every time you will open the door all lights in a bath will be switched on. The value of the _scene.allLightInBath_ will go to **true**.
-If you will close the door the lights will be switched off. And the value of _scene.allLightInBath_ will go to **false**. 
+If you close the door the lights will be switched off, and the value of _scene.allLightInBath_ will go to **false**. 
 
 It is useless, but it is good as an example.
 
@@ -108,17 +108,16 @@ sendTo(
 ```
 The adapter will read all actual values for IDs defined in this scene and save it as configured ones.
 
-## TODO: 
-- Change tooltip for "Bereits gestartetet Befehle anhalten": ??
-
 <!--
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
 
 ## Changelog
-### __WORK IN PROGRESS__
+### 2.3.3 (2020-12-06)
 * (bluefox) Implemented drag&drop for the reorder of scenes in folders
+* (bluefox) Implemented Easy mode
+* (bluefox) Possibility to use set point from other state
 
 ### 2.3.1 (2020-11-06)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-SCENES-M)

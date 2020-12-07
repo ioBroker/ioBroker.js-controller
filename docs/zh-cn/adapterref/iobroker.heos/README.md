@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heos/README.md
 title: ioBroker.heos
-hash: hE6ToxZKTxiOM031WbCm3VmfoAcE1V7Lh3Wo8jJeECY=
+hash: DCjvEfljhMQR9HEQnV7G6zbATno+KP5R6w8X5bmIxLk=
 ---
 ![商标](../../../en/adapterref/iobroker.heos/admin/heos.png)
 
@@ -20,8 +20,8 @@ hash: hE6ToxZKTxiOM031WbCm3VmfoAcE1V7Lh3Wo8jJeECY=
 该适配器可以从ioBroker控制HEOS
 
 ##配置
-*“自动播放”：连接播放器或取消静音后，自动播放音乐。可以在配置中全局配置。如果已全局启用它，则可以使用状态auto_play禁用一个特定播放器
-*“ ignore_broadcast_cmd”：如果播放器应忽略对所有播放器的命令，则配置此播放器状态，例如播放器/ set_mute＆state = on或按播放按钮以获取预设/播放列表
+*“自动播放”：连接播放器或处于静音状态后自动播放音乐。可以在配置中全局配置。如果已全局启用它，则可以使用状态auto_play禁用一个特定播放器
+*“ ignore_broadcast_cmd”：如果播放器应该忽略对所有播放器的命令，则配置该播放器状态，例如播放器/ set_mute＆state = on或按播放按钮获取预设/播放列表
 
 ##命令
 HEOS CLI规范：http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecification.pdf
@@ -36,12 +36,12 @@ HEOS CLI规范：http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecification.pd
 *“ group / ungroup_all”：删除所有组
 *“ group / group_all”：将所有玩家分组
 *“ player / [cmd]”：将命令发送给所有玩家。例如玩家/ set_mute＆state = on
-*“ leader / [cmd]”：将命令发送给所有领先玩家。例如玩家/ set_mute＆state = on
+*“ leader / [cmd]”：将命令发送给所有领先玩家。例如领导者/ set_mute＆state = on
 *“ scope / [cmd]”：将命令scope_pids中的所有播放器，前导播放器或逗号分隔的播放器pid发送到已配置的作用域
 *“ ...”：尝试将所有其他命令发送到HEOS
 
 ###玩家命令状态
-注意：如果多个命令与管道分开，则可能是多个命令，例如set_volume＆level = 20 | play_preset＆preset = 1
+注意：如果多个命令与管道分开，则可以使用多个命令，例如set_volume＆level = 20 | play_preset＆preset = 1
 
 *“ set_volume＆level = 0 | 1 | .. | 100”：设置播放器音量
 *“ set_play_state＆state =播放|暂停|停止”：设置播放器状态
@@ -56,12 +56,12 @@ HEOS CLI规范：http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecification.pd
 *“ add_to_queue＆sid = 1025＆aid = 4＆cid = [CID]”：播放器上带有[CID]的播放列表（帮助：1 –现在播放； 2 –接下来播放； 3 –添加到结尾； 4 –替换并播放）
 
 ##使正则表达式静音
-在配置中，您可以根据歌曲信息的正则表达式匹配，激活使播放器静音的功能。可以用来自动静音广告。例如对于Spotify，您可以使用以下正则表达式：§§JJJJJ_0_0§§。
+在配置中，您可以根据歌曲信息的正则表达式匹配，激活使播放器静音的功能。可以用来自动静音广告。例如，对于Spotify，您可以使用以下正则表达式：```spotify:ad:|Advertisement```。
 
 ##浏览源
-为了减少ioBroker中的状态量，只有播放列表和预设会自动存储在状态中。但是，首先必须单击播放列表或预设文件夹中的浏览按钮。您可以在“源”文件夹中找到并控制它们。如果要浏览来源的音乐，只需按浏览按钮。您将在sources.browse_result状态中找到浏览结果。还提供了一些命令，可以更深入地导航或播放资源。只需将命令粘贴到全局HEOS命令字段中即可。如果这是一个浏览命令，您将在Browse_result状态下找到结果。在配置中，您可以找到一个选项来控制播放命令的范围。这样，您可以控制播放命令是发给所有玩家，所有领导者和非小组玩家还是在状态command_scope_pid中定义的玩家ID列表。
+为了减少ioBroker中的状态量，只有播放列表和预设会自动存储在状态中。但是，首先必须单击播放列表或预设文件夹中的浏览按钮。您可以在“源”文件夹中找到并控制它们。如果要浏览来源的音乐，只需按浏览按钮。您将在sources.browse_result状态中找到浏览结果。还提供了一些命令，可以更深入地浏览或播放资源。只需将命令粘贴到全局HEOS命令字段中即可。如果这是一个浏览命令，您将在Browse_result状态下找到结果。在配置中，您可以找到一个选项来控制播放命令的范围。这样一来，您可以控制播放命令是发给所有玩家，所有领导者和非小组玩家还是在状态command_scope_pid中定义的玩家ID列表。
 
-对于VIS集成，您可以使用browser_result和以下脚本来生成html表（该表未集成在适配器中，因此您可以为其设置样式）。或者，您可以使用Uhula的脚本https://forum.iobroker.net/post/498779：
+对于VIS集成，您可以使用browser_result和以下脚本来生成html表（该表未集成在适配器中，因此您可以为其设置样式）。或者，您可以使用来自Uhula https://forum.iobroker.net/post/498779的脚本：
 
 ```javascript
 on({id: 'heos.0.sources.browse_result', change: 'any'}, function (obj) {
