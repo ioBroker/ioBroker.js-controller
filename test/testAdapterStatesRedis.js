@@ -17,7 +17,7 @@ const statesConfig = {
     port:           6379
 };
 
-let objectsConfig = {
+const objectsConfig = {
     dataDir:        __dirname + '/../tmp/data',
     options : {
         auth_pass: null,
