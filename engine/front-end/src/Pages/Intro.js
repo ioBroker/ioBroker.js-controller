@@ -1,15 +1,24 @@
 import React, {Component} from 'react';
 import {withStyles} from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
+
 import Button from '@material-ui/core/Button';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
 
 import {FaUsers as IconForum} from 'react-icons/fa';
 import {FaAddressCard as IconUsers} from 'react-icons/fa';
 import {FaComments as IconPosts} from 'react-icons/fa';
 import {FaComment as IconThemes} from 'react-icons/fa';
 import {MdCloud as IconCloud} from 'react-icons/md';
+import {MdClose as IconClose} from 'react-icons/md';
 import ServerImg from '../assets/iob-server.png';
 import HausAutomatisierungImg from '../assets/haus_automatisierung.png';
+import ChristmasSale from '../assets/christmas.svg';
+import SaleImage from '../assets/sale.svg';
 
 import Footer from '../Footer';
 import ForumInfo from '../Components/ForumInfo';
@@ -74,6 +83,27 @@ const styles = theme => ({
         fontFamily: 'Audiowide, sans-serif',
         cursor: 'pointer'
     },
+    cloudButtonSale: {
+        marginTop: 100,
+        paddingTop: 25,
+        height: 45,
+        borderRadius: 100,
+        textTransform: 'uppercase',
+        background: '#1b4777',
+        color: '#FFFFFF',
+        textAlign: 'center',
+        fontSize: 20,
+        opacity: 0.9,
+        fontFamily: 'Audiowide, sans-serif',
+        cursor: 'pointer'
+    },
+    cloudButtonSaleIcon: {
+        width: 48,
+        height: 48,
+        marginTop: -15,
+        marginRight: 5,
+        verticalAlign: 'top',
+    },
     serverButton: {
         marginTop: 100,
         paddingTop: 25,
@@ -121,11 +151,26 @@ const styles = theme => ({
     },
     darkPart: theme.palette.darkPart,
     lightPart: theme.palette.lightPart,
+    saleImage: {
+        width: 100,
+        height: 100,
+    },
+    saleText: {
+        fontSize: 24,
+        textAlign: 'center',
+    }
 });
 
 class Intro extends Component {
     constructor(props) {
         super(props);
+        this.state = {
+            showActionDialog: false,
+        }
+
+        const d = new Date()
+        this.action = (d.getMonth() === 11 && d.getDate() >= 8) ||  (d.getMonth() === 0 && d.getDate() <= 10);
+
         setTimeout(() => this.setState({loading: false}), 500);
     }
 
@@ -144,7 +189,7 @@ class Intro extends Component {
     }
 
     renderForum() {
-        return (<div className={this.props.classes.forumDiv}>
+        return <div className={this.props.classes.forumDiv}>
             <IconForum className={this.props.classes.forumIconMain}/><br/>
             <span className={this.props.classes.forumTitle}>{I18n.t('forum-text')}</span><br/>
             <div className={this.props.classes.forumDivInfo}>
@@ -169,7 +214,7 @@ class Intro extends Component {
             <Button variant="contained" color="secondary" className={this.props.classes.forumButton} onClick={() => this.onGoToForum()}>
                 {I18n.t('Join now')}
             </Button>
-        </div>);
+        </div>;
     }
 
     renderCloud() {
@@ -177,14 +222,63 @@ class Intro extends Component {
 
         const long = I18n.getLanguage() === 'ru';
 
-        return (<div style={{
+        return <div style={{
             marginTop: smallMargin ? 10 : undefined,
             width: long ? 330 : 230,
             marginLeft: long ? 'calc(50% - 165px)' : 'calc(50% - 115px)'
         }} className={this.props.classes.cloudButton} onClick={() => window.document.location = 'https://iobroker.pro/accountRemote'}>
             <IconCloud className={ this.props.classes.cloudButtonIcon }/>
             <div className={ this.props.classes.cloudButtonText }>{I18n.t('get cloud')}</div>
-        </div>)
+        </div>;
+    }
+
+    renderActionDialog() {
+        return this.state.showActionDialog ? <Dialog
+            key="dialog"
+            open={true}
+            onClose={() => this.setState({showActionDialog: false})}
+        >
+            <DialogContent>
+                <DialogContentText className={this.props.classes.saleText}>
+                    <img src={SaleImage} alt="sale image" className={this.props.classes.saleImage} />
+                    <br/>
+                    {I18n.t('33% discount on Remote access and Assistants!')}
+                </DialogContentText>
+            </DialogContent>
+            <DialogActions>
+                <Button variant="contained" onClick={() => window.document.location = 'https://iobroker.pro/accountRemote'} autoFocus color="primary">
+                    {I18n.t('Get it!')}
+                </Button>
+                <Button onClick={() => this.setState({showActionDialog: false})} >
+                    <IconClose/>
+                </Button>
+            </DialogActions>
+        </Dialog> : null;
+    }
+
+    renderAction() {
+        const smallMargin = window.screen.height < 500;
+
+        const long = I18n.getLanguage() === 'ru';
+
+        return [
+            <div
+                key="button"
+                style={{
+                    marginTop: smallMargin ? 10 : undefined,
+                    width: long ? 300 : 300,
+                    marginLeft: long ? 'calc(50% - 165px)' : 'calc(50% - 115px)'
+                }}
+                className={this.props.classes.cloudButtonSale}
+                onClick={() => {
+                    this.setState({showActionDialog: true});
+                }}
+            >
+                <img className={ this.props.classes.cloudButtonSaleIcon } src={ChristmasSale} alt="sale"/>
+                <div className={ this.props.classes.cloudButtonText }>{I18n.t('cloud sale!')}</div>
+            </div>,
+            this.renderActionDialog(),
+        ];
     }
 
     renderServer() {
@@ -257,6 +351,23 @@ class Intro extends Component {
         if (I18n.getLanguage() !== 'de') {
             link = 0;
         }
+        let middleButton = null;
+        if (this.action) {
+            middleButton = this.renderAction();
+        } else {
+            switch (link) {
+                case 1:
+                    middleButton = I18n.getLanguage() === 'de' ? this.renderHausAutomatisierung() : this.renderCloud();
+                    break;
+                case 2:
+                    middleButton = this.renderServer();
+                    break;
+                case 0:
+                default:
+                    middleButton = this.renderCloud();
+                    break;
+            }
+        }
 
         return [
             <div className={this.props.classes.content + ' ' + this.props.classes.backImage} key="content">
@@ -267,9 +378,7 @@ class Intro extends Component {
                         <div  className={this.props.classes.titleDescription}>Open source automation platform</div>
                     </div>
                 </div>
-                {link === 0 ? this.renderCloud() : null}
-                {link === 1 && I18n.getLanguage() === 'de' ? this.renderHausAutomatisierung() : null}
-                {link === 2 || (link === 1 && I18n.getLanguage() !== 'de') ? this.renderServer() : null}
+                {middleButton}
                 {!this.props.mobile ? (<LinusShell
                     header={I18n.t('install on linux')}
                     copyTitle={I18n.t('copy to clipboard')}

@@ -32,7 +32,9 @@ import Cookies from './Components/Cookies';
 import 'react-splitter-layout/lib/index.css';
 
 import LogoBig from './assets/iobroker-logo.svg';
+import LogoBigNY from './assets/iobroker-logo-ny.svg';
 import LogoSmall from './assets/iobroker-logo-small.png';
+import LogoSmallNY from './assets/iobroker-logo-small-ny.png';
 
 // Pages
 import Blog from './Pages/Blog';
@@ -236,6 +238,10 @@ class App extends Router {
             debug: window.location.hostname === 'localhost'
         });
 
+        const month = new Date().getMonth();
+        this.logo = month === 11 || month === 0 ? LogoBigNY : LogoBig;
+        this.logoSmall = month === 11 || month === 0 ? LogoSmallNY : LogoSmall;
+
         this.contentRef = React.createRef();
         this.updateWindowDimensionsBound = this.updateWindowDimensions.bind(this);
         Blog.fetchData()
@@ -301,12 +307,12 @@ class App extends Router {
     }
 
     renderLogo() {
-        return (<img
-            src={this.state.mobile ? LogoSmall : LogoBig}
+        return <img
+            src={this.state.mobile ? this.logoSmall : this.logo}
             alt="logo"
             className={this.state.mobile ? this.props.classes.logoSmall : this.props.classes.logoBig}
             onClick={() => this.onNavigate(this.state.language, 'intro')}
-        />)
+        />;
     }
 
     renderLanguage() {
