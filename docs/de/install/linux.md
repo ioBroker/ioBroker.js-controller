@@ -1,6 +1,6 @@
 ---
 title:       "Linux"
-lastChanged: "30.10.2020"
+lastChanged: "05.12.2020"
 ---
 
 # ioBroker Installation unter Linux
