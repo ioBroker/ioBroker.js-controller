@@ -151,6 +151,14 @@ function register(it, expect, context) {
             expect(err.message).to.be.equal('permissionError');
         });
     }).timeout(1000);
+
+    it(textName + 'default acl from system.config should be used', async () => {
+        const objects = context.objects;
+        await objects.setObjectAsync('test.defAck', {type: 'state'});
+        const obj = await objects.getObjectAsync('test.defAck');
+        expect(obj.acl.owner).to.be.equal('system.user.governor');
+        expect(obj.acl.ownerGroup).to.be.equal('system.group.senatorGroup');
+    }).timeout(1000);
 }
 
 module.exports.register = register;
