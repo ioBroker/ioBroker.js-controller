@@ -165,20 +165,20 @@ function register(it, expect, context) {
         await objects.setObjectAsync('test.overwriteAclDef', {type: 'state', acl: {
             object: 1636,
             state: 1636,
-            owner: 'system.user.admin',
+            owner: 'system.user.user',
             ownerGroup: 'system.group.administrator'
         }});
         const obj = await objects.getObjectAsync('test.overwriteAclDef');
-        expect(obj.acl.owner).to.be.equal('system.user.admin');
+        expect(obj.acl.owner).to.be.equal('system.user.user');
         expect(obj.acl.ownerGroup).to.be.equal('system.group.administrator');
     }).timeout(1000);
 
-    it(textName + 'default acl from system.config can be overwritten via options', async () => {
+    it(textName + 'default acl from system.config is used when user is admin', async () => {
         const objects = context.objects;
-        await objects.setObjectAsync('test.overwriteAclDefOptions', {type: 'state'}, {user: 'system.user.admin', group: 'system.group.administrator'});
-        const obj = await objects.getObjectAsync('test.overwriteAclDefOptions');
-        expect(obj.acl.owner).to.be.equal('system.user.admin');
-        expect(obj.acl.ownerGroup).to.be.equal('system.group.administrator');
+        await objects.setObjectAsync('test.aclAdmin', {type: 'state'}, {user: 'system.user.admin'});
+        const obj = await objects.getObjectAsync('test.aclAdmin');
+        expect(obj.acl.owner).to.be.equal('system.user.governor');
+        expect(obj.acl.ownerGroup).to.be.equal('system.group.senatorGroup');
     }).timeout(1000);
 }
 
