@@ -12,11 +12,12 @@
 ## mytime adapter for ioBroker
 
 This adapter handle Time (eg: countdown,etc.).
-The countdownfunctionality provides datapoints that you can use to manage a countdown (e.g. in a script). The adapter also includes several widgets to visualize these countdowns.
+The countdown functionality provides datapoints that you can use to manage a countdown (e.g. in a script). The adapter also includes several widgets to visualize these countdowns.
+Time series can be used to create complex time series at which the data points are triggered.
 
 ### Configuration
 #### Countdown
-After installation create a new countdown eg 'test', set timer to 10 seconds and import the following widgets. 
+In the configuration dialog Tab "Countdown" you can create a new countdown eg 'test', set timer to 10 seconds and import the following widgets. 
 Datapoints are pre configured for a countdown named test.
 
 ##### Stop behaviour timer
@@ -24,8 +25,35 @@ After the countdown gets the signal stop, the countdown resets to the time set b
 ##### Stop behaviour zero
 After the countdown gets the signal stop, the countdown remains at 0.
 
+#### Timeseries
+In the configuration dialog Tab "Timeseries" you can create a new timeseries with one or more timerules. For each timerule you can define different parameters
+Each timeseries creates a seperate datapoint which is triggered at the calculated time events.
+The time events are calculated in real time. However, the rrule library used is not yet perfect in all parameter combinations. 
+This shows that with some combinations the page goes into an endless loop. 
+The demo page http://jakubroztocil.github.io/rrule/ can also be used for experiments.
+Additional to add a timerule, you can add a timerule to exclude time events, to add single time events and also to exclude single time events.
 
 ### Usage
+
+#### Timeseries
+
+##### Available Datapoints
+
+After configuration of a new timeserie the adapter creates the following datapoints:
+
+| datapoint | description                                                               |
+|-----------|---------------------------------------------------------------------------|
+| action    | actual state of thie timeserie. possible values are stop,run              |
+| cmd       | no function atm                                                           |
+
+##### Available action states
+
+| action    | description                                                                                           |
+|-----------|-------------------------------------------------------------------------------------------------------|
+| stop      | no time event is active at the moment                                                                 |
+| run       | a time event was triggered. after the configured duration time, the datapoint changes to stop         |
+
+
 #### Countdown 
 
 ##### Available Datapoints
@@ -65,6 +93,7 @@ After configuration of a new countdown the adapter creates the following datapoi
 | setstop2timer | setstop2timer        | set stop behaviour configuration to timer                                                    |
 | setstop2zero  | setstop2zero         | set stop behaviour configuration to zeros                                                    |
 | save          | save                 | save the configuration defined in datapoints to the iobroker configuration                   |
+|               |                      | iobroker restarts the adapter after saving automatically                                     |
 
 ##### Format of the value for setting the countdown timer
 
@@ -260,7 +289,8 @@ Group CSS-Common / transform "scale(0.5)"
 * rolling numbers
 * customizable fonts
 * wordclock timer ?
-* timed scheduler: plan single date/time and recurring events like outlook
+* ts: timerules for exclusion (time range, single dates)
+* ~~timed scheduler: plan single date/time and recurring events like outlook~~
 * ~~Nixie style~~
 * ~~flip board display (airport-display)~~
 * ~~new command to set only target time without date~~
@@ -273,6 +303,10 @@ Group CSS-Common / transform "scale(0.5)"
 ## Changelog
 
 
+### 0.6.1
+* remove beta tag from widgets * m,assive reengeneering of the react classes, add functions für exclusion rules, adding single time events and exclude single time events
+### 0.6.0
+* Introduction of new functionality timeseries
 ### 0.5.2
 * fix an issue and introduce a new command save to save the configuration defined in datapoints to the iobroker configuration data
 ### 0.5.1

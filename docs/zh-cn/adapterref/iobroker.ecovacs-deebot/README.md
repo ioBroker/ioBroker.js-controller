@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: O66dMiaGs1nin6/Ux/c5LSurNYMoEaQYKZNUI5CnVMI=
+hash: Hq2n1GDYTE1sRzoFAKfcwrxpEovtY638ZHlS1gO64UY=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -13,35 +13,36 @@ hash: O66dMiaGs1nin6/Ux/c5LSurNYMoEaQYKZNUI5CnVMI=
 ![特拉维斯](https://travis-ci.org/mrbungle64/ioBroker.ecovacs-deebot.svg?branch=master)
 
 ＃适用于ioBroker的Ecovacs Deebot适配器
-该适配器使用[ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js)库。
+此适配器使用[ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-deebot.js)库。
 
 ＃＃ 楷模
 ###支持的型号
 * Deebot 900/901
 * Deebot奥兹莫920
 * Deebot Ozmo 930
-* Deebot奥兹莫950
+* Deebot Ozmo 950
 
 ###这些模型可以正常工作
 * Deebot苗条2
-* Deebot N79
+* Deebot N79系列
 * Deebot 601
 * Deebot 710/711
+* Deebot U2
 * Deebot奥兹莫610
 * Deebot Ozmo 900
-* Deebot奥兹莫920
 * Deebot Ozmo T8 AIVI
+* Deebot Ozmo T8（+）
 
 ###这些模型应该可以工作
 * Deebot M88
 * Deebot 600/605
 * Deebot Ozmo苗条10
-* Deebot Ozmo T8（+）
+* Deebot U2 Pro /电源
 
 ##安装
 建议使用Node.js版本10或更高版本。
 
-该适配器使用画布库，这可能需要其他安装。
+该适配器使用画布库，可能需要其他安装。
 要获得全部功能，请安装以下软件包。
 
 对于基于Debian的Linux系统，应执行以下命令：
@@ -60,14 +61,14 @@ sudo npm install canvas --unsafe-perm=true
 有关其他系统的说明，请访问https://www.npmjs.com/package/canvas#compiling
 
 ##用法
-*有关如何使用此适配器的信息可在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）
+*有关如何使用此适配器的信息可以在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）
 
 ＃＃ 已知的问题
-*有报告称Ecovacs目前正在为Ozmo 920/950和Ozmo T8 / T8 + / T8 AIVI提供空的清洁日志。
-*对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告大约连接后丢失连接。 24小时。
+*对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告在大约30分钟后连接断开。 24小时。
 * Deebot 900/901的电池电量有奇怪的行为。这很可能是固件错误。
   *您可以使用适配器配置中的相应选项作为解决方法。
 *“暂停”按钮不适用于Deebot 710/711。
+*“停止”按钮不适用于Deebot 711s。
 
 ＃＃ 常问问题
 *常见问题可以在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ）
@@ -77,8 +78,17 @@ sudo npm install canvas --unsafe-perm=true
 
 ## Changelog
 
+### 1.0.7 (beta)
+* Using library version 0.5.1
+* Initial support for Deebot U2 series
+* Improved support for Ozmo T8 models
+* Improved handling of device classes
+* (boriswerner) Fixed cleaning log for 950 type models (920/950/T8)
+* (boriswerner) Added available virtualBoundaries to "map" channel (currently read only)
+* Several enhancements and fixes
+
 ### 1.0.6
-* Bump library to 0.5.0-beta.0
+* Using library version 0.5.0-beta.0
 * Fix for running multiple devices
 * Support for additional Ozmo T8 models
 * Add option to synchronize spotArea buttons

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mytime/README.md
 title: ioBroker.mytime
-hash: g+bbSc5/i8dSqQwu4rvQiojAbcNnraQEUdfDWvWvpVo=
+hash: hSNDCCJ3wn9bOMo9ZSs+ajXFifihxmdOadKkO+16SeY=
 ---
 ![商标](../../../en/adapterref/iobroker.mytime/admin/mytime.png)
 
@@ -19,17 +19,40 @@ hash: g+bbSc5/i8dSqQwu4rvQiojAbcNnraQEUdfDWvWvpVo=
 ## IoBroker的mytime适配器
 该适配器处理时间（例如：倒数等）。
 倒计时功能提供了可用于管理倒计时的数据点（例如，在脚本中）。该适配器还包括几个小部件，以可视化这些倒数计时。
+时间序列可用于创建触发数据点的复杂时间序列。
 
 ###配置
 ＃＃＃＃ 倒数
-安装后，创建一个新的倒计时，例如“测试”，将计时器设置为10秒，然后导入以下小部件。
+在配置对话框的“倒计时”选项卡中，您可以创建一个新的倒计时，例如“测试”，将计时器设置为10秒，然后导入以下小部件。
 数据点已为名为test的倒计时预先配置。
 
 #####停止行为计时器
 倒数计时结束后，倒数计时将重设为定时器设定的时间。
 
 #####停止行为为零倒数计时使信号停止后，倒数计时保持为0。
+＃＃＃＃ 时间序列
+在配置对话框选项卡“时间序列”中，可以创建带有一个或多个计时器的新时间序列。对于每个计时器，您可以定义不同的参数每个时间序列都会创建一个单独的数据点，该数据点将在计算出的时间事件中触发。
+时间事件是实时计算的。但是，使用的rrule库在所有参数组合中都不是完美的。
+这表明，通过某些组合，页面将陷入无限循环。
+演示页面http://jakubroztocil.github.io/rrule/也可以用于实验。
+除了添加计时器外，还可以添加计时器以排除时间事件，添加单个时间事件以及排除单个时间事件。
+
 ###用法
+＃＃＃＃ 时间序列
+#####可用数据点
+配置新的时间表之后，适配器将创建以下数据点：
+
+|数据点|描述|
+|-----------|---------------------------------------------------------------------------|
+|动作|盗窃时期的实际状态。可能的值是stop，run |
+| cmd |没有功能的atm |
+
+#####可用的动作状态
+|动作|描述|
+|-----------|-------------------------------------------------------------------------------------------------------|
+|停止|目前没有任何时间事件处于活动状态|
+|运行时间事件被触发。在配置的持续时间之后，数据点将变为停止|
+
 ＃＃＃＃ 倒数
 #####可用数据点
 在配置新的倒计时之后，适配器将创建以下数据点：
@@ -65,6 +88,7 @@ hash: g+bbSc5/i8dSqQwu4rvQiojAbcNnraQEUdfDWvWvpVo=
 | setstop2timer | setstop2timer |将停止行为配置设置为计时器|
 | setstop2zero | setstop2zero |将停止行为配置设置为零|
 |保存保存将数据点中定义的配置保存到iobroker配置|
+| | | iobroker自动保存后重新启动适配器|
 
 #####设置倒数计时器的值的格式
 您可以将倒计时设置为无限时间。
@@ -217,7 +241,8 @@ Nixie-Tube / LED风格的倒数计时小部件
 *滚动数字
 *可自定义的字体
 *字时钟计时器？
-*定时计划程序：计划单个日期/时间以及诸如Outlook之类的重复事件
+* ts：排除的时间表（时间范围，单个日期）
+* ~~定时调度程序：计划单个日期/时间和诸如Outlook之类的重复事件~~
 * ~~ Nixie风格~~
 * ~~翻转板显示（机场显示）~~
 * ~~新命令只设置目标时间而没有日期~~
@@ -230,6 +255,10 @@ Nixie-Tube / LED风格的倒数计时小部件
 ## Changelog
 
 
+### 0.6.1
+* remove beta tag from widgets * m,assive reengeneering of the react classes, add functions für exclusion rules, adding single time events and exclude single time events
+### 0.6.0
+* Introduction of new functionality timeseries
 ### 0.5.2
 * fix an issue and introduce a new command save to save the configuration defined in datapoints to the iobroker configuration data
 ### 0.5.1

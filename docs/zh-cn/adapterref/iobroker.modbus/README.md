@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.modbus/README.md
 title: iobroker.modbus
-hash: xVnv+YC0NL+AUzizjvQXhh8ov5ZS+fNV1pdvA/qIU3U=
+hash: W78h8cDmiiVC7EQz9IpNrKqsdqu4+7O5CWHO43ZIHVY=
 ---
 ![商标](../../../en/adapterref/iobroker.modbus/admin/modbus.png)
 
@@ -28,14 +28,14 @@ Modbus伙伴的IP地址。
 ＃＃＃ 港口
 Modbus伙伴的TCP端口（如果配置为主机（客户端））或自己的端口（如果配置为从机（服务器））。
 
-＃＃＃ 设备ID
+＃＃＃ 设备编号
 Modbus设备ID。如果使用TCP / Modbus网桥，则很重要。
 
 ###类型
 从站（服务器）或主站（客户端）。
 
 ###使用别名作为地址
-通常，所有寄存器的地址都可以在0到65535之间。通过使用别名，您可以为每种类型的寄存器定义虚拟地址字段。一般：
+通常，所有寄存器的地址范围都可以从0到65535。通过使用别名，您可以为每种类型的寄存器定义虚拟地址字段。一般：
 
 -离散量输入为10001至20000
 -线圈从1到1000
@@ -66,7 +66,7 @@ Modbus设备ID。如果使用TCP / Modbus网桥，则很重要。
 一些系统需要首先“写入请求”才能根据“读取请求”传递数据。
 您可以通过将“最大读取请求长度”设置为1来强制此模式。
 
-**注意：**某些USB Modbus解决方案（例如，基于socat）可能无法与serialport npm模块一起使用。
+**注意：**某些USB Modbus解决方案（例如，基于socat）可能无法与Serialport npm模块一起使用。
 
 有一个软件[**基于TCP的Modbus RTU <-> Modbus RTU **](http://mbus.sourceforge.net/index.html)网关，可以通过TCP协议使用串行RTU。
 
@@ -78,6 +78,32 @@ Modbus设备ID。如果使用TCP / Modbus网桥，则很重要。
 ###写入间隔
 两个写入请求之间的延迟（以毫秒为单位）。默认值0。
 
+##配置中单个地址线的参数
+＃＃＃ 地址
+读取的Modbus地址
+
+###从站ID如果有多个从站，则这是ID（如果不是全局配置中提供的默认从站ID）
+###名称这是参数的名称
+###说明参数说明
+###单位参数的单位
+###键入要从总线读取的数据类型。有关可能的数据类型的详细信息，请参见数据类型部分。
+### Length参数的长度。对于大多数参数，这是根据数据类型确定的，但对于字符串，则以字节/字符为单位定义长度
+###因子此因子用于乘以总线的读取值，以进行静态缩放。所以计算看起来像下面的val = x * Factor + Offset
+###偏移量在上述乘法之后，此偏移量将添加到读取值中。所以计算看起来像下面的val = x * Factor + Offset
+###公式如果因子和偏移量不足，则此字段可用于高级计算。如果设置了此字段，则将忽略“因子和偏移”字段。
+该公式由eval（）函数执行。因此，支持所有常用功能。特别是数学功能。该公式必须符合Javascript语法，因此也要注意大小写。
+在公式中，“ x”必须用于从Modbus读取的值。例如。 “ x * Math.pow（10，sf ['40065']）;”
+
+如果无法在运行时对公式求值，则适配器将警告消息写入日志。
+
+###角色
+分配的IOBroker角色
+
+### Room IOBroker要分配的房间
+###轮询如果激活，则会以预定义的间隔从从站轮询值。
+### WP写脉冲
+### CW循环写入
+### SF使用值作为比例因子。使用某些接口上通过值提供的动态缩放因子是必需的。如果使用此标记标记值，则该值将按照以下命名约定存储到变量中：sf ['Modbus_address']。此变量随后可以在任何公式中用于其他参数。例如。可以设置以下公式：“（x * sf ['40065']）+ 50;”
 ##数据类型
 -uint16be-无符号16位（Big Endian）：AABB => AABB
 -uint16le-无符号16位（Little Endian）：AABB => BBAA
@@ -131,7 +157,7 @@ Modbus本身未定义浮点数据类型，但它被广泛接受，它使用IEEE-
 
 ![图4](../../../en/adapterref/iobroker.modbus/img/img4.png)
 
-显然，在使用诸如Modbus之类的网络协议时，必须严格注意存储器字节在传输时如何排序（也称为“字节顺序”）。
+显然，在使用诸如Modbus之类的网络协议时，必须严格注意在传输内存字节时如何对其进行排序（也称为“字节顺序”）。
 
 ###确定字节顺序
 根据Modbus应用协议规范V1.1.b，Modbus协议本身被声明为“ big-Endian”协议：
@@ -142,7 +168,7 @@ Big-Endian是网络协议最常用的格式-实际上非常普遍，因此也称
 
 假定Modbus RTU消息协议为big-Endian，则为了通过Modbus RTU消息成功交换32位数据类型，必须同时考虑主站和从站的字节序。许多RTU主设备和从设备允许特定的字节顺序选择，特别是在软件模拟单元的情况下。只需确保所有两个单元都设置为相同的字节顺序即可。
 
-根据经验，设备的微处理器家族决定其字节序。通常，在使用Motorola处理器设计的CPU中通常可以找到big-Endian样式（先存储高位字节，然后存储低位字节）。 little-Endian样式（低位字节先存储，然后是高位字节）通常在使用Intel架构的CPU中找到。至于哪种样式被视为“后退”，则取决于个人观点。
+根据经验，设备的微处理器家族决定其字节序。通常，在使用Motorola处理器设计的CPU中通常会找到big-Endian样式（先存储高位字节，然后存储低位字节）。 little-Endian样式（低位字节先存储，然后是高位字节）通常在使用Intel架构的CPU中找到。至于哪种样式被视为“后退”，则取决于个人观点。
 
 但是，如果字节顺序和字节序不是可配置的选项，则必须确定如何解释字节。可以从从站请求一个已知的浮点值来完成。如果返回一个不可能的值，即具有两位数或类似数字的数字，则很可能需要修改字节顺序。
 
@@ -185,7 +211,7 @@ FieldServer Modbus RTU驱动程序提供了几种处理32位整数和32位浮点
 
 请注意，不同的字节和单词顺序要求使用适当的FieldServer函数移动。一旦选择了正确的功能移动，就可以在两个方向上转换数据。
 
-互联网上有许多十六进制至浮点转换器和计算器，实际上很少有允许对字节和字序进行操作的。 www.61131.com/download.htm上有一个这样的实用程序，可以在此下载Linux和Windows版本的实用程序。安装后，该实用程序将作为具有单个对话框界面的可执行文件运行。该实用程序显示十进制浮点值123456.00，如下所示：
+Internet上有许多十六进制至浮点转换器和计算器，实际上很少有允许对字节和字序进行操作的。 www.61131.com/download.htm上有一个这样的实用程序，可以在此下载Linux和Windows版本的实用程序。安装后，该实用程序将作为具有单个对话框界面的可执行文件运行。该实用程序显示十进制浮点值123456.00，如下所示：
 
 ![图片5](../../../en/adapterref/iobroker.modbus/img/img5.png)
 
@@ -203,6 +229,16 @@ FieldServer Modbus RTU驱动程序提供了几种处理32位整数和32位浮点
 ### __正在进行的工程__->
 
 ## Changelog
+
+### 3.2.0 (2020-12-09)
+* (nkleber78) Fixed formula where return keyword was missing
+
+### 3.1.13 (2020-12-07)
+* (nkleber78) Added the possibility to use formulas for values
+
+### 3.1.12 (2020-12-05)
+* (Apollon77) fix admin serial port selection
+
 ### 3.1.10 (2020-09-25)
 * (nkleber78) Corrected: the exported data cannot be imported without modification
 
