@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: O66dMiaGs1nin6/Ux/c5LSurNYMoEaQYKZNUI5CnVMI=
+hash: Hq2n1GDYTE1sRzoFAKfcwrxpEovtY638ZHlS1gO64UY=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -24,19 +24,20 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 
 ### Diese Modelle funktionieren bekanntermaßen
 * Deebot Slim 2
-* Deebot N79
+* Deebot N79-Serie
 * Deebot 601
 * Deebot 710/711
+* Deebot U2
 * Deebot Ozmo 610
 * Deebot Ozmo 900
-* Deebot Ozmo 920
 * Deebot Ozmo T8 AIVI
+* Deebot Ozmo T8 (+)
 
 ### Diese Modelle sollten funktionieren
 * Deebot M88
 * Deebot 600/605
 * Deebot Ozmo Slim 10
-* Deebot Ozmo T8 (+)
+* Deebot U2 Pro / Power
 
 ## Installation
 Es wird empfohlen, Version 10 von Node.js oder eine neuere Version zu verwenden.
@@ -63,11 +64,11 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 * Informationen zur Verwendung dieses Adapters finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Bekannte Probleme
-* Es gibt einige Berichte, dass derzeit leere Reinigungsprotokolle von Ecovacs für Ozmo 920/950 und Ozmo T8 / T8 + / T8 AIVI geliefert werden.
 * Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da es einige gibt meldet, dass die Verbindung nach ca. 24 Stunden.
 * Der Batteriewert des Deebot 900/901 weist ein merkwürdiges Verhalten auf. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
   * Sie können die entsprechende Option in der Adapterkonfiguration als Problemumgehung verwenden.
 * Die Schaltfläche "Pause" funktioniert nicht mit Deebot 710/711.
+* Die Schaltfläche "Stopp" funktioniert nicht mit Deebot 711s.
 
 ## FAQ
 * Häufig gestellte Fragen finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
@@ -77,8 +78,17 @@ Ich bin in keiner Weise mit ECOVACS verbunden.
 
 ## Changelog
 
+### 1.0.7 (beta)
+* Using library version 0.5.1
+* Initial support for Deebot U2 series
+* Improved support for Ozmo T8 models
+* Improved handling of device classes
+* (boriswerner) Fixed cleaning log for 950 type models (920/950/T8)
+* (boriswerner) Added available virtualBoundaries to "map" channel (currently read only)
+* Several enhancements and fixes
+
 ### 1.0.6
-* Bump library to 0.5.0-beta.0
+* Using library version 0.5.0-beta.0
 * Fix for running multiple devices
 * Support for additional Ozmo T8 models
 * Add option to synchronize spotArea buttons

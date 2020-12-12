@@ -57,7 +57,7 @@ A connection to local devices supporting HTTP protocol is made via the browser o
 ### My local device supports only TCP/UDP protocol. Is a connection to TCP/UDP devices also possible?
 Yes. In order to connect to local TCP/UDP devices please use ioBroker.link-box: https://www.npmjs.com/package/iobroker.link-box
 
-### How do I grant an access to my local ioBroker installation?
+### How do I grant access to my local ioBroker installation?
 Anyone who should be granted access to a local ioBroker installation has to be explicitly configured in the ioBroker.link adapter settings. No one has access by default. That means that you also have to configure yourself in order to be able to connect to your own local ioBroker installation.
 
 ### How and where do I create the user that I'd like to grant the access to my local installation?
@@ -85,7 +85,10 @@ Even this simple service requires infrastructure running around the clock and pr
 At the moment only a single connection can be opened to a local ioBroker installation. That means if multiple users are granted access permissions to a local installation only one user at a time is able to connect to. Also the only connection per user is allowed. That means the same user, granted access permission to multiple local installations, can access only one installation at a time.
 
 ### How can I track who and when has accessed my local installation?
-All requested connections' meta data is persisted and can be viewed under https://iobroker.link.
+All requested connections' metadata is persisted and can be viewed under https://iobroker.link.
+
+### Which ports must be available in the firewall?
+Following ports on iobroker.link server must be reachable: 5000-5100 (outbound)
 
 ## Adapter configuration :: Main Settings
 
@@ -141,13 +144,28 @@ To access your router's Web-UI you might have a configuration as follows:
 - Port: 80 (if you didn't change the router's Web UI default port)
 - Type: TCP
 
+To access your IP camera's snapshot or live stream configure a device as follows:
+- enabled: checked
+- name: Front-Door-Snapshot (or whatever name you like)
+- IP: your camera's HTTP endpoint, e.g.: _http://192.168.0.178:8000/tmpfs/snap.jpg_
+- Port: ignored, supposed to be part of the HTTP enpoint configuration
+- Type: TCP
+
+Do **NOT** put your camera's credentials into the configured HTTP enpoint as request parameters:
+_http://192.168.0.178:8000/tmpfs/snap.jpg?usr=admin&pwd=admin_
+
+Instead provided them when prompted while establishing a connection.
+
 ## Changelog
+### 0.5.10 (2020-12-09)
+* (bluefox) Ignore errors at 4:00 because of the server restart
+
 ### 0.5.6 (2019-12-02)
 * (gh-got) multi-factor connection approval
 * (gh-got) Implemented the acknowledgment via telegram
 
 ### 0.5.2 (2019-11-26)
-* (bluefox) Added user enability
+* (bluefox) Added user disable/enable
 
 ### 0.4.4 (2019-07-16)
 * (gh-got) closing tunnels in case server considers an agent as offline
@@ -163,7 +181,7 @@ To access your router's Web-UI you might have a configuration as follows:
 * (bluefox) Do not connect to the cloud if no configuration defined
 
 ### 0.3.6 (2018-06-26)
-* (bluefox) The download of SSF from github depending on platform was added
+* (bluefox) The download of SSF from github depending on plattform was added
 
 ### 0.2.7 (2018-06-17)
 * (bluefox) UDP communication is now supported
@@ -177,7 +195,7 @@ To access your router's Web-UI you might have a configuration as follows:
 ## License
 Creative Common Attribution-NonCommercial (CC BY-NC)
 
-Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>, gh-got
+Copyright (c) 2018-2020 bluefox <dogafox@gmail.com>, gh-got
 
 http://creativecommons.org/licenses/by-nc/4.0/
 

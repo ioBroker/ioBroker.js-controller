@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: O66dMiaGs1nin6/Ux/c5LSurNYMoEaQYKZNUI5CnVMI=
+hash: Hq2n1GDYTE1sRzoFAKfcwrxpEovtY638ZHlS1gO64UY=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -24,24 +24,25 @@ hash: O66dMiaGs1nin6/Ux/c5LSurNYMoEaQYKZNUI5CnVMI=
 
 ### Эти модели, как известно, работают
 * Deebot Slim 2
-* Deebot N79
+* Deebot N79 серии
 * Deebot 601
 * Deebot 710/711
+* Deebot U2
 * Deebot Ozmo 610
 * Deebot Ozmo 900
-* Deebot Ozmo 920
 * Deebot Ozmo T8 AIVI
+* Deebot Ozmo T8 (+)
 
 ### Эти модели должны работать
 * Deebot M88
 * Deebot 600/605
 * Deebot Ozmo Slim 10
-* Deebot Ozmo T8 (+)
+* Deebot U2 Pro / Мощность
 
 ## Установка
 Рекомендуется использовать версию Node.js 10 или более новую.
 
-Этот адаптер использует библиотеку холста, для которой может потребоваться дополнительная установка.
+Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок.
 Для полного набора функций установите следующие пакеты.
 
 Для систем Linux на базе Debian необходимо выполнить следующие команды:
@@ -63,22 +64,31 @@ sudo npm install canvas --unsafe-perm=true
 * Информацию о том, как использовать этот адаптер, можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Известные проблемы
-* Есть сообщения, что в настоящее время Ecovacs доставляет пустые журналы очистки для Ozmo 920/950 и Ozmo T8 / T8 + / T8 AIVI.
 * Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно через прибл. 24 часа.
 * На Deebot 900/901 наблюдается странное поведение заряда батареи. Очень вероятно, что это ошибка прошивки.
-  * Вы можете использовать соответствующую опцию в конфигурации адаптера в качестве временного решения.
+  * Вы можете использовать соответствующую опцию в конфигурации адаптера как обходной путь.
 * Кнопка «пауза» не работает с Deebot 710/711.
+* Кнопка «стоп» не работает с Deebot 711s.
 
 ## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
-## Отказ от ответственности
+## Заявление об ограничении ответственности
 Я никоим образом не связан с ECOVACS.
 
 ## Changelog
 
+### 1.0.7 (beta)
+* Using library version 0.5.1
+* Initial support for Deebot U2 series
+* Improved support for Ozmo T8 models
+* Improved handling of device classes
+* (boriswerner) Fixed cleaning log for 950 type models (920/950/T8)
+* (boriswerner) Added available virtualBoundaries to "map" channel (currently read only)
+* Several enhancements and fixes
+
 ### 1.0.6
-* Bump library to 0.5.0-beta.0
+* Using library version 0.5.0-beta.0
 * Fix for running multiple devices
 * Support for additional Ozmo T8 models
 * Add option to synchronize spotArea buttons

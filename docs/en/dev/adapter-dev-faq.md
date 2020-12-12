@@ -24,7 +24,8 @@ For updating the table of contents, you can use a TOC generator, e.g. [luciopaiv
   - [Sentry](#sentry)
 - [Adapter Configuration UI (admin/index_m.html)](#adapter-configuration-ui-adminindexmhtml)
   - [Input Validation](#input-validation)
-
+- [Adapter functions](#adapter-functions)
+  - [Writing files](#writing-files)
 
 ---
 
@@ -78,3 +79,31 @@ Please note that it is required to use [Semantic Versioning](https://semver.org/
 <br>Example: This is implemented in adapter [Fahrplan](https://github.com/gaudes/ioBroker.fahrplan).
 <br>NOTE: You may need to change your `io-package.json`, see e.g. [ioBroker-Forum: sendTo() funktioniert nicht](https://forum.iobroker.net/topic/5205/gel%C3%B6st-sendto-in-eigenem-adapter-funktioniert-nicht/)
 <br>(24-Nov-2020)
+
+### Adapter functions
+
+#### Writing files
+**Question:** Adapter should download a file with axios and be able to write it to iobroker-data/files/<adapter>
+  
+**Answer:** Here's a small code snippet for this action:
+```
+const WebCall = await axios.get(url,{responseType: "arraybuffer"});
+await Helper.Adapter.writeFileAsync(Helper.Adapter.namespace, `picture.jpg`, WebCall.data)
+```
+Afterwards there was a warning in ioBroker log:<br>
+`writeFile will not write this file (picture.jpg) in future versions: <adapter> is not an object of type "meta"`<br>
+In io-package.json there has to be included a meta.user object in instanceObjects:<br>
+```
+"instanceObjects": [
+  {
+    "_id": "",
+    "type": "meta",
+    "common": {
+      "name": "User files for <Adapter>",
+      "type": "meta.user"
+    },
+    "native": {}
+  }	
+]
+```
+(09-Dec-2020)

@@ -70,6 +70,46 @@ If slave does not support "write multiple registers" command, you can activate i
 ### Write interval
 Delay between two write requests in ms. Default 0.
 
+## Parameters for single address line in config
+### Address
+Modbus address to read
+### Slave ID
+In case there are multiple slaves, then this is the id if not the default one which is given in global config
+### Name
+This is the name for the Parameter
+### Description
+Parameter description 
+### Unit
+Unit of the Parameter
+### Type
+Datatype to read from Bus. For details about the possible datatypes see section Data types
+### Length
+Length of parameter. For the most parameters this is determined based on the data type, but for Strings this defines the lenght in Bytes / characters
+### Factor
+This factor is used to multiply the read value from Bus for static scaling. So the calculation looks like following val = x * Factor + Offset
+### Offset
+This offset is added to the read value after above multiplication. So the calculation looks like following val = x * Factor + Offset
+### Formula
+This field can be used for advanced calculations if Factor and Offset is not sufficient. If this field is set, then the Factor and Offset field is ignored.
+The Formula is executed by the eval() function. Therefore all common functions are supported. Especially the Math functions. The formula must comply with Javascript syntax, therefore also take care about uper and lower cases.
+
+In the formula, "x" has to be used for the read value from Modbus. E.g. "x * Math.pow(10,sf['40065']);"
+
+If the formula cannot evaluated during runtime, then the Adapter writes a warning message to the log.
+
+### Role
+IOBroker role to assign
+### Room
+IOBroker room to assign
+### Poll
+If activated, the values are polled in predefined interval from slave.
+### WP
+Write pulse
+### CW
+Cyclic write
+### SF
+Use value as scaling factor. This is needed to used dynamic scaling factors which are on some systems provided through values on interface. If a value is marked with this flac, then the value will stored into a variable with following naming convention: sf['Modbus_address']. This variable can then later used in any formula for other parameters. E.g. following formula can set: "(x * sf['40065']) + 50;"
+
 ## Data types
 
 - uint16be - Unsigned 16 bit (Big Endian): AABB => AABB
@@ -198,6 +238,12 @@ There are some programs in folder *test' to test the TCP communication:
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+
+### 3.2.0 (2020-12-09)
+* (nkleber78) Fixed formula where return keyword was missing
+
+### 3.1.13 (2020-12-07)
+* (nkleber78) Added the possibility to use formulas for values
 
 ### 3.1.12 (2020-12-05)
 * (Apollon77) fix admin serial port selection

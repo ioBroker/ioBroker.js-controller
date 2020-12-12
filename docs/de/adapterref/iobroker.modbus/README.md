@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.modbus/README.md
 title: iobroker.modbus
-hash: xVnv+YC0NL+AUzizjvQXhh8ov5ZS+fNV1pdvA/qIU3U=
+hash: W78h8cDmiiVC7EQz9IpNrKqsdqu4+7O5CWHO43ZIHVY=
 ---
 ![Logo](../../../en/adapterref/iobroker.modbus/admin/modbus.png)
 
@@ -78,6 +78,32 @@ Wenn der Slave den Befehl "Mehrere Register schreiben" nicht unterstützt, könn
 ### Schreibintervall
 Verzögerung zwischen zwei Schreibanforderungen in ms. Standard 0.
 
+## Parameter für einzelne Adresszeile in config
+### Adresse
+Zu lesende Modbus-Adresse
+
+### Slave-ID Wenn mehrere Slaves vorhanden sind, ist dies die ID, wenn nicht die Standard-ID, die in der globalen Konfiguration angegeben ist
+### Name Dies ist der Name für den Parameter
+### Beschreibung Parameterbeschreibung
+### Einheit Einheit des Parameters
+### Geben Sie den Datentyp ein, der vom Bus gelesen werden soll. Einzelheiten zu den möglichen Datentypen finden Sie im Abschnitt Datentypen
+### Länge Länge des Parameters. Für die meisten Parameter wird dies basierend auf dem Datentyp bestimmt, für Strings definiert dies die Länge in Bytes / Zeichen
+### Faktor Dieser Faktor wird verwendet, um den Lesewert von Bus für die statische Skalierung zu multiplizieren. Die Berechnung sieht also wie folgt aus: val = x * Faktor + Offset
+### Offset Dieser Offset wird nach der obigen Multiplikation zum gelesenen Wert addiert. Die Berechnung sieht also wie folgt aus: val = x * Faktor + Offset
+### Formel Dieses Feld kann für erweiterte Berechnungen verwendet werden, wenn Faktor und Versatz nicht ausreichen. Wenn dieses Feld festgelegt ist, wird das Feld Faktor und Versatz ignoriert.
+Die Formel wird von der Funktion eval () ausgeführt. Daher werden alle gängigen Funktionen unterstützt. Besonders die Mathe-Funktionen. Die Formel muss der Javascript-Syntax entsprechen und daher auch Groß- und Kleinschreibung berücksichtigen.
+In der Formel muss "x" für den Lesewert von Modbus verwendet werden. Z.B. x * Math.pow (10, sf ['40065']);
+
+Wenn die Formel zur Laufzeit nicht ausgewertet werden kann, schreibt der Adapter eine Warnmeldung in das Protokoll.
+
+### Rolle
+Zuweisende IOBroker-Rolle
+
+### Raum IOBroker-Raum zum Zuweisen
+### Poll Wenn aktiviert, werden die Werte in einem vordefinierten Intervall vom Slave abgefragt.
+### WP Schreibimpuls
+### CW Zyklisches Schreiben
+### SF Wert als Skalierungsfaktor verwenden. Dies ist erforderlich, um dynamische Skalierungsfaktoren zu verwenden, die auf einigen Systemen durch Werte auf der Schnittstelle bereitgestellt werden. Wenn ein Wert mit diesem Flac markiert ist, wird der Wert in einer Variablen mit der folgenden Namenskonvention gespeichert: sf ['Modbus_address']. Diese Variable kann später in einer beliebigen Formel für andere Parameter verwendet werden. Z.B. Die folgende Formel kann gesetzt werden: "(x * sf ['40065']) + 50;"
 ## Datentypen
 - uint16be - 16 Bit ohne Vorzeichen (Big Endian): AABB => AABB
 - uint16le - Vorzeichenloses 16-Bit (Little Endian): AABB => BBAA
@@ -170,7 +196,7 @@ Die folgende Tabelle zeigt die FieldServer-Funktionsverschiebungen, die einen ei
 | Funktionsschlüsselwort | Swap-Modus | Quellbytes | Zielbytes |
 |------------------|-------------------|-----------------|----------------|
 | 1.float-2.i16 | N / A | [a b] [c d] | [a b] [c d] |
-| 1.float-2.i16-s | Byte und Wortwechsel | [a b] [c d] | [d c] [b a] |
+| 1.float-2.i16-s | Byte- und Worttausch | [a b] [c d] | [d c] [b a] |
 | 1.float-2.i16-sb | Byte-Swap | [a b] [c d] | [b a] [d c] |
 | 1.float-2.i16-sw | Worttausch | [a b] [c d] | [c d] [a b] |
 
@@ -203,6 +229,16 @@ Es gibt einige Programme im Ordner * test ', um die TCP-Kommunikation zu testen:
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+
+### 3.2.0 (2020-12-09)
+* (nkleber78) Fixed formula where return keyword was missing
+
+### 3.1.13 (2020-12-07)
+* (nkleber78) Added the possibility to use formulas for values
+
+### 3.1.12 (2020-12-05)
+* (Apollon77) fix admin serial port selection
+
 ### 3.1.10 (2020-09-25)
 * (nkleber78) Corrected: the exported data cannot be imported without modification
 

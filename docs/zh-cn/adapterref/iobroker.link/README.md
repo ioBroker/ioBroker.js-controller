@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.link/README.md
 title: ioBroker.link
-hash: CLxN+J/uSp2u4LH5EMxQstiIuFeA0HFA4HD1Sbr47bs=
+hash: Nn78VuRacKp2zpDW3YbNLLypO0BwkRl4mmzl8m3Iun4=
 ---
 ![商标](../../../en/adapterref/iobroker.link/admin/link.png)
 
@@ -15,20 +15,20 @@ hash: CLxN+J/uSp2u4LH5EMxQstiIuFeA0HFA4HD1Sbr47bs=
 此适配器允许通过[ioBroker.link](https://iobroker.link/)云进行安全连接。
 
 ＃＃ 常问问题
-###如何使用此适配器？
-通过此适配器，可以安全地连接到本地ioBroker安装以及DSL调制解调器/路由器/防火墙后的本地网络中的其他服务器/设备。通过公共可用的ioBroker.link云（link-cloud）建立连接。甚至可以通过链接云设置和访问多个本地ioBroker安装。
+###我可以使用此适配器做什么？
+该适配器允许在DSL调制解调器/路由器/防火墙之后安全地连接到本地ioBroker安装和本地网络中的其他服务器/设备。通过公共可用的ioBroker.link云（link-cloud）建立连接。甚至可以通过链接云设置和访问多个本地ioBroker安装。
 
 ###我可以在路由器上配置的端口转发有什么区别？
-虽然您可以在路由器上配置端口转发，从而可以从任何地方访问本地ioBroker安装，但是链接云具有以下主要优点：
+虽然您可以在路由器上配置端口转发，以便可以从任何地方访问本地ioBroker安装，但是链接云具有以下主要优点：
 
 -无需在路由器上打开任何端口即可上网
 -您的本地ioBroker安装不需要公共IP或（动态）DNS名称
--link-cloud负责身份验证和授权
+-链接云负责身份验证和授权
 -链接云使用SSL / TLS保护连接
 -链接云提供审核日志
 -可以通过链接云服务器的同一UI访问多个本地ioBroker安装
 -ioBroker.link适配器充当反向代理，并允许访问支持HTTP / TCP / UDP协议的本地网络中的其他服务器/设备
--您可以向<sup>第三</sup>人授予对本地ioBroker安装的临时或永久访问权，例如，以解决设备故障的问题，而无需透露密码或管理凭据
+-您可以向<sup>第三</sup>人授予对本地ioBroker安装的临时或永久访问权，例如，对设备故障进行故障排除，而无需透露密码或管理凭据
 
 ###如果没有公共IP并且没有打开端口，如何建立与本地ioBroker安装的连接？
 链接云永远不会连接到本地安装，它是ioBroker.link适配器，它在本地运行，并在有连接请求的情况下启动与链接云的连接。
@@ -43,7 +43,7 @@ ioBroker.link适配器通过轮询链接云定期检查未决的连接请求。�
 ioBroker.link适配器只能连接到提供颁发给ioBroker.link的有效SSL证书的服务器。
 
 ###链接云如何识别并授权所有ioBroker.link适配器轮询未决的连接请求或建立连接？
-每个ioBroker.link适配器都会生成自己的唯一2048位密钥对。在链接云上注册后，适配器将传输其公钥。在对链接云的每个后续请求（检查挂起的连接请求，接受或拒绝挂起的连接，关闭打开的连接等）时，适配器通过提供使用适配器的私钥签名的JSON Web令牌（JWT）来授权自己。链接云使用存储的公钥验证JWT的签名，并接受或拒绝连接。
+每个ioBroker.link适配器都会生成自己的唯一2048位密钥对。在链接云上注册后，适配器将传输其公钥。在对链接云的每个后续请求（检查挂起的连接请求，接受或拒绝挂起的连接，关闭打开的连接等）上，适配器通过提供使用适配器的私钥签名的JSON Web令牌（JWT）来授权自己。链接云使用存储的公钥验证JWT的签名，并接受或拒绝连接。
 
 ###一个适配器可以使用另一个适配器的JWT连接到链接云吗？
 否。适配器使用其自己的唯一私钥对JWT进行签名，该私钥永远不会离开本地安装。链接云使用相应的公钥来验证签名。
@@ -52,7 +52,7 @@ ioBroker.link适配器只能连接到提供颁发给ioBroker.link的有效SSL证
 是。密钥存储在适配器安装的/ keys文件夹中。删除此文件夹中的所有文件，然后重新启动适配器。适配器将在启动时创建一个新的密钥对，并通过发送新的公共密钥在链接云中刷新注册。
 
 ###已建立的连接本身如何得到保护？
-如果有未决的连接请求，则ioBroker.link适配器首先建立到链接云的SSH隧道并接受传入的连接。双方均通过证书进行授权。一旦建立了SSH隧道，通信本身便开始。一旦关闭连接（例如由用户通过链接云服务器UI），SSH隧道就会关闭，并且不再可能进行通信。
+如果有未决的连接请求，则ioBroker.link适配器首先建立到链接云的SSH隧道并接受传入的连接。双方均通过证书进行授权。一旦建立了SSH隧道，通信本身就会开始。一旦关闭连接（例如，由用户通过链接云服务器UI），SSH隧道就会关闭，并且不再可能进行通信。
 
 ###是否也可以通过链接云连接到我的本地设备？
 是。如果您的设备支持HTTP协议，则可以通过链接云访问它们。您要通过链接云连接的每个设备都必须在ioBroker.link适配器设置中进行显式配置。默认情况下，无法连接任何设备。甚至必须先配置ioBroker.admin Web-UI才能连接。
@@ -66,8 +66,8 @@ ioBroker.link适配器只能连接到提供颁发给ioBroker.link的有效SSL证
 ###如何授予对本地ioBroker安装的访问权限？
 必须在ioBroker.link适配器设置中显式配置应被授予对本地ioBroker安装的访问权限的任何人。默认情况下，没有人可以访问。这意味着您还必须配置自己才能连接到自己的本地ioBroker安装。
 
-###如何以及在哪里创建要授予对本地安装访问权限的用户？
-首先，您必须在https://iobroker.pro创建一个免费帐户。创建完成后，您可以在ioBroker.link适配器“允许的用户”设置中配置注册的电子邮件。适配器cconfiguration中无需提供密码。
+###如何以及在哪里创建我想要授予对本地安装的访问权限的用户？
+首先，您必须在https://iobroker.pro创建一个免费帐户。创建后，您可以在ioBroker.link适配器“允许的用户”设置中配置注册的电子邮件。适配器cconfiguration中无需提供密码。
 
 ###我已经在https://iobroker.pro上拥有一个帐户。我可以将其用于链接云吗？
 是。您可以使用已经存在的https://iobroker.pro帐户。
@@ -79,19 +79,22 @@ ioBroker.link适配器只能连接到提供颁发给ioBroker.link的有效SSL证
 链接云不使用https://iobroker.pro帐户。与https://iobroker.pro帐户关联的任何信息都不会传输/可用于链接云。链接云只是将身份验证联合到https://iobroker.pro。反过来，授权完全由链接云处理。
 
 ###如何撤销对本地安装的访问权限？
-您可以通过从ioBroker.link适配器的_Allowed user_设置中删除个人的电子邮件来撤消授予他们的访问权限。另外，通过将_Allowed users_设置为空，可以完全阻止访问本地安装。同样，停止或卸下ioBroker.link适配器也将阻止通过链接云进行任何访问。
+您可以通过从ioBroker.link适配器的_Allowed user_设置中删除他们的电子邮件来撤消授予他们的访问权限。另外，通过将_Allowed users_设置为空，可以完全阻止访问本地安装。同样，停止或卸下ioBroker.link适配器也将阻止通过链接云进行任何访问。
 
 ###使用链接云时我需要付费吗？
-目前，不收取任何费用，链接云完全免费使用。无论您使用免费的还是付费的https://iobroker.pro帐户，它都是独立的。请注意，将来可能会更改。
+目前，不收取任何费用，链接云完全免费使用。无论您使用免费还是付费https://iobroker.pro帐户，这都是独立的。请注意，将来可能会更改。
 
 ###您为什么打算为此简单服务收费？
-即使是这种简单的服务，也需要全天候运行的基础架构并产生成本。确保此服务的高可用性，对故障进行故障排除以及改进或添加新功能会消耗大量时间。为了献身于进一步的发展，我们需要芯片。这样一来，我们的妻子就可以购物，并给我们更多时间关注这个项目。
+即使是这种简单的服务，也需要全天候运行的基础架构并产生成本。确保此服务的高可用性，对故障进行故障排除以及改进或添加新功能会消耗大量时间。为了献身于进一步的发展，我们需要芯片。这将使我们的妻子能够购物，并给我们更多的时间来关注这个项目。
 
 ###链接云的局限性是什么？
 目前，只能打开到本地ioBroker安装的单个连接。这意味着，如果授予多个用户对本地安装的访问权限，则一次只能连接一个用户。同样，每个用户唯一的连接是允许的。这意味着被授予对多个本地安装的访问权限的同一用户一次只能访问一个安装。
 
 ###如何跟踪谁和何时访问了本地安装？
-所有请求的连接的元数据都将保留并可以在https://iobroker.link下查看。
+所有请求的连接的元数据都将保留，并且可以在https://iobroker.link下查看。
+
+###防火墙中哪些端口必须可用？
+iobroker.link服务器上的以下端口必须可访问：5000-5100（出站）
 
 ##适配器配置::主要设置
 ＃＃＃ 客户名称
@@ -104,7 +107,7 @@ ioBroker.link适配器只能连接到提供颁发给ioBroker.link的有效SSL证
 如果您的ioBroker安装在代理之后，则可以在此处配置代理服务器。代理可以在此处定义为：* http：// proxy：8080 *或通过** HTTPS_PROXY **环境变量。
 
 ###轮询间隔（秒）
-定义适配器多久轮询一次链接云以查找未决的连接请求。
+定义适配器多久轮询一次链接云以查看未决的连接请求。
 推荐设置：10
 
 ###允许的用户
@@ -140,7 +143,7 @@ ioBroker.link适配器只能连接到提供颁发给ioBroker.link的有效SSL证
 -端口：8081（如果您未更改ioBroker.admin的默认端口）
 -类型：TCP
 
-要访问路由器的Web-UI，您可能需要进行以下配置：
+要访问路由器的Web-UI，您可能需要进行如下配置：
 
 -启用：选中
 -名称：路由器
@@ -148,13 +151,28 @@ ioBroker.link适配器只能连接到提供颁发给ioBroker.link的有效SSL证
 -端口：80（如果您未更改路由器的Web UI默认端口）
 -类型：TCP
 
+要访问IP摄像机的快照或实时流，请按以下方式配置设备：
+
+-启用：选中
+-名称：前门快照（或您喜欢的任何名称）
+-IP：相机的HTTP端点，例如：_http：//192.168.0.178：8000 / tmpfs / snap.jpg_
+-端口：被忽略，应该是HTTP enpoint配置的一部分
+-类型：TCP
+
+**不要**将摄像机的凭据放入已配置的HTTP请求请求参数中：_http：//192.168.0.178：8000 / tmpfs / snap.jpg？usr = admin＆pwd = admin_
+
+而是在建立连接时提示时提供它们。
+
 ## Changelog
-### 0.5.5 (2019-12-02)
+### 0.5.10 (2020-12-09)
+* (bluefox) Ignore errors at 4:00 because of the server restart
+
+### 0.5.6 (2019-12-02)
 * (gh-got) multi-factor connection approval
 * (gh-got) Implemented the acknowledgment via telegram
 
 ### 0.5.2 (2019-11-26)
-* (bluefox) Added user enability
+* (bluefox) Added user disable/enable
 
 ### 0.4.4 (2019-07-16)
 * (gh-got) closing tunnels in case server considers an agent as offline
@@ -170,7 +188,7 @@ ioBroker.link适配器只能连接到提供颁发给ioBroker.link的有效SSL证
 * (bluefox) Do not connect to the cloud if no configuration defined
 
 ### 0.3.6 (2018-06-26)
-* (bluefox) The download of SSF from github depending on platform was added
+* (bluefox) The download of SSF from github depending on plattform was added
 
 ### 0.2.7 (2018-06-17)
 * (bluefox) UDP communication is now supported
@@ -184,7 +202,7 @@ ioBroker.link适配器只能连接到提供颁发给ioBroker.link的有效SSL证
 ## License
 Creative Common Attribution-NonCommercial (CC BY-NC)
 
-Copyright (c) 2018-2019 bluefox <dogafox@gmail.com>, gh-got
+Copyright (c) 2018-2020 bluefox <dogafox@gmail.com>, gh-got
 
 http://creativecommons.org/licenses/by-nc/4.0/
 

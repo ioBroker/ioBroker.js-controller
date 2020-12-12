@@ -18,19 +18,20 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 
 ### These models are known to work
 * Deebot Slim 2
-* Deebot N79
+* Deebot N79 series
 * Deebot 601
 * Deebot 710/711
+* Deebot U2
 * Deebot Ozmo 610
 * Deebot Ozmo 900
-* Deebot Ozmo 920
 * Deebot Ozmo T8 AIVI
+* Deebot Ozmo T8 (+)
 
 ### These models should work
 * Deebot M88
 * Deebot 600/605
 * Deebot Ozmo Slim 10
-* Deebot Ozmo T8 (+)
+* Deebot U2 Pro/Power
 
 ## Installation
 
@@ -56,11 +57,11 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Known issues
 
-* There are some reports that currently empty cleaning logs are being delivered by Ecovacs for Ozmo 920/950 and Ozmo T8/T8+/T8 AIVI.
 * For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours.
 * There's a strange behavior of the battery value on Deebot 900/901. It's very likely that this is a firmware bug.
   * You can use the corresponding option in the adapter config as a workaround.
 * The "pause" button does not work with Deebot 710/711.
+* The "stop" button does not work with Deebot 711s.
 
 ## FAQ
 
@@ -68,8 +69,17 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
+### 1.0.7 (beta)
+* Using library version 0.5.1
+* Initial support for Deebot U2 series
+* Improved support for Ozmo T8 models
+* Improved handling of device classes
+* (boriswerner) Fixed cleaning log for 950 type models (920/950/T8)
+* (boriswerner) Added available virtualBoundaries to "map" channel (currently read only)
+* Several enhancements and fixes
+
 ### 1.0.6
-* Bump library to 0.5.0-beta.0
+* Using library version 0.5.0-beta.0
 * Fix for running multiple devices
 * Support for additional Ozmo T8 models
 * Add option to synchronize spotArea buttons

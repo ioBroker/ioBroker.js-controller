@@ -18,7 +18,7 @@ An ioBroker adapter for Grünbeck Wasseraufbereitung SC18, SC23, SD18, SD21, SD2
 
 ## Changelog
 
-### 0.0.23
+### 0.0.24
 
 -   Fix for multiple devices
 

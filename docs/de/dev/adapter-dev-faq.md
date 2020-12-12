@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/adapter-dev-faq.md
 title: Häufig gestellte Fragen zur Adapterentwicklung
-hash: vAedyXkcC+wYcnNf+WP6LfPgxlS1ayqADzQwmtv2pzQ=
+hash: xBifYSMkiSeEcOHVKuK3c1SR01Qr030mxrhtOv9htBA=
 ---
 # Häufig gestellte Fragen zur Adapterentwicklung
 ## Einführung
@@ -19,12 +19,14 @@ Zum Aktualisieren des Inhaltsverzeichnisses können Sie einen Inhaltsverzeichnis
 
 # Inhaltsverzeichnis
 - [Adapter-Updates] (# Adapter-Updates)
-  - [Veröffentlichen von Adapter-Updates] (# Publishing-Adapter-Updates)
+  - [Veröffentlichung von Adapter-Updates] (# Publishing-Adapter-Updates)
 - [Adaptertest und Fehlerberichterstattung] (# Adaptertest und Fehlerberichterstattung)
   - [Kompaktmodus] (# Kompaktmodus)
   - [Wachposten] (# Wachposten)
 - [Benutzeroberfläche für die Adapterkonfiguration (admin / index_m.html)] (# adapter-configuration-ui-adminindexmhtml)
   - [Eingabevalidierung] (# Eingabevalidierung)
+- [Adapterfunktionen] (# Adapterfunktionen)
+  - [Dateien schreiben] (# Dateien schreiben)
 
 ---
 
@@ -63,4 +65,33 @@ Bitte beachten Sie, dass die Verwendung von [Semantische Versionierung] (https:/
 #### Eingabevalidierung
 ** Frage: ** Ich möchte Felder der Adapterkonfiguration mithilfe der Kernadaptermethoden sowie der Klassen / Methoden des Adaptercodes von node.j validieren. Die Validierung sollte erfolgen, sobald ein Benutzer in der Adapterkonfiguration auf "Speichern" klickt und dann `save()` von `admin/index_m.html` aufruft.
 
-** Antwort: ** Sie können die Methode `sendTo()` verwenden, um die Variable `obj` von `admin/index_m.html` an den Adaptercode zu senden, den Inhalt dort zu validieren und das Ergebnis per Rückruf an zu übermitteln `sendTo()` von `admin/index_m.html`.<br> Beispiel: Dies ist im Adapter [Fahrplan](https://github.com/gaudes/ioBroker.fahrplan) implementiert.<br> HINWEIS: Möglicherweise müssen Sie Ihre `io-package.json` ändern, siehe z. B. [ioBroker-Forum: sendTo () funktioniert nicht](https://forum.iobroker.net/topic/5205/gel%C3%B6st-sendto-in-eigenem-adapter-funktioniert-nicht/)<br> (24.11.2020)
+** Antwort: ** Sie können die Methode `sendTo()` verwenden, um die Variable `obj` von `admin/index_m.html` an den Adaptercode zu senden, den Inhalt dort zu validieren und dann das Ergebnis per Rückruf an zu liefern `sendTo()` von `admin/index_m.html`.<br> Beispiel: Dies ist im Adapter [Fahrplan](https://github.com/gaudes/ioBroker.fahrplan) implementiert.<br> HINWEIS: Möglicherweise müssen Sie Ihre `io-package.json` ändern, siehe z. B. [ioBroker-Forum: sendTo () funktioniert nicht](https://forum.iobroker.net/topic/5205/gel%C3%B6st-sendto-in-eigenem-adapter-funktioniert-nicht/)<br> (24.11.2020)
+
+### Adapterfunktionen
+#### Dateien schreiben
+** Frage: ** Der Adapter sollte eine Datei mit Axios herunterladen und in iobroker-data / files / <adapter> schreiben können
+
+** Antwort: ** Hier ist ein kleiner Code-Ausschnitt für diese Aktion:
+
+```
+const WebCall = await axios.get(url,{responseType: "arraybuffer"});
+await Helper.Adapter.writeFileAsync(Helper.Adapter.namespace, `picture.jpg`, WebCall.data)
+```
+
+Danach gab es eine Warnung im ioBroker-Protokoll:<br> `writeFile will not write this file (picture.jpg) in future versions: <adapter> is not an object of type "meta"`<br> In io-package.json muss ein meta.user-Objekt in instanceObjects enthalten sein:<br>
+
+```
+"instanceObjects": [
+  {
+    "_id": "",
+    "type": "meta",
+    "common": {
+      "name": "User files for <Adapter>",
+      "type": "meta.user"
+    },
+    "native": {}
+  }
+]
+```
+
+(09.12.2020)

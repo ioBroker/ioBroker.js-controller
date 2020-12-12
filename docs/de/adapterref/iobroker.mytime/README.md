@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mytime/README.md
 title: ioBroker.mytime
-hash: g+bbSc5/i8dSqQwu4rvQiojAbcNnraQEUdfDWvWvpVo=
+hash: hSNDCCJ3wn9bOMo9ZSs+ajXFifihxmdOadKkO+16SeY=
 ---
 ![Logo](../../../en/adapterref/iobroker.mytime/admin/mytime.png)
 
@@ -19,17 +19,40 @@ hash: g+bbSc5/i8dSqQwu4rvQiojAbcNnraQEUdfDWvWvpVo=
 ## Mytime Adapter für ioBroker
 Dieser Adapter verarbeitet die Zeit (z. B. Countdown usw.)
 Die Countdown-Funktion bietet Datenpunkte, mit denen Sie einen Countdown verwalten können (z. B. in einem Skript). Der Adapter enthält auch mehrere Widgets zur Visualisierung dieser Countdowns.
+Zeitreihen können verwendet werden, um komplexe Zeitreihen zu erstellen, bei denen die Datenpunkte ausgelöst werden.
 
 ### Aufbau
 #### Countdown
-Erstellen Sie nach der Installation einen neuen Countdown, z. B. 'Test', stellen Sie den Timer auf 10 Sekunden ein und importieren Sie die folgenden Widgets.
+Im Konfigurationsdialog Tab "Countdown" können Sie einen neuen Countdown erstellen, zB 'Test', den Timer auf 10 Sekunden einstellen und die folgenden Widgets importieren.
 Datenpunkte sind für einen Countdown mit dem Namen test vorkonfiguriert.
 
 ##### Verhaltens-Timer stoppen
 Nachdem der Countdown das Signal gestoppt hat, wird der Countdown auf die vom Timer eingestellte Zeit zurückgesetzt.
 
 ##### Stoppverhalten Null Nachdem der Countdown das Signal gestoppt hat, bleibt der Countdown bei 0.
+#### Zeitfolgen
+Im Konfigurationsdialog Tab "Zeitreihen" können Sie eine neue Zeitreihe mit einer oder mehreren Zeitplänen erstellen. Für jede Zeitleiste können Sie unterschiedliche Parameter definieren. Jede Zeitreihe erstellt einen separaten Datenpunkt, der bei den berechneten Zeitereignissen ausgelöst wird.
+Die Zeitereignisse werden in Echtzeit berechnet. Die verwendete Regelbibliothek ist jedoch noch nicht in allen Parameterkombinationen perfekt.
+Dies zeigt, dass bei einigen Kombinationen die Seite in eine Endlosschleife gerät.
+Die Demoseite http://jakubroztocil.github.io/rrule/ kann auch für Experimente verwendet werden.
+Zusätzlich zum Hinzufügen einer Zeitleiste können Sie eine Zeitleiste hinzufügen, um Zeitereignisse auszuschließen, einzelne Zeitereignisse hinzuzufügen und auch einzelne Zeitereignisse auszuschließen.
+
 ### Verwendung
+#### Zeitfolgen
+##### Verfügbare Datenpunkte
+Nach der Konfiguration einer neuen Zeitreihe erstellt der Adapter die folgenden Datenpunkte:
+
+| Datenpunkt | Beschreibung |
+|-----------|---------------------------------------------------------------------------|
+| Aktion | aktueller Stand der Zeitreihe. mögliche Werte sind stop, run |
+| cmd | keine Funktion atm |
+
+##### Verfügbare Aktionszustände
+| Aktion | Beschreibung |
+|-----------|-------------------------------------------------------------------------------------------------------|
+| stop | Momentan ist kein Zeitereignis aktiv |
+| run | Ein Zeitereignis wurde ausgelöst. Nach der konfigurierten Dauer ändert sich der Datenpunkt in Stopp |
+
 #### Countdown
 ##### Verfügbare Datenpunkte
 Nach der Konfiguration eines neuen Countdowns erstellt der Adapter die folgenden Datenpunkte:
@@ -65,6 +88,7 @@ Nach der Konfiguration eines neuen Countdowns erstellt der Adapter die folgenden
 | setstop2timer | setstop2timer | Setzen Sie die Konfiguration des Stoppverhaltens auf Timer |
 | setstop2zero | setstop2zero | Setzen Sie die Konfiguration des Stoppverhaltens auf Nullen |
 | speichern | speichern | Speichern Sie die in Datenpunkten definierte Konfiguration in der iobroker-Konfiguration |
+| | | iobroker startet den Adapter nach dem automatischen Speichern neu |
 
 ##### Format des Werts zum Einstellen des Countdown-Timers
 Sie können den Countdown auf eine unbegrenzte Zeit einstellen.
@@ -217,7 +241,8 @@ Wenn Sie die Größe des Countdown-Nixieclock anpassen möchten, können Sie unt
 * rollierende Zahlen
 * anpassbare Schriftarten
 * Wordclock Timer?
-* Timed Scheduler: Planen Sie ein einzelnes Datum / eine einzelne Uhrzeit und wiederkehrende Ereignisse wie Outlook
+* ts: Zeitpläne für den Ausschluss (Zeitbereich, einzelne Daten)
+* ~~ Zeitplaner: Planen Sie ein einzelnes Datum / eine einzelne Uhrzeit und wiederkehrende Ereignisse wie Outlook ~~
 * ~~ Nixie-Stil ~~
 * ~~ Flip-Board-Anzeige (Flughafen-Anzeige) ~~
 * ~~ neuer Befehl, um nur die Zielzeit ohne Datum festzulegen ~~
@@ -230,6 +255,10 @@ Wenn Sie die Größe des Countdown-Nixieclock anpassen möchten, können Sie unt
 ## Changelog
 
 
+### 0.6.1
+* remove beta tag from widgets * m,assive reengeneering of the react classes, add functions für exclusion rules, adding single time events and exclude single time events
+### 0.6.0
+* Introduction of new functionality timeseries
 ### 0.5.2
 * fix an issue and introduce a new command save to save the configuration defined in datapoints to the iobroker configuration data
 ### 0.5.1

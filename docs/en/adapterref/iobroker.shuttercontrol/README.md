@@ -44,6 +44,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 1.1.0 (2020-12-08)
+* (simatec) GUI redesign
+* (simatec) Intermediate position added for closing
+
 ### 1.0.5 (2020-12-05)
 * (Rene) fix xMas Time
 

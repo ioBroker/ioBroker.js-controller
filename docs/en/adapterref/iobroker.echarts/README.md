@@ -74,7 +74,7 @@ You can debug view charts locally with:
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
-### 0.4.3 (2020-12-05)
+### 0.4.4 (2020-12-07)
 * (bluefox) Some sentry errors were corrected.
 
 ### 0.4.2 (2020-11-29)

@@ -54,6 +54,7 @@ objects in *italic* are not part of all fritz.box configurations
 |devicetype.name|text|-|name of device|
 |devicetype.mode|text|-|mode, manuell or auto|
 |devicetype.present|boolean|-|true/false -> connected/not available|
+|devicetype.txbusy|boolean|-|true/false -> cmd sending active/not active|
 |devicetype.productname|text|-|product name|
 |devicetype.manufacturer|text|-|product manufacturer|
 |devicetype.fwversion|text|-|product FW version|
@@ -63,6 +64,7 @@ objects in *italic* are not part of all fritz.box configurations
 |--------|-------|:-:|--------|
 |group.masterdeviceid|text|-|internal id of group|
 |group.members|text|-|member id's of group|
+|group.masterdeviceid|boolean|-|cmd sending active |
 
 ### templates
 |Object|Value|settable|Description|
@@ -83,6 +85,7 @@ objects in *italic* are not part of all fritz.box configurations
 |*DECT200.temp*|value|-|actual temperature in °C|
 |*DECT200.temp_offset*|value|-|offset temperature in °C|
 |*DECT200.voltage*|value|-|actual voltage in V|
+|*DECT200.txbusy*|boolean|-|cmd sending active |
 
 ### thermostat eg. COMET/DECT300/ Heater group
 |Object|Value|settable|Description|
@@ -101,30 +104,46 @@ objects in *italic* are not part of all fritz.box configurations
 |COMET.devicelock|boolean|-|Button lock|
 |COMET.operationList|value|-|list of possible modes|
 |COMET.operationMode|value|-|actual mode|
+|*COMET.windowopen*|time|x|set status open window until time|
+|*COMET.windowopenendtime*|time|-|time when open window status ends|
+|*COMET.boostactive|boolean*|-|boost mode active status|
+|*COMET.boostactiveendtime*|time|-|time when boost status ends|
+|*COMET.boost*|time|x|set boost mode until time|
 |*COMET.battery*|value|-|actual capacity in %|
 |*COMET.summeractive*|boolean|-|summer program status|
 |*COMET.holidayactive*|boolean|-|holiday program status|
 |*COMET.windowopenactiv*|boolean|-|status of window open detection|
+|*COMET.txbusy*|boolean|-|cmd sending active |
 
 ### lamp e.g DECT500
 |Object|Value|settable|Description|
 |--------|-------|:-:|--------|
 |DECT500.state|boolean|x|true/false -> ON/OFF|
-|DECT500.txbusy|boolean|-|actual|
+|DECT500.txbusy|boolean|-|cmd sending active|
 |DECT500.colormodes|value|-|supported colormodes|
 |DECT500.current_mode|value|?|actual colormode|
-|DECT500.level|value|?|brightness 0-255 |
-|DECT500.levelpercentage|value|?|brightness 0-100% |
-|DECT500.hue|value|?|color 0-359 |
-|DECT500.saturation|value|?|saturation|
-|DECT500.temperature|value|?|color temperature (white mode)|
+|DECT500.level|value|x|brightness 0-255 |
+|DECT500.levelpercentage|value|x|brightness 0-100% |
+|DECT500.hue|value|x|color 0-359 |
+|DECT500.saturation|value|x|saturation|
+|DECT500.temperature|value|x|color temperature (white mode)|
+
+### lamp e.g DECT400
+|Object|Value|settable|Description|
+|--------|-------|:-:|--------|
+|DECT440.txbusy|boolean|-|cmd sending active|
+|DECT440.battery|value|-|battery level|
+|DECT440.batterylow|boolean|-|battery status|
+|DECT440.temperature|value|-|temperature |
+|DECT440.humidity|value|-|relative humidity % (not all FW versions |
+|DECT440.button|time|-|see DECT400 button (4x) |
 
 ### repeater e.g. DECT100
 |Object|Value|settable|Description|
 |--------|-------|:-:|--------|
 |DECT100.temp|value|-|actual temperature in °C|
 
-### contact
+### contact/alert (HAN-FUN)
 |Object|Value|settable|Description|
 |--------|-------|:-:|--------|
 |Contact.state|boolean|-|true/false -> ON/OFF|
@@ -134,18 +153,36 @@ objects in *italic* are not part of all fritz.box configurations
 |--------|-------|:-:|--------|
 |Button.lastclick|number|-|timestamp|
 
+### blind (HAN-FUN)
+|Object|Value|settable|Description|
+|--------|-------|:-:|--------|
+|Blind.blindtarget|string|x|target open/close/stop|
+
+## API limitations
+* Boost and WindowOpen can only be set for the next 24h. time=0 is cancelling the command
+
 
 ## Known Issues:
-Not all FW-versions support all objects.
+Not all FW-versions of fritz.box support all objects.
 
 ## TODO:
 * universal object names
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
-* FritzDECT440 after API release
 
 ## Changelog
+### 1.1.0
+* new features of AVM API 1.33
+    * setblind
+	* sethkrboost
+	* setwindowopen
+	* txbusy, windowopenactiveendtime,  boostactiveendtime, boostactive
+* fade duration
+* DECT440
+* DECT500
+
 ### 1.0.1
 * bugfixes in fritz API calls
+* error code 303 (but unknown what it means)
 
 ### 1.0.0 Breaking Change for non-native API objects
 * merge of fritzapi into repo directly including added DECT500 commands
@@ -153,7 +190,7 @@ Not all FW-versions support all objects.
     * GuestWLAN
     * BatteryCharge
     * OS version
-* correction of timestamp to date conversion fpr DECT400
+* correction of timestamp to date conversion for DECT400
 
 ### 0.3.2
 * new states in heater group, operationList and operationMode

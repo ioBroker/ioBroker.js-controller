@@ -1581,6 +1581,10 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+### 4.10.8 (2020-12-07)
+* (paul53) Corrected `variables.isDayTime`
+* (AlCalzone) catch errors during virtual-tsc compile calls
+* (Apollon77) Prevent crash case (Sentry)
 
 ### 4.10.7 (2020-12-03)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-JAVASCRIPT-4Q)
@@ -1598,9 +1602,6 @@ Scripts can be activated and deactivated by controlling of this state with ack=f
 ### 4.10.4 (2020-11-09)
 * (bluefox) null timeouts are checked now
 * (AlCalzone) Correction for the typescript with async functions
-
-### 4.10.3 (2020-11-08)
-* (bluefox) Corrected search in scripts
 
 ## License
 
