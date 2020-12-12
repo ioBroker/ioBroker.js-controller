@@ -34,7 +34,6 @@ function init() {
         config.sites.forEach(site => {
             console.log(`Install path ${site.route} => ${site.path}`);
             app.app.use(site.route, (req, res, next) => {
-                // console.log(`${site.route}[${req.method}]: ${req.url}`);
                 if (req.url.endsWith('.html')) {
                     req.url = req.url.replace(/\.html$/, '.htm');
                 } else {
@@ -42,6 +41,9 @@ function init() {
                         req.url += 'index.htm';
                     }
                 }
+
+                // console.log(`${site.route}[${req.method}]: ${req.url} => ${site.path}${req.url.split('?')[0]}`);
+
                 if (req.url.startsWith('/.git')) {
                     res.status(404).send('not found');
                 } else {
