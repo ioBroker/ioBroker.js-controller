@@ -33,6 +33,14 @@ function init() {
     if (config.sites) {
         config.sites.forEach(site => {
             console.log(`Install path ${site.route} => ${site.path}`);
+            let redirects;
+            if (site.redirects) {
+                try {
+                    redirects = require(site.redirects)
+                } catch (e) {
+                    console.error(`Cannot read ${site.redirects}: ${e}`);
+                }
+            }
             app.app.use(site.route, (req, res, next) => {
                 if (req.url.endsWith('.html')) {
                     req.url = req.url.replace(/\.html$/, '.htm');
@@ -43,6 +51,13 @@ function init() {
                 }
 
                 // console.log(`${site.route}[${req.method}]: ${req.url} => ${site.path}${req.url.split('?')[0]}`);
+                
+                if (redirects) {
+                    const name = req.url.split('?')[0].replace(/^\//, '');
+                    if (redirects[name]) {
+                        return res.redirect(redirects[name]);
+                    }
+                }
 
                 if (req.url.startsWith('/.git')) {
                     res.status(404).send('not found');
