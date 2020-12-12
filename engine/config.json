@@ -12,7 +12,7 @@
   "sites": [
     {
       "route": "/docu/",
-      "path": "/opt/doc/front-end/docu/docu/"
+      "path": "/opt/doc-auto/engine/front-end/docu/docu/"
     }
   ]
 }
