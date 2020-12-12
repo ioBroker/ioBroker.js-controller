@@ -51,7 +51,7 @@ function init() {
                 }
 
                 // console.log(`${site.route}[${req.method}]: ${req.url} => ${site.path}${req.url.split('?')[0]}`);
-                
+
                 if (redirects) {
                     const name = req.url.split('?')[0].replace(/^\//, '');
                     if (redirects[name]) {

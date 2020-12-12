@@ -646,25 +646,23 @@ class Markdown extends Router {
                     target="_blank"><IconGithub />{I18n.t('Edit on github')}
                     </a>) : null}
             {this.props.editEnabled && this.editText ?
-                (<div className={this.props.classes.infoEditLocal} onClick={() => {
+                <div className={this.props.classes.infoEditLocal} onClick={() => {
                     this.props.onEditMode && this.props.onEditMode(true);
-                }}><IconEdit />{I18n.t('Edit local')}</div>) : null}
+                }}><IconEdit />{I18n.t('Edit local')}</div> : null}
 
         </div>);
     }
 
     _renderSubContent(menu) {
-        return (<ul>{
+        return <ul>{
             menu.children.map(item => {
                 const ch   = this.state.content[item].children;
                 const link = this.state.content[item].external && this.state.content[item].link;
-                return (
-                    <li><span onClick={() => this.onNavigate(item, link)} className={this.props.classes.contentLinks}>{this.state.content[item].title}</span>
-                        {ch ? this._renderSubContent(this.state.content[item]) : null}
-                    </li>
-                );
+                return <li><span onClick={() => this.onNavigate(item, link)} className={this.props.classes.contentLinks}>{this.state.content[item].title}</span>
+                    {ch ? this._renderSubContent(this.state.content[item]) : null}
+                </li>;
             }).filter(e => e)
-        }</ul>);
+        }</ul>;
     }
 
     renderAffiliates() {
