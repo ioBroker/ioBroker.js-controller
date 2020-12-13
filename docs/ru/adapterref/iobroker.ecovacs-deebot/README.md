@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: Hq2n1GDYTE1sRzoFAKfcwrxpEovtY638ZHlS1gO64UY=
+hash: dJ768vJZFotNIzfLwccf2y67LTzTCqWM9+PmyHnveiA=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -52,12 +52,6 @@ sudo apt-get update
 sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev libgif-dev librsvg2-dev
 ```
 
-Перед выполнением следующей команды может потребоваться перезагрузка.
-
-```bash
-sudo npm install canvas --unsafe-perm=true
-```
-
 Для получения инструкций для других систем посетите https://www.npmjs.com/package/canvas#compiling.
 
 ## Применение
@@ -78,13 +72,13 @@ sudo npm install canvas --unsafe-perm=true
 
 ## Changelog
 
-### 1.0.7 (beta)
-* Using library version 0.5.1
+### 1.0.7
+* Using library version 0.5.1 (0.5.1-beta.3)
 * Initial support for Deebot U2 series
 * Improved support for Ozmo T8 models
-* Improved handling of device classes
 * (boriswerner) Fixed cleaning log for 950 type models (920/950/T8)
 * (boriswerner) Added available virtualBoundaries to "map" channel (currently read only)
+* Improved handling of device classes
 * Several enhancements and fixes
 
 ### 1.0.6

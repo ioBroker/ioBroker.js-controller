@@ -957,6 +957,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tileboard/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tinker/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tino/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tinyrx4/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.todoist2/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tr-064/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.tradfri/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.trashschedule/README.md
@@ -1359,6 +1360,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tileboard/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tinker/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tino/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tinyrx4/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.todoist2/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tr-064/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.tradfri/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.trashschedule/README.md
@@ -1761,6 +1763,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tileboard/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tinker/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tino/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tinyrx4/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.todoist2/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tr-064/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.tradfri/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.trashschedule/README.md
@@ -2163,6 +2166,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tileboard/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tinker/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tino/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tinyrx4/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.todoist2/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tr-064/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.tradfri/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.trashschedule/README.md

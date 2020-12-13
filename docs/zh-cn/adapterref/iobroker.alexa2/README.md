@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alexa2/README.md
 title: ioBroker.alexa2
-hash: zj7LU0BT+AR9UjXZ2wMraJr5ZbvbA/XX7MQn6BgKFNM=
+hash: I7qWNp8YP6SkqRXP+JioIktc3hbPFgC7PD3bQhmp1jw=
 ---
 ![商标](../../../en/adapterref/iobroker.alexa2/admin/alexa.png)
 
@@ -19,7 +19,7 @@ hash: zj7LU0BT+AR9UjXZ2wMraJr5ZbvbA/XX7MQn6BgKFNM=
 
 此适配器使您可以远程控制Alexa（Amazon Echo）设备。
 
-非常感谢soef提供的适配器版本1，感谢Hauke和ruhr70提供的来自ioBroker-Forum的脚本中的想法（尤其是媒体进度更新）！还要感谢meicker对所有这些文档的支持以及ioBroker论坛的众多用户的测试支持！
+非常感谢soef提供该适配器的版本1，并感谢Hauke和ruhr70提供了来自ioBroker-Forum的脚本中的想法（尤其是媒体进度更新）！还要感谢meicker对所有这些文档的支持以及ioBroker论坛的众多用户的测试支持！
 
 ##状态及其含义：
 在适配器名称空间（例如alexa2.0）中，创建了一些通道
@@ -44,7 +44,7 @@ Bespoken通常是帮助自动测试技能的服务提供商。但实际上，您
 | #sendText |要发送到虚拟设备的文本|
 |回答|来自设备的答案为文字|
 | anwserJson |来自适配器的答案为JSON，可能包含其他信息，例如卡信息或|
-|状态|使用bespoken进行通信的状态（确定=完成/等待下一个命令，正在处理=等待来自bespoken的答复，FAILURE =处理时发生错误）|
+|状态|使用bespoken进行通信的状态（确定=完成/等待下一个命令，PROCESSING =等待来自bespoken的答复，FAILURE =处理时发生错误）|
 
 ### Alexa2.0.Contacts.ContactId。*
 可用于向其发送文本消息的所有Alexa联系人，包括他本人。自己的联系人在其姓名后得到一个特殊的“（（自我）”）。
@@ -76,20 +76,20 @@ Bespoken通常是帮助自动测试技能的服务提供商。但实际上，您
 |不配对|使该设备与echo设备取消配对的按钮。 |
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Commands。*
-使用命令，您可以在Alexa设备上触发一些操作。如果您在多房间设备上使用它们，那么它们将独立执行，并且*不会*在单个设备上同步运行！
+使用命令，您可以在Alexa设备上触发一些操作。如果您在多房间设备上使用它们，那么它们将独立执行，并且*将不会*在单个设备上同步运行！
 
 |州名|意思|价值|
 | - | - | - |
 | doNotDisturb |打开/关闭请勿打扰此设备|是/否|
 |简报|在100秒内进行简报-新闻等。纽扣 |
 |早安|来自Alexa的早上好... |纽扣 |
-|功能|来自Alexa的有趣事实... |纽扣 |
+|功能|来自Alexa的有趣事实...（目前仅美国）|纽扣 |
 |笑话来自Alexa的笑话... |纽扣 |
 |清理|像播放聆听模式的开始/结束一样播放“锣”音... |纽扣 |
 |策展人|来自Alexa所选区域的随机句子... |文字（允许使用：“再见”，“确认”，“早安”，“赞美”，“生日”，“晚安”，“ iamhome”）|
 | singasong | Alexa唱了一首歌... |纽扣 |
 |说Alexa说您在这里输入的内容... |文字输入|
-|音量|调整Alexa的语音音量，该音量会在语音通话之前设置好，然后再重新设置| 0-100 |
+|音量|调整Alexa的语音音量，该音量会在语音通话之前设置好，然后再重置| 0-100 |
 |讲故事| Alexa讲故事|纽扣 |
 |交通|交通新闻|纽扣 |
 |天气|天气新闻纽扣 |
@@ -97,6 +97,7 @@ Bespoken通常是帮助自动测试技能的服务提供商。但实际上，您
 |通知|发送文本通知给设备的客户|文字|
 |公告|播放公告（例如讲话，但在文本前加上Bing）|文字|
 | ssml |说出SSML XML字符串|文字|
+| textcommand |发送文字指令到Alexa，目前仅在美国！ |文字|
 
 详细信息发言和公告：在此处输入您想让Alexa说的内容。您还可以通过在文本前输入一个百分比来调整Alexa的音量。
 例如：10; Alexa说Alexa的音量为10％，而100; Alexa的音量为100％。
@@ -113,12 +114,12 @@ Bespoken通常是帮助自动测试技能的服务提供商。但实际上，您
 | deviceTypeString |设备类型为字符串信息|
 | isMultiroomDevice |是多房间设备-多房间是虚拟设备组|信息，对/错|
 | isMultiroomMember |是Multiroom成员-如果为true，则该设备属于Multiroom设备组|信息，对/错|
-|多人家长|如果此设备是多房间设备组的一部分，则此状态显示父组设备|信息|
+|多人家长|如果此设备是多房间设备组的一部分，则此状态将显示父组设备。信息|
 |名称| Alexa设备的名称|信息|
 |序列号| Alexa设备的序列号|
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Music-Provider。*
-直接告诉Alexa播放音乐或受支持的音乐提供商的播放列表。实际支持的是：“我的图书馆”，“ Amazon音乐”，“调入”。您还可以在短语中加入多房间设备组名称，以便在该组中播放（例如“ SWR3 auf Erdgeschoss”）
+直接告诉Alexa播放音乐或受支持的音乐提供商的播放列表。实际支持的是：“我的图书馆”，“ Amazon音乐”，“调入”。您还可以在短语中加入一个多房间设备组名称，以便在该组中播放（例如“ SWR3 auf Erdgeschoss”）
 
 |州名|意思|价值|
 | - | - | - |
@@ -175,7 +176,7 @@ Bespoken通常是帮助自动测试技能的服务提供商。但实际上，您
 |新以以下格式添加新的提醒<br>时间（hh：mm），文字<br>|文字输入<br>12:00，提醒我
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Routines。*
-Alexa App中设置的例程概述。自行创建的例程具有序列号，Amazon显示为“ preconfigured：...”（预配置：...），每个例程都可以通过按钮触发一次，以运行一次。
+Alexa App中设置的例程概述。自行创建的例程具有序列号，Amazon显示为“ preconfigured：...”（预配置：...），每个例程可以通过按钮触发一次，以运行一次。
 
 |州名|意思|价值|
 | - | - | - |
@@ -201,8 +202,8 @@ Alexa App中设置的例程概述。自行创建的例程具有序列号，Amazo
 ### Alexa2.0。历史
 |州名|意思|价值|
 | - | - | - |
-| #trigger |按钮以获取新的历史记录（更多的当前时间，然后是creationTime中的时间戳），仅在不使用推连接时需要纽扣 |
-| cardContent |其他信息，如Alexa-App / Echo Show中所示。信息|
+| #trigger |按钮以获取新的历史记录（更多的当前时间，然后是creationTime中的时间戳），仅在不使用推送连接时才需要|纽扣 |
+| cardContent |如Alexa-App / Echo Show |中所示，更多信息。信息|
 | cardJson |其他信息，如Alexa-App / Echo中所示以JSON格式显示|信息|
 | creationTime |此历史记录条目的日期，仅当此时间戳记|信息|
 | domainApplicationId |其他信息，例如Skill-ID或类似信息，可选|信息|
@@ -279,7 +280,7 @@ Alexa App中设置的例程概述。自行创建的例程具有序列号，Amazo
 *您可能需要登录两次或解决验证码
 *最后，您应该看到“ https://alexa.amazon.de/spa/index.html”作为URL，但没有任何实际内容（因为JS仍被禁用），但这完全可以！！！
 *现在尝试再次获取cookie
-*如果仍然无法正常运行，请再次执行此操作，然后从浏览器中检查User-Agent和accept-Language，然后在适配器中使用它们，下次尝试
+*如果仍然无法正常运行，请再次执行此操作，然后从浏览器中检查User-Agent和accept-Language并在下次尝试中使用适配器中的那些
 
 另外，Accept-Language-Header（默认为“ de-DE”）需要与您的语言/浏览器语言/您登录的亚马逊页面的语言匹配。
 
@@ -302,6 +303,13 @@ Sentry.io是一项服务，供开发人员从其应用程序中获取有关错�
 当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
+
+### 3.4.0 (2020-12-11)
+* (Apollon77) add support for textCommand - tell an Alexa device a text as you would speak it
+* (Apollon77) make sure discovery of devices is still possible also after deleting all devices before
+
+### 3.3.5 (2020-12-03)
+* (Apollon77) make sure music providers with empty names do not produce errors
 
 ### 3.3.2 (2020-11-23)
 * (Apollon77) prevent crash cases and optimize reconnection handling

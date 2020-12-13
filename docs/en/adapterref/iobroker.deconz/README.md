@@ -7,6 +7,8 @@ ioBroker deConz dresden-elektronik Adapter
 
 [![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)](https://nodei.co/npm/iobroker.deconz/)
 
+# Important: Development of Version 2.x.x Stopped. Do not install.
+
 ## Notice
 No Support for Beta/Pre-release Versions of deConz.
 

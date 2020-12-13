@@ -127,6 +127,9 @@ For every shopping list a channel with the following states will be created:
     *Read only json string, which contains a dictionary to translate the swiss item names to the list language.*
 
 ## Changelog
+### 1.7.7 (2020-12-12)
+* (foxriver76) fix potential crash on `pollAllLists` function
+
 ### 1.7.6 (2020-12-05)
 * (foxriver76) we now use a unique name for widget rendering function to avoid conflicts
 * (foxriver76) if we cannot render widget immediately we try again after one second (see #57)

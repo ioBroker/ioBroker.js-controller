@@ -106,13 +106,16 @@ objects in *italic* are not part of all fritz.box configurations
 |COMET.operationMode|value|-|actual mode|
 |*COMET.windowopen*|time|x|set status open window until time|
 |*COMET.windowopenendtime*|time|-|time when open window status ends|
+|*COMET.windowopenactiv*|boolean|-|status of window open detection|
+|*COMET.windowopenactivtime*|value|x|time (minutes) when activation of window open |
 |*COMET.boostactive|boolean*|-|boost mode active status|
 |*COMET.boostactiveendtime*|time|-|time when boost status ends|
 |*COMET.boost*|time|x|set boost mode until time|
+|*COMET.boostactivtime*|value|x|time (minutes) when activation of boost|
 |*COMET.battery*|value|-|actual capacity in %|
 |*COMET.summeractive*|boolean|-|summer program status|
 |*COMET.holidayactive*|boolean|-|holiday program status|
-|*COMET.windowopenactiv*|boolean|-|status of window open detection|
+
 |*COMET.txbusy*|boolean|-|cmd sending active |
 
 ### lamp e.g DECT500
@@ -135,7 +138,7 @@ objects in *italic* are not part of all fritz.box configurations
 |DECT440.battery|value|-|battery level|
 |DECT440.batterylow|boolean|-|battery status|
 |DECT440.temperature|value|-|temperature |
-|DECT440.humidity|value|-|relative humidity % (not all FW versions |
+|*DECT440.humidity*|value|-|relative humidity %|
 |DECT440.button|time|-|see DECT400 button (4x) |
 
 ### repeater e.g. DECT100
@@ -166,10 +169,14 @@ objects in *italic* are not part of all fritz.box configurations
 Not all FW-versions of fritz.box support all objects.
 
 ## TODO:
-* universal object names
+* universal object names and structures -> breaking change
+* groups inside a device e.g. DECT440 -> breaking change
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
 
 ## Changelog
+### 1.1.1
+* getColorDefaults in Admin
+
 ### 1.1.0
 * new features of AVM API 1.33
     * setblind
@@ -183,6 +190,8 @@ Not all FW-versions of fritz.box support all objects.
 ### 1.0.1
 * bugfixes in fritz API calls
 * error code 303 (but unknown what it means)
+* (Black-Thunder) targetTemp=null
+* (PascalBru) datapoint nextchange in hkr 
 
 ### 1.0.0 Breaking Change for non-native API objects
 * merge of fritzapi into repo directly including added DECT500 commands

@@ -74,6 +74,13 @@ You can debug view charts locally with:
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### 0.4.6 (2020-12-12)
+* (bluefox) Allowed the same names in different folders
+
+### 0.4.5 (2020-12-11)
+* (bluefox) Some sentry errors were corrected.
+* (bluefox) Added the possibility to show actual values in legend.
+
 ### 0.4.4 (2020-12-07)
 * (bluefox) Some sentry errors were corrected.
 

@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.deconz/README.md
-title: kein Titel
-hash: c/ieNVG2u8ve69akIpyJrgAjBtTpIM+oW6/aN2D2AIQ=
+title: Wichtig: Entwicklung von Version 2.x.x gestoppt. Nicht installieren.
+hash: 91pA5IsG6BdOllBnQVybbzjjPoeE9Bi4AY9lDb9wXOs=
 ---
 ![Logo](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
@@ -16,6 +16,7 @@ ioBroker deConz dresden-elektronik Adapter
 
 ==============
 
+# Wichtig: Entwicklung von Version 2.x.x gestoppt. Nicht installieren.
 ## Beachten
 Keine Unterstützung für Beta / Pre-Release-Versionen von deConz.
 
@@ -27,7 +28,7 @@ Erforderliche js-controller Version> 2.x.x, Erforderliche node.js> = 10.x.x.
 Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Software soll eine universelle ZigBee Gateway-Lösung sein, die Hardware von dresden-elektronik, den ConBee USB-Stick und RaspBee, ein Modul für den Raspberry Pi, verwendet.
 
 ### Konfiguration
-1. Lesen Sie die Dokumentation zu deConz / Phoscon im Abschnitt [links] (https://github.com/iobroker-community-adapters/ioBroker.deconz#links).
+1. Lesen Sie die Dokumentation zu deConz / Phoscon und lesen Sie den Abschnitt [links] (https://github.com/iobroker-community-adapters/ioBroker.deconz#links).
 2. Starten Sie den Adapter
 3. * Geben Sie die IP-Adresse für deConz ein
     * Geben Sie die Portnummer ein, Standard ist 80.
@@ -93,7 +94,7 @@ Beispiele:
 `"on": true, "transitiontime": 5, "hue": 65500`
 
 #### Weisen Sie eine Szene
-   1. Stellen Sie alle Lichter in der Gruppe auf den Zustand ein, den Sie für die Szene Zustände
+   1. Stellen Sie alle Lichter in der Gruppe auf den Zustand ein, den Sie für die Szene Situationen
    2. Schreiben Sie den Namen Ihrer Szene im Status "Erstehende Szene"
 
    Das Kriege!

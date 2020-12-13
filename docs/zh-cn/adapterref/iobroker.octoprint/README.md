@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.octoprint/README.md
 title: ioBroker.octoprint
-hash: abg3z/tq5hJF+SkNY+lPHM8HD9xgDiM2TVLLIL9GiuU=
+hash: RhuVhsrm5wHw3MgX58i2+1fP1GcFb3XghrYQP9Yc6Mo=
 ---
 ![商标](../../../en/adapterref/iobroker.octoprint/admin/octoprint.png)
 
@@ -37,8 +37,39 @@ hash: abg3z/tq5hJF+SkNY+lPHM8HD9xgDiM2TVLLIL9GiuU=
 -自定义打印机命令
 -系统命令
 -点动X，Y和Z轴
+-选择一个文件或打印它
 
 ## Changelog
+
+### 1.0.5
+
+* (klein0r) Allow to select and print files using objects
+* (klein0r) Fixed .toFixed exception when no job is running
+
+### 1.0.4
+
+* (klein0r) Fixed .toFixed exception when no job is running
+
+### 1.0.3
+
+* (klein0r) Fixed filament information (volume and length)
+
+### 1.0.2
+
+* (klein0r) Added name for OctoPrint Instance
+* (klein0r) Fixed admin translation issue (syntax error)
+
+### 1.0.1
+
+* (klein0r) Added iobroker sentry
+
+### 1.0.0
+
+* (klein0r) First stable release
+
+### 0.0.6
+
+* (klein0r) Improved error handling
 
 ### 0.0.5
 

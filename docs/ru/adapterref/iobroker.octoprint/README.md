@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.octoprint/README.md
 title: ioBroker.octoprint
-hash: abg3z/tq5hJF+SkNY+lPHM8HD9xgDiM2TVLLIL9GiuU=
+hash: RhuVhsrm5wHw3MgX58i2+1fP1GcFb3XghrYQP9Yc6Mo=
 ---
 ![Логотип](../../../en/adapterref/iobroker.octoprint/admin/octoprint.png)
 
@@ -14,12 +14,12 @@ hash: abg3z/tq5hJF+SkNY+lPHM8HD9xgDiM2TVLLIL9GiuU=
 ![Статус зависимости](https://img.shields.io/david/klein0r/iobroker.octoprint.svg)
 ![Известные уязвимости](https://snyk.io/test/github/klein0r/ioBroker.octoprint/badge.svg)
 ![Статус сборки](http://img.shields.io/travis/klein0r/ioBroker.octoprint.svg)
-![НПМ](https://nodei.co/npm/iobroker.octoprint.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.octoprint.png?downloads=true)
 
 # IoBroker.octoprint
 Адаптер для подключения OctoPrint к ioBroker
 
-## Характеристики
+## Особенности
 ### Информация
 - Получить информацию о версии
 - Получить информацию о принтере
@@ -37,8 +37,39 @@ hash: abg3z/tq5hJF+SkNY+lPHM8HD9xgDiM2TVLLIL9GiuU=
 - Пользовательские команды принтера
 - Системные команды
 - Jog X, Y и Z оси
+- Выберите файл или распечатайте его
 
 ## Changelog
+
+### 1.0.5
+
+* (klein0r) Allow to select and print files using objects
+* (klein0r) Fixed .toFixed exception when no job is running
+
+### 1.0.4
+
+* (klein0r) Fixed .toFixed exception when no job is running
+
+### 1.0.3
+
+* (klein0r) Fixed filament information (volume and length)
+
+### 1.0.2
+
+* (klein0r) Added name for OctoPrint Instance
+* (klein0r) Fixed admin translation issue (syntax error)
+
+### 1.0.1
+
+* (klein0r) Added iobroker sentry
+
+### 1.0.0
+
+* (klein0r) First stable release
+
+### 0.0.6
+
+* (klein0r) Improved error handling
 
 ### 0.0.5
 

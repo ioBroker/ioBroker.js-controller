@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alexa2/README.md
 title: ioBroker.alexa2
-hash: zj7LU0BT+AR9UjXZ2wMraJr5ZbvbA/XX7MQn6BgKFNM=
+hash: I7qWNp8YP6SkqRXP+JioIktc3hbPFgC7PD3bQhmp1jw=
 ---
 ![Logo](../../../en/adapterref/iobroker.alexa2/admin/alexa.png)
 
@@ -18,7 +18,7 @@ hash: zj7LU0BT+AR9UjXZ2wMraJr5ZbvbA/XX7MQn6BgKFNM=
 
 Mit diesem Adapter können Sie Ihre Alexa-Geräte (Amazon Echo) fernsteuern.
 
-Ein großes Dankeschön geht an soef für die Version 1 des Adapters und an Hauke und ruhr70 für die Ideen in ihren Skripten vom ioBroker-Forum (insbesondere die Aktualisierungen des Medienfortschritts)! Ein großes Dankeschön auch an meicker für die Unterstützung bei der Dokumentation all dessen und an zahlreiche Benutzer des ioBroker-Forums für ihre Testunterstützung!
+Ein großes Dankeschön geht an soef für die Version 1 des Adapters und an Hauke und ruhr70 für die Ideen in ihren Skripten vom ioBroker-Forum (insbesondere die Aktualisierungen des Medienfortschritts)! Ein großes Dankeschön auch an meicker für die Unterstützung bei der Dokumentation all dessen und an zahlreiche Benutzer aus dem ioBroker Forum für ihre Testunterstützung!
 
 ## Staaten und ihre Bedeutungen:
 Im Adapter-Namespace (z. B. alexa2.0) werden einige Kanäle erstellt
@@ -61,7 +61,7 @@ Alarmeinstellungen (Wecker) für jedes Gerät, falls verfügbar.
 
 | Staatsname | Bedeutung | Wert |
 | - | - | - |
-| aktiviert | Zeigt den Status des Alarms an und ermöglicht das Ändern: Alarm mit true aktivieren - Alarm mit false deaktivieren | wahr / falsch |
+| aktiviert | Zeigt den Status des Alarms an und ermöglicht das Ändern: Alarm mit wahr aktivieren - Alarm mit falsch deaktivieren | wahr / falsch |
 | Zeit | Zeit für Alarm. Überschreiben Sie die Zeit für einen vorhandenen Alarm, um eine neue Zeit für diesen Alarm festzulegen. Falls ein Alarm vorhanden ist, können Sie die Zeit hier ändern, indem Sie einfach die Zeit im Format hh: mm: ss überschreiben. Für die Einstellung von | werden keine Sekunden benötigt Zeiteingabe |
 | ausgelöst | true, wenn der Alarm erreicht und ausgelöst wird. Die Uhr muss mit Amazon und iobroker synchron sein. Verwenden Sie diese Option, um eine andere Aktion auszulösen, sobald die Alarmzeit erreicht ist wahr / falsch |
 | neu | Zeit für neuen Alarm für dieses Gerät. Wenn Sie hier einen Wert eingeben, wird ein neuer Alarm erstellt Zeiteingabe (hh: mm: ss, Sekunden werden nicht benötigt) |
@@ -82,7 +82,7 @@ Mit Befehlen können Sie einige Aktionen auf Ihrem Alexa-Gerät auslösen. Wenn 
 | doNotDisturb | Ein- / Ausschalten Nicht stören für dieses Gerät | wahr / falsch |
 | Flashbriefing | Briefing in 100 Sekunden - Nachrichten etc.pp | Taste |
 | guten morgen | Guten Morgen von Alexa ... | Taste |
-| funfact | Lustige Tatsache von Alexa ... | Taste |
+| funfact | Lustige Tatsache von Alexa ... (im Moment nur USA) | Taste |
 | Witz | Witz von Alexa ... | Taste |
 | Aufräumen | Spielt einen "Gong" -Ton wie für Start / Ende des Hörmodus ... | Taste |
 | kuratiert | Zufälliger Satz aus dem ausgewählten Bereich von Alexa ... | Text (erlaubt: "Auf Wiedersehen", "Bestätigungen", "Guten Morgen", "Komplimente", "Geburtstag", "Gute Nacht", "iamhome") |
@@ -96,6 +96,7 @@ Mit Befehlen können Sie einige Aktionen auf Ihrem Alexa-Gerät auslösen. Wenn 
 | Benachrichtigung | Senden Sie eine Textbenachrichtigung an den Kunden des Geräts Text |
 | Ankündigung | Ansage abspielen (wie sprechen, aber mit Bing vor dem Text) | Text |
 | ssml | Sprechen Sie SSML XML-Zeichenfolge | Text |
+| Textbefehl | Senden Sie einen Textbefehl an Alexa, derzeit nur USA! | Text |
 
 Detaillierte Informationen Sprechen und Ankündigung: Geben Sie hier ein, was Alexa sagen soll. Sie können die Lautstärke von Alexa auch anpassen, indem Sie vor Ihrem Text einen Prozentsatz angeben.
 Beispiel: 10; Alexa sagt Alexa mit 10% Volumen, während 100; Alexa 100% Volumen ist.
@@ -278,7 +279,7 @@ Wenn Sie ein solches Captcha beantworten müssen, versuchen Sie Folgendes:
 * Möglicherweise müssen Sie sich zweimal anmelden oder ein Captcha lösen
 * Am Ende sollte "https://alexa.amazon.de/spa/index.html" als URL angezeigt werden, jedoch ohne echten Inhalt (da JS immer noch deaktiviert ist), ABER DAS IST VOLLSTÄNDIG OK !!!!
 * Versuchen Sie jetzt erneut, einen Cookie zu erhalten
-* Wenn es immer noch nicht funktioniert, wiederholen Sie den User-Agent und die Accept-Language in Ihrem Browser und verwenden Sie diese beim nächsten Versuch im Adapter
+* Wenn es immer noch nicht funktioniert, wiederholen Sie den Vorgang und überprüfen Sie den User-Agent und die Accept-Language in Ihrem Browser. Verwenden Sie diese beim nächsten Versuch im Adapter
 
 Zusätzlich muss der Accept-Language-Header (standardmäßig "de-DE") mit Ihrer Sprache / der Browsersprache / der Sprache der Amazon-Seite übereinstimmen, auf der Sie sich anmelden.
 
@@ -301,6 +302,13 @@ Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ih
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
+
+### 3.4.0 (2020-12-11)
+* (Apollon77) add support for textCommand - tell an Alexa device a text as you would speak it
+* (Apollon77) make sure discovery of devices is still possible also after deleting all devices before
+
+### 3.3.5 (2020-12-03)
+* (Apollon77) make sure music providers with empty names do not produce errors
 
 ### 3.3.2 (2020-11-23)
 * (Apollon77) prevent crash cases and optimize reconnection handling

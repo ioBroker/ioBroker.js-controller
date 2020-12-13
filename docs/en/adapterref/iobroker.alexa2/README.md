@@ -79,7 +79,7 @@ With Commands you can trigger some actions on your Alexa-Device. If you use thes
 | doNotDisturb | Switch on/off Do not Disturb for this device| true/false |
 | flashbriefing | Briefing in 100 seconds - news etc.pp| Button |
 | goodmorning | Good morning from Alexa ...| Button |
-| funfact | Fun fact from Alexa ...| Button |
+| funfact | Fun fact from Alexa ... (Only USA at the moment)| Button |
 | joke | Joke from Alexa ...| Button |
 | cleanup | Plays a "gong" tone like for start/end of listening mode ...| Button |
 | curatedtts | Random sentence from the choosen area from Alexa ...| Text (allowed: "goodbye", "confirmations", "goodmorning", "compliments", "birthday", "goodnight", "iamhome") |
@@ -93,6 +93,7 @@ With Commands you can trigger some actions on your Alexa-Device. If you use thes
 | notification | Send text notifcation to customer of the device | Text |
 | announcement | Play announcement (like speak but with Bing before text) | Text |
 | ssml | Speak SSML XML string | Text |
+| textcommand | Send a Text command to Alexa, only USA at the moment! | Text |
 
 Detailed information Speak and Announcement: Type in here what you want Alexa to say. You can also adjust the volume of Alexa by giving a percentage before your text.
 Example: 10;Alexa is saying Alexa with 10% volume, while 100;Alexa is 100% volume.
@@ -299,6 +300,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 
 ## Changelog
+
+### 3.4.0 (2020-12-11)
+* (Apollon77) add support for textCommand - tell an Alexa device a text as you would speak it
+* (Apollon77) make sure discovery of devices is still possible also after deleting all devices before
 
 ### 3.3.5 (2020-12-03)
 * (Apollon77) make sure music providers with empty names do not produce errors

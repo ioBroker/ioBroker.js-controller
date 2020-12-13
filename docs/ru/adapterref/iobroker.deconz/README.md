@@ -2,29 +2,30 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.deconz/README.md
-title: без названия
-hash: c/ieNVG2u8ve69akIpyJrgAjBtTpIM+oW6/aN2D2AIQ=
+title: Важно: Разработка версии 2.x.x остановлена. Не устанавливать.
+hash: 91pA5IsG6BdOllBnQVybbzjjPoeE9Bi4AY9lDb9wXOs=
 ---
 ![Логотип](../../../en/adapterref/iobroker.deconz/admin/deconz.png)
 
 ![Количество установок](http://iobroker.live/badges/deconz-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.deconz.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.deconz.svg)
-![НПМ](https://nodei.co/npm/iobroker.deconz.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.deconz.png?downloads=true)
 
 ioBroker deConz dresden-elektronik Адаптер
 
 ==============
 
+# Важно: разработка версии 2.x.x остановлена. Не устанавливать.
 ## Уведомление
 Нет поддержки бета / предварительных версий deConz.
 
 ** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
-Требуемая версия js-контроллера> 2.x.x, обязательная версия node.js> = 10.x.x
+Требуемая версия js-контроллера> 2.x.x, обязательная node.js> = 10.x.x
 
 ## Английский
-Подключается к программному обеспечению deConz, разработанному dresden-elektronik. Это программное обеспечение призвано стать универсальным решением ZigBee Gateway с использованием оборудования от dresden-elektronik, USB-накопителя ConBee и модуля RaspBee для Raspberry Pi.
+Подключается к программному обеспечению deConz, разработанному dresden-elektronik. Это программное обеспечение призвано стать универсальным решением для шлюзов ZigBee, использующим оборудование от dresden-elektronik, USB-накопитель ConBee и модуль RaspBee для Raspberry Pi.
 
 ### Настроить
 1. Прочтите документацию deConz / Phoscon, посмотрите раздел [ссылки] (https://github.com/iobroker-community-adapters/ioBroker.deconz#links).
@@ -61,7 +62,7 @@ ioBroker deConz dresden-elektronik Адаптер
 
       Это создает пустую группу.
 
-   2. лампы теперь могут быть добавлены с помощью `manage.addtoGroup`.
+   2. лампы теперь можно добавить с помощью `manage.addtoGroup`.
 
       Для этого установите состояние с идентификатором группы.
 
@@ -81,7 +82,7 @@ Verbindet mit der von dresden-elektronik entwickelten deConz-Software. Diese Sof
 4. Кликен "Erstelle API Key"
 5. * Benutzername (Стандартное наслаждение) и
     * Passwort (wird beim ersten Anmelden in der Phoscon APP vergeben) eingeben
-   * **Alterantiv:** Phoscon APP öffnen -> Menü -> Einstellungen -> Gateway -> Erweitert -> Auf "App verbinden" кликен
+   * **Alterantiv:** Phoscon APP öffnen -> Menü -> Einstellungen -> Gateway -> Erweitert -> Auf "App verbinden" klicken
 
 #### Mehr als einen Befehl senden
 Dafür gibt es das Objekt "действие".

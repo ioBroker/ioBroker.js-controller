@@ -47,6 +47,10 @@ Fast Web-App for Visualization.
 \
 ![Screenshot](img/screenshot_dslraser.jpg "&copy; by dslraser")
 
+\
+[![Demo-Video](img/play_demo.png "open on youtube")](https://youtu.be/QHgmrzMmcX4)
+
+
 Runs in any Browser. 
 Easy to setup, allthough it's fully customizable and responsive.
 
@@ -138,6 +142,12 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 ![Progressbar circle](img/progressbar_circle.png)
 
 * See [Wiki](https://github.com/sbormann/ioBroker.iqontrol/wiki/Progress-Bars) for further informations
+
+### Charts
+* You can add the ''FLOT Chart-Widget'' as BACKGROUND_URL of any device, which will automatically display the main state as a chart in the background of the device-tile
+* You need to ensure that the state is logged and recorded by one of the history-adapters of ioBroker
+
+![Chart](img/widget_flotchart.png)
 
 
 ## Device-Names

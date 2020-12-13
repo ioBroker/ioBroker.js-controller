@@ -190,6 +190,9 @@ To find out more about the function, simply read about it here at "**default dev
 	### __WORK IN PROGRESS__
 -->
 
+### 0.7.0 (2020-12-10)
+* (xenon-s) Data is now queried cyclically
+
 ### 0.6.2 (2020-12-04)
 * (xenon-s) bugfix index_m
 

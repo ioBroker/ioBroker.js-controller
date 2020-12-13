@@ -23,8 +23,8 @@ Solar-noon values for some days like today, tomorrow or beginn of spring/summer/
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
-### __WORK IN PROGRESS__
-* (HGlab01) 
+### 0.2.3 (2020-12-12)
+* (HGlab01) Update dependencies
 
 ### 0.2.2 (2020-12-07)
 * (HGlab01) Decrease log-level

@@ -67,6 +67,9 @@ Vergleichbar für den Soll-/Istverlaufs ist demnach atualtemp und targettemp.
 Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig Information ist der debug modus über die Experteneinstellung der Instanz vorzuwählen.
 
 ## Changelog
+### 1.1.1
+* getColorDefaults in Admin
+
 ### 1.1.0
 * new features of AVM API 1.33
     * setblind
@@ -80,6 +83,8 @@ Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig In
 ### 1.0.1
 * bugfixes in fritz API calls
 * error code 303 (but unknown what it means)
+* (Black-Thunder) targetTemp=null
+* (PascalBru) datapoint nextchange in hkr 
 
 ### 1.0.0 Breaking Change for non-native API objects
 * merge of fritzapi into repo directly including added DECT500 commands

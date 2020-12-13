@@ -239,6 +239,9 @@ There are some programs in folder *test' to test the TCP communication:
 -->
 ## Changelog
 
+### 3.2.1 (2020-12-12)
+* (Apollon77) prevent a crash case (Sentry IOBROKER-MODBUS-1R)
+
 ### 3.2.0 (2020-12-09)
 * (nkleber78) Fixed formula where return keyword was missing
 

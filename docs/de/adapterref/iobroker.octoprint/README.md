@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.octoprint/README.md
 title: ioBroker.octoprint
-hash: abg3z/tq5hJF+SkNY+lPHM8HD9xgDiM2TVLLIL9GiuU=
+hash: RhuVhsrm5wHw3MgX58i2+1fP1GcFb3XghrYQP9Yc6Mo=
 ---
 ![Logo](../../../en/adapterref/iobroker.octoprint/admin/octoprint.png)
 
@@ -37,8 +37,39 @@ Adapter zum Verbinden von OctoPrint mit ioBroker
 - Benutzerdefinierte Druckerbefehle
 - Systembefehle
 - X-, Y- und Z-Achse bewegen
+- Wählen Sie eine Datei aus oder drucken Sie sie aus
 
 ## Changelog
+
+### 1.0.5
+
+* (klein0r) Allow to select and print files using objects
+* (klein0r) Fixed .toFixed exception when no job is running
+
+### 1.0.4
+
+* (klein0r) Fixed .toFixed exception when no job is running
+
+### 1.0.3
+
+* (klein0r) Fixed filament information (volume and length)
+
+### 1.0.2
+
+* (klein0r) Added name for OctoPrint Instance
+* (klein0r) Fixed admin translation issue (syntax error)
+
+### 1.0.1
+
+* (klein0r) Added iobroker sentry
+
+### 1.0.0
+
+* (klein0r) First stable release
+
+### 0.0.6
+
+* (klein0r) Improved error handling
 
 ### 0.0.5
 

@@ -36,8 +36,14 @@ Adapter to connect OctoPrint to ioBroker
 - Custom Printer Commands
 - System Commands
 - Jog X, Y and Z axis
+- Select a file or print it
 
 ## Changelog
+
+### 1.0.5
+
+* (klein0r) Allow to select and print files using objects
+* (klein0r) Fixed .toFixed exception when no job is running
 
 ### 1.0.4
 
