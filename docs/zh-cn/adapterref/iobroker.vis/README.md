@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis/README.md
 title: 可视化
-hash: gxMcyyW7ttlzlCOMxgGgChxNRZkvdhTK2DRDT06Hhj8=
+hash: s0IXJycIVFU+hFCz4cR2pK//ZI/Wcmkp5i2cJae/M5k=
 ---
 ![商标](../../../en/adapterref/iobroker.vis/admin/vis.png)
 
@@ -22,11 +22,11 @@ ioBroker平台的Web可视化。
 
 ##对象绑定
 通常，大多数小部件都具有ObjectID属性。并且此属性可以与对象ID的某些值绑定。
-但是还有另一种选择如何将窗口小部件的* any *属性绑定到某些ObjectID。
+但是还有另一种选择如何将窗口小部件的* any *属性绑定到某个ObjectID。
 
-只需写入属性```{object.id}```§，它将绑定到该对象的值（不在编辑模式下）。
+只需写入§§JJJJJ_0_0§§属性，它将绑定到该对象的值（不在编辑模式下）。
 如果您要使用特殊格式，甚至可以使用它进行一些简单的操作，例如乘法或格式化。
-彭定康的格式如下：
+Patten具有以下格式：
 
 ```
 {objectID;operation1;operation2;...}
@@ -71,7 +71,7 @@ My calculations with {objectID1;operation1;operation2;...} are {objectID2;operat
 #{objectRed;/(100);*(255);HEX2}{objectGreen;HEX2}{objectBlue;HEX2}
 ```
 
-要显示对象的时间戳记，请在对象ID的末尾写入`.ts`或`.lc`（用于最后更改），例如：
+要显示对象的时间戳记，请在对象ID的末尾写入`.ts`或`.lc`（用于最后一次更改），例如：
 
 ```
 Last change: {objectRed.lc;date(hh:mm)}
@@ -83,7 +83,7 @@ Last change: {objectRed.lc;date(hh:mm)}
 Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(h*h + w*w))}
 ```
 
-`{h:height;w:width;h*w}`将被解释为以下功能：
+`{h:height;w:width;h*w}`将被解释为功能：
 
 ```
 value = (function () {
@@ -104,7 +104,7 @@ Hypotenuse of {height} and {width} = {h:height;w:width;Math.max(20, Math.sqrt(Ma
 ###特殊绑定
 有许多不同的内部绑定可在视图中提供其他信息：
 
-*`username`-显示登录的用户
+*`username`-显示已登录的用户
 *`view`-实际视图的名称
 *`wname`-小部件名称
 *`widget`-是具有小部件所有数据的对象。只能在JS部分中使用，例如`{a：a; widget.data.name}`
@@ -139,14 +139,14 @@ Vis创建3个变量：
 
 命令：
 
-*`alert`-显示警报窗口。 “ control.data”具有以下格式“ message; title; jquery-icon”。标题和jquery-icon是可选的。图标名称可在[此处]（http://jqueryui.com/themeroller/）找到。要显示图标“ ui-icon-info”，请写“ Message ;; info`”。
+*`alert`-显示可见的警报窗口。 “ control.data”具有以下格式“ message; title; jquery-icon”。标题和jquery-icon是可选的。可以在[here]（http://jqueryui.com/themeroller/）中找到图标名称。要显示图标“ ui-icon-info”，请编写“ Message ;; info`”。
 *`changeView`-切换到所需的视图。 “ control.data”必须具有视图名称。您也可以将项目名称指定为“项目/视图”。默认项目为“ main”。
 *`refresh`-重新加载，例如在将项目更改为在所有浏览器上重新加载后。
 *`reload`-与刷新相同。
 *`dialog`-显示对话框窗口。对话框必须存在于视图中。之一：
 
     -`static-HTML-对话框`，
-    -`static-图标-对话框`，
+    -静态-图标-对话框，
     -`container-HTML-在jqui对话框中查看，
     -`container-ext cmd-在jqui对话框中查看，
     -`container-Icon-在jqui对话框中查看，
@@ -163,7 +163,7 @@ Vis创建3个变量：
 如果用户更改视图或在开始时，变量将由vis填充
 
 -`control.instance`：浏览器实例和`ack = true`
--`control.data`：以`project / view`形式的项目和视图名称，例如`main / view`（和`ack = true`）
+-`control.data`：以`project / view`格式的项目和视图名称，例如`main / view`（和`ack = true`）
 -`control.command`：`changedView`和`ack = true`
 
 您可以将JSON字符串或对象作为`{instance: 'AABBCCDD', command: 'cmd', data: 'ddd'}`写入control.command中。在这种情况下，实例和数据将从JSON对象获取。
@@ -175,7 +175,7 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 ```
 
 ＃＃ 默认视图
-您可以为每个视图定义所需的分辨率（菜单=>工具=>分辨率）。这只是在编辑模式下的可视边框，可以显示某些特定设备上的屏幕尺寸。在实时模式下，它将不可见，并且边框外的所有小部件都将可见。
+您可以为每个视图定义所需的分辨率（菜单=>工具=>分辨率）。这只是在编辑模式下的可视边框，用于显示某些特定设备上的屏幕尺寸。在实时模式下，它将不可见，并且边框外的所有小部件都将可见。
 
 此外，您可以定义是否必须将此视图用作此分辨率的默认视图。
 
@@ -197,15 +197,23 @@ setState('vis.0.control.command', {"instance": "*", "command": "refresh", "data"
 ###黑暗重新连接屏幕
 有时（夜间），需要具有黑暗的加载屏幕。使用此选项可以进行设置。
 
-请注意，此设置仅对重新连接有效，而对第一次连接无效。
+请注意，这些设置仅对重新连接有效，而对第一次连接无效。
 
 ![黑暗](../../../en/adapterref/iobroker.vis/img/dark_screen.png)
 
 <！-下一个版本的占位符（在该行的开头）：
 
-### __进展中__->
+### __正在进行的工程__->
 
 ## Changelog
+### 1.3.6 (2020-12-13)
+* (twonky4) Corrected: old browser issue
+* (rbaranga) Corrected: play sounds on iOS Safari
+* (Scrounger) Added the optional arguments to support Material Design Widgets
+
+### 1.3.4 (2020-10-04)
+* (foxriver76) Corrected the error on older devices 
+
 ### 1.3.3 (2020-09-21)
 * (bluefox) Return de-bounce settings back
 * (bluefox) Corrected error with {username} binding

@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.cloud/README.md
 title: Облачный адаптер ioBroker
-hash: nbORrtNISimrwJ9owEX4UVDGB+9rHqZvXcqkSzyyTxo=
+hash: A8annnfqo+2LZ6Y9DTgNkQyzH8xSq6lZ3iJ1cNVu2Ng=
 ---
 ![Логотип](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
 
 ![Количество установок](http://iobroker.live/badges/cloud-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.cloud.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.cloud.svg)
-![НПМ](https://nodei.co/npm/iobroker.cloud.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.cloud.png?downloads=true)
 
 # IoBroker облачный адаптер
 Этот адаптер позволяет подключаться из Интернета через облако ioBroker к локальной установке ioBroker.
@@ -29,12 +29,10 @@ hash: nbORrtNISimrwJ9owEX4UVDGB+9rHqZvXcqkSzyyTxo=
 Все запросы от облачного адаптера будут перенаправлены на какой-либо WEB-экземпляр. Пользователь должен указать здесь WEB-экземпляр, который будет показан пользователю, когда он войдет на сайт https://iobroker.net.
 
 ### Разрешить самозаверяющие сертификаты
-Если вы используете стандартное облако iobroker.net, вы можете отключить его. Эта опция важна, только если используется собственное облако.
+Если вы используете стандартное облако iobroker.net, вы можете отключить его. Эта опция важна только при использовании собственного облака.
 
 ### Настройки Alexa
 *** Alexa больше не поддерживается в адаптере `cloud`. Для этого используйте адаптер ioBroker.iot. ***
-
-Некоторое время он все еще будет работать для пользователей `.pro`, а документация доступна [Вот](doc/alexa.md).
 
 ## IFTTT
 [инструкции](doc/ifttt.md)
@@ -51,18 +49,18 @@ curl --data "myString" https://iobroker.net/service/custom_test/<user-app-key>
 
 Вы можете написать «*» в белом списке, и все услуги будут разрешены.
 
-Начиная с версии 2.0.5 вы можете использовать GET-запрос в форме ```[GET]https://iobroker.net/service/custom_<NAME>/<user-app-key>/<data>``` для размещения **\<data\>** в **cloud.0.services.custom_ \<NAME\>**
+Начиная с версии 2.0.5, вы можете использовать GET-запрос в форме ```[GET]https://iobroker.net/service/custom_<NAME>/<user-app-key>/<data>``` для размещения **\<data\>** в **cloud.0.services.custom_ \<NAME\>**
 
-Здесь вы можете найти инструкции, как использовать его с [исполнитель](doc/tasker.md).
+Здесь вы найдете инструкции, как использовать его с [исполнитель](doc/tasker.md).
 
 Услуга IFTTT разрешена, только если установлен ключ IFTTT.
 
-Зарезервированные имена: «ifttt», «text2command», «simpleApi», «swagger». Они должны использоваться без префикса ```"custom_"```.
+Зарезервированные имена: ifttt, text2command, simpleApi, swagger. Они должны использоваться без префикса ```"custom_"```.
 
 ### Text2command
-Вы можете написать «text2command» в белом списке, вы можете отправить запрос POST на ```https://iobroker.net/service/text2command/<user-app-key>``` для записи данных в переменную *text2command.X.text*
+Вы можете написать «text2command» в белом списке, вы можете отправить POST-запрос на ```https://iobroker.net/service/text2command/<user-app-key>``` для записи данных в переменную *text2command.X.text*
 
-«X» можно определить в настройках с помощью опции «Использовать экземпляр text2command».
+«X» можно указать в настройках с помощью опции «Использовать экземпляр text2command».
 
 ### SimpleApi
 Вы можете использовать следующие команды (только Pro):
@@ -73,7 +71,20 @@ curl --data "myString" https://iobroker.net/service/custom_test/<user-app-key>
 
 ** Не забудьте добавить `simpleApi` к разрешенным службам в конфигурации. **
 
+### Ограничения
+Если HTTP (безопасность) или аутентификация включены для определенного веб-экземпляра, это не работает.
+
+Вы можете отключить HTTPS и аутентификацию на этом веб-экземпляре, но лучше создать новый веб-экземпляр, привязанный к `localhost`, и выбрать этот экземпляр в облачных настройках.
+
+<! - Заполнитель для следующей версии (в начале строки):
+
+### __РАБОТА В ПРОЦЕССЕ__ ->
+
 ## Changelog
+### 4.0.0  (2020-12-14)
+* (bluefox) Breaking change! Alexa was removed from cloud adapter.
+* (bluefox) Allowed to use the login and password for authentication.
+
 ### 3.1.0 (2020-10-31)
 * (bluefox) Implemented the easy simpleApi commands (not all)
 

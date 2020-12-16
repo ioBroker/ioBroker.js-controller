@@ -737,6 +737,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.haier/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ham/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.ham-wemo/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.harmony/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hass/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.hass-mqtt/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.heatingcontrol/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.heos/README.md
@@ -1140,6 +1141,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.haier/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ham/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.ham-wemo/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.harmony/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hass/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.hass-mqtt/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.heatingcontrol/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.heos/README.md
@@ -1543,6 +1545,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.haier/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ham/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.ham-wemo/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.harmony/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hass/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.hass-mqtt/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.heatingcontrol/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.heos/README.md
@@ -1946,6 +1949,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.haier/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ham/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.ham-wemo/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.harmony/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hass/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.hass-mqtt/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.heatingcontrol/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.heos/README.md

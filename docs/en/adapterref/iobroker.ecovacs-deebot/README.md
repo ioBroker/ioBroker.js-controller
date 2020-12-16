@@ -66,6 +66,11 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
+### 1.0.8 (alpha)
+* Using library version 0.5.2
+* Bump some dependencies
+* Several enhancements and fixes
+
 ### 1.0.7
 * Using library version 0.5.1 (0.5.1-beta.3)
 * Initial support for Deebot U2 series

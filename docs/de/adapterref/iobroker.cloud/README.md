@@ -2,8 +2,8 @@
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.cloud/README.md
-title: ioBroker Cloud Adapter
-hash: nbORrtNISimrwJ9owEX4UVDGB+9rHqZvXcqkSzyyTxo=
+title: ioBroker Cloud-Adapter
+hash: A8annnfqo+2LZ6Y9DTgNkQyzH8xSq6lZ3iJ1cNVu2Ng=
 ---
 ![Logo](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
 
@@ -13,7 +13,7 @@ hash: nbORrtNISimrwJ9owEX4UVDGB+9rHqZvXcqkSzyyTxo=
 ![NPM](https://nodei.co/npm/iobroker.cloud.png?downloads=true)
 
 # IoBroker Cloud Adapter
-Dieser Adapter ermöglicht die Verbindung vom Internet über die ioBroker Cloud zur lokalen Installation von ioBroker.
+Dieser Adapter ermöglicht die Verbindung vom Internet über die ioBroker-Cloud zur lokalen Installation von ioBroker.
 
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
@@ -33,8 +33,6 @@ Wenn Sie die Standard-Cloud von iobroker.net verwenden, können Sie diese deakti
 
 ### Alexa-Einstellungen
 *** Alexa wird im `cloud` Adapter nicht mehr unterstützt. Verwenden Sie dazu den ioBroker.iot-Adapter. ***
-
-Für einige Zeit wird es noch für `.pro` Benutzer funktionieren und die Dokumentation ist verfügbar [Hier](doc/alexa.md).
 
 ## IFTTT
 [Anleitung](doc/ifttt.md)
@@ -73,7 +71,20 @@ Sie können folgende Befehle verwenden (nur Pro):
 
 ** Vergessen Sie nicht, `simpleApi` zu zulässigen Diensten in der Konfiguration hinzuzufügen. **
 
+### Einschränkungen
+Wenn HTTPs (Sicherheit) oder Authentifizierung für eine definierte Webinstanz aktiviert sind, funktioniert dies nicht.
+
+Sie können HTTPS und Authentifizierung für diese Webinstanz deaktivieren. Besser ist es jedoch, eine neue Webinstanz zu erstellen, die an `localhost` gebunden ist, und diese Instanz in den Cloud-Einstellungen auszuwählen.
+
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+### 4.0.0  (2020-12-14)
+* (bluefox) Breaking change! Alexa was removed from cloud adapter.
+* (bluefox) Allowed to use the login and password for authentication.
+
 ### 3.1.0 (2020-10-31)
 * (bluefox) Implemented the easy simpleApi commands (not all)
 

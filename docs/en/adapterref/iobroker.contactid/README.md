@@ -1,14 +1,16 @@
 ![Logo](admin/contactid.png)
-
 # ioBroker.contactid
-==================
 
-[![Travis CI Build Status](https://travis-ci.org/schmupu/ioBroker.contactid.svg?branch=master)](https://travis-ci.org/schmupu/ioBroker.contactid)
-[![AppVeyor Build Status](https://ci.appveyor.com/api/projects/status/github/schmupu/ioBroker.contactid?branch=master&svg=true)](https://ci.appveyor.com/project/schmupu/ioBroker-contactid/)
-![Number of Installations](http://iobroker.live/badges/contactid-installed.svg) ![Number of Installations](http://iobroker.live/badges/contactid-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.contactid.svg)](https://www.npmjs.com/package/iobroker.contactid)
+[![NPM version](http://img.shields.io/npm/v/iobroker.contactid.svg)](https://www.npmjs.com/package/iobroker.contactid)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.contactid.svg)](https://www.npmjs.com/package/iobroker.contactid)
+![Number of Installations (latest)](http://iobroker.live/badges/contactid-installed.svg)
+![Number of Installations (stable)](http://iobroker.live/badges/contactid-stable.svg)
+[![Dependency Status](https://img.shields.io/david/schmupu/iobroker.contactid.svg)](https://david-dm.org/schmupu/iobroker.contactid)
+[![Known Vulnerabilities](https://snyk.io/test/github/schmupu/ioBroker.contactid/badge.svg)](https://snyk.io/test/github/schmupu/ioBroker.contactid)
 
 [![NPM](https://nodei.co/npm/iobroker.contactid.png?downloads=true)](https://nodei.co/npm/iobroker.contactid/)
+
+**Tests:** ![Test and Release](https://github.com/schmupu/ioBroker.contactid/workflows/Test%20and%20Release/badge.svg)
 
 
 The protocol Contact ID used by alarm systems to communicate with central stations.
@@ -31,14 +33,13 @@ The Contact-ID message
 
 [Contact ID protocol](http://www.technoimport.com.co/Producto/pdfs/ADEMCO%20-%20DC05_Contact_ID.pdf)
 
-
 ## Install & Configuration
 
 1. Install the adapter
 2. Configuration of the adapter:
 
-  Choose the IP-address and port for listening for Conctact-ID requests.
-  Register you subcriber name to identify you burglar alarm messages and
+    Choose the IP-address and port for listening for Conctact-ID requests.
+    Register you subcriber name to identify you burglar alarm messages and
   select your burglar alarm type.
 
 3. Configure your burglar system to send Contact ID messages
@@ -64,7 +65,7 @@ The Contact-ID message
 
   ```
 
-  Now you can sen a Conntact ID Message. For Lupsec burglar alarm systems the
+ Now you can sen a Conntact ID Message. For Lupsec burglar alarm systems the
   message begins and ends with [ and ]. Type in your telnet session:
 
   ```
@@ -77,45 +78,17 @@ The Contact-ID message
 
 ## Changelog
 
+### 1.0.2 (2020.12.13)
+* (Stübi) Bugfixing, ACK-invalid Format - Issue #14 
+
 ### 1.0.1 (2019.10.14)
 * (Stübi) Bugfixing, Issue #9 
 
-### 1.0.0 (2019.01.05)
-* (Stübi) Support js-controller compact mode 
-
-### 0.1.6 (2018.12.27)
-* (Stübi) Update Core Adapter
-
-### 0.1.5 (2018.06.07)
-* (Stübi) Translations
-
-### 0.1.3 (2018.06.07)
-* (Stübi) Cleanup
-
-### 0.1.2 (2018.06.07)
-* (Stübi) Improvements
-
-### 0.1.1 (2018.06.03)
-* (Stübi) Lupusec XT1 Plus, XT2 Plus and XT3 added
-
-### 0.1.0 (18.05.2018)
-* (Stübi) First Beta Release
-
-### 0.0.6 (2018.05.18)
-* (Stübi) fixed error i
-* (Stübi) correction of README.md
-
-### 0.0.5 (2018.05.17)
-* (Stübi) fixed error in drop down menu
-
-### 0.0.4 (15.05.2018)
-* (Stübi) code improvements
-
 
 ## License
-The MIT License (MIT)
+MIT License
 
-Copyright (c) 2019 Thorsten <thorsten@stueben.de>
+Copyright (c) 2020 Thorsten Stueben <thorsten@stueben.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
@@ -124,13 +97,13 @@ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
 copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
 FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.

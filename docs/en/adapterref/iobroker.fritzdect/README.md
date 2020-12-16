@@ -104,18 +104,15 @@ objects in *italic* are not part of all fritz.box configurations
 |COMET.devicelock|boolean|-|Button lock|
 |COMET.operationList|value|-|list of possible modes|
 |COMET.operationMode|value|-|actual mode|
-|*COMET.windowopen*|time|x|set status open window until time|
 |*COMET.windowopenendtime*|time|-|time when open window status ends|
-|*COMET.windowopenactiv*|boolean|-|status of window open detection|
+|*COMET.windowopenactiv*|boolean|x|status and cmd of window open detection|
 |*COMET.windowopenactivtime*|value|x|time (minutes) when activation of window open |
-|*COMET.boostactive|boolean*|-|boost mode active status|
+|*COMET.boostactive|boolean*|x|boost mode active status and cmd|
 |*COMET.boostactiveendtime*|time|-|time when boost status ends|
-|*COMET.boost*|time|x|set boost mode until time|
 |*COMET.boostactivtime*|value|x|time (minutes) when activation of boost|
 |*COMET.battery*|value|-|actual capacity in %|
 |*COMET.summeractive*|boolean|-|summer program status|
 |*COMET.holidayactive*|boolean|-|holiday program status|
-
 |*COMET.txbusy*|boolean|-|cmd sending active |
 
 ### lamp e.g DECT500
@@ -123,7 +120,7 @@ objects in *italic* are not part of all fritz.box configurations
 |--------|-------|:-:|--------|
 |DECT500.state|boolean|x|true/false -> ON/OFF|
 |DECT500.txbusy|boolean|-|cmd sending active|
-|DECT500.colormodes|value|-|supported colormodes|
+|DECT500.supported_modes|value|-|supported colormodes|
 |DECT500.current_mode|value|?|actual colormode|
 |DECT500.level|value|x|brightness 0-255 |
 |DECT500.levelpercentage|value|x|brightness 0-100% |
@@ -151,7 +148,7 @@ objects in *italic* are not part of all fritz.box configurations
 |--------|-------|:-:|--------|
 |Contact.state|boolean|-|true/false -> ON/OFF|
 
-### button (HAN-FUN, DECT400)
+### button (HAN-FUN, DECT400, DECT440)
 |Object|Value|settable|Description|
 |--------|-------|:-:|--------|
 |Button.lastclick|number|-|timestamp|
@@ -163,6 +160,7 @@ objects in *italic* are not part of all fritz.box configurations
 
 ## API limitations
 * Boost and WindowOpen can only be set for the next 24h. time=0 is cancelling the command
+* updates to the thermostat are within a 15min range, depending on the previous communication of thermostat with fritzbox the next cycle is sooner or later, but definitely imediately not after an ioBroker intervention
 
 
 ## Known Issues:
@@ -171,11 +169,21 @@ Not all FW-versions of fritz.box support all objects.
 ## TODO:
 * universal object names and structures -> breaking change
 * groups inside a device e.g. DECT440 -> breaking change
+* usage of predefined colors
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
 
 ## Changelog
-### 1.1.1
-* getColorDefaults in Admin
+### 1.1.3 (npm)
+* setcolor cmd correction
+* only valid color temperatures for white
+
+### 1.1.2
+* merge boost and boost active
+* merge windowopen and windowopenactive
+* DECT440 test
+
+### 1.1.1 (npm)
+* getColorDefaults in Admin, prepared but format of xml can no
 
 ### 1.1.0
 * new features of AVM API 1.33
@@ -187,7 +195,7 @@ Not all FW-versions of fritz.box support all objects.
 * DECT440
 * DECT500
 
-### 1.0.1
+### 1.0.1 (npm)
 * bugfixes in fritz API calls
 * error code 303 (but unknown what it means)
 * (Black-Thunder) targetTemp=null
@@ -201,36 +209,35 @@ Not all FW-versions of fritz.box support all objects.
     * OS version
 * correction of timestamp to date conversion for DECT400
 
-### 0.3.2
+### 0.3.2 (npm)
 * new states in heater group, operationList and operationMode
 
-### 0.3.1
+### 0.3.1 (npm)
 * (scrounger) new states in COMET, operationList and operationMode
 
-
-### 0.3.0
+### 0.3.0 (npm)
 * new DECT500 supported (without commands)
 
-### 0.2.5
+### 0.2.5 (npm)
 * fixed testing
 * correction for indication of actualtemp in heater groups
 * connection type and datasource added in io-package.json
 * correction pf switch and alert state (boolean in update routine)
 
-### 0.2.4
+### 0.2.4 (npm)
 * (Scrounger) correction of type mismatch (string boolean)
 
-### 0.2.3
+### 0.2.3 (npm)
 * skip updating values, when device not present
 
-### 0.2.2
+### 0.2.2 (npm)
 * added FritzDECT400 incl. testing
 * removed offset in temp value
 * new datapoint offset
 * added template for switches
 * added template testing
 
-### 0.2.1
+### 0.2.1 (npm)
 * gulp added
 * correction for DECT100 without temperature (caused a stop in creation of objects)
 * template creation corrected
@@ -239,86 +246,86 @@ Not all FW-versions of fritz.box support all objects.
 ### 0.2.0
 * compact mode
 
-### 0.1.5
+### 0.1.5 (npm)
 * reading and activation of templates added
 * correction of actual temperature in DECT200 and COMET (now offset recognized)
 * password now hidden typed and encrypted
 * new datapoint actualtemp for Comet
 * fritzapi 0.10.5
 
-### 0.1.4
+### 0.1.4 (npm)
 * button added, only send the timestamp of last click
 * fritzapi 0.10.4
 
-### 0.1.3
+### 0.1.3 (npm)
 * windowopenactiv added to thermostat
 
-### 0.1.2
+### 0.1.2  (npm)
 * errorcode string->number
 * batterylow -> boolean
 * switch in admin for non native API call for battery charge in % (shall prevent 403 message logs)
 
-### 0.1.1
+### 0.1.1 (npm)
 * switch for GuestWLAN when no access is granted and polling creates an error
 * check for devices in admin page for better access to the xml/json stream from fritzbox
 * admin v3 implemented
 
-### 0.1.0
+### 0.1.0 (npm)
 * major code change to use the xml stream instead the dedicated API-commands for the dedicated values
 * creation of objects according the feedback from fritzbox
 * support of groups
 * still usage of non-universal object names
 * more objects
 
-### 0.0.14
+### 0.0.14 (npm)
 * correction of temp offset influence
 
-### 0.0.13
+### 0.0.13 (npm)
 * DECT200 voltage new object
 * DECT200 mode/lock value polling
 * Comet mode as number and not array
 * ADMIN v3
 
-### 0.0.12
+### 0.0.12 (npm)
 * changed state to  mode AUTO/OFF/ON for thermostat (including datapoint lasttarget when going back to AUTO)
 * added name state for thermostat
 * DECT100 temperature reading
 * Contact reading
 
-### 0.0.11
+### 0.0.11 (npm)
 * added state OFF/ON for thermostat
 
-### 0.0.10
+### 0.0.10 (npm)
 * change to object oriented interface
 * getOSversion when starting for log
 
-### 0.0.9
+### 0.0.9 (npm)
 * values '1' accepted for ON
 * values '0' accepted for OFF
 
-### 0.0.8
+### 0.0.8 (npm)
 * messages info-> debug
 * values 1/true/on/ON accepted for ON
 * values 0/false/off/OFF accepted for OFF
 
-### 0.0.7
+### 0.0.7 (npm)
 * current temp of Comet/DECT300
 * cyclic polling GuestWLAN
 
-### 0.0.6
+### 0.0.6 (npm)
 * correction targettemp in DECT200 section
 
-### 0.0.5
+### 0.0.5 (npm)
 * setTemp on COMET
 * GuestWlan corrected
 
-### 0.0.4
+### 0.0.4 (npm)
 * cyclic status polling
 
-### 0.0.3
+### 0.0.3 (npm)
 * user now configurable
 
-### 0.0.2
+### 0.0.2 (npm)
 * metro widget for Dect200
 * smartfritz-promise->fritzapi
 * running version, tested with 1x DECT200 and Fritzbox FW=6.51 on Win10 with 4.5.0 and raspberry 4.7.0

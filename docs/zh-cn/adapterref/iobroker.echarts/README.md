@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: 93HYJ0QCC/JA0ONusjFwzyEf24ZyHM9d0J9AMMqfZR8=
+hash: Gqv2LbckF5c4WGWjkcx6GkA4dEEwwm8Tfecg5q0CCI4=
 ---
 ![商标](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -11,7 +11,6 @@ hash: 93HYJ0QCC/JA0ONusjFwzyEf24ZyHM9d0J9AMMqfZR8=
 ![资料下载](https://img.shields.io/npm/dm/iobroker.echarts.svg)
 ![依赖状态](https://img.shields.io/david/ioBroker/iobroker.echarts.svg)
 ![已知漏洞](https://snyk.io/test/github/ioBroker/ioBroker.echarts/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.echarts.png?downloads=true)
 
 ＃ioBroker.echarts
 ## IoBroker的echarts适配器
@@ -80,6 +79,19 @@ sendTo('echarts.0', {
 ### __正在进行的工程__->
 
 ## Changelog
+### 0.4.7 (2020-12-13)
+* (bluefox) Updated the select ID dialog
+
+### 0.4.6 (2020-12-12)
+* (bluefox) Allowed the same names in different folders
+
+### 0.4.5 (2020-12-11)
+* (bluefox) Some sentry errors were corrected.
+* (bluefox) Added the possibility to show actual values in legend.
+
+### 0.4.4 (2020-12-07)
+* (bluefox) Some sentry errors were corrected.
+
 ### 0.4.2 (2020-11-29)
 * (bluefox) Corrected the error with overflow of axis.
 

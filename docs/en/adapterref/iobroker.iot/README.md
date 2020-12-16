@@ -256,6 +256,12 @@ Following types are supported:
 -->
 
 ## Changelog
+### 1.8.8 (2020-12-14)
+* (bluefox) Corrected the "google home" error
+
+### 1.8.6 (2020-12-13)
+* (bluefox) Try to fix google home error
+
 ### 1.8.5 (2020-11-23)
 * (bluefox) Corrected the configuration table for google home
 

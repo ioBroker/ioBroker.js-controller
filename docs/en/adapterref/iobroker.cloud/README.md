@@ -6,7 +6,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.cloud.png?downloads=true)](https://nodei.co/npm/iobroker.cloud/)
 
-This adapter allows connection from internet through ioBroker cloud to local installation of ioBroker.
+This adapter allows connection from the internet through ioBroker cloud to local installation of ioBroker.
 
 **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** 
 For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
@@ -27,8 +27,6 @@ If you use standard iobroker.net cloud, you can deactivate it. This option is on
 
 ### Alexa settings
 ***Alexa is not supported in `cloud` adapter anymore. Use ioBroker.iot adapter for that.***
-
-For some time it still will work for `.pro` users and the documentation is available [here](doc/alexa.md).
 
 ## IFTTT
 [instructions](doc/ifttt.md)
@@ -66,7 +64,21 @@ You can use following commands (only pro):
 
 **Don't forget to add `simpleApi` to allowed services in the configuration.**
 
+### Limitations
+If HTTPs (Security) or authentication is enabled on defined web-instance, it does not work.
+
+You can deactivate HTTPS and authentication on these web instance, but better is to create a new web instance that is bound to `localhost` and select this instance in cloud-settings.
+
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
 ## Changelog
+### 4.0.0  (2020-12-14)
+* (bluefox) Breaking change! Alexa was removed from cloud adapter.
+* (bluefox) Allowed to use the login and password for authentication.
+
 ### 3.1.0 (2020-10-31)
 * (bluefox) Implemented the easy simpleApi commands (not all)
 

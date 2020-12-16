@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.cloud/README.md
 title: ioBroker云适配器
-hash: nbORrtNISimrwJ9owEX4UVDGB+9rHqZvXcqkSzyyTxo=
+hash: A8annnfqo+2LZ6Y9DTgNkQyzH8xSq6lZ3iJ1cNVu2Ng=
 ---
 ![商标](../../../en/adapterref/iobroker.cloud/admin/cloud.png)
 
@@ -13,7 +13,7 @@ hash: nbORrtNISimrwJ9owEX4UVDGB+9rHqZvXcqkSzyyTxo=
 ![NPM](https://nodei.co/npm/iobroker.cloud.png?downloads=true)
 
 ＃ioBroker云适配器
-该适配器允许从互联网通过ioBroker云连接到ioBroker的本地安装。
+该适配器允许通过ioBroker云从Internet连接到ioBroker的本地安装。
 
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
@@ -34,8 +34,6 @@ hash: nbORrtNISimrwJ9owEX4UVDGB+9rHqZvXcqkSzyyTxo=
 ### Alexa设置
 ***`cloud`适配器不再支持Alexa。为此使用ioBroker.iot适配器。***
 
-一段时间以来，它仍然对`.pro`用户有效，并且该文档可在[这里](doc/alexa.md)中获得。
-
 ## IFTTT
 [指示](doc/ifttt.md)
 
@@ -47,7 +45,7 @@ hash: nbORrtNISimrwJ9owEX4UVDGB+9rHqZvXcqkSzyyTxo=
 curl --data "myString" https://iobroker.net/service/custom_test/<user-app-key>
 ```
 
-如果您在设置中将“服务白名单”字段设置为名称* custom_test *，并以“ custom_test”作为服务名称进行调用，则状态** cloud.0.services.custom_test **将设置为* myString *。
+如果在设置中将“服务白名单”字段设置为名称* custom_test *，并使用“ custom_test”作为服务名称进行调用，则状态cloud / 0.services.custom_test将设置为myString *。
 
 您可以在白名单中写上“ *”，然后将允许所有服务。
 
@@ -67,13 +65,26 @@ curl --data "myString" https://iobroker.net/service/custom_test/<user-app-key>
 ### SimpleApi
 您可以使用以下命令（仅限专业人士）：
 
--```[GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / get / stateID```-读取状态值=>`{“ val”：103.516，“ ack “：true，” ts“：1604132484682，” q“：0，”来自“：” system.adapter.admin.0“，” lc“：1604132469672，”结果“：” OK“}`
--```[GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / getPlainValue / stateID``-读取状态值=>`103.641`
+-```[GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / get / stateID```-读取状态值=>`{“ val”：103.516，“ ack “：true，” ts“：1604132484682，” q“：0，”来自“：” system.adapter.admin.0“，” lc“：1604132469672，”结果“：” OK“}
+-```[获取] https://iobroker.pro/service/simpleApi/ <user-app-key> / getPlainValue / stateID``-读取状态值=>`103.641`
 -```[GET] https://iobroker.pro/service/simpleApi/ <user-app-key> / set / stateID？value = 1''`-设置状态值=>`{“结果”： “确定”}`
 
 **不要忘记将`simpleApi`添加到配置中允许的服务中。**
 
+###局限性
+如果在已定义的Web实例上启用了HTTPs（安全性）或身份验证，则它将不起作用。
+
+您可以在这些Web实例上停用HTTPS和身份验证，但更好的方法是创建一个绑定到`localhost`的新Web实例，然后在云设置中选择该实例。
+
+<！-下一个版本的占位符（在该行的开头）：
+
+### __正在进行的工程__->
+
 ## Changelog
+### 4.0.0  (2020-12-14)
+* (bluefox) Breaking change! Alexa was removed from cloud adapter.
+* (bluefox) Allowed to use the login and password for authentication.
+
 ### 3.1.0 (2020-10-31)
 * (bluefox) Implemented the easy simpleApi commands (not all)
 

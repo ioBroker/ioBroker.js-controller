@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: 93HYJ0QCC/JA0ONusjFwzyEf24ZyHM9d0J9AMMqfZR8=
+hash: Gqv2LbckF5c4WGWjkcx6GkA4dEEwwm8Tfecg5q0CCI4=
 ---
 ![Логотип](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -11,13 +11,12 @@ hash: 93HYJ0QCC/JA0ONusjFwzyEf24ZyHM9d0J9AMMqfZR8=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.echarts.svg)
 ![Статус зависимости](https://img.shields.io/david/ioBroker/iobroker.echarts.svg)
 ![Известные уязвимости](https://snyk.io/test/github/ioBroker/ioBroker.echarts/badge.svg)
-![НПМ](https://nodei.co/npm/iobroker.echarts.png?downloads=true)
 
 # IoBroker.echarts
 ## Echarts адаптер для ioBroker
 Создавайте полезные графики в ioBroker:
 
-![Снимок экрана](../../../en/adapterref/iobroker.echarts/img/screenshot1.png)
+![Скриншот](../../../en/adapterref/iobroker.echarts/img/screenshot1.png)
 
 ## Применение
 Добавьте после перезагрузки вкладку в админке: ![Админ](../../../en/adapterref/iobroker.echarts/img/admin.png)
@@ -27,7 +26,7 @@ hash: 93HYJ0QCC/JA0ONusjFwzyEf24ZyHM9d0J9AMMqfZR8=
 Для Виса есть специальный виджет с удобным выбором пресетов.
 
 ### Подсказка
-`i` в нижнем регистре указывает, что значение было интерполировано из двух соседних значений и не существует на этой отметке времени.
+`i` в нижнем регистре указывает, что значение было интерполировано из двух соседних значений и не существует на данной отметке времени.
 
 ![Подсказка](../../../en/adapterref/iobroker.echarts/img/tooltip.png)
 
@@ -80,6 +79,19 @@ sendTo('echarts.0', {
 ### __РАБОТА В ПРОЦЕССЕ__ ->
 
 ## Changelog
+### 0.4.7 (2020-12-13)
+* (bluefox) Updated the select ID dialog
+
+### 0.4.6 (2020-12-12)
+* (bluefox) Allowed the same names in different folders
+
+### 0.4.5 (2020-12-11)
+* (bluefox) Some sentry errors were corrected.
+* (bluefox) Added the possibility to show actual values in legend.
+
+### 0.4.4 (2020-12-07)
+* (bluefox) Some sentry errors were corrected.
+
 ### 0.4.2 (2020-11-29)
 * (bluefox) Corrected the error with overflow of axis.
 

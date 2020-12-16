@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: 93HYJ0QCC/JA0ONusjFwzyEf24ZyHM9d0J9AMMqfZR8=
+hash: Gqv2LbckF5c4WGWjkcx6GkA4dEEwwm8Tfecg5q0CCI4=
 ---
 ![Logo](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -11,7 +11,6 @@ hash: 93HYJ0QCC/JA0ONusjFwzyEf24ZyHM9d0J9AMMqfZR8=
 ![Downloads](https://img.shields.io/npm/dm/iobroker.echarts.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/ioBroker/iobroker.echarts.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/ioBroker/ioBroker.echarts/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.echarts.png?downloads=true)
 
 # IoBroker.echarts
 ## Echarts Adapter für ioBroker
@@ -80,6 +79,19 @@ Sie können Ansichtsdiagramme lokal debuggen mit:
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.4.7 (2020-12-13)
+* (bluefox) Updated the select ID dialog
+
+### 0.4.6 (2020-12-12)
+* (bluefox) Allowed the same names in different folders
+
+### 0.4.5 (2020-12-11)
+* (bluefox) Some sentry errors were corrected.
+* (bluefox) Added the possibility to show actual values in legend.
+
+### 0.4.4 (2020-12-07)
+* (bluefox) Some sentry errors were corrected.
+
 ### 0.4.2 (2020-11-29)
 * (bluefox) Corrected the error with overflow of axis.
 

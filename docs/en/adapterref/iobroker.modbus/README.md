@@ -239,6 +239,9 @@ There are some programs in folder *test' to test the TCP communication:
 -->
 ## Changelog
 
+### 3.2.2 (2020-12-15)
+* (Apollon77) prevent a rash case (Sentry IOBROKER-MODBUS-1S)
+
 ### 3.2.1 (2020-12-12)
 * (Apollon77) prevent a crash case (Sentry IOBROKER-MODBUS-1R)
 
