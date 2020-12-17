@@ -207,12 +207,12 @@ class Blog extends Router {
                             link = prefix + link;
                         }
 
-                        reactObj.props.children[i] = (<div
+                        reactObj.props.children[i] = <div
                             className={this.props.classes.mdLink + ' md-link'}
                             title={link}
                             onClick={() => this.onNavigate(null, link)}>
                             {item.props.children[0]}
-                        </div>);
+                        </div>;
                     }
                 }
 
@@ -224,10 +224,11 @@ class Blog extends Router {
     }
 
     static page2Date(page) {
+
         let date = page.substring(0, 10).replace(/_/g, '.');
         let d = new Date(date);
         if (isNaN(d.getTime())) {
-            date = page.substring(0, 10).replace(/\./g, '-') + 'T00:00:00';
+            date = page.substring(0, 10).replace(/_/g, '-').replace(/\./g, '-') + 'T00:00:00';
             d = new Date(date);
         }
         return d.toLocaleDateString();
@@ -236,13 +237,13 @@ class Blog extends Router {
     renderEntry(page) {
         const data = this.state.content.pages[page];
 
-        return (<Paper key={page} className={this.props.classes.pagePage}>
+        return <Paper key={page} className={this.props.classes.pagePage}>
             {data.logo ? (<div className={this.props.classes.pageLogoDiv} style={{backgroundImage: 'url(' + data.logo + ')'}}/>) : null}
             <h2 className={this.props.classes.pageTitle}  style={{cursor: 'pointer'}} onClick={() => this.props.onNavigate(null, null, page)}>{data.title[this.props.language] || data.title.en}</h2>
-            <div className={this.props.classes.pagePosted}><strong>{data.author || data.Author}</strong> {I18n.t(' posted on %s', Blog.page2Date(page))}</div>
+            <div className={this.props.classes.pagePosted}><strong>{data.author || data.Author}</strong> {I18n.t('posted on %s', Blog.page2Date(page))}</div>
             <p className={this.props.classes.pageDesc}>{data.desc && (data.desc[this.props.language] || data.desc.en || '').replace(/\\n/g, '\n')}</p>
             <Button variant="contained" className={this.props.classes.pageButton} onClick={() => this.props.onNavigate(null, null, page)}>{I18n.t('Read')}</Button>
-        </Paper>);
+        </Paper>;
     }
 
     renderEntries() {
@@ -250,9 +251,9 @@ class Blog extends Router {
             return;
         }
 
-        return (<div className={this.props.classes.pages}>{
+        return <div className={this.props.classes.pages}>{
             Object.keys(this.state.content.pages).map(page => this.renderEntry(page))
-        }</div>);
+        }</div>;
     }
 
     renderPage() {
@@ -273,11 +274,11 @@ class Blog extends Router {
         let next = pos ? Blog.page2Date(pages[pos - 1]) : '';
         let prev = pos + 1 < pages.length ? Blog.page2Date(pages[pos + 1]) : '';
 
-        return (<Paper  className={this.props.classes.pagePage}>
+        return <Paper  className={this.props.classes.pagePage}>
             {header.logo ? (<div className={this.props.classes.pageLogoDiv} style={{backgroundImage: 'url(' + header.logo + ')'}}/>) : null}
             <div className={this.props.classes.pageTitleDiv}>
                 <h2 className={this.props.classes.pageTitle}>{header.title}</h2>
-                <div className={this.props.classes.pagePosted}><strong>{header.author || header.Author}</strong> {I18n.t(' posted on %s', d.toLocaleDateString())}</div>
+                <div className={this.props.classes.pagePosted}><strong>{header.author || header.Author}</strong> {I18n.t('posted on %s', Blog.page2Date(date))}</div>
                 {next ? (<Button variant="contained" className={this.props.classes.pageTitleNextButton} onClick={() => this.onNavigate(null, null, pages[pos - 1])}>{next}&lt;=</Button>) : null}
                 {prev ? (<Button variant="contained" className={this.props.classes.pageTitlePrevButton} onClick={() => this.onNavigate(null, null, pages[pos + 1])}>=&gt;{prev}</Button>) : null}
             </div>
@@ -291,19 +292,21 @@ class Blog extends Router {
                 (<div className={this.props.classes.info}>
                     <a className={this.props.classes.infoEdit} rel="noopener noreferrer" href={header.editLink} target="_blank"><IconEdit />{I18n.t('Edit on github')}</a>
                 </div>) : null}
-        </Paper>);
+        </Paper>;
     }
 
     render() {
         if (this.state.loadTimeout && !this.state.content) {
-            return (<Loader theme={this.props.theme}/>);
+            return <Loader theme={this.props.theme}/>;
         }
 
-        return [(<div key="blog" className={this.props.classes.root}>
+        return [
+            <div key="blog" className={this.props.classes.root}>
                 {this.renderHeader()}
                 {this.state.text ? this.renderPage() : this.renderEntries()}
-                </div>),
-            (<Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>)];
+            </div>,
+            <Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>
+        ];
     }
 }
 
