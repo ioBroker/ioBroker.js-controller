@@ -145,6 +145,14 @@ Abschließend sind die in der CCU angelegten Variablen aufgelistet
 ### FAQ
 
 ## Changelog
+### 3.0.1 (2020-12-16)
+* (foxriver76) fixed enum translations (changed in API)
+* (foxriver76) fixed handling of "favorites" enum
+* __this can be breaking for some users, please check your enums__
+
+### 2.6.25 (2020-12-16)
+* (foxriver76) fix aliases being removed from enums if they contain `hm-rpc.`
+
 ### 2.6.24 (2020-11-03)
 * (foxriver76) now states will be accordingly marked to indicate that rega is down when receiving invalid responses
 

@@ -4,7 +4,7 @@ lastChanged: 05.12.2020
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/linux.md
-hash: 94FZ9JS8K/j3512/RP42QRy2cSacJu+1igJqfvWnKGc=
+hash: DPuTByoYT8n2UCyCvZtJoVvlHI0zNUpefh1s698/TJM=
 ---
 # IoBroker installation on Linux
 !> These instructions do NOT apply to finished images of the website! However, manual installation is preferable to an image.
@@ -15,7 +15,7 @@ The ioBroker then runs under this user.
 
 If reloading a script is too dangerous for you, you can check the script beforehand under [this link](https://raw.githubusercontent.com/ioBroker/ioBroker/stable-installer/installer.sh).
 
-These installation instructions for ioBroker show the installation on Linux using the example of Raspberry Pi with Raspberry OS 'Buster'.
+These installation instructions for ioBroker show the installation on Linux using the example of the Raspberry Pi with Raspberry OS 'Buster'.
 
 Due to dependencies on other packages or additional installations, special features can occur again and again during the installation.
 
@@ -25,7 +25,7 @@ or any other hardware with a common Linux. However, Debian, Ubuntu or one of the
 
 We do not recommend using a Pi 1 as a master. It's just not powerful enough (500MB RAM, etc.). Due to the different hardware, these instructions do not fit a Pi 1 anyway.
 
-Even a Pi 2 or Pi 3 only has a max. 1 GB RAM. With 15 adapter instances this should be sufficient, but beyond that it can be tight. Each adapter instance requires around 40 MB (and sometimes 200MB and more) of RAM. Therefore you should always keep an eye on the RAM usage before activating further adapter instances - 1 GB RAM is finite.
+Even a Pi 2 or Pi 3 only has a max. 1 GB RAM. With 15 adapter instances this should be sufficient, but beyond that it can be tight. Each adapter instance requires around 40 MB (and sometimes 200MB and more) of RAM. You should therefore always keep an eye on the RAM usage before activating further adapter instances - 1 GB of RAM is finite.
 
 Therefore the Raspberry4 with 4, better 8 GB RAM is recommended from the Raspberry series.
 
@@ -58,7 +58,7 @@ For the well-known safety aspects, we advise against it. To install ioBroker, it
 
 The following instructions should also be used for a downgrade.
 
-The currently recommended version is node 12.x; for other desired versions in step 4.1. replace the “12.x” with Y.x ”.
+The currently recommended version is node 12.x; for other desired versions in step 4.1. exchange the “12.x” for Y.x ”.
 
 !> Debian Buster requires at least node.js v10.x !!
 
@@ -76,7 +76,7 @@ Depending on the OS used, the update can also be carried out using ``sudo apt up
 
     ``npm -v``
 
-only if **ALL** these commands do not produce a result (i.e. no longer display the version number) continue with step 4 of this section, otherwise, or if the version does not correspond to the desired, do the following beforehand:
+only if **ALL** these commands do not produce any result (i.e. no longer display the version number) continue with step 4 of this section, otherwise, or if the version does not correspond to the desired, do the following beforehand:
 
 3. Uninstall the existing node & node.js versions
 

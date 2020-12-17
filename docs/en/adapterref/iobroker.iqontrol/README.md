@@ -1054,7 +1054,7 @@ In addition to normal thermostat you can define:
 * **PARTY_TEMPERATURE**: *string* - special-formatted string to define the party- or holiday-mode of homematic-thermostats
 * **BOOST_STATE**: *number* - displays the remaining boost-time of homematic-thermostats
 
-### <img src="img/icons/temperature.png" width="32"> Temperature-Sensor, <img src="img/icons/humidity.png" width="32"> Humidity-Sensor:
+### <img src="img/icons/temperature.png" width="32"> Temperature-Sensor, <img src="img/icons/humidity.png" width="32"> Humidity-Sensor, <img src="img/icons/pressure.png" width="32"> Pressure-Sensor:
 * **STATE**: *number* - temperature or humidity that will be displayed in the lower part of the device
 * **TEMPERATURE**: *number* - temperature that will be displayed in small in the upper right corner
 * **HUMIDITY**: *number* - humidity that will be displayed in small in the upper right corner
@@ -1192,6 +1192,9 @@ This device has some special predefined size- and display-settings to show a web
 ****
     
 ## Changelog
+
+### dev
+* (sbormann) Added pressure sensor.
 
 ### 1.5.2 (2020-12-06)
 * (sbormann) Design-Adjustments for iPhones without home button and devices with notch and rounded corners.

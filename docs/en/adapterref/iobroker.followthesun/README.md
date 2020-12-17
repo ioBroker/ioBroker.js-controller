@@ -23,6 +23,9 @@ Solar-noon values for some days like today, tomorrow or beginn of spring/summer/
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 0.2.5 (2020-12-16)
+* (HGlab01) add unit to solarnoon-values (issue #30)
+
 ### 0.2.4 (2020-12-13)
 * (HGlab01) Prepare for stable repository
 

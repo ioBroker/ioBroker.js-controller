@@ -133,7 +133,7 @@ After clicking on the button "**click here to reload**" on the Config page, all 
 - **Alexa devices**: all previously created alexas are listed here and can be added by clicking
 - **sayit ID**: all previously created sayit devices are listed here and can be added by clicking
 - **whatsapp User**: all previously created whatsapp users are listed here and can be added by clicking
-- **Telegram username**: Here all available Telegram Users are displayed and can be assigned to the device by clicking on them. 
+- **Telegram username**: Here all available Telegram Users are displayed and can be assigned to the device by clicking on them. The respective instance is indicated in the [square] brackets.
 
     **If no names should be displayed:**
     Check, if the entry under "telegram.X.communicate.users" (the X stands for the respective instance, e.g. 0) contains the following structure: "{"ID IN NUMBERS":{"firstName": "User1"}}", if not it can be easily adjusted. The adapter searches for both **firstName** and **userName**. You can decide which name you want to use. Only either the **firstName** or the **userName** can be selected!
@@ -189,6 +189,13 @@ To find out more about the function, simply read about it here at "**default dev
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+
+### 0.7.2 (2020-12-17)
+* (xenon-s) Removed unnecessary debug message
+
+### 0.7.1 (2020-12-17)
+* (xenon-s) fix telegram bug
+* (xenon-s) Deleted incorrect version numbers in the io package
 
 ### 0.7.0 (2020-12-10)
 * (xenon-s) Data is now queried cyclically

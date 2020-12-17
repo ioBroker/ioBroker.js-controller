@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/dev/adapter-dev-faq.md
 title: 常见的适配器开发问题
-hash: xBifYSMkiSeEcOHVKuK3c1SR01Qr030mxrhtOv9htBA=
+hash: eYLJSbvcCz8wYyj3Pa+wrDSZhMY78b6yn9YUWmOxv0E=
 ---
 ＃常见的适配器开发问题
 ＃＃ 介绍
@@ -20,7 +20,7 @@ Ralf于2020年11月24日在ioBroker #adapter Discord频道中与Mic讨论一个�
 ＃ 目录
 -[适配器更新]（＃adapter-updates）
   -[发布适配器更新]（＃publishing-adapter-updates）
--[适配器测试和错误报告]（＃adapter测试和错误报告）
+-[适配器测试和错误报告]（＃适配器测试和错误报告）
   -[紧凑模式]（＃compact-mode）
   -[哨兵]（＃sentry）
 -[适配器配置UI（admin / index_m.html）]（＃adapter-configuration-ui-adminindexmhtml）
@@ -38,7 +38,7 @@ Ralf于2020年11月24日在ioBroker #adapter Discord频道中与Mic讨论一个�
 
  *`io-package.json`：更改版本号并添加最近的更改日志
  *`package.json`：仅更改版本号
- *`README.md`：添加新版本号和更改日志
+ *`README.md`：添加新的版本号和更改日志
 
 请注意，必须使用[语义版本控制]（https://semver.org/），请参阅[版本控制](https://github.com/ioBroker/ioBroker.docs/blob/master/docs/en/dev/adapterdev.md#versioning)。<br> （2020年11月25日）
 
@@ -78,7 +78,7 @@ const WebCall = await axios.get(url,{responseType: "arraybuffer"});
 await Helper.Adapter.writeFileAsync(Helper.Adapter.namespace, `picture.jpg`, WebCall.data)
 ```
 
-之后，ioBroker日志中出现警告：<br> `writeFile will not write this file (picture.jpg) in future versions: <adapter> is not an object of type "meta"`<br>在io-package.json中，必须在instanceObjects中包含meta.user对象：<br>
+之后，ioBroker日志中出现警告：<br> `writeFile will not write this file (picture.jpg) in future versions: <adapter> is not an object of type "meta"`<br>在io-package.json中，必须在instanceObjects中包含一个meta.user对象：<br>
 
 ```
 "instanceObjects": [

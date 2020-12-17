@@ -65,6 +65,9 @@ sendTo('iogo', {
 
 ## Changelog
 
+### 0.6.x
+* (nisio) Changes for ioGo app version 2.3.0+ (older versions no longer supported)
+
 ### 0.5.x
 * (nisio) Changes for ioGo app version 2.1.0+ (older versions no longer supported)
 * (nisio) Split main.js into several files

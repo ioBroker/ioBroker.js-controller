@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.tado/README.md
 title: ioBroker.tado
-hash: ooe+koMCJ4qoikZpsDsD0gd8QQPVasVNmB5EsgYhRpQ=
+hash: TZNiHjYi+xQcj55oEwLLXnVq4nI+BbJlFUGzUf9pCqk=
 ---
 # IoBroker.tado
 
@@ -13,11 +13,12 @@ hash: ooe+koMCJ4qoikZpsDsD0gd8QQPVasVNmB5EsgYhRpQ=
 ![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/iobroker.tado.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.tado/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.tado.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.tado/master.svg)
 
 <img src="./admin/tado.png" width="50" height="50">
 
 [![Übersetzungsstatus] (https://weblate.iobroker.net/widgets/adapters/-/tado/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
+![Testen und freigeben](https://github.com/iobroker-community-adapters/ioBroker.tado/workflows/Test%20and%20Release/badge.svg)
 
 ## Tado-Adapter für ioBroker
 tado ° sorgt für ein angenehmes und gesundes Klima und spart bis zu 31% Ihrer Heizkosten.
@@ -28,20 +29,35 @@ Wenn Ihnen meine Arbeit gefällt, können Sie gerne eine persönliche Spende lei
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
-    ## __WORK IN PROGRESS__
+    ### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__ release comment
-* (DutchmanNL) 
+### 0.2.5 (2020-12-16)
+* (HGlab01) add childLockEnabled
 
-### 0.2.0-beta.1 (2020-08-29)
+### 0.2.4 (2020-11-19)
+* (HGlab01) Improve overlay modes + solve merge issue of version 0.2.3 
+
+### 0.2.3 (2020-11-18)
+* (HGlab01) add overlay methods 'timer'
+* (HGlab01) deal with JSON object overlay or openWindow is null
+* (HGlab01) Bugfix : Cannot read property 'percentage' of undefined
+
+### 0.2.2 (2020-11-02)
+* (HGlab01) add typeSkillBasedApp
+* (HGlab01) add autoAssistFreeTrialEnabled
+* (HGlab01) Add support for autoAssistFreeTrialEnabled
+* (HGlab01) Overlay methods 'manual' and 'next time block'
+
+### 0.2.1 (2020-10-22)
 * (DutchmanNL) Update dependency's
 * (DutchmanNL) Update testing, remove node 8 and add node 14
 * (DutchmanNL) Implement automated deployment with githubActions
-* (HGlab01) Bugfix : Fix unhandled information found in DoReadDevices 
-* (HGlab01) Bugfix : Add legacyHeatingInstallationsEnabled to DoHome
-* (LutzHelling) Bugfix : legacyHeatingInstallationsEnabled
+* (HGlab01) Support incident Detection
 * (LutzHelling) Bugfix : Add orientation
+* (LutzHelling) Bugfix : legacyHeatingInstallationsEnabled
+* (HGlab01) Bugfix : Add legacyHeatingInstallationsEnabled to DoHome
+* (HGlab01) Bugfix : Fix unhandled information found in DoReadDevices 
 
 ### 0.1.9
 * (DutchmanNL) Implement Sentry

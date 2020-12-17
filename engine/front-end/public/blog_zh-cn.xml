@@ -3,8 +3,18 @@
         <title><![CDATA[ ioBroker Blog ]]></title>
         <description><![CDATA[有关ioBroker的新闻，公告和想法]]></description>
         <link>https://www.iobroker.net/#zh-cn/blog</link>
-        <lastBuildDate>Tue, 12 May 2020 06:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 06 Dec 2020 06:00:00 GMT</lastBuildDate>
         <ttl>1440</ttl>
+        <item>
+            <title><![CDATA[圣诞优惠]]></title>
+            <description><![CDATA[
+                <p>为响应大众的要求，从2020年12月8日中午12:00到2021年1月10日晚上11点左右，将再提供一个圣诞节，用于助理和云/远程访问许可证。</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#zh-cn/blog/2020_12_06</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#zh-cn/blog/2020_12_06</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Sun, 06 Dec 2020 06:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[IOB服务器]]></title>
             <description><![CDATA[

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.device-reminder/README.md
 title: ioBroker.device-Erinnerung
-hash: v0ysrVwfjVl2oncnvJg9n/4HMqK570WaT9eGF7kuops=
+hash: H0dvFAj8hHSU/KSVQi2RzAzgvYNoYHtzz7hf1sKxBS8=
 ---
 ![Logo](../../../en/adapterref/iobroker.device-reminder/admin/icon.png)
 
@@ -28,7 +28,7 @@ hash: v0ysrVwfjVl2oncnvJg9n/4HMqK570WaT9eGF7kuops=
 Dieser Adapter kann über Messbuchsen erkennen, ob ein Gerät eingeschaltet, in Betrieb oder ausgeschaltet ist und darauf reagieren. Nachrichten können dann automatisch per Telegramm, WhatsApp, Alexa und Sayit ausgegeben werden (Mehrfachauswahl pro Gerät möglich). Es ist auch möglich, die Steckdose nach Abschluss des Vorgangs automatisch auszuschalten (ebenfalls zeitverzögert). (vorheriges Projekt, aus dem dieser Adapter entwickelt wurde: https://github.com/Xenon-s/js.device-reminder)
 
 ## Was ist zu beachten?
-Das Aktualisierungsintervall vom &quot;Live-Verbrauchswert (bedeutet **&quot; _ Energie &quot;**)&quot; für die meisten Geräte sollte nicht mehr als 10 Sekunden betragen, da es sonst zu sehr verzögerten Nachrichten kommen kann.<br> Befehl in der Tasmota-Konsole: TelePeriod 10<br>
+Das Aktualisierungsintervall vom &quot;Live-Verbrauchswert (bedeutet **&quot; _ Energie &quot;**)&quot; für die meisten Geräte sollte nicht mehr als 10 Sekunden betragen, da sonst möglicherweise sehr verzögerte Meldungen auftreten.<br> Befehl in der Tasmota-Konsole: TelePeriod 10<br>
 
 ## Welche Geräte können momentan überwacht werden?
 Es gibt Standardwerte für die folgenden Geräte:
@@ -49,7 +49,7 @@ Es gibt Standardwerte für die folgenden Geräte:
 - Alexa-Benachrichtigung (mehrere IDs sind möglich)
 - WhatsApp-Benachrichtigung mit mehreren IDs möglich)
 - Benachrichtigungen können frei erstellt oder durch ein externes Skript vordefiniert werden
-- Datenpunkte mit dem aktuellen Status, dem Live-Verbrauch und der zuletzt gesendeten Statusmeldung, um die Werte dieses Adapters in anderen Skripten zu verwenden
+- Datenpunkte mit dem aktuellen Status, dem Live-Verbrauch und der zuletzt gesendeten Statusmeldung, um Werte von diesem Adapter in anderen Skripten zu verwenden
 - Schalten Sie Geräte bei Bedarf aus (auch zeitverzögert), wenn der Vorgang als abgeschlossen erkannt wurde<br>
 
 <br> <br>
@@ -57,7 +57,7 @@ Es gibt Standardwerte für die folgenden Geräte:
 # Anleitung
 ![config.png](../../../en/adapterref/iobroker.device-reminder/admin/config.png)
 
-Zunächst müssen alle gewünschten Geräte, Alexas usw. in der Konfiguration erstellt werden, bevor sie verwendet werden können. Wenn alle Einträge abgeschlossen sind, müssen Sie auf ** "hier klicken, um neu zu laden" ** klicken. Erst dann werden die Geräte wirklich erstellt und können in der Registerkarte "** GERÄTE **" weiter konfiguriert werden.
+Zunächst müssen alle gewünschten Geräte, Alexas usw. in der Konfiguration erstellt werden, bevor sie verwendet werden können. Wenn alle Einträge vollständig sind, müssen Sie auf ** "hier klicken, um neu zu laden" ** klicken. Erst dann werden die Geräte wirklich erstellt und können in der Registerkarte "** GERÄTE **" weiter konfiguriert werden.
 
 ## Gerät erstellen
 Zuerst muss ein neuer Eintrag mit dem **"+ Gerät hinzufügen"** erstellt werden. Dadurch wird die folgende Tabellenzeile erstellt: ![addDevice.png](../../../en/adapterref/iobroker.device-reminder/admin/addDevice.png)
@@ -122,14 +122,14 @@ Wenn alle Geräte und Messenger eingefügt wurden, müssen Sie speichern, indem 
 - **Gerät aus** Status, der angezeigt wird, wenn das Gerät ausgeschaltet wird.
 
 ## Gerät konfigurieren
-Nach dem Klicken auf die Schaltfläche "** hier klicken, um neu zu laden **" auf der Konfigurationsseite werden alle erstellten Geräte angezeigt und können weiter konfiguriert werden.
+Nachdem Sie auf der Konfigurationsseite auf die Schaltfläche "** hier klicken, um neu zu laden **" geklickt haben, werden alle erstellten Geräte angezeigt und können weiter konfiguriert werden.
 
 - **aktiv** Ist standardmäßig aktiviert. Hier können Sie ein Gerät vorübergehend deaktivieren, damit es keine Benachrichtigungen mehr sendet
 - **Gerätename** wird automatisch erstellt
 - **Alexa-Geräte** Alle zuvor erstellten Alexas werden hier aufgelistet und können durch Klicken hinzugefügt werden
 - **sayit ID** Alle zuvor erstellten sayit-Geräte werden hier aufgelistet und können durch Klicken hinzugefügt werden
 - **WhatsApp-Benutzer** Alle zuvor erstellten WhatsApp-Benutzer werden hier aufgelistet und können durch Klicken hinzugefügt werden
-- **Telegramm-Benutzername** Hier werden alle verfügbaren Telegramm-Benutzer angezeigt und können dem Gerät durch Klicken zugewiesen werden.
+- **Telegramm-Benutzername** Hier werden alle verfügbaren Telegramm-Benutzer angezeigt und können dem Gerät durch Klicken zugewiesen werden. Die jeweilige Instanz ist in den [eckigen] Klammern angegeben.
 
 ** Wenn keine Namen angezeigt werden sollen: ** Prüfen Sie, ob der Eintrag unter "telegram.X.communicate.users" (das X steht für die jeweilige Instanz, zB 0) folgende Struktur enthält: "{" ID IN NUMBERS " : {"firstName": "User1"}} ", wenn nicht, kann es einfach angepasst werden. Der Adapter sucht sowohl nach ** Vorname ** als auch nach ** Benutzername **. Sie können entscheiden, welchen Namen Sie verwenden möchten. Es kann nur entweder der ** Vorname ** oder der ** Benutzername ** ausgewählt werden!
 
@@ -143,7 +143,7 @@ Nach dem Klicken auf "** Speichern und schließen **" wird nun unter *Objekte ->
 - den aktuellen Status des Geräts
 - den aktuellen Live-Verbrauch (abgerufen aus dem *Pfadverbrauch / Energie* und
 - die Nachricht an die Boten
-- durchschnittlicher Verbrauch (Kann als Hilfsmittel zur Bestimmung Ihrer eigenen Schwellenwerte verwendet werden)
+- durchschnittlicher Verbrauch (Kann als Hilfe zur Bestimmung Ihrer eigenen Schwellenwerte verwendet werden)
 - nicht stören (wenn aktiviert, werden keine Nachrichten gesendet)
 
 wird angezeigt.<br><br>
@@ -168,7 +168,7 @@ In der ersten Tabelle werden die "Standard" -Werte angezeigt. Diese Werte wurden
 Wenn Sie bisher gelesen haben und immer noch der Meinung sind, dass Sie benutzerdefinierte Werte benötigen, stehen **5 benutzerdefinierte Typen** für das kostenlose Design zur Verfügung.
 benutzerdefinierte Geräte.png] (admin / benutzerdefinierte Geräte.png)
 
-Um mehr über die Funktion zu erfahren, lesen Sie einfach hier unter "** Standardgeräte **".
+Um mehr über die Funktion zu erfahren, lesen Sie sie einfach hier unter "** Standardgeräte **".
 
 # Unterstützung
 ** Wenn dir meine Arbeit gefällt: **<br>
@@ -180,6 +180,16 @@ Um mehr über die Funktion zu erfahren, lesen Sie einfach hier unter "** Standar
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+
+### 0.7.2 (2020-12-17)
+* (xenon-s) Removed unnecessary debug message
+
+### 0.7.1 (2020-12-17)
+* (xenon-s) fix telegram bug
+* (xenon-s) Deleted incorrect version numbers in the io package
+
+### 0.7.0 (2020-12-10)
+* (xenon-s) Data is now queried cyclically
 
 ### 0.6.2 (2020-12-04)
 * (xenon-s) bugfix index_m

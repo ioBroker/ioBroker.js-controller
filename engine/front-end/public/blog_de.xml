@@ -3,8 +3,18 @@
         <title><![CDATA[ ioBroker Blog ]]></title>
         <description><![CDATA[Neuigkeiten, Ankündigungen und Ideen zu ioBroker]]></description>
         <link>https://www.iobroker.net/#de/blog</link>
-        <lastBuildDate>Tue, 12 May 2020 06:00:00 GMT</lastBuildDate>
+        <lastBuildDate>Sun, 06 Dec 2020 06:00:00 GMT</lastBuildDate>
         <ttl>1440</ttl>
+        <item>
+            <title><![CDATA[Weihnachtsangebot]]></title>
+            <description><![CDATA[
+                <p>Auf vielfachen Wunsch gibt es ab dem 08.12.2020 ca. 12:00 Uhr Mittags bis zum 10.01.2021 ca. 23 Uhr wieder ein Weihnachtsangebot für Assistenten- und Cloud/Fernzugriffs-Lizenzen.</p>
+            ]]></description>
+            <link>https://www.iobroker.net/#de/blog/2020_12_06</link>
+            <guid isPermaLink="true">https://www.iobroker.net/#de/blog/2020_12_06</guid>
+            <dc:creator><![CDATA[ ioBroker ]]></dc:creator>
+            <pubDate>Sun, 06 Dec 2020 06:00:00 GMT</pubDate>
+        </item>
         <item>
             <title><![CDATA[iob-Server]]></title>
             <description><![CDATA[

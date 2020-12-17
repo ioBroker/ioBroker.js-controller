@@ -255,7 +255,7 @@
           "title": {
             "en": "System settings",
             "de": "Systemeinstellungen",
-            "ru": "Системные настройки",
+            "ru": "Настройки системы",
             "zh-cn": "系统设置"
           },
           "content": "admin/settings.md"

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.tado/README.md
 title: ioBroker.tado
-hash: ooe+koMCJ4qoikZpsDsD0gd8QQPVasVNmB5EsgYhRpQ=
+hash: TZNiHjYi+xQcj55oEwLLXnVq4nI+BbJlFUGzUf9pCqk=
 ---
 ![安装数量](http://iobroker.live/badges/tado-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.tado.svg)
@@ -11,12 +11,13 @@ hash: ooe+koMCJ4qoikZpsDsD0gd8QQPVasVNmB5EsgYhRpQ=
 ![依赖状态](https://img.shields.io/david/iobroker-community-adapters/iobroker.tado.svg)
 ![已知漏洞](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.tado/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.tado.png?downloads=true)
-![特拉维斯](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.tado/master.svg)
 
 ＃ioBroker.tado
 <img src="./admin/tado.png" width="50" height="50">
 
 [![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/tado/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)
+
+![测试与发布](https://github.com/iobroker-community-adapters/ioBroker.tado/workflows/Test%20and%20Release/badge.svg)
 
 ## Tado ioBroker适配器
 tado°确保舒适健康的气候，同时节省多达31％的暖气费用。
@@ -27,20 +28,35 @@ tado°确保舒适健康的气候，同时节省多达31％的暖气费用。
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
-    ## __WORK IN PROGRESS__
+    ### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__ release comment
-* (DutchmanNL) 
+### 0.2.5 (2020-12-16)
+* (HGlab01) add childLockEnabled
 
-### 0.2.0-beta.1 (2020-08-29)
+### 0.2.4 (2020-11-19)
+* (HGlab01) Improve overlay modes + solve merge issue of version 0.2.3 
+
+### 0.2.3 (2020-11-18)
+* (HGlab01) add overlay methods 'timer'
+* (HGlab01) deal with JSON object overlay or openWindow is null
+* (HGlab01) Bugfix : Cannot read property 'percentage' of undefined
+
+### 0.2.2 (2020-11-02)
+* (HGlab01) add typeSkillBasedApp
+* (HGlab01) add autoAssistFreeTrialEnabled
+* (HGlab01) Add support for autoAssistFreeTrialEnabled
+* (HGlab01) Overlay methods 'manual' and 'next time block'
+
+### 0.2.1 (2020-10-22)
 * (DutchmanNL) Update dependency's
 * (DutchmanNL) Update testing, remove node 8 and add node 14
 * (DutchmanNL) Implement automated deployment with githubActions
-* (HGlab01) Bugfix : Fix unhandled information found in DoReadDevices 
-* (HGlab01) Bugfix : Add legacyHeatingInstallationsEnabled to DoHome
-* (LutzHelling) Bugfix : legacyHeatingInstallationsEnabled
+* (HGlab01) Support incident Detection
 * (LutzHelling) Bugfix : Add orientation
+* (LutzHelling) Bugfix : legacyHeatingInstallationsEnabled
+* (HGlab01) Bugfix : Add legacyHeatingInstallationsEnabled to DoHome
+* (HGlab01) Bugfix : Fix unhandled information found in DoReadDevices 
 
 ### 0.1.9
 * (DutchmanNL) Implement Sentry

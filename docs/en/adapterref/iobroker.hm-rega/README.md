@@ -4,13 +4,13 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.hm-rega/README.md
 title: HomeMatic ReGaHSS
-hash: 5nzOtddjd6p/3BVJJkfR7yHWPQUqVm2mcbdsP7tvrkM=
+hash: G+XgC3bx73W0XgVhW1GkYuvI38TcQQgIsp3P1ggWznM=
 ---
 ![logo](../../../de/adapterref/iobroker.hm-rega/media/homematic.png)
 
 # HomeMatic ReGaHSS
 ## Homematic
-> Homematic is the Smart Home System from eQ-3, which enables the comprehensive control of a wide variety of functions using scenarios (from simple to complex) in the house or apartment.
+> Homematic is the smart home system from eQ-3, which enables the comprehensive control of a wide variety of functions using scenarios (from simple to complex) in the house or apartment.
 
 > The devices include products for light, roller shutter and heating control, hazard detectors, safety sensors and products for measuring weather data. The radio communication simplifies retrofitting. Wire bus components can be used in new buildings.
 
@@ -61,7 +61,7 @@ The required services are then activated and linked to the appropriate HM-RPC in
 
 Polling
 
-If activated, the RegaHSS data is regularly queried by the CCU, based on the seconds set in the Intervals field. The interval should not be set too low, as frequent polling can lead to the CCU crashing.
+If activated, the RegaHSS data is regularly queried by the CCU, based on the seconds set in the Intervals field. The interval should not be set too low, since too frequent polling can lead to a crash of the CCU.
 
 Trigger
 
@@ -76,7 +76,7 @@ Here the user can specify which information is to be transferred from the CCU to
 - Programs: Activates the transfer of the program names from the CCU
 - Names: Activates the transfer of the plain text names of the data points from the CCU
 - Favorites: Activates the transfer and listing of favorites
-- Rooms: Activates the transfer of the rooms and a listing of them
+- Rooms: Activates the takeover of the rooms and a listing of them
 - Trades: Activates the transfer of trades and a list of them
 
 ### Additional settings area
@@ -108,6 +108,14 @@ Finally, the variables created in the CCU are listed
 ### FAQ
 
 ## Changelog
+### 3.0.1 (2020-12-16)
+* (foxriver76) fixed enum translations (changed in API)
+* (foxriver76) fixed handling of "favorites" enum
+* __this can be breaking for some users, please check your enums__
+
+### 2.6.25 (2020-12-16)
+* (foxriver76) fix aliases being removed from enums if they contain `hm-rpc.`
+
 ### 2.6.24 (2020-11-03)
 * (foxriver76) now states will be accordingly marked to indicate that rega is down when receiving invalid responses
 

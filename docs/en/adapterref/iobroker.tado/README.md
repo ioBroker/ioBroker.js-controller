@@ -9,7 +9,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.tado.png?downloads=true)](https://nodei.co/npm/iobroker.tado/)
 
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.tado/master.svg)](https://travis-ci.org/iobroker-community-adapters/ioBroker.tado)
+![Test and Release](https://github.com/iobroker-community-adapters/ioBroker.tado/workflows/Test%20and%20Release/badge.svg)
 
 ## tado adapter for ioBroker
 
@@ -23,8 +23,11 @@ If you like my work, please feel free to provide a personal donation
 ## Changelog
 <!--
     Placeholder for the next version (at the beginning of the line):
-    ## __WORK IN PROGRESS__
+    ### __WORK IN PROGRESS__
 -->
+
+### 0.2.5 (2020-12-16)
+* (HGlab01) add childLockEnabled
 
 ### 0.2.4 (2020-11-19)
 * (HGlab01) Improve overlay modes + solve merge issue of version 0.2.3 

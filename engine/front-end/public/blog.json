@@ -1,5 +1,23 @@
 {
   "pages": {
+    "2020_12_06": {
+      "date": "2020.12.06",
+      "title": {
+        "de": "Weihnachtsangebot",
+        "en": "Christmas offer",
+        "ru": "Рождественское предложение",
+        "zh-cn": "圣诞优惠"
+      },
+      "logo": "de/blog/images/2020_12_06.png",
+      "type": "news",
+      "originalName": "2020_12_06.md",
+      "desc": {
+        "de": "Auf vielfachen Wunsch gibt es ab dem 08.12.2020 ca. 12:00 Uhr Mittags bis zum 10.01.2021 ca. 23 Uhr wieder ein Weihnachtsangebot für Assistenten- und Cloud/Fernzugriffs-Lizenzen.",
+        "en": "Dear ioBroker user,",
+        "ru": "По многочисленным просьбам, с 8 декабря 2020 года около 12:00 до 10 января 2021 года около 23:00 будет еще одно рождественское предложение для лицензий на помощник и облачный / удаленный доступ.",
+        "zh-cn": "为响应大众的要求，从2020年12月8日中午12:00到2021年1月10日晚上11点左右，将再提供一个圣诞节，用于助理和云/远程访问许可证。"
+      }
+    },
     "2020_05_12": {
       "date": "2020.05.12",
       "title": {
