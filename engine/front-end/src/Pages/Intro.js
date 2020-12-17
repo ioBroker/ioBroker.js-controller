@@ -7,7 +7,6 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
 
 import {FaUsers as IconForum} from 'react-icons/fa';
 import {FaAddressCard as IconUsers} from 'react-icons/fa';
@@ -240,7 +239,7 @@ class Intro extends Component {
         >
             <DialogContent>
                 <DialogContentText className={this.props.classes.saleText}>
-                    <img src={SaleImage} alt="sale image" className={this.props.classes.saleImage} />
+                    <img src={SaleImage} alt="sale" className={this.props.classes.saleImage} />
                     <br/>
                     {I18n.t('33% discount on Remote access and Assistants!')}
                 </DialogContentText>

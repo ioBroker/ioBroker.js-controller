@@ -61,11 +61,15 @@ const styles = theme => ({
         width: 'calc(100% - 40px) !important',
     },
     paperPlatforms: {
-        width: 'calc(50% - 40px)',
+        width: 'calc(33% - 40px)',
         height: 400,
     },
     paperLanguages: {
-        width: 'calc(50% - 40px)',
+        width: 'calc(33% - 40px)',
+        height: 400,
+    },
+    paperNodes: {
+        width: 'calc(33% - 40px)',
         height: 400,
     },
     paperCountries: {
@@ -120,7 +124,9 @@ class Statistics extends Component {
             mobile: this.props.mobile || this.props.contentWidth < MAX_MOBILE_WIDTH
         };
 
-        setTimeout(() => Utils.getStatistics().then(statistics => this.setState({statistics, date: new Date(statistics.date).toLocaleDateString() + ' ' + new Date(statistics.date).toLocaleTimeString()})), 200);
+        setTimeout(() => Utils.getStatistics()
+            .then(statistics =>
+                this.setState({statistics, date: new Date(statistics.date).toLocaleDateString() + ' ' + new Date(statistics.date).toLocaleTimeString()})), 200);
     }
 
     componentWillReceiveProps(nextProps) {
@@ -130,7 +136,7 @@ class Statistics extends Component {
     }
 
     renderMap() {
-        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperMap}>
+        return <Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperMap}>
             <IconButton
                 className={this.props.classes.iframeButton}
                 title={I18n.t('Open in new window')}
@@ -138,7 +144,7 @@ class Statistics extends Component {
                 <IconZoom/>
             </IconButton>
             <iframe title="googleMaps" className={this.props.classes.iframe} src={'data/map.html'}/>
-        </Paper>);
+        </Paper>;
     }
 
     renderCountriesTable() {
@@ -148,7 +154,7 @@ class Statistics extends Component {
         const keys = Object.keys(countries);
         keys.forEach(c => sum += countries[c]);
 
-        return (<Table key="table" padding="dense" className={this.props.classes.table}>
+        return <Table key="table" padding="dense" className={this.props.classes.table}>
             <TableHead>
                 <TableRow>
                     <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnVersion} align="right">{I18n.t('Country')}</TableCell>
@@ -164,22 +170,25 @@ class Statistics extends Component {
                         <TableCell className={this.props.classes.tableCell + ' ' + this.props.classes.tableColumnPercent}>{Math.round((countries[c] / sum) * 10000) / 100}%</TableCell>
                     </TableRow>))}
             </TableBody>
-        </Table>);
+        </Table>;
     }
 
     renderCountries() {
-        if (!this.state.statistics) return null;
+        if (!this.state.statistics) {
+            return null;
+        }
 
-        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperCountries + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
+        return <Paper key="countries" className={this.props.classes.paper + ' ' + this.props.classes.paperCountries + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
             {this.renderCountriesTable()}
-        </Paper>)
+        </Paper>;
     }
 
     renderPlatforms() {
-        if (!this.state.statistics) return null;
-        if (!this.state.statistics.platforms) return null;
+        if (!this.state.statistics || !this.state.statistics.platforms) {
+            return null;
+        }
 
-        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperPlatforms + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
+        return <Paper key="plattform" className={this.props.classes.paper + ' ' + this.props.classes.paperPlatforms + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
             <div className={this.props.classes.paperHeader} title={this.state.date}>{I18n.t('Platforms')}</div>
             <PieStats
                 data={this.state.statistics.platforms}
@@ -187,14 +196,15 @@ class Statistics extends Component {
                 startFromPercent={0}
                 series={I18n.t('Platform')}
             />
-        </Paper>)
+        </Paper>;
     }
 
     renderLanguages() {
-        if (!this.state.statistics) return null;
-        if (!this.state.statistics.languages) return null;
+        if (!this.state.statistics || !this.state.statistics.languages) {
+            return null;
+        }
 
-        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperLanguages + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
+        return <Paper key="language" className={this.props.classes.paper + ' ' + this.props.classes.paperLanguages + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
             <div className={this.props.classes.paperHeader} title={this.state.date}>{I18n.t('Languages')}</div>
             <PieStats
                 data={this.state.statistics.languages}
@@ -202,13 +212,33 @@ class Statistics extends Component {
                 height={'380px'}
                 series={I18n.t('Language')}
             />
-        </Paper>)
+        </Paper>;
+    }
+
+    renderNodes() {
+        if (!this.state.statistics || !this.state.statistics.nodes) {
+            return null;
+        }
+
+        return <Paper key="nodes" className={this.props.classes.paper + ' ' + this.props.classes.paperNodes + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
+            <div className={this.props.classes.paperHeader} title={this.state.date}>{I18n.t('Node versions')}</div>
+            <PieStats
+                data={this.state.statistics.nodes}
+                height={'380px'}
+                startFromPercent={0}
+                series={I18n.t('Versions')}
+            />
+        </Paper>;
     }
 
     renderCounters() {
-        if (!this.state.statistics) return null;
+        if (!this.state.statistics) {
+            return null;
+        }
         const counts = this.state.statistics.counts;
-        if (!counts) return null;
+        if (!counts) {
+            return null;
+        }
         const labels = Object.keys(counts);
         const data = [];
         let max = 0;
@@ -266,7 +296,7 @@ class Statistics extends Component {
             }]
         };
 
-        return (<Paper key="map" className={this.props.classes.paper + ' ' + this.props.classes.paperCounters + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
+        return <Paper key="counters" className={this.props.classes.paper + ' ' + this.props.classes.paperCounters + ' ' + (this.state.mobile ? this.props.classes.paperMobile : '')}>
             <div
                 title={this.state.date}
                 className={this.props.classes.paperHeader}>
@@ -280,19 +310,21 @@ class Statistics extends Component {
  //               opts={{renderer: 'svg'}}
                 theme={"westeros"}
             />
-        </Paper>)
+        </Paper>;
     }
 
     render() {
         return [
             this.renderMap(),
-            (<div className={this.props.classes.root}>
+            <div key="stat" className={this.props.classes.root}>
                 {this.renderPlatforms()}
                 {this.renderLanguages()}
+                {this.renderNodes()}
                 {this.renderCounters()}
                 {this.renderCountries()}
                 <Footer key="footer" theme={this.props.theme} mobile={this.props.mobile} onNavigate={this.props.onNavigate}/>
-            </div>)
+            </div>
+
         ];
     }
 }
