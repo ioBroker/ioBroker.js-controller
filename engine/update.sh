@@ -1,6 +1,7 @@
 cd /opt/doc-auto
 /usr/bin/git pull
-chmod 744 engine/update.sh
+cp engine/update.sh ../updateSite.sh
+chmod 744 ../updateSite.sh
 cd engine/front-end/docu
 /usr/bin/git pull
 cd ../../..
