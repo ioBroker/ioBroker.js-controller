@@ -76,6 +76,8 @@ Die momentan empfohlene Version ist node 12.x; bei anderen gewünschten Versione
 
 <span style="color:red"> ungerade nodejs-Versionen sind grundsätzlich nicht empfohlen, da es sich um Entwicklerversionen handelt. </span>
 
+<span style="color:red"> npm wird zusammen mit nodejs passend installiert. Eine manuelle Installation oder Upgrade von npm ist nicht ratsam!  </span>
+
 
 1. System-Update: ``sudo apt-get update && sudo apt-get upgrade``
 
