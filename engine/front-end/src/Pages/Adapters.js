@@ -1,9 +1,9 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionActions from '@material-ui/core/AccordionActions';
 import IconButton from '@material-ui/core/IconButton';
 import Card from '@material-ui/core/Card';
 import CardActionArea from '@material-ui/core/CardActionArea';
@@ -577,18 +577,18 @@ class Adapters extends Component {
         }
         const filter = this.state.filter.toLowerCase();
 
-        return (<ExpansionPanel key={type} expanded={isExpanded} onChange={e => this.onToggle(type, e)}>
-            <ExpansionPanelSummary
+        return (<Accordion key={type} expanded={isExpanded} onChange={e => this.onToggle(type, e)}>
+            <AccordionSummary
                 expandIcon={<IconExpandMore />}
                 style={{width: 'calc(100% - 48px)'}} //workaround because of the bug. On mobile devices the first element is broken
                 className={isExpanded ? this.props.classes.titleExpanded : ''}
             >{
                 this.state.content.pages[type].title[this.props.language] || this.state.content.pages[type].title.en || type
-            }</ExpansionPanelSummary>
-            <ExpansionPanelDetails classes={{root: this.props.classes.details}} style={this.props.mobile ? {textAlign: 'center'} :  {}}>
+            }</AccordionSummary>
+            <AccordionActions classes={{root: this.props.classes.details}} style={this.props.mobile ? {textAlign: 'center'} :  {}}>
                 {isExpanded && Object.keys(items.pages).map(adapter => this.isAdapterVisible(items.pages[adapter], adapter, filter) && this.renderAdapterCard(type, adapter, items.pages[adapter]))}
-            </ExpansionPanelDetails>
-        </ExpansionPanel>);
+            </AccordionActions>
+        </Accordion>);
     }
 
     formatDate(date) {

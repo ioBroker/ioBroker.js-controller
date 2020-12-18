@@ -3,9 +3,9 @@ import PropTypes from 'prop-types';
 import {withStyles} from '@material-ui/core/styles';
 import MarkdownView from 'react-showdown';
 import Paper from '@material-ui/core/Paper';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionActions from '@material-ui/core/AccordionActions';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import IconButton from '@material-ui/core/IconButton';
@@ -372,7 +372,7 @@ class Markdown extends Router {
         this.contentRef = React.createRef();
 
         this.customLink = ({ text, link }) =>
-            (<a className={this.props.classes.mdLink + ' md-link'} onClick={() => {
+            <a className={this.props.classes.mdLink + ' md-link'} onClick={() => {
                 if (link) {
                     if (link.startsWith('#')) {
                         this.onNavigate(Utils.text2link(link.substring(1)))
@@ -389,7 +389,7 @@ class Markdown extends Router {
                         this.onNavigate(null, href);
                     }
                 }
-            }} title={link}>{text}</a>);
+            }} title={link}>{text}</a>;
 
         /*
         if (reactObj && (reactObj.type === 'h1' || reactObj.type === 'h2' || reactObj.type === 'h3' || reactObj.type === 'h3')) {
@@ -403,17 +403,17 @@ class Markdown extends Router {
             const _level = parseInt(level, 10);
 
             if (_level === 1) {
-                return (<h1 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h1>);
+                return <h1 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h1>;
             } else if (_level === 2) {
-                return (<h2 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h2>);
+                return <h2 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h2>;
             } else if (_level === 3) {
-                return (<h3 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h3>);
+                return <h3 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h3>;
             } else if (_level === 4) {
-                return (<h4 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h4>);
+                return <h4 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h4>;
             } else if (_level === 5) {
-                return (<h5 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h5>);
+                return <h5 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h5>;
             } else  {
-                return (<h6 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h6>);
+                return <h6 id={id}><span>{text}</span><a href={prefix + '?' + id} className={this.props.classes.mdHeaderLink + ' md-h-link'}/></h6>;
             }
         };
     }
@@ -550,6 +550,12 @@ class Markdown extends Router {
         text = (text || '').trim();
         let {header, body} = Utils.extractHeader(text);
 
+        // remove comments like <!-- -->
+        body = body.replace(/\r\n|\n/g, '§$§$');
+        body = body.replace(/<!--[^>]*-->/, '\n');
+        body = body.replace(/§\$§\$/g, '\n');
+
+
         body = Utils.removeDocsify(body);
         let {parts, content, license, changeLog, title} = Utils.decorateText(body, header, `${this.props.path && (this.props.path[0] === '/' ? this.props.path : '/' + this.props.path)}`);
 
@@ -564,12 +570,12 @@ class Markdown extends Router {
             const m = parts[i].trim().match(/<([-.\w\d_@]+)>$/);
             if (m) {
                 const email = m[1];
-                authors.push((<span key={parts[i]} className={this.props.classes.email} title={I18n.t('Click to copy %s', email)} onClick={e => {
+                authors.push(<span key={parts[i]} className={this.props.classes.email} title={I18n.t('Click to copy %s', email)} onClick={e => {
                     Utils.onCopy(e, email);
                     this.setState({tooltip: I18n.t('Copied')});
-                }}>{parts[i].replace(m[0], '').trim() + (parts.length - 1 === i ? '' : ', ')}</span>));
+                }}>{parts[i].replace(m[0], '').trim() + (parts.length - 1 === i ? '' : ', ')}</span>);
             } else {
-                authors.push((<span key={parts[i]} className={this.props.classes.name}>{parts[i] + (parts.length - 1 === i ? '' : ', ')}</span>));
+                authors.push(<span key={parts[i]} className={this.props.classes.name}>{parts[i] + (parts.length - 1 === i ? '' : ', ')}</span>);
             }
         }
 
@@ -584,73 +590,73 @@ class Markdown extends Router {
             // Translate language from english to actual language
             translatedFrom = I18n.t(translatedFrom);
 
-            data.push((<div key="translatedFrom" className={this.props.classes.headerTranslated} onClick={() => this.props.onNavigate(this.state.header.translatedFrom)} title={I18n.t('Go to original')}>{I18n.t('Translated from %s', translatedFrom)}</div>));
+            data.push(<div key="translatedFrom" className={this.props.classes.headerTranslated} onClick={() => this.props.onNavigate(this.state.header.translatedFrom)} title={I18n.t('Go to original')}>{I18n.t('Translated from %s', translatedFrom)}</div>);
         }
 
         if (this.state.header.adapter) {
-            data.push((<h1 key="h1">{[
-                this.state.header.logo ? (<img key="logo" src={this.state.header.logo} alt="logo" className={this.props.classes.logoImage}/>) : null,
-                (<div key="title" className={this.props.classes.titleText}>{this.state.header.title}</div>)
-            ]}</h1>));
+            data.push(<h1 key="h1">{[
+                this.state.header.logo ? <img key="logo" src={this.state.header.logo} alt="logo" className={this.props.classes.logoImage}/> : null,
+                <div key="title" className={this.props.classes.titleText}>{this.state.header.title}</div>
+            ]}</h1>);
             if (this.state.header.readme) {
                 const link = this.state.header.readme.replace(/blob\/master\/README.md$/, '');
-                data.push((<IconButton key="github" title={I18n.t('Open repository')} onClick={() => Utils.openLink(link)}><IconGithub/></IconButton>));
+                data.push(<IconButton key="github" title={I18n.t('Open repository')} onClick={() => Utils.openLink(link)}><IconGithub/></IconButton>);
             }
         }
 
         if (this.state.header.description) {
-            data.push((<span key="description" className={this.props.classes.description}>{this.state.header.description}</span>));
+            data.push(<span key="description" className={this.props.classes.description}>{this.state.header.description}</span>);
         }
 
         if (Object.keys(this.state.header).find(attr => ADAPTER_CARD.indexOf(attr) !== -1)) {
-            data.push((<ExpansionPanel key="header" className={this.props.classes.adapterCard}>
-                <ExpansionPanelSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Information')}</ExpansionPanelSummary>
-                <ExpansionPanelDetails><List>{
+            data.push(<Accordion key="header" className={this.props.classes.adapterCard}>
+                <AccordionSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Information')}</AccordionSummary>
+                <AccordionActions><List>{
                     ADAPTER_CARD
                         .filter(attr => this.state.header.hasOwnProperty(attr))
-                        .map(attr => (
+                        .map(attr =>
                             <ListItem key={attr} className={this.props.classes.adapterCardListItem}>
                                 <div className={this.props.classes.adapterCardAttr}>{I18n.t(attr)}: </div>
                                 <span>{attr === 'authors' ? this.formatAuthors(this.state.header[attr]) : this.state.header[attr].toString()}</span>
-                            </ListItem>))}
-                </List></ExpansionPanelDetails>
-                </ExpansionPanel>));
+                            </ListItem>)}
+                </List></AccordionActions>
+                </Accordion>);
         }
 
         if (Object.keys(this.state.header).find(attr => attr.startsWith('BADGE-'))) {
-            data.push((<ExpansionPanel key="header_badges" className={this.props.classes.adapterCard}>
-                <ExpansionPanelSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Badges')}</ExpansionPanelSummary>
-                <ExpansionPanelDetails classes={{root: this.props.classes.badgesDetails}}>{
+            data.push(<Accordion key="header_badges" className={this.props.classes.adapterCard}>
+                <AccordionSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Badges')}</AccordionSummary>
+                <AccordionActions classes={{root: this.props.classes.badgesDetails}}>{
                     Object.keys(this.state.header).filter(attr => attr.startsWith('BADGE-'))
                         .map((attr, i) => [
                                 this.state.header[attr].indexOf('nodei.co') !== -1 ? (<br key={'br' + i}/>) : null,
                                 (<img key={'img' + i} src={this.state.header[attr]} alt={attr.substring(6)}/>)
                             ])}
-                </ExpansionPanelDetails>
-            </ExpansionPanel>));
+                </AccordionActions>
+            </Accordion>);
         }
 
         return data;
     }
 
     renderInfo() {
-        return (<div className={this.props.classes.info}>
+        return <div className={this.props.classes.info}>
             {this.state.header.lastChanged ? [
-                (<span key="lastChangedTitle" className={this.props.classes.infoTitle}>{I18n.t('Last changed:')} </span>),
-                (<span key="lastChangedValue" className={this.props.classes.infoValue}>{this.state.header.lastChanged}</span>),
+                <span key="lastChangedTitle" className={this.props.classes.infoTitle}>{I18n.t('Last changed:')} </span>,
+                <span key="lastChangedValue" className={this.props.classes.infoValue}>{this.state.header.lastChanged}</span>,
                 ] : null}
             {this.state.header.editLink ?
-                (<a className={this.props.classes.infoEdit}
+                <a className={this.props.classes.infoEdit}
                     href={this.state.header.editLink}
                     rel="noopener noreferrer"
                     target="_blank"><IconGithub />{I18n.t('Edit on github')}
-                    </a>) : null}
+                    </a> : null}
             {this.props.editEnabled && this.editText ?
                 <div className={this.props.classes.infoEditLocal} onClick={() => {
                     this.props.onEditMode && this.props.onEditMode(true);
                 }}><IconEdit />{I18n.t('Edit local')}</div> : null}
 
-        </div>);
+        </div>;
     }
 
     _renderSubContent(menu) {
@@ -666,7 +672,9 @@ class Markdown extends Router {
     }
 
     renderAffiliates() {
-        if (!this.state.affiliate) return null;
+        if (!this.state.affiliate) {
+            return null;
+        }
 
         return (<Affiliates
             key="affiliates"
@@ -684,9 +692,9 @@ class Markdown extends Router {
 
     renderContentCloseButton() {
         if (this.state.hideContent) {
-            return (<IconMenu className={this.props.classes.contentClose}/>);
+            return <IconMenu className={this.props.classes.contentClose}/>;
         } else {
-            return (<IconClose className={this.props.classes.contentClose} onClick={() => this.onToggleContentButton()}/>);
+            return <IconClose className={this.props.classes.contentClose} onClick={() => this.onToggleContentButton()}/>;
         }
     }
 
@@ -696,11 +704,11 @@ class Markdown extends Router {
             return null;
         }
         if (this.state.hideContent) {
-            return (<Paper className={this.props.classes.contentDivClosed} onClick={() => this.onToggleContentButton()}>
+            return <Paper className={this.props.classes.contentDivClosed} onClick={() => this.onToggleContentButton()}>
                 {this.renderContentCloseButton()}
-            </Paper>);
+            </Paper>;
         } else {
-            return (<Paper className={this.props.classes.contentDiv}>
+            return <Paper className={this.props.classes.contentDiv}>
                 {this.renderContentCloseButton()}
                 <ul>{
                     links.map(item => {
@@ -716,7 +724,7 @@ class Markdown extends Router {
                         );
                     }).filter(e => e)
                 }</ul>
-            </Paper>);
+            </Paper>;
         }
     }
 
@@ -726,15 +734,15 @@ class Markdown extends Router {
         } else {
             const CustomLink = this.customLink;
             const CustomH = this.customH;
-            return (<ExpansionPanel>
-                <ExpansionPanelSummary
+            return <Accordion>
+                <AccordionSummary
                     className={this.props.classes.summary}
                     classes={{expanded: this.props.classes.summaryExpanded}}
-                    expandIcon={<IconExpandMore />}>{I18n.t('License')} <span className={this.props.classes.license}> {this.state.header.license}</span></ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+                    expandIcon={<IconExpandMore />}>{I18n.t('License')} <span className={this.props.classes.license}> {this.state.header.license}</span></AccordionSummary>
+                <AccordionActions>
                     <MarkdownView markdown={this.state.license} options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>);
+                </AccordionActions>
+            </Accordion>;
         }
     }
 
@@ -744,12 +752,12 @@ class Markdown extends Router {
         } else {
             const CustomLink = this.customLink;
             const CustomH = this.customH;
-            return (<ExpansionPanel>
-                <ExpansionPanelSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Changelog')}</ExpansionPanelSummary>
-                <ExpansionPanelDetails>
+            return <Accordion>
+                <AccordionSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.summaryExpanded}} expandIcon={<IconExpandMore />}>{I18n.t('Changelog')}</AccordionSummary>
+                <AccordionActions>
                     <MarkdownView markdown={this.state.changeLog} options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>
-                </ExpansionPanelDetails>
-            </ExpansionPanel>);
+                </AccordionActions>
+            </Accordion>;
         }
     }
 
@@ -767,7 +775,7 @@ class Markdown extends Router {
                     className={this.props.classes.close}
                     onClick={() => this.setState({tooltip: ''})}
                 >
-                    <IconClose />
+                    <IconClose/>
                 </IconButton>,
             ]}
         />)
@@ -851,7 +859,7 @@ class Markdown extends Router {
         }*/
     }
 
-    renderTable(lines) {
+    renderTable(lines, key) {
         const header = lines[0].replace(/^\||\|$/g, '').split('|').map(h => h.trim());
         const CustomLink = this.customLink;
         const CustomH = this.customH;
@@ -863,34 +871,33 @@ class Markdown extends Router {
             const cells = [];
             for (let j = 0; j < header.length; j++) {
                 parts[j] = this.replaceHref(parts[j]);
-                const crt = (<MarkdownView markdown={parts[j] || ''}  options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>);
-                cells.push((<TableCell className={this.props.classes.tableCell} key={'cell' + i + '_' + j}>{crt}</TableCell>));
+                const crt = <MarkdownView markdown={parts[j] || ''}  options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>;
+                cells.push(<TableCell className={this.props.classes.tableCell} key={'cell' + i + '_' + j}>{crt}</TableCell>);
             }
 
-            rows.push((<TableRow className={this.props.classes.tableRow} key={'row' + i}>{cells}</TableRow>));
+            rows.push(<TableRow className={this.props.classes.tableRow} key={'row' + i}>{cells}</TableRow>);
         }
-        return (
-            <Table padding="dense" className={this.props.classes.table}>
-                <TableHead className={this.props.classes.tableHead}>
-                    <TableRow className={this.props.classes.tableRowHead}>
-                        {
-                            header.map((h, i) =>
-                                (<TableCell className={this.props.classes.tableCellHead} key={'header' + i}>
-                                    <MarkdownView markdown={h} options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>
-                                </TableCell>))
-                        }
-                    </TableRow>
-                </TableHead>
-                <TableBody className={this.props.classes.tableBody}>{rows}</TableBody>
-            </Table>);
+        return <Table key={'table_' + key} size="small" className={this.props.classes.table}>
+            <TableHead className={this.props.classes.tableHead}>
+                <TableRow className={this.props.classes.tableRowHead}>
+                    {
+                        header.map((h, i) =>
+                            <TableCell className={this.props.classes.tableCellHead} key={'header' + i}>
+                                <MarkdownView markdown={h} options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>
+                            </TableCell>)
+                    }
+                </TableRow>
+            </TableHead>
+            <TableBody className={this.props.classes.tableBody}>{rows}</TableBody>
+        </Table>;
     }
 
     render() {
         if (this.state.notFound) {
-            return (<Page404 className={this.props.classes.root} language={this.props.language}/>);
+            return <Page404 className={this.props.classes.root} language={this.props.language}/>;
         }
         if (this.props.editMode) {
-            return (<Editor
+            return <Editor
                 language={this.props.language}
                 mobile={this.props.mobile}
                 theme={this.props.theme}
@@ -898,10 +905,10 @@ class Markdown extends Router {
                 onClose={() => {
                     this.props.onEditMode && this.props.onEditMode(false);
                 }}
-            />);
+            />;
         }
         if (this.state.loadTimeout && !this.state.parts.length) {
-            return (<Loader theme={this.props.theme}/>);
+            return <Loader theme={this.props.theme}/>;
         }
 
         const prefix = window.location.hash.split('?')[0];
@@ -911,7 +918,7 @@ class Markdown extends Router {
 
         const reactElements = this.state.parts.map((part, i) => {
             if (part.type === 'table') {
-                return this.renderTable(part.lines);
+                return this.renderTable(part.lines, i);
             } else {
                 let line = part.lines.join('\n');
                 if (part.type === 'code') {
@@ -931,25 +938,28 @@ class Markdown extends Router {
                 line = this.replaceHref(line);
                 line = this.makeHeadersAsLink(line, prefix);
 
-                const rct = (<MarkdownView markdown={line} options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>);
+                // replace <- with &lt;
+                line = line.replace(/<-/g, '&lt;-');
+
+                const rct = <MarkdownView markdown={line} options={CONVERTER_OPTIONS} components={{CustomLink, CustomH}}/>;
 
                 if (part.type === 'warn') {
-                    return (<div key={'parts' + i} className={this.props.classes.warn}>{rct}</div>);
+                    return <div key={'parts' + i} className={this.props.classes.warn}>{rct}</div>;
                 } else if (part.type === 'alarm') {
-                    return (<div key={'parts' + i} className={this.props.classes.alarm}>{rct}</div>);
+                    return <div key={'parts' + i} className={this.props.classes.alarm}>{rct}</div>;
                 } else if (part.type === 'notice') {
-                    return (<div key={'parts' + i} className={this.props.classes.notice}>{rct}</div>);
+                    return <div key={'parts' + i} className={this.props.classes.notice}>{rct}</div>;
                 }  else if (part.type === '@@@') {
-                    return (<div key={'parts' + i} className={this.props.classes.todo}>{rct}</div>);
+                    return <div key={'parts' + i} className={this.props.classes.todo}>{rct}</div>;
                 } else {
                     return <div key={'parts' + i} className={this.props.classes.paragraph}>{rct}</div>;
                 }
             }
         });
 
-        return (<div className={this.props.classes.root} ref={this.contentRef}>
+        return <div className={this.props.classes.root} ref={this.contentRef}>
             {this.renderHeader()}
-            {this.state.title && !this.state.header.adapter ? (<h1>{this.state.title}</h1>) : null}
+            {this.state.title && !this.state.header.adapter ? <h1>{this.state.title}</h1> : null}
             {this.renderAffiliates()}
             {reactElements}
             <hr/>
@@ -958,7 +968,7 @@ class Markdown extends Router {
             {this.renderInfo()}
             {this.renderContent()}
             {this.renderSnackbar()}
-        </div>);
+        </div>;
     }
 }
 

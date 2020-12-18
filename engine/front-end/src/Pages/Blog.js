@@ -130,7 +130,8 @@ class Blog extends Router {
         this.load();
 
         // Give 300ms to load the page. After that show the loading indicator.
-        setTimeout(() => !this.state.content && this.setState({ loadTimeout: true }), 300);
+        setTimeout(() =>
+            !this.state.content && this.setState({ loadTimeout: true }), 300);
 
         this.contentRef = React.createRef();
     }
@@ -257,7 +258,9 @@ class Blog extends Router {
     }
 
     renderPage() {
-        if (!this.state.text) return;
+        if (!this.state.text) {
+            return;
+        }
 
         let date = this.page.substring(0, 10).replace(/_/g, '.');
         const d = new Date(date);
@@ -275,23 +278,23 @@ class Blog extends Router {
         let prev = pos + 1 < pages.length ? Blog.page2Date(pages[pos + 1]) : '';
 
         return <Paper  className={this.props.classes.pagePage}>
-            {header.logo ? (<div className={this.props.classes.pageLogoDiv} style={{backgroundImage: 'url(' + header.logo + ')'}}/>) : null}
+            {header.logo ? <div className={this.props.classes.pageLogoDiv} style={{backgroundImage: 'url(' + header.logo + ')'}}/> : null}
             <div className={this.props.classes.pageTitleDiv}>
                 <h2 className={this.props.classes.pageTitle}>{header.title}</h2>
                 <div className={this.props.classes.pagePosted}><strong>{header.author || header.Author}</strong> {I18n.t('posted on %s', Blog.page2Date(date))}</div>
-                {next ? (<Button variant="contained" className={this.props.classes.pageTitleNextButton} onClick={() => this.onNavigate(null, null, pages[pos - 1])}>{next}&lt;=</Button>) : null}
-                {prev ? (<Button variant="contained" className={this.props.classes.pageTitlePrevButton} onClick={() => this.onNavigate(null, null, pages[pos + 1])}>=&gt;{prev}</Button>) : null}
+                {next ? <Button variant="contained" className={this.props.classes.pageTitleNextButton} onClick={() => this.onNavigate(null, null, pages[pos - 1])}>{next}&lt;=</Button> : null}
+                {prev ? <Button variant="contained" className={this.props.classes.pageTitlePrevButton} onClick={() => this.onNavigate(null, null, pages[pos + 1])}>=&gt;{prev}</Button> : null}
             </div>
 
             {header.translatedFrom ?
-                (<div className={this.props.classes.pageTitleTranslated}>{I18n.t('Translated from %s', header.translatedFrom)}</div>) : null}
+                <div className={this.props.classes.pageTitleTranslated}>{I18n.t('Translated from %s', header.translatedFrom)}</div> : null}
 
             <div className={this.props.classes.pageDesc}>{reactElement}</div>
 
             {header.editLink ?
-                (<div className={this.props.classes.info}>
+                <div className={this.props.classes.info}>
                     <a className={this.props.classes.infoEdit} rel="noopener noreferrer" href={header.editLink} target="_blank"><IconEdit />{I18n.t('Edit on github')}</a>
-                </div>) : null}
+                </div> : null}
         </Paper>;
     }
 

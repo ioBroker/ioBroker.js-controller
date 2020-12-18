@@ -8,9 +8,9 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
-import ExpansionPanel from '@material-ui/core/ExpansionPanel';
-import ExpansionPanelSummary from '@material-ui/core/ExpansionPanelSummary';
-import ExpansionPanelDetails from '@material-ui/core/ExpansionPanelDetails';
+import Accordion from '@material-ui/core/Accordion';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
+import AccordionActions from '@material-ui/core/AccordionActions';
 
 import {MdExpandMore as IconExpandMore, MdHelpOutline as IconQuestion} from 'react-icons/md';
 
@@ -121,12 +121,12 @@ class Affiliates extends Component {
 
     renderExpands() {
         if (this.props.data.length > 1) {
-            return (<ExpansionPanel key="expansion" className={this.props.classes.morePanel}>
-                <ExpansionPanelSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.moreSummary}} expandIcon={<IconExpandMore />}>{I18n.t('More devices')}</ExpansionPanelSummary>
-                <ExpansionPanelDetails className={this.props.classes.moreDetails}>
+            return (<Accordion key="expansion" className={this.props.classes.morePanel}>
+                <AccordionSummary className={this.props.classes.summary} classes={{expanded: this.props.classes.moreSummary}} expandIcon={<IconExpandMore />}>{I18n.t('More devices')}</AccordionSummary>
+                <AccordionActions className={this.props.classes.moreDetails}>
                     {this.props.data.filter((a, i) => i > 0).map(a => this.renderOne(a))}
-                </ExpansionPanelDetails>
-            </ExpansionPanel>)
+                </AccordionActions>
+            </Accordion>)
         } else {
             return null;
         }
