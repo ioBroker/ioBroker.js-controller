@@ -1193,7 +1193,8 @@ This device has some special predefined size- and display-settings to show a web
     
 ## Changelog
 
-### dev
+### 1.5.3 (2020-12-18)
+* (sbormann) Fix for black-colour-options-bug for new instances.
 * (sbormann) Added pressure sensor.
 
 ### 1.5.2 (2020-12-06)

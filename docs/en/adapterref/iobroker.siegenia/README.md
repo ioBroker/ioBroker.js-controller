@@ -37,6 +37,10 @@ Timers and other more complex data are shown by the adapter, but can be changed 
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) update dependencies
+* (Apollon77) disconnect device if authentication was not successful
+
 ### 1.0.0
 * (Apollon77) initial release
 

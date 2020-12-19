@@ -4,7 +4,7 @@ lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/adapterref.md
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
-hash: Pc2ieRRwfM3/TwXKAf+uQpuAfbO9vFy550NsNpmtL98=
+hash: mkyOCOATGB6OPsXizLqQQTSKyaB0TR/9t4xz3wjriio=
 ---
 # Adapterreferenz
 ## Datenstruktur - Objekte und Zustände
@@ -52,7 +52,7 @@ Es wird verwendet, um die Koordination von Geräten, Kanälen und Zuständen in 
 
 ?> Hinweis: Wenn der Adapter nicht so komplex ist, können die Geräte und sogar Kanäle weggelassen werden.
 
-** Adapter ** ist nur das Paket von Dateien und wird im Verzeichnis node_modules abgelegt. Für jeden Adapter finden Sie die Beschreibung dieses Adapters im Objekt "system.adapter.adapterName". Es sind nur die Felder "common" und "native" aus der Datei io-package.json. Dieser Eintrag wird automatisch erstellt, wenn iobroker adapterName installiert oder iobroker adapterName hinzufügt. Wenn der Adapter mit npm installiert wurde, wird iobroker.adapterName installiert. Bis zur Erstellung der ersten Instanz wird kein Eintrag erstellt. Aber es ist nicht so wichtig. Die für "Updates" erforderlichen Informationen werden direkt aus io-package.json gelesen. Eine vollständige Liste der allgemeinen Einstellungen für den Adapter finden Sie in [Hier](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#adapter).
+** Adapter ** ist nur das Paket von Dateien und wird im Verzeichnis node_modules abgelegt. Für jeden Adapter finden Sie die Beschreibung dieses Adapters im Objekt "system.adapter.adapterName". Es sind nur die Felder "common" und "native" aus der Datei io-package.json. Dieser Eintrag wird automatisch erstellt, wenn iobroker adapterName installiert oder iobroker adapterName hinzufügt. Wenn der Adapter mit npm install iobroker.adapterName installiert wurde, wird bis zur Erstellung der ersten Instanz kein Eintrag erstellt. Aber es ist nicht so wichtig. Die für "Updates" erforderlichen Informationen werden direkt aus io-package.json gelesen. Eine vollständige Liste der allgemeinen Einstellungen für den Adapter finden Sie in [Hier](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#adapter).
 
 ** Instanz ** ist eine Instanz des Adapters. Je nach Adaptertyp kann mehr als eine Instanz erstellt werden. Bei einigen Adaptern kann jedoch nicht mehr als eine Instanz erstellt werden. Z.B. Im Falle von Vis oder Rikscha kann nur eine Instanz erstellt werden. Dieses Verhalten wird durch Flags in io-package.json gesteuert.
 
@@ -117,7 +117,7 @@ Der Adapter muss einer Namenskonvention entsprechen, um vom ioBroker-Controller 
 * Der Name des Adapters muss eindeutig sein, in Kleinbuchstaben, ohne Sonderzeichen und ohne Leerzeichen. "-", "_" sind im Namen des Adapters zulässig.
 
 ## Struktur von io-package.json
-io-package.json wird von js-controller verwendet, um Informationen zum Adapter anzuzeigen und zu wissen, wie er zu behandeln ist. Eine vollständige Beschreibung aller Felder im gemeinsamen Teil finden Sie hier
+io-package.json wird von js-controller verwendet, um Informationen zum Adapter anzuzeigen und zu wissen, wie er behandelt wird. Eine vollständige Beschreibung aller Felder im gemeinsamen Teil finden Sie hier
 
 io-package.json wird von "admin" gelesen, um die Online-Version des Adapters herauszufinden.
 
@@ -215,7 +215,7 @@ Einige bestimmte Objekte oder Objekte mit Typzuständen können in `instanceObje
 
 Für jede erstellte Instanz werden alle Einträge aus dem Feld `instanceObjects` erstellt.
 
-Zum Beispiel erstellt der Adapter `hm-rpc` den Status `updated` für jede Instanz, um einem anderen Adapter ein Signal zu geben, dass einige neue Geräte im Datenspeicher erscheinen und dass sie von `hm-rega` verarbeitet werden müssen.
+Zum Beispiel erstellt der Adapter `hm-rpc` für jede Instanz den Status `updated`, um einem anderen Adapter ein Signal zu geben, dass einige neue Geräte im Datenspeicher erscheinen und dass sie von `hm-rega` verarbeitet werden müssen.
 
 ```
 "instanceObjects": [
@@ -331,7 +331,7 @@ Weil der Adapter in drei verschiedenen Pfaden installiert werden kann:
 * `... / iobroker.js-controller / node_modules / iobroker.adapterName` - wird beim Debuggen verwendet
 * `... / iobroker.js-controller / adapter / adapterName` - alter Stil (veraltet)
 
-utils.js macht nichts anderes als sucht nach der Datei `iobroker.js-controller/lib/adapter.js` und lädt sie.
+utils.js sucht nur nach der Datei `iobroker.js-controller/lib/adapter.js` und lädt sie.
 
 ```
 var adapter = utils.adapter('adapterName'); // - mandatory
@@ -361,7 +361,7 @@ Anschließend können Sie alle anderen im Adapter erforderlichen Module laden, z
 Vergessen Sie nur nicht, sie in `package.json` zu deklarieren.
 
 ### Optionen des Adapters
-Sie können Adapterobjekte nur mit Namen wie `utils.adapter('adapterName')` oder mit zusätzlichen Parametern wie: erstellen.
+Sie können Adapterobjekte nur mit Namen wie `utils.adapter('adapterName')` oder mit zusätzlichen Parametern wie: erstellen
 
 ```
 var adapter = utils.adapter({
@@ -569,7 +569,7 @@ Selbst wenn der Benutzer das Licht physisch einschaltet, wird der neue Status mi
 Z.B. wenn der Benutzer in `vis` die Taste gedrückt und den Befehl `hm-rpc.0.kitchen.light=ON` gesendet hat.
 Der Socket-io-Adapter sendet den neuen Status mit `kitchen.light = {val: 1, ack: false}` an die Instanz `hm-rpc.0`.
 
-Der homematische Adapter ist für alle Zustände von `hm-rpc.0` abonniert, und wenn der neue Zustand mit `ack=false` empfangen wird, sendet er den neuen Wert an den physischen Schalter.
+Der Homematikadapter ist für alle Zustände von `hm-rpc.0` abonniert, und wenn der neue Zustand mit `ack=false` empfangen wird, sendet er den neuen Wert an den physischen Schalter.
 
 Der physische Schalter führt den Befehl aus und sendet den neuen eigenen Status EIN an den `hm-rpc` Adapter.
 Der Adapter `hm-rpc.0` veröffentlicht den neuen Status des Staates `hm-rpc.0.kitchen.light={val: 1, ack: true}` (mit Zeitstempeln).
@@ -616,8 +616,8 @@ Der Adapter kann in verschiedenen Modi ausgeführt werden. Der Modus für den Ad
 
 * `none` - Dieser Adapter wird nicht gestartet.
 * `daemon` - immer laufender Prozess (wird neu gestartet, wenn der Prozess beendet wird)
-* `subscribe` - wird gestartet, wenn der Status system.adapter ... lebendig auf true wechselt. Wird beendet, wenn .alive in false geändert wird, und setzt .alive auf false, wenn der Prozess beendet wird (wird beim Beenden des Prozesses nicht neu gestartet).
-* `Zeitplan` - wird nach dem in system.adapter ... common.schedule gefundenen Zeitplan gestartet - reagiert auf Änderungen des .schedule durch Umplanen mit neuem Status
+* `subscribe` - wird gestartet, wenn der Status system.adapter ... lebendig auf true wechselt. Wird beendet, wenn .alive in false geändert wird, und setzt .alive auf false, wenn der Prozess beendet wird (wird beim Beenden des Prozesses nicht neu gestartet)
+* `Zeitplan` - wird nach dem in system.adapter ... common.schedule gefundenen Zeitplan gestartet - reagiert auf Änderungen des .schedule durch Neuplanung mit neuem Status
 * `einmal` - Dieser Adapter wird jedes Mal gestartet, wenn das Objekt system.adapter .. geändert wird. Es wird nach Beendigung nicht neu gestartet.
 
 Normalerweise sollten Adapter den Modus-Daemon verwenden.
@@ -781,7 +781,7 @@ Vor der Veröffentlichung in npm: In ioBroker / node_modules kopieren, zu `admin
 * Instanz des Adapters deaktivieren
 * Starten Sie WebStorm
 * Konfiguration für Debug mit node.js erstellen
-* Flags für die Anwendung: `--force, instance, log level` (Sie können den Adapter als` node xxx.js 1 debug --force` starten, 1 ist der Instanzindex (standardmäßig 0, debug ist die Protokollebene und `- -force` bedeutet, dass die Einstellungen "enabled: false" ignoriert werden.)
+* Flags für die Anwendung: `--force, Instanz, Protokollebene` (Sie können den Adapter als` Knoten xxx.js 1 Debug --force` starten, 1 ist Instanzindex (standardmäßig 0, Debug ist Protokollebene und `- -force` bedeutet, dass die Einstellungen "enabled: false" ignoriert werden.)
 
 ## Admin.html
 ```

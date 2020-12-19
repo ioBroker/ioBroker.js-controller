@@ -4,12 +4,12 @@ lastChanged: 05.12.2020
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/linux.md
-hash: DPuTByoYT8n2UCyCvZtJoVvlHI0zNUpefh1s698/TJM=
+hash: XmY7S1vrV+GwIHYeZ3/awCCbzNequtdZakfsn3z75aA=
 ---
 ＃在Linux上安装ioBroker
 ！>这些说明不适用于网站的成品图片！但是，手动安装比映像更可取。
 
-使用脚本执行安装，该脚本执行必需的安装步骤并重新加载可能需要的所有软件包。
+使用脚本执行安装，该脚本执行所需的安装步骤并重新加载可能需要的所有软件包。
 在安装过程中，系统中会创建一个新用户“ iobroker”和一个关联的主目录（/ home / iobroker）。
 ioBroker然后在该用户下运行。
 
@@ -17,13 +17,13 @@ ioBroker然后在该用户下运行。
 
 ioBroker的这些安装说明以带有Raspberry OS'Buster'的Raspberry Pi为例显示了在Linux上的安装。
 
-由于依赖于其他软件包或其他安装，在安装过程中总是会出现特殊功能。
+由于依赖于其他软件包或其他安装，特殊功能可能在安装过程中一次又一次地出现。
 
 ##必需的硬件
 ### Raspberry Pi 2/3/4
 或任何其他具有常见Linux的硬件。但是，建议使用Debian，Ubuntu或基于它们的发行版之一。
 
-我们不建议将Pi 1用作主机。它只是不够强大（500MB RAM等）。由于硬件不同，这些说明仍然不适用于Pi 1。
+我们不建议使用Pi 1作为主机。它只是不够强大（500MB RAM等）。由于硬件不同，这些说明仍然不适用于Pi 1。
 
 即使是Pi 2或Pi 3也只有最大。 1 GB RAM。对于15个适配器实例，这应该足够了，但除此之外，它可能会很严格。每个适配器实例需要大约40 MB（有时甚至200MB甚至更多）的RAM。因此，在激活其他适配器实例之前，您应始终注意RAM的使用-1 GB RAM是有限的。
 
@@ -42,7 +42,7 @@ ioBroker的这些安装说明以带有Raspberry OS'Buster'的Raspberry Pi为例�
 *油灰：http：//www.putty.org/
 
 ＃＃ 安装指南
-###安装操作系统
+###操作系统安装
 *根据所使用的硬件，安装所需的基本操作系统（Raspian Stretch，Ubuntu，Debian等）。
 
 有关相应版本的帮助和说明可在相应的支持页面，YouTube等上找到。
@@ -64,37 +64,39 @@ ioBroker的这些安装说明以带有Raspberry OS'Buster'的Raspberry Pi为例�
 
 <span style="color:red">通常不建议使用奇数的nodejs版本，因为它们是开发人员版本。</span>
 
+<span style="color:red">npm与nodejs一起正确安装。不建议手动安装或升级npm！</span>
+
 1.系统更新：“ sudo apt-get update && sudo apt-get upgrade”
 
 根据所使用的操作系统，也可以使用“`sudo apt update && sudo apt upgrade`”来执行更新。
 
 2.测试nodejs和npm的现有版本。
 
-    ``node -v``
+    `node -v``
 
-    ``nodejs -v``
+    `nodejs -v``
 
-    ``npm -v``
+    `npm -v``
 
-仅当** ALL **这些命令没有产生任何结果（即不再显示版本号）时才继续本节的步骤4，否则，或者如果版本与所需的版本不符，请事先执行以下操作：
+仅当** ALL **这些命令没有产生结果（即不再显示版本号）时才继续本节的步骤4，否则，或者如果版本与所需的版本不符，请事先执行以下操作：
 
 3.卸载现有的node＆node.js版本
 
     ``sudo apt-get --purge remove node``（可能是错误消息出现在这里。请继续！）
 
-    ``sudo apt-get --purge remove nodejs``
+    `sudo apt-get --purge remove nodejs``
 
-    ``sudo apt-get autoremove``
+    `sudo apt-get autoremove``
 
-    ``sudo reboot``
+    `sudo reboot``
 
 4.重新安装适用于Linux和Raspberry 2/3的Node.js
 
-    ``curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -``
+    `curl -sL https://deb.nodesource.com/setup_12.x | sudo -E bash -``
 
-    ``sudo apt install -y nodejs``
+    `sudo apt install -y nodejs``
 
-    ``sudo reboot``
+    `sudo reboot``
 
 安装后，命令“ node -v”和“ nodejs -v”必须返回相同的版本号。
 
@@ -104,7 +106,7 @@ ioBroker的这些安装说明以带有Raspberry OS'Buster'的Raspberry Pi为例�
 
 如果版本不同，请再次浏览[安装Node.js](#installation-nodejs)部分
 
-    作为最后检查，请使用``npm -v``检查npm的版本。
+    作为最终检查，请使用``npm -v``检查npm的版本。
 
 如果结果是版本<6，请使用``sudo -H npm install -g npm@6``执行npm更新。
 
@@ -115,25 +117,25 @@ ioBroker的这些安装说明以带有Raspberry OS'Buster'的Raspberry Pi为例�
 
 在控制台上运行：
 
-``curl -sLf https://iobroker.net/install.sh | bash -``
+`curl -sLf https://iobroker.net/install.sh | bash -``
 
 ---
 
-安装分为四个步骤：
+安装过程分为四个步骤：
 
-``Installing prerequisites (1/4)``
+`Installing prerequisites (1/4)``
 
-``Creating ioBroker user and directory (2/4)``
+`Creating ioBroker user and directory (2/4)``
 
-``Installing ioBroker (3/4)``
+`Installing ioBroker (3/4)``
 
-``Finalizing installation (4/4)``
+`Finalizing installation (4/4)``
 
 最后有消息
 
-``ioBroker was installed successfully``
+`ioBroker was installed successfully``
 
-``Open http://localhost:8081 in a browser and start configuring!``
+`Open http://localhost:8081 in a browser and start configuring!``
 
 ---
 
@@ -141,7 +143,7 @@ ioBroker的这些安装说明以带有Raspberry OS'Buster'的Raspberry Pi为例�
 
 **注意：**
 
-这些命令从1月初到1月中旬与安装例程一起使用：
+这些命令在1月初至1月中旬与安装例程一起使用：
 
 * iobroker停止
 * iobroker开始
@@ -154,13 +156,13 @@ ioBroker的这些安装说明以带有Raspberry OS'Buster'的Raspberry Pi为例�
 
 * sudo systemctl停止iobroker
 
-或者可以使用其他等效项
+或可以使用其他等效项
 
 此外，可能存在权利问题。
 
 在这种情况下，请使用安装修复程序：
 
-``curl -sL https://iobroker.net/fix.sh | bash -``
+`curl -sL https://iobroker.net/fix.sh | bash -``
 
 论坛中的更多信息：
 

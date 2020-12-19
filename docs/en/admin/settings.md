@@ -4,10 +4,10 @@ lastChanged: 27.03.2019
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/admin/settings.md
-hash: 02egT4dS8FPOlfDkZM4zQwt/5ydE8a4Uba+M1PJ66n8=
+hash: s6o2Rv2JpMj2fiMJqFO3Z5NSWJCOg8Boyq6qyw/Ih4Q=
 ---
 # The system settings
-The system settings can be accessed from every menu point of the administrator via the wrench icon in the title bar of the screen.
+The system settings can be reached from every menu point of the administrator via the wrench icon in the title bar of the screen.
 
 ![The system settings](../../de/admin/media/ADMIN_Settings_main.png)
 
@@ -24,7 +24,7 @@ so you can choose between different system languages. It is possible that not al
 
 ** temperature unit **
 
-this value is used by some adapters. °C or °F is possible.
+this value is used by some adapters. It can be °C or °F.
 
 **Currency**
 
@@ -40,13 +40,13 @@ Comma or period for float values
 
 ** Standard history instance **
 
-In this instance the data is logged by default and used in the charts of flot and rickshaw.
+The data is logged in this instance by default and used in the charts of flot and rickshaw.
 
 If only one history adapter (SQL / History / InfluxDB) is installed, it is used; if there are several, one can be selected.
 
 ** Active depository **
 
-The required repository from which the adapter version is to be installed is selected via the pull-down menu. The repositories listed on the “Storage locations” sub-page are available in the pull-down menu
+The desired repository from which the adapter version is to be installed is selected via the pull-down menu. The repositories listed on the “Storage locations” sub-page are available in the pull-down menu
 
 ## Storage locations
 ![The repositories](../../de/admin/media/ADMIN_Settings_repos.png)
@@ -81,7 +81,7 @@ If you activate the option to use certificates, but not the automatic update, th
 
 If the automatic updates are activated, the instance tries to request certificates from Let's Encrypt and updates them automatically.
 
-The certificates are requested for the first time when the relevant address is called up for the first time. I.e. if you e.g. “Sub.domain.com” is configured as the address and then calls up https://sub.domain.com, the certificates are requested for the first time, which can take a while before the answer comes.
+The certificates are requested for the first time the first time the relevant address is called up. I.e. if you e.g. “Sub.domain.com” is configured as the address and then calls up https://sub.domain.com, the certificates are requested for the first time, which can take a while before the answer comes.
 
 The issuing of the certificates is a complex procedure, but if you follow the explanation below it should be easy to obtain the free certificates.
 
@@ -99,22 +99,22 @@ If port 80 is already being used by another service, point 4 applies - i.e. assi
 
 When the small web server is started, the request for the certificates for the specified addresses in the system settings is sent to the Let's encrypt server.
 
-The Let's Encrypt server sends back a challenge phrase as a response to the request and after a while tries to read this challenge phrase at the address “http:// yourdomain: 80 / .well-known / acme-challenge /”.
+The Let's Encrypt server sends back a challenge phrase as a response to the request and after a while tries to read this challenge phrase under the address “http:// yourdomain: 80 / .well-known / acme-challenge /”.
 
-When the server receives this challenge phrase back from our side, the Let's Encrypt server sends the certificates. These are saved in the directory that is entered in the system settings.
+If the server gets this challenge phrase back from our side, the Let's Encrypt server sends the certificates. These are saved in the directory that is entered in the system settings.
 
-This sounds complex, but all you have to do is activate a few checkboxes and enter the email address and the web address in the system settings.
+This sounds complex, but all you have to do is activate a few checkboxes and enter the email address and web address in the system settings.
 
 The certificates received are valid for about 90 days. After these certificates have been issued for the first time, another task is started which automatically extends the validity.
 
-This topic is quite complex and thousands of things can go wrong. If this does not work, we recommend using the IoT adapter for access while on the move.
+This subject is quite complex and thousands of things can go wrong. If this does not work, it is recommended to use the IoT adapter for access while on the move.
 
 Let's Encrypt only works with a node.js version> = 4.5
 
 ## Access rights
 ![Access rights](../../de/admin/media/ADMIN_Settings_zugriffsrechte.png)
 
-In this sub-page, the access rights for different areas can be defined for all users / groups
+In this subpage, the access rights for different areas can be defined for all users / groups
 
 ## Statistics
 ![statistics](../../de/admin/media/ADMIN_Settings_statistics.png)

@@ -4,12 +4,12 @@ translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/adapterref/iobroker.mihome/README.md
 title: ioBroker Mi Home Adapter
-hash: WTtTH9oAY5k1YGKpdvBfJjyVwoMz83DTlTi2N0T3h24=
+hash: GmavLxm+klUaUCFI7o/yKJ8KJqOtoyN2RmgfJUQcojY=
 ---
 ![logo](../../../de/adapterref/iobroker.mihome/media/mihome.png)
 
-# IoBroker Mi Home Adapter With the Mi Home Adapter, a Mi Control Hub (gateway) is integrated into an ioBroker system and thus enables various Xiaomi sensors, switches, etc. to communicate with ioBroker.
-ioBroker can e.g. the lighting and the loudspeaker of the gateway are controlled.
+# IoBroker Mi Home Adapter With the Mi Home Adapter, a Mi Control Hub (gateway) is integrated into an ioBroker system and enables communication between different Xiaomi sensors, switches, etc.
+ioBroker can e.g. the lighting and the loudspeaker of the gateway can be controlled.
 
 ## Requirements
 * Mi Home app on Android or iOS device and activated local network function
@@ -18,13 +18,13 @@ ioBroker can e.g. the lighting and the loudspeaker of the gateway are controlled
 
 ### Installation of the Mi Home app and activation of the local network function
 #### Android
-* [Android App] (https://play.google.com/store/apps/details?id=com.xiaomi.smarthome) on an Android device, download, install, open and
+* [Android App] (https://play.google.com/store/apps/details?id=com.xiaomi.smarthome) download, install, open and
 
 agree to the terms and conditions.
 
 * Select *Mainland China* as the country
 *Create an account via * Login*
-* After successfully logging in, add a device via `+`
+* After successful registration, add a device via `+`
 * Under *Household Security* select the `MI Control Hub` and follow the instructions
 
 consequences
@@ -39,7 +39,7 @@ and then press *About*
 2 further menu items appear> If not, try again
 
 * Select the menu item `Wireless communication protocol`
-* Switch on the slide switch at the top, note the password and confirm with `OK`.
+* Switch on the slide switch above, note the password and confirm with `OK`.
 
 > The password will be required later during the ioBroker installation.
 
@@ -52,7 +52,7 @@ I agree to the privacy policy
 
 * Select the country *Mainland* via Profile / Settings / Country Settings.
 *Create an account via * Login*
-* After successfully logging in, add a device via `+`
+* After successful registration, add a device via `+`
 * Under *Household Security* select the `MI Control Hub` and follow the instructions
 
 consequences
@@ -64,18 +64,18 @@ press and press *About*
 * Tap repeatedly in the empty area below
 * Now the developer mode is switched on and it should after a certain time
 
-Further menu items appear> If it does not work immediately, repeat the steps
+further menu items appear> If it does not work immediately, repeat the steps
 
 * Select the 4th menu item
-* Switch on the slide switch at the top, note the password and confirm with `OK`.
+* Switch on the slide switch above, note the password and confirm with `OK`.
 
 > The password will be required later during the ioBroker installation.
 
 Now further devices can be taught in using the `+` sign.
 
 ### Setting on the router
-The IP address of the gateway used by the gateway can be determined in the text after _localip_ under About / Hub info. In the router used, this IP should be permanently assigned to the gateway.
-If you no longer want to operate the taught-in devices via the app, the Internet access of the gateway can also be switched off after all devices have been taught-in in the router.
+Under About / Hub info the IP address of the gateway used by the gateway can be determined in the text after _localip_. In the router used, this IP should be permanently assigned to the gateway.
+If you no longer want to operate the taught-in devices via the app, the gateway's Internet access can also be switched off after all devices have been taught-in in the router.
 
 ### Supported devices
 The following list does not claim to be complete:
@@ -131,7 +131,7 @@ The gateway and its taught-in devices are now displayed under *Objects*
 
 ![logo](../../../de/adapterref/iobroker.mihome/media/Objekte.PNG)
 
-The instructions have been created to the best of our knowledge and belief.
+The instructions were created to the best of our knowledge and belief.
 
 ## Changelog
 ### 1.3.6 (2020-09-25)
