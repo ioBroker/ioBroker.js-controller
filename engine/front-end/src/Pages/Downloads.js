@@ -310,7 +310,7 @@ class Downloads extends Router {
                         className={this.props.classes.instructionCopy}
                         title={I18n.t( 'copy to clipboard')}
                         onClick={e => {
-                            Utils.onCopy(e, 'curl -sLf https://deb.nodesource.com/setup_10.x | sudo -E bash -\nsudo apt-get install -y nodejs');
+                            Utils.onCopy(e, 'curl -sLf https://deb.nodesource.com/setup_12.x | sudo -E bash -\nsudo apt-get install -y nodejs');
                             this.setState({tooltip: I18n.t('Copied')});
                         }}><IconCopy fontSize="small"/></IconButton>
                 </pre>
