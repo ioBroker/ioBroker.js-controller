@@ -1,10 +1,10 @@
 ---
-BADGE-NPM version: http://img.shields.io/npm/v/iobroker.radiohead.svg
+BADGE-NPM version: https://img.shields.io/npm/v/iobroker.radiohead.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.radiohead.svg
+BADGE-Number of Installations (latest): https://iobroker.live/badges/radiohead-installed.svg
+BADGE-Number of Installations (stable): https://iobroker.live/badges/radiohead-stable.svg
 BADGE-Dependency Status: https://img.shields.io/david/crycode-de/iobroker.radiohead.svg
-BADGE-Known Vulnerabilities: https://snyk.io/test/github/crycode-de/ioBroker.radiohead/badge.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.radiohead.png?downloads=true
-BADGE-Travis-CI: http://img.shields.io/travis/crycode-de/ioBroker.radiohead/master.svg
 ---
 ![Logo](../../admin/radiohead.png)
 
@@ -292,30 +292,36 @@ Each instance of the adapter provides the following information:
 If necessary, the counters of the messages can be reset to 0 by writing to the object `actions.resetCounters`.
 
 ## Changelog
+
+### 1.1.0 (2020-12-21)
+* (crycode-de) Added Sentry error reporting
+* (crycode-de) Updated dependencies
+* (crycode-de) Optimized npm package
+
 ### 1.0.7 (2020-06-01)
-* (Peter Müller) Fixed bug on deleting incoming data entries.
+* (crycode-de) Fixed bug on deleting incoming data entries.
 
 ### 1.0.5 (2020-04-14)
-* (Peter Müller) Fixed bug in grouping in/out data.
-* (Peter Müller) Added missing translations.
-* (Peter Müller) Fixed bug with promiscuous mode.
-* (Peter Müller) Updated dependencies.
+* (crycode-de) Fixed bug in grouping in/out data.
+* (crycode-de) Added missing translations.
+* (crycode-de) Fixed bug with promiscuous mode.
+* (crycode-de) Updated dependencies.
 
 ### 1.0.4 (2020-02-03)
-* (Peter Müller) Updated connectionType and dataSource in io-package.json.
+* (crycode-de) Updated connectionType and dataSource in io-package.json.
 
 ### 1.0.3 (2020-01-23)
-* (Peter Müller) Better handling of changed objects in admin.
-* (Peter Müller) Added `connectionType` in `io-package.json` and updated dependencies.
+* (crycode-de) Better handling of changed objects in admin.
+* (crycode-de) Added `connectionType` in `io-package.json` and updated dependencies.
 
 ### 1.0.2 (2019-09-08)
-* (Peter Müller) dependency updates and bugfixes
+* (crycode-de) dependency updates and bugfixes
 
 ### 1.0.1 (2019-07-30)
-* (Peter Müller) license  update
+* (crycode-de) license  update
 
 ### 1.0.0 (2019-07-28)
-* (Peter Müller) initial release
+* (crycode-de) initial release
 
 ## License
 

@@ -72,6 +72,12 @@ You can debug view charts locally with:
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+### 0.4.9 (2020-12-21)
+* (bluefox) Updated echarts to 5.0
+* (bluefox) Implemented copy&paste of lines and markings
+* (bluefox) Available vertical legend
+* (bluefox) Allowed to hide interpolated values in tooltip
+
 ### 0.4.7 (2020-12-13)
 * (bluefox) Updated the select ID dialog
 

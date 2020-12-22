@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.device-reminder/README.md
 title: ioBroker.device-Erinnerung
-hash: H0dvFAj8hHSU/KSVQi2RzAzgvYNoYHtzz7hf1sKxBS8=
+hash: CKDOj7tho6HLlSTu7B9m+ZEKIO6VT6wd96A37iLgpOI=
 ---
 ![Logo](../../../en/adapterref/iobroker.device-reminder/admin/icon.png)
 
@@ -22,13 +22,14 @@ hash: H0dvFAj8hHSU/KSVQi2RzAzgvYNoYHtzz7hf1sKxBS8=
 ## Deutsche Readme benötigt?<br> [Deutsche Readme](https://github.com/Xenon-s/ioBroker.device-reminder/blob/master/README_GER.md)
 <br>
 
-** ACHTUNG **: Es ist unbedingt erforderlich, alle vorhandenen Instanzen zu löschen, wenn Sie eine Version <0.4 verwenden!
-
 ## Adapter zur Überwachung des Gerätestatus
 Dieser Adapter kann über Messbuchsen erkennen, ob ein Gerät eingeschaltet, in Betrieb oder ausgeschaltet ist und darauf reagieren. Nachrichten können dann automatisch per Telegramm, WhatsApp, Alexa und Sayit ausgegeben werden (Mehrfachauswahl pro Gerät möglich). Es ist auch möglich, die Steckdose nach Abschluss des Vorgangs automatisch auszuschalten (ebenfalls zeitverzögert). (vorheriges Projekt, aus dem dieser Adapter entwickelt wurde: https://github.com/Xenon-s/js.device-reminder)
 
 ## Was ist zu beachten?
-Das Aktualisierungsintervall vom &quot;Live-Verbrauchswert (bedeutet **&quot; _ Energie &quot;**)&quot; für die meisten Geräte sollte nicht mehr als 10 Sekunden betragen, da sonst möglicherweise sehr verzögerte Meldungen auftreten.<br> Befehl in der Tasmota-Konsole: TelePeriod 10<br>
+Das Aktualisierungsintervall vom &quot;Live-Verbrauchswert (bedeutet **&quot; _ Energie &quot;**)&quot; für die meisten Geräte sollte nicht mehr als 10 Sekunden betragen, da es sonst zu sehr verzögerten Nachrichten kommen kann.<br> Befehl in der Tasmota-Konsole: TelePeriod 10<br> **Hinweis:**
+
+- Werte unter 1 Watt gelten als 0 Watt und zeigen automatisch "** ausgeschaltet **" an.
+- Werte über 1 Watt zeigen das Gerät als "** Standby **" an.
 
 ## Welche Geräte können momentan überwacht werden?
 Es gibt Standardwerte für die folgenden Geräte:
@@ -40,7 +41,7 @@ Es gibt Standardwerte für die folgenden Geräte:
 - Computer,
 - Mikrowelle
 
-<br>Zusätzlich stehen 5 benutzerdefinierte Geräte zur Verfügung. Diese können bei Bedarf vom Benutzer konfiguriert werden. Die Schwellenwerte aller Gerätetypen können auch manuell angepasst werden.<br>
+Diese Werte wurden über Monate ermittelt und sollten für die meisten Geräte geeignet sein.<br> Zusätzlich stehen 5 benutzerdefinierte Geräte zur Verfügung. Diese können bei Bedarf vom Benutzer konfiguriert werden. Die Schwellenwerte aller Gerätetypen können auch manuell angepasst werden.<br>
 
 ## Was ist pro Gerät möglich?
 - Benachrichtigung beim Gerätestart
@@ -49,7 +50,7 @@ Es gibt Standardwerte für die folgenden Geräte:
 - Alexa-Benachrichtigung (mehrere IDs sind möglich)
 - WhatsApp-Benachrichtigung mit mehreren IDs möglich)
 - Benachrichtigungen können frei erstellt oder durch ein externes Skript vordefiniert werden
-- Datenpunkte mit dem aktuellen Status, dem Live-Verbrauch und der zuletzt gesendeten Statusmeldung, um Werte von diesem Adapter in anderen Skripten zu verwenden
+- Datenpunkte mit dem aktuellen Status, dem Live-Verbrauch und der zuletzt gesendeten Statusmeldung, um die Werte dieses Adapters in anderen Skripten zu verwenden
 - Schalten Sie Geräte bei Bedarf aus (auch zeitverzögert), wenn der Vorgang als abgeschlossen erkannt wurde<br>
 
 <br> <br>
@@ -57,7 +58,7 @@ Es gibt Standardwerte für die folgenden Geräte:
 # Anleitung
 ![config.png](../../../en/adapterref/iobroker.device-reminder/admin/config.png)
 
-Zunächst müssen alle gewünschten Geräte, Alexas usw. in der Konfiguration erstellt werden, bevor sie verwendet werden können. Wenn alle Einträge vollständig sind, müssen Sie auf ** "hier klicken, um neu zu laden" ** klicken. Erst dann werden die Geräte wirklich erstellt und können in der Registerkarte "** GERÄTE **" weiter konfiguriert werden.
+Zunächst müssen alle gewünschten Geräte, Alexas usw. in der Konfiguration erstellt werden, bevor sie verwendet werden können. Wenn alle Einträge abgeschlossen sind, müssen Sie auf ** "hier klicken, um neu zu laden" ** klicken. Erst dann werden die Geräte wirklich erstellt und können in der Registerkarte "** GERÄTE **" weiter konfiguriert werden.
 
 ## Gerät erstellen
 Zuerst muss ein neuer Eintrag mit dem **"+ Gerät hinzufügen"** erstellt werden. Dadurch wird die folgende Tabellenzeile erstellt: ![addDevice.png](../../../en/adapterref/iobroker.device-reminder/admin/addDevice.png)
@@ -122,7 +123,7 @@ Wenn alle Geräte und Messenger eingefügt wurden, müssen Sie speichern, indem 
 - **Gerät aus** Status, der angezeigt wird, wenn das Gerät ausgeschaltet wird.
 
 ## Gerät konfigurieren
-Nachdem Sie auf der Konfigurationsseite auf die Schaltfläche "** hier klicken, um neu zu laden **" geklickt haben, werden alle erstellten Geräte angezeigt und können weiter konfiguriert werden.
+Nach dem Klicken auf die Schaltfläche "** hier klicken, um neu zu laden **" auf der Konfigurationsseite werden alle erstellten Geräte angezeigt und können weiter konfiguriert werden.
 
 - **aktiv** Ist standardmäßig aktiviert. Hier können Sie ein Gerät vorübergehend deaktivieren, damit es keine Benachrichtigungen mehr sendet
 - **Gerätename** wird automatisch erstellt
@@ -135,6 +136,7 @@ Nachdem Sie auf der Konfigurationsseite auf die Schaltfläche "** hier klicken, 
 
 - **Auto Off** Wenn diese Option ausgewählt ist, wird die Steckdose nach Abschluss des Vorgangs automatisch ausgeschaltet
 - **Timer** Hier können Sie optional eine Zeitüberschreitung in **Minuten** eingeben. Nach Ablauf der Zeitüberschreitung wird die Steckdose ausgeschaltet *wenn die automatische Abschaltung aktiviert ist* Die Endbenachrichtigung des Geräts ist von einer Zeitüberschreitung nicht betroffen!
+- **Erkennung abbrechen** Wenn aktiviert, versucht der Adapter zu erkennen, ob ein Gerät bereits vor der Benachrichtigung manuell ausgeschaltet wurde, und meldet dann nicht mehr.
 
 Nach dem Klicken auf "** Speichern und schließen **" wird nun unter *Objekte -> Geräteerinnerung* für jedes neu erstellte Gerät ein Ordner erstellt, in dem
 
@@ -144,7 +146,7 @@ Nach dem Klicken auf "** Speichern und schließen **" wird nun unter *Objekte ->
 - den aktuellen Live-Verbrauch (abgerufen aus dem *Pfadverbrauch / Energie* und
 - die Nachricht an die Boten
 - durchschnittlicher Verbrauch (Kann als Hilfe zur Bestimmung Ihrer eigenen Schwellenwerte verwendet werden)
-- nicht stören (wenn aktiviert, werden keine Nachrichten gesendet)
+- nicht stören (Wenn aktiviert, werden keine Nachrichten über **Sprachassistent** gesendet.)
 
 wird angezeigt.<br><br>
 
@@ -178,11 +180,12 @@ Um mehr über die Funktion zu erfahren, lesen Sie sie einfach hier unter "** Sta
 ## Changelog
 <!--
 	Placeholder for the next version (at the beginning of the line):
-	### __WORK IN PROGRESS__
+    ### __WORK IN PROGRESS__
 -->
 
-### 0.7.2 (2020-12-17)
-* (xenon-s) Removed unnecessary debug message
+### 0.7.4 (2020-12-20)
+* (xenon-s) bugfix: telegram instance was not recognised correctly
+* (xenon-s) bugfix: abort detection prevented sending of notifications
 
 ### 0.7.1 (2020-12-17)
 * (xenon-s) fix telegram bug
@@ -194,9 +197,6 @@ Um mehr über die Funktion zu erfahren, lesen Sie sie einfach hier unter "** Sta
 ### 0.6.2 (2020-12-04)
 * (xenon-s) bugfix index_m
 
-### 0.6.1 (2020-12-04)
-* (xenon-s) bugfix: wrong status was displayed in the data point
-
 ### 0.6.0 (2020-12-03)
 * (xenon-s) bugfix: alexa speak-volume when input is empty
 * (xenon-s) bugfix: telegram now shows both names, otherwise there were errors in the notifications 
@@ -204,15 +204,6 @@ Um mehr über die Funktion zu erfahren, lesen Sie sie einfach hier unter "** Sta
 
 ### 0.5.4 (2020-11-28)
 * (xenon-s) calculation optimised, custom / default values may have to be adjusted if they have been changed by the user
-
-### 0.5.3 (2020-11-26)
-* (xenon-s) bugfix: can't find val of null alexa speak-volume
-
-### 0.5.2 (2020-11-23)
-* (xenon-s) bugfix: speak-volume Alexa has partially returned "undefined"
-
-### 0.5.1 (2020-11-22)
-* (xenon-s) bugfix: Alexa responds only to announcement
 
 ### 0.5.0 (2020-11-22)
 * (xenon-s) bugfix: volume sayit
@@ -222,47 +213,12 @@ Um mehr über die Funktion zu erfahren, lesen Sie sie einfach hier unter "** Sta
 ### 0.4.10 (2020-11-17)
 * (xenon-s) bugfix main.js
 
-### 0.4.9 (2020-11-14)
-* (xenon-s) Bugfix: switch off detection
-* (xenon-s) Bugfix: index_m save button was not displayed
-
-### 0.4.8 (2020-11-13)
-* (xenon-s) bugfix: Device status was partly recognized incorrectly
-
-### 0.4.7 (2020-11-13)
-* (xenon-s) readme translated into english
-
-### 0.4.6 (2020-11-12)
-* (xenon-s) Bugfix index_m
-
-### 0.4.5 (2020-11-12)
-* (xenon-s) error Adapterchecker fixed
-
-### 0.4.4 (2020-11-12)
-* (xenon-s) bugfix main.js
-
-### 0.4.3 (2020-11-12)
-* (xenon-s) release npm
-
-### 0.4.2 (2020-11-12)
-* (xenon-s) readme adapted 
-* (xenon-s) index_m fixed
-
-### 0.4.1 (2020-11-12)
-* (xenon-s) bugfix: wrong status was displayed when program abort was detected
-
 ### 0.4.0 (2020-11-11)
 * (xenon-s) config page revised to simplify the input of devices
 * (xenon-s) inserted a break, so that it is recognized, if a device is switched off prematurely at the device switch
 * (xenon-s) bugfix: telegram users are not always recognized correctly and displayed incorrectly
 * (xenon-s) adjustable values inserted at "Type
 * (xenon-s) readme extended and adapted
-
-### 0.3.2 (2020-11-08)
-* (xenon-s) bug: auto Off did not work anymore 
-
-### 0.3.1 (2020-11-07)
-* (xenon-s) bugfix
 
 ### 0.3.0 (2020-11-07)
 * (xenon-s) standby detection, even if the power outlet should not be switched off
@@ -274,12 +230,6 @@ Um mehr über die Funktion zu erfahren, lesen Sie sie einfach hier unter "** Sta
 
 ### 0.2.0 (2020-11-05)
 * (xenon-s) update to version 0.2: index_m completely revised and whatsapp added
-
-### 0.1.2 (2020-10-23)
-* (xenon-s) fix bug in index_m.html: users are not always displayed correctly
-
-### 0.1.1-beta.0 (2020-10-23)
-* (xenon-s) fix package.json
 
 ### 0.1.0 (2020-10-23)
 * (xenon-s) beta release

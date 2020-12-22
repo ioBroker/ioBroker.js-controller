@@ -530,6 +530,14 @@ Native value from ioBroker &gt; Objects
 
 ## Changelog
 
+### 2.1.0 (2020-12-21)
+
+-   (raintonr) Fixed: activeMoods can get stuck/not sync properly; all events is now handled with a queue (#58, #61, #62)
+-   (raintonr) Added open/close buttons to Garage/Gate Control (#59, #60)
+-   (pinkit) Added support for virtual text inputs (#48)
+-   (UncleSamSwiss) Updated to the latest adapter template
+-   (UncleSamSwiss) Changed log level of "Currently unsupported control type" message to "info" (#65)
+
 ### 2.0.2 (2020-10-26)
 
 -   (UncleSamSwiss) Fixed color picker updates (#52)
@@ -544,7 +552,7 @@ Native value from ioBroker &gt; Objects
 
 ### 2.0.0
 
-- **BREAKING:** Since the password is now encrypted, you will need to enter the password again after an update to this version!
+-   **BREAKING:** Since the password is now encrypted, you will need to enter the password again after an update to this version!
 -   (UncleSamSwiss) Updated to the latest development tools and changed to the TypeScript language
 
 ### 1.1.0

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: uW4oGgCfURlnIjIR1v9AmWXKc2caTb/k4RrpheVMpJE=
+hash: edj8SBd9oTq//doJa9AINv78laN6VGOWxWvQ8fHoRBA=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -16,12 +16,12 @@ hash: uW4oGgCfURlnIjIR1v9AmWXKc2caTb/k4RrpheVMpJE=
 ![Статус сборки](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Пожертвование Paypal](https://img.shields.io/badge/paypal-donate%20%7C%20spenden-green.svg)
-![НПМ](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
 
 # IoBroker.vis-inventorywo
 ## Schalter Widgets для адаптера ioBroker.vis
 ###### .. ab v 2.0.0
-<table><tr><td><center><b>Универсальный</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Мульти</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Образ</b> <br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center><b>Таблица</b><br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>Список</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Шатер</b> <br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Переключатель</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Ползунок вертикальный</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>Слайдер горизонтальный</b> <br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Переключить переключатель</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td><td></td><td></td></tr></table>
+<table><tr><td><center><b>Универсальный</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center> <b>Мульти</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center> <b>Образ</b> <br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center><b>Стол</b><br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center> <b>Список</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center> <b>Шатер</b> <br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Переключатель</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center> <b>Ползунок вертикальный</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center> <b>Слайдер горизонтальный</b> <br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center> <b>Переключить переключатель</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td><td></td><td></td></tr></table>
 
 ###### .. v 1.3.8
 ![Beispiel](http://resources.inventwo.com/github/inventwo/Set.png)
@@ -41,6 +41,18 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 [![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.6.0
+- Универсальный и мульти-виджет Vergleichsoperatoren gleich, größer, kleiner und nicht hinzugefügt
+- Ползунок Min / Max инвертированный
+- Слайдер Wert erst beim loslassen setzen
+- Виджет um Wert zu erhöhen oder zu senken
+- JSON Tabelle Fehler mit Datum behoben
+
+. JSON Tabelle anzeige von Millisekunden möglich
+
+- JSON Tabelle Platzhalter wenn Eintrag leer ist
+- JSON Tabelle Spalten können per Klick sortiert werden
 
 ## 2.5.11
 - Исправлена ошибка
@@ -181,7 +193,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ### 1.2.0
 - Добавлен виджет изображений
-- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно щелкнуть каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
+- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно нажимать каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
 - Добавлены новые иконки
 
 ### 1.1.1

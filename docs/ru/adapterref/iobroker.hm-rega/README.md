@@ -108,7 +108,7 @@ IP-адрес CCU можно выбрать в раскрывающемся ме
 ### ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 
 ## Changelog
-### 3.0.1 (2020-12-16)
+### 3.0.4 (2020-12-21)
 * (foxriver76) fixed enum translations (changed in API)
 * (foxriver76) fixed handling of "favorites" enum
 * __this can be breaking for some users, please check your enums__

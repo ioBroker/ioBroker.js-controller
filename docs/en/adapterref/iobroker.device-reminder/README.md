@@ -16,14 +16,15 @@
 ## German readme needed? <br> [German readme](https://github.com/Xenon-s/ioBroker.device-reminder/blob/master/README_GER.md)
 <br>
 
-**ATTENTION**: It is absolutely necessary to delete all existing instances, if you are using a version < 0.4 !
-
 ## Adapter for monitoring device statuses
 This adapter can detect whether a device has been switched on, in operation or switched off by means of measuring sockets and react to this. Messages can then be output automatically via telegram, whatsapp, alexa and sayit (multiple selection per device possible). It is also possible to switch off the socket automatically after the process is finished (also time-delayed). (previous project from which this adapter was developed: https://github.com/Xenon-s/js.device-reminder)
 
 ## What should be considered?
 The refresh interval from the "live consumption value (means **"_energy "**)" for most devices should not be more than 10 seconds, otherwise there may be very delayed messages.
-<br>command in the Tasmota console : TelePeriod 10 <br>
+<br>command in the Tasmota console : TelePeriod 10
+<br>**Note:**
+- Values below 1 watt are considered 0 watts and automatically indicate "**switched off**".
+- Values above 1 watt indicate the unit as "**standby**".
 
 ## Which devices can be monitored at the moment?
 There are default values for the following devices:
@@ -33,6 +34,7 @@ There are default values for the following devices:
 - electric kettle,
 - computer,
 - microwave
+These values were determined over months and should fit most devices.
 <br>
 In addition 5 custom devices are available. These can be configured by the user if required. The threshold values of all device types can also be adjusted manually.
 <br>
@@ -140,6 +142,7 @@ After clicking on the button "**click here to reload**" on the Config page, all 
 
 - **auto off**: If selected, the power outlet will automatically switch off after the process is finished
 - **timer**: Here you can optionally enter a timeout in **minutes**. After the timeout has expired, the power outlet will be switched off *if auto off is activated*. The end notification of the device is not affected by a timeout!
+- **abort detection**: If activated, the adapter tries to detect whether a device has already been switched off manually before the notification and then no longer reports.
 
 After clicking on "**Save and close**", a folder is now created under *Objects -> device-reminder* for each newly created Device, in which 
 - the current runtime in hh:mm:ss  
@@ -148,7 +151,7 @@ After clicking on "**Save and close**", a folder is now created under *Objects -
 - the current live consumption (fetched from the *path consumption/energy*) and
 - the message to the messengers
 - averageConsumption (Can be used as an aid to determine your own threshold values)
-- do not disturb (if activated, no messages are sent)
+- do not disturb (If activated, no messages are sent via **voice assistant**.)
 is displayed.
 <br>
 <br>
@@ -187,11 +190,12 @@ To find out more about the function, simply read about it here at "**default dev
 ## Changelog
 <!--
 	Placeholder for the next version (at the beginning of the line):
-	### __WORK IN PROGRESS__
+    ### __WORK IN PROGRESS__
 -->
 
-### 0.7.2 (2020-12-17)
-* (xenon-s) Removed unnecessary debug message
+### 0.7.4 (2020-12-20)
+* (xenon-s) bugfix: telegram instance was not recognised correctly
+* (xenon-s) bugfix: abort detection prevented sending of notifications
 
 ### 0.7.1 (2020-12-17)
 * (xenon-s) fix telegram bug
@@ -203,9 +207,6 @@ To find out more about the function, simply read about it here at "**default dev
 ### 0.6.2 (2020-12-04)
 * (xenon-s) bugfix index_m
 
-### 0.6.1 (2020-12-04)
-* (xenon-s) bugfix: wrong status was displayed in the data point
-
 ### 0.6.0 (2020-12-03)
 * (xenon-s) bugfix: alexa speak-volume when input is empty
 * (xenon-s) bugfix: telegram now shows both names, otherwise there were errors in the notifications 
@@ -213,15 +214,6 @@ To find out more about the function, simply read about it here at "**default dev
 
 ### 0.5.4 (2020-11-28)
 * (xenon-s) calculation optimised, custom / default values may have to be adjusted if they have been changed by the user
-
-### 0.5.3 (2020-11-26)
-* (xenon-s) bugfix: can't find val of null alexa speak-volume
-
-### 0.5.2 (2020-11-23)
-* (xenon-s) bugfix: speak-volume Alexa has partially returned "undefined"
-
-### 0.5.1 (2020-11-22)
-* (xenon-s) bugfix: Alexa responds only to announcement
 
 ### 0.5.0 (2020-11-22)
 * (xenon-s) bugfix: volume sayit
@@ -231,47 +223,12 @@ To find out more about the function, simply read about it here at "**default dev
 ### 0.4.10 (2020-11-17)
 * (xenon-s) bugfix main.js
 
-### 0.4.9 (2020-11-14)
-* (xenon-s) Bugfix: switch off detection
-* (xenon-s) Bugfix: index_m save button was not displayed
-
-### 0.4.8 (2020-11-13)
-* (xenon-s) bugfix: Device status was partly recognized incorrectly
-
-### 0.4.7 (2020-11-13)
-* (xenon-s) readme translated into english
-
-### 0.4.6 (2020-11-12)
-* (xenon-s) Bugfix index_m
-
-### 0.4.5 (2020-11-12)
-* (xenon-s) error Adapterchecker fixed
-
-### 0.4.4 (2020-11-12)
-* (xenon-s) bugfix main.js
-
-### 0.4.3 (2020-11-12)
-* (xenon-s) release npm
-
-### 0.4.2 (2020-11-12)
-* (xenon-s) readme adapted 
-* (xenon-s) index_m fixed
-
-### 0.4.1 (2020-11-12)
-* (xenon-s) bugfix: wrong status was displayed when program abort was detected
-
 ### 0.4.0 (2020-11-11)
 * (xenon-s) config page revised to simplify the input of devices
 * (xenon-s) inserted a break, so that it is recognized, if a device is switched off prematurely at the device switch
 * (xenon-s) bugfix: telegram users are not always recognized correctly and displayed incorrectly
 * (xenon-s) adjustable values inserted at "Type
 * (xenon-s) readme extended and adapted
-
-### 0.3.2 (2020-11-08)
-* (xenon-s) bug: auto Off did not work anymore 
-
-### 0.3.1 (2020-11-07)
-* (xenon-s) bugfix
 
 ### 0.3.0 (2020-11-07)
 * (xenon-s) standby detection, even if the power outlet should not be switched off
@@ -283,12 +240,6 @@ To find out more about the function, simply read about it here at "**default dev
 
 ### 0.2.0 (2020-11-05)
 * (xenon-s) update to version 0.2: index_m completely revised and whatsapp added
-
-### 0.1.2 (2020-10-23)
-* (xenon-s) fix bug in index_m.html: users are not always displayed correctly
-
-### 0.1.1-beta.0 (2020-10-23)
-* (xenon-s) fix package.json
 
 ### 0.1.0 (2020-10-23)
 * (xenon-s) beta release

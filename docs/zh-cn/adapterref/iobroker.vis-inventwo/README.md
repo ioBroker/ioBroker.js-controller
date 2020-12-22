@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: uW4oGgCfURlnIjIR1v9AmWXKc2caTb/k4RrpheVMpJE=
+hash: edj8SBd9oTq//doJa9AINv78laN6VGOWxWvQ8fHoRBA=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -34,13 +34,25 @@ hash: uW4oGgCfURlnIjIR1v9AmWXKc2caTb/k4RrpheVMpJE=
 ---
 
 ##Unterstützung
-瀑布下的阿尔贝特教堂和地下教堂
+瀑布不夜城，阿尔弗雷德·尤德·斯彭德（Wer freuen unsüberjede Spende）。
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
 [![Spende]（http://resources.inventwo.com/github/inventwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.6.0
+-通用和多小部件Vergleichsoperatoren gleich，größer，kleiner und nichthinzugefügt
+-滑块最小/最大反转
+-滑块湿ert beim loslassen setzen
+-Widget um Wert zuerhöhenoder zu senken
+-JSON Tabelle Fehler mit Datum behoben
+
+。 JSON Tabelle anzeige von Millisekundenmöglich
+
+-JSON Tabelle Platzhalter和我们分享
+-每个Klick sortiert werden的JSON Tabelle Spaltenkönnen
 
 ## 2.5.11
 -错误修正
@@ -112,7 +124,7 @@ hash: uW4oGgCfURlnIjIR1v9AmWXKc2caTb/k4RrpheVMpJE=
 -Fehler im Multi Widget behoben：Bilder und Text wechseln nicht bei Typ Navigation
 
 ## 2.2.1
--JSON中的Fehler Tabelle behoben，wenn keingültigesJSON-Objekt vorhanden ist
+-JSON中的Fehler Tabelle behoben，wen keingültigesJSON-Objekt vorhanden ist
 -价值清单behoben中的费勒：Wert wird nicht aktualisiert
 
 ## 2.2.0
@@ -212,7 +224,7 @@ hash: uW4oGgCfURlnIjIR1v9AmWXKc2caTb/k4RrpheVMpJE=
 ...
 
 ### 0.0.1
--Idee ist geboren
+-Idee ist Geboren
 
 ---
 

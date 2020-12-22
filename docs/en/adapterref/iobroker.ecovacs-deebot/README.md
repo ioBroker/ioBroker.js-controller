@@ -67,7 +67,10 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 ## Changelog
 
 ### 1.0.8 (alpha)
-* Using library version 0.5.2
+* Using library version 0.5.2 (0.5.2-alpha.5)
+* Added available virtualBoundaries channel for Deebot 900/901 and Ozmo 930 (read only)
+* Added "volume" for 950 type models (920/950/T8)
+* Added some experimental features (for a few models only)
 * Bump some dependencies
 * Several enhancements and fixes
 

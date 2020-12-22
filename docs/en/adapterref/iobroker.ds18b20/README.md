@@ -1,10 +1,10 @@
 ---
-BADGE-NPM version: http://img.shields.io/npm/v/iobroker.ds18b20.svg
+BADGE-NPM version: https://img.shields.io/npm/v/iobroker.ds18b20.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.ds18b20.svg
+BADGE-Number of Installations (latest): https://iobroker.live/badges/ds18b20-installed.svg
+BADGE-Number of Installations (stable): https://iobroker.live/badges/ds18b20-stable.svg
 BADGE-Dependency Status: https://img.shields.io/david/crycode-de/iobroker.ds18b20.svg
-BADGE-Known Vulnerabilities: https://snyk.io/test/github/crycode-de/ioBroker.ds18b20/badge.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.ds18b20.png?downloads=true
-BADGE-Travis-CI: http://img.shields.io/travis/crycode-de/ioBroker.ds18b20/master.svg
 ---
 ![Logo](../../admin/ds18b20.png)
 
@@ -184,7 +184,7 @@ force group = root
 
 Restart samba to apply the changes:
 ```sh
-sudo systemctl restart samba
+sudo systemctl restart smbd
 ```
 
 ### Configuration on the ioBroker system
@@ -215,38 +215,44 @@ In the adapter configuration you have to set the system path for the 1-wire devi
 If there are also sensors directly connected to the ioBroker system, you should add an extra instance of the adapter for the remote sensors.
 
 ## Changelog
+
+### 1.2.0 (2020-12-21)
+* (crycode-de) Added Sentry error reporting
+* (crycode-de) Updated dependencies
+* (crycode-de) Optimized npm package
+
 ### 1.1.5 (2020-10-14)
-* (Peter Müller) Fixed incorrect data type of object
-* (Peter Müller) Updated dependencies
+* (crycode-de) Fixed incorrect data type of object
+* (crycode-de) Updated dependencies
 
 ### 1.1.4 (2020-02-03)
-* (Peter Müller) Updated connectionType and dataSource in io-package.json.
+* (crycode-de) Updated connectionType and dataSource in io-package.json.
 
 ### 1.1.3 (2020-01-23)
-* (Peter Müller) Added `connectionType` in `io-package.json` and updated dependencies.
+* (crycode-de) Added `connectionType` in `io-package.json` and updated dependencies.
 
 ### 1.1.2 (2020-01-22)
-* (Peter Müller) Better handling of changed objects in admin.
+* (crycode-de) Better handling of changed objects in admin.
 
 ### 1.1.1 (2020-01-09)
-* (Peter Müller) Fixed wrong communication errror detection on some sensors.
+* (crycode-de) Fixed wrong communication errror detection on some sensors.
 
 ### 1.1.0 (2019-11-11)
-* (Peter Müller) Own implementation of reading the sensor data.
-* (Peter Müller) Fixed bug on decimals rounding.
-* (Peter Müller) 1-wire devices path is now configurable.
+* (crycode-de) Own implementation of reading the sensor data.
+* (crycode-de) Fixed bug on decimals rounding.
+* (crycode-de) 1-wire devices path is now configurable.
 
 ### 1.0.3 (2019-11-03)
-* (Peter Müller) Added documentation about DS18B20 at a Raspberry Pi; Dependencies updated
+* (crycode-de) Added documentation about DS18B20 at a Raspberry Pi; Dependencies updated
 
 ### 1.0.2 (2019-10-07)
-* (Peter Müller) Display error message when tried to search for sensors without adapter running.
+* (crycode-de) Display error message when tried to search for sensors without adapter running.
 
 ### 1.0.1 (2019-10-01)
-* (Peter Müller) Type changed to hardware, Renamed command, Added missing documentation
+* (crycode-de) Type changed to hardware, Renamed command, Added missing documentation
 
 ### 1.0.0 (2019-09-09)
-* (Peter Müller) initial release
+* (crycode-de) initial release
 
 ## License
 

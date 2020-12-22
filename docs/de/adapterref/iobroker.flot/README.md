@@ -462,6 +462,8 @@ Hier kann angegeben werden ob bei dem Öffnen des Charts dieser sofort zur Verf�
 In diesem Feld werden sämtliche Daten, die in den vorausgegangenen Menüs konfiguriert wurden in Textform zusammengefasst. Wenn man diesen Link bei vis in ein iFrame-Widget kopiert wird dort der Chart komplett angezeigt. Der Button _**zeige im Fenster**_ öffnet einen weiteren Tab im Browser und zeigt dort den Chart an. Diese Seite kann man zum Speichern des Charts bookmarken. Die Schaltfläche _**Update preview**_ zeigt in dem Vorschaufenster die letzten Änderungen. Wenn unter _**input data**_ die Checkbox autoupdate angehakt ist, steht diese Schaltfläche nicht zur Verfügung. Das Vorschaufenster aktualisiert dann bei jeder Änderung automatisch
 
 ## Changelog
+### 1.10.6 (2020-12-21)
+* (nobodyMO) added the X value mover and Y value multiplicator
 
 ### 1.10.4 (2020-11-13)
 * (Apollon77/harvey637) use browser timezone

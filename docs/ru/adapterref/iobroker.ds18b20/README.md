@@ -1,22 +1,22 @@
 ---
-BADGE-NPM version: http://img.shields.io/npm/v/iobroker.ds18b20.svg
+BADGE-NPM version: https://img.shields.io/npm/v/iobroker.ds18b20.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.ds18b20.svg
+BADGE-Number of Installations (latest): https://iobroker.live/badges/ds18b20-installed.svg
+BADGE-Number of Installations (stable): https://iobroker.live/badges/ds18b20-stable.svg
 BADGE-Dependency Status: https://img.shields.io/david/crycode-de/iobroker.ds18b20.svg
-BADGE-Known Vulnerabilities: https://snyk.io/test/github/crycode-de/ioBroker.ds18b20/badge.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.ds18b20.png?downloads=true
-BADGE-Travis-CI: http://img.shields.io/travis/crycode-de/ioBroker.ds18b20/master.svg
 translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ds18b20/README.md
 title: ioBroker.ds18b20
-hash: LjduaFrCQh7eq3mGR9Rnzp7lahaIy7p6MYD502wbBYM=
+hash: qgNU1clbVK0L2nl7I833ztViN5gKt2mLmpAei1ZoRh4=
 ---
 ![логотип](../../../de/adapterref/iobroker.ds18b20/../../admin/ds18b20.png)
 
 # IoBroker.ds18b20
 Адаптер `ds18b20` позволяет напрямую интегрировать датчики температуры 1-Wire типа DS18B20 в ioBroker.
 
-Требуется соответствующее оборудование с поддержкой шины 1-Wire (например, Raspberry Pi), а шина 1-Wire должна быть настроена для работы в системе (датчики перечислены в `/sys/bus/w1/devices/`).
+Требуется соответствующее оборудование с поддержкой шины 1-Wire (например, Raspberry Pi), а шина 1-Wire должна быть настроена для работы в системе (датчики перечислены в `/sys/bus/w1/devices/`)
 
 Пример подключения датчиков DS18B20 к Raspberry Pi можно найти ниже.
 
@@ -30,16 +30,16 @@ hash: LjduaFrCQh7eq3mGR9Rnzp7lahaIy7p6MYD502wbBYM=
 ## Установка
 В настоящее время адаптер доступен в последней версии репозитория.
 
-Кроме того, его можно установить по URL-адресу `https://github.com/crycode-de/ioBroker.ds18b20.git`.
+Кроме того, его можно установить через URL-адрес `https://github.com/crycode-de/ioBroker.ds18b20.git`.
 
 ## Конфигурация
-В конфигурации адаптера **стандартный интервал опроса** для всех датчиков может быть установлен в миллисекундах. Минимум 500.
+В конфигурации адаптера **стандартный интервал опроса** может быть установлен для всех датчиков в миллисекундах. Минимум 500.
 
-Отдельные датчики можно добавить вручную или через *Поиск датчиков* в таблице.
+Отдельные датчики можно добавить в таблицу вручную или через *Поисковые датчики*
 
 ![конфигурация](../../../de/adapterref/iobroker.ds18b20/./img/konfiguration.png)
 
-** адрес ** является 1-проводным адресом / идентификатором датчика, а также определяет идентификатор объекта.
+** адрес ** - это 1-проводный адрес / идентификатор датчика и в то же время определяет идентификатор объекта.
 Например, датчик с адресом `28-0000077ba131` получает идентификатор объекта `ds18b20.0.sensors.28-0000077ba131`.
 
 ** имя ** можно свободно выбрать для идентификации датчика.
@@ -61,12 +61,12 @@ hash: LjduaFrCQh7eq3mGR9Rnzp7lahaIy7p6MYD502wbBYM=
 Без этой опции состояние не обновляется в случае ошибок.
 
 ### Преобразование `°C` в `°F`
-Чтобы измеренные температуры возвращались адаптером в `°F`, `1.8` следует использовать как коэффициент, а `32` как смещение.
+Чтобы гарантировать, что измеренные температуры возвращаются адаптером в `°F`, `1.8` должны использоваться в качестве коэффициента и `32` в качестве смещения.
 
 ## Действия
 Путем записи в состояние `ds18b20.0.actions.readNow` можно запустить немедленное считывание всех или определенного датчика.
 
-Чтобы вызвать немедленное считывание всех датчиков, в состояние должно быть записано ключевое слово `all`.
+Чтобы вызвать немедленное считывание всех датчиков, ключевое слово `all` должно быть записано в состояние.
 
 Если должен быть прочитан только определенный датчик, адрес или идентификатор объекта ioBroker датчика должен быть записан в состояние.
 
@@ -74,9 +74,9 @@ hash: LjduaFrCQh7eq3mGR9Rnzp7lahaIy7p6MYD502wbBYM=
 Адаптеру можно посылать команды для чтения данных датчиков или поиска датчиков.
 
 ### `readNow`
-Команда `readNow` запускает немедленный запрос всего или определенного датчика.
-Для запроса всех датчиков часть сообщения можно оставить пустой или использовать строку `all`.
-Чтобы прочитать определенный датчик, в разделе сообщений должен быть указан адрес или идентификатор ioBroker ID датчика.
+Команда `readNow` инициирует немедленный запрос от всех или от определенного датчика.
+Чтобы запросить все датчики, можно оставить часть сообщения пустой или использовать строку `all`.
+Чтобы прочитать определенный датчик, в части сообщения должен быть указан адрес или идентификатор ioBroker ID датчика.
 
 Команда `readNow` не возвращает никаких данных. Это только вызывает немедленное считывание показаний датчиков.
 
@@ -88,7 +88,7 @@ sendTo('ds18b20.0', 'readNow', '28-0000077ba131');
 ### `read`
 Один датчик можно прочитать с помощью команды `read`.
 Адрес или идентификатор объекта ioBroker считываемого датчика должен быть указан в разделе сообщения.
-Считанное значение можно обработать дальше с помощью функции обратного вызова.
+Считанное значение может быть обработано дальше с помощью функции обратного вызова.
 
 ```js
 sendTo('ds18b20.0', 'read', '28-0000077ba131', (ret) => {
@@ -100,7 +100,7 @@ sendTo('ds18b20.0', 'read', '28-0000077ba131', (ret) => {
 ```
 
 ### `search`
-Команда `search` выполняет поиск подключенных в данный момент датчиков 1-Wire и возвращает адреса датчиков, обнаруженных с помощью функции обратного вызова.
+Команда `search` выполняет поиск подключенных в настоящий момент датчиков 1-Wire и возвращает адреса датчиков, обнаруженных с помощью функции обратного вызова.
 
 ```js
 sendTo('ds18b20.0', 'search', {}, (ret) => {
@@ -122,7 +122,7 @@ sendTo('ds18b20.0', 'search', {}, (ret) => {
 
 ## DS18B20 на Raspberry Pi
 Датчики температуры DS18B20 подключаются к Raspberry Pi, как показано на следующем рисунке.
-Обратите внимание, что подтягивающий резистор должен быть подключен к + 3,3 В, а не к + 5 В, так как это может повредить GPIO.
+Следует отметить, что подтягивающий резистор должен быть подключен к + 3,3 В, а не к + 5 В, так как это может повредить GPIO.
 В этом примере используется GPIO.04 (BCM).
 
 ![DS18B20 Raspberry Pi](../../../de/adapterref/iobroker.ds18b20/./img/raspi-ds18b20.png)
@@ -133,7 +133,7 @@ sendTo('ds18b20.0', 'search', {}, (ret) => {
 dtoverlay=w1-gpio,gpiopin=4
 ```
 
-Если все работает, подключенные датчики будут отображаться в `/sys/bus/w1/devices/`.
+Если все работает, подключенные датчики отображаются в `/sys/bus/w1/devices/`.
 
 ```
 $ ls -l /sys/bus/w1/devices/
@@ -145,7 +145,7 @@ lrwxrwxrwx 1 root root 0 Nov  2 10:49 w1_bus_master1 -> ../../../devices/w1_bus_
 
 ## Интеграция датчиков на удаленном Raspberry Pi
 Также можно интегрировать датчики, подключенные к удаленному Raspberry Pi.
-Для этого соответствующий каталог освобождается на удаленном Raspberry Pi с использованием *Samba* а затем монтируется в системе ioBorker.
+Для этого соответствующий каталог освобождается с помощью *Samba* на удаленном Raspberry Pi, а затем монтируется в системе ioBorker.
 
 ### Конфигурация на удаленном Raspberry Pi
 Установка Samba:
@@ -171,7 +171,7 @@ force group = root
 Затем перезапустите Samba, чтобы изменения вступили в силу:
 
 ```sh
-sudo systemctl restart samba
+sudo systemctl restart smbd
 ```
 
 ### Конфигурация в системе ioBroker
@@ -205,38 +205,44 @@ sudo mount /mnt/remote-ds1820
 Если датчики DS1820 также подключены напрямую к системе ioBroker, лучше всего создать второй экземпляр адаптера для удаленных датчиков.
 
 ## Changelog
+
+### 1.2.0 (2020-12-21)
+* (crycode-de) Added Sentry error reporting
+* (crycode-de) Updated dependencies
+* (crycode-de) Optimized npm package
+
 ### 1.1.5 (2020-10-14)
-* (Peter Müller) Fixed incorrect data type of object
-* (Peter Müller) Updated dependencies
+* (crycode-de) Fixed incorrect data type of object
+* (crycode-de) Updated dependencies
 
 ### 1.1.4 (2020-02-03)
-* (Peter Müller) Updated connectionType and dataSource in io-package.json.
+* (crycode-de) Updated connectionType and dataSource in io-package.json.
 
 ### 1.1.3 (2020-01-23)
-* (Peter Müller) Added `connectionType` in `io-package.json` and updated dependencies.
+* (crycode-de) Added `connectionType` in `io-package.json` and updated dependencies.
 
 ### 1.1.2 (2020-01-22)
-* (Peter Müller) Better handling of changed objects in admin.
+* (crycode-de) Better handling of changed objects in admin.
 
 ### 1.1.1 (2020-01-09)
-* (Peter Müller) Fixed wrong communication errror detection on some sensors.
+* (crycode-de) Fixed wrong communication errror detection on some sensors.
 
 ### 1.1.0 (2019-11-11)
-* (Peter Müller) Own implementation of reading the sensor data.
-* (Peter Müller) Fixed bug on decimals rounding.
-* (Peter Müller) 1-wire devices path is now configurable.
+* (crycode-de) Own implementation of reading the sensor data.
+* (crycode-de) Fixed bug on decimals rounding.
+* (crycode-de) 1-wire devices path is now configurable.
 
 ### 1.0.3 (2019-11-03)
-* (Peter Müller) Added documentation about DS18B20 at a Raspberry Pi; Dependencies updated
+* (crycode-de) Added documentation about DS18B20 at a Raspberry Pi; Dependencies updated
 
 ### 1.0.2 (2019-10-07)
-* (Peter Müller) Display error message when tried to search for sensors without adapter running.
+* (crycode-de) Display error message when tried to search for sensors without adapter running.
 
 ### 1.0.1 (2019-10-01)
-* (Peter Müller) Type changed to hardware, Renamed command, Added missing documentation
+* (crycode-de) Type changed to hardware, Renamed command, Added missing documentation
 
 ### 1.0.0 (2019-09-09)
-* (Peter Müller) initial release
+* (crycode-de) initial release
 
 ## License
 

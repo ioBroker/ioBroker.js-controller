@@ -47,12 +47,12 @@ Fast Web-App for Visualization.
 \
 ![Screenshot](img/screenshot_dslraser.jpg "&copy; by dslraser")
 
-\
-[![Demo-Video](img/play_demo.png "open on youtube")](https://youtu.be/QHgmrzMmcX4)
-
-
 Runs in any Browser. 
 Easy to setup, allthough it's fully customizable and responsive.
+
+\
+## Video-Tutorial (German Language):
+[![Demo-Video](img/play_demo.png "Open Tutorial on Youtube")](https://youtube.com/playlist?list=PL8epyNz8pGEv6-R8dnfXm-m5aBlZFKOBG)
 
 > **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
@@ -1192,6 +1192,12 @@ This device has some special predefined size- and display-settings to show a web
 ****
     
 ## Changelog
+
+### 1.5.4 (2020-12-20)
+* (sbormann) Added info if demo-view is loaded.
+* (sbormann) Enhanced widget FLOT_CHART to be able to use an external datapoint.
+* (sbormann) Added homeButton for BACKGROUND_VIEWs, if view has changed to return to home view.
+* (sbormann) You can now edit widget-settings by clicking the pencil icon.
 
 ### 1.5.3 (2020-12-18)
 * (sbormann) Fix for black-colour-options-bug for new instances.

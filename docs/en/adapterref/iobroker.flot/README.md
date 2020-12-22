@@ -111,6 +111,8 @@ display the current data (if the timeline is set to the current time).
 ![](img/flot_Flot_en_pic9.png)
 
 ## Changelog
+### 1.10.6 (2020-12-21)
+* (nobodyMO) added the X value mover and Y value multiplicator
 
 ### 1.10.4 (2020-11-13)
 * (Apollon77/harvey637) use browser timezone

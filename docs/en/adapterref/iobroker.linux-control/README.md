@@ -100,6 +100,10 @@ It is important that the retrieved data is transmitted in the correct type! The 
     ### __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* (paul53) datapoints type and role bug fixes
+* (Scrounger) adapter settings card layout added
+
 ### 1.0.1 (2020-11-04)
 * (Scrounger) translation for polling interval optimized
 

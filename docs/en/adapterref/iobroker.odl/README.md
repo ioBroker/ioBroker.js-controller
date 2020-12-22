@@ -1,14 +1,16 @@
 ![Logo](admin/odl.png)
+
 # ioBroker.odl
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.odl.svg)](https://www.npmjs.com/package/iobroker.odl)
+[![NPM version](https://img.shields.io/npm/v/iobroker.odl.svg)](https://www.npmjs.com/package/iobroker.odl)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.odl.svg)](https://www.npmjs.com/package/iobroker.odl)
+![Number of Installations (latest)](https://iobroker.live/badges/odl-installed.svg)
+![Number of Installations (stable)](https://iobroker.live/badges/odl-stable.svg)
 [![Dependency Status](https://img.shields.io/david/crycode-de/iobroker.odl.svg)](https://david-dm.org/crycode-de/iobroker.odl)
-[![Known Vulnerabilities](https://snyk.io/test/github/crycode-de/ioBroker.odl/badge.svg)](https://snyk.io/test/github/crycode-de/ioBroker.odl)
 
 [![NPM](https://nodei.co/npm/iobroker.odl.png?downloads=true)](https://nodei.co/npm/iobroker.odl/)
 
-**Tests:** [![Travis-CI](http://img.shields.io/travis/crycode-de/ioBroker.odl/master.svg)](https://travis-ci.org/crycode-de/ioBroker.odl)
+**Tests:** ![Test and Release](https://github.com/crycode-de/iobroker.odl/workflows/Test%20and%20Release/badge.svg)
 
 ## ODL adapter for ioBroker
 
@@ -31,30 +33,36 @@ Die aktuellen Messdaten werden von dem Adapter standardmäßig im Stundentakt ak
 
 ---
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Changelog
+
+### 1.1.0 (2020-12-21)
+* (crycode-de) Added Sentry error reporting
+* (crycode-de) Updated dependencies
+
 ### 1.0.7 (2020-10-14)
-* (Peter Müller) Added timeout to force exit the adapter after 10 minutes in case of any problems
-* (Peter Müller) Updated dependencies
+* (crycode-de) Added timeout to force exit the adapter after 10 minutes in case of any problems
+* (crycode-de) Updated dependencies
 
 ### 1.0.6 (2020-10-01)
-* (Peter Müller) Hopefully fixed a bug where adapter did not exit as expected
-* (Peter Müller) Updated dependencies
+* (crycode-de) Hopefully fixed a bug where adapter did not exit as expected
+* (crycode-de) Updated dependencies
 
 ### 1.0.5 (2020-02-05)
-* (Peter Müller) Use of `extendObject` to update names of existing objects.
+* (crycode-de) Use of `extendObject` to update names of existing objects.
 
 ### 1.0.4 (2020-02-03)
-* (Peter Müller) Updated connectionType and dataSource in io-package.json.
+* (crycode-de) Updated connectionType and dataSource in io-package.json.
 
 ### 1.0.3 (2020-01-23)
-* (Peter Müller) Added `connectionType` in `io-package.json` and updated dependencies.
+* (crycode-de) Added `connectionType` in `io-package.json` and updated dependencies.
 
 ### 1.0.2 (2019-10-22)
-* (Peter Müller) Minimum required js-conntroller version is now 1.5.7
+* (crycode-de) Minimum required js-conntroller version is now 1.5.7
 
 ### 1.0.1 (2019-10-14)
-* (Peter Müller) initial release
+* (crycode-de) initial release
 
 
 ## License

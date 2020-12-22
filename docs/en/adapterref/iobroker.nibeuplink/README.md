@@ -32,7 +32,10 @@ If you (later) get a "400 bad request" error in the log, you must get a new Auth
 * set required js-controller to >=2.0.0
 * test for node 8 removed
 * devide by 10 added to external flow temperature
+* 10 missing parameters added for SMO 40
 * fallback names for unknown parameters changed (id added)
+* store session in iobroker data directory
+* code refactoring
 
 ### 0.3.0
 * Compact mode disabled

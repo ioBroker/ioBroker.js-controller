@@ -136,7 +136,7 @@ objects in *italic* are not part of all fritz.box configurations
 |DECT440.batterylow|boolean|-|battery status|
 |DECT440.temperature|value|-|temperature |
 |*DECT440.humidity*|value|-|relative humidity %|
-|DECT440.button|time|-|see DECT400 button (4x) |
+|DECT440.button|-|-|see DECT400 button (4x) |
 
 ### repeater e.g. DECT100
 |Object|Value|settable|Description|
@@ -153,14 +153,21 @@ objects in *italic* are not part of all fritz.box configurations
 |--------|-------|:-:|--------|
 |Button.lastclick|number|-|timestamp|
 
-### blind (HAN-FUN)
+### blinds (HAN-FUN)
 |Object|Value|settable|Description|
 |--------|-------|:-:|--------|
-|Blind.blindtarget|string|x|target open/close/stop|
+|Blinds.blindsopen|booelan|x|target open|
+|Blinds.blindsclose|boolean|x|target close|
+|Blinds.blindsstop|boolean|x|target stop|
+|Blinds.level|value|x|opening 0-255 |
+|Blinds.levelpercentage|value|x|openeing 0-100% |
+|Blinds.state|boolean|-|alert status |
+|Blinds.lastalertchgtimestamp|number|-|timestamp |
 
 ## API limitations
+* too many login attempts to FB are refused by providing '00000000' as response
 * Boost and WindowOpen can only be set for the next 24h. time=0 is cancelling the command
-* updates to the thermostat are within a 15min range, depending on the previous communication of thermostat with fritzbox the next cycle is sooner or later, but definitely imediately not after an ioBroker intervention
+* updates to the thermostat are within a 15min range, depending on the previous communication of thermostat with fritzbox the next cycle is sooner or later, but definitely not imediately after an ioBroker intervention
 
 
 ## Known Issues:
@@ -169,10 +176,15 @@ Not all FW-versions of fritz.box support all objects.
 ## TODO:
 * universal object names and structures -> breaking change
 * groups inside a device e.g. DECT440 -> breaking change
+* groups for DECT500
 * usage of predefined colors
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
 
 ## Changelog
+### 1.1.4
+* blinds control
+* update testing
+
 ### 1.1.3 (npm)
 * setcolor cmd correction
 * only valid color temperatures for white

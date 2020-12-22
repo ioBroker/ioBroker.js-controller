@@ -112,6 +112,8 @@ History with InfluxDB). Он может быть использован как 
 ![](img/Flot-use1.jpg)
 
 ## Changelog
+### 1.10.6 (2020-12-21)
+* (nobodyMO) added the X value mover and Y value multiplicator
 
 ### 1.10.4 (2020-11-13)
 * (Apollon77/harvey637) use browser timezone
