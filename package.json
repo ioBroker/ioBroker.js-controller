@@ -25,7 +25,7 @@
         "deep-clone": "^3.0.3",
         "event-stream": "^4.0.1",
         "fs-extra": "^9.0.1",
-        "iobroker.objects-redis": "^4.0.4",
+        "iobroker.objects-redis": "^5.0.1",
         "ioredis": "^4.19.4",
         "jsonwebtoken": "^8.5.1",
         "jszip": "^3.5.0",
