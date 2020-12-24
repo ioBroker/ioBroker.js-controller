@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "3.1.6",
+        "version": "3.1.7",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.1.7": {
+                "en": "Corrected `chmod` CLI command",
+                "de": "Der CLI-Befehl `chmod` wurde korrigiert",
+                "ru": "Исправлена команда CLI `chmod`.",
+                "pt": "Comando CLI `chmod` corrigido",
+                "nl": "Gecorrigeerde `chmod` CLI-opdracht",
+                "fr": "Commande CLI `chmod` corrigée",
+                "it": "Comando CLI `chmod` corretto",
+                "es": "Comando CLI `chmod` corregido",
+                "pl": "Poprawione polecenie CLI `chmod`",
+                "zh-cn": "更正了`chmod` CLI命令"
+            },
             "3.1.6": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
                 "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",

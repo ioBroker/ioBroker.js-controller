@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.7 (2020-12-24) Release Francesca
+* (bluefox) fix `chmod` command
+
 ## 3.1.6 (2020-06-18) Release Francesca
 * (foxriver76) fix output of `iobroker plugin status` command
 * (foxriver76) fix deletion of states on instance-deletion
