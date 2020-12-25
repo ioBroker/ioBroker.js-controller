@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alexa2/README.md
 title: ioBroker.alexa2
-hash: I7qWNp8YP6SkqRXP+JioIktc3hbPFgC7PD3bQhmp1jw=
+hash: D+SRUcPZBTZSG1ROflwqDxficUfm4fatrviEkRp4RUQ=
 ---
 ![商标](../../../en/adapterref/iobroker.alexa2/admin/alexa.png)
 
@@ -27,31 +27,18 @@ hash: I7qWNp8YP6SkqRXP+JioIktc3hbPFgC7PD3bQhmp1jw=
 ### Alexa2.0
 |州名|意思|
 | - | - |
-| *。将文本命令发送到虚拟设备，就好像您要说话一样。 |
 |回声设备。每个Echo设备的状态，请参见下文|
 |历史记录。有关命令历史记录的信息，请参见下文|
 |智能家居设备。* |每个智能家居设备的状态，以及一般情况，请参见下文|
 |信息* |有关适配器状态的常规信息|
 | requestResult | TuneIn和智能家居设备请求的错误信息|
 
-### Alexa2.0.Bespoken。*
-Bespoken通常是帮助自动测试技能的服务提供商。但实际上，您可以使用它向“您的” Alexa / Amazon帐户发送命令。这样，您可以触发通常无法通过Alexa应用程序访问的技能操作。从本质上讲，它只能执行与“与您说话的设备”不直接交互的命令，例如执行特定操作并提供答案的普通命令。播放音频或视频或通常由您说出该命令的设备完成的操作将不起作用！
-
-由于发送的文本首先转换为音频，然后发送到Alexa语音服务，然后由Alexa答复并发回，所以Bespoken请求将花费几秒钟。因此，它最多可能需要10秒钟。
-
-|州名|意思|
-| - | - |
-| #sendText |要发送到虚拟设备的文本|
-|回答|来自设备的答案为文字|
-| anwserJson |来自适配器的答案为JSON，可能包含其他信息，例如卡信息或|
-|状态|使用bespoken进行通信的状态（确定=完成/等待下一个命令，PROCESSING =等待来自bespoken的答复，FAILURE =处理时发生错误）|
-
 ### Alexa2.0.Contacts.ContactId。*
 可用于向其发送文本消息的所有Alexa联系人，包括他本人。自己的联系人在其姓名后得到一个特殊的“（（自我）”）。
 
 |州名|意思|
 | - | - |
-| #clearOwnMessages |仅存在于自己的联系人中，触发器将删除所有发送给自己的消息（还包括通过App或设备发送给自己的消息！） |
+| #clearOwnMessages |仅存在于自己的联系人中，触发器将删除发送给自己的所有消息（还包括通过App或设备发送给自己的消息！） |
 | textMessage |将此文本作为消息发送给用户。此用户的所有设备上均以“黄色环”显示。 |
 
 ### Alexa2.0.Echo-Devices.Serialnumber。*
@@ -86,10 +73,10 @@ Bespoken通常是帮助自动测试技能的服务提供商。但实际上，您
 |功能|来自Alexa的有趣事实...（目前仅美国）|纽扣 |
 |笑话来自Alexa的笑话... |纽扣 |
 |清理|像播放聆听模式的开始/结束一样播放“锣”音... |纽扣 |
-|策展人|来自Alexa所选区域的随机句子... |文字（允许使用：“再见”，“确认”，“早安”，“赞美”，“生日”，“晚安”，“ iamhome”）|
+|策展人|来自Alexa所选区域的随机句子... |文本（允许使用：“再见”，“确认”，“早安”，“赞美”，“生日”，“晚安”，“ iamhome”）|
 | singasong | Alexa唱了一首歌... |纽扣 |
 |说Alexa说您在这里输入的内容... |文字输入|
-|音量|调整Alexa的语音音量，该音量会在语音通话之前设置好，然后再重置| 0-100 |
+|音量|调整Alexa的语音音量，该音量会在语音通话之前设置好，然后再重新设置| 0-100 |
 |讲故事| Alexa讲故事|纽扣 |
 |交通|交通新闻|纽扣 |
 |天气|天气新闻纽扣 |
@@ -119,7 +106,7 @@ Bespoken通常是帮助自动测试技能的服务提供商。但实际上，您
 |序列号| Alexa设备的序列号|
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Music-Provider。*
-直接告诉Alexa播放音乐或受支持的音乐提供商的播放列表。实际支持的是：“我的图书馆”，“ Amazon音乐”，“调入”。您还可以在短语中加入一个多房间设备组名称，以便在该组中播放（例如“ SWR3 auf Erdgeschoss”）
+直接告诉Alexa播放音乐或受支持的音乐提供商的播放列表。实际支持的是：“我的图书馆”，“ Amazon音乐”，“调入”。您还可以在短语中加入多房间设备组名称，以便在该组中播放（例如“ SWR3 auf Erdgeschoss”）
 
 |州名|意思|价值|
 | - | - | - |
@@ -170,13 +157,13 @@ Bespoken通常是帮助自动测试技能的服务提供商。但实际上，您
 |州名|意思|价值|
 | - | - | - |
 |启用|显示提醒状态并允许对其进行更改：使用true激活提醒-使用false禁用提醒，禁用后将在一段时间后自动删除。对/错|
-|时间|提醒时间。覆盖现有提醒的时间以设置新时间|时间输入|如果您已有提醒，则可以在此处更改时间，只需以hh：mm：ss格式覆盖时间即可，无需设置秒数。 |
+|时间|提醒时间。覆盖现有提醒的时间以设置新时间|时间输入|如果您已有提醒，则可以通过简单地以hh：mm：ss格式覆盖时间来更改时间，而无需设置秒|
 |触发如果达到并触发了提醒，则为true。时钟必须与Amazon和iobroker保持同步，一旦达到提醒时间，可使用此时钟触发其他操作|对/错|
 
 |新以以下格式添加新的提醒<br>时间（hh：mm），文字<br>|文字输入<br>12:00，提醒我
 
 ### Alexa2.0.Echo-Devices.Serialnumber.Routines。*
-Alexa App中设置的例程概述。自行创建的例程具有序列号，Amazon显示为“ preconfigured：...”（预配置：...），每个例程可以通过按钮触发一次，以运行一次。
+Alexa App中设置的例程概述。自行创建的例程具有序列号，Amazon显示为“ preconfigured：...”（预配置：...），每个例程都可以通过按钮触发一次，以运行一次。
 
 |州名|意思|价值|
 | - | - | - |
@@ -203,7 +190,7 @@ Alexa App中设置的例程概述。自行创建的例程具有序列号，Amazo
 |州名|意思|价值|
 | - | - | - |
 | #trigger |按钮以获取新的历史记录（更多的当前时间，然后是creationTime中的时间戳），仅在不使用推送连接时才需要|纽扣 |
-| cardContent |如Alexa-App / Echo Show |中所示，更多信息。信息|
+| cardContent |其他信息，如Alexa-App / Echo Show中所示。信息|
 | cardJson |其他信息，如Alexa-App / Echo中所示以JSON格式显示|信息|
 | creationTime |此历史记录条目的日期，仅当此时间戳记|信息|
 | domainApplicationId |其他信息，例如Skill-ID或类似信息，可选|信息|
@@ -303,6 +290,10 @@ Sentry.io是一项服务，供开发人员从其应用程序中获取有关错�
 当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
+
+### 3.5.0 (2020-12-24)
+* (Apollon77) Remove bespoken because textCommand is more flexible
+* (Apollon77) Add and adjust some known devices, add Echo 4 image
 
 ### 3.4.0 (2020-12-11)
 * (Apollon77) add support for textCommand - tell an Alexa device a text as you would speak it

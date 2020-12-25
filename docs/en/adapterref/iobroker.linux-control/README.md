@@ -100,7 +100,7 @@ It is important that the retrieved data is transmitted in the correct type! The 
     ### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 1.1.0 (2020-12-23)
 * (paul53) datapoints type and role bug fixes
 * (Scrounger) adapter settings card layout added
 

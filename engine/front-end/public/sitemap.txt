@@ -1009,6 +1009,7 @@ https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vodafone-speedtest/REA
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.volvo/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.vw-connect/README.md
+https://doc.iobroker.net/#de/adapters/adapterref/iobroker.weatherflow_udp/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.weatherunderground/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.web/README.md
 https://doc.iobroker.net/#de/adapters/adapterref/iobroker.web-speedy/README.md
@@ -1413,6 +1414,7 @@ https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vodafone-speedtest/REA
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.volvo/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.vw-connect/README.md
+https://doc.iobroker.net/#en/adapters/adapterref/iobroker.weatherflow_udp/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.weatherunderground/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.web/README.md
 https://doc.iobroker.net/#en/adapters/adapterref/iobroker.web-speedy/README.md
@@ -1817,6 +1819,7 @@ https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vodafone-speedtest/REA
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.volvo/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.vw-connect/README.md
+https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.weatherflow_udp/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.weatherunderground/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.web/README.md
 https://doc.iobroker.net/#ru/adapters/adapterref/iobroker.web-speedy/README.md
@@ -2221,6 +2224,7 @@ https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vodafone-speedtest/
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.volvo/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vr200/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.vw-connect/README.md
+https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.weatherflow_udp/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.weatherunderground/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.web/README.md
 https://doc.iobroker.net/#zh-cn/adapters/adapterref/iobroker.web-speedy/README.md

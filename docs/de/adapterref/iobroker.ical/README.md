@@ -189,8 +189,9 @@ Whitelist: Wenn Sie nur Ereignisse einer bestimmten Position einschließen möch
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 1.8.3 (2020-12-24)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-ICAL-C)
+* (Apollon77) Upgrade node-ical
 
 ### 1.8.2 (2020-11-29)
 * (klein0r) Several fixes and optimizations

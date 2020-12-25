@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: dJ768vJZFotNIzfLwccf2y67LTzTCqWM9+PmyHnveiA=
+hash: RR/sK2QrgujDOWHvOpJBzN/j6fjJC9LdXZrJDWDtnoc=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -59,10 +59,9 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 
 ## Bekannte Probleme
 * Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da es einige gibt meldet, dass die Verbindung nach ca. 24 Stunden.
-* Der Batteriewert des Deebot 900/901 weist ein merkwürdiges Verhalten auf. Es ist sehr wahrscheinlich, dass dies ein Firmware-Fehler ist.
-  * Sie können die entsprechende Option in der Adapterkonfiguration als Problemumgehung verwenden.
-* Die Schaltfläche "Pause" funktioniert nicht mit Deebot 710/711.
-* Die Schaltfläche "Stopp" funktioniert nicht mit Deebot 711s.
+* Die Funktion "Pause" funktioniert nicht mit Deebot 710/711.
+* Die "Stop" -Funktion funktioniert nicht mit Deebot 711s.
+* Die "Kanten" -Funktion funktioniert nicht mit Deebot U2.
 
 ## FAQ
 * Häufig gestellte Fragen finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
@@ -71,6 +70,14 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 Ich bin in keiner Weise mit ECOVACS verbunden.
 
 ## Changelog
+
+### 1.0.8 (alpha)
+* Using library version 0.5.2 (0.5.2-alpha.5)
+* Added available virtualBoundaries channel for Deebot 900/901 and Ozmo 930 (read only)
+* Added "volume" for 950 type models (920/950/T8)
+* Added some experimental features (for a few models only)
+* Bump some dependencies
+* Several enhancements and fixes
 
 ### 1.0.7
 * Using library version 0.5.1 (0.5.1-beta.3)

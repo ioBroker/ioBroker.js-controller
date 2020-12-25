@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP Cloud AccessPoint-Adapter
-hash: UnHTzvzWwdbWm+eHXhoedg6zjQvgT8aPkvmVK20Teq8=
+hash: DXSNlH6ml8kVGnfNW5ZpU7AAy3X8gjqNfmneHLJ5A9w=
 ---
 ![Logo](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
@@ -18,6 +18,8 @@ hash: UnHTzvzWwdbWm+eHXhoedg6zjQvgT8aPkvmVK20Teq8=
 
 ## Beschreibung
 Dieser Adapter ermöglicht die Kommunikation mit einem HomematicIP CloudAccessPoint über die Rest-API der Homematic IP Cloud
+
+** Wichtiger Hinweis: ** Bitte beschränken Sie Steuerungsanfragen auf das Nötigste, da EQ-3 IPs blockiert, wenn Sie zu viel tun!
 
 ## Installation
 Dieser Adapter benötigt Node-Js in Version> = 8.6
@@ -54,6 +56,19 @@ https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 1.6.0 (2020-12-24)
+* Important note: Please limit control requests to the bare minimum because EQ-3 started to block IPs when you do too much!
+* (Apollon77) Add support for WALL_MOUNTED_THERMOSTAT_CHANNEL
+
+### 1.5.2 (2020-12-15)
+* (Apollon77) ignore DEVICE_CHANNEL_EVENT for now and also log as debug to not flood log
+
+### 1.5.0 (2020-11-09)
+* (Apollon77) Add control options for primary/secondaryShadingLevel datapoints
+
+### 1.4.1 (2020-11-03)
+* (Apollon77) fix potential crash case (Sentry IOBROKER-HMIP-1N)
 
 ### 1.4.0 (2020-10-29)
 * (Apollon77) Add ROTARY_WHEEL_CHANNEL and RAIN_DETECTION_CHANNEL, ACCESS_CONTROLLER_WIRED_CHANNEL

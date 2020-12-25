@@ -28,45 +28,61 @@ If you (later) get a "400 bad request" error in the log, you must get a new Auth
 
 ## Changelog
 
-### 0.4.0
-* set required js-controller to >=2.0.0
-* test for node 8 removed
-* devide by 10 added to external flow temperature
-* 10 missing parameters added for SMO 40
-* fallback names for unknown parameters changed (id added)
-* store session in iobroker data directory
-* code refactoring
+### 0.4.0 - 2020-12-24
+* Set required js-controller to >=2.0.0
+* Test for Node 8 removed
+* Support for compact mode enabled
+* Support for more than one unit added
+  - There is a new object structure - one level more for the unit.
+  - The old objects will be updated if they are found - so don't panic.
+  - If you don't need the old objects, you can remove them. They will not be created again.
+* Devide by 10 added to external flow temperature
+* Hundreds of missing parameters were added
+  - The old fallback objects are no longer supported and updated. So check your objects update time.
+  - You can remove the old objects. They will not be created again.
+* Fallback names for unknown parameters changed (id added at the beginning)
+  - The old fallback objects are no longer supported and updated. So check your objects update time.
+  - You can remove the old objects. They will not be created again.
+  - If you have objects with numbers at the beginning, then these are fallback names. Please email me and I can add them.
+* Store session in iobroker data directory
+  - After the adapter update you always had to get a new AuthCode and set it in the adapter settings.
+  - This is no longer necessary from the next version.
+  - But after the update to this version (0.4.0) it is necessary once again.
+* Translate object keys of serial number, version and product in english for all languages (section SYSTEM_INFO)
+  - The old objects are no longer supported and updated. So check your objects update time.
+* Norwegian added
+* Code refactoring
 
-### 0.3.0
+### 0.3.0 - 2019-10-31
 * Compact mode disabled
 * Support for Node 6 removed
 * Trim whitespaces from setting parameters
 * Bugfix: Customs disabled
 
-### 0.2.2
+### 0.2.2 - 2019-03-24
 * Internal clean-up
 
-### 0.2.1
+### 0.2.1 - 2019-03-21
 * Dependencies updated
 * Fix problem with nodejs 6 and the spread operator and async
 
-### 0.2.0
+### 0.2.0 - 2019-03-16
 * Code change to new template
 * Support for Compact mode (js-Controller 2.0 Feature) added (#1)
 * Translations in settings page
 * Type moved from general to climate control
 
-### 0.1.1
+### 0.1.1 - 2019-02-19
 * Do not create deprecated sub path objects - only update them if present (if you have them and don't use them, you can delete them)
 * info.connection added
 
-### 0.1.0
+### 0.1.0 - 2019-02-17
 * Objects tree changed: New, more readable objects added
 
-### 0.0.2
+### 0.0.2 - 2019-02-17
 * Language support for objects tree
 
-### 0.0.1
+### 0.0.1 - 2018-12-09
 * Initial release
 
 ## License

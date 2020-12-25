@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alexa2/README.md
 title: ioBroker.alexa2
-hash: I7qWNp8YP6SkqRXP+JioIktc3hbPFgC7PD3bQhmp1jw=
+hash: D+SRUcPZBTZSG1ROflwqDxficUfm4fatrviEkRp4RUQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.alexa2/admin/alexa.png)
 
@@ -18,7 +18,7 @@ hash: I7qWNp8YP6SkqRXP+JioIktc3hbPFgC7PD3bQhmp1jw=
 
 Mit diesem Adapter können Sie Ihre Alexa-Geräte (Amazon Echo) fernsteuern.
 
-Ein großes Dankeschön geht an soef für die Version 1 des Adapters und an Hauke und ruhr70 für die Ideen in ihren Skripten vom ioBroker-Forum (insbesondere die Aktualisierungen des Medienfortschritts)! Ein großes Dankeschön auch an meicker für die Unterstützung bei der Dokumentation all dessen und an zahlreiche Benutzer aus dem ioBroker Forum für ihre Testunterstützung!
+Ein großes Dankeschön geht an soef für die Version 1 des Adapters und an Hauke und ruhr70 für die Ideen in ihren Skripten vom ioBroker-Forum (insbesondere die Aktualisierungen des Medienfortschritts)! Ein großes Dankeschön auch an meicker für die Unterstützung bei der Dokumentation all dessen und an zahlreiche Benutzer des ioBroker-Forums für ihre Testunterstützung!
 
 ## Staaten und ihre Bedeutungen:
 Im Adapter-Namespace (z. B. alexa2.0) werden einige Kanäle erstellt
@@ -26,24 +26,11 @@ Im Adapter-Namespace (z. B. alexa2.0) werden einige Kanäle erstellt
 ### Alexa2.0
 | Staatsname | Bedeutung |
 | - | - |
-| maßgeschneidert. * | Senden Sie Textbefehle an ein virtuelles Gerät, als würden Sie mit ihm sprechen |
 | Echogeräte. * | Zustände pro Echo-Gerät, siehe unten |
 | Geschichte. * | Infos zum Befehlsverlauf siehe unten |
 | Smart-Home-Geräte. * | Zustände pro Smart-Home-Gerät und allgemein siehe unten |
 | info. * | Allgemeine Informationen zum Adapterstatus |
 | requestResult | Fehlerinformationen für TuneIn- und Smart-Home-Geräteanforderungen |
-
-### Alexa2.0.Bespoken. *
-Bespoken ist normalerweise ein Dienstleister, der beim automatischen Testen von Fähigkeiten hilft. Tatsächlich können Sie damit Befehle an "Ihr" Alexa / Amazon-Konto senden. Damit können Sie Skill-Aktionen auslösen, auf die normalerweise über die Alexa-App nicht zugegriffen werden kann. Aufgrund der Funktionsweise sind nur Befehle möglich, die nicht direkt mit dem "Gerät, mit dem Sie sprechen" interagieren, wie normale Befehle, die eine bestimmte Aktion ausführen und eine Antwort geben. Die Wiedergabe von Audio oder Video oder dergleichen, die normalerweise von dem Gerät ausgeführt wird, mit dem Sie den Befehl gesprochen haben, funktioniert nicht!
-
-Eine Anfrage an Bespoken dauert einige Sekunden, da der gesendete Text zuerst in Audio umgewandelt wird, das dann an Alexa Voice Services gesendet und dann von Alexa beantwortet und zurückgesendet wird. So kann es leicht bis zu 10s dauern.
-
-| Staatsname | Bedeutung |
-| - | - |
-| #sendText | Text, der an das virtuelle Gerät gesendet werden soll |
-| Antwort | Antwort vom Gerät als Text |
-| anwserJson | Antwort vom Adapter als JSON, kann zusätzliche Informationen wie Karteninfos oder ähnliches enthalten |
-| Status | Status der Kommunikation mit Bespoken (OK = Fertig / Warten auf nächsten Befehl, VERARBEITUNG = Warten auf Antwort von Bespoken, FAILURE = Fehler während der Verarbeitung aufgetreten) |
 
 ### Alexa2.0.Contacts.ContactId. *
 Alle Alexa-Kontakte, an die Textnachrichten gesendet werden können, einschließlich sich selbst. Der eigene Kontakt erhält nach seinem Namen ein spezielles "(Selbst)".
@@ -260,7 +247,7 @@ Mit #helligkeit können Sie die Helligkeit Ihres Lichts anpassen. Mit #colorName
 * Selbstdeaktivierung, wenn Cookie / CSRF ungültig ist
 
 ## Installation
-Verwenden Sie wie gewohnt ein stabiles Repository, das neueste Repository oder verwenden Sie die ioBroker-Optionen "Installieren" von GitHub
+Verwenden Sie wie gewohnt ein stabiles Repository, das neueste Repository oder die ioBroker-Optionen "Installieren" von GitHub
 
 ## Fehlerbehebung
 ### Probleme mit der Cookie-Ermittlung per E-Mail / Passwort
@@ -279,7 +266,7 @@ Wenn Sie ein solches Captcha beantworten müssen, versuchen Sie Folgendes:
 * Möglicherweise müssen Sie sich zweimal anmelden oder ein Captcha lösen
 * Am Ende sollte "https://alexa.amazon.de/spa/index.html" als URL angezeigt werden, jedoch ohne echten Inhalt (da JS immer noch deaktiviert ist), ABER DAS IST VOLLSTÄNDIG OK !!!!
 * Versuchen Sie jetzt erneut, einen Cookie zu erhalten
-* Wenn es immer noch nicht funktioniert, wiederholen Sie den Vorgang und überprüfen Sie den User-Agent und die Accept-Language in Ihrem Browser. Verwenden Sie diese beim nächsten Versuch im Adapter
+* Wenn es immer noch nicht funktioniert, wiederholen Sie den User-Agent und die Accept-Language in Ihrem Browser und verwenden Sie diese beim nächsten Versuch im Adapter
 
 Zusätzlich muss der Accept-Language-Header (standardmäßig "de-DE") mit Ihrer Sprache / der Browsersprache / der Sprache der Amazon-Seite übereinstimmen, auf der Sie sich anmelden.
 
@@ -302,6 +289,10 @@ Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ih
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
+
+### 3.5.0 (2020-12-24)
+* (Apollon77) Remove bespoken because textCommand is more flexible
+* (Apollon77) Add and adjust some known devices, add Echo 4 image
 
 ### 3.4.0 (2020-12-11)
 * (Apollon77) add support for textCommand - tell an Alexa device a text as you would speak it

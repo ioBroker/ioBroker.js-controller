@@ -37,6 +37,12 @@ Die aktuellen Messdaten werden von dem Adapter standardmäßig im Stundentakt ak
 
 ## Changelog
 
+### 1.1.2 (2020-12-23)
+* (crycode-de) Fix objects parameters for objects created before v1.1.1
+
+### 1.1.1 (2020-12-23)
+* (crycode-de) Fixed issue creating odl state object
+
 ### 1.1.0 (2020-12-21)
 * (crycode-de) Added Sentry error reporting
 * (crycode-de) Updated dependencies

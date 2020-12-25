@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.echarts/README.md
 title: ioBroker.echarts
-hash: Gqv2LbckF5c4WGWjkcx6GkA4dEEwwm8Tfecg5q0CCI4=
+hash: OsS7Fb1g5FHqz4ndcg9s687Fco2rkIKzDDHASbVnskE=
 ---
 ![Logo](../../../en/adapterref/iobroker.echarts/admin/echarts.png)
 
@@ -60,6 +60,8 @@ sendTo('echarts.0', {
 });
 ```
 
+** Achtung: Sie können Linien in der Legende auf Touch-Geräten mit aktiviertem Zoom nicht aktivieren / deaktivieren **
+
 ## Entwicklerhandbuch
 ** Für Nichtentwickler funktioniert dieser Link nicht! **
 
@@ -79,6 +81,16 @@ Sie können Ansichtsdiagramme lokal debuggen mit:
 ### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 0.4.10 (2020-12-22)
+* (bluefox) Allow the hiding of lines at start and show them via legend later
+* (bluefox) Use canvas renderer on touch devices to allow zoom and pan
+
+### 0.4.9 (2020-12-21)
+* (bluefox) Updated echarts to 5.0
+* (bluefox) Implemented copy&paste of lines and markings
+* (bluefox) Available vertical legend
+* (bluefox) Allowed to hide interpolated values in tooltip
+
 ### 0.4.7 (2020-12-13)
 * (bluefox) Updated the select ID dialog
 
@@ -137,24 +149,23 @@ Sie können Ansichtsdiagramme lokal debuggen mit:
 * (bluefox) initial release
 
 ## License
-MIT License
+BSD 3-Clause License
 
 Copyright (c) 2019-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2017, Baidu Inc. All rights reserved.
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.
+
+Neither the name of the copyright holder nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.
+
+THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, 
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. 
+IN NO EVENT SHALL THE COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, 
+OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, 
+OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, 
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, 
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.

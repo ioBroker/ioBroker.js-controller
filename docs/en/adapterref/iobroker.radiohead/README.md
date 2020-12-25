@@ -293,9 +293,10 @@ If necessary, the counters of the messages can be reset to 0 by writing to the o
 
 ## Changelog
 
-### 1.1.0 (2020-12-21)
+### 1.1.0 (2020-12-23)
 * (crycode-de) Added Sentry error reporting
 * (crycode-de) Updated dependencies
+* (crycode-de) Compatibility with Node.js 14.x
 * (crycode-de) Optimized npm package
 
 ### 1.0.7 (2020-06-01)

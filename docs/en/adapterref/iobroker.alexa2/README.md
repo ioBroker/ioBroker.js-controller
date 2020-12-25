@@ -22,24 +22,11 @@ In the adapter namespace (e.g. alexa2.0) some channels are created
 
 | State name | meaning |
 | - | - |
-| bespoken.* | Send text commands to a virtual device as if you would speak to it |
 | echo-devices.* | States per Echo device, see below |
 | history.* | Infos for command history, see below |
 | smart-home-devices.* | States per smart home device and in general, see below |
 | info.*| General information about the adapter status |
 | requestResult | Error info for TuneIn and smart-home device requests |
-
-### alexa2.0.Bespoken.*
-Bespoken is normally a service provider to help automatically testing skills. But in fact you can use it to send commands to "your" Alexa/Amazon account. With this you can trigger skill actions that normally are not accessible via the Alexa App. By nature of the way it works only commands are possible that do not interact directly with the "Device you speak to", like normal commands that do a certain action and provide an answer. Playing Audio or Video or such that normally will be done by the device you spoke the command to will not work!
-
-A Request to Bespoken will take some seconds because the sent text is first converted into audio, which is then send to Alexa Voice Services and is then answered by Alexa and send back. So it easiely can take up to 10s.
-
-| State name | meaning |
-| - | - |
-| #sendText | Text to be send to the virtual device |
-| answer | Answer from the device as text |
-| anwserJson | Answer from the adapter as JSON, may contain additional informations like card infos or such |
-| status | Status of the communication with bespoken (OK=Done/Wait for next command, PROCESSING=wait for answer from bespoken, FAILURE=Error happend while processing) |
 
 ### alexa2.0.Contacts.ContactId.*
 All Alexa-Contacts that can be used to send Text Messages to, including himself. The own contact gets a special "(Self)" after his name.
@@ -300,6 +287,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 
 ## Changelog
+
+### 3.5.0 (2020-12-24)
+* (Apollon77) Remove bespoken because textCommand is more flexible
+* (Apollon77) Add and adjust some known devices, add Echo 4 image
 
 ### 3.4.0 (2020-12-11)
 * (Apollon77) add support for textCommand - tell an Alexa device a text as you would speak it

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP Cloud AccessPoint адаптер
-hash: UnHTzvzWwdbWm+eHXhoedg6zjQvgT8aPkvmVK20Teq8=
+hash: DXSNlH6ml8kVGnfNW5ZpU7AAy3X8gjqNfmneHLJ5A9w=
 ---
 ![Логотип](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
@@ -11,13 +11,15 @@ hash: UnHTzvzWwdbWm+eHXhoedg6zjQvgT8aPkvmVK20Teq8=
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.hmip.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.hmip.svg)
 ![Статус сборки](https://travis-ci.org/iobroker-community-adapters/ioBroker.hmip.svg?branch=master)
-![НПМ](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.hmip.png?downloads=true)
 
 # IoBroker HomeMatic IP Cloud AccessPoint Adapter
-** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Описание
 Этот адаптер позволяет обмениваться данными с HomematicIP CloudAccessPoint через Rest API из Homematic IP Cloud.
+
+** Важное примечание: ** Пожалуйста, ограничьте количество запросов на управление до минимума, потому что EQ-3 начал блокировать IP-адреса, когда вы делаете слишком много!
 
 ## Установка
 Этому адаптеру требуется node-js версии> = 8.6.
@@ -31,20 +33,20 @@ hash: UnHTzvzWwdbWm+eHXhoedg6zjQvgT8aPkvmVK20Teq8=
 
 Если устройства HmIP не работают, создайте проблему с этой информацией (пожалуйста, по одному для каждого устройства и, если возможно, укажите техническое название в теме).
 Переключите ведение журнала адаптера в ioBroker в глупый режим и добавьте json-код устройства, который печатается в журнале проблемы.
-Мне также может понадобиться json изменения состояния.
+Мне также может понадобиться json для изменения состояния.
 
 Спасибо
 
-Если вы ищете информацию, если настройки сигнализации активны, вы должны проверить активное состояние группы ВНУТРЕННИЙ и ВНЕШНИЙ, они представляют в комбинации три состояния сигнализации. ВНУТРЕННИЙ и ВНЕШНИЙ активны означает Нет на месте, активен только ВНЕШНИЙ означает, что активен только Периметр.
+Если вы ищете информацию, если настройки сигнализации активны, вы должны проверить активный статус группы ВНУТРЕННИЙ и ВНЕШНИЙ, они представляют в комбинации три состояния сигнализации. ВНУТРЕННИЙ и ВНЕШНИЙ активны означает Нет на месте, активен только ВНЕШНИЙ означает, что активен только Периметр.
 
 ## Важная информация, что можно сделать с этим адаптером
-!!! Вы можете запускать только события с этим адаптером, которые могут запускаться через исходное приложение Homematic IP.
+!!! С помощью этого адаптера вы можете запускать только события, которые могут запускаться через исходное приложение Homematic IP.
 Например, прямые соединения между устройствами не имеют событий в приложении и не могут быть запущены через этот адаптер !!!
 
 ## Настройки
-* введите свой SGTIN (на задней стороне точки доступа) и PIN-код (если он был установлен ранее) и подтвердите данные, нажав синюю светодиодную кнопку. Это создаст токен аутентификации.
+* введите свой SGTIN (на задней панели точки доступа) и PIN-код (если установлен ранее) и подтвердите данные, нажав синюю светодиодную кнопку. Это создаст токен аутентификации.
 
-## Благодарность
+## Благодаря
 в coreGreenberet за его библиотеку python (https://github.com/coreGreenberet/homematicip-rest-api)
 
 ## Обсуждение на форуме ioBroker
@@ -54,6 +56,19 @@ https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 1.6.0 (2020-12-24)
+* Important note: Please limit control requests to the bare minimum because EQ-3 started to block IPs when you do too much!
+* (Apollon77) Add support for WALL_MOUNTED_THERMOSTAT_CHANNEL
+
+### 1.5.2 (2020-12-15)
+* (Apollon77) ignore DEVICE_CHANNEL_EVENT for now and also log as debug to not flood log
+
+### 1.5.0 (2020-11-09)
+* (Apollon77) Add control options for primary/secondaryShadingLevel datapoints
+
+### 1.4.1 (2020-11-03)
+* (Apollon77) fix potential crash case (Sentry IOBROKER-HMIP-1N)
 
 ### 1.4.0 (2020-10-29)
 * (Apollon77) Add ROTARY_WHEEL_CHANNEL and RAIN_DETECTION_CHANNEL, ACCESS_CONTROLLER_WIRED_CHANNEL

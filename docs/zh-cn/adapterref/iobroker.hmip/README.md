@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.hmip/README.md
 title: ioBroker HomeMatic IP Cloud AccessPoint适配器
-hash: UnHTzvzWwdbWm+eHXhoedg6zjQvgT8aPkvmVK20Teq8=
+hash: DXSNlH6ml8kVGnfNW5ZpU7AAy3X8gjqNfmneHLJ5A9w=
 ---
 ![商标](../../../en/adapterref/iobroker.hmip/admin/homematic.png)
 
@@ -19,6 +19,8 @@ hash: UnHTzvzWwdbWm+eHXhoedg6zjQvgT8aPkvmVK20Teq8=
 ##说明
 该适配器允许通过Homematic IP Cloud的Rest API与HomematicIP CloudAccessPoint通信
 
+**重要提示：**请将控制请求限制在最低限度，因为当您执行过多操作时，EQ-3开始阻止IP！
+
 ##安装
 此适配器需要版本大于等于8.6的node-js
 
@@ -30,7 +32,7 @@ hash: UnHTzvzWwdbWm+eHXhoedg6zjQvgT8aPkvmVK20Teq8=
 我会不断改进它，但是这需要时间。社区的任何帮助，例如拉取请求将不胜感激。
 
 对于无法正常使用的HmIP设备，请创建与此信息有关的问题（每台设备一个，如果可能，请在主题中提供技术名称）。
-将在ioBroker中登录的适配器切换为傻模式，然后将打印的设备的json添加到问题中的日志中。
+将在ioBroker中登录的适配器切换为傻模式，并将打印的设备的json添加到问题中的日志中。
 我可能还需要状态更改的json。
 
 谢谢
@@ -45,7 +47,7 @@ hash: UnHTzvzWwdbWm+eHXhoedg6zjQvgT8aPkvmVK20Teq8=
 *输入您的SGTIN（接入点的背面）和PIN（如果之前已设置），然后通过按蓝色LED按钮来验证数据。这将创建一个身份验证令牌。
 
 ＃＃ 谢谢
-到coreGreenberet获取他的python库（https://github.com/coreGreenberet/homematicip-rest-api）
+到coreGreenberet获得他的python库（https://github.com/coreGreenberet/homematicip-rest-api）
 
 ioBroker论坛中的## Diskussion
 https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
@@ -54,6 +56,19 @@ https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 1.6.0 (2020-12-24)
+* Important note: Please limit control requests to the bare minimum because EQ-3 started to block IPs when you do too much!
+* (Apollon77) Add support for WALL_MOUNTED_THERMOSTAT_CHANNEL
+
+### 1.5.2 (2020-12-15)
+* (Apollon77) ignore DEVICE_CHANNEL_EVENT for now and also log as debug to not flood log
+
+### 1.5.0 (2020-11-09)
+* (Apollon77) Add control options for primary/secondaryShadingLevel datapoints
+
+### 1.4.1 (2020-11-03)
+* (Apollon77) fix potential crash case (Sentry IOBROKER-HMIP-1N)
 
 ### 1.4.0 (2020-10-29)
 * (Apollon77) Add ROTARY_WHEEL_CHANNEL and RAIN_DETECTION_CHANNEL, ACCESS_CONTROLLER_WIRED_CHANNEL

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: dJ768vJZFotNIzfLwccf2y67LTzTCqWM9+PmyHnveiA=
+hash: RR/sK2QrgujDOWHvOpJBzN/j6fjJC9LdXZrJDWDtnoc=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -42,7 +42,7 @@ hash: dJ768vJZFotNIzfLwccf2y67LTzTCqWM9+PmyHnveiA=
 ## Установка
 Рекомендуется использовать версию Node.js 10 или более новую.
 
-Этот адаптер использует библиотеку холста, которая может потребовать дополнительных установок.
+Этот адаптер использует библиотеку холста, для которой может потребоваться дополнительная установка.
 Для полного набора функций установите следующие пакеты.
 
 Для систем Linux на базе Debian необходимо выполнить следующие команды:
@@ -57,12 +57,11 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 ## Применение
 * Информацию о том, как использовать этот адаптер, можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
-## Известные проблемы
+## Известные вопросы
 * Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно через прибл. 24 часа.
-* На Deebot 900/901 наблюдается странное поведение заряда батареи. Очень вероятно, что это ошибка прошивки.
-  * Вы можете использовать соответствующую опцию в конфигурации адаптера как обходной путь.
-* Кнопка «пауза» не работает с Deebot 710/711.
-* Кнопка «стоп» не работает с Deebot 711s.
+* Функция «пауза» не работает с Deebot 710/711.
+* Функция «стоп» не работает с Deebot 711s.
+* Функция "Edge" не работает с Deebot U2.
 
 ## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
@@ -71,6 +70,14 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 Я никоим образом не связан с ECOVACS.
 
 ## Changelog
+
+### 1.0.8 (alpha)
+* Using library version 0.5.2 (0.5.2-alpha.5)
+* Added available virtualBoundaries channel for Deebot 900/901 and Ozmo 930 (read only)
+* Added "volume" for 950 type models (920/950/T8)
+* Added some experimental features (for a few models only)
+* Bump some dependencies
+* Several enhancements and fixes
 
 ### 1.0.7
 * Using library version 0.5.1 (0.5.1-beta.3)

@@ -38,6 +38,9 @@ A german HowTo doc is available here: [howto_de](./doc/howto_de.md)
 * specify the configuration in the settings of the state (admin => objects)
 
 ## Changelog
+### 1.0.1 (2020-12-22)
+* (Black-Thunder) Precision in rounding set to 4
+
 ### 1.0.0 (2020-05-01)
 * (bluefox) Caught error if structure is invalid
 * (bluefox) Added sentry

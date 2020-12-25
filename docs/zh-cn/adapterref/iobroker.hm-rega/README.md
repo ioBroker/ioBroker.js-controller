@@ -108,6 +108,9 @@ CCU和信息文件夹包含网关的基本信息。
 ＃＃＃ 常问问题
 
 ## Changelog
+### 3.0.5 (2020-12-24)
+* (foxriver76) provide possibility to use custom webinterface port, please see FAQ
+
 ### 3.0.4 (2020-12-21)
 * (foxriver76) fixed enum translations (changed in API)
 * (foxriver76) fixed handling of "favorites" enum

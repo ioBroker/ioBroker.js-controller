@@ -185,6 +185,12 @@ Hier eine Liste der bisher aufgetretenen Probleme und deren Lösungen sofern vor
 
 ## Changelog
 
+### 1.8.3 (22.12.2020)
+* (simatec) Bugfix iobroker start after restore on Windows
+* (simatec) changed webui-port for restore
+* (simatec) Bugfix influxDB Restore
+* (simatec) dependencies updated
+
 ### 1.8.2 (09.12.2020)
 * (simatec) code cleaned
 * (simatec) code for history.html object revised

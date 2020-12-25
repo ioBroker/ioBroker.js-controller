@@ -181,7 +181,7 @@ Not all FW-versions of fritz.box support all objects.
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
 
 ## Changelog
-### 1.1.4
+### 1.1.4 (npm)
 * blinds control
 * update testing
 

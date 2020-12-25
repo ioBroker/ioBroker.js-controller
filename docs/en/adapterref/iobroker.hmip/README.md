@@ -12,6 +12,8 @@
 ## Description
 This adapter allows to communicate with a HomematicIP CloudAccessPoint via the Rest API of the Homematic IP Cloud
 
+**Important note:** Please limit control requests to the bare minimum because EQ-3 started to block IPs when you do too much!
+
 ## Installation
 This Adapter needs node-js in version >= 8.6
 
@@ -50,6 +52,10 @@ https://forum.iobroker.net/topic/27532/homematic-ip-cloud-access-point-adapter
 https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
+
+### 1.6.0 (2020-12-24)
+* Important note: Please limit control requests to the bare minimum because EQ-3 started to block IPs when you do too much!
+* (Apollon77) Add support for WALL_MOUNTED_THERMOSTAT_CHANNEL
 
 ### 1.5.2 (2020-12-15)
 * (Apollon77) ignore DEVICE_CHANNEL_EVENT for now and also log as debug to not flood log
