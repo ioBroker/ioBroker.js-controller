@@ -65,7 +65,7 @@ Root Zugang für SSH freigeschaltet werden.
 reicht es aus, den Befehl sudo zu verwenden und dem jeweiligen Befehl voran zu stellen.
 
 ### Installation Node.js
-!> mit dem aktuellen Installer von ioBroker (siehe unten) wird **auf einem System ohne node.js** automatisch die aktuell empfohlene Version von node.js mit installiert!
+!> mit dem aktuellen Installer von ioBroker (siehe unten) wird **auf einem System ohne node.js** automatisch die aktuell empfohlene Version von node.js mit installiert! Eine vorherige separate Installation von node.js ist somit **nicht** mehr nötig.
 
 Die folgende Anleitung ist auch bei einem Downgrade zu verwenden.
 
