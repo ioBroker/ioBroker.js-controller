@@ -1,6 +1,6 @@
 {
     "name": "iobroker.js-controller",
-    "version": "3.1.7",
+    "version": "3.1.8",
     "engines": {
         "node": ">=10.0.0"
     },
@@ -24,7 +24,7 @@
         "decache": "^4.5.1",
         "deep-clone": "^3.0.3",
         "event-stream": "^4.0.1",
-        "iobroker.objects-redis": "^5.0.1",
+        "iobroker.objects-redis": "4.0.5",
         "ioredis": "^4.16.3",
         "jsonwebtoken": "^8.5.1",
         "jszip": "^3.4.0",

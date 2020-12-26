@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.1.7 (2020-12-24) Release Francesca
+## 3.1.8 (2020-12-26) Release Francesca
 * (bluefox) fix `chmod` command
 
 ## 3.1.6 (2020-06-18) Release Francesca
