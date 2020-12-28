@@ -186,7 +186,7 @@ function startMultihost(__config) {
         if (!_config.objects.host || tools.isLocalObjectsDbServer(_config.objects.host, _config.objects.type, true)) {
             logger.warn(`${hostLogPrefix} Multihost Master on this system is not possible, because IP address for objects is ${_config.objects.host}. Please allow remote connections to the server by adjusting the IP.`);
             return false;
-        } else if (!_config.states.host tools.isLocalObjectsDbServer(_config.states.host, _config.states.type, true)) {
+        } else if (!_config.states.host || tools.isLocalObjectsDbServer(_config.states.host, _config.states.type, true)) {
             logger.warn(`${hostLogPrefix} Multihost Master on this system is not possible, because IP address for states is ${_config.states.host}. Please allow remote connections to the server by adjusting the IP.`);
             return false;
         }
