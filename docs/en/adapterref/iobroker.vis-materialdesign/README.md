@@ -5644,12 +5644,15 @@ ical2CalendarWidget();
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 0.4.1 (2020-12-27)
+* (Scrounger): Adapter settings: theme editor implementation completed
 * (Scrounger): Progress Widget: condition binding bug fix
 * (Scrounger): minimal VIS adapter dependency set to v1.3.6
 * (Scrounger): VIS editor: image dialog bug fix
 * (Scrounger): Color themes for buttons and dialogs widgets implemented
 * (Scrounger): Calendar Widget: week number bug fix
+* (Scrougner): icon list: scrollbar bug fix
+* (Scrounger): bug fixes
 
 ### 0.4.0-beta (2020-12-09)
 * (Scrounger): Line History Chart Widget: Breaking Changes !!! aggregate (display) method for every dataset configurable, [see documentation for detailed infos](#line-history-chart)!

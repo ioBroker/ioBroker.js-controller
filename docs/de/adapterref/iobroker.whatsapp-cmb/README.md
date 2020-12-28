@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.whatsapp-cmb/README.md
 title: ioBroker.whatsapp-cmb
-hash: wMjP379z/22SVfPrzHO9w5DW5qO4gT0PAqtpv7kgXyA=
+hash: 6mnvKUWBcvbbKUMhf6evfg+bhlkfRDSyAw7fj7WoSF0=
 ---
 ![Logo](../../../en/adapterref/iobroker.whatsapp-cmb/admin/whatsapp-cmb.png)
 
@@ -25,7 +25,7 @@ Dank des kostenlosen Dienstes [CallMeBot](https://www.callmebot.com/blog/free-ap
 
 Sie müssen den API-Schlüssel vom Bot erhalten, bevor Sie die API verwenden können:
 
-- Fügen Sie die Telefonnummer +34 698 28 89 73 zu Ihren Telefonkontakten hinzu. (Nennen Sie es wie Sie möchten.)
+- Fügen Sie die Telefonnummer **+ 34 644 59 71 67** zu Ihren Telefonkontakten hinzu. (Nennen Sie es wie Sie möchten.)
 - Senden Sie diese Nachricht "Ich erlaube Callmebot, mir Nachrichten zu senden" (auf Englisch) an den neu erstellten Kontakt (natürlich mit WhatsApp).
 - Warten Sie, bis Sie die Meldung `API Activated für Ihre Telefonnummer erhalten. Ihr APIKEY ist 123123` vom Bot. Da dies noch im Beta-Test ist, kann die Aktivierung bis zu 2 Minuten dauern.
 - Die WhatsApp-Nachricht vom Bot enthält den API-Schlüssel, der zum Senden von Nachrichten über die API erforderlich ist.

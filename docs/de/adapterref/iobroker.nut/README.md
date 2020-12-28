@@ -3,11 +3,10 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nut/README.md
 title: ioBroker.nut
-hash: 4V5c4I6Vh/5cCcmu/zWPK9gorBweyRSZKnlLDbsUZkc=
+hash: 76FicpJQCVl7v9oiC8y++e8VHNLJgLPqkeuJGM6H2q8=
 ---
 ![Logo](../../../en/adapterref/iobroker.nut/admin/nut.png)
 
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/Apollon77/ioBroker.nut.svg)
 ![Anzahl der Installationen](http://iobroker.live/badges/nut-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.nut.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.nut.svg)
@@ -18,27 +17,29 @@ hash: 4V5c4I6Vh/5cCcmu/zWPK9gorBweyRSZKnlLDbsUZkc=
 # IoBroker.nut
 [![Code Climate] (https://codeclimate.com/github/Apollon77/ioBroker.nut/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.nut)
 
-Dieser Adapter für ioBroker stellt eine Verbindung zu einem definierten NUT-Server her, um den Status und die Details einer verbundenen USV / USV in den Zuständen des ioRoker anzugeben, sodass sie dort verwendet werden können.
+Dieser Adapter für ioBroker stellt eine Verbindung zu einem definierten NUT-Server her, um den Status und die Details einer verbundenen USV / USV gemäß ioBroker-Status bereitzustellen, damit sie dort verwendet werden können.
+
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
 ## Beschreibung der Parameter
 ### Host_ip
-IP-Adresse des NUT-Servers. NUT muss im Servermodus ausgeführt werden und muss für den Computer zugänglich sein, auf dem der Iobroker NUT-Adapter ausgeführt wird. Überprüfen Sie daher die Firewall-Einstellungen, wenn Sie Probleme haben, und erlauben Sie den Zugriff. Wenn die USV lokal angeschlossen ist, können Sie auch 127.0.0.1 oder localhost verwenden.
+IP-Adresse des NUT-Servers. NUT muss im Servermodus ausgeführt werden und für den Computer zugänglich sein, auf dem der iobroker NUT-Adapter ausgeführt wird. Überprüfen Sie daher die Firewall-Einstellungen, wenn Sie Probleme haben, und erlauben Sie den Zugriff. Wenn die USV lokal angeschlossen ist, können Sie auch 127.0.0.1 oder localhost verwenden.
 
 ### Host_port
 Hafen von NUT. Der Standardport ist <b>3493</b>
 
 ### Ups_name
-Name der USV, wie in der NUT-Konfiguration des NUT-Servers definiert. </ P> Hinweis: Wenn Sie eine Verbindung zu einer USV herstellen möchten, die an eine Synology-Diskstation angeschlossen ist, lautet der Name einfach "ups".
+Name der USV, wie in der NUT-Konfiguration des NUT-Servers definiert. </ P> Hinweis: Wenn Sie eine Verbindung zu einer USV herstellen möchten, die mit einer Synology-Diskstation verbunden ist, lautet der Name einfach "ups".
 
 ### Updateintervall
-Intervall in Sekunden zum Aktualisieren der Daten. Der Standardwert ist 300s
+Intervall in Sekunden, um die Daten zu aktualisieren. Standard ist 300s
 
 ## UPS-Monitor benachrichtigt
-Enthalten ist ein kleines Linux-Shell-Skript bei scripts / nut-notify.sh, das in upsmon konfiguriert werden kann.
+Enthalten ist ein kleines Linux-Shell-Skript unter scripts / nut-notify.sh, das in upsmon konfiguriert werden kann.
 
 Das Skript benötigt Ausführungsrechte (chmod + x nut-notify.sh).
 
-Es sollte zu /etc/nut/upsmon.conf hinzugefügt werden:
+Es sollte zu /etc/nut/upsmon.conf hinzugefügt werden wie:
 
 ```
 NOTIFYCMD "cd /opt/iobroker/;./nut-notify.sh"
@@ -59,7 +60,7 @@ NOTIFYFLAG NOCOMM       SYSLOG+WALL+EXEC
 NOTIFYFLAG NOPARENT     SYSLOG+WALL+EXEC
 ```
 
-Wichtig ist das hinzugefügte Flag "EXEC".
+Wichtig ist das hinzugefügte "EXEC" -Flag.
 
 Ein einfaches Beispiel für ein nut-notify.sh-Skript ist:
 
@@ -73,15 +74,23 @@ logger -t nut-notify "Notify iobroker $UPSNAME -> $NOTIFYTYPE"
 ```
 
 ## Fehlerbehebung
-Wenn Sie Probleme haben und der Adapter die Daten nicht liefert, können Sie die beiden Skripts im Verzeichnis "test" der Adapterinstallation (normalerweise in node_modules / iobroker.nut / test relativ zu Ihrem iobroker-Installationsverzeichnis) zum Ausprobieren verwenden die Befehlszeile. Rufen Sie die Skripts mit "node Dateiname.js" auf, um die erwarteten Parameter anzuzeigen. </ P>
+Wenn Sie Probleme haben und der Adapter die Daten nicht liefert, können Sie sie mit den beiden Skripten im Verzeichnis "test" der Adapterinstallation (normalerweise in node_modules / iobroker.nut / test relativ zu Ihrem iobroker-Installationsverzeichnis) ausprobieren die Kommandozeile. Rufen Sie die Skripte mit "node filename.js" auf, um die erwarteten Parameter anzuzeigen. </ P>
 
 * **test_upslist.js** Stellt eine Verbindung zum NUT-Server her und gibt eine Liste der verfügbaren USV-Namen zurück
-* **test_upsvars.js** Stellt eine Verbindung zu dem NUT-Server für eine definierte USV her und gibt eine Liste der verfügbaren USV-Variablen zurück
+* **test_upsvars.js** Stellt eine Verbindung zum NUT-Server für eine definierte USV her und gibt eine Liste der verfügbaren USV-Variablen zurück
 
 ## Machen
-* docs für die Webseite
+* Dokumente für die Webseite
 
 ## Changelog
+
+### 1.3.0 (2020-12-27)
+* (Apollon77) adjust connection close handling
+* (Apollon77) add compact mode
+
+### 1.2.0 (2020-12-26)
+* (Apollon77) update dependencies
+* (Apollon77) Add Sentry error reporting
 
 ### 1.1.3 (2018-04-13)
 * Fix Admin
@@ -113,7 +122,7 @@ Wenn Sie Probleme haben und der Adapter die Daten nicht liefert, können Sie die
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2016-2020 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

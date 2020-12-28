@@ -25,6 +25,10 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 -->
 
 ## Changelog
+
+### 2.0.3 (2020-12-27)
+* (Apollon77) make sure empty state values do not crash list node
+
 ### 2.0.2 (2020-12-07)
 * (jwiesel) Updated settings.js, node-red and dependencies to latest version.
 

@@ -3,40 +3,41 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nut/README.md
 title: ioBroker.nut
-hash: 4V5c4I6Vh/5cCcmu/zWPK9gorBweyRSZKnlLDbsUZkc=
+hash: 76FicpJQCVl7v9oiC8y++e8VHNLJgLPqkeuJGM6H2q8=
 ---
-![логотип](../../../en/adapterref/iobroker.nut/admin/nut.png)
+![Логотип](../../../en/adapterref/iobroker.nut/admin/nut.png)
 
-![Значок Greenkeeper](https://badges.greenkeeper.io/Apollon77/ioBroker.nut.svg)
 ![Количество установок](http://iobroker.live/badges/nut-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.nut.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.nut.svg)
-![Трэвис-CI](http://img.shields.io/travis/Apollon77/ioBroker.nut/master.svg)
+![Трэвис-Си](http://img.shields.io/travis/Apollon77/ioBroker.nut/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.nut?branch=master&svg=true)
-![NPM](https://nodei.co/npm/iobroker.nut.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.nut.png?downloads=true)
 
 # IoBroker.nut
-[![Изменение климата] (https://codeclimate.com/github/Apollon77/ioBroker.nut/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.nut)
+[![Code Climate] (https://codeclimate.com/github/Apollon77/ioBroker.nut/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.nut)
 
-Этот адаптер для ioBroker подключается к определенному серверу NUT, чтобы предоставить состояние и подробную информацию о подключенном ИБП / USV в состоянии ioBroker, чтобы его можно было использовать там.
+Этот адаптер для ioBroker подключается к определенному серверу NUT, чтобы предоставить состояние и подробную информацию о подключенном ИБП / USV, как сообщает ioBroker, чтобы его можно было там использовать.
+
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Описание параметров
 ### Host_ip
-IP-адрес NUT-сервера. NUT должен работать в режиме сервера и должен быть доступен компьютеру, на котором работает адаптер NUT iobroker. Поэтому проверьте настройки брандмауэра, если у вас есть проблемы, и разрешите доступ. Если ИБП подключен локально, вы также можете использовать 127.0.0.1 или localhost.
+IP-адрес NUT-сервера. NUT должен работать в режиме сервера и быть доступным для компьютера, на котором работает адаптер iobroker NUT. Поэтому проверьте настройки брандмауэра, если у вас есть проблемы, и разрешите доступ. Если ИБП подключен локально, вы также можете использовать 127.0.0.1 или localhost.
 
 ### Host_port
-Порт ОРЕХОВО. Порт по умолчанию <b>3493</b>
+Порт НУТ. Порт по умолчанию - <b>3493.</b>
 
 ### Ups_name
-Имя ИБП, определенное в конфигурации NUT сервера NUT. </ P> Подсказка: если вы хотите подключиться к ИБП, подключенному к дисковой станции Synology, его имя просто «ups».
+Имя ИБП, как определено в конфигурации NUT сервера NUT. </p> Совет: если вы хотите подключиться к ИБП, подключенному к дисковой станции Synology, имя будет просто «ups».
 
 ### Update_interval
-Интервал в секундах для обновления данных. По умолчанию 300
+Интервал в секундах для обновления данных. По умолчанию - 300 с.
 
-## UPS-Monitor уведомляет
-Включен небольшой shell-скрипт linux в scripts / nut-notify.sh, который можно настроить в upsmon.
+## UPS-Monitor Уведомляет
+Включен небольшой сценарий оболочки linux по адресу scripts / nut-notify.sh, который можно настроить в upsmon.
 
-Сценарию нужны права на выполнение (chmod + x nut-notify.sh).
+Скрипту необходимы права на выполнение (chmod + x nut-notify.sh).
 
 Его нужно добавить в /etc/nut/upsmon.conf, например:
 
@@ -59,9 +60,9 @@ NOTIFYFLAG NOCOMM       SYSLOG+WALL+EXEC
 NOTIFYFLAG NOPARENT     SYSLOG+WALL+EXEC
 ```
 
-Важным является добавленный флаг "EXEC".
+Важным является добавленный флаг «EXEC».
 
-Один простой пример для сценария nut-notify.sh:
+Вот простой пример сценария nut-notify.sh:
 
 ```
 #! /bin/sh
@@ -73,15 +74,23 @@ logger -t nut-notify "Notify iobroker $UPSNAME -> $NOTIFYTYPE"
 ```
 
 ## Поиск проблемы
-Если у вас есть проблемы, и адаптер не доставляет данные, вы можете использовать два сценария в каталоге «test» установки адаптера (как правило, в файле node_modules / iobroker.nut / test относительно вашего каталога установки iobroker), чтобы опробовать его на командная строка. Вызовите сценарии, используя «node filename.js», чтобы увидеть ожидаемые параметры. </ P>
+Если у вас возникли проблемы и адаптер не доставляет данные, вы можете использовать два сценария в каталоге "test" установки адаптера (обычно в node_modules / iobroker.nut / test относительно каталога установки iobroker), чтобы опробовать его на командная строка. Вызовите сценарии, используя "node filename.js", чтобы увидеть ожидаемые параметры. </p>
 
 * **test_upslist.js** подключается к серверу NUT и возвращает список доступных имен ИБП.
 * **test_upsvars.js** подключается к серверу NUT для определенного ИБП и возвращает список доступных переменных ИБП.
 
-## Сделать
+## Делать
 * документы для веб-страницы
 
 ## Changelog
+
+### 1.3.0 (2020-12-27)
+* (Apollon77) adjust connection close handling
+* (Apollon77) add compact mode
+
+### 1.2.0 (2020-12-26)
+* (Apollon77) update dependencies
+* (Apollon77) Add Sentry error reporting
 
 ### 1.1.3 (2018-04-13)
 * Fix Admin
@@ -113,7 +122,7 @@ logger -t nut-notify "Notify iobroker $UPSNAME -> $NOTIFYTYPE"
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2016-2020 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

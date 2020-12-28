@@ -1,8 +1,6 @@
 ![Logo](admin/nut.png)
 # ioBroker.nut
 
-[![Greenkeeper badge](https://badges.greenkeeper.io/Apollon77/ioBroker.nut.svg)](https://greenkeeper.io/)
-
 ![Number of Installations](http://iobroker.live/badges/nut-installed.svg) ![Number of Installations](http://iobroker.live/badges/nut-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.nut.svg)](https://www.npmjs.com/package/iobroker.nut)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.nut.svg)](https://www.npmjs.com/package/iobroker.nut)
 [![Code Climate](https://codeclimate.com/github/Apollon77/ioBroker.nut/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.nut)
@@ -13,6 +11,8 @@ Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon
 [![NPM](https://nodei.co/npm/iobroker.nut.png?downloads=true)](https://nodei.co/npm/iobroker.nut/)
 
 This adapter for ioBroker connects to a defined NUT server to provide the status and details of a connected UPS/USV as ioBroker states, so that it can be used there.
+
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 ## Description of parameters
 ### host_ip
@@ -80,6 +80,14 @@ directory) to try it out on the commandline. Call the scripts using "node filena
 
 ## Changelog
 
+### 1.3.0 (2020-12-27)
+* (Apollon77) adjust connection close handling
+* (Apollon77) add compact mode
+
+### 1.2.0 (2020-12-26)
+* (Apollon77) update dependencies
+* (Apollon77) Add Sentry error reporting
+
 ### 1.1.3 (2018-04-13)
 * Fix Admin
 
@@ -110,7 +118,7 @@ directory) to try it out on the commandline. Call the scripts using "node filena
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2018 Apollon77 <ingo@fischer-ka.de>
+Copyright (c) 2016-2020 Apollon77 <ingo@fischer-ka.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

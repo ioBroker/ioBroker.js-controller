@@ -317,6 +317,9 @@ Forum entries will be displayed without problems when accessing ioBroker via IP 
 ## Changelog
 <!-- ### __WORK IN PROGRESS__ -->
 
+### 1.7.14 (2020-12-27)
+* (Apollon77) fix crash case (Sentry IOBROKER-INFO-1R)
+
 ### 1.7.13 (2020-12-24)
 * (Apollon77) fix crash case (Sentry IOBROKER-INFO-A)
 

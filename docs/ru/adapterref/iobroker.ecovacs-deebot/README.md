@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: RR/sK2QrgujDOWHvOpJBzN/j6fjJC9LdXZrJDWDtnoc=
+hash: xCtvm1zWc3bAV4ojpuhej65d/KtQPOCgIAP6XKmqWQw=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -58,10 +58,10 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 * Информацию о том, как использовать этот адаптер, можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Известные вопросы
-* Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно через прибл. 24 часа.
-* Функция «пауза» не работает с Deebot 710/711.
-* Функция «стоп» не работает с Deebot 711s.
-* Функция "Edge" не работает с Deebot U2.
+* Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно через прибл. 24 часа
+* Функция "пауза" не работает с Deebot 710/711
+* Функция "стоп" не работает с Deebot 711s
+* Функция "edge" не работает с Deebot U2 (вместо этого запускает автоматическую очистку)
 
 ## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
@@ -71,13 +71,15 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 ## Changelog
 
-### 1.0.8 (alpha)
-* Using library version 0.5.2 (0.5.2-alpha.5)
+### 1.0.8
+* Using library version 0.5.2 (0.5.2-beta.1)
 * Added available virtualBoundaries channel for Deebot 900/901 and Ozmo 930 (read only)
-* Added "volume" for 950 type models (920/950/T8)
+* Added "volume" and buttons for resetting consumable values for 950 type models (920/950/T8)
+* Improved synchronization of spot area buttons
+* Add option for setting the language for spot area names
 * Added some experimental features (for a few models only)
-* Bump some dependencies
 * Several enhancements and fixes
+* Bump some dependencies
 
 ### 1.0.7
 * Using library version 0.5.1 (0.5.1-beta.3)

@@ -4,7 +4,7 @@ lastChanged: 05.12.2020
 translatedFrom: de
 translatedWarning: If you want to edit this document please delete "translatedFrom" field, elsewise this document will be translated automatically again
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/en/install/linux.md
-hash: XmY7S1vrV+GwIHYeZ3/awCCbzNequtdZakfsn3z75aA=
+hash: EPa1u0/8e/G2TQ67obN7TZJRhxqsXPUeJHkj7zyIErE=
 ---
 # IoBroker installation on Linux
 !> These instructions do NOT apply to finished images of the website! However, manual installation is preferable to an image.
@@ -17,7 +17,7 @@ If reloading a script is too dangerous for you, you can check the script beforeh
 
 These installation instructions for ioBroker show the installation on Linux using the example of Raspberry Pi with Raspberry OS 'Buster'.
 
-Due to dependencies on other packages or additional installations, special features can always occur during installation.
+Due to dependencies on other packages or additional installations, special features can occur again and again during the installation.
 
 ## Required hardware
 ### Raspberry Pi 2/3/4
@@ -51,10 +51,10 @@ Help and instructions for the respective versions are available on the correspon
 
 Root access for SSH can be activated.
 
-For the well-known safety aspects, we advise against it. To install ioBroker, it is sufficient to use the sudo command and prefix the respective command.
+For the well-known safety aspects, we advise against it. To install ioBroker, it is sufficient to use the sudo command and precede the respective command.
 
 ### Installation Node.js
-!> with the current ioBroker installer (see below) **on a system without node.js** the currently recommended version of node.js is automatically installed!
+!> with the current ioBroker installer (see below) ** on a system without node.js ** the currently recommended version of node.js is automatically installed! A separate installation of node.js beforehand is ** no longer necessary.
 
 The following instructions should also be used for a downgrade.
 

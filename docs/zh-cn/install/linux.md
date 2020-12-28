@@ -4,12 +4,12 @@ lastChanged: 05.12.2020
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/linux.md
-hash: XmY7S1vrV+GwIHYeZ3/awCCbzNequtdZakfsn3z75aA=
+hash: EPa1u0/8e/G2TQ67obN7TZJRhxqsXPUeJHkj7zyIErE=
 ---
 ＃在Linux上安装ioBroker
 ！>这些说明不适用于网站的成品图片！但是，手动安装比映像更可取。
 
-使用脚本执行安装，该脚本执行所需的安装步骤并重新加载可能需要的所有软件包。
+使用脚本执行安装，该脚本执行必需的安装步骤并重新加载可能需要的所有软件包。
 在安装过程中，系统中会创建一个新用户“ iobroker”和一个关联的主目录（/ home / iobroker）。
 ioBroker然后在该用户下运行。
 
@@ -43,7 +43,7 @@ ioBroker的这些安装说明以带有Raspberry OS'Buster'的Raspberry Pi为例�
 
 ＃＃ 安装指南
 ###操作系统安装
-*根据所使用的硬件，安装所需的基本操作系统（Raspian Stretch，Ubuntu，Debian等）。
+*根据所使用的硬件安装所需的基本操作系统（Raspian Stretch，Ubuntu，Debian等）。
 
 有关相应版本的帮助和说明可在相应的支持页面，YouTube等上找到。
 
@@ -54,7 +54,7 @@ ioBroker的这些安装说明以带有Raspberry OS'Buster'的Raspberry Pi为例�
 对于众所周知的安全方面，我们建议您不要这样做。要安装ioBroker，只需使用sudo命令并在相应命令之前即可。
 
 ###安装Node.js
-！>使用当前的ioBroker安装程序（见下文）**在没有node.js的系统上**当前推荐的node.js版本会自动安装！
+！>使用当前的ioBroker安装程序（见下文）**在没有node.js的系统上**当前推荐的node.js版本会自动安装！ **不再需要单独安装node.js **。
 
 以下说明也应用于降级。
 
@@ -106,7 +106,7 @@ ioBroker的这些安装说明以带有Raspberry OS'Buster'的Raspberry Pi为例�
 
 如果版本不同，请再次浏览[安装Node.js](#installation-nodejs)部分
 
-    作为最终检查，请使用``npm -v``检查npm的版本。
+    作为最后检查，请使用``npm -v``检查npm的版本。
 
 如果结果是版本<6，请使用``sudo -H npm install -g npm@6``执行npm更新。
 

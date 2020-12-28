@@ -49,6 +49,7 @@ Following TR-064 services and actions are used:
 * WLANConfiguration3 - GetInfo
 * X_AVM-DE_HostFilter - DisallowWANAccessByIP
 * X_AVM-DE_HostFilter - GetWANAccessByIP
+* DeviceConfig:1 - Reboot
 
 By default, the TR-064 interface is not activated. However, this can easily be changed via the 
 FritzBox web interface. To do this log in into your FritzBox and ensure that the expert view is activated. 
@@ -64,9 +65,15 @@ Hint: After changing the options, don't forget the restart of the Fritzbox !
 The configuration values are validated and only correct values can be saved. Otherwise the save button is disabled.
 
 ### Fritzbox IP-address, user and password
-The configuration of ip-address, user and password is necessary to get the device data from the fritzbox. 
+The configuration of ip-address, user and password is necessary to get the device data from the fritzbox.
+Therefore a user has to be created in the fritzbox. This is required with newer 
+firmware version (>= 7.25)of the fritzbox. See here fore information: https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/Empfehlungen%20zur%20Benutzerfu%CC%88hrung%20bei%20der%20Anmeldung%20an%20einer%20FRITZ%21Box_v1.1.pdf 
 The password is encrypted and wasn't saved in clear text. The user name and password may have a maximum of 
 32 characters. See for information: https://service.avm.de/help/de/FRITZ-Box-Fon-WLAN-7490/014/hilfe_zeichen_fuer_kennwoerter#:~:text=Namen%20f%C3%BCr%20Benutzer,Kennwortfeld%20darf%20nicht%20leer%20sein.
+
+### Ssl option
+In some cases the adapter could not connect to the fritzbox. It could help to disable this option.
+In this case the adapter tries to connect without https. 
 
 ### Interval
 You have separate intervals for family members and Fritzbox devices.
@@ -94,6 +101,7 @@ the mesh objects for every device in the Fritzbox device list are created.
 
 ### Family member settings
 For a configured family member you must enter the Name, the mac- or ip-address, a comment and if the member is enabled for calculating. For every member the adapter creates data objects and checks if the member is present or absent. 
+To get the speed information in the objects you have to select fb-devices option.
 
 ### Whitelist settings
 In the white list you can insert every known device. Any unknown devices are listed in the blacklist object. 
@@ -164,7 +172,17 @@ Here you will find information about the history of the current day.
 <!--
     Placeholder for the next version (at the beginning of the line):
     ## __WORK IN PROGRESS__
+    * Did some changes
+    * Did some more changes
 -->
+
+### 1.1.1 (2020-12-27)
+* (afuerhoff) Configuration optimized
+* (afuerhoff) Bugfix dateformat pattern
+* (afuerhoff) SSL (https) workaround implemented
+* (afuerhoff) Connection check optimized
+* (afuerhoff) Documentation added
+* (afuerhoff) Mesh handling optimized 
 
 ### 1.1.0 (2020-10-24)
 * (afuerhoff) second interval for family members implemented
@@ -185,11 +203,6 @@ Here you will find information about the history of the current day.
 * (afuerhoff) error handling optimized
 * (afuerhoff) external ip implemented
 * (afuerhoff) check if mac or ip are listed in fritzbox
-
-### 1.0.1 (2020-04-12)
-* (afuerhoff) error handling optimized
-* (afuerhoff) history configuration optimized
-* (afuerhoff) re-synchronisation of fb-devices implemented
 
 ## License
 MIT License

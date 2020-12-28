@@ -3,26 +3,28 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.weatherunderground/README.md
 title: ioBroker.weatherunderground
-hash: mnc1wmBhp/yn5r8AEdq5D7oIQN+glxNL49woG/vU9/o=
+hash: KQBKAuXaHZmK2XRbNAt/ff0+mkMYDLf0Ao3vFnFby04=
 ---
-![логотип](../../../en/adapterref/iobroker.weatherunderground/admin/wu.png)
+![Логотип](../../../en/adapterref/iobroker.weatherunderground/admin/wu.png)
 
 ![Количество установок](http://iobroker.live/badges/weatherunderground-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.weatherunderground.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.weatherunderground.svg)
-![NPM](https://nodei.co/npm/iobroker.weatherunderground.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.weatherunderground.png?downloads=true)
 
 # IoBroker.weatherunderground
-Адаптер ioBroker для загрузки 24-часового прогноза погоды для вашего местоположения из [Погода Подземная](http://www.wunderground.com/).
-Адаптер загружает все 15-минутные (по умолчанию) ежедневные и почасовые данные прогноза.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
-## Заметки
-Вы можете использовать этот адаптер с предоставлением официального API-ключа «Владелец PWS» или оставить API-ключ пустым, чтобы использовать ключи, извлеченные из веб-страницы WU.
+ioBroker Адаптер для загрузки суточного прогноза погоды для вашего местоположения из [Weather Underground](http://www.wunderground.com/).
+Адаптер загружает все 15-минутные (по умолчанию) ежедневные и ежечасные данные прогноза.
 
-## Наборы иконок
-При использовании «Legacy API» доступно несколько различных наборов значков, см. Ниже. Для использования с новым API имена изображений были изменены (см. Https://docs.google.com/document/d/1dNCf6nF6cjm4oOxQxjtqNuAvG_iEe5f9MQH1xlCeV4s/edit) и теперь основаны на числах ... их можно загрузить с e.g. https://drive.google.com/drive/folders/0B6fWQWXuE09OOWtBOXJNX190TDQ и может использоваться в качестве пользовательского набора (см. ниже).
+## Ноты
+Вы можете использовать этот адаптер с предоставлением официального API-ключа «владельца PWS» или оставить API-ключ пустым, чтобы использовать ключи, извлеченные с веб-страницы WU.
 
-В настройках адаптера измените «Custom Icon-Base-URL» на один из доступных значков на Weatherunderground: (источник: https://www.wunderground.com/weather/api/d/docs?d=resources/icon-sets )
+## Наборы значков
+При использовании «Legacy API» доступны несколько различных наборов значков, см. Ниже. Для использования с новым API имена изображений были изменены (см. Https://docs.google.com/document/d/1dNCf6nF6cjm4oOxQxjtqNuAvG_iEe5f9MQH1xlCeV4s/edit) и теперь основаны на числах ... их можно загрузить, например, с https://drive.google.com/drive/folders/0B6fWQWXuE09OOWtBOXJNX190TDQ и может использоваться как настраиваемый набор (см. ниже).
+
+В настройках адаптера измените «Custom Icon-Base-URL» на один из доступных наборов значков в Weatherunderground: (источник: https://www.wunderground.com/weather/api/d/docs?d=resources/icon-sets )
 
 | Набор иконок | URL | Пример |
 | ------------- | -------------------------------- | --------------------- 	|
@@ -38,24 +40,24 @@ hash: mnc1wmBhp/yn5r8AEdq5D7oIQN+glxNL49woG/vU9/o=
 | 11 | https://icons.wxug.com/i/c/k/ | ![альтернативный текст](https://icons.wxug.com/i/c/k/partlycloudy.gif) |
 | 11 | https://icons.wxug.com/i/c/k/ | ! [альтернативный текст] (https://icons.wxug.com/i/c/k/partlycloudy.gif) |
 
-Или вы можете также использовать свои собственные "пользовательские" значки, для этого в каталоге Base-URL должны быть предоставлены следующие gif-файлы:
+Или вы также можете использовать свои собственные "пользовательские" значки, для этого в каталоге Base-URL должны быть предоставлены следующие файлы gif:
 
-| Значок на День | Значок на ночь |
+| Значок на день | Икона на ночь |
 | -----------------------------	| ----------------------------- |
-| chanceflurries.gif | nt_chanceflurries.gif |
-| chancerain.gif | nt_chancerain.gif |
-| chancesleet.gif | nt_chancesleet.gif |
-| chancesleet.gif | nt_chancesleet.gif |
-| chancesnow.gif | nt_chancesnow.gif |
-| chancetstorms.gif | nt_chancetstorms.gif |
-| chancetstorms.gif | nt_chancetstorms.gif |
+| Chanceflurries.gif | nt_chanceflurries.gif |
+| Chancerain.gif | nt_chancerain.gif |
+| Chancesleet.gif | nt_chancesleet.gif |
+| Chancesleet.gif | nt_chancesleet.gif |
+| Chancesnow.gif | nt_chancesnow.gif |
+| Chancetstorms.gif | nt_chancetstorms.gif |
+| Chancetstorms.gif | nt_chancetstorms.gif |
 | clear.gif | nt_clear.gif |
 | cloudy.gif | nt_cloudy.gif |
 | flurries.gif | nt_flurries.gif |
 | fog.gif | nt_fog.gif |
 | hazy.gif | nt_hazy.gif |
-| mostlycloudy.gif | nt_mostlycloudy.gif |
-| mostlysunny.gif | nt_mostlysunny.gif |
+| mostcloudy.gif | nt_mostlycloudy.gif |
+| mostsunny.gif | nt_mostlysunny.gif |
 | partlycloudy.gif | nt_partlycloudy.gif |
 | partlysunny.gif | nt_partlysunny.gif |
 | sleet.gif | nt_sleet.gif |
@@ -66,14 +68,60 @@ hash: mnc1wmBhp/yn5r8AEdq5D7oIQN+glxNL49woG/vU9/o=
 | tstorms.gif | nt_tstorms.gif |
 | cloudy.gif | nt_cloudy.gif |
 
-## На форуме ioBroker (немецкий)
+## В форуме ioBroker (немецкий)
 http://forum.iobroker.org/viewtopic.php?f=20&t=2042&sid=a863d19838bc49439759bef89fcad1c3
 
-## Сделать
-Есть еще проблема с кодировкой. Адреса с "äüöß" будут показаны неправильно.
+## Делать
+Проблема с кодировкой не устранена. Адреса с "äüöß" будут отображаться неправильно.
 
 ## Changelog
 
+### 3.2.5 (2020-12-27)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-WEATHERUNDERGROUND-1, IOBROKER-WEATHERUNDERGROUND-2)
+
+### 3.2.3 (2020-12-26)
+* (Apollon77) make sure adapter do not crash when no data could be read
+* (Apollon77) Add Sentry error reporting
+
+### 3.2.2 (2020-12-02)
+* (Apollon77) icons sometimes did not have a correct extension
+* (Apollon77) Correct some cases with different types of locations when reading data
+
+### 3.2.1
+* (raintonr) Corrected 'Imperial' terminology.
+
+### 3.2.0 (2019-12-28)
+* (StrathCole) fix forecast expiry time
+* (StrathCole) add visibility index to objects on hourly forecast
+
+### 3.1.6 (2019-10-16)
+* (Bjoern3003) adjust to WU changes, now v3 API for hourly data
+* (Apollon77) run once after installation/update
+ 
+### 3.1.3
+* (Apollon77) text correction
+ 
+### 3.1.2 (2019-07-27)
+* (Apollon77) use new parameters to get decimal precision values
+ 
+### 3.1.1 (2019-07-14)
+* (Apollon77) add windDirection as string calculated based on degrees
+ 
+### 3.1.0 (2019-07-12)
+* (Apollon77) remove option for legacy API because disabled by WU
+ 
+### 3.0.14 (2019-07-11)
+* (Apollon77) optimize checking of pws station id
+ 
+### 3.0.13 (2019-07-10)
+* (Apollon77) Fix error in image url handling
+ 
+### 3.0.11/12 (2019-07-09)
+* (Apollon77) Re-Fetch PWS station key on Error 401
+ 
+### 3.0.10 (2019-05-27)
+* (Apollon77) Adopt logic to WU changes
+ 
 ### 3.0.8 (2019-03-23)
 * (Apollon77) Add additional guidance when location is not found by WU
  
@@ -165,7 +213,7 @@ initial release with all basics to load WU-forecast data
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2019 dschaedl <daniel.schaedler@gmail.com>
+Copyright (c) 2015-2020 dschaedl <daniel.schaedler@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

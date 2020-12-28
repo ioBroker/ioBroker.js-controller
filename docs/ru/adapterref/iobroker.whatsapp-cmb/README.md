@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.whatsapp-cmb/README.md
 title: ioBroker.whatsapp-cmb
-hash: wMjP379z/22SVfPrzHO9w5DW5qO4gT0PAqtpv7kgXyA=
+hash: 6mnvKUWBcvbbKUMhf6evfg+bhlkfRDSyAw7fj7WoSF0=
 ---
 ![Логотип](../../../en/adapterref/iobroker.whatsapp-cmb/admin/whatsapp-cmb.png)
 
@@ -11,7 +11,7 @@ hash: wMjP379z/22SVfPrzHO9w5DW5qO4gT0PAqtpv7kgXyA=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.whatsapp-cmb.svg)
 ![Статус зависимости](https://img.shields.io/david/ioBroker/iobroker.whatsapp-cmb.svg)
 ![Известные уязвимости](https://snyk.io/test/github/ioBroker/ioBroker.whatsapp-cmb/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.whatsapp-cmb.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.whatsapp-cmb.png?downloads=true)
 ![Трэвис-Си](http://img.shields.io/travis/ioBroker/ioBroker.whatsapp-cmb/master.svg)
 
 # IoBroker.whatsapp-cmb
@@ -25,15 +25,15 @@ hash: wMjP379z/22SVfPrzHO9w5DW5qO4gT0PAqtpv7kgXyA=
 
 Перед использованием API необходимо получить ключ API от бота:
 
-- Добавьте телефонный номер +34 698 28 89 73 в свои телефонные контакты. (Назовите его как хотите.)
+- Добавьте номер телефона **+ 34 644 59 71 67** в свои телефонные контакты. (Назовите его как хотите.)
 - Отправьте это сообщение «Я разрешаю callmebot отправлять мне сообщения» (на английском языке) новому созданному контакту (конечно, с помощью WhatsApp).
-- Подождите, пока не получите сообщение «API активирован для вашего номера телефона. Ваш APIKEY - 123123` от бота. Поскольку он все еще находится в стадии бета-тестирования, активация может занять до 2 минут.
+- Дождитесь появления сообщения «API активирован для вашего номера телефона. Ваш APIKEY - 123123` от бота. Поскольку он все еще находится в стадии бета-тестирования, активация может занять до 2 минут.
 - Сообщение WhatsApp от бота будет содержать ключ API, необходимый для отправки сообщений с помощью API.
 - Теперь вы можете использовать API KEY в конфигурации ioBroker.
 
 Пример: ![пример](../../../en/adapterref/iobroker.whatsapp-cmb/img/whatsapp.jpg)
 
-### Использование
+### Применение
 Есть две возможности отправить сообщение:
 
 - через `whatsapp-cmb.0.sendMessage`. Просто введите текст в это состояние, и сообщение будет отправлено на номер по умолчанию, который был настроен в диалоге настроек.

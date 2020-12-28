@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.weatherunderground/README.md
 title: ioBroker.weatherunderground
-hash: mnc1wmBhp/yn5r8AEdq5D7oIQN+glxNL49woG/vU9/o=
+hash: KQBKAuXaHZmK2XRbNAt/ff0+mkMYDLf0Ao3vFnFby04=
 ---
 ![Logo](../../../en/adapterref/iobroker.weatherunderground/admin/wu.png)
 
@@ -13,18 +13,20 @@ hash: mnc1wmBhp/yn5r8AEdq5D7oIQN+glxNL49woG/vU9/o=
 ![NPM](https://nodei.co/npm/iobroker.weatherunderground.png?downloads=true)
 
 # IoBroker.weatherunderground
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
 ioBroker Adapter zum Laden der 24-Stunden-Wettervorhersage für Ihren Standort aus [Das Wetter unter der Erde](http://www.wunderground.com/).
-Der Adapter lädt alle 15min (Standard) Tages- und Stundenprognosedaten.
+Der Adapter lädt alle täglichen und stündlichen 15-Minuten-Prognosedaten (Standard).
 
 ## Anmerkungen
-Sie können diesen Adapter verwenden, um einen offiziellen "PWS-Besitzer" -API-Schlüssel bereitzustellen, oder den API-Schlüssel leer lassen, um aus der WU-Webseite extrahierte Schlüssel zu verwenden.
+Sie können diesen Adapter verwenden, um einen offiziellen API-Schlüssel für "PWS-Eigentümer" bereitzustellen, oder den API-Schlüssel leer lassen, um aus der WU-Webseite extrahierte Schlüssel zu verwenden.
 
-## Symbolsätze
-Bei der Verwendung von "Legacy-API" stehen verschiedene Symbolsätze zur Verfügung (siehe unten). Für den Benutzer mit der neuen API haben sich die Bildnamen geändert (siehe https://docs.google.com/document/d/1dNCf6nF6cjm4oOxQxjtqNuAvG_iEe5f9MQH1xlCeV4s/edit). https://drive.google.com/drive/folders/0B6fWQWXuE09OOWtBOXJNX190TDQ und kann als benutzerdefiniertes Set verwendet werden (siehe unten).
+## Icon Sets
+Bei Verwendung der "Legacy-API" sind verschiedene Symbolsätze verfügbar (siehe unten). Für den Benutzer mit der neuen API haben sich die Bildnamen geändert (siehe https://docs.google.com/document/d/1dNCf6nF6cjm4oOxQxjtqNuAvG_iEe5f9MQH1xlCeV4s/edit) und können nun z. https://drive.google.com/drive/folders/0B6fWQWXuE09OOWtBOXJNX190TDQ und kann als benutzerdefinierter Satz verwendet werden (siehe unten).
 
-Ändern Sie in den Adaptereinstellungen "Custom Icon-Base-URL" in eines der verfügbaren Icon-Sets unter Weatherunderground: (Quelle: https://www.wunderground.com/weather/api/d/docs?d=resources/icon-sets) )
+Ändern Sie in den Adaptereinstellungen "Benutzerdefinierte Symbol-Basis-URL" in eines der verfügbaren Symbolsätze auf Weatherunderground: (Quelle: https://www.wunderground.com/weather/api/d/docs?d=resources/icon-sets )
 
-| Symbolsatz | URL | Beispiel |
+| Icon Set | URL | Beispiel |
 | ------------- | -------------------------------- | --------------------- 	|
 | 1 | https://icons.wxug.com/i/c/a/ | ![Alt-Text](https://icons.wxug.com/i/c/a/partlycloudy.gif) |
 | 3 | https://icons.wxug.com/i/c/c/ | ![Alt-Text](https://icons.wxug.com/i/c/c/partlycloudy.gif) |
@@ -36,44 +38,90 @@ Bei der Verwendung von "Legacy-API" stehen verschiedene Symbolsätze zur Verfüg
 | 9 | https://icons.wxug.com/i/c/i/ | ![Alt-Text](https://icons.wxug.com/i/c/i/partlycloudy.gif) |
 | 10 | https://icons.wxug.com/i/c/j/ | ![Alt-Text](https://icons.wxug.com/i/c/j/partlycloudy.gif) |
 | 11 | https://icons.wxug.com/i/c/k/ | ![Alt-Text](https://icons.wxug.com/i/c/k/partlycloudy.gif) |
-| 11 | https://icons.wxug.com/i/c/k/ | ! [alter Text] (https://icons.wxug.com/i/c/k/partlycloudy.gif) |
+| 11 | https://icons.wxug.com/i/c/k/ | ! [Alternativtext] (https://icons.wxug.com/i/c/k/partlycloudy.gif) |
 
 Oder Sie können auch Ihre eigenen "benutzerdefinierten" Symbole verwenden. Zu diesem Zweck müssen die folgenden GIF-Dateien in einem Basis-URL-Verzeichnis bereitgestellt werden:
 
-| Symbol für Tag | Symbol für Nacht |
+| Symbol für Tag | Ikone für die Nacht |
 | -----------------------------	| ----------------------------- |
-| chanceflurries.gif | nt_chanceflurries.gif |
+| Chanceflurries.gif | nt_chanceflurries.gif |
 | chancerain.gif | nt_chancerain.gif |
-| chancesleet.gif | nt_chancesleet.gif |
-| chancesleet.gif | nt_chancesleet.gif |
-| chancesnow.gif | nt_chancesnow.gif |
+| chancenleet.gif | nt_chancesleet.gif |
+| chancenleet.gif | nt_chancesleet.gif |
+| Chancennow.gif | nt_chancesnow.gif |
 | chancetstorms.gif | nt_chancetstorms.gif |
 | chancetstorms.gif | nt_chancetstorms.gif |
 | clear.gif | nt_clear.gif |
-| bewölkt.gif | nt_cloudy.gif |
+| cloudy.gif | nt_cloudy.gif |
 | flurries.gif | nt_flurries.gif |
 | fog.gif | nt_fog.gif |
 | hazy.gif | nt_hazy.gif |
-| Zum größten Teil nt_mostlycloudy.gif |
-| meistenshase.gif | nt_mostlysunny.gif |
+| meistenscloudy.gif | nt_mostlycloudy.gif |
+| mostsunny.gif | nt_mostlysunny.gif |
 | teilweisecloudy.gif | nt_partlycloudy.gif |
-| teilsunny.gif | nt_partlysunny.gif |
+| teilweise sunny.gif | nt_partlysunny.gif |
 | sleet.gif | nt_sleet.gif |
 | rain.gif | nt_rain.gif |
 | sleet.gif | nt_sleet.gif |
 | teilweisecloudy.gif | nt_partlycloudy.gif |
 | sunny.gif | nt_sunny.gif |
 | tstorms.gif | nt_tstorms.gif |
-| bewölkt.gif | nt_cloudy.gif |
+| cloudy.gif | nt_cloudy.gif |
 
 ## Im ioBroker Forum
 http://forum.iobroker.org/viewtopic.php?f=20&t=2042&sid=a863d19838bc49439759bef89fcad1c3
 
 ## Machen
-Es gibt immer noch ein Problem mit der Kodierung. Die Adressen mit "äüöß" werden falsch angezeigt.
+Es gibt immer noch ein Problem mit der Codierung. Die Adressen mit "äüöß" werden falsch angezeigt.
 
 ## Changelog
 
+### 3.2.5 (2020-12-27)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-WEATHERUNDERGROUND-1, IOBROKER-WEATHERUNDERGROUND-2)
+
+### 3.2.3 (2020-12-26)
+* (Apollon77) make sure adapter do not crash when no data could be read
+* (Apollon77) Add Sentry error reporting
+
+### 3.2.2 (2020-12-02)
+* (Apollon77) icons sometimes did not have a correct extension
+* (Apollon77) Correct some cases with different types of locations when reading data
+
+### 3.2.1
+* (raintonr) Corrected 'Imperial' terminology.
+
+### 3.2.0 (2019-12-28)
+* (StrathCole) fix forecast expiry time
+* (StrathCole) add visibility index to objects on hourly forecast
+
+### 3.1.6 (2019-10-16)
+* (Bjoern3003) adjust to WU changes, now v3 API for hourly data
+* (Apollon77) run once after installation/update
+ 
+### 3.1.3
+* (Apollon77) text correction
+ 
+### 3.1.2 (2019-07-27)
+* (Apollon77) use new parameters to get decimal precision values
+ 
+### 3.1.1 (2019-07-14)
+* (Apollon77) add windDirection as string calculated based on degrees
+ 
+### 3.1.0 (2019-07-12)
+* (Apollon77) remove option for legacy API because disabled by WU
+ 
+### 3.0.14 (2019-07-11)
+* (Apollon77) optimize checking of pws station id
+ 
+### 3.0.13 (2019-07-10)
+* (Apollon77) Fix error in image url handling
+ 
+### 3.0.11/12 (2019-07-09)
+* (Apollon77) Re-Fetch PWS station key on Error 401
+ 
+### 3.0.10 (2019-05-27)
+* (Apollon77) Adopt logic to WU changes
+ 
 ### 3.0.8 (2019-03-23)
 * (Apollon77) Add additional guidance when location is not found by WU
  
@@ -165,7 +213,7 @@ initial release with all basics to load WU-forecast data
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2019 dschaedl <daniel.schaedler@gmail.com>
+Copyright (c) 2015-2020 dschaedl <daniel.schaedler@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

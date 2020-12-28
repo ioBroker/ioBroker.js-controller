@@ -322,6 +322,9 @@ In this section you can find a description of every state of the adapter.
    *View button for media content.*
    
 ## Changelog
+### 0.7.3 (2020-12-25)
+* (foxriver76) fixed debug logging on discovery
+
 ### 0.7.2 (2020-11-23)
 * (foxriver76) removed logging of error on adapter stoppage due to rest server termination
 * (foxriver76) removed warn logging for debugging

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fb-checkpresence/README.md
 title: kein Titel
-hash: C8GTh5RNmhNJJQYm93XhRUqCeQqUWDGVoxL3qMPOCgc=
+hash: sz5GEfBmsI/P9oIGCuaFT9qb3UogJ83YDErrfMQlPYg=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -49,6 +49,7 @@ Folgende TR-064-Dienste und -Aktionen werden verwendet:
 * WLANConfiguration3 - GetInfo
 * X_AVM-DE_HostFilter - DisallowWANAccessByIP
 * X_AVM-DE_HostFilter - GetWANAccessByIP
+* DeviceConfig: 1 - Neustart
 
 Standardmäßig ist die TR-064-Schnittstelle nicht aktiviert. Dies kann jedoch einfach über die FritzBox-Weboberfläche geändert werden. Melden Sie sich dazu in Ihrer FritzBox an und stellen Sie sicher, dass die Expertenansicht aktiviert ist.
 Dann finden Sie unter "Heimnetzwerk» Heimnetzwerkübersicht »Netzwerkeinstellungen" den Punkt "Zugriff für Anwendungen zulassen". Dort müssen Sie das Kontrollkästchen aktivieren und dann die FritzBox einmal neu starten.
@@ -61,7 +62,11 @@ Die Konfigurationswerte werden validiert und es können nur korrekte Werte gespe
 
 ### Fritzbox IP-Adresse, Benutzer und Passwort
 Die Konfiguration von IP-Adresse, Benutzer und Passwort ist erforderlich, um die Gerätedaten von der fritzbox abzurufen.
-Das Passwort ist verschlüsselt und wurde nicht im Klartext gespeichert. Der Benutzername und das Passwort dürfen maximal 32 Zeichen lang sein. Weitere Informationen finden Sie unter: https://service.avm.de/help/de/FRITZ-Box-Fon-WLAN-7490/014/hilfe_zeichen_fuer_kennwoerter#:~:text=Namen%20f%C3%BCr%20Benutzer,Kennwortfeld%20darf % 20nicht% 20leer% 20sein.
+Daher muss ein Benutzer in der Fritzbox erstellt werden. Dies ist bei neuerer Firmware-Version (> = 7.25) der fritzbox erforderlich. Weitere Informationen finden Sie hier: https://avm.de/fileadmin/user_upload/Global/Service/Schnittstellen/Empfehlungen%20zur%20Benutzerfu%CC%88hrung%20bei%20der%20Anmeldung%20an%20einer%20FRITZ%21Box_v1.1.pdf Das Passwort ist verschlüsselt und wurde nicht im Klartext gespeichert. Der Benutzername und das Passwort dürfen maximal 32 Zeichen lang sein. Weitere Informationen finden Sie unter: https://service.avm.de/help/de/FRITZ-Box-Fon-WLAN-7490/014/hilfe_zeichen_fuer_kennwoerter#:~:text=Namen%20f%C3%BCr%20Benutzer,Kennwortfeld%20darf % 20nicht% 20leer% 20sein.
+
+### Ssl Option
+In einigen Fällen konnte der Adapter keine Verbindung zur Fritzbox herstellen. Es kann hilfreich sein, diese Option zu deaktivieren.
+In diesem Fall versucht der Adapter, eine Verbindung ohne https herzustellen.
 
 ### Intervall
 Sie haben separate Intervalle für Familienmitglieder und Fritzbox-Geräte.
@@ -87,6 +92,7 @@ Diese Option kann aktiviert werden, wenn die Erstellung von FB-Geräten zulässi
 
 ### Einstellungen für Familienmitglieder
 Für ein konfiguriertes Familienmitglied müssen Sie den Namen, die Mac- oder IP-Adresse, einen Kommentar und angeben, ob das Mitglied für die Berechnung aktiviert ist. Für jedes Mitglied erstellt der Adapter Datenobjekte und prüft, ob das Mitglied vorhanden ist oder nicht.
+Um die Geschwindigkeitsinformationen in den Objekten zu erhalten, müssen Sie die Option fb-Geräte auswählen.
 
 ### Whitelist-Einstellungen
 In die weiße Liste können Sie jedes bekannte Gerät einfügen. Unbekannte Geräte werden im Blacklist-Objekt aufgelistet.
@@ -100,7 +106,7 @@ Die Funktion prüft die Verfügbarkeit der verwendeten Fritzbox-Funktionen. Die 
 Unter dem Ordner guest können Sie den Status wlan auf true oder false setzen. Anschließend wird der Gast wlan ein- oder ausgeschaltet.
 
 ### Schalten Sie den Internetzugang von Fritzbox-Geräten ein / aus
-Unter dem Ordner FB-Geräte können Sie den deaktivierten Status auf wahr oder falsch setzen und der Internetzugang dieses Geräts ist in der Fritzbox gesperrt.
+Unter dem Ordner FB-Geräte können Sie den deaktivierten Status auf true oder false setzen und der Internetzugang dieses Geräts ist in der Fritzbox gesperrt.
 
 ### Gäste holen, schwarze Liste
 In dieser Funktion wird geprüft, ob ein Benutzer als Gast angemeldet ist. Wird auch überprüft, ob ein Gerät nicht in der Whitelist aufgeführt ist.
@@ -153,7 +159,17 @@ Hier finden Sie Informationen zur Geschichte des aktuellen Tages.
 <!--
     Placeholder for the next version (at the beginning of the line):
     ## __WORK IN PROGRESS__
+    * Did some changes
+    * Did some more changes
 -->
+
+### 1.1.1 (2020-12-27)
+* (afuerhoff) Configuration optimized
+* (afuerhoff) Bugfix dateformat pattern
+* (afuerhoff) SSL (https) workaround implemented
+* (afuerhoff) Connection check optimized
+* (afuerhoff) Documentation added
+* (afuerhoff) Mesh handling optimized 
 
 ### 1.1.0 (2020-10-24)
 * (afuerhoff) second interval for family members implemented
@@ -174,11 +190,6 @@ Hier finden Sie Informationen zur Geschichte des aktuellen Tages.
 * (afuerhoff) error handling optimized
 * (afuerhoff) external ip implemented
 * (afuerhoff) check if mac or ip are listed in fritzbox
-
-### 1.0.1 (2020-04-12)
-* (afuerhoff) error handling optimized
-* (afuerhoff) history configuration optimized
-* (afuerhoff) re-synchronisation of fb-devices implemented
 
 ## License
 MIT License

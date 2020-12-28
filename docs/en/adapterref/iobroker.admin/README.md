@@ -76,7 +76,7 @@ of the single instance can be set. In the selection Menu the the displayed minim
 lettering of the log appears in red.
 
 ## Changelog
-### 5.0.1 (2020-12-23)
+### 5.0.2 (2020-12-26)
 * (bluefox) Merged the changes from admin4
 
 ### 5.0.0 (2020-09_23)

@@ -256,6 +256,9 @@ Following types are supported:
 -->
 
 ## Changelog
+### 1.8.9 (2020-12-27)
+* (bluefox) Updated configuration GUI to the latest state
+
 ### 1.8.8 (2020-12-14)
 * (bluefox) Corrected the "google home" error
 

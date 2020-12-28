@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: RR/sK2QrgujDOWHvOpJBzN/j6fjJC9LdXZrJDWDtnoc=
+hash: xCtvm1zWc3bAV4ojpuhej65d/KtQPOCgIAP6XKmqWQw=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -58,10 +58,10 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 * Informationen zur Verwendung dieses Adapters finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki)
 
 ## Bekannte Probleme
-* Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da es einige gibt meldet, dass die Verbindung nach ca. 24 Stunden.
-* Die Funktion "Pause" funktioniert nicht mit Deebot 710/711.
-* Die "Stop" -Funktion funktioniert nicht mit Deebot 711s.
-* Die "Kanten" -Funktion funktioniert nicht mit Deebot U2.
+* Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da es einige gibt meldet, dass die Verbindung nach ca. 24 Stunden
+* Die Funktion "Pause" funktioniert nicht mit Deebot 710/711
+* Die "Stop" -Funktion funktioniert nicht mit Deebot 711s
+* Die "Kanten" -Funktion funktioniert nicht mit Deebot U2 (startet stattdessen die automatische Reinigung)
 
 ## FAQ
 * Häufig gestellte Fragen finden Sie [hier] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
@@ -71,13 +71,15 @@ Ich bin in keiner Weise mit ECOVACS verbunden.
 
 ## Changelog
 
-### 1.0.8 (alpha)
-* Using library version 0.5.2 (0.5.2-alpha.5)
+### 1.0.8
+* Using library version 0.5.2 (0.5.2-beta.1)
 * Added available virtualBoundaries channel for Deebot 900/901 and Ozmo 930 (read only)
-* Added "volume" for 950 type models (920/950/T8)
+* Added "volume" and buttons for resetting consumable values for 950 type models (920/950/T8)
+* Improved synchronization of spot area buttons
+* Add option for setting the language for spot area names
 * Added some experimental features (for a few models only)
-* Bump some dependencies
 * Several enhancements and fixes
+* Bump some dependencies
 
 ### 1.0.7
 * Using library version 0.5.1 (0.5.1-beta.3)

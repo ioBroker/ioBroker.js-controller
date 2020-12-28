@@ -2,44 +2,44 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.rpi2/README.md
-title: без названия
-hash: /cbBoy91TtAnLV+E46qMGy6VqvR4GCWqqAcaph/QxlM=
+title: без заголовка
+hash: LuTrQrlZ5YW5/rS6OYyVphiuYRKeh2CH3Y22fvNr/zQ=
 ---
-![логотип](../../../en/adapterref/iobroker.rpi2/admin/rpi.png) ioBroker Адаптер RPI-монитора
+![Логотип](../../../en/adapterref/iobroker.rpi2/admin/rpi.png) Адаптер ioBroker RPI-Monitor
 
 ![Количество установок](http://iobroker.live/badges/rpi2-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.rpi2.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.rpi2.svg)
-![NPM](https://nodei.co/npm/iobroker.rpi2.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.rpi2.png?downloads=true)
 
 ==============
 
 Реализация RPI-Monitor для интеграции в ioBroker. Это та же реализация, что и для iobroker.rpi, но с GPIO.
 
 ## Важная информация
-Работает только с узлом> = 0,12
+Работает только с node> = 0.12
 
-** ioBroker должен работать под root, чтобы контролировать GPIO. **
+** ioBroker требуются особые разрешения для управления GPIO. ** В большинстве дистрибутивов Linux это может быть достигнуто путем добавления пользователя ioBroker в группу `gpio` (рекомендуется) или запуска ioBroker под `root` (менее безопасно).
 
-## Монтаж
-После установки необходимо настроить все необходимые модули через страницу администрирования.
+## Установка
+После установки вам необходимо настроить все необходимые модули через страницу администрирования.
 
-После запуска iobroker.rpi все выбранные модули генерируют дерево объектов в ioBroker в rpi. <Instance>. <Modulename>, например, rpi.0.cpu
+После запуска iobroker.rpi все выбранные модули генерируют дерево объектов в ioBroker в пределах rpi. <instance>. <modulename>, например. rpi.0.cpu
 
-Убедитесь, что Python и build-essential установлены:
+Убедитесь, что установлены python и build-essential:
 
 ```
 sudo apt-get update
 sudo apt-get install -y build-essential python
 ```
 
-Следующие объекты доступны после выбора:
+После выбора доступны следующие объекты:
 
-#### **ЦПУ**
+#### **ПРОЦЕССОР**
 - cpu_frequency
 - load1
-- нагрузка5
-- нагрузка15
+- load5
+- load15
 
 #### **Малина (требуется vcgencmd)**
 - cpu_voltage
@@ -47,8 +47,8 @@ sudo apt-get install -y build-essential python
 - mem_gpu
 
 #### **Объем памяти**
-- память доступна
-- память_свободная
+- memory_available
+- memory_free
 - memory_total
 
 #### **Сеть (eth0)**
@@ -61,7 +61,7 @@ sudo apt-get install -y build-essential python
 - sdcard_root_total
 - sdcard_root_used
 
-#### **Своп**
+#### **Обмен**
 - swap_total
 - swap_used
 
@@ -69,7 +69,7 @@ sudo apt-get install -y build-essential python
 - soc_temp
 
 #### **Время работы**
-- время работы
+- время безотказной работы
 
 #### **WLAN**
 - wifi_received
@@ -78,34 +78,34 @@ sudo apt-get install -y build-essential python
 ## Конфигурация
 На странице конфигурации вы можете выбрать следующие модули:
 
-- ЦПУ
+- ПРОЦЕССОР
 - Малина
 - Объем памяти
-- сеть
+- Сеть
 - SD Card
-- Своп
+- Обмен
 - температура
-- время работы
+- Время работы
 - WLAN
 
-## Logfiles / Configuration Settings
-## Характеристики
-## Сделать
+## Файлы журнала / Настройки конфигурации
+## Особенности
+## Делать
 ## Протестированное оборудование
- - Одроид С1
- - Raspberry Pi 1
+ - Odroid C1
+ - Raspberry Pi 1
 
 ## GPIO
-Вы также можете читать и контролировать GPIO.
+Вы также можете читать и управлять GPIO.
 Все, что вам нужно сделать, это настроить в настройках параметры GPIO (дополнительная вкладка).
 
-![GPIOs](../../../en/adapterref/iobroker.rpi2/img/pi3_gpio.png)
+![GPIO](../../../en/adapterref/iobroker.rpi2/img/pi3_gpio.png)
 
 После включения некоторых портов в дереве объектов появляются следующие состояния:
 
 - rpi.0.gpio.PORT.state
 
-Нумерация портов - BCM (выводы BroadComm на чипе). Вы можете получить перечисление с помощью ```gpio readall```.
+Нумерация портов - BCM (контакты BroadComm на кристалле). Вы можете получить перечисление с помощью ```gpio readall```.
 Например, PI2:
 
 ```
@@ -137,10 +137,20 @@ sudo apt-get install -y build-essential python
 +-----+-----+---------+------+---+---Pi 2---+---+------+---------+-----+-----+
 ```
 
+## Датчики DHTxx / AM23xx
+Вы можете считывать данные с датчиков температуры / влажности DHT11, DHT22 и AM2302.
+
+Подключите такой датчик к контакту GPIO, как описано на странице пакета [узел-dht-сенсор](https://www.npmjs.com/package/node-dht-sensor). Несколько датчиков могут быть подключены к *нескольким* контактам (это *не* шинная система), как обсуждалось.
+
 ## Changelog
 
+### 1.2.0 (2020-01-17)
+- (janfromberlin) GPIO configuration as output with defined initial value
+- (foxriver76) No longer use adapter.objects
+- (Apollon77) Adjust gpio errors
+
 ### 1.1.1
- - (Apollon77) Error messages for not existing values are logged only once
+- (Apollon77) Error messages for not existing values are logged only once
 
 ### 1.1.0
  - (Apollon77) Nodejs 10 support 
@@ -186,6 +196,6 @@ sudo apt-get install -y build-essential python
 
 ## License
 
-Copyright (c) 2015-2018 husky-koglhof <husky.koglhof@icloud.com>
+Copyright (c) 2015-2020 husky-koglhof <husky.koglhof@icloud.com>
 
 MIT License

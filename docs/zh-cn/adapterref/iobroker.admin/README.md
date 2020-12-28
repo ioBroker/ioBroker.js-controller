@@ -74,7 +74,7 @@ BADGE-NPM: https://nodei.co/npm/iobroker.admin.png?downloads=true
 日志的字体显示为红色。
 
 ## Changelog
-### 5.0.1 (2020-12-23)
+### 5.0.2 (2020-12-26)
 * (bluefox) Merged the changes from admin4
 
 ### 5.0.0 (2020-09_23)

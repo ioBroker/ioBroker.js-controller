@@ -6,6 +6,8 @@
 
 [![NPM](https://nodei.co/npm/iobroker.weatherunderground.png?downloads=true)](https://nodei.co/npm/iobroker.weatherunderground/)
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ioBroker Adapter to load 24h weather forecast for your location from [Weather Underground](http://www.wunderground.com/).
 The adapter loads all 15min (default) daily and hourly forecast data.
 
@@ -69,8 +71,15 @@ There is a still a problem with encoding. The addresses with "äüöß" will be 
 
 ## Changelog
 
+### 3.2.5 (2020-12-27)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-WEATHERUNDERGROUND-1, IOBROKER-WEATHERUNDERGROUND-2)
+
+### 3.2.3 (2020-12-26)
+* (Apollon77) make sure adapter do not crash when no data could be read
+* (Apollon77) Add Sentry error reporting
+
 ### 3.2.2 (2020-12-02)
-* (Apollon77) icons sometimes did not had a correct extension
+* (Apollon77) icons sometimes did not have a correct extension
 * (Apollon77) Correct some cases with different types of locations when reading data
 
 ### 3.2.1

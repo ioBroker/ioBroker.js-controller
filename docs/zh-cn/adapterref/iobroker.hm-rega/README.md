@@ -108,6 +108,9 @@ CCU和信息文件夹包含网关的基本信息。
 ＃＃＃ 常问问题
 
 ## Changelog
+### 3.0.6 (2020-12-25)
+* (Hirsch-DE) don't write datapoints if timestamp is 0"
+
 ### 3.0.5 (2020-12-24)
 * (foxriver76) provide possibility to use custom webinterface port, please see FAQ
 

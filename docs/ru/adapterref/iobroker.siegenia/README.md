@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.siegenia/README.md
 title: ioBroker.siegenia
-hash: f+3oUEXvUSclrjXfaamqU8G2PWLUKMavLqMbtYs224U=
+hash: 4S3fJKuQab8SA1AlpY1Ei5iRwPQxcS6KkamGo62zAro=
 ---
 # IoBroker.siegenia
 
@@ -11,34 +11,40 @@ hash: f+3oUEXvUSclrjXfaamqU8G2PWLUKMavLqMbtYs224U=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.siegenia.svg)
 ![Статус зависимости](https://img.shields.io/david/Apollon77/iobroker.siegenia.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Apollon77/ioBroker.siegenia/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.siegenia.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/Apollon77/ioBroker.siegenia/master.svg)
+![НПМ](https://nodei.co/npm/iobroker.siegenia.png?downloads=true)
+![Трэвис-Си](http://img.shields.io/travis/Apollon77/ioBroker.siegenia/master.svg)
 
 <img src="./admin/siegenia_logo.jpg"/>
 
-Этот адаптер обеспечивает поддержку ioBroker для устройств контроля климата и воздуха Siegenia (https://www.siegenia.com)
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
-Адаптер требует минимум Nodejs 8.x.
+Этот адаптер обеспечивает поддержку ioBroker для устройств управления климатом и воздухом Siegenia (https://www.siegenia.com).
+
+Для адаптера требуется минимум Nodejs 8.x.
 
 ## Набор функций
-Все текущие устройства поддерживаются этим адаптером:
+Этот адаптер поддерживает все текущие устройства:
 
-* AEROPAC
-* AEROMAT VT
+* АЭРОПАК
+* АЭРОМАТ ВТ
 * ПРИВОД axxent DK / MH
 * SENSOAIR
 * AEROVITAL атмосфера
-* Семейство MHS
-* AEROTUBE
+* Семья MHS
+* АЭРОТУБА
 * Универсальный модуль
 
-Адаптер способен автоматически обнаруживать устройства Siegenia в той же сети, что и ioBroker, и отображать их в своем интерфейсе администратора. Вам нужно только исправить имя пользователя и пароль после обнаружения. Но вы также можете ввести IP-адреса и данные для входа вручную.
+Адаптер способен автоматически обнаруживать устройства Siegenia в той же сети, что и ioBroker, и выводит их список в своем интерфейсе администратора. Вам нужно только исправить пользователя и пароль после обнаружения. Но вы также можете ввести IP-адреса и данные для входа вручную.
 
 Все доступные поля данных обнаруженного устройства отображаются в объектах и предоставляют текущие данные и / или позволяют изменять данные.
 
 Таймеры и другие более сложные данные отображаются адаптером, но их можно изменить только через приложение Siegenia.
 
 ## Changelog
+
+### 1.0.1 (2020-12-24)
+* (Apollon77) update dependencies
+* (Apollon77) disconnect device if authentication was not successful
 
 ### 1.0.0
 * (Apollon77) initial release

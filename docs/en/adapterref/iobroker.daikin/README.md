@@ -64,6 +64,9 @@ After the Adapter has connected to the Daikin Device a structure of objects are 
 
 ## Changelog
 
+### 1.2.0 (2020-12-27)
+* add compact mode
+
 ### 1.1.3 (2020-11-19)
 * add experimental support for lpw parameter
 * crash cases prevented (Sentry IOBROKER-DAIKIN-7)
@@ -75,7 +78,6 @@ After the Adapter has connected to the Daikin Device a structure of objects are 
 * better handle case where configuration is missing (Sentry IOBROKER-DAIKIN-1)
 
 ### 1.1.0 (2020-07-21)
-* add compact mode
 * Adjust Texts and translate
 * create daikin.X ads device object and add one role
 * Update dependencies

@@ -54,10 +54,10 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Known issues
 
-* For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours.
-* The "pause" function does not work with Deebot 710/711.
-* The "stop" function does not work with Deebot 711s.
-* The "edge" function does not work with Deebot U2.
+* For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours
+* The "pause" function does not work with Deebot 710/711
+* The "stop" function does not work with Deebot 711s
+* The "edge" function does not work with Deebot U2 (starts auto clean instead)
 
 ## FAQ
 
@@ -65,13 +65,15 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
-### 1.0.8 (alpha)
-* Using library version 0.5.2 (0.5.2-alpha.5)
+### 1.0.8
+* Using library version 0.5.2 (0.5.2-beta.1)
 * Added available virtualBoundaries channel for Deebot 900/901 and Ozmo 930 (read only)
-* Added "volume" for 950 type models (920/950/T8)
+* Added "volume" and buttons for resetting consumable values for 950 type models (920/950/T8)
+* Improved synchronization of spot area buttons
+* Add option for setting the language for spot area names
 * Added some experimental features (for a few models only)
-* Bump some dependencies
 * Several enhancements and fixes
+* Bump some dependencies
 
 ### 1.0.7
 * Using library version 0.5.1 (0.5.1-beta.3)

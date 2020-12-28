@@ -123,7 +123,7 @@ Auch die Repositorien und Sicherheitseinstellungen können hier eingestellt werd
 Eine tiefergehende Beschreibung ist über den Link in dem Titel dieses Abschnitts zu erreichen.
 
 ## Changelog
-### 5.0.1 (2020-12-23)
+### 5.0.2 (2020-12-26)
 * (bluefox) Merged the changes from admin4
 
 ### 5.0.0 (2020-09_23)

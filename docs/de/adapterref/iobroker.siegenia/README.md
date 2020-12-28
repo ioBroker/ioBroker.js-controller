@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.siegenia/README.md
 title: ioBroker.siegenia
-hash: f+3oUEXvUSclrjXfaamqU8G2PWLUKMavLqMbtYs224U=
+hash: 4S3fJKuQab8SA1AlpY1Ei5iRwPQxcS6KkamGo62zAro=
 ---
 # IoBroker.siegenia
 
@@ -16,7 +16,9 @@ hash: f+3oUEXvUSclrjXfaamqU8G2PWLUKMavLqMbtYs224U=
 
 <img src="./admin/siegenia_logo.jpg"/>
 
-Dieser Adapter bietet ioBroker-Unterstützung für Siegenia Klima- und Luftsteuerungsgeräte (https://www.siegenia.com).
+** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
+
+Dieser Adapter bietet ioBroker-Unterstützung für Siegenia-Klima- und Luftsteuerungsgeräte (https://www.siegenia.com).
 
 Der Adapter benötigt mindestens Nodejs 8.x.
 
@@ -32,13 +34,17 @@ Alle aktuellen Geräte werden von diesem Adapter unterstützt:
 * AEROTUBE
 * Universalmodul
 
-Der Adapter kann die Siegenia-Geräte im selben Netzwerk wie ioBroker automatisch erkennen und in der Admin-Oberfläche auflisten. Sie müssen den Benutzer und das Kennwort erst nach der Erkennung korrigieren. Sie können IPs und Anmeldedaten aber auch manuell eingeben.
+Der Adapter kann die Siegenia-Geräte im selben Netzwerk wie ioBroker automatisch erkennen und in der Admin-Oberfläche auflisten. Sie müssen den Benutzer und das Kennwort erst nach der Erkennung korrigieren. Sie können IP-Adressen und Anmeldedaten aber auch manuell eingeben.
 
 Alle verfügbaren Datenfelder des erkannten Geräts werden in Objekten angezeigt und liefern aktuelle Daten und / oder ermöglichen das Ändern von Daten.
 
 Timer und andere komplexere Daten werden vom Adapter angezeigt, können jedoch nur über die Siegenia-App geändert werden.
 
 ## Changelog
+
+### 1.0.1 (2020-12-24)
+* (Apollon77) update dependencies
+* (Apollon77) disconnect device if authentication was not successful
 
 ### 1.0.0
 * (Apollon77) initial release

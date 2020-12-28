@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.rpi2/README.md
 title: kein Titel
-hash: /cbBoy91TtAnLV+E46qMGy6VqvR4GCWqqAcaph/QxlM=
+hash: LuTrQrlZ5YW5/rS6OYyVphiuYRKeh2CH3Y22fvNr/zQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.rpi2/admin/rpi.png) ioBroker RPI-Monitor Adapter
 
@@ -14,17 +14,17 @@ hash: /cbBoy91TtAnLV+E46qMGy6VqvR4GCWqqAcaph/QxlM=
 
 ==============
 
-RPI-Monitor-Implementierung zur Integration in ioBroker. Dies ist die gleiche Implementierung wie für iobroker.rpi, jedoch mit GPIOs.
+RPI-Monitor-Implementierung zur Integration in ioBroker. Es ist die gleiche Implementierung wie für iobroker.rpi, jedoch mit GPIOs.
 
 ## Wichtige Informationen
 Funktioniert nur mit Knoten> = 0.12
 
-** ioBroker muss unter root ausgeführt werden, um GPIOs steuern zu können. **
+** ioBroker benötigt spezielle Berechtigungen zur Steuerung von GPIOs. ** Bei den meisten Linux-Distributionen kann dies erreicht werden, indem der ioBroker-Benutzer zur Gruppe `gpio` hinzugefügt wird (empfohlen) oder ioBroker unter `root` ausgeführt wird (weniger sicher).
 
 ## Installation
 Nach der Installation müssen Sie alle erforderlichen Module über die Administrationsseite konfigurieren.
 
-Nach dem Start von iobroker.rpi erzeugen alle ausgewählten Module einen Objektbaum in ioBroker innerhalb von rpi. <Instance>. <Modulename>, z. rpi.0.cpu
+Nach dem Start von iobroker.rpi generieren alle ausgewählten Module einen Objektbaum in ioBroker innerhalb von rpi. <Instanz>. <Modulenname>, z. rpi.0.cpu
 
 Stellen Sie sicher, dass Python und Build-Essential installiert sind:
 
@@ -36,7 +36,7 @@ sudo apt-get install -y build-essential python
 Folgende Objekte stehen nach Auswahl zur Verfügung:
 
 #### **ZENTRALPROZESSOR**
-- CPU_Frequenz
+- CPU-Frequenz
 - load1
 - load5
 - load15
@@ -48,7 +48,7 @@ Folgende Objekte stehen nach Auswahl zur Verfügung:
 
 #### **Erinnerung**
 - memory_available
-- Speicher_frei
+- memory_free
 - memory_total
 
 #### **Netzwerk (eth0)**
@@ -61,14 +61,14 @@ Folgende Objekte stehen nach Auswahl zur Verfügung:
 - sdcard_root_total
 - sdcard_root_used
 
-#### **Wechsel**
-- Swap_Total
+#### **Tauschen**
+- swap_total
 - swap_used
 
 #### **Temperatur**
 - soc_temp
 
-#### **Uptime**
+#### **Betriebszeit**
 - Betriebszeit
 
 #### **WLAN**
@@ -83,21 +83,21 @@ Auf der Konfigurationsseite können Sie folgende Module auswählen:
 - Erinnerung
 - Netzwerk
 - SD-Karte
-- Wechsel
+- Tauschen
 - Temperatur
-- Uptime
+- Betriebszeit
 - WLAN
 
-## Logfiles / Konfigurationseinstellungen
+## Protokolldateien / Konfigurationseinstellungen
 ## Eigenschaften
 ## Machen
 ## Getestete Hardware
- - Odroid C1
- - Himbeer-Pi 1
+ - Odroid C1
+ - Himbeer-Pi 1
 
 ## GPIOs
 Sie können auch GPIOs lesen und steuern.
-Sie müssen lediglich die GPIO-Optionen in den Einstellungen konfigurieren (zusätzliche Registerkarte).
+Sie müssen lediglich in den Einstellungen die GPIO-Optionen konfigurieren (zusätzliche Registerkarte).
 
 ![GPIOs](../../../en/adapterref/iobroker.rpi2/img/pi3_gpio.png)
 
@@ -105,7 +105,7 @@ Nachdem einige Ports aktiviert wurden, werden im Objektbaum folgende Status ange
 
 - rpi.0.gpio.PORT.state
 
-Die Nummerierung der Ports ist BCM (BroadComm-Pins auf dem Chip). Die Aufzählung erhalten Sie mit ```gpio readall```.
+Die Nummerierung der Ports ist BCM (BroadComm Pins on Chip). Sie können die Aufzählung mit ```gpio readall``` erhalten.
 Zum Beispiel PI2:
 
 ```
@@ -137,10 +137,20 @@ Zum Beispiel PI2:
 +-----+-----+---------+------+---+---Pi 2---+---+------+---------+-----+-----+
 ```
 
+## DHTxx / AM23xx-Sensoren
+Sie können von den Temperatur- / Feuchtigkeitssensoren DHT11, DHT22 und AM2302 lesen.
+
+Schließen Sie einen solchen Sensor an einen GPIO-Pin an, wie auf der Paketseite [Node-Dht-Sensor](https://www.npmjs.com/package/node-dht-sensor) beschrieben. Wie beschrieben, können mehrere Sensoren an *mehrere* Pins angeschlossen werden (dies ist *kein* Bussystem).
+
 ## Changelog
 
+### 1.2.0 (2020-01-17)
+- (janfromberlin) GPIO configuration as output with defined initial value
+- (foxriver76) No longer use adapter.objects
+- (Apollon77) Adjust gpio errors
+
 ### 1.1.1
- - (Apollon77) Error messages for not existing values are logged only once
+- (Apollon77) Error messages for not existing values are logged only once
 
 ### 1.1.0
  - (Apollon77) Nodejs 10 support 
@@ -186,6 +196,6 @@ Zum Beispiel PI2:
 
 ## License
 
-Copyright (c) 2015-2018 husky-koglhof <husky.koglhof@icloud.com>
+Copyright (c) 2015-2020 husky-koglhof <husky.koglhof@icloud.com>
 
 MIT License

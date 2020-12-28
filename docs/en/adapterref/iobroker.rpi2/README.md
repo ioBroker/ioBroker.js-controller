@@ -12,7 +12,7 @@ RPI-Monitor implementation for integration into ioBroker. It is the same impleme
 ## Important Information
 Works only with node >= 0.12
 
-**ioBroker must run under root to may control GPIOs.**
+**ioBroker needs special permissions to control GPIOs.** On most Linux distributions this can be achieved by adding the ioBroker user to the `gpio` group (recommended) or running ioBroker under `root` (less secure).
 
 ## Installation
 After installation you have to configure all required modules via administration page.
@@ -136,6 +136,12 @@ For instance PI2:
 | BCM | wPi |   Name  | Mode | V | Physical | V | Mode | Name    | wPi | BCM |
 +-----+-----+---------+------+---+---Pi 2---+---+------+---------+-----+-----+
 ```
+
+## DHTxx/AM23xx Sensors
+You can read from DHT11, DHT22 and AM2302 temperature/humidity sensors.
+
+Connect such a sensor to a GPIO pin as described on the [node-dht-sensor](https://www.npmjs.com/package/node-dht-sensor) package page. Multiple sensors can be connected to *multiple* pins (this is *not* a bus system) as discussed.
+
 
 ## Changelog
 

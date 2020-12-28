@@ -20,7 +20,7 @@ Big thanks to free [CallMeBot](https://www.callmebot.com/blog/free-api-whatsapp-
 
 You need to get the API key form the bot before using the API:
 
-- Add the phone number +34 698 28 89 73 into your Phone Contacts. (Name it it as you wish.)
+- Add the phone number **+34 644 59 71 67** into your Phone Contacts. (Name it it as you wish.)
 - Send this message `I allow callmebot to send me messages` (in english) to the new contact created (using WhatsApp of course).
 - Wait until you receive the message `API Activated for your phone number. Your APIKEY is 123123` from the bot. As this is still in beta testing, the activation can take up to 2 minutes.
 - The WhatsApp message from the bot will contain the API key needed to send messages using the API.

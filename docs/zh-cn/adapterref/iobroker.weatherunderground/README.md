@@ -3,28 +3,30 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.weatherunderground/README.md
 title: ioBroker.weatherunderground
-hash: mnc1wmBhp/yn5r8AEdq5D7oIQN+glxNL49woG/vU9/o=
+hash: KQBKAuXaHZmK2XRbNAt/ff0+mkMYDLf0Ao3vFnFby04=
 ---
 ![商标](../../../en/adapterref/iobroker.weatherunderground/admin/wu.png)
 
 ![安装数量](http://iobroker.live/badges/weatherunderground-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.weatherunderground.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.weatherunderground.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.weatherunderground.svg)
 ![NPM](https://nodei.co/npm/iobroker.weatherunderground.png?downloads=true)
 
 ＃ioBroker.weatherunderground
-ioBroker适配器从[天气地下](http://www.wunderground.com/)为您的位置加载24小时天气预报。
-适配器加载所有15分钟（默认）每日和每小时预测数据。
+**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
-##注意事项
-您可以使用此适配器提供官方“PWS所有者”API密钥或将API密钥保留为空以使用从WU网页中提取的密钥。
+ioBroker适配器可从[地下天气](http://www.wunderground.com/)加载您所在位置的24小时天气预报。
+适配器将加载所有15分钟（默认）的每日和每小时预测数据。
+
+##注意
+您可以在提供官方“ PWS所有者” API密钥的情况下使用此适配器，也可以将API密钥留空以使用从WU网页中提取的密钥。
 
 ##图标集
-使用“Legacy API”时，可以使用一些不同的图标集，如下所示。对于使用新API的usabe，图片名称已更改（请参阅https://docs.google.com/document/d/1dNCf6nF6cjm4oOxQxjtqNuAvG_iEe5f9MQH1xlCeV4s/edit），现在基于数字...可以从例如https://drive.google.com/drive/folders/0B6fWQWXuE09OOWtBOXJNX190TDQ，可用作自定义设置（见下文）。
+使用“旧版API”时，有一些不同的图标集可用，请参见下文。对于使用新API的美国，图片名称已更改（请参阅https://docs.google.com/document/d/1dNCf6nF6cjm4oOxQxjtqNuAvG_iEe5f9MQH1xlCeV4s/edit），并且现在是基于编号的...可以从例如下载。 https://drive.google.com/drive/folders/0B6fWQWXuE09OOWtBOXJNX190TDQ，可以用作自定义设置（请参见下文）。
 
-在适配器设置中，将“自定义图标 - 基本URL”更改为Weatherunderground上可用的图标集之一：（来源：https：//www.wunderground.com/weather/api/d/docs？d = resources / icon-sets ）
+在“适配器设置”中，将“自定义图标库URL”更改为Weatherunderground上可用的图标集之一：（来源：https：//www.wunderground.com/weather/api/d/docs？d = resources / icon-sets ）
 
-|图标集|网址|示例|
+|图标集|网址|例子 |
 | ------------- | -------------------------------- | --------------------- 	|
 | 1 | https://icons.wxug.com/i/c/a/ | ![替代文字](https://icons.wxug.com/i/c/a/partlycloudy.gif)|
 | 3 | https://icons.wxug.com/i/c/c/ | ![替代文字](https://icons.wxug.com/i/c/c/partlycloudy.gif)|
@@ -32,15 +34,15 @@ ioBroker适配器从[天气地下](http://www.wunderground.com/)为您的位置�
 | 5 | https://icons.wxug.com/i/c/e/ | ![替代文字](https://icons.wxug.com/i/c/e/partlycloudy.gif)|
 | 6 | https://icons.wxug.com/i/c/f/ | ![替代文字](https://icons.wxug.com/i/c/f/partlycloudy.gif)|
 | 7 | https://icons.wxug.com/i/c/g/ | ![替代文字](https://icons.wxug.com/i/c/g/partlycloudy.gif)|
-| 8 | https://icons.wxug.com/i/c/h/ | ![替代文字](https://icons.wxug.com/i/c/h/partlycloudy.gif)|
+| 8 | https://icons.wxug.com/i/c/h/ | | ![替代文字](https://icons.wxug.com/i/c/h/partlycloudy.gif)|
 | 9 | https://icons.wxug.com/i/c/i/ | ![替代文字](https://icons.wxug.com/i/c/i/partlycloudy.gif)|
 | 10 | https://icons.wxug.com/i/c/j/ | ![替代文字](https://icons.wxug.com/i/c/j/partlycloudy.gif)|
 | 11 | https://icons.wxug.com/i/c/k/ | ![替代文字](https://icons.wxug.com/i/c/k/partlycloudy.gif)|
 | 11 | https://icons.wxug.com/i/c/k/ | ！[替代文字]（https://icons.wxug.com/i/c/k/partlycloudy.gif）|
 
-或者您可以使用自己的“自定义”图标，为此，必须在Base-URL目录中提供以下gif文件：
+或者，您也可以使用自己的“自定义”图标，为此，必须在Base-URL目录中提供以下gif文件：
 
-| Day |的图标夜间图标|
+|一天的图标|晚上的图标|
 | -----------------------------	| ----------------------------- |
 | chanceflurries.gif | nt_chanceflurries.gif |
 | chancerain.gif | nt_chancerain.gif |
@@ -50,12 +52,12 @@ ioBroker适配器从[天气地下](http://www.wunderground.com/)为您的位置�
 | chancetstorms.gif | nt_chancetstorms.gif |
 | chancetstorms.gif | nt_chancetstorms.gif |
 | clear.gif | nt_clear.gif |
-| cloudy.gif | nt_cloudy.gif |
+| cloud.gif | nt_cloudy.gif |
 | flurries.gif | nt_flurries.gif |
 | fog.gif | nt_fog.gif |
 | hazy.gif | nt_hazy.gif |
-| mostlycloudy.gif | nt_mostlycloudy.gif |
-| mostlysunny.gif | nt_mostlysunny.gif |
+| mostcloudy.gif | nt_mostlycloudy.gif |
+| mostsunny.gif | nt_mostlysunny.gif |
 | partlycloudy.gif | nt_partlycloudy.gif |
 | partlysunny.gif | nt_partlysunny.gif |
 | sleet.gif | nt_sleet.gif |
@@ -64,16 +66,62 @@ ioBroker适配器从[天气地下](http://www.wunderground.com/)为您的位置�
 | partlycloudy.gif | nt_partlycloudy.gif |
 | sunny.gif | nt_sunny.gif |
 | tstorms.gif | nt_tstorms.gif |
-| cloudy.gif | nt_cloudy.gif |
+| cloud.gif | nt_cloudy.gif |
 
 ioBroker论坛中的##（德语）
 http://forum.iobroker.org/viewtopic.php?f=20&t=2042&sid=a863d19838bc49439759bef89fcad1c3
 
 ＃＃ 去做
-编码仍然存在问题。 “äüöß”的地址将显示错误。
+编码仍然存在问题。带“äüöß”的地址将显示错误。
 
 ## Changelog
 
+### 3.2.5 (2020-12-27)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-WEATHERUNDERGROUND-1, IOBROKER-WEATHERUNDERGROUND-2)
+
+### 3.2.3 (2020-12-26)
+* (Apollon77) make sure adapter do not crash when no data could be read
+* (Apollon77) Add Sentry error reporting
+
+### 3.2.2 (2020-12-02)
+* (Apollon77) icons sometimes did not have a correct extension
+* (Apollon77) Correct some cases with different types of locations when reading data
+
+### 3.2.1
+* (raintonr) Corrected 'Imperial' terminology.
+
+### 3.2.0 (2019-12-28)
+* (StrathCole) fix forecast expiry time
+* (StrathCole) add visibility index to objects on hourly forecast
+
+### 3.1.6 (2019-10-16)
+* (Bjoern3003) adjust to WU changes, now v3 API for hourly data
+* (Apollon77) run once after installation/update
+ 
+### 3.1.3
+* (Apollon77) text correction
+ 
+### 3.1.2 (2019-07-27)
+* (Apollon77) use new parameters to get decimal precision values
+ 
+### 3.1.1 (2019-07-14)
+* (Apollon77) add windDirection as string calculated based on degrees
+ 
+### 3.1.0 (2019-07-12)
+* (Apollon77) remove option for legacy API because disabled by WU
+ 
+### 3.0.14 (2019-07-11)
+* (Apollon77) optimize checking of pws station id
+ 
+### 3.0.13 (2019-07-10)
+* (Apollon77) Fix error in image url handling
+ 
+### 3.0.11/12 (2019-07-09)
+* (Apollon77) Re-Fetch PWS station key on Error 401
+ 
+### 3.0.10 (2019-05-27)
+* (Apollon77) Adopt logic to WU changes
+ 
 ### 3.0.8 (2019-03-23)
 * (Apollon77) Add additional guidance when location is not found by WU
  
@@ -165,7 +213,7 @@ initial release with all basics to load WU-forecast data
 
 The MIT License (MIT)
 
-Copyright (c) 2015-2019 dschaedl <daniel.schaedler@gmail.com>
+Copyright (c) 2015-2020 dschaedl <daniel.schaedler@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

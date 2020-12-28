@@ -3,30 +3,30 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.rpi2/README.md
 title: 无题
-hash: /cbBoy91TtAnLV+E46qMGy6VqvR4GCWqqAcaph/QxlM=
+hash: LuTrQrlZ5YW5/rS6OYyVphiuYRKeh2CH3Y22fvNr/zQ=
 ---
-![商标](../../../en/adapterref/iobroker.rpi2/admin/rpi.png)ioBrokerRPI-Monitor适配器
+![商标](../../../en/adapterref/iobroker.rpi2/admin/rpi.png)ioBroker RPI监视器适配器
 
 ![安装数量](http://iobroker.live/badges/rpi2-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.rpi2.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.rpi2.svg)
+![资料下载](https://img.shields.io/npm/dm/iobroker.rpi2.svg)
 ![NPM](https://nodei.co/npm/iobroker.rpi2.png?downloads=true)
 
 ==============
 
-用于集成到ioBroker的RPI-Monitor实现。它与iobroker.rpi的实现相同，但使用GPIO。
+用于集成到ioBroker中的RPI-Monitor实现。与iobroker.rpi的实现相同，但具有GPIO。
 
 ##重要信息
 仅适用于节点> = 0.12
 
-** ioBroker必须在root下运行才能控制GPIO。**
+** ioBroker需要特殊权限才能控制GPIO。**在大多数Linux发行版中，可以通过将ioBroker用户添加到`gpio`组（推荐）或在`root`下运行ioBroker（不太安全）来实现。
 
 ##安装
 安装后，您必须通过管理页面配置所有必需的模块。
 
-在启动iobroker.rpi之后，所有选定的模块在rpi。<instance>。<modulename>中的ioBroker中生成对象树。 rpi.0.cpu
+在启动iobroker.rpi之后，所有选定的模块都会在ioBroker中的rpi中生成一个对象树。<instance>。<modulename>例如rpi.0.cpu
 
-确保安装了python和build-essential：
+确保已安装python和build-essential：
 
 ```
 sudo apt-get update
@@ -36,76 +36,76 @@ sudo apt-get install -y build-essential python
 选择后可以使用以下对象：
 
 ＃＃＃＃ **中央处理器**
- -  cpu_frequency
- -  load1
- -  load5
- -  load15
+-cpu_frequency
+-负载1
+-负载5
+-负载15
 
-#### **覆盆子（需要vcgencmd）**
- -  cpu_voltage
- -  mem_arm
- -  mem_gpu
+#### ** Raspberry（需要vcgencmd）**
+-cpu_voltage
+-mem_arm
+-mem_gpu
 
-#### **记忆**
- -  memory_available
- -  memory_free
- -  memory_total
+#### **内存**
+-memory_available
+-memory_free
+-memory_total
 
 #### **网络（eth0）**
- -  net_received
- -  net_send
+-net_received
+-net_send
 
 ＃＃＃＃ **SD卡**
- -  sdcard_boot_total
- -  sdcard_boot_used
- -  sdcard_root_total
- -  sdcard_root_used
+-sdcard_boot_total
+-sdcard_boot_used
+-sdcard_root_total
+-sdcard_root_used
 
 #### **交换**
- -  swap_total
- -  swap_used
+-swap_total
+-swap_used
 
 #### **温度**
- -  soc_temp
+-soc_temp
 
 #### **正常运行时间**
- - 正常运行时间
+-正常运行时间
 
 #### **WLAN**
- -  wifi_received
- -  wifi_send
+-wifi_received
+-wifi_send
 
 ##配置
 在配置页面上，您可以选择以下模块：
 
 - 中央处理器
 - 覆盆子
- - 记忆
- - 网络
+-记忆
+-网络
 - SD卡
- - 交换
- - 温度
- - 正常运行时间
- -  WLAN
+-交换
+-温度
+-正常运行时间
+-无线局域网
 
 ##日志文件/配置设置
 ＃＃ 特征
 ＃＃ 去做
-##经测试的硬件
-  -  Odroid C1
-  -  Raspberry Pi 1
+##经过测试的硬件
+ -Odroid C1
+ -树莓派1
 
 ## GPIO
 您也可以读取和控制GPIO。
 您需要做的就是在设置中配置GPIO选项（附加选项卡）。
 
-![个GPIO](../../../en/adapterref/iobroker.rpi2/img/pi3_gpio.png)
+![通用输入输出](../../../en/adapterref/iobroker.rpi2/img/pi3_gpio.png)
 
-启用某些端口后，对象树中将显示以下状态：
+启用某些端口后，对象树中会显示以下状态：
 
- -  rpi.0.gpio.PORT.state
+-rpi.0.gpio.PORT.state
 
-端口的编号是BCM（片上BroadComm引脚）。您可以使用```gpio readall```获取枚举。
+端口的数量为BCM（片上BroadComm引脚）。您可以使用```gpio readall```获得枚举。
 例如PI2：
 
 ```
@@ -137,10 +137,20 @@ sudo apt-get install -y build-essential python
 +-----+-----+---------+------+---+---Pi 2---+---+------+---------+-----+-----+
 ```
 
+## DHTxx / AM23xx传感器
+您可以从DHT11，DHT22和AM2302温度/湿度传感器中读取。
+
+如[节点DHT传感器](https://www.npmjs.com/package/node-dht-sensor)封装页面中所述，将这种传感器连接到GPIO引脚。可以将多个传感器连接到*多个*引脚（这不是*总线系统），如前所述。
+
 ## Changelog
 
+### 1.2.0 (2020-01-17)
+- (janfromberlin) GPIO configuration as output with defined initial value
+- (foxriver76) No longer use adapter.objects
+- (Apollon77) Adjust gpio errors
+
 ### 1.1.1
- - (Apollon77) Error messages for not existing values are logged only once
+- (Apollon77) Error messages for not existing values are logged only once
 
 ### 1.1.0
  - (Apollon77) Nodejs 10 support 
@@ -186,6 +196,6 @@ sudo apt-get install -y build-essential python
 
 ## License
 
-Copyright (c) 2015-2018 husky-koglhof <husky.koglhof@icloud.com>
+Copyright (c) 2015-2020 husky-koglhof <husky.koglhof@icloud.com>
 
 MIT License

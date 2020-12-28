@@ -32,6 +32,8 @@ siehe MeinBeispiel.jpg
 
 
 ## Changelog
+### 1.2.2 (2020-12-26
+* (Lutz Sebastian) Group Calculations only after InitialFinished
 ### 1.2.1 (2020-04-15)
 * (Lutz Sebastian) translation
 ### 1.2.0 (2020-04-15)

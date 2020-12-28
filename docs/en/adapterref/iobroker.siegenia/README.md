@@ -11,6 +11,7 @@
 
 **Tests:** Linux/Mac/Windows: [![Travis-CI](http://img.shields.io/travis/Apollon77/ioBroker.siegenia/master.svg)](https://travis-ci.org/Apollon77/ioBroker.siegenia)
 
+**This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 This adapter provides ioBroker support for Siegenia Climate and Air control Devices (https://www.siegenia.com).
 
