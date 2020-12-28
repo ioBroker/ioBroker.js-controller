@@ -108,6 +108,11 @@ function getErrorText(code) {
     return code;
 }
 
+/**
+ * Get the config directly from fs - never cached
+ *
+ * @returns {null|object}
+ */
 function getConfig() {
     const configFile = tools.getConfigFileName();
     if (!fs.existsSync(configFile)) {
@@ -117,7 +122,7 @@ function getConfig() {
         } else {
             logger = require('./lib/logger')('info', [tools.appName]);
         }
-        logger.error(hostLogPrefix + ' conf/' + tools.appName + '.json missing - call node ' + tools.appName + '.js setup');
+        logger.error(`${hostLogPrefix} conf/${tools.appName}.json missing - call node ${tools.appName}.js setup`);
         process.exit(EXIT_CODES.MISSING_CONFIG_JSON);
         return null;
     } else {
@@ -4212,11 +4217,29 @@ function init(compactGroupId) {
         config.log.noStdout = true;
     }
 
-    logger = require('./lib/logger.js')(config.log);
+    try {
+        logger = require('./lib/logger.js')(config.log);
+    } catch (e) {
+        if (e.code === 'EACCES_LOG') {
+            // We could not access logging directory - e.g. because of restored backup
+            console.error(`Could not access logging directory "${e.path}", fallback to default`);
 
-    if (!compactGroupController) {
-        // Delete all log files older than x days
-        logger.activateDateChecker(true, config.log.maxDays);
+            // read a fresh config to avoid overwriting e.g. noStdout
+            const _config = getConfig();
+            // persist the config to be fixed permanently
+            const configFile = tools.getConfigFileName();
+            const fixedLogPath = 'log/iobroker';
+            _config.log.transport['file1'].filename = fixedLogPath;
+            fs.writeFileSync(configFile, JSON.stringify(_config, null, 2));
+
+            // fix this run
+            config.log.transport['file1'].filename = fixedLogPath;
+            logger = require('./lib/logger.js')(config.log);
+
+            logger.warn(`${hostLogPrefix} Your logging path "${e.path}" was invalid, it has been changed to "${fixedLogPath}"`);
+        } else {
+            console.error(`Error initializing logger: ${e.message}`);
+        }
     }
 
     // If installed as npm module

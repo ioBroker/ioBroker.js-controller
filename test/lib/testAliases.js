@@ -183,7 +183,7 @@ function register(it, expect, context) {
     const gid = 'someAdapter.0.testStates';
     const gAliasID = 'alias.0.testStates';
 
-    // Scaling of aliases
+    // Scaling of aliases - when unit % is set to target or source
     it(testName + 'Read alias state', done => {
         context.adapter.setForeignObject(gid, {
             common: {
@@ -211,8 +211,9 @@ function register(it, expect, context) {
                         name: 'Test Alias',
                         type: 'number',
                         role: 'state',
-                        min: -10,
-                        max: 10,
+                        min: 0,
+                        max: 100,
+                        unit: '%',
                         alias: {
                             id: gid
                         }
@@ -224,11 +225,11 @@ function register(it, expect, context) {
                         owner: 'system.user.userC',
                         ownerGroup: 'system.group.user1'
                     }
-                }, err => {
+                }, () => {
                     context.adapter.getForeignState(gAliasID, (err, state) => {
                         // It must be scaled from -100, 2, 100
-                        // to                     -10, 0.2, 10
-                        expect(state.val.toFixed(3)).to.be.equal('0.200');
+                        // to                     0, 51, 100 %
+                        expect(state.val.toFixed(3)).to.be.equal('51.000');
                         expect(state.ack).to.be.true;
                         done();
                     });
@@ -278,8 +279,7 @@ function register(it, expect, context) {
                 }, err => {
                     expect(err).to.be.not.ok;
                     context.adapter.getForeignStates(gAliasID + '1', (err, states) => {
-                        // It must be scaled from -100, 2, 100
-                        // to                     -10, 0.2, 10
+                        // No scaling because no % and no min, max in source object
                         expect(states[gAliasID + '1'].val).to.be.equal(5);
                         expect(states[gAliasID + '1'].ack).to.be.true;
 
@@ -300,11 +300,11 @@ function register(it, expect, context) {
     }).timeout(1000);
 
     it(testName + 'Write alias state', done => {
-        context.adapter.setForeignState(gAliasID, 10, false, (err, state) => {
+        context.adapter.setForeignState(gAliasID, 10, false, () => {
             context.adapter.getForeignState(gid, (err, state) => {
-                // It must be scaled from -10, 10, 10
-                // to                     -100, 100, 100
-                expect(state.val.toFixed(3)).to.be.equal('100.000');
+                // It must be scaled from 0, 10, 100
+                // to                     -100, -80, 100
+                expect(state.val.toFixed(3)).to.be.equal('-80.000');
                 expect(state.ack).to.be.false;
                 done();
             });
@@ -323,7 +323,7 @@ function register(it, expect, context) {
             },
             native: {},
             type: 'state'
-        }, err => {
+        }, () => {
             context.adapter.setForeignState(gid + 'C', 2, true, err => {
                 expect(err).to.be.not.ok;
 
@@ -343,7 +343,7 @@ function register(it, expect, context) {
                     },
                     native: {},
                     type: 'state'
-                }, err => {
+                }, () => {
                     context.adapter.getForeignState(gAliasID + 'C', (err, state) => {
                         // It must be converted 2 * 10 + 1
                         expect(state.val.toFixed(3)).to.be.equal('21.000');
@@ -368,18 +368,18 @@ function register(it, expect, context) {
     it(testName + 'Read alias state by not admin', done => {
         prepareGroupsAndUsers(context.objects)
             .then(() => {
-                context.adapter.setForeignState(gAliasID, 10, false, {user: 'system.user.userC'}, (err, state) => {
+                context.adapter.setForeignState(gAliasID, 10, false, {user: 'system.user.userC'}, () => {
                     context.adapter.getForeignState(gid, {user: 'system.user.userC'}, (err, state) => {
-                        // It must be scaled from -10, 10, 10
-                        // to                     -100, 100, 100
-                        expect(state.val.toFixed(3)).to.be.equal('100.000');
+                        // It must be scaled from 0, 10, 100 %
+                        // to                     -100, -80, 100
+                        expect(state.val.toFixed(3)).to.be.equal('-80.000');
                         expect(state.ack).to.be.false;
 
-                        context.adapter.setForeignState(gid, 10, false, {user: 'system.user.userC'}, (err, state) => {
+                        context.adapter.setForeignState(gid, 10, false, {user: 'system.user.userC'}, () => {
                             context.adapter.getForeignState(gAliasID, {user: 'system.user.userC'}, (err, state) => {
-                                // It must be scaled from -10, 10, 10
-                                // to                     -100, 100, 100
-                                expect(state.val.toFixed(3)).to.be.equal('1.000');
+                                // It must be scaled from -100, 10, 100
+                                // to                     0, 55, 100 %
+                                expect(state.val.toFixed(3)).to.be.equal('55.000');
                                 expect(state.ack).to.be.false;
                                 done();
                             });
@@ -392,10 +392,10 @@ function register(it, expect, context) {
     it(testName + 'Read alias state by not admin without rights', done => {
         prepareGroupsAndUsers(context.objects)
             .then(() => {
-                context.adapter.setForeignState(gAliasID, 10, false, {user: 'system.user.userD'}, (err, state) => {
+                context.adapter.setForeignState(gAliasID, 10, false, {user: 'system.user.userD'}, err => {
                     expect(err.message).to.be.equal('permissionError');
 
-                    context.adapter.getForeignState(gid, {user: 'system.user.userD'}, (err, state) => {
+                    context.adapter.getForeignState(gid, {user: 'system.user.userD'}, err => {
                         expect(err.message).to.be.equal('permissionError');
                         done();
                     });
@@ -406,10 +406,11 @@ function register(it, expect, context) {
     // test subscriptions
     // subscribeForeignStates
     it(testName + 'Test subscribe aliases', done => {
-        context.onAdapterStateChanged = function (id, state) {
+        context.onAdapterStateChanged = (id, state) => {
             if (id === gAliasID) {
                 expect(state).to.be.ok;
-                expect(state.val).to.equal(1);
+                // from -100 10 100 to 0 55 100 %
+                expect(state.val.toFixed(3)).to.equal('55.000');
                 context.onAdapterStateChanged = null;
                 done();
             }
@@ -421,7 +422,7 @@ function register(it, expect, context) {
     }).timeout(1000);
 
     it(testName + 'Test unsubscribe aliases', done => {
-        context.onAdapterStateChanged = function (id, state) {
+        context.onAdapterStateChanged = () => {
             expect(true).to.be.false;
         };
 
@@ -434,10 +435,11 @@ function register(it, expect, context) {
     }).timeout(1000);
 
     it(testName + 'Test subscribe aliases pattern', done => {
-        context.onAdapterStateChanged = function (id, state) {
+        context.onAdapterStateChanged = (id, state) => {
             if (id === gAliasID) {
                 expect(state).to.be.ok;
-                expect(state.val).to.equal(1);
+                // from -100 10 100 to 0 55 100 %
+                expect(state.val.toFixed(3)).to.equal('55.000');
                 context.onAdapterStateChanged = null;
                 done();
             }
@@ -452,7 +454,7 @@ function register(it, expect, context) {
     }).timeout(1000);
 
     it(testName + 'Test unsubscribe aliases pattern', done => {
-        context.onAdapterStateChanged = function (id, state) {
+        context.onAdapterStateChanged = () => {
             expect(true).to.be.false;
         };
 
@@ -479,7 +481,7 @@ function register(it, expect, context) {
     }).timeout(1000);
 
     it(testName + 'Test unsubscribe aliases regex', done => {
-        context.onAdapterStateChanged = function (id, state) {
+        context.onAdapterStateChanged = () => {
             expect(true).to.be.false;
         };
 
@@ -497,11 +499,11 @@ function register(it, expect, context) {
 
     it(testName + 'Test subscribe aliases array', done => {
         let count = 0;
-        context.onAdapterStateChanged = function (id, state) {
+        context.onAdapterStateChanged = (id, state) => {
             if (id === gAliasID) {
                 count++;
                 expect(state).to.be.ok;
-                expect(state.val).to.equal(1);
+                expect(state.val.toFixed(3)).to.equal('55.000');
                 if (count === 2) {
                     context.onAdapterStateChanged = null;
                     done();
@@ -523,7 +525,7 @@ function register(it, expect, context) {
     }).timeout(1000);
 
     it(testName + 'Test unsubscribe aliases array', done => {
-        context.onAdapterStateChanged = function (id, state) {
+        context.onAdapterStateChanged = () => {
             expect(true).to.be.false;
         };
 
@@ -536,11 +538,11 @@ function register(it, expect, context) {
     }).timeout(1000);
 
     it(testName + 'Test change subscribed aliases', done => {
-        context.onAdapterStateChanged = function (id, state) {
+        context.onAdapterStateChanged = (id, state) => {
             if (id === gAliasID) {
                 // A:
                 expect(state).to.be.ok;
-                expect(state.val).to.equal(1);
+                expect(state.val.toFixed(3)).to.equal('55.000');
 
                 // update alias
                 context.adapter.setForeignObject(gAliasID, {
@@ -548,8 +550,9 @@ function register(it, expect, context) {
                         name: 'Test Alias',
                         type: 'number',
                         role: 'state',
-                        min: -10,
-                        max: 10,
+                        min: 0,
+                        max: 100,
+                        unit: '%',
                         alias: {
                             id: gid + 'A'
                         }
@@ -561,15 +564,15 @@ function register(it, expect, context) {
                         owner: 'system.user.userC',
                         ownerGroup: 'system.group.user1'
                     }
-                }, err => {
+                }, () => {
                     context.onAdapterStateChanged = context.onAdapterStateChanged = function (id, state) {
                         if (id === gAliasID) {
                             // A:
                             expect(state).to.be.ok;
-                            // -200, 10 , 200 => -10, 0.5, 10
-                            expect(state.val).to.equal(0.5);
-                            context.adapter.unsubscribeForeignStates(gAliasID, err => {
-                                context.states.setState(gid + 'A', 11, err => {
+                            // -200, 10 , 200 => 0, 52.5, 100
+                            expect(state.val).to.equal(52.5);
+                            context.adapter.unsubscribeForeignStates(gAliasID, () => {
+                                context.states.setState(gid + 'A', 11, () => {
                                     done();
                                 });
                             });
@@ -579,8 +582,8 @@ function register(it, expect, context) {
                     // give some time to update subscribes
                     setTimeout(() => {
                         // this change must be ignored
-                        context.states.setState(gid, 20, err => {
-                            context.states.setState(gid + 'A', 10, err => {
+                        context.states.setState(gid, 20, () => {
+                            context.states.setState(gid + 'A', 10, () => {
 
                             });
                         });
@@ -600,7 +603,7 @@ function register(it, expect, context) {
             },
             native: {},
             type: 'state'
-        }, err =>
+        }, () =>
             context.adapter.subscribeForeignStates(gAliasID, () =>
                 context.states.setState(gid, 10, err =>
                     expect(err).to.be.not.ok))); // => GOTO A:
@@ -626,7 +629,7 @@ function register(it, expect, context) {
             },
             native: {},
             type: 'state'
-        }, err =>
+        }, () =>
             context.adapter.setForeignObject(gAliasID + 'Star', {
                 common: {
                     name: 'Test Alias',
@@ -640,7 +643,7 @@ function register(it, expect, context) {
                 },
                 native: {},
                 type: 'state'
-            }, err =>
+            }, () =>
                 // 2. Create normal state (independent from alias)
                 context.adapter.setForeignObject(gid + 'NotAlias', {
                     common: {
@@ -652,17 +655,18 @@ function register(it, expect, context) {
                     },
                     native: {},
                     type: 'state'
-                }, err =>
-                    context.adapter.subscribeForeignStates('*', err => {
+                }, () =>
+                    context.adapter.subscribeForeignStates('*', () => {
                         let count = 0;
-                        context.onAdapterStateChanged = function (id, state) {
+                        context.onAdapterStateChanged = (id, state) => {
                             // B:
                             if (id === gid + 'NotAlias') {
                                 expect(state.val).to.be.equal(2);
                                 count++;
                             } else if (id === gAliasID + 'Star') {
                                 count++;
-                                expect(state.val).to.be.equal(-8);
+                                // no % -> no scaling
+                                expect(state.val).to.be.equal(10);
                             } else if (id === gid + 'Star') {
                                 count++;
                                 expect(state.val).to.be.equal(10);
@@ -670,22 +674,22 @@ function register(it, expect, context) {
 
                             if (count === 3) {
                                 // 6. changes must not come for any state
-                                context.onAdapterStateChanged = function (id, state) {
+                                context.onAdapterStateChanged = () => {
                                     // C:
                                     expect('Shit happens!').to.be.equal('Should not happen');
                                 };
 
                                 // 5. unsubscribe "*"
-                                context.adapter.unsubscribeForeignStates('*', err =>
-                                    context.states.setState(gid + 'NotAlias', 3, err =>
-                                        context.states.setState(gAliasID + 'Star', 5, err =>
+                                context.adapter.unsubscribeForeignStates('*', () =>
+                                    context.states.setState(gid + 'NotAlias', 3, () =>
+                                        context.states.setState(gAliasID + 'Star', 5, () =>
                                             setTimeout(() => done(), 500))));
                             }
                         };
 
                         // 4. changes must come for alias and independent state
-                        context.states.setState(gid + 'NotAlias', 2, err =>
-                            context.states.setState(gid + 'Star', 10, err => {
+                        context.states.setState(gid + 'NotAlias', 2, () =>
+                            context.states.setState(gid + 'Star', 10, () => {
                                 // go to B:
                             }));
                     }))));
@@ -727,7 +731,8 @@ function register(it, expect, context) {
                     // listen on state changes
                     context.onAdapterStateChanged = (id, state) => {
                         if (id === `${gAliasID}afterSubAlias`) {
-                            expect(state.val).to.be.equal(0);
+                            // no % -> no scaling
+                            expect(state.val).to.be.equal(50);
                             done();
                         }
                     };
