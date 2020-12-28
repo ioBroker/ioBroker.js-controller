@@ -17,7 +17,7 @@
     },
     "dependencies": {
         "@iobroker/plugin-base": "^1.2.0",
-        "@iobroker/plugin-sentry": "^1.1.4",
+        "@iobroker/plugin-sentry": "^1.1.5",
         "@iobroker/db-states-redis": "^0.0.9",
         "@iobroker/db-states-file": "^0.0.9",
         "@iobroker/db-objects-redis": "^0.0.9",
