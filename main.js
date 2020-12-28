@@ -638,10 +638,6 @@ function createObjects(onConnect) {
                                     delete procs[id].restartTimer;
                                 }
 
-                                if (procs[id].crashResetTimer) {
-                                    clearTimeout(procs[id].crashResetTimer);
-                                }
-
                                 delete procs[id];
                                 delete hostAdapter[id];
                             }
@@ -662,10 +658,6 @@ function createObjects(onConnect) {
                             if (procs[id].restartTimer) {
                                 clearTimeout(procs[id].restartTimer);
                                 delete procs[id].restartTimer;
-                            }
-
-                            if (procs[id].crashResetTimer) {
-                                clearTimeout(procs[id].crashResetTimer);
                             }
 
                             delete procs[id];
