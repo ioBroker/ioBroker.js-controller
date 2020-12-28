@@ -227,7 +227,7 @@ function testAdapter(options) {
                 expect(context.objects).to.be.ok;
                 expect(context.states).to.be.ok;
 
-                if (objectsConfig.type === 'redis') {
+                if (objectsConfig.type !== 'file') {
                     const objs = require('./objects.json');
                     addObjects(_objects, objs, () =>
                         startAdapter(() => _done()));
