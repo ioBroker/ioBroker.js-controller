@@ -637,6 +637,11 @@ function createObjects(onConnect) {
                                     clearTimeout(procs[id].restartTimer);
                                     delete procs[id].restartTimer;
                                 }
+
+                                if (procs[id].crashResetTimer) {
+                                    clearTimeout(procs[id].crashResetTimer);
+                                }
+
                                 delete procs[id];
                                 delete hostAdapter[id];
                             }
@@ -658,6 +663,11 @@ function createObjects(onConnect) {
                                 clearTimeout(procs[id].restartTimer);
                                 delete procs[id].restartTimer;
                             }
+
+                            if (procs[id].crashResetTimer) {
+                                clearTimeout(procs[id].crashResetTimer);
+                            }
+
                             delete procs[id];
                             delete hostAdapter[id];
                         }
@@ -3386,7 +3396,10 @@ function startInstance(id, wakeUp) {
                                     logger.debug(`${hostLogPrefix} Initialize crash timer of ${id}`);
                                     procs[id].crashResetTimer = setTimeout(() => {
                                         logger.debug(`${hostLogPrefix} Cleared crash counter of ${id}, because 10 minutes no crash`);
-                                        procs[id].crashCount = 0;
+                                        // check that process id still exists - could be moved to another host
+                                        if (procs[id]) {
+                                            procs[id].crashCount = 0;
+                                        }
                                     }, 1000 * 600);
                                 } else {
                                     // reset crash count and timer because non-crash exit
