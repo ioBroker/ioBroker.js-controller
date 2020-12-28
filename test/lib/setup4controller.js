@@ -72,14 +72,14 @@ function startController(options, callback) {
 
     if (options.objects) {
         if (!options.objects.type || options.objects.type === 'file') {
-            console.log('Used class for Objects: objectsInMemServerRedis');
+            console.log('Used class for Objects: Objects Server');
             Objects = require('@iobroker/db-objects-file').Server;
         } else if (options.objects.type === 'redis') {
-            console.log('Used class for Objects: objectsInRedis');
-            Objects = require('@iobroker/db-objects-file').Client;
+            console.log('Used class for Objects: Objects Redis Client');
+            Objects = require('@iobroker/db-objects-redis').Client;
         }
     } else {
-        console.log('Used class for Objects: objectsInMemServerRedis');
+        console.log('Used class for Objects: Objects Server');
         Objects = require('@iobroker/db-objects-file').Server;
     }
 
@@ -89,14 +89,14 @@ function startController(options, callback) {
     // Just open in memory DB itself
     if (options.states) {
         if (!options.states.type || options.states.type === 'file') {
-            console.log('Used class for States: statesInMemServerRedis');
+            console.log('Used class for States: States Server');
             States = require('@iobroker/db-states-file').Server;
         } else if (options.states.type === 'redis') {
-            console.log('Used class for States: statesInRedis');
-            States = require('@iobroker/db-states-file').Client;
+            console.log('Used class for States: States Redis Client');
+            States = require('@iobroker/db-states-redis').Client;
         }
     } else {
-        console.log('Used class for States: statesInMemServerRedis');
+        console.log('Used class for States: States Server');
         States = require('@iobroker/db-states-file').Server;
     }
 
