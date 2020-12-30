@@ -156,7 +156,6 @@ function register(it, expect, context) {
         const objects = context.objects;
         await objects.setObjectAsync('test.defAck', {type: 'state'});
         const obj = await objects.getObjectAsync('test.defAck');
-        console.log('Obj is ' + JSON.stringify(obj))//test
 
         expect(obj.acl.owner).to.be.equal('system.user.governor');
         expect(obj.acl.ownerGroup).to.be.equal('system.group.senatorGroup');

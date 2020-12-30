@@ -164,10 +164,11 @@ function testAdapter(options) {
     }
 
     function addObjects(objects, objs, callback) {
-        for (const id in objs) {
-            if (objs.hasOwnProperty(id) && objs[id]) {
+        for (const id of Object.keys(objs)) {
+            if (objs[id]) {
                 const obj = objs[id];
                 objs[id] = null;
+
                 return objects.setObject(id, obj, err => {
                     err && console.error(err);
                     setImmediate(addObjects, objects, objs, callback);
@@ -228,7 +229,7 @@ function testAdapter(options) {
                 expect(context.states).to.be.ok;
 
                 if (objectsConfig.type !== 'file') {
-                    const objs = JSON.parse(require('fs').readFileSync('./objects.json'));
+                    const objs = require('./objects.json');
                     addObjects(_objects, objs, () =>
                         startAdapter(() => _done()));
                 } else {
