@@ -228,7 +228,7 @@ function testAdapter(options) {
                 expect(context.states).to.be.ok;
 
                 if (objectsConfig.type !== 'file') {
-                    const objs = require('./objects.json');
+                    const objs = JSON.parse(require('fs').readFileSync('./objects.json'));
                     addObjects(_objects, objs, () =>
                         startAdapter(() => _done()));
                 } else {
