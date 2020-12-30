@@ -6,7 +6,7 @@
     },
     "optionalDependencies": {
         "diskusage": "^1.1.3",
-        "greenlock": "^2.8.8",
+        "greenlock": "^4.0.4",
         "le-challenge-fs": "^2.0.9",
         "le-sni-auto": "^2.1.9",
         "le-acme-core": "^2.1.4",
