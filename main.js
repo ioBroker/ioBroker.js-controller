@@ -2836,10 +2836,14 @@ function installAdapters() {
         const installArgs = [];
         if (!task.rebuild && task.installedFrom && procs[task.id].downloadRetry < 3) {
             // two tries with installed location, afterwards we try normal npm version install
-            if (task.installedFrom.includes('://')) {
+            if (
+                tools.isShortGithubUrl(task.installedFrom)
+                || task.installedFrom.includes('://')
+            ) {
+                // Installing from URL supports raw http(s) and file URLs as well as the short github URL format
                 installArgs.push('url');
                 installArgs.push(task.installedFrom);
-                installArgs.push(task.id.split('.')[2]);
+                installArgs.push(task.id.split('.')[2]); // adapter name
             } else {
                 installArgs.push('install');
                 let installedFrom = task.installedFrom;
