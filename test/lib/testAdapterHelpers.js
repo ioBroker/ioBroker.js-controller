@@ -392,7 +392,7 @@ function register(it, expect, context) {
     for (const method of ['setState', 'setStateChanged', 'setForeignState', 'setForeignStateChanged']) {
         describe(`${context.name} ${context.adapterShortName} adapter: ${method} validates the state object`, () => {
             it('at least one property has to exist', function (done) {
-                this.timeout(2000);
+                this.timeout(1000);
                 const callback = spy();
                 context.adapter[method]('testid', {val: undefined}, callback);
 
