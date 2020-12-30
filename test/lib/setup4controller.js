@@ -46,8 +46,7 @@ function startController(options, callback) {
             noFileCache:        (options.objects.noFileCache === undefined) ? options.objects.noFileCache : true,
             connectTimeout:     options.objects.connectTimeout || 2000,
             dataDir:            options.objects.dataDir || '',
-            enhancedLogging: true,
-            controller: true
+            enhancedLogging: true
         },
         logger: options.objects.logger || options.logger || {
             silly: msg => console.log(msg),
