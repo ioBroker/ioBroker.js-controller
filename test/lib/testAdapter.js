@@ -163,18 +163,23 @@ function testAdapter(options) {
         });
     }
 
-    function addObjects(objects, objs, callback) {
-        for (const id in objs) {
-            if (objs.hasOwnProperty(id) && objs[id]) {
-                const obj = objs[id];
-                objs[id] = null;
-                return objects.setObject(id, obj, err => {
-                    err && console.error(err);
-                    setImmediate(addObjects, objects, objs, callback);
-                });
+    /**
+     * Sets the provided Objets to the db
+     *
+     * @param {object} objects - objects instance
+     * @param {object} objs - objects to set
+     * @return {Promise<void>}
+     */
+    async function addObjects(objects, objs) {
+        for (const id of Object.keys(objs)) {
+            if (objs[id]) {
+                try {
+                    await objects.setObjectAsync(id, objs[id]);
+                } catch (e) {
+                    console.error(e);
+                }
             }
         }
-        callback && callback();
     }
 
     function addInstance() {
@@ -221,7 +226,7 @@ function testAdapter(options) {
                 objects: _objectsConfig,
                 states: _statesConfig
             },
-            (_objects, _states) => {
+            async (_objects, _states) => {
                 context.objects = _objects;
                 context.states  = _states;
                 expect(context.objects).to.be.ok;
@@ -229,8 +234,8 @@ function testAdapter(options) {
 
                 if (objectsConfig.type !== 'file') {
                     const objs = require('./objects.json');
-                    addObjects(_objects, objs, () =>
-                        startAdapter(() => _done()));
+                    await addObjects(_objects, objs);
+                    startAdapter(() => _done());
                 } else {
                     startAdapter(() => _done());
                 }

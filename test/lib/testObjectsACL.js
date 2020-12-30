@@ -151,6 +151,46 @@ function register(it, expect, context) {
             expect(err.message).to.be.equal('permissionError');
         });
     }).timeout(1000);
+
+    it(textName + 'default acl from system.config should be used', async () => {
+        const objects = context.objects;
+
+        // hack for redis, because testing setup missing setup first logic
+        objects.defaultNewAcl = {
+            object: 1636,
+            state: 1636,
+            file: 1636,
+            owner: 'system.user.governor',
+            ownerGroup: 'system.group.senatorGroup'
+        };
+
+        await objects.setObjectAsync('test.defAck', {type: 'state'});
+        const obj = await objects.getObjectAsync('test.defAck');
+
+        expect(obj.acl.owner).to.be.equal('system.user.governor');
+        expect(obj.acl.ownerGroup).to.be.equal('system.group.senatorGroup');
+    }).timeout(1000);
+
+    it(textName + 'default acl from system.config can be overwritten via acl', async () => {
+        const objects = context.objects;
+        await objects.setObjectAsync('test.overwriteAclDef', {type: 'state', acl: {
+            object: 1636,
+            state: 1636,
+            owner: 'system.user.user',
+            ownerGroup: 'system.group.administrator'
+        }});
+        const obj = await objects.getObjectAsync('test.overwriteAclDef');
+        expect(obj.acl.owner).to.be.equal('system.user.user');
+        expect(obj.acl.ownerGroup).to.be.equal('system.group.administrator');
+    }).timeout(1000);
+
+    it(textName + 'default acl from system.config is used when user is admin', async () => {
+        const objects = context.objects;
+        await objects.setObjectAsync('test.aclAdmin', {type: 'state'}, {user: 'system.user.admin'});
+        const obj = await objects.getObjectAsync('test.aclAdmin');
+        expect(obj.acl.owner).to.be.equal('system.user.governor');
+        expect(obj.acl.ownerGroup).to.be.equal('system.group.senatorGroup');
+    }).timeout(1000);
 }
 
 module.exports.register = register;
