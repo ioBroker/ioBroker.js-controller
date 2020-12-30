@@ -36,7 +36,7 @@ hash: EPa1u0/8e/G2TQ67obN7TZJRhxqsXPUeJHkj7zyIErE=
 или SSD, USB-накопитель и т. д. (в зависимости от используемого оборудования)
 
 ## Необходимые / важные ссылки
-* Загрузить изображение: https://www.raspberrypi.org/downloads/raspbian/
+* Загрузить изображение: https://www.raspberrypi.org/software/operating-systems/
 * Win32DiskImager: https://sourceforge.net/projects/win32diskimager/ **или**
 * Balena Etcher: https://www.balena.io/etcher/
 * Замазка: http://www.putty.org/

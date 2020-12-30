@@ -36,7 +36,7 @@ ioBroker的这些安装说明以带有Raspberry OS'Buster'的Raspberry Pi为例�
 或SSD，USB记忆棒等（取决于所用的硬件）
 
 ##必要/重要链接
-*下载图片：https：//www.raspberrypi.org/downloads/raspbian/
+*下载图片：https：//www.raspberrypi.org/software/operating-systems/
 * Win32DiskImager：https://sourceforge.net/projects/win32diskimager/ **或**
 * Balena Etcher：https://www.balena.io/etcher/
 *油灰：http：//www.putty.org/

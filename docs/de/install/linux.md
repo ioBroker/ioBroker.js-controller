@@ -45,7 +45,7 @@ es ist wichtig ein gutes Netzteil zu haben. Mit schwachem Netzteil sind Stabilit
 oder SSD, USB-Stick, usw. (je nach verwendeter Hardware)
 
 ## benötigte / wichtige Links
-* Download Image: https://www.raspberrypi.org/downloads/raspbian/
+* Download Image: https://www.raspberrypi.org/software/operating-systems/
 * Win32DiskImager: https://sourceforge.net/projects/win32diskimager/  **oder**
 * Balena Etcher: https://www.balena.io/etcher/
 * Putty: http://www.putty.org/

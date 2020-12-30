@@ -36,7 +36,7 @@ it is important to have a good power supply. Stability problems are to be expect
 or SSD, USB stick, etc. (depending on the hardware used)
 
 ## Needed / important links
-* Download Image: https://www.raspberrypi.org/downloads/raspbian/
+* Download Image: https://www.raspberrypi.org/software/operating-systems/
 * Win32DiskImager: https://sourceforge.net/projects/win32diskimager/ **or**
 * Balena Etcher: https://www.balena.io/etcher/
 * Putty: http://www.putty.org/
