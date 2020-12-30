@@ -485,6 +485,15 @@ function register(it, expect, context) {
                     done();
                 });
             });
+
+            it('is okay to have undefined val if another property exists', function (done) {
+                this.timeout(1000);
+                // cannot use the sync spies here, so only evaluate the err
+                context.adapter[method]('testid', {ack: true}, err => {
+                    expect(err).to.be.not.ok;
+                    done();
+                });
+            });
         });
     }
 }
