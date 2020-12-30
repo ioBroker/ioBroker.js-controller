@@ -615,6 +615,7 @@ function createObjects(onConnect) {
                                     clearTimeout(procs[id].restartTimer);
                                     delete procs[id].restartTimer;
                                 }
+
                                 delete procs[id];
                                 delete hostAdapter[id];
                             }
@@ -636,6 +637,7 @@ function createObjects(onConnect) {
                                 clearTimeout(procs[id].restartTimer);
                                 delete procs[id].restartTimer;
                             }
+
                             delete procs[id];
                             delete hostAdapter[id];
                         }
@@ -3226,12 +3228,12 @@ function startInstance(id, wakeUp) {
                     delete procs[id].stopping;
                 }
 
-                logger.debug(hostLogPrefix + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1] + ', compact=' + (instance.common.compact && instance.common.runAsCompactMode ? 'true (' +  instance.common.compactGroup + ')' : 'false'));
+                logger.debug(`${hostLogPrefix} startInstance ${name}.${args[0]} loglevel=${args[1]}, compact=${instance.common.compact && instance.common.runAsCompactMode ? 'true (' + instance.common.compactGroup + ')' : 'false'}`);
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code, signal) => {
                     outputCount += 2;
-                    states.setState(id + '.alive',     {val: false, ack: true, from: hostObjectPrefix});
-                    states.setState(id + '.connected', {val: false, ack: true, from: hostObjectPrefix});
+                    states.setState(`${id}.alive`,     {val: false, ack: true, from: hostObjectPrefix});
+                    states.setState(`${id}.connected`, {val: false, ack: true, from: hostObjectPrefix});
 
                     // if we have waiting kill timeouts from stopInstance clear them
                     // and call callback because process ended now
@@ -3353,21 +3355,63 @@ function startInstance(id, wakeUp) {
                                 (mode !== 'extension' || !procs[id].config.native.webInstance) &&
                                 mode !== 'once'
                             ) {
-                                logger.info(hostLogPrefix + ' Restart adapter ' + id + ' because enabled');
+                                if (code === EXIT_CODES.UNCAUGHT_EXCEPTION) {
+                                    // if its an uncaught exception, detect restart loop
+                                    procs[id].crashCount = procs[id].crashCount || 0;
+                                    procs[id].crashCount++;
+                                    logger.debug(`${hostLogPrefix} Crash count of ${id}: ${procs[id].crashCount}`);
+
+                                    if (procs[id].crashResetTimer) {
+                                        logger.debug(`${hostLogPrefix} Reset crash timer of ${id}, to be initialized anew`);
+                                        clearTimeout(procs[id].crashResetTimer);
+                                    }
+
+                                    // after 10 minutes without crash, we reset counter
+                                    logger.debug(`${hostLogPrefix} Initialize crash timer of ${id}`);
+                                    procs[id].crashResetTimer = setTimeout(() => {
+                                        logger.debug(`${hostLogPrefix} Cleared crash counter of ${id}, because 10 minutes no crash`);
+                                        // check that process id still exists - could be moved to another host
+                                        if (procs[id]) {
+                                            procs[id].crashCount = 0;
+                                        }
+                                    }, 1000 * 600);
+                                } else {
+                                    // reset crash count and timer because non-crash exit
+                                    logger.debug(`${hostLogPrefix} Reset crash count of ${id}, because non-crash exit`);
+                                    procs[id].crashCount = 0;
+                                    if (procs[id].crashResetTimer) {
+                                        logger.debug(`${hostLogPrefix} Cleared crash timer of ${id}, because non-crash exit`);
+                                        clearTimeout(procs[id].crashResetTimer);
+                                        delete procs[id].crashResetTimer;
+                                    }
+                                }
+
+                                logger.info(`${hostLogPrefix} Restart adapter ${id} because enabled`);
 
                                 const restartTimerExisting = !!procs[id].restartTimer;
                                 //noinspection JSUnresolvedVariable
                                 if (procs[id].restartTimer) {
                                     clearTimeout(procs[id].restartTimer);
                                 }
-                                procs[id].restartTimer = setTimeout(_id => startInstance(_id),
-                                    code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ? 1000 : ((procs[id].config.common.restartSchedule || restartTimerExisting) ? 1000 : 30000), id);
-                                // 156 is special code that adapter wants itself to be restarted immediately
+
+                                if (!procs[id].crashCount || procs[id].crashCount < 3) {
+                                    procs[id].restartTimer = setTimeout(_id => startInstance(_id),
+                                        code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ? 1000 : ((procs[id].config.common.restartSchedule || restartTimerExisting) ? 1000 : 30000), id);
+                                    // 156 is special code that adapter wants itself to be restarted immediately
+                                } else {
+                                    // 3 crashes - do not restart anymore
+                                    logger.warn(`${hostLogPrefix} Do not restart adapter ${id} because restart loop detected`);
+                                    procs[id].crashCount = 0;
+                                    if (procs[id].crashResetTimer) {
+                                        logger.debug(`${hostLogPrefix} Cleared crash timer of ${id}, because adapter stopped`);
+                                        clearTimeout(procs[id].crashResetTimer);
+                                        delete procs[id].crashResetTimer;
+                                    }
+                                }
                             } else {
                                 if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
                                     logger.info(`${hostLogPrefix} Do not restart adapter ${id} because desired by instance`);
-                                } else
-                                if (mode !== 'once') {
+                                } else if (mode !== 'once') {
                                     logger.info(`${hostLogPrefix} Do not restart adapter ${id} because disabled or deleted`);
                                 } else {
                                     logger.info(`${hostLogPrefix} instance ${id} terminated while should be started once`);
