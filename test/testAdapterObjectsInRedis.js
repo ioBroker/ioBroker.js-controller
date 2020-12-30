@@ -11,13 +11,7 @@ let   states   = null;
 const textName = 'Redis ';
 const tests    = require('./lib/testObjects');
 const fs       = require('fs');
-let  isExecute = fs.existsSync(__dirname  + '/../lib/objects/objectsInRedis.js');
-if (!isExecute) {
-    try {
-        const path = require.resolve('iobroker.objects-redis');
-        isExecute = !!path;
-    } catch (e) { /* OK */ }
-}
+
 const context = {
     objects: null,
     name: textName
@@ -45,10 +39,6 @@ describe(textName + 'Test Objects Redis', function () {
     before(textName + 'Start js-controller', function (_done) {
         this.timeout(2000);
 
-        if (!isExecute) {
-            console.warn('REDIS Objects tests disabled');
-            return _done();
-        }
         setup.startController({
             objects: objectsConfig,
             states: {
@@ -69,15 +59,9 @@ describe(textName + 'Test Objects Redis', function () {
         );
     });
 
-    if (isExecute) {
-        tests.register(it, expect, context);
-    }
+    tests.register(it, expect, context);
 
     after(textName + 'Stop js-controller', function (done) {
-        if (!isExecute) {
-            console.warn('REDIS Objects tests disabled');
-            return done();
-        }
         this.timeout(5000);
         setup.stopController(function () {
             setTimeout(done, 2000);

@@ -60,8 +60,6 @@ let detectIpsCount          = 0;
 let objectsDisconnectTimeout= null;
 let statesDisconnectTimeout = null;
 let connected               = null; // not false, because want to detect first connection
-let ipArr                   = [];
-let lastCalculationOfIps    = null;
 let lastDiskSizeCheck       = 0;
 let restartTimeout          = null;
 let connectTimeout          = null;
@@ -150,7 +148,7 @@ function _startMultihost(_config, secret) {
         cpus:   cpus ? cpus.length : 1,
         mem:    os.totalmem(),
         ostype: os.type()
-    }, getIPs(), secret);
+    }, tools.findIPs(), secret);
 }
 
 /**
@@ -183,11 +181,11 @@ function startMultihost(__config) {
             }
         }
 
-        if ((!_config.objects.host || _config.objects.host === '127.0.0.1' || _config.objects.host === 'localhost') && _config.objects.type === 'file') {
-            logger.warn(`${hostLogPrefix} Multihost Master on this system is not possible, because IP address for objects is ${_config.objects.host}`);
+        if (!_config.objects.host || tools.isLocalObjectsDbServer(_config.objects.host, _config.objects.type, true)) {
+            logger.warn(`${hostLogPrefix} Multihost Master on this system is not possible, because IP address for objects is ${_config.objects.host}. Please allow remote connections to the server by adjusting the IP.`);
             return false;
-        } else if ((!_config.states.host || _config.states.host === '127.0.0.1' || _config.states.host  === 'localhost') && _config.states.type === 'file') {
-            logger.warn(`${hostLogPrefix} Multihost Master on this system is not possible, because IP address for states is ${_config.states.host}`);
+        } else if (!_config.states.host || tools.isLocalObjectsDbServer(_config.states.host, _config.states.type, true)) {
+            logger.warn(`${hostLogPrefix} Multihost Master on this system is not possible, because IP address for states is ${_config.states.host}. Please allow remote connections to the server by adjusting the IP.`);
             return false;
         }
 
@@ -233,21 +231,6 @@ function startMultihost(__config) {
         }
         return false;
     }
-}
-
-// get the list of IP addresses of this host
-function getIPs() {
-    if (!lastCalculationOfIps || Date.now() - lastCalculationOfIps > 10000) {
-        const ifaces = os.networkInterfaces();
-        lastCalculationOfIps = Date.now();
-        ipArr = [];
-        Object.keys(ifaces).forEach(dev =>
-            ifaces[dev].forEach(details =>
-                // noinspection JSUnresolvedVariable
-                !details.internal && ipArr.push(details.address)));
-    }
-
-    return ipArr;
 }
 
 /**
@@ -311,8 +294,7 @@ function handleDisconnect() {
 }
 
 function createStates(onConnect) {
-    // eslint-disable-next-line no-unused-vars
-    const _inst = new States({
+    states = new States({
         namespace: hostLogPrefix,
         connection: config.states,
         logger: logger,
@@ -475,9 +457,7 @@ function createStates(onConnect) {
             }
              */
         },
-        connected: handler => {
-            states = handler;
-
+        connected: () => {
             if (statesDisconnectTimeout) {
                 clearTimeout(statesDisconnectTimeout);
                 statesDisconnectTimeout = null;
@@ -545,15 +525,13 @@ function initializeController() {
 
 // create "objects" object
 function createObjects(onConnect) {
-    // eslint-disable-next-line no-unused-vars
-    const _inst = new Objects({
+    objects = new Objects({
         namespace:  hostLogPrefix,
         connection: config.objects,
         controller: true,
         logger:     logger,
         hostname:   hostname,
-        connected:  handler => {
-            objects = handler;
+        connected:  () => {
             // stop disconnect timeout
             if (objectsDisconnectTimeout) {
                 clearTimeout(objectsDisconnectTimeout);
@@ -618,7 +596,7 @@ function createObjects(onConnect) {
                     }
                     if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
                         stopInstance(id, () => {
-                            const _ipArr = getIPs();
+                            const _ipArr = tools.findIPs();
 
                             if (checkAndAddInstance(procs[id].config, _ipArr)) {
                                 if (procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)) {
@@ -637,6 +615,7 @@ function createObjects(onConnect) {
                                     clearTimeout(procs[id].restartTimer);
                                     delete procs[id].restartTimer;
                                 }
+
                                 delete procs[id];
                                 delete hostAdapter[id];
                             }
@@ -644,7 +623,7 @@ function createObjects(onConnect) {
                     } else if (installQueue.find(obj => obj.id === id)) { // ignore object changes when still in install queue
                         logger.debug(`${hostLogPrefix} ignore object change because the adapter is still in installation/rebuild queue`);
                     } else {
-                        const _ipArr = getIPs();
+                        const _ipArr = tools.findIPs();
                         if (procs[id].config && checkAndAddInstance(procs[id].config, _ipArr)) {
                             if (procs[id].config.common.enabled && (procs[id].config.common.mode !== 'extension' || !procs[id].config.native.webInstance)) {
                                 startInstance(id);
@@ -658,12 +637,13 @@ function createObjects(onConnect) {
                                 clearTimeout(procs[id].restartTimer);
                                 delete procs[id].restartTimer;
                             }
+
                             delete procs[id];
                             delete hostAdapter[id];
                         }
                     }
                 } else if (obj && obj.common) {
-                    const _ipArr = getIPs();
+                    const _ipArr = tools.findIPs();
                     // new adapter
                     if (checkAndAddInstance(obj, _ipArr) &&
                         procs[id].config.common.enabled &&
@@ -1128,7 +1108,7 @@ function setIPs(ipList) {
     if (isStopping) {
         return;
     }
-    const _ipList = ipList || getIPs();
+    const _ipList = ipList || tools.findIPs();
 
     // check if IPs detected (because of DHCP delay)
     let found = false;
@@ -1203,7 +1183,7 @@ function setMeta() {
                     name: hostname + compactGroupObjectPrefix + compactGroup,
                     cmd: process.argv[0] + ' ' + (process.execArgv.join(' ') + ' ').replace(/--inspect-brk=\d+ /, '') + process.argv.slice(1).join(' '),
                     hostname: hostname,
-                    address: getIPs()
+                    address: tools.findIPs()
                 },
                 native: {
                 }
@@ -1219,7 +1199,7 @@ function setMeta() {
                     platform: ioPackage.common.platform,
                     cmd: process.argv[0] + ' ' + (process.execArgv.join(' ') + ' ').replace(/--inspect-brk=\d+ /, '') + process.argv.slice(1).join(' '),
                     hostname: hostname,
-                    address: getIPs(),
+                    address: tools.findIPs(),
                     type: ioPackage.common.name
                 },
                 native: {
@@ -2510,7 +2490,7 @@ function getInstances() {
         } else if (!doc.rows || doc.rows.length === 0) {
             logger.info(hostLogPrefix + ' no instances found');
         } else {
-            const _ipArr = getIPs();
+            const _ipArr = tools.findIPs();
             if (!compactGroupController) {
                 logger.info(hostLogPrefix + ' ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
             }
@@ -2858,10 +2838,14 @@ function installAdapters() {
         const installArgs = [];
         if (!task.rebuild && task.installedFrom && procs[task.id].downloadRetry < 3) {
             // two tries with installed location, afterwards we try normal npm version install
-            if (task.installedFrom.includes('://')) {
+            if (
+                tools.isShortGithubUrl(task.installedFrom)
+                || task.installedFrom.includes('://')
+            ) {
+                // Installing from URL supports raw http(s) and file URLs as well as the short github URL format
                 installArgs.push('url');
                 installArgs.push(task.installedFrom);
-                installArgs.push(task.id.split('.')[2]);
+                installArgs.push(task.id.split('.')[2]); // adapter name
             } else {
                 installArgs.push('install');
                 let installedFrom = task.installedFrom;
@@ -3244,12 +3228,12 @@ function startInstance(id, wakeUp) {
                     delete procs[id].stopping;
                 }
 
-                logger.debug(hostLogPrefix + ' startInstance ' + name + '.' + args[0] + ' loglevel=' + args[1] + ', compact=' + (instance.common.compact && instance.common.runAsCompactMode ? 'true (' +  instance.common.compactGroup + ')' : 'false'));
+                logger.debug(`${hostLogPrefix} startInstance ${name}.${args[0]} loglevel=${args[1]}, compact=${instance.common.compact && instance.common.runAsCompactMode ? 'true (' + instance.common.compactGroup + ')' : 'false'}`);
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code, signal) => {
                     outputCount += 2;
-                    states.setState(id + '.alive',     {val: false, ack: true, from: hostObjectPrefix});
-                    states.setState(id + '.connected', {val: false, ack: true, from: hostObjectPrefix});
+                    states.setState(`${id}.alive`,     {val: false, ack: true, from: hostObjectPrefix});
+                    states.setState(`${id}.connected`, {val: false, ack: true, from: hostObjectPrefix});
 
                     // if we have waiting kill timeouts from stopInstance clear them
                     // and call callback because process ended now
@@ -3371,21 +3355,63 @@ function startInstance(id, wakeUp) {
                                 (mode !== 'extension' || !procs[id].config.native.webInstance) &&
                                 mode !== 'once'
                             ) {
-                                logger.info(hostLogPrefix + ' Restart adapter ' + id + ' because enabled');
+                                if (code === EXIT_CODES.UNCAUGHT_EXCEPTION) {
+                                    // if its an uncaught exception, detect restart loop
+                                    procs[id].crashCount = procs[id].crashCount || 0;
+                                    procs[id].crashCount++;
+                                    logger.debug(`${hostLogPrefix} Crash count of ${id}: ${procs[id].crashCount}`);
+
+                                    if (procs[id].crashResetTimer) {
+                                        logger.debug(`${hostLogPrefix} Reset crash timer of ${id}, to be initialized anew`);
+                                        clearTimeout(procs[id].crashResetTimer);
+                                    }
+
+                                    // after 10 minutes without crash, we reset counter
+                                    logger.debug(`${hostLogPrefix} Initialize crash timer of ${id}`);
+                                    procs[id].crashResetTimer = setTimeout(() => {
+                                        logger.debug(`${hostLogPrefix} Cleared crash counter of ${id}, because 10 minutes no crash`);
+                                        // check that process id still exists - could be moved to another host
+                                        if (procs[id]) {
+                                            procs[id].crashCount = 0;
+                                        }
+                                    }, 1000 * 600);
+                                } else {
+                                    // reset crash count and timer because non-crash exit
+                                    logger.debug(`${hostLogPrefix} Reset crash count of ${id}, because non-crash exit`);
+                                    procs[id].crashCount = 0;
+                                    if (procs[id].crashResetTimer) {
+                                        logger.debug(`${hostLogPrefix} Cleared crash timer of ${id}, because non-crash exit`);
+                                        clearTimeout(procs[id].crashResetTimer);
+                                        delete procs[id].crashResetTimer;
+                                    }
+                                }
+
+                                logger.info(`${hostLogPrefix} Restart adapter ${id} because enabled`);
 
                                 const restartTimerExisting = !!procs[id].restartTimer;
                                 //noinspection JSUnresolvedVariable
                                 if (procs[id].restartTimer) {
                                     clearTimeout(procs[id].restartTimer);
                                 }
-                                procs[id].restartTimer = setTimeout(_id => startInstance(_id),
-                                    code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ? 1000 : ((procs[id].config.common.restartSchedule || restartTimerExisting) ? 1000 : 30000), id);
-                                // 156 is special code that adapter wants itself to be restarted immediately
+
+                                if (!procs[id].crashCount || procs[id].crashCount < 3) {
+                                    procs[id].restartTimer = setTimeout(_id => startInstance(_id),
+                                        code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP ? 1000 : ((procs[id].config.common.restartSchedule || restartTimerExisting) ? 1000 : 30000), id);
+                                    // 156 is special code that adapter wants itself to be restarted immediately
+                                } else {
+                                    // 3 crashes - do not restart anymore
+                                    logger.warn(`${hostLogPrefix} Do not restart adapter ${id} because restart loop detected`);
+                                    procs[id].crashCount = 0;
+                                    if (procs[id].crashResetTimer) {
+                                        logger.debug(`${hostLogPrefix} Cleared crash timer of ${id}, because adapter stopped`);
+                                        clearTimeout(procs[id].crashResetTimer);
+                                        delete procs[id].crashResetTimer;
+                                    }
+                                }
                             } else {
                                 if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
                                     logger.info(`${hostLogPrefix} Do not restart adapter ${id} because desired by instance`);
-                                } else
-                                if (mode !== 'once') {
+                                } else if (mode !== 'once') {
                                     logger.info(`${hostLogPrefix} Do not restart adapter ${id} because disabled or deleted`);
                                 } else {
                                     logger.info(`${hostLogPrefix} instance ${id} terminated while should be started once`);
@@ -4189,15 +4215,15 @@ function init(compactGroupId) {
 
     // Get "objects" object
     // If "file" and on the local machine
-    if (config.objects.type === 'file' && (!config.objects.host || config.objects.host === 'localhost' || config.objects.host === '127.0.0.1' || config.objects.host === '0.0.0.0') && !compactGroupController) {
-        Objects = require('./lib/objects/objectsInMemServerRedis');
+    if (tools.isLocalObjectsDbServer(config.objects.type, config.objects.host) && !compactGroupController) {
+        Objects = require('@iobroker/db-objects-file').Server;
     } else {
         Objects = require('./lib/objects');
     }
 
     // Get "states" object
-    if (config.states.type === 'file' && (!config.states.host || config.states.host === 'localhost' || config.states.host === '127.0.0.1' || config.states.host === '0.0.0.0') && !compactGroupController) {
-        States  = require('./lib/states/statesInMemServerRedis');
+    if (tools.isLocalStatesDbServer(config.states.type, config.states.host) && !compactGroupController) {
+        States  = require('@iobroker/db-states-file').Server;
     } else {
         States  = require('./lib/states');
     }
@@ -4259,7 +4285,7 @@ function init(compactGroupId) {
         logger.info(hostLogPrefix + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
         logger.info(hostLogPrefix + ' Copyright (c) 2014-2020 bluefox, 2014 hobbyquaker');
         logger.info(hostLogPrefix + ' hostname: ' + hostname + ', node: ' + process.version);
-        logger.info(hostLogPrefix + ' ip addresses: ' + getIPs().join(' '));
+        logger.info(hostLogPrefix + ' ip addresses: ' + tools.findIPs().join(' '));
 
         // create package.json for npm >= 3.x if not exists
         if (__dirname.replace(/\\/g, '/').toLowerCase().indexOf('/node_modules/' + title.toLowerCase()) !== -1) {
