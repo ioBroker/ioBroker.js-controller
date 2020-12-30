@@ -135,7 +135,7 @@ function register(it, expect, context) {
     // formatValue
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatValue', function (done) {
         this.timeout(1000);
-        let testValue, testValue2;
+        let testValue;
 
         // Test with number
         testValue = context.adapter.formatValue(1000,'.,');
@@ -155,7 +155,7 @@ function register(it, expect, context) {
 
         // Test with an empty format pattern
         testValue = context.adapter.formatValue('1000', ''); //1.000,00
-        testValue2 = context.adapter.formatValue('1000', (context.adapter.isFloatComma === undefined) ? '.,' : ((context.adapter.isFloatComma) ? '.,' : ',.')); //1.000,00
+        const testValue2 = context.adapter.formatValue('1000', (context.adapter.isFloatComma === undefined) ? '.,' : ((context.adapter.isFloatComma) ? '.,' : ',.')); //1.000,00
         expect(testValue).to.equal(testValue2);
 
         testValue = context.adapter.formatValue(undefined, '.,');
@@ -180,7 +180,7 @@ function register(it, expect, context) {
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatDate', function (done) {
         this.timeout(1000);
         const testDate = new Date(0);
-        let testStringDate, testStringDate2;
+        let testStringDate;
 
         expect(context.adapter.formatDate(new Date())).to.be.a('string');
 
@@ -388,18 +388,17 @@ function register(it, expect, context) {
         expect(decrypted).to.equal('topSecret');
     });
 
-    /*
-    // Todo: reactivate this tests with 3.2 when setState validation will refuse to set state
     // setState object validation
     for (const method of ['setState', 'setStateChanged', 'setForeignState', 'setForeignStateChanged']) {
         describe(`${context.name} ${context.adapterShortName} adapter: ${method} validates the state object`, () => {
-            it('requires the val property to exist', function (done) {
+            it('at least one property has to exist', function (done) {
                 this.timeout(1000);
                 const callback = spy();
-                context.adapter[method]('testid', {ack: true}, callback);
+                context.adapter[method]('testid', {val: undefined}, callback);
+
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
-                    expect(callback.firstCall.args[0]).to.match(/required/);
+                    expect(callback.firstCall.args[0].message.includes('At least one property is expected!')).to.be.true;
                     done();
                 });
             });
@@ -410,7 +409,7 @@ function register(it, expect, context) {
                 context.adapter[method]('testid', {val: 1, foo: 'bar'}, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
-                    expect(callback.firstCall.args[0]).to.match(/forbidden/);
+                    expect(callback.firstCall.args[0].message).to.match(/forbidden/);
                     done();
                 });
             });
@@ -421,8 +420,8 @@ function register(it, expect, context) {
                 context.adapter[method]('testid', {val: 1, ack: 'true'}, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
-                    expect(callback.firstCall.args[0]).to.match(/wrong type/);
-                    expect(callback.firstCall.args[0].includes('should be "boolean"')).to.be.true;
+                    expect(callback.firstCall.args[0].message).to.match(/wrong type/);
+                    expect(callback.firstCall.args[0].message.includes('should be "boolean"')).to.be.true;
                     done();
                 });
             });
@@ -433,8 +432,8 @@ function register(it, expect, context) {
                 context.adapter[method]('testid', {val: 1, ts: true}, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
-                    expect(callback.firstCall.args[0]).to.match(/wrong type/);
-                    expect(callback.firstCall.args[0].includes('should be "number"')).to.be.true;
+                    expect(callback.firstCall.args[0].message).to.match(/wrong type/);
+                    expect(callback.firstCall.args[0].message.includes('should be "number"')).to.be.true;
                     done();
                 });
             });
@@ -445,8 +444,8 @@ function register(it, expect, context) {
                 context.adapter[method]('testid', {val: 1, q: true}, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
-                    expect(callback.firstCall.args[0]).to.match(/wrong type/);
-                    expect(callback.firstCall.args[0].includes('should be "number"')).to.be.true;
+                    expect(callback.firstCall.args[0].message).to.match(/wrong type/);
+                    expect(callback.firstCall.args[0].message.includes('should be "number"')).to.be.true;
                     done();
                 });
             });
@@ -457,8 +456,8 @@ function register(it, expect, context) {
                 context.adapter[method]('testid', {val: 1, expire: true}, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
-                    expect(callback.firstCall.args[0]).to.match(/wrong type/);
-                    expect(callback.firstCall.args[0].includes('should be "number"')).to.be.true;
+                    expect(callback.firstCall.args[0].message).to.match(/wrong type/);
+                    expect(callback.firstCall.args[0].message.includes('should be "number"')).to.be.true;
                     done();
                 });
             });
@@ -469,8 +468,8 @@ function register(it, expect, context) {
                 context.adapter[method]('testid', {val: 1, from: 2}, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
-                    expect(callback.firstCall.args[0]).to.match(/wrong type/);
-                    expect(callback.firstCall.args[0].includes('should be "string"')).to.be.true;
+                    expect(callback.firstCall.args[0].message).to.match(/wrong type/);
+                    expect(callback.firstCall.args[0].message.includes('should be "string"')).to.be.true;
                     done();
                 });
             });
@@ -481,14 +480,22 @@ function register(it, expect, context) {
                 context.adapter[method]('testid', {val: 1, c: []}, callback);
                 setImmediate(() => {
                     expect(callback).to.have.been.calledOnce;
-                    expect(callback.firstCall.args[0]).to.match(/wrong type/);
-                    expect(callback.firstCall.args[0].includes('should be "string"')).to.be.true;
+                    expect(callback.firstCall.args[0].message).to.match(/wrong type/);
+                    expect(callback.firstCall.args[0].message.includes('should be "string"')).to.be.true;
+                    done();
+                });
+            });
+
+            it('is okay to have undefined val if another property exists', function (done) {
+                this.timeout(1000);
+                // cannot use the sync spies here, so only evaluate the err
+                context.adapter[method]('testid', {ack: true}, err => {
+                    expect(err).to.be.not.ok;
                     done();
                 });
             });
         });
     }
-     */
 }
 
 module.exports.register = register;
