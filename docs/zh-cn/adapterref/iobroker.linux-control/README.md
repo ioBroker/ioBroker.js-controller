@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.linux-control/README.md
 title: ioBroker.linux控制
-hash: UWL76LQz+eRlIMa6yQbcb9u3fZ4fo19J2QtVuW58jDc=
+hash: 4vljRlLuB+7ulE1Q6N15aOyRbqb2lmzu3vXqqu7mVDA=
 ---
 ![商标](../../../en/adapterref/iobroker.linux-control/admin/linux-control.png)
 
@@ -31,10 +31,10 @@ hash: UWL76LQz+eRlIMa6yQbcb9u3fZ4fo19J2QtVuW58jDc=
 |设置|描述|
 |-------|-----------|
 |启用|启用或禁用主机更新|
-|要存储所有数据点的| datapoint id | id |
+|要存储所有数据点的数据点ID | ID |
 || IP |您的Linux设备的IP地址|
 |端口| Linux设备的SSH端口|
-|轮询间隔|轮询间隔，以分钟为单位。<br>要取消轮询，您可以使用“ 0”或将其保留为空白|
+|轮询间隔|轮询间隔，以分钟为单位。<br>要取消轮询，您可以使用“ 0”或将其留空|
 | user | ssh登录用户|
 | password / passpharse | ssh登录密码或使用rsa密钥的passpharse |
 |使用Sudo |使用sudo |
@@ -47,31 +47,31 @@ hash: UWL76LQz+eRlIMa6yQbcb9u3fZ4fo19J2QtVuW58jDc=
 适配器将创建预定义的数据点，其中包含信息以及控制Linux设备的可能性。这些可以在这里选择。
 另外，对于每个单独的主机，可以通过拖放将单独的数据点或整个通道放在黑名单中，这样就不会为该主机创建它们。
 
-请注意，如果要将整个通道添加到黑名单，则必须将通道节点拖放到黑名单。只有这样，整个频道才会被忽略-参见下面的sreenshot：
+请注意，如果要将整个频道添加到黑名单，则必须将频道节点拖放到黑名单。只有这样，整个频道才会被忽略-参见下面的sreenshot：
 
 ![数据点](../../../en/adapterref/iobroker.linux-control/docs/en/img/all_to_blacklist.gif)
 
-**由于有许多不同的Linux发行版，此功能仅在Debian 10，Ubuntu 18/20 LTS上进行了测试！**
+**由于有许多不同的Linux发行版，此功能仅在Debian 10，Ubuntu 18/20 LTS上进行过测试！**
 
 ＃＃＃ 服务
 ![服务](../../../en/adapterref/iobroker.linux-control/docs/en/img/services.png)
 
 如果激活了在数据点下检索服务，则可以在此处为每个主机定义仅应检索其信息的服务。
 
-**由于有许多不同的Linux发行版，此功能仅在Debian 10，Ubuntu 18/20 LTS上进行了测试！**
+**由于有许多不同的Linux发行版，此功能仅在Debian 10，Ubuntu 18/20 LTS上进行过测试！**
 
 ###文件夹
 ![资料夹](../../../en/adapterref/iobroker.linux-control/docs/en/img/folders.png)
 
 在这里，您可以获取有关文件夹大小，这些文件夹中包含的文件数以及该文件夹中最后一次更改的时间戳的信息。
 
-**由于有许多不同的Linux发行版，此功能仅在Debian 10，Ubuntu 18/20 LTS上进行了测试！**
+**由于有许多不同的Linux发行版，此功能仅在Debian 10，Ubuntu 18/20 LTS上进行过测试！**
 
 |设置|描述|
 |-------|-----------|
 |启用|启用或禁用文件夹更新|
 |主机|应使用的主机|
-|要存储所有数据点的| datapoint id | id |
+|要存储所有数据点的数据点ID | ID |
 |路径|文件夹的路径|
 ||文件名模式|应重新显示的文件名的模式。 |
 |单位|尺寸单位|
@@ -96,12 +96,19 @@ hash: UWL76LQz+eRlIMa6yQbcb9u3fZ4fo19J2QtVuW58jDc=
 |类型|数据点的类型|
 |单位|数据点的单位|
 
+＃＃ 已知的问题
+*如果无法与您的Linux客户端建立连接，请检查iputils-ping是否正确安装在客户端上
+
 ## Changelog
 
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 1.1.0 (2020-12-23)
+* (paul53) datapoints type and role bug fixes
+* (Scrounger) adapter settings card layout added
 
 ### 1.0.1 (2020-11-04)
 * (Scrounger) translation for polling interval optimized

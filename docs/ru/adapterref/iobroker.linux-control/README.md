@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.linux-control/README.md
 title: ioBroker.linux-control
-hash: UWL76LQz+eRlIMa6yQbcb9u3fZ4fo19J2QtVuW58jDc=
+hash: 4vljRlLuB+7ulE1Q6N15aOyRbqb2lmzu3vXqqu7mVDA=
 ---
 ![Логотип](../../../en/adapterref/iobroker.linux-control/admin/linux-control.png)
 
@@ -22,11 +22,11 @@ hash: UWL76LQz+eRlIMa6yQbcb9u3fZ4fo19J2QtVuW58jDc=
 
 Управление устройствами Linux и получение информации о вашей системе
 
-** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+** Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода. ** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Конфигурация
-### Генеральная
-![Генеральная](../../../en/adapterref/iobroker.linux-control/docs/en/img/general.png)
+### Генеральный
+![генеральный](../../../en/adapterref/iobroker.linux-control/docs/en/img/general.png)
 
 | установка | описание |
 |-------|-----------|
@@ -73,7 +73,7 @@ hash: UWL76LQz+eRlIMa6yQbcb9u3fZ4fo19J2QtVuW58jDc=
 | Хост | Хост, который следует использовать |
 | идентификатор точки данных | идентификатор, под которым должны храниться все точки данных |
 | Путь | путь к папке |
-| шаблон имени файла | шаблон для имен файлов, которые следует зарегистрировать. |
+| шаблон имени файла | шаблон для имен файлов, которые должны быть преобразованы. |
 | Единица | Единица по размеру |
 | десятичных знаков | десятичных знаков |
 | количество файлов | создать точку данных для подсчета файлов |
@@ -87,7 +87,7 @@ hash: UWL76LQz+eRlIMa6yQbcb9u3fZ4fo19J2QtVuW58jDc=
 
 | установка | описание |
 |-------|-----------|
-| включен | включить или отключить обновление команды |
+| enabled | включить или отключить обновление команды |
 | Хост | Хост, который следует использовать |
 | идентификатор точки данных | идентификатор, под которым должны храниться точки данных |
 | интервал опроса | разный интервал опроса в секундах только для команды. Для деактивации используйте `0` или оставьте поле пустым, тогда будет использоваться интервал опроса от хоста |
@@ -96,12 +96,19 @@ hash: UWL76LQz+eRlIMa6yQbcb9u3fZ4fo19J2QtVuW58jDc=
 | тип | тип точки данных |
 | unit | единица точки данных |
 
+## Известные вопросы
+* если невозможно получить соединение с вашим клиентом linux, проверьте, правильно ли установлен iputils-ping на клиенте
+
 ## Changelog
 
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 1.1.0 (2020-12-23)
+* (paul53) datapoints type and role bug fixes
+* (Scrounger) adapter settings card layout added
 
 ### 1.0.1 (2020-11-04)
 * (Scrounger) translation for polling interval optimized

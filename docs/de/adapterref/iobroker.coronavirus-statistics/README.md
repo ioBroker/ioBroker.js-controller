@@ -3,20 +3,21 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker.coronavirus-Statistik
-hash: aNCB9lKKNnKhn3FeSBkx1l77wYLxDUsCYRm3gAkx4FE=
+hash: DOn+bUtBayCWnxfVAT6i1YSC1cwhLO5J8ECRAt6lKqQ=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
-![Anzahl der Installationen (spätestens)](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
+![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
 ![Anzahl der Installationen (stabil)](http://iobroker.live/badges/coronavirus-statistics-stable.svg)
-![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/iobroker.coronavirus-statistics.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.coronavirus-statistics/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.coronavirus-statistics/master.svg)
+![Abhängigkeitsstatus](https://img.shields.io/david/iobroker-community-adapters/ioBroker.coronavirus-statistics.svg)
 
 <img src="./admin/coronavirus-statistics.png" width="50" height="50">
 
 # IoBroker.coronavirus-statistics
+![Testen und freigeben](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
+
 ## Coronavirus Live Statistics-Adapter für ioBroker
 Adapter zur Anzeige von Informationen zum globalen Corona-Virus und aktuellen Berichten
 
@@ -91,6 +92,37 @@ Als erster Wert muss der Name aus der Warnmeldung aus dem Protokoll entnommen we
 
 ## Changelog
 
+<!--
+	### __WORK IN PROGRESS__
+	* (DutchmanNL) xxxx
+-->
+
+### 0.6.4 (2020-12-29)
+* (DutchmanNL) change API from V2 to V3
+* (DutchmanNL) Add Last_Updated for city's/counties
+
+### 0.6.3 (2020-11-04)
+* (DutchmanNL) Bugfix : Error warnings to wrong type in states
+* (DutchmanNL) Bugfix : Error values.features is not iterable solved
+
+### 0.6.2 (2020-11-02)
+* (stan23) 
+add "Cases per 100k" in total & during the last 7 days for Germany's Bundesländer
+
+### 0.6.1 (2020-09-25)
+* (stan23) Added cases per 100k during the last 7 days for Germany
+
+### 0.6.0 (2020-08-28)
+* (DutchmanNL) Replaced module request with axios
+* (DutchmanNL) Bugfix : Proper error handling of failing API calls (if api not reachable)
+* (Kampfratte) Bugfix : API-Abfrage geändert
+
+### 0.5.7 (2020-04-17) Continent state attribute information added and warn messages reduced
+* (DutchmanNL) Bugfix : Add continent state attribute definition
+* (DutchmanNL) Bugfix : Reduce warn messages if error occurs to 1 per message
+
+### 0.5.6 (2020-04-17) Bugfix : API changed
+* (Kampfratte) Bugfix : API changed
 
 ### 0.5.5 (2020-04-07) Bugfixes, see changelog for details
 * (DutchmanNL) Bugfix : Remove test-states

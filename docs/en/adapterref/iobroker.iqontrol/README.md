@@ -1193,6 +1193,10 @@ This device has some special predefined size- and display-settings to show a web
     
 ## Changelog
 
+### dev
+* (sbormann) Added optional headings to ADDITIONAL_CONTROLS, the appereance can be controlled by an option.
+* (sbormann) Added "No caption" to the option that controls the appereance of ADDITIONAL_CONTROLS-Section.
+
 ### 1.5.4 (2020-12-20)
 * (sbormann) Added info if demo-view is loaded.
 * (sbormann) Enhanced widget FLOT_CHART to be able to use an external datapoint.

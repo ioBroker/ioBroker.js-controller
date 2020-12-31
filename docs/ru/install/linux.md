@@ -4,7 +4,7 @@ lastChanged: 05.12.2020
 translatedFrom: de
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/install/linux.md
-hash: EPa1u0/8e/G2TQ67obN7TZJRhxqsXPUeJHkj7zyIErE=
+hash: 0RSomjzprx5ZN1ThmqOllojkXxchwdAmnMTCBbjJ9OQ=
 ---
 # Установка ioBroker в Linux
 !> Эти инструкции НЕ применимы к готовым изображениям сайта! Однако установка вручную предпочтительнее, чем установка образа.

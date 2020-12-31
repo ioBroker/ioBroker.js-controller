@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: HFuYIkN85ul11Z0/x3Z/q3ntB8gyI9hTK61ZjAT0qag=
+hash: /M83RywTZxXt+UVKfss6tcKIoeODTwnUCt8VByMtlk8=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -18,7 +18,7 @@ hash: HFuYIkN85ul11Z0/x3Z/q3ntB8gyI9hTK61ZjAT0qag=
 
 **如果您愿意，请考虑捐赠：**
 
-[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
 ##用于控制加热系统的适配器。
 特征：
@@ -58,7 +58,7 @@ hash: HFuYIkN85ul11Z0/x3Z/q3ntB8gyI9hTK61ZjAT0qag=
 *配置文件类型=支持三种不同的配置文件类型（周一至周日或周一至周五和周六/周日或每天）
 *配置文件数量=如果您需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
 *周期数=定义您需要多少个不同温度的每日区域。设置的越多，将创建更多的数据点。最好使用较低的值（例如5）
-*““公众假期如星期天=如果您想在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
+*““公众假期如星期天=如果您要在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
 * HeatPeriod =加热周期的开始和结束日期。用于设置“ HeatingPeriodActive”
 
 ＃＃＃ 设备
@@ -95,7 +95,7 @@ hash: HFuYIkN85ul11Z0/x3Z/q3ntB8gyI9hTK61ZjAT0qag=
 |现在|我们在场，如果我们不在场，降低温度|通过Profiles.0.room.AbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.AbsentDecrease |
 |假期缺席|我们缺席，所以周末也减少通过Profiles.0.room.VacationAbsentDecrease降低当前温度曲线温度|将目标设置为Profiles.0.room.absolute.VacationAbsentDecrease |
 
-*在这两种情况下，仅使用一次降脂（在适配器的早期版本中，可以使用一次以上的脱脂剂）
+*在两种情况下，仅使用一次降脂（在适配器的早期版本中，可以使用一次以上的脱脂剂）
 *在绝对脱脂配方中，仅使用不等于0°C的目标值。如果您不需要降低某个房间的温度，则将降低值保持在0°C
 
 ###没有加热时间
@@ -141,28 +141,59 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 * heatingcontrol.0.PartyNow
 
 ##使用恒温器的更改
-许多用户要求一个选项来将恒温器的更改接管适配器。现在实现了三个选项：
+许多用户要求一个选项来将恒温器的更改接管适配器。现在实现了四个选项：
 
-|选项|说明| -------------------------- | --------------------- -------------------------------------------------- ---------------- |没有和我们直到0.3.x版本一样，将忽略恒温器的更改|作为替代|温控器的变化被视为优先；必须在heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime中提前设置替代时间。 |如果未设置替代时间，则不执行替代|作为新的配置文件设置|恒温器的变化被视为当前温度曲线期间的目标温度|每个房间可调节|可以为每个房间配置以上选项。 datapoint heatingcontrol.0.Rooms.RoomName.ChangesFromThermostatMode定义模式： | 1-否| | 2-作为替代| | 3-作为新的配置文件设置| |如果使用小于0或大于3的值，则会在日志中显示警告
-
-＃＃ 要求
-*需要节点版本8或更高版本
+|选项|说明| -------------------------- | --------------------- -------------------------------------------------- ---------------- |没有温控器的变化将被忽略|作为替代|温控器的变化被视为优先；必须在heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime中提前设置替代时间。 |如果未设置替代时间，则不执行替代|作为新的配置文件设置|恒温器的变化被视为当前温度曲线期间的目标温度|直到下一个轮廓点|从恒温器的变化视为目标温度，直到下一个轮廓点。这是手动模式，因此仅使用窗口传感器。所有其他| |增加/减少被忽略。每个房间中都有一个数据点，可以在到达下一个配置文件点之前禁用手动模式。
 
 ##问题和功能请求
-*如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
+*如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues）的GitHub问题部分内创建一个问题。 ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
 
-###什么是Sentry.io，什么报告给该公司的服务器？
-Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+＃＃ 已知的问题
+###带有Homematic IPFußbodenheizungsaktorHmIP-FAL230-C10的适配器– 10fach，230 V
+似乎HmIP-FAL230-C10无法与该适配器一起直接用作致动器。如果您将HmIP-FAL230-C10与Homematic温控器一起使用，它应该可以工作。
+另请参阅[论坛](https://forum.iobroker.net/topic/22579/test-adapter-heatingcontrol-v1-0-x/1553)
 
 当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
 
-### 1.1.0 (2020-10-xx)
+### 2.0.0 (2020-12-xx)
+* (René) internal refactoring
+
+**ATTENTION: breaking changes !!!!**
+* complete internal refactoring (new source files, internal data structures, code review, ...)
+* **Periods and Profils count from 1 instead 0**
+* ChangesFromThermostat adjustable per room is removed
+* recalculation of room temperature is performed only for the room where necessary (in previous versions all rooms were recalculated and new value transmitted)
+* SensorOpenDelay / SensorCloseDelay renamed
+* ResetButton to disable manual mode (and go back to auto)
+* status log per room
+* complete profile can be saved and loaded in admin
+* copy profile (complete or for a single room) and periods (for a certain profile and room) by button supported
+* datapoint selector for external datapoints added in admin
+* autodectection for thermostats, sensors and actuators completely overworked
+* room detection overworked
+* limits and step widh for profil temperatures adjustable in admin for Pittini vis
+* simple window status view (in html) for Pittini vis added
+* room state as simple html table for vis added
+* issues in github: 
+	* #161 Profil springt zur angegebenen Zeit nicht um
+	* #153 cron Probleme beim ändern eines Profils mittels Javascript
+	* #152 Fenstererkennung im manuellen Modus
+	* #148 Bei Änderung vom Thermostat bis zum nächsten Profilpunkt müssen Sensoren berücksichtigt werden
+
+
+### 1.1.2 (2020-11-11)
+* (René) bug fix: activate actors after temperatur change
+
+### 1.1.0 (2020-11-01)
+* (René) see issue #149: bug fix: calculate current period in case we are still in last period from yesterday
+
+### 1.1.0 (2020-10-20)
 * (René) see issue #132: timer before on and off for actuators 
 * (René) see issue #143: additional checks to avoid unneccessary override 
-* (René) see issue #140: use guests present also as counter like present (as a option); add adjustable limit for present and guest present
-
+* (René) see issue #140: use guests present and party now DP's also as counter like present (as a option); add adjustable counter limit for present, party now and guest present
+* (René) see issue #145: avoid reset of target temperatur by profile settings in option "until next profil point" when set by thermostat 
 
 ### 1.0.0 (2020-10-09)
 * (matida538) added better Handling of strings in HandleThermostat (convert to Number, instead of warn) (e.g. fhem connector for fht80)
@@ -206,7 +237,6 @@ Sentry.io是一项服务，供开发人员从其应用程序中获取有关错�
 * (René) see issue #104: bug fix to take over changes from vis
 * (René) see issue #102: bug fix change current time period to be shown on vis
 
-
 ### 0.4.0 (2020-05-02)
 * (René) see issue #70: use changes from thermostat
 * (René) see issue #91 bug fix: if the same sensor is configured for more than one room thermostat target temperature will be set for all configured rooms
@@ -248,7 +278,6 @@ Sentry.io是一项服务，供开发人员从其应用程序中获取有关错�
 ### 0.3.11 (2019-12-27)
 * (René) option: minimum temperature per room
 * (René) bugfix exception in CheckTemperatureChange [ReferenceError: PublicHolidyToday is not defined] 
-
 
 ### 0.3.10 (2019-12-26)
 * (René) see issue #54: stop override with OverrideTemperature =0

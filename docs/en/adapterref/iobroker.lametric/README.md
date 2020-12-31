@@ -39,78 +39,129 @@ You can read more about notifications here: https://lametric-documentation.readt
 
 Features are limited by the [official API features](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html).
 
-## Blockly
+## Blockly Examples
 
 You can use a simple string as message, which will be shown as a single frame
 
-![simple](docs/blockly1.png)
+![single frame](docs/blockly1.png)
 
 To show multiple frames, you can also provide an array as message
 
-![simple](docs/blockly2.png)
+![multiple frames](docs/blockly2.png)
+
+If you want to use chart frames, you have to specify an array of numbers as a frame
+
+![chart data frames](docs/blockly3.png)
+
+## My Data (DIY)
+
+LaMetric offers an app (on the integrated app market) to poll custom data. This app is called [My Data DIY](https://apps.lametric.com/apps/my_data__diy_/8942). This adapter creates a new state in the required format.
+You can use the Simple API Adapter to transfer the data to the LaMetric Time.
+
+```ioBroker LaMetric Adapter -> State with Frame information <- Simple API Adapter <- My Data DIY App <- LaMetric```
+
+### Configuration (with authentication)
+
+1. Install the [Simple API ioBroker Adapter](https://github.com/ioBroker/ioBroker.simple-api)
+2. Create a new ioBroker user called "lametric" with a custom password (e.g. HhX7dZl3Fe)
+3. Add the "lametric" user to the group "users"
+4. Install this *My Data DIY* App on your LaMetric Time (use Market)
+5. Open the *My Data (DIY)* app settings and configure the simple api url (see below)
+6. Go to the adapter configuration and configure the frames with your custom information (icon and text)
+
+```
+http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/?&user=lametric&pass=HhX7dZl3Fe
+```
+
+**Ensure to update IP, port, user and password in the URL if necessary!**
+
+### Configuration (without authentication)
+
+1. Install the [Simple API ioBroker Adapter](https://github.com/ioBroker/ioBroker.simple-api)
+2. Install this *My Data DIY* App on your LaMetric Time (use Market)
+3. Open the *My Data (DIY)* app settings and configure the simple api url (see below)
+4. Go to the adapter configuration and configure the frames with your custom information (icon and text)
+
+```
+http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
+```
+
+**Ensure to update IP and port in the URL if necessary!**
 
 ## Scripts
 
 To show the message on your la metric just send a message to this instance with script adapter:
 
-```
-sendTo('lametric.0', 'send', {
-    "priority": "[info|warning|critical]",
-    "icon_type": "[none|info|alert]",
-    "lifeTime": <milliseconds>,
-    "model": {
-    "frames": [
-         {
-            "icon":"<icon id or base64 encoded binary>",
-            "text":"<text>"
-         },
-         {
-           "icon": 298,
-           "text":"text"
-         },
-         {
-             "icon": 120,
-             "goalData":{
-                 "start": 0,
-                 "current": 50,
-                 "end": 100,
-                 "unit": "%"
-             }
-         },
-         {
-             "chartData": [ <comma separated integer values> ] // [ 1, 2, 3, 4, 5, 6, 7 ]
-         }
-         ],
-         "sound": {
-           "category":"[alarms|notifications]",
-             "id":"<sound_id>",
-             "repeat":<repeat count>
-         },
-         "cycles":<cycle count>
+```JavaScript
+sendTo(
+    "lametric.0",
+    "notification",
+    {
+        priority: "[info|warning|critical]",
+        iconType: "[none|info|alert]",
+        sound: "<string from sound list>",
+        lifeTime: <milliseconds>,
+        icon: "<icon>",
+        text: "<string|array>",
+        cycles: <integer>
     }
-});
+);
+```
+
+Example single frame:
+
+```JavaScript
+sendTo(
+    "lametric.0",
+    "notification",
+    {
+        priority: "info",
+        iconType: "none",
+        sound: "cat",
+        lifeTime: 5000,
+        icon: "i31820",
+        text: "test",
+        cycles: 1
+    }
+);
+```
+
+Example multiple frames:
+
+```JavaScript
+sendTo(
+    "lametric.0",
+    "notification",
+    {
+        priority: "info",
+        iconType: "none",
+        sound: "cat",
+        lifeTime: 5000,
+        icon: "i31820",
+        text: ["frame 1", "frame 2", "frame 3"],
+        cycles: 1
+    }
+);
 ```
 
 Example to show some information cyclic:
 
-```
+```JavaScript
 let i = 0;
 function show() {
     console.log('Show ' + i);
-    sendTo('lametric.0', 'send', {
-        "priority": "info",
-        "icon_type": "info",
-        "lifeTime": 10000,
-        "model": {
-        "frames": [
-                {
-                    "icon":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNWRHWFIAAAAySURBVBhXY4AAYdcKk1lngCSUDwHIfAQbzgLqgDCgIqRLwFkQCYQoBAD5EATl4wQMDADhuxQzaDgX0gAAAABJRU5ErkJggg==",
-                    "text":"Hi " + i
-                }
-            ],
-            "cycles": 0
+    sendTo(
+        "lametric.0",
+        "notification",
+        {
+            priority: "info",
+            iconType: "info",
+            lifeTime: 5000,
+            icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNWRHWFIAAAAySURBVBhXY4AAYdcKk1lngCSUDwHIfAQbzgLqgDCgIqRLwFkQCYQoBAD5EATl4wQMDADhuxQzaDgX0gAAAABJRU5ErkJggg==",
+            text: "Hi " + i,
+            cycles: 1
         }
-    });
+    );
     i++;
 }
 setInterval(show, 10000);
@@ -118,6 +169,14 @@ show();
 ```
 
 ## Changelog
+
+### 1.1.0
+
+* (klein0r) Added support for My Data (DIY)
+
+### 1.0.1
+
+* (klein0r) Added chart data support to notification
 
 ### 1.0.0
 

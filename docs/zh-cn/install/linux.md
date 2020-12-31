@@ -4,7 +4,7 @@ lastChanged: 05.12.2020
 translatedFrom: de
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/install/linux.md
-hash: EPa1u0/8e/G2TQ67obN7TZJRhxqsXPUeJHkj7zyIErE=
+hash: 0RSomjzprx5ZN1ThmqOllojkXxchwdAmnMTCBbjJ9OQ=
 ---
 ＃在Linux上安装ioBroker
 ！>这些说明不适用于网站的成品图片！但是，手动安装比映像更可取。
@@ -36,7 +36,7 @@ ioBroker的这些安装说明以带有Raspberry OS'Buster'的Raspberry Pi为例�
 或SSD，USB记忆棒等（取决于所用的硬件）
 
 ##必要/重要链接
-*下载图片：https：//www.raspberrypi.org/software/operating-systems/
+*下载图片：https://www.raspberrypi.org/software/operating-systems/
 * Win32DiskImager：https://sourceforge.net/projects/win32diskimager/ **或**
 * Balena Etcher：https://www.balena.io/etcher/
 *油灰：http：//www.putty.org/

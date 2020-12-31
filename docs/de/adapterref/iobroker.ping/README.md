@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ping/README.md
 title: PING-Adapter
-hash: CN7YacMSC0ttlxH0ZpgkJ6AEGQGK/oBDM2KGFFNGz8g=
+hash: GdWVwWTl7oGrOnfAZSsq98vq6ttnGHj4BDlk0yANw4U=
 ---
 ![Logo](../../../en/adapterref/iobroker.ping/admin/ping.png)
 
@@ -19,7 +19,26 @@ Pingt die angegebenen IP-Adressen in einem definierten Intervall und überwacht 
 
 ** Dieser Adapter verwendet Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch an die Entwickler zu melden. ** Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry Reporting wird ab js-controller 3.0 verwendet.
 
+## Bekannte Probleme
+* Wenn es nicht möglich ist, Ihren Linux-Client zu pingen, überprüfen Sie, ob "iputils-ping" korrekt auf dem Client installiert ist
+
 ## Changelog
+
+### 1.4.12 (2020-09-18)
+* (Apollon77) Prevent crash case when no devices are defined (Sentry IOBROKER-PING-R)
+
+### 1.4.11 (2020-08-26)
+* (Apollon77) update js-controller dependency to correct version (1.5.8)
+
+### 1.4.8 (2020-06-29)
+* (Apollon77) Prevent adapter crashes with invalid state/channel names, see error log! (Sentry IOBROKER-PING-H, IOBROKER-PING-P, IOBROKER-PING-B)
+
+### 1.4.7 (2020-05-02)
+* (Apollon77) finally try to catch spawn errors (Sentry IOBROKER-PING-2)
+
+### 1.4.6 (2020-04-29)
+* (Apollon77) Make sure adapter do not crash if ping command can not be executed (Sentry)
+* (Apollon77) Catch error when ping.probe could not be started (Sentry IOBROKER-PING-2)
 
 ### 1.4.5 (2020-04-23)
 * (Apollon77) Fixed potential crash case (Sentry)

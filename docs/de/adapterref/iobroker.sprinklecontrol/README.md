@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sprinklecontrol/README.md
 title: ioBroker.sprinklecontrol
-hash: ArGsY6VmAnDUvYUoeX8320WMkUOG18KS0LiZJVuVmMk=
+hash: xuVb7eUwMnid8KrZjz+5VFj4rUzUMRx1t3sCUsEak1I=
 ---
 ![Logo](../../../en/adapterref/iobroker.sprinklecontrol/admin/sprinklecontrol.png)
 
@@ -19,17 +19,21 @@ hash: ArGsY6VmAnDUvYUoeX8320WMkUOG18KS0LiZJVuVmMk=
 ## Sprinklecontrol Adapter für ioBroker
 Dieser Adapter steuert einzelne Bewässerungskreise im Garten. Je nach Wetter und Bodenbedingungen beginnen sie zu einer bestimmten Zeit oder bei Sonnenaufgang zu arbeiten, wie in der Konfiguration angegeben.
 
-Wetterabhängige politische Kontrolle der Gartenbewässerung
+Wetterstehendeige Regelungskontrolle der Gartenbewässerung
 
 [Deutsche Beschreibung hier](docs/de/sprinklecontrol.md)
 
-Wetterabhängige automatische Steuerung der Gartenbewässerung
-
-[Englische Beschreibung hier](docs/en/sprinklecontrol.md)
+[Deutsche Beschreibung auf GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/de/sprinklecontrol.md)
 
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.1.2 (30.12.2020)
+* (Dirk-Peter-md) Beschreibung von SprinkleControl überarbeitet
+
+### 0.1.1 (08.11.2020)
+* (Dirk-Peter-md) Integration von Nachrichten per Telegramm, E-Mail, Pushover und WhatsApp
 
 ### 0.0.12 (10.10.2020)
 * (Dirk-Peter-md) Bewässerung über eine 2. Pumpe (Zisterne mit Vorrangschaltung) in abhängigkeit vom Füllstand hinzugefügt.
@@ -86,7 +90,7 @@ copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE

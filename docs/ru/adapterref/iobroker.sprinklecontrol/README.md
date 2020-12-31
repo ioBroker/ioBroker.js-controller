@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sprinklecontrol/README.md
 title: ioBroker.sprinklecontrol
-hash: ArGsY6VmAnDUvYUoeX8320WMkUOG18KS0LiZJVuVmMk=
+hash: xuVb7eUwMnid8KrZjz+5VFj4rUzUMRx1t3sCUsEak1I=
 ---
 ![Логотип](../../../en/adapterref/iobroker.sprinklecontrol/admin/sprinklecontrol.png)
 
@@ -13,23 +13,27 @@ hash: ArGsY6VmAnDUvYUoeX8320WMkUOG18KS0LiZJVuVmMk=
 ![Статус зависимости](https://img.shields.io/david/Dirk-Peter-md/iobroker.sprinklecontrol.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Dirk-Peter-md/ioBroker.sprinklecontrol/badge.svg)
 ![Трэвис-Си](http://img.shields.io/travis/Dirk-Peter-md/ioBroker.sprinklecontrol/master.svg)
-![NPM](https://nodei.co/npm/iobroker.sprinklecontrol.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.sprinklecontrol.png?downloads=true)
 
 # IoBroker.sprinklecontrol
 ## Адаптер sprinklecontrol для ioBroker
 Этот адаптер управляет отдельными контурами полива в саду. В зависимости от погодных и почвенных условий они начинают работать в определенное время или с восходом солнца, как указано в конфигурации.
 
-Wetterabhängige automatische steuerung der Gartenbewässerung
+Wetterabhängige automatische Steuerung der Gartenbewässerung
 
 [Deutsche Beschreibung hier](docs/de/sprinklecontrol.md)
 
-Погодозависимый автоматический контроль полива сада
-
-[Английский Описание здесь](docs/en/sprinklecontrol.md)
+[Deutsche Beschreibung на GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/de/sprinklecontrol.md)
 
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.1.2 (30.12.2020)
+* (Dirk-Peter-md) Beschreibung von SprinkleControl überarbeitet
+
+### 0.1.1 (08.11.2020)
+* (Dirk-Peter-md) Integration von Nachrichten per Telegramm, E-Mail, Pushover und WhatsApp
 
 ### 0.0.12 (10.10.2020)
 * (Dirk-Peter-md) Bewässerung über eine 2. Pumpe (Zisterne mit Vorrangschaltung) in abhängigkeit vom Füllstand hinzugefügt.
@@ -86,7 +90,7 @@ copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE

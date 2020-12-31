@@ -807,6 +807,9 @@ Congratulations! Now you can control the system ioBroker and receive data via a 
 
 ## Changelog
 
+### 2.3.1 (2020-12-30)
+* (FunCyRanger) Add option to ignore SSL validation errors
+
 ### 2.1.14 (2020-11-30)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-MQTT-11) 
 

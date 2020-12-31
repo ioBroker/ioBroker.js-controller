@@ -3,23 +3,23 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.followthesun/README.md
 title: ioBroker.followthesun
-hash: J/g7F0hU1yfdbMFD+ncBg6RxzgsDKkfV0mQEdpoqZwg=
+hash: eAi1SpyORx03FIQD0nRM7NjJbd4NoSCu23k+SEwfH84=
 ---
 ![Logo](../../../en/adapterref/iobroker.followthesun/admin/followthesun.png)
 
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.followthesun.svg)
+![Anzahl der Installationen (stabil)](http://iobroker.live/badges/followthesun-stable.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.followthesun.svg)
 ![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/followthesun-installed.svg)
-![Anzahl der Installationen (stabil)](http://iobroker.live/badges/followthesun-stable.svg)
 ![Abhängigkeitsstatus](https://img.shields.io/david/HGlab01/iobroker.followthesun.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/HGlab01/ioBroker.followthesun/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.followthesun.png?downloads=true)
 
 # IoBroker.followthesun
-![Testen und freigeben](https://github.com/HGlab01/ioBroker.followthesun/workflows/Test%20and%20Release/badge.svg)
+[![FOSSA-Status] (https://app.fossa.com/api/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.followthesun.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.followthesun?ref=badge_shield)![Testen und freigeben](https://github.com/HGlab01/ioBroker.followthesun/workflows/Test%20and%20Release/badge.svg)
 
 ## Followthesun Adapter für ioBroker
-Dieser Adapter berechnet die aktuelle Höhe und den Azimut der Sonne basierend auf der Geoposition. Zusätzlich werden die Kompassrichtung und die Bewegung (Sonnenaufgang oder Sonnenuntergang) der Sonne gespeichert.
+Dieser Adapter berechnet die aktuelle Höhe und den Azimut der Sonne basierend auf der Geoposition. Zusätzlich wird die Kompassrichtung und die Bewegung (Sonnenaufgang oder Sonnenuntergang) der Sonne gespeichert.
 Es wird die in der Konfiguration definierte Geoposition verwendet. Das Berechnungsintervall kann in Instanzeinstellungen definiert werden.
 Solar-Mittag-Werte für einige Tage wie heute, morgen oder den Beginn von Frühling / Sommer / Herbst / Winter werden ebenfalls gespeichert.
 
@@ -28,8 +28,18 @@ Solar-Mittag-Werte für einige Tage wie heute, morgen oder den Beginn von Frühl
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
-### __WORK IN PROGRESS__
-* (HGlab01) 
+### 0.2.6 (2020-12-30)
+* (HGlab01) implement license check provided by app.fossa.com
+
+### 0.2.5 (2020-12-16)
+* (HGlab01) add unit to solarnoon-values (issue #30)
+
+### 0.2.4 (2020-12-13)
+* (HGlab01) Prepare for stable repository
+
+### 0.2.3 (2020-12-13)
+* (HGlab01) Update dependencies
+* (HGlab01) Change type to "geoposition" 
 
 ### 0.2.2 (2020-12-07)
 * (HGlab01) Decrease log-level
@@ -68,3 +78,6 @@ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
+
+
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.followthesun.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2FHGlab01%2FioBroker.followthesun?ref=badge_large)

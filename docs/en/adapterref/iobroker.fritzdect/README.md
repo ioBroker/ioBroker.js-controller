@@ -35,7 +35,12 @@ The widget requires that also vis-metro and vis-jqui-mfd are installed
 
 ## Common Issues / Frequently Asked Questions
 
-  1. no login to the FritzBox
+  1. Fritzbox returned '00000000' no login possible.
+
+        The fritzbox allows only a limited number of logins in a timeframe. So very fast polling (update) attempts may lead to blocking of logins.
+
+
+  2. no login to the FritzBox
 
       Log messages if the form of:
 
@@ -46,141 +51,105 @@ The widget requires that also vis-metro and vis-jqui-mfd are installed
 ## ioBroker objects
 
 objects in *italic* are not part of all fritz.box configurations
+objects in **bold** are datapoints from the adapter
 
-### all devices
-|Object|Value|settable|Description|
-|--------|-------|:-:|--------|
-|devicetype.id|text|-|internal id of device|
-|devicetype.name|text|-|name of device|
-|devicetype.mode|text|-|mode, manuell or auto|
-|devicetype.present|boolean|-|true/false -> connected/not available|
-|devicetype.txbusy|boolean|-|true/false -> cmd sending active/not active|
-|devicetype.productname|text|-|product name|
-|devicetype.manufacturer|text|-|product manufacturer|
-|devicetype.fwversion|text|-|product FW version|
+The datapoints are created on the basis of the returned values of the Fritz AHA API. All groups or devices start wirth "DECT_".
+
+### devices or groups
+|Object|Value|settable|Description|DECT2x0|DECT3x0|DECT400|DECT440|DECT500|Blinds|Contact|
+|--------|-------|:-:|--------|-----|-----|-----|-----|-----|-----|-----|
+|id|text|-|internal id of device|DECT2x0|DECT3x0|DECT400|DECT440|DECT500|Blinds|Contact|
+|name|text|-|name of device|DECT2x0|DECT3x0|DECT400|DECT440|DECT500|Blinds|Contact|
+|productname|text|-|product name|DECT2x0|DECT3x0|DECT400|DECT440|DECT500|Blinds|Contact|
+|manufacturer|text|-|product manufacturer|DECT2x0|DECT3x0|DECT400|DECT440|DECT500|Blinds|Contact|
+|fwversion|text|-|product FW version|DECT2x0|DECT3x0|DECT400|DECT440|DECT500|Blinds|Contact|
+|mode|text|-|mode, manuell or auto|DECT2x0|DECT3x0| | | | | |
+|present|boolean|-|true/false -> connected/not available|DECT2x0|DECT3x0|DECT400|DECT440|DECT500|Blinds|Contact|
+|*txbusy*|boolean|-|true/false -> cmd sending active/not active|DECT2x0|DECT3x0|DECT400|DECT440|DECT500|Blinds|Contact|
+|*batterylow*|boolean|-|battery status| |DECT3x0|DECT400|DECT440| | |Contact|
+|*battery*|number|-|actual capacity in %| |DECT3x0|DECT400|DECT440| | |Contact|
+|state|boolean|?|true/false |DECT2x0| | | |DECT500|Blinds| |
+|power|number|-|actual power in W|DECT2x0| | | | | | |
+|energy|number|-|actual energy consumption in Wh|DECT2x0| | | | | | |
+|*voltage*|number|-|actual voltage in V|DECT2x0| | | | | | |
+|lock|boolean|-|UI/API lock|DECT2x0|DECT3x0| | | | | |
+|devicelock|boolean|-|Button lock|DECT2x0|DECT3x0| | | | | |
+|*celsius*|number|-|actual temperature in °C|DECT2x0|DECT3x0| |DECT440| | | |
+|*offset*|number|-|offset temperature in °C|DECT2x0|DECT3x0| |DECT440| | | |
+|*rel_humidity*|number|-|relative humidity %| | | |DECT440| | | |
+|tist|number|-|actual temperature in °C| |DECT3x0| | | | | |
+|tsoll|number|x|target temperature in °C| |DECT3x0| | | | | |
+|komfort|number|-|comfort temperature in °C| |DECT3x0| | | | | |
+|absenk|number|-|night temperature in °C| |DECT3x0| | | | | |
+|**hkrmode**|array|x| 0=AUTO/1=OFF/2=ON state of thermostat| |DECT3x0| | | | | |
+|**lasttarget**|number|-| last target temperature in °C| |DECT3x0| | | | | |
+|errorcode|number|-|errorcode| |DECT3x0| | | | | |
+|**operationList**|number-|list of possible modes| |DECT3x0| | | | | |
+|**operationMode**|number|-|actual mode| |DECT3x0| | | | | |
+|*windowopenendtime*|time|-|time when open window status ends| |DECT3x0| | | | | |
+|*windowopenactiv*|boolean|x|status and cmd of window open detection| |DECT3x0| | | | | |
+|**windowopenactivtime**|number|x|time (minutes) when activation of window open | |DECT3x0| | | | | |
+|*boostactive*|boolean|x|boost mode active status and cmd| |DECT3x0| | | | | |
+|*boostactiveendtime*|time|-|time when boost status ends| |DECT3x0| | | | | |
+|**boostactivtime**|number|x|time (minutes) when activation of boost| |DECT3x0| | | | | |
+|*summeractive*|boolean|-|summer program status| |DECT3x0| | | | | |
+|*holidayactive*|boolean|-|holiday program status| |DECT3x0| | | | | |
+|*tchange*|number|-|temp with next change in °C| |DECT3x0| | | | | |
+|*endperiod*|time|-|time when next change is active| |DECT3x0| | | | | |
+|supported_modes|number|-|supported colormodes| | | | |DECT500| | |
+|current_mode|number|?|actual colormode| | | | |DECT500| | |
+|level|number|x|level 0-255 | | | | |DECT500|Blinds| |
+|levelpercentage|number|x|level 0-100 % | | | | |DECT500|Blinds| |
+|hue|number|x|color 0-359 | | | | |DECT500| | |
+|saturation|number|x|saturation 0-100| | | | |DECT500| | |
+|temperature|number|x|color temperature (white mode)| | | | |DECT500| | |
+|lastpressedtimestamp|time|-|timestamp| | |DECT400|DECT440| | |Contact|
+|**blindsopen**|booelan|x|target open| | | | | |Blinds| |
+|**blindsclose**|boolean|x|target close| | | | | |Blinds| |
+|**blindsstop**|boolean|x|target stop| | | | | |Blinds| |
+|lastalertchgtimestamp|time|-|timestamp | | | | | |Blinds| |
+
 
 ### groups
 |Object|Value|settable|Description|
 |--------|-------|:-:|--------|
-|group.masterdeviceid|text|-|internal id of group|
-|group.members|text|-|member id's of group|
-|group.masterdeviceid|boolean|-|cmd sending active |
+|masterdeviceid|text|-|internal id of group|
+|members|text|-|member id's of group|
+|masterdeviceid|boolean|-|cmd sending active |
+|synchronized|boolean|-|devices of group are synchron |
 
 ### templates
 |Object|Value|settable|Description|
 |--------|-------|:-:|--------|
-|template.id|text|-|internal id of template|
-|template.name|text|-|name of template|
-|template.toggle|boolean|x|toggle switch for template activation|
-|template.lasttemplate|text|-|last confirmed template|
+|toggle|boolean|x|toggle switch for template activation|
+|lasttemplate|text|-|last confirmed template|
 
-### switch e.g DECT200/DECT210
-|Object|Value|settable|Description|
-|--------|-------|:-:|--------|
-|DECT200.state|boolean|x|true/false -> ON/OFF|
-|DECT200.power|value|-|actual power in W|
-|DECT200.energy|value|-|actual energy consumption in Wh|
-|DECT200.lock|boolean|-|UI/API lock|
-|DECT200.devicelock|boolean|-|Button lock|
-|*DECT200.temp*|value|-|actual temperature in °C|
-|*DECT200.temp_offset*|value|-|offset temperature in °C|
-|*DECT200.voltage*|value|-|actual voltage in V|
-|*DECT200.txbusy*|boolean|-|cmd sending active |
-
-### thermostat eg. COMET/DECT300/ Heater group
-|Object|Value|settable|Description|
-|--------|-------|:-:|--------|
-|COMET.temp|value|-|actual temperature in °C w/o offset|
-|COMET.temp_offset|value|-|offset temperature in °C |
-|COMET.actualtemp|value|x|actual temperature in °C|
-|COMET.targettemp|value|x|target temperature in °C|
-|COMET.comfytemp|value|-|comfort temperature in °C|
-|COMET.nighttemp|value|-|night temperature in °C|
-|COMET.mode|array|x| 0=AUTO/1=OFF/2=ON state of thermostat|
-|COMET.lasttarget|value|-| last target temperature in °C|
-|COMET.batterylow|boolean|-|battery status|
-|COMET.errorcode|number|-|errorcode|
-|COMET.lock|boolean|-|UI/API lock|
-|COMET.devicelock|boolean|-|Button lock|
-|COMET.operationList|value|-|list of possible modes|
-|COMET.operationMode|value|-|actual mode|
-|*COMET.windowopenendtime*|time|-|time when open window status ends|
-|*COMET.windowopenactiv*|boolean|x|status and cmd of window open detection|
-|*COMET.windowopenactivtime*|value|x|time (minutes) when activation of window open |
-|*COMET.boostactive|boolean*|x|boost mode active status and cmd|
-|*COMET.boostactiveendtime*|time|-|time when boost status ends|
-|*COMET.boostactivtime*|value|x|time (minutes) when activation of boost|
-|*COMET.battery*|value|-|actual capacity in %|
-|*COMET.summeractive*|boolean|-|summer program status|
-|*COMET.holidayactive*|boolean|-|holiday program status|
-|*COMET.txbusy*|boolean|-|cmd sending active |
-
-### lamp e.g DECT500
-|Object|Value|settable|Description|
-|--------|-------|:-:|--------|
-|DECT500.state|boolean|x|true/false -> ON/OFF|
-|DECT500.txbusy|boolean|-|cmd sending active|
-|DECT500.supported_modes|value|-|supported colormodes|
-|DECT500.current_mode|value|?|actual colormode|
-|DECT500.level|value|x|brightness 0-255 |
-|DECT500.levelpercentage|value|x|brightness 0-100% |
-|DECT500.hue|value|x|color 0-359 |
-|DECT500.saturation|value|x|saturation|
-|DECT500.temperature|value|x|color temperature (white mode)|
-
-### lamp e.g DECT400
-|Object|Value|settable|Description|
-|--------|-------|:-:|--------|
-|DECT440.txbusy|boolean|-|cmd sending active|
-|DECT440.battery|value|-|battery level|
-|DECT440.batterylow|boolean|-|battery status|
-|DECT440.temperature|value|-|temperature |
-|*DECT440.humidity*|value|-|relative humidity %|
-|DECT440.button|-|-|see DECT400 button (4x) |
-
-### repeater e.g. DECT100
-|Object|Value|settable|Description|
-|--------|-------|:-:|--------|
-|DECT100.temp|value|-|actual temperature in °C|
-
-### contact/alert (HAN-FUN)
-|Object|Value|settable|Description|
-|--------|-------|:-:|--------|
-|Contact.state|boolean|-|true/false -> ON/OFF|
-
-### button (HAN-FUN, DECT400, DECT440)
-|Object|Value|settable|Description|
-|--------|-------|:-:|--------|
-|Button.lastclick|number|-|timestamp|
-
-### blinds (HAN-FUN)
-|Object|Value|settable|Description|
-|--------|-------|:-:|--------|
-|Blinds.blindsopen|booelan|x|target open|
-|Blinds.blindsclose|boolean|x|target close|
-|Blinds.blindsstop|boolean|x|target stop|
-|Blinds.level|value|x|opening 0-255 |
-|Blinds.levelpercentage|value|x|openeing 0-100% |
-|Blinds.state|boolean|-|alert status |
-|Blinds.lastalertchgtimestamp|number|-|timestamp |
 
 ## API limitations
 * too many login attempts to FB are refused by providing '00000000' as response
 * Boost and WindowOpen can only be set for the next 24h. time=0 is cancelling the command
 * updates to the thermostat are within a 15min range, depending on the previous communication of thermostat with fritzbox the next cycle is sooner or later, but definitely not imediately after an ioBroker intervention
+* only a few color temperatures are accepted (mapped already be the API to valid ones)
+* only the predefined colors are valid combinations (getcolordefaults)
 
 
-## Known Issues:
-Not all FW-versions of fritz.box support all objects.
+## Known Adapter Limitations:
+* Not all FW-versions of fritz.box support all objects.
 
 ## TODO:
-* universal object names and structures -> breaking change
-* groups inside a device e.g. DECT440 -> breaking change
-* groups for DECT500
-* usage of predefined colors
+* map of data input from user to valid predefined colors (nearest match)
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
 
 ## Changelog
+
+### 2.0.0 Breaking Changes in datapoints and structures (wip)
+* refactoring of the code
+* new fritzapi to either used md5 or pbkf2 decryption, needed for FW >7.24
+* **usage of AHA API returned values as datapoint identifier**
+* **grouping of buttons under the DECT440**
+* DECT500 groups
+* accepting blocktime from fritzbox
+
 ### 1.1.4 (npm)
 * blinds control
 * update testing
@@ -349,4 +318,4 @@ Not all FW-versions of fritz.box support all objects.
 
 The MIT License (MIT)
 
-Copyright (c) 2018 - 2020 foxthefox <foxthefox@wysiwis.net>
+Copyright (c) 2018 - 2021 foxthefox <foxthefox@wysiwis.net>

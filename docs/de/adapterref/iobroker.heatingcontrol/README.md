@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: HFuYIkN85ul11Z0/x3Z/q3ntB8gyI9hTK61ZjAT0qag=
+hash: /M83RywTZxXt+UVKfss6tcKIoeODTwnUCt8VByMtlk8=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -38,7 +38,7 @@ Eigenschaften:
 * Manuelle Temperaturüberschreitung für eine bestimmte Zeit
 * vordefinierte Heizperiode
 * Änderungen vom Thermostat übernehmen (optional)
-* Die Visualisierung von [Pittini] (https://github.com/Pittini/iobroker-heatingcontrol-vis) wird unterstützt. Dankeschön!
+* Die Visualisierung von [Pittini] (https://github.com/Pittini/iobroker-heatingcontrol-vis) wird unterstützt. Vielen Dank!
 
 [FAQ](doc/FAQ.md)
 
@@ -141,28 +141,59 @@ Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
 * Heizungssteuerung.0.PartyNow
 
 ## Änderungen vom Thermostat verwenden
-Viele Benutzer fragten nach einer Option, um Änderungen vom Thermostat in den Adapter zu übernehmen. Jetzt sind drei Optionen implementiert:
+Viele Benutzer fragten nach einer Option, um Änderungen vom Thermostat in den Adapter zu übernehmen. Nun sind vier Optionen implementiert:
 
-| Option | Beschreibung | -------------------------- | --------------------- -------------------------------------------------- ---------------- | nein | Wie bis zur Version 0.3.x werden Änderungen vom Thermostat ignoriert als Überschreibung | Änderungen vom Thermostat werden als Außerkraftsetzung angesehen; Die Übersteuerungszeit muss im Voraus in der Heizungssteuerung.0.Rooms.RoomName.TemperaturOverrideTime | eingestellt werden | Wenn die Überschreibzeit nicht eingestellt ist, wird die Überschreibung nicht ausgeführt als neue Profileinstellung | Änderungen vom Thermostat werden als Zieltemperatur für die aktuelle Profilperiode verwendet verstellbar pro Raum | Die oben genannten Optionen können pro Raum konfiguriert werden. Datenpunkt Heizungssteuerung.0.Rooms.RoomName.ChangesFromThermostatMode definiert den Modus: | | 1 - nein | | 2 - als Überschreibung | | 3 - als neue Profileinstellung | | Im Protokoll wird eine Warnung angezeigt, wenn Werte verwendet werden, die niedriger als 0 oder höher als 3 sind
-
-## Bedarf
-* Knotenversion 8 oder höher ist erforderlich
+| Option | Beschreibung | -------------------------- | --------------------- -------------------------------------------------- ---------------- | nein | Änderungen vom Thermostat werden ignoriert als Überschreibung | Änderungen vom Thermostat werden als Außerkraftsetzung angesehen; Die Übersteuerungszeit muss im Voraus in der Heizungssteuerung.0.Rooms.RoomName.TemperaturOverrideTime | eingestellt werden | Wenn die Überschreibzeit nicht eingestellt ist, wird die Überschreibung nicht ausgeführt als neue Profileinstellung | Änderungen vom Thermostat werden als Zieltemperatur für die aktuelle Profilperiode verwendet bis zum nächsten Profilpunkt | Änderungen vom Thermostat werden als Zieltemperatur bis zum nächsten Profilpunkt verwendet. Dies ist ein manueller Modus, daher werden nur Fenstersensoren verwendet. Alle anderen | | Erhöhungen / Verringerungen werden ignoriert. In jedem Raum befindet sich ein Datenpunkt, um den manuellen Modus zu deaktivieren, bevor der nächste Profilpunkt erreicht wird.
 
 ## Probleme und Funktionsanforderungen
 * Wenn Sie auf Fehler stoßen oder Funktionsanforderungen für diesen Adapter haben, erstellen Sie bitte ein Problem im GitHub-Problemabschnitt des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
 
-### Was ist Sentry.io und was wird den Servern dieses Unternehmens gemeldet?
-Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ihren Anwendungen zu erhalten. Und genau das ist in diesem Adapter implementiert.
+## Bekannte Probleme
+### Adapter mit homematischer IP Fußbodenheizungsaktor HmIP-FAL230-C10 - 10fach, 230 V.
+Es scheint, dass HmIP-FAL230-C10 nicht direkt als Aktuator in Kombination mit diesem Adapter verwendet werden kann. Wenn Sie HmIP-FAL230-C10 zusammen mit homematischen Thermostaten verwenden, sollte dies funktionieren.
+siehe auch [Forum](https://forum.iobroker.net/topic/22579/test-adapter-heatingcontrol-v1-0-x/1553)
 
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
 
-### 1.1.0 (2020-10-xx)
+### 2.0.0 (2020-12-xx)
+* (René) internal refactoring
+
+**ATTENTION: breaking changes !!!!**
+* complete internal refactoring (new source files, internal data structures, code review, ...)
+* **Periods and Profils count from 1 instead 0**
+* ChangesFromThermostat adjustable per room is removed
+* recalculation of room temperature is performed only for the room where necessary (in previous versions all rooms were recalculated and new value transmitted)
+* SensorOpenDelay / SensorCloseDelay renamed
+* ResetButton to disable manual mode (and go back to auto)
+* status log per room
+* complete profile can be saved and loaded in admin
+* copy profile (complete or for a single room) and periods (for a certain profile and room) by button supported
+* datapoint selector for external datapoints added in admin
+* autodectection for thermostats, sensors and actuators completely overworked
+* room detection overworked
+* limits and step widh for profil temperatures adjustable in admin for Pittini vis
+* simple window status view (in html) for Pittini vis added
+* room state as simple html table for vis added
+* issues in github: 
+	* #161 Profil springt zur angegebenen Zeit nicht um
+	* #153 cron Probleme beim ändern eines Profils mittels Javascript
+	* #152 Fenstererkennung im manuellen Modus
+	* #148 Bei Änderung vom Thermostat bis zum nächsten Profilpunkt müssen Sensoren berücksichtigt werden
+
+
+### 1.1.2 (2020-11-11)
+* (René) bug fix: activate actors after temperatur change
+
+### 1.1.0 (2020-11-01)
+* (René) see issue #149: bug fix: calculate current period in case we are still in last period from yesterday
+
+### 1.1.0 (2020-10-20)
 * (René) see issue #132: timer before on and off for actuators 
 * (René) see issue #143: additional checks to avoid unneccessary override 
-* (René) see issue #140: use guests present also as counter like present (as a option); add adjustable limit for present and guest present
-
+* (René) see issue #140: use guests present and party now DP's also as counter like present (as a option); add adjustable counter limit for present, party now and guest present
+* (René) see issue #145: avoid reset of target temperatur by profile settings in option "until next profil point" when set by thermostat 
 
 ### 1.0.0 (2020-10-09)
 * (matida538) added better Handling of strings in HandleThermostat (convert to Number, instead of warn) (e.g. fhem connector for fht80)
@@ -206,7 +237,6 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 * (René) see issue #104: bug fix to take over changes from vis
 * (René) see issue #102: bug fix change current time period to be shown on vis
 
-
 ### 0.4.0 (2020-05-02)
 * (René) see issue #70: use changes from thermostat
 * (René) see issue #91 bug fix: if the same sensor is configured for more than one room thermostat target temperature will be set for all configured rooms
@@ -248,7 +278,6 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 ### 0.3.11 (2019-12-27)
 * (René) option: minimum temperature per room
 * (René) bugfix exception in CheckTemperatureChange [ReferenceError: PublicHolidyToday is not defined] 
-
 
 ### 0.3.10 (2019-12-26)
 * (René) see issue #54: stop override with OverrideTemperature =0

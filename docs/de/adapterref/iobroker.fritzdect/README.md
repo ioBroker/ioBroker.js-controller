@@ -67,6 +67,15 @@ Vergleichbar für den Soll-/Istverlaufs ist demnach atualtemp und targettemp.
 Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig Information ist der debug modus über die Experteneinstellung der Instanz vorzuwählen.
 
 ## Changelog
+
+### 2.0.0 Breaking Changes in datapoints and structures (wip)
+* refactoring of the code
+* new fritzapi to either used md5 or pbkf2 decryption, needed for FW >7.24
+* **usage of AHA API returned values as datapoint identifier**
+* **grouping of buttons under the DECT440**
+* DECT500 groups
+* accepting blocktime from fritzbox
+
 ### 1.1.4 (npm)
 * blinds control
 * update testing
@@ -235,4 +244,4 @@ Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig In
 
 The MIT License (MIT)
 
-Copyright (c) 2018 - 2020 foxthefox <foxthefox@wysiwis.net>
+Copyright (c) 2018 - 2021 foxthefox <foxthefox@wysiwis.net>

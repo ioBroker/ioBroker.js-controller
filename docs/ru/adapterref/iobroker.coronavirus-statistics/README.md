@@ -3,47 +3,48 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker.coronavirus-статистика
-hash: aNCB9lKKNnKhn3FeSBkx1l77wYLxDUsCYRm3gAkx4FE=
+hash: DOn+bUtBayCWnxfVAT6i1YSC1cwhLO5J8ECRAt6lKqQ=
 ---
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
-![Количество установок (последняя)](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
+![Количество установок (последнее)](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/coronavirus-statistics-stable.svg)
-![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.coronavirus-statistics.svg)
 ![Известные уязвимости](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.coronavirus-statistics/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
-![Трэвис-CI](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.coronavirus-statistics/master.svg)
+![НПМ](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
+![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/ioBroker.coronavirus-statistics.svg)
 
 <img src="./admin/coronavirus-statistics.png" width="50" height="50">
 
 # IoBroker.coronavirus-statistics
-## Адаптер живой статистики Coronavirus для ioBroker
-Адаптер для отображения информации о вирусе глобальной короны и текущих отчетов
+![Тестирование и выпуск](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
 
-Конфигурация не требуется, после установки:
+## Адаптер живой статистики по коронавирусу для ioBroker
+Адаптер для отображения информации о Global Corona Virus и текущих отчетов
 
-- Получать глобальную информацию по всему миру и записывать ее в «global_totals»
-- Создайте папку для каждой страны со всей соответствующей информацией, касающейся COVID-19
-- Обновлять информацию каждые 15 минут
+Конфигурация не требуется, после установки она:
+
+- Получать глобальную информацию по всему миру и записывать ее в global_totals
+- Создайте папку для каждой страны со всей необходимой информацией о COVID-19.
+- Обновляйте информацию каждые 15 минут
 
 Доступна следующая информация:
 
-| Datapoint | Детали |
+| Datapoint | Подробности |
 |--|--|
-| активный | Количество текущих инфицированных людей |
+| активный | Количество инфицированных людей |
 | случаи | Количество полностью известных случаев |
 | casePerOneMillion | Количество полностью известных случаев на миллион жителей |
-| критический | Сумма критической ситуации (Госпитализирована) |
-| смерти | Количество зарегистрированных зарегистрированных смертей |
-| deathsPerOneMillion | Количество зарегистрированных зарегистрированных смертей на миллион жителей |
-| флаг | Флаг страны, ссылка на местоположение GitHub |
-| выздоровел | Количество полностью известных восстановленных случаев |
-| TodayCases | Новые случаи на сегодня |
-| сегодня смерти | Количество полностью известных людей умерло сегодня |
-| тест | Общее количество тестов covid-19, принятых во всем мире |
-| тесты на миллион округов | Общее количество тестов covid-19, принятых во всем мире на миллион |
+| критический | Количество критических ситуаций (госпитализировано) |
+| смерти | Количество зарегистрированных смертей |
+| deathsPerOneMillion | Количество зарегистрированных смертей на миллион жителей |
+| флаг | Флаг страны, ссылка на расположение на github |
+| восстановлен | Количество полностью известных выздоровевших случаев |
+| сегодняКейсы | Новые дела к сегодняшнему дню |
+| todayDeaths | Сегодня погибло количество полностью известных людей |
+| тест | Общее количество тестов на covid-19, проведенных во всем мире |
+| тестов на миллион уездов | Общее количество тестов на covid-19, проведенных в мире на миллион |
 
-Помните, что этот адаптер использует как можно больше актуальной информации, но в зависимости от отчета страны может быть задержка на несколько часов.
+Имейте в виду, что этот адаптер использует как можно больше актуальной информации, но возможна задержка на несколько часов в зависимости от отчета страны.
 Федеральные земли Германии: https://npgeo-corona-npgeo-de.hub.arcgis.com/ s Общий источник: https://coronavirus-19-api.herokuapp.com
 
 ## Расширенные настройки
@@ -51,34 +52,34 @@ hash: aNCB9lKKNnKhn3FeSBkx1l77wYLxDUsCYRm3gAkx4FE=
 |--|--|
 | Все страны | Получить данные для всех стран мира (по умолчанию: false) |
 | Континенты | Группировать общие суммы по континентам в отдельном состоянии (по умолчанию: false) |
-| Удалить неиспользуемые состояния | Удалить данные, когда страны не выбраны (по умолчанию: false) |
+| Удалить неиспользуемые состояния | Удалять данные, когда выбор стран отменен (по умолчанию: false) |
 
 ## Только для Германии
 | Вариант | Описание |
 |--|--|
-| Федеральные штаты | Получить данные федеральных земель по Германии (только выбрано, по умолчанию false) |
-| уезды | Получить данные для округов Германии (только выбрано, по умолчанию false) |
-| Города | Получить данные для городов Германии (только выбрано, по умолчанию false) |
+| Федеральные земли | Получить данные федеральной земли для Германии (только выбрано, по умолчанию false) |
+| округа | Получить данные по округам Германии (только выбрано, по умолчанию false) |
+| Города | Получить данные по городам Германии (только выбрано, по умолчанию false) |
 | Все федеральные земли | Все федеральные земли Германии (по умолчанию false) |
 | Все города | Все города Германии (по умолчанию false) |
 | Все округа | Все округа Германии (по умолчанию false) |
 
-Можно получить данные по федеральным округам (Bundesländer), городам (Städte) и округам (Landeskreise).
+Можно получить данные для федеральных земель (Bundesländer), городов (Städte) округов (Landeskreise).
 Вы можете выбрать получение всех данных или просто выбрать определенные регионы в дополнительных настройках.
 
-## Добавить недостающие страны
-Может случиться, что страны не распознаются правильно, потому что API предоставляет названия некоторых стран, не соответствующих ISO. В таком случае вы получите предупреждение в журнале, которое выглядит следующим образом
+## Добавить отсутствующие страны
+Может случиться так, что страны не распознаются правильно, потому что API предоставляет названия некоторых стран, не соответствующих ISO. В таком случае вы получите предупреждающее сообщение в журнале, которое выглядит следующим образом
 
 ```
 coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not found in lib! Must be added to the country name translator.
 ```
 
-Используя точку данных `coronavirus-statistics.0.countryTranslator`, вы можете назначить страну самостоятельно. Ищите название соответствующей страны здесь:
+Используя точку данных `coronavirus-statistics.0.countryTranslator`, вы можете назначить страну самостоятельно. Ищите здесь название соответствующей страны:
 
 [Список с названиями стран](https://github.com/i-rocky/country-list-js/blob/master/data/names.json)
 
-Выбрав название страны, вы должны создать строку JSON и ввести ее в точку данных `coronavirus-statistics.0.countryTranslator`.
-Строка JSON выглядит следующим образом, например:
+С выбранным названием страны вы должны создать строку JSON и ввести ее в точку данных `coronavirus-statistics.0.countryTranslator`.
+Тогда строка JSON будет выглядеть, например, так:
 
 ```
 {
@@ -87,10 +88,41 @@ coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not fo
 }
 ```
 
-В качестве первого значения имя из предупреждающего сообщения должно быть взято из журнала. Название страны из [Список с названиями стран](https://github.com/i-rocky/country-list-js/blob/master/data/names.json) затем присваивается этому.
+В качестве первого значения имя из предупреждающего сообщения должно быть взято из журнала. Затем ему присваивается название страны из [Список с названиями стран](https://github.com/i-rocky/country-list-js/blob/master/data/names.json).
 
 ## Changelog
 
+<!--
+	### __WORK IN PROGRESS__
+	* (DutchmanNL) xxxx
+-->
+
+### 0.6.4 (2020-12-29)
+* (DutchmanNL) change API from V2 to V3
+* (DutchmanNL) Add Last_Updated for city's/counties
+
+### 0.6.3 (2020-11-04)
+* (DutchmanNL) Bugfix : Error warnings to wrong type in states
+* (DutchmanNL) Bugfix : Error values.features is not iterable solved
+
+### 0.6.2 (2020-11-02)
+* (stan23) 
+add "Cases per 100k" in total & during the last 7 days for Germany's Bundesländer
+
+### 0.6.1 (2020-09-25)
+* (stan23) Added cases per 100k during the last 7 days for Germany
+
+### 0.6.0 (2020-08-28)
+* (DutchmanNL) Replaced module request with axios
+* (DutchmanNL) Bugfix : Proper error handling of failing API calls (if api not reachable)
+* (Kampfratte) Bugfix : API-Abfrage geändert
+
+### 0.5.7 (2020-04-17) Continent state attribute information added and warn messages reduced
+* (DutchmanNL) Bugfix : Add continent state attribute definition
+* (DutchmanNL) Bugfix : Reduce warn messages if error occurs to 1 per message
+
+### 0.5.6 (2020-04-17) Bugfix : API changed
+* (Kampfratte) Bugfix : API changed
 
 ### 0.5.5 (2020-04-07) Bugfixes, see changelog for details
 * (DutchmanNL) Bugfix : Remove test-states

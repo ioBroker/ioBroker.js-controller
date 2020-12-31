@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ping/README.md
 title: PING适配器
-hash: CN7YacMSC0ttlxH0ZpgkJ6AEGQGK/oBDM2KGFFNGz8g=
+hash: GdWVwWTl7oGrOnfAZSsq98vq6ttnGHj4BDlk0yANw4U=
 ---
 ![商标](../../../en/adapterref/iobroker.ping/admin/ping.png)
 
@@ -15,11 +15,30 @@ hash: CN7YacMSC0ttlxH0ZpgkJ6AEGQGK/oBDM2KGFFNGz8g=
 
 ＃PING适配器
 ## Ping配置的IP地址。
-以定义的时间间隔ping指定的IP地址并监视结果。
+以定义的间隔Ping指定的IP地址并监视结果。
 
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
+＃＃ 已知的问题
+*如果无法ping您的Linux客户端，请检查客户端上是否正确安装了iputils-ping
+
 ## Changelog
+
+### 1.4.12 (2020-09-18)
+* (Apollon77) Prevent crash case when no devices are defined (Sentry IOBROKER-PING-R)
+
+### 1.4.11 (2020-08-26)
+* (Apollon77) update js-controller dependency to correct version (1.5.8)
+
+### 1.4.8 (2020-06-29)
+* (Apollon77) Prevent adapter crashes with invalid state/channel names, see error log! (Sentry IOBROKER-PING-H, IOBROKER-PING-P, IOBROKER-PING-B)
+
+### 1.4.7 (2020-05-02)
+* (Apollon77) finally try to catch spawn errors (Sentry IOBROKER-PING-2)
+
+### 1.4.6 (2020-04-29)
+* (Apollon77) Make sure adapter do not crash if ping command can not be executed (Sentry)
+* (Apollon77) Catch error when ping.probe could not be started (Sentry IOBROKER-PING-2)
 
 ### 1.4.5 (2020-04-23)
 * (Apollon77) Fixed potential crash case (Sentry)

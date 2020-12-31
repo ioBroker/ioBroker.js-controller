@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sprinklecontrol/README.md
 title: ioBroker.sprinkle控件
-hash: ArGsY6VmAnDUvYUoeX8320WMkUOG18KS0LiZJVuVmMk=
+hash: xuVb7eUwMnid8KrZjz+5VFj4rUzUMRx1t3sCUsEak1I=
 ---
 ![商标](../../../en/adapterref/iobroker.sprinklecontrol/admin/sprinklecontrol.png)
 
@@ -19,17 +19,21 @@ hash: ArGsY6VmAnDUvYUoeX8320WMkUOG18KS0LiZJVuVmMk=
 ##用于ioBroker的SprinkleControl适配器
 该适配器控制花园中的各个灌溉回路。根据天气和土壤条件，它们会在配置中指定的特定时间或日出时开始工作。
 
-通用自动贩卖机
+WetterabhängigeAutomatische Steuerung derGartenbewässerung
 
 [德意志银行](docs/de/sprinklecontrol.md)
 
-取决于天气的花园灌溉自动控制
-
-[英文说明在这里](docs/en/sprinklecontrol.md)
+[Deutsche Beschreibung auf GitHub](https://github.com/Dirk-Peter-md/ioBroker.sprinklecontrol/blob/master/docs/de/sprinklecontrol.md)
 
 *************************************************************************************************************************************
 
 ## Changelog
+
+### 0.1.2 (30.12.2020)
+* (Dirk-Peter-md) Beschreibung von SprinkleControl überarbeitet
+
+### 0.1.1 (08.11.2020)
+* (Dirk-Peter-md) Integration von Nachrichten per Telegramm, E-Mail, Pushover und WhatsApp
 
 ### 0.0.12 (10.10.2020)
 * (Dirk-Peter-md) Bewässerung über eine 2. Pumpe (Zisterne mit Vorrangschaltung) in abhängigkeit vom Füllstand hinzugefügt.
@@ -86,7 +90,7 @@ copies or substantial portions of the Software.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+FITNESS FOR A PARTICULAR PURPOSE AND NON INFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE

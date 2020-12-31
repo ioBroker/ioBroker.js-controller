@@ -118,6 +118,12 @@ By writing JSON data to the `raw.send` state you are able to send CAN messages c
 
 ## Changelog
 
+### 1.0.0-beta.5 (2020-12-30)
+* (crycode-de) Added Sentry error reporting in admin
+* (crycode-de) Added check for multiple times configured message IDs in admin
+* (crycode-de) Message IDs are now transformed to upper case automatically in admin
+* (crycode-de) Updated dependencies
+
 ### 1.0.0-beta.4 (2020-12-01)
 * (crycode-de) Ignore read value if a parser returned `undefined`
 * (crycode-de) Updated dependencies

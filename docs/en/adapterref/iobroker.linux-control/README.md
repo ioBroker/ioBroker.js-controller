@@ -92,6 +92,8 @@ It is important that the retrieved data is transmitted in the correct type! The 
 |type|type of the datapoint|
 |unit|unit of the datapoint|
 
+## Known Issues
+* if its not possible to get connection to your linux client, check if `iputils-ping` is correct installed on client
 
 ## Changelog
 

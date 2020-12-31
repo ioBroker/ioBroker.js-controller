@@ -5644,6 +5644,14 @@ ical2CalendarWidget();
 
 ## Changelog
 
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ### __WORK IN PROGRESS__
+-->
+
+### 0.4.2 (2020-12-29)
+* (Scrounger) vis-google-fonts dependency removed
+
 ### 0.4.1 (2020-12-27)
 * (Scrounger): Adapter settings: theme editor implementation completed
 * (Scrounger): Progress Widget: condition binding bug fix

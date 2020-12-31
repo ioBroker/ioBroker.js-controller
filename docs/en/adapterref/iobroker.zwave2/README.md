@@ -40,6 +40,13 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.8.3 (2020-12-30)
+* Added a config file for `Technisat Dimmer and series switch`
+* The `level low` property of the `Battery CC` is now called `Battery Level Low`
+* Fixed a bug where the wrong `Binary Sensor` types were requested. To fix this, affected devices must be re-interviewed
+* The retry strategy for sending commands to nodes has been revised. This should improve communication with devices that take long to respond.
+* Some event values like `Central Scene CC` scenes are now automatically cleared after 1 second.
+
 ### 1.8.2 (2020-12-23)
 * When a node does not respond because it is asleep, the message is no longer discarded. This should improve the interview behavior of sleeping nodes.
 * Added new config files
@@ -76,9 +83,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 ### 1.7.10 (2020-11-04)
 * Improved compatibility with devices that don't follow the `User Code CC` and `Notification CC` specifications correctly (like Zipato Keypad)
 * Added the ability to edit binary values (e.g. RFID codes) using hexadecimal strings, e.g. `0xbada55`.
-
-### 1.7.9 (2020-11-01)
-* Fixed a crash in the adapter settings when a node's device type is not yet set
 
 ## License
 

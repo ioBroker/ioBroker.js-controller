@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: uXHMTTKiiRLqyA7Y/Zwqw5IlOhiqYnVLHtmPHwoI2Fs=
+hash: E8hfa7y3//Kfs8SjeMmyRcbVD3YYRXY1duPScutpZG4=
 ---
 ![Логотип](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.lametric.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.lametric.svg)
 ![Стабильный](http://iobroker.live/badges/lametric-stable.svg)
-![установлен](http://iobroker.live/badges/lametric-installed.svg)
+![установлены](http://iobroker.live/badges/lametric-installed.svg)
 ![Статус зависимости](https://img.shields.io/david/klein0r/iobroker.lametric.svg)
 ![Известные уязвимости](https://snyk.io/test/github/klein0r/ioBroker.lametric/badge.svg)
 ![Статус сборки](http://img.shields.io/travis/klein0r/ioBroker.lametric.svg)
@@ -30,7 +30,7 @@ hash: uXHMTTKiiRLqyA7Y/Zwqw5IlOhiqYnVLHtmPHwoI2Fs=
 ## Применение
 Вы можете узнать больше об уведомлениях здесь: https://lametric-documentation.readthedocs.io/en/latest/reference-docs/device-notifications.html
 
-## Характеристики
+## Особенности
 - Установите яркость дисплея (в процентах, автоматический режим / ручной режим)
 - Установить громкость звука (в процентах)
 - Настроить заставку (включить / выключить, по времени, в темноте)
@@ -41,76 +41,124 @@ hash: uXHMTTKiiRLqyA7Y/Zwqw5IlOhiqYnVLHtmPHwoI2Fs=
 
 Возможности ограничены [официальные функции API](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html).
 
-## Блочно
+## Примеры блоков
 В качестве сообщения можно использовать простую строку, которая будет отображаться в виде одного кадра.
 
-![просто](../../../en/adapterref/iobroker.lametric/docs/blockly1.png)
+![одиночный кадр](../../../en/adapterref/iobroker.lametric/docs/blockly1.png)
 
 Чтобы показать несколько кадров, вы также можете предоставить массив как сообщение
 
-![просто](../../../en/adapterref/iobroker.lametric/docs/blockly2.png)
+![несколько кадров](../../../en/adapterref/iobroker.lametric/docs/blockly2.png)
+
+Если вы хотите использовать рамки диаграммы, вы должны указать массив чисел как рамку
+
+![фреймы данных диаграммы](../../../en/adapterref/iobroker.lametric/docs/blockly3.png)
+
+## Мои данные (DIY)
+LaMetric предлагает приложение (на рынке интегрированных приложений) для опроса пользовательских данных. Это приложение называется [Мои данные DIY](https://apps.lametric.com/apps/my_data__diy_/8942). Этот адаптер создает новое состояние в требуемом формате.
+Вы можете использовать Simple API Adapter для передачи данных в LaMetric Time.
+
+```ioBroker LaMetric Adapter -> State with Frame information <- Simple API Adapter <- My Data DIY App <- LaMetric```
+
+### Конфигурация (с аутентификацией)
+1. Установите [Простой адаптер API ioBroker] (https://github.com/ioBroker/ioBroker.simple-api)
+2. Создайте нового пользователя ioBroker с именем «lametric» с индивидуальным паролем (например, HhX7dZl3Fe).
+3. Добавьте «ламетрического» пользователя в группу «пользователи».
+4. Установите это приложение *My Data DIY* на LaMetric Time (используйте Market).
+5. Откройте настройки приложения *Мои данные (DIY)* и настройте простой URL-адрес API (см. Ниже).
+6. Перейдите в конфигурацию адаптера и настройте фреймы с вашей пользовательской информацией (значок и текст).
+
+```
+http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/?&user=lametric&pass=HhX7dZl3Fe
+```
+
+** При необходимости обновите IP-адрес, порт, пользователя и пароль в URL-адресе! **
+
+### Конфигурация (без аутентификации)
+1. Установите [Простой адаптер API ioBroker] (https://github.com/ioBroker/ioBroker.simple-api)
+2. Установите это приложение *My Data DIY* на LaMetric Time (используйте Market).
+3. Откройте настройки приложения *Мои данные (DIY)* и настройте простой URL-адрес API (см. Ниже).
+4. Перейдите в конфигурацию адаптера и настройте фреймы с вашей пользовательской информацией (значок и текст).
+
+```
+http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
+```
+
+** При необходимости обновите IP-адрес и порт в URL-адресе! **
 
 ## Скрипты
 Чтобы отобразить сообщение на вашей метрике la, просто отправьте сообщение этому экземпляру с помощью адаптера сценария:
 
-```
-sendTo('lametric.0', 'send', {
-    "priority": "[info|warning|critical]",
-    "icon_type": "[none|info|alert]",
-    "lifeTime": <milliseconds>,
-    "model": {
-    "frames": [
-         {
-            "icon":"<icon id or base64 encoded binary>",
-            "text":"<text>"
-         },
-         {
-           "icon": 298,
-           "text":"text"
-         },
-         {
-             "icon": 120,
-             "goalData":{
-                 "start": 0,
-                 "current": 50,
-                 "end": 100,
-                 "unit": "%"
-             }
-         },
-         {
-             "chartData": [ <comma separated integer values> ] // [ 1, 2, 3, 4, 5, 6, 7 ]
-         }
-         ],
-         "sound": {
-           "category":"[alarms|notifications]",
-             "id":"<sound_id>",
-             "repeat":<repeat count>
-         },
-         "cycles":<cycle count>
+```JavaScript
+sendTo(
+    "lametric.0",
+    "notification",
+    {
+        priority: "[info|warning|critical]",
+        iconType: "[none|info|alert]",
+        sound: "<string from sound list>",
+        lifeTime: <milliseconds>,
+        icon: "<icon>",
+        text: "<string|array>",
+        cycles: <integer>
     }
-});
+);
 ```
 
-Пример для отображения некоторой информации циклически:
+Пример одиночного кадра:
 
+```JavaScript
+sendTo(
+    "lametric.0",
+    "notification",
+    {
+        priority: "info",
+        iconType: "none",
+        sound: "cat",
+        lifeTime: 5000,
+        icon: "i31820",
+        text: "test",
+        cycles: 1
+    }
+);
 ```
+
+Пример нескольких кадров:
+
+```JavaScript
+sendTo(
+    "lametric.0",
+    "notification",
+    {
+        priority: "info",
+        iconType: "none",
+        sound: "cat",
+        lifeTime: 5000,
+        icon: "i31820",
+        text: ["frame 1", "frame 2", "frame 3"],
+        cycles: 1
+    }
+);
+```
+
+Пример показа некоторой информации циклически:
+
+```JavaScript
 let i = 0;
 function show() {
     console.log('Show ' + i);
-    sendTo('lametric.0', 'send', {
-        "priority": "info",
-        "icon_type": "info",
-        "lifeTime": 10000,
-        "model": {
-        "frames": [
-                {
-                    "icon":"data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNWRHWFIAAAAySURBVBhXY4AAYdcKk1lngCSUDwHIfAQbzgLqgDCgIqRLwFkQCYQoBAD5EATl4wQMDADhuxQzaDgX0gAAAABJRU5ErkJggg==",
-                    "text":"Hi " + i
-                }
-            ],
-            "cycles": 0
+    sendTo(
+        "lametric.0",
+        "notification",
+        {
+            priority: "info",
+            iconType: "info",
+            lifeTime: 5000,
+            icon: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAIAAABLbSncAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjEuNWRHWFIAAAAySURBVBhXY4AAYdcKk1lngCSUDwHIfAQbzgLqgDCgIqRLwFkQCYQoBAD5EATl4wQMDADhuxQzaDgX0gAAAABJRU5ErkJggg==",
+            text: "Hi " + i,
+            cycles: 1
         }
-    });
+    );
     i++;
 }
 setInterval(show, 10000);
@@ -118,6 +166,14 @@ show();
 ```
 
 ## Changelog
+
+### 1.1.0
+
+* (klein0r) Added support for My Data (DIY)
+
+### 1.0.1
+
+* (klein0r) Added chart data support to notification
 
 ### 1.0.0
 

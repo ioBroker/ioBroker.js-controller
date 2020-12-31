@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.linux-control/README.md
 title: ioBroker.linux-control
-hash: UWL76LQz+eRlIMa6yQbcb9u3fZ4fo19J2QtVuW58jDc=
+hash: 4vljRlLuB+7ulE1Q6N15aOyRbqb2lmzu3vXqqu7mVDA=
 ---
 ![Logo](../../../en/adapterref/iobroker.linux-control/admin/linux-control.png)
 
@@ -39,7 +39,7 @@ Steuern Sie Linux-Geräte und erhalten Sie Informationen zu Ihrem System
 | password / passpharse | ssh Passwort für die Anmeldung oder passpharse, wenn Sie einen rsa-Schlüssel verwenden |
 | benutze Sudo | mit sudo |
 | rsa key | Pfad und Dateiname Ihres rsa-Schlüssels. Zugriffsrechte müssen verfügbar sein! |
-| Zeitüberschreitung | Verbindungszeitüberschreitung |
+| Timeout | Verbindungs-Timeout |
 
 ### Datenpunkte
 ![Datenpunkte](../../../en/adapterref/iobroker.linux-control/docs/en/img/datapoints.gif)
@@ -96,12 +96,19 @@ Es ist wichtig, dass die abgerufenen Daten im richtigen Typ übertragen werden! 
 | Typ | Typ des Datenpunkts |
 | Einheit | Einheit des Datenpunkts |
 
+## Bekannte Probleme
+* Wenn es nicht möglich ist, eine Verbindung zu Ihrem Linux-Client herzustellen, überprüfen Sie, ob "iputils-ping" korrekt auf dem Client installiert ist
+
 ## Changelog
 
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 1.1.0 (2020-12-23)
+* (paul53) datapoints type and role bug fixes
+* (Scrounger) adapter settings card layout added
 
 ### 1.0.1 (2020-11-04)
 * (Scrounger) translation for polling interval optimized

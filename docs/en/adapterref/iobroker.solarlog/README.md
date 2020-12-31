@@ -5,7 +5,7 @@
 ![Number of Installations](http://iobroker.live/badges/solarlog-installed.svg) ![Number of Installations](http://iobroker.live/badges/solarlog-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.solarlog.svg)](https://www.npmjs.com/package/iobroker.solarlog)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.solarlog.svg)](https://www.npmjs.com/package/iobroker.solarlog)
 
-[![NPM](https://nodei.co/npm/iobroker.solarlog.png?downloads=true)](https://nodei.co/npm/iobroker.solarlog/) 
+[![NPM](https://nodei.co/npm/iobroker.solarlog.png?downloads=true)](https://nodei.co/npm/iobroker.solarlog/)
 
 An ioBroker adapter for Solarlog - devices
 
@@ -37,6 +37,10 @@ Solarlog 200PM+ / 300PM+ / 500 / 1200Meter / 50
 SolarLog 50: There is no open JSON-Interface @ SolarLog 50 devices. So certain values in the 'info' and the 'status' channel will be 'ACCESS DENIED'. If you prefer another solution, please open an issue or post your preferences in a corresponding issue.
 
 ## Changelog
+
+### 2.0.1
+
+-   bugfix (better timing to set inverter data).
 
 ### 2.0.0
 

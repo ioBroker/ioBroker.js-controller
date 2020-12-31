@@ -140,38 +140,62 @@ Just configure events from ical in admin. Supported are
 * heatingcontrol.0.PartyNow
 
 ## use changes from thermostat
-Many user asked for an option to take over changes from thermostat into adapter. Now a thre options are implemented:
+Many user asked for an option to take over changes from thermostat into adapter. Now a four options are implemented:
 
 | option                   | description                                                
 |--------------------------|---------------------------------------------------------------------------------------
-| no                       | as we have until version 0.3.x, changes from thermostat are ignored
+| no                       | changes from thermostat are ignored
 | as override              | changes from thermostat are taken as override; override time must be set in advance in heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime
 |                          | if override time is not set, than override is not executed
 | as new profile setting   | changes from thermostat are taken as target temperature for current profile period
-| adjustable per room      | above options can be configured per room. datapoint heatingcontrol.0.Rooms.RoomName.ChangesFromThermostatMode defines the mode:
-|                          |               1 - no
-|                          |               2 - as override 
-|                          |               3 -  as new profile setting 
-|                          | a warning will appear in log if values lower then 0 or higher then 3 are used
+| until next profile point | changes from thermostat are taken as target temperature until next profile point. This is a manual mode, so only Window sensors are used. All other 
+|                          | increases / decreases are ignored. There is a datapoint in every room to disable manual mode before reaching next profile point.
 
-
-## Requirements
-* Node version 8 or higher is required
 
 ## Issues and Feature Requests
 * If you are faced with any bugs or have feature requests for this adapter, please create an issue within the GitHub issue section of the adapter at [github](https://github.com/rg-engineering/ioBroker.heatingcontrol/issues). Any feedback is appreciated and will help to improve this adapter.
 
-### What is Sentry.io and what is reported to the servers of that company?
-Sentry.io is a service for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
+## known issues
+
+### Adapter with Homematic IP Fußbodenheizungsaktor HmIP-FAL230-C10 – 10fach, 230 V 
+It seems that HmIP-FAL230-C10 can not be used directly as an actuator in combination with that adapter. If you use HmIP-FAL230-C10 together with Homematic thermostats it should work.
+see also [Forum](https://forum.iobroker.net/topic/22579/test-adapter-heatingcontrol-v1-0-x/1553)
+
 
 When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry.  All of this helps me to provide error free adapters that basically never crashs.
 
 ## Changelog
 
+### 2.0.0 (2020-12-xx)
+* (René) internal refactoring
+
+**ATTENTION: breaking changes !!!!**
+* complete internal refactoring (new source files, internal data structures, code review, ...)
+* **Periods and Profils count from 1 instead 0**
+* ChangesFromThermostat adjustable per room is removed
+* recalculation of room temperature is performed only for the room where necessary (in previous versions all rooms were recalculated and new value transmitted)
+* SensorOpenDelay / SensorCloseDelay renamed
+* ResetButton to disable manual mode (and go back to auto)
+* status log per room
+* complete profile can be saved and loaded in admin
+* copy profile (complete or for a single room) and periods (for a certain profile and room) by button supported
+* datapoint selector for external datapoints added in admin
+* autodectection for thermostats, sensors and actuators completely overworked
+* room detection overworked
+* limits and step widh for profil temperatures adjustable in admin for Pittini vis
+* simple window status view (in html) for Pittini vis added
+* room state as simple html table for vis added
+* issues in github: 
+	* #161 Profil springt zur angegebenen Zeit nicht um
+	* #153 cron Probleme beim ändern eines Profils mittels Javascript
+	* #152 Fenstererkennung im manuellen Modus
+	* #148 Bei Änderung vom Thermostat bis zum nächsten Profilpunkt müssen Sensoren berücksichtigt werden
+
+
 ### 1.1.2 (2020-11-11)
 * (René) bug fix: activate actors after temperatur change
 
-### 1.1.1 (2020-11-01)
+### 1.1.0 (2020-11-01)
 * (René) see issue #149: bug fix: calculate current period in case we are still in last period from yesterday
 
 ### 1.1.0 (2020-10-20)
@@ -222,7 +246,6 @@ When the adapter crashes or an other Code error happens, this error message that
 * (René) see issue #104: bug fix to take over changes from vis
 * (René) see issue #102: bug fix change current time period to be shown on vis
 
-
 ### 0.4.0 (2020-05-02)
 * (René) see issue #70: use changes from thermostat
 * (René) see issue #91 bug fix: if the same sensor is configured for more than one room thermostat target temperature will be set for all configured rooms
@@ -264,7 +287,6 @@ When the adapter crashes or an other Code error happens, this error message that
 ### 0.3.11 (2019-12-27)
 * (René) option: minimum temperature per room
 * (René) bugfix exception in CheckTemperatureChange [ReferenceError: PublicHolidyToday is not defined] 
-
 
 ### 0.3.10 (2019-12-26)
 * (René) see issue #54: stop override with OverrideTemperature =0

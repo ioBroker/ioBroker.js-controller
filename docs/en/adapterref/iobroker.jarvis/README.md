@@ -65,6 +65,33 @@ You may find more videos on the [YouTube Channels](https://www.youtube.com/chann
 Please also see [release page](https://github.com/Zefau/ioBroker.jarvis/releases) for changelog and detailed information.
 
 
+### v2.1.0-rc.2 - Spotlight (2020-12-30)
+
+#### :star2: newly added features
+- Support import of more devices from ioBroker.hm-rpc ([414](https://github.com/Zefau/ioBroker.jarvis/issues/414))
+
+
+### v2.1.0-rc.1 - Captain Phillips (2020-12-30)
+
+#### :star2: newly added features
+- Detect color input of LightColorBody ([498](https://github.com/Zefau/ioBroker.jarvis/issues/498))
+- Support import of devices from ioBroker.mihome-vacuum ([462](https://github.com/Zefau/ioBroker.jarvis/issues/462))
+- add component CustomTextBody ([461](https://github.com/Zefau/ioBroker.jarvis/issues/461))
+- add option to only show overview and / or preview ([460](https://github.com/Zefau/ioBroker.jarvis/issues/460))
+- Support import of more devices from ioBroker.hm-rpc ([414](https://github.com/Zefau/ioBroker.jarvis/issues/414))
+- Objektauswahl vereinfachen ([321](https://github.com/Zefau/ioBroker.jarvis/issues/321))
+- Allow to show states and to trigger action ([319](https://github.com/Zefau/ioBroker.jarvis/issues/319))
+- Feature: Triggern sekundäre Datenpunkte zuweisen ([267](https://github.com/Zefau/ioBroker.jarvis/issues/267))
+- Support import of devices from ioBroker.knx adapter ([231](https://github.com/Zefau/ioBroker.jarvis/issues/231))
+- StateList: Add option to configure which state will be triggered via group action ([178](https://github.com/Zefau/ioBroker.jarvis/issues/178))
+- Add filter / search option to device list ([141](https://github.com/Zefau/ioBroker.jarvis/issues/141))
+- Allow user defined global CSS styles overwriting any default styles ([117](https://github.com/Zefau/ioBroker.jarvis/issues/117))
+- add JSON Editor for inputs fields in Devices configuration ([98](https://github.com/Zefau/ioBroker.jarvis/issues/98))
+
+#### :bug: fixed bugs
+- Calender-Widget zeigt keine wiederkehrenden Termine an ([433](https://github.com/Zefau/ioBroker.jarvis/issues/433))
+
+
 ### v2.0.0-rc.1 - City of God (2020-11-27)
 
 #### :exclamation: BREAKING CHANGES

@@ -72,6 +72,10 @@ Change the value of programs.selected.BSH_Common_Root_SelectedProgram leads to s
 
 ## Changelog
 
+### 0.0.32 (29.12.2020)
+
+- (Morluktom) bugfix for devices that are completely switched off (e.g. washing machine, dryer)
+
 ### 0.0.31
 
 - (ta2k) fix pause start command

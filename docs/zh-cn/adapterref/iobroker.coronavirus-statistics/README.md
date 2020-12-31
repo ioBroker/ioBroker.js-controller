@@ -3,20 +3,21 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker。冠状病毒统计
-hash: aNCB9lKKNnKhn3FeSBkx1l77wYLxDUsCYRm3gAkx4FE=
+hash: DOn+bUtBayCWnxfVAT6i1YSC1cwhLO5J8ECRAt6lKqQ=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
 ![安装数量（最新）](http://iobroker.live/badges/coronavirus-statistics-installed.svg)
 ![安装数量（稳定）](http://iobroker.live/badges/coronavirus-statistics-stable.svg)
-![依赖状态](https://img.shields.io/david/iobroker-community-adapters/iobroker.coronavirus-statistics.svg)
 ![已知漏洞](https://snyk.io/test/github/iobroker-community-adapters/ioBroker.coronavirus-statistics/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.coronavirus-statistics.png?downloads=true)
-![特拉维斯](http://img.shields.io/travis/iobroker-community-adapters/ioBroker.coronavirus-statistics/master.svg)
+![依赖状态](https://img.shields.io/david/iobroker-community-adapters/ioBroker.coronavirus-statistics.svg)
 
 <img src="./admin/coronavirus-statistics.png" width="50" height="50">
 
 ＃ioBroker.coronavirus-statistics
+![测试与发布](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)
+
 ##用于ioBroker的冠状病毒实时统计适配器
 显示全球冠状病毒信息和当前报告的适配器
 
@@ -43,17 +44,17 @@ hash: aNCB9lKKNnKhn3FeSBkx1l77wYLxDUsCYRm3gAkx4FE=
 |测试全球进行的covid-19测试总数|
 |每百万个县进行测试|全球每100万次进行的covid-19测试总数|
 
-请注意，此适配器会使用尽可能多的最新信息，但是可能会延迟几个小时，具体取决于国家/地区的报告。
+请注意，此适配器使用尽可能多的最新信息，但是可能会延迟几个小时，具体取决于国家/地区的报告。
 德国联邦州：https://npgeo-corona-npgeo-de.hub.arcgis.com/ s通用来源：https://coronavirus-19-api.herokuapp.com
 
 ＃＃ 高级设置
 |选项|描述 |
 |--|--|
-|所有国家|获取全球所有国家/地区的数据（默认：false）|
+|所有国家|获取全球所有国家/地区的数据（默认值：false）|
 |大洲|在单独状态下按大陆分组总金额（默认：false）|
 |删除未使用的状态|取消选择国家时删除数据（默认值：false）|
 
-##仅适用于德国
+##仅限于德国
 |选项|描述 |
 |--|--|
 |联邦州|获取德国的联邦州数据（仅选中，默认为false）|
@@ -63,11 +64,11 @@ hash: aNCB9lKKNnKhn3FeSBkx1l77wYLxDUsCYRm3gAkx4FE=
 |所有城市|所有德国城市（默认为false）|
 |所有县|所有德国县（默认为false）|
 
-可以获得联邦州（Bundesländer），城市（Städte）县（Landeskreise）的数据。
+可以获取联邦州（Bundesländer），城市（Städte）县（Landeskreise）的数据。
 您可以选择接收所有数据，也可以只选择高级设置中的特定区域。
 
-##添加缺少的国家
-由于API提供的某些国家/地区名称与ISO不一致，因此可能无法正确识别国家/地区。在这种情况下，您会在日志中收到一条警告消息，看起来像这样
+##添加缺失的国家
+由于API提供的某些国家/地区名称与ISO不一致，因此可能无法正确识别国家/地区。在这种情况下，您将在日志中收到一条警告消息，如下所示
 
 ```
 coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not found in lib! Must be added to the country name translator.
@@ -91,6 +92,37 @@ coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not fo
 
 ## Changelog
 
+<!--
+	### __WORK IN PROGRESS__
+	* (DutchmanNL) xxxx
+-->
+
+### 0.6.4 (2020-12-29)
+* (DutchmanNL) change API from V2 to V3
+* (DutchmanNL) Add Last_Updated for city's/counties
+
+### 0.6.3 (2020-11-04)
+* (DutchmanNL) Bugfix : Error warnings to wrong type in states
+* (DutchmanNL) Bugfix : Error values.features is not iterable solved
+
+### 0.6.2 (2020-11-02)
+* (stan23) 
+add "Cases per 100k" in total & during the last 7 days for Germany's Bundesländer
+
+### 0.6.1 (2020-09-25)
+* (stan23) Added cases per 100k during the last 7 days for Germany
+
+### 0.6.0 (2020-08-28)
+* (DutchmanNL) Replaced module request with axios
+* (DutchmanNL) Bugfix : Proper error handling of failing API calls (if api not reachable)
+* (Kampfratte) Bugfix : API-Abfrage geändert
+
+### 0.5.7 (2020-04-17) Continent state attribute information added and warn messages reduced
+* (DutchmanNL) Bugfix : Add continent state attribute definition
+* (DutchmanNL) Bugfix : Reduce warn messages if error occurs to 1 per message
+
+### 0.5.6 (2020-04-17) Bugfix : API changed
+* (Kampfratte) Bugfix : API changed
 
 ### 0.5.5 (2020-04-07) Bugfixes, see changelog for details
 * (DutchmanNL) Bugfix : Remove test-states

@@ -21,6 +21,9 @@ A small excerpt just of the command options:
 <b>NodeJs >> 8.x.x </b>
 
 ## Changelog
+### 2.0.2 (2020-12-28)
+* (arteck) little update
+
 ### 2.0.1 (2020-08-19)
 * (arteck) refactoring
 * (arteck) settings update interval switch so sec
