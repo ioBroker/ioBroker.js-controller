@@ -35,18 +35,30 @@ The widget requires that also vis-metro and vis-jqui-mfd are installed
 
 ## Common Issues / Frequently Asked Questions
 
-  1. Fritzbox returned '00000000' no login possible.
+  1. Fritzbox returned '00000000' no login possible. possible reasons:
 
         The fritzbox allows only a limited number of logins in a timeframe. So very fast polling (update) attempts may lead to blocking of logins.
+        There are no appropriate user rights set in the fritzbox.
+        There is a time elapsing in the fritzbox blocking the logins 
 
-
-  2. no login to the FritzBox
+ 2. no login to the FritzBox, when using https
 
       Log messages if the form of:
 
           { error: { [Error: self signed certificate] code: 'DEPTH_ZERO_SELF_SIGNED_CERT' }
 
-      indicate that there are SSL security problems. Use the `"strictSSL": false` option (no tick in checkbox) in the admin page of adapter to disable the respective check.
+      indicate that there are SSL security problems (certificate). Use the `"strictSSL": false` option (no tick in checkbox) in the admin page of adapter to disable the respective check (experimental). 
+
+## Thermostat
+
+The thermostat has different modes:
+* auto (temperature control), to be set by hkrmode (0)
+* on (full open), to be set by hkrmode (1)
+* off (full close), to be set by hkrmode (2)
+* boost (full open for limited time), detected by feedback boostactive, can be set by boostactive (false->true)
+* windowopen (full closed for defined time), detected by feedback windowopenactiv, can be set be windowopenactiv (false->true)
+* holiday (temp control), detected by holidayactive
+* summer (temp control), detected by summeractive
 
 ## ioBroker objects
 
@@ -68,7 +80,7 @@ The datapoints are created on the basis of the returned values of the Fritz AHA 
 |*txbusy*|boolean|-|true/false -> cmd sending active/not active|DECT2x0|DECT3x0|DECT400|DECT440|DECT500|Blinds|Contact|
 |*batterylow*|boolean|-|battery status| |DECT3x0|DECT400|DECT440| | |Contact|
 |*battery*|number|-|actual capacity in %| |DECT3x0|DECT400|DECT440| | |Contact|
-|state|boolean|?|true/false |DECT2x0| | | |DECT500|Blinds| |
+|state|boolean|-/x|true/false |DECT2x0| | | |DECT500|Blinds|Contact|
 |power|number|-|actual power in W|DECT2x0| | | | | | |
 |energy|number|-|actual energy consumption in Wh|DECT2x0| | | | | | |
 |*voltage*|number|-|actual voltage in V|DECT2x0| | | | | | |
@@ -97,7 +109,7 @@ The datapoints are created on the basis of the returned values of the Fritz AHA 
 |*tchange*|number|-|temp with next change in °C| |DECT3x0| | | | | |
 |*endperiod*|time|-|time when next change is active| |DECT3x0| | | | | |
 |supported_modes|number|-|supported colormodes| | | | |DECT500| | |
-|current_mode|number|?|actual colormode| | | | |DECT500| | |
+|current_mode|number|-|actual colormode| | | | |DECT500| | |
 |level|number|x|level 0-255 | | | | |DECT500|Blinds| |
 |levelpercentage|number|x|level 0-100 % | | | | |DECT500|Blinds| |
 |hue|number|x|color 0-359 | | | | |DECT500| | |
@@ -135,20 +147,24 @@ The datapoints are created on the basis of the returned values of the Fritz AHA 
 
 ## Known Adapter Limitations:
 * Not all FW-versions of fritz.box support all objects.
+* https (DEPTH_ZERO_SELF_SIGNED_CERT -> strictSSL: false necessary) see above
 
 ## TODO:
 * map of data input from user to valid predefined colors (nearest match)
 * improvement of thermostat mode to text representation (auto, off, boost, comfort, night), comfort and night are also auto mode, but preset to the parametrized value
+* refactor to the format of as of "create adapter"
 
 ## Changelog
 
 ### 2.0.0 Breaking Changes in datapoints and structures (wip)
 * refactoring of the code
-* new fritzapi to either used md5 or pbkf2 decryption, needed for FW >7.24
+* new fritzapi to either used md5 or pbkf2 decryption, needed for fritzbox FW >7.24
 * **usage of AHA API returned values as datapoint identifier**
 * **grouping of buttons under the DECT440**
 * DECT500 groups
 * accepting blocktime from fritzbox
+* announcing new detected datapoints delivered by fritzbox
+* option strictSSL (experimental)
 
 ### 1.1.4 (npm)
 * blinds control

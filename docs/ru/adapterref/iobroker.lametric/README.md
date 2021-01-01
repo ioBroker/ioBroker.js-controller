@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: E8hfa7y3//Kfs8SjeMmyRcbVD3YYRXY1duPScutpZG4=
+hash: kOs+oAaM15EyAFrv0XnOOjsTZQ4ElAGUA1oeP3C2Quc=
 ---
 ![Логотип](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -17,7 +17,7 @@ hash: E8hfa7y3//Kfs8SjeMmyRcbVD3YYRXY1duPScutpZG4=
 ![НПМ](https://nodei.co/npm/iobroker.lametric.png?downloads=true)
 
 # IoBroker.lametric
-Этот адаптер позволяет получать информацию о состоянии вашего LaMetric Time и отправлять на него уведомления.
+Этот адаптер позволяет получать информацию о статусе вашего [LaMetric Time](https://haus-auto.com/p/amz/LaMetricTime) *(Партнерская ссылка)* и отправлять на него уведомления.
 Все, что вам нужно, это IP-адрес вашего устройства и ключ разработчика API.
 
 ## Конфигурация
@@ -27,17 +27,15 @@ hash: E8hfa7y3//Kfs8SjeMmyRcbVD3YYRXY1duPScutpZG4=
 
 ![API-ключ](../../../en/adapterref/iobroker.lametric/docs/apiKey.png)
 
-## Применение
-Вы можете узнать больше об уведомлениях здесь: https://lametric-documentation.readthedocs.io/en/latest/reference-docs/device-notifications.html
-
 ## Особенности
 - Установите яркость дисплея (в процентах, автоматический режим / ручной режим)
 - Установить громкость звука (в процентах)
 - Настроить заставку (включить / выключить, по времени, в темноте)
 - Активировать / деактивировать Bluetooth и изменить имя Bluetooth
 - Переключение между приложениями (следующее, предыдущее, перейти к определенному приложению)
-- Отправлять блочные уведомления (с настраиваемым приоритетом, звуком, значками, текстом и т. Д.)
-- Управляйте специальными приложениями, такими как радио, секундомер и погода
+- Отправлять уведомления блочно (с настраиваемым приоритетом, звуком, значками, текстом и т. Д.)
+- Управляйте специальными приложениями, такими как радио, секундомер или погода
+- Используйте приложение *Мои данные (DIY)* LaMetric для отображения постоянной информации
 
 Возможности ограничены [официальные функции API](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html).
 
@@ -85,6 +83,15 @@ http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
 ```
 
 ** При необходимости обновите IP-адрес и порт в URL-адресе! **
+
+### Конфигурация рамы
+- Используйте значок плюса, чтобы добавить столько кадров, сколько хотите
+- Значок: выберите значок на [официальном сайте] (https://developer.lametric.com/icons) и введите идентификатор в поле конфигурации. ** Важно: добавьте i (для статических значков) или a (для анимированных значков) в качестве префикса для этого идентификатора. (Пример: `i3389`)
+- Текст: просто введите текстовую информацию для рамки. Вы можете использовать состояния в фигурных скобках. Эта информация будет заменена соответствующим значением состояния. (Пример: `{youtube.0.channels.HausAutomatisierungCom.statistics.subscriberCount} Подписчики`)
+
+Пример конфигурации 2 кадров:
+
+![пример конфигурации кадра](../../../en/adapterref/iobroker.lametric/docs/myDataDIYConfig.png)
 
 ## Скрипты
 Чтобы отобразить сообщение на вашей метрике la, просто отправьте сообщение этому экземпляру с помощью адаптера сценария:
@@ -166,6 +173,11 @@ show();
 ```
 
 ## Changelog
+
+### 1.1.1
+
+* (klein0r) Fixed replacement issue for My Data (DIY)
+* (klein0r) Updated README with more configuration details
 
 ### 1.1.0
 

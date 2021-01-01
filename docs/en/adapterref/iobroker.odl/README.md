@@ -37,6 +37,9 @@ Die aktuellen Messdaten werden von dem Adapter standardmäßig im Stundentakt ak
 
 ## Changelog
 
+### 1.1.3 (2020-12-31)
+* (crycode-de) Fixed issue when log is not available at startup timeout
+
 ### 1.1.2 (2020-12-23)
 * (crycode-de) Fix objects parameters for objects created before v1.1.1
 

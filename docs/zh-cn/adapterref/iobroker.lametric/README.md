@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: E8hfa7y3//Kfs8SjeMmyRcbVD3YYRXY1duPScutpZG4=
+hash: kOs+oAaM15EyAFrv0XnOOjsTZQ4ElAGUA1oeP3C2Quc=
 ---
 ![商标](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -17,7 +17,7 @@ hash: E8hfa7y3//Kfs8SjeMmyRcbVD3YYRXY1duPScutpZG4=
 ![NPM](https://nodei.co/npm/iobroker.lametric.png?downloads=true)
 
 ＃ioBroker.lametric
-该适配器使您可以获取有关LaMetric Time的状态信息，并向其发送通知。
+此适配器使您可以获取有关[公制时间](https://haus-auto.com/p/amz/LaMetricTime)*（会员链接）*的状态信息，并向其发送通知。
 您需要的只是设备的IP地址和api开发人员密钥。
 
 ##配置
@@ -27,17 +27,15 @@ hash: E8hfa7y3//Kfs8SjeMmyRcbVD3YYRXY1duPScutpZG4=
 
 ![api键](../../../en/adapterref/iobroker.lametric/docs/apiKey.png)
 
-##用法
-您可以在此处阅读有关通知的更多信息：https://lametric-documentation.readthedocs.io/en/latest/reference-docs/device-notifications.html
-
 ＃＃ 特征
 -设置显示亮度（百分比，自动模式/手动模式）
 -设置音量（百分比）
 -配置屏幕保护程序（启用/禁用，基于时间，黑暗时）
 -激活/停用蓝牙并更改蓝牙名称
 -在应用之间切换（下一个，上一个，转到特定的应用）
--发送块状通知（具有可配置的优先级，声音，图标，文本等）
--控制特殊的应用程序，例如收音机，秒表和天气
+-以块状发送通知（具有可配置的优先级，声音，图标，文本等）
+-控制特殊的应用程序，例如收音机，秒表或天气
+-使用*我的数据（DIY）* LaMetric App显示永久信息
 
 功能受[官方API功能](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html)的限制。
 
@@ -85,6 +83,15 @@ http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
 ```
 
 **如有必要，请确保更新URL中的IP和端口！**
+
+###框架配置
+-使用加号图标可以添加任意数量的帧
+-图标：从[官方网站]（https://developer.lametric.com/icons）中选择一个图标，然后将ID放在配置字段中。 **重要提示：添加一个i（用于静态图标）或a（用于动画图标）作为该ID的前缀。 （例如：“ i3389”）
+-文字：只需输入框架的文字信息即可。您可以在花括号中使用状态。这些信息将被替换为状态的相应值。 （例如：“ {youtube.0.channels.HausAutomatisierungCom.statistics.subscriberCount}订阅者”）
+
+2帧的示例配置：
+
+![示例框架配置](../../../en/adapterref/iobroker.lametric/docs/myDataDIYConfig.png)
 
 ##脚本
 要在您的公制上显示消息，只需使用脚本适配器将消息发送到该实例：
@@ -166,6 +173,11 @@ show();
 ```
 
 ## Changelog
+
+### 1.1.1
+
+* (klein0r) Fixed replacement issue for My Data (DIY)
+* (klein0r) Updated README with more configuration details
 
 ### 1.1.0
 

@@ -70,11 +70,13 @@ Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig In
 
 ### 2.0.0 Breaking Changes in datapoints and structures (wip)
 * refactoring of the code
-* new fritzapi to either used md5 or pbkf2 decryption, needed for FW >7.24
+* new fritzapi to either used md5 or pbkf2 decryption, needed for fritzbox FW >7.24
 * **usage of AHA API returned values as datapoint identifier**
 * **grouping of buttons under the DECT440**
 * DECT500 groups
 * accepting blocktime from fritzbox
+* announcing new detected datapoints delivered by fritzbox
+* option strictSSL (experimental)
 
 ### 1.1.4 (npm)
 * blinds control

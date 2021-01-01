@@ -12,7 +12,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.lametric.png?downloads=true)](https://nodei.co/npm/iobroker.lametric/)
 
-This adapter allows you to get status information about your LaMetric Time and to send notifications to it.
+This adapter allows you to get status information about your [LaMetric Time](https://haus-auto.com/p/amz/LaMetricTime) *(Affiliate Link)* and to send notifications to it.
 All you need is the IP address of your device and the api developer key.
 
 ## Configuration
@@ -23,10 +23,6 @@ You can get your personal key [here](https://developer.lametric.com/).
 
 ![api-key](docs/apiKey.png)
 
-## Usage
-
-You can read more about notifications here: https://lametric-documentation.readthedocs.io/en/latest/reference-docs/device-notifications.html
-
 ## Features
 
 - Set display brightness (percent, auto-mode/manual-mode)
@@ -34,8 +30,9 @@ You can read more about notifications here: https://lametric-documentation.readt
 - Configure screensaver (enable/disable, time based, when dark)
 - Activate/Deactivate bluetooth and change bluetooth name
 - Switch between apps (next, previous, go to specific app)
-- Send blockly notifications (with configurable priority, sound, icons, text, ...)
-- Control special apps like radio, stopwatch and weather
+- Send notifications with blockly (with configurable priority, sound, icons, text, ...)
+- Control special apps like radio, stopwatch or weather
+- Use *My Data (DIY)* LaMetric App to display persistent information
 
 Features are limited by the [official API features](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html).
 
@@ -87,6 +84,16 @@ http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
 ```
 
 **Ensure to update IP and port in the URL if necessary!**
+
+### Frame Configuration
+
+- Use the plus icon to add as many frames as you want
+- Icon: Choose an icon from the [official website](https://developer.lametric.com/icons) and put the ID in the configuration field. **Important: Add an i (for static icons) or an a (for animated icons) as a prefix for that ID. (Example: `i3389`)
+- Text: Just type the text information for the frame. You can use states in curly braces. These information will be replaced with the corresponding value of the state. (Example: `{youtube.0.channels.HausAutomatisierungCom.statistics.subscriberCount} Subscribers`)
+
+Example configuration of 2 frames:
+
+![example frame config](docs/myDataDIYConfig.png)
 
 ## Scripts
 
@@ -169,6 +176,11 @@ show();
 ```
 
 ## Changelog
+
+### 1.1.1
+
+* (klein0r) Fixed replacement issue for My Data (DIY)
+* (klein0r) Updated README with more configuration details
 
 ### 1.1.0
 
