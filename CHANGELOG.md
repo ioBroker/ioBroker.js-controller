@@ -51,6 +51,7 @@
 * (foxriver76) readFile should not validate meta object, we now throw on writeFile if id is no valid meta object
 * (AlCalzone) update Forbidden ID Characters: use Unicode properties to define which characters are allowed instead of blacklisting. For ASCII the allowed characters are the same as before - for other languages mainly character class of Unicode are allowed!
 * (foxriver76) Throw on invalid setState objects; was logged as deprecated before
+* (foxriver76) remove getMessage shim, no adapter uses it anymore; was logged as deprecated before
 
 **Developer relevant new Features**
 * (foxriver76) use aes-192-cbc as encryption - backward compatible with current encryption
