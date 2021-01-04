@@ -10,6 +10,7 @@
 * (foxriver76) Detect adapter restart loops and stop restarting after 3 crashes (an adapter is considered "working" when no crash by an exception happens within 10 minutes)
 * (AlCalzone) detect and allow short github URL format when (auto-)installing adapters (`iobroker url User/repo#branchorcommit`)
 * (foxriver76) handling major upgrades more carefully (CLI on upgrade will show if it's a major upgrade  and major upgrades will be skipped on upgrade all when executed by admin
+* (foxriver76) enhance setup (and setup first) with redis to all port configuration
 
 **Optimizations and Fixes**
 * (foxriver76) Fix failed logins if username is uppercase, be reworking user logic and caching
@@ -45,9 +46,8 @@
 * (AlCalzone) Remove hardcoded references to GitHub master branch because newer repositories use "main"
 * (Apollon77, foxriver, bluefox, AlCalzone) Several fixes and refactorings tp prevent potential crash cases reported by Sentry and other cases
 
-
 **Developer relevant DEPRECATIONS/WARNINGS**
-* (foxriver76) we warn if object not exists when setting a state via adapter.set*State* - If this is NOT wanted the adapter needs to be initialized with strictObjectChecks = false!!
+* (foxriver76) we warn if object not exists when setting a state via adapter.set*State*. Adjust your code that a state value is NOT set before the object is successfully created. If this deep check is NOT wanted for performance reasons the adapter needs to be initialized with strictObjectChecks = false!!
 * (foxriver76) readFile should not validate meta object, we now throw on writeFile if id is no valid meta object
 * (AlCalzone) update Forbidden ID Characters: use Unicode properties to define which characters are allowed instead of blacklisting. For ASCII the allowed characters are the same as before - for other languages mainly character class of Unicode are allowed!
 * (foxriver76) Throw on invalid setState objects; was logged as deprecated before
