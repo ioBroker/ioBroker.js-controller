@@ -319,7 +319,7 @@ function register(it, expect, context) {
         // remove normal user from normal group
         err = await cli.processCommandAsync(context.objects, context.states, 'setup', ['first'], {});
         expect(err).to.be.not.ok;
-    }).timeout(40000);
+    }).timeout(20000);
 
     // setup custom
     // url
