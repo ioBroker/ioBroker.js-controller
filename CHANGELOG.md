@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.2.0 (2020-09-xx) Release G... WIP!!!
+## 3.2.0 (2021-01-xx) Release Grace WIP!!!
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x
 
