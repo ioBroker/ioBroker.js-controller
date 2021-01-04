@@ -31,7 +31,7 @@ You can get your personal key [here](https://developer.lametric.com/).
 - Activate/Deactivate bluetooth and change bluetooth name
 - Switch between apps (next, previous, go to specific app)
 - Send notifications with blockly (with configurable priority, sound, icons, text, ...)
-- Control special apps like radio, stopwatch or weather
+- Control special apps like clock, radio, stopwatch or weather
 - Use *My Data (DIY)* LaMetric App to display persistent information
 
 Features are limited by the [official API features](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html).
@@ -50,7 +50,7 @@ If you want to use chart frames, you have to specify an array of numbers as a fr
 
 ![chart data frames](docs/blockly3.png)
 
-## My Data (DIY)
+## My Data (DIY) *(version > 1.1.0)*
 
 LaMetric offers an app (on the integrated app market) to poll custom data. This app is called [My Data DIY](https://apps.lametric.com/apps/my_data__diy_/8942). This adapter creates a new state in the required format.
 You can use the Simple API Adapter to transfer the data to the LaMetric Time.
@@ -85,7 +85,7 @@ http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
 
 **Ensure to update IP and port in the URL if necessary!**
 
-### Frame Configuration
+### Frame Configuration *(version > 1.1.0)*
 
 - Use the plus icon to add as many frames as you want
 - Icon: Choose an icon from the [official website](https://developer.lametric.com/icons) and put the ID in the configuration field. **Important: Add an i (for static icons) or an a (for animated icons) as a prefix for that ID. (Example: `i3389`)
@@ -94,6 +94,23 @@ http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
 Example configuration of 2 frames:
 
 ![example frame config](docs/myDataDIYConfig.png)
+
+## Special Apps / Widgets *(version > 1.1.2)*
+
+You can control some apps with custom information
+
+### clock.clockface
+
+Allowed values are:
+
+- one of `weather`, `page_a_day`, `custom` or `none`
+- custom icon data in format `data:image/png;base64,<base64 encoded png binary>` or `data:image/gif;base64,<base64 encoded gif binary>`
+
+Example: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOklEQVQYlWNUVFBgwAeYcEncv//gP04FMEmsCmCSiooKjHAFMEF0SRQTsEnCFcAE0SUZGBgYGAl5EwA+6RhuHb9bggAAAABJRU5ErkJggg==`
+
+### countdown.configure
+
+Allowed value: Time in seconds
 
 ## Scripts
 
@@ -176,6 +193,11 @@ show();
 ```
 
 ## Changelog
+
+### 1.1.2
+
+* (klein0r) Delete app channels if app was deleted on LaMetric
+* (klein0r) Custom app configuration (clockface, countdown duration)
 
 ### 1.1.1
 

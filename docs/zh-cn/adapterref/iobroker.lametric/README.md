@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: kOs+oAaM15EyAFrv0XnOOjsTZQ4ElAGUA1oeP3C2Quc=
+hash: bOe4RZ4iOCvZilH76augOpu6bsiQq/LtFuQnnjGePXY=
 ---
 ![商标](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -34,7 +34,7 @@ hash: kOs+oAaM15EyAFrv0XnOOjsTZQ4ElAGUA1oeP3C2Quc=
 -激活/停用蓝牙并更改蓝牙名称
 -在应用之间切换（下一个，上一个，转到特定的应用）
 -以块状发送通知（具有可配置的优先级，声音，图标，文本等）
--控制特殊的应用程序，例如收音机，秒表或天气
+-控制时钟，收音机，秒表或天气等特殊应用
 -使用*我的数据（DIY）* LaMetric App显示永久信息
 
 功能受[官方API功能](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html)的限制。
@@ -52,7 +52,7 @@ hash: kOs+oAaM15EyAFrv0XnOOjsTZQ4ElAGUA1oeP3C2Quc=
 
 ![图表数据框](../../../en/adapterref/iobroker.lametric/docs/blockly3.png)
 
-##我的数据（DIY）
+##我的数据（DIY）*（版本> 1.1.0）*
 LaMetric提供了一个应用程序（在集成应用程序市场上）以轮询自定义数据。这个程序叫做[我的数据DIY](https://apps.lametric.com/apps/my_data__diy_/8942)。该适配器以所需格式创建新状态。
 您可以使用简单API适配器将数据传输到LaMetric Time。
 
@@ -84,7 +84,7 @@ http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
 
 **如有必要，请确保更新URL中的IP和端口！**
 
-###框架配置
+###框架配置*（版本> 1.1.0）*
 -使用加号图标可以添加任意数量的帧
 -图标：从[官方网站]（https://developer.lametric.com/icons）中选择一个图标，然后将ID放在配置字段中。 **重要提示：添加一个i（用于静态图标）或a（用于动画图标）作为该ID的前缀。 （例如：“ i3389”）
 -文字：只需输入框架的文字信息即可。您可以在花括号中使用状态。这些信息将被替换为状态的相应值。 （例如：“ {youtube.0.channels.HausAutomatisierungCom.statistics.subscriberCount}订阅者”）
@@ -92,6 +92,20 @@ http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
 2帧的示例配置：
 
 ![示例框架配置](../../../en/adapterref/iobroker.lametric/docs/myDataDIYConfig.png)
+
+##特殊应用/小部件*（版本> 1.1.2）*
+您可以使用自定义信息控制某些应用
+
+### Clock.clockface
+允许的值为：
+
+-“天气”，“ page_a_day”，“自定义”或“无”之一
+-格式为`data：image / png; base64，<base64编码的png二进制>或`data：image / gif; base64，<base64编码的gif二进制>的自定义图标数据
+
+示例：`data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOklEQVQYlWNUVFBgwAeYcEncv//gP04FMEmsCmCSiooKjHAFMEF0SRQTsEnCFcAE0SUZGBgYGAl5EwA+6RhuHb9bggAAAABJRU5ErkJggg==`
+
+### Countdown.configure
+允许的值：以秒为单位的时间
 
 ##脚本
 要在您的公制上显示消息，只需使用脚本适配器将消息发送到该实例：
@@ -173,6 +187,11 @@ show();
 ```
 
 ## Changelog
+
+### 1.1.2
+
+* (klein0r) Delete app channels if app was deleted on LaMetric
+* (klein0r) Custom app configuration (clockface, countdown duration)
 
 ### 1.1.1
 

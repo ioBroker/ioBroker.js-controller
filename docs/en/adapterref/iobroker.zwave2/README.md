@@ -40,6 +40,9 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.8.4 (2021-01-03)
+* Logfiles are created again
+
 ### 1.8.3 (2020-12-30)
 * Added a config file for `Technisat Dimmer and series switch`
 * The `level low` property of the `Battery CC` is now called `Battery Level Low`
@@ -79,10 +82,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 * Empty user codes are now also handled as strings instead of Buffer objects
 * The `targetValue` property for the `Binary Switch`, `Multilevel Switch` and `Basic` CCs is now created even if it has no value
 * Values for Notification events (one-time events) are now created. Previously only Notification variables were available as states
-
-### 1.7.10 (2020-11-04)
-* Improved compatibility with devices that don't follow the `User Code CC` and `Notification CC` specifications correctly (like Zipato Keypad)
-* Added the ability to edit binary values (e.g. RFID codes) using hexadecimal strings, e.g. `0xbada55`.
 
 ## License
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: /M83RywTZxXt+UVKfss6tcKIoeODTwnUCt8VByMtlk8=
+hash: CzrM2sVnQGvb4GqUv79oQsY4U9EUf8OID4uDnT/3EqU=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -145,6 +145,12 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 
 |选项|说明| -------------------------- | --------------------- -------------------------------------------------- ---------------- |没有温控器的变化将被忽略|作为替代|温控器的变化被视为优先；必须在heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime中提前设置替代时间。 |如果未设置替代时间，则不执行替代|作为新的配置文件设置|恒温器的变化被视为当前温度曲线期间的目标温度|直到下一个轮廓点|从恒温器的变化视为目标温度，直到下一个轮廓点。这是手动模式，因此仅使用窗口传感器。所有其他| |增加/减少被忽略。每个房间中都有一个数据点，可以在到达下一个配置文件点之前禁用手动模式。
 
+##温控器处理“窗口打开”
+一些恒温器可以自己处理“窗口打开”。在那些情况下，会配置车窗传感器和恒温器之间的直接连接，并且在打开车窗时恒温器会降低其目标温度。
+结合选项“使用恒温器的更改” /“直到下一个配置文件点”将导致此状态变为意外的手动状态。在这种情况下，将使用降低的温度直到下一个轮廓点。
+但是adpater可以处理此行为。您必须启用选项“ Thermostat处理'Window is Open'”，并且还可以在适配器中配置窗口传感器。
+当窗口打开时，适配器等待最大值。恒温器设定的新目标温度为3秒。如果在那段时间内收到新的目标温度，它将用作降低的绝对温度。状态将变为“自动打开窗口”。窗户一旦关闭，状态就会恢复为自动，并且恒温器会将原始目标温度设置为“注意” **，在这种情况下，请勿使用“传感器打开延迟”。如果使用它，则从恒温器接收到目标温度后，将出现“打开窗口”事件。最终以手动状态结束。
+
 ##问题和功能请求
 *如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues）的GitHub问题部分内创建一个问题。 ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
 
@@ -157,7 +163,7 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 
 ## Changelog
 
-### 2.0.0 (2020-12-xx)
+### 2.0.0 (2021-01-xx)
 * (René) internal refactoring
 
 **ATTENTION: breaking changes !!!!**
@@ -176,6 +182,8 @@ a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降
 * limits and step widh for profil temperatures adjustable in admin for Pittini vis
 * simple window status view (in html) for Pittini vis added
 * room state as simple html table for vis added
+* (optionally) extend override when temperature is changed; in standard new temperature is set, but timer is not changed
+* (optionally) Thermostat handles "window is open"
 * issues in github: 
 	* #161 Profil springt zur angegebenen Zeit nicht um
 	* #153 cron Probleme beim ändern eines Profils mittels Javascript
@@ -390,7 +398,7 @@ Attention: some changes in datapoints!!
 
 ## License
 
-Copyright (C) <2019-2020>  <info@rg-engineering.eu>
+Copyright (C) <2019-2021>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

@@ -329,15 +329,15 @@ Settings that are not listed in the table below are self-explanatory.
         </tr>
         <tr>
             <td>value list</td>
-            <td>Method of data of menu: value list<br>Define the number of menu entries by adding values that will be set to the datapoint. Entries must be separeted by comma</td>
+            <td>Method of data of menu: value list<br>Define the number of menu entries by adding values that will be set to the datapoint. Entries must be separeted by semicolon</td>
         </tr>
         <tr>
         <td>value list: labels</td>
-            <td>Method of data of menu: value list<br>Define the related labels of the values. Entries must be separeted by comma</td>
+            <td>Method of data of menu: value list<br>Define the related labels of the values. Entries must be separeted by semicolon</td>
         </tr>
         <tr>
         <td>value list: labels</td>
-            <td>Method of data of menu: value list<br>Define the related icons of the values. Entries must be separeted by comma. You can use image path or Material Design Icons name</td>
+            <td>Method of data of menu: value list<br>Define the related icons of the values. Entries must be separeted by semicolon. You can use image path or Material Design Icons name</td>
         </tr>                
     </tbody>
 </table>
@@ -396,15 +396,15 @@ Settings that are not listed in the table below are self-explanatory.
         </tr>
         <tr>
             <td>value list</td>
-            <td>Method of data of menu: value list<br>Define the number of menu entries by adding values that will be set to the datapoint. Entries must be separeted by comma</td>
+            <td>Method of data of menu: value list<br>Define the number of menu entries by adding values that will be set to the datapoint. Entries must be separeted by semicolon</td>
         </tr>
         <tr>
         <td>value list: labels</td>
-            <td>Method of data of menu: value list<br>Define the related labels of the values. Entries must be separeted by comma</td>
+            <td>Method of data of menu: value list<br>Define the related labels of the values. Entries must be separeted by semicolon</td>
         </tr>
         <tr>
         <td>value list: labels</td>
-            <td>Method of data of menu: value list<br>Define the related icons of the values. Entries must be separeted by comma. You can use image path or Material Design Icons name</td>
+            <td>Method of data of menu: value list<br>Define the related icons of the values. Entries must be separeted by semicolon. You can use image path or Material Design Icons name</td>
         </tr>                
     </tbody>
 </table>

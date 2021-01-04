@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: edj8SBd9oTq//doJa9AINv78laN6VGOWxWvQ8fHoRBA=
+hash: Qlptx8/xzNEFPEp1K4E/t4+ZfyEiCcsjhTbX0UIlc3o=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -16,7 +16,7 @@ hash: edj8SBd9oTq//doJa9AINv78laN6VGOWxWvQ8fHoRBA=
 ![Статус сборки](https://ci.appveyor.com/api/projects/status/2hvs4fvfms7xhmnw?svg=true)
 ![Лицензия](https://img.shields.io/badge/license-MIT-blue.svg?style=flat)
 ![Пожертвование Paypal](https://img.shields.io/badge/paypal-donate%20%7C%20spenden-green.svg)
-![NPM](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.vis-inventwo.png?downloads=true)
 
 # IoBroker.vis-inventorywo
 ## Schalter Widgets для адаптера ioBroker.vis
@@ -41,6 +41,14 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 [![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.0
+- Новый виджет: Farbslider
+- JSON Tabelle Spaltenformat boolean und number
+- JSON Tabelle Kopfzeile kann fixiert werden
+- JSON Tabelle Fehler beim sortieren behoben
+- JSON Tabelle konfigurierbare Dummyzeile wenn JSON leer ist
+- Fehler behoben
 
 ## 2.6.0
 - Универсальный и мульти-виджет Vergleichsoperatoren gleich, größer, kleiner und nicht hinzugefügt

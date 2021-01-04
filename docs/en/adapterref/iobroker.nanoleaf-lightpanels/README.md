@@ -9,7 +9,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.nanoleaf-lightpanels.png?downloads=true)](https://nodei.co/npm/iobroker.nanoleaf-lightpanels/)
 
-This is an ioBroker Adapter to control the nanoleaf Light Panels (formerly nanoleaf Aurora) or nanoleaf Canvas through the nanoleaf OpenAPI.
+This is an ioBroker Adapter to control the nanoleaf Light Panels (formerly nanoleaf Aurora) or nanoleaf Canvas and Shapes through the nanoleaf OpenAPI.
 
 ## Connection to the nanoleaf Light Panels/Canvas Controller:
 1. In the adapter settings you have to set the IP address or hostname and port of the nanoleaf Controller. You can use the search function to discover all nanoleaf devices in your network.
@@ -22,12 +22,13 @@ This is an ioBroker Adapter to control the nanoleaf Light Panels (formerly nanol
 5. Have fun!
 
 ### Direct Status update via Server Sent Events (SSE)
-Since Light Panels firmware version > 3.1.0 and Canvas firmware version > 1.1.0 Server Sent Events (SSE) can be used for direct status updates. For Canvas devices touch events are supported.
+Since Light Panels firmware version > 3.1.0 and Canvas firmware version > 1.1.0 Server Sent Events (SSE) can be used for direct status updates. For Canvas and Shapes devices touch events are supported.
 
-_Please note:_ to detect if nanoleaf device is still alive, SSDP Notify messages were sent from nanoleaf device every 60 seconds. Please ensure you can receive UDP multicast messages on port 1900 (check firewall and routing). Otherwise you will get error messages in the adapter that connection was lost. If you have problems with keep alive, please set the correct adapter interface in admin settings for the nanoleaf adapter.
+_Please note:_ to detect if nanoleaf device is still alive, SSDP notify messages were sent from nanoleaf device every 60 seconds. Please ensure you can receive UDP multicast messages on port 1900 (check firewall and routing). Otherwise you will get error messages in the adapter that connection was lost. If you have problems with keep alive, please set the correct adapter interface in admin settings for the nanoleaf adapter.
 For searching devices please ensure you can receive traffic on UDP port 5000.
+I noticed that some nanoleaf devices suddenly stop sending the SSDP notify messages so connection will not be detected anymore. This is an issue with the nanoleaf device itself. People how have this problem can enable the usage of the keep alive polling mechanism instead of SSDP notify messages in the additional adapter settings.
 
-The setting for the status update polling interval only affects devices with lower firmware versions where polling is used for status updates.
+The setting for the status update polling interval only affects devices with lower firmware versions where polling is used for status updates or if the SSE function is disabled in the additional adapter settings.
 
 ## Alexa
 You can control the nanoleaf Light Panels/Canvas with Alexa via ioBroker (Cloud-Adapter).
@@ -51,6 +52,10 @@ To control and visualize the color you have to install the color picker style Wi
 You can use the nanoleaf vis demo project found in the /vis subfolder on github.
 
 ## Changelog
+
+### 1.2.0 (2021-01-03)
+* (daniel_2k) new: possibility to use polling for keep alive detection instead of SSDP notify messages (for nanoleaf devices which stop sending SSDP notify packages)
+* (daniel_2k) changed: small internal adjustments
 
 ### 1.1.1 (2020-12-27)
 * (daniel_2k) fixed: error in device detection

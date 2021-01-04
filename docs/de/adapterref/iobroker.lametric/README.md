@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: kOs+oAaM15EyAFrv0XnOOjsTZQ4ElAGUA1oeP3C2Quc=
+hash: bOe4RZ4iOCvZilH76augOpu6bsiQq/LtFuQnnjGePXY=
 ---
 ![Logo](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -34,7 +34,7 @@ Sie können Ihren persönlichen Schlüssel [Hier](https://developer.lametric.com
 - Aktivieren / Deaktivieren Sie Bluetooth und ändern Sie den Bluetooth-Namen
 - Zwischen Apps wechseln (weiter, vorher, zu einer bestimmten App gehen)
 - Benachrichtigungen blockweise senden (mit konfigurierbarer Priorität, Ton, Symbolen, Text, ...)
-- Steuern Sie spezielle Apps wie Radio, Stoppuhr oder Wetter
+- Steuern Sie spezielle Apps wie Uhr, Radio, Stoppuhr oder Wetter
 - Verwenden Sie *My Data (DIY)* LaMetric App, um dauerhafte Informationen anzuzeigen
 
 Funktionen sind durch die [offizielle API-Funktionen](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html) begrenzt.
@@ -52,7 +52,7 @@ Wenn Sie Diagrammrahmen verwenden möchten, müssen Sie ein Array von Zahlen als
 
 ![Diagrammdatenrahmen](../../../en/adapterref/iobroker.lametric/docs/blockly3.png)
 
-## Meine Daten (DIY)
+## Meine Daten (DIY) *(Version> 1.1.0)*
 LaMetric bietet eine App (auf dem integrierten App-Markt) zum Abfragen benutzerdefinierter Daten. Diese App heißt [Meine Daten DIY](https://apps.lametric.com/apps/my_data__diy_/8942). Dieser Adapter erstellt einen neuen Status im erforderlichen Format.
 Mit dem Simple API Adapter können Sie die Daten zur LaMetric Time übertragen.
 
@@ -84,7 +84,7 @@ http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
 
 ** Stellen Sie sicher, dass IP und Port in der URL aktualisiert werden, falls erforderlich! **
 
-### Rahmenkonfiguration
+### Rahmenkonfiguration *(Version> 1.1.0)*
 - Verwenden Sie das Plus-Symbol, um so viele Frames hinzuzufügen, wie Sie möchten
 - Symbol: Wählen Sie ein Symbol auf der [offiziellen Website] (https://developer.lametric.com/icons) und geben Sie die ID in das Konfigurationsfeld ein. ** Wichtig: Fügen Sie ein i (für statische Symbole) oder ein a (für animierte Symbole) als Präfix für diese ID hinzu. (Beispiel: "i3389")
 - Text: Geben Sie einfach die Textinformationen für den Rahmen ein. Sie können Zustände in geschweiften Klammern verwenden. Diese Informationen werden durch den entsprechenden Wert des Status ersetzt. (Beispiel: `{youtube.0.channels.HausAutomatisierungCom.statistics.subscriberCount} Subscribers`)
@@ -92,6 +92,20 @@ http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
 Beispielkonfiguration von 2 Frames:
 
 ![Beispiel Frame-Konfiguration](../../../en/adapterref/iobroker.lametric/docs/myDataDIYConfig.png)
+
+## Spezielle Apps / Widgets *(Version> 1.1.2)*
+Sie können einige Apps mit benutzerdefinierten Informationen steuern
+
+### Clock.clockface
+Zulässige Werte sind:
+
+- eines von "Wetter", "page_a_day", "custom" oder "none"
+- Benutzerdefinierte Symboldaten im Format "Daten: Bild / PNG; Base64, <Base64-codierte PNG-Binärdatei" oder "Daten: Bild / GIF; Basis64, <Base64-codierte GIF-Binärdatei"
+
+Beispiel: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOklEQVQYlWNUVFBgwAeYcEncv//gP04FMEmsCmCSiooKjHAFMEF0SRQTsEnCFcAE0SUZGBgYGAl5EwA+6RhuHb9bggAAAABJRU5ErkJggg==`
+
+### Countdown.configure
+Zulässiger Wert: Zeit in Sekunden
 
 ## Skripte
 Um die Nachricht in Ihrer la-Metrik anzuzeigen, senden Sie einfach eine Nachricht mit dem Skriptadapter an diese Instanz:
@@ -173,6 +187,11 @@ show();
 ```
 
 ## Changelog
+
+### 1.1.2
+
+* (klein0r) Delete app channels if app was deleted on LaMetric
+* (klein0r) Custom app configuration (clockface, countdown duration)
 
 ### 1.1.1
 

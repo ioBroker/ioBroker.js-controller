@@ -65,6 +65,12 @@ You may find more videos on the [YouTube Channels](https://www.youtube.com/chann
 Please also see [release page](https://github.com/Zefau/ioBroker.jarvis/releases) for changelog and detailed information.
 
 
+### v2.1.0-rc.4 - Into the Wild (2021-01-01)
+
+#### :star2: newly added features
+- Support import of more devices from ioBroker.hm-rpc ([414](https://github.com/Zefau/ioBroker.jarvis/issues/414))
+
+
 ### v2.1.0-rc.2 - Spotlight (2020-12-30)
 
 #### :star2: newly added features

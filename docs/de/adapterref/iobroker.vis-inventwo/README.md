@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: edj8SBd9oTq//doJa9AINv78laN6VGOWxWvQ8fHoRBA=
+hash: Qlptx8/xzNEFPEp1K4E/t4+ZfyEiCcsjhTbX0UIlc3o=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -41,6 +41,14 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 [![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.0
+- Neues Widget: Farbslider
+- JSON Tabelle Spaltenformat boolean und number
+- JSON Tabelle Kopfzeile kann fixiert werden
+- JSON Tabelle Fehler beim sortieren gehört
+- JSON Tabelle konfigurierbare Dummyzeile wenn JSON leer ist
+- Fehler gehört
 
 ## 2.6.0
 - Universal- & Multi-Widget Vergleichsoperatoren gleich, gehören, kleiner und nicht hinzugefügt
@@ -143,7 +151,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 
 ## 2.0.0
 - Switch, Button, Nav und Background Widget (sowie die kleinen Ausführungen) zu einem eigenen Widget zussammen Verluste -> dem Universal Widget
-- Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können.
+- Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können
 - Image Widget kann nun auf Datenpunkt kaufen
 - Radiobuttons hinzugefügt
 - Werteliste hinzugefügt

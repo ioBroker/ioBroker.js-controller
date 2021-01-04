@@ -1,8 +1,10 @@
 ---
-BADGE-Number of Installations: http://iobroker.live/badges/fritzdect-stable.svg
 BADGE-NPM version: http://img.shields.io/npm/v/iobroker.fritzdect.svg
 BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.fritzdect.svg
-BADGE-Build Status: https://travis-ci.org/foxthefox/ioBroker.fritzdect.svg?branch=master
+BADGE-Number of Installations (latest): http://iobroker.live/badges/fritzdect-installed.svg
+BADGE-Number of Installations (stable): http://iobroker.live/badges/fritzdect-stable.svg
+BADGE-Dependency Status: https://img.shields.io/david/foxthefox/iobroker.fritzdect.svg
+BADGE-Known Vulnerabilities: https://snyk.io/test/github/foxthefox/ioBroker.fritzdect/badge.svg
 BADGE-NPM: https://nodei.co/npm/iobroker.fritzdect.png?downloads=true
 ---
 ![Logo](../../admin/fritzdect_logo.png)
@@ -67,8 +69,11 @@ Vergleichbar für den Soll-/Istverlaufs ist demnach atualtemp und targettemp.
 Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig Information ist der debug modus über die Experteneinstellung der Instanz vorzuwählen.
 
 ## Changelog
+### 2.1.0
+* more refactoring => adapter based on class, gitCI instead of travisCI
+* new thromastat buttons (setmodeauto, setmodeon,setmodeoff)
 
-### 2.0.0 Breaking Changes in datapoints and structures (wip)
+### 2.0.0 Breaking Changes in datapoints and structures (npm)
 * refactoring of the code
 * new fritzapi to either used md5 or pbkf2 decryption, needed for fritzbox FW >7.24
 * **usage of AHA API returned values as datapoint identifier**
@@ -77,6 +82,7 @@ Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig In
 * accepting blocktime from fritzbox
 * announcing new detected datapoints delivered by fritzbox
 * option strictSSL (experimental)
+
 
 ### 1.1.4 (npm)
 * blinds control

@@ -75,6 +75,14 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+## 2.7.0
+- Neues Widget: Farbslider
+- JSON Tabelle Spaltenformat boolean und number
+- JSON Tabelle Kopfzeile kann fixiert werden
+- JSON Tabelle Fehler beim sortieren behoben
+- JSON Tabelle konfigurierbare Dummyzeile wenn JSON leer ist
+- Fehler behoben
+
 ## 2.6.0
 - Universal- & Multi-Widget Vergleichsoperatoren gleich, größer, kleiner und nicht hinzugefügt
 - Slider Min/Max invertieren

@@ -152,6 +152,18 @@ Many user asked for an option to take over changes from thermostat into adapter.
 |                          | increases / decreases are ignored. There is a datapoint in every room to disable manual mode before reaching next profile point.
 
 
+## Thermostat handles "window is open"
+Some thermostats can handle "window is open" by itself. In those cases a direct connection between window sensor and thermostat is configured and thermostat reduces
+target temperature by itslef when a window is opened.
+In combination with option "use of changes from thermostat"  / "until next profil point" will lead this to an unexpected manual state. In this situation the reduced 
+temperature  would be used until next profil point.
+But the adpater can handle this behavior. You must enable option "Thermostat handles 'Window is Open'" and you can configure window sensors also in adapter.
+When window is opened the adapter waits for max. 3 seconds for new target temperature from thermostat. If it receives a new target temperature in that time it will be used
+as a reduced absolut temperature. Status will then be "auto window open". As soon as the window is closed the status goes back to auto and thermostat sets back the
+original target temperature
+**Attention** do not use Sensor Open Delay in that case. If you use it, the Window open event appears after target temperature received from thermostat. This ends up in 
+manual state. 
+
 ## Issues and Feature Requests
 * If you are faced with any bugs or have feature requests for this adapter, please create an issue within the GitHub issue section of the adapter at [github](https://github.com/rg-engineering/ioBroker.heatingcontrol/issues). Any feedback is appreciated and will help to improve this adapter.
 
@@ -166,7 +178,7 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 2.0.0 (2020-12-xx)
+### 2.0.0 (2021-01-xx)
 * (René) internal refactoring
 
 **ATTENTION: breaking changes !!!!**
@@ -186,6 +198,7 @@ When the adapter crashes or an other Code error happens, this error message that
 * simple window status view (in html) for Pittini vis added
 * room state as simple html table for vis added
 * (optionally) extend override when temperature is changed; in standard new temperature is set, but timer is not changed
+* (optionally) Thermostat handles "window is open"
 * issues in github: 
 	* #161 Profil springt zur angegebenen Zeit nicht um
 	* #153 cron Probleme beim ändern eines Profils mittels Javascript
@@ -400,7 +413,7 @@ Attention: some changes in datapoints!!
 
 ## License
 
-Copyright (C) <2019-2020>  <info@rg-engineering.eu>
+Copyright (C) <2019-2021>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

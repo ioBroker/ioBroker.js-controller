@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: kOs+oAaM15EyAFrv0XnOOjsTZQ4ElAGUA1oeP3C2Quc=
+hash: bOe4RZ4iOCvZilH76augOpu6bsiQq/LtFuQnnjGePXY=
 ---
 ![Логотип](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -34,7 +34,7 @@ hash: kOs+oAaM15EyAFrv0XnOOjsTZQ4ElAGUA1oeP3C2Quc=
 - Активировать / деактивировать Bluetooth и изменить имя Bluetooth
 - Переключение между приложениями (следующее, предыдущее, перейти к определенному приложению)
 - Отправлять уведомления блочно (с настраиваемым приоритетом, звуком, значками, текстом и т. Д.)
-- Управляйте специальными приложениями, такими как радио, секундомер или погода
+- Управляйте специальными приложениями, такими как часы, радио, секундомер или погода
 - Используйте приложение *Мои данные (DIY)* LaMetric для отображения постоянной информации
 
 Возможности ограничены [официальные функции API](https://lametric-documentation.readthedocs.io/en/latest/reference-docs/lametric-time-reference.html).
@@ -52,7 +52,7 @@ hash: kOs+oAaM15EyAFrv0XnOOjsTZQ4ElAGUA1oeP3C2Quc=
 
 ![фреймы данных диаграммы](../../../en/adapterref/iobroker.lametric/docs/blockly3.png)
 
-## Мои данные (DIY)
+## Мои данные (DIY) *(версия> 1.1.0)*
 LaMetric предлагает приложение (на рынке интегрированных приложений) для опроса пользовательских данных. Это приложение называется [Мои данные DIY](https://apps.lametric.com/apps/my_data__diy_/8942). Этот адаптер создает новое состояние в требуемом формате.
 Вы можете использовать Simple API Adapter для передачи данных в LaMetric Time.
 
@@ -84,7 +84,7 @@ http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
 
 ** При необходимости обновите IP-адрес и порт в URL-адресе! **
 
-### Конфигурация рамы
+### Конфигурация фрейма *(версия> 1.1.0)*
 - Используйте значок плюса, чтобы добавить столько кадров, сколько хотите
 - Значок: выберите значок на [официальном сайте] (https://developer.lametric.com/icons) и введите идентификатор в поле конфигурации. ** Важно: добавьте i (для статических значков) или a (для анимированных значков) в качестве префикса для этого идентификатора. (Пример: `i3389`)
 - Текст: просто введите текстовую информацию для рамки. Вы можете использовать состояния в фигурных скобках. Эта информация будет заменена соответствующим значением состояния. (Пример: `{youtube.0.channels.HausAutomatisierungCom.statistics.subscriberCount} Подписчики`)
@@ -92,6 +92,20 @@ http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
 Пример конфигурации 2 кадров:
 
 ![пример конфигурации кадра](../../../en/adapterref/iobroker.lametric/docs/myDataDIYConfig.png)
+
+## Специальные приложения / виджеты *(версия> 1.1.2)*
+Вы можете управлять некоторыми приложениями с помощью специальной информации
+
+### Clock.clockface
+Допустимые значения:
+
+- один из вариантов: weather, page_a_day, custom или none
+- данные пользовательского значка в формате `data: image / png; base64, <двоичный png в кодировке base64>` или `data: image / gif; base64, <двоичный gif в кодировке base64>`
+
+Пример: `data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAgAAAAICAYAAADED76LAAAAOklEQVQYlWNUVFBgwAeYcEncv//gP04FMEmsCmCSiooKjHAFMEF0SRQTsEnCFcAE0SUZGBgYGAl5EwA+6RhuHb9bggAAAABJRU5ErkJggg==`
+
+### Countdown.configure
+Допустимое значение: время в секундах.
 
 ## Скрипты
 Чтобы отобразить сообщение на вашей метрике la, просто отправьте сообщение этому экземпляру с помощью адаптера сценария:
@@ -173,6 +187,11 @@ show();
 ```
 
 ## Changelog
+
+### 1.1.2
+
+* (klein0r) Delete app channels if app was deleted on LaMetric
+* (klein0r) Custom app configuration (clockface, countdown duration)
 
 ### 1.1.1
 

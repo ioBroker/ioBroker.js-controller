@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: edj8SBd9oTq//doJa9AINv78laN6VGOWxWvQ8fHoRBA=
+hash: Qlptx8/xzNEFPEp1K4E/t4+ZfyEiCcsjhTbX0UIlc3o=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -26,7 +26,7 @@ hash: edj8SBd9oTq//doJa9AINv78laN6VGOWxWvQ8fHoRBA=
 ###### .. v 1.3.8
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Preview.png)
 
@@ -41,6 +41,14 @@ hash: edj8SBd9oTq//doJa9AINv78laN6VGOWxWvQ8fHoRBA=
 [![Spende]（http://resources.inventwo.com/github/inventwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.0
+-Neues小工具：Farbslider
+-JSON Tabelle Spaltenformat布尔值和数字
+-JSON Tabelle Kopfzeile kann fixiert werden
+-JSON Tabelle Fehler beim sortieren behoben
+-JSON Tabelle konfigurierbare Dummyzeile wenn JSON学习者
+-费勒·贝霍本
 
 ## 2.6.0
 -通用和多小部件Vergleichsoperatoren gleich，größer，kleiner und nichthinzugefügt
@@ -143,7 +151,7 @@ hash: edj8SBd9oTq//doJa9AINv78laN6VGOWxWvQ8fHoRBA=
 
 ## 2.0.0
 -开关，按钮，导航和背景小部件（显示小部件）-> dem通用小部件
--多种小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere）
+-多功能小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere Datenpunkte und Wertegeprüftwerden kann（Ähnlichder Signalbild Funktion）
 -图像小部件kann nun auf Datenpunktprüfen
 -单选按钮hinzugefügt
 -Wertelistehinzugefügt（Kann Liste aus einem Datenpunkt oder manuell eingetragenem Text erstellen）
@@ -224,7 +232,7 @@ hash: edj8SBd9oTq//doJa9AINv78laN6VGOWxWvQ8fHoRBA=
 ...
 
 ### 0.0.1
--Idee ist Geboren
+-Idee ist geboren
 
 ---
 

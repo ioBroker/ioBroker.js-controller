@@ -112,6 +112,10 @@ Door and window states:
 
 ## Changelog
 
+### 0.0.22
+
+- calculate outside temperatur in °C also for Skoda and Audi
+
 ### 0.0.21
 
 - add remotes for id

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nanoleaf-lightpanels/README.md
 title: ioBroker.nanoleaf-lightpanels Adapter
-hash: JOJd7PfdENk2ezyZ4MVLXehagWUnnuGik3WsCynFRog=
+hash: i+JgMJTd6a/CI3m4/mF4qoaX3UiBMFfPXnNlDbV8XDo=
 ---
 ![Logo](../../../en/adapterref/iobroker.nanoleaf-lightpanels/admin/nanoleaf-lightpanels.png)
 
@@ -16,9 +16,9 @@ hash: JOJd7PfdENk2ezyZ4MVLXehagWUnnuGik3WsCynFRog=
 # IoBroker.nanoleaf-lightpanels Adapter
 =================
 
-Dies ist ein ioBroker-Adapter zur Steuerung der Nanoleaf Light Panels (ehemals Nanoleaf Aurora) oder des Nanoleaf Canvas über das Nanoleaf OpenAPI.
+Dies ist ein ioBroker-Adapter zur Steuerung der Nanoleaf Light Panels (ehemals Nanoleaf Aurora) oder Nanoleaf Canvas and Shapes über das Nanoleaf OpenAPI.
 
-## Verbindung zum Nanoleaf Light Panels / Canvas Controller:
+## Anschluss an die Nanoleaf Light Panels / Canvas Controller:
 1. In den Adaptereinstellungen müssen Sie die IP-Adresse oder den Hostnamen und den Port des Nanoleaf-Controllers festlegen. Mit der Suchfunktion können Sie alle Nanoleaf-Geräte in Ihrem Netzwerk ermitteln.
 2. Das Nanoleaf OpenAPI benötigt ein Autorisierungstoken, um Zugriff auf das OpenAPI zu gewähren. Wenn Sie bereits einen haben, können Sie den Token hier eingeben und den nächsten Schritt überspringen.
 3. Wenn Sie kein Autorisierungstoken haben, müssen Sie es bei der Nanoleaf OpenAPI anfordern.
@@ -30,12 +30,13 @@ Klicken Sie dann innerhalb von 30 Sekunden auf die Schaltfläche 'Autorisierungs
 5. Viel Spaß!
 
 ### Direkte Statusaktualisierung über Server Sent Events (SSE)
-Da Light Panels Firmware-Version> 3.1.0 und Canvas-Firmware-Version> 1.1.0 Server Sent Events (SSE) für direkte Statusaktualisierungen verwendet werden können. Für Canvas-Geräte werden Berührungsereignisse unterstützt.
+Da Light Panels Firmware-Version> 3.1.0 und Canvas-Firmware-Version> 1.1.0 Server Sent Events (SSE) für direkte Statusaktualisierungen verwendet werden können. Für Canvas- und Shapes-Geräte werden Berührungsereignisse unterstützt.
 
-_Bitte beachten Sie: _ Um festzustellen, ob das Nanoleaf-Gerät noch am Leben ist, wurden alle 60 Sekunden SSDP-Benachrichtigungsnachrichten vom Nanoleaf-Gerät gesendet. Stellen Sie sicher, dass Sie UDP-Multicast-Nachrichten an Port 1900 empfangen können (überprüfen Sie die Firewall und das Routing). Andernfalls erhalten Sie im Adapter eine Fehlermeldung, dass die Verbindung unterbrochen wurde. Wenn Sie Probleme mit Keep Alive haben, stellen Sie bitte die richtige Adapterschnittstelle in den Admin-Einstellungen für den Nanoleaf-Adapter ein.
+_Bitte beachten Sie: _ Um festzustellen, ob das Nanoleaf-Gerät noch am Leben ist, wurden alle 60 Sekunden SSDP-Benachrichtigungsnachrichten vom Nanoleaf-Gerät gesendet. Stellen Sie sicher, dass Sie UDP-Multicast-Nachrichten an Port 1900 empfangen können (überprüfen Sie die Firewall und das Routing). Andernfalls erhalten Sie Fehlermeldungen im Adapter, dass die Verbindung unterbrochen wurde. Wenn Sie Probleme mit Keep Alive haben, stellen Sie bitte die richtige Adapterschnittstelle in den Admin-Einstellungen für den Nanoleaf-Adapter ein.
 Stellen Sie zum Suchen von Geräten sicher, dass Sie Datenverkehr über den UDP-Port 5000 empfangen können.
+Ich habe festgestellt, dass einige Nanoleaf-Geräte plötzlich keine SSDP-Benachrichtigungsnachrichten mehr senden, sodass keine Verbindung mehr erkannt wird. Dies ist ein Problem mit dem Nanoleaf-Gerät selbst. Personen mit diesem Problem können die Verwendung des Keep-Alive-Polling-Mechanismus anstelle von SSDP-Benachrichtigungsnachrichten in den zusätzlichen Adaptereinstellungen aktivieren.
 
-Die Einstellung für das Abfrageintervall für Statusaktualisierungen betrifft nur Geräte mit niedrigeren Firmware-Versionen, bei denen die Abfrage für Statusaktualisierungen verwendet wird.
+Die Einstellung für das Abfrageintervall für Statusaktualisierungen betrifft nur Geräte mit niedrigeren Firmware-Versionen, bei denen die Abfrage für Statusaktualisierungen verwendet wird oder wenn die SSE-Funktion in den zusätzlichen Adaptereinstellungen deaktiviert ist.
 
 ## Alexa
 Sie können die Nanoleaf Light Panels / Canvas mit Alexa über ioBroker (Cloud-Adapter) steuern.
@@ -60,6 +61,16 @@ Um die Farbe zu steuern und zu visualisieren, müssen Sie die Widgets im Farbaus
 Sie können das Nanoleaf-Vis-Demo-Projekt verwenden, das sich im Unterordner / vis auf github befindet.
 
 ## Changelog
+
+### 1.2.0 (2021-01-03)
+* (daniel_2k) new: possibility to use polling for keep alive detection instead of SSDP notify messages (for nanoleaf devices which stop sending SSDP notify packages)
+* (daniel_2k) changed: small internal adjustments
+
+### 1.1.1 (2020-12-27)
+* (daniel_2k) fixed: error in device detection
+
+### 1.1.0 (2020-12-27)
+* (daniel_2k) new: support nanoleaf Shapes
 
 ### 1.0.6 (2020-09-14)
 * (daniel_2k) changed: force status update for Canvas touch events

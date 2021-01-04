@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nanoleaf-lightpanels/README.md
 title: ioBroker.nanoleaf-lightpanels适配器
-hash: JOJd7PfdENk2ezyZ4MVLXehagWUnnuGik3WsCynFRog=
+hash: i+JgMJTd6a/CI3m4/mF4qoaX3UiBMFfPXnNlDbV8XDo=
 ---
 ![商标](../../../en/adapterref/iobroker.nanoleaf-lightpanels/admin/nanoleaf-lightpanels.png)
 
@@ -16,26 +16,27 @@ hash: JOJd7PfdENk2ezyZ4MVLXehagWUnnuGik3WsCynFRog=
 ＃ioBroker.nanoleaf-lightpanels适配器
 =================
 
-这是一个ioBroker适配器，可通过nanoleaf OpenAPI控制nanoleaf光面板（以前称为nanoleaf Aurora）或nanoleaf Canvas。
+这是一个ioBroker适配器，可通过nanoleaf OpenAPI控制nanoleaf光面板（以前称为nanoleaf Aurora）或nanoleaf Canvas和Shape。
 
 ##连接到nanoleaf灯光面板/画布控制器：
 1.在适配器设置中，您必须设置nanoleaf Controller的IP地址或主机名和端口。您可以使用搜索功能发现网络中的所有纳米叶设备。
 2. nanoleaf OpenAPI需要授权令牌才能授予对OpenAPI的访问权限。如果已经拥有一个令牌，则可以在此处输入令牌，然后跳过下一步。
 3.如果没有授权令牌，则需要从nanoleaf OpenAPI请求它。
 
-为此，通过按住设备上的电源按钮5到7秒钟，直到LED交替闪烁，将nanoleaf Controller设置为配对模式。
-然后在30秒内单击“获取授权令牌”按钮（配对模式在30秒后停止）。适配器必须正在运行！如果成功，则应在“身份验证令牌”字段中看到授权令牌。如果发生错误，则会弹出带有错误消息的窗口（详细信息可以在日志中看到）。
+为此，通过按住设备上的电源按钮5-7秒钟，直到LED交替闪烁，将nanoleaf Controller设置为配对模式。
+然后在30秒内单击“获取授权令牌”按钮（配对模式在30秒后停止）。适配器必须正在运行！如果成功，则应该在“身份验证令牌”字段中看到授权令牌。如果发生错误，则会弹出带有错误消息的窗口（详细信息可以在日志中看到）。
 
 4.保存设置。
 5.玩得开心！
 
-通过服务器发送事件（SSE）更新直接状态
-由于Light Panel固件版本> 3.1.0和Canvas固件版本> 1.1.0，因此服务器发送事件（SSE）可以用于直接状态更新。对于Canvas设备，支持触摸事件。
+通过服务器发送事件（SSE）###直接状态更新
+由于Light Panel固件版本> 3.1.0和Canvas固件版本> 1.1.0，因此服务器发送事件（SSE）可以用于直接状态更新。对于“画布和形状”设备，支持触摸事件。
 
-_请注意：_为检测nanoleaf设备是否仍然存在，每60秒从nanoleaf设备发送一次SSDP通知消息。请确保您可以在端口1900上接收UDP多播消息（检查防火墙和路由）。否则，您将在适配器中收到有关连接已丢失的错误消息。如果您在保持生命方面遇到问题，请在管理设置中为nanoleaf适配器设置正确的适配器接口。
+_请注意：_要检测nanoleaf设备是否仍在运行，SSDP通知消息每60秒从nanoleaf设备发送一次。请确保您可以在端口1900上接收UDP多播消息（检查防火墙和路由）。否则，您将在适配器中收到有关连接已丢失的错误消息。如果您在保持生命方面遇到问题，请在管理设置中为nanoleaf适配器设置正确的适配器接口。
 对于搜索设备，请确保可以在UDP端口5000上接收流量。
+我注意到某些纳米叶设备突然停止发送SSDP通知消息，因此将不再检测到连接。这是纳米叶装置本身的问题。遇到此问题的人可以启用保持活动轮询机制，而不必使用其他适配器设置中的SSDP通知消息。
 
-状态更新轮询间隔的设置仅影响使用轮询进行状态更新的固件版本较低的设备。
+状态更新轮询间隔的设置仅影响使用较低固件版本的设备，在这些固件中，轮询用于状态更新，或者在其他适配器设置中禁用了SSE功能。
 
 ## Alexa
 您可以通过ioBroker（云适配器）使用Alexa控制nanoleaf光面板/画布。
@@ -51,15 +52,25 @@ _请注意：_为检测nanoleaf设备是否仍然存在，每60秒从nanoleaf设
 在云适配器中使用相同的智能名称。
 
 ## IoBroker可视化
-可以在ioBroker可视化中通过使用基本小部件（例如“开/关单选按钮”）或用于控制功率状态，亮度，色相，饱和度和色温状态的滑块来控制ioafroker可视化中的nanoleaf光面板/画布。
+可以在ioBroker可视化中通过使用基本小部件（例如“开/关单选按钮”）或用于控制功率状态，亮度，色相，饱和度和色温状态的滑块来控制ioBroker可视化中的nanoleaf光面板/画布。
 
-对于效果，可以使用“选择ValueList”小部件将其用作下拉列表，然后将effectsList状态映射到该小部件的value和text属性（类型：“ {nanoleaf-lightpanels.0.LightPanels.effectsList}” ->大括号很重要！）
+对于效果，您可以使用“选择ValueList”小部件将其用作下拉列表，然后将effectsList状态映射到小部件的value和text属性（类型：“ {nanoleaf-lightpanels.0.LightPanels.effectsList}” ->大括号很重要！）
 
 要控制和显示颜色，您必须安装颜色选择器样式的小部件。您可以将RGB ID映射到colorRGB状态，也可以使用三个HSV状态。
 
 您可以使用在github上的/ vis子文件夹中找到的nanoleaf vis演示项目。
 
 ## Changelog
+
+### 1.2.0 (2021-01-03)
+* (daniel_2k) new: possibility to use polling for keep alive detection instead of SSDP notify messages (for nanoleaf devices which stop sending SSDP notify packages)
+* (daniel_2k) changed: small internal adjustments
+
+### 1.1.1 (2020-12-27)
+* (daniel_2k) fixed: error in device detection
+
+### 1.1.0 (2020-12-27)
+* (daniel_2k) new: support nanoleaf Shapes
 
 ### 1.0.6 (2020-09-14)
 * (daniel_2k) changed: force status update for Canvas touch events

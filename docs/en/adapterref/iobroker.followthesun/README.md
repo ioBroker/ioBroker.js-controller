@@ -54,7 +54,7 @@ Solar-noon values for some days like today, tomorrow or beginn of spring/summer/
 ## License
 MIT License
 
-Copyright (c) 2020 HGlab01 <iobroker.followthesun@gmail.com>
+Copyright (c) 2021 HGlab01 <iobroker.followthesun@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -189,6 +189,9 @@ Whitelist: If you only want to include events of a specific location use regular
 
 ## Changelog
 
+### 1.8.5 (2021-01-01)
+* (Apollon77) update ical library to prevent problems with RRULE parsing
+
 ### 1.8.4 (2020-12-27)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-ICAL-D)
 

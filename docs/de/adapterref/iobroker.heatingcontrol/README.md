@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: /M83RywTZxXt+UVKfss6tcKIoeODTwnUCt8VByMtlk8=
+hash: CzrM2sVnQGvb4GqUv79oQsY4U9EUf8OID4uDnT/3EqU=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -145,6 +145,12 @@ Viele Benutzer fragten nach einer Option, um Änderungen vom Thermostat in den A
 
 | Option | Beschreibung | -------------------------- | --------------------- -------------------------------------------------- ---------------- | nein | Änderungen vom Thermostat werden ignoriert als Überschreibung | Änderungen vom Thermostat werden als Außerkraftsetzung angesehen; Die Übersteuerungszeit muss im Voraus in der Heizungssteuerung.0.Rooms.RoomName.TemperaturOverrideTime | eingestellt werden | Wenn die Überschreibzeit nicht eingestellt ist, wird die Überschreibung nicht ausgeführt als neue Profileinstellung | Änderungen vom Thermostat werden als Zieltemperatur für die aktuelle Profilperiode verwendet bis zum nächsten Profilpunkt | Änderungen vom Thermostat werden als Zieltemperatur bis zum nächsten Profilpunkt verwendet. Dies ist ein manueller Modus, daher werden nur Fenstersensoren verwendet. Alle anderen | | Erhöhungen / Verringerungen werden ignoriert. In jedem Raum befindet sich ein Datenpunkt, um den manuellen Modus zu deaktivieren, bevor der nächste Profilpunkt erreicht wird.
 
+## Thermostat behandelt "Fenster ist offen"
+Einige Thermostate können "Fenster ist offen" von selbst handhaben. In diesen Fällen wird eine direkte Verbindung zwischen Fenstersensor und Thermostat konfiguriert und der Thermostat reduziert die Zieltemperatur beim Öffnen eines Fensters um das Selbst.
+In Kombination mit der Option "Verwendung von Änderungen vom Thermostat" / "bis zum nächsten Profilpunkt" führt dies zu einem unerwarteten manuellen Zustand. In dieser Situation würde die reduzierte Temperatur bis zum nächsten Profilpunkt verwendet.
+Aber der Adpater kann mit diesem Verhalten umgehen. Sie müssen die Option "Thermostat behandelt 'Fenster ist offen'" aktivieren und Sie können Fenstersensoren auch im Adapter konfigurieren.
+Beim Öffnen des Fensters wartet der Adapter auf max. 3 Sekunden für neue Zieltemperatur vom Thermostat. Wenn es in dieser Zeit eine neue Zieltemperatur erhält, wird es als reduzierte absolute Temperatur verwendet. Der Status lautet dann "Automatisches Fenster öffnen". Sobald das Fenster geschlossen wird, kehrt der Status zu Auto zurück und der Thermostat setzt die ursprüngliche Zieltemperatur zurück. **Achtung** Verwenden Sie in diesem Fall keine Sensoröffnungsverzögerung. Wenn Sie es verwenden, wird das Ereignis "Fenster öffnen" nach der vom Thermostat empfangenen Zieltemperatur angezeigt. Dies endet im manuellen Zustand.
+
 ## Probleme und Funktionsanforderungen
 * Wenn Sie auf Fehler stoßen oder Funktionsanforderungen für diesen Adapter haben, erstellen Sie bitte ein Problem im GitHub-Problemabschnitt des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
 
@@ -157,7 +163,7 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 
 ## Changelog
 
-### 2.0.0 (2020-12-xx)
+### 2.0.0 (2021-01-xx)
 * (René) internal refactoring
 
 **ATTENTION: breaking changes !!!!**
@@ -176,6 +182,8 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 * limits and step widh for profil temperatures adjustable in admin for Pittini vis
 * simple window status view (in html) for Pittini vis added
 * room state as simple html table for vis added
+* (optionally) extend override when temperature is changed; in standard new temperature is set, but timer is not changed
+* (optionally) Thermostat handles "window is open"
 * issues in github: 
 	* #161 Profil springt zur angegebenen Zeit nicht um
 	* #153 cron Probleme beim ändern eines Profils mittels Javascript
@@ -390,7 +398,7 @@ Attention: some changes in datapoints!!
 
 ## License
 
-Copyright (C) <2019-2020>  <info@rg-engineering.eu>
+Copyright (C) <2019-2021>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

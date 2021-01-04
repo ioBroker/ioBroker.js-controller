@@ -93,6 +93,14 @@ As first value the name from the warning message must be taken from the log. The
 	* (DutchmanNL) xxxx
 -->
 
+### 0.6.6 (2021-01-03)
+* (DutchmanNL) Bugfix : Wrong channel creation of _Impfungen
+* (DutchmanNL) BugfixWindows :Error: ENOENT: no such file or directory, open 'C:\opt\iobroker\iobroker-data\files\Impfquotenmonitoring.xlsx'
+
+### 0.6.5 (2021-01-02)
+* (DutchmanNL) implement Vaccination data for Germany, thank you @winnyschuster for
+[RKI-Impfquotenmonitoring Deutschland](https://forum.iobroker.net/topic/40394/skript-rki-impfquotenmonitoring-deutschland-incl-b-länder/3)
+
 ### 0.6.4 (2020-12-29)
 * (DutchmanNL) change API from V2 to V3
 * (DutchmanNL) Add Last_Updated for city's/counties

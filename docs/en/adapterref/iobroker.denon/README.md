@@ -829,6 +829,14 @@ If you are missing any functions or detected a bug, please open an [issue](https
 The adapter is tested with an DENON AVR-X1200W and a Marantz SR5009.
 
 ## Changelog
+### 1.9.4 (2021-01-03)
+* (foxriver76) added missing rear height speaker states
+* (foxriver76) revert the last added options because they are not working as intended
+* (foxriver76) no longer remove digits and spaces from surroundMode response
+
+### 1.9.2 (2021-01-03)
+* (foxriver76) added some missing options for surroundMode
+
 ### 1.9.1 (2020-12-03)
 * (foxriver76) prevent writing in destroyed socket on adapter unload
 * (foxriver76) add subwoofer states for main zone

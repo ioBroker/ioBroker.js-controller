@@ -4,6 +4,7 @@
 ![Number of Installations](http://iobroker.live/badges/yahka-installed.svg) ![Number of Installations](http://iobroker.live/badges/yahka-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.yahka.svg)](https://www.npmjs.com/package/iobroker.yahka)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.yahka.svg)](https://www.npmjs.com/package/iobroker.yahka)
 [![Tests](https://travis-ci.org/ioBroker/ioBroker.yahka.svg?branch=master)](https://travis-ci.org/ioBroker/ioBroker.yahka)
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=SJYXDK96G2NCN)
 
 ## Installation and Usage
 
@@ -149,6 +150,7 @@ The value _\<path to homematic object\>_ needs to be replaced with the actual pa
 
 For general Information about the Configuration Mask, see: TODO<br>
 For more information about the Configuration, the InOut Functions and Conversion Functions, see: [Wiki](https://github.com/jensweigele/ioBroker.yahka/wiki/Configuration,-InOut-Functions-and-Conversion-Functions)
+
 
 ## Changelog
 ### 0.10.0 (2020-02-19)

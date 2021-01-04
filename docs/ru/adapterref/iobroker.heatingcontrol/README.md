@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: /M83RywTZxXt+UVKfss6tcKIoeODTwnUCt8VByMtlk8=
+hash: CzrM2sVnQGvb4GqUv79oQsY4U9EUf8OID4uDnT/3EqU=
 ---
 ![Логотип](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -145,6 +145,12 @@ a) уменьшить текущую температуру профиля, ко
 
 | вариант | описание | -------------------------- | --------------------- -------------------------------------------------- ---------------- | нет | изменения с термостата игнорируются | как переопределение | изменения с термостата принимаются за отмену; время отмены должно быть установлено заранее в heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime | | если время переопределения не установлено, то переопределение не выполняется | как настройка нового профиля | изменения от термостата принимаются за расчетную температуру для текущего периода профиля | до следующей точки профиля | изменения от термостата принимаются как заданная температура до следующей точки профиля. Это ручной режим, поэтому используются только датчики окна. Все остальные | | увеличение / уменьшение игнорируются. В каждой комнате есть точка данных для отключения ручного режима перед достижением следующей точки профиля.
 
+## Термостат обрабатывает "окно открыто"
+Некоторые термостаты могут справиться с открытием окна самостоятельно. В этих случаях настраивается прямое соединение между датчиком окна и термостатом, и термостат снижает заданную температуру только при открытии окна.
+В сочетании с опцией «использование изменений с термостата» / «до следующей точки профиля» приведет к неожиданному ручному состоянию. В этой ситуации будет использоваться пониженная температура до следующей точки профиля.
+Но адпаттер может справиться с таким поведением. Вы должны включить опцию «Термостат управляет« Окно открыто »», и вы можете настроить датчики окна также в адаптере.
+Когда окно открыто, адаптер ожидает макс. 3 секунды для новой целевой температуры от термостата. Если за это время будет получена новая целевая температура, она будет использоваться как пониженная абсолютная температура. Статус будет «автоматическое открытое окно». Как только окно закрывается, статус возвращается к автоматическому, и термостат устанавливает исходную заданную температуру **Внимание** не используйте в этом случае задержку открытия датчика. Если вы его используете, событие «Окно открыто» появляется после получения заданной температуры от термостата. Это заканчивается в ручном режиме.
+
 ## Проблемы и запросы функций
 * Если вы столкнулись с какими-либо ошибками или у вас есть запросы функций для этого адаптера, создайте проблему в разделе проблем GitHub адаптера на [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ). Любые отзывы приветствуются и помогут улучшить этот адаптер.
 
@@ -157,7 +163,7 @@ a) уменьшить текущую температуру профиля, ко
 
 ## Changelog
 
-### 2.0.0 (2020-12-xx)
+### 2.0.0 (2021-01-xx)
 * (René) internal refactoring
 
 **ATTENTION: breaking changes !!!!**
@@ -176,6 +182,8 @@ a) уменьшить текущую температуру профиля, ко
 * limits and step widh for profil temperatures adjustable in admin for Pittini vis
 * simple window status view (in html) for Pittini vis added
 * room state as simple html table for vis added
+* (optionally) extend override when temperature is changed; in standard new temperature is set, but timer is not changed
+* (optionally) Thermostat handles "window is open"
 * issues in github: 
 	* #161 Profil springt zur angegebenen Zeit nicht um
 	* #153 cron Probleme beim ändern eines Profils mittels Javascript
@@ -390,7 +398,7 @@ Attention: some changes in datapoints!!
 
 ## License
 
-Copyright (C) <2019-2020>  <info@rg-engineering.eu>
+Copyright (C) <2019-2021>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 
