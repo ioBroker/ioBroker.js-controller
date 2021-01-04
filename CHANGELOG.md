@@ -7,6 +7,9 @@
 **Features**
 * (bluefox) Provide min/max for convert alias functions
 * (foxriver76) set connectionName for redis connections and simulator support
+* (foxriver76) Detect adapter restart loops and stop restarting after 3 crashes (an adapter is considered "working" when no crash by an exception happens within 10 minutes)
+* (AlCalzone) detect and allow short github URL format when (auto-)installing adapters (`iobroker url User/repo#branchorcommit`)
+* (foxriver76) handling major upgrades more carefully (CLI on upgrade will show if it's a major upgrade  and major upgrades will be skipped on upgrade all when executed by admin
 
 **Optimizations and Fixes**
 * (foxriver76) Fix failed logins if username is uppercase, be reworking user logic and caching
@@ -32,17 +35,29 @@
 * (foxriver76) multihost discovery now logs ignored messages on debug and also logs the senders address
 * (foxriver76) sync up created objects on instance startage and instance creation by using helper function in tools.js, e.g. .loglevel was missing on instance creation
 * (bluefox) Package-Manager: Filter empty packets out to suppress error message
-* (Apollon77, foxriver, bluefox, AlCalzone) Several fixes for potential crash cases reported by Sentry and other error cases
+* (foxriver76) rename repository names for new installations and on updates to beta/stable
+* (foxriver76) rewrite collectDiagInfo to Promises and fix minor issue with it
+* (foxriver76) only scale aliases if target or source is represented by unit %
+* (foxriver76) create meta.user on file sync cli, if not existing
+* (foxriver76) fix enumInstances used by CLI commands
+* (foxriver76) when missing rights to access log dir do not crash hard anymore, instead fallback to default directory
+* (bluefox) Fix error if type of native data changed in the new version from basic type e.g. 'string' to 'object'.
+* (AlCalzone) Remove hardcoded references to GitHub master branch because newer repositories use "main"
+* (Apollon77, foxriver, bluefox, AlCalzone) Several fixes and refactorings tp prevent potential crash cases reported by Sentry and other cases
+
 
 **Developer relevant DEPRECATIONS/WARNINGS**
 * (foxriver76) we warn if object not exists when setting a state via adapter.set*State* - If this is NOT wanted the adapter needs to be initialized with strictObjectChecks = false!!
 * (foxriver76) readFile should not validate meta object, we now throw on writeFile if id is no valid meta object
+* (AlCalzone) update Forbidden ID Characters: use Unicode properties to define which characters are allowed instead of blacklisting. For ASCII the allowed characters are the same as before - for other languages mainly character class of Unicode are allowed!
+* (foxriver76) Throw on invalid setState objects; was logged as deprecated before
 
 **Developer relevant new Features**
 * (foxriver76) use aes-192-cbc as encryption - backward compatible with current encryption
 * (bluefox) Add system view to filter for "folder" objects
 * (bluefox) add set/clearTimeout and set/clearInterval to adapter methods and check on unload that they were all cleared and clear if needed with logging, so developers should make sure to clean up themself!
 * (AlCalzone) Add ...Async version for getChannels - make sure to check before using or use correct js.controller version dependency!
+* (Apollon77) modularize databases into own npm packages and basically support adding new types of databases; add deprecation infos and logging to "old legacy" files in lib/states and lib/objects to not be used anymore; requires mostly updates in testing 
 
 **Developer relevant Optimizations and Fixes**
 * (foxriver76) implement maybeCallback and maybeCallbackWithError and use it in adapter.js
@@ -53,7 +68,12 @@
 * (bluefox) Added "http" and "stream" options for logs
 * (foxriver76) migrated ci tests to github actions
 * (foxriver76) resolve adapter main file as tools.js method
-* (foxriver76) optimize extendObject with def value 
+* (foxriver76) optimize extendObject with def value
+* (AlCalzone)  Handle existing, but undefined properties in validateSetStateObjectArgument
+* (foxriver76) also escape + char on regex, its not forbidden
+* (foxriver76) do not support '?' as wildcard due to interchanges with startkey/endkey logic
+* (bluefox) Set default state only for objects of type "state"
+* (AlCalzone) include folders in the result of getAdapterObjects
 * general dependency updates
 * code style optimizations
 

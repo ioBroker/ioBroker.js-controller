@@ -453,7 +453,7 @@ function register(it, expect, context) {
         // try to delete non-active repo
         err = await cli.processCommandAsync(context.objects, context.states, 'repo', ['del', 'local1'], {});
         expect(err).to.be.not.ok;
-    });
+    }).timeout(6000);
 
     // license
     it(testName + 'license', async () => {
