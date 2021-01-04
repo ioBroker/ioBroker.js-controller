@@ -71,7 +71,6 @@
 * (foxriver76) optimize extendObject with def value
 * (AlCalzone)  Handle existing, but undefined properties in validateSetStateObjectArgument
 * (foxriver76) also escape + char on regex, its not forbidden
-* (foxriver76) do not support '?' as wildcard due to interchanges with startkey/endkey logic
 * (bluefox) Set default state only for objects of type "state"
 * (AlCalzone) include folders in the result of getAdapterObjects
 * general dependency updates
