@@ -6,13 +6,13 @@
 
 **Features**
 * (bluefox) Provide min/max for convert alias functions
-* (foxriver76) set connectionName for redis connections and simulator support
-* (foxriver76) Detect adapter restart loops and stop restarting after 3 crashes (an adapter is considered "working" when no crash by an exception happens within 10 minutes)
+* (foxriver76) handling major adapter upgrades more carefully (CLI on upgrade will show if it's a major upgrade  and major upgrades will be skipped on upgrade all when executed by admin
 * (AlCalzone) detect and allow short github URL format when (auto-)installing adapters (`iobroker url User/repo#branchorcommit`)
-* (foxriver76) handling major upgrades more carefully (CLI on upgrade will show if it's a major upgrade  and major upgrades will be skipped on upgrade all when executed by admin
 * (foxriver76) enhance setup (and setup first) with redis to all port configuration
+* (foxriver76) set connectionName for redis connections and simulator support
 
 **Optimizations and Fixes**
+* (foxriver76) Detect adapter restart loops and stop restarting after 3 crashes (an adapter is considered "working" when no crash by an exception happens within 10 minutes)
 * (foxriver76) Fix failed logins if username is uppercase, be reworking user logic and caching
 * (bluefox) Set for def states the quality: QUALITY_SUBS_INITIAL
 * (AlCalzone) fix npm uninstall loglevel argument
@@ -25,21 +25,22 @@
 * (foxriver76) allow migration of instances to already existing host 
 * (foxriver76) also allow <adapter>.<instance-nr> for install/add cli command 
 * (AlCalzone) buffer streams that are piped to stdout to fix weird Windows logging cases
-* (foxriver76/AlCalzone) Optimize upgrade/downgrade logic for adapters, ) ask for a downgrade only if lower version is to be installed
+* (foxriver76/AlCalzone) Optimize upgrade/downgrade logic for adapters, ask for a downgrade only if lower version is to be installed
 * (foxriver76) allow redis redis migration when changing host of redis - fix bug where process crashes when controller is running when migrating
 * (bluefox) Catch errors for subscribe on alias without target
 * (foxriver76) only perform auto scaling on alias if not null
 * (foxriver76) if repository request fails also use cached sources on updating repository
-* (foxriver76) prevent host deletion from same host - otherwise it will remove the system.host states but instances will still be on the removed host, because transferation happens to itself
+* (foxriver76) prevent host deletion from same host - otherwise it will remove the system.host states but instances will still be on the removed host, because transfer happens to itself
 * (foxriver76) use instanceObjects from system.adapter.* object instead from io-package.json
 * (foxriver76) notify of errors on readFileCertificates to show permission problems etc.
 * (foxriver76) multihost discovery now logs ignored messages on debug and also logs the senders address
-* (foxriver76) sync up created objects on instance startage and instance creation by using helper function in tools.js, e.g. .loglevel was missing on instance creation
+* (foxriver76) sync up created objects on instance start and instance creation by using helper function in tools.js, e.g. .loglevel was missing on instance creation
 * (bluefox) Package-Manager: Filter empty packets out to suppress error message
 * (foxriver76) rename repository names for new installations and on updates to beta/stable
 * (foxriver76) rewrite collectDiagInfo to Promises and fix minor issue with it
 * (foxriver76) only scale aliases if target or source is represented by unit %
 * (foxriver76) create meta.user on file sync cli, if not existing
+* (Apollon77) also create meta.user on setup first if not existing
 * (foxriver76) fix enumInstances used by CLI commands
 * (foxriver76) when missing rights to access log dir do not crash hard anymore, instead fallback to default directory
 * (bluefox) Fix error if type of native data changed in the new version from basic type e.g. 'string' to 'object'.
@@ -54,7 +55,7 @@
 * (foxriver76) remove getMessage shim, no adapter uses it anymore; was logged as deprecated before
 
 **Developer relevant new Features**
-* (foxriver76) use aes-192-cbc as encryption - backward compatible with current encryption
+* (foxriver76) use aes-192-cbc as encryption - backward compatible with current encryption, nothing to do for adapter-developers
 * (bluefox) Add system view to filter for "folder" objects
 * (bluefox) add set/clearTimeout and set/clearInterval to adapter methods and check on unload that they were all cleared and clear if needed with logging, so developers should make sure to clean up themself!
 * (AlCalzone) Add ...Async version for getChannels - make sure to check before using or use correct js.controller version dependency!
@@ -70,8 +71,8 @@
 * (foxriver76) migrated ci tests to github actions
 * (foxriver76) resolve adapter main file as tools.js method
 * (foxriver76) optimize extendObject with def value
-* (AlCalzone)  Handle existing, but undefined properties in validateSetStateObjectArgument
-* (foxriver76) also escape + char on regex, its not forbidden
+* (AlCalzone) Handle existing, but undefined properties in validateSetStateObjectArgument
+* (foxriver76) also escape + char on regex, it's not forbidden
 * (bluefox) Set default state only for objects of type "state"
 * (AlCalzone) include folders in the result of getAdapterObjects
 * general dependency updates
