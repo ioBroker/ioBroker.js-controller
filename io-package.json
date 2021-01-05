@@ -724,5 +724,204 @@
                 "object": 1604
             }
         }
+    ],
+    "notifications": [
+        {
+            "id": "system",
+            "name": {
+                "en": "System Notifications",
+                "de": "System-Benachrichtigungen",
+                "ru": "Системные уведомления",
+                "pt": "Notificações do sistema",
+                "nl": "Systeemmeldingen",
+                "fr": "Notifications système",
+                "it": "Notifiche di sistema",
+                "es": "Notificaciones del sistema",
+                "pl": "Powiadomienia systemowe",
+                "zh-cn": "系统通知"
+            },
+            "description": {
+                "en": "These notifications are collected by the ioBroker system and point to issues you should check and fix",
+                "de": "Diese Benachrichtigungen werden vom ioBroker-System erfasst und weisen auf Probleme hin, die Sie überprüfen und beheben sollten",
+                "ru": "Эти уведомления собираются системой ioBroker и указывают на проблемы, которые вы должны проверить и исправить.",
+                "pt": "Essas notificações são coletadas pelo sistema ioBroker e apontam para problemas que você deve verificar e corrigir",
+                "nl": "Deze meldingen worden verzameld door het ioBroker-systeem en wijzen op problemen die u moet controleren en oplossen",
+                "fr": "Ces notifications sont collectées par le système ioBroker et indiquent des problèmes que vous devez vérifier et résoudre",
+                "it": "Queste notifiche vengono raccolte dal sistema ioBroker e indicano problemi che dovresti controllare e correggere",
+                "es": "Estas notificaciones son recopiladas por el sistema ioBroker y señalan problemas que debe verificar y solucionar.",
+                "pl": "Te powiadomienia są zbierane przez system ioBroker i wskazują problemy, które należy sprawdzić i naprawić",
+                "zh-cn": "这些通知由ioBroker系统收集，并指出您应检查并修复的问题"            },
+            "categories": [
+                {
+                    "id": "memIssues",
+                    "name": {
+                        "en": "Issues with RAM availability",
+                        "de": "Probleme mit der Speicher-Verfügbarkeit",
+                        "ru": "Проблемы с доступностью оперативной памяти",
+                        "pt": "Problemas com disponibilidade de RAM",
+                        "nl": "Problemen met de beschikbaarheid van RAM",
+                        "fr": "Problèmes de disponibilité de la RAM",
+                        "it": "Problemi con la disponibilità della RAM",
+                        "es": "Problemas con la disponibilidad de RAM",
+                        "pl": "Problemy z dostępnością pamięci RAM",
+                        "zh-cn": "RAM可用性问题"
+                    },
+                    "severity": "alert",
+                    "description": {
+                        "en": "Your RAM is running out of memory, either your hardware is to weak or a process has a memory leak.",
+                        "de": "Ihrem RAM geht der Speicher aus, entweder ist Ihre Hardware zu schwach oder ein Prozess hat ein Speicherleck.",
+                        "ru": "В вашей оперативной памяти не хватает памяти, либо ваше оборудование слишком слабое, либо процесс имеет утечку памяти.",
+                        "pt": "Sua RAM está ficando sem memória, ou o hardware está muito fraco ou um processo está com vazamento de memória.",
+                        "nl": "Uw RAM heeft onvoldoende geheugen, uw hardware is te zwak of een proces heeft een geheugenlek.",
+                        "fr": "Votre RAM manque de mémoire, soit votre matériel est trop faible, soit un processus a une fuite de mémoire.",
+                        "it": "La tua RAM sta esaurendo la memoria, o il tuo hardware è debole o un processo ha una perdita di memoria.",
+                        "es": "Su RAM se está quedando sin memoria, o su hardware es demasiado débil o un proceso tiene una pérdida de memoria.",
+                        "pl": "W pamięci RAM kończy się pamięć, albo sprzęt jest za słaby, albo proces ma wyciek pamięci.",
+                        "zh-cn": "您的RAM内存不足，可能是硬件功能不足或进程存在内存泄漏。"
+                    },
+                    "regex": [
+                        "^Exception-Code: ENOMEM",
+                        "buffer allocation failed"
+                    ],
+                    "count": 10
+                },
+                {
+                    "id": "fsIoErrors",
+                    "name": {
+                        "en": "Issues with file system input/output",
+                        "de": "Probleme mit der Dateisystem-Eingabe/Ausgabe",
+                        "ru": "Проблемы с вводом / выводом файловой системы",
+                        "pt": "Problemas com entrada / saída do sistema de arquivos",
+                        "nl": "Problemen met de invoer / uitvoer van het bestandssysteem",
+                        "fr": "Problèmes avec l'entrée / la sortie du système de fichiers",
+                        "it": "Problemi con l'input / output del file system",
+                        "es": "Problemas con la entrada / salida del sistema de archivos",
+                        "pl": "Problemy z wejściem / wyjściem systemu plików",
+                        "zh-cn": "文件系统输入/输出问题"
+                    },
+                    "severity": "alert",
+                    "description": {
+                        "en": "There is a unknown error with inout/output on your file system, maybe your file system is corrupted or wrongly configured.",
+                        "de": "Es liegt ein unbekannter Fehler mit Ein-/Ausgabe auf Ihrem Dateisystem vor, vielleicht ist Ihr Dateisystem beschädigt oder falsch konfiguriert.",
+                        "ru": "Произошла неизвестная ошибка с входом / выходом в вашей файловой системе, возможно, ваша файловая система повреждена или неправильно настроена.",
+                        "pt": "Há um erro desconhecido com entrada / saída em seu sistema de arquivos, talvez seu sistema de arquivos esteja corrompido ou configurado incorretamente.",
+                        "nl": "Er is een onbekende fout met inout / output op uw bestandssysteem, misschien is uw bestandssysteem beschadigd of verkeerd geconfigureerd.",
+                        "fr": "Il y a une erreur inconnue avec entrée / sortie sur votre système de fichiers, peut-être que votre système de fichiers est corrompu ou mal configuré.",
+                        "it": "C'è un errore sconosciuto con inout / output sul tuo file system, forse il tuo file system è danneggiato o configurato in modo errato.",
+                        "es": "Hay un error desconocido con inout / output en su sistema de archivos, tal vez su sistema de archivos esté dañado o configurado incorrectamente.",
+                        "pl": "W systemie plików występuje nieznany błąd z danymi wejściowymi / wyjściowymi, być może system plików jest uszkodzony lub nieprawidłowo skonfigurowany.",
+                        "zh-cn": "文件系统上的inout / output未知错误，可能是文件系统已损坏或配置错误。"
+                    },
+                    "regex": [
+                        "^Exception-Code: EROFS",
+                        "^Exception-Code: EIO",
+                        "^Exception-Code: EMFILE",
+                        "^Exception-Code: EBADF",
+                        "^Exception-Code: ENFILE",
+                        "^Unknown system error -117"
+                    ],
+                    "count": 10
+                },
+                {
+                    "id": "noDiskSpace",
+                    "name": {
+                        "en": "Issues with disk space",
+                        "de": "Probleme mit Speicherplatz",
+                        "ru": "Проблемы с дисковым пространством",
+                        "pt": "Problemas com espaço em disco",
+                        "nl": "Problemen met schijfruimte",
+                        "fr": "Problèmes d'espace disque",
+                        "it": "Problemi con lo spazio su disco",
+                        "es": "Problemas con el espacio en disco",
+                        "pl": "Problemy z miejscem na dysku",
+                        "zh-cn": "磁盘空间问题"
+                    },
+                    "severity": "alert",
+                    "description": {
+                        "en": "There is not enough disk space left on your device.",
+                        "de": "Es ist nicht genügend Speicherplatz auf Ihrem Gerät vorhanden.",
+                        "ru": "На вашем устройстве недостаточно места на диске.",
+                        "pt": "Não há espaço em disco suficiente no seu dispositivo.",
+                        "nl": "Er is niet genoeg schijfruimte op uw apparaat.",
+                        "fr": "Il n'y a pas assez d'espace disque sur votre appareil.",
+                        "it": "Spazio su disco insufficiente sul dispositivo.",
+                        "es": "No queda suficiente espacio en disco en su dispositivo.",
+                        "pl": "W urządzeniu jest za mało miejsca na dysku.",
+                        "zh-cn": "设备上没有足够的磁盘空间。"
+                    },
+                    "regex": [
+                        "^Exception-Code: ENOSPC"
+                    ],
+                    "count": 10
+                },
+                {
+                    "id": "accessErrors",
+                    "name": {
+                        "en": "Issues with accessing files",
+                        "de": "Probleme beim Zugriff auf Dateien",
+                        "ru": "Проблемы с доступом к файлам",
+                        "pt": "Problemas para acessar arquivos",
+                        "nl": "Problemen met toegang tot bestanden",
+                        "fr": "Problèmes d'accès aux fichiers",
+                        "it": "Problemi con l'accesso ai file",
+                        "es": "Problemas con el acceso a archivos",
+                        "pl": "Problemy z dostępem do plików",
+                        "zh-cn": "访问文件的问题"
+                    },
+                    "severity": "alert",
+                    "description": {
+                        "en": "There is an issue accessing files on your system. You can try running the installation fixer.",
+                        "de": "Es gibt ein Problem beim Zugriff auf Dateien auf Ihrem System. Sie können versuchen, den Installationsfixer auszuführen.",
+                        "ru": "Проблема с доступом к файлам в вашей системе. Вы можете попробовать запустить средство исправления установки.",
+                        "pt": "Ocorreu um problema ao acessar os arquivos em seu sistema. Você pode tentar executar o fixador de instalação.",
+                        "nl": "Er is een probleem met het openen van bestanden op uw systeem. U kunt proberen de installatie-fixer uit te voeren.",
+                        "fr": "Il y a un problème d'accès aux fichiers sur votre système. Vous pouvez essayer d'exécuter le programme d'installation.",
+                        "it": "Si è verificato un problema durante l'accesso ai file sul tuo sistema. Puoi provare a eseguire il programma di riparazione dell'installazione.",
+                        "es": "Hay un problema al acceder a los archivos de su sistema. Puede intentar ejecutar el reparador de instalación.",
+                        "pl": "Wystąpił problem z dostępem do plików w systemie. Możesz spróbować uruchomić program do naprawy instalacji.",
+                        "zh-cn": "访问系统上的文件时出现问题。您可以尝试运行安装修复程序。"
+                    },
+                    "regex": [
+                        "^Exception-Code: ENOSPC"
+                    ],
+                    "count": 10
+                },
+                {
+                    "id": "nonExistingFileErrors",
+                    "name": {
+                        "en": "Issues with non-existing file or directory",
+                        "de": "Probleme mit nicht vorhandener Datei oder nicht vorhandenem Verzeichnis",
+                        "ru": "Проблемы с несуществующим файлом или каталогом",
+                        "pt": "Problemas com arquivo ou diretório não existente",
+                        "nl": "Problemen met niet-bestaand bestand of directory",
+                        "fr": "Problèmes avec un fichier ou un répertoire inexistant",
+                        "it": "Problemi con file o directory inesistenti",
+                        "es": "Problemas con archivos o directorios que no existen",
+                        "pl": "Problemy z nieistniejącym plikiem lub katalogiem",
+                        "zh-cn": "文件或目录不存在的问题"
+                    },
+                    "severity": "alert",
+                    "description": {
+                        "en": "A process tries to access a non-existing file or directory.",
+                        "de": "Ein Prozess versucht, auf eine nicht vorhandene Datei oder ein nicht vorhandenes Verzeichnis zuzugreifen.",
+                        "ru": "Процесс пытается получить доступ к несуществующему файлу или каталогу.",
+                        "pt": "Um processo tenta acessar um arquivo ou diretório não existente.",
+                        "nl": "Een proces probeert toegang te krijgen tot een niet-bestaand bestand of map.",
+                        "fr": "Un processus tente d'accéder à un fichier ou un répertoire inexistant.",
+                        "it": "Un processo tenta di accedere a un file o una directory inesistente.",
+                        "es": "Un proceso intenta acceder a un archivo o directorio que no existe.",
+                        "pl": "Proces próbuje uzyskać dostęp do nieistniejącego pliku lub katalogu.",
+                        "zh-cn": "进程尝试访问不存在的文件或目录。"
+                    },
+                    "regex": [
+                        "^Exception-Code: EHOSTDOWN"
+                    ],
+                    "count": 10
+                },
+                {
+
+                }
+            ]
+        }
     ]
 }
