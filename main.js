@@ -940,7 +940,7 @@ function checkHost(callback) {
 /**
  * Collects the dialog information, e.g. used by Admin "System Settings"
  *
- * @param {'extended'|'normal'|'no-city'} type - type of required information
+ * @param {'extended'|'normal'|'no-city'|'none'} type - type of required information
  * @returns {Promise<object>|void}
  */
 async function collectDiagInfo(type) {
