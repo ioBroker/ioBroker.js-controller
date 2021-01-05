@@ -945,7 +945,7 @@ function checkHost(callback) {
  */
 async function collectDiagInfo(type) {
     if (type !== 'extended' && type !== 'normal' && type !== 'no-city') {
-        throw new Error(`Unsupported type "${type}" for collectDiagInfo`);
+        return null;
     } else {
         let systemConfig;
         let err;
