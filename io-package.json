@@ -727,7 +727,7 @@
     ],
     "notifications": [
         {
-            "id": "system",
+            "scope": "system",
             "name": {
                 "en": "System Notifications",
                 "de": "System-Benachrichtigungen",
@@ -753,7 +753,7 @@
                 "zh-cn": "这些通知由ioBroker系统收集，并指出您应检查并修复的问题"            },
             "categories": [
                 {
-                    "id": "memIssues",
+                    "category": "memIssues",
                     "name": {
                         "en": "Issues with RAM availability",
                         "de": "Probleme mit der Speicher-Verfügbarkeit",
@@ -786,7 +786,7 @@
                     "count": 10
                 },
                 {
-                    "id": "fsIoErrors",
+                    "category": "fsIoErrors",
                     "name": {
                         "en": "Issues with file system input/output",
                         "de": "Probleme mit der Dateisystem-Eingabe/Ausgabe",
@@ -823,7 +823,7 @@
                     "count": 10
                 },
                 {
-                    "id": "noDiskSpace",
+                    "category": "noDiskSpace",
                     "name": {
                         "en": "Issues with disk space",
                         "de": "Probleme mit Speicherplatz",
@@ -855,7 +855,7 @@
                     "count": 10
                 },
                 {
-                    "id": "accessErrors",
+                    "category": "accessErrors",
                     "name": {
                         "en": "Issues with accessing files",
                         "de": "Probleme beim Zugriff auf Dateien",
@@ -887,7 +887,7 @@
                     "count": 10
                 },
                 {
-                    "id": "nonExistingFileErrors",
+                    "category": "nonExistingFileErrors",
                     "name": {
                         "en": "Issues with non-existing file or directory",
                         "de": "Probleme mit nicht vorhandener Datei oder nicht vorhandenem Verzeichnis",
