@@ -882,7 +882,8 @@
                         "zh-cn": "访问系统上的文件时出现问题。您可以尝试运行安装修复程序。"
                     },
                     "regex": [
-                        "^Exception-Code: ENOSPC"
+                        "^Exception-Code: EACCESS",
+                        "^Exception-Code: EPERM"
                     ],
                     "limit": 10
                 },
@@ -912,6 +913,38 @@
                         "es": "Un proceso intenta acceder a un archivo o directorio que no existe.",
                         "pl": "Proces próbuje uzyskać dostęp do nieistniejącego pliku lub katalogu.",
                         "zh-cn": "进程尝试访问不存在的文件或目录。"
+                    },
+                    "regex": [
+                        "^Exception-Code: ENOENT"
+                    ],
+                    "limit": 10
+                },
+                {
+                    "category": "remoteHostErrors",
+                    "name": {
+                        "en": "Issues with remote host",
+                        "de": "Probleme mit Remote-Host",
+                        "ru": "проблемы с удаленным хостом",
+                        "pt": "problemas com host remoto",
+                        "nl": "problemen met externe host",
+                        "fr": "problèmes avec l'hôte distant",
+                        "it": "problemi con l'host remoto",
+                        "es": "problemas con el host remoto",
+                        "pl": "problemy ze zdalnym hostem",
+                        "zh-cn": "远程主机的问题"
+                    },
+                    "severity": "alert",
+                    "description": {
+                        "en": "Issue with remote host, the host could be offline.",
+                        "de": "Problem mit Remote-Host, der Host könnte offline sein.",
+                        "ru": "Проблема с удаленным хостом, возможно, хост отключен.",
+                        "pt": "Problema com o host remoto, o host pode estar offline.",
+                        "nl": "Probleem met externe host, de host kan offline zijn.",
+                        "fr": "Problème avec l'hôte distant, l'hôte peut être hors ligne.",
+                        "it": "Problema con l'host remoto, l'host potrebbe essere offline.",
+                        "es": "Problema con el host remoto, el host podría estar fuera de línea.",
+                        "pl": "Problem ze zdalnym hostem, host może być offline.",
+                        "zh-cn": "远程主机出现问题，主机可能处于脱机状态。"
                     },
                     "regex": [
                         "^Exception-Code: EHOSTDOWN"
