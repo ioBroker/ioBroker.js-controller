@@ -801,16 +801,16 @@
                     },
                     "severity": "alert",
                     "description": {
-                        "en": "There is a unknown error with inout/output on your file system, maybe your file system is corrupted or wrongly configured.",
+                        "en": "There is a unknown error with input/output on your file system, maybe your file system is corrupted or wrongly configured.",
                         "de": "Es liegt ein unbekannter Fehler mit Ein-/Ausgabe auf Ihrem Dateisystem vor, vielleicht ist Ihr Dateisystem beschädigt oder falsch konfiguriert.",
-                        "ru": "Произошла неизвестная ошибка с входом / выходом в вашей файловой системе, возможно, ваша файловая система повреждена или неправильно настроена.",
+                        "ru": "Произошла неизвестная ошибка ввода / вывода в вашей файловой системе, возможно, ваша файловая система повреждена или неправильно настроена.",
                         "pt": "Há um erro desconhecido com entrada / saída em seu sistema de arquivos, talvez seu sistema de arquivos esteja corrompido ou configurado incorretamente.",
-                        "nl": "Er is een onbekende fout met inout / output op uw bestandssysteem, misschien is uw bestandssysteem beschadigd of verkeerd geconfigureerd.",
-                        "fr": "Il y a une erreur inconnue avec entrée / sortie sur votre système de fichiers, peut-être que votre système de fichiers est corrompu ou mal configuré.",
-                        "it": "C'è un errore sconosciuto con inout / output sul tuo file system, forse il tuo file system è danneggiato o configurato in modo errato.",
-                        "es": "Hay un error desconocido con inout / output en su sistema de archivos, tal vez su sistema de archivos esté dañado o configurado incorrectamente.",
-                        "pl": "W systemie plików występuje nieznany błąd z danymi wejściowymi / wyjściowymi, być może system plików jest uszkodzony lub nieprawidłowo skonfigurowany.",
-                        "zh-cn": "文件系统上的inout / output未知错误，可能是文件系统已损坏或配置错误。"
+                        "nl": "Er is een onbekende fout met invoer / uitvoer op uw bestandssysteem, misschien is uw bestandssysteem beschadigd of verkeerd geconfigureerd.",
+                        "fr": "Il y a une erreur inconnue avec l'entrée / la sortie sur votre système de fichiers, peut-être que votre système de fichiers est corrompu ou mal configuré.",
+                        "it": "C'è un errore sconosciuto con input / output sul tuo file system, forse il tuo file system è danneggiato o configurato in modo errato.",
+                        "es": "Hay un error desconocido con la entrada / salida en su sistema de archivos, tal vez su sistema de archivos esté dañado o configurado incorrectamente.",
+                        "pl": "Wystąpił nieznany błąd wejścia / wyjścia w systemie plików, być może system plików jest uszkodzony lub nieprawidłowo skonfigurowany.",
+                        "zh-cn": "文件系统上的输入/输出存在未知错误，可能是文件系统已损坏或配置错误。"
                     },
                     "regex": [
                         "^Exception-Code: EROFS",
@@ -946,7 +946,7 @@
                         "zh-cn": "实例频繁重启，请检查日志文件。"
                     },
                     "regex": [],
-                    "limit": 10
+                    "limit": 1
                 }
             ]
         }

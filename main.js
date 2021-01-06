@@ -4434,6 +4434,8 @@ function init(compactGroupId) {
                 try {
                     notificationHandler.addConfig(notificationsConfig, hostname);
                     logger.info(`${hostLogPrefix} added notifications configuration of host`);
+                    // load setup of all adapters to class, to remember messages even of non-running hosts
+                    await notificationHandler.getSetupOfAllAdaptersFromHost();
                 } catch (e) {
                     logger.error(`${hostLogPrefix} Could not add notifications config of this host: ${e.message}`);
                 }
