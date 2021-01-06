@@ -2477,10 +2477,24 @@ async function processMessage(msg) {
             break;
         }
 
-        case 'notification':
+        case 'addNotification':
             notificationHandler.addMessage(msg.message.scope, msg.message.category, msg.message.message, msg.message.instance);
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
+            }
+            break;
+
+        case 'clearNotification':
+            notificationHandler.clearNotifications(msg.message.scope, msg.message.category, msg.message.instance);
+            if (msg.callback && msg.from) {
+                sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
+            }
+            break;
+
+        case 'getNotifications':
+            if (msg.callback && msg.from) {
+                const notificationsObj = notificationHandler.getFilteredInformation(msg.message.scope, msg.message.category, msg.message.instance);
+                sendTo(msg.from, msg.command, {result: notificationsObj}, msg.callback);
             }
             break;
     }
