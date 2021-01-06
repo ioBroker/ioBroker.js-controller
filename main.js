@@ -2478,7 +2478,7 @@ async function processMessage(msg) {
         }
 
         case 'notification':
-            notificationHandler.addMessage(msg.scope, msg.category, msg.message);
+            notificationHandler.addMessage(msg.message.scope, msg.message.category, msg.message.message, msg.message.instance);
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
             }
@@ -3410,6 +3410,7 @@ function startInstance(id, wakeUp) {
                                 } else {
                                     // 3 crashes - do not restart anymore
                                     logger.warn(`${hostLogPrefix} Do not restart adapter ${id} because restart loop detected`);
+                                    notificationHandler.addMessage('system', 'restartLoop', 'Restart loop detected', id);
                                     procs[id].crashCount = 0;
                                     if (procs[id].crashResetTimer) {
                                         logger.debug(`${hostLogPrefix} Cleared crash timer of ${id}, because adapter stopped`);
@@ -4407,6 +4408,7 @@ function init(compactGroupId) {
             try {
                 notificationHandler = new NotificationHandler(notificationSettings);
                 await notificationHandler.getSetupOfAllAdaptersFromHost();
+                logger.warn(hostLogPrefix + ' ' + JSON.stringify(notificationHandler.setup));
             } catch (e) {
                 logger.error(`${hostLogPrefix} Could not correctly initialize notification handler: ${e.message}`);
             }
