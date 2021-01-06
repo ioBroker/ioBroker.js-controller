@@ -568,6 +568,9 @@ function createObjects(onConnect) {
                         if (!compactGroupController && procs[id].config.common.compactGroup && compactProcs[procs[id].config.common.compactGroup] && compactProcs[procs[id].config.common.compactGroup].instances && compactProcs[procs[id].config.common.compactGroup].instances.includes(id)) {
                             compactProcs[procs[id].config.common.compactGroup].instances.splice(compactProcs[procs[id].config.common.compactGroup].instances.indexOf(id), 1);
                         }
+
+                        // instance removed -> remove all notifications
+                        notificationHandler.clearNotifications(null, null, id);
                         procs[id].config.common.enabled = false;
                         procs[id].config.common.host    = null;
                         procs[id].config.deleted        = true;
@@ -617,6 +620,9 @@ function createObjects(onConnect) {
                                     clearTimeout(procs[id].restartTimer);
                                     delete procs[id].restartTimer;
                                 }
+
+                                // instance moved -> remove all notifications, new host has to take care
+                                notificationHandler.clearNotifications(null, null, id);
 
                                 delete procs[id];
                                 delete hostAdapter[id];
