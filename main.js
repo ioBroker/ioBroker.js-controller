@@ -3242,6 +3242,15 @@ function startInstance(id, wakeUp) {
     procs[id].startedInCompactMode = false;
     procs[id].startedAsCompactGroup = false;
 
+    if (procs[id].config && procs[id].config.notifications) {
+        try {
+            notificationHandler.addConfig(procs[id].config.notifications, id);
+            logger.info(`${hostLogPrefix} added notifications configuration of ${id}`);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Could not add notifications config of ${id}: ${e.message}`);
+        }
+    }
+
     switch (mode) {
         case 'once':
         case 'daemon':
@@ -4397,14 +4406,15 @@ function init(compactGroupId) {
             // Disabled in 1.5.x
             // states.subscribe('*.info.connection');
 
-            let notificationsSetup;
+            let notificationsConfig;
             try {
                 const obj = await objects.getObjectAsync(`system.host.${hostname}`);
 
                 if (obj && obj.notifications) {
-                    notificationsSetup = obj.notifications;
+                    notificationsConfig = obj.notifications;
                 } else {
-                    logger.warn(`${hostLogPrefix} No setup notifications found for this host`);
+                    // there should be some for a host
+                    logger.warn(`${hostLogPrefix} No notifications config found for this host`);
                 }
             } catch (e) {
                 logger.error(`${hostLogPrefix} Cannot read notifications config: ${e.message}`);
@@ -4414,17 +4424,19 @@ function init(compactGroupId) {
                 states: states,
                 objects: objects,
                 log: logger,
-                setup: notificationsSetup,
                 logPrefix: hostLogPrefix,
                 host: hostname
             };
 
-            try {
-                notificationHandler = new NotificationHandler(notificationSettings);
-                await notificationHandler.getSetupOfAllAdaptersFromHost();
-                logger.warn(hostLogPrefix + ' ' + JSON.stringify(notificationHandler.setup));
-            } catch (e) {
-                logger.error(`${hostLogPrefix} Could not correctly initialize notification handler: ${e.message}`);
+            notificationHandler = new NotificationHandler(notificationSettings);
+
+            if (notificationsConfig) {
+                try {
+                    notificationHandler.addConfig(notificationsConfig, hostname);
+                    logger.info(`${hostLogPrefix} added notifications configuration of host`);
+                } catch (e) {
+                    logger.error(`${hostLogPrefix} Could not add notifications config of this host: ${e.message}`);
+                }
             }
 
             if (connectTimeout) {

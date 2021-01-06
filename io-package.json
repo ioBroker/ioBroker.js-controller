@@ -919,31 +919,31 @@
                     "limit": 10
                 },
                 {
-                    "category": "nonExistingFileErrors",
+                    "category": "restartLoop",
                     "name": {
-                        "en": "Issues with non-existing file or directory",
-                        "de": "Probleme mit nicht vorhandener Datei oder nicht vorhandenem Verzeichnis",
-                        "ru": "Проблемы с несуществующим файлом или каталогом",
-                        "pt": "Problemas com arquivo ou diretório não existente",
-                        "nl": "Problemen met niet-bestaand bestand of directory",
-                        "fr": "Problèmes avec un fichier ou un répertoire inexistant",
-                        "it": "Problemi con file o directory inesistenti",
-                        "es": "Problemas con archivos o directorios que no existen",
-                        "pl": "Problemy z nieistniejącym plikiem lub katalogiem",
-                        "zh-cn": "文件或目录不存在的问题"
+                        "en": "Issues with frequently crashing instances",
+                        "de": "Probleme mit häufig abstürzenden Instanzen",
+                        "ru": "Проблемы с частыми сбоями экземпляров",
+                        "pt": "Problemas com falhas frequentes de instâncias",
+                        "nl": "Problemen met vaak crashende instanties",
+                        "fr": "Problèmes avec les instances qui plantent fréquemment",
+                        "it": "Problemi con istanze che si arrestano frequentemente",
+                        "es": "Problemas con instancias que fallan con frecuencia",
+                        "pl": "Problemy z często zawieszającymi się instancjami",
+                        "zh-cn": "实例频繁崩溃的问题"
                     },
                     "severity": "alert",
                     "description": {
-                        "en": "A process tries to access a non-existing file or directory.",
-                        "de": "Ein Prozess versucht, auf eine nicht vorhandene Datei oder ein nicht vorhandenes Verzeichnis zuzugreifen.",
-                        "ru": "Процесс пытается получить доступ к несуществующему файлу или каталогу.",
-                        "pt": "Um processo tenta acessar um arquivo ou diretório não existente.",
-                        "nl": "Een proces probeert toegang te krijgen tot een niet-bestaand bestand of map.",
-                        "fr": "Un processus tente d'accéder à un fichier ou un répertoire inexistant.",
-                        "it": "Un processo tenta di accedere a un file o una directory inesistente.",
-                        "es": "Un proceso intenta acceder a un archivo o directorio que no existe.",
-                        "pl": "Proces próbuje uzyskać dostęp do nieistniejącego pliku lub katalogu.",
-                        "zh-cn": "进程尝试访问不存在的文件或目录。"
+                        "en": "A instance is frequently restarting, please check to log file.",
+                        "de": "Eine Instanz wird häufig neu gestartet, bitte prüfen Sie die Log-Datei.",
+                        "ru": "Экземпляр часто перезагружается, проверьте файл журнала.",
+                        "pt": "Uma instância é reiniciada com frequência, verifique o arquivo de log.",
+                        "nl": "Een exemplaar wordt regelmatig opnieuw opgestart. Controleer het logboekbestand.",
+                        "fr": "Une instance redémarre fréquemment, veuillez vérifier le fichier journal.",
+                        "it": "Un'istanza si riavvia frequentemente, controlla nel file di registro.",
+                        "es": "Una instancia se reinicia con frecuencia, verifique el archivo de registro.",
+                        "pl": "Instancja często uruchamia się ponownie, sprawdź plik dziennika.",
+                        "zh-cn": "实例频繁重启，请检查日志文件。"
                     },
                     "regex": [],
                     "limit": 10
