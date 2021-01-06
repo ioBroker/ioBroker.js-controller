@@ -2484,14 +2484,14 @@ async function processMessage(msg) {
         }
 
         case 'addNotification':
-            notificationHandler.addMessage(msg.message.scope, msg.message.category, msg.message.message, msg.message.instance);
+            await notificationHandler.addMessage(msg.message.scope, msg.message.category, msg.message.message, msg.message.instance);
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
             }
             break;
 
         case 'clearNotifications':
-            notificationHandler.clearNotifications(msg.message.scope, msg.message.category, msg.message.instance);
+            await notificationHandler.clearNotifications(msg.message.scope, msg.message.category, msg.message.instance);
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
             }
@@ -3255,7 +3255,7 @@ async function startInstance(id, wakeUp) {
 
     if (procs[id].config && procs[id].config.notifications) {
         try {
-            await notificationHandler.addConfig(procs[id].config.notifications, id);
+            await notificationHandler.addConfig(procs[id].config.notifications);
             logger.debug(`${hostLogPrefix} added notifications configuration of ${id}`);
         } catch (e) {
             logger.error(`${hostLogPrefix} Could not add notifications config of ${id}: ${e.message}`);
@@ -3289,7 +3289,7 @@ async function startInstance(id, wakeUp) {
                         }
                     }
 
-                    cleanAutoSubscribes(id, () => {
+                    cleanAutoSubscribes(id, async () => {
                         if (procs[id] && procs[id].config && procs[id].config.common.logTransporter) {
                             outputCount++;
                             console.log(`================================== > LOG REDIRECT ${id} => false [Process stopped]`);
@@ -3444,7 +3444,7 @@ async function startInstance(id, wakeUp) {
                                 } else {
                                     // 3 crashes - do not restart anymore
                                     logger.warn(`${hostLogPrefix} Do not restart adapter ${id} because restart loop detected`);
-                                    notificationHandler.addMessage('system', 'restartLoop', 'Restart loop detected', id);
+                                    await notificationHandler.addMessage('system', 'restartLoop', 'Restart loop detected', id);
                                     procs[id].crashCount = 0;
                                     if (procs[id].crashResetTimer) {
                                         logger.debug(`${hostLogPrefix} Cleared crash timer of ${id}, because adapter stopped`);
@@ -4441,7 +4441,7 @@ function init(compactGroupId) {
 
             if (ioPackage.notifications) {
                 try {
-                    notificationHandler.addConfig(ioPackage.notifications, hostname);
+                    await notificationHandler.addConfig(ioPackage.notifications);
                     logger.info(`${hostLogPrefix} added notifications configuration of host`);
                     // load setup of all adapters to class, to remember messages even of non-running hosts
                     await notificationHandler.getSetupOfAllAdaptersFromHost();
