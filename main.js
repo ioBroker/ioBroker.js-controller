@@ -2484,7 +2484,7 @@ async function processMessage(msg) {
             }
             break;
 
-        case 'clearNotification':
+        case 'clearNotifications':
             notificationHandler.clearNotifications(msg.message.scope, msg.message.category, msg.message.instance);
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
@@ -3245,7 +3245,7 @@ function startInstance(id, wakeUp) {
     if (procs[id].config && procs[id].config.notifications) {
         try {
             notificationHandler.addConfig(procs[id].config.notifications, id);
-            logger.info(`${hostLogPrefix} added notifications configuration of ${id}`);
+            logger.debug(`${hostLogPrefix} added notifications configuration of ${id}`);
         } catch (e) {
             logger.error(`${hostLogPrefix} Could not add notifications config of ${id}: ${e.message}`);
         }
@@ -4406,20 +4406,6 @@ function init(compactGroupId) {
             // Disabled in 1.5.x
             // states.subscribe('*.info.connection');
 
-            let notificationsConfig;
-            try {
-                const obj = await objects.getObjectAsync(`system.host.${hostname}`);
-
-                if (obj && obj.notifications) {
-                    notificationsConfig = obj.notifications;
-                } else {
-                    // there should be some for a host
-                    logger.warn(`${hostLogPrefix} No notifications config found for this host`);
-                }
-            } catch (e) {
-                logger.error(`${hostLogPrefix} Cannot read notifications config: ${e.message}`);
-            }
-
             const notificationSettings = {
                 states: states,
                 objects: objects,
@@ -4430,9 +4416,9 @@ function init(compactGroupId) {
 
             notificationHandler = new NotificationHandler(notificationSettings);
 
-            if (notificationsConfig) {
+            if (ioPackage.notifications) {
                 try {
-                    notificationHandler.addConfig(notificationsConfig, hostname);
+                    notificationHandler.addConfig(ioPackage.notifications, hostname);
                     logger.info(`${hostLogPrefix} added notifications configuration of host`);
                     // load setup of all adapters to class, to remember messages even of non-running hosts
                     await notificationHandler.getSetupOfAllAdaptersFromHost();
