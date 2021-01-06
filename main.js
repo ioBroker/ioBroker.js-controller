@@ -3083,7 +3083,7 @@ function startScheduledInstance(callback) {
     processNextScheduledInstance();
 }
 
-function startInstance(id, wakeUp) {
+async function startInstance(id, wakeUp) {
     if (isStopping || !connected) {
         return;
     }
@@ -3130,7 +3130,12 @@ function startInstance(id, wakeUp) {
     if (!fs.existsSync(adapterDir_)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
         logger.debug(`${hostLogPrefix} startInstance Queue ${id} for installation`);
-        installQueue.push({id: id, version: instance.common.installedVersion || instance.common.version, installedFrom: instance.common.installedFrom, wakeUp: wakeUp});
+        installQueue.push({
+            id: id,
+            version: instance.common.installedVersion || instance.common.version,
+            installedFrom: instance.common.installedFrom,
+            wakeUp: wakeUp
+        });
         // start install queue if not started
         if (installQueue.length === 1) {
             installAdapters();
@@ -3147,7 +3152,7 @@ function startInstance(id, wakeUp) {
         args.push(`--max-old-space-size=${parseInt(instance.common.memoryLimitMB, 10)}`);
     }
 
-    let fileNameFull = path.join(adapterDir_ , fileName);
+    let fileNameFull = path.join(adapterDir_, fileName);
 
     // workaround for old vis.
     if (instance.common.onlyWWW && name === 'vis') {
@@ -3156,7 +3161,7 @@ function startInstance(id, wakeUp) {
 
     if (instance.common.mode !== 'extension' && (instance.common.onlyWWW || !fs.existsSync(fileNameFull))) {
         fileName = name + '.js';
-        fileNameFull = path.join(adapterDir_,fileName);
+        fileNameFull = path.join(adapterDir_, fileName);
         if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
             // If not just www files
             if (instance.common.onlyWWW || fs.existsSync(path.join(adapterDir_, 'www'))) {
@@ -3204,7 +3209,7 @@ function startInstance(id, wakeUp) {
             const text = fs.readFileSync('/proc/meminfo', 'utf8');
             const m = text && text.match(/MemAvailable:\s*(\d+)/);
             if (m && m[1]) {
-                availableMemMB =  Math.round(parseInt(m[1], 10) * 0.001024); // convert to MB
+                availableMemMB = Math.round(parseInt(m[1], 10) * 0.001024); // convert to MB
             }
         } catch (err) {
             logger.warn(`${hostLogPrefix} Cannot read /proc/meminfo: ${err}`);
@@ -3250,7 +3255,7 @@ function startInstance(id, wakeUp) {
 
     if (procs[id].config && procs[id].config.notifications) {
         try {
-            notificationHandler.addConfig(procs[id].config.notifications, id);
+            await notificationHandler.addConfig(procs[id].config.notifications, id);
             logger.debug(`${hostLogPrefix} added notifications configuration of ${id}`);
         } catch (e) {
             logger.error(`${hostLogPrefix} Could not add notifications config of ${id}: ${e.message}`);
@@ -3270,7 +3275,7 @@ function startInstance(id, wakeUp) {
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code, signal) => {
                     outputCount += 2;
-                    states.setState(`${id}.alive`,     {val: false, ack: true, from: hostObjectPrefix});
+                    states.setState(`${id}.alive`, {val: false, ack: true, from: hostObjectPrefix});
                     states.setState(`${id}.connected`, {val: false, ack: true, from: hostObjectPrefix});
 
                     // if we have waiting kill timeouts from stopInstance clear them
@@ -3479,7 +3484,11 @@ function startInstance(id, wakeUp) {
                     }
 
                     if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process) {
-                        states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: hostObjectPrefix});
+                        states.setState(id + '.sigKill', {
+                            val: procs[id].process.pid,
+                            ack: true,
+                            from: hostObjectPrefix
+                        });
                     }
 
                     // catch error output
@@ -3557,7 +3566,11 @@ function startInstance(id, wakeUp) {
                             }
 
                             if (procs[id].process && !procs[id].process.kill) {
-                                procs[id].process.kill = () => states.setState(id + '.sigKill', {val: -1, ack: false, from: hostObjectPrefix});
+                                procs[id].process.kill = () => states.setState(id + '.sigKill', {
+                                    val: -1,
+                                    ack: false,
+                                    from: hostObjectPrefix
+                                });
                             }
 
                             handleAdapterProcessStart();
@@ -3712,7 +3725,11 @@ function startInstance(id, wakeUp) {
                     }
                 } else {
                     // set to 0 to stop any pot. already running instances, especially broken compactModes
-                    states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}, () => handleAdapterProcessStart());
+                    states.setState(id + '.sigKill', {
+                        val: 0,
+                        ack: false,
+                        from: hostObjectPrefix
+                    }, () => handleAdapterProcessStart());
                 }
 
             } else {
