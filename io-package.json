@@ -783,7 +783,7 @@
                         "^Exception-Code: ENOMEM",
                         "buffer allocation failed"
                     ],
-                    "count": 10
+                    "limit": 10
                 },
                 {
                     "category": "fsIoErrors",
@@ -820,7 +820,7 @@
                         "^Exception-Code: ENFILE",
                         "^Unknown system error -117"
                     ],
-                    "count": 10
+                    "limit": 10
                 },
                 {
                     "category": "noDiskSpace",
@@ -852,7 +852,7 @@
                     "regex": [
                         "^Exception-Code: ENOSPC"
                     ],
-                    "count": 10
+                    "limit": 10
                 },
                 {
                     "category": "accessErrors",
@@ -884,7 +884,7 @@
                     "regex": [
                         "^Exception-Code: ENOSPC"
                     ],
-                    "count": 10
+                    "limit": 10
                 },
                 {
                     "category": "nonExistingFileErrors",
@@ -916,7 +916,7 @@
                     "regex": [
                         "^Exception-Code: EHOSTDOWN"
                     ],
-                    "count": 10
+                    "limit": 10
                 },
                 {
 

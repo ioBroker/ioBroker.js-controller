@@ -23,7 +23,9 @@ const deepClone       = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const EXIT_CODES      = require('./lib/exitCodes');
 const { PluginHandler } = require('@iobroker/plugin-base');
+const NotificationHandler = require('./lib/notificationHandler');
 let pluginHandler;
+let notificationHandler;
 
 const exec            = cp.exec;
 const spawn           = cp.spawn;
@@ -2474,6 +2476,13 @@ async function processMessage(msg) {
 
             break;
         }
+
+        case 'notification':
+            notificationHandler.addMessage(msg.scope, msg.category, msg.message);
+            if (msg.callback && msg.from) {
+                sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
+            }
+            break;
     }
 }
 
@@ -3631,7 +3640,7 @@ function startInstance(id, wakeUp) {
                                                     return;
                                                 }
                                             }
-                                            logger.info(hostLogPrefix + ' All instances are stopped.');
+                                            logger.info(`${hostLogPrefix} All instances are stopped.`);
                                             allInstancesStopped = true;
 
                                             storePids(); // Store all pids to make possible kill them all
@@ -4128,6 +4137,7 @@ function stop(force, callback) {
 
     stopInstances(force, wasForced => {
         pluginHandler.destroyAll();
+        notificationHandler.storeNotifications();
 
         if (objects && objects.destroy) {
             objects.destroy();
@@ -4359,18 +4369,47 @@ function init(compactGroupId) {
     try {
         pluginHandler.addPlugins(config.plugins, __dirname);           // ... plugins from iobroker.json
     } catch (e) {
-        logger.error('Cannot load plugins ' + JSON.stringify(config.plugins) + ': ' + e);
-        console.error('Cannot load plugins ' + JSON.stringify(config.plugins) + ': ' + e);
+        logger.error(`${hostLogPrefix} Cannot load plugins ${JSON.stringify(config.plugins)}: ${e}`);
+        console.error(`Cannot load plugins ${JSON.stringify(config.plugins)}: ${e}`);
     }
 
     createObjects(() => {
         objects.subscribe('system.adapter.*');
 
         // create states object
-        createStates(() => {
+        createStates(async () => {
             // Subscribe for connection state of all instances
             // Disabled in 1.5.x
             // states.subscribe('*.info.connection');
+
+            let notificationsSetup;
+            try {
+                const obj = await objects.getObjectAsync(`system.host.${hostname}`);
+
+                if (obj && obj.notifications) {
+                    notificationsSetup = obj.notifications;
+                } else {
+                    logger.warn(`${hostLogPrefix} No setup notifications found for this host`);
+                }
+            } catch (e) {
+                logger.error(`${hostLogPrefix} Cannot read notifications config: ${e.message}`);
+            }
+
+            const notificationSettings = {
+                states: states,
+                objects: objects,
+                log: logger,
+                setup: notificationsSetup,
+                logPrefix: hostLogPrefix,
+                host: hostname
+            };
+
+            try {
+                notificationHandler = new NotificationHandler(notificationSettings);
+                await notificationHandler.getSetupOfAllAdaptersFromHost();
+            } catch (e) {
+                logger.error(`${hostLogPrefix} Could not correctly initialize notification handler: ${e.message}`);
+            }
 
             if (connectTimeout) {
                 clearTimeout(connectTimeout);
