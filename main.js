@@ -1647,23 +1647,29 @@ function setMeta() {
     // delete obsolete states and create new ones
     objects.getObjectView('system', 'state', {startkey: hostObjectPrefix + '.', endkey: hostObjectPrefix + '.\u9999', include_docs: true}, (err, doc) => {
         if (err) {
-            logger && logger.error(hostLogPrefix + ' Could not collect ' + hostObjectPrefix + ' states to check for obsolete states: ' + err);
+            logger && logger.error(`${hostLogPrefix} Could not collect ${hostObjectPrefix} states to check for obsolete states: ${err}`);
         } else if (doc.rows) {
             // identify existing states for deletion, because they are not in the new tasks-list
             let thishostStates = doc.rows;
             if (!compactGroupController) {
                 thishostStates = doc.rows.filter(out1 => !out1.id.includes(hostObjectPrefix + compactGroupObjectPrefix));
             }
-            const pluginStatesIndex = (hostObjectPrefix + '.plugins.').length;
+            const pluginStatesIndex = (`${hostObjectPrefix}.plugins.`).length;
             const toDelete = thishostStates.filter(out1 => {
                 const found = tasks.find(out2 => out1.id === out2._id);
-                if (found === undefined && out1.id.startsWith(hostObjectPrefix + '.plugins.')) {
-                    let nameEndIndex = out1.id.indexOf('.', pluginStatesIndex + 1);
-                    if (nameEndIndex === -1) {
-                        nameEndIndex = undefined;
+                if (found === undefined) {
+                    if (out1.id.startsWith(`${hostObjectPrefix}.plugins.`)) {
+                        let nameEndIndex = out1.id.indexOf('.', pluginStatesIndex + 1);
+                        if (nameEndIndex === -1) {
+                            nameEndIndex = undefined;
+                        }
+                        return !pluginHandler.pluginExists(out1.id.substring(pluginStatesIndex, nameEndIndex));
+                    } else if (out1.id.startsWith(`${hostObjectPrefix}.notifications`)) {
+                        // notifications states are allowed to exist
+                        return false;
                     }
-                    return !pluginHandler.pluginExists(out1.id.substring(pluginStatesIndex, nameEndIndex));
                 }
+
                 return found === undefined;
             });
 
