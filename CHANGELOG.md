@@ -5,7 +5,8 @@
 * None, Supported are nodejs 10.x, 12.x and 14.x
 
 **Features**
-* (raintonr) Update Let's encrypt implementation; all relevent adapters (web and such) need updates to use it!
+* (raintonr) Update Let's encrypt implementation; all relevent adapters (web and such) need updates to use it! NEEDS NODE.JS 12.x+!
+* (bluefox) Restart adapters that use Let's encrypt after certificates were updated
 * (bluefox) Provide min/max for convert alias functions
 * (foxriver76) handling major adapter upgrades more carefully (CLI on upgrade will show if it's a major upgrade  and major upgrades will be skipped on upgrade all when executed by admin
 * (AlCalzone) detect and allow short github URL format when (auto-)installing adapters (`iobroker url User/repo#branchorcommit`)
