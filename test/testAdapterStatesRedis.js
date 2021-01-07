@@ -4,7 +4,7 @@
 /* jshint expr:true */
 'use strict';
 const testAdapter = require(__dirname + '/lib/testAdapter');
-const dataDir = __dirname + '/../tmp/data-redis';
+// const dataDir = __dirname + '/../tmp/data-redis';
 
 const statesConfig = {
     options : {
