@@ -16,9 +16,6 @@ For more details and for information how to disable the error reporting see [Sen
                                                                           
 [![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url) 
 
-
-
-
 ## Adapter for controlling your heating system.
 
 Features:
@@ -114,32 +111,34 @@ In that case and if you use actuators from the adapter then you have the possibi
 
 ## others
 
-* HolidayPresent
-if HolidayPresent is set to true then profile for Sunday is used in any case. We assume you are at home like on Sunday.
-
-* PublicHolidyToday
-There is a option to handle PublicHoliday like Sunday. This option can be enabled in admin.
-
+* HolidayPresent / PublicHolidyToday
+If you enable "Holiday present like sunday" or "public holiday like sunday" in admin, the profile for sunday is used
+when adapter is informed that today is a public holiday or you are at home in holiday.
 
 ### window open
 if "use sensors" is active and sensor(s) for a room is / are configured then
 
-a) decrease current profile temperature when window is open (true) by Profiles.0.room.WindowOpenDecrease if relative decrease is configured
-b) set target to Profiles.0.room.absolute.WindowOpenDecrease when window is open (true) if  absolute decrease is configured
+* decrease current profile temperature when window is open (true) by Profiles.0.room.WindowOpenDecrease if relative decrease is configured
+* set target to Profiles.0.room.absolute.WindowOpenDecrease when window is open (true) if  absolute decrease is configured
 
 optionally a delay can be used. If window is opened only for a short time sensor delay can avoid from reduce and back to normal in very short times.
 
 ## ical support
-you can use your calendar to change datapoints in adapter.
-Just configure events from ical in admin. Supported are
+you can use your calendar or any other datapoint to change datapoints in adapter.
+Just configure events from ical or other datapoints in admin. Supported are
 
-* heatingcontrol.0.Present
-* heatingcontrol.0.HolidayPresent
-* heatingcontrol.0.VacationAbsent
-* heatingcontrol.0.GuestsPresent
-* heatingcontrol.0.PartyNow
+|                                     |
+|-------------------------------------|----------------------------------------------------------------------------
+|heatingcontrol.0.Present             | set it to true (in case of boolean) or to a number higher then limit (in case of number)
+|heatingcontrol.0.HolidayPresent      | set it to true when you at home in your holiday
+|heatingcontrol.0.VacationAbsent      | set it to true when you not at home in your holiday
+|heatingcontrol.0.GuestsPresent       | set it to true (in case of boolean) or to a number higher then limit (in case of number)
+|heatingcontrol.0.PartyNow            | set it to true (in case of boolean) or to a number higher then limit (in case of number)
+
+hint: with number datapoints you could count how many people are in the house and then decide, e.g. we have enough for a party...
 
 ## use changes from thermostat
+
 Many user asked for an option to take over changes from thermostat into adapter. Now a four options are implemented:
 
 | option                   | description                                                
@@ -150,6 +149,11 @@ Many user asked for an option to take over changes from thermostat into adapter.
 | as new profile setting   | changes from thermostat are taken as target temperature for current profile period
 | until next profile point | changes from thermostat are taken as target temperature until next profile point. This is a manual mode, so only Window sensors are used. All other 
 |                          | increases / decreases are ignored. There is a datapoint in every room to disable manual mode before reaching next profile point.
+
+## extend override when temperature is changed
+The standard behavior for override is, when you change temperature the override time is not changed. E.g if you start override for 20 minutes with 25°C
+and you change to 28°C after 15 minutes then 28°C is only used for the last 5 minutes. With that option you restart override whenever you change override temperature.
+In example above 28°C would then be used for 20 minutes which leads to 15 minutes 25°C and 20 minutes 28°C 
 
 
 ## Thermostat handles "window is open"

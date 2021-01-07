@@ -178,6 +178,24 @@ The datapoints are created on the basis of the returned values of the Fritz AHA 
 * refactor to the format of as of "create adapter"
 
 ## Changelog
+### 2.1.6
+* pbkdf2 hash correction in calculation
+
+### 2.1.5
+* pbkdf2 hash correction in output to fritzbox
+
+### 2.1.4
+* removed the dependency to vis
+
+### 2.1.3
+* presence=0 continue
+
+### 2.1.2
+* withoit info.connection
+
+### 2.1.1
+* error handling in msgbox
+
 ### 2.1.0
 * more refactoring => adapter based on class, gitCI instead of travisCI
 * new thromastat buttons (setmodeauto, setmodeon,setmodeoff)

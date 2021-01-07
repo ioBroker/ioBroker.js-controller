@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker.coronavirus-Statistik
-hash: DOn+bUtBayCWnxfVAT6i1YSC1cwhLO5J8ECRAt6lKqQ=
+hash: ibo/NbvviJZKwYm3iQ7yZ5tQuol+GXxIF52k5dU/UJc=
 ---
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
@@ -36,7 +36,7 @@ Folgende Informationen sind verfügbar:
 | FällePerOneMillion | Anzahl der völlig bekannten Fälle pro Million Einwohner |
 | kritisch | Menge der kritischen Situation (Krankenhausaufenthalt) |
 | Todesfälle | Anzahl der aktuell registrierten Todesfälle |
-| TodesfällePerOneMillion | Anzahl der aktuell registrierten Todesfälle pro Million Einwohner |
+| TodesfällePerOneMillion | Anzahl der derzeit registrierten Todesfälle pro Million Einwohner |
 | flag | Länderflagge, Link zum Github-Standort |
 | wiederhergestellt | Anzahl der vollständig bekannten wiederhergestellten Fälle |
 | todayCases | Neue Fälle bis heute |
@@ -67,6 +67,8 @@ Bundesländer: https://npgeo-corona-npgeo-de.hub.arcgis.com/ s Generische Quelle
 Es ist möglich, Daten für Bundesländer und Städtekreise abzurufen.
 Sie können wählen, ob alle Daten empfangen werden sollen, oder nur bestimmte Regionen in den erweiterten Einstellungen auswählen.
 
+<span style="color:red">Impfdaten sind derzeit nur für Deutschland verfügbar und werden nur abgerufen, wenn *&quot;Bundeslaender&quot;* aktiviert ist</span>
+
 ## Fehlende Länder hinzufügen
 Es kann vorkommen, dass Länder nicht korrekt erkannt werden, da die API einige Ländernamen liefert, die nicht ISO-konform sind. In einem solchen Fall erhalten Sie eine Warnmeldung im Protokoll, die so aussieht
 
@@ -96,6 +98,18 @@ Als erster Wert muss der Name aus der Warnmeldung aus dem Protokoll entnommen we
 	### __WORK IN PROGRESS__
 	* (DutchmanNL) xxxx
 -->
+
+### 0.6.7 (2021-01-04) Improve handling of vaccination data for germany
+* (DutchmanNL) Added Impfungen pro 1.000 Einwohner
+* (DutchmanNL) Bugfix : Proper error handling if excel data cannot be retrieved
+
+### 0.6.6 (2021-01-03)
+* (DutchmanNL) Bugfix : Wrong channel creation of _Impfungen
+* (DutchmanNL) BugfixWindows :Error: ENOENT: no such file or directory, open 'C:\opt\iobroker\iobroker-data\files\Impfquotenmonitoring.xlsx'
+
+### 0.6.5 (2021-01-02)
+* (DutchmanNL) implement Vaccination data for Germany, thank you @winnyschuster for
+[RKI-Impfquotenmonitoring Deutschland](https://forum.iobroker.net/topic/40394/skript-rki-impfquotenmonitoring-deutschland-incl-b-länder/3)
 
 ### 0.6.4 (2020-12-29)
 * (DutchmanNL) change API from V2 to V3

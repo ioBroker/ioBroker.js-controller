@@ -61,7 +61,9 @@ Generic Source : https://coronavirus-19-api.herokuapp.com
 | All counties | All Germany counties (Default false) |
 
 It's possible to get data for federal states (Bundesländer), cities (Städte) counties (Landeskreise).
-You can choose to recieve all data or just select specific regions in advanced settings.
+You can choose to receive all data or just select specific regions in advanced settings.
+
+<span style="color:red">Vaccination data is currently only available for Germany and will only be retrieved when *"Bundeslaender"* is activated</span>
 
 ## Add missing countries
 It may happen that countries are not recognized correctly because the API delivers some country names not ISO conform. In such a case you will get a warning message in the log, which looks like this
@@ -92,6 +94,10 @@ As first value the name from the warning message must be taken from the log. The
 	### __WORK IN PROGRESS__
 	* (DutchmanNL) xxxx
 -->
+
+### 0.6.7 (2021-01-04) Improve handling of vaccination data for germany
+* (DutchmanNL) Added Impfungen pro 1.000 Einwohner
+* (DutchmanNL) Bugfix : Proper error handling if excel data cannot be retrieved
 
 ### 0.6.6 (2021-01-03)
 * (DutchmanNL) Bugfix : Wrong channel creation of _Impfungen

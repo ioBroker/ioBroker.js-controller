@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker。冠状病毒统计
-hash: DOn+bUtBayCWnxfVAT6i1YSC1cwhLO5J8ECRAt6lKqQ=
+hash: ibo/NbvviJZKwYm3iQ7yZ5tQuol+GXxIF52k5dU/UJc=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
@@ -64,8 +64,10 @@ hash: DOn+bUtBayCWnxfVAT6i1YSC1cwhLO5J8ECRAt6lKqQ=
 |所有城市|所有德国城市（默认为false）|
 |所有县|所有德国县（默认为false）|
 
-可以获取联邦州（Bundesländer），城市（Städte）县（Landeskreise）的数据。
+可以获得联邦州（Bundesländer），城市（Städte）县（Landeskreise）的数据。
 您可以选择接收所有数据，也可以只选择高级设置中的特定区域。
+
+<span style="color:red">疫苗接种数据目前仅适用于德国，并且仅在*“ Bundeslaender” *被激活时才能检索</span>
 
 ##添加缺失的国家
 由于API提供的某些国家/地区名称与ISO不一致，因此可能无法正确识别国家/地区。在这种情况下，您将在日志中收到一条警告消息，如下所示
@@ -96,6 +98,18 @@ coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not fo
 	### __WORK IN PROGRESS__
 	* (DutchmanNL) xxxx
 -->
+
+### 0.6.7 (2021-01-04) Improve handling of vaccination data for germany
+* (DutchmanNL) Added Impfungen pro 1.000 Einwohner
+* (DutchmanNL) Bugfix : Proper error handling if excel data cannot be retrieved
+
+### 0.6.6 (2021-01-03)
+* (DutchmanNL) Bugfix : Wrong channel creation of _Impfungen
+* (DutchmanNL) BugfixWindows :Error: ENOENT: no such file or directory, open 'C:\opt\iobroker\iobroker-data\files\Impfquotenmonitoring.xlsx'
+
+### 0.6.5 (2021-01-02)
+* (DutchmanNL) implement Vaccination data for Germany, thank you @winnyschuster for
+[RKI-Impfquotenmonitoring Deutschland](https://forum.iobroker.net/topic/40394/skript-rki-impfquotenmonitoring-deutschland-incl-b-länder/3)
 
 ### 0.6.4 (2020-12-29)
 * (DutchmanNL) change API from V2 to V3

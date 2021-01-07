@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.coronavirus-statistics/README.md
 title: ioBroker.coronavirus-статистика
-hash: DOn+bUtBayCWnxfVAT6i1YSC1cwhLO5J8ECRAt6lKqQ=
+hash: ibo/NbvviJZKwYm3iQ7yZ5tQuol+GXxIF52k5dU/UJc=
 ---
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.coronavirus-statistics.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.coronavirus-statistics.svg)
@@ -67,6 +67,8 @@ hash: DOn+bUtBayCWnxfVAT6i1YSC1cwhLO5J8ECRAt6lKqQ=
 Можно получить данные для федеральных земель (Bundesländer), городов (Städte) округов (Landeskreise).
 Вы можете выбрать получение всех данных или просто выбрать определенные регионы в дополнительных настройках.
 
+<span style="color:red">В настоящее время данные о вакцинации доступны только для Германии и будут получены только при активации *&quot;Bundeslaender&quot;* </span>
+
 ## Добавить отсутствующие страны
 Может случиться так, что страны не распознаются правильно, потому что API предоставляет названия некоторых стран, не соответствующих ISO. В таком случае вы получите предупреждающее сообщение в журнале, которое выглядит следующим образом
 
@@ -96,6 +98,18 @@ coronavirus-statistics.0	2020-03-21 09:05:31.328	warn	(22937) Timor-Leste not fo
 	### __WORK IN PROGRESS__
 	* (DutchmanNL) xxxx
 -->
+
+### 0.6.7 (2021-01-04) Improve handling of vaccination data for germany
+* (DutchmanNL) Added Impfungen pro 1.000 Einwohner
+* (DutchmanNL) Bugfix : Proper error handling if excel data cannot be retrieved
+
+### 0.6.6 (2021-01-03)
+* (DutchmanNL) Bugfix : Wrong channel creation of _Impfungen
+* (DutchmanNL) BugfixWindows :Error: ENOENT: no such file or directory, open 'C:\opt\iobroker\iobroker-data\files\Impfquotenmonitoring.xlsx'
+
+### 0.6.5 (2021-01-02)
+* (DutchmanNL) implement Vaccination data for Germany, thank you @winnyschuster for
+[RKI-Impfquotenmonitoring Deutschland](https://forum.iobroker.net/topic/40394/skript-rki-impfquotenmonitoring-deutschland-incl-b-länder/3)
 
 ### 0.6.4 (2020-12-29)
 * (DutchmanNL) change API from V2 to V3

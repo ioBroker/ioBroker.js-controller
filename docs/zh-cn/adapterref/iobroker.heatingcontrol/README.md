@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: CzrM2sVnQGvb4GqUv79oQsY4U9EUf8OID4uDnT/3EqU=
+hash: 2PQtLeckVKGn4znp7cn2E1jsJeLHKPYwsyQvRJFeJrA=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -58,7 +58,7 @@ hash: CzrM2sVnQGvb4GqUv79oQsY4U9EUf8OID4uDnT/3EqU=
 *配置文件类型=支持三种不同的配置文件类型（周一至周日或周一至周五和周六/周日或每天）
 *配置文件数量=如果您需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
 *周期数=定义您需要多少个不同温度的每日区域。设置的越多，将创建更多的数据点。最好使用较低的值（例如5）
-*““公众假期如星期天=如果您要在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
+*““公众假期如星期天=如果您想在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
 * HeatPeriod =加热周期的开始和结束日期。用于设置“ HeatingPeriodActive”
 
 ＃＃＃ 设备
@@ -115,35 +115,36 @@ hash: CzrM2sVnQGvb4GqUv79oQsY4U9EUf8OID4uDnT/3EqU=
 在这种情况下，如果您使用适配器中的执行器，则可以定义执行器的设置方式（关闭，打开或保持原样）
 
 ＃＃ 其他
-* HolidayPresent
+* HolidayPresent /今天公开假期
 
-如果HolidayPresent设置为true，则在任何情况下都将使用星期日的配置文件。我们假设您像星期天一样在家。
-
-* PublicHolidyToday
-
-有一个选项可以像周日一样处理PublicHoliday。可以在admin中启用此选项。
+如果在管理员中启用了“像星期天一样的假日礼物”或“像星期天一样的公共假日”，则当适配器被告知今天是公共假日或您在家度假时，将使用星期日的个人资料。
 
 ###窗口打开
 如果“使用传感器”处于活动状态并且配置了一个房间的传感器，则
 
-a）如果配置了相对降低，则通过Profiles.0.room.WindowOpenDecrease降低当前打开窗口时的温度（true）如果配置了相对降低，则b）将目标设置为Profiles.0.room.absolute.WindowOpenDecrease，如果绝对降低，则打开窗口时（true）已配置
+*通过Profiles.0.room.WindowOpenDec（如果配置了相对降低）打开窗口时，降低当前轮廓温度（true）
+*如果配置了绝对减小，则在打开窗口（真）时将目标设置为Profiles.0.room.absolute.WindowOpenDecrease
 
 可选地，可以使用延迟。如果仅在短时间内打开窗户，则传感器延迟可以避免在很短的时间内减小并恢复正常。
 
 ##医疗支持
-您可以使用日历来更改适配器中的数据点。
-只需在ical中通过ical配置事件即可。支持的是
+您可以使用日历或任何其他数据点来更改适配器中的数据点。
+只需在admin中配置来自ical或其他数据点的事件即可。支持的是
 
-*加热控制0.存在
-*加热控制0.HolidayPresent
-*加热控制0.缺席
-* heatingcontrol.0.GuestsPresent
-* heatingcontrol.0.PartyNow
+|                                     |
+
+| ------------------------------------- | ----------- -------------------------------------------------- --------------- |加热控制0.当前| |将其设置为true（如果是布尔型）或设置为一个比限制高的数字（如果是数字）| heatingcontrol.0.HolidayPresent |当您在假期在家中时，将其设置为true | heatingcontrol.0.VacationAbsent |当您不在家度假时，将其设置为true | heatingcontrol.0.GuestsPresent | |将其设置为true（如果是布尔值）或将其设置为一个更高的值（如果是数字，则为limit）| heatingcontrol.0.PartyNow |将其设置为true（对于布尔值）或大于限制的数字（对于数字）
+
+提示：使用数字数据点，您可以算出房子里有多少人，然后再决定例如我们有足够的聚会...
 
 ##使用恒温器的更改
 许多用户要求一个选项来将恒温器的更改接管适配器。现在实现了四个选项：
 
 |选项|说明| -------------------------- | --------------------- -------------------------------------------------- ---------------- |没有温控器的变化将被忽略|作为替代|温控器的变化被视为优先；必须在heatingcontrol.0.Rooms.RoomName.TemperaturOverrideTime中提前设置替代时间。 |如果未设置替代时间，则不执行替代|作为新的配置文件设置|恒温器的变化被视为当前温度曲线期间的目标温度|直到下一个轮廓点|从恒温器的变化视为目标温度，直到下一个轮廓点。这是手动模式，因此仅使用窗口传感器。所有其他| |增加/减少被忽略。每个房间中都有一个数据点，可以在到达下一个配置文件点之前禁用手动模式。
+
+##更改温度时扩展覆盖
+替代的标准行为是，当您更改温度时，替代时间不会更改。例如，如果您在25°C下启动覆盖20分钟，而在15分钟后更改为28°C，则仅在最后5分钟使用28°C。使用该选项，只要您更改倍率温度，就可以重新启动倍率。
+在高于28°C的示例中，将使用20分钟，这将导致15分钟（25°C）和20分钟（28°C）
 
 ##温控器处理“窗口打开”
 一些恒温器可以自己处理“窗口打开”。在那些情况下，会配置车窗传感器和恒温器之间的直接连接，并且在打开车窗时恒温器会降低其目标温度。

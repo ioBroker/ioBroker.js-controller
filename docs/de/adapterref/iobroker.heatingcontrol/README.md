@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: CzrM2sVnQGvb4GqUv79oQsY4U9EUf8OID4uDnT/3EqU=
+hash: 2PQtLeckVKGn4znp7cn2E1jsJeLHKPYwsyQvRJFeJrA=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -84,7 +84,7 @@ Eigenschaften:
 | DP-Name | Beschreibung |
 |---------------------|-----------------------------------------------------------------------------------------------------|
 | HeatingPeriodActive | Wenn diese Option deaktiviert ist, werden die Profile nicht verwendet |
-| AktuellesProfil | aktuelles Profil auswählen (1 basierend, bedeutet, dass Profil 1 Datenpunkte unter Heizungssteuerung.0.Profile.0 verwendet) |
+| AktuellesProfil | Aktuelles Profil auswählen (1 basierend, bedeutet, dass Profil 1 Datenpunkte unter Heizungssteuerung.0.Profile.0 verwendet) |
 | LastProgramRun | Zeigt das letzte Mal an, wenn der Adapter ausgeführt wird |
 
 ### Temperaturabnahme / -erhöhung
@@ -115,35 +115,36 @@ Mit dieser Option wird nichts an den Thermostat gesendet, wenn keine Heizperiode
 In diesem Fall und wenn Sie Aktuatoren aus dem Adapter verwenden, haben Sie die Möglichkeit zu definieren, wie Aktuatoren eingestellt werden sollen (aus, ein oder lassen Sie es wie es ist).
 
 ## Andere
-* HolidayPresent
+* HolidayPresent / PublicHolidyToday
 
-Wenn HolidayPresent auf true gesetzt ist, wird in jedem Fall das Profil für Sonntag verwendet. Wir gehen davon aus, dass Sie wie am Sonntag zu Hause sind.
-
-* PublicHolidyToday
-
-Es besteht die Möglichkeit, PublicHoliday wie Sonntag zu behandeln. Diese Option kann in admin aktiviert werden.
+Wenn Sie in admin "Feiertagsgeschenk wie Sonntag" oder "Feiertag wie Sonntag" aktivieren, wird das Profil für Sonntag verwendet, wenn der Adapter darüber informiert wird, dass heute ein Feiertag ist oder Sie im Urlaub zu Hause sind.
 
 ### Fenster geöffnet
 Wenn "Sensoren verwenden" aktiv ist und die Sensoren für einen Raum konfiguriert sind
 
-a) Verringern Sie die aktuelle Profiltemperatur, wenn das Fenster geöffnet ist (true), um Profiles.0.room.WindowOpenDecrease, wenn die relative Verringerung konfiguriert ist. b) Setzen Sie das Ziel auf Profiles.0.room.absolute.WindowOpenDecrease, wenn das Fenster geöffnet ist (true), wenn das absolute Fenster abnimmt ist konfiguriert
+* Verringern Sie die aktuelle Profiltemperatur, wenn das Fenster von Profiles.0.room.WindowOpenDecrease geöffnet ist (true), wenn die relative Verringerung konfiguriert ist
+* Ziel auf Profiles.0.room.absolute.WindowOpenDecrease setzen, wenn das Fenster geöffnet ist (true), wenn die absolute Abnahme konfiguriert ist
 
 optional kann eine Verzögerung verwendet werden. Wenn das Fenster nur für eine kurze Zeit geöffnet wird, kann eine Sensorverzögerung verhindern, dass sie in sehr kurzen Zeiten reduziert und wieder normal wird.
 
 ## Ical Unterstützung
-Sie können Ihren Kalender verwenden, um Datenpunkte im Adapter zu ändern.
-Konfigurieren Sie einfach Ereignisse von ical in admin. Unterstützt werden
+Sie können Ihren Kalender oder einen anderen Datenpunkt verwenden, um Datenpunkte im Adapter zu ändern.
+Konfigurieren Sie einfach Ereignisse von ical oder anderen Datenpunkten in admin. Unterstützt werden
 
-* Heizungssteuerung.0.Present
-* Heizungssteuerung.0.HolidayPresent
-* Heizungssteuerung.0.VacationAbsent
-* Heizungssteuerung.0.GästePräsent
-* Heizungssteuerung.0.PartyNow
+|                                     |
+
+| ------------------------------------- | ----------- -------------------------------------------------- --------------- | Heizungssteuerung.0.Present | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit (im Falle einer Zahl) ist. | heatcontrol.0.HolidayPresent | Setzen Sie es auf true, wenn Sie zu Hause in Ihrem Urlaub sind. | heizungssteuerung.0.VacationAbsent | Setzen Sie es auf true, wenn Sie in Ihrem Urlaub nicht zu Hause sind Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit (im Falle einer Zahl) ist. | heatcontrol.0.PartyNow | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit ist (im Falle einer Zahl).
+
+Hinweis: Mit Zahlendatenpunkten können Sie zählen, wie viele Personen sich im Haus befinden, und dann entscheiden, z. Wir haben genug für eine Party ...
 
 ## Änderungen vom Thermostat verwenden
 Viele Benutzer fragten nach einer Option, um Änderungen vom Thermostat in den Adapter zu übernehmen. Nun sind vier Optionen implementiert:
 
 | Option | Beschreibung | -------------------------- | --------------------- -------------------------------------------------- ---------------- | nein | Änderungen vom Thermostat werden ignoriert als Überschreibung | Änderungen vom Thermostat werden als Außerkraftsetzung angesehen; Die Übersteuerungszeit muss im Voraus in der Heizungssteuerung.0.Rooms.RoomName.TemperaturOverrideTime | eingestellt werden | Wenn die Überschreibzeit nicht eingestellt ist, wird die Überschreibung nicht ausgeführt als neue Profileinstellung | Änderungen vom Thermostat werden als Zieltemperatur für die aktuelle Profilperiode verwendet bis zum nächsten Profilpunkt | Änderungen vom Thermostat werden als Zieltemperatur bis zum nächsten Profilpunkt verwendet. Dies ist ein manueller Modus, daher werden nur Fenstersensoren verwendet. Alle anderen | | Erhöhungen / Verringerungen werden ignoriert. In jedem Raum befindet sich ein Datenpunkt, um den manuellen Modus zu deaktivieren, bevor der nächste Profilpunkt erreicht wird.
+
+## Override verlängern, wenn die Temperatur geändert wird
+Das Standardverhalten für das Überschreiben ist, wenn Sie die Temperatur ändern, wird die Übersteuerungszeit nicht geändert. Wenn Sie beispielsweise 20 Minuten lang bei 25 °C mit dem Override beginnen und nach 15 Minuten auf 28 ° C wechseln, werden 28 ° C nur für die letzten 5 Minuten verwendet. Mit dieser Option starten Sie die Übersteuerung neu, wenn Sie die Übersteuerungstemperatur ändern.
+In einem Beispiel über 28 ° C würde dann 20 Minuten lang verwendet, was zu 15 Minuten 25 ° C und 20 Minuten 28 ° C führt
 
 ## Thermostat behandelt "Fenster ist offen"
 Einige Thermostate können "Fenster ist offen" von selbst handhaben. In diesen Fällen wird eine direkte Verbindung zwischen Fenstersensor und Thermostat konfiguriert und der Thermostat reduziert die Zieltemperatur beim Öffnen eines Fensters um das Selbst.

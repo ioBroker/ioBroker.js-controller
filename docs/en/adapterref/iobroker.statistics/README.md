@@ -38,6 +38,9 @@ A german HowTo doc is available here: [howto_de](./doc/howto_de.md)
 * specify the configuration in the settings of the state (admin => objects)
 
 ## Changelog
+### 1.0.2 (2021-01-06)
+* (foxthefox) try catch around the cronjobs
+
 ### 1.0.1 (2020-12-22)
 * (Black-Thunder) Precision in rounding set to 4
 
@@ -92,6 +95,6 @@ A german HowTo doc is available here: [howto_de](./doc/howto_de.md)
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 foxthefox <foxthefox@wysiwis.net>,
+Copyright (c) 2018-2021 foxthefox <foxthefox@wysiwis.net>,
 
-Copyright (c) 2018-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2018-2021 bluefox <dogafox@gmail.com>

@@ -55,6 +55,10 @@ When the adapter crashes or an other Code error happens, this error message that
     ### __WORK IN PROGRESS__
 -->
 
+### 0.4.8-alpha.3 (2021-01-06)
+* (Dutchman) Bugfix : dev: 0 bug workaround
+* (Dutchman) Bugfix : Bugfix : Calculation of previous states
+
 ### 0.4.8-alpha.2 (2020-10-08)
 * (Dutchman) Bugfix : Cannot read property 'stateDetails' of null
 

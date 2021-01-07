@@ -135,6 +135,12 @@ CCU / Homematic поддерживает различные типы устро�
 ## FAQ
 
 ## Changelog
+### 1.14.26 (2021-01-05)
+* (foxriver76) match clientId with namespace to find correct units
+
+### 1.14.25 (2021-01-04)
+* (foxriver76) we now use a unique id to connect for each client taking the hostname into account
+
 ### 1.14.24 (2020-10-15)
 * (foxriver76) fixed error with some blinds if no adapter restart has been performed
 
