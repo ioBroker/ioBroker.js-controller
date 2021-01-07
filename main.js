@@ -2480,7 +2480,10 @@ async function processMessage(msg) {
             // restart all instances that depends on lets encrypt, except the issuer
             const instances = [];
             Object.keys(procs).forEach(id => {
-                if (procs[id].config.common.enabled &&    // if enabled
+                if (procs[id].config &&
+                    procs[id].config.common &&
+                    procs[id].config.common.enabled &&    // if enabled
+                    procs[id].config.native &&
                     procs[id].config.native.leEnabled &&  // if using letsencrypt
                     !procs[id].config.native.leUpdate &&  // if not updating certs itself
                     procs[id].config.common.mode === 'daemon' && // if constantly running
