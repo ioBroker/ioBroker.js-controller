@@ -1654,7 +1654,8 @@ function setMeta() {
             if (!compactGroupController) {
                 thishostStates = doc.rows.filter(out1 => !out1.id.includes(hostObjectPrefix + compactGroupObjectPrefix));
             }
-            const pluginStatesIndex = (`${hostObjectPrefix}.plugins.`).length;
+            const pluginStatesIndex = `${hostObjectPrefix}.plugins.`.length;
+            const notificationStatesIndex = `${hostObjectPrefix}.notifications.`.length;
             const toDelete = thishostStates.filter(out1 => {
                 const found = tasks.find(out2 => out1.id === out2._id);
                 if (found === undefined) {
@@ -1664,9 +1665,9 @@ function setMeta() {
                             nameEndIndex = undefined;
                         }
                         return !pluginHandler.pluginExists(out1.id.substring(pluginStatesIndex, nameEndIndex));
-                    } else if (out1.id.startsWith(`${hostObjectPrefix}.notifications`)) {
-                        // notifications states are allowed to exist
-                        return false;
+                    } else if (out1.id.startsWith(`${hostObjectPrefix}.notifications.`)) {
+                        // notifications states are allowed to exist if their scope still exists
+                        return !notificationHandler.scopeExists(out1.id.substring(notificationStatesIndex));
                     }
                 }
 
