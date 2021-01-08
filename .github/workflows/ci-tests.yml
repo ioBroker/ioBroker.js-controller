@@ -12,8 +12,8 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [windows-latest, ubuntu-18.04, macos-latest]
-        node: [10, 12, 14]
+        os: [windows-latest, ubuntu-latest, macos-latest]
+        node: [10, 12, 14, 15]
 
     steps:
       - uses: actions/checkout@v2
@@ -23,7 +23,7 @@ jobs:
           node-version: ${{ matrix.node-version }}
 
       - name: Prepare installation (Linux)
-        if: ${{ matrix.os == 'ubuntu-18.04' }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo add-apt-repository ppa:chris-lea/redis-server -y
           sudo apt-get update -q
@@ -54,7 +54,7 @@ jobs:
         run: npm test
 
       - name: Sentinel Tests (Linux)
-        if: ${{ matrix.os == 'ubuntu-18.04' }}
+        if: ${{ matrix.os == 'ubuntu-latest' }}
         run: |
           sudo chmod ogu+x test/redis-socket/setup-socket.sh
           sudo chmod ogu+x test/redis-sentinel/*.sh
