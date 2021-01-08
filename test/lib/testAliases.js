@@ -297,7 +297,7 @@ function register(it, expect, context) {
                 });
             });
         });
-    }).timeout(1000);
+    }).timeout(2000);
 
     it(testName + 'Write alias state', done => {
         context.adapter.setForeignState(gAliasID, 10, false, () => {
