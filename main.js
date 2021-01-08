@@ -4404,7 +4404,7 @@ function init(compactGroupId) {
 
     if (!compactGroupController) {
         logger.info(`${hostLogPrefix} ${tools.appName}.js-controller version ${version} ${ioPackage.common.name} starting`);
-        logger.info(`${hostLogPrefix} Copyright (c) 2014-2020 bluefox, 2014 hobbyquaker`);
+        logger.info(`${hostLogPrefix} Copyright (c) 2014-2021 bluefox, 2014 hobbyquaker`);
         logger.info(`${hostLogPrefix} hostname: ${hostname}, node: ${process.version}`);
         logger.info(`${hostLogPrefix} ip addresses: ${tools.findIPs().join(' ')}`);
 
