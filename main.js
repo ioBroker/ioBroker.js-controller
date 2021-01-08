@@ -23,7 +23,9 @@ const deepClone       = require('deep-clone');
 const { isDeepStrictEqual } = require('util');
 const EXIT_CODES      = require('./lib/exitCodes');
 const { PluginHandler } = require('@iobroker/plugin-base');
+const NotificationHandler = require('./lib/notificationHandler');
 let pluginHandler;
+let notificationHandler;
 
 const exec            = cp.exec;
 const spawn           = cp.spawn;
@@ -489,12 +491,34 @@ function createStates(onConnect) {
     return true;
 }
 
-function initializeController() {
+async function initializeController() {
     if (!states || !objects || connected) {
         return;
     }
 
-    logger.info(hostLogPrefix + ' connected to Objects and States');
+    logger.info(`${hostLogPrefix} connected to Objects and States`);
+
+    // initialize notificationHandler
+    const notificationSettings = {
+        states: states,
+        objects: objects,
+        log: logger,
+        logPrefix: hostLogPrefix,
+        host: hostname
+    };
+
+    notificationHandler = new NotificationHandler(notificationSettings);
+
+    if (ioPackage.notifications) {
+        try {
+            await notificationHandler.addConfig(ioPackage.notifications);
+            logger.info(`${hostLogPrefix} added notifications configuration of host`);
+            // load setup of all adapters to class, to remember messages even of non-running hosts
+            await notificationHandler.getSetupOfAllAdaptersFromHost();
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Could not add notifications config of this host: ${e.message}`);
+        }
+    }
 
     if (connected === null) {
         connected = true;
@@ -552,7 +576,7 @@ function createObjects(onConnect) {
             }, (config.objects.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
             // give main controller a bit longer, so that adapter and compact processes can exit before
         },
-        change: (id, obj) => {
+        change: async (id, obj) => {
             if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) {
                 return;
             }
@@ -566,6 +590,9 @@ function createObjects(onConnect) {
                         if (!compactGroupController && procs[id].config.common.compactGroup && compactProcs[procs[id].config.common.compactGroup] && compactProcs[procs[id].config.common.compactGroup].instances && compactProcs[procs[id].config.common.compactGroup].instances.includes(id)) {
                             compactProcs[procs[id].config.common.compactGroup].instances.splice(compactProcs[procs[id].config.common.compactGroup].instances.indexOf(id), 1);
                         }
+
+                        // instance removed -> remove all notifications
+                        await notificationHandler.clearNotifications(null, null, id);
                         procs[id].config.common.enabled = false;
                         procs[id].config.common.host    = null;
                         procs[id].config.deleted        = true;
@@ -595,7 +622,7 @@ function createObjects(onConnect) {
                         hostAdapter[id].config = obj;
                     }
                     if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
-                        stopInstance(id, () => {
+                        stopInstance(id, async () => {
                             const _ipArr = tools.findIPs();
 
                             if (checkAndAddInstance(procs[id].config, _ipArr)) {
@@ -615,6 +642,9 @@ function createObjects(onConnect) {
                                     clearTimeout(procs[id].restartTimer);
                                     delete procs[id].restartTimer;
                                 }
+
+                                // instance moved -> remove all notifications, new host has to take care
+                                await notificationHandler.clearNotifications(null, null, id);
 
                                 delete procs[id];
                                 delete hostAdapter[id];
@@ -1639,23 +1669,30 @@ function setMeta() {
     // delete obsolete states and create new ones
     objects.getObjectView('system', 'state', {startkey: hostObjectPrefix + '.', endkey: hostObjectPrefix + '.\u9999', include_docs: true}, (err, doc) => {
         if (err) {
-            logger && logger.error(hostLogPrefix + ' Could not collect ' + hostObjectPrefix + ' states to check for obsolete states: ' + err);
+            logger && logger.error(`${hostLogPrefix} Could not collect ${hostObjectPrefix} states to check for obsolete states: ${err}`);
         } else if (doc.rows) {
             // identify existing states for deletion, because they are not in the new tasks-list
             let thishostStates = doc.rows;
             if (!compactGroupController) {
                 thishostStates = doc.rows.filter(out1 => !out1.id.includes(hostObjectPrefix + compactGroupObjectPrefix));
             }
-            const pluginStatesIndex = (hostObjectPrefix + '.plugins.').length;
+            const pluginStatesIndex = `${hostObjectPrefix}.plugins.`.length;
+            const notificationStatesIndex = `${hostObjectPrefix}.notifications.`.length;
             const toDelete = thishostStates.filter(out1 => {
                 const found = tasks.find(out2 => out1.id === out2._id);
-                if (found === undefined && out1.id.startsWith(hostObjectPrefix + '.plugins.')) {
-                    let nameEndIndex = out1.id.indexOf('.', pluginStatesIndex + 1);
-                    if (nameEndIndex === -1) {
-                        nameEndIndex = undefined;
+                if (found === undefined) {
+                    if (out1.id.startsWith(`${hostObjectPrefix}.plugins.`)) {
+                        let nameEndIndex = out1.id.indexOf('.', pluginStatesIndex + 1);
+                        if (nameEndIndex === -1) {
+                            nameEndIndex = undefined;
+                        }
+                        return !pluginHandler.pluginExists(out1.id.substring(pluginStatesIndex, nameEndIndex));
+                    } else if (out1.id.startsWith(`${hostObjectPrefix}.notifications.`)) {
+                        // notifications states are allowed to exist if their scope still exists
+                        return !notificationHandler.scopeExists(out1.id.substring(notificationStatesIndex));
                     }
-                    return !pluginHandler.pluginExists(out1.id.substring(pluginStatesIndex, nameEndIndex));
                 }
+
                 return found === undefined;
             });
 
@@ -2476,6 +2513,27 @@ async function processMessage(msg) {
             break;
         }
 
+        case 'addNotification':
+            await notificationHandler.addMessage(msg.message.scope, msg.message.category, msg.message.message, msg.message.instance);
+            if (msg.callback && msg.from) {
+                sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
+            }
+            break;
+
+        case 'clearNotifications':
+            await notificationHandler.clearNotifications(msg.message.scope, msg.message.category, msg.message.instance);
+            if (msg.callback && msg.from) {
+                sendTo(msg.from, msg.command, {result: 'ok'}, msg.callback);
+            }
+            break;
+
+        case 'getNotifications':
+            if (msg.callback && msg.from) {
+                const notificationsObj = notificationHandler.getFilteredInformation(msg.message.scope, msg.message.category, msg.message.instance);
+                sendTo(msg.from, msg.command, {result: notificationsObj}, msg.callback);
+            }
+            break;
+
         case 'certsUpdated': {
             // restart all instances that depends on lets encrypt, except the issuer
             const instances = [];
@@ -3089,7 +3147,7 @@ function startScheduledInstance(callback) {
     processNextScheduledInstance();
 }
 
-function startInstance(id, wakeUp) {
+async function startInstance(id, wakeUp) {
     if (isStopping || !connected) {
         return;
     }
@@ -3136,7 +3194,12 @@ function startInstance(id, wakeUp) {
     if (!fs.existsSync(adapterDir_)) {
         procs[id].downloadRetry = procs[id].downloadRetry || 0;
         logger.debug(`${hostLogPrefix} startInstance Queue ${id} for installation`);
-        installQueue.push({id: id, version: instance.common.installedVersion || instance.common.version, installedFrom: instance.common.installedFrom, wakeUp: wakeUp});
+        installQueue.push({
+            id: id,
+            version: instance.common.installedVersion || instance.common.version,
+            installedFrom: instance.common.installedFrom,
+            wakeUp: wakeUp
+        });
         // start install queue if not started
         if (installQueue.length === 1) {
             installAdapters();
@@ -3153,7 +3216,7 @@ function startInstance(id, wakeUp) {
         args.push(`--max-old-space-size=${parseInt(instance.common.memoryLimitMB, 10)}`);
     }
 
-    let fileNameFull = path.join(adapterDir_ , fileName);
+    let fileNameFull = path.join(adapterDir_, fileName);
 
     // workaround for old vis.
     if (instance.common.onlyWWW && name === 'vis') {
@@ -3162,7 +3225,7 @@ function startInstance(id, wakeUp) {
 
     if (instance.common.mode !== 'extension' && (instance.common.onlyWWW || !fs.existsSync(fileNameFull))) {
         fileName = name + '.js';
-        fileNameFull = path.join(adapterDir_,fileName);
+        fileNameFull = path.join(adapterDir_, fileName);
         if (instance.common.onlyWWW || !fs.existsSync(fileNameFull)) {
             // If not just www files
             if (instance.common.onlyWWW || fs.existsSync(path.join(adapterDir_, 'www'))) {
@@ -3210,7 +3273,7 @@ function startInstance(id, wakeUp) {
             const text = fs.readFileSync('/proc/meminfo', 'utf8');
             const m = text && text.match(/MemAvailable:\s*(\d+)/);
             if (m && m[1]) {
-                availableMemMB =  Math.round(parseInt(m[1], 10) * 0.001024); // convert to MB
+                availableMemMB = Math.round(parseInt(m[1], 10) * 0.001024); // convert to MB
             }
         } catch (err) {
             logger.warn(`${hostLogPrefix} Cannot read /proc/meminfo: ${err}`);
@@ -3254,6 +3317,15 @@ function startInstance(id, wakeUp) {
     procs[id].startedInCompactMode = false;
     procs[id].startedAsCompactGroup = false;
 
+    if (procs[id].config && procs[id].config.notifications) {
+        try {
+            await notificationHandler.addConfig(procs[id].config.notifications);
+            logger.debug(`${hostLogPrefix} added notifications configuration of ${id}`);
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Could not add notifications config of ${id}: ${e.message}`);
+        }
+    }
+
     switch (mode) {
         case 'once':
         case 'daemon':
@@ -3267,7 +3339,7 @@ function startInstance(id, wakeUp) {
                 // Exit Handler for normal Adapters started as own processes
                 const exitHandler = (code, signal) => {
                     outputCount += 2;
-                    states.setState(`${id}.alive`,     {val: false, ack: true, from: hostObjectPrefix});
+                    states.setState(`${id}.alive`, {val: false, ack: true, from: hostObjectPrefix});
                     states.setState(`${id}.connected`, {val: false, ack: true, from: hostObjectPrefix});
 
                     // if we have waiting kill timeouts from stopInstance clear them
@@ -3281,7 +3353,7 @@ function startInstance(id, wakeUp) {
                         }
                     }
 
-                    cleanAutoSubscribes(id, () => {
+                    cleanAutoSubscribes(id, async () => {
                         if (procs[id] && procs[id].config && procs[id].config.common.logTransporter) {
                             outputCount++;
                             console.log(`================================== > LOG REDIRECT ${id} => false [Process stopped]`);
@@ -3436,6 +3508,7 @@ function startInstance(id, wakeUp) {
                                 } else {
                                     // 3 crashes - do not restart anymore
                                     logger.warn(`${hostLogPrefix} Do not restart adapter ${id} because restart loop detected`);
+                                    await notificationHandler.addMessage('system', 'restartLoop', 'Restart loop detected', id);
                                     procs[id].crashCount = 0;
                                     if (procs[id].crashResetTimer) {
                                         logger.debug(`${hostLogPrefix} Cleared crash timer of ${id}, because adapter stopped`);
@@ -3475,7 +3548,11 @@ function startInstance(id, wakeUp) {
                     }
 
                     if (!procs[id].startedInCompactMode && !procs[id].startedAsCompactGroup && procs[id].process) {
-                        states.setState(id + '.sigKill', {val: procs[id].process.pid, ack: true, from: hostObjectPrefix});
+                        states.setState(id + '.sigKill', {
+                            val: procs[id].process.pid,
+                            ack: true,
+                            from: hostObjectPrefix
+                        });
                     }
 
                     // catch error output
@@ -3553,7 +3630,11 @@ function startInstance(id, wakeUp) {
                             }
 
                             if (procs[id].process && !procs[id].process.kill) {
-                                procs[id].process.kill = () => states.setState(id + '.sigKill', {val: -1, ack: false, from: hostObjectPrefix});
+                                procs[id].process.kill = () => states.setState(id + '.sigKill', {
+                                    val: -1,
+                                    ack: false,
+                                    from: hostObjectPrefix
+                                });
                             }
 
                             handleAdapterProcessStart();
@@ -3666,7 +3747,7 @@ function startInstance(id, wakeUp) {
                                                     return;
                                                 }
                                             }
-                                            logger.info(hostLogPrefix + ' All instances are stopped.');
+                                            logger.info(`${hostLogPrefix} All instances are stopped.`);
                                             allInstancesStopped = true;
 
                                             storePids(); // Store all pids to make possible kill them all
@@ -3708,7 +3789,11 @@ function startInstance(id, wakeUp) {
                     }
                 } else {
                     // set to 0 to stop any pot. already running instances, especially broken compactModes
-                    states.setState(id + '.sigKill', {val: 0, ack: false, from: hostObjectPrefix}, () => handleAdapterProcessStart());
+                    states.setState(id + '.sigKill', {
+                        val: 0,
+                        ack: false,
+                        from: hostObjectPrefix
+                    }, () => handleAdapterProcessStart());
                 }
 
             } else {
@@ -4163,6 +4248,7 @@ function stop(force, callback) {
 
     stopInstances(force, wasForced => {
         pluginHandler.destroyAll();
+        notificationHandler.storeNotifications();
 
         if (objects && objects.destroy) {
             objects.destroy();
@@ -4394,15 +4480,15 @@ function init(compactGroupId) {
     try {
         pluginHandler.addPlugins(config.plugins, __dirname);           // ... plugins from iobroker.json
     } catch (e) {
-        logger.error('Cannot load plugins ' + JSON.stringify(config.plugins) + ': ' + e);
-        console.error('Cannot load plugins ' + JSON.stringify(config.plugins) + ': ' + e);
+        logger.error(`${hostLogPrefix} Cannot load plugins ${JSON.stringify(config.plugins)}: ${e}`);
+        console.error(`Cannot load plugins ${JSON.stringify(config.plugins)}: ${e}`);
     }
 
     createObjects(() => {
         objects.subscribe('system.adapter.*');
 
         // create states object
-        createStates(() => {
+        createStates( () => {
             // Subscribe for connection state of all instances
             // Disabled in 1.5.x
             // states.subscribe('*.info.connection');

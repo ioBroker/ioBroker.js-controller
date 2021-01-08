@@ -378,7 +378,7 @@ function register(it, expect, context) {
         done();
     });
 
-    it(context.name + ' ' + context.adapterShortName + ' adapter: encrypt decrypt functions', async () => {
+    it(context.name + ' ' + context.adapterShortName + ' adapter: encrypt decrypt functions', () => {
         const encrypted = context.adapter.encrypt('topSecret');
         // we only check not equal, because encryption can change and is not always deterministic
         expect(encrypted.length).to.equal(79);
