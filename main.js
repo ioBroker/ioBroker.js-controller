@@ -491,12 +491,34 @@ function createStates(onConnect) {
     return true;
 }
 
-function initializeController() {
+async function initializeController() {
     if (!states || !objects || connected) {
         return;
     }
 
-    logger.info(hostLogPrefix + ' connected to Objects and States');
+    logger.info(`${hostLogPrefix} connected to Objects and States`);
+
+    // initialize notificationHandler
+    const notificationSettings = {
+        states: states,
+        objects: objects,
+        log: logger,
+        logPrefix: hostLogPrefix,
+        host: hostname
+    };
+
+    notificationHandler = new NotificationHandler(notificationSettings);
+
+    if (ioPackage.notifications) {
+        try {
+            await notificationHandler.addConfig(ioPackage.notifications);
+            logger.info(`${hostLogPrefix} added notifications configuration of host`);
+            // load setup of all adapters to class, to remember messages even of non-running hosts
+            await notificationHandler.getSetupOfAllAdaptersFromHost();
+        } catch (e) {
+            logger.error(`${hostLogPrefix} Could not add notifications config of this host: ${e.message}`);
+        }
+    }
 
     if (connected === null) {
         connected = true;
@@ -554,7 +576,7 @@ function createObjects(onConnect) {
             }, (config.objects.connectTimeout || 2000) + (!compactGroupController ? 500 : 0));
             // give main controller a bit longer, so that adapter and compact processes can exit before
         },
-        change: (id, obj) => {
+        change: async (id, obj) => {
             if (!started || !id.match(/^system\.adapter\.[a-zA-Z0-9-_]+\.[0-9]+$/)) {
                 return;
             }
@@ -570,7 +592,7 @@ function createObjects(onConnect) {
                         }
 
                         // instance removed -> remove all notifications
-                        notificationHandler.clearNotifications(null, null, id);
+                        await notificationHandler.clearNotifications(null, null, id);
                         procs[id].config.common.enabled = false;
                         procs[id].config.common.host    = null;
                         procs[id].config.deleted        = true;
@@ -600,7 +622,7 @@ function createObjects(onConnect) {
                         hostAdapter[id].config = obj;
                     }
                     if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
-                        stopInstance(id, () => {
+                        stopInstance(id, async () => {
                             const _ipArr = tools.findIPs();
 
                             if (checkAndAddInstance(procs[id].config, _ipArr)) {
@@ -622,7 +644,7 @@ function createObjects(onConnect) {
                                 }
 
                                 // instance moved -> remove all notifications, new host has to take care
-                                notificationHandler.clearNotifications(null, null, id);
+                                await notificationHandler.clearNotifications(null, null, id);
 
                                 delete procs[id];
                                 delete hostAdapter[id];
@@ -4431,31 +4453,10 @@ function init(compactGroupId) {
         objects.subscribe('system.adapter.*');
 
         // create states object
-        createStates(async () => {
+        createStates( () => {
             // Subscribe for connection state of all instances
             // Disabled in 1.5.x
             // states.subscribe('*.info.connection');
-
-            const notificationSettings = {
-                states: states,
-                objects: objects,
-                log: logger,
-                logPrefix: hostLogPrefix,
-                host: hostname
-            };
-
-            notificationHandler = new NotificationHandler(notificationSettings);
-
-            if (ioPackage.notifications) {
-                try {
-                    await notificationHandler.addConfig(ioPackage.notifications);
-                    logger.info(`${hostLogPrefix} added notifications configuration of host`);
-                    // load setup of all adapters to class, to remember messages even of non-running hosts
-                    await notificationHandler.getSetupOfAllAdaptersFromHost();
-                } catch (e) {
-                    logger.error(`${hostLogPrefix} Could not add notifications config of this host: ${e.message}`);
-                }
-            }
 
             if (connectTimeout) {
                 clearTimeout(connectTimeout);
