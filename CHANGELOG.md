@@ -2,7 +2,7 @@
 
 ## 3.2.0 (2021-01-xx) Release Grace WIP!!!
 **BREAKING CHANGES**
-* None, Supported are nodejs 10.x, 12.x and 14.x
+* None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working in the automated tests, but formally not supported)
 
 **Features**
 * (raintonr) Update Let's encrypt implementation; all relevent adapters (web and such) need updates to use it! NEEDS NODE.JS 12.x+! (see DOCS LINK TODO)
