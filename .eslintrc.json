@@ -24,7 +24,7 @@
         "prefer-const": "error",
         "no-throw-literal": "error",
         "prefer-promise-reject-errors": "error",
-        "eqeqeq": ["error", "always", {"null":  "ignore"}],
+        "eqeqeq": ["error", "always"],
         "quotes": [
             "error",
             "single",
