@@ -2512,7 +2512,7 @@ async function processMessage(msg) {
             }
             break;
 
-      case 'certsUpdated': {
+        case 'certsUpdated': {
             // restart all instances that depends on lets encrypt, except the issuer
             const instances = [];
             Object.keys(procs).forEach(id => {
