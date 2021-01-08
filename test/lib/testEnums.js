@@ -4,7 +4,7 @@
 /* jshint expr:true */
 'use strict';
 
-function register(it, expect, context) {
+function register(/*it, expect, context*/) {
 
     // getEnum
     // getEnums
