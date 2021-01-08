@@ -25,3 +25,4 @@ lib/objects/lua
 /test/tmp
 /test/redis-sentinel/log
 /test/redis-sentinel/*.config
+/lib/.greenlockrc

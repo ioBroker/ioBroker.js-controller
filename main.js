@@ -438,7 +438,7 @@ function createStates(onConnect) {
                         }
                     } else {
                         if (!pluginHandler.destroy(pluginName)) {
-                            logger.info(hostLogPrefix + ' Plugin ' + pluginName + ' could not be disabled. Please restart ioBroker to disable it.');
+                            logger.info(`${hostLogPrefix} Plugin ${pluginName} could not be disabled. Please restart ioBroker to disable it.`);
                         }
                     }
                 }
@@ -948,12 +948,12 @@ function checkHost(callback) {
 /**
  * Collects the dialog information, e.g. used by Admin "System Settings"
  *
- * @param {'extended'|'normal'|'no-city'} type - type of required information
+ * @param {'extended'|'normal'|'no-city'|'none'} type - type of required information
  * @returns {Promise<object>|void}
  */
 async function collectDiagInfo(type) {
     if (type !== 'extended' && type !== 'normal' && type !== 'no-city') {
-        throw new Error(`Unsupported type "${type}" for collectDiagInfo`);
+        return null;
     } else {
         let systemConfig;
         let err;
@@ -2376,6 +2376,7 @@ async function processMessage(msg) {
             }
             break;
         }
+
         case 'getInterfaces':
             if (msg.callback && msg.from) {
                 sendTo(msg.from, msg.command, {result: os.networkInterfaces()}, msg.callback);
@@ -2510,13 +2511,48 @@ async function processMessage(msg) {
                 sendTo(msg.from, msg.command, {result: notificationsObj}, msg.callback);
             }
             break;
+
+      case 'certsUpdated': {
+            // restart all instances that depends on lets encrypt, except the issuer
+            const instances = [];
+            Object.keys(procs).forEach(id => {
+                if (procs[id].config &&
+                    procs[id].config.common &&
+                    procs[id].config.common.enabled &&    // if enabled
+                    procs[id].config.native &&
+                    procs[id].config.native.leEnabled &&  // if using letsencrypt
+                    !procs[id].config.native.leUpdate &&  // if not updating certs itself
+                    procs[id].config.common.mode === 'daemon' && // if constantly running
+                    (!msg.message || msg.message.instance !== id)) { // and it not the issuer
+                    // restart this instance, because letsencrypt updated
+                    instances.push(id);
+                }
+            });
+            restartInstances(instances);
+
+            break;
+        }
+    }
+}
+
+// restart given instances sequentially
+function restartInstances(instances, cb) {
+    if (!instances || !instances.length) {
+        cb && cb();
+    } else {
+        const id = instances.shift();
+        logger.info(`${hostLogPrefix} instance "${id} restarted because the "let's encrypt" certificates were updated`);
+        stopInstance(id, () => {
+            startInstance(id);
+            setTimeout(() => restartInstances(instances, cb), 3000);
+        });
     }
 }
 
 function getInstances() {
     objects.getObjectView('system', 'instance', {}, (err, doc) => {
         if (err && err.message && err.message.startsWith('Cannot find ')) {
-            logger.error(hostLogPrefix + ' _design/system missing - call node ' + tools.appName + '.js setup');
+            logger.error(`${hostLogPrefix} _design/system missing - call node ${tools.appName}.js setup`);
             //if (objects.destroy) objects.destroy();
             //if (states  && states.destroy)  states.destroy();
             //process.exit(1);
@@ -2524,11 +2560,11 @@ function getInstances() {
         } else if (err) {
             logger.error(hostLogPrefix + ' Can not get instances: ' + err);
         } else if (!doc.rows || doc.rows.length === 0) {
-            logger.info(hostLogPrefix + ' no instances found');
+            logger.info(`${hostLogPrefix} no instances found`);
         } else {
             const _ipArr = tools.findIPs();
             if (!compactGroupController) {
-                logger.info(hostLogPrefix + ' ' + doc.rows.length + ' instance' + (doc.rows.length === 1 ? '' : 's') + ' found');
+                logger.info(`${hostLogPrefix} ${doc.rows.length} instance${doc.rows.length === 1 ? '' : 's'} found`);
             }
             let count = 0;
 
@@ -2649,7 +2685,7 @@ function checkAndAddInstance(instance, ipArr) {
     }
 
     if (compactGroupController) {
-        logger.debug(hostLogPrefix + ' instance ' + instance._id + ' is managed by this controller');
+        logger.debug(`${hostLogPrefix} instance ${instance._id} is managed by this controller`);
     }
     procs[instance._id] = procs[instance._id] || {};
     if (!procs[instance._id].config) {
@@ -2750,7 +2786,7 @@ function checkVersion(id, name, version, instances) {
     }
 
     if (!isFound) {
-        logger.error(hostLogPrefix + ' startInstance ' + id + ': required adapter "' + name + '" not found!');
+        logger.error(`${hostLogPrefix} startInstance ${id}: required adapter "${name}" not found!`);
         return false;
     } else {
         return true;
@@ -2829,10 +2865,10 @@ function storePids() {
             }
             pids.push(process.pid);
             try {
-                fs.writeFileSync(__dirname + '/pids.txt', JSON.stringify(pids));
+                fs.writeFileSync(`${__dirname}/pids.txt`, JSON.stringify(pids));
             } catch (err) {
-                logger.error(hostLogPrefix + ' could not store process id list in ' + __dirname + '/pids.txt! Please check permissions and user ownership of this file. Was ioBroker started as a different user? Please also check left over processes when stopping ioBroker!\n' + err);
-                logger.error(hostLogPrefix + ' Please consider running the installation fixer when on Linux.');
+                logger.error(`${hostLogPrefix} could not store process id list in ${__dirname}/pids.txt! Please check permissions and user ownership of this file. Was ioBroker started as a different user? Please also check left over processes when stopping ioBroker!\n${err}`);
+                logger.error(`${hostLogPrefix} Please consider running the installation fixer when on Linux.`);
             }
         }, 1000);
     }
@@ -2854,7 +2890,7 @@ function installAdapters() {
 
     const commandScope = task.rebuild ? 'rebuild' : 'install';
     if (compactGroupController && !task.rebuild) {
-        logger.info(hostLogPrefix + ' adapter ' + name + ' is not installed, installation will be handled by main controller ... waiting ');
+        logger.info(`${hostLogPrefix} adapter ${name} is not installed, installation will be handled by main controller ... waiting `);
         setImmediate(() => {
             installQueue.shift();
             installAdapters();
@@ -2866,9 +2902,9 @@ function installAdapters() {
         procs[task.id].downloadRetry++;
 
         if (task.rebuild) {
-            logger.warn(hostLogPrefix + ' adapter "' + name + '" seems to be installed for a different version of Node.js. Trying to rebuild it... ' + procs[task.id].rebuildCounter + ' attempt');
+            logger.warn(`${hostLogPrefix} adapter "${name}" seems to be installed for a different version of Node.js. Trying to rebuild it... ${procs[task.id].rebuildCounter} attempt`);
         } else {
-            logger.warn(hostLogPrefix + ' startInstance cannot find adapter "' + name + '". Try to install it... ' + procs[task.id].downloadRetry + ' attempt');
+            logger.warn(`${hostLogPrefix} startInstance cannot find adapter "${name}". Try to install it... ${procs[task.id].downloadRetry} attempt`);
         }
 
         const installArgs = [];
@@ -2897,7 +2933,7 @@ function installAdapters() {
                 installArgs.push('--install');
             }
         }
-        logger.info(hostLogPrefix + ' ' + tools.appName + ' ' + installArgs.join(' ') + (task.rebuild ? '' : ' using ' + ((procs[task.id].downloadRetry < 3 && task.installedFrom) ? 'installedFrom' : 'installedVersion')));
+        logger.info(`${hostLogPrefix} ${tools.appName} ${installArgs.join(' ')}${task.rebuild ? '' : ' using ' + ((procs[task.id].downloadRetry < 3 && task.installedFrom) ? 'installedFrom' : 'installedVersion')}`);
         installArgs.unshift(__dirname + '/' + tools.appName + '.js');
 
         try {
@@ -2906,18 +2942,18 @@ function installAdapters() {
             if (child.stdout) {
                 child.stdout.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
-                    logger.info(hostLogPrefix + ' ' + tools.appName + ' npm-' + commandScope + ': ' + data);
+                    logger.info(`${hostLogPrefix} ${tools.appName} npm-${commandScope}: ${data}`);
                 });
             }
             if (child.stderr) {
                 child.stderr.on('data', data => {
                     data = data.toString().replace(/\n/g, '');
-                    logger.error(hostLogPrefix + ' ' + tools.appName + ' npm-' + commandScope + ': ' + data);
+                    logger.error(`${hostLogPrefix} ${tools.appName} npm-${commandScope}: ${data}`);
                 });
             }
 
             child.on('exit', exitCode => {
-                logger.info(hostLogPrefix + ' ' + tools.appName + ' npm-' + commandScope + ': exit ' + exitCode);
+                logger.info(`${hostLogPrefix} ${tools.appName} npm-${commandScope}: exit ${exitCode}`);
                 installQueue.shift();
                 if (exitCode === EXIT_CODES.CANNOT_INSTALL_NPM_PACKET) {
                     task.inProgress = false;
@@ -2926,7 +2962,7 @@ function installAdapters() {
                     procs[task.id].needsRebuild = false;
                     if (!task.disabled) {
                         if (!procs[task.id].config.common.enabled) {
-                            logger.info(hostLogPrefix + ' startInstance ' + task.id + ': instance is disabled but should be started, re-enabling it');
+                            logger.info(`${hostLogPrefix} startInstance ${task.id}: instance is disabled but should be started, re-enabling it`);
                             states.setState(task.id + '.alive', {val: true, ack: false, from: hostObjectPrefix});
                         } else if (task.rebuild) {
                             // on rebuild we send a restart signal via object change to also reach compact group processes
@@ -2935,23 +2971,22 @@ function installAdapters() {
                             startInstance(task.id, task.wakeUp);
                         }
                     } else {
-                        logger.debug(hostLogPrefix + ' ' + tools.appName + ' ' + commandScope + ' successful but the instance is disabled');
+                        logger.debug(`${hostLogPrefix} ${tools.appName} ${commandScope} successful but the instance is disabled`);
                     }
                 }
 
-                setTimeout(() => {
-                    installAdapters();
-                }, 1000);
+                setTimeout(() =>
+                    installAdapters(), 1000);
             });
             child.on('error', err => {
-                logger.error(hostLogPrefix + ' Cannot execute "' + __dirname + '/' + tools.appName + '.js ' + commandScope + ' ' + name + ': ' + err);
+                logger.error(`${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName}.js ${commandScope} ${name}: ${err}`);
                 setTimeout(() => {
                     installQueue.shift();
                     installAdapters();
                 }, 1000);
             });
         } catch (err) {
-            logger.error(hostLogPrefix + ' Cannot execute "' + __dirname + '/' + tools.appName + '.js ' + commandScope + ' ' + name + ': ' + err);
+            logger.error(`${hostLogPrefix} Cannot execute "${__dirname}/${tools.appName}.js ${commandScope} ${name}: ${err}`);
             setTimeout(() => {
                 installQueue.shift();
                 installAdapters();
@@ -2959,9 +2994,9 @@ function installAdapters() {
         }
     } else {
         if (task.rebuild) {
-            logger.error(hostLogPrefix + ' Cannot rebuild adapter "' + name + '". To retry it disable/enable the adapter or restart host. Also check the error messages in the log or execute "npm install --production" in adapter directory manually!');
+            logger.error(`${hostLogPrefix} Cannot rebuild adapter "${name}". To retry it disable/enable the adapter or restart host. Also check the error messages in the log or execute "npm install --production" in adapter directory manually!`);
         } else {
-            logger.error(hostLogPrefix + ' Cannot download and install adapter "' + name + '". To retry it disable/enable the adapter or restart host. Also check the error messages in the log!');
+            logger.error(`${hostLogPrefix} Cannot download and install adapter "${name}". To retry it disable/enable the adapter or restart host. Also check the error messages in the log!`);
         }
         setTimeout(() => {
             installQueue.shift();
@@ -3827,7 +3862,7 @@ function stopInstance(id, force, callback) {
         callback = force;
         force    = false;
     }
-    logger.info(hostLogPrefix + ' stopInstance ' + id + ' (force=' + force + ', process=' + (procs[id].process ? 'true' : 'false') + ')');
+    logger.info(`${hostLogPrefix} stopInstance ${id} (force=${force}, process=${procs[id].process ? 'true' : 'false'})`);
     if (!procs[id]) {
         logger.warn(hostLogPrefix + ' unknown instance ' + id);
         return typeof callback === 'function' && callback();
@@ -4346,10 +4381,10 @@ function init(compactGroupId) {
     });
 
     if (!compactGroupController) {
-        logger.info(hostLogPrefix + ' ' + tools.appName + '.js-controller version ' + version + ' ' + ioPackage.common.name + ' starting');
-        logger.info(hostLogPrefix + ' Copyright (c) 2014-2020 bluefox, 2014 hobbyquaker');
-        logger.info(hostLogPrefix + ' hostname: ' + hostname + ', node: ' + process.version);
-        logger.info(hostLogPrefix + ' ip addresses: ' + tools.findIPs().join(' '));
+        logger.info(`${hostLogPrefix} ${tools.appName}.js-controller version ${version} ${ioPackage.common.name} starting`);
+        logger.info(`${hostLogPrefix} Copyright (c) 2014-2020 bluefox, 2014 hobbyquaker`);
+        logger.info(`${hostLogPrefix} hostname: ${hostname}, node: ${process.version}`);
+        logger.info(`${hostLogPrefix} ip addresses: ${tools.findIPs().join(' ')}`);
 
         // create package.json for npm >= 3.x if not exists
         if (__dirname.replace(/\\/g, '/').toLowerCase().indexOf('/node_modules/' + title.toLowerCase()) !== -1) {
@@ -4507,7 +4542,7 @@ function init(compactGroupId) {
 
     connectTimeout = setTimeout(() => {
         connectTimeout = null;
-        logger.error(hostLogPrefix + ' No connection to databases possible, restart');
+        logger.error(`${hostLogPrefix} No connection to databases possible, restart`);
         !compactGroupController && processMessage({command: 'cmdExec', message: {data: '_restart'}});
         setTimeout(() => process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED), compactGroupController ? 0 : 1000);
     }, 30000);
@@ -4527,7 +4562,7 @@ function init(compactGroupId) {
         }
         if (err.arguments && err.arguments[0] === 'fragmentedOperation') {
             // TODO Remove as soon as socketio is no longer used
-            logger.error(hostLogPrefix + ' fragmentedOperation: restart objects');
+            logger.error(`${hostLogPrefix} fragmentedOperation: restart objects`);
             // restart objects
             objects.destroy();
             objects = null;

@@ -136,6 +136,7 @@ function testAdapter(options) {
                 }
             } else {
                 setTimeout(function () {
+                    // eslint-disable-next-line no-unused-vars
                     checkValueOfState(id, value, cb, counter + 1);
                 }, 500);
             }
@@ -143,6 +144,7 @@ function testAdapter(options) {
     }
 
     // TODO: This is unused:
+    // eslint-disable-next-line no-unused-vars
     function sendTo(target, command, message, callback) {
         context.onControllerStateChanged = function (id, state) {
             if (id === 'messagebox.system.adapter.test.0') {
@@ -156,6 +158,7 @@ function testAdapter(options) {
             from:       'system.adapter.test.0',
             callback: {
                 message: message,
+                // eslint-disable-next-line no-undef
                 id:      sendToID++, // TODO: sendToID is undefined!
                 ack:     false,
                 time:    (new Date()).getTime()

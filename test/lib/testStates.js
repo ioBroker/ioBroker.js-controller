@@ -122,12 +122,9 @@ function register(it, expect, context) {
             context.adapter.getStates('abc*', function (err, states) {
                 expect(err).to.be.not.ok;
                 expect(states).to.be.an('object');
-                let found = false;
-                // TODO: what does this loop do?
-                for(const _a in states) {
-                    found = true;
-                }
-                expect(found).to.be.false;
+
+                // no states should match
+                expect(Object.keys(states).length).to.be.equal(0);
 
                 context.adapter.getStates(gid.substring(0, gid.length - 2) + '*', function (err, states) {
                     expect(err).to.be.not.ok;
@@ -614,11 +611,9 @@ function register(it, expect, context) {
             context.adapter.getForeignStates(context.adapterShortName + '1.0.abc*', function (err, states) {
                 expect(err).to.be.not.ok;
                 expect(states).to.be.an('object');
-                let found = false;
-                for(const _a in states) {
-                    found = true;
-                }
-                expect(found).to.be.false;
+
+                // no states should match
+                expect(Object.keys(states).length).to.be.equal(0);
 
                 context.adapter.getForeignStates(context.adapterShortName + '1.0.' + gid.substring(0, gid.length - 2) + '*', function (err, states) {
                     expect(err).to.be.not.ok;
