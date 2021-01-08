@@ -25,6 +25,7 @@
         "no-throw-literal": "error",
         "prefer-promise-reject-errors": "error",
         "require-await": "error",
+        "eqeqeq": ["error", "always"],
         "quotes": [
             "error",
             "single",
