@@ -2563,7 +2563,7 @@ function restartInstances(instances, cb) {
         cb && cb();
     } else {
         const id = instances.shift();
-        logger.info(`${hostLogPrefix} instance "${id} restarted because the "let's encrypt" certificates were updated`);
+        logger.info(`${hostLogPrefix} instance "${id}" restarted because the "let's encrypt" certificates were updated`);
         stopInstance(id, () => {
             startInstance(id);
             setTimeout(() => restartInstances(instances, cb), 3000);
