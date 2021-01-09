@@ -708,8 +708,9 @@ function register(it, expect, context) {
 
                 expect(obj).to.be.null;
 
+                // deleting non existing object should not result in an error
                 context.adapter.delObject(gid, err => {
-                    expect(err.message).to.equal('Not exists');
+                    expect(err).to.not.be.ok;
                     done();
                 });
             });
@@ -726,8 +727,9 @@ function register(it, expect, context) {
 
                 expect(obj).to.be.null;
 
+                // deleting non existing object should not result in an error
                 context.adapter.delForeignObject(context.adapterShortName + 'f.0.' + gid, function (err) {
-                    expect(err.message).to.equal('Not exists');
+                    expect(err).to.be.not.ok;
                     done();
                 });
             });
