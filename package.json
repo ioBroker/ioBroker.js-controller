@@ -1,6 +1,6 @@
 {
     "name": "iobroker.js-controller",
-    "version": "3.2.3",
+    "version": "3.2.4",
     "engines": {
         "node": ">=10.0.0"
     },
@@ -22,7 +22,7 @@
         "@iobroker/db-states-redis": "^1.0.3",
         "@iobroker/db-states-file": "^1.0.3",
         "@iobroker/db-objects-redis": "^1.0.3",
-        "@iobroker/db-objects-file": "^1.0.3",
+        "@iobroker/db-objects-file": "^1.0.4",
         "chokidar": "^3.4.3",
         "daemonize2": "^0.4.2",
         "debug": "^4.3.1",
