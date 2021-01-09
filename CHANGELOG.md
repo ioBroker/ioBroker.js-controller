@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.2.1 (2021-01-09) Release Grace
+## 3.2.2 (2021-01-09) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working in the automated tests, but formally not supported)
 
