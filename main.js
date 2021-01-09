@@ -4294,7 +4294,9 @@ function stop(force, callback) {
                         // delete pids.txt
                         fs.unlinkSync(path.join(__dirname, 'pids.txt'));
                     } catch (e) {
-                        logger.error(`${hostLogPrefix} Could not delete ${path.join(__dirname, 'pids.txt')}: ${e}`);
+                        if (e.code !== 'ENOENT') {
+                            logger.error(`${hostLogPrefix} Could not delete ${path.join(__dirname, 'pids.txt')}: ${e}`);
+                        }
                     }
                     process.exit(EXIT_CODES.JS_CONTROLLER_STOPPED);
                 }, 1000);
