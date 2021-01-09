@@ -49,6 +49,8 @@
 * (bluefox) Fix error if type of native data changed in the new version from basic type e.g. 'string' to 'object'.
 * (AlCalzone) Remove hardcoded references to GitHub master branch because newer repositories use "main"
 * (Apollon77) update _design objects also on js-controller upgrade/setup first
+* (Apollon77) optimize deletion of files in ioBroker file storage
+* (foxriver76) do not return an error if object does not exist on del*Object
 * (Apollon77, foxriver, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
