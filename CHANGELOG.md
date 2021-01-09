@@ -1,6 +1,6 @@
 # Changelog
 
-## 3.2.2 (2021-01-09) Release Grace
+## 3.2.3 (2021-01-09) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working in the automated tests, but formally not supported)
 
@@ -48,6 +48,7 @@
 * (foxriver76) when missing rights to access log dir do not crash hard anymore, instead fallback to default directory
 * (bluefox) Fix error if type of native data changed in the new version from basic type e.g. 'string' to 'object'.
 * (AlCalzone) Remove hardcoded references to GitHub master branch because newer repositories use "main"
+* (Apollon77) update _design objects also on js-controller upgrade/setup first
 * (Apollon77, foxriver, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
