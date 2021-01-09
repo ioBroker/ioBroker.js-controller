@@ -50,6 +50,7 @@
         "yargs": "^16.2.0"
     },
     "devDependencies": {
+        "@alcalzone/release-script": "^1.8.2",
         "@types/event-stream": "^3.3.34",
         "@types/fs-extra": "^9.0.6",
         "@types/iobroker": "^3.2.7",
@@ -110,6 +111,7 @@
         "stop": "node iobroker.js stop",
         "restart": "node iobroker.js restart",
         "prepublishOnly": "node lib/scripts/scripts.js --prepublish",
+        "release": "release-script",
         "test": "node node_modules/mocha/bin/mocha test --exit",
         "test-redis-socket": "node node_modules/mocha/bin/mocha test/redis-socket/ --exit",
         "test-redis-sentinel": "node node_modules/mocha/bin/mocha test/redis-sentinel/ --exit",
