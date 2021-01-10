@@ -44,7 +44,7 @@
         "readline-sync": "^1.4.10",
         "request": "^2.88.2",
         "semver": "^7.3.4",
-        "tar": "^6.0.5",
+        "tar": "^6.1.0",
         "winston": "^3.3.3",
         "winston-daily-rotate-file": "^4.5.0",
         "yargs": "^16.2.0"
