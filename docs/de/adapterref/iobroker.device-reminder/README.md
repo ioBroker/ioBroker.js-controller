@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.device-reminder/README.md
 title: ioBroker.device-Erinnerung
-hash: q4JxybjgdjPpzFLfN6T1e2bRJ22P/dHBnDEaPQwlcB4=
+hash: f73+0kIQ/JWIC/UsFaGXlKZEhfmYtthHNJvoj1LBBvs=
 ---
 ![Logo](../../../en/adapterref/iobroker.device-reminder/admin/icon.png)
 
@@ -19,7 +19,10 @@ hash: q4JxybjgdjPpzFLfN6T1e2bRJ22P/dHBnDEaPQwlcB4=
 # IoBroker.device-Erinnerung
 ![Testen und freigeben](https://github.com/xenon-s/iobroker.device-reminder/workflows/Test%20and%20Release/badge.svg)
 
-# Adapter zur Überwachung des Status von Geräten Version 1.0
+## Deutsche Readme benötigt?<br> [Deutsch Readme](https://github.com/Xenon-s/ioBroker.device-reminder/blob/master/README_GER.md)
+<br>
+
+# Adapter zur Überwachung des Status von Geräten Version 1.x.
 Dieser Adapter kann mithilfe von Messbuchsen erkennen, ob ein Gerät eingeschaltet ist, in Betrieb ist oder ausgeschaltet wurde, und darauf reagieren. Nachrichten können dann automatisch per Telegramm, WhatsApp, Alexa, Sayit, Pushover und E-Mail ausgegeben werden (Mehrfachauswahl pro Gerät möglich). Es ist auch möglich, den Socket nach Abschluss des Vorgangs automatisch auszuschalten (ebenfalls zeitverzögert).
 
 # Was ist zu beachten?
@@ -162,9 +165,12 @@ wird angezeigt.<br>
 	Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 1.0.3 (2021-01-07)
+* (xenon-s) bugfix pushover
+* (xenon-s) added link "german readme" in readme
 
 ### 1.0.2 (2021-01-06)
-* (xenon-s) fix name i io-package.json
+* (xenon-s) fix name in io-package.json
 
 ### 1.0.1 (2021-01-05)
 * (xenon-s) bugfix

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.device-reminder/README.md
 title: ioBroker.device-напоминание
-hash: q4JxybjgdjPpzFLfN6T1e2bRJ22P/dHBnDEaPQwlcB4=
+hash: f73+0kIQ/JWIC/UsFaGXlKZEhfmYtthHNJvoj1LBBvs=
 ---
 ![Логотип](../../../en/adapterref/iobroker.device-reminder/admin/icon.png)
 
@@ -19,7 +19,10 @@ hash: q4JxybjgdjPpzFLfN6T1e2bRJ22P/dHBnDEaPQwlcB4=
 # IoBroker.device-напоминание
 ![Тестирование и выпуск](https://github.com/xenon-s/iobroker.device-reminder/workflows/Test%20and%20Release/badge.svg)
 
-# Адаптер для мониторинга состояния устройств Версия 1.0
+## Нужен немецкий ридми?<br> [немецкий ридми](https://github.com/Xenon-s/ioBroker.device-reminder/blob/master/README_GER.md)
+<br>
+
+# Адаптер для мониторинга состояния устройств Версия 1.x
 Этот адаптер может использовать измерительные гнезда, чтобы определять, включено ли устройство, работает или было выключено, и реагировать на это. Затем сообщения могут быть отправлены автоматически через Telegram, WhatsApp, Alexa, Sayit, pushover и электронную почту (возможен множественный выбор для каждого устройства). Также возможно автоматическое отключение розетки после завершения процесса (также с задержкой по времени).
 
 # Что следует учитывать?
@@ -162,9 +165,12 @@ hash: q4JxybjgdjPpzFLfN6T1e2bRJ22P/dHBnDEaPQwlcB4=
 	Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 1.0.3 (2021-01-07)
+* (xenon-s) bugfix pushover
+* (xenon-s) added link "german readme" in readme
 
 ### 1.0.2 (2021-01-06)
-* (xenon-s) fix name i io-package.json
+* (xenon-s) fix name in io-package.json
 
 ### 1.0.1 (2021-01-05)
 * (xenon-s) bugfix

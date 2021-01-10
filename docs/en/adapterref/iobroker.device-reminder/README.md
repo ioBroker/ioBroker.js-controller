@@ -13,7 +13,10 @@
 
 [![NPM](https://nodei.co/npm/iobroker.device-reminder.png?downloads=true)](https://nodei.co/npm/iobroker.device-reminder/)
 
-# Adapter for monitoring the status of devices Version 1.0
+## german readme needed? <br>[german readme](https://github.com/Xenon-s/ioBroker.device-reminder/blob/master/README_GER.md)
+<br>
+
+# Adapter for monitoring the status of devices Version 1.x
 This adapter can use measurement sockets to detect whether a device is switched on, in operation or has been switched off and react to this. Messages can then be issued automatically via Telegram, whatsapp, alexa, sayit, pushover and email (multiple selection per device possible). It is also possible to automatically switch off the socket after the process has been completed (also time-delayed).
 
 # What should be considered?
@@ -163,9 +166,12 @@ is displayed.
 	Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 1.0.3 (2021-01-07)
+* (xenon-s) bugfix pushover
+* (xenon-s) added link "german readme" in readme
 
 ### 1.0.2 (2021-01-06)
-* (xenon-s) fix name i io-package.json
+* (xenon-s) fix name in io-package.json
 
 ### 1.0.1 (2021-01-05)
 * (xenon-s) bugfix

@@ -1152,6 +1152,7 @@ In addition to normal thermostat you can define:
 	* 'back', 'home' or 'menu*, if the corresponding buttons are clicked
 	* Keep in mind: You can use the Target-Value-List (accessible via the wrench-icon of each datapoint) to link from one datapoint to multiple datapoints, depending on the returned value (see Modifying Datapoints section above)
 * **REMOTE_COLOR**: *string* - shows colored buttons an returns the corresponding color ('red', 'green', 'yellow' or 'blue'), if a color is clicked
+* **REMOTE_CHANNELS**: *array* - an array of buttons. The name of the button is sent to the corresponding state-id, if the button is clicked
 * **REMOTE_ADDITIONAL_BUTTONS**: *array* - an array of buttons. The name of the button is sent to the corresponding state-id, if the button is clicked
 * **REMOTE_HIDE_REMOTE**: *boolean* - if true, the complete remote control section will be hidden (for example to show it only, if a valid source is selected)
 
@@ -1193,9 +1194,13 @@ This device has some special predefined size- and display-settings to show a web
     
 ## Changelog
 
-### dev
+### 1.5.5 (2021-01-07)
 * (sbormann) Added optional headings to ADDITIONAL_CONTROLS, the appereance can be controlled by an option.
 * (sbormann) Added "No caption" to the option that controls the appereance of ADDITIONAL_CONTROLS-Section.
+* (sbormann) The ADDITIONAL_CONTROLS-Section has been reordered to appear higher up.
+* (sbormann) Virtual enlarge-switch from widgets was renamed from switch to enlarge.
+* (siedi) Fix for remote control not appearing if REMOTE_CHANNELS was the only used datapoint.
+* (sbormann) Reposition popup, if ADDITIONAL_CONTROLS are present.
 
 ### 1.5.4 (2020-12-20)
 * (sbormann) Added info if demo-view is loaded.
@@ -1917,7 +1922,7 @@ This device has some special predefined size- and display-settings to show a web
 ## License
 MIT License
 
-Copyright (c) 2020 Sebastian Bormann
+Copyright (c) 2021 Sebastian Bormann
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

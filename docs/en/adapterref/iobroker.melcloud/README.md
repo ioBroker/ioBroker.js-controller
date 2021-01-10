@@ -13,7 +13,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.melcloud.png?downloads=true)](https://nodei.co/npm/iobroker.melcloud/)
 
-**Tests:**: [![Build Status](https://travis-ci.com/Black-Thunder/ioBroker.melcloud.svg?branch=master)](https://travis-ci.com/Black-Thunder/ioBroker.melcloud)
+**Tests:** [![Build Status](https://travis-ci.com/Black-Thunder/ioBroker.melcloud.svg?branch=master)](https://travis-ci.com/Black-Thunder/ioBroker.melcloud)
 
 ## melcloud adapter for ioBroker
 
@@ -21,7 +21,7 @@ This adapter integrates Mitsubishi air conditioning systems via MELCloud (https:
 
 Documentation:
 
-* [Forum thread](https://forum.iobroker.net/topic/33855/test-adapter-melcloud-v1-0-x-github)
+* [Forum thread](https://forum.iobroker.net/topic/40705/test-adapter-melcloud-v1-1-x-latest)
 * [English description](https://github.com/Black-Thunder/ioBroker.melcloud/tree/master/docs/en/melcloud.md)
 * [Deutsche Beschreibung](https://github.com/Black-Thunder/ioBroker.melcloud/tree/master/docs/de/melcloud.md)
 
@@ -31,10 +31,15 @@ Documentation:
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 1.1.1 (2021-01-10)
+**Attention: With this version you must reenter your password in the adapter settings and save again! Otherwise login will fail.**
+* (Black-Thunder) fix: correctly use auto decryption handling for password 
+* (Black-Thunder) polling interval in adapter settings is now limited to values greater than 0
+
+### 1.1.0 (2021-01-08)
+* (Black-Thunder) new functionality: retrieve power consumption reports
 * (Black-Thunder) adapter connection state now correctly set accordingly to the cloud connection
-* (Black-Thunder) added release-script and Dependabot
-* (Black-Thunder) updated dependecies
+* (Black-Thunder) added release-script and Dependabot, updated dependecies
 
 ### 1.0.6 28.06.2020
 * (Black-Thunder) implemented queue mechanism for sending requests to cloud

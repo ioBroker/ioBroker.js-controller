@@ -153,6 +153,22 @@ For more information about the Configuration, the InOut Functions and Conversion
 
 
 ## Changelog
+### 0.13.0
+  (jw) updated dependencies<br>
+  (jw) improved state selector (scrolling and refresh on open)<br>
+
+### 0.12.0
+  (jw) updated dependencies<br>
+  (jw) added support for linking services to support Television Services<br> 
+  (jw) added possibility to publish devices without the bridge (necessary for TV service)<br> 
+  (jw) added support for audio stream in camera<br> 
+  (jw) added support for custom characteristics on the services (e.g. to add Wattage characteristic to plugs)<br> 
+  (jw) added support for additonal services to camera (to enable usage of doorbell service)<br> 
+  (many20) fixed scaleInt conversion - results are now rounded<br> 
+  
+### 0.11.0
+  Intermediate release<br>
+
 ### 0.10.0 (2020-02-19)
   (apollon77) updated dependencies, nodejs 12 support<br>
 

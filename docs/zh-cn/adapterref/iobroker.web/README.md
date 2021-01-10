@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: 44jVs/zK2VzhG/oNEYKlUu9L9p9HrLI9eZnRlE7BMYU=
+hash: CAC28G6Ipt23Zf8bSJMg0pr62rzCFUqpdHVb0+xZ9Pc=
 ---
 ![商标](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -14,7 +14,7 @@ hash: 44jVs/zK2VzhG/oNEYKlUu9L9p9HrLI9eZnRlE7BMYU=
 ![NPM](https://nodei.co/npm/iobroker.web.png?downloads=true)
 
 ＃ioBroker.web
-基于Node.js的Web服务器，并表示从ioBroker DB中读取文件
+基于Node.js的Web服务器，并表示可以从ioBroker DB中读取文件
 
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
@@ -28,9 +28,9 @@ hash: 44jVs/zK2VzhG/oNEYKlUu9L9p9HrLI9eZnRlE7BMYU=
 
 ##扩展
 Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类URL请求，则会调用该处理程序。
-这些扩展看起来像普通的适配器，但是它们没有正在运行的进程，将由Web服务器调用。
+这些扩展看起来像普通适配器，但是它们没有正在运行的进程，将由Web服务器调用。
 
-例如。用户可以激活特殊的代理适配器并访问同一Web服务器中的其他设备（例如Web cam）。
+例如。用户可以激活特殊的代理适配器，并访问同一Web服务器中的其他设备（例如Web Cam）。
 必须让所有服务在一台Web服务器下可用。
 
 ##暴力保护
@@ -41,14 +41,40 @@ Web驱动程序支持扩展。扩展名是URL处理程序，如果出现此类UR
 如果选择此选项，则用户将保持登录状态一个月。
 否则，用户将保持登录状态，以配置“登录超时”。
 
+##访问状态的值
+您可以通过HTTP get请求访问常规状态值和二进制状态值。
+
+```
+http://IP:8082/state/system.adapter.web.0.alive =>
+{"val":true,"ack":true,"ts":1606831924559,"q":0,"from":"system.adapter.web.0","lc":1606777539894}
+```
+
+要么
+
+```
+http://IP:8082/state/javascript.picture.png =>
+[IMAGE]
+```
+
+该图像必须使用如下所示的javascript适配器编写：
+
+```
+createState('javascript.0.picture.png', {type: 'file', name: 'Picture'}, () => {
+    setBinaryState('javascript.0.picture.png', fs.readFileSync('/tmp/picture.png'));
+});
+```
+
 <！-下一个版本的占位符（在该行的开头）：
 
-### __进展中__->
+### __正在进行的工程__->
 ##“基本身份验证”选项
-通过发送未经授权的`WWW-Authenticate`标头允许`401`，允许通过基本身份验证登录。
+允许通过发送未经授权的`WWW-Authenticate`标头发送`401`来通过基本身份验证登录。
 可以用于* FullyBrowser *之类的应用程序。一旦输入了错误的凭据，您将被重定向到登录页面。
 
 ## Changelog
+### 3.2.0 (2021-01-08)
+* (raintonr) Support of new Let's Encrypt (only with js-controller 3.2.x)
+* (raintonr) Allow to disable to serve files or states from DB
 
 ### 3.1.0 (2020-11-26)
 * (foxriver76) Add option for Basic Auth

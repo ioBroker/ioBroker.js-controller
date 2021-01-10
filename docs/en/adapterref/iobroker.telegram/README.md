@@ -645,6 +645,8 @@ msg.payload = {
 -->
 
 ## Changelog
+### 1.7.0 (2021-01-08)
+* (bluefox) Support of new Let's Encrypt (only with js-controller 3.2.x)
 
 ### 1.6.2 (2020-12-27)
 * (fincha) Fixing error with keyboard
@@ -860,7 +862,7 @@ msg.payload = {
 
 The MIT License (MIT)
 
-Copyright (c) 2016-2020, bluefox <dogafox@gmail.com>
+Copyright (c) 2016-2021, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

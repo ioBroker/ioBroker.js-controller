@@ -3,8 +3,8 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.seq.svg)](https://www.npmjs.com/package/iobroker.seq)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.seq.svg)](https://www.npmjs.com/package/iobroker.seq)
-![Number of Installations (latest)](http://iobroker.live/badges/seq-installed.svg)
-![Number of Installations (stable)](http://iobroker.live/badges/seq-stable.svg)
+![Number of Installations (latest)](https://iobroker.live/badges/seq-installed.svg)
+![Number of Installations (stable)](https://iobroker.live/badges/seq-stable.svg)
 [![Dependency Status](https://img.shields.io/david/o0shojo0o/iobroker.seq.svg)](https://david-dm.org/o0shojo0o/iobroker.seq)
 
 [![NPM](https://nodei.co/npm/iobroker.seq.png?downloads=true)](https://nodei.co/npm/iobroker.seq/)
@@ -60,7 +60,7 @@ This adapter allows you to push your ioBroker log into the system of [Seq](https
 ## License
 MIT License
 
-Copyright (c) 2020 Dennis Hinzpeter <info@bastelbunker.de>
+Copyright (c) 2021 Dennis Hinzpeter <info@bastelbunker.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

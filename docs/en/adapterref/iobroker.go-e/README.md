@@ -21,20 +21,21 @@ go-e is an invitation to move electrically. E-mobility is our drive, whereby our
 **DE**
 go-e ist die Aufforderung, sich elektrisch zu bewegen. e-Mobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der einzelnen Ladestation für e-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von ganzen Gebäuden, sind wir Anbieter gesamtheitlicher Systemlösungen für sämtliche Anforderungen der modernen e-Mobilität.
 
-## Adapter manual 
+## ioBroker-Adapter manual 
 
-The Manual for Installation and configuration you can find here:
+The Manual for installation and configuration you can find here:
 [Adapter Manual](./docs/Readme.md)
 
 ## Developer manual
+
+Join the adapter Community
+https://t.me/goECharger 
 
 Official API Documentation:
 https://github.com/goecharger/go-eCharger-API-v1 
 
 Official Product Support:
 https://go-e.co/support/
-
-
 
 ## Changelog
 

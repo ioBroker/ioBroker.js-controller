@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.simple-api/README.md
 title: 简单API
-hash: FITqSMIxROPfo/aC+w9iXCLJmf2VTbboYVG33cZLge8=
+hash: CmFb3bicG5lruCvSom8AvKW7IIT9XQ2XllE+tsP92ys=
 ---
 ![商标](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
@@ -19,7 +19,7 @@ hash: FITqSMIxROPfo/aC+w9iXCLJmf2VTbboYVG33cZLge8=
 **此适配器使用Sentry库自动向开发人员报告异常和代码错误。**有关更多详细信息以及如何禁用错误报告的信息，请参见[哨兵插件文档](https://github.com/ioBroker/plugin-sentry#plugin-sentry)！ Sentry报告从js-controller 3.0开始使用。
 
 ##用法
-在浏览器```http://ipaddress:8087/help```中调用以获取有关API的帮助。结果是：
+在浏览器```http://ipaddress:8087/help```中调用以获得有关API的帮助。结果是：
 
 ```
 {
@@ -155,7 +155,7 @@ http://ipaddress:8087/set/javascript.0.test?value=1&prettyPrint&ack=true
 ＃＃＃ 状态
 ###搜索
 如果在配置中设置了数据源（History，SQL），则仅列出该数据源已知的数据点。
-如果已激活“列出所有数据点”选项或未指定任何数据源，则将列出所有数据点。
+如果激活了“列出所有数据点”选项或未指定任何数据源，则将列出所有数据点。
 Grafana JSON / SimpleJSON插件需要此命令。
 
 ###查询
@@ -192,9 +192,9 @@ Grafana JSON / SimpleJSON插件需要此命令。
 
 <pre>http：// localhost：8087 / get / admin.0.memHeapTotal /？prettyPrint</pre>
 
-<pre>{“ val”：31.19，“ ack”：true，“ ts”：1423154619，“ from”：“ system.adapter.admin.0”，“ lc”：1423153989，“ _id”：“ system.adapter.admin。 0.memHeapTotal”，“ type”：“ state”，“ common”：{“ name”：“ admin.0.memHeapTotal”，“ type”：“ number”，“ role”：“ indicator.state”，“ unit” “：” MB“，”历史记录“：{” enabled“：true，” changesOnly“：true，” minLength“：480，” maxLength“：960，” retention“：604800，” debounce“：10000}}，”本机”：{}}</pre>
+<pre>{“ val”：31.19，“ ack”：true，“ ts”：1423154619，“ from”：“ system.adapter.admin.0”，“ lc”：1423153989，“ _ id”：“ system.adapter.admin。 0.memHeapTotal”，“ type”：“ state”，“ common”：{“ name”：“ admin.0.memHeapTotal”，“ type”：“ number”，“ role”：“ indicator.state”，“ unit” “：” MB“，”历史记录“：{” enabled“：true，” changesOnly“：true，” minLength“：480，” maxLength“：960，” retention“：604800，” debounce“：10000}}，”本机”：{}}</pre>
 
-<pre>http：// ip：8087 / get / admin.0.memHeapTotal，admin.0.memHeapUsed /？prettyPrint</pre><pre> [{“ val”：31.19，“ ack”：true，“ ts”：1423154544，“ from”：“ system.adapter.admin.0”，“ lc”：1423153989，“ _id”：“ system.adapter.admin .0.memHeapTotal”，“类型”：“状态”，“公共”：{“名称”：“ admin.0.memHeapTotal”，“类型”：“数字”，“角色”：“ indicator.state”，“ unit“：” MB“，” history“：{” enabled“：true，” changesOnly“：true，” minLength“：480，” maxLength“：960，” retention“：604800，” debounce“：10000}}， “ native”：{}}，{“ val”：16.25，“ ack”：true，“ ts”：1423154544，“ from”：“ system.adapter.admin.0”，“ lc”：1423154544，“ _id” ：“” system.adapter.admin.0.memHeapUsed“，” type“：” state“，” common“：{” name“：” admin.0.memHeapUsed“，” type“：” number“，” role“： “ indicator.state”，“ unit”：“ MB”，“ history”：{“ enabled”：true，“ changesOnly”：true，“ minLength”：480，“ maxLength”：960，“ retention”：604800，“ debounce”：10000}}，“ native”：{}}]</pre>
+<pre>http：// ip：8087 / get / admin.0.memHeapTotal，admin.0.memHeapUsed /？prettyPrint</pre><pre> [{“ val”：31.19，“ ack”：true，“ ts”：1423154544，“ from”：“ system.adapter.admin.0”，“ lc”：1423153989，“ _id”：“ system.adapter.admin .0.memHeapTotal”，“类型”：“状态”，“公用”：{“名称”：“ admin.0.memHeapTotal”，“类型”：“数字”，“角色”：“ indicator.state”，“ unit“：” MB“，” history“：{” enabled“：true，” changesOnly“：true，” minLength“：480，” maxLength“：960，” retention“：604800，” debounce“：10000}}， “ native”：{}}，{“ val”：16.25，“ ack”：true，“ ts”：1423154544，“ from”：“ system.adapter.admin.0”，“ lc”：1423154544，“ _id” ：“” system.adapter.admin.0.memHeapUsed“，” type“：” state“，” common“：{” name“：” admin.0.memHeapUsed“，” type“：” number“，” role“： “ indicator.state”，“ unit”：“ MB”，“ history”：{“ enabled”：true，“ changesOnly”：true，“ minLength”：480，“ maxLength”：960，“ retention”：604800，“ debounce”：10000}}，“ native”：{}}]</pre>
 
 ### GetBulk
 使用时间戳读取更多ID的状态。您可以指定更多的ID，以分号分隔。
@@ -222,7 +222,7 @@ Grafana JSON / SimpleJSON插件需要此命令。
 ###对象
 获取模式的所有对象的列表。如果未指定任何模式，则将返回所有对象作为JSON数组。
 
-<pre>http：// ip：8087 / objects？prettyPrint</pre><pre> {“” system.adapter.admin.0.uptime“：{” _id“：” system.adapter.admin.0.uptime“，” type“：” state“，” common“：{” name“：” admin。 0.uptime”，“ type”：“ number”，“ role”：“ indicator.state”，“ unit”：“ seconds”，“}”，“ native”：{}}，“ system.adapter.admin.0.memRss” “：{” _id“：” system.adapter.admin.0.memRss“，” type“：”州“，” common“：{” name“：” admin.0.memRss“，” desc“：”常驻设置大小”，“类型”：“数字”，“角色”：“ indicator.state”，“单位”：“ MB”，“历史记录”：{“启用”：true，“ changesOnly”：true，“ minLength” ：480，“ maxLength”：960，“保留”：604800，“反跳”：10000}}，“本机”：{}}，...
+<pre>http：// ip：8087 / objects？prettyPrint</pre><pre> {“” system.adapter.admin.0.uptime“：{” _id“：” system.adapter.admin.0.uptime“，” type“：” state“，” common“：{” name“：” admin。 0.uptime”，“ type”：“ number”，“ role”：“ indicator.state”，“ unit”：“ seconds”，“}”，“ native”：{}}，“ system.adapter.admin.0.memRss” “：{” _id“：” system.adapter.admin.0.memRss“，” type“：”状态“，” common“：{” name“：” admin.0.memRss“，” desc“：”常驻设置大小”，“类型”：“数字”，“角色”：“ indicator.state”，“单位”：“ MB”，“历史记录”：{“启用”：true，“ changesOnly”：true，“ minLength” ：480，“ maxLength”：960，“ retention”：604800，“ debounce”：10000}}，“ native”：{}}，...
 </pre>
 
 获取适配器system.adapter.admin.0的所有控制对象：<pre> http：// ip：8087 / objects？pattern = system.adapter.admin.0 *＆prettyPrint</pre><pre> {“” system.adapter.admin.0.uptime“：{” _id“：” system.adapter.admin.0.uptime“，” type“：” state“，” common“：{” name“：” admin。 0.uptime”，“ type”：“ number”，“ role”：“ indicator.state”，“ unit”：“ seconds”}，“ native”：{}}，...
@@ -241,20 +241,24 @@ Grafana JSON / SimpleJSON插件需要此命令。
 
 ###搜索
 如果在配置中设置了数据源（History，SQL），则仅列出该数据源已知的数据点。
-如果已激活“列出所有数据点”选项或未指定任何数据源，则将列出所有数据点。
+如果激活了“列出所有数据点”选项或未指定任何数据源，则将列出所有数据点。
 
 <pre>http：// ip：8087 / search？pattern = system.adapter.admin.0 *＆prettyPrint</pre><pre> {“ system.adapter.admin.0.outputCount”，“ system.adapter.admin.0.inputCount”，“ system.adapter.admin.0.uptime”，“ system.adapter.admin.0.memRss”，“ system.adapter.admin.0.memHeapTotal”，“ system.adapter.admin.0.memHeapUsed”，“ system.adapter.admin.0.cputime”，“ system.adapter.admin.0.cpu”，“系统。 adapter.admin.0.connected“，” system.adapter.admin.0.alive“}</pre>
 
 ###查询
-如果已指定数据源（历史记录，SQL），则将在指定期间内读取来自指定数据点的数据。
+如果指定了数据源（History，SQL），则在指定期间内将读取来自指定数据点的数据。
 
-<pre>http：// ip：8087 / query / system.host.iobroker-dev.load，system.host.iobroker-dev.memHeapUsed /？prettyPrint＆dateFrom = 2019-06-08T01：00：00.000Z＆dateTo = 2019-06-08T01： 00：10.000Z</pre><pre> [{“ target”：“ system.host.iobroker-dev.load”，“ datapoints”：[[0.12，1559955600000]，[0.46，1559955601975]，[0.44，1559955610000]]}，{“ target”：“系统.host.iobroker-dev.memHeapUsed“，” datapoints“：[[23.01，1559955600000]，[22.66，1559955601975]，[22.69，1559955610000]]}]</pre>
+<pre>http：// ip：8087 / query / system.host.iobroker-dev.load，system.host.iobroker-dev.memHeapUsed /？prettyPrint＆dateFrom = 2019-06-08T01：00：00.000Z＆dateTo = 2019-06-08T01： 00：10.000Z</pre><pre> [{“ target”：“ system.host.iobroker-dev.load”，“ datapoints”：[[0.12，1559955600000]，[0.46，1559955601975]，[0.44，1559955610000]]}，{“ target”：“系统.host.iobroker-dev.memHeapUsed“，”数据点“：[[23.01，1559955600000]，[22.66，1559955601975]，[22.69，1559955610000]]}]</pre>
 
 如果未指定数据源或传递了noHistory参数，则仅读取数据点的当前值。
 
-<pre>http：// ip：8087 / query / system.host.iobroker-dev.load，system.host.iobroker-dev.memHeapUsed /？prettyPrint＆noHistory = true</pre><pre> [{“ target”：“ system.host.iobroker-dev.load”，“数据点”：[[0.58，1559970500342]]}，{“ target”：“ system.host.iobroker-dev.memHeapUsed”，“数据点“：[[21.53，1559970500342]]}]</pre>
+<pre>http：// ip：8087 / query / system.host.iobroker-dev.load，system.host.iobroker-dev.memHeapUsed /？prettyPrint＆noHistory = true</pre><pre> [{“ target”：“ system.host.iobroker-dev.load”，“数据点”：[[0.58，1559970500342]]}，{“ target”：“ system.host.iobroker-dev.memHeapUsed”，“数据点“：[[21.53，1559970500342]]}] </pre><!-- Placeholder for the next version (at the beginning of the line):
+
+### __正在进行的工程__->
 
 ## Changelog
+### 2.5.2 (2021-01-09)
+* (bluefox) Support of new Let's Encrypt (only with js-controller 3.2.x)
 
 ### 2.4.8 (2020-09-17)
 * (Apollon77) Make sure missing favico file locally is not throwing exceptions (Sentry IOBROKER-SIMPLE-API-G)
@@ -378,7 +382,7 @@ Grafana JSON / SimpleJSON插件需要此命令。
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2015-2021 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

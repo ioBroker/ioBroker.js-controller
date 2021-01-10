@@ -216,6 +216,10 @@ Sollten auf dem ioBroker-System ebenfalls DS1820 Sensoren direkt angeschlossen s
 
 ## Changelog
 
+### 1.2.1 (2021-01-09)
+* (crycode-de) Small fixes
+* (crycode-de) Updated dependencies
+
 ### 1.2.0 (2020-12-21)
 * (crycode-de) Added Sentry error reporting
 * (crycode-de) Updated dependencies
@@ -256,7 +260,7 @@ Sollten auf dem ioBroker-System ebenfalls DS1820 Sensoren direkt angeschlossen s
 
 ## License
 
-Copyright (c) 2019-2020 Peter Müller <peter@crycode.de>
+Copyright (c) 2019-2021 Peter Müller <peter@crycode.de>
 
 ### MIT License
 

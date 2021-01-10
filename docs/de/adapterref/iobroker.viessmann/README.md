@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: m2KxXpGacYVnj+s8CqCvqKvKkRAqFQhzno5PxB0mQuU=
+hash: 4NabZ/OA0tONNOF/z9F3yImEp9/Ov9BLbJIcuVIguMI=
 ---
 ![Logo](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
@@ -16,6 +16,8 @@ hash: m2KxXpGacYVnj+s8CqCvqKvKkRAqFQhzno5PxB0mQuU=
 
 # IoBroker.viessmann
 =================
+
+** Tests: **: ![GitHub-Aktionen](https://github.com/misanorot/ioBroker.viessmann/workflows/Test%20and%20Release/badge.svg)
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
@@ -61,7 +63,7 @@ Eine Sortierung der Befehle, ist durch Klicken auf den Tabellenkopf möglich.
 ## Wicht!!
 - Bei jedem neuen einlesen der Vito Daten, werden ggf. die "alten" Einstellungen eingestellt.
 
-Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten, ein möglichst Grosses Abfrageintervall zu gehört.
+Es ist empfehlenswert, bei relativ unwichtigen Abfragewerten.
 Es ist möglich möglich, einen Wert ausserhalb des Abfragezyklus abzufragen. Hierzu muss der Datenpunkt *force_polling* mit dem verloren *get* Wert werden werden.
 
 *die benlichen Bilder Bilder von www.viessmann.com.*
@@ -72,7 +74,7 @@ Es ist möglich möglich, einen Wert ausserhalb des Abfragezyklus abzufragen. Hi
 
 ## Changelog
 
-	### 1.3.1 (17.09.2020)
+	### 1.3.2 (17.09.2020)
 	* (misanorot) fixed little issues
 
 	### 1.2.5 (26.07.2020)

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: gYWLurBbi1dxqxxkHpR68IGwUaFd5z+gIxIDJX99OgY=
+hash: xGij4emSrCG+kqcvzPjLnYoFRE/Y8at2v92F3JahDMA=
 ---
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -13,9 +13,10 @@ hash: gYWLurBbi1dxqxxkHpR68IGwUaFd5z+gIxIDJX99OgY=
 ![Abhängigkeitsstatus](https://img.shields.io/david/misanorot/iobroker.alarm.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/misanorot/ioBroker.alarm/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.alarm.png?downloads=true)
-![Travis-CI](http://img.shields.io/travis/misanorot/ioBroker.alarm/master.svg)
 
 # IoBroker.alarm
+** Github-Aktionen: **: ![GitHub-Aktionen](https://github.com/misanorot/ioBroker.alarm/workflows/Test%20and%20Release/badge.svg)
+
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[Englische Beschreibung](https://github.com/misanorot/ioBroker.alarm/blob/master/lib/Readme_en.md)**
@@ -39,7 +40,7 @@ Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-
 
 ----------------------------------------------------------------------------------------------------------------------
 
-### Tab-Anweisungen
+### Tab Anweisungen
 Berechtigungen über Andere Adapter wie z.B. Telegramm, Email oder andere.
 [Probleme](#Probleme)
 
@@ -71,7 +72,7 @@ Der endgültige die konfigurierten Staaten auf Ansprüche und meldet stirbt.
 Ist eine mögliche Sprachausgabe z.B. bei bei der Regel des Zustandses.
 * Man muss sich sicher sein, das der Datenpunkte, mit einem Text werden werden können! ZUM BEISPIEL. "sayit.0.tts" *
 
-Es ist wichtig, sich die Ausgabe von Namen mit Ansagen zu lassen.
+Es ist wichtig, sich die Ausgabe von Namen mit Ansagen zu lassen, kann diese Option anlassen.
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -96,7 +97,7 @@ Das sind die eigentlichen Staaten um die Alarmanlage zu verwalten.
 - use.activate_sharp_inside_circuit -> Wahrnehmung der Wahrnehmung des Warnkreises
 - use.disable -> Deaktivierung der Anlage
 - use.enable -> Alarm der Anlage
-- use.enable_with_delay -> Alarm der Anlage mit Arbeitszeit
+- use.enable_with_delay -> Alarm der Anlage mit Anlagenzeit
 - use.list -> Deaktivierung
 - use.quit_changes -> Rücksetzen der Staaten *info.notification_circuit_changes, info.sharp_inside_siren, status.activation_failed*
 - use.toggle_password -> Deaktivierung / Alarm der Anlage mit Passwort
@@ -121,6 +122,10 @@ Der log_today Zustand wird um Mitternacht geleert.
 #### Wichtige, die Berechtigung dieses Adapters zusätzliche auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Berechtigung!
 
 ## Changelog
+
+
+#### 1.9.0 (08.01.2021)
+* (misanorot) added html states and fixed little issues
 
 #### 1.8.0 (26.11.2020)
 * (misanorot) added status.state_list to shortcuts

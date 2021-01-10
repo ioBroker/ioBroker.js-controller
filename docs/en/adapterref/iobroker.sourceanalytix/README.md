@@ -54,6 +54,8 @@ When the adapter crashes or an other Code error happens, this error message that
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 0.4.8-alpha.4 (2021-01-09)
+* (Dutchman) Bugfix : Incorrect calculation of watt at initialisation and adapter start
 
 ### 0.4.8-alpha.3 (2021-01-06)
 * (Dutchman) Bugfix : dev: 0 bug workaround

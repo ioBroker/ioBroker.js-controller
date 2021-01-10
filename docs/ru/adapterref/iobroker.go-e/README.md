@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.go-e/README.md
 title: ioBroker.go-echarger
-hash: 8XGVp8IUazkVL8O7QjH7YCwsN0vP19tnu4k4lIQ9rXA=
+hash: qe9C2wrVZxdJuvBs8NEFeQF24PHZ2ust9lnd6+7AZcc=
 ---
 ![Логотип](../../../en/adapterref/iobroker.go-e/admin/go-echarger.png)
 
@@ -19,15 +19,17 @@ hash: 8XGVp8IUazkVL8O7QjH7YCwsN0vP19tnu4k4lIQ9rXA=
 # Настенная коробка go-eCharger
 ![Изображение продукта](../../../en/adapterref/iobroker.go-e/admin/go-eCharger-HOME-Wallbox.png). Для получения более подробной информации посетите https://go-e.co/
 
-## Переходник go-eCharger для ioBroker
-** EN ** go-e - это приглашение к электрическому перемещению. Электронная мобильность - это наша движущая сила, и наша основная компетенция - технология зарядки для электромобилей. От индивидуальных зарядных станций для электромобилей до фотоэлектрических подключений и управления нагрузкой на все здания - мы являемся поставщиками комплексных системных решений для всех требований современной электронной мобильности.
+## Адаптер go-eCharger для ioBroker
+** EN ** go-e - это приглашение к электрическому перемещению. Электронная мобильность - это наша движущая сила, и наша основная компетенция - технологии зарядки для электромобилей. От индивидуальной зарядной станции для электромобилей до фотоэлектрических подключений и управления нагрузкой всего здания - мы являемся поставщиками комплексных системных решений для всех требований современной электронной мобильности.
 
 ** DE ** go-e ist die Aufforderung, sich elektrisch zu bewegen. e-Mobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der einzelnen Ladestation für e-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von ganzen Gebäuden, sind wir Anbieter gesamtheitlicher Systemlösungen für sämtliche Anforderungen der modernen e-Mobiliten.
 
-## Руководство по адаптеру
-Руководство по установке и настройке вы можете найти здесь: [Руководство по адаптеру](./docs/Readme.md)
+## IoBroker-Adapter инструкция
+Руководство по установке и настройке можно найти здесь: [Руководство по адаптеру](./docs/Readme.md)
 
 ## Руководство разработчика
+Присоединяйтесь к сообществу адаптеров https://t.me/goECharger
+
 Официальная документация по API: https://github.com/goecharger/go-eCharger-API-v1
 
 Официальная поддержка продукта: https://go-e.co/support/

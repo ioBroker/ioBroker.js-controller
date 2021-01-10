@@ -6,10 +6,13 @@ BADGE-Tests: https://travis-ci.org/ioBroker/ioBroker.javascript.svg?branch=maste
 BADGE-NPM: https://nodei.co/npm/iobroker.javascript.png?downloads=true
 chapters: {"pages":{"de/adapterref/iobroker.javascript/README.md":{"title":{"de":"no title"},"content":"de/adapterref/iobroker.javascript/README.md"},"de/adapterref/iobroker.javascript/blockly.md":{"title":{"de":"Inhalt"},"content":"de/adapterref/iobroker.javascript/blockly.md"}}}
 ---
+** Hinweis: Momentan beinhaltet die Englishe Version viel mehr infomation und wir empfehlen die zu lesen**
+
 Der javascript-Adapter dient dazu komfortabel Skripte zu erstellen, editieren und zu verwalten.
 
 
-## [](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-javascript#konfiguration)Konfiguration
+## Konfiguration
+[Hier ist mehr darüber](https://github.com/ioBroker/ioBroker/wiki/ioBroker-Adapter-javascript#konfiguration)
 
 
 ![Einstellungsmenü Javascript Adapter](img/javascript_Einstellungen-Javascript.png)

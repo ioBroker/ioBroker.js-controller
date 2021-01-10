@@ -8,7 +8,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.alarm.png?downloads=true)](https://nodei.co/npm/iobroker.alarm/)
 
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/misanorot/ioBroker.alarm/master.svg)](https://travis-ci.org/misanorot/ioBroker.alarm)
+**Github Actions:**: ![GitHub Actions](https://github.com/misanorot/ioBroker.alarm/workflows/Test%20and%20Release/badge.svg)
 
 
 [![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
@@ -134,6 +134,10 @@ Der log_today state wird um Mitternacht geleert.
 
 
 ## Changelog
+
+
+#### 1.9.0 (08.01.2021)
+* (misanorot) added html states and fixed little issues
 
 #### 1.8.0 (26.11.2020)
 * (misanorot) added status.state_list to shortcuts

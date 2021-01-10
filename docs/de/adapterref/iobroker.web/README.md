@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.web/README.md
 title: ioBroker.web
-hash: 44jVs/zK2VzhG/oNEYKlUu9L9p9HrLI9eZnRlE7BMYU=
+hash: CAC28G6Ipt23Zf8bSJMg0pr62rzCFUqpdHVb0+xZ9Pc=
 ---
 ![Logo](../../../en/adapterref/iobroker.web/admin/web.png)
 
@@ -30,7 +30,7 @@ Lesen Sie [Hier](https://github.com/ioBroker/ioBroker.admin#lets-encrypt-certifi
 Der Webtreiber unterstützt Erweiterungen. Die Erweiterung ist URL-Handler, der aufgerufen wird, wenn eine solche URL-Anforderung angezeigt wird.
 Die Erweiterungen sehen aus wie normale Adapter, haben jedoch keinen laufenden Prozess und werden vom Webserver aufgerufen.
 
-Z.B. Der Benutzer kann einen speziellen Proxy-Adapter aktivieren und andere Geräte (z. B. Web-Cams) auf demselben Webserver erreichen.
+Z.B. Der Benutzer kann einen speziellen Proxy-Adapter aktivieren und andere Geräte (wie Web-Cams) auf demselben Webserver erreichen.
 Es ist erforderlich, dass alle Dienste unter einem Webserver verfügbar sind.
 
 ## Brute-Force-Schutz
@@ -41,6 +41,29 @@ Nach dem 15. Fehlversuch muss der Benutzer 1 Stunde warten.
 Wenn diese Option ausgewählt ist, bleibt der Benutzer einen Monat lang angemeldet.
 Wenn nicht, bleibt der Benutzer für das konfigurierte "Anmeldezeitlimit" angemeldet.
 
+## Zugriffsstatuswerte
+Sie können über die HTTP-Abrufanforderung auf die normalen und binären Statuswerte zugreifen.
+
+```
+http://IP:8082/state/system.adapter.web.0.alive =>
+{"val":true,"ack":true,"ts":1606831924559,"q":0,"from":"system.adapter.web.0","lc":1606777539894}
+```
+
+oder
+
+```
+http://IP:8082/state/javascript.picture.png =>
+[IMAGE]
+```
+
+Das Bild muss wie folgt in den Javascript-Adapter geschrieben werden:
+
+```
+createState('javascript.0.picture.png', {type: 'file', name: 'Picture'}, () => {
+    setBinaryState('javascript.0.picture.png', fs.readFileSync('/tmp/picture.png'));
+});
+```
+
 <! - Platzhalter für die nächste Version (am Zeilenanfang):
 
 ### __WORK IN PROGRESS__ ->
@@ -49,6 +72,9 @@ Ermöglicht die Anmeldung über die Standardauthentifizierung durch Senden von `
 Dies kann für Anwendungen wie *FullyBrowser* verwendet werden. Wenn Sie einmal die falschen Anmeldeinformationen eingeben, werden Sie zur Anmeldeseite weitergeleitet.
 
 ## Changelog
+### 3.2.0 (2021-01-08)
+* (raintonr) Support of new Let's Encrypt (only with js-controller 3.2.x)
+* (raintonr) Allow to disable to serve files or states from DB
 
 ### 3.1.0 (2020-11-26)
 * (foxriver76) Add option for Basic Auth

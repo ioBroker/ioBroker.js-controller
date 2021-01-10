@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: Qlptx8/xzNEFPEp1K4E/t4+ZfyEiCcsjhTbX0UIlc3o=
+hash: T167cGyTwk/+nFRStlOpG6ggSemkxvFKyzbjUufjUpc=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -21,12 +21,12 @@ hash: Qlptx8/xzNEFPEp1K4E/t4+ZfyEiCcsjhTbX0UIlc3o=
 ＃ioBroker.vis-inventwo
 ## Schalter窗口小部件ioBroker.vis适配器
 ###### .. ab v 2.0.0
-<table><tr><td><center><b>普遍</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center><b>多</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center><b>图片</b><br><img src="widgets/vis-inventwo/img/Image.png"></td></tr><tr><td colspan=3></td></tr><tr><td><center><b>表</b><br><img src="widgets/vis-inventwo/img/Table.png"></td><td><center><b>清单</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center><b>选框</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center><b>单选按钮</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center><b>垂直滑块</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td><td><center><b>水平滑块</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td></tr><tr><td colspan=3></td></tr><tr><td><center><b>拨动开关</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td><td></td><td></td></tr></table>
+<table><tr><td><center><b>普遍</b><br><img src="widgets/vis-inventwo/img/Universal.gif"></td><td><center><b>多</b><br><img src="widgets/vis-inventwo/img/Multi.gif"></td><td><center><b>图片</b><br><img src="widgets/vis-inventwo/img/Image.png"></td><td><center><b>表</b><br><img src="widgets/vis-inventwo/img/Table.png"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>清单</b><br><img src="widgets/vis-inventwo/img/List.png"></td><td><center><b>选框</b><br><img src="widgets/vis-inventwo/img/Marquee.gif"></td><td><center><b>单选按钮</b><br><img src="widgets/vis-inventwo/img/Radio.gif"></td><td><center><b>垂直滑块</b><br><img src="widgets/vis-inventwo/img/Slider2.gif"></td></tr><tr><td colspan=4></td></tr><tr><td><center><b>水平滑块</b><br><img src="widgets/vis-inventwo/img/Slider1.gif"></td><td><center><b>彩色滑块水平</b><br><img src="widgets/vis-inventwo/img/ColorSliderHor.png"></td><td><center><b>彩色滑块水平</b><br><img src="widgets/vis-inventwo/img/ColorSliderVert.png"></td><td><center><b>拨动开关</b><br><img src="widgets/vis-inventwo/img/Toggle.gif"></td></tr></table>
 
 ###### .. v 1.3.8
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Preview.png)
 
@@ -34,13 +34,23 @@ hash: Qlptx8/xzNEFPEp1K4E/t4+ZfyEiCcsjhTbX0UIlc3o=
 ---
 
 ##Unterstützung
-瀑布不夜城，阿尔弗雷德·尤德·斯彭德（Wer freuen unsüberjede Spende）。
+瀑布下的阿尔贝特教堂和地下教堂
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
 [![Spende]（http://resources.inventwo.com/github/inventwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.2
+-Fehler在Radiobutton mit Bildfarbe behoben中
+-费勒·贝霍本（Fehler behoben）：多贝特尔·克利肯（北国）
+-HovereffektfürButtons游戏
+-问题解答
+-滑块文本anhängenmöglich
+
+## 2.7.1
+-错误修正
 
 ## 2.7.0
 -Neues小工具：Farbslider
@@ -123,7 +133,7 @@ hash: Qlptx8/xzNEFPEp1K4E/t4+ZfyEiCcsjhTbX0UIlc3o=
 ## 2.3.0
 -问题behoben，bei demSchaltflächenzweimal Werte senden
 -Datum / Uhrzeit und Bildformat for Tabellenzellenhinzugefügt
--通用和多小部件属性werden beim Klicken auf Widget aktualisiert
+-通用和多窗口小部件属性
 
 ## 2.2.3
 -JSON Tabelle behoben中的Fehler
@@ -132,7 +142,7 @@ hash: Qlptx8/xzNEFPEp1K4E/t4+ZfyEiCcsjhTbX0UIlc3o=
 -Fehler im Multi Widget behoben：Bilder und Text wechseln nicht bei Typ Navigation
 
 ## 2.2.1
--JSON中的Fehler Tabelle behoben，wen keingültigesJSON-Objekt vorhanden ist
+-JSON中的Fehler Tabelle behoben，wenn keingültigesJSON-Objekt vorhanden ist
 -价值清单behoben中的费勒：Wert wird nicht aktualisiert
 
 ## 2.2.0

@@ -547,8 +547,13 @@ If no data source was specified or the noHistory parameter is passed, then only 
     }
   ]
 </pre>
-
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
 ## Changelog
+### 2.5.2 (2021-01-09)
+* (bluefox) Support of new Let's Encrypt (only with js-controller 3.2.x)
 
 ### 2.4.8 (2020-09-17)
 * (Apollon77) Make sure missing favico file locally is not throwing exceptions (Sentry IOBROKER-SIMPLE-API-G)
@@ -672,7 +677,7 @@ If no data source was specified or the noHistory parameter is passed, then only 
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2015-2021 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

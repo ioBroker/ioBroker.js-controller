@@ -135,6 +135,12 @@ CCU / Homematic支持不同的设备类型（有线，无线，HMIP，CUxD）。
 ##常见问题
 
 ## Changelog
+### 1.14.30 (2021-01-10)
+* (foriver76) in general reject events of unregistered devices, see #298
+
+### 1.14.29 (2021-01-09)
+* (foxriver76) do not set PONG state anymore
+
 ### 1.14.26 (2021-01-05)
 * (foxriver76) match clientId with namespace to find correct units
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.simple-api/README.md
 title: Simple-API
-hash: FITqSMIxROPfo/aC+w9iXCLJmf2VTbboYVG33cZLge8=
+hash: CmFb3bicG5lruCvSom8AvKW7IIT9XQ2XllE+tsP92ys=
 ---
 ![Logo](../../../en/adapterref/iobroker.simple-api/admin/simple-api.png)
 
@@ -53,7 +53,7 @@ Ergebnis:
 true
 ```
 
-### Erhalten
+### Bekommen
 Rufen Sie z.
 
 ```
@@ -163,7 +163,7 @@ Wenn eine Datenquelle (Verlauf, SQL) angegeben wurde, werden die Daten von den a
 Dieser Befehl wird für das Grafana JSON / SimpleJSON-Plugin benötigt.
 
 ### Hilfe
-Gibt [Dies](#usage) Ausgabe zurück
+Gibt [diese](#usage) Ausgabe zurück
 
 ## Installieren
 ```node iobroker.js add simple-api```
@@ -173,7 +173,7 @@ Angenommen, wir haben keine Sicherheit und der Server wird auf dem Standardport 
 
 Für alle Abfragen kann der Name oder die ID des Status angegeben werden.
 
-Für jede Anforderung, die JSON zurückgibt, können Sie den Parameter *hübschPrint* festlegen, um die Ausgabe in lesbarer Form zu erhalten.
+Für jede Anforderung, die JSON zurückgibt, können Sie den Parameter *prettyPrint* festlegen, um die Ausgabe in lesbarer Form zu erhalten.
 
 Wenn die Authentifizierung aktiviert ist, sind zwei weitere Felder obligatorisch:<pre> ? user = admin &amp; pass = iobroker</pre>
 
@@ -186,15 +186,15 @@ Statuswert als Text lesen. Sie können weitere IDs angeben, die durch Semikolon 
 
 <pre>http:// ip: 8087 / getPlainValue / admin.0.memHeapTotal, admin.0.memHeapUsed</pre><pre> 31,19 17,52</pre>
 
-### Erhalten
+### Bekommen
 Lesen Sie Status- und Objektdaten des Status als json. Sie können weitere IDs angeben, die durch Semikolon geteilt werden.
 Wenn mehr als eine ID angefordert wird, wird das JSON-Array zurückgegeben.
 
 <pre>http:// localhost: 8087 / get / admin.0.memHeapTotal /? prettyPrint</pre>
 
-<pre>{&quot;val&quot;: 31.19, &quot;ack&quot;: true, &quot;ts&quot;: 1423154619, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423153989, &quot;_id&quot;: &quot;system.adapter.admin&quot;. 0.memHeapTotal &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memHeapTotal &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indic.state &quot;,&quot; unit &quot; &quot;:&quot; MB &quot;,&quot; Verlauf &quot;: {&quot; aktiviert &quot;: wahr,&quot; ÄnderungenOnly &quot;: wahr,&quot; minLength &quot;: 480,&quot; maxLength &quot;: 960,&quot; Aufbewahrung &quot;: 604800,&quot; entprellen &quot;: 10000}},&quot; native &quot;: {}}</pre>
+<pre>{&quot;val&quot;: 31.19, &quot;ack&quot;: true, &quot;ts&quot;: 1423154619, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423153989, &quot;_id&quot;: &quot;system.adapter.admin&quot;. 0.memHeapTotal &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memHeapTotal &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indic.state &quot;,&quot; unit &quot; &quot;:&quot; MB &quot;,&quot; Verlauf &quot;: {&quot; aktiviert &quot;: wahr,&quot; ÄnderungenOnly &quot;: wahr,&quot; minLength &quot;: 480,&quot; maxLength &quot;: 960,&quot; Retention &quot;: 604800,&quot; debounce &quot;: 10000}},&quot; native &quot;: {}}</pre>
 
-<pre>http:// ip: 8087 / get / admin.0.memHeapTotal, admin.0.memHeapUsed /? prettyPrint</pre><pre> [{&quot;val&quot;: 31.19, &quot;ack&quot;: true, &quot;ts&quot;: 1423154544, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423153989, &quot;_id&quot;: &quot;system.adapter.admin&quot; .0.memHeapTotal &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memHeapTotal &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indic.state &quot;,&quot; Einheit &quot;:&quot; MB &quot;,&quot; Verlauf &quot;: {&quot; aktiviert &quot;: wahr,&quot; ÄnderungenOnly &quot;: wahr,&quot; minLength &quot;: 480,&quot; maxLength &quot;: 960,&quot; Retention &quot;: 604800,&quot; Debounce &quot;: 10000}}, &quot;native&quot;: {}}, {&quot;val&quot;: 16.25, &quot;ack&quot;: true, &quot;ts&quot;: 1423154544, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423154544, &quot;_id&quot; : &quot;system.adapter.admin.0.memHeapUsed&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin.0.memHeapUsed&quot;, &quot;type&quot;: &quot;number&quot;, &quot;role&quot;: &quot;Indikator.Zustand&quot;, &quot;Einheit&quot;: &quot;MB&quot;, &quot;Verlauf&quot;: {&quot;aktiviert&quot;: wahr, &quot;Änderungen nur&quot;: wahr, &quot;minLength&quot;: 480, &quot;maxLength&quot;: 960, &quot;Aufbewahrung&quot;: 604800, &quot; entprellen &quot;: 10000}},&quot; native &quot;: {}}]</pre>
+<pre>http:// ip: 8087 / get / admin.0.memHeapTotal, admin.0.memHeapUsed /? prettyPrint</pre><pre> [{&quot;val&quot;: 31.19, &quot;ack&quot;: true, &quot;ts&quot;: 1423154544, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423153989, &quot;_id&quot;: &quot;system.adapter.admin&quot; .0.memHeapTotal &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memHeapTotal &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indic.state &quot;,&quot; Einheit &quot;:&quot; MB &quot;,&quot; Verlauf &quot;: {&quot; aktiviert &quot;: wahr,&quot; ÄnderungenOnly &quot;: wahr,&quot; minLength &quot;: 480,&quot; maxLength &quot;: 960,&quot; Aufbewahrung &quot;: 604800,&quot; entprellen &quot;: 10000}}, &quot;native&quot;: {}}, {&quot;val&quot;: 16.25, &quot;ack&quot;: true, &quot;ts&quot;: 1423154544, &quot;from&quot;: &quot;system.adapter.admin.0&quot;, &quot;lc&quot;: 1423154544, &quot;_id&quot; : &quot;system.adapter.admin.0.memHeapUsed&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin.0.memHeapUsed&quot;, &quot;type&quot;: &quot;number&quot;, &quot;role&quot;: &quot;Indikator.Zustand&quot;, &quot;Einheit&quot;: &quot;MB&quot;, &quot;Verlauf&quot;: {&quot;aktiviert&quot;: wahr, &quot;Änderungen nur&quot;: wahr, &quot;minLength&quot;: 480, &quot;maxLength&quot;: 960, &quot;Aufbewahrung&quot;: 604800, &quot; entprellen &quot;: 10000}},&quot; native &quot;: {}}]</pre>
 
 ### GetBulk
 Lesen Sie die Zustände weiterer IDs mit Zeitstempel. Sie können weitere IDs angeben, die durch Semikolon geteilt werden.
@@ -222,7 +222,7 @@ Im ersten Fall wird die Antwort sofort zurückgegeben und *ack* ist falsch. Im z
 ### Objekte
 Holen Sie sich die Liste aller Objekte für Muster. Wenn kein Muster angegeben ist, werden alle Objekte als JSON-Array zurückgegeben.
 
-<pre>http:// ip: 8087 / Objekte? PrettyPrint</pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indic.state &quot;,&quot; unit &quot;:&quot; Sekunden &quot;},&quot; native &quot;: {}},&quot; system.adapter.admin.0.memRss &quot;: {&quot; _id &quot;:&quot; system.adapter.admin.0.memRss &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memRss &quot;,&quot; desc &quot;:&quot; Resident Größe einstellen &quot;,&quot; Typ &quot;:&quot; Nummer &quot;,&quot; Rolle &quot;:&quot; Indikator.Zustand &quot;,&quot; Einheit &quot;:&quot; MB &quot;,&quot; Verlauf &quot;: {&quot; Aktiviert &quot;: true,&quot; ChangesOnly &quot;: true,&quot; minLength &quot; : 480, &quot;maxLength&quot;: 960, &quot;Retention&quot;: 604800, &quot;Debounce&quot;: 10000}}, &quot;native&quot;: {}}, ...
+<pre>http:// ip: 8087 / Objekte? PrettyPrint</pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indic.state &quot;,&quot; unit &quot;:&quot; Sekunden &quot;},&quot; native &quot;: {}},&quot; system.adapter.admin.0.memRss &quot;: {&quot; _id &quot;:&quot; system.adapter.admin.0.memRss &quot;,&quot; type &quot;:&quot; state &quot;,&quot; common &quot;: {&quot; name &quot;:&quot; admin.0.memRss &quot;,&quot; desc &quot;:&quot; Resident Größe einstellen &quot;,&quot; Typ &quot;:&quot; Nummer &quot;,&quot; Rolle &quot;:&quot; Indikator.Status &quot;,&quot; Einheit &quot;:&quot; MB &quot;,&quot; Verlauf &quot;: {&quot; Aktiviert &quot;: True,&quot; ChangesOnly &quot;: True,&quot; MinLength &quot; : 480, &quot;maxLength&quot;: 960, &quot;Retention&quot;: 604800, &quot;Debounce&quot;: 10000}}, &quot;native&quot;: {}}, ...
 </pre>
 
 Holen Sie sich alle Steuerobjekte des Adapters system.adapter.admin.0:<pre> http:// ip: 8087 / object? pattern = system.adapter.admin.0 * &amp; prettyPrint</pre><pre> {&quot;system.adapter.admin.0.uptime&quot;: {&quot;_id&quot;: &quot;system.adapter.admin.0.uptime&quot;, &quot;type&quot;: &quot;state&quot;, &quot;common&quot;: {&quot;name&quot;: &quot;admin. 0.uptime &quot;,&quot; type &quot;:&quot; number &quot;,&quot; role &quot;:&quot; indic.state &quot;,&quot; unit &quot;:&quot; Sekunden &quot;},&quot; native &quot;: {}}, ...
@@ -246,15 +246,19 @@ Wenn die Option 'Alle Datenpunkte auflisten' aktiviert wurde oder keine Datenque
 <pre>http:// ip: 8087 / search? pattern = system.adapter.admin.0 * &amp; prettyPrint</pre><pre> {&quot;system.adapter.admin.0.outputCount&quot;, &quot;system.adapter.admin.0.inputCount&quot;, &quot;system.adapter.admin.0.uptime&quot;, &quot;system.adapter.admin.0.memRss&quot;, &quot; system.adapter.admin.0.memHeapTotal &quot;,&quot; system.adapter.admin.0.memHeapUsed &quot;,&quot; system.adapter.admin.0.cputime &quot;,&quot; system.adapter.admin.0.cpu &quot;,&quot; system. adapter.admin.0.connected &quot;,&quot; system.adapter.admin.0.alive &quot;}</pre>
 
 ### Abfrage
-Wenn eine Datenquelle (Verlauf, SQL) angegeben wurde, werden die Daten der angegebenen Datenpunkte für den angegebenen Zeitraum ausgelesen.
+Wenn eine Datenquelle (Verlauf, SQL) angegeben wurde, werden die Daten aus den angegebenen Datenpunkten für den angegebenen Zeitraum ausgelesen.
 
 <pre>http:// ip: 8087 / query / system.host.iobroker-dev.load, system.host.iobroker-dev.memHeapUsed /? prettyPrint &amp; dateFrom = 2019-06-08T01: 00: 00.000Z &amp; dateTo = 2019-06-08T01: 00: 10.000Z</pre><pre> [{&quot;target&quot;: &quot;system.host.iobroker-dev.load&quot;, &quot;datapoints&quot;: [[0.12, 1559955600000], [0.46, 1559955601975], [0.44, 1559955610000]]}, {&quot;target&quot;: &quot;system .host.iobroker-dev.memHeapUsed &quot;,&quot; Datenpunkte &quot;: [[23.01, 1559955600000], [22.66, 1559955601975], [22.69, 1559955610000]]}]</pre>
 
 Wenn keine Datenquelle angegeben wurde oder der Parameter noHistory übergeben wird, wird nur der aktuelle Wert des Datenpunkts ausgelesen.
 
-<pre>http:// ip: 8087 / query / system.host.iobroker-dev.load, system.host.iobroker-dev.memHeapUsed /? prettyPrint &amp; noHistory = true</pre><pre> [{&quot;target&quot;: &quot;system.host.iobroker-dev.load&quot;, &quot;datapoints&quot;: [[0.58, 1559970500342]]}, {&quot;target&quot;: &quot;system.host.iobroker-dev.memHeapUsed&quot;, &quot;datapoints&quot; &quot;: [[21.53, 1559970500342]]}]</pre>
+<pre>http:// ip: 8087 / query / system.host.iobroker-dev.load, system.host.iobroker-dev.memHeapUsed /? prettyPrint &amp; noHistory = true</pre><pre> [{&quot;target&quot;: &quot;system.host.iobroker-dev.load&quot;, &quot;datapoints&quot;: [[0.58, 1559970500342]]}, {&quot;target&quot;: &quot;system.host.iobroker-dev.memHeapUsed&quot;, &quot;datapoints&quot; &quot;: [[21.53, 1559970500342]]}] </pre><!-- Placeholder for the next version (at the beginning of the line):
+
+### __WORK IN PROGRESS__ ->
 
 ## Changelog
+### 2.5.2 (2021-01-09)
+* (bluefox) Support of new Let's Encrypt (only with js-controller 3.2.x)
 
 ### 2.4.8 (2020-09-17)
 * (Apollon77) Make sure missing favico file locally is not throwing exceptions (Sentry IOBROKER-SIMPLE-API-G)
@@ -378,7 +382,7 @@ Wenn keine Datenquelle angegeben wurde oder der Parameter noHistory übergeben w
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2015-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2015-2021 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

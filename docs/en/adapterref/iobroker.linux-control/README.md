@@ -102,6 +102,11 @@ It is important that the retrieved data is transmitted in the correct type! The 
     ### __WORK IN PROGRESS__
 -->
 
+### 1.1.2 (2021-01-08)
+* (Scrounger) show error if user is not in sudoers file
+* (Scrounger) bug fix if response has no result optimized
+* (Scrounger) myCommands: bug fix sudo is no longer mandatory
+
 ### 1.1.0 (2020-12-23)
 * (paul53) datapoints type and role bug fixes
 * (Scrounger) adapter settings card layout added

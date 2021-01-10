@@ -26,6 +26,10 @@ To get an API-Key you have to go to [console.developers.google.com](https://cons
 
 ## Changelog
 
+### 1.0.1
+
+* (klein0r) Fixed trailing dot in channel error message
+
 ### 1.0.0
 
 * (klein0r) First stable release

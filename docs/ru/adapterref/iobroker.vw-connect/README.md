@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vw-connect/README.md
 title: ioBroker.vw-connect
-hash: YBWgB09BCzGVxV5MNMGSRmsS3JZugKLttPxrLSd0448=
+hash: MxBql9oH6Q/4fvMw7OnoW6CSjrVpiNTsQfS4xL2aQ64=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vw-connect/admin/vw-connect.png)
 
@@ -16,9 +16,9 @@ hash: YBWgB09BCzGVxV5MNMGSRmsS3JZugKLttPxrLSd0448=
 
 # IoBroker.vw-connect
 ## Адаптер vw-connect для ioBroker
-Адаптер для VW We Connect, We Connect ID, myAudi, Skoda Connect и We Connect Go
+Адаптер для VW We Connect, We Connect ID, myAudi, Skoda Connect, Seat Connect и We Connect Go
 
-Пожалуйста, обновите вашу систему на узле 10.
+Пожалуйста, обновите свою систему на узле 10.
 <https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten>
 
 ## Применение
@@ -111,6 +111,14 @@ hash: YBWgB09BCzGVxV5MNMGSRmsS3JZugKLttPxrLSd0448=
 ```
 
 ## Changelog
+
+### 0.0.23
+
+- add Seat and new climatisation v2
+
+### 0.0.22
+
+- calculate outside temperatur in °C also for Skoda and Audi
 
 ### 0.0.21
 

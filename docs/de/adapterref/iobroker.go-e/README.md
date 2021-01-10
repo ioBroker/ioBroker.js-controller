@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.go-e/README.md
 title: ioBroker.go-echarger
-hash: 8XGVp8IUazkVL8O7QjH7YCwsN0vP19tnu4k4lIQ9rXA=
+hash: qe9C2wrVZxdJuvBs8NEFeQF24PHZ2ust9lnd6+7AZcc=
 ---
 ![Logo](../../../en/adapterref/iobroker.go-e/admin/go-echarger.png)
 
@@ -22,12 +22,14 @@ hash: 8XGVp8IUazkVL8O7QjH7YCwsN0vP19tnu4k4lIQ9rXA=
 ## Go-eCharger Adapter für ioBroker
 ** DE ** go-e ist eine Einladung, sich elektrisch zu bewegen. Elektromobilität ist unser Antrieb, wobei unsere Kernkompetenz die Ladetechnologie für Elektroautos ist. Von der individuellen Ladestation für E-Autos über Photovoltaik-Anschlüsse bis hin zum Lastmanagement ganzer Gebäude bieten wir ganzheitliche Systemlösungen für alle Anforderungen der modernen Elektromobilität.
 
-** DE ** go-e ist die Aufforderung, sich elektrisch zu bewegen. Die e-Mobilität ist unser Antrieb, unsere unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der politischen Ladestation für E-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement von Gesamtverwaltung, sind wir für die gesamte Systemlösungen für sämtliche Beziehungen der modernen E-Mobilität.
+** DE ** go-e ist die Aufforderung, sich elektrisch zu bewegen. Die e-Mobilität ist unser Antrieb, unsere unsere Kernkompetenz die Ladetechnik für Elektroautos ist. Von der grundlegenden Ladestation für E-Autos über Photovoltaik-Anbindung bis hin zum Lastmanagement
 
-## Adapterhandbuch
+## IoBroker-Adapter Handbuch
 Das Handbuch zur Installation und Konfiguration finden Sie hier: [Adapterhandbuch](./docs/Readme.md)
 
 ## Entwicklerhandbuch
+Treten Sie der Adapter-Community https://t.me/goECharger bei
+
 Offizielle API-Dokumentation: https://github.com/goecharger/go-eCharger-API-v1
 
 Offizieller Produktsupport: https://go-e.co/support/

@@ -239,6 +239,9 @@ There are some programs in folder *test' to test the TCP communication:
 -->
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) add a meta object as instance object
+
 ### 3.2.2 (2020-12-15)
 * (Apollon77) prevent a rash case (Sentry IOBROKER-MODBUS-1S)
 

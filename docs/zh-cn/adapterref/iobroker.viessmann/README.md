@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: m2KxXpGacYVnj+s8CqCvqKvKkRAqFQhzno5PxB0mQuU=
+hash: 4NabZ/OA0tONNOF/z9F3yImEp9/Ov9BLbJIcuVIguMI=
 ---
 ![商标](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
@@ -17,6 +17,8 @@ hash: m2KxXpGacYVnj+s8CqCvqKvKkRAqFQhzno5PxB0mQuU=
 ＃ioBroker.viessmann
 =================
 
+**测试：**：![GitHub动作](https://github.com/misanorot/ioBroker.viessmann/workflows/Test%20and%20Release/badge.svg)
+
 [![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[英文说明](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
@@ -25,7 +27,7 @@ Mit diesem Adapter ist es esmöglich，位于Objekten zu speichern的[电压控�
 Ebenso ist das Setzen von Werten，围捕者Vito.xml的死者。
 
 ####（主持人）
-主机名与IOBroker laufen相当，因此请使用.xml Dateien einzulesen中的Linux系统代理。
+主机名与IOBroker laufen相当，因此请使用.xml Dateien einzulesen中的Linux代理人keine weitereVeränderung。
 *（Vorausgesetzt，dem Standard Pfad中的sie liegt：/etc/vcontrold/vito.xml)*
 
 ####（Anderer主机）
@@ -33,9 +35,9 @@ Ist Vcontroled auf einem anderen主机安装程序，按SSH Zugang的.xml Dateie
 SSH Tab eingeben中的HierfürdienötigenInformationen。
 *（Eine funktionierende SSH版本与vorausgesetzt。）*
 
-Nach dem Neustart der Instanz，wird diese dann automatisch eingelesen，man kann nun in der Konstanguration der Instanz和Werte einstellen。
+Nach dem Neustart der Instanz，Wird diese dann automatisch eingelesen，Man Kann Nun in der Konstanguration der Instanz die Werte einstellen。
 
-＃在Folgenden表aufgebaugt中删除Struktur der vito.xml中的音乐：
+＃在Folgenden形式的Aufgebaugt中存在Struktur der vito.xml音乐：
 		```<vito>
 			<devices>
 				<device ID="2094" name="V200KW1" protocol="KW2"/>
@@ -56,13 +58,13 @@ Nach dem Neustart der Instanz，wird diese dann automatisch eingelesen，man kan
 			</commands>
 		</vito>```
 
-Eine Sortierung der Befehle，他和他合影。
+Eine Sortierung der Befehle，他的父亲。
 
 ## Wichtig !：
 -werden ggf的Bei jedem neuen einlesen der Vito Daten。死于“ alten” Einstellungengelöscht。
 
-Es ist empfehlenswert，Abfragewerten亲戚关系部，EinmöglichstGrosses Abfrageintervall zuwählen。
-Es ist ebensomöglich，einen Wert ausserhalb des Abfragezyklus abzufragen。 Hierzu muss der Datenpunkt * force_polling *，mit demgewünschten* get * Wert beschrieben werden。
+Es ist empfehlenswert，Abfragewerten亲属关系，EinmöglichstGrosses Abfrageintervall zuwählen。
+Es ist ebensomöglich，einen Wert ausserhalb des Abfragezyklus abzufragen。 Hierzu muss der Datenpunkt *强制投票*，mit demgewünschten*获取* Wert beschrieben werden。
 
 * die benutzten Bilder stammen von www.viessmann.com。*
 
@@ -72,7 +74,7 @@ Es ist ebensomöglich，einen Wert ausserhalb des Abfragezyklus abzufragen。 Hi
 
 ## Changelog
 
-	### 1.3.1 (17.09.2020)
+	### 1.3.2 (17.09.2020)
 	* (misanorot) fixed little issues
 
 	### 1.2.5 (26.07.2020)

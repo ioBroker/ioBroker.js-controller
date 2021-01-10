@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: m2KxXpGacYVnj+s8CqCvqKvKkRAqFQhzno5PxB0mQuU=
+hash: 4NabZ/OA0tONNOF/z9F3yImEp9/Ov9BLbJIcuVIguMI=
 ---
 ![Логотип](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
@@ -17,11 +17,13 @@ hash: m2KxXpGacYVnj+s8CqCvqKvKkRAqFQhzno5PxB0mQuU=
 # IoBroker.viessmann
 =================
 
+** Тесты: **: ![Действия GitHub](https://github.com/misanorot/ioBroker.viessmann/workflows/Test%20and%20Release/badge.svg)
+
 [![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[Английское описание](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
 
-Mit diesem Adapter ist es möglich, Werte aus einer Viessmann Steuerung die mit dem Programm [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, in Objekten zu speichern.
+Mit diesem Adapter ist es möglich, Werte aus einer Viessmann Steuerung die mit dem Programm [Vcontrold](https://github.com/openv/vcontrold) kommuniziert, в Objekten zu speichern.
 Ebenso ist das Setzen von Werten, die man in seiner Vito.xml konfiguriert hat möglich.
 
 #### (Selber Host)
@@ -66,13 +68,13 @@ Es ist ebenso möglich, einen Wert ausserhalb des Abfragezyklus abzufragen. Hier
 
 *die benutzten Bilder stammen von www.viessmann.com.*
 
-## Сделать
+## Делать
 - Anderung der Vito.xml ohne Verlust der Einstellungen
 - Включение / выключение блока внедрения
 
 ## Changelog
 
-	### 1.3.1 (17.09.2020)
+	### 1.3.2 (17.09.2020)
 	* (misanorot) fixed little issues
 
 	### 1.2.5 (26.07.2020)

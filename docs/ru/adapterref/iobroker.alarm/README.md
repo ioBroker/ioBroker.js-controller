@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: gYWLurBbi1dxqxxkHpR68IGwUaFd5z+gIxIDJX99OgY=
+hash: xGij4emSrCG+kqcvzPjLnYoFRE/Y8at2v92F3JahDMA=
 ---
 ![Логотип](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -13,9 +13,10 @@ hash: gYWLurBbi1dxqxxkHpR68IGwUaFd5z+gIxIDJX99OgY=
 ![Статус зависимости](https://img.shields.io/david/misanorot/iobroker.alarm.svg)
 ![Известные уязвимости](https://snyk.io/test/github/misanorot/ioBroker.alarm/badge.svg)
 ![НПМ](https://nodei.co/npm/iobroker.alarm.png?downloads=true)
-![Трэвис-Си](http://img.shields.io/travis/misanorot/ioBroker.alarm/master.svg)
 
 # IoBroker.alarm
+** Действия Github: **: ![Действия GitHub](https://github.com/misanorot/ioBroker.alarm/workflows/Test%20and%20Release/badge.svg)
+
 [![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[Английское описание](https://github.com/misanorot/ioBroker.alarm/blob/master/lib/Readme_en.md)**
@@ -121,6 +122,10 @@ Der log_today State Wird um Mitternacht geleert.
 #### Wichtig, die Benutzung dieses Адаптеры geschieht auf eigene Gefahr, für etwaige Fehlfunktionen wird keine Haftung übernommen!
 
 ## Changelog
+
+
+#### 1.9.0 (08.01.2021)
+* (misanorot) added html states and fixed little issues
 
 #### 1.8.0 (26.11.2020)
 * (misanorot) added status.state_list to shortcuts

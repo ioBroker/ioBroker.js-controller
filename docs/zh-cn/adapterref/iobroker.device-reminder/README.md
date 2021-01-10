@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.device-reminder/README.md
 title: ioBroker.device-reminder
-hash: q4JxybjgdjPpzFLfN6T1e2bRJ22P/dHBnDEaPQwlcB4=
+hash: f73+0kIQ/JWIC/UsFaGXlKZEhfmYtthHNJvoj1LBBvs=
 ---
 ![商标](../../../en/adapterref/iobroker.device-reminder/admin/icon.png)
 
@@ -19,7 +19,10 @@ hash: q4JxybjgdjPpzFLfN6T1e2bRJ22P/dHBnDEaPQwlcB4=
 ＃ioBroker.device-reminder
 ![测试与发布](https://github.com/xenon-s/iobroker.device-reminder/workflows/Test%20and%20Release/badge.svg)
 
-＃用于监视设备状态1.0的适配器
+##需要自述文件？<br> [德语自述文件](https://github.com/Xenon-s/ioBroker.device-reminder/blob/master/README_GER.md)
+<br>
+
+＃用于监视设备版本1.x的状态的适配器
 该适配器可以使用测量插座来检测设备是处于打开状态，工作状态还是已关闭，并对此做出反应。然后可以通过电报，whatsapp，alexa，sayit，pushover和电子邮件（每个设备可能有多个选择）自动发出消息。该过程完成（也有时间延迟）后，也可以自动关闭插座。
 
 ＃应该考虑什么？
@@ -162,9 +165,12 @@ hash: q4JxybjgdjPpzFLfN6T1e2bRJ22P/dHBnDEaPQwlcB4=
 	Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+### 1.0.3 (2021-01-07)
+* (xenon-s) bugfix pushover
+* (xenon-s) added link "german readme" in readme
 
 ### 1.0.2 (2021-01-06)
-* (xenon-s) fix name i io-package.json
+* (xenon-s) fix name in io-package.json
 
 ### 1.0.1 (2021-01-05)
 * (xenon-s) bugfix

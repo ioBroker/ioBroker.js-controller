@@ -40,6 +40,10 @@ Adapter to connect OctoPrint to ioBroker
 
 ## Changelog
 
+### 1.0.6
+
+* (foxriver76) Avoid spamming the same error again and again
+
 ### 1.0.5
 
 * (klein0r) Allow to select and print files using objects

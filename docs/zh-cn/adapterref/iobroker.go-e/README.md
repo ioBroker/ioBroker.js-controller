@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.go-e/README.md
 title: ioBroker.go充电器
-hash: 8XGVp8IUazkVL8O7QjH7YCwsN0vP19tnu4k4lIQ9rXA=
+hash: qe9C2wrVZxdJuvBs8NEFeQF24PHZ2ust9lnd6+7AZcc=
 ---
 ![商标](../../../en/adapterref/iobroker.go-e/admin/go-echarger.png)
 
@@ -20,14 +20,16 @@ hash: 8XGVp8IUazkVL8O7QjH7YCwsN0vP19tnu4k4lIQ9rXA=
 ![产品图片](../../../en/adapterref/iobroker.go-e/admin/go-eCharger-HOME-Wallbox.png)有关更多详细信息，请访问https://go-e.co/
 
 ## IoBroker的go-eCharger适配器
-** EN ** go-e是电动移动的邀请。电动汽车是我们的动力，而我们的核心竞争力是电动汽车的充电技术。从用于电动汽车的单个充电站到光伏连接，再到整个建筑物的负载管理，我们都是满足现代电动汽车所有要求的整体系统解决方案提供商。
+** EN ** go-e是电动移动的邀请。电动汽车是我们的动力，而我们的核心竞争力是电动汽车的充电技术。从单个的电动汽车充电站到光伏连接，再到整个建筑物的负载管理，我们都是满足现代电动汽车所有要求的整体系统解决方案提供商。
 
 ** DE ** Aufforderung，Sich Elektrisch zu bewegen。 e-Mobilitätist unser Antrieb，wobei unsere Kernkompetenz die LadetechnikfürElektroautos ist。冯·e·恩泽尔嫩·莱德斯特在电动汽车上的应用
 
-##适配器手册
-您可以在此处找到《安装和配置手册》：[适配器手册](./docs/Readme.md)
+## IoBroker-Adapter手册
+您可以在这里找到安装和配置手册：[适配器手册](./docs/Readme.md)
 
 ##开发人员手册
+加入适配器社区https://t.me/goECharger
+
 官方API文档：https：//github.com/goecharger/go-eCharger-API-v1
 
 官方产品支持：https：//go-e.co/support/

@@ -312,6 +312,9 @@ You can set option *Force Web-Sockets* to force using only web-sockets transport
 -->
 
 ## Changelog
+### 3.1.2 (2021-01-09)
+* (bluefox) Support of new Let's Encrypt (only with js-controller 3.2.x)
+
 ### 3.0.13 (2020-08-21)
 * (bluefox) Added getAdapterName method
 
