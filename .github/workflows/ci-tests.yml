@@ -106,6 +106,9 @@ jobs:
           BODY="${BODY//$'\\r'/'%0D'}"
           echo "::set-output name=BODY::$BODY"
 
+      - name: Install Dependencies
+        run: npm ci
+
       - name: Publish package to npm
         env:
           PRERELEASE: ${{ contains(steps.extract_release.outputs.VERSION, '-') }}

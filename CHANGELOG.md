@@ -4,7 +4,14 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.2.5-0 (2021-01-10)
+## __WORK IN PROGRESS__
+* (Apollon77) update db library to fix reading root dir and rename on redis
+* (foxriver76, Apollon77) also accept pre-release version in some semver checks for dependencies
+* (Apollon77) handle error with wrong db on migrations
+* (Apollon77) fix iobroker status
+* (Apollon77) fix crash cases
+
+## 3.2.5 (2021-01-10)
 * (foxriver76) replace outdated encryption mechanism of multihost
 * (Apollon77) update db library to fix readDir issue with directories
 * (AlCalzone) Add release script
@@ -76,6 +83,7 @@
 * (bluefox) add set/clearTimeout and set/clearInterval to adapter methods and check on unload that they were all cleared and clear if needed with logging, so developers are reminded to clean up!
 * (AlCalzone) Add ...Async version for getChannels - make sure to check before using or use correct js-controller version dependency!
 * (Apollon77) modularize databases into own npm packages and basically support adding new types of databases; add deprecation infos and logging to "old legacy" files in lib/states and lib/objects to not be used anymore; requires mostly updates in testing (see DOCS LINK TODO)
+* (foxriver76) allow to specify the instance for debug starts (`iobroker debug adaptername.1`) 
 
 **Developer relevant Optimizations and Fixes**
 * (foxriver76) implement maybeCallback and maybeCallbackWithError and use it in adapter.js
