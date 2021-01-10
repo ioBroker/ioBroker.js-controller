@@ -194,8 +194,14 @@ function startMultihost(__config) {
         if (_config.multihostService.secure) {
             objects.getObject('system.config', (err, obj) => {
                 if (obj && obj.native && obj.native.secret) {
-                    tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
-                        _startMultihost(_config, secret));
+                    if (!_config.multihostService.password.startsWith(`$/aes-192-cbc:`)) {
+                        // if old encryption was used, we need to decrypt in old fashion
+                        tools.decryptPhrase(obj.native.secret, _config.multihostService.password, secret =>
+                            _startMultihost(_config, secret));
+                    } else {
+                        const secret = tools.decrypt(obj.native.secret, _config.multihostService.password);
+                        _startMultihost(_config, secret);
+                    }
                 } else {
                     logger.error(`${hostLogPrefix} Cannot start multihost discovery server: no system.config found (err:${err})`);
                 }
