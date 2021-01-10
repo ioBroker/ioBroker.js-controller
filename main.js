@@ -2790,8 +2790,8 @@ function checkVersion(id, name, version, instances) {
     if (name === 'js-controller') {
         // Check only version
         if (version) {
-            if (!semver.satisfies(ioPackage.common.version, version)) {
-                logger.error(`${hostLogPrefix} startInstance ${id}Invalid version of "${name}". Installed "${ioPackage.common.version}", required "${version}`);
+            if (!semver.satisfies(ioPackage.common.version, version, {includePrerelease: true})) {
+                logger.error(`${hostLogPrefix} startInstance ${id} Invalid version of "${name}". Installed "${ioPackage.common.version}", required "${version}`);
                 return false;
             } else {
                 isFound = true;
@@ -2805,7 +2805,7 @@ function checkVersion(id, name, version, instances) {
         // get all instances of this adapter
         const filteredInst = Object.keys(instances).filter(p => instances[p] && instances[p].common && instances[p].common.name === name);
         for (const inst of filteredInst) {
-            if (version && !semver.satisfies(instances[inst].common.version, version)) {
+            if (version && !semver.satisfies(instances[inst].common.version, version, {includePrerelease: true})) {
                 logger.error(`${hostLogPrefix} startInstance ${id}: required adapter "${name}" has wrong version. Installed "${instances[inst].common.version}", required "${version}"!`);
                 return false;
             }
