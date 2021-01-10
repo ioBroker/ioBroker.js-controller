@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.2.6-0 (2021-01-10)
 * (Apollon77) update db library to fix reading root dir and rename on redis
 * (foxriver76, Apollon77) also accept pre-release version in some semver checks for dependencies
 * (Apollon77) handle error with wrong db on migrations

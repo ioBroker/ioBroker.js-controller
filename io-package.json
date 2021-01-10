@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "3.2.5",
+        "version": "3.2.6-0",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.2.6-0": {
+                "en": "update db library to fix reading root dir and rename on redis\n(foxriver76, Apollon77) also accept pre-release version in some semver checks for dependencies\nhandle error with wrong db on migrations\nfix iobroker status\nfix crash cases",
+                "de": "Aktualisieren Sie die Datenbankbibliothek, um das Lesen des Stammverzeichnisses zu korrigieren und bei Redis umzubenennen\n(foxriver76, Apollon77) akzeptieren auch die Vorabversion in einigen Semver-Überprüfungen auf Abhängigkeiten\nBehandeln Sie Fehler mit falscher Datenbank bei Migrationen\niobroker Status korrigieren\nAbsturzfälle beheben",
+                "ru": "обновить библиотеку db, чтобы исправить чтение корневого каталога и переименовать его в Redis\n(foxriver76, Apollon77) также принимают предварительную версию в некоторых проверках semver на зависимости\nобрабатывать ошибку с неправильной базой данных при миграции\nисправить статус iobroker\nисправить случаи сбоя",
+                "pt": "atualizar a biblioteca db para corrigir a leitura do diretório raiz e renomear no redis\n(foxriver76, Apollon77) também aceitam a versão de pré-lançamento em algumas verificações do Semver para dependências\nlidar com erros com banco de dados incorreto em migrações\ncorrigir status do iobroker\nconsertar casos de falha",
+                "nl": "update db-bibliotheek om het lezen van rootdir te repareren en hernoemen op redis\n(foxriver76, Apollon77) accepteren ook pre-releaseversies in sommige semvercontroles op afhankelijkheden\nbehandel fout met verkeerde db bij migraties\niobroker-status repareren\ncrash gevallen oplossen",
+                "fr": "mettre à jour la bibliothèque db pour corriger la lecture du répertoire racine et renommer sur redis\n(foxriver76, Apollon77) accepte également la version préliminaire dans certaines vérifications semver pour les dépendances\ngérer l'erreur avec une mauvaise base de données lors des migrations\ncorriger le statut d'iobroker\ncorriger les cas de crash",
+                "it": "aggiorna la libreria db per correggere la lettura della directory root e rinomina su redis\n(foxriver76, Apollon77) accetta anche la versione pre-rilascio in alcuni controlli semver per le dipendenze\ngestire l'errore con db errato nelle migrazioni\ncorreggere lo stato di iobroker\nrisolvere i casi di crash",
+                "es": "actualice la biblioteca db para corregir la lectura del directorio raíz y cambie el nombre en redis\n(foxriver76, Apollon77) también aceptan la versión preliminar en algunas comprobaciones de semver para las dependencias\nmanejar el error con una base de datos incorrecta en las migraciones\narreglar el estado de iobroker\narreglar casos de accidentes",
+                "pl": "zaktualizuj bibliotekę db, aby naprawić odczyt katalogu głównego i zmianę nazwy w redis\n(foxriver76, Apollon77) również akceptują wersję przedpremierową w niektórych kontrolach semver pod kątem zależności\nobsłużyć błąd z niewłaściwą bazą danych podczas migracji\nnaprawić status iobroker\nnaprawić przypadki awarii",
+                "zh-cn": "更新数据库库以修复读取根目录并在Redis上重命名\n（foxriver76，Apollon77）在某些semver检查依赖项中也接受预发行版本\n在迁移时使用错误的数据库处理错误\n修复iobroker状态\n修复崩溃案例"
+            },
             "3.2.5-0": {
                 "en": "replace outdated encryption mechanism of multihost\nupdate db library to fix readDir issue with directories\nAdd release script",
                 "de": "Ersetzen Sie den veralteten Verschlüsselungsmechanismus von Multihost\nAktualisieren Sie die Datenbankbibliothek, um das readDir-Problem mit Verzeichnissen zu beheben\nRelease-Skript hinzufügen",
