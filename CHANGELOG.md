@@ -4,9 +4,15 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver76) replace outdated encryption mechanism of multihost
+* (Apollon77) update db library to fix readDir issue with directories
+* (AlCalzone) Add release script
+
 ## 3.2.4 (2021-01-09) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
+* If you have enabled Multihost Discovery please disable and enable it again if you really need it persistant running. By re-enabling it you update the used passphrase with a better encryption mechanism.
 
 **Features**
 * (raintonr) Update Let's encrypt implementation; all relevent adapters (web and such) need updates to use it! NEEDS NODE.JS 12.x+! (see DOCS LINK TODO)
