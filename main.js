@@ -2790,8 +2790,8 @@ function checkVersion(id, name, version, instances) {
     if (name === 'js-controller') {
         // Check only version
         if (version) {
-            if (!semver.satisfies(ioPackage.common.version, version)) {
-                logger.error(`${hostLogPrefix} startInstance ${id}Invalid version of "${name}". Installed "${ioPackage.common.version}", required "${version}`);
+            if (!semver.satisfies(version, ioPackage.common.version)) {
+                logger.error(`${hostLogPrefix} startInstance ${id} Invalid version of "${name}". Installed "${ioPackage.common.version}", required "${version}`);
                 return false;
             } else {
                 isFound = true;
