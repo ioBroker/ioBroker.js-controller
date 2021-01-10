@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "3.2.4",
+        "version": "3.2.5-0",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.2.5-0": {
+                "en": "replace outdated encryption mechanism of multihost\nupdate db library to fix readDir issue with directories\nAdd release script",
+                "de": "Ersetzen Sie den veralteten Verschlüsselungsmechanismus von Multihost\nAktualisieren Sie die Datenbankbibliothek, um das readDir-Problem mit Verzeichnissen zu beheben\nRelease-Skript hinzufügen",
+                "ru": "заменить устаревший механизм шифрования multihost\nобновить библиотеку db, чтобы исправить проблему readDir с каталогами\nДобавить сценарий выпуска",
+                "pt": "substituir mecanismo de criptografia desatualizado de multihost\natualize a biblioteca db para corrigir o problema readDir com diretórios\nAdicionar script de lançamento",
+                "nl": "vervang het verouderde versleutelingsmechanisme van multihost\nupdate db-bibliotheek om het readDir-probleem met mappen op te lossen\nRelease-script toevoegen",
+                "fr": "remplacer le mécanisme de cryptage obsolète du multihôte\nmettre à jour la bibliothèque db pour résoudre le problème de readDir avec les répertoires\nAjouter un script de version",
+                "it": "sostituire il meccanismo di crittografia obsoleto di multihost\naggiorna la libreria db per correggere il problema di readDir con le directory\nAggiungi script di rilascio",
+                "es": "Reemplazar el mecanismo de cifrado obsoleto de multihost\nactualice la biblioteca db para solucionar el problema de readDir con los directorios\nAgregar script de lanzamiento",
+                "pl": "zastąpić przestarzały mechanizm szyfrowania multihost\nzaktualizuj bibliotekę db, aby naprawić problem readDir z katalogami\nDodaj skrypt wydania",
+                "zh-cn": "替换多主机过时的加密机制\n更新数据库库以修复目录的readDir问题\n添加发布脚本"
+            },
             "3.2.1": {
                 "en": "see CHANGELOG.md",
                 "de": "Sehe CHANGELOG.md",
@@ -236,7 +248,10 @@
         "plugins": {
             "sentry": {
                 "dsn": "https://ab26a840557947c088448fead588e0c5@sentry.iobroker.net/9",
-                "pathWhitelist": ["@iobroker", "iobroker.js-controller"]
+                "pathWhitelist": [
+                    "@iobroker",
+                    "iobroker.js-controller"
+                ]
             }
         }
     },
@@ -509,7 +524,6 @@
                     "es": "Funciones",
                     "pl": "Funkcje",
                     "zh-cn": "职能"
-
                 },
                 "desc": {
                     "en": "List of the functions",
@@ -522,7 +536,6 @@
                     "es": "Lista de las funciones",
                     "pl": "Lista funkcji",
                     "zh-cn": "功能列表"
-
                 },
                 "members": [],
                 "dontDelete": true
@@ -762,7 +775,8 @@
                 "it": "Queste notifiche vengono raccolte dal sistema ioBroker e indicano problemi che dovresti controllare e correggere",
                 "es": "Estas notificaciones son recopiladas por el sistema ioBroker y señalan problemas que debe verificar y solucionar.",
                 "pl": "Te powiadomienia są zbierane przez system ioBroker i wskazują problemy, które należy sprawdzić i naprawić",
-                "zh-cn": "这些通知由ioBroker系统收集，并指出您应检查并修复的问题"            },
+                "zh-cn": "这些通知由ioBroker系统收集，并指出您应检查并修复的问题"
+            },
             "categories": [
                 {
                     "category": "memIssues",

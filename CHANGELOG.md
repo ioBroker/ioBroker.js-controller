@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.2.5-0 (2021-01-10)
 * (foxriver76) replace outdated encryption mechanism of multihost
 * (Apollon77) update db library to fix readDir issue with directories
 * (AlCalzone) Add release script
