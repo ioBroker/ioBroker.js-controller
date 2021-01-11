@@ -102,8 +102,8 @@ jobs:
           echo "::set-output name=VERSION::$VERSION"
           BODY=$(git show -s --format=%b)
           BODY="${BODY//'%'/'%25'}"
-          BODY="${BODY//$'\\n'/'%0A'}"
-          BODY="${BODY//$'\\r'/'%0D'}"
+          BODY="${BODY//$'\n'/'%0A'}"
+          BODY="${BODY//$'\r'/'%0D'}"
           echo "::set-output name=BODY::$BODY"
 
       - name: Install Dependencies
