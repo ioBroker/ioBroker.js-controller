@@ -50,7 +50,7 @@
     "yargs": "^16.2.0"
   },
   "devDependencies": {
-    "@alcalzone/release-script": "^1.8.2",
+    "@alcalzone/release-script": "^1.8.3",
     "@types/event-stream": "^3.3.34",
     "@types/fs-extra": "^9.0.6",
     "@types/iobroker": "^3.2.7",
