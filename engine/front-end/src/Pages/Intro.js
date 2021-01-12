@@ -167,8 +167,8 @@ class Intro extends Component {
             showActionDialog: false,
         }
 
-        const d = new Date()
-        this.action = (d.getMonth() === 11 && d.getDate() >= 8) ||  (d.getMonth() === 0 && d.getDate() <= 10);
+        const d = new Date();
+        this.action = (d.getMonth() === 11 && d.getDate() >= 8) || (d.getMonth() === 0 && d.getDate() <= 10);
 
         setTimeout(() => this.setState({loading: false}), 500);
     }

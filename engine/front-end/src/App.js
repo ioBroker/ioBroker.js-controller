@@ -238,9 +238,11 @@ class App extends Router {
             debug: window.location.hostname === 'localhost'
         });
 
-        const month = new Date().getMonth();
-        this.logo = month === 11 || month === 0 ? LogoBigNY : LogoBig;
-        this.logoSmall = month === 11 || month === 0 ? LogoSmallNY : LogoSmall;
+        const d = new Date();
+        const action = (d.getMonth() === 11 && d.getDate() >= 8) ||  (d.getMonth() === 0 && d.getDate() <= 10);
+
+        this.logo = action ? LogoBigNY : LogoBig;
+        this.logoSmall = action ? LogoSmallNY : LogoSmall;
 
         this.contentRef = React.createRef();
         this.updateWindowDimensionsBound = this.updateWindowDimensions.bind(this);
@@ -510,71 +512,69 @@ class App extends Router {
     }
 
     renderPagesMenu() {
-        return [
-            (<Drawer key="drawer" open={this.state.showTabMenu} anchor="right" onClose={() => this.setState({showTabMenu: false})}>
-                <List>
-                    {Object.keys(PAGES).map(tab => {
-                        if (!PAGES[tab].tabIndex) return null;
+        return <Drawer key="drawer" open={this.state.showTabMenu} anchor="right" onClose={() => this.setState({showTabMenu: false})}>
+            <List>
+                {Object.keys(PAGES).map(tab => {
+                    if (!PAGES[tab].tabIndex) return null;
 
-                        if (PAGES[tab].menu) {
-                            return [
-                                (<ListItem button key={tab}
-                                           onClick={e => {
-                                               const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
-                                               const pos = menuOpened.indexOf(tab);
-                                               if (pos === -1) {
-                                                   menuOpened.push(tab);
-                                               } else {
-                                                   menuOpened.splice(pos, 1);
-                                               }
-                                               this.setState({menuOpened});
-                                           }}
-                                >
-                                    {PAGES[tab].icon ? (<ListItemIcon>{PAGES[tab].icon}</ListItemIcon>) : null}
-                                    <ListItemText primary={I18n.t(PAGES[tab].name)} />
-                                </ListItem>),
-
-                                this.state.menuOpened.indexOf(tab) !== -1 ? (<List className={this.props.classes.subMenu}>
-                                    {PAGES[tab].menu.map(item =>
-                                        (<ListItem classes={{root: this.props.classes.subMenuItem}} selected={this.state.selectedPage === tab} button key={item}
-                                                   onClick={() => {
-                                                       if (item.links) {
-                                                           Utils.openLink(item.links[this.state.language] || item.links.en, item.target);
-                                                       } else
-                                                       if (item.link) {
-                                                           Utils.openLink(item.link, item.target)
-                                                       } else if (item.tab) {
-                                                           this.onNavigate(null, item.tab);
-                                                       }
-                                                       this.setState({showTabMenu: false});
-                                                   }}>
-                                            {item.icon ? (<ListItemIcon>{item.icon}</ListItemIcon>) : null}
-                                            <ListItemText classes={{primary: this.props.classes.subMenuItemText}} primary={item.name} />
-                                        </ListItem>)
-                                    )}
-                                </List>) : null
-                            ];
-                        } else {
-                            return (<ListItem selected={this.state.selectedPage === tab} button key={tab} onClick={e => {
-                                this.setState({showTabMenu: false}, () => {
-                                    if (PAGES[tab].links) {
-                                        Utils.openLink(PAGES[tab].links[this.state.language] || PAGES[tab].links.en, PAGES[tab].target);
-                                    } else if (PAGES[tab].link) {
-                                        Utils.openLink(PAGES[tab].link, PAGES[tab].target)
-                                    } else {
-                                        this.onNavigate(null, tab);
-                                    }
-                                    this.setState({showTabMenu: false});
-                                });
-                            }}>
+                    if (PAGES[tab].menu) {
+                        return [
+                            (<ListItem button key={tab}
+                                       onClick={e => {
+                                           const menuOpened = JSON.parse(JSON.stringify(this.state.menuOpened));
+                                           const pos = menuOpened.indexOf(tab);
+                                           if (pos === -1) {
+                                               menuOpened.push(tab);
+                                           } else {
+                                               menuOpened.splice(pos, 1);
+                                           }
+                                           this.setState({menuOpened});
+                                       }}
+                            >
                                 {PAGES[tab].icon ? (<ListItemIcon>{PAGES[tab].icon}</ListItemIcon>) : null}
                                 <ListItemText primary={I18n.t(PAGES[tab].name)} />
-                            </ListItem>);
-                        }
-                    })}
-                </List>
-            </Drawer>)
-        ];
+                            </ListItem>),
+
+                            this.state.menuOpened.indexOf(tab) !== -1 ? (<List className={this.props.classes.subMenu}>
+                                {PAGES[tab].menu.map(item =>
+                                    (<ListItem classes={{root: this.props.classes.subMenuItem}} selected={this.state.selectedPage === tab} button key={item}
+                                               onClick={() => {
+                                                   if (item.links) {
+                                                       Utils.openLink(item.links[this.state.language] || item.links.en, item.target);
+                                                   } else
+                                                   if (item.link) {
+                                                       Utils.openLink(item.link, item.target)
+                                                   } else if (item.tab) {
+                                                       this.onNavigate(null, item.tab);
+                                                   }
+                                                   this.setState({showTabMenu: false});
+                                               }}>
+                                        {item.icon ? (<ListItemIcon>{item.icon}</ListItemIcon>) : null}
+                                        <ListItemText classes={{primary: this.props.classes.subMenuItemText}} primary={item.name} />
+                                    </ListItem>)
+                                )}
+                            </List>) : null
+                        ];
+                    } else {
+                        return (<ListItem selected={this.state.selectedPage === tab} button key={tab} onClick={e => {
+                            this.setState({showTabMenu: false}, () => {
+                                if (PAGES[tab].links) {
+                                    Utils.openLink(PAGES[tab].links[this.state.language] || PAGES[tab].links.en, PAGES[tab].target);
+                                } else if (PAGES[tab].link) {
+                                    Utils.openLink(PAGES[tab].link, PAGES[tab].target)
+                                } else {
+                                    this.onNavigate(null, tab);
+                                }
+                                this.setState({showTabMenu: false});
+                            });
+                        }}>
+                            {PAGES[tab].icon ? (<ListItemIcon>{PAGES[tab].icon}</ListItemIcon>) : null}
+                            <ListItemText primary={I18n.t(PAGES[tab].name)} />
+                        </ListItem>);
+                    }
+                })}
+            </List>
+        </Drawer>;
     }
 
     renderAppBar() {
