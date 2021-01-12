@@ -81,7 +81,7 @@
     "device": "Docker",
     "details": "Docker image",
     "picture": "docker.png",
-    "info": "https://buanet.de/2019/05/iobroker-unter-docker-auf-der-synology-diskstation-v3/"
+    "info": "https://smarthome.buanet.de/docker/container-images/iobroker/"
   },
   {
     "file": "ioBroker_Image_OdroidC2_20190209_stretch.zip",
