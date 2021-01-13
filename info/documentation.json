@@ -69,8 +69,8 @@
                     "link": "https://homematic-guru.de/category/iobroker"
                 },
                 {
-                    "title": "Sabrije und André Germann Blog",
-                    "link": "https://buanet.de/category/iobroker/"
+                    "title": "smarthome.buanet.de - Tipps, Tricks und Tutorials",
+                    "link": "https://smarthome.buanet.de/"
                 }
             ],
             "news": [
@@ -100,8 +100,8 @@
                     "date": "2019-05-23T00:00:00.000Z"
                 },
                 {
-                    "title": "ioBroker unter Docker auf der Synology Diskstation (V3)",
-                    "link": "https://buanet.de/2019/05/iobroker-unter-docker-auf-der-synology-diskstation-v3/",
+                    "title": "ioBroker unter Docker auf der Synology Diskstation (ab V3)",
+                    "link": "https://smarthome.buanet.de/2019/05/iobroker-unter-docker-auf-der-synology-diskstation-v3/",
                     "date": "2019-05-04T00:00:00.000Z"
                 },
                 {
