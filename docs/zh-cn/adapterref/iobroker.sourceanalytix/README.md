@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: jav7W00Tmb6Dgrhx6KWgqe5+nVu+ZDgnD/cmvQTY4uw=
+hash: FFJQrjVNPtvD4pbmp4/7Y+bxPKovBLvxCd9+bJ53k7I=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
@@ -30,9 +30,7 @@ hash: jav7W00Tmb6Dgrhx6KWgqe5+nVu+ZDgnD/cmvQTY4uw=
 @hadering对此进行了改进，并发布在github https://github.com/hdering/homematic_verbrauchszaehler
 
 ＃＃ 已知的问题
-* []如果在对象中定义了默认值，则源值将在晚上重置为默认值（JS-Controller中的错误，在2.3中需要修复）
-
-*解决方法：确保未为自创建状态设置默认值*
+<>
 
 ＃＃ 去做
 * []文档
@@ -47,19 +45,42 @@ hash: jav7W00Tmb6Dgrhx6KWgqe5+nVu+ZDgnD/cmvQTY4uw=
 ##什么是Sentry.io，什么报告给该公司的服务器？
 Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
+
 <!--
     Placeholder for the next version (at the beginning of the line):
-    ## __WORK IN PROGRESS__
+    ### __WORK IN PROGRESS__
 -->
 
+## Changelog
 ### __WORK IN PROGRESS__
+#### Breaking changes
+* (Dutchman) **Breaking!!! Move current values to currentYear*
+* (Dutchman & ToTXR4Y) MajorChange ! : Replaced **Current_Reading** with **CumulativeReading**
+
+#### New Features
+* (Dutchman) Code cleanup
 * (Dutchman) Add back "currentYear"
-* (Dutchman) **Breaking!!!** Move current values to current year
+* (Dutchman) Weekly reset of weekdays
+* (Dutchman) Calculation for all states
+* (Dutchman) Calculation for previous states
+* (Dutchman) Optimized error reporting (Sentry)
 * (Dutchman) Removed unneeded settings in configuration
 * (Dutchman) Implemented new configuration for "currentYear"
+* (Dutchman & ToTXR4Y) implement cached memory slot for initialisation value
+* (Dutchman & ToTXR4Y) Implement log messages if state attributes are changed
+* (Dutchman & ToTXR4Y) Implement automatically detection of currency from admin settings [#247](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/247)
+
+#### BugFixes
+* (Dutchman) Bugfix : dev: 0 bug workaround
+* (Dutchman) Bugfix : Calculations for "previous" values
+* (Dutchman) Bugfix : Cannot read property 'stateDetails' of null
+* (Dutchman & ToTXR4Y) Bugfix : Rebuild calculation logic which solves :
+  * Watt values : Ensure proper reading start (0 instead of current watt value)
+    Watt values : Ensure proper reading calculation with exponent (0 instead of current watt value)
+  * All calculations : correct handling  of device reset (if value is reset or 0)
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry

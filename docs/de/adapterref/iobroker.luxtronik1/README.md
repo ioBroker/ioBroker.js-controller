@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: DFgt0+UkXwVLDlE+SoE8gYKyy2A4U5NakxuX7u0Pqto=
+hash: TT0lYMaugEBCLZTuZjl4ZHvVk+OeeEtLuxV35Z5MYMY=
 ---
 ![Logo](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -11,10 +11,9 @@ hash: DFgt0+UkXwVLDlE+SoE8gYKyy2A4U5NakxuX7u0Pqto=
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.luxtronik1.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.luxtronik1.svg)
 ![NPM](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.luxtronik1.svg)
 
 # IoBroker.luxtronik1
-Ein ioBroker-Adapter für Luxtronik 1 - Wärmepumpenregler (d. H. Alpha Innotec, Siemens ...)
+Ein ioBroker-Adapter für Luxtronik 1-Wärmepumpenregler (d. H. Alpha Innotec, Siemens ...)
 
 Adapter installieren, Instanz erstellen.
 Installieren Sie die Hardware: d. H. RS232-LAN-Adapter an die serielle Schnittstelle (RS232) des Heatbumps-Hauptbords.
@@ -23,7 +22,7 @@ Einstellungen serielle Schnittstelle: 57600/8 / N / 1, Modus: TCP-Server Reset T
 
 Set luxtronik - IP-Adresse, Port und Polling - Intervall
 
-Getestet auf Luxtronik 1 und AlphaInnotec Heatpumpe
+Getestet mit Luxtronik 1 und AlphaInnotec Heatpumpe
 
 Liest verschiedene Werte und Statistiken Ihrer Wärmepumpe (Temperaturen, Fehler, Laufzeit, ...).
 Steuert Luxtronik 1 durch Einstellen von Werten im 'Steuerungskanal'. Steuert die folgenden Werte:
@@ -32,10 +31,32 @@ Steuert Luxtronik 1 durch Einstellen von Werten im 'Steuerungskanal'. Steuert di
 - Heizmodus
 - Heißwassermodus
 - Heizkurve (Differenz, Endpunkt, Startpunkt, nächtliche Reduzierung).
+- Hysterese heißes Wasser
+- Hystereseheizung
 
 Werte im 'control' - Kanal müssen mit ack = false gesetzt werden, um eine Aktion auszulösen.
 
 ## Changelog
+
+### 0.3.0
+
+- info on temperature - settings and hysteresis - control added
+
+### 0.2.7
+
+-   status-info added.
+
+### 0.2.6
+
+-   input-data and timers (Eingänge & Ablaufzeiten) added.
+
+### 0.2.5
+
+-   outlet-data added by @pingus01.
+
+### 0.2.4
+
+-   comm-errors fixed, 'control'-values are updated now.
 
 ### 0.2.3
 
@@ -89,7 +110,7 @@ Werte im 'control' - Kanal müssen mit ack = false gesetzt werden, um eine Aktio
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2021 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

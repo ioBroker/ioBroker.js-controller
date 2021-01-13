@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: T167cGyTwk/+nFRStlOpG6ggSemkxvFKyzbjUufjUpc=
+hash: 91ZtGQuLbm1S1bO9yqVvA5ZTNODi5wl5JRsCDJyg0so=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -41,6 +41,13 @@ hash: T167cGyTwk/+nFRStlOpG6ggSemkxvFKyzbjUufjUpc=
 [![Spende]（http://resources.inventwo.com/github/inventwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.4
+-FehlendeÜbersetzungfürHover-Farbenhinzugefügt
+
+## 2.7.3
+-Fehler beim多州与州
+-Schatten und Rand HoverfürButtonshinzugefügt
 
 ## 2.7.2
 -Fehler在Radiobutton mit Bildfarbe behoben中

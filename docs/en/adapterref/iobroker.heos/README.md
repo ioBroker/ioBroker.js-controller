@@ -230,6 +230,9 @@ on({id: 'heos.0.sources.browse_result', change: 'any'}, function (obj) {
 
 ## Changelog
 
+### 1.6.2 (2021-01-02)
+* (withstu) fix "user not logged in" handling
+
 ### 1.6.1 (2020-11-25)
 * (withstu) clear timeout and interval on unload; fix roles; remove sleep in tts module
 

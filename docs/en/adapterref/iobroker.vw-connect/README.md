@@ -112,6 +112,10 @@ Door and window states:
 
 ## Changelog
 
+### 0.0.24
+
+- add remote state update
+
 ### 0.0.23
 
 - add Seat and new climatisation v2

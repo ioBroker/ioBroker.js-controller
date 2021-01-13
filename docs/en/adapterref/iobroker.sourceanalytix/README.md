@@ -29,8 +29,7 @@ Which has been improved by @hadering and published on github
 https://github.com/hdering/homematic_verbrauchszaehler
 
 ## Known issues
-* [ ] Source Values reset to default value at night if default value is defined in an object (bug in JS-Controller, fix needed in 2.3)
-*Workaround : Ensure no default value is set for self-created states*
+<>
 
 ## To-Do
 * [ ] Documentation
@@ -49,33 +48,41 @@ Sentry.io is a service for developers to get an overview about errors from their
 
 When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs. 
 
-# Changelog
+
+## Changelog
+
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
-### 0.4.8-alpha.4 (2021-01-09)
-* (Dutchman) Bugfix : Incorrect calculation of watt at initialisation and adapter start
 
-### 0.4.8-alpha.3 (2021-01-06)
-* (Dutchman) Bugfix : dev: 0 bug workaround
-* (Dutchman) Bugfix : Bugfix : Calculation of previous states
+## Changelog
+### __WORK IN PROGRESS__
+#### Breaking changes
+* (Dutchman) **Breaking!!! Move current values to currentYear*
+* (Dutchman & ToTXR4Y) MajorChange ! : Replaced **Current_Reading** with **CumulativeReading**
 
-### 0.4.8-alpha.2 (2020-10-08)
-* (Dutchman) Bugfix : Cannot read property 'stateDetails' of null
-
-### 0.4.8-alpha.1 (2020-10-08)
-* (Dutchman) Fix calculations for "previous" values
-
-### 0.4.8-alpha.0 (2020-10-06)
-* (Dutchman) **Breaking!!! Move current values to currentYear**
-* (Dutchman) Add back "currentYear"
+#### New Features
 * (Dutchman) Code cleanup
+* (Dutchman) Add back "currentYear"
+* (Dutchman) Weekly reset of weekdays
+* (Dutchman) Calculation for all states
+* (Dutchman) Calculation for previous states
 * (Dutchman) Optimized error reporting (Sentry)
-* (Dutchman) implemented weekly reset of weekdays
-* (Dutchman) implemented calculation for all states
 * (Dutchman) Removed unneeded settings in configuration
 * (Dutchman) Implemented new configuration for "currentYear"
+* (Dutchman & ToTXR4Y) implement cached memory slot for initialisation value
+* (Dutchman & ToTXR4Y) Implement log messages if state attributes are changed
+* (Dutchman & ToTXR4Y) Implement automatically detection of currency from admin settings [#247](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/247)
+
+#### BugFixes
+* (Dutchman) Bugfix : dev: 0 bug workaround
+* (Dutchman) Bugfix : Calculations for "previous" values
+* (Dutchman) Bugfix : Cannot read property 'stateDetails' of null
+* (Dutchman & ToTXR4Y) Bugfix : Rebuild calculation logic which solves :
+  * Watt values : Ensure proper reading start (0 instead of current watt value)
+    Watt values : Ensure proper reading calculation with exponent (0 instead of current watt value)
+  * All calculations : correct handling  of device reset (if value is reset or 0)
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry

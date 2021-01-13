@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.go-e/README.md
 title: ioBroker.go-echarger
-hash: qe9C2wrVZxdJuvBs8NEFeQF24PHZ2ust9lnd6+7AZcc=
+hash: HglRf0U/Jca9Da4HM1YaGj4dY4gKOdaeBGpiyrZ/nVo=
 ---
 ![Логотип](../../../en/adapterref/iobroker.go-e/admin/go-echarger.png)
 
@@ -13,7 +13,8 @@ hash: qe9C2wrVZxdJuvBs8NEFeQF24PHZ2ust9lnd6+7AZcc=
 ![Количество установок (стабильно)](http://iobroker.live/badges/go-e-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/MK-2001/iobroker.go-e.svg)
 ![Известные уязвимости](https://snyk.io/test/github/MK-2001/ioBroker.go-e/badge.svg)
-![НПМ](https://nodei.co/npm/iobroker.go-e.png?downloads=true)
+![Сборка и тесты](https://img.shields.io/travis/MK-2001/ioBroker.go-e/master.svg)
+![НПМ](https://nodei.co/npm/iobroker.go-e.png?mini=true)
 
 # IoBroker.go-echarger
 # Настенная коробка go-eCharger

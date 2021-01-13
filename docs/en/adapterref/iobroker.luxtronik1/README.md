@@ -25,12 +25,18 @@ Controls Luxtronik 1 by setting values in the 'control' - channel. Controls the 
 
 -   Hotwater - temperature setting
 -   Heating - mode
--   Hotwater - mode
+-   Hot water - mode
 -   Heating - curve (difference, endpoint, startingpoint, nightly reduction).
+-   Hysteresis hot water
+-   Hysteresis heating
 
 Values in the 'control' - channel have to be set with ack=false to trigger an action.
 
 ## Changelog
+
+### 0.3.0
+
+- info on temperature - settings and hysteresis - control added
 
 ### 0.2.7
 
@@ -100,7 +106,7 @@ Values in the 'control' - channel have to be set with ack=false to trigger an ac
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2021 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

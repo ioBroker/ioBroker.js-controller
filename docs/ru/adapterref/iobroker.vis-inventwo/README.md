@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: T167cGyTwk/+nFRStlOpG6ggSemkxvFKyzbjUufjUpc=
+hash: 91ZtGQuLbm1S1bO9yqVvA5ZTNODi5wl5JRsCDJyg0so=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -41,6 +41,13 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 [![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.4
+- Fehlende Übersetzung für Hover-Farben hinzugefügt
+
+## 2.7.3
+- Fehler beim Multi-State und mehreren Zuständen behoben
+- Schatten und Rand Hover für Buttons hinzugefügt
 
 ## 2.7.2
 - Фелер в Radiobutton mit Bildfarbe behoben

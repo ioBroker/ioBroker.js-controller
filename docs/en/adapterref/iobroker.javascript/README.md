@@ -1581,6 +1581,10 @@ There is a possibility to enabled and disable scripts via states. For every scri
 Scripts can be activated and deactivated by controlling of this state with ack=false.
 
 ## Changelog
+
+### __WORK IN PROGRESS__
+* (Apollon77) Make sure to end all Timeouts
+
 ### 4.10.8 (2020-12-07)
 * (paul53) Corrected `variables.isDayTime`
 * (AlCalzone) catch errors during virtual-tsc compile calls

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.go-e/README.md
 title: ioBroker.go充电器
-hash: qe9C2wrVZxdJuvBs8NEFeQF24PHZ2ust9lnd6+7AZcc=
+hash: HglRf0U/Jca9Da4HM1YaGj4dY4gKOdaeBGpiyrZ/nVo=
 ---
 ![商标](../../../en/adapterref/iobroker.go-e/admin/go-echarger.png)
 
@@ -13,7 +13,8 @@ hash: qe9C2wrVZxdJuvBs8NEFeQF24PHZ2ust9lnd6+7AZcc=
 ![安装数量（稳定）](http://iobroker.live/badges/go-e-stable.svg)
 ![依赖状态](https://img.shields.io/david/MK-2001/iobroker.go-e.svg)
 ![已知漏洞](https://snyk.io/test/github/MK-2001/ioBroker.go-e/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.go-e.png?downloads=true)
+![构建与测试](https://img.shields.io/travis/MK-2001/ioBroker.go-e/master.svg)
+![NPM](https://nodei.co/npm/iobroker.go-e.png?mini=true)
 
 ＃ioBroker.go-echarger
 ＃go-eCharger Wallbox

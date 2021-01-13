@@ -48,8 +48,8 @@ The refresh interval from the "live consumption value (is called **"_energy "**)
 - **device type**: here you have to select which device it is, so that the calculations in the adapter can be carried out correctly.
 - **consumption/energy**: Click on the button with the three white dots to open your object management. The data point that displays the **current live consumption** must be selected. 
 - **switch on/off**: Clicking on the button with the three white dots opens your object management. The data point that switches your **socket on/off** must be selected (not mandatory).
-- Start text**: Notification to be sent when the device is started (special characters are also possible). There must be no "." at the end!
-- End text**: Notification to be sent when the unit has finished its operation (special characters are also possible). There must be no "." at the end!
+- Start text**: Notification to be sent when the device is started (special characters are also possible)
+- End text**: Notification to be sent when the unit has finished its operation (special characters are also possible)
 
 With **Start text** and **End text** you can also get a message from an external data point. This message is read from the data point with a delay of 1 second after the status of the unit has changed. In this way, you can have a message created by an external script. The adapter automatically recognises whether a message comes from a data point or whether it was simply entered manually. To select a data point, simply click on the button with the three white dots and then select the corresponding data point. **Please note**: only either a data point **or** a manually entered message can be used!
 <br>
@@ -166,6 +166,11 @@ is displayed.
 	Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 1.0.4 (2021-01-12)
+* (xenon-s) bugfix pushover
+* (xenon-s) bugfix message: there may now be a "." at the end of the messages
+
 ### 1.0.3 (2021-01-07)
 * (xenon-s) bugfix pushover
 * (xenon-s) added link "german readme" in readme

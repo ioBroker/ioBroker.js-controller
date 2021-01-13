@@ -131,6 +131,11 @@ Just now it can detect via ping, UPnP (serial planned).
 -->
 ## Changelog
 
+### 2.5.0 (2021-01-11)
+* (Zefau) Replace nuki2 with nuki-extended
+* (Zefau) Suggest jarvis for discovery as advice
+* (Apollon77) Add checks on broadlink2 discovery to prevent crash case (Sentry IOBROKER-DISCOVERY-2H)
+
 ### 2.4.1 (2020-12-06)
 * (Apollon77) Fix potential crash case in lightify (Sentry IOBROKER-DISCOVERY-2D)
 * (Apollon77) Fix potential crash case (Sentry IOBROKER-DISCOVERY-2C)

@@ -39,6 +39,8 @@ With adapter you can use both: **v6 Bridge** and **Legacy Bridge**.
 
 
 ## Changelog
+### 1.0.5 (2020-01-10)
+- (steiger04) Small bug fix
 ### 1.0.1 (2020-11-21)
 - (steiger04) Added admin-UI based on Vue and Quasar
 ### 0.6.0 (2020-05-23)
@@ -51,4 +53,4 @@ With adapter you can use both: **v6 Bridge** and **Legacy Bridge**.
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2020 Steiger04 <steiger04@posteo.de>
+Copyright (c) 2017-2021 Steiger04 <steiger04@posteo.de>

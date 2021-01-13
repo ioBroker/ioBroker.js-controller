@@ -3,39 +3,60 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: DFgt0+UkXwVLDlE+SoE8gYKyy2A4U5NakxuX7u0Pqto=
+hash: TT0lYMaugEBCLZTuZjl4ZHvVk+OeeEtLuxV35Z5MYMY=
 ---
-![логотип](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
+![Логотип](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
 ![Количество установок](http://iobroker.live/badges/luxtronik1-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.luxtronik1.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.luxtronik1.svg)
-![NPM](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)
-![Значок Greenkeeper](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.luxtronik1.svg)
+![НПМ](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)
 
 # IoBroker.luxtronik1
-Адаптер ioBroker для Luxtronik 1 - тепловые насосы - контроллеры (то есть Alpha Innotec, Siemens ...)
+Адаптер ioBroker для Luxtronik 1 - тепловой насос - контроллеры (например, Alpha Innotec, Siemens ...)
 
 Установите адаптер, создайте экземпляр.
-Установите аппаратное обеспечение: то есть адаптер RS232-LAN к последовательному интерфейсу (RS232) основного кабеля тепловых насосов.
-Характеристики: последовательный кабель: связать PINS 2, 3 и 5 (если он не работает, поменяйте контакты 2 и 3). Преобразователь RS232 в LAN: т. Е. USR TCP232 - 302.
-Настройки последовательного интерфейса: 57600/8 / N / 1, режим: время ожидания сброса TCP-сервера: 0
+Установите оборудование: например, адаптер RS232 - LAN к последовательному интерфейсу (RS232) основной платы теплового насоса.
+Технические характеристики: последовательный кабель: соедините контакты 2, 3 и 5 (если он не работает, замените контакты 2 и 3) Преобразователь RS232 в LAN: например, USR TCP232 - 302.
+Настройки последовательного интерфейса: 57600/8 / N / 1, Режим: Тайм-аут сброса TCP-сервера: 0
 
-Set luxtronik - IP-адрес, порт и опрос - intervall
+Установить luxtronik - IP-адрес, порт и опрос - интервал
 
-Испытано на тепловых насосах luxtronik 1 и AlphaInnotec
+Протестировано на тепловом насосе luxtronik 1 и AlphaInnotec
 
-Читает различные значения и характеристики вашего теплового насоса (температуры, ошибки, время работы, ...).
-Управляет Luxtronik 1, устанавливая значения в «control» - канале. Управляет следующими значениями:
+Считывает различные значения и статистику вашего теплового насоса (температуры, ошибки, время работы, ...).
+Управляет Luxtronik 1, задавая значения в «контрольном» канале. Управляет следующими значениями:
 
-- Горячая вода - установка температуры
+- Горячая вода - настройка температуры
 - Отопление - режим
 - Горячая вода - режим
-- Кривая отопления (разница, конечная точка, начальная точка, ночное сокращение).
+- Отопление - кривая (разница, конечная точка, начальная точка, ночная редукция).
+- Гистерезис горячей воды
+- Гистерезис подогрева
 
-Значения в 'control' - канале должны быть установлены с помощью ack = false, чтобы инициировать действие.
+Значения в «контрольном» канале должны быть установлены с ack = false для запуска действия.
 
 ## Changelog
+
+### 0.3.0
+
+- info on temperature - settings and hysteresis - control added
+
+### 0.2.7
+
+-   status-info added.
+
+### 0.2.6
+
+-   input-data and timers (Eingänge & Ablaufzeiten) added.
+
+### 0.2.5
+
+-   outlet-data added by @pingus01.
+
+### 0.2.4
+
+-   comm-errors fixed, 'control'-values are updated now.
 
 ### 0.2.3
 
@@ -89,7 +110,7 @@ Set luxtronik - IP-адрес, порт и опрос - intervall
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2021 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

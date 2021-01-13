@@ -189,6 +189,10 @@ Whitelist: Wenn Sie nur Ereignisse einer bestimmten Position einschließen möch
 
 ## Changelog
 
+### 1.9.0 (2021-01-12)
+* (christofkac) Added option to ignore case when events are searched in calendars
+* (Apollon77) Prevent crash case (Sentry IOBROKER-ICAL-F)
+
 ### 1.8.5 (2021-01-01)
 * (Apollon77) update ical library to prevent problems with RRULE parsing
 

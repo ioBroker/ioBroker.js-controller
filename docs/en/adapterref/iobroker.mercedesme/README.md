@@ -17,6 +17,10 @@ Mercedes me adapter for ioBroker
 
 ## Changelog
 
+### 0.0.43
+
+- Small improvments
+
 ### 0.0.42
 
 - Fix Fueling history

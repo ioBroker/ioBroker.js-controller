@@ -25,10 +25,13 @@ Zusätzlich werden Gruppen gebildet (diese werden unter virtualpowermeter.0.xxx 
 
 Mit diesen neuen Datenpunkten kann dann eine Einfache Visualiserung durchgeführt werden.
 
-Die neuen Datenpunkte (besonders die Gruppen) könnten super mit Sourceanalytix weiterverarbeitet werden
+Die neuen Datenpunkte (besonders die Gruppen) könnten super mit valuetrackerovertime weiterverarbeitet werden
 
-siehe MeinBeispiel.jpg
+Die neuen Datenpunkte für Power und Total werden normal im gleichen Verzeichnis wie die überwachten States abgelegt. Sobald der Pfad einen "." enthält wird das Verzeichnis als Absolut betrachtet und unter dieser id abgelegt. Hier ist es sinnvoll die Datenpunkte in das eigene virtualpowermeter.0 abzulegen (aufpassen dass man die Ids nicht doppelt verwendet.)
+<img src="https://user-images.githubusercontent.com/25373047/104218659-5920eb80-543d-11eb-8e20-774822d489a7.png" />
 
+Beispiel mit valuetrackerovertime:
+<img src="MeinBeispiel2.jpg" />
 
 
 ## Changelog
@@ -68,7 +71,7 @@ siehe MeinBeispiel.jpg
 ## License
 MIT License
 
-Copyright (c) 2020 Lutz Sebastian general.of.omega@googlemail.com
+Copyright (c) 2021 Lutz Sebastian general.of.omega@googlemail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

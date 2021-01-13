@@ -65,9 +65,11 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
-### 1.0.9 (alpha)
+### 1.0.9
+* Using library version 0.5.3
 * Added some experimental features (for a few models only)
-* Some improvements to adapter config
+* Added option for virtual boundaries and some further improvements to adapter config
+* Some improvements for js-controller 3.2.x
 
 ### 1.0.8
 * Using library version 0.5.2 (0.5.2-beta.1)

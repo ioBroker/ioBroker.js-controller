@@ -71,6 +71,14 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 ---
 
 ## Changelog / Änderungsprotokoll
+
+## 2.7.4
+- Fehlende Übersetzung für Hover-Farben hinzugefügt
+
+## 2.7.3
+- Fehler beim Multi-State und mehreren Zuständen behoben
+- Schatten und Rand Hover für Buttons hinzugefügt
+
 ## 2.7.2
 - Fehler in Radiobutton mit Bildfarbe behoben
 - Fehler behoben: Doppeltes klicken bei State mit Verweildauer

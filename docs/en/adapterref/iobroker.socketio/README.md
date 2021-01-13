@@ -312,6 +312,10 @@ You can set option *Force Web-Sockets* to force using only web-sockets transport
 -->
 
 ## Changelog
+
+### 3.1.3 (2021-01-12)
+* (Apollon77) fix socketio dependency
+
 ### 3.1.2 (2021-01-09)
 * (bluefox) Support of new Let's Encrypt (only with js-controller 3.2.x)
 

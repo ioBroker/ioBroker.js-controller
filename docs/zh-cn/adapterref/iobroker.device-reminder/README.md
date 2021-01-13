@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.device-reminder/README.md
 title: ioBroker.device-reminder
-hash: f73+0kIQ/JWIC/UsFaGXlKZEhfmYtthHNJvoj1LBBvs=
+hash: 6WQhTic8DOQNfvs2iDWDtZo/TUZaSOt9zST0NRrWBeE=
 ---
 ![商标](../../../en/adapterref/iobroker.device-reminder/admin/icon.png)
 
@@ -26,7 +26,7 @@ hash: f73+0kIQ/JWIC/UsFaGXlKZEhfmYtthHNJvoj1LBBvs=
 该适配器可以使用测量插座来检测设备是处于打开状态，工作状态还是已关闭，并对此做出反应。然后可以通过电报，whatsapp，alexa，sayit，pushover和电子邮件（每个设备可能有多个选择）自动发出消息。该过程完成（也有时间延迟）后，也可以自动关闭插座。
 
 ＃应该考虑什么？
-对于大多数设备，从“实时消耗值（称为**“ _ energy” **））开始的刷新间隔不应超过10秒，否则可能会有非常延迟的消息。<br> Tasmota控制台中的命令：TelePeriod 10<br> **注意：**
+对于大多数设备，从“实时消耗值（称为**” _ energy“ **）”开始的刷新间隔不应超过10秒，否则可能会有非常延迟的消息。<br> Tasmota控制台中的命令：TelePeriod 10<br> **注意：**
 
 -低于1瓦的值被视为0瓦，并自动指示“ **已关闭**”。
 -高于1瓦的值表示单位为“ **待机**”。
@@ -41,7 +41,7 @@ hash: f73+0kIQ/JWIC/UsFaGXlKZEhfmYtthHNJvoj1LBBvs=
 -电子邮件通知（可以使用多个ID）
 -通知可以自由创建，也可以由外部脚本指定
 -具有当前状态，实时消耗和已发送的最后状态消息的数据点，以便能够在其他脚本中使用此适配器的值
--当过程被识别为完成时，可以根据需要关闭设备（还有时间延迟）。
+-确认过程已完成后，可以根据需要关闭设备（还需要一定时间）。
 -语音助手可以通过数据点暂时停用
 
 ＃说明
@@ -52,8 +52,8 @@ hash: f73+0kIQ/JWIC/UsFaGXlKZEhfmYtthHNJvoj1LBBvs=
 -**设备类型**：在这里您必须选择它是哪个设备，以便可以正确执行适配器中的计算。
 -**消耗/能量**：单击带有三个白点的按钮以打开对象管理。必须选择显示“当前实时消费量”的数据点。
 -**打开/关闭**：单击带有三个白点的按钮可打开对象管理。必须选择打开/关闭插座的数据点（非强制性）。
--起始文本**：启动设备时将发送通知（也可以使用特殊字符）。不能有“。”在最后！
--结束文本**：本机完成操作后将发送通知（也可以使用特殊字符）。不能有“。”在最后！
+-起始文本**：设备启动时将发送通知（也可以使用特殊字符）
+-结束文字**：本机完成操作后将发送通知（也可以使用特殊字符）
 
 使用**起始文本**和**结束文本**，您还可以从外部数据点获取消息。设备状态更改后，将从数据点读取此消息，延迟一秒钟。这样，您可以通过外部脚本创建一条消息。适配器自动识别消息是来自数据点还是仅是手动输入。要选择一个数据点，只需单击带有三个白点的按钮，然后选择相应的数据点。 **请注意**：只能使用一个数据点**或**一个手动输入的消息！<br><br>
 
@@ -143,7 +143,7 @@ hash: f73+0kIQ/JWIC/UsFaGXlKZEhfmYtthHNJvoj1LBBvs=
 -**几分钟后关闭**：可以选择在此处输入**分钟**的超时时间。超时到期后，*如果激活了自动关闭功能*，则会关闭套接字。但是，设备的结束通知仍不受超时的影响！
 -中止检测**：如果激活，适配器将尝试检测在通知之前是否已手动关闭设备，然后不再进行通知。
 
-单击“ **保存并关闭**”后，现在在*对象->设备提醒*下为每个新创建的设备创建一个文件夹
+单击“ **保存并关闭**”后，现在在* Objects-> device-reminder *下为每个新创建的设备创建一个文件夹。
 
 -当前运行时间：hh：mm：ss
 -当前运行时间（以毫秒为单位）
@@ -165,6 +165,11 @@ hash: f73+0kIQ/JWIC/UsFaGXlKZEhfmYtthHNJvoj1LBBvs=
 	Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 1.0.4 (2021-01-12)
+* (xenon-s) bugfix pushover
+* (xenon-s) bugfix message: there may now be a "." at the end of the messages
+
 ### 1.0.3 (2021-01-07)
 * (xenon-s) bugfix pushover
 * (xenon-s) added link "german readme" in readme

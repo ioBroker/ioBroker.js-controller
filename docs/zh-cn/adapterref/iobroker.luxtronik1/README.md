@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.luxtronik1/README.md
 title: ioBroker.luxtronik1
-hash: DFgt0+UkXwVLDlE+SoE8gYKyy2A4U5NakxuX7u0Pqto=
+hash: TT0lYMaugEBCLZTuZjl4ZHvVk+OeeEtLuxV35Z5MYMY=
 ---
 ![商标](../../../en/adapterref/iobroker.luxtronik1/admin/luxtronik1.png)
 
@@ -11,7 +11,6 @@ hash: DFgt0+UkXwVLDlE+SoE8gYKyy2A4U5NakxuX7u0Pqto=
 ![NPM版本](http://img.shields.io/npm/v/iobroker.luxtronik1.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.luxtronik1.svg)
 ![NPM](https://nodei.co/npm/iobroker.luxtronik1.png?downloads=true)
-![环保管理员徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.luxtronik1.svg)
 
 ＃ioBroker.luxtronik1
 用于Luxtronik 1-热泵-控制器的ioBroker适配器（即Alpha Innotec，Siemens ...）
@@ -32,10 +31,32 @@ hash: DFgt0+UkXwVLDlE+SoE8gYKyy2A4U5NakxuX7u0Pqto=
 -加热-模式
 -热水-模式
 -加热-曲线（差异，终点，起点，夜间减少）。
+-滞后热水
+-磁滞加热
 
 必须使用ack = false设置“控制”-通道中的值才能触发操作。
 
 ## Changelog
+
+### 0.3.0
+
+- info on temperature - settings and hysteresis - control added
+
+### 0.2.7
+
+-   status-info added.
+
+### 0.2.6
+
+-   input-data and timers (Eingänge & Ablaufzeiten) added.
+
+### 0.2.5
+
+-   outlet-data added by @pingus01.
+
+### 0.2.4
+
+-   comm-errors fixed, 'control'-values are updated now.
 
 ### 0.2.3
 
@@ -89,7 +110,7 @@ hash: DFgt0+UkXwVLDlE+SoE8gYKyy2A4U5NakxuX7u0Pqto=
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2021 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

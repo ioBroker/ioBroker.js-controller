@@ -70,6 +70,11 @@ This can be used for applications like *FullyBrowser*. When entering the wrong c
 to the Login Page. 
 
 ## Changelog
+
+### 3.2.3 (2021-01-12)
+* (Apollon77) If no port is provided use default 8082 (Sentry IOBROKER-WEB-2S)
+* (Apollon77) update dependencies of socketio and simple-api
+
 ### 3.2.0 (2021-01-08)
 * (raintonr) Support of new Let's Encrypt (only with js-controller 3.2.x)
 * (raintonr) Allow to disable to serve files or states from DB

@@ -53,6 +53,9 @@ https://github.com/ioBroker/AdapterRequests/issues/62
 
 ## Changelog
 
+### 1.6.1 (2021-01-12)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-HMIP-1N)
+
 ### 1.6.0 (2020-12-24)
 * Important note: Please limit control requests to the bare minimum because EQ-3 started to block IPs when you do too much!
 * (Apollon77) Add support for WALL_MOUNTED_THERMOSTAT_CHANNEL

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sourceanalytix/README.md
 title: ИсточникAnalytix
-hash: jav7W00Tmb6Dgrhx6KWgqe5+nVu+ZDgnD/cmvQTY4uw=
+hash: FFJQrjVNPtvD4pbmp4/7Y+bxPKovBLvxCd9+bJ53k7I=
 ---
 # SourceAnalytix
 
@@ -20,7 +20,7 @@ hash: jav7W00Tmb6Dgrhx6KWgqe5+nVu+ZDgnD/cmvQTY4uw=
 
 * Отслеживайте потребление ежедневно, еженедельно, ежемесячно, ежеквартально, ежегодно
 * рассчитать затраты (текущая цена настраивается)
-* Может использоваться для потребления энергии, жидкостей и ГАЗА
+* Может использоваться для потребления энергии, жидкостей и ГАЗА.
 * Входные значения могут быть Вт / кВтч / Вт / м3 / л.
 
 ## Как
@@ -30,12 +30,10 @@ hash: jav7W00Tmb6Dgrhx6KWgqe5+nVu+ZDgnD/cmvQTY4uw=
 
 Что было улучшено с помощью @hadering и опубликовано на github https://github.com/hdering/homematic_verbrauchszaehler
 
-## Известные проблемы
-* [] Исходные значения сбрасываются до значения по умолчанию ночью, если значение по умолчанию определено в объекте (ошибка в JS-Controller, исправление необходимо в 2.3)
+## Известные вопросы
+<>
 
-*Обходной путь: убедитесь, что для самостоятельно созданных состояний не установлено значение по умолчанию*
-
-## Сделать
+## Делать
 * [ ] Документация
 * [] Расчет периода можно выбрать, но еще не реализован
 * [] месячная себестоимость еще не учтена в расчетах
@@ -51,16 +49,39 @@ Sentry.io - это сервис, позволяющий разработчика
 Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется в Sentry. Когда вы разрешили iobroker GmbH собирать диагностические данные, включается также ваш идентификатор установки (это просто уникальный идентификатор **без** дополнительной информации о вас, электронной почты, имени и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
 
 ## Changelog
+
 <!--
     Placeholder for the next version (at the beginning of the line):
-    ## __WORK IN PROGRESS__
+    ### __WORK IN PROGRESS__
 -->
 
+## Changelog
 ### __WORK IN PROGRESS__
+#### Breaking changes
+* (Dutchman) **Breaking!!! Move current values to currentYear*
+* (Dutchman & ToTXR4Y) MajorChange ! : Replaced **Current_Reading** with **CumulativeReading**
+
+#### New Features
+* (Dutchman) Code cleanup
 * (Dutchman) Add back "currentYear"
-* (Dutchman) **Breaking!!!** Move current values to current year
+* (Dutchman) Weekly reset of weekdays
+* (Dutchman) Calculation for all states
+* (Dutchman) Calculation for previous states
+* (Dutchman) Optimized error reporting (Sentry)
 * (Dutchman) Removed unneeded settings in configuration
 * (Dutchman) Implemented new configuration for "currentYear"
+* (Dutchman & ToTXR4Y) implement cached memory slot for initialisation value
+* (Dutchman & ToTXR4Y) Implement log messages if state attributes are changed
+* (Dutchman & ToTXR4Y) Implement automatically detection of currency from admin settings [#247](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/247)
+
+#### BugFixes
+* (Dutchman) Bugfix : dev: 0 bug workaround
+* (Dutchman) Bugfix : Calculations for "previous" values
+* (Dutchman) Bugfix : Cannot read property 'stateDetails' of null
+* (Dutchman & ToTXR4Y) Bugfix : Rebuild calculation logic which solves :
+  * Watt values : Ensure proper reading start (0 instead of current watt value)
+    Watt values : Ensure proper reading calculation with exponent (0 instead of current watt value)
+  * All calculations : correct handling  of device reset (if value is reset or 0)
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry

@@ -183,6 +183,20 @@ Here is a list of problems encountered so far and their solutions, if any.
 
 ## Changelog
 
+### 1.8.5 (11.01.2021)
+* (simatec) Bugfix Jarvis Backup
+* (simatec) Bugfix GUI
+
+### 1.8.4 (09.01.2021)
+* (simatec) Bugfix influxDB Backup
+* (simatec) Bugfix influxDB Restore
+* (simatec) Jarvis Backup added
+* (simatec) Jarvis Restore added
+* (simatec) Bugfix mysql Backup
+* (simatec) Bugfix pgsql Backup
+* (simatec) small Bugfixes
+* (simatec) Info-Message for storage added
+
 ### 1.8.3 (22.12.2020)
 * (simatec) Bugfix iobroker start after restore on Windows
 * (simatec) changed webui-port for restore

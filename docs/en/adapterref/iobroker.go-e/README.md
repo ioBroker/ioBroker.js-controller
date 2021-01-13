@@ -7,8 +7,8 @@
 ![Number of Installations (stable)](http://iobroker.live/badges/go-e-stable.svg)
 [![Dependency Status](https://img.shields.io/david/MK-2001/iobroker.go-e.svg)](https://david-dm.org/MK-2001/iobroker.go-e)
 [![Known Vulnerabilities](https://snyk.io/test/github/MK-2001/ioBroker.go-e/badge.svg)](https://snyk.io/test/github/MK-2001/ioBroker.go-e)
-
-[![NPM](https://nodei.co/npm/iobroker.go-e.png?downloads=true)](https://nodei.co/npm/iobroker.go-e/)
+![Build & Tests](https://img.shields.io/travis/MK-2001/ioBroker.go-e/master.svg)
+[![NPM](https://nodei.co/npm/iobroker.go-e.png?mini=true)](https://nodei.co/npm/iobroker.go-e/)
 
 # The go-eCharger Wallbox
 ![Product Image](admin/go-eCharger-HOME-Wallbox.png)
