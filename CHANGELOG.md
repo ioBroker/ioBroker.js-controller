@@ -4,6 +4,11 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver76) propagate error on sendTo methods to prevent exception loops
+* (foxriver76) optimize parameters and flags on CLI
+* (foxriver76) Use yargs helper instead of building our own string output to allow showing --help for a specific command instead of the whole output and allow support for auto completion (`iobroker _createCompletion >> ~/.bashrc`)
+
 ## 3.2.6-0 (2021-01-10)
 * (Apollon77) update db library to fix reading root dir and rename on redis
 * (foxriver76, Apollon77) also accept pre-release version in some semver checks for dependencies
