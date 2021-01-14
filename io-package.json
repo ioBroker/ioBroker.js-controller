@@ -856,7 +856,7 @@
                         "^Exception-Code: EMFILE",
                         "^Exception-Code: EBADF",
                         "^Exception-Code: ENFILE",
-                        "^Unknown system error -117"
+                        "^Unknown system error -117[^,]*, write"
                     ],
                     "limit": 10
                 },
