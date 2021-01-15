@@ -1143,8 +1143,6 @@ function register(it, expect, context) {
         state = await context.adapter.getStateAsync('testDefaultValExtend');
         expect(state.val.hello).to.equal('world');
         expect(state.ack).to.equal(true);
-
-        return Promise.resolve();
     });
 
     // should use def as default state value on extendForeignObject when obj non existing
@@ -1189,8 +1187,39 @@ function register(it, expect, context) {
         state = await context.adapter.getForeignStateAsync('foreign.0.testDefaultValExtend');
         expect(state.val.hello).to.equal('world');
         expect(state.ack).to.equal(true);
+    });
 
-        return Promise.resolve();
+    it(testName + 'Check extendForeignObject with preserveSetting', async () => {
+        let obj = await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
+            type: 'state',
+            common: {
+                name: 'Don\'t change me',
+                type: 'string',
+                def: 'Run Forrest, Run!'
+            }
+        });
+
+        expect(obj).to.be.ok;
+
+        const options = {preserve: {common: {name: true}}};
+
+        await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
+            common: {
+                def: 'Changed',
+                name: 'Changed'
+            },
+            native: {
+                existing: 'exists'
+            }
+        }, options);
+
+        // delete state but not object
+        obj = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
+
+        // preserved name but def is not preserved and  stuff is there
+        expect(obj.common.name).to.be.equal('Don\'t change me');
+        expect(obj.native.existing).to.be.equal('exists');
+        expect(obj.common.def).to.be.equal('Changed');
     });
 
     it(testName + 'Should check object existence', async () => {
