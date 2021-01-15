@@ -1189,7 +1189,7 @@ function register(it, expect, context) {
         expect(state.ack).to.equal(true);
     });
 
-    it(testName + 'Check extendForeignObject with preserveSetting', async () => {
+    it(testName + 'Check extendForeignObject with preserve option', async () => {
         let obj = await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
             type: 'state',
             common: {
@@ -1205,6 +1205,7 @@ function register(it, expect, context) {
 
         const options = {preserve: {common: {name: true}, native: {bool: true}}};
 
+        // extend object again with new, preserved and override values
         await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
             common: {
                 def: 'Changed',
@@ -1216,7 +1217,6 @@ function register(it, expect, context) {
             }
         }, options);
 
-        // delete state but not object
         obj = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
 
         // preserved name but def is not preserved and  stuff is there
