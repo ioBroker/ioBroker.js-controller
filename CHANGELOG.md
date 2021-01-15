@@ -8,6 +8,7 @@
 * (foxriver76) propagate error on sendTo methods to prevent exception loops
 * (foxriver76) optimize parameters and flags on CLI
 * (foxriver76) Use yargs helper instead of building our own string output to allow showing --help for a specific command instead of the whole output and allow support for auto completion (`iobroker _createCompletion >> ~/.bashrc`)
+* (Apollon77) Do not reject the promise when no callback is used and a Database error occurs
 
 ## 3.2.6-0 (2021-01-10)
 * (Apollon77) update db library to fix reading root dir and rename on redis
