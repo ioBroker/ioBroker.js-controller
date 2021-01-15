@@ -1196,12 +1196,14 @@ function register(it, expect, context) {
                 name: 'Don\'t change me',
                 type: 'string',
                 def: 'Run Forrest, Run!'
+            }, native: {
+                bool: false
             }
         });
 
         expect(obj).to.be.ok;
 
-        const options = {preserve: {common: {name: true}}};
+        const options = {preserve: {common: {name: true}, native: {bool: true}}};
 
         await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
             common: {
@@ -1209,7 +1211,8 @@ function register(it, expect, context) {
                 name: 'Changed'
             },
             native: {
-                existing: 'exists'
+                existing: 'exists',
+                bool: true
             }
         }, options);
 
@@ -1220,6 +1223,7 @@ function register(it, expect, context) {
         expect(obj.common.name).to.be.equal('Don\'t change me');
         expect(obj.native.existing).to.be.equal('exists');
         expect(obj.common.def).to.be.equal('Changed');
+        expect(obj.native.bool).to.be.equal(false);
     });
 
     it(testName + 'Should check object existence', async () => {
