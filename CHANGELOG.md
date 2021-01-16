@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver76) fix upgrade/upload commands
+
 ## 3.2.6-2 (2021-01-16)
 * (foxriver76) Preserve name field on instance object creation/update
 * (foxriver76) Enhance extendObject to allow to preserve specified fields (e.g. common.name)
