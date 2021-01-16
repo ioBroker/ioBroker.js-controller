@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "3.2.6-4",
+        "version": "3.2.6",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,90 +18,6 @@
             "zh-cn": "JS控制器"
         },
         "news": {
-            "3.2.6-4": {
-                "en": "optimize logs when instance is restarted",
-                "de": "Optimieren Sie die Protokolle, wenn die Instanz neu gestartet wird",
-                "ru": "оптимизировать логи при перезапуске экземпляра",
-                "pt": "otimizar logs quando a instância for reiniciada",
-                "nl": "optimaliseer logboeken wanneer het exemplaar opnieuw wordt opgestart",
-                "fr": "optimiser les journaux lors du redémarrage de l'instance",
-                "it": "ottimizzare i log quando l'istanza viene riavviata",
-                "es": "optimizar los registros cuando se reinicia la instancia",
-                "pl": "optymalizuj dzienniki po ponownym uruchomieniu instancji",
-                "zh-cn": "重新启动实例时优化日志"
-            },
-            "3.2.6-3": {
-                "en": "fix upgrade/upload commands",
-                "de": "Fix Upgrade / Upload Befehle",
-                "ru": "исправить команды обновления / загрузки",
-                "pt": "corrigir comandos de atualização / upload",
-                "nl": "upgrade / upload-opdrachten repareren",
-                "fr": "corriger les commandes de mise à niveau / téléchargement",
-                "it": "correggere i comandi di aggiornamento / caricamento",
-                "es": "arreglar comandos de actualización / carga",
-                "pl": "napraw polecenia aktualizacji / przesyłania",
-                "zh-cn": "修复升级/上传命令"
-            },
-            "3.2.6-2": {
-                "en": "Preserve name field on instance object creation/update\nEnhance extendObject to allow to preserve specified fields (e.g. common.name)\nSome more optimizations\nupdate sentry plugin",
-                "de": "Behalten Sie das Namensfeld bei der Erstellung / Aktualisierung des Instanzobjekts bei\nErweitern Sie expandObject, um bestimmte Felder (z. B. common.name) beizubehalten.\nNoch einige Optimierungen\nSentry Plugin aktualisieren",
-                "ru": "Сохранить поле имени при создании / обновлении экземпляра объекта\nУлучшите extendObject, чтобы разрешить сохранение указанных полей (например, common.name)\nЕще несколько оптимизаций\nобновить плагин часовой",
-                "pt": "Preservar campo de nome na criação / atualização de objeto de instância\nAprimore extendObject para permitir a preservação de campos especificados (por exemplo, common.name)\nMais algumas otimizações\natualizar plugin de sentinela",
-                "nl": "Behoud het naamveld bij het maken / bijwerken van instantieobjecten\nVerbeter extObject om gespecificeerde velden te behouden (bijv. Common.name)\nNog enkele optimalisaties\nupdate sentry plugin",
-                "fr": "Préserver le champ de nom lors de la création / mise à jour de l'objet d'instance\nAméliorez extendObject pour permettre de conserver les champs spécifiés (par exemple common.name)\nQuelques optimisations supplémentaires\nmettre à jour le plugin sentry",
-                "it": "Conserva il campo del nome durante la creazione / aggiornamento dell'oggetto istanza\nMigliora extensionObject per consentire di preservare i campi specificati (ad es. Common.name)\nAltre ottimizzazioni\naggiorna il plugin Sentry",
-                "es": "Conservar el campo de nombre en la creación / actualización del objeto de instancia\nMejore extendObject para permitir conservar campos específicos (por ejemplo, common.name)\nAlgunas optimizaciones más\nactualizar el complemento centinela",
-                "pl": "Zachowaj pole nazwy podczas tworzenia / aktualizacji obiektu instancji\nUlepsz rozszerzenie obiektu, aby umożliwić zachowanie określonych pól (np. Common.name)\nJeszcze kilka optymalizacji\nzaktualizuj wtyczkę sentry",
-                "zh-cn": "在实例对象创建/更新时保留名称字段\n增强extendObject以允许保留指定的字段（例如common.name）\n更多优化\n更新哨兵插件"
-            },
-            "3.2.6-1": {
-                "en": "propagate error on sendTo methods to prevent exception loops\noptimize parameters and flags on CLI\nUse yargs helper instead of building our own string output to allow showing --help for a specific command instead of the whole output and allow support for auto completion (`iobroker _createCompletion >> ~/.bashrc`)\nDo not reject the promise when no callback is used and a Database error occurs",
-                "de": "Fehler bei sendTo-Methoden weitergeben, um Ausnahmeschleifen zu vermeiden\nOptimieren Sie Parameter und Flags in der CLI\nVerwenden Sie den yargs-Helfer, anstatt eine eigene Zeichenfolgenausgabe zu erstellen, damit --help für einen bestimmten Befehl anstelle der gesamten Ausgabe angezeigt wird, und unterstützen Sie die automatische Vervollständigung (`iobroker _createCompletion >> ~ / .bashrc`).\nLehnen Sie das Versprechen nicht ab, wenn kein Rückruf verwendet wird und ein Datenbankfehler auftritt",
-                "ru": "распространять ошибку в методах sendTo для предотвращения циклов исключений\nоптимизировать параметры и флаги в CLI\nИспользуйте помощник yargs вместо создания нашего собственного строкового вывода, чтобы показать --help для конкретной команды вместо всего вывода и разрешить поддержку автозаполнения (`iobroker _createCompletion >> ~ / .bashrc`)\nНе отклоняйте обещание, если обратный вызов не используется и возникает ошибка базы данных",
-                "pt": "propagar erro em métodos sendTo para evitar loops de exceção\notimizar parâmetros e sinalizadores na CLI\nUse yargs helper em vez de construir nossa própria saída de string para permitir mostrar --help para um comando específico em vez de toda a saída e permitir o suporte para preenchimento automático (`iobroker _createCompletion >> ~ / .bashrc`)\nNão rejeite a promessa quando nenhum retorno de chamada for usado e ocorrer um erro de banco de dados",
-                "nl": "propageren fout op sendTo-methoden om uitzonderingslussen te voorkomen\noptimaliseer parameters en vlaggen op CLI\nGebruik yargs helper in plaats van onze eigen string output te bouwen om --help voor een specifiek commando te laten zien in plaats van de hele output en ondersteuning voor automatische aanvulling mogelijk te maken (`iobroker _createCompletion >> ~ / .bashrc`)\nWijs de belofte niet af als er geen callback wordt gebruikt en er een databasefout optreedt",
-                "fr": "propager l'erreur sur les méthodes sendTo pour éviter les boucles d'exception\noptimiser les paramètres et les indicateurs sur la CLI\nUtilisez l'assistant yargs au lieu de construire notre propre sortie de chaîne pour permettre d'afficher --help pour une commande spécifique au lieu de la sortie entière et permettre la prise en charge de la complétion automatique (`iobroker _createCompletion >> ~ / .bashrc`)\nNe rejetez pas la promesse lorsqu'aucun rappel n'est utilisé et qu'une erreur de base de données se produit",
-                "it": "propagare l'errore sui metodi sendTo per prevenire cicli di eccezioni\nottimizzare parametri e flag su CLI\nUsa l'helper yargs invece di costruire il nostro output di stringa per consentire la visualizzazione di --help per un comando specifico invece dell'intero output e consentire il supporto per il completamento automatico (`iobroker _createCompletion >> ~ / .bashrc`)\nNon rifiutare la promessa quando non viene utilizzata la richiamata e si verifica un errore del database",
-                "es": "propagar el error en los métodos sendTo para evitar bucles de excepción\noptimizar parámetros y banderas en CLI\nUse yargs helper en lugar de construir nuestra propia salida de cadena para permitir mostrar --help para un comando específico en lugar de toda la salida y permitir la compatibilidad con la finalización automática (`iobroker _createCompletion >> ~ / .bashrc`)\nNo rechace la promesa cuando no se utiliza ninguna devolución de llamada y se produce un error en la base de datos",
-                "pl": "propaguj błąd w metodach sendTo, aby zapobiec pętlom wyjątków\noptymalizuj parametry i flagi w CLI\nUżyj pomocnika yargs zamiast budować własne wyjście łańcuchowe, aby umożliwić wyświetlanie --help dla określonego polecenia zamiast całego wyjścia i zezwolić na obsługę automatycznego uzupełniania (`iobroker _createCompletion >> ~ / .bashrc`)\nNie odrzucaj obietnicy, gdy nie jest używane wywołanie zwrotne i wystąpi błąd bazy danych",
-                "zh-cn": "在sendTo方法上传播错误以防止异常循环\n在CLI上优化参数和标志\n使用yargs helper而不是构建我们自己的字符串输出来允许显示--help而不是整个输出来显示特定命令的--help，并支持自动完成（`iobroker _createCompletion >>〜/ .bashrc`）\n当不使用回调并且发生数据库错误时，请不要拒绝承诺"
-            },
-            "3.2.6-0": {
-                "en": "update db library to fix reading root dir and rename on redis\n(foxriver76, Apollon77) also accept pre-release version in some semver checks for dependencies\nhandle error with wrong db on migrations\nfix iobroker status\nfix crash cases",
-                "de": "Aktualisieren Sie die Datenbankbibliothek, um das Lesen des Stammverzeichnisses zu korrigieren und bei Redis umzubenennen\n(foxriver76, Apollon77) akzeptieren auch die Vorabversion in einigen Semver-Überprüfungen auf Abhängigkeiten\nBehandeln Sie Fehler mit falscher Datenbank bei Migrationen\niobroker Status korrigieren\nAbsturzfälle beheben",
-                "ru": "обновить библиотеку db, чтобы исправить чтение корневого каталога и переименовать его в Redis\n(foxriver76, Apollon77) также принимают предварительную версию в некоторых проверках semver на зависимости\nобрабатывать ошибку с неправильной базой данных при миграции\nисправить статус iobroker\nисправить случаи сбоя",
-                "pt": "atualizar a biblioteca db para corrigir a leitura do diretório raiz e renomear no redis\n(foxriver76, Apollon77) também aceitam a versão de pré-lançamento em algumas verificações do Semver para dependências\nlidar com erros com banco de dados incorreto em migrações\ncorrigir status do iobroker\nconsertar casos de falha",
-                "nl": "update db-bibliotheek om het lezen van rootdir te repareren en hernoemen op redis\n(foxriver76, Apollon77) accepteren ook pre-releaseversies in sommige semvercontroles op afhankelijkheden\nbehandel fout met verkeerde db bij migraties\niobroker-status repareren\ncrash gevallen oplossen",
-                "fr": "mettre à jour la bibliothèque db pour corriger la lecture du répertoire racine et renommer sur redis\n(foxriver76, Apollon77) accepte également la version préliminaire dans certaines vérifications semver pour les dépendances\ngérer l'erreur avec une mauvaise base de données lors des migrations\ncorriger le statut d'iobroker\ncorriger les cas de crash",
-                "it": "aggiorna la libreria db per correggere la lettura della directory root e rinomina su redis\n(foxriver76, Apollon77) accetta anche la versione pre-rilascio in alcuni controlli semver per le dipendenze\ngestire l'errore con db errato nelle migrazioni\ncorreggere lo stato di iobroker\nrisolvere i casi di crash",
-                "es": "actualice la biblioteca db para corregir la lectura del directorio raíz y cambie el nombre en redis\n(foxriver76, Apollon77) también aceptan la versión preliminar en algunas comprobaciones de semver para las dependencias\nmanejar el error con una base de datos incorrecta en las migraciones\narreglar el estado de iobroker\narreglar casos de accidentes",
-                "pl": "zaktualizuj bibliotekę db, aby naprawić odczyt katalogu głównego i zmianę nazwy w redis\n(foxriver76, Apollon77) również akceptują wersję przedpremierową w niektórych kontrolach semver pod kątem zależności\nobsłużyć błąd z niewłaściwą bazą danych podczas migracji\nnaprawić status iobroker\nnaprawić przypadki awarii",
-                "zh-cn": "更新数据库库以修复读取根目录并在Redis上重命名\n（foxriver76，Apollon77）在某些semver检查依赖项中也接受预发行版本\n在迁移时使用错误的数据库处理错误\n修复iobroker状态\n修复崩溃案例"
-            },
-            "3.2.5-0": {
-                "en": "replace outdated encryption mechanism of multihost\nupdate db library to fix readDir issue with directories\nAdd release script",
-                "de": "Ersetzen Sie den veralteten Verschlüsselungsmechanismus von Multihost\nAktualisieren Sie die Datenbankbibliothek, um das readDir-Problem mit Verzeichnissen zu beheben\nRelease-Skript hinzufügen",
-                "ru": "заменить устаревший механизм шифрования multihost\nобновить библиотеку db, чтобы исправить проблему readDir с каталогами\nДобавить сценарий выпуска",
-                "pt": "substituir mecanismo de criptografia desatualizado de multihost\natualize a biblioteca db para corrigir o problema readDir com diretórios\nAdicionar script de lançamento",
-                "nl": "vervang het verouderde versleutelingsmechanisme van multihost\nupdate db-bibliotheek om het readDir-probleem met mappen op te lossen\nRelease-script toevoegen",
-                "fr": "remplacer le mécanisme de cryptage obsolète du multihôte\nmettre à jour la bibliothèque db pour résoudre le problème de readDir avec les répertoires\nAjouter un script de version",
-                "it": "sostituire il meccanismo di crittografia obsoleto di multihost\naggiorna la libreria db per correggere il problema di readDir con le directory\nAggiungi script di rilascio",
-                "es": "Reemplazar el mecanismo de cifrado obsoleto de multihost\nactualice la biblioteca db para solucionar el problema de readDir con los directorios\nAgregar script de lanzamiento",
-                "pl": "zastąpić przestarzały mechanizm szyfrowania multihost\nzaktualizuj bibliotekę db, aby naprawić problem readDir z katalogami\nDodaj skrypt wydania",
-                "zh-cn": "替换多主机过时的加密机制\n更新数据库库以修复目录的readDir问题\n添加发布脚本"
-            },
-            "3.2.1": {
-                "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
-                "ru": "см. CHANGELOG.md",
-                "pt": "veja CHANGELOG.md",
-                "nl": "zie CHANGELOG.md",
-                "fr": "voir CHANGELOG.md",
-                "it": "vedi CHANGELOG.md",
-                "es": "ver CHANGELOG.md",
-                "pl": "zobacz CHANGELOG.md",
-                "zh-cn": "看到CHANGELOG.md"
-            },
             "3.1.6": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
                 "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",

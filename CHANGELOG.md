@@ -4,37 +4,10 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.2.6-4 (2021-01-16)
-* (Apollon77) optimize logs when instance is restarted
+## __WORK IN PROGRESS__
+* see CHANGELOG.md
 
-## 3.2.6-3 (2021-01-16)
-* (foxriver76) fix upgrade/upload commands
-
-## 3.2.6-2 (2021-01-16)
-* (foxriver76) Preserve name field on instance object creation/update
-* (foxriver76) Enhance extendObject to allow to preserve specified fields (e.g. common.name)
-* (Apollon77) Some more optimizations
-* (Apollon77) update sentry plugin
-
-## 3.2.6-1 (2021-01-15)
-* (foxriver76) propagate error on sendTo methods to prevent exception loops
-* (foxriver76) optimize parameters and flags on CLI
-* (foxriver76) Use yargs helper instead of building our own string output to allow showing --help for a specific command instead of the whole output and allow support for auto completion (`iobroker _createCompletion >> ~/.bashrc`)
-* (Apollon77) Do not reject the promise when no callback is used and a Database error occurs
-
-## 3.2.6-0 (2021-01-10)
-* (Apollon77) update db library to fix reading root dir and rename on redis
-* (foxriver76, Apollon77) also accept pre-release version in some semver checks for dependencies
-* (Apollon77) handle error with wrong db on migrations
-* (Apollon77) fix iobroker status
-* (Apollon77) fix crash cases
-
-## 3.2.5 (2021-01-10)
-* (foxriver76) replace outdated encryption mechanism of multihost
-* (Apollon77) update db library to fix readDir issue with directories
-* (AlCalzone) Add release script
-
-## 3.2.4 (2021-01-09) Release Grace
+## 3.2.x (2021-01-16) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
 * If you have enabled Multihost Discovery please disable and enable it again if you really need it persistant running. By re-enabling it you update the used passphrase with a better encryption mechanism.
@@ -86,6 +59,12 @@
 * (Apollon77) update _design objects also on js-controller upgrade/setup first
 * (Apollon77) optimize deletion of files in ioBroker file storage
 * (foxriver76) do not return an error if object does not exist on del*Object
+* (Apollon77) optimize logs when instance is restarted
+* (foxriver76) Preserve name field on instance object creation/update
+* (foxriver76) optimize parameters and flags on CLI
+* (foxriver76) Use yargs helper instead of building our own string output to allow showing --help for a specific command instead of the whole output and allow support for auto completion (`iobroker _createCompletion >> ~/.bashrc`)
+* (foxriver76, Apollon77) also accept pre-release version in some semver checks for dependencies
+* (foxriver76) replace outdated encryption mechanism of multihost
 * (Apollon77, foxriver, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**
@@ -102,6 +81,7 @@
 * (AlCalzone) Add ...Async version for getChannels - make sure to check before using or use correct js-controller version dependency!
 * (Apollon77) modularize databases into own npm packages and basically support adding new types of databases; add deprecation infos and logging to "old legacy" files in lib/states and lib/objects to not be used anymore; requires mostly updates in testing (see DOCS LINK TODO)
 * (foxriver76) allow to specify the instance for debug starts (`iobroker debug adaptername.1`) 
+* (foxriver76) Enhance extendObject to allow to preserve specified fields (e.g. common.name)
 
 **Developer relevant Optimizations and Fixes**
 * (foxriver76) implement maybeCallback and maybeCallbackWithError and use it in adapter.js
