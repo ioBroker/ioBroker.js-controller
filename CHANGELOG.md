@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.2.7 (2021-01-16)
 * see CHANGELOG.md
 
 ## 3.2.x (2021-01-16) Release Grace
