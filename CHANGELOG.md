@@ -4,6 +4,12 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (foxriver76) Preserve name field on instance object creation/update
+* (foxriver76) Enhance extendObject to allow to preserve specified fields (e.g. common.name)
+* (Apollon77) Some more optimizations
+* (Apollon77) update sentry plugin
+
 ## 3.2.6-1 (2021-01-15)
 * (foxriver76) propagate error on sendTo methods to prevent exception loops
 * (foxriver76) optimize parameters and flags on CLI
