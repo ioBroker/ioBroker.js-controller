@@ -2,84 +2,89 @@
 translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-materialdesign/README.md
-title: ioBroker.vis-materialdesign
-hash: GNNbmwIBbVaY95LZA+2l5V6O8ne+OuH9sNbKJ9VLLJU=
+title: Виджеты материального дизайна для ioBroker VIS
+hash: GxD5lXh5YKguBVkrVRmQnbbUOVL63f14AJiPC1L2Cvw=
 ---
-![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
+![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png) <! - пропустить в toc ->
 
 ![стабильная версия](http://iobroker.live/badges/vis-materialdesign.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.vis-materialdesign.svg)
 ![Количество установок](http://iobroker.live/badges/vis-materialdesign-installed.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.vis-materialdesign.svg)
-![Статус зависимости](https://img.shields.io/david/Scrounger/iobroker.vis-materialdesign.svg)
-![Известные уязвимости](https://snyk.io/test/github/Scrounger/ioBroker.vis-materialdesign/badge.svg)
-![НПМ](https://nodei.co/npm/iobroker.vis-materialdesign.png?downloads=true)
-![Трэвис-Си](http://img.shields.io/travis/Scrounger/ioBroker.vis-materialdesign/master.svg)
+![NPM](https://nodei.co/npm/iobroker.vis-materialdesign.png?downloads=true)
 
-# IoBroker.vis-materialdesign
-## Виджеты Material Design для ioBroker VIS
-[![PayPal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
+## IoBroker.vis-materialdesign
+<! - опустить в toc ->
 
-Виджеты ioBroker Material Design основаны на [Рекомендации Google по материальному дизайну](https://material.io/design/). Адаптер использует следующие библиотеки:
+# Виджеты Material Design для ioBroker VIS [![PayPal] (https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
+Виджеты ioBroker Material Design основаны на [Рекомендации Google по материальному дизайну](https://material.io/design/)
 
-* [Материальные компоненты Google для Интернета] (https://github.com/material-components/material-components-web)
-* [Vuetify] (https://github.com/vuetifyjs/vuetify)
-* [chartjs] (https://www.chartjs.org/)
-* [круглый слайдер от thomasloven] (https://github.com/thomasloven/round-slider)
-* [Значки дизайна материалов] (https://materialdesignicons.com/)
+<br>
 
-## Настройки адаптера (редактор тем)
-Начиная с версии 0.4.0 есть страница настроек адаптера. Вы можете найти его в разделе «Экземпляры» в пользовательском интерфейсе адаптера администратора.
+<! - опустить в toc ->
 
-### Генеральный
-![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_general.png)
+## Таблица содержания
+- [Общие] (# общие)
+- [Интернет-пример проекта] (# онлайн-пример-проект)
+- [Практические примеры] (# практических-примеров)
+- [Вопросы и ответы о виджетах] (# вопросы-и-ответы-о-виджетах)
+- [Поддерживаемый браузер] (# поддерживаемый браузер)
+- [Поддерживаемый браузер для функции вибрации на мобильных устройствах] (# supported-browser-for-vibrate-on-mobil-devices-function)
+- [Приложение ioBroker VIS] (# iobroker-vis-app)
+- [Настройки адаптера] (# настройки адаптера)
+- [Общий] (# общий-1)
+- [Редактор тем] (# редактор тем)
+- [Цветовая тема] (# цветовая тема)
+- [Тема шрифтов] (# тема шрифтов)
+- [Тема размера шрифта] (# font-sizes-theme)
+- [Виджеты] (# виджетов)
+- [Значки и изображения материального дизайна] (# material-design-icons-and-images)
+- [Кнопки] (# кнопки)
+- [Кнопки по вертикали] (# кнопки по вертикали)
+- [Значок кнопок] (значок # кнопок)
+- [Карта] (# карта)
+- [Список] (# список)
+- [IconList] (# список значков)
+- [Прогресс] (# прогресс)
+- [Слайдер] (# слайдер)
+- [Круглый слайдер] (# круглый слайдер)
+- [Флажок] (флажок #)
+- [Переключатель] (переключатель #)
+- [Ввод] (# вход)
+- [Ввод текста] (# ввод текста)
+- [Выбрать] (# выбрать)
+- [Автозаполнение] (# автозаполнение)
+- [Верхняя панель приложения с навигационным ящиком] (# top-app-bar-with-navigation-drawer)
+- [Подменю] (# подменю)
+- [Диаграммы] (# диаграмм)
+- [Гистограмма] (# гистограмма)
+- [Круговая диаграмма] (# круговая диаграмма)
+- [Линейный график истории:] (# линейный график истории)
+- [JSON Chart] (# json-chart)
+- [Общий] (# общий-2)
+- [график] (# график)
+- [граф-линейная диаграмма spfeicifc] (# graph-line-chart-spfeicifc)
+- [графическая гистограмма spfeicifc] (# graph-bar-chart-spfeicifc)
+- [ось y графика] (ось y # график)
+- [gradientColor] (# gradientcolor)
+- [Диаграмма с осью времени] (# диаграмма с осью времени)
+- [значения с отметкой времени] (# значения с отметкой времени)
+- [настройки оси X для данных с отметкой времени] (# x-axis-settings-for-data-with-timestamp)
+- [Таблица] (# таблица)
+- [Входные данные] (# входных данных)
+- [Элементы управления] (# элементов управления)
+- [Настройки редактора] (# редактор-настройки)
+- [Адаптивный макет] (# адаптивный макет)
+- [Виды кладки] (# вида кладки)
+- [Представления сетки] (# представлений сетки)
+- [Оповещения] (# оповещений)
+- [Календарь] (# календарь)
+- [HTML-элементы] (# html-элементы)
+- [используемые библиотеки] (# используемые библиотеки)
+- [Список изменений] (# список изменений)
+- [Лицензия] (# лицензия)
 
-| установка | описание |
-|-------|-----------|
-| Документация | Ссылки на документацию, которая поможет вам настроить виджеты |
-| Создать глобальный сценарий | Создать глобальный сценарий для [Механизм сценариев Javascript](https://github.com/ioBroker/ioBroker.javascript) со всеми точками данных темы. Это позволяет удобно использовать цвета, шрифты и размеры шрифтов в скриптах. |
-| Sentry | используют библиотеки Sentry для автоматического анонимного сообщения разработчикам об исключениях и ошибках кода. Для получения дополнительных сведений и информации о том, как отключить отчеты об ошибках, см. [Документация Sentry-Plugin] (https://github.com/ioBroker/plugin-sentry#plugin-sentry)! |
-
-### Редактор тем
-С помощью редактора тем вы можете централизованно устанавливать цвета, шрифты и размеры шрифтов для всех виджетов через настройки адаптера. Это реализовано с помощью [Привязки адаптера VIS](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects). Для каждого виджета создаются точки данных (см. Снимок экрана ниже) с заданными значениями. Это позволяет использовать эти настройки в других виджетах (не в виджетах Material Design) через привязки.
-
-##### Структура Datapoint
-![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_datapoints.png)
-
-##### VIS Editor (восстановление / обновление старых виджетов)
-![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/vis_editor_theme_restore.gif)
-
-В редакторе VIS вы найдете кнопку `use theme` для каждого виджета. С помощью этой кнопки вы можете сбросить виджеты на использование тем. Это означает, что если вы изменили цвета, шрифты или размеры шрифтов, вы можете сбросить их с помощью этой кнопки.
-
-С помощью этой кнопки также можно обновить ваши виджеты с версий до 0.4.0, чтобы использовать темы.
-
-##### Использовать привязку для виджетов без материального дизайна
-![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_binding.gif)
-
-В настройках адаптера можно скопировать команду привязки в буфер обмена, щелкнув текст по умолчанию или идентификатор в таблицах. Затем эту привязку можно использовать путем копирования и вставки даже для виджетов, не относящихся к материальному дизайну.
-
-#### Цветовая тема
-Для цветов есть две темы - светлая тема и темная тема. С помощью точки данных `vis-materialdesign.0.colors.darkTheme` вы можете переключаться между двумя темами.
-
-![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_light.png)
-
-![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_dark.png)
-
-Стандартные цвета можно определить в верхней части. Затем эти стандартные цвета можно назначить отдельным виджетам с помощью кнопок в таблице. Если вы измените цвет по умолчанию, он также изменится для всех виджетов, использующих этот цвет.
-Кроме того, виджетам можно назначать свои собственные цвета, независимо от стандартных цветов.
-
-#### Тема шрифтов
-![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fonts.png)
-
-Стандартные шрифты можно определить в верхней части. Затем эти стандартные шрифты можно назначить отдельным виджетам с помощью кнопок в таблице. Если вы измените цвет по умолчанию, он также изменится для всех виджетов, использующих этот цвет.
-Кроме того, для виджетов можно назначить свои собственные шрифты, независимо от стандартных цветов.
-
-#### Тема размера шрифта
-![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fontSizes.png)
-
-Стандартные размеры шрифта могут быть определены в верхней части. Эти стандартные размеры шрифта затем можно назначить отдельным виджетам с помощью кнопок в таблице. Если вы измените цвет по умолчанию, он также изменится для всех виджетов, использующих этот цвет.
-Кроме того, для виджетов можно назначать собственные размеры шрифта, независимо от стандартных цветов.
-
+# Генеральный
 ## Интернет-пример проекта
 предоставлено [iobroker.click](https://iobroker.click/index.html), спасибо bluefox и iobroker.
 
@@ -97,15 +102,72 @@ hash: GNNbmwIBbVaY95LZA+2l5V6O8ne+OuH9sNbKJ9VLLJU=
 
 * [Немецкие темы] (https://forum.iobroker.net/search?term=Material%20Design%20Widgets%3A&in=titles&matchWords=all&by%5B%5D=Scrounger&categories%5B%5D=7&sortBy=topic.title&sortDshoirection=desc темы)
 
-### Поддерживаемый браузер
-https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
+## Поддерживаемый браузер
+Я официально поддерживаю последние две версии всех основных браузеров. В частности, я тестирую следующие браузеры:
 
-### Поддерживаемый браузер для функции вибрации на мобильных устройствах
+* Firefox в Windows и Linux
+* Chrome для Android, Windows и Linux
+
+## Поддерживаемый браузер для функции вибрации на мобильных устройствах
 https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 
-### Приложение ioBroker VIS
-не работает в данный момент, необходимо реализовать в приложении, см. https://github.com/ioBroker/ioBroker.vis.cordova
+## Приложение ioBroker VIS
+последняя версия должна быть реализована приложением, см. https://github.com/ioBroker/ioBroker.vis.cordova.
+Я не использую приложение и не тестирую на нем
 
+# Настройки адаптера
+Начиная с версии 0.4.0 есть страница настроек адаптера. Вы можете найти его в разделе «Экземпляры» в пользовательском интерфейсе адаптера администратора.
+
+## Генеральный
+![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_general.png)
+
+| установка | описание |
+|-------|-----------|
+| Документация | Ссылки на документацию, которая поможет вам настроить виджеты |
+| Создать глобальный сценарий | Создать глобальный сценарий для [Механизм сценариев Javascript](https://github.com/ioBroker/ioBroker.javascript) со всеми точками данных темы. Это позволяет удобно использовать цвета, шрифты и размеры шрифтов в скриптах. |
+| Sentry | используют библиотеки Sentry для автоматического анонимного сообщения разработчикам об исключениях и ошибках кода. Для получения дополнительных сведений и информации о том, как отключить отчеты об ошибках, см. [Документация Sentry-Plugin] (https://github.com/ioBroker/plugin-sentry#plugin-sentry)! |
+
+## Редактор тем
+С помощью редактора тем вы можете централизованно устанавливать цвета, шрифты и размеры шрифтов для всех виджетов через настройки адаптера. Это реализовано с помощью [Привязки адаптера VIS](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects). Для каждого виджета создаются точки данных (см. Снимок экрана ниже) с заданными значениями. Это позволяет использовать эти настройки в других виджетах (не в виджетах Material Design) через привязки.
+
+##### Структура Datapoint
+![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_datapoints.png)
+
+##### VIS Editor (восстановление / обновление старых виджетов)
+![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/vis_editor_theme_restore.gif)
+
+В редакторе VIS вы найдете кнопку `use theme` для каждого виджета. С помощью этой кнопки вы можете сбросить виджеты на использование тем. Это означает, что если вы изменили цвета, шрифты или размеры шрифтов, вы можете сбросить их с помощью этой кнопки.
+
+С помощью этой кнопки также можно обновить ваши виджеты с версий до 0.4.0, чтобы использовать темы.
+
+##### Использовать привязку для виджетов без материального дизайна
+![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_binding.gif)
+
+В настройках адаптера можно скопировать команду привязки в буфер обмена, щелкнув текст по умолчанию или идентификатор в таблицах. Затем эту привязку можно использовать путем копирования и вставки даже для виджетов, не относящихся к материальному дизайну.
+
+### Цветовая тема
+Для цветов есть две темы - светлая тема и темная тема. С помощью точки данных `vis-materialdesign.0.colors.darkTheme` вы можете переключаться между двумя темами.
+
+![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_light.png)
+
+![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_dark.png)
+
+Стандартные цвета можно определить в верхней части. Затем эти стандартные цвета можно назначить отдельным виджетам с помощью кнопок в таблице. Если вы измените цвет по умолчанию, он также изменится для всех виджетов, использующих этот цвет.
+Кроме того, виджетам можно назначать свои собственные цвета, независимо от стандартных цветов.
+
+### Тема шрифтов
+![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fonts.png)
+
+Стандартные шрифты можно определить в верхней части. Затем эти стандартные шрифты можно назначить отдельным виджетам с помощью кнопок в таблице. Если вы измените цвет по умолчанию, он также изменится для всех виджетов, использующих этот цвет.
+Кроме того, для виджетов можно назначить свои собственные шрифты, независимо от стандартных цветов.
+
+### Тема размера шрифта
+![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fontSizes.png)
+
+Стандартные размеры шрифта могут быть определены в верхней части. Эти стандартные размеры шрифта затем можно назначить отдельным виджетам с помощью кнопок в таблице. Если вы измените цвет по умолчанию, он также изменится для всех виджетов, использующих этот цвет.
+Кроме того, для виджетов можно назначать собственные размеры шрифта, независимо от стандартных цветов.
+
+# Виджеты
 ## Значки и изображения Material Design
 <table><thead><tr><th>Скриншот</th><th> Описание</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/material-icons.png"></td><td> Некоторые виджеты поддерживают библиотеку <a href="https://materialdesignicons.com/" target="_blank">значков материального дизайна</a> . Вы можете нарисовать значок из списка выше или открыть средство выбора изображений, нажав кнопку справа от поля ввода.<br><br> <b>Цвета изображения применимы только к значкам материального дизайна, а не к изображению!</b></td></tr></tbody></table>
 
@@ -146,17 +208,17 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 ## Значок кнопок
 ![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
 
-### Свойства ссылки на значок кнопки
+##### Свойства ссылки на значок кнопки
 Следующие свойства могут использоваться как [элемент управления в таблице] (# элемент управления) или как [элемент HTML](#html-elements)
 
 <details><table><thead><tr><th>Свойство</th><th> Описание</th><th> Тип</th><th> Значения </th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b>Общие</b></i></td></tr><tr><td> href</td><td> Ссылка</td><td> url</td><td/></tr><tr><td> openNewWindow</td><td> открыть в новом окне</td><td> логический</td><td> ложь | правда</td></tr><tr><td> vibrateOnMobilDevices</td><td> вибрировать на мобильных устройствах [ах]</td><td> количество </td><td/></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b>икона</b></i></td></tr><tr><td> образ</td><td> Образ</td><td> строка</td><td/></tr><tr><td> imageColor</td><td> цвет изображения</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> iconHeight</td><td> высота изображения</td><td> количество </td><td/></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b>цвета</b></i></td></tr><tr><td> colorBgFalse</td><td> задний план</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> colorPress</td><td> цвет нажат</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr></tbody></table></details>
 
-### Свойства состояния значка кнопки
+##### Свойства состояния значка кнопки
 Следующие свойства могут использоваться как [элемент управления в таблице] (# элемент управления) или как [элемент HTML](#html-elements)
 
 <details><table><thead><tr><th>Свойство</th><th> Описание</th><th> Тип</th><th> Значения </th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b>Общие</b></i></td></tr><tr><td> Oid</td><td> ID объекта</td><td> строка</td><td/></tr><tr><td> значение</td><td> значение</td><td> строка</td><td/></tr><tr><td> vibrateOnMobilDevices</td><td> вибрировать на мобильных устройствах [ах]</td><td> количество </td><td/></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b>икона</b></i></td></tr><tr><td> образ</td><td> Образ</td><td> строка</td><td/></tr><tr><td> imageColor</td><td> цвет изображения</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> iconHeight</td><td> высота изображения</td><td> количество </td><td/></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b>цвета</b></i></td></tr><tr><td> colorBgFalse</td><td> задний план</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> colorPress</td><td> цвет нажат</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b>Блокировка</b></i></td></tr><tr><td> lockEnabled</td><td> включить блокировку</td><td> логический</td><td> ложь | правда</td></tr><tr><td> autoLockAfter</td><td> автоматическая блокировка через [с]</td><td> количество</td><td/></tr><tr><td> lockIcon</td><td> икона</td><td> строка</td><td/></tr><tr><td> lockIconTop</td><td> расстояние символа сверху [%]</td><td> количество</td><td/></tr><tr><td> lockIconLeft</td><td> расстояние символа слева [%]</td><td> количество</td><td/></tr><tr><td> lockIconSize</td><td> размер значка</td><td> количество</td><td/></tr><tr><td> lockIconColor</td><td> цвет значка</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> lockIconBackground</td><td> lockIconBackground</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> lockBackgroundSizeFactor</td><td> lockBackgroundSizeFactor</td><td> количество</td><td/></tr><tr><td> lockFilterGrayscale</td><td> серый фильтр, если заблокирован</td><td> количество</td><td/></tr></tbody></table></details>
 
-### Свойства переключателя значка кнопки
+##### Свойства переключателя значка кнопки
 Следующие свойства могут использоваться как [элемент управления в таблице] (# элемент управления) или как [элемент HTML](#html-elements)
 
 <details><table><thead><tr><th>Свойство</th><th> Описание</th><th> Тип</th><th> Значения </th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b>Общие</b></i></td></tr><tr><td> Oid</td><td> ID объекта</td><td> строка</td><td/></tr><tr><td> только для чтения</td><td> только чтение</td><td> логический</td><td> ложь | правда</td></tr><tr><td> toggleType</td><td> тип переключения</td><td> строка</td><td> логическое | значение</td></tr><tr><td> нажать кнопку</td><td> нажать кнопку</td><td> логический</td><td> ложь | правда</td></tr><tr><td> valueOff</td><td> значение для выкл.</td><td> строка</td><td/></tr><tr><td> valueOn</td><td> значение для</td><td> строка</td><td/></tr><tr><td> stateIfNotTrueValue</td><td> указать, если значение не равно условию &quot;включено&quot;</td><td> строка</td><td> на | выключен</td></tr><tr><td> vibrateOnMobilDevices</td><td> вибрировать на мобильных устройствах [ах]</td><td> количество </td><td/></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b>икона</b></i></td></tr><tr><td> образ</td><td> Образ</td><td> строка</td><td/></tr><tr><td> imageColor</td><td> цвет изображения</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> imageTrue</td><td> активное изображение</td><td> строка</td><td/></tr><tr><td> imageTrueColor</td><td> цвет активного изображения</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> iconHeight</td><td> высота изображения</td><td> количество </td><td/></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b>цвета</b></i></td></tr><tr><td> colorBgFalse</td><td> задний план</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> colorBgTrue</td><td> активный фон</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> colorPress</td><td> цвет нажат</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"> <i><b>Блокировка</b></i></td></tr><tr><td> lockEnabled</td><td> включить блокировку</td><td> логический</td><td> ложь | правда</td></tr><tr><td> autoLockAfter</td><td> автоматическая блокировка через [с]</td><td> количество</td><td/></tr><tr><td> lockIcon</td><td> икона</td><td> строка</td><td/></tr><tr><td> lockIconTop</td><td> расстояние символа сверху [%]</td><td> количество</td><td/></tr><tr><td> lockIconLeft</td><td> расстояние символа слева [%]</td><td> количество</td><td/></tr><tr><td> lockIconSize</td><td> размер значка</td><td> количество</td><td/></tr><tr><td> lockIconColor</td><td> цвет значка</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> lockIconBackground</td><td> lockIconBackground</td><td> строка</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> lockBackgroundSizeFactor</td><td> lockBackgroundSizeFactor</td><td> количество</td><td/></tr><tr><td> lockFilterGrayscale</td><td> серый фильтр, если заблокирован</td><td> количество</td><td/></tr></tbody></table></details>
@@ -295,7 +357,7 @@ https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
 <table><thead><tr><th>Свойство</th><th> Описание</th><th> Тип</th><th> Значения</th></tr></thead><tbody><tr><td> axisLabels</td><td> метка оси графика</td><td> Массив</td><td> числа или строка</td></tr><tr><td> графики</td><td> данные графиков</td><td> массив [ <a href="#graph">график</a> ]</td><td> см. график</td></tr></tbody></table>
 
 #### График
-<details><table><thead><tr><th>Свойство</th><th> Описание</th><th> Тип</th><th> Значения</th></tr></thead><tbody><tr><td> данные</td><td> данные графика или данные с отметкой времени</td><td> Массив [числа] | Массив [ <a href="#data-with-time-axis">значения с отметкой времени</a> ]</td><td> количество</td></tr><tr><td> тип</td><td> тип графика</td><td> строка</td><td> &#39;линия&#39;, &#39;полоса&#39;</td></tr><tr><td> legendText</td><td> текст легенды</td><td> строка</td><td></td></tr><tr><td> Отобразить заказ</td><td> порядок наложения графика</td><td> количество</td><td> 1, 2, ...</td></tr><tr><td> цвет</td><td> цвет графика</td><td> цвет</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> use_gradient_color</td><td> использовать цвет градиента</td><td> логический</td><td> ложь Правда</td></tr><tr><td> gradient_color</td><td> массив цветов градиента</td><td> массив [ <a href="#gradientcolor">gradientColor</a> ]</td><td> [{значение: -20, цвет: &#39;# 7d3c98&#39;}, {значение: 0, цвет: &#39;# 2874a6&#39;}]</td></tr><tr><td> tooltip_title</td><td> заголовок всплывающей подсказки</td><td> строка</td><td></td></tr><tr><td> tooltip_text</td><td> ovveride текст всплывающей подсказки</td><td> строка</td><td></td></tr><tr><td> tooltip_MinDigits</td><td> максимальное количество знаков после запятой в значении всплывающей подсказки</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> tooltip_MaxDigits</td><td> максимальное количество знаков после запятой в значении подсказки</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> tooltip_AppendText</td><td> добавить текст к значению всплывающей подсказки</td><td> строка</td><td></td></tr><tr><td> datalabel_show</td><td> показать метки данных для графика</td><td> строка | логический</td><td> ложь, истина, авто</td></tr><tr><td> datalabel_anchor</td><td> привязка меток данных</td><td> строка</td><td> центр, начало, конец</td></tr><tr><td> datalabel_align</td><td> положение метки данных относительно точки привязки</td><td> строка</td><td> влево, начало, центр, конец, вправо, вверх, вниз</td></tr><tr><td> datalabel_offset</td><td> расстояние (в пикселях), чтобы отвести метку данных от точки привязки</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_text_align</td><td> текстовое соответствие метки данных</td><td> строка</td><td> влево, начало, центр, конец, вправо</td></tr><tr><td> datalabel_rotation</td><td> угол поворота (в градусах) метки данных по часовой стрелке</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_steps</td><td> показывать метку данных каждые x шаг</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_minDigits</td><td> минимальное количество знаков после запятой в метках данных</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_maxDigits</td><td> максимальное количество знаков после запятой в метках данных</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_append</td><td> добавить текст к метке данных</td><td> строка</td><td></td></tr><tr><td> datalabel_color</td><td> цвет метки данных</td><td> цвет | массив [цвета]</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> datalabel_fontFamily</td><td> семейство шрифтов метки данных</td><td> строка</td><td></td></tr><tr><td> datalabel_fontSize</td><td> размер шрифта метки данных</td><td> количество</td><td> 1, 2, 5, ...</td></tr><tr><td> datalabel_backgroundColor</td><td> цвет фона метки данных</td><td> цвет | массив [цвета]</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> datalabel_borderColor</td><td> цвет границы метки данных</td><td> цвет | массив [цвета]</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> datalabel_borderWidth</td><td> ширина границы метки данных</td><td> количество</td><td> 1, 2, 5, ...</td></tr><tr><td> datalabel_borderRadius</td><td> радиус границы метки данных</td><td> количество</td><td> 1, 2, 5, ...</td></tr></tbody></table></details>
+<details><table><thead><tr><th>Свойство</th><th> Описание</th><th> Тип</th><th> Значения</th></tr></thead><tbody><tr><td> данные</td><td> данные графика или данные с отметкой времени</td><td> Массив [числа] | Массив [ <a href="#data-with-time-axis">значения с отметкой времени</a> ]</td><td> количество</td></tr><tr><td> тип</td><td> тип графика</td><td> строка</td><td> &#39;линия&#39;, &#39;полоса&#39;</td></tr><tr><td> legendText</td><td> текст легенды</td><td> строка</td><td></td></tr><tr><td> Отобразить заказ</td><td> порядок наложения графика</td><td> количество</td><td> 1, 2, ...</td></tr><tr><td> цвет</td><td> цвет графика</td><td> цвет</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> use_gradient_color</td><td> использовать цвет градиента</td><td> логический</td><td> ложь Правда</td></tr><tr><td> gradient_color</td><td> массив цветов градиента</td><td> массив [ <a href="#gradientcolor">gradientColor</a> ]</td><td> [{значение: -20, цвет: &#39;# 7d3c98&#39;}, {значение: 0, цвет: &#39;# 2874a6&#39;}]</td></tr><tr><td> tooltip_title</td><td> заголовок всплывающей подсказки</td><td> строка</td><td></td></tr><tr><td> tooltip_text</td><td> ovveride текст всплывающей подсказки</td><td> строка</td><td></td></tr><tr><td> tooltip_MinDigits</td><td> максимальное количество знаков после запятой в значении всплывающей подсказки</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> tooltip_MaxDigits</td><td> максимальное количество знаков после запятой в значении всплывающей подсказки</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> tooltip_AppendText</td><td> добавить текст к значению всплывающей подсказки</td><td> строка</td><td></td></tr><tr><td> datalabel_show</td><td> показать метки данных для графика</td><td> строка | логический</td><td> ложь, истина, авто</td></tr><tr><td> datalabel_anchor</td><td> привязка меток данных</td><td> строка</td><td> центр, начало, конец</td></tr><tr><td> datalabel_align</td><td> положение метки данных относительно точки привязки</td><td> строка</td><td> влево, начало, центр, конец, вправо, вверх, вниз</td></tr><tr><td> datalabel_offset</td><td> расстояние (в пикселях), чтобы отвести метку данных от точки привязки</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_text_align</td><td> текстовое соответствие метки данных</td><td> строка</td><td> влево, начало, центр, конец, вправо</td></tr><tr><td> datalabel_rotation</td><td> угол поворота (в градусах) метки данных по часовой стрелке</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_steps</td><td> показывать метку данных каждые x шаг</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_minDigits</td><td> минимальное количество знаков после запятой в метках данных</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_maxDigits</td><td> максимальное количество знаков после запятой в метках данных</td><td> количество</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_append</td><td> добавить текст к метке данных</td><td> строка</td><td></td></tr><tr><td> datalabel_color</td><td> цвет метки данных</td><td> цвет | массив [цвета]</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> datalabel_fontFamily</td><td> семейство шрифтов метки данных</td><td> строка</td><td></td></tr><tr><td> datalabel_fontSize</td><td> размер шрифта метки данных</td><td> количество</td><td> 1, 2, 5, ...</td></tr><tr><td> datalabel_backgroundColor</td><td> цвет фона метки данных</td><td> цвет | массив [цвета]</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> datalabel_borderColor</td><td> цвет границы метки данных</td><td> цвет | массив [цвета]</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> datalabel_borderWidth</td><td> ширина границы метки данных</td><td> количество</td><td> 1, 2, 5, ...</td></tr><tr><td> datalabel_borderRadius</td><td> радиус границы метки данных</td><td> количество</td><td> 1, 2, 5, ...</td></tr></tbody></table></details>
 
 #### График график spfeicifc
 <details><table><thead><tr><th>Свойство</th><th> Описание</th><th> Тип</th><th> Значения</th></tr></thead><tbody><tr><td> line_pointStyle</td><td> точечный стиль линии</td><td> строка</td><td> круг, крест, crossRot, черта, линия, rect, rectRounded, rectRot, звезда, треугольник</td></tr><tr><td> line_pointSize</td><td> размер строки</td><td> количество</td><td> 1, 2, 3, ...</td></tr><tr><td> line_pointSizeHover</td><td> размер строки</td><td> количество</td><td> 1, 2, 3, ...</td></tr><tr><td> line_PointColor</td><td> цвет точки линии</td><td> цвет | массив [цвета]</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> line_PointColorBorder</td><td> цвет границы точки линии</td><td> цвет | массив [цвета]</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> line_PointColorHover</td><td> цвет наведения линии</td><td> цвет | массив [цвета]</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> line_PointColorBorderHover</td><td> цвет границы при наведении курсора на точку линии</td><td> цвет | массив [цвета]</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> line_spanGaps</td><td> рисовать линии, если в данных есть пробелы</td><td> логический</td><td> ложь Правда</td></tr><tr><td> line_steppedLine</td><td> включить ступенчатую линию</td><td> логический</td><td> ложь Правда</td></tr><tr><td> line_Tension</td><td> плавность линии</td><td> количество</td><td> 0 - 1</td></tr><tr><td> line_Thickness</td><td> толщина линии</td><td> количество</td><td> 1, 2, 5, ...</td></tr><tr><td> line_UseFillColor</td><td> использовать цвет заливки под линией</td><td> логический</td><td> ложь Правда</td></tr><tr><td> line_FillColor</td><td> цвет заливки под линией</td><td> цвет</td><td> шестнадцатеричный (# 44739e), RGB (20, 50, 200), RGBA (20, 50, 200, 0,5)</td></tr><tr><td> use_line_gradient_fill_color</td><td> использовать цвет градиентной заливки</td><td> логический</td><td> ложь Правда</td></tr><tr><td> line_gradient_fill_color</td><td> массив цветов градиента</td><td> массив [ <a href="#gradientcolor">gradientColor</a> ]</td><td> [{значение: -20, цвет: &#39;# 7d3c98&#39;}, {значение: 0, цвет: &#39;# 2874a6&#39;}]</td></tr><tr><td> line_FillBetweenLines</td><td> цвет заливки до следующей / предыдущей строки</td><td> строка</td><td> &#39;+1&#39;, &#39;-1&#39;, &#39;+2&#39;, ...</td></tr></tbody></table></details>
@@ -684,22 +746,44 @@ ical2CalendarWidget();
 ```
 
 ## HTML-элементы
-<! - опустить в toc ->
+Создайте элемент html из поддерживаемых виджетов Material Design, чтобы использовать его в любом другом виджете, поддерживающем html.
+Просто создайте стиль своего виджета Material Design, нажмите `generate Html Element`, скопируйте данные и вставьте их в любой виджет, поддерживающий HTML-теги.
+Или используйте его в скриптах для динамической генерации виджетов.
+
+![Логотип](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/html-elements.gif)
+
+Более подробную информацию о поддерживаемых свойствах можно найти в отдельных виджетах:
+
+* [Кнопки] (# кнопки)
+* [Кнопки по вертикали] (# кнопки по вертикали)
+* [Значок кнопок] (# кнопки-значок)
+
+# Использованные библиотеки
+Адаптер использует следующие библиотеки:
+
+* [Материальные компоненты Google для Интернета] (https://github.com/material-components/material-components-web)
+* [Vuetify] (https://github.com/vuetifyjs/vuetify)
+* [chartjs] (https://www.chartjs.org/)
+* [круглый слайдер от thomasloven] (https://github.com/thomasloven/round-slider)
+* [Значки дизайна материалов] (https://materialdesignicons.com/)
 
 ## Changelog
 
 <!--
-    Placeholder for the next version (at the beginning of the line):
-    ### __WORK IN PROGRESS__
+    Placeholder for the next version (at the beginning of the line):    
+	### __WORK IN PROGRESS__
 -->
 
+<!-- omit in toc -->
 ### __WORK IN PROGRESS__
 * (Scrounger) icon list: option for status bar text added
 * (Scrounger) icon list: status bar position bug fix
 
+<!-- omit in toc -->
 ### 0.4.2 (2020-12-29)
 * (Scrounger) vis-google-fonts dependency removed
 
+<!-- omit in toc -->
 ### 0.4.1 (2020-12-27)
 * (Scrounger): Adapter settings: theme editor implementation completed
 * (Scrounger): Progress Widget: condition binding bug fix
@@ -710,6 +794,7 @@ ical2CalendarWidget();
 * (Scrougner): icon list: scrollbar bug fix
 * (Scrounger): bug fixes
 
+<!-- omit in toc -->
 ### 0.4.0-beta (2020-12-09)
 * (Scrounger): Line History Chart Widget: Breaking Changes !!! aggregate (display) method for every dataset configurable, [see documentation for detailed infos](#line-history-chart)!
 * (Scrounger): TopAppBar Widget: Breaking Changes !!! Submenus must now be created using JSON string, [see documentation for detailed infos](#since-version-040)!
@@ -749,6 +834,7 @@ ical2CalendarWidget();
 * (Scrounger): dependencies updated
 * (Scrounger): bug fixes
 
+<!-- omit in toc -->
 ### 0.3.19 (2020-07-18)
 * (Scrounger): Icon Button Widget: background color option for lock icon added
 * (Scrounger): possibility to deactivate sentry implemented -> see documentation
@@ -764,249 +850,6 @@ ical2CalendarWidget();
 * (Scrounger): Round Slider Widget: readonly option added
 * (Scrounger): Table Widget: background color hover option added
 * (Scrounger): bug fixes
-
-### 0.3.14 (2020-06-01)
-* (Scrounger): Table Widget: bug fixes
-
-### 0.3.13 (2020-05-29)
-* (Scrounger): Multi State Button Widgets: delay option added
-* (Scrounger): Table Widget: option to add ohter Widgets to table added
-* (Scrounger): Slider & Round Slider Widget: option to show value in percent added
-* (Scrounger): Sentry error handling improved
-* (scrounger): Buttons: click bug fix
-* (scrounger): MaterialDesingIcons: extension bug fix
-* (Scrounger): small bug fixes
-
-### 0.3.11 (2020-05-24)
-* (Scrounger): Sentry added
-* (Scrounger): Select & Autocomplete Widget: vibrate on mobil devices added
-* (Scrounger): List Widget: vibrate on mobil devices added
-* (Scrounger): Masonry & Grid Widget: height changed to optional to support widgets using relative position
-* (Scrounger): Progress Widget revised
-* (Scrounger): Progress Circular Widget added
-* (Scrounger): bug fixes
-
-### 0.3.9 (2020-05-20)
-* (Scrounger): List Widget: subscribe for nested oids and bindings bug fix
-* (Scrounger): Multi State Button Widgets added
-* (Scrounger): checkbox: lock option added
-* (Scrounger): switch: lock option added
-* (Scrounger): bar & pie chart: option for distance between legends points added
-* (Scrounger): bar, pie & json chart: tooltip title and value override options added
-* (Scrounger): pie chart: orientation change bug fix
-* (Scrounger): json & line history chart: stepped line option added
-* (Scrounger): table: option for fixed table headline added
-* (Scrounger): charts: newline bug fixed
-* (Scrounger): charts: tooltip decimal places bug fix
-
-
-### 0.3.6 (2020-04-29)
-* Input, Select, Autocomplete: default input controll buttons removed
-* vuetify library updated to v2.2.26 
-* JSON Chart: auto mode to show values added
-* Line History Chart: auto mode to show values added
-* Bar Chart: auto mode to show values added
-* Pie Chart: auto mode to show values added
-* Button State: lock icon input field bug fix
-
-### 0.3.4 (2020-04-27)
-* Select / AutoComplete Widget: Breaking Changes !!! separator for valuelist changed from comma to semicolon
-* Pie Chart Widget: support for json string implemented
-* Browser Edge: gradient color bug fix
-
-### 0.3.3
-* (Scrounger): css file bug fixes
-* (Scrounger): Material Design Icons library updated to v5.1.45
-
-### 0.3.2
-* (Scrounger): Select & Autocomplete Widget: color option for menu items added
-* (Scrounger): setState type bug fixes
-* (Scrounger): small bug fixes
-
-### 0.3.0
-* (Scrounger): JSON Chart: error handling added
-* (Scrounger): IconList: error handling added
-* (Scrounger): Line History chart: debug mode & error handling added
-* (Scrounger): Select Widget: handling for object with mulitstate added
-* (Scrounger): Autocomplete Widget: handling for object with mulitstate added
-* (Scrounger): bug fixes
-
-### 0.2.76
-* (Scrounger): deprecated Widgets Slider, TopAppBar, Select, Column View removed
-* (Scrounger): JSON Chart Widget added
-* (Scrounger): Line Chart Widget: starttime by object added
-* (Scrounger): Bar Chart Widget: support for json string oid added
-* (Scrounger): Chart Widget: min / max decimals for axis, labels and tooltip added
-* (Scrounger): Masonry View Widget: sort order added
-* (Scrounger): Grid View Widget: sort order added
-* (Scrounger): new Dialog Widget added
-* (Scrounger): bug fixes
-
-### 0.2.66
-* (Scrounger): IconListWidget: button layout options added
-* (Scrounger): IconListWidget: lock option for toggle and state function added
-* (Scrounger): Alert Widget: visibility depending on resoltuion added
-* (Scrounger): Button Widgets: lock option for toggle and state button added
-* (Scrounger): Material Design Icon Widget added
-* (Scrounger): bug fixes
-
-### 0.2.62
-* (Scrounger): List Widget: binding bug fix
-* (Scrounger): Select Widget: number bug fix
-* (Scrounger): IconList Widget: object id for json string added, html input field removed from editor
-* (Scrounger): Input Widget: clear & null bug fix
-* (Scrounger): bug fixes
-
-### 0.2.59
-* (Scrounger): Buttons Toggle: option for push function added
-* (Scrounger): IconList Widget added
-* (Scrounger): Alerts Widget: show dummy message in Editor
-* (Scrounger): Grid Views Widget added
-* (Scrounger): List Widget: color option for switch added
-* (Scrounger): List Widget: dynamic generate item using json string
-* (Scrounger): Masonry Views Widget: visible condition added
-* (Scrounger): Calendar Widget added
-* (Scrounger): translation added
-* (Scrounger): VIS Editor: Link to Forum widget threads added
-* (Scrounger): bug fixes
-
-### 0.2.49
-* (Scrounger): new Select Widget added
-* (Scrounger): Autocomplete Widget added
-* (Scrounger): Alerts Widget added
-* (Scrounger): use of Material Design Icons as images added
-* (Scrounger): Perfomrance optimized
-* (Scrounger): Input Widget added
-* (Scrounger): Masonry Views Widget: settings options for mobile phone and tablet added
-* (Scrounger): Masonry Views Widget: another chrome bug fix, option for distance between views added
-* (Scrounger): Round Slider: vibrate on mobil devices added
-* (Scrounger): bug fixes
-
-### 0.2.32
-* (Scrounger): Editor translation bug fix
-* (Scrounger): Masonry Views Widget: alignment bug fix for chrome
-* (Scrounger): Line History Chart Widget: layout option for line values added
-* (Bluefox): Russian translation revised
-
-### 0.2.30
-* (Scrounger): Masonry Views Widget added
-* (Scrounger): Select Widget: background color bug fix
-* (Scrounger): Column Views Widget added
-* (Scrounger): Button Widgets: icon height bug fix
-* (Scrounger): Vuetify API bug fix
-* (Scrounger): Chart Widgets: localization added
-* (Scrounger): Line History Chart Widget: color options for each y-axis added
-* (Scrounger): Line History Chart Widget: x-axis boundary options added
-* (Scrounger): Line History Chart Widget: x-axis scaling bug fix
-* (Scrounger): TopAppBar Widget: `view in widget 8` removed -> old TopAppBar Widget will be removed in version 0.3.x
-* (Scrounger): bug fixes
-
-### 0.2.22
-* (Scrounger): library material-components-web updated to v4.0.0
-* (Scrounger): Table: support for objects added
-* (Scrounger): List: layout checkbox disabled added
-* (Scrounger): vuetify slider added -> old slider will be removed in version 0.3.x
-* (Scrounger): vuetify library v2.1.15 added
-* (Scrounger): bug fixes
-
-### 0.2.9
-* (Scrounger): translations added
-* (Scrounger): select Widget: color options added
-* (Scrounger): slider Widget: color options added
-* (Scrounger): bug fixes
-
-### 0.2.7
-* (Scrounger): List Widget: types switch readonly, checkbox readonly & button toggle readonly added
-* (Scrounger): Line History Chart Widget: bug fix for hide yaxis by legend click if common axis is set
-* (Scrounger): Line History Chart Widget: option to append text to yAxis values added
-* (Scrounger): Switch Widget: color options added
-* (Scrounger): chartjs lib updated to v2.9.3
-* (Scrounger): round-slider: lib updated to v0.3.7
-* (Scrounger): Table Widget: wordwrap & width option added
-* (Scrounger): Chart Widgets: option for background color of diagram area added
-
-### 0.2.4
-* (Scrounger): Round Slider Widget bug fixes
-* (Scrounger): Line History Chart Widget: null value bug fix
-* (Scrounger): Line History Chart Widget: tooltip bug fix
-* (Scrounger): Line History Chart Widget: editor translation improved
- 
-### 0.2.0
-* (Scrounger): Round Slider Widget added
-* (Scrounger): Icon Button Adition Widget added
-* (Scrounger): Button Adition Widget added
-* (Scrounger): Line History Chart Widget added
-* (Scrounger): Table Widget added
-* (Scrounger): Dialog iFrame Widget added
-* (Scrounger): Dialog View Widget added
-* (Scrounger): Select Widget added
-* (Scrounger): colorSchemes for Charts added
-* (Scrounger): bug fixes
-
-### 0.1.5
-* (Scrounger): bar chart added
-* (Scrounger): pie chart added
-* (Scrounger): bug fixes
-
-### 0.1.2
-* (Scrounger): list: right label option added
-* (Scrounger): slider: value text option for lees or greather than added
-* (Scrounger): switch: support for non boolean values added
-* (Scrounger): checkbox: support for non boolean values added
-* (Scrounger): buttons: image position option added
-* (Scrounger): toggle buttons: support for non boolean values added
-* (Scrounger): topAppBar: z-Index added
-* (Scrounger): haptic feedback (vibration) option for mobil browser added
-* (Scrounger): editor text fields changed to html
-* (Scrounger): mdc-typography font styles added
-* (Scrounger): bug fixes
-
-### 0.1.1
-* (Scrounger): bug fixes
-
-### 0.1.0
-* (Scrounger): Top App Bar Submenu added
-* (Scrounger): List added
-* (Scrounger): Button vertical State, Link, Nav added
-* (Scrounger): Icon Button State, Link, Nav added
-* (Scrounger): initialize slider bug fixes
-* (Scrounger): moved hard coded styling options to css
-* (Scrounger): styling options extended
-* (Scrounger): bug fixes
-
-### 0.0.7
-* (Scrounger): Top App Bar Layouts added
-* (Scrounger): Top App Bar customizing options added
-* (Scrounger): Top App Bar Navigation Drawer backdrop layout added
-* (Scrounger): Button State added
-* (Scrounger): Button Link added
-
-### 0.0.6
-* (Scrounger): Top App Bar with Navigation Drawer added
-* (Scrounger): Checkbox added
-* (Scrounger): bug fixes
- 
-### 0.0.5
-* (Scrounger): icon button Toggle added
-* (Scrounger): color pressed for buttons added
-* (Scrounger): Slider bug fix & label for value <= min / >= max added
-* (Scrounger): translation added
-
-### 0.0.4
-* (Scrounger): cards added
-
-### 0.0.3
-* (Scrounger): progress added
- 
-### 0.0.2
-* (Scrounger): slider vertical added
-* (Scrounger): switch added
-* (Scrounger): button toggle added
-
-### 0.0.1
-* (Scrounger) initial release
-
-<!-- omit in toc -->
 
 ## License
 

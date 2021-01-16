@@ -153,11 +153,15 @@ For more information about the Configuration, the InOut Functions and Conversion
 
 
 ## Changelog
-### 0.13.0
+### 0.13.1 (2021-01-14)
+  (jw) switched to HAP-NodeJS 0.9.0-beta.113 and added useLegacyAdvertiser option<br>
+  (jw) fixed bug which prevented cameras from deletion and duplication<br>
+
+### 0.13.0 (2021-01-08)
   (jw) updated dependencies<br>
   (jw) improved state selector (scrolling and refresh on open)<br>
 
-### 0.12.0
+### 0.12.0 (2020-12-23)
   (jw) updated dependencies<br>
   (jw) added support for linking services to support Television Services<br> 
   (jw) added possibility to publish devices without the bridge (necessary for TV service)<br> 
@@ -166,7 +170,7 @@ For more information about the Configuration, the InOut Functions and Conversion
   (jw) added support for additonal services to camera (to enable usage of doorbell service)<br> 
   (many20) fixed scaleInt conversion - results are now rounded<br> 
   
-### 0.11.0
+### 0.11.0 (2020-02-19)
   Intermediate release<br>
 
 ### 0.10.0 (2020-02-19)
@@ -177,17 +181,17 @@ For more information about the Configuration, the InOut Functions and Conversion
   (apollon77) removed support for NodeJS 4 - NodeJS 6 is now the minimum required NodeJS version (merged #109)<br>  
   (yaming116) fixed scale conversion to support min values others than 0<br>
 
-### 0.9.2
+### 0.9.2 (2019-03-12)
   (jw) fixed a bug where the adapter didn't start anymore<br>
   (jw) removed the reference to the git repository of the hap community types<br>
 
-### 0.9.1
+### 0.9.1 (2019-01-29)
   (jw) fixed a bug where the adapter crashes if a state does not exist<br>
   (jw) added io functions for HomeMatic dimmers ([#30](https://github.com/jensweigele/ioBroker.yahka/issues/30) and [#75](https://github.com/jensweigele/ioBroker.yahka/issues/75))<br>
   (jw) fixed a bug where adapter didn't start anymore when using the conversion function "inverse" ([#98](https://github.com/jensweigele/ioBroker.yahka/issues/98))
   (jw) updated to latest HAP-NodeJS library to support TV services and characteristics (available since iOS 12.2 beta 1)<br>Note: that's still in development, not all services are working correctly. For more information see:  ([#89](https://github.com/jensweigele/ioBroker.yahka/issues/89))<br>
 
-### 0.9.0
+### 0.9.0 (2019-01-24)
   (jw) added more services and characteristics (from https://github.com/homespun/hap-nodejs-community-types)<br>
   (jw) improved admin interface to support individual editors for IO/Conversion functions<br>
   (jw) added new conversion function "script" which adds the ability to run JavaScript functions as conversion functions<br>
@@ -203,29 +207,29 @@ For more information about the Configuration, the InOut Functions and Conversion
   (jw) added support for specifiyng device information via datapoints ([#91](https://github.com/jensweigele/ioBroker.yahka/issues/91))<br>
   (SchumyHao) added Chinese support
   
-### 0.8.2
+### 0.8.2 (2018-12-09)
   (jw) Removed a bug which flooded logging when starting/stopping the adapter which led to excessive memory consumption<br>
 
-### 0.8.1
+### 0.8.1 (2018-12-04)
   (jw) updated dependencies<br>
   (jw) change default name of new instances<br>
   (foxriver76) remove excessive logging<br>
   (mdietz666) scaleInt and scaleFloat now supports min-values (this allows mapping from e.g. -90 to 90 to 0 to 180)<br>
   (arichter83) added "Duplicate Device" functionality<br>
 
-### 0.7.1
+### 0.7.1 (2018-02-14)
   (jw) fixed a bug where state selection with admin 2.0.9 did not work anymore<br>
   (jw) restructured repository to support install via url<br>
 
-### 0.7.0 
+### 0.7.0 (2018-02-01)
   (bluefox) Fixed the ID select dialog in Admin3<br>
   (jw) updated hap-nodejs to support the following new services: Faucet, IrrigationSystem and Valve<br>
   (jw) added ip-package to dependencies to avoid errors on some installations<br>
 
-### 0.6.1 
+### 0.6.1 (2018-01-25)
   (jw) fixed startup crash<br>
 
-### 0.6.0
+### 0.6.0 (2018-01-24)
   (jw) add support for IP-Cameras<br>
   (jw) included iOS 11 device definitions<br>
   (jw) allowed negative temperatures for temperature sensors<br>
@@ -234,24 +238,24 @@ For more information about the Configuration, the InOut Functions and Conversion
   (jw) added conversion functions scaleInt, scaleFloat and inverse<br>
   (jw) devices are now sorted by name in the admin panel<br>
 
-### 0.5.5
+### 0.5.5 (2017-05-08)
   (bluefox) allow select ID in configuration dialog<br>
 
-### 0.5.4
+### 0.5.4 (2017-02-08)
   (jw) improve logoutput<br>
   (jw) added HomematicControlModeToHomekitHeathingCoolingState mapping<br>
 
-### 0.5.3
+### 0.5.3 (2017-02-08)
   (jw) internal release<br>
 
-### 0.5.2
+### 0.5.2 (2016-12-23)
   (jw) fixed issues with empty characteristic values<br>
   (jw) fixed issue with empty adapter.systemConfig.system object<br>
 
-### 0.5.1
+### 0.5.1 (2016-10-05)
   (jw) fixed issue with wrongly displayed logo<br>
 
-### 0.5.0
+### 0.5.0 (2016-10-05)
   (jw) initial release<br>
 
 ## License

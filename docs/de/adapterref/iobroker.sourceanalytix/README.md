@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: FFJQrjVNPtvD4pbmp4/7Y+bxPKovBLvxCd9+bJ53k7I=
+hash: gDX9ygFJC29JCD7BepllWAaI6nHAa/xdc0NAO7t93U8=
 ---
 # SourceAnalytix
 
@@ -18,23 +18,181 @@ hash: FFJQrjVNPtvD4pbmp4/7Y+bxPKovBLvxCd9+bJ53k7I=
 
 Detaillierte Analyse Ihres Energie-, Gas- und Flüssigkeitsverbrauchs Für Datenanalysen kann jede Quelle (kWh, Wh, Watt, l / h oder m3) verwendet werden:
 
+## Eigenschaften
+#### Grundfunktionen
+| Zustand | Funktionalität | Beschreibung |
+|--|--|--|
+| > Gerät <.cumulativeReading | [Werte akkumulieren] (# cumulativeReading) | Berechnen Sie kumulierte Werte<br/> einschließlich [Transformation] (# valueTransformation)<br/> Der kumulierte Wert kann durch Befolgen dieser Schritte geändert werden](#cumulativeReading-Reset) |
+| &gt; Gerät &lt;.&gt; Jahr &lt;.&gt; Aktuelles Jahr | [Statistik des laufenden Jahres](#Current-Period) | Speichern Sie statistische Informationen des aktuellen Jahres auf Ebene<br/> &gt; Gerät.&gt; aktuelles Jahr &lt;.&gt; gewählter Zeitraum &lt;|
+| &gt; Jahr &lt;.&gt; Aktuelles Jahr.&gt; Verbrauchsart &lt;| [Verbrauch](#consumptionCalculation) | Stammordner zum Speichern von Verbrauchsdaten<br/> (aktueller Wert - vorheriger Wert).<br/> Kann Verbrauch oder Lieferung sein |
+| &gt; Jahr &lt;.&gt; Aktuelles Jahr&gt; Kostentyp &lt;| [Kosten](#costCalculation) | Stammordner zum Speichern von Kostendaten.<br/> aktueller Wert * Kosten + Grundpreis<br/> Kann Verbrauch oder Lieferung sein |
+| &gt; Jahr &lt;.&gt; Aktuelles Jahr&gt; Kostentyp &lt;| [Kosten] (# costCalculation) | Stammordner zum Speichern von Kostendaten.<br/> aktueller Wert * Kosten + Grundpreis<br/> Kann Verbrauch oder Lieferung sein |
+
+Alle Statusstandorte sind nach Statusnamen gruppiert und in Perioden- und [Kategorie](#Categories)-Strukturen getrennt.<br/> Berechnungen werden automatisch verarbeitet und die Werte in die richtige Einheit umgewandelt, wie in [Preisdefinitionen](#Price-DefinitionsPrice-Definitions) definiert.
+
+Wenn Sie irgendwelche Probleme haben, lesen Sie bitte zuerst die **[Fehlerbehebung](#Troubleshooting)**
+
+## Wie man
+### Zustandsaktivierung! ![Haupteinstellungen](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/settingKey.png)
+![Haupteinstellungen](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/stateSettings.png)
+
+| Konfigurationselement | Beschreibung |
+|--|--|
+| aktiviert | Aktivieren Sie den Status für SourceAnalytix |
+| Alias | Standard: Name des Status, Name des Geräts wie in SA | gezeigt |
+| Wählen Sie Typ | obligatorisch, wählen Sie die Berechnungsart, die gemäß [Preisdefinitionen](#Price-Definitions) | berechnet werden soll |
+| Wählen Sie Einheit | Standard: Bei Bedarf automatisch manuell auswählen (siehe Protokolle) |
+| Kosten | Kostenberechnung |
+| ohne Grundgebühr inkl. Grundgebühr bei der Kostenberechnung |
+| Verbrauch | Verbrauchsdaten berechnen |
+| Zählerwerte | Aktuelle Zählerwerte speichern |
+| Zählerstand am </ br> Anfang von x: | Startwert des Zählers für einen bestimmten Zeitraum zur Verarbeitung des </ br> Berechnungsstroms - startValue |
+
+### Grundkonfiguration (Adapterinstanz)
+![Haupteinstellungen](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/mainSettings.png)
+
+#### CumulativeReading
+> ToDo: Logik beschreiben <
+
+#### Verbrauchsberechnung
+> ToDo: Logik beschreiben <
+
+#### Kostenkalkulation
+> ToDo: Logik beschreiben <
+
+#### ValueTransformation
+&gt; ToDo: Dokumentlink zur Bibliothek (document lib also!)<br/> &gt; ToDo: Dokumentieren Sie die Umwandlung von Watt in kWh<br/> &gt; ToDo: Transformation der Dokumenteinheit (wie Watt, von Wh zu KWh<br/>
+
+#### Jahresstatistik
+Speichern Sie statistische Informationen zu Verbrauch / Preisen und / oder Kosten / Einnahmen auf Jahresebene<br/> &gt;&gt; Gerät.&gt; dieses Jahr &lt;.&gt; Kategorie &lt;.&gt; ausgewählter Zeitraum
+
+Diese Informationen werden normalerweise für die Datenspeicherung und historische Vergleiche verwendet.<br/> Die Staaten sind nach einem bestimmten Zeitraum gruppiert (wie Jahr 2020 gegen 2021, Erz Februar 2019 gegen Februar ect).
+
+&gt; #### *Wochen* br/> &gt; Geräte &lt;.&gt; Jahr &lt;.&gt; Kosten / Ertrag<br/> &gt; Verbrauch / Lieferung &lt;.Wochen. **WocheNr** &lt;&gt; #### *Monate* br/> &gt; Geräte &lt;.&gt; Jahr &lt;.&gt; Kosten / Ertrag<br/> &gt; Verbrauch / Lieferung &lt;.Monate. **Monat** &lt;&gt; #### *Quartale* br/> &gt; Geräte &lt;.&gt; Jahr &lt;.&gt; Kosten / Ertrag<br/> &gt; Verbrauch / Lieferung &lt;.Viertel. **Qx** &lt;
+
+#### Derzeitige Periode
+Speichern Sie statistische Informationen des aktuellen Jahres auf der Ebene:> Gerät.> Aktuelles Jahr <.> Ausgewählter Zeitraum
+
+&gt; #### *Wochen* br/> &gt; Geräte &lt;.&gt; Jahr &lt;.&gt; Kosten / Ertrag<br/> &gt; Verbrauch / Lieferung &lt;.Wochen. **WocheNr** &lt;&gt; #### *Monate* br/> &gt; Geräte &lt;.&gt; Jahr &lt;.&gt; Kosten / Ertrag<br/> &gt; Verbrauch / Lieferung &lt;.Monate. **Monat** &lt;&gt; #### *Quartale* br/> &gt; Gerät &lt;.&gt; Jahr &lt;.&gt; Kosten / Ertrag&gt; Verbrauch / Lieferung &lt;.Viertel. **Qx** &lt;
+
+Diese Informationen werden normalerweise für die tägliche / wöchentliche / monatliche Berechnung von verwendet<br/> Kosten / Ertrag und / oder Verbrauch / Lieferung gruppiert nach festgelegtem Zeitraum
+
+> ToDo: Screenshots hinzufügen <
+
+#### Kategorien
+| Kategorie | Typ | Beschreibung |
+|--|--|--|
+| Kosten | finanziell | Ergebnis des Berechnungswertes * Selbstkostenpreis + Grundpreis |
+| Einkommen | finanziell | Ergebnis des Berechnungswertes * Verdienstpreis + Grundpreis |
+| Verbrauch | Berechnungen Ergebnis des Berechnungswertes als Kostenstartwert<br/> von Jahr / Monat / Quartal usw. |
+| Lieferung | Berechnungen Ergebnis des Berechnungswertes als Lieferung - Startwert<br/> von Jahr / Monat / Quartal usw. |
+
+### Fehlerbehebung
+Bevor wir mit der Fehlerbehebung beginnen, ist es wichtig zu verstehen, wie Source Analytix initialisiert wird, da hier Fehler auftreten können, siehe Abschnitt "Probleme".
+Die folgende Sequenz wird behandelt:
+
+1) SourceAnalytix starten 2) Alle für SourceAnalytix aktivierten Zustände auflisten 3) Zustände für jeden Zustand einleiten:
+
+    * Lesen Sie das aktuelle kumulierte Lesen </ br>
+
+      (falls vorhanden) und Speicherwerte aus dem Status
+
+    * Überprüfen Sie, ob das Gerät gehandhabt werden kann {Problem 1}
+    * Überprüfen Sie, ob die Kostenart ausgewählt ist {Ausgabe 2}
+    * Überprüfen Sie, ob für die Kostenart {Ausgabe 3} eine gültige Preisdefinition vorliegt.
+    * Überprüfen Sie, ob der vorherige Initialisierungswert> der aktuelle kumulierte Wert ist {Problem 4}
+    * Überprüfen Sie, ob der vorherige Geräte-Reset gültig ist> aktueller kumulierter Wert {Problem 5}
+    * Speichern Sie alle Daten im Speicher
+
+4) Initialisieren Sie Zustände für jeden Zustand:
+
+    * create state cumulativeReading (zum Speichern von Berechnungsergebnissen, kann auch nur für W bis kWh verwendet werden) {Ausgabe 6}
+    * Erstellen Sie Status wie in der Statuskonfiguration ausgewählt {Ausgabe 7}
+    * Berechnung starten
+
+5) Bei Statusänderung / Aktualisierung
+
+    * Überprüfen Sie, ob die Informationen korrekt sind
+    * Wert in richtige Einheit umwandeln (Zustandseinheit in Einheit, die in der Zustandskonfiguration ausgewählt wurde)
+  * Überprüfen Sie, ob die Werteingabe korrekt ist (aktueller Wert **** VorherigerInit-Wert) {Siehe **7 Beim Zurücksetzen des Geräts** Ausgabe 8}
+    * Berechne {Ausgabe 9}
+      * Für Watt: Berechnen Sie Watt in kWh, berechnen Sie cumulatedReading = currentReading + cumulatedReading
+      * Für andere: berechne cumulatedReading = currentReading + previousDeviceReset (falls vorhanden)
+
+6) Nachts (00.00)
+
+    * Alle aktivierten SourceAnalytix-Zustände auflisten
+    * Startwerte (Tag / Woche / Jahr / Monat) zurücksetzen
+
+7) Beim Zurücksetzen des Geräts
+
+    * Speichern Sie den aktuellen Wert als previousDeviceReset- und previousInit-Wert </ br>
+
+Wenn das Gerät erneut zurückgesetzt wird (erkannt durch den Wert von previousInit), wird </ br> currentReading + previousDeviceReset wie bei previousDeviceReset gespeichert.
+
+** Problem 1 ** Keine Einheit definiert für ....., kann keine Berechnungen ausführen </ br> Bitte wählen Sie die richtige Einheit in den Statuseinstellungen aus
+
+** Problem 2 ** Kein Kostentyp definiert für ....., bitte Wählen Sie den Berechnungstyp bei der Statuseinstellung aus. </ Br> Bitte wählen Sie den gewünschten Kostentyp aus, um zu verstehen, welcher Betrag für die Berechnung verwendet werden soll
+
+** Problem 3 ** Ausgewählter Typ ... existiert nicht in Preisdefinitionen </ br> Jetzt werden Preisdefinitionen für den ausgewählten Kostentyp gefunden. Bitte überprüfen Sie Ihre Preiseinstellung (Konfiguration anpassen).
+
+** Ausgabe 4 ** Überprüfen Sie die Einstellungen für .....! Bekannter Init-Wert: .....> bekannter kumulativer Wert ..... kann nicht fortgesetzt werden </ br> Der bekannte Init-Wert> bekannte kumulierte Werte, dies kann durch Entfernen oder Ändern dieser Objekte im Status-Rohobjekt gelöst werden
+
+```"valueAtDeviceInit": xxxx```
+
+** Ausgabe 5 ** Überprüfen Sie die Einstellungen für .....! Bekannter WertAtDeviceReset: .....> bekannter kumulativer Wert ..... kann nicht verarbeitet werden </ br> Der bekannte Init-Wert> bekannte kumulierte Werte, dies kann gelöst werden </ br> Entfernen oder Ändern dieser Objekte im Status-Rohobjekt
+
+```valueAtDeviceReset": xxxx```
+
+** Problem 6 ** Status für kumulatives Lesen wird nicht erstellt </ br> Die Initialisierung des Status ist fehlgeschlagen, siehe Problem 1 bis 5
+
+** Ausgabe 7 ** Zustände für Kostenablesungen wurden nicht erstellt </ br> Die Art der Berechnung ist in den Zustandseinstellungen nicht aktiviert. ![Haupteinstellungen](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/stateSettings.png)
+
+### Preisdefinitionen ![Haupteinstellungen](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/priceSettings.png)
+** Problem 8 **aktueller Wert** <** previousInit </ br> Ein Geräte-Reset wurde erkannt, siehe Funktion 7
+
+** Problem 9 ** Meine Berechnungen sind falsch </ br>
+
+#### CumulativeReading-Reset 1) Überprüfen Sie, ob die richtige Einheit ausgewählt ist (von nicht ausgewählt, SA versucht, automatisch zu erkennen). 2) Überprüfen Sie, ob das kumulierte Lesen den korrekten Gesamtwert Ihres Wertes widerspiegelt, falls nicht </ br>
+        - Stoppen Sie SA
+        - Gehen Sie zu Registerkartenobjekten
+
+          ![Haupteinstellungen](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/cumulativeReading-Reset.png)
+
+        - Wechseln Sie in den Expertenmodus
+        - Ändern Sie das kumulierte Lesen
+        - Beenden Sie den Expertenmodus
+        - Stellen Sie sicher, dass die Startwerte richtig eingestellt sind
+        - Starten Sie SA </ br>
+
+3) Stellen Sie sicher, dass die Startwerte richtig eingestellt sind</br> SA verarbeitet Berechnungen mit cumulatedReading - bekannt als cumulatedReading zu Beginn des Zeitraums. <b/>Diese Startwerte werden in den Statuseinstellungen definiert und sollten &lt;als **currentReading** sein</b></br> <b/>Bitte stellen Sie sicher, dass cumulativeReading&gt; = DayStart&gt; = WeekStart&gt; = MonthStart&gt; = QuarterStart&gt; = YearStart ![Haupteinstellungen](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/stateStartValues.png)</b>
+
+4) Überprüfen Sie diese Werte im Status-Rohobjekt:
+
+```valueAtDeviceReset": xxx```
+
+```"valueAtDeviceInit": xxx```
+
+<! - **Problem 6** Einstellung - Status für SourceAnalytix kann nicht deaktiviert werden
+
+Im RAW NUR "Verbrauch": false umgestellt, gehört. Das wurde behalten (wo ggf. noch nicht falsch, auch bei "aktiviert": falsch und bei "Kosten": falsch) In der Objekt-Übersicht ist der Schraubenschlüssel nachwievor blau. Dann mit dem Schraubenschlüssel in das Objekt, SA Krieg nicht der Haken bei Interessen drin. Dort einmal aufgenommen, nicht gespeichert, wieder aufgestaltet.
+Kontrolle im RAW, ob SA-EIntrag Nonne weg => jup, ist Nonne fott ->
+
+<!--
+
 * Verfolgen Sie den Verbrauch täglich, wöchentlich, monatlich, vierteljährlich, jährlich
 * Kosten berechnen (aktueller Preis ist konfigurierbar)
 * Kann für Stromverbrauch, Flüssigkeiten und GAS verwendet werden
 * Eingabewerte können wh / kWh / Watt / m3 / l sein
 
-## Wie man
-Bitte geben Sie Ihr Feedback hier https://forum.iobroker.net/topic/31932/major-update-sourceanalytix-0-4-0-complete-code-rebuild
+-->
 
 Dieser Adapter hat Wurzeln dank dank Pix im Jahr 2016 https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
 Was von @hadering verbessert und auf github https://github.com/hdering/homematic_verbrauchszaehler veröffentlicht wurde
 
-## Bekannte Probleme
-<>
-
 ## Machen
-* [] Dokumentation
+* [] Dokumentation!
 * [] Periodenberechnung auswählbar, aber noch nicht implementiert
 * [] monatlicher Selbstkostenpreis noch nicht in die Berechnung einbezogen
 * [] Neuberechnung basierend auf Zählerwerten (konfigurierbar nach Datum)
@@ -48,39 +206,51 @@ Sentry.io ist ein Dienst für Entwickler, um einen Überblick über Fehler in ih
 
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. Wenn Sie der iobroker GmbH erlaubt haben, Diagnosedaten zu sammeln, ist auch Ihre Installations-ID (dies ist nur eine eindeutige ID **ohne** zusätzliche Informationen über Sie, E-Mail, Name oder dergleichen) enthalten. Auf diese Weise kann Sentry Fehler gruppieren und anzeigen, wie viele eindeutige Benutzer von einem solchen Fehler betroffen sind. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
-## Changelog
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
 
-<!--
-    Placeholder for the next version (at the beginning of the line):
-    ### __WORK IN PROGRESS__
--->
+### __WORK IN PROGRESS__ ->
+### 0.4.8-alpha.13 (2021-01-15)
+* (Holländer) Bugfix: Fehler {Ist keine Zahl, kann Berechnung nicht fortsetzen} wenn Wert = 0
 
 ## Changelog
-### __WORK IN PROGRESS__
+### 0.4.8-alpha.12 (2021-01-14)
+* (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
+* (Dutchman) Bugfix : Ensure proper reset and init of Watt
+
+### 0.4.8-alpha.10 (2021-01-14)
+* (Dutchman) Bugfix : Avoid loop if init value is set and > reading
+* (Dutchman) Bugfix : Throw error if value is NULL for troubleshooting instead of handling incorrect calculation
+
+### 0.4.8-alpha.9 (2021-01-13)
 #### Breaking changes
-* (Dutchman) **Breaking!!! Move current values to currentYear*
-* (Dutchman & ToTXR4Y) MajorChange ! : Replaced **Current_Reading** with **CumulativeReading**
+* (Dutchman) Breaking!!! Move current values to currentYear [#135](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/135)
+* (Dutchman & ToTXR4Y) MajorChange !: Replaced **Current_Reading** with **CumulativeReading** [226](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/226)
 
 #### New Features
 * (Dutchman) Code cleanup
 * (Dutchman) Add back "currentYear"
+* (Dutchman) (debug) Logging improved
 * (Dutchman) Weekly reset of weekdays
 * (Dutchman) Calculation for all states
-* (Dutchman) Calculation for previous states
+* (Dutchman) Calculation for previous states [#242](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/242)
 * (Dutchman) Optimized error reporting (Sentry)
 * (Dutchman) Removed unneeded settings in configuration
 * (Dutchman) Implemented new configuration for "currentYear"
-* (Dutchman & ToTXR4Y) implement cached memory slot for initialisation value
+* (Dutchman & ToTXR4Y) implement "05_currentYear" in year root folder [#280](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/280)
+* (Dutchman & ToTXR4Y) implement cached memory slot for initialisation value [#226](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/226)
 * (Dutchman & ToTXR4Y) Implement log messages if state attributes are changed
 * (Dutchman & ToTXR4Y) Implement automatically detection of currency from admin settings [#247](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/247)
 
 #### BugFixes
 * (Dutchman) Bugfix : dev: 0 bug workaround
-* (Dutchman) Bugfix : Calculations for "previous" values
+* (Dutchman) Do not round cumulated reading
+* (Dutchman) Bugfix : Calculations for "previous" values    
+* (Dutchman) Bugfix : Avoid calculation of non-Initialised states
 * (Dutchman) Bugfix : Cannot read property 'stateDetails' of null
+* (Dutchman) Correct error handling of "Watt" state initialisation
 * (Dutchman & ToTXR4Y) Bugfix : Rebuild calculation logic which solves :
   * Watt values : Ensure proper reading start (0 instead of current watt value)
-    Watt values : Ensure proper reading calculation with exponent (0 instead of current watt value)
+    Watt values : Ensure proper reading calculation with exponent (0 instead of current watt value) [#281](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/281)
   * All calculations : correct handling  of device reset (if value is reset or 0)
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets

@@ -245,4 +245,4 @@ https://go-e.co/support/
    limitations under the License.
 
 ## Copyright
-Copyright (c) 2020 MK-2001 go-e@itinsi.de
+Copyright (c) 2021 MK-2001 go-e@itinsi.de

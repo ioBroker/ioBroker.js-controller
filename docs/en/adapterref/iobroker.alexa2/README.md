@@ -288,6 +288,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.5.1 (2021-01-14)
+* (Apollon77) Prevent to write non-existing state values
+* (Apollon77) Add and adjust some known devices
+
 ### 3.5.0 (2020-12-24)
 * (Apollon77) Remove bespoken because textCommand is more flexible
 * (Apollon77) Add and adjust some known devices, add Echo 4 image

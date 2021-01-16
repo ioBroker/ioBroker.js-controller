@@ -2,84 +2,89 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
-title: ioBroker.vis-materialdesign
-hash: GNNbmwIBbVaY95LZA+2l5V6O8ne+OuH9sNbKJ9VLLJU=
+title: ioBroker VIS的材料设计小部件
+hash: GxD5lXh5YKguBVkrVRmQnbbUOVL63f14AJiPC1L2Cvw=
 ---
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)<！-toc中省略->
 
 ![稳定版](http://iobroker.live/badges/vis-materialdesign.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.vis-materialdesign.svg)
 ![安装数量](http://iobroker.live/badges/vis-materialdesign-installed.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.vis-materialdesign.svg)
-![依赖状态](https://img.shields.io/david/Scrounger/iobroker.vis-materialdesign.svg)
-![已知漏洞](https://snyk.io/test/github/Scrounger/ioBroker.vis-materialdesign/badge.svg)
 ![NPM](https://nodei.co/npm/iobroker.vis-materialdesign.png?downloads=true)
-![特拉维斯](http://img.shields.io/travis/Scrounger/ioBroker.vis-materialdesign/master.svg)
 
-＃ioBroker.vis-materialdesign
-## IoBroker VIS的材料设计小部件
-[![贝宝]（https://www.paypalobjects.com/zh_CN/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
+## IoBroker.vis-materialdesign
+<！-在目录中省略->
 
-ioBroker物料设计小部件基于[Google的材料设计指南](https://material.io/design/)。适配器使用以下库：
+＃ioBroker VIS [![贝宝]（https://www.paypalobjects.com/zh_CN/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)]的材料设计小部件
+ioBroker物料设计小部件基于[Google的材料设计指南](https://material.io/design/)
 
-* [适用于Google的网络材料组件]（https://github.com/material-components/material-components-web）
-* [Vuetify]（https://github.com/vuetifyjs/vuetify）
-* [chartjs]（https://www.chartjs.org/）
-* [来自thomasloven的round-slider]（https://github.com/thomasloven/round-slider）
-* [材料设计图标]（https://materialdesignicons.com/）
+<br>
 
-##适配器设置（主题编辑器）
-从版本0.4.0开始，有一个适配器设置页面。您可以在管理适配器的用户界面中的“实例”下找到它
+<！-在目录中省略->
 
-＃＃＃ 一般
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_general.png)
+＃＃ 表中的内容
+-[一般]（＃general）
+-[在线示例项目]（＃online-example-project）
+-[实用示例]（＃practical-examples）
+-[有关小部件的问题和答案]（＃questions-and-answers-about-the-widgets）
+-[支持的浏览器]（＃supported-browser）
+-[支持在移动设备上振动的浏览器功能]（＃支持浏览器在移动设备上振动的功能）
+-[ioBroker VIS App]（＃iobroker-vis-app）
+-[适配器设置]（＃adapter-settings）
+-[General]（＃general-1）
+-[主题编辑器]（＃theme-editor）
+-[颜色主题]（＃colors-theme）
+-[字体主题]（＃fonts-theme）
+-[字体大小主题]（＃font-sizes-theme）
+-[小部件]（＃widgets）
+-[材料设计图标和图像]（＃material-design-icons-and-images）
+-[按钮]（＃buttons）
+-[垂直按钮]（＃buttons-vertical）
+-[按钮图标]（＃buttons-icon）
+-[卡片]（＃card）
+-[列表]（＃list）
+-[IconList]（＃iconlist）
+-[进度]（＃progress）
+-[滑块]（＃slider）
+-[圆形滑块]（＃round-slider）
+-[复选框]（＃checkbox）
+-[Switch]（＃switch）
+-[输入]（＃输入）
+-[文字输入]（＃text-input）
+-[选择]（＃select）
+-[自动完成]（＃autocomplete）
+-[带有导航抽屉的顶部应用栏]（＃top-app-bar-with-navigation-drawer）
+-[子菜单]（＃submenu）
+-[图表]（＃charts）
+-[条形图]（＃bar-chart）
+-[饼图]（＃pie-chart）
+-[线路历史记录图表：]（＃line-history-chart）
+-[JSON图表]（＃json-chart）
+-[General]（＃general-2）
+-[图]（＃graph）
+-[图形折线图spfeicifc]（＃graph-line-chart-spfeicifc）
+-[graph bar chart spfeicifc]（＃graph-bar-chart-spfeicifc）
+-[图y轴]（＃graph-y轴）
+-[gradientColor]（＃gradientcolor）
+-[带有时间轴的图表]（＃带有时间轴的图表）
+-[带时间戳的值]（＃values-with-timestamp）
+-[带有时间戳的数据的x轴设置]（带有时间戳的数据的#x轴设置）
+-[表格]（＃table）
+-[输入数据]（＃input-data）
+-[控制元素]（＃control-elements）
+-[编辑器设置]（＃editor-settings）
+-[响应式布局]（＃sensitive-layout）
+-[砌体视图]（＃masonry-views）
+-[网格视图]（＃grid-views）
+-[警报]（＃alerts）
+-[日历]（＃calendar）
+-[HTML元素]（＃html-elements）
+-[二手图书馆]（＃used-libraries）
+-[变更日志]（＃changelog）
+-[许可证]（＃license）
 
-|设置|描述|
-|-------|-----------|
-|文档|文档链接以帮助您配置窗口小部件|
-|生成全局脚本|使用所有主题数据点为[Javascript脚本引擎](https://github.com/ioBroker/ioBroker.javascript)创建全局脚本。这允许在脚本中舒适地使用颜色，字体和字体大小。 |
-| Sentry |使用Sentry库自动向开发人员匿名报告异常和代码错误。有关更多详细信息以及如何禁用错误报告的信息，请参见[Sentry-Plugin文档]（https://github.com/ioBroker/plugin-sentry#plugin-sentry）！ |
-
-###主题编辑器
-借助主题编辑器，您可以通过适配器设置为所有小部件集中设置颜色，字体和字体大小。这是在[VIS适配器的绑定](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects)的帮助下实现的。对于每个窗口小部件，使用设置值创建数据点（请参见下面的屏幕快照）。这样就可以通过绑定在其他窗口小部件（而非“材料设计窗口小部件”）中使用这些设置。
-
-#####数据点结构
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_datapoints.png)
-
-##### VIS编辑器（还原/更新旧的小部件）
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/vis_editor_theme_restore.gif)
-
-在VIS编辑器中，您将为每个小部件找到一个按钮`use theme`。使用此按钮，您可以重置小部件以使用主题。这意味着如果您更改了颜色，字体或字体大小，则可以使用此按钮将其重置。
-
-借助此按钮，还可以从0.4.0之前的版本更新您的小部件以使用主题。
-
-#####对非Material Design小部件使用绑定
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_binding.gif)
-
-在适配器设置中，您可以通过单击表中的默认文本或ID将绑定命令复制到剪贴板。然后，即使对于非Material Design小部件，也可以通过复制和粘贴使用此绑定。
-
-####颜色主题
-对于颜色，有两个主题-浅色主题和深色主题。使用数据点`vis-materialdesign.0.colors.darkTheme`，您可以在两个主题之间切换。
-
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_light.png)
-
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_dark.png)
-
-可以在上方区域定义标准颜色。然后可以使用表格中的按钮将这些标准颜色分配给各个小部件。如果更改默认颜色，则所有使用该颜色的小部件的颜色也会更改。
-此外，可以将您自己的颜色分配给小部件，而与标准颜色无关。
-
-####字体主题
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fonts.png)
-
-可以在上方区域定义标准字体。然后，可以使用表格中的按钮将这些标准字体分配给各个小部件。如果更改默认颜色，则所有使用该颜色的小部件的颜色也会更改。
-另外，可以将您自己的字体分配给小部件，而与标准颜色无关。
-
-####字体大小主题
-![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fontSizes.png)
-
-可以在上方区域定义标准字体大小。然后，可以使用表格中的按钮将这些标准字体大小分配给各个小部件。如果更改默认颜色，则所有使用该颜色的小部件的颜色也会更改。
-此外，可以将您自己的字体大小分配给小部件，而与标准颜色无关。
-
+＃ 一般
 ##在线示例项目
 由[iobroker.click](https://iobroker.click/index.html)提供，这要归功于bluefox和iobroker。
 
@@ -97,15 +102,72 @@ ioBroker物料设计小部件基于[Google的材料设计指南](https://materia
 
 * [德语线程]（https://forum.iobroker.net/search?term=Material%20Design%20Widgets%3A&in=titles&matchWords=all&by%5B%5D=Scrounger&categories%5B%5D=7&sortBy=topic.title&sortDirection=desc&showAs=主题）
 
-###支持的浏览器
-https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
+##支持的浏览器
+我正式支持每个主要浏览器的最后两个版本。具体来说，我在以下浏览器上进行测试：
 
-###受支持的浏览器可在移动设备上振动功能
+* Windows和Linux上的Firefox
+* Android，Windows和Linux上的Chrome
+
+##支持的浏览器可在移动设备上振动功能
 https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
-### IoBroker VIS应用程序
-目前无法正常运行，需要由应用程序标记，请参见https://github.com/ioBroker/ioBroker.vis.cordova
+## IoBroker VIS应用程序
+该应用程序需要实现最新版本，请参阅https://github.com/ioBroker/ioBroker.vis.cordova。
+我不使用该应用程序，也未对其进行测试
 
+＃适配器设置
+从版本0.4.0开始，有一个适配器设置页面。您可以在管理适配器的用户界面中的“实例”下找到它
+
+＃＃ 一般
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_general.png)
+
+|设置|描述|
+|-------|-----------|
+|文档|文档链接以帮助您配置窗口小部件|
+|生成全局脚本|使用所有主题数据点为[Javascript脚本引擎](https://github.com/ioBroker/ioBroker.javascript)创建全局脚本。这允许在脚本中舒适地使用颜色，字体和字体大小。 |
+| Sentry |使用Sentry库自动向开发人员匿名报告异常和代码错误。有关更多详细信息以及如何禁用错误报告的信息，请参见[Sentry-Plugin文档]（https://github.com/ioBroker/plugin-sentry#plugin-sentry）！ |
+
+##主题编辑器
+借助主题编辑器，您可以通过适配器设置为所有小部件集中设置颜色，字体和字体大小。这是在[VIS适配器的绑定](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects)的帮助下实现的。对于每个窗口小部件，使用设置值创建数据点（请参见下面的屏幕快照）。这样就可以通过绑定在其他窗口小部件（而非“材料设计窗口小部件”）中使用这些设置。
+
+#####数据点结构
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_datapoints.png)
+
+##### VIS编辑器（还原/更新旧的小部件）
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/vis_editor_theme_restore.gif)
+
+在VIS编辑器中，您将为每个小部件找到一个按钮`use theme`。使用此按钮，您可以重置小部件以使用主题。这意味着如果您更改了颜色，字体或字体大小，则可以使用此按钮将其重置。
+
+借助此按钮，还可以从0.4.0之前的版本更新您的小部件以使用主题。
+
+#####对非Material Design小部件使用绑定
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_binding.gif)
+
+在适配器设置中，您可以通过单击表中的默认文本或ID将绑定命令复制到剪贴板。然后，即使对于非Material Design小部件，也可以通过复制和粘贴使用此绑定。
+
+###颜色主题
+对于颜色，有两个主题-浅色主题和深色主题。使用数据点`vis-materialdesign.0.colors.darkTheme`，您可以在两个主题之间切换。
+
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_light.png)
+
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_dark.png)
+
+可以在上方区域定义标准颜色。然后可以使用表格中的按钮将这些标准颜色分配给各个小部件。如果更改默认颜色，则所有使用该颜色的小部件的颜色也会更改。
+此外，可以将您自己的颜色分配给小部件，而与标准颜色无关。
+
+###字体主题
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fonts.png)
+
+可以在上方区域定义标准字体。然后，可以使用表格中的按钮将这些标准字体分配给各个小部件。如果更改默认颜色，则所有使用该颜色的小部件的颜色也会更改。
+另外，可以将您自己的字体分配给小部件，而与标准颜色无关。
+
+###字体大小主题
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fontSizes.png)
+
+可以在上方区域定义标准字体大小。然后，可以使用表格中的按钮将这些标准字体大小分配给各个小部件。如果更改默认颜色，则所有使用该颜色的小部件的颜色也会更改。
+此外，可以将您自己的字体大小分配给小部件，而与标准颜色无关。
+
+＃小部件
 ##材质设计图标和图像
 <table><thead><tr><th>屏幕截图</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/material-icons.png"></td><td>一些小部件支持<a href="https://materialdesignicons.com/" target="_blank">Material Design Icons</a>库。您可以从上方列表中弹出一个图标，或通过单击输入字段右侧的按钮来打开图像选择器。<br><br><b>图像颜色仅适用于材料设计图标，不适用于图像！</b></td></tr></tbody></table>
 
@@ -146,17 +208,17 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ##按钮图标
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/icon-button.gif)
 
-###按钮图标链接属性
+#####按钮图标链接属性
 以下属性可用作[表中的控制元素]（＃control-elements）或作为[HTML元素](#html-elements)
 
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>共同</b></i></td></tr><tr><td>href</td><td>链接</td><td>网址</td><td/></tr><tr><td>openNewWindow</td><td>在新窗口中打开</td><td>布尔值</td><td>错误真正</td></tr><tr><td>vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td/></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>图标</b></i></td></tr><tr><td>图片</td><td>图片</td><td>串</td><td/></tr><tr><td>imageColor</td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> iconHeight</td><td>影像高度</td><td>数</td><td/></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>颜色</b></i></td></tr><tr><td>colorBgFalse</td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> colorPress</td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr></tbody></table></details>
 
-###按钮图标状态属性
+#####按钮图标状态属性
 以下属性可用作[表中的控制元素]（＃control-elements）或作为[HTML元素](#html-elements)
 
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>共同</b></i></td></tr><tr><td>oid</td><td>对象ID</td><td>串</td><td/></tr><tr><td>值</td><td>值</td><td>串</td><td/></tr><tr><td>vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td/></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>图标</b></i></td></tr><tr><td>图片</td><td>图片</td><td>串</td><td/></tr><tr><td>imageColor</td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> iconHeight</td><td>影像高度</td><td>数</td><td/></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>颜色</b></i></td></tr><tr><td>colorBgFalse</td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> colorPress</td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>锁定</b></i></td></tr><tr><td>lockEnabled</td><td>启用锁定</td><td>布尔值</td><td>错误真正</td></tr><tr><td>autoLockAfter</td><td> [s]之后自动锁定</td><td>数</td><td/></tr><tr><td>lockIcon</td><td>图标</td><td>串</td><td/></tr><tr><td>lockIconTop</td><td>距顶部的符号距离[％]</td><td>数</td><td/></tr><tr><td>lockIconLeft</td><td>距左的符号距离[％]</td><td>数</td><td/></tr><tr><td>lockIconSize</td><td>图标大小</td><td>数</td><td/></tr><tr><td>lockIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> lockIconBackground</td><td> lockIconBackground</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> lockBackgroundSizeFactor</td><td> lockBackgroundSizeFactor</td><td>数</td><td/></tr><tr><td>lockFilterGrayscale</td><td>灰色滤镜（如果锁定）</td><td>数</td><td/></tr></tbody></table></details>
 
-###按钮图标切换属性
+#####按钮图标切换属性
 以下属性可用作[表中的控制元素]（＃control-elements）或作为[HTML元素](#html-elements)
 
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>共同</b></i></td></tr><tr><td>oid</td><td>对象ID</td><td>串</td><td/></tr><tr><td>只读</td><td>只读</td><td>布尔值</td><td>错误真正</td></tr><tr><td>toggleType</td><td>切换类型</td><td>串</td><td>布尔|值</td></tr><tr><td>按钮</td><td>按钮</td><td>布尔值</td><td>错误真正</td></tr><tr><td>valueOff</td><td>折价</td><td>串</td><td/></tr><tr><td>valueOn</td><td>的价值</td><td>串</td><td/></tr><tr><td>stateIfNotTrueValue</td><td>说明值是否等于“ on”条件</td><td>串</td><td>在|关</td></tr><tr><td>vibrateOnMobilDevices</td><td>在移动装置上振动[s]</td><td>数</td><td/></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>图标</b></i></td></tr><tr><td>图片</td><td>图片</td><td>串</td><td/></tr><tr><td>imageColor</td><td>图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> imageTrue</td><td>活动图像</td><td>串</td><td/></tr><tr><td>imageTrueColor</td><td>活动图像颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> iconHeight</td><td>影像高度</td><td>数</td><td/></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>颜色</b></i></td></tr><tr><td>colorBgFalse</td><td>背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> colorBgTrue</td><td>活动背景</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> colorPress</td><td>压色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>锁定</b></i></td></tr><tr><td>lockEnabled</td><td>启用锁定</td><td>布尔值</td><td>错误真正</td></tr><tr><td>autoLockAfter</td><td> [s]之后自动锁定</td><td>数</td><td/></tr><tr><td>lockIcon</td><td>图标</td><td>串</td><td/></tr><tr><td>lockIconTop</td><td>距顶部的符号距离[％]</td><td>数</td><td/></tr><tr><td>lockIconLeft</td><td>距左的符号距离[％]</td><td>数</td><td/></tr><tr><td>lockIconSize</td><td>图标大小</td><td>数</td><td/></tr><tr><td>lockIconColor</td><td>图标颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> lockIconBackground</td><td> lockIconBackground</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> lockBackgroundSizeFactor</td><td> lockBackgroundSizeFactor</td><td>数</td><td/></tr><tr><td>lockFilterGrayscale</td><td>灰色滤镜（如果锁定）</td><td>数</td><td/></tr></tbody></table></details>
@@ -684,22 +746,44 @@ ical2CalendarWidget();
 ```
 
 ## HTML元素
-<！-在目录中省略->
+从受支持的Material Design小部件创建html元素，以在支持html的任何其他小部件中使用它。
+只需为您的Material Design小部件设置样式，然后按`generate Html Element`，将数据复制并粘贴到任何支持html标签的小部件中。
+或者在脚本中使用它来动态生成窗口小部件。
+
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/html-elements.gif)
+
+有关受支持属性的更多信息，请参见各个小部件：
+
+* [按钮]（＃buttons）
+* [垂直按钮]（＃buttons-vertical）
+* [按钮图标]（＃buttons-icon）
+
+＃使用的库
+适配器使用以下库：
+
+* [适用于Google的网络材料组件]（https://github.com/material-components/material-components-web）
+* [Vuetify]（https://github.com/vuetifyjs/vuetify）
+* [chartjs]（https://www.chartjs.org/）
+* [来自thomasloven的round-slider]（https://github.com/thomasloven/round-slider）
+* [材料设计图标]（https://materialdesignicons.com/）
 
 ## Changelog
 
 <!--
-    Placeholder for the next version (at the beginning of the line):
-    ### __WORK IN PROGRESS__
+    Placeholder for the next version (at the beginning of the line):    
+	### __WORK IN PROGRESS__
 -->
 
+<!-- omit in toc -->
 ### __WORK IN PROGRESS__
 * (Scrounger) icon list: option for status bar text added
 * (Scrounger) icon list: status bar position bug fix
 
+<!-- omit in toc -->
 ### 0.4.2 (2020-12-29)
 * (Scrounger) vis-google-fonts dependency removed
 
+<!-- omit in toc -->
 ### 0.4.1 (2020-12-27)
 * (Scrounger): Adapter settings: theme editor implementation completed
 * (Scrounger): Progress Widget: condition binding bug fix
@@ -710,6 +794,7 @@ ical2CalendarWidget();
 * (Scrougner): icon list: scrollbar bug fix
 * (Scrounger): bug fixes
 
+<!-- omit in toc -->
 ### 0.4.0-beta (2020-12-09)
 * (Scrounger): Line History Chart Widget: Breaking Changes !!! aggregate (display) method for every dataset configurable, [see documentation for detailed infos](#line-history-chart)!
 * (Scrounger): TopAppBar Widget: Breaking Changes !!! Submenus must now be created using JSON string, [see documentation for detailed infos](#since-version-040)!
@@ -749,6 +834,7 @@ ical2CalendarWidget();
 * (Scrounger): dependencies updated
 * (Scrounger): bug fixes
 
+<!-- omit in toc -->
 ### 0.3.19 (2020-07-18)
 * (Scrounger): Icon Button Widget: background color option for lock icon added
 * (Scrounger): possibility to deactivate sentry implemented -> see documentation
@@ -764,249 +850,6 @@ ical2CalendarWidget();
 * (Scrounger): Round Slider Widget: readonly option added
 * (Scrounger): Table Widget: background color hover option added
 * (Scrounger): bug fixes
-
-### 0.3.14 (2020-06-01)
-* (Scrounger): Table Widget: bug fixes
-
-### 0.3.13 (2020-05-29)
-* (Scrounger): Multi State Button Widgets: delay option added
-* (Scrounger): Table Widget: option to add ohter Widgets to table added
-* (Scrounger): Slider & Round Slider Widget: option to show value in percent added
-* (Scrounger): Sentry error handling improved
-* (scrounger): Buttons: click bug fix
-* (scrounger): MaterialDesingIcons: extension bug fix
-* (Scrounger): small bug fixes
-
-### 0.3.11 (2020-05-24)
-* (Scrounger): Sentry added
-* (Scrounger): Select & Autocomplete Widget: vibrate on mobil devices added
-* (Scrounger): List Widget: vibrate on mobil devices added
-* (Scrounger): Masonry & Grid Widget: height changed to optional to support widgets using relative position
-* (Scrounger): Progress Widget revised
-* (Scrounger): Progress Circular Widget added
-* (Scrounger): bug fixes
-
-### 0.3.9 (2020-05-20)
-* (Scrounger): List Widget: subscribe for nested oids and bindings bug fix
-* (Scrounger): Multi State Button Widgets added
-* (Scrounger): checkbox: lock option added
-* (Scrounger): switch: lock option added
-* (Scrounger): bar & pie chart: option for distance between legends points added
-* (Scrounger): bar, pie & json chart: tooltip title and value override options added
-* (Scrounger): pie chart: orientation change bug fix
-* (Scrounger): json & line history chart: stepped line option added
-* (Scrounger): table: option for fixed table headline added
-* (Scrounger): charts: newline bug fixed
-* (Scrounger): charts: tooltip decimal places bug fix
-
-
-### 0.3.6 (2020-04-29)
-* Input, Select, Autocomplete: default input controll buttons removed
-* vuetify library updated to v2.2.26 
-* JSON Chart: auto mode to show values added
-* Line History Chart: auto mode to show values added
-* Bar Chart: auto mode to show values added
-* Pie Chart: auto mode to show values added
-* Button State: lock icon input field bug fix
-
-### 0.3.4 (2020-04-27)
-* Select / AutoComplete Widget: Breaking Changes !!! separator for valuelist changed from comma to semicolon
-* Pie Chart Widget: support for json string implemented
-* Browser Edge: gradient color bug fix
-
-### 0.3.3
-* (Scrounger): css file bug fixes
-* (Scrounger): Material Design Icons library updated to v5.1.45
-
-### 0.3.2
-* (Scrounger): Select & Autocomplete Widget: color option for menu items added
-* (Scrounger): setState type bug fixes
-* (Scrounger): small bug fixes
-
-### 0.3.0
-* (Scrounger): JSON Chart: error handling added
-* (Scrounger): IconList: error handling added
-* (Scrounger): Line History chart: debug mode & error handling added
-* (Scrounger): Select Widget: handling for object with mulitstate added
-* (Scrounger): Autocomplete Widget: handling for object with mulitstate added
-* (Scrounger): bug fixes
-
-### 0.2.76
-* (Scrounger): deprecated Widgets Slider, TopAppBar, Select, Column View removed
-* (Scrounger): JSON Chart Widget added
-* (Scrounger): Line Chart Widget: starttime by object added
-* (Scrounger): Bar Chart Widget: support for json string oid added
-* (Scrounger): Chart Widget: min / max decimals for axis, labels and tooltip added
-* (Scrounger): Masonry View Widget: sort order added
-* (Scrounger): Grid View Widget: sort order added
-* (Scrounger): new Dialog Widget added
-* (Scrounger): bug fixes
-
-### 0.2.66
-* (Scrounger): IconListWidget: button layout options added
-* (Scrounger): IconListWidget: lock option for toggle and state function added
-* (Scrounger): Alert Widget: visibility depending on resoltuion added
-* (Scrounger): Button Widgets: lock option for toggle and state button added
-* (Scrounger): Material Design Icon Widget added
-* (Scrounger): bug fixes
-
-### 0.2.62
-* (Scrounger): List Widget: binding bug fix
-* (Scrounger): Select Widget: number bug fix
-* (Scrounger): IconList Widget: object id for json string added, html input field removed from editor
-* (Scrounger): Input Widget: clear & null bug fix
-* (Scrounger): bug fixes
-
-### 0.2.59
-* (Scrounger): Buttons Toggle: option for push function added
-* (Scrounger): IconList Widget added
-* (Scrounger): Alerts Widget: show dummy message in Editor
-* (Scrounger): Grid Views Widget added
-* (Scrounger): List Widget: color option for switch added
-* (Scrounger): List Widget: dynamic generate item using json string
-* (Scrounger): Masonry Views Widget: visible condition added
-* (Scrounger): Calendar Widget added
-* (Scrounger): translation added
-* (Scrounger): VIS Editor: Link to Forum widget threads added
-* (Scrounger): bug fixes
-
-### 0.2.49
-* (Scrounger): new Select Widget added
-* (Scrounger): Autocomplete Widget added
-* (Scrounger): Alerts Widget added
-* (Scrounger): use of Material Design Icons as images added
-* (Scrounger): Perfomrance optimized
-* (Scrounger): Input Widget added
-* (Scrounger): Masonry Views Widget: settings options for mobile phone and tablet added
-* (Scrounger): Masonry Views Widget: another chrome bug fix, option for distance between views added
-* (Scrounger): Round Slider: vibrate on mobil devices added
-* (Scrounger): bug fixes
-
-### 0.2.32
-* (Scrounger): Editor translation bug fix
-* (Scrounger): Masonry Views Widget: alignment bug fix for chrome
-* (Scrounger): Line History Chart Widget: layout option for line values added
-* (Bluefox): Russian translation revised
-
-### 0.2.30
-* (Scrounger): Masonry Views Widget added
-* (Scrounger): Select Widget: background color bug fix
-* (Scrounger): Column Views Widget added
-* (Scrounger): Button Widgets: icon height bug fix
-* (Scrounger): Vuetify API bug fix
-* (Scrounger): Chart Widgets: localization added
-* (Scrounger): Line History Chart Widget: color options for each y-axis added
-* (Scrounger): Line History Chart Widget: x-axis boundary options added
-* (Scrounger): Line History Chart Widget: x-axis scaling bug fix
-* (Scrounger): TopAppBar Widget: `view in widget 8` removed -> old TopAppBar Widget will be removed in version 0.3.x
-* (Scrounger): bug fixes
-
-### 0.2.22
-* (Scrounger): library material-components-web updated to v4.0.0
-* (Scrounger): Table: support for objects added
-* (Scrounger): List: layout checkbox disabled added
-* (Scrounger): vuetify slider added -> old slider will be removed in version 0.3.x
-* (Scrounger): vuetify library v2.1.15 added
-* (Scrounger): bug fixes
-
-### 0.2.9
-* (Scrounger): translations added
-* (Scrounger): select Widget: color options added
-* (Scrounger): slider Widget: color options added
-* (Scrounger): bug fixes
-
-### 0.2.7
-* (Scrounger): List Widget: types switch readonly, checkbox readonly & button toggle readonly added
-* (Scrounger): Line History Chart Widget: bug fix for hide yaxis by legend click if common axis is set
-* (Scrounger): Line History Chart Widget: option to append text to yAxis values added
-* (Scrounger): Switch Widget: color options added
-* (Scrounger): chartjs lib updated to v2.9.3
-* (Scrounger): round-slider: lib updated to v0.3.7
-* (Scrounger): Table Widget: wordwrap & width option added
-* (Scrounger): Chart Widgets: option for background color of diagram area added
-
-### 0.2.4
-* (Scrounger): Round Slider Widget bug fixes
-* (Scrounger): Line History Chart Widget: null value bug fix
-* (Scrounger): Line History Chart Widget: tooltip bug fix
-* (Scrounger): Line History Chart Widget: editor translation improved
- 
-### 0.2.0
-* (Scrounger): Round Slider Widget added
-* (Scrounger): Icon Button Adition Widget added
-* (Scrounger): Button Adition Widget added
-* (Scrounger): Line History Chart Widget added
-* (Scrounger): Table Widget added
-* (Scrounger): Dialog iFrame Widget added
-* (Scrounger): Dialog View Widget added
-* (Scrounger): Select Widget added
-* (Scrounger): colorSchemes for Charts added
-* (Scrounger): bug fixes
-
-### 0.1.5
-* (Scrounger): bar chart added
-* (Scrounger): pie chart added
-* (Scrounger): bug fixes
-
-### 0.1.2
-* (Scrounger): list: right label option added
-* (Scrounger): slider: value text option for lees or greather than added
-* (Scrounger): switch: support for non boolean values added
-* (Scrounger): checkbox: support for non boolean values added
-* (Scrounger): buttons: image position option added
-* (Scrounger): toggle buttons: support for non boolean values added
-* (Scrounger): topAppBar: z-Index added
-* (Scrounger): haptic feedback (vibration) option for mobil browser added
-* (Scrounger): editor text fields changed to html
-* (Scrounger): mdc-typography font styles added
-* (Scrounger): bug fixes
-
-### 0.1.1
-* (Scrounger): bug fixes
-
-### 0.1.0
-* (Scrounger): Top App Bar Submenu added
-* (Scrounger): List added
-* (Scrounger): Button vertical State, Link, Nav added
-* (Scrounger): Icon Button State, Link, Nav added
-* (Scrounger): initialize slider bug fixes
-* (Scrounger): moved hard coded styling options to css
-* (Scrounger): styling options extended
-* (Scrounger): bug fixes
-
-### 0.0.7
-* (Scrounger): Top App Bar Layouts added
-* (Scrounger): Top App Bar customizing options added
-* (Scrounger): Top App Bar Navigation Drawer backdrop layout added
-* (Scrounger): Button State added
-* (Scrounger): Button Link added
-
-### 0.0.6
-* (Scrounger): Top App Bar with Navigation Drawer added
-* (Scrounger): Checkbox added
-* (Scrounger): bug fixes
- 
-### 0.0.5
-* (Scrounger): icon button Toggle added
-* (Scrounger): color pressed for buttons added
-* (Scrounger): Slider bug fix & label for value <= min / >= max added
-* (Scrounger): translation added
-
-### 0.0.4
-* (Scrounger): cards added
-
-### 0.0.3
-* (Scrounger): progress added
- 
-### 0.0.2
-* (Scrounger): slider vertical added
-* (Scrounger): switch added
-* (Scrounger): button toggle added
-
-### 0.0.1
-* (Scrounger) initial release
-
-<!-- omit in toc -->
 
 ## License
 

@@ -29,6 +29,10 @@ This adapter allows you to push your ioBroker log into the system of [Seq](https
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+
+### 0.2.3 (2021-01-15)
+* (IdleBit) server address ends with "/", this must be removed.
+
 ### 0.2.2 (2021-01-10)
 * (IdleBit) handle uncomplete log message
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: jd9BgNo5pX4TKImcxV35XMy4WBvFO8nVTCUheVhfS+A=
+hash: A7xAt+oZ1mmWz9RS/ljKzTjKddar7wc2MaWgZAvbjE0=
 ---
 ![Logo](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -46,11 +46,14 @@ Manchmal muss npm intall mehrmals aufgerufen werden, um alle erforderlichen Pake
 
 * Bitte erstellen Sie Probleme unter [github] (https://github.com/rg-engineering/ioBroker.sbfspot/issues), wenn Sie Fehler finden oder neue Funktionen wünschen
 
+## 4.0.3 (2021-01-15)
+* (René) Fehlerbehebung basierend auf CI-Tests
+
 ## 4.0.2 (2020-10-09)
 * (René) Fehlerbehebung basierend auf CI-Tests
 
 ## 4.0.0 (2020-07-28)
-* (René) überarbeiten, um async / await zu verwenden
+* (René) Überarbeitung, um async / await zu verwenden
 * (René) benutze mysql2
 
 ## 3.0.0 (2020-04-25)
@@ -130,7 +133,7 @@ Achtung: Das Widget ist nicht mit Version 1.x.x kompatibel. Überprüfen Sie ein
 * (René) Fehlerbehebung für Android App> 1.0.6
 
 ### 0.2.5
-* (René) Verwenden Sie das Installationsdatum, um historische Werte zu berechnen
+* (René) verwendet das Installationsdatum, um historische Werte zu berechnen
 
 ### 0.2.4
 * (René) Logo geändert
@@ -160,7 +163,7 @@ Achtung: Das Widget ist nicht mit Version 1.x.x kompatibel. Überprüfen Sie ein
 ## Changelog
 
 ## License
-Copyright (C) <2017-2020>  <info@rg-engineering.eu>
+Copyright (C) <2017-2021>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

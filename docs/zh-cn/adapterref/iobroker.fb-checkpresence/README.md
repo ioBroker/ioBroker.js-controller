@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.fb-checkpresence/README.md
 title: 无题
-hash: sz5GEfBmsI/P9oIGCuaFT9qb3UogJ83YDErrfMQlPYg=
+hash: 6OUWoEhaUFW+Uy+gxdJgmnwOhzJhVHqVyin9sfbrBgY=
 ---
 ![安装数量](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -47,9 +47,11 @@ fritzbox服务通过TR-064协议使用。
 * WANIPConnection：1-GetInfo
 * WLANConfiguration3-设置启用
 * WLANConfiguration3-GetInfo
+* WLANConfiguration3-GetSecurityKeys
 * X_AVM-DE_HostFilter-DisallowWANAccessByIP
 * X_AVM-DE_HostFilter-GetWANAccessByIP
 * DeviceConfig：1-重新启动
+* LANConfigSecurity1-X_AVM-DE_GetCurrentUser
 
 默认情况下，TR-064接口未激活。但是，可以通过FritzBox Web界面轻松更改此设置。为此，请登录到FritzBox并确保激活了专家视图。
 然后，您将在“家庭网络»家庭网络概述»网络设置”下面找到“允许访问应用程序”。在那里，您必须激活复选框，然后重新启动FritzBox。
@@ -91,7 +93,7 @@ Fritzbox设备的间隔可以配置为1到59分钟。通常，1到5分钟之间�
 如果允许创建FB设备，则可以选中此选项。如果选中此选项，则会为Fritzbox设备列表中的每个设备创建网格对象。
 
 ###家庭成员设置
-对于已配置的家庭成员，您必须输入名称，mac地址或ip地址，注释，以及是否允许该成员进行计算。适配器为每个成员创建数据对象，并检查该成员是否存在。
+对于已配置的家庭成员，您必须输入名称，mac或ip地址，注释，以及是否允许该成员进行计算。适配器为每个成员创建一个状态，并检查该成员是否存在。如果状态更改，则状态也会更改。
 要获取对象中的速度信息，必须选择fb-devices选项。
 
 ###白名单设置
@@ -100,10 +102,13 @@ Fritzbox设备的间隔可以配置为1到59分钟。通常，1到5分钟之间�
 
 ＃＃ 特征
 ### AVM支持检查
-该功能检查使用的fritzbox功能的可用性。可用性记录为信息。如果遇到问题，请查看所有功能是否都设置为true。
+该功能检查使用的fritzbox功能的可用性。可用性记录为信息。如果遇到问题，请查看所有功能是否都设置为true。如果访问权限不正确，还将检查用户的访问权限，并将功能设置为false。
 
 ###开启/关闭访客无线局域网
 在guest虚拟机文件夹下，您可以将状态wlan设置为true或false，然后guest虚拟机wlan打开或关闭。
+
+###访客无线局域网的QR码
+来宾wlan的QR码保存在来宾文件夹中的状态wlanQR中。 QR代码可以在基本的Bool SVG小部件中可见显示。
 
 ###打开/关闭Fritzbox设备的互联网访问
 在文件夹FB-devices下，您可以将禁用状态设置为true或false，并且Fritzbox中将阻止该设备的Internet访问。
@@ -138,13 +143,13 @@ Fritzbox设备的间隔可以配置为1到59分钟。通常，1到5分钟之间�
 以下是有关适配器的最新更新和连接状态的信息。
 
 ###对象来宾
-下面列出了有关活动来宾和表对象（其中包含设备信息）数量的信息。
+以下列出了有关活动来宾和表对象（其中包含设备信息）数量的信息。
 
 ###对象黑名单
 以下列出了有关未知设备数量和其中包含未知设备信息的表对象的信息。
 
 ###对象member.present
-在这里，您可以找到有关当日成员的存在以及该成员自上次更改以来一直为真状态的时间的信息。
+在这里，您可以找到有关当日成员在场的信息以及自上次更改以来该成员的状态为真多久。
 
 ###对象member.absent
 在这里，您可以找到有关当日缺少成员以及该成员自上次更改以来一直处于错误状态的信息。
@@ -162,6 +167,14 @@ Fritzbox设备的间隔可以配置为1到59分钟。通常，1到5分钟之间�
     * Did some changes
     * Did some more changes
 -->
+### 1.1.2 (2021-01-13)
+* (afuerhoff) QR-Code implemented
+* (afuerhoff) setState presence only if changed
+* (afuerhoff) access rights implemented
+* (afuerhoff) use name for presence
+* (afuerhoff) active / inactive devices
+* (afuerhoff) interval 10s bug fixed
+* (afuerhoff) documentation edited 
 
 ### 1.1.1 (2020-12-27)
 * (afuerhoff) Configuration optimized
@@ -186,15 +199,10 @@ Fritzbox设备的间隔可以配置为1到59分钟。通常，1到5分钟之间�
 ### 1.0.3 (2020-05-26)
 * (afuerhoff) bugfix checking mac or ip
 
-### 1.0.2 (2020-05-24)
-* (afuerhoff) error handling optimized
-* (afuerhoff) external ip implemented
-* (afuerhoff) check if mac or ip are listed in fritzbox
-
 ## License
 MIT License
 
-Copyright (c) 2019-2020 Achim Fürhoff <achim.fuerhoff@outlook.de>
+Copyright (c) 2019-2021 Achim Fürhoff <achim.fuerhoff@outlook.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

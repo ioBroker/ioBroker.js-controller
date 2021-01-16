@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.milight-smart-light/README.md
 title: ioBroker.milight-smart-light
-hash: nxsm7kl4CELqAk5+YPohNOy8qyvS3IIUZSu4SG2eaJE=
+hash: cWv7WlDzwUw8WHGt7KPNdnmutK4CenySEwXQgJItWjc=
 ---
 ![milight-smart-light Logo](../../../en/adapterref/iobroker.milight-smart-light/admin/milight-smart-light.png)
 
@@ -37,11 +37,19 @@ Mit dem Adapter können Sie beide verwenden: **v6 Bridge** und **Legacy Bridge**
 - Weiß
 - rgb (w)
 
+**Beschreibung**
+
+Eine ausführliche Beschreibung finden Sie in [hier](https://steiger04.github.io/milight-smart-light-doku/).
+
 ### Versionen
-- **Node.js** Verwenden Sie Version 8.0.0 oder höher
+- **Node.js** Verwenden Sie Version 10.18.1 oder höher
 - **iobroker.admin** Verwenden Sie Version 3.5.10 oder höher
 
 ## Changelog
+### 1.1.1 (2020-01-13)
+- (steiger04) compact mode added
+### 1.0.5 (2020-01-10)
+- (steiger04) Small bug fix
 ### 1.0.1 (2020-11-21)
 - (steiger04) Added admin-UI based on Vue and Quasar
 ### 0.6.0 (2020-05-23)
@@ -54,4 +62,4 @@ Mit dem Adapter können Sie beide verwenden: **v6 Bridge** und **Legacy Bridge**
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2020 Steiger04 <steiger04@posteo.de>
+Copyright (c) 2017-2021 Steiger04 <steiger04@posteo.de>

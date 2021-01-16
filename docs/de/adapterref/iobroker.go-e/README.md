@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.go-e/README.md
 title: ioBroker.go-echarger
-hash: HglRf0U/Jca9Da4HM1YaGj4dY4gKOdaeBGpiyrZ/nVo=
+hash: z6Xgq5QQSdBHuRZHWfl2FDeCbmlLRy5CK6sYe9/ShmU=
 ---
 ![Logo](../../../en/adapterref/iobroker.go-e/admin/go-echarger.png)
 
@@ -36,7 +36,7 @@ Offizielle API-Dokumentation: https://github.com/goecharger/go-eCharger-API-v1
 Offizieller Produktsupport: https://go-e.co/support/
 
 ## Urheberrechte ©
-Copyright (c) 2020 MK-2001 go-e@itinsi.de
+Copyright (c) 2021 MK-2001 go-e@itinsi.de
 
 ## Changelog
 

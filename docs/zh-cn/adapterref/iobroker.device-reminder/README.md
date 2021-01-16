@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.device-reminder/README.md
 title: ioBroker.device-reminder
-hash: 6WQhTic8DOQNfvs2iDWDtZo/TUZaSOt9zST0NRrWBeE=
+hash: K8qV+cdjFv27qHhd6wcX3gwDcqL0TdEq/LMwZwJAPI4=
 ---
 ![商标](../../../en/adapterref/iobroker.device-reminder/admin/icon.png)
 
@@ -52,8 +52,8 @@ hash: 6WQhTic8DOQNfvs2iDWDtZo/TUZaSOt9zST0NRrWBeE=
 -**设备类型**：在这里您必须选择它是哪个设备，以便可以正确执行适配器中的计算。
 -**消耗/能量**：单击带有三个白点的按钮以打开对象管理。必须选择显示“当前实时消费量”的数据点。
 -**打开/关闭**：单击带有三个白点的按钮可打开对象管理。必须选择打开/关闭插座的数据点（非强制性）。
--起始文本**：设备启动时将发送通知（也可以使用特殊字符）
--结束文字**：本机完成操作后将发送通知（也可以使用特殊字符）
+-**开始文本**：设备启动时将发送通知（也可以使用特殊字符）
+-**结束文字**：设备完成操作后将发送通知（也可以使用特殊字符）
 
 使用**起始文本**和**结束文本**，您还可以从外部数据点获取消息。设备状态更改后，将从数据点读取此消息，延迟一秒钟。这样，您可以通过外部脚本创建一条消息。适配器自动识别消息是来自数据点还是仅是手动输入。要选择一个数据点，只需单击带有三个白点的按钮，然后选择相应的数据点。 **请注意**：只能使用一个数据点**或**一个手动输入的消息！<br><br>
 

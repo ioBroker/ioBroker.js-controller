@@ -178,6 +178,9 @@ The datapoints are created on the basis of the returned values of the Fritz AHA 
 * refactor to the format of as of "create adapter"
 
 ## Changelog
+### 2.1.8
+* simpleonoff plug as device/group/template (telekom)
+
 ### 2.1.7 (npm)
 * boostactivetime/windowactivetime only value
 

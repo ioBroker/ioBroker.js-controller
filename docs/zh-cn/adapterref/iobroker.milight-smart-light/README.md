@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.milight-smart-light/README.md
 title: ioBroker.milight-smart-light
-hash: nxsm7kl4CELqAk5+YPohNOy8qyvS3IIUZSu4SG2eaJE=
+hash: cWv7WlDzwUw8WHGt7KPNdnmutK4CenySEwXQgJItWjc=
 ---
 ![milight-smart-light徽标](../../../en/adapterref/iobroker.milight-smart-light/admin/milight-smart-light.png)
 
@@ -37,11 +37,19 @@ mwittig /[Node-milight-promise](https://github.com/mwittig/node-milight-promise)
 -白色
 -rgb（w）
 
+**描述**
+
+可以在[er](https://steiger04.github.io/milight-smart-light-doku/)中找到详细说明。
+
 ###版本
--** Node.js **：使用8.0.0或更高版本
+-** Node.js **：使用10.18.1版或更高版本
 -** iobroker.admin **：使用3.5.10或更高版本
 
 ## Changelog
+### 1.1.1 (2020-01-13)
+- (steiger04) compact mode added
+### 1.0.5 (2020-01-10)
+- (steiger04) Small bug fix
 ### 1.0.1 (2020-11-21)
 - (steiger04) Added admin-UI based on Vue and Quasar
 ### 0.6.0 (2020-05-23)
@@ -54,4 +62,4 @@ mwittig /[Node-milight-promise](https://github.com/mwittig/node-milight-promise)
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2020 Steiger04 <steiger04@posteo.de>
+Copyright (c) 2017-2021 Steiger04 <steiger04@posteo.de>

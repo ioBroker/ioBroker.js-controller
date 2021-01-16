@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: 2PQtLeckVKGn4znp7cn2E1jsJeLHKPYwsyQvRJFeJrA=
+hash: bDmqmEqLbJJK8xKH2am8B0IuElEx4QcdaMgzEKNigGY=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -84,7 +84,7 @@ Eigenschaften:
 | DP-Name | Beschreibung |
 |---------------------|-----------------------------------------------------------------------------------------------------|
 | HeatingPeriodActive | Wenn diese Option deaktiviert ist, werden die Profile nicht verwendet |
-| AktuellesProfil | Aktuelles Profil auswählen (1 basierend, bedeutet, dass Profil 1 Datenpunkte unter Heizungssteuerung.0.Profile.0 verwendet) |
+| AktuellesProfil | aktuelles Profil auswählen (1 basierend, bedeutet, dass Profil 1 Datenpunkte unter Heizungssteuerung.0.Profile.0 verwendet) |
 | LastProgramRun | Zeigt das letzte Mal an, wenn der Adapter ausgeführt wird |
 
 ### Temperaturabnahme / -erhöhung
@@ -133,7 +133,7 @@ Konfigurieren Sie einfach Ereignisse von ical oder anderen Datenpunkten in admin
 
 |                                     |
 
-| ------------------------------------- | ----------- -------------------------------------------------- --------------- | Heizungssteuerung.0.Present | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit (im Falle einer Zahl) ist. | heatcontrol.0.HolidayPresent | Setzen Sie es auf true, wenn Sie zu Hause in Ihrem Urlaub sind. | heizungssteuerung.0.VacationAbsent | Setzen Sie es auf true, wenn Sie in Ihrem Urlaub nicht zu Hause sind Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit (im Falle einer Zahl) ist. | heatcontrol.0.PartyNow | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit ist (im Falle einer Zahl).
+| ------------------------------------- | ----------- -------------------------------------------------- --------------- | Heizungssteuerung.0.Present | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit (im Falle einer Zahl) ist. | heatcontrol.0.HolidayPresent | Setzen Sie es auf true, wenn Sie zu Hause in Ihrem Urlaub sind. | heizungssteuerung.0.VacationAbsent | Setzen Sie es auf true, wenn Sie in Ihrem Urlaub nicht zu Hause sind | Heizungssteuerung.0.GuestsPresent | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit (im Falle einer Zahl) ist. | heatcontrol.0.PartyNow | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit ist (im Falle einer Zahl).
 
 Hinweis: Mit Zahlendatenpunkten können Sie zählen, wie viele Personen sich im Haus befinden, und dann entscheiden, z. Wir haben genug für eine Party ...
 
@@ -160,11 +160,15 @@ Beim Öffnen des Fensters wartet der Adapter auf max. 3 Sekunden für neue Zielt
 Es scheint, dass HmIP-FAL230-C10 nicht direkt als Aktuator in Kombination mit diesem Adapter verwendet werden kann. Wenn Sie HmIP-FAL230-C10 zusammen mit homematischen Thermostaten verwenden, sollte dies funktionieren.
 siehe auch [Forum](https://forum.iobroker.net/topic/22579/test-adapter-heatingcontrol-v1-0-x/1553)
 
+### Fensteröffnungsfunktion von HM-Thermostaten
+HM-Thermostate haben in zwei Varianten eine Open-Window-Funktion. Einerseits als Temperaturabfallerkennung und andererseits in Verbindung mit einem Fensterkontakt.
+Diese Funktion bewirkt, dass der Adapter beim Öffnen des Fensters in den manuellen Modus wechselt. Im Idealfall sollte diese Funktion deaktiviert werden, um die Funktionalität des Adapters nicht zu beeinträchtigen.
+
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
 
-### 2.0.0 (2021-01-xx)
+### 2.0.0 (2021-01-10)
 * (René) internal refactoring
 
 **ATTENTION: breaking changes !!!!**

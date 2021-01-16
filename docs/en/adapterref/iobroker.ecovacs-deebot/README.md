@@ -65,6 +65,10 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
+### 1.0.10 (alpha)
+* Add spotAreaBoundaries
+* Some refactoring
+
 ### 1.0.9
 * Using library version 0.5.3
 * Added some experimental features (for a few models only)

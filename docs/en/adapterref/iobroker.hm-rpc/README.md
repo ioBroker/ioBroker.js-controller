@@ -135,6 +135,9 @@ Here, measured values, control and status data are listed; depending on the func
 ## FAQ
 
 ## Changelog
+### 1.14.31 (2021-01-15)
+* (foxriver76) fixed default values of HMIP value list states
+
 ### 1.14.30 (2021-01-10)
 * (foriver76) in general reject events of unregistered devices, see #298
 

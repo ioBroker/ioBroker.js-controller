@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.device-reminder/README.md
 title: ioBroker.device-Erinnerung
-hash: 6WQhTic8DOQNfvs2iDWDtZo/TUZaSOt9zST0NRrWBeE=
+hash: K8qV+cdjFv27qHhd6wcX3gwDcqL0TdEq/LMwZwJAPI4=
 ---
 ![Logo](../../../en/adapterref/iobroker.device-reminder/admin/icon.png)
 
@@ -52,8 +52,8 @@ Das Aktualisierungsintervall vom &quot;Live-Verbrauchswert (wird als **&quot; _ 
 - **Gerätetyp** Hier müssen Sie auswählen, um welches Gerät es sich handelt, damit die Berechnungen im Adapter korrekt durchgeführt werden können.
 - **Verbrauch / Energie** Klicken Sie auf die Schaltfläche mit den drei weißen Punkten, um Ihre Objektverwaltung zu öffnen. Der Datenpunkt, der den **aktuellen Live-Verbrauch** anzeigt, muss ausgewählt werden.
 - **Ein- / Ausschalten** Durch Klicken auf die Schaltfläche mit den drei weißen Punkten wird Ihre Objektverwaltung geöffnet. Der Datenpunkt, der Ihre **Buchse ein- / ausschaltet** muss ausgewählt sein (nicht obligatorisch).
-- Starttext **: Benachrichtigung, die beim Starten des Geräts gesendet werden soll (Sonderzeichen sind ebenfalls möglich)
-- Endtext **: Benachrichtigung, die gesendet werden soll, wenn das Gerät seinen Betrieb beendet hat (Sonderzeichen sind ebenfalls möglich)
+- **Starttext** Benachrichtigung, die beim Starten des Geräts gesendet werden soll (Sonderzeichen sind ebenfalls möglich)
+- **Endtext** Benachrichtigung, die gesendet werden soll, wenn das Gerät seinen Betrieb beendet hat (Sonderzeichen sind ebenfalls möglich)
 
 Mit **Starttext** und **Endtext** können Sie auch eine Nachricht von einem externen Datenpunkt erhalten. Diese Nachricht wird mit einer Verzögerung von 1 Sekunde vom Datenpunkt gelesen, nachdem sich der Status des Geräts geändert hat. Auf diese Weise können Sie eine Nachricht von einem externen Skript erstellen lassen. Der Adapter erkennt automatisch, ob eine Nachricht von einem Datenpunkt stammt oder ob sie einfach manuell eingegeben wurde. Um einen Datenpunkt auszuwählen, klicken Sie einfach auf die Schaltfläche mit den drei weißen Punkten und wählen Sie dann den entsprechenden Datenpunkt aus. **Bitte beachten Sie** Es kann nur entweder ein Datenpunkt **oder** eine manuell eingegebene Nachricht verwendet werden!<br><br>
 

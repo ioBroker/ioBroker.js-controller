@@ -80,6 +80,10 @@ directory) to try it out on the commandline. Call the scripts using "node filena
 
 ## Changelog
 
+### 1.4.0 (2021-01-14)
+* (Apollon77) Prevent warnings in js-controller 3.2
+* (Apollon77) Require at least js-controller 2.0
+
 ### 1.3.0 (2020-12-27)
 * (Apollon77) adjust connection close handling
 * (Apollon77) add compact mode

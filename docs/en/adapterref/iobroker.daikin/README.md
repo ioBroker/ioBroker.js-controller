@@ -64,6 +64,11 @@ After the Adapter has connected to the Daikin Device a structure of objects are 
 
 ## Changelog
 
+### 1.3.0 (2021-01-14)
+* (Apollon77) Prevent warnings in js-controller 3.2
+* (Apollon77) Allow overwriting the name in Daikin channel object
+* (Apollon77) Require at least js-controller 2.0
+
 ### 1.2.0 (2020-12-27)
 * add compact mode
 

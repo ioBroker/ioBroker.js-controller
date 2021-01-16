@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.go-e/README.md
 title: ioBroker.go充电器
-hash: HglRf0U/Jca9Da4HM1YaGj4dY4gKOdaeBGpiyrZ/nVo=
+hash: z6Xgq5QQSdBHuRZHWfl2FDeCbmlLRy5CK6sYe9/ShmU=
 ---
 ![商标](../../../en/adapterref/iobroker.go-e/admin/go-echarger.png)
 
@@ -36,7 +36,7 @@ hash: HglRf0U/Jca9Da4HM1YaGj4dY4gKOdaeBGpiyrZ/nVo=
 官方产品支持：https：//go-e.co/support/
 
 ##版权
-版权所有（c）2020 MK-2001 go-e@itinsi.de
+版权所有（c）2021 MK-2001 go-e@itinsi.de
 
 ## Changelog
 

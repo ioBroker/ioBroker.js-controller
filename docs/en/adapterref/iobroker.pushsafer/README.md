@@ -50,6 +50,10 @@ You can find API description [here](https://www.pushsafer.com/en/pushapi)
 You can use blockly too.
 
 ## Changelog
+
+### 1.0.3 (2021-01-13)
+* (Apollon77) update dependencies
+
 ### 1.0.2 (2020-04-24)
 * (bluefox) Added color icon option
 * (bluefox) Refactoring
@@ -80,7 +84,7 @@ You can use blockly too.
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2021 bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

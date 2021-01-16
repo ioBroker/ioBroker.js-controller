@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sbfspot/README.md
 title: ioBroker.sbfspot
-hash: jd9BgNo5pX4TKImcxV35XMy4WBvFO8nVTCUheVhfS+A=
+hash: A7xAt+oZ1mmWz9RS/ljKzTjKddar7wc2MaWgZAvbjE0=
 ---
 ![商标](../../../en/adapterref/iobroker.sbfspot/admin/sbfspot.png)
 
@@ -46,6 +46,9 @@ hash: jd9BgNo5pX4TKImcxV35XMy4WBvFO8nVTCUheVhfS+A=
 
 *如果发现错误或有新功能，请在[github]（https://github.com/rg-engineering/ioBroker.sbfspot/issues）中创建问题
 
+## 4.0.3（2021-01-15）
+*（René）基于CI测试的错误修复
+
 ## 4.0.2（2020-10-09）
 *（René）基于CI测试的错误修复
 
@@ -54,10 +57,10 @@ hash: jd9BgNo5pX4TKImcxV35XMy4WBvFO8nVTCUheVhfS+A=
 *（René）使用mysql2
 
 ## 3.0.0（2020-04-25）
-*（René）sqlite3包被Better-sqlite3取代
+*（René）sqlite3程序包被Better-sqlite3取代
 * DP的（René）角色工作过度
 *（René）参见问题＃19：仅当添加日光时才获取数据
-*（René）参见问题＃29：小部件轴标签的默认颜色已更改
+*（René）请参阅问题29：小部件轴标签的默认颜色已更改
 *（René）小部件：如果添加的小部件太小，则记录日志
 
 ## 2.4.3（2020-04-02）
@@ -160,7 +163,7 @@ hash: jd9BgNo5pX4TKImcxV35XMy4WBvFO8nVTCUheVhfS+A=
 ## Changelog
 
 ## License
-Copyright (C) <2017-2020>  <info@rg-engineering.eu>
+Copyright (C) <2017-2021>  <info@rg-engineering.eu>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

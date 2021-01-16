@@ -3,14 +3,14 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.fb-checkpresence/README.md
 title: без заголовка
-hash: sz5GEfBmsI/P9oIGCuaFT9qb3UogJ83YDErrfMQlPYg=
+hash: 6OUWoEhaUFW+Uy+gxdJgmnwOhzJhVHqVyin9sfbrBgY=
 ---
 ![Количество установок](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.fb-checkpresence.svg)
 ![Статус зависимости](https://img.shields.io/david/afuerhoff/iobroker.fb-checkpresence.svg)
 ![Известные уязвимости](https://snyk.io/test/github/afuerhoff/ioBroker.fb-checkpresence/badge.svg)
-![НПМ](https://nodei.co/npm/iobroker.fb-checkpresence.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.fb-checkpresence.png?downloads=true)
 ![Трэвис-Си](http://img.shields.io/travis/afuerhoff/ioBroker.fb-checkpresence/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/afuerhoff/ioBroker.fb-checkpresence?branch=master&svg=true)
 
@@ -47,9 +47,11 @@ hash: sz5GEfBmsI/P9oIGCuaFT9qb3UogJ83YDErrfMQlPYg=
 * WANIPConnection: 1 - GetInfo
 * WLANConfiguration3 - SetEnable
 * WLANConfiguration3 - GetInfo
+* WLANConfiguration3 - GetSecurityKeys
 * X_AVM-DE_HostFilter - DisallowWANAccessByIP
 * X_AVM-DE_HostFilter - GetWANAccessByIP
 * DeviceConfig: 1 - перезагрузка
+* LANConfigSecurity1 - X_AVM-DE_GetCurrentUser
 
 По умолчанию интерфейс TR-064 не активирован. Однако это можно легко изменить через веб-интерфейс FritzBox. Для этого войдите в свой FritzBox и убедитесь, что режим эксперта активирован.
 Затем вы найдете ниже «Домашняя сеть» Обзор домашней сети »Настройки сети» пункт «Разрешить доступ для приложений». Здесь вам нужно установить флажок, а затем перезапустить FritzBox один раз.
@@ -85,25 +87,28 @@ hash: sz5GEfBmsI/P9oIGCuaFT9qb3UogJ83YDErrfMQlPYg=
 Если этот параметр отключен, информация о сетке также отключена.
 
 ### Ресинхронизация объектов устройства FB
-Если этот флажок установлен, объект устройства FB повторно синхронизируется со списком устройств Fritzbox.
+Если эта опция отмечена, то объект устройства FB повторно синхронизируется со списком устройств Fritzbox.
 
 ### Создание информации о сетке
 Этот параметр можно проверить, если создание устройств FB разрешено. Если этот флажок установлен, объекты сетки создаются для каждого устройства в списке устройств Fritzbox.
 
 ### Настройки членов семьи
-Для настроенного члена семьи вы должны ввести Имя, MAC- или IP-адрес, комментарий и указать, включен ли член для расчета. Для каждого члена адаптер создает объекты данных и проверяет, присутствует ли член или нет.
+Для настроенного члена семьи вы должны ввести Имя, MAC- или IP-адрес, комментарий и указать, включен ли член для расчета. Для каждого члена адаптер создает состояние присутствия и проверяет, присутствует ли член или нет. Состояние было изменено, если изменилось состояние присутствия.
 Для получения информации о скорости в объектах необходимо выбрать опцию fb-devices.
 
 ### Настройки белого списка
-В белый список вы можете вставить все известные устройства. Любые неизвестные устройства перечислены в объекте черного списка.
+В белый список вы можете вставить все известные устройства. Любые неизвестные устройства занесены в черный список.
 Если вы установите флажок в заголовке таблицы, будут выбраны все устройства.
 
 ## Особенности
 ### Проверка поддержки AVM
-Функция проверяет наличие используемых функций fritzbox. Доступность регистрируется как информация. Если у вас есть проблемы, посмотрите, все ли функции установлены на true.
+Функция проверяет наличие используемых функций fritzbox. Доступность регистрируется как информация. Если у вас есть проблемы, посмотрите, все ли функции установлены на true. Также для пользователя проверяются права доступа, и для функции устанавливается значение false, если права доступа неверны.
 
 ### Включение / выключение гостевой wlan
 В гостевой папке вы можете установить для состояния wlan значение true или false, а затем гостевой wlan включится или выключится.
+
+### QR-код гостевой wlan
+QR-код гостевой wlan сохраняется в состоянии wlanQR в гостевой папке. QR-код может отображаться на vis в виджете basic - Bool SVG.
 
 ### Включение / выключение доступа в Интернет устройств Fritzbox
 В папке FB-devices вы можете установить для отключенного состояния значение true или false, а доступ в Интернет для этого устройства будет заблокирован в Fritzbox.
@@ -123,7 +128,7 @@ hash: sz5GEfBmsI/P9oIGCuaFT9qb3UogJ83YDErrfMQlPYg=
 Если присутствуют все члены семьи, то объект верен.
 
 ### Наличие объекта
-Если присутствует один член семьи, значит, объект верен.
+Если один член семьи присутствует, значит, объект верен.
 
 ### Объектные устройства
 Все эти устройства перечислены в fritzbox.
@@ -162,6 +167,14 @@ hash: sz5GEfBmsI/P9oIGCuaFT9qb3UogJ83YDErrfMQlPYg=
     * Did some changes
     * Did some more changes
 -->
+### 1.1.2 (2021-01-13)
+* (afuerhoff) QR-Code implemented
+* (afuerhoff) setState presence only if changed
+* (afuerhoff) access rights implemented
+* (afuerhoff) use name for presence
+* (afuerhoff) active / inactive devices
+* (afuerhoff) interval 10s bug fixed
+* (afuerhoff) documentation edited 
 
 ### 1.1.1 (2020-12-27)
 * (afuerhoff) Configuration optimized
@@ -186,15 +199,10 @@ hash: sz5GEfBmsI/P9oIGCuaFT9qb3UogJ83YDErrfMQlPYg=
 ### 1.0.3 (2020-05-26)
 * (afuerhoff) bugfix checking mac or ip
 
-### 1.0.2 (2020-05-24)
-* (afuerhoff) error handling optimized
-* (afuerhoff) external ip implemented
-* (afuerhoff) check if mac or ip are listed in fritzbox
-
 ## License
 MIT License
 
-Copyright (c) 2019-2020 Achim Fürhoff <achim.fuerhoff@outlook.de>
+Copyright (c) 2019-2021 Achim Fürhoff <achim.fuerhoff@outlook.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

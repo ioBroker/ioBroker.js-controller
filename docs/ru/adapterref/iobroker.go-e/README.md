@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.go-e/README.md
 title: ioBroker.go-echarger
-hash: HglRf0U/Jca9Da4HM1YaGj4dY4gKOdaeBGpiyrZ/nVo=
+hash: z6Xgq5QQSdBHuRZHWfl2FDeCbmlLRy5CK6sYe9/ShmU=
 ---
 ![Логотип](../../../en/adapterref/iobroker.go-e/admin/go-echarger.png)
 
@@ -14,7 +14,7 @@ hash: HglRf0U/Jca9Da4HM1YaGj4dY4gKOdaeBGpiyrZ/nVo=
 ![Статус зависимости](https://img.shields.io/david/MK-2001/iobroker.go-e.svg)
 ![Известные уязвимости](https://snyk.io/test/github/MK-2001/ioBroker.go-e/badge.svg)
 ![Сборка и тесты](https://img.shields.io/travis/MK-2001/ioBroker.go-e/master.svg)
-![НПМ](https://nodei.co/npm/iobroker.go-e.png?mini=true)
+![NPM](https://nodei.co/npm/iobroker.go-e.png?mini=true)
 
 # IoBroker.go-echarger
 # Настенная коробка go-eCharger
@@ -36,7 +36,7 @@ hash: HglRf0U/Jca9Da4HM1YaGj4dY4gKOdaeBGpiyrZ/nVo=
 Официальная поддержка продукта: https://go-e.co/support/
 
 ## Авторское право
-Авторские права (c) 2020 MK-2001 go-e@itinsi.de
+Авторские права (c) 2021 MK-2001 go-e@itinsi.de
 
 ## Changelog
 

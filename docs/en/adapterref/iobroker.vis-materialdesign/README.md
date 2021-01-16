@@ -1,32 +1,121 @@
 ![Logo](admin/vis-materialdesign.png)
-# ioBroker.vis-materialdesign
+<!-- omit in toc -->
+## ioBroker.vis-materialdesign
 
 ![stable version](http://iobroker.live/badges/vis-materialdesign.svg)
 [![NPM version](http://img.shields.io/npm/v/iobroker.vis-materialdesign.svg)](https://www.npmjs.com/package/iobroker.vis-materialdesign)
 [![Number of Installations](http://iobroker.live/badges/vis-materialdesign-installed.svg)](https://www.npmjs.com/package/ioBroker.vis-materialdesign)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.vis-materialdesign.svg)](https://www.npmjs.com/package/ioBroker.vis-materialdesign)
-[![Dependency Status](https://img.shields.io/david/Scrounger/iobroker.vis-materialdesign.svg)](https://david-dm.org/Scrounger/iobroker.vis-materialdesign)
-[![Known Vulnerabilities](https://snyk.io/test/github/Scrounger/ioBroker.vis-materialdesign/badge.svg)](https://snyk.io/test/github/Scrounger/ioBroker.vis-materialdesign)
 
 [![NPM](https://nodei.co/npm/iobroker.vis-materialdesign.png?downloads=true)](https://nodei.co/npm/iobroker.vis-materialdesign/)
 
-**Tests:**: [![Travis-CI](http://img.shields.io/travis/Scrounger/ioBroker.vis-materialdesign/master.svg)](https://travis-ci.org/Scrounger/ioBroker.vis-materialdesign)
-
-## Material Design Widgets for IoBroker VIS
+<!-- omit in toc -->
+# Material Design Widgets for IoBroker VIS
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=VWAXSTS634G88&source=url)
 
-ioBroker Material Design Widgets are based on [Google's material design guidelines](https://material.io/design/). The adapter uses the following libraries:
-* [Google material components for the web](https://github.com/material-components/material-components-web)
-* [Vuetify](https://github.com/vuetifyjs/vuetify)
-* [chartjs](https://www.chartjs.org/)
-* [round-slider from thomasloven](https://github.com/thomasloven/round-slider)
-* [Material Design Icons](https://materialdesignicons.com/)
 
-## Adapter settings (Theme Editor)
+ioBroker Material Design Widgets are based on [Google's material design guidelines](https://material.io/design/)
+
+<br>
+
+<!-- omit in toc -->
+## Table of Content
+- [General](#general)
+	- [Online Example Project](#online-example-project)
+	- [Practical examples](#practical-examples)
+	- [Questions and answers about the widgets](#questions-and-answers-about-the-widgets)
+	- [Supported Browser](#supported-browser)
+	- [Supported Browser for vibrate on mobil devices function](#supported-browser-for-vibrate-on-mobil-devices-function)
+	- [ioBroker VIS App](#iobroker-vis-app)
+- [Adapter settings](#adapter-settings)
+	- [General](#general-1)
+	- [Theme Editor](#theme-editor)
+		- [Colors Theme](#colors-theme)
+		- [Fonts Theme](#fonts-theme)
+		- [Font Sizes Theme](#font-sizes-theme)
+- [Widgets](#widgets)
+	- [Material Design Icons and Images](#material-design-icons-and-images)
+	- [Buttons](#buttons)
+	- [Buttons Vertical](#buttons-vertical)
+	- [Buttons Icon](#buttons-icon)
+	- [Card](#card)
+	- [List](#list)
+	- [IconList](#iconlist)
+	- [Progress](#progress)
+	- [Slider](#slider)
+	- [Round Slider](#round-slider)
+	- [Checkbox](#checkbox)
+	- [Switch](#switch)
+	- [Input](#input)
+		- [Text input](#text-input)
+		- [Select](#select)
+		- [Autocomplete](#autocomplete)
+	- [Top App Bar with Navigation Drawer](#top-app-bar-with-navigation-drawer)
+		- [Submenu](#submenu)
+	- [Charts](#charts)
+		- [Bar Chart](#bar-chart)
+		- [Pie Chart](#pie-chart)
+		- [Line History Chart:](#line-history-chart)
+		- [JSON Chart](#json-chart)
+			- [General](#general-2)
+			- [graph](#graph)
+			- [graph line chart spfeicifc](#graph-line-chart-spfeicifc)
+			- [graph bar chart spfeicifc](#graph-bar-chart-spfeicifc)
+			- [graph y-Axis](#graph-y-axis)
+			- [gradientColor](#gradientcolor)
+		- [Chart with time axis](#chart-with-time-axis)
+			- [values with timestamp](#values-with-timestamp)
+			- [x-axis settings for data with timestamp](#x-axis-settings-for-data-with-timestamp)
+	- [Table](#table)
+		- [Input Data](#input-data)
+			- [Control Elements](#control-elements)
+		- [Editor Settings](#editor-settings)
+	- [Responsive Layout](#responsive-layout)
+		- [Masonry Views](#masonry-views)
+		- [Grid Views](#grid-views)
+	- [Alerts](#alerts)
+	- [Calendar](#calendar)
+	- [HTML Elements](#html-elements)
+- [used libraries](#used-libraries)
+- [Changelog](#changelog)
+- [License](#license)
+
+# General
+
+## Online Example Project
+provided by [iobroker.click](https://iobroker.click/index.html), thanks to bluefox and iobroker.
+
+* <a href="https://iobroker.click/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a> (<a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">alternativ</a>)
+* <a href="https://iobroker.click/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS Editor</a> (<a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">alternativ</a>)
+
+## Practical examples
+* [Weather View](https://forum.iobroker.net/topic/32232/material-design-widgets-wetter-view)
+* [Skript Status](https://forum.iobroker.net/topic/30662/material-design-widgets-skript-status)
+* [Adapter Status](https://forum.iobroker.net/topic/30661/material-design-widgets-adapter-status)
+* [UniFi Netzwerk Status](https://github.com/Scrounger/ioBroker.vis-materialdesign/tree/master/examples/UnifiNetworkState)
+
+## Questions and answers about the widgets
+If you have questions about the individual widgets, then first look at the topics of the individual widgets
+
+* [German threads](https://forum.iobroker.net/search?term=Material%20Design%20Widgets%3A&in=titles&matchWords=all&by%5B%5D=Scrounger&categories%5B%5D=7&sortBy=topic.title&sortDirection=desc&showAs=topics)
+
+## Supported Browser
+I officially support the last two versions of every major browser. Specifically, i test on the following browsers:
+* Firefox on Windows and Linux
+* Chrome on Android, Windows, and Linux
+
+## Supported Browser for vibrate on mobil devices function
+https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
+
+## ioBroker VIS App
+latest version needs to be implemented by the app, see https://github.com/ioBroker/ioBroker.vis.cordova.
+I do not use the app and do not test on it either
+
+# Adapter settings
 
 Starting with version 0.4.0 there is a settings page for the adapter. You can find it under Instances in the user interface of the admin adapter
 
-### General
+## General
 ![Logo](doc/en/media/settings_general.png)
 
 |setting|description|
@@ -35,7 +124,7 @@ Starting with version 0.4.0 there is a settings page for the adapter. You can fi
 |Generate global script|Create a global script for the [Javascript Script Engine](https://github.com/ioBroker/ioBroker.javascript) with all theme data points. This allows to use colors, fonts and font sizes comfortably in scripts.|
 |Sentry|use Sentry libraries to automatically report exceptions and code errors anonymously to the developers. For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)!|
 
-### Theme Editor
+## Theme Editor
 
 With the help of the Theme Editor you can centrally set colors, fonts and font sizes for all widgets via the adapter settings. This is realized with the help of the [Bindings of the VIS adapter](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects). For each widget datapoints (see screenshot below) are created with the set values. This makes it possible to use these settings in other widgets (not Material Design Widgets) via bindings.
 
@@ -57,7 +146,7 @@ With the help of this button it is also possible to update your widgets from ver
 
 In the adapter settings you can copy the binding command to the clipboard by clicking on the default text or the id in the tables. This binding can then be used by copy and paste even for non Material Design Widgets.
 
-#### Colors Theme
+### Colors Theme
 For colors there are two themes - light theme and dark theme. With the datapoint `vis-materialdesign.0.colors.darkTheme` you can switch between the two themes.
 
 ![Logo](doc/en/media/settings_colors_light.png)
@@ -67,14 +156,14 @@ For colors there are two themes - light theme and dark theme. With the datapoint
 Standard colors can be defined in the upper area. These standard colors can then be assigned to the individual widgets using the buttons in the table. If you change the default color, it will also change for all widgets that use this color.
 Additionally, it is possible to assign your own colors to the widgets, independent of the standard colors.
 
-#### Fonts Theme
+### Fonts Theme
 
 ![Logo](doc/en/media/settings_fonts.png)
 
 Standard fonts can be defined in the upper area. These standard fonts can then be assigned to the individual widgets using the buttons in the table. If you change the default color, it will also change for all widgets that use this color.
 Additionally, it is possible to assign your own fonts to the widgets, independent of the standard colors.
 
-#### Font Sizes Theme
+### Font Sizes Theme
 
 ![Logo](doc/en/media/settings_fontSizes.png)
 
@@ -82,31 +171,8 @@ Standard font sizes can be defined in the upper area. These standard font sizes 
 Additionally, it is possible to assign your own font sizes to the widgets, independent of the standard colors.
 
 
-## Online Example Project
-provided by [iobroker.click](https://iobroker.click/index.html), thanks to bluefox and iobroker.
+# Widgets
 
-* <a href="https://iobroker.click/vis/index.html?Material%20Design%20Widgets" target="_blank">VIS Runtime</a> (<a href="http://iobroker.click:8082/vis/index.html?Material%20Design%20Widgets" target="_blank">alternativ</a>)
-* <a href="https://iobroker.click/vis/edit.html?Material%20Design%20Widgets" target="_blank">VIS Editor</a> (<a href="http://iobroker.click:8082/vis/edit.html?Material%20Design%20Widgets" target="_blank">alternativ</a>)
-
-## Practical examples
-* [Weather View](https://forum.iobroker.net/topic/32232/material-design-widgets-wetter-view)
-* [Skript Status](https://forum.iobroker.net/topic/30662/material-design-widgets-skript-status)
-* [Adapter Status](https://forum.iobroker.net/topic/30661/material-design-widgets-adapter-status)
-* [UniFi Netzwerk Status](https://github.com/Scrounger/ioBroker.vis-materialdesign/tree/master/examples/UnifiNetworkState)
-
-## Questions and answers about the widgets
-If you have questions about the individual widgets, then first look at the topics of the individual widgets
-
-* [German threads](https://forum.iobroker.net/search?term=Material%20Design%20Widgets%3A&in=titles&matchWords=all&by%5B%5D=Scrounger&categories%5B%5D=7&sortBy=topic.title&sortDirection=desc&showAs=topics)
-
-### Supported Browser
-https://github.com/material-components/material-components-web/blob/master/docs/supported-browsers.md
-
-### Supported Browser for vibrate on mobil devices function
-https://developer.mozilla.org/en-US/docs/Web/API/Navigator/vibrate
-
-### ioBroker VIS App
-not working at the moment, needs to be implemneted by app, see https://github.com/ioBroker/ioBroker.vis.cordova
 
 ## Material Design Icons and Images
 <table>
@@ -1308,7 +1374,7 @@ The following properties can be used as [control element in a table](#control-el
 ## Buttons Icon
 ![Logo](doc/en/media/icon-button.gif)
 
-### Button Icon Link Properties
+##### Button Icon Link Properties
 
 The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
 
@@ -1396,7 +1462,7 @@ The following properties can be used as [control element in a table](#control-el
 	</table>
 </details>
 
-### Button Icon State Properties
+##### Button Icon State Properties
 
 The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
 
@@ -1551,7 +1617,7 @@ The following properties can be used as [control element in a table](#control-el
 	</table>
 </details>
 
-### Button Icon Toggle Properties
+##### Button Icon Toggle Properties
 
 The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
 
@@ -6126,23 +6192,47 @@ function ical2CalendarWidget() {
 ical2CalendarWidget();
 ```
 
+
 ## HTML Elements
 
-<!-- omit in toc -->
-## Changelog
+Create an html element from the supported Material Design widgets to use it in any other widget that supports html.
+Just style your Material Design widget, press the `generate Html Element`, copy the data and paste it to any widget that supports html tags.
+Or use it in scripts to generate dynamically Widgets.
+
+![Logo](doc/en/media/html-elements.gif)
+
+More information about the supported properties can be found at the individual widgets:
+* [Buttons](#buttons)
+* [Buttons Vertical](#buttons-vertical)
+* [Buttons Icon](#buttons-icon)
+
+
+# used libraries
+The adapter uses the following libraries:
+* [Google material components for the web](https://github.com/material-components/material-components-web)
+* [Vuetify](https://github.com/vuetifyjs/vuetify)
+* [chartjs](https://www.chartjs.org/)
+* [round-slider from thomasloven](https://github.com/thomasloven/round-slider)
+* [Material Design Icons](https://materialdesignicons.com/)
+
+
+# Changelog
 
 <!--
-    Placeholder for the next version (at the beginning of the line):
-    ### __WORK IN PROGRESS__
+    Placeholder for the next version (at the beginning of the line):    
+	### __WORK IN PROGRESS__
 -->
 
+<!-- omit in toc -->
 ### __WORK IN PROGRESS__
 * (Scrounger) icon list: option for status bar text added
 * (Scrounger) icon list: status bar position bug fix
 
+<!-- omit in toc -->
 ### 0.4.2 (2020-12-29)
 * (Scrounger) vis-google-fonts dependency removed
 
+<!-- omit in toc -->
 ### 0.4.1 (2020-12-27)
 * (Scrounger): Adapter settings: theme editor implementation completed
 * (Scrounger): Progress Widget: condition binding bug fix
@@ -6153,6 +6243,7 @@ ical2CalendarWidget();
 * (Scrougner): icon list: scrollbar bug fix
 * (Scrounger): bug fixes
 
+<!-- omit in toc -->
 ### 0.4.0-beta (2020-12-09)
 * (Scrounger): Line History Chart Widget: Breaking Changes !!! aggregate (display) method for every dataset configurable, [see documentation for detailed infos](#line-history-chart)!
 * (Scrounger): TopAppBar Widget: Breaking Changes !!! Submenus must now be created using JSON string, [see documentation for detailed infos](#since-version-040)!
@@ -6192,6 +6283,7 @@ ical2CalendarWidget();
 * (Scrounger): dependencies updated
 * (Scrounger): bug fixes
 
+<!-- omit in toc -->
 ### 0.3.19 (2020-07-18)
 * (Scrounger): Icon Button Widget: background color option for lock icon added
 * (Scrounger): possibility to deactivate sentry implemented -> see documentation
@@ -6208,249 +6300,8 @@ ical2CalendarWidget();
 * (Scrounger): Table Widget: background color hover option added
 * (Scrounger): bug fixes
 
-### 0.3.14 (2020-06-01)
-* (Scrounger): Table Widget: bug fixes
 
-### 0.3.13 (2020-05-29)
-* (Scrounger): Multi State Button Widgets: delay option added
-* (Scrounger): Table Widget: option to add ohter Widgets to table added
-* (Scrounger): Slider & Round Slider Widget: option to show value in percent added
-* (Scrounger): Sentry error handling improved
-* (scrounger): Buttons: click bug fix
-* (scrounger): MaterialDesingIcons: extension bug fix
-* (Scrounger): small bug fixes
-
-### 0.3.11 (2020-05-24)
-* (Scrounger): Sentry added
-* (Scrounger): Select & Autocomplete Widget: vibrate on mobil devices added
-* (Scrounger): List Widget: vibrate on mobil devices added
-* (Scrounger): Masonry & Grid Widget: height changed to optional to support widgets using relative position
-* (Scrounger): Progress Widget revised
-* (Scrounger): Progress Circular Widget added
-* (Scrounger): bug fixes
-
-### 0.3.9 (2020-05-20)
-* (Scrounger): List Widget: subscribe for nested oids and bindings bug fix
-* (Scrounger): Multi State Button Widgets added
-* (Scrounger): checkbox: lock option added
-* (Scrounger): switch: lock option added
-* (Scrounger): bar & pie chart: option for distance between legends points added
-* (Scrounger): bar, pie & json chart: tooltip title and value override options added
-* (Scrounger): pie chart: orientation change bug fix
-* (Scrounger): json & line history chart: stepped line option added
-* (Scrounger): table: option for fixed table headline added
-* (Scrounger): charts: newline bug fixed
-* (Scrounger): charts: tooltip decimal places bug fix
-
-
-### 0.3.6 (2020-04-29)
-* Input, Select, Autocomplete: default input controll buttons removed
-* vuetify library updated to v2.2.26 
-* JSON Chart: auto mode to show values added
-* Line History Chart: auto mode to show values added
-* Bar Chart: auto mode to show values added
-* Pie Chart: auto mode to show values added
-* Button State: lock icon input field bug fix
-
-### 0.3.4 (2020-04-27)
-* Select / AutoComplete Widget: Breaking Changes !!! separator for valuelist changed from comma to semicolon
-* Pie Chart Widget: support for json string implemented
-* Browser Edge: gradient color bug fix
-
-### 0.3.3
-* (Scrounger): css file bug fixes
-* (Scrounger): Material Design Icons library updated to v5.1.45
-
-### 0.3.2
-* (Scrounger): Select & Autocomplete Widget: color option for menu items added
-* (Scrounger): setState type bug fixes
-* (Scrounger): small bug fixes
-
-### 0.3.0
-* (Scrounger): JSON Chart: error handling added
-* (Scrounger): IconList: error handling added
-* (Scrounger): Line History chart: debug mode & error handling added
-* (Scrounger): Select Widget: handling for object with mulitstate added
-* (Scrounger): Autocomplete Widget: handling for object with mulitstate added
-* (Scrounger): bug fixes
-
-### 0.2.76
-* (Scrounger): deprecated Widgets Slider, TopAppBar, Select, Column View removed
-* (Scrounger): JSON Chart Widget added
-* (Scrounger): Line Chart Widget: starttime by object added
-* (Scrounger): Bar Chart Widget: support for json string oid added
-* (Scrounger): Chart Widget: min / max decimals for axis, labels and tooltip added
-* (Scrounger): Masonry View Widget: sort order added
-* (Scrounger): Grid View Widget: sort order added
-* (Scrounger): new Dialog Widget added
-* (Scrounger): bug fixes
-
-### 0.2.66
-* (Scrounger): IconListWidget: button layout options added
-* (Scrounger): IconListWidget: lock option for toggle and state function added
-* (Scrounger): Alert Widget: visibility depending on resoltuion added
-* (Scrounger): Button Widgets: lock option for toggle and state button added
-* (Scrounger): Material Design Icon Widget added
-* (Scrounger): bug fixes
-
-### 0.2.62
-* (Scrounger): List Widget: binding bug fix
-* (Scrounger): Select Widget: number bug fix
-* (Scrounger): IconList Widget: object id for json string added, html input field removed from editor
-* (Scrounger): Input Widget: clear & null bug fix
-* (Scrounger): bug fixes
-
-### 0.2.59
-* (Scrounger): Buttons Toggle: option for push function added
-* (Scrounger): IconList Widget added
-* (Scrounger): Alerts Widget: show dummy message in Editor
-* (Scrounger): Grid Views Widget added
-* (Scrounger): List Widget: color option for switch added
-* (Scrounger): List Widget: dynamic generate item using json string
-* (Scrounger): Masonry Views Widget: visible condition added
-* (Scrounger): Calendar Widget added
-* (Scrounger): translation added
-* (Scrounger): VIS Editor: Link to Forum widget threads added
-* (Scrounger): bug fixes
-
-### 0.2.49
-* (Scrounger): new Select Widget added
-* (Scrounger): Autocomplete Widget added
-* (Scrounger): Alerts Widget added
-* (Scrounger): use of Material Design Icons as images added
-* (Scrounger): Perfomrance optimized
-* (Scrounger): Input Widget added
-* (Scrounger): Masonry Views Widget: settings options for mobile phone and tablet added
-* (Scrounger): Masonry Views Widget: another chrome bug fix, option for distance between views added
-* (Scrounger): Round Slider: vibrate on mobil devices added
-* (Scrounger): bug fixes
-
-### 0.2.32
-* (Scrounger): Editor translation bug fix
-* (Scrounger): Masonry Views Widget: alignment bug fix for chrome
-* (Scrounger): Line History Chart Widget: layout option for line values added
-* (Bluefox): Russian translation revised
-
-### 0.2.30
-* (Scrounger): Masonry Views Widget added
-* (Scrounger): Select Widget: background color bug fix
-* (Scrounger): Column Views Widget added
-* (Scrounger): Button Widgets: icon height bug fix
-* (Scrounger): Vuetify API bug fix
-* (Scrounger): Chart Widgets: localization added
-* (Scrounger): Line History Chart Widget: color options for each y-axis added
-* (Scrounger): Line History Chart Widget: x-axis boundary options added
-* (Scrounger): Line History Chart Widget: x-axis scaling bug fix
-* (Scrounger): TopAppBar Widget: `view in widget 8` removed -> old TopAppBar Widget will be removed in version 0.3.x
-* (Scrounger): bug fixes
-
-### 0.2.22
-* (Scrounger): library material-components-web updated to v4.0.0
-* (Scrounger): Table: support for objects added
-* (Scrounger): List: layout checkbox disabled added
-* (Scrounger): vuetify slider added -> old slider will be removed in version 0.3.x
-* (Scrounger): vuetify library v2.1.15 added
-* (Scrounger): bug fixes
-
-### 0.2.9
-* (Scrounger): translations added
-* (Scrounger): select Widget: color options added
-* (Scrounger): slider Widget: color options added
-* (Scrounger): bug fixes
-
-### 0.2.7
-* (Scrounger): List Widget: types switch readonly, checkbox readonly & button toggle readonly added
-* (Scrounger): Line History Chart Widget: bug fix for hide yaxis by legend click if common axis is set
-* (Scrounger): Line History Chart Widget: option to append text to yAxis values added
-* (Scrounger): Switch Widget: color options added
-* (Scrounger): chartjs lib updated to v2.9.3
-* (Scrounger): round-slider: lib updated to v0.3.7
-* (Scrounger): Table Widget: wordwrap & width option added
-* (Scrounger): Chart Widgets: option for background color of diagram area added
-
-### 0.2.4
-* (Scrounger): Round Slider Widget bug fixes
-* (Scrounger): Line History Chart Widget: null value bug fix
-* (Scrounger): Line History Chart Widget: tooltip bug fix
-* (Scrounger): Line History Chart Widget: editor translation improved
- 
-### 0.2.0
-* (Scrounger): Round Slider Widget added
-* (Scrounger): Icon Button Adition Widget added
-* (Scrounger): Button Adition Widget added
-* (Scrounger): Line History Chart Widget added
-* (Scrounger): Table Widget added
-* (Scrounger): Dialog iFrame Widget added
-* (Scrounger): Dialog View Widget added
-* (Scrounger): Select Widget added
-* (Scrounger): colorSchemes for Charts added
-* (Scrounger): bug fixes
-
-### 0.1.5
-* (Scrounger): bar chart added
-* (Scrounger): pie chart added
-* (Scrounger): bug fixes
-
-### 0.1.2
-* (Scrounger): list: right label option added
-* (Scrounger): slider: value text option for lees or greather than added
-* (Scrounger): switch: support for non boolean values added
-* (Scrounger): checkbox: support for non boolean values added
-* (Scrounger): buttons: image position option added
-* (Scrounger): toggle buttons: support for non boolean values added
-* (Scrounger): topAppBar: z-Index added
-* (Scrounger): haptic feedback (vibration) option for mobil browser added
-* (Scrounger): editor text fields changed to html
-* (Scrounger): mdc-typography font styles added
-* (Scrounger): bug fixes
-
-### 0.1.1
-* (Scrounger): bug fixes
-
-### 0.1.0
-* (Scrounger): Top App Bar Submenu added
-* (Scrounger): List added
-* (Scrounger): Button vertical State, Link, Nav added
-* (Scrounger): Icon Button State, Link, Nav added
-* (Scrounger): initialize slider bug fixes
-* (Scrounger): moved hard coded styling options to css
-* (Scrounger): styling options extended
-* (Scrounger): bug fixes
-
-### 0.0.7
-* (Scrounger): Top App Bar Layouts added
-* (Scrounger): Top App Bar customizing options added
-* (Scrounger): Top App Bar Navigation Drawer backdrop layout added
-* (Scrounger): Button State added
-* (Scrounger): Button Link added
-
-### 0.0.6
-* (Scrounger): Top App Bar with Navigation Drawer added
-* (Scrounger): Checkbox added
-* (Scrounger): bug fixes
- 
-### 0.0.5
-* (Scrounger): icon button Toggle added
-* (Scrounger): color pressed for buttons added
-* (Scrounger): Slider bug fix & label for value <= min / >= max added
-* (Scrounger): translation added
-
-### 0.0.4
-* (Scrounger): cards added
-
-### 0.0.3
-* (Scrounger): progress added
- 
-### 0.0.2
-* (Scrounger): slider vertical added
-* (Scrounger): switch added
-* (Scrounger): button toggle added
-
-### 0.0.1
-* (Scrounger) initial release
-
-<!-- omit in toc -->
-## License
+# License
 
 MIT License
 

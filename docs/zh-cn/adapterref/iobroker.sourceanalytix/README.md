@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: FFJQrjVNPtvD4pbmp4/7Y+bxPKovBLvxCd9+bJ53k7I=
+hash: gDX9ygFJC29JCD7BepllWAaI6nHAa/xdc0NAO7t93U8=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
@@ -17,23 +17,181 @@ hash: FFJQrjVNPtvD4pbmp4/7Y+bxPKovBLvxCd9+bJ53k7I=
 
 详细分析您的能源，气体和液体消耗可以将任何来源（kWh，Wh，Watt，l / h或m3）用于数据分析：
 
+＃＃ 特征
+####基本功能
+|州|功能|描述 |
+|--|--|--|
+| >设备<.cumulativeReading | [累积值]（＃cumulativeReading）|计算累计值<br/>包括[transformation]（＃valueTransformation）<br/>可以通过以下[这些步骤来更改累积值](#cumulativeReading-Reset)|
+| &gt;设备&lt;。&gt;年份&lt;。&gt;当前年份| [本年度统计](#Current-Period)|在级别上存储当年的统计信息<br/>&gt;设备。&gt; currentYear &lt;。&gt;所选时间段&lt;|
+| &gt;年&lt;。&gt;当前年。&gt;消费类型&lt;| [消费](#consumptionCalculation)|根目录存储消费数据<br/>（当前值-先前值）。<br/>可消费或送货|
+| &gt;年份&lt;。&gt;当前年份。&gt;费用类型&lt;| [费用](#costCalculation)|用于存储成本数据的根文件夹。<br/>现值*成本+基本价格<br/>可消费或送货|
+| &gt;年份&lt;。&gt;当前年份。&gt;费用类型&lt;| [费用]（＃costCalculation）|用于存储成本数据的根文件夹。<br/>现值*成本+基本价格<br/>可消费或送货|
+
+所有状态位置均按状态名称分组，并以句点和[类别](#Categories)结构分隔。<br/>将自动处理计算，并将值转换为[价格定义](#Price-DefinitionsPrice-Definitions)中定义的适当单位。
+
+如果您有任何问题，请先阅读**[故障排除](#Troubleshooting)**！
+
+＃＃ 如何
+###状态激活！ ![主要设定](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/settingKey.png)
+![主要设定](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/stateSettings.png)
+
+|配置项|描述 |
+|--|--|
+|启用|激活SourceAnalytix的状态|
+|别名|默认值：状态名称，如SA |中所示的设备名称 |
+|选择类型|强制，请选择计算类型以根据[价格定义](#Price-Definitions)|
+|选择单位|默认值：自动，需要时手动选择（请参阅日志） |
+|费用|成本计算|
+|有（无）基本费用|包括成本计算中的基本费用|
+|消费计算消费数据|
+|计数器值|存储当前计数器值|
+| x的</br>处的仪表读数：|特定时期内计数器的起始值以处理</br>计算电流-startValue |
+
+###基本配置（适配器实例）
+![主要设定](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/mainSettings.png)
+
+####累积阅读
+> ToDo：描述逻辑<
+
+####消费计算
+> ToDo：描述逻辑<
+
+#### CostCalculation
+> ToDo：描述逻辑<
+
+#### ValueTransformation
+&gt; ToDo：指向库的文档链接（也包含文档lib！）<br/> &gt; ToDo：记录从瓦特到千瓦时的转换<br/>&gt; ToDo：文档单位转换（如瓦特，从Wh到KWh<br/>
+
+####年统计
+在年份级别存储消费/价格和/或成本/收益的统计信息<br/>&gt;&gt;设备。&gt; thisYear &lt;。&gt; cathegory &lt;。&gt;选定时间段
+
+此信息通常用于数据存储和历史比较。<br/>各州按指定时期进行分组（例如2020年与2021年，2019年2月矿石与2月ect等）
+
+&gt; #### *周*<br/> &gt;设备&lt;。&gt;年&lt;。&gt;成本/收益<br/>&gt;消费/配送&lt;.weeks。** weekNr **&lt;&gt; #### *月*<br/> &gt;设备&lt;。&gt;年&lt;。&gt;成本/收益<br/>&gt;消费/交付&lt;.months。**月** &lt;&gt; #### *季度*<br/> &gt;设备&lt;。&gt;年&lt;。&gt;成本/收益<br/>&gt;消费/交付&lt;。季度。** Qx** &lt;
+
+＃＃＃＃ 现时阶段
+将当前年份的统计信息存储在> device。> currentYear <。>级别
+
+&gt; #### *周*<br/> &gt;设备&lt;。&gt;年&lt;。&gt;成本/收益<br/>&gt;消费/配送&lt;.weeks。** weekNr **&lt;&gt; #### *月*<br/> &gt;设备&lt;。&gt;年&lt;。&gt;成本/收益<br/>&gt;消费/交付&lt;.months。**月** &lt;&gt; #### *季度*<br/> &gt;设备&lt;。&gt;年&lt;。&gt;成本/收益&gt;消耗/交付&lt;。季度。** Qx** &lt;
+
+此信息通常用于每日/每周/每月的<br/>成本/收入和/或消耗/交付按指定时期分组
+
+>待办事项：添加屏幕截图<
+
+####类别
+|类别|类型描述 |
+|--|--|--|
+|费用|财务|计算值的结果*成本价+基本价|
+|收益|财务|计算值的结果*收益价格+基本价格|
+|消费计算计算值的结果作为成本-起始值<br/>年/月/季度等 |
+|交货|计算计算值的结果作为交货-起始值<br/>年/月/季度等 |
+
+＃＃＃ 故障排除
+在开始进行故障排除之前，了解源分析的初始化方式非常重要，因为此处可能会发生错误，请参见问题部分。
+将按以下顺序处理：
+
+1）启动SourceAnalytix 2）列出为SourceAnalytix激活的所有状态3）为每个状态初始化状态：
+
+    *读取当前的累计读数</br>
+
+      （如果存在）和状态中的内存值
+
+    *检查单元是否可以处理{问题1}
+    *检查是否选择了费用类型{问题2}
+    *验证费用类型{问题3}的价格定义是否有效
+    *检查先前的初始化值>当前的累积值{问题4}
+    *检查先前设备重置的有效已知信息>当前累积值{问题5}
+    *将所有数据存储到内存
+
+4）为每个状态初始化状态：
+
+    *创建状态累积读数（用于存储计算结果，也可以仅用于W到kWh）{问题6}
+    *创建状态配置中选择的状态{问题7}
+    *开始计算
+
+5）在状态更改/更新
+
+    *验证信息是否正确
+    *将值转换为适当的单位（状态单位转换为状态配置中选择的单位）
+  *检查值输入是否正确（当前值**> ** previousInit值）{请参阅** 7设备复位时**问题8}
+    *计算{问题9}
+      *对于瓦特：计算瓦特到kWh，计算cumulatedReading = currentReading + cumulatedReading
+      *对于其他：计算cumulatedReading = currentReading + previousDeviceReset（如果存在）
+
+6）晚上（00.00）
+
+    *列出所有启用SourceAnalytix的状态
+    *重置开始（日/周/年/月）值
+
+7）重置设备时
+
+    *将当前值存储为previousDeviceReset和previousInit值</br>
+
+如果将再次重置设备（通过previousInit值检测到），则将<br> currentReading + previousDeviceReset与previousDeviceReset一样存储。
+
+**问题1 **没有为.....定义单位，无法执行计算</br>请在状态设置中选择正确的单位
+
+**问题2 **尚未为.....定义成本类型，请在状态设置中选择计算类型</br>。请选择所需的成本类型，以了解应使用多少金额进行计算
+
+**问题3 **所选类型...在价格定义中不存在</br> </br>现在，已找到所选成本类型的价格定义，请验证您的价格设置（自适应配置）
+
+**问题4 ** .....已知的初始值：.....>已知的累积值.....无法继续</br>已知的初始值>已知的累积值，可以通过在状态原始对象中删除或修改这些对象来解决
+
+```"valueAtDeviceInit": xxxx```
+
+**问题5 ** .....已知valueAtDeviceReset：.....>已知累积值.....无法进行处理</br>已知init值>已知累积值，可以解决</br>删除或修改状态原始对象中的这些对象
+
+```valueAtDeviceReset": xxxx```
+
+**问题6 **未创建用于累积读取的状态</br>状态初始化失败，请参见问题1至5
+
+**问题7 **未创建费用读数的状态</br>状态设置![主要设定](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/stateSettings.png)中未启用计算类型
+
+###价格定义![主要设定](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/priceSettings.png)
+**问题8 **当前值** <** previousInit </ br>检测到设备复位，请参见功能7
+
+**问题9 **我的计算不正确</br>
+
+#### CumulativeReading-Reset 1）验证是否选择了正确的单位（未选择正确的单位，SA将尝试自动检测）2）验证cumulatedReading是否反映了您的数值读数的正确总值，否则</br>
+        -停止SA
+        -转到标签对象
+
+          ![主要设定](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/cumulativeReading-Reset.png)
+
+        -进入专家模式
+        -更改累积读数
+        -退出专家模式
+        -确保正确设置起始值
+        -启动SA </br>
+
+3）确保正确设置起始值</br>SA通过cumulatedReading-周期开始时的已知cumulatedReading处理计算。<b/>这些起始值在状态设置中定义，并且应小于** currentReading **</b></br><b/>请确保累积读数&gt; = DayStart&gt; = WeekStart&gt; = MonthStart&gt; = QuarterStart&gt; = YearStart![主要设定](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/stateStartValues.png)</b>
+
+4）验证状态原始对象中的这些值：
+
+```valueAtDeviceReset": xxx```
+
+```"valueAtDeviceInit": xxx```
+
+<！-**问题6 **设置-无法停用SourceAnalytix的状态
+
+Im RAW NUR“消费”：false umgestellt，gespeichert。 Das wurde behalten（wo ggf. noch nicht false，auch bei“ enabled”：虚假和bei“ costs”：虚假）在derObjekt-Übersichtist derschraubenschlüsselnachwievor blau。位于美国达斯·奥布耶特（Das Objekt）的Dann mit demSchraubenschlüssel，战争发生地Dort einmal auf aktiviert，nicht speichern，wieder auf deaktiviert，speichern。
+Kontrolle im RAW，ob SA-EIntrag修女=> jup，是修女->
+
+<!--
+
 *跟踪每天，每周，每月，每季度，每年的消耗量
 *计算成本（当前价格是可配置的）
 *可用于功耗，液体和气体
 *输入值可以是wh / kWh / Watt / m3 / l
 
-＃＃ 如何
-请在这里提供您的反馈https://forum.iobroker.net/topic/31932/major-update-sourceanalytix-0-4-0-complete-code-rebuild
+-->
 
 此适配器的起源归功于pix早在2016年https://forum.iobroker.net/viewtopic.php?f=21&t=2262
 
 @hadering对此进行了改进，并发布在github https://github.com/hdering/homematic_verbrauchszaehler
 
-＃＃ 已知的问题
-<>
-
 ＃＃ 去做
-* []文档
+* []文档！
 * []期间计算可选，但尚未实施
 * []尚未在计算中实施的每月费用价格
 * []根据仪表值重新计算（可按日期配置）
@@ -47,39 +205,51 @@ Sentry.io是一项服务，供开发人员从其应用程序中获取有关错�
 
 当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
-## Changelog
+<！-下一个版本的占位符（在该行的开头）：
 
-<!--
-    Placeholder for the next version (at the beginning of the line):
-    ### __WORK IN PROGRESS__
--->
+### __正在进行的工程__->
+### 0.4.8-alpha.13（2021-01-15）
+*（荷兰人）修正：错误：{不是数字，无法继续计算}，如果value = 0
 
 ## Changelog
-### __WORK IN PROGRESS__
+### 0.4.8-alpha.12 (2021-01-14)
+* (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
+* (Dutchman) Bugfix : Ensure proper reset and init of Watt
+
+### 0.4.8-alpha.10 (2021-01-14)
+* (Dutchman) Bugfix : Avoid loop if init value is set and > reading
+* (Dutchman) Bugfix : Throw error if value is NULL for troubleshooting instead of handling incorrect calculation
+
+### 0.4.8-alpha.9 (2021-01-13)
 #### Breaking changes
-* (Dutchman) **Breaking!!! Move current values to currentYear*
-* (Dutchman & ToTXR4Y) MajorChange ! : Replaced **Current_Reading** with **CumulativeReading**
+* (Dutchman) Breaking!!! Move current values to currentYear [#135](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/135)
+* (Dutchman & ToTXR4Y) MajorChange !: Replaced **Current_Reading** with **CumulativeReading** [226](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/226)
 
 #### New Features
 * (Dutchman) Code cleanup
 * (Dutchman) Add back "currentYear"
+* (Dutchman) (debug) Logging improved
 * (Dutchman) Weekly reset of weekdays
 * (Dutchman) Calculation for all states
-* (Dutchman) Calculation for previous states
+* (Dutchman) Calculation for previous states [#242](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/242)
 * (Dutchman) Optimized error reporting (Sentry)
 * (Dutchman) Removed unneeded settings in configuration
 * (Dutchman) Implemented new configuration for "currentYear"
-* (Dutchman & ToTXR4Y) implement cached memory slot for initialisation value
+* (Dutchman & ToTXR4Y) implement "05_currentYear" in year root folder [#280](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/280)
+* (Dutchman & ToTXR4Y) implement cached memory slot for initialisation value [#226](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/226)
 * (Dutchman & ToTXR4Y) Implement log messages if state attributes are changed
 * (Dutchman & ToTXR4Y) Implement automatically detection of currency from admin settings [#247](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/247)
 
 #### BugFixes
 * (Dutchman) Bugfix : dev: 0 bug workaround
-* (Dutchman) Bugfix : Calculations for "previous" values
+* (Dutchman) Do not round cumulated reading
+* (Dutchman) Bugfix : Calculations for "previous" values    
+* (Dutchman) Bugfix : Avoid calculation of non-Initialised states
 * (Dutchman) Bugfix : Cannot read property 'stateDetails' of null
+* (Dutchman) Correct error handling of "Watt" state initialisation
 * (Dutchman & ToTXR4Y) Bugfix : Rebuild calculation logic which solves :
   * Watt values : Ensure proper reading start (0 instead of current watt value)
-    Watt values : Ensure proper reading calculation with exponent (0 instead of current watt value)
+    Watt values : Ensure proper reading calculation with exponent (0 instead of current watt value) [#281](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/281)
   * All calculations : correct handling  of device reset (if value is reset or 0)
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets

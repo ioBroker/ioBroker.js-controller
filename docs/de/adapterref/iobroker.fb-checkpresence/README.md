@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.fb-checkpresence/README.md
 title: kein Titel
-hash: sz5GEfBmsI/P9oIGCuaFT9qb3UogJ83YDErrfMQlPYg=
+hash: 6OUWoEhaUFW+Uy+gxdJgmnwOhzJhVHqVyin9sfbrBgY=
 ---
 ![Anzahl der Installationen](http://iobroker.live/badges/fb-checkpresence-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.fb-checkpresence.svg)
@@ -47,9 +47,11 @@ Folgende TR-064-Dienste und -Aktionen werden verwendet:
 * WANIPConnection: 1 - GetInfo
 * WLANConfiguration3 - SetEnable
 * WLANConfiguration3 - GetInfo
+* WLANConfiguration3 - GetSecurityKeys
 * X_AVM-DE_HostFilter - DisallowWANAccessByIP
 * X_AVM-DE_HostFilter - GetWANAccessByIP
 * DeviceConfig: 1 - Neustart
+* LANConfigSecurity1 - X_AVM-DE_GetCurrentUser
 
 Standardmäßig ist die TR-064-Schnittstelle nicht aktiviert. Dies kann jedoch einfach über die FritzBox-Weboberfläche geändert werden. Melden Sie sich dazu in Ihrer FritzBox an und stellen Sie sicher, dass die Expertenansicht aktiviert ist.
 Dann finden Sie unter "Heimnetzwerk» Heimnetzwerkübersicht »Netzwerkeinstellungen" den Punkt "Zugriff für Anwendungen zulassen". Dort müssen Sie das Kontrollkästchen aktivieren und dann die FritzBox einmal neu starten.
@@ -91,7 +93,7 @@ Wenn diese Option aktiviert ist, wird das FB-Geräteobjekt erneut mit der Gerät
 Diese Option kann aktiviert werden, wenn die Erstellung von FB-Geräten zulässig ist. Wenn diese Option aktiviert ist, werden die Netzobjekte für jedes Gerät in der Fritzbox-Geräteliste erstellt.
 
 ### Einstellungen für Familienmitglieder
-Für ein konfiguriertes Familienmitglied müssen Sie den Namen, die Mac- oder IP-Adresse, einen Kommentar und angeben, ob das Mitglied für die Berechnung aktiviert ist. Für jedes Mitglied erstellt der Adapter Datenobjekte und prüft, ob das Mitglied vorhanden ist oder nicht.
+Für ein konfiguriertes Familienmitglied müssen Sie den Namen, die Mac- oder IP-Adresse, einen Kommentar und angeben, ob das Mitglied für die Berechnung aktiviert ist. Für jedes Mitglied erstellt der Adapter eine Statuspräsenz und prüft, ob das Mitglied anwesend ist oder nicht. Der Status wurde geändert, wenn sich der Anwesenheitsstatus geändert hat.
 Um die Geschwindigkeitsinformationen in den Objekten zu erhalten, müssen Sie die Option fb-Geräte auswählen.
 
 ### Whitelist-Einstellungen
@@ -100,10 +102,13 @@ Wenn Sie das Kontrollkästchen in der Überschrift der Tabelle aktivieren, sind 
 
 ## Eigenschaften
 ### Überprüfung der AVM-Unterstützung
-Die Funktion prüft die Verfügbarkeit der verwendeten Fritzbox-Funktionen. Die Verfügbarkeit wird als Info protokolliert. Wenn Sie Probleme haben, prüfen Sie, ob alle Funktionen auf true gesetzt sind.
+Die Funktion prüft die Verfügbarkeit der verwendeten Fritzbox-Funktionen. Die Verfügbarkeit wird als Info protokolliert. Wenn Sie Probleme haben, prüfen Sie, ob alle Funktionen auf true gesetzt sind. Außerdem werden die Zugriffsrechte für den Benutzer überprüft und die Funktion wird auf false gesetzt, wenn das Zugriffsrecht nicht korrekt ist.
 
 ### Schalten Sie den Gast-WLAN ein / aus
 Unter dem Ordner guest können Sie den Status wlan auf true oder false setzen. Anschließend wird der Gast wlan ein- oder ausgeschaltet.
+
+### QR-Code des Gast-WLAN
+Der QR-Code des Gast-WLAN wird im Status-WLAN im Gastordner gespeichert. Der QR-Code kann im Basis-Bool-SVG-Widget angezeigt werden.
 
 ### Schalten Sie den Internetzugang von Fritzbox-Geräten ein / aus
 Unter dem Ordner FB-Geräte können Sie den deaktivierten Status auf true oder false setzen und der Internetzugang dieses Geräts ist in der Fritzbox gesperrt.
@@ -144,7 +149,7 @@ Hier finden Sie Informationen zur Anzahl der aktiven Gäste und Tabellenobjekte 
 Hier finden Sie Informationen zur Anzahl unbekannter Geräte und Tabellenobjekte mit den unbekannten Geräteinformationen.
 
 ### Objekt member.present
-Hier finden Sie Informationen über die Anwesenheit eines Mitglieds am aktuellen Tag und darüber, wie lange der Status des Mitglieds seit der letzten Änderung wahr war.
+Hier finden Sie Informationen zur Anwesenheit eines Mitglieds am aktuellen Tag und wie lange das Mitglied seit der letzten Änderung den Status wahr hat.
 
 ### Objekt member.absent
 Hier finden Sie Informationen zur Abwesenheit eines Mitglieds am aktuellen Tag und wie lange der Status des Mitglieds seit der letzten Änderung falsch war.
@@ -162,6 +167,14 @@ Hier finden Sie Informationen zur Geschichte des aktuellen Tages.
     * Did some changes
     * Did some more changes
 -->
+### 1.1.2 (2021-01-13)
+* (afuerhoff) QR-Code implemented
+* (afuerhoff) setState presence only if changed
+* (afuerhoff) access rights implemented
+* (afuerhoff) use name for presence
+* (afuerhoff) active / inactive devices
+* (afuerhoff) interval 10s bug fixed
+* (afuerhoff) documentation edited 
 
 ### 1.1.1 (2020-12-27)
 * (afuerhoff) Configuration optimized
@@ -186,15 +199,10 @@ Hier finden Sie Informationen zur Geschichte des aktuellen Tages.
 ### 1.0.3 (2020-05-26)
 * (afuerhoff) bugfix checking mac or ip
 
-### 1.0.2 (2020-05-24)
-* (afuerhoff) error handling optimized
-* (afuerhoff) external ip implemented
-* (afuerhoff) check if mac or ip are listed in fritzbox
-
 ## License
 MIT License
 
-Copyright (c) 2019-2020 Achim Fürhoff <achim.fuerhoff@outlook.de>
+Copyright (c) 2019-2021 Achim Fürhoff <achim.fuerhoff@outlook.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -21,24 +21,28 @@ mwittig / [node-milight-promise](https://github.com/mwittig/node-milight-promise
 With adapter you can use both: **v6 Bridge** and **Legacy Bridge**.
 
 **v6 Bridge:**
-
 - bridge (only iBox1)
 - white
 - rgb(w)
 - fullColor
 - fullColor8Zone
 
-
 **Legacy Bridge:**
 - white
 - rgb(w)
 
+**Description**
+
+A detailed description can be found [hier](https://steiger04.github.io/milight-smart-light-doku/).
+
 ### Versions
-- **Node.js**: use v. 8.0.0 or higher
+- **Node.js**: use v. 10.18.1 or higher
 - **iobroker.admin**: use v. 3.5.10 or higher
 
 
 ## Changelog
+### 1.1.1 (2020-01-13)
+- (steiger04) compact mode added
 ### 1.0.5 (2020-01-10)
 - (steiger04) Small bug fix
 ### 1.0.1 (2020-11-21)

@@ -319,6 +319,9 @@ $ sudo apt-get install smartmontools
 ## Changelog
 <!-- ### __WORK IN PROGRESS__ -->
 
+### 1.7.15 (2021-01-13)
+* (Apollon77) fix crash case (Sentry IOBROKER-INFO-1X)
+
 ### 1.7.14 (2020-12-27)
 * (Apollon77) fix crash case (Sentry IOBROKER-INFO-1R)
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: 2PQtLeckVKGn4znp7cn2E1jsJeLHKPYwsyQvRJFeJrA=
+hash: bDmqmEqLbJJK8xKH2am8B0IuElEx4QcdaMgzEKNigGY=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -56,9 +56,9 @@ hash: 2PQtLeckVKGn4znp7cn2E1jsJeLHKPYwsyQvRJFeJrA=
 
 ###个人资料
 *配置文件类型=支持三种不同的配置文件类型（周一至周日或周一至周五和周六/周日或每天）
-*配置文件数量=如果您需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
+*配置文件数量=如果需要更多，则在配置文件上增加该值。然后，您可以选择要使用的配置文件。
 *周期数=定义您需要多少个不同温度的每日区域。设置的越多，将创建更多的数据点。最好使用较低的值（例如5）
-*““公众假期如星期天=如果您想在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
+*““公众假期如星期天=如果您要在公众假期如星期天设置目标温度，请启用该选项。否则，公众假期设置与正常天相同
 * HeatPeriod =加热周期的开始和结束日期。用于设置“ HeatingPeriodActive”
 
 ＃＃＃ 设备
@@ -150,21 +150,25 @@ hash: 2PQtLeckVKGn4znp7cn2E1jsJeLHKPYwsyQvRJFeJrA=
 一些恒温器可以自己处理“窗口打开”。在那些情况下，会配置车窗传感器和恒温器之间的直接连接，并且在打开车窗时恒温器会降低其目标温度。
 结合选项“使用恒温器的更改” /“直到下一个配置文件点”将导致此状态变为意外的手动状态。在这种情况下，将使用降低的温度直到下一个轮廓点。
 但是adpater可以处理此行为。您必须启用选项“ Thermostat处理'Window is Open'”，并且还可以在适配器中配置窗口传感器。
-当窗口打开时，适配器等待最大值。恒温器设定的新目标温度为3秒。如果在那段时间内收到新的目标温度，它将用作降低的绝对温度。状态将变为“自动打开窗口”。窗户一旦关闭，状态就会恢复为自动，并且恒温器会将原始目标温度设置为“注意” **，在这种情况下，请勿使用“传感器打开延迟”。如果使用它，则从恒温器接收到目标温度后，将出现“打开窗口”事件。最终以手动状态结束。
+当窗口打开时，适配器等待最大值。恒温器设定的新目标温度为3秒。如果在那段时间内收到新的目标温度，它将用作降低的绝对温度。状态将变为“自动打开窗口”。窗户一旦关闭，状态就会恢复为自动，恒温器会将原始目标温度设置为“注意” **，在这种情况下，请勿使用“传感器打开延迟”。如果使用它，则从恒温器接收到目标温度后，将出现“打开窗口”事件。最终以手动状态结束。
 
 ##问题和功能请求
-*如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues）的GitHub问题部分内创建一个问题。 ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
+*如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
 
 ＃＃ 已知的问题
 ###带有Homematic IPFußbodenheizungsaktorHmIP-FAL230-C10的适配器– 10fach，230 V
 似乎HmIP-FAL230-C10无法与该适配器一起直接用作致动器。如果您将HmIP-FAL230-C10与Homematic温控器一起使用，它应该可以工作。
 另请参阅[论坛](https://forum.iobroker.net/topic/22579/test-adapter-heatingcontrol-v1-0-x/1553)
 
+### HM温控器的开窗功能
+HM温控器具有两个版本的开窗功能。一方面用作温度下降检测，另一方面与窗户触点连接。
+当窗口打开时，此功能使适配器切换到手动模式。理想情况下，应禁用此功能，以免干扰适配器的功能。
+
 当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
 
-### 2.0.0 (2021-01-xx)
+### 2.0.0 (2021-01-10)
 * (René) internal refactoring
 
 **ATTENTION: breaking changes !!!!**
