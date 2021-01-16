@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.2.6-4 (2021-01-16)
 * (Apollon77) optimize logs when instance is restarted
 
 ## 3.2.6-3 (2021-01-16)

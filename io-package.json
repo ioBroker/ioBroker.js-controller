@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "3.2.6-3",
+        "version": "3.2.6-4",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.2.6-4": {
+                "en": "optimize logs when instance is restarted",
+                "de": "Optimieren Sie die Protokolle, wenn die Instanz neu gestartet wird",
+                "ru": "оптимизировать логи при перезапуске экземпляра",
+                "pt": "otimizar logs quando a instância for reiniciada",
+                "nl": "optimaliseer logboeken wanneer het exemplaar opnieuw wordt opgestart",
+                "fr": "optimiser les journaux lors du redémarrage de l'instance",
+                "it": "ottimizzare i log quando l'istanza viene riavviata",
+                "es": "optimizar los registros cuando se reinicia la instancia",
+                "pl": "optymalizuj dzienniki po ponownym uruchomieniu instancji",
+                "zh-cn": "重新启动实例时优化日志"
+            },
             "3.2.6-3": {
                 "en": "fix upgrade/upload commands",
                 "de": "Fix Upgrade / Upload Befehle",
@@ -245,18 +257,6 @@
                 "es": "Asegúrese de que la pestaña del Adaptador de información se muestre automáticamente en la instalación\nOptimice los mensajes para los comandos del host CLI\nReemplace la dependencia de winston-syslog para evitar errores de compilación en node.js 10+ al instalar o actualizar iobroker\nRefrescar los certificados predeterminados",
                 "pl": "Upewnij się, że zakładka Info Adapter jest wyświetlana automatycznie podczas instalacji nOptymalizuj komunikaty dla poleceń hosta CLI nReplace zależność winston-syslog, aby zapobiec błędom kompilacji na node.js 10+ podczas instalacji lub aktualizacji iobroker n Odśwież domyślne certyfikaty",
                 "zh-cn": "确保在安装\nOptimize消息上自动显示Info Adapter选项卡以显示CLI主机命令\n更新winston-syslog依赖关系以防止在安装或更新iobroker时对node.js 10+进行构建错误\n刷新默认SSL证书"
-            },
-            "1.5.12": {
-                "en": "Install instance of info adapter too on first setup of controller",
-                "de": "Installiere eine Instanz des info Adapters beim ersten Setup des Controllers",
-                "ru": "установить экземпляр информационного адаптера тоже при первой настройке контроллера",
-                "pt": "instale a instância do adaptador de informações também na primeira configuração do controlador",
-                "nl": "installeer ook een instantie van de info-adapter bij de eerste configuratie van de controller",
-                "fr": "Installez également l'instance de l'info-adaptateur lors de la première configuration du contrôleur.",
-                "it": "Installa anche l'istanza dell'adattatore di informazioni sulla prima configurazione del controller",
-                "es": "Instale la instancia del adaptador de información también en la primera configuración del controlador",
-                "pl": "zainstaluj również instancję adaptera informacyjnego przy pierwszej konfiguracji kontrolera",
-                "zh-cn": "在首次设置控制器时也安装info适配器的实例"
             }
         },
         "desc": {
