@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.2.6-3 (2021-01-16)
 * (foxriver76) fix upgrade/upload commands
 
 ## 3.2.6-2 (2021-01-16)

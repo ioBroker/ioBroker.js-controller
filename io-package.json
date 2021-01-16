@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "3.2.6-2",
+        "version": "3.2.6-3",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.2.6-3": {
+                "en": "fix upgrade/upload commands",
+                "de": "Fix Upgrade / Upload Befehle",
+                "ru": "исправить команды обновления / загрузки",
+                "pt": "corrigir comandos de atualização / upload",
+                "nl": "upgrade / upload-opdrachten repareren",
+                "fr": "corriger les commandes de mise à niveau / téléchargement",
+                "it": "correggere i comandi di aggiornamento / caricamento",
+                "es": "arreglar comandos de actualización / carga",
+                "pl": "napraw polecenia aktualizacji / przesyłania",
+                "zh-cn": "修复升级/上传命令"
+            },
             "3.2.6-2": {
                 "en": "Preserve name field on instance object creation/update\nEnhance extendObject to allow to preserve specified fields (e.g. common.name)\nSome more optimizations\nupdate sentry plugin",
                 "de": "Behalten Sie das Namensfeld bei der Erstellung / Aktualisierung des Instanzobjekts bei\nErweitern Sie expandObject, um bestimmte Felder (z. B. common.name) beizubehalten.\nNoch einige Optimierungen\nSentry Plugin aktualisieren",
@@ -245,18 +257,6 @@
                 "es": "Instale la instancia del adaptador de información también en la primera configuración del controlador",
                 "pl": "zainstaluj również instancję adaptera informacyjnego przy pierwszej konfiguracji kontrolera",
                 "zh-cn": "在首次设置控制器时也安装info适配器的实例"
-            },
-            "1.5.11": {
-                "en": "Allow to install specific versions/fix installing specific versions\nRead cache of repository before download the whole file\nif npm returns code 1 it is OK\nfix instances enumeration\nrevert greenlock version to 2.7.1",
-                "de": "Erlaube die Installation bestimmter Versionen / behebe die Installation bestimmter Versionen\nLesen Sie den Cache des Repositorys, bevor Sie die gesamte Datei herunterladen\nWenn npm den Code 1 zurückgibt, ist es OK\nInstanzen-Aufzählung korrigieren\nGreenlock-Version auf 2.7.1 zurücksetzen",
-                "ru": "Разрешить установку определенных версий / исправить установку определенных версий\nПрочитайте кеш репозитория перед загрузкой всего файла\nесли npm возвращает код 1, все в порядке\nисправить перечисление экземпляров\nвернуть версию greenlock на 2.7.1",
-                "pt": "Permitir a instalação de versões específicas / corrigir a instalação de versões específicas\nLeia o cache do repositório antes de baixar o arquivo inteiro\nse npm retornar o código 1, tudo bem\ncorrigir enumeração de instâncias\nreverter a versão greenlock para 2.7.1",
-                "nl": "Sta toe om specifieke versies te installeren / repareer de installatie van specifieke versies\nLees de cache van de repository voordat je het hele bestand downloadt\nals npm code 1 retourneert, is het OK\nfix instanties opsomming\nzet greenlock-versie terug naar 2.7.1",
-                "fr": "Autoriser l'installation de versions spécifiques / corriger l'installation de versions spécifiques\nLire le cache du référentiel avant de télécharger le fichier entier\nsi npm retourne le code 1 c'est ok\ncorrection des énumérations d'instances\nrevenir à la version 2.7 de greenlock",
-                "it": "Consentire l'installazione di versioni specifiche / correggere l'installazione di versioni specifiche\nLeggi la cache del repository prima di scaricare l'intero file\nse npm restituisce il codice 1, è OK\ncorregge l'enumerazione delle istanze\nripristinare la versione di Greenlock alla 2.7.1",
-                "es": "Permitir instalar versiones específicas / corregir instalar versiones específicas\nLea la memoria caché del repositorio antes de descargar el archivo completo\nSi npm devuelve el código 1, está bien.\narreglar instancias enumeración\nrevertir la versión de Greenlock a 2.7.1",
-                "pl": "Pozwól zainstalować określone wersje / fix instalując określone wersje\nPrzeczytaj cache repozytorium przed pobraniem całego pliku\njeśli npm zwróci kod 1, jest OK\npoprawiono wyliczanie instancji\nprzywróć wersję Greenlock do wersji 2.7.1",
-                "zh-cn": "允许安装特定版本/修复安装特定版本\n在下载整个文件之前读取存储库的缓存\n如果npm返回代码1就可以了\n修复实例枚举\n将greenlock版本恢复为2.7.1"
             }
         },
         "desc": {
