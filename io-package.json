@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "3.2.6-1",
+        "version": "3.2.6-2",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.2.6-2": {
+                "en": "Preserve name field on instance object creation/update\nEnhance extendObject to allow to preserve specified fields (e.g. common.name)\nSome more optimizations\nupdate sentry plugin",
+                "de": "Behalten Sie das Namensfeld bei der Erstellung / Aktualisierung des Instanzobjekts bei\nErweitern Sie expandObject, um bestimmte Felder (z. B. common.name) beizubehalten.\nNoch einige Optimierungen\nSentry Plugin aktualisieren",
+                "ru": "Сохранить поле имени при создании / обновлении экземпляра объекта\nУлучшите extendObject, чтобы разрешить сохранение указанных полей (например, common.name)\nЕще несколько оптимизаций\nобновить плагин часовой",
+                "pt": "Preservar campo de nome na criação / atualização de objeto de instância\nAprimore extendObject para permitir a preservação de campos especificados (por exemplo, common.name)\nMais algumas otimizações\natualizar plugin de sentinela",
+                "nl": "Behoud het naamveld bij het maken / bijwerken van instantieobjecten\nVerbeter extObject om gespecificeerde velden te behouden (bijv. Common.name)\nNog enkele optimalisaties\nupdate sentry plugin",
+                "fr": "Préserver le champ de nom lors de la création / mise à jour de l'objet d'instance\nAméliorez extendObject pour permettre de conserver les champs spécifiés (par exemple common.name)\nQuelques optimisations supplémentaires\nmettre à jour le plugin sentry",
+                "it": "Conserva il campo del nome durante la creazione / aggiornamento dell'oggetto istanza\nMigliora extensionObject per consentire di preservare i campi specificati (ad es. Common.name)\nAltre ottimizzazioni\naggiorna il plugin Sentry",
+                "es": "Conservar el campo de nombre en la creación / actualización del objeto de instancia\nMejore extendObject para permitir conservar campos específicos (por ejemplo, common.name)\nAlgunas optimizaciones más\nactualizar el complemento centinela",
+                "pl": "Zachowaj pole nazwy podczas tworzenia / aktualizacji obiektu instancji\nUlepsz rozszerzenie obiektu, aby umożliwić zachowanie określonych pól (np. Common.name)\nJeszcze kilka optymalizacji\nzaktualizuj wtyczkę sentry",
+                "zh-cn": "在实例对象创建/更新时保留名称字段\n增强extendObject以允许保留指定的字段（例如common.name）\n更多优化\n更新哨兵插件"
+            },
             "3.2.6-1": {
                 "en": "propagate error on sendTo methods to prevent exception loops\noptimize parameters and flags on CLI\nUse yargs helper instead of building our own string output to allow showing --help for a specific command instead of the whole output and allow support for auto completion (`iobroker _createCompletion >> ~/.bashrc`)\nDo not reject the promise when no callback is used and a Database error occurs",
                 "de": "Fehler bei sendTo-Methoden weitergeben, um Ausnahmeschleifen zu vermeiden\nOptimieren Sie Parameter und Flags in der CLI\nVerwenden Sie den yargs-Helfer, anstatt eine eigene Zeichenfolgenausgabe zu erstellen, damit --help für einen bestimmten Befehl anstelle der gesamten Ausgabe angezeigt wird, und unterstützen Sie die automatische Vervollständigung (`iobroker _createCompletion >> ~ / .bashrc`).\nLehnen Sie das Versprechen nicht ab, wenn kein Rückruf verwendet wird und ein Datenbankfehler auftritt",
