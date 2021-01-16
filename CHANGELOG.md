@@ -4,6 +4,9 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (Apollon77) optimize logs when instance is restarted
+
 ## 3.2.6-3 (2021-01-16)
 * (foxriver76) fix upgrade/upload commands
 

@@ -628,6 +628,7 @@ function createObjects(onConnect) {
                         hostAdapter[id].config = obj;
                     }
                     if (procs[id].process || procs[id].config.common.mode === 'schedule' || procs[id].config.common.mode === 'subscribe') {
+                        procs[id].restartExpected = true;
                         stopInstance(id, async () => {
                             const _ipArr = tools.findIPs();
 
@@ -3172,6 +3173,8 @@ async function startInstance(id, wakeUp) {
         delete procs[id].restartTimer;
     }
 
+    procs[id].restartExpected = false;
+
     if (wakeUp) {
         mode = 'daemon';
     }
@@ -3410,7 +3413,9 @@ async function startInstance(id, wakeUp) {
                                 return;
                             } else {
                                 //noinspection JSUnresolvedVariable
-                                if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
+                                if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION && procs[id] && procs[id].restartExpected) {
+                                    logger.error(`${hostLogPrefix} instance ${id} terminated for restart.`);
+                                } else if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
                                     logger.error(`${hostLogPrefix} instance ${id} terminated by request of the instance itself and will not be restarted, before user restarts it.`);
                                 } else if (code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP && procs[id] && procs[id].config && procs[id].config.common.restartSchedule) {
                                     logger.info(`${hostLogPrefix} instance ${id} scheduled normal terminated and will be restarted on schedule.`);
@@ -3523,7 +3528,9 @@ async function startInstance(id, wakeUp) {
                                     }
                                 }
                             } else {
-                                if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
+                                if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION && procs[id] && procs[id].restartExpected) {
+                                    logger.info(`${hostLogPrefix} Adapter ${id} will be restarted automatically`);
+                                } else if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
                                     logger.info(`${hostLogPrefix} Do not restart adapter ${id} because desired by instance`);
                                 } else if (mode !== 'once') {
                                     logger.info(`${hostLogPrefix} Do not restart adapter ${id} because disabled or deleted`);
