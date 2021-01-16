@@ -3414,7 +3414,7 @@ async function startInstance(id, wakeUp) {
                             } else {
                                 //noinspection JSUnresolvedVariable
                                 if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION && procs[id] && procs[id].restartExpected) {
-                                    logger.error(`${hostLogPrefix} instance ${id} terminated for restart.`);
+                                    logger.info(`${hostLogPrefix} instance ${id} terminated for restart.`);
                                 } else if (code === EXIT_CODES.ADAPTER_REQUESTED_TERMINATION) {
                                     logger.error(`${hostLogPrefix} instance ${id} terminated by request of the instance itself and will not be restarted, before user restarts it.`);
                                 } else if (code === EXIT_CODES.START_IMMEDIATELY_AFTER_STOP && procs[id] && procs[id].config && procs[id].config.common.restartSchedule) {
