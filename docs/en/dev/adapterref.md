@@ -763,12 +763,6 @@ the quality of states will be set up depends on the connection status.
 * subscribeForeignStates = function subscribeForeignStates(pattern)
 * unsubscribeForeignStates = function unsubscribeForeignStates(pattern)
 * subscribeStates = function subscribeStates(pattern)
-* pushFifo = function pushFifo(id, state, callback)
-* trimFifo = function trimFifo(id, start, end, callback)
-* getFifoRange = function getFifoRange(id, start, end, callback)
-* getFifo = function getFifo(id, callback)
-* lenFifo = function lenFifo(id, callback)
-* subscribeFifo = function subscribeFifo(pattern)
 * getSession = function getSession(id, callback)
 * setSession = function setSession(id, ttl, data, callback)
 * destroySession = function destroySession(id, callback)
@@ -781,6 +775,11 @@ the quality of states will be set up depends on the connection status.
 * setPassword = function setPassword(user, pw, callback)
 * checkGroup = function checkGroup(user, group, callback)
 * stop (common.mode: subscribe, schedule, once)
+* terminate
+* setInteral
+* clearInterval
+* setTimeout
+* clearTimeout
 * log.debug(msg)
 * log.info(msg)
 * log.warn(msg)
