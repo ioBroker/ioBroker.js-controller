@@ -829,7 +829,7 @@
                     "severity": "alert",
                     "description": {
                         "en": "There is not enough disk space left on the storage device. Please clean up some disk space.",
-                        "de": "Es steht nicht genügend Speicherplatz zur Verfügung. Bitte bereinigen Sie etwas Speicherplatz.",
+                        "de": "Es steht nicht genügend Speicherplatz auf dem Datenträger zur Verfügung. Bitte bereinigen Sie etwas Speicherplatz.",
                         "ru": "На запоминающем устройстве недостаточно места на диске. Пожалуйста, очистите место на диске.",
                         "pt": "Não há espaço em disco suficiente no dispositivo de armazenamento. Limpe algum espaço em disco.",
                         "nl": "Er is niet genoeg schijfruimte over op het opslagapparaat. Ruim wat schijfruimte op.",
