@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.2.7 (2021-01-16)
+## __WORK IN PROGRESS__
 * see CHANGELOG.md
 
 ## 3.2.x (2021-01-16) Release Grace
@@ -97,6 +97,7 @@
 * (foxriver76) also escape + char on regex, it's not forbidden
 * (bluefox) Set default state only for objects of type "state"
 * (AlCalzone) include folders in the result of getAdapterObjects
+* (Apollon77) Make sure to not trigger subscribes or messages when unload is called
 * general dependency updates
 * code style optimizations
 
