@@ -6,7 +6,8 @@ import I18n from './i18n';
 
 import LogoIoBroker from './assets/iobroker-logo-small.png';
 import {FaGithubSquare as IconGithub} from 'react-icons/fa';
-import {FaFacebook as IconFacebook} from 'react-icons/fa';
+import {FaFacebookSquare as IconFacebook} from 'react-icons/fa';
+import {FaDiscord as IconDiscord} from 'react-icons/fa';
 import Utils from './Utils';
 
 
@@ -69,13 +70,18 @@ class Loader extends React.Component {
                             onClick={() => Utils.openLink('https://www.facebook.com/groups/440499112958264')}
                 />
             </div>
+            <div title="Discord Server" className={this.props.classes.footerIconDiv}>
+                <IconDiscord className={this.props.classes.footerIcon} style={{height:"50px"}}
+                             onClick={() => Utils.openLink('https://discord.gg/HwUCwsH')}
+                />
+            </div>
             <br/>
 
             <div className={this.props.classes.footerLink} onClick={() => this.props.onNavigate(null, 'imprint')}>{I18n.t('Imprint')}</div>
             <div className={this.props.classes.footerLink} style={{cursor: 'inherit'}}> | </div>
             <div className={this.props.classes.footerLink} onClick={() => this.props.onNavigate(null, 'privacy')}>{I18n.t('Privacy policy')}</div>
 
-            <p className={this.props.classes.footerCopyright}>Copyright © 2014-2020 by the ioBroker Community and the ioBroker GmbH.</p>
+            <p className={this.props.classes.footerCopyright}>Copyright © 2014-2021 by the ioBroker Community and the ioBroker GmbH.</p>
             <img src={LogoIoBroker} className={this.props.classes.footerLogo} alt="logo"/>
         </div>);
     }
