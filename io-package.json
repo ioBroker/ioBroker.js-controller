@@ -32,7 +32,7 @@
             },
             "3.1.6": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
+                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
                 "ru": "исправления и оптимизации, см. CHANGELOG.md",
                 "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
                 "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
@@ -44,7 +44,7 @@
             },
             "3.1.5": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
+                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
                 "ru": "исправления и оптимизации, см. CHANGELOG.md",
                 "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
                 "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
@@ -56,7 +56,7 @@
             },
             "3.1.4": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
+                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
                 "ru": "исправления и оптимизации, см. CHANGELOG.md",
                 "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
                 "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
@@ -68,7 +68,7 @@
             },
             "3.0.20": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
+                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
                 "ru": "исправления и оптимизации, см. CHANGELOG.md",
                 "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
                 "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
@@ -80,7 +80,7 @@
             },
             "3.0.19": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
+                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
                 "ru": "исправления и оптимизации, см. CHANGELOG.md",
                 "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
                 "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
@@ -92,7 +92,7 @@
             },
             "3.0.18": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
+                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
                 "ru": "исправления и оптимизации, см. CHANGELOG.md",
                 "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
                 "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
@@ -104,7 +104,7 @@
             },
             "3.0.14": {
                 "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
+                "de": "Siehe CHANGELOG.md",
                 "ru": "см. CHANGELOG.md",
                 "pt": "veja CHANGELOG.md",
                 "nl": "zie CHANGELOG.md",
@@ -116,7 +116,7 @@
             },
             "2.2.9": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
+                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
                 "ru": "исправления и оптимизации, см. CHANGELOG.md",
                 "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
                 "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
@@ -128,7 +128,7 @@
             },
             "2.2.8": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
+                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
                 "ru": "исправления и оптимизации, см. CHANGELOG.md",
                 "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
                 "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
@@ -140,7 +140,7 @@
             },
             "2.2.7": {
                 "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
+                "de": "Siehe CHANGELOG.md",
                 "ru": "см. CHANGELOG.md",
                 "pt": "veja CHANGELOG.md",
                 "nl": "zie CHANGELOG.md",
@@ -152,7 +152,7 @@
             },
             "2.1.1": {
                 "en": "bugfixes and optimizations, see CHANGELOG.md",
-                "de": "Bugfixes und Optimierungen finden Sie in CHANGELOG.md",
+                "de": "Bugfixes und Optimierungen siehe CHANGELOG.md",
                 "ru": "исправления и оптимизации, см. CHANGELOG.md",
                 "pt": "correções de bugs e otimizações, consulte CHANGELOG.md",
                 "nl": "bugfixes en optimalisaties, zie CHANGELOG.md",
@@ -164,7 +164,7 @@
             },
             "2.1.0": {
                 "en": "see CHANGELOG.md",
-                "de": "Sehe CHANGELOG.md",
+                "de": "Siehe CHANGELOG.md",
                 "ru": "см. CHANGELOG.md",
                 "pt": "veja CHANGELOG.md",
                 "nl": "zie CHANGELOG.md",
@@ -176,7 +176,7 @@
             },
             "1.5.14": {
                 "en": "Make sure Info Adapter tab is displayed automatically on install\nOptimize messages for CLI host commands\nReplace winston-syslog dependency to prevent build errors on node.js 10+ when installing or updating iobroker\nRefresh of default SSL certificates",
-                "de": "Sicherstellen, dass die Registerkarte Info Adapter bei der Installation automatisch angezeigt wird.\nMeldungen für CLI-Hostbefehle optimiert.\nZur Vermeidung von Buildfehler unter node.js 10+ wurde die Abhängigkeit zu winston-syslog angepasst.\nAktualisierung der Standard SSL-Zertifikate für den Admin.",
+                "de": "Sicherstellen, dass die Registerkarte Info Adapter bei der Installation automatisch angezeigt wird.\nMeldungen für CLI-Hostbefehle optimiert.\nZur Vermeidung von Buildfehlern unter node.js 10+ wurde die Abhängigkeit zu winston-syslog angepasst.\nAktualisierung der Standard SSL-Zertifikate für den Admin.",
                 "ru": "Убедитесь, что вкладка Info Adapter отображается автоматически при установке\nОптимизировать сообщения для команд хоста CLI\nЗаменить зависимость winston-syslog, чтобы предотвратить ошибки сборки на node.js 10+ при установке или обновлении iobroker\nОбновить сертификаты по умолчанию",
                 "pt": "Certifique-se de que a guia Adaptador de Informações é exibida automaticamente ao instalar\nOtimizar mensagens para comandos do host CLI\nReiniciar a dependência do winston-syslog para evitar erros de compilação no node.js 10+ ao instalar ou atualizar o iobroker\nRefresh de certificados padrão",
                 "nl": "Zorg ervoor dat het tabblad Info Adapter automatisch wordt weergegeven tijdens de installatie\n Berichten optimaliseren voor CLI-hostopdrachten\nVerbeter de winston-syslog-afhankelijkheid om build-fouten te voorkomen op node.js 10+ bij het installeren of bijwerken van iobroker\nVernieuwen van SSL standaardcertificaten",
@@ -307,7 +307,7 @@
                 },
                 "description": {
                     "en": "Can do everything with System",
-                    "de": "Kann alles mit System machen",
+                    "de": "Darf alles mit dem System machen",
                     "ru": "Может делать все с помощью системы",
                     "pt": "Pode fazer tudo com o sistema",
                     "nl": "Kan alles doen met System",
@@ -380,7 +380,7 @@
                 },
                 "description": {
                     "en": "Cannot modify everything",
-                    "de": "Kann nicht alles ändern",
+                    "de": "Darf nicht alles ändern",
                     "ru": "Не может изменять все",
                     "pt": "Não é possível modificar tudo",
                     "nl": "Kan niet alles wijzigen",
@@ -453,7 +453,7 @@
                 },
                 "desc": {
                     "en": "List of the rooms",
-                    "de": "Liste der Räumen",
+                    "de": "Liste der Räume",
                     "ru": "Список комнат",
                     "pt": "Lista dos quartos",
                     "nl": "Lijst met kamers",
@@ -567,7 +567,7 @@
             "common": {
                 "name": {
                     "en": "System repositories",
-                    "de": "System-Repositorys",
+                    "de": "System-Repositories",
                     "ru": "Системные репозитории",
                     "pt": "Repositórios do sistema",
                     "nl": "Systeemrepository's",
@@ -679,7 +679,7 @@
                 },
                 "desc": {
                     "en": "Here you can upload your files or create your private objects and states",
-                    "de": "Hier können Sie Ihre Dateien hochladen oder Ihre privaten Objekte und Zustände erstellen",
+                    "de": "Hier können eigene Dateien hochgeladen oder private Objekte und Zustände erstellt werden",
                     "ru": "Здесь вы можете загрузить свои файлы или создать свои личные объекты и состояния",
                     "pt": "Aqui você pode enviar seus arquivos ou criar seus objetos e estados particulares",
                     "nl": "Hier kunt u uw bestanden uploaden of uw privé-objecten en statussen maken",
@@ -730,15 +730,15 @@
                 "zh-cn": "系统通知"
             },
             "description": {
-                "en": "These notifications are collected by the ioBroker system and point to issues you should check and fix",
-                "de": "Diese Benachrichtigungen werden vom ioBroker-System erfasst und weisen auf Probleme hin, die Sie überprüfen und beheben sollten",
+                "en": "These notifications are collected by the ioBroker system and point to issues you should check and fix.",
+                "de": "Diese Benachrichtigungen werden vom ioBroker-System erfasst und weisen auf Probleme hin, die überprüft und behoben werden sollten.",
                 "ru": "Эти уведомления собираются системой ioBroker и указывают на проблемы, которые вы должны проверить и исправить.",
-                "pt": "Essas notificações são coletadas pelo sistema ioBroker e apontam para problemas que você deve verificar e corrigir",
-                "nl": "Deze meldingen worden verzameld door het ioBroker-systeem en wijzen op problemen die u moet controleren en oplossen",
-                "fr": "Ces notifications sont collectées par le système ioBroker et indiquent des problèmes que vous devez vérifier et résoudre",
-                "it": "Queste notifiche vengono raccolte dal sistema ioBroker e indicano problemi che dovresti controllare e correggere",
+                "pt": "Essas notificações são coletadas pelo sistema ioBroker e apontam para problemas que você deve verificar e corrigir.",
+                "nl": "Deze meldingen worden verzameld door het ioBroker-systeem en wijzen op problemen die u moet controleren en oplossen.",
+                "fr": "Ces notifications sont collectées par le système ioBroker et indiquent des problèmes que vous devez vérifier et résoudre.",
+                "it": "Queste notifiche vengono raccolte dal sistema ioBroker e indicano problemi che dovresti controllare e correggere.",
                 "es": "Estas notificaciones son recopiladas por el sistema ioBroker y señalan problemas que debe verificar y solucionar.",
-                "pl": "Te powiadomienia są zbierane przez system ioBroker i wskazują problemy, które należy sprawdzić i naprawić",
+                "pl": "Te powiadomienia są zbierane przez system ioBroker i wskazują problemy, które należy sprawdzić i naprawić.",
                 "zh-cn": "这些通知由ioBroker系统收集，并指出您应检查并修复的问题"
             },
             "categories": [
@@ -746,7 +746,7 @@
                     "category": "memIssues",
                     "name": {
                         "en": "Issues with RAM availability",
-                        "de": "Probleme mit der Speicher-Verfügbarkeit",
+                        "de": "Probleme mit der Arbeitsspeicher-Verfügbarkeit",
                         "ru": "Проблемы с доступностью оперативной памяти",
                         "pt": "Problemas com disponibilidade de RAM",
                         "nl": "Problemen met de beschikbaarheid van RAM",
@@ -758,16 +758,16 @@
                     },
                     "severity": "alert",
                     "description": {
-                        "en": "Your RAM is running out of memory, either your hardware is to weak or a process has a memory leak.",
-                        "de": "Ihrem RAM geht der Speicher aus, entweder ist Ihre Hardware zu schwach oder ein Prozess hat ein Speicherleck.",
-                        "ru": "В вашей оперативной памяти не хватает памяти, либо ваше оборудование слишком слабое, либо процесс имеет утечку памяти.",
-                        "pt": "Sua RAM está ficando sem memória, ou o hardware está muito fraco ou um processo está com vazamento de memória.",
-                        "nl": "Uw RAM heeft onvoldoende geheugen, uw hardware is te zwak of een proces heeft een geheugenlek.",
-                        "fr": "Votre RAM manque de mémoire, soit votre matériel est trop faible, soit un processus a une fuite de mémoire.",
-                        "it": "La tua RAM sta esaurendo la memoria, o il tuo hardware è debole o un processo ha una perdita di memoria.",
-                        "es": "Su RAM se está quedando sin memoria, o su hardware es demasiado débil o un proceso tiene una pérdida de memoria.",
-                        "pl": "W pamięci RAM kończy się pamięć, albo sprzęt jest za słaby, albo proces ma wyciek pamięci.",
-                        "zh-cn": "您的RAM内存不足，可能是硬件功能不足或进程存在内存泄漏。"
+                        "en": "Your system is running out of memory. Please check the number of running adapters and processes or if single processes need too many memory.",
+                        "de": "Es steht nicht genug Arbeitsspeicher zur Verfügung. Die Anzahl der laufenden Adapter und Prozesse sollte geprüft werden, oder ob einzelne Prozesse zuviel Speicher benötigen.",
+                        "ru": "В вашей системе не хватает памяти. Пожалуйста, проверьте количество работающих адаптеров и процессов, или если отдельным процессам требуется слишком много памяти.",
+                        "pt": "Seu sistema está ficando sem memória. Verifique o número de adaptadores e processos em execução ou se processos únicos precisam de muita memória.",
+                        "nl": "Uw systeem heeft onvoldoende geheugen. Controleer het aantal actieve adapters en processen of als afzonderlijke processen te veel geheugen nodig hebben.",
+                        "fr": "Votre système manque de mémoire. Veuillez vérifier le nombre d'adaptateurs et de processus en cours d'exécution ou si des processus uniques nécessitent trop de mémoire.",
+                        "it": "Il tuo sistema sta esaurendo la memoria. Controllare il numero di adattatori e processi in esecuzione o se i singoli processi richiedono troppa memoria.",
+                        "es": "Su sistema se está quedando sin memoria. Verifique el número de adaptadores y procesos en ejecución o si los procesos individuales necesitan demasiada memoria.",
+                        "pl": "W Twoim systemie kończy się pamięć. Sprawdź liczbę działających adapterów i procesów lub czy pojedyncze procesy wymagają zbyt dużej ilości pamięci.",
+                        "zh-cn": "您的系统内存不足。请检查正在运行的适配器和进程的数量，或者单个进程是否需要太多内存。"
                     },
                     "regex": [
                         "^Exception-Code: ENOMEM",
@@ -778,29 +778,29 @@
                 {
                     "category": "fsIoErrors",
                     "name": {
-                        "en": "Issues with file system input/output",
-                        "de": "Probleme mit der Dateisystem-Eingabe/Ausgabe",
-                        "ru": "Проблемы с вводом / выводом файловой системы",
-                        "pt": "Problemas com entrada / saída do sistema de arquivos",
-                        "nl": "Problemen met de invoer / uitvoer van het bestandssysteem",
-                        "fr": "Problèmes avec l'entrée / la sortie du système de fichiers",
-                        "it": "Problemi con l'input / output del file system",
-                        "es": "Problemas con la entrada / salida del sistema de archivos",
-                        "pl": "Problemy z wejściem / wyjściem systemu plików",
-                        "zh-cn": "文件系统输入/输出问题"
+                        "en": "Issues with the file system",
+                        "de": "Probleme mit dem Dateisystem",
+                        "ru": "Проблемы с файловой системой",
+                        "pt": "Problemas com o sistema de arquivos",
+                        "nl": "Problemen met het bestandssysteem",
+                        "fr": "Problèmes avec le système de fichiers",
+                        "it": "Problemi con il file system",
+                        "es": "Problemas con el sistema de archivos",
+                        "pl": "Problemy z systemem plików",
+                        "zh-cn": "文件系统问题"
                     },
                     "severity": "alert",
                     "description": {
-                        "en": "There is a unknown error with input/output on your file system, maybe your file system is corrupted or wrongly configured.",
-                        "de": "Es liegt ein unbekannter Fehler mit Ein-/Ausgabe auf Ihrem Dateisystem vor, vielleicht ist Ihr Dateisystem beschädigt oder falsch konfiguriert.",
-                        "ru": "Произошла неизвестная ошибка ввода / вывода в вашей файловой системе, возможно, ваша файловая система повреждена или неправильно настроена.",
-                        "pt": "Há um erro desconhecido com entrada / saída em seu sistema de arquivos, talvez seu sistema de arquivos esteja corrompido ou configurado incorretamente.",
-                        "nl": "Er is een onbekende fout met invoer / uitvoer op uw bestandssysteem, misschien is uw bestandssysteem beschadigd of verkeerd geconfigureerd.",
-                        "fr": "Il y a une erreur inconnue avec l'entrée / la sortie sur votre système de fichiers, peut-être que votre système de fichiers est corrompu ou mal configuré.",
-                        "it": "C'è un errore sconosciuto con input / output sul tuo file system, forse il tuo file system è danneggiato o configurato in modo errato.",
-                        "es": "Hay un error desconocido con la entrada / salida en su sistema de archivos, tal vez su sistema de archivos esté dañado o configurado incorrectamente.",
-                        "pl": "Wystąpił nieznany błąd wejścia / wyjścia w systemie plików, być może system plików jest uszkodzony lub nieprawidłowo skonfigurowany.",
-                        "zh-cn": "文件系统上的输入/输出存在未知错误，可能是文件系统已损坏或配置错误。"
+                        "en": "There is an error with the file system. Maybe the file system is corrupted or wrongly configured. A file system check is required!",
+                        "de": "Es liegt ein Fehler im Dateisystem vor. Möglicherweise ist das Dateisystem beschädigt oder falsch konfiguriert. Eine Dateisystemprüfung ist erforderlich!",
+                        "ru": "Ошибка файловой системы. Возможно, файловая система повреждена или неправильно настроена. Требуется проверка файловой системы!",
+                        "pt": "Ocorreu um erro com o sistema de arquivos. Talvez o sistema de arquivos esteja corrompido ou configurado incorretamente. É necessária uma verificação do sistema de arquivos!",
+                        "nl": "Er is een fout opgetreden met het bestandssysteem. Misschien is het bestandssysteem beschadigd of verkeerd geconfigureerd. Een bestandssysteemcontrole is vereist!",
+                        "fr": "Il y a une erreur avec le système de fichiers. Le système de fichiers est peut-être corrompu ou mal configuré. Une vérification du système de fichiers est requise!",
+                        "it": "C'è un errore con il file system. Forse il file system è danneggiato o configurato in modo errato. È richiesto un controllo del file system!",
+                        "es": "Hay un error con el sistema de archivos. Quizás el sistema de archivos está dañado o configurado incorrectamente. Se requiere una verificación del sistema de archivos.",
+                        "pl": "Wystąpił błąd w systemie plików. Być może system plików jest uszkodzony lub nieprawidłowo skonfigurowany. Wymagane jest sprawdzenie systemu plików!",
+                        "zh-cn": "文件系统出错。也许文件系统已损坏或配置错误。需要文件系统检查！"
                     },
                     "regex": [
                         "^Exception-Code: EROFS",
@@ -815,29 +815,29 @@
                 {
                     "category": "noDiskSpace",
                     "name": {
-                        "en": "Issues with disk space",
-                        "de": "Probleme mit Speicherplatz",
-                        "ru": "Проблемы с дисковым пространством",
-                        "pt": "Problemas com espaço em disco",
-                        "nl": "Problemen met schijfruimte",
-                        "fr": "Problèmes d'espace disque",
-                        "it": "Problemi con lo spazio su disco",
-                        "es": "Problemas con el espacio en disco",
-                        "pl": "Problemy z miejscem na dysku",
-                        "zh-cn": "磁盘空间问题"
+                        "en": "Issues with free disk space",
+                        "de": "Probleme mit dem freien Speicherplatz",
+                        "ru": "Проблемы со свободным местом на диске",
+                        "pt": "Problemas com espaço livre em disco",
+                        "nl": "Problemen met vrije schijfruimte",
+                        "fr": "Problèmes d'espace disque libre",
+                        "it": "Problemi con lo spazio libero su disco",
+                        "es": "Problemas con el espacio libre en disco",
+                        "pl": "Problemy z wolnym miejscem na dysku",
+                        "zh-cn": "可用磁盘空间问题"
                     },
                     "severity": "alert",
                     "description": {
-                        "en": "There is not enough disk space left on your device.",
-                        "de": "Es ist nicht genügend Speicherplatz auf Ihrem Gerät vorhanden.",
-                        "ru": "На вашем устройстве недостаточно места на диске.",
-                        "pt": "Não há espaço em disco suficiente no seu dispositivo.",
-                        "nl": "Er is niet genoeg schijfruimte op uw apparaat.",
-                        "fr": "Il n'y a pas assez d'espace disque sur votre appareil.",
-                        "it": "Spazio su disco insufficiente sul dispositivo.",
-                        "es": "No queda suficiente espacio en disco en su dispositivo.",
-                        "pl": "W urządzeniu jest za mało miejsca na dysku.",
-                        "zh-cn": "设备上没有足够的磁盘空间。"
+                        "en": "There is not enough disk space left on the storage device. Please clean up some disk space.",
+                        "de": "Es steht nicht genügend Speicherplatz zur Verfügung. Bitte bereinigen Sie etwas Speicherplatz.",
+                        "ru": "На запоминающем устройстве недостаточно места на диске. Пожалуйста, очистите место на диске.",
+                        "pt": "Não há espaço em disco suficiente no dispositivo de armazenamento. Limpe algum espaço em disco.",
+                        "nl": "Er is niet genoeg schijfruimte over op het opslagapparaat. Ruim wat schijfruimte op.",
+                        "fr": "Il n'y a pas assez d'espace disque sur le périphérique de stockage. Veuillez nettoyer de l'espace disque.",
+                        "it": "Spazio su disco insufficiente sul dispositivo di archiviazione. Si prega di pulire un po 'di spazio su disco.",
+                        "es": "No queda suficiente espacio en disco en el dispositivo de almacenamiento. Limpie algo de espacio en disco.",
+                        "pl": "Za mało miejsca na dysku na urządzeniu magazynującym. Proszę wyczyścić trochę miejsca na dysku.",
+                        "zh-cn": "存储设备上没有足够的磁盘空间。请清理一些磁盘空间。"
                     },
                     "regex": [
                         "^Exception-Code: ENOSPC"
@@ -847,29 +847,29 @@
                 {
                     "category": "accessErrors",
                     "name": {
-                        "en": "Issues with accessing files",
-                        "de": "Probleme beim Zugriff auf Dateien",
-                        "ru": "Проблемы с доступом к файлам",
-                        "pt": "Problemas para acessar arquivos",
-                        "nl": "Problemen met toegang tot bestanden",
-                        "fr": "Problèmes d'accès aux fichiers",
-                        "it": "Problemi con l'accesso ai file",
-                        "es": "Problemas con el acceso a archivos",
-                        "pl": "Problemy z dostępem do plików",
-                        "zh-cn": "访问文件的问题"
+                        "en": "Issues with file access rights",
+                        "de": "Probleme mit Dateizugriffsrechten",
+                        "ru": "Проблемы с правами доступа к файлам",
+                        "pt": "Problemas com direitos de acesso a arquivos",
+                        "nl": "Problemen met toegangsrechten voor bestanden",
+                        "fr": "Problèmes avec les droits d'accès aux fichiers",
+                        "it": "Problemi con i diritti di accesso ai file",
+                        "es": "Problemas con los derechos de acceso a archivos",
+                        "pl": "Problemy z prawami dostępu do plików",
+                        "zh-cn": "文件访问权限问题"
                     },
                     "severity": "alert",
                     "description": {
-                        "en": "There is an issue accessing files on your system. You can try running the installation fixer.",
-                        "de": "Es gibt ein Problem beim Zugriff auf Dateien auf Ihrem System. Sie können versuchen, den Installationsfixer auszuführen.",
-                        "ru": "Проблема с доступом к файлам в вашей системе. Вы можете попробовать запустить средство исправления установки.",
-                        "pt": "Ocorreu um problema ao acessar os arquivos em seu sistema. Você pode tentar executar o fixador de instalação.",
-                        "nl": "Er is een probleem met het openen van bestanden op uw systeem. U kunt proberen de installatie-fixer uit te voeren.",
-                        "fr": "Il y a un problème d'accès aux fichiers sur votre système. Vous pouvez essayer d'exécuter le programme d'installation.",
-                        "it": "Si è verificato un problema durante l'accesso ai file sul tuo sistema. Puoi provare a eseguire il programma di riparazione dell'installazione.",
-                        "es": "Hay un problema al acceder a los archivos de su sistema. Puede intentar ejecutar el reparador de instalación.",
-                        "pl": "Wystąpił problem z dostępem do plików w systemie. Możesz spróbować uruchomić program do naprawy instalacji.",
-                        "zh-cn": "访问系统上的文件时出现问题。您可以尝试运行安装修复程序。"
+                        "en": "There is an issue with access rights for files on the system. Running the installation fixer can solve these issues. Alternatively check the relevant directories and files.",
+                        "de": "Es liegt ein Problem mit den Zugriffsrechten für Dateien auf dem System vor. Durch Ausführen des Installationsfixers können diese behoben werden. Alternativ müssen die entsprechenden Verzeichnisse und Dateien überprüft werden.",
+                        "ru": "Возникла проблема с правами доступа к файлам в системе. Эти проблемы можно решить с помощью средства исправления установки. Или проверьте соответствующие каталоги и файлы.",
+                        "pt": "Há um problema com os direitos de acesso para arquivos no sistema. Executar o fixador de instalação pode resolver esses problemas. Como alternativa, verifique os diretórios e arquivos relevantes.",
+                        "nl": "Er is een probleem met toegangsrechten voor bestanden op het systeem. Het uitvoeren van de installatie-fixer kan deze problemen oplossen. Als alternatief kunt u de relevante mappen en bestanden controleren.",
+                        "fr": "Il y a un problème avec les droits d'accès aux fichiers sur le système. L'exécution du programme d'installation peut résoudre ces problèmes. Vous pouvez également vérifier les répertoires et fichiers concernés.",
+                        "it": "Si è verificato un problema con i diritti di accesso per i file sul sistema. L'esecuzione del programma di riparazione dell'installazione può risolvere questi problemi. In alternativa, controlla le directory e i file pertinenti.",
+                        "es": "Existe un problema con los derechos de acceso a los archivos del sistema. Ejecutar el reparador de instalación puede resolver estos problemas. Alternativamente, consulte los directorios y archivos relevantes.",
+                        "pl": "Wystąpił problem z prawami dostępu do plików w systemie. Uruchomienie narzędzia do naprawy instalacji może rozwiązać te problemy. Alternatywnie sprawdź odpowiednie katalogi i pliki.",
+                        "zh-cn": "系统上文件的访问权限存在问题。运行安装修复程序可以解决这些问题。或者，检查相关的目录和文件。"
                     },
                     "regex": [
                         "^Exception-Code: EACCESS",
@@ -880,15 +880,15 @@
                 {
                     "category": "nonExistingFileErrors",
                     "name": {
-                        "en": "Issues with non-existing file or directory",
-                        "de": "Probleme mit nicht vorhandener Datei oder nicht vorhandenem Verzeichnis",
-                        "ru": "Проблемы с несуществующим файлом или каталогом",
-                        "pt": "Problemas com arquivo ou diretório não existente",
-                        "nl": "Problemen met niet-bestaand bestand of directory",
-                        "fr": "Problèmes avec un fichier ou un répertoire inexistant",
+                        "en": "Issues with non-existing files or directories",
+                        "de": "Probleme mit nicht vorhandenen Dateien oder Verzeichnissen",
+                        "ru": "Проблемы с несуществующими файлами или каталогами",
+                        "pt": "Problemas com arquivos ou diretórios não existentes",
+                        "nl": "Problemen met niet-bestaande bestanden of mappen",
+                        "fr": "Problèmes avec des fichiers ou des répertoires non existants",
                         "it": "Problemi con file o directory inesistenti",
                         "es": "Problemas con archivos o directorios que no existen",
-                        "pl": "Problemy z nieistniejącym plikiem lub katalogiem",
+                        "pl": "Problemy z nieistniejącymi plikami lub katalogami",
                         "zh-cn": "文件或目录不存在的问题"
                     },
                     "severity": "alert",
@@ -912,29 +912,29 @@
                 {
                     "category": "remoteHostErrors",
                     "name": {
-                        "en": "Issues with remote host",
-                        "de": "Probleme mit Remote-Host",
-                        "ru": "проблемы с удаленным хостом",
-                        "pt": "problemas com host remoto",
-                        "nl": "problemen met externe host",
-                        "fr": "problèmes avec l'hôte distant",
-                        "it": "problemi con l'host remoto",
-                        "es": "problemas con el host remoto",
-                        "pl": "problemy ze zdalnym hostem",
-                        "zh-cn": "远程主机的问题"
+                        "en": "Issues with remote servers",
+                        "de": "Probleme mit Remote-Servern",
+                        "ru": "Проблемы с удаленными серверами",
+                        "pt": "Problemas com servidores remotos",
+                        "nl": "Problemen met externe servers",
+                        "fr": "Problèmes avec les serveurs distants",
+                        "it": "Problemi con i server remoti",
+                        "es": "Problemas con servidores remotos",
+                        "pl": "Problemy ze zdalnymi serwerami",
+                        "zh-cn": "远程服务器的问题"
                     },
                     "severity": "alert",
                     "description": {
-                        "en": "Issue with remote host, the host could be offline.",
-                        "de": "Problem mit Remote-Host, der Host könnte offline sein.",
-                        "ru": "Проблема с удаленным хостом, возможно, хост отключен.",
-                        "pt": "Problema com o host remoto, o host pode estar offline.",
-                        "nl": "Probleem met externe host, de host kan offline zijn.",
-                        "fr": "Problème avec l'hôte distant, l'hôte peut être hors ligne.",
-                        "it": "Problema con l'host remoto, l'host potrebbe essere offline.",
-                        "es": "Problema con el host remoto, el host podría estar fuera de línea.",
-                        "pl": "Problem ze zdalnym hostem, host może być offline.",
-                        "zh-cn": "远程主机出现问题，主机可能处于脱机状态。"
+                        "en": "Issue with remote servers that are expected to be online. Also mounted remote file systems could be unavailable and need to be checked.",
+                        "de": "Problem mit Remoteservern, von denen erwartet wird, dass sie online sind. Auch gemountete Remote-Dateisysteme sind möglicherweise nicht verfügbar und müssen überprüft werden.",
+                        "ru": "Проблема с удаленными серверами, которые должны быть в сети. Кроме того, смонтированные удаленные файловые системы могут быть недоступны, и их необходимо проверить.",
+                        "pt": "Problema com servidores remotos que deveriam estar online. Além disso, os sistemas de arquivos remotos montados podem estar indisponíveis e precisam ser verificados.",
+                        "nl": "Probleem met externe servers waarvan wordt verwacht dat ze online zijn. Ook gekoppelde externe bestandssystemen zijn mogelijk niet beschikbaar en moeten worden gecontroleerd.",
+                        "fr": "Problème avec les serveurs distants censés être en ligne. Les systèmes de fichiers distants montés peuvent également être indisponibles et doivent être vérifiés.",
+                        "it": "Problema con i server remoti che dovrebbero essere online. Anche i file system remoti montati potrebbero non essere disponibili e devono essere controllati.",
+                        "es": "Problema con los servidores remotos que se espera que estén en línea. Además, los sistemas de archivos remotos montados pueden no estar disponibles y deben revisarse.",
+                        "pl": "Problem ze zdalnymi serwerami, które powinny być w trybie online. Również zamontowane zdalne systemy plików mogą być niedostępne i należy je sprawdzić.",
+                        "zh-cn": "预期会联机的远程服务器出现问题。安装的远程文件系统也可能不可用，需要进行检查。"
                     },
                     "regex": [
                         "^Exception-Code: EHOSTDOWN"
@@ -944,29 +944,29 @@
                 {
                     "category": "restartLoop",
                     "name": {
-                        "en": "Issues with frequently crashing instances",
-                        "de": "Probleme mit häufig abstürzenden Instanzen",
-                        "ru": "Проблемы с частыми сбоями экземпляров",
-                        "pt": "Problemas com falhas frequentes de instâncias",
-                        "nl": "Problemen met vaak crashende instanties",
-                        "fr": "Problèmes avec les instances qui plantent fréquemment",
-                        "it": "Problemi con istanze che si arrestano frequentemente",
-                        "es": "Problemas con instancias que fallan con frecuencia",
-                        "pl": "Problemy z często zawieszającymi się instancjami",
-                        "zh-cn": "实例频繁崩溃的问题"
+                        "en": "Issues with frequently crashing adapter instances",
+                        "de": "Probleme mit häufig abstürzenden Adapterinstanzen",
+                        "ru": "Проблемы с частыми сбоями экземпляров адаптера",
+                        "pt": "Problemas com falhas frequentes de instâncias do adaptador",
+                        "nl": "Problemen met vaak crashende adapterinstanties",
+                        "fr": "Problèmes avec les instances d'adaptateur qui plantent fréquemment",
+                        "it": "Problemi con le istanze dell'adattatore che si arrestano frequentemente",
+                        "es": "Problemas con instancias de adaptador que fallan con frecuencia",
+                        "pl": "Problemy z często zawieszającymi się instancjami adaptera",
+                        "zh-cn": "适配器实例频繁崩溃的问题"
                     },
                     "severity": "alert",
                     "description": {
-                        "en": "A instance is frequently restarting, please check to log file.",
-                        "de": "Eine Instanz wird häufig neu gestartet, bitte prüfen Sie die Log-Datei.",
-                        "ru": "Экземпляр часто перезагружается, проверьте файл журнала.",
-                        "pt": "Uma instância é reiniciada com frequência, verifique o arquivo de log.",
-                        "nl": "Een exemplaar wordt regelmatig opnieuw opgestart. Controleer het logboekbestand.",
-                        "fr": "Une instance redémarre fréquemment, veuillez vérifier le fichier journal.",
-                        "it": "Un'istanza si riavvia frequentemente, controlla nel file di registro.",
-                        "es": "Una instancia se reinicia con frecuencia, verifique el archivo de registro.",
-                        "pl": "Instancja często uruchamia się ponownie, sprawdź plik dziennika.",
-                        "zh-cn": "实例频繁重启，请检查日志文件。"
+                        "en": "An adapter instance is frequently crashing on startup and was stopped because of this. The log file needs to be checked before restarting the instance.",
+                        "de": "Eine Adapterinstanz stürzt beim Start häufig ab und wurde aus diesem Grund gestoppt. Die Protokolldatei muss vor dem Neustart der Instanz überprüft werden.",
+                        "ru": "Экземпляр адаптера часто дает сбой при запуске и был остановлен из-за этого. Перед перезапуском экземпляра необходимо проверить файл журнала.",
+                        "pt": "Uma instância do adaptador frequentemente falha na inicialização e foi interrompida por causa disso. O arquivo de log precisa ser verificado antes de reiniciar a instância.",
+                        "nl": "Een adapterinstantie crasht vaak bij het opstarten en is hierdoor gestopt. Het logboekbestand moet worden gecontroleerd voordat het exemplaar opnieuw wordt opgestart.",
+                        "fr": "Une instance d'adaptateur plante fréquemment au démarrage et a été arrêtée à cause de cela. Le fichier journal doit être vérifié avant de redémarrer l'instance.",
+                        "it": "Un'istanza dell'adattatore si blocca spesso all'avvio ed è stata interrotta per questo motivo. Il file di registro deve essere controllato prima di riavviare l'istanza.",
+                        "es": "Una instancia de adaptador falla con frecuencia al iniciarse y se detuvo debido a esto. Es necesario comprobar el archivo de registro antes de reiniciar la instancia.",
+                        "pl": "Instancja adaptera często ulega awarii podczas uruchamiania i została z tego powodu zatrzymana. Plik dziennika należy sprawdzić przed ponownym uruchomieniem instancji.",
+                        "zh-cn": "适配器实例在启动时经常崩溃，因此已被停止。重新启动实例之前，需要检查日志文件。"
                     },
                     "regex": [],
                     "limit": 1
