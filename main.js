@@ -4261,7 +4261,7 @@ function stop(force, callback) {
 
     stopInstances(force, wasForced => {
         pluginHandler.destroyAll();
-        notificationHandler.storeNotifications();
+        notificationHandler && notificationHandler.storeNotifications();
 
         if (objects && objects.destroy) {
             objects.destroy();
