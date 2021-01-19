@@ -132,6 +132,11 @@ function register(it, expect, context) {
         done();
     });
 
+    it(context.name + ' ' + context.adapterShortName + ' adapter: get the user id', async () => {
+        const id = await context.adapter.getUserID('admin');
+        expect(id).to.be.equal('system.user.admin');
+    });
+
     // formatValue
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatValue', function (done) {
         this.timeout(1000);
