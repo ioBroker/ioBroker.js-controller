@@ -37,6 +37,10 @@ Die aktuellen Messdaten werden von dem Adapter standardmäßig im Stundentakt ak
 
 ## Changelog
 
+### 1.1.4 (2021-01-16)
+* (crycode-de) Updated BfS logo
+* (crycode-de) Updated dependencies
+
 ### 1.1.3 (2020-12-31)
 * (crycode-de) Fixed issue when log is not available at startup timeout
 
@@ -76,7 +80,7 @@ Die aktuellen Messdaten werden von dem Adapter standardmäßig im Stundentakt ak
 
 ## License
 
-Copyright (c) 2019-2020 Peter Müller <peter@crycode.de>
+Copyright (c) 2019-2021 Peter Müller <peter@crycode.de>
 
 Data (c) [German Federal Office for Radiation Protection (Bundesamt für Strahlenschutz, BfS)](https://www.bfs.de/), [Data licence Germany – attribution – Version 2.0](http://www.govdata.de/dl-de/by-2-0)
 

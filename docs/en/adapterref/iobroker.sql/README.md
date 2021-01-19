@@ -421,6 +421,9 @@ sendTo('sql.0', 'getEnabledDPs', {}, function (result) {
 
 ## Changelog
 
+### 1.15.4 (2021-01-17)
+* (Apollon77) Optimize stop handling
+
 ### 1.15.3 (2020-08-29)
 * (bluefox) Added the option "Do not create database". E.g. if DB was created and it does not required to do that, because the user does not have enough rights.
  

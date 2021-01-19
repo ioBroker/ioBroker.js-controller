@@ -5,7 +5,7 @@
 ![Number of Installations](http://iobroker.live/badges/viessmann-installed.svg) ![Number of Installations](http://iobroker.live/badges/viessmann-stable.svg) [![NPM version](http://img.shields.io/npm/v/iobroker.viessmann.svg)](https://www.npmjs.com/package/iobroker.viessmann)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.viessmann.svg)](https://www.npmjs.com/package/iobroker.viessmann)
 
-**Tests:**:
+**Github Actions**:
 <!-- [![Travis-CI](http://img.shields.io/travis/misanorot/ioBroker.viessmann/master.svg)](https://travis-ci.org/misanorot/ioBroker.viessmann) -->
 <!-- Windows: [![AppVeyor](https://ci.appveyor.com/api/projects/status/github/misanorot/ioBroker.viessmann?branch=master&svg=true)](https://ci.appveyor.com/project/misanorot/ioBroker-viessmann/) -->
 ![GitHub Actions](https://github.com/misanorot/ioBroker.viessmann/workflows/Test%20and%20Release/badge.svg)
@@ -137,7 +137,7 @@ mit dem gewünschten *get* Wert beschrieben werden.
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2020 misanorot <audi16v@gmx.de>
+Copyright (c) 2017-2021 misanorot <audi16v@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

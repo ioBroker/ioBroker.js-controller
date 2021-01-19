@@ -41,7 +41,7 @@ A detailed description can be found [hier](https://steiger04.github.io/milight-s
 
 
 ## Changelog
-### 1.1.1 (2020-01-13)
+### 1.2.0 (2020-01-16)
 - (steiger04) compact mode added
 ### 1.0.5 (2020-01-10)
 - (steiger04) Small bug fix

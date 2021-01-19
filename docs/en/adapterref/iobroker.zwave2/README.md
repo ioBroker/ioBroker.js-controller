@@ -40,6 +40,9 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.8.6 (2021-01-17)
+* Many, many changes... See https://github.com/zwave-js/node-zwave-js/blob/master/CHANGELOG.md#changelog for details
+
 ### 1.8.5 (2021-01-06)
 * The interview is no longer aborted when a device does not respond to the Wakeup Capability query
 * Fixed a crash that could happen when compressing the value DB with an existing backup file
@@ -63,21 +66,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 * Added missing % unit to Battery level
 * The `targetValue` for the `Binary Switch`, `Multilevel Switch` and `Basic` CCs is no longer removed when a report without one is received
 * Some more interview timeouts are ignored
-
-### 1.8.1 (2020-12-14)
-* The `targetValue` of switch-type CCs is no longer overwritten with `undefined` when a report without target value is received
-* Added a config file for `Jasco ZW3010`
-* Added a config file for `HeatIt Z-TRM3`
-* Added a config file for `Eurotronic Air quality sensor (Luftgütesensor)`
-* Improved support for `Qubino Flush 2 Relay`
-* The `Multi Channel Association CC`, `Z-Wave+ CC` and `Node Naming and Location CC` values are now hidden
-* `Color Switch CC`: Setting the **warm white** `targetValue` no longer falsely claims that the `propertyKey` is missing
-* Removed some debug logging which could blow up the log file size
-* Removing a node association no longer throws an error when both multi channel and normal associations are supported.
-* `Notification CC Reports` are now parsed correctly when the `V1 Alarm` bytes are not zero
-* Added support for `*.gbl` firmware files and Aeotec updater executables which include a checksum and a target chip byte.
-* Fixed an issue where the wrong response could be mapped to some commands
-* ... and some more minor bugfixes
 
 ## License
 

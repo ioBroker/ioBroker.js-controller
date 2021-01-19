@@ -13,11 +13,11 @@ This adapter reads information from SMA Energy Meter and SMA Home Manager 2.
 
 ### States
 - Total and Counter of active power, reactive power, apparent power
-- cosphi, Total Harmonic Distortion, Voltage
+- cosphi, Total Harmonic Distortion, Voltage, Frequency
 - Detailed Each of the 3 phases with regard of active power, reactive power, apparent power, cosphi, Amperage, Voltage
 - Detailed Each of the 3 phases with surplus of active power, reactive power, apparent power, cosphi, Amperage, Voltage
 - Detailed Each of the 3 phases counter
-- Serial Number of SMA Energy Meter
+- Serial Number, Software Version, SUSyID of SMA Energy Meter
 
 ### Options
 - Selection options over each individual phase L1 / L2 / L3
@@ -41,8 +41,33 @@ Example:
           psurplus P-active power / surplus
           qsurplus Q-reaktive power /surplus
           ssurplus S-apparent power /surplus
+
+<!--
+    Placeholder for the next version (at the beginning of the line):
+    ### __WORK IN PROGRESS__
+-->
         
 ## Changelog
+
+### 0.6.1-beta.0 (2021-01-18)
+* (TGuybrush) Bug fixes
+  * Software Version string, last part is the revision as character (e.g. R = release)
+  * Potential Warning during the first start
+  * Revised units to follow the SI standardization (DIN 1301)
+* (TGuybrush) Top level hierarchy object description indicates if the device is a SMA Energy Meter or a SMA Home Manager 2.
+* (DutchmanNL) Released to the latest repo, fixed some typo's + news and translations
+
+### 0.6.0
+* (TGuybrush) Fixed wrong status information 
+  * Complete adapter core rewritten to extract the status values by their OBIS value instead of the absolute position in the received UDP message according to the SMA documentation.
+  *  Improved compatibility to future new OBIS values
+* (TGuybrush) Add additional status information
+  * Power grid frequency
+  * Time tick counter
+  * SMA SUSy ID
+  * Software Version
+* Add a timestamp for each received status information
+
 ### 0.5.7
 * (DutchmanNL) Solved incorrect stated ID type for JS-controller 3.x
 
@@ -75,7 +100,7 @@ Example:
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017 Marcolotti <info@ct-j.de>
+Copyright (c) 2021 IoBroker-Community
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.nut/README.md
 title: ioBroker.nut
-hash: 76FicpJQCVl7v9oiC8y++e8VHNLJgLPqkeuJGM6H2q8=
+hash: 1XnHuFKmyG55WGJQpHOmqGh0OJzUsyMfqL+05Hzp5CQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.nut/admin/nut.png)
 
@@ -29,7 +29,10 @@ IP-Adresse des NUT-Servers. NUT muss im Servermodus ausgeführt werden und für 
 Hafen von NUT. Der Standardport ist <b>3493</b>
 
 ### Ups_name
-Name der USV, wie in der NUT-Konfiguration des NUT-Servers definiert. </ P> Hinweis: Wenn Sie eine Verbindung zu einer USV herstellen möchten, die mit einer Synology-Diskstation verbunden ist, lautet der Name einfach "ups".
+Name der USV, wie in der NUT-Konfiguration des NUT-Servers definiert. </ P> Hinweise:
+
+- Wenn Sie eine Verbindung zu einer USV herstellen möchten, die mit einer Synology-Diskstation verbunden ist, lautet der Name einfach "ups".
+- Wenn Sie eine Verbindung zu einer USV herstellen möchten, die mit einem QNAP NAS verbunden ist, lautet der Name einfach "qnapups".
 
 ### Updateintervall
 Intervall in Sekunden, um die Daten zu aktualisieren. Standard ist 300s
@@ -83,6 +86,10 @@ Wenn Sie Probleme haben und der Adapter die Daten nicht liefert, können Sie sie
 * Dokumente für die Webseite
 
 ## Changelog
+
+### 1.4.0 (2021-01-14)
+* (Apollon77) Prevent warnings in js-controller 3.2
+* (Apollon77) Require at least js-controller 2.0
 
 ### 1.3.0 (2020-12-27)
 * (Apollon77) adjust connection close handling

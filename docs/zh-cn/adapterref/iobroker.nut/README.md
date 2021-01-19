@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.nut/README.md
 title: ioBroker.nut
-hash: 76FicpJQCVl7v9oiC8y++e8VHNLJgLPqkeuJGM6H2q8=
+hash: 1XnHuFKmyG55WGJQpHOmqGh0OJzUsyMfqL+05Hzp5CQ=
 ---
 ![商标](../../../en/adapterref/iobroker.nut/admin/nut.png)
 
@@ -29,7 +29,10 @@ NUT服务器的IP地址。 NUT需要在服务器模式下运行，并且需要�
 NUT的端口。默认端口是<b>3493</b>
 
 ### Ups_name
-在NUT服务器的NUT配置中定义的UPS的名称。
+在NUT服务器的NUT配置中定义的UPS的名称。</ p>提示：
+
+-如果要连接到与Synology Diskstation连接的UPS，则名称简称为“ ups”。
+-如果要连接到连接到QNAP NAS的UPS，则名称简称为“ qnapups”。
 
 ### Update_interval
 时间间隔以秒为单位来更新数据。默认为300秒
@@ -83,6 +86,10 @@ logger -t nut-notify "Notify iobroker $UPSNAME -> $NOTIFYTYPE"
 *网页文档
 
 ## Changelog
+
+### 1.4.0 (2021-01-14)
+* (Apollon77) Prevent warnings in js-controller 3.2
+* (Apollon77) Require at least js-controller 2.0
 
 ### 1.3.0 (2020-12-27)
 * (Apollon77) adjust connection close handling

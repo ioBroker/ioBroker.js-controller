@@ -108,6 +108,9 @@ Finally, the variables created in the CCU are listed
 ### FAQ
 
 ## Changelog
+### 3.0.7 (2021-01-17)
+* (foxriver76) we notify the user about aborted connection by CCU during request
+
 ### 3.0.6 (2020-12-25)
 * (Hirsch-DE) don't write datapoints if timestamp is 0"
 
@@ -446,7 +449,7 @@ or non existent if no rpc instance existed
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2020 bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2021 bluefox <dogafox@gmail.com>
 
 Copyright (c) 2014 hobbyquaker
 

@@ -3,14 +3,13 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.hs100/README.md
 title: ioBroker.hs100
-hash: 1nLPIbmkf4MX5sEbNcsDekF8XUn34s7Y//ptr9EVPTc=
+hash: lm/CDFdPTBxJAbjk7l1Wy/oVRjyrxim1HnZNucktYi8=
 ---
-![логотип](../../../en/adapterref/iobroker.hs100/admin/hs100.png)
+![Логотип](../../../en/adapterref/iobroker.hs100/admin/hs100.png)
 
 ![Количество установок](http://iobroker.live/badges/hs100-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.hs100.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.hs100.svg)
-![тесты](https://travis-ci.org/arteck/ioBroker.hs100.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.hs100.png?downloads=true)
 
 # IoBroker.hs100

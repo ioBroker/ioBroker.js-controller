@@ -75,6 +75,10 @@ You can deactivate HTTPS and authentication on these web instance, but better is
 -->
 
 ## Changelog
+
+### 4.0.1 (2021-01-16)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-CLOUD-N)
+
 ### 4.0.0  (2020-12-14)
 * (bluefox) Breaking change! Alexa was removed from cloud adapter.
 * (bluefox) Allowed to use the login and password for authentication.

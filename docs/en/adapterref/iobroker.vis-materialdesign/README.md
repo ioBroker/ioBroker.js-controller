@@ -42,8 +42,9 @@ ioBroker Material Design Widgets are based on [Google's material design guidelin
 	- [List](#list)
 	- [IconList](#iconlist)
 	- [Progress](#progress)
+	- [Progress Circular](#progress-circular)
 	- [Slider](#slider)
-	- [Round Slider](#round-slider)
+	- [Slider Round](#slider-round)
 	- [Checkbox](#checkbox)
 	- [Switch](#switch)
 	- [Input](#input)
@@ -209,126 +210,129 @@ The following properties can be used as [control element in a table](#control-el
 		</thead>
 		<tbody>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Common</b>
-					</i>
-				</td>
+				<td>type</td>
+				<td>Widget type</td>
+				<td>string</td>
+				<td>link_default</td>
+			</tr>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>buttonStyle</td>
 				<td>button style</td>
 				<td>string</td>
-				<td>text | raised | unelevated | outlined</td>
+				<td>text | raised | unelevated | outlined
 			</tr>
 			<tr>
 				<td>href</td>
 				<td>Link</td>
 				<td>url</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>openNewWindow</td>
 				<td>open in new window</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>vibrateOnMobilDevices</td>
 				<td>vibrate on mobil devices [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>labeling</b>
-					</i>
-				</td>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
 			</tr>
 			<tr>
 				<td>buttontext</td>
 				<td>Button text</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>textFontFamily</td>
 				<td>font</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>textFontSize</td>
 				<td>text size</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>labelWidth</td>
 				<td>text width</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>colors</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>mdwButtonPrimaryColor</td>
 				<td>primary color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>mdwButtonSecondaryColor</td>
 				<td>secondary color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>mdwButtonColorPress</td>
 				<td>color pressed</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>icon</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
 				<td>Image</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>imageColor</td>
 				<td>image color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>iconPosition</td>
 				<td>image position</td>
 				<td>string</td>
-				<td>left | right</td>
+				<td>left | right
 			</tr>
 			<tr>
 				<td>iconHeight</td>
 				<td>image height</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 		</tbody>
 	</table>
 </details>
+
 
 ##### Button State Properties
 
@@ -346,169 +350,168 @@ The following properties can be used as [control element in a table](#control-el
 		</thead>
 		<tbody>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Common</b>
-					</i>
-				</td>
+				<td>type</td>
+				<td>Widget type</td>
+				<td>string</td>
+				<td>state_default</td>
+			</tr>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>oid</td>
 				<td>Object ID</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>buttonStyle</td>
 				<td>button style</td>
 				<td>string</td>
-				<td>text | raised | unelevated | outlined</td>
+				<td>text | raised | unelevated | outlined
 			</tr>
 			<tr>
 				<td>value</td>
 				<td>value</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>vibrateOnMobilDevices</td>
 				<td>vibrate on mobil devices [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>labeling</b>
-					</i>
-				</td>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
 			</tr>
 			<tr>
 				<td>buttontext</td>
 				<td>Button text</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>textFontFamily</td>
 				<td>font</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>textFontSize</td>
 				<td>text size</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>labelWidth</td>
 				<td>text width</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>colors</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>mdwButtonPrimaryColor</td>
 				<td>primary color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>mdwButtonSecondaryColor</td>
 				<td>secondary color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>mdwButtonColorPress</td>
 				<td>color pressed</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>icon</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
 				<td>Image</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>imageColor</td>
 				<td>image color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>iconPosition</td>
 				<td>image position</td>
 				<td>string</td>
-				<td>left | right</td>
+				<td>left | right
 			</tr>
 			<tr>
 				<td>iconHeight</td>
 				<td>image height</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Locking</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
 			</tr>
 			<tr>
 				<td>lockEnabled</td>
 				<td>enable Locking</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>autoLockAfter</td>
 				<td>auto Locking after [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIcon</td>
 				<td>icon</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconSize</td>
 				<td>icon size</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconColor</td>
 				<td>icon color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>lockFilterGrayscale</td>
 				<td>gray filter if locked</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 		</tbody>
 	</table>
 </details>
+
 
 ##### Button Toggle Properties
 
@@ -526,241 +529,240 @@ The following properties can be used as [control element in a table](#control-el
 		</thead>
 		<tbody>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Common</b>
-					</i>
-				</td>
+				<td>type</td>
+				<td>Widget type</td>
+				<td>string</td>
+				<td>toggle_default</td>
+			</tr>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>oid</td>
 				<td>Object ID</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>buttonStyle</td>
 				<td>button style</td>
 				<td>string</td>
-				<td>text | raised | unelevated | outlined</td>
+				<td>text | raised | unelevated | outlined
 			</tr>
 			<tr>
 				<td>readOnly</td>
 				<td>read only</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>toggleType</td>
 				<td>type of toggle</td>
 				<td>string</td>
-				<td>boolean | value</td>
+				<td>boolean | value
 			</tr>
 			<tr>
 				<td>pushButton</td>
 				<td>push button</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>valueOff</td>
 				<td>value for off</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>valueOn</td>
 				<td>value for on</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>stateIfNotTrueValue</td>
 				<td>state if value unequal to 'on' condition</td>
 				<td>string</td>
-				<td>on | off</td>
+				<td>on | off
 			</tr>
 			<tr>
 				<td>vibrateOnMobilDevices</td>
 				<td>vibrate on mobil devices [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>labeling</b>
-					</i>
-				</td>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
 			</tr>
 			<tr>
 				<td>buttontext</td>
 				<td>Button text</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>labelTrue</td>
 				<td>Label true</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>labelColorFalse</td>
 				<td>label color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>labelColorTrue</td>
 				<td>active label color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>textFontFamily</td>
 				<td>font</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>textFontSize</td>
 				<td>text size</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>labelWidth</td>
 				<td>text width</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>colors</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>mdwButtonPrimaryColor</td>
 				<td>primary color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>mdwButtonSecondaryColor</td>
 				<td>secondary color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>mdwButtonColorPress</td>
 				<td>color pressed</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>colorBgFalse</td>
 				<td>background</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>colorBgTrue</td>
 				<td>active background</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>icon</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
 				<td>Image</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>imageColor</td>
 				<td>image color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>imageTrue</td>
 				<td>active image</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>imageTrueColor</td>
 				<td>active image color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>iconPosition</td>
 				<td>image position</td>
 				<td>string</td>
-				<td>left | right</td>
+				<td>left | right
 			</tr>
 			<tr>
 				<td>iconHeight</td>
 				<td>image height</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Locking</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
 			</tr>
 			<tr>
 				<td>lockEnabled</td>
 				<td>enable Locking</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>autoLockAfter</td>
 				<td>auto Locking after [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIcon</td>
 				<td>icon</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconSize</td>
 				<td>icon size</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconColor</td>
 				<td>icon color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>lockFilterGrayscale</td>
 				<td>gray filter if locked</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 		</tbody>
 	</table>
 </details>
+
 
 ## Buttons Vertical
 
@@ -782,132 +784,135 @@ The following properties can be used as [control element in a table](#control-el
 		</thead>
 		<tbody>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Common</b>
-					</i>
-				</td>
+				<td>type</td>
+				<td>Widget type</td>
+				<td>string</td>
+				<td>link_vertical</td>
+			</tr>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>buttonStyle</td>
 				<td>button style</td>
 				<td>string</td>
-				<td>text | raised | unelevated | outlined</td>
+				<td>text | raised | unelevated | outlined
 			</tr>
 			<tr>
 				<td>href</td>
 				<td>Link</td>
 				<td>url</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>openNewWindow</td>
 				<td>open in new window</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>vibrateOnMobilDevices</td>
 				<td>vibrate on mobil devices [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>labeling</b>
-					</i>
-				</td>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
 			</tr>
 			<tr>
 				<td>buttontext</td>
 				<td>Button text</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>textFontFamily</td>
 				<td>font</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>textFontSize</td>
 				<td>text size</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>alignment</td>
 				<td>alignment</td>
 				<td>string</td>
-				<td>flex-start | center | flex-end</td>
+				<td>flex-start | center | flex-end
 			</tr>
 			<tr>
 				<td>distanceBetweenTextAndImage</td>
 				<td>distance between text and image</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>colors</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>mdwButtonPrimaryColor</td>
 				<td>primary color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>mdwButtonSecondaryColor</td>
 				<td>secondary color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>mdwButtonColorPress</td>
 				<td>color pressed</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>icon</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
 				<td>Image</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>imageColor</td>
 				<td>image color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>iconPosition</td>
 				<td>image position</td>
 				<td>string</td>
-				<td>top | bottom</td>
+				<td>top | bottom
 			</tr>
 			<tr>
 				<td>iconHeight</td>
 				<td>image height</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 		</tbody>
 	</table>
 </details>
+
 
 ##### Button Vertical State Properties
 
@@ -925,187 +930,186 @@ The following properties can be used as [control element in a table](#control-el
 		</thead>
 		<tbody>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Common</b>
-					</i>
-				</td>
+				<td>type</td>
+				<td>Widget type</td>
+				<td>string</td>
+				<td>state_vertical</td>
+			</tr>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>oid</td>
 				<td>Object ID</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>buttonStyle</td>
 				<td>button style</td>
 				<td>string</td>
-				<td>text | raised | unelevated | outlined</td>
+				<td>text | raised | unelevated | outlined
 			</tr>
 			<tr>
 				<td>value</td>
 				<td>value</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>vibrateOnMobilDevices</td>
 				<td>vibrate on mobil devices [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>labeling</b>
-					</i>
-				</td>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
 			</tr>
 			<tr>
 				<td>buttontext</td>
 				<td>Button text</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>textFontFamily</td>
 				<td>font</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>textFontSize</td>
 				<td>text size</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>alignment</td>
 				<td>alignment</td>
 				<td>string</td>
-				<td>flex-start | center | flex-end</td>
+				<td>flex-start | center | flex-end
 			</tr>
 			<tr>
 				<td>distanceBetweenTextAndImage</td>
 				<td>distance between text and image</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>colors</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>mdwButtonPrimaryColor</td>
 				<td>primary color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>mdwButtonSecondaryColor</td>
 				<td>secondary color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>mdwButtonColorPress</td>
 				<td>color pressed</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>icon</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
 				<td>Image</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>imageColor</td>
 				<td>image color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>iconPosition</td>
 				<td>image position</td>
 				<td>string</td>
-				<td>top | bottom</td>
+				<td>top | bottom
 			</tr>
 			<tr>
 				<td>iconHeight</td>
 				<td>image height</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Locking</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
 			</tr>
 			<tr>
 				<td>lockEnabled</td>
 				<td>enable Locking</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>autoLockAfter</td>
 				<td>auto Locking after [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIcon</td>
 				<td>icon</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconTop</td>
 				<td>symbol distance from top [%]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconLeft</td>
 				<td>symbol distance from left [%]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconSize</td>
 				<td>icon size</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconColor</td>
 				<td>icon color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>lockFilterGrayscale</td>
 				<td>gray filter if locked</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 		</tbody>
 	</table>
 </details>
+
 
 ##### Button Vertical Toggle Properties
 
@@ -1123,253 +1127,252 @@ The following properties can be used as [control element in a table](#control-el
 		</thead>
 		<tbody>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Common</b>
-					</i>
-				</td>
+				<td>type</td>
+				<td>Widget type</td>
+				<td>string</td>
+				<td>toggle_vertical</td>
+			</tr>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>oid</td>
 				<td>Object ID</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>buttonStyle</td>
 				<td>button style</td>
 				<td>string</td>
-				<td>text | raised | unelevated | outlined</td>
+				<td>text | raised | unelevated | outlined
 			</tr>
 			<tr>
 				<td>readOnly</td>
 				<td>read only</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>toggleType</td>
 				<td>type of toggle</td>
 				<td>string</td>
-				<td>boolean | value</td>
+				<td>boolean | value
 			</tr>
 			<tr>
 				<td>pushButton</td>
 				<td>push button</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>valueOff</td>
 				<td>value for off</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>valueOn</td>
 				<td>value for on</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>stateIfNotTrueValue</td>
 				<td>state if value unequal to 'on' condition</td>
 				<td>string</td>
-				<td>on | off</td>
+				<td>on | off
 			</tr>
 			<tr>
 				<td>vibrateOnMobilDevices</td>
 				<td>vibrate on mobil devices [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>labeling</b>
-					</i>
-				</td>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
 			</tr>
 			<tr>
 				<td>buttontext</td>
 				<td>Button text</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>labelTrue</td>
 				<td>Label true</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>labelColorFalse</td>
 				<td>label color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>labelColorTrue</td>
 				<td>active label color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>textFontFamily</td>
 				<td>font</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>textFontSize</td>
 				<td>text size</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>alignment</td>
 				<td>alignment</td>
 				<td>string</td>
-				<td>flex-start | center | flex-end</td>
+				<td>flex-start | center | flex-end
 			</tr>
 			<tr>
 				<td>distanceBetweenTextAndImage</td>
 				<td>distance between text and image</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>colors</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>mdwButtonPrimaryColor</td>
 				<td>primary color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>mdwButtonSecondaryColor</td>
 				<td>secondary color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>colorBgFalse</td>
 				<td>background</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>colorBgTrue</td>
 				<td>active background</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>icon</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
 				<td>Image</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>imageColor</td>
 				<td>image color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>imageTrue</td>
 				<td>active image</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>imageTrueColor</td>
 				<td>active image color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>iconPosition</td>
 				<td>image position</td>
 				<td>string</td>
-				<td>top | bottom</td>
+				<td>top | bottom
 			</tr>
 			<tr>
 				<td>iconHeight</td>
 				<td>image height</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Locking</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
 			</tr>
 			<tr>
 				<td>lockEnabled</td>
 				<td>enable Locking</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>autoLockAfter</td>
 				<td>auto Locking after [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIcon</td>
 				<td>icon</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconTop</td>
 				<td>symbol distance from top [%]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconLeft</td>
 				<td>symbol distance from left [%]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconSize</td>
 				<td>icon size</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconColor</td>
 				<td>icon color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>lockFilterGrayscale</td>
 				<td>gray filter if locked</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 		</tbody>
 	</table>
 </details>
+
 
 ## Buttons Icon
 ![Logo](doc/en/media/icon-button.gif)
@@ -1390,77 +1393,84 @@ The following properties can be used as [control element in a table](#control-el
 		</thead>
 		<tbody>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Common</b>
-					</i>
-				</td>
+				<td>type</td>
+				<td>Widget type</td>
+				<td>string</td>
+				<td>link_icon</td>
+			</tr>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>href</td>
 				<td>Link</td>
 				<td>url</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>openNewWindow</td>
 				<td>open in new window</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>vibrateOnMobilDevices</td>
 				<td>vibrate on mobil devices [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>icon</b>
-					</i>
-				</td>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
 				<td>Image</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>imageColor</td>
 				<td>image color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>iconHeight</td>
 				<td>image height</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>colors</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>colorBgFalse</td>
 				<td>background</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>colorPress</td>
 				<td>color pressed</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 		</tbody>
 	</table>
 </details>
+
 
 ##### Button Icon State Properties
 
@@ -1478,144 +1488,147 @@ The following properties can be used as [control element in a table](#control-el
 		</thead>
 		<tbody>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Common</b>
-					</i>
-				</td>
+				<td>type</td>
+				<td>Widget type</td>
+				<td>string</td>
+				<td>state_icon</td>
+			</tr>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>oid</td>
 				<td>Object ID</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>value</td>
 				<td>value</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>vibrateOnMobilDevices</td>
 				<td>vibrate on mobil devices [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>icon</b>
-					</i>
-				</td>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
 				<td>Image</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>imageColor</td>
 				<td>image color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>iconHeight</td>
 				<td>image height</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>colors</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>colorBgFalse</td>
 				<td>background</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>colorPress</td>
 				<td>color pressed</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Locking</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
 			</tr>
 			<tr>
 				<td>lockEnabled</td>
 				<td>enable Locking</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>autoLockAfter</td>
 				<td>auto Locking after [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIcon</td>
 				<td>icon</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconTop</td>
 				<td>symbol distance from top [%]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconLeft</td>
 				<td>symbol distance from left [%]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconSize</td>
 				<td>icon size</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconColor</td>
 				<td>icon color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>lockIconBackground</td>
 				<td>lockIconBackground</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>lockBackgroundSizeFactor</td>
 				<td>lockBackgroundSizeFactor</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockFilterGrayscale</td>
 				<td>gray filter if locked</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 		</tbody>
 	</table>
 </details>
+
 
 ##### Button Icon Toggle Properties
 
@@ -1630,191 +1643,193 @@ The following properties can be used as [control element in a table](#control-el
 				<th>Type</th>
 				<th>Values</th>
 			</tr>
-		</thead>
+		<thead>
 		<tbody>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Common</b>
-					</i>
-				</td>
+				<td>type</td>
+				<td>Widget type</td>
+				<td>string</td>
+				<td>toggle_icon</td>
+			</tr>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>oid</td>
 				<td>Object ID</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>readOnly</td>
 				<td>read only</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>toggleType</td>
 				<td>type of toggle</td>
 				<td>string</td>
-				<td>boolean | value</td>
+				<td>boolean | value
 			</tr>
 			<tr>
 				<td>pushButton</td>
 				<td>push button</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>valueOff</td>
 				<td>value for off</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>valueOn</td>
 				<td>value for on</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>stateIfNotTrueValue</td>
 				<td>state if value unequal to 'on' condition</td>
 				<td>string</td>
-				<td>on | off</td>
+				<td>on | off
 			</tr>
 			<tr>
 				<td>vibrateOnMobilDevices</td>
 				<td>vibrate on mobil devices [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>icon</b>
-					</i>
-				</td>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
 				<td>Image</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>imageColor</td>
 				<td>image color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>imageTrue</td>
 				<td>active image</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>imageTrueColor</td>
 				<td>active image color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>iconHeight</td>
 				<td>image height</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>colors</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>colorBgFalse</td>
 				<td>background</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>colorBgTrue</td>
 				<td>active background</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>colorPress</td>
 				<td>color pressed</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;">
-					<i>
-						<b>Locking</b>
-					</i>
-				</td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
 			</tr>
 			<tr>
 				<td>lockEnabled</td>
 				<td>enable Locking</td>
 				<td>boolean</td>
-				<td>false | true</td>
+				<td>false | true
 			</tr>
 			<tr>
 				<td>autoLockAfter</td>
 				<td>auto Locking after [s]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIcon</td>
 				<td>icon</td>
 				<td>string</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconTop</td>
 				<td>symbol distance from top [%]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconLeft</td>
 				<td>symbol distance from left [%]</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconSize</td>
 				<td>icon size</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockIconColor</td>
 				<td>icon color</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>lockIconBackground</td>
 				<td>lockIconBackground</td>
 				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
 				<td>lockBackgroundSizeFactor</td>
 				<td>lockBackgroundSizeFactor</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 			<tr>
 				<td>lockFilterGrayscale</td>
 				<td>gray filter if locked</td>
 				<td>number</td>
-				<td/>
+				<td>
 			</tr>
 		</tbody>
 	</table>
@@ -1924,6 +1939,390 @@ Settings that are not listed in the table below are self-explanatory.
     </tbody>
 </table>
 
+##### Progress Properties
+
+The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
+
+<details>
+	<table>
+		<thead>
+			<tr>
+				<th>Property</th>
+				<th>Description</th>
+				<th>Type</th>
+				<th>Values</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>type</td>
+				<td>Widget type</td>
+				<td>string</td>
+				<td>linear</td>
+			</tr>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+			</tr>
+			<tr>
+				<td>progressIndeterminate</td>
+				<td>indeterminate - continuously animates</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>oid</td>
+				<td>Object ID</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>min</td>
+				<td>min</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>max</td>
+				<td>max</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>reverse</td>
+				<td>Revers value</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>layout</b></i></td>
+			</tr>
+			<tr>
+				<td>progressRounded</td>
+				<td>rounded corners</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>progressStriped</td>
+				<td>striped</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>progressStripedColor</td>
+				<td>progressStripedColor</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+			</tr>
+			<tr>
+				<td>colorProgressBackground</td>
+				<td>background color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorProgress</td>
+				<td>color progress</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorOneCondition</td>
+				<td>condition for color 1 progress [>]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>colorOne</td>
+				<td>color 1 progress</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorTwoCondition</td>
+				<td>condition for color 2 progress [>]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>colorTwo</td>
+				<td>color 2 progress</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
+			</tr>
+			<tr>
+				<td>showValueLabel</td>
+				<td>show value</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>valueLabelStyle</td>
+				<td>value caption style</td>
+				<td>string</td>
+				<td>progressPercent | progressValue | progressCustom
+			</tr>
+			<tr>
+				<td>valueLabelUnit</td>
+				<td>unit</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueMaxDecimals</td>
+				<td>decimal points</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueLabelCustom</td>
+				<td>custom label</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>textColor</td>
+				<td>Minutes text color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>textFontSize</td>
+				<td>text size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>textFontFamily</td>
+				<td>font</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>textAlign</td>
+				<td>textAlign</td>
+				<td>string</td>
+				<td>start | center | end
+			</tr>
+		</tbody>
+	</table>
+</details>
+
+
+## Progress Circular
+![Logo](doc/en/media/progress.gif)
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=6><img src="doc/en/media/progress_settings.png"></td>
+            <td>custom label</td>
+            <td>For custom label you can use the property <code>[#value]</code> to show the real value of the datapoint. To show the current percent you can use <code>[#percent]</code></td>
+        </tr>
+    </tbody>
+</table>
+
+##### Progress Circular Properties
+
+The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
+
+<details>
+	<table>
+		<thead>
+			<tr>
+				<th>Property</th>
+				<th>Description</th>
+				<th>Type</th>
+				<th>Values</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>type</td>
+				<td>Widget type</td>
+				<td>string</td>
+				<td>circular</td>
+			</tr>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+			</tr>
+			<tr>
+				<td>oid</td>
+				<td>Object ID</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>min</td>
+				<td>min</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>max</td>
+				<td>max</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>layout</b></i></td>
+			</tr>
+			<tr>
+				<td>progressCircularSize</td>
+				<td>size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>progressCircularWidth</td>
+				<td>thickness</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>progressCircularRotate</td>
+				<td>rotate start point</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+			</tr>
+			<tr>
+				<td>colorProgressBackground</td>
+				<td>background color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorProgress</td>
+				<td>color progress</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>innerColor</td>
+				<td>circle background color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorOneCondition</td>
+				<td>condition for color 1 progress [>]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>colorOne</td>
+				<td>color 1 progress</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorTwoCondition</td>
+				<td>condition for color 2 progress [>]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>colorTwo</td>
+				<td>color 2 progress</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
+			</tr>
+			<tr>
+				<td>showValueLabel</td>
+				<td>show value</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>valueLabelStyle</td>
+				<td>value caption style</td>
+				<td>string</td>
+				<td>progressPercent | progressValue | progressCustom
+			</tr>
+			<tr>
+				<td>valueLabelUnit</td>
+				<td>unit</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueMaxDecimals</td>
+				<td>decimal points</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueLabelCustom</td>
+				<td>custom label</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>textColor</td>
+				<td>Minutes text color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>textFontSize</td>
+				<td>text size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>textFontFamily</td>
+				<td>font</td>
+				<td>string</td>
+				<td>
+			</tr>
+		</tbody>
+	</table>
+</details>
+
+
 ## Slider
 ![Logo](doc/en/media/slider.gif)
 
@@ -1946,14 +2345,970 @@ Settings that are not listed in the table below are self-explanatory.
     </tbody>
 </table>
 
-## Round Slider
+##### Slider Properties
+
+The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
+
+<details>
+	<table>
+		<thead>
+			<tr>
+				<th>Property</th>
+				<th>Description</th>
+				<th>Type</th>
+				<th>Values</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+			</tr>
+			<tr>
+				<td>oid</td>
+				<td>Object ID</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>oid-working</td>
+				<td>Working Object ID</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>orientation</td>
+				<td>Orientation</td>
+				<td>string</td>
+				<td>horizontal | vertical
+			</tr>
+			<tr>
+				<td>reverseSlider</td>
+				<td>invert slider</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>knobSize</td>
+				<td>knob size</td>
+				<td>string</td>
+				<td>knobSmall | knobMedium | knobBig
+			</tr>
+			<tr>
+				<td>readOnly</td>
+				<td>read only</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>min</td>
+				<td>min</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>max</td>
+				<td>max</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>step</td>
+				<td>steps</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>vibrateOnMobilDevices</td>
+				<td>vibrate on mobil devices [s]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>steps Layout</b></i></td>
+			</tr>
+			<tr>
+				<td>showTicks</td>
+				<td>show steps</td>
+				<td>string</td>
+				<td>no | yes | always
+			</tr>
+			<tr>
+				<td>tickSize</td>
+				<td>display size of steps</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>tickLabels</td>
+				<td>text of steps (comma separated)</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>tickTextColor</td>
+				<td>text color of steps</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>tickFontFamily</td>
+				<td>font of steps</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>tickFontSize</td>
+				<td>font size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>tickColorBefore</td>
+				<td>color before the regulator</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>tickColorAfter</td>
+				<td>color after the regulator</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+			</tr>
+			<tr>
+				<td>colorBeforeThumb</td>
+				<td>color before regulator</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorThumb</td>
+				<td>color of regulator</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorAfterThumb</td>
+				<td>color after regulator</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
+			</tr>
+			<tr>
+				<td>prepandText</td>
+				<td>text prepanded</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>prepandTextWidth</td>
+				<td>prepandTextWidth</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>prepandTextColor</td>
+				<td>color of text prepanded</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>prepandTextFontSize</td>
+				<td>size text prepanded</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>prepandTextFontFamily</td>
+				<td>font of text prepanded</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>showValueLabel</td>
+				<td>show value</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>valueLabelStyle</td>
+				<td>value caption style</td>
+				<td>string</td>
+				<td>sliderPercent | sliderValue
+			</tr>
+			<tr>
+				<td>valueLabelUnit</td>
+				<td>unit</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueFontFamily</td>
+				<td>valueFontFamily</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueFontSize</td>
+				<td>value font size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueLabelColor</td>
+				<td>text color of value</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>valueLabelMin</td>
+				<td>text for value less than min</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueLabelMax</td>
+				<td>text for value greater than min</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueLessThan</td>
+				<td>'smaller than' condition for the text of the value</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>textForValueLessThan</td>
+				<td>text for 'smaller than'</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueGreaterThan</td>
+				<td>'greater than' condition for the text of the value</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>textForValueGreaterThan</td>
+				<td>text for 'greater than'</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueLabelWidth</td>
+				<td>distance label</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>layout of the controller label</b></i></td>
+			</tr>
+			<tr>
+				<td>showThumbLabel</td>
+				<td>show label</td>
+				<td>string</td>
+				<td>no | yes | always
+			</tr>
+			<tr>
+				<td>thumbSize</td>
+				<td>label size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>thumbBackgroundColor</td>
+				<td>background color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>thumbFontColor</td>
+				<td>font color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>thumbFontSize</td>
+				<td>font size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>thumbFontFamily</td>
+				<td>font</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>useLabelRules</td>
+				<td>use rules of the text</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+		</tbody>
+	</table>
+</details>
+
+
+## Slider Round
 ![Logo](doc/en/media/round_slider.gif)
+
+##### Slider Round Properties
+
+The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
+
+<details>
+	<table>
+		<thead>
+			<tr>
+				<th>Property</th>
+				<th>Description</th>
+				<th>Type</th>
+				<th>Values</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+			</tr>
+			<tr>
+				<td>oid</td>
+				<td>Object ID</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>oid-working</td>
+				<td>Working Object ID</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>min</td>
+				<td>min</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>max</td>
+				<td>max</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>step</td>
+				<td>steps</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>readOnly</td>
+				<td>read only</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>startAngle</td>
+				<td>start angle</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>arcLength</td>
+				<td>arc length</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>sliderWidth</td>
+				<td>slider thikness</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>handleSize</td>
+				<td>knob size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>handleZoom</td>
+				<td>knob zoom at control</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>rtl</td>
+				<td>slider movement from right to left</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>vibrateOnMobilDevices</td>
+				<td>vibrate on mobil devices [s]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+			</tr>
+			<tr>
+				<td>colorSliderBg</td>
+				<td>background</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorBeforeThumb</td>
+				<td>color before regulator</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorThumb</td>
+				<td>color of regulator</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorAfterThumb</td>
+				<td>color after regulator</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>valueLabelColor</td>
+				<td>text color of value</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
+			</tr>
+			<tr>
+				<td>showValueLabel</td>
+				<td>show value</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>valueLabelVerticalPosition</td>
+				<td>vertical text position of value </td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueLabelStyle</td>
+				<td>value caption style</td>
+				<td>string</td>
+				<td>sliderPercent | sliderValue
+			</tr>
+			<tr>
+				<td>valueLabelUnit</td>
+				<td>unit</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueFontFamily</td>
+				<td>valueFontFamily</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueFontSize</td>
+				<td>value font size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueLabelMin</td>
+				<td>text for value less than min</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueLabelMax</td>
+				<td>text for value greater than min</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueLessThan</td>
+				<td>'smaller than' condition for the text of the value</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>textForValueLessThan</td>
+				<td>text for 'smaller than'</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueGreaterThan</td>
+				<td>'greater than' condition for the text of the value</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>textForValueGreaterThan</td>
+				<td>text for 'greater than'</td>
+				<td>string</td>
+				<td>
+			</tr>
+		</tbody>
+	</table>
+</details>
+
 
 ## Checkbox
 ![Logo](doc/en/media/checkbox.gif)
 
+##### Checkbox Properties
+
+The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
+
+<details>
+	<table>
+		<thead>
+			<tr>
+				<th>Property</th>
+				<th>Description</th>
+				<th>Type</th>
+				<th>Values</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+			</tr>
+			<tr>
+				<td>oid</td>
+				<td>Object ID</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>readOnly</td>
+				<td>read only</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>toggleType</td>
+				<td>type of toggle</td>
+				<td>string</td>
+				<td>boolean | value
+			</tr>
+			<tr>
+				<td>valueOff</td>
+				<td>value for off</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueOn</td>
+				<td>value for on</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>stateIfNotTrueValue</td>
+				<td>state if value unequal to 'on' condition</td>
+				<td>string</td>
+				<td>on | off
+			</tr>
+			<tr>
+				<td>vibrateOnMobilDevices</td>
+				<td>vibrate on mobil devices [s]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
+			</tr>
+			<tr>
+				<td>labelFalse</td>
+				<td>Label false</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>labelTrue</td>
+				<td>Label true</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>labelPosition</td>
+				<td>labelPosition</td>
+				<td>string</td>
+				<td>left | right | off
+			</tr>
+			<tr>
+				<td>labelClickActive</td>
+				<td>activate label click</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>valueFontFamily</td>
+				<td>valueFontFamily</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueFontSize</td>
+				<td>value font size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+			</tr>
+			<tr>
+				<td>colorCheckBox</td>
+				<td>checkbox color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorCheckBoxBorder</td>
+				<td>border color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorCheckBoxHover</td>
+				<td>hover color of checkbox</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>labelColorFalse</td>
+				<td>label color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>labelColorTrue</td>
+				<td>active label color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
+			</tr>
+			<tr>
+				<td>lockEnabled</td>
+				<td>enable Locking</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>autoLockAfter</td>
+				<td>auto Locking after [s]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>lockIcon</td>
+				<td>icon</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>lockIconTop</td>
+				<td>symbol distance from top [%]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>lockIconLeft</td>
+				<td>symbol distance from left [%]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>lockIconSize</td>
+				<td>icon size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>lockIconColor</td>
+				<td>icon color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>lockFilterGrayscale</td>
+				<td>gray filter if locked</td>
+				<td>number</td>
+				<td>
+			</tr>
+		</tbody>
+	</table>
+</details>
+
+
 ## Switch
 ![Logo](doc/en/media/switch.gif)
+
+##### Switch Properties
+
+The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
+
+<details>
+	<table>
+		<thead>
+			<tr>
+				<th>Property</th>
+				<th>Description</th>
+				<th>Type</th>
+				<th>Values</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>debug</td>
+				<td>debug mode</td>
+				<td>boolean</td>
+				<td>false | true</td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+			</tr>
+			<tr>
+				<td>oid</td>
+				<td>Object ID</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>readOnly</td>
+				<td>read only</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>toggleType</td>
+				<td>type of toggle</td>
+				<td>string</td>
+				<td>boolean | value
+			</tr>
+			<tr>
+				<td>valueOff</td>
+				<td>value for off</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueOn</td>
+				<td>value for on</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>stateIfNotTrueValue</td>
+				<td>state if value unequal to 'on' condition</td>
+				<td>string</td>
+				<td>on | off
+			</tr>
+			<tr>
+				<td>vibrateOnMobilDevices</td>
+				<td>vibrate on mobil devices [s]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>generateHtmlControl</td>
+				<td>generate Html Element</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
+			</tr>
+			<tr>
+				<td>labelFalse</td>
+				<td>Label false</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>labelTrue</td>
+				<td>Label true</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>labelPosition</td>
+				<td>labelPosition</td>
+				<td>string</td>
+				<td>left | right | off
+			</tr>
+			<tr>
+				<td>labelClickActive</td>
+				<td>activate label click</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>valueFontFamily</td>
+				<td>valueFontFamily</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>valueFontSize</td>
+				<td>value font size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+			</tr>
+			<tr>
+				<td>colorSwitchThumb</td>
+				<td>thumb color of switch</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorSwitchTrack</td>
+				<td>track color of switch</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorSwitchTrue</td>
+				<td>active switch color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorSwitchHover</td>
+				<td>hover color of switch</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>colorSwitchHoverTrue</td>
+				<td>active switch color selected / hover</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>labelColorFalse</td>
+				<td>label color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>labelColorTrue</td>
+				<td>active label color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
+			</tr>
+			<tr>
+				<td>lockEnabled</td>
+				<td>enable Locking</td>
+				<td>boolean</td>
+				<td>false | true
+			</tr>
+			<tr>
+				<td>autoLockAfter</td>
+				<td>auto Locking after [s]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>lockIcon</td>
+				<td>icon</td>
+				<td>string</td>
+				<td>
+			</tr>
+			<tr>
+				<td>lockIconTop</td>
+				<td>symbol distance from top [%]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>lockIconLeft</td>
+				<td>symbol distance from left [%]</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>lockIconSize</td>
+				<td>icon size</td>
+				<td>number</td>
+				<td>
+			</tr>
+			<tr>
+				<td>lockIconColor</td>
+				<td>icon color</td>
+				<td>string</td>
+				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+			</tr>
+			<tr>
+				<td>lockFilterGrayscale</td>
+				<td>gray filter if locked</td>
+				<td>number</td>
+				<td>
+			</tr>
+		</tbody>
+	</table>
+</details>
+
 
 ## Input
 
@@ -3191,1074 +4546,6 @@ Take a look at the animated screenshot below:
         </tr>
     </tbody>
 </table>
-
-##### Progress
-
-<details>
-<table>
-    <thead>
-        <tr>
-            <th>Property</th>
-            <th>Description</th>
-            <th>Type</th>
-            <th>Values</th>
-        </tr>
-    </thead>
-    <tbody>
-		<tr>
-			<td>oid</td>
-			<td>Object ID</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>indeterminate</td>
-			<td>indeterminate - continuously animates</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>min</td>
-			<td>min</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>max</td>
-			<td>max</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>reverse</td>
-			<td>Revers value</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>progressRounded</td>
-			<td>rounded corners</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>progressStriped</td>
-			<td>striped</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>progressStripedColor</td>
-			<td>progressStripedColor</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorProgressBackground</td>
-			<td>background color</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorProgress</td>
-			<td>color progress</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorOneCondition</td>
-			<td>condition for color 1 progress [>]</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>colorOne</td>
-			<td>color 1 progress</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorTwoCondition</td>
-			<td>condition for color 2 progress [>]</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>colorTwo</td>
-			<td>color 2 progress</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>showValueLabel</td>
-			<td>show value</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>valueLabelStyle</td>
-			<td>value caption style</td>
-			<td>string</td>
-			<td>progressPercent | progressValue | progressCustom</td>
-		</tr>
-		<tr>
-			<td>valueLabelUnit</td>
-			<td>unit</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>valueMaxDecimals</td>
-			<td>decimal points</td>
-			<td>number</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>valueLabelCustom</td>
-			<td>valueLabelCustom</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>textColor</td>
-			<td>text color</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>textFontSize</td>
-			<td>text size</td>
-			<td>number</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>textFontFamily</td>
-			<td>textFontFamily</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>textAlign</td>
-			<td>textAlign</td>
-			<td>string</td>
-			<td>start | center | end</td>
-		</tr>
-    </tbody>
-</table>
-</details>
-
-
-##### Progress Circular
-
-<details>
-<table>
-	<thead>
-		<tr>
-			<th>Property</th>
-			<th>Description</th>
-			<th>Type</th>
-			<th>Values</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>oid</td>
-			<td>Object ID</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>min</td>
-			<td>min</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>max</td>
-			<td>max</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>progressCircularSize</td>
-			<td>size</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>progressCircularWidth</td>
-			<td>thickness</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>progressCircularRotate</td>
-			<td>rotate start point</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>colorProgressBackground</td>
-			<td>background color</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorProgress</td>
-			<td>color progress</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>innerColor</td>
-			<td>circle background color</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorOneCondition</td>
-			<td>condition for color 1 progress [>]</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>colorOne</td>
-			<td>color 1 progress</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorTwoCondition</td>
-			<td>condition for color 2 progress [>]</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>colorTwo</td>
-			<td>color 2 progress</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>showValueLabel</td>
-			<td>show value</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>valueLabelStyle</td>
-			<td>value caption style</td>
-			<td>string</td>
-			<td>progressPercent | progressValue | progressCustom</td>
-		</tr>
-		<tr>
-			<td>valueLabelUnit</td>
-			<td>unit</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>valueMaxDecimals</td>
-			<td>decimal points</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>valueLabelCustom</td>
-			<td>valueLabelCustom</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>textColor</td>
-			<td>text color</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>textFontSize</td>
-			<td>text size</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>textFontFamily</td>
-			<td>textFontFamily</td>
-			<td>string</td>
-			<td/>
-		</tr>
-	</tbody>
-</table>
-</details>
-
-
-##### Slider
-
-<details>
-<table>
-    <thead>
-        <tr>
-            <th>Property</th>
-            <th>Description</th>
-            <th>Type</th>
-            <th>Values</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-			<td>oid</td>
-			<td>Object ID</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>oid-working</td>
-			<td>Working Object ID</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>orientation</td>
-			<td>Orientation</td>
-			<td>string</td>
-			<td>horizontal | vertical</td>
-		</tr>
-		<tr>
-			<td>reverseSlider</td>
-			<td>invert slider</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>knobSize</td>
-			<td>knob size</td>
-			<td>string</td>
-			<td>knobSmall | knobMedium | knobBig</td>
-		</tr>
-		<tr>
-			<td>readOnly</td>
-			<td>read only</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>min</td>
-			<td>min</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>max</td>
-			<td>max</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>step</td>
-			<td>steps</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>vibrateOnMobilDevices</td>
-			<td>vibrate on mobil devices [s]</td>
-			<td>number</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>showTicks</td>
-			<td>show steps</td>
-			<td>string</td>
-			<td>no | yes | always</td>
-		</tr>
-		<tr>
-			<td>tickSize</td>
-			<td>display size of steps</td>
-			<td>number</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>tickLabels</td>
-			<td>text of steps (comma separated)</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>tickColorBefore</td>
-			<td>color before the regulator</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>tickColorAfter</td>
-			<td>color after the regulator</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorBeforeThumb</td>
-			<td>color before regulator</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorThumb</td>
-			<td>color of regulator</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorAfterThumb</td>
-			<td>color after regulator</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>prepandText</td>
-			<td>text prepanded</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>prepandTextWidth</td>
-			<td>prepandTextWidth</td>
-			<td>number</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>prepandTextColor</td>
-			<td>color of text prepanded</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>prepandTextFontSize</td>
-			<td>size text prepanded</td>
-			<td>number</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>prepandTextFontFamily</td>
-			<td>font of text prepanded</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>showValueLabel</td>
-			<td>show value</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>valueLabelStyle</td>
-			<td>value caption style</td>
-			<td>string</td>
-			<td>sliderPercent | sliderValue</td>
-		</tr>
-		<tr>
-			<td>valueLabelUnit</td>
-			<td>unit</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>valueLabelMin</td>
-			<td>text for value less than min</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>valueLabelMax</td>
-			<td>text for value greater than min</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>valueLessThan</td>
-			<td>'smaller than' condition for the text of the value</td>
-			<td>number</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>textForValueLessThan</td>
-			<td>text for 'smaller than'</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>valueGreaterThan</td>
-			<td>'greater than' condition for the text of the value</td>
-			<td>number</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>textForValueGreaterThan</td>
-			<td>text for 'greater than'</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>valueLabelWidth</td>
-			<td>distance label</td>
-			<td>number</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>showThumbLabel</td>
-			<td>show label</td>
-			<td>string</td>
-			<td>no | yes | always</td>
-		</tr>
-		<tr>
-			<td>thumbSize</td>
-			<td>label size</td>
-			<td>number</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>thumbBackgroundColor</td>
-			<td>background color</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>thumbFontColor</td>
-			<td>font color</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>thumbFontSize</td>
-			<td>font size</td>
-			<td>number</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>thumbFontFamily</td>
-			<td>font</td>
-			<td>string</td>
-			<td></td>
-		</tr>
-		<tr>
-			<td>useLabelRules</td>
-			<td>use rules of the text</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-    </tbody>
-</table>
-</details>
-
-
-##### Slider Round
-
-<details>
-<table>
-	<thead>
-		<tr>
-			<th>Property</th>
-			<th>Description</th>
-			<th>Type</th>
-			<th>Values</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>oid</td>
-			<td>Object ID</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>oid-working</td>
-			<td>Working Object ID</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>min</td>
-			<td>min</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>max</td>
-			<td>max</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>step</td>
-			<td>steps</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>readOnly</td>
-			<td>nur lesend</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>startAngle</td>
-			<td>start angle</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>arcLength</td>
-			<td>arc length</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>sliderWidth</td>
-			<td>slider thikness</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>handleSize</td>
-			<td>knob size</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>handleZoom</td>
-			<td>knob zoom at control</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>rtl</td>
-			<td>slider movement from right to left</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>vibrateOnMobilDevices</td>
-			<td>vibrate on mobil devices [s]</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>colorSliderBg</td>
-			<td>background</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorBeforeThumb</td>
-			<td>color before regulator</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorThumb</td>
-			<td>color of regulator</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorAfterThumb</td>
-			<td>color after regulator</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>valueLabelColor</td>
-			<td>text color of value</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>showValueLabel</td>
-			<td>show value</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>valueLabelVerticalPosition</td>
-			<td>vertical text position of value </td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>valueLabelStyle</td>
-			<td>value caption style</td>
-			<td>string</td>
-			<td>sliderPercent | sliderValue</td>
-		</tr>
-		<tr>
-			<td>valueLabelUnit</td>
-			<td>unit</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>valueLabelMin</td>
-			<td>text for value less than min</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>valueLabelMax</td>
-			<td>text for value greater than min</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>valueLessThan</td>
-			<td>'smaller than' condition for the text of the value</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>textForValueLessThan</td>
-			<td>text for 'smaller than'</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>valueGreaterThan</td>
-			<td>'greater than' condition for the text of the value</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>textForValueGreaterThan</td>
-			<td>text for 'greater than'</td>
-			<td>string</td>
-			<td/>
-		</tr>
-	</tbody>
-</table>
-</details>
-
-
-##### Switch
-
-<details>
-<table>
-	<thead>
-		<tr>
-			<th>Property</th>
-			<th>Description</th>
-			<th>Type</th>
-			<th>Values</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>oid</td>
-			<td>Object ID</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>readOnly</td>
-			<td>nur lesend</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>toggleType</td>
-			<td>Art der Umschaltung</td>
-			<td>string</td>
-			<td>boolean | value</td>
-		</tr>
-		<tr>
-			<td>valueOff</td>
-			<td>Wert f�r aus</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>valueOn</td>
-			<td>Wert f�r ein</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>stateIfNotTrueValue</td>
-			<td>Zustand, wenn der Wert nicht der Bedingung 'Ein' entspricht</td>
-			<td>string</td>
-			<td>on | off</td>
-		</tr>
-		<tr>
-			<td>vibrateOnMobilDevices</td>
-			<td>auf mobilen Ger�ten vibrieren [s]</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>labelFalse</td>
-			<td>Beschriftung False</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>labelTrue</td>
-			<td>Beschriftung True</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>labelPosition</td>
-			<td>labelPosition</td>
-			<td>string</td>
-			<td>left | right | off</td>
-		</tr>
-		<tr>
-			<td>labelClickActive</td>
-			<td>Beschriftungs-Klick aktivieren</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>colorSwitchThumb</td>
-			<td>Knopffarbe des Schalters</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorSwitchTrack</td>
-			<td>Schieberfarbe des Schalters</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorSwitchTrue</td>
-			<td>aktive Schalterfarbe</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorSwitchHover</td>
-			<td>Schalterfarbe selektiert / hover</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>colorSwitchHoverTrue</td>
-			<td>Schalterfarbe selektiert / hover für Aktiviert</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>labelColorFalse</td>
-			<td>Beschriftungsfarbe</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>labelColorTrue</td>
-			<td>Beschriftungsfarbe f�r true</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>lockEnabled</td>
-			<td>Verriegeln aktivieren</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>autoLockAfter</td>
-			<td>automatisch Verriegeln nach [s]</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>lockIcon</td>
-			<td>Symbol</td>
-			<td>custom</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>lockIconTop</td>
-			<td>Symbolabstand von oben [%]</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>lockIconLeft</td>
-			<td>Symbolabstand von links [%]</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>lockIconSize</td>
-			<td>Symbolgr��e</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>lockIconColor</td>
-			<td>Symbolfarbe</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>lockFilterGrayscale</td>
-			<td>Graufilter, wenn verriegelt</td>
-			<td>number</td>
-			<td/>
-		</tr>
-	</tbody>
-</table>
-</details>
-
-
-##### Checkbox
-
-<details>
-<table>
-	<thead>
-		<tr>
-			<th>Property</th>
-			<th>Description</th>
-			<th>Type</th>
-			<th>Values</th>
-		</tr>
-	</thead>
-	<tbody>
-		<tr>
-			<td>oid</td>
-			<td>Object ID</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>readOnly</td>
-			<td>nur lesend</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>toggleType</td>
-			<td>Art der Umschaltung</td>
-			<td>string</td>
-			<td>boolean | value</td>
-		</tr>
-		<tr>
-			<td>valueOff</td>
-			<td>Wert f�r aus</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>valueOn</td>
-			<td>Wert f�r ein</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>stateIfNotTrueValue</td>
-			<td>Zustand, wenn der Wert nicht der Bedingung 'Ein' entspricht</td>
-			<td>string</td>
-			<td>on | off</td>
-		</tr>
-		<tr>
-			<td>vibrateOnMobilDevices</td>
-			<td>auf mobilen Ger�ten vibrieren [s]</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>labelFalse</td>
-			<td>Beschriftung False</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>labelTrue</td>
-			<td>Beschriftung True</td>
-			<td>string</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>labelPosition</td>
-			<td>labelPosition</td>
-			<td>string</td>
-			<td>left | right</td>
-		</tr>
-		<tr>
-			<td>labelClickActive</td>
-			<td>Beschriftungs-Klick aktivieren</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>colorCheckBox</td>
-			<td>Kontrollk�stchen Farbe</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>labelColorFalse</td>
-			<td>Beschriftungsfarbe</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>labelColorTrue</td>
-			<td>Beschriftungsfarbe f�r true</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>lockEnabled</td>
-			<td>Verriegeln aktivieren</td>
-			<td>boolean</td>
-			<td>false | true</td>
-		</tr>
-		<tr>
-			<td>autoLockAfter</td>
-			<td>automatisch Verriegeln nach [s]</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>lockIcon</td>
-			<td>Symbol</td>
-			<td>custom</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>lockIconTop</td>
-			<td>Symbolabstand von oben [%]</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>lockIconLeft</td>
-			<td>Symbolabstand von links [%]</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>lockIconSize</td>
-			<td>Symbolgr��e</td>
-			<td>number</td>
-			<td/>
-		</tr>
-		<tr>
-			<td>lockIconColor</td>
-			<td>Symbolfarbe</td>
-			<td>string</td>
-			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
-		</tr>
-		<tr>
-			<td>lockFilterGrayscale</td>
-			<td>Graufilter, wenn verriegelt</td>
-			<td>number</td>
-			<td/>
-		</tr>
-	</tbody>
-</table>
-</details>
-
 
 ##### Textfield
 
@@ -6205,7 +6492,14 @@ More information about the supported properties can be found at the individual w
 * [Buttons](#buttons)
 * [Buttons Vertical](#buttons-vertical)
 * [Buttons Icon](#buttons-icon)
-
+* 
+* [Slider](#slider)
+*
+* [Progress](#progress)
+* [Progress Circular](#progress-circular)
+*
+* [Checkbox](#checkbox)
+* [Switch](#switch)
 
 # used libraries
 The adapter uses the following libraries:
@@ -6227,6 +6521,8 @@ The adapter uses the following libraries:
 ### __WORK IN PROGRESS__
 * (Scrounger) icon list: option for status bar text added
 * (Scrounger) icon list: status bar position bug fix
+* (Scrounger) progress circular: auto size option added
+* (Scrounger) VIS editor: html previews bug fixes
 
 <!-- omit in toc -->
 ### 0.4.2 (2020-12-29)

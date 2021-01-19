@@ -19,6 +19,13 @@ This adapter loads the weather warnings from the German weather service via JSON
 
 ## Changelog
 
+### 2.7.0 (2021-01-18)
+* (Apollon77) restructure code to not exit before really done with setting all states
+* (Apollon77) js-controller 2.0 is now required at minimum
+
+### 2.6.1 (2021-01-16)
+* (wendy2702) correct Region "Leer"
+
 ### 2.6.0 (2021-01-11)
 * (maeb3) Add datapoint for number of warnings
 

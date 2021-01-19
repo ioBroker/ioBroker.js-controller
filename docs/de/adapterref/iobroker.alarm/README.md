@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: xGij4emSrCG+kqcvzPjLnYoFRE/Y8at2v92F3JahDMA=
+hash: KDbrlsVux+RIy0pbsUg2ijd5L/i1q4vKiyC/NSBtKP8=
 ---
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -15,7 +15,9 @@ hash: xGij4emSrCG+kqcvzPjLnYoFRE/Y8at2v92F3JahDMA=
 ![NPM](https://nodei.co/npm/iobroker.alarm.png?downloads=true)
 
 # IoBroker.alarm
-** Github-Aktionen: **: ![GitHub-Aktionen](https://github.com/misanorot/ioBroker.alarm/workflows/Test%20and%20Release/badge.svg)
+** Github-Aktionen **:
+
+![GitHub-Aktionen](https://github.com/misanorot/ioBroker.alarm/workflows/Test%20and%20Release/badge.svg)
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
@@ -27,20 +29,17 @@ Er Nord die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. bei
 
 ----------------------------------------------------------------------------------------------------------------------
 
-### AB VERSION 1.7.x SIND DIE EINSTELLUNGEN FÜR DEN STILLEN ALARM ZU PRÜFEN
 ### Tab Haupteinstellungen
 Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm und Passwort Rechte.
-
-*Bis 1.2.4, sind alle Zeiten sind in Sekundenzahlengeben*
 
 - Aktivierzeit -> Zeitverzögerung bis zu Aktivierung, wenn man einen Verspätung Datenpunkt hat
 - Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf wahrheitsgemäß
 - Alarmverzögerung -> Vertragsfrist bis Einbruch Rechte wird wird
-- Auslösezeit bei Warnungen />
+- Auslösezeit bei Warnungen /> Sirene innen -> Bei Auslösung des berechtigungskreises oder scharf innen kreises, wird der jeweils zugehörigen Datenpunkt für die Zeit auf wahres Vermögen
 
 ----------------------------------------------------------------------------------------------------------------------
 
-### Tab Anweisungen
+### Tab-Anweisungen
 Berechtigungen über Andere Adapter wie z.B. Telegramm, Email oder andere.
 [Probleme](#Probleme)
 
@@ -50,7 +49,7 @@ Berechtigungen über Andere Adapter wie z.B. Telegramm, Email oder andere.
 Hier werden die Kreise der Anlage Infrastruktur.
 * die Namen der Staaten lassen sich ändern *
 
-Der Alarmkreis hat die richtigen „hoch" und hat bei aktivierter Anlage (scharf) Vorrang vor allen anderen Keisen. Er dient zur eigentlichen Wahrnehmung der Anlage. Dies ist der Vollschutz einer Alarmanlage Der Meldekreis dient nur zur Meldung, während der scharfen, scharfen und nach der Nachtruhe.
+Der Alarmkreis hat die richtigen „hoch" und hat bei aktivierter Anlage (scharf) Vorrang vor allen anderen Kreisen. Er dient zur eigentlichen Wahrnehmung der Anlage. Dies ist der Vollschutz einer Alarmanlage Der Meldekreis dient nur zur Meldung, während der scharfen, scharfen und nach der Nachtruhe.
 * Es ist möglich möglich, dass man für einen Staat, den Haken bei allen drei Kreisen macht. *
 
 Dies ist ein Mann, der Kontakt hat, der Alarmkreis nicht sofort reagiert, kann man das Häckchen bei stiller Alarm wird. Haupteinstellungen, der Alarm Rechte.
@@ -77,7 +76,7 @@ Es ist wichtig, sich die Ausgabe von Namen mit Ansagen zu lassen, kann diese Opt
 ----------------------------------------------------------------------------------------------------------------------
 
 ### Tab Belohnungen
-Hier ist es möglich Adapter interne Zustände direkt mit den zugehörigen Zuständen zu wechseln. Somit ist ein Umweg über ein Skript oder ein anderes nicht erledigt.
+Hier ist es möglich. Somit ist ein Umweg über ein Skript oder ein anderes nicht erledigt.
 Es lässt sich somit somit z.B. bei Beginn der Nachtruhe, eine Veriegelung des Türschlosses realisieren.
 ![Logo](../../../en/adapterref/iobroker.alarm/admin/img/short.png)
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sma-em/README.md
 title: ioBroker.sma-em
-hash: hYAOnhOsemUQz9HSTF5sjJflyv6TVEBPYbiF2JcCYnY=
+hash: HDNboRZw265iaFHPa2oYoyICxLQAktvA1OEehe4Qfg4=
 ---
 ![Logo](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
 
@@ -13,36 +13,67 @@ hash: hYAOnhOsemUQz9HSTF5sjJflyv6TVEBPYbiF2JcCYnY=
 ![Tests](https://travis-ci.org/CTJaeger/ioBroker.sma-em.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sma-em.png?downloads=true)
 
-# IoBroker.sma-em ===================
-### Info
+# IoBroker.sma-em
+=================
+
+### Die Info
 Dieser Adapter liest Informationen von SMA Energy Meter und SMA Home Manager 2.
 
 ### Zustände
-- Summe und Zähler von Wirkleistung, Blindleistung, Scheinleistung
-- cosphi, Total Harmonic Distortion, Spannung
-- Detailliert Jede der 3 Phasen in Bezug auf Wirkleistung, Blindleistung, Scheinleistung, Stromverbrauch, Spannung
-- Detailliert Jede der 3 Phasen mit einem Überschuss an Wirkleistung, Blindleistung, Scheinleistung, Stromverbrauch, Stromstärke und Spannung
+- Summe und Zähler der Wirkleistung, Blindleistung, Scheinleistung
+- Phosphi, harmonische Gesamtverzerrung, Spannung, Frequenz
+- Detailliert Jede der 3 Phasen in Bezug auf Wirkleistung, Blindleistung, Scheinleistung, Phosphi, Stromstärke, Spannung
+- Detailliert Jede der 3 Phasen mit Überschuss an Wirkleistung, Blindleistung, Scheinleistung, Phosphi, Stromstärke, Spannung
 - Detailliert Jeder der 3 Phasenzähler
-- Seriennummer des SMA Energy Meters
+- Seriennummer, Softwareversion, SUSyID des SMA-Energiezählers
 
 ### Optionen
-- Auswahlmöglichkeiten über jede einzelne Phase L1 / L2 / L3
-- Auswahl nicht erweiterter Modus für Gesamt- und Wirkleistungszähler
-- Auswahl erweiterter Modus für Blindleistung, Scheinleistung, Stromverbrauch, Spannung (benötigt mehr Rechenleistung)
+- Auswahlmöglichkeiten für jede einzelne Phase L1 / L2 / L3
+- Auswahl des nicht erweiterten Modus für Gesamt und Zähler der Wirkleistung
+- Auswahl erweiterter Modus für Blindleistung, Scheinleistung, Phosphi, Stromstärke, Spannung (erfordert mehr Rechenleistung)
 
 ### Ordnerstruktur
 - L1 - Phase 1
 - L2 - Phase 2
 - L3 - Phase 3
 
-### States-Structure
+### Zustandsstruktur
 Beispiel:
 
-pregard P-Wirkleistung / Rücksicht qregard Q-Blindleistung / Rücksichtnahme S-Scheinleistung / Rücksicht
+Pregard P-Wirkleistung / Rücksicht auf Q-Blindleistung / Rücksicht auf Sregard S-Scheinleistung / Rücksicht
 
 psurplus P-Wirkleistung / Überschuss qsurplus Q-reaktive Leistung / Überschuss ssurplus S-Scheinleistung / Überschuss
 
+<! - Platzhalter für die nächste Version (am Zeilenanfang):
+
+### __WORK IN PROGRESS__ ->
+
 ## Changelog
+
+### 0.6.1-beta.0 (2021-01-18)
+* (TGuybrush) Bug fixes
+  * Software Version string, last part is the revision as character (e.g. R = release)
+  * Potential Warning during the first start
+  * Revised units to follow the SI standardization (DIN 1301)
+* (TGuybrush) Top level hierarchy object description indicates if the device is a SMA Energy Meter or a SMA Home Manager 2.
+* (DutchmanNL) Released to the latest repo, fixed some typo's + news and translations
+
+### 0.6.0
+* (TGuybrush) Fixed wrong status information 
+  * Complete adapter core rewritten to extract the status values by their OBIS value instead of the absolute position in the received UDP message according to the SMA documentation.
+  *  Improved compatibility to future new OBIS values
+* (TGuybrush) Add additional status information
+  * Power grid frequency
+  * Time tick counter
+  * SMA SUSy ID
+  * Software Version
+* Add a timestamp for each received status information
+
+### 0.5.7
+* (DutchmanNL) Solved incorrect stated ID type for JS-controller 3.x
+
+### 0.5.4
+* (Andiling) Adapter compatibility extended for Node 10 and higher
 
 ### 0.5.3
 * (Marcolotti) Fix units 
@@ -70,7 +101,7 @@ psurplus P-Wirkleistung / Überschuss qsurplus Q-reaktive Leistung / Überschuss
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017 Marcolotti <info@ct-j.de>
+Copyright (c) 2021 IoBroker-Community
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -304,8 +304,11 @@ Following states will be created by the adapter:
    *21:	AUX7*
 
    *22: BT*
+
+   *23: USB*
    
-   *Please note, that not every input source is available on every AVR model.*
+   *Please note, that not every input source is available on every AVR model. If your AVR has additional inputs,
+    they will be appended to the list, once they have been detected.*
    
    *Example:*
    
@@ -829,6 +832,9 @@ If you are missing any functions or detected a bug, please open an [issue](https
 The adapter is tested with an DENON AVR-X1200W and a Marantz SR5009.
 
 ## Changelog
+### 1.10.0 (2021-01-17)
+* (foxriver76) auto-detect selectInput of all zones
+
 ### 1.9.4 (2021-01-03)
 * (foxriver76) added missing rear height speaker states
 * (foxriver76) revert the last added options because they are not working as intended

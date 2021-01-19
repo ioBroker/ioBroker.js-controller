@@ -233,21 +233,40 @@ If you like my work, please consider a personal donation
 ## What is Sentry.io and what is reported to the servers of that company?
 Sentry.io is a service for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
 
-When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs. 
-
-
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.
 
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 0.4.8-beta.0 (2021-01-18)
+* (Dutchman) Bugfix : Formatting of news
+* (Dutchman) Bugfix : delete states in create function
+* (Dutchman) Bugfix : Incorrect initialisation for states
+* (Dutchman) Bugfix : Avoid NULL & 0 values at night reset
+* (Dutchman) Bugfix : Incorrect initialisation for Watt values with 0 input
+* (Dutchman) Bugfix : Only create cumulatedXXX in year statistics if activated
+* (Dutchman) implement category cumulative values under year statistics
+
+### 0.4.8-alpha.15 (2021-01-16)
+* (Dutchman) Bugfix : Issue in array load at first calculation handling
+* (Dutchman) Bugfix : Do not cumulative value to object
+
+### 0.4.8-alpha.14 (2021-01-16)
+* (Dutchman) change default log-level to info
+* (Dutchman) Bugfix : quarters.1 has no existing object
+* (Dutchman) Bugfix : 05_currentYear has no existing object
+* (Dutchman) Bugfix : Caught sentry error : Alias xxxxx has no target
+* (Dutchman) Bugfix : Incorrect warn message if configuration for objects is changed
+
 ### 0.4.8-alpha.13 (2021-01-15)
 * (Dutchman) Bugfix : Error {Is not a number, cannot continue calculation} if value =  0
 
 ## Changelog
 ### 0.4.8-alpha.12 (2021-01-14)
 * (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
-* (Dutchman) Bugfix : Ensure proper reset and init of Watt
+* (Dutchman) Bugfix : Ensure a proper reset and init of Watt values
 
 ### 0.4.8-alpha.10 (2021-01-14)
 * (Dutchman) Bugfix : Avoid loop if init value is set and > reading

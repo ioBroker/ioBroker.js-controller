@@ -3,8 +3,8 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.fahrplan.svg)](https://www.npmjs.com/package/iobroker.fahrplan)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.fahrplan.svg)](https://www.npmjs.com/package/iobroker.fahrplan)
-![Number of Installations (latest)](https://iobroker.live/badges/fahrplan-installed.svg)
-![Number of Installations (stable)](https://iobroker.live/badges/fahrplan-stable.svg)
+![Number of Installations (latest)](https://iobroker.live/badges/fahrplan-installed.svg?dummy=unused)
+![Number of Installations (stable)](https://iobroker.live/badges/fahrplan-stable.svg?dummy=unused)
 [![Dependency Status](https://img.shields.io/david/gaudes/iobroker.fahrplan.svg)](https://david-dm.org/gaudes/iobroker.fahrplan)
 ![Test and Release](https://github.com/gaudes/ioBroker.fahrplan/workflows/Test%20and%20Release/badge.svg)
 

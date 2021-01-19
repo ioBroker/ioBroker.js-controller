@@ -127,7 +127,7 @@ optionally a delay can be used. If window is opened only for a short time sensor
 you can use your calendar or any other datapoint to change datapoints in adapter.
 Just configure events from ical or other datapoints in admin. Supported are
 
-|                                     |
+| datapoint                           | description
 |-------------------------------------|----------------------------------------------------------------------------
 |heatingcontrol.0.Present             | set it to true (in case of boolean) or to a number higher then limit (in case of number)
 |heatingcontrol.0.HolidayPresent      | set it to true when you at home in your holiday
@@ -168,6 +168,25 @@ original target temperature
 **Attention** do not use Sensor Open Delay in that case. If you use it, the Window open event appears after target temperature received from thermostat. This ends up in 
 manual state. 
 
+
+## Copy period and copy profile
+``
+heatingcontrol.0.Profiles.1.CopyProfile
+heatingcontrol.0.Profiles.1.Room.CopyProfile
+``
+
+and
+
+``
+heatingcontrol.0.Profiles.1.Küche.Fri.CopyPeriods
+``
+
+CopyProfile copies the entire content of the profile where the button is pressed to the next profile. In the above example, the button is in profile 1. The button copies everything from profile 1 to profile 2.
+If you want to copy only one room, use the button in a certain room.
+
+The CopyPeriods are available per day or Mon-Fri per room. This copies the periods to the next section. In the above example, the CopyPeriods copies all periods from Friday in the kitchen room to the periods on Saturday in the kitchen room.
+So you can e.g. in the profile "every day separately", copy the periods from Monday to Sunday ...
+
 ## Issues and Feature Requests
 * If you are faced with any bugs or have feature requests for this adapter, please create an issue within the GitHub issue section of the adapter at [github](https://github.com/rg-engineering/ioBroker.heatingcontrol/issues). Any feedback is appreciated and will help to improve this adapter.
 
@@ -180,13 +199,16 @@ see also [Forum](https://forum.iobroker.net/topic/22579/test-adapter-heatingcont
 ### Window-open function of HM thermostats
 HM thermostats have an open window function in two variants. On the one hand as temperature drop detection and on the other hand in connection with a window contact.
 This function causes the adapter to switch to manual mode when the window is opened. Ideally, this function should be deactivated so as not to interfere with the functionality of the adapter.
-
+If thermostat use information from window sensor then "thermostat handles window open" option should be enabled.
 
 When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry.  All of this helps me to provide error free adapters that basically never crashs.
 
 ## Changelog
 
-### 2.0.0 (2021-01-10)
+### 2.0.1 (2021-01-18)
+* (René) bug fix for issue #204: do not take over reduced temperature in manual mode
+
+### 2.0.0 (2021-01-16)
 * (René) internal refactoring
 
 **ATTENTION: breaking changes !!!!**

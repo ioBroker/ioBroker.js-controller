@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.device-reminder/README.md
 title: ioBroker.device-Erinnerung
-hash: K8qV+cdjFv27qHhd6wcX3gwDcqL0TdEq/LMwZwJAPI4=
+hash: dJkkVjbUSb8+xqm1CW8yhmrkkEJm7K6WiNM36a0jNUo=
 ---
 ![Logo](../../../en/adapterref/iobroker.device-reminder/admin/icon.png)
 
@@ -40,11 +40,14 @@ Das Aktualisierungsintervall vom &quot;Live-Verbrauchswert (wird als **&quot; _ 
 - Pushover-Benachrichtigung (mehrere IDs sind möglich)
 - E-Mail-Benachrichtigung (mehrere IDs sind möglich)
 - Benachrichtigungen können frei erstellt oder auch von einem externen Skript angegeben werden
-- Datenpunkte mit dem aktuellen Status, dem Live-Verbrauch und der zuletzt gesendeten Statusmeldung, um die Werte dieses Adapters in anderen Skripten verwenden zu können
+- Datenpunkte mit dem aktuellen Status, dem Live-Verbrauch und der zuletzt gesendeten Statusmeldung, um Werte von diesem Adapter in anderen Skripten verwenden zu können
 - Geräte können bei Bedarf (auch zeitverzögert) ausgeschaltet werden, wenn der Vorgang als abgeschlossen erkannt wurde.
 - Sprachassistenten können über Datenpunkt vorübergehend deaktiviert werden
 
 # Anweisung
+## Grundlegende Dinge im Voraus
+Für jede Gruppe von Geräten, Alexa usw. gibt es eine Schaltfläche "Check Input". Wenn Sie auf diese Schaltfläche klicken, werden die vorhandenen Eingaben auf Plausibilität überprüft und Sie erhalten sofort eine Antwort, ob alle Eingaben korrekt sind. Wenn Änderungen vorgenommen wurden, muss auf diese Schaltfläche geklickt werden!
+
 ## Gerät erstellen
 ![addDevice.png](../../../en/adapterref/iobroker.device-reminder/admin/addDevice.png)
 
@@ -115,7 +118,7 @@ Die letzten 4 Felder können verwendet werden, um einen Zeitraum zu erstellen, i
 
 - **Startwert** Startwert in Watt, der überschritten werden muss, damit das Gerät als gestartet erkannt wird.
 - Endwert **: Endwert in Watt, der unterschritten werden muss, damit das Gerät als fertig erkannt wird.
-- Anzahl der Werte "Start" **: Gibt an, wie oft der "Startwert" ** nacheinander ** überschritten werden muss. Wenn Sie einmal darunter fallen, wird der Start abgebrochen. Der Durchschnitt dieser Werte muss über dem Startwert liegen, damit die Einheit als gestartet erkannt wird.
+- Anzahl der Werte "Start" **Gibt an, wie oft der "Startwert"** nacheinander **überschritten werden muss** Wenn Sie einmal darunter fallen, wird der Start abgebrochen. Der Durchschnitt dieser Werte muss über dem Startwert liegen, damit die Einheit als gestartet erkannt wird.
 
 * Beispiel: Der Wert sollte 10 W betragen und dreimal hintereinander überschritten werden. 1. 15W, 2. 1W, 15W => Die Startphase wurde abgebrochen, da der zweite Wert unter 10 lag.
 
@@ -165,6 +168,9 @@ wird angezeigt.<br>
 	Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 1.0.5 (2021-01-16)
+* (xenon-s) bugfix: no messages were sent
 
 ### 1.0.4 (2021-01-12)
 * (xenon-s) bugfix pushover

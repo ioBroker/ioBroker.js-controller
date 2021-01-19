@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: xGij4emSrCG+kqcvzPjLnYoFRE/Y8at2v92F3JahDMA=
+hash: KDbrlsVux+RIy0pbsUg2ijd5L/i1q4vKiyC/NSBtKP8=
 ---
 ![商标](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -15,9 +15,11 @@ hash: xGij4emSrCG+kqcvzPjLnYoFRE/Y8at2v92F3JahDMA=
 ![NPM](https://nodei.co/npm/iobroker.alarm.png?downloads=true)
 
 ＃ioBroker.alarm
-** Github操作：**：![GitHub动作](https://github.com/misanorot/ioBroker.alarm/workflows/Test%20and%20Release/badge.svg)
+** Github操作**：
 
-[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
+![GitHub动作](https://github.com/misanorot/ioBroker.alarm/workflows/Test%20and%20Release/badge.svg)
+
+[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[英文说明](https://github.com/misanorot/ioBroker.alarm/blob/master/lib/Readme_en.md)**
 
@@ -27,16 +29,13 @@ Dies ist ein Adapter，mit dem sich eine kleine Alarmanlage ohnegroßeprogrammie
 
 ----------------------------------------------------------------------------------------------------------------------
 
-### AB版本1.7.x SIND DIE EINSTELLUNGENFÜRDEN STILLEN ALARM ZUPRÜFEN
 ### Tab Haupteinstellungen
 较高级别的居民，Natetruhe的Zeiten，Sirenezeit的Stiller-Alarm和Passwort的害虫。
-
-*根据1.2.4，在Sekunden einzugeben中犯罪的Zeiten sind *
 
 -Aktivierzeit->Zeitverzögerungbis zu Aktivierung wenn man einen delay Datenpunkt benutzt
 -Sienenzeit bei Einbruch-> Bei Einbruch wird der Datenpunkt alarm.0.status.sirenfürdie Zeit auf true gesetzt
 -Alarmverzögerung->Verzögerungszeitbis Einbruchausgelöstwird（währenddieser Zeit wird der Stille Alarmausgelöst）
--Warnungen / Sirene innen的Auslösezeitit-> Benachrichtigungskreises oder scharf innen的北Auslösungzekreises，wird der jeweilszugehörigeDatenpunkt for Zeit auf true
+-Warnungen / Sirene innen的Auslösezezeit-> Benachrichtigungskreises oder scharf innen的北Auslösungzekreises，wird der jeweilszugehörigeDatenpunktfürdie Zeit auf true gesetzt
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -50,15 +49,15 @@ BenachrichtigungenüberAndere适配器wie z.B.电报，电子邮件或其他。
 werden die Kreise der Anlage konfiguriert。
 *戴姆·德恩州立大学拉森学院
 
-阿尔赫（Acharage）的优先权和“帽子”的优先地位阿尔兰（Zer eigentlichenÜberwachungder Anlage）的历史。实习生的经历实习生和实习生的经历。
-* Es ist durchausmöglich，艾因州立大学，登·哈肯·贝艾伦·德雷·克雷森·马赫特*
+阿尔赫拉格（先生）和安拉格（沙夫）的优先权。实习生的故事实习生的故事，实习生和实习生的故事。
+* Es ist durchausmöglich，达斯·曼·埃因姆州，den Haken bei allen drei Kreisen macht
 
 报警人，报警人，报警人，报警人，报警人。 Dadurch wird nach Ablauf der eingestellten Zeit（Haupteinstellungen），警报作者。
 
 Die Kreise werdenfolgendermaßenüberwacht：
 
 #### Alarmkreis：
-阿兰基拉格州议会议员（沙尔夫·沙尔滕）温·恩·康菲格里耶特（Aktiv ist）。您可以在警报器中查看警报。
+阿兰基拉格州议会议员（沙尔夫·沙尔滕）您可以在警报器中查看警报。
 
 #### Scharf实习生Kreis：
 Alle hier konfigurierten州werden beim Zustand scharf实习生überwachtundLösen实习生anerem den internen报警澳大利亚。
@@ -72,7 +71,7 @@ Alle hier konfigurierten州werden beim Zustand scharf实习生überwachtundLöse
 Iine eewgewünschteSprachausgabe z.B. bei beiÄnderungdes Zustandesgewünscht，lässtsich das hier mit dengewünschtenSätzenkonfigurieren。
 *曼·穆斯·希奇·谢尔·塞恩（Mus sich sicher sein），达斯·奥斯特瓦特·达滕彭克（Das derausgewählteDatenpunkt），麻省理工学院（Einem）文字beschrieben werden kann！ Z.B. “ sayit.0.tts” *
 
-曼彻斯特人（Ausgabe von Namen mit Ansagen lassen），坎恩曼彻斯（anangense）选择anwählen。
+曼彻斯特·曼·希奇（Ausgabe von Namen mit Ansagen lassen），坎恩·曼彻斯（Kann Man diese）选择anwählen。
 
 ----------------------------------------------------------------------------------------------------------------------
 
@@ -97,7 +96,7 @@ Der Adapter liefert eine ganze Anzahl国家/地区：
 -use.activate_sharp_inside_circuit->战役实习生（实习生）
 -use.disable-> Deaktivierung der Anlage（Alarmkreis）
 -use.enable-> Aktivierung der Anlage（Alarmkreis）
--use.enable_with_delay-> Antiv（Alarmkreis）mitVerzögerungszeit
+-use.enable_with_delay->安提格（Alarmkreis）博物馆（Verzögerungszeit）
 -use.list-> Deaktivierung / Aktivierung / Warnkreis / Aktivierung mitVerzögerungszeit
 -use.quit_changes->状态设置* info.notification_circuit_changes，info.sharp_inside_siren，status.activation_failed *
 -use.toggle_password-> Deaktivierung / Aktivierung der Anlage（Alarmkreis）mit Passwort

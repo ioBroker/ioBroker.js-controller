@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: gDX9ygFJC29JCD7BepllWAaI6nHAa/xdc0NAO7t93U8=
+hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
 ---
 # SourceAnalytix
 
@@ -209,13 +209,33 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 <! - Platzhalter für die nächste Version (am Zeilenanfang):
 
 ### __WORK IN PROGRESS__ ->
+### 0.4.8-beta.0 (2021-01-18)
+* (Holländer) Bugfix: Formatierung von Nachrichten
+* (Holländer) Bugfix: Löscht Zustände in der Erstellungsfunktion
+* (Holländer) Bugfix: Falsche Initialisierung für Staaten
+* (Holländer) Bugfix: Vermeiden Sie NULL & 0-Werte beim nächtlichen Zurücksetzen
+* (Holländer) Bugfix: Falsche Initialisierung für Wattwerte mit 0 Eingabe
+* (Holländer) Bugfix: Erstelle nur kumuliertes XXX in der Jahresstatistik, wenn aktiviert
+* (Niederländer) implementieren kumulative Werte der Kategorie in der Jahresstatistik
+
+### 0.4.8-alpha.15 (2021-01-16)
+* (Holländer) Bugfix: Problem beim Laden des Arrays bei der ersten Berechnungsbehandlung
+* (Holländer) Bugfix: Kumulativer Wert für das Objekt
+
+### 0.4.8-alpha.14 (2021-01-16)
+* (Holländer) Ändern Sie die Standardprotokollstufe in "Info"
+* (Holländer) Bugfix: Vierteln.1 hat kein vorhandenes Objekt
+* (Holländer) Bugfix: 05_currentYear hat kein vorhandenes Objekt
+* (Holländer) Bugfix: Wachpostenfehler: Alias xxxxx hat kein Ziel
+* (Holländer) Bugfix: Falsche Warnmeldung, wenn die Konfiguration für Objekte geändert wird
+
 ### 0.4.8-alpha.13 (2021-01-15)
 * (Holländer) Bugfix: Fehler {Ist keine Zahl, kann Berechnung nicht fortsetzen} wenn Wert = 0
 
 ## Changelog
 ### 0.4.8-alpha.12 (2021-01-14)
 * (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
-* (Dutchman) Bugfix : Ensure proper reset and init of Watt
+* (Dutchman) Bugfix : Ensure a proper reset and init of Watt values
 
 ### 0.4.8-alpha.10 (2021-01-14)
 * (Dutchman) Bugfix : Avoid loop if init value is set and > reading

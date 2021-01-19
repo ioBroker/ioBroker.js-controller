@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.nut/README.md
 title: ioBroker.nut
-hash: 76FicpJQCVl7v9oiC8y++e8VHNLJgLPqkeuJGM6H2q8=
+hash: 1XnHuFKmyG55WGJQpHOmqGh0OJzUsyMfqL+05Hzp5CQ=
 ---
 ![Логотип](../../../en/adapterref/iobroker.nut/admin/nut.png)
 
@@ -12,7 +12,7 @@ hash: 76FicpJQCVl7v9oiC8y++e8VHNLJgLPqkeuJGM6H2q8=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.nut.svg)
 ![Трэвис-Си](http://img.shields.io/travis/Apollon77/ioBroker.nut/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/Apollon77/ioBroker.nut?branch=master&svg=true)
-![НПМ](https://nodei.co/npm/iobroker.nut.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.nut.png?downloads=true)
 
 # IoBroker.nut
 [![Code Climate] (https://codeclimate.com/github/Apollon77/ioBroker.nut/badges/gpa.svg)](https://codeclimate.com/github/Apollon77/ioBroker.nut)
@@ -29,7 +29,10 @@ IP-адрес NUT-сервера. NUT должен работать в режи�
 Порт НУТ. Порт по умолчанию - <b>3493.</b>
 
 ### Ups_name
-Имя ИБП, как определено в конфигурации NUT сервера NUT. </p> Совет: если вы хотите подключиться к ИБП, подключенному к дисковой станции Synology, имя будет просто «ups».
+Имя ИБП, как определено в конфигурации NUT сервера NUT. </p> Подсказки:
+
+- Если вы хотите подключиться к ИБП, подключенному к дисковой станции Synology, имя будет просто «ups».
+- Если вы хотите подключиться к ИБП, подключенному к QNAP NAS, имя будет просто «qnapups».
 
 ### Update_interval
 Интервал в секундах для обновления данных. По умолчанию - 300 с.
@@ -83,6 +86,10 @@ logger -t nut-notify "Notify iobroker $UPSNAME -> $NOTIFYTYPE"
 * документы для веб-страницы
 
 ## Changelog
+
+### 1.4.0 (2021-01-14)
+* (Apollon77) Prevent warnings in js-controller 3.2
+* (Apollon77) Require at least js-controller 2.0
 
 ### 1.3.0 (2020-12-27)
 * (Apollon77) adjust connection close handling

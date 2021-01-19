@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: bDmqmEqLbJJK8xKH2am8B0IuElEx4QcdaMgzEKNigGY=
+hash: SXAYnuQfm8dl0i+0H9WoUFB6idHaoKxWuW4FZIQTa0I=
 ---
 ![商标](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -18,7 +18,7 @@ hash: bDmqmEqLbJJK8xKH2am8B0IuElEx4QcdaMgzEKNigGY=
 
 **如果您愿意，请考虑捐赠：**
 
-[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
+[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=YBAZTEBT9SYC2&source=url)
 
 ##用于控制加热系统的适配器。
 特征：
@@ -131,9 +131,7 @@ hash: bDmqmEqLbJJK8xKH2am8B0IuElEx4QcdaMgzEKNigGY=
 您可以使用日历或任何其他数据点来更改适配器中的数据点。
 只需在admin中配置来自ical或其他数据点的事件即可。支持的是
 
-|                                     |
-
-| ------------------------------------- | ----------- -------------------------------------------------- --------------- |加热控制0.当前| |将其设置为true（如果是布尔型）或设置为一个比限制高的数字（如果是数字）| heatingcontrol.0.HolidayPresent |当您在假期在家中时，将其设置为true | heatingcontrol.0.VacationAbsent |当您不在家度假时，将其设置为true | heatingcontrol.0.GuestsPresent | |将其设置为true（如果是布尔值）或将其设置为一个更高的值（如果是数字，则为limit）| heatingcontrol.0.PartyNow |将其设置为true（对于布尔值）或大于限制的数字（对于数字）
+|数据点|说明| ------------------------------------- | ---------- -------------------------------------------------- ---------------- | heatingcontrol.0。当前| |将其设置为true（如果是布尔型）或设置为一个比限制高的数字（如果是数字）| heatingcontrol.0.HolidayPresent |当您在假期在家中时，将其设置为true | heatingcontrol.0.VacationAbsent |当您不在家度假时，将其设置为true | heatingcontrol.0.GuestsPresent | |将其设置为true（如果是布尔值）或将其设置为一个更高的值（如果是数字，则为limit）| heatingcontrol.0.PartyNow |将其设置为true（对于布尔值）或大于限制的数字（对于数字）
 
 提示：使用数字数据点，您可以算出房子里有多少人，然后再决定例如我们有足够的聚会...
 
@@ -152,6 +150,19 @@ hash: bDmqmEqLbJJK8xKH2am8B0IuElEx4QcdaMgzEKNigGY=
 但是adpater可以处理此行为。您必须启用选项“ Thermostat处理'Window is Open'”，并且还可以在适配器中配置窗口传感器。
 当窗口打开时，适配器等待最大值。恒温器设定的新目标温度为3秒。如果在那段时间内收到新的目标温度，它将用作降低的绝对温度。状态将变为“自动打开窗口”。窗户一旦关闭，状态就会恢复为自动，恒温器会将原始目标温度设置为“注意” **，在这种情况下，请勿使用“传感器打开延迟”。如果使用它，则从恒温器接收到目标温度后，将出现“打开窗口”事件。最终以手动状态结束。
 
+##复制期间和配置文件
+``heatingcontrol.0.Profiles.1.CopyProfile heatingcontrol.0.Profiles.1.Room.CopyProfile``
+
+和
+
+``heatingcontrol.0.Profiles.1.Küche.Fri.CopyPeriods``
+
+CopyProfile将按下按钮的配置文件的全部内容复制到下一个配置文件。在上面的示例中，该按钮位于配置文件1中。该按钮将所有内容从配置文件1复制到配置文件2。
+如果只想复制一个房间，请使用某个房间的按钮。
+
+CopyPeriods每天或每个房间的周一至周五可用。这会将期间复制到下一部分。在上面的示例中，CopyPeriods将所有时间段从厨房房间的星期五复制到厨房房间的星期六。
+所以你可以在“每天分别”配置文件中，复制从星期一到星期日的时间段...
+
 ##问题和功能请求
 *如果您遇到此适配器的任何错误或有功能要求，请在[github]（https://github.com/rg-engineering/ioBroker.heatingcontrol/issues ）。感谢您提供任何反馈意见，这将有助于改进此适配器。
 
@@ -163,12 +174,16 @@ hash: bDmqmEqLbJJK8xKH2am8B0IuElEx4QcdaMgzEKNigGY=
 ### HM温控器的开窗功能
 HM温控器具有两个版本的开窗功能。一方面用作温度下降检测，另一方面与窗户触点连接。
 当窗口打开时，此功能使适配器切换到手动模式。理想情况下，应禁用此功能，以免干扰适配器的功能。
+如果恒温器使用了来自窗户传感器的信息，则应启用“恒温器处理窗户打开”选项。
 
 当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
 
-### 2.0.0 (2021-01-10)
+### 2.0.1 (2021-01-18)
+* (René) bug fix for issue #204: do not take over reduced temperature in manual mode
+
+### 2.0.0 (2021-01-16)
 * (René) internal refactoring
 
 **ATTENTION: breaking changes !!!!**

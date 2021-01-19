@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heatingcontrol/README.md
 title: ioBroker.HeatingControl
-hash: bDmqmEqLbJJK8xKH2am8B0IuElEx4QcdaMgzEKNigGY=
+hash: SXAYnuQfm8dl0i+0H9WoUFB6idHaoKxWuW4FZIQTa0I=
 ---
 ![Logo](../../../en/adapterref/iobroker.heatingcontrol/admin/heatingcontrol.png)
 
@@ -131,9 +131,7 @@ optional kann eine Verzögerung verwendet werden. Wenn das Fenster nur für eine
 Sie können Ihren Kalender oder einen anderen Datenpunkt verwenden, um Datenpunkte im Adapter zu ändern.
 Konfigurieren Sie einfach Ereignisse von ical oder anderen Datenpunkten in admin. Unterstützt werden
 
-|                                     |
-
-| ------------------------------------- | ----------- -------------------------------------------------- --------------- | Heizungssteuerung.0.Present | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit (im Falle einer Zahl) ist. | heatcontrol.0.HolidayPresent | Setzen Sie es auf true, wenn Sie zu Hause in Ihrem Urlaub sind. | heizungssteuerung.0.VacationAbsent | Setzen Sie es auf true, wenn Sie in Ihrem Urlaub nicht zu Hause sind | Heizungssteuerung.0.GuestsPresent | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit (im Falle einer Zahl) ist. | heatcontrol.0.PartyNow | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit ist (im Falle einer Zahl).
+| Datenpunkt | Beschreibung | ------------------------------------- | ---------- -------------------------------------------------- ---------------- | Heizungssteuerung.0.Present | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit (im Falle einer Zahl) ist. | heatcontrol.0.HolidayPresent | Setzen Sie es auf true, wenn Sie zu Hause in Ihrem Urlaub sind. | heizungssteuerung.0.VacationAbsent | Setzen Sie es auf true, wenn Sie in Ihrem Urlaub nicht zu Hause sind | Heizungssteuerung.0.GuestsPresent | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit (im Falle einer Zahl) ist. | heatcontrol.0.PartyNow | Setzen Sie es auf true (im Falle eines Booleschen Werts) oder auf eine Zahl, die höher als limit ist (im Falle einer Zahl).
 
 Hinweis: Mit Zahlendatenpunkten können Sie zählen, wie viele Personen sich im Haus befinden, und dann entscheiden, z. Wir haben genug für eine Party ...
 
@@ -152,6 +150,19 @@ In Kombination mit der Option "Verwendung von Änderungen vom Thermostat" / "bis
 Aber der Adpater kann mit diesem Verhalten umgehen. Sie müssen die Option "Thermostat behandelt 'Fenster ist offen'" aktivieren und Sie können Fenstersensoren auch im Adapter konfigurieren.
 Beim Öffnen des Fensters wartet der Adapter auf max. 3 Sekunden für neue Zieltemperatur vom Thermostat. Wenn es in dieser Zeit eine neue Zieltemperatur erhält, wird es als reduzierte absolute Temperatur verwendet. Der Status lautet dann "Automatisches Fenster öffnen". Sobald das Fenster geschlossen wird, kehrt der Status zu Auto zurück und der Thermostat setzt die ursprüngliche Zieltemperatur zurück. **Achtung** Verwenden Sie in diesem Fall keine Sensoröffnungsverzögerung. Wenn Sie es verwenden, wird das Ereignis "Fenster öffnen" nach der vom Thermostat empfangenen Zieltemperatur angezeigt. Dies endet im manuellen Zustand.
 
+## Kopierzeitraum und Kopierprofil
+`` Heizungssteuerung.0.Profile.1.CopyProfile Heizungssteuerung.0.Profile.1.Room.CopyProfile` `
+
+und
+
+`` Heizungssteuerung.0.Profile.1.Küche.Fri.CopyPeriods ``
+
+CopyProfile kopiert den gesamten Inhalt des Profils, in dem die Schaltfläche gedrückt wird, zum nächsten Profil. Im obigen Beispiel befindet sich die Schaltfläche in Profil 1. Die Schaltfläche kopiert alles von Profil 1 nach Profil 2.
+Wenn Sie nur einen Raum kopieren möchten, verwenden Sie die Schaltfläche in einem bestimmten Raum.
+
+Die CopyPeriods sind pro Tag oder Mo-Fr pro Zimmer verfügbar. Dadurch werden die Punkte in den nächsten Abschnitt kopiert. Im obigen Beispiel kopieren die CopyPeriods alle Zeiträume von Freitag im Küchenraum bis zu den Zeiträumen am Samstag im Küchenraum.
+So können Sie z. Kopieren Sie im Profil "jeden Tag separat" die Zeiträume von Montag bis Sonntag ...
+
 ## Probleme und Funktionsanforderungen
 * Wenn Sie auf Fehler stoßen oder Funktionsanforderungen für diesen Adapter haben, erstellen Sie bitte ein Problem im GitHub-Problemabschnitt des Adapters unter [github] (https://github.com/rg-engineering/ioBroker.heatingcontrol/issues) ). Jedes Feedback wird geschätzt und hilft, diesen Adapter zu verbessern.
 
@@ -163,12 +174,16 @@ siehe auch [Forum](https://forum.iobroker.net/topic/22579/test-adapter-heatingco
 ### Fensteröffnungsfunktion von HM-Thermostaten
 HM-Thermostate haben in zwei Varianten eine Open-Window-Funktion. Einerseits als Temperaturabfallerkennung und andererseits in Verbindung mit einem Fensterkontakt.
 Diese Funktion bewirkt, dass der Adapter beim Öffnen des Fensters in den manuellen Modus wechselt. Im Idealfall sollte diese Funktion deaktiviert werden, um die Funktionalität des Adapters nicht zu beeinträchtigen.
+Wenn der Thermostat Informationen vom Fenstersensor verwendet, sollte die Option "Thermostat behandelt das Öffnen des Fensters" aktiviert sein.
 
 Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehlermeldung, die auch im ioBroker-Protokoll angezeigt wird, an Sentry gesendet. All dies hilft mir, fehlerfreie Adapter bereitzustellen, die im Grunde nie abstürzen.
 
 ## Changelog
 
-### 2.0.0 (2021-01-10)
+### 2.0.1 (2021-01-18)
+* (René) bug fix for issue #204: do not take over reduced temperature in manual mode
+
+### 2.0.0 (2021-01-16)
 * (René) internal refactoring
 
 **ATTENTION: breaking changes !!!!**

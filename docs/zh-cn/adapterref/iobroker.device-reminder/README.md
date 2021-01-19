@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.device-reminder/README.md
 title: ioBroker.device-reminder
-hash: K8qV+cdjFv27qHhd6wcX3gwDcqL0TdEq/LMwZwJAPI4=
+hash: dJkkVjbUSb8+xqm1CW8yhmrkkEJm7K6WiNM36a0jNUo=
 ---
 ![商标](../../../en/adapterref/iobroker.device-reminder/admin/icon.png)
 
@@ -41,10 +41,13 @@ hash: K8qV+cdjFv27qHhd6wcX3gwDcqL0TdEq/LMwZwJAPI4=
 -电子邮件通知（可以使用多个ID）
 -通知可以自由创建，也可以由外部脚本指定
 -具有当前状态，实时消耗和已发送的最后状态消息的数据点，以便能够在其他脚本中使用此适配器的值
--确认过程已完成后，可以根据需要关闭设备（还需要一定时间）。
+-当过程被识别为完成时，可以根据需要关闭设备（还有时间延迟）。
 -语音助手可以通过数据点暂时停用
 
 ＃说明
+##事前基本
+对于每组设备，alexa等，都有一个按钮“检查输入”。如果单击此按钮，将检查现有输入的合理性，您将立即收到有关所有输入是否正确的答案。如果进行了更改，则必须单击此按钮！
+
 ##创建设备
 ![addDevice.png](../../../en/adapterref/iobroker.device-reminder/admin/addDevice.png)
 
@@ -143,7 +146,7 @@ hash: K8qV+cdjFv27qHhd6wcX3gwDcqL0TdEq/LMwZwJAPI4=
 -**几分钟后关闭**：可以选择在此处输入**分钟**的超时时间。超时到期后，*如果激活了自动关闭功能*，则会关闭套接字。但是，设备的结束通知仍不受超时的影响！
 -中止检测**：如果激活，适配器将尝试检测在通知之前是否已手动关闭设备，然后不再进行通知。
 
-单击“ **保存并关闭**”后，现在在* Objects-> device-reminder *下为每个新创建的设备创建一个文件夹。
+单击“ **保存并关闭**”后，现在在*对象->设备提醒*下为每个新创建的设备创建一个文件夹
 
 -当前运行时间：hh：mm：ss
 -当前运行时间（以毫秒为单位）
@@ -158,13 +161,16 @@ hash: K8qV+cdjFv27qHhd6wcX3gwDcqL0TdEq/LMwZwJAPI4=
 ＃支持
 **如果您喜欢我的工作：**<br>
 
-[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3EYML5A4EMJCW&source=url)]<br><br>
+[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=3EYML5A4EMJCW&source=url)]<br><br>
 
 ## Changelog
 <!--
 	Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 1.0.5 (2021-01-16)
+* (xenon-s) bugfix: no messages were sent
 
 ### 1.0.4 (2021-01-12)
 * (xenon-s) bugfix pushover

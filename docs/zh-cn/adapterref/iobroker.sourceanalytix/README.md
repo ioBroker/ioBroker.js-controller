@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: gDX9ygFJC29JCD7BepllWAaI6nHAa/xdc0NAO7t93U8=
+hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
@@ -15,7 +15,7 @@ hash: gDX9ygFJC29JCD7BepllWAaI6nHAa/xdc0NAO7t93U8=
 ＃SourceAnalytix
 [![翻译状态]（https://weblate.iobroker.net/widgets/adapters/-/sourceanalytix/svg-badge.svg）](https://weblate.iobroker.net/engage/adapters/?utm_source=widget)![测试与发布](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg)] **此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新的设备模式。**更多详细信息，请参见下文！
 
-详细分析您的能源，气体和液体消耗可以将任何来源（kWh，Wh，Watt，l / h或m3）用于数据分析：
+能源，气体和液体消耗的详细分析可以将任何来源（kWh，Wh，Watt，l / h或m3）用于数据分析：
 
 ＃＃ 特征
 ####基本功能
@@ -174,7 +174,7 @@ hash: gDX9ygFJC29JCD7BepllWAaI6nHAa/xdc0NAO7t93U8=
 
 <！-**问题6 **设置-无法停用SourceAnalytix的状态
 
-Im RAW NUR“消费”：false umgestellt，gespeichert。 Das wurde behalten（wo ggf. noch nicht false，auch bei“ enabled”：虚假和bei“ costs”：虚假）在derObjekt-Übersichtist derschraubenschlüsselnachwievor blau。位于美国达斯·奥布耶特（Das Objekt）的Dann mit demSchraubenschlüssel，战争发生地Dort einmal auf aktiviert，nicht speichern，wieder auf deaktiviert，speichern。
+Im RAW NUR“消费”：false umgestellt，gespeichert。 Das wurde behalten（wo ggf. noch nicht false，auch bei“ enabled”：虚假和bei“ costs”：虚假）在derObjekt-Übersichtist derschraubenschlüsselnachwievor blau。位于美国达斯奥布耶特（Das Objekt）的Dann mit demSchraubenschlüssel，战争发生地Dort einmal auf aktiviert，nicht speichern，wieder auf deaktiviert，speichern。
 Kontrolle im RAW，ob SA-EIntrag修女=> jup，是修女->
 
 <!--
@@ -203,18 +203,38 @@ Kontrolle im RAW，ob SA-EIntrag修女=> jup，是修女->
 ##什么是Sentry.io，什么报告给该公司的服务器？
 Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您，电子邮件，姓名等的任何其他信息）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 <！-下一个版本的占位符（在该行的开头）：
 
 ### __正在进行的工程__->
+### 0.4.8-beta.0（2021-01-18）
+*（荷兰人）错误修正：新闻格式
+*（荷兰人）错误修正：在创建函数中删除状态
+*（荷兰人）错误修正：状态初始化不正确
+*（荷兰人）错误修正：避免在夜间重置时出现NULL＆0值
+*（荷兰人）错误修正：输入0瓦特值初始化不正确
+*（荷兰人）错误修正：如果激活，仅在年份统计信息中创建cumulatedXXX
+*（荷兰人）在年度统计数据中实施类别累计值
+
+### 0.4.8-alpha.15（2021-01-16）
+*（荷兰人）错误修正：第一次计算处理时数组加载出现问题
+*（荷兰人）错误修正：不累积对象价值
+
+### 0.4.8-alpha.14（2021-01-16）
+*（荷兰人）将默认日志级别更改为info
+*（荷兰人）错误修正：quarters.1没有现有对象
+*（荷兰人）错误修正：05_currentYear没有现有对象
+*（荷兰人）错误修正：抓到哨兵错误：别名xxxxx没有目标
+*（荷兰人）错误修正：如果更改了对象的配置，则警告消息不正确
+
 ### 0.4.8-alpha.13（2021-01-15）
 *（荷兰人）修正：错误：{不是数字，无法继续计算}，如果value = 0
 
 ## Changelog
 ### 0.4.8-alpha.12 (2021-01-14)
 * (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
-* (Dutchman) Bugfix : Ensure proper reset and init of Watt
+* (Dutchman) Bugfix : Ensure a proper reset and init of Watt values
 
 ### 0.4.8-alpha.10 (2021-01-14)
 * (Dutchman) Bugfix : Avoid loop if init value is set and > reading

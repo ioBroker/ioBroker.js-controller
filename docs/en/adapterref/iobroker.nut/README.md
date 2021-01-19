@@ -25,7 +25,9 @@ Port of NUT. The default port is <b>3493</b>
 
 ### ups_name
 Name of the UPS as defined in the NUT configuration of the NUT server.</p>
-Hint: If you want to connect to an UPS connected to a Synology diskstation the name is simply "ups".
+Hints:
+- If you want to connect to an UPS connected to a Synology diskstation the name is simply "ups".
+- If you want to connect to an UPS connected to a QNAP NAS the name is simply "qnapups".
 
 ### update_interval
 Interval in Seconds to update the data. Default is 300s

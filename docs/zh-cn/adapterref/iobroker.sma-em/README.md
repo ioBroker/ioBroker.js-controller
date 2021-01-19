@@ -2,47 +2,78 @@
 translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sma-em/README.md
-title: ioBroker.sma-EM
-hash: hYAOnhOsemUQz9HSTF5sjJflyv6TVEBPYbiF2JcCYnY=
+title: ioBroker.sma-em
+hash: HDNboRZw265iaFHPa2oYoyICxLQAktvA1OEehe4Qfg4=
 ---
 ![商标](../../../en/adapterref/iobroker.sma-em/admin/sma-em.png)
 
 ![安装数量](http://iobroker.live/badges/sma-em-stable.svg)
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sma-em.svg)
-![下载](https://img.shields.io/npm/dm/iobroker.sma-em.svg)
-![测试](https://travis-ci.org/CTJaeger/ioBroker.sma-em.svg?branch=master)
+![资料下载](https://img.shields.io/npm/dm/iobroker.sma-em.svg)
+![测验](https://travis-ci.org/CTJaeger/ioBroker.sma-em.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sma-em.png?downloads=true)
 
-＃ioBroker.sma-em =================
+＃ioBroker.sma-em
+=================
+
 ###信息
-该适配器从SMA Energy Meter和SMA Home Manager 2读取信息。
+该适配器从SMA电能表和SMA Home Manager 2读取信息。
 
 ＃＃＃ 状态
- - 有功功率，无功功率，视在功率的总和计数器
- -  cosphi，总谐波失真，电压
- - 详细介绍有功功率，无功功率，视在功率，cosphi，安培数，电压等三个阶段中的每一个阶段
- - 详细说明3个阶段中的每个阶段，有功功率，无功功率，视在功率，cosphi，电流，电压
- - 详细的三个阶段计数器中的每一个
- -  SMA能量计的序列号
+-有功，无功，视在功率的总和计数器
+-cosphi，总谐波失真，电压，频率
+-详细的有功，无功，视在功率，cosphi，安培数，电压三个阶段
+-详细的三个阶段中的每个阶段都有剩余有功功率，无功功率，视在功率，cosphi，安培数，电压
+-详细的3个阶段的每个计数器
+-SMA电表的序列号，软件版本，SUSyID
 
 ###选项
- - 每个单独阶段L1 / L2 / L3的选择选项
- - 选择有效功率总计和计数器的非扩展模式
- - 选择扩展无功功率模式，视在功率，cosphi，安培数，电压（需要更多计算能力）
+-每个单独的相L1 / L2 / L3的选择选项
+-选择总功率和计数器有功功率的非扩展模式
+-针对无功功率，视在功率，cosphi，安培数，电压选择扩展模式（需要更多计算能力）
 
 ###文件夹结构
- -  L1  - 第1阶段
- -  L2  - 第2阶段
- -  L3  - 第3阶段
+-L1-第一阶段
+-L2-第二阶段
+-L3-第三阶段
 
-### States-Structure
+###状态结构
 例：
 
-pre-p-active power / respect qregard Q-reactive power / respect sregard S-apparent power / respect
+pregard P有功功率/关于qregard Q无功功率/关于regard S-视在功率/关于
 
-psurplus P-active power / surplus qsurplus Q-reaktive power / surplus ssurplus S-apparent power / surplus
+p剩余p有功功率/剩余q剩余q求功功率/剩余s视在功率/剩余
+
+<！-下一个版本的占位符（在该行的开头）：
+
+### __正在进行的工程__->
 
 ## Changelog
+
+### 0.6.1-beta.0 (2021-01-18)
+* (TGuybrush) Bug fixes
+  * Software Version string, last part is the revision as character (e.g. R = release)
+  * Potential Warning during the first start
+  * Revised units to follow the SI standardization (DIN 1301)
+* (TGuybrush) Top level hierarchy object description indicates if the device is a SMA Energy Meter or a SMA Home Manager 2.
+* (DutchmanNL) Released to the latest repo, fixed some typo's + news and translations
+
+### 0.6.0
+* (TGuybrush) Fixed wrong status information 
+  * Complete adapter core rewritten to extract the status values by their OBIS value instead of the absolute position in the received UDP message according to the SMA documentation.
+  *  Improved compatibility to future new OBIS values
+* (TGuybrush) Add additional status information
+  * Power grid frequency
+  * Time tick counter
+  * SMA SUSy ID
+  * Software Version
+* Add a timestamp for each received status information
+
+### 0.5.7
+* (DutchmanNL) Solved incorrect stated ID type for JS-controller 3.x
+
+### 0.5.4
+* (Andiling) Adapter compatibility extended for Node 10 and higher
 
 ### 0.5.3
 * (Marcolotti) Fix units 
@@ -70,7 +101,7 @@ psurplus P-active power / surplus qsurplus Q-reaktive power / surplus ssurplus S
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2017 Marcolotti <info@ct-j.de>
+Copyright (c) 2021 IoBroker-Community
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

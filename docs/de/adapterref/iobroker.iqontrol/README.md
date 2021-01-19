@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: fXQqbHG8xS4nt7zW3GsXC+yVFwPUfiCfIcygEPKy15s=
+hash: c1Hq6MWy+zvgtvzQZcXb97Tn6IX05fho5XS9FSJ3dhk=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -63,7 +63,7 @@ Sie können es als Web-App auf Homescreen speichern und es sieht aus und fühlt 
 ## Du brauchst...
 * Knoten 10 oder höher
 * Web-Adapter mit einer Instanz, auf der dasselbe Protokoll (http oder https) wie der Admin-Adapter ausgeführt wird, socket.IO auf "integriert" und "Web-Sockets erzwingen" deaktiviert
-    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu - iQontrol durchsucht die am besten passende Webadapter-Instanz und verwendet sie für die Kommunikation
+    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu - iQontrol durchsucht die passende passende Webadapter-Instanz und verwendet sie für die Kommunikation
 * Für die Verbindung über *iobroker.pro-Cloud* sollten sowohl der Administrator- als auch der Webadapter auf http (nicht https) eingestellt sein.
 
 * Wenn Probleme auftreten, lesen Sie bitte den Abschnitt [Fehlerbehebung] (# Fehlerbehebung) am Ende dieser Readme-Datei
@@ -184,7 +184,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 ## Widgets
 * Jede Kachel hat einen BACKGROUND_URL- und einen BACKGROUND_HTML-Datenpunkt
 * Hier können Sie einen Link (über BACKGROUND_URL) zu einer Website definieren oder direkten HTML-Code (über BACKGROUND_HTML) platzieren, der als Hintergrund der Kachel angezeigt wird
-* Dies gibt Ihnen die Möglichkeit, (interaktive) Inhalte in eine Kachel zu platzieren (wie Uhren, FLOT-Charts, Tabellen, Wettervorhersagen usw.)
+* Dies gibt Ihnen die Möglichkeit, (interaktive) Inhalte in eine Kachel zu platzieren (wie Uhren, FLOT-Diagramme, Tabellen, Wettervorhersagen usw.)
 * Standardmäßig werden Mausereignisse auf diesen Inhalt gerichtet (daher können Sie nicht mehr auf die Kachel selbst klicken). Sie können dies jedoch mit der Option "Mausereignisse auf die Kachel anstatt auf den Inhalt von BACKGROUND_VIEW / URL / HTML lenken" deaktivieren ""
 * iQontrol bietet eine Geräterolle "Widget" mit einigen vordefinierten Optionen, die hauptsächlich verwendet werden, wenn eine Website als Widget angezeigt wird. Sie können jedoch mit jeder anderen Rolle das gleiche Ergebnis erzielen, indem Sie die Geräteoptionen ordnungsgemäß ändern.
 
@@ -213,7 +213,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
         * `` {Befehl: "getState", stateId: <stateId>} ``
 * Dies führt dazu, dass iQontrol den Wert des ioBroker-Status "<stateId>" sendet (siehe unten, wie die Antwortnachricht empfangen wird).
         * `` {Befehl: "getStateSubscribed", stateId: <stateId>} ``
-* Dadurch sendet iQontrol den Wert des ioBroker-Status "<stateId>" jetzt und jedes Mal, wenn sich sein Wert ändert (siehe unten, wie die Antwortnachrichten empfangen werden).
+* Dies veranlasst iQontrol, den Wert des ioBroker-Status "<stateId>" jetzt und jedes Mal zu senden, wenn sich sein Wert ändert (siehe unten, wie die Antwortnachrichten empfangen werden).
         * `` {Befehl: "renderView", Wert: <viewID>} ``
 * Dadurch wird iQontrol angewiesen, eine Ansicht zu rendern, wobei `` <viewID> `` wie `` iqontrol. <Instanznummer> .Views. <Ansichtsname> `` formatiert werden muss (Groß- und Kleinschreibung beachten)
         * `` {Befehl: "openDialog", Wert: <Geräte-ID>} ``
@@ -522,7 +522,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * Standard: "false"
 * Fliesenverhalten bei vergrößertem Gerät:
 * `` sizeEnlarged`` (Größe der Kachel, wenn das Gerät vergrößert ist):
-* Mögliche Werte: "" | "schmal, wenn vergrößert" | "schmal, vergrößert, vergrößert" | "schmal, vergrößert, vergrößert" | "|" xhighIfEnlarged "|" wideIfEnlarged highIfEnlarged "|" xwideIfEnlarged highIfEnlarged "|" wideIfEnlarged xhighIfEnlarged "|" xwideIfEnlarged xhighIfEnlarged "|" fullWidthIfEnlarged aspekt 1-1IfEnlarged "|" fullWidthIfEnlarged aspekt 4-3IfEnlarged "|" fullWidthIfEnlarged Aspekt-3- 2Wenn vergrößert "|" fullWidthIfEnlarged Aspekt-16-9IfEnlarged "|" fullWidthIfEnlarged Aspekt-21-9IfEnlarged "|" fullWidthIfEnlarged fullHeightIfEnlarged "|"
+* Mögliche Werte: "" | "schmaler, vergrößerter" | "schmaler, vergrößerter" "|" xhighIfEnlarged "|" wideIfEnlarged highIfEnlarged "|" xwideIfEnlarged highIfEnlarged "|" wideIfEnlarged xhighIfEnlarged "|" xwideIfEnlarged xhighIfEnlarged "|" fullWidthIfEnlarged aspekt 1-1IfEnlarged "|" fullWidthIfEnlarged aspekt 4-3IfEnlarged "|" fullWidthIfEnlarged Aspekt-3- 2Wenn vergrößert "|" fullWidthIfEnlarged Aspekt-16-9IfEnlarged "|" fullWidthIfEnlarged Aspekt-21-9IfEnlarged "|" fullWidthIfEnlarged fullHeightIfEnlarged "|"
 * `` bigIconEnlarged`` (Großes Symbol anzeigen, wenn das Gerät vergrößert ist):
 * Mögliche Werte: "true" | "false"
 * Standard: "true"
@@ -925,7 +925,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 ## Beschreibung der Rollen und zugehörigen Zustände
 Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Zuständen, die mit einem entsprechenden iobroker-Zustand verknüpft werden können.
 Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem iobroker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Zustände wie möglich zuzuordnen.
-Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um den Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die Geräte bearbeiten, die durch die automatische Erstellung erstellt wurden.
+Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die Geräte bearbeiten, die durch die automatische Erstellung erstellt wurden.
 Klicken Sie auf den Stift hinter dem Gerät, um die Rolle und den Status eines Geräts zu bearbeiten. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
 
 ### Ändern der Datenpunktkonfiguration
@@ -991,15 +991,17 @@ Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der
     * Sie können das Verhalten des Batteriesymbols im Optionsbereich 'BATTERY Empty Icon' weiter anpassen.
 * **ERROR** *boolean* - Wenn true, wird ein kleines Ausrufezeichen angezeigt
 * **UNREACH** *boolean* - Wenn true, wird ein kleines WLAN-Symbol angezeigt
-    * Das Verhalten kann im Abschnitt "Allgemein" der Optionen umgekehrt werden (verwenden Sie "Verbunden" anstelle von "Nicht erreichen").
+    * Das Verhalten kann im Abschnitt "Allgemein" der Optionen umgekehrt werden (verwenden Sie "Verbunden" anstelle von "Nicht erreichbar").
 * **ENLARGE_TILE** *boolean* - Wenn true, wird die Kachel als vergrößert festgelegt. Sie können dies überschreiben, indem Sie auf die Schaltfläche Vergrößern / Verkleinern klicken. Aber jedes Mal, wenn sich der Status von ENLARGE_TILE ändert, übernimmt es wieder die Kontrolle über den Status der Kachelvergrößerung. Wenn die Rolle von ENLARGE_TILE *button* ist, wird bei jeder Statusänderung der Vergrößerungsstatus umgeschaltet
+* **ABZEICHEN** *Zahl* oder *Zeichenfolge* - Wenn ein anderer Wert als Null / Falsch vorhanden ist, wird in der oberen linken Ecke ein Abzeichen mit diesem Wert angezeigt
+ *** BADGE_COLOR* *string* - jede gültige HTML-Farbzeichenfolge (wie 'grün', '# 00FF00', 'rgba (0,255,0,0,5)'), die die Farbe des Abzeichens darstellt. Wenn nicht vorhanden oder ungültig, wird Rot verwendet.
 
 ### Link zu anderer Ansicht:
 * Hat keine weiteren Zustände
 * Die **Linked-View-Eigenschaft** wird direkt geöffnet
 
 ###<img src="img/icons/switch_on.png" width="32"> Schalter:
-* **STATE** *boolean* - Anzeigen und Ein- / Ausschalten
+* **STATE** *boolean* - Anzeige und Ein / Aus-Status
 * **POWER** *number* - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
 ###<img src="img/icons/button.png" width="32"> Taste:
@@ -1049,7 +1051,7 @@ Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das
   * **POWER** * number * - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
 ###<img src="img/icons/fan_on.png" width="32"> Ventilator:
-* **STATE** *boolean* - Anzeigen und Ein- / Ausschalten
+* **STATE** *boolean* - Anzeige und Ein / Aus-Status
 * **LEVEL** *number* oder *value-list* - die Lüftergeschwindigkeit
 * **POWER** *number* - Stromverbrauch, der in der oberen rechten Ecke klein angezeigt wird
 
@@ -1147,7 +1149,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **STATE** *string* - "play", "pause" oder "stop" oder *boolean* - true für play, false für stop
     * In den Geräteoptionen können Sie den Wert definieren, der Wiedergabe, Pause und Stopp darstellt
 * **COVER_URL** *string* - URL zum Titelbild
-* **KÜNSTLER, ALBUM, TITEL** *string* - selbsterklärend
+* **KÜNSTLER, ALBUM, TITEL** *Zeichenfolge* - selbsterklärend
 * **TRACK_NUMBER** *number* - selbsterklärend
 * **PREV, REWIND, PLAY, PAUSE, STOP, FORWARD, NEXT** *boolean* - wird auf true gesetzt, wenn die entsprechende Taste gedrückt wird
 * **SHUFFLE, MUTE, PLAY_EVERYWHERE, EJECT, POWER_SWITCH** *Boolescher* - Status für die entsprechende Funktion
@@ -1206,6 +1208,11 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 ****
 
 ## Changelog
+
+### 1.5.6 dev
+* (sbormann) Fixed toolbar hiding issue if popup with additional controls is closed early.
+* (sbormann) Fixed ALTERNATIVE_COLORSPACE only working after opening the view a second time.
+* (sbormann) Added badge.
 
 ### 1.5.5 (2021-01-07)
 * (sbormann) Added optional headings to ADDITIONAL_CONTROLS, the appereance can be controlled by an option.

@@ -988,6 +988,8 @@ However, not every type makes sense to every role. So the STATE of a switch for 
 * **UNREACH**: *boolean* - when true, a little wireless-icon will be displayed
     * Behaviour can be inverted in the 'General' section of options (use connected instead of unreach)
 * **ENLARGE_TILE**: *boolean* - when true, the tile will be set as enlarged. You can overwrite that by clicking the enlarge/reduce button. But everytime the state of ENLARGE_TILE changes, it will take over control of the tiles enlargement state again. If the role of ENLARGE_TILE is *button*, then every state change will toggle the enlargement state
+* **BADGE**: *number* or *string* - if a value other than zero/false is present, then a badge in the upper left corner is shown with this value
+    * **BADGE_COLOR*: *string* - any valid html-color-string (like 'green', '#00FF00', 'rgba(0,255,0,0.5)' and so on) that represents the color of the badge. If not present or invalid red will be used.
 
 ### Link to other view:
 * Has no further states
@@ -1193,6 +1195,11 @@ This device has some special predefined size- and display-settings to show a web
 ****
     
 ## Changelog
+
+### 1.5.6 dev
+* (sbormann) Fixed toolbar hiding issue if popup with additional controls is closed early.
+* (sbormann) Fixed ALTERNATIVE_COLORSPACE only working after opening the view a second time.
+* (sbormann) Added badge.
 
 ### 1.5.5 (2021-01-07)
 * (sbormann) Added optional headings to ADDITIONAL_CONTROLS, the appereance can be controlled by an option.

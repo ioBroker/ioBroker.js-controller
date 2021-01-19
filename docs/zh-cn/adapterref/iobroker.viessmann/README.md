@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: 4NabZ/OA0tONNOF/z9F3yImEp9/Ov9BLbJIcuVIguMI=
+hash: GeOy2jgizgzXYnFjrbu2xhUBaac8mjOqayiJ4iWM4KI=
 ---
 ![商标](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
@@ -17,9 +17,9 @@ hash: 4NabZ/OA0tONNOF/z9F3yImEp9/Ov9BLbJIcuVIguMI=
 ＃ioBroker.viessmann
 =================
 
-**测试：**：![GitHub动作](https://github.com/misanorot/ioBroker.viessmann/workflows/Test%20and%20Release/badge.svg)
+** Github动作**：![GitHub动作](https://github.com/misanorot/ioBroker.viessmann/workflows/Test%20and%20Release/badge.svg)
 
-[![贝宝（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
+[![paypal]（https://www.paypalobjects.com/zh_CN/DK/i/btn/btn_donateCC_LG.gif）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
 **[英文说明](https://github.com/misanorot/ioBroker.viessmann/blob/master/lib/Readme_en.md)**
 
@@ -132,7 +132,7 @@ Es ist ebensomöglich，einen Wert ausserhalb des Abfragezyklus abzufragen。 Hi
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2020 misanorot <audi16v@gmx.de>
+Copyright (c) 2017-2021 misanorot <audi16v@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

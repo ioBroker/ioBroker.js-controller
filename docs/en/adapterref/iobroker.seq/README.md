@@ -30,8 +30,17 @@ This adapter allows you to push your ioBroker log into the system of [Seq](https
 	### __WORK IN PROGRESS__
 -->
 
+### 0.2.4 (2021-01-16)
+* (IdleBit) bugfix display of the filter options
+* (IdleBit) bugfix display of template parameters
+* (IdleBit) add parameter logging Arch
+* (IdleBit) add parameter logging JsController
+* (IdleBit) add parameter logging Node
+* (IdleBit) add parameter logging Platform
+* (IdleBit) add parameter logging SourceVersion
+
 ### 0.2.3 (2021-01-15)
-* (IdleBit) server address ends with "/", this must be removed.
+* (IdleBit) if the server address ends with "/", this must be removed. …
 
 ### 0.2.2 (2021-01-10)
 * (IdleBit) handle uncomplete log message
@@ -40,13 +49,13 @@ This adapter allows you to push your ioBroker log into the system of [Seq](https
 * (IdleBit) added forgetting native...
 
 ### 0.2.0 (2020-10-01)
-* (IdleBit) Optional selective logging on adapter basis
+* (IdleBit) optional selective logging on adapter basis
 
 ### 0.1.0 (2020-09-26)
 * (IdleBit) API key is no longer not displayed in clear text 
 * (IdleBit) API key is now stored encrypted
   * ***Attention: The API key will be lost and must be set again!***
-* (IdleBit) Higher dependencies of the js-controller (>=3.1.0)
+* (IdleBit) higher dependencies of the js-controller (>=3.1.0)
 
 ### 0.0.5 (2020-09-23)
 * (IdleBit) add param SystemName for display in Seq

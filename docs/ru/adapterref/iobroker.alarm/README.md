@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.alarm/README.md
 title: ioBroker.alarm
-hash: xGij4emSrCG+kqcvzPjLnYoFRE/Y8at2v92F3JahDMA=
+hash: KDbrlsVux+RIy0pbsUg2ijd5L/i1q4vKiyC/NSBtKP8=
 ---
 ![Логотип](../../../en/adapterref/iobroker.alarm/admin/alarm.png)
 
@@ -12,10 +12,12 @@ hash: xGij4emSrCG+kqcvzPjLnYoFRE/Y8at2v92F3JahDMA=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.alarm.svg)
 ![Статус зависимости](https://img.shields.io/david/misanorot/iobroker.alarm.svg)
 ![Известные уязвимости](https://snyk.io/test/github/misanorot/ioBroker.alarm/badge.svg)
-![НПМ](https://nodei.co/npm/iobroker.alarm.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.alarm.png?downloads=true)
 
 # IoBroker.alarm
-** Действия Github: **: ![Действия GitHub](https://github.com/misanorot/ioBroker.alarm/workflows/Test%20and%20Release/badge.svg)
+** Действия Github **:
+
+![Действия GitHub](https://github.com/misanorot/ioBroker.alarm/workflows/Test%20and%20Release/badge.svg)
 
 [![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
@@ -27,11 +29,8 @@ Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. b
 
 ----------------------------------------------------------------------------------------------------------------------
 
-### AB ВЕРСИЯ 1.7.x SIND DIE EINSTELLUNGEN FÜR DEN STILLEN ALARM ZU PRÜFEN
 ### Tab Haupteinstellungen
 Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm und Passwort vorgenommen.
-
-*Bis 1.2.4, sind alle Zeiten sind в Sekunden einzugeben*
 
 - Aktivierzeit -> Zeitverzögerung bis zu Aktivierung wenn man einen delay Datenpunkt benutzt
 - Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf true gesetzt
@@ -50,8 +49,8 @@ Benachrichtigungen über Andere Adapter wie z.B. Telegramm, электронна
 Hier werden die Kreise der Anlage konfiguriert.
 * die Namen der states lassen sich ändern *
 
-Der Alarmkreis hat die Priorität „hoch" und hat bei aktivierter Anlage (scharf) Vorrang vor allen anderen Keisen. Er dient zur eigentlichen Überwachung der Anlage. scharf intern befindet. Der Meldekreis dient nur zur Meldung während der Zustände scharf, scharf intern und bei der der Nachtruhe.
-* Es ist durchaus möglich, dass man für einen State, den Haken bei allen drei Kreisen macht. *
+Der Alarmkreis hat die Priorität «hoch» und hat bei aktivierter Anlage (scharf) Vorrang vor allen anderen Kreisen. Er dient zur eigentlichen Überwachung der Anlage. scharf intern befindet. Der Meldekreis dient nur zur Meldung während der Zustände scharf, scharf intern und bei der der Nachtruhe.
+* Es ist durchaus möglich, dass man für einem state, den Haken bei allen drei Kreisen macht. *
 
 Sollte man einen Kontakt haben, der den Alarmkreis nicht sofort auslösen soll, kann man das Häckchen bei stiller Alarm aktivieren. Dadurch wird nach Ablauf der eingestellten Zeit (Haupteinstellungen), der Alarm ausgelöst.
 

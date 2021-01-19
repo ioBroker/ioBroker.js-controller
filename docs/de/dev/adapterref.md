@@ -4,7 +4,7 @@ lastChanged: 14.09.2018
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/dev/adapterref.md
 translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
-hash: mkyOCOATGB6OPsXizLqQQTSKyaB0TR/9t4xz3wjriio=
+hash: SNzQ5LnJzi4kG9R/SMOCOROXMt3ghKCh+Z+M44ZfT50=
 ---
 # Adapterreferenz
 ## Datenstruktur - Objekte und Zustände
@@ -52,7 +52,7 @@ Es wird verwendet, um die Koordination von Geräten, Kanälen und Zuständen in 
 
 ?> Hinweis: Wenn der Adapter nicht so komplex ist, können die Geräte und sogar Kanäle weggelassen werden.
 
-** Adapter ** ist nur das Paket von Dateien und wird im Verzeichnis node_modules abgelegt. Für jeden Adapter finden Sie die Beschreibung dieses Adapters im Objekt "system.adapter.adapterName". Es sind nur die Felder "common" und "native" aus der Datei io-package.json. Dieser Eintrag wird automatisch erstellt, wenn iobroker adapterName installiert oder iobroker adapterName hinzufügt. Wenn der Adapter mit npm install iobroker.adapterName installiert wurde, wird bis zur Erstellung der ersten Instanz kein Eintrag erstellt. Aber es ist nicht so wichtig. Die für "Updates" erforderlichen Informationen werden direkt aus io-package.json gelesen. Eine vollständige Liste der allgemeinen Einstellungen für den Adapter finden Sie in [Hier](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#adapter).
+** Adapter ** ist nur das Paket von Dateien und wird im Verzeichnis node_modules abgelegt. Für jeden Adapter finden Sie die Beschreibung dieses Adapters im Objekt "system.adapter.adapterName". Es sind nur die Felder "common" und "native" aus der Datei io-package.json. Dieser Eintrag wird automatisch erstellt, wenn iobroker adapterName installiert oder iobroker adapterName hinzufügt. Wenn der Adapter mit npm installiert wurde, wird iobroker.adapterName installiert. Bis zur Erstellung der ersten Instanz wird kein Eintrag erstellt. Aber es ist nicht so wichtig. Die für "Updates" erforderlichen Informationen werden direkt aus io-package.json gelesen. Eine vollständige Liste der allgemeinen Einstellungen für den Adapter finden Sie in [Hier](https://github.com/ioBroker/ioBroker/blob/master/doc/SCHEMA.md#adapter).
 
 ** Instanz ** ist eine Instanz des Adapters. Je nach Adaptertyp kann mehr als eine Instanz erstellt werden. Bei einigen Adaptern kann jedoch nicht mehr als eine Instanz erstellt werden. Z.B. Im Falle von Vis oder Rikscha kann nur eine Instanz erstellt werden. Dieses Verhalten wird durch Flags in io-package.json gesteuert.
 
@@ -111,7 +111,7 @@ Hinweis: lib / utils.js ist eine gemeinsame Datei für alle Adapter, mit der die
 Der Adapter muss einer Namenskonvention entsprechen, um vom ioBroker-Controller akzeptiert und gestartet zu werden.
 
 * Auf github (oder woanders) muss es den Namen *io **B** roker.adapterName* haben.
-* Wenn der Adapter auf npm verfügbar sein soll, muss er den Namen iobroker.adapterName haben, da npm doe Rotz Großbuchstaben in Paketnamen zulässt. Es kann in package.json definiert werden
+* Wenn der Adapter auf npm verfügbar sein soll, muss er den Namen iobroker.adapterName haben, da npm doe snot Großbuchstaben in Paketnamen zulässt. Es kann in package.json definiert werden
 * Die GUI-HTML-Datei für die Konfiguration des Adapters muss den Namen admin / index.html haben. Es können mehr Dateien im Verzeichnis "admin" sein, aber index.html muss vorhanden sein.
 * Die Startdatei des Adapters muss den Namen main.js oder adapterName.js haben.
 * Der Name des Adapters muss eindeutig sein, in Kleinbuchstaben, ohne Sonderzeichen und ohne Leerzeichen. "-", "_" sind im Namen des Adapters zulässig.
@@ -331,7 +331,7 @@ Weil der Adapter in drei verschiedenen Pfaden installiert werden kann:
 * `... / iobroker.js-controller / node_modules / iobroker.adapterName` - wird beim Debuggen verwendet
 * `... / iobroker.js-controller / adapter / adapterName` - alter Stil (veraltet)
 
-utils.js sucht nur nach der Datei `iobroker.js-controller/lib/adapter.js` und lädt sie.
+utils.js macht nichts anderes als sucht nach der Datei `iobroker.js-controller/lib/adapter.js` und lädt sie.
 
 ```
 var adapter = utils.adapter('adapterName'); // - mandatory
@@ -579,7 +579,7 @@ Diese Änderung wird vom hm-rpc-Adapter nicht ausgeführt, da ack true ist. Und 
 #### Wie schreibe ich den Status
 Zustände können als Befehle oder als Status geschrieben werden. Dafür müssen `adapter.setState` und `adapter.setForeignState` verwendet werden:
 
-`adapter.setForeignState('otherAdapter.X.someState', 1);` // Andere Adapter steuern (es besteht keine Notwendigkeit, den eigenen Status zu steuern, wir können dies direkt tun)
+`adapter.setForeignState('otherAdapter.X.someState', 1);` // Andere Adapter steuern (es ist nicht erforderlich, den eigenen Status zu steuern, wir können dies direkt tun)
 
 `adapter.setState('myState', 1, true);` // neuen Status des eigenen Staates anzeigen
 
@@ -739,12 +739,6 @@ In diesem Fall wird der Verbindungsstatus in der Liste der Instanz in `admin` an
 * subscribeForeignStates = function subscribeForeignStates(pattern)
 * unsubscribeForeignStates = function unsubscribeForeignStates(pattern)
 * subscribeStates = function subscribeStates(pattern)
-* pushFifo = function pushFifo(id, state, callback)
-* trimFifo = function trimFifo(id, start, end, callback)
-* getFifoRange = function getFifoRange(id, start, end, callback)
-* getFifo = function getFifo(id, callback)
-* lenFifo = function lenFifo(id, callback)
-* subscribeFifo = function subscribeFifo(pattern)
 * getSession = function getSession(id, callback)
 * setSession = function setSession(id, ttl, data, callback)
 * destroySession = function destroySession(id, callback)
@@ -757,6 +751,11 @@ In diesem Fall wird der Verbindungsstatus in der Liste der Instanz in `admin` an
 * setPassword = function setPassword(user, pw, callback)
 * checkGroup = function checkGroup(user, group, callback)
 * stop (common.mode: subscribe, schedule, once)
+* terminate
+* setInteral
+* clearInterval
+* setTimeout
+* clearTimeout
 * log.debug(msg)
 * log.info(msg)
 * log.warn(msg)

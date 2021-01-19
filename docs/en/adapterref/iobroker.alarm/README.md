@@ -8,7 +8,9 @@
 
 [![NPM](https://nodei.co/npm/iobroker.alarm.png?downloads=true)](https://nodei.co/npm/iobroker.alarm/)
 
-**Github Actions:**: ![GitHub Actions](https://github.com/misanorot/ioBroker.alarm/workflows/Test%20and%20Release/badge.svg)
+**Github Actions**:
+
+![GitHub Actions](https://github.com/misanorot/ioBroker.alarm/workflows/Test%20and%20Release/badge.svg)
 
 
 [![paypal](https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
@@ -23,13 +25,11 @@ Er bietet die Möglichkeit 3 Sicherheitskreise zu konfigurieren und diese z.B. b
 eine direkte Verknüpfung der jeweiligen Instanz "states", auf andere "states" möglich. Diese Verknüpfungen werden im Reiter Verknüpfungen angelegt.
 
 ----------------------------------------------------------------------------------------------------------------------
-### AB VERSION 1.7.x SIND DIE EINSTELLUNGEN FÜR DEN STILLEN ALARM ZU PRÜFEN
 
 ### Tab Haupteinstellungen
 
 Hier werden die Einstellungen wie die Zeiten der Nachtruhe, Sirenezeit, Stiller-Alarm und Passwort vorgenommen.
 
-*Bis 1.2.4, sind  alle Zeiten sind in Sekunden einzugeben*
 
 - Aktivierzeit -> Zeitverzögerung bis zu Aktivierung wenn man einen delay Datenpunkt benutzt
 - Sirenenzeit bei Einbruch -> Bei Einbruch wird der Datenpunkt alarm.0.status.siren für die Zeit auf true gesetzt
@@ -51,8 +51,8 @@ Benachrichtigungen über Andere Adapter wie z.B. Telegramm, Email oder andere.
 Hier werden die Kreise der Anlage konfiguriert.
 *die Namen der states lassen sich ändern*
 
-Der Alarmkreis hat die Priorität „hoch" und hat bei aktivierter Anlage (scharf) Vorrang vor allen anderen Keisen. Er dient zur eigentlichen Überwachung der Anlage. Dies entspricht den Vollschutz  einer Alarmanlage. Der scharf intern Kreis wird überwacht, wenn die Anlage sich im Zustand scharf intern befindet. Der Meldekreis dient nur zur Meldung während der Zustände scharf, scharf intern und bei der der Nachtruhe.
-*Es ist durchaus möglich, dass man für einen State, den Haken bei allen drei Kreisen macht.*
+Der Alarmkreis hat die Priorität „hoch" und hat bei aktivierter Anlage (scharf) Vorrang vor allen anderen Kreisen. Er dient zur eigentlichen Überwachung der Anlage. Dies entspricht den Vollschutz  einer Alarmanlage. Der scharf intern Kreis wird überwacht, wenn die Anlage sich im Zustand scharf intern befindet. Der Meldekreis dient nur zur Meldung während der Zustände scharf, scharf intern und bei der der Nachtruhe.
+*Es ist durchaus möglich, dass man für einem state, den Haken bei allen drei Kreisen macht.*
 
 Sollte man einen Kontakt haben, der den Alarmkreis nicht sofort auslösen soll, kann man das Häckchen bei stiller Alarm aktivieren. Dadurch wird nach Ablauf der eingestellten Zeit (Haupteinstellungen), der Alarm ausgelöst.
 

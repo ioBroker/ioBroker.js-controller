@@ -41,6 +41,10 @@ The refresh interval from the "live consumption value (is called **"_energy "**)
 
 # Instruction
 
+## Basic things in advance
+
+For each group of devices, alexa etc. there is a button "Check Input". If this button is clicked, the existing inputs are checked for plausibility and you immediately receive an answer as to whether all inputs are correct. If changes have been made, this button must be clicked!
+
 ## Create device
 ![addDevice.png](admin/addDevice.png)
 
@@ -166,6 +170,9 @@ is displayed.
 	Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
+
+### 1.0.5 (2021-01-16)
+* (xenon-s) bugfix: no messages were sent
 
 ### 1.0.4 (2021-01-12)
 * (xenon-s) bugfix pushover

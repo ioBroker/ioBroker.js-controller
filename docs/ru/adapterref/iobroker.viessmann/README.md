@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: 4NabZ/OA0tONNOF/z9F3yImEp9/Ov9BLbJIcuVIguMI=
+hash: GeOy2jgizgzXYnFjrbu2xhUBaac8mjOqayiJ4iWM4KI=
 ---
 ![Логотип](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
@@ -12,12 +12,12 @@ hash: 4NabZ/OA0tONNOF/z9F3yImEp9/Ov9BLbJIcuVIguMI=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.viessmann.svg)
 ![Трэвис-Си](http://img.shields.io/travis/misanorot/ioBroker.viessmann/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/misanorot/ioBroker.viessmann?branch=master&svg=true)
-![НПМ](https://nodei.co/npm/iobroker.viessmann.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.viessmann.png?downloads=true)
 
 # IoBroker.viessmann
 =================
 
-** Тесты: **: ![Действия GitHub](https://github.com/misanorot/ioBroker.viessmann/workflows/Test%20and%20Release/badge.svg)
+** Действия Github **: ![Действия GitHub](https://github.com/misanorot/ioBroker.viessmann/workflows/Test%20and%20Release/badge.svg)
 
 [![PayPal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
@@ -132,7 +132,7 @@ Es ist ebenso möglich, einen Wert ausserhalb des Abfragezyklus abzufragen. Hier
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2020 misanorot <audi16v@gmx.de>
+Copyright (c) 2017-2021 misanorot <audi16v@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.viessmann/README.md
 title: ioBroker.viessmann
-hash: 4NabZ/OA0tONNOF/z9F3yImEp9/Ov9BLbJIcuVIguMI=
+hash: GeOy2jgizgzXYnFjrbu2xhUBaac8mjOqayiJ4iWM4KI=
 ---
 ![Logo](../../../en/adapterref/iobroker.viessmann/admin/viessmann.png)
 
@@ -17,7 +17,7 @@ hash: 4NabZ/OA0tONNOF/z9F3yImEp9/Ov9BLbJIcuVIguMI=
 # IoBroker.viessmann
 =================
 
-** Tests: **: ![GitHub-Aktionen](https://github.com/misanorot/ioBroker.viessmann/workflows/Test%20and%20Release/badge.svg)
+** Github-Aktionen **: ![GitHub-Aktionen](https://github.com/misanorot/ioBroker.viessmann/workflows/Test%20and%20Release/badge.svg)
 
 [![paypal] (https://www.paypalobjects.com/en_US/DK/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=ZYHW84XXF5REJ&source=url)
 
@@ -132,7 +132,7 @@ Es ist möglich möglich, einen Wert ausserhalb des Abfragezyklus abzufragen. Hi
 
 The MIT License (MIT)
 
-Copyright (c) 2017-2020 misanorot <audi16v@gmx.de>
+Copyright (c) 2017-2021 misanorot <audi16v@gmx.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

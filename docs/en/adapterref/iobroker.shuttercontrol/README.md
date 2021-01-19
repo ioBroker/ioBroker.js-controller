@@ -44,6 +44,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 1.1.2 (2021-01-18)
+* (simatec) small fix for holiday state
+
 ### 1.1.1 (2021-01-04)
 * (René) bug fix xmas time
 * (simatec) copy function for shutter-table added

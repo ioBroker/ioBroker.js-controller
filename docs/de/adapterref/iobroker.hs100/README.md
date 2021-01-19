@@ -3,20 +3,19 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.hs100/README.md
 title: ioBroker.hs100
-hash: 1nLPIbmkf4MX5sEbNcsDekF8XUn34s7Y//ptr9EVPTc=
+hash: lm/CDFdPTBxJAbjk7l1Wy/oVRjyrxim1HnZNucktYi8=
 ---
 ![Logo](../../../en/adapterref/iobroker.hs100/admin/hs100.png)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/hs100-stable.svg)
 ![NPM-Version](http://img.shields.io/npm/v/iobroker.hs100.svg)
 ![Downloads](https://img.shields.io/npm/dm/iobroker.hs100.svg)
-![Tests](https://travis-ci.org/arteck/ioBroker.hs100.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.hs100.png?downloads=true)
 
 # IoBroker.hs100
 =================
 
-TP-Link Adapter für ioBroker ---------------------------------------- ----------------------------------
+TP-Link Adapter für ioBroker ---------------------------------------- ---------------------------------- ------------------
 
 TP-Link Stecker und Glühlampe schalten
 
