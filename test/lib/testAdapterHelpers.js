@@ -133,8 +133,15 @@ function register(it, expect, context) {
     });
 
     it(context.name + ' ' + context.adapterShortName + ' adapter: get the user id', async () => {
-        const id = await context.adapter.getUserID('admin');
+        let id = await context.adapter.getUserID('admin');
         expect(id).to.be.equal('system.user.admin');
+        id = await context.adapter.getUserID('test');
+        expect(id).to.be.equal('system.user.governor');
+
+        // should not exist - uppercase
+        id = await context.adapter.getUserID('Test');
+        expect(id).to.be.undefined;
+
     });
 
     // formatValue
