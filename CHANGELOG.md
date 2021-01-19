@@ -5,12 +5,16 @@
 -->
 
 ## __WORK IN PROGRESS__
+* (Apollon77) fix reading of certificates if the given certificates are files
+* (Apollon77) add error handling when let's encrypt configuration contains invalid domain names
+* (foxriver76) fix compact mode cli commands
+* (AlCalzone) Support more Github URL formats for `iobroker url` commnd
 * see CHANGELOG.md
 
 ## 3.2.x (2021-01-16) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
-* If you have enabled Multihost Discovery please disable and enable it again if you really need it persistant running. By re-enabling it you update the used passphrase with a better encryption mechanism.
+* If you have enabled Multihost Discovery please disable and enable it again if you really need it persistent running. By re-enabling it you update the used passphrase with a better encryption mechanism.
 
 **Features**
 * (raintonr) Update Let's encrypt implementation; all relevent adapters (web and such) need updates to use it! NEEDS NODE.JS 12.x+! (see DOCS LINK TODO)
@@ -20,7 +24,8 @@
 * (AlCalzone) detect and allow short github URL format when (auto-)installing adapters (`iobroker url User/repo#branchorcommit`)
 * (foxriber76) Add notification system (see DOCS LINK TODO)
 * (foxriver76) enhance setup (and setup first) with redis to all port configuration
-* (foxriver76) set connectionName for redis connections and simulator support (see DOCS LINK TODO)
+* (foxriver76) set connectionName for redis connections and simulator support
+* (bluefox) Added "http" and "stream" options for logs
 
 **Optimizations and Fixes**
 * (foxriver76) Detect adapter restart loops and stop restarting after 3 crashes (an adapter is considered "working" when no crash by an exception happens within 10 minutes)
@@ -32,7 +37,7 @@
 * (AlCalzone) Package-Manager: log which packages were (already) installed
 * (foxriver76) replace redis "KEYS" command by "SCAN" to optimize redis access performance
 * (foxriver76) optimize redis library usage to prevent errors on redis outages
-* (bluefox) Catch errors by plugins load. At least log will work and could be checked for errors.
+* (bluefox) Catch errors when plugins initialize. At least log will work and could be checked for errors.
 * (foxriver76) allow migration of instances to already existing host 
 * (foxriver76) also allow <adapter>.<instance-nr> for install/add cli command
 * (AlCalzone) buffer streams that are piped to stdout to fix weird Windows logging cases
@@ -50,7 +55,7 @@
 * (foxriver76) rename repository names for new installations and on updates to beta/stable
 * (foxriver76) rewrite collectDiagInfo to Promises and fix minor issue with it
 * (foxriver76) only scale aliases if target or source is represented by unit %
-* (foxriver76) create meta.user on file sync cli, if not existing (see DOCS LINK TODO)
+* (foxriver76) create meta.user on file sync cli, if not existing
 * (Apollon77) also create meta.user on setup first if not existing
 * (foxriver76) fix enumInstances used by CLI commands
 * (foxriver76) when missing rights to access log dir do not crash hard anymore, instead fallback to default directory
@@ -89,7 +94,6 @@
 * (AlCalzone) read JSON files using fs-extra's readJSONSync
 * (AlCalzone) fix callback definitions in adapter.js, We have signatures for (almost) everything in @types/iobroker and we should use them
 * (AlCalzone) move from Promises to async/await in some places, use a single readyPromise instead of an array
-* (bluefox) Added "http" and "stream" options for logs
 * (foxriver76) migrated ci tests to github actions
 * (foxriver76) resolve adapter main file as tools.js method
 * (foxriver76) optimize extendObject with def value

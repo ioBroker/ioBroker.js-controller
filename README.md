@@ -128,7 +128,7 @@ If needed, especially for low memory situations the memory limit for all adapter
 
 The js-controller is collecting statistics for the host (`system.host.hostname.*`), running compact groups (`system.host.hostname.compaczgroupX.*`) and for each adapter (`system.adapter.adaptername.*`). The data contains memory usage, free memory, number of events and also the event loop lag of the Node.js process.
 
-## Error Reporting via ioBroker Sentry
+### Error Reporting via ioBroker Sentry
 **Feature status:** stable since js-controller 3.0.0
 
 Sentry.io is a way for developers to get an overview about errors from their applications. The js-controller uses this method to make sure application crashes are reported to us. With this we can make sure to provide fixes for problems very fast.
@@ -140,6 +140,51 @@ When the js-controller crashes or an other Code error happens (and only then!), 
 All of this helps me to provide an error free smart home system that basically never crashes.
 
 If you want to disable the error reporting you can do this by setting the state "system.host.NAME.plugins.sentry.enabled" to false. You should see a log message stating that sentry was disabled. After disabling the plugin no crashes from your system are reported and so can not be fixed without reporting them by yourself manually!
+
+### Notification System
+**Feature status:** Technology preview since js-controller 3.2.0
+
+The notification system in ioBroker allows to set, detect and store notifications per Host and allows to query the details.
+
+Notifications need to be defined in the io-package.json of the adapter in the key "notifications". Notifications are grouped in "scopes" and contain "categories" of different notification types. Notifications can contain a regex for automatic detection in strings or adapter exception texts.
+The definition also contain localized names and descriptions that can be used to display it to the users.
+
+Registered notifications are stored per host and can be requested via messages to the host. They are also stored when the controller stops and loaded on next start.
+Additionally a summary of the stored categories per scope with a number of stored notifications and the last added timestamp is available in the state `system.host.hostname.notifications.scopeid` as a JSON.
+
+The js-controller defines in it's io-package the system scope together with all details. You can use this as an example.
+
+#### How to register own notifications?
+An adapter can use the method "registerNotification" to register own notifications to the system. To find out if the used controller version check if the method exists (or require at least js-controller 3.2.0).
+
+This method takes the following parameters:
+* scope: scope to be addressed
+* category: category - to be addressed, if null message will be checked by regex of given scope
+* message: message to be stored/checked
+
+When a regex is defined then console.error output from the adapter is always checked by the regex and notifications are registered automatically when the regex matches! 
+
+#### How to read notifications?
+The host supports the message command "getNotifications" to query the stored notifications together with the localized names and descriptions.
+
+The message needs to take the following parameters in the message object:
+* scopeFilter - scope of notifications
+* categoryFilter - category of notifications
+* instanceFilter - instance of notifications
+
+All three are optional and can be a string or null/undefined if ommited.
+
+#### How to clear notifications?
+The host supports the message command "clearNotifications" to clear specific notifications after they are handled.
+
+**Please only clear notifications that really were handled and displayed to the user especially for "system" scope!**
+
+The message needs to take the following parameters in the message object:
+* scopeFilter - scope of notifications
+* categoryFilter - category of notifications
+* instanceFilter - instance of notifications
+
+All three are optional and can be a string or null/undefined if ommited.
 
 ### Logging
 
@@ -480,7 +525,7 @@ Additional information about aliases could be found [here](https://www.iobroker.
 
 ioBroker is storing three different type of data:
 * **objects** contain the meta data, descriptions and configuration values for all objects and states stored by ioBroker. Objects are created initially and sometimes updated, but usually not changed very frequently
-* **files** are all JSON, image and other files that are accessible for all ioBroker adapters
+* **files** are all JSON, image and other files that are accessible for all ioBroker adapters. A meta.user object needs to exist for the adapter or instance to define allowed root directories. As example see sayit adapter io-package.
 * **states** contain the real data from sensors, devices and objects which are updated frequently
 
 #### ioBroker in-memory database with JSON file storage
@@ -619,6 +664,12 @@ With such a setup, ioBroker will connect to one of these sentinel processes to g
 
 ... CLI
 ... Files vs PEM content
+... TODO
+
+#### Let's Encrypt support
+
+... see web
+... letsencrypt.js
 ... TODO
 
 ### js-controller Host Messages
