@@ -6,9 +6,11 @@
 
 ## __WORK IN PROGRESS__
 * (Apollon77) fix reading of certificates if the given certificates are files
-* (Apollon77) add error handling when let's encrypt configuration contains invalid domain names
+* (Apollon77) add error handling when let's encrypt configuration contains invalid domain names and other cases to allow still access to the adapter if possible
 * (foxriver76) fix compact mode cli commands
-* (AlCalzone) Support more Github URL formats for `iobroker url` commnd
+* (AlCalzone) Support more Github URL formats for `iobroker url` command
+* (foxriver76) replace exit codes in setup js with named constants
+* (foxriver76) add adapter method getUserId  
 * see CHANGELOG.md
 
 ## 3.2.x (2021-01-16) Release Grace
