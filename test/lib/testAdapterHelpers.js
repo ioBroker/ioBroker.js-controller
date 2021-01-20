@@ -132,6 +132,18 @@ function register(it, expect, context) {
         done();
     });
 
+    it(context.name + ' ' + context.adapterShortName + ' adapter: get the user id', async () => {
+        let id = await context.adapter.getUserID('admin');
+        expect(id).to.be.equal('system.user.admin');
+        id = await context.adapter.getUserID('test');
+        expect(id).to.be.equal('system.user.governor');
+
+        // should not exist - uppercase
+        id = await context.adapter.getUserID('Test');
+        expect(id).to.be.undefined;
+
+    });
+
     // formatValue
     it(context.name + ' ' + context.adapterShortName + ' adapter: Check formatValue', function (done) {
         this.timeout(1000);

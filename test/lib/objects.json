@@ -352,7 +352,8 @@
             "object": 1636,
             "owner": "system.user.admin",
             "ownerGroup": "system.group.user"
-        }
+        },
+        "_id": "system.user.governor"
     },
     "system.user.admin": {
         "type": "user",
