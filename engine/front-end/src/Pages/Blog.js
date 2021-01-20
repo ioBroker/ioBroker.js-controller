@@ -263,7 +263,6 @@ class Blog extends Router {
         }
 
         let date = this.page.substring(0, 10).replace(/_/g, '.');
-        const d = new Date(date);
 
         const {body, header} = Utils.extractHeader(this.state.text);
 

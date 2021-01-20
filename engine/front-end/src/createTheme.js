@@ -2,7 +2,7 @@ import {createMuiTheme} from '@material-ui/core/styles';
 
 const APP_BAR_HEIGHT = 54;
 
-export default type => {
+const Theme = type => {
     if (type === 'dark') {
         return createMuiTheme({
             palette: {
@@ -69,6 +69,7 @@ export default type => {
                 color: '#2c3e50'
             },
         });
-
     }
-}
+};
+
+export default Theme;
