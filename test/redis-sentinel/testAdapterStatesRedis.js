@@ -12,7 +12,7 @@ if (!isExecute) {
     try {
         const path = require.resolve('iobroker.objects-redis');
         isExecute = !!path;
-    } catch (e) { /* OK */ }
+    } catch { /* OK */ }
 }
 
 const statesConfig = {

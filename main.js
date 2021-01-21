@@ -852,7 +852,7 @@ function cleanAutoSubscribe(instance, autoInstance, callback) {
         let subs;
         try {
             subs = JSON.parse(state.val);
-        } catch (e) {
+        } catch {
             logger.error(hostLogPrefix + ' Cannot parse subscribes: ' + state.val);
             return typeof callback === 'function' && setImmediate(() => callback());
         }
@@ -1054,7 +1054,7 @@ async function collectDiagInfo(type) {
             doc.rows.sort((a, b) => {
                 try {
                     return semver.lt((a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0', (b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0');
-                } catch (e) {
+                } catch {
                     logger.error(`${hostLogPrefix} Invalid versions: ${(a && a.value && a.value.common) ? a.value.common.installedVersion : '0.0.0'}[${(a && a.value && a.value.common) ? a.value.common.name : 'unknown'}] or ${(b && b.value && b.value.common) ? b.value.common.installedVersion : '0.0.0'}[${(b && b.value && b.value.common) ? b.value.common.name : 'unknown'}]`);
                     return 0;
                 }
@@ -2032,7 +2032,7 @@ async function processMessage(msg) {
                                 let _ioPack;
                                 try {
                                     _ioPack = fs.readJSONSync(`${__dirname}/io-package.json`);
-                                } catch (e) {
+                                } catch {
                                     logger.error(`${hostLogPrefix} cannot read and parse "${__dirname}/io-package.json"`);
                                 }
                                 if (_ioPack) {
@@ -2087,7 +2087,7 @@ async function processMessage(msg) {
                 if (fs.existsSync(dir + '/io-package.json')) {
                     try {
                         _result = fs.readJSONSync(dir + '/io-package.json');
-                    } catch (e) {
+                    } catch {
                         logger.error(hostLogPrefix + ' cannot read and parse "' + dir + '/io-package.json"');
                     }
                 }
@@ -2102,7 +2102,7 @@ async function processMessage(msg) {
                 ioPack = null;
                 try {
                     ioPack = fs.readJSONSync(__dirname + '/io-package.json');
-                } catch (e) {
+                } catch {
                     logger.error(hostLogPrefix + ' cannot read and parse "' + __dirname + '/io-package.json"');
                 }
                 if (ioPack) {
@@ -2452,7 +2452,7 @@ async function processMessage(msg) {
                         const stat = fs.lstatSync(configFile);
                         config = JSON.parse(config);
                         sendTo(msg.from, msg.command, {config, isActive: uptimeStart > stat.mtimeMs}, msg.callback);
-                    } catch (e) {
+                    } catch {
                         const error = 'Cannot parse file ' + configFile;
                         logger.error(hostLogPrefix + ' ' + error);
                         sendTo(msg.from, msg.command, {error}, msg.callback);
@@ -2476,7 +2476,7 @@ async function processMessage(msg) {
                     if (typeof msg.message === 'string') {
                         try {
                             config = JSON.parse(msg.message);
-                        } catch (e) {
+                        } catch {
                             error = 'Cannot parse data ' + msg.message;
                         }
                     } else {
@@ -2499,7 +2499,7 @@ async function processMessage(msg) {
                     if (!error) {
                         try {
                             fs.writeFileSync(configFile, JSON.stringify(config, null, 2));
-                        } catch (e) {
+                        } catch {
                             error = 'Cannot write file ' + configFile;
                         }
                     }
@@ -3253,7 +3253,7 @@ async function startInstance(id, wakeUp) {
         let p = fs.readFileSync(`${adapterDir_}/package.json`);
         p = JSON.parse(p.toString());
         procs[id].engine = p && p.engines && p.engines.node;
-    } catch (e) {
+    } catch {
         logger.error(`${hostLogPrefix} startInstance ${name}.${args[0]}: Cannot read and parse "${adapterDir}/package.json"`);
     }
 
@@ -4455,7 +4455,7 @@ function init(compactGroupId) {
     let packageJson;
     try {
         packageJson = fs.readJSONSync(`${__dirname}/package.json`);
-    } catch (err) {
+    } catch {
         logger.error(hostLogPrefix + ' Can not read js-controller package.json');
     }
 
