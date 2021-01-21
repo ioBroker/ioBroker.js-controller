@@ -12,7 +12,7 @@
 * (foxriver76) replace exit codes in setup js with named constants
 * (foxriver76) add adapter method getUserId
 * (Apollon77) add seq logging support to js-controller
-  
+* (Foxriver76) Harmonize username handling between admin and js-controller by transforming the object id to lowercase. With this user names will be treated case insensitive from now on!
 * see CHANGELOG.md
 
 ## 3.2.x (2021-01-16) Release Grace
