@@ -4,21 +4,11 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.2.8 (2021-01-21)
-* (Apollon77) fix reading of certificates if the given certificates are files
-* (Apollon77) add error handling when let's encrypt configuration contains invalid domain names and other cases to allow still access to the adapter if possible
-* (foxriver76) fix compact mode cli commands
-* (AlCalzone) Support more Github URL formats for `iobroker url` command
-* (foxriver76) replace exit codes in setup js with named constants
-* (foxriver76) add adapter method getUserId
-* (Apollon77) add seq logging support to js-controller
-* (Foxriver76) Harmonize username handling between admin and js-controller by transforming the object id to lowercase. With this user names will be treated case insensitive from now on!
-* see CHANGELOG.md
-
-## 3.2.x (2021-01-16) Release Grace
+## 3.2.8 (2021-01-21) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
 * If you have enabled Multihost Discovery please disable and enable it again if you really need it persistent running. By re-enabling it you update the used passphrase with a better encryption mechanism.
+* (Foxriver76) Harmonize username handling between admin and js-controller by transforming the object id to lowercase. With this user names will be treated case insensitive from now on!
 
 **Features**
 * (raintonr) Update Let's encrypt implementation; all relevent adapters (web and such) need updates to use it! NEEDS NODE.JS 12.x+! (see DOCS LINK TODO)
@@ -26,10 +16,12 @@
 * (bluefox) Provide min/max for convert alias functions
 * (foxriver76) handling major adapter upgrades more carefully (CLI on upgrade will show if it's a major upgrade  and major upgrades will be skipped on upgrade all when executed by admin
 * (AlCalzone) detect and allow short github URL format when (auto-)installing adapters (`iobroker url User/repo#branchorcommit`)
+* (AlCalzone) Support more Github URL formats for `iobroker url` command
 * (foxriber76) Add notification system (see DOCS LINK TODO)
 * (foxriver76) enhance setup (and setup first) with redis to all port configuration
 * (foxriver76) set connectionName for redis connections and simulator support
 * (bluefox) Added "http" and "stream" options for logs
+* (Apollon77) add seq logging support to js-controller
 
 **Optimizations and Fixes**
 * (foxriver76) Detect adapter restart loops and stop restarting after 3 crashes (an adapter is considered "working" when no crash by an exception happens within 10 minutes)
@@ -91,6 +83,7 @@
 * (Apollon77) modularize databases into own npm packages and basically support adding new types of databases; add deprecation infos and logging to "old legacy" files in lib/states and lib/objects to not be used anymore; requires mostly updates in testing (see DOCS LINK TODO)
 * (foxriver76) allow to specify the instance for debug starts (`iobroker debug adaptername.1`) 
 * (foxriver76) Enhance extendObject to allow to preserve specified fields (e.g. common.name)
+* (foxriver76) add adapter method getUserId
 
 **Developer relevant Optimizations and Fixes**
 * (foxriver76) implement maybeCallback and maybeCallbackWithError and use it in adapter.js
