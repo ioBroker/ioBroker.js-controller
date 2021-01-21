@@ -10,7 +10,9 @@
 * (foxriver76) fix compact mode cli commands
 * (AlCalzone) Support more Github URL formats for `iobroker url` command
 * (foxriver76) replace exit codes in setup js with named constants
-* (foxriver76) add adapter method getUserId  
+* (foxriver76) add adapter method getUserId
+* (Apollon77) add seq logging support to js-controller
+  
 * see CHANGELOG.md
 
 ## 3.2.x (2021-01-16) Release Grace
