@@ -12,7 +12,7 @@
     "le-sni-auto": "^2.1.9",
     "le-acme-core": "^2.1.4",
     "winston-syslog": "^2.4.4",
-    "@rubenbez/winston-seq": "RubenBez/winston-seq"
+    "winston-seq-updated": "^1.0.4"
   },
   "bin": {
     "iobroker": "./iobroker.js"
