@@ -11,7 +11,8 @@
     "le-challenge-fs": "^2.0.9",
     "le-sni-auto": "^2.1.9",
     "le-acme-core": "^2.1.4",
-    "winston-syslog": "^2.4.4"
+    "winston-syslog": "^2.4.4",
+    "winston-seq-updated": "^1.0.4"
   },
   "bin": {
     "iobroker": "./iobroker.js"
