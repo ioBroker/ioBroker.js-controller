@@ -5,7 +5,7 @@ const expect = require('chai').expect;
 let nodeVersion;
 try {
     nodeVersion = parseInt(process.versions.node.split('.')[0]);
-} catch (e) {
+} catch {
     // nothing to do, skip test
 }
 

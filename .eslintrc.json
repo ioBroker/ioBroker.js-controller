@@ -16,7 +16,7 @@
         "brace-style": "error",
         "arrow-parens": ["error", "as-needed"],
         "no-console": "off",
-        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_", "caughtErrors": "all" }],
         "no-useless-escape": "warn",
         "no-constant-condition": "off",
         "no-multiple-empty-lines": ["error", { "max": 1, "maxEOF": 1 }],
