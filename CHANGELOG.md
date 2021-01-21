@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.2.8 (2021-01-21)
 * (Apollon77) fix reading of certificates if the given certificates are files
 * (Apollon77) add error handling when let's encrypt configuration contains invalid domain names and other cases to allow still access to the adapter if possible
 * (foxriver76) fix compact mode cli commands
