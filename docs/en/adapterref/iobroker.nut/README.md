@@ -82,6 +82,9 @@ directory) to try it out on the commandline. Call the scripts using "node filena
 
 ## Changelog
 
+### 1.4.1 (2021-01-21)
+* (Apollon77) Optimize stop handling (Sentry IOBROKER-NUT-1)
+
 ### 1.4.0 (2021-01-14)
 * (Apollon77) Prevent warnings in js-controller 3.2
 * (Apollon77) Require at least js-controller 2.0

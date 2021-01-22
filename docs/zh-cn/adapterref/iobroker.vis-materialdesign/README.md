@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-materialdesign/README.md
 title: ioBroker VIS的材料设计小部件
-hash: niZ/WvdcAo4qkTwMH9OtPT5j4k2a8RO8C8q13If5IQ0=
+hash: STkC4jUrj13PgxyXCjHtZZL44zY9Atc892hDUI3Tx/M=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png)<！-toc中省略->
 
@@ -45,6 +45,8 @@ ioBroker物料设计小部件基于[Google的材料设计指南](https://materia
 -[卡片]（＃card）
 -[列表]（＃list）
 -[IconList]（＃iconlist）
+-[编辑器设置]（＃editor-settings）
+-[JSON属性]（＃json-properties）
 -[进度]（＃progress）
 -[进度通知]（＃progress-circular）
 -[滑块]（＃slider）
@@ -55,26 +57,24 @@ ioBroker物料设计小部件基于[Google的材料设计指南](https://materia
 -[文字输入]（＃text-input）
 -[选择]（＃select）
 -[自动完成]（＃autocomplete）
--[带有导航抽屉的顶部应用栏]（＃top-app-bar-with-navigation-drawer）
+-[顶部应用栏]（＃top-app-bar）
 -[子菜单]（＃submenu）
+-[JSON属性]（＃json-properties-1）
 -[图表]（＃charts）
 -[条形图]（＃bar-chart）
+-[编辑器设置]（＃editor-settings-1）
+-[JSON属性]（＃json-properties-2）
 -[饼图]（＃pie-chart）
+-[编辑器设置]（＃editor-settings-2）
+-[JSON属性]（＃json-properties-3）
 -[线路历史记录图表：]（＃line-history-chart）
+-[编辑器设置]（＃editor-settings-3）
 -[JSON图表]（＃json-chart）
--[General]（＃general-2）
--[图]（＃graph）
--[图形折线图spfeicifc]（＃graph-line-chart-spfeicifc）
--[graph bar chart spfeicifc]（＃graph-bar-chart-spfeicifc）
--[图y轴]（＃graph-y轴）
--[gradientColor]（＃gradientcolor）
--[带有时间轴的图表]（＃带有时间轴的图表）
--[带时间戳的值]（＃values-with-timestamp）
--[带有时间戳的数据的x轴设置]（带有时间戳的数据的#x轴设置）
+-[JSON属性]（＃json-properties-4）
 -[表格]（＃table）
 -[输入数据]（＃input-data）
 -[控制元素]（＃control-elements）
--[编辑器设置]（＃editor-settings）
+-[编辑器设置]（＃editor-settings-4）
 -[响应式布局]（＃sensitive-layout）
 -[砌体视图]（＃masonry-views）
 -[网格视图]（＃grid-views）
@@ -123,10 +123,10 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_general.png)
 
 |设置|描述|
-|-------|-----------|
-|文档|文档链接以帮助您配置窗口小部件|
-|生成全局脚本|使用所有主题数据点为[Javascript脚本引擎](https://github.com/ioBroker/ioBroker.javascript)创建全局脚本。这允许在脚本中舒适地使用颜色，字体和字体大小。 |
-| Sentry |使用Sentry库自动向开发人员匿名报告异常和代码错误。有关更多详细信息以及如何禁用错误报告的信息，请参见[Sentry-Plugin文档]（https://github.com/ioBroker/plugin-sentry#plugin-sentry）！ |
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+|说明文件|链接到文档以帮助您配置窗口小部件|
+|生成全局脚本使用所有主题数据点为[Javascript脚本引擎](https://github.com/ioBroker/ioBroker.javascript)创建一个全局脚本。这允许在脚本中舒适地使用颜色，字体和字体大小。 |
+|哨兵使用Sentry库自动向开发人员匿名报告异常和代码错误。有关更多详细信息以及如何禁用错误报告的信息，请参见[Sentry-Plugin文档]（https://github.com/ioBroker/plugin-sentry#plugin-sentry）！ |
 
 ##主题编辑器
 借助主题编辑器，您可以通过适配器设置为所有小部件集中设置颜色，字体和字体大小。这是在[VIS适配器的绑定](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects)的帮助下实现的。对于每个窗口小部件，使用设置值创建数据点（请参见下面的屏幕快照）。这样就可以通过绑定在其他窗口小部件（而非“材料设计窗口小部件”）中使用这些设置。
@@ -233,9 +233,20 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ## IconList
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/iconList.gif)
 
+###编辑器设置
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/iconList_settings_common.png"></td><td>列表数据的输入方法</td><td>IconList的数据可以通过编辑器输入，也可以使用JSON字符串</td></tr><tr><td>JSON-String：对象ID</td><td>带有JSON字符串的datapoint的对象ID。 JSON字符串必须具有以下格式：<pre><code> [ { &quot;background&quot;: &quot;red&quot;, &quot;text&quot;: &quot;text1&quot;, &quot;subText&quot;: &quot;number&quot;, &quot;image&quot;: &quot;harddisk&quot;, &quot;imageColor&quot;: &quot;#ec0909&quot;, &quot;imageActive&quot;: &quot;folder&quot;, &quot;imageActiveColor&quot;: &quot;#5ad902&quot;, &quot;buttonBackgroundColor&quot;: &quot;&quot;, &quot;buttonBackgroundActiveColor&quot;: &quot;&quot;, &quot;listType&quot;: &quot;buttonState&quot;, &quot;objectId&quot;: &quot;0_userdata.0.iconList.buttonState.number&quot;, &quot;buttonStateValue&quot;: &quot;60&quot;, &quot;buttonNavView&quot;: &quot;&quot;, &quot;buttonLink&quot;: &quot;&quot;, &quot;buttonToggleValueTrue&quot;: &quot;&quot;, &quot;buttonToggleValueFalse&quot;: &quot;&quot;, &quot;valueAppendix&quot;: &quot;&quot;, &quot;showValueLabel&quot;: &quot;true&quot;, &quot;statusBarColor&quot;: &quot;green&quot;, &quot;lockEnabled&quot;: &quot;false&quot; }, { &quot;background&quot;: &quot;green&quot;, &quot;text&quot;: &quot;text0&quot;, &quot;subText&quot;: &quot;bool&quot;, &quot;image&quot;: &quot;home&quot;, &quot;imageColor&quot;: &quot;#44739e&quot;, &quot;imageActive&quot;: &quot;home&quot;, &quot;imageActiveColor&quot;: &quot;#44739e&quot;, &quot;buttonBackgroundColor&quot;: &quot;&quot;, &quot;buttonBackgroundActiveColor&quot;: &quot;#a0f628&quot;, &quot;listType&quot;: &quot;buttonToggle&quot;, &quot;objectId&quot;: &quot;0_userdata.0.iconList.buttonToggle.bool0&quot;, &quot;buttonStateValue&quot;: &quot;60&quot;, &quot;buttonNavView&quot;: &quot;&quot;, &quot;buttonLink&quot;: &quot;&quot;, &quot;buttonToggleValueTrue&quot;: &quot;&quot;, &quot;buttonToggleValueFalse&quot;: &quot;&quot;, &quot;valueAppendix&quot;: &quot;&quot;, &quot;showValueLabel&quot;: &quot;false&quot;, &quot;statusBarColor&quot;: &quot;&quot;, &quot;lockEnabled&quot;: &quot;false&quot; } ]</code></pre>属性<code>listType</code>可以具有以下值：<br> <code>text, buttonState, buttonToggle, buttonToggleValueTrue, buttonToggleValueFalse, buttonNav, buttonLink</code></td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/iconlist_settings_data.png"></td><td>列表数据的输入方法</td><td>IconList的数据可以通过编辑器输入，也可以使用JSON字符串</td></tr><tr><td>编辑器：列表项计数</td><td>使用vis编辑器获取列表数据的列表项数</td></tr><tr><td>JSON-String：对象ID</td><td>包含json字符串的数据点的对象ID。允许的属性如下所述</td></tr></tbody></table>
+
+### JSON属性
+JSON字符串必须是具有以下属性的对象数组：
+
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>listType</td><td>清单类型</td><td>串</td><td>文字| buttonState | buttonToggle | buttonToggleValueTrue | buttonToggleValueFalse | buttonNav | buttonLink</td></tr><tr><td> objectId</td><td>按钮的对象ID</td><td>串</td><td/></tr><tr><td>buttonStateValue</td><td>按钮状态的值</td><td>串</td><td/></tr><tr><td>buttonNavView</td><td>查看导航</td><td>串</td><td/></tr><tr><td>buttonLink</td><td>网址导航</td><td>串</td><td/></tr><tr><td>buttonToggleValueTrue</td><td>按键切换的真实值</td><td>串</td><td/></tr><tr><td>buttonToggleValueFalse</td><td>按钮切换的假值</td><td>串</td><td/></tr><tr><td>showValueLabel</td><td>以文字显示价值</td><td>串</td><td/></tr><tr><td>价值附录</td><td>将文字附加到值</td><td>串</td><td/></tr><tr><td>背景</td><td>背景颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td>背景</td><td>文本</td><td>串</td><td/></tr><tr><td>subText</td><td>第二文字</td><td>串</td><td/></tr><tr><td>图片</td><td>图像路径或“材料设计”图标的名称</td><td>串</td><td/></tr><tr><td>imageColor</td><td>材料设计图标的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> imageActive</td><td>活动按钮的图像路径或“材料设计”图标的名称</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> buttonBackgroundColor</td><td>按钮的背景色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> buttonBackgroundActiveColor</td><td>活动按钮的按钮背景色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> statusBarColor</td><td>状态栏的颜色</td><td>串</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> statusBarText</td><td>状态栏文字</td><td>串</td><td/></tr><tr><td>lockEnabled</td><td>启用锁定</td><td>布尔值</td><td>错误真正</tr></tbody></table>
+
+<！-在目录中省略->
+
+####示例
+<details> <pre><code> [ { "background": "red", "text": "text1", "subText": "number", "image": "harddisk", "imageColor": "#ec0909", "imageActive": "folder", "imageActiveColor": "#5ad902", "buttonBackgroundColor": "", "buttonBackgroundActiveColor": "", "listType": "buttonState", "objectId": "0_userdata.0.iconList.buttonState.number", "buttonStateValue": "60", "buttonNavView": "", "buttonLink": "", "buttonToggleValueTrue": "", "buttonToggleValueFalse": "", "valueAppendix": "", "showValueLabel": "true", "statusBarColor": "green", "lockEnabled": "false" }, { "background": "green", "text": "text0", "subText": "bool", "image": "home", "imageColor": "#44739e", "imageActive": "home", "imageActiveColor": "#44739e", "buttonBackgroundColor": "", "buttonBackgroundActiveColor": "#a0f628", "listType": "buttonToggle", "objectId": "0_userdata.0.iconList.buttonToggle.bool0", "buttonStateValue": "60", "buttonNavView": "", "buttonLink": "", "buttonToggleValueTrue": "", "buttonToggleValueFalse": "", "valueAppendix": "", "showValueLabel": "false", "statusBarColor": "", "lockEnabled": "false" } ] </code></pre> </details>
 
 ##进展
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/progress.gif)
@@ -313,7 +324,7 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 
 <table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td>菜单数据的方法</td><td>有三种方法可以定义菜单数据。首先是通过编辑器定义它。其次是通过json字符串定义它。第三种方法是通过三个值，标签和图标列表来定义它</td></tr><tr><td>编辑器：菜单项计数</td><td>菜单数据的方法：通过编辑器<br>定义菜单项的数量。各个菜单项可以在菜单项[x]下定义</td></tr><tr><td>JSON字符串</td><td>菜单数据的方法：json字符串<br>在这里，您可以添加JSON字符串以定义菜单项，或使用绑定到包含JSON字符串的数据点。<br><br> JSON字符串必须具有以下格式：<br><pre><code> [ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot;, &quot;iconColor&quot;: &quot;red&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot;, &quot;iconColor&quot;: &quot;green&quot; } ]</code></pre></td></tr><tr><td>值表</td><td>菜单数据的方法：值列表<br>通过添加将设置到数据点的值来定义菜单条目的数量。条目必须以分号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关标签。条目必须以分号分隔</td></tr><tr><td>值清单：标签</td><td>菜单数据的方法：值列表<br>定义值的相关图标。条目必须以分号分隔。您可以使用图像路径或“材料设计图标”名称</td></tr></tbody></table>
 
-##带有导航抽屉的顶部应用栏
+##顶部应用栏
 带有导航抽屉的顶部应用栏可以与<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">小部件8中</a>的<a href="https://www.iobroker.net/#en/documentation/viz/basic.md">视图</a>结合使用。
 
 <b>看一下[Material Design Widgets示例项目](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b>以了解其工作原理。
@@ -329,92 +340,107 @@ https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/vibrate
 ###子菜单
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
 
-#####自0.4.0版起
-从0.4.0版开始，子菜单必须由JSON字符串定义：
+子菜单必须由JSON字符串定义：
 
-```
-[
-	{
-		"text": "subitem0",
-		"icon": "account",
-		"iconColor": "red"
-	},
-	{
-		"text": "subitem1",
-		"icon": "home",
-		"iconColor": "green",
-		"divider": "true"
-	},
-	{
-		"text": "subitem1",
-		"divider": "true",
-		"icon": "/vis.0/myImages/devices/lxc_iobroker.png",
-		"userGroups": ["administrator", "user"],
-		"behaviorNotInUserGroup": "disabled"
-	}
-]
-```
-
+#### JSON属性
 <table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>文本</td><td>输入文字</td><td>串</td><td></td></tr><tr><td>图标</td><td>图标或图像的输入路径</td><td>串</td><td></td></tr><tr><td>iconColor</td><td>图标颜色（如果使用图像则无法使用）</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td>分频器</td><td>显示分隔线</td><td>布尔值</td><td>假，真</td></tr><tr><td>userGroups</td><td>允许查看和控制此条目的用户组。</td><td>数组[字符串]</td><td>用户组ID</td></tr><tr><td> behaviorNotInUserGroup</td><td>如果用户不属于用户组，则隐藏或禁用条目</td><td>串</td><td>隐藏，禁用</td></tr></tbody></table>
 
-版本0.4.0之前的#####
-下表中未列出的设置是不言自明的。
+<！-在目录中省略->
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td>子菜单数[x]</td><td>定义导航项目是否具有子菜单和子菜单的计数。</td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td>标签[x]</td><td>要更改项目的文本，您必须将json对象放入带有查看字段索引的label字段中。<br>例：<br>
-
-`{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
-
-结果：查看屏幕截图</td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_icons.png"></td><td>图标[x]</td><td>要更改项目的图标，您必须将json对象放入带有视图字段索引的icons字段中。<br>例：<br>
-
-`{"itemImage": "/icons-material-svg/hardware/ic_computer_48px.svg", "subItems": ["/vis/widgets/materialdesign/img/IoBroker_Logo.png", "/icons-material-svg/action/ic_android_48px.svg"]}`
-
-结果：查看屏幕截图</ td> </ tr> </ tbody> </ table>
+####示例
+<details> <pre><code> [ { "text": "subitem0", "icon": "account", "iconColor": "red" }, { "text": "subitem1", "icon": "home", "iconColor": "green", "divider": "true" }, { "text": "subitem1", "divider": "true", "icon": "/vis.0/myImages/devices/lxc_iobroker.png", "userGroups": ["administrator", "user"], "behaviorNotInUserGroup": "disabled" } ] </code></pre> </details>
 
 ##图表
 ###条形图
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/barChart.png)
 
-去做
+####编辑器设置
+下表中未列出的设置是不言自明的。
+
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/barchart_settings_common.png"></td><td>设置数据集</td><td>可以通过编辑器输入BarChart的数据，也可以使用JSON字符串</td></tr><tr><td>项目数</td><td>使用vis编辑器获取列表数据的条数</td></tr><tr><td>对象编号</td><td>包含json字符串的数据点的对象ID。允许的属性如下所述</td></tr><tr><td rowspan=><img src="doc/en/media/barchart_settings_dataset.png"></td><td>对象ID [x]</td><td>使用vis编辑器的单个条的对象ID</td></tr></tbody></table>
+
+#### JSON属性
+JSON字符串必须是具有以下属性的对象数组：
+
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>标签</td><td>条轴标签</td><td>串</td><td/></tr><tr><td>值</td><td>条值</td><td>数</td><td/></tr><tr><td>dataColor</td><td>条形颜色</td><td>串</td><td/></tr><tr><td>valueText</td><td>覆盖栏文字</td><td>串</td><td/></tr><tr><td>valueColor</td><td>值文字的颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td><td/></tr><tr><td>价值附录</td><td>有价文字附录</td><td>串</td><td/></tr><tr><td>工具提示标题</td><td>工具提示标题</td><td>串</td><td/></tr><tr><td>工具提示文字</td><td>工具提示文字</td><td>串</td><td/></tr></tbody></table>
+
+<！-在目录中省略->
+
+####示例
+<details> <pre><code> [ { "label": "val0", "value": "30", "valueColor": "#ffffff" }, { "label": "val1", "value": "12.54645646", "tooltipTitle": "myTitle" }, { "label": "val2", "value": "48", "dataColor": "#c2c2c2", "valueAppendix": "\n extra" }, { "label": "val3", "value": "97", "valueColor": "#ffffff" }, { "label": "val4", "value": "32", "valueText": "text" } ] </pre></code> </details>
 
 ＃＃＃ 饼形图
-去做
+![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/pieChart.png)
+
+####编辑器设置
+下表中未列出的设置是不言自明的。
+
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/piechart_settings_common.png"></td><td>设置数据集</td><td>可以通过编辑器输入PieChart的数据，也可以使用JSON字符串</td></tr><tr><td>项目数</td><td>使用vis编辑器获取列表数据的饼数</td></tr><tr><td>对象编号</td><td>包含json字符串的数据点的对象ID。允许的属性如下所述</td></tr><tr><td rowspan=><img src="doc/en/media/barchart_settings_dataset.png"></td><td>对象ID [x]</td><td>使用vis编辑器的单个饼图的对象ID</td></tr></tbody></table>
+
+#### JSON属性
+JSON字符串必须是具有以下属性的对象数组：
 
 ###线路历史记录图表：
 >必需的适配器：[SQL]（https://github.com/ioBroker/ioBroker.sql），[历史记录]（https://github.com/ioBroker/ioBroker.history）或[InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)！
 
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/line_history_chart.gif)
 
+####编辑器设置
 下表中未列出的设置是不言自明的。
 
-<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td>SQL或历史记录适配器的实例</td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。<br><br>如果数据点来自“字符串”类型，则它必须包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接值之一</a><br>如果数据点来自“数字”类型，则它必须包含图形的开始时间戳。<br><br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td>adatapoint的ID，以触发图表的手动刷新。<br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td>图表超时</td><td>加载图表数据超时。如果收到超时错误消息，请增加此值</td></tr><tr><td>调试模式</td><td>如果您有问题或错误，请激活调试模式，并将控制台日志（F12）数据附加到问题上</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td>对象编号</td><td>具有SQL或历史记录适配器的激活实例的数据点ID</td></tr><tr><td>显示方式</td><td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">链接</a></td></tr><tr><td>最高要显示的数据点数</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s]</td><td>可选设置，将覆盖“计数”设置。<br>各个数据点之间的距离，以秒为单位。<br>例如，如果要每分钟显示一次数据点，则必须在此处输入60</td></tr><tr><td>数据乘以</td><td>可选设置，将每个数据点乘以给定值</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td>x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr></tbody></table>
+<table><thead><tr><th>屏幕截图</th><th>设置</th><th>描述</th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td>适配器实例</td><td>SQL或历史记录适配器的实例</td></tr><tr><td>使用对象控制时间间隔</td><td>数据点的ID，以更改图表的时间间隔。<br><br>如果数据点来自“字符串”类型，则它必须包含<a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">链接值之一</a><br>如果数据点来自“数字”类型，则它必须包含图形的开始时间戳。<br><br>例如，您可以在此处使用按钮在运行时更改图表的显示</td></tr><tr><td>用于更新的布尔对象</td><td>adatapoint的ID，以触发图表的手动刷新。<br>例如，您可以在此处使用按钮在运行时刷新图表</td></tr><tr><td>图表超时</td><td>加载图表数据超时。如果收到超时错误消息，请增加此值</td></tr><tr><td>调试模式</td><td>如果您有问题或错误，请激活调试模式，并将控制台日志（F12）数据附加到问题上</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td>对象ID [x]</td><td>具有激活的历史记录实例的数据点的ID</td></tr><tr><td>显示方法[x]</td><td><a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">汇总方法</a></td></tr><tr><td>最高要显示的数据点数[x]</td><td>要显示的最大数据点数</td></tr><tr><td>数据点之间的时间间隔[s] [x]</td><td>可选设置，将覆盖“计数”设置。<br>各个数据点之间的距离，以秒为单位。<br>例如，如果要每分钟显示一次数据点，则必须在此处输入60</td></tr><tr><td>数据乘以[x]</td><td>可选设置，将每个数据点乘以给定值</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td>x轴的时间格式</td><td>更改X轴的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td>工具提示时间格式</td><td>更改工具提示的时间格式。必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr></tbody></table>
 
 ### JSON图表
-＃＃＃＃ 一般
-<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>axisLabels</td><td>图的轴标签</td><td>数组</td><td>数字或字符串</td></tr><tr><td>图表</td><td>图形数据</td><td>数组[<a href="#graph">图</a>]</td><td>见图表</td></tr></tbody></table>
+使用JSON图表，您可以最大程度地通过脚本创建混合图表（折线图，条形图和堆积条形图）。
 
-####图
+![徽标]（doc / en / media / jsonChart.png）！[徽标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/jsonChart2.png)
+
+#### JSON属性
+<！-在目录中省略->
+
+＃＃＃＃＃ 一般
+<table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>axisLabels</td><td>图的轴标签</td><td>数组</td><td>数字或字符串</td></tr><tr><td>图表</td><td>图形数据</td><td>数组&lt;<a href="#graph">图</a>&gt;</td><td>见图表</td></tr></tbody></table>
+
+<！-在目录中省略->
+
+#####图
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>数据</td><td>图形数据或带有时间戳的数据</td><td>数组[数字] | Array [<a href="#data-with-time-axis">带有时间戳的值</a>]</td><td>数</td></tr><tr><td>类型</td><td>图的类型</td><td>串</td><td>“线”，“栏”</td></tr><tr><td> legendText</td><td>传说文字</td><td>串</td><td></td></tr><tr><td>显示顺序</td><td>图的叠加顺序</td><td>数</td><td>一二三</td></tr><tr><td>颜色</td><td>图的颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> use_gradient_color</td><td>使用渐变色</td><td>布尔值</td><td>假，真</td></tr><tr><td>渐变色</td><td>渐变颜色阵列</td><td>数组[ <a href="#gradientcolor">gradientColor</a> ]</td><td> [{值：-20，颜色：&#39;＃7d3c98&#39;}，{值：0，颜色：&#39;＃2874a6&#39;}]</td></tr><tr><td> tooltip_title</td><td>工具提示的标题</td><td>串</td><td></td></tr><tr><td>tooltip_text</td><td>工具提示的ovveride文字</td><td>串</td><td></td></tr><tr><td>tooltip_MinDigits</td><td>工具提示值的最大小数</td><td>数</td><td>0、1、2，...</td></tr><tr><td> tooltip_MaxDigits</td><td>工具提示值的最大小数</td><td>数</td><td>0、1、2，...</td></tr><tr><td> tooltip_AppendText</td><td>将文字附加到工具提示值</td><td>串</td><td></td></tr><tr><td>datalabel_show</td><td>显示图表的数据标签</td><td>字符串布尔值</td><td>错误，正确，自动</td></tr><tr><td>datalabel_anchor</td><td>数据标签的锚点</td><td>串</td><td>中心，开始，结束</td></tr><tr><td>datalabel_align</td><td>数据标签相对于锚点的位置</td><td>串</td><td>左，开始，居中，结束，右，上，下</td></tr><tr><td>datalabel_offset</td><td>距离（以像素为单位）将数据标签拉离锚点</td><td>数</td><td>0、1、2，...</td></tr><tr><td> datalabel_text_align</td><td>数据标签的文字匹配</td><td>串</td><td>左，开始，居中，结束，右</td></tr><tr><td>datalabel_rotation</td><td>数据标签的顺时针旋转角度（以度为单位）</td><td>数</td><td>0、1、2，...</td></tr><tr><td> datalabel_steps</td><td>每x步显示数据标签</td><td>数</td><td>0、1、2，...</td></tr><tr><td> datalabel_minDigits</td><td>数据标签的最小小数</td><td>数</td><td>0、1、2，...</td></tr><tr><td> datalabel_maxDigits</td><td>数据标签的最大小数</td><td>数</td><td>0、1、2，...</td></tr><tr><td> datalabel_append</td><td>将文字附加到数据标签</td><td>串</td><td></td></tr><tr><td>datalabel_color</td><td>数据标签颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_fontFamily</td><td>数据标签字体系列</td><td>串</td><td></td></tr><tr><td>datalabel_fontSize</td><td>数据标签字体大小</td><td>数</td><td>1，2，5，...</td></tr><tr><td> datalabel_backgroundColor</td><td>数据标签背景色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_borderColor</td><td>数据标签边框颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> datalabel_borderWidth</td><td>数据标签边框宽度</td><td>数</td><td>1，2，5，...</td></tr><tr><td> datalabel_borderRadius</td><td>数据标签边框半径</td><td>数</td><td>1，2，5，...</td></tr></tbody></table></details>
 
-####图形折线图spfeicifc
+<！-在目录中省略->
+
+#####图形折线图spfeicifc
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>line_pointStyle</td><td>线的点样式</td><td>串</td><td>圆，十字，crossRot，破折号，直线，矩形，rectRounded，rectRot，星形，三角形</td></tr><tr><td>line_pointSize</td><td>线的点大小</td><td>数</td><td>1，2，3，...</td></tr><tr><td> line_pointSizeHover</td><td>线的点大小</td><td>数</td><td>1，2，3，...</td></tr><tr><td> line_PointColor</td><td>线点颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> line_PointColorBorder</td><td>线点的边框颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> line_PointColorHover</td><td>悬停线点颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> line_PointColorBorderHover</td><td>线点的边框悬停颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> line_spanGaps</td><td>如果数据之间存在差距，则画线</td><td>布尔值</td><td>假，真</td></tr><tr><td>line_steppedLine</td><td>启用阶梯线</td><td>布尔值</td><td>假，真</td></tr><tr><td>line_Tension</td><td>线的平滑度</td><td>数</td><td>0-1</td></tr><tr><td>线的粗细</td><td>线的厚度</td><td>数</td><td>1，2，5，...</td></tr><tr><td> line_UseFillColor</td><td>在线条下使用填充颜色</td><td>布尔值</td><td>假，真</td></tr><tr><td>line_FillColor</td><td>在线下填充颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> use_line_gradient_fill_color</td><td>使用渐变填充颜色</td><td>布尔值</td><td>假，真</td></tr><tr><td>line_gradient_fill_color</td><td>渐变颜色阵列</td><td>数组[ <a href="#gradientcolor">gradientColor</a> ]</td><td> [{值：-20，颜色：&#39;＃7d3c98&#39;}，{值：0，颜色：&#39;＃2874a6&#39;}]</td></tr><tr><td> line_FillBetweenLines</td><td>为下一行/上一行填充颜色</td><td>串</td><td>&#39;+1&#39;，&#39;-1&#39;，&#39;+ 2&#39;，...</td></tr></tbody></table></details>
 
-####图形条形图spfeicifc
+<！-在目录中省略->
+
+#####图形条形图spfeicifc
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>bar已堆叠</td><td>堆积的酒吧。如果您有组合图表（折线+堆积条形图），则还必须为折线数据集设置该值！</td><td>布尔值</td><td>假，真</td></tr><tr><td>barStackId</td><td>堆栈ID。应该组合到堆栈的栏必须具有相同的ID</td><td>数</td><td>1，2，5，...</td></tr><tr><td> barColorHover</td><td>悬停颜色栏</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> barBorderColor</td><td>条的边框颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> barBorderWidth</td><td>条形边框的厚度</td><td>数</td><td>1，2，5，...</td></tr><tr><td> barBorderColorHover</td><td>条形的边框悬停颜色</td><td>颜色|数组[颜色]</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> barBorderWidthHover</td><td>将鼠标悬停在边框上</td><td>数</td><td>1，2，5，...</td></tr></tbody></table></details>
 
-####图形y轴
+<！-在目录中省略->
+
+#####图形y轴
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>yAxis_id</td><td> y轴的ID。如果您想将通用的y轴用于多图图形数据，请使用相同的ID。</td><td>数</td><td>1，2，5，...</td></tr><tr><td> yAxis_position</td><td> y轴位置</td><td>串</td><td>左右</td></tr><tr><td>yAxis_show</td><td>显示y轴</td><td>布尔值</td><td>假，真</td></tr><tr><td>yAxis_title_text</td><td> y轴标题</td><td>串</td><td></td></tr><tr><td>yAxis_title_color</td><td>覆盖y轴标题颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> yAxis_title_font家庭</td><td>覆盖y轴标题字体系列</td><td>串</td><td></td></tr><tr><td>yAxis_title_fontSize</td><td>覆盖y轴标题字体大小</td><td>数</td><td>1，2，5，...</td></tr><tr><td> yAxis_min</td><td> y轴的最小值</td><td>数</td><td>1，2，5，...</td></tr><tr><td> yAxis_max</td><td> y轴最大值</td><td>数</td><td>1，2，5，...</td></tr><tr><td> yAxis_step</td><td> y轴步长</td><td>数</td><td>1，2，5，...</td></tr><tr><td> yAxis_minimumDigits</td><td> y轴最小小数位数</td><td>数</td><td>1，2，5，...</td></tr><tr><td> yAxis_maximumDigits</td><td> y轴最大小数位数</td><td>数</td><td>1，2，5，...</td></tr><tr><td> yAxis_maxSteps</td><td> y轴的最大步幅</td><td>数</td><td>1，2，5，...</td></tr><tr><td> yAxis_distance</td><td>覆盖y轴值到轴的距离</td><td>数</td><td>1，2，5，...</td></tr><tr><td> yAxis_appendix</td><td>将文字附加到y轴值</td><td>串</td><td></td></tr><tr><td>yAxis_color</td><td>覆盖y轴值颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> yAxis_fontFamily</td><td>覆盖y轴值字体系列</td><td>串</td><td></td></tr><tr><td>yAxis_fontSize</td><td>覆盖y轴值字体大小</td><td>数</td><td>1，2，5，...</td></tr><tr><td> yAxis_zeroLineWidth</td><td> y轴零线宽度</td><td>数</td><td>0.3、1.5、4 ...</td></tr><tr><td> yAxis_zeroLineColor</td><td> y轴零线颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> yAxis_gridLines_show</td><td>显示y轴网格线</td><td>布尔值</td><td>假，真</td></tr><tr><td>yAxis_gridLines_color</td><td> y轴网格线的颜色</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr><tr><td> yAxis_gridLines_lineWidth</td><td>网格线的宽度</td><td>数</td><td>0-1</td></tr><tr><td> yAxis_gridLines_border_show</td><td>显示y轴网格线的边界</td><td>布尔值</td><td>假，真</td></tr><tr><td>yAxis_gridLines_ticks_show</td><td>显示y轴网格间隔刻度</td><td>布尔值</td><td>假，真</td></tr><tr><td>yAxis_gridLines_ticks_length</td><td> y轴网格刻度的长度</td><td>数</td><td>1，2，5，...</td></tr></tbody></table></details>
 
-#### GradientColor
+<！-在目录中省略->
+
+##### GradientColor
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>值</td><td>应当在其中应用颜色的值</td><td>数</td><td>1，2，5，...</td></tr><tr><td>颜色</td><td>物有所值</td><td>颜色</td><td>十六进制（＃44739e），rgb（20、50、200），rgba（20、50、200、0.5）</td></tr></tbody></table></details>
 
-###带时间轴的图表
-JSON图表支持带有时间戳的数据。若要使用此数据数组必须具有时间戳记值（x轴值）和值（y轴值）。
+<！-在目录中省略->
 
-####带有时间戳的值
+具有时间轴的#####图表JSON图表支持具有时间戳的数据。若要使用此数据数组必须具有时间戳记值（x轴值）和值（y轴值）。
+######带有时间戳的值
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>Ť</td><td>时间戳-xAxis值</td><td>数</td><td>1，2，5，...</td></tr><tr><td> ÿ</td><td>时间戳的值-yAxis值</td><td>数</td><td>1，2，5，...</td></tr></tbody></table></details>
 
-#### X轴设置带有时间戳的数据
+###### X轴设置带有时间戳的数据
 <details><table><thead><tr><th>属性</th><th>描述</th><th>类型</th><th>价值观</th></tr></thead><tbody><tr><td>xAxis_bounds</td><td>规模边界策略<br><br>&#39;数据&#39;：确保数据完全可见，外部标签被去除<br>&#39;打勾&#39;：确保打勾完全可见，外部数据被截断</td><td>串</td><td>数据，刻度</td></tr><tr><td>xAxis_timeFormats</td><td> x轴的时间格式</td><td>目的</td><td>必须为所有时间单位输入时间格式， <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">允许以下时间单位。</a><br>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr><tr><td>xAxis_tooltip_timeFormats</td><td> x轴的时间格式</td><td>串</td><td>必须根据moment.js库输入批准的时间格式，<a href="https://momentjs.com/docs/#/displaying/">请参阅链接</a></td></tr><tr><td>xAxis_time_unit</td><td>强制x轴的时间格式</td><td>串</td><td>允许以下单位，<a href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html#time-units">请参阅链接</a></td></tr></tbody></table></details>
+
+<！-在目录中省略->
+
+####示例
+<details> <pre><code> { "axisLabels": ["1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h", "11h", "12h", "13h", "14h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "24h"], "graphs": [ { "data": [19, 19, 18, 19, 19, 20, 20, 21, 22, 24, 24, 24, 23, 22, 23, 23, 24, 23, 23, 22, 22, 21, 20, 20], "type": "line", "color": "gray", "legendText": "Temperatur", "line_pointSizeHover": 5, "line_pointSize": 0, "line_Tension": 0.3, "yAxis_show": false, "yAxis_gridLines_show": false, "yAxis_gridLines_ticks_length": 5, "yAxis_min": 0, "yAxis_max": 30, "yAxis_step": 5, "yAxis_position": "left", "yAxis_appendix": " °C", "yAxis_zeroLineWidth": 0.1, "yAxis_zeroLineColor": "black", "displayOrder": 0, "tooltip_AppendText": " °C", "datalabel_backgroundColor": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "datalabel_color": "white", "datalabel_offset": -10, "datalabel_fontFamily": "RobotoCondensed-Light", "datalabel_fontSize": 12, "datalabel_borderRadius": 6, "datalabel_show": "auto", "line_PointColor": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "line_PointColorBorder": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "line_PointColorHover": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "line_PointColorBorderHover": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "use_gradient_color": true, "gradient_color": [{ "value": -20, "color": "#5b2c6f66" }, { "value": 0, "color": "#2874a666" }, { "value": 14, "color": "#73c6b666" }, { "value": 22, "color": "#00800066" }, { "value": 27, "color": "#ffa50066" }, { "value": 35, "color": "#ff000066" } ], "use_line_gradient_fill_color": true, "line_gradient_fill_color": [{ "value": -20, "color": "#5b2c6f66" }, { "value": 0, "color": "#2874a666" }, { "value": 14, "color": "#73c6b666" }, { "value": 22, "color": "#00800066" }, { "value": 27, "color": "#ffa50066" }, { "value": 35, "color": "#ff000066" } ] }, { "data": [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 19, 33, 36, 23, 14, 16, 34, 46, 40, 24, 22], "type": "line", "color": "#0d47a1", "legendText": "Regenwahrscheinlichkeit", "line_UseFillColor": true, "line_pointSize": 0, "line_pointSizeHover": 5, "yAxis_min": 0, "yAxis_max": 100, "yAxis_maxSteps": 10, "yAxis_position": "left", "yAxis_gridLines_show": false, "yAxis_gridLines_border_show": false, "yAxis_zeroLineWidth": 0.1, "yAxis_zeroLineColor": "black", "yAxis_appendix": " %", "displayOrder": 1, "tooltip_AppendText": " %", "datalabel_show": false }, { "data": ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1.3", "2.5", 0, 1.9, 1.17, 0, 0, 0, 0.18, 0.7, 0.2, 0, 0], "type": "bar", "color": "#6dd600", "legendText": "Niederschlag", "yAxis_min": 0, "yAxis_max": 5, "yAxis_maxSteps": 10, "yAxis_position": "right", "yAxis_gridLines_show": false, "yAxis_appendix": " mm", "yAxis_gridLines_border_show": false, "yAxis_zeroLineWidth": 0.1, "yAxis_zeroLineColor": "black", "displayOrder": 1, "tooltip_AppendText": " mm", "datalabel_show": false } ] }
+
+</ pre> </ code> </ details>
 
 ##表
 ![商标](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table.gif)

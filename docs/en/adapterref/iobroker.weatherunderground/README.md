@@ -71,6 +71,10 @@ There is a still a problem with encoding. The addresses with "äüöß" will be 
 
 ## Changelog
 
+### 3.3.0 (2021-01-22)
+* (Apollon77) Optimize for js-controller 3.2
+* (Apollon77) js-controller 2.0 is now required at least
+
 ### 3.2.5 (2020-12-27)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-WEATHERUNDERGROUND-1, IOBROKER-WEATHERUNDERGROUND-2)
 

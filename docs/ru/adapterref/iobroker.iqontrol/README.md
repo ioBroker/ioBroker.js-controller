@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: c1Hq6MWy+zvgtvzQZcXb97Tn6IX05fho5XS9FSJ3dhk=
+hash: fm28Ts6Wnr157PcexHJkCVKx2HzM7IVod3RSF2m6wSo=
 ---
 ![Логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -13,7 +13,7 @@ hash: c1Hq6MWy+zvgtvzQZcXb97Tn6IX05fho5XS9FSJ3dhk=
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.iqontrol.svg)
 ![Статус зависимости](https://img.shields.io/david/sbormann/iobroker.iqontrol.svg)
 ![Известные уязвимости](https://snyk.io/test/github/sbormann/ioBroker.iqontrol/badge.svg)
-![NPM](https://nodei.co/npm/iobroker.iqontrol.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.iqontrol.png?downloads=true)
 ![Трэвис-Си](http://img.shields.io/travis/sbormann/ioBroker.iqontrol/master.svg)
 ![AppVeyor](https://ci.appveyor.com/api/projects/status/github/sbormann/ioBroker.iqontrol?branch=master&svg=true)
 
@@ -408,7 +408,7 @@ hash: c1Hq6MWy+zvgtvzQZcXb97Tn6IX05fho5XS9FSJ3dhk=
 * 'параметры URL-адреса виджета'
 * синтаксис: &#39;&#39; <meta name="widget-urlparameters" content="parameter/default value/description/type;parameter2/default value2/description2/type2"/> ``
 * У пользователя будет запрошен этот параметр при выборе виджета как URL или BACKGROUND_URL или при автосоздании виджета.
-* type не является обязательным и может быть text (по умолчанию), number, checkbox, color, select или multipleSelect. `
+* type не является обязательным и может быть text (по умолчанию), number, checkbox, color, select, multipleSelect. `или` `historyInstance``
 * Если тип - select или multipleSelect, вам необходимо указать возможные варианты, добавив / <selectOptions>, где <selectOptions> - строка формата <значение1>, <заголовок1> / <значение2>, <заголовок2> / ... ''
 * Если тип - `` число '', то можно указать минимальную, максимальную и ширину шага, добавив `` / <numberOptions> '', где `` <numberOptions> '' - это строка формата `` <min>, <макс>, <шаг> ''
 * Все эти параметры будут переданы веб-сайту виджета через строку параметра url (например, `` widget.html? Parameter = value & parameter2 = value2 '')
@@ -994,7 +994,7 @@ hash: c1Hq6MWy+zvgtvzQZcXb97Tn6IX05fho5XS9FSJ3dhk=
     * Поведение можно инвертировать в разделе опций «Общие» (использовать подключенное вместо недоступного)
 * **ENLARGE_TILE** *boolean* - если true, тайл будет увеличен. Вы можете перезаписать это, нажав кнопку увеличения / уменьшения. Но каждый раз, когда состояние ENLARGE_TILE изменяется, он снова берет на себя управление состоянием увеличения тайлов. Если роль ENLARGE_TILE - *кнопка* то каждое изменение состояния будет переключать состояние увеличения.
 * **BADGE** *число* или *строка* - если присутствует значение, отличное от нуля / false, то значок в верхнем левом углу отображается с этим значением
- *** BADGE_COLOR* *string* - любая допустимая строка цвета html (например, «зеленый», «# 00FF00», «rgba (0,255,0,0.5)» и т. Д.), Представляющая цвет значка. Если отсутствует или недействителен, будет использован красный цвет.
+ *** BADGE_COLOR* *string* - любая допустимая строка цвета html (например, «зеленый», «# 00FF00», «rgba (0,255,0,0.5)» и т. Д.), Представляющая цвет значка. Если отсутствует или недействителен, будет использован красный цвет с 50% прозрачностью.
 
 ### Ссылка на другое представление:
 * Не имеет других состояний
@@ -1033,13 +1033,15 @@ hash: c1Hq6MWy+zvgtvzQZcXb97Tn6IX05fho5XS9FSJ3dhk=
     * **RGBW** / **# RGBW** вместо использования HUE, SATURATION, COLOR_BRIGHTNESS и WHITE_BRIGHTNESS вы можете использовать формат RGBW (шестнадцатеричный), необязательно с ведущим '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** вместо HUE, SATURATION, COLOR_BRIGHTNESS, CT и WHITE_BRIGHTNESS вы можете использовать формат RGBWWCW или RGBCWWW (шестнадцатеричный , WW = теплый белый, CW = холодный белый), необязательно с ведущим '#'
     * **RGB (только оттенок)** / **# RGB (только оттенок)** вместо использования HUE вы можете использовать формат RGB (только оттенок) (шестнадцатеричный), необязательно с ведущим '#'. В этом особом случае формат RGB будет принимать только чистые насыщенные цвета круга оттенок-цвет. Смешанный белый не допускается
-    * **Hue for Milight** это значение оттенка для устройств Milight с использованием другой отправной точки в цветовом круге оттенка:
+    * **Hue for Milight** это значение оттенка для устройств Milight (v5) с использованием другой отправной точки в цветовом круге оттенка:
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
 modulo(-3.60 * (MilightHue/2.55 - 66), 360);
 on modulo(n, m){ return ((n % m) + m) %m; }
 ````
+
+    * **HHSSBB для Tuya** длинная 12-значная шестнадцатеричная строка, представляющая оттенок (HH = 0000-016d [0-365]), насыщенность (SS = 0000-03e8 [0-1000]) и яркость цвета (BB = 0000-03e8 [0-1000])
 
 Имейте в виду: преобразование в альтернативное цветовое пространство выполняется веб-интерфейсом, поэтому оно активно только в том случае, если где-то открыт iQontrol. Поэтому вы не можете использовать его в качестве преобразователя цветовых пространств. Чтобы избежать зацикливания на диалоге, рекомендуется использовать либо исходные точки данных цветового пространства (HUE, SATURATION, COLOR_BRIGHTNESS, CT, WHITE_BRIGHTNESS) *либо* альтернативную точку данных цветового пространства для *замены* этих точек данных.
 
@@ -1209,10 +1211,16 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ## Changelog
 
-### 1.5.6 dev
+### 1.5.6 (2021-01-21)
 * (sbormann) Fixed toolbar hiding issue if popup with additional controls is closed early.
 * (sbormann) Fixed ALTERNATIVE_COLORSPACE only working after opening the view a second time.
 * (sbormann) Added badge.
+* (sbormann) Added predefined wallpapers to dropdown for devices background images.
+* (sbormann) Redesigned dropdown for toolbar-icons to show thumbnails and added ability to add custom icons.
+* (sbormann) Added option to show toolbar in one singe line.
+* (sbormann) Added HHSSBB for Tuya to ALTERNATIVE_COLORSPACEs.
+* (sbormann) Added historyInstance to options of FLOT-Chart-Widget.
+* (sbormann) Fixed changing commonRole breaks symbolic links.
 
 ### 1.5.5 (2021-01-07)
 * (sbormann) Added optional headings to ADDITIONAL_CONTROLS, the appereance can be controlled by an option.

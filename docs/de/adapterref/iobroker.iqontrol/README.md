@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: c1Hq6MWy+zvgtvzQZcXb97Tn6IX05fho5XS9FSJ3dhk=
+hash: fm28Ts6Wnr157PcexHJkCVKx2HzM7IVod3RSF2m6wSo=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -408,7 +408,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * 'Widget-URL-Parameter'
 * Syntax: `` <meta name="widget-urlparameters" content="parameter/default value/description/type;parameter2/default value2/description2/type2"/> ``
 * Der Benutzer wird nach diesen Parametern gefragt, wenn er das Widget als URL oder BACKGROUND_URL auswählt oder ein Widget automatisch erstellt
-* `` type`` ist optional und kann `` text`` (dies ist ein Fehler), `` number``, `` checkbox``, `` color``, `` select`` oder `` multipleSelect` sein `
+* `` type`` ist optional und kann `` text`` (dies ist ein Fehler), `` number``, `` checkbox``, `` color``, `` select``, `` multipleSelect` sein `oder` `historyInstance``
 * Wenn der Typ `` select`` oder `` multipleSelect`` ist, müssen Sie die möglichen Optionen angeben, indem Sie `` / <selectOptions> `` hinzufügen, wobei `` <selectOptions> `` eine Zeichenfolge im Format `` ist <Wert1>, <Caption1> / <Wert2>, <Caption2> / ... ``
 * Wenn der Typ `` number`` ist, können Sie min, max und step-width angeben, indem Sie `` / <numberOptions> `` hinzufügen, wobei `` <numberOptions> `` eine Zeichenfolge im Format `` <min> ist. <max>, <step> ``
 * Alle diese Parameter werden der Widget-Website über eine URL-Parameter-Zeichenfolge (wie `` widget.html? Parameter = value & parameter2 = value2``) mitgeteilt.
@@ -925,7 +925,7 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 ## Beschreibung der Rollen und zugehörigen Zustände
 Jedes Gerät hat eine Rolle, die die Funktion des Geräts definiert. Jede Rolle generiert eine Reihe von Zuständen, die mit einem entsprechenden iobroker-Zustand verknüpft werden können.
 Wenn Sie die Auto-Create-Funktion verwenden, können Sie ein vorhandenes Gerät aus dem iobroker-Objektbaum auswählen. Autocreate versucht, die Rolle herauszufinden und so viele Zustände wie möglich zuzuordnen.
-Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die Geräte bearbeiten, die durch die automatische Erstellung erstellt wurden.
+Dies funktioniert nur bei bekannten Geräten. Für unbekannte Geräte und um den Geräten erweiterte Funktionen zu bieten, können Sie sie manuell über die Schaltfläche (+) - hinzufügen oder die Geräte bearbeiten, die durch die automatische Erstellung erstellt wurden.
 Klicken Sie auf den Stift hinter dem Gerät, um die Rolle und den Status eines Geräts zu bearbeiten. Nachfolgend finden Sie eine kurze Beschreibung der Rollen und der verwendeten Zustände:
 
 ### Ändern der Datenpunktkonfiguration
@@ -994,7 +994,7 @@ Allerdings macht nicht jeder Typ für jede Rolle Sinn. So ist beispielsweise der
     * Das Verhalten kann im Abschnitt "Allgemein" der Optionen umgekehrt werden (verwenden Sie "Verbunden" anstelle von "Nicht erreichbar").
 * **ENLARGE_TILE** *boolean* - Wenn true, wird die Kachel als vergrößert festgelegt. Sie können dies überschreiben, indem Sie auf die Schaltfläche Vergrößern / Verkleinern klicken. Aber jedes Mal, wenn sich der Status von ENLARGE_TILE ändert, übernimmt es wieder die Kontrolle über den Status der Kachelvergrößerung. Wenn die Rolle von ENLARGE_TILE *button* ist, wird bei jeder Statusänderung der Vergrößerungsstatus umgeschaltet
 * **ABZEICHEN** *Zahl* oder *Zeichenfolge* - Wenn ein anderer Wert als Null / Falsch vorhanden ist, wird in der oberen linken Ecke ein Abzeichen mit diesem Wert angezeigt
- *** BADGE_COLOR* *string* - jede gültige HTML-Farbzeichenfolge (wie 'grün', '# 00FF00', 'rgba (0,255,0,0,5)'), die die Farbe des Abzeichens darstellt. Wenn nicht vorhanden oder ungültig, wird Rot verwendet.
+ *** BADGE_COLOR* *string* - jede gültige HTML-Farbzeichenfolge (wie 'grün', '# 00FF00', 'rgba (0,255,0,0,5)'), die die Farbe des Abzeichens darstellt. Wenn nicht vorhanden oder ungültig, wird Rot mit 50% Transparenz verwendet.
 
 ### Link zu anderer Ansicht:
 * Hat keine weiteren Zustände
@@ -1033,13 +1033,15 @@ Optional können Sie folgende Zustände definieren:
     * **RGBW** / **# RGBW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS und WHITE_BRIGHTNESS können Sie das RGBW-Format (hex) verwenden, optional mit führendem '#'
     * **RGBWWCW** / **# RGBWWCW** / **RGBCWWW** / **# RGBCWWW** Anstelle von HUE, SATURATION, COLOR_BRIGHTNESS, CT und WHITE_BRIGHTNESS können Sie das RGBWWCW- oder RGBCWWW-Format (hex) verwenden , WW = warmweiß, CW = kaltweiß), optional mit führendem '#'
     * **RGB (nur Farbton)** / **# RGB (nur Farbton)** Anstelle von HUE können Sie auch das RGB-Format (nur Farbton) (hex) verwenden, optional mit dem führenden '#'. In diesem speziellen Fall akzeptiert das RGB-Format nur reine gesättigte Farben des Farbton-Farbkreises. Mischweiß ist nicht erlaubt
-    * **Farbton für Milight** Dies ist der Farbtonwert für Milight-Geräte, wobei ein anderer Ausgangspunkt im Farbton-Farbkreis verwendet wird:
+    * **Farbton für Milight** Dies ist der Farbtonwert für Milight-Geräte (v5), wobei ein anderer Ausgangspunkt im Farbton-Farbkreis verwendet wird:
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
 modulo(-3.60 * (MilightHue/2.55 - 66), 360);
 on modulo(n, m){ return ((n % m) + m) %m; }
 ````
+
+    * **HHSSBB für Tuya** 12-stellige Hex-Zeichenfolge, die Farbton (HH = 0000-016d [0-365]), Sättigung (SS = 0000-03e8 [0-1000]) und Farbhelligkeit (BB) darstellt = 0000-03e8 [0-1000])
 
 Beachten Sie: Die Konvertierung in einen alternativen Farbraum erfolgt über das Frontend und ist daher nur aktiv, wenn iQontrol irgendwo geöffnet ist. Daher können Sie es nicht als Konverter für Farbräume verwenden. Um Konversationsschleifen zu vermeiden, wird empfohlen, entweder die ursprünglichen Farbraum-Datenpunkte (HUE, SATURATION, COLOR_BRIGHTNESS, CT, WHITE_BRIGHTNESS) *oder* den alternativen Farbraum-Datenpunkt zu verwenden, um diese Datenpunkte *zu ersetzen*
 
@@ -1149,7 +1151,7 @@ Zusätzlich zum normalen Thermostat können Sie Folgendes definieren:
 * **STATE** *string* - "play", "pause" oder "stop" oder *boolean* - true für play, false für stop
     * In den Geräteoptionen können Sie den Wert definieren, der Wiedergabe, Pause und Stopp darstellt
 * **COVER_URL** *string* - URL zum Titelbild
-* **KÜNSTLER, ALBUM, TITEL** *Zeichenfolge* - selbsterklärend
+* **KÜNSTLER, ALBUM, TITEL** *string* - selbsterklärend
 * **TRACK_NUMBER** *number* - selbsterklärend
 * **PREV, REWIND, PLAY, PAUSE, STOP, FORWARD, NEXT** *boolean* - wird auf true gesetzt, wenn die entsprechende Taste gedrückt wird
 * **SHUFFLE, MUTE, PLAY_EVERYWHERE, EJECT, POWER_SWITCH** *Boolescher* - Status für die entsprechende Funktion
@@ -1209,10 +1211,16 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 
 ## Changelog
 
-### 1.5.6 dev
+### 1.5.6 (2021-01-21)
 * (sbormann) Fixed toolbar hiding issue if popup with additional controls is closed early.
 * (sbormann) Fixed ALTERNATIVE_COLORSPACE only working after opening the view a second time.
 * (sbormann) Added badge.
+* (sbormann) Added predefined wallpapers to dropdown for devices background images.
+* (sbormann) Redesigned dropdown for toolbar-icons to show thumbnails and added ability to add custom icons.
+* (sbormann) Added option to show toolbar in one singe line.
+* (sbormann) Added HHSSBB for Tuya to ALTERNATIVE_COLORSPACEs.
+* (sbormann) Added historyInstance to options of FLOT-Chart-Widget.
+* (sbormann) Fixed changing commonRole breaks symbolic links.
 
 ### 1.5.5 (2021-01-07)
 * (sbormann) Added optional headings to ADDITIONAL_CONTROLS, the appereance can be controlled by an option.

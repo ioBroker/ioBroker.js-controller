@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: a5XMy2RH028ypMZGZZKBxBTRMvIjemVroqfyQHtWmQM=
+hash: vjCCXJTBzoNWfIuXlN+LgsLK7ydOnA6JPOKBBgmj4uA=
 ---
 ![商标](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
@@ -13,7 +13,7 @@ hash: a5XMy2RH028ypMZGZZKBxBTRMvIjemVroqfyQHtWmQM=
 
 ＃ioBroker.knx
 ##说明
-zh：该适配器允许从ETS导入knxproj文件。它会在KNX-groupaddress和ioBroker之间生成转换，并将设备放入房间（尤其是MobileUI）。
+zh：该适配器允许从ETS导入knxproj文件。它在KNX-Group地址和ioBroker之间生成转换，并将设备放入房间（尤其是MobileUI）。
 
 它连接到标准KNX / LAN网关。
 
@@ -37,62 +37,62 @@ zh：该适配器允许从ETS导入knxproj文件。它会在KNX-groupaddress和i
 通常是3671端口。
 
 ###物理EIB地址
-填写免费物理。与您的KNX体系结构相对应的地址，**但与您的KNX网关所拥有的地址不同！**
+填写免费物理。对应于您的KNX体系结构的地址，**不是您的KNX网关的地址！**不能以0结尾！
 
 ###调试级别
-扩展适配器的输出级别以进行调试
+扩展适配器的输出级别以进行调试。
 
 ###上传knxproj
 您可以在此处以`knxproj`格式上传ETS导出。
 
 成功导入后，将显示一个对话框，显示导入对象的数量。现在按“保存并关闭”，适配器应该启动。
-启动适配器时，将读取所有带有read-Flag的groupAddresses。这可能需要一段时间，并且可能会在您的KNX总线上产生很高的负载。但是，您的可见值在启动后会更新。
+启动适配器时，将使用read-Flag读取所有组地址。这可能需要一段时间，并且可能会在您的KNX总线上产生很高的负载。但是，您的可见值在启动后会更新。
 
 ###对象
 这里是knx.0下的组地址树，就像您的ETS项目中一样。
 
 ###枚举
-如果您的ETS中有带有相应设备的建筑结构，则会在此处显示。在“成员”下是该组中带有send-Flag的设备列出的组地址的名称。
+如果您的ETS中有带有相应设备的建筑结构，则将在此处显示。在“成员”下是该组中带有send-Flag的设备列出的组地址的名称。
 
 ###用法
 如果适配器成功启动，您的数据点将可用于您想做的所有事情。
 
 ###数据点类型
-根据KNX Association的“系统规范，互通，数据点类型”，所有DPT均可用。这意味着您可以得到2种信息类型：1）值或字符串2）逗号分隔的值或值数组（目前我还没有更好的处理方法）
+根据KNX Association的“系统规范，互通，数据点类型”的所有DPT均可用。这意味着您可以获得两种类型的信息：1）值或字符串2）逗号分隔的值或值的数组（目前我不知道哪种更好的处理方法）
 
 例如，DPT5.001被编码为8位无符号整数。这给出一个值。 DPT3.007（控制调光）被编码为1Bit（布尔）+ 3Bit（无符号Int）。
-结果是值如“ 0,5”，其中“ 0”表示“减少”，“ 5”表示间隔数。
+结果例如在“ 0,5”之类的值中，其中“ 0”表示“减少”，“ 5”表示间隔数。
 
-## Wie werden死于Datenpunkte创始者
+## Wie werden死于Datenpunkte
 ### 1）Auslesen aller Kommunikationsobjektreferenzen（im folgenden KOR）
-ID的jeweilige DPT der KOR zugeordnet，Wen ervorhanden ist。属性写入=是和读取=否。 Alle darauf folgenden GAR ID的bekommen nur den DPT zugeordnet
+达韦尔·登（Daruperwerden den Gruppenaddressreferenz）（戴姆·弗尔根登·加尔）（ID）属性写入=是而读取=否。 Alle darauf folgenden GAR ID的bekommen nur den DPT zugeordnet
 
 ### 2）Erzeugen der Gruppenadressstruktur（im folgenden GAS）
-较高的级别是由GAS负责的，而GAR ID的建议是由DPT的zugeordnet负责的，而1月份之前是由负责人负责的。
+较高的GAS数量和GARID的数量将导致DPT的Zugeordnet下降，直到1月后死亡。1）Noch nicht geschehen ist。
 
 ### 3）Herausfinden der Schalt-和Statusaddressen
-在ETS出口中，Schalt- und Statusadressen可能会提示。状态与州之间的联系方式。
-Wird einPärchengefunden，dessenÄhnlichkeitmehr als，90％beträgt，Dann Wird angenommen，GA1，Schaltadresse和GA2或Statusadresse ist。 DabeierhältGA1 das write = true und read = false和GA2 das write = false und read = true。
-APT的Ausserdem werden die DPT abgeglichen aus der jeweilig korrespondierenden GA。澳大利亚的Grund ist es schwierig律师事务所，Gruppenadressbeschriftungen律师事务所。
+在实际的ETS出口中，Schalt-Statadressen可以作为提示。状态与州之间的联系方式。
+Wird einPärchengefunden，dessenÄhnlichkeitmehr als，90％beträgt，Dann Wird angenommen，GA1或Schaltadresse以及GA2或Statusadresse ist。 DabeierhältGA1 das write = true und read = false和GA2 das write = false und read = true。
+奥地利国防军（DPT）国防军（GA）。澳大利亚的Grund ist es schwierig律师事务所，Gruppenadressbeschriftungen律师事务所。
 
 Weiterhin werden死在旗帜上。关于北威州的标志：
 
 | KNX | | | iobroker | | |
 |-------|-----------|------------|----------|----------|-------------------------------------------------|
 |莱森|施瑞本| Übertragen|莱森|施瑞本| Erklärung|
-| -| -| -| -| -| der wertüberGroupValueResponse aktualiesiert |
+| -| -| -| -| -| der wert wiberüberGroupValueResponse aktualiesiert |
 | x | -| -| x | x | ein触发器darauflöstGroupValueRead aus |
-| -| x | -| -| x | Schreibt den angegeben Wert mit GroupValueWrite auf den KNX-Bus |
+| -| x | -| -| x | KNX总线|
 | -| -| x | x | -| der Wert wiberüberGroupValueResponse aktualisiert |
 | x | -| x | x | x | ein触发器darauflöstGroupValueRead aus |
 
-### 4）Erzeugen der Datenpunktpaaren（im folgenden DPP）
-Ein DPP与erzeugt，GA，GAR和DPT有效结合。 Mit diesen DPP适配器适配器。 Fehlen还死于einer GA的DPT，即weil sie auf keiner der o。答：Wege gefunden werden konnte，所以我们很想知道GA维护DPP维护和维护。
+### 4）Erzeugen der Datenpunktpaare（im folgenden DPP）
+Ein DPP wird erzeugt，GA，GAR和DPT有效。 Mit diesen DPP适配器适配器。 Fehlen还在einer GA的DPT上任职。答：Wege gefunden werden konnte，所以GA KEIN DPP erzeugt和sie ist im Weiteren nicht nutzbar很受欢迎。
 
-Im Idealfall werden somitfüreinen Schaltkanal 2 DPP erzeugt。达斯特·达斯·沙尔滕。在疾病中，GAR ID des Status DPP提示者。状态DPP发生在Refenrenz。
+Im Idealfall werden somitfüreinen Schaltkanal 2 DPP erzeugt。达斯特·达斯·沙尔滕。在疾病中，GAR ID des Status DPP提示者。状态DPP否否是参考。
 
 ## Beim Start des适配器
-Lese-Flag markieren DPP律师事务所开始abgefragt。死于美国时刻了解Buslast和dauert einen时刻。 Im Anschluss罪恶了aktuellen Werteverfügbar。
+Lese-Flag Markierten DPP律师事务所开始abgefragt。死于美国时刻了解Buslast和dauert einen时刻。 Im Anschluss罪恶了aktuellen Werteverfügbar。
 
 ##（隐藏）功能：
 根据GroupValue的摘要，您可以在状态，地址，地址和地址等方面进行选择。
@@ -106,11 +106,11 @@ Lese-Flag markieren DPP律师事务所开始abgefragt。死于美国时刻了解
 
 2）Prüfenob das KNX / LAN GW erreichbar ist。 Wenn es das nicht ist，Versucht der Adapter sich kontinuierlich zu verbinden。
 
-3）Physikalische Adresse richtigwählen（wichtig beim Einsatz von Linienkopplern）。 !!! ACHTUNG：导致地址物理地址变高的地址是NIC Gateway地址和LAN网关地址以及地址0结束！
+3）Physikalische Adresse richtigwählen（wichtig beim Einsatz von Linienkopplern）。 !!! ACHTUNG：导致地址物理地址变高的地址是NIC网关地址和地址分配地址0个数字！
 
 4）Der Port der LAN Schnittstelle ist i.d.R. 3671
 
-5）状态服务器的状态更新：40秒钟后，代理服务器将关闭，网关网关将重新连接。
+5）结束状态后的状态：结束语40，Anfragen pro Sekunde vom ioBroker生成器werden，dennsesekönnendann Physkalisch床上用品和适配器。
 
 ##计划中的功能
 *将地址添加到对象描述（id）

@@ -95,6 +95,9 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
+### 3.1.9 (2021-01-22)
+* (Apollon77) optimize stop handling (Sentry IOBROKER-SMARTMETER-10)
+
 ### 3.1.8 (2021-01-14)
 * (Apollon77) prevent last warnings with js-controller 3.2
 

@@ -239,40 +239,8 @@ When the adapter crashes or an other Code error happens, this error message that
     Placeholder for the next version (at the beginning of the line):
     ### __WORK IN PROGRESS__
 -->
-
-### 0.4.8-beta.0 (2021-01-18)
-* (Dutchman) Bugfix : Formatting of news
-* (Dutchman) Bugfix : delete states in create function
-* (Dutchman) Bugfix : Incorrect initialisation for states
-* (Dutchman) Bugfix : Avoid NULL & 0 values at night reset
-* (Dutchman) Bugfix : Incorrect initialisation for Watt values with 0 input
-* (Dutchman) Bugfix : Only create cumulatedXXX in year statistics if activated
-* (Dutchman) implement category cumulative values under year statistics
-
-### 0.4.8-alpha.15 (2021-01-16)
-* (Dutchman) Bugfix : Issue in array load at first calculation handling
-* (Dutchman) Bugfix : Do not cumulative value to object
-
-### 0.4.8-alpha.14 (2021-01-16)
-* (Dutchman) change default log-level to info
-* (Dutchman) Bugfix : quarters.1 has no existing object
-* (Dutchman) Bugfix : 05_currentYear has no existing object
-* (Dutchman) Bugfix : Caught sentry error : Alias xxxxx has no target
-* (Dutchman) Bugfix : Incorrect warn message if configuration for objects is changed
-
-### 0.4.8-alpha.13 (2021-01-15)
-* (Dutchman) Bugfix : Error {Is not a number, cannot continue calculation} if value =  0
-
 ## Changelog
-### 0.4.8-alpha.12 (2021-01-14)
-* (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
-* (Dutchman) Bugfix : Ensure a proper reset and init of Watt values
-
-### 0.4.8-alpha.10 (2021-01-14)
-* (Dutchman) Bugfix : Avoid loop if init value is set and > reading
-* (Dutchman) Bugfix : Throw error if value is NULL for troubleshooting instead of handling incorrect calculation
-
-### 0.4.8-alpha.9 (2021-01-13)
+### 0.4.8 (2021-01-20)
 #### Breaking changes
 * (Dutchman) Breaking!!! Move current values to currentYear [#135](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/135)
 * (Dutchman & ToTXR4Y) MajorChange !: Replaced **Current_Reading** with **CumulativeReading** [226](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/226)
@@ -283,11 +251,13 @@ When the adapter crashes or an other Code error happens, this error message that
 * (Dutchman) (debug) Logging improved
 * (Dutchman) Weekly reset of weekdays
 * (Dutchman) Calculation for all states
+* (Dutchman) change default log-level to info
 * (Dutchman) Calculation for previous states [#242](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/242)
 * (Dutchman) Optimized error reporting (Sentry)
 * (Dutchman) Removed unneeded settings in configuration
 * (Dutchman) Implemented new configuration for "currentYear"
 * (Dutchman & ToTXR4Y) implement "05_currentYear" in year root folder [#280](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/280)
+* (Dutchman) Implemented category cumulative values under year statistics
 * (Dutchman & ToTXR4Y) implement cached memory slot for initialisation value [#226](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/226)
 * (Dutchman & ToTXR4Y) Implement log messages if state attributes are changed
 * (Dutchman & ToTXR4Y) Implement automatically detection of currency from admin settings [#247](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/247)
@@ -295,14 +265,29 @@ When the adapter crashes or an other Code error happens, this error message that
 #### BugFixes
 * (Dutchman) Bugfix : dev: 0 bug workaround
 * (Dutchman) Do not round cumulated reading
-* (Dutchman) Bugfix : Calculations for "previous" values    
+* (Dutchman) Bugfix : delete states in create function
+* (Dutchman) Bugfix : quarters.1 has no existing object
+* (Dutchman) Bugfix : Calculations for "previous" values
+* (Dutchman) Bugfix : Incorrect initialisation for states
+* (Dutchman) Bugfix : Avoid NULL & 0 values at night reset
+* (Dutchman) Bugfix : 05_currentYear has no existing object
 * (Dutchman) Bugfix : Avoid calculation of non-Initialised states
 * (Dutchman) Bugfix : Cannot read property 'stateDetails' of null
 * (Dutchman) Correct error handling of "Watt" state initialisation
+* (Dutchman) Bugfix : Ensure a proper reset and init of Watt values
+* (Dutchman) Bugfix : Avoid loop if init value is set and > reading
+* (Dutchman) Bugfix : Caught sentry error : Alias xxxxx has no target
 * (Dutchman & ToTXR4Y) Bugfix : Rebuild calculation logic which solves :
   * Watt values : Ensure proper reading start (0 instead of current watt value)
     Watt values : Ensure proper reading calculation with exponent (0 instead of current watt value) [#281](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/281)
   * All calculations : correct handling  of device reset (if value is reset or 0)
+* (Dutchman) Bugfix : Incorrect initialisation for Watt values with 0 input
+* (Dutchman) Bugfix : Only create cumulatedXXX in year statistics if activated
+* (Dutchman) Bugfix : Incorrect warn message if configuration for objects is changed
+* (Dutchman) Bugfix : Error {Is not a number, cannot continue calculation} if value =  0
+* (Dutchman) Bugfix : Throw error if value is NULL for troubleshooting instead of handling incorrect calculation
+* (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
+
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry

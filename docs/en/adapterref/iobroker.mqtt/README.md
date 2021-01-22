@@ -807,6 +807,9 @@ Congratulations! Now you can control the system ioBroker and receive data via a 
 
 ## Changelog
 
+### 2.3.3 (2021-01-21)
+* (Apollon77) Catch errors when setting states (Sentry IOBROKER-MQTT-1D)
+
 ### 2.3.2 (2021-01-13)
 * (Apollon77) Check configured server port and reset to 1883 if invalid (Sentry IOBROKER-MQTT-1B)
 * (Apollon77) Catch error when server can not be started (Sentry IOBROKER-MQTT-1C)

@@ -3,23 +3,23 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: a5XMy2RH028ypMZGZZKBxBTRMvIjemVroqfyQHtWmQM=
+hash: vjCCXJTBzoNWfIuXlN+LgsLK7ydOnA6JPOKBBgmj4uA=
 ---
 ![Логотип](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.knx.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.knx.svg)
-![NPM](https://nodei.co/npm/iobroker.knx.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.knx.png?downloads=true)
 
 # IoBroker.knx
 ## Описание
-ru: Этот адаптер позволяет импортировать файлы knxproj из ETS. Он генерирует перевод между групповыми адресами KNX и ioBroker и помещает устройства в комнаты (особенно для MobileUI).
+ru: Этот адаптер позволяет импортировать файлы knxproj из ETS. Он генерирует преобразование между адресами группы KNX и ioBroker и помещает устройства в комнаты (особенно для MobileUI).
 
 Он подключается к стандартным шлюзам KNX / LAN.
 
 Перед началом: Каждый DPT com.Objects должен быть установлен в вашем проекте ETS. Каждое устройство должно быть рассортировано по структуре вашего объекта.
 
-## Характеристики:
+## Особенности:
 * импорт файла `knxproj`
 * создание ETS-подобной объектной структуры
 * поиск и объединение act-channel и state-channel (эвристика)
@@ -37,43 +37,43 @@ ru: Этот адаптер позволяет импортировать фай
 Обычно это порт 3671.
 
 ### Phys. Адрес ЕИБ
-Заполните бесплатно физ. адрес, соответствующий вашей архитектуре KNX, **НО НЕ такой, как у вашего шлюза KNX!**
+Заполните бесплатно физ. адрес, соответствующий вашей архитектуре KNX, **НО НЕ адрес вашего шлюза KNX!** не может заканчиваться на 0 !!!
 
 ### Уровень отладки
-Расширяет выходной уровень адаптера для целей отладки
+Расширяет выходной уровень адаптера для целей отладки.
 
 ### Загрузить knxproj
 здесь вы можете загрузить свой экспорт ETS в формате `knxproj`.
 
-После успешного импорта в диалоговом окне отображается номер импортированного объекта. Теперь нажмите «сохранить и закрыть», и адаптер должен запуститься.
-При запуске адаптер читает все groupAddresses с флагом чтения. Это может занять некоторое время и привести к высокой нагрузке на вашу шину KNX. Но значения в вашем vis обновляются после запуска.
+После успешного импорта в диалоговом окне отображается количество импортированных объектов. Теперь нажмите «сохранить и закрыть», и адаптер должен запуститься.
+При запуске адаптер читает все групповые адреса с флагом чтения. Это может занять некоторое время и привести к большой нагрузке на вашу шину KNX. Но значения в вашем vis обновляются после запуска.
 
 ### Объекты
 Вот под knx.0 дерево групповых адресов, как в вашем проекте ETS.
 
 ### Перечисления
-Если в вашем ETS есть строительная конструкция с соответствующими устройствами, она будет показана здесь. Под «членами» находятся имена групповых адресов, перечисленных для устройств с флагом отправки в этой группе.
+Если в вашей ETS есть строительная конструкция с соответствующими устройствами, она будет показана здесь. Под «членами» находятся имена групповых адресов, перечисленных для устройств с флагом отправки в этой группе.
 
-### Использование
+### Применение
 Если адаптер запускается успешно, ваши точки данных будут доступны для всего, что вы хотите делать.
 
 ### Типы точек данных
-Доступны все DPT в соответствии с "Системными спецификациями, взаимодействием, типами данных" от KNX Association. Это означает, что есть 2 типа информации, которую вы можете получить: 1) значение или строку 2) значения, разделенные запятыми, или массив значений (на данный момент я не знаю, как лучше обрабатывать)
+Доступны все DPT в соответствии с «Системными спецификациями, взаимодействием, типами данных» от KNX Association. Это означает, что есть 2 типа информации, которую вы можете получить: 1) значение или строку 2) значения, разделенные запятыми, или массив значений (на данный момент я не знаю, как лучше обрабатывать)
 
-Например, DPT5.001 кодируется как 8-битное целое число без знака. Это дает единственное значение. DPT3.007 (Control Dimming) кодируется как 1 бит (логическое значение) + 3 бит (беззнаковое целое число).
-Это приводит к f.e. в значении типа «0,5», где «0» означает «уменьшение», а «5» означает количество интервалов.
+Например, DPT5.001 кодируется как 8-битное целое без знака. Это дает единственное значение. DPT3.007 (Control Dimming) кодируется как 1 бит (логическое значение) + 3 бит (беззнаковое целое число).
+Это приводит, например, к в значении вроде «0,5», где «0» означает «уменьшение», а «5» означает количество интервалов.
 
 ## Wie werden die Datenpunkte generiert
-### 1) Auslesenaller Kommunikationsobjektreferenzen (im folgenden KOR)
-Dabei werden den Gruppenaddressreferenz (im folgenden GAR) ID's der jeweilige DPT der KOR zugeordnet, wenn er vorhanden ist. Ausserdem bekommt der erste Eintrag die Attribute write = yes und read = no. Alle darauf folgenden GAR ID's bekommen nur den DPT zugeordnet
+### 1) Auslesen Aller Kommunikationsobjektreferenzen (im folgenden KOR)
+Dabei werden den Gruppenaddressreferenz (im folgenden GAR) IDs der jeweilige DPT der KOR zugeordnet, wenn er vorhanden ist. Ausserdem bekommt der erste Eintrag die Attribute write = yes und read = no. Alle darauf folgenden GAR ID's bekommen nur den DPT zugeordnet
 
 ### 2) Erzeugen der Gruppenadressstruktur (im folgenden GAS)
-После того, как ГАЗ и ГАР ID's erzeugt и ebenfalls умирают, DPT умирает, падает до 1) noch nicht geschehen ist.
+Hier wird die GAS anhand der GAR IDs erzeugt und ebenfalls die DPTs zugeordnet, Fall dies unter 1) noch nicht geschehen ist.
 
 ### 3) Herausfinden der Schalt- und Statusaddressen
-In dem ETS Export sind die Schalt- und Statusadressen nicht hinterlegt. Somit führe ich eine Ähnlichkeitsprüfungaller Gruppenadressnamen durch mit der Auswertung auf status und state.
-Wird ein Pärchen gefunden, dessen Ähnlichkeit mehr als 90% beträgt, dann wird angenommen, das die GA1 die Schaltadresse und GA2 die Statusadresse ist. Dabei erhält GA1 das write = true und read = false и GA2 das write = false und read = true.
-Ausserdem werden die DPT abgeglichen aus der jeweilig korrespondierenden GA. Aus diesem Grund ist es schwierig, Pärchen zu finden, wenn die Gruppenadressbeschriftungen nicht konsistent sind.
+In dem ETS-Export sind die Schalt- und Statusadressen nicht hinterlegt. Somit führe ich eine Ähnlichkeitsprüfungaller Gruppenadressnamen durch mit der Auswertung auf status und state.
+Wird ein Pärchen gefunden, dessen Ähnlichkeit mehr als 90% beträgt, dann wird angenommen, dass die GA1 die Schaltadresse und GA2 die Statusadresse ist. Dabei erhält GA1 das write = true und read = false и GA2 das write = false und read = true.
+Außerdem werden die DPT abgeglichen aus der jeweilig korrespondierenden GA. Aus diesem Grund ist es schwierig, Pärchen zu finden, wenn die Gruppenadressbeschriftungen nicht konsistent sind.
 
 Weiterhin werden die Флаги in den Gerätekonfigurationen betrachtet. Dabei werden die Flags wie folgt umgesetzt:
 
@@ -86,13 +86,13 @@ Weiterhin werden die Флаги in den Gerätekonfigurationen betrachtet. Dabei 
 | - | - | х | х | - | der Wert wird über GroupValueResponse aktualisiert |
 | х | - | х | х | х | ein Trigger darauf löst GroupValueRead aus |
 
-### 4) Erzeugen der Datenpunktpaaren (im folgenden DPP)
-Ein DPP wird erzeugt, wenn die GA, GAR и DPT действительный синд. Mit diesen DPP arbeitet der Adapter. Фелен также умирает от DPT в einer GA, weil sie auf keiner der o. A. Wege gefunden werden konnte, so wird für diese GA kein DPP erzeugt und ist im Weiteren nicht nutzbar.
+### 4) Erzeugen der Datenpunktpaare (im folgenden DPP)
+Ein DPP wird erzeugt, wenn die GA, GAR und der DPT valid sind. Mit diesen DPP arbeitet der Adapter. Fehlen также der DPT in einer GA, weil er auf keiner der o. A. Wege gefunden werden konnte, so wird für diese GA kein DPP erzeugt und sie ist im Weiteren nicht nutzbar.
 
-Im Idealfall werden somit für einen Schaltkanal 2 DPP erzeugt. Das erste ist das Schalten. В этом случае GAR ID указывает на исходный статус DPP. Das zweite ist dann das Status DPP ohne weitere Refenrenz.
+Im Idealfall werden somit für einen Schaltkanal 2 DPP erzeugt. Das erste ist das Schalten. В этом случае GAR ID указывает на статус DPP hinterlegt. Das zweite ist dann das Status DPP ohne weitere Referenz.
 
 ## Beim Start des Adapters
-Alle mit dem Lesen-Flag markieren DPP werden beim Start abgefragt. Dies verursacht u.U. eine höhere Buslast und dauert einen Moment. Im Anschluss sind aber alle aktuellen Werte verfügbar.
+Alle mit dem Lesen-Flag markierten DPP werden beim Start abgefragt. Dies verursacht u.U. eine höhere Buslast und dauert einen Moment. Im Anschluss sind aber alle aktuellen Werte verfügbar.
 
 ## (скрытый) Характеристики:
 Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekte innerhalb dieser Gruppenadresse per GroupValueRead abgefragt.
@@ -100,7 +100,7 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 ### Vermeidung von Problemen
 1) соблюдать Программирование ETS и соблюдать Программирование ETS и соблюдать Программирование ETS
 
-* zuweisen der DPT's !!
+* zuweisen der DPTs !!
 * einheitliche Beschriftung der GA-Namen (z.B "EG Wohnen Decke Licht schalten" и "EG Wohnen Decke Licht schalten status")
 * Vermeidung von Sonderzeichen ",. /; \ &% $ § []" (kann zu Problemen bei der Erzeugung der GAS führen)
 
@@ -110,9 +110,9 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 
 4) Der Port der LAN Schnittstelle ist i.d.R. 3671
 
-5) Durch die Möglichkeit der Statusabfrage ist eines zu beachten: Es ist sicherzustellen das nicht mehr als 40 Anfragen pro Sekunde vom ioBroker genert werden, denn diese könniter dann Physikalisch Bedingt nicht mehr durch den Adaptor.
+5) Durch die Möglichkeit der Statusabfrage ist eines zu beachten: Es ist sicherzustellen, dass nicht mehr als 40 Anfragen pro Sekunde vom ioBroker genert werden, denn diese können dann Physikalisch Bedingt nicht détére détére dépété nicht de dérán de dérété nicht.
 
-## Строганные элементы
+## Запланированные функции
 * добавление адресов в описание объекта (id)
 * выборочный импорт knx-проекта
 * требуется версия узла> 8.9.4!

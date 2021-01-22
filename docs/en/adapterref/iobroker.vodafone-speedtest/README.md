@@ -10,13 +10,24 @@
 
 [![NPM](https://nodei.co/npm/iobroker.vodafone-speedtest.png?downloads=true)](https://nodei.co/npm/iobroker.vodafone-speedtest/)
 
+**This adapter uses the service [Sentry.io](https://sentry.io) to automatically report exceptions and code errors and new device schemas to me as the developer.** More details see below!
+
+
 ## vodafone-speedtest adapter for ioBroker
 
 Speedtest of Vodafone.de
 
 Implements same technique as https://speedtest.vodafone.de
 
+## What is Sentry.io and what is reported to the servers of that company?
+Sentry.io is a service for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
+
+When the adapter crashes or an other Code error happens, this error message that also appears in the ioBroker log is submitted to Sentry. When you allowed iobroker GmbH to collect diagnostic data then also your installation ID (this is just a unique ID **without** any additional infos about you, email, name or such) is included. This allows Sentry to group errors and show how many unique users are affected by such an error. All of this helps me to provide error free adapters that basically never crashs.
+
 ## Changelog
+
+### 0.0.6 (2021-01-21)
+* Added Sentry.io Integration
 
 ### 0.0.5 (2020-05-26)
 * Added ping results

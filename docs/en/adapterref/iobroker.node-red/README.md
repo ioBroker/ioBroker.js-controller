@@ -25,6 +25,8 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 -->
 
 ## Changelog
+### 2.0.4 (2021-01-20)
+* (withstu) Fixed node-red modules installation
 
 ### 2.0.3 (2020-12-27)
 * (Apollon77) make sure empty state values do not crash list node
@@ -255,7 +257,7 @@ This adapter uses the node-red server from https://github.com/node-red/node-red
 
 ## License
 
-Copyright 2014-2020 bluefox <dogafox@gmail.com>.
+Copyright 2014-2021 bluefox <dogafox@gmail.com>.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.

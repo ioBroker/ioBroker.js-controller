@@ -40,6 +40,14 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.8.7 (2021-01-21)
+* The scene ID of `Scene Activation CC` now gets reset automatically
+* Fixed an error that could occur while configuring associations
+* Fixed two potential sources of crashes
+* The values of the root endpoint of some legacy devices are now correctly updated
+* Added support for `Aeotec aerQ ZWA009-A` US/Canada/Mexico version
+* Fixed invalid parameter options in many config files
+
 ### 1.8.6 (2021-01-17)
 * Many, many changes... See https://github.com/zwave-js/node-zwave-js/blob/master/CHANGELOG.md#changelog for details
 
@@ -57,15 +65,6 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 * Fixed a bug where the wrong `Binary Sensor` types were requested. To fix this, affected devices must be re-interviewed
 * The retry strategy for sending commands to nodes has been revised. This should improve communication with devices that take long to respond.
 * Some event values like `Central Scene CC` scenes are now automatically cleared after 1 second.
-
-### 1.8.2 (2020-12-23)
-* When a node does not respond because it is asleep, the message is no longer discarded. This should improve the interview behavior of sleeping nodes.
-* Added new config files
-* Fixed wrong label and description for Z-Wave.Me UZB
-* Added missing label to Binary Sensor CC
-* Added missing % unit to Battery level
-* The `targetValue` for the `Binary Switch`, `Multilevel Switch` and `Basic` CCs is no longer removed when a report without one is received
-* Some more interview timeouts are ignored
 
 ## License
 

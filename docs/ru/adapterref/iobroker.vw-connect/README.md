@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vw-connect/README.md
 title: ioBroker.vw-connect
-hash: MxBql9oH6Q/4fvMw7OnoW6CSjrVpiNTsQfS4xL2aQ64=
+hash: a7aLEDyebBQGHGHW6hC+9bxmAWl8nZ1D6/SZX1szrCo=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vw-connect/admin/vw-connect.png)
 
@@ -16,13 +16,13 @@ hash: MxBql9oH6Q/4fvMw7OnoW6CSjrVpiNTsQfS4xL2aQ64=
 
 # IoBroker.vw-connect
 ## Адаптер vw-connect для ioBroker
-Адаптер для VW We Connect, We Connect ID, myAudi, Skoda Connect, Seat Connect и We Connect Go
+Адаптер для VW We Connect, We Connect ID, We Charge, myAudi, Skoda Connect, Seat Connect и We Connect Go
 
-Пожалуйста, обновите свою систему на узле 10.
+Пожалуйста, обновите вашу систему на узле 10.
 <https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten>
 
 ## Применение
-Используйте состояние под дистанционным управлением для удаленного управления автомобилем.
+Используйте состояние под дистанционным управлением для дистанционного управления автомобилем.
 
 ## Поля статуса Пояснение
 Состояния дверей и окон:
@@ -111,6 +111,14 @@ hash: MxBql9oH6Q/4fvMw7OnoW6CSjrVpiNTsQfS4xL2aQ64=
 ```
 
 ## Changelog
+
+### 0.0.25
+
+- add we charge 
+
+### 0.0.24
+
+- add remote state update
 
 ### 0.0.23
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.growatt/README.md
 title: ioBroker.growatt
-hash: c5Xjzht6mVy+sswSnlkxM0CkP6Hf9CsG1chBO67Eoto=
+hash: qqvE2OM/6oZMWmhSpifTAMEcDCczFUPaus8TIljn38Y=
 ---
 ![Logo](../../../en/adapterref/iobroker.growatt/admin/glogo.png)
 
@@ -19,13 +19,50 @@ hash: c5Xjzht6mVy+sswSnlkxM0CkP6Hf9CsG1chBO67Eoto=
 ioBroker Growatt Adapter zur Kommunikation mit Growatt Shine Server.
 Ich bin nicht verbunden.
 Normalerweise werden die Daten alle 5 Minuten vom Datenlogger an die Cloud gesendet.
+Sie können es ändern, siehe unten.
 Die Software fragt den Server alle 30 Sekunden ab, damit der Offset nicht zu groß ist.
 
 Nicht alle Anlagentypen sind implementiert.
 
 Derzeit können nur Daten gelesen werden, das Schreiben von Parametern oder das Ändern von Parametern ist nicht möglich.
 
-## Administrator Seite
+# Datenintervall beschleunigen
+## Sie können das Logger-Intervall zwischen 5 Minuten und 1 Minute einstellen
+Entfernen Sie den Gummistopfen der KEY-Taste von ShineWiFi-S und drücken Sie kurz die Taste im Inneren. Die blaue LED leuchtet auf. Verwenden Sie Ihr Telefon oder Ihren Computer, um eine Verbindung zum drahtlosen Netzwerk herzustellen, das vom ShineWiFi-S-Modul ausgegeben wird. Der Netzwerkname / die SSID ist die Seriennummer des ShineWiFi-S-Moduls.
+
+## Loginseite
+Öffnen Sie nach erfolgreichem Verbindungsaufbau den Webbrowser auf Ihrem Telefon oder Computer und geben Sie 192.168.10.100 in die Adressleiste ein. Der Benutzername lautet admin, das Standardkennwort lautet 12345678.
+![Loginseite](../../../en/adapterref/iobroker.growatt/docs/login.png)
+
+## Erweiterte Einstellungen
+Ändern Sie die Datenintervallzeit auf 1 Minute. ![Erweiterte Einstellungen](../../../en/adapterref/iobroker.growatt/docs/advancedsettings.png)
+
+## Systemneustart
+Starten Sie Ihr ShineWiFi-S-Modul auf dieser Seite neu. Klicken Sie auf "Sofort neu starten", um die soeben vorgenommenen neuen Einstellungen zu aktivieren und sich vom internen Webserver Ihres ShineWiFi-Moduls abzumelden.
+![Systemneustart](../../../en/adapterref/iobroker.growatt/docs/restart.png)
+
+** Die Diagramme auf der Growatt-Seite werden nicht geändert. Dort können Sie nur eine Änderung der Daten aus dem Datenlogger sehen. **
+
+# Deutsch - Beschleunigungsdatenintervall
+## Du kannst das Protokollierungsintervall von 5 Minuten auf 1 Minute Handlungen
+Den Gummi vor dem KEY Button des ShineWiFi-S entfernen und den Button kurz hören.
+Der ShineWiFi-S spielt nun kurz Hotspot (SSID = Seriennummer des ShineWiFi-S). Beim Netz mit einem Laptop oder dem Handy anmelden.
+
+## Einloggen
+als Webadresse http://192.168.10.100 in der Browser-Eingabe.
+Der Benutzername ist Admin und das Passwort 12345678 (sollte man gleich auch mal ändern, geht in System Management).
+![Loginseite](../../../en/adapterref/iobroker.growatt/docs/login.png)
+
+## Erweiterte Einstellungen
+Auf "Erweiterte Einstellungen" gehen und das Intervall ändern. (von 5 auf 1) ![Erweiterte Einstellungen](../../../en/adapterref/iobroker.growatt/docs/advancedsettings.png)
+
+## Systemneustart
+Auf System Neustart gehen und Button herzhaft, aber zukünftige Rechte.
+![Systemneustart](../../../en/adapterref/iobroker.growatt/docs/restart.png)
+
+** Es gibt keine Möglichkeit an den Diagrammen auf der Growatt-Seite, die bleibt bei 5min. Dort sehen Sie nur eine Frage der Daten im Datenlogger. **
+
+# Adapter-Administrationsseite
 ### Benutzer und Passwort
 Bitte geben Sie den Namen und das Passwort ein, die Sie auch in der Shine-App oder im Webportal verwenden.
 
@@ -35,14 +72,21 @@ Auf der Growatt-Website unter Energie, Anlagenmanagement, Betriebstools können 
 ### Anlagendaten lesen
 Dieser Datensatz enthält die gespeicherten Stammdaten
 
+### Letzte Verlaufsdaten lesen
+Liest den letzten Datensatz aus dem Verlauf des Datenloggers.
+Diese Funktion unterstützt Minutenintervalle für den Datenlogger.
+
 ### Statusdaten lesen
 Diese Daten sind nicht für alle Anlagen verfügbar (nicht INV / MAX / TLX). Dieser Datensatz enthält Live-Daten.
+Diese Funktion unterstützt Minutenintervalle für den Datenlogger.
 
 ### Letzte Daten des Diagramms lesen
-Diese Daten sind nur für Anlagen ohne Lesestatusdaten (INV / MAX / TLX) verfügbar. Es wird nach den letzten gültigen Daten für den Tag gesucht.
+** Veraltet: Wird bald entfernt ** Diese Daten sind nur für Anlagen ohne Lesestatusdaten (INV / MAX / TLX) verfügbar. Es wird nach den letzten gültigen Daten für den Tag gesucht.
+Minutenintervalle werden nicht unterstützt.
 
 ### Daten des Diagramms lesen
-Diese Daten sind nur für Anlagen ohne Lesestatusdaten verfügbar und erfordern gelesene letzte Daten der Tabelle (INV / MAX / TLX). Die Daten werden als JSON-Zeichenfolge geschrieben und gespeichert.
+** Veraltet: Wird bald entfernt ** Diese Daten sind nur für Anlagen ohne Lesestatusdaten verfügbar und erfordern die letzten gelesenen Daten der Tabelle (INV / MAX / TLX). Die Daten werden als JSON-Zeichenfolge geschrieben und gespeichert.
+Minutenintervalle werden nicht unterstützt.
 
 ### Gesamtdaten lesen
 Dieser Datensatz enthält Aggregationsdaten.
@@ -53,9 +97,16 @@ Dieser Datensatz enthält einige Daten vom Gerät. Einige Daten sind auch in den
 ### Wetter lesen
 Dieser Datensatz enthält die Wettervorhersage.
 
-ende
+-*-
 
 ## Changelog
+### 0.0.17 (21.01.2021)
+* (PLCHome) fixes a date issue on inverter history data.
+
+### 0.0.16 (20.01.2021)
+* (PLCHome) npm package version update
+* (PLCHome) add last history for all plants. Special thanks to magix for the key, so i can test the inverter history function.
+
 ### 0.0.15 (04.12.2020)
 * (PLCHome) npm package version update
 
@@ -93,10 +144,13 @@ ende
 ### 0.0.1
 * (PLCHome) initial release.
 
+
+-*-
+
 ## License
 MIT License
 
-Copyright (c) 2020 PLCHome <https://github.com/PLCHome>
+Copyright (c) 2021 PLCHome <https://github.com/PLCHome>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

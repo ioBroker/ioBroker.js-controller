@@ -124,6 +124,10 @@ Unter *Objekte* wird nun das Gateway und seine angelernten Geräte angezeigt:
 Die Anleitung wurde nach besten Wissen und Gewissen erstellt.
 
 ## Changelog
+
+### 1.3.7 (2021-01-22)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-MIHOME-A)
+
 ### 1.3.6 (2020-09-25)
 * (VLGorskij) Added new device QBKG24LM
 

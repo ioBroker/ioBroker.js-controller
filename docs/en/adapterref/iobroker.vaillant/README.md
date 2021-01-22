@@ -21,6 +21,9 @@ Change objects in the folders configuration. Some configuration will only work w
 
 ## Changelog
 
+### 0.0.11
+
+-   fix issue with js-controller 3.2
 ### 0.0.10
 
 -   fix issue with js-controller 3

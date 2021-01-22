@@ -182,6 +182,9 @@ https://github.com/elParaguayo/LMS-CLI-Documentation/blob/master/LMS-CLI.md
 * ~~autodiscover logitech media server~~
 
 ## Changelog
+
+### 1.3.0
+* fix problem wit setting own icon in player widget / * add infos about alarms to a player datapoint
 ### 1.2.1
 * fix small issue in last version
 ### 1.2.0

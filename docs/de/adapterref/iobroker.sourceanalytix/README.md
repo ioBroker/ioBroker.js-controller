@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
+hash: LsdLv+thJpq7Wp2JfE8oOVuq8y3/0IuAV6u17f39qBo=
 ---
 # SourceAnalytix
 
@@ -88,7 +88,7 @@ Diese Informationen werden normalerweise für die tägliche / wöchentliche / mo
 | Lieferung | Berechnungen Ergebnis des Berechnungswertes als Lieferung - Startwert<br/> von Jahr / Monat / Quartal usw. |
 
 ### Fehlerbehebung
-Bevor wir mit der Fehlerbehebung beginnen, ist es wichtig zu verstehen, wie Source Analytix initialisiert wird, da hier Fehler auftreten können, siehe Abschnitt "Probleme".
+Bevor wir mit der Fehlerbehebung beginnen, ist es wichtig zu verstehen, wie Source Analytix initialisiert wird, da hier Fehler auftreten können (siehe Abschnitt "Probleme").
 Die folgende Sequenz wird behandelt:
 
 1) SourceAnalytix starten 2) Alle für SourceAnalytix aktivierten Zustände auflisten 3) Zustände für jeden Zustand einleiten:
@@ -114,7 +114,7 @@ Die folgende Sequenz wird behandelt:
 
     * Überprüfen Sie, ob die Informationen korrekt sind
     * Wert in richtige Einheit umwandeln (Zustandseinheit in Einheit, die in der Zustandskonfiguration ausgewählt wurde)
-  * Überprüfen Sie, ob die Werteingabe korrekt ist (aktueller Wert **** VorherigerInit-Wert) {Siehe **7 Beim Zurücksetzen des Geräts** Ausgabe 8}
+  * Überprüfen Sie, ob die Werteingabe korrekt ist (aktueller Wert **** vorherigerInit-Wert) {Siehe **7 Beim Zurücksetzen des Geräts** Ausgabe 8}
     * Berechne {Ausgabe 9}
       * Für Watt: Berechnen Sie Watt in kWh, berechnen Sie cumulatedReading = currentReading + cumulatedReading
       * Für andere: berechne cumulatedReading = currentReading + previousDeviceReset (falls vorhanden)
@@ -130,7 +130,7 @@ Die folgende Sequenz wird behandelt:
 
 Wenn das Gerät erneut zurückgesetzt wird (erkannt durch den Wert von previousInit), wird </ br> currentReading + previousDeviceReset wie bei previousDeviceReset gespeichert.
 
-** Problem 1 ** Keine Einheit definiert für ....., kann keine Berechnungen ausführen </ br> Bitte wählen Sie die richtige Einheit in den Statuseinstellungen aus
+** Problem 1 ** Keine Einheit definiert für ....., kann keine Berechnungen ausführen </ br> Bitte wählen Sie in den Statuseinstellungen die richtige Einheit aus
 
 ** Problem 2 ** Kein Kostentyp definiert für ....., bitte Wählen Sie den Berechnungstyp bei der Statuseinstellung aus. </ Br> Bitte wählen Sie den gewünschten Kostentyp aus, um zu verstehen, welcher Betrag für die Berechnung verwendet werden soll
 
@@ -146,7 +146,7 @@ Wenn das Gerät erneut zurückgesetzt wird (erkannt durch den Wert von previousI
 
 ** Problem 6 ** Status für kumulatives Lesen wird nicht erstellt </ br> Die Initialisierung des Status ist fehlgeschlagen, siehe Problem 1 bis 5
 
-** Ausgabe 7 ** Zustände für Kostenablesungen wurden nicht erstellt </ br> Die Art der Berechnung ist in den Zustandseinstellungen nicht aktiviert. ![Haupteinstellungen](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/stateSettings.png)
+** Ausgabe 7 ** Zustände für Kostenablesungen sind nicht erstellt </ br> Die Art der Berechnung ist in den Zustandseinstellungen nicht aktiviert. ![Haupteinstellungen](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/stateSettings.png)
 
 ### Preisdefinitionen ![Haupteinstellungen](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/priceSettings.png)
 ** Problem 8 **aktueller Wert** <** previousInit </ br> Ein Geräte-Reset wurde erkannt, siehe Funktion 7
@@ -209,39 +209,9 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 <! - Platzhalter für die nächste Version (am Zeilenanfang):
 
 ### __WORK IN PROGRESS__ ->
-### 0.4.8-beta.0 (2021-01-18)
-* (Holländer) Bugfix: Formatierung von Nachrichten
-* (Holländer) Bugfix: Löscht Zustände in der Erstellungsfunktion
-* (Holländer) Bugfix: Falsche Initialisierung für Staaten
-* (Holländer) Bugfix: Vermeiden Sie NULL & 0-Werte beim nächtlichen Zurücksetzen
-* (Holländer) Bugfix: Falsche Initialisierung für Wattwerte mit 0 Eingabe
-* (Holländer) Bugfix: Erstelle nur kumuliertes XXX in der Jahresstatistik, wenn aktiviert
-* (Niederländer) implementieren kumulative Werte der Kategorie in der Jahresstatistik
-
-### 0.4.8-alpha.15 (2021-01-16)
-* (Holländer) Bugfix: Problem beim Laden des Arrays bei der ersten Berechnungsbehandlung
-* (Holländer) Bugfix: Kumulativer Wert für das Objekt
-
-### 0.4.8-alpha.14 (2021-01-16)
-* (Holländer) Ändern Sie die Standardprotokollstufe in "Info"
-* (Holländer) Bugfix: Vierteln.1 hat kein vorhandenes Objekt
-* (Holländer) Bugfix: 05_currentYear hat kein vorhandenes Objekt
-* (Holländer) Bugfix: Wachpostenfehler: Alias xxxxx hat kein Ziel
-* (Holländer) Bugfix: Falsche Warnmeldung, wenn die Konfiguration für Objekte geändert wird
-
-### 0.4.8-alpha.13 (2021-01-15)
-* (Holländer) Bugfix: Fehler {Ist keine Zahl, kann Berechnung nicht fortsetzen} wenn Wert = 0
 
 ## Changelog
-### 0.4.8-alpha.12 (2021-01-14)
-* (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
-* (Dutchman) Bugfix : Ensure a proper reset and init of Watt values
-
-### 0.4.8-alpha.10 (2021-01-14)
-* (Dutchman) Bugfix : Avoid loop if init value is set and > reading
-* (Dutchman) Bugfix : Throw error if value is NULL for troubleshooting instead of handling incorrect calculation
-
-### 0.4.8-alpha.9 (2021-01-13)
+### 0.4.8 (2021-01-20)
 #### Breaking changes
 * (Dutchman) Breaking!!! Move current values to currentYear [#135](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/135)
 * (Dutchman & ToTXR4Y) MajorChange !: Replaced **Current_Reading** with **CumulativeReading** [226](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/226)
@@ -252,11 +222,13 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 * (Dutchman) (debug) Logging improved
 * (Dutchman) Weekly reset of weekdays
 * (Dutchman) Calculation for all states
+* (Dutchman) change default log-level to info
 * (Dutchman) Calculation for previous states [#242](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/242)
 * (Dutchman) Optimized error reporting (Sentry)
 * (Dutchman) Removed unneeded settings in configuration
 * (Dutchman) Implemented new configuration for "currentYear"
 * (Dutchman & ToTXR4Y) implement "05_currentYear" in year root folder [#280](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/280)
+* (Dutchman) Implemented category cumulative values under year statistics
 * (Dutchman & ToTXR4Y) implement cached memory slot for initialisation value [#226](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/226)
 * (Dutchman & ToTXR4Y) Implement log messages if state attributes are changed
 * (Dutchman & ToTXR4Y) Implement automatically detection of currency from admin settings [#247](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/247)
@@ -264,14 +236,29 @@ Wenn der Adapter abstürzt oder ein anderer Codefehler auftritt, wird diese Fehl
 #### BugFixes
 * (Dutchman) Bugfix : dev: 0 bug workaround
 * (Dutchman) Do not round cumulated reading
-* (Dutchman) Bugfix : Calculations for "previous" values    
+* (Dutchman) Bugfix : delete states in create function
+* (Dutchman) Bugfix : quarters.1 has no existing object
+* (Dutchman) Bugfix : Calculations for "previous" values
+* (Dutchman) Bugfix : Incorrect initialisation for states
+* (Dutchman) Bugfix : Avoid NULL & 0 values at night reset
+* (Dutchman) Bugfix : 05_currentYear has no existing object
 * (Dutchman) Bugfix : Avoid calculation of non-Initialised states
 * (Dutchman) Bugfix : Cannot read property 'stateDetails' of null
 * (Dutchman) Correct error handling of "Watt" state initialisation
+* (Dutchman) Bugfix : Ensure a proper reset and init of Watt values
+* (Dutchman) Bugfix : Avoid loop if init value is set and > reading
+* (Dutchman) Bugfix : Caught sentry error : Alias xxxxx has no target
 * (Dutchman & ToTXR4Y) Bugfix : Rebuild calculation logic which solves :
   * Watt values : Ensure proper reading start (0 instead of current watt value)
     Watt values : Ensure proper reading calculation with exponent (0 instead of current watt value) [#281](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/281)
   * All calculations : correct handling  of device reset (if value is reset or 0)
+* (Dutchman) Bugfix : Incorrect initialisation for Watt values with 0 input
+* (Dutchman) Bugfix : Only create cumulatedXXX in year statistics if activated
+* (Dutchman) Bugfix : Incorrect warn message if configuration for objects is changed
+* (Dutchman) Bugfix : Error {Is not a number, cannot continue calculation} if value =  0
+* (Dutchman) Bugfix : Throw error if value is NULL for troubleshooting instead of handling incorrect calculation
+* (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
+
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry

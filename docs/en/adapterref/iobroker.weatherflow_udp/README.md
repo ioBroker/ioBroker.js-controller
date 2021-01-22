@@ -59,6 +59,8 @@ Further, the adapter provides a selection of useful minimum and maximum values o
 The protocol sends a lightning distance of 0 when no lightning was detected. Values of 0 are modified to 999 to avoid the impression that lightning strikes are directly overhead.
 
 ## Changelog
+### 0.0.15
+(womi) only update min/max values if value has changed
 ### 0.0.14
 (womi) Corrected wind chill calculation in feels like temperature calculation
 ### 0.0.13

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sourceanalytix/README.md
 title: SourceAnalytix
-hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
+hash: LsdLv+thJpq7Wp2JfE8oOVuq8y3/0IuAV6u17f39qBo=
 ---
 ![NPM版本](http://img.shields.io/npm/v/iobroker.sourceanalytix.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.sourceanalytix.svg)
@@ -133,13 +133,13 @@ hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
 
 **问题2 **尚未为.....定义成本类型，请在状态设置中选择计算类型</br>。请选择所需的成本类型，以了解应使用多少金额进行计算
 
-**问题3 **所选类型...在价格定义中不存在</br> </br>现在，已找到所选成本类型的价格定义，请验证您的价格设置（自适应配置）
+**问题3 **所选类型...在价格定义中不存在</br>现在，已找到所选成本类型的价格定义，请验证您的价格设置（自适应配置）
 
 **问题4 ** .....已知的初始值：.....>已知的累积值.....无法继续</br>已知的初始值>已知的累积值，可以通过在状态原始对象中删除或修改这些对象来解决
 
 ```"valueAtDeviceInit": xxxx```
 
-**问题5 ** .....已知valueAtDeviceReset：.....>已知累积值.....无法进行处理</br>已知init值>已知累积值，可以解决</br>删除或修改状态原始对象中的这些对象
+**问题5 ** .....已知valueAtDeviceReset：.....>已知累积值.....无法处理</br>已知init值>已知累积值，可以解决</br>在状态原始对象中删除或修改这些对象
 
 ```valueAtDeviceReset": xxxx```
 
@@ -208,39 +208,9 @@ Sentry.io是一项服务，供开发人员从其应用程序中获取有关错�
 <！-下一个版本的占位符（在该行的开头）：
 
 ### __正在进行的工程__->
-### 0.4.8-beta.0（2021-01-18）
-*（荷兰人）错误修正：新闻格式
-*（荷兰人）错误修正：在创建函数中删除状态
-*（荷兰人）错误修正：状态初始化不正确
-*（荷兰人）错误修正：避免在夜间重置时出现NULL＆0值
-*（荷兰人）错误修正：输入0瓦特值初始化不正确
-*（荷兰人）错误修正：如果激活，仅在年份统计信息中创建cumulatedXXX
-*（荷兰人）在年度统计数据中实施类别累计值
-
-### 0.4.8-alpha.15（2021-01-16）
-*（荷兰人）错误修正：第一次计算处理时数组加载出现问题
-*（荷兰人）错误修正：不累积对象价值
-
-### 0.4.8-alpha.14（2021-01-16）
-*（荷兰人）将默认日志级别更改为info
-*（荷兰人）错误修正：quarters.1没有现有对象
-*（荷兰人）错误修正：05_currentYear没有现有对象
-*（荷兰人）错误修正：抓到哨兵错误：别名xxxxx没有目标
-*（荷兰人）错误修正：如果更改了对象的配置，则警告消息不正确
-
-### 0.4.8-alpha.13（2021-01-15）
-*（荷兰人）修正：错误：{不是数字，无法继续计算}，如果value = 0
 
 ## Changelog
-### 0.4.8-alpha.12 (2021-01-14)
-* (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
-* (Dutchman) Bugfix : Ensure a proper reset and init of Watt values
-
-### 0.4.8-alpha.10 (2021-01-14)
-* (Dutchman) Bugfix : Avoid loop if init value is set and > reading
-* (Dutchman) Bugfix : Throw error if value is NULL for troubleshooting instead of handling incorrect calculation
-
-### 0.4.8-alpha.9 (2021-01-13)
+### 0.4.8 (2021-01-20)
 #### Breaking changes
 * (Dutchman) Breaking!!! Move current values to currentYear [#135](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/135)
 * (Dutchman & ToTXR4Y) MajorChange !: Replaced **Current_Reading** with **CumulativeReading** [226](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/226)
@@ -251,11 +221,13 @@ Sentry.io是一项服务，供开发人员从其应用程序中获取有关错�
 * (Dutchman) (debug) Logging improved
 * (Dutchman) Weekly reset of weekdays
 * (Dutchman) Calculation for all states
+* (Dutchman) change default log-level to info
 * (Dutchman) Calculation for previous states [#242](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/242)
 * (Dutchman) Optimized error reporting (Sentry)
 * (Dutchman) Removed unneeded settings in configuration
 * (Dutchman) Implemented new configuration for "currentYear"
 * (Dutchman & ToTXR4Y) implement "05_currentYear" in year root folder [#280](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/280)
+* (Dutchman) Implemented category cumulative values under year statistics
 * (Dutchman & ToTXR4Y) implement cached memory slot for initialisation value [#226](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/226)
 * (Dutchman & ToTXR4Y) Implement log messages if state attributes are changed
 * (Dutchman & ToTXR4Y) Implement automatically detection of currency from admin settings [#247](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/247)
@@ -263,14 +235,29 @@ Sentry.io是一项服务，供开发人员从其应用程序中获取有关错�
 #### BugFixes
 * (Dutchman) Bugfix : dev: 0 bug workaround
 * (Dutchman) Do not round cumulated reading
-* (Dutchman) Bugfix : Calculations for "previous" values    
+* (Dutchman) Bugfix : delete states in create function
+* (Dutchman) Bugfix : quarters.1 has no existing object
+* (Dutchman) Bugfix : Calculations for "previous" values
+* (Dutchman) Bugfix : Incorrect initialisation for states
+* (Dutchman) Bugfix : Avoid NULL & 0 values at night reset
+* (Dutchman) Bugfix : 05_currentYear has no existing object
 * (Dutchman) Bugfix : Avoid calculation of non-Initialised states
 * (Dutchman) Bugfix : Cannot read property 'stateDetails' of null
 * (Dutchman) Correct error handling of "Watt" state initialisation
+* (Dutchman) Bugfix : Ensure a proper reset and init of Watt values
+* (Dutchman) Bugfix : Avoid loop if init value is set and > reading
+* (Dutchman) Bugfix : Caught sentry error : Alias xxxxx has no target
 * (Dutchman & ToTXR4Y) Bugfix : Rebuild calculation logic which solves :
   * Watt values : Ensure proper reading start (0 instead of current watt value)
     Watt values : Ensure proper reading calculation with exponent (0 instead of current watt value) [#281](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/281)
   * All calculations : correct handling  of device reset (if value is reset or 0)
+* (Dutchman) Bugfix : Incorrect initialisation for Watt values with 0 input
+* (Dutchman) Bugfix : Only create cumulatedXXX in year statistics if activated
+* (Dutchman) Bugfix : Incorrect warn message if configuration for objects is changed
+* (Dutchman) Bugfix : Error {Is not a number, cannot continue calculation} if value =  0
+* (Dutchman) Bugfix : Throw error if value is NULL for troubleshooting instead of handling incorrect calculation
+* (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
+
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry

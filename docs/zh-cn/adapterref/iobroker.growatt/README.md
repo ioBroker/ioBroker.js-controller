@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.growatt/README.md
 title: ioBroker.growatt
-hash: c5Xjzht6mVy+sswSnlkxM0CkP6Hf9CsG1chBO67Eoto=
+hash: qqvE2OM/6oZMWmhSpifTAMEcDCczFUPaus8TIljn38Y=
 ---
 ![商标](../../../en/adapterref/iobroker.growatt/admin/glogo.png)
 
@@ -19,30 +19,74 @@ hash: c5Xjzht6mVy+sswSnlkxM0CkP6Hf9CsG1chBO67Eoto=
 ioBroker Growatt适配器可与Growatt Shine Server通信。
 我没有关系。
 通常，每5分钟将数据从数据记录器发送到云端。
+您可以更改它，请参见下文。
 该软件每30秒查询一次服务器，以使偏移量不会太大。
 
 并非所有工厂类型都已实现。
 
 当前只能读取数据，无法写入参数或更改参数。
 
-##管理页面
+＃加速数据间隔
+##您可以将记录器间隔设置为5分钟到1分钟
+从ShineWiFi-S上卸下KEY按钮的橡胶塞，然后短按内部的按钮。蓝色LED将点亮。使用手机或计算机连接到ShineWiFi-S模块发出的无线网络。网络名称/ SSID是ShineWiFi-S模块的序列号。
+
+##登录页面
+成功建立连接后，打开手机或计算机上的Web浏览器，然后在地址栏中键入192.168.10.100。用户名是admin，默认密码是12345678。
+![登录页面](../../../en/adapterref/iobroker.growatt/docs/login.png)
+
+＃＃ 高级设置
+将数据间隔时间更改为1分钟![高级设置](../../../en/adapterref/iobroker.growatt/docs/advancedsettings.png)
+
+##系统重启
+在此页面上重新启动ShineWiFi-S模块，单击“立即重新启动”以启用您刚进行的新设置，并从ShineWiFi模块的内部网络服务器注销。
+![系统重启](../../../en/adapterref/iobroker.growatt/docs/restart.png)
+
+** Growatt端的图表没有变化。在那里，您只能看到数据记录器中数据的变化。**
+
+＃德语-加速数据间隔
+## Du kannst das Protokollierungsintervall von 5 Minuten auf 1分钟einstellen
+密码键和WiFi的激活，以及按键按钮。
+Der ShineWiFi-S特立尼姑库尔兹热点（SSID = Seriennummer des ShineWiFi-S）。 Beim Netz mit einem便携式计算机。
+
+## Einloggen
+ALS Webadresse http://192.168.10.100（位于浏览器eingeben中）。
+Der用户名ist Admin和das Passwort 12345678（系统管理中的高级人）。
+![登录页面](../../../en/adapterref/iobroker.growatt/docs/login.png)
+
+＃＃ 高级设置
+Auf“高级设置”显示间隔时间。 （von 5 auf 1）![高级设置](../../../en/adapterref/iobroker.growatt/docs/advancedsettings.png)
+
+##系统重启
+Auf System重新启动gehen und Button herzhaft，aber vorsichtig Klicken。
+![系统重启](../../../en/adapterref/iobroker.growatt/docs/restart.png)
+
+** Es gibt keineÄnderungand den Diagrammen在Growatt-Seite之后，于5分钟后关闭。 Datenlogger中的Dort sehen Sie nur eineÄnderungder。**
+
+＃适配器管理页面
 ###用户和密码
 请输入您在Shine应用程序或Web门户中也使用的名称和密码。
 
 ###使用共享密钥登录
-在Growatt网站上的能源，工厂管理，操作工具下，您可以通过电子邮件向自己发送密钥。
+在Growatt网站上的能源，工厂管理和操作工具下，您可以通过电子邮件向自己发送密钥。
 
 ###读取工厂数据
 该数据记录包含存储的主数据
 
+###读取最后的历史数据
+从数据记录器的历史记录中读取最后一条数据记录。
+此功能支持数据记录器的分钟间隔。
+
 ###读取状态数据
 这些数据不适用于所有工厂（不是INV / MAX / TLX）。该数据集包含实时数据。
+此功能支持数据记录器的分钟间隔。
 
 ###读取图表的最后数据
-这些数据仅适用于没有读取状态数据（INV / MAX / TLX）的工厂。搜索当天的最后有效数据。
+**不推荐使用：将很快删除**这些数据仅适用于没有读取状态数据（INV / MAX / TLX）的工厂。搜索当天的最后有效数据。
+不支持分钟间隔。
 
 ###读取图表数据
-这些数据仅适用于没有读取状态数据的工厂，并且需要读取图表的最后数据（INV / MAX / TLX）。数据被写入并存储为JSON字符串。
+**不推荐使用：将很快删除**这些数据仅适用于没有读取状态数据的工厂，并且需要读取图表的最后数据（INV / MAX / TLX）。数据被写入并存储为JSON字符串。
+不支持分钟间隔。
 
 ###读取总数据
 该数据记录包含聚合数据。
@@ -53,9 +97,16 @@ ioBroker Growatt适配器可与Growatt Shine Server通信。
 ###阅读天气
 该数据集包含天气预报。
 
-恩德
+-*-
 
 ## Changelog
+### 0.0.17 (21.01.2021)
+* (PLCHome) fixes a date issue on inverter history data.
+
+### 0.0.16 (20.01.2021)
+* (PLCHome) npm package version update
+* (PLCHome) add last history for all plants. Special thanks to magix for the key, so i can test the inverter history function.
+
 ### 0.0.15 (04.12.2020)
 * (PLCHome) npm package version update
 
@@ -93,10 +144,13 @@ ioBroker Growatt适配器可与Growatt Shine Server通信。
 ### 0.0.1
 * (PLCHome) initial release.
 
+
+-*-
+
 ## License
 MIT License
 
-Copyright (c) 2020 PLCHome <https://github.com/PLCHome>
+Copyright (c) 2021 PLCHome <https://github.com/PLCHome>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: c1Hq6MWy+zvgtvzQZcXb97Tn6IX05fho5XS9FSJ3dhk=
+hash: fm28Ts6Wnr157PcexHJkCVKx2HzM7IVod3RSF2m6wSo=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -112,7 +112,7 @@ hash: c1Hq6MWy+zvgtvzQZcXb97Tn6IX05fho5XS9FSJ3dhk=
     *``<viewID>``的格式必须类似于``iqontrol。<instance-number> .Views。<view-name>``
 *注意：这是区分大小写的！
 *要在加载页面时打开指定的对话框，可以添加“ openDialog = <deviceID>”作为URL参数
-    *``<deviceID>``的格式必须类似于``iqontrol。<instance-number> .Views。<view-name> .devices。<device-number>``其中``<device-number>``从0开始（因此视图中的第一个设备是设备号0）
+    *``<deviceID>''的格式必须类似于``iqontrol。<instance-number> .Views。<view-name> .devices。<device-number>``，其中``<device-number>``从0开始（因此视图中的第一个设备是设备号0）
 *注意：这是区分大小写的！
 *要设置或覆盖时间设置后的返回值，请使用以下参数：
 *``returnAfterTimeTreshold =<time in seconds> ``设置时间，之后将调用目标视图。使用``0&#39;&#39;禁用定时返回功能。
@@ -408,7 +408,7 @@ hash: c1Hq6MWy+zvgtvzQZcXb97Tn6IX05fho5XS9FSJ3dhk=
 *'widget-urlparameters'
 *语法：`` <meta name="widget-urlparameters" content="parameter/default value/description/type;parameter2/default value2/description2/type2"/> ``
 *选择小部件作为URL或Background_URL或自动创建小部件时，系统将要求用户提供这些参数
-* type是可选的，可以是text（这是dafault），number，checkbox，color，select或multipleSelect` `
+*``type''是可选的，可以是``text''（这是dafault），``number''，``checkbox''，``color''，``select''，``multipleSelect` `或``historyInstance''
 *如果类型是``select''或``multipleSelect``，那么您需要通过添加``/ <selectOptions>''来指定可能的选项，其中``<selectOptions>''是格式为``的字符串<值1>，<标题1> / <值2>，<标题2> / ...''
 *如果类型是数字，则可以通过添加/ <numberOptions>来指定最小，最大和步长，其中，<numberOptions>是格式为<min>的字符串， <max>，<step>``
 *所有这些参数都将通过url-parameter-string（例如widget.html？parameter = value＆parameter2 = value2``）提供给小部件网站。
@@ -994,7 +994,7 @@ hash: c1Hq6MWy+zvgtvzQZcXb97Tn6IX05fho5XS9FSJ3dhk=
     *行为可以在选项的“常规”部分中反转（使用已连接而不是未连接）
 * **ENLARGE_TILE** *布尔值*-为true时，图块将设置为放大。您可以通过单击放大/缩小按钮将其覆盖。但是，每当ENLARGE_TILE的状态更改时，它将再次接管对图块放大状态的控制。如果ENLARGE_TILE的角色是* button *，则每次状态更改都会切换放大状态
 * **BADGE** *数字*或*字符串*-如果存在非零/ false的值，则在此值的左上角会显示一个徽章
-  * ** BADGE_COLOR *：* string *-代表徽章颜色的任何有效的html-color-string（例如'green'，'＃00FF00'，'rgba（0,255,0,0.5）等）。如果不存在或将使用无效的红色。
+  * ** BADGE_COLOR *：* string *-代表徽章颜色的任何有效的html-color-string（例如'green'，'＃00FF00'，'rgba（0,255,0,0.5）等）。如果不存在或将使用透明度为50％的无效红色。
 
 ###链接到其他视图：
 *没有其他状态
@@ -1033,13 +1033,15 @@ hash: c1Hq6MWy+zvgtvzQZcXb97Tn6IX05fho5XS9FSJ3dhk=
     * **RGBW** / **RGBW** 您可以使用RGBW格式（十六进制），而不是使用HUE，SATURATION，COLOR_BRIGHTNESS和WHITE_BRIGHTNESS，可将其与前导'＃'结合使用
     * **RGBWWCW** / **RGBWWCW** / **RGBCWWW** / **RGBCWWW** 您可以使用RGBWWCW-或RGBCWWW-Format（十六进制）来代替HUE，SATURATION，COLOR_BRIGHTNESS，CT和WHITE_BRIGHTNESS ，WW =暖白，CW =冷白），可选，以“＃”开头
     * **RGB（仅色相）** /** RGB（仅色相）**：可以使用RGB（仅色相）格式（十六进制）替代使用HUE，并以“＃”开头。在这种特殊情况下，RGB格式将仅接受色相色圆圈的纯饱和色。不允许混合白色
-    * ** Milight的色相**：这是Milight设备的色相值，在色相色域中使用另一个起点：
+    * ** Milight的色相**：这是Milight-Devices（v5）的Hue值，在色相color-cirlce中使用另一个起点：
 
 ````
 tHue = modulo(66 - (hue / 3.60), 100) * 2.55;
 modulo(-3.60 * (MilightHue/2.55 - 66), 360);
 on modulo(n, m){ return ((n % m) + m) %m; }
 ````
+
+        * **适用于Tuya的HHSSBB **：12位十六进制长字符串，代表色相（HH = 0000-016d [0-365]），饱和度（SS = 0000-03e8 [0-1000]）和色亮度（BB = 0000-03e8 [0-1000]）
 
 切记：转换到替代色彩空间是由前端完成的，因此只有在打开了iQontrol的情况下，它才处于活动状态。因此，您不能将其用作色彩空间的转换器。为避免对话循环，建议您要么使用原始色彩空间数据点（HUE，SATURATION，COLOR_BRIGHTNESS，CT，WHITE_BRIGHTNESS），要么使用替代色彩空间数据点来“替换”这些数据点。
 
@@ -1153,7 +1155,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **TRACK_NUMBER** *数字*-自我说明
 * **PREV，REWIND，PLAY，PAUSE，STOP，FORWARD，NEXT** *布尔值*-如果按下相应的按钮，则设置为true
 * **SHUFFLE，MUTE，PLAY_EVERYWHERE，EJECT，POWER_SWITCH** *boolean* 相应功能的状态
-* **REPEAT** *布尔值*-重复功能的状态或* string *-可以通过相应的选项定义3种状态：off的值，all-all和repeat-one的值
+* **REPEAT** *布尔值*-表示重复功能的状态或* string *-可以通过相应的选项定义3种状态：off值，all-all和repeat-one的值
 * **DURATION，ELAPSED** *数字*-实际标题的持续时间和经过的时间-用于显示搜索栏
 * **VOLUME** *数字*-用于音量滑块
 * **源，播放列表**：*值列表*-显示选择菜单以从播放列表中选择来源或标题
@@ -1209,10 +1211,16 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 ## Changelog
 
-### 1.5.6 dev
+### 1.5.6 (2021-01-21)
 * (sbormann) Fixed toolbar hiding issue if popup with additional controls is closed early.
 * (sbormann) Fixed ALTERNATIVE_COLORSPACE only working after opening the view a second time.
 * (sbormann) Added badge.
+* (sbormann) Added predefined wallpapers to dropdown for devices background images.
+* (sbormann) Redesigned dropdown for toolbar-icons to show thumbnails and added ability to add custom icons.
+* (sbormann) Added option to show toolbar in one singe line.
+* (sbormann) Added HHSSBB for Tuya to ALTERNATIVE_COLORSPACEs.
+* (sbormann) Added historyInstance to options of FLOT-Chart-Widget.
+* (sbormann) Fixed changing commonRole breaks symbolic links.
 
 ### 1.5.5 (2021-01-07)
 * (sbormann) Added optional headings to ADDITIONAL_CONTROLS, the appereance can be controlled by an option.

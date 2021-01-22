@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: xCtvm1zWc3bAV4ojpuhej65d/KtQPOCgIAP6XKmqWQw=
+hash: /M7vUZmfoQZYH5UIo1KeJ6Nuao1/i/reEFgS8VUuH0w=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -26,16 +26,16 @@ hash: xCtvm1zWc3bAV4ojpuhej65d/KtQPOCgIAP6XKmqWQw=
 * Deebot Slim 2
 * Deebot N79 серии
 * Deebot 601
-* Deebot 710/711
 * Deebot U2
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 * Deebot Ozmo T8 AIVI
 * Deebot Ozmo T8 (+)
 
-### Эти модели должны работать
+### Эти модели должны работать (частично)
 * Deebot M88
 * Deebot 600/605
+* Deebot 710/711
 * Deebot Ozmo Slim 10
 * Deebot U2 Pro / Мощность
 
@@ -59,8 +59,7 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 ## Известные вопросы
 * Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно через прибл. 24 часа
-* Функция "пауза" не работает с Deebot 710/711
-* Функция "стоп" не работает с Deebot 711s
+* Некоторые функции очистки могут не работать с 710/711 / 711s. Пожалуйста, используйте пока версию 0.5.8.
 * Функция "edge" не работает с Deebot U2 (вместо этого запускает автоматическую очистку)
 
 ## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
@@ -70,6 +69,17 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 Я никоим образом не связан с ECOVACS.
 
 ## Changelog
+
+### 1.0.10
+* Using library version 0.5.4
+* Several improvements and fixes
+* Added available spot area boundaries to "map" channel (read only)
+
+### 1.0.9
+* Using library version 0.5.3
+* Added some experimental features (for a few models only)
+* Added option for virtual boundaries and some further improvements to adapter config
+* Some improvements for js-controller 3.2.x
 
 ### 1.0.8
 * Using library version 0.5.2 (0.5.2-beta.1)

@@ -1,17 +1,18 @@
 ![Logo](admin/seq.png)
 # ioBroker.seq
 
-[![NPM version](http://img.shields.io/npm/v/iobroker.seq.svg)](https://www.npmjs.com/package/iobroker.seq)
-[![Downloads](https://img.shields.io/npm/dm/iobroker.seq.svg)](https://www.npmjs.com/package/iobroker.seq)
-![Number of Installations (latest)](https://iobroker.live/badges/seq-installed.svg)
-![Number of Installations (stable)](https://iobroker.live/badges/seq-stable.svg)
-[![Dependency Status](https://img.shields.io/david/o0shojo0o/iobroker.seq.svg)](https://david-dm.org/o0shojo0o/iobroker.seq)
+[![NPM version](http://img.shields.io/npm/v/iobroker.seq.svg?dummy=unused)](https://www.npmjs.com/package/iobroker.seq)
+[![Downloads](https://img.shields.io/npm/dm/iobroker.seq.svg?dummy=unused)](https://www.npmjs.com/package/iobroker.seq)
+![Number of Installations (latest)](https://iobroker.live/badges/seq-installed.svg?dummy=unused)
+![Number of Installations (stable)](https://iobroker.live/badges/seq-stable.svg?dummy=unused)
+[![Dependency Status](https://img.shields.io/david/o0shojo0o/iobroker.seq.svg?dummy=unused)](https://david-dm.org/o0shojo0o/iobroker.seq)
 
 [![NPM](https://nodei.co/npm/iobroker.seq.png?downloads=true)](https://nodei.co/npm/iobroker.seq/)
 
 ## Seq adapter for ioBroker
 
-This adapter allows you to push your ioBroker log into the system of [Seq](https://datalust.co/seq)
+This adapter allows you to push your ioBroker log into the system of [Seq](https://datalust.co/seq).  
+It is also possible to apply a filter to the log levels and also to the adapters.
 
 ## Configuration
 
@@ -29,6 +30,12 @@ This adapter allows you to push your ioBroker log into the system of [Seq](https
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### 0.2.6 (2021-01-21)
+* (bluefox) Refactoring
+* (bluefox) Better translations
+
+### 0.2.5 (2021-01-20)
+* (IdleBit) no real change only the description for the admin
 
 ### 0.2.4 (2021-01-16)
 * (IdleBit) bugfix display of the filter options

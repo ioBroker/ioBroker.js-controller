@@ -3,20 +3,21 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.seq/README.md
 title: ioBroker.seq
-hash: Z3wIYJa4DkCBRw0AVCmkWc/RVCc/+Rkq1ThDdcqM+2Q=
+hash: PtT3SYHwSkQyfpF7eD+TbLkDYw7rBEynyoxziVfPZ18=
 ---
 ![Logo](../../../en/adapterref/iobroker.seq/admin/seq.png)
 
-![NPM-Version](http://img.shields.io/npm/v/iobroker.seq.svg)
-![Downloads](https://img.shields.io/npm/dm/iobroker.seq.svg)
-![Anzahl der Installationen (aktuell)](http://iobroker.live/badges/seq-installed.svg)
-![Anzahl der Installationen (stabil)](http://iobroker.live/badges/seq-stable.svg)
-![Abhängigkeitsstatus](https://img.shields.io/david/o0shojo0o/iobroker.seq.svg)
+![NPM-Version](http://img.shields.io/npm/v/iobroker.seq.svg?dummy=unused)
+![Downloads](https://img.shields.io/npm/dm/iobroker.seq.svg?dummy=unused)
+![Anzahl der Installationen (aktuell)](https://iobroker.live/badges/seq-installed.svg?dummy=unused)
+![Anzahl der Installationen (stabil)](https://iobroker.live/badges/seq-stable.svg?dummy=unused)
+![Abhängigkeitsstatus](https://img.shields.io/david/o0shojo0o/iobroker.seq.svg?dummy=unused)
 ![NPM](https://nodei.co/npm/iobroker.seq.png?downloads=true)
 
 # IoBroker.seq
 ## Seq Adapter für ioBroker
-Mit diesem Adapter können Sie Ihr ioBroker-Protokoll in das System von [Seq](https://datalust.co/seq) verschieben
+Mit diesem Adapter können Sie Ihr ioBroker-Protokoll in das System von [Seq](https://datalust.co/seq) verschieben.
+Es ist auch möglich, einen Filter auf die Protokollebenen und auch auf die Adapter anzuwenden.
 
 ## Aufbau
 1. Erstellen Sie eine neue Instanz des Adapters
@@ -27,10 +28,45 @@ Mit diesem Adapter können Sie Ihr ioBroker-Protokoll in das System von [Seq](ht
 ## Changelog
 <!--
  https://github.com/AlCalzone/release-script#usage
-    npm run release prerelease beta -- --all
+    npm run release minor -- --all 0.9.8 -> 0.10.0
+    npm run release patch -- --all 0.9.8 -> 0.9.9
+    npm run release prerelease beta -- --all v0.2.1 -> v0.2.2-beta.0  
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### 0.2.6 (2021-01-21)
+* (bluefox) Refactoring
+* (bluefox) Better translations
+
+### 0.2.5 (2021-01-20)
+* (IdleBit) no real change only the description for the admin
+
+### 0.2.4 (2021-01-16)
+* (IdleBit) bugfix display of the filter options
+* (IdleBit) bugfix display of template parameters
+* (IdleBit) add parameter logging Arch
+* (IdleBit) add parameter logging JsController
+* (IdleBit) add parameter logging Node
+* (IdleBit) add parameter logging Platform
+* (IdleBit) add parameter logging SourceVersion
+
+### 0.2.3 (2021-01-15)
+* (IdleBit) if the server address ends with "/", this must be removed. …
+
+### 0.2.2 (2021-01-10)
+* (IdleBit) handle uncomplete log message
+
+### 0.2.1 (2020-10-01)
+* (IdleBit) added forgetting native...
+
+### 0.2.0 (2020-10-01)
+* (IdleBit) optional selective logging on adapter basis
+
+### 0.1.0 (2020-09-26)
+* (IdleBit) API key is no longer not displayed in clear text 
+* (IdleBit) API key is now stored encrypted
+  * ***Attention: The API key will be lost and must be set again!***
+* (IdleBit) higher dependencies of the js-controller (>=3.1.0)
 
 ### 0.0.5 (2020-09-23)
 * (IdleBit) add param SystemName for display in Seq
@@ -53,7 +89,7 @@ Mit diesem Adapter können Sie Ihr ioBroker-Protokoll in das System von [Seq](ht
 ## License
 MIT License
 
-Copyright (c) 2020 Dennis Hinzpeter <info@bastelbunker.de>
+Copyright (c) 2021 IdleBit <info@bastelbunker.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

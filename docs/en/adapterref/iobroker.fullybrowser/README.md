@@ -20,6 +20,9 @@ A small excerpt just of the command options:
 <b>NodeJs >> 8.x.x </b>
 
 ## Changelog
+### 2.0.4 (2021-01-20)
+* (arteck) new js-controller upd
+
 ### 2.0.2 (2020-12-28)
 * (arteck) little update
 

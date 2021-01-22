@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vodafone-speedtest/README.md
 title: ioBroker.vodafone速度测试
-hash: 8s1pRmGN7w0zBjhm3pvBQZB3r0ArzFz+HUVwk9j3ZAg=
+hash: +IOdcWrUCNgyMOAXgoIEkc0/nKCJtzsE0iXB29hapt0=
 ---
 ![商标](../../../en/adapterref/iobroker.vodafone-speedtest/admin/vodafone-speedtest.png)
 
@@ -16,12 +16,30 @@ hash: 8s1pRmGN7w0zBjhm3pvBQZB3r0ArzFz+HUVwk9j3ZAg=
 ![NPM](https://nodei.co/npm/iobroker.vodafone-speedtest.png?downloads=true)
 
 ＃ioBroker.vodafone-speedtest
-##适用于ioBroker的vodafone-speedtest适配器
-Vodafone.de的速度测试
+**此适配器使用服务[哨兵](https://sentry.io)向开发人员自动向我报告异常和代码错误以及新设备架构。**更多详细信息，请参见下文！
 
-实现与https://speedtest.vodafone.de相同的技术
+##适用于ioBroker的vodafone-speedtest适配器
+Vodafone.de的测速
+
+实施与https://speedtest.vodafone.de相同的技术
+
+##什么是Sentry.io，什么报告给该公司的服务器？
+Sentry.io是一项服务，供开发人员从其应用程序中获取有关错误的概述。确切地说，这是在此适配器中实现的。
+
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给Sentry。当您允许iobroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
+
+### 0.0.6 (2021-01-21)
+* Added Sentry.io Integration
+
+### 0.0.5 (2020-05-26)
+* Added ping results
+* Added calculated values by actual raw data
+
+### 0.0.4 (2020-04-30)
+* Changed Adapter start type to scheduled (reinstallation might be needed)
+* Bug fixes and feedback implementation
 
 ### 0.0.3 (2020-04-24)
 * Implemented feedback from Forum and github issue

@@ -134,6 +134,10 @@ ioBroker可以例如网关的照明和扬声器可以控制。
 这些说明是根据我们的知识和信念而制作的。
 
 ## Changelog
+
+### 1.3.7 (2021-01-22)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-MIHOME-A)
+
 ### 1.3.6 (2020-09-25)
 * (VLGorskij) Added new device QBKG24LM
 

@@ -38,6 +38,10 @@ Timers and other more complex data are shown by the adapter, but can be changed 
 
 ## Changelog
 
+### 1.1.0 (2021-01-22)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-SIEGENIA-1)
+* (Apollon77) js-controller 2.0 is now required at least
+
 ### 1.0.1 (2020-12-24)
 * (Apollon77) update dependencies
 * (Apollon77) disconnect device if authentication was not successful

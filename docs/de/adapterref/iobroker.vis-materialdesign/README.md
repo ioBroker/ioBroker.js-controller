@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-materialdesign/README.md
 title: Material Design Widgets für ioBroker VIS
-hash: niZ/WvdcAo4qkTwMH9OtPT5j4k2a8RO8C8q13If5IQ0=
+hash: STkC4jUrj13PgxyXCjHtZZL44zY9Atc892hDUI3Tx/M=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/admin/vis-materialdesign.png) <! - in toc weglassen ->
 
@@ -29,7 +29,7 @@ ioBroker Material Design Widgets basieren auf [Richtlinien für das Materialdesi
 - [Praktische Beispiele] (# praktische Beispiele)
 - [Fragen und Antworten zu den Widgets] (# Fragen und Antworten zu den Widgets)
 - [Unterstützter Browser] (# unterstützter Browser)
-- [Unterstützte Browserfunktion zum Vibrieren auf Mobilgeräten] (# Unterstützte Browserfunktion zum Vibrieren auf Mobilgeräten)
+- [Unterstützte Browser-Funktion zum Vibrieren auf Mobilgeräten] (# Unterstützte Browser-Funktion zum Vibrieren auf Mobilgeräten)
 - [ioBroker VIS App] (# iobroker-vis-app)
 - [Adaptereinstellungen] (# Adaptereinstellungen)
 - [Allgemein] (# allgemein-1)
@@ -45,6 +45,8 @@ ioBroker Material Design Widgets basieren auf [Richtlinien für das Materialdesi
 - [Karte] (# Karte)
 - [Liste] (# Liste)
 - [IconList] (# iconlist)
+- [Editoreinstellungen] (# Editoreinstellungen)
+- [JSON-Eigenschaften] (# json-properties)
 - [Fortschritt] (# Fortschritt)
 - [Fortschrittsrundschreiben] (# Fortschrittsrundschreiben)
 - [Slider] (# Slider)
@@ -55,26 +57,24 @@ ioBroker Material Design Widgets basieren auf [Richtlinien für das Materialdesi
 - [Texteingabe] (# Texteingabe)
 - [Auswählen] (# Auswählen)
 - [Autocomplete] (# Autocomplete)
-- [Obere App-Leiste mit Navigationsleiste] (# Top-App-Leiste mit Navigationsleiste)
+- [Top App Bar] (# Top-App-Leiste)
 - [Untermenü] (# Untermenü)
+- [JSON-Eigenschaften] (# json-properties-1)
 - [Charts] (# Charts)
 - [Balkendiagramm] (# Balkendiagramm)
+- [Editoreinstellungen] (# editor-settings-1)
+- [JSON-Eigenschaften] (# json-properties-2)
 - [Kreisdiagramm] (# Kreisdiagramm)
+- [Editoreinstellungen] (# editor-settings-2)
+- [JSON-Eigenschaften] (# json-properties-3)
 - [Linienverlaufsdiagramm:] (# Linienverlaufsdiagramm)
+- [Editoreinstellungen] (# editor-settings-3)
 - [JSON-Diagramm] (# json-Diagramm)
-- [Allgemein] (# allgemein-2)
-- [Grafik] (# Grafik)
-- [graph line chart spfeicifc] (# graph-line-chart-spfeicifc)
-- [graph bar chart spfeicifc] (# graph-bar-chart-spfeicifc)
-- [Grafik y-Achse] (# Grafik y-Achse)
-- [gradientColor] (# gradientcolor)
-- [Diagramm mit Zeitachse] (# Diagramm mit Zeitachse)
-- [Werte mit Zeitstempel] (# Werte mit Zeitstempel)
-- [x-Achseneinstellungen für Daten mit Zeitstempel] (# x-Achseneinstellungen für Daten mit Zeitstempel)
+- [JSON-Eigenschaften] (# json-properties-4)
 - [Tabelle] (# Tabelle)
 - [Eingabedaten] (# Eingabedaten)
 - [Steuerelemente] (# Steuerelemente)
-- [Editoreinstellungen] (# Editoreinstellungen)
+- [Editoreinstellungen] (# editor-settings-4)
 - [Responsive Layout] (# Responsive-Layout)
 - [Mauerwerksansichten] (# Mauerwerksansichten)
 - [Rasteransichten] (# Rasteransichten)
@@ -123,10 +123,10 @@ Ab Version 0.4.0 gibt es eine Einstellungsseite für den Adapter. Sie finden es 
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_general.png)
 
 | Einstellung | Beschreibung |
-|-------|-----------|
+| ---------------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | Dokumentation | Links zur Dokumentation zur Konfiguration der Widgets |
-| Globales Skript generieren | Globales Skript für die [Javascript Script Engine](https://github.com/ioBroker/ioBroker.javascript) mit allen Themendatenpunkten erstellen. Auf diese Weise können Farben, Schriftarten und Schriftgrößen bequem in Skripten verwendet werden |
-| Sentry | Verwenden Sie Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch anonym an die Entwickler zu melden. Weitere Informationen und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation] (https://github.com/ioBroker/plugin-sentry#plugin-sentry)! |
+| Globales Skript generieren | Erstellen Sie ein globales Skript für die [Javascript Script Engine](https://github.com/ioBroker/ioBroker.javascript) mit allen Themendatenpunkten. Dies ermöglicht die bequeme Verwendung von Farben, Schriftarten und Schriftgrößen in Skripten. |
+| Wachposten | Verwenden Sie Sentry-Bibliotheken, um Ausnahmen und Codefehler automatisch anonym an die Entwickler zu melden. Weitere Details und Informationen zum Deaktivieren der Fehlerberichterstattung finden Sie unter [Sentry-Plugin-Dokumentation] (https://github.com/ioBroker/plugin-sentry#plugin-sentry)! |
 
 ## Themeneditor
 Mit Hilfe des Design-Editors können Sie Farben, Schriftarten und Schriftgrößen für alle Widgets über die Adaptereinstellungen zentral einstellen. Dies wird mit Hilfe der [Bindungen des VIS-Adapters](https://github.com/ioBroker/ioBroker.vis#bindings-of-objects) realisiert. Für jedes Widget werden Datenpunkte (siehe Abbildung unten) mit den festgelegten Werten erstellt. Dies ermöglicht die Verwendung dieser Einstellungen in anderen Widgets (nicht Material Design Widgets) über Bindungen.
@@ -154,7 +154,7 @@ Für Farben gibt es zwei Themen - helles Thema und dunkles Thema. Mit dem Datenp
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_colors_dark.png)
 
 Im oberen Bereich können Standardfarben definiert werden. Diese Standardfarben können dann über die Schaltflächen in der Tabelle den einzelnen Widgets zugewiesen werden. Wenn Sie die Standardfarbe ändern, ändert sich dies auch für alle Widgets, die diese Farbe verwenden.
-Darüber hinaus können Sie den Widgets unabhängig von den Standardfarben eigene Farben zuweisen.
+Darüber hinaus ist es möglich, den Widgets unabhängig von den Standardfarben eigene Farben zuzuweisen.
 
 ### Schriftart-Thema
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/settings_fonts.png)
@@ -233,9 +233,20 @@ Die folgenden Eigenschaften können als [Steuerelement in einer Tabelle] (# Steu
 ## IconList
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/iconList.gif)
 
+### Editoreinstellungen
 Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbsterklärend.
 
-<table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/iconList_settings_common.png"></td><td>Eingabemethode für die Listendaten</td><td> Die Daten für die IconList können über den Editor eingegeben oder eine JSON-Zeichenfolge verwendet werden</td></tr><tr><td> JSON-String: Objekt-ID</td><td> Objekt-ID des Datenpunkts mit JSON-Zeichenfolge. Die JSON-Zeichenfolge muss das folgende Format haben:<pre><code> [ { &quot;background&quot;: &quot;red&quot;, &quot;text&quot;: &quot;text1&quot;, &quot;subText&quot;: &quot;number&quot;, &quot;image&quot;: &quot;harddisk&quot;, &quot;imageColor&quot;: &quot;#ec0909&quot;, &quot;imageActive&quot;: &quot;folder&quot;, &quot;imageActiveColor&quot;: &quot;#5ad902&quot;, &quot;buttonBackgroundColor&quot;: &quot;&quot;, &quot;buttonBackgroundActiveColor&quot;: &quot;&quot;, &quot;listType&quot;: &quot;buttonState&quot;, &quot;objectId&quot;: &quot;0_userdata.0.iconList.buttonState.number&quot;, &quot;buttonStateValue&quot;: &quot;60&quot;, &quot;buttonNavView&quot;: &quot;&quot;, &quot;buttonLink&quot;: &quot;&quot;, &quot;buttonToggleValueTrue&quot;: &quot;&quot;, &quot;buttonToggleValueFalse&quot;: &quot;&quot;, &quot;valueAppendix&quot;: &quot;&quot;, &quot;showValueLabel&quot;: &quot;true&quot;, &quot;statusBarColor&quot;: &quot;green&quot;, &quot;lockEnabled&quot;: &quot;false&quot; }, { &quot;background&quot;: &quot;green&quot;, &quot;text&quot;: &quot;text0&quot;, &quot;subText&quot;: &quot;bool&quot;, &quot;image&quot;: &quot;home&quot;, &quot;imageColor&quot;: &quot;#44739e&quot;, &quot;imageActive&quot;: &quot;home&quot;, &quot;imageActiveColor&quot;: &quot;#44739e&quot;, &quot;buttonBackgroundColor&quot;: &quot;&quot;, &quot;buttonBackgroundActiveColor&quot;: &quot;#a0f628&quot;, &quot;listType&quot;: &quot;buttonToggle&quot;, &quot;objectId&quot;: &quot;0_userdata.0.iconList.buttonToggle.bool0&quot;, &quot;buttonStateValue&quot;: &quot;60&quot;, &quot;buttonNavView&quot;: &quot;&quot;, &quot;buttonLink&quot;: &quot;&quot;, &quot;buttonToggleValueTrue&quot;: &quot;&quot;, &quot;buttonToggleValueFalse&quot;: &quot;&quot;, &quot;valueAppendix&quot;: &quot;&quot;, &quot;showValueLabel&quot;: &quot;false&quot;, &quot;statusBarColor&quot;: &quot;&quot;, &quot;lockEnabled&quot;: &quot;false&quot; } ]</code></pre> Die Eigenschaft <code>listType</code> kann folgende Werte haben:<br> <code>text, buttonState, buttonToggle, buttonToggleValueTrue, buttonToggleValueFalse, buttonNav, buttonLink</code></td></tr></tbody></table>
+<table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/iconlist_settings_data.png"></td><td> Eingabemethode für die Listendaten</td><td> Die Daten für die IconList können über den Editor eingegeben oder eine JSON-Zeichenfolge verwendet werden</td></tr><tr><td> Editor: Anzahl der Listenelemente</td><td> Anzahl der Listenelemente mit dem vis-Editor für die Listendaten</td></tr><tr><td> JSON-String: Objekt-ID</td><td> Objekt-ID des Datenpunkts, der die JSON-Zeichenfolge enthält. Zulässige Eigenschaften werden unten beschrieben</td></tr></tbody></table>
+
+### JSON-Eigenschaften
+Die JSON-Zeichenfolge muss ein Array von Objekten mit den folgenden Eigenschaften sein:
+
+<table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> listType</td><td> Art der Liste</td><td> Zeichenfolge</td><td> Text | buttonState | buttonToggle | buttonToggleValueTrue | buttonToggleValueFalse | buttonNav | buttonLink</td></tr><tr><td> Objekt Identifikation</td><td> Objekt-ID für Schaltfläche</td><td> Zeichenfolge</td><td/></tr><tr><td> buttonStateValue</td><td> Wert für den Schaltflächenstatus</td><td> Zeichenfolge</td><td/></tr><tr><td> buttonNavView</td><td> Ansicht zum Navigieren</td><td> Zeichenfolge</td><td/></tr><tr><td> buttonLink</td><td> URL zum Navigieren</td><td> Zeichenfolge</td><td/></tr><tr><td> buttonToggleValueTrue</td><td> wahrer Wert für das Umschalten der Taste</td><td> Zeichenfolge</td><td/></tr><tr><td> buttonToggleValueFalse</td><td> falscher Wert für das Umschalten der Schaltfläche</td><td> Zeichenfolge</td><td/></tr><tr><td> showValueLabel</td><td> Wert als Text anzeigen</td><td> Zeichenfolge</td><td/></tr><tr><td> valueAnhang</td><td> Text an Wert anhängen</td><td> Zeichenfolge</td><td/></tr><tr><td> Hintergrund</td><td> Hintergrundfarbe</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> Hintergrund</td><td> Text</td><td> Zeichenfolge</td><td/></tr><tr><td> Untertext</td><td> zweiter Text</td><td> Zeichenfolge</td><td/></tr><tr><td> Bild</td><td> Bildpfad oder Name der Material Design Icons</td><td> Zeichenfolge</td><td/></tr><tr><td> imageColor</td><td> Farbe der Material Design Icons</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> imageActive</td><td> Bildpfad oder Name der Material Design Icons für die aktive Schaltfläche</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> buttonBackgroundColor</td><td> Hintergrundfarbe der Schaltfläche</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> buttonBackgroundActiveColor</td><td> Hintergrundfarbe der Schaltfläche für die aktive Schaltfläche</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> statusBarColor</td><td> Farbe der Statusleiste</td><td> Zeichenfolge</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> statusBarText</td><td> Text der Statusleiste</td><td> Zeichenfolge</td><td/></tr><tr><td> lockEnabled</td><td> Sperren aktivieren</td><td> Boolescher Wert</td><td> false | wahr</tr></tbody></table>
+
+<! - in toc weglassen ->
+
+#### Beispiel
+<details> <pre><code> [ { "background": "red", "text": "text1", "subText": "number", "image": "harddisk", "imageColor": "#ec0909", "imageActive": "folder", "imageActiveColor": "#5ad902", "buttonBackgroundColor": "", "buttonBackgroundActiveColor": "", "listType": "buttonState", "objectId": "0_userdata.0.iconList.buttonState.number", "buttonStateValue": "60", "buttonNavView": "", "buttonLink": "", "buttonToggleValueTrue": "", "buttonToggleValueFalse": "", "valueAppendix": "", "showValueLabel": "true", "statusBarColor": "green", "lockEnabled": "false" }, { "background": "green", "text": "text0", "subText": "bool", "image": "home", "imageColor": "#44739e", "imageActive": "home", "imageActiveColor": "#44739e", "buttonBackgroundColor": "", "buttonBackgroundActiveColor": "#a0f628", "listType": "buttonToggle", "objectId": "0_userdata.0.iconList.buttonToggle.bool0", "buttonStateValue": "60", "buttonNavView": "", "buttonLink": "", "buttonToggleValueTrue": "", "buttonToggleValueFalse": "", "valueAppendix": "", "showValueLabel": "false", "statusBarColor": "", "lockEnabled": "false" } ] </code></pre> </details>
 
 ## Fortschritt
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/progress.gif)
@@ -313,7 +324,7 @@ Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbste
 
 <table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung</th></tr></thead><tbody><tr><td rowspan=6><img src="doc/en/media/select_autocomplete_settings.png"></td><td> Methode der Daten des Menüs</td><td> Es gibt drei Methoden, um die Daten des Menüs zu definieren. Zunächst muss es über den Editor definiert werden. Zweitens müssen Sie es über eine JSON-Zeichenfolge definieren. Die dritte Methode besteht darin, sie durch drei Listen für Werte, Beschriftungen und Symbole zu definieren</td></tr><tr><td> Editor: Anzahl der Menüpunkte</td><td> Datenmethode des Menüs: über den Editor<br> Definieren Sie die Anzahl der Menüeinträge. Die einzelnen Menüeinträge können unter Menüpunkt [x] definiert werden.</td></tr><tr><td> JSON-Zeichenfolge</td><td> Datenmethode des Menüs: JSON-Zeichenfolge<br> Hier können Sie eine JSON-Zeichenfolge hinzufügen, um die Menüeinträge zu definieren, oder Bindungen an einen Datenpunkt verwenden, der eine JSON-Zeichenfolge enthält.<br><br> JSON-Zeichenfolge muss das folgende Format haben:<br><pre><code> [ { &quot;text&quot;: &quot;text 0&quot;, &quot;subText&quot;: &quot;sub 0&quot;, &quot;value&quot;: &quot;val0&quot;, &quot;icon&quot;: &quot;account-cancel&quot; }, { &quot;text&quot;: &quot;text 1&quot;, &quot;subText&quot;: &quot;sub 1&quot;, &quot;value&quot;: &quot;val1&quot;, &quot;icon&quot;: &quot;/vis/icon/info.png&quot;, &quot;iconColor&quot;: &quot;red&quot; }, { &quot;text&quot;: &quot;text 2&quot;, &quot;subText&quot;: &quot;sub 2&quot;, &quot;value&quot;: &quot;val2&quot;, &quot;icon&quot;: &quot;facebook-workplace&quot;, &quot;iconColor&quot;: &quot;green&quot; } ]</code></pre></td></tr><tr><td> Werteliste</td><td> Datenmethode des Menüs: Werteliste<br> Definieren Sie die Anzahl der Menüeinträge, indem Sie Werte hinzufügen, die auf den Datenpunkt gesetzt werden. Einträge müssen durch Semikolon getrennt werden</td></tr><tr><td> Werteliste: Labels</td><td> Datenmethode des Menüs: Werteliste<br> Definieren Sie die zugehörigen Beschriftungen der Werte. Einträge müssen durch Semikolon getrennt werden</td></tr><tr><td> Werteliste: Labels</td><td> Datenmethode des Menüs: Werteliste<br> Definieren Sie die zugehörigen Symbole der Werte. Einträge müssen durch Semikolon getrennt werden. Sie können den Bildpfad oder den Namen des Material Design Icons verwenden</td></tr></tbody></table>
 
-## Obere App-Leiste mit Navigationsschublade
+## Top App Bar
 Die obere App-Leiste mit Navigationsleiste kann mit der <a href="https://www.iobroker.net/#en/documentation/viz/basic.md">Ansicht in Widget 8</a> kombiniert werden.
 
 <b>Schauen Sie sich die [Beispielprojekt für Material Design Widgets](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b> an, um zu verstehen, wie es funktioniert.
@@ -329,92 +340,107 @@ Die obere App-Leiste mit Navigationsleiste kann mit der <a href="https://www.iob
 ### Untermenü
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/drawer_subMenu.png)
 
-##### Seit Version 0.4.0
-Seit Version 0.4.0 müssen die Untermenüs durch eine JSON-Zeichenfolge definiert werden:
+Untermenüs müssen durch eine JSON-Zeichenfolge definiert werden:
 
-```
-[
-	{
-		"text": "subitem0",
-		"icon": "account",
-		"iconColor": "red"
-	},
-	{
-		"text": "subitem1",
-		"icon": "home",
-		"iconColor": "green",
-		"divider": "true"
-	},
-	{
-		"text": "subitem1",
-		"divider": "true",
-		"icon": "/vis.0/myImages/devices/lxc_iobroker.png",
-		"userGroups": ["administrator", "user"],
-		"behaviorNotInUserGroup": "disabled"
-	}
-]
-```
-
+#### JSON-Eigenschaften
 <table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Text</td><td> Text des Eintrags</td><td> Zeichenfolge</td><td></td></tr><tr><td> Symbol</td><td> Symbol oder Bildpfad des Eintritts</td><td> Zeichenfolge</td><td></td></tr><tr><td> iconColor</td><td> Symbolfarbe (funktioniert nicht, wenn Bild verwendet wird)</td><td> Farbe</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> Teiler</td><td> zeige einen Teiler</td><td> Boolescher Wert</td><td> Falsch Richtig</td></tr><tr><td> Benutzergruppen</td><td> Benutzergruppen, die diesen Eintrag anzeigen und steuern dürfen.</td><td> Array [Zeichenfolge]</td><td> ID der Benutzergruppen</td></tr><tr><td> behaviourNotInUserGroup</td><td> Eintrag ausblenden oder deaktivieren, wenn der Benutzer nicht Teil der Benutzergruppe ist</td><td> Zeichenfolge</td><td> verstecken, deaktiviert</td></tr></tbody></table>
 
-##### Vor Version 0.4.0
-Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbsterklärend.
+<! - in toc weglassen ->
 
-<table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_views.png"></td><td> Anzahl der Untermenüs [x]</td><td> Definieren Sie, ob das Navigationselement Untermenüs und die Anzahl der Untermenüs enthält.</td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_labels.png"></td><td> label [x]</td><td> Um den Text der Elemente zu ändern, müssen Sie ein JSON-Objekt mit dem Index des Ansichtsfelds in das Beschriftungsfeld einfügen.<br> Beispiel:<br>
-
-`{"itemText": "Item with Subitems", "subItems": ["subItem1", "subItem2"]}`
-
-Ergebnis: siehe Screenshot</td></tr><tr><td rowspan=1><img src="doc/en/media/drawer_subMenu_icons.png"></td><td> Symbol [x]</td><td> Um die Symbole der Elemente zu ändern, müssen Sie ein JSON-Objekt mit dem Index des Ansichtsfelds in das Symbolfeld einfügen.<br> Beispiel:<br>
-
-`{"itemImage": "/icons-material-svg/hardware/ic_computer_48px.svg", "subItems": ["/vis/widgets/materialdesign/img/IoBroker_Logo.png", "/icons-material-svg/action/ic_android_48px.svg"]}`
-
-Ergebnis: siehe Screenshot </ td> </ tr> </ tbody> </ table>
+#### Beispiel
+<details> <pre><code> [ { "text": "subitem0", "icon": "account", "iconColor": "red" }, { "text": "subitem1", "icon": "home", "iconColor": "green", "divider": "true" }, { "text": "subitem1", "divider": "true", "icon": "/vis.0/myImages/devices/lxc_iobroker.png", "userGroups": ["administrator", "user"], "behaviorNotInUserGroup": "disabled" } ] </code></pre> </details>
 
 ## Diagramme
 ### Balkendiagramm
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/barChart.png)
 
-MACHEN
+#### Editoreinstellungen
+Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbsterklärend.
+
+<table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/barchart_settings_common.png"></td><td>Datensätze setzen mit</td><td> Die Daten für das BarChart können über den Editor eingegeben oder eine JSON-Zeichenfolge verwendet werden</td></tr><tr><td> Anzahl der Teile</td><td> Anzahl der Balken mit dem vis-Editor für die Daten der Liste</td></tr><tr><td> Objekt Identifikation</td><td> Objekt-ID des Datenpunkts, der die JSON-Zeichenfolge enthält. Zulässige Eigenschaften werden unten beschrieben</td></tr><tr><td rowspan=><img src="doc/en/media/barchart_settings_dataset.png"></td><td> Objekt-ID [x]</td><td> Objekt-ID für die einzelnen Balken mit dem vis-Editor</td></tr></tbody></table>
+
+#### JSON-Eigenschaften
+Die JSON-Zeichenfolge muss ein Array von Objekten mit den folgenden Eigenschaften sein:
+
+<table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Etikette</td><td> Achsenbeschriftung des Balkens</td><td> Zeichenfolge</td><td/></tr><tr><td> Wert</td><td> Balkenwert</td><td> Nummer</td><td/></tr><tr><td> dataColor</td><td> Balkenfarbe</td><td> Zeichenfolge</td><td/></tr><tr><td> valueText</td><td> Text der Leiste überschreiben</td><td> Zeichenfolge</td><td/></tr><tr><td> valueColor</td><td> Farbe des Wertetextes</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td><td/></tr><tr><td> valueAnhang</td><td> Anhang des Wertetextes</td><td> Zeichenfolge</td><td/></tr><tr><td> tooltipTitle</td><td> Tooltip-Titel</td><td> Zeichenfolge</td><td/></tr><tr><td> tooltipText</td><td> Tooltip-Text</td><td> Zeichenfolge</td><td/></tr></tbody></table>
+
+<! - in toc weglassen ->
+
+#### Beispiel
+<details> <pre><code> [ { "label": "val0", "value": "30", "valueColor": "#ffffff" }, { "label": "val1", "value": "12.54645646", "tooltipTitle": "myTitle" }, { "label": "val2", "value": "48", "dataColor": "#c2c2c2", "valueAppendix": "\n extra" }, { "label": "val3", "value": "97", "valueColor": "#ffffff" }, { "label": "val4", "value": "32", "valueText": "text" } ] </pre></code> </details>
 
 ### Kuchendiagramm
-MACHEN
+![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/pieChart.png)
+
+#### Editoreinstellungen
+Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbsterklärend.
+
+<table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=3><img src="doc/en/media/piechart_settings_common.png"></td><td>Datensätze setzen mit</td><td> Die Daten für das PieChart können über den Editor eingegeben oder eine JSON-Zeichenfolge verwendet werden</td></tr><tr><td> Anzahl der Teile</td><td> Anzahl der Tortenstücke mit vis editor für die Daten der Liste</td></tr><tr><td> Objekt Identifikation</td><td> Objekt-ID des Datenpunkts, der die JSON-Zeichenfolge enthält. Zulässige Eigenschaften werden unten beschrieben</td></tr><tr><td rowspan=><img src="doc/en/media/barchart_settings_dataset.png"></td><td> Objekt-ID [x]</td><td> Objekt-ID für die Einzelkuchenstücke mit dem vis-Editor</td></tr></tbody></table>
+
+#### JSON-Eigenschaften
+Die JSON-Zeichenfolge muss ein Array von Objekten mit den folgenden Eigenschaften sein:
 
 ### Linienverlaufsdiagramm:
 > Erforderlicher Adapter: [SQL] (https://github.com/ioBroker/ioBroker.sql), [Verlauf] (https://github.com/ioBroker/ioBroker.history) oder [InfluxDb](https://github.com/ioBroker/ioBroker.influxdb)!
 
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/line_history_chart.gif)
 
+#### Editoreinstellungen
 Einstellungen, die in der folgenden Tabelle nicht aufgeführt sind, sind selbsterklärend.
 
-<table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td> Adapterinstanz</td><td> Instanz für den SQL- oder Verlaufsadapter</td></tr><tr><td> Zeitintervall mit Objekt steuern</td><td> ID eines Datenpunkts zum Ändern des Zeitintervalls des Diagramms.<br><br> Wenn der Datenpunkt vom Typ &#39;Zeichenfolge&#39; ist, muss er <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">einen der verknüpften Werte enthalten</a><br> Wenn der Datenpunkt vom Typ &#39;Nummer&#39; ist, muss er den Startzeitstempel des Diagramms enthalten.<br><br> Beispielsweise können Sie hier eine Schaltfläche verwenden, um die Anzeige des Diagramms zur Laufzeit zu ändern</td></tr><tr><td> Boolesches Objekt zum Aktualisieren</td><td> ID von adatapoint, um eine manuelle Aktualisierung des Diagramms auszulösen.<br> Beispielsweise können Sie hier eine Schaltfläche verwenden, um das Diagramm zur Laufzeit zu aktualisieren</td></tr><tr><td> Diagramm-Timeout</td><td> Zeitüberschreitung beim Laden der Diagrammdaten. Wenn Sie eine Timeout-Fehlermeldung erhalten, erhöhen Sie diesen Wert</td></tr><tr><td> Debug-Modus</td><td> Wenn Sie Probleme oder Fehler haben, aktivieren Sie den Debug-Modus und hängen Sie die Daten des Konsolenprotokolls (F12) an das Problem an</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td> Objekt Identifikation</td><td> Datenpunkt-ID mit aktivierter Instanz für den SQL- oder Verlaufsadapter</td></tr><tr><td> Anzeigemethode</td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">Verknüpfung</a></td></tr><tr><td> max. Anzahl der anzuzeigenden Datenpunkte</td><td> Anzahl der maximal anzuzeigenden Datenpunkte</td></tr><tr><td> Zeitintervall zwischen den Datenpunkten in [s]</td><td> Die optionale Einstellung überschreibt die Einstellung &#39;Anzahl&#39;.<br> Abstand zwischen den einzelnen Datenpunkten in Sekunden.<br> Wenn Sie beispielsweise jede Minute Datenpunkte anzeigen möchten, müssen Sie hier 60 eingeben</td></tr><tr><td> Daten multiplizieren mit</td><td> Optionale Einstellung: Multiplizieren Sie jeden Datenpunkt mit dem angegebenen Wert</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> Zeitformate der x-Achse</td><td> Ändern Sie das Zeitformat der X-Achse. Zeitformate müssen für alle Zeiteinheiten eingegeben werden, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">die folgenden Zeiteinheiten sind zulässig.</a><br> Genehmigte Zeitformate müssen gemäß der Bibliothek moment.js eingegeben werden, <a href="https://momentjs.com/docs/#/displaying/">siehe Link</a></td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td> Tooltip-Zeitformate</td><td> Ändern Sie das Zeitformat des Tooltips. Zeitformate müssen für alle Zeiteinheiten eingegeben werden, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">die folgenden Zeiteinheiten sind zulässig.</a><br> Genehmigte Zeitformate müssen gemäß der Bibliothek moment.js eingegeben werden, <a href="https://momentjs.com/docs/#/displaying/">siehe Link</a></td></tr></tbody></table>
+<table><thead><tr><th>Bildschirmfoto</th><th> Rahmen</th><th> Beschreibung </th></tr></thead><tbody><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_general.png"></td><td> Adapterinstanz</td><td> Instanz für den SQL- oder Verlaufsadapter</td></tr><tr><td> Zeitintervall mit Objekt steuern</td><td> ID eines Datenpunkts zum Ändern des Zeitintervalls des Diagramms.<br><br> Wenn der Datenpunkt vom Typ &#39;Zeichenfolge&#39; ist, muss er <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/235530e4e54346b5527333ca06ce596519954c67/widgets/materialdesign/js/materialdesign.chart.js#L802">einen der verknüpften Werte enthalten</a><br> Wenn der Datenpunkt vom Typ &#39;Nummer&#39; ist, muss er den Startzeitstempel des Diagramms enthalten.<br><br> Beispielsweise können Sie hier eine Schaltfläche verwenden, um die Anzeige des Diagramms zur Laufzeit zu ändern</td></tr><tr><td> Boolesches Objekt zum Aktualisieren</td><td> ID von adatapoint, um eine manuelle Aktualisierung des Diagramms auszulösen.<br> Beispielsweise können Sie hier eine Schaltfläche verwenden, um das Diagramm zur Laufzeit zu aktualisieren</td></tr><tr><td> Diagramm-Timeout</td><td> Zeitüberschreitung beim Laden der Diagrammdaten. Wenn Sie eine Timeout-Fehlermeldung erhalten, erhöhen Sie diesen Wert</td></tr><tr><td> Debug-Modus</td><td> Wenn Sie Probleme oder Fehler haben, aktivieren Sie den Debug-Modus und hängen Sie die Daten des Konsolenprotokolls (F12) an das Problem an</td></tr><tr><td rowspan=5><img src="doc/en/media/line_hostory_chart_dataset.png"></td><td> Objekt-ID [x]</td><td> ID des Datenpunkts mit aktivierter Verlaufsinstanz</td></tr><tr><td> Anzeigemethode [x]</td><td> <a href="https://www.iobroker.net/docu/index-195.htm?page_id=198&lang=en#Aggregation">Aggregationsmethode</a></td></tr><tr><td> max. Anzahl der anzuzeigenden Datenpunkte [x]</td><td> Anzahl der maximal anzuzeigenden Datenpunkte</td></tr><tr><td> Zeitintervall zwischen den Datenpunkten in [s] [x]</td><td> Die optionale Einstellung überschreibt die Einstellung &#39;Anzahl&#39;.<br> Abstand zwischen den einzelnen Datenpunkten in Sekunden.<br> Wenn Sie beispielsweise jede Minute Datenpunkte anzeigen möchten, müssen Sie hier 60 eingeben</td></tr><tr><td> Daten multiplizieren mit [x]</td><td> Optionale Einstellung: Multiplizieren Sie jeden Datenpunkt mit dem angegebenen Wert</td></tr><tr><td><img src="doc/en/media/line_hostory_chart_xAxis_layout.png"></td><td> Zeitformate der x-Achse</td><td> Ändern Sie das Zeitformat der X-Achse. Zeitformate müssen für alle Zeiteinheiten eingegeben werden, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">die folgenden Zeiteinheiten sind zulässig.</a><br> Genehmigte Zeitformate müssen gemäß der Bibliothek moment.js eingegeben werden, <a href="https://momentjs.com/docs/#/displaying/">siehe Link</a></td></tr><tr><td><img src="doc/en/media/line_hostory_chart_tooltip_layout.png"></td><td> Tooltip-Zeitformate</td><td> Ändern Sie das Zeitformat des Tooltips. Zeitformate müssen für alle Zeiteinheiten eingegeben werden, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">die folgenden Zeiteinheiten sind zulässig.</a><br> Genehmigte Zeitformate müssen gemäß der Bibliothek moment.js eingegeben werden, <a href="https://momentjs.com/docs/#/displaying/">siehe Link</a></td></tr></tbody></table>
 
 ### JSON-Diagramm
-#### Allgemeines
-<table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> axisLabels</td><td> Achsenbeschriftung des Graphen</td><td> Array</td><td> Zahlen oder Zeichenfolge</td></tr><tr><td> Grafiken</td><td> Daten von Graphen</td><td> Array [ <a href="#graph">Grafik</a> ]</td><td> siehe Grafik</td></tr></tbody></table>
+Mit dem JSON-Diagramm haben Sie die maximale Freiheit, ein gemischtes Diagramm (Linie, Balken und gestapelte Balken) per Skript zu erstellen.
 
-#### Graph
+![Logo] (doc / de / media / jsonChart.png)! [Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/jsonChart2.png)
+
+#### JSON-Eigenschaften
+<! - in toc weglassen ->
+
+##### Allgemeines
+<table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> axisLabels</td><td> Achsenbeschriftung des Graphen</td><td> Array</td><td> Zahlen oder Zeichenfolge</td></tr><tr><td> Grafiken</td><td> Daten von Graphen</td><td> Array &lt; <a href="#graph">Graph</a> &gt;</td><td> siehe Grafik</td></tr></tbody></table>
+
+<! - in toc weglassen ->
+
+##### Grafik
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Daten</td><td> Daten des Graphen oder Daten mit Zeitstempel</td><td> Array [Zahlen] | Array [ <a href="#data-with-time-axis">Werte mit Zeitstempel</a> ]</td><td> Nummer</td></tr><tr><td> Art</td><td> Art des Diagramms</td><td> Zeichenfolge</td><td> &#39;line&#39;, &#39;bar&#39;</td></tr><tr><td> legendText</td><td> Text der Legende</td><td> Zeichenfolge</td><td></td></tr><tr><td> Bestellung anzeigen</td><td> Überlagerungsreihenfolge des Diagramms</td><td> Nummer</td><td> 1, 2, ...</td></tr><tr><td> Farbe</td><td> Farbe des Graphen</td><td> Farbe</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> use_gradient_color</td><td> Verwenden Sie eine Verlaufsfarbe</td><td> Boolescher Wert</td><td> Falsch Richtig</td></tr><tr><td> Farbverlauf</td><td> Farbverlaufsarray</td><td> Array [ <a href="#gradientcolor">gradientColor</a> ]</td><td> [{Wert: -20, Farbe: &#39;# 7d3c98&#39;}, {Wert: 0, Farbe: &#39;# 2874a6&#39;}]</td></tr><tr><td> tooltip_title</td><td> Titel des Tooltips</td><td> Zeichenfolge</td><td></td></tr><tr><td> tooltip_text</td><td> Übergreifender Text des Tooltips</td><td> Zeichenfolge</td><td></td></tr><tr><td> tooltip_MinDigits</td><td> Maximale Dezimalstellen des Tooltip-Werts</td><td> Nummer</td><td> 0, 1, 2, ...</td></tr><tr><td> tooltip_MaxDigits</td><td> Maximale Dezimalstellen des Tooltip-Werts</td><td> Nummer</td><td> 0, 1, 2, ...</td></tr><tr><td> tooltip_AppendText</td><td> Fügen Sie Text an den Tooltip-Wert an</td><td> Zeichenfolge</td><td></td></tr><tr><td> datalabel_show</td><td> Datenbeschriftungen für Grafik anzeigen</td><td> Zeichenfolge | Boolescher Wert</td><td> false, true, auto</td></tr><tr><td> datalabel_anchor</td><td> Anker von Datenetiketten</td><td> Zeichenfolge</td><td> zentrieren, beginnen, enden</td></tr><tr><td> datalabel_align</td><td> Position des Datenetiketts relativ zum Ankerpunkt</td><td> Zeichenfolge</td><td> links, Start, Mitte, Ende, rechts, oben, unten</td></tr><tr><td> datalabel_offset</td><td> Abstand (in Pixel), um das Datenetikett vom Ankerpunkt wegzuziehen</td><td> Nummer</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_text_align</td><td> Textausrichtung des Datenetiketts</td><td> Zeichenfolge</td><td> links, Start, Mitte, Ende, rechts</td></tr><tr><td> datalabel_rotation</td><td> Drehwinkel des Datenetiketts im Uhrzeigersinn (in Grad)</td><td> Nummer</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_steps</td><td> Datenbeschriftung bei jedem x-Schritt anzeigen</td><td> Nummer</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_minDigits</td><td> minimale Dezimalstellen von Datenetiketten</td><td> Nummer</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_maxDigits</td><td> maximale Dezimalstellen von Datenbeschriftungen</td><td> Nummer</td><td> 0, 1, 2, ...</td></tr><tr><td> datalabel_append</td><td> Text an Datenetikett anhängen</td><td> Zeichenfolge</td><td></td></tr><tr><td> datalabel_color</td><td> Datenetikettenfarbe</td><td> Farbe | Array [Farben]</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> datalabel_fontFamily</td><td> Datenetiketten-Schriftfamilie</td><td> Zeichenfolge</td><td></td></tr><tr><td> datalabel_fontSize</td><td> Schriftgröße der Datenbeschriftung</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> datalabel_backgroundColor</td><td> Hintergrundfarbe des Datenetiketts</td><td> Farbe | Array [Farben]</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> datalabel_borderColor</td><td> Randfarbe der Datenbeschriftung</td><td> Farbe | Array [Farben]</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> datalabel_borderWidth</td><td> Breite des Datenetikettenrahmens</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> datalabel_borderRadius</td><td> Randradius der Datenbeschriftung</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr></tbody></table></details>
 
-#### Graph liniendiagramm spfeicifc
+<! - in toc weglassen ->
+
+##### Grafik Liniendiagramm spfeicifc
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> line_pointStyle</td><td> Punktstil der Linie</td><td> Zeichenfolge</td><td> Kreis, Kreuz, CrossRot, Strich, Linie, Rect, RectRounded, RectRot, Stern, Dreieck</td></tr><tr><td> line_pointSize</td><td> Punktgröße der Linie</td><td> Nummer</td><td> 1, 2, 3, ...</td></tr><tr><td> line_pointSizeHover</td><td> Punktgröße der Linie</td><td> Nummer</td><td> 1, 2, 3, ...</td></tr><tr><td> line_PointColor</td><td> Farbe des Linienpunktes</td><td> Farbe | Array [Farben]</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> line_PointColorBorder</td><td> Randfarbe des Linienpunktes</td><td> Farbe | Array [Farben]</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> line_PointColorHover</td><td> Schwebefarbe des Linienpunktes</td><td> Farbe | Array [Farben]</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> line_PointColorBorderHover</td><td> Rand Schwebefarbe des Linienpunktes</td><td> Farbe | Array [Farben]</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> line_spanGaps</td><td> Zeichnen Sie Linien, wenn die Daten Lücken aufweisen</td><td> Boolescher Wert</td><td> Falsch Richtig</td></tr><tr><td> line_steppedLine</td><td> gestufte Linie aktivieren</td><td> Boolescher Wert</td><td> Falsch Richtig</td></tr><tr><td> line_Tension</td><td> Glätte der Linie</td><td> Nummer</td><td> 0 - 1</td></tr><tr><td> dicke der Linie</td><td> Dicke der Linie</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> line_UseFillColor</td><td> Verwenden Sie die Füllfarbe unter der Linie</td><td> Boolescher Wert</td><td> Falsch Richtig</td></tr><tr><td> line_FillColor</td><td> Füllfarbe unter Linie</td><td> Farbe</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> use_line_gradient_fill_color</td><td> Verwenden Sie die Verlaufsfüllfarbe</td><td> Boolescher Wert</td><td> Falsch Richtig</td></tr><tr><td> line_gradient_fill_color</td><td> Farbverlaufsarray</td><td> Array [ <a href="#gradientcolor">gradientColor</a> ]</td><td> [{Wert: -20, Farbe: &#39;# 7d3c98&#39;}, {Wert: 0, Farbe: &#39;# 2874a6&#39;}]</td></tr><tr><td> line_FillBetweenLines</td><td> Füllfarbe bis zur nächsten / vorherigen Zeile</td><td> Zeichenfolge</td><td> &#39;+1&#39;, &#39;-1&#39;, &#39;+2&#39;, ...</td></tr></tbody></table></details>
 
-#### Grafik Balkendiagramm spfeicifc
+<! - in toc weglassen ->
+
+##### Diagramm Balkendiagramm spfeicifc
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> barIsStacked</td><td> gestapelte Stange. Wenn Sie ein kombiniertes Diagramm (Linie + gestapelter Balken) haben, müssen Sie diesen Wert auch für den Liniendatensatz festlegen!</td><td> Boolescher Wert</td><td> Falsch Richtig</td></tr><tr><td> barStackId</td><td> ID des Stapels. Balken, die zu einem Stapel kombiniert werden sollen, müssen dieselbe ID haben</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> barColorHover</td><td> Schwebefarbe des Balkens</td><td> Farbe | Array [Farben]</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> barBorderColor</td><td> Randfarbe des Balkens</td><td> Farbe | Array [Farben]</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> barBorderWidth</td><td> Dicke der Balkengrenze</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> barBorderColorHover</td><td> Rand Schwebefarbe der Leiste</td><td> Farbe | Array [Farben]</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> barBorderWidthHover</td><td> Schweben Sie die Dicke der Balkengrenze</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr></tbody></table></details>
 
-#### Grafik y-Achse
+<! - in toc weglassen ->
+
+##### Graph y-Achse
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> yAxis_id</td><td> ID der y-Achse. Wenn Sie eine gemeinsame y-Achse für mehrere Diagrammdaten verwenden möchten, verwenden Sie dieselbe ID.</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> yAxis_position</td><td> Position der y-Achse</td><td> Zeichenfolge</td><td> links rechts</td></tr><tr><td> yAxis_show</td><td> y-Achse zeigen</td><td> Boolescher Wert</td><td> Falsch Richtig</td></tr><tr><td> yAxis_title_text</td><td> Titel der y-Achse</td><td> Zeichenfolge</td><td></td></tr><tr><td> yAxis_title_color</td><td> Überschreiben Sie die Titelfarbe der y-Achse</td><td> Farbe</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> yAxis_title_fontFamily</td><td> Überschreiben Sie die Schriftfamilie der Titel auf der y-Achse</td><td> Zeichenfolge</td><td></td></tr><tr><td> yAxis_title_fontSize</td><td> Überschreiben Sie die Schriftgröße des Titels der y-Achse</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> yAxis_min</td><td> Minimalwert der y-Achse</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> yAxis_max</td><td> Maximalwert der y-Achse</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> yAxis_step</td><td> Schritte der y-Achse</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> yAxis_minimumDigits</td><td> Mindestanzahl von Dezimalstellen auf der y-Achse</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> yAxis_maximumDigits</td><td> y-Achse maximale Anzahl von Dezimalstellen</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> yAxis_maxSteps</td><td> maximale Schritte der y-Achse</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> yAxis_distance</td><td> y-Achsenwert Abstand zur Achse überschreiben</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> yAxis_appendix</td><td> Fügen Sie Text an den Wert der y-Achse an</td><td> Zeichenfolge</td><td></td></tr><tr><td> yAxis_color</td><td> Überschreiben Sie die Farbe des y-Achsenwerts</td><td> Farbe</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> yAxis_fontFamily</td><td> Überschreiben Sie die Schriftfamilie der y-Achsenwerte</td><td> Zeichenfolge</td><td></td></tr><tr><td> yAxis_fontSize</td><td> Überschreiben Sie die Schriftgröße des y-Achsenwerts</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> yAxis_zeroLineWidth</td><td> Breite der Nulllinie der y-Achse</td><td> Nummer</td><td> 0,3, 1,5, 4, ...</td></tr><tr><td> yAxis_zeroLineColor</td><td> Nulllinienfarbe der y-Achse</td><td> Farbe</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> yAxis_gridLines_show</td><td> Y-Achsen-Gitterlinien anzeigen</td><td> Boolescher Wert</td><td> Falsch Richtig</td></tr><tr><td> yAxis_gridLines_color</td><td> Farbe der Gitterlinien der y-Achse</td><td> Farbe</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr><tr><td> yAxis_gridLines_lineWidth</td><td> Breite der Gitterlinien</td><td> Nummer</td><td> 0 - 1</td></tr><tr><td> yAxis_gridLines_border_show</td><td> Rand der Gitterlinien der y-Achse anzeigen</td><td> Boolescher Wert</td><td> Falsch Richtig</td></tr><tr><td> yAxis_gridLines_ticks_show</td><td> Zeige Tick-Intervall-Ticks auf der y-Achse</td><td> Boolescher Wert</td><td> Falsch Richtig</td></tr><tr><td> yAxis_gridLines_ticks_length</td><td> Länge der Y-Achsen-Gitter-Ticks</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr></tbody></table></details>
 
-#### Farbverlauf
+<! - in toc weglassen ->
+
+##### Farbverlauf
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> Wert</td><td> Wert, bei dem Farbe angewendet werden soll</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> Farbe</td><td> Farbe für Wert</td><td> Farbe</td><td> hex (# 44739e), rgb (20, 50, 200), rgba (20, 50, 200, 0,5)</td></tr></tbody></table></details>
 
-### Diagramm mit Zeitachse
-JSON Chart unterstützt Daten mit einem Zeitstempel. Um dies zu verwenden, muss das Datenarray Werte für Zeitstempel (x-Achsenwert) und Wert (y-Achsenwert) haben.
+<! - in toc weglassen ->
 
-#### Werte mit Zeitstempel
+##### Diagramm mit Zeitachse JSON-Diagramm unterstützt Daten mit einem Zeitstempel. Um dies zu verwenden, muss das Datenarray Werte für Zeitstempel (x-Achsenwert) und Wert (y-Achsenwert) haben.
+###### Werte mit Zeitstempel
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> t</td><td> Zeitstempel - xAxis-Wert</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr><tr><td> y</td><td> Wert für Zeitstempel - yAxis-Wert</td><td> Nummer</td><td> 1, 2, 5, ...</td></tr></tbody></table></details>
 
-#### X-Achseneinstellungen für Daten mit Zeitstempel
+###### X-Achseneinstellungen für Daten mit Zeitstempel
 <details><table><thead><tr><th>Eigentum</th><th> Beschreibung</th><th> Art</th><th> Werte</th></tr></thead><tbody><tr><td> xAxis_bounds</td><td> Skalengrenzstrategie<br><br> &#39;Daten&#39;: Stellt sicher, dass die Daten vollständig sichtbar sind und Beschriftungen außerhalb entfernt werden<br> &#39;Ticks&#39;: Stellt sicher, dass die Ticks vollständig sichtbar sind und die Daten außerhalb abgeschnitten werden</td><td> String</td><td> Daten, Zecken</td></tr><tr><td> xAxis_timeFormats</td><td> Zeitformate für die x-Achse</td><td> Objekt</td><td> Zeitformate müssen für alle Zeiteinheiten eingegeben werden, <a href="https://github.com/Scrounger/ioBroker.vis-materialdesign/blob/c677220868961b3cf0b153fb8bf04e13b4475c09/widgets/materialdesign/js/materialdesign.chart.js#L805">die folgenden Zeiteinheiten sind zulässig.</a><br> Genehmigte Zeitformate müssen gemäß der Bibliothek moment.js eingegeben werden, <a href="https://momentjs.com/docs/#/displaying/">siehe Link</a></td></tr><tr><td> xAxis_tooltip_timeFormats</td><td> Zeitformate für die x-Achse</td><td> String</td><td> Genehmigte Zeitformate müssen gemäß der Bibliothek moment.js eingegeben werden, <a href="https://momentjs.com/docs/#/displaying/">siehe Link</a></td></tr><tr><td> xAxis_time_unit</td><td> Erzwinge das Zeitformat für die x-Achse</td><td> String</td><td> Folgende Einheiten sind erlaubt, <a href="https://www.chartjs.org/docs/latest/axes/cartesian/time.html#time-units">siehe Link</a></td></tr></tbody></table></details>
+
+<! - in toc weglassen ->
+
+#### Beispiel
+<details> <pre><code> { "axisLabels": ["1h", "2h", "3h", "4h", "5h", "6h", "7h", "8h", "9h", "10h", "11h", "12h", "13h", "14h", "17h", "18h", "19h", "20h", "21h", "22h", "23h", "24h"], "graphs": [ { "data": [19, 19, 18, 19, 19, 20, 20, 21, 22, 24, 24, 24, 23, 22, 23, 23, 24, 23, 23, 22, 22, 21, 20, 20], "type": "line", "color": "gray", "legendText": "Temperatur", "line_pointSizeHover": 5, "line_pointSize": 0, "line_Tension": 0.3, "yAxis_show": false, "yAxis_gridLines_show": false, "yAxis_gridLines_ticks_length": 5, "yAxis_min": 0, "yAxis_max": 30, "yAxis_step": 5, "yAxis_position": "left", "yAxis_appendix": " °C", "yAxis_zeroLineWidth": 0.1, "yAxis_zeroLineColor": "black", "displayOrder": 0, "tooltip_AppendText": " °C", "datalabel_backgroundColor": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "datalabel_color": "white", "datalabel_offset": -10, "datalabel_fontFamily": "RobotoCondensed-Light", "datalabel_fontSize": 12, "datalabel_borderRadius": 6, "datalabel_show": "auto", "line_PointColor": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "line_PointColorBorder": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "line_PointColorHover": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "line_PointColorBorderHover": ["#2b9a44", "#2b9a44", "#3aa35b", "#2b9a44", "#2b9a44", "#1d922e", "#1d922e", "#0e8917", "#008000", "#668f00", "#668f00", "#668f00", "#338700", "#008000", "#338700", "#338700", "#668f00", "#338700", "#338700", "#008000", "#008000", "#0e8917", "#1d922e", "#1d922e"], "use_gradient_color": true, "gradient_color": [{ "value": -20, "color": "#5b2c6f66" }, { "value": 0, "color": "#2874a666" }, { "value": 14, "color": "#73c6b666" }, { "value": 22, "color": "#00800066" }, { "value": 27, "color": "#ffa50066" }, { "value": 35, "color": "#ff000066" } ], "use_line_gradient_fill_color": true, "line_gradient_fill_color": [{ "value": -20, "color": "#5b2c6f66" }, { "value": 0, "color": "#2874a666" }, { "value": 14, "color": "#73c6b666" }, { "value": 22, "color": "#00800066" }, { "value": 27, "color": "#ffa50066" }, { "value": 35, "color": "#ff000066" } ] }, { "data": [50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 19, 33, 36, 23, 14, 16, 34, 46, 40, 24, 22], "type": "line", "color": "#0d47a1", "legendText": "Regenwahrscheinlichkeit", "line_UseFillColor": true, "line_pointSize": 0, "line_pointSizeHover": 5, "yAxis_min": 0, "yAxis_max": 100, "yAxis_maxSteps": 10, "yAxis_position": "left", "yAxis_gridLines_show": false, "yAxis_gridLines_border_show": false, "yAxis_zeroLineWidth": 0.1, "yAxis_zeroLineColor": "black", "yAxis_appendix": " %", "displayOrder": 1, "tooltip_AppendText": " %", "datalabel_show": false }, { "data": ["0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "0", "1.3", "2.5", 0, 1.9, 1.17, 0, 0, 0, 0.18, 0.7, 0.2, 0, 0], "type": "bar", "color": "#6dd600", "legendText": "Niederschlag", "yAxis_min": 0, "yAxis_max": 5, "yAxis_maxSteps": 10, "yAxis_position": "right", "yAxis_gridLines_show": false, "yAxis_appendix": " mm", "yAxis_gridLines_border_show": false, "yAxis_zeroLineWidth": 0.1, "yAxis_zeroLineColor": "black", "displayOrder": 1, "tooltip_AppendText": " mm", "datalabel_show": false } ] }
+
+</ pre> </ code> </ details>
 
 ## Tabelle
 ![Logo](../../../en/adapterref/iobroker.vis-materialdesign/doc/en/media/table.gif)

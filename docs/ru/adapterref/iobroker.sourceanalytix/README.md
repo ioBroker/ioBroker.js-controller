@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sourceanalytix/README.md
 title: ИсточникAnalytix
-hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
+hash: LsdLv+thJpq7Wp2JfE8oOVuq8y3/0IuAV6u17f39qBo=
 ---
 # SourceAnalytix
 
@@ -12,7 +12,7 @@ hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
 ![Количество установок (последнее)](http://iobroker.live/badges/sourceanalytix-installed.svg)
 ![Количество установок (стабильно)](http://iobroker.live/badges/sourceanalytix-stable.svg)
 ![Статус зависимости](https://img.shields.io/david/iobroker-community-adapters/iobroker.sourceanalytix.svg)
-![NPM](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
+![НПМ](https://nodei.co/npm/iobroker.sourceanalytix.png?downloads=true)
 
 [![Статус перевода] (https://weblate.iobroker.net/widgets/adapters/-/sourceanalytix/svg-badge.svg)](https://weblate.iobroker.net/engage/adapters/?utm_source=widget) ![Тестирование и выпуск](https://github.com/iobroker-community-adapters/ioBroker.coronavirus-statistics/workflows/Test%20and%20Release/badge.svg) **Этот адаптер использует службу [Sentry.io](https://sentry.io) для автоматического сообщения мне как разработчику об исключениях, ошибках кода и новых схемах устройств.** Подробнее см. Ниже!
 
@@ -33,7 +33,7 @@ hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
 Если у вас есть какие-либо вопросы, пожалуйста, прочтите сначала **[Поиск проблемы](#Troubleshooting)**
 
 ## Как
-### Состояние-активация! ![Основные параметры](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/settingKey.png)
+### Состояние-Активация! ![Основные параметры](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/settingKey.png)
 ![Основные параметры](../../../en/adapterref/iobroker.sourceanalytix/admin/readmeDocu/stateSettings.png)
 
 | Элемент конфигурации | Описание |
@@ -43,7 +43,7 @@ hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
 | Выберите тип | обязательно, выберите тип расчета для расчета в соответствии с [Цена-определения](#Price-Definitions) |
 | Выберите блок | по умолчанию: автоматически, при необходимости выберите вручную (см. журналы) |
 | Стоимость | Расчет стоимости |
-| с базовым зарядом | Включая базовую плату при расчете стоимости |
+| с базовым зарядом | включая базовую плату при расчете стоимости |
 | потребление | рассчитать данные о потреблении |
 | значения счетчика | сохранить текущие значения счетчиков |
 | Показания счетчика в </br> начале x: | Начальное значение счетчика за определенный период для обработки </br> текущего расчета - startValue |
@@ -61,7 +61,7 @@ hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
 > ToDo: Опишите логику <
 
 #### ValueTransformation
-&gt; Задачи: ссылка на документ в библиотеке (также в библиотеке документов!)<br/> &gt; Задачи: Документируйте преобразование ватт в кВтч<br/> &gt; ToDo: преобразование единиц документа (например, ватт, в Втч в кВтч<br/>
+&gt; Задачи: ссылка на документ в библиотеке (также в библиотеке документов!)<br/> &gt; Задачи: Документируйте преобразование ватт в кВтч<br/> &gt; Задачи: преобразование единиц измерения документа (например, ватт в Втч в кВтч<br/>
 
 #### Год-Статистика
 Хранить статистическую информацию о потреблении / ценах и / или затратах / доходах на уровне года<br/> &gt;&gt; устройство.&gt; этот год &lt;.&gt; категория &lt;.&gt; выбранный период
@@ -75,7 +75,7 @@ hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
 
 &gt; #### *Недели* br/> &gt; Устройство &lt;.&gt; Год &lt;.&gt; Расходы / прибыль<br/> &gt; потребление / доставка &lt;.weeks. **weekNr** &lt;&gt; #### *Месяцы* br/> &gt; Устройство &lt;.&gt; Год &lt;.&gt; Расходы / прибыль<br/> &gt; потребление / доставка &lt;.months. **Month** &lt;&gt; #### *Quarters* br/> &gt; Устройство &lt;.&gt; Год &lt;.&gt; Затраты / прибыль&gt; потребление / доставка &lt;. Четверть. **Qx** &lt;
 
-Эта информация обычно используется для ежедневного / еженедельного / ежемесячного расчета<br/> расходы / доходы и / или потребление / доставка сгруппированы по заданному периоду
+Эта информация обычно используется для ежедневного / еженедельного / ежемесячного расчета<br/> расходы / прибыль и / или потребление / доставка сгруппированы по заданному периоду
 
 > ToDo: добавить скриншоты <
 
@@ -101,7 +101,7 @@ hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
     * Проверьте, выбран ли тип стоимости {Проблема 2}
     * Проверьте, присутствует ли действительное определение цены для типа затрат {Проблема 3}
     * Проверить, не превышает ли предыдущее значение инициализации текущее накопленное значение {Проблема 4}
-    * Проверьте, действительно ли известно о предыдущем сбросе устройства> текущее суммарное значение {Проблема 5}
+    * Проверьте, действительно ли известно о предыдущем сбросе устройства> текущее накопленное значение {Проблема 5}
     * Хранить все данные в памяти
 
 4) Инициализируйте состояния для каждого состояния:
@@ -114,7 +114,7 @@ hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
 
     * Проверить правильность информации
     * преобразовать значение в соответствующую единицу (единицу состояния в единицу, выбранную в конфигурации состояния)
-  * проверьте правильность ввода значения (текущее значение **** предыдущее значение) {см. **7 При сбросе устройства** Проблема 8}
+  * проверьте правильность ввода значения (текущее значение **** previousInit значение) {См. **7 При сбросе устройства** Проблема 8}
     * рассчитать {выпуск 9}
       * Для ватт: вычислить ватт в кВтч, вычислить накопленное чтение = текущее считывание + накопленное считывание
       * Для других: вычислить cumulatedReading = currentReading + previousDeviceReset (если есть)
@@ -128,7 +128,7 @@ hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
 
     * Сохранить текущее значение как значение previousDeviceReset и previousInit </br>
 
-Если устройство снова будет перезагружено (обнаружено значением previousInit), </br> currentReading + previousDeviceReset сохраняется как previousDeviceReset.
+Если устройство снова будет перезагружено (обнаружено по значению previousInit), </br> currentReading + previousDeviceReset сохраняется как previousDeviceReset.
 
 ** Проблема 1 ** Не определены единицы для ....., невозможно выполнить вычисления </br> Пожалуйста, выберите правильную единицу в настройках состояния
 
@@ -140,7 +140,7 @@ hash: cJ0zcRjinMYceOqlpu5dgtyyFMRwSAEG4RjYQcqZcw8=
 
 ```"valueAtDeviceInit": xxxx```
 
-** Проблема 5 ** Проверьте настройки для .....! Known valueAtDeviceReset: .....> известное кумулятивное значение ..... не может быть продолжено </br> Известное значение инициализации> известные накопленные значения, это можно решить </br> удалив или изменив эти объекты в необработанном объекте состояния
+** Проблема 5 ** Проверьте настройки для .....! Known valueAtDeviceReset: .....> известное кумулятивное значение ..... невозможно продолжить </br> Известное значение инициализации> известные накопленные значения, это можно решить </br>, удалив или изменив эти объекты в необработанном объекте состояния
 
 ```valueAtDeviceReset": xxxx```
 
@@ -209,39 +209,9 @@ Sentry.io - это сервис, позволяющий разработчика
 <! - Заполнитель для следующей версии (в начале строки):
 
 ### __РАБОТА В ПРОЦЕССЕ__ ->
-### 0.4.8-beta.0 (18.01.2021)
-* (Голландец) Исправление: Форматирование новостей
-* (Голландец) Исправление: удаление состояний в функции создания
-* (Голландец) Исправление: неправильная инициализация состояний
-* (Голландец) Исправление: Избегайте значений NULL и 0 при ночном сбросе
-* (Голландец) Исправление: неправильная инициализация для значений ватт с 0 входом
-* (Голландец) Исправление: Создавать только накопленные ХХХ статистики за год, если активировано
-* (Голландец) реализовать совокупные значения категорий в статистике года
-
-### 0.4.8-alpha.15 (2021-01-16)
-* (Голландец) Исправление: проблема с загрузкой массива при первой обработке вычислений
-* (Голландец) Исправление: не суммировать значение для объекта
-
-### 0.4.8-alpha.14 (2021-01-16)
-* (Голландец) изменить уровень журнала по умолчанию на info
-* (Голландец) Исправление: четверть.1 не имеет существующего объекта
-* (Голландец) Исправление: 05_currentYear не имеет существующего объекта
-* (Голландец) Исправление: ошибка караула: псевдоним xxxxx не имеет цели
-* (Голландец) Исправление: неправильное предупреждающее сообщение при изменении конфигурации объектов.
-
-### 0.4.8-alpha.13 (15.01.2021)
-* (Голландец) Исправление: ошибка {не является числом, невозможно продолжить вычисление}, если значение = 0
 
 ## Changelog
-### 0.4.8-alpha.12 (2021-01-14)
-* (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
-* (Dutchman) Bugfix : Ensure a proper reset and init of Watt values
-
-### 0.4.8-alpha.10 (2021-01-14)
-* (Dutchman) Bugfix : Avoid loop if init value is set and > reading
-* (Dutchman) Bugfix : Throw error if value is NULL for troubleshooting instead of handling incorrect calculation
-
-### 0.4.8-alpha.9 (2021-01-13)
+### 0.4.8 (2021-01-20)
 #### Breaking changes
 * (Dutchman) Breaking!!! Move current values to currentYear [#135](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/135)
 * (Dutchman & ToTXR4Y) MajorChange !: Replaced **Current_Reading** with **CumulativeReading** [226](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/226)
@@ -252,11 +222,13 @@ Sentry.io - это сервис, позволяющий разработчика
 * (Dutchman) (debug) Logging improved
 * (Dutchman) Weekly reset of weekdays
 * (Dutchman) Calculation for all states
+* (Dutchman) change default log-level to info
 * (Dutchman) Calculation for previous states [#242](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/242)
 * (Dutchman) Optimized error reporting (Sentry)
 * (Dutchman) Removed unneeded settings in configuration
 * (Dutchman) Implemented new configuration for "currentYear"
 * (Dutchman & ToTXR4Y) implement "05_currentYear" in year root folder [#280](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/280)
+* (Dutchman) Implemented category cumulative values under year statistics
 * (Dutchman & ToTXR4Y) implement cached memory slot for initialisation value [#226](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/226)
 * (Dutchman & ToTXR4Y) Implement log messages if state attributes are changed
 * (Dutchman & ToTXR4Y) Implement automatically detection of currency from admin settings [#247](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/247)
@@ -264,14 +236,29 @@ Sentry.io - это сервис, позволяющий разработчика
 #### BugFixes
 * (Dutchman) Bugfix : dev: 0 bug workaround
 * (Dutchman) Do not round cumulated reading
-* (Dutchman) Bugfix : Calculations for "previous" values    
+* (Dutchman) Bugfix : delete states in create function
+* (Dutchman) Bugfix : quarters.1 has no existing object
+* (Dutchman) Bugfix : Calculations for "previous" values
+* (Dutchman) Bugfix : Incorrect initialisation for states
+* (Dutchman) Bugfix : Avoid NULL & 0 values at night reset
+* (Dutchman) Bugfix : 05_currentYear has no existing object
 * (Dutchman) Bugfix : Avoid calculation of non-Initialised states
 * (Dutchman) Bugfix : Cannot read property 'stateDetails' of null
 * (Dutchman) Correct error handling of "Watt" state initialisation
+* (Dutchman) Bugfix : Ensure a proper reset and init of Watt values
+* (Dutchman) Bugfix : Avoid loop if init value is set and > reading
+* (Dutchman) Bugfix : Caught sentry error : Alias xxxxx has no target
 * (Dutchman & ToTXR4Y) Bugfix : Rebuild calculation logic which solves :
   * Watt values : Ensure proper reading start (0 instead of current watt value)
     Watt values : Ensure proper reading calculation with exponent (0 instead of current watt value) [#281](https://github.com/iobroker-community-adapters/ioBroker.sourceanalytix/issues/281)
   * All calculations : correct handling  of device reset (if value is reset or 0)
+* (Dutchman) Bugfix : Incorrect initialisation for Watt values with 0 input
+* (Dutchman) Bugfix : Only create cumulatedXXX in year statistics if activated
+* (Dutchman) Bugfix : Incorrect warn message if configuration for objects is changed
+* (Dutchman) Bugfix : Error {Is not a number, cannot continue calculation} if value =  0
+* (Dutchman) Bugfix : Throw error if value is NULL for troubleshooting instead of handling incorrect calculation
+* (Dutchman) Bugfix : Ensure daily reset does not destroy cumulative memory value (Fixes NULL values for Watt after night reset)
+
 
 ### 0.4.7 (2020-09-15) Solved NULL error's & daily resets
 * (Dutchman) Implement Sentry

@@ -115,6 +115,12 @@ The adapter will read all actual values for IDs defined in this scene and save i
 
 ## Changelog
 
+### 2.3.6 (2021-01-22)
+* (Apollon77) Check state id before getting value (Sentry IOBROKER-SCENES-F)
+
+### 2.3.5 (2021-01-22)
+* (Apollon77) Add error logging if invalid ids are configured for scenes (Sentry IOBROKER-SCENES-Y)
+
 ### 2.3.4 (2021-01-16)
 * (Apollon77) Prevent crash case (Sentry IOBROKER-SCENES-X, IOBROKER-SCENES-V)
 

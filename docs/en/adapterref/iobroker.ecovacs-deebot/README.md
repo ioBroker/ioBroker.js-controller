@@ -20,16 +20,16 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 * Deebot Slim 2
 * Deebot N79 series
 * Deebot 601
-* Deebot 710/711
 * Deebot U2
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 * Deebot Ozmo T8 AIVI
 * Deebot Ozmo T8 (+)
 
-### These models should work
+### These models should work (partially)
 * Deebot M88
 * Deebot 600/605
+* Deebot 710/711
 * Deebot Ozmo Slim 10
 * Deebot U2 Pro/Power
 
@@ -55,8 +55,7 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 ## Known issues
 
 * For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours
-* The "pause" function does not work with Deebot 710/711
-* The "stop" function does not work with Deebot 711s
+* Some cleaning functions may not work with 710/711/711s. Please use version 0.5.8 for now.
 * The "edge" function does not work with Deebot U2 (starts auto clean instead)
 
 ## FAQ
@@ -65,10 +64,10 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
-### 1.0.10 (alpha)
-* Using library version 0.5.4 (0.5.4-alpha.1)
-* Added available spot area boundaries to "map" channel (read only)
+### 1.0.10
+* Using library version 0.5.4
 * Several improvements and fixes
+* Added available spot area boundaries to "map" channel (read only)
 
 ### 1.0.9
 * Using library version 0.5.3

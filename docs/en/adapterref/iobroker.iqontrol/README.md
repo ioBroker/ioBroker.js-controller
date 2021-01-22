@@ -408,7 +408,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* 'widget-urlparameters'
 		* syntax: ``<meta name="widget-urlparameters" content="parameter/default value/description/type;parameter2/default value2/description2/type2"/>``
 		* The user will be asked for these parameter when chosing the widget as URL or BACKGROUND_URL or autocreates a widget
-		* ``type`` is optional and may be ``text`` (this is dafault), ``number``, ``checkbox``, ``color``, ``select`` or ``multipleSelect``
+		* ``type`` is optional and may be ``text`` (this is dafault), ``number``, ``checkbox``, ``color``, ``select``, ``multipleSelect`` or ``historyInstance``
 		    * If type is ``select`` or ``multipleSelect`` then you need to specify the possible options by adding ``/<selectOptions>``, where ``<selectOptions>`` is a string of the format ``<value1>,<caption1>/<value2>,<caption2>/...``
 		    * If type is ``number`` then can specify min, max and step-width by adding ``/<numberOptions>``, where ``<numberOptions>`` is a string of the format ``<min>,<max>,<step>``
 		* All these parameters will be given to the widget-website via an url-parameter-string (like ``widget.html?parameter=value&parameter2=value2``)
@@ -989,7 +989,7 @@ However, not every type makes sense to every role. So the STATE of a switch for 
     * Behaviour can be inverted in the 'General' section of options (use connected instead of unreach)
 * **ENLARGE_TILE**: *boolean* - when true, the tile will be set as enlarged. You can overwrite that by clicking the enlarge/reduce button. But everytime the state of ENLARGE_TILE changes, it will take over control of the tiles enlargement state again. If the role of ENLARGE_TILE is *button*, then every state change will toggle the enlargement state
 * **BADGE**: *number* or *string* - if a value other than zero/false is present, then a badge in the upper left corner is shown with this value
-    * **BADGE_COLOR*: *string* - any valid html-color-string (like 'green', '#00FF00', 'rgba(0,255,0,0.5)' and so on) that represents the color of the badge. If not present or invalid red will be used.
+    * **BADGE_COLOR*: *string* - any valid html-color-string (like 'green', '#00FF00', 'rgba(0,255,0,0.5)' and so on) that represents the color of the badge. If not present or invalid red with 50% transparency will be used.
 
 ### Link to other view:
 * Has no further states
@@ -1024,12 +1024,13 @@ Optional you can define the following states:
         * **RGBW** / **#RGBW**: instead of using HUE, SATURATION, COLOR_BRIGHTNESS and WHITE_BRIGHTNESS you can use the RGBW-Format (hex), optional with leading '#'
         * **RGBWWCW** / **#RGBWWCW** / **RGBCWWW** / **#RGBCWWW**: instead of HUE, SATURATION, COLOR_BRIGHTNESS, CT and WHITE_BRIGHTNESS you can use the RGBWWCW- or RGBCWWW-Format (hex, WW = warm white, CW = cold white), optional with leading '#'
         * **RGB (Hue only)** / **#RGB (Hue only)**: instead of using HUE you can use the RGB (Hue only)-Format (hex), optional with leading '#'. In this special case the RGB-Format will only accept pure saturated colors of the hue-color-circle. Mixed white is not allowed
-        * **Hue for Milight**: This is the Hue-Value for Milight-Devices, with use another starting-point in the hue color-cirlce: 
+        * **Hue for Milight**: This is the Hue-Value for Milight-Devices (v5), with use another starting-point in the hue color-cirlce: 
             ````
     		MilightHue = modulo(66 - (hue / 3.60), 100) * 2.55; 
     		hue = modulo(-3.60 * (MilightHue/2.55 - 66), 360);
     		function modulo(n, m){ return ((n % m) + m) %m; }
             ````
+        * **HHSSBB for Tuya**: 12 digit long hex-string, representing hue (HH = 0000-016d [0-365]), saturation (SS = 0000-03e8 [0-1000]) and color-brightness (BB =  0000-03e8 [0-1000])
 	Keep in Mind: Conversion to alternative colorspace is done by frontend, so it is only active, if iQontrol is opened somewhere. Therefore you can't use it as a converter for colorspaces. To avoid conversation-loops it is recommendet to either use the original colorspace-datapoints (HUE, SATURATION, COLOR_BRIGHTNESS, CT, WHITE_BRIGHTNESS) *or* the alternative colorspace-datapoint to *replace* these datapoints. 
 * Effect-Mode:
     * **EFFECT**: *value-list* - the effect to play
@@ -1196,10 +1197,16 @@ This device has some special predefined size- and display-settings to show a web
     
 ## Changelog
 
-### 1.5.6 dev
+### 1.5.6 (2021-01-21)
 * (sbormann) Fixed toolbar hiding issue if popup with additional controls is closed early.
 * (sbormann) Fixed ALTERNATIVE_COLORSPACE only working after opening the view a second time.
 * (sbormann) Added badge.
+* (sbormann) Added predefined wallpapers to dropdown for devices background images.
+* (sbormann) Redesigned dropdown for toolbar-icons to show thumbnails and added ability to add custom icons.
+* (sbormann) Added option to show toolbar in one singe line.
+* (sbormann) Added HHSSBB for Tuya to ALTERNATIVE_COLORSPACEs.
+* (sbormann) Added historyInstance to options of FLOT-Chart-Widget.
+* (sbormann) Fixed changing commonRole breaks symbolic links.
 
 ### 1.5.5 (2021-01-07)
 * (sbormann) Added optional headings to ADDITIONAL_CONTROLS, the appereance can be controlled by an option.

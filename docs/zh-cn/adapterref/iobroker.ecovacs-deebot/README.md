@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: xCtvm1zWc3bAV4ojpuhej65d/KtQPOCgIAP6XKmqWQw=
+hash: /M7vUZmfoQZYH5UIo1KeJ6Nuao1/i/reEFgS8VUuH0w=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -26,16 +26,16 @@ hash: xCtvm1zWc3bAV4ojpuhej65d/KtQPOCgIAP6XKmqWQw=
 * Deebot苗条2
 * Deebot N79系列
 * Deebot 601
-* Deebot 710/711
 * Deebot U2
 * Deebot奥兹莫610
 * Deebot Ozmo 900
 * Deebot Ozmo T8 AIVI
 * Deebot Ozmo T8（+）
 
-###这些模型应该可以工作
+###这些模型应该工作（部分）
 * Deebot M88
 * Deebot 600/605
+* Deebot 710/711
 * Deebot Ozmo苗条10
 * Deebot U2 Pro /电源
 
@@ -55,12 +55,11 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 有关其他系统的说明，请访问https://www.npmjs.com/package/canvas#compiling
 
 ##用法
-*有关如何使用此适配器的信息可在[此处]（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）中找到
+*有关如何使用此适配器的信息可以在[此处]找到（https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki）
 
 ＃＃ 已知的问题
 *对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告在大约30分钟后连接断开。 24小时
-*“暂停”功能不适用于Deebot 710/711
-*“停止”功能不适用于Deebot 711s
+*某些清洁功能可能不适用于710/711 / 711s。请暂时使用0.5.8版。
 *“边缘”功能不适用于Deebot U2（而是启动自动清洁）
 
 ＃＃ 常问问题
@@ -70,6 +69,17 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 我绝不隶属于ECOVACS。
 
 ## Changelog
+
+### 1.0.10
+* Using library version 0.5.4
+* Several improvements and fixes
+* Added available spot area boundaries to "map" channel (read only)
+
+### 1.0.9
+* Using library version 0.5.3
+* Added some experimental features (for a few models only)
+* Added option for virtual boundaries and some further improvements to adapter config
+* Some improvements for js-controller 3.2.x
 
 ### 1.0.8
 * Using library version 0.5.2 (0.5.2-beta.1)

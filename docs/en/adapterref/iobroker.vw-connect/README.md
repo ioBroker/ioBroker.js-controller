@@ -13,7 +13,7 @@
 
 ## vw-connect adapter for ioBroker
 
-Adapter for VW We Connect, We Connect ID, myAudi, Skoda Connect, Seat Connect and We Connect Go
+Adapter for VW We Connect, We Connect ID, We Charge, myAudi, Skoda Connect, Seat Connect and We Connect Go
 
 Please update your system on Node 10.
 <https://forum.iobroker.net/topic/22867/how-to-node-js-f%C3%BCr-iobroker-richtig-updaten>
@@ -111,6 +111,10 @@ Door and window states:
 ```
 
 ## Changelog
+
+### 0.0.25
+
+- add we charge 
 
 ### 0.0.24
 

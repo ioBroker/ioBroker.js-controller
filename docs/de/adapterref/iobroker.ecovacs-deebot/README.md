@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: xCtvm1zWc3bAV4ojpuhej65d/KtQPOCgIAP6XKmqWQw=
+hash: /M7vUZmfoQZYH5UIo1KeJ6Nuao1/i/reEFgS8VUuH0w=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -26,16 +26,16 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 * Deebot Slim 2
 * Deebot N79-Serie
 * Deebot 601
-* Deebot 710/711
 * Deebot U2
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 * Deebot Ozmo T8 AIVI
 * Deebot Ozmo T8 (+)
 
-### Diese Modelle sollten funktionieren
+### Diese Modelle sollten (teilweise) funktionieren
 * Deebot M88
 * Deebot 600/605
+* Deebot 710/711
 * Deebot Ozmo Slim 10
 * Deebot U2 Pro / Power
 
@@ -59,8 +59,7 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 
 ## Bekannte Probleme
 * Für den Deebot Ozmo 930 wird empfohlen, einmal täglich [einen Neustart zu planen] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content), da es einige gibt meldet, dass die Verbindung nach ca. 24 Stunden
-* Die Funktion "Pause" funktioniert nicht mit Deebot 710/711
-* Die "Stop" -Funktion funktioniert nicht mit Deebot 711s
+* Einige Reinigungsfunktionen funktionieren möglicherweise nicht mit 710/711 / 711s. Bitte verwenden Sie vorerst Version 0.5.8.
 * Die "Kanten" -Funktion funktioniert nicht mit Deebot U2 (startet stattdessen die automatische Reinigung)
 
 ## FAQ
@@ -70,6 +69,17 @@ Anweisungen für andere Systeme finden Sie unter https://www.npmjs.com/package/c
 Ich bin in keiner Weise mit ECOVACS verbunden.
 
 ## Changelog
+
+### 1.0.10
+* Using library version 0.5.4
+* Several improvements and fixes
+* Added available spot area boundaries to "map" channel (read only)
+
+### 1.0.9
+* Using library version 0.5.3
+* Added some experimental features (for a few models only)
+* Added option for virtual boundaries and some further improvements to adapter config
+* Some improvements for js-controller 3.2.x
 
 ### 1.0.8
 * Using library version 0.5.2 (0.5.2-beta.1)

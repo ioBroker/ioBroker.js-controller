@@ -171,6 +171,9 @@ is displayed.
     ### __WORK IN PROGRESS__
 -->
 
+### 1.0.6 (2021-01-19)
+* (xenon-s) bugfix: removed incorrect status
+
 ### 1.0.5 (2021-01-16)
 * (xenon-s) bugfix: no messages were sent
 

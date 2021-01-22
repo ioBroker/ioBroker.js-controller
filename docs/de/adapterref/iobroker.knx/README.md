@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: a5XMy2RH028ypMZGZZKBxBTRMvIjemVroqfyQHtWmQM=
+hash: vjCCXJTBzoNWfIuXlN+LgsLK7ydOnA6JPOKBBgmj4uA=
 ---
 ![Logo](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
@@ -37,16 +37,16 @@ Bevor Sie beginnen: Jeder DPT von com.Objects sollte in Ihrem ETS-Projekt festge
 Dies ist normalerweise Port 3671.
 
 ### Phys. EIB-Adresse
-Füllen Sie freie phys. Adresse, die Ihrer KNX-Architektur entspricht, **ABER NICHT die gleiche wie bei Ihrem KNX-Gateway!**
+Füllen Sie freie phys. Adresse, die Ihrer KNX-Architektur entspricht, **ABER NICHT die Adresse Ihres KNX-Gateways!** Darf nicht mit 0 enden !!!
 
 ### Debug-Ebene
-Erweitert den Ausgangspegel des Adapters für Debugging-Zwecke
+Erweitert den Ausgangspegel des Adapters für Debugging-Zwecke.
 
 ### Knxproj hochladen
 Hier können Sie Ihren ETS-Export im Format `knxproj` hochladen.
 
 Nach erfolgreichem Import wird in einem Dialogfeld die Anzahl der importierten Objekte angezeigt. Drücken Sie nun "Speichern & Schließen" und der Adapter sollte starten.
-Beim Starten liest der Adapter alle groupAddresses mit read-Flag. Dies kann eine Weile dauern und Ihren KNX-Bus stark belasten. Die Werte in Ihrem Vis werden jedoch nach dem Start aktualisiert.
+Beim Starten liest der Adapter alle Gruppenadressen mit read-Flag. Dies kann eine Weile dauern und Ihren KNX-Bus stark belasten. Die Werte in Ihrem Vis werden jedoch nach dem Start aktualisiert.
 
 ### Objekte
 Hier ist unter knx.0 der Gruppenadressbaum wie in Ihrem ETS-Projekt.
@@ -58,22 +58,22 @@ Wenn Sie in Ihrem ETS eine Gebäudestruktur mit den entsprechenden Geräten habe
 Wenn der Adapter erfolgreich gestartet wird, stehen Ihre Datenpunkte für alles zur Verfügung, was Sie tun möchten.
 
 ### Datenpunkttypen
-Alle DPTs gemäß "Systemspezifikationen, Interworking, Datenpunkttypen" der KNX Association sind verfügbar. Das bedeutet, dass Sie zwei Arten von Informationen erhalten können: 1) einen Wert oder eine Zeichenfolge 2) durch Kommas getrennte Werte oder ein Array von Werten (im Moment weiß ich nicht, wie ich besser damit umgehen soll).
+Alle DPTs gemäß "Systemspezifikationen, Interworking, Datenpunkttypen" der KNX Association sind verfügbar. Das bedeutet, dass Sie zwei Arten von Informationen erhalten können: 1) einen Wert oder eine Zeichenfolge 2) durch Kommas getrennte Werte oder ein Array von Werten (im Moment weiß ich nicht, wie ich besser damit umgehen soll)
 
 Beispielsweise wird ein DPT5.001 als vorzeichenlose Ganzzahl mit 8-Bit codiert. Dies ergibt einen einzelnen Wert. Der DPT3.007 (Control Dimming) ist als 1Bit (Boolean) + 3Bit (Int ohne Vorzeichen) codiert.
-Dies führt zu f.e. bei Werten wie "0,5", wobei "0" "Abnahme" und "5" die Anzahl der Intervalle bedeutet.
+Dies führt z.B. in einem Wert wie "0,5", wobei "0" "Abnahme" und "5" die Anzahl der Intervalle bedeutet.
 
 ## Wie werden die Datenpunkte müssen
 ### 1) Auslesen aller Kommunikationsobjektreferenzen (im folgenden KOR)
 Es werden die Gruppenaddressreferenz (im folgenden GAR) identifiziert. Ausserdem erhalten der erste gehört die Attribut write = yes und read = no. Alle betreffenden GAR IDs werden nur den DPT empfangen
 
 ### 2) Erzeugen der Gruppenadressstruktur (im folgenden GAS)
-Hier wird die GAS-Anzeige der GAR-IDs gehört und auch die DPT-Rechte, fällt stirbt unter 1) noch nicht erwartet ist.
+Hier wird die GAS-Anzeige der GAR-IDs erhalten und auch die DPTs verloren, fällt stirbt unter 1) noch nicht erwartet ist.
 
 ### 3) Herausfinden der Schalt- und Statusaddressen
-Im ETS-Export sind die Schalt- und Statusadressen nicht hinterlegt. Somit führe ich eine Ansichtsprüfung aller Gruppenadressnamen durch mit der Auswertung auf Status und Staat.
-Wird ein Pärchen gefunden, wird mehr als 90% gefunden, dann wird entschieden, das die GA1 die Schaltadresse und GA2 die Statusadresse ist. Dabei heißt GA1 das schreiben = wahr und lesen = falsch und GA2 das schreiben = falsch und lesen = wahr.
-Ausserdem werden die DPT abgezählten aus der entsprechendenig korrespondierenden GA. Aus diesem Grund ist es anders, Pärchen zu finden, wenn die Gruppenadressbeschriftungen nicht konsistent sind.
+Im ETS-Export sind die Schalt- und Statusadressen nicht hinterlegt. Somit führe ich eine Betrachtungsprüfung aller Gruppenadressnamen durch mit der Auswertung auf Status und Staat.
+Wird ein Pärchen gefunden, wird mehr als 90% gefunden, dann wird entschieden, dass die GA1 die Schaltadresse und GA2 die Statusadresse ist. Dabei heißt GA1 das schreiben = wahr und lesen = falsch und GA2 das schreiben = falsch und lesen = wahr.
+Werden werden die DPT abgeklagt aus der politischen korrespondierenden GA. Aus diesem Grund ist es anders, Pärchen zu finden, wenn die Gruppenadressbeschriftungen nicht konsistent sind.
 
 Weiterhin werden die Flaggen in den Gerätekonfigurationen betrachtet. Dabei werden die Flaggen wie folgt gehört:
 
@@ -86,13 +86,13 @@ Weiterhin werden die Flaggen in den Gerätekonfigurationen betrachtet. Dabei wer
 | - | - | x | x | - | der Wert wird über GroupValueResponse aktualisiert |
 | x | - | x | x | x | ein Trigger bezieht sich auf GroupValueRead aus |
 
-### 4) Erzeugen der Datenpunktpaaren
-Ein DPP wird erledigt, wenn die GA, GAR und der DPT gültig sind. Mit diesen DPP arbeiten der Adapter. Fehlen auch die DPTs in einer GA, weil sie auf keine der o. A. Wege gefunden werden können, so wird für diese GA kein DPP gewählt und ist im Weiteren nicht nutzbar.
+### 4) Erzeugen der Datenpunktpaare (im offenen DPP)
+Ein DPP wird erledigt, wenn die GA, GAR und der DPT gültig sind. Mit diesen DPP arbeiten der Adapter. Fehlt auch der DPT in einer GA, weil er auf keine der o. A. Wege gefunden werden können, so wird für diese GA kein DPP gewählt und sie ist im Weiteren nicht nutzbar.
 
-Im Idealfall werden somit für einen Schaltkanal 2 DPP erforderlich. Das erste ist das Schalten. In diesem ist die GAR ID des Status DPP hinterlegt. Das zweite ist dann das Status DPP ohne weitere Refenrenz.
+Im Idealfall werden somit für einen Schaltkanal 2 DPP erforderlich. Das erste ist das Schalten. In diesem ist die GAR ID des Status DPP hinterlegt. Das zweite ist dann das Status DPP ohne weitere Referenz.
 
 ## Beim Start des Adapters
-Alle mit dem Lesen-Flag werden DPP werden beim Start abgefragt. Dies verursacht u.U. eine erhöhte Buslast und gehört einen Moment. Im Anschluss sind aber alle wichtigen Werte möglich.
+Alle mit dem Lesen-Flag markierten DPP werden beim Start abgefragt. Dies verursacht u.U. eine erhöhte Buslast und gehört einen Moment. Im Anschluss sind aber alle wichtigen Werte möglich.
 
 ## (versteckt) Funktionen:
 Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekte dieser Gruppenadresse per GroupValueRead abgefragt.
@@ -106,7 +106,7 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 
 2) Prüfen ob das KNX / LAN GW befindetbar ist. Wenn es das nicht ist, versucht der Adapter sich zu ändern.
 
-3) Physikalische Adresse richtig gewählt (wichtig beim Einsatz von Linienkopplern). !!! ACHTUNG: Die hier ist die physische Adresse ist nicht die Adresse des LAN Gateways und darf nicht auf 0 enden !!!
+3) Physikalische Adresse richtig gewählt (wichtig beim Einsatz von Linienkopplern). !!! ACHTUNG: Die hier ist die physikalische Adresse ist NICHT die Adresse des LAN Gateways und darf nicht auf 0 enden !!!
 
 4) Der Port der LAN Schnittstelle ist i.d.R. 3671
 

@@ -134,6 +134,10 @@ The gateway and its taught-in devices are now displayed under *Objects*
 The instructions were created to the best of our knowledge and belief.
 
 ## Changelog
+
+### 1.3.7 (2021-01-22)
+* (Apollon77) Prevent crash case (Sentry IOBROKER-MIHOME-A)
+
 ### 1.3.6 (2020-09-25)
 * (VLGorskij) Added new device QBKG24LM
 
