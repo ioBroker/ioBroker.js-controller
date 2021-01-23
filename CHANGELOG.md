@@ -4,10 +4,11 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.2.9 (2021-01-23)
+## __WORK IN PROGRESS__
 * (Apollon77) prevent some errors shown and optimize database handling
 * (Apollon77) prevent an endless loop when lua script initialization was not possible
 * (Apollon77) catch semver errors in upgrade commands
+* (foxriver76) ensure setAdapterInstanceEnabled can not hang
 
 ## 3.2.8 (2021-01-21) Release Grace
 **BREAKING CHANGES**
