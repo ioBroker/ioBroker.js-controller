@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.2.10 (2021-01-23)
 * (Apollon77) prevent some errors shown and optimize database handling
 * (Apollon77) prevent an endless loop when lua script initialization was not possible
 * (Apollon77) catch semver errors in upgrade commands
