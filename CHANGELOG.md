@@ -4,6 +4,11 @@
 	## __WORK IN PROGRESS__
 -->
 
+## __WORK IN PROGRESS__
+* (Apollon77) prevent some errors shown and optimize database handling
+* (Apollon77) prevent an endless loop when lua script initialization was not possible
+* (Apollon77) catch semver errors in upgrade commands
+
 ## 3.2.8 (2021-01-21) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
