@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "js-controller",
-        "version": "3.2.8",
+        "version": "3.2.9",
         "platform": "Javascript/Node.js",
         "controller": true,
         "title": "JS controller",
@@ -18,6 +18,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.2.9": {
+                "en": "prevent some errors shown and optimize database handling\nprevent an endless loop when lua script initialization was not possible\ncatch semver errors in upgrade commands",
+                "de": "Verhindern Sie einige angezeigte Fehler und optimieren Sie die Datenbankbehandlung\nVerhindern Sie eine Endlosschleife, wenn die Initialisierung des Lua-Skripts nicht möglich war\nSemver-Fehler in Upgrade-Befehlen abfangen",
+                "ru": "предотвратить появление некоторых ошибок и оптимизировать обработку базы данных\nпредотвратить бесконечный цикл, когда инициализация скрипта lua была невозможна\nпоймать ошибки semver в командах обновления",
+                "pt": "evitar alguns erros mostrados e otimizar o manuseio do banco de dados\nevitar um loop infinito quando a inicialização do script lua não for possível\ncapturar erros sempre em comandos de atualização",
+                "nl": "voorkomen dat sommige fouten worden weergegeven en optimaliseren van de databaseafhandeling\nvoorkom een eindeloze lus wanneer initialisatie van het lua-script niet mogelijk was\nvang semver-fouten op in upgrade-opdrachten",
+                "fr": "éviter certaines erreurs affichées et optimiser la gestion de la base de données\nempêcher une boucle sans fin lorsque l'initialisation du script lua n'était pas possible\nattraper les erreurs semver dans les commandes de mise à niveau",
+                "it": "prevenire la visualizzazione di alcuni errori e ottimizzare la gestione del database\nprevenire un ciclo infinito quando l'inizializzazione dello script lua non era possibile\ncattura gli errori del semver nei comandi di aggiornamento",
+                "es": "evitar algunos errores mostrados y optimizar el manejo de la base de datos\nevitar un bucle sin fin cuando la inicialización del script lua no fue posible\ndetectar errores de semver en los comandos de actualización",
+                "pl": "zapobiec niektórym wyświetlanym błędom i zoptymalizować obsługę bazy danych\nzapobiega niekończącej się pętli, gdy inicjalizacja skryptu Lua nie była możliwa\nłapie błędy semver w poleceniach aktualizacji",
+                "zh-cn": "防止显示某些错误并优化数据库处理\n防止无法初始化lua脚本时出现无限循环\n在升级命令中捕获semver错误"
+            },
             "3.2.8": {
                 "en": "fix reading of certificates if the given certificates are files\nadd error handling when let's encrypt configuration contains invalid domain names and other cases to allow still access to the adapter if possible\nfix compact mode cli commands\nSupport more Github URL formats for `iobroker url` command\nreplace exit codes in setup js with named constants\nadd adapter method getUserId\nadd seq logging support to js-controller\nHarmonize username handling between admin and js-controller by transforming the object id to lowercase. With this user names will be treated case insensitive from now on!\nsee CHANGELOG.md",
                 "de": "Das Lesen von Zertifikaten wurde korrigiert, wenn es sich bei den angegebenen Zertifikaten um Dateien handelt\nFügen Sie die Fehlerbehandlung hinzu, wenn die Verschlüsselungskonfiguration ungültige Domänennamen und andere Fälle enthält, um nach Möglichkeit weiterhin auf den Adapter zugreifen zu können\nKorrigieren Sie die CLI-Befehle im Kompaktmodus\nUnterstützt mehr Github-URL-Formate für den Befehl \"iobroker url\"\nErsetzen Sie die Exit-Codes in Setup js durch benannte Konstanten\nAdaptermethode getUserId hinzufügen\nUnterstützung für Seq-Protokollierung zu js-controller hinzufügen\nHarmonisieren Sie die Behandlung von Benutzernamen zwischen admin und js-controller, indem Sie die Objekt-ID in Kleinbuchstaben umwandeln. Damit werden Benutzernamen von nun an ohne Berücksichtigung der Groß- und Kleinschreibung behandelt!\nsiehe CHANGELOG.md",
