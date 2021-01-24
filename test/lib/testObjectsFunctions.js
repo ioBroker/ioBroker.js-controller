@@ -1203,7 +1203,7 @@ function register(it, expect, context) {
 
         expect(obj).to.be.ok;
 
-        const options = {preserve: {common: {name: true}, native: {bool: true}}};
+        let options = {preserve: {common: ['name'], native: ['bool']}};
 
         // extend object again with new, preserved and override values
         await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
@@ -1219,11 +1219,106 @@ function register(it, expect, context) {
 
         obj = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
 
-        // preserved name but def is not preserved and  stuff is there
+        // preserved name but def is not preserved and stuff is there
         expect(obj.common.name).to.be.equal('Don\'t change me');
         expect(obj.native.existing).to.be.equal('exists');
         expect(obj.common.def).to.be.equal('Changed');
         expect(obj.native.bool).to.be.equal(false);
+
+        // now overwrite all
+        await context.adapter.setForeignObjectAsync('foreign.0.testExtendPreserve', {
+            type: 'state',
+            common: {
+                name: 'Don\'t change me',
+                type: 'string',
+                def: 'Run Forrest, Run!'
+            }, native: {
+                bool: false
+            }
+        });
+
+        options = {preserve: {common: true}};
+
+        // preserve whole common
+        await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
+            type: 'state',
+            common: {
+                name: 'CHANGED',
+                type: 'number',
+                def: 1
+            }, native: {
+                bool: false
+            }
+        }, options);
+
+        obj = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
+
+        // preserved whole common but native is not preserved and stuff is there
+        expect(obj.common.name).to.be.equal('Don\'t change me');
+        expect(obj.common.type).to.be.equal('string');
+        expect(obj.common.def).to.be.equal('Run Forrest, Run!');
+        expect(obj.native.bool).to.be.equal(false);
+
+        // Now preserve a property which is not in the oldObj
+        options = {preserve: {common: ['newStuff']}};
+
+        await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
+            type: 'state',
+            common: {
+                name: 'CHANGED',
+                type: 'number',
+                def: 1,
+                newStuff: 'test'
+            }, native: {
+                bool: false
+            }
+        }, options);
+
+        obj = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
+
+        expect(obj.common.newStuff).to.be.equal('test');
+
+        // Now preserve a property which is not in the newObj
+        options = {preserve: {common: ['name']}};
+
+        await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
+            type: 'state',
+            common: {
+                type: 'number',
+                def: 1,
+                newStuff: 'test'
+            }, native: {
+                bool: false
+            }
+        }, options);
+
+        obj = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
+
+        // should not be deleted
+        expect(obj.common.name).to.be.equal('CHANGED');
+
+        // Now preserve a property whose type is changing
+        options = {preserve: {common: ['name']}};
+
+        await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
+            type: 'state',
+            common: {
+                name: {
+                    en: 'Hallo',
+                    de: 'Hello'
+                },
+                type: 'number',
+                def: 1,
+                newStuff: 'test'
+            }, native: {
+                bool: false
+            }
+        }, options);
+
+        obj = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
+        // should still be the string, because preserved
+        expect(obj.common.name).to.be.equal('CHANGED');
+
     });
 
     it(testName + 'Should check object existence', async () => {
