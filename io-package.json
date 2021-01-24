@@ -19,18 +19,6 @@
         },
         "news": {
             "3.2.11": {
-                "en": "enhance field-preserving logic for extendObject\nupgrade Plugin dependencies",
-                "de": "Verbessern Sie die felderhaltende Logik für extensObject\nAktualisieren Sie die Plugin-Abhängigkeiten",
-                "ru": "улучшить логику сохранения полей для extendObject\nобновить зависимости плагина",
-                "pt": "aprimorar a lógica de preservação de campo para extendObject\natualizar dependências do plug-in",
-                "nl": "verbeter de logica voor het bewaren van velden voor extensionObject\nupgrade Plugin-afhankelijkheden",
-                "fr": "améliorer la logique de préservation des champs pour extendObject\nmettre à niveau les dépendances du plugin",
-                "it": "migliorare la logica di conservazione del campo per extentObject\naggiornare le dipendenze del plugin",
-                "es": "mejorar la lógica de conservación de campos para extendObject\nactualizar las dependencias del complemento",
-                "pl": "udoskonalić logikę chroniącą pola dla ExtendObject\naktualizacja Zależności wtyczki",
-                "zh-cn": "增强extendObject的字段保留逻辑\n升级插件依赖项"
-            },
-            "3.2.10": {
                 "en": "see CHANGELOG.md",
                 "de": "siehe CHANGELOG.md",
                 "ru": "см. CHANGELOG.md",
