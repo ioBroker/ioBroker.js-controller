@@ -4,13 +4,11 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.2.10 (2021-01-23)
-* (Apollon77) prevent some errors shown and optimize database handling
-* (Apollon77) prevent an endless loop when lua script initialization was not possible
-* (Apollon77) catch semver errors in upgrade commands
-* (foxriver76) ensure setAdapterInstanceEnabled can not hang
+## __WORK IN PROGRESS__
+* (foxriver76) enhance field-preserving logic for extendObject
+* (Apollon77) upgrade Plugin dependencies 
 
-## 3.2.8 (2021-01-21) Release Grace
+## 3.2.10 (2021-01-24) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
 * If you have enabled Multihost Discovery please disable and enable it again if you really need it persistent running. By re-enabling it you update the used passphrase with a better encryption mechanism.
@@ -72,6 +70,9 @@
 * (foxriver76) Use yargs helper instead of building our own string output to allow showing --help for a specific command instead of the whole output and allow support for auto completion (`iobroker _createCompletion >> ~/.bashrc`)
 * (foxriver76, Apollon77) also accept pre-release version in some semver checks for dependencies
 * (foxriver76) replace outdated encryption mechanism of multihost
+* (Apollon77) prevent an endless loop when lua script initialization was not possible
+* (Apollon77) catch semver errors in upgrade commands
+* (foxriver76) ensure setAdapterInstanceEnabled can not hang
 * (Apollon77, foxriver, bluefox, AlCalzone) Several fixes and refactorings to prevent potential crash cases reported by Sentry and other sources
 
 **Developer relevant DEPRECATIONS/WARNINGS**

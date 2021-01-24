@@ -19,18 +19,6 @@
         },
         "news": {
             "3.2.10": {
-                "en": "prevent some errors shown and optimize database handling\nprevent an endless loop when lua script initialization was not possible\ncatch semver errors in upgrade commands\nensure setAdapterInstanceEnabled can not hang",
-                "de": "Verhindern Sie einige angezeigte Fehler und optimieren Sie die Datenbankbehandlung\nVerhindern Sie eine Endlosschleife, wenn die Initialisierung des Lua-Skripts nicht möglich war\nSemver-Fehler in Upgrade-Befehlen abfangen\nStellen Sie sicher, dass setAdapterInstanceEnabled nicht hängen kann",
-                "ru": "предотвратить появление некоторых ошибок и оптимизировать обработку базы данных\nпредотвратить бесконечный цикл, когда инициализация скрипта lua была невозможна\nпоймать ошибки semver в командах обновления\nубедитесь, что setAdapterInstanceEnabled не может зависнуть",
-                "pt": "evitar alguns erros mostrados e otimizar o manuseio do banco de dados\nevitar um loop infinito quando a inicialização do script lua não for possível\ncapturar erros sempre em comandos de atualização\ncertifique-se de que setAdapterInstanceEnabled não pode travar",
-                "nl": "voorkomen dat sommige fouten worden weergegeven en optimaliseren van de databaseafhandeling\nvoorkom een eindeloze lus wanneer initialisatie van het lua-script niet mogelijk was\nvang semver-fouten op in upgrade-opdrachten\nzorg ervoor dat setAdapterInstanceEnabled niet kan hangen",
-                "fr": "éviter certaines erreurs affichées et optimiser la gestion de la base de données\nempêcher une boucle sans fin lorsque l'initialisation du script lua n'était pas possible\nattraper les erreurs semver dans les commandes de mise à niveau\nassurez-vous que setAdapterInstanceEnabled ne peut pas se bloquer",
-                "it": "prevenire la visualizzazione di alcuni errori e ottimizzare la gestione del database\nprevenire un ciclo infinito quando l'inizializzazione dello script lua non era possibile\ncattura gli errori del semver nei comandi di aggiornamento\nassicurarsi che setAdapterInstanceEnabled non possa bloccarsi",
-                "es": "evitar algunos errores mostrados y optimizar el manejo de la base de datos\nevitar un bucle sin fin cuando la inicialización del script lua no fue posible\ndetectar errores de semver en los comandos de actualización\nasegúrese de que setAdapterInstanceEnabled no pueda colgarse",
-                "pl": "zapobiec niektórym wyświetlanym błędom i zoptymalizować obsługę bazy danych\nzapobiega niekończącej się pętli, gdy inicjalizacja skryptu Lua nie była możliwa\nłapie błędy semver w poleceniach aktualizacji\nupewnij się, że setAdapterInstanceEnabled nie może się zawiesić",
-                "zh-cn": "防止显示某些错误并优化数据库处理\n防止无法初始化lua脚本时出现无限循环\n在升级命令中捕获semver错误\n确保setAdapterInstanceEnabled无法挂起"
-            },
-            "3.2.8": {
                 "en": "see CHANGELOG.md",
                 "de": "siehe CHANGELOG.md",
                 "ru": "см. CHANGELOG.md",
