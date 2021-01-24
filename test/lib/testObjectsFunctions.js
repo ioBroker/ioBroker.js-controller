@@ -1203,7 +1203,7 @@ function register(it, expect, context) {
 
         expect(obj).to.be.ok;
 
-        const options = {preserve: {common: {name: true}, native: {bool: true}}};
+        let options = {preserve: {common: ['name'], native: ['bool']}};
 
         // extend object again with new, preserved and override values
         await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
@@ -1223,6 +1223,40 @@ function register(it, expect, context) {
         expect(obj.common.name).to.be.equal('Don\'t change me');
         expect(obj.native.existing).to.be.equal('exists');
         expect(obj.common.def).to.be.equal('Changed');
+        expect(obj.native.bool).to.be.equal(false);
+
+        // now overwrite all
+        await context.adapter.setForeignObjectAsync('foreign.0.testExtendPreserve', {
+            type: 'state',
+            common: {
+                name: 'Don\'t change me',
+                type: 'string',
+                def: 'Run Forrest, Run!'
+            }, native: {
+                bool: false
+            }
+        });
+
+        options = {preserve: {common: true}};
+
+        // preserve whole common
+        await context.adapter.extendForeignObjectAsync('foreign.0.testExtendPreserve', {
+            type: 'state',
+            common: {
+                name: 'CHANGED',
+                type: 'number',
+                def: 1
+            }, native: {
+                bool: false
+            }
+        }, options);
+
+        obj = await context.adapter.getForeignObjectAsync('foreign.0.testExtendPreserve');
+
+        // preserved whole common but native is not preserved and stuff is there
+        expect(obj.common.name).to.be.equal('Don\'t change me');
+        expect(obj.common.type).to.be.equal('string');
+        expect(obj.common.def).to.be.equal('Run Forrest, Run!');
         expect(obj.native.bool).to.be.equal(false);
     });
 
