@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.2.11 (2021-01-24)
 * (foxriver76) enhance field-preserving logic for extendObject
 * (Apollon77) upgrade Plugin dependencies 
 
