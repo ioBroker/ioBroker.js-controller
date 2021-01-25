@@ -270,6 +270,8 @@ Drag& drop a switch widget on your view, connect it to the Object ID of a switch
 Important: The user is in charge of connecting the correct data points to the widgets. You can connect a real value to a binary status (e.g. light bulb), so the light bulb will show “on” once the real value is >1.0. That’s all, folks, pretty easy and straight forward, huh?
 
 ## Changelog
+### 1.1.10 (2021-01-24)
+* (smiling_Jack) Bugfix in the Admin
 
 ### 1.1.9 (2020-08-02)
 * (Apollon77) Fix object access issue
@@ -282,7 +284,7 @@ Important: The user is in charge of connecting the correct data points to the wi
 * (Apollon77) reconnection handling on timeouts optimized
 
 ### 1.1.4 (2018.07.10)
-* (Apollon77) Support for nodejs 10 on windows
+* (Apollon77) Support for nodejs 10 on Windows
 
 ### 1.1.3 (2018.01.19)
 * (bluefox) The time offset was added
@@ -352,7 +354,7 @@ Important: The user is in charge of connecting the correct data points to the wi
 
 ### 0.1.8 (2015.08.10)
 * (smiling_Jack) Bugfix send info states
-* (smiling_Jack) Remove unneeded conole.log
+* (smiling_Jack) Remove unneeded console.log
 
 ### 0.1.7 (2015.08.06)
 * (smiling_Jack) Bugfix send to SPS
@@ -399,7 +401,7 @@ Important: The user is in charge of connecting the correct data points to the wi
 
 The MIT License (MIT)
 
-Copyright (c) 2014-2020 smiling_Jack <steffen.schorling@googlemail.com>, bluefox <dogafox@gmail.com>
+Copyright (c) 2014-2021 smiling_Jack <steffen.schorling@googlemail.com>, bluefox <dogafox@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

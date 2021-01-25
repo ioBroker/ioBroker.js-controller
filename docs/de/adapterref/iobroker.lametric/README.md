@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: bOe4RZ4iOCvZilH76augOpu6bsiQq/LtFuQnnjGePXY=
+hash: lSKyUIwZ8HzN3fwYt5gLQOEWhqss8l2VzaHXmcTbXYw=
 ---
 ![Logo](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -21,7 +21,7 @@ Mit diesem Adapter können Sie Statusinformationen zu Ihrem [LaMetric Time](http
 Sie benötigen lediglich die IP-Adresse Ihres Geräts und den API-Entwicklerschlüssel.
 
 ## Aufbau
-Getestet mit LaMetric Firmware *2.0.28* und *2.1.2* (empfohlen)
+Getestet mit LaMetric Firmware *2.0.28* und *2.1.3* (empfohlen)
 
 Sie können Ihren persönlichen Schlüssel [Hier](https://developer.lametric.com/) erhalten.
 
@@ -32,7 +32,7 @@ Sie können Ihren persönlichen Schlüssel [Hier](https://developer.lametric.com
 - Stellen Sie die Lautstärke ein (Prozent)
 - Bildschirmschoner konfigurieren (aktivieren / deaktivieren, zeitbasiert, wenn es dunkel ist)
 - Aktivieren / Deaktivieren Sie Bluetooth und ändern Sie den Bluetooth-Namen
-- Zwischen Apps wechseln (weiter, vorher, zu einer bestimmten App gehen)
+- Zwischen Apps wechseln (nächste, vorherige, zu einer bestimmten App gehen)
 - Benachrichtigungen blockweise senden (mit konfigurierbarer Priorität, Ton, Symbolen, Text, ...)
 - Steuern Sie spezielle Apps wie Uhr, Radio, Stoppuhr oder Wetter
 - Verwenden Sie *My Data (DIY)* LaMetric App, um dauerhafte Informationen anzuzeigen
@@ -259,7 +259,7 @@ show();
 
 The MIT License (MIT)
 
-Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2021 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

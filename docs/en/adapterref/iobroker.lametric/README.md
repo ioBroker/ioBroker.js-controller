@@ -17,7 +17,7 @@ All you need is the IP address of your device and the api developer key.
 
 ## Configuration
 
-Tested with LaMetric firmware *2.0.28* and *2.1.2* (recommended)
+Tested with LaMetric firmware *2.0.28* and *2.1.3* (recommended)
 
 You can get your personal key [here](https://developer.lametric.com/).
 
@@ -265,7 +265,7 @@ show();
 
 The MIT License (MIT)
 
-Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2021 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

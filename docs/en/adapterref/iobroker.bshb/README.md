@@ -31,6 +31,11 @@ Work in progress. Feedback appreciated.
 
 ## Changelog
 
+### 0.1.12
+* (holomekc) states and units
+* (holomekc) update license and copyright
+* (holomekc) fix typo in connectionType
+
 ### 0.1.11
 * (holomekc) update dependencies
 * (holomekc) changes due to new ioBroker lib
@@ -130,7 +135,7 @@ Work in progress. Feedback appreciated.
 
 MIT License
 
-Copyright (c) 2020 Christopher Holomek <holomekc.github@gmail.com>
+Copyright (c) 2021 Christopher Holomek <holomekc.github@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

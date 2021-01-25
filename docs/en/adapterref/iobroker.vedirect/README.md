@@ -24,6 +24,12 @@ Set the proper device (example /dev/ttyUSB0) in adapter config.
     ## __WORK IN PROGRESS__
 -->
 
+### __WORK IN PROGRESS__
+* (DutchmanNL) Optimise code
+* (DutchmanNL) Do not write objects unneeded
+* (Andiling) Add new product names of Vedirect
+* (DutchmanNL) Add option to admin for state expiration
+
 ### 0.1.2 (2020-10-06)
 * (DutchmanNL) Fix sentry issue, error in opening USB-Port
 

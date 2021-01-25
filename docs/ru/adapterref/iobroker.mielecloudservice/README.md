@@ -3,13 +3,12 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
+hash: dG9nxHZKRYkU855utuyjPIzekKzcRRjwWSj+HXOqrzU=
 ---
 ![Логотип](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
 ![Количество установок](http://iobroker.live/badges/mielecloudservice-stable.svg)
 ![Версия NPM](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
-![Статус зависимости](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
 ![Известные уязвимости](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)
 ![Трэвис-Си](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
 ![НПМ](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
@@ -34,10 +33,16 @@ hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
  * стабильное репо - чтобы получить текущую стабильную версию
  * latest Repo - чтобы получить последнюю тестовую версию (может быть нестабильной)
  * через: https://github.com/Grizzelbee/ioBroker.mielecloudservice.git - чтобы получить последнюю версию для разработки
-2. Создайте учетную запись для Miele @ Home в приложении для смартфона Miele.
+2. Создайте учетную запись для Miele @ Home в приложении Miele для смартфона.
 3. Создайте учетную запись разработчика на странице https://www.miele.com/f/com/en/register_api.aspx.
 4. Добавьте свои устройства Miele-Devices в приложение (если не добавляются автоматически)
 6. Введите client_secret и client_id, полученные от команды разработчиков Miele, а также идентификатор учетной записи и пароль из приложения.
+
+## Делать
+* Внедрите MieleAPI 1.0.4 - https://www.miele.com/developer/news.html
+* Добавить Sentry
+* Проверьте наличие нового предупреждения с помощью js-controller 3.2
+* зашифровать пароль (и) с помощью js-контроллера
 
 ## Документация
 В основном обращайтесь к основной документации API, опубликованной Miele.
@@ -45,7 +50,7 @@ hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
 * [Общая документация] (https://www.miele.com/developer/swagger-ui/index.html)
 * [Предварительные условия для выполнения действия на устройстве] (https://www.miele.com/developer/swagger-ui/put_additional_info.html)
 
-Существуют два типа точек данных. В виде удобочитаемого текста и числа.
+Существуют 2 типа точек данных. В виде удобочитаемого текста и числа.
 Эти числовые поля данных, принадлежащие текстовому полю, имеют то же имя, но с добавлением «_raw».
 Ниже перечислены поля, которые имеют общее значение.
 Поля, которые не указаны в списке, различаются по своему значению от устройства к устройству и не исключаются Miele.
@@ -82,9 +87,9 @@ hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
  | 39 | ДВОЙНАЯ ПЕЧЬ |
  | 40 | ДВОЙНАЯ ПАРОВАЯ ПЕЧЬ |
  | 41 | ДВОЙНАЯ ПЕЧЬ КОМБИНАЦИЯ |
- | 42 | ДВОЙНОЙ СВЧ |
+ | 42 | ДВОЙНОЕ СВЧ |
  | 43 | ДВОЙНАЯ МИКРОВОЛНОВАЯ ПЕЧЬ |
- | 45 | ПАРОВАЯ ПЕЧЬ СВЧ-КОМБИНАЦИЯ |
+ | 45 | ПАРНАЯ ПЕЧЬ СВЧ-КОМБИНАЦИЯ |
  | 48 | ВАКУУМНЫЙ ЯЩИК |
  | 67 | ДИАЛОГОВЕН |
  | 68 | ВИННЫЙ ШКАФ КОМБИНАЦИЯ МОРОЗИЛЬНИКОВ |
@@ -110,6 +115,7 @@ hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
  | 144 | ПО УМОЛЧАНИЮ |
  | 145 | ЗАБЛОКИРОВАНО |
  | 146 | SUPERCOOLING_SUPERFREEZING |
+ | 255 | Устройство не в сети |
 
 ### ProgramType / Programmart
 | Исходное значение | Состояние |
@@ -139,14 +145,14 @@ hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
 | 48 | "Flusen ausspülen" | Стиральная машина с сушкой |
 | 50 | "Dunkle Wäsche" / | Стиральная машина с сушкой |
 | 122 | «Экспресс 20» / | Стиральная машина с сушкой |
-| 123 | «Дунклз / Джинсы» | Стиральная машина |
+| 123 | «Дунклс / Джинсы» | Стиральная машина |
 
 ### ProgramPhase
 | Исходное значение | Состояние | доступен для |
 |----------|-------|---------------|
 | 260 | «Вашен» / «Стирка» | Стиральная машина |
 | 261 | «Spülen» / «Полоскание» | Стиральная машина |
-| 266 | «Шлейдерн» / «Спиннинг» | Стиральная машина |
+| 266 | «Шлейдерн» / «Прядение» | Стиральная машина |
 | 267 | "Knitterschutz" / "" | Стиральная машина |
 | 268 | «Энде» / «Конец» | Большинство устройств |
 | 256 | «Форбюгельн» | Стиральная машина |
@@ -154,10 +160,14 @@ hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
 | 519 | «Абкюлен» | Стиральная машина с сушкой |
 | 532 | "Flusen ausspülen" | Стиральная машина с сушкой |
 
-## Авторские права
+## Авторское право
 Авторские права (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 2.1.0 (2021-02-xx)
+*  (grizzelbee) Upd: removed david-dm badge
+*  (grizzelbee) Upd: updated dependencies
+
 ### 2.0.3 (2020-09-15)
 * (grizzelbee) Upd: Updated country list in config dialog
 * (grizzelbee) New: Some more debug code

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: vjCCXJTBzoNWfIuXlN+LgsLK7ydOnA6JPOKBBgmj4uA=
+hash: Y3LfuhBlGSBH6jmK7CnDM3nai71WINNc2hKrTektnU0=
 ---
 ![Логотип](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
@@ -63,7 +63,7 @@ ru: Этот адаптер позволяет импортировать фай
 Например, DPT5.001 кодируется как 8-битное целое без знака. Это дает единственное значение. DPT3.007 (Control Dimming) кодируется как 1 бит (логическое значение) + 3 бит (беззнаковое целое число).
 Это приводит, например, к в значении вроде «0,5», где «0» означает «уменьшение», а «5» означает количество интервалов.
 
-## Wie werden die Datenpunkte generiert
+## Wie werden die Datenpunkte generiert (Deutsch)
 ### 1) Auslesen Aller Kommunikationsobjektreferenzen (im folgenden KOR)
 Dabei werden den Gruppenaddressreferenz (im folgenden GAR) IDs der jeweilige DPT der KOR zugeordnet, wenn er vorhanden ist. Ausserdem bekommt der erste Eintrag die Attribute write = yes und read = no. Alle darauf folgenden GAR ID's bekommen nur den DPT zugeordnet
 
@@ -112,12 +112,20 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 
 5) Durch die Möglichkeit der Statusabfrage ist eines zu beachten: Es ist sicherzustellen, dass nicht mehr als 40 Anfragen pro Sekunde vom ioBroker genert werden, denn diese können dann Physikalisch Bedingt nicht détére détére dépété nicht de dérán de dérété nicht.
 
+## Планируемые функции
+=======
+
 ## Запланированные функции
 * добавление адресов в описание объекта (id)
 * выборочный импорт knx-проекта
 * требуется версия узла> 8.9.4!
 
 ## Changelog
+### 1.0.44 (2021_01_22)
+* fixed act and state handling 
+* added some new datapoint types
+* fix facility and room recognition and device allocation
+
 ### 1.0.42 (2020_09_03)
 * Fixed problem with missing index_m.html
 
@@ -308,7 +316,7 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 ## License
 The CC-NC-BY License (CC-NC-BY)
 
-Copyright (c) 2016-2020 K.Ringmann <info@punktnetzwerk.net>
+Copyright (c) 2016-2021 K.Ringmann <info@punktnetzwerk.net>
 
 THE WORK IS PROVIDED UNDER THE TERMS OF THIS CREATIVE
 COMMONS PUBLIC LICENSE ("CCPL" OR "LICENSE"). THE WORK IS PROTECTED BY

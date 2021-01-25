@@ -60,7 +60,7 @@ For example a DPT5.001 is encoded as unsigned Integer with 8-Bit. This gives a s
 This results e.g. in a value like "0,5", where "0" means "decrease" and "5" means number of intervals.
 
 
-## Wie werden die Datenpunkte generiert
+## Wie werden die Datenpunkte generiert (Deutsch)
 ### 1) Auslesen aller Kommunikationsobjektreferenzen (im folgenden KOR)
 Dabei werden den Gruppenaddressreferenz (im folgenden GAR) IDs der jeweilige DPT der KOR zugeordnet, wenn er vorhanden ist. Ausserdem bekommt der erste Eintrag die Attribute write=yes und read=no. Alle darauf folgenden GAR ID's bekommen nur den DPT zugeordnet
 
@@ -111,12 +111,19 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 5) Durch die Möglichkeit der Statusabfrage ist eines zu beachten: Es ist sicherzustellen, dass nicht mehr als 40 Anfragen pro Sekunde vom ioBroker generiert werden, denn diese können dann physikalisch
    bedingt nicht mehr durch den Adapter an das Gateway weitergereicht werden.
 
+## Planned features
+=======
 ## planned features
 * adding addresses to object-description (id)
 * selective import of knx-project
 * require node Version >8.9.4!
 
 ## Changelog
+### 1.0.44 (2021_01_22)
+* fixed act and state handling 
+* added some new datapoint types
+* fix facility and room recognition and device allocation
+
 ### 1.0.42 (2020_09_03)
 * Fixed problem with missing index_m.html
 
@@ -307,7 +314,7 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 ## License
 The CC-NC-BY License (CC-NC-BY)
 
-Copyright (c) 2016-2020 K.Ringmann <info@punktnetzwerk.net>
+Copyright (c) 2016-2021 K.Ringmann <info@punktnetzwerk.net>
 
 THE WORK IS PROVIDED UNDER THE TERMS OF THIS CREATIVE
 COMMONS PUBLIC LICENSE ("CCPL" OR "LICENSE"). THE WORK IS PROTECTED BY

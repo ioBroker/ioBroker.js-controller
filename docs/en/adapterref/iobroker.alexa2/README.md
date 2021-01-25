@@ -288,7 +288,10 @@ When the adapter crashes or an other Code error happens, this error message that
 
 ## Changelog
 
-### 3.5.3 (2021-01-22)
+### 3.5.6 (2021-01-22)
+* (Apollon77) Catch error when deleting objects
+
+### 3.5.4 (2021-01-22)
 * (Apollon77) restart adapter when no initial cookie could be requested
 
 ### 3.5.2 (2021-01-17)

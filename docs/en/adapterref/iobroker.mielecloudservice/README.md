@@ -3,7 +3,6 @@
 ![Number of Installations](http://iobroker.live/badges/mielecloudservice-installed.svg)
 ![Number of Installations](http://iobroker.live/badges/mielecloudservice-stable.svg)
 [![NPM version](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)](https://www.npmjs.com/package/iobroker.mielecloudservice)
-[![Dependency Status](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)](https://david-dm.org/Grizzelbee/iobroker.mielecloudservice)
 [![Known Vulnerabilities](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice?targetFile=package.json)
 [![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)](https://travis-ci.com/Grizzelbee/ioBroker.mielecloudservice) 
 [![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)](https://nodei.co/npm/iobroker.mielecloudservice/)
@@ -33,7 +32,19 @@ To install, do the following:
 4. Add your Miele-Devices to the App (if not added automatically)
 6. Fill in the client_secret and client_id received from Miele-developer Team and account-id and password from the App.
 
+## ToDo
+* Implement MieleAPI 1.0.4 - https://www.miele.com/developer/news.html
+* Add Sentry
+* Check for new Warning with js-controller 3.2
+* encrypt password(s) using js-controller
+
+
+
 ## Changelog
+### 2.1.0 (2021-02-xx)
+*  (grizzelbee) Upd: removed david-dm badge
+*  (grizzelbee) Upd: updated dependencies
+
 ### 2.0.3 (2020-09-15)
 * (grizzelbee) Upd: Updated country list in config dialog
 * (grizzelbee) New: Some more debug code
@@ -224,7 +235,8 @@ Here is a list of what these raw values stand for:
  |144| DEFAULT|
  |145| LOCKED|
  |146| SUPERCOOLING_SUPERFREEZING|
- 
+ |255| Device offline|
+
 ### ProgramType/Programmart
 
 | Raw value | State|

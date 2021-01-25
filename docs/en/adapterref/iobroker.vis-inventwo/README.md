@@ -72,6 +72,14 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ## Changelog / Änderungsprotokoll
 
+## 2.7.5
+- JSON Tabelle farbliche Schwellenwerte für Zahlen
+- Fehler beim Slider behoben wenn ungültiger Wert im Datenpunkt steht
+- Fehler behoben: Signalbilder wurden mit eingefärbt
+- Option um Bildfarbe zu invertieren eingefügt, um Farbfilter zu umgehen
+- Color Slider kann nun zwischen HEX, RGB und CIE unterscheiden
+
+
 ## 2.7.4
 - Fehlende Übersetzung für Hover-Farben hinzugefügt
 

@@ -113,6 +113,9 @@ This data set contains the weather forecast.
 -*-
 
 ## Changelog
+### 0.0.18 (23.01.2021)
+* (PLCHome) wrong version info.
+
 ### 0.0.17 (21.01.2021)
 * (PLCHome) fixes a date issue on inverter history data.
 

@@ -40,6 +40,11 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 	### __WORK IN PROGRESS__
 -->
 
+### 1.8.8 (2021-01-24)
+* Fixed an issue where communication with sleeping secure nodes could get stuck
+* After changing a value, the verification of the new value happens with a larger delay to avoid capturing intermediate and outdated values
+* Several hundred device configuration files were added
+
 ### 1.8.7 (2021-01-21)
 * The scene ID of `Scene Activation CC` now gets reset automatically
 * Fixed an error that could occur while configuring associations
@@ -59,18 +64,11 @@ Easy usage in ioBroker was kept in mind during the whole development. For exampl
 ### 1.8.4 (2021-01-03)
 * Logfiles are created again
 
-### 1.8.3 (2020-12-30)
-* Added a config file for `Technisat Dimmer and series switch`
-* The `level low` property of the `Battery CC` is now called `Battery Level Low`
-* Fixed a bug where the wrong `Binary Sensor` types were requested. To fix this, affected devices must be re-interviewed
-* The retry strategy for sending commands to nodes has been revised. This should improve communication with devices that take long to respond.
-* Some event values like `Central Scene CC` scenes are now automatically cleared after 1 second.
-
 ## License
 
 MIT License
 
-Copyright (c) 2019-2020 AlCalzone
+Copyright (c) 2019-2021 AlCalzone
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: bOe4RZ4iOCvZilH76augOpu6bsiQq/LtFuQnnjGePXY=
+hash: lSKyUIwZ8HzN3fwYt5gLQOEWhqss8l2VzaHXmcTbXYw=
 ---
 ![Логотип](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -21,7 +21,7 @@ hash: bOe4RZ4iOCvZilH76augOpu6bsiQq/LtFuQnnjGePXY=
 Все, что вам нужно, это IP-адрес вашего устройства и ключ разработчика API.
 
 ## Конфигурация
-Протестировано с прошивкой LaMetric *2.0.28* и *2.1.2* (рекомендуется)
+Протестировано с прошивкой LaMetric *2.0.28* и *2.1.3* (рекомендуется)
 
 Вы можете получить личный ключ [Вот](https://developer.lametric.com/).
 
@@ -108,7 +108,7 @@ http://172.16.0.219:8087/getPlainValue/lametric.0.mydatadiy.obj/
 Допустимое значение: время в секундах.
 
 ## Скрипты
-Чтобы отобразить сообщение на вашей метрике la, просто отправьте сообщение этому экземпляру с помощью адаптера сценария:
+Чтобы отобразить сообщение в вашей метрике la, просто отправьте сообщение этому экземпляру с помощью адаптера сценария:
 
 ```JavaScript
 sendTo(
@@ -162,7 +162,7 @@ sendTo(
 );
 ```
 
-Пример показа некоторой информации циклически:
+Пример для отображения некоторой информации циклически:
 
 ```JavaScript
 let i = 0;
@@ -259,7 +259,7 @@ show();
 
 The MIT License (MIT)
 
-Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2021 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

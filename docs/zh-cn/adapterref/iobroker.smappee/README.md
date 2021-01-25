@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.smappee/README.md
 title: ioBroker.smappee
-hash: 7klzWHLWoGQ0NVhX2qy0KrupRHgqvSA9Y+00q7LNjbk=
+hash: gwcVX0Z9Crq0vyemPA0SsrxqNuHkE+VXpj/xJtFTXD4=
 ---
 ![商标](../../../en/adapterref/iobroker.smappee/admin/smappee.png)
 
@@ -11,6 +11,7 @@ hash: 7klzWHLWoGQ0NVhX2qy0KrupRHgqvSA9Y+00q7LNjbk=
 ![NPM版本](http://img.shields.io/npm/v/iobroker.smappee.svg)
 ![资料下载](https://img.shields.io/npm/dm/iobroker.smappee.svg)
 ![NPM](https://nodei.co/npm/iobroker.smappee.png?downloads=true)
+![保镖徽章](https://badges.greenkeeper.io/iobroker-community-adapters/ioBroker.smappee.svg)
 
 ＃ioBroker.smappee
 适用于smappee的ioBroker适配器-设备
@@ -25,7 +26,7 @@ hash: 7klzWHLWoGQ0NVhX2qy0KrupRHgqvSA9Y+00q7LNjbk=
 ![ioBMQ](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/ioBrokerMQTTBroker.PNG)
 
 将实例配置为服务器/代理。默认情况下，端口1883可以，可以选择其他任何端口。
-设置用户名和密码（对于smappee-和smappee-Adapter配置，您需要此名称：
+设置用户名和密码（对于smappee-和smappee-Adapter配置，您将需要此名称：
 
 ![ioBMC](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/ioBrokerMQTTConfig.PNG)
 
@@ -45,7 +46,7 @@ hash: 7klzWHLWoGQ0NVhX2qy0KrupRHgqvSA9Y+00q7LNjbk=
 
 ![smpmqt](https://github.com/iobroker-community-adapters/ioBroker.smappee/blob/master/admin/smpmqt.png)
 
-输入ioBroker的Ip，然后输入您为mqtt-broker指定的端口（默认为1883），即tcp：//192.168.1.111：1883
+输入ioBroker的Ip，然后输入为mqtt-broker指定的端口（默认为1883），即tcp：//192.168.1.111：1883
 
 输入您配置mqtt-broker时指定的用户名和密码。
 然后点击“应用更改并重新启动监视器”。
@@ -66,9 +67,13 @@ smappee的某些值是“计数器”，有些是特定时间段内的值（5分
 为了聚合或分离数据，请使用ioBroker.statistics适配器。
 
 ###控制插头/开关
-Smappee允许您远程控制智能插头/智能开关。 smappee-one或其他433Mhz RF插头/三明治（即Intertechno IT-1500）。将交换机与您的smappee-应用程序配对，然后重新启动ioBroker smappee-adapter。您将获得插头的名称和状态，并通过将“ switchON”设置为“ true”，打开开关，将其设置为“ false”时，则将其关闭（当设置“ switchON”时，ACK必须为false） 。
+Smappee允许您远程控制智能插头/智能开关。 smappee-one或其他433Mhz RF插头/三明治（即Intertechno IT-1500）。将交换机与您的smappee-应用程序配对，然后重新启动ioBroker smappee-adapter。您将获得插头的名称和状态，并通过将“ switchON”设置为“ true”，将开关打开，将其设置为“ false”时，则将其关闭（当设置“ switchON”时，ACK必须为false） 。 switchON的实际状态将更新为plug.state的状态。
 
 ## Changelog
+
+### 0.2.3
+
+-   'switchON' state is updated with actual state of a plug.
 
 ### 0.2.2
 
@@ -119,7 +124,7 @@ Smappee允许您远程控制智能插头/智能开关。 smappee-one或其他433
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2019 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2021 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

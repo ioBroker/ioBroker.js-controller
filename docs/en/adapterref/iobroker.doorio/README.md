@@ -21,6 +21,9 @@ Ausgänge zu schalten. Für die Selbstgemachte Türsprechstelle, kann jede
 Hardware auf der sich Baresip installieren lässt genutzt werden.
 
 ## Changelog
+### 1.1.3
+* (bettman66) add test ring buttons
+
 ### 1.1.2
 * (bettman66) Changes for js-controller 3.2.x
 

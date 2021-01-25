@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: bOe4RZ4iOCvZilH76augOpu6bsiQq/LtFuQnnjGePXY=
+hash: lSKyUIwZ8HzN3fwYt5gLQOEWhqss8l2VzaHXmcTbXYw=
 ---
 ![商标](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -17,11 +17,11 @@ hash: bOe4RZ4iOCvZilH76augOpu6bsiQq/LtFuQnnjGePXY=
 ![NPM](https://nodei.co/npm/iobroker.lametric.png?downloads=true)
 
 ＃ioBroker.lametric
-此适配器使您可以获取有关[公制时间](https://haus-auto.com/p/amz/LaMetricTime)*（会员链接）*的状态信息，并向其发送通知。
+使用此适配器，您可以获取有关[公制时间](https://haus-auto.com/p/amz/LaMetricTime)*（会员链接）*的状态信息，并向其发送通知。
 您需要的只是设备的IP地址和api开发人员密钥。
 
 ##配置
-经LaMetric固件* 2.0.28 *和* 2.1.2 *测试（推荐）
+经LaMetric固件* 2.0.28 *和* 2.1.3 *测试（推荐）
 
 您可以获取个人密钥[这里](https://developer.lametric.com/)。
 
@@ -259,7 +259,7 @@ show();
 
 The MIT License (MIT)
 
-Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2021 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

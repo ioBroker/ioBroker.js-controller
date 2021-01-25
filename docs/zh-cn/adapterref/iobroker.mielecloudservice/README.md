@@ -3,13 +3,12 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
+hash: dG9nxHZKRYkU855utuyjPIzekKzcRRjwWSj+HXOqrzU=
 ---
 ![商标](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
 ![安装数量](http://iobroker.live/badges/mielecloudservice-stable.svg)
 ![NPM版本](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
-![依赖状态](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
 ![已知漏洞](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)
 ![特拉维斯](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
@@ -33,21 +32,27 @@ hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
 1.使用以下命令通过管理员安装
  *稳定的回购-获得当前的稳定版本
  *最新的Repo-获取最新的测试版本（可能不稳定）
- *通过：https://github.com/Grizzelbee/ioBroker.mielecloudservice.git-获取最新的开发版本
+ *通过：https://github.com/Grizzelbee/ioBroker.mielecloudservice.git-获得最新的开发版本
 2.在Miele Smartphone应用程序中为Miele @ Home创建一个应用程序帐户
 3.在https://www.miele.com/f/com/zh-CN/register_api.aspx上创建一个开发人员帐户
 4.将您的Miele设备添加到应用程序（如果未自动添加）
 6.填写从Miele-developer团队收到的client_secret和client_id以及从应用程序获得的帐户ID和密码。
 
+＃＃ 去做
+*实施MieleAPI 1.0.4-https://www.miele.com/developer/news.html
+*添加哨兵
+*使用js-controller 3.2检查是否有新警告
+*使用js-controller加密密码
+
 ##文档
 请主要参考Miele发布的主要API文档
 
-* [一般文档]（https://www.miele.com/developer/swagger-ui/index.html）
+* [常规文档]（https://www.miele.com/developer/swagger-ui/index.html）
 * [在设备上执行操作的前提条件]（https://www.miele.com/developer/swagger-ui/put_additional_info.html）
 
 有两种数据点可用。作为人类可读的文本和数字。
 这些属于文本字段的数字数据字段具有相同的名称，但附加了“ _raw”。
-下面列出了具有一般含义的字段。
+具有一般含义的字段在下面列出。
 未列出的字段的含义因设备而异，并且不受Miele的贬低。
 如果需要在脚本中引用这些字段，请始终使用_raw值。
 文本值将来可能会更改，并且还取决于语言。
@@ -85,7 +90,7 @@ hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
  | 42 |双微波|
  | 43 |双微波炉|
  | 45 |蒸汽烤箱微波组合|
- | 48 |真空吸尘器|
+ | 48 |真空抽屉|
  | 67 | DIALOGOVEN |
  | 68 |葡萄酒柜冷冻组合|
 
@@ -104,12 +109,13 @@ hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
  | 10 |空闲|
  | 11 | RINSE_HOLD |
  | 12 |服务|
- | 13 |超冻结|
+ | 13 |超级冷冻|
  | 14 |超冷|
  | 15 |超热|
  | 144 |默认|
  | 145 |锁定|
  | 146 | SUPERCOOLING_SUPERFREEZING |
+ | 255 |设备离线|
 
 ### ProgramType / Programmart
 |原始值状态|
@@ -127,7 +133,7 @@ hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
  | 2 |正常|
  | 3 |稍干|
  | 4 |手铁1级|
- | 5 |手动熨斗2 |
+ | 5 |手工熨斗2 |
  | 6 |机铁|
 
 ### ProgramBezeichnung
@@ -136,7 +142,7 @@ hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
 | 1 | “ Baumwolle” /“棉” |洗衣机|
 | 23 | “ Oberhemden” / |洗衣机|
 | 27 | “Imprägnieren” / |洗衣机|
-| 48 | “弗吕森·奥斯普林” |洗衣机烘干机|
+| 48 | “弗鲁森·奥斯普林” |洗衣机烘干机|
 | 50 | “ DunkleWäsche” / |洗衣机烘干机|
 | 122 | “快递20”洗衣机烘干机|
 | 123 | “扣篮/牛仔裤” |洗衣机|
@@ -148,16 +154,20 @@ hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
 | 261 | “Spülen” /“冲洗” |洗衣机|
 | 266 | “ Schleudern” /“ Spinning” |洗衣机|
 | 267 | “ Knitterschutz” /“” |洗衣机|
-| 268 | “结束” /“结束” |大多数设备|
+| 268 | “ Ende” /“ End” |大多数设备|
 | 256 | “Vorbügeln” |洗衣机|
 | 514 | “ Trocknen” |洗衣机烘干机|
 | 519 | “阿布库伦” |洗衣机烘干机|
-| 532 | “弗吕森·奥斯普林” |洗衣机烘干机|
+| 532 | “ Flusenausspülen” |洗衣机烘干机|
 
 ##版权
 版权所有（c）2019、2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 2.1.0 (2021-02-xx)
+*  (grizzelbee) Upd: removed david-dm badge
+*  (grizzelbee) Upd: updated dependencies
+
 ### 2.0.3 (2020-09-15)
 * (grizzelbee) Upd: Updated country list in config dialog
 * (grizzelbee) New: Some more debug code

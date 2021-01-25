@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: /M7vUZmfoQZYH5UIo1KeJ6Nuao1/i/reEFgS8VUuH0w=
+hash: zUljsVn9bmg0WDjV5SXHpjOiRt3wgOxcrj42DJZTndw=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -26,16 +26,16 @@ hash: /M7vUZmfoQZYH5UIo1KeJ6Nuao1/i/reEFgS8VUuH0w=
 * Deebot苗条2
 * Deebot N79系列
 * Deebot 601
+* Deebot 710/711（请参阅“已知问题”）
 * Deebot U2
 * Deebot奥兹莫610
 * Deebot Ozmo 900
 * Deebot Ozmo T8 AIVI
 * Deebot Ozmo T8（+）
 
-###这些模型应该工作（部分）
+###这些模型应该可以工作
 * Deebot M88
 * Deebot 600/605
-* Deebot 710/711
 * Deebot Ozmo苗条10
 * Deebot U2 Pro /电源
 
@@ -59,7 +59,7 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 ＃＃ 已知的问题
 *对于Deebot Ozmo 930，建议每天安排一次[安排重新启动]（https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content）报告在大约30分钟后连接断开。 24小时
-*某些清洁功能可能不适用于710/711 / 711s。请暂时使用0.5.8版。
+*某些清洁功能可能不适用于710/711。请暂时使用0.5.8版。
 *“边缘”功能不适用于Deebot U2（而是启动自动清洁）
 
 ＃＃ 常问问题
@@ -69,6 +69,10 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 我绝不隶属于ECOVACS。
 
 ## Changelog
+
+### 1.0.11
+* Enable some features for OZMO 900
+* Several improvements and fixes
 
 ### 1.0.10
 * Using library version 0.5.4
@@ -129,29 +133,28 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 * Added support for Ozmo T8 AIVI
 
 ### 1.0.1
-   * Compact mode support
-   * New features:
-     * button to save the last used custom area values
-     * buttons to rerun saved custom areas
-   * Some enhancements and fixes
+* Compact mode support
+* Added a button to save the last used custom area values
+* Added buttons to rerun saved custom areas
+* Some enhancements and fixes
 
 ### 1.0.0
-   * Stable Release
+* Stable Release
 
 ### 0.6.3 - 0.6.5
-   * Using library version 0.4.13
-   * Set flag for compact mode to false
-   * Some minor fixes
-   * Some translations added
+* Using library version 0.4.13
+* Set flag for compact mode to false
+* Some minor fixes
+* Some translations added
 
 ### 0.6.2
-   * Using library version 0.4.12
-   * (boriswerner) Alternative API call for last clean log info (920/950)
-   * (mrbungle64) Periodically polling of CleanLogs
+* Using library version 0.4.12
+* (boriswerner) Alternative API call for last clean log info (920/950)
+* (mrbungle64) Periodically polling of CleanLogs
 
 ### 0.6.0 - 0.6.1
-   * Using library version 0.4.10/11
-   * Several enhancements and fixes
+* Using library version 0.4.10/11
+* Several enhancements and fixes
 
 ### 0.0.1 - 0.5.9
 * [Changelog archive](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/Changelog-(archive)#059)

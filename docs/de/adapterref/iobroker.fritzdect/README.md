@@ -69,6 +69,12 @@ Vergleichbar für den Soll-/Istverlaufs ist demnach atualtemp und targettemp.
 Es ist ratsam das log anzuschauen, sofern nicht aussagekräftig oder zu wenig Information ist der debug modus über die Experteneinstellung der Instanz vorzuwählen.
 
 ## Changelog
+### 2.1.10
+* comfort/night is AUTO but reintroduced as operationmode
+
+### 2.1.9
+* info to user after start of adapter
+
 ### 2.1.8
 * simpleonoff plug as device/group/template (telekom)
 

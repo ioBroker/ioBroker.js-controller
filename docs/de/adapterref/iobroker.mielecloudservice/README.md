@@ -3,13 +3,12 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.mielecloudservice/README.md
 title: ioBroker.MieleCloudService
-hash: PqfoHNAeYhBL99q7cpMKaFBTf8Z+oaywHSbcbZL4krc=
+hash: dG9nxHZKRYkU855utuyjPIzekKzcRRjwWSj+HXOqrzU=
 ---
 ![Logo](../../../en/adapterref/iobroker.mielecloudservice/admin/mielecloudservice.svg)
 
 ![Anzahl der Installationen](http://iobroker.live/badges/mielecloudservice-stable.svg)
 ![NPM-Version](https://img.shields.io/npm/v/iobroker.mielecloudservice.svg)
-![Abhängigkeitsstatus](https://img.shields.io/david/Grizzelbee/iobroker.mielecloudservice.svg)
 ![Bekannte Sicherheitslücken](https://snyk.io/test/github/Grizzelbee/ioBroker.mielecloudservice/badge.svg?targetFile=package.json)
 ![Travis-CI](http://img.shields.io/travis/Grizzelbee/ioBroker.mielecloudservice/master.svg)
 ![NPM](https://nodei.co/npm/iobroker.mielecloudservice.png?downloads=true)
@@ -38,6 +37,12 @@ Gehen Sie zur Installation wie folgt vor:
 3. Erstellen Sie ein Entwicklerkonto unter https://www.miele.com/f/com/en/register_api.aspx
 4. Fügen Sie Ihre Miele-Geräte zur App hinzu (falls nicht automatisch hinzugefügt)
 6. Geben Sie die vom Miele-Entwicklerteam erhaltenen client_secret und client_id sowie die Konto-ID und das Kennwort der App ein.
+
+## Machen
+* Implementieren Sie MieleAPI 1.0.4 - https://www.miele.com/developer/news.html
+* Wachposten hinzufügen
+* Mit js-controller 3.2 auf neue Warnung prüfen
+* Passwort (e) mit js-controller verschlüsseln
 
 ## Dokumentation
 Bitte beziehen Sie sich hauptsächlich auf die von Miele veröffentlichte API-Hauptdokumentation
@@ -69,7 +74,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 18 | HAUBE |
  | 19 | KÜHLSCHRANK |
  | 20 | Gefrierschrank |
- | 21 | KÜHL- / GEFRIERKOMBINATION |
+ | 21 | KÜHLSCHRANK- / GEFRIERKOMBINATION |
  | 23 | VAKUUMREINIGER, AUTOMATISCHER ROBOTER VAKUUMREINIGER |
  | 24 | SCHEIBETROCKNER |
  | 25 | DISH WARMER |
@@ -110,6 +115,7 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
  | 144 | STANDARD |
  | 145 | GESPERRT |
  | 146 | SUPERCOOLING_SUPERFREEZING |
+ | 255 | Gerät offline |
 
 ### ProgramType / Programmart
 | Rohwert | Staat |
@@ -158,6 +164,10 @@ Hier ist eine Liste, wofür diese Rohwerte stehen:
 Copyright (c) 2019, 2020 grizzelbee <hanjo@hingsen.de>
 
 ## Changelog
+### 2.1.0 (2021-02-xx)
+*  (grizzelbee) Upd: removed david-dm badge
+*  (grizzelbee) Upd: updated dependencies
+
 ### 2.0.3 (2020-09-15)
 * (grizzelbee) Upd: Updated country list in config dialog
 * (grizzelbee) New: Some more debug code

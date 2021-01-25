@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: /M7vUZmfoQZYH5UIo1KeJ6Nuao1/i/reEFgS8VUuH0w=
+hash: zUljsVn9bmg0WDjV5SXHpjOiRt3wgOxcrj42DJZTndw=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -26,16 +26,16 @@ hash: /M7vUZmfoQZYH5UIo1KeJ6Nuao1/i/reEFgS8VUuH0w=
 * Deebot Slim 2
 * Deebot N79 серии
 * Deebot 601
+* Deebot 710/711 (см. «Известные проблемы»)
 * Deebot U2
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 * Deebot Ozmo T8 AIVI
 * Deebot Ozmo T8 (+)
 
-### Эти модели должны работать (частично)
+### Эти модели должны работать
 * Deebot M88
 * Deebot 600/605
-* Deebot 710/711
 * Deebot Ozmo Slim 10
 * Deebot U2 Pro / Мощность
 
@@ -59,7 +59,7 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 ## Известные вопросы
 * Для Deebot Ozmo 930 рекомендуется [запланировать перезапуск] (https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) один раз в день, потому что есть некоторые сообщает, что соединение потеряно через прибл. 24 часа
-* Некоторые функции очистки могут не работать с 710/711 / 711s. Пожалуйста, используйте пока версию 0.5.8.
+* Некоторые функции очистки могут не работать с 710/711. Пожалуйста, используйте пока версию 0.5.8.
 * Функция "edge" не работает с Deebot U2 (вместо этого запускает автоматическую очистку)
 
 ## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
@@ -69,6 +69,10 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 Я никоим образом не связан с ECOVACS.
 
 ## Changelog
+
+### 1.0.11
+* Enable some features for OZMO 900
+* Several improvements and fixes
 
 ### 1.0.10
 * Using library version 0.5.4
@@ -129,29 +133,28 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 * Added support for Ozmo T8 AIVI
 
 ### 1.0.1
-   * Compact mode support
-   * New features:
-     * button to save the last used custom area values
-     * buttons to rerun saved custom areas
-   * Some enhancements and fixes
+* Compact mode support
+* Added a button to save the last used custom area values
+* Added buttons to rerun saved custom areas
+* Some enhancements and fixes
 
 ### 1.0.0
-   * Stable Release
+* Stable Release
 
 ### 0.6.3 - 0.6.5
-   * Using library version 0.4.13
-   * Set flag for compact mode to false
-   * Some minor fixes
-   * Some translations added
+* Using library version 0.4.13
+* Set flag for compact mode to false
+* Some minor fixes
+* Some translations added
 
 ### 0.6.2
-   * Using library version 0.4.12
-   * (boriswerner) Alternative API call for last clean log info (920/950)
-   * (mrbungle64) Periodically polling of CleanLogs
+* Using library version 0.4.12
+* (boriswerner) Alternative API call for last clean log info (920/950)
+* (mrbungle64) Periodically polling of CleanLogs
 
 ### 0.6.0 - 0.6.1
-   * Using library version 0.4.10/11
-   * Several enhancements and fixes
+* Using library version 0.4.10/11
+* Several enhancements and fixes
 
 ### 0.0.1 - 0.5.9
 * [Changelog archive](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/Changelog-(archive)#059)

@@ -32,7 +32,7 @@ jarvis is not as flexible as ioBroker.vis, but offers a standard design for a qu
 
 
 ## Installation and more informationen
-[More informationen - especially redarding configuration - may be found in the Wiki](https://github.com/Zefau/ioBroker.jarvis/wiki).
+[More informationen - especially redarding configuration - may be found in the Wiki](https://zefau.gitbook.io/jarvis-de/).
 
 _____
 

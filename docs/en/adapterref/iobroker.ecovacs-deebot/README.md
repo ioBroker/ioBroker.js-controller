@@ -20,16 +20,16 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 * Deebot Slim 2
 * Deebot N79 series
 * Deebot 601
+* Deebot 710/711 (see "Known issues")
 * Deebot U2
 * Deebot Ozmo 610
 * Deebot Ozmo 900
 * Deebot Ozmo T8 AIVI
 * Deebot Ozmo T8 (+)
 
-### These models should work (partially)
+### These models should work
 * Deebot M88
 * Deebot 600/605
-* Deebot 710/711
 * Deebot Ozmo Slim 10
 * Deebot U2 Pro/Power
 
@@ -55,7 +55,7 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 ## Known issues
 
 * For the Deebot Ozmo 930 it is recommended to [schedule a restart](https://www.iobroker.net/#en/documentation/admin/instances.md#The%20page%20content) once a day because there are some reports that the connection is lost after approx. 24 hours
-* Some cleaning functions may not work with 710/711/711s. Please use version 0.5.8 for now.
+* Some cleaning functions may not work with 710/711. Please use version 0.5.8 for now.
 * The "edge" function does not work with Deebot U2 (starts auto clean instead)
 
 ## FAQ
@@ -63,6 +63,10 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 * Frequently asked questions can be found [here](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
 ## Changelog
+
+### 1.0.11
+* Enable some features for OZMO 900
+* Several improvements and fixes
 
 ### 1.0.10
 * Using library version 0.5.4
@@ -123,29 +127,28 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 * Added support for Ozmo T8 AIVI
 
 ### 1.0.1
-   * Compact mode support
-   * New features:
-     * button to save the last used custom area values
-     * buttons to rerun saved custom areas
-   * Some enhancements and fixes
+* Compact mode support
+* Added a button to save the last used custom area values
+* Added buttons to rerun saved custom areas
+* Some enhancements and fixes
 
 ### 1.0.0
-   * Stable Release
+* Stable Release
 
 ### 0.6.3 - 0.6.5
-   * Using library version 0.4.13
-   * Set flag for compact mode to false
-   * Some minor fixes
-   * Some translations added
+* Using library version 0.4.13
+* Set flag for compact mode to false
+* Some minor fixes
+* Some translations added
 
 ### 0.6.2
-   * Using library version 0.4.12
-   * (boriswerner) Alternative API call for last clean log info (920/950)
-   * (mrbungle64) Periodically polling of CleanLogs
+* Using library version 0.4.12
+* (boriswerner) Alternative API call for last clean log info (920/950)
+* (mrbungle64) Periodically polling of CleanLogs
 
 ### 0.6.0 - 0.6.1
-   * Using library version 0.4.10/11
-   * Several enhancements and fixes
+* Using library version 0.4.10/11
+* Several enhancements and fixes
 
 ### 0.0.1 - 0.5.9
 * [Changelog archive](https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/Changelog-(archive)#059)

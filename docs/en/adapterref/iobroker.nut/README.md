@@ -82,6 +82,9 @@ directory) to try it out on the commandline. Call the scripts using "node filena
 
 ## Changelog
 
+### 1.4.2 (2021-01-23)
+* (Apollon77) Check configured port before using it (Sentry IOBROKER-NUT-3)
+
 ### 1.4.1 (2021-01-21)
 * (Apollon77) Optimize stop handling (Sentry IOBROKER-NUT-1)
 

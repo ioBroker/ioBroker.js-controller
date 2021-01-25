@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 91ZtGQuLbm1S1bO9yqVvA5ZTNODi5wl5JRsCDJyg0so=
+hash: tqeyHK4JyPV3bx0J33Gy6Qp962koZbw49WlY0Cc+PQc=
 ---
 ![Logo](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -41,6 +41,13 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 [![Spende] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.5
+- JSON Tabelle farbliche Schwellenwerte für Zahlen
+- Fehler beim Slider gehört wenn ungültiger Wert im Datenpunkt steht
+- Fehlerhafte: Signalbilder wurden mit eingefärbt
+- Option um Bildfarbe zu invertieren eingezogen, um Farbfilter zu entfernen
+- Color Slider kann nun zwischen HEX, RGB und CIE gehören
 
 ## 2.7.4
 - Fehlende Übersetzung für Hover-Farben hinzugefügt
@@ -146,7 +153,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Fehler in der JSON Tabelle Spalten
 
 ## 2.2.2
-- Fehler im Multi Widget gehört: Bilder und Text ändern nicht bei Typ Navigation
+- Fehler im Multi Widget Rechte: Bilder und Text ändern nicht bei Typ Navigation
 
 ## 2.2.1
 - Fehler in der JSON-Tabelle gehört, wenn kein gehörtiges JSON-Objekt vorhanden ist
@@ -171,7 +178,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Multi Widget -> wie das Universal, nur dass hier auf mehrere Datenpunkte und Werte werden können können.
 - Image Widget kann nun auf Datenpunkt kaufen
 - Radiobuttons hinzugefügt
-- Werteliste hinzugefügt
+- Werteliste hinzugefügt (Kann Liste aus einem Datenpunkt oder manuellem Zugriff Text)
 
 ## 1.3.8
 - Der Schieberegler wurde auf dezimal geändert
@@ -228,7 +235,7 @@ Falls Dir unsere Arbeit betrifft und du uns nicht möchtest, wir freuen uns übe
 - Slider-Widget hinzugefügt
 - Option zum Spiegeln des Bildes hinzugefügt
 - Neue Symbole hinzugefügt
-- Die Schaltflächen-Widgets wurden geändert, um die Standardoptionen für Schriftart und Text zu verwenden
+- Schaltflächen-Widgets wurden geändert, um Standardoptionen für Schriftart und Text zu verwenden
 
 ### 1.0.0
 - Widget-Hintergrund und Inhaltsopazität, Wechsel kann von boolesch auf Wert geändert werden, Symbole von weiß auf schwarz geändert, nahtlose Hintergründe hinzugefügt

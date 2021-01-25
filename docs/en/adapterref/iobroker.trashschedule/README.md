@@ -189,6 +189,18 @@ Scans an ical calendar to calculate the days left until next trash pickup
 
 ## Changelog
 
+### 1.0.6
+
+* (klein0r) Fixed async object creation
+
+### 1.0.5
+
+* (klein0r) Added automatic refresh every full hour
+
+### 1.0.4
+
+* (klein0r) Delete unsed states
+
 ### 1.0.3
 
 * (klein0r) Improved VIS widget options
@@ -260,7 +272,7 @@ Scans an ical calendar to calculate the days left until next trash pickup
 
 MIT License
 
-Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2021 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

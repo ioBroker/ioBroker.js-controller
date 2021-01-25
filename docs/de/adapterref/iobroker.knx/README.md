@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: vjCCXJTBzoNWfIuXlN+LgsLK7ydOnA6JPOKBBgmj4uA=
+hash: Y3LfuhBlGSBH6jmK7CnDM3nai71WINNc2hKrTektnU0=
 ---
 ![Logo](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
@@ -63,7 +63,7 @@ Alle DPTs gemäß "Systemspezifikationen, Interworking, Datenpunkttypen" der KNX
 Beispielsweise wird ein DPT5.001 als vorzeichenlose Ganzzahl mit 8-Bit codiert. Dies ergibt einen einzelnen Wert. Der DPT3.007 (Control Dimming) ist als 1Bit (Boolean) + 3Bit (Int ohne Vorzeichen) codiert.
 Dies führt z.B. in einem Wert wie "0,5", wobei "0" "Abnahme" und "5" die Anzahl der Intervalle bedeutet.
 
-## Wie werden die Datenpunkte müssen
+## Wie werden die Datenpunkte entstehen?
 ### 1) Auslesen aller Kommunikationsobjektreferenzen (im folgenden KOR)
 Es werden die Gruppenaddressreferenz (im folgenden GAR) identifiziert. Ausserdem erhalten der erste gehört die Attribut write = yes und read = no. Alle betreffenden GAR IDs werden nur den DPT empfangen
 
@@ -113,11 +113,19 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 5.
 
 ## Geplante Funktionen
+=======
+
+## Geplante Funktionen
 * Hinzufügen von Adressen zur Objektbeschreibung (ID)
 * selektiver Import von knx-Projekt
 * Knotenversion> 8.9.4 erforderlich!
 
 ## Changelog
+### 1.0.44 (2021_01_22)
+* fixed act and state handling 
+* added some new datapoint types
+* fix facility and room recognition and device allocation
+
 ### 1.0.42 (2020_09_03)
 * Fixed problem with missing index_m.html
 
@@ -308,7 +316,7 @@ Durch senden eines Wertes auf eine Statusadresse werden die Kommunikationsobjekt
 ## License
 The CC-NC-BY License (CC-NC-BY)
 
-Copyright (c) 2016-2020 K.Ringmann <info@punktnetzwerk.net>
+Copyright (c) 2016-2021 K.Ringmann <info@punktnetzwerk.net>
 
 THE WORK IS PROVIDED UNDER THE TERMS OF THIS CREATIVE
 COMMONS PUBLIC LICENSE ("CCPL" OR "LICENSE"). THE WORK IS PROTECTED BY

@@ -73,6 +73,8 @@ These are indications as well as commands (sethkrwindowopen,sethkrboost) and whe
 ### fritzdect implementation
 From the above API possibilities the thermostat has different modes in point of view of iobroker.adapter:
 * auto (temperature control), to be set by hkrmode (0) or button "setmodeauto" -> the tsoll value will be used!
+* night if tsoll = absenk
+* comfort if tsoll = komfort
 * on (full open), to be set by hkrmode (1) or button "setmodeon"
 * off (full close), to be set by hkrmode (2) or button "setmodeoff"
 * boost (full open for limited time), detected by feedback boostactive, can be set by boostactive (false->true)
@@ -178,6 +180,12 @@ The datapoints are created on the basis of the returned values of the Fritz AHA 
 * refactor to the format of as of "create adapter"
 
 ## Changelog
+### 2.1.10
+* comfort/night is AUTO but reintroduced as operationmode
+
+### 2.1.9
+* info to user after start of adapter
+
 ### 2.1.8
 * simpleonoff plug as device/group/template (telekom)
 

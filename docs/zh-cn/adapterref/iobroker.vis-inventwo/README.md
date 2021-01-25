@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventwo
-hash: 91ZtGQuLbm1S1bO9yqVvA5ZTNODi5wl5JRsCDJyg0so=
+hash: tqeyHK4JyPV3bx0J33Gy6Qp962koZbw49WlY0Cc+PQc=
 ---
 ![商标](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -26,7 +26,7 @@ hash: 91ZtGQuLbm1S1bO9yqVvA5ZTNODi5wl5JRsCDJyg0so=
 ###### .. v 1.3.8
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Set.png)
 
-米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit在适配器适配器中恢复正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
+米特·希尔夫（Mit Hilfe）Unserer Widgets。 Zur Zeit将在非适配器适配器中正常运行，并恢复图标。 Uhr und Wetter和Adaptern undMüssenggf。 zusätzlichinstalliert werden。
 
 ![贝斯皮尔](http://resources.inventwo.com/github/inventwo/Preview.png)
 
@@ -34,13 +34,20 @@ hash: 91ZtGQuLbm1S1bO9yqVvA5ZTNODi5wl5JRsCDJyg0so=
 ---
 
 ##Unterstützung
-瀑布下的阿尔贝特教堂和地下教堂
+瀑布不夜城，阿尔弗雷德·尤德·斯彭德（Wer freuen unsüberjede Spende）。
 
 （使用Keiner Verbindung zum ioBroker的Dieser Linkführtzu unserem PayPal-Konto和Steht）
 
 [![Spende]（http://resources.inventwo.com/github/inventwo/spende.png）](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.5
+-JSON Tabelle farbliche SchwellenwertefürZahlen
+-Fehler beim Slider behoben wennungültigerWert im Datenpunkt steht
+-Fehler behoben：Signalbilder wurden miteingefärbt
+-Option um Bildfarbe zu invertiereneingefügt，um Farbfilter zu umgehen
+-彩色滑块kann nun zwischen HEX，RGB和CIE unterscheiden
 
 ## 2.7.4
 -FehlendeÜbersetzungfürHover-Farbenhinzugefügt
@@ -140,13 +147,13 @@ hash: 91ZtGQuLbm1S1bO9yqVvA5ZTNODi5wl5JRsCDJyg0so=
 ## 2.3.0
 -问题behoben，bei demSchaltflächenzweimal Werte senden
 -Datum / Uhrzeit und Bildformat for Tabellenzellenhinzugefügt
--通用和多窗口小部件属性
+-通用和多小部件属性werden beim Klicken auf Widget aktualisiert
 
 ## 2.2.3
 -JSON Tabelle behoben中的Fehler
 
 ## 2.2.2
--Fehler im Multi Widget behoben：Bilder und Text wechseln nicht bei Typ Navigation
+-Fehler im Multi Widget behoben：文本和文字的类型导航
 
 ## 2.2.1
 -JSON中的Fehler Tabelle behoben，wenn keingültigesJSON-Objekt vorhanden ist
@@ -168,7 +175,7 @@ hash: 91ZtGQuLbm1S1bO9yqVvA5ZTNODi5wl5JRsCDJyg0so=
 
 ## 2.0.0
 -开关，按钮，导航和背景小部件（显示小部件）-> dem通用小部件
--多功能小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere Datenpunkte und Wertegeprüftwerden kann（Ähnlichder Signalbild Funktion）
+-多功能小工具->通用小工具，日期从小到大，从小到大（War das hier auf mehrere Datenpunkte und Wertegeprüftwerden kann）
 -图像小部件kann nun auf Datenpunktprüfen
 -单选按钮hinzugefügt
 -Wertelistehinzugefügt（Kann Liste aus einem Datenpunkt oder manuell eingetragenem Text erstellen）

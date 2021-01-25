@@ -67,9 +67,13 @@ For aggregation or separation of data, please use the ioBroker.statistics adapte
 
 ### Control plugs/switches
 
-Smappee allows you to remotly control smart plugs / smart switches. Either smappee-ones or other 433Mhz RF-plugs/swiches (i.e. Intertechno IT-1500). Pair the switches with your smappee - app and restart the ioBroker smappee-adapter. You will get the names and states of your plugs and by setting 'switchON' 'true', you turn the switch on, when you set it 'false', you turn it off (when setting 'switchON' ACK has to be false).
+Smappee allows you to remotly control smart plugs / smart switches. Either smappee-ones or other 433Mhz RF-plugs/swiches (i.e. Intertechno IT-1500). Pair the switches with your smappee - app and restart the ioBroker smappee-adapter. You will get the names and states of your plugs and by setting 'switchON' 'true', you turn the switch on, when you set it 'false', you turn it off (when setting 'switchON' ACK has to be false). The actual state of switchON is updated with the state of plug.state.
 
 ## Changelog
+
+### 0.2.3
+
+-   'switchON' state is updated with actual state of a plug.
 
 ### 0.2.2
 
@@ -120,7 +124,7 @@ Smappee allows you to remotly control smart plugs / smart switches. Either smapp
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 forelleblau marceladam@gmx.ch
+Copyright (c) 2018-2021 forelleblau marceladam@gmx.ch
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

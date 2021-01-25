@@ -21,6 +21,9 @@ Enter under module your new target_position. Windows allows only target_position
 
 ## Changelog
 
+### 0.0.7
+
+-   fix js-controller 3.2 and interval problem
 ### 0.0.6
 
 -   fix js-controller 3 problem

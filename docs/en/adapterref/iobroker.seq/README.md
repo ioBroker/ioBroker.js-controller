@@ -30,6 +30,9 @@ It is also possible to apply a filter to the log levels and also to the adapters
 	Placeholder for the next version (at the beginning of the line):
 	### __WORK IN PROGRESS__
 -->
+### 0.2.7 (2021-01-24)
+* (IdleBit) Add overview card 
+
 ### 0.2.6 (2021-01-21)
 * (bluefox) Refactoring
 * (bluefox) Better translations

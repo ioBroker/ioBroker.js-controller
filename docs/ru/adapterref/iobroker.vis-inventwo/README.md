@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.vis-inventwo/README.md
 title: ioBroker.vis-inventorywo
-hash: 91ZtGQuLbm1S1bO9yqVvA5ZTNODi5wl5JRsCDJyg0so=
+hash: tqeyHK4JyPV3bx0J33Gy6Qp962koZbw49WlY0Cc+PQc=
 ---
 ![Логотип](../../../en/adapterref/iobroker.vis-inventwo/admin/inventwo.png)
 
@@ -41,6 +41,13 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 [![Sdency] (http://resources.inventwo.com/github/inventwo/spende.png)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=GQPD3G25CKTEJ&source=url)
 
 ---
+
+## 2.7.5
+- JSON Tabelle farbliche Schwellenwerte für Zahlen
+- Fehler beim Slider behoben wenn ungültiger Wert im Datenpunkt steht
+- Fehler behoben: Signalbilder wurden mit eingefärbt
+- Вариант um Bildfarbe zu Invertieren eingefügt, um Farbfilter zu umgehen
+- Цветной слайдер kann nun zwischen HEX, RGB und CIE unterscheiden
 
 ## 2.7.4
 - Fehlende Übersetzung für Hover-Farben hinzugefügt
@@ -135,7 +142,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Fehler bei der Navigation mit dem Widget 'View in Widget' behoben
 
 ## 2.3.1
-- Fehler в JSON Tabelle behoben
+- Фелер в JSON Tabelle behoben
 
 ## 2.3.0
 - Problem behoben, bei dem Schaltflächen zweimal Werte senden
@@ -143,7 +150,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 - Универсальный и мульти-виджет-атрибут, указанный в клике, на актуальном виджете
 
 ## 2.2.3
-- Fehler в JSON Tabelle behoben
+- Фелер в JSON Tabelle behoben
 
 ## 2.2.2
 - Fehler im Multi Widget behoben: Bilder und Text wechseln nicht bei Typ Navigation
@@ -218,7 +225,7 @@ Falls Dir unsere Arbeit gefällt und Du uns unterstützen möchtest, wir freuen 
 
 ### 1.2.0
 - Добавлен виджет изображений
-- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно щелкнуть каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
+- Добавлен ползунок для изменения радиуса границы для всех 4 углов (если эта версия является обновлением для вас, вам нужно нажимать каждую кнопку в редакторе vis, чтобы вернуть углы по умолчанию)
 - Добавлены новые иконки
 
 ### 1.1.1

@@ -14,6 +14,22 @@
 
 Visualization for all devices
 
+########################################################################
+
+# IMPORTANT !!!
+
+if you are upgrading from version < 1.3.0 please note:
+
+* the storing-place of the config-files has changed
+* you cannot save you config-file at the old place
+* read config-file with the red dropdown-button
+* the file will get a prefix "OF_"
+* now save the config-file
+* prefix will disappear and config-file is saved at new place
+
+########################################################################
+
+
 ## Instructions
 
 - install adapter as usual
@@ -44,6 +60,9 @@ For more information visit https://minukodu.de/en or watch at youtube https://yo
 
 
 ## Changelog
+### 1.3.0 (2021-01-24)
+* updated builder and app to V1.12.0
+* new meta-datapoint "0_userdata.0" for storing config-files
 ### 1.2.0 (2020-12-06)
 * updated builder and app to V1.11.0
 ### 1.1.0 (2020-12-01)

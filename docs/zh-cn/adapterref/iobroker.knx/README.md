@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.knx/README.md
 title: ioBroker.knx
-hash: vjCCXJTBzoNWfIuXlN+LgsLK7ydOnA6JPOKBBgmj4uA=
+hash: Y3LfuhBlGSBH6jmK7CnDM3nai71WINNc2hKrTektnU0=
 ---
 ![商标](../../../en/adapterref/iobroker.knx/admin/knx.png)
 
@@ -63,7 +63,7 @@ zh：该适配器允许从ETS导入knxproj文件。它在KNX-Group地址和ioBro
 例如，DPT5.001被编码为8位无符号整数。这给出一个值。 DPT3.007（控制调光）被编码为1Bit（布尔）+ 3Bit（无符号Int）。
 结果例如在“ 0,5”之类的值中，其中“ 0”表示“减少”，“ 5”表示间隔数。
 
-## Wie werden死于Datenpunkte
+## Wie werden die Datenpunktegeneriert（Deutsch）
 ### 1）Auslesen aller Kommunikationsobjektreferenzen（im folgenden KOR）
 达韦尔·登（Daruperwerden den Gruppenaddressreferenz）（戴姆·弗尔根登·加尔）（ID）属性写入=是而读取=否。 Alle darauf folgenden GAR ID的bekommen nur den DPT zugeordnet
 
@@ -112,12 +112,20 @@ Lese-Flag Markierten DPP律师事务所开始abgefragt。死于美国时刻了�
 
 5）结束状态后的状态：结束语40，Anfragen pro Sekunde vom ioBroker生成器werden，dennsesekönnendann Physkalisch床上用品和适配器。
 
+##计划的功能
+=======
+
 ##计划中的功能
 *将地址添加到对象描述（id）
 *选择性导入knx-project
 *要求节点版本> 8.9.4！
 
 ## Changelog
+### 1.0.44 (2021_01_22)
+* fixed act and state handling 
+* added some new datapoint types
+* fix facility and room recognition and device allocation
+
 ### 1.0.42 (2020_09_03)
 * Fixed problem with missing index_m.html
 
@@ -308,7 +316,7 @@ Lese-Flag Markierten DPP律师事务所开始abgefragt。死于美国时刻了�
 ## License
 The CC-NC-BY License (CC-NC-BY)
 
-Copyright (c) 2016-2020 K.Ringmann <info@punktnetzwerk.net>
+Copyright (c) 2016-2021 K.Ringmann <info@punktnetzwerk.net>
 
 THE WORK IS PROVIDED UNDER THE TERMS OF THIS CREATIVE
 COMMONS PUBLIC LICENSE ("CCPL" OR "LICENSE"). THE WORK IS PROTECTED BY
