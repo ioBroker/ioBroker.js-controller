@@ -4,6 +4,10 @@
     "required": ["common"],
     "additionalProperties": false,
     "properties": {
+        "$schema": {
+            "description": "JSON schema for validation",
+            "type": "string"
+        },
         "common": {
             "required": ["name", "version", "platform", "titleLang", "news", "desc"],
             "additionalProperties": false,
@@ -30,15 +34,41 @@
                 },
                 "titleLang": {
                     "description": "Longer name of adapter in all supported languages like {en: 'Adapter', de: 'adapter', ru: 'Драйвер'}",
-                    "type": "object"
+                    "type": "object",
+                    "patternProperties": {
+                        "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
                 },
                 "news": {
                     "description": "Short form of changelog in all supported languages",
-                    "type": "object"
+                    "type": "object",
+                    "minProperties": 1,
+                    "maxProperties": 20,
+                    "patternProperties": {
+                        "^\\d+\\.\\d+\\.\\d+.*": {
+                            "type": "object",
+                            "patternProperties": {
+                                "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
+                                    "type": "string"
+                                }
+                            },
+                            "additionalProperties": false
+                        }
+                     },
+                    "additionalProperties": false
                 },
                 "desc": {
                     "description": "Description, object for multilingual description",
-                    "type": "object"
+                    "type": "object",
+                    "patternProperties": {
+                        "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
                 },
                 "messagebox": {
                     "description": "true if messagebox supported. If yes, the object system.adapter.<instance>.messagebox will be created to send messages to adapter",
@@ -50,11 +80,20 @@
                 },
                 "docs": {
                     "description": "The structure like {\"en\": \"docs/en/README.md\", \"de\": [\"docs/de/README.md\", \"docs/de/README1.md\"]} that describes the documentation if not in README.md",
-                    "type": "object"
+                    "type": "object",
+                    "patternProperties": {
+                        "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
+                            "type": "string"
+                        }
+                    },
+                    "additionalProperties": false
                 },
                 "authors": {
                     "description": "Array of authors as string",
-                    "type": "array"
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 },
                 "license": {
                     "description": "License of the software",
@@ -97,7 +136,13 @@
                         },
                         "name": {
                             "description": "Name of TAB (multilingual object) in admin",
-                            "type": "object"
+                            "type": "object",
+                            "patternProperties": {
+                                "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
+                                    "type": "string"
+                                }
+                            },
+                            "additionalProperties": false
                         },
                         "singleton": {
                             "description": "If true, only one TAB for all instances will be shown.",
@@ -112,20 +157,40 @@
                 "allowInit": {
                     "description": "allow for \"scheduled\" adapter to be called \"not in the time schedule\", if settings changed or adapter started. Or allow scheduled adapter start once after configuration changed and then by schedule.",
                     "type": "boolean"
+                },
+                "availableModes": {
+                    "description": "values for common.mode if more than one mode is possible",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "blockly": {
+                    "description": "if adapter has custom blocks for blockly (admin/blockly.js required)",
+                    "type": "boolean"
                 }
             }
         },
         "objects": {
             "description": "Objects which will be created for the adapter",
-            "type": "array"
+            "type": "array",
+            "items": {
+                "type": "object"
+            }
         },
         "instanceObjects": {
             "description": "Objects which will be created for each instance",
-            "type": "array"
+            "type": "array",
+            "items": {
+                "type": "object"
+            }
         },
         "notifications": {
             "description": "Register notifications for the built-in notification system",
-            "type": "array"
+            "type": "array",
+            "items": {
+                "type": "object"
+            }
         },
         "native": {
             "description": "Predefined attributes which are accessible in index_m.html and at runtime via adapter.config.<attribute>, e.g. {\"port\": 1234, \"password\": \"secret\"}",
@@ -133,15 +198,17 @@
         },
         "protectedNative": {
             "description": "Array of config attributes which will only be accessible by the own adapter, e.g. [\"password\"]",
-            "type": "array"
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         },
         "encryptedNative": {
             "description": "Array of config attributes which will be automatically encrypted when stored via Admin configuration page and automatically decrypted at adapter runtime, e.g. [\"password\", \"token\"]",
-            "type": "array"
-        },
-        "$schema": {
-            "description": "JSON schema for validation",
-            "type": "string"
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
         }
     }
 }
