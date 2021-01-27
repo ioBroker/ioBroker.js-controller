@@ -36,6 +36,7 @@
                 "titleLang": {
                     "description": "Longer name of adapter in all supported languages like {en: 'Adapter', de: 'adapter', ru: 'Драйвер'}",
                     "type": "object",
+                    "required": ["en"],
                     "patternProperties": {
                         "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
                             "type": "string"
@@ -51,6 +52,7 @@
                     "patternProperties": {
                         "^\\d+\\.\\d+\\.\\d+.*": {
                             "type": "object",
+                            "required": ["en"],
                             "patternProperties": {
                                 "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
                                     "type": "string"
@@ -64,6 +66,7 @@
                 "desc": {
                     "description": "Description, object for multilingual description",
                     "type": "object",
+                    "required": ["en"],
                     "patternProperties": {
                         "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
                             "type": "string"
@@ -82,6 +85,7 @@
                 "docs": {
                     "description": "The structure like {\"en\": \"docs/en/README.md\", \"de\": [\"docs/de/README.md\", \"docs/de/README1.md\"]} that describes the documentation if not in README.md",
                     "type": "object",
+                    "required": ["en"],
                     "patternProperties": {
                         "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
                             "type": "string"
@@ -141,6 +145,7 @@
                         "name": {
                             "description": "Name of TAB (multilingual object) in admin",
                             "type": "object",
+                            "required": ["en"],
                             "patternProperties": {
                                 "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
                                     "type": "string"
@@ -205,6 +210,10 @@
                 "eraseOnUpload": {
                     "description": "erase all previous data in the directory before upload",
                     "type": "boolean"
+                },
+                "extIcon": {
+                    "description": "Link to external icon for uninstalled adapters. Normally on GitHub",
+                    "type": "string"
                 }
             }
         },
