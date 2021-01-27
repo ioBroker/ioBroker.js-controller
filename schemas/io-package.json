@@ -1,8 +1,10 @@
 {
     "$schema": "http://json-schema.org/schema#",
     "type": "object",
+    "required": ["common"],
     "properties": {
         "common": {
+            "required": ["name", "version", "platform", "titleLang", "news", "desc"],
             "description": "Contains all common instance attributes",
             "type": "object",
             "properties": {
@@ -15,6 +17,30 @@
                     "description": "Current adapter version",
                     "type": "string",
                     "pattern": "^\\d+\\.\\d+\\.\\d+.*"
+                },
+                "platform": {
+                    "description": "Platform, normally Javascript/Node.js",
+                    "type": "string"
+                },
+                "title": {
+                    "description": "[DEPRECATED] Longer name of adapter to show in admin",
+                    "type": "string"
+                },
+                "titleLang": {
+                    "description": "Longer name of adapter in all supported languages like {en: 'Adapter', de: 'adapter', ru: 'Драйвер'}",
+                    "type": "object"
+                },
+                "news": {
+                    "description": "Short form of changelog in all supported languages",
+                    "type": "object"
+                },
+                "desc": {
+                    "description": "Description, object for multilingual description",
+                    "type": "object"
+                },
+                "messagebox": {
+                    "description": "true if messagebox supported. If yes, the object system.adapter.<instance>.messagebox will be created to send messages to adapter",
+                    "type": "boolean"
                 }
             }
         },
