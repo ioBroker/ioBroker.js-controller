@@ -473,7 +473,7 @@ function register(it, expect, context) {
     it(testName + 'should not delete non existing object', done => {
         const objects = context.objects;
         objects.delObject(testId + 'not', err => {
-            expect(err.message).to.be.equal('Not exists');
+            expect(err).to.be.not.ok;
             done();
         });
     });
@@ -481,10 +481,9 @@ function register(it, expect, context) {
     it(testName + 'should not delete non existing object async', done => {
         const objects = context.objects;
         objects.delObjectAsync(testId + 'async1').then(() => {
-            expect(1).to.be.equal('Should not happen');
-        }).catch(err => {
-            expect(err.message).to.be.equal('Not exists');
             done();
+        }).catch(err => {
+            expect(err.message).to.be.equal('Should not happen');
         });
     });
 
