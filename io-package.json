@@ -1,4 +1,5 @@
 {
+    "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
         "version": "3.2.11",

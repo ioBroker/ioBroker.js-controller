@@ -108,6 +108,10 @@
                 "controller": {
                     "description": "Only used by js-controller",
                     "type": "boolean"
+                },
+                "allowInit": {
+                    "description": "allow for \"scheduled\" adapter to be called \"not in the time schedule\", if settings changed or adapter started. Or allow scheduled adapter start once after configuration changed and then by schedule.",
+                    "type": "boolean"
                 }
             }
         },
@@ -134,6 +138,10 @@
         "encryptedNative": {
             "description": "Array of config attributes which will be automatically encrypted when stored via Admin configuration page and automatically decrypted at adapter runtime, e.g. [\"password\", \"token\"]",
             "type": "array"
+        },
+        "$schema": {
+            "description": "JSON schema for validation",
+            "type": "string"
         }
     }
 }
