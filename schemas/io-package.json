@@ -2,9 +2,11 @@
     "$schema": "http://json-schema.org/schema#",
     "type": "object",
     "required": ["common"],
+    "additionalProperties": false,
     "properties": {
         "common": {
             "required": ["name", "version", "platform", "titleLang", "news", "desc"],
+            "additionalProperties": false,
             "description": "Contains all common instance attributes",
             "type": "object",
             "properties": {
@@ -40,6 +42,71 @@
                 },
                 "messagebox": {
                     "description": "true if messagebox supported. If yes, the object system.adapter.<instance>.messagebox will be created to send messages to adapter",
+                    "type": "boolean"
+                },
+                "readme": {
+                    "description": "[DEPRECATED]: Use docs",
+                    "type": "string"
+                },
+                "docs": {
+                    "description": "The structure like {\"en\": \"docs/en/README.md\", \"de\": [\"docs/de/README.md\", \"docs/de/README1.md\"]} that describes the documentation if not in README.md",
+                    "type": "object"
+                },
+                "authors": {
+                    "description": "Array of authors as string",
+                    "type": "array"
+                },
+                "license": {
+                    "description": "License of the software",
+                    "type": "string"
+                },
+                "type": {
+                    "description": "Type of the adapter",
+                    "type": "string",
+                    "pattern": "alarm|climate-control|communication|date-and-time|energy|metering|garden|general|geoposition|hardware|health|household|infrastructure|iot-systems|lighting|logic|messaging|misc-data|multimedia|network|protocols|storage|utility|visualization|visualization-icons|visualization-widgets|weather"
+                },
+                "unsafePerm": {
+                    "description": "if the package must be installed with \"npm --unsafe-perm\" parameter",
+                    "type": "boolean"
+                },
+                "plugins": {
+                    "description": "ioBroker plugins to be used",
+                    "type": "object"
+                },
+                "adminColumns": {
+                    "description": "Custom attributes, that must be shown in admin in the object browser. Like: [{\"name\": {\"en\": \"KNX address\"}, \"path\": \"native.address\", \"width\": 100, \"align\": \"left\"}, {\"name\": \"DPT\", \"path\": \"native.dpt\", \"width\": 100, \"align\": \"right\", \"type\": \"number\", \"edit\": true, \"objTypes\": [\"state\", \"channel\"]}]. type is a type of the attribute (e.g. string, number, boolean) and only needed if edit is enabled. objTypes is a list of the object types, that could have such attribute. Used only in edit mode too.",
+                    "type": "array"
+                },
+                "adminTab": {
+                    "description": "Adds a Tab which can be shown in admin adapter",
+                    "type": "object",
+                    "required": ["fa-icon", "link", "name"],
+                    "additionalProperties": false,
+                    "properties": {
+                        "fa-icon": {
+                            "description": "Font-Awesome icon name for TAB",
+                            "type": "string"
+                        },
+                        "ignoreConfigUpdate": {
+                            "description": "Do not update config TAB if configuration changed (to enable configure settings in TAB)",
+                            "type": "boolean"
+                        },
+                        "link": {
+                            "description": "Link for iframe in the TAB. You can use parameters replacement like this: \"http://%ip%:%port%\". IP will be replaced with host IP. \"port\" will be extracted from native.port.",
+                            "type": "string"
+                        },
+                        "name": {
+                            "description": "Name of TAB (multilingual object) in admin",
+                            "type": "object"
+                        },
+                        "singleton": {
+                            "description": "If true, only one TAB for all instances will be shown.",
+                            "type": "boolean"
+                        }
+                    }
+                },
+                "controller": {
+                    "description": "Only used by js-controller",
                     "type": "boolean"
                 }
             }
