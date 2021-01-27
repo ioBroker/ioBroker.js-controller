@@ -168,6 +168,19 @@
                 "blockly": {
                     "description": "if adapter has custom blocks for blockly (admin/blockly.js required)",
                     "type": "boolean"
+                },
+                "connectionType": {
+                    "description": "Type of connection to device",
+                    "type": "string",
+                    "pattern": "local|cloud"
+                },
+                "compact": {
+                    "description": "If compact mode supported",
+                    "type": "boolean"
+                },
+                "dataFolder": {
+                    "description": "Folder relative to iobroker-data where the adapter stores the data. This folder will be backed up and restored automatically. You can use variable '%INSTANCE%' in it",
+                    "type": "string"
                 }
             }
         },
