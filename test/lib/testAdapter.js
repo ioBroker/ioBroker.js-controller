@@ -179,7 +179,7 @@ function testAdapter(options) {
                 try {
                     await objects.setObjectAsync(id, objs[id]);
                 } catch (e) {
-                    console.error(e);
+                    console.error(e.message);
                 }
             }
         }
