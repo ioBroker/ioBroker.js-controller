@@ -1,0 +1,38 @@
+{
+    "$schema": "http://json-schema.org/schema#",
+    "type": "object",
+    "properties": {
+        "common": {
+            "description": "Contains all common instance attributes",
+            "type": "object",
+            "properties": {
+                "name": {
+                    "description": "Name of the adapter without ioBroker",
+                    "type": "string",
+                    "pattern": "(?i)^(?!iobroker)"
+                },
+                "version": {
+                    "description": "Current adapter version",
+                    "type": "string",
+                    "pattern": "^\\d+\\.\\d+\\.\\d+.*"
+                }
+            }
+        },
+        "objects": {
+            "description": "Objects which will be created for the adapter",
+            "type": "array"
+        },
+        "instanceObjects": {
+            "description": "Objects which will be created for each instance",
+            "type": "array"
+        },
+        "notifications": {
+            "description": "Register notifications for the built-in notification system",
+            "type": "array"
+        },
+        "native": {
+            "description": "Configuration attributes of each instance",
+            "type": "object"
+        }
+    }
+}
