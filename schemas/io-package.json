@@ -26,7 +26,8 @@
                 },
                 "platform": {
                     "description": "Platform, normally Javascript/Node.js",
-                    "type": "string"
+                    "type": "string",
+                    "enum": ["Javascript/Node.js"]
                 },
                 "title": {
                     "description": "[DEPRECATED] Longer name of adapter to show in admin",
@@ -102,7 +103,10 @@
                 "type": {
                     "description": "Type of the adapter",
                     "type": "string",
-                    "pattern": "alarm|climate-control|communication|date-and-time|energy|metering|garden|general|geoposition|hardware|health|household|infrastructure|iot-systems|lighting|logic|messaging|misc-data|multimedia|network|protocols|storage|utility|visualization|visualization-icons|visualization-widgets|weather"
+                    "enum": ["alarm", "climate-control", "communication", "date-and-time", "energy", "metering", "garden", "general",
+                        "geoposition", "hardware", "health", "household", "infrastructure", "iot-systems", "lighting", "logic", "messaging",
+                        "misc-data", "multimedia", "network", "protocols", "storage", "utility", "visualization", "visualization-icons",
+                        "visualization-widgets", "weather"]
                 },
                 "unsafePerm": {
                     "description": "if the package must be installed with \"npm --unsafe-perm\" parameter",
@@ -172,7 +176,7 @@
                 "connectionType": {
                     "description": "Type of connection to device",
                     "type": "string",
-                    "pattern": "local|cloud"
+                    "enum": ["local", "cloud"]
                 },
                 "compact": {
                     "description": "If compact mode supported",
@@ -181,6 +185,26 @@
                 "dataFolder": {
                     "description": "Folder relative to iobroker-data where the adapter stores the data. This folder will be backed up and restored automatically. You can use variable '%INSTANCE%' in it",
                     "type": "string"
+                },
+                "dataSource": {
+                    "description": "How the data will be received from device",
+                    "type": "string",
+                    "enum": ["poll", "push", "assumption"]
+                },
+                "dependencies": {
+                    "description": "Array like [{\"js-controller\": \">=2.0.0\"}] that describes which ioBroker modules are required for this adapter",
+                    "type": "array",
+                    "items": {
+                        "type": "object"
+                    }
+                },
+                "enabled": {
+                    "description": "Value should be false so new instances are disabled by default",
+                    "type": "boolean"
+                },
+                "eraseOnUpload": {
+                    "description": "erase all previous data in the directory before upload",
+                    "type": "boolean"
                 }
             }
         },
