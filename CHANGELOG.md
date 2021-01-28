@@ -3,11 +3,13 @@
 	Placeholder for the next version (at the beginning of the line):
 	## __WORK IN PROGRESS__
 -->
+
 ## __WORK IN PROGRESS__
 * (foxriver76) fix repo cli
 * (foxriver76) add instances list back to 'status all'
-* (Apollon77) add missing Log Namespaces in DB classes
+* (Apollon77) optimize logging in db classes
 * (Apollon77) enhance letsencrypt to also allow to specify alternative names for certs
+* (Apollon77) deleting a not existing object is handled as success instead of Not-Exists error
 
 ## 3.2.11 (2021-01-24) Release Grace
 **BREAKING CHANGES**
