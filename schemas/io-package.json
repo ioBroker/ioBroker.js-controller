@@ -9,7 +9,7 @@
             "type": "string"
         },
         "common": {
-            "required": ["name", "version", "platform", "titleLang", "news", "desc"],
+            "required": ["name", "version", "platform", "titleLang", "news", "desc", "mode"],
             "additionalProperties": false,
             "description": "Contains all common instance attributes",
             "type": "object",
@@ -214,6 +214,117 @@
                 "extIcon": {
                     "description": "Link to external icon for uninstalled adapters. Normally on GitHub",
                     "type": "string"
+                },
+                "getHistory": {
+                    "description": "if adapter supports getHistory message",
+                    "type": "boolean"
+                },
+                "icon": {
+                    "description": "name of the local icon (should be located in subdirectory \"admin\")",
+                    "type": "string"
+                },
+                "keywords": {
+                    "description": "Similar to keywords in package.json, but can be defined in many languages.",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "localLinks": {
+                    "description": "Link to the web service of this adapter. E.g to http://localhost:5984/_utils for button in admin",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "localLink": {
+                    "description": "[DEPRECATED] Use common.localLinks",
+                    "type": "string"
+                },
+                "logLevel": {
+                    "description": "Default Loglevel after instance creation",
+                    "type": "string",
+                    "enum": ["silly", "debug", "info", "warn", "error"]
+                },
+                "logTransporter": {
+                    "description": "If this adapter receives logs from other hosts and adapters (e.g. to store them somewhere)",
+                    "type": "boolean"
+                },
+                "main": {
+                    "description": "[DEPRECATED] Location of adapter main file",
+                    "type": "string"
+                },
+                "materialize": {
+                    "description": "If adapter supports > admin3 (materialize style)",
+                    "type": "boolean"
+                },
+                "materializeTab": {
+                    "description": "If adapter supports > admin3 for tab (materialize style)",
+                    "type": "boolean"
+                },
+                "mode": {
+                    "description": "Execution mode of the adapter",
+                    "type": "string",
+                    "enum": ["none", "daemon", "subscribe", "schedule", "once", "extension"]
+                },
+                "noConfig": {
+                    "description": "Do not show configuration dialog for instance",
+                    "type": "boolean"
+                },
+                "noIntro": {
+                    "description": "never show instances of this adapter on Intro/Overview screen in admin (like icons, widgets)",
+                    "type": "boolean"
+                },
+                "noRepository": {
+                    "description": "If adapter delivered with initial installation or has own repository",
+                    "type": "boolean"
+                },
+                "nogit": {
+                    "description": "If true, no install from github directly is possible",
+                    "type": "boolean"
+                },
+                "nondeletable": {
+                    "description": "This adapter cannot be deleted or updated. It will be updated together with controller.",
+                    "type": "boolean"
+                },
+                "onlyWWW": {
+                    "description": "Say to controller, that adapter has only html files and no main.js, like rickshaw",
+                    "type": "boolean"
+                },
+                "osDependencies": {
+                    "description": "OS packages which should be installed on adapter installation",
+                    "type": "object",
+                    "additionalProperties": false,
+                    "patternProperties": {
+                        "linux|darwin|win32": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                },
+                "os": {
+                    "description": "String or array of supported operation systems, e.g [\"linux\", \"darwin\"]",
+                    "type": ["string", "array"],
+                    "minItems": 1,
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "preserveSettings": {
+                    "description": "String (or array) with names of attributes in common of instance, which will not be deleted. E.g. \"history\", so by setState('system.adapter.mqtt.0\", {..}) the field common.history will not be deleted even if new object does not have this field. To delete the attribute it must be explicitly done with common:{history: null}.",
+                    "type": ["string", "array"],
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "restartAdapters": {
+                    "description": "array with names of adapter that must be restarted after this adapter is installed, e.g. [\"vis\"]",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
                 }
             }
         },

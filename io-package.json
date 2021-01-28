@@ -5,6 +5,7 @@
         "version": "3.2.11",
         "platform": "Javascript/Node.js",
         "controller": true,
+        "mode": "daemon",
         "title": "JS controller",
         "titleLang": {
             "en": "JS controller",
