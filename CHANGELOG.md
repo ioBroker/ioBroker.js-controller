@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.2.12 (2021-01-28)
 * (foxriver76) fix repo cli
 * (foxriver76) add instances list back to 'status all'
 * (Apollon77) optimize logging in db classes
