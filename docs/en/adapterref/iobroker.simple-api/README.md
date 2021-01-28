@@ -552,6 +552,10 @@ If no data source was specified or the noHistory parameter is passed, then only 
 	### __WORK IN PROGRESS__
 -->
 ## Changelog
+
+### 2.5.3 (2021-01-25)
+* (Apollon77) Make sure that delayed answers are not crashing (Sentry IOBROKER-SIMPLE-API-Z)
+
 ### 2.5.2 (2021-01-09)
 * (bluefox) Support of new Let's Encrypt (only with js-controller 3.2.x)
 

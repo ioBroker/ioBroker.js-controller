@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.trashschedule/README.md
 title: ioBroker.trashschedule
-hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
+hash: QCYelfjzjTR0AhzJk9+BvOHy7OqUhYR9G9nnRFQTMYI=
 ---
 ![Логотип](../../../en/adapterref/iobroker.trashschedule/admin/trashschedule.png)
 
@@ -14,7 +14,7 @@ hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
 ![Статус зависимости](https://img.shields.io/david/klein0r/iobroker.trashschedule.svg)
 ![Известные уязвимости](https://snyk.io/test/github/klein0r/ioBroker.trashschedule/badge.svg)
 ![Статус сборки](http://img.shields.io/travis/klein0r/ioBroker.trashschedule.svg)
-![НПМ](https://nodei.co/npm/iobroker.trashschedule.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.trashschedule.png?downloads=true)
 
 # IoBroker.trashschedule
 Сканирует календарь для подсчета дней, оставшихся до следующего вывоза мусора
@@ -39,7 +39,7 @@ hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
 ## Пример блока
 ![Пример блока](../../../en/adapterref/iobroker.trashschedule/images/exampleBlockly.png)
 
-```
+```xml
 <xml xmlns="https://developers.google.com/blockly/xml">
   <block type="comment" id="@ObjS.SGnDWy?:*J=bee" x="37" y="188">
     <field name="COMMENT">Um 18:00 Uhr am Vortag (verbleibende Tage = 1) erinnern, dass Abholung bevorsteht</field>
@@ -188,7 +188,37 @@ hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
 </xml>
 ```
 
+## Конфигурация смещения
+## По умолчанию 0
+![Пример смещения](../../../en/adapterref/iobroker.trashschedule/images/offsetExample.jpg)
+
+## Пример 1
+![Пример смещения](../../../en/adapterref/iobroker.trashschedule/images/offsetExample1.jpg)
+
+## Пример -1
+![Пример смещения](../../../en/adapterref/iobroker.trashschedule/images/offsetExample2.jpg)
+
 ## Changelog
+
+### 1.1.1
+
+* (klein0r) ...
+
+### 1.1.0
+
+* (klein0r) Just allow clean trash type names **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
+
+### 1.0.6
+
+* (klein0r) Fixed async object creation
+
+### 1.0.5
+
+* (klein0r) Added automatic refresh every full hour
+
+### 1.0.4
+
+* (klein0r) Delete unsed states
 
 ### 1.0.3
 
@@ -205,8 +235,8 @@ hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
 
 ### 1.0.0
 
-* (klein0r) BREAKING CHANGE: Renamed data types - check your scripts!
-* (klein0r) First stable release
+* (klein0r) Renamed data types **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
+* (klein0r) First **stable** release
 * (klein0r) Added iobroker sentry
 
 ### 0.0.11
@@ -261,7 +291,7 @@ hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
 
 MIT License
 
-Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2021 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

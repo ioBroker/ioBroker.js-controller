@@ -25,25 +25,25 @@ Dieses Projekt hat keine Verbindung mit der Firma Beckhoff
 1. Im Projekt muss ADS aktiviert sein. Dazu im Steuerungsproject in die Taskkonfiguration gehen und die Checkbox `Symbole erzeugen` aktivieren. Dann die Konfiguration auf die Steuerung laden und diese neu starten. Ein Neustart ist nur nötig wenn TwinCat 2 verwendet wird.
 
     ![createSymbols](img/createSymbols.png)
-    
+
 2. In der Steuerung muss eine Statische Route angelegt werden. Die Route muss mit dem ioBroker zusammenpassen (IP-Adresse und AMS-Net-ID).
-    
+
     Hier ein Beispiel wie das aussehen kann wenn die Route direkt auf der Steuerung hinzugefügt wird. Die Route kann auch über den Engineerien Rechner hinzugefügt werden.
 
     ![createSymbols](img/addRoute.png)
-    
+
     Weitere Informationen über den TwinCat Router und die Steuerung allgemein kann im [Beckhoff Information System](https://infosys.beckhoff.com/ "Beckhoff Information System") nachgelesen werden.
-    
+
 3. Bei TwinCat 2 muss in der Steuerung noch eine Struktur angelegt werden. Die Struktur danach zu einer globalen Variablentabelle hinzufügen. Hier können dann alle benötigten Variablen angelegt werden. Der Datenaustausch wird dann von ADS und dem Adapter selbstständig ausgeführt.
-    
-    ##### Derzeit unterstützte Datentypen: BOOL, BYTE, WORD, DWORD, SINT, USINT, INT, UINT, DINT, UDINT, REAL, STRING(80)
-        
+
+    ##### Derzeit unterstützte Datentypen: BOOL, BYTE, WORD, DWORD, SINT, USINT, INT, UINT, DINT, UDINT, REAL, LREAL, STRING(80)
+
     OPTIONAL: Es kann eine Variable direkt in der Variablentabelle ohne Verschachtelung mit einem exakten Namen angelegt werden -> ioBrokerResync (Groß-/Kleinschreibung und Datentyp ist egal) -> Jedes mal wenn sich dieser Wert ändert wird die Variablentabelle im ioBroker neu eingelesen.
 
 3. Bei TwinCat 3 muss in der Steuerung noch eine globale Variablentabelle angelegt werden. Hier können dann alle benötigten Variablen angelegt werden. Der Datenaustausch wird dann von ADS und dem Adapter selbstständig ausgeführt.
 
-    ##### Derzeit unterstützte Datentypen: BOOL, BYTE, WORD, DWORD, SINT, USINT, INT, UINT, DINT, UDINT, REAL, STRING(80)
-    
+    ##### Derzeit unterstützte Datentypen: BOOL, BYTE, WORD, DWORD, SINT, USINT, INT, UINT, DINT, UDINT, REAL, LREAL, STRING(80)
+
     OPTIONAL: Es kann eine Variable direkt in der Variablentabelle ohne Verschachtelung mit einem exakten Namen angelegt werden -> ioBrokerResync (Groß-/Kleinschreibung und Datentyp ist egal) -> Jedes mal wenn sich dieser Wert ändert wird die Variablentabelle im ioBroker neu eingelesen.
 
 ### Adapter Einstellungen
@@ -64,13 +64,21 @@ Die *.tpy Datei aus dem SPS Projekt muss hochgeladen werden. -> Immer wenn am St
 ### Wichtiges
 1. Der TwinCAT AMS Router lässt keine mehrfachen TCP Verbindungen vom gleichen Host zu. Wenn zwei Instanzen vom selben Host zum selben TwinCat Router aufgebaut werden so wird vom Router automatisch die erste Verbindung geschlossen und nur der neusten geantwortet.
 2. Der Adapter syncronisiert automatisch alle Variablen im ioBroker. Es gibt mehrere Möglichkeiten wie ein resync getriggert werden kann:
-    - Wenn sich der Wert der Resyc Variable ändert (Siehe [hier](#Konfiguration-der-Steuerung)) 
+    - Wenn sich der Wert der Resyc Variable ändert (Siehe [hier](#Konfiguration-der-Steuerung))
     - Wenn die Steuerung länger nicht im RUN Modus ist als der Reconnect Interval -> Dann wird beim übergang der Steuerung in den RUN Modus die Variablentabelle resynchronisiert.
     - Wenn das Project auf die Steuerung geladen wird. Ausnahme -> OnlineChange
     - Wenn der Adapter neu gestartet wird.
 3. Bei "Synchronisierung" bzw. "Einlesen" ist nicht der Werteaustausch der Variablen gemeint sondern die Synchronisierung der Variablen selbst und das anlegen bzw. löschen derselben im ioBroker
 
 ## Changelog
+### 1.4.0 (2021-01-25)
+
+-   (dkleber89) Add LREAL Support
+
+### 1.3.0 (2021-01-25)
+
+-   (dkleber89) Set correct type for channels
+
 ### 1.2.2 (2020-05-30)
 
 -   (dkleber89) Clear reconnectTimeout on Adapter unload;
@@ -111,20 +119,11 @@ Die *.tpy Datei aus dem SPS Projekt muss hochgeladen werden. -> Immer wenn am St
 
 -   (dkleber89) Random Bugfixes, Add some monitoring that States get correct Ack
 
-### 1.0.0 (2019-03-23)
-
--   (dkleber 89) Stable Release, Update Gulp, add new Translations
-
-### 0.3.0 (2019-03-09)
-
--   (Appollon77) Core Files/Testing Update and introduce adapter-core
--   (dkleber89) Fix Problem 'write after End'
-
 ## License
 
 The MIT License (MIT)
 
-Copyright (c) 2018-2020 dkleber89 <dkleber89@gmail.com>
+Copyright (c) 2018-2021 dkleber89 <dkleber89@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

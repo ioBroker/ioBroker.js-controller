@@ -270,6 +270,17 @@ Drag& drop a switch widget on your view, connect it to the Object ID of a switch
 Important: The user is in charge of connecting the correct data points to the widgets. You can connect a real value to a binary status (e.g. light bulb), so the light bulb will show “on” once the real value is >1.0. That’s all, folks, pretty easy and straight forward, huh?
 
 ## Changelog
+
+### 1.2.2 (2021-01-26)
+* (Apollon77) Prevent warnings in js-controller 3.2
+
+### 1.2.1 (2021-01-25)
+* (Apollon77) fix info.connection state
+
+### 1.2.0 (2021-01-25)
+* (Apollon77) Prevent error case (Sentry IOBROKER-S7-4)
+* (Apollon77) js-controller 2.0 is now required at minimum
+
 ### 1.1.10 (2021-01-24)
 * (smiling_Jack) Bugfix in the Admin
 

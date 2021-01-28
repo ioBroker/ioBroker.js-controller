@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.trashschedule/README.md
 title: ioBroker.trashschedule
-hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
+hash: QCYelfjzjTR0AhzJk9+BvOHy7OqUhYR9G9nnRFQTMYI=
 ---
 ![Logo](../../../en/adapterref/iobroker.trashschedule/admin/trashschedule.png)
 
@@ -27,7 +27,7 @@ Scannt einen Kalender, um die verbleibenden Tage bis zur nächsten Müllabfuhr z
 5. Wenn Sie die Registerkarte "Ereignisse" verwenden, aktivieren Sie das Kontrollkästchen "Anzeige" für jeden Ereignistyp, der auch in Ihrem Papierkorbplan verwendet werden soll (andernfalls wird das Ereignis von der ical-Instanz ausgeblendet).
 
 ## Aufbau
-1. Erstellen Sie eine Papierkorbplaninstanz und wählen Sie die ical-Instanz als Quelle aus
+1. Erstellen Sie eine Papierkorbinstanz und wählen Sie die ical-Instanz als Quelle aus
 2. Wechseln Sie zur Registerkarte Papierkorbtypen und fügen Sie Typnamen und Ereignisübereinstimmungen hinzu
 3. Starten Sie die Instanz
 
@@ -39,7 +39,7 @@ Scannt einen Kalender, um die verbleibenden Tage bis zur nächsten Müllabfuhr z
 ## Blockiertes Beispiel
 ![Blockhaftes Beispiel](../../../en/adapterref/iobroker.trashschedule/images/exampleBlockly.png)
 
-```
+```xml
 <xml xmlns="https://developers.google.com/blockly/xml">
   <block type="comment" id="@ObjS.SGnDWy?:*J=bee" x="37" y="188">
     <field name="COMMENT">Um 18:00 Uhr am Vortag (verbleibende Tage = 1) erinnern, dass Abholung bevorsteht</field>
@@ -188,7 +188,37 @@ Scannt einen Kalender, um die verbleibenden Tage bis zur nächsten Müllabfuhr z
 </xml>
 ```
 
+## Offset-Konfiguration
+## Standard 0
+![Versatzbeispiel](../../../en/adapterref/iobroker.trashschedule/images/offsetExample.jpg)
+
+## Beispiel 1
+![Versatzbeispiel](../../../en/adapterref/iobroker.trashschedule/images/offsetExample1.jpg)
+
+## Beispiel 1
+![Versatzbeispiel](../../../en/adapterref/iobroker.trashschedule/images/offsetExample2.jpg)
+
 ## Changelog
+
+### 1.1.1
+
+* (klein0r) ...
+
+### 1.1.0
+
+* (klein0r) Just allow clean trash type names **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
+
+### 1.0.6
+
+* (klein0r) Fixed async object creation
+
+### 1.0.5
+
+* (klein0r) Added automatic refresh every full hour
+
+### 1.0.4
+
+* (klein0r) Delete unsed states
 
 ### 1.0.3
 
@@ -205,8 +235,8 @@ Scannt einen Kalender, um die verbleibenden Tage bis zur nächsten Müllabfuhr z
 
 ### 1.0.0
 
-* (klein0r) BREAKING CHANGE: Renamed data types - check your scripts!
-* (klein0r) First stable release
+* (klein0r) Renamed data types **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
+* (klein0r) First **stable** release
 * (klein0r) Added iobroker sentry
 
 ### 0.0.11
@@ -261,7 +291,7 @@ Scannt einen Kalender, um die verbleibenden Tage bis zur nächsten Müllabfuhr z
 
 MIT License
 
-Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2021 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

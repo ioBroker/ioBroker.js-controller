@@ -35,46 +35,67 @@ ioBroker Material Design Widgets are based on [Google's material design guidelin
 		- [Font Sizes Theme](#font-sizes-theme)
 - [Widgets](#widgets)
 	- [Material Design Icons and Images](#material-design-icons-and-images)
+		- [Editor Settings](#editor-settings)
+		- [HTML Properties](#html-properties)
 	- [Buttons](#buttons)
 	- [Buttons Vertical](#buttons-vertical)
 	- [Buttons Icon](#buttons-icon)
+	- [Checkbox](#checkbox)
+		- [Editor Settings](#editor-settings-1)
+		- [HTML Properties](#html-properties-1)
+	- [Switch](#switch)
+		- [Editor Settings](#editor-settings-2)
+		- [HTML Properties](#html-properties-2)
 	- [Card](#card)
 	- [List](#list)
 	- [IconList](#iconlist)
-		- [Editor Settings](#editor-settings)
+		- [Editor Settings](#editor-settings-3)
 		- [JSON Properties](#json-properties)
 	- [Progress](#progress)
+		- [Editor Settings](#editor-settings-4)
+		- [HTML Properties](#html-properties-3)
 	- [Progress Circular](#progress-circular)
+		- [Editor Settings](#editor-settings-5)
+		- [HTML Properties](#html-properties-4)
 	- [Slider](#slider)
+		- [HTML Properties](#html-properties-5)
 	- [Slider Round](#slider-round)
-	- [Checkbox](#checkbox)
-	- [Switch](#switch)
+		- [HTML Properties](#html-properties-6)
 	- [Input](#input)
 		- [Text input](#text-input)
 		- [Select](#select)
+			- [Menu JSON Properties](#menu-json-properties)
+			- [HTML Properties](#html-properties-7)
 		- [Autocomplete](#autocomplete)
+			- [Menu JSON Properties](#menu-json-properties-1)
+			- [HTML Properties](#html-properties-8)
 	- [Top App Bar](#top-app-bar)
 		- [Submenu](#submenu)
 			- [JSON Properties](#json-properties-1)
 	- [Charts](#charts)
 		- [Bar Chart](#bar-chart)
-			- [Editor Settings](#editor-settings-1)
-			- [JSON Properties](#json-properties-2)
+			- [Editor Settings](#editor-settings-6)
+			- [Dataset JSON Properties](#dataset-json-properties)
 		- [Pie Chart](#pie-chart)
-			- [Editor Settings](#editor-settings-2)
-			- [JSON Properties](#json-properties-3)
+			- [Editor Settings](#editor-settings-7)
+			- [Dataset JSON Properties](#dataset-json-properties-1)
 		- [Line History Chart:](#line-history-chart)
-			- [Editor Settings](#editor-settings-3)
+			- [Editor Settings](#editor-settings-8)
 		- [JSON Chart](#json-chart)
-			- [JSON Properties](#json-properties-4)
+			- [JSON Properties](#json-properties-2)
 	- [Table](#table)
 		- [Input Data](#input-data)
 			- [Control Elements](#control-elements)
-		- [Editor Settings](#editor-settings-4)
+		- [Editor Settings](#editor-settings-9)
 	- [Responsive Layout](#responsive-layout)
 		- [Masonry Views](#masonry-views)
+			- [Editor Settings](#editor-settings-10)
 		- [Grid Views](#grid-views)
+			- [Editor Settings](#editor-settings-11)
 	- [Alerts](#alerts)
+		- [Editor Settings](#editor-settings-12)
+		- [JSON Properties](#json-properties-3)
+		- [Script: send alert to widget](#script-send-alert-to-widget)
 	- [Calendar](#calendar)
 	- [HTML Elements](#html-elements)
 - [used libraries](#used-libraries)
@@ -176,6 +197,13 @@ Additionally, it is possible to assign your own font sizes to the widgets, indep
 
 
 ## Material Design Icons and Images
+
+![Logo](doc/en/media/materialdesignicons.png)
+
+### Editor Settings
+
+Settings that are not listed in the table below are self-explanatory.
+
 <table>
     <thead>
         <tr>
@@ -191,6 +219,66 @@ Additionally, it is possible to assign your own font sizes to the widgets, indep
     </tbody>
 </table>
 
+### HTML Properties
+
+The following properties can be used as [HTML element](#html-elements).
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-mdwIcon</td>
+			<td>icon</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-mdwIconSize</td>
+			<td>icon size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-mdwIconColor</td>
+			<td>icon color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-debug</td>
+			<td>debug</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+	</tbody>
+</table>
+
+<!-- omit in toc -->
+#### HTML Properties - Example
+
+<details>
+
+```
+<div class='vis-widget materialdesign-widget materialdesign-icon materialdesign-materialdesignicons-html-element'
+	style='width: 50px; height: 50px; position: relative; display: flex; align-items: center;'
+	mdw-mdwIcon='iobroker'
+	mdw-mdwIconSize='30'
+	mdw-mdwIconColor='#mdwTheme:vis-materialdesign.0.colors.material_design_icon.color'
+	mdw-debug='true'
+></div>
+```
+
+</details>
 
 ## Buttons
 
@@ -222,7 +310,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>false | true</td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>buttonStyle</td>
@@ -255,7 +343,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>labeling</b></i></td>
 			</tr>
 			<tr>
 				<td>buttontext</td>
@@ -282,7 +370,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>mdwButtonPrimaryColor</td>
@@ -303,7 +391,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
@@ -362,7 +450,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>false | true</td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>oid</td>
@@ -395,7 +483,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>labeling</b></i></td>
 			</tr>
 			<tr>
 				<td>buttontext</td>
@@ -422,7 +510,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>mdwButtonPrimaryColor</td>
@@ -443,7 +531,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
@@ -470,7 +558,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Locking</b></i></td>
 			</tr>
 			<tr>
 				<td>lockEnabled</td>
@@ -541,7 +629,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>false | true</td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>oid</td>
@@ -604,7 +692,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>labeling</b></i></td>
 			</tr>
 			<tr>
 				<td>buttontext</td>
@@ -649,7 +737,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>mdwButtonPrimaryColor</td>
@@ -682,7 +770,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
@@ -721,7 +809,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Locking</b></i></td>
 			</tr>
 			<tr>
 				<td>lockEnabled</td>
@@ -796,7 +884,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>false | true</td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>buttonStyle</td>
@@ -829,7 +917,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>labeling</b></i></td>
 			</tr>
 			<tr>
 				<td>buttontext</td>
@@ -862,7 +950,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>mdwButtonPrimaryColor</td>
@@ -883,7 +971,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
@@ -942,7 +1030,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>false | true</td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>oid</td>
@@ -975,7 +1063,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>labeling</b></i></td>
 			</tr>
 			<tr>
 				<td>buttontext</td>
@@ -1008,7 +1096,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>mdwButtonPrimaryColor</td>
@@ -1029,7 +1117,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
@@ -1056,7 +1144,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Locking</b></i></td>
 			</tr>
 			<tr>
 				<td>lockEnabled</td>
@@ -1139,7 +1227,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>false | true</td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>oid</td>
@@ -1202,7 +1290,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>labeling</b></i></td>
 			</tr>
 			<tr>
 				<td>buttontext</td>
@@ -1253,7 +1341,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>mdwButtonPrimaryColor</td>
@@ -1280,7 +1368,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
@@ -1319,7 +1407,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Locking</b></i></td>
 			</tr>
 			<tr>
 				<td>lockEnabled</td>
@@ -1405,7 +1493,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>false | true</td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>href</td>
@@ -1432,7 +1520,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
@@ -1453,7 +1541,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>colorBgFalse</td>
@@ -1500,7 +1588,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>false | true</td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>oid</td>
@@ -1527,7 +1615,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
@@ -1548,7 +1636,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>colorBgFalse</td>
@@ -1563,7 +1651,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Locking</b></i></td>
 			</tr>
 			<tr>
 				<td>lockEnabled</td>
@@ -1658,7 +1746,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>false | true</td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
 			</tr>
 			<tr>
 				<td>oid</td>
@@ -1715,7 +1803,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>icon</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>icon</b></i></td>
 			</tr>
 			<tr>
 				<td>image</td>
@@ -1748,7 +1836,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
 			</tr>
 			<tr>
 				<td>colorBgFalse</td>
@@ -1769,7 +1857,7 @@ The following properties can be used as [control element in a table](#control-el
 				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
 			</tr>
 			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
+				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Locking</b></i></td>
 			</tr>
 			<tr>
 				<td>lockEnabled</td>
@@ -1834,6 +1922,549 @@ The following properties can be used as [control element in a table](#control-el
 		</tbody>
 	</table>
 </details>
+
+
+
+
+## Checkbox
+
+![Logo](doc/en/media/checbox.gif)
+
+### Editor Settings 
+
+Settings that are not listed in the table below are self-explanatory.
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=4><img src="doc/en/media/checkbox_settings_common.png"></td>
+            <td>type of toggle</td>
+            <td>Define which type of datapoint (boolean or value) should be switched</td>
+        </tr>
+        <tr>
+            <td>value for off</td>
+            <td>Set at which value the checkbox is false</td>
+        </tr>
+        <tr>
+            <td>value for on</td>
+            <td>Set at which value the checkbox is true</td>
+        </tr>		
+        <tr>
+            <td>state if value unequal to 'on' condition</td>
+            <td>Set the state of the checkbox when the value does not match the 'on' condition</td>
+        </tr> 		        
+    </tbody>
+</table>
+
+### HTML Properties
+
+The following properties can be used as [HTML element](#html-elements).
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-oid</td>
+			<td>Object ID</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-readOnly</td>
+			<td>read only</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-toggleType</td>
+			<td>type of toggle</td>
+			<td>string</td>
+			<td>boolean | value
+		</tr>
+		<tr>
+			<td>mdw-valueOff</td>
+			<td>value for off</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueOn</td>
+			<td>value for on</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-stateIfNotTrueValue</td>
+			<td>state if value unequal to 'on' condition</td>
+			<td>string</td>
+			<td>on | off
+		</tr>
+		<tr>
+			<td>mdw-vibrateOnMobilDevices</td>
+			<td>vibrate on mobil devices [s]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-debug</td>
+			<td>debug</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>labeling</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-labelFalse</td>
+			<td>Label false</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-labelTrue</td>
+			<td>Label true</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-labelPosition</td>
+			<td>labelPosition</td>
+			<td>string</td>
+			<td>left | right | off
+		</tr>
+		<tr>
+			<td>mdw-labelClickActive</td>
+			<td>activate label click</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-valueFontFamily</td>
+			<td>valueFontFamily</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueFontSize</td>
+			<td>value font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-colorCheckBox</td>
+			<td>checkbox color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorCheckBoxBorder</td>
+			<td>border color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorCheckBoxHover</td>
+			<td>hover color of checkbox</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-labelColorFalse</td>
+			<td>label color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-labelColorTrue</td>
+			<td>active label color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Locking</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-lockEnabled</td>
+			<td>enable Locking</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-autoLockAfter</td>
+			<td>auto Locking after [s]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-lockIcon</td>
+			<td>icon</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-lockIconTop</td>
+			<td>symbol distance from top [%]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-lockIconLeft</td>
+			<td>symbol distance from left [%]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-lockIconSize</td>
+			<td>icon size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-lockIconColor</td>
+			<td>icon color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-lockFilterGrayscale</td>
+			<td>gray filter if locked</td>
+			<td>number</td>
+			<td>
+		</tr>
+	</tbody>
+</table>
+
+<!-- omit in toc -->
+#### HTML Properties - Example
+
+<details>
+
+```
+<div class='vis-widget materialdesign-widget materialdesign-checkbox materialdesign-checkbox-html-element'
+	style='width: 100%; height: 50px; position: relative; overflow: visible !important; display: flex; align-items: center;'
+	mdw-debug='false'
+	mdw-oid='0_userdata.0.bool'
+	mdw-toggleType='boolean'
+	mdw-stateIfNotTrueValue='on'
+	mdw-vibrateOnMobilDevices='50'
+	mdw-labelFalse='off'
+	mdw-labelTrue='on'
+	mdw-labelPosition='right'
+	mdw-labelClickActive='true'
+	mdw-valueFontFamily='#mdwTheme:vis-materialdesign.0.fonts.checkbox.value'
+	mdw-valueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.checkbox.value'
+	mdw-colorCheckBox='#mdwTheme:vis-materialdesign.0.colors.checkbox.on'
+	mdw-colorCheckBoxBorder='#mdwTheme:vis-materialdesign.0.colors.checkbox.border'
+	mdw-colorCheckBoxHover='#mdwTheme:vis-materialdesign.0.colors.checkbox.hover'
+	mdw-labelColorFalse='#mdwTheme:vis-materialdesign.0.colors.checkbox.text_off'
+	mdw-labelColorTrue='#mdwTheme:vis-materialdesign.0.colors.checkbox.text_on'
+	mdw-autoLockAfter='10'
+	mdw-lockIconTop='5'
+	mdw-lockIconLeft='5'
+	mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.checkbox.lock_icon'
+	mdw-lockFilterGrayscale='30'
+></div>
+```
+
+</details>
+
+
+## Switch
+
+![Logo](doc/en/media/switch.gif)
+
+### Editor Settings 
+
+Settings that are not listed in the table below are self-explanatory.
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=4><img src="doc/en/media/switch_settings_common.png"></td>
+            <td>type of toggle</td>
+            <td>Define which type of datapoint (boolean or value) should be switched</td>
+        </tr>
+        <tr>
+            <td>value for off</td>
+            <td>Set at which value the switch is false</td>
+        </tr>
+        <tr>
+            <td>value for on</td>
+            <td>Set at which value the switch is true</td>
+        </tr>		
+        <tr>
+            <td>state if value unequal to 'on' condition</td>
+            <td>Set the state of the switch when the value does not match the 'on' condition</td>
+        </tr> 		        
+    </tbody>
+</table>
+
+### HTML Properties
+
+The following properties can be used as [HTML element](#html-elements).
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-oid</td>
+			<td>Object ID</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-readOnly</td>
+			<td>read only</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-toggleType</td>
+			<td>type of toggle</td>
+			<td>string</td>
+			<td>boolean | value
+		</tr>
+		<tr>
+			<td>mdw-valueOff</td>
+			<td>value for off</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueOn</td>
+			<td>value for on</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-stateIfNotTrueValue</td>
+			<td>state if value unequal to 'on' condition</td>
+			<td>string</td>
+			<td>on | off
+		</tr>
+		<tr>
+			<td>mdw-vibrateOnMobilDevices</td>
+			<td>vibrate on mobil devices [s]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-debug</td>
+			<td>debug</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>labeling</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-labelFalse</td>
+			<td>Label false</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-labelTrue</td>
+			<td>Label true</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-labelPosition</td>
+			<td>labelPosition</td>
+			<td>string</td>
+			<td>left | right | off
+		</tr>
+		<tr>
+			<td>mdw-labelClickActive</td>
+			<td>activate label click</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-valueFontFamily</td>
+			<td>valueFontFamily</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueFontSize</td>
+			<td>value font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-colorSwitchThumb</td>
+			<td>thumb color of switch</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorSwitchTrack</td>
+			<td>track color of switch</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorSwitchTrue</td>
+			<td>active switch color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorSwitchHover</td>
+			<td>hover color of switch</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorSwitchHoverTrue</td>
+			<td>active switch color selected / hover</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-labelColorFalse</td>
+			<td>label color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-labelColorTrue</td>
+			<td>active label color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Locking</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-lockEnabled</td>
+			<td>enable Locking</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-autoLockAfter</td>
+			<td>auto Locking after [s]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-lockIcon</td>
+			<td>icon</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-lockIconTop</td>
+			<td>symbol distance from top [%]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-lockIconLeft</td>
+			<td>symbol distance from left [%]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-lockIconSize</td>
+			<td>icon size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-lockIconColor</td>
+			<td>icon color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-lockFilterGrayscale</td>
+			<td>gray filter if locked</td>
+			<td>number</td>
+			<td>
+		</tr>
+	</tbody>
+</table>
+
+<!-- omit in toc -->
+#### HTML Properties - Example
+
+<details>
+
+```
+<div class='vis-widget materialdesign-widget materialdesign-switch materialdesign-switch-html-element'
+	style='width: 100%; height: 50px; position: relative; overflow: visible !important; display: flex; align-items: center;'
+	mdw-debug='false'
+	mdw-oid='0_userdata.0.bool'
+	mdw-toggleType='boolean'
+	mdw-stateIfNotTrueValue='on'
+	mdw-vibrateOnMobilDevices='50'
+	mdw-labelFalse='off'
+	mdw-labelTrue='on'
+	mdw-labelPosition='right'
+	mdw-labelClickActive='true'
+	mdw-valueFontFamily='#mdwTheme:vis-materialdesign.0.fonts.switch.value'
+	mdw-valueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.switch.value'
+	mdw-colorSwitchThumb='#mdwTheme:vis-materialdesign.0.colors.switch.off'
+	mdw-colorSwitchTrack='#mdwTheme:vis-materialdesign.0.colors.switch.track'
+	mdw-colorSwitchTrue='#mdwTheme:vis-materialdesign.0.colors.switch.on'
+	mdw-colorSwitchHover='#mdwTheme:vis-materialdesign.0.colors.switch.off_hover'
+	mdw-colorSwitchHoverTrue='#mdwTheme:vis-materialdesign.0.colors.switch.on_hover'
+	mdw-labelColorFalse='#mdwTheme:vis-materialdesign.0.colors.switch.text_off'
+	mdw-labelColorTrue='#mdwTheme:vis-materialdesign.0.colors.switch.text_on'
+	mdw-autoLockAfter='10'
+	mdw-lockIconTop='5'
+	mdw-lockIconLeft='5'
+	mdw-lockIconColor='#mdwTheme:vis-materialdesign.0.colors.switch.lock_icon'
+	mdw-lockFilterGrayscale='30'
+></div>
+```
+
+</details>
+
 
 ## Card
 ![Logo](doc/en/media/cards.png)
@@ -1949,7 +2580,7 @@ JSON string must be an array of objects with the following properties:
 			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
 		</tr>
 		<tr>
-			<td>background</td>
+			<td>text</td>
 			<td>text</td>
 			<td>string</td>
 			<td/>
@@ -1974,6 +2605,12 @@ JSON string must be an array of objects with the following properties:
 		</tr>
 		<tr>
 			<td>imageActive</td>
+			<td>image path or name of Material Design Icons</td>
+			<td>string</td>
+			<td/>
+		</tr>		
+		<tr>
+			<td>imageActiveColor</td>
 			<td>image path or name of Material Design Icons for active button</td>
 			<td>string</td>
 			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
@@ -2012,7 +2649,7 @@ JSON string must be an array of objects with the following properties:
 </table>
 
 <!-- omit in toc -->
-#### Example
+#### JSON Properties - Example
 
 <details>
 <pre><code>
@@ -2069,6 +2706,8 @@ JSON string must be an array of objects with the following properties:
 ## Progress
 ![Logo](doc/en/media/progress.gif)
 
+### Editor Settings
+
 <table>
     <thead>
         <tr>
@@ -2079,399 +2718,234 @@ JSON string must be an array of objects with the following properties:
     </thead>
     <tbody>
         <tr>
-            <td rowspan=6><img src="doc/en/media/progress_settings.png"></td>
+            <td rowspan=2><img src="doc/en/media/progress_settings_colors.png"></td>
+            <td>condition for color 1 progress [>]</td>
+            <td>Condition from when color 1 should be used. The value of the condition must be in percent</td>
+        </tr>
+        <tr>
+            <td>condition for color 2 progress [>]</td>
+            <td>Condition from when color 2 should be used. The value of the condition must be in percent</td>
+        </tr>				
+        <tr>
+            <td rowspan=1><img src="doc/en/media/progress_settings.png"></td>
             <td>custom label</td>
             <td>For custom label you can use the property <code>[#value]</code> to show the real value of the datapoint. To show the current percent you can use <code>[#percent]</code></td>
         </tr>
     </tbody>
 </table>
 
-##### Progress Properties
+### HTML Properties
 
-The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
+The following properties can be used as [HTML element](#html-elements).
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>mdw-type</td>
+			<td>Widget type</td>
+			<td>string</td>
+			<td>linear</td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-oid</td>
+			<td>Object ID</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-min</td>
+			<td>min</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-max</td>
+			<td>max</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-progressIndeterminate</td>
+			<td>indeterminate - continuously animates</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-reverse</td>
+			<td>Revers value</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-debug</td>
+			<td>debug</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>layout</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-progressRounded</td>
+			<td>rounded corners</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-progressStriped</td>
+			<td>striped</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-progressStripedColor</td>
+			<td>progressStripedColor</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-colorProgressBackground</td>
+			<td>background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorProgress</td>
+			<td>color progress</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorOneCondition</td>
+			<td>condition for color 1 progress [>]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-colorOne</td>
+			<td>color 1 progress</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorTwoCondition</td>
+			<td>condition for color 2 progress [>]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-colorTwo</td>
+			<td>color 2 progress</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>labeling</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-showValueLabel</td>
+			<td>show value</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-valueLabelStyle</td>
+			<td>value caption style</td>
+			<td>string</td>
+			<td>progressPercent | progressValue | progressCustom
+		</tr>
+		<tr>
+			<td>mdw-valueLabelUnit</td>
+			<td>unit</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueMaxDecimals</td>
+			<td>decimal points</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueLabelCustom</td>
+			<td>custom label</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-textColor</td>
+			<td>Minutes text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-textFontSize</td>
+			<td>text size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-textFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-textAlign</td>
+			<td>textAlign</td>
+			<td>string</td>
+			<td>start | center | end
+		</tr>
+	</tbody>
+</table>
+
+<!-- omit in toc -->
+#### HTML Properties - Example
 
 <details>
-	<table>
-		<thead>
-			<tr>
-				<th>Property</th>
-				<th>Description</th>
-				<th>Type</th>
-				<th>Values</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>type</td>
-				<td>Widget type</td>
-				<td>string</td>
-				<td>linear</td>
-			</tr>
-			<tr>
-				<td>debug</td>
-				<td>debug mode</td>
-				<td>boolean</td>
-				<td>false | true</td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
-			</tr>
-			<tr>
-				<td>progressIndeterminate</td>
-				<td>indeterminate - continuously animates</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>oid</td>
-				<td>Object ID</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>min</td>
-				<td>min</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>max</td>
-				<td>max</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>reverse</td>
-				<td>Revers value</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>generateHtmlControl</td>
-				<td>generate Html Element</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>layout</b></i></td>
-			</tr>
-			<tr>
-				<td>progressRounded</td>
-				<td>rounded corners</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>progressStriped</td>
-				<td>striped</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>progressStripedColor</td>
-				<td>progressStripedColor</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
-			</tr>
-			<tr>
-				<td>colorProgressBackground</td>
-				<td>background color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorProgress</td>
-				<td>color progress</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorOneCondition</td>
-				<td>condition for color 1 progress [>]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>colorOne</td>
-				<td>color 1 progress</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorTwoCondition</td>
-				<td>condition for color 2 progress [>]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>colorTwo</td>
-				<td>color 2 progress</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
-			</tr>
-			<tr>
-				<td>showValueLabel</td>
-				<td>show value</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>valueLabelStyle</td>
-				<td>value caption style</td>
-				<td>string</td>
-				<td>progressPercent | progressValue | progressCustom
-			</tr>
-			<tr>
-				<td>valueLabelUnit</td>
-				<td>unit</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueMaxDecimals</td>
-				<td>decimal points</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueLabelCustom</td>
-				<td>custom label</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>textColor</td>
-				<td>Minutes text color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>textFontSize</td>
-				<td>text size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>textFontFamily</td>
-				<td>font</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>textAlign</td>
-				<td>textAlign</td>
-				<td>string</td>
-				<td>start | center | end
-			</tr>
-		</tbody>
-	</table>
-</details>
 
+```
+<div class='vis-widget materialdesign-widget materialdesign-progress materialdesign-progress-html-element'
+	style='width: 100%; height: 100%; position: relative; padding: 0px;'
+	mdw-type='linear'
+	mdw-oid='0_userdata.0.MDW.Progress.val0'
+	mdw-debug='true'
+	mdw-progressRounded='true'
+	mdw-colorProgressBackground='#mdwTheme:vis-materialdesign.0.colors.progress.track_background'
+	mdw-colorProgress='#mdwTheme:vis-materialdesign.0.colors.progress.track'
+	mdw-colorOneCondition='50'
+	mdw-colorOne='#mdwTheme:vis-materialdesign.0.colors.progress.track_condition1'
+	mdw-colorTwoCondition='70'
+	mdw-colorTwo='#mdwTheme:vis-materialdesign.0.colors.progress.track_condition2'
+	mdw-showValueLabel='true'
+	mdw-valueLabelStyle='progressPercent'
+	mdw-textColor='#mdwTheme:vis-materialdesign.0.colors.progress.text'
+	mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.progress.text'
+	mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.progress.text'
+	mdw-textAlign='end'
+></div>
+```
+
+</details>
 
 ## Progress Circular
-![Logo](doc/en/media/progress.gif)
+![Logo](doc/en/media/progress_circular.gif)
 
-<table>
-    <thead>
-        <tr>
-            <th>Screenshot</th>
-            <th>Setting</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan=6><img src="doc/en/media/progress_settings.png"></td>
-            <td>custom label</td>
-            <td>For custom label you can use the property <code>[#value]</code> to show the real value of the datapoint. To show the current percent you can use <code>[#percent]</code></td>
-        </tr>
-    </tbody>
-</table>
-
-##### Progress Circular Properties
-
-The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
-
-<details>
-	<table>
-		<thead>
-			<tr>
-				<th>Property</th>
-				<th>Description</th>
-				<th>Type</th>
-				<th>Values</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>type</td>
-				<td>Widget type</td>
-				<td>string</td>
-				<td>circular</td>
-			</tr>
-			<tr>
-				<td>debug</td>
-				<td>debug mode</td>
-				<td>boolean</td>
-				<td>false | true</td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
-			</tr>
-			<tr>
-				<td>oid</td>
-				<td>Object ID</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>min</td>
-				<td>min</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>max</td>
-				<td>max</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>generateHtmlControl</td>
-				<td>generate Html Element</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>layout</b></i></td>
-			</tr>
-			<tr>
-				<td>progressCircularSize</td>
-				<td>size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>progressCircularWidth</td>
-				<td>thickness</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>progressCircularRotate</td>
-				<td>rotate start point</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
-			</tr>
-			<tr>
-				<td>colorProgressBackground</td>
-				<td>background color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorProgress</td>
-				<td>color progress</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>innerColor</td>
-				<td>circle background color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorOneCondition</td>
-				<td>condition for color 1 progress [>]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>colorOne</td>
-				<td>color 1 progress</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorTwoCondition</td>
-				<td>condition for color 2 progress [>]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>colorTwo</td>
-				<td>color 2 progress</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
-			</tr>
-			<tr>
-				<td>showValueLabel</td>
-				<td>show value</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>valueLabelStyle</td>
-				<td>value caption style</td>
-				<td>string</td>
-				<td>progressPercent | progressValue | progressCustom
-			</tr>
-			<tr>
-				<td>valueLabelUnit</td>
-				<td>unit</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueMaxDecimals</td>
-				<td>decimal points</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueLabelCustom</td>
-				<td>custom label</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>textColor</td>
-				<td>Minutes text color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>textFontSize</td>
-				<td>text size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>textFontFamily</td>
-				<td>font</td>
-				<td>string</td>
-				<td>
-			</tr>
-		</tbody>
-	</table>
-</details>
-
-
-## Slider
-![Logo](doc/en/media/slider.gif)
+### Editor Settings 
 
 Settings that are not listed in the table below are self-explanatory.
 
@@ -2485,977 +2959,832 @@ Settings that are not listed in the table below are self-explanatory.
     </thead>
     <tbody>
         <tr>
-            <td rowspan=6><img src="doc/en/media/slider.png"></td>
-            <td>initDelay</td>
-            <td>If the slider is not visible or operable after loading the runtime, then this value must be increased. Entry is made in milliseconds.<br>For example, increase by 250 steps until the slider works.</td>
+            <td rowspan=2><img src="doc/en/media/progress_circular_settings_colors.png"></td>
+            <td>condition for color 1 progress [>]</td>
+            <td>Condition from when color 1 should be used. The value of the condition must be in percent</td>
+        </tr>
+        <tr>
+            <td>condition for color 2 progress [>]</td>
+            <td>Condition from when color 2 should be used. The value of the condition must be in percent</td>
+        </tr>	
+        <tr>
+            <td rowspan=6><img src="doc/en/media/progress_settings.png"></td>
+            <td>custom label</td>
+            <td>For custom label you can use the property <code>[#value]</code> to show the real value of the datapoint. To show the current percent you can use <code>[#percent]</code></td>
         </tr>
     </tbody>
 </table>
 
-##### Slider Properties
+### HTML Properties
 
-The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
+The following properties can be used as [HTML element](#html-elements).
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>mdw-type</td>
+			<td>Widget type</td>
+			<td>string</td>
+			<td>circular</td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-oid</td>
+			<td>Object ID</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-min</td>
+			<td>min</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-max</td>
+			<td>max</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-progressIndeterminate</td>
+			<td>indeterminate - continuously animates</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-debug</td>
+			<td>debug</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>layout</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-progressCircularSize</td>
+			<td>size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-progressCircularWidth</td>
+			<td>thickness</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-progressCircularRotate</td>
+			<td>rotate start point</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-colorProgressBackground</td>
+			<td>background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorProgress</td>
+			<td>color progress</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-innerColor</td>
+			<td>circle background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorOneCondition</td>
+			<td>condition for color 1 progress [>]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-colorOne</td>
+			<td>color 1 progress</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorTwoCondition</td>
+			<td>condition for color 2 progress [>]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-colorTwo</td>
+			<td>color 2 progress</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>labeling</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-showValueLabel</td>
+			<td>show value</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-valueLabelStyle</td>
+			<td>value caption style</td>
+			<td>string</td>
+			<td>progressPercent | progressValue | progressCustom
+		</tr>
+		<tr>
+			<td>mdw-valueLabelUnit</td>
+			<td>unit</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueMaxDecimals</td>
+			<td>decimal points</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueLabelCustom</td>
+			<td>custom label</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-textColor</td>
+			<td>Minutes text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-textFontSize</td>
+			<td>text size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-textFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+	</tbody>
+</table>
+
+<!-- omit in toc -->
+#### HTML Properties - Example
 
 <details>
-	<table>
-		<thead>
-			<tr>
-				<th>Property</th>
-				<th>Description</th>
-				<th>Type</th>
-				<th>Values</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>debug</td>
-				<td>debug mode</td>
-				<td>boolean</td>
-				<td>false | true</td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
-			</tr>
-			<tr>
-				<td>oid</td>
-				<td>Object ID</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>oid-working</td>
-				<td>Working Object ID</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>orientation</td>
-				<td>Orientation</td>
-				<td>string</td>
-				<td>horizontal | vertical
-			</tr>
-			<tr>
-				<td>reverseSlider</td>
-				<td>invert slider</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>knobSize</td>
-				<td>knob size</td>
-				<td>string</td>
-				<td>knobSmall | knobMedium | knobBig
-			</tr>
-			<tr>
-				<td>readOnly</td>
-				<td>read only</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>min</td>
-				<td>min</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>max</td>
-				<td>max</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>step</td>
-				<td>steps</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>vibrateOnMobilDevices</td>
-				<td>vibrate on mobil devices [s]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>generateHtmlControl</td>
-				<td>generate Html Element</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>steps Layout</b></i></td>
-			</tr>
-			<tr>
-				<td>showTicks</td>
-				<td>show steps</td>
-				<td>string</td>
-				<td>no | yes | always
-			</tr>
-			<tr>
-				<td>tickSize</td>
-				<td>display size of steps</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>tickLabels</td>
-				<td>text of steps (comma separated)</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>tickTextColor</td>
-				<td>text color of steps</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>tickFontFamily</td>
-				<td>font of steps</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>tickFontSize</td>
-				<td>font size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>tickColorBefore</td>
-				<td>color before the regulator</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>tickColorAfter</td>
-				<td>color after the regulator</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
-			</tr>
-			<tr>
-				<td>colorBeforeThumb</td>
-				<td>color before regulator</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorThumb</td>
-				<td>color of regulator</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorAfterThumb</td>
-				<td>color after regulator</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
-			</tr>
-			<tr>
-				<td>prepandText</td>
-				<td>text prepanded</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>prepandTextWidth</td>
-				<td>prepandTextWidth</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>prepandTextColor</td>
-				<td>color of text prepanded</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>prepandTextFontSize</td>
-				<td>size text prepanded</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>prepandTextFontFamily</td>
-				<td>font of text prepanded</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>showValueLabel</td>
-				<td>show value</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>valueLabelStyle</td>
-				<td>value caption style</td>
-				<td>string</td>
-				<td>sliderPercent | sliderValue
-			</tr>
-			<tr>
-				<td>valueLabelUnit</td>
-				<td>unit</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueFontFamily</td>
-				<td>valueFontFamily</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueFontSize</td>
-				<td>value font size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueLabelColor</td>
-				<td>text color of value</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>valueLabelMin</td>
-				<td>text for value less than min</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueLabelMax</td>
-				<td>text for value greater than min</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueLessThan</td>
-				<td>'smaller than' condition for the text of the value</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>textForValueLessThan</td>
-				<td>text for 'smaller than'</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueGreaterThan</td>
-				<td>'greater than' condition for the text of the value</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>textForValueGreaterThan</td>
-				<td>text for 'greater than'</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueLabelWidth</td>
-				<td>distance label</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>layout of the controller label</b></i></td>
-			</tr>
-			<tr>
-				<td>showThumbLabel</td>
-				<td>show label</td>
-				<td>string</td>
-				<td>no | yes | always
-			</tr>
-			<tr>
-				<td>thumbSize</td>
-				<td>label size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>thumbBackgroundColor</td>
-				<td>background color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>thumbFontColor</td>
-				<td>font color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>thumbFontSize</td>
-				<td>font size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>thumbFontFamily</td>
-				<td>font</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>useLabelRules</td>
-				<td>use rules of the text</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-		</tbody>
-	</table>
+
+```
+<div class='vis-widget materialdesign-widget materialdesign-progress materialdesign-progress-html-element'
+	style='width: 100%; height: 100%; position: relative; padding: 0px;'
+	mdw-type='circular'
+	mdw-oid='0_userdata.0.MDW.Progress.val1'
+	mdw-colorProgressBackground='#mdwTheme:vis-materialdesign.0.colors.progress.track_background'
+	mdw-colorProgress='#mdwTheme:vis-materialdesign.0.colors.progress.track'
+	mdw-innerColor='#mdwTheme:vis-materialdesign.0.colors.progress.circular_background'
+	mdw-colorOneCondition='50'
+	mdw-colorOne='#mdwTheme:vis-materialdesign.0.colors.progress.track_condition1'
+	mdw-colorTwoCondition='70'
+	mdw-colorTwo='#mdwTheme:vis-materialdesign.0.colors.progress.track_condition2'
+	mdw-showValueLabel='true'
+	mdw-valueLabelStyle='progressPercent'
+	mdw-textColor='#mdwTheme:vis-materialdesign.0.colors.progress.text'
+	mdw-textFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.progress.text'
+	mdw-textFontFamily='#mdwTheme:vis-materialdesign.0.fonts.progress.text'
+></div>
+```
+
 </details>
 
+## Slider
+![Logo](doc/en/media/slider.gif)
+
+### HTML Properties
+
+The following properties can be used as [HTML element](#html-elements).
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-oid</td>
+			<td>Object ID</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-oid-working</td>
+			<td>Working Object ID</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-orientation</td>
+			<td>Orientation</td>
+			<td>string</td>
+			<td>horizontal | vertical
+		</tr>
+		<tr>
+			<td>mdw-reverseSlider</td>
+			<td>invert slider</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-knobSize</td>
+			<td>knob size</td>
+			<td>string</td>
+			<td>knobSmall | knobMedium | knobBig
+		</tr>
+		<tr>
+			<td>mdw-readOnly</td>
+			<td>read only</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-min</td>
+			<td>min</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-max</td>
+			<td>max</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-step</td>
+			<td>steps</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-vibrateOnMobilDevices</td>
+			<td>vibrate on mobil devices [s]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-debug</td>
+			<td>debug</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>steps Layout</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-showTicks</td>
+			<td>show steps</td>
+			<td>string</td>
+			<td>no | yes | always
+		</tr>
+		<tr>
+			<td>mdw-tickSize</td>
+			<td>display size of steps</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-tickLabels</td>
+			<td>text of steps (comma separated)</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-tickTextColor</td>
+			<td>text color of steps</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-tickFontFamily</td>
+			<td>font of steps</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-tickFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-tickColorBefore</td>
+			<td>color before the regulator</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-tickColorAfter</td>
+			<td>color after the regulator</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-colorBeforeThumb</td>
+			<td>color before regulator</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorThumb</td>
+			<td>color of regulator</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorAfterThumb</td>
+			<td>color after regulator</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>labeling</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-prepandText</td>
+			<td>text prepanded</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandTextWidth</td>
+			<td>prepandTextWidth</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandTextColor</td>
+			<td>color of text prepanded</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-prepandTextFontSize</td>
+			<td>size text prepanded</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandTextFontFamily</td>
+			<td>font of text prepanded</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-showValueLabel</td>
+			<td>show value</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-valueLabelStyle</td>
+			<td>value caption style</td>
+			<td>string</td>
+			<td>sliderPercent | sliderValue
+		</tr>
+		<tr>
+			<td>mdw-valueLabelUnit</td>
+			<td>unit</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueFontFamily</td>
+			<td>valueFontFamily</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueFontSize</td>
+			<td>value font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueLabelColor</td>
+			<td>text color of value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-valueLabelMin</td>
+			<td>text for value less than min</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueLabelMax</td>
+			<td>text for value greater than min</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueLessThan</td>
+			<td>'smaller than' condition for the text of the value</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-textForValueLessThan</td>
+			<td>text for 'smaller than'</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueGreaterThan</td>
+			<td>'greater than' condition for the text of the value</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-textForValueGreaterThan</td>
+			<td>text for 'greater than'</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueLabelWidth</td>
+			<td>distance label</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>layout of the controller label</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-showThumbLabel</td>
+			<td>show label</td>
+			<td>string</td>
+			<td>no | yes | always
+		</tr>
+		<tr>
+			<td>mdw-thumbSize</td>
+			<td>label size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-thumbBackgroundColor</td>
+			<td>background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-thumbFontColor</td>
+			<td>font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-thumbFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-thumbFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-useLabelRules</td>
+			<td>use rules of the text</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+	</tbody>
+</table> 
+
+<!-- omit in toc -->
+#### HTML Properties - Example
+
+<details>
+
+```
+<div class='vis-widget materialdesign-widget materialdesign-slider-vertical materialdesign-slider-html-element'
+	style='width: 342px; height: 100px; position: relative; overflow:visible !important; display: flex; align-items: center;'
+	mdw-debug='false'
+	mdw-oid='0_userdata.0.MDW.Slider.val0'
+	mdw-oid-working='0_userdata.0.MDW.Slider.working'
+	mdw-orientation='horizontal'
+	mdw-knobSize='knobSmall'
+	mdw-min='0'
+	mdw-max='100'
+	mdw-step='10'
+	mdw-vibrateOnMobilDevices='50'
+	mdw-showTicks='always'
+	mdw-tickSize='5'
+	mdw-tickLabels='1,2,3,4,5,6,7,8,9,10,11'
+	mdw-tickTextColor='#mdwTheme:vis-materialdesign.0.colors.slider.tick'
+	mdw-tickFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.ticks'
+	mdw-tickFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.ticks'
+	mdw-tickColorBefore='#mdwTheme:vis-materialdesign.0.colors.slider.tick_before'
+	mdw-tickColorAfter='#mdwTheme:vis-materialdesign.0.colors.slider.tick_after'
+	mdw-colorBeforeThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control_before'
+	mdw-colorThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control'
+	mdw-colorAfterThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control_behind'
+	mdw-prepandText='prepand'
+	mdw-prepandTextWidth='60'
+	mdw-prepandTextColor='#mdwTheme:vis-materialdesign.0.colors.slider.text_prepand'
+	mdw-prepandTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.prepand'
+	mdw-prepandTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.prepand'
+	mdw-showValueLabel='true'
+	mdw-valueLabelStyle='sliderPercent'
+	mdw-valueFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.value'
+	mdw-valueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.value'
+	mdw-valueLabelColor='#mdwTheme:vis-materialdesign.0.colors.slider.text'
+	mdw-valueLabelWidth='50'
+	mdw-showThumbLabel='always'
+	mdw-thumbBackgroundColor='#mdwTheme:vis-materialdesign.0.colors.slider.control_background'
+	mdw-thumbFontColor='#mdwTheme:vis-materialdesign.0.colors.slider.control_text'
+	mdw-thumbFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.control'
+	mdw-thumbFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.control'
+></div>
+```
+
+</details>
 
 ## Slider Round
 ![Logo](doc/en/media/round_slider.gif)
 
-##### Slider Round Properties
+### HTML Properties
 
-The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
+The following properties can be used as [HTML element](#html-elements).
 
-<details>
-	<table>
-		<thead>
-			<tr>
-				<th>Property</th>
-				<th>Description</th>
-				<th>Type</th>
-				<th>Values</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>debug</td>
-				<td>debug mode</td>
-				<td>boolean</td>
-				<td>false | true</td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
-			</tr>
-			<tr>
-				<td>oid</td>
-				<td>Object ID</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>oid-working</td>
-				<td>Working Object ID</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>min</td>
-				<td>min</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>max</td>
-				<td>max</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>step</td>
-				<td>steps</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>readOnly</td>
-				<td>read only</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>startAngle</td>
-				<td>start angle</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>arcLength</td>
-				<td>arc length</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>sliderWidth</td>
-				<td>slider thikness</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>handleSize</td>
-				<td>knob size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>handleZoom</td>
-				<td>knob zoom at control</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>rtl</td>
-				<td>slider movement from right to left</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>vibrateOnMobilDevices</td>
-				<td>vibrate on mobil devices [s]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>generateHtmlControl</td>
-				<td>generate Html Element</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
-			</tr>
-			<tr>
-				<td>colorSliderBg</td>
-				<td>background</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorBeforeThumb</td>
-				<td>color before regulator</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorThumb</td>
-				<td>color of regulator</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorAfterThumb</td>
-				<td>color after regulator</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>valueLabelColor</td>
-				<td>text color of value</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
-			</tr>
-			<tr>
-				<td>showValueLabel</td>
-				<td>show value</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>valueLabelVerticalPosition</td>
-				<td>vertical text position of value </td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueLabelStyle</td>
-				<td>value caption style</td>
-				<td>string</td>
-				<td>sliderPercent | sliderValue
-			</tr>
-			<tr>
-				<td>valueLabelUnit</td>
-				<td>unit</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueFontFamily</td>
-				<td>valueFontFamily</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueFontSize</td>
-				<td>value font size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueLabelMin</td>
-				<td>text for value less than min</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueLabelMax</td>
-				<td>text for value greater than min</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueLessThan</td>
-				<td>'smaller than' condition for the text of the value</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>textForValueLessThan</td>
-				<td>text for 'smaller than'</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueGreaterThan</td>
-				<td>'greater than' condition for the text of the value</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>textForValueGreaterThan</td>
-				<td>text for 'greater than'</td>
-				<td>string</td>
-				<td>
-			</tr>
-		</tbody>
-	</table>
-</details>
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-oid</td>
+			<td>Object ID</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-oid-working</td>
+			<td>Working Object ID</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-min</td>
+			<td>min</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-max</td>
+			<td>max</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-step</td>
+			<td>steps</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-readOnly</td>
+			<td>read only</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-startAngle</td>
+			<td>start angle</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-arcLength</td>
+			<td>arc length</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-sliderWidth</td>
+			<td>slider thikness</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-handleSize</td>
+			<td>knob size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-handleZoom</td>
+			<td>knob zoom at control</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-rtl</td>
+			<td>slider movement from right to left</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-vibrateOnMobilDevices</td>
+			<td>vibrate on mobil devices [s]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-debug</td>
+			<td>debug</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>colors</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-colorSliderBg</td>
+			<td>background</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorBeforeThumb</td>
+			<td>color before regulator</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorThumb</td>
+			<td>color of regulator</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-colorAfterThumb</td>
+			<td>color after regulator</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-valueLabelColor</td>
+			<td>text color of value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>labeling</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-showValueLabel</td>
+			<td>show value</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-valueLabelVerticalPosition</td>
+			<td>vertical text position of value </td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueLabelStyle</td>
+			<td>value caption style</td>
+			<td>string</td>
+			<td>sliderPercent | sliderValue
+		</tr>
+		<tr>
+			<td>mdw-valueLabelUnit</td>
+			<td>unit</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueFontFamily</td>
+			<td>valueFontFamily</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueFontSize</td>
+			<td>value font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueLabelMin</td>
+			<td>text for value less than min</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueLabelMax</td>
+			<td>text for value greater than min</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueLessThan</td>
+			<td>'smaller than' condition for the text of the value</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-textForValueLessThan</td>
+			<td>text for 'smaller than'</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueGreaterThan</td>
+			<td>'greater than' condition for the text of the value</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-textForValueGreaterThan</td>
+			<td>text for 'greater than'</td>
+			<td>string</td>
+			<td>
+		</tr>
+	</tbody>
+</table>
 
-
-## Checkbox
-![Logo](doc/en/media/checkbox.gif)
-
-##### Checkbox Properties
-
-The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
+<!-- omit in toc -->
+#### HTML Properties - Example
 
 <details>
-	<table>
-		<thead>
-			<tr>
-				<th>Property</th>
-				<th>Description</th>
-				<th>Type</th>
-				<th>Values</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>debug</td>
-				<td>debug mode</td>
-				<td>boolean</td>
-				<td>false | true</td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
-			</tr>
-			<tr>
-				<td>oid</td>
-				<td>Object ID</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>readOnly</td>
-				<td>read only</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>toggleType</td>
-				<td>type of toggle</td>
-				<td>string</td>
-				<td>boolean | value
-			</tr>
-			<tr>
-				<td>valueOff</td>
-				<td>value for off</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueOn</td>
-				<td>value for on</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>stateIfNotTrueValue</td>
-				<td>state if value unequal to 'on' condition</td>
-				<td>string</td>
-				<td>on | off
-			</tr>
-			<tr>
-				<td>vibrateOnMobilDevices</td>
-				<td>vibrate on mobil devices [s]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>generateHtmlControl</td>
-				<td>generate Html Element</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
-			</tr>
-			<tr>
-				<td>labelFalse</td>
-				<td>Label false</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>labelTrue</td>
-				<td>Label true</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>labelPosition</td>
-				<td>labelPosition</td>
-				<td>string</td>
-				<td>left | right | off
-			</tr>
-			<tr>
-				<td>labelClickActive</td>
-				<td>activate label click</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>valueFontFamily</td>
-				<td>valueFontFamily</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueFontSize</td>
-				<td>value font size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
-			</tr>
-			<tr>
-				<td>colorCheckBox</td>
-				<td>checkbox color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorCheckBoxBorder</td>
-				<td>border color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorCheckBoxHover</td>
-				<td>hover color of checkbox</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>labelColorFalse</td>
-				<td>label color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>labelColorTrue</td>
-				<td>active label color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
-			</tr>
-			<tr>
-				<td>lockEnabled</td>
-				<td>enable Locking</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>autoLockAfter</td>
-				<td>auto Locking after [s]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>lockIcon</td>
-				<td>icon</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>lockIconTop</td>
-				<td>symbol distance from top [%]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>lockIconLeft</td>
-				<td>symbol distance from left [%]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>lockIconSize</td>
-				<td>icon size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>lockIconColor</td>
-				<td>icon color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>lockFilterGrayscale</td>
-				<td>gray filter if locked</td>
-				<td>number</td>
-				<td>
-			</tr>
-		</tbody>
-	</table>
-</details>
 
+```
+<div class="vis-widget materialdesign-widget materialdesign-slider-round materialdesign-roundslider-html-element"
+	style="width: 100px; height: 100px; position: relative;"
+	mdw-debug="false"
+	mdw-oid='0_userdata.0.MDW.Slider.val0'
+	mdw-oid-working='0_userdata.0.MDW.Slider.working'
+	mdw-step='1'
+	mdw-startAngle='135'
+	mdw-arcLength='270'
+	mdw-handleZoom='1.5'
+	mdw-vibrateOnMobilDevices='50'
+	mdw-colorSliderBg='#mdwTheme:vis-materialdesign.0.colors.slider.background'
+	mdw-colorBeforeThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control_before'
+	mdw-colorThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control'
+	mdw-colorAfterThumb='#mdwTheme:vis-materialdesign.0.colors.slider.control_behind'
+	mdw-valueLabelColor='#mdwTheme:vis-materialdesign.0.colors.slider.text'
+	mdw-showValueLabel='true'
+	mdw-valueLabelStyle='sliderValue'
+	mdw-valueFontFamily='#mdwTheme:vis-materialdesign.0.fonts.slider.value'
+	mdw-valueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.slider.value'
+></div>
+```
 
-## Switch
-![Logo](doc/en/media/switch.gif)
-
-##### Switch Properties
-
-The following properties can be used as [control element in a table](#control-elements) or as [HTML element](#html-elements)
-
-<details>
-	<table>
-		<thead>
-			<tr>
-				<th>Property</th>
-				<th>Description</th>
-				<th>Type</th>
-				<th>Values</th>
-			</tr>
-		</thead>
-		<tbody>
-			<tr>
-				<td>debug</td>
-				<td>debug mode</td>
-				<td>boolean</td>
-				<td>false | true</td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Common</b></i></td>
-			</tr>
-			<tr>
-				<td>oid</td>
-				<td>Object ID</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>readOnly</td>
-				<td>read only</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>toggleType</td>
-				<td>type of toggle</td>
-				<td>string</td>
-				<td>boolean | value
-			</tr>
-			<tr>
-				<td>valueOff</td>
-				<td>value for off</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueOn</td>
-				<td>value for on</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>stateIfNotTrueValue</td>
-				<td>state if value unequal to 'on' condition</td>
-				<td>string</td>
-				<td>on | off
-			</tr>
-			<tr>
-				<td>vibrateOnMobilDevices</td>
-				<td>vibrate on mobil devices [s]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>generateHtmlControl</td>
-				<td>generate Html Element</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>labeling</b></i></td>
-			</tr>
-			<tr>
-				<td>labelFalse</td>
-				<td>Label false</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>labelTrue</td>
-				<td>Label true</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>labelPosition</td>
-				<td>labelPosition</td>
-				<td>string</td>
-				<td>left | right | off
-			</tr>
-			<tr>
-				<td>labelClickActive</td>
-				<td>activate label click</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>valueFontFamily</td>
-				<td>valueFontFamily</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>valueFontSize</td>
-				<td>value font size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>colors</b></i></td>
-			</tr>
-			<tr>
-				<td>colorSwitchThumb</td>
-				<td>thumb color of switch</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorSwitchTrack</td>
-				<td>track color of switch</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorSwitchTrue</td>
-				<td>active switch color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorSwitchHover</td>
-				<td>hover color of switch</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>colorSwitchHoverTrue</td>
-				<td>active switch color selected / hover</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>labelColorFalse</td>
-				<td>label color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>labelColorTrue</td>
-				<td>active label color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b>Locking</b></i></td>
-			</tr>
-			<tr>
-				<td>lockEnabled</td>
-				<td>enable Locking</td>
-				<td>boolean</td>
-				<td>false | true
-			</tr>
-			<tr>
-				<td>autoLockAfter</td>
-				<td>auto Locking after [s]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>lockIcon</td>
-				<td>icon</td>
-				<td>string</td>
-				<td>
-			</tr>
-			<tr>
-				<td>lockIconTop</td>
-				<td>symbol distance from top [%]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>lockIconLeft</td>
-				<td>symbol distance from left [%]</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>lockIconSize</td>
-				<td>icon size</td>
-				<td>number</td>
-				<td>
-			</tr>
-			<tr>
-				<td>lockIconColor</td>
-				<td>icon color</td>
-				<td>string</td>
-				<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
-			</tr>
-			<tr>
-				<td>lockFilterGrayscale</td>
-				<td>gray filter if locked</td>
-				<td>number</td>
-				<td>
-			</tr>
-		</tbody>
-	</table>
-</details>
-
+</details> 
 
 ## Input
 
@@ -3489,48 +3818,864 @@ Settings that are not listed in the table below are self-explanatory.
         </tr>
         <tr>
             <td>JSON string</td>
-            <td>Method of data of menu: json string<br>Here you can add a JSON string to define the menu entries or use bindings to a datapoint that contains a JSON string.<br><br>JSON string must have the following format:<br>
-<pre><code>
-[
-	{
-		"text": "text 0",
-		"subText": "sub 0",
-		"value": "val0",
-		"icon": "account-cancel"
-	},
-	{
-		"text": "text 1",
-		"subText": "sub 1",
-		"value": "val1",
-		"icon": "/vis/icon/info.png",
-        "iconColor": "red",
-        "iconColorSelectedTextField": "red"
-	},
-	{
-		"text": "text 2",
-		"subText": "sub 2",
-		"value": "val2",
-		"icon": "facebook-workplace",
-        "iconColor": "green"
-	}
-]
-</code></pre>
+            <td>Here you can add a JSON string to define the menu entries or use bindings to a datapoint that contains a JSON string.<br><br>JSON string must have the above descibed format<br>
             </td>
         </tr>
         <tr>
             <td>value list</td>
-            <td>Method of data of menu: value list<br>Define the number of menu entries by adding values that will be set to the datapoint. Entries must be separeted by semicolon</td>
+            <td>Define the number of menu entries by adding values that will be set to the datapoint. Entries must be separeted by semicolon</td>
         </tr>
         <tr>
         <td>value list: labels</td>
-            <td>Method of data of menu: value list<br>Define the related labels of the values. Entries must be separeted by semicolon</td>
+            <td>Define the related labels of the values. Entries must be separeted by semicolon</td>
         </tr>
         <tr>
-        <td>value list: labels</td>
-            <td>Method of data of menu: value list<br>Define the related icons of the values. Entries must be separeted by semicolon. You can use image path or Material Design Icons name</td>
+        <td>value list: images</td>
+            <td>Define the related icons of the values. Entries must be separeted by semicolon. You can use image path or Material Design Icons name</td>
         </tr>                
     </tbody>
 </table>
+
+#### Menu JSON Properties
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>text</td>
+			<td>text of menu item</td>
+			<td>string</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>subText</td>
+			<td>subtext of menu item</td>
+			<td>string</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>value</td>
+			<td>value of menu item, this will assign as value to the datapoint if this is selected</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>icon</td>
+			<td>material design icon or image path for menu item</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>iconColor</td>
+			<td>color of material design icon</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>iconColorSelectedTextField</td>
+			<td>icon color of input field when selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+	</tbody>
+</table>
+
+<!-- omit in toc -->
+##### Menu JSON Properties - Example
+
+<details>
+
+```
+[   {
+		"text": "1 Tag",
+		"subText": "sub",
+		"value": "1 day",
+		"icon": "home"
+	}, 
+	{
+		"text": "3 Tage",
+		"subText": "sub",		
+		"value": "3 days",
+		"icon": "home"
+	}, 
+	{
+		"text": "1 Woche",
+		"subText": "sub",		
+		"value": "7 days",
+		"icon": "home"
+	}, 
+	{
+		"text": "2 Wochen",
+		"subText": "sub",		
+		"value": "14 days",
+		"icon": "home"
+	}, 
+	{
+		"text": "1 Monat",
+		"subText": "sub",		
+		"value": "1 month",
+		"icon": "/vis.0/myImages/hard-drive.png"
+	}, 
+	{
+		"text": "2 Monate",
+		"subText": "sub",		
+		"value": "2 months",
+		"icon": "home",
+		"iconColor": "blue",
+		"iconColorSelectedTextField": "purple"
+	}, 
+	{
+		"text": "3 Monate",
+		"value": "3 months"
+	}, 
+	{
+		"text": "6 Monate",
+		"value": "6 months"
+	}, 
+	{
+		"text": "1 Jahr",
+		"value": "1 year"
+	}
+]
+```
+
+</details>
+
+
+#### HTML Properties
+
+The following properties can be used as [HTML element](#html-elements).
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-oid</td>
+			<td>Object ID</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputType</td>
+			<td>input type</td>
+			<td>string</td>
+			<td>text | date | time
+		</tr>
+		<tr>
+			<td>mdw-vibrateOnMobilDevices</td>
+			<td>vibrate on mobil devices [s]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-debug</td>
+			<td>debug</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>layout input </b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-inputLayout</td>
+			<td>layout</td>
+			<td>string</td>
+			<td>regular | solo | solo-rounded | solo-shaped | filled | filled-rounded | filled-shaped | outlined | outlined-rounded | outlined-shaped
+		</tr>
+		<tr>
+			<td>mdw-inputAlignment</td>
+			<td>text alignment</td>
+			<td>string</td>
+			<td>left | center | right
+		</tr>
+		<tr>
+			<td>mdw-inputLayoutBackgroundColor</td>
+			<td>background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLayoutBackgroundColorHover</td>
+			<td>background color hover</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLayoutBackgroundColorSelected</td>
+			<td>background color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLayoutBorderColor</td>
+			<td>border color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLayoutBorderColorHover</td>
+			<td>border color hover</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLayoutBorderColorSelected</td>
+			<td>border color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputTextFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputTextFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputTextColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>label of input </b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-inputLabelText</td>
+			<td>text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputLabelColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLabelColorSelected</td>
+			<td>text color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLabelFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputLabelFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputTranslateX</td>
+			<td>offset x</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputTranslateY</td>
+			<td>offset y</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>appendixs of the input</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-inputPrefix</td>
+			<td>prepended text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputSuffix</td>
+			<td>appended text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputAppendixColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputAppendixFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputAppendixFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>sub text of input</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-showInputMessageAlways</td>
+			<td>always show</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-inputMessage</td>
+			<td>text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputMessageFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputMessageFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputMessageColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>counter layout</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-showInputCounter</td>
+			<td>show counter</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-inputCounterColor</td>
+			<td>font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputCounterFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputCounterFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Icons</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-clearIconShow</td>
+			<td>show text delete icon </td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-clearIcon</td>
+			<td>text delete icon </td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-clearIconSize</td>
+			<td>size of text delete icon </td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-clearIconColor</td>
+			<td>color of text delete icon </td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-collapseIcon</td>
+			<td>menu open symbol</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-collapseIconSize</td>
+			<td>size of menu open symbol</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-collapseIconColor</td>
+			<td>color of menu open symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-prepandIcon</td>
+			<td>prefixed icon</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandIconSize</td>
+			<td>size of prefixed icon</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandIconColor</td>
+			<td>color of prefixed icon</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-prepandInnerIcon</td>
+			<td>inner prefixed symbol</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandInnerIconSize</td>
+			<td>size of inner prefixed symbol</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandInnerIconColor</td>
+			<td>color of inner prefixed symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-appendOuterIcon</td>
+			<td>outer appended symbol</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-appendOuterIconSize</td>
+			<td>size of outer appended symbol</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-appendOuterIconColor</td>
+			<td>color of outer appended symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>data of menu</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-listDataMethod</td>
+			<td>input method for the menu data</td>
+			<td>string</td>
+			<td>inputPerEditor | jsonStringObject | multistatesObject | valueList
+		</tr>
+		<tr>
+			<td>mdw-countSelectItems</td>
+			<td>Editor: count of menu items</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-jsonStringObject</td>
+			<td>JSON string. Must be html escaped! Hint: use <a href="https://github.com/mathiasbynens/he#heencodetext-options">he library</a> in your scripts to encode to htmle</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueList</td>
+			<td>value list</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueListLabels</td>
+			<td>value list: labels</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueListIcons</td>
+			<td>value list: images</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>menu layout</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-listPosition</td>
+			<td>position</td>
+			<td>string</td>
+			<td>auto | top | bottom
+		</tr>
+		<tr>
+			<td>mdw-listPositionOffset</td>
+			<td>use position offset</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-openOnClear</td>
+			<td>open Menu at using clear button</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-listItemHeight</td>
+			<td>height of menu item</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemBackgroundColor</td>
+			<td>background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemBackgroundHoverColor</td>
+			<td>hover color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemBackgroundSelectedColor</td>
+			<td>color of selected item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemRippleEffectColor</td>
+			<td>effect color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-showSelectedIcon</td>
+			<td>show icon of selected item</td>
+			<td>string</td>
+			<td>no | prepend | prepend-inner | append-outer
+		</tr>
+		<tr>
+			<td>mdw-listIconSize</td>
+			<td>icon size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listIconColor</td>
+			<td>icon color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listIconHoverColor</td>
+			<td>icon hover color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listIconSelectedColor</td>
+			<td>icon color of selected item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemFont</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemFontColor</td>
+			<td>font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemFontHoverColor</td>
+			<td>font hover color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemFontSelectedColor</td>
+			<td>font color of selected item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemSubFontSize</td>
+			<td>second text font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemSubFont</td>
+			<td>second text font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemSubFontColor</td>
+			<td>second text font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemSubFontHoverColor</td>
+			<td>hover color of second text</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemSubFontSelectedColor</td>
+			<td>color of second selected text</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-showValue</td>
+			<td>show value</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-listItemValueFontSize</td>
+			<td>font size of value</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemValueFont</td>
+			<td>font of value</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemValueFontColor</td>
+			<td>font color of value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemValueFontHoverColor</td>
+			<td>hover font color of value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemValueFontSelectedColor</td>
+			<td>font color of selected value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>menu item [x]</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-value[x]</td>
+			<td>value</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-label[x]</td>
+			<td>label</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-subLabel[x]</td>
+			<td>second text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listIcon[x]</td>
+			<td>icon</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listIconColor[x]</td>
+			<td>icon color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-imageColorSelectedTextField[x]</td>
+			<td>selected icon color for textfield</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+	</tbody>
+</table>
+
+<!-- omit in toc -->
+##### HTML Properties - Example
+
+<details>
+
+```
+<div class='vis-widget materialdesign-widget materialdesign-select materialdesign-select-html-element'
+	style='width: 322px; height: 38px; position: relative; overflow: visible; display: flex; align-items: center;'
+	mdw-debug='true'
+	mdw-oid='0_userdata.0.MDW.Input.string'
+	mdw-inputType='text'
+	mdw-vibrateOnMobilDevices='50'
+	mdw-inputLayout='regular'
+	mdw-inputAlignment='left'
+	mdw-inputLayoutBorderColor='#mdwTheme:vis-materialdesign.0.colors.input.border'
+	mdw-inputLayoutBorderColorHover='#mdwTheme:vis-materialdesign.0.colors.input.border_hover'
+	mdw-inputLayoutBorderColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.border_selected'
+	mdw-inputTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.text'
+	mdw-inputTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.text'
+	mdw-inputTextColor='#mdwTheme:vis-materialdesign.0.colors.input.text'
+	mdw-inputLabelText='Fuu'
+	mdw-inputLabelColor='#mdwTheme:vis-materialdesign.0.colors.input.label'
+	mdw-inputLabelColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.label_selected'
+	mdw-inputLabelFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.label'
+	mdw-inputLabelFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.label'
+	mdw-inputAppendixColor='#mdwTheme:vis-materialdesign.0.colors.input.appendix'
+	mdw-inputAppendixFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.appendix'
+	mdw-inputAppendixFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.appendix'
+	mdw-showInputMessageAlways='true'
+	mdw-inputMessageFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.message'
+	mdw-inputMessageFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.message'
+	mdw-inputMessageColor='#mdwTheme:vis-materialdesign.0.colors.input.message'
+	mdw-showInputCounter='true'
+	mdw-inputCounterColor='#mdwTheme:vis-materialdesign.0.colors.input.counter'
+	mdw-inputCounterFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.counter'
+	mdw-inputCounterFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.counter'
+	mdw-clearIconShow='true'
+	mdw-clearIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_clear'
+	mdw-collapseIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_collapse'
+	mdw-prepandIcon='account-network'
+	mdw-prepandIconSize='30'
+	mdw-prepandIconColor='#f91010'
+	mdw-prepandInnerIcon='alert-box'
+	mdw-prepandInnerIconSize='20'
+	mdw-appendOuterIcon='/vis.0/myImages/hard-drive.png'
+	mdw-listDataMethod='jsonStringObject'
+	mdw-countSelectItems='0'
+	mdw-jsonStringObject='[   {
+&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Tag&#x22;,
+&#x9;&#x9;&#x22;subText&#x22;: &#x22;sub&#x22;,
+&#x9;&#x9;&#x22;value&#x22;: &#x22;1 day&#x22;,
+&#x9;&#x9;&#x22;icon&#x22;: &#x22;home&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;3 Tage&#x22;,
+&#x9;&#x9;&#x22;subText&#x22;: &#x22;sub&#x22;,&#x9;&#x9;
+&#x9;&#x9;&#x22;value&#x22;: &#x22;3 days&#x22;,
+&#x9;&#x9;&#x22;icon&#x22;: &#x22;home&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Woche&#x22;,
+&#x9;&#x9;&#x22;subText&#x22;: &#x22;sub&#x22;,&#x9;&#x9;
+&#x9;&#x9;&#x22;value&#x22;: &#x22;7 days&#x22;,
+&#x9;&#x9;&#x22;icon&#x22;: &#x22;home&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;2 Wochen&#x22;,
+&#x9;&#x9;&#x22;subText&#x22;: &#x22;sub&#x22;,&#x9;&#x9;
+&#x9;&#x9;&#x22;value&#x22;: &#x22;14 days&#x22;,
+&#x9;&#x9;&#x22;icon&#x22;: &#x22;home&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Monat&#x22;,
+&#x9;&#x9;&#x22;subText&#x22;: &#x22;sub&#x22;,&#x9;&#x9;
+&#x9;&#x9;&#x22;value&#x22;: &#x22;1 month&#x22;,
+&#x9;&#x9;&#x22;icon&#x22;: &#x22;/vis.0/myImages/hard-drive.png&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;2 Monate&#x22;,
+&#x9;&#x9;&#x22;subText&#x22;: &#x22;sub&#x22;,&#x9;&#x9;
+&#x9;&#x9;&#x22;value&#x22;: &#x22;2 months&#x22;,
+&#x9;&#x9;&#x22;icon&#x22;: &#x22;home&#x22;,
+&#x9;&#x9;&#x22;iconColor&#x22;: &#x22;blue&#x22;,
+&#x9;&#x9;&#x22;iconColorSelectedTextField&#x22;: &#x22;purple&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;3 Monate&#x22;,
+&#x9;&#x9;&#x22;value&#x22;: &#x22;3 months&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;6 Monate&#x22;,
+&#x9;&#x9;&#x22;value&#x22;: &#x22;6 months&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Jahr&#x22;,
+&#x9;&#x9;&#x22;value&#x22;: &#x22;1 year&#x22;
+&#x9;}
+]'
+	mdw-listPosition='bottom'
+	mdw-listPositionOffset='true'
+	mdw-listItemBackgroundColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.background'
+	mdw-listItemBackgroundHoverColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.hover'
+	mdw-listItemBackgroundSelectedColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.selected'
+	mdw-listItemRippleEffectColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.effect'
+	mdw-showSelectedIcon='prepend-inner'
+	mdw-listIconColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.icon'
+	mdw-listIconHoverColor='#bf0d0d'
+	mdw-listIconSelectedColor='#42ff2e'
+	mdw-listItemFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.text'
+	mdw-listItemFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.text'
+	mdw-listItemFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.text'
+	mdw-listItemSubFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.subText'
+	mdw-listItemSubFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.subText'
+	mdw-listItemSubFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.subText'
+	mdw-showValue='true'
+	mdw-listItemValueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.value'
+	mdw-listItemValueFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.value'
+	mdw-listItemValueFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.value'
+></div>
+```
+
+</details>
 
 ### Autocomplete
 ![Logo](doc/en/media/autocomplete.gif)
@@ -3557,47 +4702,861 @@ Settings that are not listed in the table below are self-explanatory.
         </tr>
         <tr>
             <td>JSON string</td>
-            <td>Method of data of menu: json string<br>Here you can add a JSON string to define the menu entries or use bindings to a datapoint that contains a JSON string.<br><br>JSON string must have the following format:<br>
-<pre><code>
-[
-	{
-		"text": "text 0",
-		"subText": "sub 0",
-		"value": "val0",
-		"icon": "account-cancel"
-	},
-	{
-		"text": "text 1",
-		"subText": "sub 1",
-		"value": "val1",
-		"icon": "/vis/icon/info.png",
-        "iconColor": "red"
-	},
-	{
-		"text": "text 2",
-		"subText": "sub 2",
-		"value": "val2",
-		"icon": "facebook-workplace",
-        "iconColor": "green"
-	}
-]
-</code></pre>
+            <td>Here you can add a JSON string to define the menu entries or use bindings to a datapoint that contains a JSON string.<br><br>JSON string must have the above descibed format<br>
             </td>
         </tr>
         <tr>
             <td>value list</td>
-            <td>Method of data of menu: value list<br>Define the number of menu entries by adding values that will be set to the datapoint. Entries must be separeted by semicolon</td>
+            <td>Define the number of menu entries by adding values that will be set to the datapoint. Entries must be separeted by semicolon</td>
         </tr>
         <tr>
         <td>value list: labels</td>
-            <td>Method of data of menu: value list<br>Define the related labels of the values. Entries must be separeted by semicolon</td>
+            <td>Define the related labels of the values. Entries must be separeted by semicolon</td>
         </tr>
         <tr>
-        <td>value list: labels</td>
-            <td>Method of data of menu: value list<br>Define the related icons of the values. Entries must be separeted by semicolon. You can use image path or Material Design Icons name</td>
+        <td>value list: images</td>
+            <td>Define the related icons of the values. Entries must be separeted by semicolon. You can use image path or Material Design Icons name</td>
         </tr>                
     </tbody>
 </table>
+
+#### Menu JSON Properties
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>text</td>
+			<td>text of menu item</td>
+			<td>string</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>subText</td>
+			<td>subtext of menu item</td>
+			<td>string</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>value</td>
+			<td>value of menu item, this will assign as value to the datapoint if this is selected</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>icon</td>
+			<td>material design icon or image path for menu item</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>iconColor</td>
+			<td>color of material design icon</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>iconColorSelectedTextField</td>
+			<td>icon color of input field when selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+	</tbody>
+</table>
+
+<!-- omit in toc -->
+##### Menu JSON Properties - Example
+
+<details>
+
+```
+[   {
+		"text": "1 Tag",
+		"subText": "sub",
+		"value": "1 day",
+		"icon": "home"
+	}, 
+	{
+		"text": "3 Tage",
+		"subText": "sub",		
+		"value": "3 days",
+		"icon": "home"
+	}, 
+	{
+		"text": "1 Woche",
+		"subText": "sub",		
+		"value": "7 days",
+		"icon": "home"
+	}, 
+	{
+		"text": "2 Wochen",
+		"subText": "sub",		
+		"value": "14 days",
+		"icon": "home"
+	}, 
+	{
+		"text": "1 Monat",
+		"subText": "sub",		
+		"value": "1 month",
+		"icon": "/vis.0/myImages/hard-drive.png"
+	}, 
+	{
+		"text": "2 Monate",
+		"subText": "sub",		
+		"value": "2 months",
+		"icon": "home",
+		"iconColor": "blue",
+		"iconColorSelectedTextField": "purple"
+	}, 
+	{
+		"text": "3 Monate",
+		"value": "3 months"
+	}, 
+	{
+		"text": "6 Monate",
+		"value": "6 months"
+	}, 
+	{
+		"text": "1 Jahr",
+		"value": "1 year"
+	}
+]
+```
+
+</details>
+
+
+#### HTML Properties
+
+The following properties can be used as [HTML element](#html-elements).
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Common</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-oid</td>
+			<td>Object ID</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputMode</td>
+			<td>inputMode</td>
+			<td>string</td>
+			<td>write | select
+		</tr>
+		<tr>
+			<td>mdw-inputType</td>
+			<td>input type</td>
+			<td>string</td>
+			<td>text | date | time
+		</tr>
+		<tr>
+			<td>mdw-vibrateOnMobilDevices</td>
+			<td>vibrate on mobil devices [s]</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-debug</td>
+			<td>debug</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>layout input </b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-inputLayout</td>
+			<td>layout</td>
+			<td>string</td>
+			<td>regular | solo | solo-rounded | solo-shaped | filled | filled-rounded | filled-shaped | outlined | outlined-rounded | outlined-shaped
+		</tr>
+		<tr>
+			<td>mdw-inputAlignment</td>
+			<td>text alignment</td>
+			<td>string</td>
+			<td>left | center | right
+		</tr>
+		<tr>
+			<td>mdw-inputLayoutBackgroundColor</td>
+			<td>background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLayoutBackgroundColorHover</td>
+			<td>background color hover</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLayoutBackgroundColorSelected</td>
+			<td>background color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLayoutBorderColor</td>
+			<td>border color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLayoutBorderColorHover</td>
+			<td>border color hover</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLayoutBorderColorSelected</td>
+			<td>border color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputTextFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputTextFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputTextColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>label of input </b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-inputLabelText</td>
+			<td>text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputLabelColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLabelColorSelected</td>
+			<td>text color selected</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputLabelFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputLabelFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputTranslateX</td>
+			<td>offset x</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputTranslateY</td>
+			<td>offset y</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>appendixs of the input</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-inputPrefix</td>
+			<td>prepended text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputSuffix</td>
+			<td>appended text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputAppendixColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputAppendixFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputAppendixFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>sub text of input</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-showInputMessageAlways</td>
+			<td>always show</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-inputMessage</td>
+			<td>text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputMessageFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputMessageFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputMessageColor</td>
+			<td>text color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>counter layout</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-showInputCounter</td>
+			<td>show counter</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-inputCounterColor</td>
+			<td>font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-inputCounterFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-inputCounterFontFamily</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>Icons</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-clearIconShow</td>
+			<td>show text delete icon </td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-clearIcon</td>
+			<td>text delete icon </td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-clearIconSize</td>
+			<td>size of text delete icon </td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-clearIconColor</td>
+			<td>color of text delete icon </td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-collapseIcon</td>
+			<td>menu open symbol</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-collapseIconSize</td>
+			<td>size of menu open symbol</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-collapseIconColor</td>
+			<td>color of menu open symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-prepandIcon</td>
+			<td>prefixed icon</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandIconSize</td>
+			<td>size of prefixed icon</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandIconColor</td>
+			<td>color of prefixed icon</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-prepandInnerIcon</td>
+			<td>inner prefixed symbol</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandInnerIconSize</td>
+			<td>size of inner prefixed symbol</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-prepandInnerIconColor</td>
+			<td>color of inner prefixed symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-appendOuterIcon</td>
+			<td>outer appended symbol</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-appendOuterIconSize</td>
+			<td>size of outer appended symbol</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-appendOuterIconColor</td>
+			<td>color of outer appended symbol</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>data of menu</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-listDataMethod</td>
+			<td>input method for the menu data</td>
+			<td>string</td>
+			<td>inputPerEditor | jsonStringObject | multistatesObject | valueList
+		</tr>
+		<tr>
+			<td>mdw-countSelectItems</td>
+			<td>Editor: count of menu items</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-jsonStringObject</td>
+			<td>JSON string. Must be html escaped! Hint: use <a href="https://github.com/mathiasbynens/he#heencodetext-options">he library</a> in your scripts to encode to htmle</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueList</td>
+			<td>value list</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueListLabels</td>
+			<td>value list: labels</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-valueListIcons</td>
+			<td>value list: images</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>menu layout</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-listPosition</td>
+			<td>position</td>
+			<td>string</td>
+			<td>auto | top | bottom
+		</tr>
+		<tr>
+			<td>mdw-listPositionOffset</td>
+			<td>use position offset</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-openOnClear</td>
+			<td>open Menu at using clear button</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-listItemHeight</td>
+			<td>height of menu item</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemBackgroundColor</td>
+			<td>background color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemBackgroundHoverColor</td>
+			<td>hover color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemBackgroundSelectedColor</td>
+			<td>color of selected item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemRippleEffectColor</td>
+			<td>effect color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-showSelectedIcon</td>
+			<td>show icon of selected item</td>
+			<td>string</td>
+			<td>no | prepend | prepend-inner | append-outer
+		</tr>
+		<tr>
+			<td>mdw-listIconSize</td>
+			<td>icon size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listIconColor</td>
+			<td>icon color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listIconHoverColor</td>
+			<td>icon hover color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listIconSelectedColor</td>
+			<td>icon color of selected item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemFontSize</td>
+			<td>font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemFont</td>
+			<td>font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemFontColor</td>
+			<td>font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemFontHoverColor</td>
+			<td>font hover color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemFontSelectedColor</td>
+			<td>font color of selected item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemSubFontSize</td>
+			<td>second text font size</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemSubFont</td>
+			<td>second text font</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemSubFontColor</td>
+			<td>second text font color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemSubFontHoverColor</td>
+			<td>hover color of second text</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemSubFontSelectedColor</td>
+			<td>color of second selected text</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-showValue</td>
+			<td>show value</td>
+			<td>boolean</td>
+			<td>false | true
+		</tr>
+		<tr>
+			<td>mdw-listItemValueFontSize</td>
+			<td>font size of value</td>
+			<td>number</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemValueFont</td>
+			<td>font of value</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listItemValueFontColor</td>
+			<td>font color of value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemValueFontHoverColor</td>
+			<td>hover font color of value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-listItemValueFontSelectedColor</td>
+			<td>font color of selected value</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td colspan="4" style="background: #44739e; color: white; border-color: #44739e;"><i><b><br>menu item [x]</b></i></td>
+		</tr>
+		<tr>
+			<td>mdw-value[x]</td>
+			<td>value</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-label[x]</td>
+			<td>label</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-subLabel[x]</td>
+			<td>second text</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listIcon[x]</td>
+			<td>icon</td>
+			<td>string</td>
+			<td>
+		</tr>
+		<tr>
+			<td>mdw-listIconColor[x]</td>
+			<td>icon color</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+		<tr>
+			<td>mdw-imageColorSelectedTextField[x]</td>
+			<td>selected icon color for textfield</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)
+		</tr>
+	</tbody>
+</table>
+
+<!-- omit in toc -->
+##### HTML Properties - Example
+
+<details>
+
+```
+<div class='vis-widget materialdesign-widget materialdesign-autocomplete materialdesign-autocomplete-html-element'
+	style='width: 354px; height: 38px; position: relative; overflow: visible; display: flex; align-items: center;'
+	mdw-oid='0_userdata.0.MDW.Input.string'
+	mdw-inputMode='write'
+	mdw-inputType='text'
+	mdw-vibrateOnMobilDevices='50'
+	mdw-inputLayout='regular'
+	mdw-inputAlignment='left'
+	mdw-inputLayoutBorderColor='#mdwTheme:vis-materialdesign.0.colors.input.border'
+	mdw-inputLayoutBorderColorHover='#mdwTheme:vis-materialdesign.0.colors.input.border_hover'
+	mdw-inputLayoutBorderColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.border_selected'
+	mdw-inputTextFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.text'
+	mdw-inputTextFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.text'
+	mdw-inputTextColor='#mdwTheme:vis-materialdesign.0.colors.input.text'
+	mdw-inputLabelText='fuuu'
+	mdw-inputLabelColor='#mdwTheme:vis-materialdesign.0.colors.input.label'
+	mdw-inputLabelColorSelected='#mdwTheme:vis-materialdesign.0.colors.input.label_selected'
+	mdw-inputLabelFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.label'
+	mdw-inputLabelFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.label'
+	mdw-inputAppendixColor='#mdwTheme:vis-materialdesign.0.colors.input.appendix'
+	mdw-inputAppendixFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.appendix'
+	mdw-inputAppendixFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.appendix'
+	mdw-showInputMessageAlways='true'
+	mdw-inputMessageFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.message'
+	mdw-inputMessageFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.message'
+	mdw-inputMessageColor='#mdwTheme:vis-materialdesign.0.colors.input.message'
+	mdw-showInputCounter='true'
+	mdw-inputCounterColor='#mdwTheme:vis-materialdesign.0.colors.input.counter'
+	mdw-inputCounterFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.counter'
+	mdw-inputCounterFontFamily='#mdwTheme:vis-materialdesign.0.fonts.input.counter'
+	mdw-clearIconShow='true'
+	mdw-clearIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_clear'
+	mdw-collapseIconColor='#mdwTheme:vis-materialdesign.0.colors.input.icon_collapse'
+	mdw-listDataMethod='jsonStringObject'
+	mdw-countSelectItems='1'
+	mdw-jsonStringObject='[   {
+&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Tag&#x22;,
+&#x9;&#x9;&#x22;subText&#x22;: &#x22;sub&#x22;,
+&#x9;&#x9;&#x22;value&#x22;: &#x22;1 day&#x22;,
+&#x9;&#x9;&#x22;icon&#x22;: &#x22;home&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;3 Tage&#x22;,
+&#x9;&#x9;&#x22;subText&#x22;: &#x22;sub&#x22;,&#x9;&#x9;
+&#x9;&#x9;&#x22;value&#x22;: &#x22;3 days&#x22;,
+&#x9;&#x9;&#x22;icon&#x22;: &#x22;home&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Woche&#x22;,
+&#x9;&#x9;&#x22;subText&#x22;: &#x22;sub&#x22;,&#x9;&#x9;
+&#x9;&#x9;&#x22;value&#x22;: &#x22;7 days&#x22;,
+&#x9;&#x9;&#x22;icon&#x22;: &#x22;home&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;2 Wochen&#x22;,
+&#x9;&#x9;&#x22;subText&#x22;: &#x22;sub&#x22;,&#x9;&#x9;
+&#x9;&#x9;&#x22;value&#x22;: &#x22;14 days&#x22;,
+&#x9;&#x9;&#x22;icon&#x22;: &#x22;home&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Monat&#x22;,
+&#x9;&#x9;&#x22;subText&#x22;: &#x22;sub&#x22;,&#x9;&#x9;
+&#x9;&#x9;&#x22;value&#x22;: &#x22;1 month&#x22;,
+&#x9;&#x9;&#x22;icon&#x22;: &#x22;home&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;2 Monate&#x22;,
+&#x9;&#x9;&#x22;subText&#x22;: &#x22;sub&#x22;,&#x9;&#x9;
+&#x9;&#x9;&#x22;value&#x22;: &#x22;2 months&#x22;,
+&#x9;&#x9;&#x22;icon&#x22;: &#x22;home&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;3 Monate&#x22;,
+&#x9;&#x9;&#x22;value&#x22;: &#x22;3 months&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;6 Monate&#x22;,
+&#x9;&#x9;&#x22;value&#x22;: &#x22;6 months&#x22;
+&#x9;}, 
+&#x9;{
+&#x9;&#x9;&#x22;text&#x22;: &#x22;1 Jahr&#x22;,
+&#x9;&#x9;&#x22;value&#x22;: &#x22;1 year&#x22;
+&#x9;}
+]'
+	mdw-listPosition='auto'
+	mdw-listPositionOffset='true'
+	mdw-listItemBackgroundColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.background'
+	mdw-listItemBackgroundHoverColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.hover'
+	mdw-listItemBackgroundSelectedColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.selected'
+	mdw-listItemRippleEffectColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.effect'
+	mdw-showSelectedIcon='prepend-inner'
+	mdw-listIconColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.icon'
+	mdw-listItemFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.text'
+	mdw-listItemFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.text'
+	mdw-listItemFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.text'
+	mdw-listItemSubFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.subText'
+	mdw-listItemSubFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.subText'
+	mdw-listItemSubFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.subText'
+	mdw-showValue='true'
+	mdw-listItemValueFontSize='#mdwTheme:vis-materialdesign.0.fontSizes.input.dropdown.value'
+	mdw-listItemValueFont='#mdwTheme:vis-materialdesign.0.fonts.input.dropdown.value'
+	mdw-listItemValueFontColor='#mdwTheme:vis-materialdesign.0.colors.input.menu.value'
+></div>
+```
+
+</details>
+
 
 ## Top App Bar
 
@@ -3761,7 +5720,7 @@ Settings that are not listed in the table below are self-explanatory.
 	</tbody>
 </table>	
 
-#### JSON Properties
+#### Dataset JSON Properties
 
 JSON string must be an array of objects with the following properties:
 
@@ -3896,7 +5855,7 @@ Settings that are not listed in the table below are self-explanatory.
 	</tbody>
 </table>
 
-#### JSON Properties
+#### Dataset JSON Properties
 
 JSON string must be an array of objects with the following properties:
 
@@ -6572,14 +8531,15 @@ There are two widgets - Masonry Views and Grid Views - with which it is possible
 
 ### Masonry Views
 
+![Logo](doc/en/media/masnory.gif)
+
 Masonry Views has multiple `view in widget` integrated, that will be ordered automatically depending of the width of the widget. With this widget it is possible to create a responsive layout (one layout for desktop, tablet and mobil).
 Masonry views are especially useful if the views included have different heights.
 
 
 <b>Take a look at the [Material Design Widgets example project](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b> to understand how it works.
 
-![Logo](doc/en/media/masnory.gif)
-
+#### Editor Settings 
 
 <table>
     <thead>
@@ -6613,6 +8573,8 @@ Masonry views are especially useful if the views included have different heights
 
 ### Grid Views
 
+![Logo](doc/en/media/grid.gif)
+
 Grid Views has multiple `view in widget` integrated, that will be ordered automatically depending of the width of the widget. With this widget it is possible to create a responsive layout (one layout for desktop, tablet and mobil).
 Grid views are especially useful if the views included have the same heights.
 
@@ -6620,7 +8582,7 @@ Grid views are especially useful if the views included have the same heights.
 
 <b>Take a look at the [Material Design Widgets example project](https://github.com/Scrounger/ioBroker.vis-materialdesign#online-example-project)</b> to understand how it works.
 
-![Logo](doc/en/media/grid.gif)
+#### Editor Settings 
 
 <table>
     <thead>
@@ -6655,7 +8617,89 @@ Alerts widget can be used e.g. to display messages in the VIS, like it works wit
 
 ![Logo](doc/en/media/alerts.gif)
 
-The Alerts widget requires a JSON string as object, which must be structured as follows:
+### Editor Settings
+
+<table>
+    <thead>
+        <tr>
+            <th>Screenshot</th>
+            <th>Setting</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td rowspan=3><img src="doc/en/media/alerts_settings.png"></td>
+            <td>number of columns</td>
+            <td>define number of columns</td>
+        </tr>
+        <tr>
+            <td>Object ID</td>
+            <td>Object must be a json string. Allowed properties are described below</td>
+        </tr>
+        <tr>
+            <td>max. Alerts</td>
+            <td>max number of Alerts that should be shown.</td>
+        </tr>
+    </tbody>
+</table>
+
+### JSON Properties
+
+<table>
+	<thead>
+		<tr>
+			<th>Property</th>
+			<th>Description</th>
+			<th>Type</th>
+			<th>Values</th>
+		</tr>
+	</thead>
+	<tbody>
+		<tr>
+			<td>text</td>
+			<td>text of menu item</td>
+			<td>string</td>
+			<td></td>
+		</tr>
+		<tr>
+			<td>backgroundColor</td>
+			<td>background color of alert item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>borderColor</td>
+			<td>border color of alert item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>icon</td>
+			<td>material design icon or image path for menu item</td>
+			<td>string</td>
+			<td/>
+		</tr>
+		<tr>
+			<td>iconColor</td>
+			<td>color of material design icon</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+		<tr>
+			<td>fontColor</td>
+			<td>font color of alert item</td>
+			<td>string</td>
+			<td>hex(#44739e), rgb(20, 50, 200), rgba(20, 50, 200, 0.5)</td>
+		</tr>
+	</tbody>
+</table>
+
+<!-- omit in toc -->
+#### JSON Properties - Example
+
+<details>
+
 ```
 [
        {
@@ -6683,30 +8727,9 @@ The Alerts widget requires a JSON string as object, which must be structured as 
 ]
 ```
 
-<table>
-    <thead>
-        <tr>
-            <th>Screenshot</th>
-            <th>Setting</th>
-            <th>Description</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <td rowspan=3><img src="doc/en/media/alerts_settings.png"></td>
-            <td>number of columns</td>
-            <td>define number of columns</td>
-        </tr>
-        <tr>
-            <td>Object ID</td>
-            <td>Object must be a json string, which must be structured as described above</td>
-        </tr>
-        <tr>
-            <td>max. Alerts</td>
-            <td>max number of Alerts that should be shown.</td>
-        </tr>
-    </tbody>
-</table>
+</details>
+
+### Script: send alert to widget
 
 With the following script you can send easy messages to datapoint that is used by the Alerts Widget.
 The script must put into global scripts. Then it is possible to send message with the following command
@@ -6906,6 +8929,13 @@ ical2CalendarWidget();
 Create an html element from the supported Material Design widgets to use it in any other widget that supports html.
 Just style your Material Design widget, press the `generate Html Element`, copy the data and paste it to any widget that supports html tags.
 Or use it in scripts to generate dynamically Widgets.
+
+> Attention: 
+> * attributes of html tags must surrounded by `'` (single quote)
+> * double quotes `"` used in attributes must be escaped like `\"`
+> 
+> compare this with the shown examples of the diffrent widgets
+
 
 ![Logo](doc/en/media/html-elements.gif)
 

@@ -1,139 +1,231 @@
 ---
-translatedFrom: en
-translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.bring/README.md
-title: ioBroker.bring
-hash: n1lrpEniOSNdTJPhXYpr74N+pzHkxWVNnX3UPJa37bc=
+BADGE-Number of Installations: http://iobroker.live/badges/bring-installed.svg
+BADGE-Stable version: http://iobroker.live/badges/bring-stable.svg
+BADGE-NPM version: http://img.shields.io/npm/v/iobroker.bring.svg
+BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.bring.svg
+BADGE-NPM: https://nodei.co/npm/iobroker.bring.png?downloads=true
 ---
-![Logo](../../../en/adapterref/iobroker.bring/admin/bring.png)
+![Logo](media/bring.png)
 
-![Anzahl der Installationen](http://iobroker.live/badges/bring-installed.svg)
-![stabile Version](http://iobroker.live/badges/bring-stable.svg)
-![NPM-Version](http://img.shields.io/npm/v/iobroker.bring.svg)
-![Downloads](https://img.shields.io/npm/dm/iobroker.bring.svg)
-![Greenkeeper-Abzeichen](https://badges.greenkeeper.io/foxriver76/ioBroker.bring.svg)
-![NPM](https://nodei.co/npm/iobroker.bring.png?downloads=true)
+# Bring! Adapter
 
-# IoBroker.bring
-===========================
+Der Bring! Adapter ermöglicht die Einbindung aller Bring! Einkaufslisten eines Nutzers.
 
-![Build Status](https://github.com/foxriver76/ioBroker.bring/workflows/Test%20and%20Release/badge.svg)
+## Überblick
 
-## Zustände
-Eine Beschreibung der erstellten Zustände finden Sie unten.
+### Bring!
+Bei Bring! handelt es sich um eine Applikation für mobile Endgeräte sowie Web-App, um Einkaufslisten kollaborativ zu 
+nutzen. So kann im Haushalt gemeinsam eine Einkaufsliste genutzt werden und wird automatisch mit den anderen Mitgliedern
+der Liste synchronisiert.
 
-### Kanal: info
+### Bring! Adapter
+Der Bring! Adapter findet nach Anmeldung mittels E-Mail Adresse und Passwort des Bring! Accounts automatisch alle Listen
+des entsprechenden Nutzers. 
+<br/>
+Der Adapter legt automatisch alle Listen in Form von Channels an und bietet neben der Darstellung der Liste als JSON 
+sowie HTML auch die Möglichkeit neue Gegenstände auf die Liste zu setzen und zu entfernen.
+
+## Voraussetzungen vor der Installation
+Es muss ein Bring! Account existieren und eine Internetverbindung bestehen. Ein Bring! Account kann über die mobile 
+Applikation auf dem Smartphone angelegt werden.
+
+## Installation
+Eine Instanz des Adapters wird über die ioBroker Admin-Oberfläche installiert. 
+Die ausführliche Anleitung für die dazu notwendigen Installatonschritte kann hier (TODO:LINK) nachgelesen werden.
+<br/><br/>
+Nach Abschluss der Installation einer Adapterinstanz öffnet sich automatisch ein Konfigurationsfenster.
+
+## Konfiguration
+
+
+![Adapter Configuration](media/config.png "Haupteinstellungen")<span style="color:grey">*Tab Haupteinstellungen*</span>
+
+| Feld         | Beschreibung |                                                                       
+|:-------------|:-------------|
+|E-Mail Adresse|E-Mail Adresse des Bring! Accounts|
+|Passwort|Passwort des zugehörigen Accounts|
+
+![Adapter Notifications](media/notifications.png "Benachrichtigungen")<span style="color:grey">*Tab Benachrichtigungen*</span>
+
+Falls es gewünscht ist, Benachrichtigungen per Mail zu erhalten, kann dies im Tab __Benachrichtigungen__ konfiguriert 
+werden. Bei Betätigung des `messageTrigger` Buttons einer Liste, wird diese Liste an die konfigurierten Empfänger versendet.
+
+| Feld         | Beschreibung |                                                                       
+|:-------------|:-------------|
+|Benachrichtigungsart|Art der Benachrichtigung (E-Mail, Pushover, Telegram|
+|E-Mail Empfänger|Empfänger der Mail|
+|Telegram Empfänger|Empfänger der Telegram Nachricht|
+|E-Mail Absender|Absender Adresse der E-Mail|
+|Device ID (optional)| Pushover Device ID des Empfängers|
+|E-Mail/Pushover/Telegram Instanz|Instanz zum Versenden der Nachricht|
+
+Nach Abschluss der Konfiguration wird der Konfigurationsdialog mit `SPEICHERN UND SCHLIEßEN` verlassen. 
+Dadurch efolgt im Anschluß ein Neustart des Adapters.
+
+## Instanzen
+Die Installation des Adapters hat im Bereich `Instanzen` eine aktive Instanz des Bring! Adapters angelegt.
+<br/><br/>
+![Instanz](media/instance.png "Instanz")<span style="color:grey">  
+*Erste Instanz*</span>
+
+Auf einem ioBroker Server können mehrere Bring! Adapter Instanzen angelegt werden. 
+Sollen mehrere Accounts von einem ioBroker Server synchronisiert werden, sollte 
+je Account eine Instanz angelegt werden.
+<br/><br/>
+Ob der Adapter aktiviert oder mit der Bring! API verbunden ist, wird mit der Farbe des Status-Feldes der 
+Instanz verdeutlicht. Zeigt der Mauszeiger auf das Symbol, werden weitere Detailinformationen dargestellt. 
+
+## Objekte des Adapters
+Im Bereich `Objekte` werden in einer Baumstruktur alle vom Adapter im Account 
+erkannten Listen aufgeführt. 
+
+![Objekte](media/objects.png "Bring! Objekte")<span style="color:grey">  
+*Objekte des Bring! Adapters*</span>
+
+Jeder Datenpunkt ist mit seinem zugehörigen Datentyp sowie seinen Berechtigungen aufgehführt. 
+Berechtigungen können lesend (R) sowie schreibend (W) sein. Jeder Datenpunkt kann mindestens gelesen (R) werden, während
+andere ebenfalls beschrieben werden können. Zur Suche nach einem bestimmten Datenpunkt empfiehlt sich die Suche mittels 
+der Tastenkombination "STRG + F".
+
+### Channel: info
 * info.connection
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | boolean | R |
+    |boolean|R|
 
-   *Nur-Lese-Boolean-Indikator. Wenn Ihr Broker bei bring angemeldet ist, ist der Status true, andernfalls false.*
-
+   *Read-only boolean Wert, der aussagt ob die Verbindung zur API hergestellt ist.*
+   
 * info.user
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R |
+    |string|R|
 
-   *Nur lesbare Zeichenfolge. Enthält den Namen des angemeldeten Benutzers.*
-
+   *Read only string. Beinhaltet den Namen des eingeloggten Nutzers*
+   
 ### Einkaufslisten
-Für jede Einkaufsliste wird ein Kanal mit folgenden Status erstellt:
+Für jede Einkaufsliste wird ein Channel mit den folgenden Objekten angelegt:
 
-* *list* .content / *list* .contentHtml / NoHead
+* *list*.content / *list*.contentHtml/NoHead
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R |
+    |string|R|
 
-*Schreibgeschützter JSON / HTML-String, der als Liste oder HTML-Tabelle formatiert ist. Enthält die Artikel, die sich aktuell auf Ihrer Einkaufsliste befinden.
-Die NoHead-HTML-Tabellen enthalten keine Tabellenüberschriften.*
+   *Read only json/html string formatiert als Liste, bzw. HTML Tabelle.
+   Beinhaltet die Gegenstände die aktuell auf der Einkaufsliste stehen.
+   Die NoHead HTML Tabellen sind ohne HTML Header.*
+   
+* *list*.recentContent / *list*.recentContentHtml/NoHead
 
-* *list* .recentContent / *list* .recentContentHtml / NoHead
-
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R |
+    |string|R|
 
-*Schreibgeschützter JSON / HTML-String, der als Liste oder HTML-Tabelle formatiert ist. Enthält die Artikel, die kürzlich auf Ihrer Einkaufsliste standen.
-Die NoHead-HTML-Tabellen enthalten keine Tabellenüberschriften.*
+    *Read only json/html string formatiert als Liste, bzw. HTML Tabelle.
+   Beinhaltet die Gegenstände die kürzlich auf der Einkaufsliste standen.
+   Die NoHead HTML Tabellen sind ohne HTML Header.*
+   
+* *list*.removeItem
 
-* *list* .removeItem
-
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
+    |string|R/W|
 
-*Wählen Sie einen Artikel aus, der aus der Einkaufsliste und der Liste der zuletzt verwendeten Inhalte entfernt werden soll.
-Der Status wird bestätigt, wenn der Befehl vom Bring! API.*
+   *Mit diesem State kann ein Gegenstand von der Einkaufsliste entfernt werden. 
+   Der State wird bestätigt, sobald das Kommando von der Bring! API bestätigt wurde.*
+   
+* *list*.moveToRecentContent
 
-* *list* .moveToRecentContent
-
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
+    |string|R/W|
 
-*Wählen Sie ein Element aus, das verschoben oder zur Liste der zuletzt verwendeten Inhalte hinzugefügt werden soll.
-Der Status wird bestätigt, wenn der Befehl vom Bring! API.*
+   *Mit diesem State kann ein Gegenstand zur recentContent Liste bewegt bzw. hinzugefügt werden. 
+   Der State wird bestätigt, sobald das Kommando von der Bring! API bestätigt wurde.*
+   
+* *list*.saveItem
 
-* *Liste* .saveItem
-
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
+    |string|R/W|
 
-*Wählen Sie einen Artikel aus, der zur Einkaufsliste hinzugefügt werden soll. Sie können auch zusätzliche Informationen zu dem Element angeben, indem Sie den Status anhand des folgenden Schemas festlegen:*
+   *Erlaubt das hinzufügen eines Gegenstandes zur Einkaufsliste. Durch das folgende Schema, können zusätzliche
+   Spezifikationen mitgegeben werden:* 
+   
+   ```Apple, 2.50 $, the green ones```
+   
+   *Hierbei wird alles nach dem ersten Komma, als Spezifikation gewertet und erscheint in der App unter dem Gegenstand. 
+   Der State wird bestätigt, sobald das Kommando von der Bring! API bestätigt wurde.*
+    
+* *list*.users / *list*.usersHtml/NoHead
 
-```Apple, 2.50 $, the green ones```
-
-*Beachten Sie, dass alles hinter dem Komma die Spezifikation beschreibt.
-Der Status wird bestätigt, wenn der Befehl vom Bring! API.*
-
-* *list* .users / *list* .usersHtml / NoHead
-
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R |
+    |string|R|
 
-*Schreibgeschützter JSON / HTML-String, der als Liste oder HTML-Tabelle formatiert ist. Enthält die Benutzer, die Teil der Einkaufsliste sind, sowie ihre E-Mail-Adresse.
-Die NoHead-HTML-Tabellen enthalten keine Tabellenüberschriften.*
+    *Read only json/html string formatiert als Liste, bzw. HTML Tabelle.
+   Beinhaltet alle Nutzer die derzeit Mitglied der Liste sind.
+   Die NoHead HTML Tabellen sind ohne HTML Header.*
+   
+* *list*.count
 
-* *Liste* .count
-
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | number | R |
+    |number|R|
 
-   *Schreibgeschützte Nummer, die die Anzahl der enthaltenen Elemente der Liste darstellt.*
+   *Read only number, welcher anzeigt, wie viele Gegenstände sich derzeit auf der Einkaufsliste befinden.*
+   
+* *list*.messageTrigger
 
-* *list* .messageTrigger
-
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | Taste | R / W |
+    |button|R/W|
+    
+    *Bei Betätigung des Buttons, wird eine Nachricht mittels Pushover, E-Mail und/oder Telegram and die konfigurierten
+     Instanzen versendet, welche die aktuelle Einkaufsliste enthält.*
+     
+* *list*.enumSentence
 
-*Wenn Sie diese Schaltfläche drücken, wird die Einkaufsliste an die konfigurierten Instanzen gesendet, z. G. Pushover, Telegramm oder / und E-Mail.*
-
-* *list* .enumSentence
-
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R |
+    |string|R|
+    
+    *Nur lesbarer String, welcher eine Auflistung der aktuellen Gegenstände in sprechbarer Form enthält. 
+    Eignet sich z. B. zur Sprachausgabe via Sprachassistenten.*
+    
+* *list*.translation
 
-*Read only string, der eine Aufzählung der Artikel der Einkaufsliste in sprechbarer Form enthält.
-Dies kann z. G. für die Sprachausgabe über intelligente Assistenten.*
-
-* *Liste* Übersetzung
-
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R |
-
-    *Read only json string, der ein Wörterbuch enthält, um die Schweizer Artikelnamen in die Listensprache zu übersetzen.*
+    |string|R|
+    
+    *Nur lesbarer JSON-String, der ein Wörterbuch zur Übersetzung der schweizerischen Namen in die Listensprache darstellt.
 
 ## Changelog
+### 1.7.7 (2020-12-12)
+* (foxriver76) fix potential crash on `pollAllLists` function
+
+### 1.7.6 (2020-12-05)
+* (foxriver76) we now use a unique name for widget rendering function to avoid conflicts
+* (foxriver76) if we cannot render widget immediately we try again after one second (see #57)
+
+### 1.7.4 (2020-12-04)
+* (foxriver76) we now render the widget immediately
+
+### 1.7.3 (2020-10-26)
+* (foxriver76) bring module now returns real errors instead of strings, handle them correct
+
+### 1.7.2 (2020-04-23)
+* (foxriver76) fixed potential issue on rendering widget
+
+### 1.7.1 (2020-02-13)
+* (foxriver76) we are now using AES-256-CBC as encryption
+
+### 1.6.8 (2019-12-31)
+* (foxriver76) ensure compatibility with older browsers
+
 ### 1.6.6 (2019-11-21)
 * (foxriver76) improved error handling in widget
 
@@ -221,7 +313,7 @@ Dies kann z. G. für die Sprachausgabe über intelligente Assistenten.*
 ## License
 The MIT License (MIT)
 
-Copyright (c) 2019 Moritz Heusinger <moritz.heusinger@gmail.com>
+Copyright (c) 2019-2020 Moritz Heusinger <moritz.heusinger@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

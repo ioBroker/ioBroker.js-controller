@@ -194,6 +194,10 @@ show();
 
 ## Changelog
 
+### 1.1.3
+
+* (klein0r) Fixed async object creation
+
 ### 1.1.2
 
 * (klein0r) Delete app channels if app was deleted on LaMetric

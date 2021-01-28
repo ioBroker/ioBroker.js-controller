@@ -38,6 +38,9 @@ For better view a custom lovelace card is created - see https://github.com/algar
 
 ## Changelog
 
+### 1.1.5
+* (algar42) Resolve log Warning for js-controller 3.2
+
 ### 1.1.4
 * (HGlab01) small bugfix regarding setTimeout range
 

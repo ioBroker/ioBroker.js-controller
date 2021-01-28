@@ -3,8 +3,8 @@
 
 [![NPM version](http://img.shields.io/npm/v/iobroker.fahrplan.svg)](https://www.npmjs.com/package/iobroker.fahrplan)
 [![Downloads](https://img.shields.io/npm/dm/iobroker.fahrplan.svg)](https://www.npmjs.com/package/iobroker.fahrplan)
-![Number of Installations (latest)](https://iobroker.live/badges/fahrplan-installed.svg?dummy=unused)
-![Number of Installations (stable)](https://iobroker.live/badges/fahrplan-stable.svg?dummy=unused)
+![Number of Installations (latest)](https://iobroker.live/badges/fahrplan-installed.svg)
+![Number of Installations (stable)](https://iobroker.live/badges/fahrplan-stable.svg)
 [![Dependency Status](https://img.shields.io/david/gaudes/iobroker.fahrplan.svg)](https://david-dm.org/gaudes/iobroker.fahrplan)
 ![Test and Release](https://github.com/gaudes/ioBroker.fahrplan/workflows/Test%20and%20Release/badge.svg)
 
@@ -213,10 +213,12 @@ With +-Button new entries can be added to the table.
 	### __WORK IN PROGRESS__
 -->
 
-### __WORK IN PROGRESS__
+### 1.0.3 (2021-01-27)
 * (Gaudes) Station search returns only stations (Sentry Multiple results found for station)
 * (Gaudes) Integrate SBB profile
 * (Gaudes) Leave out superflous journey per route than configured
+* (Gaudes) Fix call of helper for correct counters
+* (Gaudes) Include Dependabot updates
 
 ### 1.0.2 (2021-01-12)
 * (Gaudes) Configurable Headline for HTML tables
@@ -233,9 +235,6 @@ With +-Button new entries can be added to the table.
 * (Gaudes) First stable release
 
 ### 0.2.8 (2020-12-02)
-* (Gaudes) Fixing connection error to HAFAS
-
-### 0.2.7 (2020-11-28)
 * (Gaudes) Fixing connection error to HAFAS
 
 ## License

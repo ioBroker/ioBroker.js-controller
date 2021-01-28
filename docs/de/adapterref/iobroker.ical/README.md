@@ -189,6 +189,9 @@ Whitelist: Wenn Sie nur Ereignisse einer bestimmten Position einschließen möch
 
 ## Changelog
 
+### __WORK IN PROGRESS__
+* (Apollon77) try to make sure all code is executed before adapter is ended
+
 ### 1.9.0 (2021-01-12)
 * (christofkac) Added option to ignore case when events are searched in calendars
 * (Apollon77) Prevent crash case (Sentry IOBROKER-ICAL-F)

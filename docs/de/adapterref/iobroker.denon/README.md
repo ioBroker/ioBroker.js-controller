@@ -1,832 +1,897 @@
 ---
-translatedFrom: en
-translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
-editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.denon/README.md
-title: ioBroker.denon
-hash: JYREJt7gT3z33R1WkTzC1mRy5Fp2M+2eeCHRIxmYS5E=
+BADGE-Number of Installations: http://iobroker.live/badges/denon-stable.svg
+BADGE-NPM version: http://img.shields.io/npm/v/iobroker.denon.svg
+BADGE-Downloads: https://img.shields.io/npm/dm/iobroker.denon.svg
+BADGE-NPM: https://nodei.co/npm/iobroker.denon.png?downloads=true
 ---
-![Logo](../../../en/adapterref/iobroker.denon/admin/denon.png)
+![Logo](media/denon.png)
 
-![Anzahl der Installationen](http://iobroker.live/badges/denon-stable.svg)
-![NPM-Version](http://img.shields.io/npm/v/iobroker.denon.svg)
-![Downloads](https://img.shields.io/npm/dm/iobroker.denon.svg)
-![NPM](https://nodei.co/npm/iobroker.denon.png?downloads=true)
+# DENON/Marantz AV-Receiver Adapter
 
-# IoBroker.denon
-===========================
+Der DENON Adapter ermöglicht die Einbindung eines AV-Receivers des Herstellers DENON oder Marantz in das ioBroker System.
 
-![Build-Status](https://github.com/foxriver76/ioBroker.denon/workflows/Test%20and%20Release/badge.svg)
+## Überblick
+
+### DENON AV-Receiver
+Bei DENON und Marantz AV-Receivern handelt es sich um AV-Receiver der Mittel bis Oberklasse. Unterstützt wird regulär mindestens
+5.1 Surround Sound. So ist es möglich Boxen und Subwoofer unterschiedlicher Hersteller in das Multimediasystem einzubinden. 
+<br/>
+Ebenfalls sind die meisten neueren Geräte netzwerkfähig, wodurch diese neben den klassischen Eingangssignalen auch Internetradio, 
+Serverdateien und via Bluetooth oder Netzwerk gestreamte Dateien wiedergeben können.
+
+### DENON Adapter
+Der DENON Adapter findet automatisch kompatible DENON und Marantz AV-Receiver, die sich im gleichen Netzwerksubnetz wie
+der ioBroker befinden.
+<br/>
+Der Adapter legt automatisch alle für das jeweilige Modell verüfgbaren Befehle und Stati in Form von Objekten an. 
+Ein Großteil der Stati kann ebenfalls ausgelesen werden, wie z. B. die aktuelle Laustärke, der Eingangskanal und viele mehr.
+Durch geziehltes Beschreiben oder Lesen der angelegten Objekten kann deren Status geändert und 
+damit Aktionen ausgelöst oder auch abgefragt werden. 
+
+## Voraussetzungen vor der Installation
+Bevor der Adapter mit einem AV-Receiver kommunizieren kann, sollte sichergestellt werden, dass der AV-Receiver korrekt
+konfiguriert ist. Ebenfalls muss der AV-Receiver über eine aktive Netzwerkverindung verfügen.
+
+1. Durch das Drücken der "SETUP" Taste auf der Fernbedienung, öffnet sich das Menü auf dem Onscreen-Display (OSD) sowie auf dem
+angeschlossenen Videoausgangs-Gerät.
+2. Anschließend muss der Menüpunkt "Netzwerk" und anschließend der Punkt "Einstellungen" gewählt werden.
+3. Die Parameter sollten wie folgt konfiguriert werden:
+
+   *DHCP: EIN (Diese Einstellung sollte genutzt werden, wenn es einen DHCP Server (z. B. FRITZ!Box) im lokalen Netzwerk gibt)*
+  
+   *IP-Adresse: Wenn DHCP ausgeschaltet ist, muss eine IP-Adresse konfiguriert werden.*
+  
+   *Subnetz Maske: Subnetzmaske muss nur konfiguriert werden wenn DHCP ausgeschaltet wurde.*
+  
+   *Standardgateway: Die Adresse des Gateways sollte konfiguirert werden, falls DHCP ausgeschaltet wurde.*
+  
+   *Prim. DNS-Server: Nicht konfigurieren.*
+  
+   *Second DNS: Nicht konfigurieren.*
+  
+   *Proxy: AUS*
+  
+4. Durch Drücken des Punktes "Speichern" werden die Einstellungen übernommen
+5. Der "SETUP" Knopf auf der Fernbedienung muss erneut gedrückt werden
+6. Nun sollte in das Menü "Netzwerk" navigiert werden und anschließend "Netzwerk-Strg" geäwhlt werden.
+7. Der konfigurierebare Parameter sollte auf "Immer ein" gestellt werden.
 
 ## Installation
-Sie können den Adapter entweder über die ioBroker-Weboberfläche oder über npm auf Ihrem lokalen Computer installieren.
-
-### Browser-basiert
-1. Öffnen Sie Ihre ioBroker-Weboberfläche in einem Browser (z. B.: 192.168.30.70:8081).
-2. Klicken Sie auf die Registerkarte "Adapter".
-3. Geben Sie "Denon" in den Filter ein
-4. Klicken Sie auf die drei Punkte und dann auf das Symbol "+" des DENON AVR-Adapters
-
-![Adapter hinzufügen](../../../en/adapterref/iobroker.denon/docs/en/media/plusAddAdapter.png)
-
-### Lokale Maschine
-Navigieren Sie in Ihren iobroker-Ordner und führen Sie den folgenden Befehl aus:
-
-```bash
-npm i iobroker.denon
-```
+Eine Instanz des Adapters wird über die ioBroker Admin-Oberfläche installiert. 
+Die ausführliche Anleitung für die dazu notwendigen Installatonschritte kann hier (TODO:LINK) nachgelesen werden.
+<br/><br/>
+Nach Abschluss der Installation einer Adapterinstanz öffnet sich automatisch ein Konfigurationsfenster.
 
 ## Konfiguration
-Zusätzlich zur Adapterinstallation müssen Sie sicherstellen, dass Ihr AVR korrekt konfiguriert ist.
 
-### IoBroker
-1. Öffnen Sie Ihre ioBroker-Oberfläche in einem Browser (zB: 192.168.1.33:8081).
-2. Navigieren Sie zur Registerkarte "Adapter".
-3. Klicken Sie auf die drei Punkte und dann auf das Symbol "+" des DENON AVR-Adapters
+### Fenster "Haupteinstellungen"
+![Adapter Configuration](media/fillInIp.png "Haupteinstellungen")<span style="color:grey">*Admin Oberfläche*</span>
 
-![Adapter hinzufügen](../../../en/adapterref/iobroker.denon/docs/en/media/plusAddAdapter.png)
+| Feld         | Beschreibung |                                                                       
+|:-------------|:-------------|
+|IP Adresse    |Hier soll die IP-Adresse des gewünschten AV-Receivers eingegeben werden. Alternativ können Geräte im Netzwerk durch Klick auf die Lupe gesucht und anschließend im Dropdown Menü selektiert werden.|
 
-4. Jetzt sehen Sie die Adapterkonfigurationsseite -> geben Sie die IP-Adresse Ihres DENON AVR ein oder klicken Sie auf die Suche
+### Fenster "Erweiterte Einstellungen"
+![Advanced Settings](media/advancedSettings.png "Erweiterte Einstellungen")<span style="color:grey">*Admin Oberfläche*</span>
 
-Symbol zum Auffinden von AVRs in Ihrem Netzwerk (über UPnP) ![Adapterkonfiguration](../../../en/adapterref/iobroker.denon/docs/en/media/fillInIp.png)
+| Feld         | Beschreibung |                                                                       
+|:-------------|:-------------|
+|Abrufintervall|Hiermit kann festgelegt werden, wie oft der Adapter manche Objekte aktualisiert. Die meisten Objekte werden bei einer Änderung automatisch aktualisiert. Der voreingestellte Wert hat sich als geeignet erwiesen.|
+|Intervall zwischen Befehlen|Hier kann festgelegt werden, wie lange der Adapter zwischen Befehlen wartet. Sollte ein älterer AV-Receiver genutzt werden und Probleme mit dem Adapter auftreten, kann es sinnvoll sein, diesen Wert zu erhöhen (z. B. auf 200 ms).|
 
-5. Wenn Sie auch das Anforderungs- / Abfrageintervall anpassen möchten, klicken Sie auf die Registerkarte "Erweiterte Einstellungen".
+Nach Abschluss der Konfiguration wird der Konfigurationsdialog mit `SPEICHERN UND SCHLIEßEN` verlassen. 
+Dadurch efolgt im Anschluß ein Neustart des Adapters.
 
-Durch Verringern des Abfrageintervalls verringert der Adapter die Zeit zwischen dem Aktualisieren des Anzeigeinhalts.
-Durch Verringern des Anforderungsintervalls wird die Zeit zwischen dem Senden von Befehlen verringert.
-Die Standardeinstellungen sollten für die meisten Benutzer gut passen.
-![Erweiterte Einstellungen](../../../en/adapterref/iobroker.denon/docs/en/media/advancedSettings.png)
+## Instanzen
+Die Installation des Adapters hat im Bereich `Instanzen` eine aktive Instanz des DENON Adapters angelegt.
+<br/><br/>
+![Instanz](media/instance.png "Instanz")<span style="color:grey">  
+*Erste Instanz*</span>
 
-6. Klicken Sie auf Speichern und schließen
+Auf einem ioBroker Server können mehrere DENON Adapter Instanzen angelegt werden. Jedoch kann ein AV-Receiver nur mit 
+einem ioBroker Server gleichzeitig verbunden sein. Sollen mehrere Geräte von einem ioBroker Server gesteuert werden, sollte 
+je AV-Receiver eine Instanz angelegt werden.
+<br/><br/>
+Ob der Adapter aktiviert oder mit dem AV-Receiver verbunden ist, wird mit der Farbe des Status-Feldes der 
+Instanz verdeutlicht. Zeigt der Mauszeiger auf das Symbol, werden weitere Detailinformationen dargestellt. 
 
-### Netzwerkeinrichtung des AV-Receivers
-1. Drücken Sie die SETUP-Taste, dann erscheint das Menü auf dem FL-Display (und der GUI).
-2. Wählen Sie "Netzwerk" -> "Einstellungen"
-3. Stellen Sie die unten beschriebenen Parameter ein
+## Objekte des Adapters
+Im Bereich `Objekte` werden in einer Baumstruktur alle vom Adapter im AVR erkannten
+Funktionalitäten aufgelistet. Zusätzlich wird auch noch 
+darüber informiert, ob die Kommunikation mit dem AVR reibungslos erfolgt.
 
-   *DHCP: "ON" (Verwenden Sie diese Einstellung, wenn sich der DHCP-Server im lokalen Netzwerk befindet.)*
+![Objekte](media/objects.png "DENON Objekte")<span style="color:grey">  
+*Objekte des DENON Adapters*</span>
 
-   *IP-Adresse: Wenn <DHCP> "Aus" setzt, stellen Sie bitte die IP-Adresse ein.*
+Nachfolgend werden die Objekte in States und Buttons unterteilt. 
+Jeder Datenpunkt ist mit seinem zugehörigen Datentyp sowie seinen Berechtigungen aufgehführt. 
+Berechtigungen können lesend (R) sowie schreibend (W) sein. Jeder Datenpunkt kann mindestens gelesen (R) werden, während
+andere ebenfalls beschrieben werden können. Zur Suche nach einem bestimmten Datenpunkt empfiehlt sich die Suche mittels 
+der Tastenkombination "STRG + F".
 
-   *Subnetzmaske: Wenn <DHCP> "Aus" setzt, stellen Sie bitte die Subnetzmaske ein.*
+### Buttons
+Der Adapter erstellt die folgenden Buttons:
 
-   *Gateway: Legen Sie die Adresse des Gateways fest, wenn sich das Gateway im lokalen Netzwerk befindet.*
+#### Channel: zoneMain / zone2 / zone3
 
-   *Primärer DNS: Stellen Sie diesen Parameter nicht ein.*
-
-   *Zweiter DNS: Stellen Sie diesen Parameter nicht ein.*
-
-   *Proxy: Stellen Sie diesen Parameter auf "Aus".*
-
-4. Drücken Sie die SETUP-Taste, dann erscheint das Menü auf dem FL-Display (und der GUI).
-5. Wählen Sie "Netzwerk" -> Netzwerksteuerung / IP-Steuerung "
-6. Stellen Sie diesen Parameter auf "Immer ein".
-
-## Verwendung
-Beachten Sie, dass die AVRs nur eine einzige Telnet-Verbindung verwalten können. Wenn Sie eine aktive Telnet-Verbindung haben e. G. Mit dem Javascript-Adapter verweigert der AVR den Anschluss dieses Adapters.
-Hier finden Sie eine Beschreibung der Zustände und deren Verwendung.
-
-### Tasten
-Der Adapter erstellt die folgenden Schaltflächen:
-
-#### Kanal: zoneMain / zone2 / zone3
 * zoneMain.playPause
 
-   *Musik von Bluetooth-, Online-, USB- / iPod-Quellen abspielen und anhalten.*
-
+   *Wiedergeben und pausieren von Musik von den Quellen: Bluetooth, Online, USB/iPod.*
+   
 * zoneMain.play
 
-   *Spielen Sie Musik von Bluetooth-, Online-, USB- / iPod-Quellen ab.*
-
+   *Wiedergeben von Musik von den Quellen: Bluetooth, Online, USB/iPod.*
+   
 * zoneMain.pause
 
-   *Unterbrechen Sie Musik von Bluetooth-, Online-, USB- / iPod-Quellen.*
+   *Pausieren von Musik von den Quellen: Bluetooth, Online, USB/iPod.*
 
 * zoneMain.skipMinus
 
-   *Zum vorherigen Titel springen.*
-
-   *NICHT VOLLSTÄNDIG UNTERSTÜTZT FÜR HEOS AVR*
+   *Springe zum nächsten Titel.*
+   
+   *Hinweis: Dieser State ist auf HEOS-fähigen Geräten nicht voll funktionsfähig.*
 
 * zoneMain.skipPlus
 
-   *Zum nächsten Titel springen.*
-
-   *NICHT VOLLSTÄNDIG UNTERSTÜTZT FÜR HEOS AVR*
+   *Springe zum vorherigen Titel.*
+   
+   *Hinweis: Dieser State ist auf HEOS-fähigen Geräten nicht voll funktionsfähig.*
 
 * zoneMain.volumeDown / zone2.volumeDown / zone3.volumeDown
 
-   *Verringern Sie die Lautstärke der Hauptzone / Zone2 / Zone3.*
-
+   *"Leiser"-Knopf für die Zonen: Main Zone / Zone2 / Zone3.*
+   
 * zoneMain.volumeUp / zone2.volumeUp / zone3.volumeUp
 
-   *Erhöhen Sie die Lautstärke von Hauptzone / Zone2 / Zone3.*
-
+   *"Lauter"-Knopf für die Zonen: Main Zone / Zone2 / Zone3.*
+   
 * zoneMain.equalizerBassUp / zone2.equalizerBassUp / zone3.equalizerBassUp
 
-   *Taste, die den Basspegel der Zone erhöht.*
-
-  *Die Einstellungen für Bässe und Höhen können angepasst werden, wenn Dyn EQ auf OFF und Tone Control auf* gestellt ist.
-
+   *Diser Knopf erhöht das Bass Level der jeweiligen Zone.*
+   
+   *Bass und Treble Einstellungen können nur vorgenommen werden, wenn "Dyn EQ" ausgeschaltet sowie "Tone Control"
+   eingeschaltet ist.*
+   
 * zoneMain.equalizerBassDown / zone2.equalizerBassDown / zone3.equalizerBassDown
 
-   *Taste, die den Basspegel der Zone verringert.*
-
-  *Die Einstellungen für Bässe und Höhen können angepasst werden, wenn Dyn EQ auf OFF und Tone Control auf* gestellt ist.
-
+   *Diser Knopf verringert das Bass Level der jeweiligen Zone.*
+   
+   *Bass und Treble Einstellungen können nur vorgenommen werden, wenn "Dyn EQ" ausgeschaltet sowie "Tone Control"
+    eingeschaltet ist.*
+   
 * zoneMain.equalizerTrebleUp / zone2.equalizerTrebleUp / zone3.equalizerTrebleUp
 
-   *Taste, die den Höhenpegel der Zone erhöht.*
-
-  *Die Einstellungen für Bässe und Höhen können angepasst werden, wenn Dyn EQ auf OFF und Tone Control auf* gestellt ist.
-
+   *Diser Knopf erhöht das Treble Level der jeweiligen Zone.*
+   
+   *Bass und Treble Einstellungen können nur vorgenommen werden, wenn "Dyn EQ" ausgeschaltet sowie "Tone Control"
+    eingeschaltet ist.*
+   
 * zoneMain.equalizerTrebleDown / zone2.equalizerTrebleDown / zone3.equalizerTrebleDown
 
-   *Taste, die den Höhenpegel der Zone verringert.*
-
-  *Die Einstellungen für Bässe und Höhen können angepasst werden, wenn Dyn EQ auf OFF und Tone Control auf* gestellt ist.
-
-#### Kanal: Einstellungen
+   *Diser Knopf verringert das Treble Level der jeweiligen Zone.*
+   
+   *Bass und Treble Einstellungen können nur vorgenommen werden, wenn "Dyn EQ" ausgeschaltet sowie "Tone Control"
+    eingeschaltet ist.*
+   
+#### Channel: settings
+   
 * settings.subwooferLevelDown / settings.subwooferTwoLevelDown
 
-   *Reduzieren Sie den Subwoofer-Pegel durch Drücken der Taste.*
-
+   *Verringert das Subwoofer Level.*
+   
 * settings.subwooferLevelUp / settings.subwooferTwoLevelUp
 
-   *Erhöhen Sie den Subwoofer-Pegel durch Drücken der Taste.*
-
+   *Erhöht das Subwoofer Level.*
+   
 * settings.containmentAmountDown
 
-   *Verringern Sie den Audyssey LFC-Betrag. Die Schaltfläche wird nur erstellt, wenn sie von Ihrem AVR unterstützt wird.*
+   *Verrinert die Menge an Audyssey LFC. Dieser Button wird nur erstellt, wenn er vom AVR unterstützt wird*
 
 * settings.containmentAmountUp
 
-   *Erhöhen Sie die Audyssey LFC-Menge. Die Schaltfläche wird nur erstellt, wenn sie von Ihrem AVR unterstützt wird.*
-
+   *Erhöht die Menge an Audyssey LFC. Dieser Button wird nur erstellt, wenn er vom AVR unterstützt wird*
+   
 * settings.cursorUp / settings.cursorDown / settings.cursorLeft / settings.cursorRight
 
-   *Simuliert die Cursortasten Ihrer Fernbedienung*
-
+   *Simuliert die Pfeiltasten der Fernbedienung.*
+   
 * settings.enter
 
-   *Simuliert die Eingabetaste Ihrer Fernbedienung*
-
+   *Simuliert den "Enter"-Knopf der Fernbedienung.*
+	
 * settings.return
 
-   *Simuliert die Return / Back-Taste Ihrer Fernbedienung*
-
+   *Simuliert den "RETURN" oder "BACK" Knopf der Fernbedienung.*
+   
 * settings.option
 
-   *Simuliert das Optionsfeld Ihrer Fernbedienung*
-
+   *Simuliert den "Option"-Knopf der Fernbedienung.*
+   
 * settings.info
 
-   *Simuliert die Info-Taste Ihrer Fernbedienung*
+   *Simuliert den "Info"-Knopf der Fernbedienung.*
 
-### Zustände
-Folgende Zustände werden vom Adapter erstellt:
+### States
+Die folgenden States werden vom Adapter angelegt:
 
-#### Kanal: info
+#### Channel: info
+
 * info.connection
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|
     |:---:|:---:|
-    | boolean | R |
+    |boolean|R|
 
-   *Schreibgeschützter boolescher Indikator. Wenn Ihr Broker mit Ihrem DENON AVR verbunden ist, ist der Status wahr, andernfalls falsch.*
-
+   *Nur lesbarer Indikator, der true ist, wenn der ioBroker mit dem AVR verbunden ist.*
+   
 * info.friendlyName
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|
     |:---:|:---:|
-    | string | R |
+    |string|R|
 
-   *Nur-Lese-Zeichenfolge. Enthält den Anzeigenamen des angeschlossenen AVR.*
+   *Nur lesbarer String, der den Netzwerknamen des AVR's beinhaltet.*
 
 * info.onlinePresets
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|
     |:---:|:---:|
-    | string | R |
+    |string|R|
 
-*Zeichenfolge im JSON-Array-Format, die die aktuell gespeicherten Favoriten anhand ihrer ID und ihres Kanals darstellt.
-Die Namen der einzelnen Kanäle sind auf 20 Stellen begrenzt. Sie können den aktuellen Kanal in einer ID speichern, indem Sie settings.savePreset festlegen, und einen laden, indem Sie settings.loadPreset auf die zugehörige ID setzen.*
-
-#### Kanal: zoneMain / zone2 / zone3
+    *String im JSON Array Format, welcher die derzeit gespeicherten Online-Favoriten je Id enthält.
+    Der Name je Sender ist hierbei auf 20 Zeichen begrenzt. Um den
+    derzeitigen Sender auf eine Id zu speichern kann settings.savePreset genutzt werden. Das Abspielen
+    eines Favoritenkanals erfolgt durch den settings.loadPreset State.*
+   
+#### Channel: zoneMain / zone2 / zone3
+   
 * zoneMain.volume / zone2.volume / zone3.volume
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | Nummer | R / W |
+    |number|R/W|
 
-*Zahlenwert, der die aktuelle Lautstärke der Hauptzone / Zone2 / Zone 3 Ihres AVR darstellt. Hier können Sie auch die Lautstärke einstellen.
-Die Lautstärke wird auch in getrennten Zuständen in dB dargestellt, z. G. mainVolumeDB*
-
-   *Der Bereich reicht von 0 bis 98 (möglicherweise aufgrund des maximalen Volumens niedriger), wobei 80 = 0 dB*
-
+   *Number Wert der die derzeitige Lautstärke der jeweiligen Zone (Main Zone / Zone2 / Zone 3 )repsäentiert. 
+   Durch beschreiben des Wertes wird der AVR auf die jeweilige Lautstärke gestellt. 
+   Es existiert ein zusätzlicher State pro Zone, der den dB Wert enthält z. B. zoneMain.VolumeDB*
+   
+   *Der Bereich reicht von 0 zu 98 (eventuell niedriger durch die konfigurierte maximumVolume), wobei 80 = 0 dB*
+   
    *Beispiel:*
-
-```javascript
-setState('denon.0.zoneMain.volume', 45.5); // Sets volume of Main Zone to 45.5
-```
-
+   
+    ```javascript
+    setState('denon.0.zoneMain.volume', 45.5); // Setzt die Lautstärke der Main Zone auf 45.5
+    ```
+   
 * zoneMain.maximumVolume
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | Nummer | R |
+    |number|R|
 
-   *Schreibgeschützte Zahl, die die maximal mögliche Lautstärke darstellt, wobei 80 = 0 dB. Die Lautstärke wird im Status "MaximumVolumeDB" ebenfalls in dB eingestellt.*
-
+   *Nur lesbarer Wert, der die maximal mögliche Lautstärke repräsentiert, wobei 80 = 0 dB. 
+   Es existiert ein zusätlicher State maximumVolumeDB, welcher die maximal mögliche Laustärle in dB darstellt.*
+   
 * zoneMain.muteIndicator / zone2.muteIndicator / zone3.muteIndicator
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | boolean | R / W |
+    |boolean|R/W|
 
-   *Boolescher Wert, der wahr ist, wenn die Hauptzone / Zone2 / Zone3 stummgeschaltet ist, andernfalls falsch. Sie können Ihren AVR mit diesem Status stummschalten.*
-
+   *Boolscher Wert, welcher true liefert wenn die Main Zone / Zone2 / Zone3 stumm geschaltet ist, sonst false. 
+   Durch setzen des States kann die entsprechende Zone stumm geschaltet werden.*
+   
    *Beispiel:*
-
-```javascript
-setState('denon.0.zoneMain.muteIndicator', true); // Mutes the Main Zone of your AVR
-```
-
+   
+    ```javascript
+    setState('denon.0.zoneMain.muteIndicator', true); // Schaltet die Main Zone stumm
+    ```
+   
 * zoneMain.powerZone / zone2.powerZone / zone3.powerZone
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | boolean | R / W |
+    |boolean|R/W|
 
-   *Boolescher Wert, der wahr ist, wenn die Zone aktiviert ist, andernfalls falsch. In diesem Zustand können Sie Ihren AVR / Ihre Zone ein- und ausschalten.*
-
+   *Boolscher Wert, welcher true ist, wenn die jeweilige Zone eingeschalten ist.
+   Die jeweilige Zone kann mit diesem State ein- und ausgeschaltet werden*
+   
 * zoneMain.selectInput / zone2.selectInput / zone3.selectInput
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
+    |string|R/W|
 
-   *Der Zeichenfolgenwert enthält die aktuelle Eingabequelle. Sie können die Eingabequelle auch mit der folgenden Codierung einstellen:*
-
-   *0: PHONO*
-
-   *1: CD*
-
-   *2: TUNER*
-
-   *3: DVD*
-
-   *4: BD*
-
-   *5: TV*
-
-   *6: SAT / CBL*
-
-   *7: MPLAY*
-
-   *8: SPIEL*
-
-   *9: NET*
-
-   *10: SPOTIFIZIEREN*
-
-   *11: LASTFM*
-
-   *12: IRADIO*
-
-   *13: SERVER*
-
-   *14: FAVORITEN*
-
-   *15: AUX1*
-
-   *16: AUX2*
-
-   *17: AUX3*
-
-   *18: AUX4*
-
-   *19: AUX5*
-
-   *20: AUX6*
-
-   *21: AUX7*
+   *Der string Wert beinhaltet die aktuelle Eingangsquelle. Dieser kann hierbei ebenfalls gesetzt werden. Die Key-Value 
+   Liste ist wie folgt aufgebaut:*
+   
+   *0: 	PHONO*
+   
+   *1: 	CD*
+   
+   *2: 	TUNER*
+   
+   *3: 	DVD*
+   
+   *4: 	BD*
+   
+   *5: 	TV*
+   
+   *6: 	SAT/CBL*
+   
+   *7: 	MPLAY*
+   
+   *8: 	GAME*
+   
+   *9: 	NET*
+   
+   *10:	SPOTIFY*
+   
+   *11:	LASTFM*
+   
+   *12:	IRADIO*
+   
+   *13:	SERVER*
+   
+   *14:	FAVORITES*
+   
+   *15:	AUX1*
+   
+   *16:	AUX2*
+   
+   *17:	AUX3*
+   
+   *18:	AUX4*
+   
+   *19:	AUX5*
+   
+   *20:	AUX6*
+   
+   *21:	AUX7*
 
    *22: BT*
 
    *23: USB*
-
-*Bitte beachten Sie, dass nicht jede Eingangsquelle bei jedem AVR-Modell verfügbar ist. Wenn Ihr AVR über zusätzliche Eingänge verfügt, werden diese an die Liste angehängt, sobald sie erkannt wurden.*
-
+   
+   *Hinweis: Nicht jede Eingangsquelle ist auf jedem Modell verfügbar. Falls der AVR über zusätzliche Eingangsquellen
+    verfügt, werden diese der Liste angefügt, sobald diese erkannt wurden.*
+   
    *Beispiel:*
-
-```javascript
- setState('denon.0.zoneMain.selectInput', '5'); // Selects TV as input for Main Zone
-```
+   
+   ```javascript
+    setState('denon.0.zoneMain.selectInput', '5'); // Selects TV as input for Main Zone
+   ```
 
 * zoneMain.quickSelect / zone2.quickSelect / zone3.quickSelect
 
-   | Datentyp | Berechtigung |
-   |:---:|:---:|
-   | Nummer | R / W |
-
-   *Emuliert die Schnellwahltasten Ihrer Fernbedienung mit Zahlen von 1 bis 5 für Hauptzone / Zone2 / Zone3.*
-
+    |Datentyp|Berechtigung|                                                                       
+    |:---:|:---:|
+    |number|R/W|
+   
+    *Steuert die "QuickSelect" bzw. "SmartSelect" Tasten des AVR's an. Nummern zwischen 1 und 5 für 
+    Main Zone / Zone2 / Zone3 sind möglich.*
+   
 * zoneMain.sleepTimer / zone2.sleepTimer / zone3.sleepTimer
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | Nummer | R / W |
+    |number|R/W|
 
-   *Zahlenwert zum Lesen und Einstellen des Sleep-Timers für die ausgewählte Zone. Der Wert wird in weniger als 10 Sekunden aktualisiert.*
-
+   *Number Wert um den Sleep Timer zu setzen und zu lesen. Der Wert wird entsprechend, dem in den 
+   erweiterten Einstellungen konfigurierebarem Abfrageintervall aktualisiert.*
+   
 * zoneMain.iconURL
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R |
+    |string|R|
 
-   *Enthält einen Link, über den Sie das Cover des aktuell gespielten Kanals / Songs finden.*
-
-   *NICHT FÜR HEOS AVR'S UNTERSTÜTZT*
-
+   *Beinhaltet einen Link zum Cover des aktuell abgespielten Senders oder Musikstücks.*
+   
+   *Hinweis: Dieser State ist auf HEOS-fähigen Geräten nicht verfügbar.*
+   
 * zoneMain.equalizerBass / zone2.equalizerBass / zone3.equalizerBass
-
-    | Datentyp | Berechtigung |
+    
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | Nummer | R / W |
+    |number|R/W|
 
-   *Zahlenwert, der den Basspegel der Zone darstellt. Der Wertebereich liegt zwischen -6 und +6 dB.*
-
-  *Die Einstellungen für Bässe und Höhen können angepasst werden, wenn Dyn EQ auf OFF und Tone Control auf* gestellt ist.
-
+   *Number Wert welcher das aktuelle Bass Level der jeweiligen Zone repräsentiert. Der Wertebereich liegt von -6 bis +6 dB.*
+   
+   *Bass und Treble Einstellungen können nur vorgenommen werden, wenn "Dyn EQ" ausgeschaltet sowie "Tone Control"
+    eingeschaltet ist.*
+   
 * zoneMain.equalizerTreble / zone2.equalizerTreble / zone3.equalizerTreble
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | Nummer | R / W |
+    |number|R/W|
 
-   *Zahlenwert, der die Höhen der Zone darstellt. Der Wertebereich liegt zwischen -6 und +6 dB.*
-
-  *Die Einstellungen für Bässe und Höhen können angepasst werden, wenn Dyn EQ auf OFF und Tone Control auf* gestellt ist.
-
+   *Number Wert welcher das aktuelle Treble Level der jeweiligen Zone repräsentiert. Der Wertebereich liegt von -6 bis +6 dB.*
+   
+   *Bass und Treble Einstellungen können nur vorgenommen werden, wenn "Dyn EQ" ausgeschaltet sowie "Tone Control"
+    eingeschaltet ist.*
+    
 * zoneMain.channelVolumeFrontLeft / zone2.channelVolumeFrontLeft / zone3.channelVolumeFrontLeft / ...
 
-   | Datentyp | Berechtigung |
+   |Data type|Permission|                                                                       
    |:---:|:---:|
-   | Nummer | R / W |
+   |number|R/W|
+   
+   *Number wert welcher die derzeitige Kanallautstärke der Box darstellt. Jede Box hat einen separaten State. Die
+   Einstellungen sind für den derzeitigen Select Input Modus wirksam und können von -12 dB bis + 12 dB justiert werden.*
+   
+#### Channel: display
 
-*Zahlenwert, der die aktuelle Kanallautstärke für jeden Lautsprecher darstellt. Jeder Sprecher hat einen eigenen Status. Die Einstellungen wirken sich auf den aktuellen Eingabemodus auswählen aus. Der Zustand kann von -12 dB bis +12 dB eingestellt werden.*
-
-#### Kanal: Anzeige
 * display.displayContent
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R |
+    |string|R|
+   
+   *Nur lesbarer string, welcher den Inhalt des Onscreen-Displays enthält. Es gibt neun States, nummeriert von 0 - 9.*
+   
+   *Hinweis: Dieser State ist auf HEOS-fähigen Geräten nicht verfügbar.*
+   
+* display.brightness
 
-   *Schreibgeschützte Zeichenfolge, die den Inhalt Ihrer AVR-Anzeige enthält. Es hat neun Zustände 0 - 9.*
-
-   *ANZEIGEINHALTE WERDEN FÜR HEOS AVRs NICHT UNTERSTÜTZT*
-
-* Bildschirmhelligkeit
-
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
+    |string|R/W|
 
-   *Zeichenfolgenwert, der die Anzeigehelligkeit darstellt. Der Wert kann die Anzeigehelligkeit auch durch die folgende Codierung einstellen:*
-
-   *0: Aus -> schaltet die Anzeige aus*
-
-   *1: Dunkel -> wird dunkel*
-
-   *2: Abgedunkelt -> dreht die Anzeige abgedunkelt*
-
-   *3: Hell -> schaltet das Display hell*
-
+   *String Wert, welcher die Displayheligkeit des Onscreen-Display repräsentiert.
+   Mit dem State kann diese ebenfalls gestuert werden. Die Key-Value Liste ist wie folgt aufgebaut:*
+   
+   *0: Off --> turns display off*
+   
+   *1: Dark --> turns display dark*
+   
+   *2: Dimmed --> turns display dimmed*
+   
+   *3: Bright --> turns display bright*
+   
    *Beispiel:*
+   
+   ```javascript
+   setState('denon.0.display.brightness', '3'); // Stellt die Helligkeit des Onscreen-Displays auf das Maximum
+   ```
+#### Channel: settings
 
-```javascript
-setState('denon.0.display.brightness', '3'); // Sets display brightness to "Bright"
-```
-
-#### Kanal: Einstellungen
 * settings.powerSystem
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | boolean | R / W |
-
-   *Boolescher Wert, der wahr ist, wenn der AVR eingeschaltet ist, andernfalls falsch. In diesem Zustand können Sie Ihren AVR auch ein- und ausschalten.*
-
+    |boolean|R/W|
+   
+   *Boolscher Wert, welcher true ist, falls der AVR eingeschaltet ist, sonst false. Der AVR kann ebenfalls durch setzen 
+   des States ein- und ausgeschaltet werden.*
+   
 * settings.surroundMode
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
+    |string|R/W|
 
-   *Der Zeichenfolgenwert enthält den aktuellen Surround-Modus. Sie können die Quelle auch mit der folgenden Codierung ändern:*
-
-   *0: STEREO*
-
-   *1: VIRTUELL*
-
-   *2: VIDEOSPIEL*
-
-   *3: MCH STEREO*
-
-   *4: DTS-UMGEBUNG*
-
-   *5: DOLBY DIGITAL*
-
-   *6: FILM*
-
-   *7: MUSIK*
-
-   *8: DIREKT*
-
-   *9: PURE DIRECT*
-
-   *10: AUTO*
-
-   *11: SPIEL*
-
-   *12: AURO3D*
-
-   *13: AURO2DSURR*
-
-   *14: BREITBILDSCHIRM*
-
-   *15: SUPER STADIUM*
-
-   *16: ROCK ARENA*
-
-   *17: JAZZ CLUB*
-
-   *18: KLASSISCHES KONZERT*
-
-   *19: MONO-FILM*
-
-   *20: MATRIX*
-
-   *Bitte beachten Sie, dass nicht jeder Surround-Modus für jedes AVR-Modell verfügbar ist.*
-
+   *Der string Wert beinhaltet den derzeitigen Surround Mode. Dieser kann ebenfalls durch die folgende Key-Value Liste
+   gesteuert werden:*
+   
+   *0:	STEREO*
+   
+   *1:	VIRTUAL*
+   
+   *2:	VIDEO GAME*
+   
+   *3:	MCH STEREO*
+   
+   *4:	DTS SURROUND*
+   
+   *5:	DOLBY DIGITAL*
+   
+   *6:	MOVIE*
+   
+   *7:	MUSIC*
+   
+   *8:	DIRECT*
+   
+   *9:	PURE DIRECT*
+   
+   *10:	AUTO*
+   
+   *11:	GAME*
+   
+   *12:	AURO3D*
+   
+   *13:	AURO2DSURR*
+   
+   *14:	WIDE SCREEN*
+   
+   *15:	SUPER STADIUM*
+   
+   *16:	ROCK ARENA*
+   
+   *17:	JAZZ CLUB*
+   
+   *18:	CLASSIC CONCERT*
+   
+   *19:	MONO MOVIE*
+   
+   *20:	MATRIX*
+   
+   *Hinweis: Nicht jeder Surround Mode ist auf jedem Modell verfügbar.*
+   
    *Beispiel:*
-
-```javascript
-setState('denon.0.settings.surroundMode', '3'); // Sets Multi Channel Stereo as surround mode
-```
-
+   
+   ```javascript
+   setState('denon.0.settings.surroundMode', '3'); // Setze Multi Channel Stereo als Surround Mode
+   ```
 * settings.lfeAmount
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | Nummer | R / W |
+    |number|R/W|
 
-*Menge des zusätzlich an die Lautsprecher gerichteten Subwoofersignals in dB.
-Der Bereich reicht von 0 dB bis -10 dB. Wobei 10 = -10 dB.*
-
+    *Höhe deszusätzlichen  Subwoofer Signals das an die Speaker weitergeleitet wird in dB. 
+    Bereich von 0 dB bis -10 dB möglich. Wobei 10 = -10 dB.*
+    
 * settings.expertCommand
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
+    |string|R/W|
 
-   *Mit diesem Status können Sie Ihre eigenen benutzerdefinierten Befehle senden. Eine Übersicht über die vorhandenen Befehle finden Sie in den [AVR-Control-Protocol.pdf](docs/AVR-Control-Protocol.pdf)*
-
+   *Mittels dem experten Kommando können eigene Befehle an den AVR gesendet werden. Eine Übersicht kann in [AVR-Control-Protocol.pdf](media/AVR-Control-Protocol.pdf)
+   gefunden werden.*
+   
    *Beispiel:*
-
-```javascript
-setState('denon.0.settings.expertCommand', 'ECOON'); // Turns Main Zone ECO mode on
-```
-
+   
+    ```javascript
+    setState('denon.0.settings.expertCommand', 'ECOON'); // Schaltet den ECO Mode für die Main Zone ein 
+    ```
+  
 * settings.expertReadingPattern
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
-
-*Wenn Sie bestimmte Antworten in `settings.expertReadingResult` speichern möchten, müssen Sie einen RegEx auf diesen Status setzen.
-RegEx muss festgelegt werden, damit ein RegEx-Konstruktor es verwenden kann. Es wird empfohlen, einen [RegEx-Tester](https://regexr.com/) zu verwenden.
-Setzen Sie `/` nicht am Anfang oder Ende des RegEx.*
-
+    |string|R/W|
+    
+    *Wenn spezielle Daten des AVR's abgegeriffen werden sollen und in `settings.expertReadingResult` gespeichert werden sollen,
+    muss in diesen State eine Regex übergeben werden. Die RegEx wird einem RegEx Konstruktor übergeben und sollte keine 
+    `/` am Anfang oder Ende enthalten. Es wird empfohlen die RegEx mit einem geeigneten [RegEx tester](https://regexr.com/)
+    zu validieren.*
+    
     *Beispiel:*
+    
+    ```javascript
+    setState('denon.0.settings.expertReadingPattern', '(MV.+)|(SSINFAISFSV.+)');
 
-```javascript
-setState('denon.0.settings.expertReadingPattern', '(MV.+)|(SSINFAISFSV.+)');
+* settings.expertReadingResult
 
-ttings.expertReadingResult
+    |Datentyp|Berechtigung|                                                                       
+    |:---:|:---:|
+    |string|R|
+    
+    *Eingehende Daten, die der RegEx in `settings.expertReadingPattern` entsprechen, werden in diesen State geschrieben.*
 
-|Data type|Permission|
-|:---:|:---:|
-|string|R|
+* settings.outputMonitor
 
-*Incoming data, which matches the RegEx of `settings.expertReadingPattern` will be set to this state.*
+    |Datentyp|Berechtigung|                                                                       
+    |:---:|:---:|
+    |string|R/W|
 
-ttings.outputMonitor
-
-|Data type|Permission|
-|:---:|:---:|
-|string|R/W|
-
-Select the output monitor of your AVR. This state will only be created if your AVR supports two HDMI outputs. You can switch the state between:*
-
-0: AUTO --> Auto detection of monitor*
-
-1: 1 --> Outputs signal to monitor 1*
-
-2: 2 --> Outputs signal to monitor 2*
-
-Example:*
-
-``javascript
-etState('denon.0.settings.outputMonitor', '2'); // Sets monitor 2 as active monitor
-``
-
+   *Setzt den Ausgangsmonitor für den AVR. Dieser State ist nur verfügbar wenn das Modell über zwei HDMI Ausgänge verfügt. 
+   Der State kann durch die folgende Key-Value Liste gesetzt werden:*
+   
+   *0: AUTO --> Auto detection of monitor*
+   
+   *1: 1 --> Outputs signal to monitor 1*
+   
+   *2: 2 --> Outputs signal to monitor 2*
+   
+  *Beispiel:*
+  
+   ```javascript
+   setState('denon.0.settings.outputMonitor', '2'); // Leitet das Videosignal zu Monitor 2
+   ```
+   
 * settings.videoProcessingMode
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
+    |string|R/W|
 
-   *Wählen Sie den Videoverarbeitungsmodus Ihres AVR. Dieser Status wird nur erstellt, wenn Ihr AVR ihn unterstützt. Sie können den Status wechseln zwischen:*
-
+   *Der Video Processing Mode kann durch diesen State ausgelesen und gesetzt werden. 
+   Der State wird nur erstellt, wenn er vom AVR unterstützt wird. Die States können durch die folgende Key-Value Liste
+   gesteuert werden:*
+   
    *0: AUTO*
-
-   *1: SPIEL*
-
-   *2: FILM*
-
+   
+   *1: GAME*
+   
+   *2: MOVIE*
+   
    *Beispiel:*
-
-```javascript
-setState('denon.0.settings.videoProcessingMode', '2'); // Sets Video Processing Mode to "MOVIE"
-```
-
+ 
+    ```javascript
+    setState('denon.0.settings.videoProcessingMode', '2'); // Setzt den Video Processing Mode auf "MOVIE"
+    ```
+   
 * settings.centerSpread
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | boolean | R / W |
+    |boolean|R/W|
 
-   *Boolescher Wert, der wahr ist, wenn die Mittelstreuung abgeschnitten ist, andernfalls falsch. Mit diesem Status können Sie auch die Mittelverteilung ein- und ausschalten.*
-
+   *Boolscher Wert der true ist, wenn Center Spread aktiviert ist, sonst false. 
+   Mittels diesem State kann Center Spread an und aus geschaltet werden.*
+   
 * settings.dynamicEq
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | boolean | R / W |
+    |boolean|R/W|
 
-   *Boolescher Wert, der den Status des dynamischen EQ darstellt. Mit diesem Status können Sie auch den dynamischen EQ ein- und ausschalten.*
+   *Boolscher Wert welcher true ist, wenn Dynamic EQ aktiviert ist. Dynamic EQ kann hiermit ein- und ausgeschaltet werden.*
 
 * settings.subwooferLevelState
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | boolean | R / W |
+    |boolean|R/W|
 
-   *Boolescher Wert, wenn es wahr ist, können Sie Änderungen auf der Subwoofer-Ebene vornehmen.*
+   *Boolscher Wert, der aussagt ob Änderungen am Subwoofer Level gemacht werden können. Diese Einstellung kann hiermit
+   gesetzt werden.*
 
 * settings.subwooferLevel / settings.subwooferTwoLevel
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | Nummer | R / W |
+    |number|R/W|
 
-*Zahlenwert, der den aktuellen Subwoofer-Pegel angibt. Der Wert liegt zwischen -12 und 12 (-12 dB bis +12 dB).
-Der SubwooferTwoLevel-Status wird nur erstellt, wenn er von Ihrem AVR unterstützt wird.*
-
+   *Number Wert, welcher das aktuelle Subwoofer Level repräsentiert. Der Wert ist in einem Bereich von -12 bis 
+   12 (-12 dB bis +12 dB).
+   Der subwooferTwoLevel state ist nur verfügbar, wenn dies vom AVR unterstützt wird..*
+   
 * settings.audysseyLfc
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | boolean | R / W |
+    |boolean|R/W|
 
-*Boolescher Wert, der den Audyssey Low Frequency Containment-Status enthält und steuern kann (Ein / Aus).
-Der Status wird nur erstellt, wenn er von Ihrem AVR unterstützt wird.*
-
+   *Boolscher Wert, welcher aussagt ob Audyssey Low Frequency Containment aus- oder eingeschaltet ist.
+   Der State wird nur erstellt, wenn er vom AVR unterstützt wird.*
+   
 * settings.containmentAmount
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | Nummer | R / W |
-
-*Zahlenwert zum Einstellen des Niederfrequenz-Containment-Betrags. Der Wert kann zwischen 1 und 7 liegen. Der Status wird nur erstellt, wenn er von Ihrem AVR unterstützt wird.*
-
+    |number|R/W|
+	
+   *Number Wert um die Menge an Low Frequency Containment auszulesen und zu steuern. 
+   Der Wert kann zwischen 1 und 7 liegen. Der State wird nur erstellt, wenn er vom AVR unterstüzt wird.*
+   
 * settings.multEq
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
+    |string|R/W|
 
-   *String-Wert, um die MultEQ-Funktion Ihres AVR mit der folgenden Codierung festzulegen:*
-
-   *0: AUS*
-
+   *String Wert, um die MultEQ Funktion des AVR's zu steuern. Hierbei kann folgende Key-Value Liste genutzt werden:*
+   
+   *0: OFF*
+              
    *1: AUDYSSEY*
-
+                	
    *2: BYP.LR*
-
-   *3: WOHNUNG*
-
-   *4: HANDBUCH*
-
+   
+   *3: FLAT*
+      
+   *4: MANUAL*
+   
 * settings.dynamicVolume
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
+    |string|R/W|
 
-   *String-Wert zum Auswählen des dynamischen Volumes durch folgende Codierung:*
-
-   *0: AUS -> schaltet die dynamische Lautstärke aus*
-
-   *1: LIT -> schaltet die dynamische Lautstärke auf*
-
-   *2: MED -> dreht die dynamische Lautstärke auf mittel*
-
-   *3: HEV -> macht Dynamic Volume zu schwer*
-
+   *String Wert um die Dynamic Volume Funktion des AVR's zu steuern. Hierbei wird auf folgende Key-Value 
+   Liste zurückgegriffen:*
+   
+   *0: OFF --> turns Dynamic Volume off*
+   
+   *1: LIT --> turns Dynamic Volume to light*
+   
+   *2: MED --> turns Dynamic Volume to medium*
+   
+   *3: HEV --> turns Dynamic Volume to heavy*
+   
 * settings.referenceLevelOffset
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
+    |string|R/W|
 
-   *Zeichenfolgenwert zum Auswählen des Referenzpegelversatzes durch die folgende Codierung:*
-
-   *0: 0 dB*
-
-   *5: 5 dB*
-
-   *10: 10 dB*
-
+   *String Wert um die ReferenceLeveLOffset Funktion des AVR's zu steuern. Basierend auf folgender Key-Value Liste:
+   
+   *0: 	0 dB*
+   
+   *5:	5 dB*
+   
+   *10:	10 dB*
+   
    *15: 15 dB*
-
+   
    *Beispiel:*
-
-```javascript
-setState('denon.0.settings.referenceLevelOffset', '5'); // Sets Reference Level Offset to 5 dB
-```
-
+   
+    ```javascript
+    setState('denon.0.settings.referenceLevelOffset', '5'); // Setzt das Reference Level Offset auf 5 dB
+    ```
+    
 * settings.pictureMode
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|                                                                       
     |:---:|:---:|
-    | string | R / W |
+    |string|R/W|
 
-   *Zeichenfolgenwert zum Festlegen der direkten Änderung im Bildmodus. Dieser Status wird nur erstellt, wenn Ihr AVR ihn unterstützt*
-
-   *Sie können die folgenden Werte als Zeichenfolge festlegen:*
-
-   *'Aus'*
-
+   *String Wert um die Picture Mode Direct Change Funktion des AVR's auszulesen und zu steuern. 
+   Der State wird nur erstellt, wenn er vom AVR unterstützt wird.*
+   
+   *Die folgenden Werte können als String gesetzt werden:*
+   
+   *'Off'* 
+   
    *'Standard'*
-
-   *'Film'*
-
-   *'Lebhaft'*
-
-   *'Strom'*
-
-   *'Benutzerdefiniert'*
-
+   
+   *'Movie'*
+   
+   *'Vivid'*
+   
+   *'Stream'*
+    
+   *'Custom'*
+   
    *'ISF Day'*
-
+   
    *'ISF Night'*
-
+   
    *Beispiel:*
-
-```javascript
-setState('denon.0.settings.pictureMode', 'Standard'); // Set Picture Mode Direct Change to Standard
-```
-
+   
+   ```javascript
+   setState('denon.0.settings.pictureMode', 'Standard'); // Setzt den  Picture Mode Direct Change auf Standard
+   ```
+   
 * settings.toneControl
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|
     |:---:|:---:|
-    | boolean | R / W |
-
-   *Boolescher Wert, der den Status der Tonsteuerung angibt. Sie können es mit diesem Status ein- und ausschalten.*
-
-   *Die Tonsteuerung kann nur eingeschaltet werden, wenn Dyn EQ auf OFF gestellt ist.*
-
+    |boolean|R/W|
+    
+   *Boolscher Wert, welcher true ist, wenn Änderungen an den Bass und Treble States möglich sind. Diese Funktion kann hiermit 
+   ebenfalls gesteuert werden.*
+   
+   *Der State kann nur genutzt werden, wenn Dyn EQ ausgeschaltet ist.*
+   
 * settings.setupMenu
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|
     |:---:|:---:|
-    | boolean | R / W |
+    |boolean|R/W|
 
-   *Boolesche Anzeige, die anzeigt, ob das Setup-Menü gerade geöffnet oder geschlossen ist. Sie können es mit diesem Status öffnen und schließen.*
+   *Boolscher Indikator, welcher true ist, wenn das Setup Menü derzeit geöffnet ist.
+   Durch setzen des States, kann das Menü geöffnet und geschlossen werden.*
 
 * settings.savePreset
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|
     |:---:|:---:|
-    | Nummer | R / W |
+    |number|R/W|
 
-*Zahlenwert, der auf den Wert info.onlinePresets gesetzt werden kann. Dann wird der aktuelle Kanal als Voreinstellung auf die angegebene Nummer gespeichert.
-Es können nur Zahlen verwendet werden, die in info.onlinePresets enthalten sind. Der Staat erhält keine Bestätigung, unabhängig davon, ob der Befehl erfolgreich war oder nicht. Sie können info.onlinePresets überprüfen, um zu überprüfen, ob der Befehl wie vorgesehen funktioniert hat.*
+   *Number Wert, welcher auf eine Id von info.onlinePresets gesetzt werden kann. Entsprechend wird der aktuelle Sender auf eine Id entsprechend dem
+   gesetzten Number Wert gespeichert. Hierbei können nur Id's welche in info.onlinePresets enthalten sind, genutzt werden. Dieser State
+   erhält kein acknowledge, selbst dann nicht, wenn er erfolgreich durchgeführt wurde.
+   Durch das Prüfen des info.onlinePresets States, kann getestet werden ob der Befehl erfolgreich war.*
 
 * settings.loadPreset
 
-    | Datentyp | Berechtigung |
+    |Datentyp|Berechtigung|
     |:---:|:---:|
-    | Nummer | R / W |
+    |number|R/W|
 
-*Zahlenwert, der auf den Wert info.onlinePresets gesetzt werden kann. Dadurch wird der zugehörige Kanal geladen.
-Dieser Status wird nicht bestätigt, unabhängig davon, ob der Befehl erfolgreich war oder nicht.*
-
-### Andere Staaten
-Aufgrund der Tatsache, dass einige AVRs wie der DENON POA-3012CI eine andere Logik verwenden, gibt es einige Unterschiede in den Zuständen.
-Die Zustände, die den oben aufgeführten entsprechen, sind: settings.powerSystem, settings.expertCommand, display.brightness und info.connection. Zusätzlich werden für jede Zone 2-12 (gerade) die folgenden Zustände erstellt:
-
-* zoneX.speakerOneVolume / zoneX.speakerTwoVolume
-
-    | Datentyp | Berechtigung |
-    |:---:|:---:|
-    | Nummer | R / W |
-
-*Zahlenwert, der die Lautstärke des Lautsprechers des AVR darstellt. Wenn operationMode auf 'BRIDGED' eingestellt ist, können die Lautsprecher nicht unabhängig voneinander gesteuert werden, und die Steuerung des einen regelt auch die Lautstärke des anderen.*
-
-* zoneX.selectInputOne / zoneX.selectInputTwo
-
-    | Datentyp | Berechtigung |
-    |:---:|:---:|
-    | string | R / W |
-
-*Tastenwertpaar, das den ausgewählten Eingang des AVR-Lautsprechers darstellt. Wenn operationMode auf 'BRIDGED' eingestellt ist, können die Lautsprecher nicht unabhängig voneinander gesteuert werden, und die Steuerung des einen steuert auch den Eingang der anderen.*
-
-    *Folgende Werte sind möglich:*
-
-    *'0': 'BUS L'*
-
-    *'1': 'BUS R'*
-
-    *'2': 'BUS M'*
-
-    *'3': 'AUX'*
-
-* zoneX.operationMode
-
-    | Datentyp | Berechtigung |
-    |:---:|:---:|
-    | string | R / W |
-
-*Schlüsselwertpaar, das den Operationsmodus des AVR darstellt. Wenn operationMode auf 'BRIDGED' eingestellt ist, können die Lautsprecher nicht unabhängig voneinander gesteuert werden, und die Steuerung von Lautsprecher 1 steuert auch Lautsprecher 2.*
-
-    *Folgende Werte sind möglich:*
-
-    *'0': 'NORMAL'*
-
-    *'1': 'BRIDGED'*
-
-* zoneX.lowCutFilterSpeakerOne / zoneX.lowCutFilterSpeakerTwo
-
-    | Datentyp | Berechtigung |
-    |:---:|:---:|
-    | boolean | R / W |
-
-*Boolescher Wert, der angibt, ob der Low-Cut-Filter für den Lautsprecher aktiviert oder deaktiviert ist. Im Bridged-Modus hängen beide Lautsprecher voneinander ab.*
-
-* zoneX.zoneTurnOnModeChange
-
-    | Datentyp | Berechtigung |
-    |:---:|:---:|
-    | string | R / W |
-
-*Schlüsselwertpaar, das die Änderung des Zoneneinschaltmodus der Zone darstellt. Sie können Ihren AVR auch mit diesem Status steuern.*
-
-    *Folgende Werte sind möglich:*
-
-    *'0': 'Konstante'*
-
-    *'1': 'Trigger in'*
-
-    *'2': 'Audiosignal'*
-
-    *'3': 'Aus'*
-
-* zoneX.triggerInput
-
-    | Datentyp | Berechtigung |
-    |:---:|:---:|
-    | boolean | R / W |
-
-    *Schalten Sie den Triggereingang mit diesem booleschen Wert ein oder aus.*
-
-* zoneX.audioSignalInput
-
-    | Datentyp | Berechtigung |
-    |:---:|:---:|
-    | boolean | R / W |
-
-    *Boolescher Wert, der den Audiosignaleingang Ihres AVR anzeigt und steuert.*
-
-## Fehlende Funktionen & Fehler
-Wenn Ihnen Funktionen fehlen oder ein Fehler festgestellt wurde, öffnen Sie bitte einen [Problem](https://github.com/foxriver76/ioBroker.denon/issues).
-
-Der Adapter wird mit einem DENON AVR-X1200W und einem Marantz SR5009 getestet.
+   *Number Wert, welcher auf eine in info.onlinePresets enthaltene Id gesetzt werden kann.
+   Hierdurch wird der entsprechende Favoriten-Sender wiedergegeben.
+   Dieser State erhält kein acknowledge, selbst dann nicht, wenn er erfolgreich durchgeführt wurde.*
+   
+ ### Weitere States
+Da manche AV-Receiver, wie z. B. der DENON POA-3012CI eine andere Logik nutzen, gibt es für diese unterschiedliche States.
+Die folgenden States sind äquivalent zu den oben genannten: settings.powerSystem, settings.expertCommand, display.brightness
+und info.connection. Zusätzlich werden die folgenden States für jede Zone 2-12 (gerade) erstellt:
+ 
+ * zoneX.speakerOneVolume / zoneX.speakerTwoVolume
+ 
+     |Data type|Permission|
+     |:---:|:---:|
+     |number|R/W|
+     
+     *Number Wert, welcher die Lautstärke des AVR's repräsentiert. Wenn der operationMode auf 'BRIDGED' steht,
+     werden die Speaker abhängig voneinander gesteuert.
+     
+ * zoneX.selectInputOne / zoneX.selectInputTwo
+ 
+     |Data type|Permission|
+     |:---:|:---:|
+     |string|R/W|
+     
+     *Key value Paar, welche den Eingangskanal des jeweiligen Speakers repräsentiert. 
+     Wenn der operationMode auf 'BRIDGED' steht, werden die Speaker abhängig voneinander gesteuert.*
+     
+     *Die folgenden States sind möglich:*
+     
+     *'0': 'BUS L'*
+     
+     *'1': 'BUS R'*
+     
+     *'2': 'BUS M'*
+     
+     *'3': 'AUX'*
+     
+ * zoneX.operationMode
+ 
+     |Data type|Permission|
+     |:---:|:---:|
+     |string|R/W|
+     
+     *Key value Paar, welches den Operation Mode des AVR's darstellt. 
+     Wenn der operationMode auf 'BRIDGED' steht, werden die Speaker abhängig voneinander gesteuert.*
+     
+     *Die folgenden States sind möglich:*
+         
+     *'0': 'NORMAL'*
+         
+     *'1': 'BRIDGED'*
+     
+ * zoneX.lowCutFilterSpeakerOne / zoneX.lowCutFilterSpeakerTwo
+ 
+     |Data type|Permission|
+     |:---:|:---:|
+     |boolean|R/W|
+     
+     *Boolscher Wert, welcher aussagt, ob der Low Cut Filter für den Speaker eingeschaltet ist. 
+     Wenn der operationMode auf 'BRIDGED' steht, werden die Speaker abhängig voneinander gesteuert.*
+     
+ * zoneX.zoneTurnOnModeChange
+ 
+     |Data type|Permission|
+     |:---:|:---:|
+     |string|R/W|
+     
+     *Key value Paar, welcher den Zone Turn On Mode des AVR's darstellt. Der AVR kann durch diesen
+     State gesteuert werden.
+     
+     *Die folgenden States sind möglich:*
+     
+     *'0': 'Constant'*
+     
+     *'1': 'Trigger in'*
+     
+     *'2': 'Audio signal'*
+     
+     *'3': 'Off'*
+     
+ * zoneX.triggerInput
+     
+     |Data type|Permission|
+     |:---:|:---:|
+     |boolean|R/W|
+     
+     *Boolscher Wert um den Trigger Input der Zone zu aktivieren oder zu deaktivieren.*
+     
+ * zoneX.audioSignalInput
+ 
+     |Data type|Permission|
+     |:---:|:---:|
+     |boolean|R/W|
+     
+     *Boolscher Wert um den Audio Signal Input der jeweiligen Zone zu aktivieren oder zu deaktivieren.*
 
 ## Changelog
 ### 1.10.0 (2021-01-17)

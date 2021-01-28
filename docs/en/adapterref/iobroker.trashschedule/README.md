@@ -38,7 +38,7 @@ Scans an ical calendar to calculate the days left until next trash pickup
 
 ![Blockly example](images/exampleBlockly.png)
 
-```
+```xml
 <xml xmlns="https://developers.google.com/blockly/xml">
   <block type="comment" id="@ObjS.SGnDWy?:*J=bee" x="37" y="188">
     <field name="COMMENT">Um 18:00 Uhr am Vortag (verbleibende Tage = 1) erinnern, dass Abholung bevorsteht</field>
@@ -187,7 +187,29 @@ Scans an ical calendar to calculate the days left until next trash pickup
 </xml>
 ```
 
+## Offset configuration
+
+## default 0
+
+![Offset example](images/offsetExample.jpg)
+
+## example 1
+
+![Offset example](images/offsetExample1.jpg)
+
+## example -1
+
+![Offset example](images/offsetExample2.jpg)
+
 ## Changelog
+
+### 1.1.1
+
+* (klein0r) ...
+
+### 1.1.0
+
+* (klein0r) Just allow clean trash type names **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
 
 ### 1.0.6
 
@@ -216,8 +238,8 @@ Scans an ical calendar to calculate the days left until next trash pickup
 
 ### 1.0.0
 
-* (klein0r) BREAKING CHANGE: Renamed data types - check your scripts!
-* (klein0r) First stable release
+* (klein0r) Renamed data types **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
+* (klein0r) First **stable** release
 * (klein0r) Added iobroker sentry
 
 ### 0.0.11

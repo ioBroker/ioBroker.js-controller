@@ -1582,6 +1582,9 @@ Scripts can be activated and deactivated by controlling of this state with ack=f
 
 ## Changelog
 
+### 4.10.14 (2021-01-25)
+* (Apollon77) Handle more cases with invalid script names/state-ids (Sentry IOBROKER-JAVASCRIPT-5R)
+
 ### 4.10.13 (2021-01-24)
 * (Apollon77) Handle more cases with invalid script names/state-ids (Sentry IOBROKER-JAVASCRIPT-4B)
 
@@ -1595,11 +1598,6 @@ Scripts can be activated and deactivated by controlling of this state with ack=f
 ### 4.10.9 (2021-01-13)
 * (Apollon77) Make sure to end all Timeouts
 * (Apollon77) Prevent crash case (Sentry IOBROKER-JAVASCRIPT-51)
-
-### 4.10.8 (2020-12-07)
-* (paul53) Corrected `variables.isDayTime`
-* (AlCalzone) catch errors during virtual-tsc compile calls
-* (Apollon77) Prevent crash case (Sentry)
 
 ## License
 

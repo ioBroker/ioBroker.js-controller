@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: zUljsVn9bmg0WDjV5SXHpjOiRt3wgOxcrj42DJZTndw=
+hash: oP6qfwe3XXyIVWYMFxZmcOpb5qA+NbJnYj7ZocUMUFQ=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -30,12 +30,12 @@ hash: zUljsVn9bmg0WDjV5SXHpjOiRt3wgOxcrj42DJZTndw=
 * Deebot U2
 * Deebot奥兹莫610
 * Deebot Ozmo 900
-* Deebot Ozmo T8 AIVI
-* Deebot Ozmo T8（+）
+* Deebot Ozmo T8系列
 
 ###这些模型应该可以工作
 * Deebot M88
 * Deebot 600/605
+* Deebot Ozmo T5
 * Deebot Ozmo苗条10
 * Deebot U2 Pro /电源
 
@@ -70,9 +70,14 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 ## Changelog
 
+### 1.0.12 (alpha)
+* Using library version 0.5.5
+* Bugfix for T8 series
+* Added some more T8 models
+
 ### 1.0.11
-* Enable some features for OZMO 900
-* Several improvements and fixes
+* Enabled some features for OZMO 900
+* Several minor improvements
 
 ### 1.0.10
 * Using library version 0.5.4

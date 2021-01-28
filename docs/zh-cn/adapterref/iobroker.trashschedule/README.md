@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.trashschedule/README.md
 title: ioBroker.trashschedule
-hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
+hash: QCYelfjzjTR0AhzJk9+BvOHy7OqUhYR9G9nnRFQTMYI=
 ---
 ![商标](../../../en/adapterref/iobroker.trashschedule/admin/trashschedule.png)
 
@@ -23,7 +23,7 @@ hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
 1.创建一个**实例**
 2.配置日历的网址（例如Google日历）
 3.将“预览天数”设置为一个范围，该范围应包括每种垃圾类型至少两次（例如30天）
-4.选择“隐藏事件的开始-结束”选项
+4.选择选项“隐藏事件的开始-结束”
 5.如果使用“事件”选项卡，请确保为每个事件类型启用“显示”复选框，该类型也应在垃圾箱计划中使用（否则该事件将被ical实例隐藏）
 
 ##配置
@@ -39,7 +39,7 @@ hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
 ##块状示例
 ![例题](../../../en/adapterref/iobroker.trashschedule/images/exampleBlockly.png)
 
-```
+```xml
 <xml xmlns="https://developers.google.com/blockly/xml">
   <block type="comment" id="@ObjS.SGnDWy?:*J=bee" x="37" y="188">
     <field name="COMMENT">Um 18:00 Uhr am Vortag (verbleibende Tage = 1) erinnern, dass Abholung bevorsteht</field>
@@ -188,7 +188,37 @@ hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
 </xml>
 ```
 
+##偏移配置
+##默认0
+![偏移量示例](../../../en/adapterref/iobroker.trashschedule/images/offsetExample.jpg)
+
+##示例1
+![偏移量示例](../../../en/adapterref/iobroker.trashschedule/images/offsetExample1.jpg)
+
+##示例-1
+![偏移量示例](../../../en/adapterref/iobroker.trashschedule/images/offsetExample2.jpg)
+
 ## Changelog
+
+### 1.1.1
+
+* (klein0r) ...
+
+### 1.1.0
+
+* (klein0r) Just allow clean trash type names **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
+
+### 1.0.6
+
+* (klein0r) Fixed async object creation
+
+### 1.0.5
+
+* (klein0r) Added automatic refresh every full hour
+
+### 1.0.4
+
+* (klein0r) Delete unsed states
 
 ### 1.0.3
 
@@ -205,8 +235,8 @@ hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
 
 ### 1.0.0
 
-* (klein0r) BREAKING CHANGE: Renamed data types - check your scripts!
-* (klein0r) First stable release
+* (klein0r) Renamed data types **(BREAKING CHANGE - CHECK YOUR SCRIPTS AND VIS)**
+* (klein0r) First **stable** release
 * (klein0r) Added iobroker sentry
 
 ### 0.0.11
@@ -261,7 +291,7 @@ hash: uyFx2iG9tGsEkEZsuIZF+6ZVIdN7N83dTsXhJc5rfAc=
 
 MIT License
 
-Copyright (c) 2020 Matthias Kleine <info@haus-automatisierung.com>
+Copyright (c) 2021 Matthias Kleine <info@haus-automatisierung.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

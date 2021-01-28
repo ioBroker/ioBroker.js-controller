@@ -108,6 +108,21 @@ Finally, the variables created in the CCU are listed
 ### FAQ
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### 3.0.10 (2021-01-27)
+* (foxriver76) no build needed
+
+### 3.0.9 (2021-01-27)
+* (foxriver76) fix gh actions
+
+### 3.0.8 (2021-01-27)
+* (foxriver76) we now wait until objects are created before setting states (fixes #122)
+* (foxriver76) added release script
+
 ### 3.0.7 (2021-01-17)
 * (foxriver76) we notify the user about aborted connection by CCU during request
 

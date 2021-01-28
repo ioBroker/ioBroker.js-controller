@@ -36,6 +36,9 @@ There are knowledge bases that can be useful for working with Zigbee-devices and
 * in Russian https://github.com/kirovilya/ioBroker.zigbee/wiki
 
 ## Changelog
+### 1.4.2 (2020-12)
+
+
 ### 1.4.1 (2020-12)
 * (o0shojo0o) added a kelvin posibility into colortemp
 * (asgothian) Hue_calibration for exposed devices (Use requires PR on zigbee-herdsman-converters, PR is being worked on)

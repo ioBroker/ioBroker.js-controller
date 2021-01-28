@@ -95,6 +95,23 @@ As first value the name from the warning message must be taken from the log. The
 	* (DutchmanNL) xxxx
 -->
 
+### 0.6.8 (2021-01-27)
+* (DutchmanNL) Bugfix : Gernmany vaccinaation data, source changed code updated
+* (DutchmanNL) Removed states (not available anymore by RKI)
+  * Impfungen pro 1.000 Einwohner
+  * Indikation nach Alter 
+  * Berufliche Indikation
+  * Medizinische Indikation
+  * Pflegeheim-bewohnerIn
+* (DutchmanNL) New states (provided by RKI)
+  * Differenz zum Vortag 
+  * Gesamtzahl bisher verabreichter Impfstoffdosen
+  * Gesamtzahl kumulatiev BioNTech
+  * Gesamtzahl kumulatiev Moderna
+  * Impf-quote
+  * Zweit Impfungen kumulativ
+  * Zweit Impfungen Differenz zum Vortag
+
 ### 0.6.7 (2021-01-04) Improve handling of vaccination data for germany
 * (DutchmanNL) Added Impfungen pro 1.000 Einwohner
 * (DutchmanNL) Bugfix : Proper error handling if excel data cannot be retrieved

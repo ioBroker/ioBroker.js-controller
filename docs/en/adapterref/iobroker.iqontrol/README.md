@@ -50,11 +50,10 @@ Fast Web-App for Visualization.
 Runs in any Browser. 
 Easy to setup, allthough it's fully customizable and responsive.
 
-\
+> **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
+
 ## Video-Tutorial (German Language):
 [![Demo-Video](img/play_demo.png "Open Tutorial on Youtube")](https://youtube.com/playlist?list=PL8epyNz8pGEv6-R8dnfXm-m5aBlZFKOBG)
-
-> **This adapter uses Sentry libraries to automatically report exceptions and code errors to the developers.** For more details and for information how to disable the error reporting see [Sentry-Plugin Documentation](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Sentry reporting is used starting with js-controller 3.0.
 
 
 ## Add to Homescreen
@@ -258,7 +257,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 * See below for an example widget-website:
 
 <details>
-<summary>Show example widget-website to be displayed as widget with postMessage-communication:</summary>
+<summary>Show example widget-website to be displayed as widget with postMessage-communication: (<ins>klick to open</ins>)</summary>
 
 * You can use the following HTML code and copy it to the BACKGROUND_HTML-State of a widget (which then needs to be configured as "Constant") 
 * As an alternative you can upload this code as html-file into the /userwidgets subdirectory and reference it to BACKGROUND_URL-State (which then also needs to be configured as "Constant")
@@ -407,8 +406,8 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 		* The content will be displayed when chosing the widget as URL or BACKGROUND_URL or if you autocreate a widget
 	* 'widget-urlparameters'
 		* syntax: ``<meta name="widget-urlparameters" content="parameter/default value/description/type;parameter2/default value2/description2/type2"/>``
-		* The user will be asked for these parameter when chosing the widget as URL or BACKGROUND_URL or autocreates a widget
-		* ``type`` is optional and may be ``text`` (this is dafault), ``number``, ``checkbox``, ``color``, ``select``, ``multipleSelect`` or ``historyInstance``
+		* The user will be asked for these parameters when chosing the widget as URL or BACKGROUND_URL or autocreates a widget
+		* ``type`` is optional and may be ``text`` (this is dafault), ``number``, ``checkbox``, ``color``, ``select``, ``multipleSelect``, ``historyInstance``, ``datapoint`` or ``icon``
 		    * If type is ``select`` or ``multipleSelect`` then you need to specify the possible options by adding ``/<selectOptions>``, where ``<selectOptions>`` is a string of the format ``<value1>,<caption1>/<value2>,<caption2>/...``
 		    * If type is ``number`` then can specify min, max and step-width by adding ``/<numberOptions>``, where ``<numberOptions>`` is a string of the format ``<min>,<max>,<step>``
 		* All these parameters will be given to the widget-website via an url-parameter-string (like ``widget.html?parameter=value&parameter2=value2``)
@@ -421,13 +420,18 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 				return results === null ? null : decodeURIComponent(results[1].replace(/\+/g, ' '));
 			};
 			````
+		    * If you used type ``icon`` for your url-parameter then you will get either a path relative to the iqontrol-directory or an absolute path to an image. To create a valid link to your image you can use this code:
+			    ````javascript
+				var iconOn = getUrlParameter('iconOn') || './images/icons/switch_on.png';
+				if(iconOn.indexOf('http') != 0) iconOn = '/iqontrol/' + iconOn;
+				````
 
 	* 'widget-options'
 		* syntax: ``<meta name="widget-options" content="{'noZoomOnHover': 'true', 'hideDeviceName': 'true'}"/>``
 		* See the expandable section below for the possible options that can be configured by this meta-tag
 
 <details>
-<summary>Show possible options that can be configured by the meta-tag 'widget-options':</summary>
+<summary>Show possible options that can be configured by the meta-tag 'widget-options': (<ins>klick to open</ins>)</summary>
 
 * Icons:
 	* ``icon_on`` (Icon on):
@@ -435,7 +439,89 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``icon_off`` (Icon off):
 		* Default: ""
 * Device Specific Options:
-	* ``noVirtualState`` (Do not use a virtual datapoint for STATE (hide switch, if STATE is empty)):
+	* ``showState`` (Show State) - only valid for role Button and Program:
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``buttonCaption`` (Caption for button) - only valid for role Button:
+		* Default: "" 
+	* ``returnToOffSetValueAfter`` (Return to 'OFF_SET_VALUE' after [ms]) - only valid for role Button:
+		* Possible values: number from 10 to 60000
+		* Default: "" 
+	* ``alwaysSendTrue`` (Always send 'true' (do not toggle)) - only valid for role Scene:
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``closeDialogAfterExecution`` (Close dialog after execution) - only valid for role Button, Program and Scene:
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``invertCt`` (Invert CT (use Kelvin instead of Mired)) - only valid for role Light:
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``alternativeColorspace`` (Colorspace for ALTERNATIVE_COLORSPACE_VALUE") - only valid for role Light:
+		* Possible values: ""|"RGB"|"#RGB"|"RGBW"|"#RGBW"|"RGBWWCW"|"#RGBWWCW"|"RGBCWWW"|"#RGBCWWW"|"RGB_HUEONLY"|"#RGB_HUEONLY"|"HUE_MILIGHT"|"HHSSBB_TUYA"
+		* Default: "" 
+	* ``linkGlowActiveColorToHue`` (Use color of lamp as GLOW_ACTIVE_COLOR) - only valid for role Light:
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``controlModeDisabledValue`` (Value of CONTROL_MODE for 'disabled') - only valid for role Thermostat:
+		* Default: "" 
+	* ``stateClosedValue`` (Value of STATE for 'closed') - only valid for role Window:
+		* Default: "" 
+	* ``stateOpenedValue`` (Value of STATE for 'opened') - only valid for role Window:
+		* Default: "" 
+	* ``stateTiltedValue`` (Value of STATE for 'tilted') - only valid for role Window:
+		* Default: "" 
+	* ``invertActuatorLevel`` (Invert LEVEL (0 = open)) - only valid for role Blind:
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``directionOpeningValue`` (Value of DIRECTION for 'opening') - only valid for role Window:
+		* Default: "1" 
+	* ``directionOpeningValue`` (Value of DIRECTION for 'opening') - only valid for role Window:
+		* Default: "2" 
+	* ``directionUncertainValue`` (Value of DIRECTION for 'uncertain') - only valid for role Window:
+		* Default: "3" 
+	* ``favoritePositionCaption`` (Caption for FAVORITE_POSITION) - only valid for role Window:
+		* Default: "Favorite Position" 
+	* ``stopCaption`` (Caption for STOP) - only valid for role Window:
+		* Default: "Stop" 
+	* ``downCaption`` (Caption for DOWN) - only valid for role Window:
+		* Default: "Down" 
+	* ``controlModeDisarmedValue`` (Value of CONTROL_MODE for 'disarmed') - only valid for role Alarm:
+		* Default: "0" 
+	* ``coverImageReloadDelay`` (Delay reload of cover-image [ms]) - only valid for role Media:
+		* Possible values: number from 0 to 5000
+		* Default: "" 
+	* ``statePlayValue`` (Value of STATE for 'play') - only valid for role Media:
+		* Default: "play" 
+	* ``statePauseValue`` (Value of STATE for 'pause') - only valid for role Media:
+		* Default: "pause" 
+	* ``stateStopValue`` (Value of STATE for 'stop') - only valid for role Media:
+		* Default: "stop" 
+	* ``hidePlayOverlay`` (Hide play icon) - only valid for role Media:
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``hidePauseAndStopOverlay`` (Hide pause and stop icon) - only valid for role Media:
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``repeatOffValue`` (Value of REPEAT for 'off') - only valid for role Media:
+		* Default: "false" 
+	* ``repeatAllValue`` (Value of REPEAT for 'repeat all') - only valid for role Media:
+		* Default: "true" 
+	* ``repeatOneValue`` (Value of REPEAT for 'repeat one') - only valid for role Media:
+		* Default: "2" 
+	* ``remoteKeepSectionsOpen`` (Keep sections open) - only valid for role Media:
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``remoteSectionsStartOpened`` (Start with these sections initially opened) - only valid for role Media:
+		* Possible values: array with "REMOTE_PAD", "REMOTE_CONTROL", "REMOTE_ADDITIONAL_BUTTONS", "REMOTE_CHANNELS", "REMOTE_NUMBERS" and/or "REMOTE_COLORS"
+		* Default: "false" 
+	* ``remoteShowDirectionsInsidePad`` (Show Vol and Ch +/- inside Pad) - only valid for role Media:
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``remoteChannelsCaption`` (Caption for section 'Channels') - only valid for role Media:
+		* Default: "" 
+	* ``remoteAdditionalButtonsCaption`` (Caption for section 'Additional Buttons') - only valid for role Media:
+		* Default: "" 
+	* ``noVirtualState`` (Do not use a virtual datapoint for STATE (hide switch, if STATE is empty)) - only valid for role Widget:
 		* Possible values: "true"|"false"
 		* Default: "false" 
 * General:
@@ -445,16 +531,28 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``invertUnreach`` (Invert UNREACH (use connected instead of unreach)):
 		* Possible values: "true"|"false"
 		* Default: "false" 
+	* ``invertGlowHide`` (Invert GLOW_HIDE):
+		* Possible values: "true"|"false"
+		* Default: "false" 
 	* ``additionalControlsSectionType`` (Appereance of ADDITIONAL_CONTROLS):
 		* Possible values: "none"|"collapsible"|"collapsible open"
 		* Default: "collapsible"
 	* ``additionalControlsCaption`` (Caption for ADDITIONAL_CONTROLS):
 		* Default: "Additional Controls"
+	* ``additionalControlsHeadingType`` (Appereance of ADDITIONAL_CONTROLS Headings):
+		* Possible values: "none"|"collapsible"|"collapsible open"
+		* Default: "collapsible"
 	* ``additionalInfoSectionType`` (Appereance of ADDITIONAL_INFO):
 		* Possible values: "none"|"collapsible"|"collapsible open"
 		* Default: "collapsible"
 	* ``additionalInfoCaption`` (Caption for ADDITIONAL_INFO):
 		* Default: "Additional Infos"
+	* ``renderLinkedViewInParentInstance`` (Open linked view in parent instance, if this view is used as a BACKGROUND_VIEW):
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``renderLinkedViewInParentInstanceClosesPanel`` (After opening linked view in parent instance, close panel (if it is dismissible)):
+		* Possible values: "true"|"false"
+		* Default: "false" 
 * BATTERY Empty Icon:
 	* ``batteryActiveCondition`` (Condition):
 		* Possible values: ""|"at"|"af"|"eqt"|"eqf"|"eq"|"ne"|"gt"|"ge"|"lt"|"le"
@@ -465,6 +563,12 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``clickOnIconOpensDialog`` (Click on icon opens dialog (instead of toggling)):
 		* Possible values: "true"|"false"
 		* Default: "false" 
+	* ``clickOnTileToggles`` (Click on tile toggles (instead of opening dialog))):
+		* Possible values: "true"|"false"
+		* Default: "false" 
+	* ``clickOnTileOpensDialog`` (Click on tile opens dialog):
+		* Possible values: "true"|"false"
+		* Default: "true" (for most devices)
 	* ``noZoomOnHover`` (Disable zoom-effect on hover):
 		* Possible values: "true"|"false"
 		* Default: "true"
@@ -481,6 +585,9 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``iconNoPointerEventsInactive`` (Ignore mouse events for the icon, if device is inactive):
 		* Possible values: "true"|"false"
 		* Default: "false"
+	* ``transparentIfInactive`` (Make background transparent, if device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
 	* ``noOverlayInactive`` (Remove overlay of tile, if device is inactive):
 		* Possible values: "true"|"false"
 		* Default: "true" 
@@ -490,9 +597,15 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``hideDeviceNameIfInactive`` (Hide device name, if the device is inactive):
 		* Possible values: "true"|"false"
 		* Default: "false"
+	* ``hideInfoAIfInactive`` (Hide INFO_A, if the device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``hideInfoBIfInactive`` (Hide INFO_B, if the device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
 	* ``hideStateIfInactive`` (Hide state, if the device is inactive):
 		* Possible values: "true"|"false"
-		* Default: "true"	* ``
+		* Default: "false"
 	* ``hideDeviceIfInactive`` (Hide device, if it is inactive):
 		* Possible values: "true"|"false"
 		* Default: "false"	* ``
@@ -505,6 +618,9 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``iconNoPointerEventsActive`` (Ignore mouse events for the icon, if device is active):
 		* Possible values: "true"|"false"
 		* Default: "false"
+	* ``transparentIfActive`` (Make background transparent, if device is active):
+		* Possible values: "true"|"false"
+		* Default: "false"
 	* ``noOverlayActive`` (Remove overlay of tile, if device is active):
 		* Possible values: "true"|"false"
 		* Default: "true"
@@ -512,6 +628,12 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 		* Possible values: "true"|"false"
 		* Default: "false"
 	* ``hideDeviceNameIfActive`` (Hide device name, if the device is active):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``hideInfoAIfActive`` (Hide INFO_A, if the device is active):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``hideInfoBIfActive`` (Hide INFO_B, if the device is active):
 		* Possible values: "true"|"false"
 		* Default: "false"
 	* ``hideStateIfActive`` (Hide state, if the device is active):
@@ -527,6 +649,9 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 		* Possible values: "true"|"false"
 		* Default: "true"
 	* ``iconNoPointerEventsEnlarged`` (Ignore mouse events for the icon, if device is enlarged):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``transparentIfEnlarged`` (Make background transparent, if device is enlarged):
 		* Possible values: "true"|"false"
 		* Default: "false"
 	* ``noOverlayEnlarged`` (Remove overlay of tile, if device is enlarged):
@@ -551,6 +676,12 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 		* Possible values: ""|"visibleIfEnlarged"|"hideIfEnlarged"
 		* Default: ""
 	* ``hideDeviceNameIfEnlarged`` (Hide device name, if the device is enlarged):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``hideInfoAIfEnlarged`` (Hide INFO_A, if the device is enlarged):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``hideInfoBIfEnlarged`` (Hide INFO_B, if the device is enlarged):
 		* Possible values: "true"|"false"
 		* Default: "false"
 	* ``hideStateIfEnlarged`` (Hide state, if the device is enlarged):
@@ -588,16 +719,25 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``popupAllowPostMessage`` (Allow postMessage-Communication for URL/HTML):
 		* Possible values: "true"|"false"
 		* Default: "false"
+	* ``backgroundURLDynamicIframeZoom`` (Dynamic zoom for BACKGROUND_VIEW/URL/HTML (this is the zoom-level in % that would be needed, to let the content fit into a single 1x1 tile)):
+		* Possible values: number from 0.01 to 200
+		* Default: ""
+	* ``backgroundURLPadding`` (Apply padding to BACKGROUND_VIEW/URL/HTML):
+		* Possible values: number from 0 to 50 [pixel]
+		* Default: ""
 	* ``backgroundURLAllowPostMessage`` (Allow postMessage-Communication for BACKGROUND_VIEW/URL/HTML):
 		* Possible values: "true"|"false"
 		* Default: "false"
 	* ``backgroundURLNoPointerEvents`` (Direct mouse events to the tile instead to the content of BACKGROUND_VIEW/URL/HTML):
 		* Possible values: "true"|"false"
 		* Default: "false"
+	* ``overlayAboveBackgroundURL`` (Position Overlay above BACKGROUND_VIEW/URL/HTML):
+		* Possible values: "true"|"false"
+		* Default: "false"
 </details>
 
 <details>
-<summary>Show example widget-website that creates a map with the above settings:</summary>
+<summary>Show example widget-website that creates a map with the above settings: (<ins>klick to open</ins>)</summary>
 
 * You can upload the following HTML code as html-file into the /userwidgets subdirectory and reference it to BACKGROUND_URL-State (which then needs to be configured as "Constant")
 * When adding the widget a description is displayed
@@ -687,7 +827,7 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 </details>
 
 <details>
-<summary>Show a more edvanced example:</summary>
+<summary>Show a more edvanced example: (<ins>klick to open</ins>)</summary>
 
 * You can upload the following HTML code as html-file into the /userwidgets subdirectory and reference it to BACKGROUND_URL-State (which then needs to be configured as "Constant")
 * When adding the widget a description is displayed
@@ -976,6 +1116,8 @@ However, not every type makes sense to every role. So the STATE of a switch for 
 
 #### Further general states:
 * **INFO_A** and **INFO_B**: *array* - an array of datapoints and icons, that will be cyclical displayed in the upper right side of the tile
+
+    ![INFO_A and INFO_B](img/info_a_info_b.png)
 * **ADDITIONAL_CONTROLS**: *array* - an array of datapoints, that define additional control elements that will be displayed inside info-dialog
 * **ADDITIONAL_INFO**: *array* - an array of datapoints, that will be displayed at the bottom of the info-dialog
 * **URL**: CONSTANT or DATAPOINT *string* - this url will be opened as iframe inside the dialog
@@ -989,7 +1131,18 @@ However, not every type makes sense to every role. So the STATE of a switch for 
     * Behaviour can be inverted in the 'General' section of options (use connected instead of unreach)
 * **ENLARGE_TILE**: *boolean* - when true, the tile will be set as enlarged. You can overwrite that by clicking the enlarge/reduce button. But everytime the state of ENLARGE_TILE changes, it will take over control of the tiles enlargement state again. If the role of ENLARGE_TILE is *button*, then every state change will toggle the enlargement state
 * **BADGE**: *number* or *string* - if a value other than zero/false is present, then a badge in the upper left corner is shown with this value
-    * **BADGE_COLOR*: *string* - any valid html-color-string (like 'green', '#00FF00', 'rgba(0,255,0,0.5)' and so on) that represents the color of the badge. If not present or invalid red with 50% transparency will be used.
+    * **BADGE_COLOR**: *string* - any valid html-color-string (like 'green', '#00FF00', 'rgba(0,255,0,0.5)' and so on) that represents the color of the badge. If not present or invalid red with 20% transparency will be used.
+
+    ![Badge](img/badge.png)
+* **OVERLAY_INACTIVE_COLOR** and **OVERLAY_ACTIVE_COLOR**: *string* - any valid html-color-string (like 'green', '#00FF00', 'rgba(0,255,0,0.5)' and so on) that represents the color of the overlay of the tile (depending on whether the tile is active of inactive). If no valid color-string is given, the standard-overlay-color (which can be configured in iQontrol-Options) is used. Keep in mind, that there is an option to define the transparency of the overlay in the iQontrol options, which will affect the appereance of the set overlay color.
+
+    ![Overlay Color](img/overlay_color.png)
+
+* **GLOW_INACTIVE_COLOR** and **GLOW_ACTIVE_COLOR**: *string* - any valid html-color-string (like 'green', '#00FF00', 'rgba(0,255,0,0.5)' and so on) that represents the color of a glow-effect around the tile (depending on whether the tile is active of inactive). If no valid color-string is given, the glow-effect is disabled.
+	* **GLOW_HIDE**: *boolean* - if true, the glow-effect is hidden (can be inverted in the 'General' section of options)	
+	* For Lights you can also use the option "Use color of lamp as GLOW_ACTIVE_COLOR" which can be found in the devicespecific options. 
+
+    ![Glow](img/glow.png)
 
 ### Link to other view:
 * Has no further states
@@ -1196,6 +1349,13 @@ This device has some special predefined size- and display-settings to show a web
 ****
     
 ## Changelog
+
+### dev
+* (sbormann) Changed standard badge-color to red, 20% transparency.
+* (sbormann) Added optional glow-effect for tiles.
+* (sbormann) Fixed edit-dialog of device not opening under some circumstances.
+* (sbormann) Added type icon and type datapoint to widget-url-parameters.
+* (sbormann) Added OVERLAY_INACTIVE_COLOR and OVERLAY_ACTIVE_COLOR.
 
 ### 1.5.7 (2021-01-24)
 * (sbormann) Fixed missing info.connection object.
@@ -1489,7 +1649,7 @@ This device has some special predefined size- and display-settings to show a web
 * (sbormann) Corrected a few translations.
 
 <details>
-<summary>Older Changelog:</summary>
+<summary>Older Changelog: (<ins>klick to open</ins>)</summary>
 
 ### 0.4.1 (2020-05-15)
 * (sbormann) Added icons for toplight and tilted to window and enhanced window to recognize tilted position.

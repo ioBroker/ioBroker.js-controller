@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: zUljsVn9bmg0WDjV5SXHpjOiRt3wgOxcrj42DJZTndw=
+hash: oP6qfwe3XXyIVWYMFxZmcOpb5qA+NbJnYj7ZocUMUFQ=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -30,12 +30,12 @@ hash: zUljsVn9bmg0WDjV5SXHpjOiRt3wgOxcrj42DJZTndw=
 * Deebot U2
 * Deebot Ozmo 610
 * Deebot Ozmo 900
-* Deebot Ozmo T8 AIVI
-* Deebot Ozmo T8 (+)
+* Deebot Ozmo T8 серии
 
 ### Эти модели должны работать
 * Deebot M88
 * Deebot 600/605
+* Deebot Ozmo T5
 * Deebot Ozmo Slim 10
 * Deebot U2 Pro / Мощность
 
@@ -62,7 +62,7 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 * Некоторые функции очистки могут не работать с 710/711. Пожалуйста, используйте пока версию 0.5.8.
 * Функция "edge" не работает с Deebot U2 (вместо этого запускает автоматическую очистку)
 
-## ЧАСТО ЗАДАВАЕМЫЕ ВОПРОСЫ
+## ВОПРОСЫ-ОТВЕТЫ
 * Часто задаваемые вопросы можно найти [здесь] (https://github.com/mrbungle64/ioBroker.ecovacs-deebot/wiki/FAQ)
 
 ## Заявление об ограничении ответственности
@@ -70,9 +70,14 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 ## Changelog
 
+### 1.0.12 (alpha)
+* Using library version 0.5.5
+* Bugfix for T8 series
+* Added some more T8 models
+
 ### 1.0.11
-* Enable some features for OZMO 900
-* Several improvements and fixes
+* Enabled some features for OZMO 900
+* Several minor improvements
 
 ### 1.0.10
 * Using library version 0.5.4

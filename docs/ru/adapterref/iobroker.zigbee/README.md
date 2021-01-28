@@ -34,6 +34,9 @@ BADGE-NPM: https://nodei.co/npm/iobroker.zigbee.png?downloads=true
 Поэтому, если какие-либо улучшения или поддержка новых zigbee-устройств происходит в проекте Zigbee2MQTT, то можно перенести и добавить этот же функционал в этот драйвер. Если заметили это, то напиши issue - перенесем.
 
 ## Changelog
+### 1.4.2 (2020-12)
+
+
 ### 1.4.1 (2020-12)
 * (o0shojo0o) added a kelvin posibility into colortemp
 * (asgothian) Hue_calibration for exposed devices (Use requires PR on zigbee-herdsman-converters, PR is being worked on)
