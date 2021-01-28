@@ -1,5 +1,17 @@
 {
     "$schema": "http://json-schema.org/schema#",
+    "definitions": {
+        "multilingual": {
+            "type": "object",
+            "required": ["en"],
+            "patternProperties": {
+                "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
+                    "type": "string"
+                }
+            },
+            "additionalProperties": false
+        }
+    },
     "type": "object",
     "required": ["common"],
     "additionalProperties": false,
@@ -22,7 +34,7 @@
                 "version": {
                     "description": "Current adapter version",
                     "type": "string",
-                    "pattern": "^\\d+\\.\\d+\\.\\d+.*"
+                    "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$"
                 },
                 "platform": {
                     "description": "Platform, normally Javascript/Node.js",
@@ -35,14 +47,7 @@
                 },
                 "titleLang": {
                     "description": "Longer name of adapter in all supported languages like {en: 'Adapter', de: 'adapter', ru: 'Драйвер'}",
-                    "type": "object",
-                    "required": ["en"],
-                    "patternProperties": {
-                        "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false
+                    "$ref": "#/definitions/multilingual"
                 },
                 "news": {
                     "description": "Short form of changelog in all supported languages",
@@ -50,29 +55,15 @@
                     "minProperties": 1,
                     "maxProperties": 20,
                     "patternProperties": {
-                        "^\\d+\\.\\d+\\.\\d+.*": {
-                            "type": "object",
-                            "required": ["en"],
-                            "patternProperties": {
-                                "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
-                                    "type": "string"
-                                }
-                            },
-                            "additionalProperties": false
+                        "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-((?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\\.(?:0|[1-9]\\d*|\\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\\+([0-9a-zA-Z-]+(?:\\.[0-9a-zA-Z-]+)*))?$": {
+                            "$ref": "#/definitions/multilingual"
                         }
                      },
                     "additionalProperties": false
                 },
                 "desc": {
                     "description": "Description, object for multilingual description",
-                    "type": "object",
-                    "required": ["en"],
-                    "patternProperties": {
-                        "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
-                            "type": "string"
-                        }
-                    },
-                    "additionalProperties": false
+                    "$ref": "#/definitions/multilingual"
                 },
                 "messagebox": {
                     "description": "true if messagebox supported. If yes, the object system.adapter.<instance>.messagebox will be created to send messages to adapter",
@@ -88,7 +79,11 @@
                     "required": ["en"],
                     "patternProperties": {
                         "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
-                            "type": "string"
+                            "type": ["string", "array"],
+                            "minItems": 1,
+                            "items": {
+                                "type": "string"
+                            }
                         }
                     },
                     "additionalProperties": false
@@ -96,13 +91,15 @@
                 "authors": {
                     "description": "Array of authors as string",
                     "type": "array",
+                    "minItems": 1,
                     "items": {
                         "type": "string"
                     }
                 },
                 "license": {
                     "description": "License of the software",
-                    "type": "string"
+                    "type": "string",
+                    "pattern": "(?i)afl-3.0|apache-2.0|artistic-2.0|bsl-1.0|bsd-2-clause|bsd-3-clause|bsd-3-clause-clear|cc|cc0-1.0|cc-by-4.0|cc-by-sa-4.0|wtfpl|ecl-2.0|epl-1.0|epl-2.0|eupl-1.1|agpl-3.0|gpl|gpl-2.0|gpl-3.0|lgpl|lgpl-2.1|lgpl-3.0|isc|lppl-1.3c|ms-pl|mit|mpl-2.0|osl-3.0|postgresql|ofl-1.1|ncsa|unlicense|zlib"
                 },
                 "type": {
                     "description": "Type of the adapter",
@@ -122,7 +119,47 @@
                 },
                 "adminColumns": {
                     "description": "Custom attributes, that must be shown in admin in the object browser. Like: [{\"name\": {\"en\": \"KNX address\"}, \"path\": \"native.address\", \"width\": 100, \"align\": \"left\"}, {\"name\": \"DPT\", \"path\": \"native.dpt\", \"width\": 100, \"align\": \"right\", \"type\": \"number\", \"edit\": true, \"objTypes\": [\"state\", \"channel\"]}]. type is a type of the attribute (e.g. string, number, boolean) and only needed if edit is enabled. objTypes is a list of the object types, that could have such attribute. Used only in edit mode too.",
-                    "type": "array"
+                    "type": "array",
+                    "minItems": 1,
+                    "items": {
+                        "type": "object",
+                        "required": ["name", "path", "width", "align"],
+                        "properties": {
+                            "name": {
+                                "anyOf": [
+                                    {
+                                        "type": "string"
+                                    },
+                                    {
+                                        "$ref": "#/definitions/multilingual"
+                                    }
+                                ]
+                            },
+                            "path": {
+                                "type": "string"
+                            },
+                            "width": {
+                                "type": "number",
+                                "minimum": 0
+                            },
+                            "align": {
+                                "type": "string",
+                                "enum": ["left", "right", "center", "justify"]
+                            },
+                            "type": {
+                                "type": "string"
+                            },
+                            "edit": {
+                                "type": "boolean"
+                            },
+                            "objTypes": {
+                                "type": "array",
+                                "items": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
                 },
                 "adminTab": {
                     "description": "Adds a Tab which can be shown in admin adapter",
@@ -144,14 +181,7 @@
                         },
                         "name": {
                             "description": "Name of TAB (multilingual object) in admin",
-                            "type": "object",
-                            "required": ["en"],
-                            "patternProperties": {
-                                "en|de|ru|pt|nl|fr|it|es|pl|zh-cn": {
-                                    "type": "string"
-                                }
-                            },
-                            "additionalProperties": false
+                            "$ref": "#/definitions/multilingual"
                         },
                         "singleton": {
                             "description": "If true, only one TAB for all instances will be shown.",
@@ -170,8 +200,10 @@
                 "availableModes": {
                     "description": "values for common.mode if more than one mode is possible",
                     "type": "array",
+                    "minItems": 1,
                     "items": {
-                        "type": "string"
+                        "type": "string",
+                        "enum": ["none", "daemon", "subscribe", "schedule", "once", "extension"]
                     }
                 },
                 "blockly": {
@@ -306,11 +338,28 @@
                 },
                 "os": {
                     "description": "String or array of supported operation systems, e.g [\"linux\", \"darwin\"]",
-                    "type": ["string", "array"],
-                    "minItems": 1,
-                    "items": {
-                        "type": "string"
-                    }
+                    "anyOf": [
+                        {
+                            "type": "string",
+                            "enum": [
+                                "linux",
+                                "darwin",
+                                "win32"
+                            ]
+                        },
+                        {
+                            "type": "array",
+                            "minItems": 1,
+                            "items": {
+                                "type": "string",
+                                "enum": [
+                                    "linux",
+                                    "darwin",
+                                    "win32"
+                                ]
+                            }
+                        }
+                    ]
                 },
                 "preserveSettings": {
                     "description": "String (or array) with names of attributes in common of instance, which will not be deleted. E.g. \"history\", so by setState('system.adapter.mqtt.0\", {..}) the field common.history will not be deleted even if new object does not have this field. To delete the attribute it must be explicitly done with common:{history: null}.",
@@ -349,7 +398,9 @@
                 "stopTimeout": {
                     "description": "timeout in ms to wait, till adapter shut down",
                     "type": "number",
-                    "default": 500
+                    "default": 500,
+                    "minimum": 0,
+                    "multipleOf": 1
                 },
                 "subscribable": {
                     "description": "Variables of this adapter must be subscribed with sendTo to enable updates",
@@ -418,14 +469,26 @@
             "description": "Objects which will be created for the adapter",
             "type": "array",
             "items": {
-                "type": "object"
+                "type": "object",
+                "required": ["_id"],
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    }
+                }
             }
         },
         "instanceObjects": {
             "description": "Objects which will be created for each instance",
             "type": "array",
             "items": {
-                "type": "object"
+                "type": "object",
+                "required": ["_id"],
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    }
+                }
             }
         },
         "notifications": {
