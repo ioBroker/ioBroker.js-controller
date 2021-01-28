@@ -200,7 +200,7 @@
                     "description": "Array like [{\"js-controller\": \">=2.0.0\"}] that describes which ioBroker modules are required for this adapter",
                     "type": "array",
                     "items": {
-                        "type": "object"
+                        "type": ["object", "string"]
                     }
                 },
                 "enabled": {
@@ -241,7 +241,7 @@
                     "description": "[DEPRECATED] Use common.localLinks",
                     "type": "string"
                 },
-                "logLevel": {
+                "loglevel": {
                     "description": "Default Loglevel after instance creation",
                     "type": "string",
                     "enum": ["silly", "debug", "info", "warn", "error"]
