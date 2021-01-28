@@ -532,13 +532,13 @@ id `system.adapter.<adapter.name>`
 * `common.extIcon`            - link to external icon for uninstalled adapters. Normally on github.
 * `common.getHistory`         - [true/false] if adapter supports getHistory message
 * `common.icon`               - name of the local icon (should be located in subdirectory "admin")
-* `common.installedVersion`   - **mandatory** installed version
+* `common.installedVersion`   - Do not use it, will be set internally only
 * `common.keywords`           - Similar to keywords in package.json, but can be defined in many languages. Just an array. 
 * `common.localLinks`         - link to the web service of this adapter. E.g to http://localhost:5984/_utils for futon from admin
 * `common.localLink`          - deprecated. Use `common.localLinks`.
-* `common.logLevel`           - debug, info, warn or error
+* `common.loglevel`           - debug, info, warn or error
 * `common.logTransporter`     - if this adapter receives logs from other hosts and adapters (e.g. to strore them somewhere)
-* `common.main`               - Start file of the adapter. Same as in package.json.
+* `common.main`               - **Deprecated** Use main in package.json.
 * `common.materializeTab`     - if adapter supports > admin3  for tab (materialize style)
 * `common.materialize`        - if adapter supports > admin3 (materialize style)
 * `common.messagebox`         - true if message box supported. If yes, the object system.adapter.&lt;adapter.name&gt&lt;adapter.instance&gt.messagebox will be created to send messges to adapter (used for email, pushover,...;
