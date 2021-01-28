@@ -4,6 +4,13 @@
 	## __WORK IN PROGRESS__
 -->
 
+## 3.2.12 (2021-01-28)
+* (foxriver76) fix repo cli
+* (foxriver76) add instances list back to 'status all'
+* (Apollon77) optimize logging in db classes
+* (Apollon77) enhance letsencrypt to also allow to specify alternative names for certs
+* (Apollon77) deleting a not existing object is handled as success instead of Not-Exists error
+
 ## 3.2.11 (2021-01-24) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)

@@ -2,7 +2,7 @@
     "$schema": "./schemas/io-package.json",
     "common": {
         "name": "js-controller",
-        "version": "3.2.11",
+        "version": "3.2.12",
         "platform": "Javascript/Node.js",
         "controller": true,
         "mode": "daemon",
@@ -20,6 +20,18 @@
             "zh-cn": "JS控制器"
         },
         "news": {
+            "3.2.12": {
+                "en": "fix repo cli\nadd instances list back to 'status all'\noptimize logging in db classes\nenhance letsencrypt to also allow to specify alternative names for certs\ndeleting a not existing object is handled as success instead of Not-Exists error",
+                "de": "Fix Repo Cli\nFügen Sie die Liste der Instanzen wieder zu \"Status alle\" hinzu.\nOptimieren Sie die Protokollierung in Datenbankklassen\nVerbessern Sie letsencrypt, um auch alternative Namen für Zertifikate anzugeben\nDas Löschen eines nicht vorhandenen Objekts wird anstelle des Fehlers \"Nicht vorhanden\" als Erfolg behandelt",
+                "ru": "исправить репо cli\nдобавить список экземпляров обратно в \"статус все\"\nоптимизировать ведение журнала в классах БД\nулучшить letsencrypt, чтобы также можно было указывать альтернативные имена для сертификатов\nудаление несуществующего объекта считается успешным, а не ошибкой Not-Exists",
+                "pt": "consertar repo cli\nadicionar lista de instâncias de volta para 'status all'\notimizar o registro em classes db\nmelhorar o letsencrypt para também permitir especificar nomes alternativos para certificados\na exclusão de um objeto não existente é tratada como sucesso em vez de erro Não existe",
+                "nl": "repo cli repareren\nlijst met instanties terug toevoegen aan 'status alles'\noptimaliseren van logboekregistratie in db-klassen\nverbeter letsencrypt om ook alternatieve namen voor certs te specificeren\nhet verwijderen van een niet-bestaand object wordt afgehandeld als geslaagd in plaats van als niet-bestaat-fout",
+                "fr": "réparer le repo cli\najouter la liste des instances à «tout statut»\noptimiser la journalisation dans les classes db\naméliorer letsencrypt pour permettre également de spécifier des noms alternatifs pour les certificats\nla suppression d'un objet non existant est traitée comme une réussite au lieu d'une erreur Not-Exists",
+                "it": "fix repo cli\naggiungere nuovamente l'elenco delle istanze a \"stato tutto\"\nottimizzare la registrazione nelle classi db\nmigliorare Letencrypt per consentire anche di specificare nomi alternativi per i certificati\nl'eliminazione di un oggetto non esistente viene gestita come riuscita invece che come errore Non-esistente",
+                "es": "arreglar repo cli\nagregar lista de instancias de nuevo a 'estado de todos'\noptimizar el registro en clases db\nmejorar letsencrypt para permitir también especificar nombres alternativos para certificados\nla eliminación de un objeto que no existe se maneja como un éxito en lugar de un error No existente",
+                "pl": "fix repo cli\ndodaj listę instancji z powrotem do „statusu wszystkich”\nzoptymalizować logowanie w klasach db\nulepsz letsencrypt, aby umożliwić również określenie alternatywnych nazw certyfikatów\nusunięcie nieistniejącego obiektu jest traktowane jako sukces zamiast błędu Nieistniejący",
+                "zh-cn": "修复仓库\n将实例列表添加回“全部状态”\n优化数据库类中的日志记录\n增强letsencrypt，还允许为证书指定备用名称\n删除不存在的对象将被视为成功而不是不存在错误"
+            },
             "3.2.11": {
                 "en": "see CHANGELOG.md",
                 "de": "siehe CHANGELOG.md",
