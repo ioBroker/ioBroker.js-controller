@@ -320,11 +320,97 @@
                     }
                 },
                 "restartAdapters": {
-                    "description": "array with names of adapter that must be restarted after this adapter is installed, e.g. [\"vis\"]",
+                    "description": "Array with names of adapter that must be restarted after this adapter is installed, e.g. [\"vis\"]",
                     "type": "array",
                     "items": {
                         "type": "string"
                     }
+                },
+                "schedule": {
+                    "description": "CRON schedule if adapter runs in mode schedule",
+                    "type": "string"
+                },
+                "serviceStates": {
+                    "description": "If adapter can deliver additional states. If true, the path adapter/lib/states.js (or given path as string) will be called and it give following parameters function (objects, states, instance, config, callback). The function must deliver the array of points with values like function (err, result) { result = [{id: 'id1', val: 1}, {id: 'id2', val: 2}]}",
+                    "type": ["boolean", "string"]
+                },
+                "singletonHost": {
+                    "description": "Adapter can be installed only once on one host",
+                    "type": "boolean"
+                },
+                "singleton": {
+                    "description": "Adapter can be installed only once in whole system",
+                    "type": "boolean"
+                },
+                "stopBeforeUpdate": {
+                    "description": "If adapter must be stopped before update",
+                    "type": "boolean"
+                },
+                "stopTimeout": {
+                    "description": "timeout in ms to wait, till adapter shut down",
+                    "type": "number",
+                    "default": 500
+                },
+                "subscribable": {
+                    "description": "Variables of this adapter must be subscribed with sendTo to enable updates",
+                    "type": "boolean"
+                },
+                "subscribe": {
+                    "description": "Name of variable, that is subscribed automatically",
+                    "type": "string"
+                },
+                "supportCustoms": {
+                    "description": "If the adapter support settings for every state. It has to have custom.html file in admin. Sample can be found in ioBroker.history",
+                    "type": "boolean"
+                },
+                "supportStopInstance": {
+                    "description": "If adapter supports signal stopInstance (messagebox required). The signal will be sent before stop to the adapter. (used if the problems occured with SIGTERM)",
+                    "type": "boolean"
+                },
+                "wakeup": {
+                    "description": "Adapter will be started if some value is written into system.adapter.NAME.x.wakeup. Normally the adapter should stop after processing of event.",
+                    "type": "boolean"
+                },
+                "webByVersion": {
+                    "description": "Show version as prefix in web adapter (usually - ip:port/material, webByVersion - ip:port/1.2.3/material)",
+                    "type": "boolean"
+                },
+                "webExtendable": {
+                    "description": "If web server in this adapter can be extended with plugin/extensions like proxy, simple-api",
+                    "type": "boolean"
+                },
+                "webExtension": {
+                    "description": "Relative filename to connect the web extension. E.g. in simple-api \"lib/simpleapi.js\" relative to the adapter root directory. Additionally is native.webInstance required to say where this extension will be included. Empty means, it must run as own web service. \"*\" means every web server must include it.",
+                    "type": "string"
+                },
+                "webPreSettings": {
+                    "description": "Object of parameters that must be included into info.js by webServer adapter. (Example material)",
+                    "type": "object"
+                },
+                "webservers": {
+                    "description": "Array of web server's instances that should serve content from the adapters www folder",
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                },
+                "welcomeScreen": {
+                    "description": "Array of pages, that should be shown on the \"web\" index.html page. [\"vis/edit.html\", \"vis/index.html\"] or [{\"link\": \"vis/edit.html\", \"name\": \"Vis editor\", \"img\": \"vis/img/edit.png\", \"color\": \"blue\"}, \"vis/index.html\"]",
+                    "type": "array",
+                    "items": {
+                        "type": ["string", "object"]
+                    }
+                },
+                "welcomeScreenPro": {
+                    "description": "Array of pages used on access via ioBroker cloud, that should be shown on the \"web\" index.html page. [\"vis/edit.html\", \"vis/index.html\"] or [{\"link\": \"vis/edit.html\", \"name\": \"Vis editor\", \"img\": \"vis/img/edit.png\", \"color\": \"blue\"}, \"vis/index.html\"]",
+                    "type": "array",
+                    "items": {
+                        "type": ["string", "object"]
+                    }
+                },
+                "wwwDontUpload": {
+                    "description": "Do not upload the www directory into DB. Used only for admin.",
+                    "type": "boolean"
                 }
             }
         },
