@@ -4,14 +4,10 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.2.12 (2021-01-28)
-* (foxriver76) fix repo cli
-* (foxriver76) add instances list back to 'status all'
-* (Apollon77) optimize logging in db classes
-* (Apollon77) enhance letsencrypt to also allow to specify alternative names for certs
-* (Apollon77) deleting a not existing object is handled as success instead of Not-Exists error
+### __WORK IN PROGRESS__
+* see CHANGELOG.md, Finalized stable release
 
-## 3.2.11 (2021-01-24) Release Grace
+## 3.2.12 (2021-01-28) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
 * If you have enabled Multihost Discovery please disable and enable it again if you really need it persistent running. By re-enabling it you update the used passphrase with a better encryption mechanism.
@@ -29,6 +25,7 @@
 * (foxriver76) set connectionName for redis connections and simulator support
 * (bluefox) Added "http" and "stream" options for logs
 * (Apollon77) add seq logging support to js-controller
+* (Apollon77) enhance letsencrypt to also allow to specify alternative names for certs
 
 **Optimizations and Fixes**
 * (foxriver76) Detect adapter restart loops and stop restarting after 3 crashes (an adapter is considered "working" when no crash by an exception happens within 10 minutes)
@@ -109,6 +106,7 @@
 * (bluefox) Set default state only for objects of type "state"
 * (AlCalzone) include folders in the result of getAdapterObjects
 * (Apollon77) Make sure to not trigger subscribes or messages when unload is called
+* (Apollon77) deleting a not existing object is handled as success instead of Not-Exists error
 * general dependency updates
 * code style optimizations
 
