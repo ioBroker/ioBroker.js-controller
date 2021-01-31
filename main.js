@@ -1738,16 +1738,16 @@ function setMeta() {
                                         try {
                                             fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                         } catch (e) {
-                                            logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                                            logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                                         }
                                     });
                             }
                         } catch (e) {
-                            logger && logger.error(`Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                            logger && logger.error(`Cannot parse ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                             try {
                                 fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                             } catch (e) {
-                                logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                                logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                             }
                         }
                     }
@@ -2694,7 +2694,7 @@ function checkAndAddInstance(instance, ipArr) {
         instance.common.host = hostname;
         objects.setObject(instance._id, instance, err =>
             err ?
-                logger.error(`Cannot update hostname for ${instance._id}: ${err.toString()}`) :
+                logger.error(`Cannot update hostname for ${instance._id}: ${err.message}`) :
                 logger.info(`Set hostname ${hostname} for ${instance._id}`));
 
     }
@@ -4342,7 +4342,7 @@ function init(compactGroupId) {
                     logger && logger.info(`Deleted ${VENDOR_BOOTSTRAP_FILE}`);
                 }
             } catch (e) {
-                logger && logger.error(`Cannot delete ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                logger && logger.error(`Cannot delete ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
             }
         }, 30000);
     }
