@@ -1731,10 +1731,10 @@ function setMeta() {
                                         try {
                                             fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                         } catch (e) {
-                                            logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.toString()}`);
+                                            logger && logger.error(`Cannot delete file ${VENDOR_BOOTSTRAP_FILE}: ${e.message}`);
                                         }
                                     }).catch(err => {
-                                        logger && logger.error(`Cannot update vendor information: ${JSON.stringify(err.toString())}`);
+                                        logger && logger.error(`Cannot update vendor information: ${err.message)}`);
                                         try {
                                             fs.existsSync(VENDOR_BOOTSTRAP_FILE) && fs.unlinkSync(VENDOR_BOOTSTRAP_FILE);
                                         } catch (e) {
@@ -3105,7 +3105,7 @@ function startScheduledInstance(callback) {
                     try {
                         procs[id].process = cp.fork(fileNameFull, args, {windowsHide: true});
                     } catch(err) {
-                        logger.error(hostLogPrefix + ' instance ' + id + ' could not be started: ' + err);
+                        logger.error(hostLogPrefix + ' instance ' + id + ' could not be started: ' + err.message);
                         delete procs[id].process;
                     }
                     if (procs[id].process) {

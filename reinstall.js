@@ -51,7 +51,7 @@ function savePackages(root) {
             const pack = fs.readJSONSync(fileName);
             return {name: pack.name, version: pack.version};
         } catch (e) {
-            console.error(`Cannot read or parse ${fileName}: ${e}`);
+            console.error(`Cannot read or parse ${fileName}: ${e.message}`);
         }
         return null;
     }).filter(e => e);
@@ -147,7 +147,7 @@ function doAll() {
         .then(() => {
             console.log('\n\n\nEverything is done');
         }).catch(e => {
-            console.error('Cannot reinstall all packages: ' + e);
+            console.error('Cannot reinstall all packages: ' + e.message);
             hadErrors = 1;
         }).then(() => {
             console.log(`\n\n\nFinished in ${Math.round((Date.now() - start) / 1000)} seconds.`);
