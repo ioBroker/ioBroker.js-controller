@@ -1582,6 +1582,9 @@ Scripts can be activated and deactivated by controlling of this state with ack=f
 
 ## Changelog
 
+### 4.10.15 (2021-01-31)
+* (Apollon77) Handle more cases with invalid script names/state-ids (Sentry IOBROKER-JAVASCRIPT-5W)
+
 ### 4.10.14 (2021-01-25)
 * (Apollon77) Handle more cases with invalid script names/state-ids (Sentry IOBROKER-JAVASCRIPT-5R)
 
@@ -1594,10 +1597,6 @@ Scripts can be activated and deactivated by controlling of this state with ack=f
 ### 4.10.10 (2021-01-22)
 * (Apollon77) Do not try to set a state value if object creation was not successful (Sentry IOBROKER-JAVASCRIPT-5G)
 * (Apollon77) Make sure no incorrect states are trying to be set (Sentry IOBROKER-JAVASCRIPT-5F, IOBROKER-JAVASCRIPT-5A)
-
-### 4.10.9 (2021-01-13)
-* (Apollon77) Make sure to end all Timeouts
-* (Apollon77) Prevent crash case (Sentry IOBROKER-JAVASCRIPT-51)
 
 ## License
 

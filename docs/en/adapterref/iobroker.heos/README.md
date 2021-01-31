@@ -57,6 +57,9 @@ Note: Multiple commands are possible, if they are separated with the pipe e.g. s
 ## Mute Regex
 In the configuration you can activate a function to mute the player based on a regex match on the song information. That can be used to mute ads automatically. For example for Spotify you can use the following regex: ```spotify:ad:|Advertisement```.
 
+## Seek
+The seek functionality is not working on all sources. Spotify and Amazon Music are supporting seeking.
+
 ## Browse Sources
 To reduce the state amount in ioBroker, only playlists and the presets are automatically stored in the states. However at first you have to click the browse button in the playlists or presets folder. You can find and control them in the "sources" folder. If you want to browse the music of a source, just press the browse button. You'll find the browse result in the sources.browse_result state. There are also commands provided to navigate deeper or play a resource. Just paste the commands in the global HEOS command field. If it is a browse command you'll find the result in the browse_result state. In the configuration you find an option to control the scope of the play commands. With that you can control if the play commands go to all players, to all leaders and non-group players or to a list of player Ids defined in the state command_scope_pid.
 
@@ -229,6 +232,16 @@ on({id: 'heos.0.sources.browse_result', change: 'any'}, function (obj) {
 ```
 
 ## Changelog
+
+### 1.7.2 (2021-01-30)
+* (withstu) fix seek in groups
+
+### 1.7.1 (2021-01-30)
+* (withstu) add seek
+
+### 1.7.0 (2021-01-29)
+* (withstu) reboot not responding players
+* (withstu) delete old presets and playlists
 
 ### 1.6.2 (2021-01-02)
 * (withstu) fix "user not logged in" handling

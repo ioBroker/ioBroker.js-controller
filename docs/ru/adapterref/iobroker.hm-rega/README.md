@@ -113,6 +113,15 @@ IP-адрес CCU можно выбрать в раскрывающемся ме
 	### __WORK IN PROGRESS__
 -->
 
+### 3.0.14 (2021-01-30)
+* (foxriver76) fix pot. crash after reconnect because of existingStates array
+
+### 3.0.13 (2021-01-30)
+* (foxriver76) ensure to not set states of non-existing RPC objects due to differences in the APIs (fixes #123)
+
+### 3.0.12 (2021-01-29)
+* (foxriver76) we now handle some more edge case errors
+
 ### 3.0.10 (2021-01-27)
 * (foxriver76) no build needed
 

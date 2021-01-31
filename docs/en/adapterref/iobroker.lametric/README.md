@@ -17,7 +17,7 @@ All you need is the IP address of your device and the api developer key.
 
 ## Configuration
 
-Tested with LaMetric firmware *2.0.28* and *2.1.3* (recommended)
+Tested with LaMetric firmware *2.1.3* (recommended)
 
 You can get your personal key [here](https://developer.lametric.com/).
 
@@ -193,6 +193,12 @@ show();
 ```
 
 ## Changelog
+
+### 1.2.0
+
+* (klein0r) Added hide if value for My Data (DIY)
+* (klein0r) Remove frames without text from My Data (DIY)
+* (klein0r) Allow dynamic states for My Data (DIY) icons
 
 ### 1.1.3
 

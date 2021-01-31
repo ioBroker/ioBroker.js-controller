@@ -60,6 +60,8 @@ For more information visit https://minukodu.de/en or watch at youtube https://yo
 
 
 ## Changelog
+### 1.3.1 (2021-01-24)
+* updated app to V1.12.1
 ### 1.3.0 (2021-01-24)
 * updated builder and app to V1.12.0
 * new meta-datapoint "0_userdata.0" for storing config-files

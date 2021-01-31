@@ -3,54 +3,54 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.sonoff/README.md
 title: ioBroker Sonoff
-hash: sd76KWFFfIcWHwVBnmdbn8KgdJtIKXjm3+WFAKuwtI8=
+hash: 3sJtUS1rjlgVC9EW6ImdUqJPd9fS0yVC1S2ABMdysCw=
 ---
-![логотип](../../../en/adapterref/iobroker.sonoff/admin/sonoff.png)
+![Логотип](../../../en/adapterref/iobroker.sonoff/admin/sonoff.png)
 
 ![Количество установок](http://iobroker.live/badges/sonoff-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.sonoff.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.sonoff.svg)
-![тесты](https://travis-ci.org/ioBroker/ioBroker.sonoff.svg?branch=master)
+![Тесты](https://travis-ci.org/ioBroker/ioBroker.sonoff.svg?branch=master)
 ![NPM](https://nodei.co/npm/iobroker.sonoff.png?downloads=true)
 
 # IoBroker Sonoff
-## Использование
-Этот адаптер связывается с устройствами Sonoff с прошивкой Tasmota или ESP через MQTT.
+## Применение
+Этот адаптер связывается с устройствами Sonoff с прошивкой Tasmota или устройствами ESP через MQTT.
 
 Ожидаются следующие темы:
 
 - `tele / DeviceNAME / STATE`
-- `tele / DeviceNAME / SENSOR`
+- `теле / ИМЯ устройства / ДАТЧИК`
 - `tele / DeviceNAME / INFOx`
 - `tele / DeviceNAME / ENERGY`
 - `cmnd / DeviceNAME / POWERx`
 - `stat / DeviceNAME / POWERx`
-- `/ DeviceNAME / BM280 / Температура`
-- `/ DeviceNAME / BM280 / Humidity`
+- `/ ИМЯ устройства / BM280 / Температура`
+- `/ ИМЯ устройства / BM280 / Влажность`
 - `/ DeviceNAME / BM280 / Temperatur`
 - `/ DeviceNAME / BM280 / Feuchtigkeit`
-- `/ DeviceNAME / BM280 / Vcc`
-- `/ DeviceNAME / BM280 / VCC`
-- `/ DeviceNAME / BM280 / Laufzeit`
-- `/ DeviceNAME / BM280 / RSSI`
-- `/ DeviceNAME / BM280 / POWER`
-- `/ DeviceNAME / BM280 / POWER1`
-- `/ DeviceNAME / BM280 / POWER2`
-- `/ DeviceNAME / BM280 / POWER3`
-- `/ DeviceNAME / BM280 / POWER4`
+- `/ ИМЯ устройства / BM280 / Vcc`
+- `/ ИМЯ устройства / BM280 / VCC`
+- `/ ИМЯ устройства / BM280 / Laufzeit`
+- `/ ИМЯ устройства / BM280 / RSSI`
+- `/ ИМЯ устройства / BM280 / ПИТАНИЕ`
+- `/ ИМЯ устройства / BM280 / POWER1`
+- `/ ИМЯ устройства / BM280 / POWER2`
+- `/ ИМЯ устройства / BM280 / POWER3`
+- `/ ИМЯ устройства / BM280 / POWER4`
 - `/ DeviceNAME / BM280 / Switch1`
-- `/ DeviceNAME / BM280 / Switch2`
-- `/ DeviceNAME / BM280 / Total`
-- `/ DeviceNAME / BM280 / Today`
-- `/ DeviceNAME / BM280 / heute`
-- `/ DeviceNAME / BM280 / Вчера`
+- `/ ИМЯ устройства / BM280 / Switch2`
+- `/ ИМЯ устройства / BM280 / Всего`
+- `/ ИМЯ устройства / BM280 / Сегодня`
+- `/ ИМЯ устройства / BM280 / heute`
+- `/ DeviceNAME / BM280 / Yesterday`
 - `/ DeviceNAME / BM280 / gestern`
-- `/ DeviceNAME / BM280 / Фактор`
+- `/ DeviceNAME / BM280 / Faktor`
 - `/ DeviceNAME / BM280 / Factor`
 - `/ DeviceNAME / BM280 / Power`
 - `/ DeviceNAME / BM280 / Leistung`
 - `/ DeviceNAME / BM280 / Voltage`
-- `/ DeviceNAME / BM280 / Spannung`
+- `/ ИМЯ устройства / BM280 / Spannung`
 - `/ DeviceNAME / BM280 / Current`
 - `/ DeviceNAME / BM280 / Strom`
 - `/ DeviceNAME / BM280 / Punkt`
@@ -58,43 +58,49 @@ hash: sd76KWFFfIcWHwVBnmdbn8KgdJtIKXjm3+WFAKuwtI8=
 - `/ DeviceNAME / BM280 / Counter2`
 - `/ DeviceNAME / BM280 / Counter3`
 - `/ DeviceNAME / BM280 / Counter4`
-- `/ DeviceNAME / BM280 / Pressure`
+- `/ ИМЯ устройства / BM280 / Давление`
 - `/ DeviceNAME / BM280 / SeaPressure`
 - `/ DeviceNAME / BM280 / Druck`
-- `/ DeviceNAME / BM280 / Прибл. Altitude`
+- `/ ИМЯ устройства / BM280 / Прибл. Высота`
 - `/ DeviceNAME / BM280 / Module`
-- `/ DeviceNAME / BM280 / Version`
-- `/ DeviceNAME / BM280 / Hostname`
-- `/ DeviceNAME / BM280 / IPAddress`
+- `/ ИМЯ устройства / BM280 / Версия`
+- `/ ИМЯ устройства / BM280 / Имя хоста`
+- `/ ИМЯ устройства / BM280 / IP-адрес`
 - `/ DeviceNAME / BM280 / IPaddress`
-- `/ DeviceNAME / BM280 / RestartReason`
+- `/ ИМЯ устройства / BM280 / RestartReason`
 - `/ DeviceNAME / BM280 / CarbonDioxide`
 - `/ DeviceNAME / DHT11 / Illuminance`
-- `/ DeviceNAME / SonoffSC / Light`
+- `/ ИМЯ устройства / SonoffSC / Light`
 - `/ DeviceNAME / SonoffSC / Noise`
-- `/ DeviceNAME / SonoffSC / AirQuality`
-- `/ DeviceNAME / SDS0X1 / PM2.5`
-- `/ DeviceNAME / SDS0X1 / PM10`
-- `/ DeviceNAME / SDS0X1 / UvLevel`
+- `/ ИМЯ устройства / SonoffSC / AirQuality`
+- `/ ИМЯ устройства / SDS0X1 / PM2.5`
+- `/ ИМЯ устройства / SDS0X1 / PM10`
+- `/ ИМЯ устройства / SDS0X1 / UvLevel`
 - `/ DeviceNAME / SDS0X1 / Latitude`
-- `/ DeviceNAME / SDS0X1 / Longitude`
+- `/ ИМЯ устройства / SDS0X1 / Долгота`
 - `/ DeviceNAME / SR04 / Distance`
 
-** Примечание **: список может быть легко расширен. Пожалуйста, отправьте `Pull Requests` или *отладочные данные* для неизвестных состояний разработчику (через проблему).
+** Примечание **: список можно легко расширить. Отправьте разработчику `Pull Requests` или *данные отладки* для неизвестных состояний (через проблему).
 
 ## Автоматическое создание объектов
-В веб-конфигурации вы можете определить, какие телеграммы MQTT создают новые объекты не в точках данных по умолчанию
+В веб-конфигурации вы можете определить, какие телеграммы MQTT создают новые объекты не в точках данных по умолчанию.
 
-* `TELE_SENSOR` создает объекты из телеграмм` tele / xxx / SENSOR`
-* `TELE_STATE` создает объекты из телеграмм` tele / xxx / STATE`
-* `STAT_RESULT` создает объекты из телеграмм` stat / xxx / RESULT`
+* TELE_SENSOR создает объекты из телеграмм tele / xxx / SENSOR
+* TELE_STATE создает объекты из телеграмм tele / xxx / STATE
+* STAT_RESULT создает объекты из телеграмм stat / xxx / RESULT
 
-Обычно TELE_SENSOR должно быть достаточно для большинства пользователей.
+Обычно для большинства пользователей достаточно TELE_SENSOR.
+
+* `Create object tree` создает объекты как древовидную структуру
+
+** Предупреждение! ** Эта опция испортит ваше дерево объектов sonoff! Приходится переделывать все настройки для хранения ...
+Сохраните структуру объекта как файл JSON, чтобы вы могли воссоздать свою старую структуру.
+Лучше всего остановить адаптер, удалить все объекты в sonoff и снова запустить адаптер.
 
 ## Флаги для светодиодных контроллеров
-Состояния режима будут созданы, только если устройство имеет одно из состояний:
+Состояния режима будут созданы только в том случае, если устройство находится в одном из состояний:
 
-- `Красный`,` Зеленый`, `Синий`,` WW`, `CW`,` Color`, `RGB_POWER`,` WW_POWER`, `CW_POWER`,` Hue`, `Saturation`
+- Red, Green, Blue, WW, CW, Color, RGB_POWER, WW_POWER, CW_POWER, Hue, Насыщенность.
 
 Состояния:
 
@@ -102,6 +108,14 @@ hash: sd76KWFFfIcWHwVBnmdbn8KgdJtIKXjm3+WFAKuwtI8=
 * `modeReadColors` - разрешить чтение цвета из MQTT (по умолчанию false)
 
 ## Changelog
+
+### __WORK IN PRGRESS__
+* (anwa) add several datapoints
+* (anwa) Fix tranlation for 'ignorePings'
+* (anwa) Fix wrong unit for humidity
+* (anwa) Config option to create a complete object tree instead of a flat structure
+* (anwa) Change Action type to string
+* (Apollon77) js-controller 2.0 is required at least
 
 ### 2.3.3 (2019-11-27)
 * (bluefox) Error with empty packet was caught

@@ -27,51 +27,85 @@ Mit diesen neuen Datenpunkten kann dann eine Einfache Visualiserung durchgeführ
 
 Die neuen Datenpunkte (besonders die Gruppen) könnten super mit valuetrackerovertime weiterverarbeitet werden
 
-Die neuen Datenpunkte für Power und Total werden normal im gleichen Verzeichnis wie die überwachten States abgelegt. Sobald der Pfad einen "." enthält wird das Verzeichnis als Absolut betrachtet und unter dieser id abgelegt. Hier ist es sinnvoll die Datenpunkte in das eigene virtualpowermeter.0 abzulegen (aufpassen dass man die Ids nicht doppelt verwendet.)
-<img src="https://user-images.githubusercontent.com/25373047/104218659-5920eb80-543d-11eb-8e20-774822d489a7.png" />
+## Instance Settings
+
+<img src="admin/InstanceSettings.PNG" />
+
+hier kan der Default-Name für das Power und Energy_Total definiert werden.
+
+
+Die Einstellung default setting: Datapoint Destination bestimmt die default Einstellung beim erstellen eines neuen Custom-Settings. Bei "in the state folder" wird bei neuen Custom-Settings die Standardnamen für Power und Energie genutz. Bei "in group" wird als Standardname die ObjectID des Custom-DP (. durch _ ersetzt) als Unterverzeichnis + der Standardname für Power und Energie genutz. "anywhere else" nutzt ebenfalls den Standardname für Power und Engery muss aber für jeden Custom-DP manuell angepasst werden.
+
+
+## Custom Settings 
+<img src="admin/DatapointSample.PNG" />
+Die aktivierung eines Custom-Settings aktiviert 2 Datenpunkte. Power -> Watt, Energy(_Total) -> Wh
+Der Speicherort setzt sich aus dem Datapoint Destination + Datapointname zusammen.
+
+Wichtig: Wenn Destination "in Group" bzw wenn mehere DP im gleichen Verzeichnis "in current state tree" braucht jeder Datenpunkt seinen eindeutigen Namen. wenn default-Destination "in Group" wird der Datenpunktname automatisch mit der ID des States ergänzt (. durch _ ersetzt). Hier kann aber Auch z.B. Wohnzimmer_Licht.Power und Wohnzimmer_Licht.Energy angegeben werden.
+
+## Custom Settings für Geräte die nur Power Angabe (Watt) und man die Wh zählen will
+
+Es gibt Geräte die nur eine Watt ausgabe haben und man aber wissen will wieviel Strom verbraucht wurde.
+Hierfür kann auch der VirtualPowermeter verwendet werden. Dafür muss nur der Max-Wert vom Datenpunkt und der Max-Power vom VirtualPowermeter gleich sein.
+Beispiel:
+<img src="BeispielPowerToEnergy.png">
+
+
 
 Beispiel mit valuetrackerovertime:
 <img src="MeinBeispiel2.jpg" />
 
 
 ## Changelog
+### 1.3.2 (2021-01-27)
+* (Omega236) group total is now its own counter
+* (Omega236) improved precision
+### 1.3.1 (2021-01-25)
+* (Omega236) reduce initializations and optimize group handling
+### 1.3.0 (2021-01-15)
+* (scrounger) default ids for power and energie configurable through adapter settings
+* (scrounger) custom: autocomplete for group input added
+* (scrounger) option added -> group energy values can only increase 
+* (Omega236) Check duplicate Destination DP
+* (Omega236n) allows to Set Destination of DP
 ### 1.2.2 (2020-12-26
-* (Lutz Sebastian) Group Calculations only after InitialFinished
+* (Omega236) Group Calculations only after InitialFinished
 ### 1.2.1 (2020-04-15)
-* (Lutz Sebastian) translation
+* (Omega236) translation
 ### 1.2.0 (2020-04-15)
-* (Lutz Sebastian) js-controller 3.x support
+* (Omega236) js-controller 3.x support
 ### 1.1.1 (2020-04-07)
-* (Lutz Sebastian) bugfix translation
+* (Omega236) bugfix translation
 ### 1.1.0 (2020-04-05)
-* (Lutz Sebastian) inverted added
+* (Omega236) inverted added
 ### 1.0.1
-* (Lutz Sebastian) SecurityUpdates
+* (Omega236) SecurityUpdates
 ### 1.0.0
-* (Lutz Sebastian) Final Release
+* (Omega236) Final Release
 ### 0.2.8
-* (Lutz Sebastian) Bug found on travis unsubscribeStatesAsync
+* (Omega236) Bug found on travis unsubscribeStatesAsync
 ### 0.2.6
-* (Lutz Sebastian) texts adapted
+* (Omega236) texts adapted
 ### 0.2.5
-* (Lutz Sebastian) awaits missing
+* (Omega236) awaits missing
 ### 0.2.4
-* (Lutz Sebastian) var remove and SettingPage Info and dic in class and .bind(this) (Template 1.10)
+* (Omega236) var remove and SettingPage Info and dic in class and .bind(this) (Template 1.10)
 ### 0.2.3
-* (Lutz Sebastian) CodeOptimierung nach eslint
+* (Omega236) CodeOptimierung nach eslint
 ### 0.2.1
-* (Lutz Sebastian) CodeOptimierung und bild
+* (Omega236) CodeOptimierung und bild
 ### 0.2.0
-* (Lutz Sebastian) Alle Funktionen implementiert, code noch nicht überprüft/optimiert/getestet
+* (Omega236) Alle Funktionen implementiert, code noch nicht überprüft/optimiert/getestet
 ### 0.1.0
-* (Lutz Sebastian) Erste Version mit Grundfunktionalität
+* (Omega236) Erste Version mit Grundfunktionalität
 ### 0.0.1
-* (Lutz Sebastian) initial release
+* (Omega236) initial release
 
 ## License
 MIT License
 
-Copyright (c) 2021 Lutz Sebastian general.of.omega@googlemail.com
+Copyright (c) 2021 Omega236 general.of.omega@googlemail.com
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

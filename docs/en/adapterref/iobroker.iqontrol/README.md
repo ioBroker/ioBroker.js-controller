@@ -579,6 +579,15 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 	* ``sizeInactive`` (Size of tile, if device is inactive):
 		* Possible values: ""|"narrowIfInactive shortIfInactive"|"narrowIfInactive"|"narrowIfInactive highIfInactive"|"narrowIfInactive xhighIfInactive"|"shortIfInactive"|"shortIfInactive wideIfInactive"|"shortIfInactive xwideIfInactive"|"wideIfInactive"|"xwideIfInactive"|"highIfInactive"|"xhighIfInactive"|"wideIfInactive highIfInactive"|"xwideIfInactive highIfInactive"|"wideIfInactive xhighIfInactive"|"xwideIfInactive xhighIfInactive"|"fullWidthIfInactive aspect-1-1IfInactive"|"fullWidthIfInactive aspect-4-3IfInactive"|"fullWidthIfInactive aspect-3-2IfInactive"|"fullWidthIfInactive aspect-16-9IfInactive"|"fullWidthIfInactive aspect-21-9IfInactive"|"fullWidthIfInactive fullHeightIfInactive"|"
 		* Default: "xwideIfInactive highIfInactive"
+	* ``stateHeightAdaptsContentInactive`` (Adapt height of STATE to its content (this overwrites the tile size, if needed), if the device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``stateFillsDeviceInactive`` (Size of STATE fills the complete device (this may interfere with other content), if the device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``stateBigFontInactive`` (Use big font for STATE, if the device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
 	* ``bigIconInactive`` (Show big icon, if device is inactive):
 		* Possible values: "true"|"false"
 		* Default: "false"
@@ -612,6 +621,15 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 * Tile-Behaviour if device is active:
 	* ``sizeActive`` (Size of tile, if device is active):
 		* Possible values: ""|"narrowIfActive shortIfActive"|"narrowIfActive"|"narrowIfActive highIfActive"|"narrowIfActive xhighIfActive"|"shortIfActive"|"shortIfActive wideIfActive"|"shortIfActive xwideIfActive"|"wideIfActive"|"xwideIfActive"|"highIfActive"|"xhighIfActive"|"wideIfActive highIfActive"|"xwideIfActive highIfActive"|"wideIfActive xhighIfActive"|"xwideIfActive xhighIfActive"|"fullWidthIfActive aspect-1-1IfActive"|"fullWidthIfActive aspect-4-3IfActive"|"fullWidthIfActive aspect-3-2IfActive"|"fullWidthIfActive aspect-16-9IfActive"|"fullWidthIfActive aspect-21-9IfActive"|"fullWidthIfActive fullHeightIfActive"|"
+	* ``stateHeightAdaptsContentActive`` (Adapt height of STATE to its content (this overwrites the tile size, if needed), if the device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``stateFillsDeviceActive`` (Size of STATE fills the complete device (this may interfere with other content), if the device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``stateBigFontActive`` (Use big font for STATE, if the device is active):
+		* Possible values: "true"|"false"
+		* Default: "false"
 	* ``bigIconActive`` (Show big icon, if device is active):
 		* Possible values: "true"|"false"
 		* Default: "false"
@@ -645,6 +663,15 @@ Most things work right out of the box. You *can*, but you don't have to use all 
 * Tile-Behaviour if device is enlarged:
 	* ``sizeEnlarged`` (Size of tile, if device is enlarged):
 		* Possible values: ""|"narrowIfEnlarged shortIfEnlarged"|"narrowIfEnlarged"|"narrowIfEnlarged highIfEnlarged"|"narrowIfEnlarged xhighIfEnlarged"|"shortIfEnlarged"|"shortIfEnlarged wideIfEnlarged"|"shortIfEnlarged xwideIfEnlarged"|"wideIfEnlarged"|"xwideIfEnlarged"|"highIfEnlarged"|"xhighIfEnlarged"|"wideIfEnlarged highIfEnlarged"|"xwideIfEnlarged highIfEnlarged"|"wideIfEnlarged xhighIfEnlarged"|"xwideIfEnlarged xhighIfEnlarged"|"fullWidthIfEnlarged aspect-1-1IfEnlarged"|"fullWidthIfEnlarged aspect-4-3IfEnlarged"|"fullWidthIfEnlarged aspect-3-2IfEnlarged"|"fullWidthIfEnlarged aspect-16-9IfEnlarged"|"fullWidthIfEnlarged aspect-21-9IfEnlarged"|"fullWidthIfEnlarged fullHeightIfEnlarged"|"
+	* ``stateHeightAdaptsContentEnlarged`` (Adapt height of STATE to its content (this overwrites the tile size, if needed), if the device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``stateFillsDeviceInactiveEnlarged`` (Size of STATE fills the complete device (this may interfere with other content), if the device is inactive):
+		* Possible values: "true"|"false"
+		* Default: "false"
+	* ``stateBigFontEnlarged`` (Use big font for STATE, if the device is enlarged):
+		* Possible values: "true"|"false"
+		* Default: "false"
 	* ``bigIconEnlarged`` (Show big icon, if device is enlarged):
 		* Possible values: "true"|"false"
 		* Default: "true"
@@ -1323,6 +1350,10 @@ In addition to normal thermostat you can define:
 This device has some special predefined size- and display-settings to show a website, that can be defined by **BACKGROUND_URL**, as a widget. With default options, a small enlarge-button will be shown on the upper right side.
 * **STATE**: *any* - SPECIAL: If empty, a virtual datapoint will be created, so you can click on the icon, to activate and therefore maximize the size of the widget
 
+### <img src="img/icons/info_bubble_off.png" width="32"> Info-Text:
+This device has some special predefined size- and display-settings to show a text over the full width of screen on a transparent background. With standard-settings the device is hidden, if the STATE is empty. The height of the device adapts to the size of the STATE.
+* **STATE**: *any* - tis text ist shown on screen.
+
 
 ****
 
@@ -1356,6 +1387,11 @@ This device has some special predefined size- and display-settings to show a web
 * (sbormann) Fixed edit-dialog of device not opening under some circumstances.
 * (sbormann) Added type icon and type datapoint to widget-url-parameters.
 * (sbormann) Added OVERLAY_INACTIVE_COLOR and OVERLAY_ACTIVE_COLOR.
+* (sbormann) Added option to show badge value without unit.
+* (sbormann) Added toggle by icon for garage door (after optional confirmation).
+* (sbormann) Fixed not to open Dialog if clickOnTileOpensDialog is set to false.
+* (sbormann) Added new device: Info-Text, which can be used to display plain Text on views, therefore some new options were created (stateHeightAdaptsContent, stateFillsDevice, stateBigFont).
+* (sbormann) Text on transparent tiles is now white (can be configured).
 
 ### 1.5.7 (2021-01-24)
 * (sbormann) Fixed missing info.connection object.

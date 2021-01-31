@@ -11,9 +11,9 @@ This app is designed to run on mobile phones and tables. it stores the vis proje
 
 ## Usage
 This app required the installed and running web adapter or socket-io adapter and installed vis adapter. If web server is activated, so internal socket-io interface must be activated.
-In vis some project should exists, e.g. "main".
+In vis some project should exist, e.g. "main".
 
-The ports and the ioBroker server must be reachable from mobile phone.
+The ports and the ioBroker server must be reachable from the mobile phone.
 
 Install app via [App Store](https://play.google.com/store/apps/details?id=net.iobroker.vis&hl=en). After starting the app for the first time the settings dialog should be opened automatically. To start work with an app see settings.
 
@@ -21,7 +21,7 @@ To show settings press semi-transparent button with "..." in the top left corner
 ![Settings](img/menu.png)
 
 ## Settings
-Almost all settings are optional except "WIFI Socket" and "Project".
+Almost all settings are optional except "WI-FI Socket" and "Project".
 
 ### Buttons
 - *Reload* - Just restart the web engine, like you press the "Refresh" button in your browser.
@@ -31,27 +31,27 @@ If the option * Sleep in background * is activated, the phone must be active dur
 - *Cancel* - discard all changes and close dialog.
 
 ### Connectivity
-App can detect via SSID name if the mobile phone in the home (trusted) network or outside of home network and use for home and outside connection the different socket URLs and login data.
+App can detect via SSID name if the mobile phone in the home (trusted) network or outside home network and use for home and outside connection the different socket URLs and login data.
 
 Normally in the home network there is no authentication and connection is via HTTP (insecure) but from outside network the connection goes via https (secure) and with login/password.
 
 - *Connected* - shows if the app is connected with ioBroker server.
-- *WIFI SSID* - name or names (divided by comma) of home SSID to use home credentials for authentication and home URL for connection.
+- *WIFI SSID* - name or names (divided by the comma) of home SSID to use home credentials for authentication and home URL for connection.
 - *WIFI Socket* - URL like ```http://192.168.0.5:8082```. It is important to have http or https at the start, so app can distinguish between secure and insecure connections. Port is important too. Normally 8082 for *web* or *8084* for separated socketio.
-- *WIFI User* - if for the socket communication the authentication is enabled, write here user name from iobroker. User must be first created via "admin" interface. The user "admin" exists always and cannot be deleted.
+- *WIFI User* - if for the socket communication the authentication is enabled, write here the username from iobroker. User must be first created via "admin" interface. The user "admin" exists always and cannot be deleted.
 - *WIFI Password* - user password as set in the ioBroker
 - *WIFI Password repeat* - repeat user password here
 
-Following settings are active only if some SSID specified and the device is currently outside of this SSID WiFi network.
-- *Cell Socket* - same as *WIFI Socket*, but will be used outside of home network.
-- *Cell User* - same as *WIFI User*, but will be used outside of home network.
-- *Cell Password* - same as *WIFI Password*, but will be used outside of home network.
-- *Cell Password repeat* - same as *WIFI Password repeat*, but will be used outside of home network.
+Following settings are active only if some SSID specified and the device is currently outside this SSID Wi-Fi network.
+- *Cell Socket* - same as *WIFI Socket*, but will be used outside home network.
+- *Cell User* - same as *WIFI User*, but will be used outside home network.
+- *Cell Password* - same as *WIFI Password*, but will be used outside home network.
+- *Cell Password repeat* - same as *WIFI Password repeat*, but will be used outside home network.
 
 *Note*: the global CSS file will not be processed by application. To use these styles in specific project they should be copied into project CSS file.
 
 ### Project name and settings language
-- *Language* - language of the settings dialog. English, German and Russian languages are supported. To activate changes press *OK* button.
+- *Language* - language of the setting dialog. English, German and Russian languages are supported. To activate changes press *OK* button.
 - *Project* - project name from ioBroker. If no project name shown, so there is no connection with iobroker or no one project is exist.
 
 ### Visualisation and behaviour
@@ -87,9 +87,9 @@ Of course one instance of text2command adapter must be installed.
 - *Response over TTS* - if activated the answers from text2command will be synthesised via text-to-speech engine. Of course some TTS Engine must be installed and activated on android device.
 
 ### Battery and location
-There is a possibility to report position and battery status to server. 
+There is a possibility to report position and battery status to the server. 
 
-- *Device name* - device name is used to create states on server (see below).
+- *Device name* - device name is used to create states on the server (see below).
 - *Report battery status* - if battery status must be reported to server or not. Only changes of battery level or plugged state will be reported. No cyclic update.
 - *Position poll interval (sec)* - If position should be reported to server. Position is reported on change and cyclic. To disable report of position set interval to zero. (E.g. to save the battery)
 - *High accuracy position* - If position must be high accuracy or not. In high accuracy mode more battery drain.
@@ -112,14 +112,14 @@ Following states are not available on all devices:
 - vis.0.<deviceName>.coords.speed - current ground speed of the device, specified in meters per second.
 - vis.0.<deviceName>.coords.speedKm - current ground speed of the device, specified in km per hours.
 
-### Access to images and other resources
+### Access to the images and other resources
 The App copies the view file of the selected project and all referenced images during the synchronization to the phone (internal memory). There is no automatic update so you have to restart the re-synchronization manually.
 The following content will be copied to the phone:
 - The view files and all other files in the directory of the chosen vis project with one of the following file extensions: ```.png .jpg .jpeg .gif```
 - All image files with file extension ```.png .jpg .jpeg .gif``` and files with file extension ```.wav .mp3 .bmp .svg```, which are in a adapter directory below [iobroker data directory]/files/ and which are referenced inside the view definition file of the chosen vis project. The fist sub directory below [iobroker data directory]/files/ must contain the char "." in his name otherwise the files inside will not be copied.
 
 To allow the app to replace the paths correctly, the files must be specified with an absolute local path (for example, /vis.0/main/img/test.png). Relative paths are not supported. If paths to resources are embedded in HTML inside widgets, the syntax must be exactly match the following pattern  ```... src='/vis.0/main...'``` or ```... src ="/vis.0/main..."```. Other notations are not recognized.
-Additionally you can configure an *Substitution URL* in the settings dialog. This URL points to the external URL of the Web server of VIS or another local web server. All found references to URL found in the view definition which starts with the configured Test are downloaded to the device and the URL will be changed to the local path during the synchronization. Please note that this substitution is not implemented for embedded links in html code(e.g. ```https://[your domain]/visweb```).
+Additionally, you can configure an *Substitution URL* in the setting dialog. This URL points to the external URL of the Web server of VIS or another local web server. All found references to URL found in the view definition which starts with the configured Test are downloaded to the device and the URL will be changed to the local path during the synchronization. Please note that this substitution is not implemented for embedded links in html code(e.g. ```https://[your domain]/visweb```).
 
 The replacement of paths at runtime is currently limited to the following widgets:
 - basic string (unescaped)
@@ -178,7 +178,7 @@ Depends on the SSID name the app will determine if it must use local address (So
 
 Activate checkbox "Use iobroker.pro" and enter below your login (email) and password for ioBroker.pro cloud.
 
-After that, when you connects via iobroker.pro you will see small icon on the top right corner for first 10 seconds if connection is via iobroker.pro cloud.
+After that, when you connect via iobroker.pro you will see the small icon in the top right corner for first 10 seconds if connection is via iobroker.pro cloud.
 
 ![iobroker.pro icon](img/iobroker.pro3.png)
 
@@ -192,7 +192,7 @@ Vis creates 3 variables:
 Commands:
 
 * alert - show alert window in vis. "control.data" has following format "message;title;jquery-icon". Title and jquery-icon are optional. Icon names can be found [here](http://jqueryui.com/themeroller/). To show icon "ui-icon-info" write ```Message;;info```.
-* changeView - switch to desired view. "control.data" must have name of view. You can specify project name too as "project/view". Default project is "main".
+* changeView - switch to desired view. "control.data" must have a name of view. You can specify project name too as "project/view". Default project is "main".
 * refresh - reload vis, for instance after project is changed to reload on all browsers.
 * reload - same as refresh.
 * dialog - Show dialog window. Dialog must exist on view. One of:

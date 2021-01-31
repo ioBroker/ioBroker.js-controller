@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: lSKyUIwZ8HzN3fwYt5gLQOEWhqss8l2VzaHXmcTbXYw=
+hash: J96EEfhXaMPbFj1J6CUCiIB2CbfhWhEyF1gfJdaKe8A=
 ---
 ![Logo](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -21,14 +21,14 @@ Mit diesem Adapter können Sie Statusinformationen zu Ihrem [LaMetric Time](http
 Sie benötigen lediglich die IP-Adresse Ihres Geräts und den API-Entwicklerschlüssel.
 
 ## Aufbau
-Getestet mit LaMetric Firmware *2.0.28* und *2.1.3* (empfohlen)
+Getestet mit LaMetric Firmware *2.1.3* (empfohlen)
 
 Sie können Ihren persönlichen Schlüssel [Hier](https://developer.lametric.com/) erhalten.
 
 ![API-Schlüssel](../../../en/adapterref/iobroker.lametric/docs/apiKey.png)
 
 ## Eigenschaften
-- Displayhelligkeit einstellen (Prozent, Auto-Modus / Manueller-Modus)
+- Stellen Sie die Anzeigehelligkeit ein (Prozent, Auto-Modus / Manueller-Modus).
 - Stellen Sie die Lautstärke ein (Prozent)
 - Bildschirmschoner konfigurieren (aktivieren / deaktivieren, zeitbasiert, wenn es dunkel ist)
 - Aktivieren / Deaktivieren Sie Bluetooth und ändern Sie den Bluetooth-Namen
@@ -187,6 +187,16 @@ show();
 ```
 
 ## Changelog
+
+### 1.2.0
+
+* (klein0r) Added hide if value for My Data (DIY)
+* (klein0r) Remove frames without text from My Data (DIY)
+* (klein0r) Allow dynamic states for My Data (DIY) icons
+
+### 1.1.3
+
+* (klein0r) Fixed async object creation
 
 ### 1.1.2
 

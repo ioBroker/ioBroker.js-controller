@@ -3,25 +3,25 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: lSKyUIwZ8HzN3fwYt5gLQOEWhqss8l2VzaHXmcTbXYw=
+hash: J96EEfhXaMPbFj1J6CUCiIB2CbfhWhEyF1gfJdaKe8A=
 ---
 ![Логотип](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.lametric.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.lametric.svg)
 ![Стабильный](http://iobroker.live/badges/lametric-stable.svg)
-![установлены](http://iobroker.live/badges/lametric-installed.svg)
+![установлен](http://iobroker.live/badges/lametric-installed.svg)
 ![Статус зависимости](https://img.shields.io/david/klein0r/iobroker.lametric.svg)
 ![Известные уязвимости](https://snyk.io/test/github/klein0r/ioBroker.lametric/badge.svg)
 ![Статус сборки](http://img.shields.io/travis/klein0r/ioBroker.lametric.svg)
-![НПМ](https://nodei.co/npm/iobroker.lametric.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.lametric.png?downloads=true)
 
 # IoBroker.lametric
 Этот адаптер позволяет получать информацию о статусе вашего [LaMetric Time](https://haus-auto.com/p/amz/LaMetricTime) *(Партнерская ссылка)* и отправлять на него уведомления.
 Все, что вам нужно, это IP-адрес вашего устройства и ключ разработчика API.
 
 ## Конфигурация
-Протестировано с прошивкой LaMetric *2.0.28* и *2.1.3* (рекомендуется)
+Протестировано с прошивкой LaMetric *2.1.3* (рекомендуется)
 
 Вы можете получить личный ключ [Вот](https://developer.lametric.com/).
 
@@ -187,6 +187,16 @@ show();
 ```
 
 ## Changelog
+
+### 1.2.0
+
+* (klein0r) Added hide if value for My Data (DIY)
+* (klein0r) Remove frames without text from My Data (DIY)
+* (klein0r) Allow dynamic states for My Data (DIY) icons
+
+### 1.1.3
+
+* (klein0r) Fixed async object creation
 
 ### 1.1.2
 

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
+hash: FN7/wD4lfP+fOAfD1I+LrEHjCHOIwfKUpX7Kv6dshz4=
 ---
 ![商标](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -62,7 +62,7 @@ hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
 
 ＃＃ 你需要...
 * Nodejs 10或更高版本
-* Web适配器，其一个实例运行与admin-adapter，socket.IO相同的协议（http或https），并且IO设置为“集成”并且“强制Web-Sockets”被禁用
+* Web适配器，其一个实例运行与admin-adapter，socket.IO相同的协议（http或https），并且IO设置为“集成”，并且禁用了“强制Web-Sockets”
     *如果与其他适配器冲突，只需添加具有上述设置的另一个实例-iQontrol将搜索最合适的web-adapter-instance并将其用于通信
 *为了同时通过* iobroker.pro-Cloud *进行连接，应将admin-和web-adapter设置为http（而非https）
 
@@ -217,7 +217,7 @@ hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
         *``{命令：“ renderView”，值：<viewID>}``
 *这将指示iQontrol渲染视图，其中的<viewID>必须像iqontrol。<instance-number> .Views。<view-name>``一样格式化（区分大小写）
         *``{命令：“ openDialog”，值：<deviceID>}``
-*这将指示iQontrol打开一个对话框，其中的<deviceID>格式必须与iqontrol。<instance-number> .Views。<view-name> .devices。<device-number>``一样其中``<设备号>''从0开始（因此视图中的第一个设备是设备号0）
+*这将指示iQontrol打开一个对话框，其中的<deviceID>必须像iqontrol。<instance-number> .Views。<view-name> .devices。<device-number>``一样格式化其中``<设备号>''从0开始（因此视图中的第一个设备是设备号0）
 *要从iQontrol接收消息，您需要使用javascript命令``window.addEventListener（“ message”，receivePostMessage，false）;向“ message”事件注册一个事件监听器。
     *函数``receivePostMessage''接收对象``event''
 *``event.data``包含来自iqontrol的消息，它将是一个类似于以下内容的对象：
@@ -582,6 +582,15 @@ hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
 *``sizeInactive``（磁贴的大小，如果设备处于非活动状态）：
 *可能的值：“” |“ narrowIfInactive shortIfInactive” |“ narrowIfInactive” |“ narrowIfInactive highIfInactive” |“ narrowIfInactive xhighIfInactive” |“ shortIfInactive” |“ shortIfInactive wideIfInactive” |“ shortIfInactive xwideIfInactive” |“ wideIfInactive” || xwideIfInactive“ |” xwideIfInactive“ “ |” xhighIfInactive“ |” wideIfInactive highIfInactive“ |” xwideIfInactive highIfInactive“ |” wideIfInactive xhighIfInactive“ |” xwideIfInactive xhighIfInactive“ |” fullWidthIfInactive“ -1-1IfInactive” |“ fullWidthIfInactive Aspect-4-3IfInactive” |“ fullWidthIfInactive Aspect-3- 2IfInactive“ |” fullWidthIfInactive方面16-9IfInactive“ |” fullWidthIfInactive方面21-9IfInactive“ |” fullWidthIfInactive fullHeightIfInactive“ |”
 *默认值：“ xwideIfInactive highIfInactive”
+*``stateHeightAdaptsContentInactive``（如果设备处于非活动状态，则STATE对其内容的适应高度（如果需要，它将覆盖图块大小））：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``stateFillsDeviceInactive``（如果设备处于非活动状态，则STATE的大小将填充整个设备（这可能会干扰其他内容））：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``stateBigFontInactive``（如果设备处于非活动状态，请为STATE使用大字体）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
 *``bigIconInactive``（如果设备处于非活动状态，则显示大图标）：
 *可能的值：“ true” |“ false”
 *默认值：“ false”
@@ -615,6 +624,15 @@ hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
 *瓷砖行为（如果设备处于活动状态）：
 *``sizeActive``（图块的大小，如果设备处于活动状态）：
 *可能的值：“” |“ narrowIfActive shortIfActive” |“ narrowIfActive” |“ narrowIfActive highIfActive” |“ narrowIfActive xhighIfActive” |“ shortIfActive” |“ shortIfActive wideIfActive” |“ shortIfActive xwideIfActive” |“ wideIfActive” |“ xwideIfActive” |“ highIfActive” “ |” xhighIfActive“ |” wideIfActive highIfActive“ |” xwideIfActive highIfActive“ |” wideIfActive xhighIfActive“ |” xwideIfActive xhighIfActive“ |” fullWidthIfActive Aspect-1-1IfActive“ |” fullWidthIfActive Aspect-4-3IfActive“ |” fullWidthIfActive Aspect-3- 2IfActive“ |” fullWidthIfActive Aspect-16-9IfActive“ |” fullWidthIfActive Aspect-21-9IfActive“ |” fullWidthIfActive fullHeightIfActive“ |”
+*``stateHeightAdaptsContentActive``（如果设备处于非活动状态，则STATE适应其内容的高度（如果需要，这将覆盖图块大小））：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``stateFillsDeviceActive``（如果设备处于非活动状态，则STATE的大小将填充整个设备（这可能会干扰其他内容））：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``stateBigFontActive``（如果设备处于活动状态，请为STATE使用大字体）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
 *``bigIconActive``（如果设备处于活动状态则显示大图标）：
 *可能的值：“ true” |“ false”
 *默认值：“ false”
@@ -648,6 +666,15 @@ hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
 *如果将设备放大，则会显示平铺行为：
 *``sizeEnlarged``（图块的大小，如果设备被放大）：
 *可能的值：“” |“ narrowIfEnlarged shortIfEnlarged” |“ narrowIfEnlarged” |“ narrowIfEnlarged highIfEnlarged” |“ narrowIfEnlarged xhighIfEnlarged” |“ shortIfEnlarged” |“ shortIfEnlarged wideIfEnlarged” |“ shortIfEnlargedxwideIfEnlarged” |“如果Ifenlarged” |“ “ |” xhighIfEnlarged“ |” wideIfEnlarged highIfEnlarged“ |” xwideIfEnlarged highIfEnlarged“ |” wideIfEnlargedxhighIfEnlarged“ |” xwideIfEnlarged xhighIfEnlarged“ |” fullWidthIfEnlarged宽高比-1-1IfEnlarged“ |” fullWidthIfEnlarged宽宽比| -4-3IfEnlarged“ 2IfEnlarged“ |”“ fullWidthIfEnlarged方面-16-9IfEnlarged” |“ fullWidthIfEnlarged方面-21-9IfEnlarged” |“ fullWidthIfEnlarged fullHeightIfEnlarged” |“
+*``stateHeightAdaptsContentEnlarged``（如果设备处于非活动状态，则STATE对其内容的自适应高度（如果需要，它将覆盖图块大小））：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``stateFillsDeviceInactiveEnlarged``（如果设备处于非活动状态，则STATE的大小将填充整个设备（这可能会干扰其他内容））：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
+*``stateBigFontEnlarged``（如果设备被放大，请为STATE使用大字体）：
+*可能的值：“ true” |“ false”
+*默认值：“ false”
 *``bigIconEnlarged``（如果设备放大则显示大图标）：
 *可能的值：“ true” |“ false”
 *默认值：“ true”
@@ -1343,6 +1370,11 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 * **STATE** *任何*-特殊：如果为空，将创建一个虚拟数据点，因此您可以单击该图标以激活并因此最大化小部件的大小
 
+###<img src="img/icons/info_bubble_off.png" width="32">信息文字：
+该设备具有一些特殊的预定义大小和显示设置，可以在透明背景的整个屏幕上显示文本。如果STATE为空，则使用标准设置可以隐藏设备。设备的高度适应于状态的大小。
+
+* **州**：*任何*-屏幕上显示文本。
+
 ****
 
 ＃＃ 故障排除
@@ -1375,6 +1407,11 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * (sbormann) Fixed edit-dialog of device not opening under some circumstances.
 * (sbormann) Added type icon and type datapoint to widget-url-parameters.
 * (sbormann) Added OVERLAY_INACTIVE_COLOR and OVERLAY_ACTIVE_COLOR.
+* (sbormann) Added option to show badge value without unit.
+* (sbormann) Added toggle by icon for garage door (after optional confirmation).
+* (sbormann) Fixed not to open Dialog if clickOnTileOpensDialog is set to false.
+* (sbormann) Added new device: Info-Text, which can be used to display plain Text on views, therefore some new options were created (stateHeightAdaptsContent, stateFillsDevice, stateBigFont).
+* (sbormann) Text on transparent tiles is now white (can be configured).
 
 ### 1.5.7 (2021-01-24)
 * (sbormann) Fixed missing info.connection object.

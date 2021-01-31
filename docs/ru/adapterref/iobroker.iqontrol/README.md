@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
+hash: FN7/wD4lfP+fOAfD1I+LrEHjCHOIwfKUpX7Kv6dshz4=
 ---
 ![Логотип](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -52,7 +52,7 @@ hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
 Работает в любом браузере.
 Легко настроить, хотя он полностью настраивается и быстро реагирует.
 
-> **Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода.** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация по Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
+> **Этот адаптер использует библиотеки Sentry для автоматического сообщения разработчикам об исключениях и ошибках кода.** Дополнительные сведения и информацию о том, как отключить отчет об ошибках, см. В [Документация Sentry-Plugin](https://github.com/ioBroker/plugin-sentry#plugin-sentry)! Сторожевые отчеты используются начиная с js-controller 3.0.
 
 ## Видеоурок (немецкий язык):
 [![Демо-видео] (img / play_demo.png «Открыть учебник на Youtube»)](https://youtube.com/playlist?list=PL8epyNz8pGEv6-R8dnfXm-m5aBlZFKOBG)
@@ -63,7 +63,7 @@ hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
 ## Тебе нужно...
 * Nodejs 10 или выше
 * Web-адаптер с одним экземпляром, работающим по тому же протоколу (http или https), что и админ-адаптер, socket.IO установлен на 'интегрированный' и 'Force Web-Sockets' отключен
-    * Если это противоречит другим адаптерам, просто добавьте еще один экземпляр с указанными выше настройками - iQontrol будет искать наиболее подходящий экземпляр веб-адаптера и использовать его для связи.
+    * Если это противоречит другим адаптерам, просто добавьте еще один экземпляр с указанными выше настройками - iQontrol выполнит поиск наиболее подходящего экземпляра веб-адаптера и будет использовать его для связи.
 * Для подключения через *iobroker.pro-Cloud* как админ-, так и веб-адаптер должны быть настроены на http (не https)
 
 * Если у вас возникнут какие-либо проблемы, ознакомьтесь с разделом [устранение неполадок] (# устранение неполадок) в конце этого файла ознакомительных сведений.
@@ -102,7 +102,7 @@ hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
 * Имейте в виду, что из-за большого количества различных адаптеров и устройств внутри ioBroker-univese функция автокоррекции не может поддерживать все устройства на 100% правильно. Возможно, вам придется изменить некоторые настройки вручную, чтобы получить наилучшие результаты. Но autocreate предлагает вам хорошую отправную точку для создания собственной визуализации за секунды.
 
 ## Параметры URL
-* Интерфейс вызывается через http [s]: // <url или ip of iobroker>: <порт веб-адаптера> / iqontrol / index.html`
+* Интерфейс вызывается через `http [s]: // <url или ip of iobroker>: <порт веб-адаптера> / iqontrol / index.html`
     * `` <порт веб-адаптера> '' обычно 8082
 * Чтобы открыть указанный экземпляр, вы можете добавить `` namespace = iqontrol. <instance-number> '' в качестве параметра URL
 * Чтобы открыть указанное представление, вы можете добавить renderView = <viewID> в качестве параметра URL.
@@ -582,6 +582,15 @@ hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
 * `` sizeInactive`` (Размер плитки, если устройство неактивно):
 * Возможные значения: "" | "thinIfInactive shortIfInactive" | "thinIfInactive" | "thinIfInactive highIfInactive" | "thinIfInactive xhighIfInactive" | "shortIfInactive" | "shortIfInactive wideIfInactive" | "shortIfInactive xwideIfInactive" | "wideIfInactive" xwideIfInactive "|" wideIfInactive " "|" xhighIfInactive "|" wideIfInactive highIfInactive "|" xwideIfInactive highIfInactive "|" wideIfInactive xhighIfInactive "|" xwideIfInactive xhighIfInactive "|" fullWidthIfInactive аспект-1-1IfidthInactive "|" fullWidthIfIfIfInactive "|" fullWidthIfIfInactive 2IfInactive "|" fullWidthIfInactive аспект-16-9IfInactive "|" fullWidthIfInactive аспект-21-9IfInactive "|" fullWidthIfInactive fullHeightIfInactive "|"
 * По умолчанию: «xwideIfInactive highIfInactive»
+* `` stateHeightAdaptsContentInactive` (адаптировать высоту STATE к его содержимому (при необходимости размер плитки перезаписывается), если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` stateFillsDeviceInactive`` (размер STATE заполняет все устройство (это может мешать другому контенту), если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` stateBigFontInactive` (используйте большой шрифт для STATE, если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
 * `` bigIconInactive`` (показывать большой значок, если устройство неактивно):
 * Возможные значения: «true» | «false»
 * По умолчанию: «false»
@@ -615,6 +624,15 @@ hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
 * Tile-Behavior, если устройство активно:
 * `` sizeActive`` (Размер плитки, если устройство активно):
 * Возможные значения: «» | «thinIfActive shortIfActive» | «thinIfActive» | «thinIfActive highIfActive» | «УзкийIfActive xhighIfActive» | «shortIfActive» | «shortIfActive wideIfActive» | «shortIfActive xwideIfActive» | «wideIfActive» xwideIfActive | «wideIfActive» | "|" xhighIfActive "|" wideIfActive highIfActive "|" xwideIfActive highIfActive "|" wideIfActive xhighIfActive "|" xwideIfActive xhighIfActive "|" fullWidthIfActive аспект-1-1IfActive "|" fullWidth- 4IfActive "|" fullWidth- 4IfActive " 2IfActive "|" fullWidthIfActive аспект-16-9IfActive "|" fullWidthIfActive аспект-21-9IfActive "|" fullWidthIfActive fullHeightIfActive "|"
+* `` stateHeightAdaptsContentActive`` (адаптировать высоту STATE к его содержимому (при необходимости размер плитки перезаписывается), если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` stateFillsDeviceActive`` (размер STATE заполняет все устройство (это может мешать другому контенту), если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` stateBigFontActive`` (используйте большой шрифт для STATE, если устройство активно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
 * bigIconActive (показывать большой значок, если устройство активно):
 * Возможные значения: «true» | «false»
 * По умолчанию: «false»
@@ -648,6 +666,15 @@ hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
 * Поведение плитки при увеличении устройства:
 * `` sizeEnlarged`` (размер плитки, если устройство увеличено):
 * Возможные значения: "" | "узкийIfEnlarged shortIfEnlarged" | "узкийIfEnlarged" | "узкийIfEnlarged highIfEnlarged" | "slimIfEnlarged xhighIfEnlarged" | "shortIfEnlarged" | "shortIfEnlarged расширенный "IfEnlarged" xlarged wide "IfEnlarged " "|" xhighIfEnlarged "|" wideIfEnlarged highIfEnlarged "|" xwideIfEnlarged highIfEnlarged "|" wideIfEnlarged xhighIfEnlarged "|" xwideIfEnlarged xhighIfEnlarged "|" xwideIfEnlarged xhighIfEnlarged "|" fullWiredIfEnlarged "| 2IfEnlarged "|" fullWidthIfEnlarged аспект-16-9IfEnlarged "|" fullWidthIfEnlarged аспект-21-9IfEnlarged "|" fullWidthIfEnlarged fullHeightIfEnlarged "|"
+* `` stateHeightAdaptsContentEnlarged` (адаптировать высоту STATE к его содержимому (при необходимости размер плитки перезаписывается), если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` stateFillsDeviceInactiveEnlarged`` (размер STATE заполняет все устройство (это может мешать другому контенту), если устройство неактивно):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
+* `` stateBigFontEnlarged`` (используйте крупный шрифт для STATE, если устройство увеличено):
+* Возможные значения: «true» | «false»
+* По умолчанию: «false»
 * `` bigIconEnlarged`` (показывать большой значок, если устройство увеличено):
 * Возможные значения: «true» | «false»
 * По умолчанию: "true"
@@ -1282,7 +1309,7 @@ on modulo(n, m){ return ((n % m) + m) %m; }
     * Вы также можете назначить * строку * для отображения любого текста, например «наводнение на верхнем этаже»
 * **свойство связанного просмотра** открывается напрямую
 
-###<img src="img/icons/alarm_on.png" width="32"> Аварийная сигнализация:
+###<img src="img/icons/alarm_on.png" width="32"> Тревога:
 * **STATE** *boolean* - если true, датчик будет отображаться как сработавший
     * В качестве альтернативы вы можете назначить * список значений *, чтобы отображать дополнительные состояния, такие как 'tamolated'
     * Вы также можете назначить * строку * для отображения любого текста, например «пожар на верхнем этаже»
@@ -1295,14 +1322,14 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * **POWER** *число* - потребляемая мощность, которая будет отображаться мелким шрифтом в правом верхнем углу
 * **VOLTAGE** *число* - напряжение, которое будет отображаться маленьким шрифтом в правом верхнем углу
 
-###<img src="img/icons/value_on.png" width="32"> Значение:
+###<img src="img/icons/value_on.png" width="32"> Ценность:
 * **СОСТОЯНИЕ** *любое* - любое допустимое состояние для отображения (см. Раздел «Общие состояния»)
 * **УРОВЕНЬ** *число* - создаст слайдер в диалоге
 
 ###<img src="img/icons/play_on.png" width="32"> Программа:
 * **STATE** *boolean* - если установлено значение true, программа будет запущена
 
-###<img src="img/icons/play.png" width="32"> Сцена:
+###<img src="img/icons/play.png" width="32"> Место действия:
 * **STATE** *boolean* - отображается, если сцена активна. В зависимости от конфигурации сцены (виртуальная группа, установленные значения для false включено или отключено), команда toggle отправит true, false, min, 0, max или 100. Существует возможность всегда отправлять true (отключение переключения) .
 
 ###<img src="img/icons/media_on.png" width="32"> Медиа-плеер / пульт дистанционного управления:
@@ -1343,6 +1370,11 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 
 * **СОСТОЯНИЕ** *любое* - СПЕЦИАЛЬНОЕ: если пусто, будет создана виртуальная точка данных, поэтому вы можете щелкнуть значок, чтобы активировать и, следовательно, увеличить размер виджета.
 
+###<img src="img/icons/info_bubble_off.png" width="32"> Информационный текст:
+Это устройство имеет некоторые специальные предопределенные настройки размера и отображения для отображения текста по всей ширине экрана на прозрачном фоне. При стандартных настройках устройство скрыто, если СОСТОЯНИЕ пусто. Высота устройства адаптируется к размеру ГОСУДАРСТВА.
+
+* **СОСТОЯНИЕ** *любой* - этот текст не отображается на экране.
+
 ****
 
 ## Поиск проблемы
@@ -1375,6 +1407,11 @@ on modulo(n, m){ return ((n % m) + m) %m; }
 * (sbormann) Fixed edit-dialog of device not opening under some circumstances.
 * (sbormann) Added type icon and type datapoint to widget-url-parameters.
 * (sbormann) Added OVERLAY_INACTIVE_COLOR and OVERLAY_ACTIVE_COLOR.
+* (sbormann) Added option to show badge value without unit.
+* (sbormann) Added toggle by icon for garage door (after optional confirmation).
+* (sbormann) Fixed not to open Dialog if clickOnTileOpensDialog is set to false.
+* (sbormann) Added new device: Info-Text, which can be used to display plain Text on views, therefore some new options were created (stateHeightAdaptsContent, stateFillsDevice, stateBigFont).
+* (sbormann) Text on transparent tiles is now white (can be configured).
 
 ### 1.5.7 (2021-01-24)
 * (sbormann) Fixed missing info.connection object.

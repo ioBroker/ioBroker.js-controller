@@ -894,6 +894,18 @@ und info.connection. Zusätzlich werden die folgenden States für jede Zone 2-12
      *Boolscher Wert um den Audio Signal Input der jeweiligen Zone zu aktivieren oder zu deaktivieren.*
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### 1.10.3 (2021-01-28)
+* (foxriver76) don't poll whole online presets after change, it is unnecessary load
+
+### 1.10.2 (2021-01-28)
+* (foxriver76) return after detecting NSH command
+* (foxriver76) use release script
+
 ### 1.10.0 (2021-01-17)
 * (foxriver76) auto-detect selectInput of all zones
 

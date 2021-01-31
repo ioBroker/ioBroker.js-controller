@@ -189,7 +189,7 @@ Whitelist: If you only want to include events of a specific location use regular
 
 ## Changelog
 
-### __WORK IN PROGRESS__
+### 1.9.1 (2021-01-30)
 * (Apollon77) try to make sure all code is executed before adapter is ended
 
 ### 1.9.0 (2021-01-12)

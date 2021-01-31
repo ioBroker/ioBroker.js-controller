@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.heos/README.md
 title: ioBroker.heos
-hash: DCjvEfljhMQR9HEQnV7G6zbATno+KP5R6w8X5bmIxLk=
+hash: EqPpB9VnuvNgbo3m4kgL2Yr7hVTMsRsOA4cxObppYgQ=
 ---
 ![Logo](../../../en/adapterref/iobroker.heos/admin/heos.png)
 
@@ -36,7 +36,7 @@ HEOS CLI-Spezifikation: http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecifica
 * "group / ungroup_all": Alle Gruppen löschen
 * "group / group_all": Gruppiert alle Spieler in einer Gruppe
 * "player / [cmd]": Sende den Befehl an alle Spieler. z.B. player / set_mute & state = on
-* "Anführer / [cmd]": Senden Sie den Befehl an alle führenden Spieler. z.B. Leader / set_mute & state = on
+* "Anführer / [cmd]": Senden Sie den Befehl an alle führenden Spieler. z.B. führer / set_mute & state = on
 * "scope / [cmd]": Senden Sie den Befehl an den konfigurierten Bereich aller Spieler, führenden Spieler oder durch Kommas getrennten Spieler-Pids in scope_pids
 * "...": Alle anderen Befehle werden versucht, an HEOS zu senden
 
@@ -57,6 +57,9 @@ Hinweis: Mehrere Befehle sind möglich, wenn sie mit der Pipe getrennt sind, z. 
 
 ## Regex stumm schalten
 In der Konfiguration können Sie eine Funktion aktivieren, um den Player basierend auf einer Regex-Übereinstimmung mit den Songinformationen stummzuschalten. Damit können Anzeigen automatisch stummgeschaltet werden. Für Spotify können Sie beispielsweise den folgenden regulären Ausdruck verwenden: ```spotify:ad:|Advertisement```.
+
+## Suchen
+Die Suchfunktion funktioniert nicht bei allen Quellen. Spotify und Amazon Music unterstützen die Suche.
 
 ## Quellen durchsuchen
 Um den Statusbetrag in ioBroker zu reduzieren, werden automatisch nur Wiedergabelisten und Voreinstellungen in den Status gespeichert. Zuerst müssen Sie jedoch auf die Schaltfläche Durchsuchen im Ordner Wiedergabelisten oder Voreinstellungen klicken. Sie finden und steuern sie im Ordner "Quellen". Wenn Sie die Musik einer Quelle durchsuchen möchten, klicken Sie einfach auf die Schaltfläche Durchsuchen. Sie finden das Suchergebnis im Status "sources.browse_result". Es gibt auch Befehle, um tiefer zu navigieren oder eine Ressource abzuspielen. Fügen Sie einfach die Befehle in das globale HEOS-Befehlsfeld ein. Wenn es sich um einen Durchsuchungsbefehl handelt, finden Sie das Ergebnis im Status browse_result. In der Konfiguration finden Sie eine Option zur Steuerung des Umfangs der Wiedergabebefehle. Damit können Sie steuern, ob die Spielbefehle an alle Spieler, an alle Anführer und Nicht-Gruppenspieler oder an eine Liste von Spieler-IDs gehen, die im Status command_scope_pid definiert sind.
@@ -230,6 +233,19 @@ on({id: 'heos.0.sources.browse_result', change: 'any'}, function (obj) {
 ```
 
 ## Changelog
+
+### 1.7.2 (2021-01-30)
+* (withstu) fix seek in groups
+
+### 1.7.1 (2021-01-30)
+* (withstu) add seek
+
+### 1.7.0 (2021-01-29)
+* (withstu) reboot not responding players
+* (withstu) delete old presets and playlists
+
+### 1.6.2 (2021-01-02)
+* (withstu) fix "user not logged in" handling
 
 ### 1.6.1 (2020-11-25)
 * (withstu) clear timeout and interval on unload; fix roles; remove sleep in tts module

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.ecovacs-deebot/README.md
 title: Адаптер Ecovacs Deebot для ioBroker
-hash: oP6qfwe3XXyIVWYMFxZmcOpb5qA+NbJnYj7ZocUMUFQ=
+hash: 0OJ6dgogZ6XBW56XbGPHYMYCo7s/bA0DPHeng8e8fUw=
 ---
 ![Логотип](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -17,26 +17,27 @@ hash: oP6qfwe3XXyIVWYMFxZmcOpb5qA+NbJnYj7ZocUMUFQ=
 
 ## Модели
 ### Поддерживаемые модели
-* Deebot 900/901
-* Deebot Ozmo 920
-* Deebot Ozmo 930
-* Deebot Ozmo 950
+* Deebot 901
+* Deebot OZMO 920
+* Deebot OZMO 930
+* Deebot OZMO 950
 
 ### Эти модели, как известно, работают
 * Deebot Slim 2
 * Deebot N79 серии
 * Deebot 601
 * Deebot 710/711 (см. «Известные проблемы»)
+* Deebot 900
 * Deebot U2
-* Deebot Ozmo 610
-* Deebot Ozmo 900
-* Deebot Ozmo T8 серии
+* Deebot OZMO 610
+* Deebot OZMO 900
+* Deebot OZMO T8 серии
 
 ### Эти модели должны работать
 * Deebot M88
 * Deebot 600/605
-* Deebot Ozmo T5
-* Deebot Ozmo Slim 10
+* Deebot OZMO T5
+* Deebot OZMO Slim 10
 * Deebot U2 Pro / Мощность
 
 ## Установка
@@ -70,10 +71,10 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 ## Changelog
 
-### 1.0.12 (alpha)
+### 1.0.12
 * Using library version 0.5.5
-* Bugfix for T8 series
 * Added some more T8 models
+* Several improvements and fixes
 
 ### 1.0.11
 * Enabled some features for OZMO 900

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: mfGvqbr1ILQHaKyiD3jrGqQ2180YJdt7BQ1ZhTmvopA=
+hash: 0suiklRXYOyN3nVHV97UVCZua42xqf6uo1oXykfUO6Y=
 ---
 ![商标](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -18,11 +18,11 @@ hash: mfGvqbr1ILQHaKyiD3jrGqQ2180YJdt7BQ1ZhTmvopA=
 需要node.js 8.0或更高版本以及Admin v3！
 
 适配器通过REST api和CoAP或MQTT协议与Shelly设备通信。
-默认为Shelly固件（无需刷新固件！）。您可以在这里找到有关该设备的更多详细信息：[雪莉](https://shelly.cloud/)
+默认情况下为Shelly固件（无需刷新固件！）。您可以在此处找到有关该设备的更多详细信息：[雪莉](https://shelly.cloud/)
 
-如果您使用CoAP协议，则带固件1.8.0或更高版本的Shelly设备仅适用于Shelly Adapter 4.0.0或更高版本。如果您使用固件低于1.8.0的设备（Shelly 4Pro除外），则必须使用Shelly Adapter 3.3.6或更低版本。在这种情况下，Shelly Adapter 4.0.0或更高版本将无法工作！
+如果您使用CoAP协议，则带固件1.8.0或更高版本的Shelly设备只能与Shelly Adapter 4.0.0或更高版本一起使用。如果您使用固件低于1.8.0的设备（Shelly 4Pro除外），则必须使用Shelly Adapter 3.3.6或更低版本。在这种情况下，Shelly Adapter 4.0.0或更高版本将无法工作！
 
-**此适配器使用Sentry库自动向开发人员报告异常和代码错误。**更多详细信息，请参见下文！
+**该适配器使用Sentry库自动向开发人员报告异常和代码错误。**更多详细信息，请参见下文！
 
 ##安装
 您可以在此处找到详细的安装文档：[安装文件](./docs/EN/INSTALL.md)
@@ -41,7 +41,7 @@ hash: mfGvqbr1ILQHaKyiD3jrGqQ2180YJdt7BQ1ZhTmvopA=
 | ShellyRGBW2（SHRGBW2）|自v3.3.0起受支持|自v3.3.0起受支持|
 | Shelly2LED（SH2LED）|自v3.3.0起受支持|自v3.3.0起受支持|
 | ShellyPlug（SHPLG-1）|自v3.3.0起受支持|自v3.3.0起受支持|
-| ShellyPlug S（SHPLG-1）|自v3.3.0起受支持|自v3.3.0起受支持|
+| ShellyPlug S（SHPLG-1）|从v3.3.0起受支持|从v3.3.0起受支持|
 | ShellyPlug 2（SHPLG-2）|自v3.3.0起受支持|自v3.3.0起受支持|
 | ShellySense（SHSEN-1）|自v3.3.0起受支持|自v3.3.0起受支持|
 | Shelly4Pro（SHSW-44）|自v3.3.5起受支持|自v3.3.5起受支持|
@@ -59,11 +59,12 @@ hash: mfGvqbr1ILQHaKyiD3jrGqQ2180YJdt7BQ1ZhTmvopA=
 | Shelly门窗传感器2（SHDW-2）|自v3.3.5起受支持|自v3.3.5起受支持|
 | Shelly Uni（SHUNI-1）|自v4.0.4起受支持|自v4.0.4起受支持|
 | Shelly 1L（SHSW-L）|自v4.0.5起受支持|自v4.0.5起受支持|
+| Shelly彩色灯泡（SHCB-1）|自v4.0.5起受支持|自v4.0.5起受支持|
 
 ##什么是Sentry，什么报告给服务器？
 Sentry.io是开发人员从其应用程序中获得有关错误概述的一种方式。确切地说，这是在此适配器中实现的。
 
-当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许ioBroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
+当适配器崩溃或发生其他代码错误时，此错误消息（也出现在ioBroker日志中）将提交给我们在德国托管的Sentry服务器。当您允许ioBroker GmbH收集诊断数据时，还将包括您的安装ID（这是唯一的ID，**没有**有关您的任何其他信息，电子邮件，姓名等）。这使Sentry可以对错误进行分组，并显示有多少唯一用户受此错误影响。所有这些都帮助我提供了基本不会崩溃的无错误适配器。
 
 ## Changelog
 
@@ -71,6 +72,7 @@ Sentry.io是开发人员从其应用程序中获得有关错误概述的一种�
 * (Matze2010) - Add Support for Shelly Uni (SHSW-L)
 * (Matze2010) - Shelly 2.5 Roller: Support for favorite positions 
 * (Stübi) - Bugfixing TypeError in Shelly Plug implementation (Issue #281)
+* (Stübi) - Support auf Shelly Color Bulb (SHCB-1) - Issue #317
 
 ### 4.0.4 (2020-11-15)
 * (Apollon77) update dependencies and shelly-iot lib

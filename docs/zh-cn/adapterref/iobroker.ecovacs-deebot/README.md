@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.ecovacs-deebot/README.md
 title: 适用于ioBroker的Ecovacs Deebot适配器
-hash: oP6qfwe3XXyIVWYMFxZmcOpb5qA+NbJnYj7ZocUMUFQ=
+hash: 0OJ6dgogZ6XBW56XbGPHYMYCo7s/bA0DPHeng8e8fUw=
 ---
 ![商标](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -17,26 +17,27 @@ hash: oP6qfwe3XXyIVWYMFxZmcOpb5qA+NbJnYj7ZocUMUFQ=
 
 ＃＃ 楷模
 ###支持的型号
-* Deebot 900/901
-* Deebot奥兹莫920
-* Deebot Ozmo 930
-* Deebot Ozmo 950
+* Deebot 901
+* Deebot OZMO 920
+* Deebot OZMO 930
+* Deebot OZMO 950
 
 ###这些模型可以正常工作
 * Deebot苗条2
 * Deebot N79系列
 * Deebot 601
 * Deebot 710/711（请参阅“已知问题”）
+* Deebot 900
 * Deebot U2
-* Deebot奥兹莫610
-* Deebot Ozmo 900
-* Deebot Ozmo T8系列
+* Deebot OZMO 610
+* Deebot OZMO 900
+* Deebot OZMO T8系列
 
 ###这些模型应该可以工作
 * Deebot M88
 * Deebot 600/605
-* Deebot Ozmo T5
-* Deebot Ozmo苗条10
+* Deebot OZMO T5
+* Deebot OZMO苗条10
 * Deebot U2 Pro /电源
 
 ##安装
@@ -70,10 +71,10 @@ sudo apt-get install build-essential libcairo2-dev libpango1.0-dev libjpeg-dev l
 
 ## Changelog
 
-### 1.0.12 (alpha)
+### 1.0.12
 * Using library version 0.5.5
-* Bugfix for T8 series
 * Added some more T8 models
+* Several improvements and fixes
 
 ### 1.0.11
 * Enabled some features for OZMO 900

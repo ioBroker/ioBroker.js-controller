@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.sonoff/README.md
 title: ioBroker Sonoff
-hash: sd76KWFFfIcWHwVBnmdbn8KgdJtIKXjm3+WFAKuwtI8=
+hash: 3sJtUS1rjlgVC9EW6ImdUqJPd9fS0yVC1S2ABMdysCw=
 ---
 ![Logo](../../../en/adapterref/iobroker.sonoff/admin/sonoff.png)
 
@@ -28,10 +28,10 @@ Folgende Themen werden erwartet:
 - `/ DeviceNAME / BM280 / Temperature`
 - `/ DeviceNAME / BM280 / Humidity`
 - `/ DeviceNAME / BM280 / Temperatur`
-- `/ DeviceNAME / BM280 / Feuchtigkeit`
+- `/ DeviceNAME / BM280 / Verletzungen`
 - `/ DeviceNAME / BM280 / Vcc`
 - `/ DeviceNAME / BM280 / VCC`
-- `/ DeviceNAME / BM280 / Laufzeit`
+- `/ DeviceNAME / BM280 / Runden`
 - `/ DeviceNAME / BM280 / RSSI`
 - `/ DeviceNAME / BM280 / POWER`
 - `/ DeviceNAME / BM280 / POWER1`
@@ -61,7 +61,7 @@ Folgende Themen werden erwartet:
 - `/ DeviceNAME / BM280 / Pressure`
 - `/ DeviceNAME / BM280 / SeaPressure`
 - `/ DeviceNAME / BM280 / Druck`
-- `/ DeviceNAME / BM280 / Ca. Höhe "
+- `/ DeviceNAME / BM280 / Ca. Höhe`
 - `/ DeviceNAME / BM280 / Module`
 - `/ DeviceNAME / BM280 / Version`
 - `/ DeviceNAME / BM280 / Hostname`
@@ -80,28 +80,42 @@ Folgende Themen werden erwartet:
 - `/ DeviceNAME / SDS0X1 / Longitude`
 - `/ DeviceNAME / SR04 / Distance`
 
-** Hinweis **: Die Liste kann leicht erweitert werden. Bitte senden Sie `Pull Requests` oder *Debug-Daten* für unbekannte Zustände an den Entwickler (per Issue).
+** Hinweis **: Die Liste kann leicht erweitert werden. Bitte senden Sie `Pull Requests` oder *Debug-Daten* für unbekannte Zustände an den Entwickler (per Ausgabe).
 
 ## Automatische Erstellung von Objekten
-In der Web-Konfiguration können Sie festlegen, welche MQTT-Telegramme die neuen Objekte erstellen, die nicht in den Standarddatenpunkten enthalten sind
+In der Webkonfiguration können Sie festlegen, welche MQTT-Telegramme die neuen Objekte erstellen, die sich nicht in Standarddatenpunkten befinden
 
-* `TELE_SENSOR` erzeugt Objekte aus` tele / xxx / SENSOR` Telegrammen
-* `TELE_STATE` erzeugt Objekte aus` tele / xxx / STATE` Telegrammen
-* `STAT_RESULT` erzeugt Objekte aus` stat / xxx / RESULT` Telegrammen
+* `TELE_SENSOR` erstellt Objekte aus` tele / xxx / SENSOR` Telegrammen
+* `TELE_STATE` erstellt Objekte aus` tele / xxx / STATE` Telegrammen
+* `STAT_RESULT` erstellt Objekte aus` stat / xxx / RESULT` Telegrammen
 
-Normalerweise sollte TELE_SENSOR für die meisten Benutzer ausreichen.
+Normalerweise sollte TELE_SENSOR für die meisten Benutzer ausreichend sein.
+
+* `Objektbaum erstellen` erstellt Objekte als Baumstruktur
+
+** Warnung! ** Diese Option bringt Ihren Sonoff-Objektbaum durcheinander! Sie müssen alle Einstellungen für die Speicherung wiederholen ...
+Speichern Sie die Objektstruktur als JSON-Datei, damit Sie Ihre alte Struktur neu erstellen können.
+Am besten stoppen Sie den Adapter, löschen alle Objekte unter sonoff und starten den Adapter erneut.
 
 ## Flags für LED-Controller
-Die Moduszustände werden nur erstellt, wenn das Gerät einen der folgenden Zustände aufweist:
+Die Moduszustände werden nur erstellt, wenn das Gerät einen der folgenden Zustände hat:
 
-- `Rot`,` Grün`, `Blau`,` WW`, `CW`,` Farbe`, `RGB_POWER`,` WW_POWER`, `CW_POWER`,` Farbton`, `Sättigung`
+- "Rot", "Grün", "Blau", "WW", "CW", "Farbe", "RGB_POWER", "WW_POWER", "CW_POWER", "Farbton", "Sättigung"
 
 Zustände:
 
-* `modeLedExor` - exor für weiße LEDs und Farb-LEDs => Wenn die weißen LEDs eingeschaltet sind, sind die Farb-LEDs ausgeschaltet und umgekehrt (Standardwert true)
-* `modeReadColors` - ermöglicht das Lesen von Farben aus MQTT (Standard false)
+* `modeLedExor` - Exor für weiße LEDs und Farb-LEDs => Wenn die weißen LEDs eingeschaltet sind, werden die Farb-LEDs ausgeschaltet und umgekehrt (Standard wahr)
+* `modeReadColors` - Ermöglicht das Lesen von Farben aus MQTT (Standardwert false)
 
 ## Changelog
+
+### __WORK IN PRGRESS__
+* (anwa) add several datapoints
+* (anwa) Fix tranlation for 'ignorePings'
+* (anwa) Fix wrong unit for humidity
+* (anwa) Config option to create a complete object tree instead of a flat structure
+* (anwa) Change Action type to string
+* (Apollon77) js-controller 2.0 is required at least
 
 ### 2.3.3 (2019-11-27)
 * (bluefox) Error with empty packet was caught

@@ -11,26 +11,27 @@ This adapter uses the [ecovacs-deebot.js](https://github.com/mrbungle64/ecovacs-
 ## Models
 
 ### Supported models
-* Deebot 900/901
-* Deebot Ozmo 920
-* Deebot Ozmo 930
-* Deebot Ozmo 950
+* Deebot 901
+* Deebot OZMO 920
+* Deebot OZMO 930
+* Deebot OZMO 950
 
 ### These models are known to work
 * Deebot Slim 2
 * Deebot N79 series
 * Deebot 601
 * Deebot 710/711 (see "Known issues")
+* Deebot 900
 * Deebot U2
-* Deebot Ozmo 610
-* Deebot Ozmo 900
-* Deebot Ozmo T8 series
+* Deebot OZMO 610
+* Deebot OZMO 900
+* Deebot OZMO T8 series
 
 ### These models should work
 * Deebot M88
 * Deebot 600/605
-* Deebot Ozmo T5
-* Deebot Ozmo Slim 10
+* Deebot OZMO T5
+* Deebot OZMO Slim 10
 * Deebot U2 Pro/Power
 
 ## Installation
@@ -64,10 +65,10 @@ For instructions for other systems visit https://www.npmjs.com/package/canvas#co
 
 ## Changelog
 
-### 1.0.12 (alpha)
+### 1.0.12
 * Using library version 0.5.5
-* Bugfix for T8 series
 * Added some more T8 models
+* Several improvements and fixes
 
 ### 1.0.11
 * Enabled some features for OZMO 900

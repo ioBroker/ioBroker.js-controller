@@ -54,6 +54,9 @@ You find a detailed installation documentation here:
 |Shelly Door/Window Sensor 2 (SHDW-2)|supported since v3.3.5|supported since v3.3.5|
 |Shelly Uni (SHUNI-1)|supported since v4.0.4|supported since v4.0.4|
 |Shelly 1L (SHSW-L)|supported since v4.0.5|supported since v4.0.5|
+|Shelly Color Bulb (SHCB-1)|supported since v4.0.5|supported since v4.0.5|
+
+
 
 ## What is Sentry and what is reported to the servers?
 Sentry.io is a way for developers to get an overview about errors from their applications. And exactly this is implemented in this adapter.
@@ -66,6 +69,7 @@ When the adapter crashes or an other Code error happens, this error message that
 * (Matze2010) - Add Support for Shelly Uni (SHSW-L)
 * (Matze2010) - Shelly 2.5 Roller: Support for favorite positions 
 * (Stübi) - Bugfixing TypeError in Shelly Plug implementation (Issue #281)
+* (Stübi) - Support auf Shelly Color Bulb (SHCB-1) - Issue #317
 
 ### 4.0.4 (2020-11-15)
 * (Apollon77) update dependencies and shelly-iot lib

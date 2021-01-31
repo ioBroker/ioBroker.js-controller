@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.iqontrol/README.md
 title: ioBroker.iqontrol
-hash: 67/so0rXjV1LInGkTVUVcmoYRBi+29kMM8ivEzAyFcw=
+hash: FN7/wD4lfP+fOAfD1I+LrEHjCHOIwfKUpX7Kv6dshz4=
 ---
 ![Logo](../../../en/adapterref/iobroker.iqontrol/admin/iqontrol.png)
 
@@ -63,7 +63,7 @@ Sie können es als Web-App auf Homescreen speichern und es sieht aus und fühlt 
 ## Du brauchst...
 * Knoten 10 oder höher
 * Web-Adapter mit einer Instanz, auf der dasselbe Protokoll (http oder https) wie der Admin-Adapter ausgeführt wird, socket.IO auf "integriert" und "Web-Sockets erzwingen" deaktiviert
-    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu - iQontrol durchsucht die am besten passende Webadapter-Instanz und verwendet sie für die Kommunikation
+    * Wenn dies im Widerspruch zu anderen Adaptern steht, fügen Sie einfach eine weitere Instanz mit den oben genannten Einstellungen hinzu - iQontrol durchsucht die passende passende Webadapter-Instanz und verwendet sie für die Kommunikation
 * Für die Verbindung über *iobroker.pro-Cloud* sollten sowohl der Administrator- als auch der Webadapter auf http (nicht https) eingestellt sein.
 
 * Wenn Probleme auftreten, lesen Sie bitte den Abschnitt [Fehlerbehebung] (# Fehlerbehebung) am Ende dieser Readme-Datei
@@ -582,6 +582,15 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * `` sizeInactive`` (Größe der Kachel, wenn das Gerät inaktiv ist):
 * Mögliche Werte: "" | "strictIfInactive shortIfInactive" | "strictIfInactive" | "strictIfInactive highIfInactive" | "strictIfInactive xhighIfInactive" | "shortIfInactive" | "shortIfInactive wideIfInactive" | "shortIfInactive xwideIfInactive" | " "|" xhighIfInactive "|" wideIfInactive highIfInactive "|" xwideIfInactive highIfInactive "|" wideIfInactive xhighIfInactive "|" xwideIfInactive xhighIfInactive "|" fullWidthIfInactive Aspekt-1-1IfInactive "|" fullWidth 2IfInactive "|" fullWidthIfInactive Aspekt-16-9IfInactive "|" fullWidthIfInactive Aspekt-21-9IfInactive "|" fullWidthIfInactive fullHeightIfInactive "|"
 * Standard: "xwideIfInactive highIfInactive"
+* `` stateHeightAdaptsContentInactive`` (Passen Sie die Höhe von STATE an den Inhalt an (dies überschreibt bei Bedarf die Kachelgröße), wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` stateFillsDeviceInactive`` (Größe von STATE füllt das gesamte Gerät aus (dies kann andere Inhalte beeinträchtigen), wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` stateBigFontInactive`` (Verwenden Sie eine große Schriftart für STATE, wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
 * `` bigIconInactive`` (Großes Symbol anzeigen, wenn Gerät inaktiv ist):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
@@ -615,6 +624,15 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * Kachelverhalten bei aktivem Gerät:
 * `` sizeActive`` (Größe der Kachel, wenn das Gerät aktiv ist):
 * Mögliche Werte: "" | "engIfAktiv kurzIfAktiv" | "schmalIfAktiv" | "engIfAktiv hochIfAktiv" | "schmalIfAktiv xhighIfAktiv" | "kurzIfAktiv" | "kurzIfAktiv breitIfAktiv" | "kurzIfAktiv xweitIfAktiv" "|" xhighIfActive "|" wideIfActive highIfActive "|" xwideIfActive highIfActive "|" wideIfActive xhighIfActive "|" xwideIfActive xhighIfActive "|" fullWidthIfActive Aspekt-1-1IfActive "|" fullWid- 2IfActive "|" fullWidthIfActive-Aspekt-16-9IfActive "|" fullWidthIfActive-Aspekt-21-9IfActive "|" fullWidthIfActive fullHeightIfActive "|"
+* `` stateHeightAdaptsContentActive`` (Passen Sie die Höhe von STATE an den Inhalt an (dies überschreibt bei Bedarf die Kachelgröße), wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` stateFillsDeviceActive`` (Größe von STATE füllt das gesamte Gerät aus (dies kann andere Inhalte beeinträchtigen), wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` stateBigFontActive`` (Verwenden Sie eine große Schriftart für STATE, wenn das Gerät aktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
 * `` bigIconActive`` (Großes Symbol anzeigen, wenn Gerät aktiv ist):
 * Mögliche Werte: "true" | "false"
 * Standard: "false"
@@ -648,6 +666,15 @@ Die kostenlosen Demo-Hintergrundbilder stammen von www.pexels.com.
 * Fliesenverhalten bei vergrößertem Gerät:
 * `` sizeEnlarged`` (Größe der Kachel, wenn das Gerät vergrößert ist):
 * Mögliche Werte: "" | "schmal, wenn vergrößert" | "schmal, vergrößert, vergrößert" | "schmal, vergrößert, vergrößert" | "|" xhighIfEnlarged "|" wideIfEnlarged highIfEnlarged "|" xwideIfEnlarged highIfEnlarged "|" wideIfEnlarged xhighIfEnlarged "|" xwideIfEnlarged xhighIfEnlarged "|" fullWidthIfEnlarged aspekt 1-1IfEnlarged "|" fullWidthIfEnlarged aspekt 4-3IfEnlarged "|" fullWidthIfEnlarged Aspekt-3- 2Wenn vergrößert "|" fullWidthIfEnlarged Aspekt-16-9IfEnlarged "|" fullWidthIfEnlarged Aspekt-21-9IfEnlarged "|" fullWidthIfEnlarged fullHeightIfEnlarged "|"
+* `` stateHeightAdaptsContentEnlarged`` (Passen Sie die Höhe von STATE an den Inhalt an (dies überschreibt bei Bedarf die Kachelgröße), wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` stateFillsDeviceInactiveEnlarged`` (Größe von STATE füllt das gesamte Gerät aus (dies kann andere Inhalte beeinträchtigen), wenn das Gerät inaktiv ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
+* `` stateBigFontEnlarged`` (Verwenden Sie eine große Schriftart für STATE, wenn das Gerät vergrößert ist):
+* Mögliche Werte: "true" | "false"
+* Standard: "false"
 * `` bigIconEnlarged`` (Großes Symbol anzeigen, wenn das Gerät vergrößert ist):
 * Mögliche Werte: "true" | "false"
 * Standard: "true"
@@ -1343,6 +1370,11 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 
 * **STATE** *any* - SPECIAL: Wenn leer, wird ein virtueller Datenpunkt erstellt, sodass Sie auf das Symbol klicken können, um das Widget zu aktivieren und damit die Größe zu maximieren
 
+###<img src="img/icons/info_bubble_off.png" width="32"> Info-Text:
+Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeigeeinstellungen, um einen Text über die gesamte Bildschirmbreite auf einem transparenten Hintergrund anzuzeigen. Bei Standardeinstellungen ist das Gerät ausgeblendet, wenn der STATE leer ist. Die Höhe des Geräts passt sich der Größe des STAATS an.
+
+* **STATE** *Jeder* - dieser Text wird auf dem Bildschirm angezeigt.
+
 ****
 
 ## Fehlerbehebung
@@ -1375,6 +1407,11 @@ Dieses Gerät verfügt über einige spezielle vordefinierte Größen- und Anzeig
 * (sbormann) Fixed edit-dialog of device not opening under some circumstances.
 * (sbormann) Added type icon and type datapoint to widget-url-parameters.
 * (sbormann) Added OVERLAY_INACTIVE_COLOR and OVERLAY_ACTIVE_COLOR.
+* (sbormann) Added option to show badge value without unit.
+* (sbormann) Added toggle by icon for garage door (after optional confirmation).
+* (sbormann) Fixed not to open Dialog if clickOnTileOpensDialog is set to false.
+* (sbormann) Added new device: Info-Text, which can be used to display plain Text on views, therefore some new options were created (stateHeightAdaptsContent, stateFillsDevice, stateBigFont).
+* (sbormann) Text on transparent tiles is now white (can be configured).
 
 ### 1.5.7 (2021-01-24)
 * (sbormann) Fixed missing info.connection object.

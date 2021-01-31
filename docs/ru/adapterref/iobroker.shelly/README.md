@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Если вы хотите отредактировать этот документ, удалите поле «translationFrom», в противном случае этот документ будет снова автоматически переведен
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/ru/adapterref/iobroker.shelly/README.md
 title: ioBroker.shelly
-hash: mfGvqbr1ILQHaKyiD3jrGqQ2180YJdt7BQ1ZhTmvopA=
+hash: 0suiklRXYOyN3nVHV97UVCZua42xqf6uo1oXykfUO6Y=
 ---
 ![Логотип](../../../en/adapterref/iobroker.shelly/admin/shelly.png)
 
@@ -12,13 +12,13 @@ hash: mfGvqbr1ILQHaKyiD3jrGqQ2180YJdt7BQ1ZhTmvopA=
 ![Количество установок](http://iobroker.live/badges/shelly-stable.svg)
 ![Версия NPM](http://img.shields.io/npm/v/iobroker.shelly.svg)
 ![Загрузки](https://img.shields.io/npm/dm/iobroker.shelly.svg)
-![НПМ](https://nodei.co/npm/iobroker.shelly.png?downloads=true)
+![NPM](https://nodei.co/npm/iobroker.shelly.png?downloads=true)
 
 # IoBroker.shelly
 Требуется node.js 8.0 или выше и Admin v3!
 
-Адаптер взаимодействует с устройствами Shelly с помощью REST api и протокола CoAP или MQTT.
-По умолчанию прошивка Shelly (прошивка прошивки не требуется!). Вы найдете более подробную информацию об устройстве здесь: [Шелли](https://shelly.cloud/)
+Адаптер взаимодействует с устройствами Shelly через REST api и протокол CoAP или MQTT.
+По умолчанию прошивка Shelly (прошивка прошивки не требуется!). Вы можете найти более подробную информацию об устройстве здесь: [Шелли](https://shelly.cloud/)
 
 Если вы используете протокол CoAP, устройства Shelly с прошивкой 1.8.0 или выше работают только с Shelly Adapter 4.0.0 или выше. Если вы используете устройства с прошивкой ниже 1.8.0, за исключением Shelly 4Pro, вам необходимо использовать Shelly Adapter 3.3.6 или ниже. Адаптер Shelly 4.0.0 и выше в этом случае работать не будет!
 
@@ -59,11 +59,12 @@ hash: mfGvqbr1ILQHaKyiD3jrGqQ2180YJdt7BQ1ZhTmvopA=
 | Датчик двери / окна Shelly 2 (SHDW-2) | поддерживается с v3.3.5 | поддерживается с v3.3.5 |
 | Shelly Uni (SHUNI-1) | поддерживается с v4.0.4 | поддерживается с v4.0.4 |
 | Shelly 1L (SHSW-L) | поддерживается с v4.0.5 | поддерживается с v4.0.5 |
+| Цветовая лампа Shelly (SHCB-1) | поддерживается с v4.0.5 | поддерживается с v4.0.5 |
 
 ## Что такое Sentry и что передается на серверы?
 Sentry.io - это способ для разработчиков получить обзор ошибок в своих приложениях. Именно это и реализовано в этом адаптере.
 
-Когда адаптер выходит из строя или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Когда вы разрешили ioBroker GmbH собирать диагностические данные, включается также ваш установочный идентификатор (это просто уникальный идентификатор **без** дополнительной информации о вас, электронной почты, имени и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
+Когда адаптер дает сбой или возникает другая ошибка кода, это сообщение об ошибке, которое также появляется в журнале ioBroker, отправляется на наш собственный сервер Sentry, расположенный в Германии. Когда вы разрешили ioBroker GmbH собирать диагностические данные, включается также ваш установочный идентификатор (это просто уникальный идентификатор **без** дополнительной информации о вас, электронной почте, имени и т. Д.). Это позволяет Sentry группировать ошибки и показывать, сколько уникальных пользователей затронуты такой ошибкой. Все это помогает мне предоставлять безошибочные адаптеры, которые практически никогда не дают сбоев.
 
 ## Changelog
 
@@ -71,6 +72,7 @@ Sentry.io - это способ для разработчиков получит
 * (Matze2010) - Add Support for Shelly Uni (SHSW-L)
 * (Matze2010) - Shelly 2.5 Roller: Support for favorite positions 
 * (Stübi) - Bugfixing TypeError in Shelly Plug implementation (Issue #281)
+* (Stübi) - Support auf Shelly Color Bulb (SHCB-1) - Issue #317
 
 ### 4.0.4 (2020-11-15)
 * (Apollon77) update dependencies and shelly-iot lib

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.lametric/README.md
 title: ioBroker.lametric
-hash: lSKyUIwZ8HzN3fwYt5gLQOEWhqss8l2VzaHXmcTbXYw=
+hash: J96EEfhXaMPbFj1J6CUCiIB2CbfhWhEyF1gfJdaKe8A=
 ---
 ![商标](../../../en/adapterref/iobroker.lametric/admin/lametric.png)
 
@@ -21,13 +21,13 @@ hash: lSKyUIwZ8HzN3fwYt5gLQOEWhqss8l2VzaHXmcTbXYw=
 您需要的只是设备的IP地址和api开发人员密钥。
 
 ##配置
-经LaMetric固件* 2.0.28 *和* 2.1.3 *测试（推荐）
+经LaMetric固件* 2.1.3 *测试（推荐）
 
 您可以获取个人密钥[这里](https://developer.lametric.com/)。
 
 ![api键](../../../en/adapterref/iobroker.lametric/docs/apiKey.png)
 
-＃＃ 特征
+＃＃ 产品特点
 -设置显示亮度（百分比，自动模式/手动模式）
 -设置音量（百分比）
 -配置屏幕保护程序（启用/禁用，基于时间，黑暗时）
@@ -187,6 +187,16 @@ show();
 ```
 
 ## Changelog
+
+### 1.2.0
+
+* (klein0r) Added hide if value for My Data (DIY)
+* (klein0r) Remove frames without text from My Data (DIY)
+* (klein0r) Allow dynamic states for My Data (DIY) icons
+
+### 1.1.3
+
+* (klein0r) Fixed async object creation
 
 ### 1.1.2
 

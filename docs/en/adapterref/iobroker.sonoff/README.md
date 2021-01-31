@@ -84,6 +84,12 @@ In the web config you can determine which MQTT telegrams create the new objects 
 
 Usually TELE_SENSOR should be sufficient for most users.
 
+* `Create object tree` creates objects as tree structure
+
+**Warning!** This option will mess up your sonoff object tree! You have to redo all the settings for storage...
+Store the object structure as JSON file, so you can recreate your old structure.
+Best is to stop the adapter, delete all objects under sonoff and start the adapter again.
+
 ## Flags for LED controllers
 The mode states will be created only if device has one of the states:
 
@@ -95,6 +101,14 @@ States:
 * `modeReadColors` - allow for color read from MQTT (default false)
 
 ## Changelog
+
+### __WORK IN PRGRESS__
+* (anwa) add several datapoints
+* (anwa) Fix tranlation for 'ignorePings'
+* (anwa) Fix wrong unit for humidity
+* (anwa) Config option to create a complete object tree instead of a flat structure
+* (anwa) Change Action type to string
+* (Apollon77) js-controller 2.0 is required at least
 
 ### 2.3.3 (2019-11-27)
 * (bluefox) Error with empty packet was caught

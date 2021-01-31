@@ -239,6 +239,9 @@ There are some programs in folder *test' to test the TCP communication:
 -->
 ## Changelog
 
+### 3.2.4 (2021-01-30)
+* (Sierra83) also support ttyXRUSB0 style devices
+
 ### 3.2.3 (2021-01-21)
 * (Apollon77) Catch value encoding error and do not crash adapter (Sentry IOBROKER-MODBUS-1W)
 * (Apollon77) add a meta object as instance object

@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.sonoff/README.md
 title: ioBroker Sonoff
-hash: sd76KWFFfIcWHwVBnmdbn8KgdJtIKXjm3+WFAKuwtI8=
+hash: 3sJtUS1rjlgVC9EW6ImdUqJPd9fS0yVC1S2ABMdysCw=
 ---
 ![商标](../../../en/adapterref/iobroker.sonoff/admin/sonoff.png)
 
@@ -15,7 +15,7 @@ hash: sd76KWFFfIcWHwVBnmdbn8KgdJtIKXjm3+WFAKuwtI8=
 
 ＃ioBroker Sonoff
 ##用法
-此适配器通过MQTT与具有Tasmota固件的Sonoff设备或ESP设备通信。
+该适配器通过MQTT与具有Tasmota固件的Sonoff设备或ESP设备通信。
 
 预期以下主题：
 
@@ -61,7 +61,7 @@ hash: sd76KWFFfIcWHwVBnmdbn8KgdJtIKXjm3+WFAKuwtI8=
 -`/ DeviceNAME / BM280 / Pressure`
 -`/ DeviceNAME / BM280 / SeaPressure`
 -`/ DeviceNAME / BM280 / Druck`
--`/ DeviceNAME / BM280 / Approx。海拔`
+-`/ DeviceNAME / BM280 / Approx。海拔
 -`/ DeviceNAME / BM280 / Module`
 -`/ DeviceNAME / BM280 / Version`
 -`/ DeviceNAME / BM280 / Hostname`
@@ -80,16 +80,22 @@ hash: sd76KWFFfIcWHwVBnmdbn8KgdJtIKXjm3+WFAKuwtI8=
 -`/ DeviceNAME / SDS0X1 / Longitude`
 -`/ DeviceNAME / SR04 / Distance`
 
-**注意**：该列表可以轻松扩展。请发送`Pull Requests`或*调试数据*到未知状态给开发人员（通过发出）。
+**注意**：该列表可以轻松扩展。请将未知状态的`Pull Requests`或*调试数据*发送给开发人员（通过发出）。
 
 ##自动创建对象
 在Web配置中，您可以确定哪些MQTT报文创建不在默认数据点中的新对象
 
 *`TELE_SENSOR`从`tele / xxx / SENSOR`电报创建对象
 *`TELE_STATE`通过`tele / xxx / STATE`电报创建对象
-* STAT_RESULT从stat / xxx / RESULT电报中创建对象
+* STAT_RESULT从stat / xxx / RESULT电报创建对象
 
 通常，TELE_SENSOR对于大多数用户来说就足够了。
+
+*`Create object tree`创建对象为树结构
+
+**警告！**此选项会弄乱您的sonoff对象树！您必须重做所有存储设置...
+将对象结构存储为JSON文件，以便您可以重新创建旧结构。
+最好是停止适配器，删除sonoff下的所有对象，然后重新启动适配器。
 
 ## LED控制器的标志
 仅当设备具有以下状态之一时，才会创建模式状态：
@@ -102,6 +108,14 @@ hash: sd76KWFFfIcWHwVBnmdbn8KgdJtIKXjm3+WFAKuwtI8=
 *`modeReadColors`-允许从MQTT读取颜色（默认为false）
 
 ## Changelog
+
+### __WORK IN PRGRESS__
+* (anwa) add several datapoints
+* (anwa) Fix tranlation for 'ignorePings'
+* (anwa) Fix wrong unit for humidity
+* (anwa) Config option to create a complete object tree instead of a flat structure
+* (anwa) Change Action type to string
+* (Apollon77) js-controller 2.0 is required at least
 
 ### 2.3.3 (2019-11-27)
 * (bluefox) Error with empty packet was caught

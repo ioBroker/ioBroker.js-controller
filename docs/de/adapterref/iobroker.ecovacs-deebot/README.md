@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: Wenn Sie dieses Dokument bearbeiten möchten, löschen Sie bitte das Feld "translationsFrom". Andernfalls wird dieses Dokument automatisch erneut übersetzt
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/de/adapterref/iobroker.ecovacs-deebot/README.md
 title: Ecovacs Deebot Adapter für ioBroker
-hash: oP6qfwe3XXyIVWYMFxZmcOpb5qA+NbJnYj7ZocUMUFQ=
+hash: 0OJ6dgogZ6XBW56XbGPHYMYCo7s/bA0DPHeng8e8fUw=
 ---
 ![Logo](../../../en/adapterref/iobroker.ecovacs-deebot/admin/ecovacs-deebot.png)
 
@@ -17,26 +17,27 @@ Dieser Adapter verwendet die Bibliothek [ecovacs-deebot.js](https://github.com/m
 
 ## Modelle
 ### Unterstützte Modelle
-* Deebot 900/901
-* Deebot Ozmo 920
-* Deebot Ozmo 930
-* Deebot Ozmo 950
+* Deebot 901
+* Deebot OZMO 920
+* Deebot OZMO 930
+* Deebot OZMO 950
 
 ### Diese Modelle funktionieren bekanntermaßen
 * Deebot Slim 2
 * Deebot N79-Serie
 * Deebot 601
 * Deebot 710/711 (siehe "Bekannte Probleme")
+* Deebot 900
 * Deebot U2
-* Deebot Ozmo 610
-* Deebot Ozmo 900
-* Deebot Ozmo T8-Serie
+* Deebot OZMO 610
+* Deebot OZMO 900
+* Deebot OZMO T8-Serie
 
 ### Diese Modelle sollten funktionieren
 * Deebot M88
 * Deebot 600/605
-* Deebot Ozmo T5
-* Deebot Ozmo Slim 10
+* Deebot OZMO T5
+* Deebot OZMO Slim 10
 * Deebot U2 Pro / Power
 
 ## Installation
@@ -70,10 +71,10 @@ Ich bin in keiner Weise mit ECOVACS verbunden.
 
 ## Changelog
 
-### 1.0.12 (alpha)
+### 1.0.12
 * Using library version 0.5.5
-* Bugfix for T8 series
 * Added some more T8 models
+* Several improvements and fixes
 
 ### 1.0.11
 * Enabled some features for OZMO 900

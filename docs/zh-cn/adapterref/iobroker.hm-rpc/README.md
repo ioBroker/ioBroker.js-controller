@@ -135,6 +135,23 @@ CCU / Homematic支持不同的设备类型（有线，无线，HMIP，CUxD）。
 ##常见问题
 
 ## Changelog
+<!--
+	Placeholder for the next version (at the beginning of the line):
+	### __WORK IN PROGRESS__
+-->
+
+### __WORK IN PROGRESS__
+* (foxriver76) use async rpc calls for better error handling
+
+### 1.14.33 (2021-01-30)
+* (foxriver76) fix problems with CuxD and HMIP (fixes #307)
+* (foxriver76) more palces where we now log message on real errors instead of error object
+
+### 1.14.32 (2021-01-29)
+* (foxriver76) revert received messages with invalid command
+* (foxriver76) log message on real errors instead of error object
+* (foxriver76) fix for crashes on decrypt
+
 ### 1.14.31 (2021-01-15)
 * (foxriver76) fixed default values of HMIP value list states
 

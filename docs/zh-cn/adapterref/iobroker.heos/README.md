@@ -3,7 +3,7 @@ translatedFrom: en
 translatedWarning: 如果您想编辑此文档，请删除“translatedFrom”字段，否则此文档将再次自动翻译
 editLink: https://github.com/ioBroker/ioBroker.docs/edit/master/docs/zh-cn/adapterref/iobroker.heos/README.md
 title: ioBroker.heos
-hash: DCjvEfljhMQR9HEQnV7G6zbATno+KP5R6w8X5bmIxLk=
+hash: EqPpB9VnuvNgbo3m4kgL2Yr7hVTMsRsOA4cxObppYgQ=
 ---
 ![商标](../../../en/adapterref/iobroker.heos/admin/heos.png)
 
@@ -57,6 +57,9 @@ HEOS CLI规范：http://rn.dmglobal.com/euheos/HEOS_CLI_ProtocolSpecification.pd
 
 ##使正则表达式静音
 在配置中，您可以根据歌曲信息的正则表达式匹配，激活使播放器静音的功能。可以用来自动静音广告。例如，对于Spotify，您可以使用以下正则表达式：```spotify:ad:|Advertisement```。
+
+##寻求
+查找功能不适用于所有源。 Spotify和Amazon Music支持寻求。
 
 ##浏览源
 为了减少ioBroker中的状态量，只有播放列表和预设会自动存储在状态中。但是，首先必须单击播放列表或预设文件夹中的浏览按钮。您可以在“源”文件夹中找到并控制它们。如果要浏览来源的音乐，只需按浏览按钮。您将在sources.browse_result状态中找到浏览结果。还提供了一些命令，可以更深入地浏览或播放资源。只需将命令粘贴到全局HEOS命令字段中即可。如果这是一个浏览命令，您将在Browse_result状态下找到结果。在配置中，您可以找到一个选项来控制播放命令的范围。这样一来，您可以控制播放命令是发给所有玩家，所有领导者和非小组玩家还是在状态command_scope_pid中定义的玩家ID列表。
@@ -230,6 +233,19 @@ on({id: 'heos.0.sources.browse_result', change: 'any'}, function (obj) {
 ```
 
 ## Changelog
+
+### 1.7.2 (2021-01-30)
+* (withstu) fix seek in groups
+
+### 1.7.1 (2021-01-30)
+* (withstu) add seek
+
+### 1.7.0 (2021-01-29)
+* (withstu) reboot not responding players
+* (withstu) delete old presets and playlists
+
+### 1.6.2 (2021-01-02)
+* (withstu) fix "user not logged in" handling
 
 ### 1.6.1 (2020-11-25)
 * (withstu) clear timeout and interval on unload; fix roles; remove sleep in tts module
