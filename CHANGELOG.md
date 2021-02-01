@@ -6,6 +6,9 @@
 
 ### __WORK IN PROGRESS__
 * see CHANGELOG.md, Finalized stable release
+* (Apollon77) adjust error logging in some places
+* (foxriver76) fix client name in redis
+* (foxriver76) fix errors from package manager
 
 ## 3.2.12 (2021-01-28) Release Grace
 **BREAKING CHANGES**
