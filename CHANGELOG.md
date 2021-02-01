@@ -4,7 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## __WORK IN PROGRESS__
+## 3.2.13 (2021-02-01)
 * see CHANGELOG.md, Finalized stable release
 * (Apollon77) adjust error logging in some places
 * (foxriver76) fix client name in redis
