@@ -19,18 +19,6 @@
         },
         "news": {
             "3.2.13": {
-                "en": "see CHANGELOG.md, Finalized stable release\nadjust error logging in some places\nfix client name in redis\nfix errors from package manager",
-                "de": "siehe CHANGELOG.md, Finalisierte stabile Version\nPassen Sie die Fehlerprotokollierung an einigen Stellen an\nClient-Name in Redis korrigieren\nBeheben Sie Fehler vom Paketmanager",
-                "ru": "см. CHANGELOG.md, Окончательный стабильный выпуск\nнастроить запись ошибок в некоторых местах\nисправить имя клиента в Redis\nисправить ошибки из диспетчера пакетов",
-                "pt": "consulte CHANGELOG.md, versão estável finalizada\najustar o registro de erros em alguns lugares\nconsertar o nome do cliente no redis\ncorrigir erros do gerenciador de pacotes",
-                "nl": "zie CHANGELOG.md, Afgeronde stabiele release\npas foutregistratie op sommige plaatsen aan\nfix client naam in redis\nrepareer fouten van pakketbeheerder",
-                "fr": "voir CHANGELOG.md, version stable finalisée\najuster la journalisation des erreurs à certains endroits\ncorriger le nom du client dans redis\ncorriger les erreurs du gestionnaire de packages",
-                "it": "vedi CHANGELOG.md, versione stabile finalizzata\nregolare la registrazione degli errori in alcuni punti\ncorreggere il nome del client in redis\ncorreggere gli errori dal gestore di pacchetti",
-                "es": "ver CHANGELOG.md, versión estable finalizada\najustar el registro de errores en algunos lugares\narreglar el nombre del cliente en redis\ncorregir errores del administrador de paquetes",
-                "pl": "zobacz CHANGELOG.md, Sfinalizowane wydanie stabilne\ndostosować logowanie błędów w niektórych miejscach\npopraw nazwę klienta w redis\nnapraw błędy z menedżera pakietów",
-                "zh-cn": "请参阅CHANGELOG.md，最终稳定版本\n在某些地方调整错误记录\n在Redis中修复客户端名称\n修复程序包管理器中的错误"
-            },
-            "3.2.12": {
                 "en": "see CHANGELOG.md",
                 "de": "siehe CHANGELOG.md",
                 "ru": "см. CHANGELOG.md",

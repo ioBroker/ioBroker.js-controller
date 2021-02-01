@@ -4,13 +4,7 @@
 	## __WORK IN PROGRESS__
 -->
 
-## 3.2.13 (2021-02-01)
-* see CHANGELOG.md, Finalized stable release
-* (Apollon77) adjust error logging in some places
-* (foxriver76) fix client name in redis
-* (foxriver76) fix errors from package manager
-
-## 3.2.12 (2021-01-28) Release Grace
+## 3.2.13 (2021-02-01) Release Grace
 **BREAKING CHANGES**
 * None, Supported are nodejs 10.x, 12.x and 14.x (Node.js 15.x is also working WHEN USED WITH npm 6!! in the automated tests, but formally not supported)
 * If you have enabled Multihost Discovery please disable and enable it again if you really need it persistent running. By re-enabling it you update the used passphrase with a better encryption mechanism.
