@@ -67,7 +67,7 @@
     "gulp-replace": "^1.0.0",
     "istanbul": "^0.4.5",
     "mocha": "^8.2.1",
-    "sinon": "^9.2.3",
+    "sinon": "^9.2.4",
     "sinon-chai": "^3.5.0"
   },
   "homepage": "http://www.iobroker.com",
